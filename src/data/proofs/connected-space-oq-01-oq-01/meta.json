@@ -109,9 +109,17 @@
       "mathContext": "The topologist's sine curve shows path-connectedness genuinely fails to survive closure."
     },
     {
+      "id": "positive-half-setup",
+      "title": "Section Divider: the Local Path-Connectedness Hypothesis",
+      "startLine": 87,
+      "endLine": 89,
+      "summary": "Marks the pivot to the positive half with the section comment '## The positive half: local path-connectedness restores closure-stability' and adds the section-wide hypothesis variable [LocPathConnectedSpace α], strictly strengthening the ambient assumptions used by every theorem below it.",
+      "mathContext": "From here on, $\\alpha$ is additionally assumed $\\mathrm{LocPathConnectedSpace}$."
+    },
+    {
       "id": "positive-half-component-closure",
       "title": "Section II: Path Components Are Their Own Closure",
-      "startLine": 87,
+      "startLine": 91,
       "endLine": 110,
       "summary": "closure_pathComponent, isPathConnected_closure_pathComponent, closure_pathComponent_eq_connectedComponent: in a LocPathConnectedSpace path components are clopen, so closure fixes them, identifying the closure with the path component itself and with the connected component.",
       "mathContext": "Clopen path components are their own closures — exactly where closure preserves path-connectedness."
