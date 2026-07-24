@@ -82,17 +82,17 @@
     },
     "type": "insight",
     "title": "Probability Form: |above|/|s| \u2265 (1-\u03b8)\u00b2\u00b7(mean)\u00b2/E[f\u00b2]",
-    "content": "`paley_zygmund_probability` divides the counting form by $\\sum f^2$: $(1-\\theta)^2 (\\sum f)^2 / \\sum f^2 \\leq |\\text{above}|$. The proof uses `div_le_iff hf2_pos` to convert division to multiplication, then applies `paley_zygmund_quantitative`. The hypothesis `hf2_pos : 0 < \u2211f\u00b2` is needed for safe division. This is the classical 'probability form' matching $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2/E[X^2]$.",
+    "content": "`paley_zygmund_probability` divides the counting form by $\\sum f^2$: $(1-\\theta)^2 (\\sum f)^2 / \\sum f^2 \\leq |\\text{above}|$. The proof uses `div_le_iff hf2_pos` to convert division to multiplication, then applies `paley_zygmund_quantitative_counting`. The hypothesis `hf2_pos : 0 < \u2211f\u00b2` is needed for safe division. This is the classical 'probability form' matching $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2/E[X^2]$.",
     "mathContext": "Dividing both sides by $\\sum f^2$: $|\\text{above}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$. Normalizing by $|s|^2$: $|\\text{above}|/|s| \\geq (1-\\theta)^2 E[f]^2 / E[f^2]$.",
     "significance": "supporting",
     "relatedConcepts": [
       "div_le_iff",
-      "paley_zygmund_quantitative",
+      "paley_zygmund_quantitative_counting",
       "probability form",
       "Paley-Zygmund"
     ],
     "prerequisites": [
-      "paley_zygmund_quantitative",
+      "paley_zygmund_quantitative_counting",
       "div_le_iff"
     ]
   },
@@ -105,17 +105,17 @@
     },
     "type": "insight",
     "title": "\u03b8=0 Special Case: Recovers Qualitative Second Moment Method",
-    "content": "`paley_zygmund_at_zero` sets $\\theta = 0$, recovering $(\\sum f)^2 \\leq |\\{f > 0\\}| \\cdot \\sum f^2$. The proof applies `paley_zygmund_quantitative` with `\u03b8 = 0`, then `simp` reduces $(1-0)^2 = 1$ and $0 \\cdot \\mu = 0$. The `convert` tactic handles the filter predicate change from `0\u00b7\u03bc < f a` to `0 < f a`. This shows that the quantitative Paley-Zygmund subsumes the qualitative second moment: $|\\text{supp}(f)| \\geq (\\sum f)^2 / \\sum f^2$, i.e., $P[X>0] \\geq E[X]^2/E[X^2]$.",
+    "content": "`paley_zygmund_at_zero` sets $\\theta = 0$, recovering $(\\sum f)^2 \\leq |\\{f > 0\\}| \\cdot \\sum f^2$. The proof applies `paley_zygmund_quantitative_counting` with `\u03b8 = 0`, then `simp` reduces $(1-0)^2 = 1$ and $0 \\cdot \\mu = 0$. The `convert` tactic handles the filter predicate change from `0\u00b7\u03bc < f a` to `0 < f a`. This shows that the quantitative Paley-Zygmund subsumes the qualitative second moment: $|\\text{supp}(f)| \\geq (\\sum f)^2 / \\sum f^2$, i.e., $P[X>0] \\geq E[X]^2/E[X^2]$.",
     "mathContext": "$P[X > 0] \\geq E[X]^2/E[X^2]$ (second moment lower bound on support). Implies $P[X > 0] > 0$ when $E[X] > 0$. Tightness: equality iff $X$ is essentially constant on its support.",
     "significance": "key",
     "relatedConcepts": [
       "second moment method",
-      "paley_zygmund_quantitative",
+      "paley_zygmund_quantitative_counting",
       "convert tactic",
       "support lower bound"
     ],
     "prerequisites": [
-      "paley_zygmund_quantitative",
+      "paley_zygmund_quantitative_counting",
       "qualitative second moment method"
     ]
   }

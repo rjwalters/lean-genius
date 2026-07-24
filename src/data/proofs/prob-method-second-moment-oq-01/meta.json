@@ -23,7 +23,7 @@
     "definitionCount": 0,
     "assumptions": "None. 0 axioms, 0 sorries. Fully verified in Lean 4 with Mathlib.",
     "originalContributions": [
-      "paley_zygmund_quantitative: (1-θ)²·(∑f)² ≤ |{a : f(a) > θ·mean}| · ∑f² (counting form)",
+      "paley_zygmund_quantitative_counting: (1-θ)²·(∑f)² ≤ |{a : f(a) > θ·mean}| · ∑f² (counting form)",
       "paley_zygmund_probability: (1-θ)²·(∑f)²/∑f² ≤ |above| (probability form)",
       "paley_zygmund_at_zero: θ=0 recovers the qualitative second moment method"
     ],
@@ -56,7 +56,7 @@
       "**Cauchy-Schwarz bridges first and second moments**: The private `sq_sum_le` lemma converts $\\sum_{\\text{above}} f \\geq (1-\\theta)\\sum f$ (first moment bound) into $(1-\\theta)^2 (\\sum f)^2 \\leq |\\text{above}| \\cdot \\sum f^2$ (first-second moment relationship). This is the core of the second moment method.",
       "**θ=0 recovers the qualitative method**: Setting $\\theta = 0$ gives $|\\{f > 0\\}| \\geq (\\sum f)^2 / \\sum f^2$, which implies $|\\{f > 0\\}| > 0$ when $\\sum f > 0$. This is the qualitative second moment principle, recovered as a special case.",
       "**Finite discrete setting avoids measure theory**: By working over ℚ-valued functions on Finsets, all inequalities reduce to elementary algebra over ℚ. The `hpos : 0 < ∑f` and `hnn : ∀ a, 0 ≤ f a` hypotheses replace σ-algebra measurability. This makes the proof accessible without MeasureTheory.Lp.",
-      "**Three formulations for different uses**: The counting form (`paley_zygmund_quantitative`) is best for combinatorial applications. The probability form (`paley_zygmund_probability`) matches the classical statement. The θ=0 form connects to the parent. Together they cover the main uses of Paley-Zygmund in the probabilistic method."
+      "**Three formulations for different uses**: The counting form (`paley_zygmund_quantitative_counting`) is best for combinatorial applications. The probability form (`paley_zygmund_probability`) matches the classical statement. The θ=0 form connects to the parent. Together they cover the main uses of Paley-Zygmund in the probabilistic method."
     ],
     "prerequisites": [
       "Cauchy-Schwarz inequality for finite sums (sq_sum_le)",
@@ -85,7 +85,7 @@
       "title": "Main Paley-Zygmund Inequality (Counting Form)",
       "startLine": 54,
       "endLine": 86,
-      "summary": "paley_zygmund_quantitative: 6-step proof via above/below decomposition, below-sum bound, Cauchy-Schwarz on above, filter-subset monotonicity, and sq_le_sq' to close.",
+      "summary": "paley_zygmund_quantitative_counting: 6-step proof via above/below decomposition, below-sum bound, Cauchy-Schwarz on above, filter-subset monotonicity, and sq_le_sq' to close.",
       "mathContext": "$(1-\\theta)^2(\\sum f)^2 \\leq |\\text{above}| \\cdot \\sum f^2$ where above = {f > θμ}."
     },
     {
