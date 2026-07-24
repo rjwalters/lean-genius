@@ -132,8 +132,8 @@
     "summary": "Specializes the parent's group-agnostic Burnside formula |Fix(g)| = k^{cyc(g)} to the cyclic rotation action, proving (A) cyc(rotation r) = gcd(n,r) by identifying the ⟨r⟩-orbit quotient with the coset space and applying Lagrange plus addOrderOf r = n/gcd(n,r), (B) k^{gcd(n,r)} fixed colorings via the parent's per-element count, and (C) the classical cyclic necklace count ∑_r k^{gcd(n,r)} = (#necklaces)·n by reindexing the parent's averaging identity. Fully verified with 0 sorries and 0 axioms.",
     "implications": "Answers the parent entry's openQuestions[0] verbatim — recovering the cyclic value cyc(rotation r) = gcd(n,r) as a corollary of the abstract orbit-count — so the classical necklace formula becomes a specialization of one general theorem. It pins the abstract orbit invariant cyc to elementary number theory (gcd, additive order) and supplies the integer-form Burnside average behind every cyclic necklace count in the gallery.",
     "openQuestions": [
-      "Recover the dihedral reflection counts k^{(n+1)/2}, k^{n/2+1}, k^{n/2} as instances of k^{cyc(g)} by computing the cycle count of each reflection in the dihedral action, completing the parent's program for the full dihedral group.",
-      "Push (C) to the divisor form ∑_{d|n} φ(n/d) k^d by grouping rotations of the same order, obtaining the standard closed expression for the number of k-colored necklaces."
+      "**(Resolved by `burnside-counting-oq-03-oq-02-oq-02`.)** Recover the dihedral reflection counts k^{(n+1)/2}, k^{n/2+1}, k^{n/2} as instances of k^{cyc(g)} by computing the cycle count of each reflection in the dihedral action, completing the parent's program for the full dihedral group.",
+      "**(Resolved by `burnside-counting-oq001`.)** Push (C) to the divisor form ∑_{d|n} φ(n/d) k^d by grouping rotations of the same order, obtaining the standard closed expression for the number of k-colored necklaces."
     ]
   },
   "crossReferences": [
@@ -148,6 +148,18 @@
       "targetId": "burnside-counting-oq-03",
       "relationship": "specializes",
       "description": "The grandparent established the cyclic necklace count |Fix(rotation r)| = k^{gcd(r,n)} as a bespoke result; this entry re-derives the same value as a specialization of the arbitrary-group Burnside formula, closing the loop between the concrete cyclic count and the abstract orbit-counting API."
+    },
+    {
+      "id": "xref-burnside-oq030202-dihedral-sibling",
+      "targetId": "burnside-counting-oq-03-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Answers openQuestions[0] above: computes the dual reflection cycle count cyc(reflection) = (n+|Fix|)/2, supplying the second half of the dihedral Burnside sum this entry's rotation count started."
+    },
+    {
+      "id": "xref-burnside-oq001-divisor-form",
+      "targetId": "burnside-counting-oq001",
+      "relationship": "extended-by",
+      "description": "Answers openQuestions[1] above: pushes this entry's integer-form necklace count ∑_r k^{gcd(n,r)} = (#necklaces)·n to the standard divisor form ∑_{d∣n} φ(n/d)·k^d by grouping rotations of the same order."
     }
   ],
   "leanFile": {
