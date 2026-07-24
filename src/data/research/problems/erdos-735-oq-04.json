@@ -65,6 +65,7 @@
       "Of the three polytopes named by S1 OBSERVE, only the tetrahedron is 2-flat magic — now machine-checked in Lean (S6a positive + S6b/c negative certificates)."
     ],
     "builtItems": [
+      "S6e (researcher-3, 2026-07-24): Erdos735OQ04GeneralPosition.lean — general-position uniform-weight theorem: IsKFlatGeneralPositionD, isKFlatMagic_of_kFlatGeneralPosition (uniform weight, constant k+1), isKFlatMagic_of_affineIndependent (simplex configs magic for EVERY k), isKFlatMagic_one_of_generalPosition (class-2 forward implication of the S5 classification axiom proved outright, all d). 0 ax / 0 sorry; host-verified v4.31.0; #print axioms = 3 foundational (no dependence on the S5 axiom).",
       "Wrote research/problems/erdos-735-oq-04/problem.md (formal targets + S2-S7 plan + (d, k) hierarchy) — S1 OBSERVE, PR #18336.",
       "Wrote research/problems/erdos-735-oq-04/knowledge.md (ABKPR recap + polytope examples + combinatorial counting) — S1 OBSERVE, PR #18336.",
       "Wrote research/problems/erdos-735-oq-04/state.md (phase OBSERVE) — S1 OBSERVE, PR #18336.",
@@ -83,11 +84,12 @@
       "Erdos735OQ04Octahedron.lean: octa_not_isKFlatMagic (0 axioms, 0 sorries) + generic helpers ne_of_coord/coordL/sumL/mem_mk'_ker_iff/rank_ker_two",
       "Erdos735OQ04Cube.lean: cube_not_isKFlatMagic (0 axioms, 0 sorries), reuses octahedron helpers via import"
     ],
-    "progressSummary": "S6a+S6b+S6c COMPLETE (2026-07-24): all three S1-OBSERVE polytope claims settled in Lean. Tetrahedron IS 2-flat magic (Erdos735OQ04Tetrahedron.lean, PR #43107); octahedron and cube are NOT (Erdos735OQ04Octahedron.lean octa_not_isKFlatMagic, Erdos735OQ04Cube.lean cube_not_isKFlatMagic — both 0 axioms 0 sorries, Docker-verified 3041 jobs). Refutations use a 4-flat linear-arithmetic route (no O_h symmetry averaging): flats as mk' over kernels of coordinate/sum functionals, exact filter computation, linarith contradiction with positivity. Slug axiom count unchanged: 1 (S5 oneflat_classification_higher_dim, genuinely open). Next shippable: S6d dodeca/icosa analysis, S6e general-position uniform-weight theorem, S7 gallery JSON (slug still has no src/data/proofs entry).",
+    "progressSummary": "S6a/b/c/e complete: tetrahedron witness (k=2 magic), octa/cube refutations, and the S6e general-position uniform-weight theorem — affinely independent configurations are k-flat magic for every k, and the class-2 ('general position ⟹ magic') implication of the axiomatized higher-dim classification is now a machine-checked theorem in every dimension. Slug axiom count stays 1 (the S5 classification iff). Remaining: S6d dodeca/icosa, S7 gallery JSON, IsIncenterConfigD tightening.",
     "nextSteps": [
-      "S6d: dodecahedron/icosahedron 2-flat enumeration (PREP's Python script generalizes; decide magic vs not, then Lean certificate)",
-      "S6e: general-position uniform-weight theorem for 1 <= k <= d-1 in R^d (~40-60 LOC, k-parameterised IsGeneralPositionD variant)",
-      "S7: gallery JSON for erdos-735-oq-04 (status axiomatized, axiomCount 1, document S5 axiom + IsIncenterConfigD skeleton gap)"
+      "S6d: dodecahedron/icosahedron — witness vs refutation (check face lattices; likely refutations à la octa/cube).",
+      "S7: gallery JSON — slug still has NO src/data/proofs entry.",
+      "IsIncenterConfigD tightening (structural skeleton → genuine incenter condition).",
+      "Optional: reverse implications / other classes of the S5 classification (collinear ⟹ magic is likely also accessible; near-pencil needs care)."
     ]
   },
   "tags": [
@@ -145,5 +147,6 @@
     "erdos-7",
     "erdos-73",
     "erdos-735"
-  ]
+  ],
+  "iteration": 13
 }
