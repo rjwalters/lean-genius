@@ -96,11 +96,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module header and context",
+      "title": "Docstring: statement and strategy",
       "startLine": 1,
-      "endLine": 28,
-      "summary": "States the shallow-diagonal Fibonacci identity ∑_j C(n−j, j) = F(n+1), the parent's first open question (recorded there only via native_decide examples), and the strategy: reduce to Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose by reflecting the index. Imports Mathlib and opens Finset.",
+      "endLine": 22,
+      "summary": "States the shallow-diagonal Fibonacci identity ∑_j C(n−j, j) = F(n+1), the parent's first open question (recorded there only via native_decide examples), and the strategy: reduce to Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose by reflecting the index. Names the two main results, fib_shallow_diagonal_alt and fib_shallow_diagonal.",
       "mathContext": "$\\sum_{j=0}^{n} \\binom{n-j}{j} = F_{n+1}$; the diagonal of slope 2 through Pascal's triangle, finite because $\\binom{n-j}{j} = 0$ once $2j > n$."
+    },
+    {
+      "id": "imports",
+      "title": "Imports, namespace, and Finset scope",
+      "startLine": 24,
+      "endLine": 28,
+      "summary": "Imports Mathlib and opens the CombinationsFormulaOQ01OQ01 namespace, bringing Finset into scope so the antidiagonal- and range-sum lemmas used by both theorems can be stated unqualified.",
+      "mathContext": "`open Finset` exposes `Finset.range`, `Finset.sum_range_reflect`, and the antidiagonal API used to state and prove both sum identities."
     },
     {
       "id": "mirror-form",
