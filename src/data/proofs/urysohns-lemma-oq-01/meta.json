@@ -50,11 +50,19 @@
     },
     {
       "id": "explicit-metric",
-      "title": "Part (b): The Explicit Metric Urysohn Function",
+      "title": "Part (b): The Explicit Urysohn Function, Defined and Verified",
       "startLine": 77,
-      "endLine": 158,
-      "summary": "Defines urysohnFn s t x = d(x,s)/(d(x,s)+d(x,t)) and proves, from the Metric.infDist API alone: infDist_add_pos (denominator > 0 everywhere, from disjointness), continuous_urysohnFn (Continuous.div with nowhere-vanishing denominator), urysohnFn_eq_zero (= 0 on s), urysohnFn_eq_one (= 1 on t), urysohnFn_mem_Icc ([0,1]-valued). urysohn_metric bundles these into a C(X,ℝ) separator; urysohn_metric_of_normalSpace notes the abstract lemma applies verbatim since every metric space is normal.",
+      "endLine": 138,
+      "summary": "Defines urysohnFn s t x = d(x,s)/(d(x,s)+d(x,t)) and proves, from the Metric.infDist API alone: infDist_add_pos (denominator > 0 everywhere, from disjointness), continuous_urysohnFn (Continuous.div with nowhere-vanishing denominator), urysohnFn_eq_zero (= 0 on s), urysohnFn_eq_one (= 1 on t), urysohnFn_mem_Icc ([0,1]-valued).",
       "mathContext": "$f(x)=\\dfrac{d(x,s)}{d(x,s)+d(x,t)}$: continuous, $f|_s=0$, $f|_t=1$, $f(x)\\in[0,1]$, denominator $>0$."
+    },
+    {
+      "id": "metric-bundled",
+      "title": "Part (b) Continued: The Bundled Metric Separator",
+      "startLine": 140,
+      "endLine": 158,
+      "summary": "urysohn_metric bundles the individual urysohnFn facts into a single C(X,ℝ) separator. urysohn_metric_of_normalSpace notes the abstract lemma applies verbatim since every metric space is normal, needing no nonemptiness hypotheses.",
+      "mathContext": "$\\exists f\\in C(X,\\mathbb{R})$ with $f|_s\\equiv 0$, $f|_t\\equiv 1$, $f(X)\\subseteq[0,1]$, from either the explicit witness or abstract normality."
     },
     {
       "id": "concrete-evaluation",
