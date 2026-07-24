@@ -42,7 +42,8 @@
       "The oriented boundary seed the whole n ≥ 2 program was missing is the hemisphere SIGN-degree: push the {±1,±2} labelling through the magnitude-collapsing sign map sgn : Fin 4 → ZMod 2 and count sign flips along an antipodal-boundary arc. This is the first POSITIVE odd boundary seed on the hexagon — every prior boundary result (even ring, non-invariant half-ring) was negative.",
       "The sign map is the ZMod 2 reduction of the antipodal action (sgn (negL x) = sgn x + 1), so a hemisphere arc v₀ → ⋯ → v₃ = −v₀ has sign-distinct endpoints — exactly the boundary condition of the verified one-dimensional Tucker lemma. The odd hemisphere sign-degree is therefore n = 1 Tucker applied to the sign-reduced labelling, connecting the n = 2 boundary directly to the already-verified base case.",
       "The seed lives on the antipodal fundamental domain, not the whole circle: the full-ring sign-change count is EVEN (the loop returns to its starting sign), so the oddness is read off half the loop — the discrete analogue of reading a degree off a fundamental domain. This is why the sibling entries' full-ring and symmetric counts had to be even.",
-      "A sign flip is a genuinely weaker event than a complementary edge: a boundary edge can have opposite signs (e.g. +2 then −1) yet not be complementary (λ(v_{i+1}) ≠ −λ(v_i)). The complementary-edge count misses exactly these edges, which is precisely why it is even / non-parity-invariant while the sign-degree is odd. Bridging the odd sign flips to an interior complementary simplex is the remaining 2-D path-following."
+      "A sign flip is a genuinely weaker event than a complementary edge: a boundary edge can have opposite signs (e.g. +2 then −1) yet not be complementary (λ(v_{i+1}) ≠ −λ(v_i)). The complementary-edge count misses exactly these edges, which is precisely why it is even / non-parity-invariant while the sign-degree is odd. Bridging the odd sign flips to an interior complementary simplex is the remaining 2-D path-following.",
+      "All four theorems are kernel `decide` certificates over a finite search space (4³ = 64 free boundary labellings; the centre label never enters), not `native_decide` — so none of them introduces `Lean.ofReduceBool`, and the file is genuinely axiom-free rather than merely disclosed as such. This makes the entry a rare case in the door-counting program where a universal positive claim ('the hemisphere sign-degree is odd for every labelling') is settled by exhaustive finite verification: the telescoping / discrete-FTC argument explains *why* it is true, but the Lean proof itself is a certificate over the 64 cases, not a derivation from that argument."
     ]
   },
   "sections": [
@@ -63,10 +64,17 @@
     },
     {
       "id": "hemisphere-sign-degree-odd",
-      "title": "The Hemisphere Sign-Degree is Odd, the Full Ring Even",
+      "title": "The Hemisphere Sign-Degree is Odd",
       "startLine": 103,
+      "endLine": 118,
+      "summary": "arcSignChanges counts the edges of the fundamental-domain arc v₀ → v₁ → v₂ → v₃ across which the sign bit flips, and arc_sign_changes_odd proves this hemisphere sign-degree is ODD for every antipodal labelling (all 4³ = 64 cases by decide) — the positive odd boundary seed, obtained as n = 1 Tucker of the sign-reduced labelling whose arc endpoints sgn v₀ and sgn v₃ = sgn v₀ + 1 differ."
+    },
+    {
+      "id": "full-ring-sign-changes-even",
+      "title": "The Full Ring is Even — Oddness Lives on the Fundamental Domain",
+      "startLine": 119,
       "endLine": 128,
-      "summary": "arcSignChanges counts the edges of the fundamental-domain arc v₀ → v₁ → v₂ → v₃ across which the sign bit flips, and arc_sign_changes_odd proves this hemisphere sign-degree is ODD for every antipodal labelling (all 4³ = 64 cases by decide) — the positive odd boundary seed, obtained as n = 1 Tucker of the sign-reduced labelling whose arc endpoints sgn v₀ and sgn v₃ = sgn v₀ + 1 differ. fullSignChanges counts sign flips around the whole ring, and full_sign_changes_even proves it is always EVEN: the odd seed lives on the antipodal fundamental domain, not the whole circle."
+      "summary": "fullSignChanges counts sign flips around the whole boundary ring v₀ → v₁ → ⋯ → v₅ → v₀ (all six edges), and full_sign_changes_even proves this count is always EVEN by kernel decide. The contrast with the hemisphere arc is the conceptual crux: a closed loop returns to its starting sign, so its telescoping sum is 0 mod 2, whereas the odd seed exists only on the antipodal fundamental domain — the discrete analogue of reading a topological degree off half the loop."
     },
     {
       "id": "sign-vs-complementary",
