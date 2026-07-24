@@ -171,6 +171,7 @@ theorem exists_equitable_recut_blocks (G : SimpleGraph V) [DecidableRel G.Adj]
           by rw [hfibA]] at hpe₂
         linarith [hQ'pe, hpe₂]
 
+omit [Fintype V] in
 /-- **Disjoint blocks have disjoint fibers.**  Since pieces are nonempty and
 the blocks of `T` are pairwise disjoint, a piece of `Q₀` lies in the fiber of
 at most one block, so the fiber cardinalities sum to at most `|Q₀|`. -/
