@@ -124,18 +124,16 @@
     },
     "type": "concept",
     "title": "Guth-Katz Theorem (2015)",
-    "content": "**guthKatz** is the breakthrough result: g(n) ≥ c·n/log n for some c > 0.\n\nThis is weaker than the conjecture by a factor of √(log n), but was a major breakthrough after decades of work.\n\n**Why an axiom?** The proof uses sophisticated algebraic geometry techniques (polynomial partitioning).",
+    "content": "The **Guth-Katz Theorem** is the breakthrough result: g(n) ≥ c·n/log n for some c > 0.\n\nThis is weaker than the conjecture by a factor of √(log n), but was a major breakthrough after decades of work.\n\nThis result is described in a comment block, not formalized as a Lean axiom or theorem — the proof uses sophisticated algebraic geometry techniques (polynomial partitioning) outside the scope of this file.",
     "mathContext": "Guth and Katz proved this using a polynomial method, counting incidences between points and lines in 3D.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "guth-katz",
       "polynomial-method"
     ],
     "prerequisites": [
       "Polynomial Partitioning",
-      "Incidence Geometry",
-      "Lean Axioms"
+      "Incidence Geometry"
     ]
   },
   {
@@ -147,11 +145,10 @@
     },
     "type": "concept",
     "title": "Grid Upper Bound",
-    "content": "**gridUpperBound** states: g(n) ≤ c·n/√(log n) for some c > 0.\n\nThe √n × √n integer grid achieves this bound, showing the conjecture is tight if true.\n\nThis uses number theory: the count of integers ≤ x representable as sums of two squares.",
+    "content": "The **grid upper bound** states: g(n) ≤ c·n/√(log n) for some c > 0.\n\nThe √n × √n integer grid achieves this bound, showing the conjecture is tight if true.\n\nThis is described in a comment block, not formalized as a Lean axiom or theorem — the argument uses number theory: the count of integers ≤ x representable as sums of two squares.",
     "mathContext": "The Landau-Ramanujan constant governs this: |{n ≤ x : n = a² + b²}| ~ Kx/√(log x).",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "upper-bound",
       "integer-grid",
       "sums-of-squares"
@@ -171,7 +168,7 @@
     },
     "type": "concept",
     "title": "Conjecture Implies Guth-Katz",
-    "content": "**conjecture_implies_guthKatz** shows the conjecture is strictly stronger than Guth-Katz.\n\nThe key: n/√(log n) > n/log n for large n, since √(log n) < log n.\n\nThis is a genuine Lean theorem (with one sorry for the inequality).",
+    "content": "**conjecture_implies_guthKatz** shows the conjecture is strictly stronger than Guth-Katz.\n\nThe key: n/√(log n) > n/log n for large n, since √(log n) < log n.\n\nThis is a genuine Lean theorem, fully proved (0 sorries).",
     "mathContext": "The proof uses `filter_upwards` to work with the eventually filter and `calc` for the chain of inequalities.",
     "significance": "key",
     "relatedConcepts": [
@@ -194,7 +191,7 @@
     },
     "type": "concept",
     "title": "Historical Development",
-    "content": "The problem saw steady progress over decades:\n\n- **1992**: Chung proves Ω(n^(4/5))\n- **2001**: Solymosi-Tóth prove Ω(n^(6/7))\n- **2004**: Tardos proves Ω(n^0.8641)\n- **2015**: Guth-Katz prove Ω(n/log n)\n\n**chung1992** and **tardos2004** are axioms for these historical bounds.",
+    "content": "The problem saw steady progress over decades:\n\n- **1992**: Chung proves Ω(n^(4/5))\n- **2001**: Solymosi-Tóth prove Ω(n^(6/7))\n- **2004**: Tardos proves Ω(n^0.8641)\n- **2015**: Guth-Katz prove Ω(n/log n)\n\nThese historical bounds are described in prose only; they are not formalized as Lean declarations (no `chung1992` or `tardos2004` axioms or theorems exist in this file).",
     "mathContext": "The exponent improved from 0.8 to 0.86 to... finally escaping polynomial bounds in 2015.",
     "significance": "supporting",
     "relatedConcepts": [
