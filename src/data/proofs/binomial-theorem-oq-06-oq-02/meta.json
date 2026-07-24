@@ -88,7 +88,8 @@
       "**Mathlib's hockey-stick is vertical, not diagonal.** Nat.sum_Icc_choose and Nat.sum_range_add_choose fix the LOWER index k and sum a column. The parallel-summation ∑ C(r+k,k), where the DIFFERENCE (r+k)−k = r is constant, sums a diagonal; the single symmetry C(r+k,k)=C(k+r,r) converts one into the other.",
       "**One reflection turns a diagonal into a column.** Flipping each summand with Nat.choose_symm_add is the only combinatorial content of the parallel-summation proof — after it, Mathlib's vertical hockey-stick closes the goal.",
       "**The sum of squares of a Pascal row is a Catalan multiple.** ∑_{k=0}^{n} C(n,k)² = C(2n,n) = (n+1)·catalan n. The Vandermonde diagonal already equals the central binomial coefficient; Mathlib's succ_mul_catalan_eq_centralBinom then exposes the Catalan number hiding inside it.",
-      "**The factor n+1 is the cycle lemma.** C(2n,n) counts all monotone lattice paths (0,0)→(n,n); catalan n counts the Dyck paths (weakly below the diagonal); each Dyck path is shared exactly n+1 times among cyclic rotations, which is precisely the n+1 in ∑ C(n,k)² = (n+1)·catalan n."
+      "**The factor n+1 is the cycle lemma.** C(2n,n) counts all monotone lattice paths (0,0)→(n,n); catalan n counts the Dyck paths (weakly below the diagonal); each Dyck path is shared exactly n+1 times among cyclic rotations, which is precisely the n+1 in ∑ C(n,k)² = (n+1)·catalan n.",
+      "**The central diagonal is half the next central binomial coefficient.** central_diagonal gives ∑_{k=0}^{n} C(n+k,k) = C(2n+1,n). Since the two central entries of an odd row coincide, C(2n+1,n) = C(2n+1,n+1), and Pascal's rule gives C(2n+1,n)+C(2n+1,n+1) = C(2n+2,n+1); so C(2n+1,n) = centralBinom(n+1)/2 — a second, independent bridge from this file's diagonal sums back to the central-binomial family, distinct from the Catalan bridge for ∑ C(n,k)² (checks at n=3: C(7,3)=35=centralBinom(4)/2=70/2)."
     ],
     "exampleSections": [
       {
