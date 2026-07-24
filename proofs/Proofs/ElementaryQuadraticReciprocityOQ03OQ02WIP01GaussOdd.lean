@@ -280,4 +280,103 @@ theorem gaussSumOdd_ne_zero (hq2 : q ≠ 2) (ζ : K) (hζq : ζ ^ q = 1)
   rw [hchi, mul_zero] at hone
   exact zero_ne_one hone
 
+/-! ## Frobenius covariance in characteristic `p`
+
+With the square formula in hand, the reciprocity mechanism is the Frobenius
+endomorphism: in a field of odd characteristic `p` (with `p` invertible mod
+`q`), raising the Gauss sum to the `p`-th power distributes over the sum
+(`sum_pow_char`), fixes the character values (`χ(a)^p = χ(a)` since
+`χ(a) ∈ {0, ±1}` and `p` is odd), and dilates the frequency (`(ζ^a)^p =
+ζ^{ap}`); undoing the dilation with the substitution `a ↦ a·p̄` costs exactly
+one factor `χ(p̄)`.  Cancelling `g ≠ 0` in `g^p = g·(g²)^{(p−1)/2}` then
+converts the covariance into the *Euler-criterion identity*
+`(χ(−1)·q)^{(p−1)/2} = χ(p̄)` — the algebraic heart of quadratic
+reciprocity. -/
+
+section Frobenius
+
+variable {p : ℕ} [hp : Fact p.Prime] [CharP K p]
+
+/-- Character values are fixed by odd powers: `χ(a)^p = χ(a)` in `K`, because
+`χ(a) ∈ {0, 1, −1}` and `p` is odd. -/
+theorem chiK_pow_char (hodd : Odd p) (a : ZMod q) :
+    chiK (K := K) a ^ p = chiK a := by
+  rcases quadraticChar_isQuadratic (ZMod q) a with h | h | h <;>
+    · unfold chiK
+      rw [h]
+      push_cast
+      first
+        | exact zero_pow hp.out.ne_zero
+        | exact one_pow p
+        | exact hodd.neg_one_pow
+
+/-- Power law for `zetapow`: `(ζ^a)^n = ζ^{a·n̄}` where `n̄ = (n : ZMod q)`.
+The exponents agree modulo `q`, and `ζ^q = 1` folds them. -/
+theorem zetapow_pow (ζ : K) (hζq : ζ ^ q = 1) (a : ZMod q) (n : ℕ) :
+    zetapow ζ a ^ n = zetapow ζ (a * (n : ZMod q)) := by
+  unfold zetapow
+  rw [← pow_mul]
+  conv_lhs => rw [pow_eq_pow_mod _ hζq]
+  conv_rhs => rw [pow_eq_pow_mod _ hζq]
+  congr 1
+  rw [ZMod.val_mul, Nat.mod_mod_of_dvd _ (dvd_refl q), ZMod.val_natCast]
+  exact Nat.ModEq.mul_left a.val (Nat.mod_modEq n q).symm
+
+/-- **Frobenius covariance of the Gauss sum:** in characteristic `p` (odd,
+invertible mod `q`), `g^p = χ(p̄)·g`.  The Frobenius distributes over the sum,
+fixes `χ`, and dilates frequencies by `p̄`; the substitution `a ↦ a·p̄`
+(`mulRight_bijective₀`) restores `g` at the cost of `χ(p̄)`. -/
+theorem gaussSumOdd_pow_char (hodd : Odd p) (ζ : K) (hζq : ζ ^ q = 1)
+    (hpq : (p : ZMod q) ≠ 0) :
+    gaussSumOdd (q := q) ζ ^ p = chiK (K := K) ((p : ZMod q)) * gaussSumOdd (q := q) ζ := by
+  haveI : ExpChar K p := ExpChar.prime hp.out
+  have hstep : gaussSumOdd (q := q) ζ ^ p
+      = ∑ a : ZMod q, chiK a * zetapow ζ (a * (p : ZMod q)) := by
+    rw [gaussSumOdd, sum_pow_char]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [mul_pow, chiK_pow_char hodd, zetapow_pow ζ hζq]
+  have hrw : ∀ a : ZMod q, chiK (K := K) a * zetapow ζ (a * (p : ZMod q))
+      = chiK (K := K) ((p : ZMod q))
+          * (chiK (a * (p : ZMod q)) * zetapow ζ (a * (p : ZMod q))) := by
+    intro a
+    have h2 : chiK (K := K) ((p : ZMod q)) * chiK ((p : ZMod q)) = 1 :=
+      chiK_sq_eq_one hpq
+    rw [chiK_mul]
+    linear_combination (-(chiK (K := K) a * zetapow ζ (a * (p : ZMod q)))) * h2
+  rw [hstep, Finset.sum_congr rfl fun a _ => hrw a, ← Finset.mul_sum]
+  congr 1
+  rw [gaussSumOdd]
+  exact Fintype.sum_bijective _ (mulRight_bijective₀ _ hpq) _ _ (fun a => rfl)
+
+/-- **The Euler-criterion identity:** cancelling `g ≠ 0` between
+`g^p = χ(p̄)·g` (Frobenius) and `g^p = g·(g²)^{(p−1)/2}` with `g² = χ(−1)·q`
+gives
+
+    `(χ(−1)·q)^{(p−1)/2} = χ(p̄)`   in `K`.
+
+Instantiated in `GaloisField p k` and descended to `ZMod p`, this becomes full
+quadratic reciprocity. -/
+theorem chi_neg_one_mul_q_pow_eq_chi (hq2 : q ≠ 2) (hodd : Odd p) (ζ : K)
+    (hζq : ζ ^ q = 1) (hζ1 : ζ ≠ 1) (hqK : (q : K) ≠ 0)
+    (hpq : (p : ZMod q) ≠ 0) :
+    (chiK (K := K) (-1 : ZMod q) * q) ^ ((p - 1) / 2) = chiK ((p : ZMod q)) := by
+  have hS := gaussSumOdd_ne_zero hq2 ζ hζq hζ1 hqK
+  have hfrob := gaussSumOdd_pow_char (p := p) hodd ζ hζq hpq
+  have hsq := gaussSumOdd_sq hq2 ζ hζq hζ1
+  have hp1 : p = 2 * ((p - 1) / 2) + 1 := by
+    rcases hodd with ⟨m, hm⟩; omega
+  have hpow : gaussSumOdd (q := q) ζ ^ p
+      = gaussSumOdd (q := q) ζ * (gaussSumOdd (q := q) ζ ^ 2) ^ ((p - 1) / 2) := by
+    conv_lhs => rw [hp1]
+    rw [pow_succ, pow_mul]
+    ring
+  rw [hsq] at hpow
+  have hcancel : gaussSumOdd (q := q) ζ * (chiK (K := K) (-1 : ZMod q) * q) ^ ((p - 1) / 2)
+      = gaussSumOdd (q := q) ζ * chiK ((p : ZMod q)) := by
+    rw [← hpow, hfrob]
+    ring
+  exact mul_left_cancel₀ hS hcancel
+
+end Frobenius
+
 end KroneckerSymbol
