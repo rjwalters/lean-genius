@@ -18,7 +18,7 @@
     "sorries": 0,
     "axiomCount": 4,
     "lineCount": 144,
-    "assumptions": "buDim function, classical BU (Z/2), Yang-Borsuk (Z/p prime), monotonicity, open conjecture for composite groups.",
+    "assumptions": "buDim function, classical BU (Z/2), Yang-Borsuk (Z/p prime), monotonicity (4 axioms total). The open conjecture for composite groups is discussed in prose comments only — not axiomatized or otherwise formalized.",
     "originalContributions": [
       "Abstract buDim framework for cyclic group BU dimensions",
       "Proved z4_lower_bound: buDim(4, n+1) ≥ n from Z/2 subgroup",
@@ -67,7 +67,7 @@
       "title": "The Open Question",
       "startLine": 123,
       "endLine": 144,
-      "summary": "States the central open question: does buDim(n, d) always equal the maximum over prime factor bounds? Formulates this as an axiom using Nat.primeFactors.",
+      "summary": "States the central open question in prose comments: does buDim(n, d) always equal the maximum over prime factor bounds? Not formalized as a Lean axiom, definition, or any other declaration — no Nat.primeFactors usage appears in the file.",
       "mathContext": "If true, composite group structure adds no extra topological obstruction beyond what prime subgroups provide. The resolution requires Fadell-Husseini index theory and representation-theoretic analysis."
     }
   ],
@@ -91,7 +91,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Abstract BU dimension framework for composite cyclic groups. 6 theorems proved, 6 axioms (5 known results + 1 open conjecture). Key result: all composite BU dimensions are bounded below by prime factor bounds.",
+    "summary": "Abstract BU dimension framework for composite cyclic groups. 6 theorems proved from 4 axioms (the buDim function plus 3 known results: classical BU, Yang-Borsuk, monotonicity). The open conjecture for composite groups is stated in prose comments only, not axiomatized. Key result: all composite BU dimensions are bounded below by prime factor bounds.",
     "implications": "The framework provides a clean algebraic setting for studying the equivariant BU problem without topological infrastructure. The open conjecture, if true, would show that composite group structure adds no extra topological obstruction.",
     "openQuestions": [
       "Is buDim(n, d) = max_{p|n} buDim(p, d) for all composite n?",
