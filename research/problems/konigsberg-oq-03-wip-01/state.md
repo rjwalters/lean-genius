@@ -2,10 +2,52 @@
 
 ## Current State
 
-**Phase**: ACT (S12 — satisfiability witnesses shipped, Docker-GREEN)
+**Phase**: ACT (S13 — incomparability pair shipped, Docker-GREEN)
 **Path**: full
-**Since**: 2026-07-24 (S12 ACT, researcher-2)
-**Iteration**: 12
+**Since**: 2026-07-24 (S13 ACT, researcher-1)
+**Iteration**: 13
+
+## S13 ACT Summary (2026-07-24, researcher-1)
+
+**Mode**: ACT (Lean + tracker sync; Docker-verified GREEN first try, 8576 jobs).
+
+Shipped both items of the S12 "S13 menu" — the incomparability pair, new
+"Incomparability of the two Euler-path notions (S13)" section (4 theorems,
+0 sorry / 0 axiom):
+
+- **`not_hasInfiniteEulerPath_rayGraph`** — the ray has no *bi-infinite*
+  Euler path. The predicted ~100+ LOC discrete-crossing argument collapsed
+  to ~25 LOC: vertex `0` has degree one, and a ℤ-indexed walk must both
+  enter and leave every vertex it visits, so the steps into and out of `0`
+  each traverse the unique edge `{0, 1}` — edge-injectivity violated. Purely
+  local; no pigeonhole needed.
+- **`not_hasOneWayEulerPath_lineGraph`** — the line has no *one-way* Euler
+  path. This one is genuinely global: the edge `{0, 1}` is traversed at a
+  unique step `t` (`huniq` via 4-way `sameEdge` case analysis); a
+  `Nat.le_induction` confinement lemma shows the walk stays on one side of
+  the cut `{…, 0} | {1, …}` after step `t` (re-crossing would re-traverse
+  `{0, 1}`); the infinitely many abandoned-side edges (`{-1-k, -k}` resp.
+  `{k+1, k+2}`) then `choose`-inject into `Set.Iic t` —
+  `Set.infinite_of_injective_forall_mem` vs `Set.finite_Iic` closes it.
+- **`not_oneWay_imp_biInfinite` / `not_biInfinite_imp_oneWay`** — capstones:
+  neither Euler-path predicate implies the other. With the S12 witnesses the
+  2×2 picture is complete: ray = one-way ✓ / bi-infinite ✗; line = one-way ✗
+  / bi-infinite ✓. The number of *ends* is exactly what separates the two
+  notions — the formal core of the EGW picture.
+
+Net: 462 → 623 LOC, +4 theorems (27 total by `grep -c "^theorem"`), 0 sorry /
+0 axiom throughout. Lean idioms: keep `w.vertex _` as `omega` atoms (all
+vertex-value case analysis closes by `omega` with ℕ→ℤ casts); ℤ-index
+normalization via `rw [show t - 1 + 1 = t from by ring]`.
+
+**S14 menu**: (a) EGW necessity for locally finite graphs (one-way Euler path
+⇒ ≤ 2 odd-degree vertices; degree counting over `infiniteDegree`, ~150+ LOC —
+first genuinely structural EGW piece); (b) extract the S13 cut-confinement
+argument as a reusable lemma; (c) park — the file is at a natural plateau
+with the positive/negative picture complete. Session memo:
+`sessions/2026-07-24-s13-act-incomparability-pair.md`.
+
+---
 
 ## S12 ACT Summary (2026-07-24, researcher-2)
 
