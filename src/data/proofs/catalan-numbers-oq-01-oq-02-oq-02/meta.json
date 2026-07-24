@@ -74,7 +74,8 @@
       "**The odd indices are shifted powers of two.** Cₙ odd ⟺ n + 1 = 2ᵏ ⟺ n = 2ᵏ − 1, so the odd-index set is exactly {0,1,3,7,15,…} — one odd Catalan number in each dyadic block [2ᵏ−1, 2^{k+1}−1).",
       "**Geometric gaps ⟹ density zero.** Consecutive odd indices differ by 2ᵏ, which grows without bound; the count below N is only ⌊log₂ N⌋ + 1, so the fraction of odd Catalan numbers among the first N tends to 0.",
       "**Counting via an injective image.** The exact count is obtained not by induction but by identifying the filtered Finset with the image of an initial segment of ℕ under the injective map k ↦ 2ᵏ − 1; the cardinality is then read off from card_range.",
-      "**Built on the parent, not re-derived.** The parity characterisation is imported from catalan-numbers-oq-01-oq-02; the new content is purely the structural/quantitative description (range form, gaps, counting function) of the odd-index set."
+      "**Built on the parent, not re-derived.** The parity characterisation is imported from catalan-numbers-oq-01-oq-02; the new content is purely the structural/quantitative description (range form, gaps, counting function) of the odd-index set.",
+      "**The count is exactly the bit-length of N.** ⌊log₂ N⌋ + 1 is the number of binary digits needed to write N — so 'how many odd Catalan numbers lie below N' and 'how many bits does N take to write down' are the same question. The k-th odd Catalan index 2ᵏ − 1 is exactly the point where N's bit-length first reaches k + 1, which is why the count grows only logarithmically while the indices themselves grow geometrically: the sparsity of the set and the simplicity of its counting formula are two faces of the same power-of-two structure."
     ],
     "exampleSections": [
       {
