@@ -48,7 +48,8 @@
       "The weight k is not an obstruction but a signal to shift the row: absorption k·C(n,k) = n·C(n-1,k-1) trades the linear weight for a decrement of both the upper and lower index, converting a weighted self-convolution into an ordinary (unequal-row) Vandermonde convolution.",
       "Applying absorption to only one of the two C(n+1,j+1) factors is the crux: it leaves a clean product C(n,j)·C(n+1,j+1) whose two rows differ by exactly 1, which is precisely the shape Nat.add_choose_eq collapses.",
       "Phrasing the workhorse over n+1 eliminates every truncated ℕ-subtraction in the derivation; subtraction survives only in the cosmetic RHS index C(2n-1,n-1) of the final statement, where a single omega step and the n=0 base case suffice.",
-      "The closed form n·C(2n-1,n-1) is exactly (n/2)·C(2n,n): the first moment is half the total mass ∑ C(n,k)² = C(2n,n) times n, matching the symmetry of the squared Pascal row about its center."
+      "The closed form n·C(2n-1,n-1) is exactly (n/2)·C(2n,n): the first moment is half the total mass ∑ C(n,k)² = C(2n,n) times n, matching the symmetry of the squared Pascal row about its center.",
+      "An independent generating-function derivation reaches the same closed form without absorption: differentiating one copy of (1+x)^n = ∑_k C(n,k)x^k gives n(1+x)^{n-1} = ∑_k k·C(n,k)x^{k-1}, so the coefficient of x^n in x·n(1+x)^{n-1}·(1+x)^n = n·x·(1+x)^{2n-1} is simultaneously ∑_k k·C(n,k)·C(n,n-k) = ∑_k k·C(n,k)² (via C(n,n-k) = C(n,k)) and n·C(2n-1,n-1)."
     ]
   },
   "sections": [
@@ -85,7 +86,7 @@
       "title": "Sanity Checks",
       "startLine": 124,
       "endLine": 132,
-      "summary": "Axiom-free decide verifications: ∑ k·C(3,k)² = 48 = 3·C(5,2), ∑ k·C(4,k)² = 140 = 4·C(7,3), ∑ k·C(5,k)² = 630 = 5·C(9,4)."
+      "summary": "Axiom-free decide verifications: ∑ k·C(3,k)² = 30 = 3·C(5,2), ∑ k·C(4,k)² = 140 = 4·C(7,3), ∑ k·C(5,k)² = 630 = 5·C(9,4)."
     }
   ],
   "conclusion": {
