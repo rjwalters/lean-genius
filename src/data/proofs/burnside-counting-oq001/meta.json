@@ -93,9 +93,17 @@
       "id": "header",
       "title": "Problem Statement and Results",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "Module docstring stating the parent's request to push the integer-form Burnside total to divisor form and the three results — (D) the range-form identity Σ_{r<n} k^{gcd(n,r)} = Σ_{d∣n} φ(n/d) k^d, (E) its ZMod n version, and (F) the necklace count (#necklaces)·n = Σ_{d∣n} φ(n/d) k^d — followed by the setup: import Mathlib and the parent file Proofs.BurnsideCountingOQ03OQ02OQ01, the Finset/BigOperators/MulAction opens, the namespace, and the open pulling in the parent's Rot, rotation, and sum_pow_gcd_eq_card_necklaces_mul.",
+      "endLine": 36,
+      "summary": "Module docstring stating the parent's request to push the integer-form Burnside total to divisor form and the three results — (D) the range-form identity Σ_{r<n} k^{gcd(n,r)} = Σ_{d∣n} φ(n/d) k^d, (E) its ZMod n version, and (F) the necklace count (#necklaces)·n = Σ_{d∣n} φ(n/d) k^d.",
       "mathContext": "$\\sum_{r} k^{\\gcd(n,r)} = \\sum_{d\\mid n} \\varphi(n/d)\\,k^d$"
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and the Reused Cyclic Machinery",
+      "startLine": 38,
+      "endLine": 45,
+      "summary": "Imports Mathlib and the parent file Proofs.BurnsideCountingOQ03OQ02OQ01, opens Finset/BigOperators/MulAction, declares the namespace, and selectively opens the parent's Rot, rotation, and sum_pow_gcd_eq_card_necklaces_mul — the single result (C) this entry pushes to divisor form.",
+      "mathContext": "$(\\#\\text{necklaces})\\cdot n = \\sum_{r:\\mathbb{Z}/n} k^{\\gcd(n,r)}$ (parent's result (C), reused)"
     },
     {
       "id": "divisor-form",
