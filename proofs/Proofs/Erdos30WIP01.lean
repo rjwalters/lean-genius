@@ -2079,4 +2079,239 @@ theorem sidonNumber_twentynine : sidonNumber 29 = 7 := by
   · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 29 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
 
+/-! ### `h(30..33) = 7` and `h(34) = h(35) = 8` — the 8-mark plateau completes
+
+The optimal 8-mark Golomb ruler `{0,1,4,9,15,22,32,34}` has span `34`, so
+`h(N) = 7` persists through `N = 33` and jumps at `N = 34`.  Residue-class
+double counting is exhaustively dead on this stretch (every modulus `2..16`
+admits a surviving class profile — the structured blocker recorded at `h(29)`),
+so each of `N = 30..33` falls to the pruned backtracking search.  The span
+dichotomy is the same argument four times with shifted constants, so it is
+factored here into one parametric step lemma (`no_sidon_card_eight_step`):
+sliding a hypothetical 8-element Sidon set down by its minimum either drops it
+into the previous range — killed by the preceding theorem — or pins both
+endpoints `{0, N}` and hands the six interior elements to a kernel-verified
+`searchOK` evaluation (`29072 / 42618 / 47842 / 68680` extension tests for
+`N = 30..33`, against flat enumerations of up to `C(32,6) = 906192`).
+
+At `N = 34` the plain counting bound returns after ten silent values:
+`9² = 81 > 77 = 2·34 + 9`, so no 9-element Sidon set fits in `{0,…,34}` — no
+search needed — and the ruler witness gives `h(34) = 8`; the same pair settles
+`h(35) = 8` (`81 > 79`).  The counting slack reopens only at `N = 36`
+(`81 ≤ 81`), where the walls resume. -/
+
+/-- **Parametric span-dichotomy step.**  If no 8-element Sidon set fits in
+`{0,…,N−1}` (`prev`) and the backtracking search refutes six interior elements
+between the pinned endpoints `{0, N}` (`hsearch`), then no 8-element Sidon set
+fits in `{0,…,N}`.  The counting bound `|A|² ≤ 2N + |A|` caps `|A|` at `8` for
+every `N ≤ 33`, so only the 8-element case needs the dichotomy.  The explicit
+`M` (with `M + 1 = N`) keeps the search-interval literals in the per-`N`
+kernel theorems exact-match. -/
+private theorem no_sidon_card_eight_step {N M : ℕ} (hM : M + 1 = N) (hN : N ≤ 33)
+    (prev : ∀ A : Finset ℕ, A ⊆ Finset.range N → IsSidonSet A → A.card ≤ 7)
+    (hsearch : searchOK {0, N} 1 M 6 = false)
+    (A : Finset ℕ) (hsub : A ⊆ Finset.range (N + 1)) (hA : IsSidonSet A) :
+    A.card ≤ 7 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  have hup : A.card * A.card ≤ 2 * N + A.card := sidon_card_sq_le N hsub hA
+  have hc8 : A.card = 8 := by
+    by_contra hne
+    have h9 : 9 ≤ A.card := by omega
+    have hmul : 9 * A.card ≤ A.card * A.card := Nat.mul_le_mul h9 (le_refl A.card)
+    omega
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  set m := A.min' hne with hm
+  have hmle : ∀ x ∈ A, m ≤ x := fun x hx => A.min'_le x hx
+  have hbound : ∀ x ∈ A, x ≤ N := fun x hx => by
+    have := hsub hx; rw [Finset.mem_range] at this; omega
+  set A' := A.image (fun x => x - m) with hA'
+  have hinj : Set.InjOn (fun x => x - m) ↑A := by
+    intro x hx y hy hxy
+    have hx' := hmle x (Finset.mem_coe.mp hx)
+    have hy' := hmle y (Finset.mem_coe.mp hy)
+    have hxy' : x - m = y - m := hxy
+    omega
+  have hA'card : A'.card = 8 := by
+    rw [hA', Finset.card_image_of_injOn hinj, hc8]
+  have hA'sidon : IsSidonSet A' := by
+    intro a b c d ha hb hc hd hab hcd heq
+    rw [hA'] at ha hb hc hd
+    simp only [Finset.mem_image] at ha hb hc hd
+    obtain ⟨a₀, ha₀, rfl⟩ := ha
+    obtain ⟨b₀, hb₀, rfl⟩ := hb
+    obtain ⟨c₀, hc₀, rfl⟩ := hc
+    obtain ⟨d₀, hd₀, rfl⟩ := hd
+    have hma := hmle a₀ ha₀; have hmb := hmle b₀ hb₀
+    have hmc := hmle c₀ hc₀; have hmd := hmle d₀ hd₀
+    obtain ⟨h1, h2⟩ := hA a₀ b₀ c₀ d₀ ha₀ hb₀ hc₀ hd₀ (by omega) (by omega) (by omega)
+    exact ⟨by omega, by omega⟩
+  have hzero : (0 : ℕ) ∈ A' := by
+    rw [hA']
+    exact Finset.mem_image.mpr ⟨m, A.min'_mem hne, Nat.sub_self m⟩
+  have hA'ne : A'.Nonempty := ⟨0, hzero⟩
+  have hA'bound : ∀ x ∈ A', x ≤ N := by
+    intro x hx
+    rw [hA'] at hx
+    obtain ⟨x₀, hx₀, hx₀eq⟩ := Finset.mem_image.mp hx
+    have hb := hbound x₀ hx₀
+    have hx₀eq' : x₀ - m = x := hx₀eq
+    omega
+  rcases Nat.lt_or_ge (A'.max' hA'ne) N with hMax | hMax
+  · -- Span ≤ N−1: the slid set lives in {0,…,N−1}; the previous theorem applies.
+    have hsub' : A' ⊆ Finset.range N := fun x hx => by
+      rw [Finset.mem_range]
+      exact lt_of_le_of_lt (A'.le_max' x hx) hMax
+    have := prev A' hsub' hA'sidon
+    omega
+  · -- Span = N: both endpoints pinned; the six interior elements fall to the search.
+    have hNmem : N ∈ A' := by
+      have hMle : A'.max' hA'ne ≤ N := hA'bound _ (A'.max'_mem hA'ne)
+      have hMeq : A'.max' hA'ne = N := le_antisymm hMle hMax
+      rw [← hMeq]
+      exact A'.max'_mem hA'ne
+    set B := (A'.erase 0).erase N with hB
+    have hN' : N ∈ A'.erase 0 := Finset.mem_erase.mpr ⟨by omega, hNmem⟩
+    have hrecon : insert 0 (insert N B) = A' := by
+      rw [hB, Finset.insert_erase hN', Finset.insert_erase hzero]
+    have hBcard : B.card = 6 := by
+      rw [hB, Finset.card_erase_of_mem hN', Finset.card_erase_of_mem hzero, hA'card]
+    have hBsub : B ⊆ Finset.Icc 1 M := by
+      intro x hx
+      rw [hB] at hx
+      have hxN := (Finset.mem_erase.mp hx).1
+      have hx' := Finset.mem_of_mem_erase hx
+      have hx0 := (Finset.mem_erase.mp hx').1
+      have hxA := Finset.mem_of_mem_erase hx'
+      have := hA'bound x hxA
+      rw [Finset.mem_Icc]
+      omega
+    have hcheckU : SidonCheck ({0, N} ∪ B) := by
+      have hU : ({0, N} : Finset ℕ) ∪ B = insert 0 (insert N B) := by
+        rw [Finset.insert_union, Finset.singleton_union]
+      rw [hU, hrecon]
+      exact sidonCheck_of_isSidonSet hA'sidon
+    have htrue : searchOK {0, N} 1 M 6 = true :=
+      searchOK_complete 6 {0, N} 1 M B hBsub hBcard hcheckU
+    rw [hsearch] at htrue
+    exact Bool.false_ne_true htrue
+
+set_option maxRecDepth 100000 in
+/-- Kernel search for `h(30)`: no six elements of `{1,…,29}` extend the pinned
+endpoints `{0, 30}` to an 8-element Sidon set (`29072` extension tests). -/
+private theorem search_zero_thirty_eq_false :
+    searchOK {0, 30} 1 29 6 = false := by
+  decide +kernel
+
+set_option maxRecDepth 100000 in
+/-- Kernel search for `h(31)`: no six elements of `{1,…,30}` extend the pinned
+endpoints `{0, 31}` to an 8-element Sidon set (`42618` extension tests). -/
+private theorem search_zero_thirtyone_eq_false :
+    searchOK {0, 31} 1 30 6 = false := by
+  decide +kernel
+
+set_option maxRecDepth 100000 in
+/-- Kernel search for `h(32)`: no six elements of `{1,…,31}` extend the pinned
+endpoints `{0, 32}` to an 8-element Sidon set (`47842` extension tests). -/
+private theorem search_zero_thirtytwo_eq_false :
+    searchOK {0, 32} 1 31 6 = false := by
+  decide +kernel
+
+set_option maxRecDepth 100000 in
+/-- Kernel search for `h(33)`: no six elements of `{1,…,32}` extend the pinned
+endpoints `{0, 33}` to an 8-element Sidon set (`68680` extension tests). -/
+private theorem search_zero_thirtythree_eq_false :
+    searchOK {0, 33} 1 32 6 = false := by
+  decide +kernel
+
+/-- **No 8-element Sidon set fits in `{0,…,30}`** (span dichotomy + search). -/
+theorem no_sidon_card_eight_range_thirtyone (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 31) (hA : IsSidonSet A) : A.card ≤ 7 :=
+  no_sidon_card_eight_step rfl (by norm_num)
+    (fun A hs hA' => no_sidon_card_eight_range_thirty A hs hA')
+    search_zero_thirty_eq_false A hsub hA
+
+/-- **No 8-element Sidon set fits in `{0,…,31}`** (span dichotomy + search). -/
+theorem no_sidon_card_eight_range_thirtytwo (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 32) (hA : IsSidonSet A) : A.card ≤ 7 :=
+  no_sidon_card_eight_step rfl (by norm_num)
+    no_sidon_card_eight_range_thirtyone
+    search_zero_thirtyone_eq_false A hsub hA
+
+/-- **No 8-element Sidon set fits in `{0,…,32}`** (span dichotomy + search). -/
+theorem no_sidon_card_eight_range_thirtythree (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 33) (hA : IsSidonSet A) : A.card ≤ 7 :=
+  no_sidon_card_eight_step rfl (by norm_num)
+    no_sidon_card_eight_range_thirtytwo
+    search_zero_thirtytwo_eq_false A hsub hA
+
+/-- **No 8-element Sidon set fits in `{0,…,33}`** (span dichotomy + search).
+Equivalently, every 8-mark Golomb ruler has length ≥ 34 — sharp, by the optimal
+ruler `{0,1,4,9,15,22,32,34}`. -/
+theorem no_sidon_card_eight_range_thirtyfour (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 34) (hA : IsSidonSet A) : A.card ≤ 7 :=
+  no_sidon_card_eight_step rfl (by norm_num)
+    no_sidon_card_eight_range_thirtythree
+    search_zero_thirtythree_eq_false A hsub hA
+
+/-- `h(30) = 7`. -/
+theorem sidonNumber_thirty : sidonNumber 30 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirtyone A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 30 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/-- `h(31) = 7`. -/
+theorem sidonNumber_thirtyone : sidonNumber 31 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirtytwo A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 31 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/-- `h(32) = 7`. -/
+theorem sidonNumber_thirtytwo : sidonNumber 32 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirtythree A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 32 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/-- `h(33) = 7` — the last value before the 8-mark ruler fits. -/
+theorem sidonNumber_thirtythree : sidonNumber 33 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirtyfour A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 33 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/-- The optimal 8-mark Golomb ruler `{0,1,4,9,15,22,32,34}` is a Sidon set.
+Certified through the `SidonCheck` bridge: one `decide` replaces an
+`8⁴ = 4096`-case `rcases`/`omega` sweep. -/
+private theorem isSidonSet_0_1_4_9_15_22_32_34 :
+    IsSidonSet {0, 1, 4, 9, 15, 22, 32, 34} :=
+  isSidonSet_of_sidonCheck (by decide)
+
+/-- `h(34) = 8`: the optimal 8-mark Golomb ruler fits exactly, and after ten
+values of counting slack the plain bound resumes duty — `9² = 81 > 77 = 2·34 + 9`
+blocks a 9-element Sidon set with no search at all. -/
+theorem sidonNumber_thirtyfour : sidonNumber 34 = 8 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h9 : 9 ≤ m := hc
+    nlinarith [hm, h9]
+  · calc 8 = ({0, 1, 4, 9, 15, 22, 32, 34} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 34 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_15_22_32_34
+
+/-- `h(35) = 8`: counting still blocks nine (`81 > 79 = 2·35 + 9`); the slack
+reopens at `N = 36`, where `9² = 81 ≤ 81 = 2·36 + 9` and the walls resume. -/
+theorem sidonNumber_thirtyfive : sidonNumber 35 = 8 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h9 : 9 ≤ m := hc
+    nlinarith [hm, h9]
+  · calc 8 = ({0, 1, 4, 9, 15, 22, 32, 34} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 35 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_15_22_32_34
+
 end Erdos30
