@@ -96,10 +96,19 @@
   "sections": [
     {
       "id": "module-doc",
-      "title": "Module Documentation & Setup",
+      "title": "Module Documentation: the Identity and Why It's Not a Re-export",
       "startLine": 1,
+      "endLine": 28,
+      "summary": "Imports (`Matrix.Adjugate`, `NonsingularInverse`, `Trace`, `Tactic`) and the docstring's opening sections: what is proved (the explicit A³ − (tr A)A² + c₂A − (det A)1 = 0 identity and the cube reduction) and why it is not a re-export of Mathlib's charpoly-based `Matrix.aeval_self_charpoly` — this file gives the bare trace/minor/determinant identity from scratch by entrywise `ring`, rather than the abstract charpoly statement.",
+      "mathContext": "Mathlib's Cayley–Hamilton is stated via `charpoly = det(X•1 − A)`; it does not hand you the concrete trace/minor/determinant polynomial, which is what this file computes directly."
+    },
+    {
+      "id": "coefficient-and-setup",
+      "title": "The Middle Coefficient, Mathematical Significance, and Ambient Setup",
+      "startLine": 30,
       "endLine": 57,
-      "summary": "Imports (`Matrix.Adjugate`, `NonsingularInverse`, `Trace`, `Tactic`) and the module docstring stating the explicit 3×3 Cayley–Hamilton identity and the cube reduction, the definition of the middle coefficient c₂ as the sum of the three 2×2 principal minors, the entrywise from-scratch proof strategy, and why it is not a re-export of Mathlib's charpoly Cayley–Hamilton. Opens the `CayleyHamiltonOQ04OQ01` namespace, `open Matrix`, and fixes the ambient `variable {R : Type*} [CommRing R]` over which everything is stated."
+      "summary": "Docstring sections describing c₂ as the sum of the three 2×2 principal minors, the mathematical significance (3×3 spatial linear algebra: rotations, inertia tensor, triple products — the degree-3 instance of Newton's identities), and the file's place relative to the 2×2 case and Wiedijk #49. Opens the `CayleyHamiltonOQ04OQ01` namespace, `open Matrix`, and fixes the ambient `variable {R : Type*} [CommRing R]`.",
+      "mathContext": "c₂ = (a₀₀a₁₁ − a₀₁a₁₀) + (a₀₀a₂₂ − a₀₂a₂₀) + (a₁₁a₂₂ − a₁₂a₂₁), the second elementary symmetric function of the eigenvalues — the coefficient of X in the characteristic polynomial."
     },
     {
       "id": "c2",
