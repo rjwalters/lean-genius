@@ -29,7 +29,8 @@
       "All scaled Gaussian even moments lie on a single orbit of the dilation x ↦ √a·x acting on the one unscaled master integral — so they need no separate analysis, only a change of variables",
       "The dilation rule's Jacobian |s⁻¹| = 1/√a supplies precisely the missing half-power: the integrand contributes aⁿ and the Jacobian contributes a^{-1/2}, combining to the scale factor a^{-(n+1/2)} = √(π/a)/(2a)ⁿ ÷ ((2n−1)‼√π)",
       "Separating analytic content (the parent's integration-by-parts induction) from algebraic content (this entry's scaling) makes every scaled moment machine-checked for free from the a = 1 case",
-      "The second moment √(π/a)/(2a) is exactly twice the half-line value √(π/a)/(4a), exhibiting the even-symmetry doubling of the (0,∞) integral concretely"
+      "The second moment √(π/a)/(2a) is exactly twice the half-line value √(π/a)/(4a), exhibiting the even-symmetry doubling of the (0,∞) integral concretely",
+      "The closed-form value is proved without ever invoking integrable_pow_mul_scaled_gaussian: Measure.integral_comp_mul_left is an unconditional dilation identity (it holds under the Bochner integral's junk-value convention whether or not the integrand is integrable), so once the parent's unscaled value is known, algebra alone produces the scaled value — the standalone integrability theorem is a useful companion fact, not a dependency of the main proof"
     ],
     "prerequisites": [
       "The unscaled parent even moment ∫ x^{2n} e^{-x²} = (2n−1)‼·√π/2ⁿ",
