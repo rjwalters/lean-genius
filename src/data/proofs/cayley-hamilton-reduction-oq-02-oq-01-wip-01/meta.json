@@ -77,11 +77,19 @@
   "sections": [
     {
       "id": "overview-imports",
-      "title": "Overview and Imports",
+      "title": "Overview: Imports and the Three RCF Assembly Invariants",
       "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports (Mathlib charpoly/block-matrix/field-division/minpoly machinery and the parent companion-matrix file), and the docstring stating the three invariants proved for the block-diagonal companion form B = C(p) ⊕ C(q): charpoly B = p·q, (p·q)(B) = 0, and minpoly B = lcm p q — explaining why the single-block non-derogatory characterisation breaks under direct sum unless p, q are coprime.",
+      "mathContext": "Works over an arbitrary field F. Reuses companionMatrix and the proven facts charpoly_companionMatrix, minpoly_companionMatrix, aeval_companionMatrix from the parent file."
+    },
+    {
+      "id": "new-content-and-setup",
+      "title": "What Is New (vs. Mathlib), Status, and Ambient Setup",
+      "startLine": 37,
       "endLine": 64,
-      "summary": "Imports (Mathlib charpoly/block-matrix/field-division/minpoly machinery and the parent companion-matrix file), the docstring framing the three RCF assembly invariants, and the namespace/opens setup with variable {F : Type*} [Field F].",
-      "mathContext": "Works over an arbitrary field F. Reuses companionMatrix and the proven facts charpoly_companionMatrix, minpoly_companionMatrix, aeval_companionMatrix from the parent file. The block-matrix infrastructure (Matrix.fromBlocks, fromBlocks_diagonal_pow, charpoly_fromBlocks_zero₂₁) comes from Mathlib."
+      "summary": "Docstring section identifying the file's new content — aeval_fromBlocks_diag as the algebraic engine, and the two-sided-divisibility proof of minpoly B = lcm p q as the genuine RCF content beyond Mathlib's charpoly-only block lemmas — followed by a status checklist of the four proved results. Opens the namespace, `Matrix Polynomial BigOperators`, and the parent's namespace, fixing `variable {F : Type*} [Field F]`.",
+      "mathContext": "The block-matrix infrastructure (Matrix.fromBlocks, fromBlocks_diagonal_pow, charpoly_fromBlocks_zero₂₁) comes from Mathlib; only the companion-block specialisation and the minpoly = lcm computation are new."
     },
     {
       "id": "aeval-block",
