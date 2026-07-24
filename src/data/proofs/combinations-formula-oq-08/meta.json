@@ -69,7 +69,8 @@
       "The 'shallow diagonal' indexing hidden inside Mathlib's antidiagonal pair (i,j) with i+j=n becomes visible once reindexed: the k-th diagonal term is C(n-k, k), the entry k steps up the diagonal.",
       "Finset.sum_range_reflect is the precise tool for the symmetry k ↦ n-k that converts C(k, n-k) (the direct antidiagonal evaluation) into the conventional C(n-k, k).",
       "The diagonal sum is automatically finite because C(n-k, k) vanishes once k exceeds ⌊n/2⌋: at that point the lower index k overtakes the upper index n-k, and Nat.choose_eq_zero_of_lt applies.",
-      "omega handles the division-by-two reasoning (n/2 < k ⟹ n - k < k) needed to locate the vanishing tail, keeping the truncation argument fully automatic."
+      "omega handles the division-by-two reasoning (n/2 < k ⟹ n - k < k) needed to locate the vanishing tail, keeping the truncation argument fully automatic.",
+      "The identity carries its own proof of the Fibonacci recurrence, with no appeal to fib's definition: applying Pascal's rule C(n-k,k) = C(n-1-k,k) + C(n-2-(k-1),k-1) to every term of the row-n diagonal sum splits it exactly into the row-(n-1) diagonal sum (giving fib(n)) plus the row-(n-2) diagonal sum after reindexing k ↦ k-1 (giving fib(n-1)), reproducing fib(n+1) = fib(n) + fib(n-1) from pure binomial-coefficient algebra."
     ]
   },
   "sections": [
