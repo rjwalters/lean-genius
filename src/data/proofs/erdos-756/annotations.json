@@ -330,7 +330,7 @@
     },
     "type": "concept",
     "title": "Bhowmick's General Result",
-    "content": "**bhowmick_general:**\n\nFor higher multiplicities: ⌊n/(2(m+1))⌋ distances can occur ≥ n+m times.\n\n```lean\naxiom bhowmick_general (m n : ℕ) (hn : n ≥ 2 * (m + 1)) :\n  ∃ A : PointSet, A.card = n ∧\n    (((allDistances A).filter fun d =>\n      distanceMultiplicity A d ≥ n + m).card : ℕ) ≥ n / (2 * (m + 1))\n```\n\n**Trade-off:** Higher multiplicity (n+m instead of n+1) means fewer such distances.",
+    "content": "**Bhowmick's general trade-off result:**\n\nFor higher multiplicities: ⌊n/(2(m+1))⌋ distances can occur ≥ n+m times.\n\n*Not formalized* — this generalization is described only in a source comment (line 128); no `bhowmick_general` declaration exists in the file. Only the m=1 case (`bhowmick_main`) is axiomatized.\n\n**Trade-off:** Higher multiplicity (n+m instead of n+1) means fewer such distances.",
     "mathContext": "This generalizes the main result to multiplicities beyond the n+1 threshold.",
     "significance": "key",
     "relatedConcepts": [
@@ -375,7 +375,7 @@
     },
     "type": "concept",
     "title": "Square Grid Results (2025)",
-    "content": "**clemen_dumitrescu_liu:**\n\nOn the n×n square grid: superpolynomially many rich distances.\n\n```lean\naxiom clemen_dumitrescu_liu (n : ℕ) (hn : n ≥ 2) :\n  ∃ c : ℝ, c > 0 ∧\n    let A := squareGrid n\n    let k := n^2  -- number of grid points\n    (numRichDistances A : ℝ) ≥ k^(c / Real.log (Real.log k))\n```\n\n**Growth:** n^{c/log log n} rich distances among n² = k grid points.\n\nThe grid structure creates many distances with high multiplicity!",
+    "content": "**Clemen-Dumitrescu-Liu (2025):**\n\nOn the n×n square grid: superpolynomially many rich distances.\n\n*Not formalized* — this result is described only in a source comment (Part VII); no `clemen_dumitrescu_liu` declaration exists in the file. Only the grid point set itself (`squareGrid`) is axiomatized, not the multiplicity bound.\n\n**Growth (per the cited paper, not Lean-verified here):** n^{c/log log n} rich distances among n² = k grid points.\n\nThe grid structure creates many distances with high multiplicity!",
     "mathContext": "Clemen-Dumitrescu-Liu (2025) showed structured sets like grids can achieve superpolynomial richness.",
     "significance": "key",
     "relatedConcepts": [

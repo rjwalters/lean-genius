@@ -67,7 +67,7 @@
       "max_distance_not_rich theorem: largest is never rich (proved)",
       "bhowmick_main axiom: ⌊n/4⌋ rich distances exist",
       "erdos_756_answer theorem: YES answer to the question",
-      "squareGrid definition: n×n grid points",
+      "squareGrid axiom: n×n grid points (axiomatized construction)",
       "richDistanceRatio definition: ratio of rich distances to n",
       "bhowmick_ratio theorem: achieves ratio ≥ 1/4",
       "multiplicity_trivial_upper theorem: multiplicity ≤ n²",
@@ -134,7 +134,7 @@
     {
       "id": "bhowmick",
       "title": "Bhowmick's Answer (2024)",
-      "summary": "bhowmick_construction, bhowmick_main, bhowmick_general axioms",
+      "summary": "bhowmick_main axiom (general m-multiplicity trade-off is described only in a comment, not formalized)",
       "startLine": 117,
       "endLine": 137,
       "mathContext": "Bhowmick (2024): $\\exists A \\subseteq \\mathbb{R}^2,\\, |A| = n$ with $\\lfloor n/4 \\rfloor$ rich distances. General: for any $m$, $\\lfloor n/(2(m+1)) \\rfloor$ distances with multiplicity $\\geq n + m$."
@@ -150,7 +150,7 @@
     {
       "id": "grid-results",
       "title": "Square Grid Results (2025)",
-      "summary": "squareGrid, clemen_dumitrescu_liu, grid_super_linear_multiplicity",
+      "summary": "squareGrid axiom (Clemen-Dumitrescu-Liu superpolynomial richness result is described only in a comment, not formalized)",
       "startLine": 157,
       "endLine": 178,
       "mathContext": "Clemen-Dumitrescu-Liu (2025): on the $\\sqrt{n} \\times \\sqrt{n}$ integer grid, $n^{c/\\log\\log n}$ distances have multiplicity $\\geq n^{1+c/\\log\\log n}$ — superpolynomial richness from lattice point theory."
