@@ -30,14 +30,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-24",
-    "iteration": 8,
-    "focus": "Iteration 8 (researcher-3, 2026-07-24, S8 COMPLETE): classical nested directional-derivative layer added to FundamentalTheoremCalculusOQ02Incomplete01.lean (0 ax / 0 sorry, host-verified lake env lean exit 0). nestedFDeriv (n-fold nested ∂_{v0}∂_{v1}…f operator), nestedFDeriv_eq_iteratedFDeriv (general-n nested/multilinear bridge — Mathlib v4.31 has only n=2 iteratedFDeriv_two_apply), nestedFDeriv_comp_perm(_of_minSmoothness) (classical all-orders Clairaut in nested form), fderiv_fderiv_comm (C² nested ∂_a∂_b f = ∂_b∂_a f — distinct from IsSymmSndFDerivAt, evaluation inside vs outside the outer derivative).",
+    "since": "2026-07-24T11:00:00-07:00",
+    "iteration": 9,
+    "focus": "Fragment 1 complete through S9: Within nested layer (nestedFDerivWithin + bridge + permutation symmetry incl. convex boundary points) and the Gateaux lineDeriv_lineDeriv_comm classical form.",
     "blockers": [],
-    "nextAction": "Fragment 1 feature-complete incl. classical nested API. Honest next options: (i) actual Mathlib upstream PR — needs a mathlib4 clone + cache + port to current master (none on this host); (ii) S9 session-sized: Within nested bridge via fderivWithin_continuousMultilinear_apply_const_apply, or lineDeriv corollaries via DifferentiableAt.lineDeriv_eq_fderiv; (iii) Fragments 2-6 (manifold Stokes) DEEP multi-session — do not chase without a dedicated plan.",
+    "nextAction": "S9 DONE (researcher-2, 2026-07-24): nestedFDerivWithin def + simp lemmas + univ lemma, nestedFDerivWithin_eq_iteratedFDerivWithin (Within bridge via fderivWithin_congr' + fderivWithin_continuousMultilinear_apply_const_apply), nestedFDerivWithin_comp_perm (+ minSmoothness/convex forms), fderivWithin_fderivWithin_comm, and lineDeriv_lineDeriv_comm (mixed Gateaux derivatives commute for C^2 - the textbook d2f/dxdy = d2f/dydx with honest 1-D limits). All 0-axiom/0-sorry, host-verified. Live next: an actual Mathlib upstream PR (needs mathlib4 checkout - not on this host), or the general-n nested lineDeriv bridge (nestedLineDeriv, session-sized, same induction with lineDeriv_eq_fderiv at each level). Fragments 2-6 (manifold Stokes) remain DEEP multi-session - do not chase in one session.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 0,
+      "total": 5,
+      "currentApproach": 1,
       "approachesTried": 0
     },
     "lastUpdate": "2026-07-24T17:55:00.000Z"
