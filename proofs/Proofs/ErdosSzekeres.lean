@@ -31,6 +31,12 @@ The proof uses an elegant pigeonhole argument:
 4. But there are only (r-1)(s-1) such pairs, and we have (r-1)(s-1)+1 positions
 5. By pigeonhole, two positions must have the same pair — contradiction!
 
+(Note: the classical argument above uses the *ending-at-`i`* lengths aᵢ, bᵢ.
+The Lean definitions `maxIncLen`/`maxDecLen` below realize a strictly weaker
+*running (prefix) maximum* — see their docstrings and `Proofs/ErdosSzekeresOQ02.lean`.
+The gallery's ES existence theorem is axiomatized independently of these, so this
+spec gap does not affect the presented result.)
+
 ## Approach
 - **Foundation:** We formalize increasing/decreasing subsequences using StrictMono/StrictAnti
 - **Original Contributions:** Direct proof of the pigeonhole argument using Finset cardinality
@@ -86,10 +92,16 @@ structure DecreasingSubseq {α : Type*} [Preorder α] {n : ℕ} (f : Sequence α
 /- ## Length of Longest Subsequences
 
 For each position i in a sequence, we define:
-- `maxIncLen f i` = length of longest increasing subsequence ending at position i
-- `maxDecLen f i` = length of longest decreasing subsequence ending at position i
+- `maxIncLen f i` = longest increasing chain among positions `≤ i` (only the last
+  element may equal `i`) — i.e. the running (prefix) maximum of the ending-at
+  lengths, not the ending-at-`i` length itself
+- `maxDecLen f i` = longest decreasing chain among positions `≤ i` (only the last
+  element may equal `i`) — the analogous running (prefix) maximum
 
 These are always at least 1 (the single element subsequence).
+See `Proofs/ErdosSzekeresOQ02.lean` for the formal characterization
+`maxIncLen f i = (Iic i).sup (incDP f)` and a counterexample separating this
+running maximum from the true ending-at-`i` length.
 -/
 
 /-- There exists an increasing subsequence of given length ending at position i.
@@ -150,14 +162,21 @@ lemma hasDecreasingEndingAt_one {α : Type*} [Preorder α] {n : ℕ}
     have heq : a = b := Subsingleton.elim a b
     exact absurd hab (heq ▸ lt_irrefl _)
 
-/-- Longest increasing subsequence length ending at position `i`.
-    Defined as the greatest `k ≤ i.val + 1` with `HasIncreasingEndingAt f i k`. -/
+/-- Longest increasing chain among positions `≤ i` (only the last element may
+    equal `i`); equivalently, the running (prefix) maximum of the ending-at
+    lengths, *not* the ending-at-`i` length itself.
+    Defined as the greatest `k ≤ i.val + 1` with `HasIncreasingEndingAt f i k`.
+    Because `HasIncreasingEndingAt` never forces its last element to equal `i`
+    (chains lying strictly below `i` also qualify), this is a running maximum;
+    see `Proofs/ErdosSzekeresOQ02.lean`. -/
 noncomputable def maxIncLen {α : Type*} [LinearOrder α] {n : ℕ}
     (f : Sequence α n) (i : Fin n) : ℕ :=
   open Classical in
   Nat.findGreatest (HasIncreasingEndingAt f i) (i.val + 1)
 
-/-- Longest decreasing subsequence length ending at position `i`. -/
+/-- Longest decreasing chain among positions `≤ i` (only the last element may
+    equal `i`); the running (prefix) maximum of the ending-at lengths, *not* the
+    ending-at-`i` length itself. See `Proofs/ErdosSzekeresOQ02.lean`. -/
 noncomputable def maxDecLen {α : Type*} [LinearOrder α] {n : ℕ}
     (f : Sequence α n) (i : Fin n) : ℕ :=
   open Classical in
