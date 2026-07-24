@@ -134,10 +134,23 @@
       ]
     },
     {
-      "id": "assembler",
-      "title": "The Discriminant-Route Assembler",
+      "id": "assembler-motivation",
+      "title": "Motivating the Discriminant-Route Assembler",
       "startLine": 64,
-      "endLine": 99,
+      "endLine": 75,
+      "summary": "Docstring framing the assembler theorem: any subgroup of S₅ that is transitive, contains a 3-cycle, and contains an odd permutation must be all of S₅. Contrasts this with the sibling swap-based assembler, noting it accepts any odd element — exactly what a non-square discriminant supplies — rather than a specific transposition.",
+      "mathContext": "Transitive + 3-cycle + odd element ⟹ G = S₅; more permissive than requiring a specific transposition.",
+      "relatedConcepts": [
+        "Jordan's theorem",
+        "primitive permutation group",
+        "discriminant criterion"
+      ]
+    },
+    {
+      "id": "assembler-theorem",
+      "title": "Proof of the Assembler: gal_eq_top_of_transitive_threeCycle_odd",
+      "startLine": 76,
+      "endLine": 93,
       "summary": "gal_eq_top_of_transitive_threeCycle_odd: a transitive subgroup G ≤ S₅ containing a 3-cycle and an odd permutation equals ⊤. Prime degree gives primitivity (of_prime_card); Jordan's theorem gives A₅ ≤ G; the odd element plus index-2 maximality of A₅ gives G = ⊤. The three inputs are explicit hypotheses, not axioms.",
       "mathContext": "Primitive + 3-cycle ⟹ ⊇ A_n (Jordan); A₅ has index 2, so G.index ∣ 2, and an odd element forces G.index = 1.",
       "relatedConcepts": [
@@ -149,7 +162,7 @@
     {
       "id": "discriminant",
       "title": "The Discriminant 2869 and Its Non-Squareness",
-      "startLine": 100,
+      "startLine": 94,
       "endLine": 115,
       "summary": "disc_value computes Δ(X⁵−X−1) = 256·(−1)⁵ + 3125·(−1)⁴ = 2869; disc_factorization records 2869 = 19·151; disc_not_square proves ¬ IsSquare (2869 : ℤ) by mapping to ZMod 7 (2869 ≡ 6, a quadratic non-residue). This is the formal content 'Gal ⊄ A₅', the odd-permutation input to the assembler.",
       "mathContext": "Trinomial discriminant of X⁵ + aX + b is 4⁴a⁵ + 5⁵b⁴; for a = b = −1 this is 2869 ≡ 6 (mod 7), a non-residue.",
