@@ -1,5 +1,24 @@
 # Research State: erdos-1151-oq-04
 
+> **S39 ACT — CONTINUOUS SATURATION WITNESS (researcher-3, 2026-07-24).**
+> UNBLOCKED: Docker recovered (build clean, 3355 jobs, first attempt). Sorry 2
+> ingredient (a) CLOSED: `chebyshev_lebesgue_saturated_continuous` gives, for
+> every n, x, a CONTINUOUS f with |f| ≤ 1 and Lₙf(x) = Λₙ(x) — via clamped
+> Lagrange polynomial (max(−1, min(1, Σ wₖℓₖ))), NOT Tietze. New public infra:
+> `lagrangeBasis_apply_self` / `lagrangeBasis_apply_ne` (delta property),
+> `lagrangeBasis_continuous`, `exists_continuous_bounded_through_nodes`
+> (general injective nodes, |wₖ| ≤ 1, no 0 < n hypothesis). File 2714→2842
+> lines, 32→36 top-level theorems, still exactly 1 sorry
+> (`divergence_from_lebesgue_growth`). **ROADMAP CORRECTION**: the S34 §6 UBP
+> chain (CLM packaging → op-norm → Banach–Steinhaus) CANNOT close Sorry 2 as
+> stated — the S30 statement-weakening PR #17593 was closed unmerged, so main
+> still states the STRONG full-limit form `∀ M, ∃ N, ∀ n ≥ N, M < Lₙf(x)`;
+> UBP gives only limsup. Next (S40): either (i) polynomial-reproduction lemma
+> `chebyshevInterp n p x = p x` for deg p < n (the missing lacunary-assembly
+> piece, works toward the strong form), or (ii) a PLAN decision to revive
+> S30's limsup refactor on its merits. See
+> session-39-continuous-saturation-witness.md.
+
 > **S38 STATE-SYNC + BLOCKED (researcher-1, 2026-06-13).** Two tracker drifts
 > fixed after S37 BUILD-VERIFY (#22947, 2026-06-12) grew the file: research-JSON
 > `leanFiles` lineCounts were stale (`Erdos1151OQ04` 2692→**2714**, `…Aristotle`
@@ -17,11 +36,11 @@
 > S37 left the file BUILD-VERIFY clean (3084 jobs, 1 sorry). No Lean touched.
 
 ## Current State
-**Phase**: ACT (S36 CLUSTER-A-CLOSE — researcher folds chebyshevInterp_sub proof into a single `simp only` matching sibling chebyshevInterp_neg pattern; Cluster A (1 error) eliminated, Cluster B (21 errors at lines 952–1247) deferred to subsequent mechanic-handoff sub-cluster PRs)
+**Phase**: ACT (S39 CONTINUOUS-SATURATION — Sorry 2 ingredient (a) closed via clamped Lagrange polynomial; build-verified clean; 1 sorry remains: `divergence_from_lebesgue_growth`, whose strong full-limit conclusion needs the lacunary assembly (b) — see S39 header note for the roadmap correction)
 **Path**: full
-**Since**: 2026-06-09T18:55:00Z (S36 CLUSTER-A-CLOSE)
-**Iteration**: 36
-**Last Updated**: 2026-06-09 (researcher-3)
+**Since**: 2026-07-24T12:30:00Z (S39 CONTINUOUS-SATURATION)
+**Iteration**: 39
+**Last Updated**: 2026-07-24 (researcher-3)
 
 ## Session 36 (researcher-3, 2026-06-09, build pending — Cluster A surgically closed; Cluster B still 21 errors) — fold chebyshevInterp_sub to single `simp only` matching sibling chebyshevInterp_neg
 
