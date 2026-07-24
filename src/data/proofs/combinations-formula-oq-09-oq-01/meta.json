@@ -50,7 +50,8 @@
       "Phrasing the moment in the falling-factorial basis (rather than powers k^j) makes the identity Stirling-number-free: (m)_j = j!·C(m,j) turns the weighted term into pure binomial coefficients.",
       "The whole j-fold absorption collapses to one application of the subset-of-a-subset identity Nat.choose_mul — reindexing beats induction on j.",
       "The head terms k < j vanish automatically because Nat.descFactorial k j = 0 for k < j, so restricting to Ico j (n+1) and shifting the index aligns the sum with a shorter Pascal row of length n-j.",
-      "The identity is genuinely unconditional in j: for j > n every term and the coefficient (n)_j are 0, so no side hypotheses are needed."
+      "The identity is genuinely unconditional in j: for j > n every term and the coefficient (n)_j are 0, so no side hypotheses are needed.",
+      "The formula has a direct double-counting reading beside the Lean proof's algebraic reindexing: both sides count pairs (an ordered list of j distinct officers, a k-person committee containing them) drawn from n people. The right side chooses the officers first — (n)_j ordered ways — then lets each of the remaining n−j people independently join the committee or not (2^{n−j} ways); the left side instead fixes the committee size k first, choosing it in C(n,k) ways and then its ordered officers in (k)_j ways, and summing over k recovers the same total."
     ]
   },
   "sections": [
