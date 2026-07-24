@@ -130,12 +130,20 @@
       "mathContext": "\\frac{BD}{DC}=\\frac{AB\\,\\sin\\angle BAD}{AC\\,\\sin\\angle DAC},\\qquad \\angle ADB+\\angle ADC=\\pi\\;\\Rightarrow\\;\\sin\\angle ADB=\\sin\\angle ADC>0."
     },
     {
-      "id": "trig-ceva-product",
-      "title": "The Trigonometric Ceva Product Identity",
+      "id": "trig-ceva-product-statement",
+      "title": "Product Identity: Statement",
       "startLine": 112,
+      "endLine": 126,
+      "description": "The docstring and signature of `trig_ceva_product`: for a non-degenerate triangle A B C with cevian feet D, E, F strictly between the opposite vertex pairs, the product of the three side-division ratios equals the product of the three sine ratios.",
+      "mathContext": "\\frac{BD}{DC}\\cdot\\frac{CE}{EA}\\cdot\\frac{AF}{FB}=\\frac{\\sin\\angle BAD\\,\\sin\\angle CBE\\,\\sin\\angle ACF}{\\sin\\angle DAC\\,\\sin\\angle EBA\\,\\sin\\angle FCB}."
+    },
+    {
+      "id": "trig-ceva-product-proof",
+      "title": "Product Identity: Proof",
+      "startLine": 127,
       "endLine": 163,
-      "description": "`trig_ceva_product` multiplies the cevian ratio law over the three cevians. It permutes hABC to feed the law at each apex (h1 at A, h2 at B, h3 at C), establishes pairwise vertex distinctness (A≠B, A≠C, B≠C) so the side lengths dist A B, dist A C, dist B C are nonzero, then rewrites the three ratio laws and closes with field_simp: the side-length factors appear once in a numerator and once in a denominator and cancel, leaving the pure sine-ratio product.",
-      "mathContext": "\\frac{BD}{DC}\\cdot\\frac{CE}{EA}\\cdot\\frac{AF}{FB}=\\frac{\\sin\\angle BAD\\,\\sin\\angle CBE\\,\\sin\\angle ACF}{\\sin\\angle DAC\\,\\sin\\angle EBA\\,\\sin\\angle FCB}\\quad(\\text{side lengths cancel})."
+      "description": "The proof of `trig_ceva_product`. It permutes hABC to feed the ratio law at each apex (h1 at A, h2 at B, h3 at C), establishes pairwise vertex distinctness (A≠B, A≠C, B≠C) so the side lengths dist A B, dist A C, dist B C are nonzero, then rewrites the three ratio laws and closes with field_simp: the side-length factors appear once in a numerator and once in a denominator and cancel, leaving the pure sine-ratio product.",
+      "mathContext": "Applying `cevian_dist_ratio` at each of the three apexes gives h1, h2, h3; after establishing A\\ne B,\\,A\\ne C,\\,B\\ne C the shared distances are nonzero and `field_simp` cancels them, since each side length appears once in a numerator and once in a denominator across the three ratio laws."
     }
   ],
   "sorries": 0
