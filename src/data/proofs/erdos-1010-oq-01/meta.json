@@ -85,11 +85,18 @@
       "summary": "crossover: (t+1)·k < t·(k+1) ↔ k < t, proved by ring-normalising both products to t·k + k and t·k + t and finishing with omega. linear_bound_beaten_iff: the restatement for m = ⌊n/2⌋ ≥ 1, (t+1)(m-1) < t·m ↔ m ≤ t, the exact transition point. This is why the linear bound of #1010 cannot extend past t = ⌊n/2⌋."
     },
     {
-      "id": "witness",
-      "title": "Part 2 — Explicit witness at n = 6, t = ⌊n/2⌋",
+      "id": "witness-construction",
+      "title": "Part 2 — Constructing the witness graph",
       "startLine": 102,
+      "endLine": 138,
+      "summary": "Docstring setting up n = 6 (⌊n²/4⌋ = 9, ⌊n/2⌋ = 3, the first value outside the range of #1010), then the witness graph Gw on Fin 6: the adjacency matrix Mbool (smaller side {0,1}, larger side {2,3,4,5}, full K_{2,4} between them, plus the 4-cycle 2–3–4–5–2 inside the larger side), the SimpleGraph structure Gw built from it, and the DecidableRel instance needed for `decide`."
+    },
+    {
+      "id": "witness-proofs",
+      "title": "Part 2 — Sharpness of Erdős #1010 at t = ⌊n/2⌋",
+      "startLine": 140,
       "endLine": 167,
-      "summary": "The witness graph Gw on Fin 6 (adjacency matrix Mbool: smaller side {0,1}, larger side {2,3,4,5}, full K_{2,4}, plus the 4-cycle 2–3–4–5–2). witness_edge_count (12 = ⌊6²/4⌋ + 3) and witness_triangle_count (8) by decide; supersaturation_bound_fails_at_threshold (8 < 3·3 at t = 6/2) and its Fintype.card restatement supersaturation_fails_card establish that the bound fails at t = ⌊n/2⌋."
+      "summary": "witness_edge_count (12 = ⌊6²/4⌋ + 3) and witness_triangle_count (8) by decide; supersaturation_bound_fails_at_threshold (8 < 3·3 at t = 6/2) and its Fintype.card restatement supersaturation_fails_card establish that the linear bound of #1010 fails at t = ⌊n/2⌋, so the hypothesis t < ⌊n/2⌋ in Erdős #1010 is sharp."
     }
   ],
   "crossReferences": [
