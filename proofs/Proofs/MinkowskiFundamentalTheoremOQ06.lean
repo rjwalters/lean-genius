@@ -299,6 +299,7 @@ theorem subsingleton_ball_inter_of_uniform_discrete (L : AddSubgroup E) {r₀ : 
     rw [dist_comm y b] at h3
     rw [← dist_eq_norm]
     linarith
+  have hn0 : (0 : ℝ) ≤ ‖a - b‖ := norm_nonneg _
   linarith
 
 /-- **A bounded set meets a uniformly discrete subgroup finitely often** (in a
