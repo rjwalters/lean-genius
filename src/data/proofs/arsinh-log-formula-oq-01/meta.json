@@ -97,11 +97,19 @@
       "mathContext": "$\\operatorname{arsinh} x = \\log(x + \\sqrt{1+x^2})$, antiderivative of $1/\\sqrt{1+x^2}$, inverse of $\\sinh$."
     },
     {
-      "id": "closed-form-and-api",
-      "title": "Closed Form and Supporting Identities",
+      "id": "closed-form",
+      "title": "The Closed Logarithmic Form",
       "startLine": 32,
+      "endLine": 40,
+      "summary": "arsinh_eq_log: the named closed form arsinh x = log(x + √(1+x²)), proved by rfl against Mathlib's definition. exp_arsinh' re-exports the exponential form exp(arsinh x) = x + √(1+x²) that the closed form unfolds.",
+      "mathContext": "$\\operatorname{arsinh} x = \\log(x + \\sqrt{1+x^2})$, $\\exp(\\operatorname{arsinh} x) = x + \\sqrt{1+x^2}$."
+    },
+    {
+      "id": "inverse-pair-api",
+      "title": "Inverse-Pair and Pythagorean Companion (Re-exported)",
+      "startLine": 42,
       "endLine": 56,
-      "summary": "arsinh_eq_log (the named closed form, rfl) and exp_arsinh' (exponential form). Re-exports of the inverse pair sinh_arsinh' / arsinh_sinh', the Pythagorean companion cosh_arsinh' (= √(1+x²)), and oddness arsinh_neg' — the API the addition law is built on.",
+      "summary": "Re-exports of the inverse pair sinh_arsinh' / arsinh_sinh', the Pythagorean companion cosh_arsinh' (= √(1+x²)), and oddness arsinh_neg' — the API the addition law is built on.",
       "mathContext": "$\\sinh(\\operatorname{arsinh} x) = x$, $\\cosh(\\operatorname{arsinh} x) = \\sqrt{1+x^2}$, $\\operatorname{arsinh}(-x) = -\\operatorname{arsinh} x$."
     },
     {
