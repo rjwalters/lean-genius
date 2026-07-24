@@ -25,9 +25,9 @@
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 2,
-    "focus": "2026-07-23: exact table extended + RECORD-SETTERS proved — hErdos 18 = 3 (engine-only, no practical factorisation), hErdos 20 = 4 (unique hard target 18; NON-MONOTONICITY: 20 < 24 but hErdos 20 = 4 > 3 = hErdos 24, and d(20) = 6 < 8 = d(24)), hErdos 28 = 4 (hard target 27), hErdos 8/16/32 via the power formula, and minimal_hErdos_two/three/four/five (IsLeast): the least practical m with hErdos m = t is 2^t for t = 2..5 — record-setter sequence 2, 4, 8, 16, 32. All 0-axiom, docker-verified. Open question crystallised: is the record-setter 2^t for ALL t? Would follow from hErdos m <= log2 m (practical m), but the greedy proof FAILS (practical 78 has divisor-gap ratio 13/6 > 2), so a non-greedy argument is needed.",
+    "focus": "2026-07-24: t=9 record rung CLOSED — minimal_hErdos_nine = 348 (powers-of-two pattern breaks; hErdos_le_log_fails now a theorem); octave [64,128) fully pinned with index-4 floor theorem; restricted lower engine + shared-coverage practicality engine on file. All 0-axiom, docker-verified.",
     "blockers": [],
-    "nextAction": "t = 8 rung ([128,256)) or octave index-6 census via witness-list engine; record-setter proved through t = 7",
+    "nextAction": "t = 10 rung: Python census of Stewart-extremal candidates m = q*(sigma(q)+1) FIRST; or growth-envelope sweep (is hErdos <= C log m plausible?); [348,512) octave remainder is LOW priority",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: restricted lower engine (graded powersetCard slices, C(d,<t) vs 2^d) closes last session's blocker; exact values hErdos 168=4, 180=4 (octave floor), 210=5, 240=5 (blocked pair), 252=5 all 0-axiom. Record sequence 2^t for t=1..8 unchanged; t=9 rung and octave exact-value completion now fully unblocked.",
+    "progressSummary": "PROGRESS: record-setter sequence settled for t=1..9 — 2,4,8,16,32,64,128,256,348: the powers-of-two pattern BREAKS at t=9 (348 = 2^2*3*29 < 2^9, Stewart-extremal 29 = sigma(12)+1); conjectured hErdos <= log2 bound REFUTED as a theorem (hErdos_le_log_fails); local uniqueness fails at t=8 (272/304 tie); new shared-coverage practicality engine. Same day: restricted lower engine (graded powersetCard slices, C(d,<t) vs 2^d); octave [64,128) fully closed out (15/15 exact values) with index-4 floor theorem; [128,256) exacts 168/180/210/240/252 pinned. Next: t=10 census + growth-envelope sweep",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -82,7 +82,14 @@
       "record_index_seven_locally_unique + twofiftysix_practical + hErdos_twofiftysix in Erdos18WIP01.lean",
       "le_repLength_of_no_small_subset / le_hErdos_of_no_small_subset (restricted lower engine, graded powersetCard slices) in Erdos18WIP01.lean",
       "hErdos_twohundredten (=5), hErdos_twoforty (=5), hErdos_onesixtyeight (=4), hErdos_oneeighty (=4), hErdos_twofiftytwo (=5) exact values + lower bounds + tight uppers hErdos_onesixtyeight_le_four / hErdos_oneeighty_le_four",
-      "Practicality lemmas: onetwenty_practical, twoforty_practical, eightyfour_practical, onesixtyeight_practical, oneeighty_practical, twofiftytwo_practical"
+      "Practicality lemmas: onetwenty_practical, twoforty_practical, eightyfour_practical, onesixtyeight_practical, oneeighty_practical, twofiftytwo_practical",
+      "isPractical_of_witnesses_from (practicality engine from coin-chain coverage) in Erdos18WIP01.lean",
+      "twoseventytwo_cover/threehundredfour_cover/threefortyeight_cover shared coverage decides; twoseventytwo/threehundredfour/threefortyeight_practical",
+      "hErdos_twoseventytwo = 8, hErdos_threehundredfour = 8 (hard targets 270/300); hErdos_threefortyeight = 9 (hard target 347, 2^12 lower decide)",
+      "14 octave upper bounds hErdos_twosixty_le..hErdos_threefortytwo_le (5 kernel-free splits + 9 sub-family engine runs, |S| <= 10)",
+      "hErdos_le_eight_of_lt_threefortyeight (92-case threshold); minimal_hErdos_nine; hErdos_le_log_fails; record_setter_pattern_fails; record_index_eight_not_locally_unique",
+      "hErdos_seventytwo/eighty/eightyfour/ninetysix/onehundredeight/onehundredtwelve/onetwenty exact values in Erdos18WIP01.lean (with 5 new practicality lemmas + hErdos_onetwenty_le_four 9-coin sub-family chain)",
+      "index_four_floor_sixtyfour_octave theorem in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -129,13 +136,24 @@
       "hErdos 210 = 5 and hErdos 240 = 5 (unique hard targets 209/237): both previously-blocked d>12 exact values; 240 is the least number with 20 divisors yet ties 32 = 2^5",
       "Index-4 floor of [128,256) is exactly {168, 180} = doublings of 84, 90; the [64,128) floor {72,84,90,96,120,126} thins 6 -> 2 under doubling; 240/252 rises formalized, 144/192 Python-only",
       "hErdos 252 = 5: subadditive hErdos(2*126) <= 1+4 is TIGHT — doubling a floor member can cost the full unit (contrast 200 = 2*100 which drops)",
-      "180 tight upper needs a 12-coin chain (no <=11-coin sub-family covers at t=4, exhaustively checked); 2^12 x 180 decide fits maxHeartbeats 3200000"
+      "180 tight upper needs a 12-coin chain (no <=11-coin sub-family covers at t=4, exhaustively checked); 2^12 x 180 decide fits maxHeartbeats 3200000",
+      "T=9 BREAKS THE PATTERN: minimal_hErdos_nine = 348 = 2^2*3*29 < 512 = 2^9 — first non-power-of-two record-setter; hErdos 348 = 9",
+      "Refuted (now theorems): hErdos_le_log_fails — hErdos m <= log2 m is FALSE for practical m (348: 9 > 8); record_setter_pattern_fails — 2^t is not the record-setter for all t",
+      "Mechanism: 348 = 12*29 with 29 = sigma(12)+1 exactly (Stewart-extremal); divisors = D(12) ∪ 29*D(12); unique hard target 347 ≡ 28 (mod 29) forces all 6 prefix divisors + 3 of the 29-layer = 9",
+      "Local uniqueness fails again at t=8: 272 = 2^4*17 and 304 = 2^4*19 tie index 8 — near-doubling 9-chains (17,19 ≈ 16), the structural neighbours of 2^8",
+      "Shared-coverage pattern: one standalone 'cover' decide theorem feeds BOTH isPractical_of_witnesses_from and hErdos_le_of_witnesses_from — practicality never pays the full 2^d powerset",
+      "Growth envelope re-homed: with log2 m dead, question becomes hErdos <= C*log m? Iterating Stewart-extremal m -> m*(sigma(m)+1) may push C; Python sweep to 1e5 is the next cheap probe",
+      "Octave [64,128) fully pinned: all 15 practicals have exact hErdos values (6 floor members at 4; 66/80/108/112 at 5; 64/78/88/100/104 at 6); 80 and 108 have unique hard targets 79 and 107 (both m-1)",
+      "index_four_floor_sixtyfour_octave: the index-4 floor {72,84,90,96,120,126} of [64,128) is now a theorem (interval_cases + decide refutation of non-practicals + 15 value lemmas)",
+      "Python correction: hErdos 40 = 4, not 5 (t=6 session only pinned the subadditive upper). [32,64) floor = {36,40,42,48,54,60}, six members; floor cascade 6 -> 6 -> 2 across three octaves",
+      "[64,128) floor structure: doublings of [32,64) floor members that stay (72,84,96,120) plus practically-unsplittable 90,126; risers 80=2*40, 108=2*54; unique zero-cost off-floor doubling 112=2*56"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "t = 8 rung: sweep [128, 256) (~21 practicals) with the split-vs-engine dichotomy; count practically-unsplittable numbers first",
-      "Octave index-6 census: are 78/88/100/104 the only ties in (64,128)? Needs engine uppers for 80, 112 (cheap) and 120 (d=16 - build a witness-list engine: explicit per-target witness lists, O(m) decide instead of O(m*2^d))",
-      "Exact values for 40, 56, 60 (cheap hard-target lower bounds)",
+      "t = 10 rung: Python census first — where is the least index-10 practical? Candidates: Stewart-extremal m = q*(sigma(q)+1) for practical q; compute, do not guess",
+      "Growth envelope: with hErdos <= log2 m refuted, probe hErdos <= C*log m by iterating the Stewart-extremal construction (Python sweep to 1e5) before formalizing",
+      "[32,64) floor-cascade completion (exact values already there; floor theorem for {36,40,42,48,54,60} would make the 6->6->2 cascade fully formal)",
+      "[128,256) octave exact-value completion: remaining d<=12 targets cheap via graded-slice lowers; 132/144/192/216 need tight uppers first",
       "Investigate gap-type vs dense-type dichotomy as a theorem: does a divisor-ratio gap > 2 above the prefix force index >= prefix-length-based bound?"
     ],
     "markdown": "# Knowledge Base: erdos-18-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

@@ -119,3 +119,36 @@ created: 2026-07-09T17:33:19-07:00
 
 **Significance**: 7/10
 **Tractability**: 5/10
+
+## Adversarial checklist — t = 9 record-setter claim (2026-07-24, researcher-2)
+
+Claim under audit: `minimal_hErdos_nine : IsLeast {m | IsPractical m ∧ hErdos m = 9} 348`,
+`hErdos_le_log_fails`, `record_setter_pattern_fails` (Erdos18WIP01.lean).
+
+1. **Index mismatch (hErdos vs h)**: the refuted conjecture concerns `hErdos`
+   (max-representation-length, the corrected Erdős #18 index defined mid-file),
+   NOT the parent's universal-set `h`. Confirm the theorems reference `hErdos`
+   and that no claim is made about the parent `h` or about the $250 `h(n!)`
+   conjecture — which remains open and untouched.
+2. **Floor-log artifact**: `hErdos_le_log_fails` uses `Nat.log 2`. Since
+   `hErdos` is a natural number, `hErdos m ≤ log₂ m` (real) ⟺ `hErdos m ≤
+   ⌊log₂ m⌋` = `Nat.log 2 m`; and concretely 9 > 8.44 = log₂ 348, so the
+   refutation is NOT a floor artifact.
+3. **Set-shape drift**: the `IsLeast` set comprehension is verbatim the shape
+   used at t = 1..8 (`minimal_hErdos_two` … `_eight`) — same `IsPractical m ∧
+   hErdos m = t`.
+4. **Boundary traps**: threshold `hErdos_le_eight_of_lt_threefortyeight` covers
+   `m < 348` strictly; membership of 348 is proved separately
+   (`threefortyeight_practical`, `hErdos_threefortyeight`); hard target
+   `k = 347 < 348` is in `Finset.range 348`.
+5. **Circularity**: no axiom or hypothesis as strong as the claim — upper
+   bounds are kernel coverage decides over explicit coin chains, the lower
+   bound is a full `2¹²`-powerset kernel decide at `k = 347`; the file stays
+   0-axiom/0-sorry.
+6. **Wrong-multiplicity near-miss**: `record_setter_pattern_fails` refutes
+   `∀ t, IsLeast … (2^t)`, witnessed at `t = 9` via the lower-bound half —
+   it does not merely prove "348 attains 9" but that 2⁹ = 512 is NOT a lower
+   bound of the index-9 set, which is exactly the pattern claim.
+7. **Cross-check**: Python full-powerset enumeration (independent of the Lean
+   DP semantics) confirmed hErdos 348 = 9 (unique argmax k = 347), hErdos 272
+   = hErdos 304 = 8, and every octave value used in the threshold.
