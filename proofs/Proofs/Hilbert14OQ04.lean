@@ -465,8 +465,6 @@ theorem fixedPoints_eq_noetherCandidate_of_kernel
   · exact reynolds_monomial_mem_noetherCandidate_of_le hm
   · exact hker m hm
 
-omit [Group G] [MulSemiringAction G (MvPolynomial (Fin n) k)]
-  [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- There are only finitely many exponent vectors of bounded total degree:
 the map `m ↦ ⇑m` embeds them into the finite product `Π i, [0, D]`. -/
 theorem finite_degreeBounded_exponents (D : ℕ) :
