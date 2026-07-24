@@ -97,4 +97,105 @@ theorem hilbert_finiteness :
   -- Step 5e: translate Subalgebra.FG back to Algebra.FiniteType.
   exact ⟨h_kB_fg⟩
 
+/-!
+## S5 ACT — toward Noether's degree bound: charpoly coefficient API (Stages 1–3)
+
+The quantitative half of Noether 1916 (`generators ⊆ deg ≤ |G|`) factors through
+the orbit characteristic polynomial `MulSemiringAction.charpoly G b = ∏ g, (X - C (g • b))`
+(PREP-2/PREP-3 design, PRs #19294 + follow-up). This section lands the three
+self-contained stages:
+
+* **Stage 1** — every coefficient of `charpoly G b` is `G`-invariant, i.e. lies in
+  `FixedPoints.subalgebra k R G` (from Mathlib's `smul_coeff_charpoly`);
+* **Stage 2** — `(charpoly G b).natDegree = |G|` (product of `|G|` monic linear factors);
+* **Stage 3** — with the graded-action hypothesis
+  `h_graded : ∀ g p, (g • p).totalDegree ≤ p.totalDegree` (NOT automatic from
+  `MulSemiringAction`; PREP-3 §2 Option A), the `j`-th coefficient has total degree
+  at most `(|G| - j) · deg b`, via Vieta (`Multiset.prod_X_sub_C_coeff`) and the
+  elementary symmetric expansion (`Finset.esymm_map_val`).
+
+Stage 5 (Reynolds-operator extraction of a generating set in degree `≤ |G|`,
+requiring `¬ (ringChar k ∣ |G|)`) remains for a dedicated S6 iteration.
+-/
+
+section DegreeBound
+
+open MulSemiringAction
+
+/-- **Stage 1**: every coefficient of the orbit characteristic polynomial
+`charpoly G b = ∏ g, (X - C (g • b))` is fixed by the `G`-action, hence lies in
+the invariant subalgebra. This is the source of the integrality relations that
+the eventual degree-bound generating set is drawn from. -/
+theorem coeff_charpoly_mem_fixedPoints (b : MvPolynomial (Fin n) k) (j : ℕ) :
+    (charpoly G b).coeff j ∈
+      FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G :=
+  fun g => smul_coeff_charpoly b j g
+
+/-- **Stage 2**: the orbit characteristic polynomial has `natDegree` exactly
+`|G|` — it is a product of `|G|` monic linear factors. -/
+theorem natDegree_charpoly (b : MvPolynomial (Fin n) k) :
+    (charpoly G b).natDegree = Fintype.card G := by
+  rw [charpoly_eq,
+    Polynomial.natDegree_prod_of_monic _ _ (fun g _ => Polynomial.monic_X_sub_C _)]
+  simp [Polynomial.natDegree_X_sub_C]
+
+/-- **Stage 3**: under a degree-nonincreasing (graded) action — the standard
+Noether-1916 setting of a linear action on the variables, stated as the explicit
+hypothesis `h_graded` per PREP-3 §2 (it is NOT implied by `MulSemiringAction`
+alone) — the `j`-th coefficient of `charpoly G b` has total degree at most
+`(|G| - j) · deg b`.
+
+Route: Vieta expresses the coefficient as `(-1)^(|G|-j) · esymm_{|G|-j}` of the
+orbit multiset `{g • b}`; the elementary symmetric function is a sum over
+`(|G|-j)`-subsets of products of orbit elements, each of total degree
+`≤ deg b` by `h_graded`. -/
+theorem totalDegree_coeff_charpoly_le
+    (h_graded : ∀ (g : G) (p : MvPolynomial (Fin n) k),
+      (g • p).totalDegree ≤ p.totalDegree)
+    (b : MvPolynomial (Fin n) k) (j : ℕ) (hj : j ≤ Fintype.card G) :
+    ((charpoly G b).coeff j).totalDegree
+      ≤ (Fintype.card G - j) * b.totalDegree := by
+  classical
+  -- the orbit multiset
+  set s : Multiset (MvPolynomial (Fin n) k) :=
+    Finset.univ.val.map (fun g : G => g • b) with hs
+  have hcard : Multiset.card s = Fintype.card G := by
+    rw [hs, Multiset.card_map]
+    exact Finset.card_univ
+  -- charpoly as a multiset product of linear factors
+  have hprod : charpoly G b =
+      (s.map fun t => Polynomial.X - Polynomial.C t).prod := by
+    rw [charpoly_eq, Finset.prod_eq_multiset_prod, hs, Multiset.map_map]
+    rfl
+  -- Vieta: the coefficient is a signed elementary symmetric function
+  have hcoeff : (charpoly G b).coeff j =
+      (-1) ^ (Fintype.card G - j) * s.esymm (Fintype.card G - j) := by
+    rw [hprod, Multiset.prod_X_sub_C_coeff s (by rw [hcard]; exact hj), hcard]
+  rw [hcoeff]
+  set m : ℕ := Fintype.card G - j with hm
+  -- the sign factor is a constant
+  have hsign : ((-1 : MvPolynomial (Fin n) k) ^ m).totalDegree = 0 := by
+    have hC : ((-1 : MvPolynomial (Fin n) k) ^ m) =
+        MvPolynomial.C ((-1 : k) ^ m) := by
+      rw [map_pow, map_neg, map_one]
+    rw [hC, MvPolynomial.totalDegree_C]
+  -- the esymm factor: sum over m-subsets of degree-bounded products
+  have hesymm : (s.esymm m).totalDegree ≤ m * b.totalDegree := by
+    rw [hs, Finset.esymm_map_val]
+    refine le_trans (MvPolynomial.totalDegree_finsetSum _ _) ?_
+    refine Finset.sup_le fun t ht => ?_
+    have htcard : t.card = m := (Finset.mem_powersetCard.mp ht).2
+    refine le_trans (MvPolynomial.totalDegree_finsetProd _ _) ?_
+    calc ∑ g ∈ t, ((g • b).totalDegree)
+        ≤ ∑ _g ∈ t, b.totalDegree := Finset.sum_le_sum fun g _ => h_graded g b
+      _ = t.card * b.totalDegree := by rw [Finset.sum_const, smul_eq_mul]
+      _ = m * b.totalDegree := by rw [htcard]
+  calc ((-1 : MvPolynomial (Fin n) k) ^ m * s.esymm m).totalDegree
+      ≤ ((-1 : MvPolynomial (Fin n) k) ^ m).totalDegree
+          + (s.esymm m).totalDegree := MvPolynomial.totalDegree_mul _ _
+    _ = (s.esymm m).totalDegree := by rw [hsign, zero_add]
+    _ ≤ m * b.totalDegree := hesymm
+
+end DegreeBound
+
 end Hilbert14OQ04
