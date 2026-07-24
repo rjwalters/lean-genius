@@ -75,9 +75,8 @@ theorem zetaSum_summable {n : ℕ} (hn : 2 ≤ n) :
 /-- `1 ≤ ζ(n)` for `n ≥ 2`: the `m = 1` term alone is `1`, and all terms are
 nonnegative. -/
 theorem one_le_zetaSum {n : ℕ} (hn : 2 ≤ n) : 1 ≤ zetaSum n := by
-  have h1 : (1 : ℝ) = 1 / ((1 : ℕ) : ℝ) ^ n := by norm_num
-  rw [zetaSum, h1]
-  exact (zetaSum_summable hn).le_tsum 1 (fun i _ => by positivity)
+  have h := (zetaSum_summable hn).le_tsum 1 (fun i _ => by positivity)
+  simpa [zetaSum] using h
 
 /-- `ζ(n) > 0` for `n ≥ 2`. -/
 theorem zetaSum_pos {n : ℕ} (hn : 2 ≤ n) : 0 < zetaSum n :=
@@ -191,7 +190,6 @@ theorem exists_count_zero_of_integral_lt_one {Ω : Type*} [MeasurableSpace Ω]
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (h ω)
   have hint1 : ∫ ω, (1 : ℝ) ∂μ ≤ ∫ ω, (N ω : ℝ) ∂μ :=
     integral_mono (integrable_const 1) hInt h1
-  rw [integral_const, measure_univ] at hint1
   simp at hint1
   linarith
 
