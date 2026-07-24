@@ -56,7 +56,8 @@
       "The Euler–Mascheroni convergence is not special to 1/x: the only inputs are antitonicity (to make the integral test sandwich hold) and nonnegativity (to bound the telescoped remainder), so every antitone nonnegative summand has its own limiting constant",
       "Boundedness comes from a global telescoping identity across the whole window, while monotonicity comes from a purely local per-cell integral estimate — two different uses of the same one-sided comparison AntitoneOn.integral_le_sum",
       "The uniform bound is sharp in form: D f n ≤ f 1 with the limit in [0, f 1], and f 1 is exactly the first term of the series, so the generalized Euler constant never exceeds the leading summand",
-      "Divergence of ∑ f (the 'Euler constant' regime) is not needed for the defect to converge — convergence of D f is automatic; divergence is what makes the constant an interesting invariant rather than a rewriting of the convergent tail"
+      "Divergence of ∑ f (the 'Euler constant' regime) is not needed for the defect to converge — convergence of D f is automatic; divergence is what makes the constant an interesting invariant rather than a rewriting of the convergent tail",
+      "The two halves of generalizedEuler_mem_Icc cost different amounts of proof work: the lower bound 0 ≤ generalizedEuler f drops straight out of le_ciSup at the definitional base case defect_zero (D f 0 = 0), while the upper bound generalizedEuler f ≤ f 1 needs the full telescoping argument of defect_le carried out at every n and then pushed through ciSup_le — the supremum machinery gives one side of the enclosure for free and forces the other to be earned"
     ],
     "prerequisites": [
       "The antitone integral-test sandwich ∑ f(x₀+i+1) ≤ ∫ ≤ ∑ f(x₀+i) (parent entry / Mathlib SumIntegralComparisons)",
