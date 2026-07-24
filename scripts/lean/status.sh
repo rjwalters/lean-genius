@@ -391,6 +391,14 @@ EOF
         # Work Queue
         echo -e "  ${CYAN}Work Queue:${NC}"
         echo "    Proofs needing enrichment: $enrichment_count"
+        # Enrichment-saturation signal (issue #43008): when the queue is empty,
+        # any running enrichers are idle or reduced to score-ceiling noise
+        # (find-targets serving only 96+-quality entries). Flag it so operators
+        # know enricher slots are better spent on researchers.
+        if [[ "$enrichment_count" == "0" ]]; then
+            echo -e "      ${YELLOW}Enrichment queue saturated — enricher capacity may be idle;${NC}"
+            echo -e "      ${YELLOW}consider './scripts/lean/launch.sh scale enricher 1' and adding researchers.${NC}"
+        fi
         echo "    Aristotle jobs pending: $aristotle_jobs"
         echo "    Aristotle candidates: $aristotle_candidates"
         echo "    Research problems available: $research_problems"
