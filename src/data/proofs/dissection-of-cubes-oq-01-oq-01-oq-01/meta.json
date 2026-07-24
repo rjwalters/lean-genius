@@ -105,34 +105,34 @@
       "id": "header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 70,
+      "endLine": 65,
       "summary": "Docstring stating the question (does the witness survive genuine coverage?) and the answer (no), plus imports and opens."
     },
     {
       "id": "geo-structure",
       "title": "Genuine (Volumetric) Cube Dissection",
-      "startLine": 71,
-      "endLine": 100,
+      "startLine": 66,
+      "endLine": 97,
       "summary": "GeoCubeDissection with `volume_fills : ∑ c.side³ = 1` and the forgetful map to CubeDissection."
     },
     {
       "id": "satisfiable",
       "title": "The Predicate is Satisfiable — the Unit Cube",
-      "startLine": 101,
-      "endLine": 150,
+      "startLine": 98,
+      "endLine": 145,
       "summary": "unitCube, unitGeoDissection (a genuine dissection), unitGeo_no_collision (0 colliding cubes), unitGeo_not_minimal."
     },
     {
       "id": "witness-fails",
       "title": "The Minimal-Collision Example Fails Genuine Coverage",
-      "startLine": 151,
-      "endLine": 180,
+      "startLine": 146,
+      "endLine": 175,
       "summary": "exampleCubes_volume_ne_one (volume 59/864 ≠ 1) and no_geo_with_exampleCubes (the headline obstruction)."
     },
     {
       "id": "open-question",
       "title": "The Open Question, Restated",
-      "startLine": 181,
+      "startLine": 176,
       "endLine": 203,
       "summary": "Restates the open geometric question and transports the ≥2 lower bound to GeoCubeDissection."
     },
