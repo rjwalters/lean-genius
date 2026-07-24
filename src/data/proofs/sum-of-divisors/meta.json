@@ -56,7 +56,7 @@
     "implications": "This formalization provides the algebraic infrastructure for one of number theory's richest subjects. The multiplicativity of σ connects via Dirichlet series to ζ(s)ζ(s-1), linking divisor sums to the Riemann zeta function. Robin's theorem (1984) shows σ(n) < e^γ n ln(ln(n)) for n > 5040 iff RH holds — a startling connection between a simple arithmetic function and the most famous open problem in mathematics. The classification into deficient/perfect/abundant has been studied since Nicomachus (~100 CE), yet the question of odd perfect numbers remains unsolved after 2000 years of effort.",
     "openQuestions": [
       "Are there odd perfect numbers? Any odd perfect number must satisfy n > 10^1500 and have at least 101 prime factors (Ochem-Rao 2012). In Lean, formalizing even the simplest constraint — that an odd perfect number must have a prime factor ≡ 1 (mod 4) — would require connecting σ(p^a) ≡ 0 (mod 4) conditions to the perfect number equation σ(n) = 2n",
-      "Formalize Euler's converse theorem: every even perfect number has the form 2^(p-1)(2^p-1) where 2^p-1 is prime. Euclid's direction (⟸) follows immediately from `sigma_mul_coprime` and the prime power formula; Euler's direction (⟹) requires showing that if 2^(p-1)(2^p-1) is perfect, then 2^p-1 must be prime (a divisibility argument on the structure of even numbers). This bidirectional classification is the starting point for the `perfect-numbers` gallery entry",
+      "RESOLVED (see `sum-of-divisors-oq-02`, additional file Proofs/SumOfDivisorsOQ02.lean): Euler's converse theorem — every even perfect number has the form 2^(p-1)(2^p-1) where 2^p-1 is prime — is fully formalized as `euler_converse_self_contained` (0 sorries, 0 axioms). Euclid's direction (⟸) follows immediately from `sigma_mul_coprime` and the prime power formula; Euler's direction (⟹) is proved there via a divisibility argument reducing perfectness plus σ-multiplicativity to a single divisor equation. This bidirectional classification underlies the `perfect-numbers` gallery entry",
       "Formalize Robin's inequality: σ(n) < e^γ n ln(ln(n)) for n ≤ 5040 by computation (verifiable by `native_decide` on a bounded range), and state the equivalence with RH as an axiom for the gallery entry on the Riemann Hypothesis. The threshold n = 5040 corresponds to the highly composite number 7! with the largest known ratio σ(n)/(n ln ln n)",
       "Formalize Gronwall's theorem: lim sup_{n→∞} σ(n)/(n ln ln n) = e^γ. This is an asymptotic statement requiring real analysis (limsup of a sequence). The upper bound follows from Dirichlet series estimates; the lower bound requires constructing highly composite numbers achieving σ(n)/n close to e^γ ln ln n. Formalizing either direction in Lean would require connecting `ArithmeticFunction.sigma` to the Mathlib analysis library"
     ]
@@ -74,6 +74,11 @@
     ]
   },
   "crossReferences": [
+    {
+      "targetId": "sum-of-divisors-oq-02",
+      "relationship": "extended-by",
+      "description": "`sum-of-divisors-oq-02` (Proofs/SumOfDivisorsOQ02.lean, listed above as this entry's additionalFiles) fully formalizes Euler's converse: every even perfect number has Euclid's Mersenne form 2^(p-1)(2^p-1). It builds directly on this file's `sigma_mul_coprime` and prime-power formula."
+    },
     {
       "targetId": "perfect-numbers",
       "relationship": "extended-by",
