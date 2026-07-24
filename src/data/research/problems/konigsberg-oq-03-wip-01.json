@@ -50,7 +50,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S13 complete — the two Euler-path predicates are formally incomparable. File KonigsbergOQ03.lean: 623 LOC, 27 theorems, 18 defs, 0 sorry / 0 axiom, Docker-GREEN. S12 witnesses (ray: one-way, line: bi-infinite) now paired with S13 impossibilities (ray: no bi-infinite, line: no one-way). Remaining open: EGW necessity/characterization (structural, multi-session), r>=3 hypergraph NP-completeness (blocked route).",
+    "progressSummary": "PROGRESS: S15 complete — bi-infinite parity necessity: every finite-degree vertex even (no start exception; exact Z-shift pairing), one odd vertex rules out bi-infinite Euler paths, parity re-proof of the S13 ray impossibility, and the combined parity_picture (one-way: odd set subsingleton; bi-infinite: odd set empty). File KonigsbergOQ03.lean 1186 LOC, 0 sorry / 0 axiom. Necessity side of EGW parity now complete for BOTH path notions — natural park point.",
     "builtItems": [
       "InfiniteWalk structure in Proofs/KonigsbergOQ03.lean:105 — ℕ-indexed walk on InfiniteGraph, with vertex : ℕ → V + step_adj field (S4 ACT)",
       "InfiniteWalk.sameEdge in Proofs/KonigsbergOQ03.lean:115 — two step indices traverse same undirected edge (S4 ACT)",
@@ -73,7 +73,8 @@
       "S12: rayGraph_arcSet_infinite / lineGraph_arcSet_infinite — witnesses paired with S11 finite-arc impossibility in contrapositive",
       "not_hasInfiniteEulerPath_rayGraph in KonigsbergOQ03.lean — ray graph has no bi-infinite Euler path (degree-1 vertex argument)",
       "not_hasOneWayEulerPath_lineGraph in KonigsbergOQ03.lean — line graph has no one-way Euler path (unique cut-crossing + confinement + pigeonhole)",
-      "not_oneWay_imp_biInfinite / not_biInfinite_imp_oneWay in KonigsbergOQ03.lean — formal incomparability capstones"
+      "not_oneWay_imp_biInfinite / not_biInfinite_imp_oneWay in KonigsbergOQ03.lean — formal incomparability capstones",
+      "KonigsbergOQ03.lean S15 (930->1186 LOC): BiInfiniteWalk.outSteps/inSteps/step_ne/disjoint/image_succ_inSteps, IsBiInfiniteEulerWalk census (ncard_neighbors_eq = 2x, even_ncard_neighbors, infiniteDegree_eq_two_mul), noOddVertex_of_hasInfiniteEulerPath, not_hasInfiniteEulerPath_of_odd_vertex, not_hasInfiniteEulerPath_rayGraph_parity, parity_picture; 0 ax / 0 sorry host-verified v4.31"
     ],
     "insights": [
       "**True placeholders are dishonest formalisation**: KonigsbergOQ03.lean has 0 sorries and 0 axioms but until 2026-06-03 had 3 (later 2) :=True propositions, which makes its 0-sorry count misleading. Per CLAUDE.md Aristotle rule #3 (No placeholder True theorems), the same principle applies broadly — True propositions are gaps masquerading as completeness. As of S4 ACT, all 3 are discharged.",
@@ -91,7 +92,10 @@
       "S13: a degree-1 vertex kills bi-infinite Euler paths LOCALLY — a Z-indexed walk must both enter and leave every visited vertex, so the unique incident edge repeats. No crossing/pigeonhole machinery needed (the S12 estimate of ~100+ LOC for the ray side collapsed to ~25 LOC).",
       "S13: for the line graph the one-way impossibility IS global: unique cut-edge traversal (edge-injectivity) + Nat.le_induction confinement traps the walk on one side; the abandoned side has infinitely many edges but only t+1 pre-crossing steps — choose + Set.infinite_of_injective_forall_mem + Set.finite_Iic closes it.",
       "S13: omega handles all vertex-value case analysis when w.vertex terms are kept as atoms (equalities like v i = -1 - k with Nat-to-Int casts); the only rewriting needed is index normalization t - 1 + 1 = t via rw [show ... from by ring] on Z-indices.",
-      "S13: rayGraph and lineGraph now separate HasOneWayEulerPath and HasInfiniteEulerPath in both directions — the number of ends (one vs two) is exactly what distinguishes the two Euler-path notions, the formal core of the EGW picture."
+      "S13: rayGraph and lineGraph now separate HasOneWayEulerPath and HasInfiniteEulerPath in both directions — the number of ends (one vs two) is exactly what distinguishes the two Euler-path notions, the formal core of the EGW picture.",
+      "S15 bi-infinite parity: over Z the arrival-shift is EXACT — (.+1) image of inSteps v equals outSteps v with no removed index (the N-indexed census had outSteps minus {0}) — so degree v = 2|outSteps v| and EVERY finite-degree vertex on a bi-infinite Euler walk is even; no start exception exists because there is no start.",
+      "Parity now separates the two Euler-path notions quantitatively: one-way allows at most ONE odd finite-degree vertex (S14, the start), bi-infinite allows NONE (S15, parity_picture). One odd vertex kills bi-infinite outright (not_hasInfiniteEulerPath_of_odd_vertex).",
+      "The ray graph impossibility (S13) now has a second independent proof by pure degree counting: vertex 0 has odd degree 1 (not_hasInfiniteEulerPath_rayGraph_parity); S13 went via walk surjectivity onto arcs."
     ],
     "mathlibGaps": [
       "r-uniform hypergraph type (Mathlib.Combinatorics has nothing).",
@@ -99,9 +103,9 @@
       "Erdős-Grünwald-Weiszfeld (1936) theorem characterising countable-graph Euler paths (the predicates HasInfiniteEulerPath / HasOneWayEulerPath are now defined in this file, but a Mathlib-level statement and proof of EGW remains an open formalisation target)."
     ],
     "nextSteps": [
-      "S14 (a): EGW necessity for locally finite graphs — one-way Euler path => at most 2 odd-degree vertices (degree counting over infiniteDegree).",
-      "S14 (b): extract the S13 cut-confinement mechanism into a reusable lemma for future EGW work.",
-      "EGW full characterization and r>=3 hypergraph Euler tours remain structured blocked routes (multi-week / NP-complete)."
+      "EGW sufficiency (Konig lemma compactness) — multi-week, structured blocked route.",
+      "r>=3 hypergraph Euler tours — NP-complete (Lonc-Naroski), blocked route.",
+      "Optional polish: extract the shared census pattern (N and Z) into a single parametrized lemma if a third index type ever appears."
     ],
     "progressHistory": [
       {

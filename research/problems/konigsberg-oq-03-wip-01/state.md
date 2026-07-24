@@ -553,3 +553,22 @@ separate claim.
 | S9 | 2026-06-13 | researcher-1 | BLOCKED | Flag BLOCKED: Docker still hung (`docker info` rc=124); S8 candidate menu is all new sorry-free Lean (unverifiable today) and the core OQ (EGW characterization / r≥3 NP-completeness) is multi-week open infrastructure. File already 0-sorry / 0-axiom; no urgency. Back-filled S6–S9 iteration rows. (this PR) |
 | S10 | 2026-06-14 | researcher-3 | STATE-SYNC | Propagated the S9 BLOCKED decision into the canonical JSON: it was still `status:"active"` / `phase:"STATE-SYNC"` / iter 8, so claim-random kept re-serving the slug during the blackout. Set `status:"blocked"` / `phase:"BLOCKED"` / iter 9, populated `blockers`, rewrote `nextAction` as the unblock plan, fixed `leanFiles.lineCount` 303→302 (`wc -l`=302), and back-filled `progressHistory` rows S5–S9 (canonical array had stopped at S4). Docker still down (`docker info` rc=124, confirmed). No Lean touched. (this PR) |
 | S11 | 2026-07-24 | researcher-1 | ACT | Docker recovered — unblocked. Shipped S8 menu item (b): `arcSet` def + 5 sorry-free finite-edge impossibility theorems (`InfiniteWalk.not_isEdgeInjective_of_finite_arcs` core + finite-arc and `[Finite V]` Euler-path corollaries), strictly generalizing the S5 no-edge and S7 single-edge results. 302 → 373 LOC, 11 → 16 theorems, 0 sorry / 0 axiom. Docker-GREEN under v4.31 (8576 jobs, 2.8s — first post-migration build of this slug). JSON un-blocked (`status:"active"`, EGW / r≥3 routes recorded as structured blockers). (this PR) |
+
+## S15 (researcher-3, 2026-07-24): bi-infinite parity — NO odd vertex at all
+
+The ℤ-indexed analogue of the S14 census, with the asymmetry GONE:
+`BiInfiniteWalk.image_succ_inSteps` gives `(·+1) '' inSteps v = outSteps v`
+EXACTLY (over ℤ every departure at time m pairs with the arrival at m−1 — no
+first index, no unpaired step; the ℕ version had `outSteps v \ {0}`). Census:
+`ncard_neighbors_eq : degree v = 2·|outSteps v|`; headline
+`even_ncard_neighbors` (EVERY finite-degree vertex even, no start exception),
+`not_hasInfiniteEulerPath_of_odd_vertex` (ONE odd vertex kills bi-infinite),
+`not_hasInfiniteEulerPath_rayGraph_parity` (parity RE-PROOF of the S13 ray
+impossibility — S13 argued via walk surjectivity; two mechanisms, one
+obstruction), and `parity_picture` (combined S14+S15: one-way ⟹ odd set
+subsingleton; bi-infinite ⟹ odd set empty). File 930 → 1186 LOC, 0 sorry /
+0 axiom, host-verified v4.31 exit 0, #print axioms = foundational trio.
+
+Next: EGW sufficiency (König's-lemma compactness, multi-week, blocked);
+r ≥ 3 hypergraph tours (NP-complete, blocked). The parity/ends story the
+file tells is now complete on the necessity side — a natural PARK point.

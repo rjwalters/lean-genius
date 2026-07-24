@@ -927,4 +927,260 @@ theorem lineGraph_parity_not_sufficient :
       ¬ HasOneWayEulerPath lineGraph :=
   ⟨lineGraph_even_ncard_neighbors, not_hasOneWayEulerPath_lineGraph⟩
 
+/-! ### EGW necessity, bi-infinite case: NO odd vertex at all (S15)
+
+S14 established the one-way parity clause: along a ℕ-indexed Euler walk every
+finite-degree vertex has even degree *except possibly the start* (which is
+odd). A ℤ-indexed bi-infinite Euler walk has **no start**, and correspondingly
+no exception: shifting arrival steps forward by one identifies `w.inSteps v`
+with `w.outSteps v` *exactly* — over ℤ there is no unpaired index `0` — so
+
+`degree v = 2 · |outSteps v|`,
+
+and **every** finite-degree vertex is even. Headline: a single odd
+finite-degree vertex rules out a bi-infinite Euler path. Together with S14
+this completes the parity half of the incomparability picture:
+
+* one-way: at most ONE odd vertex (the start, S14);
+* bi-infinite: NO odd vertex (S15).
+
+Sanity: the ray graph's vertex `0` has degree `1` (odd), so the parity
+obstruction *re-proves* S13's `not_hasInfiniteEulerPath_rayGraph` by pure
+degree counting — the S13 proof went through walk surjectivity instead. -/
+
+namespace BiInfiniteWalk
+
+/-- The integer steps at which the bi-infinite walk departs from `v`. -/
+def outSteps {V : Type*} {G : InfiniteGraph V} (w : BiInfiniteWalk G) (v : V) :
+    Set ℤ :=
+  {n | w.vertex n = v}
+
+/-- The integer steps at which the bi-infinite walk arrives at `v`. -/
+def inSteps {V : Type*} {G : InfiniteGraph V} (w : BiInfiniteWalk G) (v : V) :
+    Set ℤ :=
+  {n | w.vertex (n + 1) = v}
+
+/-- Each step of a bi-infinite walk traverses a non-loop edge. -/
+theorem step_ne {V : Type*} {G : InfiniteGraph V}
+    (w : BiInfiniteWalk G) (n : ℤ) : w.vertex n ≠ w.vertex (n + 1) :=
+  fun h => G.loopless (w.vertex n) (h ▸ w.step_adj n)
+
+/-- No integer step both departs from and arrives at `v` (no loops). -/
+theorem disjoint_outSteps_inSteps {V : Type*} {G : InfiniteGraph V}
+    (w : BiInfiniteWalk G) (v : V) : Disjoint (w.outSteps v) (w.inSteps v) := by
+  rw [Set.disjoint_left]
+  intro n hn hn'
+  simp only [outSteps, inSteps, Set.mem_setOf_eq] at hn hn'
+  exact w.step_ne n (hn.trans hn'.symm)
+
+/-- **The bi-infinite pairing has no exception**: shifting arrival steps
+forward by one yields *exactly* the departure steps. Over ℤ every departure
+at time `m` is preceded by the step at time `m − 1` — there is no first
+index, hence no unpaired departure (contrast with the ℕ-indexed
+`InfiniteWalk.image_succ_inSteps`, whose image is `outSteps v \ {0}`). -/
+theorem image_succ_inSteps {V : Type*} {G : InfiniteGraph V}
+    (w : BiInfiniteWalk G) (v : V) :
+    (fun n : ℤ => n + 1) '' w.inSteps v = w.outSteps v := by
+  ext m
+  simp only [Set.mem_image, inSteps, outSteps, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨n, hn, rfl⟩
+    exact hn
+  · intro hm
+    exact ⟨m - 1, by simpa using hm, by ring⟩
+
+end BiInfiniteWalk
+
+namespace IsBiInfiniteEulerWalk
+
+/-- A bi-infinite Euler walk covers each adjacent pair. -/
+theorem covers {V : Type*} {G : InfiniteGraph V} {w : BiInfiniteWalk G}
+    (hE : IsBiInfiniteEulerWalk G w) (u v : V) (hadj : G.adj u v) :
+    w.CoversEdge u v :=
+  hE.1 u v hadj
+
+/-- Edge-injectivity of a bi-infinite Euler walk in the positive form used by
+the census: two step indices traversing the same undirected edge coincide. -/
+theorem injective {V : Type*} {G : InfiniteGraph V} {w : BiInfiniteWalk G}
+    (hE : IsBiInfiniteEulerWalk G w) (m n : ℤ)
+    (h : (w.vertex m = w.vertex n ∧ w.vertex (m + 1) = w.vertex (n + 1)) ∨
+      (w.vertex m = w.vertex (n + 1) ∧ w.vertex (m + 1) = w.vertex n)) :
+    m = n := by
+  by_contra hmn
+  exact hE.2 m n hmn h
+
+/-- The out-neighbours over departure steps and in-neighbours over arrival
+steps jointly exhaust the neighbour set of `v`. -/
+theorem image_outSteps_union_image_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) (v : V) :
+    ((fun n : ℤ => w.vertex (n + 1)) '' w.outSteps v) ∪
+      ((fun n : ℤ => w.vertex n) '' w.inSteps v) = {u | G.adj v u} := by
+  ext u
+  simp only [Set.mem_union, Set.mem_image, BiInfiniteWalk.outSteps,
+    BiInfiniteWalk.inSteps, Set.mem_setOf_eq]
+  constructor
+  · rintro (⟨n, hn, rfl⟩ | ⟨n, hn, rfl⟩)
+    · rw [← hn]
+      exact w.step_adj n
+    · have h := w.step_adj n
+      rw [hn] at h
+      exact G.symm _ _ h
+  · intro hu
+    rcases hE.covers v u hu with ⟨n, hn1, hn2⟩ | ⟨n, hn1, hn2⟩
+    · exact Or.inl ⟨n, hn1, hn2⟩
+    · exact Or.inr ⟨n, hn2, hn1⟩
+
+/-- Departure steps map injectively to out-neighbours. -/
+theorem injOn_vertex_succ_outSteps {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) (v : V) :
+    Set.InjOn (fun n : ℤ => w.vertex (n + 1)) (w.outSteps v) := by
+  intro m hm n hn h
+  simp only [BiInfiniteWalk.outSteps, Set.mem_setOf_eq] at hm hn
+  exact hE.injective m n (Or.inl ⟨hm.trans hn.symm, h⟩)
+
+/-- Arrival steps map injectively to in-neighbours. -/
+theorem injOn_vertex_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) (v : V) :
+    Set.InjOn (fun n : ℤ => w.vertex n) (w.inSteps v) := by
+  intro m hm n hn h
+  simp only [BiInfiniteWalk.inSteps, Set.mem_setOf_eq] at hm hn
+  exact hE.injective m n (Or.inl ⟨h, hm.trans hn.symm⟩)
+
+/-- No neighbour of `v` is both an out-neighbour and an in-neighbour. -/
+theorem disjoint_image_outSteps_image_inSteps {V : Type*}
+    {G : InfiniteGraph V} {w : BiInfiniteWalk G}
+    (hE : IsBiInfiniteEulerWalk G w) (v : V) :
+    Disjoint ((fun n : ℤ => w.vertex (n + 1)) '' w.outSteps v)
+      ((fun n : ℤ => w.vertex n) '' w.inSteps v) := by
+  rw [Set.disjoint_left]
+  rintro u ⟨m, hm, rfl⟩ ⟨n, hn, hnm⟩
+  simp only [BiInfiniteWalk.outSteps, BiInfiniteWalk.inSteps,
+    Set.mem_setOf_eq] at hm hn
+  have hmn : m = n := hE.injective m n (Or.inr ⟨hm.trans hn.symm, hnm.symm⟩)
+  subst hmn
+  exact w.step_ne m (hm.trans hn.symm)
+
+/-- If `v` has finitely many neighbours, its departure steps are finite. -/
+theorem finite_outSteps {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) {v : V}
+    (hfin : {u | G.adj v u}.Finite) : (w.outSteps v).Finite := by
+  refine Set.Finite.of_finite_image (hfin.subset ?_)
+    (hE.injOn_vertex_succ_outSteps v)
+  rw [← hE.image_outSteps_union_image_inSteps v]
+  exact Set.subset_union_left
+
+/-- If `v` has finitely many neighbours, its arrival steps are finite. -/
+theorem finite_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) {v : V}
+    (hfin : {u | G.adj v u}.Finite) : (w.inSteps v).Finite := by
+  refine Set.Finite.of_finite_image (hfin.subset ?_)
+    (hE.injOn_vertex_inSteps v)
+  rw [← hE.image_outSteps_union_image_inSteps v]
+  exact Set.subset_union_right
+
+/-- **Degree census along a bi-infinite Euler walk**: the neighbour count of
+a finite-degree vertex is exactly *twice* its number of departure steps —
+every departure at time `m` pairs with the arrival at time `m − 1`, with no
+exception (contrast the one-way census `InfiniteWalk` version, where step `0`
+is unpaired). -/
+theorem ncard_neighbors_eq {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) (v : V)
+    (hfin : {u | G.adj v u}.Finite) :
+    {u | G.adj v u}.ncard = 2 * (w.outSteps v).ncard := by
+  have hOut : (w.outSteps v).Finite := hE.finite_outSteps hfin
+  have hIn : (w.inSteps v).Finite := hE.finite_inSteps hfin
+  have hshift : (w.inSteps v).ncard = (w.outSteps v).ncard := by
+    rw [← w.image_succ_inSteps v,
+      Set.ncard_image_of_injective _ (add_left_injective (1 : ℤ))]
+  calc {u | G.adj v u}.ncard
+      = (((fun n : ℤ => w.vertex (n + 1)) '' w.outSteps v) ∪
+          ((fun n : ℤ => w.vertex n) '' w.inSteps v)).ncard := by
+        rw [hE.image_outSteps_union_image_inSteps v]
+    _ = ((fun n : ℤ => w.vertex (n + 1)) '' w.outSteps v).ncard +
+          ((fun n : ℤ => w.vertex n) '' w.inSteps v).ncard :=
+        Set.ncard_union_eq (hE.disjoint_image_outSteps_image_inSteps v)
+          (hOut.image _) (hIn.image _)
+    _ = (w.outSteps v).ncard + (w.inSteps v).ncard := by
+        rw [(hE.injOn_vertex_succ_outSteps v).ncard_image,
+          (hE.injOn_vertex_inSteps v).ncard_image]
+    _ = 2 * (w.outSteps v).ncard := by
+        rw [hshift]
+        ring
+
+/-- **EGW necessity, bi-infinite case**: along a bi-infinite Euler walk,
+EVERY finite-degree vertex has an even number of neighbours — there is no
+start, hence no exception. -/
+theorem even_ncard_neighbors {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) (v : V)
+    (hfin : {u | G.adj v u}.Finite) :
+    Even {u | G.adj v u}.ncard := by
+  rw [hE.ncard_neighbors_eq v hfin]
+  exact ⟨(w.outSteps v).ncard, by ring⟩
+
+/-- Degree form: the `infiniteDegree` of any finite-degree vertex along a
+bi-infinite Euler walk is `2 * k` for some `k : ℕ`. -/
+theorem infiniteDegree_eq_two_mul {V : Type*}
+    {G : InfiniteGraph V} {w : BiInfiniteWalk G}
+    (hE : IsBiInfiniteEulerWalk G w) {v : V}
+    (hfin : infiniteDegree G v ≠ ⊤) :
+    ∃ k : ℕ, infiniteDegree G v = 2 * k := by
+  have hf : {u | G.adj v u}.Finite := by
+    rwa [infiniteDegree, Set.encard_ne_top_iff] at hfin
+  obtain ⟨k, hk⟩ := hE.even_ncard_neighbors v hf
+  refine ⟨k, ?_⟩
+  rw [infiniteDegree, ← hf.cast_ncard_eq, hk]
+  push_cast
+  ring
+
+end IsBiInfiniteEulerWalk
+
+/-- **No odd vertex at all**: a graph with a bi-infinite Euler path has no
+finite-degree vertex of odd degree. Sharper than the one-way clause (S14
+allows one odd vertex, the start). -/
+theorem noOddVertex_of_hasInfiniteEulerPath {V : Type*}
+    {G : InfiniteGraph V} (h : HasInfiniteEulerPath G) :
+    ∀ v, {u | G.adj v u}.Finite → Even {u | G.adj v u}.ncard := by
+  obtain ⟨w, hE⟩ := h
+  exact fun v hf => hE.even_ncard_neighbors v hf
+
+/-- **EGW necessity, bi-infinite headline**: a single vertex of odd finite
+degree rules out a bi-infinite Euler path. -/
+theorem not_hasInfiniteEulerPath_of_odd_vertex {V : Type*}
+    {G : InfiniteGraph V} {v : V} (hf : {u | G.adj v u}.Finite)
+    (hodd : Odd {u | G.adj v u}.ncard) :
+    ¬ HasInfiniteEulerPath G :=
+  fun h => Nat.not_even_iff_odd.mpr hodd (noOddVertex_of_hasInfiniteEulerPath h v hf)
+
+/-- The parity obstruction *re-proves* S13's impossibility for the ray graph
+by pure degree counting: vertex `0` has degree `1` (odd), so no bi-infinite
+Euler path exists. (The S13 proof `not_hasInfiniteEulerPath_rayGraph` argued
+via walk surjectivity onto arcs instead — two independent mechanisms, one
+obstruction.) -/
+theorem not_hasInfiniteEulerPath_rayGraph_parity :
+    ¬ HasInfiniteEulerPath rayGraph :=
+  not_hasInfiniteEulerPath_of_odd_vertex
+    (by rw [rayGraph_neighbors_zero]; exact Set.finite_singleton 1)
+    rayGraph_odd_ncard_neighbors_zero
+
+/-- The combined S14+S15 parity picture, in one statement: a one-way Euler
+path allows at most one odd finite-degree vertex, a bi-infinite Euler path
+allows none. -/
+theorem parity_picture {V : Type*} (G : InfiniteGraph V) :
+    (HasOneWayEulerPath G →
+      {v | {u | G.adj v u}.Finite ∧ Odd {u | G.adj v u}.ncard}.Subsingleton) ∧
+    (HasInfiniteEulerPath G →
+      {v | {u | G.adj v u}.Finite ∧ Odd {u | G.adj v u}.ncard} = ∅) := by
+  refine ⟨oddVertices_subsingleton_of_hasOneWayEulerPath, fun h => ?_⟩
+  ext v
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]
+  intro hf hodd
+  exact Nat.not_even_iff_odd.mpr hodd (noOddVertex_of_hasInfiniteEulerPath h v hf)
+
+#check @BiInfiniteWalk.image_succ_inSteps
+#check @IsBiInfiniteEulerWalk.ncard_neighbors_eq
+#check @IsBiInfiniteEulerWalk.even_ncard_neighbors
+#check @not_hasInfiniteEulerPath_of_odd_vertex
+#check @not_hasInfiniteEulerPath_rayGraph_parity
+#check @parity_picture
+
 end KonigsbergOQ03
