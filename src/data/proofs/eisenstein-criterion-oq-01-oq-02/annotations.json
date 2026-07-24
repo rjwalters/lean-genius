@@ -29,7 +29,7 @@
     "type": "tactic",
     "range": {
       "startLine": 32,
-      "endLine": 54
+      "endLine": 51
     },
     "title": "Irreducibility over ℚ via Gauss's Lemma",
     "content": "The single new algebraic input. Since $X^n - p$ is monic it is **primitive**, and primitive-polynomial Gauss's lemma (`IsPrimitive.Int.irreducible_iff_irreducible_map_cast`) says it is irreducible over $\\mathbb{Z}$ iff its image in $\\mathbb{Q}[X]$ is. The image of $X^n - C\\,p$ under $\\mathbb{Z} \\to \\mathbb{Q}$ is again $X^n - C\\,p$ (closed by `simp`), so the parent's $\\mathbb{Z}$-irreducibility transfers to $\\mathbb{Q}$ for **every** exponent $n$, not just prime $n$.",
@@ -50,7 +50,7 @@
     "proofId": "eisenstein-criterion-oq-01-oq-02",
     "type": "tactic",
     "range": {
-      "startLine": 56,
+      "startLine": 55,
       "endLine": 78
     },
     "title": "Identifying the Minimal Polynomial",
@@ -72,8 +72,8 @@
     "proofId": "eisenstein-criterion-oq-01-oq-02",
     "type": "theorem",
     "range": {
-      "startLine": 83,
-      "endLine": 98
+      "startLine": 79,
+      "endLine": 96
     },
     "title": "The Extension Degree Equals the Exponent",
     "content": "For $\\alpha$ integral over $K$, $\\dim_K K\\langle\\alpha\\rangle = \\deg(\\operatorname{minpoly}_K\\alpha)$ (`IntermediateField.adjoin.finrank`). Substituting the identified minimal polynomial and $\\operatorname{natDegree}(X^n - p) = n$ gives $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = n$. Taking $\\alpha = p^{1/n}$ (via `Real.rpow_inv_natCast_pow`) shows **Eisenstein furnishes a real algebraic number of every prescribed degree** $n \\ge 1$.",
