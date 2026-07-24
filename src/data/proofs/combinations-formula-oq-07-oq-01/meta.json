@@ -99,9 +99,16 @@
     {
       "id": "absorption",
       "title": "Absorption / Committee-Chair Corollary",
-      "startLine": 111,
+      "startLine": 108,
+      "endLine": 118,
+      "summary": "mul_choose_eq: k·C(n,k) = n·C(n-1,k-1), the m=1 slice recovered with Nat.choose_one_right."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 120,
       "endLine": 129,
-      "summary": "mul_choose_eq: k·C(n,k) = n·C(n-1,k-1), the m=1 slice recovered with Nat.choose_one_right. Worked numeric checks C(5,3)·C(3,2) = C(5,2)·C(3,1) = 30 and 3·C(5,3) = 5·C(4,2) = 30."
+      "summary": "Numeric sanity checks: C(5,3)·C(3,2) = C(5,2)·C(3,1) = 30 (the headline identity) and 3·C(5,3) = 5·C(4,2) = 30 (absorption), both closed by kernel decide."
     }
   ],
   "conclusion": {
