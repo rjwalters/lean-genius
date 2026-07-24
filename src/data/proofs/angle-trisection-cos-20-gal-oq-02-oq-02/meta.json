@@ -116,17 +116,25 @@
       "mathContext": "Transporting the real root identity to ℚ[X], where the minimal polynomial lives, and supplying the nonvanishing needed for integrality and the degree bound."
     },
     {
-      "id": "integral-and-factor",
-      "title": "Section II: Integrality and the Irreducible Factor",
+      "id": "integrality",
+      "title": "Section II: Integrality of cos 2π/n",
       "startLine": 70,
-      "endLine": 94,
-      "summary": "cos_isIntegral shows cos 2π/n is integral over ℚ (root of the nonzero Tₙ − 1); minpoly_cos_dvd_chebT gives minpoly ℚ (cos 2π/n) ∣ (Tₙ − 1) via minpoly.dvd; minpoly_cos_irreducible gives irreducibility. Together: the minimal polynomial is an irreducible factor of Tₙ − 1.",
-      "mathContext": "The structural core of the open question, proved uniformly in n ≥ 1 with 0 axioms."
+      "endLine": 76,
+      "summary": "cos_isIntegral: cos 2π/n is integral over ℚ, as a root of the nonzero polynomial Tₙ − 1 (IsAlgebraic.isIntegral applied to the witness of Section I).",
+      "mathContext": "$\\cos(2\\pi/n)$ is integral over $\\mathbb{Q}$, the hypothesis `minpoly.irreducible` needs."
+    },
+    {
+      "id": "irreducible-factor",
+      "title": "Section III: The Irreducible Factor",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "minpoly_cos_dvd_chebT gives minpoly ℚ (cos 2π/n) ∣ (Tₙ − 1) via minpoly.dvd; minpoly_cos_irreducible gives irreducibility. Together: the minimal polynomial is an irreducible factor of Tₙ − 1 — the structural core of the open question.",
+      "mathContext": "$\\mathrm{minpoly}_{\\mathbb{Q}}(\\cos 2\\pi/n) \\mid (T_n-1)$ and is irreducible, proved uniformly in $n\\ge1$ with 0 axioms."
     },
     {
       "id": "degree-bound",
-      "title": "Section III: Degree Bound",
-      "startLine": 95,
+      "title": "Section IV: Degree Bound",
+      "startLine": 93,
       "endLine": 99,
       "summary": "minpoly_cos_natDegree_le: deg(minpoly ℚ (cos 2π/n)) ≤ deg(Tₙ − 1), the unconditional bound that divisibility gives.",
       "mathContext": "The non-sharp upper bound; the sharp value φ(n)/2 remains the open refinement inherited from the parent."
