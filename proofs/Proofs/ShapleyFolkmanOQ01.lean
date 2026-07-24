@@ -35,6 +35,7 @@ import Mathlib.Analysis.Normed.Module.Convex
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Convex.Hull
 import Mathlib.Analysis.Convex.Segment
+import Mathlib.Analysis.Normed.Lp.lpSpace
 import Proofs.ShapleyFolkman
 
 set_option linter.unusedVariables false
@@ -394,6 +395,83 @@ theorem no_universal_shapley_folkman_bound :
   intro K
   refine ⟨midpointDecomp (K + 1), ?_⟩
   rw [tight_excess_count (K + 1) (midpointDecomp (K + 1))]
+  exact Nat.lt_succ_self K
+
+/-! ### S2-D — the genuine `ℓ²` infinite-dimensional lift
+
+    The results above live in `EuclideanSpace ℝ (Fin N)`, which is
+    finite-dimensional; they show the parent `Module.finrank` bound is *sharp*
+    but stay inside finite dimensions. This section carries the tightness family
+    into the honest infinite-dimensional Hilbert space `ℓ² = lp (fun _ : ℕ => ℝ) 2`
+    via an injective linear embedding `ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] ℓ²`
+    and the `Decomposition.map` transport core, producing a *literal* family of
+    subsets of `ℓ²` whose Shapley–Folkman excess count is unbounded. Since
+    `Module.finrank ℝ ℓ² = 0`, this refutes the literal `card ≤ finrank` parent
+    bound in `ℓ²` and confirms the negative answer to OQ-01: the finite-dimensional
+    hypothesis cannot be dropped. -/
+
+/-- **The embedding** `EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2`.
+
+    A finite sum of single-coordinate injections: coordinate `i : Fin N` of the
+    input is placed at coordinate `i.val : ℕ` of the `ℓ²` output via `lp.lsingle`. -/
+noncomputable def ιN (N : ℕ) :
+    EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2 where
+  toFun v := ∑ i : Fin N, lp.lsingle 2 (i.val) (v i)
+  map_add' v w := by
+    simp only [PiLp.add_apply, map_add, Finset.sum_add_distrib]
+  map_smul' c v := by
+    simp only [PiLp.smul_apply, map_smul, RingHom.id_apply, Finset.smul_sum]
+
+/-- Coordinate `j.val` of `ιN N v` is exactly `v j`: distinct `Fin N` indices
+    land at distinct `ℕ` coordinates, so the single-coordinate injections do not
+    interfere. -/
+lemma ιN_apply_coord (N : ℕ) (v : EuclideanSpace ℝ (Fin N)) (j : Fin N) :
+    (ιN N v : ℕ → ℝ) j.val = v j := by
+  have hcoe : (ιN N v : ℕ → ℝ)
+      = ∑ i : Fin N, (Pi.single (i.val) (v i) : ℕ → ℝ) := by
+    simp only [ιN, LinearMap.coe_mk, AddHom.coe_mk, lp.coeFn_sum]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [← lp.coeFn_single 2 (i.val) (v i)]
+  rw [hcoe, Finset.sum_apply]
+  simp only [Pi.single_apply, Fin.val_eq_val]
+  exact Fintype.sum_ite_eq j (fun i => v i)
+
+/-- `ιN N` is injective (it preserves every coordinate). -/
+lemma ιN_injective (N : ℕ) : Function.Injective (ιN N) := by
+  intro v w h
+  ext j
+  have hj := congrArg (fun y : lp (fun _ : ℕ => ℝ) 2 => (y : ℕ → ℝ) (j.val)) h
+  simpa only [ιN_apply_coord] using hj
+
+/-- **S2-D — Shapley–Folkman excess is unbounded in `ℓ²`.**
+    For every candidate bound `K : ℕ` there is a finite family of subsets of the
+    genuine infinite-dimensional Hilbert space `lp (fun _ : ℕ => ℝ) 2` (the images
+    under `ιN` of the finite-dimensional tightness family) and a target point whose
+    every `Decomposition` has `excessIndices.card > K`.
+
+    This is the honest infinite-dimensional negative result: the excess count is
+    unbounded in `ℓ²`, lifted from the `Fin N` tightness (`tight_excess_count`) via
+    the injective embedding `ιN` and the `Decomposition.map` transport core
+    (injectivity preserves the excess set, `map_excessIndices_card_of_injective`).
+    Because `Module.finrank ℝ (lp (fun _ : ℕ => ℝ) 2) = 0`, no `card ≤ finrank`
+    bound can hold here — the finite-dimensionality hypothesis of `shapley_folkman`
+    is essential and cannot be replaced by any fixed finite bound. -/
+theorem shapley_folkman_excess_unbounded_in_lp :
+    ∀ K : ℕ, ∃ (N : ℕ)
+      (D : ShapleyFolkman.Decomposition
+             (fun i : Fin N =>
+               (ιN N) '' ({0, EuclideanSpace.single i 1} :
+                   Set (EuclideanSpace ℝ (Fin N))))
+             (Finset.univ : Finset (Fin N))
+             ((ιN N) ((1 / 2 : ℝ) •
+                 ∑ i : Fin N, EuclideanSpace.single i (1 : ℝ) :
+                   EuclideanSpace ℝ (Fin N)))),
+      D.excessIndices.card > K := by
+  intro K
+  refine ⟨K + 1, (midpointDecomp (K + 1)).map (ιN (K + 1)), ?_⟩
+  rw [ShapleyFolkman.Decomposition.map_excessIndices_card_of_injective
+        (midpointDecomp (K + 1)) (ιN_injective (K + 1)),
+      tight_excess_count (K + 1) (midpointDecomp (K + 1))]
   exact Nat.lt_succ_self K
 
 end ShapleyFolkmanOQ01
