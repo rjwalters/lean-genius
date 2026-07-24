@@ -79,7 +79,7 @@
     "title": "Single-Eigenvalue Case by Affine Translation",
     "content": "matrix_single_eigenvalue_charpoly handles the first genuinely non-nilpotent case: if M - λ·I is nilpotent then charpoly(M) = (X - λ)^(card n). The nilpotent case gives charpoly(M - λ·I) = X^n, and Matrix.charpoly_sub_scalar states charpoly(M - λ·I)(X) = charpoly(M)(X + λ); substituting X ↦ X - λ (via the polynomial composition lemmas comp_assoc, add_comp, X_comp, C_comp, pow_comp) recovers charpoly(M) = (X - λ)^n. The translation costs nothing beyond the nilpotent result — it simply relocates the single eigenvalue to 0.",
     "mathContext": "Writing $N = M - \\lambda I$: $\\det(tI - M) = \\det((t-\\lambda)I - N) = \\operatorname{charpoly}(N)(t - \\lambda) = (t-\\lambda)^n$. Formally this is the substitution $X \\mapsto X - \\lambda$ applied to $\\operatorname{charpoly}(N)(X) = \\operatorname{charpoly}(M)(X + \\lambda) = X^n$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "affine translation of eigenvalues",
       "polynomial composition",
@@ -101,7 +101,7 @@
     "title": "Cayley–Hamilton on the Single-Eigenvalue Case, and What Remains",
     "content": "matrix_single_eigenvalue_aeval_charpoly evaluates the translated charpoly at M: aeval M ((X - λ)^(card n)) = (M - λ·I)^(card n) = 0 because M - λ·I is nilpotent. This closes the base cases of the reduction. The summary records the independence claim (verified by #print axioms: only propext / Classical.choice / Quot.sound, and no aeval_self_charpoly in the proof term) and the one remaining step for the full theorem: over an algebraically closed field, assemble the single-eigenvalue result across all generalized eigenspaces via Module.End.iSup_genEigenspace_eq_top — the multi-eigenvalue reduction, left as future work.",
     "mathContext": "For general $M$ over $\\bar K$: $V = \\bigoplus_\\lambda G_\\lambda$ with $G_\\lambda = \\ker(M-\\lambda)^n$, on each of which $M - \\lambda$ is nilpotent. Since $\\operatorname{charpoly}(M) = \\prod_\\lambda (X-\\lambda)^{d_\\lambda}$ and $(M-\\lambda)^{d_\\lambda}$ kills $G_\\lambda$, the product annihilates all of $V$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "generalized eigenspace decomposition",
       "algebraically closed field",

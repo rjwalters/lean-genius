@@ -7,7 +7,7 @@
     "title": "Strategy overview: closing the parent's squarefree follow-up",
     "content": "The parent file (ZolotarevBaseCase) proved sign(ringMulPerm a on ℤ/p) = legendreSym p a for a single prime p, then combined it with the grandparent's CRT multiplicativity to handle a two-prime modulus p·q, explicitly leaving the general squarefree case as 'a routine induction over the prime factorization adding no new idea.' This file performs exactly that induction: strong induction on n via its smallest prime factor p = n.minFac, recursing on the cofactor m = n/p, landing on Mathlib's actual jacobiSym rather than a bespoke symbol. The honest-scope note is explicit that prime-power factors pᵉ (e ≥ 2) are NOT handled — CRT only separates coprime factors, and the sign on ℤ/(pᵉ) is a genuinely different computation left to a follow-up. Imports the parent file and opens its ringMulPerm API plus the NumberTheorySymbols scope for the J(· | ·) notation.",
     "mathContext": "$\\mathrm{sgn}(x\\mapsto a x \\text{ on } \\mathbb{Z}/n) = J(a\\mid n)$ for all odd squarefree $n$, by strong induction on $n$ via $n.\\mathrm{minFac}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Zolotarev's lemma", "Frobenius 1914", "strong induction", "prime factorization"],
     "prerequisites": ["the parent's prime base case", "the grandparent's CRT sign multiplicativity"]
   },
@@ -67,7 +67,7 @@
     "title": "Local instances and the coprime split",
     "content": "Before building the CRT units, the proof installs the Fact/NeZero instances p and m need to talk about ZMod p and ZMod m, derives that both factors are odd (Nat.odd_mul) and p ≠ 2 (odd primes aren't 2), inherits Squarefree m from Squarefree n along the divisibility m ∣ n, and confirms m < p·m. It then splits the coprimality IsCoprime c (p*m) into its two components IsCoprime c p and IsCoprime c m via of_mul_right_left/of_mul_right_right — exactly the two hypotheses intCast_isUnit_of_isCoprime needs at each factor.",
     "mathContext": "$\\gcd(c, pm) = 1 \\;\\Longrightarrow\\; \\gcd(c,p) = 1 \\ \\wedge\\ \\gcd(c,m) = 1$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["IsCoprime.of_mul_right_left", "Nat.odd_mul", "Squarefree.squarefree_of_dvd"],
     "prerequisites": ["coprimality splits over a product", "squarefreeness is inherited by divisors"]
   },

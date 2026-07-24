@@ -10,7 +10,7 @@
     "title": "From single monotonic subsequences to monotonic decompositions",
     "content": "Erdős–Szekeres guarantees a single long monotonic subsequence; OQ-05 asks instead how many monotonic pieces are needed to cover the whole sequence — a monotonic decomposition, the object of Hanani's 1957 theorem. The parent Erdos1026Problem.lean only states the MonotonicDecomposition structure; Hanani's (√2 + o(1))√n bound lives in a comment. This file settles the elementary lower-bound (Mirsky/Dilworth) half axiom-free: any decomposition into monotonic parts satisfies n ≤ numParts · max(LIS, LDS). Because the longest monotone run is only ≈ √n on the extremal Erdős–Szekeres sequences, this forces numParts ≳ √n. The matching constructive O(√n) upper bound is stated but left open. The interface is re-stated locally rather than imported, since the parent depends on Archive.Wiedijk100Theorems.",
     "mathContext": "$n \\le \\mathrm{numParts}\\cdot\\max(\\mathrm{LIS}(\\mathrm{seq}),\\mathrm{LDS}(\\mathrm{seq}))$; on extremal sequences $\\max(\\mathrm{LIS},\\mathrm{LDS})\\approx\\sqrt n$ forces $\\mathrm{numParts}\\gtrsim\\sqrt n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "monotonic decomposition",
       "Erdős–Szekeres theorem",

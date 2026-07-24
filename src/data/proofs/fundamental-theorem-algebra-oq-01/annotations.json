@@ -19,7 +19,7 @@
     "title": "Sign Change at Infinity (positive leading coefficient)",
     "content": "The helper proves the positive-leading-coefficient case. A degree-$n$ polynomial with $\\operatorname{lc}(p) > 0$ satisfies $p(x) \\to +\\infty$ as $x \\to +\\infty$ (`tendsto_atTop_of_leadingCoeff_nonneg`).\n\nTo get the opposite behaviour at $-\\infty$, we reflect through $X \\mapsto -X$. The polynomial $p(-X)$ has leading coefficient $\\operatorname{lc}(p)\\cdot(-1)^{\\deg p}$, and since $\\deg p$ is **odd**, $(-1)^{\\deg p} = -1$, making it negative. Hence $p(-y) \\to -\\infty$ as $y \\to +\\infty$; composing with negation gives $p(x) \\to -\\infty$ as $x \\to -\\infty$.",
     "mathContext": "$\\operatorname{lc}(p(-X)) = \\operatorname{lc}(p)\\,(-1)^{\\deg p} = -\\operatorname{lc}(p) < 0$ when $\\deg p$ is odd.",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": ["leading coefficient", "polynomial composition", "limits at infinity"],
     "relatedConcepts": ["odd parity", "leadingCoeff_comp", "tendsto atBot"]
   },
@@ -55,7 +55,7 @@
     "title": "The Algebraic Obstruction: These Facts Are Not Field-Theoretic",
     "content": "Two counterexamples show the analytic facts genuinely go beyond the field axioms:\n\n- `real_not_alg_closed`: $x^2 + 1 \\geq 1 > 0$ for all real $x$, so $\\mathbb{R}$ is **not** algebraically closed even though it satisfies the IVT. This is precisely why the imaginary unit $i$ (ingredient B) must be adjoined.\n- `cubic_no_root_zmod2`: the odd-degree cubic $X^3 + X + 1$ has **no root** in the finite field $\\mathbb{F}_2 = \\texttt{ZMod 2}$ — checked by kernel `decide` (not `native_decide`, so no `Lean.ofReduceBool`). Thus \"odd degree $\\Rightarrow$ root\" is a special analytic property of $\\mathbb{R}$, not a theorem of field theory.\n\nTogether these confirm: no proof of the FTA can rely on field axioms alone.",
     "mathContext": "Over $\\mathbb{F}_2$: $0^3+0+1 = 1 \\neq 0$ and $1^3+1+1 = 1 \\neq 0$. Over $\\mathbb{R}$: $x^2+1 \\geq 1$.",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": ["finite fields", "decidability", "algebraic closure"],
     "relatedConcepts": ["𝔽₂", "counterexample", "field axioms"]
   },
@@ -67,7 +67,7 @@
     "title": "The Conclusion the Reduction Targets",
     "content": "The FTA itself, supplied by Mathlib's `Complex.exists_root` (proved via Liouville's theorem). Given ingredients (A) and (B), the Artin–Schreier argument derives this conclusion by pure algebra; Mathlib instead derives it directly from complex analysis. Either route uses analysis — which is the answer to the open question.",
     "mathContext": "$\\forall p \\in \\mathbb{C}[X],\\ 0 < \\deg p \\Rightarrow \\exists z,\\ p(z) = 0.$",
-    "significance": "medium",
+    "significance": "key",
     "prerequisites": ["Liouville's theorem", "algebraic closure of ℂ"],
     "relatedConcepts": ["Complex.exists_root", "IsAlgClosed"]
   }

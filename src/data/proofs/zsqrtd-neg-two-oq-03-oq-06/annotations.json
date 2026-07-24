@@ -10,7 +10,7 @@
     "title": "Setup: the Eisenstein integers ℤ[ω] and their unit group",
     "content": "A child of zsqrtd-neg-two-oq-03, which constructs the Eisenstein-integer ring ℤ[ω] (with ω² + ω + 1 = 0), its multiplicative norm N(a + bω) = a² − ab + b², and its EuclideanDomain structure en route to representing primes p ≡ 1 mod 3 as a² + 3b². This entry determines the unit group completely: z is a unit iff N(z) = 1, and there are exactly six such elements — the sixth roots of unity {±1, ±ω, ±ω²}. The classification is packaged both element-wise (isUnit_iff) and as an explicit Finset (unitsFinset, card = 6). Everything reuses the parent's norm and is 0-axiom: no sorry, no axiom, and no native_decide.",
     "mathContext": "$\\mathbb{Z}[\\omega]$ with $\\omega^2+\\omega+1=0$, norm $N(a+b\\omega)=a^2-ab+b^2$ multiplicative; units $=\\{z:N(z)=1\\}=\\{\\pm1,\\pm\\omega,\\pm\\omega^2\\}$, the group $\\mu_6$ of sixth roots of unity.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eisenstein integers",
       "norm of a quadratic ring",

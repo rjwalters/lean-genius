@@ -55,7 +55,7 @@
     "title": "Reducing kronecker2 to a function of a mod 8",
     "content": "The private helper `kronecker2_mod_eight` re-derives that `kronecker2 x = kronecker2 (x % 8)` by unfolding the definition and collapsing the nested moduli with `Int.emod_emod_of_dvd` (using 2 ∣ 8 and 8 ∣ 8). This is the pivot that turns period-8 periodicity into pure arithmetic: once kronecker2 is known to factor through `x % 8`, `kronecker2_congr` (equal values on congruent-mod-8 inputs) is a two-line rewrite. The reduction to residues, rather than a direct computation, is what makes the subsequent full-period statement free.",
     "mathContext": "$\\mathrm{kronecker2}(x) = \\mathrm{kronecker2}(x \\bmod 8)$; with $(x\\bmod 8)\\bmod 2 = x\\bmod 2$ and $(x\\bmod 8)\\bmod 8 = x\\bmod 8$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Int.emod_emod_of_dvd",
       "nested modulus reduction",

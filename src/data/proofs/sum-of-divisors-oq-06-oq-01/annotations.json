@@ -19,7 +19,7 @@
     "title": "Why n ≠ 0 is required",
     "content": "The hypothesis `hn : n ≠ 0` is not incidental. In Mathlib `Nat.divisors 0 = ∅` by convention (0 has no finite set of divisors in this bookkeeping), so #(0).divisors = 0, whereas the empty product ∏_{p ∈ primeFactors 0} (…) evaluates to 1. The formula would therefore assert 0 = 1 at n = 0; excluding n = 0 is exactly what makes it true. Every downstream count inherits this: the prime-power result needs no such guard only because pᵃ ≠ 0 for a prime p.",
     "mathContext": "$\\#(\\mathrm{divisors}\\,0) = 0 \\neq 1 = \\prod_{p \\in \\emptyset}(\\cdots)$, so $n \\neq 0$ is necessary.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["empty product", "edge cases", "Mathlib conventions", "divisors of zero"],
     "prerequisites": ["finite products", "conventions in number theory"]
   },
@@ -79,7 +79,7 @@
     "title": "Worked computations assembling the formula",
     "content": "Concrete instances that exercise both the product formula and the multiplicative law. τ(12) = 6 from 12 = 2²·3 giving (2+1)(1+1); τ(100) = 9 from 100 = 2²·5² giving (2+1)(2+1) — both discharged by kernel `decide`. The final two examples show the *assembly* pattern: τ(4·3) = τ(4)·τ(3) via `card_divisors_coprime_mul` on the coprime factors 4 and 3, and τ(2⁵) = 6 via `card_divisors_prime_pow` directly. Together they demonstrate that the general τ(∏ pᵢ^{aᵢ}) = ∏(aᵢ+1) reduces to these two lemmas — the induction flagged in the open questions.",
     "mathContext": "$\\tau(12) = (2{+}1)(1{+}1) = 6$; $\\tau(100) = (2{+}1)(2{+}1) = 9$; $\\tau(4 \\cdot 3) = \\tau(4)\\tau(3) = 3 \\cdot 2 = 6$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "kernel decide", "assembly by induction", "concrete verification"],
     "prerequisites": ["prime factorization", "the product formula"]
   }

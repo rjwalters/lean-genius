@@ -10,7 +10,7 @@
     "title": "Sophie Germain primes and Mersenne divisors",
     "content": "The module docstring states the goal: if p ≡ 3 (mod 4) is prime and q = 2p+1 is also prime (making p a Sophie Germain prime of this residue class), then q divides the Mersenne number M_p = 2^p − 1. The mechanism chains three classical facts: a residue computation (p ≡ 3 mod 4 ⟹ q ≡ 7 mod 8), the second supplement to quadratic reciprocity (q ≡ 7 mod 8 ⟹ 2 is a square mod q), and Fermat's little theorem (2^p = x^(q−1) = 1 in ZMod q). This is the classical reason 23 ∣ 2^11−1, 47 ∣ 2^23−1, etc., and shows those Mersenne numbers are composite.",
     "mathContext": "$p\\equiv 3\\pmod 4,\\ q=2p+1\\text{ prime}\\ \\Rightarrow\\ q\\mid 2^p-1$. Here $2p=q-1$, so a square root $x$ of $2$ mod $q$ gives $2^p=(x^2)^p=x^{q-1}=1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Sophie Germain prime",
       "Mersenne number",
@@ -152,7 +152,7 @@
     "title": "Concrete instances: 23 ∣ 2^11−1, 47 ∣ 2^23−1, 167 ∣ 2^83−1",
     "content": "The file closes with machine-checked instances: 23 ∣ 2^11−1 (= 2047 = 23·89), 47 ∣ 2^23−1, and 167 ∣ 2^83−1, plus a compositeness witness ¬Prime(2^11−1). Each is discharged by applying `dvd_mersenne`/`mersenne_not_prime` with `norm_num` verifying the three primality/residue hypotheses. These make the abstract theorem tangible and double as regression tests for the general result.",
     "mathContext": "$p=11\\Rightarrow 23\\mid 2^{11}-1$; $p=23\\Rightarrow 47\\mid 2^{23}-1$; $p=83\\Rightarrow 167\\mid 2^{83}-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mersenne numbers",
       "worked examples",

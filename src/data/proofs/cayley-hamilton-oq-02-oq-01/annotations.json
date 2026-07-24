@@ -43,7 +43,7 @@
     "title": "The key telescoping identity A·ρₖ = ρ_{k+1} + λₖ•ρₖ",
     "content": "The algebraic engine of Putzer's algorithm. Rewriting ρ_{k+1} = ρₖ·(A - λₖ•1) and using A·ρₖ = ρₖ·A gives A·ρₖ = ρₖ·A = ρₖ·(A - λₖ•1) + λₖ•ρₖ = ρ_{k+1} + λₖ•ρₖ; the final cancellation is closed by `abel`. In the full proof this identity converts the derivative of the k-th term, d/dt(Pₖ ρ_{k-1}) = Ṗₖ ρ_{k-1}, into a multiple of A, so that after the index shift the finite sum M(t) = ∑ₖ Pₖ(t)ρ_{k-1} satisfies Ṁ = A·M.",
     "mathContext": "$A\\,\\rho_k = \\rho_{k+1} + \\lambda_k\\,\\rho_k$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Putzer's algorithm",
       "linear ODE ẋ = Ax",
@@ -62,7 +62,7 @@
     "title": "Cayley–Hamilton truncation ρₙ = 0",
     "content": "The bridge lemma rho_eq_aeval_prod proves ρₖ = aeval A (∏_{i<k}(X - C λᵢ)) by induction — crucially the product now lives in the COMMUTATIVE ring R[X], so Finset.prod_range_succ and map_mul apply, and matrix noncommutativity is confined to one map_mul step per stage. At k = n, converting the Fin n univ-product to a range-product and substituting the splitting hypothesis χ_A = ∏(X - C λᵢ) turns the right side into aeval A χ_A, which is 0 by Matrix.aeval_self_charpoly. Hence ρₙ = 0: Putzer's sum truncates at n terms and the boundary term Pₙρₙ vanishes.",
     "mathContext": "$\\rho_n = (\\mathrm{aeval}\\,A)\\,\\chi_A = 0$ when $\\chi_A = \\prod_i (X - \\lambda_i)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Cayley–Hamilton theorem",
       "characteristic polynomial",

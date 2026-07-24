@@ -7,7 +7,7 @@
     "title": "The Bézout → Euclid → UFD Argument, Transplanted to Polynomials",
     "content": "The module docstring states the guiding theme: the same abstract chain that proves the Fundamental Theorem of Arithmetic for ℤ — Bézout's identity ⟹ Euclid's lemma ⟹ unique factorization — carries over verbatim to polynomial rings. Over a field K, K[X] is a Euclidean domain (polynomial long division), hence a PID, hence a UFD; over an arbitrary UFD R, Gauss's Lemma lifts unique factorization to R[X]. The four headline results are: R[X] is a UFD when R is, K[X] is a Euclidean domain, the polynomial Bézout identity over a field, and irreducible ⟺ prime in polynomial UFDs. The proof leans entirely on Mathlib's algebraic hierarchy, so it is 0 sorries and 0 axioms.",
     "mathContext": "$\\text{Bézout} \\Rightarrow \\text{Euclid's lemma} \\Rightarrow \\text{UFD}$, for both $\\mathbb{Z}$ and $K[X]$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Fundamental Theorem of Arithmetic", "Euclidean domain", "unique factorization", "Gauss's Lemma", "principal ideal domain"],
     "prerequisites": ["ring theory hierarchy", "polynomial rings", "divisibility"]
   },
@@ -79,7 +79,7 @@
     "title": "Section V — Concrete Factorizations over ℚ",
     "content": "Two concrete instances ground the abstract theory over ℚ[X]. The first `example` verifies the factorization $X^2 - 1 = (X-1)(X+1)$ purely by `ring`. `x_irreducible_Q` records that $X$ itself is irreducible in ℚ[X] via `Polynomial.irreducible_X` — a degree-1 monic polynomial cannot split into two non-units. These set up the contrast made precise in the next theorem: $X$ is a prime 'atom' of ℚ[X] while $X^2-1$ is composite, exactly paralleling primes versus composites in ℤ.",
     "mathContext": "In $\\mathbb{Q}[X]$: $X$ irreducible (degree 1), $X^2 - 1 = (X-1)(X+1)$ reducible (degree 2 splitting into two linear factors).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Polynomial.irreducible_X", "linear factors", "concrete factorization", "ring tactic"],
     "prerequisites": ["degree of a polynomial", "irreducibility of linear polynomials"]
   },

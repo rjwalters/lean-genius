@@ -7,7 +7,7 @@
     "title": "The Diagonal Beta Value as a Central-Binomial Reciprocal",
     "content": "The file is kept independent of the parent build by restating the one fact it needs: the diagonal Beta value equals 1/((2n+1)·C(2n,n)). The helper lemma centralBinom_cast re-expresses the central binomial coefficient in factorial form C(2n,n) = (2n)!/(n!·n!), proved directly from Mathlib's Nat.choose_mul_factorial_mul_factorial after rewriting 2n − n = n. This factorial form is what lets the later Stirling identity be pure algebra.",
     "mathContext": "$B(n+1,n+1) = \\dfrac{1}{(2n+1)\\,C(2n,n)}, \\qquad C(2n,n) = \\dfrac{(2n)!}{n!\\,n!}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euler Beta function", "central binomial coefficient", "factorial identities"],
     "prerequisites": ["binomial coefficients", "Euler Beta integral"]
   },
@@ -19,7 +19,7 @@
     "title": "Telescoping the Per-Step Stirling Estimate",
     "content": "log_gap_le_telescope replaces Mathlib's per-step bound of 1/(4(m+j+1)^2) on the gap of log∘stirlingSeq by a strictly larger but telescoping difference 1/(4(m+j)) − 1/(4(m+j+1)). The key inequality is that this difference equals 1/(4(m+j)(m+j+1)), which dominates 1/(4(m+j+1)^2), discharged by one_div_le_one_div_of_le and nlinarith. Trading the summable per-step estimates for a telescoping envelope is precisely what makes the infinite sum collapse to a clean 1/(4m) tail.",
     "mathContext": "$\\log\\mathrm{stirlingSeq}(m{+}j{+}1) - \\log\\mathrm{stirlingSeq}(m{+}j{+}2) \\le \\dfrac{1}{4(m+j)} - \\dfrac{1}{4(m+j+1)} = \\dfrac{1}{4(m+j)(m+j+1)}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["telescoping series", "Stirling sequence", "monotone convergence"],
     "prerequisites": ["telescoping sums", "real analysis inequalities"]
   },

@@ -7,7 +7,7 @@
     "title": "From a per-degree squeeze to a uniform prime-degree law",
     "content": "The docstring recalls the parent's two-sided squeeze on $|\\mathrm{Gal}(X^n-p/\\mathbb{Q})|$: the metacyclic ceiling $|\\mathrm{Gal}| \\leq n\\varphi(n)$ meets the coprime lower bound $n\\varphi(n) \\mid |\\mathrm{Gal}|$ whenever $\\gcd(n,\\varphi(n))=1$, pinning the order at $n\\varphi(n)$. The parent extracted only the quintic instance $20$. Importing the verified parent lemma `gal_card_eq_n_mul_totient_of_coprime` (line 41) lets this file lift the pin to *every* prime degree at once — because at a prime $\\ell$ the coprimality side-condition becomes automatic. `open Polynomial` (line 45) brings `X`, `C`, and `.Gal` into scope.",
     "mathContext": "$|\\mathrm{Gal}(X^n-p/\\mathbb{Q})| = n\\varphi(n)$ when $\\gcd(n,\\varphi(n)) = 1$; specialised below to $n = \\ell$ prime.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Galois theory", "metacyclic groups", "Kummer extensions", "cyclotomic fields", "Euler totient"],
     "prerequisites": ["field extensions", "Galois groups of polynomials"]
   },
@@ -67,7 +67,7 @@
     "title": "Axiom audit: foundational axioms only",
     "content": "The trailing `#print axioms` on all three headline theorems confirms the entry's `verified` status: each depends on exactly $\\{$`propext`, `Classical.choice`, `Quot.sound`$\\}$ — the ordinary foundational axioms — with no `Lean.ofReduceBool` (no `native_decide`) and no `sorryAx`. In particular `gal_card_septic_eq_42` closes by definitional reduction of $7 \\cdot (7-1) = 42$, not by a compiler-kernel `decide`, so no `ofReduceBool` leaks in. This substantiates `axiomCount: 0` and `badge: verified`.",
     "mathContext": "Dependency set $= \\{\\text{propext}, \\text{Classical.choice}, \\text{Quot.sound}\\}$ — no assumption-carrying axioms.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["axiom integrity", "kernel verification", "#print axioms", "native_decide"],
     "prerequisites": ["Lean trusted kernel", "axiom accounting"]
   }

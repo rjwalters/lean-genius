@@ -7,7 +7,7 @@
     "title": "Two forms of the symmetric Lovász Local Lemma hypothesis",
     "content": "The symmetric Lovász Local Lemma is quoted in two ways. The **tight** form asks each bad event to have probability at most $T(d) = d^d/(d+1)^{d+1}$, the exact maximum of $x(1-x)^d$ attained at $x = 1/(d+1)$; this is `lllThreshold` in the parent gallery proof `lovasz-local-lemma`, formalized over $\\mathbb{Q}$. The **memorable** form, quoted almost everywhere and used in the OQ-01 measure-theoretic entries, asks $e\\cdot p\\cdot(d+1) \\le 1$ where $e = \\exp 1$. This file proves the standard textbook fact linking them: the memorable Euler condition is the safe (slightly weaker) consequence of the tight threshold, $e\\cdot p\\cdot(d+1) \\le 1 \\Rightarrow p \\le T(d)$. The single inequality that puts the constant $e$ into the LLL is the classic $(1 + 1/d)^d \\le e$.",
     "mathContext": "Bridge between $p \\le T(d) = d^d/(d+1)^{d+1}$ (tight) and $e\\cdot p\\cdot(d+1) \\le 1$ (memorable), for integer degree $d \\ge 1$ and real $p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "symmetric LLL threshold",
@@ -27,7 +27,7 @@
     "title": "Building on the parent proof: imports and open namespaces",
     "content": "The file imports only `Proofs.LovaszLocalLemma` — the parent gallery proof — rather than re-deriving the threshold. This is a deliberate architectural choice: the tight threshold `lllThreshold d = d^d/(d+1)^{d+1}` (defined over $\\mathbb{Q}$) and the tight-threshold symmetric statement `symmetric_lll` already live there, so this entry references *the same* threshold the parent formalized instead of introducing a real-valued surrogate. `open Real` brings `Real.exp`, `Real.add_one_le_exp`, and `Real.exp_nat_mul` into scope for the $e$-bound; `open ProbMethod.LovaszLocal` exposes `lllThreshold` unqualified. No new `def` is introduced anywhere in the file — it is entirely five theorems over $\\mathbb{R}$ — which is why `definitionCount = 0` and the only cross-namespace surface is the single `lllThreshold_cast` plumbing lemma that reconciles the parent's $\\mathbb{Q}$ value with these real inequalities.",
     "mathContext": "Depends on the parent proof `lovasz-local-lemma` for `lllThreshold` (over $\\mathbb{Q}$) and `symmetric_lll`; `open Real` supplies `exp`, `add_one_le_exp`, `exp_nat_mul`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof reuse via import",
       "ProbMethod.LovaszLocal namespace",
@@ -47,7 +47,7 @@
     "title": "The classic Euler bound (1 + 1/d)ᵈ ≤ e",
     "content": "The heart of the file. `Real.add_one_le_exp` gives $1 + x \\le \\exp x$ for every real $x$; instantiated at $x = 1/d$ it reads $1 + 1/d \\le \\exp(1/d)$. Both sides are nonnegative, so raising to the $d$-th power (`pow_le_pow_left₀`) preserves the inequality: $(1 + 1/d)^d \\le \\exp(1/d)^d$. Finally $\\exp(1/d)^d = \\exp(d\\cdot(1/d)) = \\exp 1$ via `Real.exp_nat_mul` and $d\\cdot(1/d) = 1$ (valid since $d \\ne 0$). This is the sequence that climbs toward $e$ from below, and it is exactly why the constant $e$ appears in the memorable LLL condition.",
     "mathContext": "$(1 + 1/d)^d \\le e$ for $d \\ge 1$, from $1 + x \\le \\exp x$ raised to the $d$-th power.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Real.add_one_le_exp",
       "Real.exp_nat_mul",
@@ -105,7 +105,7 @@
     "title": "The Euler budget sits below the tight threshold",
     "content": "`inv_exp_mul_le_lllThreshold`: $1/(e(d+1)) \\le T(d)$. After casting the threshold and applying `div_le_div_iff₀` and `pow_succ`, the goal becomes $(d+1)^{d+1} \\le e\\cdot(d+1)\\cdot d^d$, i.e. the multiplicative Euler bound $(d+1)^d \\le e\\cdot d^d$ multiplied through by the positive factor $(d+1)$ — closed by `nlinarith` from `succ_pow_le_exp_mul`. Because $(1+1/d)^d < e$ strictly for every finite $d$, this inequality is strict: the Euler budget is genuinely (if only slightly) more conservative than the sharp threshold.",
     "mathContext": "$1/(e(d+1)) \\le d^d/(d+1)^{d+1} = T(d)$, equivalent to $(d+1)^d \\le e\\cdot d^d$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "div_le_div_iff₀",
       "pow_succ",

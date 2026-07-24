@@ -10,7 +10,7 @@
     "title": "Geometric Provenance: Divergence Theorem and Shell Integration",
     "content": "The identity Sₙ = n·Vₙ is the integral form of the divergence theorem applied to the radial vector field x ↦ x on the unit ball: ∫_ball div(x) dV = n·Vₙ equals the outward flux ∫_sphere x·n̂ dS = Sₙ. Equivalently, integrating in spherical shells, Vₙ(r) = ∫₀ʳ Sₙ tⁿ⁻¹ dt, so Sₙ = dVₙ(r)/dr at r=1 = n·Vₙ. This file does not reprove the geometry; it shows that the two independent Gamma closed forms are already in the ratio n:1, so the geometric scaling law is baked into the special-function formulas. The header also fixes the n=0 convention (Γ(0)=0 ⇒ S₀=0) that lets the theorem hold without a hypothesis n≥1.",
     "mathContext": "$\\int_{B^n}\\operatorname{div}(x)\\,dV = n V_n = \\oint_{S^{n-1}} x\\cdot\\hat n\\,dS = S_n$; shells: $V_n=\\int_0^1 S_n\\,r^{n-1}\\,dr = S_n/n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "divergence theorem",
       "spherical shell integration",

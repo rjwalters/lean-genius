@@ -7,7 +7,7 @@
     "title": "Hypergraphs and the Complete-Sub-hypergraph (Clique) Analog",
     "content": "A k-uniform hypergraph H (structure Hypergraph) is a finite family of k-element vertex sets, its hyperedges; at k=2 this is a graph's edge set. The clique generalizes to Hypergraph.IsCompleteSub: a vertex set S all of whose k-subsets are hyperedges of H (for k=2, every pair inside S is an edge — an ordinary clique). The one arithmetic fact carrying the whole framework is eq_of_subset_of_card_eq: two k-sets nested by ⊆ are equal (Finset.eq_of_subset_of_card_le). It immediately gives isCompleteSub_of_mem_edges — a hyperedge is its own complete sub-hypergraph, since its only k-subset is itself.",
     "mathContext": "$S$ is complete when $\\forall e \\subseteq S,\\ |e| = k \\Rightarrow e \\in E(H)$; nested $k$-sets $e \\subseteq f$ with $|e| = |f| = k$ satisfy $e = f$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "k-uniform hypergraph",
       "complete sub-hypergraph",
@@ -27,7 +27,7 @@
     "title": "Cover, Partition, and the Two Extremal Numbers",
     "content": "A CompleteCover asks each hyperedge to lie inside (⊆) at least one complete sub-hypergraph; a CompletePartition strengthens this to exactly one, phrased with ExistsUnique. Forgetting the uniqueness clause (CompletePartition.toCover) turns any partition into a cover on the same family — the structural heart of the always-true direction. The extremal numbers coverNum = ccₖ(H) and partitionNum = cpₖ(H) are the infima of achievable family sizes.",
     "mathContext": "$cc_k(H) = \\inf\\{|\\mathcal C| : \\mathcal C \\text{ a complete-sub cover}\\}$, $cp_k(H)$ likewise over partitions.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "edge clique cover",
       "edge clique partition",

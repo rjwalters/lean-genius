@@ -7,7 +7,7 @@
     "title": "Setup: inheriting the BHP bound from the parent",
     "content": "The module docstring frames the follow-up: the parent `Erdos1138OQ03` records the deep Baker–Harman–Pintz bound $G(x) \\leq x^{0.525}$ (for $x \\geq 25$) as `axiom baker_harman_pintz`, alongside the *conditional* Cramér-flavoured `cramer_implies_gap_sublinear`. Reopening `namespace Erdos1138OQ03` (line 29) brings both `maxPrimeGap` and the BHP axiom into scope without re-declaring anything, and `open Filter Topology` (line 31) makes `Tendsto`, `atTop`, and `𝓝` available unqualified. No new axiom is introduced here — the entry stays `axiomatized` purely through the imported BHP bound.",
     "mathContext": "$G(x) = \\max\\{q - p : p, q \\text{ consecutive primes}, q \\leq x\\}$, with the inherited assumption $G(x) \\leq x^{0.525}$ for $x \\geq 25$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["prime gaps", "Baker–Harman–Pintz theorem", "axiom inheritance", "namespaces in Lean"],
     "prerequisites": ["analytic number theory", "Lean 4 module system"]
   },
@@ -31,7 +31,7 @@
     "title": "Casting positivity from ℕ to ℝ",
     "content": "Before any real-power manipulation, the proof establishes $0 < (x : \\mathbb{R})$ from $25 \\leq x$. The natural-number inequality $0 < x$ comes from `lt_of_lt_of_le (by norm_num) hx`, then `exact_mod_cast` transports it across the `Nat → ℝ` cast. This `hx_pos` hypothesis is the side condition required by both `Real.rpow_sub` (which needs a positive base) and the division-monotonicity step.",
     "mathContext": "$25 \\leq x \\Rightarrow 0 < x \\Rightarrow 0 < (x : \\mathbb{R})$, the base-positivity hypothesis for `rpow_sub`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["numeric casts", "exact_mod_cast", "rpow base positivity"],
     "prerequisites": ["Lean coercions", "order lemmas"]
   },

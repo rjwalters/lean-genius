@@ -10,7 +10,7 @@
     "title": "File roadmap: the Fermat/Mersenne mirror and the n ≥ 1 exception",
     "content": "The module docstring frames the result and its place beside the Mersenne condition. A **Fermat number** is $2^n + 1$; the known Fermat primes $3, 5, 17, 257, 65537$ have exponents $1, 2, 4, 8, 16$ — all powers of two — and the theorem shows this is forced: $\\text{Prime}(2^n+1) \\wedge n \\ge 1 \\Rightarrow n = 2^k$. The docstring draws the exact mirror with `MersennePrimeExponent.lean`: a *composite* exponent kills $2^n - 1$ through a **proper-divisor** factor $2^d - 1$, whereas $2^n + 1$ is killed by any **odd** factor $d > 1$ of the exponent (via the proper divisor $2^{n/d} + 1$). Hence the surviving exponents are exactly those with no odd factor $> 1$ — the powers of two. It also flags the sole exception $2^0 + 1 = 2$ (prime, but $0$ is not a power of two), which is why the hypothesis $n \\ge 1$ is genuinely needed. `import Mathlib` pulls in the full library; `namespace FermatPrimeExponent` scopes the five theorems that follow.",
     "mathContext": "$\\text{Prime}(2^n+1) \\wedge n \\ge 1 \\implies \\exists k,\\ n = 2^k$; the $+1$ mirror of $2^n-1$ prime $\\Rightarrow n$ prime.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Fermat and Mersenne numbers",
       "Divisibility and primality in ℕ"
@@ -78,7 +78,7 @@
     "title": "Odd part 1 ⇒ power of two, by self-contained strong induction",
     "content": "`isPowerOfTwo_of_odd_divisor_eq_one` closes the gap between 'no odd divisor $> 1$' and 'is a power of two', deliberately avoiding `Nat.factorization` / `ord_compl`. Strong induction (`Nat.strong_induction_on`) on the value splits on parity. If $n$ is **odd**, then $n$ divides itself and is odd, so the hypothesis forces $n = 1 = 2^0$. If $n$ is **even**, write $n = 2m$ with $0 < m < n$; every odd divisor of $m$ also divides $n$ (`hd.trans hmdvd`), so $m$ inherits the hypothesis, the induction gives $m = 2^k$, and hence $n = 2^{k+1}$. Four short lines, entirely elementary — the factorization API is never touched.",
     "mathContext": "Strong induction: $n$ odd $\\Rightarrow n=1=2^0$; $n=2m \\Rightarrow m=2^k \\Rightarrow n=2^{k+1}$.",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": [
       "Strong induction on ℕ",
       "Parity case split (Nat.even_or_odd)",
@@ -101,7 +101,7 @@
     "title": "Main theorem and its search-pruning packagings",
     "content": "The two halves compose in one line: `exponent_isPowerOfTwo` feeds `odd_divisor_eq_one` (every odd divisor of $n$ is $1$) straight into `isPowerOfTwo_of_odd_divisor_eq_one`, giving $n \\ge 1 \\wedge \\text{Prime}(2^n+1) \\Rightarrow \\exists k,\\ n = 2^k$. Two downstream forms make the result usable: `exponent_zero_or_isPowerOfTwo` drops the positivity hypothesis and honestly records the exception as the dichotomy $n = 0 \\vee \\exists k,\\ n = 2^k$ (since $2^0 + 1 = 2$ is a prime with a non-power-of-two exponent); and `not_prime_of_odd_factor` is the contrapositive search filter — an exponent with an odd factor $> 1$ yields a composite Fermat number — which is exactly the fact that justifies indexing Fermat primes as $2^{2^k} + 1$ and restricting primality searches to power-of-two exponents.",
     "mathContext": "$\\exists k,\\ n=2^k$ (main); $n=0 \\vee \\exists k,\\ n=2^k$ (hypothesis-free); odd factor $>1 \\Rightarrow \\neg\\text{Prime}(2^n+1)$ (contrapositive).",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": [
       "Composition of lemmas",
       "Contrapositive reasoning"

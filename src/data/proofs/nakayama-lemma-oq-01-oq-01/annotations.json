@@ -7,7 +7,7 @@
     "title": "Imports Encode the Proof Architecture",
     "content": "The import block reads as a table of contents for the argument. `Mathlib.RingTheory.Nakayama` supplies the lemma that powers the upper bound (a generating set of size exactly the dimension exists); `Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic` and `Mathlib.RingTheory.Ideal.Cotangent` give the local ring, its residue field k = R/𝔪, and the 𝔪/𝔪² cotangent machinery; `Mathlib.Algebra.Module.Torsion.Basic` provides the annihilator/torsion facts that make M/𝔪M a k-module; and the two `LinearAlgebra.Dimension.*` modules furnish `finrank` and the span↔dimension inequalities used on both sides of the count. The final `import Proofs.NakayamaLemmaOQ01` pulls in the parent entry's lifting lemma — this file is the `-oq-01-oq-01` child that assembles the two-sided count on top of it.",
     "mathContext": "Dependency layers: Nakayama (upper bound) · residue field $k = R/\\mathfrak{m}$ + cotangent $\\mathfrak{m}/\\mathfrak{m}^2$ · torsion/annihilator ($M/\\mathfrak{m}M$ is a $k$-module) · $\\operatorname{finrank}$ and span–dimension bounds.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Nakayama's lemma", "residue field", "cotangent space", "finrank", "parent lifting lemma"],
     "prerequisites": ["Mathlib module organization", "local ring theory"]
   },
@@ -31,7 +31,7 @@
     "title": "The Local-Ring / Module Ambient Context",
     "content": "The `variable` block fixes the ambient setting for every lemma below. `[CommRing R] [IsLocalRing R]` is the crucial hypothesis: `IsLocalRing R` is what gives a unique maximal ideal 𝔪, a residue field k = R/𝔪, and makes Nakayama's lemma applicable — none of the count survives if R is merely a commutative ring. `M` is an arbitrary R-module (`[AddCommGroup M] [Module R M]`); finiteness is added lemma-by-lemma rather than globally, so the definitions (the residue space, the generator count) are stated in full generality and only the dimension bounds assume `Module.Finite`. `open Submodule IsLocalRing Module` is what lets the source write `maximalIdeal R`, `𝔪 • ⊤`, and `finrank` without qualification.",
     "mathContext": "Fixed context: $(R,\\mathfrak{m})$ a local commutative ring with residue field $k = R/\\mathfrak{m}$, and $M$ an $R$-module; $R$-finiteness assumed only where dimension bounds require it.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["IsLocalRing", "maximal ideal", "Module.Finite", "variable/typeclass context", "open namespaces"],
     "prerequisites": ["Lean typeclass variables", "local rings", "modules over a ring"]
   },

@@ -10,7 +10,7 @@
     "title": "The Two Symmetries of the Shoelace Sum",
     "content": "The signed shoelace sum S(v0, ..., v_{m-1}) = Sum_k (x_k y_{k+1} - x_{k+1} y_k) computes twice the oriented area of a lattice polygon. Two structural facts make it 'oriented area' rather than an encoding artefact: reversing the traversal direction negates it (S(reverse vs) = -S(vs)), and relabelling which vertex is first — a cyclic rotation — leaves it unchanged (S(rotate vs) = S(vs)). This file proves both, axiom-free, answering open question (2) of PicksTheoremOQ04. The method factors every result through an open-polyline edge sum edgeSum, which is agnostic to the loop's distinguished basepoint.",
     "mathContext": "Reversal encodes orientation; rotation encodes basepoint-independence. Together with the parent file's translation invariance, they exhibit the full symmetry action on the coordinate area.",
-    "significance": "Confirms |S|/2 is a well-defined oriented area, not an artefact of the chosen vertex list.",
+    "significance": "supporting",
     "relatedConcepts": [
       "shoelace formula",
       "signed area",
@@ -33,7 +33,7 @@
     "title": "The Wedge Product and Its Antisymmetry — the Algebraic Engine",
     "content": "A lattice point is a pair of integers (Pt = ℤ × ℤ). The per-edge term of the shoelace sum is the 2D wedge product cross a b = a.1 * b.2 - a.2 * b.1, which is exactly the determinant of the 2×2 matrix with rows a and b — twice the signed area of the triangle (0, a, b). Two facts about it are recorded here: cross a a = 0 (a degenerate edge has no area, `cross_self`) and, crucially, cross a b = - cross b a (antisymmetry, `cross_antisymm`). Both fall to `ring`. The single antisymmetry identity is where every sign flip in this file comes from: reversing an edge negates its contribution, so reversing the whole boundary negates the sum.",
     "mathContext": "cross is the 2×2 determinant / exterior product a ∧ b; antisymmetry is the defining property of an alternating bilinear form. Over ℤ it is exact, with no scaling or area factor lost.",
-    "significance": "Isolates the entire orientation-sensitivity of signed area into one algebraic line, so the later reversal theorem needs no geometry — only this identity plus bookkeeping.",
+    "significance": "supporting",
     "relatedConcepts": [
       "wedge product",
       "2×2 determinant",
@@ -56,7 +56,7 @@
     "title": "Two Encodings of the Sum: Closed Loop vs. Public Entry Point",
     "content": "shoelaceAux first vs sums cross over consecutive vertices of vs and then closes the loop with the edge from the last vertex back to first — the single-element base case [a] ↦ cross a first is precisely that closing edge. shoelace vs is the public wrapper that seeds first := v0, so shoelace [v0, …] = shoelaceAux v0 [v0, …] traverses the closed polygon in cyclic order. Keeping the auxiliary (which threads the basepoint explicitly) separate from the entry point is deliberate: it is what later lets a cyclic rotation move the distinguished basepoint around the loop without changing the value.",
     "mathContext": "shoelaceAux is structural recursion with the basepoint carried as a parameter; the closing edge is what turns an open polyline into a closed polygon sum Σ_k cross(v_k, v_{k+1 mod m}).",
-    "significance": "Separating the basepoint-threaded auxiliary from the public sum is the design choice that makes both rotation and reversal provable by list surgery rather than index juggling.",
+    "significance": "supporting",
     "relatedConcepts": [
       "shoelace formula",
       "structural recursion",
@@ -79,7 +79,7 @@
     "title": "The edgeSum Bridge: Decoupling Symmetry from Basepoint",
     "content": "edgeSum sums cross over consecutive pairs of a list with NO closing edge — the open polyline sum. The bridge shoelaceAux_eq_edgeSum proves shoelaceAux first l = edgeSum (l ++ [first]): the closed shoelace loop is exactly the open edge sum of the list with its start appended as the closing vertex. This is the pivotal move. On the closed loop the head vertex plays a double role (start and loop-close), which entangles reversal and rotation; on the open polyline there is no distinguished basepoint, so each symmetry becomes a clean structural induction. Every later theorem transports its result back to shoelace through this one lemma.",
     "mathContext": "Proved by two-step list induction: the a :: b :: t recursion of shoelaceAux matches that of edgeSum after cons_append normalization.",
-    "significance": "A reusable pattern: to prove symmetries of a based cyclic structure, factor through a basepoint-free open version.",
+    "significance": "supporting",
     "relatedConcepts": [
       "open vs closed polyline",
       "structural recursion",
@@ -100,7 +100,7 @@
     "title": "The Snoc Law: One Appended Vertex Adds Exactly One Edge",
     "content": "edgeSum (l ++ [y] ++ [x]) = edgeSum (l ++ [y]) + cross y x: appending a vertex x after a polyline that currently ends in y contributes exactly the single new edge term cross y x, leaving all interior edges untouched. This incremental-accounting lemma is the workhorse behind both later results. The reversal induction (edgeSum_reverse) uses it to peel the newly-exposed last edge after a List.reverse_cons, and the rotation argument (shoelace_rotate_one) uses it to attach the wrapped-around basepoint edge. It is proved by induction on l with a two-element base case, closing with `ring`.",
     "mathContext": "The open edge sum is a telescoping sum over consecutive pairs; snoc is the statement that it is additive in the final edge, i.e. edgeSum is a left fold whose last step is isolated.",
-    "significance": "Reduces the global operations of reversal and rotation to local, one-edge manipulations at the end of a list — the key to keeping every induction shallow.",
+    "significance": "supporting",
     "relatedConcepts": [
       "telescoping sum",
       "snoc / append",
@@ -123,7 +123,7 @@
     "title": "Orientation Reversal: S(reverse vs) = -S(vs)",
     "content": "edgeSum_reverse proves edgeSum (reverse l) = -edgeSum l: reversing a polyline reverses every edge, and since cross a b = -cross b a (cross_antisymm), the whole sum negates. The induction uses edgeSum_snoc to peel the edge newly exposed at the end of the reversed list. Transporting to the full polygon is subtle: reversing vs changes which vertex is first, so the naive bridge mismatches basepoints. shoelace_reverse_tail first handles reversal with the base vertex held fixed (via edgeSum_reverse on the closed loop), and shoelace_reverse then uses rotation invariance to slide the base vertex back into place — so the reversal law genuinely depends on the rotation law.",
     "mathContext": "Orientation reversal is the single algebraic fact cross_antisymm lifted along the reverse induction; the basepoint realignment is where rotation invariance enters.",
-    "significance": "Formalizes that clockwise vs counter-clockwise traversal is exactly the sign of the shoelace area.",
+    "significance": "supporting",
     "relatedConcepts": [
       "antisymmetry",
       "orientation",
@@ -145,7 +145,7 @@
     "title": "Cyclic Rotation Invariance: S(rotate vs) = S(vs)",
     "content": "shoelace_rotate_one proves that moving the first vertex to the back of the list (rest ++ [v0] vs v0 :: rest) leaves the shoelace sum unchanged: both loops are expanded through the edgeSum bridge and matched via edgeSum_snoc, exhibiting them as the same edge multiset re-associated. The explicit one-step rotation rotl packages this, and shoelace_rotl_iterate lifts it to any number of one-step rotations by induction on the iterate count, so the shoelace sum is a genuine invariant of the cyclic vertex order. A closed polygon has no distinguished starting vertex.",
     "mathContext": "Rotation invariance is combinatorial, not analytic: it is a re-association of the closed edge sum, formalized entirely by the bridge plus the snoc law.",
-    "significance": "Justifies treating a polygon as a cyclic (not linear) list of vertices when computing area.",
+    "significance": "supporting",
     "relatedConcepts": [
       "cyclic order",
       "rotation",
@@ -167,7 +167,7 @@
     "title": "Concrete Verification: Triangles and a Rectangle, All by `decide`",
     "content": "Because every quantity is ℤ-valued and the definitions are computable, the abstract laws are pinned to ground truth by kernel computation. The unit right triangle taken counter-clockwise gives S = 1; the same triangle reversed (clockwise) gives S = -1, exhibiting orientation reversal; a cyclic relabelling of its vertices keeps S = 1, exhibiting rotation invariance; and the one-step rotation law is checked verbatim. The 3×4 rectangle gives S = 24 = 2·(area 12), with its reversal giving -24. Each `example ... := by decide` is discharged without appeal to the general theorems, so they serve as an independent computational cross-check on the symbolic proofs above.",
     "mathContext": "S equals twice the oriented area; a positive value means counter-clockwise orientation. decide evaluates the recursive definitions in the kernel, so these are genuine end-to-end computations, not restatements.",
-    "significance": "Provides a computational ground-truth anchor for the symbolic reversal and rotation theorems, guarding against a vacuous or mis-stated formalization.",
+    "significance": "supporting",
     "relatedConcepts": [
       "decide tactic",
       "oriented area",

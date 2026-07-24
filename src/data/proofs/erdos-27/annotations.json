@@ -10,7 +10,7 @@
     "title": "Erdős Problem #27: Almost Covering Systems (DISPROVED, $100)",
     "content": "Erdős Problem #27 ($100 prize) asked: is there a fixed constant $C>1$ such that for every $\\varepsilon>0$ and $N\\ge 1$ there is an $\\varepsilon$-almost covering system — a finite set of congruences with distinct moduli leaving an uncovered-integer density $\\le\\varepsilon$ — with all moduli in $[N,CN]$? The answer is **NO**, proved by Filaseta–Ford–Konyagin–Pomerance–Yu (JAMS 2007). For any fixed $C>1$, every system with moduli in $[N,CN]$ has uncovered density $\\gtrsim 1/(2C)$ for large $N$; the critical scale is $\\alpha(N)=\\tfrac{\\log\\log\\log N}{4\\log\\log N}$, and any fixed $C$ eventually satisfies $C\\le N^{\\alpha(N)}$. If $C$ is allowed to grow with $N$ (e.g. $C(N)=N^{1/\\log\\log N}$), almost coverings do exist. This file formalizes the definitions and proved facts, and axiomatizes the four deep external results (FFKPY disproof, positive direction, averaging bound, and the BBMST 2024 minimum-modulus bound of 616000).",
     "mathContext": "$\\exists\\,C>1\\ \\forall\\varepsilon,N:\\ \\varepsilon\\text{-almost covering with moduli in }[N,CN]$? \\quad\\textbf{No}",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "covering systems of congruences",
       "uncovered density",
@@ -285,7 +285,7 @@
     "title": "The Telescoping Density Product ∏(1−1/n) = 1/k and Its Vanishing",
     "content": "Two proved results underlie the averaging argument. `naturalDensity_eq_inv`: $\\prod_{n=2}^{k}(1-1/n)=1/k$, by induction with the telescoping cancellation $(1/2)(2/3)\\cdots((k-1)/k)=1/k$ (`Finset.prod_insert` + `field_simp`/`ring`). `naturalDensity_vanishes`: consequently $\\prod_{n=2}^{k}(1-1/n)\\to 0$, so for any $\\varepsilon>0$ some finite range already has density $<\\varepsilon$ (choose $k>1/\\varepsilon$). This is the quantitative core of why *growing* ranges can achieve arbitrarily small uncovered density.",
     "mathContext": "$\\prod_{n=2}^{k}\\bigl(1-\\tfrac1n\\bigr)=\\tfrac1k \\xrightarrow{k\\to\\infty} 0$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "telescoping product",
       "induction on Finset.prod",
@@ -472,7 +472,7 @@
     "type": "theorem",
     "title": "Main Theorems: #27 Is Disproved",
     "content": "Part IX derives the headline results from the axioms. `erdos_27_disproved` / `no_universal_constant`: no fixed $C>1$ achieves almost covering with moduli in $[N,CN]$ (from the FFKPY axiom); `erdos_27_conjecture_false`: `¬ErdosConjecture` via the dichotomy. `growing_C_works`: the positive direction. `bbmst_bound` and `perfect_covering_min_modulus`: every perfect covering has a modulus $<616000$ (equivalently $\\le 615999$). `ffkpy_C_eq_2`: a concrete instance for $C=2$. Together they encode the complete resolution of Problem #27 (0 sorries, 4 axioms).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "disproof of the conjecture",
       "corollaries from axioms",

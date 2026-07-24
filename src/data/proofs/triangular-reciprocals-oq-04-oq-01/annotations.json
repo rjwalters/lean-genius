@@ -10,7 +10,7 @@
     "title": "Simplicial Reciprocals Sum to d/(d−1) at Every Depth",
     "content": "The result: for every depth d = m+2 >= 2, the sum of reciprocals of the d-simplicial (figurate) numbers is d/(d-1). Depth 2 gives triangular numbers n(n+1)/2 (sum 2), depth 3 the tetrahedral numbers (sum 3/2). This generalizes the parent entry, which handled only d = 3, by a SINGLE telescoping argument uniform in d. Reindexing the term to n : N, the summand 1/C(n+d, d) is written as a difference G(n) - G(n+1) of a discrete antiderivative, so the partial sums collapse and the tail G(N) -> 0.",
     "mathContext": "$\\sum_{n=1}^\\infty \\frac{1}{\\binom{n+d-1}{d}} = \\frac{d}{d-1}$; the telescoping is $\\frac{1}{\\binom{n+d}{d}} = G(n)-G(n+1)$ with $G(n)=\\frac{d}{d-1}\\cdot\\frac{1}{\\binom{n+d-1}{d-1}}$.",
-    "significance": "The whole file is one uniform-in-d telescoping; everything reduces to two binomial absorption identities plus a convergence estimate.",
+    "significance": "supporting",
     "relatedConcepts": [
       "figurate numbers",
       "telescoping series",
@@ -34,7 +34,7 @@
     "title": "The Summand and Its Telescoping Antiderivative",
     "content": "simpReciprocal m n = 1/C(n+m+2, m+2) is the reciprocal of the n-th depth-(m+2) simplicial number. gTele m n = (m+2)/(m+1) · 1/C(n+m+1, m+1) is the discrete antiderivative chosen so that the summand equals the forward difference G(n) - G(n+1). Writing d = m+2 keeps the whole argument over N (m >= 0 iff d >= 2), avoiding real-subtraction edge cases at d = 1 where the series diverges.",
     "mathContext": "$\\mathrm{simpReciprocal}(m,n) = \\binom{n+m+2}{m+2}^{-1}$, $\\ G(m,n) = \\frac{m+2}{m+1}\\binom{n+m+1}{m+1}^{-1}$.",
-    "significance": "Choosing the right antiderivative G is the crux; the rest is verifying G(n)-G(n+1) equals the summand.",
+    "significance": "supporting",
     "relatedConcepts": [
       "discrete antiderivative",
       "finite differences",
@@ -56,7 +56,7 @@
     "title": "Positivity of the Three Binomials",
     "content": "Three one-line helpers establishing C(n+m+2, m+2), C(n+m+1, m+1) and C(n+m+2, m+1) are all positive (each C(a, b) > 0 since a >= b). Positivity is needed to invert the binomials as real numbers and to justify the field_simp / division steps in the telescoping identity.",
     "mathContext": "$\\binom{a}{b} > 0 \\iff a \\ge b$; here all three indices satisfy $a \\ge b$.",
-    "significance": "Guards every reciprocal and division that follows.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.choose_pos",
       "positivity"
@@ -76,7 +76,7 @@
     "title": "The Two Absorption Identities (R1, R2)",
     "content": "The arithmetic engine of the telescoping, stated as natural-number equalities. R1: (n+m+2)·C(n+m+1, m+1) = (m+2)·C(n+m+2, m+2), from Nat.add_one_mul_choose_eq. R2: (n+1)·C(n+m+2, m+1) = (m+2)·C(n+m+2, m+2), from Nat.choose_succ_right_eq. Both re-express the same target binomial C(n+m+2, m+2) times (m+2), so dividing them yields the difference of reciprocals used in the telescoping.",
     "mathContext": "$(n+m+2)\\binom{n+m+1}{m+1}=(m+2)\\binom{n+m+2}{m+2}$ and $(n+1)\\binom{n+m+2}{m+1}=(m+2)\\binom{n+m+2}{m+2}$.",
-    "significance": "Standard Pascal absorption identities are exactly what make the reciprocal difference telescope.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Pascal's rule",
       "absorption identity",
@@ -98,7 +98,7 @@
     "title": "The Depth-d Telescoping Identity",
     "content": "The heart of the proof: 1/C(n+m+2, m+2) = G(n) - G(n+1). After casting the three binomials to R and using the shift C(n+1+m+1, m+1) = C(n+m+2, m+1), the two absorption identities give p⁻¹ = (n+m+2)/((m+2)a) and q⁻¹ = (n+1)/((m+2)a) where a = C(n+m+2, m+2). Then field_simp and ring close the identity. This single lemma is where all the combinatorics is spent; the series result is then formal.",
     "mathContext": "$\\binom{n+d}{d}^{-1} = G(n)-G(n+1)$, reducing to $p^{-1}-q^{-1} = \\frac{m+1}{(m+2)a}$ via R1, R2.",
-    "significance": "Converts a hard-looking reciprocal into a forward difference — the key that makes the series telescope.",
+    "significance": "supporting",
     "relatedConcepts": [
       "telescoping",
       "field_simp",
@@ -120,7 +120,7 @@
     "title": "Closed Form for the Partial Sum",
     "content": "Summing the telescoping identity over i < N and applying Finset.sum_range_sub' collapses the sum to G(0) - G(N). Since G(0) = (m+2)/(m+1)·1/C(m+1, m+1) = (m+2)/(m+1) (as C(m+1, m+1) = 1), the N-th partial sum equals (m+2)/(m+1) - G(N). The infinite sum is now just the limit of G(N).",
     "mathContext": "$\\sum_{i<N}\\binom{i+d}{d}^{-1} = \\frac{m+2}{m+1} - G(N)$, using $\\binom{m+1}{m+1}=1$.",
-    "significance": "Reduces the whole series to understanding the single tail term G(N).",
+    "significance": "supporting",
     "relatedConcepts": [
       "Finset.sum_range_sub'",
       "telescoping sum",
@@ -142,7 +142,7 @@
     "title": "Binomial Lower Bound C(N+m+1, m+1) ≥ N+1",
     "content": "A clean induction on N (using Pascal's rule Nat.choose_succ_succ' and C(K+m+1, m) >= 1) showing the relevant binomial grows at least linearly. This is exactly the estimate needed to squeeze the tail 1/C(N+m+1, m+1) below 1/(N+1), forcing G(N) -> 0.",
     "mathContext": "$\\binom{N+m+1}{m+1} \\ge N+1$, hence $\\binom{N+m+1}{m+1}^{-1} \\le \\frac{1}{N+1} \\to 0$.",
-    "significance": "Supplies the comparison bound driving convergence of the tail to zero.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Pascal's rule",
       "induction",
@@ -164,7 +164,7 @@
     "title": "The Tail G(N) → 0",
     "content": "Combines the lower bound with squeeze_zero: 0 <= 1/C(N+m+1, m+1) <= 1/(N+1) -> 0, so the reciprocal binomial tends to 0, and multiplying by the constant (m+2)/(m+1) leaves the limit at 0. This is the analytic input (the only non-algebraic step) that turns the partial-sum closed form into a convergent series value.",
     "mathContext": "$G(N) = \\frac{m+2}{m+1}\\binom{N+m+1}{m+1}^{-1} \\to 0$ by the squeeze $0 \\le \\binom{N+m+1}{m+1}^{-1} \\le \\frac{1}{N+1}$.",
-    "significance": "The vanishing tail is what pins the infinite sum at exactly (m+2)/(m+1).",
+    "significance": "supporting",
     "relatedConcepts": [
       "squeeze theorem",
       "Filter.Tendsto",
@@ -186,7 +186,7 @@
     "title": "Main Theorem: HasSum = (m+2)/(m+1)",
     "content": "Assembles the pieces: nonnegativity lets HasSum reduce to the limit of partial sums (hasSum_iff_tendsto_nat_of_nonneg), the partial sums equal (m+2)/(m+1) - G(N), and G(N) -> 0, so the series converges to (m+2)/(m+1) = d/(d-1). The companion simplicial_reciprocals_tsum restates this in tsum form. This is the general-depth answer to the parent's open question.",
     "mathContext": "$\\mathrm{HasSum}\\ \\big(n \\mapsto \\binom{n+d}{d}^{-1}\\big)\\ \\frac{d}{d-1}$, i.e. $\\sum_{n\\ge 1}\\binom{n+d-1}{d}^{-1} = \\frac{d}{d-1}$.",
-    "significance": "The headline general-depth result, uniform in d, generalizing the parent's single d=3 case.",
+    "significance": "supporting",
     "relatedConcepts": [
       "HasSum",
       "tsum",
@@ -209,7 +209,7 @@
     "title": "Classical Special Cases Recovered",
     "content": "Instantiating m = 0 recovers the classical triangular-reciprocal sum ∑ 1/C(n+2,2) = 2, and m = 1 recovers the parent's tetrahedral sum ∑ 1/C(n+3,3) = 3/2. A final example checks the summand's first term 1/C(m+2, m+2) = 1 at every depth. These confirm the general theorem specializes correctly to the known cases.",
     "mathContext": "$m=0$: $\\sum 1/\\binom{n+2}{2} = 2$; $\\ m=1$: $\\sum 1/\\binom{n+3}{3} = 3/2$; first term $=1$.",
-    "significance": "Grounds the abstraction in the two classically known figurate-reciprocal sums.",
+    "significance": "supporting",
     "relatedConcepts": [
       "triangular numbers",
       "tetrahedral numbers",

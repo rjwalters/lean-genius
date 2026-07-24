@@ -7,7 +7,7 @@
     "title": "Countable → Denumerable, and the Constructive Caveat",
     "content": "The docstring frames the promotion: the parent proves the algebraic numbers are `Countable`; here we upgrade to `Denumerable`, Mathlib's strongest countability notion — an explicit bijection with ℕ. The crucial honesty: the instance is **classical/noncomputable**, factoring through `Encodable.ofCountable` (which uses `Classical.choice`). So the bijection Q̄ ≅ ℕ exists but does not compute an index for a given algebraic number; a genuinely constructive enumeration (effective root isolation) is the parent's open question 1 and remains unresolved. `#print axioms` shows only propext/Classical.choice/Quot.sound — none counting — so the file is verified, merely noncomputable.",
     "mathContext": "$\\mathrm{Countable}\\,X \\wedge \\mathrm{Infinite}\\,X \\Rightarrow \\mathrm{Denumerable}\\,X$, i.e. $\\exists\\, X \\simeq \\mathbb{N}$. Noncomputable because $\\mathrm{Encodable.ofCountable}$ invokes $\\mathrm{Classical.choice}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["countability", "denumerability", "Classical.choice", "noncomputable", "constructive vs classical existence", "algebraic numbers"],
     "prerequisites": ["set theory", "cardinality", "Lean typeclasses"]
   },

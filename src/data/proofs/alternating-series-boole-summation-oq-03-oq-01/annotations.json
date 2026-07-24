@@ -7,7 +7,7 @@
     "title": "Honest resolution of the parent's Euler-number question",
     "content": "The parent OQ-03 asked whether the finite Boole weights w_k = (-1)^k/2^{k+1} are the Euler numbers E_k(0), the values classically attached to Boole summation via the generating function 1/(1+e^t). This entry answers no. The weights of the parent's first-order iterate scheme are purely geometric — w_{k+1} = -(1/2)·w_k with w_0 = 1/2 — so their ordinary generating function is the elementary 1/(x+2), not the Euler exponential generating function 1/(1+e^t). The genuine Boole–Euler connection lives instead in the alternating power sums ∑ (-1)^j j^p, whose closed forms are Euler polynomials; the file records the degree-2 instance altSum_sq.",
     "mathContext": "w_k = (-1)^k/2^{k+1}; w_{k+1} = -(1/2)w_k; OGF = 1/(x+2) ≠ 1/(1+e^t).",
-    "significance": "Corrects a plausible but false conjecture in the parent's open question and identifies exactly which classical object carries the Boole–Euler link.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Boole summation",
       "Euler numbers",
@@ -27,7 +27,7 @@
     "title": "The Boole weights are geometric",
     "content": "booleWeight k = (-1)^k/2^{k+1} is defined (noncomputable, over ℝ). booleWeight_zero gives w_0 = 1/2 by norm_num. booleWeight_succ proves w_{k+1} = -(1/2)·w_k by simp [booleWeight, pow_succ]; ring — the geometric recurrence with ratio -1/2. This is the precise sense in which the weights are elementary: a geometric progression, unlike the Euler numbers whose recurrence is not geometric.",
     "mathContext": "w_0 = 1/2, w_{k+1} = -(1/2)w_k ⟹ w_k = (-1)^k/2^{k+1}.",
-    "significance": "The recurrence is the algebraic heart of the negative answer to the Euler-number question.",
+    "significance": "supporting",
     "relatedConcepts": [
       "geometric sequences",
       "recurrence relations"
@@ -45,7 +45,7 @@
     "title": "Exact finite rational generating function",
     "content": "sum_booleWeight_geom proves, for every x ≠ -2 and every K, the exact finite identity ∑_{k<K} w_k x^k = (1 - (-x/2)^K)/(x+2). The proof rewrites each term w_k x^k = (1/2)(-x/2)^k, factors the constant out of the sum, applies geom_sum_eq (using -x/2 ≠ 1, which follows from x ≠ -2), and clears denominators with field_simp; ring. Letting K → ∞ gives the limit 1/(x+2), an elementary rational function — visibly not the Euler EGF 1/(1+e^t).",
     "mathContext": "∑_{k=0}^{K-1} w_k x^k = (1-(-x/2)^K)/(x+2) → 1/(x+2).",
-    "significance": "Provides the honest closed-form generating function that replaces the false Euler-EGF claim, as a finite (hypothesis-free) identity.",
+    "significance": "supporting",
     "relatedConcepts": [
       "geometric series",
       "ordinary generating functions"
@@ -63,7 +63,7 @@
     "title": "Forward differences of j ↦ j² terminate at order 3",
     "content": "fdiff_sq: Δ(j²) = 2j+1; fdiff_two_sq: Δ²(j²) = 2 (constant); fdiff_three_sq: Δ³(j²) ≡ 0. Each is computed by unfolding the parent's fdiff with push_cast; ring, peeling successive iterates with Function.iterate_succ'. The vanishing third difference is exactly the hypothesis that terminates the parent's order-3 exact Boole formula on quadratic sequences.",
     "mathContext": "Δ(j²)=2j+1, Δ²(j²)=2, Δ³(j²)≡0.",
-    "significance": "Supplies the termination certificate Δ^3 ≡ 0 that makes the degree-2 alternating sum a pure endpoint expression.",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite differences",
       "Function.iterate"
@@ -81,7 +81,7 @@
     "title": "Alternating sum of squares in closed form",
     "content": "altSum_sq: ∑_{j=n}^{m-1} (-1)^j j² = ½((-1)^n n² − (-1)^m m²) − ¼((-1)^n(2n+1) − (-1)^m(2m+1)) + ⅛((-1)^n·2 − (-1)^m·2). The proof rewrites with the parent's boole_exact_of_iterate_fdiff_zero at order 3 (using fdiff_three_sq), unfolds the finite Boole sum with Finset.sum_range_succ/one, substitutes the difference lemmas, and closes with norm_num; ring. The three coefficients ½, −¼, ⅛ are the leading weights w_0, w_1, w_2. A closing example checks ∑_{j=0}^{3} (-1)^j = 0 against the parent's altSum_const.",
     "mathContext": "∑_{j=n}^{m-1}(-1)^j j² as a pure endpoint expression with weights ½, ¼, ⅛.",
-    "significance": "The concrete degree-2 rung of the polynomial ladder, and the true finite instance of the Boole/Euler evaluation of alternating monomial sums.",
+    "significance": "supporting",
     "relatedConcepts": [
       "alternating series",
       "closed-form summation"

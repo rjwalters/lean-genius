@@ -106,7 +106,7 @@
     "title": "Unitary divisors: the same Boolean cube, read multiplicatively",
     "content": "unitaryDivisors n := n.divisors.filter (fun d => Nat.Coprime d (n / d)) collects the divisors d ∣ n with gcd(d, n/d) = 1. Equivalently d takes at each prime p ∣ n either the full prime-power p^v_p(n) or 1, so unitary divisors also biject with subsets of primeFactors(n) — the same 2^ω(n) Boolean cube as the idempotents of ℤ/n. The idempotent attached to a unitary divisor d is the CRT element that is 1 on the d-part and 0 on the n/d-part. Four decide-checked examples exhibit the correspondence concretely: unitaryDivisors 12 = {1,3,4,12} and (unitaryDivisors 12).card = 4 for ω(12) = 2, (unitaryDivisors 30).card = 8 for ω(30) = 3, and unitaryDivisors 9 = {1,9} for the prime power ω(9) = 1. Crucially these decide-checks reduce only through Nat.divisors.filter and Nat.Coprime (both kernel-reducible); they never reduce the well-founded Nat.primeFactors recursion, so the entry stays verified with only foundational axioms. The general finite-set bijection powerset(primeFactors n) ≃ unitaryDivisors n is left for a follow-up.",
     "mathContext": "A unitary divisor $d\\mid n$ ($\\gcd(d,n/d)=1$) chooses at each prime the full prime-power or $1$; unitary divisors biject with subsets of $\\mathrm{primeFactors}(n)$ and hence with the idempotents of $\\mathbb{Z}/n$, matching $2^{\\omega(n)}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "unitary divisors",
       "coprime complement gcd(d, n/d) = 1",

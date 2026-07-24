@@ -19,7 +19,7 @@
     "title": "2-Part Building Block: v₂(φ(2^a)) = a − 1",
     "content": "The contribution of the power of 2 dividing n. Since φ(2^a) = 2^(a−1) for a ≥ 1 (and φ(1) = 1 for a = 0, where a − 1 truncates to 0 in ℕ), the valuation is exactly a − 1. Proved by `Nat.totient_prime_pow` followed by `padicValNat.prime_pow`. This single term is what makes n = 4 (a = 2, contribution 1) a solution with no odd prime factor at all.",
     "mathContext": "$v_2(\\varphi(2^a)) = a - 1$; in particular $a = 2 \\Rightarrow v_2(\\varphi(4)) = 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Euler's totient of prime powers", "2-adic valuation"],
     "prerequisites": ["φ(p^k) = p^(k−1)(p−1)", "valuation of prime powers"]
   },
@@ -55,7 +55,7 @@
     "title": "Odd-Part Valuation as a Sum over Prime Factors",
     "content": "For odd m ≠ 0, v₂(φ m) = Σ_{p ∣ m} v₂(p − 1). Derived from Euler's product formula φ m = ∏ p^(k−1)(p−1) and `Nat.factorization_prod` (the valuation of a product is the sum of valuations); every prime factor of an odd m is itself odd, so the p^(k−1) factors drop out and each summand is v₂(p − 1). This is the odd-part half of the master split.",
     "mathContext": "$m$ odd $\\Rightarrow v_2(\\varphi(m)) = \\sum_{p \\mid m} v_2(p-1)$, each summand $\\ge 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Euler's product formula", "factorization of a product", "prime factors"],
     "prerequisites": ["Nat.totient_eq_prod_factorization", "additivity of valuation over products"]
   },
@@ -103,7 +103,7 @@
     "title": "mod-4 Restatement: φ(n) ≡ 2 (mod 4) ↔ (the three families)",
     "content": "The form matching the parent's open question verbatim. Obtained from the main theorem by rewriting through the arithmetic core `padicValNat_two_eq_one_iff` applied to φ(n): φ(n) % 4 = 2 ↔ v₂(φ(n)) = 1 ↔ the three-family disjunction.",
     "mathContext": "$\\varphi(n) \\equiv 2 \\pmod 4 \\iff n \\in \\{4\\} \\cup \\{p^k, 2p^k : p \\equiv 3\\ (4)\\ \\mathrm{prime},\\ k \\ge 1\\}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["residues mod 4", "Euler's totient"],
     "prerequisites": ["the main characterization", "arithmetic core"]
   },

@@ -34,7 +34,7 @@
   "title": "The MGF ODE g'(t) = t·g(t)",
   "content": "Writing $g(t)=M_X(t)=\\exp(t^2/2)$, the chain rule gives the defining first-order ODE $g'(t)=t\\,g(t)$ (`deriv_g`), since $\\frac{d}{dt}\\exp(t^2/2)=\\exp(t^2/2)\\cdot t$. This single differential relation is the engine of the whole computation: no integrability estimates are needed because everything is done on the smooth generating function. Smoothness ($g \\in C^\\infty$, `g_contDiff`) supplies the differentiability of every iterated derivative used below.",
   "mathContext": "$g(t)=e^{t^2/2}$, $g'(t)=t\\,e^{t^2/2}=t\\,g(t)$.",
-  "significance": "important",
+  "significance": "key",
   "prerequisites": [
    "HasDerivAt.exp and the chain rule",
    "Smoothness of exp∘(polynomial): ContDiff"
@@ -79,7 +79,7 @@
   "title": "From Probability Integral to Analytic Derivative",
   "content": "`moment_eq_iteratedDeriv` bridges the probability integral to the analytic derivative: $\\int x^n\\,d\\mathrm{stdNormal} = g^{(n)}(0)$. It discharges the interior side-condition of `iteratedDeriv_mgf_zero` by showing `integrableExpSet id stdNormal = Set.univ` (so $0$ lies in its interior — the standard normal MGF is defined on all of $\\mathbb{R}$), then reconciles `mgf id stdNormal` with the explicit $g(t)=\\exp(t^2/2)$ recorded by the grandparent.",
   "mathContext": "$\\int_{\\mathbb R} x^n\\, dN(0,1) = \\frac{d^n}{dt^n}M_X(t)\\big|_{t=0} = g^{(n)}(0)$.",
-  "significance": "important",
+  "significance": "key",
   "prerequisites": [
    "integrableExpSet_id_gaussianReal = Set.univ",
    "iteratedDeriv_mgf_zero"

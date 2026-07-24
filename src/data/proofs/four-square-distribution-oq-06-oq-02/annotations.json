@@ -10,7 +10,7 @@
     "title": "Repackaging σ*'s summand as an arithmetic function",
     "content": "The setup makes one decisive modelling choice. Jacobi's modified divisor sum σ*(n) = Σ_{d∣n, 4∤d} d is defined directly (sigmaStar), but the summand [4∤d]·d is ALSO packaged as a Mathlib ArithmeticFunction weightedId. An ArithmeticFunction ℕ is a function ℕ→ℕ required to vanish at 0; here weightedId 0 = 0 holds automatically because 4∣0, so the packaging is legitimate. This is the pivot of the whole proof: once the summand is an ArithmeticFunction, σ* becomes a Dirichlet convolution ζ ⋆ g and multiplicativity follows from Mathlib's convolution machinery rather than from any hand computation.",
     "mathContext": "$\\sigma^*(n)=\\sum_{d\\mid n}g(d)$ with $g(d)=[4\\nmid d]\\cdot d$; $g(0)=0$ since $4\\mid 0$, so $g$ is a valid ArithmeticFunction.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "arithmetic functions",
       "divisor sums",

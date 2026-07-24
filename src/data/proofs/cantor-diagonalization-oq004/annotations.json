@@ -39,7 +39,7 @@
     "title": "Predicate form: #A < #(A → Prop)",
     "content": "cardinality_gap is the exact statement the open question requests. Because Set A is definitionally A → Prop, it is literally cardinality_gap_set A — no transport or rewriting between the two formulations is needed.",
     "mathContext": "$\\mathrm{Set}\\,A \\equiv (A \\to \\mathrm{Prop})$ definitionally, so $\\#(A \\to \\mathrm{Prop}) = \\#(\\mathrm{Set}\\,A)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Set as A → Prop", "definitional equality"],
     "prerequisites": ["Set A = A → Prop"]
   },
@@ -51,7 +51,7 @@
     "title": "The gap re-implies non-surjectivity",
     "content": "not_surjective_of_cardinality_gap closes the loop with the parent: from a hypothetical surjection e : A ↠ (A → Prop), Cardinal.mk_le_of_surjective gives #(A → Prop) ≤ #A, contradicting the strict gap #A < #(A → Prop). Hence the quantitative statement subsumes the parent's cantor_surjective_recovered — it is strictly stronger.",
     "mathContext": "Surjection $A \\twoheadrightarrow B \\Rightarrow \\#B \\le \\#A$ (`Cardinal.mk_le_of_surjective`); combined with $\\#A < \\#(A\\to\\mathrm{Prop})$ this is a contradiction.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Cardinal.mk_le_of_surjective", "non-surjectivity", "strengthening"],
     "prerequisites": ["surjection lowers cardinality"]
   },

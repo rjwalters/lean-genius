@@ -7,7 +7,7 @@
     "title": "The Open Question and the Coordinate-Isometry Bridge",
     "content": "The module docstring frames this file as the answer to the parent entry's first open question. The parent (cauchy-interlacing-theorem-oq-01-oq-01) proves the geometric identification — the orthogonal compression of toEuclideanLin A to the coordinate hyperplane H = span {e_{j.succAbove i}} has, on that basis, sesquilinear form exactly the principal submatrix A' = A.submatrix j.succAbove j.succAbove — but leaves open the matrix-level eigenvalue corollary. This file supplies the missing bridge: the coordinate isometry coordEquiv : EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H, e_i ↦ e_{j.succAbove i}, under which the compression literally IS toEuclideanLin A' (compress_intertwine). Pushing A''s spectral eigenbasis through coordEquiv yields an eigenbasis of the compression with the SAME antitone eigenvalues — so no eigenvalue-uniqueness lemma is needed — feeding the abstract cauchy_interlacing to give λ_{k+1} ≤ μ_k ≤ λ_k. Works over any RCLike field (ℝ and ℂ); absent from Mathlib.",
     "mathContext": "$\\mathrm{compress}\\,(\\mathrm{toEuclideanLin}\\,A)\\,H\\,(\\mathrm{coordEquiv}\\,x) = \\mathrm{coordEquiv}\\,(\\mathrm{toEuclideanLin}\\,A'\\,x)$; hence the principal submatrix eigenvalues interlace: $\\lambda_{k+1} \\le \\mu_k \\le \\lambda_k$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cauchy interlacing", "principal submatrix", "linear isometry equivalence", "spectral theorem", "compression of an operator"],
     "prerequisites": ["the parent geometric identification (compress_inner_eq_principalSubmatrix)", "the spectral theorem for symmetric operators", "orthonormal bases and isometries"]
   },

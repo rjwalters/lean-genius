@@ -7,7 +7,7 @@
     "title": "The Open Question and the Corrected Inverse Formula",
     "content": "The parent entry proved the **forward** Eulerian → Stirling identity $i!\\,S(n,i) = \\sum_{j<n} \\binom{j}{n-i}\\langle n,j\\rangle$, expressing the factorial-weighted Stirling row over the Eulerian row through plain binomial weights. This entry settles open question `oq-01`: the **inverse pairing**, recovering the Eulerian numbers from the Stirling row, so the two rows are mutually inverse under the binomial triangle. A subtlety recorded up front: the open question's *proposed* inverse $\\langle n,k\\rangle = \\sum_j (-1)^{k-j}\\binom{n-j}{k-j}\\,j!\\,S(n,j)$ is **incorrect** — at $n=3, k=0$ it gives $0$ whereas $\\langle 3,0\\rangle = 1$. The genuine binomial inverse proved here is `eulerian_inverse`: $\\langle n,k\\rangle = \\sum_{i\\le n}(-1)^{n-i-k}\\binom{n-i}{k}\\,i!\\,S(n,i)$ for $1\\le n$, $k\\le n-1$, numerically verified for all rows $n\\le 7$.",
     "mathContext": "Corrected inverse: $\\langle n,k\\rangle = \\sum_{i\\le n}(-1)^{n-i-k}\\binom{n-i}{k}\\,i!\\,S(n,i)$. The OQ's proposal $\\sum_j(-1)^{k-j}\\binom{n-j}{k-j}j!\\,S(n,j)$ fails already at $n=3,k=0$ ($0 \\ne \\langle 3,0\\rangle = 1$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Eulerian numbers",
       "Stirling numbers of the second kind",

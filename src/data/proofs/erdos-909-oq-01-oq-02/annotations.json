@@ -87,7 +87,7 @@
     "title": "Sharp Case: a 0-Dimensional Factor Recovers the Full m+n",
     "content": "`product_cover_refinement_zero_right` and `..._zero_left` specialise the main theorem to $\\dim Y = 0$ (resp. $\\dim X = 0$). There the order bound $(m+1)(0+1) = m+1$ equals the sharp dimension level $m + 0 = m + n$, so on product covers the FULL product inequality $\\dim(X \\times Y) \\leq \\dim X + \\dim Y$ holds exactly when one factor is $0$-dimensional — matching `dimension_product_ineq` in that regime. This shows the product-cover bound is not merely a weak surrogate: it is tight precisely where the classical theorem is easiest, and the loss to $mn+m+n$ appears only when both factors have positive dimension.",
     "mathContext": "$(m+1)(0+1)=m+1 \\Rightarrow$ dimension level $m = m+n$ (sharp) when $n=0$; symmetric for $m=0$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["zero-dimensional spaces", "sharpness", "logarithmic law"],
     "prerequisites": ["main product-cover theorem", "Nat arithmetic"]
   }

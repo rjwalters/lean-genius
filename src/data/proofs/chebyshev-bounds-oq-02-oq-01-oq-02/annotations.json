@@ -78,7 +78,7 @@
     "title": "Floor Bridge: ψ(x) = chebyshevPsi ⌊x⌋₊",
     "content": "psi_eq_chebyshevPsi_floor is the connective tissue between the parent's natural-number world and this file's real-variable world. Mathlib's real $\\psi(x)$ and the parent's chebyshevPsi are both the sum $\\sum_{n \\le \\lfloor x\\rfloor} \\Lambda(n)$ of the von Mangoldt function, so they agree once the real argument is replaced by its floor. The proof simply rewrites both sides to the shared Icc-sum form (psi_eq_sum_Icc) and cancels via Nat.floor_natCast. This identity lets the parent's discrete lower bound be quoted verbatim.",
     "mathContext": "$\\psi(x) = \\sum_{n \\le \\lfloor x\\rfloor_+} \\Lambda(n) = \\mathrm{chebyshevPsi}(\\lfloor x\\rfloor_+)$, where $\\Lambda$ is the von Mangoldt function.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "floor function",
       "von Mangoldt function",

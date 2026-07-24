@@ -7,7 +7,7 @@
     "title": "Open Question and the Closed Form",
     "content": "The header states the parent's open question OQ-03-OQ-03-OQ-01 — does the exact super-multiplicativity defect factor `gcd(a,b)/φ(gcd(a,b))` admit a clean prime-factor closed form — and gives the answer in its strongest form: for EVERY positive `n` (not just squarefree), `n/φ(n) = ∏_{p ∈ n.primeFactors} p/(p-1)`. This is simply Euler's product formula `φ(n)/n = ∏(1 - 1/p)` read as the reciprocal defect ratio. Specialising `n := gcd(a,b)` produces the parent's defect factor in closed product form. The docstring also previews the proof engine, `Nat.totient_mul_prod_primeFactors`, and the ℕ→ℚ casting architecture.",
     "mathContext": "$\\dfrac{n}{\\varphi(n)} = \\prod_{p \\mid n} \\dfrac{p}{p-1}$, the reciprocal of $\\dfrac{\\varphi(n)}{n} = \\prod_{p \\mid n}\\left(1 - \\dfrac1p\\right)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euler's totient", "Euler product formula", "super-multiplicativity defect", "prime factorization"],
     "prerequisites": ["Euler's totient function", "greatest common divisor", "prime factors"]
   },
@@ -79,7 +79,7 @@
     "title": "Worked Instances",
     "content": "Three concrete checks ground the abstract identities: `6/φ(6) = 3 = (2/1)·(3/2)` for the squarefree `6 = 2·3`; `φ(15) = (3-1)(5-1) = 8`, where `Squarefree 15` is discharged via `Nat.squarefree_mul_iff` and `Prime.squarefree`; and the defect factor at `gcd(12,18) = 6` equals `∏_{p|6} p/(p-1)`, exhibiting `defect_factor_gcd` on a genuine pair.",
     "mathContext": "$\\tfrac{6}{\\varphi(6)} = 3 = \\tfrac21\\cdot\\tfrac32$; $\\varphi(15) = 2\\cdot 4 = 8$; $\\tfrac{\\gcd(12,18)}{\\varphi(\\gcd(12,18))} = \\tfrac{6}{2} = 3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "Nat.squarefree_mul_iff", "Prime.squarefree"],
     "prerequisites": ["evaluation of φ on small numbers", "Finset.prod over explicit primeFactors"]
   }

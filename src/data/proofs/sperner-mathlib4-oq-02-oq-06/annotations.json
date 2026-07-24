@@ -10,7 +10,7 @@
     "title": "From the door-counting machinery to Tucker's actual conclusion",
     "content": "The header frames the entry against sixteen prior iterations of the sperner-mathlib4-oq-02 program. Those iterations machine-checked every STRUCTURAL piece of the door-counting proof of Tucker's lemma — the abstract path-following and handshaking engines, the fact that the concrete hexagon DOOR GRAPH is a disjoint union of paths and cycles, and the odd oriented BOUNDARY SEED (the hemisphere sign-degree). None of them stated Tucker's actual CONCLUSION: that, for an antipodally-labelled triangulation of B², some edge is complementary (its endpoints carry antipodal labels {k, −k}). This entry supplies that conclusion for the standard hexagon + centre triangulation of B². Honest status: a concrete verification for one coarse triangulation by exhaustive kernel decide over its 256 labellings, 0 sorries and 0 axioms (propext / Quot.sound only, no Lean.ofReduceBool); it is not a dimension-free proof of Tucker.",
     "mathContext": "Tucker's lemma: for an antipodally symmetric triangulation of $B^n$ and a labelling $\\lambda : V \\to \\{\\pm1,\\dots,\\pm n\\}$ with $\\lambda(-v) = -\\lambda(v)$ on $\\partial B^n = S^{n-1}$, some edge $\\{u,w\\}$ is complementary: $\\lambda(u) = -\\lambda(w)$. Here $n = 2$, labels lie in $\\{\\pm1,\\pm2\\}$, and the triangulation is the hexagon boundary hexagon coned to its centre.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tucker's lemma",
       "Borsuk–Ulam theorem",
@@ -34,7 +34,7 @@
     "title": "The antipodal labelling model on the hexagon disk",
     "content": "Labels {+1,+2,−1,−2} are encoded as Fin 4 with the negation map negL = ![2,3,0,1]; negL_involutive and negL_free record that negL is a fixed-point-free involution, so it genuinely models label antipody. The six boundary vertices are given labels V a b c = ![a, b, c, negL a, negL b, negL c] from three free labels a,b,c on v₀,v₁,v₂ — the antipodal boundary condition v_{i+3} = negL v_i is built in and confirmed by V_antipodal (proved by decide). This is exactly the encoding of the sibling hexagon files SpernerTuckerHexagon and SpernerTuckerHexagonFullDoorGraph, so the model is shared across the n = 2 entries. The seventh vertex — the interior centre — is not part of V; its label is the free variable d supplied to the theorems.",
     "mathContext": "Boundary vertices $v_0,\\dots,v_5$ of the hexagon $S^1$ with $v_{i+3} = -v_i$; the antipodal action $i \\mapsto i+3$ on $\\mathrm{Fin}\\,6$ is free, so the boundary labelling is a genuine antipodal labelling of $S^1$. The centre vertex has an unconstrained (interior) label $d$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "label negation",
       "antipodal involution",
@@ -57,7 +57,7 @@
     "title": "Complementary spokes and boundary edges",
     "content": "An edge is complementary when one endpoint's label is the antipode of the other's. The twelve edges of the hexagon + centre triangulation split into six spokes centre–vᵢ (endpoint labels (d, vᵢ)) and six boundary edges vᵢ–v_{i+1}, cyclic in Fin 6 (endpoint labels (vᵢ, v_{i+1})). spokeCompl a b c d := ∃ i : Fin 6, d = negL (V a b c i) says some spoke is complementary; boundaryCompl a b c := ∃ i : Fin 6, V a b c (i+1) = negL (V a b c i) says some boundary edge is complementary. Both are given explicit Decidable instances, so the exhaustive search over all labellings runs inside the kernel via plain decide (no native_decide, hence no Lean.ofReduceBool).",
     "mathContext": "Complementary edge $\\{u,w\\}$: $\\lambda(u) = \\mathrm{negL}(\\lambda(w))$. Spokes contribute $d = \\mathrm{negL}(v_i)$; boundary edges contribute $v_{i+1} = \\mathrm{negL}(v_i)$ with indices cyclic modulo 6.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "complementary edge",
       "spoke vs boundary edge",

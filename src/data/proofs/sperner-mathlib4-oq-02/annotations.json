@@ -10,7 +10,7 @@
     "title": "Two machine-checked obstructions to naive door choices for n = 2 Tucker",
     "content": "The header docstring frames this negative/scoping result. The door-counting program for Tucker's lemma is abstractly complete up to ONE geometric input: the single-level path-following engine and the dimension recursion are fully verified, leaving only the geometric construction of the door graph (Freund–Todd 1981 / Prescott–Su). A tempting shortcut is to fix one sign k, declare doors to be the complementary {+k,-k} edges, and run the engine. The companion `SpernerTuckerHexagon` already killed the FIRST naive simplification (the complementary-edge count is not a parity invariant for n = 2). THIS file kills the SECOND: on the same concrete hexagon+centre triangulation of B², entirely by kernel `decide`, a door graph built from one fixed complementary sign is not a complete certificate — for a suitable antipodal labelling the whole 'complementary spoke' door graph is empty (every triangle has door-degree 0) yet Tucker's conclusion still holds, because the complementary edge lives on the boundary, invisible to that door choice. Conclusion: the correct door structure must range over ALL signs and account for boundary edges. Honest status: a scoping/negative result, fully concrete, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only — kernel `decide`, no `Lean.ofReduceBool`).",
     "mathContext": "Model: hexagon + centre triangulation of $B^2$, boundary vertices $v_0,\\dots,v_5$ in antipodal pairs $v_{i+3} = -v_i$, labels in $\\{+1,+2,-1,-2\\} \\cong \\mathrm{Fin}\\,4$ with negation $\\mathrm{negL}$. Triangles $T_i = (\\text{centre}, v_i, v_{i+1})$. The spoke-door graph takes centre-incident edges complementary to the centre label $d$; door-degree $\\le 2$ always, but can be $\\equiv 0$ while a complementary boundary edge still exists.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tucker's lemma",
       "Borsuk–Ulam theorem",
@@ -60,7 +60,7 @@
     "title": "The spoke-door graph has max degree ≤ 2",
     "content": "degSpoke a b c d i counts how many of triangle Ti's two spokes (centre—v i and centre—v(i+1)) are complementary to the centre label d. degSpoke_le_two proves this is always ≤ 2, over all 4⁴ = 256 antipodal labellings and 6 triangles, by kernel decide. This is the crucial point of the obstruction: the naive door graph is a legal input to the path-following engine — it genuinely satisfies the paths-and-cycles hypothesis ∀ v, degree v ≤ 2 — so its failure is not a matter of ill-formedness.",
     "mathContext": "$\\forall a,b,c,d,i:\\ \\deg_{\\mathrm{spoke}}(a,b,c,d,i)\\le 2$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "door graph",
       "maximum degree",
@@ -83,7 +83,7 @@
     "title": "A single-sign door graph is not a complete certificate",
     "content": "spoke_graph_empty_yet_complementary exhibits an antipodal labelling on which no spoke is complementary to the centre — every triangle has door-degree 0, so the path-following engine produces nothing — yet a boundary edge is complementary, so Tucker's conclusion still holds. Witness: centre d = +2 with all boundary vertices labelled ±1; then negL(+2) = -2 appears on no boundary vertex (no spoke door) while a boundary edge with labels +1,-1 is complementary. The single fixed interior door type is blind to the boundary-living complementary edge.",
     "mathContext": "$\\exists a,b,c,d:\\ (\\forall i,\\ \\neg\\,\\mathrm{Compl}(d,V_i))\\ \\wedge\\ (\\exists i,\\ \\mathrm{Compl}(V_i,V_{\\mathrm{rot}\\,i}))$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "obstruction",
       "complete certificate",

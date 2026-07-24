@@ -10,7 +10,7 @@
     "title": "Module Header: why the complex case needs rotated diagonals",
     "content": "The parent cauchy-schwarz-oq-08 shows that over a *real* inner-product space the norm determines the inner product (polarization $\\langle x,y\\rangle=(\\|x+y\\|^2-\\|x-y\\|^2)/4$), so norm-preservation forces inner-product-preservation. Over $\\mathbb{C}$ this fails for the norm alone: the real diagonals $\\|x\\pm y\\|$ recover only $\\mathrm{Re}\\langle x,y\\rangle$, and complex conjugation on $\\mathbb{C}$ preserves the norm while conjugating $\\langle\\cdot,\\cdot\\rangle$. The imaginary part is pinned by the *rotated* diagonals $\\|x\\pm i\\,y\\|$, which the four-term complex polarization identity consumes. The file works over an arbitrary RCLike field $\\mathbb{K}$ (so $\\mathbb{R}$ and $\\mathbb{C}$ at once), with $i=$ `RCLike.I`.",
     "mathContext": "Complex polarization: $\\langle x,y\\rangle=\\big(\\|x+y\\|^2-\\|x-y\\|^2+(\\|x-i y\\|^2-\\|x+i y\\|^2)\\,i\\big)/4$ over any RCLike field.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["polarization identity", "inner product space", "RCLike field", "complex conjugation", "norm"],
     "prerequisites": ["complex inner product spaces", "norms and metrics"]
   },

@@ -7,7 +7,7 @@
     "title": "Open Question, Approach, and the GCH Subtlety",
     "content": "The module docstring frames the entry as a *structural reading* of Cantor's theorem rather than a new diagonal construction. The base entry and OQ-03 prove a < 2^a via Cantor/König/Lawvere diagonalisation; here that inequality is imported as Cardinal.cantor and its global consequences are extracted: ∃ b, a < b, ¬ IsMax a, and the strictly monotone iterated-powerset tower. The header flags the one genuine pitfall up front — the map c ↦ 2^c is NOT provably strictly monotone on cardinals (whether a < b → 2^a < 2^b is the GCH-adjacent question, independent of ZFC), so the tower's ascent must be sourced from a fresh application of Cantor at each rung, exactly the consecutive comparisons strictMono_nat_of_lt_succ consumes.",
     "mathContext": "$$a < 2^a \\;\\Rightarrow\\; \\big(\\forall a,\\exists b,\\ a<b\\big)\\ \\wedge\\ \\neg\\,\\mathrm{IsMax}\\,a\\ \\wedge\\ \\mathrm{StrictMono}\\,(\\mathrm{powTower}\\,a).$$ The global rule $a<b\\Rightarrow 2^a<2^b$ is independent of ZFC and is deliberately avoided.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cantor's theorem",
       "generalized continuum hypothesis",

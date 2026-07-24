@@ -33,7 +33,7 @@
     "title": "The One Principle: Area Scales as the Square of Length",
     "content": "triArea_scale proves triArea (r·b) (r·t) = r²·triArea b t — scaling every linear dimension of a triangle by r multiplies its area by exactly r². This is the single geometric principle Einstein's proof rests on, and it is elementary: from Area = ½·base·height, replacing base by r·base and height by r·height pulls out r². Applied to the three mutually similar triangles in the altitude decomposition (linear ratios cA/h and cB/h relative to the whole), it delivers the areas k·cA² and k·cB² that Layer 2 then cancels.",
     "mathContext": "$\\mathrm{Area} = \\tfrac12 b h \\implies \\mathrm{Area}(rb, rt) = r^2 \\cdot \\mathrm{Area}(b,t)$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "similarity",
       "quadratic homogeneity of area",
@@ -54,7 +54,7 @@
     "title": "The Altitude Foot as an Explicit Affine Combination",
     "content": "Rather than invoke Mathlib's orthogonal-projection API, altitudeFoot A B C := A + (‖A − C‖²/‖A − B‖²)·(B − A) writes the foot H directly as an affine combination of A and B, with parameter t = |CA|²/|AB|² — precisely the similar-triangle ratio. foot_perp then proves ⟪C − H, A − B⟫ = 0 by expanding two inner products: ⟪C − A, A − B⟫ = −‖A − C‖² (using the right angle ⟪A − C, B − C⟫ = 0) and ⟪B − A, A − B⟫ = −‖A − B‖². Substituting t makes the combination vanish, confirming H is genuinely the altitude foot. Everything downstream is then a direct computation with no projection machinery.",
     "mathContext": "$H = A + \\frac{|CA|^2}{|AB|^2}(B-A),\\quad \\langle C-H,\\ A-B\\rangle = 0$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "orthogonal projection",
       "altitude of a triangle",
@@ -100,7 +100,7 @@
     "title": "Reassembling Pythagoras from the Altitude",
     "content": "pythagorean_via_altitude is the payoff: multiplying betweenness |AH| + |HB| = |AB| by |AB| gives |AB|² = |AB|·|AH| + |AB|·|HB|, and substituting the two geometric-mean relations turns the right-hand side into |CA|² + |CB|². This rebuilds the Pythagorean identity through the altitude decomposition rather than through the bare polarization line. einstein_matches_core records that this route and pythagorean_core prove the same thing. Honesty note: in a fixed inner-product model the norm already encodes distance, so pythagorean_core is itself Pythagoras and the altitude layer is a faithful re-derivation, not a foundationally independent proof — its value is that it verifies the decomposition Einstein actually used.",
     "mathContext": "$|AB|^2 = |AB|(|AH|+|HB|) = |CA|^2 + |CB|^2$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "similar-triangles proof",
       "geometric mean",

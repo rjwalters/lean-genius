@@ -7,7 +7,7 @@
     "title": "Coordinate-Free Euclidean Setting",
     "content": "The file works over an arbitrary real Euclidean affine space rather than ℝ²: V is a real inner product space and P a NormedAddTorsor over V. The unoriented angle notation ∠ a b c (the angle at vertex b between rays b→a and b→c) comes from Mathlib's EuclideanGeometry. Because nothing is fixed to coordinates or to dimension 2, every result is genuinely a statement about the intrinsic geometry of three points.",
     "mathContext": "$P$ a torsor over a real inner product space $V$; $\\angle\\, a\\,b\\,c \\in [0,\\pi]$ is the unoriented angle at $b$. The parent problem defines $\\alpha_N = \\min_{|P|=N}\\max_{a,b,c\\in P}\\angle\\,a\\,b\\,c$; here $N=3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["inner product space", "affine space", "normed torsor", "unoriented angle"],
     "prerequisites": ["linear algebra", "Euclidean geometry"]
   },

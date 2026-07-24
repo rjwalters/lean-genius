@@ -7,7 +7,7 @@
     "title": "Erdős #1 and the Conway–Guy Construction",
     "content": "The module docstring frames the whole file. Erdős Problem #1 asks for the minimum largest element f(n) of an n-element set of positive integers whose 2ⁿ subset sums are all distinct. The powers-of-two set {1,2,4,…,2^(n-1)} is the obvious distinct-subset-sums (DSS) witness and gives f(n) ≤ 2^(n-1). Conway and Guy (1968) beat it: the n-element difference set of the sequence 0,1,2,4,7,13,24,44,84,… (OEIS A005318) is DSS with largest element strictly below 2^(n-1) for n ≥ 4. This file contributes a decidable reformulation of DSS, kernel-`decide` certificates for the explicit witnesses cg4…cg8, and the packaged non-optimality theorem.",
     "mathContext": "$f(n) = \\min\\{\\max(A) : |A| = n,\\ \\text{all } 2^n \\text{ subset sums of } A \\text{ distinct}\\}$; powers of two give $f(n) \\le 2^{n-1}$, Conway–Guy give $f(n) < 2^{n-1}$ for $n \\ge 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["distinct subset sums", "Sidon sets", "Conway–Guy sequence", "OEIS A005318", "extremal set theory"],
     "prerequisites": ["additive combinatorics", "subset sums"]
   },
@@ -19,7 +19,7 @@
     "title": "Raising maxRecDepth for Kernel Decision",
     "content": "The distinct-subset-sums checks for the larger witnesses (n = 7, 8) force the Lean kernel to reduce a cardinality computation over a powerset of 2⁷ = 128 and 2⁸ = 256 subsets. That reduction nests deeper than the default elaboration recursion limit, so `set_option maxRecDepth 10000` is required. Crucially this raises only the recursion budget of ordinary kernel `decide`; it does not switch to `native_decide`, so no compiler-trust axiom (`Lean.ofReduceBool`) is introduced.",
     "mathContext": "The powerset of an $n$-set has $2^n$ elements; building $\\{\\sum S : S \\subseteq A\\}$ and comparing its cardinality to $2^n$ costs $O(2^n)$ kernel reductions, deepest at $n = 8$ ($256$ subsets).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["kernel reduction", "decide tactic", "recursion depth", "trusted kernel"],
     "prerequisites": ["Lean elaboration", "decidability"]
   },

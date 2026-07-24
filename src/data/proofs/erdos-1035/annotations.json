@@ -231,7 +231,7 @@
     "type": "technique",
     "title": "The Bit-Flip Map: Neighbors of v Are Exactly Its n Bit-Flips",
     "content": "The neighbor structure of $Q_n$ is captured by `hypercubeFlip n v k = v \\oplus 2^k` (well-defined: `hypercube_flip_lt` shows $v\\oplus 2^k<2^n$ via `Nat.xor_lt_two_pow`). Three lemmas make it a clean bijection onto the neighborhood: `hypercube_flip_adj` (each flip is a neighbor), `hypercube_adj_of_flip` (every neighbor is *some* flip), and `hypercube_flip_injective` (distinct bit positions give distinct neighbors, since $2^i=2^j\\Rightarrow i=j$). Together they identify $N(v)$ with $\\mathrm{Fin}\\,n$ via bit position — the combinatorial engine for the counting results that follow.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "hypercubeFlip = $v\\oplus 2^k$",
       "neighborhood as bit positions",
@@ -250,7 +250,7 @@
     "title": "Q_n Is n-Regular (All n)",
     "content": "`hypercube_n_regular_general`: every vertex of $Q_n$ has exactly $n$ neighbors, for all $n$ — subsuming the earlier `native_decide` checks for $n\\le 3$. The neighbor set equals the image of the injective flip map `hypercubeFlip n v` over `Fin n`, so `card_image_of_injective` + `Fintype.card_fin` give $|N(v)| = |\\mathrm{Fin}\\,n| = n$. This is the first fully general (axiom-free, no `native_decide`) structural theorem.",
     "mathContext": "$\\deg_{Q_n}(v) = n$ for every vertex $v$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "n-regularity",
       "card_image_of_injective",
@@ -269,7 +269,7 @@
     "title": "Q_n Has n·2^n Directed Edges (All n)",
     "content": "`hypercube_n_edge_count`: the number of ordered adjacent pairs in $Q_n$ is $n\\cdot 2^n$ (so $n\\cdot 2^{n-1}$ undirected edges), generalizing the $n=2,3$ computational checks. The proof builds an explicit bijection $(v,k)\\mapsto(v, v\\oplus 2^k)$ from $\\mathrm{Fin}(2^n)\\times\\mathrm{Fin}\\,n$ onto the directed-edge set — injective by `hypercube_flip_injective`, surjective by `hypercube_adj_of_flip` — then counts the domain with `Fintype.card_prod`.",
     "mathContext": "$|\\{(u,v): u\\sim v\\}| = n\\cdot 2^n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "edge counting by bijection",
       "Fintype.card_prod",
@@ -305,7 +305,7 @@
     "title": "Q_n Is Bipartite via Popcount Parity",
     "content": "`hypercube_bipartite`: $Q_n$ is 2-colorable, colored by the parity of the number of set bits (`hypercubeBitCount`/`hypercubeColor`). The heart is the private lemma `hypercubeBitCount_xor_pow_parity`: flipping bit $k$ ($v\\mapsto v\\oplus 2^k$) changes the popcount parity, because all bits $j\\ne k$ are unchanged (`Nat.testBit_two_pow_of_ne`) while bit $k$ flips (`Nat.testBit_two_pow_self`), so the isolated $k$-term shifts the sum by exactly $\\pm 1$ (case split + `omega`). Since adjacent vertices differ in exactly one bit, they get different colors — a `SimpleGraph.Coloring` into `Fin 2`, hence bipartiteness.",
     "mathContext": "color$(v) = \\mathrm{popcount}(v)\\bmod 2$; adjacent $\\Rightarrow$ different parity",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "bipartite / 2-coloring",
       "popcount parity",

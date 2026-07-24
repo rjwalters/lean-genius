@@ -7,7 +7,7 @@
     "title": "Scalar Invariants vs. the Structural Layer",
     "content": "The module docstring frames this entry against its companion [oq-01]: that entry collects the classical *scalar* similarity invariants (determinant, trace, characteristic polynomial); this one adds the *structural* layer — rank, nullity, and invertibility — which is exactly the data a change of basis cannot see about the underlying linear map. It previews the four results proved (rank_eq over any commutative ring; isUnit_iff / isUnit_det_iff; the matrix form of rank–nullity; nullity_eq and the trivial-kernel ⇔ full-rank bridge) and notes that Mathlib already has the ingredients (rank_mul_eq_left/right_of_isUnit_det, finrank_range_add_finrank_ker, isUnit_iff_isUnit_det) but packages neither a named Similar relation nor these invariance theorems.",
     "mathContext": "Scalar invariants: $\\det A,\\ \\operatorname{tr} A,\\ \\chi_A(x)$. Structural invariants added here: $\\operatorname{rank} A,\\ \\operatorname{nullity} A,\\ \\operatorname{IsUnit} A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["similarity invariants", "change of basis", "rank of a linear map", "kernel dimension"],
     "prerequisites": ["matrices over a commutative ring", "the Similar relation from the companion entry"]
   },

@@ -10,7 +10,7 @@
     "title": "The Center Dichotomy for |G| = pq, and Why the Middle Is Forbidden",
     "content": "The docstring states OQ-09 and its answer: for |G| = pq with p ≠ q prime, the center has order |Z(G)| ∈ {1, pq} — never the intermediate p or q. The argument is entirely index-theoretic. By Lagrange |Z(G)| divides pq, so it is 1, p, q, or pq. The forbidden case |Z(G)| = p gives index [G:Z(G)] = q, a prime, so G/Z(G) is cyclic; a group with cyclic central quotient is abelian, forcing Z(G) = G and |Z(G)| = pq — contradicting |Z(G)| = p. The case q is symmetric. The headline consequence, a nonabelian group of order pq has trivial center, is the structural entry point for the Sylow classification in the sibling entry lagrange-theorem-oq-01-oq-01. Mathlib's card_center_eq_prime_pow handles prime-power orders only, so the two-distinct-prime case is proved here from scratch.",
     "mathContext": "$|Z(G)| \\in \\{1, pq\\}$ for $|G| = pq$, $p \\neq q$ prime; the divisors $p, q$ are impossible because prime index forces $G/Z(G)$ cyclic hence $G$ abelian.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "center of a group",
       "Lagrange's theorem",

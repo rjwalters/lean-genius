@@ -43,7 +43,7 @@
     "title": "The Diagonal Beta Value",
     "content": "betaDiag n = 1/((2n+1)·C(2n,n)) is the real diagonal Euler Beta value B(n+1,n+1), inherited as a closed form from the parent entry. It is the total (unrescaled) mass of the symmetric Beta density t^n(1-t)^n on [0,1], and the object whose decay the file quantifies.",
     "mathContext": "$\\mathrm{betaDiag}(n) = B(n+1,n+1) = \\dfrac{1}{(2n+1)\\,C(2n,n)}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euler Beta function", "central binomial coefficient", "symmetric Beta density"],
     "prerequisites": ["Euler Beta integral", "binomial coefficients"]
   },
@@ -67,7 +67,7 @@
     "title": "Anchoring to the Complex Euler Beta Integral",
     "content": "betaIntegral_diag_eq proves Complex.betaIntegral (n+1) (n+1) = (betaDiag n : ℂ) using the parent lemma betaIntegral_diag_centralBinom. This certifies that the real sequence analysed throughout is literally the value of Mathlib's complex Euler Beta integral on the diagonal, so the asymptotic is a genuine statement about B(n+1,n+1) rather than an ad-hoc surrogate sequence.",
     "mathContext": "$\\mathrm{betaIntegral}(n+1,\\,n+1) = (\\mathrm{betaDiag}(n) : \\mathbb{C})$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["complex Beta integral", "Euler Beta function", "analytic continuation"],
     "prerequisites": ["Complex.betaIntegral", "casting ℝ to ℂ"]
   }

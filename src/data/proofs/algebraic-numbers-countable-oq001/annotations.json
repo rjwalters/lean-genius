@@ -7,7 +7,7 @@
     "title": "The Baire-category engine, abstracted from ℝ",
     "content": "The parent proves the concrete ℝ dichotomy (algebraic reals Fσ-not-Gδ, transcendentals dense Gδ). This file records the observation that the 'not Gδ' half is pure topology: for a dense countable D in a nonempty perfect T1 Baire space, D is Fσ but not Gδ. The reason: D is meagre (countable in a perfect Baire space), so Dᶜ is comeagre — a dense Gδ; and two disjoint dense Gδ sets cannot coexist in a nonempty Baire space (their intersection would be dense yet empty). The proof assembles three already-verified parent lemmas: `isFσ_of_countable`, `compl_countable_isDenseGδ`, and `not_isGδ_of_dense_of_disjoint_denseGδ`.",
     "mathContext": "$D \\text{ countable} \\Rightarrow D \\text{ meagre} \\Rightarrow D^c \\text{ dense } G_\\delta;\\quad \\text{two disjoint dense } G_\\delta \\text{ impossible}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Baire category theorem", "meagre set", "comeagre set", "dense Gδ", "descriptive set theory"],
     "prerequisites": ["Baire category", "meagre and comeagre sets"]
   },
@@ -43,7 +43,7 @@
     "title": "How the 'not Gδ' proof mechanically fires",
     "content": "The four-line tactic block is the whole argument. `refine ⟨isFσ_of_countable hcount, ?_⟩` discharges the Fσ half immediately and leaves only `¬ IsGδ D`. Then `intro hGδ` assumes D *is* Gδ for contradiction; `obtain ⟨hgc, hdc⟩ := compl_countable_isDenseGδ hcount` extracts that Dᶜ is Gδ (`hgc`) and dense (`hdc`); and the final `exact not_isGδ_of_dense_of_disjoint_denseGδ hdense hGδ hgc hdc disjoint_compl_right` feeds the referee both dense-Gδ sets plus `disjoint_compl_right : Disjoint D Dᶜ`. The disjointness is the free lemma that closes the loop — D and its complement are always disjoint, so no separation argument is needed. No metric, measure, or induction appears anywhere.",
     "mathContext": "$D \\in G_\\delta \\;\\wedge\\; D^c \\in G_\\delta \\text{ dense} \\;\\wedge\\; D \\cap D^c = \\varnothing \\;\\Rightarrow\\; \\bot$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["proof by contradiction", "disjoint_compl_right", "term-mode assembly", "Baire category"],
     "prerequisites": ["Lean tactic mode", "by_contra reasoning"]
   },

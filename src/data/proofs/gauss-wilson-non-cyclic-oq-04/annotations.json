@@ -7,7 +7,7 @@
     "title": "The Square-Root-of-Unity Count N(n)",
     "content": "sqrtOneCount n = Nat.card {x : ZMod n // x² = 1} is the number of solutions of x² = 1 modulo n. A root of x² = 1 is automatically a unit (its own inverse), so this counts the 2-torsion of (ZMod n)ˣ — exactly the object the parent entry studies — while working in the ring ZMod n, which is what lets the Chinese Remainder Theorem act on it directly. It is declared noncomputable because Nat.card is defined via cardinality, not by a decidable enumeration.",
     "mathContext": "For finite n the set {x : x² = 1} is the fibre over 1 of the squaring map on units. Over a field it has ≤ 2 elements; over ZMod n it can be larger because ZMod n has zero divisors, and its size is the arithmetic function computed here.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": ["roots of unity", "2-torsion subgroup", "arithmetic function"],
     "prerequisites": ["Nat.card", "ZMod"]
   },
@@ -31,7 +31,7 @@
     "title": "Odd Prime Power: Only ±1 Are Square Roots of Unity",
     "content": "In ZMod (p^k) with p an odd prime, x² = 1 ↔ x = 1 ∨ x = -1. The proof is elementary and avoids cyclic-group theory: lift x to an integer a, so p^k ∣ (a-1)(a+1). Since p is odd it cannot divide both a-1 and a+1 (their difference is 2), so p is coprime to one factor; then IsCoprime.pow_left and IsCoprime.dvd_of_dvd_mul make p^k divide the other, forcing a ≡ 1 or a ≡ -1 (mod p^k). The reverse direction is a one-line ring computation.",
     "mathContext": "This is the statement that the ring ZMod (p^k) has no nontrivial square roots of unity for odd p — equivalently the 2-torsion of (ZMod (p^k))ˣ is {±1}. It fails for p = 2 (e.g. ZMod 8 has four square roots of unity: 1, 3, 5, 7), which is exactly the source of the 2-adic correction δ in the full formula.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["coprimality", "Chinese Remainder Theorem", "cyclic units"],
     "prerequisites": ["Prime.coprime_iff_not_dvd", "IsCoprime.dvd_of_dvd_mul_right", "ZMod.intCast_zmod_eq_zero_iff_dvd"]
   },
@@ -55,7 +55,7 @@
     "title": "Local Count N(p^k) = 2",
     "content": "Combining the ±1 classification with 1 ≠ -1 (which holds because the odd prime power p^k ≥ 3, proved in one_ne_neg_one_prime_pow via p^k ∤ 2), the filtered set {x : x² = 1} equals the two-element Finset {1, -1}. Finset.card_pair then gives N(p^k) = 2.",
     "mathContext": "Every odd prime contributes exactly a factor of 2 to the count — the two square roots ±1. This is the per-prime input to the multiplicative assembly.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Finset.card_pair", "two-element set"],
     "prerequisites": ["Fintype.card_subtype", "Finset.card_pair"]
   },
@@ -67,7 +67,7 @@
     "title": "Multiplicativity via the Chinese Remainder Theorem",
     "content": "For coprime m, n, N(m·n) = N(m)·N(n). The CRT ring isomorphism e : ZMod (m·n) ≃+* ZMod m × ZMod n transports x² = 1 across e (using map_pow and injectivity), so {x : ZMod (m·n) // x²=1} ≃ {p : ZMod m × ZMod n // p²=1}. Since (a,b)² = 1 ↔ a²=1 ∧ b²=1, Equiv.subtypeProdEquivProd splits this into a product of the two local solution sets, and Nat.card_prod delivers the product formula.",
     "mathContext": "This is the arithmetic-function multiplicativity of N: it is the exact statement that solving x² = 1 mod m·n is independent solving mod m and mod n when gcd(m,n) = 1. It reduces the global count to prime-power counts.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Chinese Remainder Theorem", "multiplicative function", "product of subtypes"],
     "prerequisites": ["ZMod.chineseRemainder", "Equiv.subtypeProdEquivProd", "Nat.card_prod"]
   },
@@ -79,7 +79,7 @@
     "title": "Assembly: N(n) = 2^ω(n) for Odd n",
     "content": "N is multiplicative with N(1) = 1, so Nat.multiplicative_factorization writes N(n) as the product of N(p^k) over the prime factorization of n. For odd n every prime factor p is odd (p = 2 would make n even, contradicting Odd n — dispatched by omega on n % 2), so each factor is 2, and Finset.prod_const collapses the product to 2^(number of distinct prime factors) = 2^ω(n), where ω(n) = n.primeFactors.card.",
     "mathContext": "The identity N(n) = 2^ω(n) is the classical count of square roots of unity modulo an odd n. Setting δ = 0 in the parent's conjectured 2^(ω_odd(n)+δ), this is exactly the odd-modulus case; the even case adds the 2-adic contribution from the prime 2.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["multiplicative functions", "prime factorization", "omega function"],
     "prerequisites": ["Nat.multiplicative_factorization", "Finset.prod_const", "Nat.support_factorization"]
   }

@@ -91,7 +91,7 @@
     "title": "Readability restatement: a prime just past each p_n",
     "content": "`rh_implies_prime_after_each_prime` re-packages the axiom in prime-indexed form: under RH, for every `n` there is a prime `q` with `p_n < q ≤ p_n + C√p_n·log p_n`. It is immediate from the axiom (instantiated at `x = p_n`) and carries no new mathematical work — recorded only to make the short-interval consequence legible at the level of consecutive primes. The substantive theorem remains `rh_implies_prime_gap_bound`.",
     "mathContext": "$\\forall n,\\ \\exists q \\in \\mathbb{P},\\ p_n < q \\le p_n + C\\sqrt{p_n}\\log p_n$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["short intervals", "restatement", "readability lemma"],
     "prerequisites": ["prime enumeration"]
   }

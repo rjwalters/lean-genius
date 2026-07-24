@@ -10,7 +10,7 @@
     "title": "Two answers to 'how does 2^ω(n) generalize?'",
     "content": "The parent proves ZMod n has 2^ω(n) idempotents (automorphic residues e²≡e mod n). This file answers the parent's open question — how does the count generalize beyond ℤ? — arithmetically and algebraically. Arithmetically, 2^ω(n) is the number of squarefree divisors of n, since squarefree divisors are indexed by subsets of the prime-factor set. Algebraically, the count is a power of two because the Chinese Remainder Theorem writes the modulus as a finite product of LOCAL rings, and a local ring has only the trivial idempotents 0 and 1; this holds equally for ZMod n (factors ZMod pᵏ) and for 𝒪_K/𝔞 (factors 𝒪_K/𝔭ᵏ), the number-ring case named in the open question.",
     "mathContext": "$\\#\\{\\text{idempotents of } \\mathbb{Z}/n\\} = \\#\\{\\text{squarefree divisors of } n\\} = 2^{\\omega(n)}$, and more generally $2^{(\\text{number of local factors})}$ for any CRT product of local rings.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "idempotents",
       "local rings",

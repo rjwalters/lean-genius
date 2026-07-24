@@ -29,7 +29,7 @@
     "title": "The promotion is honest ℤ√2 multiplication",
     "content": "`negMul` promotes the scalar product into `Pell.Solution₁ 2` via `Solution₁.mk`, but the mathematically important lemma is `coe_negMul`: the promoted element's underlying `ℤ√2` value is *literally* the ring product `⟨x₁,y₁⟩ · ⟨x₂,y₂⟩`. This is what makes the construction genuine rather than an ad-hoc coordinate formula — it is proved by unfolding `mk`, rewriting with `coe_mk`, and matching components via the `Zsqrtd` multiplication simp lemmas `re_mul`/`im_mul`. The `@[simp]` component lemmas `negMul_x`/`negMul_y` are pure `rfl`.",
     "mathContext": "In $\\mathbb{Z}[\\sqrt2]$: $\\langle x_1,y_1\\rangle\\langle x_2,y_2\\rangle=\\langle x_1x_2+2y_1y_2,\\ x_1y_2+y_1x_2\\rangle$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Zsqrtd", "coercion", "Solution₁.mk"]
   },
   {

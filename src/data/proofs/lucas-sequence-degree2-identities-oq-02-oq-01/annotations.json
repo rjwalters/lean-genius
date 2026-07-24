@@ -7,7 +7,7 @@
     "title": "The Sharp Bound gcd(Uₙ, Vₙ) ∣ 2 for Coprime Parameters",
     "content": "The header frames the open question. For the fundamental Lucas sequence Uₙ (U₀=0, U₁=1) and companion Vₙ (V₀=2, V₁=P) of parameters (P,Q), the sibling entry proved the unconditional core gcd(Uₙ,Vₙ) ∣ 4Qⁿ from the master identity Vₙ² − D·Uₙ² = 4Qⁿ. This entry sharpens it to the best-possible gcd(Uₙ,Vₙ) ∣ 2 whenever gcd(P,Q) = 1 — sharp because the Fibonacci/Lucas case (P,Q)=(1,−1) gives gcd(F₃,L₃) = gcd(2,4) = 2, so 2 cannot drop to 1. Proof architecture, via the companion-from-fundamental relation Vₙ = 2Uₙ₊₁ − PUₙ: writing g = gcd(Uₙ,Vₙ), g ∣ Vₙ + PUₙ = 2Uₙ₊₁; under gcd(P,Q)=1 consecutive terms Uₙ, Uₙ₊₁ are coprime (U_coprime_succ), so IsCoprime g Uₙ₊₁; cancelling Uₙ₊₁ from g ∣ 2Uₙ₊₁ gives g ∣ 2. The coprimality is an induction needing the auxiliary U_succ_coprime_Q (Uₙ₊₁ ≡ Pⁿ mod Q, hence coprime to Q), which lets the step Uₙ₊₂ = PUₙ₊₁ − QUₙ reduce mod Uₙ₊₁ to −QUₙ and split by IsCoprime.mul_right. Instances: fib_lucas_gcd_dvd_two, pell_gcd_dvd_two. 0 axioms, 0 sorries.",
     "mathContext": "$\\gcd(U_n,V_n)\\mid 2$ when $\\gcd(P,Q)=1$ (sharp: $\\gcd(F_3,L_3)=2$); via $V_n = 2U_{n+1}-PU_n$, $\\gcd(P,Q)=1 \\Rightarrow U_n\\perp U_{n+1}$, cancel $U_{n+1}$ from $g\\mid 2U_{n+1}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lucas sequences (fundamental and companion)", "gcd / coprimality bounds", "Fibonacci–Lucas and Pell", "master identity Vₙ²−DUₙ²=4Qⁿ", "sharpness of a divisibility constant"],
     "prerequisites": ["Lucas sequence recurrences", "IsCoprime API", "the sibling's gcd(Uₙ,Vₙ) ∣ 4Qⁿ core"]
   },

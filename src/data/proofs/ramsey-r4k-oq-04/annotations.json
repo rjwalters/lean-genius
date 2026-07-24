@@ -34,7 +34,7 @@
     "title": "Two-colour existence by strong induction on r + s",
     "content": "ramseyProp_exists packages the classical Ramsey existence theorem for RamseyProp: for all r, s there is n with RamseyProp n r s. The gallery already had the recursive bound ramsey_recursion (R(r,s) <= R(r-1,s) + R(r,s-1)) and the base cases, but not the packaged existence. The proof uses a helper 'key : forall N r s, r + s <= N -> exists n, RamseyProp n r s' proved by induction on the bound N; base cases r <= 1 or s <= 1 discharge via ramseyProp_zero_left/right and ramseyProp_one_left/right, and the r >= 2, s >= 2 case combines two induction-hypothesis witnesses through ramsey_recursion.",
     "mathContext": "Strong induction on $r + s$ is the standard route to Ramsey existence: the recursion $R(r,s) \\le R(r-1,s) + R(r,s-1)$ strictly decreases $r + s$, and the boundary $\\min(r,s) \\le 1$ is trivial. Bounding the recursion depth by an explicit parameter $N$ avoids well-founded-recursion boilerplate.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Erdos-Szekeres recursion",
       "strong induction on r + s",
@@ -130,7 +130,7 @@
     "title": "Bridge: two-colour RamseyMulti equals RamseyProp",
     "content": "ramseyMulti_two_iff_ramseyProp proves RamseyMulti n 2 ![r,s] <-> RamseyProp n r s. A small colour code b2 : Bool -> Fin 2 (red/true -> colour 0 with target r, blue/false -> colour 1 with target s) mediates both directions, decoded by the decide lemmas b2_eq_zero and b2_eq_one. This certifies the multicolour framework is a conservative extension of the gallery's two-colour theory: nothing about RamseyProp is changed, it is exactly the c = 2 instance.",
     "mathContext": "Colour $0$ carries the first target $r$ (the red clique) and colour $1$ the second target $s$ (the blue clique), matching the vector $![r, s]$. The equivalence anchors the new definition to the established one so the extension cannot silently diverge from classical Ramsey theory.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "conservative extension",
       "Bool <-> Fin 2 colour code",

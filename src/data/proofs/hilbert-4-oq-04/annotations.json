@@ -128,7 +128,7 @@
     "title": "φ Preserves the Positive Ray and Fixes t⋆",
     "content": "Two facts that make the dynamical system well-posed on (0,∞). `den_pos` and `mobius_pos` show that for t > 0 the denominator c·t+d and the value φ(t) = (a·t+b)/(c·t+d) are both positive — the positive ray is forward-invariant, so the whole power iteration stays where the Hilbert metric lives. `mobius_perron` verifies φ(t⋆) = t⋆ directly from the fixed-point quadratic (`perron_quadratic`): the Perron ratio is a genuine fixed point, the limit the iteration will be shown to approach.",
     "mathContext": "$t>0\\Rightarrow\\varphi(t)>0$; $\\varphi(t^\\star)=t^\\star$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Forward invariance",
       "Fixed point",

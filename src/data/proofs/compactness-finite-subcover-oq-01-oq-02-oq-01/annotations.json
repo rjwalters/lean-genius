@@ -19,7 +19,7 @@
     "title": "Formalizing 'Nested, Shrinking, Complete' as Lean Hypotheses",
     "content": "The docstring's prose is turned into exactly four hypotheses: `Monotone a` and `Antitone b` encode 'nested' (each interval contains the next), `∀ n, a n ≤ b n` rules out an interval being empty, and `Tendsto (fun n => b n - a n) atTop (𝓝 0)` encodes 'shrinking'. No compactness or completeness hypothesis is stated explicitly — it is silently supplied by `ℝ` itself, since the proof only ever needs a conditional supremum to exist, which every `BddAbove` set of reals has. The conclusion packages both existence and uniqueness into one equation, `⋂ n, Icc (a n) (b n) = {⨆ n, a n}`, rather than the more common two-step 'is nonempty, and is a singleton'.",
     "mathContext": "Hypotheses: $a\\nearrow$, $b\\searrow$, $a_n\\le b_n\\ \\forall n$, $b_n-a_n\\to 0$. Conclusion: $\\bigcap_n [a_n,b_n]=\\{\\sup_n a_n\\}$ in one equation.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Monotone", "Antitone", "Tendsto", "conditional completeness of ℝ", "iInter as Icc"],
     "prerequisites": ["order relations on sequences", "filters and limits"]
   },

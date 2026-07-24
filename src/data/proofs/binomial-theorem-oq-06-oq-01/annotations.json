@@ -19,7 +19,7 @@
     "title": "The Signed Vandermonde Convolution",
     "content": "The central result: ∑_{k=0}^{r} (-1)^k C(m,k) C(n,r-k) = [x^r] (1-X)^m (1+X)^n. Mathlib records the unsigned convolution (Nat.add_choose_eq) and the plain alternating row sum (Int.alternating_sum_range_choose) but not this signed interpolation. The proof is Polynomial.coeff_mul on the product, converting the antidiagonal to range (r+1) and rewriting the two factor coefficients via coeff_one_sub_X_pow and Mathlib's coeff_one_add_X_pow.",
     "mathContext": "$\\sum_{k=0}^{r} (-1)^k \\binom{m}{k}\\binom{n}{r-k} = [x^r](1-x)^m(1+x)^n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Vandermonde's identity", "generating functions", "convolution"],
     "prerequisites": ["Polynomial.coeff_mul", "Finset.Nat.sum_antidiagonal_eq_sum_range_succ"]
   },
@@ -55,7 +55,7 @@
     "title": "Closed Form for (1 - X^2)^n Coefficients",
     "content": "[x^r] (1-X^2)^n = (-1)^{r/2} C(n, r/2) when 2 ∣ r, and 0 otherwise. Extracting the coefficient from the even-degree expansion: coeff_X_pow selects the single index j with 2j = r, so the sum collapses to one term when r is even (via Finset.sum_eq_single at r/2) and is identically zero when r is odd.",
     "mathContext": "$[x^r](1-X^2)^n = [\\,2 \\mid r\\,]\\, (-1)^{r/2} \\binom{n}{r/2}$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["coefficient extraction", "parity", "central binomial coefficient"],
     "prerequisites": ["Polynomial.coeff_X_pow", "Finset.sum_eq_single"]
   },
@@ -67,7 +67,7 @@
     "title": "Closed Form of the Alternating Squared-Binomial Sum",
     "content": "∑_{k=0}^{n} (-1)^k C(n,k)^2 = (-1)^{n/2} C(n, n/2) for even n and 0 for odd n. Combines the convolution at r = n (using C(n,n-k) = C(n,k) by symmetry, so the summand becomes (-1)^k C(n,k)^2) with the closed form of [x^n] (1-X^2)^n. This is the alternating companion of the parent entry's ∑ C(n,k)^2 = C(2n,n).",
     "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k}^2 = \\begin{cases} (-1)^{n/2}\\binom{n}{n/2} & n \\text{ even} \\\\ 0 & n \\text{ odd}\\end{cases}$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["alternating sums", "squared binomial coefficients", "symmetry of binomials"],
     "prerequisites": ["alternating_choose_sq", "coeff_one_sub_X_sq_pow", "Nat.choose_symm"]
   }

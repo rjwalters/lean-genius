@@ -10,7 +10,7 @@
     "title": "Where This Entry Sits: Completing the Hadamard Tower",
     "content": "This file is the top of a three-entry tower of Hadamard's determinant inequality. The **grandparent** (`gram-linear-independence-iff-oq-01-oq-01`) proved the abstract Gram-matrix form $\\det(\\mathrm{gram}\\,\\mathbb{k}\\,v) \\le \\prod_i \\lVert v_i\\rVert^2$; the **parent** (`…-oq-01-oq-01-oq-02`) specialised it to the column form $\\lVert\\det A\\rVert \\le \\prod_j \\lVert \\mathrm{col}_j A\\rVert$. This entry adds the two remaining standard statements — the **row** form and the **uniform** $n^{n/2}$ ceiling — all pivoted on one bridge, `gram 𝕜 (columns A) = Aᴴ A`, which yields $\\det(A^{\\mathsf H}A) = \\overline{\\det A}\\,\\det A = \\lVert\\det A\\rVert^2$. It imports only the grandparent and re-derives the column form self-containedly so the extensions stand alone. The `namespace`/`variable` block fixes the ambient data: an `RCLike` scalar field $\\mathbb{k}$ (so $\\mathbb{R}$ or $\\mathbb{C}$) and a dimension $n$, with `ComplexOrder` and `InnerProductSpace` scoped notation in play.",
     "mathContext": "Bridge: $\\mathrm{gram}(\\text{cols }A) = A^{\\mathsf H}A$, so $\\det(A^{\\mathsf H}A) = \\overline{\\det A}\\cdot\\det A = \\lVert\\det A\\rVert^2$. Tower: Gram form $\\Rightarrow$ column form $\\Rightarrow$ {row form, uniform bound $\\lVert\\det A\\rVert \\le M^n n^{n/2}$}.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hadamard's determinant inequality",
       "Gram matrix",

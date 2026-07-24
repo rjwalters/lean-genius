@@ -9,7 +9,7 @@
     "title": "Extending Euler's Theorem to Concrete Graph Families",
     "content": "The header sets the agenda: rather than a single impossibility result (Königsberg), this file builds a small catalogue of concrete graphs and decides Eulerian existence for each — positive examples (the cycles $C_4$, $C_5$) and negative ones ($K_4$, and any odd-regular graph such as the Petersen graph). It builds on Mathlib's `SimpleGraph.Trails` infrastructure, whose `Walk.IsEulerian` carries the degree-parity machinery used throughout. The organizing theorem is Euler's: a connected graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian trail iff exactly zero or two vertices have odd degree.",
     "mathContext": "Euler (1736): a connected multigraph has an Eulerian trail $\\iff$ it has $0$ or $2$ odd-degree vertices, and an Eulerian circuit $\\iff$ it has $0$ odd-degree vertices.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Eulerian circuit", "Eulerian trail", "Königsberg bridges", "SimpleGraph.Walk.IsEulerian"],
     "prerequisites": ["graph theory basics", "vertex degree", "Mathlib SimpleGraph"]
   },
@@ -163,7 +163,7 @@
     "title": "Summary: 24 Theorems, 0 Axioms, 0 Sorries",
     "content": "The closing summary catalogues the 24 verified theorems grouped by graph ($C_4$, $C_5$, $K_4$) and by the general theory, recording 0 axioms and 0 sorries. Taken together the file is a compact case study in the two halves of Euler's theorem: explicit `Walk` constructions witness the *sufficiency* side (a closed walk traversing each edge witnesses an Eulerian circuit) for the even-degree cycle graphs, while the degree-parity lemmas deliver the *necessity* side (odd-degree obstructions) for $K_4$ and every odd-regular family. The `#check` commands at the end pin the type signatures of the four headline results.",
     "mathContext": "Positive witnesses: $C_4, C_5$ Eulerian. Negative obstructions: $K_4$ and all odd-regular graphs on $\\ge 3$ vertices, non-Eulerian.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["proof catalogue", "sufficiency vs necessity", "axiom-free verification"],
     "prerequisites": ["Euler's theorem"]
   }

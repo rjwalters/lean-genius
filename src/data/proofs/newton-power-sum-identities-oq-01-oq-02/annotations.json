@@ -91,7 +91,7 @@
     "title": "Concrete specialisation to Fin 2 over ℤ",
     "content": "The final `example` instantiates the degree-2 determinant identity at the two-variable, integer case σ = Fin 2, R = ℤ, confirming the universal statement lands on the familiar formula 2·X₀X₁ = (X₀+X₁)² − (X₀²+X₁²). Because the general theorem already holds over an arbitrary commutative ring, this specialisation is a one-line application `two_esymm_two_det (Fin 2) ℤ` — a sanity anchor rather than new content.",
     "mathContext": "Over $\\sigma = \\mathrm{Fin}\\,2,\\ R = \\mathbb{Z}$: $2e_2 = 2X_0X_1 = p_1^2 - p_2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["symmetric polynomials", "specialisation", "worked example"],
     "prerequisites": ["two_esymm_two_det"]
   }

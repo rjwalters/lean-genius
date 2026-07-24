@@ -7,7 +7,7 @@
     "title": "Bridging two disconnected Mathlib definitions",
     "content": "The docstring states the goal and the obstruction. Mathlib defines the Bell numbers Nat.bell by the binomial recurrence B_{n+1} = Σᵢ C(n,i)·B_{n−i} and the Stirling numbers of the second kind Nat.stirlingSecond by the triangular recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k), but provides no lemma linking them. The classical row-sum identity Bₙ = Σₖ S(n,k) (group the partitions of an n-set by block count) therefore needs a fresh combinatorial bridge. The bridge is a 'horizontal' Stirling recurrence — also missing from Mathlib — obtained by conditioning a partition of {0,…,n} on how many points lie outside the block of the last element.",
     "mathContext": "$B_n = \\sum_{k=0}^{n} S(n,k)$; the bridge is $S(n+1,k+1) = \\sum_{j=0}^{n} \\binom{n}{j} S(j,k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Bell numbers", "Stirling numbers of the second kind", "set partitions", "OEIS A000110", "recurrence relations"],
     "prerequisites": ["enumerative combinatorics", "set partitions"]
   },

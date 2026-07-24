@@ -7,7 +7,7 @@
     "title": "Goal and Companions: D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1",
     "content": "The docstring states the goal for arbitrary additive groups G₁, G₂: D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1. Two companions are named: `Erdos131DavenportRank2` proves the rank-2 CYCLIC case D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 via one explicit extremal sequence, and `Erdos131DavenportConstant` gives the exact cyclic value D(ℤ/nℤ) = n. This file instead proves the underlying structural principle — the concatenation of zero-sum-free sequences — for arbitrary group summands, and is deliberately self-contained (imports only Mathlib, not the companions) so it verifies independently. The matching upper bound D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1 for a ∣ b is Olson's theorem, a substantial result not formalized here.",
     "mathContext": "$D(G_1 \\oplus G_2) \\ge D(G_1) + D(G_2) - 1$ for arbitrary additive groups $G_1, G_2$; specializes to the rank-2 cyclic bound $a+b-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Davenport constant", "direct sum of groups", "Olson's theorem", "Erdős #131"],
     "prerequisites": ["finite abelian groups", "Davenport constant"]
   },

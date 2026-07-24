@@ -10,7 +10,7 @@
     "title": "Scope: removing Mathlib's TietzeExtension black box",
     "content": "The docstring fixes the contribution precisely against the parent entry. The parent (urysohns-lemma-oq-01-oq-01) isolates the engine — the one-step Urysohn approximation urysohn_approx_step and the quantitative iterate urysohn_approx_iterate — but then assembles the final extension by calling Mathlib's TietzeExtension.exists_restrict_eq, which hides the limit behind a black box. This entry removes that black box: it builds the extension by hand as a genuinely convergent series G = ∑' n, gₙ in the Banach space C_b(X, ℝ), where each correction gₙ comes from one application of Urysohn's lemma to the current residual and satisfies ‖gₙ‖ ≤ (2/3)ⁿ·(M/3). The geometric majorant forces absolute convergence (the space is complete), the partial sums approximate f on the closed set s with error (2/3)ⁿ·M → 0, and summing the majorant gives ‖G‖ ≤ M — so the extension lands in the same sup-bound [-M, M] as the data, with no sorry and no use of Mathlib's TietzeExtension API.",
     "mathContext": "$G = \\sum_{n} g_n$ in $C_b(X,\\mathbb{R})$ with $\\|g_n\\| \\le (2/3)^n\\,(M/3)$, so $\\|G\\| \\le \\sum_n (2/3)^n (M/3) = M$ and $G|_s = f$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tietze extension theorem",
       "Urysohn's lemma",

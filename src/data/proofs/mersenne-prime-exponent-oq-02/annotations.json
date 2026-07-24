@@ -7,7 +7,7 @@
     "title": "The two factor restrictions and why they matter",
     "content": "States the goal: for an odd prime p and any prime q dividing the Mersenne number 2^p − 1, both q ≡ 1 (mod 2p) and q ≡ ±1 (mod 8) hold — even when 2^p − 1 is composite. These are the residue filters that make Mersenne trial division efficient: candidate factors have the shape q = 2kp + 1 restricted to ±1 (mod 8). The worked example 2^11 − 1 = 23·89 illustrates 23 = 2·11 + 1 ≡ −1 and 89 = 8·11 + 1 ≡ 1 (mod 8).",
     "mathContext": "$p \\text{ odd prime},\\; q \\text{ prime},\\; q \\mid 2^p - 1 \\;\\Rightarrow\\; q \\equiv 1 \\pmod{2p} \\;\\wedge\\; q \\equiv \\pm 1 \\pmod 8.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mersenne numbers", "trial division", "prime factorization", "residue classes"],
     "prerequisites": ["elementary number theory", "modular arithmetic"]
   },

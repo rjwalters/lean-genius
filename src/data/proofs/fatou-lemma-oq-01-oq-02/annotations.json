@@ -22,7 +22,7 @@
     "title": "The Three Lemmas and the No-Majorant Method",
     "content": "The docstring roadmaps the file's contribution — making precise, on the escaping-mass example, why DCT's integrable-majorant hypothesis is unavoidable. escaping_no_integrable_majorant: every g dominating all bumps has ∫⁻ g = ∞, since their pointwise supremum is 𝟙_[0,∞), of infinite Lebesgue mass. escaping_not_dominated: consequently DCT's domination hypothesis can never be met for this sequence. escaping_dct_failure: the package — escaping n → 0 pointwise yet ∫⁻ escaping n = 1 ↛ 0, with no contradiction to DCT precisely because no integrable majorant exists. The method is the single-bump trick: for x ≥ 0, escaping ⌊x⌋₊ already equals 1 at x, so domination of the whole family forces 𝟙_[0,∞) ≤ g.",
     "mathContext": "$\\sup_n \\mathbf{1}_{[n,n+1)} = \\mathbf{1}_{[0,\\infty)}$, so $\\forall n\\,(f_n \\le g) \\Rightarrow \\int^- g \\ge \\mathrm{vol}([0,\\infty)) = \\infty$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "escaping mass",
       "integrable majorant",

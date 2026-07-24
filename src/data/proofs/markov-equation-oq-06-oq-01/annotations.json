@@ -34,7 +34,7 @@
     "title": "Reusing the Parent's Ascent Infrastructure",
     "content": "The file imports the verified parent leaf Proofs.MarkovEquationOQ06 (and, transitively, Proofs.MarkovEquation) and opens both namespaces. Everything about the ascent itself is inherited: `seq n` is the parent's iterated Vieta-jump of (1,1,1), `seq_spec n` certifies that `seq n` is a sorted Markov triple 1 ≤ a ≤ b ≤ c, and `seq_zero` records (seq 0) = (1,1,1). This entry adds no new definitions (definitionCount = 0) — it consumes these three facts as black boxes and contributes only the quantitative growth estimate, so the whole geometric bound is a thin, axiom-free layer over already-checked infrastructure rather than a fresh construction of the Markov tree.",
     "mathContext": "$\\text{seq},\\ \\text{seq\\_spec},\\ \\text{seq\\_zero}\\ \\text{imported};\\qquad (\\mathrm{seq}\\,0) = (1,1,1),\\ \\ 1 \\le a \\le b \\le c.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "proof reuse",
       "sorted Markov triple invariant",

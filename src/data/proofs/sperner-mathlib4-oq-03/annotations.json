@@ -31,7 +31,7 @@
     "title": "Fixed-point index and boundary index in ZMod 2",
     "content": "fpIndex c K is the panchromatic count reduced into ZMod 2 — the mod-2 degree the Sperner→Brouwer argument computes — and boundaryIndex c K is the boundary-door count in ZMod 2. Lifting the counts from ℕ-mod-2 into the ring ZMod 2 lets the parity congruence be stated as a genuine equation of index elements rather than a congruence of naturals.",
     "mathContext": "$\\mathrm{fpIndex}=(\\mathrm{fp}:\\mathbb{Z}/2),\\ \\mathrm{boundaryIndex}=(\\partial:\\mathbb{Z}/2)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["fixed-point index", "mod-2 degree", "ZMod 2"],
     "prerequisites": ["the two combinatorial counts"]
   },
@@ -43,7 +43,7 @@
     "title": "The index identity fpIndex = boundaryIndex",
     "content": "fpIndex_eq_boundaryIndex is the exact 'fixed-point index computation' OQ-03 asks for: the parity theorem promoted to an identity of ZMod 2 indices. The proof unfolds both indices and applies ZMod.natCast_eq_natCast_iff to reduce the goal to the Nat.ModEq congruence proved above.",
     "mathContext": "$\\mathrm{fpIndex}(c,K)=\\mathrm{boundaryIndex}(c,K)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["ZMod.natCast_eq_natCast_iff", "index computation", "mod-2 degree"],
     "prerequisites": ["Sperner parity in ModEq form"]
   },
@@ -67,7 +67,7 @@
     "title": "Existence engine: nonzero index forces a fixed point",
     "content": "exists_panchromatic_of_boundaryIndex_ne_zero: if boundaryIndex c K ≠ 0 then a panchromatic cell (a combinatorial fixed point) exists. The proof applies the parent lemma sperner and discharges its odd-boundary-door hypothesis by contradiction — an even count would make the boundary index zero by the nullity criterion. This is the index-theoretic form of Sperner's lemma and the mechanism behind Brouwer's existence conclusion.",
     "mathContext": "$\\mathrm{boundaryIndex}(c,K)\\neq 0 \\;\\Rightarrow\\; \\exists\\,s,\\ \\mathrm{IsPanchromatic}\\,c\\,K\\,s$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Sperner's lemma", "existence of fixed point", "proof by contradiction"],
     "prerequisites": ["sperner (parent)", "ZMod-2 nullity criterion"]
   },
@@ -79,7 +79,7 @@
     "title": "Vanishing shadow: no fixed point forces zero index",
     "content": "boundaryIndex_eq_zero_of_no_panchromatic: if no cell is panchromatic then boundaryIndex c K = 0. The proof rewrites through the index identity to fpIndex, then shows the panchromatic-cell filter is empty (filter_eq_empty_iff) so its cardinality — and hence the index — is zero. This is the contrapositive 'no-retraction' shadow that Brouwer's proof exploits.",
     "mathContext": "$(\\forall s,\\ \\neg\\,\\mathrm{IsPanchromatic}\\,c\\,K\\,s)\\;\\Rightarrow\\;\\mathrm{boundaryIndex}(c,K)=0$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["no-retraction principle", "Finset.filter_eq_empty_iff", "contrapositive"],
     "prerequisites": ["the index identity"]
   },

@@ -10,7 +10,7 @@
     "title": "Cube Isolation Goal, Axiom Budget, and Classification Table",
     "content": "The module docstring frames the file's goal (prove the cube is the unique Platonic solid with zero Dehn invariant), previews the new arccos(1/√5)/π irrationality result reusing the Chebyshev-sequence technique from OQ-02's Niven-style argument, and states the axiom budget as 0: both previously axiomatized results — the ℝ-over-ℤ flatness fact used in OQ02OQ02, and icoAngle_irrational proved in this file — are now proved theorems rather than assumptions. It closes with the classification table listing each Platonic solid's dihedral angle and whether its Dehn invariant vanishes (only the cube's does).",
     "mathContext": "Classification: cube $\\pi/2 \\to D=0$; tetrahedron $\\arccos(1/3)$, octahedron $\\arccos(-1/3)$, dodecahedron $\\arccos(-1/\\sqrt5)$, icosahedron $\\arccos(-\\sqrt5/3) \\to D\\neq 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Dehn invariant", "scissors congruence", "Hilbert's third problem", "Platonic solids"],
     "prerequisites": ["Dehn invariant infrastructure from OQ-02/OQ-02-OQ-02"]
   },

@@ -10,7 +10,7 @@
     "title": "Honest Scope: A Genuine Mathlib Gap and the Oracle Increment",
     "content": "Jacobi's four-square formula r₄(n) = 8·Σ_{d|n, 4∤d} d is a real Mathlib gap: Mathlib has four-square EXISTENCE (Nat.sum_four_squares) and Euler's multiplicativity identity, but no representation COUNT r₄, no two-square count r₂, and no Jacobi formula. All three classical routes are blocked by ≫1000-LOC prerequisites: weight-2 modular forms θ⁴ ∈ M₂(Γ₀(4)) (theta identity absent), Hurwitz-quaternion order arithmetic (undeveloped), and the elementary Lambert/Liouville method (needs the missing r₂). Rather than overclaim, this file pins the counting CONVENTION and provides a machine-checked oracle that the divisor-sum RHS matches a brute-force lattice count for 1≤n≤24 — mirroring the parent OQ-01's 'verified for small cases' pattern. The docstring's axiom-status paragraph is accurate: the oracle uses native_decide (⇒ Lean.ofReduceBool), so the entry is honestly status=axiomatized, while the structural lemmas are 0-axiom.",
     "mathContext": "$r_4(n)=8\\sum_{d\\mid n,\\,4\\nmid d} d$ (Jacobi). Mathlib has existence and Euler's identity $(\\sum x_i^2)(\\sum y_i^2)=\\sum z_i^2$, but no count.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Jacobi four-square formula",
       "modular forms",

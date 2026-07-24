@@ -7,7 +7,7 @@
     "title": "The Capstone of the Hurwitz Isoperimetric Program",
     "content": "The module docstring lays out the whole strategy. The gallery parent proved the isoperimetric inequality 4πA ≤ L² for smooth closed curves from FIVE disclosed analytic axioms — Fourier decomposition, constant-speed reparametrization (IFT), the Wirtinger sum bound, and two Cauchy–Schwarz bounds — plus the fully-proved algebraic kernel. Across the OQ lineage each of the five axioms was independently discharged 0-axiom in a self-contained companion file. This capstone performs the final assembly: it feeds the four discharged analytic bounds (on the IFT reparametrization) into the algebraic kernel to obtain a fully axiom-free proof. The crucial honesty point spelled out here: the result is stated for RegularClosedCurve, not all SmoothClosedCurve, because the reparametrization axiom is genuinely FALSE at stationary points — so a literal 0-axiom replacement of the parent theorem is impossible, and the regular locus is the maximal domain where the inverse-function-theorem route can succeed. Restricting the hypothesis, rather than adding an axiom, is what makes the end-to-end chain honest.",
     "mathContext": "Program: Fourier $\\Rightarrow$ Wirtinger $\\Rightarrow$ Cauchy–Schwarz $\\Rightarrow$ IFT reparametrization $\\Rightarrow$ algebraic kernel $\\Rightarrow$ $4\\pi A \\le L^2$, on the regular locus, with 0 axioms and 0 sorries.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["isoperimetric inequality", "Hurwitz proof", "axiom discharge", "regular vs smooth curve", "maximal honest endpoint"],
     "prerequisites": ["the isoperimetric problem", "the notion of a disclosed axiom", "regular closed curves"]
   },

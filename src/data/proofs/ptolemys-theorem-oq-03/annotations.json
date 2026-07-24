@@ -19,7 +19,7 @@
     "title": "The Diameter-1 Inscribed Quadrilateral (Thales)",
     "content": "The four vertices are placed in ℂ: A = 0 and C = 1 are the endpoints of a diameter of length 1, and B = ⟨cos²α, sin α cos α⟩ = cos α·e^{iα}, D = ⟨cos²β, −sin β cos β⟩ = cos β·e^{−iβ} are the apexes of two right triangles on opposite sides of AC. Choosing AC to be a diameter is the crucial move: by Thales' theorem the inscribed angles ∠ABC and ∠ADC are right angles, so in triangle ABC the legs are AB = cos α, BC = sin α (with ∠BAC = α), and likewise AD = cos β, CD = sin β. B and D are marked `noncomputable` only because they are built from the real transcendental functions sin/cos.",
     "mathContext": "$B = \\cos\\alpha\\,e^{i\\alpha},\\ D = \\cos\\beta\\,e^{-i\\beta}$ on the circle of diameter $AC=[0,1]$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Thales' theorem", "inscribed angle", "cyclic quadrilateral", "unit diameter"],
     "prerequisites": ["circle geometry", "right triangles"]
   },
@@ -31,7 +31,7 @@
     "title": "Chord Lengths from the Pythagorean Identity",
     "content": "The four sides and the diameter are computed uniformly. In ℂ, `dist z w = ‖z − w‖ = √(normSq(z − w))`, so each length is the square root of a squared distance. For example normSq(A − B) = cos⁴α + sin²α cos²α = cos²α(cos²α + sin²α) = cos²α, which collapses by the Pythagorean identity `Real.sin_sq_add_cos_sq`; then `Real.sqrt_sq`, together with cos α ≥ 0 on [0,π/2], gives AB = cos α. The same three-step pattern (compute normSq → recognize a perfect square via sin²+cos²=1 → extract with sqrt_sq under nonnegativity) yields BC = sin α, AD = cos β, CD = sin β, and AC = 1.",
     "mathContext": "$AB=\\cos\\alpha,\\ BC=\\sin\\alpha,\\ AD=\\cos\\beta,\\ CD=\\sin\\beta,\\ AC=1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Euclidean distance in ℂ", "normSq", "Pythagorean identity", "Real.sqrt_sq"],
     "prerequisites": ["complex modulus", "square roots"]
   },
@@ -55,7 +55,7 @@
     "title": "The Construction Satisfies Ptolemy's Relation",
     "content": "`ptolemy_relation` confirms AC·BD = AB·CD + BC·AD for the six computed lengths. Substituting AC = 1, BD = sin α cos β + cos α sin β, AB = cos α, CD = sin β, BC = sin α, AD = cos β reduces the goal to 1·(sin α cos β + cos α sin β) = cos α·sin β + sin α·cos β, closed by `ring`. This certifies the inscribed quadrilateral as a genuine Ptolemy configuration and shows Ptolemy's product relation is exactly the sine addition formula in disguise.",
     "mathContext": "$AC\\cdot BD = AB\\cdot CD + BC\\cdot AD \\iff 1\\cdot BD = \\cos\\alpha\\sin\\beta + \\sin\\alpha\\cos\\beta$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Ptolemy's theorem", "cyclic quadrilateral", "diagonal-side products"],
     "prerequisites": ["Ptolemy's theorem"]
   },

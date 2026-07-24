@@ -79,7 +79,7 @@
     "title": "Symbolic, Axiom-Free Cross-Checks",
     "content": "Four spot checks exercise the closed form in both presentations without decide / native_decide: binaryGcdSteps 8 8 = 4 (via the power-of-two form, 8 = 2³), binaryGcdSteps 5 5 = 1 (odd), binaryGcdSteps 12 12 = 3 (constructive form, 12 = 2²·3), and binaryGcdSteps 12 12 = padicValNat 2 12 + 1 (valuation form). Deriving these symbolically — rather than by decide — means the checks incur no Lean.ofReduceBool, so the whole file rests only on the foundational axioms propext / Classical.choice / Quot.sound. They also make the non-monotonicity of the diagonal concrete: the cost is 1 at n = 5 but 4 at n = 8.",
     "mathContext": "$\\texttt{binaryGcdSteps}\\,8\\,8 = 4$, $\\texttt{binaryGcdSteps}\\,5\\,5 = 1$, $\\texttt{binaryGcdSteps}\\,12\\,12 = 3$ — all symbolic, no $\\texttt{native\\_decide}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["axiom integrity", "no native_decide", "non-monotonicity", "worked examples"],
     "prerequisites": ["the diagonal closed form", "#print axioms discipline"]
   }

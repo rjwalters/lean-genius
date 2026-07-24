@@ -10,7 +10,7 @@
     "title": "The undischarged non-nullness side condition of the LLL strong induction",
     "content": "The measure-theoretic OQ-01 development has assembled the Erdős–Lovász induction step over arbitrary subset histories and the neighbour-block denominator recursion. But two of those results — `cond_iInter_compl_ge_prod` and `cond_failure_le_x_prod` — carry a side condition that is *assumed but never proved*:\n$$\\texttt{hpos}: \\quad \\forall\\, T \\subseteq S,\\ \\mu\\!\\left(\\Big(\\bigcap_{j\\in T} A_j^c\\Big) \\cap C\\right) \\ne 0.$$\nThe chain-rule entry `lovasz-local-lemma-oq-01-chain-rule` discharges the analogous fact, but **only over prefix histories** $\\bigcap_{j<n} A_j^c$ (a `Finset.range` induction) and with no extra conditioning block $C$. The genuine dependency-graph induction conditions on the avoidance of an *unstructured subset* $S$ on top of a fixed non-neighbour block $C$, so the prefix result cannot supply its `hpos`. This file discharges the subset-history version.",
     "mathContext": "The LLL strong induction maintains two invariants over subset histories: the per-event failure bounds $\\mu[A_i \\mid \\text{avoidance}] \\le x_i$ and the non-nullness of the histories. This entry supplies the second half.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "survival history positivity",

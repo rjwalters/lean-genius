@@ -143,7 +143,7 @@
     "title": "Empty Family and Monotonicity toward the Infinite Bessel Sum",
     "content": "Part VI supplies the base case and the monotonicity step that lift the finite result to the countable one. `besselSum_empty` records that projecting over `∅` gives `0`, so Bessel degenerates to the trivial `0 ≤ ‖u‖²`.\n\n`bessel_sum_mono` proves that enlarging the finite index set never decreases the coefficient sum: for `s ⊆ t`, `∑_{s} ⟪e i, u⟫² ≤ ∑_{t} ⟪e i, u⟫²`, since each newly included term `⟪e i, u⟫²` is nonnegative (`Finset.sum_le_sum_of_subset_of_nonneg` with `sq_nonneg`). The finite Bessel sums thus form a monotone net bounded above by `‖u‖²`; passing to the supremum over finite `s` yields the countable Bessel inequality `∑' i, ⟪e i, u⟫² ≤ ‖u‖²`, which becomes Parseval's identity when the orthonormal family is a complete basis.",
     "mathContext": "The finite Bessel sums $s \\mapsto \\sum_{i\\in s}\\langle e_i,u\\rangle^2$ form a monotone net bounded by $\\|u\\|^2$; its supremum $\\sum_i' \\langle e_i,u\\rangle^2 \\le \\|u\\|^2$ is the countable Bessel inequality, with equality (Parseval) for a complete basis.",
-    "significance": "key-insight",
+    "significance": "key",
     "relatedConcepts": [
       "monotone convergence",
       "Parseval identity",

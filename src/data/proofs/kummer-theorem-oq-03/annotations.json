@@ -7,7 +7,7 @@
     "title": "Divisibility of Binomial Coefficients by Higher Prime Powers",
     "content": "The docstring frames the entry as a strengthening of the parent's Kummer theorem (which computes the p-adic valuation of a binomial coefficient as a count of base-p carries). Here the goal is the full divisibility characterization by higher prime powers p^m, together with the classical 'prime row' consequences. Three results are promised: (1) p^m ∣ C(n,k) iff there are at least m carries in the base-p addition of k + (n−k); (2) p ∣ C(pⁿ,k) for every interior 0 < k < pⁿ; (3) p-adic patterns for specific rows. All follow from Mathlib plus the parent file, 0 axioms and 0 sorries. The historical arc runs from Kummer (1852, the carry theorem) to Granville (1997, prime-power generalizations).",
     "mathContext": "$p^m \\mid \\binom{n}{k} \\iff \\#\\{\\text{base-}p\\text{ carries in } k+(n-k)\\} \\ge m$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Kummer's theorem", "p-adic valuation", "base-p carries", "Pascal's triangle mod p", "Lucas' theorem"],
     "prerequisites": ["binomial coefficients", "base-p representation", "prime powers"]
   },

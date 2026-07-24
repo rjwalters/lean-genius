@@ -85,7 +85,7 @@
     "title": "The Recursion Depth is Exactly the Bit-Length",
     "content": "`depth_eq_size` proves $\\lfloor\\log_2 n\\rfloor + 1 = $ `Nat.size n` (the number of binary digits of $n$) for $n>0$. This makes the abstract 'depth factor' concrete: HGCD's halving strips one bit per level, so it recurses through **precisely the bit-length many** levels. `cost_le_size` then restates the master bound as $T(n) \\le (\\text{bit-length of } n)\\cdot M(n)$ — the form in which practitioners quote the $O(M(n)\\log n)$ result, with $\\log n$ read as the bit-count.",
     "mathContext": "Both quantities are pinned by the same sandwich. `Nat.log`: $2^{\\log_2 n}\\le n < 2^{\\log_2 n + 1}$ (`pow_log_le_self`, `lt_pow_succ_log_self`). `Nat.size`: $m<\\text{size }n \\iff 2^m\\le n$ and $\\text{size }m\\le n\\iff m<2^n$ (`lt_size`, `size_le`). Together they force $\\log_2 n < \\text{size }n \\le \\log_2 n + 1$, hence equality of $\\text{size }n$ and $\\log_2 n + 1$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.size (bit-length)",
       "floor logarithm",
@@ -107,7 +107,7 @@
     "title": "Linear Merge: the Classical O(n·log n) Shape",
     "content": "Instantiating the merge cost $M = \\mathrm{id}$ gives `cost_le_linear`: $T(n) \\le (\\lfloor\\log_2 n\\rfloor + 1)\\cdot n$, the familiar $\\Theta(n\\log n)$ shape for a divide-and-conquer routine with linear-time merging (and the leading behaviour of Schönhage GCD with quasi-linear multiplication, where the extra $M(n)/n$ factor is subsumed). `halvingRegular_id` supplies the regularity check, which for the identity is simply $2\\lfloor n/2\\rfloor \\le n$. The section ends with a `#print axioms` audit confirming the four headline theorems rest only on `propext`, `Classical.choice`, `Quot.sound`.",
     "mathContext": "For $M(n)=n$: $M(\\lfloor n/2\\rfloor)+M(\\lfloor n/2\\rfloor)=2\\lfloor n/2\\rfloor\\le n=M(n)$, so the identity is halving-regular with equality on even $n$. Substituting into `cost_le` collapses `id n` to `n` definitionally, and the bound $(\\lfloor\\log_2 n\\rfloor + 1)\\cdot n$ is exactly the number-of-levels times per-level linear work.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "O(n log n) divide-and-conquer",
       "identity/linear cost model",

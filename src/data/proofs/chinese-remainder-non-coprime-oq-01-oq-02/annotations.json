@@ -10,7 +10,7 @@
     "title": "From Mixed-Radix Fact to Full Algorithm",
     "content": "The parent entry proved only the k = 2 mixed-radix existence fact: any x < m·n splits as c₁ + c₂·m with c₁ < m, c₂ < n. That is a statement about representations, not an algorithm — it does not tell you how to find the CRT solution from residues, nor what it costs.\n\nThis file supplies both halves of the open question. The algorithm half is `garner`: forward substitution computing one digit per modulus, using an executable extended-gcd modular inverse, with machine-checked correctness and uniqueness. The complexity half is `garnerOps_eq`: since Mathlib has no machine cost model, the classical O(k²) bound is formalized as a proved closed form — exactly k(k−1)/2 — of an explicit operation counter whose per-step charge is itself grounded by a verified single-precision inner loop (Part V).\n\nEverything is verified with 0 axioms and 0 sorries; the executable examples use kernel `decide`, not `native_decide`.",
     "mathContext": "Given pairwise-coprime moduli $m_1,\\ldots,m_k$ and residues $r_1,\\ldots,r_k$, find $x < \\prod_i m_i$ with $x \\equiv r_i \\pmod{m_i}$ for all $i$, and bound the number of single-precision modular operations the computation requires.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Chinese Remainder Theorem", "Garner's algorithm", "mixed-radix representation", "operation counting"],
     "prerequisites": ["Nat.ModEq", "pairwise coprimality"]
   },
@@ -55,7 +55,7 @@
     "title": "Forward Substitution in Truncation-Safe ℕ Arithmetic",
     "content": "The algorithm threads two accumulators through the modulus list: x (partial solution) and P (product of moduli already processed). Each step computes\n\n    v = ((r % m + (m − x % m)) · modInv (P % m) m) % m\n\nwhich is the textbook (r − x)·P⁻¹ mod m written without integer subtraction: since x % m < m, the inner `m − x % m` never truncates, and modulo m the expression r % m + m − x % m is exactly r − x. Then x ← x + v·P and P ← P·m.\n\nNote the inverse is taken of P % m, not P — this keeps the inverse computation single-precision (both arguments below m) while `ZMod.natCast_mod` makes it equal to P⁻¹ in the correctness proof.\n\n`garnerDigitsRec` runs the same recursion but records the digit stream [v₁, …, vₖ]; `garnerRec_eq_ofDigits` proves by a purely structural induction that the accumulated solution is the Horner value of that stream.",
     "mathContext": "$v_i = (r_i - x_{i-1}) \\cdot P_{i-1}^{-1} \\bmod m_i$, $x_i = x_{i-1} + v_i \\cdot P_{i-1}$, $P_i = P_{i-1} \\cdot m_i$, written in $\\mathbb{N}$ as $r \\% m + (m - x \\% m)$ so the subtraction never underflows.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["forward substitution", "truncated ℕ subtraction", "Horner evaluation"],
     "prerequisites": ["modInv", "ZMod.natCast_mod"]
   },

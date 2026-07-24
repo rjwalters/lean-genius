@@ -49,7 +49,7 @@
     "title": "Concrete Parallelepiped Volume via Matrix.det",
     "content": "parallelepiped_eq_toLin'_image identifies the defining map t ↦ ∑ i, tᵢ • vᵢ of Mathlib's fundamental parallelepiped with Matrix.toLin' of the coordinate matrix (of fun i j => v j i) whose columns are the vectors vᵢ — a coordinatewise funext whose only arithmetic content is mul_comm (tᵢ · (vᵢ)ₖ = (vᵢ)ₖ · tᵢ). volume_parallelepiped then reuses the core lemma at the unit cube, where volume_unitCube collapses the box factor to 1, giving volume (parallelepiped v) = ENNReal.ofReal |det|. This is the concrete volume/Matrix.det counterpart of Mathlib's basis-phrased addHaar_parallelepiped, ready for use without unfolding the Basis.addHaar machinery.",
     "mathContext": "$\\operatorname{vol}(\\operatorname{parallelepiped} v) = |\\det ((v_j)_i)|$, with the matrix's columns the spanning vectors.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "parallelepiped",
       "coordinate matrix",

@@ -39,7 +39,7 @@
     "title": "Counting permutations that fix a set pointwise: (n − |S|)!",
     "content": "card_perm_fixesPointwise is the one non-trivial combinatorial input. For any set S ⊆ Fin n, the permutations that fix every element of S are exactly the permutations of the complement Sᶜ extended by the identity on S — there are (n − |S|)! of them. The proof builds the bijection {σ : σ fixes S pointwise} ≃ Perm ↥Sᶜ from Mathlib's Equiv.Perm.subtypeEquivSubtypePerm applied to the predicate p := (· ∉ S): its codomain {f : Perm α // ∀ a, ¬p a → f a = a} unfolds (via not_not) to permutations fixing S. Then Fintype.card_perm gives (card ↥Sᶜ)! and Fintype.card_subtype_compl computes card ↥Sᶜ = n − |S|. This is the 'fix at least S' analogue of the parent's 'fix exactly S = derangement of the complement' lemma.",
     "mathContext": "$\\#\\{\\sigma \\in S_n : \\forall i \\in S,\\ \\sigma(i) = i\\} = (n - |S|)!$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Equiv.Perm.subtypeEquivSubtypePerm",
       "permutation of a complement",
@@ -79,7 +79,7 @@
     "title": "Dividing by |S_n|: the moment equals 1",
     "content": "factorial_moment_eq_one turns the count identity into the probabilistic statement. The uniform expectation over S_n is the sum divided by |S_n| = Fintype.card (Perm (Fin n)) = n! (Fintype.card_perm, Fintype.card_fin). Casting the sum identity to ℝ gives numerator = n!, and since n! ≠ 0 the quotient n!/n! = 1 by field_simp. This is E[(X_n)_r] = 1 stated directly as a real ratio — the exact, error-free Poisson(1) fingerprint at finite n.",
     "mathContext": "$\\mathbb{E}[(X_n)_r] = \\dfrac{\\sum_\\sigma (X_\\sigma)_r}{|S_n|} = \\dfrac{n!}{n!} = 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["uniform expectation", "Fintype.card_perm", "factorial nonzero"],
     "prerequisites": ["the sum identity ∑_σ (X_σ)_r = n!", "|S_n| = n!"]
   },

@@ -10,7 +10,7 @@
     "title": "File roadmap: the division-free design constraint and the three public theorems",
     "content": "The module docstring states the goal and the guiding design constraint before any proof: prove $\\sum_{k=1}^{n} T_k = \\binom{n+2}{3} = n(n+1)(n+2)/6$ with $T_k = \\binom{k+1}{2}$, *phrased so no division ever appears*. It lays out the three headline results the file will deliver — `sum_triangular_choose` (the clean hockey-stick statement in binomial form), `six_mul_sum_triangular` (the cleared-denominator polynomial identity), and `six_mul_choose_three` (the tetrahedral closed form) — and names the entire toolkit used to reach them: `Finset.sum_range_succ`, Pascal's rule (`Nat.choose_succ_succ`), and `ring`/`omega`. The novelty note records that Mathlib has `Nat.choose_two_right` and Pascal's rule but neither the tetrahedral closed form nor the $d=3$ hockey-stick identity as named lemmas. The single import of `Mathlib.Tactic` (plus `Mathlib.Algebra.BigOperators.Intervals` for range-sums) is routine for a gallery proof; `namespace TetrahedralNumberFormula` and `open Finset` scope the range-sum notation.",
     "mathContext": "$\\sum_{k=1}^{n} \\binom{k+1}{2} = \\binom{n+2}{3} = \\tfrac{n(n+1)(n+2)}{6}$, proved with $\\binom{\\cdot}{\\cdot}$ so the $/6$ and $/2$ never enter the core inductions.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "Binomial coefficients (Nat.choose)",
       "Finite sums over Finset.range"
@@ -32,7 +32,7 @@
     "title": "Triangular number as a binomial: C(k+1,2) = k(k+1)/2 and 2·C(k+1,2) = k(k+1)",
     "content": "These two bridge lemmas connect the clean binomial summand to the elementary triangular number. `triangular_choose_eq` rewrites $\\binom{k+1}{2}$ to $k(k+1)/2$ using `Nat.choose_two_right` ($\\binom{n}{2} = n(n-1)/2$) followed by `Nat.add_sub_cancel` and `Nat.mul_comm`. `two_mul_triangular_choose` then clears the halving *exactly*: $2\\binom{k+1}{2} = k(k+1)$. Because $k(k+1)$ is a product of consecutive integers it is even (`Nat.even_mul_succ_self`), so `Nat.mul_div_cancel'` cancels the $\\times 2$ against the $/2$ with no truncated-division reasoning. This division-free restatement is what lets the polynomial sum formula stay entirely in $\\mathbb{N}$.",
     "mathContext": "$\\binom{k+1}{2} = \\tfrac{k(k+1)}{2}$ and $2\\binom{k+1}{2} = k(k+1)$.",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": [
       "Binomial coefficients",
       "Parity of consecutive products"
@@ -98,7 +98,7 @@
     "title": "Tetrahedral closed form for free, and the T_k = k(k+1)/2 phrasing",
     "content": "`six_mul_choose_three` states the tetrahedral number's own closed form $6\\binom{n+2}{3} = n(n+1)(n+2)$. Rather than a separate degree-3 Pascal induction, it is obtained by a one-line backward rewrite: `rw [← sum_triangular_choose]` turns $6\\binom{n+2}{3}$ into $6\\sum \\binom{k+1}{2}$, which is exactly `six_mul_sum_triangular`. Finally `sum_triangular_div` restates the hockey-stick identity with the elementary summand $k(k+1)/2$ in place of $\\binom{k+1}{2}$, using `Finset.sum_congr` and `triangular_choose_eq` termwise — the reader-facing form $\\sum_{k\\le n} k(k+1)/2 = \\binom{n+2}{3}$.",
     "mathContext": "$6\\binom{n+2}{3} = n(n+1)(n+2)$ and $\\sum_{k\\le n} \\tfrac{k(k+1)}{2} = \\binom{n+2}{3}$.",
-    "significance": "high",
+    "significance": "critical",
     "prerequisites": [
       "Finset.sum_congr"
     ],

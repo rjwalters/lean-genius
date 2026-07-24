@@ -113,7 +113,7 @@
     "title": "Numeric sanity checks",
     "content": "Two concrete evaluations at n = 3 confirm the identity: the raw sum ∑_{k≤3} k⁴ = 1+16+81 = 98, and its cleared form 30·∑_{k≤3} k⁴ = 3·4·7·35 = 2940 = 30·98, matching the factored product n(n+1)(2n+1)(3n²+3n−1) at n = 3. Both are discharged by kernel `decide`, so they add no axioms (no native_decide, hence no Lean.ofReduceBool).",
     "mathContext": "$\\sum_{k\\le 3} k^4 = 98,\\qquad 30\\cdot 98 = 2940 = 3\\cdot 4\\cdot 7\\cdot 35.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numeric verification",
       "kernel decide"

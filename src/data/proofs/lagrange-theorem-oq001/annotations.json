@@ -10,7 +10,7 @@
     "title": "Where the content lives: one load-bearing import",
     "content": "The entire orbit-counting argument is imported, not rebuilt. Mathlib.GroupTheory.GroupAction.Quotient supplies the finiteness-free bijection sigmaFixedByEquivOrbitsProdGroup : (Σ g, fixedBy X g) ≃ (X/G) × G — the sole piece of mathematics doing real work, and it carries no Fintype or Finite hypothesis. The other imports are pure cardinality plumbing: SetTheory.Cardinal.Finite gives the instance-free Nat.card and its transport lemmas (Nat.card_congr, Nat.card_sigma, Nat.card_prod, Nat.card_eq_fintype_card), and Algebra.BigOperators.Finprod gives finsum_eq_sum_of_fintype to move between ∑ᶠ and Finset sums. That the crux lemma sits in the general GroupAction.Quotient file (not a Fintype-specialised one) is precisely why the generalisation off Fintype costs nothing.",
     "mathContext": "The bijection $\\Sigma_{g:G}\\,\\operatorname{fixedBy} X\\,g \\;\\simeq\\; (X/G)\\times G$ is stated for an arbitrary $\\mathrm{MulAction}\\ G\\ X$; finiteness enters only when taking $\\mathrm{Nat.card}$ of both sides.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "sigmaFixedByEquivOrbitsProdGroup",
       "Nat.card transport",

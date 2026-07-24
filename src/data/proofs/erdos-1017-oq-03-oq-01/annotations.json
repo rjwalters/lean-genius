@@ -27,7 +27,7 @@
     "title": "Re-declaring the Turán Bound",
     "content": "turanBound n := n^2 / 4 is re-declared here rather than imported from the sibling Erdos1017OQ03.lean, so this file depends only on Mathlib and stays self-contained (0 sorries, 0 axioms, no native_decide). Every downstream identity in this file — the increments, the triangular-number bridge, the binomial bridge, and the accumulation formula — is proved directly from this one-line definition.",
     "mathContext": "$T(n) := \\lfloor n^2/4 \\rfloor$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Turán bound", "natural-number division", "self-contained re-declaration"],
     "prerequisites": ["floor division over ℕ"]
   },

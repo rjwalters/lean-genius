@@ -55,7 +55,7 @@
     "title": "Absolute-value form",
     "content": "Because |x|² = x² (sq_abs), the squared inequality is unchanged by taking the absolute value of the inner sum, giving |∑aᵢbᵢ|² ≤ (∑aᵢ²)(∑bᵢ²). This is the form most often quoted, and it follows in one rewrite from the squared version.",
     "mathContext": "$\\left|\\sum_i a_i b_i\\right|^2 \\le \\left(\\sum_i a_i^2\\right)\\left(\\sum_i b_i^2\\right)$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["absolute value", "sq_abs"],
     "prerequisites": ["inner_sq_le_sum_sq_mul_sum_sq"]
   },
@@ -67,7 +67,7 @@
     "title": "Concrete specialisations over ℚ and ℝ",
     "content": "The inequality holds verbatim over the rationals and the reals — cauchy_schwarz_rat and cauchy_schwarz_real are direct instantiations of the general theorem, since both ℚ and ℝ are linearly ordered fields. These pin down the abstract result to the two fields where Cauchy–Schwarz is most used.",
     "mathContext": "Cauchy–Schwarz over $\\mathbb{Q}$ and $\\mathbb{R}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["rational numbers", "real numbers", "specialization"],
     "prerequisites": ["inner_sq_le_sum_sq_mul_sum_sq"]
   },

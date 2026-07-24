@@ -32,7 +32,7 @@
     "title": "The Dual Solution ncSolve'",
     "content": "`quasidet₁₁ A = a₁₁ - a₁₀·a₀₀⁻¹·a₀₁` is the Schur complement of the (0,0)-entry. `ncSolve'` solves the system by back-substitution from row 0: $x_1 = |A|_{11}^{-1}(b_1 - a_{10}a_{00}^{-1}b_0)$, then $x_0 = a_{00}^{-1}(b_0 - a_{01}x_1)$.",
     "mathContext": "This is the mirror image of OQ-03's `ncSolve`, exchanging the roles of rows 0 and 1 and of the entries $a_{00}$ and $a_{11}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "back-substitution",
       "Schur complement"
@@ -52,7 +52,7 @@
     "title": "Correctness of the Dual Pivot",
     "content": "`ncSolve'_row0` follows by direct left cancellation $a_{00}a_{00}^{-1} = 1$. `ncSolve'_row1` factors out $|A|_{11}$ using `sub_mul` and cancels $|A|_{11}·|A|_{11}^{-1} = 1$, giving `nc_cramers_rule'`: $A · \\text{ncSolve'}(A,b) = b$.",
     "mathContext": "Compared to OQ-03 the difficulty moves from row 0 to row 1: the nontrivial non-commutative factoring $a_{11}x_1 - a_{10}a_{00}^{-1}a_{01}x_1 = |A|_{11}x_1$ now appears in row 1.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "left cancellation",
       "sub_mul in non-commutative rings"
@@ -72,7 +72,7 @@
     "title": "Kernel Triviality and Uniqueness",
     "content": "`nc_kernel_trivial'`: if $Ax = 0$ and $|A|_{11}$ is invertible then $x = 0$, by extracting $x_0$ from row 0, substituting into row 1 to get $|A|_{11}x_1 = 0$, and using the no-zero-divisor property. `nc_cramers_unique'` then gives uniqueness of the dual solution.",
     "mathContext": "Reverse Gaussian elimination on the dual pivot. The absence of zero divisors in a division ring is exactly what forces $x_1 = 0$ from $|A|_{11}x_1 = 0$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "kernel triviality",
       "no zero divisors"
@@ -92,7 +92,7 @@
     "title": "Pivot-Independence",
     "content": "`solutions_agree`: any two solutions of $Ax = b$ (with $a_{00} \\neq 0$, $|A|_{11} \\neq 0$) are equal. Hence the $a_{11}$-pivot solution of OQ-03 and the $a_{00}$-pivot solution here coincide whenever both pivots are admissible — resolving the asymmetry OQ-03 flagged as open.",
     "mathContext": "No new computation is needed: pivot-independence is a corollary of uniqueness. This is the non-commutative analogue of the row/column symmetry of classical Cramer's Rule.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "uniqueness",
       "row/column symmetry"

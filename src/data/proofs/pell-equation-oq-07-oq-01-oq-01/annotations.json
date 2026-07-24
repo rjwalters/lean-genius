@@ -7,7 +7,7 @@
     "title": "Multiplicative Content of the Companion Form",
     "content": "The parent supplied the companion-matrix power `Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)]` for a quadratic integer `a ∈ ℤ√d`, with `det M = N(a)`. This entry exploits multiplicativity of the determinant: `det(Mⁿ) = (det M)ⁿ = N(a)ⁿ`. Reading `det(Mⁿ)` off the explicit power form yields the quadratic Pell invariant `re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ` (Cassini for Pell chains); combined with the one-step coordinate recurrences it produces the three-term Cassini/Catalan identities. All of it is pure integer algebra in `ℤ√d` and `2×2` integer matrices — no passage to ℝ or √d.",
     "mathContext": "$\\det(M^n) = N(a)^n$ gives $\\mathrm{re}(a^n)^2 - d\\,\\mathrm{im}(a^n)^2 = N(a)^n$, the Cassini invariant for the Pell power chain.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pell's equation", "Cassini identity", "Catalan identity", "quadratic integers", "companion matrix"],
     "prerequisites": ["ℤ√d arithmetic", "determinants", "matrix powers"]
   },
@@ -79,7 +79,7 @@
     "title": "Concrete D = 2 Checks against (3+2√2)ⁿ",
     "content": "The fundamental norm-1 unit of `ℤ[√2]` is `3 + 2√2 = ⟨3,2⟩`, with `re: 1,3,17,99,…`, `im: 0,2,12,70,…`, `N = 1`. Four `decide` checks confirm the identities on concrete powers: the quadratic invariant at `n=3` (`99² − 2·70² = 1`), the real three-term Cassini at `n=0` (`1·17 − 3² = 8 = 2·2²`), the √d three-term at `n=1` (`2·70 − 12² = −4`), and the mixed Cassini at `n=2` (`17·70 − 99·12 = 2 = im(a)·N³`).",
     "mathContext": "$(3+2\\sqrt2)^n$: $99^2 - 2\\cdot 70^2 = 1$;\\ $1\\cdot17 - 3^2 = 8$;\\ $2\\cdot70 - 12^2 = -4$;\\ $17\\cdot70 - 99\\cdot12 = 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "decide tactic", "fundamental unit of ℤ[√2]"],
     "prerequisites": ["decide", "evaluation of ℤ√d powers"]
   }

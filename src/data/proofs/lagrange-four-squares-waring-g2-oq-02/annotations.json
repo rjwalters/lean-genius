@@ -19,7 +19,7 @@
     "title": "Representability and Universality-for-Large-n",
     "content": "IsSumOfKthPowers s k n says n = f 0^k + ⋯ + f (s−1)^k for some f : Fin s → ℕ. UniversalForLarge s k says there is a threshold N beyond which every n is such a sum — its least witness s is exactly G(k). The two padding lemmas make the number of summands well-behaved: isSumOfKthPowers_succ appends a zero summand (0^k = 0 for k ≠ 0), and isSumOfKthPowers_mono iterates it, so representability is monotone in s. Consequently 'no s ≤ B is universal' reduces to defeating the single largest value s = B, and one obstruction kills an entire range of bounds. natCast_zmod_of_modEq is a small helper transporting a ≡ b (mod n) to equal images in ZMod n.",
     "mathContext": "$\\texttt{IsSumOfKthPowers}\\ s\\ k\\ n := \\exists f : \\mathrm{Fin}\\,s \\to \\mathbb{N},\\ \\sum_i (f_i)^k = n$; monotone in $s$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["representability", "monotonicity", "ZMod", "modular congruence"],
     "prerequisites": ["finite sums over Fin s", "ZMod n"]
   },
@@ -55,7 +55,7 @@
     "title": "Non-vacuity of the Obstructions",
     "content": "Two small checks confirm the forbidden residue classes 4 (mod 9) and 15 (mod 16) are genuinely inhabited, so the lower bounds are not vacuously true: they really do exclude concrete (and arbitrarily large) numbers from being short sums of k-th powers.",
     "mathContext": "$4 \\bmod 9$ and $15 \\bmod 16$ are non-empty residue classes.",
-    "significance": "minor",
+    "significance": "supporting",
     "relatedConcepts": ["non-vacuity", "residue classes"],
     "prerequisites": []
   }

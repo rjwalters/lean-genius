@@ -55,7 +55,7 @@
     "title": "Signed variant via x ↦ −x",
     "content": "qBinom_gauss_neg gives the alternating product ∏(1 − qⁱx) = ∑ (−1)ᵏ[n,k]_q q^{C(k,2)} x^k for free by substituting x ↦ −x in the main theorem: each factor 1 + qⁱ(−x) becomes 1 − qⁱx, and each xᵏ picks up (−1)ᵏ via mul_pow. These alternating signs are exactly what appear in finite Jacobi-triple-product and q-series manipulations.",
     "mathContext": "$\\prod_{i=0}^{n-1}(1 - q^i x) = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}_q q^{\\binom{k}{2}} x^k.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["substitution", "alternating signs", "Jacobi triple product", "q-series"],
     "prerequisites": ["the main q-binomial theorem", "mul_pow"]
   },
@@ -79,7 +79,7 @@
     "title": "Concrete check at n = 2",
     "content": "Two examples pin down the identity at n = 2. First, the product (1 + x)(1 + qx) expands directly to 1 + (1+q)x + qx². Second, the q-binomial right-hand side ∑_{k<3} [2,k]_q q^{C(k,2)} xᵏ is computed and shown to equal the same polynomial, with the coefficients [2,0]_q = 1, [2,1]_q = 1+q, [2,2]_q·q^{C(2,2)} = 1·q. This makes the abstract identity tangible and guards against off-by-one or exponent-weight errors.",
     "mathContext": "$(1+x)(1+qx) = 1 + (1+q)x + q x^2 = \\sum_{k=0}^{2}\\binom{2}{k}_q q^{\\binom{k}{2}} x^k.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "polynomial expansion", "sanity check"],
     "prerequisites": ["Finset.prod_range_succ", "the q-binomial theorem"]
   }

@@ -7,7 +7,7 @@
     "title": "OQ-02: A piAntidiag-free Multinomial Theorem via Finsupp/Multiset",
     "content": "Answers OQ-02 of the parent entry (BinomialTheoremOQ02OQ04): YES, the multinomial theorem can be proved without Finset.piAntidiag. Two Mathlib expansions already avoid it — the word expansion Finset.sum_pow' and the multiset expansion Finset.sum_pow (indexed by s.sym n) — and this entry connects them to the parent's piAntidiag route by making the content correspondence M ↦ (i ↦ M.count i) explicit, term by term.",
     "mathContext": "The multinomial theorem $(\\sum_{i\\in s} f_i)^n=\\sum_{|\\alpha|=n}\\binom{n}{\\alpha}f^\\alpha$ can be indexed by words, by multisets (Sym), by Finsupp exponent vectors, or by piAntidiag functions; these index sets are combinatorially interchangeable via content/count.",
-    "significance": "primary",
+    "significance": "critical",
     "relatedConcepts": ["multinomial theorem", "piAntidiag", "Sym", "Finsupp", "Multiset.count"],
     "prerequisites": ["binomial-theorem-oq-02-oq-04", "Finset.sum_pow", "Finset.sum_pow'"]
   },
@@ -31,7 +31,7 @@
     "title": "Route 2 — Multiset (Sym) Expansion",
     "content": "multinomial_via_sym: (∑ i∈s, f i)^n = ∑_{M ∈ s.sym n} M.multinomial * (M.map f).prod. The collected form indexed by size-n multisets drawn from s, with coefficient Multiset.multinomial. This is Mathlib's Finset.sum_pow, whose proof is an add_pow induction on s that never constructs piAntidiag.",
     "mathContext": "$Multiset.multinomial\\,M = M.\\mathrm{toFinsupp}.multinomial$: the multiset coefficient is packaged through a Finsupp, so this route is simultaneously the Multiset and the Finsupp route.",
-    "significance": "primary",
+    "significance": "critical",
     "relatedConcepts": ["Finset.sum_pow", "Sym", "Multiset.multinomial"],
     "prerequisites": ["Finset.sum_pow"]
   },
@@ -79,7 +79,7 @@
     "title": "Route Equivalence and Parent Consistency",
     "content": "sym_sum_eq_piAntidiag_sum: the multiset-indexed expansion equals the parent's piAntidiag-indexed expansion (both compute the power). multinomial_piAntidiag_via_sym: composing the piAntidiag-free multiset route with this equivalence recovers the parent's piAntidiag-indexed multinomial theorem.",
     "mathContext": "The per-summand content lemmas identify the two families of terms; both sides equal $(\\sum_i f_i)^n$, so the two combinatorial routes yield the same finite expansion.",
-    "significance": "primary",
+    "significance": "critical",
     "relatedConcepts": ["Finset.sum_pow", "Finset.sum_pow_eq_sum_piAntidiag"],
     "prerequisites": ["binomial-theorem-oq-02-oq-04"]
   }

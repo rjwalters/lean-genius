@@ -7,7 +7,7 @@
     "title": "Adding Additive Structure to the Erdős #10 Powers-of-Two Thread",
     "content": "The parent Erdos10OQ02 thread built RepWithAtMost k n ('n is a sum of at most k powers of two') and its reduction to popcount via repWithAtMost_iff_bitIndices_length, but had no additive structure. This file supplies exactly that: repWithAtMost_add shows RepWithAtMost is subadditive by concatenating exponent multisets, and feeding the popcount-minimal representations through it gives — for free — the classical fact that binary popcount is subadditive. The file closes with isPrimePlusKPowers_iff_popcount, rewriting the Erdős #10 predicate ('n is a prime plus at most k powers of two') into an O(log)-checkable form via popcount(n − p), the form the concrete witness searches (e.g. Grechuk's 1117175146) rest on. Imports both parent files and opens Erdos10OQ02 for RepWithAtMost and its lemmas.",
     "mathContext": "Goal: $\\mathrm{RepWithAtMost}$ is subadditive, so $\\mathrm{popcount}(a+b)\\le\\mathrm{popcount}(a)+\\mathrm{popcount}(b)$, and the Erdős #10 predicate rewrites via $\\mathrm{popcount}(n-p)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős–Graham problem", "RepWithAtMost", "binary popcount", "additive combinatorics"],
     "prerequisites": ["the parent RepWithAtMost/popcount characterization (Erdos10OQ02)", "powSum_add"]
   },

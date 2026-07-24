@@ -7,7 +7,7 @@
     "title": "From Countability Dichotomy to Exact Cardinal",
     "content": "The parent entry characterized when `{x : L | IsAlgebraic K x}` is countable (iff `K` is countable). This entry upgrades that coarse dichotomy to an exact cardinal formula: `#{x : L | IsAlgebraic K x} = max(#K, ℵ₀)`, under the natural hypothesis that the ambient `L` is algebraically closed (`IsAlgClosed L`) — precisely the statement that `L` contains an algebraic closure of `K`. The hypothesis is genuinely needed: for `L = K` a finite field the algebraic set is just `K` (finite), while `max(#K, ℵ₀) = ℵ₀`. Both the countable regime (`max = ℵ₀`) and the uncountable regime (`max = #K`) are the two cases of the one formula.",
     "mathContext": "$\\#\\{x \\in L : x\\ \\text{algebraic}/K\\} = \\max(\\#K, \\aleph_0)$ when $L$ is algebraically closed.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cardinal arithmetic", "algebraic closure", "algebraic numbers", "countability"],
     "prerequisites": ["cardinality", "algebraic elements", "field extensions"]
   },
@@ -67,7 +67,7 @@
     "title": "Both Regimes as Instances",
     "content": "Two examples realise the two cases of the single formula. Countable regime: the algebraic numbers `{x : ℂ | IsAlgebraic ℚ x}` have cardinality `max(#ℚ, ℵ₀) = ℵ₀` (via `Cardinal.mkRat` and `max_self`) — the classical countability of the algebraic numbers, now as an exact count. Uncountable regime: `{x : ℂ | IsAlgebraic ℝ x}` has cardinality `max(#ℝ, ℵ₀) = 𝔠` (via `Cardinal.mk_real` and `aleph0_le_continuum`), since every element of ℂ is algebraic over ℝ of degree ≤ 2.",
     "mathContext": "$\\#\\{x \\in \\mathbb{C} : x\\ \\text{alg}/\\mathbb{Q}\\} = \\aleph_0$;\\ $\\#\\{x \\in \\mathbb{C} : x\\ \\text{alg}/\\mathbb{R}\\} = \\mathfrak{c}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["algebraic numbers", "continuum", "Cardinal.mkRat", "Cardinal.mk_real"],
     "prerequisites": ["cardinality of ℚ and ℝ", "aleph0_le_continuum"]
   }

@@ -7,7 +7,7 @@
     "title": "Step 1 of the three-step Kummer–Dedekind route",
     "content": "The docstring situates this file within OQ-04's plan to eliminate the last A₅ axiom `three_dvd_gal_card : 3 ∣ Fintype.card q.Gal` (InverseGaloisA5.lean:309). The companion `InverseGaloisA5DedekindInstantiation` reduces that axiom to the arithmetic fact `3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)`, provable by a three-step route: (1) Kummer–Dedekind turns an irreducible cubic factor of q mod 7 into a prime of 𝓞 ℚ(α) of inertia degree 3; (2) inertia-degree tower multiplicativity lifts it to the splitting field; (3) Galois uniformity spreads it to all primes over 7. The sibling entry `Proofs.DedekindInertiaTower` machine-checked steps (2)–(3); this file packages step (1) in full generality, for an arbitrary number field K, algebraic integer θ, and prime p not dividing the Kummer–Dedekind exponent of θ, using only foundational axioms.",
     "mathContext": "The realizability obstruction is $3 \\mid \\lvert \\mathrm{Gal}(q)\\rvert$. A Frobenius/Chebotarev reading turns this into a statement about a residue-field degree: it suffices to exhibit an unramified prime of $\\mathcal{O}_{q.\\mathrm{SplittingField}}$ over $7$ whose inertia degree is divisible by $3$, i.e. $3 \\mid \\mathrm{inertiaDegIn}_{(7)}$. The three-step chain is $Q \\text{ irreducible cubic} \\bmod 7 \\ \\xrightarrow{(1)\\ \\text{Kummer–Dedekind}}\\ \\exists P \\lhd \\mathcal{O}_{\\mathbb{Q}(\\alpha)},\\ f(P\\mid 7)=3 \\ \\xrightarrow{(2)\\ \\text{tower}}\\ 3 \\mid f(\\mathfrak{P}\\mid 7) \\ \\xrightarrow{(3)\\ \\text{Galois}}\\ 3 \\mid \\mathrm{inertiaDegIn}_{(7)}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Inverse Galois problem",
       "Frobenius element and Chebotarev density",
@@ -28,7 +28,7 @@
     "title": "Ambient data: an arbitrary number field, algebraic integer, and rational prime",
     "content": "The `variable` block fixes the fully general setting: a number field `K` (`[Field K] [NumberField K]`), an algebraic integer `θ : 𝓞 K` of its ring of integers, and a rational prime `p : ℕ` carried as a typeclass fact `[Fact (Nat.Prime p)]` (so that `ZMod p` is a field and `(ZMod p)[X]` a UFD, letting `minpoly ℤ θ mod p` factor into monic irreducibles). Nothing here is specialized to A₅ or to p = 7 — the two theorems hold for every such K, θ, p, which is exactly what makes the brick reusable. The `open Polynomial NumberField Ideal RingOfIntegers` line brings the Kummer–Dedekind vocabulary (`inertiaDeg`, `span`, `primesOverSpanEquivMonicFactorsMod`, `exponent`, `monicFactorsMod`) into scope.",
     "mathContext": "The relevant objects are $\\mathcal{O}_K$ (the ring of integers, a Dedekind domain), the minimal polynomial $\\mathrm{minpoly}_{\\mathbb{Z}}\\,\\theta \\in \\mathbb{Z}[X]$, and its reduction $\\overline{\\mathrm{minpoly}_{\\mathbb{Z}}\\,\\theta} \\in (\\mathbb{Z}/p)[X]$. The prime-power fact `[Fact (Nat.Prime p)]` is what makes $\\mathbb{Z}/p\\mathbb{Z}$ a field, so $(\\mathbb{Z}/p)[X]$ is a PID and the factorization into monic irreducibles that Kummer–Dedekind reads is well defined.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "ring of integers 𝓞 K",
       "Dedekind domain",

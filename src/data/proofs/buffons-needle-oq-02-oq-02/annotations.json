@@ -251,7 +251,7 @@
     "title": "Connection to the Cauchy–Crofton formula",
     "content": "Part IX situates the result in integral geometry: the smooth 3D Buffon noodle theorem is the parallel-plane specialization of the Cauchy–Crofton formula in ℝ³, ∫_{Gr(2,3)} n(C,H) dμ(H) = ½·length(C), where n(C,H) counts intersections of the curve C with the plane H and the integral is over oriented planes with their invariant measure. The factor ½ is exactly the sphere average α₃ = E_{S²}[|cos φ|] established in the parent BuffonsNeedleOQ02.lean. A full formalization would need the Grassmannian Gr(2,3) ≅ S² as a measure space, its Haar measure, and the counting function — infrastructure beyond current Mathlib, which is why E = L/(2d) is axiomatized rather than derived.",
     "mathContext": "$\\displaystyle\\int_{\\mathrm{Gr}(2,3)} n(C,H)\\,d\\mu(H) = \\tfrac12\\,\\mathrm{length}(C)$; parallel planes of spacing $d$ specialize this to $E=\\dfrac{L}{2d}$, with $\\tfrac12=\\alpha_3=\\mathbb{E}_{S^2}[\\,|\\cos\\varphi|\\,]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cauchy–Crofton formula",
       "integral geometry",
@@ -275,7 +275,7 @@
     "title": "Conclusion: what is axiomatized and the key insight",
     "content": "The concluding docstring records the honest scope: the smooth 3D noodle formula E = L/(2d) rests on 2 axioms (the definition smooth3DExpectedCrossings and the identity smooth3D_buffon_eq), 0 sorries, with a suite of fully verified consequences — shape independence, monotonicity, nonnegativity, approximation convergence, dimension comparison, and Lipschitz stability. The axiomatization parallels the 2D smooth case (BuffonsNoodle.lean) and rests on the fully verified 3D polygonal theory in BuffonsNeedleOQ02.lean. The unifying insight: the crossing constant α₃ = ½ (sphere average of |cos φ|) plays in 3D the role α₂ = 2/π plays in 2D, and the smooth formula follows from the polygonal one by approximation and continuity.",
     "mathContext": "$\\alpha_3=\\tfrac12$ (3D) mirrors $\\alpha_2=\\tfrac2\\pi$ (2D); status: axiomatized (2 axioms, 0 sorries), consequences verified.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "axiomatization",
       "Buffon–Barbier constant",

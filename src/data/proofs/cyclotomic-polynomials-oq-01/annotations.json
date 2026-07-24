@@ -28,7 +28,7 @@
     "title": "deg Φ_n = φ(n), and deg Φ_p = p − 1 for prime p",
     "content": "`cyclotomic_natDegree` records the headline degree fact deg Φ_n = φ(n) over any nontrivial ring, wrapping Mathlib's `natDegree_cyclotomic`. `cyclotomic_prime_natDegree` specializes it to a prime p: rewriting with `Nat.totient_prime` (φ(p) = p − 1) gives deg Φ_p = p − 1.",
     "mathContext": "$\\deg\\Phi_n = \\varphi(n)$; $\\deg\\Phi_p = p-1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["polynomial degree", "Euler's totient", "primes"],
     "prerequisites": ["natDegree", "totient of a prime"]
   },
@@ -40,7 +40,7 @@
     "title": "Prime cyclotomics are geometric sums",
     "content": "For a prime p, `cyclotomic_prime_geom_sum` gives Φ_p = ∑_{i<p} Xⁱ = 1 + X + ⋯ + X^{p−1}, the p-term geometric sum (Mathlib's `cyclotomic_prime`). Evaluating this at 1 sums p copies of 1, so `cyclotomic_prime_eval_one` yields Φ_p(1) = p.",
     "mathContext": "$\\Phi_p = \\sum_{i<p}X^i$, so $\\Phi_p(1) = p$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["geometric sum", "polynomial evaluation", "primes"],
     "prerequisites": ["Finset.range sums", "evaluation of polynomials"]
   },

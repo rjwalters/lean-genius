@@ -105,7 +105,7 @@
     "title": "Results Table: One Bridge, Every Eta Value",
     "content": "The closing summary tabulates the exports and states the entry's organizing idea: a single analytic-free lemma hasSum_eta_of_hasSum_zeta packages the even/odd parity split once, so every Dirichlet eta value is a specialisation of it composed with a zeta HasSum. From ζ(m) = Z it gives η(m) = (1 − 2/2ᵐ)·Z for any exponent m; hasSum_eta_two_mul_nat specializes to the even family η(2k) = (1 − 2^{1−2k})ζ(2k) (with eta_factor_eq proving 1 − 2/2^{2k} = 1 − 2^{1−2k}), and composing with hasSum_zeta_two / hasSum_zeta_four yields η(2) = π²/12 and η(4) = 7π⁴/720, each also given in tsum form. This factor-out-the-parity-split design avoids re-deriving the split per exponent, unlike the sibling entries that prove η(2) and η(4) separately. 0 sorries, 0 axioms.",
     "mathContext": "\\zeta(m) = Z \\;\\Rightarrow\\; \\eta(m) = \\Big(1 - \\tfrac{2}{2^m}\\Big) Z = \\big(1 - 2^{1-m}\\big)\\zeta(m)",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "exponent-independent bridge lemma",
       "η(s) = (1 − 2^{1−s})ζ(s)",

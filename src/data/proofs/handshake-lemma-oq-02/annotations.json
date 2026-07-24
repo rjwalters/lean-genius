@@ -7,7 +7,7 @@
     "title": "Erdős–Gallai and the Necessity Milestone",
     "content": "The module docstring frames the whole theorem and pins down exactly what this file proves. A non-increasing sequence d₁ ≥ ⋯ ≥ dₙ is graphical iff its sum is even AND it satisfies the Erdős–Gallai inequalities for every k. The even-sum condition is the handshake lemma (the parent gallery entry). The inequality family has two directions: necessity (any graph forces them) and sufficiency (they let you build a graph). Sufficiency is the hard, constructive half (Havel–Hakimi / edge swaps); this file delivers necessity, and in the strongest form — for an arbitrary vertex subset A rather than only the top-k by degree.",
     "mathContext": "$\\sum_{i\\le k} d_i \\le k(k-1) + \\sum_{i>k}\\min(d_i,k)\\quad\\text{for all }k,\\ \\text{plus }\\textstyle\\sum_i d_i\\text{ even}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["graphical sequence", "degree sequence", "Erdős–Gallai theorem", "handshake lemma", "Havel–Hakimi algorithm"],
     "prerequisites": ["graph degree sequences", "the statement of the Erdős–Gallai theorem"]
   },

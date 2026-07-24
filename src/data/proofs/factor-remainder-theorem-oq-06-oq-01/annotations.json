@@ -7,7 +7,7 @@
     "title": "From a One-Off √2 Example to a General Criterion",
     "content": "The parent entry OQ-06 proved ∀ r : ℚ, r² ≠ 2 as a single worked application of the rational root theorem to the monic polynomial X² − 2. That argument never used anything special about the exponent 2 or the constant 2. Replacing X² − 2 by the general monic polynomial X^k − C n turns it into the principle behind every classical irrationality result: the k-th root of an integer is either an integer or irrational.",
     "mathContext": "$X^2 - 2 \\;\\rightsquigarrow\\; X^k - C\\,n$: the fixed square/2 become an arbitrary exponent $k\\ge 1$ and integer $n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["rational root theorem", "irrationality", "monic polynomial", "generalization of an instance"],
     "prerequisites": ["polynomials over ℤ", "rational numbers"]
   },
@@ -19,7 +19,7 @@
     "title": "The Monic Polynomial X^k − C n",
     "content": "Mathlib's monic_X_pow_sub_C certifies that X^k − C n is monic whenever k ≠ 0 — cleaner for a general exponent than the parent's degree-argument monic_X_pow_sub. Evaluating this polynomial at a rational r gives r^k − n, so r is a root exactly when r^k = n.",
     "mathContext": "$X^k - C\\,n$ has leading coefficient $1$, hence is monic for $k\\neq 0$; and $\\operatorname{aeval}_r(X^k - C\\,n) = r^k - n$, so $r$ is a root $\\iff r^k = n$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["monic polynomial", "leading coefficient", "aeval (polynomial evaluation)", "integral root theorem"],
     "prerequisites": ["polynomial ring ℤ[X]", "monic_X_pow_sub_C"]
   },

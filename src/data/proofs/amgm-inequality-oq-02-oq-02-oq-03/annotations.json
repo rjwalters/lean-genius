@@ -7,7 +7,7 @@
     "title": "Setup: Muirhead's inequality and its atomic bunching step",
     "content": "Muirhead's inequality orders the symmetric means [a](x) = (1/n!)·Σ_{σ∈Sₙ} ∏ᵢ xᵢ^{a_{σ(i)}} by majorization on the exponent vector a: for non-negative x, [a] ≥ [b] for all x iff a majorizes b (Hardy–Littlewood–Pólya §2.18). The parent formalization amgm-inequality-oq-02-oq-02 proves Newton's log-concavity and the Maclaurin chain M₁ ≥ ⋯ ≥ Mₙ, which is a special case; open question OQ-03 asks to formalize the majorization ordering. Its engine is a single 'Robin-Hood' transfer between two coordinates — the two-variable case. This file settles that atomic step in full generality (0 axioms, 0 sorries) and is explicit that only the two-variable case is closed here; the general n-variable statement, which composes transfers along a T-transform chain, is left for a follow-up.",
     "mathContext": "$[a](x) = \\tfrac{1}{n!}\\sum_{\\sigma\\in S_n}\\prod_i x_i^{a_{\\sigma(i)}}$, and Muirhead's theorem asserts $[a](x)\\ge[b](x)$ for all $x\\ge0$ iff $a\\succeq b$ (majorization). This file settles the atomic two-coordinate transfer that generates $\\succeq$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["majorization order", "symmetric means", "Robin-Hood / T-transform", "Hardy–Littlewood–Pólya inequalities", "Maclaurin means"],
     "prerequisites": ["symmetric polynomials", "permutation groups", "partial orders"]
   },

@@ -104,7 +104,7 @@
     "title": "Two-sided inverse",
     "content": "neumann_sub_mul_left and neumann_sub_mul_right verify that $\\left(\\sum_n (x^{-1}t)^n\\right)x^{-1}$ is a genuine two-sided inverse of $x-t$: multiplying on either side gives $1$. Each proof rewrites the series back to $\\mathrm{Ring.inverse}(x-t)$ via neumann_series_sub and then applies `Ring.inverse_mul_cancel` / `Ring.mul_inverse_cancel` with the unit witness `isUnit_sub`.",
     "mathContext": "$\\left(\\sum_n (x^{-1}t)^n\\right)x^{-1}(x-t) = (x-t)\\left(\\sum_n (x^{-1}t)^n\\right)x^{-1} = 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "two-sided inverse",
       "Ring.inverse_mul_cancel",
@@ -126,7 +126,7 @@
     "title": "Finite truncation with remainder",
     "content": "neumann_sub_partial_remainder gives the exact truncation $(x-t)^{-1} = \\left(\\sum_{i<N}(x^{-1}t)^i\\right)x^{-1} + (x^{-1}t)^N (x-t)^{-1}$. The proof passes through the helper identity $(x-t)^{-1} = (1-x^{-1}t)^{-1}x^{-1}$ and Mathlib's `NormedRing.inverse_one_sub_nth_order'` for the inner factor, distributing $x^{-1}$ on the right. Since $\\lVert (x^{-1}t)^N\\rVert \\to 0$, the truncation approximates the inverse to any accuracy — the basis of preconditioned iterative inversion, where $x$ plays the role of the preconditioner / splitting matrix.",
     "mathContext": "$(x-t)^{-1} = \\left(\\sum_{i<N}(x^{-1}t)^i\\right)x^{-1} + (x^{-1}t)^N (x-t)^{-1}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "truncation with remainder",
       "iterative inversion",
@@ -149,7 +149,7 @@
     "title": "Local continuity of inversion",
     "content": "inverse_sub_continuousAt shows that $t \\mapsto (x-t)^{-1}$ is continuous at every base point $t_0$ with $\\lVert x^{-1}t_0\\rVert<1$. The proof takes the unit witness from `isUnit_sub`, invokes `NormedRing.inverse_continuousAt` at the unit $x-t_0$, and composes with the continuous map $t\\mapsto x-t$. This is the local statement whose global form is the openness of the unit group and whose refinement — expanding the Neumann series as a convergent power series — is the analyticity of inversion and the holomorphy of the resolvent $(\\lambda-T)^{-1}$.",
     "mathContext": "$t \\mapsto (x-t)^{-1}$ is continuous at each $t_0$ with $\\lVert x^{-1}t_0\\rVert<1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "continuity of inversion",
       "openness of the unit group",

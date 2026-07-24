@@ -7,7 +7,7 @@
     "title": "The analytic side of the generalized binomial theorem",
     "content": "The header docstring frames this child within the binomial-theorem tower. The parent `binomial-theorem-oq-01-oq-01` supplied the *coefficient-level* data: the generalized coefficient `genBinom α k = (∏ j ∈ range k, (α-j))/k!`, the `absorption` identity `α·C(α-1,k) = (k+1)·C(α,k+1)`, and the analytic framework `binomial_series_analytic : HasFPowerSeriesOnBall (fun y => (1+y)^α) (binomialSeries ℝ α) 0 1`. This OQ closes the *analytic* side: that `d/dx (1+x)^α = α(1+x)^(α-1)`, and that this is exactly the absorption identity read off term by term. The whole file is 0-sorry, 0-axiom (only `propext`/`Classical.choice`/`Quot.sound`), and its technical engine is the single Mathlib lemma `HasDerivAt.rpow_const` (Pow/Deriv.lean:668).",
     "mathContext": "Two viewpoints on the same fact. Analytic: $\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$. Algebraic: differentiating $\\sum_k \\binom{\\alpha}{k}x^k$ term by term gives $\\sum_k (k+1)\\binom{\\alpha}{k+1}x^k = \\alpha\\sum_k \\binom{\\alpha-1}{k}x^k$, using absorption $(k+1)\\binom{\\alpha}{k+1} = \\alpha\\binom{\\alpha-1}{k}$. The file proves both sides agree.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["generalized binomial theorem", "Newton's binomial series", "term-by-term differentiation", "absorption identity", "HasFPowerSeriesOnBall"],
     "prerequisites": ["power series", "real exponentiation (rpow)", "the parent binomial-theorem-oq-01-oq-01 entry"]
   },

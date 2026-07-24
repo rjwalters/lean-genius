@@ -34,7 +34,7 @@
     "title": "factorization_factorial_of_sq_gt: vₚ(n!) = ⌊n/p⌋ when p² > n",
     "content": "The central lemma. From the sole hypothesis n < p² it derives Nat.log p n < 2 (the n = 0 edge case is closed by simp; otherwise Nat.log_lt_iff_lt_pow converts n < p² to log_p n < 2). Rewriting (n!).factorization p through Nat.factorization_def and Legendre's padicValNat_factorial produces a sum over Finset.Ico 1 2; decide rewrites that index set to the singleton {1}, and Finset.sum_singleton with pow_one leave exactly ⌊n/p⌋.",
     "mathContext": "Only the first Legendre term survives because $p^i \\geq p^2 > n$ makes $\\lfloor n/p^i \\rfloor = 0$ for all $i \\geq 2$; the surviving $\\lfloor n/p \\rfloor$ is the exact exponent of $p$ in $n!$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Legendre's formula",
       "integer logarithm",
@@ -76,7 +76,7 @@
     "title": "prime_pow_dvd_factorial_iff_of_sq_gt: pᵏ ∣ n! ↔ k ≤ ⌊n/p⌋",
     "content": "Combines the exact valuation with Nat.Prime.pow_dvd_iff_le_factorization to characterize every prime-power divisor of n! for a large prime p purely by comparing the exponent k with the single floor ⌊n/p⌋. This is the reusable divisibility API the open question requested.",
     "mathContext": "$p^k \\mid n! \\iff k \\leq v_p(n!) = \\lfloor n/p \\rfloor$: all divisibility behaviour of a prime above $\\sqrt{n}$ is governed by one floor.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "prime-power divisibility",
       "p-adic valuation"
@@ -136,7 +136,7 @@
     "title": "unramified_prime_factorial: the Capstone API and Examples",
     "content": "Bundles the exact valuation (vₚ(n!) = ⌊n/p⌋) with the full divisibility iff (∀ k, pᵏ ∣ n! ↔ k ≤ ⌊n/p⌋) into a single reusable 'unramified prime' statement. Two worked examples confirm the collapse: v₁₁(100!) = 9 (prime present, since 11² = 121 > 100 and ⌊100/11⌋ = 9) and v₁₃(10!) = 0 (prime absent, 13 > 10).",
     "mathContext": "A prime $p > \\sqrt{n}$ behaves in $n!$ like an unramified prime: its entire contribution is captured by the single number $\\lfloor n/p \\rfloor$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "unramified prime",
       "reusable API",

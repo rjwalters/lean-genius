@@ -10,7 +10,7 @@
     "title": "Euler's converse for even perfect numbers: the six-step skeleton",
     "content": "The docstring lays out the goal and strategy. Euler (1747) proved the converse of Euclid's construction: every even perfect number n has the form 2^k·(2^(k+1)−1) with 2^(k+1)−1 a Mersenne prime. Mathlib's Archive proves this in one block; the gallery value here is a named six-step decomposition exposing the algebraic skeleton — σ-multiplicativity, σ(2^k)=M_{k+1}, the perfect equation M_{k+1}·σ(m)=2^(k+1)·m, the divisibility M_{k+1}∣m, the identity σ(m)=m+c, and a two-divisor argument forcing c=1 and m prime. The Archive is used only for the 2-adic split and σ(2^k); Step 6 and the capstone's bound-chasing are self-contained.",
     "mathContext": "Perfect: $\\sigma(n)=2n$. Euclid–Euler: $n$ even perfect $\\iff n=2^k(2^{k+1}-1)$ with $2^{k+1}-1$ (a Mersenne number $M_{k+1}$) prime.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "perfect numbers",
       "Mersenne primes",

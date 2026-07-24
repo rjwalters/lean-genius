@@ -67,7 +67,7 @@
     "title": "Corollary: the decline set is nonempty",
     "content": "sound_approx_declines_nonempty recovers the earlier single-witness statement as a corollary of the sharp form: a not-r.e. set cannot be empty (the empty set is trivially r.e.), so the decline set on non-halting inputs contains at least one code. This closes the loop back to the schematic 'must decline somewhere' barrier from the companion HaltingApproximation.lean, now proved in the genuine computation model rather than schematically.",
     "mathContext": "The empty predicate is r.e.; since the decline set is not r.e., it is nonempty — $\\exists c,\\ \\neg\\mathrm{Halts}\\,n\\,c \\wedge \\neg(f\\,c).\\mathrm{Dom}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["corollary", "nonempty from non-r.e.", "schematic vs model-level barrier"],
     "prerequisites": ["the empty set is r.e.", "the sharp non-r.e. theorem"]
   }

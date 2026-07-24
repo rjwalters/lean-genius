@@ -139,7 +139,7 @@
     "title": "Concrete sanity checks",
     "content": "Worked instances confirm the formulas by decide: D(5) = 44 with modulus 20 and signed closed form (−1)^5·16 = −16, so 44 − (−16) = 60 = 3·20; D(6) = 265 with reduced residue 5² = 25, so 265 − 25 = 240 = 8·30; and r(5) = 4 (odd branch), r(6) = 25 (even branch). These make the abstract congruence tangible and guard against off-by-one or parity errors.",
     "mathContext": "$D(5)=44\\equiv 4,\\; D(6)=265\\equiv 25 \\pmod{n(n-1)}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["decidable evaluation", "worked examples"],
     "prerequisites": ["decide tactic"]
   }

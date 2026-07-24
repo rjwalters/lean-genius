@@ -10,7 +10,7 @@
     "title": "Completing a `:= True` Placeholder Honestly",
     "content": "The parent survey left its main theorem as `def EquivariantBorsukUlam := True`, acknowledging that the full compact-Lie-group case needs ~2000 lines of equivariant cohomology. This file completes the placeholder for the historically central and tractable ℤ/2 case by following the same discipline as the classical BorsukUlam file: isolate the one deep topological input as a named axiom and prove everything else on top of it. The result is a genuine, machine-checkable theorem rather than an opaque `True`.",
     "mathContext": "Classical Borsuk-Ulam is the ℤ/2-equivariant statement for the antipodal map $x \\mapsto -x$. Recognizing the antipodal map as one free involution among many yields the free-involution formulation used here.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "Borsuk-Ulam theorem",
       "equivariant topology",
@@ -55,7 +55,7 @@
     "title": "The Single Topological Input: Free-Involution Borsuk-Ulam",
     "content": "The axiom borsuk_ulam_free_involution states the G = ℤ/2 case of the general equivariant Borsuk-Ulam theorem (Dold 1983): for a free involution σ on Sⁿ (σ∘σ = id, σ x ≠ x on the sphere) and a target map τ fixed-point-free away from 0, there is no continuous (σ,τ)-equivariant map Sⁿ → ℝⁿ avoiding 0. Normalizing such a map would give a ℤ/2-equivariant Sⁿ → Sⁿ⁻¹ between free actions, contradicting the Dold dimension bound. This is the deep input that needs equivariant algebraic topology not yet in Mathlib; it strictly generalizes the classical odd-map axiom (the σ = τ = negation case).",
     "mathContext": "Free involution: $\\sigma^2 = \\mathrm{id}$ with no fixed points on $S^n$. The classical odd-map axiom is $\\sigma = \\tau = -\\mathrm{id}$; equivariance then reads $h(-x) = -h(x)$ (oddness).",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "Dold's theorem",
       "equivariant no-retraction",
@@ -79,7 +79,7 @@
     "title": "Zero-Existence Theorem and the Real Statement",
     "content": "equivariant_borsuk_ulam converts the axiom into its usable form: every continuous equivariant map from Sⁿ into the lower-dimensional space vanishes somewhere on the sphere (proved by contradiction — a nowhere-zero map would be the forbidden object). EquivariantBorsukUlamStatement then names the real Prop that the parent's `:= True` stood for, and it is proved to hold. This is the actual mathematical content promised by the placeholder, now formalized for arbitrary free involutions.",
     "mathContext": "If $h : S^n \\to \\mathbb{R}^n$ is continuous and $(\\sigma,\\tau)$-equivariant with $\\sigma,\\tau$ free, then $\\exists x \\in S^n$ with $h(x) = 0$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "zero-existence",
       "proof by contradiction",
@@ -100,7 +100,7 @@
     "title": "Non-Circular Recovery of Classical Borsuk-Ulam",
     "content": "The antipodal map σ = τ = negation is a free involution: eq_zero_of_neg_eq proves −x = x forces x = 0 (no 2-torsion in a real vector space, via two_smul and smul_eq_zero), so neg_ne_self_on_sphere gives σ x ≠ x on the sphere. Applying equivariant_borsuk_ulam to the gadget g(x) = f(x) − f(−x) — continuous, odd, and nonzero on the sphere if there were no antipodal pair — yields a contradiction, re-deriving the EXACT classical gallery theorem BorsukUlam.HasAntipodalPair. Crucially, `#print axioms classical_of_free_involution` reports borsuk_ulam_free_involution but NOT the classical odd-map axiom, so the general principle genuinely subsumes the classical one rather than quietly reusing it.",
     "mathContext": "Gadget: $g(x) = f(x) - f(-x)$ is odd, so $g(\\sigma x) = \\tau(g x)$ for $\\sigma = \\tau = -\\mathrm{id}$. A zero of $g$ on $S^n$ is exactly an antipodal pair $f(x) = f(-x)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "classical Borsuk-Ulam",
       "gadget construction",

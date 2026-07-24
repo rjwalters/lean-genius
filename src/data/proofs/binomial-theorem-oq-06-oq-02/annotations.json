@@ -152,7 +152,7 @@
     "title": "Worked examples and numeric checks",
     "content": "Concrete instances tie the abstract identities to numbers: the vertical hockey-stick C(2,2)+C(3,2)+C(4,2)+C(5,2)=20=C(6,3); the diagonal C(2,0)+C(3,1)+C(4,2)=10=C(5,2); the central diagonal ∑ C(3+k,k)=35=C(7,3); and the Catalan bridge ∑ C(4,k)²=1+16+36+16+1=70=5·catalan 4=5·14. The purely numeric checks (=35, =70) are discharged by kernel `decide`, keeping the file free of native_decide and hence axiom-free.",
     "mathContext": "$\\sum_{k=0}^{3}\\binom{3+k}{k}=35=\\binom{7}{3}, \\qquad \\sum_{k=0}^{4}\\binom{4}{k}^2=70=5\\cdot 14$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["numeric verification", "kernel decide", "Catalan numbers"],
     "prerequisites": ["evaluating binomial coefficients"]
   }

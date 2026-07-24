@@ -36,7 +36,7 @@
     "title": "Total-Variation Distance from Uniform",
     "content": "dTVUnif p = ½·∑ᵢ |pᵢ − 1/d| is the standard total-variation distance of a probability vector from the uniform law u = (1/d, …, 1/d). sum_abs_dev records the ℓ¹ identity ∑ᵢ |pᵢ − 1/d| = 2·dTVUnif p (an unfold; ring), which is what lets the factor ½ in the definition surface as the constant 4 in the main bound. dTVUnif_nonneg is immediate from Finset.sum_nonneg over abs_nonneg, closed by positivity.",
     "mathContext": "For two distributions p, q on a finite set, the total-variation distance is dTV(p,q) = ½∑ᵢ |pᵢ − qᵢ| = sup over events of |p(A) − q(A)|. Here q is uniform, so dTV(p,u) measures how biased p is; it is 0 exactly for the uniform law and at most 1.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "total-variation distance",
       "probability simplex",

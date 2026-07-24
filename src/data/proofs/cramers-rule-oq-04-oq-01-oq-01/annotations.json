@@ -10,7 +10,7 @@
     "title": "OQ-01: From the Determinant Form to the Honest Scalar Formula",
     "content": "The module docstring states the parent's open question: the parent (CramersRuleOQ04OQ01) proved only the determinant-scaled form A·(adj A · b) = (det A)·b, and OQ-01 asks for the classical scalar formula xᵢ = det(Aᵢ)/det A, where Aᵢ is A with column i replaced by b. The bridge is Matrix.cramer: cramer_apply identifies its i-th component with det(Aᵢ), and the same adjugate identity adj(A)·A = (det A)·I that powered the parent shows cramer A b = (det A)•x for any solution x of Ax = b — so dividing by the nonzero determinant recovers the classical formula. Lists the five theorems the file proves (the algebraic core, the explicit formula, uniqueness, and existence) before opening the Matrix namespace and fixing the commutative-ring section.",
     "mathContext": "$\\mathrm{cramer}\\,A\\,b\\,i = \\det(A.\\mathrm{updateCol}\\,i\\,b)$ bridges the parent's $A\\cdot(\\mathrm{adj}\\,A\\cdot b) = (\\det A)\\cdot b$ to $x_i = \\det(A_i)/\\det A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Matrix.cramer", "cramer_apply", "adjugate identity", "determinant-scaled solution"],
     "prerequisites": ["matrix adjugate", "Cramer's rule (determinant form)"]
   },

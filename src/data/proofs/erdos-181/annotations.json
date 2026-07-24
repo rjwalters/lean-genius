@@ -10,7 +10,7 @@
     "title": "Erdős Problem #181: The Ramsey Number of the Hypercube",
     "content": "Erdős Problem #181 (OPEN) asks whether the 2-colour Ramsey number of the $n$-dimensional hypercube grows only linearly in its vertex count: $R(Q_n)\\ll 2^n$. Here $Q_n$ has $2^n$ vertices (binary strings of length $n$) with edges between strings differing in one bit. The trivial lower bound is $R(Q_n)\\ge 2^n$; the Burr–Erdős conjecture predicts a matching $R(Q_n)\\le C\\cdot 2^n$; the best known upper bound is Tikhomirov's (2022) $R(Q_n)\\le C\\cdot 2^{(2-c)n}$ with $c\\approx 0.0366$. This file formalizes the hypercube graph, the Ramsey number, the conjecture and known bounds (as axioms), and — importantly — proves a large body of *unconditional* structural results (pigeonhole embedding obstruction, monotonicity, $R(Q_0)=1$, and the conditional lower bound) directly from the definition. The Erdős–Sós question of whether $R(Q_n)/2^n\\to\\infty$ remains open.",
     "mathContext": "$2^n \\le R(Q_n) \\le C\\cdot 2^{(2-c)n}$; \\quad conjecture: $R(Q_n)\\le C\\cdot 2^n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Ramsey numbers",
       "hypercube graph $Q_n$",
@@ -301,7 +301,7 @@
     "title": "Unconditional Structural Lemmas: Pigeonhole, Monotonicity, Conditional Lower Bound",
     "content": "Part VI proves — with no axioms — the combinatorial backbone of $R(Q_n)$. `no_embedding_small`: if $N<2^n$ there is no injection $\\mathrm{Fin}(2^n)\\hookrightarrow\\mathrm{Fin}(N)$ (`Fintype.card_le_of_injective` + `omega`), the pigeonhole obstruction forcing $R(Q_n)\\ge 2^n$. `ramsey_property_mono`: the Ramsey property is upward monotone in the host size — restrict a colouring of $K_M$ to the first $N$ vertices via `Fin.castLE` and lift the embedding back (`Fin.castLE_injective`). `lower_bound_conditional`: whenever the Ramsey set is non-empty, $R(Q_n)\\ge 2^n$, obtained by `le_csInf` and applying the pigeonhole lemma to the all-zero colouring. Together these turn the axiomatic `lower_bound` into a genuinely proved fact under a mild non-emptiness hypothesis.",
     "mathContext": "$N<2^n \\Rightarrow \\nexists\\, \\mathrm{Fin}(2^n)\\hookrightarrow \\mathrm{Fin}(N)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "pigeonhole (Fintype.card_le_of_injective)",
       "monotonicity via Fin.castLE",

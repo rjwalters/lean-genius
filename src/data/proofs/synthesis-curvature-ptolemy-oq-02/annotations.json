@@ -10,7 +10,7 @@
     "title": "Overview: Hyperbolic Ptolemy via Conformal-Factor Cancellation",
     "content": "The parent synthesis entry unifies the spherical (K>0) and Euclidean (K=0) Ptolemy theorems through curvatureSin K, and leaves the hyperbolic (K=-1) case as a CONJECTURE, estimating that a Poincaré-disk metric-space development of ~800–1200 lines (blocked in Mathlib) would be needed. This entry discharges the conjecture as a fully verified theorem. The mechanism is a change of variables: the hyperbolic half-distance sinh(d_H(z,w)/2) equals the conformal chord s(z,w) = ‖z-w‖/√((1-‖z‖²)(1-‖w‖²)). In the Ptolemy relation each product s(zᵢ,zⱼ)·s(zₖ,zₗ) then carries the SAME denominator √((1-‖z₁‖²)(1-‖z₂‖²)(1-‖z₃‖²)(1-‖z₄‖²)), because the pair {i,j} and its complement {k,l} partition {1,2,3,4}. Cancelling that single positive factor turns the hyperbolic relation into the Euclidean ptolemy_inequality (for the inequality) and ptolemy_equality_of_proportional (for the equality). Taking the disk metric in its closed form d_H = 2·arsinh(s), the bridge sinh(d_H/2) = s is one line (Real.sinh_arsinh), so the results are stated in the exact sinh(d_H/2) = curvatureSin (-1) (d_H/2) form of the conjecture. 0 sorry, 0 axiom.",
     "mathContext": "In the Poincaré disk the hyperbolic distance satisfies $\\sinh\\!\\big(\\tfrac12 d_H(z,w)\\big) = \\dfrac{|z-w|}{\\sqrt{(1-|z|^2)(1-|w|^2)}}$. Substituting this into the Ptolemy relation, the product over all four conformal factors $\\prod_i (1-|z_i|^2)$ divides out of every term, reducing the hyperbolic identity to the Euclidean chord identity $|z_1-z_3||z_2-z_4| \\le |z_1-z_2||z_3-z_4| + |z_2-z_3||z_1-z_4|$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "hyperbolic geometry",
       "Poincaré disk model",
@@ -58,7 +58,7 @@
     "title": "Hyperbolic Ptolemy Inequality by Common-Denominator Reduction",
     "content": "`hyperbolic_ptolemy_inequality`: for ANY four points in the open disk (no concyclicity), `s(z₁,z₃)·s(z₂,z₄) ≤ s(z₁,z₂)·s(z₃,z₄) + s(z₂,z₃)·s(z₁,z₄)`. The proof rewrites each of the three products over the common denominator `√((1-‖z₁‖²)(1-‖z₂‖²)(1-‖z₃‖²)(1-‖z₄‖²))` using `field_simp`, combines the two right-hand fractions with `← add_div`, and then divides the Euclidean `ptolemy_inequality` by the common positive denominator using `gcongr`. No hyperbolic-metric machinery is invoked.",
     "mathContext": "Writing $s(z_i,z_j) = |z_i-z_j|/(a_i a_j)$ with $a_k = \\sqrt{1-|z_k|^2}>0$, each product $s(z_i,z_j)s(z_k,z_l) = |z_i-z_j||z_k-z_l|/(a_1a_2a_3a_4)$ because $\\{i,j,k,l\\}=\\{1,2,3,4\\}$. So the inequality is the Euclidean one scaled by the single positive constant $1/(a_1a_2a_3a_4)$, valid unconditionally.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Ptolemy inequality",
       "common denominator",
@@ -104,7 +104,7 @@
     "title": "The Disk Metric, the sinh(d_H/2) Bridge, and the Discharged Conjecture",
     "content": "`poincareDist z w = 2·arsinh(poincareChord z w)` is the standard closed form of the K=-1 disk metric (equivalently `arcosh(1+2s²)`, via `arcosh(1+2s²) = 2·arsinh s`). The bridge `sinh_poincareDist_half` gives `sinh(poincareDist z w / 2) = poincareChord z w` in one line from `Real.sinh_arsinh`. Rewriting through it, `hyperbolic_ptolemy_inequality_sinh` and `hyperbolic_ptolemy_equality_sinh` state the results in the exact `sinh(d_H/2)` form of the parent's conjecture; since `curvatureSin (-1) = sinh`, these ARE the parent's conjectured hyperbolic Ptolemy relation. The metric is taken by its closed form as a DEFINITION — the file does not (and need not) re-derive that it satisfies the metric axioms.",
     "mathContext": "$d_H(z,w) = \\operatorname{arcosh}\\!\\big(1 + \\tfrac{2|z-w|^2}{(1-|z|^2)(1-|w|^2)}\\big) = 2\\operatorname{arsinh}(s)$ since $\\cosh(2\\operatorname{arsinh} s) = 1 + 2\\sinh^2(\\operatorname{arsinh} s) = 1 + 2s^2$. Then $\\sinh(d_H/2) = \\sinh(\\operatorname{arsinh} s) = s$, so the conjectured $\\sinh(d_H/2)$ statements collapse onto the proved chord relations.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Poincaré disk metric",
       "hyperbolic distance closed form",

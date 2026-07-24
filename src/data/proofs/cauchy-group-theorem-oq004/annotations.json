@@ -34,7 +34,7 @@
     "title": "The ℤ-Power Bridge Lemma: x^(exp G) = 1 as an Integer Power",
     "content": "zpow_exponent_eq_one restates the defining exponent property x^(exp G) = 1 (Monoid.pow_exponent_eq_one, a ℕ-power fact) as the integer-power equality x^(↑exp G : ℤ) = 1, proved by rw [zpow_natCast] and the ℕ-power lemma. This tiny repackaging is exactly what the image proof needs: Bézout writes gcd(n,e) = n·A + e·B over ℤ with A, B integers, so the exponent enters as the ℤ-coefficient of the product e·B. Having x raised to an integer multiple of e collapse to 1 is what lets the e·B term drop out; without the zpow form the integer arithmetic would not typecheck against the ℕ-power lemma.",
     "mathContext": "$$x^{(\\uparrow\\!\\exp G\\,:\\,\\mathbb{Z})} = 1,\\qquad\\text{the }\\mathbb{Z}\\text{-power companion of } x^{\\exp G}=1.$$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "monoid exponent",
       "integer powers (zpow)",

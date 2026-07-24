@@ -19,7 +19,7 @@
     "title": "Re-declaring Graph and IsHom",
     "content": "Graph n re-declares a simple graph on Fin n (an irreflexive, symmetric adjacency relation) and IsHom re-declares a graph homomorphism f : G → H (adjacent vertices map to adjacent vertices, with no injectivity or surjectivity required) — both carried over unchanged from the parent files so this entry stays self-contained over Mathlib. Every later definition (hasHomCopy, homFree, blowup) and theorem in the file is built on exactly these two declarations.",
     "mathContext": "$G = (\\mathrm{adj}, \\mathrm{symm}, \\mathrm{irrefl})$ on $\\mathrm{Fin}\\,n$; $\\mathrm{IsHom}\\,G\\,H\\,f := \\forall\\,u\\,v,\\ G.\\mathrm{adj}\\,u\\,v \\to H.\\mathrm{adj}\\,(f\\,u)\\,(f\\,v)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["simple graph", "graph homomorphism", "self-contained re-declaration"],
     "prerequisites": ["irreflexive symmetric relations", "Fin n"]
   },
@@ -67,7 +67,7 @@
     "title": "Cliques and the complete graph K_r",
     "content": "Graph.hasClique re-declares an r-clique as an injective family of r pairwise-adjacent vertices, and Graph.cliqueFree its negation. completeGraph r declares K_r on Fin r (distinct vertices adjacent). completeGraph_castLE_isHom records that the inclusion Fin.castLE is a graph homomorphism K_m → K_r whenever m ≤ r — the fact that feeds hasHomCopy_mono to give clique-order monotonicity. These four declarations set up everything the bridge below needs.",
     "mathContext": "$G.\\mathrm{hasClique}\\,r := \\exists\\,s : \\mathrm{Fin}\\,r \\to \\mathrm{Fin}\\,n,\\ \\mathrm{Inj}(s) \\wedge \\forall\\,i\\ne j,\\ G.\\mathrm{adj}(s\\,i)(s\\,j)$; $K_r.\\mathrm{adj}\\,i\\,j := i \\ne j$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["clique", "complete graph", "Fin.castLE", "graph homomorphism"],
     "prerequisites": ["injective functions", "Fin.castLE"]
   },

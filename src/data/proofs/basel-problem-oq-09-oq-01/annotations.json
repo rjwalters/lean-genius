@@ -7,7 +7,7 @@
     "title": "The Exponent-Uniform Parity Split and the Dirichlet Lambda Function",
     "content": "The docstring states the entry's thesis: the parent (`basel-problem-oq-09`) split the Basel sum at the single exponent s = 2 to get ∑ 1/(2k+1)² = π²/8; this entry lifts that to an *exponent-uniform* law. For any convergent p-series with ∑ 1/nˢ = Z, the odd-index subseries is a fixed fraction of the whole: ∑ 1/(2k+1)ˢ = (1 − 2^{−s})·Z. Since the even part ∑ 1/(2k)ˢ = 2^{−s}·Z is just a rescaled copy of the full series, the fraction 1 − 2^{−s} is the *only* exponent-dependent quantity. Writing λ(s) := ∑ 1/(2k+1)ˢ for the Dirichlet lambda function, this is exactly λ(s) = (1 − 2^{−s})·ζ(s), specializing to λ(2) = π²/8, λ(4) = π⁴/96, and λ(2m) = (1 − 2^{−2m})·ζ(2m). Crucially, no new analytic input beyond the parent's toolkit is needed — the novelty is the abstraction and the s = 4 value.",
     "mathContext": "$\\lambda(s) = \\sum_{k\\ge0}\\frac{1}{(2k+1)^s} = (1 - 2^{-s})\\,\\zeta(s)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet lambda function", "Riemann zeta at even integers", "Basel problem", "even/odd decomposition", "p-series"],
     "prerequisites": ["infinite series", "Riemann zeta function", "HasSum API"]
   },

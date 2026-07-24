@@ -29,7 +29,7 @@
     "title": "The reduction: meshPt and signColoring",
     "content": "`meshPt m j = j / m` names the uniform mesh $\\{0, 1/m, \\dots, 1\\}$; `signColoring f m` is the induced 2-coloring, sending vertex `j` to `0` when `f (j/m) ≤ 0` and to `1` otherwise. This *is* the continuous-coloring → Sperner-coloring reduction in the 1-d case: it turns a real function into a combinatorial 2-coloring of the interval mesh. The endpoint lemmas make the Sperner boundary condition explicit: `signColoring_zero` shows the left end is colored `0` when `f 0 ≤ 0`, and `signColoring_self` shows the right end is colored `1` when `0 < f 1` (using `meshPt_self : meshPt m m = 1` via `div_self`). Under the hypothesis `f 0 ≤ 0 < f 1`, the two mesh endpoints therefore receive **opposite** colors — exactly the input Sperner needs to force a panchromatic (sign-changing) cell.",
     "mathContext": "The bridge from analysis to combinatorics. Assigning color 0/1 by the sign of $f$ at each mesh point encodes 'where $f$ is $\\le 0$ vs. $> 0$'; opposite endpoint colors are the 1-d Sperner boundary hypothesis. No continuity is needed to *define* or *color* the mesh.",
-    "significance": "key-step",
+    "significance": "key",
     "relatedConcepts": [
       "sign function",
       "2-coloring",
@@ -49,7 +49,7 @@
     "title": "Discrete IVT for a real function (continuity-free)",
     "content": "`exists_sign_change_cell`: for any `f` with `f 0 ≤ 0 < f 1` and any mesh `m > 0`, feeding `signColoring f m` to the 1-d Sperner discrete intermediate-value theorem `SpernerSimplicialInstanceOQ05Scarf1d.discrete_ivt_panchromatic_cell` produces a cell `i : Fin m` whose endpoints `i/m` and `(i+1)/m` straddle a sign change of `f`. The opposite endpoint colors (`decide` on `0 ≠ 1` in `Fin 2`) supply the Sperner boundary hypothesis; the panchromatic cell is then unpacked by a four-way `by_cases` on the two endpoint signs. Crucially **no continuity is used** — this is a purely discrete statement about an arbitrary real function. `exists_sign_change_bracket` restates the sign flip uniformly as the product inequality `f(i/m) · f((i+1)/m) ≤ 0` via `mul_nonpos_iff`, independent of which way the sign turns.",
     "mathContext": "This is the *combinatorial half* of the intermediate-value theorem. Sperner parity guarantees a sign-changing cell at every mesh resolution $m$; taking $m \\to \\infty$ later yields arbitrarily fine brackets. Isolating this half from continuity is what makes the analysis-vs-combinatorics split clean.",
-    "significance": "key-step",
+    "significance": "key",
     "relatedConcepts": [
       "discrete intermediate value theorem",
       "panchromatic cell",

@@ -34,7 +34,7 @@
     "title": "The G-action setup and the orbit-space notation Ω = X/G",
     "content": "Before either declaration, a compact setup block fixes the acting group and the orbit space. `open MulAction` brings Mathlib's group-action API (orbit, stabilizer, orbitRel, orbitProdStabilizerEquivGroup) into scope; the `variable {α : Type*} [Group α] {β : Type*} [MulAction α β]` line declares a group α acting on a set β once, so both the equivalence and the counting theorem inherit the same context. The load-bearing line is `local notation \"Ω\" => Quotient (orbitRel α β)`: it names the quotient of β by the orbit relation — the orbit space X/G — as Ω. Every subsequent occurrence of Ω (the codomain Ω × α of the bijection, `Fintype.card Ω` as the orbit count |X/G|, and each representative `ω.out` for `ω : Ω`) reads through this abbreviation, which is why the whole file can state Σ_x |Stab(x)| = |X/G|·|G| so tersely.",
     "mathContext": "$\\Omega := \\mathrm{Quotient}(\\mathrm{orbitRel}\\ \\alpha\\ \\beta) = X/G$, the set of orbits; $|\\Omega| = \\mathrm{Fintype.card}\\ \\Omega$ is the orbit count.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "orbitRel and the orbit space X/G",
       "MulAction API",

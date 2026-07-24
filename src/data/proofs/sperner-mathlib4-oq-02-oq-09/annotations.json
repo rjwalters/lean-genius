@@ -10,7 +10,7 @@
     "title": "Sign door vs. genuine Tucker witness: quantifying the gap",
     "content": "The directed pos→neg sign door rule of oq-02-oq-08 reads only signs (sgn : Fin 4 → ZMod 2, {+1,+2}↦0, {−1,−2}↦1) and fires on any oriented +→− side. A genuine Tucker witness is stronger: a side whose two labels are exactly antipodal, Compl x y := x = negL y (+1/−1 or +2/−2, not the merely opposite-sign +1/−2). The sibling entry forced exactly three interior degree-1 disc rooms under the sign rule; this entry asks how many of those three carry a GENUINE complementary door, and finds the answer can be zero. The seed count 3 therefore over-states the interior Tucker witnesses: no Tucker conclusion follows from the directed interior seed alone. All statements are decided by kernel decide over the 4⁴ = 256 antipodal labellings (a,b,c,d), so the axiom profile is propext / Classical.choice / Quot.sound only — no sorryAx, no Lean.ofReduceBool.",
     "mathContext": "Two nested relations on the labels: the sign shadow $\\mathrm{sgn} : \\mathrm{Fin}\\,4 \\to \\mathbb{Z}/2$ that the directed door reads, versus exact antipodality $\\mathrm{Compl}\\,x\\,y := x = \\mathrm{negL}\\,y$ that a Tucker witness requires. Every claim is a decidable proposition over the $4^4 = 256$ antipodal labellings $(a,b,c,d)$, discharged by kernel `decide`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tucker's lemma",
       "Borsuk–Ulam theorem",

@@ -102,7 +102,7 @@
     "title": "Numerical Sanity Check by Decidability",
     "content": "A concrete instance, C(6,3) = 20, is recovered by rewriting with central_binom_eq_sum_sq 3 and then discharging the fully numeric goal ∑_{i∈range 4} C(3,i)² = 20 with `decide`. Because every quantity is a closed natural number, kernel evaluation settles it without any arithmetic lemmas — a cheap end-to-end confirmation that the general identity specializes correctly.",
     "mathContext": "$\\binom{6}{3} = \\binom{3}{0}^2+\\binom{3}{1}^2+\\binom{3}{2}^2+\\binom{3}{3}^2 = 1+9+9+1 = 20$. `decide` evaluates both sides to the literal $20$ in the kernel.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "decidable equality",
       "kernel reduction",

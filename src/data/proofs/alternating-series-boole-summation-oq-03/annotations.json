@@ -7,7 +7,7 @@
     "title": "The polynomial ladder of Boole summation",
     "content": "The parent's finite Boole formula peels the leading Boole/Euler terms off an alternating sum and leaves an exact remainder that is an alternating sum of the next forward difference. When some forward difference Δᴷa vanishes identically — i.e. a is polynomial of degree < K — the remainder is exactly zero and the alternating sum equals its finite endpoint model. The parent cashes this out at degree 1 (altSum_affine, K=2). This file does degree 2: a quadratic a_j = α+β·j+γ·j² has Δa = (β+γ)+2γj (affine), Δ²a = 2γ (constant), Δ³a ≡ 0, so the order-3 formula terminates and the alternating sum is a pure endpoint expression.",
     "mathContext": "Δ^{d+1} annihilates degree ≤ d; here d = 2 needs order K = 3.",
-    "significance": "Positions the entry as the d=2 rung of a uniform ladder above the parent's d=0 and d=1 rungs.",
+    "significance": "supporting",
     "relatedConcepts": ["finite differences", "Boole summation", "polynomial sequences"],
     "prerequisites": ["forward difference operator", "the parent finite Boole engine"]
   },
@@ -19,7 +19,7 @@
     "title": "First forward difference of a quadratic",
     "content": "fdiff_quadratic computes Δ(α+β·j+γ·j²) = (β+γ)+2γ·j. Unfolding the definition gives β·((j+1)−j) + γ·((j+1)²−j²) = β + γ·(2j+1) = (β+γ) + 2γ·j, the discrete analogue of the derivative β+2γx offset by the finite-difference correction γ·(2j+1). A subtlety worth noting: the result lambda must be annotated fun (j : ℕ) => …, otherwise the (j : ℝ) cast inside makes Lean infer the binder as ℝ and the function type mismatches fdiff's ℕ → ℝ domain.",
     "mathContext": "$\\Delta(\\alpha+\\beta j+\\gamma j^2)=(\\beta+\\gamma)+2\\gamma j$, using $(j+1)^2-j^2=2j+1$.",
-    "significance": "The one genuinely new algebraic input; everything else reuses parent lemmas.",
+    "significance": "supporting",
     "relatedConcepts": ["finite difference", "discrete derivative"],
     "prerequisites": ["fdiff definition", "ring / push_cast"]
   },
@@ -31,7 +31,7 @@
     "title": "Second difference via the parent's fdiff_affine",
     "content": "fdiff_two_quadratic shows Δ²(quadratic) = 2γ (a constant). Rather than recompute, it peels one iterate with congrFun (Function.iterate_succ' fdiff 1), rewrites the inner Δ by fdiff_quadratic to the affine sequence (β+γ)+2γ·j, and then applies the parent's own fdiff_affine (β+γ) (2γ) — whose statement is exactly Δ(affine) = constant. This is direct reuse of verified parent infrastructure.",
     "mathContext": "$\\Delta^2(\\alpha+\\beta j+\\gamma j^2)=\\Delta\\big((\\beta+\\gamma)+2\\gamma j\\big)=2\\gamma$.",
-    "significance": "Illustrates composing new results out of the parent's lemmas instead of re-deriving.",
+    "significance": "supporting",
     "relatedConcepts": ["Function.iterate_succ'", "constant sequences"],
     "prerequisites": ["fdiff_affine (parent)", "iterate unfolding"]
   },
@@ -43,7 +43,7 @@
     "title": "Third difference vanishes",
     "content": "iterate_fdiff_three_quadratic establishes Δ³(quadratic) ≡ 0. Peeling one iterate reduces it to Δ of the constant 2γ, which is 2γ − 2γ = 0 by sub_self. This ∀ j, Δ³a j = 0 is precisely the hypothesis the parent's boole_exact_of_iterate_fdiff_zero needs to make the order-3 remainder vanish.",
     "mathContext": "$\\Delta^3(\\alpha+\\beta j+\\gamma j^2)\\equiv 0$.",
-    "significance": "The vanishing higher difference is what terminates the finite Boole expansion exactly.",
+    "significance": "supporting",
     "relatedConcepts": ["constant difference", "annihilation of polynomials"],
     "prerequisites": ["fdiff_two_quadratic", "sub_self"]
   },
@@ -55,7 +55,7 @@
     "title": "The exact closed form and its squares instance",
     "content": "altSum_quadratic feeds Δ³a ≡ 0 into boole_exact_of_iterate_fdiff_zero at K=3, then unfolds the length-3 Boole sum with Finset.sum_range_succ (twice) and sum_range_one. The three surviving terms carry the Boole weights (-1)^k/2^{k+1} = ½, −¼, ⅛; substituting the difference values a, Δa, Δ²a = 2γ and simplifying yields ∑ (-1)^j (α+βj+γj²) = ½·((-1)^n a_n − (-1)^m a_m) − ¼·((-1)^n (Δa)_n − (-1)^m (Δa)_m) + ¼·γ·((-1)^n − (-1)^m). altSum_sq specializes α=β=0, γ=1 to give the pure alternating sum of squares ∑ (-1)^j j² in closed form.",
     "mathContext": "Weights $\\tfrac{(-1)^k}{2^{k+1}}$ for $k=0,1,2$ close the degree-2 sum with no remainder.",
-    "significance": "The payoff: an exact endpoint closed form for every quadratic alternating sum, with a concrete sanity-check instance.",
+    "significance": "supporting",
     "relatedConcepts": ["Boole weights", "Euler numbers", "alternating power sums"],
     "prerequisites": ["boole_exact_of_iterate_fdiff_zero (parent)", "Finset.sum_range_succ", "ring"]
   }

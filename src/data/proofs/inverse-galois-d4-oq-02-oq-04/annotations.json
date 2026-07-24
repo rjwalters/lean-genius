@@ -7,7 +7,7 @@
     "title": "Radical Extensions and the Metacyclic / Affine Structure",
     "content": "The Galois group of Xⁿ − p over ℚ is metacyclic: it embeds in the affine group AGL(1,n) = ℤ/n ⋊ (ℤ/n)ˣ, the semidirect product of the order-n root-shuffling kernel by the order-φ(n) cyclotomic action. The parent established n ∣ |Gal| ∣ n! and φ(n) ∣ |Gal|, with the product n·φ(n) ∣ |Gal| only under gcd(n,φ(n)) = 1. This file makes that hypothesis automatic at prime degree.",
     "mathContext": "$\\mathrm{Gal}(X^n - p/\\mathbb{Q}) \\hookrightarrow \\mathrm{AGL}(1,n) = \\mathbb{Z}/n \\rtimes (\\mathbb{Z}/n)^\\times, \\quad |\\mathrm{AGL}(1,n)| = n\\,\\varphi(n)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["inverse Galois problem", "radical extensions", "affine group AGL(1,n)"],
     "prerequisites": ["Galois theory", "semidirect products", "Euler totient"]
   },
@@ -67,7 +67,7 @@
     "title": "The New Prime Degree ℓ = 7",
     "content": "Beyond the parent's hand-checked ℓ ∈ {3,5}, this instance records 42 = 7·6 ∣ |Gal(X⁷−p/ℚ)| ∣ 5040 = 7! for every prime p: the affine group AGL(1,7) of order 42 sits inside the Galois group, which in turn embeds in S₇. It is discharged by specialising gal_card_affine_lower_bound at ℓ = 7 and norm_num — no bespoke coprimality check, unlike the parent's decide-based ℓ = 3, 5.",
     "mathContext": "$42 = 7\\cdot 6 \\mid |\\mathrm{Gal}(X^7 - p/\\mathbb{Q})| \\mid 5040 = 7!$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["concrete instance", "affine group AGL(1,7)", "symmetric group S₇"],
     "prerequisites": ["norm_num", "specialisation of the affine bound"]
   }

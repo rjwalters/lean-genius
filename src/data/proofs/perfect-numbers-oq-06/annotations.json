@@ -7,7 +7,7 @@
     "title": "Closing the form → triangular gap",
     "content": "The docstring states the target and the gap it fills. Mathlib's Archive proves the Euclid–Euler *form* of even perfect numbers (n = 2^{p−1}(2^p − 1) with 2^p − 1 a Mersenne prime) but never the classical observation that such n are triangular numbers Tₘ = m(m+1)/2. This file supplies that consequence and pins down the triangulating index: it is exactly the Mersenne prime, so 6 = T₃, 28 = T₇, 496 = T₃₁, 8128 = T₁₂₇. The whole argument is kept division-free by working with the doubled value 2·n.",
     "mathContext": "Even $n$ perfect $\\implies n = T_{2^p-1}$ where $2^p-1$ is the Mersenne prime.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["perfect numbers", "triangular numbers", "Euclid–Euler theorem", "Mersenne primes"],
     "prerequisites": ["perfect numbers", "triangular numbers"]
   },
@@ -55,7 +55,7 @@
     "title": "The first four perfect numbers, triangulated",
     "content": "Four example checks confirm the general theorem numerically: 6 = T₃, 28 = T₇, 496 = T₃₁, 8128 = T₁₂₇, each discharged by exhibiting the index and a norm_num computation. The indices 3, 7, 31, 127 are precisely the Mersenne primes 2²−1, 2³−1, 2⁵−1, 2⁷−1 — a concrete illustration that the triangulating index is the Mersenne prime, not an arbitrary integer.",
     "mathContext": "$6=T_3,\\ 28=T_7,\\ 496=T_{31},\\ 8128=T_{127}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["triangular numbers", "Mersenne primes", "norm_num"],
     "prerequisites": ["triangular numbers"]
   }

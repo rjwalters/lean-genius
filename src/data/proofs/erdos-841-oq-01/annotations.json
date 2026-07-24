@@ -55,7 +55,7 @@
     "title": "Universal bound t_n ≤ 3n and the base case t_n = 0 ⟺ n a square",
     "content": "t_le_three_mul feeds the {4n} witness into t_le_of_hasSquareSubset, giving t_n ≤ 3n for all n (with n = 0 handled by the empty-subset witness). This is unconditional — far weaker than Selfridge's conditional O(√n), but it needs no hypotheses and certifies that the square-completion search always halts. t_eq_zero_iff_isSquare characterizes the base case in both directions: if n is a square, the empty subset realizes HasSquareSubset n 0 so t_n = 0; conversely if t_n = 0 then the achieving interval Ioc n n is empty, forcing S = ∅ and hence n·1 = n a square. This exact characterization is something the axiomatized parent could only assert as a comment.",
     "mathContext": "$t_n\\le 3n$ for all $n$; $t_n = 0 \\iff \\exists m,\\ n=m^2$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["unconditional upper bound", "termination", "empty product", "perfect square characterization"],
     "prerequisites": ["t_le_of_hasSquareSubset", "Finset.Ioc_self", "Finset.subset_empty"]
   },

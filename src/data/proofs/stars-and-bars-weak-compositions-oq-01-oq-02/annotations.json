@@ -19,7 +19,7 @@
     "title": "The upper index is a natural number when k ≥ 1",
     "content": "cast_add_sub_one is the natural-number bookkeeping that lets the generalized identity land on the ordinary Nat.choose. The generalized coefficient C(−k, n) has an integer upper index, but the classical right-hand side C(n+k−1, n) needs a natural-number one. For k ≥ 1 the integer (k:ℤ)+n−1 is exactly the cast of the natural number n+k−1, proved by Nat.cast_sub after checking 1 ≤ n+k with omega. This hypothesis k ≥ 1 is only needed here on the ℤ side; the general upper-negation lemma ringChoose_neg_eq needs no positivity at all.",
     "mathContext": "$(k:\\mathbb{Z}) + n - 1 = \\uparrow(n+k-1)\\quad\\text{for } k \\ge 1.$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.cast_sub", "ℕ/ℤ coercion", "omega", "natural subtraction"],
     "prerequisites": ["casting subtraction between ℕ and ℤ"]
   },
@@ -91,7 +91,7 @@
     "title": "Numeric sanity checks",
     "content": "Two examples ground the identity. C(−2, 3) = −4, consistent with (−1)³·C(4, 3) = −4; and C(−3, 2) = 6 = (−1)²·C(4, 2). Both are derived from ringChoose_neg_natCast and closed by norm_num, confirming the sign convention and the reduction to ordinary binomial coefficients on concrete inputs.",
     "mathContext": "$\\binom{-2}{3} = -4,\\qquad \\binom{-3}{2} = 6 = (-1)^2\\binom{4}{2}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "norm_num", "sign convention"],
     "prerequisites": ["ringChoose_neg_natCast"]
   }

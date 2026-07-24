@@ -10,7 +10,7 @@
     "title": "The complete all-signs complementary-edge door graph on the hexagon",
     "content": "The header docstring frames this as the structural sequel to the parent obstruction. The abstract door-counting engine `SpernerTuckerDoorGraph.doorGraph_degree_le_two` turns a finite door-incidence relation satisfying two bounds — `hdoor` (each door borders ≤ 2 rooms) and `hsimplex` (each room has ≤ 2 doors) — into a max-degree-≤-2 graph (paths and cycles), off which Tucker is read via an ODD count of boundary doors. The parent entry showed a SINGLE fixed-sign door graph is incomplete and asked whether ranging over ALL signs, interior AND boundary, repairs it. This file supplies that full graph — doors are ALL complementary edges — and proves, entirely by kernel `decide`, that both engine hypotheses hold on every one of the 256 antipodal labellings, so the complete Freund–Todd door graph IS paths-and-cycles. Yet the parity engine still cannot fire: the boundary-door count is always even, and the antipodal-quotient half-count is not a parity invariant. Honest status: a scoping result, fully concrete, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only — kernel `decide`, no `Lean.ofReduceBool`).",
     "mathContext": "Model: hexagon + centre triangulation of $B^2$, boundary vertices $v_0,\\dots,v_5$ in antipodal pairs $v_{i+3} = -v_i$, labels in $\\{+1,+2,-1,-2\\} \\cong \\mathrm{Fin}\\,4$ with negation $\\mathrm{negL}$. Triangles $T_i = (\\text{centre}, v_i, v_{i+1})$; twelve edges (six spokes, six boundary). A door is ANY complementary edge; incidence $\\mathrm{inc}\\,t\\,e := (e \\text{ a side of } t) \\wedge (e \\text{ complementary})$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tucker's lemma",
       "Borsuk–Ulam theorem",
@@ -51,7 +51,7 @@
     "title": "Complementary-edge doors over all signs",
     "content": "`edgeCompl a b c d e` decides whether edge `e` is complementary under the labelling with centre `d`: a spoke `centre–v i` is complementary iff `d = negL (V i)`; a boundary edge `v i–v (i+1)` iff `V (i+1) = negL (V i)`. The door incidence `inc t e := geo t e ∧ edgeCompl e` makes the doors ALL complementary edges — interior spokes and boundary edges alike, of either sign. This is exactly the all-signs, boundary-aware repair the parent obstruction called for.",
     "mathContext": "Doors range over both signs and both edge families, unlike the parent's single fixed-sign interior spoke doors.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["door incidence relation", "complementary edge", "Freund–Todd doors"],
     "prerequisites": ["decidable relations", "Fin case split"]
   },
@@ -66,7 +66,7 @@
     "title": "The engine hypotheses: the graph is paths-and-cycles",
     "content": "`hsimplex` proves every triangle has at most two complementary doors, and `no_triangle_all_complementary` gives the sharp reason — no triangle ever has all three of its sides complementary — so the room degree is ≤ 2, never 3. `hdoor` proves every edge borders at most two triangles (the pseudomanifold bound, independent of the labelling). All three are checked by kernel `decide` over all 256 antipodal labellings. These are precisely the hypotheses of the verified engine `doorGraph_degree_le_two`, so the full all-signs complementary-edge door graph is a disjoint union of paths and cycles — the first realization of the engine's structural hypothesis by the COMPLETE Freund–Todd door graph (interior and boundary, all signs) on concrete n = 2 geometry.",
     "mathContext": "`doorGraph_degree_le_two : (∀ d, #{v | inc v d} ≤ 2) → (∀ v, #{d | inc v d} ≤ 2) → (doorGraph inc).degree v ≤ 2`. The two antecedents are `hdoor` and `hsimplex`.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["maximum degree ≤ 2", "paths and cycles", "pseudomanifold property", "handshaking lemma"],
     "prerequisites": ["SimpleGraph.degree", "Finset.card", "kernel decide"]
   },
@@ -81,7 +81,7 @@
     "title": "The boundary doors carry no odd seed",
     "content": "`boundary_door_count_even` proves the number of complementary boundary edges is always even, so the ODD boundary count the parity engine consumes is absent from the unsigned door count. `half_boundary_parity_not_invariant` shows that restricting to a fundamental domain of the antipodal action — three consecutive boundary edges — does not rescue an odd seed: the half-ring complementary count is even on some antipodal labellings and odd on others. Hence no unsigned door count supplies the seed; the remaining Freund–Todd input is provably an oriented / antipodally-signed count (a discrete Borsuk–Ulam degree on $S^1$).",
     "mathContext": "The boundary is an antipodal 6-cycle; complementary edges pair up under $v_i \\mapsto v_{i+3}$, forcing evenness. The fundamental-domain count is $\\{i \\in \\{0,1,2\\} : v_{i+1} = -v_i\\}$, whose parity varies over labellings.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["parity invariant", "antipodal quotient", "oriented / signed count", "1-D Tucker on the circle"],
     "prerequisites": ["Even / Odd", "kernel decide", "antipodal action"]
   }

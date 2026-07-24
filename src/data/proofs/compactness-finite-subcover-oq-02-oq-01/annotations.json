@@ -10,7 +10,7 @@
     "title": "The Lebesgue-Number Route to Heine–Cantor",
     "content": "The module docstring frames the whole file. Heine–Cantor states that a continuous map f : X → Y from a compact metric space to a metric space is uniformly continuous — one δ works simultaneously at every point. Rather than invoke Mathlib's packaged CompactSpace.uniformContinuous_of_continuous, this entry deliberately REPROVES uniform continuity along the route singled out by the parent (compactness-finite-subcover-oq-02): cover X by the preimage sets U z = f⁻¹(ball (f z) ε/2), extract a single Lebesgue number δ, and read that δ off as a global modulus of continuity. The 'Results' list names the four theorems — the ε–δ engine heine_cantor_dist, the packaged heine_cantor, the equivalence continuous_iff_uniformContinuous, and the Cauchy-preservation corollary. Because the one non-trivial ingredient (lebesgue_number_lemma_of_metric) and the headline are both already in Mathlib, the formalized content is the self-contained Lebesgue-number derivation itself, hence the mathlib badge.",
     "mathContext": "$f\\colon X\\to Y$ continuous, $X$ compact metric $\\Longrightarrow$ $f$ uniformly continuous. Route: $\\{U_z=f^{-1}(B(fz,\\varepsilon/2))\\}_{z\\in X}$ is an open cover; its Lebesgue number $\\delta$ satisfies $\\forall x\\,\\exists z:\\ B(x,\\delta)\\subseteq U_z$, which IS a uniform modulus.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Heine–Cantor theorem",
       "Lebesgue number lemma",
@@ -35,7 +35,7 @@
     "title": "Ambient data: compact metric domain, metric codomain",
     "content": "The setup fixes the exact hypotheses Heine–Cantor needs. The domain X carries [MetricSpace X] together with [CompactSpace X] — compactness of the domain is what powers the Lebesgue number lemma (applied to isCompact_univ) and is indispensable: uniform continuity can fail for continuous maps off a compact domain (e.g. x ↦ x² on ℝ, or x ↦ 1/x on (0,1]). The codomain Y is only [MetricSpace Y]; no compactness or completeness is assumed there, since the argument controls distances in Y purely through ε/2-balls and the triangle inequality. 'open Set Metric' brings ball, preimage, iUnion, and mem_ball into scope.",
     "mathContext": "$X$: compact metric space (`[MetricSpace X] [CompactSpace X]`); $Y$: metric space (`[MetricSpace Y]`). Compactness of the domain, not the codomain, is the essential hypothesis.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "compact metric space",
       "metric space typeclasses",

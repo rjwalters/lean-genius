@@ -7,7 +7,7 @@
     "title": "The aggregation property and the generating-function strategy",
     "content": "The framing docstring states the goal and the method in advance. Goal: the multinomial family's defining closure property — for ANY union of categories A ⊆ s, the aggregated count X_A = Σ_{i∈A} X_i of a Multinomial(n, p) vector is again Binomial(n, p_A) with p_A = Σ_{i∈A} p_i. The parent thread built the binomial distribution from the binomial theorem; a sibling proved the single-coordinate marginal X_{i₀} ~ Binomial(n, p_{i₀}); this file gives the genuine generalization. Method: the multinomial moment-generating identity (a repackaging of the multinomial theorem) is fed the block indicator g(i) = if i∈A then t else 1, collapsing the generating product to t^{Σ_{i∈A} k(i)} = t^{X_A} and — using Σ_{i∈s} p_i = 1 — the PGF base to p_A·t + (1−p_A), so E[t^{X_A}] = (p_A·t + (1−p_A))^n, exactly the Binomial(n, p_A) PGF. The only change from the single-coordinate proof is swapping the equality indicator (if i = i₀) for the membership indicator (if i ∈ A), which is why aggregation is essentially free here. The block of imports and namespace opening (Mathlib, Finset, BigOperators) makes the file self-contained.",
     "mathContext": "$X_A=\\sum_{i\\in A}X_i\\sim\\mathrm{Binomial}(n,p_A)$, $p_A=\\sum_{i\\in A}p_i$. Via the PGF with $g(i)=\\mathbf{1}[i\\in A]\\,t+\\mathbf{1}[i\\notin A]$: $\\;E[t^{X_A}]=(p_A t+(1-p_A))^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["multinomial distribution", "aggregation / lumping", "probability generating function", "binomial closure"],
     "prerequisites": ["the parent binomial-distribution entry", "block / membership indicators", "the multinomial theorem"]
   },

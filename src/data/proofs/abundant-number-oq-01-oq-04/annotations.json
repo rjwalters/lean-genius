@@ -7,7 +7,7 @@
     "title": "Infinitely many primitive abundant numbers via 2^k·p",
     "content": "The docstring lays out the whole argument. A primitive abundant number is abundant but has only deficient proper divisors — the minimal abundant numbers under divisibility (OEIS A091191: 20, 70, 88, 104, ...). The sibling entry pinned the least one at 20 and left infinitude open; this entry settles it with the explicit family 2^k·p. Two features make the family tractable: coprimality gives the exact multiplicative divisor sum σ(2^k·p) = (2^(k+1) − 1)(p + 1), and taking Bertrand's postulate on the base 2^k − 1 (rather than 2^k) keeps p strictly below the perfect-number boundary 2^(k+1) − 1, so no Mersenne/Euclid special cases arise.",
     "mathContext": "Primitive abundant $n$: $\\sigma(n)>2n$ and every proper divisor $d\\mid n$ has $\\sigma(d)<2d$. Family: $n=2^k p$ with $2^k-1<p<2^{k+1}-1$.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["primitive abundant numbers", "abundancy index", "Bertrand's postulate", "Euclid perfect numbers"],
     "prerequisites": ["divisor functions", "divisibility"]
   },
@@ -31,7 +31,7 @@
     "title": "The exact multiplicative divisor sum σ(2^a·p) = (2^(a+1) − 1)(p + 1)",
     "content": "This is the engine of the entry. For an odd prime p, 2^a and p are coprime (coprime_primes together with Coprime.pow_left), so Nat.Coprime.sum_divisors_mul splits σ(2^a·p) = σ(2^a)·σ(p). The first factor σ(2^a) = ∑_{i<a+1} 2^i is evaluated by Nat.sum_divisors_prime_pow followed by the geometric-sum lemma two_pow_geom (∑_{i<n} 2^i = 2^n − 1, proved by a two-line induction with omega closing the successor step). The second factor σ(p) = p + 1 comes from Nat.Prime.divisors (divisors p = {1, p}) and Finset.sum_pair. Multiplying yields (2^(a+1) − 1)(p + 1).",
     "mathContext": "$\\sigma$ multiplicative on coprimes; $\\sigma(2^a)=\\sum_{i=0}^{a}2^i=2^{a+1}-1$; $\\sigma(p)=p+1$ for prime $p$.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["multiplicativity of σ", "geometric series", "prime-power divisor sum", "Nat.Coprime.sum_divisors_mul"],
     "prerequisites": ["coprimality", "Finset.sum_pair", "induction"]
   },
@@ -43,7 +43,7 @@
     "title": "Both properties collapse to one inequality on p",
     "content": "With the σ formula in hand, abundant_two_pow_mul_prime and deficient_two_pow_mul_prime reduce the entire behaviour of the family to a single-variable inequality. Writing 2^(k+1) = c + 1 clears the truncated ℕ subtraction, so abundance 2·(2^k·p) < (2^(k+1) − 1)(p + 1) becomes (c+1)·p < c·(p+1), i.e. p < c = 2^(k+1) − 1; deficiency of 2^a·p is the mirror image c·(p+1) < (c+1)·p, i.e. c < p, i.e. 2^(a+1) − 1 < p. Each is a linear product inequality dispatched by nlinarith. Thus n = 2^k·p is abundant exactly when p < 2^(k+1) − 1, and each smaller-power divisor 2^a·p (a < k) is deficient exactly when p > 2^(a+1) − 1.",
     "mathContext": "Abundant $\\iff p<2^{k+1}-1$; $2^a p$ deficient $\\iff p>2^{a+1}-1$. Window: $2^k-1<p<2^{k+1}-1$.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["abundancy threshold", "ℕ truncated subtraction", "nlinarith"],
     "prerequisites": ["divisor-sum inequalities", "linear arithmetic"]
   },
@@ -55,7 +55,7 @@
     "title": "Every proper divisor is a power of two or 2^a·p with a < k",
     "content": "isPrimitiveAbundant_two_pow_mul_prime assembles the family. Abundance is immediate from abundant_two_pow_mul_prime. For primitivity, take a proper divisor d of 2^k·p and split on whether p ∣ d. If p ∤ d then d is coprime to p (Nat.Prime.coprime_iff_not_dvd), so d ∣ 2^k, hence d = 2^a is a power of two — deficient for free by Nat.Prime.deficient_pow. If p ∣ d then cancelling p (mul_dvd_mul_iff_right) gives d = 2^a·p, and d < 2^k·p forces a < k; then a + 1 ≤ k yields 2^(a+1) − 1 ≤ 2^k − 1 < p, so the window deficiency lemma applies. A consistency check recovers the known least value 20 = 2^2·5 from the construction (k = 2, p = 5).",
     "mathContext": "Divisors of $2^k p$ are $2^a$ ($a\\le k$) and $2^a p$ ($a\\le k$); properness removes $2^k p$, leaving $a<k$ in the $p\\mid d$ case.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["divisor structure of 2^k·p", "Nat.Prime.deficient_pow", "Nat.dvd_prime_pow", "mul_dvd_mul_iff_right"],
     "prerequisites": ["prime divisibility", "coprimality"]
   },
@@ -67,7 +67,7 @@
     "title": "Bertrand on base 2^k − 1, then unboundedness",
     "content": "infinite_primitiveAbundant uses Set.infinite_iff_exists_gt: for any bound a, produce a primitive abundant number > a. Take k = a + 2 (so k ≥ 2) and apply Nat.exists_prime_lt_and_le_two_mul to 2^k − 1, obtaining a prime p with 2^k − 1 < p ≤ 2·(2^k − 1) = 2^(k+1) − 2, which is strictly below the boundary 2^(k+1) − 1 — this is precisely why the base is 2^k − 1 and not 2^k: it keeps p out of the perfect-number value that would make 2^k·p a Euclid perfect number rather than abundant. The core theorem makes 2^k·p primitive abundant, and 2^k·p ≥ 2^k > k > a gives the required strict inequality. No injectivity bookkeeping is needed — unboundedness alone yields infinitude.",
     "mathContext": "Bertrand: $\\exists p$ prime, $m<p\\le 2m$. With $m=2^k-1$: $2^k-1<p\\le 2^{k+1}-2<2^{k+1}-1$. And $2^k p\\ge 2^k>k>a$.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": ["Bertrand's postulate", "Set.infinite_iff_exists_gt", "Euclid perfect numbers", "unboundedness ⇒ infinite"],
     "prerequisites": ["Bertrand's postulate", "Set.Infinite"]
   }

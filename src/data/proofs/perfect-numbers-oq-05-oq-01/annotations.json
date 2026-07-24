@@ -10,7 +10,7 @@
     "title": "Module Header: From the inequality to the exact gap",
     "content": "The parent entry proves the **inequality** $\\sigma(p^k) < 2p^k$ — every prime power is deficient. Its first open question asks for the *exact size* of the deficiency\n$$\\text{deficiency}(n) := 2n - \\sigma(n).$$\nThis file computes it in closed form for every prime power:\n$$2p^k - \\sigma(p^k) = p^k - (1 + p + \\cdots + p^{k-1}) = p^k - \\frac{p^k - 1}{p - 1}.$$\nTwo sharp consequences: the gap is **always $\\ge 1$**, and for $p = 2$ it is **exactly $1$** for every $k$ — the powers of two are the *almost-perfect* numbers $\\sigma(2^k) = 2^{k+1} - 1$.",
     "mathContext": "$2p^k-\\sigma(p^k)=p^k-\\frac{p^k-1}{p-1}\\ge 1$, with the gap equal to $1$ exactly when $p=2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "deficiency 2n−σ(n)",
       "prime power p^k",
@@ -56,7 +56,7 @@
     "title": "Division-free meaning of (pᵏ − 1)/(p − 1)",
     "content": "`pred_mul_geomSum_add_one`: for $p \\ge 1$,\n$$(p - 1)\\sum_{j<k} p^j + 1 = p^k.$$\nThis gives the truncated $\\mathbb{N}$-division $(p^k - 1)/(p - 1)$ a rigorous, side-condition-free meaning. Proved by induction on $k$: the base case is $p^0 = 1$, and the step factors $p^n\\,(1 + (p-1)) = p^n \\cdot p = p^{n+1}$, with `omega` closing the linear recombination.",
     "mathContext": "$(p-1)\\sum_{j<k}p^j+1=p^k$ for $p\\ge 1$ — a division-free form of $(p^k-1)/(p-1)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite geometric series",
       "induction on k",
@@ -79,7 +79,7 @@
     "title": "σ(pᵏ) as lower tail plus top term",
     "content": "`sigma_prime_pow_split`: $\\sigma(p^k) = (1 + p + \\cdots + p^{k-1}) + p^k$, obtained by rewriting $\\sigma(p^k) = \\sum_{j \\le k} p^j$ (`sigma_one_apply_prime_pow`) and peeling the top term with `Finset.sum_range_succ`. This algebraic pivot feeds every deficiency statement below.",
     "mathContext": "$\\sigma(p^k)=\\big(\\sum_{j<k}p^j\\big)+p^k=\\sum_{j\\le k}p^j$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "sigma_one_apply_prime_pow",
       "Finset.sum_range_succ",
@@ -170,7 +170,7 @@
     "title": "Concrete gaps without native_decide",
     "content": "`deficiency 8 = 1` (as $2^3$, an almost-perfect number, $\\sigma(8) = 15$) and `deficiency 9 = 5` (as $3^2$, $\\sigma(9) = 13 = 18 - 5$). Each is a substitution into the general theorem, kernel-checked with $0$ axioms rather than trusted to `native_decide`.",
     "mathContext": "$\\operatorname{deficiency}(8)=1\\ (\\sigma(8)=15)$, $\\operatorname{deficiency}(9)=5\\ (\\sigma(9)=13)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked examples",
       "kernel-checked computation",

@@ -7,7 +7,7 @@
     "title": "Bounded-part weak compositions and the sieve",
     "content": "The docstring sets up the target: count weak compositions f : Fin k → ℕ of n with every part capped at r, and prove the classical inclusion-exclusion closed form. The argument is a subset sieve over the k overflow events A_i = {f | f i ≥ r+1}: admissible compositions are U \\ ⋃ᵢ A_i, and subtracting r+1 from each coordinate in a size-j subset S gives a bijection A_S ≃ {weak compositions of n − j(r+1)}, so |A_S| = C(n − j(r+1) + k − 1, k − 1). Grouping the 2^k subsets by size collapses to the single alternating j-sum.",
     "mathContext": "$N_{\\le r}(n,k) = \\sum_{S \\subseteq [k]} (-1)^{|S|} |A_S| = \\sum_{j=0}^{k} (-1)^j \\binom{k}{j} \\binom{n - j(r+1) + k - 1}{k-1}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["inclusion-exclusion", "stars and bars", "overflow-shift bijection", "weak compositions"],
     "prerequisites": ["binomial coefficients", "finite set cardinality", "subset sieve"]
   },
@@ -79,7 +79,7 @@
     "title": "The general identity, recorded as an axiom",
     "content": "boundedCount_eq_rhs is the full bounded-part inclusion-exclusion identity for all k ≥ 1. It is recorded as a single classical axiom: its statement and normalisation are pinned down and cross-checked by the two verified special cases (n ≤ r for all k, and k = 1 for all n), but the general subset sieve — Finset.inclusion_exclusion over the k overflow events plus the overflow-shift bijection identifying each |A_S| — is not yet discharged in Lean. This is the entry's sole assumption (badge: axiom, status: axiomatized); completing it is HARD known-mathematics work.",
     "mathContext": "$(\\mathrm{boundedCount}\\,r\\,k\\,n : \\mathbb{Z}) = \\mathrm{boundedRHS}\\,r\\,k\\,n$ for $k \\ge 1$ — axiomatized pending a full sieve proof.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.inclusion_exclusion", "axiomatized status", "overflow-shift bijection"],
     "prerequisites": ["inclusion-exclusion principle", "assumption accounting"]
   }

@@ -35,7 +35,7 @@
     "title": "Building on the Parent: Imports and the Opened Namespace",
     "content": "The two imports mark this file as a genuine *child* of the Euler-inequality entry rather than a standalone proof. `import Proofs.HeronsFormulaOQ06` pulls in the verified parent, and `open EulerInequalityHeronOQ06` brings its triangle infrastructure — `semiperimeter`, `area`, `circumradius`, `inradius`, and the key lemma `area_sq` (Area² = s·xyz after Ravi substitution) — into scope unqualified, so Gerretsen's inequality is derived by *reusing* the parent's data rather than re-deriving R, r, and the area from scratch. Only `import Mathlib.Tactic` is added on top (for `nlinarith`/`polyrith`/`ring`), a lighter dependency than a blanket `import Mathlib`. `open Real` supplies the real-number scope for `Real.sqrt` and friends, and the `namespace GerretsenHeronOQ06OQ02` wrapper keeps `gerretsenPoly` and the core lemmas from colliding with the parent's identically-shaped definitions.",
     "mathContext": "Reused parent data: $\\mathrm{Area}^2 = s\\,xyz$, $R = \\frac{abc}{4\\,\\mathrm{Area}}$, $r = \\frac{\\mathrm{Area}}{s}$ with $x=s-a,\\ y=s-b,\\ z=s-c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "namespace and open (Lean modules)",
       "reuse of a verified parent proof",

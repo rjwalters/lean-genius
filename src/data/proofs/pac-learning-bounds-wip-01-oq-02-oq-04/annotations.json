@@ -7,7 +7,7 @@
     "title": "Lifting Sauer–Shelah to Real-Valued Classes via the Hypograph Reduction",
     "content": "The header frames open question oq-04: extend the parent's verified Boolean growth bound |Π_H(m)| ≤ Σ_{k≤d} C(m,k) to level/integer-valued function classes, replacing VC dimension with the pseudo-dimension, yielding a covering-number bound O((m/γ)^d). The route is Approach A, the classical hypograph/subgraph reduction of Pollard and Haussler: encode a function g by its hypograph {(x,i) : g x > i} over a point/threshold grid, making it a Boolean concept class to which the verified parent Sauer–Shelah bound applies verbatim. The pseudo-dimension is defined as the VC dimension of that family. The genuinely-analytic parts (a general L∞-cover-to-pattern reduction and the sharp constant (2/γ)^k) are documented follow-ups; the O((m/γ)^d) order is fully delivered.",
     "mathContext": "The reduction schema in one line: $\\mathrm{Pdim}(F) := \\mathrm{VCdim}\\big(\\{\\,(x,t) : f(x) \\ge t\\,\\}_{f \\in F}\\big)$, so a real-valued growth bound follows from the Boolean one applied to subgraphs — $\\Gamma_F(m) \\le \\sum_{i \\le d} \\binom{mb}{i} = O\\!\\big((mb)^d\\big) = O\\!\\big((m/\\gamma)^d\\big)$ with $b \\approx 1/\\gamma$ discretization levels.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["pseudo-dimension", "VC dimension", "Sauer–Shelah lemma", "growth function", "covering numbers", "hypograph / subgraph reduction", "fat-shattering dimension"],
     "prerequisites": ["PAC learning basics", "VC dimension and shattering", "the Boolean Sauer–Shelah growth bound (parent entry)"]
   },

@@ -7,7 +7,7 @@
     "title": "The telescoping idea and why ℚ",
     "content": "The docstring states the finite closed form ∑_{k=1}^{n} k/(k+1)! = 1 − 1/(n+1)!, the finite version of the convergent series ∑ k/(k+1)! = 1. It is the reciprocal counterpart of the sibling entry ∑ k·k! = (n+1)! − 1. The whole proof rests on one exact identity: each summand is a difference of consecutive factorial reciprocals, so the sum telescopes to its first minus last term. Working over ℚ is essential — division must be genuine, not ℕ truncation.",
     "mathContext": "$\\sum_{k=1}^{n} \\frac{k}{(k+1)!} = 1 - \\frac{1}{(n+1)!}$, the finite form of $\\sum_{k=1}^{\\infty} \\frac{k}{(k+1)!} = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["telescoping sums", "factorial reciprocals", "convergent series", "field arithmetic over ℚ"],
     "prerequisites": ["factorial", "finite sums", "rational arithmetic"]
   },
@@ -43,7 +43,7 @@
     "title": "Matching the literal lower limit k = 1",
     "content": "sum_Icc_eq_sum_range bridges the range (n+1) form (indices 0..n) to the literal ∑_{k=1}^{n} over Finset.Icc 1 n. The only difference is the k=0 index, whose summand 0/1! = 0 vanishes, so the two sums are equal. Proved by induction using Finset.sum_Icc_succ_top and Finset.sum_range_succ in lock-step.",
     "mathContext": "$\\sum_{k \\in \\mathrm{Icc}\\,1\\,n} = \\sum_{k \\in \\mathrm{range}(n+1)}$ since the extra $k=0$ term is $\\frac{0}{1!} = 0$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.sum_Icc_succ_top", "reindexing sums", "vanishing summand"],
     "prerequisites": ["Finset.Icc vs range", "sum over intervals"]
   },

@@ -10,7 +10,7 @@
     "title": "Motivation: the Exponent-1 Gap in the Parent Criterion",
     "content": "The module docstring frames the problem this entry solves. The parent file proves the raw valuation criterion `¬ n ∣ m.factorization p → ¬ ∃ k, k^n = m`, but its user-facing helper `not_perfect_pow_of_sq_not_dvd` only fires when a prime divides the radicand *exactly once* (exponent 1). That misses every radicand whose prime exponents are all `≥ 2` yet not all divisible by `n`.\n\nThe canonical missed case is `72 = 2³·3²`: the odd exponent 3 of the prime 2 makes `√72` irrational, but `2² ∣ 72` disables the exponent-1 lemma while `3` (exponent 2) is benign for `n = 2`. This file builds the ergonomic bridge to the raw criterion for exactly these mixed-exponent radicands.",
     "mathContext": "$\\big(\\exists\\,p\\text{ prime},\\ n\\nmid v_p(m)\\big)\\Rightarrow\\sqrt[n]{m}\\notin\\mathbb{Q}$, where $v_p(m)$ is the $p$-adic valuation. Missed by exponent-1: $72=2^3\\cdot 3^2$ with $v_2=3,\\ v_3=2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["p-adic valuation", "unique factorization", "perfect powers", "irrationality"],
     "prerequisites": ["number theory", "prime factorization"]
   },
@@ -115,7 +115,7 @@
     "title": "The Exponent-1 Case is Subsumed",
     "content": "`√12` (`12 = 2² · 3`, blocked by `3` at exponent `1`) is still a one-liner here: `3 ∣ 12`, `9 ∤ 12`, `2 ∤ 1`. Instantiating the general criterion at `e = 1` reproduces the parent's exponent-1 corollary, confirming the generalization loses nothing.",
     "mathContext": "At $e=1$ the window $p\\mid m \\wedge p^2\\nmid m$ is exactly the parent's exponent-1 trigger, and $n\\nmid 1$ holds for all $n>1$. So `not_perfect_pow_of_sq_not_dvd` is the special case $e=1$ of `not_perfect_pow_of_factorization_eq`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["generalization", "special case", "backward compatibility"],
     "prerequisites": ["number theory"]
   }

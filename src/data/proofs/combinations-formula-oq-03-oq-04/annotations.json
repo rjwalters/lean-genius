@@ -7,7 +7,7 @@
     "title": "Palindromy: the symmetric half of Sylvester's theorem",
     "content": "The module docstring frames the target. The Gaussian binomial [n,k]_q is a polynomial in q of degree k(n-k) with nonnegative integer coefficients; Sylvester (1878) proved its coefficient sequence is symmetric AND unimodal. This file formalizes only the symmetric (palindromic) half — the elementary precursor — and is scrupulously honest that unimodality (the hard half, Proctor 1982 via sl₂) is NOT proved. Over a field, palindromy is packaged as the algebraic identity below rather than as a coefficient statement, which keeps the whole proof inside elementary power arithmetic.",
     "mathContext": "$\\genfrac{[}{]}{0pt}{}{n}{k}_q = q^{k(n-k)}\\,\\genfrac{[}{]}{0pt}{}{n}{k}_{q^{-1}}$, i.e. $a_j = a_{k(n-k)-j}$ for the coefficient sequence.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gaussian q-binomial coefficient",
       "Sylvester's unimodality theorem (1878)",

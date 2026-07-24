@@ -31,7 +31,7 @@
     "title": "Halving the gcd Recovers the gcd of the Halves",
     "content": "A direct consequence of the factorisation: gcd(φ m, φ n) / 2 = gcd(φ m/2, φ n/2). Because the factorisation writes the gcd as 2·G, integer division by 2 returns G exactly (no rounding). Discharged by `omega` after rewriting with the main identity.",
     "mathContext": "$\\gcd(\\varphi(m),\\varphi(n))/2 = \\gcd(\\varphi(m)/2,\\varphi(n)/2)$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["natural division", "gcd factorisation"],
     "prerequisites": ["the exact factorisation", "omega"]
   },
@@ -55,7 +55,7 @@
     "title": "gcd ≥ 4 ⟺ the Halved Totients Share a Factor",
     "content": "The complementary criterion: the gcd exceeds the parity minimum (reaching ≥ 4) exactly when φ(m)/2 and φ(n)/2 stop being coprime, i.e. gcd of the halves ≥ 2. From gcd = 2·G, the inequality 4 ≤ 2·G is equivalent to 2 ≤ G. This makes precise the jump from the guaranteed floor 2 to the next possible value.",
     "mathContext": "$\\gcd(\\varphi(m),\\varphi(n))\\ge 4 \\iff \\gcd(\\varphi(m)/2,\\varphi(n)/2)\\ge 2$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["gcd lower bound", "common factor of halves"],
     "prerequisites": ["the exact factorisation", "omega"]
   },
@@ -79,7 +79,7 @@
     "title": "Worked Examples of the Factorisation",
     "content": "Concrete instances by kernel `decide`. The equality cases: (m,n) = (3,4) with halves 1, 1 (coprime ⇒ gcd = 2) and the counterexample (5,7) with halves 2, 3 (coprime ⇒ gcd = 2). The larger-gcd cases: (5,5) with halves 2, 2 sharing 2 ⇒ gcd = 2·2 = 4, and (7,9) with halves 3, 3 sharing 3 ⇒ gcd = 2·3 = 6. Each illustrates the factorisation gcd = 2·gcd(halves) directly.",
     "mathContext": "$\\gcd(\\varphi(7),\\varphi(9))=6=2\\cdot 3=2\\cdot\\gcd(3,3)$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "kernel decide", "factorisation instances"],
     "prerequisites": ["Euler's totient values", "gcd computation"]
   }

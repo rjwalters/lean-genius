@@ -7,7 +7,7 @@
     "title": "Why Erdős #435 is posed only for non-prime-powers",
     "content": "Erdős Problem #435 asks for the largest integer not representable as a non-negative combination of the interior binomial coefficients C(n,1), …, C(n,n−1) — the Frobenius number of the numerical semigroup they generate. That quantity exists only when the semigroup has finite complement, which for a numerical semigroup happens exactly when its generators are globally coprime (gcd = 1). This file is one of three: `Erdos435Problem.lean` states the problem and the Hwang–Song formula, `Erdos435PrimePowerObstruction.lean` proves the easy half (for n = pᵏ every interior C(n,j) shares the factor p, so gcd > 1 and no Frobenius number exists), and this file proves the converse — the reason the problem is well-posed for the n it is stated over. Together they establish the sharp dichotomy gcd{C(n,1),…,C(n,n−1)} = 1 ⟺ n is not a prime power. The proof engine is Lucas' theorem: for each prime p ∣ n with a = v_p(n), the witness coefficient satisfies C(n, pᵃ) ≡ n/pᵃ (mod p), and n/pᵃ = ordCompl[p] n is coprime to p, so no prime divides all generators.",
     "mathContext": "For a numerical semigroup, finite complement ⟺ gcd of generators = 1. Here that reduces to the dichotomy $\\gcd\\{\\binom{n}{j}: 1\\le j\\le n-1\\} = 1 \\iff n \\text{ is not a prime power}$, matching OEIS A014963.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős Problem #435", "numerical semigroup", "Frobenius number", "global coprimality", "Hwang–Song formula", "prime-power dichotomy"],
     "prerequisites": ["numerical semigroups and the Frobenius number", "binomial coefficients", "prime powers"]
   },

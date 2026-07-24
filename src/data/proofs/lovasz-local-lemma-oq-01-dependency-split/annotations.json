@@ -7,7 +7,7 @@
     "title": "Why the LLL induction step needs arbitrary subset histories",
     "content": "The measure-theoretic OQ-01 scaffold (`lovasz-local-lemma-oq-01-chain-rule`, `-quantitative`) reduces the Lovász Local Lemma to a per-event bound on the conditional failure probability over the **prefix** history $\\bigcap_{j<k} A_j^c$. That reduction is genuine, but it is not the LLL: the actual Erdős–Lovász induction bounds $\\Pr[A_i \\mid \\bigcap_{j\\in S} A_j^c]$ for an **arbitrary** subset $S$ of the other events, splitting $S$ into the *neighbours* $S_1$ and *non-neighbours* $S_2$ of $A_i$ in the dependency graph. Those sets are unstructured — never prefixes of a fixed enumeration — so no prefix-history lemma can even state the induction step. This file supplies the two per-event moves of that step over arbitrary finite subset histories $\\bigcap_{j\\in S} A_j^c$: numerator monotonicity (to drop the neighbour factor) and the non-neighbour independence collapse. What it deliberately does not prove is the recursive denominator bound, which is where the well-founded recursion on $|S|$ and the dependency-degree hypothesis enter.",
     "mathContext": "Induction step of the LLL: bound $\\Pr[A_i \\mid \\bigcap_{j\\in S} A_j^c] \\le x_i$ for arbitrary $S \\not\\ni i$, by splitting $S = S_1 \\sqcup S_2$ into neighbours and non-neighbours of $A_i$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "dependency graph",
@@ -28,7 +28,7 @@
     "title": "Conditional probability is monotone in the numerator",
     "content": "`cond_mono_num`: for any measurable conditioning set $H$, if $E \\subseteq F$ then $\\mu[E \\mid H] \\le \\mu[F \\mid H]$. Surprisingly, Mathlib has **no** monotonicity lemma for `cond` in the conditioned event. The proof is elementary: `cond_apply` rewrites both sides as $(\\mu H)^{-1} \\cdot \\mu(H \\cap \\cdot)$; from $E \\subseteq F$ we get $H \\cap E \\subseteq H \\cap F$, and `measure_mono` plus the common nonnegative factor $(\\mu H)^{-1}$ finish — a single `gcongr` after the rewrites. This is the workhorse of the LLL induction: the induction bounds a conditional failure probability by *dropping* the survival of $A_i$'s neighbours from the numerator, which is exactly one application of this inequality (its corollary `cond_inter_le`, $\\mu[E \\cap F \\mid H] \\le \\mu[E \\mid H]$).",
     "mathContext": "$E \\subseteq F \\Rightarrow \\mu[E \\mid H] \\le \\mu[F \\mid H]$, via $\\mu[t\\mid s] = (\\mu s)^{-1}\\mu(s\\cap t)$ and monotonicity of $\\mu$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "monotonicity of measure",
       "conditional probability",
@@ -67,7 +67,7 @@
     "title": "The non-neighbour collapse over an arbitrary subset",
     "content": "`cond_failure_eq_measure_of_indep_subset`: if $A_i$ is independent of the survival history $H = \\bigcap_{j\\in S} A_j^c$ of an **arbitrary** finite $S$ (with $\\mu H \\ne 0$), then the conditional failure probability collapses to the unconditional one, $\\mu[A_i \\mid H] = \\mu(A_i)$. This is the arbitrary-subset generalisation of the prefix-only non-neighbour step: in the dependency graph the events *not* adjacent to $A_i$ form an unstructured set $S_2$, so this — not the prefix version — is what the induction actually applies. The proof is identical in spirit to the prefix case: `cond_apply` unfolds $\\mu[A_i\\mid H] = (\\mu H)^{-1}\\mu(H\\cap A_i)$, `Set.inter_comm` and `IndepSet.measure_inter_eq_mul` factor $\\mu(A_i \\cap H) = \\mu(A_i)\\,\\mu H$, and `ENNReal.inv_mul_cancel` cancels the finite nonzero $\\mu H$, leaving $\\mu(A_i)$.",
     "mathContext": "IndepSet Aᵢ (⋂_{j∈S} Aⱼᶜ) μ and μ(⋂_{j∈S} Aⱼᶜ) ≠ 0 ⟹ μ[Aᵢ | ⋂_{j∈S} Aⱼᶜ] = μ(Aᵢ).",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "IndepSet.measure_inter_eq_mul",
       "conditional probability",
@@ -87,7 +87,7 @@
     "title": "Assembling the numerator half of the induction step",
     "content": "`cond_failure_le_measure_of_indep_num` packages the two moves into the numerator bound the LLL induction feeds into its recursive denominator estimate: if $A_i$ is independent of the positive-measure history $\\bigcap_{j\\in S_2} A_j^c$ (its non-neighbours), then for *any* further events $T$, $\\mu[A_i \\cap (\\bigcap_{j\\in T} A_j^c) \\mid \\bigcap_{j\\in S_2} A_j^c] \\le \\mu(A_i)$. The proof is a two-step `calc`: `cond_inter_le` drops the extra neighbour factor $T$ from the numerator, then `cond_failure_eq_measure_of_indep_subset` collapses the independent sub-history to $\\mu(A_i)$. This is exactly the LLL induction's numerator bound $\\Pr[A_i \\cap \\bigcap_{S_1} A_j^c \\mid \\bigcap_{S_2} A_j^c] \\le \\Pr[A_i] $; what remains open is the recursive **denominator** lower bound $\\Pr[\\bigcap_{S_1} A_j^c \\mid \\bigcap_{S_2} A_j^c] \\ge \\prod_{j\\in S_1}(1-x_j)$.",
     "mathContext": "μ[Aᵢ ∩ (⋂_{j∈T} Aⱼᶜ) | ⋂_{j∈S₂} Aⱼᶜ] ≤ μ(Aᵢ) under independence of Aᵢ from the non-neighbour survival ⋂_{j∈S₂} Aⱼᶜ.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "LLL induction step",
       "neighbour/non-neighbour split",

@@ -28,7 +28,7 @@
     "title": "Covers, K_r-covers, and edge-disjoint K_r-packings",
     "content": "Three parametrized definitions carry the LP. `RCliqueCoveredBy F s` says the edge set F contains one of the clique s's edges. `IsRCliqueEdgeCover r G F` says deleting F makes G K_r-free — the quantity a K_r-removal lemma deletes. `IsRCliquePacking r G P` is a finite family of r-cliques that are pairwise edge-disjoint, encoded as `(s ∩ t).card ≤ 1`. These generalize the parent's IsTriangle/IsTriangleEdgeCover/IsTrianglePacking by replacing the literal 3 with an r parameter.",
     "mathContext": "Cover $F$: $G\\setminus F$ is $K_r$-free. Packing $P$: $r$-cliques with $|s\\cap t|\\le 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "edge cover",
       "SimpleGraph.deleteEdges",
@@ -84,7 +84,7 @@
     "title": "Greedy cover, the removal number, and the bracket",
     "content": "`rClique_exists_edge` needs r ≥ 2 so an r-clique actually has an edge to select; `exists_cover_card_le_numRCliques` picks one edge per r-clique, giving a cover of size ≤ τ_r (the image of an attach is no larger). `rRemovalNumber r G` is the infimum of cover sizes, attained (`rRemovalNumber_mem`) because the greedy cover is a member. Combining `rPacking_card_le_rRemovalNumber` (ν_r ≤ ρ_r, from weak duality against the minimizing cover) and `rRemovalNumber_le_numRCliques` (ρ_r ≤ τ_r, from the greedy cover) yields the headline bracket ν_r ≤ ρ_r ≤ τ_r.",
     "mathContext": "$\\rho_r(G) = \\inf\\{|F| : G\\setminus F\\text{ is }K_r\\text{-free}\\}$, and $\\nu_r(G) \\le \\rho_r(G) \\le \\tau_r(G)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "greedy cover",
       "Nat.sInf_mem",

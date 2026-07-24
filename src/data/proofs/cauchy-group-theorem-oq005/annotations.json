@@ -127,7 +127,7 @@
     "title": "Helper: the integer-cast exponent power is the identity",
     "content": "A small private lemma `zpow_exponent_eq_one'`: in any group, x raised to the integer cast of the exponent equals 1. It rewrites the ℤ-power to a ℕ-power via `zpow_natCast` and applies `Monoid.pow_exponent_eq_one`. This lets the Bézout argument in the group image theorem work over ℤ (where gcdA/gcdB live) rather than ℕ, so the negative Bézout coefficient is handled as an integer power.",
     "mathContext": "$x^{(\\exp G : \\mathbb{Z})} = x^{\\exp G} = 1$ in any group, bridging $\\mathbb{N}$-powers and $\\mathbb{Z}$-powers for the Bézout step.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["zpow_natCast", "Monoid.pow_exponent_eq_one", "integer powers"],
     "prerequisites": ["group exponent", "zpow (integer powers)"]
   },

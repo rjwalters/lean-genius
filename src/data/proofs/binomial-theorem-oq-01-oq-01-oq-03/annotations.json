@@ -67,7 +67,7 @@
     "title": "Scope: the uniform closed form for the negative half-integer coefficient",
     "content": "The module docstring frames the contribution relative to the parent `binomial-theorem-oq-01-oq-01`, which supplies the generalized (Newton) coefficient `genBinom α k = (∏_{j<k}(α-j))/k!`, its ODE recurrence `(k+1)·C(α,k+1) = (α-k)·C(α,k)`, and ad-hoc values of the POSITIVE coefficient `C(1/2,k)` only for `k ≤ 3`. This entry instead delivers the general UNIFORM formula for the NEGATIVE coefficient `C(-1/2,k)` — the one that actually appears in analysis as the Taylor coefficients of `(1+x)^(-1/2) = 1/√(1+x)`. The whole file rests on a single induction whose engine is the coincidence of two ratios: `C(-1/2,n+1)/C(-1/2,n) = -(2n+1)/(2(n+1))` from the ODE recurrence, and `-centralBinom(n+1)/(4·centralBinom(n)) = -(2n+1)/(2(n+1))` from Mathlib's central-binomial recurrence. The imports `import Mathlib` and `import Proofs.BinomialTheoremOQ01OQ01` are gallery conventions (Mathlib-wide import is expected here, not Mathlib-submission style).",
     "mathContext": "$\\binom{-1/2}{k} = \\frac{(-1)^k}{4^k}\\binom{2k}{k} = \\frac{(-1)^k}{4^k}\\mathrm{cb}_k = \\frac{(-1)^k(k+1)C_k}{4^k}$, the coefficients of $\\frac{1}{\\sqrt{1+x}} = \\sum_{k\\ge 0}\\binom{-1/2}{k}x^k$ and, via $\\sqrt{1-4x} = 1-2\\sum_{k\\ge 1}C_{k-1}x^k$, of the central-binomial generating function $\\sum_k \\mathrm{cb}_k x^k = 1/\\sqrt{1-4x}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's generalized binomial theorem", "generating functions", "central binomial coefficients", "Catalan numbers", "parent entry binomial-theorem-oq-01-oq-01"],
     "prerequisites": ["generalized binomial coefficients", "Taylor series", "the parent's ODE recurrence"]
   },
@@ -103,7 +103,7 @@
     "title": "Concrete small-k values as sanity checks",
     "content": "Four explicit evaluations — `C(-1/2,0)=1`, `C(-1/2,1)=-1/2`, `C(-1/2,2)=3/8`, `C(-1/2,3)=-5/16` — each proved by rewriting with the main closed form and discharging the arithmetic with `norm_num [Nat.centralBinom, Nat.choose]`. They serve two purposes: they cross-check the general formula against the parent gallery proof's hand-computed small-`k` data, and they exhibit the beginning of the Taylor expansion `1/√(1+x) = 1 - x/2 + 3x²/8 - 5x³/16 + …`, making the alternating signs and the Wallis-type magnitude decay concretely visible.",
     "mathContext": "$\\frac{1}{\\sqrt{1+x}} = 1 - \\tfrac{1}{2}x + \\tfrac{3}{8}x^2 - \\tfrac{5}{16}x^3 + \\cdots$, i.e. $\\binom{-1/2}{0,1,2,3} = 1, -\\tfrac12, \\tfrac38, -\\tfrac{5}{16}$; magnitudes $1, \\tfrac12, \\tfrac38, \\tfrac{5}{16}$ decrease monotonically.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Taylor coefficients of 1/√(1+x)", "norm_num evaluation", "sanity checking against parent data", "alternating series"],
     "prerequisites": ["the main closed form"]
   }

@@ -29,7 +29,7 @@
     "title": "exists_index_of_mem — from geometry to arithmetic",
     "content": "`exists_index_of_mem` bridges membership and parameters: if the length-$k$ AP $\\{a, a+d, \\ldots, a+(k-1)d\\}$ fits in $[n]$ (i.e. $a + (k-1)d < n$) and $x$ lies on it, then $x = a + i\\cdot d$ for some index $i < k$ (equality of underlying naturals). The proof unfolds `vdwAP = (range k).image (i ↦ cast(a + i·d))`, extracts $i < k$ with $\\mathrm{cast}(a+i\\cdot d) = x$, and uses `Fin.val_cast_of_lt` on $a + i\\cdot d \\le a + (k-1)d < n$ to strip the cast. This is the input to the parameter injection.",
     "mathContext": "Converts 'x is on this AP' into the algebraic relation x = a + i·d, which lets the first term a be recovered from (index, step).",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["arithmetic progression", "Fin.val_cast_of_lt", "Finset.mem_image"],
     "prerequisites": ["vdwAP definition (base entry)"]
   },
@@ -58,7 +58,7 @@
     "title": "card_family_through_le — transfer to the family of AP-sets",
     "content": "`card_family_through_le` lifts the parameter bound to the family of AP-*sets*: at most $k\\cdot n$ members of `vdwFamily n k` contain a fixed point $x$. Since the family is the image of the fitting-parameter set under $(a,d) \\mapsto$ `vdwAP n a d k`, every family member through $x$ is the image of a parameter pair through $x$; so the family-through-$x$ set is contained in the image of the parameter-through-$x$ set, and `Finset.card_image_le` bounds it by the parameter count $k\\cdot n$. (Distinct parameters may yield the same AP-set, but that only *helps* the inequality.)",
     "mathContext": "Bridges the parameter-space count and the set-space count, since the LLL dependency is between AP-sets, not parameter pairs.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.card_image_le", "image of a filtered set", "vdwFamily"],
     "prerequisites": ["card_params_through_le", "vdwFamily definition (base entry)"]
   },

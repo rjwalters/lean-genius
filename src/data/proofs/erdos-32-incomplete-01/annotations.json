@@ -53,7 +53,7 @@
     "title": "O(log N) ⊆ O((log N)²)",
     "content": "hasLogDensity_imp_hasLogSquaredDensity proves an O(log N) complement also has O((log N)²) density, with constant C/log 2. From count ≤ C·log N and the monotonicity fact log 2 ≤ log N (Real.log_le_log_iff), clearing the denominator (div_le_iff₀) reduces to count·log 2 ≤ C·(log N)², closed by nlinarith. This places the hypothetical $50-prize class (and Ruzsa's O(ω·log N)) inside Erdős's 1954 class.",
     "mathContext": "count ≤ C·log N ≤ (C/log 2)·(log N)² because log 2 ≤ log N: the O(log N) bound refines the O((log N)²) bound.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "density classes",
       "logarithm monotonicity"
@@ -74,7 +74,7 @@
     "title": "O((log N)(log log N)) ⊆ O((log N)²)",
     "content": "hasLogLogLogDensity_imp_hasLogSquaredDensity proves Kolountzakis's class lies inside Erdős's. For N ≥ 3, log log N ≤ log N follows from Real.log_le_sub_one_of_pos (log x ≤ x − 1 at x = log N), so count ≤ C·log N·log log N ≤ C·(log N)². The single point N = 2 (excluded by the log log bound, which needs N ≥ 3) is absorbed by choosing the constant max(C, count(2)/(log 2)²), handled by a case split.",
     "mathContext": "log log N ≤ log N (concavity bound log x ≤ x − 1) tames the extra log log N factor against a full (log N)².",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "density classes",
       "logarithm concavity",
@@ -96,7 +96,7 @@
     "title": "The Unconditional Structure of #32",
     "content": "erdos32_unconditional_structure bundles unconditional existence with the two density-class containments into a single statement — the provable logical skeleton of Erdős #32, established with none of the parent's deep axioms (confirmed by #print axioms).",
     "mathContext": "Existence plus the nesting O(log N) ⊆ O((log N)(log log N)) ⊆ O((log N)²) is the elementary structure underlying the deep, axiomatized results-tower.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "results hierarchy",
       "0-axiom skeleton"

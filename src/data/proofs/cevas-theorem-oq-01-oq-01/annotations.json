@@ -7,7 +7,7 @@
     "title": "Trigonometric vs. Affine Ceva, over an Arbitrary Inner-Product Space",
     "content": "The module docstring positions this file against its affine sibling CevasTheoremOQ01.lean. The affine file proves the metric/side-ratio form of Ceva — cevians are concurrent iff the product of the signed division ratios equals 1 — using coordinates. This file instead supplies the *trigonometric* ingredient, working natively with Mathlib's Euclidean-geometry API: EuclideanGeometry.angle (∠), the law of sines, and strict betweenness (Sbtw). Crucially, the ambient space is left general: V is any real inner-product space (NormedAddCommGroup + InnerProductSpace ℝ) and P is a NormedAddTorsor over it, so the whole development is basis-free and coordinate-free — it holds in every Euclidean model Mathlib supports, not just ℝ². The docstring previews the two payload results: the cevian ratio law and, by multiplying it over three cevians, the trigonometric product identity.",
     "mathContext": "\\text{Ambient: } V \\text{ a real inner-product space, } P \\text{ a }\\mathrm{NormedAddTorsor}\\text{ over } V.\\\\\n\\text{Affine form (sibling file): } \\prod \\frac{\\text{signed side ratio}}=1 \\iff \\text{concurrent}.\\\\\n\\text{Trigonometric form (here): built from } \\frac{BD}{DC}=\\frac{AB\\sin\\angle BAD}{AC\\sin\\angle DAC}.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euclidean geometry", "inner-product space", "NormedAddTorsor", "law of sines", "affine vs. trigonometric form"],
     "prerequisites": ["InnerProductSpace", "EuclideanGeometry.angle", "Sbtw"]
   },
@@ -19,7 +19,7 @@
     "title": "Collinearity Is Permutation-Invariant: ncol_perm",
     "content": "ncol_perm is a small but pervasive bookkeeping lemma: from ¬Collinear ℝ {a,b,c} and a set equality {x,y,z} = {a,b,c}, it concludes ¬Collinear ℝ {x,y,z}. The one-line proof (rw [hs]; exact h) exploits that Collinear is a predicate on the underlying point *set*, so it is invariant under any reordering of the listed points. This matters because Mathlib's law of sines, dist_eq_dist_mul_sin_angle_div_sin_angle, expects its non-collinearity hypothesis in one specific vertex order; ncol_perm lets cevian_dist_ratio and trig_ceva_product feed the same geometric fact in whatever order each application demands (the set-equality side goals are discharged by `ext p; simp; tauto`). It is used six times across the file, once for each apex/sub-triangle reindexing.",
     "mathContext": "\\{x,y,z\\}=\\{a,b,c\\}\\;\\wedge\\;\\neg\\,\\mathrm{Collinear}\\,\\{a,b,c\\}\\;\\Rightarrow\\;\\neg\\,\\mathrm{Collinear}\\,\\{x,y,z\\}.\\\\\n\\text{Collinearity is a property of a set, hence symmetric under all } 3! \\text{ orderings.}",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["collinearity", "permutation invariance", "set equality", "non-degenerate triangle"],
     "prerequisites": ["Collinear", "Set extensionality", "law of sines vertex ordering"]
   },

@@ -7,7 +7,7 @@
     "title": "Joint independence of disjoint blocks via PGF factorization",
     "content": "The parent entry proved that marginals of a multinomial are binomial; its first open question asks whether the PGF method extends to JOINT independence of disjoint index subsets. In the binomial model — independent Bernoulli(p) indicators (Xᵢ) — the block-sums U = ∑_{i∈S} Xᵢ and V = ∑_{i∈T} Xᵢ over disjoint S, T should be jointly independent, each a Binomial. The certificate is generating-function factorization: for independent variables the joint PGF E[∏ tᵢ^{Xᵢ}] is the product of the per-index Bernoulli PGFs, and a joint PGF that separates into a function of u times a function of v certifies independence. Scope: the file proves this factorization rigorously; it does not re-derive the measure-theoretic PGF ⇒ independence equivalence.",
     "mathContext": "$G_{U,V}(u,v) = \\mathbb{E}[u^{U} v^{V}]$ factors as $g(u)\\,h(v) \\iff U \\perp V$. Here $U = \\sum_{i\\in S} X_i$, $V = \\sum_{i\\in T} X_i$ with $S \\cap T = \\varnothing$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["probability generating function", "independence", "Bernoulli trials", "binomial distribution", "multinomial"],
     "prerequisites": ["probability theory", "generating functions", "independence of random variables"]
   },
@@ -31,7 +31,7 @@
     "title": "These are genuine PGFs (total probability 1)",
     "content": "bernoulliPGF_one: at t = 1, (1−p) + p·1 = 1 (by ring). jointPGF_one: evaluating every variable at 1 makes each factor 1, so the product is 1 — proved by Finset.prod_eq_one, reducing to the Bernoulli case factorwise. Evaluating a PGF at 1 recovers the total probability mass, so these lemmas confirm bernoulliPGF and jointPGF are honest generating functions rather than arbitrary polynomials.",
     "mathContext": "$G(1) = \\sum_k \\mathbb{P}(X=k) = 1$: $\\mathrm{bernoulliPGF}\\,p\\,1 = 1$ and $\\mathrm{jointPGF}\\,s\\,p\\,\\mathbf{1} = \\prod_{i\\in s} 1 = 1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["normalization", "total probability", "Finset.prod_eq_one", "generating function at 1"],
     "prerequisites": ["probability mass functions"]
   },

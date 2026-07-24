@@ -10,7 +10,7 @@
     "title": "The Erdős–Lovász induction step is a ratio, and nobody had assembled it",
     "content": "The Lovász Local Lemma is proved by a strong induction that maintains the invariant $\\mu[A_i \\mid \\bigcap_{j\\in S} A_j^c] \\le x_i$ for every subset $S$ of the other events. The induction step splits $S = S_1 \\sqcup S_2$ into the **neighbours** $S_1$ and **non-neighbours** $S_2$ of $A_i$, writes $N = \\bigcap_{j\\in S_1} A_j^c$ (neighbour survival) and $C = \\bigcap_{j\\in S_2} A_j^c$ (non-neighbour survival), and expands the conditional as a ratio $\\mu[A_i \\mid N\\cap C] = \\mu[A_i \\cap N \\mid C] / \\mu[N \\mid C]$. Earlier OQ-01 entries verified the two halves separately — the numerator bound $\\mu[A_i \\cap N \\mid C] \\le \\mu(A_i)$ (dependency-split) and the per-neighbour survival peel that builds $\\mu[N \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$ (denominator-step) — but never the **division** that joins them. This entry supplies it: the abstract ratio bound `cond_le_div`, its LLL specialisation `cond_failure_le_measure_div`, and the closed invariant `cond_failure_le_x`.",
     "mathContext": "μ[Aᵢ | N ∩ C] = μ[Aᵢ ∩ N | C] / μ[N | C], with numerator ≤ μ(Aᵢ) and denominator ≥ ∏(1 − xⱼ), closing to μ[Aᵢ | N ∩ C] ≤ xᵢ under μ(Aᵢ) ≤ xᵢ·∏(1 − xⱼ).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "Erdős–Lovász induction",
@@ -34,7 +34,7 @@
     "title": "The abstract ratio bound: a numerator bound over a denominator bound is a fraction bound",
     "content": "`cond_le_div`: for events $A, N, C$ over a probability measure with $\\mu(N\\cap C)\\ne 0$, from a numerator upper bound $\\mu[A\\cap N \\mid C] \\le \\text{num}$ and a denominator lower bound $\\text{denom} \\le \\mu[N \\mid C]$ (with $\\text{denom}\\ne 0$), conclude $\\mu[A \\mid N\\cap C] \\le \\text{num}/\\text{denom}$. This is the ratio that assembles the two halves of the LLL induction step, absent from every prior OQ-01 file. The key is the **same** two-block identity the denominator-step file used to factor a numerator, read the other way: `cond_inter_eq_cond_cond_mul` gives $\\mu[A\\cap N \\mid C] = \\mu[A \\mid N\\cap C]\\cdot\\mu[N \\mid C]$, so solving for the target and using $\\text{denom}\\le\\mu[N\\mid C]$ (monotonicity) yields $\\mu[A\\mid N\\cap C]\\cdot\\text{denom}\\le\\text{num}$. Dividing needs the denominator finite — which is free: any lower bound of a conditional is $\\le 1 < \\infty$, so `ne_top_of_le_ne_top` on `cond_ne_top` discharges it. `ENNReal.le_div_iff_mul_le` then rewrites the goal to exactly that inequality.",
     "mathContext": "μ[A | N ∩ C]·μ[N | C] = μ[A ∩ N | C] ≤ num, and denom ≤ μ[N | C], so μ[A | N ∩ C]·denom ≤ num; ENNReal.le_div_iff_mul_le (denom ≠ 0, ≠ ∞) gives μ[A | N ∩ C] ≤ num/denom.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "two-block conditioning identity",
       "ENNReal division",
@@ -57,7 +57,7 @@
     "title": "Specialising to the dependency graph: numerator half meets any denominator bound",
     "content": "`cond_failure_le_measure_div`: with $S_1$ the neighbours and $S_2$ the non-neighbours of $A_i$, $A_i$ independent of the non-neighbour survival block $\\bigcap_{j\\in S_2} A_j^c$ (of positive measure), and **any** denominator lower bound $d \\le \\mu[\\bigcap_{j\\in S_1} A_j^c \\mid \\bigcap_{j\\in S_2} A_j^c]$ with $d\\ne 0$: $\\mu[A_i \\mid (\\bigcap_{S_1} A_j^c)\\cap(\\bigcap_{S_2} A_j^c)] \\le \\mu(A_i)/d$. This is a direct instantiation of `cond_le_div` with $N,C$ the neighbour and non-neighbour survival blocks (measurability from `measurableSet_survival`) and the numerator input $\\text{num}=\\mu(A_i)$ supplied by the dependency-split entry's `cond_failure_le_measure_of_indep_num`. The only independence used is $A_i$'s independence from its non-neighbours — exactly the dependency-graph structure the LLL hypothesises; the denominator bound is left abstract because producing it is the still-open recursion.",
     "mathContext": "cond_le_div with N = ⋂_{S₁} Aⱼᶜ, C = ⋂_{S₂} Aⱼᶜ, num = μ(Aᵢ) from cond_failure_le_measure_of_indep_num, denom = d.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "dependency graph",
       "non-neighbour independence",
@@ -80,7 +80,7 @@
     "title": "Closing the loop: the maintained induction invariant μ[Aᵢ | history] ≤ xᵢ",
     "content": "`cond_failure_le_x`: under the asymmetric LLL hypothesis $\\mu(A_i) \\le x\\cdot d$ — with $d$ the neighbour-survival lower bound $\\prod_{j\\in S_1}(1-x_j)$ and $x = x_i$ the value assigned to $A_i$ — the induction step closes to $\\mu[A_i \\mid (\\bigcap_{S_1} A_j^c)\\cap(\\bigcap_{S_2} A_j^c)] \\le x$. This is precisely the statement the LLL strong induction maintains at every conditioning event, and it is what the induction feeds back as its hypothesis one level up. The proof chains `cond_failure_le_measure_div` (giving $\\le \\mu(A_i)/d$) with $\\mu(A_i)/d \\le x$, the latter being exactly `ENNReal.div_le_iff_le_mul` applied to $\\mu(A_i) \\le x\\cdot d$ ($d$ finite as a lower bound of the finite conditional, nonzero by hypothesis). The upshot: the induction step is **closed once the denominator lower bound is supplied** — the entire remaining open problem is producing $d = \\prod(1-x_j)$ by iterating the denominator-step peel, after which this lemma turns it directly into the invariant.",
     "mathContext": "μ[Aᵢ | N ∩ C] ≤ μ(Aᵢ)/d ≤ x, the second step by ENNReal.div_le_iff_le_mul from μ(Aᵢ) ≤ x·d.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "asymmetric Lovász Local Lemma",
       "induction invariant",

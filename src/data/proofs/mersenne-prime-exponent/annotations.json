@@ -7,7 +7,7 @@
     "title": "The necessary condition on Mersenne exponents",
     "content": "The docstring frames the classical result: if the Mersenne number 2^n − 1 is prime then n itself is prime. This is the condition that lets the Lucas–Lehmer test restrict its search to prime exponents. The converse fails — 2^11 − 1 = 2047 = 23·89 — so primality of the exponent is necessary but not sufficient. The proof is a contrapositive: a composite exponent produces a nontrivial factorization of the Mersenne number.",
     "mathContext": "$2^n - 1 \\text{ prime} \\Rightarrow n \\text{ prime}$. Converse false: $2^{11} - 1 = 2047 = 23 \\cdot 89$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mersenne primes", "Lucas–Lehmer test", "contrapositive", "necessary vs sufficient conditions"],
     "prerequisites": ["primality", "divisibility", "geometric series factorization"]
   },

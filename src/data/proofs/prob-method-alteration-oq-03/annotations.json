@@ -7,7 +7,7 @@
     "title": "A deterministic Caro–Wei proof that removes the parent's axiom",
     "content": "The parent entry states the Caro–Wei bound α(G) ≥ n²/(2m+n) as the axiom caro_wei. This file proves it, and proves the stronger weighted form ∑_v 1/(deg(v)+1) ≤ α(G) that it descends from. The classical proof of Caro–Wei is probabilistic (random vertex ordering, keep a vertex if it precedes all neighbours, expected size ∑ 1/(deg+1)); formalizing that would require a uniform distribution over permutations. Instead the proof here is fully constructive: induct on the vertex set, delete the closed neighbourhood of a MINIMUM-degree vertex, recurse, and re-insert the vertex. No probability, measure theory, or permutation counting appears.",
     "mathContext": "$\\sum_{v} \\frac{1}{\\deg(v)+1} \\le \\alpha(G)$, and by convexity $\\alpha(G) \\ge \\frac{n^2}{2m+n}$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "independence number",
       "Caro–Wei bound",
@@ -69,7 +69,7 @@
     "title": "From the finset induction to the weighted bound over the whole graph",
     "content": "degIn_univ identifies the within-univ degree with the ordinary graph degree, degIn G univ u = G.degree u, because neighborFinset u = univ.filter (G.Adj u) (SimpleGraph.card_neighborFinset_eq_degree). caro_wei_weighted then instantiates exists_indep_card_ge at W = univ: the independent set I it produces has I.card in the set defining independenceNumber, which is bounded above by Fintype.card V, so le_csSup gives I.card ≤ α(G). Chaining with the weight inequality yields ∑_v 1/(G.degree v + 1) ≤ α(G).",
     "mathContext": "$\\sum_{v} \\frac{1}{\\deg(v)+1} \\le |I| \\le \\alpha(G)$ via $I.\\mathrm{card} \\le \\sup$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "handshake between induced and global degree",
       "supremum bound",

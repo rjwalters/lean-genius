@@ -19,7 +19,7 @@
     "title": "Fixing a primitive cube root and its basic laws",
     "content": "ω is fixed as Complex.exp(2πi/3), certified a primitive cube root of unity via Complex.isPrimitiveRoot_exp. Three consequences are drawn directly from the IsPrimitiveRoot API: ω³ = 1 (pow_eq_one), ω ≠ 1 (ne_one), and the general divisibility criterion ω^m = 1 ⟺ 3 ∣ m (pow_eq_one_iff_dvd). The last fact is what later turns a complex-exponent identity into the purely arithmetic residue condition k % 3 = r.",
     "mathContext": "$\\omega = e^{2\\pi i/3},\\quad \\omega^3 = 1,\\quad \\omega \\neq 1,\\quad \\omega^m = 1 \\iff 3 \\mid m$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["IsPrimitiveRoot", "Complex.isPrimitiveRoot_exp", "IsPrimitiveRoot.pow_eq_one_iff_dvd"],
     "prerequisites": ["complex exponential", "primitive roots of unity"]
   },
@@ -79,7 +79,7 @@
     "title": "Partition check: the three classes recover the full row",
     "content": "sum_three_residues: S_0(n) + S_1(n) + S_2(n) = 2^n. A sanity check that the three residue classes mod 3 genuinely partition row n: rewriting each S_r as an indicator sum and combining, every k ∈ range(n+1) contributes to exactly one of the three cases (k % 3 = 0, 1, or 2), so the combined sum matches Nat.sum_range_choose = 2^n termwise. Confirms no coefficient is double-counted or dropped by the extraction machinery.",
     "mathContext": "$S_0(n) + S_1(n) + S_2(n) = 2^n$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.sum_range_choose", "partition of a finite set"],
     "prerequisites": ["row sum ∑_k C(n,k) = 2^n"]
   }

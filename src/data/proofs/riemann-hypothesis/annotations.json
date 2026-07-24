@@ -507,7 +507,7 @@
     "title": "Cross-Equivalence Theorems: Routing Through RH as a Hub",
     "content": "Part XXII proves that all 7 named equivalent formulations (Robin, Lagarias, Mertens, prime-counting, de Bruijn-Newman, Weil positivity, Nyman-Beurling) are pairwise equivalent to each other, not merely each to RH. The proof pattern is uniform throughout the file: to show `A ↔ B`, compose `A ↔ RH` with `RH ↔ B`, using RH as the 'hub' of the equivalence network (e.g. `Robin_iff_Lagarias`, `NymanBeurling_iff_deBruijnNewman`). `RH_equivalence_class` packages all of them into one theorem, and `not_RH_iff_deBruijnNewman_pos` shows ¬RH is equivalent to Λ>0.",
     "mathContext": "Hub pattern: $A \\leftrightarrow B$ derived from $(A \\leftrightarrow \\text{RH}) \\land (\\text{RH} \\leftrightarrow B)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["equivalence network", "hub-and-spoke proof pattern"],
     "prerequisites": ["each individual RH-equivalence axiom"]
   },
@@ -531,7 +531,7 @@
     "title": "Prime Gaps, S(T) Bounds, Turán's Method, and Early Cryptographic Consequences",
     "content": "Parts XXV-XXVIII survey four RH-adjacent research threads with light formalization: Cramér's 1936 prime-gap conjecture (`CramerConjecture`, still open even under RH); Backlund's unconditional bound S(T)=O(log T) on the zero-counting error term versus the RH-conditional Littlewood improvement; Turán's power-sum approach and the Turán inequalities on ξ-function derivatives (necessary but not sufficient for the Laguerre-Pólya property equivalent to RH); and Miller's 1976 theorem (`miller_primality_under_GRH`, axiom) that GRH makes primality testing deterministic with witnesses up to $2(\\log n)^2$, predating AKS by 26 years.",
     "mathContext": "Cramér: $p_{n+1}-p_n = O((\\log p_n)^2)$. Backlund: $S(T)=O(\\log T)$. Miller-GRH witness bound: $2(\\log n)^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cramér's conjecture", "Backlund's theorem", "Turán inequalities", "Miller primality test"],
     "prerequisites": ["prime gaps", "the argument function S(T)", "Miller-Rabin primality testing"]
   },
@@ -555,7 +555,7 @@
     "title": "Computational Verification Methods and Barriers to Proving RH",
     "content": "Part F surveys the computational-verification toolchain — the Riemann-Siegel formula for O(√t) evaluation of ζ(1/2+it), a milestone table from Gram (1903, 15 zeros) to Gourdon (2004, 10^13 zeros), and Turing's rigorous method for certifying no zeros are missed between sign changes. Part G is a frank inventory of why every attempted approach has failed after 165+ years: Hilbert-Pólya (no self-adjoint operator has been constructed), Connes's noncommutative trace formula (an equivalent reformulation, not a proof), the function-field analogue (proved by Weil/Deligne but with no known 'Frobenius' for ℚ), and the Selberg-class barrier (some Selberg-class L-functions genuinely fail RH-type statements, ruling out purely axiomatic proof strategies).",
     "mathContext": "Riemann-Siegel: $Z(t)=e^{i\\theta(t)}\\zeta(1/2+it)$, real-valued, evaluable in $O(\\sqrt t)$ time.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Riemann-Siegel formula", "Turing's method", "Hilbert-Pólya conjecture", "Connes' approach"],
     "prerequisites": ["the Riemann-Siegel theta function", "self-adjoint operator spectral theory"]
   },
@@ -567,7 +567,7 @@
     "title": "Zero-Density Estimates and the Selberg Class Structure Theorem",
     "content": "After local definitions of `chebyshevPsi` and `mertensFunction`, Part XXX states classical zero-density bounds — Ingham (1940), Huxley (1972), and the density hypothesis $N(\\sigma,T)=O(T^{2(1-\\sigma)+\\varepsilon})$ — via a placeholder `zeroDensityCount := 0`, so these theorems hold trivially pending a genuine zero-counting definition; `VK_improves_classical` records that the Vinogradov-Korobov zero-free region is wider than the classical one. Part XXXI defines `SelbergClassFunction` with its degree/conductor/Ramanujan-bound fields and states the Kaczorowski-Perelli 2011 structure theorem: every degree-1 element of the extended Selberg class is a shifted Dirichlet L-function.",
     "mathContext": "Density hypothesis: $N(\\sigma,T) = O(T^{2(1-\\sigma)+\\varepsilon})$. Kaczorowski-Perelli: degree 1 $\\Rightarrow$ shift of a Dirichlet L-function.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["zero-density estimates", "Selberg class degree", "Kaczorowski-Perelli"],
     "prerequisites": ["zero-counting function N(σ,T)", "Dirichlet L-functions"]
   },
@@ -651,7 +651,7 @@
     "title": "Completing the K₈ Equivalence Network",
     "content": "Part XLII fills in the remaining pairwise equivalences among the 8 named formulations (Robin, Lagarias, Mertens, PrimeCounting, deBruijnNewman, WeilPositivity, Speiser, NymanBeurling) that were not yet cross-connected — 15 more edges completing the graph $K_8$ with $\\binom{8}{2}=28$ total equivalences (`equivalence_network_complete`, proved by `native_decide`). Every edge is proved the same way: compose the two hub equivalences with RH in the middle. This is purely propositional bookkeeping (`Robin_implies_all`, `negation_propagates_all`) but establishes that ANY one of the 8 conditions is a fully interchangeable substitute for the others.",
     "mathContext": "$K_8$ network: $\\binom{8}{2} = 28$ pairwise equivalences among 8 formulations of RH.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["equivalence network K8", "hub-and-spoke proof pattern"],
     "prerequisites": ["the 8 individual RH-equivalence axioms"]
   },
@@ -663,7 +663,7 @@
     "title": "Euler Product Algebra and Arithmetic Identities",
     "content": "Part XLIII is a purely computational section (no sorry, no axiom) verifying small arithmetic facts that underlie the file's analytic claims: truncated Euler products over the first few primes (`euler_product_first_three_primes`, `euler_product_first_four_primes`, approximating ζ(2)=π²/6), Möbius-sum identities Σ_{d|n}μ(d)=[n=1] for n=1,2,4,6,12,30, von Mangoldt prime-power factorizations, the moment exponents k² for k=1..4, Bourgain's subconvexity exponent 13/84<1/4, and the factorization 5040=2⁴·3²·5·7 of Robin's last known exceptional integer.",
     "mathContext": "$5040 = 2^4\\cdot3^2\\cdot5\\cdot7$, $\\sigma(5040)=19344$. Bourgain: $13/84 < 1/4$ (subconvex vs. convexity exponent).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Euler product", "Möbius function", "von Mangoldt function", "Bourgain subconvexity"],
     "prerequisites": ["basic number-theoretic arithmetic functions"]
   },

@@ -7,7 +7,7 @@
     "title": "The elementary deletion bound, replacing a vacuous placeholder",
     "content": "The parent entry prob-method-alteration records its independent-set claim only as the vacuous existence form ∃ k, k ≥ n/(2d) ∧ k > 0, which never mentions a graph. This file proves the genuine, probability-free core of the alteration method: delete one endpoint from each of the m edges of a finite simple graph, and the n − |deleted| ≥ n − m remaining vertices form an independent set. Read against the real independence number α(G) = sSup {|S| : S independent}, this gives α(G) ≥ n − m. It is the weak end of the spectrum whose sharp end (Caro–Wei) is proved in the sibling OQ-03.",
     "mathContext": "$\\alpha(G) \\ge n - m$ for a finite simple graph with $n$ vertices and $m$ edges.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "independence number",
       "alteration method",
@@ -29,7 +29,7 @@
     "title": "A symmetric per-edge endpoint choice via Sym2.lift",
     "content": "An edge is an unordered pair, an element of Sym2 V, so any function selecting an endpoint must not depend on the (nonexistent) orientation. Sym2.lift lifts a symmetric binary function to Sym2 V; feeding it ⟨min, min_comm⟩ produces pick, which returns the lesser endpoint. pick_mk computes pick s(a,b) = min a b definitionally, and pick_mem_pair records that min a b is one of a, b (by le_total). Choosing min — rather than, say, a first coordinate — is exactly what makes the map well-typed on unordered pairs.",
     "mathContext": "$\\mathrm{pick}\\, \\{a,b\\} = \\min(a,b) \\in \\{a,b\\}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Sym2 (unordered pairs)",
       "symmetric functions",
@@ -48,7 +48,7 @@
     "title": "The complement of the deletion set is independent",
     "content": "Let D = edgeFinset.image pick be the chosen endpoints. Then |D| ≤ m (Finset.card_image_le). Independence of univ ∖ D is a one-line contradiction: if a, b both survive and are adjacent, then s(a,b) is a genuine edge (mem_edgeFinset with mem_edgeSet), so its chosen endpoint pick s(a,b) ∈ D; but pick s(a,b) equals a or b (pick_mem_pair), each of which was assumed outside D. The symmetric min-choice is what guarantees the deleted vertex is provably one of the two endpoints under consideration.",
     "mathContext": "If $a,b \\notin D$ and $a \\sim b$ then $\\min(a,b) \\in D$ and $\\min(a,b)\\in\\{a,b\\}$ — contradiction.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "independent set",
       "edge finset",
@@ -67,7 +67,7 @@
     "title": "Lifting the surviving independent set to α(G) ≥ n − m",
     "content": "The complement S = univ ∖ D is independent, so its cardinality lies in the set {k | ∃ independent s, |s| = k} whose supremum is α(G). That set is bounded above by Fintype.card V, so le_csSup gives |S| ≤ α(G). Size bookkeeping computes |S| = n − |D| (Finset.card_sdiff, then Finset.inter_univ and Finset.card_univ), and |D| ≤ m combines via Nat.sub_le_sub_left to n − m ≤ n − |D| = |S|. Chaining the two inequalities yields the deletion bound.",
     "mathContext": "$n - m \\le n - |D| = |S| \\le \\alpha(G)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "conditional supremum",
       "bounded-above set",
@@ -86,7 +86,7 @@
     "title": "The sub-sampling optimization behind the strong bound n²/(4m)",
     "content": "The n − m bound is tight for a perfect matching but vacuous once m ≥ n; the strong bound α(G) ≥ n²/(4m) instead keeps each vertex with probability p and deletes one endpoint of every surviving edge, leaving n·p − m·p² vertices in expectation. sample_delete_optimum completes the square, n·p − m·p² = n²/(4m) − m(p − n/(2m))², whence sample_delete_le (the surplus never exceeds n²/(4m)) and sample_delete_attained (equality at p = n/(2m)). Only the expectation-to-existence step is missing to reach the graph bound — recorded as an open question.",
     "mathContext": "$\\max_p\\,(np - mp^2) = \\frac{n^2}{4m}$ at $p = \\frac{n}{2m}$.",
-    "significance": "supplementary",
+    "significance": "supporting",
     "relatedConcepts": [
       "random induced subgraph",
       "linearity of expectation",

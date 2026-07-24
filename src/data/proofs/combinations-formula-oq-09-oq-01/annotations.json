@@ -10,7 +10,7 @@
     "title": "The General Factorial Moment of a Binomial Row",
     "content": "For a fixed row n of Pascal’s triangle and any order j, the j-th falling-factorial moment has the closed form ∑_{k=0}^{n} (k)_j·C(n,k) = (n)_j·2^{n-j}, where (m)_j = Nat.descFactorial m j. This uniformly generalises the parent entry combinations-formula-oq-09, which handled only j=1 (∑ k·C(n,k)=n·2^{n-1}) and j=2. The parent’s open question asked whether the peel-then-absorb pattern extends to all j; the answer is yes, and the cleanest route is a single subset-of-a-subset reindexing rather than iterated peeling. Phrasing the moment in the falling-factorial basis (not ordinary powers) is what avoids Stirling numbers.",
     "mathContext": "$\\sum_{k=0}^{n}(k)_j\\binom{n}{k}=(n)_j\\,2^{n-j}$, with $(m)_j=\\mathrm{descFactorial}\\,m\\,j$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "falling factorial",
       "factorial moment",
@@ -127,7 +127,7 @@
     "title": "Higher-Order Numerical Verifications",
     "content": "The base case j=0 recovers ∑ C(n,k) = 2^n, and the worked instances ∑_{k≤4} (k)_2·C(4,k) = 48 = (4)_2·2² and ∑_{k≤5} (k)_3·C(5,k) = 240 = (5)_3·2² confirm the closed form at orders the parent's first/second-moment results cannot reach. All are decided, adding no Lean.ofReduceBool axiom.",
     "mathContext": "$j=0$: $\\sum\\binom{n}{k}=2^n$; e.g. $\\sum_{k\\le4}(k)_2\\binom{4}{k}=48$, $\\sum_{k\\le5}(k)_3\\binom{5}{k}=240$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "base case j=0",
       "worked numerical instances",

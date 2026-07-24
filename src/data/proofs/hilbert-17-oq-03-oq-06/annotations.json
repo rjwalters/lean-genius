@@ -7,7 +7,7 @@
     "title": "From axiomatized existence to an explicit rational-SOS witness",
     "content": "The file header frames the goal precisely against its parent entry. Hilbert's 17th problem (1900) asks whether every real polynomial that is nonnegative on all of ℝⁿ is a sum of squares of rational functions; Artin proved 'yes' in 1927 by real-closed-field model theory, and the parent entry hilbert-17 must axiomatize that general statement (artin_hilbert17). The parent also machine-checks the negative fact that the Robinson form is not a sum of squares of polynomials. What is genuinely new here is the positive side made explicit for this one polynomial: a concrete, 0-axiom certificate that Robinson is a sum of squares of rational functions. The docstring states the whole proof up front — a single polynomial identity multiplying R by 4x²+4y²+4z² — so the reader sees the certificate before any Lean machinery.",
     "mathContext": "R(x,y,z) = x^6 + y^6 + z^6 - x^4y^2 - y^4z^2 - z^4x^2 - x^2y^4 - y^2z^4 - z^2x^4 + 3x^2y^2z^2 \\ge 0 \\text{ on } \\mathbb{R}^3, \\text{ but } R \\notin \\Sigma^2\\mathbb{R}[x,y,z]; \\text{ Artin: } R \\in \\Sigma^2\\mathbb{R}(x,y,z).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Hilbert's 17th problem", "Artin's theorem", "Robinson form", "sum of squares", "real closed fields"],
     "prerequisites": ["real algebraic geometry", "positive polynomials"]
   },
@@ -79,7 +79,7 @@
     "title": "Validating division by the multiplier in the field",
     "content": "To divide by the multiplier inside ℝ(x,y,z) one must know it is nonzero there. multiplier_ne_zero shows 4x²+4y²+4z² ≠ 0 in ℝ[x,y,z] by evaluating at (1,0,0), where it takes the value 4 ≠ 0 — a nonzero polynomial cannot vanish identically. toRF_multiplier_ne_zero then transports this to the field: since the embedding ℝ[x,y,z] ↪ ℝ(x,y,z) is injective (IsFractionRing.injective), a nonzero polynomial maps to a nonzero element. This injectivity is precisely why the fraction field faithfully contains the polynomial ring, licensing the later field_simp.",
     "mathContext": "\\mathrm{eval}_{(1,0,0)}(4x^2+4y^2+4z^2) = 4 \\ne 0 \\Rightarrow \\text{multiplier} \\ne 0; \\quad \\text{toRF injective} \\Rightarrow \\text{toRF(multiplier)} \\ne 0.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["polynomial evaluation", "injectivity of localization map", "IsFractionRing", "nonvanishing"],
     "prerequisites": ["evaluation homomorphisms", "properties of fraction fields"]
   },

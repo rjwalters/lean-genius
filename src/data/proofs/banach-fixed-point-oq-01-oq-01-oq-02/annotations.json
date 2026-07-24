@@ -29,7 +29,7 @@
     "title": "The concrete Picard operator and its successive approximations",
     "content": "P y t = 1 + ∫₀ᵗ y(s) ds is the Picard integral operator for y' = y, y(0) = 1 (the general x₀ + ∫₀ᵗ f(y) with f = id, x₀ = 1). picardIter is the sequence of successive approximations: picardIter 0 ≡ 1 (the constant seed) and picardIter (n+1) = P (picardIter n). Unlike the parent's abstract fixed point, these are concrete functions one can write down.",
     "mathContext": "$\\mathrm{picardIter}\\,0 \\equiv 1,\\quad \\mathrm{picardIter}\\,(n{+}1) = P(\\mathrm{picardIter}\\,n)$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["Picard operator", "successive approximations", "recursion"],
     "prerequisites": ["interval integrals"]
   },
@@ -53,7 +53,7 @@
     "title": "Closed form: the n-th approximation is a Taylor partial sum",
     "content": "picardIter_eq proves picardIter n t = ∑_{k=0}^{n} tᵏ/k!, so every successive approximation is an explicit polynomial — the (n+1)-term Taylor partial sum of exp — rather than an opaque limit. The proof is by induction: the base case is 1 = ∑_{k<1} tᵏ/k!; the step rewrites the integrand by the inductive hypothesis, integrates the partial sum term by term (integral_finset_sum, each monomial term continuous hence interval-integrable), evaluates ∫₀ᵗ sᵏ/k! ds = tᵏ⁺¹/(k+1)! via integral_term, and reindexes with Finset.sum_range_succ' to match ∑_{k<n+2} tᵏ/k!.",
     "mathContext": "$\\mathrm{picardIter}\\,n\\,t = \\sum_{k=0}^{n} \\dfrac{t^k}{k!}$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["Taylor series", "induction", "term-by-term integration"],
     "prerequisites": ["integral_pow", "integral_finset_sum", "Finset.sum_range_succ'"]
   },
@@ -65,7 +65,7 @@
     "title": "The approximations converge to exp: solution as an explicit limit",
     "content": "picardIter_tendsto shows the successive approximations converge to exp t for every t. Using the closed form, the sequence is the partial sums of the exponential series; expSeries_div_hasSum_exp ℝ t together with Real.exp_eq_exp_ℝ gives HasSum (fun n => tⁿ/n!) (exp t), whose partial sums (reindexed by n ↦ n+1 via tendsto_add_atTop_nat) converge to exp t. This is exactly the solution recovered as the limit of successive approximations that the parent's open question asked for.",
     "mathContext": "$\\lim_{n\\to\\infty} \\sum_{k=0}^{n} \\dfrac{t^k}{k!} = \\exp t$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["convergence", "power series", "successive approximations"],
     "prerequisites": ["HasSum.tendsto_sum_nat", "expSeries_div_hasSum_exp"]
   },
@@ -89,7 +89,7 @@
     "title": "The explicit contraction constant is the interval length",
     "content": "picard_contraction proves |P y t − P z t| ≤ C·|t| whenever |y s − z s| ≤ C for all s. Since P y t − P z t = ∫₀ᵗ (y − z) (integral_sub for continuous, hence integrable, y and z), the bound follows from norm_integral_le_of_norm_le_const, which gives ‖∫₀ᵗ f‖ ≤ C·|t − 0|. On an interval [0, ε] the constant is ε, so P is a genuine contraction once ε < 1 — the concrete realisation of the abstract contraction constant the parent's Banach argument invokes.",
     "mathContext": "$|P y\\,t - P z\\,t| \\le C\\,|t|,\\quad C = \\sup|y-z|;\\ \\text{constant } \\varepsilon \\text{ on } [0,\\varepsilon]$",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["contraction mapping", "Lipschitz estimate", "integral bound"],
     "prerequisites": ["norm_integral_le_of_norm_le_const", "intervalIntegral.integral_sub"]
   }

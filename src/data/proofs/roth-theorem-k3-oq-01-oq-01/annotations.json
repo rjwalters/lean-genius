@@ -10,7 +10,7 @@
     "title": "The missing modulus-decay component of Roth's density increment",
     "content": "The header frames the file as the component the parent entry roth-theorem-k3-oq-01 flagged as missing. That parent formalizes the Roth number r₃(N), the qualitative r₃(N)/N → 0, and the density-increment iteration bound k ≤ 100/δ² (iterations_before_contradiction), but leaves its four quantitative bounds sorried; its own keyInsights name the reason — there is no rate controlling how fast the sub-progression modulus M shrinks per iteration, and an earlier crude bound r₃(N) ≤ 10√N had to be removed because it is false (Behrend: r₃(N) ≥ N·exp(-c√log N) ≫ √N). This file formalizes exactly that rate: Roth's decay M ≥ N^(2/3). Results are stated over an abstract modulus sequence M : ℕ → ℝ with M 0 = N and Mᵢ^(2/3) ≤ Mᵢ₊₁ — the interface a future formalization of the Fourier increment step supplies. Honest status: the file has 0 sorries and 0 axiom declarations, uses no decide / native_decide / Lean.ofReduceBool, and depends only on standard classical Mathlib (propext / Classical.choice / Quot.sound). A machine build to confirm this could not be run in-session due to a host-disk / Docker outage, so the entry is marked build-pending (status formalized, badge wip) rather than verified.",
     "mathContext": "Roth's method passes an AP-free density-$\\delta$ set to a sub-progression of modulus $M \\geq N^{2/3}$ carrying density $\\delta + \\delta^2/100$; iterating the moduli gives $M_{i+1} \\geq M_i^{2/3}$ from $M_0 = N$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Roth's theorem",
       "density increment method",

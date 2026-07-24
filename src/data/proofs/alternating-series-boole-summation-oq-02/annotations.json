@@ -7,7 +7,7 @@
     "title": "Porting Boole summation from ℝ to a normed real vector space",
     "content": "The docstring frames the child's contribution: the parent `alternating-series-boole-summation` proved the first-order Boole summation identity and its total-variation remainder bound for real sequences; this file re-establishes both for sequences valued in an arbitrary normed real vector space E (so E = ℂ, an operator algebra, or any Banach space). The 'Honest Scope' paragraph is the key qualification: the algebraic identity and the norm bound are domain-agnostic and generalize verbatim, but the antitone/telescoping monotonicity refinement of the real parent does NOT port — it relies on the order of ℝ, which a general normed space lacks. So this entry delivers precisely the order-free core.",
     "mathContext": "Boole summation is the alternating-series analogue of Abel/Euler–Maclaurin summation. Over a normed ℝ-module $E$: $\\mathrm{altSum}\\,a\\,n\\,m = \\sum_{j=n}^{m-1} (-1)^j\\, a_j$, and the first-order identity expresses it via a two-point boundary term plus the alternating sum of the forward differences $\\Delta a_j$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Boole summation", "Abel summation", "Euler–Maclaurin formula", "alternating series", "normed vector space", "total variation"],
     "prerequisites": ["normed vector spaces", "finite sums over intervals", "alternating series"]
   },
@@ -31,7 +31,7 @@
     "title": "altSum_succ_top — peeling the top index",
     "content": "`altSum_succ_top` extends the range by one: `altSum a n (m+1) = altSum a n m + (-1)^m • a m` for `n ≤ m`. The proof unfolds `altSum` and applies Mathlib's `Finset.sum_Ico_succ_top h`, the lemma that splits a sum over `Ico n (m+1)` into the sum over `Ico n m` plus the top term. This single peeling step is the engine of the induction that proves the Boole identity — it is what lets a statement about the range [n, m+1) be reduced to the same statement about [n, m).",
     "mathContext": "$\\sum_{j \\in [n,m+1)} f(j) = \\sum_{j \\in [n,m)} f(j) + f(m)$ for $n \\le m$; here $f(j) = (-1)^j \\bullet a_j$, giving $\\mathrm{altSum}\\,a\\,n\\,(m+1) = \\mathrm{altSum}\\,a\\,n\\,m + (-1)^m \\bullet a_m$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.sum_Ico_succ_top", "telescoping", "induction on the upper bound"],
     "prerequisites": ["sums over half-open intervals", "Nat.le_induction"]
   },
