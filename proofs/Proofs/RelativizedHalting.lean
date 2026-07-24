@@ -693,6 +693,244 @@ theorem chain_strict_succ_identityPredictor
   chain_strict_succ_of_isAlwaysNonDegenerate
     (isAlwaysNonDegenerate_identityPredictor o₀) n
 
+/-! ### Section 13. Pairwise distinctness: the periodicity obstruction and
+the rank criterion (S9-light)
+
+S8-light left open whether universal non-degeneracy
+(`IsAlwaysNonDegenerate`) suffices for *pairwise* distinctness of the
+chain — `jumpIter H o₀ m ≠ jumpIter H o₀ n` for all `m ≠ n` — noting
+that consecutive distinctness does not obviously rule out a periodic
+chain. This section settles the question in both directions.
+
+**Negative (the periodicity obstruction).** Universal non-degeneracy
+does NOT imply pairwise distinctness. The witness is S8-light's own
+`identityPredictor`: its jump step is pointwise Boolean negation
+(`jumpIter (n+1) c = ¬ jumpIter n c`), so the chain has period exactly
+2 — every consecutive pair differs (at every code!), yet
+`jumpIter (n+2) = jumpIter n`. Consecutive strictness coexists with
+global collapse.
+
+**Positive (the rank criterion).** The missing structural hypothesis is
+a *rank*: any function `r : (Nat → Bool) → Nat` that strictly increases
+along the chain forces the chain to be injective, hence pairwise
+distinct. This is the abstract shadow of the classical fact that the
+Turing jump strictly increases Turing degree.
+
+**Non-vacuity, and non-necessity of universal non-degeneracy.** The
+`successorPredictor` below drives the chain through the unary oracles
+`unaryOracle 0, unaryOracle 1, unaryOracle 2, …` (where
+`unaryOracle k = fun i => decide (i < k)`), which are pairwise distinct
+— a fully concrete never-revisiting chain. Notably this chain flips
+exactly ONE code per step, so `successorPredictor` is NOT universally
+non-degenerate: together with the identity-predictor counterexample this
+shows universal non-degeneracy is neither sufficient (periodicity) nor
+necessary (successor chain) for pairwise distinctness. The two
+conditions are orthogonal: `IsAlwaysNonDegenerate` measures how *wide*
+each single step is (every code flips), while pairwise distinctness
+measures whether the chain ever *revisits* a level. -/
+
+/-- **The identity-predictor jump step is pointwise negation.** Unfolds
+definitionally: `jumpIter (n+1) c = ¬ (identityPredictor (jumpIter n) c c)
+= ¬ (jumpIter n c)`. -/
+theorem jumpIter_identityPredictor_succ_apply
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIter identityPredictor o₀ (n + 1) c =
+      Bool.not (jumpIter identityPredictor o₀ n c) := rfl
+
+/-- **The identity-predictor chain has period 2.** Two jump steps are a
+double negation, which is the identity on `Bool`. -/
+theorem jumpIter_identityPredictor_add_two
+    (o₀ : Nat → Bool) (n : Nat) :
+    jumpIter identityPredictor o₀ (n + 2) =
+      jumpIter identityPredictor o₀ n := by
+  funext c
+  show Bool.not (Bool.not (jumpIter identityPredictor o₀ n c)) =
+      jumpIter identityPredictor o₀ n c
+  exact Bool.not_not _
+
+/-- **The identity-predictor chain is not injective**: levels `0` and `2`
+coincide (as do any two levels of equal parity). -/
+theorem jumpIter_identityPredictor_not_injective (o₀ : Nat → Bool) :
+    ∃ m n : Nat, m ≠ n ∧
+      jumpIter identityPredictor o₀ m = jumpIter identityPredictor o₀ n :=
+  ⟨2, 0, fun h => Nat.noConfusion h, jumpIter_identityPredictor_add_two o₀ 0⟩
+
+/-- **S9-light PREP answer, negative half: universal non-degeneracy does
+NOT imply pairwise distinctness.** There is a predictor/oracle pair whose
+chain is non-degenerate at every level and every code — so all
+consecutive levels differ, at every code — yet two distinct levels of
+the chain are equal as functions. Hence
+`chain_strict_of_isAlwaysNonDegenerate` (pairwise distinctness from
+`IsAlwaysNonDegenerate` alone) is FALSE as conjectured, and any pairwise
+strictness theorem needs an additional structural hypothesis (see
+`jumpIter_injective_of_hasRank`). -/
+theorem isAlwaysNonDegenerate_not_sufficient_for_pairwise :
+    ∃ (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool),
+      IsAlwaysNonDegenerate H o₀ ∧
+      ∃ m n : Nat, m ≠ n ∧ jumpIter H o₀ m = jumpIter H o₀ n :=
+  ⟨identityPredictor, falseOracle,
+    isAlwaysNonDegenerate_identityPredictor falseOracle,
+    jumpIter_identityPredictor_not_injective falseOracle⟩
+
+/-- **Rank along the chain.** A function `r` on oracles strictly
+increases along the `jumpIter H o₀` chain. This is the abstract analog
+of "the jump strictly increases Turing degree": any quantity that
+provably grows at every jump step certifies that the chain never
+revisits a level. -/
+def HasRank (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool)
+    (r : (Nat → Bool) → Nat) : Prop :=
+  ∀ n, r (jumpIter H o₀ n) < r (jumpIter H o₀ (n + 1))
+
+/-- A rank strictly increases across any strictly increasing pair of
+levels (iterated transitivity of the one-step hypothesis). -/
+theorem rank_lt_of_hasRank {H : RelativizedHaltingPredictor}
+    {o₀ : Nat → Bool} {r : (Nat → Bool) → Nat} (hr : HasRank H o₀ r) :
+    ∀ {m n : Nat}, m < n →
+      r (jumpIter H o₀ m) < r (jumpIter H o₀ n) := by
+  intro m n h
+  induction n with
+  | zero => exact absurd h (Nat.not_lt_zero m)
+  | succ k ih =>
+    cases Nat.lt_or_ge m k with
+    | inl h' => exact Nat.lt_trans (ih h') (hr k)
+    | inr h' =>
+      have hmk : m = k := Nat.le_antisymm (Nat.le_of_lt_succ h) h'
+      exact hmk ▸ hr k
+
+/-- **The rank criterion (positive half of the S9-light question).** If
+some rank strictly increases along the chain, the chain is injective:
+distinct levels are distinct oracles. This is the "additional structural
+hypothesis" that repairs the failed conjecture
+`chain_strict_of_isAlwaysNonDegenerate` — see
+`isAlwaysNonDegenerate_not_sufficient_for_pairwise` for why
+`IsAlwaysNonDegenerate` alone cannot do the job. -/
+theorem jumpIter_injective_of_hasRank {H : RelativizedHaltingPredictor}
+    {o₀ : Nat → Bool} {r : (Nat → Bool) → Nat} (hr : HasRank H o₀ r)
+    (m n : Nat) (heq : jumpIter H o₀ m = jumpIter H o₀ n) : m = n := by
+  cases Nat.lt_or_ge m n with
+  | inl h => exact absurd (heq ▸ rank_lt_of_hasRank hr h) (Nat.lt_irrefl _)
+  | inr h₁ =>
+    cases Nat.lt_or_ge n m with
+    | inl h => exact absurd (heq ▸ rank_lt_of_hasRank hr h) (Nat.lt_irrefl _)
+    | inr h₂ => exact Nat.le_antisymm h₂ h₁
+
+/-- **Pairwise strict chain under a rank.** Contrapositive packaging of
+the rank criterion: distinct levels give distinct oracles. -/
+theorem chain_pairwise_strict_of_hasRank {H : RelativizedHaltingPredictor}
+    {o₀ : Nat → Bool} {r : (Nat → Bool) → Nat} (hr : HasRank H o₀ r)
+    {m n : Nat} (h : m ≠ n) : jumpIter H o₀ m ≠ jumpIter H o₀ n :=
+  fun heq => h (jumpIter_injective_of_hasRank hr m n heq)
+
+/-! #### Concrete witness: the successor predictor and the unary chain
+
+The rank criterion would be empty comfort if no chain were actually
+pairwise distinct. The `successorPredictor` drives the chain through the
+unary oracles: starting from `falseOracle = unaryOracle 0`, each jump
+step turns `unaryOracle k` into `unaryOracle (k + 1)` — the chain counts
+in unary and never revisits a level. -/
+
+/-- The unary oracle of height `k`: true exactly on `{0, …, k − 1}`. The
+chain `unaryOracle 0, unaryOracle 1, …` is the simplest strictly
+growing family of oracles. -/
+def unaryOracle (k : Nat) : Nat → Bool :=
+  fun i => decide (i < k)
+
+/-- The successor predictor: at code `c`, answers `false` for `c = 0`
+and the negation of the oracle's value at `c − 1` otherwise. Engineered
+so that the jump step `jumpOracle` (which negates the diagonal) sends
+`unaryOracle k` to `unaryOracle (k + 1)`. -/
+def successorPredictor : RelativizedHaltingPredictor :=
+  fun o c _ => if c = 0 then false else Bool.not (o (c - 1))
+
+/-- **Closed form of the successor chain: it counts in unary.**
+`jumpIter successorPredictor falseOracle n = unaryOracle n` for every
+`n`. Induction on `n`; the step is a per-code case split — code `0`
+flips to `true` (entering the unary block), code `m + 1` copies the
+previous oracle at `m` via double negation. -/
+theorem jumpIter_successorPredictor (n : Nat) :
+    jumpIter successorPredictor falseOracle n = unaryOracle n := by
+  induction n with
+  | zero =>
+    funext i
+    exact (decide_eq_false (Nat.not_lt_zero i)).symm
+  | succ k ih =>
+    funext c
+    show Bool.not
+        (successorPredictor (jumpIter successorPredictor falseOracle k) c c) =
+      unaryOracle (k + 1) c
+    rw [ih]
+    cases c with
+    | zero =>
+      show true = unaryOracle (k + 1) 0
+      exact (decide_eq_true (Nat.zero_lt_succ k)).symm
+    | succ m =>
+      show Bool.not (Bool.not (unaryOracle k m)) = unaryOracle (k + 1) (m + 1)
+      rw [Bool.not_not]
+      show decide (m < k) = decide (m + 1 < k + 1)
+      by_cases h : m < k
+      · rw [decide_eq_true h, decide_eq_true (Nat.succ_lt_succ h)]
+      · rw [decide_eq_false h,
+          decide_eq_false (fun h' => h (Nat.lt_of_succ_lt_succ h'))]
+
+/-- Unary oracles of distinct heights are distinct: evaluate at the
+smaller height, where one is `false` and the other `true`. -/
+theorem unaryOracle_inj {j k : Nat} (h : unaryOracle j = unaryOracle k) :
+    j = k := by
+  cases Nat.lt_or_ge j k with
+  | inl hlt =>
+    have h1 : unaryOracle j j = unaryOracle k j := congrFun h j
+    rw [show unaryOracle j j = decide (j < j) from rfl,
+      show unaryOracle k j = decide (j < k) from rfl,
+      decide_eq_false (Nat.lt_irrefl j), decide_eq_true hlt] at h1
+    exact Bool.noConfusion h1
+  | inr h₁ =>
+    cases Nat.lt_or_ge k j with
+    | inl hlt =>
+      have h1 : unaryOracle j k = unaryOracle k k := congrFun h k
+      rw [show unaryOracle j k = decide (k < j) from rfl,
+        show unaryOracle k k = decide (k < k) from rfl,
+        decide_eq_true hlt, decide_eq_false (Nat.lt_irrefl k)] at h1
+      exact Bool.noConfusion h1
+    | inr h₂ => exact Nat.le_antisymm h₂ h₁
+
+/-- **The successor chain is pairwise distinct** — a fully concrete,
+never-revisiting jump chain: distinct levels are distinct oracles. Via
+the closed form, this is injectivity of `unaryOracle`. -/
+theorem jumpIter_successorPredictor_injective (m n : Nat)
+    (h : jumpIter successorPredictor falseOracle m =
+      jumpIter successorPredictor falseOracle n) : m = n := by
+  rw [jumpIter_successorPredictor, jumpIter_successorPredictor] at h
+  exact unaryOracle_inj h
+
+/-- **Universal non-degeneracy is NOT necessary for pairwise
+distinctness.** The successor chain flips exactly one code per step, so
+its predictor fails `IsAlwaysNonDegenerate` (witness: level `1`, code
+`0`, where the predictor answers `false` but the level-`1` oracle is
+`true` at `0`) — yet the chain never revisits a level. -/
+theorem not_isAlwaysNonDegenerate_successorPredictor :
+    ¬ IsAlwaysNonDegenerate successorPredictor falseOracle := by
+  intro h
+  have h10 : successorPredictor
+        (jumpIter successorPredictor falseOracle 1) 0 0 =
+      jumpIter successorPredictor falseOracle 1 0 := h 1 0
+  exact Bool.noConfusion h10
+
+/-- **S9-light synthesis: the two conditions are orthogonal.** There is
+a chain that is pairwise distinct but not universally non-degenerate.
+Combined with `isAlwaysNonDegenerate_not_sufficient_for_pairwise`,
+universal non-degeneracy is neither sufficient nor necessary for
+pairwise distinctness: step-width (every code flips at every step) and
+non-recurrence (no level is ever revisited) are independent properties
+of a jump chain. -/
+theorem pairwise_strict_without_isAlwaysNonDegenerate :
+    ∃ (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool),
+      ¬ IsAlwaysNonDegenerate H o₀ ∧
+      ∀ m n : Nat, m ≠ n → jumpIter H o₀ m ≠ jumpIter H o₀ n :=
+  ⟨successorPredictor, falseOracle,
+    not_isAlwaysNonDegenerate_successorPredictor,
+    fun m n hne heq =>
+      hne (jumpIter_successorPredictor_injective m n heq)⟩
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
@@ -729,5 +967,20 @@ theorem chain_strict_succ_identityPredictor
 #check nonDegenerateAt_identityPredictor
 #check isAlwaysNonDegenerate_identityPredictor
 #check chain_strict_succ_identityPredictor
+#check jumpIter_identityPredictor_succ_apply
+#check jumpIter_identityPredictor_add_two
+#check jumpIter_identityPredictor_not_injective
+#check isAlwaysNonDegenerate_not_sufficient_for_pairwise
+#check HasRank
+#check rank_lt_of_hasRank
+#check jumpIter_injective_of_hasRank
+#check chain_pairwise_strict_of_hasRank
+#check unaryOracle
+#check successorPredictor
+#check jumpIter_successorPredictor
+#check unaryOracle_inj
+#check jumpIter_successorPredictor_injective
+#check not_isAlwaysNonDegenerate_successorPredictor
+#check pairwise_strict_without_isAlwaysNonDegenerate
 
 end RelativizedHalting
