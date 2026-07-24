@@ -39,6 +39,9 @@ This is the foundational tool for:
 ## Axioms
 - `kakutani_fixed_point_axiom`: The main Kakutani FPT (requires Brouwer +
   finite-dimensional approximation, which needs algebraic topology)
+- `brouwer_pi_compact_convex`: Brouwer FPT for products of compact convex
+  sets (requires a Schoenflies-type homeomorphism argument not yet in
+  Mathlib; see Part 10)
 
 ## Proved (previously axiomatized)
 - `brouwer_compact_convex`: Brouwer FPT for compact convex subsets
