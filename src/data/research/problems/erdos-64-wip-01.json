@@ -21,15 +21,20 @@
     "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 3,
-    "focus": "Dirac rung DONE (2026-07-22b): hasMinDegree_exists_cycle_length_ge — min degree d>=2 forces a cycle of length >= d+1 (longest-path engine; largest neighbour index >= d via T subset Icc 1 max + card_Icc pigeonhole). With existence, length-predicate bridge, even-cycle parity and this quantitative rung, the ELEMENTARY layer is fully saturated.",
+    "focus": "Even-spectrum rung landed (floor((d-1)/2) distinct even cycle lengths, sharp for K_{d+1}); elementary layer fully saturated including the flagged residual.",
     "blockers": [
       {
         "route": "power-of-two cycle LENGTH: every finite graph with min-degree ≥ 3 contains a cycle of length 2^k",
         "reopenCriterion": "materially new mechanism required: Liu–Montgomery-scale extremal/expansion machinery. Elementary cycle-EXISTENCE (a cycle exists at all, for every finite min-degree-≥2 graph) is COMPLETE (PRs #40522/#40874/#40917); the 2^k-length core is the open $1000 problem.",
         "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "counting refinements of the longest-path engine (spectrum/parity)",
+        "reopenCriterion": "materially new mechanism required — even-spectrum count floor((d-1)/2) is sharp for K_{d+1}, so no further counting rung can constrain the d=3 case",
+        "blockedAt": "2026-07-23"
       }
     ],
-    "nextAction": "STAND DOWN at the elementary layer. Only the deep 2^k-length core remains (Liu-Montgomery scale). Do not re-claim without a genuinely new mechanism for power-of-two cycle lengths.",
+    "nextAction": "None elementary. Only the deep power-of-two-length core (Liu-Montgomery scale) remains; requires a materially new mechanism.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: cycle-spectrum counting rung proved (2026-07-23). hasMinDegree_card_cycle_lengths + ContainsCycleLength restatement: min degree d>=2 forces >= d-1 DISTINCT cycle lengths (Finset of lengths, injective +1 image of trapped indices >= 2; at most one index equals 1). Reuses the maximal-path engine; new counting content beyond the Dirac rung (which only extracts the max index). Elementary layer: existence + bridge + parity + Dirac + spectrum count. Open core unchanged: whether the spectrum of a min-degree-3 graph must meet {2^k, k>=2} (Liu-Montgomery scale).",
+    "progressSummary": "Elementary layer FULLY saturated incl. flagged residual: cycle existence (connected/general), length-predicate bridge, even cycle, Dirac rung (length >= d+1), spectrum count (>= d-1 lengths), EVEN spectrum count (>= floor((d-1)/2), sharp). Only the deep 2^k-length core (Liu-Montgomery) remains.",
     "builtItems": [
       "connected_hasMinDegree_two_not_isAcyclic (Erdos64Problem.lean): nontrivial connected graph, HasMinDegree 2 => ¬IsAcyclic. Axiom-free.",
       "connected_hasMinDegree_two_exists_cycle (Erdos64Problem.lean): same hyp => ∃ v (c : Walk v v), c.IsCycle. Axiom-free.",
@@ -50,7 +55,8 @@
       "hasMinDegree_exists_cycle_length_ge (Dirac-type: min-deg d>=2 => cycle length >= d+1) in Erdos64Problem.lean",
       "hasMinDegree_containsCycleLength_ge (ContainsCycleLength restatement) in Erdos64Problem.lean",
       "hasMinDegree_card_cycle_lengths (Erdos64Problem.lean): min-deg d>=2 => Finset S of cycle lengths, |S| >= d-1, each realized by an explicit IsCycle witness; axiom-free",
-      "hasMinDegree_card_containsCycleLength (Erdos64Problem.lean): same spectrum bound in the ContainsCycleLength predicate the conjecture uses"
+      "hasMinDegree_card_containsCycleLength (Erdos64Problem.lean): same spectrum bound in the ContainsCycleLength predicate the conjecture uses",
+      "Erdos64Problem.lean: hasMinDegree_card_even_cycle_lengths + hasMinDegree_card_even_containsCycleLength (even sub-spectrum count, sharp), hseg segment-cycle extraction. 16->18 theorems, 867->1096 lines, 0 axioms."
     ],
     "insights": [
       "A finite nontrivial TREE has a leaf (degree-1 vertex): Mathlib SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial. Hence a connected graph with min degree >= 2 cannot be a tree, so cannot be acyclic — the elementary base fact under Erdos #64.",
@@ -61,7 +67,8 @@
       "Parity middle layer between cycle-existence and the deep 2^k core: min-degree-3 forces an EVEN cycle, via the classical longest-path argument. Take a maximum-length path from v0; maximality traps all >=3 neighbours of v0 on the path at distinct positive indices; the two largest indices a<b (a>=2) give three cycles of lengths a+1, b+1, b-a+2 summing to 2b+4 (even), so one is even.",
       "Lean mechanism for maximal paths: Nat.sSup_mem on {n | exists path of length n} (nonempty via Walk.nil, BddAbove via IsPath.length_lt), then le_csSup for maximality. No dedicated Mathlib longest-path API exists.",
       "Key Mathlib toolkit for index arithmetic on paths: Walk.getVert_length_takeUntil (vertex at index = takeUntil length), Walk.length_takeUntil (= support.idxOf), Walk.dropUntil_eq_drop + Walk.drop_getVert + Walk.getVert_copy (getVert of suffix), IsPath.getVert_injOn (injectivity on indices <= length), IsPath.eq_snd_of_mem_edges (an edge of a path through its start is the first edge - closes the takeUntil prefix into a cycle).",
-      "Cycle-spectrum counting rung: the maximal-path engine yields a cycle at EVERY trapped neighbour index >= 2, and distinct indices give distinct lengths — so min degree d forces >= d-1 distinct cycle lengths. Elementary end of the spectrum view: Liu-Montgomery resolves large min-degree via spectrum density hitting a power of two."
+      "Cycle-spectrum counting rung: the maximal-path engine yields a cycle at EVERY trapped neighbour index >= 2, and distinct indices give distinct lengths — so min degree d forces >= d-1 distinct cycle lengths. Elementary end of the spectrum view: Liu-Montgomery resolves large min-degree via spectrum density hitting a power of two.",
+      "Even-spectrum count: majority parity class of trapped neighbour indices + same-parity segment cycles (length b-a+2) give floor((d-1)/2) distinct even cycle lengths from min degree d — SHARP for K_{d+1} (cycle lengths 3..d+1). Segment cycles need only 1 <= a < b, unlike prefix cycles (index >= 2). At d=3 this means exactly one guaranteed even length; the entire open content is pinning it to a power of two."
     ],
     "mathlibGaps": [
       "No general (disconnected/forest) leaf lemma: Mathlib only has IsTree.minDegree_eq_one_of_nontrivial (connected). A forest edge-count bound #edges <= n-1 is also absent (only IsTree.card_edgeFinset).",
@@ -93,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.782Z",
-  "lastUpdate": "2026-07-22",
+  "lastUpdate": "2026-07-23T00:00:00.000Z",
   "significance": 8,
   "tractability": 5
 }

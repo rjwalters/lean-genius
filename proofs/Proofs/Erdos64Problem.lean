@@ -820,6 +820,235 @@ theorem hasMinDegree_card_containsCycleLength
   obtain ⟨h3, v, c, hc, hlen⟩ := hS k hk
   exact ⟨h3, hlen ▸ isCycle_containsCycleLength G c hc⟩
 
+/- ## Even-length cycle spectrum (parity-class difference cycles)
+
+A `2^k`-cycle (`k ≥ 2`) is even, so the part of the cycle spectrum relevant to
+Problem 64 is the EVEN sub-spectrum.  The longest-path engine refines once more:
+among the `≥ d` trapped neighbour indices, some parity class carries at least
+`⌈d/2⌉` of them, and for two trapped indices `a < b` of EQUAL parity the segment
+cycle `v₀ — v_a — ⋯ — v_b — v₀` has even length `b - a + 2`.  Fixing `a` to be
+the smallest index of the majority class and letting `b` range over the rest
+yields `⌈d/2⌉ - 1 = ⌊(d-1)/2⌋` distinct even cycle lengths.  (Unlike the prefix
+cycles of the two preceding rungs, segment cycles need no `index ≥ 2` proviso —
+any `1 ≤ a < b` closes.)
+
+The count is SHARP: the complete graph `K_{d+1}` has minimum degree `d` and its
+cycle lengths are exactly `3, 4, …, d + 1`, of which exactly `⌊(d-1)/2⌋` are
+even.  So at minimum degree `3` no counting refinement of this kind can beat
+"one even cycle length", and upgrading that single even length to a power of two
+is precisely the open Liu–Montgomery-scale core of Problem 64.
+-/
+
+/-- **Even-spectrum rung: minimum degree `d` forces at least `⌊(d-1)/2⌋` distinct
+EVEN cycle lengths**, each realized by an explicit cycle witness.  Sharp for the
+complete graph `K_{d+1}`.  Mechanism: the majority parity class of the trapped
+neighbour indices, closed pairwise through same-parity segment cycles of length
+`b - a + 2`. -/
+theorem hasMinDegree_card_even_cycle_lengths
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ}
+    (hdeg : HasMinDegree G d) :
+    ∃ L : Finset ℕ, (d - 1) / 2 ≤ L.card ∧
+      ∀ k ∈ L, Even k ∧ ∃ (v : W) (c : G.Walk v v), c.IsCycle ∧ c.length = k := by
+  classical
+  -- a path of maximum length (the engine of the preceding sections)
+  have hne : ({n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n}).Nonempty :=
+    ⟨0, Classical.arbitrary W, Classical.arbitrary W, Walk.nil, Walk.IsPath.nil, rfl⟩
+  have hbdd : BddAbove {n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n} := by
+    refine ⟨Fintype.card W, ?_⟩
+    rintro n ⟨a, b, q, hq, rfl⟩
+    exact hq.length_lt.le
+  obtain ⟨v₀, u, p, hp, hplen⟩ := Nat.sSup_mem hne hbdd
+  have hmax : ∀ (a b : W) (q : G.Walk a b), q.IsPath → q.length ≤ p.length := by
+    intro a b q hq
+    rw [hplen]
+    exact le_csSup hbdd ⟨a, b, q, hq, rfl⟩
+  -- maximality traps every neighbour of `v₀` on `p`
+  have hnbr : ∀ w : W, G.Adj v₀ w → w ∈ p.support := by
+    intro w hw
+    by_contra hws
+    have hcons : (Walk.cons hw.symm p).IsPath := (Walk.cons_isPath_iff _ _).mpr ⟨hp, hws⟩
+    have := hmax _ _ _ hcons
+    rw [Walk.length_cons] at this
+    omega
+  set idx : W → ℕ := fun w => if hw : w ∈ p.support then (p.takeUntil w hw).length else 0
+    with hidx
+  have hidx_get : ∀ w (hw : w ∈ p.support), p.getVert (idx w) = w := by
+    intro w hw
+    simp only [hidx, dif_pos hw]
+    exact Walk.getVert_length_takeUntil hw
+  set T : Finset ℕ := (G.neighborFinset v₀).image idx with hT
+  have hTcard : d ≤ T.card := by
+    rw [hT, Finset.card_image_of_injOn]
+    · exact hdeg v₀
+    · intro w₁ hw₁ w₂ hw₂ hww
+      have h₁ : G.Adj v₀ w₁ := (G.mem_neighborFinset v₀ w₁).mp (Finset.mem_coe.mp hw₁)
+      have h₂ : G.Adj v₀ w₂ := (G.mem_neighborFinset v₀ w₂).mp (Finset.mem_coe.mp hw₂)
+      calc w₁ = p.getVert (idx w₁) := (hidx_get w₁ (hnbr _ h₁)).symm
+        _ = p.getVert (idx w₂) := by rw [hww]
+        _ = w₂ := hidx_get w₂ (hnbr _ h₂)
+  have hpos : ∀ n ∈ T, 1 ≤ n := by
+    intro n hn
+    rw [hT] at hn
+    obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hn
+    have hadj : G.Adj v₀ w := (G.mem_neighborFinset v₀ w).mp hw
+    rcases Nat.eq_zero_or_pos (idx w) with h0 | h1
+    · exfalso
+      have hgw := hidx_get w (hnbr _ hadj)
+      rw [h0, Walk.getVert_zero] at hgw
+      exact hadj.ne hgw
+    · exact h1
+  -- segment cycles: any two trapped indices `a < b` close into a cycle of
+  -- length `b - a + 2` (the `[a, b]` stretch of `p` plus the edges back to `v₀`)
+  have hseg : ∀ a b : ℕ, a ∈ T → b ∈ T → a < b →
+      ∃ c : G.Walk v₀ v₀, c.IsCycle ∧ c.length = b - a + 2 := by
+    intro a b haT hbT hab
+    have ha1 : 1 ≤ a := hpos a haT
+    rw [hT] at haT hbT
+    obtain ⟨y, hyN, hyb⟩ := Finset.mem_image.mp hbT
+    obtain ⟨x, hxN, hxa⟩ := Finset.mem_image.mp haT
+    have hax : G.Adj v₀ x := (G.mem_neighborFinset v₀ x).mp hxN
+    have hay : G.Adj v₀ y := (G.mem_neighborFinset v₀ y).mp hyN
+    have hxs : x ∈ p.support := hnbr x hax
+    have hys : y ∈ p.support := hnbr y hay
+    have hxa' : (p.takeUntil x hxs).length = a := by
+      rw [← hxa]; simp only [hidx, dif_pos hxs]
+    have hyb' : (p.takeUntil y hys).length = b := by
+      rw [← hyb]; simp only [hidx, dif_pos hys]
+    have hgx : p.getVert a = x := by rw [← hxa']; exact Walk.getVert_length_takeUntil hxs
+    have hgy : p.getVert b = y := by rw [← hyb']; exact Walk.getVert_length_takeUntil hys
+    have hblen : b ≤ p.length := by rw [← hyb']; exact p.length_takeUntil_le_length hys
+    have halen : a ≤ p.length := by omega
+    have hxy : x ≠ y := by
+      intro h
+      have hgg : p.getVert a = p.getVert b := by rw [hgx, hgy, h]
+      have := hp.getVert_injOn (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega) hgg
+      omega
+    -- the middle segment of `p` from `x` (index `a`) to `y` (index `b`)
+    have hia : p.support.idxOf x = a := by
+      rw [← p.length_takeUntil hxs]; exact hxa'
+    have hdrop_gv : (p.dropUntil x hxs).getVert (b - a) = y := by
+      rw [Walk.dropUntil_eq_drop, Walk.getVert_copy, Walk.drop_getVert, hia,
+        show a + (b - a) = b by omega]
+      exact hgy
+    have hdrop_len : b - a ≤ (p.dropUntil x hxs).length := by
+      rw [Walk.length_dropUntil, hia]
+      omega
+    have hyd : y ∈ (p.dropUntil x hxs).support :=
+      Walk.mem_support_iff_exists_getVert.mpr ⟨b - a, hdrop_gv, hdrop_len⟩
+    set r := (p.dropUntil x hxs).takeUntil y hyd with hr
+    have hrpath : r.IsPath := (hp.dropUntil hxs).takeUntil hyd
+    have hrlen : r.length = b - a := by
+      have h₁ : (p.dropUntil x hxs).getVert r.length = y := Walk.getVert_length_takeUntil hyd
+      have hle : r.length ≤ (p.dropUntil x hxs).length :=
+        (p.dropUntil x hxs).length_takeUntil_le_length hyd
+      exact (hp.dropUntil hxs).getVert_injOn
+        (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega)
+        (h₁.trans hdrop_gv.symm)
+    have hv₀r : v₀ ∉ r.support := by
+      intro hmem
+      have hmem' : v₀ ∈ (p.dropUntil x hxs).support :=
+        (p.dropUntil x hxs).support_takeUntil_subset_support hyd hmem
+      obtain ⟨n, hgv, hn⟩ := Walk.mem_support_iff_exists_getVert.mp hmem'
+      rw [Walk.dropUntil_eq_drop, Walk.getVert_copy, Walk.drop_getVert, hia] at hgv
+      have h0 : p.getVert (a + n) = p.getVert 0 := by rw [hgv, Walk.getVert_zero]
+      have hanle : a + n ≤ p.length := by
+        rw [Walk.length_dropUntil, hia] at hn
+        omega
+      have := hp.getVert_injOn (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega) h0
+      omega
+    -- close the segment: `v₀ — x — ⋯ — y — v₀`
+    have hyv₀ : G.Adj y v₀ := hay.symm
+    have hcpath : (r.concat hyv₀).IsPath := hrpath.concat hv₀r hyv₀
+    have hcedge : s(v₀, x) ∉ (r.concat hyv₀).edges := by
+      rw [Walk.edges_concat]
+      intro hmem
+      rw [List.concat_eq_append, List.mem_append, List.mem_singleton] at hmem
+      rcases hmem with hin | heq
+      · exact hv₀r (r.fst_mem_support_of_mem_edges hin)
+      · rcases Sym2.eq_iff.mp heq with ⟨h1, _⟩ | ⟨_, h2⟩
+        · exact hay.ne h1
+        · exact hxy h2
+    refine ⟨Walk.cons hax (r.concat hyv₀),
+      (Walk.cons_isCycle_iff _ _).mpr ⟨hcpath, hcedge⟩, ?_⟩
+    rw [Walk.length_cons, Walk.length_concat, hrlen]
+  -- a same-parity subclass `S` of the trapped indices yields `|S| - 1` distinct
+  -- even lengths: fix the smallest index and close against every other one
+  have key : ∀ S : Finset ℕ, S ⊆ T → (∀ i ∈ S, ∀ j ∈ S, i % 2 = j % 2) →
+      ∃ L : Finset ℕ, S.card - 1 ≤ L.card ∧
+        ∀ k ∈ L, Even k ∧ ∃ c : G.Walk v₀ v₀, c.IsCycle ∧ c.length = k := by
+    intro S hST hpar
+    rcases S.eq_empty_or_nonempty with rfl | hSne
+    · exact ⟨∅, by simp, by simp⟩
+    have hmS : S.min' hSne ∈ S := S.min'_mem hSne
+    refine ⟨(S.erase (S.min' hSne)).image (fun k => k - S.min' hSne + 2), ?_, ?_⟩
+    · have hinj : Set.InjOn (fun k => k - S.min' hSne + 2) (S.erase (S.min' hSne)) := by
+        intro k₁ h₁ k₂ h₂ heq
+        have h₁' : k₁ ∈ S.erase (S.min' hSne) := h₁
+        have h₂' : k₂ ∈ S.erase (S.min' hSne) := h₂
+        have hk₁ : S.min' hSne ≤ k₁ := S.min'_le k₁ (Finset.mem_of_mem_erase h₁')
+        have hk₂ : S.min' hSne ≤ k₂ := S.min'_le k₂ (Finset.mem_of_mem_erase h₂')
+        have heq' : k₁ - S.min' hSne + 2 = k₂ - S.min' hSne + 2 := heq
+        omega
+      rw [Finset.card_image_of_injOn hinj, Finset.card_erase_of_mem hmS]
+    · intro k hk
+      obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp hk
+      have hbS : b ∈ S := Finset.mem_of_mem_erase hb
+      have hmb : S.min' hSne < b :=
+        lt_of_le_of_ne (S.min'_le b hbS) (Ne.symm (Finset.ne_of_mem_erase hb))
+      obtain ⟨c, hc, hclen⟩ := hseg (S.min' hSne) b (hST hmS) (hST hbS) hmb
+      refine ⟨?_, c, hc, hclen⟩
+      have hpar' := hpar b hbS (S.min' hSne) hmS
+      rw [Nat.even_iff]
+      omega
+  -- the majority parity class carries at least `⌈d/2⌉` trapped indices
+  have hsplit : (T.filter (fun n => n % 2 = 0)).card
+      + (T.filter (fun n => ¬ n % 2 = 0)).card = T.card :=
+    Finset.card_filter_add_card_filter_not _
+  obtain ⟨S, hSsub, hSpar, hScard⟩ :
+      ∃ S : Finset ℕ, S ⊆ T ∧ (∀ i ∈ S, ∀ j ∈ S, i % 2 = j % 2) ∧ d ≤ 2 * S.card := by
+    rcases Nat.lt_or_ge (T.filter (fun n => n % 2 = 0)).card
+        (T.filter (fun n => ¬ n % 2 = 0)).card with hcmp | hcmp
+    · refine ⟨T.filter (fun n => ¬ n % 2 = 0), Finset.filter_subset _ _, ?_, by omega⟩
+      intro i hi j hj
+      have hi' := (Finset.mem_filter.mp hi).2
+      have hj' := (Finset.mem_filter.mp hj).2
+      omega
+    · refine ⟨T.filter (fun n => n % 2 = 0), Finset.filter_subset _ _, ?_, by omega⟩
+      intro i hi j hj
+      have hi' := (Finset.mem_filter.mp hi).2
+      have hj' := (Finset.mem_filter.mp hj).2
+      omega
+  obtain ⟨L, hLcard, hL⟩ := key S hSsub hSpar
+  refine ⟨L, by omega, fun k hk => ?_⟩
+  obtain ⟨hke, c, hc, hclen⟩ := hL k hk
+  exact ⟨hke, v₀, c, hc, hclen⟩
+
+/-- Restatement in the `ContainsCycleLength` predicate: minimum degree `d` yields
+at least `⌊(d-1)/2⌋` distinct EVEN realized cycle lengths, each `≥ 4` (an even
+cycle length is automatically `≥ 4`).  Problem 64's target family
+`{2^k : k ≥ 2}` lies inside "even and `≥ 4`", so this rung counts exactly the
+sub-spectrum the open core must hit; at `d = 3` it guarantees one even length —
+sharp, by `K₄` — and the open question is whether that even sub-spectrum must
+meet the powers of two. -/
+theorem hasMinDegree_card_even_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ}
+    (hdeg : HasMinDegree G d) :
+    ∃ L : Finset ℕ, (d - 1) / 2 ≤ L.card ∧
+      ∀ k ∈ L, Even k ∧ 4 ≤ k ∧ ContainsCycleLength G k := by
+  obtain ⟨L, hcard, hL⟩ := hasMinDegree_card_even_cycle_lengths G hdeg
+  refine ⟨L, hcard, fun k hk => ?_⟩
+  obtain ⟨hke, v, c, hc, hlen⟩ := hL k hk
+  have h3 : 3 ≤ k := hlen ▸ hc.three_le_length
+  have h4 : 4 ≤ k := by
+    rw [Nat.even_iff] at hke
+    omega
+  exact ⟨hke, h4, hlen ▸ isCycle_containsCycleLength G c hc⟩
+
 /- ## Known Cycle Results -/
 
 /- 

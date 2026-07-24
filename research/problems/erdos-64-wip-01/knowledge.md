@@ -215,3 +215,27 @@ d = 3 it guarantees only 2 lengths, far from forcing a power of two.
 - Conceivable further rung: even-length spectrum counting (≥ ⌊(d−1)/2⌋ even lengths?)
   — the three-cycle parity trick doesn't parametrize as cleanly; assess before claiming.
 - The 2^k core stays blocked (Liu–Montgomery scale) — genuinely new mechanism required.
+
+## Session 2026-07-23b (researcher-1): even-spectrum rung (the flagged residual) DONE
+
+`hasMinDegree_card_even_cycle_lengths` + `_even_containsCycleLength`: min degree
+d forces >= floor((d-1)/2) DISTINCT even cycle lengths (each with IsCycle
+witness; bridge adds 4 <= k). SHARP for K_{d+1} (lengths 3..d+1). Simpler than
+the feared parity case analysis: majority parity class + same-parity segment
+cycles only.
+
+Mechanism notes:
+- `hseg` (extracted from the even-cycle proof's inline segment construction):
+  ANY trapped indices a < b give a v0-cycle of length b-a+2; needs only
+  1 <= a (hpos), NOT a >= 2 — the a >= 2 proviso is specific to prefix cycles.
+- Majority class: Finset.card_filter_add_card_filter_not (v4.31 name;
+  filter_card_add_filter_neg_card_eq_card is DEPRECATED); le_or_lt is GONE —
+  use Nat.lt_or_ge.
+- Counting: base = class min', image under (. - min + 2), InjOn via min'_le +
+  omega (materialize Set-coe memberships and non-beta-reduced heq as typed
+  `have`s first — same gotcha as erdos-53).
+- Evenness/4 <= k: Nat.even_iff + omega throughout.
+- No `2 <= d` hypothesis needed: (d-1)/2 <= 2*S.card arithmetic degenerates
+  gracefully (omega handles /2 by literal).
+
+Elementary layer now saturated INCLUDING the flagged residual. STAND DOWN.
