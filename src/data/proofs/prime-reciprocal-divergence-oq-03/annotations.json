@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Smooth and Rough Numbers: The Counting Dichotomy",
-    "content": "IsSmooth N k holds when every prime factor of k is ≤ N. IsRough N k holds when k has at least one prime factor > N. Together, every integer ≥ 2 is either N-smooth or N-rough for any N. The proof exploits this dichotomy: count smooth numbers from above (≤ √n · 2^π(N)) and rough numbers from above (< n/2 under the convergence assumption), showing both counts sum to less than n — contradiction, since [1..n] has n elements.",
+    "content": "IsSmooth N k holds when every prime factor of k is ≤ N. IsRough N k holds when k has at least one prime factor > N. Together, every integer ≥ 2 is either N-smooth or N-rough for any N. This file's headline theorem (infinitely_many_primes_erdos) uses only the smooth side: assuming all primes are ≤ N makes every integer N-smooth, and the smooth-count bound (≤ √n · 2^π(N)) alone already contradicts that for large n. The rough-number side (rough_count_bound, multiples_count) is proved but unused by the final theorem — see the file's closing 'Notes' section.",
     "mathContext": "Smooth numbers (also called N-smooth or B-smooth) are central to factoring algorithms (e.g., the quadratic sieve, elliptic curve factorization). A number is B-smooth if all its prime factors are ≤ B. The count of B-smooth numbers up to n is denoted Ψ(n, B). Erdős's argument uses the cruder bound Ψ(n, N) ≤ √n · 2^π(N), which suffices for the combinatorial contradiction.",
     "significance": "key",
     "relatedConcepts": [
@@ -104,8 +104,8 @@
     },
     "type": "concept",
     "title": "Multiples Count Bijection: |{p,2p,...} ∩ [1,n]| = ⌊n/p⌋",
-    "content": "multiples_count proves the elementary fact that there are exactly ⌊n/p⌋ multiples of p in [1,n]. The Lean proof establishes the set equality by bijecting {j·p : j ∈ [1, n/p]} with {multiples of p in [1,n]}, then uses Finset.card_image_of_injective (multiplication by p is injective for p > 0). The size of [1, n/p] is n/p by Finset.card_Icc + omega. This result feeds into the rough number count: ≤ Σ_{p>N} n/p rough numbers in [1,n].",
-    "mathContext": "The bound |{rough numbers in [1,n]}| ≤ Σ_{p>N, prime} ⌊n/p⌋ follows by inclusion-exclusion (lower bound by union). Under the assumption Σ_{p>N} 1/p < 1/2, the sum ≤ n/2. Combined with smooth ≤ √n · 2^π(N), the two counts show that for large n, smooth + rough < n — contradicting the fact that [1,n] has n elements.",
+    "content": "multiples_count proves the elementary fact that there are exactly ⌊n/p⌋ multiples of p in [1,n]. The Lean proof establishes the set equality by bijecting {j·p : j ∈ [1, n/p]} with {multiples of p in [1,n]}, then uses Finset.card_image_of_injective (multiplication by p is injective for p > 0). The size of [1, n/p] is n/p by Finset.card_Icc + omega. This bounds the count of multiples of a single prime p; summed over all p > N it would bound the rough-number count, but this file's main theorem (infinitely_many_primes_erdos) does not take this route — it derives its contradiction directly from smooth_count_bound alone.",
+    "mathContext": "The idea |{rough numbers in [1,n]}| ≤ Σ_{p>N, prime} ⌊n/p⌋ (via inclusion-exclusion), combined with Σ_{p>N} 1/p < 1/2 giving rough < n/2 and smooth ≤ √n · 2^π(N), motivates rough_count_bound and is the shape of Erdős's analytic Σ1/p argument. It is NOT what this file's headline theorem executes: infinitely_many_primes_erdos assumes only finitely many primes exist (all ≤ N) and refutes that from the smooth bound alone, so rough_count_bound and multiples_count are proved but unused by the final theorem.",
     "significance": "supporting",
     "relatedConcepts": [
       "divisibility",
@@ -138,7 +138,7 @@
       "erdos-proof"
     ],
     "prerequisites": [
-      "the assumption Σ1/p converges (for contradiction)",
+      "the assumption that only finitely many primes exist, i.e. all primes ≤ N (for contradiction)",
       "the smooth-number counting bound",
       "proof by contradiction"
     ]

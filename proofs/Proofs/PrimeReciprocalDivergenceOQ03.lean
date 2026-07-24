@@ -60,7 +60,7 @@ def IsSmooth (N k : ℕ) : Prop :=
 
 /-- An integer k is N-rough if it has at least one prime factor > N. -/
 def IsRough (N k : ℕ) : Prop :=
-  ∃ p : ℕ, p.Prime → p ∣ k ∧ p > N
+  ∃ p : ℕ, p.Prime ∧ p ∣ k ∧ p > N
 
 /-- The set of N-smooth numbers in {1, ..., n}. -/
 noncomputable def smoothSet (N n : ℕ) : Finset ℕ :=
