@@ -67,7 +67,8 @@
       "**This is genuine content, not a re-export.** Mathlib equips Matrix m n ℝ with no inner product and no default norm: the Frobenius norm lives in scoped defs (frobeniusNormedAddCommGroup) kept out of instance resolution to avoid a norm diamond against the sup-norm. So the inner-product structure must be built from scratch.",
       "**The Core is the right certificate.** Because the space has no norm instance, one cannot even *state* InnerProductSpace ℝ (Matrix m n ℝ) without first committing to a norm — the very diamond Mathlib avoids. InnerProductSpace.Core packages all the inner-product axioms without forcing that choice, so its mere existence is the cleanest formal statement of the result.",
       "**Symmetry is cyclic invariance of the trace, read twice.** ⟪A, B⟫ = ⟪B, A⟫ is tr(AᵀB) = tr(BᵀA) = Σ Aᵢⱼ Bᵢⱼ — the same bilinear trace-pairing that the parent entry studies as tr(AB) = tr(BA), now in the inner-product guise.",
-      "**Positive definiteness is the only non-formal step.** Bilinearity and symmetry are entrywise ring identities; the content is that a sum of squares vanishes iff each entry does, which needs Finset.sum_eq_zero_iff_of_nonneg applied across the two-dimensional index."
+      "**Positive definiteness is the only non-formal step.** Bilinearity and symmetry are entrywise ring identities; the content is that a sum of squares vanishes iff each entry does, which needs Finset.sum_eq_zero_iff_of_nonneg applied across the two-dimensional index.",
+      "**Nothing here uses squareness.** Every lemma is stated for arbitrary finite index types m, n — the proof never assumes m = n. The 2×3 symmetry sanity check exercises exactly this generality: rectangular matrices carry the same Frobenius inner product as square ones, matching the standard picture of Matrix m n ℝ as ℝ^{mn} under entrywise flattening, with frobInner as the ordinary Euclidean dot product transported along that identification."
     ],
     "prerequisites": [
       "The trace tr(M) = Σ Mᵢᵢ and the product formula (Aᵀ·B)ᵢⱼ entries",
@@ -101,12 +102,20 @@
       "mathContext": "$\\langle A, A\\rangle = \\sum_{i,j} A_{ij}^2 = 0 \\iff A = 0$."
     },
     {
-      "id": "core-and-norm",
-      "title": "The Bundled Inner-Product Certificate and the Frobenius Norm",
+      "id": "core-certificate",
+      "title": "The Bundled Inner-Product Certificate",
       "startLine": 125,
-      "endLine": 163,
-      "summary": "frobCore : InnerProductSpace.Core ℝ (Matrix m n ℝ) assembled from the axioms; frob_sqrt_self_eq_frobenius_norm identifying the induced norm √⟪A, A⟫ as the Frobenius norm √(Σ Aᵢⱼ²); and concrete sanity checks (⟪·,·⟫ = 25 on a 2×2 witness, symmetry on a 2×3 pair).",
+      "endLine": 142,
+      "summary": "frobCore : InnerProductSpace.Core ℝ (Matrix m n ℝ), assembling conj_inner_symm, re_inner_nonneg, add_left, smul_left, and definite from the lemmas above, with the Hermitian fields specialised to ℝ via RCLike.conj_to_real / RCLike.re_to_real. Its existence is the formal statement that frobInner is a genuine real inner product.",
       "mathContext": "$\\text{frobCore} : \\text{InnerProductSpace.Core}\\ \\mathbb{R}\\ (\\text{Matrix}\\ m\\ n\\ \\mathbb{R})$."
+    },
+    {
+      "id": "norm-and-sanity-checks",
+      "title": "The Induced Frobenius Norm and Concrete Sanity Checks",
+      "startLine": 144,
+      "endLine": 163,
+      "summary": "frob_sqrt_self_eq_frobenius_norm identifies the induced norm √⟪A, A⟫ with the Frobenius norm √(Σ Aᵢⱼ²); concrete sanity checks confirm ⟪·,·⟫ = 25 on the 3-4-5 witness ![![3,4],![0,0]] and symmetry on a rectangular 2×3 pair.",
+      "mathContext": "$\\sqrt{\\langle A, A\\rangle} = \\sqrt{\\textstyle\\sum_{i,j} A_{ij}^2} = \\lVert A\\rVert_F$."
     }
   ],
   "crossReferences": [
