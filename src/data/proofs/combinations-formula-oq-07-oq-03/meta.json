@@ -107,8 +107,15 @@
       "id": "classical-form",
       "title": "Halving and the Classical Form",
       "startLine": 105,
-      "endLine": 135,
-      "summary": "central_binom_two_mul_pred: C(2n,n) = 2·C(2n−1,n−1) for n ≥ 1 via Pascal's rule and symmetry; sum_weighted_sq: ∑ k·C(n,k)² = n·C(2n−1,n−1) for n ≥ 1 by cancelling the factor 2; with the numeric check ∑_{k=0}^{3} k·C(3,k)² = 30 = 3·C(5,2)."
+      "endLine": 129,
+      "summary": "central_binom_two_mul_pred: C(2n,n) = 2·C(2n−1,n−1) for n ≥ 1 via Pascal's rule and symmetry; sum_weighted_sq: ∑ k·C(n,k)² = n·C(2n−1,n−1) for n ≥ 1 by cancelling the factor 2."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 130,
+      "endLine": 137,
+      "summary": "Numeric checks: ∑_{k=0}^{3} k·C(3,k)² = 0+9+18+3 = 30, and the classical closed form 30 = 3·C(5,2), both closed by kernel decide."
     }
   ],
   "conclusion": {
