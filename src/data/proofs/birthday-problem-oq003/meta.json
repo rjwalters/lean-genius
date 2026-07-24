@@ -41,7 +41,8 @@
       "The collision excess is *exactly* the squared ℓ² distance from uniform (parent identity), so bounding it below in total variation is precisely the ℓ¹-vs-ℓ² comparison delivered by Cauchy–Schwarz: (∑|xᵢ|)² ≤ d·∑xᵢ² on d coordinates.",
       "The constant 4 is not cosmetic: dTV involves the factor ½ (so ∑|pᵢ − 1/d| = 2·dTV), and squaring turns that into a 4. The final bound (4/d)·dTV² is order-sharp — it is attained up to constants by a two-spike perturbation of uniform that concentrates all the deviation mass on two coordinates.",
       "This is a Pinsker-type inequality for the collision functional: it lower-bounds a smooth quantity (the ℓ² collision excess) by the square of a metric distance (total variation), turning a bias into an effective, computable penalty.",
-      "The quantitative bound subsumes the parent's qualitative equality case: dTV(p, u) = 0 ⟺ p uniform ⟺ ∑ pᵢ² = 1/d, so the effective inequality recovers 'equality iff uniform' as its degenerate boundary."
+      "The quantitative bound subsumes the parent's qualitative equality case: dTV(p, u) = 0 ⟺ p uniform ⟺ ∑ pᵢ² = 1/d, so the effective inequality recovers 'equality iff uniform' as its degenerate boundary.",
+      "The strict form of the parent's extremality — any bias, however small, strictly raises the collision probability — falls out as an immediate corollary rather than needing a separate argument: since 4/d·dTV(p,u)² is strictly positive whenever dTV(p,u) ≠ 0 (positivity alone), the mere existence of bias forces C(p) > 1/d, with no need to know its precise magnitude."
     ],
     "prerequisites": [
       "sq_sum_le_card_mul_sum_sq: (∑ f)² ≤ #s · ∑ f² (Chebyshev/Cauchy–Schwarz), Mathlib.Algebra.Order.Chebyshev",
