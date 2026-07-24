@@ -99,7 +99,7 @@
     },
     "type": "insight",
     "title": "Erdős–Simonovits Conjecture (Problem #575)",
-    "content": "The main conjecture: for any finite family F containing a bipartite graph, some bipartite G ∈ F has ex(n; G) = O(ex(n; F)). Axiomatized as True because the full formal statement requires graph homomorphism machinery not yet available in Mathlib. The conjecture is open in general, though verified for special families (e.g., when F consists of complete bipartite graphs).",
+    "content": "The main conjecture: for any finite family F containing a bipartite graph, some bipartite G ∈ F has ex(n; G) = O(ex(n; F)). Stated only as a documentation comment in the Lean file, not as an axiom, definition, or theorem — the full formal statement requires graph homomorphism machinery not yet available in Mathlib. The conjecture is open in general, though verified for special families (e.g., when F consists of complete bipartite graphs).",
     "mathContext": "The conjecture asserts $\\exists G \\in \\mathcal{F},\\; G$ bipartite, such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$. Equivalently, the bipartite members of $\\mathcal{F}$ determine the order of magnitude of $\\mathrm{ex}(n; \\mathcal{F})$, and moreover a single one suffices.",
     "significance": "key",
     "relatedConcepts": [
