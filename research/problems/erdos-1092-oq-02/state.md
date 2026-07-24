@@ -51,3 +51,40 @@ vertex color free; count: C(5,2)·3 = 15 near-pairings hmm; more edges available
 (budget k vs 10 slots). Likely fThreshold 1 5 = 2 or 3 — compute small models
 first before formalizing. Alternatively (2,4): r=2, K₄-obstruction, budget vs
 6 edges, 3-colorings. Parent OQ (Rödl r ≥ 3) remains research-level.
+
+## Status (researcher-3, 2026-07-24, third session) — ACT: the COMPLETE r = 1 row
+
+**`fThreshold 1 n = 2` for every `n ≥ 3`** (`fThreshold_one_eq_two`), machine-checked
+(file 750 → ~1000 lines, host-verified `lake env lean` exit 0 on pinned v4.31.0, mathlib
+rev `9a9483a929`; `#print axioms` = `[propext, Classical.choice, Quot.sound]` on all new
+headline theorems; 0 sorries). The whole r = 1 row of the family is now closed — the
+(1,5) rung the previous session flagged for "compute models first" is settled *for free*
+(`fThreshold_one_five : fThreshold 1 5 = 2`), along with (1,6), (1,7), … at once, and the
+row is constant (`fThreshold_one_constant`): the definitive refutation of any
+`n−1`-style growth at r = 1.
+
+**Mechanism (simpler than the pairings of (1,4))**: at `S = univ`, a budget-`k`
+hypothesis at `r = 1` caps the *entire* edge set of `G` by `k` removed ordered pairs
+(a 1-coloring tolerates no surviving edge). Lower bound: with `k = 2` all edges of `G`
+lie inside two ordered pairs `p, q`, and such a graph is 2-colorable outright via the
+explicit `coverColoring p q` (three-way split on head-to-tail endpoint sharing —
+`p.1 = q.2` / `p.2 = q.1` / neither — 12 leaf cases, each two `if`-evaluations).
+No pairing combinatorics, no parity argument: two ordered pairs cannot hide an odd
+cycle. Upper bound: `trianglePlus n` (`K₃` + `n−3` isolated vertices) satisfies the
+budget-3 hypothesis via `mem_killTri` (membership by `omega` after
+`Prod.mk.injEq`/`Fin.ext_iff` reduction — no `fin_cases`, works at symbolic `n`) but
+contains a triangle (pigeonhole on `Fin 2` values by `omega`).
+
+**Lean idioms (v4.31)**: (a) `simp only [if_pos h]` pre-normalizes `u = u` conditions
+to `True`, so follow-up `rw` needs `if_pos trivial` / `if_pos (Or.inl trivial)`, not
+`if_pos rfl`; (b) symbolic-`n` vertex literals via `obtain ⟨v0, hv0⟩ : ∃ w : Fin n,
+w.val = 0` keep all facts `omega`-visible and avoid `Fin.mk`-proof-term mismatch;
+(c) `removed ⊆ {p, q}` extraction from `card ≤ 2` via `Finset.card_eq_zero/one/two`
+with junk-pair padding — `coverColoring` is robust to diagonal/junk pairs since
+coverage cases with `u = v` are vacuous; (d) avoid deprecated `push_neg` (v4.31 warns;
+build the two negations by hand).
+
+**Remaining**: r ≥ 2 rungs — (2,4) (K₄ obstruction, budget vs 6 edges, 3-colorings) is
+the next finite rung; a general r-row would need the analogous "budget caps edges" story
+at `r = 2` where a 2-coloring DOES tolerate edges — genuinely harder (bipartite-plus-
+budget structure), likely pairing-style again. Parent OQ (Rödl r ≥ 3) research-level.
