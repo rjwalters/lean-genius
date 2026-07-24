@@ -130,7 +130,8 @@
       "**The factor (1 − X²) is sin².** Under x = cos θ, 1 − x² = sin² θ, and Mathlib's U_real_cos gives U_{k−1}(cos θ)·sin θ = sin(kθ). So (1−X²)·U_{m−1}·U_{n−1} evaluated at cos θ is exactly sin(mθ)·sin(nθ), and T_add is the polynomial cos(α+β) = cos α cos β − sin α sin β. This is why the second term cannot be written in T alone — it is genuinely a second-kind (sine) contribution.",
       "**Mathlib has product-to-sum but not addition.** T_mul_T gives T_{m+k} + T_{m−k} coupled together; isolating T_{m+n} from it reintroduces T_{m−n}. The addition formula here is the decoupled form, expressing T_{m+n} purely from the m-th and n-th data — the form needed for, e.g., a single-step angle increment.",
       "**Both formulas reduce to a Mathlib mixed recurrence at n = 1.** The whole induction rests on two facts Mathlib already proves: T_eq_X_mul_T_sub_pol_U and U_eq_X_mul_U_add_T are precisely the n=1 instances, so no new base-case computation is needed.",
-      "**The diagonal is the Pell/Pythagorean identity.** Setting m = n in the subtraction formula and using T_0 = 1 yields Tₙ² + (1−X²)·U_{n−1}² = 1, i.e. Tₙ² − (X²−1)·U_{n−1}² = 1 — the defining Pell relation of the Chebyshev pair and the polynomial cos² + sin² = 1."
+      "**The diagonal is the Pell/Pythagorean identity.** Setting m = n in the subtraction formula and using T_0 = 1 yields Tₙ² + (1−X²)·U_{n−1}² = 1, i.e. Tₙ² − (X²−1)·U_{n−1}² = 1 — the defining Pell relation of the Chebyshev pair and the polynomial cos² + sin² = 1.",
+      "**T_sub costs no second induction.** Rather than re-running Polynomial.Chebyshev.induct, T_sub is obtained purely algebraically from the already-proved T_add by substituting n ↦ −n and rewriting with the reflection identities T_{−n} = Tₙ (T_neg) and U_{−n−1} = −U_{n−1} (U_neg_sub_one): the sign flip on U exactly cancels the sign already in front of (1−X²)·U_{m−1}·U_{n−1}, turning the addition formula into the subtraction formula with a single linear_combination."
     ],
     "prerequisites": [
       "Chebyshev polynomials of the first and second kind over a commutative ring",
@@ -203,6 +204,11 @@
       "targetId": "chebyshev-polynomials-oq-01",
       "relationship": "extends",
       "description": "Parent Chebyshev-polynomial entry; this adds the angle-addition formula T_{m+n}=T_m·T_n − (1−X²)·U_{m−1}·U_{n−1} over any commutative ring, extending Mathlib's product-to-sum identity."
+    },
+    {
+      "targetId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: packages T_add, U_add and T_sq_add into a single 2×2 matrix multiplicativity M(m+n) = M(m)·M(n), the 'Chebyshev rotation' whose powers generate T and U."
     }
   ]
 }
