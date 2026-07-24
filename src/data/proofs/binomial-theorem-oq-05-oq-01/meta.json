@@ -77,7 +77,8 @@
       "**Convolution = product of generating functions.** Chu–Vandermonde is exactly the coefficient-by-coefficient reading of $(1+x)^m(1+x)^n = (1+x)^{m+n}$. The range form makes the convolution structure $\\sum_i a_i b_{k-i}$ explicit, which the antidiagonal form hides.",
       "**Row symmetry turns convolution into autocorrelation.** Setting $m=n$ and substituting $C(n,n-i)=C(n,i)$ converts the convolution $\\sum_i C(n,i)C(n,k-i)$ into the autocorrelation $\\sum_k C(n,k)C(n,k+d)$ — the diagonal sums of Pascal's triangle.",
       "**Sum of squares is the central coefficient.** $\\sum_k \\binom{n}{k}^2 = \\binom{2n}{n}$ is the $d=0$ autocorrelation: choosing $n$ from $2n$, split by how many of the first $n$ are chosen, with the complementary symmetry $\\binom{n}{n-k}=\\binom{n}{k}$ producing the square.",
-      "**Vanishing tails make the bookkeeping painless.** Because $\\binom{n}{i}=0$ for $i>n$, the finite Vandermonde sum can be freely extended or truncated; `Finset.sum_subset` and `Finset.sum_range_reflect` handle the reindexing without case analysis on $d$."
+      "**Vanishing tails make the bookkeeping painless.** Because $\\binom{n}{i}=0$ for $i>n$, the finite Vandermonde sum can be freely extended or truncated; `Finset.sum_subset` and `Finset.sum_range_reflect` handle the reindexing without case analysis on $d$.",
+      "**Reindexing, not induction, does all the work.** Textbook proofs of Vandermonde's identity typically induct on $m$ or $n$; here, since Mathlib already supplies the antidiagonal form `Nat.add_choose_eq`, none of `chu_vandermonde`, `sum_choose_mul_choose_add`, or `sum_sq_choose` needs induction — each is obtained purely by reindexing a finite sum (`sum_antidiagonal_eq_sum_range_succ`, `sum_subset`, `sum_range_reflect`) plus the one symmetry lemma `Nat.choose_symm`."
     ],
     "prerequisites": [
       "Binomial coefficients and the binomial theorem (1+x)ⁿ = Σ C(n,k) xᵏ",
