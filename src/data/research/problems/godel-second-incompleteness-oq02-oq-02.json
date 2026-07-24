@@ -31,7 +31,7 @@
     "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-06-13",
     "iteration": 17,
     "focus": "S16 ACT shipped GodelSecondIncompletenessOQ02Soundness.lean (Docker-verified 3063 jobs, 0 sorries, 0 NEW axioms): arithmetical soundness of GL in rule-verified conditional form. The mp/nec inference-rule cases are discharged unconditionally by impl_mp + d1_representability (genuine theorems, exported as arith_sound_mp/arith_sound_nec); the taut/k/lob axiom-schema cases are isolated as explicit hypotheses (Htaut/Hk/Hlob) since they assert PA-provability of object formulas that cannot be derived under the opaque Provable predicate.",
@@ -45,7 +45,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "BLOCKED on verification blackout. Resume S17 (discharge Hk via internal deduction theorem) once Docker is back; this is the most tractable +0/+1-axiom ACT. See state.md S17 block.",
+    "nextAction": "S20 candidates: genuine Kripke soundness (transitive converse-wf frames, S5 axis) or decidability of box-free GL via boxfree_characterization. Hk/Hlob remain blocked on the Sigma1 Provable rebuild.",
     "attemptCounts": {
       "total": 17,
       "currentApproach": 17,
@@ -53,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: GL syntax (S8) + translate (S10) + conditional arithmetical soundness (S16) + FIRST DERIVED GL THEOREM: the 4 schema, axiom-free (S18), with a reusable Lukasiewicz-schema propositional toolkit. Hk/Hlob hypotheses confirmed blocked on the Sigma1 Provable rebuild (S16 internal_K route refuted — meta/object level confusion). Next: Htaut instances or full Kalmar completeness for the ->/bottom fragment; S5 Kripke semantics remains an independent unblocked axis.",
+    "progressSummary": "PROGRESS (S19, 2026-07-24): Kalmar completeness for the box-free fragment + machine-checked CONSISTENCY of the S8 GL system (boolean one-world semantics; box |-> true validates K and Lob). New Mathlib-free file with PDeriv hypothesis layer, deduction theorem, dne/case_split, kalmar, boxfree_characterization: GL box-free fragment = classical propositional logic exactly. S18 GLFour toolkit + this = the propositional metatheory is closed. Blocked route (Hk/Hlob via Sigma1 Provable rebuild) unchanged. Next: genuine Kripke soundness (S5 axis) or box-free decidability.",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
@@ -83,7 +83,11 @@
         "description": "Realization function bridging GL syntax to PA syntax. 4 recursive cases + 5 simp-equation theorems all rfl-discharged."
       },
       "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)",
-      "GodelSecondIncompletenessOQ02GLFour.lean: four (GL |- box A -> box box A), box_iterate, box_mono, propositional toolkit (12 decls) — 0 axioms, 0 sorries, no Mathlib imports, docker-verified"
+      "GodelSecondIncompletenessOQ02GLFour.lean: four (GL |- box A -> box box A), box_iterate, box_mono, propositional toolkit (12 decls) — 0 axioms, 0 sorries, no Mathlib imports, docker-verified",
+      "GodelSecondIncompletenessOQ02Kalmar.lean (S19, Mathlib-free): eval + eval_of_GL_proves + GL_consistent + GL_proves_no_atom",
+      "PDeriv (hyp/thm/mp) + weaken + deduction theorem + toGL",
+      "dne, case_split (classical glue via deduction theorem)",
+      "kalmar_main + elim_atoms + kalmar + boxfree_characterization"
     ],
     "insights": [
       "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
@@ -97,7 +101,12 @@
       "S15 ACT (2026-06-01, researcher-1): shipped `translate : (PropAtom → Formula) → GLFormula → Formula` per S10 PREP #18678 §3.3 — new companion file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (132 LOC) with 4 recursive cases (`atom`/`falsum`/`impl`/`box`) + 5 `rfl`-discharged simp-equation theorems. **0 new axioms** (clean structural-theorem-add per CLAUDE.md §Axiom Integrity). Docker 3062 jobs clean at HEAD; target built 9.0s on cached Mathlib pin `2df2f0150c`. The S10 PREP design implemented verbatim with no API surprises at v4.26.0. Unblocks S16 arithmetical soundness induction (5-case dispatch over `GL_proves`).",
       "S18: GL derives the 4 schema box A -> box box A axiom-free (GL extends K4) — first derived theorem in the S8 GL Hilbert system; Boolos argument with B := A and-def box A, Lob constructor closing the loop. #print axioms four: does not depend on ANY axioms (fully constructive, no Mathlib).",
       "BLOCKED ROUTE (S16 recommendation not viable): discharging Hk from internal_K confuses meta and object levels — internal_K is the META rule (|- phi->psi) -> (|- Prov phi ->f Prov psi); Hk needs the OBJECT theorem |- Prov(a->b) ->f (Prov a ->f Prov b) (formalized D2). No object-level deduction theorem exists under the opaque Provable; Hk/Hlob genuinely blocked on the Sigma1 rebuild (S6 PREP #18497).",
-      "Reusable propositional toolkit from the 3 Lukasiewicz schemas: imp_id, imp_trans, flip (rule form = imp_trans(ax1) . mp(ax2)), imp_swap (theorem), efq (via k3 against not-bottom), dni (flip of id), conj := not(p -> not q) with intro/elims. Enables Htaut instance discharges; full Htaut = Kalmar completeness (~300-500 LOC constructive, next big tractable target)."
+      "Reusable propositional toolkit from the 3 Lukasiewicz schemas: imp_id, imp_trans, flip (rule form = imp_trans(ax1) . mp(ax2)), imp_swap (theorem), efq (via k3 against not-bottom), dni (flip of id), conj := not(p -> not q) with intro/elims. Enables Htaut instance discharges; full Htaut = Kalmar completeness (~300-500 LOC constructive, next big tractable target).",
+      "GL is CONSISTENT, machine-checked: the one-world successor-free boolean model (box |-> true) validates all five S8 constructors including Lob, so GL_proves bot is refuted — 40 lines, no Mathlib",
+      "The box-free fragment of GL is EXACTLY classical propositional logic (Kalmar completeness + boolean soundness): propositional obligations reduce to truth-table checks",
+      "Kalmar runs constructively through a PDeriv hypothesis layer + deduction theorem (k1/k2 only); dne and case_split then fall out of natural-deduction-style reasoning instead of combinator gymnastics",
+      "Atom elimination is duplicate-tolerant: weakening absorbs repeated atoms, so no Nodup/dedup machinery — the updated-valuation contexts embed into (litAtom-of-a :: untouched tail)",
+      "Lean: PDeriv induction with fixed context gives PRE-APPLIED IHs; lit-of-atom bridges are rfl not simp (hidden Decidable instances); .hyp (by simp) needs the hypothesis formula pinned before elaboration"
     ],
     "mathlibGaps": [
       "No modal logic / provability logic library in Mathlib.",
