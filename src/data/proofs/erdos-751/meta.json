@@ -51,11 +51,12 @@
       "erdos_751_with_girth: girth doesn't help",
       "erdos_751_summary: combined results",
       "colorable_of_erase_colorable / exists_min_subset_of_not_colorable: greedy coloring-extension engine over induced subgraphs",
-      "degree_induce_eq_filter_card, minDegree_induce_ge, cycleLengths_induce_subset: bridges from the extracted vertex set to bondy_vince_theorem and back into G"
+      "degree_induce_eq_filter_card, minDegree_induce_ge, cycleLengths_induce_subset: bridges from the extracted vertex set to bondy_vince_theorem and back into G",
+      "Part VII (axiom-free): erdos_751_cycle_exists proves the weak conclusion of Erdős #751 — a 4-chromatic graph contains a cycle at all — without invoking bondy_vince_theorem, via not_isAcyclic_of_two_le_degree (min degree ≥ 2 forces a cycle, using IsAcyclic.isTree_connectedComponent + IsTree.exists_vert_degree_one_of_nontrivial)"
     ],
     "axiomCount": 1,
-    "lineCount": 465,
-    "assumptions": "1 axiom: bondy_vince_theorem (Bondy–Vince 1998: minDegree ≥ 3 ⟹ two cycle lengths differ by ≤ 2) — a deep graph-theory result with no Mathlib cycle-length-spectrum API. The chromatic–degeneracy lemma four_chromatic_subgraph_minDeg (χ(G)=4 ⟹ a nonempty vertex set s in which every vertex has ≥ 3 neighbours inside s, i.e. the induced subgraph has minimum degree ≥ 3) is now PROVED from Mathlib via a critical-subgraph argument (take a vertex-minimal subset whose induced graph is not 3-colorable; greedy extension shows each of its vertices has ≥ 3 internal neighbours). A previous formulation quantified minDegree over the whole vertex type, which was false as stated (K₄ plus an isolated vertex); the proved statement bounds degrees inside the extracted set. The subgraph's close cycles lift to G via the verified cycleLengths_induce_subset lemma. 0 sorries.",
+    "lineCount": 595,
+    "assumptions": "1 axiom: bondy_vince_theorem (Bondy–Vince 1998: minDegree ≥ 3 ⟹ two cycle lengths differ by ≤ 2) — a deep graph-theory result with no Mathlib cycle-length-spectrum API. The chromatic–degeneracy lemma four_chromatic_subgraph_minDeg (χ(G)=4 ⟹ a nonempty vertex set s in which every vertex has ≥ 3 neighbours inside s, i.e. the induced subgraph has minimum degree ≥ 3) is now PROVED from Mathlib via a critical-subgraph argument (take a vertex-minimal subset whose induced graph is not 3-colorable; greedy extension shows each of its vertices has ≥ 3 internal neighbours). A previous formulation quantified minDegree over the whole vertex type, which was false as stated (K₄ plus an isolated vertex); the proved statement bounds degrees inside the extracted set. The subgraph's close cycles lift to G via the verified cycleLengths_induce_subset lemma. The weaker conclusion that a 4-chromatic graph has a cycle at all (erdos_751_cycle_exists, Part VII) is proved without the axiom, via a tree/degree argument. 0 sorries.",
     "theoremCount": 25,
     "definitionCount": 6
   },
@@ -70,7 +71,8 @@
       "**Girth Irrelevant:** Large girth doesn't change the conclusion",
       "**Gap Bound:** The gap between consecutive cycle lengths is always <= 2",
       "**Tight Example:** K_4 has chi = 4 and cycles of length 3 and 4",
-      "**Generalization:** Result holds for any graph with min degree >= 3"
+      "**Generalization:** Result holds for any graph with min degree >= 3",
+      "**Axiom-Free Cycle Existence:** The weak conclusion — a 4-chromatic graph has a cycle at all — does not need bondy_vince_theorem. Min degree >= 2 already forces a cycle (an acyclic graph's components are trees, and a nontrivial finite tree has a degree-1 vertex, contradicting min degree >= 2), and the chromatic-degeneracy lemma supplies min degree >= 3 >= 2 on the extracted subgraph."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -119,6 +121,13 @@
       "summary": "erdos_751_summary combining all results",
       "startLine": 434,
       "endLine": 465
+    },
+    {
+      "id": "cycle-existence-axiom-free",
+      "title": "Part VII: Cycle Existence (Axiom-Free)",
+      "summary": "Proves the weak conclusion of Erdős #751 (a 4-chromatic graph contains a cycle) without invoking bondy_vince_theorem. three_le_of_mem_cycleLengths and degree_toSimpleGraph_eq are bridging lemmas; not_isAcyclic_of_two_le_degree is the engine (min degree >= 2 forces a cycle: an acyclic graph's connected components are trees, and a nontrivial finite tree has a degree-1 vertex, contradicting the degree bound); cycleLengths_nonempty_of_two_le_degree and cycleLengths_nonempty_of_two_le_minDegree restate this for the cycle spectrum. erdos_751_cycle_exists chains this through the (proved, axiom-free) chromatic-degeneracy lemma to conclude a 4-chromatic graph has a cycle; not_isAcyclic_of_four_chromatic and three_le_girth_of_four_chromatic are its immediate corollaries. `#print axioms erdos_751_cycle_exists` reports foundational axioms only, no bondy_vince_theorem.",
+      "startLine": 466,
+      "endLine": 594
     }
   ],
   "conclusion": {
