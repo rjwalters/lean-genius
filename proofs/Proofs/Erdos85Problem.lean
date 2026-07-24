@@ -2796,9 +2796,10 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
     have hvmemS : v ∈ G.commonNeighbors x y := ⟨hvx, hvy⟩
     -- The goal's `Fintype` instance (Classical, baked into the Archive's
     -- `Friendship` def) differs definitionally from the one synthesized from
-    -- `[DecidableRel G.Adj]`.  Making the instance an explicit `@`-hole lets
-    -- `refine` UNIFY it with the goal's instance instead of re-synthesizing.
-    refine (@Fintype.card_eq_one_iff _ ?_).mpr ⟨⟨v, hvmemS⟩, ?_⟩
+    -- `[DecidableRel G.Adj]`.  `rw` matches the goal syntactically, so the
+    -- instance argument is instantiated from the goal rather than re-synthesized.
+    rw [Fintype.card_eq_one_iff]
+    refine ⟨⟨v, hvmemS⟩, ?_⟩
     rintro ⟨w, hw⟩
     obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
     have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
