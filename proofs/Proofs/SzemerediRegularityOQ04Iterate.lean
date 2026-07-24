@@ -83,20 +83,22 @@ theorem exists_equitable_recut_blocks (G : SimpleGraph V) [DecidableRel G.Adj]
       partitionEnergy G Q₀ -
           ∑ A ∈ T, (2 * ((Q₀.filter (· ⊆ A)).card * m : ℚ) / (Fintype.card V : ℚ)
             + 2 * (m * m : ℚ) / (Fintype.card V : ℚ)) ≤
-        partitionEnergy G Q₁ := by
+        partitionEnergy G Q₁ ∧
+      (∀ c ∈ Q₁, c ∈ Q₀ ∨ ∃ A ∈ T, c ⊆ A) := by
   classical
   revert hTdisj hfloor
   induction T using Finset.induction_on with
   | empty =>
       intro _ _
-      refine ⟨Q₀, rfl, hQdisj, hQne, ?_, fun B _ => rfl, by simp⟩
+      refine ⟨Q₀, rfl, hQdisj, hQne, ?_, fun B _ => rfl, by simp,
+        fun c hc => Or.inl hc⟩
       intro A hA
       exact absurd hA (by simp)
   | @insert A T' hA ih =>
       intro hTdisj hfloor
       have hsubT' : (↑T' : Set (Finset V)) ⊆ (↑(insert A T') : Set (Finset V)) :=
         Finset.coe_subset.mpr (Finset.subset_insert A T')
-      obtain ⟨Q', hQ'cov, hQ'disj, hQ'ne, hQ'sized, hQ'fib, hQ'pe⟩ :=
+      obtain ⟨Q', hQ'cov, hQ'disj, hQ'ne, hQ'sized, hQ'fib, hQ'pe, hQ'loc⟩ :=
         ih (hTdisj.subset hsubT')
           (fun A' hA' => hfloor A' (Finset.mem_insert_of_mem hA'))
       -- `A` is disjoint from every block of `T'`
@@ -129,7 +131,7 @@ theorem exists_equitable_recut_blocks (G : SimpleGraph V) [DecidableRel G.Adj]
         have hpos : 0 < c.card := by
           rcases hRsize c hc with h | h <;> omega
         exact Finset.card_pos.mp hpos
-      refine ⟨(Q' \ Q'.filter (· ⊆ A)) ∪ R, ?_, hdisj₂, ?_, ?_, ?_, ?_⟩
+      refine ⟨(Q' \ Q'.filter (· ⊆ A)) ∪ R, ?_, hdisj₂, ?_, ?_, ?_, ?_, ?_⟩
       · rw [hcov]
         exact hQ'cov
       · intro c hc
@@ -170,6 +172,13 @@ theorem exists_equitable_recut_blocks (G : SimpleGraph V) [DecidableRel G.Adj]
         rw [show ((Q'.filter (· ⊆ A)).card : ℚ) = ((Q₀.filter (· ⊆ A)).card : ℚ) from
           by rw [hfibA]] at hpe₂
         linarith [hQ'pe, hpe₂]
+      · -- piece locality: every rebuilt piece is an original piece or sits in a block
+        intro c hc
+        rcases Finset.mem_union.mp hc with h | h
+        · rcases hQ'loc c (Finset.mem_sdiff.mp h).1 with h0 | ⟨A', hA', hcA'⟩
+          · exact Or.inl h0
+          · exact Or.inr ⟨A', Finset.mem_insert_of_mem hA', hcA'⟩
+        · exact Or.inr ⟨A, Finset.mem_insert_self A T', hR_in_A c h⟩
 
 omit [Fintype V] in
 /-- **Disjoint blocks have disjoint fibers.**  Since pieces are nonempty and

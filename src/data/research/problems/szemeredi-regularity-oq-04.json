@@ -22,11 +22,17 @@
     "since": "2026-07-24",
     "iteration": 12,
     "focus": "S25 ACT (researcher-1, 2026-07-24): equitable re-cut DONE — merging half combinatorial step. New SzemerediRegularityOQ04Recut.lean: exists_equitable_recut (any pairwise-disjoint P re-cuts into R, same ground set, pieces nonempty <= m, AT MOST ONE deficient globally, energy loss <= 2|P|m/n) via S23 chop-refinement + pooled-deficient re-cut (S22 engine) + S24 replace bound; plus m=1 unit instance. Docker-GREEN, 0 ax / 0 sorry.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "S27 maintained-oracle closure from the single-witness gain E^4 m^2/n^2 (parameter bookkeeping over restoration cost 2|q1|m/n + 2|Vparts|m^2/n)",
+        "reopenCriterion": "materially new mechanism required: S28 gain amplification - extract the mass-weighted defect summed over ALL irregular pairs from not-IsAFKSFineRegular (true AFKS eps^5-scale increment, independent of m/n); the deficit 2m/n > E^4 m^2/n^2 holds for every admissible parameter choice, so no bookkeeping closes it",
+        "blockedAt": "2026-07-24"
+      }
+    ],
     "nextAction": "S26: parameter bookkeeping only — choose m with 2|P|m/n below the retained eps^4 m^2/n^2-scale gain and feed exists_afksTwoLevel_of_maintained_oracle; apply S22 n = a*m + b*(m+1) global-equitability packaging to the recut output."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: AFKS re-equitization combinatorially complete AND ambient-composable: S23-S26 pipeline + S27a in-place forms (exists_equitable_recut_within: fiber S of ambient Q0 with m^2 <= |U S| re-cuts in place to sizes {m,m+1} at ambient cost 2|S|m/n + 2m^2/n). All 0-axiom. S27b = iterate over the coarse blocks of the bare-split successor (Finset induction, per-block ground-mass floor) + parameter choice feeding exists_afksTwoLevel_of_maintained_oracle.",
+    "progressSummary": "PROGRESS: S12-S27b-ii complete + S28a statement audit. MAJOR FINDING: the bare IsAFKSTwoLevel target is degenerate (discrete partition witnesses it trivially - exists_afksTwoLevel_discrete); the content lives in the part-count bound, now formalized as IsAFKSTwoLevelBounded. The oracle machinery proves the bounded statement with L = n/m; the S28 amplified increment (structured blocker) is the path to an n-independent L(eps,k). Future sessions: target IsAFKSTwoLevelBounded.",
     "builtItems": [
       "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
@@ -113,7 +119,14 @@
       "S27a SzemerediRegularityOQ04Surgery.lean: exists_absorb_deficient_within (in-place absorption, ambient loss <= 2m^2/n)",
       "S27a: exists_chop_refinement_within (fiber chop as ambient refinement, zero loss)",
       "S27a: exists_equitable_recut_within (per-block brick: fiber -> exact {m,m+1} in place, ambient cost 2|S|m/n + 2m^2/n)",
-      "SzemerediRegularityOQ04Iterate.lean: exists_equitable_recut_blocks + sum_fiber_card_le + recut_blocks_cost_le (3 thm, 0 axioms, 0 sorries, docker 8589 jobs first-try)"
+      "SzemerediRegularityOQ04Iterate.lean: exists_equitable_recut_blocks + sum_fiber_card_le + recut_blocks_cost_le (3 thm, 0 axioms, 0 sorries, docker 8589 jobs first-try)",
+      "fiber_ground_eq_block in SzemerediRegularityOQ04Assemble.lean",
+      "exists_invariant_restore (S27b-ii modular capstone) in SzemerediRegularityOQ04Assemble.lean",
+      "exists_maintained_next_deficit (deficit-form maintained step) in SzemerediRegularityOQ04Assemble.lean",
+      "locality clause on exists_equitable_recut_blocks in SzemerediRegularityOQ04Iterate.lean",
+      "isEpsilonRegular_singleton in SzemerediRegularityOQ04Discrete.lean",
+      "exists_afksTwoLevel_discrete (degeneracy witness) in SzemerediRegularityOQ04Discrete.lean",
+      "IsAFKSTwoLevelBounded (corrected target) in SzemerediRegularityOQ04Discrete.lean"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -169,7 +182,13 @@
       "S27a ambient surgery: the fiber energy is NOT a summand of ambient energy (cross-block pairs), so per-block re-equitization must be stated on the AMBIENT family; chopping only the fiber IS an ambient refinement (refine_mono with trivial cells {A} outside the fiber), and pool/absorb are S24 replacements with small mass - the whole S25/S26 pipeline transfers in-place",
       "The untouched ambient part identity A2 \\\\ R1 = Q0 \\\\ S needs fiber pieces nonempty + contained in the fiber ground set: an old piece equal to a fiber piece would be a nonempty subset of U S yet disjoint from every member of S",
       "Lean: Finset.union_biUnion (NOT biUnion_union, which is pointwise) distributes biUnion over family union; after simp [mem_sdiff] in an ext goal both sides unfold to conjunctions - return mem_sdiff.mp h directly",
-      "S27b-i (researcher-1, 2026-07-24): block-family iteration DONE in new SzemerediRegularityOQ04Iterate.lean. exists_equitable_recut_blocks — Finset.induction_on over disjoint blocks T; the composable invariant is FIBER PRESERVATION AS FINSETS (Q1.filter (⊆B) = Q0.filter (⊆B) for B disjoint from all processed blocks), which keeps both the m² floors and the cost terms anchored to the ORIGINAL family, so costs telescope to Σ_A (2|fiber(A)|m/n + 2m²/n). recut_blocks_cost_le bounds the sum by 2|Q0|m/n + 2|T|m²/n via disjoint-fibers card_biUnion. Key trick: rw the CARD-CAST equation (not the raw fiber equation) into the step inequality — rewriting the fiber Finset equation would also rewrite the family expression in the conclusion."
+      "S27b-i (researcher-1, 2026-07-24): block-family iteration DONE in new SzemerediRegularityOQ04Iterate.lean. exists_equitable_recut_blocks — Finset.induction_on over disjoint blocks T; the composable invariant is FIBER PRESERVATION AS FINSETS (Q1.filter (⊆B) = Q0.filter (⊆B) for B disjoint from all processed blocks), which keeps both the m² floors and the cost terms anchored to the ORIGINAL family, so costs telescope to Σ_A (2|fiber(A)|m/n + 2m²/n). recut_blocks_cost_le bounds the sum by 2|Q0|m/n + 2|T|m²/n via disjoint-fibers card_biUnion. Key trick: rw the CARD-CAST equation (not the raw fiber equation) into the step inequality — rewriting the fiber Finset equation would also rewrite the family expression in the conclusion.",
+      "S27b-ii: invariant restoration is fully modular - exists_invariant_restore rebuilds ANY covering/disjoint/refining family to the complete Chain loop invariant (cover, disjoint, refines, +-1 equitable, mass floor m) at explicit cost 2|q1|m/n + 2|Vparts|m^2/n; an S28 amplified-gain successor composes with it verbatim.",
+      "THE S27 DEFICIT IS PROVABLY NEGATIVE: the single-witness gain E^4m^2/n^2 is below ANY re-equitization cost (2m/n > E^4m^2/n^2 iff 2n > E^4m, always true for E<=1, m<=n; even the lone absorption term 2m^2/n exceeds the gain). researcher-3 sizing caution confirmed and sharpened - closing the oracle REQUIRES gain amplification, not bookkeeping.",
+      "Locality clause added to exists_equitable_recut_blocks (every rebuilt piece is an original piece or sits inside a processed block) - the missing link from the recut output to IsRefinement and global equitability of the restored family.",
+      "Empty-piece stripping is free: Bridge partitionEnergy_filter_card_ne_zero lets the restoration accept bare-split successors without a nonemptiness hypothesis.",
+      "DEGENERACY: IsAFKSTwoLevel (no part-count bound) is trivially witnessable - every singleton pair is eps-regular for 0 < eps, so the discrete partition satisfies all three clauses with zero graph theory (exists_afksTwoLevel_discrete). The mathematical content of AFKS Lemma 3.2 lives entirely in the |Wparts| <= L(eps,k) bound the formalization omitted.",
+      "Corrected target IsAFKSTwoLevelBounded defined (adds sizeBound : Wparts.card <= L). The S12-S27 mass-floor machinery proves the bounded statement with L = n/m; an n-independent L(eps,k) additionally requires the S28 amplified eps^5-scale increment (iteration count must not depend on n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
