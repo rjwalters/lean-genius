@@ -68,7 +68,8 @@
       "GCD preservation is the shadow of a bijection. Because a unimodular matrix acts invertibly on ℤ², the set of common divisors — and the generated ideal — are preserved exactly, in both directions, with no appeal to Cramer's rule beyond the inverse itself.",
       "The inverse is the whole game. Once M⁻¹ is exhibited (adjugate scaled by det, a two-sided inverse exactly when det² = 1), the converse divisor transfer, the bijectivity, and the reverse ideal inclusion all follow by applying the forward lemma to M⁻¹.",
       "Self-containment buys axiom-freeness. By re-deriving the cofactor structure on a fresh HGCDMatrix type, the file avoids the parent's native_decide results entirely; #print axioms lists only propext/Classical.choice/Quot.sound.",
-      "det = ±1 ⇔ membership in GL₂(ℤ). The closure lemmas det_inv and det_mul_unimodular are exactly the group axioms restricted to the determinant ±1 condition, making explicit that Schönhage's cofactor matrices live in a group."
+      "det = ±1 ⇔ membership in GL₂(ℤ). The closure lemmas det_inv and det_mul_unimodular are exactly the group axioms restricted to the determinant ±1 condition, making explicit that Schönhage's cofactor matrices live in a group.",
+      "gcd_apply_eq and span_apply_eq are proved independently rather than one from the other, even though the ideal equality formally subsumes the gcd equality (a principal ideal's generator is a gcd). Both instead specialize the same dvd_apply_iff common-divisor equivalence to their own antisymmetry lattice — Nat.dvd_antisymm for the gcd, le_antisymm on Ideal ℤ for the span — so the file demonstrates the invariance at both the numerical and the ideal-theoretic level rather than deriving one as a corollary of the other."
     ]
   },
   "sections": [
