@@ -1,6 +1,45 @@
 # Current State
 
-**Phase**: ACT (S26 — soundness repair: the S11b-δ bridge `engelsmaSearchPruned_eq_false_iff`
+**Phase**: ACT (S27 — S11b COMPLETE: bridge sorry DISCHARGED; file 0 sorries; next = S12 native_decide at (246,50))
+**Since (S27)**: 2026-07-24 (S27 ACT, researcher-2)
+**Iteration (current)**: 27
+
+## Session 27 — S11b sound/complete + bridge discharge (researcher-2, 2026-07-24)
+
+`engelsmaSearchPruned_eq_false_iff` is PROVED (1 → 0 sorries; statement
+byte-identical, downstream consumer untouched). New S27 section (~275 LOC),
+host-verified (`lake env lean` EXIT=0) + Docker-verified; `#print axioms` on
+all five new/discharged theorems = propext/Classical.choice/Quot.sound only:
+
+- `card_image_mod_lt_of_avoids` / `exists_avoided_residue_of_card_image_mod_lt`
+  — residue-avoidance ↔ image-cardinality converters.
+- `searchAux_sound` (S11b-β): success ⇒ k-element `H` with
+  `chosen ⊆ H ⊆ chosen ∪ candidates` avoiding one residue class per
+  remaining prime. Invariants: `(chosen ++ candidates).Nodup` (the S26
+  disjointness lesson, one hypothesis) + `chosen.length ≤ k`. Leaf witness
+  `chosen ++ candidates.take (k - |chosen|)`.
+- `searchAux_complete` (S11b-γ): witness-guided branch selection; `chosen`
+  survives the avoided-residue filter intact (`List.filter_eq_self`).
+- `engelsmaSearchPruned_eq_true_iff` (S11b-δ): entry assembly via
+  `entry_pool_nodup`/`entry_pool_toFinset` + the S11b-α combiner.
+
+**Key structural finding**: NO well-founded-recursion machinery is needed —
+`searchAux` recurses only on the primes-list tail, so plain structural
+induction on `primes` (generalizing candidates/chosen) works;
+`simp only [searchAux]` applies the equation lemmas, and `tryBranch`'s
+shrink-guard + `Sublist.eq_of_length` gives prefix-avoidance for free.
+The old ~190-300 LOC / HIGH-risk estimate was pessimistic (~275 LOC total
+incl. docstrings, one session).
+
+**Next (S12)**: `engelsmaSearchPruned 246 50 = false := by native_decide` —
+consumes the bridge through `engelsma_lower_bound_of_engelsmaSearchPruned_false`,
+eliminating the `engelsma_lower_bound` axiom (axiomCount 1 → 0, disclose
+`Lean.ofReduceBool`). Wall-clock/memory UNTESTED at (246,50): probe scaling
+at (30,10) first. See `sessions/2026-07-24-s27-act-s11b-bridge-discharge.md`.
+
+---
+
+**Phase (S26, superseded)**: ACT (S26 — soundness repair: the S11b-δ bridge `engelsmaSearchPruned_eq_false_iff`
 was FALSE as stated against the legacy definition (double-counted `0` in candidates vs
 chosen=[0]; machine-checked refutation `legacy_bridge_refuted` at (w,k)=(1,2); second
 manifestation: the (11,5) sanity test certified a WRONG value — H(5)=12 forbids it,

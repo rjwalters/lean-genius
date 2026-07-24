@@ -2,7 +2,7 @@
   "slug": "bounded-prime-gaps-oq-03-oq-02",
   "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
   "phase": "ACT",
-  "status": "blocked",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,8 +28,982 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-01T20:50:00.000Z",
-    "iteration": 24,
+    "since": "2026-07-24T13:30:00Z",
+    "iteration": 27,
+    "focus": "S27 ACT (researcher-2, 2026-07-24): S11b BRIDGE SORRY DISCHARGED — engelsmaSearchPruned_eq_false_iff PROVED (file 1 -> 0 sorries). New S27 section (~275 LOC): residue-avoidance <-> image-cardinality converters; searchAux_sound (S11b-beta, witness = chosen ++ take (k-|chosen|) candidates, invariants = (chosen++candidates).Nodup + |chosen| <= k); searchAux_complete (S11b-gamma, witness-guided branch, chosen survives filter via filter_eq_self); engelsmaSearchPruned_eq_true_iff (S11b-delta entry assembly via entry_pool_nodup/entry_pool_toFinset + S11b-alpha combiner). Plain structural induction on the primes list — no WF-recursion machinery needed in proofs. Statement byte-identical; downstream consumer engelsma_lower_bound_of_engelsmaSearchPruned_false unchanged.",
+    "blockers": [
+      {
+        "id": "B1",
+        "status": "CLEARED",
+        "clearedAt": "2026-06-01T20:50:00.000Z",
+        "description": "Docker daemon hung at S22 PREP open (docker info exit 124 / Server section blank). Re-verified at S23 STATE-SYNC: docker info returns normally with full Server section. Recovery is 15+ days old; not attributable to a specific Loom PR.",
+        "since": "2026-05-16T06:01:00Z",
+        "mitigation": "Cleared by natural recovery (host-side restart or daemon resync)."
+      },
+      {
+        "id": "B2",
+        "status": "CLEARED",
+        "clearedAt": "2026-06-01T20:50:00.000Z",
+        "description": "Host disk RED below 5 Gi soft-floor at S22 PREP open (/System/Volumes/Data at 4.2 Gi free, 100% capacity). Re-verified at S23 STATE-SYNC: /System/Volumes/Data at 41 Gi free / 96% capacity (926 Gi total, 858 Gi used) — well above 5 Gi soft-floor.",
+        "since": "2026-05-17T00:00:00Z",
+        "mitigation": "Cleared by natural recovery + likely host-side cleanup (docker prune, lake cache eviction). Not attributable to a specific Loom PR."
+      },
+      {
+        "id": "B3",
+        "status": "ACTIVE",
+        "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S23 STATE-SYNC: symlink still present at the same path, ls timestamp 2026-05-29 11:42 unchanged, target unchanged. Will cause lake build to fail before reaching Mathlib.",
+        "since": "2026-05-16T09:04:00Z",
+        "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse into directory because target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."
+      }
+    ],
+    "nextAction": "S11b-β ACT (next): searchAux_sound — given primes residue-disjoint to chosen, searchAux returning true implies witness existence. ~70-120 LOC, MEDIUM risk (well-founded recursion + invariant lemmas per S18 PREP §2). Then S11b-γ ACT searchAux_complete (~110-170 LOC, HIGH risk) and S11b-δ bridge assembly (~20-30 LOC, LOW risk) using S11b-α + β + γ to discharge the line-969 sorry. PREREQUISITE: B3 host-side rm `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` for Docker verify of S11b-α + subsequent ACTs. Until B3 clears, the entire S11b-{α,β,γ,δ} chain ships build-pending (Docker not just contended but host-blocked at the symlink layer). Auditor / next-cycle picker should defer verify until B3 cleared.",
+    "attemptCounts": {
+      "total": 24,
+      "currentApproach": 1,
+      "approachesTried": 0
+    },
+    "lastUpdate": "2026-06-02T17:50:00Z"
+  },
+  "knowledge": {
+    "progressSummary": "S27 (researcher-2, 2026-07-24): S11b COMPLETE — the bridge engelsmaSearchPruned_eq_false_iff is PROVED (file 0 sorries, axiomCount 1). The pruned Engelsma search is now fully verified sound+complete against the powersetCard admissibility semantics. Remaining: S12 native_decide at (246,50) to discharge engelsma_lower_bound (axiom 1 -> 0); wall-clock untested, probe (30,10) scaling first.",
+    "builtItems": [
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/state.md — S1–S6 session log with S7 (10,30) deferred and rationale.",
+      "theorem engelsma_analogue_6_16 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 8008 subsets, S4, vacuous)",
+      "theorem engelsma_analogue_8_22 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 319,770 subsets, S5 intermediate scaling checkpoint, vacuous)",
+      "theorems engelsma_analogue_nonvacuous_3_7 / _4_9 / _5_13 / _6_17 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 35 / 126 / 1287 / 12376 subsets, S6 boundary non-vacuous cases, tight bounds witnessed by {0,2,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12,16})",
+      "theorem isAdmissible_image_sub_iff in BoundedPrimeGapsOQ03OQ02.lean — IsAdmissible is invariant under translation `(· - m)` when `m ≤ ∀ a ∈ H`. Proven via per-prime residue-image cardinality preservation (S8, sub-piece a).",
+      "theorem engelsma_lower_bound_of_finitary in BoundedPrimeGapsOQ03OQ02.lean — the §2.4 bridge: the finitary form `∀ H ∈ powersetCard 50 (Finset.range 246), 0 ∈ H → ¬ IsAdmissible H` implies the unbounded `engelsma_lower_bound` axiom statement. Pure-Lean combinatorics, no `native_decide` (S8, sub-piece c).",
+      "def engelsmaSearch (w k : ℕ) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S9 Bool scaffold: naive decide-backed enumeration over (Finset.range w).powersetCard k.",
+      "theorem engelsmaSearch_eq_false_iff in BoundedPrimeGapsOQ03OQ02.lean — S9 Bool/Prop bridge: engelsmaSearch w k = false ↔ the finitary Engelsma lower bound at (w, k).",
+      "theorem engelsma_lower_bound_of_engelsmaSearch_false in BoundedPrimeGapsOQ03OQ02.lean — S9 composition: engelsmaSearch 246 50 = false → engelsma_lower_bound (via S8 bridge).",
+      "theorem engelsmaSearch_7_3_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S9 positive unit test at (7, 3): 35-subset native_decide, witnessed by {0, 2, 6}.",
+      "def primesUpTo (k : ℕ) : List ℕ in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT canonical bearer per S10c PREP §2.3: (Nat.primesBelow (k + 1)).sort (· ≤ ·). Used by future S11 ACT pruner def as the prime list to branch on.",
+      "theorem primesUpTo_10_eq in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT sanity test: primesUpTo 10 = [2, 3, 5, 7]. Pins list value + ascending order via native_decide.",
+      "theorem primesUpTo_50_eq in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT sanity test: primesUpTo 50 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] (15 primes — the exact branching surface for the engelsmaSearch 246 50 = false discharge). Via native_decide.",
+      "private def tryBranch (p r : ℕ) (candidates chosen : List ℕ) (cont : List ℕ → List ℕ → Bool) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): single-branch residue-filter helper; filters candidates+chosen to drop n ≡ r (mod p), returns false if chosen shrank, else delegates to cont. Bool-valued + non-recursive so it sits cleanly outside searchAux's WF scope.",
+      "def searchAux (w k : ℕ) : List ℕ → List ℕ → List ℕ → Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): recursive Bool body with `termination_by primes.length` + `decreasing_by all_goals (simp_wf; omega)`. Performs the pruned-enumeration backtracking.",
+      "def engelsmaSearchPruned (w k : ℕ) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): Bool surface wrapping searchAux w k (primesUpTo k) (List.range w) [0]. Replaces engelsmaSearch in the S12 ACT axiom-discharge chain.",
+      "theorem engelsmaSearchPruned_eq_false_iff in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): bridge engelsmaSearchPruned w k = false ↔ ∀ H ∈ powersetCard k (Finset.range w), 0 ∈ H → ¬IsAdmissible H. **Contains 1 named `sorry` at line 925** for S11b-α/β/γ/δ discharge (S20 PREP §5 4-sub-PR split).",
+      "theorem engelsma_lower_bound_of_engelsmaSearchPruned_false in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): composition engelsmaSearchPruned 246 50 = false → engelsma_lower_bound (chains pruned bridge through S8 ACT's engelsma_lower_bound_of_finitary).",
+      "theorem engelsmaSearchPruned_7_3_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): positive unit test at (7, 3) via native_decide.",
+      "theorem engelsmaSearchPruned_11_5_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): positive unit test at (11, 5) via native_decide.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s17-prep-postS10ACT-drift-recheck.md — S17 PREP memo (PR #19354): paste-ready S11 ACT skeleton §6 with `tryBranch` + `searchAux` + `engelsmaSearchPruned` + bridge + 2 native_decide tests.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s18-prep-bridge-decomp.md — S18 PREP memo (PR #19386): §6.4 bridge sub-lemma decomposition (searchAux_sound + searchAux_complete + IsAdmissible_iff_residue_disjoint_primesUpTo combiner); S11a/S11b split recommendation (~190-300 LOC for S11b, later refined to 225-360 by S20 PREP).",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s19-statesync-s17-s18-prep-absorbed.md — Session 19 STATE-SYNC memo (PR #19425): absorbs S17+S18 PREP into state.md+JSON; iter 16 → 18.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s11a-act-engelsma-pruned-build-pending.md — S11a ACT memo (PR #19519): records the +118-LOC paste, B1 Docker hung blocker, S5 ACT schroeder-bernstein-oq-01 precedent for build-pending workflow.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s20-prep-s11a-paste-audit-and-shipped-api-resync.md — S20 PREP memo (PR #19570): post-paste audit + S18 PREP §2 sub-lemma resync vs SHIPPED API + 3 DELTAs + 4 Mathlib SHA spot-check + S11b 4-sub-PR split + paste-ready S11b-α combiner skeleton + 8-item ACT-readiness gate.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s21-statesync-knowledge-catchup-post-s20.md — S21 STATE-SYNC memo (this PR): JSON knowledge.* catchup absorbing S11a ACT + S20 PREP; pre-flight notes Docker still RED at 9h since hang (< 12h Path C cancellation window).",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-17-s22-prep-path-c-activation-paper-discharge-s11b-alpha-1-2.md — S22 PREP memo (this PR): Path C activation (Docker hang 18h > 12h threshold); paper discharge of S11b-α-1 + S11b-α-2 sorries from S20 PREP §6 skeleton (~9-13 LOC across two Mathlib-lemma chains: `Finset.mem_sort` ↔ `Nat.mem_primesBelow`); 3-RED INFRA escalation (B1 Docker +9h; B2 disk RED 4.2 Gi below 5 Gi soft-floor; B3 .lake circular self-symlink RED); §3.5 refined S11b-α LOC budget +30-40 (was +25-40); §4 1-bearer spot-check `Finset.mem_sort` confirmed via codebase usage; §6 6-row picker decision matrix; §7 informational host recovery script.",
+      "S26 repair in BoundedPrimeGapsOQ03OQ02.lean: fixed engelsmaSearchPruned (disjoint candidates + degenerate guard), engelsmaSearchPrunedLegacy + legacy_bridge_refuted (machine-checked refutation), engelsmaSearch_1_2_eq_false (kernel decide), corrected engelsmaSearchPruned_11_5_eq_false, regressions (1,2)/(2,2), agreement grid engelsmaSearchPruned_agrees_small (78 pairs, native_decide)",
+      "card_image_mod_lt_of_avoids + exists_avoided_residue_of_card_image_mod_lt (S27): residue-avoidance <-> image-cardinality converters",
+      "searchAux_sound (S27, S11b-beta): soundness invariant for the pruned search",
+      "searchAux_complete (S27, S11b-gamma): completeness invariant for the pruned search",
+      "engelsmaSearchPruned_eq_true_iff + entry_pool_nodup + entry_pool_toFinset (S27, S11b-delta): entry-point assembly",
+      "engelsmaSearchPruned_eq_false_iff (S27): the bridge, sorry -> proved"
+    ],
+    "insights": [
+      "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
+      "Decidability of IsAdmissible H is straightforward (~40 lines) — the `∀ p Prime` quantifier is automatically bounded by `p ≤ H.card` since for larger primes card_image_le forces the inequality.",
+      "Path A's direct `native_decide` is infeasible by ~50 orders of magnitude; the only viable certified-computation strategy is to implement Engelsma's pruning in Lean and prove its correctness, then native_decide the search-returns-empty equation.",
+      "Path C (sieve-based lower bound + residual enumeration) does not help because the sieve gives min_diam ≥ 207, leaving $\\binom{207}{50}$ subsets to enumerate — still infeasible without pruning. So C does not remove the need for B.",
+      "The hard work is concentrated in S8+ (verified backtracking, ~500-1500 lines). S2 (Decidable instance), the §2.4 bridge, and the S4/S5/S6 native_decide analogues are well-scoped and independent of the feasibility question.",
+      "S4 (researcher-10, 2026-05-12, build pending): native_decide Engelsma analogue at (k,w)=(6,16) over 8008 subsets — first axiom contribution (Lean.ofReduceBool). Vacuous (H(6)=16 > 15).",
+      "S5 (researcher-11, 2026-05-12, build pending): intermediate native_decide Engelsma analogue at (k,w)=(8,22) over 319,770 subsets — 40× S4 scaling checkpoint, vacuous antecedent (no admissible 8-tuple fits in range 22 since Engelsma's H(8)=26). Reuses Lean.ofReduceBool; no axiomCount bump.",
+      "S6 (researcher-5, 2026-05-12, build pending): four non-vacuous Engelsma analogues at boundary (k, H(k)+1) for k=3..6 — closes the vacuous-bound gap by enumerating tight cases where admissible witnesses DO exist. Cumulative ~1.4 × 10⁴ subsets across the four. Reuses Lean.ofReduceBool; theoremCount 7 → 11. Doubles as a unit-test harness for future Path-B backtracking work.",
+      "S8 (researcher-3, 2026-05-12, build pending): `engelsma_lower_bound_of_finitary` bridge lemma — pure-Lean combinatorics, no native_decide, no new axioms. 9 new declarations: 6 lemmas/helpers (translation invariance toolkit: `card_image_sub_eq`, `image_sub_nonempty`, `image_sub_max'_eq`, `image_sub_min'_eq_zero`, plus the per-prime modular bijection `card_image_image_sub_mod_eq` and its `sub_mod_eq_mod_add_sub_mod` core identity); the headline `isAdmissible_image_sub_iff` and `engelsma_lower_bound_of_finitary` theorems; the 50-subset extraction helper `exists_subset_card_50_containing_zero`. theoremCount 11 → 20; axiomCount stays at 1. Reduces the unbounded `engelsma_lower_bound` axiom to its finitary form — future Path-B (S9+) work needs only to discharge the latter.",
+      "S9 (researcher-5, 2026-05-12, build pending): Path-B Option-3 hybrid scaffold — naive def engelsmaSearch + Bool/Prop bridge engelsmaSearch_eq_false_iff + downstream consumer engelsma_lower_bound_of_engelsmaSearch_false (composes through S8). Plus positive unit test engelsmaSearch_7_3_eq_true (35-subset native_decide). The naive search is intractable at (50, 246) but the surface API is fixed: S10+ pruned variants plug in without touching downstream consumers. lineCount 617 → 761; theoremCount 20 → 23; defCount 1 → 2; axiomCount stays at 1.",
+      "S10 ACT (rjwalters, PR #19014, 2026-05-15, BUILD VERIFIED 7745 jobs / 8.4 s): two-part deliverable. Part A — S9 build unblocker: the 7-deep S2-S9 `(build pending)` PR chain hid 3 Mathlib v4.26.0 regressions (line 475 `rewrite` motive-check, line 488 `omega` beta-on-hypothesis-lambda, line 593 `rw [hH'_def]` motive-check; all 3 fixed via `simp only` beta-aliasing pattern) plus 2 deprecation renames (`Finset.notMem_erase`, `Finset.card_insert_of_notMem`). Root cause: the local-worktree `proofs/.lake` symlink trap blocked Docker verification for every prior researcher across the 7-PR chain (memory: feedback_researcher_lake_symlink_broken). The Mathlib v4.26.0 stricter `rewrite` motive checks + omega beta behavior on hypothesis-lambdas only fail at Docker-build time, never at editor-level type-check. Part B — `def primesUpTo (k : ℕ) : List ℕ := (Nat.primesBelow (k + 1)).sort (· ≤ ·)` per S10c PREP §2.3 canonical bearer + 2 native_decide sanity tests (primesUpTo_10_eq, primesUpTo_50_eq). lineCount 761 → 835 (+74 net; PR header +80/-6 since deprecation renames also rewrite existing lines); defCount 2 → 3; theoremCount 23 → 25; axiomCount stays at 1 (Lean.ofReduceBool reused). 0 sorries. Methodology marker: the build-verified S10 ACT establishes a clean baseline for all S11+ ACT work — silent parent-regression risk on future ACT iterations is now controlled.",
+      "S15 PREP (researcher-12, PR #19201, 2026-05-15, doc-only): coordination PREP under the 2026-05-14/15 deployer stall — pins merge sequencing for the two then-OPEN CLEAN PRs (#19014 S10 ACT, #19004 Session 14 STATE-SYNC), forecasts the post-merge JSON `leanFiles[]` mechanic-sync gap that this Session 15 STATE-SYNC exactly absorbs (file metrics 835/25/3 vs pre-sync JSON 761/23/2), analyzes the DIRTY 3-day-old orphan #18024 as superseded by S6 #18027 (four orders of magnitude cheaper), and re-pins the S11 ACT pre-flight bearer at the Mathlib v4.26.0 manifest SHA (closes S10c/S10d's tag-vs-SHA verification loop).",
+      "S16 PREP (researcher-12, PR #19273, 2026-05-15, doc-only): Mathlib v4.26.0 (manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) syntax + elaboration audit of the S10c/S10d searchAux skeleton. Locks 3 failure modes (the `r ↦ candidates.filter (· % p ≠ r)` callback inside `(Finset.range p).any` carries a hidden partial-application binding; `termination_by primes _ _ => primes.length` 3-binder form has zero Mathlib precedent vs the 0-binder `termination_by primes.length` having 5 hits; the `decreasing_by` chain needs `all_goals (simp_wf; omega)` wrapping per Mathlib's `Data/List/Defs.lean:170`). Proposes three S11 ACT structures (Option α 'helper lift' / Option β 'explicit binding' / Option γ 'Lean-native `List.any`') with Option α recommended (~6 LOC overhead, idiomatic Mathlib shape, partial-application scope reduction). 9 Mathlib bearer line citations for the S11 ACT pre-flight checklist.",
+      "S17 PREP (researcher-10, PR #19354, 2026-05-16 01:08:19Z, doc-only): post-S10-ACT-merge drift recheck of S15 PREP bearer table + S16 PREP Option α/β/γ trilemma against the 835-LOC file shape; ships paste-ready S11 ACT skeleton (§6.1 `tryBranch` private def ~6 LOC; §6.2 `searchAux` recursive body ~22 LOC with 0-binder `termination_by primes.length` + `decreasing_by all_goals (simp_wf; omega)`; §6.3 `engelsmaSearchPruned` Bool surface ~5 LOC calling `searchAux w k (primesUpTo k) (List.range w) [0]`; §6.4 bridge theorem `engelsmaSearchPruned_eq_false_iff` sorry-scaffold ~12 LOC; §6.5 two `native_decide` sanity tests at `(w,k)=(7,3)` and `(11,5)` ~6 LOC). Drift recheck verdict: zero substantive drift on Mathlib SHA (`2df2f0150c...`) or any of the 10 S15 PREP §6 bearer pins. Option α/β/γ all survive post-S10-ACT-merge; α remains primary recommendation. §7 ACT-readiness checklist gives 6-step pickup plan for next picker (paste + Docker + branch on verdict + paste tests + axiomCount recheck + STATE-SYNC follow-up).",
+      "S18 PREP (researcher-8, PR #19386, 2026-05-16 ~02:46Z, doc-only): §6.4 bridge sub-lemma decomposition — extends S17 PREP's single-`sorry` scaffold into 3 sub-lemmas + combiner. §2.1 `searchAux_sound` (~55-90 LOC, induction on `primes`, leaf via `Finset.card_union_le` + cardinality arithmetic, inductive via `tryBranch` decomposition + IH). §2.2 `searchAux_complete` (~90-140 LOC, dominant cost, residue-witness `r := (H \\ chosen.toFinset).min' _ % p`). §2.3 `IsAdmissible_iff_residue_disjoint_primesUpTo` combiner (~25-40 LOC, reverse direction splits on `p ≤ k` hypothesis vs `p > k` cardinality bound). §3 adds 5 new Mathlib bearer pins at unchanged SHA `2df2f0150c...` (`List.length_filter_le`, `List.mem_filter`, `Finset.mem_powersetCard`, `Finset.card_image_le`, `Finset.card_union_le`). §4 worked goal-state for `searchAux_sound`'s leaf + inductive cases (paper-only, paste-ready reasoning). §5 S11a/S11b split recommendation (S11a = +~59 LOC paste of §6.1-§6.3 skeleton + §6.4 sorry-scaffold + §6.5 tests, 1-2 Docker iters; S11b = +~190-300 LOC bridge discharge per §2.1-§2.3, 3-4 Docker iters). Total +~249-359 LOC across two PRs (vs original S10 PREP §8 single-PR +120-180 LOC budget). Drift recheck verdict: zero drift since S17 PREP @ 01:04Z (~91 min). 0 open PRs at PREP creation. Pattern: post-`feedback_researcher_postship_pivot_discharges_owed_pencil_work_in_prior_honesty_note.md`-style discharge of S17 §8 honesty-note pencil-work (3 owed sub-lemmas), but staged across S11a/S11b not single ACT.",
+      "S26 CRITICAL: the sorried S11b-delta bridge engelsmaSearchPruned_eq_false_iff was FALSE as stated — legacy initial call passed List.range w as candidates while chosen=[0] committed 0; the leaf test candidates.length >= k - chosen.length double-counts 0. Machine-checked refutation legacy_bridge_refuted at (w,k)=(1,2); planned 190-300 LOC sound/complete development would have hit an unprovable goal.",
+      "Second bug manifestation: the S11b sanity test asserted engelsmaSearchPruned 11 5 = true, but H(5)=12 forbids any admissible 5-tuple in {0..10} — the test certified a WRONG value (naive search disagrees). Corrected to = false.",
+      "Repair recipe: candidates (List.range w).filter (. != 0) restores chosen-candidates disjointness; guard w=0 or k=0 -> false handles Nat-truncation acceptance. Drop-in agreement with naive engelsmaSearch machine-checked on all 78 pairs w<=12 k<=5.",
+      "For the future S11b author: state searchAux sound/complete invariants with chosen-candidates disjointness EXPLICIT; leaf soundness = {0} + any (k-1)-subset of residue-filtered candidates is admissible; completeness = admissible H containing 0 misses some r_p not congruent 0 mod p per prime p <= k."
+    ],
+    "mathlibGaps": [
+      "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
+      "Finset.image_translate_admissible (translation invariance of admissibility) — needed for the §2.4 bridge.",
+      "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
+    ],
+    "nextSteps": [
+      "S12: engelsmaSearchPruned 246 50 = false := by native_decide, consuming the S27 bridge through engelsma_lower_bound_of_engelsmaSearchPruned_false; eliminates the engelsma_lower_bound axiom. Probe native_decide scaling at (30,10) first — (246,50) wall-clock/memory untested.",
+      "If (246,50) is infeasible: profile intermediate (w,k) points and document the compute frontier; the bridge itself is now permanent verified infrastructure.",
+      "Optional cleanup: kernel decide for small sanity tests where feasible (naive search reduces; searchAux needs native_decide)."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "prime-gaps",
+    "sieve-theory",
+    "polymath",
+    "admissible-tuples",
+    "computer-search",
+    "decidability",
+    "native-decide",
+    "certified-computation",
+    "open-problem",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
+    "bounded-prime-gaps-oq-02",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01",
+    "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+    "bounded-prime-gaps-oq-04-oq-01-incomplete-01-oq-01",
+    "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "bounded-prime-gaps-oq-04-oq-02",
+    "bounded-prime-gaps-oq-04-oq-03",
+    "bounded-prime-gaps-oq-05",
+    "prime-gap-bounds-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "T. Engelsma, Permissible patterns and prime gaps (2013, unpublished; opertech8.com).",
+      "D. H. J. Polymath, Variants of the Selberg sieve, and bounded intervals containing many primes, Research in the Mathematical Sciences 1 (2014), #12.",
+      "A. V. Sutherland, Narrow admissible k-tuples (2014, computational tables; math.mit.edu/~drew/admissible.html).",
+      "J. Maynard, Small gaps between primes, Annals of Mathematics 181 (2015), 383-413."
+    ],
+    "urls": [
+      "https://www.opertech8.com/primes/index.html",
+      "https://math.mit.edu/~drew/admissible.html"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Prime.Basic — Nat.decidablePrime, Nat.Prime",
+      "Mathlib.Data.Finset.Image — Finset.card_image_le, Finset.image_image",
+      "Mathlib.Data.Finset.Basic — Finset.decidableDforallFinset",
+      "Mathlib.Data.Finset.Powerset — Finset.powersetCard"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.561Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ02.lean",
+      "filename": "BoundedPrimeGapsOQ02.lean",
+      "lineCount": 662,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ02Chebyshev.lean",
+      "filename": "BoundedPrimeGapsOQ02Chebyshev.lean",
+      "lineCount": 195,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ02Chebyshev.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 390,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "lineCount": 407,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 998,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 600,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ03.lean",
+      "lineCount": 136,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ05.lean",
+      "filename": "BoundedPrimeGapsOQ05.lean",
+      "lineCount": 151,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ05.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ],
+  "iteration": 25
+}
+{
+  "slug": "bounded-prime-gaps-oq-03-oq-02",
+  "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall H \\subseteq \\mathbb{N},\\ \\mathrm{IsAdmissible}(H) \\land |H| \\ge 50 \\implies \\max(H) - \\min(H) \\ge 246. \\quad \\text{Goal: replace the axiom with a } \\texttt{native\\_decide}\\text{-backed proof.}",
+    "plain": "BoundedPrimeGapsOQ03.lean asserts as an axiom (line 134) that every admissible 50-tuple has diameter at least 246, citing Engelsma's 2013 exhaustive computer search. OQ-03-OQ-02 asks: can this axiom be replaced with a machine-verified Lean computation via decide / native_decide on a suitably encoded finite search problem?",
+    "whyMatters": [
+      "Axiom elimination — BoundedPrimeGapsOQ03.lean currently has 1 axiom; replacing it upgrades the file toward 'verified' status.",
+      "Pattern transferability — the same template (admissible-tuple lower bounds via certified search) recurs for engelsma54Tuple, Sutherland's narrow tuples, and future Polymath improvements.",
+      "Mathlib contribution path — a Decidable (IsAdmissible H) instance + verified backtracking would be a natural Mathlib contribution under a future Mathlib.NumberTheory.AdmissibleTuples namespace.",
+      "Methodology marker — demonstrates a non-trivial certified-computation result in the gallery, parallel in spirit to Flyspeck but at a much smaller scale."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "admissible_50_tuple_diam_achieved — the Engelsma 50-tuple realizes diameter 246 (BoundedPrimeGapsOQ03.lean, line 143).",
+      "engelsma50Tuple_admissible — the specific 50-tuple {0,4,6,...,246} is admissible, by case-split on small primes (BoundedPrimeGapsOQ03.lean, line 66).",
+      "IsAdmissible definition with the residue-coverage condition, plus admissible_subset and admissible_singleton."
+    ],
+    "open": [
+      "engelsma_lower_bound — the lower-bound side ≥ 246, currently axiomatized."
+    ],
+    "goal": "Replace the axiom with a theorem proved by Lean's kernel (ideally via native_decide on a pruned search procedure faithfully reifying Engelsma's algorithm)."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T13:30:00Z",
+    "iteration": 27,
+    "focus": "S11b-α ACT (researcher-1, 2026-06-02T17:50Z): paste-ready combiner IsAdmissible_iff_residue_disjoint_primesUpTo shipped to BoundedPrimeGapsOQ03OQ02.lean:835 via S20 PREP §6 skeleton + S22 PREP §3.3 + §3.4 paper-discharged sorries. +44 LOC, 0 functional sorries added, 0 axioms added. Bearers: Finset.mem_sort, Nat.mem_primesBelow, Finset.card_image_le, Nat.lt_succ_of_le, omega. Build pending: B3 (proofs/.lake circular self-symlink) STILL ACTIVE per S23 STATE-SYNC re-verification — Docker build host-blocked (not merely contended like sibling lagrange S16b PR #22116 + schauder S29 PR #22117 in this session). B1+B2 cleared but B3 needs host-side rm before verify possible. Risk-acceptance 6/8 GREEN, 2/8 AMBER (region BUILD-VERIFY age + B3 still-active). NOW 997 LOC / 2 axioms / 1 functional sorry (line 969, the engelsmaSearchPruned_eq_false_iff bridge stub awaiting S11b-δ).",
+    "blockers": [
+      {
+        "id": "B1",
+        "status": "CLEARED",
+        "clearedAt": "2026-06-01T20:50:00.000Z",
+        "description": "Docker daemon hung at S22 PREP open (docker info exit 124 / Server section blank). Re-verified at S23 STATE-SYNC: docker info returns normally with full Server section. Recovery is 15+ days old; not attributable to a specific Loom PR.",
+        "since": "2026-05-16T06:01:00Z",
+        "mitigation": "Cleared by natural recovery (host-side restart or daemon resync)."
+      },
+      {
+        "id": "B2",
+        "status": "CLEARED",
+        "clearedAt": "2026-06-01T20:50:00.000Z",
+        "description": "Host disk RED below 5 Gi soft-floor at S22 PREP open (/System/Volumes/Data at 4.2 Gi free, 100% capacity). Re-verified at S23 STATE-SYNC: /System/Volumes/Data at 41 Gi free / 96% capacity (926 Gi total, 858 Gi used) — well above 5 Gi soft-floor.",
+        "since": "2026-05-17T00:00:00Z",
+        "mitigation": "Cleared by natural recovery + likely host-side cleanup (docker prune, lake cache eviction). Not attributable to a specific Loom PR."
+      },
+      {
+        "id": "B3",
+        "status": "ACTIVE",
+        "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S23 STATE-SYNC: symlink still present at the same path, ls timestamp 2026-05-29 11:42 unchanged, target unchanged. Will cause lake build to fail before reaching Mathlib.",
+        "since": "2026-05-16T09:04:00Z",
+        "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse into directory because target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."
+      }
+    ],
+    "nextAction": "S12: engelsmaSearchPruned 246 50 = false := by native_decide — the compute step consuming the bridge; eliminates the engelsma_lower_bound axiom (axiomCount 1 -> 0, disclose Lean.ofReduceBool). Wall-clock/memory at (246,50) UNTESTED: probe scaling first at (30,10) (deferred S7 datapoint) before committing to the full run.",
+    "attemptCounts": {
+      "total": 24,
+      "currentApproach": 1,
+      "approachesTried": 0
+    },
+    "lastUpdate": "2026-06-02T17:50:00Z"
+  },
+  "knowledge": {
+    "progressSummary": "S27 (researcher-2, 2026-07-24): S11b COMPLETE — the bridge engelsmaSearchPruned_eq_false_iff is PROVED (file 0 sorries, axiomCount 1). The pruned Engelsma search is now fully verified sound+complete against the powersetCard admissibility semantics. Remaining: S12 native_decide at (246,50) to discharge engelsma_lower_bound (axiom 1 -> 0); wall-clock untested, probe (30,10) scaling first.",
+    "builtItems": [
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/state.md — S1–S6 session log with S7 (10,30) deferred and rationale.",
+      "theorem engelsma_analogue_6_16 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 8008 subsets, S4, vacuous)",
+      "theorem engelsma_analogue_8_22 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 319,770 subsets, S5 intermediate scaling checkpoint, vacuous)",
+      "theorems engelsma_analogue_nonvacuous_3_7 / _4_9 / _5_13 / _6_17 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 35 / 126 / 1287 / 12376 subsets, S6 boundary non-vacuous cases, tight bounds witnessed by {0,2,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12,16})",
+      "theorem isAdmissible_image_sub_iff in BoundedPrimeGapsOQ03OQ02.lean — IsAdmissible is invariant under translation `(· - m)` when `m ≤ ∀ a ∈ H`. Proven via per-prime residue-image cardinality preservation (S8, sub-piece a).",
+      "theorem engelsma_lower_bound_of_finitary in BoundedPrimeGapsOQ03OQ02.lean — the §2.4 bridge: the finitary form `∀ H ∈ powersetCard 50 (Finset.range 246), 0 ∈ H → ¬ IsAdmissible H` implies the unbounded `engelsma_lower_bound` axiom statement. Pure-Lean combinatorics, no `native_decide` (S8, sub-piece c).",
+      "def engelsmaSearch (w k : ℕ) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S9 Bool scaffold: naive decide-backed enumeration over (Finset.range w).powersetCard k.",
+      "theorem engelsmaSearch_eq_false_iff in BoundedPrimeGapsOQ03OQ02.lean — S9 Bool/Prop bridge: engelsmaSearch w k = false ↔ the finitary Engelsma lower bound at (w, k).",
+      "theorem engelsma_lower_bound_of_engelsmaSearch_false in BoundedPrimeGapsOQ03OQ02.lean — S9 composition: engelsmaSearch 246 50 = false → engelsma_lower_bound (via S8 bridge).",
+      "theorem engelsmaSearch_7_3_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S9 positive unit test at (7, 3): 35-subset native_decide, witnessed by {0, 2, 6}.",
+      "def primesUpTo (k : ℕ) : List ℕ in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT canonical bearer per S10c PREP §2.3: (Nat.primesBelow (k + 1)).sort (· ≤ ·). Used by future S11 ACT pruner def as the prime list to branch on.",
+      "theorem primesUpTo_10_eq in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT sanity test: primesUpTo 10 = [2, 3, 5, 7]. Pins list value + ascending order via native_decide.",
+      "theorem primesUpTo_50_eq in BoundedPrimeGapsOQ03OQ02.lean — S10 ACT sanity test: primesUpTo 50 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] (15 primes — the exact branching surface for the engelsmaSearch 246 50 = false discharge). Via native_decide.",
+      "private def tryBranch (p r : ℕ) (candidates chosen : List ℕ) (cont : List ℕ → List ℕ → Bool) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): single-branch residue-filter helper; filters candidates+chosen to drop n ≡ r (mod p), returns false if chosen shrank, else delegates to cont. Bool-valued + non-recursive so it sits cleanly outside searchAux's WF scope.",
+      "def searchAux (w k : ℕ) : List ℕ → List ℕ → List ℕ → Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): recursive Bool body with `termination_by primes.length` + `decreasing_by all_goals (simp_wf; omega)`. Performs the pruned-enumeration backtracking.",
+      "def engelsmaSearchPruned (w k : ℕ) : Bool in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): Bool surface wrapping searchAux w k (primesUpTo k) (List.range w) [0]. Replaces engelsmaSearch in the S12 ACT axiom-discharge chain.",
+      "theorem engelsmaSearchPruned_eq_false_iff in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): bridge engelsmaSearchPruned w k = false ↔ ∀ H ∈ powersetCard k (Finset.range w), 0 ∈ H → ¬IsAdmissible H. **Contains 1 named `sorry` at line 925** for S11b-α/β/γ/δ discharge (S20 PREP §5 4-sub-PR split).",
+      "theorem engelsma_lower_bound_of_engelsmaSearchPruned_false in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): composition engelsmaSearchPruned 246 50 = false → engelsma_lower_bound (chains pruned bridge through S8 ACT's engelsma_lower_bound_of_finitary).",
+      "theorem engelsmaSearchPruned_7_3_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): positive unit test at (7, 3) via native_decide.",
+      "theorem engelsmaSearchPruned_11_5_eq_true in BoundedPrimeGapsOQ03OQ02.lean — S11a ACT (PR #19519, build pending): positive unit test at (11, 5) via native_decide.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s17-prep-postS10ACT-drift-recheck.md — S17 PREP memo (PR #19354): paste-ready S11 ACT skeleton §6 with `tryBranch` + `searchAux` + `engelsmaSearchPruned` + bridge + 2 native_decide tests.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s18-prep-bridge-decomp.md — S18 PREP memo (PR #19386): §6.4 bridge sub-lemma decomposition (searchAux_sound + searchAux_complete + IsAdmissible_iff_residue_disjoint_primesUpTo combiner); S11a/S11b split recommendation (~190-300 LOC for S11b, later refined to 225-360 by S20 PREP).",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s19-statesync-s17-s18-prep-absorbed.md — Session 19 STATE-SYNC memo (PR #19425): absorbs S17+S18 PREP into state.md+JSON; iter 16 → 18.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s11a-act-engelsma-pruned-build-pending.md — S11a ACT memo (PR #19519): records the +118-LOC paste, B1 Docker hung blocker, S5 ACT schroeder-bernstein-oq-01 precedent for build-pending workflow.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s20-prep-s11a-paste-audit-and-shipped-api-resync.md — S20 PREP memo (PR #19570): post-paste audit + S18 PREP §2 sub-lemma resync vs SHIPPED API + 3 DELTAs + 4 Mathlib SHA spot-check + S11b 4-sub-PR split + paste-ready S11b-α combiner skeleton + 8-item ACT-readiness gate.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s21-statesync-knowledge-catchup-post-s20.md — S21 STATE-SYNC memo (this PR): JSON knowledge.* catchup absorbing S11a ACT + S20 PREP; pre-flight notes Docker still RED at 9h since hang (< 12h Path C cancellation window).",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-17-s22-prep-path-c-activation-paper-discharge-s11b-alpha-1-2.md — S22 PREP memo (this PR): Path C activation (Docker hang 18h > 12h threshold); paper discharge of S11b-α-1 + S11b-α-2 sorries from S20 PREP §6 skeleton (~9-13 LOC across two Mathlib-lemma chains: `Finset.mem_sort` ↔ `Nat.mem_primesBelow`); 3-RED INFRA escalation (B1 Docker +9h; B2 disk RED 4.2 Gi below 5 Gi soft-floor; B3 .lake circular self-symlink RED); §3.5 refined S11b-α LOC budget +30-40 (was +25-40); §4 1-bearer spot-check `Finset.mem_sort` confirmed via codebase usage; §6 6-row picker decision matrix; §7 informational host recovery script.",
+      "S26 repair in BoundedPrimeGapsOQ03OQ02.lean: fixed engelsmaSearchPruned (disjoint candidates + degenerate guard), engelsmaSearchPrunedLegacy + legacy_bridge_refuted (machine-checked refutation), engelsmaSearch_1_2_eq_false (kernel decide), corrected engelsmaSearchPruned_11_5_eq_false, regressions (1,2)/(2,2), agreement grid engelsmaSearchPruned_agrees_small (78 pairs, native_decide)",
+      "card_image_mod_lt_of_avoids + exists_avoided_residue_of_card_image_mod_lt (S27): residue-avoidance <-> image-cardinality converters",
+      "searchAux_sound (S27, S11b-beta): soundness invariant for the pruned search",
+      "searchAux_complete (S27, S11b-gamma): completeness invariant for the pruned search",
+      "engelsmaSearchPruned_eq_true_iff + entry_pool_nodup + entry_pool_toFinset (S27, S11b-delta): entry-point assembly",
+      "engelsmaSearchPruned_eq_false_iff (S27): the bridge, sorry -> proved"
+    ],
+    "insights": [
+      "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
+      "Decidability of IsAdmissible H is straightforward (~40 lines) — the `∀ p Prime` quantifier is automatically bounded by `p ≤ H.card` since for larger primes card_image_le forces the inequality.",
+      "Path A's direct `native_decide` is infeasible by ~50 orders of magnitude; the only viable certified-computation strategy is to implement Engelsma's pruning in Lean and prove its correctness, then native_decide the search-returns-empty equation.",
+      "Path C (sieve-based lower bound + residual enumeration) does not help because the sieve gives min_diam ≥ 207, leaving $\\binom{207}{50}$ subsets to enumerate — still infeasible without pruning. So C does not remove the need for B.",
+      "The hard work is concentrated in S8+ (verified backtracking, ~500-1500 lines). S2 (Decidable instance), the §2.4 bridge, and the S4/S5/S6 native_decide analogues are well-scoped and independent of the feasibility question.",
+      "S4 (researcher-10, 2026-05-12, build pending): native_decide Engelsma analogue at (k,w)=(6,16) over 8008 subsets — first axiom contribution (Lean.ofReduceBool). Vacuous (H(6)=16 > 15).",
+      "S5 (researcher-11, 2026-05-12, build pending): intermediate native_decide Engelsma analogue at (k,w)=(8,22) over 319,770 subsets — 40× S4 scaling checkpoint, vacuous antecedent (no admissible 8-tuple fits in range 22 since Engelsma's H(8)=26). Reuses Lean.ofReduceBool; no axiomCount bump.",
+      "S6 (researcher-5, 2026-05-12, build pending): four non-vacuous Engelsma analogues at boundary (k, H(k)+1) for k=3..6 — closes the vacuous-bound gap by enumerating tight cases where admissible witnesses DO exist. Cumulative ~1.4 × 10⁴ subsets across the four. Reuses Lean.ofReduceBool; theoremCount 7 → 11. Doubles as a unit-test harness for future Path-B backtracking work.",
+      "S8 (researcher-3, 2026-05-12, build pending): `engelsma_lower_bound_of_finitary` bridge lemma — pure-Lean combinatorics, no native_decide, no new axioms. 9 new declarations: 6 lemmas/helpers (translation invariance toolkit: `card_image_sub_eq`, `image_sub_nonempty`, `image_sub_max'_eq`, `image_sub_min'_eq_zero`, plus the per-prime modular bijection `card_image_image_sub_mod_eq` and its `sub_mod_eq_mod_add_sub_mod` core identity); the headline `isAdmissible_image_sub_iff` and `engelsma_lower_bound_of_finitary` theorems; the 50-subset extraction helper `exists_subset_card_50_containing_zero`. theoremCount 11 → 20; axiomCount stays at 1. Reduces the unbounded `engelsma_lower_bound` axiom to its finitary form — future Path-B (S9+) work needs only to discharge the latter.",
+      "S9 (researcher-5, 2026-05-12, build pending): Path-B Option-3 hybrid scaffold — naive def engelsmaSearch + Bool/Prop bridge engelsmaSearch_eq_false_iff + downstream consumer engelsma_lower_bound_of_engelsmaSearch_false (composes through S8). Plus positive unit test engelsmaSearch_7_3_eq_true (35-subset native_decide). The naive search is intractable at (50, 246) but the surface API is fixed: S10+ pruned variants plug in without touching downstream consumers. lineCount 617 → 761; theoremCount 20 → 23; defCount 1 → 2; axiomCount stays at 1.",
+      "S10 ACT (rjwalters, PR #19014, 2026-05-15, BUILD VERIFIED 7745 jobs / 8.4 s): two-part deliverable. Part A — S9 build unblocker: the 7-deep S2-S9 `(build pending)` PR chain hid 3 Mathlib v4.26.0 regressions (line 475 `rewrite` motive-check, line 488 `omega` beta-on-hypothesis-lambda, line 593 `rw [hH'_def]` motive-check; all 3 fixed via `simp only` beta-aliasing pattern) plus 2 deprecation renames (`Finset.notMem_erase`, `Finset.card_insert_of_notMem`). Root cause: the local-worktree `proofs/.lake` symlink trap blocked Docker verification for every prior researcher across the 7-PR chain (memory: feedback_researcher_lake_symlink_broken). The Mathlib v4.26.0 stricter `rewrite` motive checks + omega beta behavior on hypothesis-lambdas only fail at Docker-build time, never at editor-level type-check. Part B — `def primesUpTo (k : ℕ) : List ℕ := (Nat.primesBelow (k + 1)).sort (· ≤ ·)` per S10c PREP §2.3 canonical bearer + 2 native_decide sanity tests (primesUpTo_10_eq, primesUpTo_50_eq). lineCount 761 → 835 (+74 net; PR header +80/-6 since deprecation renames also rewrite existing lines); defCount 2 → 3; theoremCount 23 → 25; axiomCount stays at 1 (Lean.ofReduceBool reused). 0 sorries. Methodology marker: the build-verified S10 ACT establishes a clean baseline for all S11+ ACT work — silent parent-regression risk on future ACT iterations is now controlled.",
+      "S15 PREP (researcher-12, PR #19201, 2026-05-15, doc-only): coordination PREP under the 2026-05-14/15 deployer stall — pins merge sequencing for the two then-OPEN CLEAN PRs (#19014 S10 ACT, #19004 Session 14 STATE-SYNC), forecasts the post-merge JSON `leanFiles[]` mechanic-sync gap that this Session 15 STATE-SYNC exactly absorbs (file metrics 835/25/3 vs pre-sync JSON 761/23/2), analyzes the DIRTY 3-day-old orphan #18024 as superseded by S6 #18027 (four orders of magnitude cheaper), and re-pins the S11 ACT pre-flight bearer at the Mathlib v4.26.0 manifest SHA (closes S10c/S10d's tag-vs-SHA verification loop).",
+      "S16 PREP (researcher-12, PR #19273, 2026-05-15, doc-only): Mathlib v4.26.0 (manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) syntax + elaboration audit of the S10c/S10d searchAux skeleton. Locks 3 failure modes (the `r ↦ candidates.filter (· % p ≠ r)` callback inside `(Finset.range p).any` carries a hidden partial-application binding; `termination_by primes _ _ => primes.length` 3-binder form has zero Mathlib precedent vs the 0-binder `termination_by primes.length` having 5 hits; the `decreasing_by` chain needs `all_goals (simp_wf; omega)` wrapping per Mathlib's `Data/List/Defs.lean:170`). Proposes three S11 ACT structures (Option α 'helper lift' / Option β 'explicit binding' / Option γ 'Lean-native `List.any`') with Option α recommended (~6 LOC overhead, idiomatic Mathlib shape, partial-application scope reduction). 9 Mathlib bearer line citations for the S11 ACT pre-flight checklist.",
+      "S17 PREP (researcher-10, PR #19354, 2026-05-16 01:08:19Z, doc-only): post-S10-ACT-merge drift recheck of S15 PREP bearer table + S16 PREP Option α/β/γ trilemma against the 835-LOC file shape; ships paste-ready S11 ACT skeleton (§6.1 `tryBranch` private def ~6 LOC; §6.2 `searchAux` recursive body ~22 LOC with 0-binder `termination_by primes.length` + `decreasing_by all_goals (simp_wf; omega)`; §6.3 `engelsmaSearchPruned` Bool surface ~5 LOC calling `searchAux w k (primesUpTo k) (List.range w) [0]`; §6.4 bridge theorem `engelsmaSearchPruned_eq_false_iff` sorry-scaffold ~12 LOC; §6.5 two `native_decide` sanity tests at `(w,k)=(7,3)` and `(11,5)` ~6 LOC). Drift recheck verdict: zero substantive drift on Mathlib SHA (`2df2f0150c...`) or any of the 10 S15 PREP §6 bearer pins. Option α/β/γ all survive post-S10-ACT-merge; α remains primary recommendation. §7 ACT-readiness checklist gives 6-step pickup plan for next picker (paste + Docker + branch on verdict + paste tests + axiomCount recheck + STATE-SYNC follow-up).",
+      "S18 PREP (researcher-8, PR #19386, 2026-05-16 ~02:46Z, doc-only): §6.4 bridge sub-lemma decomposition — extends S17 PREP's single-`sorry` scaffold into 3 sub-lemmas + combiner. §2.1 `searchAux_sound` (~55-90 LOC, induction on `primes`, leaf via `Finset.card_union_le` + cardinality arithmetic, inductive via `tryBranch` decomposition + IH). §2.2 `searchAux_complete` (~90-140 LOC, dominant cost, residue-witness `r := (H \\ chosen.toFinset).min' _ % p`). §2.3 `IsAdmissible_iff_residue_disjoint_primesUpTo` combiner (~25-40 LOC, reverse direction splits on `p ≤ k` hypothesis vs `p > k` cardinality bound). §3 adds 5 new Mathlib bearer pins at unchanged SHA `2df2f0150c...` (`List.length_filter_le`, `List.mem_filter`, `Finset.mem_powersetCard`, `Finset.card_image_le`, `Finset.card_union_le`). §4 worked goal-state for `searchAux_sound`'s leaf + inductive cases (paper-only, paste-ready reasoning). §5 S11a/S11b split recommendation (S11a = +~59 LOC paste of §6.1-§6.3 skeleton + §6.4 sorry-scaffold + §6.5 tests, 1-2 Docker iters; S11b = +~190-300 LOC bridge discharge per §2.1-§2.3, 3-4 Docker iters). Total +~249-359 LOC across two PRs (vs original S10 PREP §8 single-PR +120-180 LOC budget). Drift recheck verdict: zero drift since S17 PREP @ 01:04Z (~91 min). 0 open PRs at PREP creation. Pattern: post-`feedback_researcher_postship_pivot_discharges_owed_pencil_work_in_prior_honesty_note.md`-style discharge of S17 §8 honesty-note pencil-work (3 owed sub-lemmas), but staged across S11a/S11b not single ACT.",
+      "S26 CRITICAL: the sorried S11b-delta bridge engelsmaSearchPruned_eq_false_iff was FALSE as stated — legacy initial call passed List.range w as candidates while chosen=[0] committed 0; the leaf test candidates.length >= k - chosen.length double-counts 0. Machine-checked refutation legacy_bridge_refuted at (w,k)=(1,2); planned 190-300 LOC sound/complete development would have hit an unprovable goal.",
+      "Second bug manifestation: the S11b sanity test asserted engelsmaSearchPruned 11 5 = true, but H(5)=12 forbids any admissible 5-tuple in {0..10} — the test certified a WRONG value (naive search disagrees). Corrected to = false.",
+      "Repair recipe: candidates (List.range w).filter (. != 0) restores chosen-candidates disjointness; guard w=0 or k=0 -> false handles Nat-truncation acceptance. Drop-in agreement with naive engelsmaSearch machine-checked on all 78 pairs w<=12 k<=5.",
+      "For the future S11b author: state searchAux sound/complete invariants with chosen-candidates disjointness EXPLICIT; leaf soundness = {0} + any (k-1)-subset of residue-filtered candidates is admissible; completeness = admissible H containing 0 misses some r_p not congruent 0 mod p per prime p <= k."
+    ],
+    "mathlibGaps": [
+      "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
+      "Finset.image_translate_admissible (translation invariance of admissibility) — needed for the §2.4 bridge.",
+      "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
+    ],
+    "nextSteps": [
+      "S12: engelsmaSearchPruned 246 50 = false := by native_decide, consuming the S27 bridge through engelsma_lower_bound_of_engelsmaSearchPruned_false; eliminates the engelsma_lower_bound axiom. Probe native_decide scaling at (30,10) first — (246,50) wall-clock/memory untested.",
+      "If (246,50) is infeasible: profile intermediate (w,k) points and document the compute frontier; the bridge itself is now permanent verified infrastructure.",
+      "Optional cleanup: kernel decide for small sanity tests where feasible (naive search reduces; searchAux needs native_decide)."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "prime-gaps",
+    "sieve-theory",
+    "polymath",
+    "admissible-tuples",
+    "computer-search",
+    "decidability",
+    "native-decide",
+    "certified-computation",
+    "open-problem",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
+    "bounded-prime-gaps-oq-02",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01",
+    "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+    "bounded-prime-gaps-oq-04-oq-01-incomplete-01-oq-01",
+    "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "bounded-prime-gaps-oq-04-oq-02",
+    "bounded-prime-gaps-oq-04-oq-03",
+    "bounded-prime-gaps-oq-05",
+    "prime-gap-bounds-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "T. Engelsma, Permissible patterns and prime gaps (2013, unpublished; opertech8.com).",
+      "D. H. J. Polymath, Variants of the Selberg sieve, and bounded intervals containing many primes, Research in the Mathematical Sciences 1 (2014), #12.",
+      "A. V. Sutherland, Narrow admissible k-tuples (2014, computational tables; math.mit.edu/~drew/admissible.html).",
+      "J. Maynard, Small gaps between primes, Annals of Mathematics 181 (2015), 383-413."
+    ],
+    "urls": [
+      "https://www.opertech8.com/primes/index.html",
+      "https://math.mit.edu/~drew/admissible.html"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Prime.Basic — Nat.decidablePrime, Nat.Prime",
+      "Mathlib.Data.Finset.Image — Finset.card_image_le, Finset.image_image",
+      "Mathlib.Data.Finset.Basic — Finset.decidableDforallFinset",
+      "Mathlib.Data.Finset.Powerset — Finset.powersetCard"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.561Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ02.lean",
+      "filename": "BoundedPrimeGapsOQ02.lean",
+      "lineCount": 662,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ02Chebyshev.lean",
+      "filename": "BoundedPrimeGapsOQ02Chebyshev.lean",
+      "lineCount": 195,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ02Chebyshev.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 390,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "lineCount": 407,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 998,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04.lean",
+      "filename": "BoundedPrimeGapsOQ04.lean",
+      "lineCount": 367,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Aristotle.lean",
+      "lineCount": 165,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ01WIP01.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ02.lean",
+      "lineCount": 600,
+      "theoremCount": 10,
+      "axiomCount": 6,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ04OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ04OQ03.lean",
+      "lineCount": 136,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ05.lean",
+      "filename": "BoundedPrimeGapsOQ05.lean",
+      "lineCount": 151,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ05.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsSieve.lean",
+      "filename": "BoundedPrimeGapsSieve.lean",
+      "lineCount": 368,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsSieve.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsTPC.lean",
+      "filename": "BoundedPrimeGapsTPC.lean",
+      "lineCount": 282,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    }
+  ],
+  "iteration": 25
+}
+{
+  "slug": "bounded-prime-gaps-oq-03-oq-02",
+  "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall H \\subseteq \\mathbb{N},\\ \\mathrm{IsAdmissible}(H) \\land |H| \\ge 50 \\implies \\max(H) - \\min(H) \\ge 246. \\quad \\text{Goal: replace the axiom with a } \\texttt{native\\_decide}\\text{-backed proof.}",
+    "plain": "BoundedPrimeGapsOQ03.lean asserts as an axiom (line 134) that every admissible 50-tuple has diameter at least 246, citing Engelsma's 2013 exhaustive computer search. OQ-03-OQ-02 asks: can this axiom be replaced with a machine-verified Lean computation via decide / native_decide on a suitably encoded finite search problem?",
+    "whyMatters": [
+      "Axiom elimination — BoundedPrimeGapsOQ03.lean currently has 1 axiom; replacing it upgrades the file toward 'verified' status.",
+      "Pattern transferability — the same template (admissible-tuple lower bounds via certified search) recurs for engelsma54Tuple, Sutherland's narrow tuples, and future Polymath improvements.",
+      "Mathlib contribution path — a Decidable (IsAdmissible H) instance + verified backtracking would be a natural Mathlib contribution under a future Mathlib.NumberTheory.AdmissibleTuples namespace.",
+      "Methodology marker — demonstrates a non-trivial certified-computation result in the gallery, parallel in spirit to Flyspeck but at a much smaller scale."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "admissible_50_tuple_diam_achieved — the Engelsma 50-tuple realizes diameter 246 (BoundedPrimeGapsOQ03.lean, line 143).",
+      "engelsma50Tuple_admissible — the specific 50-tuple {0,4,6,...,246} is admissible, by case-split on small primes (BoundedPrimeGapsOQ03.lean, line 66).",
+      "IsAdmissible definition with the residue-coverage condition, plus admissible_subset and admissible_singleton."
+    ],
+    "open": [
+      "engelsma_lower_bound — the lower-bound side ≥ 246, currently axiomatized."
+    ],
+    "goal": "Replace the axiom with a theorem proved by Lean's kernel (ideally via native_decide on a pruned search procedure faithfully reifying Engelsma's algorithm)."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T13:30:00Z",
+    "iteration": 27,
     "focus": "S11b-α ACT (researcher-1, 2026-06-02T17:50Z): paste-ready combiner IsAdmissible_iff_residue_disjoint_primesUpTo shipped to BoundedPrimeGapsOQ03OQ02.lean:835 via S20 PREP §6 skeleton + S22 PREP §3.3 + §3.4 paper-discharged sorries. +44 LOC, 0 functional sorries added, 0 axioms added. Bearers: Finset.mem_sort, Nat.mem_primesBelow, Finset.card_image_le, Nat.lt_succ_of_le, omega. Build pending: B3 (proofs/.lake circular self-symlink) STILL ACTIVE per S23 STATE-SYNC re-verification — Docker build host-blocked (not merely contended like sibling lagrange S16b PR #22116 + schauder S29 PR #22117 in this session). B1+B2 cleared but B3 needs host-side rm before verify possible. Risk-acceptance 6/8 GREEN, 2/8 AMBER (region BUILD-VERIFY age + B3 still-active). NOW 997 LOC / 2 axioms / 1 functional sorry (line 969, the engelsmaSearchPruned_eq_false_iff bridge stub awaiting S11b-δ).",
     "blockers": [
       {
@@ -65,7 +1039,7 @@
     "lastUpdate": "2026-06-02T17:50:00Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S26 soundness repair — the S11b-delta bridge sorry was unprovable against the legacy pruned-search definition (double-counted 0); definition repaired, refutation machine-checked, drop-in agreement with naive search verified on w<=12 k<=5 grid. Bridge sorry remains (1 functional sorry) and is now plausibly true; next session can start the sound/complete decomposition on honest foundations.",
+    "progressSummary": "S27 (researcher-2, 2026-07-24): S11b COMPLETE — the bridge engelsmaSearchPruned_eq_false_iff is PROVED (file 0 sorries, axiomCount 1). The pruned Engelsma search is now fully verified sound+complete against the powersetCard admissibility semantics. Remaining: S12 native_decide at (246,50) to discharge engelsma_lower_bound (axiom 1 -> 0); wall-clock untested, probe (30,10) scaling first.",
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
@@ -96,7 +1070,12 @@
       "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s20-prep-s11a-paste-audit-and-shipped-api-resync.md — S20 PREP memo (PR #19570): post-paste audit + S18 PREP §2 sub-lemma resync vs SHIPPED API + 3 DELTAs + 4 Mathlib SHA spot-check + S11b 4-sub-PR split + paste-ready S11b-α combiner skeleton + 8-item ACT-readiness gate.",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-16-s21-statesync-knowledge-catchup-post-s20.md — S21 STATE-SYNC memo (this PR): JSON knowledge.* catchup absorbing S11a ACT + S20 PREP; pre-flight notes Docker still RED at 9h since hang (< 12h Path C cancellation window).",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-17-s22-prep-path-c-activation-paper-discharge-s11b-alpha-1-2.md — S22 PREP memo (this PR): Path C activation (Docker hang 18h > 12h threshold); paper discharge of S11b-α-1 + S11b-α-2 sorries from S20 PREP §6 skeleton (~9-13 LOC across two Mathlib-lemma chains: `Finset.mem_sort` ↔ `Nat.mem_primesBelow`); 3-RED INFRA escalation (B1 Docker +9h; B2 disk RED 4.2 Gi below 5 Gi soft-floor; B3 .lake circular self-symlink RED); §3.5 refined S11b-α LOC budget +30-40 (was +25-40); §4 1-bearer spot-check `Finset.mem_sort` confirmed via codebase usage; §6 6-row picker decision matrix; §7 informational host recovery script.",
-      "S26 repair in BoundedPrimeGapsOQ03OQ02.lean: fixed engelsmaSearchPruned (disjoint candidates + degenerate guard), engelsmaSearchPrunedLegacy + legacy_bridge_refuted (machine-checked refutation), engelsmaSearch_1_2_eq_false (kernel decide), corrected engelsmaSearchPruned_11_5_eq_false, regressions (1,2)/(2,2), agreement grid engelsmaSearchPruned_agrees_small (78 pairs, native_decide)"
+      "S26 repair in BoundedPrimeGapsOQ03OQ02.lean: fixed engelsmaSearchPruned (disjoint candidates + degenerate guard), engelsmaSearchPrunedLegacy + legacy_bridge_refuted (machine-checked refutation), engelsmaSearch_1_2_eq_false (kernel decide), corrected engelsmaSearchPruned_11_5_eq_false, regressions (1,2)/(2,2), agreement grid engelsmaSearchPruned_agrees_small (78 pairs, native_decide)",
+      "card_image_mod_lt_of_avoids + exists_avoided_residue_of_card_image_mod_lt (S27): residue-avoidance <-> image-cardinality converters",
+      "searchAux_sound (S27, S11b-beta): soundness invariant for the pruned search",
+      "searchAux_complete (S27, S11b-gamma): completeness invariant for the pruned search",
+      "engelsmaSearchPruned_eq_true_iff + entry_pool_nodup + entry_pool_toFinset (S27, S11b-delta): entry-point assembly",
+      "engelsmaSearchPruned_eq_false_iff (S27): the bridge, sorry -> proved"
     ],
     "insights": [
       "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
@@ -117,7 +1096,11 @@
       "S26 CRITICAL: the sorried S11b-delta bridge engelsmaSearchPruned_eq_false_iff was FALSE as stated — legacy initial call passed List.range w as candidates while chosen=[0] committed 0; the leaf test candidates.length >= k - chosen.length double-counts 0. Machine-checked refutation legacy_bridge_refuted at (w,k)=(1,2); planned 190-300 LOC sound/complete development would have hit an unprovable goal.",
       "Second bug manifestation: the S11b sanity test asserted engelsmaSearchPruned 11 5 = true, but H(5)=12 forbids any admissible 5-tuple in {0..10} — the test certified a WRONG value (naive search disagrees). Corrected to = false.",
       "Repair recipe: candidates (List.range w).filter (. != 0) restores chosen-candidates disjointness; guard w=0 or k=0 -> false handles Nat-truncation acceptance. Drop-in agreement with naive engelsmaSearch machine-checked on all 78 pairs w<=12 k<=5.",
-      "For the future S11b author: state searchAux sound/complete invariants with chosen-candidates disjointness EXPLICIT; leaf soundness = {0} + any (k-1)-subset of residue-filtered candidates is admissible; completeness = admissible H containing 0 misses some r_p not congruent 0 mod p per prime p <= k."
+      "For the future S11b author: state searchAux sound/complete invariants with chosen-candidates disjointness EXPLICIT; leaf soundness = {0} + any (k-1)-subset of residue-filtered candidates is admissible; completeness = admissible H containing 0 misses some r_p not congruent 0 mod p per prime p <= k.",
+      "S27: The S11b sound/complete development needs NO well-founded-recursion machinery — searchAux only recurses on the tail of the primes list, so both invariants go through by plain structural induction on primes (generalizing candidates/chosen); simp only [searchAux] applies the equation lemmas cleanly and the termination_by clause never surfaces.",
+      "S27: tryBranch shrink-guard gives the prefix-avoidance fact for free in BOTH directions: surviving branch means chosen.filter has full length, and Sublist.eq_of_length upgrades length-equality to list-equality, then List.filter_eq_self.mp yields forall n in chosen, n % p != r.",
+      "S27: The S26 disjointness lesson is encoded as ONE hypothesis (chosen ++ candidates).Nodup — it carries chosen-candidates disjointness AND internal distinctness, exactly what makes the leaf count |chosen| + |take (k-|chosen|) candidates| = k correct (toFinset_card_of_nodup + length_take + omega, which handles the min).",
+      "S27 false-green gotcha recurrence: piping lake env lean through grep -v/head masks the exit code — the first S27 typecheck reported exit 0 with a REAL error at line 1225 hidden. Always capture to a log file and check $? of lean itself plus grep -c error on the FULL log."
     ],
     "mathlibGaps": [
       "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
@@ -125,16 +1108,9 @@
       "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
     ],
     "nextSteps": [
-      "[S23 drift note: S11a IS merged; file now 997 LOC and the bridge sorry is at line 969, not the pre-S11a estimates (953/925) quoted below. All sub-steps below are GATED on Docker recovery — see BLOCKED status.]",
-      "S22b ACT (post-Docker-recovery, LOW risk, +30-40 LOC, 1 Docker iter) — paste S20 PREP §6 S11b-α combiner skeleton with S22 PREP §3 paper-discharge replacements for S11b-α-1 + S11b-α-2 into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` after S11a paste (insertion point line 953). Combiner signature: `lemma IsAdmissible_iff_residue_disjoint_primesUpTo {H : Finset ℕ} {k : ℕ} (hcard : H.card ≤ k) : IsAdmissible H ↔ ∀ p ∈ primesUpTo k, (H.image (· % p)).card < p`. Run 1 Docker build via `./proofs/scripts/docker-build.sh Proofs.BoundedPrimeGapsOQ03OQ02` to verify (a) S22 §3.3 prime-extraction discharge typechecks at pin `2df2f0150c…`, (b) §3.4 membership-construction discharge typechecks, (c) `omega` finishes p > k case, (d) no regression on `engelsmaSearchPruned_7_3_eq_true` / `engelsmaSearchPruned_11_5_eq_true` native_decide tests. If §3 Mathlib lemma name fallback needed: pivot to `simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]` unfold form. Net post-S22b sorries: 1 (line-925 bridge persists until S11b-δ; combiner is sorry-free at landing). Net axiomCount unchanged at 1.",
-      "S11b-α ACT (post-S11a-VERIFY, LOW risk) — paste S20 PREP §6 combiner skeleton `IsAdmissible_iff_residue_disjoint_primesUpTo` (+25-40 LOC, 1 Docker iter) into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`. Discharges S11b-α-1 / S11b-α-2 sorries via `Nat.primesBelow` membership + `Finset.mem_sort` (paper-derived in S20 PREP §6, ~3 LOC each). Net sorries 1 → 1 (S11b-α-1/-α-2 close locally but the line-925 main bridge sorry persists until S11b-δ).",
-      "S11b-β ACT (post-S11b-α merge, MEDIUM risk) — `searchAux_sound` (+70-120 LOC, 1-2 Docker iters). Inductive case absorbs S20 PREP §3.1 DELTA-1 case-split + §3.2 DELTA-2 leaf-appeal. May need auxiliary residue-counting lemma if discharge ≥ 30 LOC (R6).",
-      "S11b-γ ACT (post-S11b-β merge, HIGH risk) — `searchAux_complete` (+110-170 LOC, 2-3 Docker iters). Dominant cost via residue-witness construction; **MUST use S20 PREP §3.1-corrected `(List.range p).filter (· ∉ H.image (· % p)) |>.head!`** (NOT S18 PREP §2.2's `(H \\ chosen.toFinset).min' _ % p` — that picks an EXISTING residue but admissibility needs a MISSING residue; the S18 sketch is WRONG).",
-      "S11b-δ ACT (post-S11b-γ merge, LOW risk) — forward + reverse bridge assembly (+20-30 LOC, 1 Docker iter). Composes α/β/γ into the discharge of `engelsmaSearchPruned_eq_false_iff` line-925 sorry. Net sorries 1 → 0; axiomCount stays 1.",
-      "S12 ACT (post-S11b-δ merge) — `engelsmaSearchPruned 246 50 = false := by native_decide`. Consumes S11b chain and produces the engelsma_lower_bound axiom replacement through engelsma_lower_bound_of_engelsmaSearchPruned_false (S11a). Net axiomCount: 1 → 0 per S10b PREP gallery convention (Lean.ofReduceBool not counted).",
-      "Path C cancellation (post-12h Docker hang — currently 9h since 2026-05-16T06:01Z, triggers at ~18:01Z) — ship doc-only S22 PREP refreshing bearer drift + extending S11b-α skeleton w/ paper discharge of S11b-α-1/-α-2 sorries.",
-      "Alternative deferred S7 — native_decide Engelsma analogue at (k,w)=(10,30). Lower priority than S11–S12; useful only as empirical scaling datapoint.",
-      "Fallback if S11b pruning chain is too slow: land S2 + S3 + S4 + S5 + S6 + S8 + S9 + S10 + S11a ACT as standalone gallery improvements. The bridge + Bool API + primesUpTo bearer + pruner skeleton already narrow the axiom statement to a single Bool equation; only S11b discharge + S12 native_decide remain structural."
+      "S12: engelsmaSearchPruned 246 50 = false := by native_decide, consuming the S27 bridge through engelsma_lower_bound_of_engelsmaSearchPruned_false; eliminates the engelsma_lower_bound axiom. Probe native_decide scaling at (30,10) first — (246,50) wall-clock/memory untested.",
+      "If (246,50) is infeasible: profile intermediate (w,k) points and document the compute frontier; the bridge itself is now permanent verified infrastructure.",
+      "Optional cleanup: kernel decide for small sanity tests where feasible (naive search reduces; searchAux needs native_decide)."
     ]
   },
   "tags": [

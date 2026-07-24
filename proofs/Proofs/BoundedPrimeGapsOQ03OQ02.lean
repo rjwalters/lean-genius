@@ -848,8 +848,8 @@ theorem primesUpTo_50_eq :
     `Finset.mem_sort` + `Nat.mem_primesBelow`; reverse constructs membership
     symmetrically. This is the S11b-α deliverable of the S11b decomposition
     (S20 PREP §6 + S22 PREP §3.3 + §3.4 paper discharge). It is consumed by
-    the bridge proof `engelsmaSearchPruned_eq_false_iff` below at line 922
-    (S11b-δ ACT, currently sorry-stub). -/
+    the bridge proof `engelsmaSearchPruned_eq_true_iff` below
+    (S11b-δ, discharged in S27). -/
 lemma IsAdmissible_iff_residue_disjoint_primesUpTo
     {H : Finset ℕ} {k : ℕ} (hcard : H.card ≤ k) :
     IsAdmissible H ↔ ∀ p ∈ primesUpTo k, (H.image (· % p)).card < p := by
@@ -957,6 +957,271 @@ def engelsmaSearchPruned (w k : ℕ) : Bool :=
   if w = 0 ∨ k = 0 then false
   else searchAux w k (primesUpTo k) ((List.range w).filter (· ≠ 0)) [0]
 
+/-! ## S27 — S11b sound/complete decomposition: bridge discharge
+
+The two residue-avoidance ↔ image-cardinality converters, the
+`searchAux` soundness/completeness invariants (S11b-β / S11b-γ), and
+the entry-point assembly (S11b-δ) that together discharge the
+`engelsmaSearchPruned_eq_false_iff` sorry below.
+
+Invariant design (per the S26 post-mortem): both invariants carry the
+pool-distinctness hypothesis `(chosen ++ candidates).Nodup` — which
+encodes `chosen ∩ candidates = ∅` *and* the internal distinctness of
+each list — exactly the property whose violation made the legacy
+bridge false. The witness sandwich is `chosen ⊆ H ⊆ chosen ∪
+candidates` with `H.card = k`, plus one avoided residue class per
+prime still on the work list. -/
+
+/-- If every element of `H` avoids the residue `r < p`, the mod-`p`
+image of `H` misses `r`, so it has at most `p - 1 < p` elements. -/
+lemma card_image_mod_lt_of_avoids {H : Finset ℕ} {p r : ℕ}
+    (hr : r < p) (h : ∀ n ∈ H, n % p ≠ r) :
+    (H.image (· % p)).card < p := by
+  have hp : 0 < p := lt_of_le_of_lt (Nat.zero_le r) hr
+  have hsub : H.image (· % p) ⊆ (Finset.range p).erase r := by
+    intro x hx
+    obtain ⟨n, hn, rfl⟩ := Finset.mem_image.mp hx
+    exact Finset.mem_erase.mpr
+      ⟨h n hn, Finset.mem_range.mpr (Nat.mod_lt n hp)⟩
+  calc (H.image (· % p)).card
+      ≤ ((Finset.range p).erase r).card := Finset.card_le_card hsub
+    _ = p - 1 := by
+        rw [Finset.card_erase_of_mem (Finset.mem_range.mpr hr),
+          Finset.card_range]
+    _ < p := by omega
+
+/-- Conversely, if the mod-`p` image of `H` has fewer than `p`
+elements, some residue `r < p` is avoided by every element of `H`. -/
+lemma exists_avoided_residue_of_card_image_mod_lt {H : Finset ℕ} {p : ℕ}
+    (h : (H.image (· % p)).card < p) :
+    ∃ r < p, ∀ n ∈ H, n % p ≠ r := by
+  have hlt : (H.image (· % p)).card < (Finset.range p).card := by
+    rwa [Finset.card_range]
+  obtain ⟨r, hrmem, hrnot⟩ := Finset.exists_mem_notMem_of_card_lt_card hlt
+  exact ⟨r, Finset.mem_range.mp hrmem, fun n hn heq =>
+    hrnot (Finset.mem_image.mpr ⟨n, hn, heq⟩)⟩
+
+/-- **S11b-β soundness invariant.** If the pruned search succeeds from
+state `(primes, candidates, chosen)`, then some `k`-element set `H`
+sandwiched between the committed prefix and the pool
+(`chosen ⊆ H ⊆ chosen ∪ candidates`) avoids one full residue class
+for every prime still on the work list.
+
+State invariants: pool distinctness `(chosen ++ candidates).Nodup`
+(this is the S26 `chosen ∩ candidates = ∅` requirement, plus internal
+distinctness) and prefix feasibility `chosen.length ≤ k`. Both hold at
+the `engelsmaSearchPruned` entry point and are preserved by every
+recursive call (`tryBranch` either leaves `chosen` unchanged or
+returns `false`). -/
+lemma searchAux_sound {w k : ℕ} (primes : List ℕ) :
+    ∀ (candidates chosen : List ℕ),
+      (chosen ++ candidates).Nodup → chosen.length ≤ k →
+      searchAux w k primes candidates chosen = true →
+      ∃ H : Finset ℕ, chosen.toFinset ⊆ H ∧
+        H ⊆ (chosen ++ candidates).toFinset ∧ H.card = k ∧
+        ∀ p ∈ primes, ∃ r < p, ∀ n ∈ H, n % p ≠ r := by
+  induction primes with
+  | nil =>
+    intro candidates chosen hnd hlen h
+    simp only [searchAux, decide_eq_true_eq, ge_iff_le] at h
+    -- take the prefix plus enough fresh candidates to reach k elements
+    refine ⟨(chosen ++ candidates.take (k - chosen.length)).toFinset,
+      ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      rw [List.mem_toFinset] at hx ⊢
+      exact List.mem_append.mpr (Or.inl hx)
+    · intro x hx
+      rw [List.mem_toFinset] at hx ⊢
+      rcases List.mem_append.mp hx with h1 | h1
+      · exact List.mem_append.mpr (Or.inl h1)
+      · exact List.mem_append.mpr (Or.inr (List.mem_of_mem_take h1))
+    · have hnd' : (chosen ++ candidates.take (k - chosen.length)).Nodup :=
+        hnd.sublist
+          ((List.take_sublist (k - chosen.length) candidates).append_left
+            chosen)
+      rw [List.toFinset_card_of_nodup hnd', List.length_append,
+        List.length_take]
+      omega
+    · intro p hp
+      simp at hp
+  | cons p primes' ih =>
+    intro candidates chosen hnd hlen h
+    simp only [searchAux] at h
+    split at h
+    · exact Bool.noConfusion h
+    · rw [List.any_eq_true] at h
+      obtain ⟨r, hrmem, htb⟩ := h
+      rw [List.mem_range] at hrmem
+      simp only [tryBranch] at htb
+      split at htb
+      · exact Bool.noConfusion htb
+      · rename_i hns
+        -- the prefix survived the filter unshrunk, hence unchanged
+        have hchosen_eq : chosen.filter (fun n => n % p ≠ r) = chosen :=
+          List.filter_sublist.eq_of_length
+            (le_antisymm List.filter_sublist.length_le (not_lt.mp hns))
+        rw [hchosen_eq] at htb
+        have hcavoid : ∀ n ∈ chosen, n % p ≠ r := by
+          intro n hn
+          have := List.filter_eq_self.mp hchosen_eq n hn
+          simpa using this
+        have hnd' :
+            (chosen ++ candidates.filter (fun n => n % p ≠ r)).Nodup :=
+          hnd.sublist (List.filter_sublist.append_left chosen)
+        obtain ⟨H, hHsub1, hHsub2, hHcard, hHavoid⟩ :=
+          ih _ _ hnd' hlen htb
+        refine ⟨H, hHsub1, ?_, hHcard, ?_⟩
+        · intro x hx
+          have hmem := hHsub2 hx
+          rw [List.mem_toFinset, List.mem_append] at hmem
+          rw [List.mem_toFinset, List.mem_append]
+          rcases hmem with h1 | h1
+          · exact Or.inl h1
+          · exact Or.inr (List.mem_of_mem_filter h1)
+        · intro q hq
+          rcases List.mem_cons.mp hq with rfl | hq'
+          · refine ⟨r, hrmem, ?_⟩
+            intro n hn
+            have hmem := hHsub2 hn
+            rw [List.mem_toFinset, List.mem_append] at hmem
+            rcases hmem with h1 | h1
+            · exact hcavoid n h1
+            · have := (List.mem_filter.mp h1).2
+              simpa using this
+          · exact hHavoid q hq'
+
+/-- **S11b-γ completeness invariant.** Every `k`-element witness `H`
+sandwiched between the committed prefix and the pool that avoids one
+residue class per remaining prime is found by the pruned search: at
+each prime the search tries (among others) exactly the residue `H`
+avoids, and `H` survives that branch's filter intact. -/
+lemma searchAux_complete {w k : ℕ} (primes : List ℕ) :
+    ∀ (candidates chosen : List ℕ) (H : Finset ℕ),
+      (chosen ++ candidates).Nodup →
+      chosen.toFinset ⊆ H → H ⊆ (chosen ++ candidates).toFinset →
+      H.card = k →
+      (∀ p ∈ primes, ∃ r < p, ∀ n ∈ H, n % p ≠ r) →
+      searchAux w k primes candidates chosen = true := by
+  induction primes with
+  | nil =>
+    intro candidates chosen H hnd _ hsub2 hcard _
+    simp only [searchAux, decide_eq_true_eq, ge_iff_le]
+    have hk : k ≤ chosen.length + candidates.length := by
+      calc k = H.card := hcard.symm
+        _ ≤ (chosen ++ candidates).toFinset.card :=
+            Finset.card_le_card hsub2
+        _ ≤ (chosen ++ candidates).length := List.toFinset_card_le _
+        _ = chosen.length + candidates.length := List.length_append
+    omega
+  | cons p primes' ih =>
+    intro candidates chosen H hnd hsub1 hsub2 hcard havoid
+    obtain ⟨r, hr, hravoid⟩ := havoid p List.mem_cons_self
+    have hk : k ≤ chosen.length + candidates.length := by
+      calc k = H.card := hcard.symm
+        _ ≤ (chosen ++ candidates).toFinset.card :=
+            Finset.card_le_card hsub2
+        _ ≤ (chosen ++ candidates).length := List.toFinset_card_le _
+        _ = chosen.length + candidates.length := List.length_append
+    simp only [searchAux]
+    rw [if_neg (by omega : ¬candidates.length < k - chosen.length),
+      List.any_eq_true]
+    refine ⟨r, List.mem_range.mpr hr, ?_⟩
+    -- the committed prefix avoids r, so the filter keeps it intact
+    have hchosen_eq : chosen.filter (fun n => n % p ≠ r) = chosen :=
+      List.filter_eq_self.mpr fun a ha => by
+        simpa using hravoid a (hsub1 (List.mem_toFinset.mpr ha))
+    simp only [tryBranch]
+    rw [hchosen_eq, if_neg (lt_irrefl chosen.length)]
+    refine ih _ _ H
+      (hnd.sublist (List.filter_sublist.append_left chosen))
+      hsub1 ?_ hcard
+      (fun q hq => havoid q (List.mem_cons_of_mem p hq))
+    -- H survives the r-branch filter
+    intro x hx
+    have hmem := hsub2 hx
+    rw [List.mem_toFinset, List.mem_append] at hmem
+    rw [List.mem_toFinset, List.mem_append]
+    rcases hmem with h1 | h1
+    · exact Or.inl h1
+    · exact Or.inr (List.mem_filter.mpr ⟨h1, by simpa using hravoid x hx⟩)
+
+/-- The `engelsmaSearchPruned` entry pool `[0] ++ (range w).filter (≠ 0)`
+is duplicate-free — the S26 disjointness invariant at the entry point. -/
+private lemma entry_pool_nodup (w : ℕ) :
+    (([0] : List ℕ) ++ (List.range w).filter (· ≠ 0)).Nodup := by
+  rw [List.singleton_append, List.nodup_cons]
+  refine ⟨fun hmem => ?_, List.Nodup.filter _ List.nodup_range⟩
+  simpa using (List.mem_filter.mp hmem).2
+
+/-- For `w ≠ 0` the entry pool materializes exactly `Finset.range w`. -/
+private lemma entry_pool_toFinset {w : ℕ} (hw : w ≠ 0) :
+    (([0] : List ℕ) ++ (List.range w).filter (· ≠ 0)).toFinset
+      = Finset.range w := by
+  ext x
+  rw [List.mem_toFinset, Finset.mem_range]
+  simp only [List.singleton_append, List.mem_cons, List.mem_filter,
+    List.mem_range, decide_eq_true_eq]
+  constructor
+  · rintro (rfl | ⟨h1, _⟩)
+    · omega
+    · exact h1
+  · intro hx
+    by_cases hx0 : x = 0
+    · exact Or.inl hx0
+    · exact Or.inr ⟨hx, hx0⟩
+
+/-- **S11b-δ (positive form)**: the repaired pruned search returns
+`true` exactly when an admissible `k`-element witness containing `0`
+exists inside `{0, …, w-1}`. Soundness instantiates `searchAux_sound`
+at the entry state and converts residue avoidance to admissibility via
+the S11b-α combiner; completeness runs the converse conversion through
+`exists_avoided_residue_of_card_image_mod_lt`. -/
+theorem engelsmaSearchPruned_eq_true_iff (w k : ℕ) :
+    engelsmaSearchPruned w k = true ↔
+      ∃ H ∈ (Finset.range w).powersetCard k, 0 ∈ H ∧ IsAdmissible H := by
+  constructor
+  · intro h
+    rw [engelsmaSearchPruned] at h
+    split at h
+    · exact Bool.noConfusion h
+    · rename_i hguard
+      push_neg at hguard
+      obtain ⟨hw, hk⟩ := hguard
+      obtain ⟨H, hsub1, hsub2, hcard, havoid⟩ :=
+        searchAux_sound (primesUpTo k) _ _ (entry_pool_nodup w)
+          (by simp; omega) h
+      rw [entry_pool_toFinset hw] at hsub2
+      refine ⟨H, Finset.mem_powersetCard.mpr ⟨hsub2, hcard⟩,
+        hsub1 (by simp), ?_⟩
+      rw [IsAdmissible_iff_residue_disjoint_primesUpTo hcard.le]
+      intro p hp
+      obtain ⟨r, hr, hravoid⟩ := havoid p hp
+      exact card_image_mod_lt_of_avoids hr hravoid
+  · rintro ⟨H, hHmem, hH0, hHadm⟩
+    obtain ⟨hHsub, hHcard⟩ := Finset.mem_powersetCard.mp hHmem
+    have hw : w ≠ 0 := by
+      rintro rfl
+      simpa using hHsub hH0
+    have hk : k ≠ 0 := by
+      rintro rfl
+      rw [Finset.card_eq_zero] at hHcard
+      rw [hHcard] at hH0
+      simpa using hH0
+    rw [engelsmaSearchPruned, if_neg (by push_neg; exact ⟨hw, hk⟩)]
+    refine searchAux_complete (primesUpTo k) _ _ H (entry_pool_nodup w)
+      ?_ ?_ hHcard ?_
+    · intro x hx
+      have hx0 : x = 0 := by simpa using hx
+      subst hx0
+      exact hH0
+    · rw [entry_pool_toFinset hw]
+      exact hHsub
+    · intro p hp
+      have hp' : p ∈ Nat.primesBelow (k + 1) :=
+        ((Nat.primesBelow (k + 1)).mem_sort (· ≤ ·)).mp hp
+      have hp_prime : p.Prime := (Nat.mem_primesBelow.mp hp').2
+      exact exists_avoided_residue_of_card_image_mod_lt (hHadm p hp_prime)
+
 /-- **Bool/Prop bridge** for `engelsmaSearchPruned`. Mirror of
 `engelsmaSearch_eq_false_iff` (S9 ACT) for the pruned variant.
 
@@ -984,12 +1249,18 @@ statement agree with the naive `engelsmaSearch` on the whole grid
 plausibly true.  Sound/complete invariants for the decomposition must be
 stated with `chosen ∩ candidates = ∅` as an explicit hypothesis.
 
-S11b ACT author: discharge the `sorry` below via the three sub-lemmas
-above; estimate +~190-300 LOC for the full decomposition (S18 PREP §2). -/
+**S27 status**: DISCHARGED — negation of `engelsmaSearchPruned_eq_true_iff`
+(S11b-δ above), which composes `searchAux_sound` (S11b-β),
+`searchAux_complete` (S11b-γ), and the S11b-α combiner. 0 sorries. -/
 theorem engelsmaSearchPruned_eq_false_iff (w k : ℕ) :
     engelsmaSearchPruned w k = false ↔
       ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H := by
-  sorry
+  rw [← Bool.not_eq_true, engelsmaSearchPruned_eq_true_iff]
+  constructor
+  · intro h H hH h0 hadm
+    exact h ⟨H, hH, h0, hadm⟩
+  · rintro h ⟨H, hH, h0, hadm⟩
+    exact h H hH h0 hadm
 
 /-- **Pruned-form S9 deliverable**: a `Bool`-equation reduction of
 `engelsma_lower_bound` via the pruned search. Mirrors
