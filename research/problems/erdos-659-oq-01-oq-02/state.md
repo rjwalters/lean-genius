@@ -1,6 +1,51 @@
 # Current State
 
-**Status**: ACTIVE — S10 ACT LANDED (2026-07-24, researcher-1). The 2026-06-13 BLOCKED flag is cleared: Docker is no longer required (host `lake env lean` verification works), and the S9 PREP `(5, 7)` mixed-modulus recipe has been pasted and verified GREEN on the first try. 4 of 7 safe pairs discharged.
+**Status**: ACTIVE — S11 ACT LANDED (2026-07-24, researcher-2). 5 of 7 safe pairs discharged; `(5, 13)` done via the S10 pre-audit (one new helper, first-try GREEN on host `lake env lean`).
+
+**Phase**: ACT (S11 ACT — `(5, 13)` axis-vs-plane safety DISCHARGED)
+**Since**: 2026-07-24 (S11 ACT)
+**Iteration**: 18
+**Last Update**: 2026-07-24 (researcher-2) — S11 ACT: executed the S10 `(5, 13)` pre-audit in `proofs/Proofs/Erdos659OQ01OQ02.lean` (877 → 1069 LOC). +1 helper (`zmod_13_a_sq_eq_five_b_sq_iff`, 169-case decide), +3 descent theorems (`safe_{A,B,C}_5_13_holds`), +1 composite (`safe_5_13_axis_vs_plane`). 0 sorries / 0 axioms delta; host-verified v4.31 (`lake env lean` exit 0, first try; `#print axioms` = propext/Classical.choice/Quot.sound on all 4 new named declarations). The pre-audit held exactly: eqs A/C reduce mod 5 reusing `zmod_5_a_sq_eq_three_b_sq_iff` (13 ≡ 3 mod 5, 3 a non-residue), only eq B needed the new mod-13 helper (5 ∉ squares mod 13 = {0,1,3,4,9,10,12}). All `linear_combination` orientations mirror the `(5, 7)` template (`-heq` / `-hb2` / `-hc2`).
+
+## S11 ACT (researcher-2, 2026-07-24, host-verified GREEN)
+
+Pasted the `(5, 13)` mixed-modulus discharge, mirroring the S10 `(5, 7)` section
+1:1 with `7 → 13` and the mod-5 helper swapped from the "two" form to the
+"three" form:
+
+| Eq | mod | relation | helper | new? |
+|----|-----|----------|--------|------|
+| A `13c²=a²+5b²` | 5 | `a²≡3c²` | `zmod_5_a_sq_eq_three_b_sq_iff` | reuse |
+| B `5b²=a²+13c²` | 13 | `a²≡5b²` | `zmod_13_a_sq_eq_five_b_sq_iff` | **NEW** |
+| C `a²=5b²+13c²` | 5 | `a²≡3c²` | `zmod_5_a_sq_eq_three_b_sq_iff` | reuse |
+
+**Safe-pair scoreboard**: (2,5) ✓, (3,5) ✓, (2,13) ✓, (5,7) ✓, **(5,13) ✓ (this
+session)**; remaining: (7,13), (11,13).
+
+**Pre-audit for the remaining two pairs (QR tables hand-computed — squares
+mod 11 = {0,1,3,4,5,9}, mod 13 = {0,1,3,4,9,10,12} — verify via `decide` at
+paste time):**
+- **(7,13)**: mod-7 reduction fails for A (`−13 ≡ 1 (mod 7)` is a QR), so go
+  uniform **mod 13**: A `13c²=a²+7b²` gives `a² + 7b² ≡ 0` and `−7 ≡ 6 ∉`
+  squares ✓; B `7b²=a²+13c²` and C `a²=7b²+13c²` give `a² ≡ 7b²` with `7 ∉`
+  squares ✓. TWO new 169-case helpers: `zmod_13_a_sq_plus_7_b_sq_eq_zero_iff`
+  (A) and `zmod_13_a_sq_eq_seven_b_sq_iff` (B/C) — shape of the (2,13) session.
+- **(11,13)**: **mixed-modulus**, TWO new helpers. A `13c²=a²+11b²` mod 11:
+  `13 ≡ 2` and `2 ∉` squares mod 11 ✓ → NEW `zmod_11_a_sq_eq_two_b_sq_iff`;
+  B `11b²=a²+13c²` mod 11 fails (`−11·c²` form: `−2 ≡ 9 = 3²` is a QR), so
+  mod 13: `a² ≡ 11b²`, `11 ∉` squares ✓ → NEW
+  `zmod_13_a_sq_eq_eleven_b_sq_iff`; C `a²=11b²+13c²` mod 11: `a² ≡ 2c²` ✓
+  (reuses the new mod-11 helper).
+
+**Next actions**:
+1. **(7,13) ACT**: uniform mod-13 discharge, two new helpers (pre-audit above).
+2. **(11,13) ACT**: mixed-modulus discharge, two new helpers (mod 11 + mod 13).
+3. Blocked (unchanged): full-rank ternary Hasse–Minkowski safety; Θ(n^{2/3})
+   assembly.
+
+---
+
+**Status (S10, superseded)**: ACTIVE — S10 ACT LANDED (2026-07-24, researcher-1). The 2026-06-13 BLOCKED flag is cleared: Docker is no longer required (host `lake env lean` verification works), and the S9 PREP `(5, 7)` mixed-modulus recipe has been pasted and verified GREEN on the first try. 4 of 7 safe pairs discharged.
 
 **Phase**: ACT (S10 ACT — `(5, 7)` axis-vs-plane safety DISCHARGED)
 **Since**: 2026-07-24 (S10 ACT)
