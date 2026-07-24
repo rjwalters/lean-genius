@@ -3,26 +3,30 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-23T10:45:00-07:00
-**Iteration**: 7
+**Since**: 2026-07-24T00:00:00-07:00
+**Iteration**: 8
 
 ## Current Focus
-Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..28) as of the
-2026-07-23b session (h(28)=7 via a mod-4 class double count — the perfect
-8-mark ruler is forced at N=28 and the residue-class counts
-Σcᵣ(cᵣ−1)=14, Σcᵣ·c_{r+2}=14, Σcᵣ=8 are jointly unsatisfiable; no kernel
-search needed).
+Two-sided √N-order bracket LANDED (session 2026-07-24): the Erdős–Turán
+(1941) modular construction — for odd prime p the set
+{2p·i + (i² mod p) : i < p} is Sidon in {0,…,2p²−1} — plus Bertrand
+(`Nat.bertrand`) gives `sidonNumber_gt_sqrt : h(N) > ⌊√(N/8)⌋` (N ≥ 32),
+real form `√N/4 ≤ h(N)`, and the bracket
+`sidonNumber_sqrt_bracket : √N/4 ≤ h(N) ≤ √(2N)+1`. The polynomial gap
+(previous lower bound was logarithmic, powers of two) is CLOSED.
 
 ## Active Approach
-Residue-class double counting against forced perfect rulers at the wall
-values N = k(k−1)/2 (h(10) parity, h(15) mod-3, h(21) parity, h(28) mod-4);
-chained span dichotomy + pinned-endpoint kernel search for the in-between
-values. `SidonCheck` converse bridge certifies witnesses with one `decide`.
+Erdős–Turán construction proof = base-2p digit separation (`etMap_add_eq`,
+residues < p never carry) + quadratic uniqueness over 𝔽_p
+(`pair_eq_of_sum_sq`, `linear_combination` workhorse; 2 invertible for
+p > 2). Exact table h(0..28) stands via the residue-class ladder
+(h(10)/h(21) parity, h(15) mod-3, h(28) mod-4) + span dichotomy searches.
 
 ## Attempt Count
-- Total attempts: 7 sessions
-- Current approach attempts: 4 (h(16), h(17..21), h(22..27), h(28) — all landed)
-- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count
+- Total attempts: 8 sessions
+- Current approach attempts: 1 (Erdős–Turán √N lower — landed)
+- Approaches tried: parity wall, mod-3 class count, span dichotomy,
+  mod-4 double count, Erdős–Turán modular construction
 
 ## Blockers
 h(29..33) wall: perfect ruler no longer forced (28 diffs in {1,…,N} miss
@@ -32,6 +36,8 @@ alone checked INSUFFICIENT at N=29 (a {4,2,1,1} arrangement with the missing
 value ≡ 2 mod 4 survives). Elementary layer near-saturated.
 
 ## Next Action
-Either combine mod-3 × mod-4 (or endpoint sum-collision pruning: pairs
-summing to N are forbidden when {0,N} ⊆ A) to fell h(29), or switch to DEEP
-targets: Singer √N lower bound, N^{1/4} refinement, $1000 N^ε conjecture.
+Remaining targets are all DEEP: sharp constants (Singer projective-plane
+lower `(1−o(1))√N`; Lindström/BFR upper `√N + N^{1/4} + 1`), the $1000
+`N^ε`-error conjecture (open Prop), or the h(29..33) table wall (new
+invariant — mod-3×mod-4 combination / endpoint sum-collision pruning — or
+a ~376k kernel search). Treat elementary vein as SATURATED.
