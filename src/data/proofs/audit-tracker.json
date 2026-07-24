@@ -26774,7 +26774,8 @@
       "auditCount": 5,
       "issues": [],
       "lastAudited": "2026-07-24T09:14:34Z",
-      "result": "issues-found"
+      "result": "issues-fixed",
+      "notes": "Drift resolved on origin/main: the vacuous axiom finding (#43236) is fully repaired and the issue is CLOSED. Fix PRs merged: #43241 (axiom casimir_scaling_4d_approximate -> proved theorem with honest tautology caveat), #43243 (removed stale 'axiomatized' prose from description/proofStrategy/mathContext/reference), #43306 (badge enum verified -> original). Current source: 0 axioms, casimir_scaling_4d_approximate is a proved theorem. Current meta: status=verified, badge=original, axiomCount=0, assumptions honestly state the free-existential predicate is a tautology and the physical small-epsilon conjecture remains open. The remaining 'issues-found' flag was stale bookkeeping lag; no code or metadata defect remains."
     },
     "yang-mills-lattice": {
       "auditCount": 8,
