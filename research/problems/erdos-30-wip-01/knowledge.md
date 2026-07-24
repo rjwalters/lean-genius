@@ -196,3 +196,53 @@ value ≡ 2 (mod 4) with class multiset {4,2,1,1} arranged c₀c₂+c₁c₃ = 6
 the double count) — needs either a mod-4+mod-3 combination, endpoint-pinned
 sum-collision pruning (a+b = 29 forbidden pairs), or the C(28,6) ≈ 376k kernel
 search. DEEP targets unchanged.
+
+## Session 2026-07-24 (researcher-1) — Erdős–Turán construction: polynomial lower bound h(N) ≥ √N/4
+
+Added ~215 lines to `Erdos30WIP01.lean` (0 sorries, 0 axioms; `#print axioms` =
+propext/Classical.choice/Quot.sound on all three headline theorems):
+- `etMap`/`etSet` (private): the Erdős–Turán (1941) construction — for odd prime p,
+  the p numbers `2pi + (i² mod p)` (i < p) form a Sidon set in {0,…,2p²−1}.
+- `base_two_p_eq` (private): base-2p digit extraction (quotient/remainder both match).
+- `et_quadratic` (private): the crux — i+j = k+l and i²+j² ≡ k²+l² (mod p) with all
+  < p forces {i,j} = {k,l}. Over ZMod p: equal power sums + equal e₁ ⟹ equal e₂
+  (2 invertible, p odd), so both pairs are root multisets of one monic quadratic;
+  (x−k)(x−l) = 0 at x = i via `linear_combination`, split by `mul_eq_zero`.
+- `sidonNumber_ge_of_odd_prime`: p ≤ h(2p²−1).
+- `sidonNumber_sqrt_lower`: h(N) > ⌊√((N+1)/2)⌋/2 for N ≥ 49 (Bertrand:
+  `Nat.exists_prime_lt_and_le_two_mul` on m/2 with m = ⌊√((N+1)/2)⌋; m ≥ 5 makes
+  the prime ≥ 3, hence odd).
+- `sidonNumber_ge_real_sqrt`: √N/4 ≤ h(N) for N ≥ 49. **With `sidonNumber_le_real`
+  (h(N) ≤ √(2N)+1) the file now settles h(N) ≍ √N elementarily** — the former
+  DEEP target "Singer √N lower bound" is achieved via Erdős–Turán instead of
+  Singer difference sets (no projective planes needed).
+
+**Lean recipe notes:**
+- `omega` atomizes `2*p*a` and `2*p*b` as DISTINCT atoms — after extracting a = b
+  from the base-2p division, `subst` first so both sides share one atom, then omega.
+- Cast to ZMod p via `congrArg (Nat.cast : ℕ → ZMod p)` + `push_cast [ZMod.natCast_mod]`
+  (folds `(i² % p : ℕ)` cast to `(i : ZMod p)²` in one pass).
+- `(2 : ZMod p) ≠ 0` for odd prime p: via `ZMod.val_cast_of_lt (2 < p)`; needs
+  `haveI : NeZero p := ⟨hp.pos.ne'⟩` alongside `Fact p.Prime`.
+- Both symmetric-function identities are one-shot `linear_combination`:
+  `(x+y+z+w) * h1 - h2` gives 2xy = 2zw; `x * h1 - hq'` gives (x−z)(x−w) = 0.
+- `Nat.sub_le_iff_le_add` avoids omega-on-pow when feeding `2*p^2 − 1 ≤ N` to
+  `sidonNumber_mono` (omega rejects `^`; linarith with atoms p², (N+1)/2 works).
+
+**h(29) wall CORRECTION (prior note wrong):** the earlier claim "parity ⟹ missing
+diff d odd" is FALSE. Mod-2 class count: signed even diffs = 28 − 2[d even] =
+o(o−1)+e(e−1) = o²+e²−8 with o+e = 8; d odd needs o²+e² = 36 — impossible
+({32,34,40,50,64}) — so **d is EVEN**. Then mod-4: d ≡ 0 (mod 4) gives same-class
+12 ⟹ profile {3,3,1,1} but cross-class stays 14 ⟹ c₀c₂+c₁c₃ = 7 ∉ {10,6} —
+contradiction. So **d ≡ 2 (mod 4)**, d ∈ {2,6,10,14,18,22,26}. Mod-3: 3∤d ⟹
+profile (4,3,1); 3∣d (d ∈ {6,18}) ⟹ profile (4,2,2) — NOT excluded (prior note
+also overclaimed "mod-3 forces 3∤d"). Residue invariants alone still don't close
+h(29); remaining routes: mod-6/mod-8 cross counts against the narrowed d-list, or
+span dichotomy (span 28 dies on the h(28) theorem by translation; span 29 pins
+{0,29}, sum-collision kills complementary pairs a+(29−a), C(14,6)·2⁶ ≈ 192k
+candidates — still beyond decide+kernel comfort).
+
+**Remaining targets:** h(29..33) per-N nonexistence (above), N^{1/4} refinement
+(Erdős–Turán exact form √N + N^{1/4} + 1), $1000 N^ε conjecture (stays a Prop).
+The construction side is now DONE at order √N; constant-sharpening (h ≥ (1−o(1))√N
+via Singer) would need genuine finite-geometry infra.

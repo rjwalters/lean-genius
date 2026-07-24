@@ -26,6 +26,17 @@
                               `1 ≤ h(N) ≤ √(2N) + 1` with the bound above.
   * `sidonNumber_mono`      : `N ≤ M ⟹ h(N) ≤ h(M)` — `h` is monotone in the range.
 
+  Polynomial lower bound — the Erdős–Turán construction (all axiom-free):
+
+  * `sidonNumber_ge_of_odd_prime` : for every odd prime `p`, the set
+                              `{2pi + (i² mod p) : i < p}` is a Sidon set in
+                              `{0,…,2p²−1}`, so `h(2p²−1) ≥ p`.
+  * `sidonNumber_sqrt_lower`  : `h(N) > ⌊√((N+1)/2)⌋/2` for `N ≥ 49`, via
+                              Bertrand's postulate.
+  * `sidonNumber_ge_real_sqrt` : `√N/4 ≤ h(N)` for `N ≥ 49` — together with
+                              `sidonNumber_le_real` this settles the order of
+                              magnitude `h(N) ≍ √N` elementarily.
+
   The mechanism: for a Sidon set the differences a − b (a ≠ b) are all distinct
   (a − b = c − d rewrites to a + d = c + b, and the Sidon property forces the
   pair to match), and they are nonzero integers in [−N, N], of which there are
@@ -1665,5 +1676,208 @@ theorem sidonNumber_twentyeight : sidonNumber 28 = 7 := by
       (fun A hsub hA => no_sidon_card_eight_range_twentynine A hsub hA)
   · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 28 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/- ## The Erdős–Turán construction: a polynomial lower bound `h(N) ≳ √N/4`
+
+The powers-of-two family above shows `h(N)` is unbounded, but only
+logarithmically.  Here we formalize the classical Erdős–Turán (1941)
+*construction*: for an odd prime `p`, the `p` numbers
+
+  `2·p·i + (i² mod p)`,  `0 ≤ i < p`
+
+form a Sidon set inside `{0, …, 2p² − 1}`.  Writing each element in "base
+`2p`" as `(quotient, remainder) = (i, i² mod p)`, a coincidence of pairwise
+sums forces `i + j = k + l` (quotients) and `i² + j² ≡ k² + l² (mod p)`
+(remainders); over the field `ZMod p` this pins down the elementary symmetric
+functions `i + j` and `i·j` of the pair, so `{i, j} = {k, l}` as roots of the
+same monic quadratic.  Hence `h(2p² − 1) ≥ p`, and Bertrand's postulate turns
+this single-prime bound into the uniform polynomial bound `h(N) > ⌊√((N+1)/2)⌋/2`
+for all `N ≥ 49` — order `√N`, matching the `√(2N) + 1` upper bound
+(`sidonNumber_le_real`) up to a constant factor. -/
+
+/-- The Erdős–Turán map `i ↦ 2·p·i + (i² mod p)`: "base-`2p`" encoding of the
+pair `(i, i² mod p)`. -/
+private def etMap (p i : ℕ) : ℕ := 2 * p * i + i ^ 2 % p
+
+/-- Base-`2p` digit extraction: if `2p·a + r = 2p·b + s` with both remainders
+`< 2p`, then the quotients and remainders agree separately. -/
+private theorem base_two_p_eq {p a b r s : ℕ} (hp : 0 < p) (hr : r < 2 * p)
+    (hs : s < 2 * p) (h : 2 * p * a + r = 2 * p * b + s) : a = b ∧ r = s := by
+  have hd : (2 * p * a + r) / (2 * p) = (2 * p * b + s) / (2 * p) := by rw [h]
+  rw [Nat.mul_add_div (by omega), Nat.mul_add_div (by omega),
+    Nat.div_eq_of_lt hr, Nat.div_eq_of_lt hs] at hd
+  have hab : a = b := by omega
+  subst hab
+  exact ⟨rfl, by omega⟩
+
+/-- The quadratic step of the Erdős–Turán argument: if `i + j = k + l` and
+`i² + j² ≡ k² + l² (mod p)` for an odd prime `p` and `i, j, k, l < p`, then
+`{i, j} = {k, l}`.  Over `ZMod p` the two pairs share both elementary symmetric
+functions, so they are the root multisets of one monic quadratic. -/
+private theorem et_quadratic {p : ℕ} (hp : p.Prime) (hodd : p ≠ 2)
+    {i j k l : ℕ} (hi : i < p) (_hj : j < p) (hk : k < p) (hl : l < p)
+    (hsum : i + j = k + l)
+    (hsq : i ^ 2 % p + j ^ 2 % p = k ^ 2 % p + l ^ 2 % p) :
+    (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  have h1 := congrArg (Nat.cast : ℕ → ZMod p) hsum
+  push_cast at h1
+  have h2 := congrArg (Nat.cast : ℕ → ZMod p) hsq
+  push_cast [ZMod.natCast_mod] at h2
+  -- 2 is invertible mod an odd prime
+  have h2ne : (2 : ZMod p) ≠ 0 := by
+    have hlt : 2 < p := lt_of_le_of_ne hp.two_le (Ne.symm hodd)
+    intro h20
+    have hval : ((2 : ℕ) : ZMod p).val = 2 := ZMod.val_cast_of_lt hlt
+    rw [show ((2 : ℕ) : ZMod p) = (2 : ZMod p) from by norm_cast, h20,
+      ZMod.val_zero] at hval
+    norm_num at hval
+  -- equal power sums + equal first symmetric function ⟹ equal products
+  have hq : (2 : ZMod p) * ((i : ZMod p) * (j : ZMod p))
+      = 2 * ((k : ZMod p) * (l : ZMod p)) := by
+    linear_combination ((i : ZMod p) + (j : ZMod p) + (k : ZMod p) + (l : ZMod p)) * h1 - h2
+  have hq' : (i : ZMod p) * (j : ZMod p) = (k : ZMod p) * (l : ZMod p) :=
+    mul_left_cancel₀ h2ne hq
+  -- i is a root of (X − k)(X − l)
+  have hroot : ((i : ZMod p) - (k : ZMod p)) * ((i : ZMod p) - (l : ZMod p)) = 0 := by
+    linear_combination (i : ZMod p) * h1 - hq'
+  have hcast : ∀ {a b : ℕ}, a < p → b < p → (a : ZMod p) = (b : ZMod p) → a = b := by
+    intro a b ha hb hab
+    have hva := ZMod.val_cast_of_lt ha
+    have hvb := ZMod.val_cast_of_lt hb
+    rw [hab] at hva
+    omega
+  rcases mul_eq_zero.mp hroot with h | h
+  · exact Or.inl ⟨hcast hi hk (sub_eq_zero.mp h), by
+      have := hcast hi hk (sub_eq_zero.mp h); omega⟩
+  · exact Or.inr ⟨hcast hi hl (sub_eq_zero.mp h), by
+      have := hcast hi hl (sub_eq_zero.mp h); omega⟩
+
+/-- The Erdős–Turán Sidon set: the image of `{0, …, p−1}` under
+`i ↦ 2·p·i + (i² mod p)`. -/
+private def etSet (p : ℕ) : Finset ℕ := (Finset.range p).image (etMap p)
+
+/-- The Erdős–Turán set has distinct pairwise sums: a sum coincidence forces
+the base-`2p` digits to match (`base_two_p_eq`), and the quadratic step
+(`et_quadratic`) then matches the pairs. -/
+private theorem hasDistinctSums_etSet {p : ℕ} (hp : p.Prime) (hodd : p ≠ 2) :
+    HasDistinctSums (etSet p) := by
+  intro a b c d ha hb hc hd habcd
+  simp only [etSet, Finset.mem_image, Finset.mem_range] at ha hb hc hd
+  obtain ⟨i, hi, rfl⟩ := ha
+  obtain ⟨j, hj, rfl⟩ := hb
+  obtain ⟨k, hk, rfl⟩ := hc
+  obtain ⟨l, hl, rfl⟩ := hd
+  have hppos : 0 < p := hp.pos
+  have m1 : i ^ 2 % p < p := Nat.mod_lt _ hppos
+  have m2 : j ^ 2 % p < p := Nat.mod_lt _ hppos
+  have m3 : k ^ 2 % p < p := Nat.mod_lt _ hppos
+  have m4 : l ^ 2 % p < p := Nat.mod_lt _ hppos
+  have hsum : 2 * p * (i + j) + (i ^ 2 % p + j ^ 2 % p)
+      = 2 * p * (k + l) + (k ^ 2 % p + l ^ 2 % p) := by
+    unfold etMap at habcd
+    linarith
+  obtain ⟨hIJ, hRes⟩ := base_two_p_eq hppos (by omega) (by omega) hsum
+  rcases et_quadratic hp hodd hi hj hk hl hIJ hRes with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · exact Or.inl ⟨rfl, rfl⟩
+  · exact Or.inr ⟨rfl, rfl⟩
+
+/-- **The Erdős–Turán set is a Sidon set** (for `p` an odd prime). -/
+private theorem isSidonSet_etSet {p : ℕ} (hp : p.Prime) (hodd : p ≠ 2) :
+    IsSidonSet (etSet p) :=
+  (sidon_iff_distinct_sums _).mpr (hasDistinctSums_etSet hp hodd)
+
+/-- The Erdős–Turán set has exactly `p` elements: the map `etMap p` is
+injective on `{0, …, p−1}` since the base-`2p` quotient recovers `i`. -/
+private theorem etSet_card {p : ℕ} (hp : 0 < p) : (etSet p).card = p := by
+  rw [etSet, Finset.card_image_of_injOn, Finset.card_range]
+  intro a ha b hb hab
+  simp only [Finset.coe_range, Set.mem_Iio] at ha hb
+  have m1 : a ^ 2 % p < p := Nat.mod_lt _ hp
+  have m2 : b ^ 2 % p < p := Nat.mod_lt _ hp
+  unfold etMap at hab
+  exact (base_two_p_eq hp (by omega) (by omega) hab).1
+
+/-- Each element of the Erdős–Turán set is `< 2p²`. -/
+private theorem etSet_subset {p : ℕ} (hp : 0 < p) :
+    etSet p ⊆ Finset.range (2 * p ^ 2) := by
+  intro x hx
+  simp only [etSet, Finset.mem_image, Finset.mem_range] at hx ⊢
+  obtain ⟨i, hi, rfl⟩ := hx
+  have h2 : i ^ 2 % p < p := Nat.mod_lt _ hp
+  have h1 : 2 * p * (i + 1) ≤ 2 * p * p := Nat.mul_le_mul_left _ hi
+  unfold etMap
+  nlinarith
+
+/-- **Erdős–Turán (1941) lower bound, single-prime form**: for every odd prime
+`p` the interval `{0, …, 2p² − 1}` contains a Sidon set of size `p`, so
+`h(2p² − 1) ≥ p`.  This is the first polynomial-order lower bound in this
+file — order `√N`, versus the logarithmic powers-of-two bound. -/
+theorem sidonNumber_ge_of_odd_prime {p : ℕ} (hp : p.Prime) (hodd : p ≠ 2) :
+    p ≤ sidonNumber (2 * p ^ 2 - 1) := by
+  have hppos : 0 < p := hp.pos
+  have hrange : 2 * p ^ 2 - 1 + 1 = 2 * p ^ 2 :=
+    Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr (by positivity))
+  calc p = (etSet p).card := (etSet_card hppos).symm
+    _ ≤ sidonNumber (2 * p ^ 2 - 1) :=
+        sidonNumber_ge_card (by rw [hrange]; exact etSet_subset hppos)
+          (isSidonSet_etSet hp hodd)
+
+/-- **Uniform polynomial lower bound via Bertrand's postulate**: for `N ≥ 49`,
+`h(N) > ⌊√((N+1)/2)⌋ / 2` — order `√N`.  Bertrand supplies an odd prime `p`
+with `m/2 < p ≤ m` for `m = ⌊√((N+1)/2)⌋`; then `2p² − 1 ≤ N`, and the
+Erdős–Turán set for `p` fits inside `{0, …, N}`. -/
+theorem sidonNumber_sqrt_lower {N : ℕ} (hN : 49 ≤ N) :
+    Nat.sqrt ((N + 1) / 2) / 2 < sidonNumber N := by
+  set m := Nat.sqrt ((N + 1) / 2) with hm
+  have hm5 : 5 ≤ m := by
+    rw [hm]
+    exact Nat.le_sqrt.mpr (by omega)
+  obtain ⟨p, hp, hlow, hhigh⟩ := Nat.exists_prime_lt_and_le_two_mul (m / 2) (by omega)
+  have hodd : p ≠ 2 := by omega
+  have hpm : p ≤ m := by omega
+  have hsq : p ^ 2 ≤ (N + 1) / 2 := by
+    calc p ^ 2 ≤ m ^ 2 := Nat.pow_le_pow_left hpm 2
+      _ ≤ (N + 1) / 2 := by rw [hm]; exact Nat.sqrt_le' _
+  have h2p : 2 * p ^ 2 ≤ N + 1 := by
+    have hd : 2 * ((N + 1) / 2) ≤ N + 1 := by omega
+    linarith
+  calc m / 2 < p := hlow
+    _ ≤ sidonNumber (2 * p ^ 2 - 1) := sidonNumber_ge_of_odd_prime hp hodd
+    _ ≤ sidonNumber N := sidonNumber_mono (Nat.sub_le_iff_le_add.mpr h2p)
+
+/-- **The `√N` shape of the lower bound**: `√N / 4 ≤ h(N)` for `N ≥ 49`.
+Together with `sidonNumber_le_real` (`h(N) ≤ √(2N) + 1`) this settles the
+order of magnitude `h(N) ≍ √N` — entirely elementarily. -/
+theorem sidonNumber_ge_real_sqrt {N : ℕ} (hN : 49 ≤ N) :
+    Real.sqrt N / 4 ≤ (sidonNumber N : ℝ) := by
+  set m := Nat.sqrt ((N + 1) / 2) with hm
+  have hmain : m / 2 + 1 ≤ sidonNumber N := sidonNumber_sqrt_lower hN
+  -- `N < 2(m+1)²`, hence `N ≤ (2(m+1))²` with room to spare
+  have hN2 : N < 2 * (m + 1) ^ 2 := by
+    have h1 : (N + 1) / 2 < (m + 1) ^ 2 := by
+      rw [hm]
+      have := Nat.lt_succ_sqrt' ((N + 1) / 2)
+      simpa using this
+    have h2 : N + 1 ≤ 2 * ((N + 1) / 2) + 1 := by omega
+    linarith
+  have hN4 : N ≤ (2 * (m + 1)) ^ 2 := by
+    have h3 : (2 * (m + 1)) ^ 2 = 4 * (m + 1) ^ 2 := by ring
+    linarith
+  have hsqrt : Real.sqrt N ≤ ((2 * (m + 1) : ℕ) : ℝ) := by
+    have hc : (N : ℝ) ≤ (((2 * (m + 1) : ℕ) : ℝ)) ^ 2 := by exact_mod_cast hN4
+    calc Real.sqrt N ≤ Real.sqrt ((((2 * (m + 1) : ℕ) : ℝ)) ^ 2) := Real.sqrt_le_sqrt hc
+      _ = ((2 * (m + 1) : ℕ) : ℝ) := Real.sqrt_sq (by positivity)
+  have hdiv : ((m : ℝ) + 1) / 2 ≤ ((m / 2 : ℕ) : ℝ) + 1 := by
+    have hfloor : m ≤ 2 * (m / 2) + 1 := by omega
+    have hc : (m : ℝ) ≤ 2 * ((m / 2 : ℕ) : ℝ) + 1 := by exact_mod_cast hfloor
+    linarith
+  have hcast2 : ((2 * (m + 1) : ℕ) : ℝ) = 2 * ((m : ℝ) + 1) := by push_cast; ring
+  have hmainR : ((m / 2 : ℕ) : ℝ) + 1 ≤ (sidonNumber N : ℝ) := by exact_mod_cast hmain
+  calc Real.sqrt N / 4 ≤ ((2 * (m + 1) : ℕ) : ℝ) / 4 := by linarith
+    _ = ((m : ℝ) + 1) / 2 := by rw [hcast2]; ring
+    _ ≤ ((m / 2 : ℕ) : ℝ) + 1 := hdiv
+    _ ≤ (sidonNumber N : ℝ) := hmainR
 
 end Erdos30
