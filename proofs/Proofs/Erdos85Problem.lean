@@ -2700,6 +2700,7 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
       rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree]
   have hTcard : T.card = 78 := by
     rw [hT, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+    decide
   have hmaps : ∀ p ∈ C, p.2 ∈ T := by
     intro p hp
     rw [hC, Finset.mem_sigma] at hp
@@ -2742,7 +2743,7 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
   have hterm : ∀ v : Fin 13, 6 ≤ (G.degree v).choose 2 := by
     intro v
     have h4 : 4 ≤ G.degree v := le_trans hmin (G.minDegree_le_degree v)
-    calc 6 = (4 : ℕ).choose 2 := by norm_num
+    calc 6 = (4 : ℕ).choose 2 := by decide
       _ ≤ (G.degree v).choose 2 := Nat.choose_le_choose 2 h4
   have hCge : 78 ≤ C.card := by
     rw [hCcard]
@@ -2758,7 +2759,7 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
     by_contra hne
     have h5 : 5 ≤ G.degree v := by omega
     have h10 : 10 ≤ (G.degree v).choose 2 := by
-      calc (10 : ℕ) = (5 : ℕ).choose 2 := by norm_num
+      calc (10 : ℕ) = (5 : ℕ).choose 2 := by decide
         _ ≤ (G.degree v).choose 2 := Nat.choose_le_choose 2 h5
     have hsplit : (G.degree v).choose 2 +
         ∑ u ∈ univ.erase v, (G.degree u).choose 2
@@ -2780,7 +2781,6 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
   -- common neighbour.
   have hfriend : Theorems100.Friendship G := by
     intro x y hxy
-    rw [Fintype.card_eq_one_iff]
     have hxyT : ({x, y} : Finset (Fin 13)) ∈ T := by
       rw [hT, Finset.mem_powersetCard]
       exact ⟨Finset.subset_univ _, Finset.card_pair_eq_two_iff.mpr hxy⟩
@@ -2792,9 +2792,11 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
     have hsub := (Finset.mem_powersetCard.mp hpow).1
     have hvx : G.Adj x v := ((G.mem_neighborFinset v x).mp (hsub (by simp))).symm
     have hvy : G.Adj y v := ((G.mem_neighborFinset v y).mp (hsub (by simp))).symm
-    refine ⟨⟨v, SimpleGraph.mem_commonNeighbors.mpr ⟨hvx, hvy⟩⟩, ?_⟩
+    -- `commonNeighbors` membership is definitionally the pair of adjacencies.
+    have hvmemS : v ∈ G.commonNeighbors x y := ⟨hvx, hvy⟩
+    refine Fintype.card_eq_one_iff.mpr ⟨⟨v, hvmemS⟩, ?_⟩
     rintro ⟨w, hw⟩
-    obtain ⟨hwx, hwy⟩ := SimpleGraph.mem_commonNeighbors.mp hw
+    obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
     have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
     have hwmem : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
       rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
