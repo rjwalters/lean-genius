@@ -56,7 +56,7 @@
     "summary": "The generalized continuum function satisfies the three ZFC constraints — monotonicity, Cantor's ℵ_α < 2^{ℵ_α}, and König's cf(2^{ℵ_α}) > ℵ_α — all proved axiom-free from Mathlib, discharging the parent's stated-only König constraint. 7 theorems, 1 definition, 79 lines.",
     "implications": "This gives the necessary conditions of Easton's characterization of admissible continuum patterns, in machine-checked form, and upgrades the parent's König constraint from an assumption to a theorem. It clarifies that the only universal laws of the continuum function are these three; everything else is independent of ZFC.",
     "openQuestions": [
-      "Formalize the sufficiency half of Easton's theorem (forcing construction realizing any constraint-respecting pattern on regular cardinals) — the converse/permitted-values direction is scaffolded in the gallery by cantor-diagonalization-oq-01-oq-01-oq-02-oq-01.",
+      "**(Partially resolved by `cantor-diagonalization-oq001`.)** Formalize the sufficiency half of Easton's theorem (forcing construction realizing any constraint-respecting pattern on regular cardinals): that entry proves the pointwise converse (every regular κ ≥ ℵ₁ is a permitted value for 2^ℵ₀), but the full forcing construction realizing an arbitrary constraint-respecting *function* on all regular cardinals remains open.",
       "Treat singular cardinals, where Silver's and Shelah's PCF theorems impose additional constraints beyond König.",
       "State GCH at the generalized level (2^{ℵ_α} = ℵ_{α+1} for all α) and derive it as the minimal constraint-respecting pattern."
     ]
