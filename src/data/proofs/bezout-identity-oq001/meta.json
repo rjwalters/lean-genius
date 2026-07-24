@@ -86,10 +86,18 @@
     },
     {
       "id": "remainder-product",
-      "title": "§II The accumulated product Rₖ and the full invariant",
+      "title": "§II.a The accumulated product Rₖ and its unimodularity",
       "startLine": 90,
+      "endLine": 115,
+      "summary": "Defines Rprod [q_k,…,q_1] = Q(q_k)·⋯·Q(q_1) by list recursion (with simp lemmas Rprod_nil, Rprod_cons). det_Rprod proves det (Rprod qs) = (−1)^(qs.length) by induction (Matrix.det_mul + det_Q), so every accumulated transformation is unimodular."
+    },
+    {
+      "id": "remainder-product-invariant",
+      "title": "§II.b The full matrix–Euclidean invariant",
+      "startLine": 117,
       "endLine": 126,
-      "summary": "Defines Rprod [q_k,…,q_1] = Q(q_k)·⋯·Q(q_1) by list recursion (with simp lemmas Rprod_nil, Rprod_cons). det_Rprod proves det (Rprod qs) = (−1)^(qs.length) by induction (Matrix.det_mul + det_Q), so every accumulated transformation is unimodular. Rprod_mulVec proves (Rprod qs).mulVec v = qs.foldr euclidStep v: applying the product folds the individual Euclidean steps."
+      "summary": "Rprod_mulVec proves (Rprod qs).mulVec v = qs.foldr euclidStep v by induction on qs, threading Matrix.mulVec_mulVec through Q_mulVec: applying the accumulated product folds the individual Euclidean steps.",
+      "mathContext": "$R_k \\cdot v = \\mathrm{foldr}\\ \\mathrm{euclidStep}\\ v\\ [q_k,\\ldots,q_1]$: the accumulated matrix product reproduces the composition of the $k$ individual Euclidean steps."
     },
     {
       "id": "examples",
