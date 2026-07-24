@@ -43,7 +43,7 @@
     "dateAdded": "2025-12-28",
     "wiedijkNumber": 46,
     "axiomCount": 0,
-    "lineCount": 936,
+    "lineCount": 973,
     "prerequisites": [
       "Complex numbers and polynomial evaluation",
       "Cubic equation solution (Cardano's formula)",
@@ -52,7 +52,7 @@
     ],
     "assumptions": "0 axioms, 0 sorries — the entry is fully machine-checked. All results, including the previously-axiomatized `quartic_has_four_roots`, `biquadratic_forward`, and `biquadratic_backward`, are now proved: the monic degree-4 quartic splits over ℂ via Mathlib's FTA infrastructure (`IsAlgClosed.splits`, `splits_iff_card_roots`, `Multiset.card_eq_three`, `mem_roots`), and the biquadratic cases follow from the complex quadratic formula (`Complex.cpow_nat_inv_pow`, `linear_combination`). `#print axioms` on the main theorems reports only `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`). The Ferrari factorization / root-verification lemmas (`ferrari_factorization`, `ferrari_roots_verify_ne`) carry an `α ≠ 0` (equivalently `2m + p ≠ 0`) non-degeneracy hypothesis, threaded from every call site — this replaced the earlier `*_forward/backward` and `ferrari_roots_verify` axioms, which were latently unsound at `α = 0`. Docker build verified (3058 jobs, success).",
     "mathlib_version": "4.31.0",
-    "theoremCount": 29,
+    "theoremCount": 30,
     "definitionCount": 6
   },
   "overview": {
@@ -158,7 +158,7 @@
     {
       "targetId": "abel-ruffini",
       "relationship": "complementary",
-      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for degree 5+, because S\u2085 is not solvable while S\u2084 is."
+      "description": "The quartic is the last degree solvable by radicals. Abel-Ruffini (Wiedijk #16) proves no general formula exists for degree 5+, because S₅ is not solvable while S₄ is."
     },
     {
       "targetId": "fundamental-theorem-algebra",
@@ -168,22 +168,22 @@
     {
       "targetId": "angle-trisection",
       "relationship": "related",
-      "description": "Both connect to constructibility: quartic roots with degree 4 = 2\u00b2 ARE constructible (4 divides 2\u00b2), while the cubic case (degree 3) is the obstruction for trisection"
+      "description": "Both connect to constructibility: quartic roots with degree 4 = 2² ARE constructible (4 divides 2²), while the cubic case (degree 3) is the obstruction for trisection"
     },
     {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
-      "description": "Lagrange's theorem underpins the Galois-theoretic explanation: S\u2084 has order 24 and its solvable derived series S\u2084 \u25b7 A\u2084 \u25b7 V\u2084 \u25b7 {e} enables radical solutions"
+      "description": "Lagrange's theorem underpins the Galois-theoretic explanation: S₄ has order 24 and its solvable derived series S₄ ▷ A₄ ▷ V₄ ▷ {e} enables radical solutions"
     },
     {
       "targetId": "sylow-theorems",
       "relationship": "related",
-      "description": "Sylow theory reveals the subgroup structure of S\u2084 (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S\u2084 solvable"
+      "description": "Sylow theory reveals the subgroup structure of S₄ (Sylow 2-subgroups of order 8, Sylow 3-subgroups of order 3) that enables the composition series making S₄ solvable"
     },
     {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "complementary",
-      "description": "The A\u2085 simplicity proof chain exposes each step from A\u2085 simple to 'no quintic formula' \u2014 this quartic file is the complementary 'last solvable case' showing S\u2084 solvable (derived series S\u2084 \u25b7 A\u2084 \u25b7 V\u2084 \u25b7 {e}) while S\u2085 is not"
+      "description": "The A₅ simplicity proof chain exposes each step from A₅ simple to 'no quintic formula' — this quartic file is the complementary 'last solvable case' showing S₄ solvable (derived series S₄ ▷ A₄ ▷ V₄ ▷ {e}) while S₅ is not"
     }
   ],
   "references": [
@@ -191,7 +191,7 @@
       "authors": "Ferrari, Lodovico (via Cardano)",
       "title": "Ars Magna",
       "year": "1545",
-      "venue": "N\u00fcrnberg: Petreius",
+      "venue": "Nürnberg: Petreius",
       "note": "First publication of the quartic formula, discovered by Ferrari (Cardano's student) and published in Cardano's treatise"
     },
     {
@@ -216,9 +216,9 @@
       "Complex"
     ],
     "namespace": "GeneralQuartic",
-    "lineCount": 936,
+    "lineCount": 973,
     "axiomCount": 0,
-    "theoremCount": 29,
+    "theoremCount": 30,
     "definitionCount": 6,
     "path": "Proofs/GeneralQuartic.lean",
     "sorries": 0
