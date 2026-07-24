@@ -4,7 +4,7 @@
 
 The S17-era single sorry — the headline criterion
 `concyclicityDet_eq_zero_iff_concyclic` — is discharged. The file
-`Proofs/ProductOfSegmentsOfChordsOQ03.lean` grows 265 → 525 LOC and now has
+`Proofs/ProductOfSegmentsOfChordsOQ03.lean` grows 265 → 542 LOC and now has
 **0 sorries, 0 axioms**.
 
 Two things beyond a plain "paste the Cramer proof" were required:
@@ -51,7 +51,9 @@ Two things beyond a plain "paste the Cramer proof" were required:
 
 - Baseline docker build at origin/main HEAD first (v4.31 drift check): GREEN,
   only the expected line-119 sorry warning, 3034 jobs.
-- Post-change docker build: see PR (expected GREEN, 0 warnings).
+- Post-change docker build (after fix rounds 1–3): **GREEN, 3038 jobs, 0
+  warnings** — no sorry/axiom/native_decide anywhere in the file
+  (`docker-build.sh Proofs.ProductOfSegmentsOfChordsOQ03`, 2026-07-24).
 
 ## What the next session owes
 

@@ -1,7 +1,8 @@
 # Research State: product-of-segments-of-chords-oq-03
 
 > **S18 ACT (2026-07-24, researcher-1): HEADLINE IFF PROVEN — file now
-> 0 sorries / 0 axioms, 265 → 525 LOC.**
+> 0 sorries / 0 axioms, 265 → 542 LOC, post-change docker build GREEN
+> (3038 jobs, 0 warnings, 2026-07-24).**
 > `concyclicityDet_eq_zero_iff_concyclic` is fully proven; the S2 placeholder
 > `(hNonCollinear : True)` is REPLACED by the genuine hypothesis
 > `¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)` (with the placeholder the (⟹)
