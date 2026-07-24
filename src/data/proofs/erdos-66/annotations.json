@@ -111,53 +111,53 @@
     "prerequisites": [
       "the representation function r(n)",
       "logical negation of convergence",
-      "Erd\u0151s's conjecture (no nice limit)"
+      "Erdős's conjecture (no nice limit)"
     ]
   },
   {
     "id": "ann-e66-erdos-sarkozy",
     "proofId": "erdos-66",
     "range": {
-      "startLine": 100,
-      "endLine": 114
+      "startLine": 102,
+      "endLine": 111
     },
     "type": "concept",
     "title": "Erdős-Sárközy Theorem",
-    "content": "**erdosSarkozy** states that for any A, the error |r_A(n) - log(n)| cannot shrink to o(√log n).\n\nIn other words: the representation function cannot approximate log(n) with error smaller than √log(n) eventually.\n\n**Why this matters**: Even if r_A(n) ~ log(n), the fluctuations must remain significant. You can't 'smooth out' the representation function to exactly match log(n).",
-    "mathContext": "The statement says there is NO set A with `|r_A(n) - log n| / √(log n) → 0`. This is a universal negative—a strong constraint on all possible sets.",
-    "significance": "key",
+    "content": "This block is a **module comment only** (not a Lean declaration): it documents, in prose, that for any A the error |r_A(n) - log(n)| cannot shrink to o(√log n).\n\nIn other words: the representation function cannot approximate log(n) with error smaller than √log(n) eventually.\n\n**Why this matters**: Even if r_A(n) ~ log(n), the fluctuations must remain significant. You can't 'smooth out' the representation function to exactly match log(n).\n\n**Not formalized**: no `axiom` or `theorem` states this claim in Lean; it is documentation only.",
+    "mathContext": "The comment describes a universal negative—no set A has `|r_A(n) - log n| / √(log n) → 0`—but this is not expressed as a Lean `Prop` or assumed via `axiom` anywhere in the file.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "axiom",
+      "comment-only",
       "error-bound",
       "sqrt-log"
     ],
     "prerequisites": [
       "error terms for representation functions",
-      "\u221a(log n) error bounds",
-      "the Erd\u0151s\u2013S\u00e1rk\u00f6zy theorem (axiom)"
+      "√(log n) error bounds",
+      "the Erdős–Sárközy theorem (documented in prose, not formalized)"
     ]
   },
   {
     "id": "ann-e66-horvath",
     "proofId": "erdos-66",
     "range": {
-      "startLine": 117,
-      "endLine": 130
+      "startLine": 112,
+      "endLine": 120
     },
     "type": "concept",
     "title": "Horváth's Improvement (2007)",
-    "content": "**horvath2007** strengthens Erdős-Sárközy: the error exceeds (1-ε)√log(n) for infinitely many n.\n\nFor any ε > 0 and any set A, there are arbitrarily large n where |r_A(n) - log(n)| > (1-ε)√log(n).\n\n**The improvement**: This gives a quantitative lower bound on the limsup of the error, not just that it doesn't go to zero.",
-    "mathContext": "Using `∀ᶠ n in atTop` means 'for all sufficiently large n'. Combined with the universal quantifier over ε, this says the error cannot stay below √log(n) for long.",
-    "significance": "key",
+    "content": "This block is also a **module comment only** (not a Lean declaration): it documents that Horváth strengthened Erdős-Sárközy so the error exceeds (1-ε)√log(n) for infinitely many n.\n\nFor any ε > 0 and any set A, there are arbitrarily large n where |r_A(n) - log(n)| > (1-ε)√log(n).\n\n**Not formalized**: no `axiom` or `theorem` states this claim in Lean; it is documentation only, describing a quantitative lower bound on the limsup of the error without asserting it.",
+    "mathContext": "Informally 'for all sufficiently large n' with a universal quantifier over ε—but this remains prose, not a Lean `Prop`, `axiom`, or `theorem`.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "axiom",
+      "comment-only",
       "quantitative-bound",
       "limsup"
     ],
     "prerequisites": [
-      "quantitative bounds on r(n)\u2212n",
+      "quantitative bounds on r(n)−n",
       "limsup estimates",
-      "Horv\u00e1th's 2007 improvement"
+      "Horváth's 2007 improvement (documented in prose, not formalized)"
     ]
   },
   {
@@ -203,7 +203,7 @@
     "prerequisites": [
       "limsup and liminf of r(n)",
       "a universal constant bound",
-      "Erd\u0151s's stronger conjecture"
+      "Erdős's stronger conjecture"
     ]
   },
   {
