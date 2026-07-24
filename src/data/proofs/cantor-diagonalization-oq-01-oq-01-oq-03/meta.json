@@ -43,7 +43,8 @@
       "König's constraint, stated as a Prop in the parent, is a direct corollary of Mathlib's Cardinal.lt_cof_power — no axiom needed.",
       "The strict inequality is between an index and its own value (Cantor); between distinct indices only ≤ holds — the continuum function is monotone but NOT strictly monotone (e.g. 2^{ℵ₀} = 2^{ℵ₁} under Martin's Axiom).",
       "Together monotonicity, Cantor and König are exactly the Easton constraints, so this is a faithful formal answer to 'which patterns are consistent'.",
-      "König's constraint concretely forbids 2^{ℵ₀} = ℵ_ω: because cf(ℵ_ω) = ℵ₀ is not > ℵ₀, the value ℵ_ω fails cf(2^{ℵ₀}) > ℵ₀. So ℵ_ω is the smallest cardinal above all the ℵ_n that the continuum provably cannot equal — even though Cantor's inequality 2^{ℵ₀} > ℵ₀ alone would permit it. This is the sense in which König strictly sharpens Cantor."
+      "König's constraint concretely forbids 2^{ℵ₀} = ℵ_ω: because cf(ℵ_ω) = ℵ₀ is not > ℵ₀, the value ℵ_ω fails cf(2^{ℵ₀}) > ℵ₀. So ℵ_ω is the smallest cardinal above all the ℵ_n that the continuum provably cannot equal — even though Cantor's inequality 2^{ℵ₀} > ℵ₀ alone would permit it. This is the sense in which König strictly sharpens Cantor.",
+      "The three proved theorems hold at every ordinal α, but Easton's freeness claim (any constraint-respecting pattern is consistent) is only established for α indexing REGULAR cardinals. contFn_monotone, aleph_lt_contFn, and aleph_lt_cof_contFn are unconditional ZFC facts even where ℵ_α is singular (e.g. α = ω), but at singular indices Silver's theorem and Shelah's PCF theory impose further ZFC-provable constraints not implied by monotonicity, Cantor, and König alone — so this file's three theorems are necessary conditions everywhere, yet a complete list of constraints only at the regular indices where Easton's theorem applies."
     ],
     "prerequisites": [
       "Cardinal arithmetic and the aleph hierarchy",
