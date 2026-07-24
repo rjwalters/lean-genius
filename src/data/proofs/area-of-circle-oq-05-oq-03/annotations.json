@@ -16,6 +16,11 @@
       "Gaussian",
       "characteristic function",
       "central limit theorem"
+    ],
+    "prerequisites": [
+      "area-of-circle-oq-05 — the real Gaussian integral ∫ e^{-x²} = √π",
+      "Lebesgue/Bochner integration over ℝ",
+      "characteristic functions of probability distributions"
     ]
   },
   {
@@ -34,6 +39,11 @@
       "completing the square",
       "complex exponential",
       "linear_combination"
+    ],
+    "prerequisites": [
+      "Complex.exp_add (exponential of a sum)",
+      "the linear_combination tactic",
+      "Complex.I_sq — i² = -1"
     ]
   },
   {
@@ -53,6 +63,10 @@
       "vertical-strip shift",
       "complex power",
       "real square root"
+    ],
+    "prerequisites": [
+      "Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I",
+      "Complex.ofReal_cpow and Real.sqrt_eq_rpow"
     ]
   },
   {
@@ -71,6 +85,11 @@
       "Bochner integral linearity",
       "characteristic function",
       "normalization"
+    ],
+    "prerequisites": [
+      "gaussian_integrand_complete_square",
+      "cpow_half_eq_sqrt_two_pi",
+      "MeasureTheory.integral_mul_const / integral_div"
     ]
   },
   {
@@ -89,6 +108,34 @@
       "probability density normalization",
       "Gaussian integral",
       "characteristic function at 0"
+    ],
+    "prerequisites": [
+      "gaussian_fourier_real",
+      "gaussian_fourier_normalized"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03-charfun",
+    "proofId": "area-of-circle-oq-05-oq-03",
+    "range": {
+      "startLine": 151,
+      "endLine": 218
+    },
+    "type": "insight",
+    "title": "Bridging to Mathlib's Concrete Standard-Normal Measure",
+    "content": "The identities above are stated for the explicit Lebesgue integrand; Part V connects them to Mathlib's probability-theoretic measure ProbabilityTheory.gaussianReal 0 1 and its characteristic function charFun. charFun_stdGaussian gets the characteristic function of N(0,1) directly from Mathlib's charFun_gaussianReal, specialised at μ = 0, v = 1, closed by push_cast; ring. gaussianReal_fourier_identity then rewrites the measure-integral Fourier identity ∫ e^{itx} ∂(gaussianReal 0 1) = e^{-t²/2} via charFun_apply_real, matching it against charFun_stdGaussian. The file's own comments flag this as exactly the shape of the CentralLimitTheorem.lean axiom gaussian_fourier_identity — proved here as a theorem for the concrete gaussianReal 0 1, though fully discharging that axiom would still require refactoring CentralLimitTheorem.lean to define its abstract stdGaussian as gaussianReal 0 1 (not attempted here, per the honest-scope note).",
+    "mathContext": "$\\varphi_X(t) = \\mathbb{E}[e^{itX}] = e^{-t^2/2}$ for $X \\sim \\mathcal{N}(0,1)$, proved both as `charFun (gaussianReal 0 1) t` and as the Lebesgue integral $\\int_{\\mathbb{R}} e^{itx}\\, d(\\text{gaussianReal } 0\\ 1)(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic function",
+      "ProbabilityTheory.gaussianReal",
+      "central limit theorem",
+      "charFun_gaussianReal"
+    ],
+    "prerequisites": [
+      "gaussian_fourier_real",
+      "Mathlib's ProbabilityTheory.gaussianReal and charFun",
+      "CentralLimitTheorem.lean's gaussian_fourier_identity axiom"
     ]
   }
 ]
