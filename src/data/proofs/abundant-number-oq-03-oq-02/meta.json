@@ -58,9 +58,17 @@
       "id": "header",
       "title": "Statement and Strategy",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 34,
       "summary": "Module docstring: the quantitative sharpening x < 1890·A(x) + 945 of the parent's infinitude of odd abundant numbers, giving lower density ≥ 1/1890. Explains that the witnesses 945·(2k+1) with 2k+1 ≤ x/945 are (x/945+1)/2 ≥ x/1890 − 1/2 distinct odd abundant numbers in [1, x], injecting into the counted set, and notes the constant 1/1890 is the honest single-seed bound.",
       "mathContext": "Count the parent's odd-multiples family below x: density 1/1890 is the density of the odd multiples of the seed 945."
+    },
+    {
+      "id": "setup",
+      "title": "Imports",
+      "startLine": 36,
+      "endLine": 39,
+      "summary": "Imports Mathlib and the sibling AbundantOddInfiniteOQ03 (for odd_abundant_945_mul and odd_mul_succ_injective, the witness-family facts the counting bound below reuses without recomputation), and opens the AbundantOddCountingOQ0302 namespace.",
+      "mathContext": "The counting argument below is purely a cardinality packaging of the parent's odd-multiples witnesses; no divisor-sum computation is repeated here."
     },
     {
       "id": "counting-function",
