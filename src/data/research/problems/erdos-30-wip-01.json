@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact table h(0..28) complete + √N-ORDER TWO-SIDED BRACKET: Erdős–Turán modular construction (odd prime p ⟹ Sidon set of size p in {0..2p²−1}) + Bertrand gives √N/4 ≤ h(N) ≤ √(2N)+1 for N≥32 — the polynomial gap between log lower and √N upper is CLOSED. Remaining DEEP: sharp constants (Singer (1−o(1))√N lower, Lindström/BFR √N+N^{1/4}+1 upper), $1000 N^ε conjecture; next table wall h(29..33) needs new invariant or big search.",
+    "progressSummary": "Exact table h(0..28) complete + √N-ORDER TWO-SIDED BRACKET (√N/4 ≤ h(N) ≤ √(2N)+1, N≥32) + CONJECTURE REDUCTION LAYER: the $1000 N^ε conjecture is now formally assembled from one-sided ε-families (RequiredUpperBound/RequiredLowerBound) via exponent monotonicity, with the ε = 1/2 instance settled unconditionally by the bracket (C = √2) — open content lives strictly below ε = 1/2. Remaining DEEP: sharp constants (Singer (1−o(1))√N lower feeding RequiredLowerBound, Lindström/BFR √N+N^{1/4}+1 upper feeding RequiredUpperBound(1/4)); next table wall h(29..33) needs new invariant or big search.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -61,7 +61,12 @@
       "etMap/etMap_div/etMap_injOn/etMap_add_eq (digit separation) in Erdos30WIP01.lean",
       "pair_eq_of_sum_sq (quadratic uniqueness over ZMod p via linear_combination) in Erdos30WIP01.lean",
       "isSidonSet_erdosTuran, erdosTuran_card, erdosTuran_subset, prime_le_sidonNumber in Erdos30WIP01.lean",
-      "sidonNumber_gt_sqrt (h(N) > ⌊√(N/8)⌋, N≥32), sidonNumber_ge_real (√N/4 ≤ h(N)), sidonNumber_sqrt_bracket (two-sided √N bracket) in Erdos30WIP01.lean"
+      "sidonNumber_gt_sqrt (h(N) > ⌊√(N/8)⌋, N≥32), sidonNumber_ge_real (√N/4 ≤ h(N)), sidonNumber_sqrt_bracket (two-sided √N bracket) in Erdos30WIP01.lean",
+      "Erdos30ConjectureAt / RequiredLowerBound (single-exponent and Singer-side families) + erdos30Conjecture_iff_forall in Erdos30WIP01.lean",
+      "requiredUpperBound_mono / requiredLowerBound_mono (error-exponent monotonicity via rpow) in Erdos30WIP01.lean",
+      "erdos30ConjectureAt_of_bounds / erdos30Conjecture_of_bounds (one-sided families assemble the $1000 N^ε conjecture) in Erdos30WIP01.lean",
+      "erdos30Conjecture_of_stronger (O(1) conjecture ⟹ N^ε conjecture) in Erdos30WIP01.lean",
+      "requiredUpperBound_half / erdos30ConjectureAt_half (ε = 1/2 instance settled unconditionally, C = √2) in Erdos30WIP01.lean"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -84,7 +89,9 @@
       "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search",
       "Erdős–Turán (1941) construction formalized: for odd prime p, {2p·i + (i² mod p) : i < p} is a Sidon set of size p inside {0,…,2p²−1}. Proof splits into base-2p digit separation (residues < p so digit sums < 2p never carry) + quadratic uniqueness over 𝔽_p (equal sum and sum-of-squares ⟹ equal product via invertible 2 ⟹ same monic quadratic ⟹ same root multiset, no zero divisors).",
       "Bertrand (Nat.bertrand, already in Mathlib) converts the prime-indexed bound h(2p²−1) ≥ p into a bound for ALL N ≥ 32: prime q ∈ (s,2s] for s=⌊√(N/8)⌋ gives 2q²−1 ≤ 8s²−1 ≤ N, hence h(N) > ⌊√(N/8)⌋, real form √N/4 ≤ h(N).",
-      "The polynomial gap is CLOSED: two-sided bracket √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 32 (sidonNumber_sqrt_bracket), constant ratio ≤ 4√2. Previous lower bound was only logarithmic (powers of two)."
+      "The polynomial gap is CLOSED: two-sided bracket √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 32 (sidonNumber_sqrt_bracket), constant ratio ≤ 4√2. Previous lower bound was only logarithmic (powers of two).",
+      "The conjecture's reduction argument (a comment sketch in Erdos30Problem.lean) is fully formal: one-sided ε-families are exponent-monotone (N^{ε₀} ≤ N^ε for N ≥ 1 via Real.rpow_le_rpow_of_exponent_le), assemble into the two-sided bound with constant max C₁ C₂ (abs_sub_le_iff), and the O(1) conjecture implies the N^ε one. A single sub-1/4 upper improvement would settle every larger exponent at once.",
+      "ε = 1/2 instance of the conjecture holds unconditionally from the bracket: √(2N)+1 ≤ √N + √2·N^{1/2} for N ≥ 1 (Real.sqrt_mul splits √(2N); 1 ≤ √N absorbs the +1), and the lower side is trivial since √N − N^{1/2} = 0 (Real.sqrt_eq_rpow). The open content of the $1000 problem lives strictly below ε = 1/2 — below 1/4 after Erdős–Turán 1941."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -112,7 +119,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-23",
+  "lastUpdate": "2026-07-24",
   "significance": 8,
   "tractability": 6
 }

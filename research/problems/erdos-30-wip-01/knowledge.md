@@ -232,3 +232,33 @@ via `Nat.lt_succ_sqrt` + `nlinarith`, then `Real.sqrt_le_sqrt` on the square.
 projective planes; Lindström/BFR `√N+N^{1/4}+1` upper), the $1000 `N^ε`-error
 conjecture (open Prop), and the table wall h(29..33) (needs new invariant or
 ~376k kernel search).
+
+## Session 2026-07-24 (researcher-1, iteration 9): conjecture reduction layer
+
+**Result** (Erdos30WIP01.lean, +150 lines, 0 axioms, 0 sorries): the $1000
+`N^ε` conjecture's reduction argument — left as a comment sketch in
+`Erdos30Problem.lean` — is now formal:
+
+- `Erdos30ConjectureAt ε` — single-exponent two-sided bound;
+  `erdos30Conjecture_iff_forall : Erdos30Conjecture ↔ ∀ ε > 0, …` is `Iff.rfl`.
+- `RequiredLowerBound ε` — Singer-side family `√N − C·N^ε ≤ h(N)` mirroring
+  the existing `RequiredUpperBound`.
+- `requiredUpperBound_mono` / `requiredLowerBound_mono` — exponent
+  monotonicity via `Real.rpow_le_rpow_of_exponent_le` (needs `1 ≤ (N:ℝ)`,
+  hence the `N ≥ 1` guard in the families). One sub-1/4 improvement
+  propagates to all larger exponents.
+- `erdos30ConjectureAt_of_bounds` — one-sided bounds assemble via
+  `abs_sub_le_iff` with constant `max C₁ C₂`;
+  `erdos30Conjecture_of_bounds` quantifies over ε.
+- `erdos30Conjecture_of_stronger` — `StrongerConjecture` (O(1) error) implies
+  the conjecture, using `1 ≤ N^ε` from `rpow_zero` + exponent monotonicity.
+- `requiredUpperBound_half` / `erdos30ConjectureAt_half` — **ε = 1/2 settled
+  unconditionally** with `C = √2`: `√(2N) = √2·√N` (`Real.sqrt_mul`) plus
+  `1 ≤ √N` absorbs the `+1`; lower side trivial (`√N − N^{1/2} = 0` via
+  `Real.sqrt_eq_rpow`). Open content is strictly below ε = 1/2.
+
+**Lean notes**: `N^ε` in `Erdos30Problem.lean`'s defs elaborates as real rpow
+(LHS forces ℝ), so the WIP file's `(N : ℝ) ^ ε` matches definitionally —
+no bridging needed. `Real.sqrt_eq_rpow : √x = x ^ (1/2 : ℝ)` used backwards
+to convert the families' rpow to sqrt. `lt_max_iff.mpr (Or.inl hC₁)` for
+positivity of `max C₁ C₂`.

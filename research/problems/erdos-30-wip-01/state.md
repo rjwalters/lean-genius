@@ -4,16 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-24T00:00:00-07:00
-**Iteration**: 8
+**Iteration**: 9
 
 ## Current Focus
-Two-sided √N-order bracket LANDED (session 2026-07-24): the Erdős–Turán
-(1941) modular construction — for odd prime p the set
-{2p·i + (i² mod p) : i < p} is Sidon in {0,…,2p²−1} — plus Bertrand
-(`Nat.bertrand`) gives `sidonNumber_gt_sqrt : h(N) > ⌊√(N/8)⌋` (N ≥ 32),
-real form `√N/4 ≤ h(N)`, and the bracket
-`sidonNumber_sqrt_bracket : √N/4 ≤ h(N) ≤ √(2N)+1`. The polynomial gap
-(previous lower bound was logarithmic, powers of two) is CLOSED.
+Reduction layer LANDED (iteration 9, same session): the $1000 `N^ε`
+conjecture's scaffolding is now formal. `Erdos30ConjectureAt ε` (single-
+exponent two-sided bound), `RequiredLowerBound ε` (Singer side, mirroring
+`RequiredUpperBound`), exponent-monotonicity for both families,
+`erdos30Conjecture_of_bounds` (the two one-sided families assemble the
+conjecture), `erdos30Conjecture_of_stronger` (O(1) ⟹ N^ε), and
+`erdos30ConjectureAt_half` — the proved bracket settles the ε = 1/2
+instance unconditionally (C = √2), so the open content lives strictly
+below ε = 1/2 (below 1/4 after Erdős–Turán). Builds on iteration 8's
+bracket `sidonNumber_sqrt_bracket : √N/4 ≤ h(N) ≤ √(2N)+1`.
 
 ## Active Approach
 Erdős–Turán construction proof = base-2p digit separation (`etMap_add_eq`,
@@ -23,8 +26,8 @@ p > 2). Exact table h(0..28) stands via the residue-class ladder
 (h(10)/h(21) parity, h(15) mod-3, h(28) mod-4) + span dichotomy searches.
 
 ## Attempt Count
-- Total attempts: 8 sessions
-- Current approach attempts: 1 (Erdős–Turán √N lower — landed)
+- Total attempts: 9 sessions
+- Current approach attempts: 1 (conjecture reduction layer — landed)
 - Approaches tried: parity wall, mod-3 class count, span dichotomy,
   mod-4 double count, Erdős–Turán modular construction
 
@@ -36,8 +39,12 @@ alone checked INSUFFICIENT at N=29 (a {4,2,1,1} arrangement with the missing
 value ≡ 2 mod 4 survives). Elementary layer near-saturated.
 
 ## Next Action
-Remaining targets are all DEEP: sharp constants (Singer projective-plane
-lower `(1−o(1))√N`; Lindström/BFR upper `√N + N^{1/4} + 1`), the $1000
-`N^ε`-error conjecture (open Prop), or the h(29..33) table wall (new
-invariant — mod-3×mod-4 combination / endpoint sum-collision pruning — or
-a ~376k kernel search). Treat elementary vein as SATURATED.
+Conjecture reduction scaffolding DONE (iteration 9) — the conjecture
+itself is now cleanly `∀ ε > 0, RequiredUpperBound ε ∧ RequiredLowerBound ε`
+up to assembly, with ε = 1/2 settled. Remaining targets are all DEEP:
+sharp constants (Singer projective-plane lower `(1−o(1))√N`, which would
+feed `RequiredLowerBound` for every ε; Lindström/BFR upper
+`√N + N^{1/4} + 1`, which would feed `RequiredUpperBound (1/4)`), or the
+h(29..33) table wall (new invariant — mod-3×mod-4 combination / endpoint
+sum-collision pruning — or a ~376k kernel search). Treat elementary vein
+as SATURATED.
