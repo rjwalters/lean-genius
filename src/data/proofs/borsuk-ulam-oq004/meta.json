@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "header-strategy",
+      "title": "Statement of the Open Question and Proof Strategy",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module docstring stating the parent's open question (is the dihedral lower bound tight?), the three-part strategy (uniform Finset.sup packaging, unconditional lower bound, tightness-to-upper-bound reduction), and the honesty note that all topological content is inherited from the parent's axiomatization. Followed by the imports and the dihedralLowerBound docstring.",
+      "mathContext": "The parent file proved the lower bound only case-by-case ($D_p$, $D_5$, $D_6$); this file's contribution is the uniform-in-$n$ packaging and the precise isolation of the one missing (Fadell-Husseini) ingredient, without adding any new axioms."
+    },
+    {
       "id": "uniform-formula",
       "title": "The Conjectured Exact Value, Uniform in n",
       "startLine": 60,
