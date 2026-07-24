@@ -89,11 +89,19 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: the real-variable Euler integral and its density",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring framing the real-variable goal: bring the complex diagonal Beta value B(n+1,n+1) (established over ℂ by the parent and sibling entries) down to the real integral ∫₀¹ xⁿ(1-x)ⁿ dx and its role as the normalizer of the symmetric Beta(n+1,n+1) density. States the three theorems to follow and previews the bridge technique (Complex.cpow_natCast + intervalIntegral.integral_ofReal). Imports the parent BetaIntegralRecurrence and sibling BetaCentralBinomial.",
+      "mathContext": "The real Euler integral ∫₀¹ xⁿ(1-x)ⁿ dx is the object this entry's open question actually asks for, versus the ℂ-valued Complex.betaIntegral the parent/sibling supply."
+    },
+    {
       "id": "bridge",
       "title": "The ℂ → ℝ bridge",
-      "startLine": 1,
+      "startLine": 35,
       "endLine": 52,
-      "summary": "Docstring framing the real-variable goal and the relation to the complex siblings. ofReal_integral_diag unfolds Complex.betaIntegral on the diagonal: the exponent (n+1)-1 reduces to n, Complex.cpow_natCast collapses the complex powers to monoid powers, the integrand becomes a cast real polynomial, and intervalIntegral.integral_ofReal (via integral_congr on [0,1]) descends the integral to ↑(∫₀¹ xⁿ(1-x)ⁿ).",
+      "summary": "open Complex intervalIntegral; namespace BetaIntegralRecurrenceOQ01OQ03. ofReal_integral_diag unfolds Complex.betaIntegral on the diagonal: the exponent (n+1)-1 reduces to n, Complex.cpow_natCast collapses the complex powers to monoid powers, the integrand becomes a cast real polynomial, and intervalIntegral.integral_ofReal (via integral_congr on [0,1]) descends the integral to ↑(∫₀¹ xⁿ(1-x)ⁿ).",
       "mathContext": "Complex.betaIntegral (n+1)(n+1) = ↑(∫ x in 0..1, xⁿ(1-x)ⁿ)."
     },
     {
