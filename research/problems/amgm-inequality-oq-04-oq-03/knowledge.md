@@ -97,16 +97,33 @@ To prove `ellipticK_eq_hyp2F1 : K(k) = (π/2) · ₂F₁(1/2, 1/2; 1; k²)`:
    converges for |x|<1.
 2. ✅ **Wallis closed form** (S3, `wallisHalf_even`, this session): the half-period
    integral ∫₀^{π/2} sin^{2n}θ dθ has the explicit central-binomial value.
-3. ⏳ **Binomial series**: (1−u)^(−1/2) = ∑ (centralBinom n / 4ⁿ) uⁿ for |u|<1.
-4. ⚙️ **Uniform summability** (in progress): on compact k-subsets of
-   (−1, 1), the series ∑ cₙ k^{2n} sin^{2n}θ is dominated and uniformly
-   summable in θ. S4a/b ship the M-test inputs
-   (`hypCoeff_mul_pow_abs_le_of_abs_le`,
-   `hyp2F1_mtest_inputs_on_closedBall`); S5 will wrap as
-   `TendstoUniformlyOn` via Mathlib's `tendstoUniformlyOn_tsum`.
-5. ⏳ **Sum/integral interchange**: DCT-style argument combining 3, 4 to compute
-   K(k) term by term, then close using 2 and 1.
+3. ✅ **Binomial series** (S6, 2026-07-24, §10): (1−u)^(−1/2) = ∑ (centralBinom n / 4ⁿ) uⁿ
+   for |u|<1 — `hasSum_inv_sqrt_one_sub`, plus `hasSum_ellipticIntegrand` landing it
+   pointwise on the K integrand at u = k²sin²θ. Consumed from Mathlib's
+   `Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero` (a = 1/2; the module
+   `Mathlib.Analysis.Analytic.Binomial` is NEW at the v4.31 pin). Coefficient identity
+   `Ring.choose (1/2 + n − 1) n = centralBinom n / 4ⁿ` via
+   `Ring.factorial_nsmul_multichoose_eq_ascPochhammer` +
+   `Polynomial.ascPochhammer_smeval_eq_eval` + the `succ_mul_centralBinom_succ` induction.
+4. ✅ **Uniform summability** (S4a/b M-test inputs; S5 `TendstoUniformlyOn` wrap +
+   continuity of hyp2F1 on the open unit ball, §9).
+5. ⏳ **Sum/integral interchange** (the ONLY remaining leg): all terms nonneg for
+   0 ≤ k² < 1, so Beppo Levi (`MeasureTheory.integral_tsum` after
+   intervalIntegral → set-integral conversion) or
+   `hasSum_integral_of_dominated_convergence` computes K(k) term by term; then
+   `wallisHalf_even` (leg 2) + `hypCoeff_eq_sq` assemble (π/2)·hyp2F1(k²) and the
+   axiom `ellipticK_eq_hyp2F1` becomes a theorem.
 
 The companion files in `Proofs/AmgmInequalityOQ04OQ03*.lean` are built so that legs
 can ship independently without rebasing on each other; the final composition step
-(leg 5) integrates them once leg 3 lands.
+(leg 5) integrates them — legs 1–4 are now all in place.
+
+## Session S6 gotchas (v4.31 pin)
+
+- Factorial notation `n !` no longer parses (expects no space); use `n.factorial`.
+- `EMetric.ball` / `EMetric.mem_ball` deprecated → `Metric.eball` / `Metric.mem_eball`;
+  membership proof shape: `rw [Metric.mem_eball, edist_dist, Real.dist_eq, sub_zero]`
+  then `ENNReal.ofReal_lt_one.mpr`.
+- `HasFPowerSeriesOnBall.hasSum` + `FormalMultilinearSeries.ofScalars_apply_eq` +
+  a coefficient rewrite + `Real.sqrt_eq_rpow` is the full consumption pattern for
+  Mathlib power-series lemmas stated with `.ofScalars`.
