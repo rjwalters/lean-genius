@@ -666,6 +666,126 @@ theorem pan_witness_t_zero_nondegenerate_root :
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   ring
 
+/-! ### The `k = 1` tangency along the Pan witness (S5b ACT, OQ-02.a)
+
+The scaffolds above reduced OQ-02.a to a statement about the *cleaned*
+resolvent `R̃(s; t) = s³ − 2s² + (4t² − t⁴)s − t⁴` along the Pan witness:
+the degenerate double root `s = 0` of the `t = 0` boundary perturbs, for
+`t ≠ 0`, into roots of size exactly `Θ(t²)` in `s` — hence
+`α = √s = Θ(t)`, the **first-order (`k = 1`) cancellation** of Ferrari's
+intermediate. The S4c Newton-polygon PREP showed `k ≥ 2` is unattainable
+in smooth families; this section shows `k = 1` is *attained*, pinning the
+tangency order.
+
+The quantitative form needs no asymptotic (`O`/`Θ`) infrastructure: for
+real `0 < t ≤ 1` the real cleaned resolvent changes sign on
+`(t²/4, t²)` — so it has a root `s = α²` there (IVT) — and is strictly
+negative on all of `[0, t²/4]` — so no root cancels faster. Together:
+every near-zero cancellation of `α²` along the Pan family happens at
+order *exactly* `t²`, i.e. `t/2 < α < t`. -/
+
+/-- The **real** cleaned resolvent along the Pan witness:
+`R̃(s; t) = s³ − 2s² + (4t² − t⁴)s − t⁴` with `t, s : ℝ`. The real form of
+`pan_witness_cleaned_resolvent`, suitable for sign analysis and the IVT. -/
+def panCleanedResolvent (t s : ℝ) : ℝ :=
+  s ^ 3 - 2 * s ^ 2 + (4 * t ^ 2 - t ^ 4) * s - t ^ 4
+
+/-- The real cleaned resolvent computes the (complex) resolvent cubic of the
+Pan witness under the substitution `m = (s + 1)/2` (`s = 2m + p` with
+`p = −1`): real roots of `panCleanedResolvent t` are genuine resolvent-cubic
+roots of the Ferrari data. Bridge between the real sign analysis below and
+the file's ℂ-valued Ferrari objects. -/
+theorem panCleanedResolvent_bridge (t s : ℝ) :
+    (resolventCubic (-1) ((t : ℂ) ^ 2) (1/4 - (t : ℂ) ^ 2 + (t : ℂ) ^ 4 / 4)).eval
+      (((s : ℂ) + 1) / 2) = (panCleanedResolvent t s : ℂ) := by
+  have h := pan_witness_cleaned_resolvent (t : ℂ) (s : ℂ)
+  rw [show ((s : ℂ) - (-1)) / 2 = ((s : ℂ) + 1) / 2 by ring] at h
+  rw [h]
+  simp only [panCleanedResolvent]
+  push_cast
+  ring
+
+/-- **No faster-than-`t²` cancellation**: the cleaned resolvent is strictly
+negative on the whole interval `0 ≤ s ≤ t²/4` (for `0 < t ≤ 1`). Certificate:
+`−R̃(s) = (t⁴ − 4t²s) + s·(t⁴ + 2s − s²) + s²·s·0…` — the first summand is
+nonnegative since `4t²s ≤ t⁴`, the second is nonnegative since `s ≤ 1/4 < 2`,
+and they cannot vanish simultaneously (`s = 0` forces the first to be `t⁴ > 0`).
+Hence any vanishing of `α² = s` along the Pan family is of order at least
+`t²/4`: the intermediate `α` cannot cancel at order higher than `t`. -/
+theorem pan_witness_no_root_below (t s : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1)
+    (hs0 : 0 ≤ s) (hs : s ≤ t ^ 2 / 4) : panCleanedResolvent t s < 0 := by
+  rcases eq_or_lt_of_le hs0 with rfl | hspos
+  · -- boundary `s = 0`: the value is exactly `−t⁴`
+    have h : panCleanedResolvent t 0 = -t ^ 4 := by
+      unfold panCleanedResolvent; ring
+    rw [h]
+    have : (0 : ℝ) < t ^ 4 := by positivity
+    linarith
+  · -- interior `s > 0`: `−R̃(s) = t²(t² − 4s) + t⁴s + s²(2 − s)`, with the
+    -- middle summand strictly positive
+    unfold panCleanedResolvent
+    nlinarith [mul_pos (pow_pos ht0 4) hspos,
+      mul_nonneg (sq_nonneg t) (by linarith : (0 : ℝ) ≤ t ^ 2 - 4 * s),
+      mul_nonneg (sq_nonneg s) (by nlinarith : (0 : ℝ) ≤ 2 - s)]
+
+/-- The cleaned resolvent is strictly positive at `s = t²` (any `t ≠ 0`):
+`R̃(t²; t) = t⁴`. The upper end of the sign-change bracket. -/
+theorem pan_witness_pos_at_t_sq (t : ℝ) (ht0 : t ≠ 0) :
+    0 < panCleanedResolvent t (t ^ 2) := by
+  have h : panCleanedResolvent t (t ^ 2) = t ^ 4 := by
+    unfold panCleanedResolvent; ring
+  rw [h]
+  positivity
+
+/-- **The `k = 1` tangency, real root-localization form** (S5b ACT,
+OQ-02.a). For every `0 < t ≤ 1` the cleaned resolvent of the Pan witness has
+a real root `s` with `t²/4 < s < t²`.
+
+Interpretation: `s = α²` where `α = √(2m + p)` is Ferrari's cancelling
+intermediate, so `t/2 < α < t` — the cancellation is of order **exactly**
+`t¹` (`k = 1`), matching the Newton-polygon prediction and completing the
+witness half of OQ-02.a: smooth families cannot do better than `k = 1`
+(S4c PREP), and the Pan family attains it. -/
+theorem pan_witness_k1_tangency (t : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1) :
+    ∃ s : ℝ, t ^ 2 / 4 < s ∧ s < t ^ 2 ∧ panCleanedResolvent t s = 0 := by
+  have hab : t ^ 2 / 4 ≤ t ^ 2 := by nlinarith [sq_nonneg t]
+  have hcont : ContinuousOn (panCleanedResolvent t) (Set.Icc (t ^ 2 / 4) (t ^ 2)) := by
+    apply Continuous.continuousOn
+    unfold panCleanedResolvent
+    fun_prop
+  have hneg : panCleanedResolvent t (t ^ 2 / 4) < 0 :=
+    pan_witness_no_root_below t (t ^ 2 / 4) ht0 ht1 (by positivity) le_rfl
+  have hpos : 0 < panCleanedResolvent t (t ^ 2) :=
+    pan_witness_pos_at_t_sq t (ne_of_gt ht0)
+  have hivt := intermediate_value_Ioo hab hcont
+  have h0 : (0 : ℝ) ∈ Set.Ioo (panCleanedResolvent t (t ^ 2 / 4))
+      (panCleanedResolvent t (t ^ 2)) := ⟨hneg, hpos⟩
+  obtain ⟨s, hs, hs0⟩ := hivt h0
+  exact ⟨s, hs.1, hs.2, hs0⟩
+
+/-- **The `k = 1` tangency, resolvent-cubic form** (S5b ACT capstone,
+OQ-02.a). For every `0 < t ≤ 1` the Pan-witness resolvent cubic
+`resolventCubic (−1) (t²) (1/4 − t² + t⁴/4)` has a **real** root `m` whose
+Ferrari intermediate `α² = 2m + p = 2m − 1` satisfies `t²/4 < 2m − 1 < t²`.
+
+This is the formal statement of OQ-02.a's exact-arithmetic stability
+witness at the tangency order the S4c Newton-polygon analysis pinned:
+along the Pan family the resolvent root exists in exact arithmetic, but its
+Ferrari intermediate `α = √(2m − 1) ∈ (t/2, t)` cancels linearly while the
+family stays uniformly well-separated — the `Ω(t⁻¹)`-amplification
+mechanism of Ferrari's formula near the biquadratic stratum. -/
+theorem pan_witness_k1_resolvent_root (t : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1) :
+    ∃ m : ℝ,
+      (resolventCubic (-1) ((t : ℂ) ^ 2) (1/4 - (t : ℂ) ^ 2 + (t : ℂ) ^ 4 / 4)).eval
+        ((m : ℂ)) = 0 ∧
+      t ^ 2 / 4 < 2 * m - 1 ∧ 2 * m - 1 < t ^ 2 := by
+  obtain ⟨s, hs1, hs2, hs0⟩ := pan_witness_k1_tangency t ht0 ht1
+  refine ⟨(s + 1) / 2, ?_, by linarith, by linarith⟩
+  have hbridge := panCleanedResolvent_bridge t s
+  rw [hs0] at hbridge
+  rw [show ((((s + 1) / 2 : ℝ) : ℂ)) = ((s : ℂ) + 1) / 2 by push_cast; ring]
+  simpa using hbridge
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
