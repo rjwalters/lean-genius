@@ -103,7 +103,8 @@
       "**Mathlib stops at the element; the corollaries are the content**: the three existence statements are direct re-exports, so the genuine contribution is the packaged subgroup / involution / contrapositive forms that Mathlib does not record.",
       "**An element of order p IS a subgroup of order p**: the cyclic group it generates, zpowers x, has cardinality orderOf x, so Cauchy's element form upgrades for free to the subgroup form that the Sylow theory actually consumes.",
       "**Even order ⟹ involution is just Cauchy at p = 2**: an element of order 2 is precisely a non-trivial self-inverse element, x * x = x^(orderOf x) = 1, making the classical involution lemma a one-line specialisation.",
-      "**`decide` sees the involution but not the order**: `addOrderOf` does not reduce under kernel computation, so the explicit orders in ZMod 6 are certified through addOrderOf_eq_prime (from the decidable facts p • x = 0 and x ≠ 0) rather than by deciding `addOrderOf x = p` directly — keeping the file free of `native_decide` and hence of Lean.ofReduceBool."
+      "**`decide` sees the involution but not the order**: `addOrderOf` does not reduce under kernel computation, so the explicit orders in ZMod 6 are certified through addOrderOf_eq_prime (from the decidable facts p • x = 0 and x ≠ 0) rather than by deciding `addOrderOf x = p` directly — keeping the file free of `native_decide` and hence of Lean.ofReduceBool.",
+      "**The contrapositive is a certificate, not just a restatement**: since G is a `Fintype`, `¬∃x, orderOf x = p` in `not_dvd_card_of_no_orderOf_eq` is a decidable finite search over the (finitely many) element orders of G — so the lemma yields an actual coprimality test for p ∤ |G| that never has to compute `Nat.card G` at all, only enumerate orders."
     ],
     "prerequisites": [
       "Finite groups, Lagrange's theorem, and the order of an element (orderOf)",

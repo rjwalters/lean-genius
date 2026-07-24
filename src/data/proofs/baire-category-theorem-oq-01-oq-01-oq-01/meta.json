@@ -162,12 +162,20 @@
       "mathContext": "Successive approximation: ‖h^[n] y‖ ≤ (1/2)^n‖y‖, ∑ u n converges, T (∑ u n) = y."
     },
     {
-      "id": "open-inverse-graph",
-      "title": "Open Mapping, Inverse Mapping and Closed Graph",
+      "id": "open-mapping-theorem",
+      "title": "The Open Mapping Theorem",
       "startLine": 198,
+      "endLine": 219,
+      "summary": "isOpenMap: controlled preimages make T an open map. Given an open s and y = T x in its image, the ε-ball around x in s transports through the norm bound ‖preimage‖ ≤ C‖z − y‖, so T '' s contains a ball around each of its points and is open.",
+      "mathContext": "If T has C-controlled preimages then T(B(x,ε)) ⊇ B(Tx, ε/C), so T is an open map."
+    },
+    {
+      "id": "inverse-and-closed-graph",
+      "title": "Inverse Mapping and Closed Graph Theorems",
+      "startLine": 220,
       "endLine": 255,
-      "summary": "isOpenMap: controlled preimages make T open. continuous_linearEquiv_symm: a continuous linear bijection is open, so its inverse is continuous. continuous_of_isClosed_graph: the first projection out of the closed (complete) graph subspace is a continuous linear bijection onto E, whose continuous inverse exhibits g as a composite of continuous maps.",
-      "mathContext": "IsOpenMap T; Continuous e.symm; Continuous g from a closed graph."
+      "summary": "continuous_linearEquiv_symm: a continuous linear bijection is open by the open mapping theorem, and 'open bijection' is exactly 'continuous inverse', so e.symm is continuous. continuous_of_isClosed_graph: the first projection out of the closed (hence complete) graph subspace is a continuous linear bijection onto E, whose continuous inverse exhibits g as a composite of continuous maps.",
+      "mathContext": "Continuous e.symm from IsOpenMap applied to a bijection; Continuous g from a closed graph via the projection bijection E ≃ g.graph."
     }
   ],
   "sorries": 0,
