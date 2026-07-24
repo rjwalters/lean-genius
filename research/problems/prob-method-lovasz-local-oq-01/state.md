@@ -1,11 +1,53 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S16 ACT COMPLETE (OQ-01-B WitnessTree skeleton landed in Part VI and Docker-verified at v4.31; next = S17 witness_valid / tree-probability bound)
+**Phase**: S17 ACT COMPLETE (witness_valid landed: relational deepest-attachment extraction + propriety theorem, host-verified at v4.31; next = S18 witness_prob_bd)
 **Path**: full
 **Since**: 2026-07-24
-**Iteration**: 18
-**Last Updated**: 2026-07-24 (S16 ACT, researcher-2 — WitnessTree skeleton verified, BLOCKED gates reverted)
+**Iteration**: 19
+**Last Updated**: 2026-07-24 (S17 ACT, researcher-3 — witness_valid verified)
+
+## S17 ACT — researcher-3, 2026-07-24
+
+**Mode**: ACT (substantive Lean delivery, host-verified).
+
+The S16 roadmap item `witness_valid` is landed as the second half of Part VI
+of `proofs/Proofs/MoserTardos.lean`: the Moser–Tardos §4 extraction is
+formalized *relationally* and every extracted tree is proved proper. File
+580 → 724 lines (+144); **0 new sorries, 0 new axioms** (file stays 0/0).
+Verification: host `lean` v4.31.0 elaboration against the pinned Mathlib
+oleans (researcher-1 sibling worktree, same pin as the S16 Docker build):
+0 errors, 0 warnings; `#print axioms witness_valid` = foundational only.
+
+Declarations (namespace `MTProblem.WitnessTree`):
+- `HasMatchAt j τ d` — depth-`d` vertex whose label's `Γ⁺` contains `j`
+  (same `∃ t ∈ ch` structural-recursion form as `isProper`; elaborated
+  first try).
+- `inductive Attach j τ d τ'` — leaf `j` attached under a matching vertex at
+  depth `d` (list-splitting `pre ++ t :: post` constructor for the recursive
+  case).
+- `AttachDeepest j τ τ'` — `∃ d`, attach at `d` + depth-maximality.
+- `Attach.hasMatchAt`, `Attach.labelOf_eq` — API lemmas.
+- `isProper_attach` — **the propriety core**: depth-maximal attachment
+  preserves `isProper`. Distinct-siblings step: a same-labelled existing
+  child of the target would be a strictly deeper match (`j ∈ Γ⁺(j)` via
+  `self_mem_inclNbhd`), contradicting maximality. Maximality is relativized
+  down the tree by `d' + 1 ≤ d + 1 → d' ≤ d` on the child hypothesis.
+- `inductive ExtractsFrom j log τ` — root + per-entry attach-or-skip (skip
+  only when NO depth matches, keeping the extraction faithful to MT §4).
+- `witness_valid` — **headline**: `ExtractsFrom j l τ → isProper τ`
+  (Moser–Tardos §4 propriety; step 2 of the `mt_expected_step_bound`
+  skeleton discharged).
+
+Design note: the extraction is a relation, not a program — the S18+
+probability bound only needs (a) the attachment site matches and (b) nothing
+matches deeper, which is exactly what the relation records; no `Decidable`/
+computability rework of `collisionAdj` is required (per the S16 deferral).
+
+**Next (S18)**: `witness_prob_bd` — for a fixed proper tree τ,
+Pr[τ appears in the execution] ≤ ∏_v uniformDrawProb (labelOf v), consuming
+`LLLAdmissibleUniform.lll_uniform`; this is where the `PMF.run` chain and the
+resample-table coupling enter. Then OQ-01-C Galton–Watson sum.
 
 ## S16 ACT — researcher-2, 2026-07-24
 

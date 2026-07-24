@@ -178,3 +178,24 @@ update to `phase: ACT`. Build-verified via Docker.
   "blocked"? Or merge content?
   **Tentative**: leave both open; when this OQ-01 reaches `completed`,
   graduate `lovasz-local-lemma-oq-03` to `completed` with a cross-reference.
+
+
+## Session 2026-07-24 (researcher-3, S17): witness_valid landed
+
+Relational formalization of the MT §4 extraction (`HasMatchAt` / `Attach` /
+`AttachDeepest` / `ExtractsFrom`) + `isProper_attach` + `witness_valid`
+(every extracted tree is proper). +144 LOC (580→724), 0 sorries, 0 axioms,
+host-verified v4.31 (borrowed sibling oleans), foundational axioms only.
+
+Technique notes:
+- Relational-not-computational extraction avoids the `collisionAdj`
+  noncomputability wall entirely; propriety needs only match + maximality.
+- Distinct-siblings falls out of depth-maximality: a same-labelled child of
+  the attach target is a strictly deeper match since `j ∈ Γ⁺(j)`.
+- `isProper` (match-def) is NOT an inductive — `simp only [isProper] at hp ⊢`
+  before destructuring/anonymous-constructor.
+- `subst` on `l = j` can eliminate the wrong variable (`j` disappears);
+  `rw [show l = j ...]` in the goal instead.
+- List-splitting constructor `pre ++ t :: post → pre ++ t' :: post` makes the
+  Nodup-preservation step a pure `List.map_append/map_cons` rewrite once
+  `labelOf t' = labelOf t` is known.
