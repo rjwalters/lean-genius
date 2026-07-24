@@ -54,11 +54,18 @@
       "summary": "Module docstring explaining the ∞-topos section problem for the universal ℤ/2-bundle, why a literal synthetic-HoTT proof is unavailable in Lean's proof-irrelevant foundation, and the fundamental-group route taken instead. Imports Mathlib and opens the namespace."
     },
     {
-      "id": "sec-oq0403-obstruction",
-      "title": "The π₁-Level Section Obstruction",
+      "id": "sec-oq0403-injectivity",
+      "title": "The π₁-Level Section Obstruction, Part I: Injectivity and Cardinality",
       "startLine": 62,
+      "endLine": 89,
+      "summary": "For an abstract pair (p, s) modelling (p_*, s_*): section_injective proves a homomorphism section is injective (the base π₁(B) embeds into the total π₁(E)), and card_le_of_section upgrades this to the cardinality inequality |π₁(B)| ≤ |π₁(E)| in the finite case — for the universal ℤ/2-bundle this instantiates to the already-impossible 2 ≤ 1."
+    },
+    {
+      "id": "sec-oq0403-obstruction",
+      "title": "The π₁-Level Section Obstruction, Part II: Surjectivity and Non-Existence",
+      "startLine": 91,
       "endLine": 108,
-      "summary": "Pure group theory for an abstract pair (p, s) modelling (p_*, s_*): section_injective (a homomorphism section is injective), card_le_of_section (a section forces |π₁(B)| ≤ |π₁(E)|), projStar_surjective_of_section (p_* is a split epimorphism), and the core no_section_of_trivial_total (trivial total group + nontrivial base group ⟹ no section)."
+      "summary": "projStar_surjective_of_section shows a section forces p_* to be a split epimorphism, and the core theorem no_section_of_trivial_total combines this with injectivity to rule out any section when π₁(E) is trivial (Subsingleton) and π₁(B) is nontrivial — the algebraic heart of \"contractible total space ⟹ no section over a space with nontrivial π₁\"."
     },
     {
       "id": "sec-oq0403-structure",
