@@ -142,7 +142,8 @@
       "Power-mean equality is governed by a single instance of the strict-Jensen equality case: feeding the powered data z_i^r into the equality criterion for the strictly convex map x ↦ x^{t/r} pins down equality of the means exactly when the data is constant — the same engine the grandparent uses with exp for AM–GM, here with a power function.",
       "Strict convexity of x ↦ x^{t/r} requires t/r > 1, i.e. r < t strictly; this is precisely why the equality characterization needs strict inequality of exponents (at r = t the means are trivially equal regardless of the data).",
       "Both translations — from A^{t/r} = B to M_r = M_t, and from 'each z_j^r equals the mean' to 'all z_j equal' — are powered by injectivity of x ↦ x^c on the nonnegative reals (Real.rpow_left_inj), once for the exponent t (comparing the means) and once for r (comparing the data).",
-      "The strict QM–AM inequality (am_lt_qm_of_ne) drops out as the r=1, t=2 instance: the quadratic mean strictly exceeds the arithmetic mean for any non-constant family, the inequality underlying strict positivity of variance."
+      "The strict QM–AM inequality (am_lt_qm_of_ne) drops out as the r=1, t=2 instance: the quadratic mean strictly exceeds the arithmetic mean for any non-constant family, the inequality underlying strict positivity of variance.",
+      "power_mean_lt_of_ne needs no fresh convexity argument at all: it is assembled purely by combining the parent's non-strict bound M_r ≤ M_t with the iff power_mean_eq_iff_pos via lt_of_le_of_ne — non-constant data rules out the equality case, so the non-strict inequality is forced to be strict. This is a reusable pattern: once a monotonicity result and its exact equality characterization are both in hand, every strict refinement follows for free by trichotomy, with no further analytic work."
     ]
   }
 }
