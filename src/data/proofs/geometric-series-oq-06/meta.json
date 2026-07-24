@@ -127,6 +127,11 @@
       "targetId": "geometric-series-oq-03",
       "relationship": "sibling",
       "description": "The Euler-product entry uses the same plain geometric series per prime factor; this entry differentiates it instead."
+    },
+    {
+      "targetId": "summation-by-parts-oq-01",
+      "relationship": "refined-by",
+      "description": "Proves the exact finite partial sum ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² over any field, with no convergence hypothesis — the algebraic skeleton whose ‖r‖<1 limit is this entry's infinite identity ∑ n·rⁿ = r/(1−r)²."
     }
   ],
   "sorries": 0,
