@@ -128,8 +128,8 @@ theorem not_isPreconnected_quadratic_lemniscate {a b : ℂ} {C : ℝ} (hC : 0 < 
     (quadratic_lemniscate_subset_union a b hC.le)
     ⟨a, hmema, hballa⟩ ⟨b, hmemb, hballb⟩
   have hdisj := sqrt_balls_disjoint hC hsep
-  rw [Set.eq_empty_iff_forall_not_mem] at hdisj
-  exact hdisj z hz
+  rw [hdisj] at hz
+  exact Set.notMem_empty z hz
 
 /-- The quadratic lemniscate is not connected in the separated regime. -/
 theorem not_isConnected_quadratic_lemniscate {a b : ℂ} {C : ℝ} (hC : 0 < C)
@@ -215,7 +215,7 @@ theorem not_isPathConnected_levelSet_three {C : ℝ} (hC : 0 < C) (hC' : C < 3 /
 theorem cyclotomic_four : cyclotomic 4 ℂ = X ^ 2 + 1 := by
   have h := cyclotomic_expand_eq_cyclotomic Nat.prime_two (dvd_refl 2) ℂ
   norm_num at h
-  rw [← h, cyclotomic_two, map_add, expand_X, map_one]
+  exact h.symm
 
 /-- `Φ₄` factors over its two roots: `Φ₄(z) = (z − i)(z + i)`. -/
 theorem cyclotomic_four_eval_factor (z : ℂ) :
