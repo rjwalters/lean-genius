@@ -367,6 +367,124 @@ theorem cnorm3_not_surjective : ¬ Function.Surjective cnorm3 := by
   exact cnorm_ne_seven p.1 p.2.1 p.2.2 hp
 
 /-
+## Inert primes in general: infinitely many non-norms (Session 8)
+
+Session 7 treated the single prime 7. This section extracts the argument into a
+*generic descent lemma*: for ANY modulus p at which the norm form is anisotropic
+(equivalently, x³ - 2 has no root pattern making the form isotropic — for prime p this
+means p is inert in ℚ(∛2)), an integer m with p ∣ m but p³ ∤ m is never a norm
+(`cnorm_ne_of_anisotropic`). The p = 7 results become the first instance; new kernel
+`decide` checks give the anisotropy at the further inert primes 13 and 19
+(2 is a cubic non-residue mod 13 and mod 19), yielding new non-norms ±13, ±19 — and,
+via the p = 7 family {7·(1 + 49k)}, the capstone: **the set of non-norm integers is
+infinite** (`non_norms_infinite`). Combined with S6's dichotomy, every integer falls in
+one of two classes: N(ξ) = m has infinitely many solutions, or none — and both classes
+are infinite.
+-/
+
+/-- **Generic anisotropy ⟹ divisibility descent.** If the norm form is anisotropic
+    mod p (its only zero over ZMod p is trivial), then p ∣ N(a,b,c) forces p to divide
+    each coordinate. Converse: homogeneity of degree 3. Generalizes
+    `seven_dvd_cnorm_iff` to any modulus. -/
+theorem dvd_cnorm_iff_of_anisotropic (p : ℕ) [NeZero p]
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0)
+    (a b c : ℤ) :
+    (p : ℤ) ∣ cnorm a b c ↔ (p : ℤ) ∣ a ∧ (p : ℤ) ∣ b ∧ (p : ℤ) ∣ c := by
+  constructor
+  · intro h
+    have hp : ((cnorm a b c : ℤ) : ZMod p) = 0 :=
+      (ZMod.intCast_zmod_eq_zero_iff_dvd _ p).mpr h
+    rw [cnorm] at hp
+    push_cast at hp
+    obtain ⟨ha, hb, hc⟩ := haniso (a : ZMod p) (b : ZMod p) (c : ZMod p) hp
+    exact ⟨(ZMod.intCast_zmod_eq_zero_iff_dvd a p).mp ha,
+           (ZMod.intCast_zmod_eq_zero_iff_dvd b p).mp hb,
+           (ZMod.intCast_zmod_eq_zero_iff_dvd c p).mp hc⟩
+  · rintro ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩
+    exact ⟨(p : ℤ) ^ 2 * cnorm a' b' c', by simp only [cnorm]; ring⟩
+
+/-- Anisotropy mod p bootstraps p ∣ N into p³ ∣ N: divide out one p from each
+    coordinate and use homogeneity. The single descent step. -/
+theorem cube_dvd_cnorm_of_dvd (p : ℕ) [NeZero p]
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0)
+    (a b c : ℤ) (h : (p : ℤ) ∣ cnorm a b c) : (p : ℤ) ^ 3 ∣ cnorm a b c := by
+  obtain ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩ :=
+    (dvd_cnorm_iff_of_anisotropic p haniso a b c).mp h
+  exact ⟨cnorm a' b' c', by simp only [cnorm]; ring⟩
+
+/-- **Generic non-norm criterion.** If the norm form is anisotropic mod p and m has
+    p-adic valuation 1 or 2 (p ∣ m but p³ ∤ m), then m is not a norm. This packages the
+    entire S7 argument for arbitrary inert p: one lemma, infinitely many non-norms. -/
+theorem cnorm_ne_of_anisotropic (p : ℕ) [NeZero p]
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0)
+    (m : ℤ) (hdvd : (p : ℤ) ∣ m) (hndvd : ¬ (p : ℤ) ^ 3 ∣ m)
+    (a b c : ℤ) : cnorm a b c ≠ m := by
+  intro h
+  subst h
+  exact hndvd (cube_dvd_cnorm_of_dvd p haniso a b c hdvd)
+
+/-- **The norm form is anisotropic mod 13**: 2 is a cubic non-residue mod 13 (the cubes
+    mod 13 are {0, 1, 5, 8, 12}), so x³ - 2 is irreducible over 𝔽₁₃ and 13 is inert in
+    ℚ(∛2). Finite kernel `decide` over the 13³ = 2197 residue triples. -/
+theorem cnorm_anisotropic_mod13 :
+    ∀ a b c : ZMod 13,
+      a ^ 3 + 2 * b ^ 3 + 4 * c ^ 3 - 6 * a * b * c = 0 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  decide
+
+/-- **The norm form is anisotropic mod 19**: 2 is a cubic non-residue mod 19 (the cubes
+    mod 19 are {0, 1, 7, 8, 11, 12, 18}), so 19 is inert in ℚ(∛2). Finite kernel
+    `decide` over the 19³ = 6859 residue triples. -/
+theorem cnorm_anisotropic_mod19 :
+    ∀ a b c : ZMod 19,
+      a ^ 3 + 2 * b ^ 3 + 4 * c ^ 3 - 6 * a * b * c = 0 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  decide
+
+/-- 13 is never a norm — the p = 13 instance of the generic criterion. -/
+theorem cnorm_ne_thirteen (a b c : ℤ) : cnorm a b c ≠ 13 :=
+  cnorm_ne_of_anisotropic 13 cnorm_anisotropic_mod13 13 (by norm_num) (by norm_num) a b c
+
+/-- 19 is never a norm — the p = 19 instance. -/
+theorem cnorm_ne_nineteen (a b c : ℤ) : cnorm a b c ≠ 19 :=
+  cnorm_ne_of_anisotropic 19 cnorm_anisotropic_mod19 19 (by norm_num) (by norm_num) a b c
+
+/-- 91 = 7·13 is never a norm: it suffices that ONE inert prime (here 7) divides it to
+    the wrong power. Composite non-norms come for free from the generic criterion. -/
+theorem cnorm_ne_ninety_one (a b c : ℤ) : cnorm a b c ≠ 91 :=
+  cnorm_ne_of_anisotropic 7 cnorm_anisotropic_mod7 91 (by norm_num) (by norm_num) a b c
+
+/-- N(ξ) = 13 has no integral solution (companion to `norm_eq_seven_no_solution`). -/
+theorem norm_eq_thirteen_no_solution : {p : ℤ × ℤ × ℤ | cnorm3 p = 13} = ∅ := by
+  ext ⟨a, b, c⟩
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, cnorm3]
+  exact cnorm_ne_thirteen a b c
+
+/-- **The set of non-norms is infinite.** The family m_k = 7·(1 + 49k) consists of
+    pairwise-distinct integers with 7-adic valuation exactly 1, so by the generic
+    criterion none is a norm. Together with S6 (every attainable nonzero value is
+    attained infinitely often) this completes the two-sided picture: the value
+    spectrum of the cubic norm form splits ℤ \ {0} into two classes — values attained
+    infinitely often, and values never attained — and BOTH classes are infinite. -/
+theorem non_norms_infinite :
+    {m : ℤ | ∀ p : ℤ × ℤ × ℤ, cnorm3 p ≠ m}.Infinite := by
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun k : ℕ => (7 : ℤ) * (1 + 49 * (k : ℤ)))
+  · intro j k hjk
+    simp only at hjk
+    omega
+  · intro k
+    simp only [Set.mem_setOf_eq]
+    rintro ⟨a, b, c⟩
+    simp only [cnorm3]
+    refine cnorm_ne_of_anisotropic 7 cnorm_anisotropic_mod7 _ ?_ ?_ a b c
+    · exact ⟨1 + 49 * (k : ℤ), by push_cast; ring⟩
+    · rw [show ((7 : ℕ) : ℤ) ^ 3 = 343 by norm_num]
+      rintro ⟨t, ht⟩
+      omega
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its
@@ -403,12 +521,23 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
    m ≠ 0, if N(ξ) = m is solvable it has infinitely many integral solutions, the
    unit-orbit {ξ₀·uᵏ} (`norm_eq_solutions_infinite`, `cmul_chain_injective`);
    e.g. N(ξ) = 2 (`norm_two_solutions_infinite`). The m = 1 case recovers item 5.
-7. (NEW, S7) **Non-surjectivity / a non-norm.** The norm form is anisotropic mod 7
+7. (S7) **Non-surjectivity / a non-norm.** The norm form is anisotropic mod 7
    (`cnorm_anisotropic_mod7`, finite kernel `decide`: x³-2 is irreducible over 𝔽₇, so 7
    is inert), hence 7 ∣ N forces 7 ∣ a,b,c (`seven_dvd_cnorm_iff`) and 343 ∣ N. Thus
    7 is never a norm (`cnorm_ne_seven`, `cnorm_ne_neg_seven`): N(ξ) = 7 has **no**
    solution (`norm_eq_seven_no_solution`) and N is **not surjective**
    (`cnorm3_not_surjective`) — the empty counterpart to item 6's N = 2.
+8. (NEW, S8) **Generic inert-prime descent + infinitude of non-norms.** The S7
+   argument extracted to any modulus: anisotropy mod p gives the divisibility descent
+   (`dvd_cnorm_iff_of_anisotropic`, `cube_dvd_cnorm_of_dvd`) and the non-norm
+   criterion — p ∣ m, p³ ∤ m ⟹ m is not a norm (`cnorm_ne_of_anisotropic`). New
+   kernel-`decide` anisotropy at the inert primes 13 (`cnorm_anisotropic_mod13`) and
+   19 (`cnorm_anisotropic_mod19`) yields new non-norms (`cnorm_ne_thirteen`,
+   `cnorm_ne_nineteen`, `norm_eq_thirteen_no_solution`) and composites
+   (`cnorm_ne_ninety_one`, 91 = 7·13). Capstone: the family 7·(1 + 49k) shows the set
+   of non-norms is **infinite** (`non_norms_infinite`) — with S6, the value spectrum
+   of N splits into two classes (attained infinitely often / never attained), both
+   infinite.
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
