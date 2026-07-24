@@ -128,21 +128,25 @@ def SignedLabeling (V : Type*) (n : ℕ) := V → Fin n × Bool
 def IsComplementaryEdge {V : Type*} {n : ℕ} (L : SignedLabeling V n) (u v : V) : Prop :=
   ∃ k : Fin n, (L u = (k, true) ∧ L v = (k, false)) ∨ (L u = (k, false) ∧ L v = (k, true))
 
-/-- Tucker's lemma: any antipodal labeling of a triangulated ball has a
-    complementary edge. This is the combinatorial foundation of the
-    PPAD-completeness result.
+/- **Tucker's lemma (not axiomatized here).** Tucker's lemma states that any
+   antipodal labeling of a triangulated ball has a complementary edge — the
+   combinatorial foundation of the PPAD-completeness result.
 
-    We state this for a finite simplicial complex with an antipodal
-    labeling on the boundary. -/
-axiom tuckers_lemma (n : ℕ) (hn : n ≥ 1)
-    (V : Type) [Fintype V] [DecidableEq V]
-    (edges : Set (V × V))
-    (boundary : Set V)
-    (antipodal_map : V → V)
-    (L : SignedLabeling V n)
-    -- Antipodal condition on boundary
-    (h_antipodal : ∀ v ∈ boundary, L (antipodal_map v) = (⟨(L v).1, !(L v).2⟩)) :
-    ∃ u v, (u, v) ∈ edges ∧ IsComplementaryEdge L u v
+   We deliberately do NOT axiomatize the general statement. A naive axiom of
+   the form "for any finite `V`, edge set, boundary and antipodal map, an
+   antipodal boundary labeling forces a complementary edge" is *false*, hence
+   kernel-inconsistent: instantiating with `V := Empty`, `edges := ∅`,
+   `boundary := ∅` makes the antipodal hypothesis vacuously true while the
+   conclusion `∃ u v, ...` is unsatisfiable, so `False` becomes derivable. The
+   real hypothesis — that `(V, edges)` is the 1-skeleton of an antipodally
+   symmetric triangulation of a ball, with `antipodal_map` an involution and a
+   genuine boundary condition — requires simplicial-complex infrastructure not
+   yet available in Mathlib.
+
+   The bare lemma is not invoked by any theorem in this file (only
+   `borsuk_ulam_exact` is used, to derive the approximate version), so no result
+   here depends on it; we record the statement here as documentation rather than
+   as an unsound axiom. -/
 
 -- ============================================================
 -- PART 6: PPAD Complexity Class
@@ -321,7 +325,7 @@ The PPAD-completeness means:
 2. But no polynomial-time algorithm exists (unless PPAD ⊆ P)
 3. The problem sits strictly between P and NP-hard
 
-Axioms: 3 (borsuk_ulam_exact, tuckers_lemma, ppad_solution_exists)
+Axioms: 1 (borsuk_ulam_exact)
 Sorries: 0
 -/
 
