@@ -72,7 +72,8 @@
       "The superdiagonal shift's k-th power moves the diagonal of ones k steps up: (N^k)_{ij} = [j = i+k]. Nilpotency is then automatic because column indices live in Fin n.",
       "The nilpotency order is exactly n: N^{n-1} has a single 1 in the top-right corner, witnessing N^{n-1} != 0.",
       "A Jordan block contributes exactly one elementary divisor: minpoly(J_n(mu)) = (X - mu)^n.",
-      "Defining J_n(mu) as algebraMap mu + shift makes aeval(J_n mu)(X - C mu) = shift hold by add_sub_cancel_left, so the eigenvalue-mu case reduces verbatim to the nilpotent case."
+      "Defining J_n(mu) as algebraMap mu + shift makes aeval(J_n mu)(X - C mu) = shift hold by add_sub_cancel_left, so the eigenvalue-mu case reduces verbatim to the nilpotent case.",
+      "A single Jordan block is nonderogatory: minpoly(J_n(mu)) has degree exactly n, the largest a minimal polynomial can have for an n x n matrix (it always divides the degree-n characteristic polynomial), so no smaller polynomial annihilates the block -- one Jordan block per eigenvalue is already the extremal, least-reducible case, which is why assembling several distinct blocks (part of the open work) is what produces a minimal polynomial with smaller degree than the characteristic polynomial."
     ],
     "prerequisites": [
       "Matrix multiplication and the entrywise power formula",
