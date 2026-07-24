@@ -22,30 +22,34 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "S3 (researcher-2, 2026-07-24): ACT — Part 12 Cauchy-estimate bridge landed. Unconditional μ(r) ≤ M(r) for every genuinely entire function (no coefficient hypothesis): FormalMultilinearSeries.ofScalars packages the coefficients, IsEntire forces radius = ⊤, the sum function is differentiable, one-dimensional uniqueness identifies the scalar series with cauchyPowerSeries, and norm_cauchyPowerSeries_le bounds ‖aₙ‖rⁿ by the circle average ≤ M(r). Corollaries termModulusRatio_le_one and limit_mem_Icc (L ∈ [0,1]) now unconditional. 10 new axiom-free theorems, 0 new sorries. Docker build exit 0. Sorry/axiom profile unchanged (1 sorry, 3 axioms — Clunie/Clunie–Hayman/Wiman–Valiron, absent from Mathlib).",
+    "iteration": 4,
+    "focus": "S4 (researcher-3, 2026-07-24): ACT — Part 13 polish veins drained. isEntire_iff_radius_eq_top (IsEntire <-> ofScalars radius = top, converse via summable_norm_mul_pow); norm_seriesSum_le_maxModulus (maximum modulus principle: M(r) bounds the whole closed disk, via Complex.norm_le_of_forall_mem_frontier_norm_le on the ball, frontier_ball/closure_ball); maxModulus_mono and maxTerm_mono (monotonicity of M(r) and mu(r), the standing Wiman-Valiron assumptions). 5 new axiom-free theorems, 0 new sorries. Host-verified v4.31 (lake env lean, sibling cache). Sorry/axiom profile unchanged (1 sorry, 3 axioms).",
     "blockers": [],
-    "nextAction": "Only small polish veins remain (Complex.AbsMax maximum-principle restatement of maxModulus; AnalyticAt characterisation of IsEntire) — or stand down. Do NOT re-attempt axiom/sorry elimination; route 1 (HasFPowerSeriesOnBall bridge) is done.",
+    "nextAction": "STAND DOWN — both polish veins named after S3 are now done (AnalyticAt/radius characterisation AND AbsMax maximum-principle restatement, plus monotonicity corollaries). Remaining sorry + 3 axioms are DEEP (Clunie/Clunie-Hayman/Wiman-Valiron, absent from Mathlib); do NOT re-attempt. No polish veins remain.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Elementary layer (Part 11) AND complex-analytic bridge (Part 12) both saturated: μ(r) ≤ M(r) holds unconditionally via Cauchy's estimate; ratio ≤ 1 and limit ∈ [0,1] axiom-free for all genuinely entire functions. Remaining sorry + 3 axioms are DEEP (Wiman–Valiron / Clunie–Hayman theory absent from Mathlib).",
+    "progressSummary": "Elementary layer (Part 11), complex-analytic bridge (Part 12) and polish layer (Part 13: radius characterisation of IsEntire, disk maximum principle, monotonicity of M(r)/mu(r)) all saturated and axiom-free. Remaining sorry + 3 axioms are DEEP (Wiman-Valiron / Clunie-Hayman theory absent from Mathlib). Entry is complete short of deep theory.",
     "builtItems": [
       "IsEntire predicate + maxTerm_nonneg/maxModulus_nonneg (Erdos227Problem.lean Part 11)",
       "norm_series_term / summable_series_term / norm_tsum_le_sum_norm / bddAbove_range_norm / maxModulus_le_tsum (circle-of-radius-r toolkit)",
       "norm_tsum_at_zero_of_nonneg + maxTerm_le_maxModulus_of_nonneg (mu(r) <= M(r), Clunie setting)",
       "termModulusRatio_le_one_of_nonneg + limit_mem_Icc_of_nonneg (ratio limit in [0,1], axiom-free)",
-      "expFunction + expFunction_coeff_nonneg + expFunction_isEntire + expFunction_ratio_le_one (exp witness)"
+      "expFunction + expFunction_coeff_nonneg + expFunction_isEntire + expFunction_ratio_le_one (exp witness)",
+      "isEntire_iff_radius_eq_top (Erdos227Problem.lean Part 13)",
+      "norm_seriesSum_le_maxModulus_of_mem_sphere + norm_seriesSum_le_maxModulus (disk maximum principle)",
+      "maxModulus_mono + maxTerm_mono (monotonicity in r)"
     ],
     "insights": [
       "EntireFunction structure imposes NO convergence: divergent-coefficient members give junk tsum=0/iSup=0, making ratio identically 0 for large r — so the axioms remain sound over the weak structure (junk regime always yields L=0)",
       "The lone sorry (positive_coeffs_normal) asserts existence of the limit for nonneg coeffs — that existence IS Clunie s unpublished theorem; do not close it with an axiom or a False-risking strengthening",
       "mu(r) <= M(r) for nonneg coeffs needs no Cauchy integral: each term a_n r^n is a summand of f(r) = M-candidate at theta=0; general-coefficient mu <= M genuinely needs Cauchy estimates (Mathlib bridge to HasFPowerSeriesOnBall would be ~300-500 lines)",
-      "Complex.ofReal_tsum (not RCLike.ofReal_tsum) is the syntactically-matching rewrite for coercion-through-tsum in goals elaborated with Complex.ofReal"
+      "Complex.ofReal_tsum (not RCLike.ofReal_tsum) is the syntactically-matching rewrite for coercion-through-tsum in goals elaborated with Complex.ofReal",
+      "Beta-unreduced ciSup goals: rintro x <n, rfl> over Set.range leaves (fun n => ...) n unapplied; rw fails to find the pattern — insert a `show` with the beta-reduced statement first"
     ],
     "mathlibGaps": [
       "Wiman-Valiron theory (maximum term, central index) absent from Mathlib",
@@ -53,7 +57,6 @@
       "No lemma linking a raw coefficient sequence to HasFPowerSeriesOnBall without building the FormalMultilinearSeries by hand"
     ],
     "nextSteps": [
-      "OPTIONAL (300-500 lines): bridge EntireFunction+IsEntire to Mathlib power-series API and prove unconditional mu(r) <= M(r) via Cauchy estimates",
       "DEEP (do not attempt from Mathlib): eliminate positive_coeffs_normal sorry (needs Clunie limit-existence) or any of the 3 axioms"
     ],
     "markdown": "# Knowledge Base: erdos-227-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
