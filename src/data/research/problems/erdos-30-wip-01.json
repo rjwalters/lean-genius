@@ -19,11 +19,22 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 3,
-    "focus": "h(22)..h(27) SHIPPED (2026-07-23): table extended to h(0..27). h(22)=h(23)=h(24)=6 via the SCALED span dichotomy chained across three N values: slide down by the minimum; reduced span appeals to the previous N's obstruction (anchored at the merged h(21) parity theorem no_sidon_card_seven_range_twentytwo), span=N pins endpoints {0,N} and the FIVE interior elements fall to decide +kernel over C(N-1,5) subsets (20349 / 26334 / 33649 candidates for N=22,23,24). h(25)=h(26)=h(27)=7: the optimal 7-mark Golomb ruler {0,1,4,10,18,23,25} (span 25, sharp by no_sidon_card_seven_range_twentyfive) gives the witness, certified via the new converse bridge isSidonSet_of_sidonCheck (decide replaces the 7^4=2401-case rcases sweep); counting blocks eight (64 > 2N+8 through N=27).",
-    "blockers": [],
-    "nextAction": "Table h(0..27) complete. Next wall is N=28: counting goes slack for eight (64 = 2*28+8) and the optimal 8-mark ruler {0,1,4,9,15,22,32,34} has span 34, so h(28..33) need per-N nonexistence of an 8-element Sidon set — span dichotomy would need C(N-1,6) kernel searches (~296k at N=28, likely still feasible but growing). Or pivot to the DEEP targets: Singer/Bose difference-set lower bound h(N)>=(1-o(1))sqrt(N) (finite projective geometry, likely axiomatize), N^{1/4} constant refinement, and the $1000 N^eps conjecture (stays a Prop).",
+    "since": "2026-07-24T18:00:00.000Z",
+    "iteration": 4,
+    "focus": "h(29) = 7 LANDED via verified backtracking search (recovered from stranded branch research/erdos30-wip01-h29 — session died after push, before PR; evening session cherry-picked onto fresh main, resolved append conflict vs the Erdos-Turan section, host-verified, PRd). Engine: searchOK (pruned backtracking, 26651 extension tests vs C(28,6)=376740 flat) + completeness lemma searchOK_complete + one decide +kernel evaluation, chained through the span dichotomy to no_sidon_card_eight_range_thirty and sidonNumber_twentynine. Exact table now COMPLETE h(0..29). Evening session also closed the residue-counting route exhaustively (all moduli 2..16 have surviving profiles) and measured kernel costs (flat search 11 CPU-hours — infeasible; Finset.sort kernel-irreducible; list-native formulation 20-100x faster as scaling fallback).",
+    "blockers": [
+      {
+        "route": "single-modulus residue-class double counting for h(29..33)",
+        "reopenCriterion": "materially new mechanism required (constraints beyond class counts — exhaustively checked m=2..16, all have surviving profiles)",
+        "blockedAt": "2026-07-24"
+      },
+      {
+        "route": "flat powersetCard kernel search for span-29",
+        "reopenCriterion": "kernel throughput improvement or list-native reformulation (measured ~105 ms/candidate, C(28,6) = 11 CPU-hours)",
+        "blockedAt": "2026-07-24"
+      }
+    ],
+    "nextAction": "h(30)..h(33) = 7: each is one searchOK_complete application (searchOK {0,N} 1 (N-1) 6 = false) plus a constant-bumped copy of no_sidon_card_eight_range_thirty chained to the previous range theorem; then h(34) = 8 via the optimal 8-mark ruler witness {0,1,4,9,15,22,32,34}. Watch kernel cost growth; switch the engine inner check to the list-native formulation (sublistsLen/diffList/Nodup) if a wall exceeds ~10 min kernel time.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Two-sided √N bounds COMPLETE: √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 49 (Erdős–Turán construction + Bertrand; 0 axioms) — order of magnitude h(N) ≍ √N settled elementarily. Exact table h(0..28) complete. NEXT wall: h(29..33) (missing diff d ≡ 2 mod 4 now pinned; residue invariants alone insufficient; span-29 search ≈192k after sum-collision pruning). DEEP remaining: N^{1/4} refinement (exact Erdős–Turán form), Singer (1−o(1))√N constant, $1000 N^ε conjecture.",
+    "progressSummary": "2026-07-24: h(29) = 7 landed — first non-forced-ruler wall, via a verified backtracking search engine (searchOK + completeness + decide +kernel; 26651 tests vs 376740 flat). Exact Sidon table complete h(0..29); two-sided bounds sqrt(N)/4 <= h(N) <= sqrt(2N)+1 for N >= 49. Counting route for h(29..33) exhaustively closed (all moduli 2..16 fail). Engine is parametric — h(30..33) are one application each, then h(34) = 8 witness completes the 8-mark story. Two-sided √N bounds COMPLETE: √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 49 (Erdős–Turán construction + Bertrand; 0 axioms) — order of magnitude h(N) ≍ √N settled elementarily. Exact table h(0..28) complete. NEXT wall: h(29..33) (missing diff d ≡ 2 mod 4 now pinned; residue invariants alone insufficient; span-29 search ≈192k after sum-collision pruning). DEEP remaining: N^{1/4} refinement (exact Erdős–Turán form), Singer (1−o(1))√N constant, $1000 N^ε conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -61,7 +72,12 @@
       "etMap/etSet + base_two_p_eq + et_quadratic (private) in Erdos30WIP01.lean",
       "sidonNumber_ge_of_odd_prime: p ≤ sidonNumber (2p²−1)",
       "sidonNumber_sqrt_lower: Nat.sqrt((N+1)/2)/2 < sidonNumber N for N ≥ 49",
-      "sidonNumber_ge_real_sqrt: √N/4 ≤ h(N) for N ≥ 49 (0 axioms)"
+      "sidonNumber_ge_real_sqrt: √N/4 ≤ h(N) for N ≥ 49 (0 axioms)",
+      "searchOK (Erdos30WIP01.lean ~1908) — pruned backtracking Sidon-extension search engine, parametric in interval and count",
+      "searchOK_complete (Erdos30WIP01.lean ~1930) — completeness: any true extension is rediscovered smallest-element-first",
+      "search_zero_twentynine_eq_false (Erdos30WIP01.lean ~1970) — the kernel-verified span-29 search",
+      "no_sidon_card_eight_range_thirty (Erdos30WIP01.lean ~1980) — span dichotomy chaining h(28) + the search",
+      "sidonNumber_twentynine (Erdos30WIP01.lean ~2074) — h(29) = 7"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -84,7 +100,11 @@
       "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search",
       "Erdős–Turán construction {2pi + (i² mod p) : i < p} formalized: base-2p digit extraction + ZMod p quadratic-roots argument gives Sidon property; p ≤ h(2p²−1) for odd primes p",
       "Bertrand postulate converts the single-prime bound to uniform √N/4 ≤ h(N) for N ≥ 49 — with the √(2N)+1 upper bound the file settles h(N) ≍ √N elementarily, no projective planes needed",
-      "h(29) wall correction: mod-2 class count forces missing diff d EVEN (not odd as previously recorded), mod-4 then forces d ≡ 2 (mod 4); mod-3 allows both (4,3,1) with 3∤d and (4,2,2) with d ∈ {6,18}; residue invariants alone still insufficient"
+      "h(29) wall correction: mod-2 class count forces missing diff d EVEN (not odd as previously recorded), mod-4 then forces d ≡ 2 (mod 4); mod-3 allows both (4,3,1) with 3∤d and (4,2,2) with d ∈ {6,18}; residue invariants alone still insufficient",
+      "h(29): single-modulus residue-class double counting provably CANNOT fell the span-29 wall — exhaustive sweep m=2..16 finds surviving class profiles at every modulus (48 at m=8, 42 at m=6, 144 at m=12). The h(28)-style counting argument is special to forced perfect rulers.",
+      "Verified pruned search beats flat enumeration in kernel decides: searchOK visits 26651 extension tests vs C(28,6)=376740 flat (14x), and each pruned test short-circuits early; completeness is a clean induction on the residual-set cardinality via min-first rediscovery.",
+      "★Finset.sort is defined by well-founded recursion and does NOT reduce under decide +kernel (stuck at instDecidablePairwise) — kernel-facing decidable predicates must stay list-native (List.sublistsLen over List.range gives sorted sublists for free).",
+      "Kernel cost calibration (host v4.31): quartic SidonCheck over powersetCard ~105 ms/candidate; list-native diffList+Nodup ~4.8 ms/candidate at C(27,5) scale (20-100x) — the fallback engine for h(32)/h(33) if searchOK slows."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -246,3 +246,54 @@ candidates — still beyond decide+kernel comfort).
 (Erdős–Turán exact form √N + N^{1/4} + 1), $1000 N^ε conjecture (stays a Prop).
 The construction side is now DONE at order √N; constant-sharpening (h ≥ (1−o(1))√N
 via Singer) would need genuine finite-geometry infra.
+
+## 2026-07-24 h(29) session + evening recovery (researcher-1)
+
+**h(29) = 7 LANDED — verified backtracking search.** The 01:24 session
+built the engine, pushed branch `research/erdos30-wip01-h29`, and died
+before PR; the evening session recovered it (cherry-pick onto fresh
+origin/main, append-conflict vs the ET section resolved, host-verified,
+PR'd). New in `Erdos30WIP01.lean` (+199 LOC):
+
+- `searchOK A lo hi k : Bool` — pruned backtracking Sidon-extension
+  search: extend the partial set one element at a time in increasing
+  order, abandon a branch the moment `SidonCheck` fails. 26,651
+  extension tests vs C(28,6) = 376,740 flat candidates (14×), and most
+  tests die on an early sum collision.
+- `searchOK_complete` — completeness by induction on k: a true extension
+  would be rediscovered smallest-element-first (min' of the residual B
+  is in the scan range; `SidonCheck` is hereditary via `sidonCheck_mono`;
+  `B.erase min'` lives in `{x+1,…,hi}`).
+- `search_zero_twentynine_eq_false : searchOK {0,29} 1 28 6 = false` —
+  one `decide +kernel`.
+- `no_sidon_card_eight_range_thirty` — span dichotomy: slide min to 0;
+  span ≤ 28 dies on `no_sidon_card_eight_range_twentynine` (the h(28)
+  mod-4 theorem); span 29 pins {0,29} and the six interior elements fall
+  to the search via `searchOK_complete` + the `SidonCheck` bridge.
+- `sidonNumber_twentynine : sidonNumber 29 = 7` (lower bound: the span-25
+  optimal 7-mark ruler still attains 7).
+
+**Counting route CLOSED (evening session, exhaustive check):** for EVERY
+modulus m = 2..16 there are class profiles satisfying all symmetric
+difference-bucket counts of {1..29}\{d} for some admissible d (48
+survivors at m = 8, 42 at m = 6, 144 at m = 12, 330 at m = 15). The
+"mod-6/mod-8 cross counts" route suggested by the prior session cannot
+work at any single modulus — recorded as a structured blocker.
+
+**Kernel-performance data (evening session, host v4.31):**
+- Flat `powersetCard` + quartic `SidonCheck` `decide +kernel`:
+  ~105 ms/candidate (2002-candidate slice = 211 s) ⟹ flat C(28,6)
+  ≈ 11 CPU-hours — validates the pruned-engine approach.
+- ★`Finset.sort` is WF-recursive and does NOT kernel-reduce: any
+  `decide +kernel` predicate touching `.sort` gets stuck at
+  `instDecidablePairwise`. Keep kernel predicates list-native.
+- List-native alternative (`List.sublistsLen` over `List.range'`,
+  sublists of a sorted list are sorted — no sort call; explicit
+  `diffList` + `Nodup` with early-exit): 2002 candidates ≈ 2 s,
+  C(27,5) = 80,730 ≈ 6.5 min (4.8 ms each) — 20–100× faster than the
+  Finset formulation. This is the fallback engine if `searchOK` cost
+  grows too fast at h(32)/h(33).
+
+**Next:** h(30..33) each = one `searchOK_complete` application + a
+constant-bumped span-dichotomy copy; then h(34) = 8 witness
+{0,1,4,9,15,22,32,34}. Completes the 8-mark story.
