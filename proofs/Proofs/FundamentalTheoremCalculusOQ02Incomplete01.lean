@@ -893,4 +893,121 @@ theorem lineDeriv_lineDeriv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 
       (houter a x).lineDeriv_eq_fderiv]
   exact fderiv_fderiv_comm hf a b x
 
+/-! ### Step 9 (S10): the general-`n` Gateaux nest — `nestedLineDeriv`
+
+The last classical spelling: `n`-fold nested *Gateaux* (line) derivatives.
+Step 8's `lineDeriv_lineDeriv_comm` treats `n = 2`; here the full tower is
+built — `nestedLineDeriv 𝕜 n v f = ∂_{v 0} (∂_{v 1} (… f))` with each `∂_w g x`
+the genuine one-dimensional limit `d/dt g(x + t·w)|₀` (`lineDeriv`), no Fréchet
+structure in the *statement* at all.  For a `C^n` function every level of the
+nest is in fact Fréchet differentiable, so the Gateaux nest coincides with the
+Fréchet nest (`nestedLineDeriv_eq_nestedFDeriv`, level-by-level via
+`DifferentiableAt.lineDeriv_eq_fderiv`), hence computes the `n`-th iterated
+derivative applied to the direction tuple and inherits the all-orders
+permutation symmetry.  This is Clairaut/Schwarz in its weakest-primitive form:
+only iterated one-dimensional limits appear. -/
+
+section GateauxNested
+
+variable (𝕜) in
+/-- The `n`-fold nested Gateaux (line) derivative:
+`nestedLineDeriv 𝕜 n v f = ∂_{v 0} (∂_{v 1} (… (∂_{v (n-1)} f)))` where
+`∂_w g x = lineDeriv 𝕜 g x w = d/dt g(x + t·w)|_{t=0}` — direction `v 0`
+outermost, matching `nestedFDeriv`. -/
+noncomputable def nestedLineDeriv : (n : ℕ) → (Fin n → E) → (E → F) → E → F
+  | 0, _, f => f
+  | n + 1, v, f => fun x => lineDeriv 𝕜 (nestedLineDeriv n (Fin.tail v) f) x (v 0)
+
+@[simp]
+theorem nestedLineDeriv_zero (v : Fin 0 → E) (f : E → F) :
+    nestedLineDeriv 𝕜 0 v f = f :=
+  rfl
+
+theorem nestedLineDeriv_succ_apply {n : ℕ} (v : Fin (n + 1) → E) (f : E → F) (x : E) :
+    nestedLineDeriv 𝕜 (n + 1) v f x
+      = lineDeriv 𝕜 (nestedLineDeriv 𝕜 n (Fin.tail v) f) x (v 0) :=
+  rfl
+
+@[simp]
+theorem nestedLineDeriv_one_apply (v : Fin 1 → E) (f : E → F) (x : E) :
+    nestedLineDeriv 𝕜 1 v f x = lineDeriv 𝕜 f x (v 0) :=
+  rfl
+
+/-- **The Gateaux/Fréchet nest bridge.** For a `C^n` function the `n`-fold nested
+line derivative agrees with the `n`-fold nested Fréchet derivative: at each level
+the inner nest is (by the S8 bridge) the constant-tuple evaluation of the
+`C^{n-k}` multilinear derivative, hence Fréchet differentiable, and
+`DifferentiableAt.lineDeriv_eq_fderiv` upgrades the Gateaux level to Fréchet.
+Holds over any nontrivially normed field. -/
+theorem nestedLineDeriv_eq_nestedFDeriv :
+    ∀ {n : ℕ}, ContDiff 𝕜 (n : ℕ) f → ∀ (v : Fin n → E) (x : E),
+      nestedLineDeriv 𝕜 n v f x = nestedFDeriv 𝕜 n v f x := by
+  intro n
+  induction n with
+  | zero => intro _ v x; rfl
+  | succ n IH =>
+    intro hf v x
+    have hfn : ContDiff 𝕜 (n : ℕ) f := hf.of_le (by exact_mod_cast Nat.le_succ n)
+    have hfun : nestedLineDeriv 𝕜 n (Fin.tail v) f
+        = nestedFDeriv 𝕜 n (Fin.tail v) f :=
+      funext fun y => IH hfn (Fin.tail v) y
+    have hfun2 : nestedFDeriv 𝕜 n (Fin.tail v) f
+        = fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v) :=
+      funext fun y => nestedFDeriv_eq_iteratedFDeriv hfn (Fin.tail v) y
+    have hdiff : DifferentiableAt 𝕜
+        (fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v)) x := by
+      have h1 : DifferentiableAt 𝕜 (iteratedFDeriv 𝕜 n f) x :=
+        (hf.differentiable_iteratedFDeriv (by norm_cast; omega)).differentiableAt
+      exact h1.continuousMultilinear_apply_const _
+    calc nestedLineDeriv 𝕜 (n + 1) v f x
+        = lineDeriv 𝕜 (nestedLineDeriv 𝕜 n (Fin.tail v) f) x (v 0) := rfl
+      _ = lineDeriv 𝕜 (fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v)) x (v 0) := by
+          rw [hfun, hfun2]
+      _ = fderiv 𝕜 (fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v)) x (v 0) :=
+          hdiff.lineDeriv_eq_fderiv
+      _ = fderiv 𝕜 (nestedFDeriv 𝕜 n (Fin.tail v) f) x (v 0) := by rw [← hfun2]
+      _ = nestedFDeriv 𝕜 (n + 1) v f x := rfl
+
+/-- The Gateaux nest of a `C^n` function computes the `n`-th iterated Fréchet
+derivative applied to the direction tuple — the two S8/S10 bridges composed. -/
+theorem nestedLineDeriv_eq_iteratedFDeriv {n : ℕ} (hf : ContDiff 𝕜 (n : ℕ) f)
+    (v : Fin n → E) (x : E) :
+    nestedLineDeriv 𝕜 n v f x = iteratedFDeriv 𝕜 n f x v := by
+  rw [nestedLineDeriv_eq_nestedFDeriv hf v x, nestedFDeriv_eq_iteratedFDeriv hf v x]
+
+/-- **Classical all-orders Clairaut/Schwarz, Gateaux form.** For a `C^n` function
+over `ℝ` or `ℂ`, nested one-dimensional directional derivatives may be taken in
+any order — the weakest-primitive spelling of the theorem: only iterated limits
+`d/dt g(x + t·w)|₀` appear in the statement. -/
+theorem nestedLineDeriv_comp_perm [IsRCLikeNormedField 𝕜] {n : ℕ}
+    (hf : ContDiff 𝕜 (n : ℕ) f) (v : Fin n → E) (σ : Equiv.Perm (Fin n)) (x : E) :
+    nestedLineDeriv 𝕜 n (v ∘ σ) f x = nestedLineDeriv 𝕜 n v f x := by
+  rw [nestedLineDeriv_eq_nestedFDeriv hf (v ∘ σ) x,
+    nestedLineDeriv_eq_nestedFDeriv hf v x, nestedFDeriv_comp_perm hf v σ x]
+
+/-- Field-uniform `minSmoothness` form of the Gateaux nested Clairaut theorem. -/
+theorem nestedLineDeriv_comp_perm_of_minSmoothness {n : ℕ}
+    (hf : ContDiff 𝕜 (minSmoothness 𝕜 n) f) (v : Fin n → E) (σ : Equiv.Perm (Fin n))
+    (x : E) :
+    nestedLineDeriv 𝕜 n (v ∘ σ) f x = nestedLineDeriv 𝕜 n v f x := by
+  have hfn : ContDiff 𝕜 (n : ℕ) f := hf.of_le le_minSmoothness
+  rw [nestedLineDeriv_eq_nestedFDeriv hfn (v ∘ σ) x,
+    nestedLineDeriv_eq_nestedFDeriv hfn v x,
+    nestedFDeriv_comp_perm_of_minSmoothness hf v σ x]
+
+/-- Sanity: the `n = 2` Gateaux nest is literally the Step-8 double line
+derivative, so `nestedLineDeriv_comp_perm` at `n = 2` recovers
+`lineDeriv_lineDeriv_comm`. -/
+theorem nestedLineDeriv_two_apply (a b : E) (f : E → F) (x : E) :
+    nestedLineDeriv 𝕜 2 ![a, b] f x
+      = lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y b) x a := by
+  have ha : Fin.tail (![a, b] : Fin 2 → E) = ![b] := by
+    funext i
+    fin_cases i
+    rfl
+  rw [nestedLineDeriv_succ_apply, ha]
+  rfl
+
+end GateauxNested
+
 end FTCOQ02Incomplete01
