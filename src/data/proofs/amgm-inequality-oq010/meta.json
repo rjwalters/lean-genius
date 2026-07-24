@@ -85,11 +85,19 @@
       "mathContext": "$p_5 = e_1^5 - 5 e_1^3 e_2 + 5 e_1 e_2^2 + 5 e_1^2 e_3 - 5 e_2 e_3 - 5 e_1 e_4 + 5 e_5$."
     },
     {
-      "id": "universal",
-      "title": "Universal Closed Form (MvPolynomial)",
+      "id": "universal-recurrence",
+      "title": "The k=5 Recurrence",
       "startLine": 57,
+      "endLine": 89,
+      "summary": "psum_five_recurrence extracts p₅ = e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁ + 5e₅ from Mathlib's psum_eq_mul_esymm_sub_sum at n=5, computing the antidiagonal filter {(1,4),(2,3),(3,2),(4,1)} and the lead term (−1)⁶·5·e₅ = 5e₅.",
+      "mathContext": "$p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1 + 5 e_5$, from the general Newton recurrence at $n=5$."
+    },
+    {
+      "id": "universal-closed",
+      "title": "The k=5 Closed Form",
+      "startLine": 91,
       "endLine": 109,
-      "summary": "psum_five_recurrence extracts p₅ = e₁p₄ − e₂p₃ + e₃p₂ − e₄p₁ + 5e₅ from psum_eq_mul_esymm_sub_sum at n=5 (antidiagonal {(1,4),(2,3),(3,2),(4,1)}). psum_five_closed substitutes the proven p₄, p₃, p₂, p₁ closed forms and ring-normalises.",
+      "summary": "psum_five_closed substitutes the proven closed forms for p₄, p₃, p₂, p₁ into psum_five_recurrence and closes with ring, yielding the fully reduced universal identity in e₁,…,e₅.",
       "mathContext": "In MvPolynomial σ R: $p_5 = e_1^5 - 5 e_1^3 e_2 + 5 e_1 e_2^2 + 5 e_1^2 e_3 - 5 e_2 e_3 - 5 e_1 e_4 + 5 e_5$."
     },
     {
