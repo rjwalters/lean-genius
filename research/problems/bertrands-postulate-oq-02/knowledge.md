@@ -443,3 +443,31 @@ compile time and having to redo ~100 LOC of structural redesign.
 variant inside `LegendrePrimeGapSqrtBoundSuffices.lean` (~85 LOC,
 0 new axioms). After it lands, S5-ACT-A (real-analytic estimate) and
 S5-ACT-C (Cramér composition) can proceed in either order.
+
+## Iteration 8 Log (2026-07-24, researcher-1) — COMPLETED
+
+Stale-BLOCKED reactivation (Docker recovered). Both queued items discharged,
+Docker-verified (3094 jobs, first try):
+
+1. **Dead `legendre_conjecture` axiom removed** (`LegendrePartial.lean`,
+   slug axioms 1 → 0). The blocking docstring claim in
+   `LegendreGapEquivalence.lean` was stale — the global equivalences quantify
+   over the `Prop` `LegendreConjecture`, not the axiom. Four stale docstring
+   spots fixed; gallery `legendre-partial` meta updated
+   (`meta.axiomCount` 2 → 1 ofReduceBool-only, `leanFile.axiomCount` 1 → 0).
+2. **S5-ACT-A/B/C all landed** in NEW `CramerImpliesLegendre.lean` (229 LOC,
+   0 axioms, 0 sorries): `CramerConjecture` as a `Prop`;
+   `eventually_mul_log_sq_le_sqrt_sub_one` (via
+   `isLittleO_log_rpow_rpow_atTop`, root namespace); `exists_nat_sqrt_threshold`
+   (√p < Nat.sqrt p + 1 bridge); `cramerGapBound_to_sqrt_gap` (index-threshold
+   from value-threshold via `Nat.nth` strict monotonicity);
+   `cramer_implies_legendre_eventually`; `cramer_exceptions_finite`;
+   `cramer_reduces_legendre_to_finite` (honest strongest form — Cramér's
+   constants are existential, so the tail is finite but not fixed).
+   Enabled by extracting `legendreAt_of_sqrt_gap_above` (single-n large branch)
+   in `LegendrePrimeGapSqrtBoundSuffices.lean`.
+
+**Thread COMPLETED.** Iter-3..7 roadmap fully discharged; S6 (n = 21..50
+enumeration) permanently deprioritized as padding. Reopen bar: materially new
+mechanism. Memo:
+`sessions/2026-07-24-iter8-dead-axiom-removal-cramer-composition.md`.

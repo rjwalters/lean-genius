@@ -2,7 +2,7 @@
   "id": "legendre-partial",
   "title": "Legendre's Conjecture (Partial)",
   "slug": "legendre-partial",
-  "description": "Legendre's conjecture (1798) — one of the oldest open problems in number theory — asserts that for every positive integer n, there exists a prime between n² and (n+1)². This formalization verifies the conjecture for n = 1 to 20 using explicit prime witnesses checked by native_decide, proves the gap formula (n+1)² - n² = 2n + 1, and states the full conjecture as an axiom.",
+  "description": "Legendre's conjecture (1798) — one of the oldest open problems in number theory — asserts that for every positive integer n, there exists a prime between n² and (n+1)². This formalization verifies the conjecture for n = 1 to 20 using explicit prime witnesses checked by native_decide, proves the gap formula (n+1)² - n² = 2n + 1, and defines the full conjecture as a Prop (LegendreConjecture) without assuming it: downstream files prove conditional results with it as an explicit hypothesis or conclusion.",
   "meta": {
     "author": "Adrien-Marie Legendre (formalized in Lean 4)",
     "date": "1798",
@@ -30,9 +30,9 @@
       "Gap formula: (n+1)^2 - n^2 = 2n + 1"
     ],
     "dateAdded": "2025-12-31",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 165,
-    "assumptions": "2 assumptions. (1) axiom legendre_conjecture: the full open conjecture (for all n >= 1, there is a prime in (n^2, (n+1)^2)), stated as an axiom since it has been unproven since 1798. (2) Lean.ofReduceBool: introduced by native_decide, which discharges all 20 verified cases legendre_1..legendre_20 and thus trusts the compiler kernel reduction. leanFile.axiomCount is 1 (literal axiom declarations only); meta.axiomCount is 2 to also count the native_decide (ofReduceBool) dependency. 0 sorries.",
+    "assumptions": "1 assumption: Lean.ofReduceBool, introduced by native_decide, which discharges all 20 verified cases legendre_1..legendre_20 and thus trusts the compiler kernel reduction. The full open conjecture is defined as a Prop (LegendreConjecture) and is NOT assumed — a dead axiom legendre_conjecture with zero uses was removed in the 2026-07-24 research session (bertrands-postulate-oq-02 iteration 8), so leanFile.axiomCount is 0 (literal axiom declarations) while meta.axiomCount is 1 for the native_decide (ofReduceBool) dependency. 0 sorries.",
     "mathlib_version": "4.31.0",
     "theoremCount": 21,
     "definitionCount": 3,
@@ -43,14 +43,14 @@
   "overview": {
     "historicalContext": "Adrien-Marie Legendre stated this conjecture in his *Essai sur la Théorie des Nombres* (1798), the same work that introduced the prime counting function approximation $\\pi(x) \\approx x/(\\ln x - 1.08366)$. The conjecture asks whether every interval $(n^2, (n+1)^2)$ contains at least one prime — a natural question about the regularity of prime distribution near perfect squares.\n\nThe conjecture sits in a hierarchy of progressively stronger statements about prime gaps. Bertrand's postulate — a prime exists in $(n, 2n)$ — was conjectured by Bertrand (1845) and proved by Chebyshev (1852), with an elegant proof later given by Erdős (1932) at age 19. Legendre's conjecture is strictly stronger: the interval $(n^2, (n+1)^2)$ has length $2n$, much shorter than $(n, 2n)$'s length $n$ when measured relative to the numbers involved. Oppermann's conjecture (1882) is stronger still: it asserts primes in both $(n^2, n^2 + n)$ and $(n^2 + n, (n+1)^2)$, splitting Legendre's interval in half.\n\nThe best unconditional progress toward Legendre is due to Baker, Harman, and Pintz (2001), who proved there is always a prime in $(x, x + x^{0.525})$ for sufficiently large $x$. For $x = n^2$, this gives a prime in $(n^2, n^2 + n^{1.05})$, which is contained in $(n^2, (n+1)^2)$ for large $n$ — so the BHP result actually implies Legendre's conjecture asymptotically. Earlier milestones include Ingham (1937) who proved a prime in $(x, x + x^{5/8})$, and Huxley (1972) who improved this to $x^{7/12}$.\n\nUnder the Riemann Hypothesis, much stronger results hold: von Koch (1901) showed that the prime gap near $x$ is $O(\\sqrt{x} \\log x)$, which for $x = n^2$ gives gaps of $O(n \\log n)$ — far smaller than the Legendre interval's length $2n$. So the Riemann Hypothesis implies Legendre's conjecture.\n\nComputationally, Legendre's conjecture has been verified for $n$ up to at least $10^{18}$. The conjecture is closely related to Andrica's conjecture (1985): $\\sqrt{p_{n+1}} - \\sqrt{p_n} < 1$, which is equivalent to asserting that consecutive primes never straddle a perfect square — precisely Legendre's claim.",
     "problemStatement": "**Legendre's Conjecture (1798)**: For every positive integer n, there exists a prime p with:\n$$n^2 < p < (n+1)^2$$\n\nEquivalently: there's always a prime between consecutive squares.\n\n**Gap Size**: The interval (n^2, (n+1)^2) has length 2n, which grows linearly. This is a weaker density requirement than Bertrand's (n, 2n).",
-    "text": "Legendre's conjecture (1798) — one of the oldest open problems in number theory — asserts that for every positive integer n, there exists a prime between n² and (n+1)². This formalization verifies the conjecture for n = 1 to 20 using explicit prime witnesses checked by native_decide, proves the gap formula (n+1)² - n² = 2n + 1, and states the full conjecture as an axiom.",
+    "text": "Legendre's conjecture (1798) — one of the oldest open problems in number theory — asserts that for every positive integer n, there exists a prime between n² and (n+1)². This formalization verifies the conjecture for n = 1 to 20 using explicit prime witnesses checked by native_decide, proves the gap formula (n+1)² - n² = 2n + 1, and defines the full conjecture as a Prop (LegendreConjecture) without assuming it: downstream files prove conditional results with it as an explicit hypothesis or conclusion.",
     "proofStrategy": "We verify Legendre's conjecture for n = 1 to 20 by providing explicit prime witnesses.\n\nFor each n, we find a prime p with n^2 < p < (n+1)^2 and verify:\n1. p is prime (using `native_decide`)\n2. n^2 < p (arithmetic check)\n3. p < (n+1)^2 (arithmetic check)\n\nThe witnesses are chosen to be the smallest prime in each interval for consistency.",
     "keyInsights": [
       "**Linear gap growth**: The interval $(n^2, (n+1)^2)$ has length $2n$, growing linearly. By the Prime Number Theorem, the expected number of primes is $\\sim n/\\ln n \\to \\infty$, making the conjecture heuristically certain — yet no proof is known.",
       "**Computational verification via `native_decide`**: Each case reduces to three decidable checks (primality, two inequalities) compiled to native code. This is the ideal use case for `native_decide` — small numbers where kernel computation suffices. Extending to $n = 10^6$ would require a different approach (e.g., certified computation with `norm_num`).",
       "**Hierarchy of prime gap conjectures**: Cramér (strongest) $\\Rightarrow$ Oppermann $\\Rightarrow$ Legendre $\\Leftrightarrow$ Andrica $\\Rightarrow$ Bertrand (weakest, proved). Legendre occupies the middle ground — strong enough to be interesting, weak enough to be plausible, yet stubbornly unproven.",
       "**Baker-Harman-Pintz (2001)**: A prime exists in $(x, x + x^{0.525})$ for large $x$. Setting $x = n^2$ gives a prime in $(n^2, n^2 + n^{1.05}) \\subset (n^2, (n+1)^2)$ for large $n$, so BHP implies Legendre asymptotically. Under the Riemann Hypothesis, the gap shrinks to $O(\\sqrt{x}\\log x)$, far smaller than $2n$.",
-      "**Axiom vs sorry**: The full conjecture uses `axiom` (not `sorry`) to mark an unproven assumption. This is semantically correct: `axiom` declares a proposition as a foundational assumption, while `sorry` marks an incomplete proof. The distinction matters for `axiomCount` tracking and downstream theorem dependency analysis.",
+      "**Statement without assumption**: The full conjecture is defined as a `Prop` (`LegendreConjecture`) and deliberately not assumed. A dead `axiom legendre_conjecture` formerly declared here had zero uses anywhere in the repository and was removed — conditional results downstream (e.g. the sqrt prime-gap criterion and the Cramér ⇒ Legendre composition) take the conjecture as an explicit hypothesis or conclusion instead. Only the `native_decide` (`Lean.ofReduceBool`) dependency of the 20 case checks remains as an assumption.",
       "**Primes near perfect squares**: Several witnesses ($197 = 14^2 + 1$, $257 = 16^2 + 1$, $401 = 20^2 + 1$) have the form $n^2 + 1$, connecting to the open problem of whether infinitely many primes have this form — a special case of Bunyakovsky's conjecture (1857)."
     ],
     "prerequisites": [
@@ -104,9 +104,9 @@
       "id": "gap-formula-and-conjecture",
       "title": "Gap Formula, Full Conjecture, and Summary",
       "startLine": 138,
-      "endLine": 165,
-      "summary": "`square_gap_linear` proves $(n+1)^2 = n^2 + 2n + 1$ by `ring`. The full Legendre conjecture is stated as an `axiom` (1 axiom total). Closing commentary summarizes verified cases and open status.",
-      "mathContext": "The identity $(n+1)^2 - n^2 = 2n$ gives the interval length. The `axiom legendre_conjecture : LegendreConjecture` introduces one foundational assumption: $\\forall n \\geq 1, \\text{LegendreAt}(n)$."
+      "endLine": 169,
+      "summary": "`square_gap_linear` proves $(n+1)^2 = n^2 + 2n + 1$ by `ring`. The full Legendre conjecture is defined as a `Prop` (`LegendreConjecture`, statement only — 0 axiom declarations; a dead axiom formerly here was removed). Closing commentary summarizes verified cases and open status.",
+      "mathContext": "The identity $(n+1)^2 - n^2 = 2n$ gives the interval length. The full conjecture $\\forall n \\geq 1, \\text{LegendreAt}(n)$ is stated as the `Prop` `LegendreConjecture` and never assumed; conditional results downstream use it as an explicit hypothesis or conclusion."
     }
   ],
   "conclusion": {
@@ -127,7 +127,7 @@
     "opens": [],
     "namespace": "Legendre",
     "lineCount": 165,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 3,
     "path": "Proofs/LegendrePartial.lean",

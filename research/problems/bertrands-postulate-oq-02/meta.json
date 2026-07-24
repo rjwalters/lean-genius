@@ -28,15 +28,21 @@
     "goal": "Initial survey; identify tractable sub-milestone for iteration 2 (recommended: equivalence with prime-gap bound)"
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-10T00:00:00Z",
-    "iteration": 6,
-    "focus": "S5-PREP-2 DONE (researcher-9, 2026-06-10): pre-flight audit of iter-5's recommended S5 Cramér⇒Legendre ACT. Finding: iter-5's PrimeGapSqrtBound (∀ k, p_{k+1}-p_k ≤ 2√p_k+1) does NOT directly accept Cramér's eventually-quantified output (∃ k₀, ∀ k≥k₀, gap ≤ C·log²p_k); the asymptotic Cramér bound fails at small k (e.g. C·(log 2)² < 1 = gap_0). Numerical analysis: smallest p where C·log²p ≤ 2√p+1 is p=121 (k₀≈29) for C=1 and p=358 (k₀≈70) for the Granville-optimal C=2e^{-γ}. For n≥21 iter-5 uses gap at k(n)≥84, exceeding both thresholds; legendre-partial's n=1..20 finite-tail suffices with margin. The remediation: a refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) that takes the gap bound only for k with p_k ≥ M, plus LegendreAt n for n² < 2·M; iter-5 is recovered at M=0. Proof uses Mathlib's Nat.bertrand on n²/2 to ensure p_k ≥ M. ~85 LOC estimate, 0 new axioms.",
-    "blockers": [],
-    "nextAction": "S5-ACT-B′ — implement the refined iter-5 variant inside LegendrePrimeGapSqrtBoundSuffices.lean. Add prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) with hypotheses (h_gap_above : ∀ k, M ≤ p_k → gap ≤ 2√p_k+1) and (h_legendre_below : ∀ n, 1 ≤ n → n² < 2*M → LegendreAt n). Proof: case n² < 2*M direct from h_legendre_below; case n² ≥ 2*M applies Nat.bertrand at n²/2 to obtain p_k > n²/2 ≥ M, then replays iter-5's findGreatest construction. Derive prime_gap_sqrt_bound_implies_legendre as the corollary at M = 0. Estimated +85 LOC, 0 new axioms. Unblocks S5-ACT-A (real-analytic C·log²p ≤ 2√p+1) and S5-ACT-C (Cramér composition) — both can then proceed in either order.",
+    "phase": "COMPLETED",
+    "since": "2026-07-24T00:00:00Z",
+    "iteration": 8,
+    "focus": "Session 8 (researcher-1, 2026-07-24): dead legendre_conjecture axiom REMOVED (slug axioms 1->0) and S5-ACT-A+B+C all landed in NEW CramerImpliesLegendre.lean (229 LOC, 0 axioms, 0 sorries): CramerConjecture as Prop; C·log²x ≤ √x−1 eventually (isLittleO_log_rpow_rpow_atTop); Cramér ⇒ sqrt gap bound above threshold; cramer_implies_legendre_eventually / cramer_exceptions_finite / cramer_reduces_legendre_to_finite. Docker-verified (3094 jobs). Thread COMPLETED — iter-3..7 roadmap fully discharged; S6 enumeration permanently deprioritized.",
+    "blockers": [
+      {
+        "route": "unconditional prime-gap bound of BHP x^0.525 strength",
+        "reopenCriterion": "materially new mechanism required (Mathlib-scale analytic NT infrastructure)",
+        "blockedAt": "2026-07-24"
+      }
+    ],
+    "nextAction": "None — thread COMPLETED (see state.md Session 8 and the iter-8 session memo).",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 4,
+      "total": 8,
+      "currentApproach": 5,
       "approachesTried": 4
     }
   },

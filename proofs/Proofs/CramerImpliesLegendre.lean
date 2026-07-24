@@ -91,7 +91,7 @@ theorem eventually_mul_log_sq_le_sqrt_sub_one (C : ℝ) :
   -- `(log x)^2 = o(x^{1/2})` (rpow exponents)
   have hlo : (fun x : ℝ => Real.log x ^ (2 : ℝ)) =o[atTop]
       fun x : ℝ => x ^ ((1 : ℝ) / 2) :=
-    Real.isLittleO_log_rpow_rpow_atTop 2 (by norm_num)
+    isLittleO_log_rpow_rpow_atTop 2 (by norm_num)
   have hbound := hlo.def (show (0 : ℝ) < 1 / (2 * D) by positivity)
   filter_upwards [hbound, eventually_ge_atTop (1 : ℝ),
     eventually_ge_atTop (4 : ℝ)] with x hx hx1 hx4
@@ -100,8 +100,7 @@ theorem eventually_mul_log_sq_le_sqrt_sub_one (C : ℝ) :
   -- rewrite the rpow forms as `(log x)^2` (monoid power) and `√x`
   have hrw_log : Real.log x ^ (2 : ℝ) = Real.log x ^ 2 := by
     rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
-  have hrw_sqrt : x ^ ((1 : ℝ) / 2) = Real.sqrt x := (Real.rpow_natCast x 1 ▸
-    (Real.sqrt_eq_rpow x).symm : x ^ ((1 : ℝ) / 2) = Real.sqrt x)
+  have hrw_sqrt : x ^ ((1 : ℝ) / 2) = Real.sqrt x := (Real.sqrt_eq_rpow x).symm
   rw [hrw_log, hrw_sqrt, Real.norm_of_nonneg (sq_nonneg _),
     Real.norm_of_nonneg (Real.sqrt_nonneg x)] at hx
   -- `√x ≥ 2` for `x ≥ 4`
@@ -153,12 +152,13 @@ theorem cramerGapBound_to_sqrt_gap {C : ℝ} {k₀ : ℕ} (h : CramerGapBound C 
   refine ⟨max M₀ (Nat.nth Nat.Prime k₀), fun k hk => ?_⟩
   -- `p_k ≥ p_{k₀}` forces `k ≥ k₀` (strict monotonicity of `Nat.nth`)
   have hk₀ : k₀ ≤ k := by
-    by_contra hlt
-    push_neg at hlt
-    have hmono : Nat.nth Nat.Prime k < Nat.nth Nat.Prime k₀ :=
-      Nat.nth_strictMono Nat.infinite_setOf_prime hlt
-    have hmax := le_max_right M₀ (Nat.nth Nat.Prime k₀)
-    omega
+    rcases lt_or_ge k k₀ with hlt | h
+    · exfalso
+      have hmono : Nat.nth Nat.Prime k < Nat.nth Nat.Prime k₀ :=
+        Nat.nth_strictMono Nat.infinite_setOf_prime hlt
+      have hmax := le_max_right M₀ (Nat.nth Nat.Prime k₀)
+      omega
+    · exact h
   have hgap := h k hk₀
   have hthr := hM₀ (Nat.nth Nat.Prime k) (le_trans (le_max_left _ _) hk)
   have hcast : ((Nat.nth Nat.Prime (k + 1) - Nat.nth Nat.Prime k : ℕ) : ℝ)
@@ -190,9 +190,9 @@ theorem cramer_exceptions_finite (h : CramerConjecture) :
   refine Set.Finite.subset (Set.finite_Iio N) ?_
   rintro n ⟨-, hnot⟩
   rw [Set.mem_Iio]
-  by_contra hge
-  push_neg at hge
-  exact hnot (hN n hge)
+  rcases lt_or_ge n N with h | hge
+  · exact h
+  · exact absurd (hN n hge) hnot
 
 /-- **Full conditional composition**: under Cramér's conjecture, Legendre's
 conjecture reduces to finitely many explicit cases — there is a single `N`
