@@ -1880,4 +1880,328 @@ theorem sidonNumber_ge_real_sqrt {N : ℕ} (hN : 49 ≤ N) :
     _ ≤ ((m / 2 : ℕ) : ℝ) + 1 := hdiv
     _ ≤ (sidonNumber N : ℝ) := hmainR
 
+/-! ### Toward `h(29) = 7` — the fifth wall: the near-perfect ruler and its narrowing
+
+At `N = 29` an 8-element Sidon set `A ⊆ {0,…,29}` has 56 ordered differences,
+all distinct and lying in the 58-element set `[-29, 29] \ {0}`: the ruler is
+*near-perfect*, missing exactly one positive difference `d` (and its
+negation).  Unlike the `N = 28` wall no single forced scenario remains, but
+residue-class counts still narrow the missing difference sharply:
+
+* **mod 2** (same-class count): a mod-2 class profile `(e₀, e₁)` with
+  `e₀ + e₁ = 8` yields `Σ eᵣ(eᵣ−1) ∈ {24, 26, 32, 42, 56}` ordered even
+  differences, while the even count is `28 − 2·[d even] ∈ {26, 28}`; only
+  `26` is attainable, so `d` is even and the profile is `{5, 3}`.
+* **mod 4** (same-class count, linked to the mod-2 profile): the ordered
+  multiples of four number `14 − 2·[4 ∣ d]`; with `Σ cᵣ = 8` and the mod-2
+  profile `{5, 3}` forced above, `Σ cᵣ(cᵣ−1) = 12` is unattainable, so
+  `4 ∤ d` and hence `d ≡ 2 (mod 4)`.
+
+This machine-checks the narrowing `d ∈ {2, 6, 10, 14, 18, 22, 26}`.  An
+exhaustive residue-profile computation (2026-07-24, recorded in the research
+state file) confirms that each of the seven remaining cases falls to a
+cross-class count — mod 7 for `d ∈ {10, 18}`, mod 9 for `d ∈ {14, 22}`,
+mod 10 for `d ∈ {2, 6, 26}` — so `h(29) = 7` requires NO kernel search,
+in contrast to the ≈`C(28,6)` span-29 searches previously projected. -/
+
+/-- **Near-perfect ruler extraction at `N = 29`.**  An 8-element Sidon subset
+    of `{0,…,29}` realizes every ordered difference in `[-29, 29] \ {0}`
+    except a single pair `{d, -d}` with `1 ≤ d ≤ 29`. -/
+theorem sidon_eight_range_thirty_image (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 30) (hA : IsSidonSet A) (hc8 : A.card = 8) :
+    ∃ d : ℤ, 0 < d ∧ d ≤ 29 ∧
+      A.offDiag.image diffMap =
+        ((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d} := by
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hoffcard : A.offDiag.card = 56 := by rw [Finset.offDiag_card, hc8]
+  have himSub : A.offDiag.image diffMap ⊆ (Finset.Icc (-29 : ℤ) 29).erase 0 := by
+    intro δ hδ
+    rw [Finset.mem_image] at hδ
+    obtain ⟨p, hp, rfl⟩ := hδ
+    rw [Finset.mem_offDiag] at hp
+    obtain ⟨hp1, hp2, hpne⟩ := hp
+    have hb1 := hsub hp1; have hb2 := hsub hp2
+    rw [Finset.mem_range] at hb1 hb2
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    simp only [diffMap]
+    exact ⟨fun h => hpne (by omega), by omega, by omega⟩
+  have himCard : (A.offDiag.image diffMap).card = 56 := by
+    rw [Finset.card_image_of_injOn hfull, hoffcard]
+  have hEcard : ((Finset.Icc (-29 : ℤ) 29).erase 0).card = 58 := by
+    rw [Finset.card_erase_of_mem (by decide), Int.card_Icc]; decide
+  -- The complement of the image inside `[-29, 29] \ {0}` has exactly two elements.
+  set M : Finset ℤ := ((Finset.Icc (-29 : ℤ) 29).erase 0) \ A.offDiag.image diffMap
+    with hM
+  have hMcard : M.card = 2 := by
+    rw [hM, Finset.card_sdiff, Finset.inter_eq_left.mpr himSub, hEcard, himCard]
+  -- The image is closed under negation (swap the ordered pair) …
+  have hnegIm : ∀ δ ∈ A.offDiag.image diffMap, -δ ∈ A.offDiag.image diffMap := by
+    intro δ hδ
+    rw [Finset.mem_image] at hδ ⊢
+    obtain ⟨p, hp, rfl⟩ := hδ
+    rw [Finset.mem_offDiag] at hp
+    refine ⟨(p.2, p.1), Finset.mem_offDiag.mpr ⟨hp.2.1, hp.1, hp.2.2.symm⟩, ?_⟩
+    simp only [diffMap]
+    ring
+  -- … hence so is the two-element complement.
+  have hnegM : ∀ δ ∈ M, -δ ∈ M := by
+    intro δ hδ
+    rw [hM, Finset.mem_sdiff, Finset.mem_erase, Finset.mem_Icc] at hδ ⊢
+    obtain ⟨⟨h0, h1, h2⟩, hIm⟩ := hδ
+    refine ⟨⟨by omega, by omega, by omega⟩, fun hcon => hIm ?_⟩
+    have h' := hnegIm _ hcon
+    rwa [neg_neg] at h'
+  obtain ⟨x, y, hxy, hMxy⟩ := Finset.card_eq_two.mp hMcard
+  have hxM : x ∈ M := by rw [hMxy]; exact Finset.mem_insert_self _ _
+  have hxbounds : x ≠ 0 ∧ -29 ≤ x ∧ x ≤ 29 := by
+    have h := hxM
+    rw [hM, Finset.mem_sdiff, Finset.mem_erase, Finset.mem_Icc] at h
+    exact ⟨h.1.1, h.1.2.1, h.1.2.2⟩
+  have hnegx : -x ∈ M := hnegM x hxM
+  have hyx : y = -x := by
+    rw [hMxy, Finset.mem_insert, Finset.mem_singleton] at hnegx
+    obtain ⟨hx0, -, -⟩ := hxbounds
+    rcases hnegx with h | h
+    · exfalso; omega
+    · omega
+  have hkey : A.offDiag.image diffMap = ((Finset.Icc (-29 : ℤ) 29).erase 0) \ M := by
+    ext δ
+    rw [hM]
+    simp only [Finset.mem_sdiff]
+    constructor
+    · intro h
+      exact ⟨himSub h, fun hcon => hcon.2 h⟩
+    · rintro ⟨hE', hnot⟩
+      by_contra hcon
+      exact hnot ⟨hE', hcon⟩
+  obtain ⟨hx0, hxlo, hxhi⟩ := hxbounds
+  rcases lt_or_gt_of_ne hx0 with hxneg | hxpos
+  · refine ⟨-x, by omega, by omega, ?_⟩
+    rw [hkey, hMxy, hyx, neg_neg, Finset.pair_comm]
+  · refine ⟨x, hxpos, hxhi, ?_⟩
+    rw [hkey, hMxy, hyx]
+
+/-- **Mod-2 / mod-4 narrowing of the missing difference at `N = 29`.**  The
+    missing positive difference `d` of an 8-element Sidon subset of `{0,…,29}`
+    satisfies `d ≡ 2 (mod 4)`, i.e. `d ∈ {2, 6, 10, 14, 18, 22, 26}`.
+
+    Same-class double counts: the mod-2 count forces `d` even (28 ordered even
+    differences is unattainable by a class profile summing to 8; 26 forces the
+    profile `{5, 3}`), and the mod-4 count with the linked `{5, 3}` mod-2
+    profile rules out `4 ∣ d` (12 ordered multiples of four is unattainable). -/
+theorem sidon_eight_range_thirty_missing_two_mod_four (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 30) (hA : IsSidonSet A) (hc8 : A.card = 8) :
+    ∃ d : ℤ, 0 < d ∧ d ≤ 29 ∧ d % 4 = 2 ∧
+      A.offDiag.image diffMap =
+        ((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d} := by
+  obtain ⟨d, hd_pos, hd_le, himageEq⟩ := sidon_eight_range_thirty_image A hsub hA hc8
+  refine ⟨d, hd_pos, hd_le, ?_, himageEq⟩
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hdne : d ≠ -d := by omega
+  have hpairsub : ({d, -d} : Finset ℤ) ⊆ (Finset.Icc (-29 : ℤ) 29).erase 0 := by
+    intro δ hδ
+    rw [Finset.mem_insert, Finset.mem_singleton] at hδ
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    rcases hδ with rfl | rfl
+    · exact ⟨by omega, by omega, by omega⟩
+    · exact ⟨by omega, by omega, by omega⟩
+  have hpaircard : ({d, -d} : Finset ℤ).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (fun h => hdne (Finset.mem_singleton.mp h)),
+      Finset.card_singleton]
+  -- `S2` = the off-diagonal pairs with even difference.
+  set S2 := A.offDiag.filter (fun p => diffMap p % 2 = 0) with hS2
+  have hS2sub : S2 ⊆ A.offDiag := Finset.filter_subset _ _
+  have hinjS2 : Set.InjOn diffMap ↑S2 := hfull.mono (Finset.coe_subset.mpr hS2sub)
+  have hS2img : S2.image diffMap
+      = (((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d}).filter (fun δ => δ % 2 = 0) := by
+    rw [hS2, ← Finset.filter_image (p := fun δ : ℤ => δ % 2 = 0), himageEq]
+  have hsplit2 : (((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d}).filter (fun δ => δ % 2 = 0)
+      = (((Finset.Icc (-29 : ℤ) 29).erase 0).filter (fun δ => δ % 2 = 0))
+        \ (({d, -d} : Finset ℤ).filter (fun δ => δ % 2 = 0)) := by
+    ext δ
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have hE2card : (((Finset.Icc (-29 : ℤ) 29).erase 0).filter
+      (fun δ => δ % 2 = 0)).card = 28 := by decide
+  have hS2card : S2.card
+      = 28 - (({d, -d} : Finset ℤ).filter (fun δ => δ % 2 = 0)).card := by
+    rw [← Finset.card_image_of_injOn hinjS2, hS2img, hsplit2, Finset.card_sdiff,
+      Finset.inter_eq_left.mpr (Finset.filter_subset_filter _ hpairsub), hE2card]
+  -- Fiberwise structure of `S2`: same-residue pairs mod 2.
+  have hS2eq : S2 = A.offDiag.filter (fun p => p.1 % 2 = p.2 % 2) := by
+    rw [hS2]
+    refine Finset.filter_congr (fun p hp => ?_)
+    simp only [diffMap]
+    omega
+  have hfiber2 : ∀ r : ℕ, S2.filter (fun p => p.1 % 2 = r)
+      = (A.filter (fun a => a % 2 = r)).offDiag := by
+    intro r
+    ext p
+    rw [hS2eq]
+    simp only [Finset.mem_filter, Finset.mem_offDiag]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hmod⟩, h1r⟩
+      exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+    · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+      exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+  have hfibA2 : A.card = ∑ r ∈ Finset.range 2, (A.filter (fun a => a % 2 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hS2fib : S2.card = ∑ r ∈ Finset.range 2, (S2.filter (fun p => p.1 % 2 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun p _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hcount2 : S2.card = ∑ r ∈ Finset.range 2,
+      ((A.filter (fun a => a % 2 = r)).card * (A.filter (fun a => a % 2 = r)).card
+        - (A.filter (fun a => a % 2 = r)).card) := by
+    rw [hS2fib]
+    exact Finset.sum_congr rfl (fun r _ => by rw [hfiber2 r, Finset.offDiag_card])
+  have hsum2 : (A.filter (fun a => a % 2 = 0)).card
+      + (A.filter (fun a => a % 2 = 1)).card = 8 := by
+    have h := hfibA2
+    rw [hc8] at h
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
+    omega
+  -- Mod-2 kill: the missing difference is even.
+  have hd2 : d % 2 = 0 := by
+    by_contra hd2
+    have hpf : (({d, -d} : Finset ℤ).filter (fun δ => δ % 2 = 0)) = ∅ := by
+      rw [Finset.filter_eq_empty_iff]
+      intro δ hδ
+      rw [Finset.mem_insert, Finset.mem_singleton] at hδ
+      rcases hδ with rfl | rfl <;> omega
+    rw [hpf, Finset.card_empty, Nat.sub_zero] at hS2card
+    have hquad := hcount2
+    rw [hS2card] at hquad
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at hquad
+    have hsum := hsum2
+    generalize hg0 : (A.filter (fun a => a % 2 = 0)).card = e0 at hsum hquad
+    generalize hg1 : (A.filter (fun a => a % 2 = 1)).card = e1 at hsum hquad
+    have hb0 : e0 ≤ 8 := by omega
+    have hb1 : e1 ≤ 8 := by omega
+    interval_cases e0 <;> interval_cases e1 <;> omega
+  -- So the pair filter is full and `|S2| = 26`, forcing the `{5, 3}` profile.
+  have hpf2 : (({d, -d} : Finset ℤ).filter (fun δ => δ % 2 = 0))
+      = ({d, -d} : Finset ℤ) := by
+    refine Finset.filter_true_of_mem (fun δ hδ => ?_)
+    rw [Finset.mem_insert, Finset.mem_singleton] at hδ
+    rcases hδ with rfl | rfl <;> omega
+  have hS226 : S2.card = 26 := by rw [hS2card, hpf2, hpaircard]
+  -- Mod-4 kill: `4 ∣ d` is impossible, so `d ≡ 2 (mod 4)`.
+  have hd4 : d % 4 = 0 ∨ d % 4 = 2 := by omega
+  rcases hd4 with hd4 | hd4
+  · exfalso
+    set S4 := A.offDiag.filter (fun p => diffMap p % 4 = 0) with hS4
+    have hS4sub : S4 ⊆ A.offDiag := Finset.filter_subset _ _
+    have hinjS4 : Set.InjOn diffMap ↑S4 := hfull.mono (Finset.coe_subset.mpr hS4sub)
+    have hS4img : S4.image diffMap
+        = (((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d}).filter (fun δ => δ % 4 = 0) := by
+      rw [hS4, ← Finset.filter_image (p := fun δ : ℤ => δ % 4 = 0), himageEq]
+    have hsplit4 : (((Finset.Icc (-29 : ℤ) 29).erase 0) \ {d, -d}).filter (fun δ => δ % 4 = 0)
+        = (((Finset.Icc (-29 : ℤ) 29).erase 0).filter (fun δ => δ % 4 = 0))
+          \ (({d, -d} : Finset ℤ).filter (fun δ => δ % 4 = 0)) := by
+      ext δ
+      simp only [Finset.mem_filter, Finset.mem_sdiff]
+      tauto
+    have hE4card : (((Finset.Icc (-29 : ℤ) 29).erase 0).filter
+        (fun δ => δ % 4 = 0)).card = 14 := by decide
+    have hpf4 : (({d, -d} : Finset ℤ).filter (fun δ => δ % 4 = 0))
+        = ({d, -d} : Finset ℤ) := by
+      refine Finset.filter_true_of_mem (fun δ hδ => ?_)
+      rw [Finset.mem_insert, Finset.mem_singleton] at hδ
+      rcases hδ with rfl | rfl <;> omega
+    have hS4card : S4.card = 12 := by
+      rw [← Finset.card_image_of_injOn hinjS4, hS4img, hsplit4, Finset.card_sdiff,
+        Finset.inter_eq_left.mpr (Finset.filter_subset_filter _ hpairsub), hE4card,
+        hpf4, hpaircard]
+    have hS4eq : S4 = A.offDiag.filter (fun p => p.1 % 4 = p.2 % 4) := by
+      rw [hS4]
+      refine Finset.filter_congr (fun p hp => ?_)
+      simp only [diffMap]
+      omega
+    have hfiber4 : ∀ r : ℕ, S4.filter (fun p => p.1 % 4 = r)
+        = (A.filter (fun a => a % 4 = r)).offDiag := by
+      intro r
+      ext p
+      rw [hS4eq]
+      simp only [Finset.mem_filter, Finset.mem_offDiag]
+      constructor
+      · rintro ⟨⟨⟨h1, h2, hne⟩, hmod⟩, h1r⟩
+        exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+      · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+        exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+    have hfibA4 : A.card = ∑ r ∈ Finset.range 4, (A.filter (fun a => a % 4 = r)).card :=
+      Finset.card_eq_sum_card_fiberwise
+        (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+    have hS4fib : S4.card = ∑ r ∈ Finset.range 4, (S4.filter (fun p => p.1 % 4 = r)).card :=
+      Finset.card_eq_sum_card_fiberwise
+        (fun p _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+    have hcount4 : S4.card = ∑ r ∈ Finset.range 4,
+        ((A.filter (fun a => a % 4 = r)).card * (A.filter (fun a => a % 4 = r)).card
+          - (A.filter (fun a => a % 4 = r)).card) := by
+      rw [hS4fib]
+      exact Finset.sum_congr rfl (fun r _ => by rw [hfiber4 r, Finset.offDiag_card])
+    -- Linking: each mod-2 class is the disjoint union of two mod-4 classes.
+    have hfe0 : A.filter (fun a => a % 2 = 0)
+        = A.filter (fun a => a % 4 = 0) ∪ A.filter (fun a => a % 4 = 2) := by
+      ext a
+      simp only [Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨ha, h2⟩
+        have h4 : a % 4 = 0 ∨ a % 4 = 2 := by omega
+        rcases h4 with h | h
+        · exact Or.inl ⟨ha, h⟩
+        · exact Or.inr ⟨ha, h⟩
+      · rintro (⟨ha, h⟩ | ⟨ha, h⟩) <;> exact ⟨ha, by omega⟩
+    have hfe1 : A.filter (fun a => a % 2 = 1)
+        = A.filter (fun a => a % 4 = 1) ∪ A.filter (fun a => a % 4 = 3) := by
+      ext a
+      simp only [Finset.mem_filter, Finset.mem_union]
+      constructor
+      · rintro ⟨ha, h2⟩
+        have h4 : a % 4 = 1 ∨ a % 4 = 3 := by omega
+        rcases h4 with h | h
+        · exact Or.inl ⟨ha, h⟩
+        · exact Or.inr ⟨ha, h⟩
+      · rintro (⟨ha, h⟩ | ⟨ha, h⟩) <;> exact ⟨ha, by omega⟩
+    have hdisj02 : Disjoint (A.filter (fun a => a % 4 = 0))
+        (A.filter (fun a => a % 4 = 2)) := by
+      rw [Finset.disjoint_left]
+      intro a h1 h2
+      rw [Finset.mem_filter] at h1 h2
+      omega
+    have hdisj13 : Disjoint (A.filter (fun a => a % 4 = 1))
+        (A.filter (fun a => a % 4 = 3)) := by
+      rw [Finset.disjoint_left]
+      intro a h1 h2
+      rw [Finset.mem_filter] at h1 h2
+      omega
+    have hlink0 : (A.filter (fun a => a % 2 = 0)).card
+        = (A.filter (fun a => a % 4 = 0)).card + (A.filter (fun a => a % 4 = 2)).card := by
+      rw [hfe0, Finset.card_union_of_disjoint hdisj02]
+    have hlink1 : (A.filter (fun a => a % 2 = 1)).card
+        = (A.filter (fun a => a % 4 = 1)).card + (A.filter (fun a => a % 4 = 3)).card := by
+      rw [hfe1, Finset.card_union_of_disjoint hdisj13]
+    -- Extract the Diophantine system and refute it by finite case analysis.
+    have hq2 := hcount2
+    rw [hS226] at hq2
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at hq2
+    rw [hlink0, hlink1] at hq2
+    have hq4 := hcount4
+    rw [hS4card] at hq4
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at hq4
+    have hs8 := hfibA4
+    rw [hc8] at hs8
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at hs8
+    generalize hg0 : (A.filter (fun a => a % 4 = 0)).card = c0 at hs8 hq4 hq2
+    generalize hg1 : (A.filter (fun a => a % 4 = 1)).card = c1 at hs8 hq4 hq2
+    generalize hg2 : (A.filter (fun a => a % 4 = 2)).card = c2 at hs8 hq4 hq2
+    generalize hg3 : (A.filter (fun a => a % 4 = 3)).card = c3 at hs8 hq4 hq2
+    have hb0 : c0 ≤ 8 := by omega
+    have hb1 : c1 ≤ 8 := by omega
+    have hb2 : c2 ≤ 8 := by omega
+    have hb3 : c3 ≤ 8 := by omega
+    interval_cases c0 <;> interval_cases c1 <;> interval_cases c2 <;>
+      interval_cases c3 <;> omega
+  · exact hd4
+
 end Erdos30
