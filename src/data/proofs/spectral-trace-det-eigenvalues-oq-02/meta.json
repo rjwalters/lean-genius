@@ -131,11 +131,6 @@
       "targetId": "matrix-similarity-invariants-oq-01",
       "relationship": "related",
       "description": "Packages determinant, trace, characteristic polynomial, and (over an integral domain) the eigenvalue multiset into one unified similarity-invariants theorem, with similarity proved to be an equivalence relation. This entry reaches the same eigenvalue-multiset invariance (eigenvalues_units_conj) via a different route — as the bridge from cyclic-invariance-of-the-trace to the spectral picture of oq-01 — and adds the determinant-hypothesis (IsUnit P.det) form of similarity invariance that matrix-similarity-invariants-oq-01 does not state."
-    },
-    {
-      "targetId": "spectral-trace-det-eigenvalues-oq-02-oq-01",
-      "relationship": "extended-by",
-      "description": "Answers the first half of this entry's open question: proves the trace form tr(Aᵀ·B) = Σ Aᵢⱼ Bᵢⱼ is a genuine inner product, packaged as InnerProductSpace.Core ℝ (Matrix m n ℝ), with the induced norm identified as the Frobenius norm. The singular-value relation ‖A‖_F² = Σ σᵢ² is deliberately left out of scope there."
     }
   ],
   "conclusion": {
