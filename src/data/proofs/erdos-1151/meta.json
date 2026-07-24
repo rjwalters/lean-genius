@@ -17,7 +17,6 @@
       "interpolation"
     ],
     "badge": "axiom",
-    "sorries": 1,
     "erdosNumber": 1151,
     "erdosUrl": "https://erdosproblems.com/1151",
     "erdosProblemStatus": "open",
@@ -42,6 +41,7 @@
       "Formal statement of the full conjecture with special cases derived",
       "Companion file Erdos1151OQ04.lean: sorry-free proof of the Lebesgue-function divergence theorem (erdos_1941_divergence_from_growth): for x = cos(πp/q) with odd p, q there is a continuous f whose Chebyshev interpolation values at x are unbounded (limsup |Lₙf(x)| = ∞), via Λₙ(x) ≥ C log(n+1) growth plus Banach–Steinhaus (S41). This is the faithful limsup form of the classical argument; the finer full-limit statement of Erdős's paper remains axiomatized as erdos_1941_divergence in the parent file only."
     ],
+    "sorries": 0,
     "axiomCount": 2,
     "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines, in its strong full-limit form), erdos_1151_conjecture (the open problem). The companion file Erdos1151OQ04.lean (listed under additionalFiles) is sorry-free (0 sorries, 0 axiom declarations) and PROVES the limsup form of the 1941 divergence (erdos_1941_divergence_from_growth, via Lebesgue-function growth + Banach–Steinhaus); the parent's erdos_1941_divergence axiom records the stronger full-limit literature statement, which is not yet formalized.",
     "lineCount": 222,
@@ -178,5 +178,5 @@
       "Proofs/Erdos1151OQ04.lean"
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }
