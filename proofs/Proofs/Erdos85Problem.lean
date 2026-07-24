@@ -2845,4 +2845,212 @@ theorem minDegreeForC4_thirteen : minDegreeForC4 13 = 4 :=
 
 end Thirteen
 
+/-
+## Tight points: `f(k(k−1)+1) ≤ k` for every `k ≥ 3`
+
+The `f(13) ≤ 4` argument above is the `k = 4` instance of a uniform
+phenomenon.  At the projective-plane parameter `n = k(k−1)+1` the cherry
+double-count is *exactly* tight — `C(n,2) = n·C(k,2)` — so a `C₄`-free graph
+on `n` vertices with minimum degree `≥ k` would have to be `k`-regular with
+every vertex pair sharing exactly one common neighbour: a friendship graph,
+whose politician (friendship theorem) has degree `n − 1 = k(k−1) ≠ k`.
+
+This section parameterises the `Thirteen` section over `k`, producing
+infinitely many upper bounds one vertex beyond the counting range
+`n ≤ k(k−1)` of `minDegreeForC4_le_of_le_mul_pred` — including the new
+concrete values `f(21) ≤ 5` and `f(31) ≤ 6`, beyond the exact table
+`f(1..13)`.
+-/
+
+section TightPoints
+
+/-- **Exact tightness of the cherry count at the projective-plane parameter**:
+`C(k(k−1)+1, 2) = (k(k−1)+1) · C(k,2)`.  (Both `Nat.choose 2` halvings are
+exact because `k(k−1)` is even.) -/
+theorem choose_two_tight (k : ℕ) :
+    (k * (k - 1) + 1).choose 2 = (k * (k - 1) + 1) * k.choose 2 := by
+  rw [Nat.choose_two_right, Nat.add_sub_cancel,
+    Nat.mul_div_assoc _ (two_dvd_mul_pred k), Nat.choose_two_right]
+
+/-- **The tight-point theorem.**  Every graph on `k(k−1)+1` vertices with
+minimum degree `≥ k` (for `k ≥ 3`) contains a `4`-cycle.  Cherry-counting is
+exactly tight (`choose_two_tight`), so a `C₄`-free such graph would be
+`k`-regular with every vertex pair having exactly one common neighbour — a
+friendship graph; the friendship theorem's politician has degree
+`k(k−1) ≠ k`.  The `Thirteen` section's argument, uniformly in `k`. -/
+theorem containsC4_of_tight_minDegree {k : ℕ} (hk : 3 ≤ k)
+    (G : SimpleGraph (Fin (k * (k - 1) + 1))) [DecidableRel G.Adj]
+    (hmin : k ≤ G.minDegree) : containsC4 (Fin (k * (k - 1) + 1)) G := by
+  classical
+  by_contra hC4
+  -- The cherry Finset and the endpoint-pair target, exactly as in the
+  -- `Thirteen` section.
+  set C : Finset (Σ _ : Fin (k * (k - 1) + 1), Finset (Fin (k * (k - 1) + 1))) :=
+    univ.sigma (fun v => (G.neighborFinset v).powersetCard 2) with hC
+  set T : Finset (Finset (Fin (k * (k - 1) + 1))) :=
+    (univ : Finset (Fin (k * (k - 1) + 1))).powersetCard 2 with hT
+  have hCcard : C.card = ∑ v : Fin (k * (k - 1) + 1), (G.degree v).choose 2 := by
+    rw [hC, Finset.card_sigma]
+    exact Finset.sum_congr rfl fun v _ => by
+      rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree]
+  have hTcard : T.card = (k * (k - 1) + 1) * k.choose 2 := by
+    rw [hT, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+    exact choose_two_tight k
+  have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+    intro p hp
+    rw [hC, Finset.mem_sigma] at hp
+    rw [hT, Finset.mem_powersetCard]
+    exact ⟨Finset.subset_univ _, (Finset.mem_powersetCard.mp hp.2).2⟩
+  -- With no `C₄`, the endpoint pair DETERMINES the centre.
+  have hcentre : ∀ (v v' : Fin (k * (k - 1) + 1)) (e : Finset (Fin (k * (k - 1) + 1))),
+      (⟨v, e⟩ : Σ _ : Fin (k * (k - 1) + 1), Finset (Fin (k * (k - 1) + 1))) ∈ C →
+      (⟨v', e⟩ : Σ _ : Fin (k * (k - 1) + 1), Finset (Fin (k * (k - 1) + 1))) ∈ C →
+      v = v' := by
+    intro v v' e hp hq
+    by_contra hne
+    rw [hC, Finset.mem_sigma] at hp hq
+    obtain ⟨hsubv, hcard⟩ := Finset.mem_powersetCard.mp hp.2
+    obtain ⟨hsubv', -⟩ := Finset.mem_powersetCard.mp hq.2
+    obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hcard
+    have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+      exact ⟨((G.mem_neighborFinset v x).mp (hsubv (by simp))).symm,
+             ((G.mem_neighborFinset v y).mp (hsubv (by simp))).symm⟩
+    have hv'mem : v' ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+      exact ⟨((G.mem_neighborFinset v' x).mp (hsubv' (by simp))).symm,
+             ((G.mem_neighborFinset v' y).mp (hsubv' (by simp))).symm⟩
+    have h2 : 1 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+      Finset.one_lt_card.mpr ⟨v, hvmem, v', hv'mem, hne⟩
+    have h1 := common_le_one_of_not_containsC4 hC4 x y hxy
+    omega
+  have hinj : ∀ p₁ p₂ : Σ _ : Fin (k * (k - 1) + 1), Finset (Fin (k * (k - 1) + 1)),
+      p₁ ∈ C → p₂ ∈ C → p₁.2 = p₂.2 → p₁ = p₂ := by
+    rintro ⟨v, e⟩ ⟨v', e'⟩ hp hq (heq : e = e')
+    subst heq
+    obtain rfl := hcentre v v' e hp hq
+    rfl
+  -- Injectivity ⟹ `|C| ≤ n·C(k,2)`.
+  have hCle : C.card ≤ (k * (k - 1) + 1) * k.choose 2 := by
+    rw [← hTcard]
+    exact Finset.card_le_card_of_injOn (fun p => p.2) hmaps
+      (fun p₁ h₁ p₂ h₂ h => hinj p₁ p₂ h₁ h₂ h)
+  -- Minimum degree ⟹ `|C| ≥ n·C(k,2)`.
+  have hterm : ∀ v : Fin (k * (k - 1) + 1), k.choose 2 ≤ (G.degree v).choose 2 :=
+    fun v => Nat.choose_le_choose 2 (le_trans hmin (G.minDegree_le_degree v))
+  have hCge : (k * (k - 1) + 1) * k.choose 2 ≤ C.card := by
+    rw [hCcard]
+    calc (k * (k - 1) + 1) * k.choose 2
+        = ∑ _v : Fin (k * (k - 1) + 1), k.choose 2 := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+      _ ≤ ∑ v : Fin (k * (k - 1) + 1), (G.degree v).choose 2 :=
+          Finset.sum_le_sum fun v _ => hterm v
+  -- Exact tightness ⟹ `k`-regularity.
+  have hsum : ∑ v : Fin (k * (k - 1) + 1), (G.degree v).choose 2
+      = (k * (k - 1) + 1) * k.choose 2 := by
+    rw [← hCcard]
+    omega
+  have hdegk : ∀ v : Fin (k * (k - 1) + 1), G.degree v = k := by
+    intro v
+    have hkle : k ≤ G.degree v := le_trans hmin (G.minDegree_le_degree v)
+    by_contra hne
+    have hk1 : k + 1 ≤ G.degree v := by omega
+    have hchoose : k.choose 2 + k ≤ (G.degree v).choose 2 := by
+      have hstep : (k + 1).choose 2 = k.choose 2 + k := by
+        rw [Nat.choose_succ_succ, Nat.choose_one_right, Nat.add_comm]
+      calc k.choose 2 + k = (k + 1).choose 2 := hstep.symm
+        _ ≤ (G.degree v).choose 2 := Nat.choose_le_choose 2 hk1
+    have hsplit : (G.degree v).choose 2 +
+        ∑ u ∈ univ.erase v, (G.degree u).choose 2
+          = ∑ u : Fin (k * (k - 1) + 1), (G.degree u).choose 2 :=
+      Finset.add_sum_erase univ (fun u => (G.degree u).choose 2) (Finset.mem_univ v)
+    have hrest : (k * (k - 1)) * k.choose 2 ≤
+        ∑ u ∈ univ.erase v, (G.degree u).choose 2 := by
+      calc (k * (k - 1)) * k.choose 2
+          = ∑ _u ∈ univ.erase v, k.choose 2 := by
+            rw [Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ v),
+              Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel, smul_eq_mul]
+        _ ≤ ∑ u ∈ univ.erase v, (G.degree u).choose 2 :=
+            Finset.sum_le_sum fun u _ => hterm u
+    have hmul : (k * (k - 1) + 1) * k.choose 2
+        = (k * (k - 1)) * k.choose 2 + k.choose 2 := Nat.succ_mul _ _
+    omega
+  -- Exact tightness ⟹ surjectivity: every vertex pair has a common neighbour.
+  have hsurj := Finset.surj_on_of_inj_on_of_card_le
+    (s := C) (t := T) (fun p _ => p.2) (fun p hp => hmaps p hp)
+    (fun p₁ p₂ h₁ h₂ h => hinj p₁ p₂ h₁ h₂ h) (by omega)
+  -- The friendship condition.
+  have hfriend : Theorems100.Friendship G := by
+    intro x y hxy
+    have hxyT : ({x, y} : Finset (Fin (k * (k - 1) + 1))) ∈ T := by
+      rw [hT, Finset.mem_powersetCard]
+      exact ⟨Finset.subset_univ _, Finset.card_pair_eq_two_iff.mpr hxy⟩
+    obtain ⟨⟨v, e⟩, hpC, hpe⟩ := hsurj _ hxyT
+    have he : e = ({x, y} : Finset (Fin (k * (k - 1) + 1))) := hpe.symm
+    subst he
+    rw [hC, Finset.mem_sigma] at hpC
+    obtain ⟨-, hpow⟩ := hpC
+    have hsub := (Finset.mem_powersetCard.mp hpow).1
+    have hvx : G.Adj x v := ((G.mem_neighborFinset v x).mp (hsub (by simp))).symm
+    have hvy : G.Adj y v := ((G.mem_neighborFinset v y).mp (hsub (by simp))).symm
+    have hvmemS : v ∈ G.commonNeighbors x y := ⟨hvx, hvy⟩
+    -- Bridge the Classical/synthesized `Fintype` instance mismatch with
+    -- `convert`, exactly as in the `Thirteen` section.
+    have hone : Fintype.card
+        {w : Fin (k * (k - 1) + 1) // w ∈ G.commonNeighbors x y} = 1 := by
+      refine Fintype.card_eq_one_iff.mpr ⟨⟨v, hvmemS⟩, ?_⟩
+      rintro ⟨w, hw⟩
+      obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
+      have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
+      have hwmem : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hwx, hwy⟩
+      have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hvx, hvy⟩
+      exact Subtype.ext (Finset.card_le_one.mp hcom w hwmem v hvmem)
+    convert hone using 2
+  -- The friendship theorem: a politician exists — degree `k(k−1)`, not `k`.
+  obtain ⟨v, hv⟩ := Theorems100.friendship_theorem hfriend
+  have hdegBig : G.degree v = k * (k - 1) := by
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]
+    have huniv : G.neighborFinset v = univ.erase v := by
+      ext w
+      rw [SimpleGraph.mem_neighborFinset, Finset.mem_erase]
+      constructor
+      · intro h
+        exact ⟨(G.ne_of_adj h).symm, Finset.mem_univ _⟩
+      · rintro ⟨hne, -⟩
+        exact hv w (Ne.symm hne)
+    rw [huniv, Finset.card_erase_of_mem (Finset.mem_univ v),
+      Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel]
+  have hdeg := hdegk v
+  have h2k : k * 2 ≤ k * (k - 1) := Nat.mul_le_mul_left k (by omega)
+  omega
+
+/-- **`f(k(k−1)+1) ≤ k` for every `k ≥ 3`** — infinitely many upper bounds at
+the projective-plane parameters, each one vertex beyond the counting range
+`n ≤ k(k−1)` of `minDegreeForC4_le_of_le_mul_pred`. -/
+theorem minDegreeForC4_le_tight {k : ℕ} (hk : 3 ≤ k) :
+    minDegreeForC4 (k * (k - 1) + 1) ≤ k := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_tight_minDegree hk G hmin
+
+/-- Sanity check: the `k = 4` instance recovers `f(13) ≤ 4`. -/
+example : minDegreeForC4 13 ≤ 4 := by
+  simpa using minDegreeForC4_le_tight (k := 4) (by norm_num)
+
+/-- **`f(21) ≤ 5`** — the first bound beyond the exact table `f(1..13)`:
+`21 = 5·4+1` is the parameter of the projective plane of order `4`. -/
+theorem minDegreeForC4_twentyone_le : minDegreeForC4 21 ≤ 5 := by
+  simpa using minDegreeForC4_le_tight (k := 5) (by norm_num)
+
+/-- **`f(31) ≤ 6`**: `31 = 6·5+1`, the parameter of the projective plane of
+order `5`. -/
+theorem minDegreeForC4_thirtyone_le : minDegreeForC4 31 ≤ 6 := by
+  simpa using minDegreeForC4_le_tight (k := 6) (by norm_num)
+
+end TightPoints
+
 end Erdos85
