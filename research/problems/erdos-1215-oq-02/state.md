@@ -255,3 +255,48 @@ root-GAP arguments only need `cos` values — clean in `√5`; a crude uniform r
 `C < 1/16` works via `dist ≥ min(√5/2, 2·sin 72°) > 1`). Exact four-component
 count = OQ12 star-shaped template at 4 foci. Sextic layer n = 7, 9, 14, 18 now
 engine-ready. Deep `C > 1` labyrinth driver unchanged (blocked).
+
+## Status (Iter 13, researcher-1, 2026-07-24) — ACT: sextic layer OPENS (n = 9, 18), no radicals
+
+`CyclotomicPolynomialsOQ02OQ14.lean` (new file, ~330 lines, 0 axioms / 0
+sorries, host-verified `lake env lean` exit 0, axioms `[propext,
+Classical.choice, Quot.sound]`): **the `φ(n) = 6` layer opens** —
+`not_isPreconnected_levelSet_nine` / `_eighteen`: `{z : |Φ₉(z)| < C}` and
+`{z : |Φ₁₈(z)| < C}` are disconnected (and not path-connected) for every
+`0 < C < 1/15625 = (1/5)⁶`.
+
+**Mechanism — abstract roots, one cosine bound.** Unlike n = 8, 12, the
+primitive 9th/18th roots have NO radical form (`cos 2π/9` has an irreducible
+cubic minimal polynomial). The OQ13 engine never needed one:
+
+- Factor `Φ_n` over `S = primitiveRoots n ℂ` abstractly
+  (`cyclotomic_eq_prod_X_sub_primitiveRoots`); `|S| = φ(n) = 6` by
+  `Complex.card_primitiveRoots` + `decide`.
+- Members of `S` are `ζⁱ` with `i` COPRIME to `n`
+  (`eq_pow_of_pow_eq_one` + `pow_iff_coprime`, then `interval_cases i` with
+  `decide` killing the non-coprime rungs). Coprimality is what makes the
+  radius work at n = 18: the nearest 18th roots (20° away) are NOT
+  primitive; the nearest primitive ones sit at 40°/80°.
+- Chord–cosine reduction `dist(exp(αi), exp(βi))² = 2 − 2cos(α−β)`
+  (`dist_exp_mul_I_sq`, via `exp_mul_I` + `normSq_add_mul_I` +
+  `sin_sq_add_cos_sq` + `cos_sub`): separation `2·(1/5) < dist` becomes
+  `cos Δ < 23/25`.
+- ONE analytic input: `cos(2π/9) < 5/6` from `Real.cos_three_mul`
+  (`4c³ − 3c = cos 2π/3 = −1/2`) + exact factorization
+  `4c³ − 3c + 5/27 = (c − 5/6)(4c² + 10c/3 − 2/9)` (root isolation, second
+  factor positive). Everything else: `cos(2π/3) = cos(4π/3) = −1/2`,
+  `cos(8π/9) < 0`, monotonicity `cos(4π/9) < cos(2π/9)`, and
+  `cos_two_pi_sub` reflections.
+
+**Remaining sextic**: n = 7, 14 need `cos(2π/7)` — minimal cubic
+`8x³ + 4x² − 4x − 1` is NOT a triple-angle instance; needs a `cos_seven_mul`
+expansion (repeated `cos_add`) or product-of-conjugates argument. Session-sized
+but new machinery. Other live rungs unchanged: exact 4-/6-component counts
+(OQ12 star-shape template at 4/6 foci); sharpness above threshold. `C > 1`
+labyrinth driver still blocked.
+
+**Lean idioms**: `rw` order matters after `set` — rewrite `ζ^i` (`hζexp i`)
+BEFORE the bare-`ζ` equation, else the pattern is destroyed; `push_cast`
+before angle `rw [show … by ring]` normalizes `↑(i : ℕ)` to numerals so the
+pattern matches; `congr 2` + `push_cast; ring` aligns `exp` arguments across
+`↑1` casts.
