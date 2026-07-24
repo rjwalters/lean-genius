@@ -466,7 +466,7 @@ theorem maxIncLen_le_sup_Iic (f : Sequence α n) (i : Fin n) :
 theorem maxIncLen_eq_sup_Iic (f : Sequence α n) (i : Fin n) :
     maxIncLen f i = (Finset.Iic i).sup (fun j => incDP f j) :=
   le_antisymm (maxIncLen_le_sup_Iic f i)
-    (Finset.sup_le fun j hj => incDP_le_maxIncLen_of_le (Finset.mem_Iic.mp hj))
+    (Finset.sup_le fun _j hj => incDP_le_maxIncLen_of_le (Finset.mem_Iic.mp hj))
 
 /-- The DP table of `[1, 2, 0]` is `[1, 2, 1]`. -/
 theorem incDP_counterexample_table :
@@ -493,8 +493,9 @@ theorem incDP_lt_maxIncLen_counterexample :
     incDP (![1, 2, 0] : Sequence ℕ 3) 2 < maxIncLen (![1, 2, 0] : Sequence ℕ 3) 2 := by
   obtain ⟨h0, h1, h2⟩ := incDP_counterexample_table
   have hsup : maxIncLen (![1, 2, 0] : Sequence ℕ 3) 2 = 2 := by
-    rw [maxIncLen_eq_sup_Iic, show Finset.Iic (2 : Fin 3) = {0, 1, 2} from by decide,
-      Finset.sup_insert, Finset.sup_insert, Finset.sup_singleton, h0, h1, h2]
+    rw [maxIncLen_eq_sup_Iic, show Finset.Iic (2 : Fin 3) = {0, 1, 2} from by decide]
+    simp only [Finset.sup_insert, Finset.sup_singleton, h0, h1, h2]
+    decide
   rw [h2, hsup]
   omega
 
@@ -625,17 +626,22 @@ def IncChain.extend {f : Sequence α n} {j i : Fin n} {len : ℕ}
       rw [haeq, Fin.snoc_last] }
 
 /-- Computable predecessor selection: an admissible predecessor maximizing the
-    DP value, chosen via `List.argmax` (no `Classical.choice`). -/
+    DP value, chosen via `List.argmax` over the (computably) sorted predecessor
+    list (`Finset.toList` is noncomputable, `Finset.sort` is not; no
+    `Classical.choice`). -/
 def incArgmax (f : Sequence α n) (i : Fin n) : Option (Fin n) :=
-  (preds f i).toList.argmax (fun j => incDP f j)
+  ((preds f i).sort (· ≤ ·)).argmax (fun j => incDP f j)
 
 theorem incArgmax_eq_none {f : Sequence α n} {i : Fin n}
-    (h : incArgmax f i = none) : preds f i = ∅ :=
-  Finset.toList_eq_nil.mp (List.argmax_eq_none.mp h)
+    (h : incArgmax f i = none) : preds f i = ∅ := by
+  have hnil : (preds f i).sort (· ≤ ·) = [] := List.argmax_eq_none.mp h
+  have hlen := Finset.length_sort (s := preds f i) (r := (· ≤ ·))
+  rw [hnil] at hlen
+  exact Finset.card_eq_zero.mp hlen.symm
 
 theorem incArgmax_mem {f : Sequence α n} {i : Fin n} {j₀ : Fin n}
     (h : incArgmax f i = some j₀) : j₀ ∈ preds f i :=
-  Finset.mem_toList.mp (List.argmax_mem (Option.mem_def.mpr h))
+  ((preds f i).mem_sort (· ≤ ·)).mp (List.argmax_mem (Option.mem_def.mpr h))
 
 /-- With no admissible predecessor the DP value is `1`. -/
 theorem incDP_eq_one_of_incArgmax_none {f : Sequence α n} {i : Fin n}
@@ -649,7 +655,7 @@ theorem incDP_eq_of_incArgmax_some {f : Sequence α n} {i : Fin n} {j₀ : Fin n
     (h : incArgmax f i = some j₀) : incDP f i = incDP f j₀ + 1 := by
   have hmem : j₀ ∈ preds f i := incArgmax_mem h
   have hmax : ∀ j ∈ preds f i, incDP f j ≤ incDP f j₀ := fun j hj =>
-    List.le_of_mem_argmax (Finset.mem_toList.mpr hj) (Option.mem_def.mpr h)
+    List.le_of_mem_argmax (((preds f i).mem_sort (· ≤ ·)).mpr hj) (Option.mem_def.mpr h)
   have hsup : (preds f i).sup (fun j => incDP f j) = incDP f j₀ :=
     le_antisymm (Finset.sup_le hmax) (Finset.le_sup hmem)
   rw [incDP_eq, hsup, Nat.add_comm]
@@ -681,9 +687,10 @@ theorem incWitness_positions_last (f : Sequence α n) (i : Fin n)
     (incWitness f i).positions a = i :=
   (incChain f i).last_eq a ha
 
-/-- Computable global argmax position of the DP table. -/
+/-- Computable global argmax position of the DP table (`List.finRange` is the
+    computable enumeration of `Fin n`). -/
 def lisArgmax (f : Sequence α n) : Option (Fin n) :=
-  Finset.univ.toList.argmax (fun i => incDP f i)
+  (List.finRange n).argmax (fun i => incDP f i)
 
 /-- **The global executable witness**: an actual longest increasing
     subsequence of the whole sequence, of the computable global length
@@ -691,16 +698,18 @@ def lisArgmax (f : Sequence α n) : Option (Fin n) :=
 def lisWitness (f : Sequence α n) : IncreasingSubseq f (lisLength f) :=
   match h : lisArgmax f with
   | none =>
-    have huniv : (Finset.univ : Finset (Fin n)) = ∅ :=
-      Finset.toList_eq_nil.mp (List.argmax_eq_none.mp h)
+    have hempty : IsEmpty (Fin n) := ⟨fun a => by
+      have ha : a ∈ List.finRange n := List.mem_finRange a
+      rw [List.argmax_eq_none.mp h] at ha
+      simp at ha⟩
     have hlen : lisLength f = 0 := by
-      rw [lisLength, huniv]
-      exact Finset.sup_empty
+      haveI := hempty
+      rw [lisLength, Finset.univ_eq_empty, Finset.sup_empty]
     hlen.symm ▸
       (⟨Fin.elim0, fun a => a.elim0, fun a => a.elim0⟩ : IncreasingSubseq f 0)
   | some i₀ =>
-    have hmax : ∀ j ∈ Finset.univ, incDP f j ≤ incDP f i₀ := fun j hj =>
-      List.le_of_mem_argmax (Finset.mem_toList.mpr hj) (Option.mem_def.mpr h)
+    have hmax : ∀ j ∈ Finset.univ, incDP f j ≤ incDP f i₀ := fun j _ =>
+      List.le_of_mem_argmax (List.mem_finRange j) (Option.mem_def.mpr h)
     have hlen : lisLength f = incDP f i₀ :=
       le_antisymm (Finset.sup_le hmax) (Finset.le_sup (Finset.mem_univ i₀))
     hlen.symm ▸ incWitness f i₀
