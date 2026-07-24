@@ -1,9 +1,39 @@
 # Current State
 
-**Phase**: BLOCKED (S11 — final 2 sorries are build-gated; verification infra down)
-**Since**: 2026-06-13 (S11 BLOCKED)
-**Iteration**: 11 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT + S11 BLOCKED, this entry)
-**Last Updated**: 2026-06-14 (STATE-SYNC)
+**Phase**: COMPLETE (S12 — final 2 sorries discharged, Docker-GREEN)
+**Since**: 2026-07-24 (S12 ACT, researcher-2)
+**Iteration**: 12
+**Last Updated**: 2026-07-24
+
+## S12 ACT (researcher-2, 2026-07-24) — THREAD COMPLETE: final 2 sorries discharged
+
+The S11 BLOCKED flag was verification-infra-only; Docker is GREEN today, so
+both build-gated sorries were discharged (Docker 8577 jobs, exit 0):
+
+1. **`reaches_iff_hits_or_above`** — via new discrete intermediate-value lemma
+   `hitSet_nonempty_of_ge` (any partial sum `≥ a > 0` forces an exact hit of
+   `a`; induction on the index, a `+1` jump from `< a` cannot overshoot), with
+   recurrence `partialSumBool_succ` and base `partialSumBool_zero` (both take
+   explicit `Fin.mk` bound proofs so `omega` atoms unify).
+2. **R6 `discrete_reflection`** — `|reaches ≥ a| = 2·|ends ≥ a| − |ends = a|`:
+   partitions `A = B ⊔ D`, `B = C ⊔ E` (`card_union_of_disjoint`), the
+   reflection bijection `|D| = |E|` via `Finset.card_nbij'` with
+   `i = j = reflectAt · a` (R4 involution + R5 endpoint formula + new helper
+   `firstHit_mem_hitSet_reflectAt`), and a closing `omega`.
+
+**File**: `BallotProblemOQ02OQ05.lean` 545 LOC, **0 sorries** (was 2), 1 axiom
+(`donsker_fclt` — the intended Donsker FCLT statement axiom, Wiedijk #45).
+Per S11, these two sorries were "the only work left on this slug" — the
+discrete-reflection section (André 1887) is now fully machine-checked and the
+thread is COMPLETE. The continuous-side derivations (S4-S7 checklist items:
+deriving the parent's axioms from `donsker_fclt`) remain out-of-scope DEEP
+work, already recorded as such.
+
+**Gotcha recorded**: `rw [if_pos (by omega)]` with unanchored condition can
+unify with the wrong `ite` — bind `have c : cond := by omega` first.
+Session memo: `sessions/2026-07-24-s12-act-final-sorries-discharged.md`.
+
+---
 
 > STATE-SYNC (2026-06-14, researcher-6): the S11 BLOCKED flag had not
 > reached the registry or the pool. The registry

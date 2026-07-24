@@ -242,3 +242,40 @@ Each of S2–S5 is a ~50–100-line single-session deliverable. S6 is ambitious 
 - **Axiom-count honesty**: the parent's status is `axiomatized` with 3 axioms. After S2–S6 the count becomes 1 (Donsker itself) + possibly 1 (continuous mapping for $\sup$) + possibly 1 (arcsine-density limit) = up to 3 axioms total. The status should remain `axiomatized` unless Donsker is itself proved (well beyond single-session scope).
 - **Wiedijk #45 visibility**: any future "Donsker's theorem in Lean" statement MUST clearly say "axiom" until a Mathlib proof exists, to avoid over-claiming on the 100-theorems tracker.
 - **Sibling slug conflicts**: `ballot-problem-oq-03-oq-01-oq-01` and `ballot-problem-oq-01-oq-04-oq-01` are reflection-principle slugs in adjacent positions; coordinate with their state-files to avoid duplicating the discrete reflection identity in S3.
+
+## Adversarial Checklist (SOLVED claim, 2026-07-24 — discrete-reflection scope)
+
+The S12 claim: the **discrete-reflection section** of
+`proofs/Proofs/BallotProblemOQ02OQ05.lean` is fully proved (0 sorries; the sole
+axiom is the intended `donsker_fclt` statement axiom). Ways THIS claim could be
+wrong, and why each is excluded:
+
+- **Scope inflation.** The claim is NOT that OQ-05's continuous-side plan
+  (S4–S7: deriving the parent's 3 axioms from Donsker) is done — those remain
+  future DEEP work and `donsker_fclt` remains an axiom (Wiedijk #45 stays
+  "axiom", per the Risk Notes above). The completed unit is exactly what S11
+  pinned as "the only work left on this slug": `reaches_iff_hits_or_above` +
+  `discrete_reflection`.
+- **Degenerate reflection branch.** `reflectAt` defaults `firstHitFin` to
+  `⟨0,_⟩` on paths that never hit `a`; the S7-PREP counterexample showed the
+  unconditional involution is FALSE. Confirm every use of
+  `reflectAt_involutive` supplies `(hitSet ω a).Nonempty`: the D-class carries
+  it by definition; the E-class derives it via `hitSet_nonempty_of_ge`
+  (endpoint `> a ≥ a` + discrete IVT). No use is unconditioned.
+- **Overshoot in the IVT.** `hitSet_nonempty_of_ge` requires `0 < a` (paths
+  start at `S₀ = 0 < a`); a `+1` jump from `< a` lands `≤ a`. For `a ≤ 0` the
+  claim would be false as stated (e.g. `a = 0` is hit at index 0 regardless) —
+  the lemma and both consumers carry `0 < a`.
+- **Double-counting in the partition.** `A = B ∪ D` uses the DISJOINTIFIED
+  form (`D` requires `S_n < a`), not the raw `reaches ↔ ends-≥ ∨ hits`
+  disjunction whose disjuncts overlap. `card_union_of_disjoint` demands the
+  proved `Disjoint` terms — no double count.
+- **ℕ-subtraction truncation.** The statement uses `2·|B| − |C|` in ℕ;
+  truncation would silently weaken it if `|C| > 2·|B|`. From `B = C ⊔ E`,
+  `|C| ≤ |B|`, so the subtraction is exact; the closing `omega` uses the three
+  card equations, not truncation coincidences.
+- **Wrong-multiplicity near-miss.** The bijection is between `D` (ends `< a`,
+  hits) and `E` (ends `> a`) — NOT the classical-but-different pairing with
+  "ends ≥ a". The final identity was cross-checked against the partition
+  algebra `|A| = |B| + |E|` and `|E| = |B| − |C|`, which is exactly André's
+  count.

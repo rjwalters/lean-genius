@@ -36,7 +36,7 @@ arcsine identity) as theorems.
 - [x] Interpolated rescaled walk definition
 - [x] Ad hoc weak-convergence predicate on $C([0,1])$
 - [x] Donsker FCLT axiom statement
-- [ ] Discrete reflection identity (S3, sorry-free target)
+- [x] Discrete reflection identity (S12, 2026-07-24: fully proved, 0 sorries)
 - [ ] Continuous-mapping-for-sup axiom (S4)
 - [ ] Reflection-principle theorem deriving parent's axiom (S4)
 - [ ] First-passage-time event theorem (S5)
@@ -129,12 +129,12 @@ axiom donsker_fclt
 
 /-! ## Part IV: Discrete reflection identity (S6 ACT — paste-ready skeleton)
 
-This section is the S6 ACT paste-ready skeleton from S5 PREP §5, dropped
-in here so future researchers (or Aristotle) can discharge the
-acknowledged `sorry`s. R4 (`reflectAt_involutive`) and R5
-(`partialSumBool_reflectAt_endpoint`) are now proved; 2 `sorry`s remain
-(`reaches_iff_hits_or_above`, R6 `discrete_reflection`). The design is
-fully scoped in S5 PREP:
+This section began as the S6 ACT paste-ready skeleton from S5 PREP §5.
+R4 (`reflectAt_involutive`) and R5 (`partialSumBool_reflectAt_endpoint`)
+were proved in S9/S10; S12 (2026-07-24) discharged the final two
+(`reaches_iff_hits_or_above` via a discrete intermediate-value lemma, and
+R6 `discrete_reflection` via the `card_nbij'` reflection bijection) — the
+section is now **fully proved, 0 sorries**. The design followed S5 PREP:
 
 - §3.1 Option C: `partialSumBool : (Fin n → Bool) → Fin (n+1) → ℤ` via
   bounded sum over `Fin n` with `if h : i.val < k.val` guard.
@@ -143,9 +143,8 @@ fully scoped in S5 PREP:
   (non-dependent, inverse-pair form — `Mathlib/Data/Finset/Card.lean:398`),
   with `i = j = reflectAt _ a` (involutive).
 
-Build status: VERIFIED 2026-06-12 (Docker, 7744 jobs successful) with R4
-and R5 proved; the only remaining `sorry` warnings are
-`reaches_iff_hits_or_above` and R6 `discrete_reflection`. Leaf-only file
+Build status: VERIFIED 2026-07-24 (Docker, 8577 jobs successful) with the
+whole section proved — **0 `sorry`s in this file**. Leaf-only file
 (no downstream importers). -/
 
 section DiscreteReflection
@@ -323,6 +322,104 @@ lemma partialSumBool_reflectAt_endpoint
       ring
   rw [Finset.sum_congr rfl (fun i _ => step i), ← Finset.mul_sum, hA]
 
+/-- The index-0 partial sum vanishes: the `i.val < 0` guard kills every
+    summand. The bound proof is an explicit argument so callers' `Fin.mk`
+    literals match without proof-irrelevance gymnastics. -/
+lemma partialSumBool_zero (ω : Fin n → Bool) (h0 : 0 < n + 1) :
+    partialSumBool ω ⟨0, h0⟩ = 0 := by
+  unfold partialSumBool
+  simp
+
+/-- One-step recurrence: the partial sum at `j + 1` adds the `j`-th `±1`
+    step. All three `Fin` bound proofs are explicit arguments so the
+    statement unifies syntactically with whatever proofs the caller has in
+    context (`omega` treats `Fin.mk` terms with different proofs as distinct
+    atoms). -/
+lemma partialSumBool_succ (ω : Fin n → Bool) {j : ℕ} (hj : j < n)
+    (h1 : j + 1 < n + 1) (h2 : j < n + 1) :
+    partialSumBool ω ⟨j + 1, h1⟩
+      = partialSumBool ω ⟨j, h2⟩ + (if ω ⟨j, hj⟩ then (1 : ℤ) else -1) := by
+  have hsplit : ∀ i : Fin n,
+      (if i.val < j + 1 then (if ω i then (1 : ℤ) else -1) else 0)
+        = (if i.val < j then (if ω i then (1 : ℤ) else -1) else 0)
+          + (if i.val = j then (if ω i then (1 : ℤ) else -1) else 0) := by
+    intro i
+    -- Bind each condition proof BEFORE `rw [if_pos/if_neg]`: an unanchored
+    -- `if_pos (by omega)` leaves the condition a metavariable and can unify
+    -- with the wrong `ite` (e.g. the inner `if ω i` payload).
+    rcases lt_trichotomy i.val j with h | h | h
+    · have c1 : i.val < j + 1 := by omega
+      have c3 : ¬(i.val = j) := by omega
+      rw [if_pos c1, if_pos h, if_neg c3]; ring
+    · have c1 : i.val < j + 1 := by omega
+      have c2 : ¬(i.val < j) := by omega
+      rw [if_pos c1, if_neg c2, if_pos h]; ring
+    · have c1 : ¬(i.val < j + 1) := by omega
+      have c2 : ¬(i.val < j) := by omega
+      have c3 : ¬(i.val = j) := by omega
+      rw [if_neg c1, if_neg c2, if_neg c3]; ring
+  have hlast : (∑ i : Fin n, if i.val = j then (if ω i then (1 : ℤ) else -1) else 0)
+      = (if ω ⟨j, hj⟩ then (1 : ℤ) else -1) := by
+    rw [Finset.sum_eq_single (⟨j, hj⟩ : Fin n)]
+    · have hc : (⟨j, hj⟩ : Fin n).val = j := rfl
+      rw [if_pos hc]
+    · intro i _ hne
+      exact if_neg (fun h => hne (Fin.ext h))
+    · intro habs
+      exact absurd (Finset.mem_univ _) habs
+  show (∑ i : Fin n, if i.val < j + 1 then (if ω i then (1 : ℤ) else -1) else 0)
+      = (∑ i : Fin n, if i.val < j then (if ω i then (1 : ℤ) else -1) else 0)
+        + (if ω ⟨j, hj⟩ then (1 : ℤ) else -1)
+  rw [Finset.sum_congr rfl fun i _ => hsplit i, Finset.sum_add_distrib, hlast]
+
+/-- **Discrete intermediate-value.** If some partial sum reaches `≥ a > 0`,
+    the path hits `a` exactly: partial sums start at `0` and move by `±1`,
+    so the first index with `S ≥ a` has `S = a` (a `+1` jump from `< a`
+    cannot overshoot). -/
+lemma hitSet_nonempty_of_ge {ω : Fin n → Bool} {a : ℤ} (ha : 0 < a)
+    {k : Fin (n + 1)} (hk : a ≤ partialSumBool ω k) :
+    (hitSet ω a).Nonempty := by
+  suffices H : ∀ (j : ℕ) (hj : j < n + 1), a ≤ partialSumBool ω ⟨j, hj⟩ →
+      (hitSet ω a).Nonempty from H k.val k.isLt hk
+  intro j
+  induction j with
+  | zero =>
+    intro hj h0
+    rw [partialSumBool_zero ω hj] at h0
+    omega
+  | succ i IH =>
+    intro hj hsi
+    by_cases heq : partialSumBool ω ⟨i + 1, hj⟩ = a
+    · exact ⟨⟨i + 1, hj⟩, Finset.mem_filter.mpr ⟨Finset.mem_univ _, heq⟩⟩
+    · have hi_n : i < n := by omega
+      have hi_n1 : i < n + 1 := by omega
+      have hstep := partialSumBool_succ ω hi_n hj hi_n1
+      have hgt : a < partialSumBool ω ⟨i + 1, hj⟩ := lt_of_le_of_ne hsi (Ne.symm heq)
+      have hprev : a ≤ partialSumBool ω ⟨i, hi_n1⟩ := by
+        by_cases hb : ω ⟨i, hi_n⟩
+        · rw [if_pos hb] at hstep
+          omega
+        · rw [if_neg hb] at hstep
+          omega
+      exact IH hi_n1 hprev
+
+/-- The first hit time of `ω` is also a hit time of the reflected path:
+    partial sums agree up to (and including) the first hit
+    (`partialSumBool_congr_below`). Extracted from the Step-1 argument
+    inside `reflectAt_involutive` for reuse in the R6 bijection. -/
+lemma firstHit_mem_hitSet_reflectAt {ω : Fin n → Bool} {a : ℤ}
+    (h : (hitSet ω a).Nonempty) :
+    firstHitFin ω a ∈ hitSet (reflectAt ω a) a := by
+  have hτ_eq : firstHitFin ω a = (hitSet ω a).min' h := by
+    simp [firstHitFin, dif_pos h]
+  have hτ_mem : firstHitFin ω a ∈ hitSet ω a := by
+    rw [hτ_eq]; exact (hitSet ω a).min'_mem h
+  have hτ_ps : partialSumBool ω (firstHitFin ω a) = a :=
+    (Finset.mem_filter.mp hτ_mem).2
+  refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
+  rw [partialSumBool_congr_below (le_refl _)]
+  exact hτ_ps
+
 /-- Hitting `≥ a` ⟺ `(hitSet ω a').Nonempty` for some `a' ≤ a`. For the
     bijection we need: paths reaching ≥ a partition as (ending ≥ a) ⊔
     (ending < a, having reached a). Reflection sends the second class to
@@ -331,7 +428,12 @@ lemma reaches_iff_hits_or_above
     {ω : Fin n → Bool} {a : ℤ} (ha : 0 < a) :
     (∃ k : Fin (n+1), partialSumBool ω k ≥ a)
       ↔ partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a ∨ (hitSet ω a).Nonempty := by
-  sorry  -- LOW: use Int.le_iff_exists_eq_succ on partial-sum jumps of ±1
+  constructor
+  · rintro ⟨k, hk⟩
+    exact Or.inr (hitSet_nonempty_of_ge ha hk)
+  · rintro (h | ⟨k, hk⟩)
+    · exact ⟨⟨n, Nat.lt_succ_self n⟩, h⟩
+    · exact ⟨k, ge_of_eq (Finset.mem_filter.mp hk).2⟩
 
 /-- **Discrete reflection identity** (André 1887, Feller Vol. I § III.1).
 
@@ -350,7 +452,92 @@ theorem discrete_reflection
         partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a).card
       - (Finset.univ.filter fun ω : Fin n → Bool =>
         partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ = a).card := by
-  sorry  -- R6: assemble via Finset.card_nbij' applied to the (ending<a,hits a) ↔ (ending>a) restriction
+  -- Path classes: A = reaches ≥ a (the LHS), B = ends ≥ a, C = ends = a,
+  -- D = ends < a but hits a, E = ends > a.
+  set A := (Finset.univ.filter fun ω : Fin n → Bool =>
+      ∃ k : Fin (n+1), partialSumBool ω k ≥ a) with hA
+  set B := (Finset.univ.filter fun ω : Fin n → Bool =>
+      partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a) with hB
+  set C := (Finset.univ.filter fun ω : Fin n → Bool =>
+      partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ = a) with hC
+  set D := (Finset.univ.filter fun ω : Fin n → Bool =>
+      partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ < a ∧ (hitSet ω a).Nonempty) with hD
+  set E := (Finset.univ.filter fun ω : Fin n → Bool =>
+      a < partialSumBool ω ⟨n, Nat.lt_succ_self n⟩) with hE
+  -- Partition 1: A = B ⊔ D (by `reaches_iff_hits_or_above`).
+  have hAeq : A = B ∪ D := by
+    ext ω
+    simp only [hA, hB, hD, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro hr
+      by_cases hend : partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a
+      · exact Or.inl hend
+      · rcases (reaches_iff_hits_or_above ha).mp hr with h | h
+        · exact Or.inl h
+        · exact Or.inr ⟨lt_of_not_ge hend, h⟩
+    · rintro (h | ⟨_, hne⟩)
+      · exact (reaches_iff_hits_or_above ha).mpr (Or.inl h)
+      · exact (reaches_iff_hits_or_above ha).mpr (Or.inr hne)
+  have hdisjBD : Disjoint B D := by
+    rw [Finset.disjoint_left]
+    intro ω hb hd
+    simp only [hB, hD, Finset.mem_filter, Finset.mem_univ, true_and] at hb hd
+    exact absurd hb (not_le.mpr hd.1)
+  have h1 : A.card = B.card + D.card := by
+    rw [hAeq, Finset.card_union_of_disjoint hdisjBD]
+  -- Partition 2: B = C ⊔ E (ends ≥ a splits as = a / > a).
+  have hBeq : B = C ∪ E := by
+    ext ω
+    simp only [hB, hC, hE, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro h
+      rcases eq_or_lt_of_le h with heq | hlt
+      · exact Or.inl heq.symm
+      · exact Or.inr hlt
+    · rintro (h | h)
+      · exact ge_of_eq h
+      · exact le_of_lt h
+  have hdisjCE : Disjoint C E := by
+    rw [Finset.disjoint_left]
+    intro ω hc he
+    simp only [hC, hE, Finset.mem_filter, Finset.mem_univ, true_and] at hc he
+    omega
+  have h2 : B.card = C.card + E.card := by
+    rw [hBeq, Finset.card_union_of_disjoint hdisjCE]
+  -- The reflection bijection: |D| = |E| via `reflectAt · a` both ways
+  -- (involutive on paths that hit `a`, by R4; endpoint formula by R5).
+  have h3 : D.card = E.card := by
+    apply Finset.card_nbij' (fun ω => reflectAt ω a) (fun ω => reflectAt ω a)
+    · -- MapsTo D → E: ends < a and hits a ⟹ reflection ends at 2a − S > a.
+      intro ω hω
+      rw [Finset.mem_coe] at hω ⊢
+      simp only [hD, Finset.mem_filter, Finset.mem_univ, true_and] at hω
+      simp only [hE, Finset.mem_filter, Finset.mem_univ, true_and]
+      have hR5 := partialSumBool_reflectAt_endpoint hω.2
+      rw [hR5]
+      omega
+    · -- MapsTo E → D: ends > a ⟹ hits a (discrete IVT), reflection ends
+      -- at 2a − S < a, and the reflected path still hits a at the same
+      -- first-hit index.
+      intro ω hω
+      rw [Finset.mem_coe] at hω ⊢
+      simp only [hE, Finset.mem_filter, Finset.mem_univ, true_and] at hω
+      simp only [hD, Finset.mem_filter, Finset.mem_univ, true_and]
+      have hne : (hitSet ω a).Nonempty := hitSet_nonempty_of_ge ha (le_of_lt hω)
+      have hR5 := partialSumBool_reflectAt_endpoint hne
+      exact ⟨by rw [hR5]; omega, ⟨firstHitFin ω a, firstHit_mem_hitSet_reflectAt hne⟩⟩
+    · -- Left inverse on D: R4 involution (D-membership includes the hit).
+      intro ω hω
+      rw [Finset.mem_coe] at hω
+      simp only [hD, Finset.mem_filter, Finset.mem_univ, true_and] at hω
+      exact reflectAt_involutive hω.2
+    · -- Right inverse on E: E-paths hit a by the discrete IVT, so R4 applies.
+      intro ω hω
+      rw [Finset.mem_coe] at hω
+      simp only [hE, Finset.mem_filter, Finset.mem_univ, true_and] at hω
+      exact reflectAt_involutive (hitSet_nonempty_of_ge ha (le_of_lt hω))
+  -- Assemble: |A| = |B| + |D| = |B| + |E| = |B| + (|B| − |C|) = 2|B| − |C|.
+  omega
 
 end DiscreteReflection
 
