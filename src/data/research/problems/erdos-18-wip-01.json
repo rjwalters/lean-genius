@@ -14,20 +14,21 @@
   },
   "knownResults": {
     "proven": [
-      "Record-setter sequence: least practical number with hErdos index t is 2^t, for t = 1..7 (minimal_hErdos_two..seven)",
-      "Record ties at t=6: hErdos 78 = 88 = 100 = 104 = 6 = hErdos 64; local uniqueness of the record fails (record_index_six_not_locally_unique)",
-      "Exact hErdos values: 1,2,4,6,8,12,16,18,20,24,28,30,32,64,66,78,88,90,100,104,126,128 -> 0,1,2,2,3,3,4,3,4,3,4,4,5,6,5,6,6,4,6,6,4,7"
+      "Record-setter sequence: least practical number with hErdos index t is 2^t for t = 1..8 (minimal_hErdos_two..eight) — but the pattern BREAKS at t = 9: minimal_hErdos_nine = 348 = 2^2*3*29 < 512 = 2^9 (IsLeast, kernel decide, 0-axiom)",
+      "Greedy-halving bound REFUTED: not_hErdos_le_log_two — hErdos 348 = 9 > 8 = log2 348, so hErdos m <= log2 m fails for practical m (this was the natural route to record-setter = 2^t for all t; both bound and conclusion are false)",
+      "Record ties: t=6 fails local uniqueness (78,88,100,104), t=7 unique below 256, t=8 fails again (record_index_eight_not_locally_unique: hErdos 272 = hErdos 304 = 8 inside (256,512)); no monotone trend",
+      "Exact hErdos values through the [256,348] octave fragment: 256->8, 272->8, 304->8, 348->9, 512->9; threshold hErdos_le_eight_of_lt_threefortyeight covers all 20 practicals in [256,348)"
     ],
     "open": [],
     "goal": ""
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 2,
-    "focus": "2026-07-23: exact table extended + RECORD-SETTERS proved — hErdos 18 = 3 (engine-only, no practical factorisation), hErdos 20 = 4 (unique hard target 18; NON-MONOTONICITY: 20 < 24 but hErdos 20 = 4 > 3 = hErdos 24, and d(20) = 6 < 8 = d(24)), hErdos 28 = 4 (hard target 27), hErdos 8/16/32 via the power formula, and minimal_hErdos_two/three/four/five (IsLeast): the least practical m with hErdos m = t is 2^t for t = 2..5 — record-setter sequence 2, 4, 8, 16, 32. All 0-axiom, docker-verified. Open question crystallised: is the record-setter 2^t for ALL t? Would follow from hErdos m <= log2 m (practical m), but the greedy proof FAILS (practical 78 has divisor-gap ratio 13/6 > 2), so a non-greedy argument is needed.",
+    "since": "2026-07-24T01:11:00-07:00",
+    "iteration": 7,
+    "focus": "2026-07-24: t = 9 rung DONE with a REFUTATION - the record-setter escapes the powers of two: minimal_hErdos_nine = 348 (IsLeast, 0-axiom kernel decide), strictly below 2^9 = 512. Mechanism: the 11 proper divisors of 348 sum to 492, and a representation of the hard target 347 = 492 - 145 is the complement of a sub-family summing to 145; only {29,116} and {58,87} do, so every representation uses exactly 9 divisors. Consequences: hErdos m <= log2 m is FALSE (not_hErdos_le_log_two), and record-index-8 local uniqueness fails (hErdos 272 = hErdos 304 = 8). Threshold hErdos_le_eight_of_lt_threefortyeight built from 8 subadditive splits + 11 sub-family engine certificates + 3 new practicality chains (140, 150, 162). All 0-axiom.",
     "blockers": [],
-    "nextAction": "t = 8 rung ([128,256)) or octave index-6 census via witness-list engine; record-setter proved through t = 7",
+    "nextAction": "t = 10 rung: [348,512) census is DP-complete in knowledge.md (348 is the UNIQUE index-9 practical below 512); prove the remaining <= 8 upper bounds in Lean, then ask where the second index-9 practical lies and whether hErdos m - log2 m grows (candidates: borderline-Stewart practicals with zero-slack divisor gaps)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -35,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..8 (minimal_hErdos_two..eight, all 0-axiom); STRUCTURAL: local uniqueness of the record returns at t=7 (128 alone below 256) after failing at t=6; new sub-family upper engine hErdos_le_of_witnesses_from unblocks d(210)=16/d(240)=20; next rung t=9 needs [256,512) sweep with unsplittable census first",
+    "progressSummary": "BREAKTHROUGH: the powers-of-two record pattern BREAKS at t = 9 - minimal_hErdos_nine = 348 < 512 = 2^9 (first record-setter with an odd prime factor), refuting both the record-setter-=-2^t conjecture and the hErdos <= log2 bound (not_hErdos_le_log_two); record-setter = 2^t stands for t = 1..8; t=8 record ties at 272 and 304 inside (256,512); next rung t = 10 with the [348,512) DP census already recorded",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
