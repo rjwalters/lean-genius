@@ -147,3 +147,40 @@ Lean idioms: canonicalize every index with `rw [show a = b from by omega]` BEFOR
 + if M % 2 = 0 then 1 else 0` via `by_cases` + `exact_mod_cast (by omega)`; equation-compiler
 mutual recursion packaged as `∀ M, O M ∧ E2 M` with helper `E2_of_O`. GOTCHA: `le_or_lt` is
 gone at v4.31-era Mathlib — use `Nat.lt_or_ge` (bare `lt_or_ge`/`eq_or_lt_of_le` still exist).
+
+## Session 2026-07-24 (researcher-1): k = 4 closed — exact solution of the two-point band recursion
+
+Sylvester unimodality for `[n,4]_q` (`qBinomCoeff_unimodal_four`) + codim-4 mirror
+(`qBinomCoeff_unimodal_of_codim_le_four`). 5 new theorems, 0 ax / 0 sorry,
+host-verified first try. Open interior now `5 ≤ k ≤ n−5` (first instance `[10,5]_q`).
+
+Key idea: for `4×N` boxes the box-growth step adds exactly TWO first-half indices.
+Writing `u_N, v_N` for the last two first-half increments and `δ(N)` for the k=3
+box-free prefix increment, palindromy turns the dual-Pascal recurrence into the
+linear band recursion `u_{N+1} = δ(N+1) − v_N`, `v_{N+1} = δ(N) − u_N`, which has
+the EXACT closed solution `v ≡ 0`, `u = δ`. Band nonnegativity is then literally
+k=3 first-half monotonicity — the k=3 theorem is consumed as a black box, and no
+closed form for δ (= #partitions into 2s and 3s) is ever needed.
+
+Lean recipe (all landed in `CombinationsFormulaOQ03OQ04.lean`):
+- `qBinom_X_four_coeff_succ'` — mirror of the k=3 second-form recurrence, verbatim
+  recipe (`qBinom_pascal'` + `mul_comm` + `coeff_mul_X_pow'` + `ring`).
+- `qBinom_X_four_band` — joint `∀ N, (v) ∧ (u)` equation-compiler induction, base
+  via `qBinom_symm` to `[5,4]=[5,1]`, `[4,3]=[4,1]` + `qBinom_X_coeff_one_seq` +
+  `norm_num`; step = 3 recurrence instances + 2 palindromy reflections
+  (`qBinom_X_coeff_symm'`) + 2 prefix-stability facts (k=3 `succ'` with `if_neg`,
+  `add_zero`) + `linarith`. Index canonicalization via `rw [show a = b from by
+  omega]` throughout (the established file idiom).
+- `qBinom_X_four_coeff_first_half_mono` — same case skeleton as the k=3 analogue:
+  interior (IH + k=3 increment; shifted index `j−(N+1) ≤ N−2` always inside the
+  k=3 first half since `2(N−2)+2 ≤ 3(N+1)`) then two band points from the band
+  theorem.
+
+No new gotchas — the session compiled green on the first `lake env lean` run,
+entirely by following the k=3 template + the memory-file idioms.
+
+**k=5 wall (analyzed, honest):** box step adds 5/2 indices (band alternates 2/3
+by parity), and the reflected increments hit interior near-center k=4 increments
+that `u = δ, v = 0` does NOT pin (only the last two are known). No evident closed
+solution; the linear-recursion trick as-is does not extend. Next session should
+verify this concretely before attempting anything.

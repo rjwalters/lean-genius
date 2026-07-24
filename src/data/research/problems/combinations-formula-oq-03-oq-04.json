@@ -710,7 +710,11 @@
       "BREAKTHROUGH mechanism (reopens the k>=3 elementary block legitimately): the SECOND q-Pascal form [N+4,3] = [N+3,3] + q^(N+1)[N+3,2] (qBinom_pascal-prime, already in OQ03) makes the increment correction the UNSHIFTED k=2 ramp, exactly known — unlike the first form whose shifted term crosses the [n,2] peak uncontrolled",
       "Center-band recursion: the first half of box 3x(N+1) extends past box 3xN by at most TWO indices; there the smaller-box increment is exact via palindromy (odd-degree center pair = 0; even-box pair reflects onto the PREVIOUS band). Band increments: odd box 2M+1 at j=3M: 0; even box 2M+2 at j=3M+1,3M+2: [M even],[M odd] — all 0/1, period-2 self-contained induction",
       "Sylvester k=3 is now CLOSED elementarily (no sl2/OHara): qBinomCoeff_unimodal_three; with symmetry the open range shrinks to interior 4<=k<=n-4, first open instance [8,4]_q",
-      "Why k=4 does not fall to the same trick: the center band widens (about k-1 indices) and the increments needed there are no longer exactly-known ramp parities — the recursion would need exact k=3 band VALUES at general offsets, i.e. the quasi-polynomial P3, which is where sl2/OHara re-enter"
+      "Why k=4 does not fall to the same trick: the center band widens (about k-1 indices) and the increments needed there are no longer exactly-known ramp parities — the recursion would need exact k=3 band VALUES at general offsets, i.e. the quasi-polynomial P3, which is where sl2/OHara re-enter",
+      "k=4 band recursion is EXACTLY solvable: with u_N, v_N the last two first-half increments of the 4xN box and delta(N) the k=3 box-free prefix increment, palindromy gives u_{N+1} = delta(N+1) - v_N, v_{N+1} = delta(N) - u_N, with closed solution v = 0, u = delta. Band nonnegativity reduces to the k=3 first-half monotonicity consumed as a black box.",
+      "For 4xN boxes the box-growth step adds exactly 2 first-half indices, and the shifted k=3 correction index j-(N+1) <= N-2 always lands inside the k=3 first half (2(N-2)+2 <= 3(N+1)) — so below the band, monotonicity is pure IH + k=3 increment.",
+      "delta box-independence (k=3 prefix stability) needs no new lemma: qBinom_X_three_coeff_succ' with if_neg + add_zero inlines it.",
+      "k=5 does NOT extend the same way: the box step adds 5/2 indices (band alternates 2/3 by parity) and the reflected increments hit interior near-center k=4 increments that the u=delta, v=0 solution does not pin. No evident closed solution — the general interior 5<=k<=n-5 stays sl2/O.Hara territory."
     ],
     "builtItems": [
       "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
@@ -734,7 +738,12 @@
       "qBinom_X_three_coeff_succ-prime (second-form k=3 coefficient recurrence) in CombinationsFormulaOQ03OQ04.lean",
       "qBinom_X_three_center_pair/outer_pair/even_pair (palindromy reflection pairs), qBinom_X_three_band_O_zero, qBinom_X_three_band_E2_of_O, qBinom_X_three_band (O and E2 mutual recursion), qBinom_X_three_band_E1",
       "qBinom_X_three_coeff_first_half_mono (FULL k=3 first-half monotonicity, box-binding tail included)",
-      "qBinomCoeff_unimodal_three, qBinomCoeff_unimodal_of_codim_le_three (Sylvester closed for k<=3 and k>=n-3)"
+      "qBinomCoeff_unimodal_three, qBinomCoeff_unimodal_of_codim_le_three (Sylvester closed for k<=3 and k>=n-3)",
+      "qBinom_X_four_coeff_succ' (second-form k=4 coefficient recurrence) in CombinationsFormulaOQ03OQ04.lean",
+      "qBinom_X_four_band (exact two-point center-band solution v=0, u=delta) in CombinationsFormulaOQ03OQ04.lean",
+      "qBinom_X_four_coeff_first_half_mono (full k=4 first-half inequality) in CombinationsFormulaOQ03OQ04.lean",
+      "qBinomCoeff_unimodal_four (Sylvester unimodality k=4) in CombinationsFormulaOQ03OQ04.lean",
+      "qBinomCoeff_unimodal_of_codim_le_four (k <= 4 or k >= n-4) in CombinationsFormulaOQ03OQ04.lean"
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
@@ -748,7 +757,7 @@
       "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels.",
       "k=3 box-binding tail N<j<=floor((3N-2)/2): needs strict/quantitative monotonicity or an explicit injection (OHara k=3 special case) to compensate the negative [n,2] increment past its peak. Assess an explicit-formula route: coeff_{n,3}(j) via inclusion-exclusion a_N(j)=P3(j)-P3(j-N-1)-... with P3(j)=round((j+3)^2/12), then finite-difference monotonicity on the tail."
     ],
-    "progressSummary": "MAJOR: Sylvester unimodality k=3 CLOSED elementarily (researcher-1, 2026-07-22, lake env lean exit 0, 0-axiom). Second q-Pascal form + center-band recursion (band increments exactly 0/1 by palindromy + k=2 ramp parity) settles the box-binding tail the 07-21 session left open — no sl2/OHara needed at k=3. Sylvester now proved for k<=3 and k>=n-3; open range = interior 4<=k<=n-4 (first instance [8,4]_q), where the band widens and genuinely needs sl2/OHara."
+    "progressSummary": "PROGRESS: Sylvester unimodality closed for k <= 4 and codim <= 4 (0 axioms, 0 sorries throughout). k=4 fell via the exactly-solvable two-point band recursion (v=0, u=delta); open interior is now 5 <= k <= n-5 (first instance [10,5]_q), which needs either a genuinely new band mechanism or sl2/O.Hara."
   },
   "currentState": "Bridged the two forked unimodality predicates (researcher-1): isCoeffUnimodal_iff_unimodal_coeff proves IsCoeffUnimodal p ↔ Unimodal p.coeff, unifying CombinationsFormulaOQ03OQ04Unimodal.lean (IsCoeffUnimodal, was k≤1) with CombinationsFormulaOQ03OQ04.lean (Unimodal, has k=0,1,2 + palindrome criterion). k=2 transported (qBinom_X_unimodal_two), no re-proof. 0 axioms. k≥3 open.",
   "lastUpdate": "2026-07-22",
