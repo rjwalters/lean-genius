@@ -3445,4 +3445,164 @@ the floor thins from six members to two. -/
 theorem hErdos_twofiftytwo : hErdos 252 = 5 :=
   le_antisymm hErdos_twofiftytwo_le five_le_hErdos_twofiftytwo
 
+/-! ### Closing out the octave `[64, 128)`: every exact value, and the index-`4` floor
+
+The octave `[64, 128)` contains fifteen practical numbers.  Previous sessions
+pinned eight exact values (`64, 66, 78, 88, 90, 100, 104, 126`); the remaining
+seven (`72, 80, 84, 96, 108, 112, 120`) fall here, completing the table:
+
+| `m`      | 64 | 66 | 72 | 78 | 80 | 84 | 88 | 90 | 96 | 100 | 104 | 108 | 112 | 120 | 126 |
+|----------|----|----|----|----|----|----|----|----|----|-----|-----|-----|-----|-----|-----|
+| `hErdos` |  6 |  5 |  4 |  6 |  5 |  4 |  6 |  4 |  4 |   6 |   6 |   5 |   5 |   4 |   4 |
+
+Method: uppers by the full witness engine for `d(m) = 12` targets
+(`2^{12} = 4096` subsets, known affordable) and by a `9`-coin sub-family chain
+for `120` (whose `d(120) = 16` makes the full powerset infeasible — the same
+obstruction the sub-family engine removed at `168`); lowers uniformly by the
+graded-slice engine at one hard target each (`299`–`794` subsets).  `80` and
+`108` have UNIQUE hard targets (`79` resp. `107`), like `210` and `240`.
+
+The payoff is the octave's index-`4` floor as a THEOREM
+(`index_four_floor_sixtyfour_octave`): among the fifteen practicals of
+`[64, 128)` exactly `72, 84, 90, 96, 120, 126` attain the octave minimum `4`.
+Combined with `hErdos_onesixtyeight`/`hErdos_oneeighty` (the doublings `2·84`,
+`2·90` stay at `4`) and `hErdos_twoforty`/`hErdos_twofiftytwo` (the doublings
+`2·120`, `2·126` rise to `5`), four of the six floor members now have their
+doubling behaviour formal — the remaining two, `144 = 2·72` and `192 = 2·96`,
+rise to `5` by Python DP but await tight uppers. -/
+
+/-- `72` is practical — doubling `36`. -/
+theorem seventytwo_practical : IsPractical 72 := by
+  simpa using two_mul_practical thirtysix_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 72 = 4`** — upper by the full witness engine (`d(72) = 12`,
+`4096` subsets); lower by the graded-slice engine at hard target `k = 59`
+(no `≤ 3` of the twelve divisors sum to `59`; `299` graded subsets).  The
+first of the four remaining floor members pinned this session. -/
+theorem hErdos_seventytwo : hErdos 72 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 59) seventytwo_practical
+    (by norm_num) (by decide)
+
+/-- `80` is practical — doubling `40`. -/
+theorem eighty_practical : IsPractical 80 := by
+  simpa using two_mul_practical forty_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 80 = 5`** — upper by the full witness engine (`d(80) = 10`,
+`1024` subsets); lower at the UNIQUE hard target `k = 79 = m − 1` (no `≤ 4`
+of the ten divisors sum to `79`; `386` graded subsets).  The divisor gap
+`5 → 8 → 10` in `{1,2,4,5,8,10,16,20,40}` keeps `79` five-divisor-hard. -/
+theorem hErdos_eighty : hErdos 80 = 5 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 79) eighty_practical
+    (by norm_num) (by decide)
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 84 = 4`** — upper by the full witness engine (`d(84) = 12`);
+lower at hard target `k = 83` (`299` graded subsets).  `84`'s doubling `168`
+was already shown to STAY on the floor (`hErdos_onesixtyeight`); this pins
+the base point of that doubling. -/
+theorem hErdos_eightyfour : hErdos 84 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 83) eightyfour_practical
+    (by norm_num) (by decide)
+
+/-- `96` is practical — doubling `48`. -/
+theorem ninetysix_practical : IsPractical 96 := by
+  simpa using two_mul_practical fortyeight_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 96 = 4`** — upper by the full witness engine (`d(96) = 12`);
+lower at hard target `k = 87` (`299` graded subsets).  Like `72`, a
+`2^a · 3`-smooth number sitting on the floor; its doubling `192` rises to
+`5` (Python DP — tight upper not yet formal). -/
+theorem hErdos_ninetysix : hErdos 96 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 87) ninetysix_practical
+    (by norm_num) (by decide)
+
+/-- `108` is practical — doubling `54`. -/
+theorem onehundredeight_practical : IsPractical 108 := by
+  simpa using two_mul_practical fiftyfour_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 108` — the graded-slice engine at the UNIQUE hard target
+`k = 107 = m − 1` (no `≤ 4` of the twelve divisors sum to `107`; `794` graded
+subsets). -/
+theorem five_le_hErdos_onehundredeight : 5 ≤ hErdos 108 :=
+  le_hErdos_of_no_small_subset (k := 107) onehundredeight_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 108 = 5`** — the subadditive upper `hErdos (2·54) ≤ 1 + 4`
+(`hErdos_onehundredeight_le`, from a previous session) is TIGHT: like `80`
+(and `64`), doubling a practical half costs the full subadditive unit here
+(`54` has index `4`).  Unique hard target `107`. -/
+theorem hErdos_onehundredeight : hErdos 108 = 5 :=
+  le_antisymm hErdos_onehundredeight_le five_le_hErdos_onehundredeight
+
+/-- `112` is practical — doubling `56`. -/
+theorem onehundredtwelve_practical : IsPractical 112 := by
+  simpa using two_mul_practical fiftysix_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 112 = 5`** — upper by the full witness engine (`d(112) = 10`,
+tightening the subadditive `≤ 6` of `hErdos_onehundredtwelve_le` by one);
+lower at hard target `k = 111` (`386` graded subsets).  Doubling `56` (index
+`5`, Python) is FREE here — the octave's only zero-cost doubling OFF the
+index-`4` floor (`72, 84, 96, 120` are zero-cost too, but along the floor). -/
+theorem hErdos_onehundredtwelve : hErdos 112 = 5 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 111) onehundredtwelve_practical
+    (by norm_num) (by decide)
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 120 ≤ 4` — sub-family engine on the `9`-coin chain
+`{1, 2, 4, 8, 15, 20, 30, 40, 60}` (`2^9 = 512` subsets, versus the
+infeasible `2^{16}` full powerset: `d(120) = 16` was exactly the obstruction
+that blocked this value before the sub-family engine existed).  Tightens the
+subadditive `≤ 6` of `hErdos_onetwenty_le` by two full units. -/
+theorem hErdos_onetwenty_le_four : hErdos 120 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 8, 15, 20, 30, 40, 60}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 120` — the graded-slice engine at hard target `k = 97`: no
+subset of at most `3` of the `16` divisors of `120` sums to `97` (`697`
+graded subsets). -/
+theorem four_le_hErdos_onetwenty : 4 ≤ hErdos 120 :=
+  le_hErdos_of_no_small_subset (k := 97) onetwenty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 120 = 4`** — the highest-divisor-count member of the octave's
+floor: `d(120) = 16` (a record among numbers `< 128`), yet the index equals
+`4 = hErdos 16`.  Both engines at work: neither bound was feasible with the
+plain full-powerset engines. -/
+theorem hErdos_onetwenty : hErdos 120 = 4 :=
+  le_antisymm hErdos_onetwenty_le_four four_le_hErdos_onetwenty
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- **The index-`4` floor of the octave `[64, 128)`, characterised**: a
+practical number in `[64, 128)` has `hErdos m = 4` exactly when
+`m ∈ {72, 84, 90, 96, 120, 126}`.  Previously a Python observation, now a
+theorem — the fifteen practicals of the octave each have a pinned exact value
+(`4` for the six floor members; `5` for `66, 80, 108, 112`; `6` for
+`64, 78, 88, 100, 104`), and the forty-nine non-practical `m` are refuted by
+kernel evaluation.  This is the octave-level input to the floor-thinning
+phenomenon: the `[128, 256)` floor is exactly `{168, 180} = {2·84, 2·90}`. -/
+theorem index_four_floor_sixtyfour_octave :
+    ∀ m, IsPractical m → 64 ≤ m → m < 128 →
+      (hErdos m = 4 ↔ m = 72 ∨ m = 84 ∨ m = 90 ∨ m = 96 ∨ m = 120 ∨ m = 126) := by
+  intro m hm h64 h128
+  interval_cases m <;>
+    first
+    | exact absurd hm (by decide)
+    | simp [hErdos_sixtyfour, hErdos_sixtysix, hErdos_seventytwo,
+        hErdos_seventyeight, hErdos_eighty, hErdos_eightyfour,
+        hErdos_eightyeight, hErdos_ninety, hErdos_ninetysix,
+        hErdos_onehundred, hErdos_onehundredfour, hErdos_onehundredeight,
+        hErdos_onehundredtwelve, hErdos_onetwenty, hErdos_onetwentysix]
+
 end Erdos18
