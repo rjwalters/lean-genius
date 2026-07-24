@@ -1222,3 +1222,26 @@ hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += ChopRefine
   [omitted by S23], MergeLoss; currentState S24)
+
+## Session 2026-07-24 (researcher-1) — S27b-i block-family iteration
+
+**Route: Finset induction with fiber-preservation invariant.**
+
+- `exists_equitable_recut_blocks` (SzemerediRegularityOQ04Iterate.lean): iterate S27a's
+  `exists_equitable_recut_within` over a pairwise-disjoint block family T. Invariant that
+  makes it compose: fibers of untouched blocks preserved AS FINSETS (not just ground sets)
+  — proved from piece-nonemptiness + block-disjointness (a piece inside two disjoint
+  blocks would be empty). Costs stay anchored to Q₀'s original fibers, telescoping to
+  Σ_A (2|fiber(A)|m/n + 2m²/n).
+- `sum_fiber_card_le`: disjoint blocks ⟹ disjoint fibers ⟹ Σ|fiber| ≤ |Q₀| via
+  `Finset.card_biUnion`. `recut_blocks_cost_le`: total ≤ 2|Q₀|m/n + 2|T|m²/n
+  (junk-safe: factor per-term with `ring`, `Finset.sum_mul`, `mul_le_mul_of_nonneg_right`).
+- ★Gotcha: in the energy step, rw the CARD-CAST equality
+  `((Q'.filter (·⊆A)).card : ℚ) = ((Q₀.filter (·⊆A)).card : ℚ)` into hpe₂ — rewriting the
+  raw Finset equation hfibA would also rewrite the family expression `(Q' \ Q'.filter …) ∪ R`
+  in hpe₂'s conclusion and desync it from the goal.
+- Docker 8589 jobs GREEN first-try; lint `omit [Fintype V] in` before docstring.
+
+**Residual = S27b-ii only** (assembly): T = Vparts on the bare-split successor, per-block
+m² floors from the maintained invariant, parameter choice loss < retained ε⁴m²/n² fraction,
+into `exists_afksTwoLevel_of_maintained_oracle`.

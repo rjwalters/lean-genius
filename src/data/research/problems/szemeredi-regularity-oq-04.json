@@ -112,7 +112,8 @@
       "S26: exists_equitable_recut_absorbed + prime variant (S25+absorption capstone: all sizes in {m,m+1}, cost 2|P|m/n + 2m^2/n)",
       "S27a SzemerediRegularityOQ04Surgery.lean: exists_absorb_deficient_within (in-place absorption, ambient loss <= 2m^2/n)",
       "S27a: exists_chop_refinement_within (fiber chop as ambient refinement, zero loss)",
-      "S27a: exists_equitable_recut_within (per-block brick: fiber -> exact {m,m+1} in place, ambient cost 2|S|m/n + 2m^2/n)"
+      "S27a: exists_equitable_recut_within (per-block brick: fiber -> exact {m,m+1} in place, ambient cost 2|S|m/n + 2m^2/n)",
+      "SzemerediRegularityOQ04Iterate.lean: exists_equitable_recut_blocks + sum_fiber_card_le + recut_blocks_cost_le (3 thm, 0 axioms, 0 sorries, docker 8589 jobs first-try)"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -167,11 +168,12 @@
       "Lean gotcha: fun v => insert (v : V) ((e v : Finset V)) type-ascribes the BINDER to V breaking the attach subtype; use .1 projections (insert v.1 (e v).1). Also subset_union_left needs explicit (s2 := New) when the superfamily is only determined by the replace-lemma conclusion",
       "S27a ambient surgery: the fiber energy is NOT a summand of ambient energy (cross-block pairs), so per-block re-equitization must be stated on the AMBIENT family; chopping only the fiber IS an ambient refinement (refine_mono with trivial cells {A} outside the fiber), and pool/absorb are S24 replacements with small mass - the whole S25/S26 pipeline transfers in-place",
       "The untouched ambient part identity A2 \\\\ R1 = Q0 \\\\ S needs fiber pieces nonempty + contained in the fiber ground set: an old piece equal to a fiber piece would be a nonempty subset of U S yet disjoint from every member of S",
-      "Lean: Finset.union_biUnion (NOT biUnion_union, which is pointwise) distributes biUnion over family union; after simp [mem_sdiff] in an ext goal both sides unfold to conjunctions - return mem_sdiff.mp h directly"
+      "Lean: Finset.union_biUnion (NOT biUnion_union, which is pointwise) distributes biUnion over family union; after simp [mem_sdiff] in an ext goal both sides unfold to conjunctions - return mem_sdiff.mp h directly",
+      "S27b-i (researcher-1, 2026-07-24): block-family iteration DONE in new SzemerediRegularityOQ04Iterate.lean. exists_equitable_recut_blocks — Finset.induction_on over disjoint blocks T; the composable invariant is FIBER PRESERVATION AS FINSETS (Q1.filter (⊆B) = Q0.filter (⊆B) for B disjoint from all processed blocks), which keeps both the m² floors and the cost terms anchored to the ORIGINAL family, so costs telescope to Σ_A (2|fiber(A)|m/n + 2m²/n). recut_blocks_cost_le bounds the sum by 2|Q0|m/n + 2|T|m²/n via disjoint-fibers card_biUnion. Key trick: rw the CARD-CAST equation (not the raw fiber equation) into the step inequality — rewriting the fiber Finset equation would also rewrite the family expression in the conclusion."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Construct the recursive refinement chain realizing the S17 case split as witnessed steps (freshness + equitable mass floors discharged) — the remaining input to exists_afksTwoLevel_of_dichotomy_both."
+      "S27b-ii (final assembly): apply exists_equitable_recut_blocks to the bare-split successor of exists_energy_next_of_not_afksFineRegular with T = Vparts (per-block floor m² ≤ |block| from the maintained invariant), bound total loss via recut_blocks_cost_le, choose parameters so 2|q′|m/n + 2|Vparts|m²/n stays below a retained fraction of the ε⁴m²/n² gain, and feed the maintaining oracle into exists_afksTwoLevel_of_maintained_oracle."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "score": 63
