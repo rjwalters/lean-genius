@@ -5,12 +5,12 @@
     "type": "concept",
     "title": "Basic Mathlib Imports",
     "content": "Imports Nat.Basic, Finset, Rat.Basic, and tactics from Mathlib.",
-    "mathContext": "The formalization uses `ℚ` (rational numbers) for the density parameter $\\varepsilon$ and the linear constant $c$, avoiding the complications of working with real-valued exponents. The `Finset` import supports finite vertex counting. Notably, this file does NOT import Mathlib's `SimpleGraph` type—instead it axiomatizes an abstract `Graph` type to handle infinite graphs with uncountable chromatic number, which are beyond SimpleGraph's scope.",
+    "mathContext": "The formalization uses `ℚ` (rational numbers) for the density parameter $\\varepsilon$ and the linear constant $c$, avoiding the complications of working with real-valued exponents. The `Finset` import supports finite vertex counting. Notably, this file does NOT import Mathlib's `SimpleGraph` type—instead it defines an abstract `Graph` structure (no axioms) to handle infinite graphs with uncountable chromatic number, which are beyond SimpleGraph's scope.",
     "significance": "supporting",
     "relatedConcepts": [
       "ℚ",
       "Finset",
-      "abstract axiomatization"
+      "abstract graph structure"
     ],
     "prerequisites": [
       "Mathlib.Data.Nat.Basic",
@@ -26,18 +26,18 @@
     "proofId": "erdos-75",
     "type": "concept",
     "title": "Abstract Graph Type and Chromatic Number",
-    "content": "Axiomatizes Graph as an abstract type with chromaticNum G n meaning G requires ≥ n colours, and monotonicity of this predicate.",
-    "mathContext": "The abstract `Graph` type is necessary because Problem 75 concerns graphs with **uncountable chromatic number** ($\\chi(G) \\geq \\aleph_1$), which cannot be modeled by Mathlib's `SimpleGraph V` with finite `V`. The chromatic number is represented as a predicate `chromaticNum G n` ('$G$ requires at least $n$ colours') rather than a cardinal-valued function, with monotonicity axiom: if $G$ requires $n$ colours and $m \\leq n$, then $G$ requires $m$ colours. This representation sidesteps cardinal arithmetic while capturing the essential property.",
+    "content": "Defines Graph as an abstract structure (no axioms) with chromaticNum G n meaning G requires ≥ n colours, and proves monotonicity of this predicate.",
+    "mathContext": "The abstract `Graph` type is necessary because Problem 75 concerns graphs with **uncountable chromatic number** ($\\chi(G) \\geq \\aleph_1$), which cannot be modeled by Mathlib's `SimpleGraph V` with finite `V`. The chromatic number is represented as a predicate `chromaticNum G n` ('$G$ requires at least $n$ colours') rather than a cardinal-valued function, with a proved monotonicity theorem: if $G$ requires $n$ colours and $m \\leq n$, then $G$ requires $m$ colours. This representation sidesteps cardinal arithmetic while capturing the essential property.",
     "significance": "key",
     "relatedConcepts": [
       "chromatic number",
       "infinite graphs",
       "cardinal numbers",
-      "axiomatization"
+      "structure-based formalization"
     ],
     "prerequisites": [
       "Chromatic Number",
-      "Abstract Axiomatization",
+      "Abstract Graph Structure",
       "Predicate Monotonicity"
     ],
     "range": {
@@ -71,8 +71,8 @@
     "proofId": "erdos-75",
     "type": "concept",
     "title": "Finite Subgraphs and Independence Number",
-    "content": "Axiomatizes FiniteSubgraph G n (a subgraph on n vertices), indepNumber (its independence number), and the bound α(H) ≤ n.",
-    "mathContext": "The axiomatization of `FiniteSubgraph G n` as a type (rather than a predicate on vertex subsets) cleanly handles the passage from the infinite graph $G$ to its finite induced subgraphs. The **independence number** $\\alpha(H)$ is the size of the largest independent set in $H$, axiomatized with the trivial upper bound $\\alpha(H) \\leq n$ (at most all vertices are independent). The problem asks for *lower bounds* on $\\alpha(H)$ that are nearly linear in $n$.",
+    "content": "Defines FiniteSubgraph G n (a subgraph on n vertices) and indepNumber (its independence number), and proves the bound α(H) ≤ n.",
+    "mathContext": "The definition of `FiniteSubgraph G n` as a type (rather than a predicate on vertex subsets) cleanly handles the passage from the infinite graph $G$ to its finite induced subgraphs. The **independence number** $\\alpha(H)$ is the size of the largest independent set in $H$, with the trivial upper bound $\\alpha(H) \\leq n$ (at most all vertices are independent) proved as a theorem. The problem asks for *lower bounds* on $\\alpha(H)$ that are nearly linear in $n$.",
     "significance": "key",
     "relatedConcepts": [
       "independence number",

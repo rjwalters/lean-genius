@@ -90,7 +90,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 75 is one of the most celebrated open problems in infinite graph theory, carrying a $1000 Erdős prize. It asks whether uncountable chromatic number is compatible with near-linear independence in every finite subgraph—a striking tension between global colouring complexity and local sparsity. The formalization captures both the basic (n^{1-ε}) and strong (linear) forms using an abstract axiomatization that goes beyond Mathlib's finite graph framework.",
+    "summary": "Erdős Problem 75 is one of the most celebrated open problems in infinite graph theory, carrying a $1000 Erdős prize. It asks whether uncountable chromatic number is compatible with near-linear independence in every finite subgraph—a striking tension between global colouring complexity and local sparsity. The formalization builds from-scratch graph, finite-subgraph, and independence-number infrastructure (concrete Lean 4 structures and proved theorems, no axioms) going beyond Mathlib's finite-graph framework, and defines both the basic (n^{1-ε}) and strong (linear) forms of the property as Lean propositions; the central existence conjecture itself is not formalized as a Lean statement and remains open.",
     "implications": "A positive answer would demonstrate a surprising separation between global and local graph properties, with implications for infinite Ramsey theory, the Erdős-Hajnal conjecture, and the set-theoretic foundations of combinatorics. A negative answer would establish a fundamental limitation on the independence structure of graphs with uncountable chromatic number.",
     "openQuestions": [
       "Does there exist a graph with χ ≥ ℵ₁ and the near-linear independence property?",
