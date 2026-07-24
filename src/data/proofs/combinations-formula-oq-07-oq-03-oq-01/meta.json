@@ -99,10 +99,17 @@
     },
     {
       "id": "classical-form",
-      "title": "The Classical Form and Checks",
+      "title": "The Classical Form",
       "startLine": 103,
+      "endLine": 114,
+      "summary": "sum_sq_weighted_sq: ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, obtained from the subtraction-free form by substituting n = m+1 and simplifying the subtractions (omega)."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 116,
       "endLine": 123,
-      "summary": "sum_sq_weighted_sq: ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1) for n ≥ 1, obtained from the subtraction-free form by substituting n = m+1 and simplifying the subtractions (omega). Includes the numeric check ∑_{k=0}^{3} k²·C(3,k)² = 54 = 3²·C(4,2)."
+      "summary": "Numeric checks: ∑_{k=0}^{3} k²·C(3,k)² = 0+9+36+9 = 54, and the classical closed form 54 = 3²·C(4,2), both closed by kernel decide."
     }
   ],
   "conclusion": {
