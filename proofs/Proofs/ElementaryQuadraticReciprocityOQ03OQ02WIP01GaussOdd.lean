@@ -541,6 +541,84 @@ theorem quadratic_reciprocity_qstar (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q
   rw [hbridge]
   exact hmain
 
+/-! ### The classical product form
+
+`quadratic_reciprocity_qstar` packages reciprocity in Euler's `q*` form.
+This subsection derives the textbook product form
+
+    `(q | p) · (p | q) = (−1)^{((p−1)/2)·((q−1)/2)}`
+
+by parity bookkeeping only: the first supplement in exponent form
+(`legendreSym_neg_one_eq_pow`, via Euler's criterion — not Mathlib's QR
+file), multiplicativity of the Legendre symbol, and `sq_one`. Mathlib's
+`legendreSym.quadratic_reciprocity` is **not** used anywhere in this
+chain, preserving the independence claim of the Gauss-sum engine. -/
+
+/-- **First supplement, exponent form** (via Euler's criterion only):
+`(−1 | q) = (−1)^((q−1)/2)` for an odd prime `q`. Both sides are `±1`
+integers agreeing mod `q > 2`, hence equal. -/
+theorem legendreSym_neg_one_eq_pow (q : ℕ) [hq : Fact q.Prime] (hq2 : q ≠ 2) :
+    legendreSym q (-1) = (-1) ^ ((q - 1) / 2) := by
+  have hoddq : Odd q := hq.out.odd_of_ne_two hq2
+  have hdiv : q / 2 = (q - 1) / 2 := by rcases hoddq with ⟨t, ht⟩; omega
+  have hne : ((-1 : ℤ) : ZMod q) ≠ 0 := by
+    push_cast
+    exact neg_ne_zero.mpr one_ne_zero
+  have hcast : ((legendreSym q (-1) : ℤ) : ZMod q)
+      = (((-1 : ℤ) ^ ((q - 1) / 2) : ℤ) : ZMod q) := by
+    rw [legendreSym.eq_pow, hdiv]
+    push_cast
+    ring
+  have hpow : ((-1 : ℤ) ^ ((q - 1) / 2) = 1) ∨ ((-1 : ℤ) ^ ((q - 1) / 2) = -1) := by
+    rcases Nat.even_or_odd ((q - 1) / 2) with h | h
+    · exact Or.inl h.neg_one_pow
+    · exact Or.inr h.neg_one_pow
+  exact int_pm_one_cast_inj hq2 (legendreSym.eq_one_or_neg_one (p := q) hne) hpow hcast
+
+/-- **Quadratic reciprocity, classical product form** — derived from the
+`q*` form by parity bookkeeping, independent of Mathlib's
+`legendreSym.quadratic_reciprocity`:
+
+    `(q | p) · (p | q) = (−1)^{((p−1)/2)·((q−1)/2)}`
+
+for distinct odd primes `p ≠ q`. If `(q−1)/2` is even, `q* = q` and the
+two symbols coincide, so the product is `1`; if odd, `q* = −q` and the
+extra factor `(−1 | p) = (−1)^((p−1)/2)` is exactly the right-hand side. -/
+theorem quadratic_reciprocity_product (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) :
+    legendreSym q p * legendreSym p q = (-1) ^ ((p - 1) / 2 * ((q - 1) / 2)) := by
+  have hqstar := quadratic_reciprocity_qstar p q hp2 hq2 hpq
+  have hqp : ((q : ℤ) : ZMod p) ≠ 0 := by
+    intro h0
+    exact (Nat.Prime.coprime_iff_not_dvd hp.out).mp
+      ((Nat.coprime_primes hp.out hq.out).mpr hpq)
+      ((ZMod.natCast_eq_zero_iff q p).mp (by exact_mod_cast h0))
+  have hsq : legendreSym p q * legendreSym p q = 1 := by
+    have h := legendreSym.sq_one (p := p) hqp
+    rwa [sq] at h
+  rcases Nat.even_or_odd ((q - 1) / 2) with hn | hn
+  · -- `(q−1)/2` even: `q* = q`, both sides collapse to `1`.
+    have hε : legendreSym q (-1) = 1 := by
+      rw [legendreSym_neg_one_eq_pow q hq2, hn.neg_one_pow]
+    rw [hε, one_mul] at hqstar
+    have hrhs : ((-1 : ℤ)) ^ ((p - 1) / 2 * ((q - 1) / 2)) = 1 :=
+      (Nat.even_mul.mpr (Or.inr hn)).neg_one_pow
+    rw [hrhs, ← hqstar]
+    exact hsq
+  · -- `(q−1)/2` odd: `q* = −q`, the supplement supplies `(−1)^((p−1)/2)`.
+    have hε : legendreSym q (-1) = -1 := by
+      rw [legendreSym_neg_one_eq_pow q hq2, hn.neg_one_pow]
+    rw [hε] at hqstar
+    rw [legendreSym.mul] at hqstar
+    have hpneg : legendreSym p (-1) = (-1) ^ ((p - 1) / 2) :=
+      legendreSym_neg_one_eq_pow p hp2
+    have hrhs : ((-1 : ℤ)) ^ ((p - 1) / 2 * ((q - 1) / 2)) = (-1) ^ ((p - 1) / 2) := by
+      rw [pow_mul]
+      rcases Nat.even_or_odd ((p - 1) / 2) with hm | hm
+      · rw [hm.neg_one_pow, one_pow]
+      · rw [hm.neg_one_pow, hn.neg_one_pow]
+    rw [hrhs, ← hqstar, hpneg, mul_assoc, hsq, mul_one]
+
 end Reciprocity
 
 end KroneckerSymbol
