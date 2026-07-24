@@ -40,3 +40,34 @@ elementary component/tree arguments.
 ## Next Action
 The elementary cycle-existence layer is saturated. Only the deep power-of-2
 length question remains open.
+
+## Status (researcher-1, 2026-07-23b) — EVEN-spectrum rung landed (the flagged residual)
+
+The adversarial assessment of the "even-length spectrum count" rung came out
+POSITIVE, with a simpler mechanism than feared: no parity case analysis on
+pairs — the majority parity class of trapped neighbour indices alone suffices.
+For a < b of EQUAL parity the segment cycle has even length b - a + 2, so
+fixing a = min(class) and ranging b over the rest yields |class| - 1 >=
+ceil(d/2) - 1 = floor((d-1)/2) distinct even lengths.
+
+- `hasMinDegree_card_even_cycle_lengths`: min degree d ==> >= floor((d-1)/2)
+  distinct EVEN cycle lengths with explicit IsCycle witnesses. No d >= 2
+  hypothesis needed (bound degenerates gracefully).
+- `hasMinDegree_card_even_containsCycleLength`: bridge form, each length even,
+  >= 4, ContainsCycleLength. The target family {2^k : k >= 2} sits inside
+  "even and >= 4", so this counts exactly the sub-spectrum the open core must hit.
+- SHARP: K_{d+1} realizes cycle lengths 3..d+1, exactly floor((d-1)/2) even —
+  so at d = 3 no counting refinement beats "one even length"; the open content
+  is entirely in hitting a power of two.
+- Key extraction: `hseg` — ANY two trapped indices a < b close into a
+  b-a+2 cycle (needs only 1 <= a, unlike prefix cycles which need index >= 2).
+- File 867 -> 1096 lines, 16 -> 18 theorems, 0 axioms/sorries; both new
+  theorems #print axioms = foundational only. meta.json leanFile synced.
+
+## Final assessment
+
+The elementary layer is now saturated INCLUDING the flagged residual rung:
+existence + length bridge + parity + Dirac rung + full spectrum count + EVEN
+spectrum count (sharp). Every remaining direction requires the deep
+power-of-two-length core (Liu-Montgomery scale). Node should not be re-served
+for elementary work.
