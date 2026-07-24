@@ -17,7 +17,7 @@
       "interpolation"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1151,
     "erdosUrl": "https://erdosproblems.com/1151",
     "erdosProblemStatus": "open",
@@ -39,10 +39,11 @@
       "Proof that Chebyshev nodes lie in [-1,1]",
       "Lagrange interpolation operator using basis polynomials",
       "Definition of limit point sets for sequences",
-      "Formal statement of the full conjecture with special cases derived"
+      "Formal statement of the full conjecture with special cases derived",
+      "Companion file Erdos1151OQ04.lean: partial proof of erdos_1941_divergence via the Lebesgue-function approach, reducing it to a single remaining sorry (lacunary-series construction in divergence_from_lebesgue_growth)"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem).",
+    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem). The companion file Erdos1151OQ04.lean (listed under additionalFiles) works toward proving erdos_1941_divergence and contains 1 remaining sorry (divergence_from_lebesgue_growth); all its other lemmas are fully proved, no further axioms.",
     "lineCount": 222,
     "prerequisites": [
       "Polynomial interpolation (Lagrange basis)",
@@ -177,5 +178,5 @@
       "Proofs/Erdos1151OQ04.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 1
 }
