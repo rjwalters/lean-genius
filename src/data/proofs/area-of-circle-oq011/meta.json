@@ -108,10 +108,17 @@
     },
     {
       "id": "part-iii",
-      "title": "The concrete extremiser a·cos t + b·sin t",
+      "title": "The first harmonic: derivative and mean",
       "startLine": 167,
+      "endLine": 186,
+      "summary": "first_harmonic_deriv and first_harmonic_mean_zero establish the two basic facts needed before computing energy: the derivative of a cos t + b sin t is again a first harmonic, b cos t − a sin t (HasDerivAt.const_mul on Real.hasDerivAt_cos/sin), and the first harmonic has zero mean over a full period (term-by-term integration of cos and sin)."
+    },
+    {
+      "id": "part-iv",
+      "title": "Energy and attained equality",
+      "startLine": 188,
       "endLine": 224,
-      "summary": "first_harmonic_deriv, first_harmonic_mean_zero, first_harmonic_sq_integral and first_harmonic_wirtinger_equality exhibit the first harmonic explicitly: derivative b cos t − a sin t (HasDerivAt.const_mul on cos/sin), zero mean over a period, energy ∫f²=π(a²+b²) via integral_cos_sq / integral_sin_sq / integral_sin_mul_cos₁, and the attained equality ∫f²=∫(f')²=π(a²+b²) (the derivative is again a first harmonic, so the same energy formula applies)."
+      "summary": "first_harmonic_sq_integral computes ∫₀²π (a cos t + b sin t)² = π(a²+b²) by expanding the square and applying the closed-form trigonometric integrals integral_cos_sq / integral_sin_sq / integral_sin_mul_cos₁. first_harmonic_wirtinger_equality then reuses this formula on the derivative (itself a first harmonic, b cos t − a sin t) to conclude ∫f² = ∫(f')² = π(a²+b²): the concrete extremiser attains Wirtinger equality."
     }
   ],
   "crossReferences": [
