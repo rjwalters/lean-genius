@@ -119,12 +119,20 @@
       "mathContext": "Because (A, D) ↦ A ⊕ D is an F-algebra homomorphism, evaluating any polynomial on the block-diagonal matrix acts blockwise — the engine behind the minimal-polynomial computation."
     },
     {
-      "id": "charpoly-minpoly-blockdiag",
-      "title": "Characteristic and Minimal Polynomials of a Block-Diagonal Matrix",
+      "id": "charpoly-blockdiag",
+      "title": "Characteristic Polynomial of a Block-Diagonal Matrix",
       "startLine": 91,
+      "endLine": 98,
+      "summary": "charpoly_fromBlocks records that charpoly(A ⊕ D) = charpoly A · charpoly D, a direct restatement of Mathlib's Matrix.charpoly_fromBlocks_zero₁₂ needed for the RCF readout — no new mathematics, just packaging.",
+      "mathContext": "The charpoly half of the RCF readout already exists in Mathlib; this file only re-exposes it so both readout identities are stated uniformly."
+    },
+    {
+      "id": "minpoly-blockdiag",
+      "title": "Minimal Polynomial of a Block-Diagonal Matrix (the New Result)",
+      "startLine": 100,
       "endLine": 136,
-      "summary": "charpoly_fromBlocks records that charpoly(A ⊕ D) = charpoly A · charpoly D (from Mathlib). minpoly_fromBlocks_of_dvd proves the new result: when minpoly A ∣ minpoly D, minpoly(A ⊕ D) = minpoly D, via two-way divisibility plus block extraction.",
-      "mathContext": "These are the two RCF readout identities at the level of arbitrary blocks: charpoly multiplies, minpoly takes the larger element of the divisibility chain."
+      "summary": "minpoly_fromBlocks_of_dvd proves the result missing from Mathlib: when minpoly A ∣ minpoly D, minpoly(A ⊕ D) = minpoly D, via two-way divisibility — minpoly D annihilates the block sum (using the chain hypothesis), and reading off the bottom-right block of (minpoly(A⊕D))(A⊕D) = 0 gives the reverse divisibility.",
+      "mathContext": "Unlike charpoly, which simply multiplies, minpoly of a block-diagonal matrix is in general the lcm of the blocks' minimal polynomials; the divisibility-chain hypothesis (automatic for invariant factors) collapses the lcm to the larger element, avoiding normalisation bookkeeping."
     },
     {
       "id": "rcf-readout",
