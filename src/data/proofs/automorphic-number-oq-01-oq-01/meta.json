@@ -128,6 +128,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: What This Proves and the Strategy",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring states the target law — Nat.card {e : ZMod n // e*e=e} = 2 ^ n.primeFactors.card for every n ≥ 1 — and sketches the multiplicative-function strategy: numIdem 1 = 1, coprime multiplicativity via CRT, then IsMultiplicative.multiplicative_factorization to reduce to the parent's prime-power case numIdem (p^k) = 2. Imports Mathlib and the parent file AutomorphicNumberOQ01, opens the namespace and the Finset/ArithmeticFunction namespaces used throughout.",
+      "mathContext": "Frames the general law $2^{\\omega(n)}$ that the file proves, contrasting it with the parent's concrete special case of exactly four idempotents mod $10^k$."
+    },
+    {
       "id": "numidem-definition",
       "title": "Part I: The idempotent-count arithmetic function",
       "startLine": 51,
