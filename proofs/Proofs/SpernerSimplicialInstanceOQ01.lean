@@ -143,4 +143,112 @@ theorem standardTriangle2_sperner
       CellComplex.IsPanchromatic c standardTriangle2.toCellComplex s :=
   Triangulation.sperner standardTriangle2 c hbdry
 
+/-!
+## Candidate C data layer: `LatticePoint m` and `TriCell m` (S3 ACT)
+
+The general-`m` construction (S3 ACT, per PREPs #18625/#18654/#18719):
+the vertex carrier `LatticePoint m` (lattice points of Δ² at resolution
+`m`) and the cell type `TriCell m` (`T(m)` up-triangles + `T(m-1)`
+down-triangles = `m²` cells), with `DecidableEq` and `Fintype` instances —
+the data prerequisites for the eventual
+`Triangulation (LatticePoint m) 2` instance. The vertex map (`triVtx`,
+S4), the adjacency table, and the four `Triangulation` axioms are the
+S4+ continuation; they are the genuine open core of OQ-01 (the
+`decide`-based discharge used by `standardTriangle2` above cannot work
+`m`-parametrically).
+-/
+
+section Triangle
+
+/-- A lattice point in the size-`m` standard 2-simplex Δ²: `(i, j)` with
+`i + j ≤ m`. Carried by `Fin (m+1) × Fin (m+1)` so `DecidableEq` and
+`Fintype` synthesize for free (`Subtype.instDecidableEq`,
+`Subtype.fintype`); the subtype predicate `p.1 + p.2 ≤ m` is the only
+load-bearing constraint. `#(LatticePoint m) = (m+1)(m+2)/2`. -/
+abbrev LatticePoint (m : ℕ) : Type :=
+  {p : Fin (m + 1) × Fin (m + 1) // p.1.val + p.2.val ≤ m}
+
+/-- A cell in the standard subdivision of Δ² at resolution `m`.
+
+`up i j h` is the up-triangle with lower-left corner `(i, j)`; its
+vertices are `(i, j)`, `(i+1, j)`, `(i, j+1)`. Requires `i + j < m`.
+
+`down i j h` is the down-triangle with hypotenuse on `x + y = i + j + 1`;
+its vertices are `(i+1, j)`, `(i, j+1)`, `(i+1, j+1)`. Requires
+`i + j + 1 < m`.
+
+Cardinality: `T(m)` up-cells + `T(m-1)` down-cells = `m²` total. -/
+inductive TriCell (m : ℕ) : Type
+  | up (i j : ℕ) (h : i + j < m) : TriCell m
+  | down (i j : ℕ) (h : i + j + 1 < m) : TriCell m
+  deriving DecidableEq
+
+namespace TriCell
+
+/-- `TriCell m` is a `Fintype`: up-cells and down-cells are enumerated
+from `Fin m × Fin m` via `Finset.filterMap` (the strict bounds
+`i + j < m` and `i + j + 1 < m` each force `i < m` and `j < m`, so the
+square carrier covers all cells). -/
+instance instFintype (m : ℕ) : Fintype (TriCell m) where
+  elems :=
+    (Finset.univ : Finset (Fin m × Fin m)).filterMap
+      (fun ij =>
+        if h : (ij.1 : ℕ) + (ij.2 : ℕ) < m then
+          some (TriCell.up ij.1.val ij.2.val h)
+        else none)
+      (by
+        rintro ⟨i, j⟩ ⟨i', j'⟩ b hb hb'
+        simp only [Option.mem_def] at hb hb'
+        by_cases hij : (i : ℕ) + (j : ℕ) < m
+        · rw [dif_pos hij] at hb
+          by_cases hij' : (i' : ℕ) + (j' : ℕ) < m
+          · rw [dif_pos hij'] at hb'
+            rw [Option.some.injEq] at hb hb'
+            obtain rfl := hb
+            injection hb'.symm with hi hj
+            ext
+            · exact Fin.val_injective hi
+            · exact Fin.val_injective hj
+          · rw [dif_neg hij'] at hb'
+            exact (Option.noConfusion hb').elim
+        · rw [dif_neg hij] at hb
+          exact (Option.noConfusion hb).elim)
+    ∪
+    (Finset.univ : Finset (Fin m × Fin m)).filterMap
+      (fun ij =>
+        if h : (ij.1 : ℕ) + (ij.2 : ℕ) + 1 < m then
+          some (TriCell.down ij.1.val ij.2.val h)
+        else none)
+      (by
+        rintro ⟨i, j⟩ ⟨i', j'⟩ b hb hb'
+        simp only [Option.mem_def] at hb hb'
+        by_cases hij : (i : ℕ) + (j : ℕ) + 1 < m
+        · rw [dif_pos hij] at hb
+          by_cases hij' : (i' : ℕ) + (j' : ℕ) + 1 < m
+          · rw [dif_pos hij'] at hb'
+            rw [Option.some.injEq] at hb hb'
+            obtain rfl := hb
+            injection hb'.symm with hi hj
+            ext
+            · exact Fin.val_injective hi
+            · exact Fin.val_injective hj
+          · rw [dif_neg hij'] at hb'
+            exact (Option.noConfusion hb').elim
+        · rw [dif_neg hij] at hb
+          exact (Option.noConfusion hb).elim)
+  complete := fun c => by
+    rcases c with ⟨i, j, h⟩ | ⟨i, j, h⟩
+    · apply Finset.mem_union_left
+      apply Finset.mem_filterMap.mpr
+      refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
+      simp [h]
+    · apply Finset.mem_union_right
+      apply Finset.mem_filterMap.mpr
+      refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
+      simp [h]
+
+end TriCell
+
+end Triangle
+
 end Triangulation
