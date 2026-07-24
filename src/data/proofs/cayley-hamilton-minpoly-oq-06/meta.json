@@ -113,9 +113,17 @@
       "id": "matrix-similarity",
       "title": "Matrix Specialisation: Similar Matrices Share a Minimal Polynomial",
       "startLine": 66,
-      "endLine": 79,
-      "summary": "minpoly_matrix_units_conj: for a unit matrix U, minpoly K (U⁻¹·M·U) = minpoly K M (and the U·M·U⁻¹ form), the classical similarity invariance of the minimal polynomial.",
+      "endLine": 72,
+      "summary": "minpoly_matrix_units_conj: for a unit matrix U, minpoly K (U⁻¹·M·U) = minpoly K M, the classical similarity invariance of the minimal polynomial, obtained directly from minpoly_units_conj'.",
       "mathContext": "Specialising A = Matrix n n K, the abstract result becomes the textbook fact that similar matrices N = U⁻¹·M·U have equal minimal polynomials — the minimal-polynomial companion of charpoly_units_conj."
+    },
+    {
+      "id": "matrix-similarity-reversed",
+      "title": "The Reversed Presentation U·M·U⁻¹",
+      "startLine": 74,
+      "endLine": 79,
+      "summary": "minpoly_matrix_units_conj': the U·M·U⁻¹ form of matrix similarity invariance, minpoly K (U·M·U⁻¹) = minpoly K M, obtained from minpoly_units_conj by re-using U itself rather than U⁻¹ — the same one-line pattern as minpoly_units_conj/minpoly_units_conj' one level up.",
+      "mathContext": "Both conjugation conventions N = U⁻¹MU and N = UMU⁻¹ appear in the literature; recording both forms as separate corollaries means either presentation of matrix similarity plugs in directly without a manual inverse-swap."
     }
   ],
   "conclusion": {
