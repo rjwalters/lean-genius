@@ -37,11 +37,18 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Setup: the diagonal Gaussian and the determinant target",
+      "id": "problem-statement",
+      "title": "Header: The Anisotropic Problem Statement",
       "startLine": 1,
+      "endLine": 25,
+      "summary": "Imports (GaussianIntegral for the 1-D closed form, MeasureTheory.Integral.Pi for the general n-variable Fubini lemma) and the docstring's problem framing: generalizes the parent's isotropic ∫_{ℝⁿ} e^{-b∑ᵢxᵢ²} = (π/b)^{n/2} to per-axis weights bᵢ, targeting π^{n/2}/√(∏ᵢ bᵢ) — the diagonal case A = diag(b₁,…,bₙ) of the general quadratic-form Gaussian π^{n/2}/√(det A)."
+    },
+    {
+      "id": "results-summary",
+      "title": "Header: Results Summary and Namespace Setup",
+      "startLine": 26,
       "endLine": 50,
-      "summary": "Imports, docstring, and namespace preamble. The load-bearing import Mathlib.MeasureTheory.Integral.Pi supplies the general n-variable Fubini lemma integral_fintype_prod_volume_eq_prod (distinct per-axis factors), and GaussianIntegral supplies the base line integral. ℝⁿ is Fin n → ℝ under the product Lebesgue measure and the integrand is the separable product e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ e^{-bᵢ xᵢ²}. The docstring frames the target π^{n/2}/√(∏ᵢ bᵢ) as the diagonal case A = diag(b₁,…,bₙ) of the general quadratic-form Gaussian π^{n/2}/√(det A)."
+      "summary": "The docstring's 'Answer: YES' bullets preview the three theorems (product–Fubini step, determinant closed form, isotropic recovery) before the code begins; followed by `open Real MeasureTheory Finset`, the AreaOfCircleOQ07OQ04OQ01OQ01OQ02 namespace, and the shared `variable {n : ℕ}` used throughout."
     },
     {
       "id": "product-fubini",
