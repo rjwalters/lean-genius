@@ -1,20 +1,49 @@
 # Research State: amgm-inequality-oq-04-oq-03
 
 ## Current State
-**Phase**: ACT (S5 SHIPPED — researcher-3, 2026-07-24). The Docker-blackout BLOCKED flag
-(2026-06-13) is cleared; S5 delivered exactly the banked leg plus its payoff. New §9 in
-`AmgmInequalityOQ04OQ03.lean` (315 → ~380 LOC, still 1 stated axiom / 0 sorries):
-- `hyp2F1_tendstoUniformlyOn_closedBall` — the `TendstoUniformlyOn` wrap via Mathlib's
-  `tendstoUniformlyOn_tsum_nat` consuming the §8 M-test package (the planned one-liner).
-- `hyp2F1_continuousOn_closedBall` (uniform limit of polynomial partial sums),
-  `hyp2F1_continuousAt` (each `|x| < 1` interior to a radius-`(|x|+1)/2` closed ball),
-  `hyp2F1_continuousOn_ball` — continuity of `₂F₁(1/2,1/2;1;·)` on the open unit ball,
-  the analytic ingredient for the eventual AGM-limit ↔ `K` argument.
-Verified with the v4.31.0 toolchain against the pinned Mathlib olean cache; parent modules
-(`AmgmInequalityOQ04`, `…OQ01`) compiled to scratch oleans first (worktree had no `.lake`).
+**Phase**: ACT (S6 SHIPPED — researcher-3, 2026-07-24). **Leg 3 of the axiom-discharge
+plan (the binomial series) is PROVED.** New §10 in `AmgmInequalityOQ04OQ03.lean`
+(~380 → 475 LOC, still 1 stated axiom / 0 sorries):
+- `ascPochhammer_eval_half` — `(1/2)ₙ = n!·centralBinom n/4ⁿ` (induction threading
+  `Nat.succ_mul_centralBinom_succ`, same recurrence trick as the Wallis leg).
+- `multichoose_half`, `ringChoose_half` — the generalized binomial coefficient
+  `Ring.choose (1/2 + n - 1) n = centralBinom n / 4ⁿ`.
+- `hasSum_inv_sqrt_one_sub` / `inv_sqrt_one_sub_eq_tsum` — **the binomial series**
+  `1/√(1-u) = ∑ (centralBinom n/4ⁿ) uⁿ` for `|u| < 1`, consumed from Mathlib's
+  `Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero` at `a = 1/2` (NEW at the
+  v4.31 pin — `Mathlib.Analysis.Analytic.Binomial` now exists).
+- `hasSum_ellipticIntegrand` — the series landed pointwise on the K integrand:
+  `1/√(1-k²sin²θ) = ∑ (centralBinom n/4ⁿ)(k²sin²θ)ⁿ` for `k² < 1`.
+- `hypCoeff_eq_sq` — `cₙ = (centralBinom n/4ⁿ)²` (rfl link between Legs 2·3 and ₂F₁).
+Discharge plan status: Leg 1 summability ✅ (S2), Leg 2 Wallis ✅ (S3), Leg 3 binomial
+series ✅ (S6, this session). **Only Leg 4 remains**: the sum/integral interchange over
+[0, π/2] (dominated/monotone convergence; nonneg terms suggest `MeasureTheory.integral_tsum`
+/ Beppo Levi route on the interval integral).
+Verified with the v4.31.0 toolchain against the pinned Mathlib olean cache in-worktree.
 **Path**: fast
-**Since**: 2026-07-24 (S5 ACT)
-**Iteration**: 7
+**Since**: 2026-07-24 (S6 ACT)
+**Iteration**: 8
+
+## S6 ACT 2026-07-24 (researcher-3) — §10 binomial series (Leg 3)
+
+Key discovery: the v4.31 Mathlib pin ships `Mathlib/Analysis/Analytic/Binomial.lean`
+(`binomialSeries`, real specializations). The whole leg reduced to the coefficient
+identity, proved via `Ring.factorial_nsmul_multichoose_eq_ascPochhammer` +
+`Polynomial.ascPochhammer_smeval_eq_eval` + induction. Gotchas for future sessions:
+factorial notation `n !` no longer parses at this pin (use `n.factorial`);
+`EMetric.ball`/`EMetric.mem_ball` deprecated → `Metric.eball`/`Metric.mem_eball`
+(membership for `HasFPowerSeriesOnBall.hasSum` via
+`rw [Metric.mem_eball, edist_dist, Real.dist_eq, sub_zero]` + `ENNReal.ofReal_lt_one`).
+All first-try; no new axioms.
+
+**Next (S7+)**: (α) **Leg 4 — the interchange**: for `0 ≤ k² < 1` all terms are
+nonnegative, so `intervalIntegral` ↔ `MeasureTheory` set-integral conversion +
+`MeasureTheory.integral_tsum` (or `hasSum_integral_of_dominated_convergence`) should
+give `∫₀^{π/2} ∑ = ∑ ∫₀^{π/2}`; then `wallisHalf_even` + `hypCoeff_eq_sq` assemble
+`ellipticK k = (π/2)·hyp2F1 (k²)` — i.e. the axiom becomes a THEOREM and the entry
+flips axiomatized → verified (also needs integrability of each term, elementary:
+continuous on compact). This is plausibly one ambitious session. (β) fallback
+session-sized: `hyp2F1_pos`/monotonicity on [0,1) (S5 list item (a), still open).
 
 ## S5 ACT 2026-07-24 (researcher-3) — §9 uniform convergence + continuity
 

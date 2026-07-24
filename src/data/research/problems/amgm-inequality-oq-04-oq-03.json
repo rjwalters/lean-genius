@@ -29,21 +29,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-24T11:45:00Z",
-    "iteration": 7,
-    "focus": "S5 ACT (researcher-3, 2026-07-24): SHIPPED the banked TendstoUniformlyOn leg + continuity payoff. New Section 9 in AmgmInequalityOQ04OQ03.lean: hyp2F1_tendstoUniformlyOn_closedBall (Weierstrass M-test via tendstoUniformlyOn_tsum_nat consuming the S4b package), hyp2F1_continuousOn_closedBall, hyp2F1_continuousAt, hyp2F1_continuousOn_ball (continuity of 2F1(1/2,1/2;1;.) on the open unit ball). Still 1 stated axiom (ellipticK_eq_hyp2F1, the problem's hypergeometric identity hypothesis) / 0 sorries. Docker-blackout BLOCKED flag cleared; verified with v4.31.0 toolchain against pinned Mathlib oleans (parents compiled to scratch oleans).",
+    "since": "2026-07-24T14:30:00Z",
+    "iteration": 8,
+    "focus": "S6 ACT (researcher-3, 2026-07-24): LEG 3 PROVED. New Section 10 in AmgmInequalityOQ04OQ03.lean (475 LOC, 1 stated axiom / 0 sorries): the binomial series 1/sqrt(1-u) = sum (centralBinom n/4^n) u^n for |u|<1 (hasSum_inv_sqrt_one_sub, inv_sqrt_one_sub_eq_tsum), landed pointwise on the K integrand as hasSum_ellipticIntegrand (1/sqrt(1-k^2 sin^2 theta) = sum (centralBinom n/4^n)(k^2 sin^2 theta)^n for k^2<1). Coefficient identity Ring.choose (1/2+n-1) n = centralBinom n/4^n via ascPochhammer_eval_half induction. Consumed from Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero — Mathlib.Analysis.Analytic.Binomial is NEW at the v4.31 pin. Discharge plan: legs 1-4 ALL DONE; only leg 5 (sum/integral interchange) remains to flip the axiom to a theorem.",
     "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01. S2 ACT adds the summability infrastructure via central-binomial upper bound + geometric comparison.",
     "blockers": [],
-    "nextAction": "S6 candidates: (a) hyp2F1 positivity/monotonicity on [0,1) from coefficient positivity (session-sized); (b) AGM-side limit M(a,b) convergence/continuity; (c) discharge ellipticK_eq_hyp2F1 (term-by-term integration of the elliptic integral - DEEP, the stated axiom).",
+    "nextAction": "S7: Leg 5 — the sum/integral interchange. All terms nonneg for 0 <= k^2 < 1: convert intervalIntegral to set integral, apply MeasureTheory.integral_tsum (Beppo Levi) or hasSum_integral_of_dominated_convergence, integrate term by term against wallisHalf_even, assemble (pi/2)*hyp2F1(k^2) via hypCoeff_eq_sq — this would discharge ellipticK_eq_hyp2F1 and flip the entry axiomatized -> verified. Fallback session-sized: hyp2F1 positivity/monotonicity on [0,1).",
     "attemptCounts": {
       "total": 7,
       "currentApproach": 2,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-07-24T11:45:00.000Z"
+    "lastUpdate": "2026-07-24T14:30:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "S1 ACT (PR #20885) shipped the scaffold Proofs/AmgmInequalityOQ04OQ03.lean (158 LOC, 1 axiom, 0 sorries): defs hypCoeff, hyp2F1; proved c0=1, c1=1/4, c_n>0, 2F1(...;0)=1, k=0 consistency. Axiomatized ellipticK_eq_hyp2F1. S2 ACT (this session) added section 6 Summability of the Hypergeometric Series (+64 LOC -> 222 LOC, 0 new axioms, 0 sorries): centralBinom_le_four_pow (Mathlib gap-filler), hypCoeff_le_one, summable_hyp2F1 for |x| < 1 (via absolute-summability comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg axiom-discharge plan; the remaining four legs are: Wallis closed form, binomial series for (1-u)^(-1/2), uniform summability on compacta, DCT interchange + final discharge.",
+    "progressSummary": "Five-leg axiom-discharge plan for ellipticK_eq_hyp2F1: leg 1 summability (S2), leg 2 Wallis closed form (S3), leg 3 binomial series 1/sqrt(1-u) = sum (centralBinom n/4^n)u^n INCLUDING pointwise expansion of the K integrand (S6, §10), leg 4 uniform convergence + continuity of hyp2F1 on (-1,1) (S4a/S4b/S5, §7-§9) — ALL PROVED. File: 475 LOC, 1 stated axiom, 0 sorries. Only leg 5 remains: the sum/integral interchange over [0,pi/2] (Beppo Levi, terms nonneg), which would flip the entry to verified.",
     "builtItems": [
       "Proofs/AmgmInequalityOQ04OQ03.lean (builds clean, 0 sorries, 1 axiom): defs hypCoeff, hyp2F1.",
       "hypCoeff_zero : hypCoeff 0 = 1 (proved).",
@@ -54,7 +54,8 @@
       "ellipticK_eq_hyp2F1 (axiom): K(k) = (pi/2)*2F1(1/2,1/2;1;k^2) for |k|<1 (deep term-by-term-integration identity).",
       "centralBinom_le_four_pow : Nat.centralBinom n <= 4^n (S2 ACT; Mathlib v4.26.0 gap-filler -- has only the lower bound).",
       "hypCoeff_le_one : hypCoeff n <= 1 (S2 ACT corollary).",
-      "summable_hyp2F1 (x) (hx : |x| < 1) : Summable (fun n => hypCoeff n * x^n) (S2 ACT headline; prerequisite for DCT sum/integral interchange)."
+      "summable_hyp2F1 (x) (hx : |x| < 1) : Summable (fun n => hypCoeff n * x^n) (S2 ACT headline; prerequisite for DCT sum/integral interchange).",
+      "S6 §10 AmgmInequalityOQ04OQ03.lean: ascPochhammer_eval_half, multichoose_half, ringChoose_half, hypCoeff_eq_sq, hasSum_inv_sqrt_one_sub, inv_sqrt_one_sub_eq_tsum, hasSum_ellipticIntegrand (binomial series leg, 0 new axioms)"
     ],
     "insights": [
       "The target theorem is Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).",
@@ -67,7 +68,11 @@
       "k=0 consistency is verifiable WITHOUT the deep identity: K(0)=pi/2 (ellipticK_zero) and 2F1(...;0)=1 (hyp2F1_zero via tsum_eq_single), so both sides equal pi/2 (theorem ellipticK_hyp2F1_consistent_zero).",
       "Mathlib has Nat.centralBinom (+centralBinom_zero/_pos) and integral_sin_pow recurrences but no general 2F1 and no packaged term-by-term integration lemma in the form needed; the interchange of sum and integral (delicate as k->1) is the genuine blocker.",
       "Mathlib v4.26.0 has Nat.four_pow_lt_mul_centralBinom (LOWER bound: 4^n < n * centralBinom n for n>=4) but NO upper bound centralBinom n <= 4^n. The upper bound is a one-liner via Nat.sum_range_choose applied to 2n + Finset.single_le_sum; S2 ACT proves it inline.",
-      "S2 ACT closes the *summability* leg of the five-leg ellipticK_eq_hyp2F1 discharge plan. Specifically, summable_hyp2F1 (x) (hx : |x| < 1) is the structural input the term-by-term integration step consumes (DCT-style sum/integral interchange on [0, pi/2]). Without this, the subsequent steps cannot even be stated. With it, S3-S5 can be tackled independently (Wallis, binomial series, uniform summability)."
+      "S2 ACT closes the *summability* leg of the five-leg ellipticK_eq_hyp2F1 discharge plan. Specifically, summable_hyp2F1 (x) (hx : |x| < 1) is the structural input the term-by-term integration step consumes (DCT-style sum/integral interchange on [0, pi/2]). Without this, the subsequent steps cannot even be stated. With it, S3-S5 can be tackled independently (Wallis, binomial series, uniform summability).",
+      "Mathlib v4.31 pin ships Mathlib.Analysis.Analytic.Binomial: Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero gives the power series of 1/(1-x)^a on the unit ball with coefficients Ring.choose (a+n-1) n — leg 3 (binomial series) reduces to the coefficient identity",
+      "Coefficient identity route: Ring.factorial_nsmul_multichoose_eq_ascPochhammer + Polynomial.ascPochhammer_smeval_eq_eval + induction on ascPochhammer_succ_eval threading Nat.succ_mul_centralBinom_succ (same recurrence trick as the Wallis leg)",
+      "v4.31 gotchas: factorial notation n ! no longer parses (use n.factorial); EMetric.ball/mem_ball deprecated -> Metric.eball/mem_eball; eball membership via rw [Metric.mem_eball, edist_dist, Real.dist_eq, sub_zero] + ENNReal.ofReal_lt_one",
+      "Consumption pattern for ofScalars power series: HasFPowerSeriesOnBall.hasSum + FormalMultilinearSeries.ofScalars_apply_eq + coefficient rewrite + Real.sqrt_eq_rpow"
     ],
     "mathlibGaps": [
       "No general Gauss hypergeometric function 2F1 in Mathlib.",

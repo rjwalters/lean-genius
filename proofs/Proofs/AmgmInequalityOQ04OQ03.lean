@@ -40,24 +40,28 @@ file `AmgmInequalityOQ04OQ01.lean`. This file:
 ## Why the Main Identity is Axiomatized
 
 Proving `K(k) = (π/2)·₂F₁(1/2,1/2;1;k²)` rigorously requires:
-- the binomial series (1 - u)^{-1/2} = ∑ (2n choose n)/4ⁿ · uⁿ for |u| < 1,
-- substituting u = k² sin²θ and integrating term by term over [0, π/2],
-- justifying the sum/integral interchange (dominated convergence, delicate as
-  k → 1), and
-- the Wallis integral ∫₀^{π/2} sin^{2n}θ dθ = (π/2)·(2n choose n)/4ⁿ.
-
-Mathlib has the central binomial coefficient and `integral_sin_pow`
-recurrences but neither a general ₂F₁ nor the term-by-term integration lemma in
-the form needed here, so the full identity is a multi-hundred-line build left
-to future work. This mirrors the companion file's treatment of the AGM–K
-connection. (Reference: Borwein & Borwein, *Pi and the AGM*, 1987.)
+- the binomial series (1 - u)^{-1/2} = ∑ (2n choose n)/4ⁿ · uⁿ for |u| < 1
+  (PROVED in §10, `hasSum_inv_sqrt_one_sub` / `hasSum_ellipticIntegrand`, via
+  Mathlib's `Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero`),
+- the Wallis integral ∫₀^{π/2} sin^{2n}θ dθ = (π/2)·(2n choose n)/4ⁿ
+  (PROVED as `wallisHalf_even` in the companion
+  `AmgmInequalityOQ04OQ03Wallis.lean`), and
+- substituting u = k² sin²θ and integrating term by term over [0, π/2] —
+  justifying the sum/integral interchange (dominated convergence, delicate as
+  k → 1). This interchange is the one remaining leg; until it lands the full
+  identity stays axiomatized. This mirrors the companion file's treatment of
+  the AGM–K connection. (Reference: Borwein & Borwein, *Pi and the AGM*, 1987.)
 
 ## Status
 - [x] series coefficients defined
 - [x] c₀ = 1, c₁ = 1/4, cₙ > 0 (proved, 0 sorry)
 - [x] ₂F₁(…;0) = 1 (proved)
 - [x] k = 0 consistency with `ellipticK` (proved, independent of the axiom)
-- [ ] K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) (axiomatized — see above)
+- [x] summability + uniform convergence + continuity of ₂F₁ on (-1,1) (§6–§9)
+- [x] binomial series 1/√(1-u) = ∑ (centralBinom n/4ⁿ)uⁿ, |u| < 1 (§10)
+- [x] pointwise series expansion of the K integrand (§10)
+- [ ] K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) (axiomatized — sum/integral interchange
+      is the sole remaining leg)
 
 Axioms: 1 (ellipticK_eq_hyp2F1 — the hypergeometric series identity for K)
 Sorries: 0
@@ -370,5 +374,102 @@ for downstream use with the axiomatized identity `ellipticK_eq_hyp2F1` (whose
 modulus square `k²` ranges over `[0, 1)`). -/
 theorem hyp2F1_continuousOn_ball : ContinuousOn hyp2F1 {y : ℝ | |y| < 1} :=
   fun _ hy => (hyp2F1_continuousAt hy).continuousWithinAt
+
+-- ============================================================================
+-- § 10. Leg 3: the binomial series (1-u)^(-1/2) = ∑ (centralBinom n/4ⁿ) uⁿ
+--       (S6 ACT)
+-- ============================================================================
+-- Mathlib's `Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero` provides
+-- the power series of `x ↦ 1/(1-x)^a` on the unit ball with coefficients
+-- `Ring.choose (a + n - 1) n`. Specializing to `a = 1/2` and identifying the
+-- generalized binomial coefficient with `centralBinom n / 4ⁿ` yields the
+-- binomial series leg of the axiom-discharge plan, landed directly on the
+-- integrand of `ellipticK`.
+
+/-- Rising factorial at `1/2`: `(1/2)ₙ = n! · centralBinom n / 4ⁿ`.
+    Induction threads `Nat.succ_mul_centralBinom_succ` through
+    `ascPochhammer_succ_eval`, the same recurrence used for the Wallis
+    closed form (Leg 2). -/
+lemma ascPochhammer_eval_half (n : ℕ) :
+    (ascPochhammer ℝ n).eval (1 / 2 : ℝ)
+      = (n.factorial : ℝ) * Nat.centralBinom n / 4 ^ n := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+      have hcb : ((m : ℝ) + 1) * (Nat.centralBinom (m + 1) : ℝ)
+          = 2 * (2 * (m : ℝ) + 1) * (Nat.centralBinom m : ℝ) := by
+        exact_mod_cast Nat.succ_mul_centralBinom_succ m
+      have hm1 : ((m : ℝ) + 1) ≠ 0 := by positivity
+      have hC : (Nat.centralBinom (m + 1) : ℝ)
+          = 2 * (2 * (m : ℝ) + 1) * (Nat.centralBinom m : ℝ) / ((m : ℝ) + 1) := by
+        field_simp
+        linarith [hcb]
+      rw [ascPochhammer_succ_eval, ih, Nat.factorial_succ, hC]
+      push_cast
+      have h4 : (4 : ℝ) ^ m ≠ 0 := by positivity
+      field_simp
+      ring
+
+/-- The generalized binomial coefficient of the series for `(1-u)^{-1/2}`:
+    `Ring.multichoose (1/2) n = centralBinom n / 4ⁿ`. -/
+lemma multichoose_half (n : ℕ) :
+    Ring.multichoose (1 / 2 : ℝ) n = (Nat.centralBinom n : ℝ) / 4 ^ n := by
+  have h := Ring.factorial_nsmul_multichoose_eq_ascPochhammer (1 / 2 : ℝ) n
+  rw [Polynomial.ascPochhammer_smeval_eq_eval, ascPochhammer_eval_half,
+    nsmul_eq_mul] at h
+  have hfac : (n.factorial : ℝ) ≠ 0 := by
+    exact_mod_cast Nat.factorial_ne_zero n
+  refine mul_left_cancel₀ hfac ?_
+  rw [h]; ring
+
+/-- `Ring.choose (1/2 + n - 1) n = centralBinom n / 4ⁿ`, the exact coefficient
+    form consumed by Mathlib's binomial power series. -/
+lemma ringChoose_half (n : ℕ) :
+    Ring.choose ((1 / 2 : ℝ) + n - 1) n = (Nat.centralBinom n : ℝ) / 4 ^ n := by
+  rw [← Ring.multichoose_eq, multichoose_half]
+
+/-- The hypergeometric coefficient is the square of the binomial-series
+    coefficient: `cₙ = (centralBinom n / 4ⁿ)²`. Together with the Wallis
+    closed form `wallisHalf_even` (Leg 2) this is why term-by-term
+    integration of the binomial series produces exactly `hyp2F1`. -/
+lemma hypCoeff_eq_sq (n : ℕ) :
+    hypCoeff n = ((Nat.centralBinom n : ℝ) / 4 ^ n) ^ 2 := rfl
+
+/-- **The binomial series for the inverse square root** (Leg 3 of the
+    axiom-discharge plan): for `|u| < 1`,
+    `1/√(1-u) = ∑_{n≥0} (centralBinom n / 4ⁿ) uⁿ`. -/
+theorem hasSum_inv_sqrt_one_sub {u : ℝ} (hu : |u| < 1) :
+    HasSum (fun n : ℕ => (Nat.centralBinom n : ℝ) / 4 ^ n * u ^ n)
+      (1 / Real.sqrt (1 - u)) := by
+  have H := Real.one_div_one_sub_rpow_hasFPowerSeriesOnBall_zero (1 / 2 : ℝ)
+  have hu' : u ∈ Metric.eball (0 : ℝ) 1 := by
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, sub_zero]
+    exact ENNReal.ofReal_lt_one.mpr hu
+  have hs := H.hasSum hu'
+  simp only [zero_add, FormalMultilinearSeries.ofScalars_apply_eq,
+    ringChoose_half, smul_eq_mul] at hs
+  rw [Real.sqrt_eq_rpow]
+  exact hs
+
+/-- The binomial series in `tsum` form. -/
+theorem inv_sqrt_one_sub_eq_tsum {u : ℝ} (hu : |u| < 1) :
+    1 / Real.sqrt (1 - u) = ∑' n : ℕ, (Nat.centralBinom n : ℝ) / 4 ^ n * u ^ n :=
+  (hasSum_inv_sqrt_one_sub hu).tsum_eq.symm
+
+/-- **Series expansion of the elliptic integrand** (Leg 3 landed on the
+    target): for `k² < 1` the integrand of `K(k)` expands pointwise as
+    `1/√(1-k²sin²θ) = ∑ (centralBinom n / 4ⁿ) (k² sin²θ)ⁿ`, at every `θ`.
+    Term-by-term integration over `[0, π/2]` against the Wallis values
+    `wallisHalf_even` is now the only remaining step (Leg 4, the
+    sum/integral interchange) to discharge `ellipticK_eq_hyp2F1`. -/
+theorem hasSum_ellipticIntegrand (k θ : ℝ) (hk : k ^ 2 < 1) :
+    HasSum (fun n : ℕ =>
+        (Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2 * Real.sin θ ^ 2) ^ n)
+      (ellipticIntegrand k θ) := by
+  have hsin : Real.sin θ ^ 2 ≤ 1 := Real.sin_sq_le_one θ
+  have hu : |k ^ 2 * Real.sin θ ^ 2| < 1 := by
+    rw [abs_of_nonneg (by positivity)]
+    nlinarith [sq_nonneg k, sq_nonneg (Real.sin θ)]
+  simpa [ellipticIntegrand] using hasSum_inv_sqrt_one_sub hu
 
 end AmgmInequalityOQ04OQ03
