@@ -79,11 +79,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Compression Interface and Statement",
+      "title": "Module Docstring: Compression Interface and Proof Outline",
       "startLine": 1,
-      "endLine": 62,
-      "summary": "File header: the interlacing inequalities to be proved, the compression interface (Rayleigh-agreement hypothesis as the only link between T and TH, satisfied by the orthogonal compression / principal submatrix), and the two-direction proof outline.",
+      "endLine": 54,
+      "summary": "File docstring: the interlacing inequalities to be proved, the compression interface (Rayleigh-agreement hypothesis as the only link between T and TH, satisfied by the orthogonal compression / principal submatrix), and the two-direction proof outline.",
       "mathContext": "Frames interlacing in the abstract operator/compression form so the assembly is purely order-theoretic; the spectral theorem on H and the compression construction supply the hypotheses when specialising to matrices."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Scoped Opens and Namespace",
+      "startLine": 56,
+      "endLine": 62,
+      "summary": "Opens `InnerProductSpace` notation and the `CauchyInterlacing.Keystone` namespace (bringing the two max–min keystone lemmas and `exists_rayleigh_le_in_subspace` into scope unqualified), then declares the `CauchyInterlacing.Assembly` namespace housing the single theorem below.",
+      "mathContext": "Opening the keystone namespace unqualified is what lets the assembly proof call `eigenvalue_maxmin_lower`/`eigenvalue_maxmin_upper` directly rather than through the fully-qualified `CauchyInterlacing.Keystone.` prefix."
     },
     {
       "id": "statement",
