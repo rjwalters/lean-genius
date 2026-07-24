@@ -78,12 +78,20 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why This Is Content, Not a Re-export",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring explaining why Mathlib provides no inner-product instance on Matrix m n ℝ: the Frobenius norm lives in scoped defs (Matrix.frobeniusNormedAddCommGroup) kept out of instance resolution to avoid a norm diamond against the sup-norm, so the inner-product structure and its InnerProductSpace.Core certificate must be built from scratch.",
+      "mathContext": "$\\langle A, B\\rangle = \\operatorname{tr}(A^{\\mathsf T} B) = \\sum_{i,j} A_{ij} B_{ij}$."
+    },
+    {
       "id": "definition",
       "title": "The Frobenius Inner Product and its Entrywise Formula",
-      "startLine": 1,
+      "startLine": 45,
       "endLine": 60,
-      "summary": "Module docstring explaining why Mathlib provides no inner-product instance on Matrix m n ℝ (scoped Frobenius norm, norm diamond); definition frobInner A B := (Aᵀ * B).trace; and frobInner_eq_sum, the entrywise formula ⟪A, B⟫ = Σᵢⱼ Aᵢⱼ Bᵢⱼ obtained by unfolding the trace and commuting the double sum.",
-      "mathContext": "$\\langle A, B\\rangle = \\operatorname{tr}(A^{\\mathsf T} B) = \\sum_{i,j} A_{ij} B_{ij}$."
+      "summary": "frobInner A B := (Aᵀ * B).trace, the coordinate-free definition, and frobInner_eq_sum, the entrywise formula ⟪A, B⟫ = Σᵢⱼ Aᵢⱼ Bᵢⱼ obtained by unfolding trace/diag_apply/mul_apply/transpose_apply and one Finset.sum_comm — the bridge every later property is proved through.",
+      "mathContext": "$\\operatorname{tr}(A^{\\mathsf T} B) = \\sum_i \\sum_j A_{ij} B_{ij}$."
     },
     {
       "id": "bilinearity",
