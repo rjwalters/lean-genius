@@ -68,13 +68,8 @@ namespace Erdos89
 
 /-! ### Squared distances for the custom `Erdos89.dist` -/
 
-/-- The custom gallery distance is symmetric. -/
-theorem dist_comm' (p q : EuclideanSpace ℝ (Fin 2)) :
-    Erdos89.dist p q = Erdos89.dist q p := by
-  unfold Erdos89.dist
-  exact norm_sub_rev p q
-
-/-- Coordinate formula for the squared distance. -/
+/-- Coordinate formula for the squared distance. (Symmetry `dist_comm'` is
+already provided by `Erdos89WIP01`.) -/
 theorem dist_sq (p q : EuclideanSpace ℝ (Fin 2)) :
     Erdos89.dist p q ^ 2 = (p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2 := by
   unfold Erdos89.dist
@@ -179,10 +174,16 @@ theorem blokhuisPoly_mem (α β : ℝ) (p : EuclideanSpace ℝ (Fin 2)) :
   rw [blokhuisPoly_expand]
   refine Submodule.add_mem _ (Submodule.add_mem _ (Submodule.add_mem _
     (Submodule.add_mem _ (Submodule.add_mem _ (Submodule.add_mem _
-      (Submodule.add_mem _ (Submodule.add_mem _ (hbasis 0) (hC _ _ (hbasis 1)))
-        (hC _ _ (hbasis 2))) (hC _ _ (hbasis 3)))) (hC _ _ (hbasis 4)))
-          (hC _ _ (hbasis 5))) (hC _ _ (hbasis 6))) (hC _ _ (hbasis 7)))
-            (hCone _)
+      (Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_) ?_) ?_) ?_) ?_) ?_) ?_
+  · exact hbasis 0
+  · exact hC _ _ (hbasis 1)
+  · exact hC _ _ (hbasis 2)
+  · exact hC _ _ (hbasis 3)
+  · exact hC _ _ (hbasis 4)
+  · exact hC _ _ (hbasis 5)
+  · exact hC _ _ (hbasis 6)
+  · exact hC _ _ (hbasis 7)
+  · exact hCone _
 
 /-! ### Coefficient extraction
 
@@ -198,7 +199,7 @@ private theorem coeff_x4_blokhuis (α β : ℝ) (p : EuclideanSpace ℝ (Fin 2))
     coeff (Finsupp.single 0 4) (blokhuisPoly α β p) = 1 := by
   rw [blokhuisPoly_expand]
   simp only [coeff_add, coeff_C_mul, coeff_C, pow_two, add_mul, mul_add,
-    X_def, monomial_mul, coeff_monomial, one_mul, mul_one]
+    X_def, monomial_mul, coeff_monomial, mul_one]
   norm_num [Finsupp.ext_iff, Fin.forall_fin_two, Finsupp.single_apply,
     Finsupp.add_apply]
 
@@ -206,7 +207,7 @@ private theorem coeff_x3_blokhuis (α β : ℝ) (p : EuclideanSpace ℝ (Fin 2))
     coeff (Finsupp.single 0 3) (blokhuisPoly α β p) = -4 * p 0 := by
   rw [blokhuisPoly_expand]
   simp only [coeff_add, coeff_C_mul, coeff_C, pow_two, add_mul, mul_add,
-    X_def, monomial_mul, coeff_monomial, one_mul, mul_one]
+    X_def, monomial_mul, coeff_monomial, mul_one]
   norm_num [Finsupp.ext_iff, Fin.forall_fin_two, Finsupp.single_apply,
     Finsupp.add_apply]
 
@@ -214,7 +215,7 @@ private theorem coeff_y3_blokhuis (α β : ℝ) (p : EuclideanSpace ℝ (Fin 2))
     coeff (Finsupp.single 1 3) (blokhuisPoly α β p) = -4 * p 1 := by
   rw [blokhuisPoly_expand]
   simp only [coeff_add, coeff_C_mul, coeff_C, pow_two, add_mul, mul_add,
-    X_def, monomial_mul, coeff_monomial, one_mul, mul_one]
+    X_def, monomial_mul, coeff_monomial, mul_one]
   norm_num [Finsupp.ext_iff, Fin.forall_fin_two, Finsupp.single_apply,
     Finsupp.add_apply]
 
