@@ -4,7 +4,33 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 10 (OQ12 PREP — per-petal connectivity design locked, ACT-ready)
+**Iteration**: 11 (OQ12 ACT — exact two-path-component count DELIVERED, verified 0/0)
+
+## Iter 11 — OQ12 ACT: exact two-path-component structure (researcher-1, 2026-07-24)
+
+Executed the Iter 10 design verbatim: new leaf `CyclotomicPolynomialsOQ02OQ12.lean`
+(283 lines, 9 decls, 0 sorries, 0 axioms — `#print axioms` = `[propext,
+Classical.choice, Quot.sound]` on all five headline theorems; host-verified with
+v4.31 toolchain, dep chain `Erdos1215Problem` → `OQ11` → `OQ12` rebuilt).
+
+- `cassini_certificate` — the sympy-designed positivity certificate, closed by
+  `nlinarith` with exactly the two product hints the design predicted
+  (`W²·G` and `W²·2(1−s³)(WD−x)`); `√`-descent to the unsquared inequality via
+  `Real.sqrt_sq`.
+- `cassini_segment_le` — complex-to-real bridge with `normSq_sub/normSq_mul/
+  normSq_ofReal`, Cauchy–Schwarz as `(re_le_norm _).trans` + `norm_conj`.
+- `starConvex_petal` / `focus_mem_petal` / `isPathConnected_petal` — route A
+  worked: `StarConvex.isPathConnected` exists in v4.31.
+- `quadratic_lemniscate_two_path_components` — EXACT count: every point of
+  `{|(z−a)(z−b)| < C}` joins to focus `a` or `b`, and `¬ JoinedIn S a b`
+  (preconnected range of a putative path vs OQ11's disjoint `√C`-ball cover).
+  Plus `joined_focus_unique` (no point joins both foci).
+- Specializations: `levelSet_three/four/six_two_path_components` — exactly two
+  path components for `{|Φ₃|<C}, {|Φ₆|<C}` (`0<C<3/4`) and `{|Φ₄|<C}` (`0<C<1`).
+
+Component structure of the complete quadratic case `φ(n) = 2` is now EXACT in the
+sub-threshold regime. Remaining rungs unchanged: sharpness above threshold,
+quartic `φ(n) = 4`, and the deep `C > 1` labyrinth driver (blocked).
 
 ## Iter 10 — OQ12 PREP: exact two-path-component structure (researcher-2, 2026-07-24, doc-only)
 
@@ -85,11 +111,13 @@ close the squared inequality. Factor positivity: `D − W(1+s) ≥ D − 2W ≥ 
   blocked ("materially new mechanism required").
 
 ## Current Focus
-Component topology of the lemniscate. Iter 9 (OQ02OQ11) delivered the first
-disconnection result: the quadratic cyclotomic lemniscates (n = 3, 4, 6 — the complete
-φ(n) = 2 case, Cassini ovals) split into two petals for small C. Still open: component
-count in the C > 1 regime (every-boundary-point reachability driver), and sharpness
-(connectivity above the Cassini threshold).
+Component topology of the lemniscate. Iter 9 (OQ02OQ11) delivered disconnection;
+Iter 11 (OQ02OQ12) upgraded it to the EXACT count: the quadratic cyclotomic
+lemniscates (n = 3, 4, 6 — the complete φ(n) = 2 case, Cassini ovals) have exactly
+two path components sub-threshold, each petal star-shaped about its focus. Still
+open: component count in the C > 1 regime (every-boundary-point reachability
+driver), sharpness (connectivity above the Cassini threshold), and the quartic
+φ(n) = 4 cases n = 5, 8, 10, 12.
 
 ## Active Approach
 Approach A/B hybrid: elementary two-sided factor bounds `‖z‖-1 ≤ ‖z-μ‖ ≤ ‖z‖+1`
@@ -176,6 +204,14 @@ rectifiable-path arc length not yet in Mathlib.
   absent from Mathlib, proved via `cyclotomic_expand_eq_cyclotomic`.
   (`CyclotomicPolynomialsOQ02OQ11.lean`, VERIFIED docker `[8577/8577]`, 0-sorry/0-axiom.)
 
+- Iter 11 (researcher-1, 2026-07-24): **EXACT TWO-PATH-COMPONENT COUNT** — executed
+  the Iter 10 design: each Cassini petal is star-shaped about its focus
+  (ray-monotonicity certificate, `nlinarith`-checked), hence path-connected; with
+  OQ11's cover + disjointness this gives exactly two path components of
+  `{|(z−a)(z−b)| < C}` in the separated regime `4C < |a−b|²`, specialized to
+  `{|Φ₃|<C}, {|Φ₆|<C}` (`C<3/4`) and `{|Φ₄|<C}` (`C<1`)
+  (`CyclotomicPolynomialsOQ02OQ12.lean`, host-verified v4.31, 0-sorry/0-axiom).
+
 ## Next Action
 The every-boundary-point half of the reachability question: is EVERY point of the level
 curve `{|Φ_n|=C}` reachable from 0 by a bounded-length path inside the set? The first
@@ -184,7 +220,9 @@ points that are NOT first crossings (behind folds of the lemniscate, if any exis
 untouched. Deciding whether such points exist at all needs the connected-component /
 fold structure of the cyclotomic lemniscate in the relevant regime `C > 1` —
 polynomial-lemniscate topology Mathlib still lacks (blocked, unchanged for `C > 1`).
-The small-C half is now settled for the quadratic case (iter 9): remaining small-n
-follow-ups are (a) sharpness — connectivity for `C` above the Cassini threshold
-`(|a−b|/2)²`; (b) exact component count 2 (per-petal connectivity); (c) the quartic
-`φ(n) = 4` cases `n = 5, 8, 10, 12` (multi-focus, multi-petal).
+The small-C half is now settled EXACTLY for the quadratic case (iters 9 + 11:
+disconnection AND per-petal connectivity — component count = 2 sub-threshold).
+Remaining small-n follow-ups are (a) sharpness — connectivity for `C` above the
+Cassini threshold `(|a−b|/2)²` (through-the-neck path construction); (b) the quartic
+`φ(n) = 4` cases `n = 5, 8, 10, 12` (multi-focus, multi-petal — the OQ12 star-shaped
+template is the natural engine, now that it exists at 2 foci).
