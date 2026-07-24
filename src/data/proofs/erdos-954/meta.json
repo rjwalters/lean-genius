@@ -54,7 +54,7 @@
       "IsB2Sequence: Sidon set definition for connection to Problem #28",
       "repCount_mono_k: monotonicity R_k(n) ≤ R_{k+1}(n) (proved)"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 219,
     "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete initial values of Rosen's greedy sequence (rosen_term_0 through rosen_term_10) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; the structural theorems (monotonicity, growth, greedy bounds) are proved without native_decide and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",
