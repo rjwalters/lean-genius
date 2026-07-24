@@ -167,7 +167,7 @@
     },
     "type": "concept",
     "title": "Tightness Construction",
-    "content": "**`tightBound k r t`** $= kr - 1 + (t-1)(k-1)$: one less than the threshold.\n\n**`tightness_construction`** (axiom): For $n = n_0 - 1$, there exists a $t$-coloring with no monochromatic $k$-matching. The construction partitions $[n] = X_1 \\cup X_2 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$ and $|X_i| = k - 1$ for $i \\geq 2$, coloring each edge by its first non-empty intersection.",
+    "content": "**`tightBound k r t`** $= kr - 1 + (t-1)(k-1)$: one less than the threshold.\n\n**`tightness_construction`** (documented in source comments only, no Lean declaration): For $n = n_0 - 1$, there exists a $t$-coloring with no monochromatic $k$-matching. The construction partitions $[n] = X_1 \\cup X_2 \\cup \\cdots \\cup X_t$ with $|X_1| = kr - 1$ and $|X_i| = k - 1$ for $i \\geq 2$, coloring each edge by its first non-empty intersection.",
     "mathContext": "The tightness construction is the standard 'sunflower-avoiding' partition coloring. Each edge $e \\in \\binom{[n]}{r}$ receives color $i$ where $i$ is the smallest index with $e \\cap X_i \\neq \\emptyset$. Since $|X_1| = kr - 1$, any $k$ disjoint $r$-sets colored 1 would require $kr$ elements in $X_1$, a contradiction. For colors $i \\geq 2$, each $r$-set colored $i$ must contain an element of $X_i$, but $|X_i| = k-1$ limits the matching size to $k-1$.",
     "significance": "key",
     "relatedConcepts": [
