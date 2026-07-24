@@ -107,17 +107,24 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: the continuous Chebyshev sum inequality",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring: states the continuous analogue (∫f)(∫g) ≤ (b−a)∫fg of the parent's discrete Chebyshev inequality, contrasts it with the gallery's existing general comonotone entry (which needs global comonotonicity, boundedness, and measurability rather than a local MonotoneOn hypothesis), and outlines the symmetrised-double-integral / Fubini method and its Mathlib ingredients."
+    },
+    {
       "id": "sign-lemma",
       "title": "Pointwise sign of the symmetrised integrand",
-      "startLine": 53,
-      "endLine": 86,
-      "summary": "sub_mul_sub_nonneg_of_monotoneOn: for x, y ∈ Icc a b, 0 ≤ (f x − f y)(g x − g y), by case-splitting on x ≤ y vs y ≤ x — both factors are ≤ 0 in one case and ≥ 0 in the other. norm_le_of_monotoneOn bounds a monotone function on [a,b] by max|f a||f b|, used to make f·g integrable.",
+      "startLine": 63,
+      "endLine": 99,
+      "summary": "Opens MeasureTheory/Set, declares the ChebyshevIntegralMonotone namespace and the section variables a b f g. sub_mul_sub_nonneg_of_monotoneOn: for x, y ∈ Icc a b, 0 ≤ (f x − f y)(g x − g y), by case-splitting on x ≤ y vs y ≤ x — both factors are ≤ 0 in one case and ≥ 0 in the other. norm_le_of_monotoneOn bounds a monotone function on [a,b] by max|f a||f b|, used to make f·g integrable.",
       "mathContext": "$0 \\le (f(x)-f(y))(g(x)-g(y))$ when $f,g$ are monotone the same way."
     },
     {
       "id": "core-identity",
       "title": "The Fubini identity and the main inequality",
-      "startLine": 88,
+      "startLine": 101,
       "endLine": 171,
       "summary": "chebyshev_integral_monotoneOn_setIntegral. After the degenerate a=b case, sets μ = volume.restrict (Icc a b) (mass b−a), proves integrability of f, g, f·g and of the four product cross-terms, then shows ∫∫(f x−f y)(g x−g y) d(μ×μ) = 2(b−a)∫fg − 2(∫f)(∫g) via integral_prod_mul / integral_fun_fst / integral_fun_snd; nonnegativity of the integrand (transported to the square [a,b]² via Measure.prod_restrict) closes the theorem.",
       "mathContext": "$\\iint (f(x)-f(y))(g(x)-g(y)) = 2(b-a)\\!\\int\\! fg - 2\\big(\\!\\int\\! f\\big)\\big(\\!\\int\\! g\\big) \\ge 0$."
