@@ -116,7 +116,7 @@ theorem forces_of_GL_proves {φ : GLFormula} (h : GL_proves φ) :
     ∀ (F : GLFrame) (v : PropAtom → F.World → Prop) (w : F.World),
       Forces F v w φ := by
   induction h with
-  | taut t ht =>
+  | taut ht =>
     intro F v w
     cases ht with
     | k1 p q => exact fun hp _ => hp
