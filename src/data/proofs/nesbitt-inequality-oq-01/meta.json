@@ -62,7 +62,8 @@
       "The SOS identity converts a fractional cyclic inequality into manifestly nonnegative data: a sum of squares divided by positive denominators",
       "The same identity that proves the bound also pins down the equality case — no separate optimisation argument is needed",
       "field_simp + ring is a complete decision procedure for the rational-function identity once the denominators are known nonzero; the only analytic input is the positivity of a, b, c",
-      "Reading off (a−b)² = 0 and (b−c)² = 0 from the vanishing defect gives the full equality characterisation a = b = c with no loss"
+      "Reading off (a−b)² = 0 and (b−c)² = 0 from the vanishing defect gives the full equality characterisation a = b = c with no loss",
+      "A Cauchy–Schwarz alternative reaches the same bound: writing Σ a/(b+c) = Σ a²/(a(b+c)) and applying the Engel-form (Titu's lemma) Cauchy–Schwarz inequality gives Σ a²/(a(b+c)) ≥ (a+b+c)²/(2(ab+bc+ca)), which combined with the elementary (a+b+c)² ≥ 3(ab+bc+ca) (itself a Σ(a−b)² ≥ 0 fact) also yields 3/2. The SOS route formalized here is more direct in Lean — one field_simp; ring closes the whole identity — whereas Cauchy–Schwarz would need an extra inequality lemma layered on top."
     ],
     "prerequisites": [
       "Ordered fields and the arithmetic of real fractions",
