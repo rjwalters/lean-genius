@@ -8,7 +8,11 @@
     },
     "type": "concept",
     "title": "From Mixed-Radix Fact to Full Algorithm",
-    "content": "The parent entry proved only the k = 2 mixed-radix existence fact: any x < m·n splits as c₁ + c₂·m with c₁ < m, c₂ < n. That is a statement about representations, not an algorithm — it does not tell you how to find the CRT solution from residues, nor what it costs.\n\nThis file supplies both halves of the open question. The algorithm half is `garner`: forward substitution computing one digit per modulus, using an executable extended-gcd modular inverse, with machine-checked correctness and uniqueness. The complexity half is `garnerOps_eq`: since Mathlib has no machine cost model, the classical O(k²) bound is formalized as a proved closed form — exactly k(k−1)/2 — of an explicit operation counter whose per-step charge is itself grounded by a verified single-precision inner loop (Part V).\n\nEverything is verified with 0 axioms and 0 sorries; the executable examples use kernel `decide`, not `native_decide`."
+    "content": "The parent entry proved only the k = 2 mixed-radix existence fact: any x < m·n splits as c₁ + c₂·m with c₁ < m, c₂ < n. That is a statement about representations, not an algorithm — it does not tell you how to find the CRT solution from residues, nor what it costs.\n\nThis file supplies both halves of the open question. The algorithm half is `garner`: forward substitution computing one digit per modulus, using an executable extended-gcd modular inverse, with machine-checked correctness and uniqueness. The complexity half is `garnerOps_eq`: since Mathlib has no machine cost model, the classical O(k²) bound is formalized as a proved closed form — exactly k(k−1)/2 — of an explicit operation counter whose per-step charge is itself grounded by a verified single-precision inner loop (Part V).\n\nEverything is verified with 0 axioms and 0 sorries; the executable examples use kernel `decide`, not `native_decide`.",
+    "mathContext": "Given pairwise-coprime moduli $m_1,\\ldots,m_k$ and residues $r_1,\\ldots,r_k$, find $x < \\prod_i m_i$ with $x \\equiv r_i \\pmod{m_i}$ for all $i$, and bound the number of single-precision modular operations the computation requires.",
+    "significance": "context",
+    "relatedConcepts": ["Chinese Remainder Theorem", "Garner's algorithm", "mixed-radix representation", "operation counting"],
+    "prerequisites": ["Nat.ModEq", "pairwise coprimality"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-modinv",
@@ -19,7 +23,11 @@
     },
     "type": "definition",
     "title": "An Executable Modular Inverse from the Extended GCD",
-    "content": "`modInv a m = (Nat.gcdA a m % (m : ℤ)).toNat` is a genuinely computable ℕ-valued inverse: `Nat.gcdA` is the Bézout coefficient produced by the extended Euclidean algorithm, `% m` canonicalizes it into [0, m), and `.toNat` is safe because an emod by a positive modulus is nonnegative.\n\nCorrectness (`modInv_zmod`) is proved where the algebra is easiest — in the ring ZMod m: the Bézout identity 1 = a·gcdA + m·gcdB (from `Nat.gcd_eq_gcd_ab` with gcd = 1) collapses to a·gcdA = 1 because the cast of m is zero in ZMod m, and `Int.emod_def` shows the %-canonicalization does not change the residue class.\n\nStating correctness in ZMod rather than Nat.ModEq is a deliberate choice: the later step lemma needs to multiply and cancel by this inverse, and ring algebra in ZMod (via linear_combination) is far smoother than chains of Nat.ModEq congruence lemmas."
+    "content": "`modInv a m = (Nat.gcdA a m % (m : ℤ)).toNat` is a genuinely computable ℕ-valued inverse: `Nat.gcdA` is the Bézout coefficient produced by the extended Euclidean algorithm, `% m` canonicalizes it into [0, m), and `.toNat` is safe because an emod by a positive modulus is nonnegative.\n\nCorrectness (`modInv_zmod`) is proved where the algebra is easiest — in the ring ZMod m: the Bézout identity 1 = a·gcdA + m·gcdB (from `Nat.gcd_eq_gcd_ab` with gcd = 1) collapses to a·gcdA = 1 because the cast of m is zero in ZMod m, and `Int.emod_def` shows the %-canonicalization does not change the residue class.\n\nStating correctness in ZMod rather than Nat.ModEq is a deliberate choice: the later step lemma needs to multiply and cancel by this inverse, and ring algebra in ZMod (via linear_combination) is far smoother than chains of Nat.ModEq congruence lemmas.",
+    "mathContext": "Bézout's identity $1 = a \\cdot \\mathrm{gcdA}(a,m) + m \\cdot \\mathrm{gcdB}(a,m)$ when $\\gcd(a,m)=1$ gives $a \\cdot \\mathrm{modInv}(a,m) \\equiv 1 \\pmod m$, where $\\mathrm{modInv}(a,m) \\in [0,m)$ is the canonical representative of $\\mathrm{gcdA}(a,m)$.",
+    "significance": "key",
+    "relatedConcepts": ["Bézout's identity", "extended Euclidean algorithm", "modular inverse", "ZMod"],
+    "prerequisites": ["Nat.gcdA / Nat.gcdB", "Int.emod_nonneg", "ZMod.natCast_self"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-mixedradix",
@@ -30,7 +38,11 @@
     },
     "type": "concept",
     "title": "Mixed-Radix Representation, k-Modulus Version",
-    "content": "`toDigits` peels digits by repeated (% m, / m); `ofDigits` reassembles by Horner: v₁ + m₁(v₂ + m₂(v₃ + ⋯)). Three theorems make this a genuine representation:\n\n• `ofDigits_toDigits`: round-trip identity for x < ∏mᵢ (existence — the parent's `garner_mixed_radix` is exactly the k = 2 case);\n• `toDigits_lt` / `ofDigits_lt`: digits are pointwise below their radices, stated cleanly as `List.Forall₂ (· < ·)`, and bounded digit lists reconstruct below the product;\n• `digits_unique`: two bounded digit lists with the same value are equal — proved in one line by showing `toDigits` inverts `ofDigits` on bounded lists (`toDigits_ofDigits`), the k-fold generalization of the parent's `garner_mixed_radix_unique`.\n\nA small but load-bearing trick in `ofDigits_toDigits`: positivity of the head modulus is not a hypothesis — if m = 0 then x < 0·∏ is absurd, so the case analysis supplies it for free."
+    "content": "`toDigits` peels digits by repeated (% m, / m); `ofDigits` reassembles by Horner: v₁ + m₁(v₂ + m₂(v₃ + ⋯)). Three theorems make this a genuine representation:\n\n• `ofDigits_toDigits`: round-trip identity for x < ∏mᵢ (existence — the parent's `garner_mixed_radix` is exactly the k = 2 case);\n• `toDigits_lt` / `ofDigits_lt`: digits are pointwise below their radices, stated cleanly as `List.Forall₂ (· < ·)`, and bounded digit lists reconstruct below the product;\n• `digits_unique`: two bounded digit lists with the same value are equal — proved in one line by showing `toDigits` inverts `ofDigits` on bounded lists (`toDigits_ofDigits`), the k-fold generalization of the parent's `garner_mixed_radix_unique`.\n\nA small but load-bearing trick in `ofDigits_toDigits`: positivity of the head modulus is not a hypothesis — if m = 0 then x < 0·∏ is absurd, so the case analysis supplies it for free.",
+    "mathContext": "Every $x < \\prod_i m_i$ has a unique digit list $v$ with $v_i < m_i$ and $x = v_1 + m_1\\left(v_2 + m_2\\left(v_3 + \\cdots\\right)\\right)$ — the $k$-fold generalization of base-$m$ positional notation to a mixed radix $(m_1,\\ldots,m_k)$.",
+    "significance": "key",
+    "relatedConcepts": ["mixed-radix representation", "Horner's method", "List.Forall₂", "positional number systems"],
+    "prerequisites": ["toDigits / ofDigits", "Euclidean division (%, /)"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-forward-sub",
@@ -41,7 +53,11 @@
     },
     "type": "definition",
     "title": "Forward Substitution in Truncation-Safe ℕ Arithmetic",
-    "content": "The algorithm threads two accumulators through the modulus list: x (partial solution) and P (product of moduli already processed). Each step computes\n\n    v = ((r % m + (m − x % m)) · modInv (P % m) m) % m\n\nwhich is the textbook (r − x)·P⁻¹ mod m written without integer subtraction: since x % m < m, the inner `m − x % m` never truncates, and modulo m the expression r % m + m − x % m is exactly r − x. Then x ← x + v·P and P ← P·m.\n\nNote the inverse is taken of P % m, not P — this keeps the inverse computation single-precision (both arguments below m) while `ZMod.natCast_mod` makes it equal to P⁻¹ in the correctness proof.\n\n`garnerDigitsRec` runs the same recursion but records the digit stream [v₁, …, vₖ]; `garnerRec_eq_ofDigits` proves by a purely structural induction that the accumulated solution is the Horner value of that stream."
+    "content": "The algorithm threads two accumulators through the modulus list: x (partial solution) and P (product of moduli already processed). Each step computes\n\n    v = ((r % m + (m − x % m)) · modInv (P % m) m) % m\n\nwhich is the textbook (r − x)·P⁻¹ mod m written without integer subtraction: since x % m < m, the inner `m − x % m` never truncates, and modulo m the expression r % m + m − x % m is exactly r − x. Then x ← x + v·P and P ← P·m.\n\nNote the inverse is taken of P % m, not P — this keeps the inverse computation single-precision (both arguments below m) while `ZMod.natCast_mod` makes it equal to P⁻¹ in the correctness proof.\n\n`garnerDigitsRec` runs the same recursion but records the digit stream [v₁, …, vₖ]; `garnerRec_eq_ofDigits` proves by a purely structural induction that the accumulated solution is the Horner value of that stream.",
+    "mathContext": "$v_i = (r_i - x_{i-1}) \\cdot P_{i-1}^{-1} \\bmod m_i$, $x_i = x_{i-1} + v_i \\cdot P_{i-1}$, $P_i = P_{i-1} \\cdot m_i$, written in $\\mathbb{N}$ as $r \\% m + (m - x \\% m)$ so the subtraction never underflows.",
+    "significance": "technical",
+    "relatedConcepts": ["forward substitution", "truncated ℕ subtraction", "Horner evaluation"],
+    "prerequisites": ["modInv", "ZMod.natCast_mod"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-step-lemma",
@@ -52,7 +68,11 @@
     },
     "type": "key-step",
     "title": "The Step Congruence, Closed by linear_combination in ZMod",
-    "content": "The heart of Garner correctness is one congruence: x + ((r − x)·P⁻¹ mod m)·P ≡ r (mod m).\n\nThe proof casts everything into ZMod m via `ZMod.natCast_eq_natCast_iff`. After `push_cast` (with `ZMod.natCast_mod` to strip inner reductions and `Nat.cast_sub` for the truncation-safe subtraction, justified by x % m ≤ m) and killing the cast of m via `ZMod.natCast_self`, the goal is the ring identity x + (r − x)·w·P = r given the inverse identity P·w = 1. That is exactly `linear_combination (r − x) * hw` — the difference of the two sides is (r − x)·(P·w − 1).\n\nThis is why the incremental proof beats the textbook telescoping route: no products of inverses ever accumulate; each step needs only one inverse identity and one ring identity."
+    "content": "The heart of Garner correctness is one congruence: x + ((r − x)·P⁻¹ mod m)·P ≡ r (mod m).\n\nThe proof casts everything into ZMod m via `ZMod.natCast_eq_natCast_iff`. After `push_cast` (with `ZMod.natCast_mod` to strip inner reductions and `Nat.cast_sub` for the truncation-safe subtraction, justified by x % m ≤ m) and killing the cast of m via `ZMod.natCast_self`, the goal is the ring identity x + (r − x)·w·P = r given the inverse identity P·w = 1. That is exactly `linear_combination (r − x) * hw` — the difference of the two sides is (r − x)·(P·w − 1).\n\nThis is why the incremental proof beats the textbook telescoping route: no products of inverses ever accumulate; each step needs only one inverse identity and one ring identity.",
+    "mathContext": "$x + \\left((r-x) \\cdot w \\bmod m\\right) \\cdot P \\equiv r \\pmod m$ given $P \\cdot w \\equiv 1 \\pmod m$; algebraically, $\\left(x + (r-x)wP\\right) - r = (r-x)(Pw - 1) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination tactic", "ZMod ring identities", "ZMod.natCast_eq_natCast_iff"],
+    "prerequisites": ["push_cast", "Nat.cast_sub"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-master-induction",
@@ -63,7 +83,11 @@
     },
     "type": "theorem",
     "title": "Master Induction with Three Simultaneous Invariants",
-    "content": "`garnerRec_spec` proves, in a single induction over the modulus list (generalizing x and P), three facts at once:\n\n1. **Size**: the result stays below P·∏(remaining moduli) — because each new partial solution x + v·P < P·m when x < P and v < m;\n2. **Persistence**: the result is congruent to the incoming x mod P — the recursion only ever adds multiples of P, so congruences established for already-processed moduli (each of which divides P) survive via `Nat.ModEq.of_dvd`;\n3. **New congruences**: the head congruence comes from persistence at modulus m composed with the step lemma; the tail congruences come from the induction hypothesis.\n\nThe hypotheses shift correctly through the recursion: the new product P·m is coprime to each remaining modulus by `Nat.Coprime.mul_left`, combining the old coprimality of P with the pairwise coprimality of the head against the tail. Invariant 2 is the formal expression of why forward substitution works at all: later steps cannot break earlier congruences."
+    "content": "`garnerRec_spec` proves, in a single induction over the modulus list (generalizing x and P), three facts at once:\n\n1. **Size**: the result stays below P·∏(remaining moduli) — because each new partial solution x + v·P < P·m when x < P and v < m;\n2. **Persistence**: the result is congruent to the incoming x mod P — the recursion only ever adds multiples of P, so congruences established for already-processed moduli (each of which divides P) survive via `Nat.ModEq.of_dvd`;\n3. **New congruences**: the head congruence comes from persistence at modulus m composed with the step lemma; the tail congruences come from the induction hypothesis.\n\nThe hypotheses shift correctly through the recursion: the new product P·m is coprime to each remaining modulus by `Nat.Coprime.mul_left`, combining the old coprimality of P with the pairwise coprimality of the head against the tail. Invariant 2 is the formal expression of why forward substitution works at all: later steps cannot break earlier congruences.",
+    "mathContext": "Simultaneously: $\\mathrm{garnerRec}(x,P,l) < P \\cdot \\prod_{m \\in l} m$; $\\mathrm{garnerRec}(x,P,l) \\equiv x \\pmod P$; and $\\mathrm{garnerRec}(x,P,l) \\equiv r_i \\pmod{m_i}$ for each $(m_i,r_i) \\in l$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "Nat.ModEq.of_dvd", "Nat.Coprime.mul_left"],
+    "prerequisites": ["garnerRec", "the step congruence"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-main-theorems",
@@ -74,7 +98,11 @@
     },
     "type": "theorem",
     "title": "Correctness and Uniqueness: garner Returns THE Solution",
-    "content": "`garner_correct` instantiates the master induction at x = 0, P = 1 (where every coprimality hypothesis is `Nat.coprime_one_left`): the output is below ∏mᵢ and satisfies every congruence.\n\n`garner_unique` supplies the converse: any y < ∏mᵢ satisfying all the congruences equals garner l. The proof lifts the pointwise congruences y ≡ garner l (mod mᵢ) to the product modulus by `modEq_prod` — an induction combining `Nat.modEq_and_modEq_iff_modEq_mul` (the coprime-pair CRT uniqueness) with `coprime_list_prod` — and then two applications of `Nat.mod_eq_of_lt` finish.\n\nTogether these pin the algorithm's output extensionally: garner is the unique CRT solution operator on pairwise-coprime systems. This is also what makes the worked example provable by `decide` without evaluating the extended gcd in the kernel — see Part VI."
+    "content": "`garner_correct` instantiates the master induction at x = 0, P = 1 (where every coprimality hypothesis is `Nat.coprime_one_left`): the output is below ∏mᵢ and satisfies every congruence.\n\n`garner_unique` supplies the converse: any y < ∏mᵢ satisfying all the congruences equals garner l. The proof lifts the pointwise congruences y ≡ garner l (mod mᵢ) to the product modulus by `modEq_prod` — an induction combining `Nat.modEq_and_modEq_iff_modEq_mul` (the coprime-pair CRT uniqueness) with `coprime_list_prod` — and then two applications of `Nat.mod_eq_of_lt` finish.\n\nTogether these pin the algorithm's output extensionally: garner is the unique CRT solution operator on pairwise-coprime systems. This is also what makes the worked example provable by `decide` without evaluating the extended gcd in the kernel — see Part VI.",
+    "mathContext": "$\\mathrm{garner}(l) < \\prod m_i \\wedge \\forall i,\\ \\mathrm{garner}(l) \\equiv r_i \\pmod{m_i}$; and this property characterizes $\\mathrm{garner}(l)$ uniquely among $y < \\prod m_i$.",
+    "significance": "key",
+    "relatedConcepts": ["CRT uniqueness", "Nat.modEq_and_modEq_iff_modEq_mul", "coprime list products"],
+    "prerequisites": ["garnerRec_spec", "coprime_list_prod"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-opcount",
@@ -85,7 +113,11 @@
     },
     "type": "insight",
     "title": "Runtime Bound Without a Cost Model: k(k−1)/2, Exactly",
-    "content": "Mathlib has no machine model, so 'O(k²) runtime' cannot be stated as a fact about execution. The honest formalizable reading — flagged during the survey as the only rigorous one available — is a theorem about an explicit operation counter: `stepOps` charges the step at 0-indexed position i exactly i single-precision modular operations (one Horner multiply-add-reduce per previously computed digit; Part V proves this is a faithful charge).\n\n`stepOps_eq_sum` converts the accumulator recursion into the sum ∑_{j<k}(i+j) — the only wrinkle is peeling `Finset.sum_range_succ'` from the front rather than the back so the shifted sum matches the induction hypothesis — and the Gauss sum `Finset.sum_range_id` yields the closed form\n\n    garnerOps l = k(k−1)/2.\n\nThe k−1 extended-gcd inversions are deliberately outside the counter: they depend only on the moduli, so in residue-number-system practice they are precomputed once and amortized across all conversions — the same accounting Knuth uses for Algorithm 4.3.2C."
+    "content": "Mathlib has no machine model, so 'O(k²) runtime' cannot be stated as a fact about execution. The honest formalizable reading — flagged during the survey as the only rigorous one available — is a theorem about an explicit operation counter: `stepOps` charges the step at 0-indexed position i exactly i single-precision modular operations (one Horner multiply-add-reduce per previously computed digit; Part V proves this is a faithful charge).\n\n`stepOps_eq_sum` converts the accumulator recursion into the sum ∑_{j<k}(i+j) — the only wrinkle is peeling `Finset.sum_range_succ'` from the front rather than the back so the shifted sum matches the induction hypothesis — and the Gauss sum `Finset.sum_range_id` yields the closed form\n\n    garnerOps l = k(k−1)/2.\n\nThe k−1 extended-gcd inversions are deliberately outside the counter: they depend only on the moduli, so in residue-number-system practice they are precomputed once and amortized across all conversions — the same accounting Knuth uses for Algorithm 4.3.2C.",
+    "mathContext": "$\\mathrm{garnerOps}(l) = \\sum_{i=0}^{k-1} i = \\binom{k}{2} = \\dfrac{k(k-1)}{2}$, the classical $O(k^2)$ single-precision operation count of forward-substitution CRT reconstruction.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss sum", "Finset.sum_range_id", "computational complexity without a cost model"],
+    "prerequisites": ["stepOps", "Finset.sum_range_succ'"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-hornermod",
@@ -96,7 +128,11 @@
     },
     "type": "technique",
     "title": "Grounding the Charge: the Reduced Horner Inner Loop",
-    "content": "Why does step i cost exactly i single-precision operations? Because the partial solution x_{i−1} — which the step must reduce mod mᵢ — is the Horner value of the i−1 digits computed so far, and `hornerMod` evaluates that value mod n by reducing after every multiply-add:\n\n    hornerMod n ((m, v) :: rest) = (v + m · hornerMod n rest) % n.\n\nTwo theorems make the charge honest: `hornerMod_lt` shows every intermediate stays below n after reduction (so each step really is single-precision — operands bounded by the individual moduli, never the big product), and `hornerMod_modEq` shows reducing eagerly does not change the value mod n, by a straightforward induction with `Nat.mod_modEq` and congruence lemmas.\n\nThis is precisely Garner's 1959 point, machine-checked: residue number systems support multi-precision arithmetic through single-precision operations; only the optional final `ofDigits` reconstruction touches big integers."
+    "content": "Why does step i cost exactly i single-precision operations? Because the partial solution x_{i−1} — which the step must reduce mod mᵢ — is the Horner value of the i−1 digits computed so far, and `hornerMod` evaluates that value mod n by reducing after every multiply-add:\n\n    hornerMod n ((m, v) :: rest) = (v + m · hornerMod n rest) % n.\n\nTwo theorems make the charge honest: `hornerMod_lt` shows every intermediate stays below n after reduction (so each step really is single-precision — operands bounded by the individual moduli, never the big product), and `hornerMod_modEq` shows reducing eagerly does not change the value mod n, by a straightforward induction with `Nat.mod_modEq` and congruence lemmas.\n\nThis is precisely Garner's 1959 point, machine-checked: residue number systems support multi-precision arithmetic through single-precision operations; only the optional final `ofDigits` reconstruction touches big integers.",
+    "mathContext": "$\\mathrm{hornerMod}(n,\\, (m,v){::}\\mathrm{rest}) = (v + m \\cdot \\mathrm{hornerMod}(n,\\mathrm{rest})) \\bmod n$, with every intermediate value $< n$ and the result $\\equiv$ the true Horner value $\\pmod n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Horner's method", "single-precision arithmetic", "residue number systems"],
+    "prerequisites": ["Nat.mod_modEq", "the operation counter stepOps"]
   },
   {
     "id": "ann-crt-noncop-oq01oq02-examples",
@@ -107,6 +143,10 @@
     },
     "type": "tactic",
     "title": "Spec-Driven decide: Proving garner = 23 Without Running gcdA",
-    "content": "`Nat.gcdA` is defined by well-founded recursion, which the kernel does not reduce well — so `garner [(3,2),(5,3),(7,2)] = 23` is deliberately NOT proved by `rfl` or `decide` on the left-hand side. Instead the uniqueness theorem does the work: `garner_unique` says any y < 105 satisfying the three congruences equals garner l, and for y = 23 all hypotheses (positivity, pairwise coprimality of [3,5,7], 23 < 105, and the three congruences) are small decidable facts the kernel checks instantly.\n\nThe remaining examples (`toDigits`, `ofDigits`, `garnerOps`) are structurally recursive, so plain `decide` evaluates them directly: the digits of 23 in radices (3,5,7) are [2,2,1] — 23 = 2 + 3·(2 + 5·1) — and the operation counts 3 and 10 match k(k−1)/2 for k = 3 and k = 5.\n\nAll checks are kernel `decide`; the file never uses `native_decide`, keeping the entry axiom-free."
+    "content": "`Nat.gcdA` is defined by well-founded recursion, which the kernel does not reduce well — so `garner [(3,2),(5,3),(7,2)] = 23` is deliberately NOT proved by `rfl` or `decide` on the left-hand side. Instead the uniqueness theorem does the work: `garner_unique` says any y < 105 satisfying the three congruences equals garner l, and for y = 23 all hypotheses (positivity, pairwise coprimality of [3,5,7], 23 < 105, and the three congruences) are small decidable facts the kernel checks instantly.\n\nThe remaining examples (`toDigits`, `ofDigits`, `garnerOps`) are structurally recursive, so plain `decide` evaluates them directly: the digits of 23 in radices (3,5,7) are [2,2,1] — 23 = 2 + 3·(2 + 5·1) — and the operation counts 3 and 10 match k(k−1)/2 for k = 3 and k = 5.\n\nAll checks are kernel `decide`; the file never uses `native_decide`, keeping the entry axiom-free.",
+    "mathContext": "$x \\equiv 2 \\pmod 3,\\ x \\equiv 3 \\pmod 5,\\ x \\equiv 2 \\pmod 7 \\Rightarrow x = 23 = 2 + 3(2 + 5\\cdot 1)$, and $\\mathrm{garnerOps} = 3 = \\binom{3}{2},\\ 10 = \\binom{5}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel decide", "well-founded recursion reduction"],
+    "prerequisites": ["garner_unique"]
   }
 ]
