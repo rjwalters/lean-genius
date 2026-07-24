@@ -92,7 +92,8 @@
       "The derivative of arcsin(2x−1) IS the Beta(1/2,1/2) integrand: 1 − (2x−1)² = 4x(1−x), so 2/√(1−(2x−1)²) = 1/√(x(1−x)) = x^{−1/2}(1−x)^{−1/2}. The arcsine substitution is not auxiliary — it is the antiderivative.",
       "The endpoint singularities of x^{−1/2}(1−x)^{−1/2} are handled by the FTC variant that needs the derivative only on the open interval; integrability is borrowed from Mathlib's complex Beta-convergence lemma via the norm.",
       "Reducing the complex cpow Beta integrand to a real rpow integrand (Complex.ofReal_cpow on (0,1), where both bases are nonnegative reals) lets a single real FTC computation evaluate the complex Beta integral.",
-      "This is an independent derivation of Γ(1/2) = √π: it never calls Real.Gamma_one_half_eq, so the value is recomputed through the Beta/arcsine route rather than the Gaussian one, and the two appearances of π (Gamma-square and arcsine mass) are unified."
+      "This is an independent derivation of Γ(1/2) = √π: it never calls Real.Gamma_one_half_eq, so the value is recomputed through the Beta/arcsine route rather than the Gaussian one, and the two appearances of π (Gamma-square and arcsine mass) are unified.",
+      "The integrand arcsineDensity is symmetric under x ↦ 1−x (the substitution swaps its two rpow factors), while its antiderivative arcsin(2x−1) is antisymmetric about the midpoint x = 1/2 — since arcsin(2(1−x)−1) = arcsin(1−2x) = −arcsin(2x−1). A symmetric integrand paired with an antiderivative that is odd about the midpoint is exactly what makes the FTC evaluation arcsin(1) − arcsin(−1) = π/2 − (−π/2) sum to a nonzero total rather than cancel, and it is why the same computation would extend unchanged to any interval [a, 1−a]-symmetric reparametrisation of the Beta(1/2,1/2) integrand."
     ]
   },
   "sections": [
