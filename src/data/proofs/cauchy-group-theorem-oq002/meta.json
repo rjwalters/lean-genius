@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: from g = 1 to arbitrary g",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Docstring framing the inhomogeneous follow-up to the parent's #{xⁿ = 1} = gcd(n, |G|) count: the structural abelian dichotomy (coset or empty), the explicit cyclic value, and the one-bijection proof strategy (left-translation by a fixed n-th root a₀). Sets up the CommGroup variable α and opens Finset.",
+      "mathContext": "x ↦ a₀⁻¹·x is a bijection {x | xⁿ = g} → {x | xⁿ = 1} whenever a₀ⁿ = g, since the group is abelian."
+    },
+    {
       "id": "coset-count",
       "title": "The Coset Bijection",
       "startLine": 66,
