@@ -40,16 +40,21 @@ The formula has been verified numerically for `n = 1..120` (see
   sessions can work entirely inside `(ZMod n)ˣ` where the cyclic-group
   structure (`ZMod.isCyclic_units_of_prime_pow` etc.) applies.
 
-## Subsequent sessions
+## Session history
 
-* **S4**: prime-power count `card_sqrts_one_unit_prime_pow_odd`
-  via `IsCyclic.card_orderOf_eq_totient` (~70 lines).
-* **S5**: CRT multiplicativity (~50 lines).
-* **S6**: assembly by induction on `n.primeFactors.card` (~40 lines).
+* **S4/S4-prep**: order-2 decomposition + generic cyclic-even count = 2.
+* **S5**: odd-prime-power unit count = 2.
+* **S5b.1/2/3**: power-of-2 unit counts (1, 2, 4 for k = 1, 2, ≥ 3).
+* **S6**: CRT multiplicativity of the count across coprime moduli
+  (Section 10), via `ZMod.chineseRemainder` + `MulEquiv.prodUnits`,
+  following the `Nat.totient_mul` template.
+* **S7**: closed-form bookkeeping (Section 11) and the final induction via
+  `Nat.recOnPosPrimePosCoprime` (Section 12), closing the main theorem
+  `card_sqrts_one_eq_numSqrtsOne`.
 
 ## Status
 
-1 sorry (`card_sqrts_one_eq_numSqrtsOne`), 0 axioms.
+**0 sorries, 0 axioms — main theorem fully proved (S6+S7).**
 -/
 
 namespace GaussWilsonNonCyclicOQ03
@@ -109,26 +114,23 @@ example : numSqrtsOne 60 = 8 := by native_decide      -- 2² · 15: ω_odd=2, ε
 example : numSqrtsOne 120 = 16 := by native_decide    -- 2³ · 15: ω_odd=2, ε₂=2
 
 -- ============================================================================
--- Section 3: Main theorem (target of S3..S5)
+-- Section 3: Main theorem (statement moved to Section 12)
 -- ============================================================================
 
-/-- **Main theorem (OQ-03, statement only in S2).**
+/- **Main theorem (OQ-03).**
 
 The number of solutions of `x² = 1` in `ZMod n` equals the closed-form count
 `numSqrtsOne n = 2 ^ (ω_odd(n) + ε₂(n))`.
 
 This is the quantitative upgrade of the parent's qualitative `≥ 3` bound
-(`GaussWilsonNonCyclic.card_sq_eq_one_ge_three`).  The proof strategy
-(deferred to S3..S5) factors through:
+(`GaussWilsonNonCyclic.card_sq_eq_one_ge_three`).
 
-* CRT to reduce to prime-power moduli (S4);
-* Cyclicity of `(ZMod p^a)ˣ` for odd `p` (and the explicit `ℤ/2 × ℤ/2^{a-2}`
-  structure of `(ZMod 2^a)ˣ` for `a ≥ 3`) to count at prime-power level (S3);
-* Induction on `n.primeFactors.card` to assemble (S5).
--/
-theorem card_sqrts_one_eq_numSqrtsOne (n : ℕ) [NeZero n] :
-    (Finset.univ.filter (fun x : ZMod n => x ^ 2 = 1)).card = numSqrtsOne n := by
-  sorry
+From S2 through S5b.3 the theorem `card_sqrts_one_eq_numSqrtsOne` was *stated*
+here with `sorry` while the supporting sections below were built up.  S6/S7
+closed the proof; since Lean requires dependencies to precede their use, the
+theorem now lives at the **end of the file** (Section 12), where it is proved
+from the S3 bridge (Section 4) and the unit-side assembly
+`card_filter_sq_eq_one_units_eq_numSqrtsOne` (Section 12). -/
 
 -- ============================================================================
 -- Section 4: Ring ↔ unit bridge (S3)
@@ -580,5 +582,272 @@ theorem card_filter_sq_eq_one_units_zmod_two_pow_ge_three
   rw [hfilter, Finset.card_image_of_injOn hInj, hS,
     Finset.card_insert_of_notMem hd1, Finset.card_insert_of_notMem hd2,
     Finset.card_insert_of_notMem hd3, Finset.card_singleton]
+
+-- ============================================================================
+-- Section 10: CRT multiplicativity (S6)
+-- ============================================================================
+
+/-! ### S6 — the square-root count is multiplicative across coprime moduli
+
+Following the `Nat.totient_mul` template
+(`Mathlib/Data/Nat/Totient.lean`), the unit group of `ZMod (m * n)` for
+coprime `m, n` decomposes as
+
+```
+  (ZMod (m * n))ˣ  ≃*  (ZMod m × ZMod n)ˣ  ≃*  (ZMod m)ˣ × (ZMod n)ˣ
+```
+
+via `ZMod.chineseRemainder` (lifted to units by `Units.mapEquiv`) and
+`MulEquiv.prodUnits`.  Since a `MulEquiv` preserves the predicate
+`u² = 1`, and 2-torsion of a direct product splits componentwise
+(`(g, h)² = 1 ↔ g² = 1 ∧ h² = 1`), the solution count is multiplicative.
+
+Two generic helper lemmas package the transport and the product split;
+`card_filter_sq_eq_one_units_mul_coprime` specialises to `ZMod`. -/
+
+/-- **Transport of the square-root-of-unity count across a `MulEquiv`.**
+
+A multiplicative equivalence `e : G ≃* H` maps `{g | g² = 1}` bijectively
+onto `{h | h² = 1}` (its image under the injective map `e` is exactly the
+target filter), so the two counts agree. -/
+theorem card_filter_sq_eq_one_of_mulEquiv {G H : Type*} [Group G] [Group H]
+    [Fintype G] [Fintype H] [DecidableEq G] [DecidableEq H] (e : G ≃* H) :
+    (Finset.univ.filter (fun g : G => g ^ 2 = 1)).card =
+      (Finset.univ.filter (fun h : H => h ^ 2 = 1)).card := by
+  have himg : (Finset.univ.filter (fun g : G => g ^ 2 = 1)).image e =
+      Finset.univ.filter (fun h : H => h ^ 2 = 1) := by
+    ext h
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨g, hg, rfl⟩
+      rw [← map_pow, hg, map_one]
+    · intro hh
+      exact ⟨e.symm h, by rw [← map_pow, hh, map_one], e.apply_symm_apply h⟩
+  rw [← himg, Finset.card_image_of_injective _ e.injective]
+
+/-- **2-torsion of a direct product splits componentwise.**
+
+`(g, h)² = 1` iff `g² = 1` and `h² = 1`, so the solution filter of the
+product group is the `Finset` product of the component filters and the
+count factors. -/
+theorem card_filter_sq_eq_one_prod {G H : Type*} [Group G] [Group H]
+    [Fintype G] [Fintype H] [DecidableEq G] [DecidableEq H] :
+    (Finset.univ.filter (fun w : G × H => w ^ 2 = 1)).card =
+      (Finset.univ.filter (fun g : G => g ^ 2 = 1)).card *
+        (Finset.univ.filter (fun h : H => h ^ 2 = 1)).card := by
+  rw [← Finset.card_product]
+  congr 1
+  ext ⟨g, h⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product,
+    Prod.pow_mk, Prod.mk_eq_one]
+
+/-- **S6 ACT — CRT multiplicativity of the 2-torsion count.**
+
+For coprime moduli `m, n`, the number of square roots of unity in
+`(ZMod (m * n))ˣ` is the product of the counts for `(ZMod m)ˣ` and
+`(ZMod n)ˣ`.  The proof composes the CRT ring isomorphism
+`ZMod.chineseRemainder h : ZMod (m * n) ≃+* ZMod m × ZMod n` (lifted to
+unit groups via `Units.mapEquiv`) with `MulEquiv.prodUnits`, then applies
+the two generic lemmas above — exactly the rewrite chain of Mathlib's
+`Nat.totient_mul`. -/
+theorem card_filter_sq_eq_one_units_mul_coprime {m n : ℕ} [NeZero m] [NeZero n]
+    (h : m.Coprime n) :
+    (Finset.univ.filter (fun u : (ZMod (m * n))ˣ => u ^ 2 = 1)).card =
+      (Finset.univ.filter (fun u : (ZMod m)ˣ => u ^ 2 = 1)).card *
+        (Finset.univ.filter (fun u : (ZMod n)ˣ => u ^ 2 = 1)).card := by
+  haveI : NeZero (m * n) := ⟨Nat.mul_ne_zero (NeZero.ne m) (NeZero.ne n)⟩
+  rw [card_filter_sq_eq_one_of_mulEquiv
+      ((Units.mapEquiv (ZMod.chineseRemainder h).toMulEquiv).trans
+        MulEquiv.prodUnits)]
+  exact card_filter_sq_eq_one_prod
+
+-- ============================================================================
+-- Section 11: Closed-form bookkeeping (S7 helpers)
+-- ============================================================================
+
+/-! ### S7 bookkeeping — `numSqrtsOne` matches the per-prime-power counts
+
+The induction in Section 12 needs the closed form `numSqrtsOne` to mirror
+the behaviour of the actual count: multiplicative across coprime factors
+(matching S6) and evaluating to `2` at odd prime powers, `1 / 2 / 4` at
+`2^1 / 2^2 / 2^(k≥3)` (matching S5/S5b).  Both `omegaOdd` and `epsTwo`
+are additive across coprime products — `omegaOdd` because prime-factor
+sets of coprime numbers are disjoint, `epsTwo` because at most one
+coprime factor is even, so the two-adic data lives entirely in that
+factor. -/
+
+/-- `epsTwo` vanishes on odd numbers (no two-adic correction). -/
+theorem epsTwo_of_odd {n : ℕ} (hn : Odd n) : epsTwo n = 0 := by
+  have h2 : n % 2 = 1 := Nat.odd_iff.mp hn
+  unfold epsTwo
+  split_ifs with h8 h4 <;> omega
+
+/-- Multiplying by an odd factor does not change `epsTwo`: an odd `n` is
+coprime to every power of `2`, so `2^j ∣ m * n ↔ 2^j ∣ m`. -/
+theorem epsTwo_mul_of_odd_right {m n : ℕ} (hn : Odd n) :
+    epsTwo (m * n) = epsTwo m := by
+  have h2 : n % 2 = 1 := Nat.odd_iff.mp hn
+  have hnd : ¬ (2 : ℕ) ∣ n := by omega
+  have hco : ∀ j : ℕ, 2 ^ j ∣ m * n ↔ 2 ^ j ∣ m := fun j =>
+    ⟨fun hd => (Nat.Coprime.pow_left j
+        ((Nat.prime_two.coprime_iff_not_dvd).mpr hnd)).dvd_of_dvd_mul_right hd,
+      fun hd => Dvd.dvd.mul_right hd n⟩
+  have hd8 := hco 3
+  have hd4 := hco 2
+  norm_num at hd8 hd4
+  unfold epsTwo
+  split_ifs <;> omega
+
+/-- `epsTwo` is additive across coprime products: coprimality forces at
+least one factor to be odd, and an odd factor contributes `0`. -/
+theorem epsTwo_mul_of_coprime {m n : ℕ} (h : m.Coprime n) :
+    epsTwo (m * n) = epsTwo m + epsTwo n := by
+  rcases Nat.even_or_odd n with hn | hn
+  · rcases Nat.even_or_odd m with hm | hm
+    · -- both even contradicts coprimality
+      exfalso
+      have hg : (2 : ℕ) ∣ Nat.gcd m n := Nat.dvd_gcd hm.two_dvd hn.two_dvd
+      have h1 : Nat.gcd m n = 1 := h
+      omega
+    · rw [mul_comm, epsTwo_mul_of_odd_right hm, epsTwo_of_odd hm]
+      omega
+  · rw [epsTwo_mul_of_odd_right hn, epsTwo_of_odd hn]
+    omega
+
+/-- `omegaOdd` is additive across coprime products: the prime-factor sets
+are disjoint (`Nat.Coprime.disjoint_primeFactors`), so the odd-prime
+filters partition the union. -/
+theorem omegaOdd_mul_of_coprime {m n : ℕ} (h : m.Coprime n) :
+    omegaOdd (m * n) = omegaOdd m + omegaOdd n := by
+  unfold omegaOdd
+  rw [Nat.Coprime.primeFactors_mul h, Finset.filter_union,
+    Finset.card_union_of_disjoint
+      (Finset.disjoint_filter_filter (Nat.Coprime.disjoint_primeFactors h))]
+
+/-- `numSqrtsOne` is multiplicative across coprime products — the
+closed-form mirror of the S6 CRT multiplicativity. -/
+theorem numSqrtsOne_mul_of_coprime {m n : ℕ} (h : m.Coprime n) :
+    numSqrtsOne (m * n) = numSqrtsOne m * numSqrtsOne n := by
+  unfold numSqrtsOne
+  rw [omegaOdd_mul_of_coprime h, epsTwo_mul_of_coprime h, ← pow_add]
+  congr 1
+  omega
+
+/-- The closed form evaluates to `2` at odd prime powers, matching the S5
+unit-side count: one odd prime factor, no two-adic correction. -/
+theorem numSqrtsOne_prime_pow_odd {p k : ℕ} (hp : p.Prime) (hp2 : p ≠ 2)
+    (hk : 0 < k) :
+    numSqrtsOne (p ^ k) = 2 := by
+  unfold numSqrtsOne omegaOdd
+  rw [Nat.primeFactors_prime_pow (by omega : k ≠ 0) hp,
+    epsTwo_of_odd ((hp.odd_of_ne_two hp2).pow), Finset.filter_singleton]
+  simp [hp2]
+
+/-- Powers of `2` have no odd prime factors. -/
+theorem omegaOdd_two_pow {k : ℕ} (hk : k ≠ 0) : omegaOdd (2 ^ k) = 0 := by
+  unfold omegaOdd
+  rw [Nat.primeFactors_prime_pow hk Nat.prime_two, Finset.filter_singleton]
+  simp
+
+/-- The two-adic correction saturates at `2` once `8 ∣ 2^k`, i.e. `k ≥ 3`. -/
+theorem epsTwo_two_pow_ge_three {k : ℕ} (hk : 3 ≤ k) : epsTwo (2 ^ k) = 2 := by
+  have h8 : (8 : ℕ) ∣ 2 ^ k := by
+    calc (8 : ℕ) = 2 ^ 3 := by norm_num
+    _ ∣ 2 ^ k := pow_dvd_pow 2 hk
+  unfold epsTwo
+  have hm : (2 : ℕ) ^ k % 8 = 0 := by omega
+  simp [hm]
+
+/-- Closed form at modulus `2`: count `1`, matching S5b.1. -/
+theorem numSqrtsOne_two : numSqrtsOne 2 = 1 := by
+  have h := omegaOdd_two_pow (k := 1) one_ne_zero
+  norm_num at h
+  simp [numSqrtsOne, h, epsTwo]
+
+/-- Closed form at modulus `4`: count `2`, matching S5b.2. -/
+theorem numSqrtsOne_four : numSqrtsOne 4 = 2 := by
+  have h := omegaOdd_two_pow (k := 2) two_ne_zero
+  norm_num at h
+  simp [numSqrtsOne, h, epsTwo]
+
+-- ============================================================================
+-- Section 12: Induction assembly and the main theorem (S7)
+-- ============================================================================
+
+/-! ### S7 — assembling the closed form by `Nat.recOnPosPrimePosCoprime`
+
+The four induction cases are exactly the four ingredient groups built in
+S4–S6:
+
+* `zero` — vacuous under `NeZero`.
+* `one` — the trivial unit group `(ZMod 1)ˣ` has count `1 = numSqrtsOne 1`.
+* `prime_pow` — `p = 2` splits into `k = 1 / k = 2 / k ≥ 3`
+  (S5b.1/S5b.2/S5b.3, counts `1 / 2 / 4`); odd `p` is S5 (count `2`).
+* `coprime` — S6 multiplicativity plus the Section-11 closed-form
+  multiplicativity `numSqrtsOne_mul_of_coprime`. -/
+
+/-- **S7 — unit-side assembly.**  For every `n ≠ 0`, the number of square
+roots of unity in `(ZMod n)ˣ` equals the closed form
+`numSqrtsOne n = 2 ^ (ω_odd(n) + ε₂(n))`.  Proved by induction on the
+prime factorisation via `Nat.recOnPosPrimePosCoprime`. -/
+theorem card_filter_sq_eq_one_units_eq_numSqrtsOne :
+    ∀ (n : ℕ) [NeZero n],
+      (Finset.univ.filter (fun u : (ZMod n)ˣ => u ^ 2 = 1)).card =
+        numSqrtsOne n := by
+  intro n
+  induction n using Nat.recOnPosPrimePosCoprime with
+  | prime_pow p k hp hk =>
+    intro _
+    rcases eq_or_ne p 2 with rfl | hp2
+    · -- p = 2: the three S5b regimes
+      rcases (by omega : k = 1 ∨ k = 2 ∨ 3 ≤ k) with rfl | rfl | hk3
+      · show (Finset.univ.filter (fun u : (ZMod 2)ˣ => u ^ 2 = 1)).card =
+          numSqrtsOne 2
+        rw [card_filter_sq_eq_one_units_zmod_two, numSqrtsOne_two]
+      · show (Finset.univ.filter (fun u : (ZMod 4)ˣ => u ^ 2 = 1)).card =
+          numSqrtsOne 4
+        rw [card_filter_sq_eq_one_units_zmod_four, numSqrtsOne_four]
+      · rw [card_filter_sq_eq_one_units_zmod_two_pow_ge_three k hk3]
+        unfold numSqrtsOne
+        rw [omegaOdd_two_pow (by omega), epsTwo_two_pow_ge_three hk3]
+        norm_num
+    · -- p odd: S5
+      rw [card_filter_sq_eq_one_units_zmod_prime_pow_odd hp hp2 hk,
+        numSqrtsOne_prime_pow_odd hp hp2 hk]
+  | zero =>
+    intro h
+    exact absurd rfl h.out
+  | one =>
+    intro inst
+    have hall : ∀ u : (ZMod (1 : ℕ))ˣ, u ^ 2 = 1 := fun u =>
+      Units.ext (Subsingleton.elim _ _)
+    rw [Finset.filter_true_of_mem (fun u _ => hall u), Finset.card_univ,
+      ZMod.card_units_eq_totient, Nat.totient_one]
+    simp [numSqrtsOne, omegaOdd, epsTwo]
+  | coprime a b ha hb hab iha ihb =>
+    intro _
+    haveI ha0 : NeZero a := ⟨by omega⟩
+    haveI hb0 : NeZero b := ⟨by omega⟩
+    rw [card_filter_sq_eq_one_units_mul_coprime hab, iha, ihb,
+      numSqrtsOne_mul_of_coprime hab]
+
+/-- **Main theorem (OQ-03) — exact count of square roots of unity.**
+
+The number of solutions of `x² = 1` in `ZMod n` equals the closed-form
+count `numSqrtsOne n = 2 ^ (ω_odd(n) + ε₂(n))`, where `ω_odd(n)` is the
+number of distinct odd prime factors of `n` and `ε₂(n) ∈ {0, 1, 2}` is
+the two-adic correction.
+
+This is the quantitative upgrade of the parent's qualitative `≥ 3` bound
+(`GaussWilsonNonCyclic.card_sq_eq_one_ge_three`): CRT reduces the count
+to prime-power moduli (S6, Section 10), the per-prime-power counts are
+`2` at odd prime powers and `1 / 2 / 4` at `2^1 / 2^2 / 2^(k≥3)`
+(S5/S5b, Sections 7–9), and induction on the prime factorisation
+assembles the closed form (S7, this section).  The ring-side count
+reduces to the unit-side count through the S3 bridge (Section 4). -/
+theorem card_sqrts_one_eq_numSqrtsOne (n : ℕ) [NeZero n] :
+    (Finset.univ.filter (fun x : ZMod n => x ^ 2 = 1)).card = numSqrtsOne n := by
+  rw [card_sqrts_one_eq_card_units_sqrts_one n,
+    card_filter_sq_eq_one_units_eq_numSqrtsOne n]
 
 end GaussWilsonNonCyclicOQ03
