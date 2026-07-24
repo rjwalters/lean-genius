@@ -2,10 +2,56 @@
 
 > **RE-OPENED 2026-07-24 (researcher-2, S9)** — The 2026-06-13 blackout premise no longer holds: Docker is up, and S9 ran a full green build (`[8577/8577]`, Mathlib **v4.31** pin). Status `blocked → active`.
 
-**Phase**: ACT (S11 — element-level integral basis COMPLETE: `isIntegral_elt_iff` — `a + b·root` is an algebraic integer iff `a, b ∈ ℤ`. Route change: MINPOLY descent (`minpoly.isIntegrallyClosed_eq_field_fractions'`) instead of trace/norm formulas — for `b ≠ 0`, `minpoly ℚ (a + b·root) = X² − 2aX + (a² − 2b²)` (`minpoly_elt`), whose ℤ-descent hands exactly `2a ∈ ℤ` and `a² − 2b² ∈ ℤ` to the S10 crux `int_pair_of_double_and_norm`; no `leftMulMatrix` needed. Sole strategic sorry unchanged: `Q_sqrt2_discr_eq_eight`. Next S12: package `{1, root}` as `Basis (Fin 2) ℤ (𝓞 Q_sqrt2)` from `isIntegral_elt_iff` (needs the coordinate-surjectivity `∀ x : Q_sqrt2, ∃ a b, x = elt a b` via the power basis), then trace form `det [[2,0],[0,4]] = 8` via `NumberField.discr_eq_discr`.)
+**Phase**: COMPLETED (S12 — TARGET PROVED: `Q_sqrt2_classNumber_eq_one : NumberField.classNumber Q_sqrt2 = 1`, unconditional, 0 sorries / 0 axioms. The last strategic sorry `Q_sqrt2_discr_eq_eight` is closed: `{1, √2}` packaged as `Basis (Fin 2) ℤ (𝓞 Q_sqrt2)` from S11's `isIntegral_elt_iff`, trace matrix `[[2,0],[0,4]]`, `det = 8` via `NumberField.discr_eq_discr`.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-07-24 (Iteration 19 S11 ACT, researcher-3)
-**Iteration**: 19
+**Last Updated**: 2026-07-24 (Iteration 20 S12 ACT, researcher-3)
+**Iteration**: 20
+
+## Iteration 20 (researcher-3, 2026-07-24) — S12 ACT: discr = 8, capstone UNCONDITIONAL [HOST-VERIFIED]
+
+The file's sole strategic sorry is closed; `#print axioms` on
+`Q_sqrt2_discr_eq_eight`, `Q_sqrt2_classNumber_eq_one`, `isIntegral_elt_iff`,
+`intBasis` = `[propext, Classical.choice, Quot.sound]` (foundational trio only).
+`bin/lake env lean` exit 0, zero warnings.
+
+New bricks (S12 section at end of `Sqrt2MinpolyOQ03.lean`):
+
+- `exists_elt_eq` — coordinate surjectivity `∀ x, ∃ a b, x = elt a b`, read off
+  `(AdjoinRoot.powerBasis).basis.reindex (finCongr hdim)`;
+  `PowerBasis.basis_eq_pow` + `Fin.sum_univ_two` + `Algebra.smul_def`.
+- `elt_eq_zero` — coordinate uniqueness at 0 (irrationality via
+  `elt_not_mem_range` for `b ≠ 0`; `map_eq_zero_iff` for `b = 0`).
+- `sqrt2Int : 𝓞 Q_sqrt2` (`⟨root, root_isIntegral⟩`), `sqrt2Int_mul_self : √2·√2 = 2`
+  (transport `root_sq` through `RingOfIntegers.ext`).
+- `intBasis : Basis (Fin 2) ℤ (𝓞 Q_sqrt2) = Basis.mk` on `![1, sqrt2Int]`:
+  linear independence via coercion to `K` + `elt_eq_zero`
+  (`Fintype.linearIndependent_iff`); spanning via `exists_elt_eq` +
+  `x.isIntegral_coe` + S11 `coords_int_of_isIntegral`.
+- Traces: `trace_intCast` (= 2n, via `Algebra.trace_algebraMap` +
+  `RingOfIntegers.rank` + `Q_sqrt2_finrank`); `trace_sqrt2Int = 0`
+  (`Algebra.trace_eq_matrix_trace` + `leftMulMatrix_eq_repr_mul`, the
+  left-multiplication matrix of √2 is `[[0,2],[1,0]]` — zero diagonal).
+- `Q_sqrt2_discr_eq_eight` — `NumberField.discr_eq_discr` + `Algebra.discr_def`
+  + `Matrix.det_fin_two`, trace matrix `[[2,0],[0,4]]`, det 8.
+- `Q_sqrt2_classNumber_eq_one` — now unconditional (S9 reduction + discr).
+
+**Lean gotchas (v4.31 pin)**: `Basis` is `Module.Basis` — bare `Basis` in new
+code needs `open Module` (existing S3–S11 code never named it at top level);
+`rw [← hsum]` on a goal whose RHS mentions `b'.repr x` rewrites the `x` inside
+`repr` too — use a forward `calc` from `Basis.sum_repr` instead; `0 + 0 = 0`
+in ℤ is NOT closed by `rw`'s terminal rfl (needs `norm_num`/`simp`);
+`intBasis_apply_one` needs full `simp` (`![sqrt2Int] 0` reduction —
+`Matrix.cons_val_one` alone strands the tail lookup).
+
+**Trackers**: `src/data/research/problems/sqrt2-minpoly-oq-03.json` NOT touched
+— it is 3 concatenated JSON objects on main (mechanic issue #43405, open PR
+#43409); reconcile knowledge there after the mechanic fix merges.
+
+Nothing formalizable remains on this slug: the formal target
+`Q_sqrt2_classNumber_eq_one` and both restatement corollaries' substance
+(PID-ness via `classNumber_eq_one_iff`) are delivered. Possible follow-ups
+recorded in the session file (Euclidean-domain strengthening; other small
+real quadratic fields via the same recipe).
 
 ## Iteration 19 (researcher-3, 2026-07-24) — S11 ACT: element-level integral basis [HOST-VERIFIED]
 
