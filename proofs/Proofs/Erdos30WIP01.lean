@@ -1666,4 +1666,208 @@ theorem sidonNumber_twentyeight : sidonNumber 28 = 7 := by
   · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 28 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
 
+/- ## The Erdős–Turán construction: a √N-order LOWER bound
+
+Powers of two gave only `h(N) ≳ log₂ N`.  This section closes the polynomial
+gap with the Erdős–Turán (1941) modular construction: for a prime `p`, the
+`p` numbers
+
+    `aᵢ = 2p·i + (i² mod p)`,   `i = 0, 1, …, p − 1`
+
+form a Sidon set inside `{0, …, 2p² − 1}`, so `h(2p² − 1) ≥ p`.  Feeding in a
+Bertrand prime `q ∈ (s, 2s]` for `s = ⌊√(N/8)⌋` yields `h(N) > ⌊√(N/8)⌋` for
+all `N ≥ 32` — in real form `√N/4 ≤ h(N)`.  Together with the counting upper
+bound `sidonNumber_le_real` this pins the Sidon number at the `√N` order:
+
+    `√N/4  ≤  h(N)  ≤  √(2N) + 1`      (N ≥ 32),
+
+a constant-factor bracket (ratio ≤ 4√2 + o(1)) on a $1000-problem quantity.
+
+Why `aᵢ` is Sidon: in `aᵢ + aⱼ = aₖ + aₗ` the base-`2p` digits separate
+(each remainder `i² mod p` is `< p`, so a sum of two is `< 2p`), giving
+`i + j = k + l` in `ℕ` and `i² + j² ≡ k² + l² (mod p)`.  Hence in the field
+`𝔽_p` the pairs `{i,j}` and `{k,l}` have the same sum and — since `2` is
+invertible for odd `p` — the same product `ij = ((i+j)² − (i²+j²))/2`.  Two
+pairs with equal sum and product are the root multisets of the same monic
+quadratic, so `(k−i)(k−j) = k² − (i+j)k + ij = 0` in `𝔽_p`; a field has no
+zero divisors, and `0 ≤ i,j,k,l < p` lifts the conclusion back to `ℕ`. -/
+
+/-- The Erdős–Turán map `i ↦ 2p·i + (i² mod p)` behind the √N-order Sidon set. -/
+private def etMap (p i : ℕ) : ℕ := 2 * p * i + i ^ 2 % p
+
+/-- Dividing out the leading base-`2p` digit recovers the index: `etMap p i / 2p = i`. -/
+private theorem etMap_div {p : ℕ} (hp : 0 < p) (i : ℕ) : etMap p i / (2 * p) = i := by
+  unfold etMap
+  rw [Nat.mul_add_div (by omega), Nat.div_eq_of_lt (by have := Nat.mod_lt (i ^ 2) hp; omega)]
+
+/-- `etMap p` is injective (the quotient by `2p` recovers the index). -/
+private theorem etMap_injOn {p : ℕ} (hp : 0 < p) :
+    Set.InjOn (etMap p) ↑(Finset.range p) := by
+  intro i _ j _ hij
+  have h := congrArg (· / (2 * p)) hij
+  simp only [etMap_div hp] at h
+  exact h
+
+/-- **Digit separation.**  If `etMap p i + etMap p j = etMap p k + etMap p l` then the
+base-`2p` digits match separately: the index sums agree in `ℕ` and the residue sums
+agree on the nose (each side is a sum of two remainders `< p`, hence `< 2p`). -/
+private theorem etMap_add_eq {p : ℕ} (hp : 0 < p) {i j k l : ℕ}
+    (heq : etMap p i + etMap p j = etMap p k + etMap p l) :
+    i + j = k + l ∧ i ^ 2 % p + j ^ 2 % p = k ^ 2 % p + l ^ 2 % p := by
+  have hri : i ^ 2 % p < p := Nat.mod_lt _ hp
+  have hrj : j ^ 2 % p < p := Nat.mod_lt _ hp
+  have hrk : k ^ 2 % p < p := Nat.mod_lt _ hp
+  have hrl : l ^ 2 % p < p := Nat.mod_lt _ hp
+  have h2p : 0 < 2 * p := by omega
+  have h1 : 2 * p * (i + j) + (i ^ 2 % p + j ^ 2 % p)
+      = 2 * p * (k + l) + (k ^ 2 % p + l ^ 2 % p) := by
+    unfold etMap at heq
+    rw [Nat.mul_add, Nat.mul_add]
+    linarith [heq]
+  have hsum : i + j = k + l := by
+    have hd := congrArg (· / (2 * p)) h1
+    simpa [Nat.mul_add_div h2p,
+      Nat.div_eq_of_lt (show i ^ 2 % p + j ^ 2 % p < 2 * p by omega),
+      Nat.div_eq_of_lt (show k ^ 2 % p + l ^ 2 % p < 2 * p by omega)] using hd
+  refine ⟨hsum, ?_⟩
+  rw [hsum] at h1
+  exact Nat.add_left_cancel h1
+
+/-- **Quadratic uniqueness over `𝔽_p`.**  For an odd prime `p` and `i,j,k,l < p`, if the
+pairs `{i,j}` and `{k,l}` have the same sum (in `ℕ`) and the same sum of squares mod `p`,
+they coincide as unordered pairs: sum and sum-of-squares determine the product (2 is
+invertible), and sum and product determine a monic quadratic whose roots over a field
+are unique. -/
+private theorem pair_eq_of_sum_sq {p : ℕ} (hp : p.Prime) (hp2 : 2 < p) {i j k l : ℕ}
+    (hi : i < p) (hj : j < p) (hk : k < p) (hl : l < p)
+    (hsum : i + j = k + l)
+    (hsq : i ^ 2 % p + j ^ 2 % p = k ^ 2 % p + l ^ 2 % p) :
+    (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hZsum : (i : ZMod p) + (j : ZMod p) = (k : ZMod p) + (l : ZMod p) := by
+    exact_mod_cast congrArg (Nat.cast : ℕ → ZMod p) hsum
+  have hZsq : (i : ZMod p) ^ 2 + (j : ZMod p) ^ 2
+      = (k : ZMod p) ^ 2 + (l : ZMod p) ^ 2 := by
+    have h := congrArg (Nat.cast : ℕ → ZMod p) hsq
+    push_cast [ZMod.natCast_mod] at h
+    exact h
+  have h2ne : (2 : ZMod p) ≠ 0 := by
+    intro h
+    have h2 : ((2 : ℕ) : ZMod p) = 0 := by exact_mod_cast h
+    have hv := congrArg ZMod.val h2
+    rw [ZMod.val_natCast_of_lt hp2, ZMod.val_zero] at hv
+    exact two_ne_zero hv
+  have hZprod : (i : ZMod p) * (j : ZMod p) = (k : ZMod p) * (l : ZMod p) := by
+    have h2 : (2 : ZMod p) * ((i : ZMod p) * (j : ZMod p))
+        = 2 * ((k : ZMod p) * (l : ZMod p)) := by
+      linear_combination ((i : ZMod p) + (j : ZMod p) + (k : ZMod p) + (l : ZMod p)) * hZsum
+        - hZsq
+    exact mul_left_cancel₀ h2ne h2
+  have hfact : ((k : ZMod p) - (i : ZMod p)) * ((k : ZMod p) - (j : ZMod p)) = 0 := by
+    linear_combination (-(k : ZMod p)) * hZsum + hZprod
+  have hlift : ∀ a b : ℕ, a < p → b < p → (a : ZMod p) = (b : ZMod p) → a = b := by
+    intro a b ha hb hab
+    have hv := congrArg ZMod.val hab
+    rwa [ZMod.val_natCast_of_lt ha, ZMod.val_natCast_of_lt hb] at hv
+  rcases mul_eq_zero.mp hfact with h | h
+  · left
+    have hki : k = i := hlift k i hk hi (sub_eq_zero.mp h)
+    exact ⟨hki.symm, by omega⟩
+  · right
+    have hkj : k = j := hlift k j hk hj (sub_eq_zero.mp h)
+    exact ⟨by omega, hkj.symm⟩
+
+/-- **The Erdős–Turán set is a Sidon set** for every odd prime `p`. -/
+theorem isSidonSet_erdosTuran {p : ℕ} (hp : p.Prime) (hp2 : 2 < p) :
+    IsSidonSet ((Finset.range p).image (etMap p)) := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_image, Finset.mem_range] at ha hb hc hd
+  obtain ⟨i, hi, rfl⟩ := ha
+  obtain ⟨j, hj, rfl⟩ := hb
+  obtain ⟨k, hk, rfl⟩ := hc
+  obtain ⟨l, hl, rfl⟩ := hd
+  obtain ⟨hsum, hsq⟩ := etMap_add_eq hp.pos heq
+  rcases pair_eq_of_sum_sq hp hp2 hi hj hk hl hsum hsq with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · exact ⟨rfl, rfl⟩
+  · exact ⟨le_antisymm hab hcd, le_antisymm hcd hab⟩
+
+/-- The Erdős–Turán set has exactly `p` elements. -/
+theorem erdosTuran_card {p : ℕ} (hp : 0 < p) :
+    ((Finset.range p).image (etMap p)).card = p := by
+  rw [Finset.card_image_of_injOn (etMap_injOn hp), Finset.card_range]
+
+/-- The Erdős–Turán set lives inside `{0, …, 2p² − 1}`. -/
+theorem erdosTuran_subset {p : ℕ} (hp : 0 < p) :
+    (Finset.range p).image (etMap p) ⊆ Finset.range (2 * p ^ 2 - 1 + 1) := by
+  intro x hx
+  simp only [Finset.mem_image, Finset.mem_range] at hx ⊢
+  obtain ⟨i, hi, rfl⟩ := hx
+  have hr : i ^ 2 % p < p := Nat.mod_lt _ hp
+  have hstep : p * (2 * i + 1) ≤ p * (2 * p) := Nat.mul_le_mul (le_refl p) (by omega)
+  have hpos : 0 < 2 * p ^ 2 := by positivity
+  have h3 : 2 * p ^ 2 - 1 + 1 = 2 * p ^ 2 := Nat.succ_pred_eq_of_pos hpos
+  rw [h3]
+  have h1 : 2 * p * i + p = p * (2 * i + 1) := by ring
+  have h2 : p * (2 * p) = 2 * p ^ 2 := by ring
+  unfold etMap
+  linarith [hr, hstep]
+
+/-- **Prime lower bound**: `h(2p² − 1) ≥ p` for every odd prime `p` — the Erdős–Turán
+Sidon set of size `p` fits in `{0, …, 2p² − 1}`. -/
+theorem prime_le_sidonNumber {p : ℕ} (hp : p.Prime) (hp2 : 2 < p) :
+    p ≤ sidonNumber (2 * p ^ 2 - 1) := by
+  have h := sidonNumber_ge_card (erdosTuran_subset hp.pos) (isSidonSet_erdosTuran hp hp2)
+  rwa [erdosTuran_card hp.pos] at h
+
+/-- **The √N-order lower bound**: `h(N) > ⌊√(N/8)⌋` for `N ≥ 32`.  A Bertrand prime
+`q ∈ (s, 2s]` for `s = ⌊√(N/8)⌋` satisfies `2q² − 1 ≤ 8s² − 1 ≤ N`, so the Erdős–Turán
+set for `q` already fits in `{0, …, N}` and `h(N) ≥ q > s`.  This replaces the previous
+logarithmic lower bound (`sidonNumber_two_pow_ge`) by one of the same √N order as the
+counting upper bound. -/
+theorem sidonNumber_gt_sqrt {N : ℕ} (hN : 32 ≤ N) :
+    Nat.sqrt (N / 8) < sidonNumber N := by
+  set s := Nat.sqrt (N / 8) with hs
+  have hs2 : 2 ≤ s := by
+    rw [hs]
+    exact Nat.le_sqrt.mpr (by omega : 2 * 2 ≤ N / 8)
+  obtain ⟨q, hq, hsq, hq2s⟩ := Nat.bertrand s (by omega)
+  have hq2 : 2 < q := by omega
+  have hssq : s * s ≤ N / 8 := by rw [hs]; exact Nat.sqrt_le (N / 8)
+  have h8 : 8 * (N / 8) ≤ N := by omega
+  have hsqle : q * q ≤ (2 * s) * (2 * s) := Nat.mul_le_mul hq2s hq2s
+  have hqN : 2 * q ^ 2 ≤ N := by nlinarith [hsqle, hssq, h8]
+  calc s < q := hsq
+    _ ≤ sidonNumber (2 * q ^ 2 - 1) := prime_le_sidonNumber hq hq2
+    _ ≤ sidonNumber N := sidonNumber_mono (le_trans (Nat.sub_le _ _) hqN)
+
+/-- **Real form of the lower bound**: `√N / 4 ≤ h(N)` for `N ≥ 32`.  Together with
+`sidonNumber_le_real` this brackets the Sidon number at the √N order:
+`√N/4 ≤ h(N) ≤ √(2N) + 1`. -/
+theorem sidonNumber_ge_real {N : ℕ} (hN : 32 ≤ N) :
+    Real.sqrt N / 4 ≤ (sidonNumber N : ℝ) := by
+  have hmain := sidonNumber_gt_sqrt hN
+  set s := Nat.sqrt (N / 8) with hs
+  have hlt : N / 8 < (s + 1) * (s + 1) := by
+    rw [hs]
+    simpa [Nat.succ_eq_add_one] using Nat.lt_succ_sqrt (N / 8)
+  have hdm : N < 8 * (N / 8) + 8 := by omega
+  have h16 : (N : ℝ) ≤ (4 * ((s : ℝ) + 1)) ^ 2 := by
+    have h1 : N ≤ 16 * ((s + 1) * (s + 1)) := by nlinarith [hlt, hdm]
+    calc (N : ℝ) ≤ 16 * (((s : ℝ) + 1) * ((s : ℝ) + 1)) := by exact_mod_cast h1
+      _ = (4 * ((s : ℝ) + 1)) ^ 2 := by ring
+  have hsqrt : Real.sqrt N ≤ 4 * ((s : ℝ) + 1) := by
+    rw [show 4 * ((s : ℝ) + 1) = Real.sqrt ((4 * ((s : ℝ) + 1)) ^ 2) from
+      (Real.sqrt_sq (by positivity)).symm]
+    exact Real.sqrt_le_sqrt h16
+  have hcard : (s : ℝ) + 1 ≤ (sidonNumber N : ℝ) := by exact_mod_cast hmain
+  linarith
+
+/-- **Two-sided √N bracket** on the Sidon number: for `N ≥ 32`,
+`√N/4 ≤ h(N) ≤ √(2N) + 1`.  The upper and lower bounds differ by a factor
+`≤ 4√2 + o(1)`; sharpening the constants (Lindström/BFR upper `√N + N^{1/4} + 1`,
+Singer lower `(1−o(1))√N`) and the $1000 `N^ε`-error conjecture remain open. -/
+theorem sidonNumber_sqrt_bracket {N : ℕ} (hN : 32 ≤ N) :
+    Real.sqrt N / 4 ≤ (sidonNumber N : ℝ) ∧ (sidonNumber N : ℝ) ≤ Real.sqrt (2 * N) + 1 :=
+  ⟨sidonNumber_ge_real hN, sidonNumber_le_real N⟩
+
 end Erdos30
