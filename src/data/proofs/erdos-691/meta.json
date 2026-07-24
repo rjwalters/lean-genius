@@ -32,7 +32,7 @@
     "historicalContext": "The study of sets of multiples dates to the 1930s with Davenport and Erdős, who proved that every set of multiples has a natural density (the Davenport-Erdős theorem). Felix Behrend investigated when this density equals 1, leading to the concept of 'Behrend sequences'. For pairwise coprime sets A (with all elements > 1), the classical result states that A is Behrend iff Σ 1/a = ∞. This follows from inclusion-exclusion: the density of integers not divisible by any of a₁,...,aₖ is exactly ∏(1 - 1/aᵢ) when the aᵢ are coprime, and this product vanishes iff the reciprocal sum diverges. Erdős asked for a general characterization without the coprimality assumption—a much harder problem since inclusion-exclusion becomes non-multiplicative when elements share common factors. Tenenbaum (1996) found a sharp threshold for lacunary block sequences: with block widths η_k = (k+1)^{-β} and geometrically growing positions, the sequence is Behrend iff β < log 2 ≈ 0.693. This unexpected threshold (not at β = 1 where Σ η_k diverges) reveals that the Behrend property depends on subtle interactions between block positions and widths. The general characterization remains one of the central open problems in multiplicative number theory.",
     "problemStatement": "Find a necessary and sufficient condition on A ⊆ ℕ for the set of multiples M_A = {n : a|n for some a ∈ A} to have asymptotic density 1.",
     "text": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
-    "proofStrategy": "The formalization builds a complete density infrastructure: countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Mathlib's Filter.atTop with limsup/liminf. The set of multiples and Behrend property are defined, followed by 9 fully proved structural lemmas establishing algebraic properties of M_A (monotonicity, union decomposition, closure under multiples, counting bounds). The coprime criterion, primes-are-Behrend, block sequence theory (lacunary sequences, convergent η obstruction, Tenenbaum's threshold), and the main open problem are axiomatized.",
+    "proofStrategy": "The formalization builds a complete density infrastructure: countingFunction, upperDensity, lowerDensity, HasDensity, and HasDensityOne using Mathlib's Filter.atTop with limsup/liminf. The set of multiples and Behrend property are defined, followed by 9 fully proved structural lemmas establishing algebraic properties of M_A (monotonicity, union decomposition, closure under multiples, counting bounds). The coprime criterion, primes-are-Behrend, block sequence theory (lacunary sequences, convergent η obstruction, Tenenbaum's threshold), and the main open problem are documented as block comments only, not formal `axiom` declarations — the file contains zero axioms.",
     "keyInsights": [
       "**Substantial proved content**: 9 fully proved lemmas/theorems establish the algebraic structure of M_A—monotonicity, union decomposition, closure under multiples, counting function bounds—all without sorry",
       "**Coprime vs general**: For coprime sets, Behrend ↔ Σ 1/a = ∞ via multiplicative inclusion-exclusion; without coprimality, the product formula breaks and a new approach is needed",
@@ -92,16 +92,16 @@
       "title": "Pairwise Coprime Characterization",
       "startLine": 123,
       "endLine": 143,
-      "summary": "Defines coprimality, divergent reciprocal sum, and axiomatizes the coprime Behrend criterion and primes-are-Behrend.",
-      "mathContext": "Formal definition: Defines coprimality, divergent reciprocal sum, and axiomatizes the coprime Behrend criterion and primes-are-Behrend."
+      "summary": "Defines coprimality and divergent reciprocal sum; documents the coprime Behrend criterion and primes-are-Behrend as block comments, not formal `axiom` declarations.",
+      "mathContext": "Formal definition: Defines coprimality and divergent reciprocal sum. The coprime Behrend criterion and primes-are-Behrend are prose comments only — no Lean declaration."
     },
     {
       "id": "block-sequences",
       "title": "Block Sequences and Tenenbaum's Theorem",
       "startLine": 144,
       "endLine": 173,
-      "summary": "Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold.",
-      "mathContext": "Formal definition: Defines lacunary block sequences, axiomatizes the convergent η obstruction, and states Tenenbaum's log 2 threshold."
+      "summary": "Defines lacunary block sequences; documents the convergent η obstruction and Tenenbaum's log 2 threshold as block comments, not formal `axiom` declarations.",
+      "mathContext": "Formal definition: Defines lacunary block sequences. The convergent η obstruction and Tenenbaum's log 2 threshold are prose comments only — no Lean declaration."
     }
   ],
   "conclusion": {

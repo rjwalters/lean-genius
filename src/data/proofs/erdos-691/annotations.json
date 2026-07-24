@@ -253,7 +253,7 @@
     "type": "concept",
     "title": "Primes Are Behrend",
     "content": "The set of all primes is a Behrend sequence, since Σ 1/p = ∞ (Euler) and primes are pairwise coprime.",
-    "mathContext": "This is a direct corollary of `coprime_behrend_iff` applied to $A = \\{p : p \\text{ prime}\\}$. Primes are pairwise coprime by definition, and **Euler** proved $\\sum_p 1/p = \\infty$ in 1737, establishing that the harmonic sum over primes diverges. The density of $M_{\\text{primes}}$ being 1 means almost every positive integer has a prime divisor—which is trivially true since every $n \\geq 2$ has a prime factor. The non-trivial content is the density-theoretic framework that extends to more subtle sets.",
+    "mathContext": "This would follow from the coprime Behrend criterion (documented as a comment only, not a Lean declaration) applied to $A = \\{p : p \\text{ prime}\\}$. Primes are pairwise coprime by definition, and **Euler** proved $\\sum_p 1/p = \\infty$ in 1737, establishing that the harmonic sum over primes diverges. The density of $M_{\\text{primes}}$ being 1 means almost every positive integer has a prime divisor—which is trivially true since every $n \\geq 2$ has a prime factor. The non-trivial content is the density-theoretic framework that extends to more subtle sets.",
     "significance": "key",
     "relatedConcepts": [
       "Euler's theorem",
@@ -261,7 +261,6 @@
       "fundamental theorem of arithmetic"
     ],
     "prerequisites": [
-      "coprime_behrend_iff",
       "primes"
     ],
     "range": {
