@@ -83,10 +83,18 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module header documenting strict unimodality vs. argmax and the elementary nature of the ascent; imports the parent file (argmax + two-step descent) and opens the MaxBallVolume namespace.",
+      "mathContext": "Argmax gives $\\omega_n \\le \\omega_5$; this file supplies the missing strict-ascent half $\\omega_0<\\omega_1<\\cdots<\\omega_5$."
+    },
+    {
       "id": "ascent-steps",
       "title": "The Five Ascent Steps",
-      "startLine": 1,
-      "endLine": 66,
+      "startLine": 42,
+      "endLine": 63,
       "summary": "Proves the five one-step increases ω_0 < ω_1 < ω_2 < ω_3 < ω_4 < ω_5 individually, each from the parent's explicit values.",
       "mathContext": "ω_0=1<2=ω_1 (arithmetic); ω_1=2<π=ω_2 (π>3); ω_2=π<4π/3=ω_3 (gap π/3>0); ω_3=4π/3<π²/2=ω_4 (⟺ 8<3π, from π>3); ω_4=π²/2<8π²/15=ω_5 (⟺ 15<16, no π bound)."
     },
