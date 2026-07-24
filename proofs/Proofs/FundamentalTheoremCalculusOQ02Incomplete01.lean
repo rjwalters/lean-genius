@@ -149,7 +149,6 @@ theorem iteratedFDeriv_comp_swap_zero_one {n : ℕ} (hf : ContDiff ℝ (n + 2 : 
     funext i
     simp only [Fin.tail, Function.comp_apply]
     congr 1
-    exact Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (Fin.succ_succ_ne_one _)
   rw [iteratedFDeriv_add_two_apply, iteratedFDeriv_add_two_apply, h0, h1, ht,
     hsym.eq (m 1) (m 0)]
 
