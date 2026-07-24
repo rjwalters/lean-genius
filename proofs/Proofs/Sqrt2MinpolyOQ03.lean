@@ -25,10 +25,11 @@ S4+ deliverable.
 
 ## Status
 
-Strategic sorries: 1 — narrowed to the single input `Q_sqrt2_discr_eq_eight`
-(`discr Q(√2) = 8`); the capstone `classNumber = 1` is otherwise FULLY
-proved via `Q_sqrt2_classNumber_eq_one_of_discr` (S9, Mathlib v4.31's
-`isPrincipalIdealRing_of_abs_discr_lt`).
+Strategic sorries: 0 — S12 closed the last input `Q_sqrt2_discr_eq_eight`
+(`discr Q(√2) = 8`) via the ℤ-basis `{1, √2}` of `𝓞` (built from S11's
+`isIntegral_elt_iff`) and the trace-form determinant `det [[2,0],[0,4]]`;
+the capstone `Q_sqrt2_classNumber_eq_one` is now UNCONDITIONAL
+(S9's `Q_sqrt2_classNumber_eq_one_of_discr` + S12's discriminant).
 Axioms: 0.
 Build-verified sub-targets: `X_sq_sub_two_ne_zero`, `Q_sqrt2_finrank = 2`,
 `Q_sqrt2_nrComplexPlaces = 0` (via the totally-real instance),
@@ -295,26 +296,10 @@ theorem int_pair_of_double_and_norm (a b : ℚ) (u N : ℤ)
   obtain ⟨a0, ha0⟩ := rat_int_of_sq_int a _ hkey2
   exact ⟨⟨a0, ha0⟩, ⟨b0, hb0Q⟩⟩
 
-/-- **Remaining sub-target (strategic sorry): `discr Q(√2) = 8`.**
-
-The one open input to the capstone. Route (S10+ deliverable):
-prove `𝓞 K = ℤ[√2]` — i.e. `a + b·root` is integral iff `a, b ∈ ℤ`
-(elementary trace/norm argument: `2a ∈ ℤ` and `a² − 2b² ∈ ℤ` force
-`a, b ∈ ℤ` via a mod-4 case analysis) — then exhibit `{1, root}` as a
-`Basis (Fin 2) ℤ (𝓞 K)` and compute
-`discr K = Algebra.discr ℤ b = det [[tr 1, tr √2], [tr √2, tr 2]]
-= det [[2, 0], [0, 4]] = 8` via `NumberField.discr_eq_discr`.
-No Mathlib bearer computes quadratic-field discriminants directly at the
-pin (checked: no `Zsqrtd` ↔ `RingOfIntegers` bridge exists). -/
-theorem Q_sqrt2_discr_eq_eight : NumberField.discr Q_sqrt2 = 8 := by
-  sorry
-
-/-- **Main theorem (capstone):** the class number of Q(√2) is 1 — i.e.
-`ℤ[√2]` is a PID. Assembled from the fully-proved conditional reduction
-and the (open) discriminant computation. -/
-theorem Q_sqrt2_classNumber_eq_one :
-    NumberField.classNumber Q_sqrt2 = 1 :=
-  Q_sqrt2_classNumber_eq_one_of_discr Q_sqrt2_discr_eq_eight
+/-! The former strategic sorry `Q_sqrt2_discr_eq_eight` and the capstone
+`Q_sqrt2_classNumber_eq_one` now live at the END of the file (Session 12):
+the discriminant proof consumes the S11 element-level integral basis
+below, so it must come after that section. -/
 
 /-! ## Session 11: the element-level integral basis — `IsIntegral ℤ (a + b·√2) ↔ a, b ∈ ℤ`
 
@@ -475,5 +460,191 @@ theorem isIntegral_elt_iff (a b : ℚ) :
   · exact coords_int_of_isIntegral
   · rintro ⟨⟨a0, rfl⟩, ⟨b0, rfl⟩⟩
     exact isIntegral_elt_of_coords a0 b0
+
+/-! ## Session 12: the ℤ-basis `{1, √2}` of `𝓞 Q(√2)` and `discr = 8`
+
+The final step. From S11's `isIntegral_elt_iff` we package `{1, √2}` as an
+honest `Basis (Fin 2) ℤ (𝓞 Q_sqrt2)`:
+
+- `exists_elt_eq` — every element of `Q(√2)` is `elt a b` (coordinate
+  surjectivity, read off the `AdjoinRoot` power basis reindexed to `Fin 2`);
+- `elt_eq_zero` — coordinates are unique (irrationality of `√2` kills the
+  `b ≠ 0` case, injectivity of `algebraMap ℚ` kills the rest);
+- `intBasis` — `Basis.mk` from linear independence + spanning, both reduced
+  to the two lemmas above through the injective coercion `𝓞 → K`.
+
+The discriminant is then the determinant of the trace matrix of `intBasis`:
+`trace 1 = 2`, `trace √2 = 0` (left-multiplication matrix `[[0,2],[1,0]]`),
+`trace (√2·√2) = trace 2 = 4`, so
+`discr Q(√2) = det [[2, 0], [0, 4]] = 8` via `NumberField.discr_eq_discr`.
+This closes the last strategic sorry; the capstone
+`Q_sqrt2_classNumber_eq_one` is unconditional. -/
+
+open scoped NumberField
+
+/-- **Coordinate surjectivity**: every element of `Q(√2)` is `a + b·√2`
+for some rationals `a, b` — read off the degree-2 `AdjoinRoot` power basis. -/
+theorem exists_elt_eq (x : Q_sqrt2) : ∃ a b : ℚ, x = elt a b := by
+  have hdim : (AdjoinRoot.powerBasis X_sq_sub_two_ne_zero).dim = 2 := by
+    rw [AdjoinRoot.powerBasis_dim]
+    simp [X_sq_sub_two]
+  set b' : Basis (Fin 2) ℚ Q_sqrt2 :=
+    (AdjoinRoot.powerBasis X_sq_sub_two_ne_zero).basis.reindex (finCongr hdim) with hb'
+  have h0 : b' 0 = 1 := by
+    rw [hb', Basis.reindex_apply, PowerBasis.basis_eq_pow]
+    simp
+  have h1 : b' 1 = AdjoinRoot.root X_sq_sub_two := by
+    rw [hb', Basis.reindex_apply, PowerBasis.basis_eq_pow]
+    simp [AdjoinRoot.powerBasis_gen]
+  have hsum := b'.sum_repr x
+  rw [Fin.sum_univ_two, h0, h1] at hsum
+  refine ⟨b'.repr x 0, b'.repr x 1, ?_⟩
+  calc x = b'.repr x 0 • (1 : Q_sqrt2)
+            + b'.repr x 1 • AdjoinRoot.root X_sq_sub_two := hsum.symm
+    _ = elt (b'.repr x 0) (b'.repr x 1) := by
+        simp only [elt, Algebra.smul_def, mul_one]
+
+/-- **Coordinate uniqueness at 0**: `a + b·√2 = 0` forces `a = b = 0`
+(irrationality for `b ≠ 0`, injectivity of the ℚ-algebra map for `b = 0`). -/
+theorem elt_eq_zero {a b : ℚ} (h : elt a b = 0) : a = 0 ∧ b = 0 := by
+  by_cases hb : b = 0
+  · subst hb
+    refine ⟨?_, rfl⟩
+    have ha : algebraMap ℚ Q_sqrt2 a = 0 := by simpa [elt] using h
+    exact (map_eq_zero_iff _ (algebraMap ℚ Q_sqrt2).injective).mp ha
+  · exact absurd ⟨0, by simpa using h.symm⟩ (elt_not_mem_range a b hb)
+
+/-- `√2` as an element of the ring of integers `𝓞 Q(√2)`. -/
+noncomputable def sqrt2Int : 𝓞 Q_sqrt2 :=
+  ⟨AdjoinRoot.root X_sq_sub_two, root_isIntegral⟩
+
+@[simp] theorem sqrt2Int_coe :
+    algebraMap (𝓞 Q_sqrt2) Q_sqrt2 sqrt2Int = AdjoinRoot.root X_sq_sub_two :=
+  rfl
+
+/-- `√2 · √2 = 2` inside the ring of integers. -/
+theorem sqrt2Int_mul_self : sqrt2Int * sqrt2Int = 2 := by
+  have hroot : AdjoinRoot.root X_sq_sub_two * AdjoinRoot.root X_sq_sub_two
+      = (2 : Q_sqrt2) := by
+    rw [← pow_two]; exact root_sq
+  apply NumberField.RingOfIntegers.ext
+  show algebraMap (𝓞 Q_sqrt2) Q_sqrt2 (sqrt2Int * sqrt2Int)
+      = algebraMap (𝓞 Q_sqrt2) Q_sqrt2 2
+  rw [map_mul, map_ofNat, sqrt2Int_coe]
+  exact hroot
+
+/-- `{1, √2}` is ℤ-linearly independent in `𝓞 Q(√2)` (coerce a vanishing
+combination into `K` and apply coordinate uniqueness). -/
+theorem intBasisFun_linearIndependent :
+    LinearIndependent ℤ ![(1 : 𝓞 Q_sqrt2), sqrt2Int] := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  have hgK : elt ((g 0 : ℤ) : ℚ) ((g 1 : ℤ) : ℚ) = 0 := by
+    have hcoe := congrArg (algebraMap (𝓞 Q_sqrt2) Q_sqrt2) hg
+    rw [Fin.sum_univ_two] at hcoe
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at hcoe
+    rw [map_add, map_zsmul, map_zsmul, map_one, map_zero, sqrt2Int_coe] at hcoe
+    simp only [elt, map_intCast, zsmul_eq_mul, mul_one] at hcoe ⊢
+    exact hcoe
+  obtain ⟨h0, h1⟩ := elt_eq_zero hgK
+  intro i
+  fin_cases i
+  · exact_mod_cast h0
+  · exact_mod_cast h1
+
+/-- `{1, √2}` spans `𝓞 Q(√2)` over ℤ: any integral element has rational
+coordinates (surjectivity) which are forced into ℤ (S11). -/
+theorem intBasisFun_span :
+    ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 Q_sqrt2), sqrt2Int]) := by
+  rintro x -
+  obtain ⟨a, b, hab⟩ := exists_elt_eq (algebraMap (𝓞 Q_sqrt2) Q_sqrt2 x)
+  have hint : IsIntegral ℤ (elt a b) := hab ▸ x.isIntegral_coe
+  obtain ⟨⟨a0, ha0⟩, ⟨b0, hb0⟩⟩ := coords_int_of_isIntegral hint
+  have hx : x = a0 • (1 : 𝓞 Q_sqrt2) + b0 • sqrt2Int := by
+    apply NumberField.RingOfIntegers.coe_injective
+    rw [map_add, map_zsmul, map_zsmul, map_one, sqrt2Int_coe, hab, ← ha0, ← hb0]
+    simp only [elt, map_intCast, zsmul_eq_mul, mul_one]
+  rw [hx]
+  exact Submodule.add_mem _
+    (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩))
+    (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))
+
+/-- **The ℤ-basis `{1, √2}` of the ring of integers of `Q(√2)`** — the
+integral basis, as an honest `Basis` term. -/
+noncomputable def intBasis : Basis (Fin 2) ℤ (𝓞 Q_sqrt2) :=
+  Basis.mk intBasisFun_linearIndependent intBasisFun_span
+
+@[simp] theorem intBasis_apply_zero : intBasis 0 = 1 := by
+  simp only [intBasis, Basis.mk_apply, Matrix.cons_val_zero]
+
+@[simp] theorem intBasis_apply_one : intBasis 1 = sqrt2Int := by
+  simp only [intBasis, Basis.mk_apply, Matrix.cons_val_one, Matrix.head_cons]
+
+/-- The ℤ-trace of an integer constant in `𝓞 Q(√2)` is twice the integer
+(the field degree is 2). -/
+theorem trace_intCast (n : ℤ) :
+    Algebra.trace ℤ (𝓞 Q_sqrt2) (algebraMap ℤ (𝓞 Q_sqrt2) n) = 2 * n := by
+  rw [Algebra.trace_algebraMap, NumberField.RingOfIntegers.rank, Q_sqrt2_finrank,
+    nsmul_eq_mul]
+  norm_num
+
+theorem trace_one_int : Algebra.trace ℤ (𝓞 Q_sqrt2) 1 = 2 := by
+  simpa using trace_intCast 1
+
+theorem trace_two_int : Algebra.trace ℤ (𝓞 Q_sqrt2) 2 = 4 := by
+  have h := trace_intCast 2
+  rw [map_ofNat] at h
+  simpa using h
+
+/-- **`trace √2 = 0`**: the left-multiplication matrix of `√2` in the basis
+`{1, √2}` is `[[0, 2], [1, 0]]` — zero diagonal. -/
+theorem trace_sqrt2Int : Algebra.trace ℤ (𝓞 Q_sqrt2) sqrt2Int = 0 := by
+  rw [Algebra.trace_eq_matrix_trace intBasis, Matrix.trace_fin_two]
+  have h00 : Algebra.leftMulMatrix intBasis sqrt2Int 0 0 = 0 := by
+    rw [Algebra.leftMulMatrix_eq_repr_mul]
+    have hmul : sqrt2Int * intBasis 0 = intBasis 1 := by
+      rw [intBasis_apply_zero, intBasis_apply_one, mul_one]
+    rw [hmul, Basis.repr_self]
+    exact Finsupp.single_eq_of_ne (by decide)
+  have h11 : Algebra.leftMulMatrix intBasis sqrt2Int 1 1 = 0 := by
+    rw [Algebra.leftMulMatrix_eq_repr_mul]
+    have hmul : sqrt2Int * intBasis 1 = (2 : ℤ) • intBasis 0 := by
+      rw [intBasis_apply_zero, intBasis_apply_one, sqrt2Int_mul_self]
+      simp
+    rw [hmul, map_smul, Basis.repr_self]
+    simp [Finsupp.single_apply]
+  rw [h00, h11]
+
+/-- **`discr Q(√2) = 8`** — the trace matrix of the integral basis `{1, √2}`
+is `[[2, 0], [0, 4]]`, with determinant `8`. Formerly the file's one
+strategic sorry; now closed. -/
+theorem Q_sqrt2_discr_eq_eight : NumberField.discr Q_sqrt2 = 8 := by
+  rw [← NumberField.discr_eq_discr Q_sqrt2 intBasis, Algebra.discr_def,
+    Matrix.det_fin_two]
+  have e00 : Algebra.traceMatrix ℤ (⇑intBasis) 0 0 = 2 := by
+    rw [Algebra.traceMatrix_apply, Algebra.traceForm_apply, intBasis_apply_zero,
+      mul_one]
+    exact trace_one_int
+  have e01 : Algebra.traceMatrix ℤ (⇑intBasis) 0 1 = 0 := by
+    rw [Algebra.traceMatrix_apply, Algebra.traceForm_apply, intBasis_apply_zero,
+      intBasis_apply_one, one_mul]
+    exact trace_sqrt2Int
+  have e10 : Algebra.traceMatrix ℤ (⇑intBasis) 1 0 = 0 := by
+    rw [Algebra.traceMatrix_apply, Algebra.traceForm_apply, intBasis_apply_zero,
+      intBasis_apply_one, mul_one]
+    exact trace_sqrt2Int
+  have e11 : Algebra.traceMatrix ℤ (⇑intBasis) 1 1 = 4 := by
+    rw [Algebra.traceMatrix_apply, Algebra.traceForm_apply, intBasis_apply_one,
+      sqrt2Int_mul_self]
+    exact trace_two_int
+  rw [e00, e01, e10, e11]
+  norm_num
+
+/-- **Main theorem (capstone, now unconditional):** the class number of
+`Q(√2)` is 1 — i.e. `ℤ[√2]` is a PID. Assembled from the S9 conditional
+reduction and the S12 discriminant computation. -/
+theorem Q_sqrt2_classNumber_eq_one :
+    NumberField.classNumber Q_sqrt2 = 1 :=
+  Q_sqrt2_classNumber_eq_one_of_discr Q_sqrt2_discr_eq_eight
 
 end Sqrt2MinpolyOQ03
