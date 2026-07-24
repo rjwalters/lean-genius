@@ -53,7 +53,7 @@
       "Formal connection to non-cyclic simple group orders via IsSimpleGroup",
       "Counting function and density formalized with Finset.filter",
       "Erdős's two-sided bounds documented as docstrings (no axioms or theorems in the file)",
-      "Main conjecture as a disjunction: either the constant c exists or it doesn't"
+      "Main open conjecture stated as prose in the header/closing docstrings only (not formalized as a Lean term)"
     ],
     "axiomCount": 0,
     "lineCount": 280,
@@ -162,7 +162,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 12 ∈ A, 56 ∈ A; 6 ∉ A; prime powers ∉ A), proves a product criterion for distinct primes with witness chains, identifies 12 as the smallest non-trivial element, and connects to simple group orders via Sylow theory. The 280-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges; the file is fully verified with 0 sorries and 0 axioms.",
+    "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 12 ∈ A, 56 ∈ A; 6 ∉ A; prime powers ∉ A), proves a product criterion for distinct primes with witness chains, identifies 12 as the smallest non-trivial element, and defines the connection to simple group orders via IsSimpleGroup/IsCyclic. The 280-line file documents the main conjecture (whether the ratio -log(density)/f(N) converges) as prose only, not a formalized Lean statement; the file is fully verified with 0 sorries and 0 axioms.",
     "implications": "**Theoretical Significance**: Resolution would determine the exact density of integers with the witness divisor property, with implications for bounding the distribution of simple group orders.\n\nThe techniques would involve sieve methods, multiplicative number theory, and the distribution of smooth numbers. The constant c would quantify how 'rare' the balanced prime factorization condition is.",
     "openQuestions": [
       "Does the constant c exist, i.e., does -log(density)/√(log N)·log log N converge?",
