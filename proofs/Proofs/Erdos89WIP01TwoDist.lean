@@ -251,25 +251,35 @@ theorem blokhuis_augmented_linearIndependent (α β : ℝ) (hα : 0 < α) (hβ :
       g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 0 = 0 := by
     have h := congrArg (coeff (Finsupp.single 0 3)) hg
     simp only [coeff_add, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul,
-      smul_eq_mul, coeff_zero, coeff_x3_blokhuis, coeff_X', coeff_one, mul_one] at h
-    have h' : (-4 : ℝ) * ∑ p : {x // x ∈ S},
-        g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 0 = 0 := by
-      rw [Finset.mul_sum]
-      refine Eq.trans (Finset.sum_congr rfl fun p _ => by ring) ?_
+      smul_eq_mul, coeff_zero, coeff_x3_blokhuis, coeff_X', coeff_one] at h
+    have hclean : ∑ p : {x // x ∈ S},
+        g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 0) = 0 := by
       simpa [Finsupp.single_eq_single_iff, Finsupp.single_eq_zero] using h
-    have := mul_eq_zero.mp h'
+    have hneg : (-4 : ℝ) * ∑ p : {x // x ∈ S},
+        g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 0
+        = ∑ p : {x // x ∈ S},
+            g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 0) := by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun p _ => by ring
+    rw [hclean] at hneg
+    have := mul_eq_zero.mp hneg
     simpa using this
   have hsy : ∑ p : {x // x ∈ S},
       g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 1 = 0 := by
     have h := congrArg (coeff (Finsupp.single 1 3)) hg
     simp only [coeff_add, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul,
-      smul_eq_mul, coeff_zero, coeff_y3_blokhuis, coeff_X', coeff_one, mul_one] at h
-    have h' : (-4 : ℝ) * ∑ p : {x // x ∈ S},
-        g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 1 = 0 := by
-      rw [Finset.mul_sum]
-      refine Eq.trans (Finset.sum_congr rfl fun p _ => by ring) ?_
+      smul_eq_mul, coeff_zero, coeff_y3_blokhuis, coeff_X', coeff_one] at h
+    have hclean : ∑ p : {x // x ∈ S},
+        g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 1) = 0 := by
       simpa [Finsupp.single_eq_single_iff, Finsupp.single_eq_zero] using h
-    have := mul_eq_zero.mp h'
+    have hneg : (-4 : ℝ) * ∑ p : {x // x ∈ S},
+        g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 1
+        = ∑ p : {x // x ∈ S},
+            g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 1) := by
+      rw [Finset.mul_sum]
+      exact Finset.sum_congr rfl fun p _ => by ring
+    rw [hclean] at hneg
+    have := mul_eq_zero.mp hneg
     simpa using this
   -- Step 3: evaluation at q ∈ S ⟹ c_q·αβ + ℓ(q) = 0.
   have heval : ∀ (q : EuclideanSpace ℝ (Fin 2)) (hq : q ∈ S),
@@ -277,7 +287,7 @@ theorem blokhuis_augmented_linearIndependent (α β : ℝ) (hα : 0 < α) (hβ :
         + (g (Sum.inr 0) * q 0 + g (Sum.inr 1) * q 1 + g (Sum.inr 2)) = 0 := by
     intro q hq
     have h := congrArg (eval (fun i : Fin 2 => q i)) hg
-    simp only [map_add, map_sum, smul_eval, eval_X, eval_one, map_zero,
+    simp only [map_add, map_sum, smul_eval, eval_X, map_one, map_zero,
       mul_one] at h
     rw [Finset.sum_eq_single (⟨q, hq⟩ : {x // x ∈ S})] at h
     · rw [eval_blokhuisPoly_self] at h
