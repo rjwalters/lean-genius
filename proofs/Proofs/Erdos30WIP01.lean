@@ -1666,4 +1666,203 @@ theorem sidonNumber_twentyeight : sidonNumber 28 = 7 := by
   · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 28 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
 
+/-! ### `h(29) = 7` — a verified backtracking search fells the span-29 wall
+
+At `N = 29` the perfect ruler is **no longer forced**: an 8-element Sidon set in
+`{0,…,29}` has `C(8,2) = 28` distinct positive differences inside `{1,…,29}`, so
+exactly one value escapes, and the `h(28)` mod-4 double count goes silent — the
+count only shows the *missing* difference must be `≡ 2 (mod 4)` (a parity count
+rules out an odd missing value, and `≡ 0 (mod 4)` forces class sizes `{3,3,1,1}`
+with cross-count `∈ {6,10}`, never the required `7`), and a configuration with
+class sizes `{4,2,1,1}` and missing value `≡ 2 (mod 4)` survives every mod-4
+constraint.  So the `h(16)`/`h(22..24)` span dichotomy returns instead: sliding a
+hypothetical 8-element Sidon set down by its minimum either drops the span to
+`≤ 28` — killed outright by the `h(28)` theorem — or pins both endpoints
+`{0, 29}`, leaving the six interior elements.
+
+The flat kernel search of the `h(22..24)` walls does **not** scale here: it would
+enumerate `C(28,6) = 376740` interior candidates, 11× the `h(24)` search (measured
+at ≳ 3 CPU-hours).  Instead we verify a **pruned backtracking search**
+(`searchOK`): extend the partial set one element at a time in increasing order,
+and abandon a branch the moment the partial set stops being Sidon.  Only `26651`
+extension tests survive the pruning — 14× fewer than the flat enumeration, with
+most tests failing on an early sum collision.  Its completeness lemma
+(`searchOK_complete`, an induction on the number of missing elements: any true
+extension would be rediscovered smallest-element-first) turns the kernel-computed
+`searchOK {0,29} 1 28 6 = false` into the nonexistence theorem.  The engine is
+parametric in the interval, so the coming walls `h(30..33)` — the optimal 8-mark
+ruler has span `34` — are one `searchOK_complete` application each. -/
+
+/-- Bounded backtracking Sidon-extension search.  `searchOK A lo hi k = true`
+whenever the partial set `A` extends to a Sidon set by `k` further elements drawn
+from `{lo,…,hi}` (completeness, `searchOK_complete`); branches that already
+violate the Sidon condition are pruned immediately, which is what makes the
+kernel evaluation feasible where the flat `C(28,6)` enumeration is not. -/
+private def searchOK (A : Finset ℕ) (lo hi k : ℕ) : Bool :=
+  match k with
+  | 0 => true
+  | k + 1 => (List.range' lo (hi + 1 - lo)).any fun x =>
+      decide (SidonCheck (insert x A)) && searchOK (insert x A) (x + 1) hi k
+
+/-- The bounded Sidon predicate is hereditary (the quantifiers just restrict). -/
+private theorem sidonCheck_mono {A B : Finset ℕ} (hBA : B ⊆ A) (hA : SidonCheck A) :
+    SidonCheck B :=
+  fun a ha b hb c hc d hd hab hcd heq =>
+    hA a (hBA ha) b (hBA hb) c (hBA hc) d (hBA hd) hab hcd heq
+
+/-- **Completeness of the backtracking search**: if some `B ⊆ {lo,…,hi}` with
+`|B| = k` extends `A` to a set satisfying `SidonCheck`, then the pruned search
+reports success.  Induction on `k`: the smallest element `x` of `B` lies in the
+scan range, the partial set `insert x A` inherits `SidonCheck` from `A ∪ B`
+(so the branch is *not* pruned), and the remaining `B.erase x` lives in
+`{x+1,…,hi}`, closing the induction. -/
+private theorem searchOK_complete (k : ℕ) :
+    ∀ (A : Finset ℕ) (lo hi : ℕ) (B : Finset ℕ),
+      B ⊆ Finset.Icc lo hi → B.card = k → SidonCheck (A ∪ B) →
+      searchOK A lo hi k = true := by
+  induction k with
+  | zero => intro A lo hi B _ _ _; rfl
+  | succ k ih =>
+    intro A lo hi B hBsub hBcard hcheck
+    have hBne : B.Nonempty := Finset.card_pos.mp (by omega)
+    set x := B.min' hBne with hxdef
+    have hxB : x ∈ B := B.min'_mem hBne
+    have hxIcc : lo ≤ x ∧ x ≤ hi := Finset.mem_Icc.mp (hBsub hxB)
+    have hxmem : x ∈ List.range' lo (hi + 1 - lo) := by
+      rw [List.mem_range'_1]
+      omega
+    have hSC : SidonCheck (insert x A) := by
+      refine sidonCheck_mono (fun y hy => ?_) hcheck
+      rcases Finset.mem_insert.mp hy with rfl | hyA
+      · exact Finset.mem_union_right _ hxB
+      · exact Finset.mem_union_left _ hyA
+    simp only [searchOK, List.any_eq_true]
+    refine ⟨x, hxmem, ?_⟩
+    rw [Bool.and_eq_true]
+    refine ⟨decide_eq_true hSC, ?_⟩
+    refine ih (insert x A) (x + 1) hi (B.erase x) (fun y hy => ?_) ?_ ?_
+    · -- the remaining elements live in {x+1,…,hi}
+      have hyB := Finset.mem_of_mem_erase hy
+      have hyne := (Finset.mem_erase.mp hy).1
+      have hymin := B.min'_le y hyB
+      have hyIcc := Finset.mem_Icc.mp (hBsub hyB)
+      rw [Finset.mem_Icc]
+      omega
+    · rw [Finset.card_erase_of_mem hxB, hBcard]
+    · have hEq : insert x A ∪ B.erase x = A ∪ B := by
+        rw [Finset.insert_union, ← Finset.union_insert, Finset.insert_erase hxB]
+      rw [hEq]
+      exact hcheck
+
+set_option maxRecDepth 100000 in
+/-- **The kernel-verified search**: no six elements of `{1,…,28}` extend the pinned
+endpoints `{0, 29}` to an 8-element Sidon set.  The pruned backtracking evaluation
+visits `26651` extension tests (`5362` surviving partial sets), against `376740`
+candidates for the flat enumeration. -/
+private theorem search_zero_twentynine_eq_false :
+    searchOK {0, 29} 1 28 6 = false := by
+  decide +kernel
+
+/-- **No 8-element Sidon set fits in `{0,…,29}`.**  Span dichotomy: after sliding
+the minimum to `0`, either the set lies in `{0,…,28}` (killed by the `h(28)` mod-4
+double count) or its span is exactly `29` and the six interior elements fall to
+the verified backtracking search. -/
+theorem no_sidon_card_eight_range_thirty (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 30) (hA : IsSidonSet A) : A.card ≤ 7 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  have hup : A.card * A.card ≤ 58 + A.card := by
+    have := sidon_card_sq_le 29 hsub hA; omega
+  have hc8 : A.card = 8 := by
+    by_contra hne
+    have h9 : 9 ≤ A.card := by omega
+    have hmul : 9 * A.card ≤ A.card * A.card := Nat.mul_le_mul h9 (le_refl A.card)
+    omega
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  set m := A.min' hne with hm
+  have hmle : ∀ x ∈ A, m ≤ x := fun x hx => A.min'_le x hx
+  have hbound : ∀ x ∈ A, x ≤ 29 := fun x hx => by
+    have := hsub hx; rw [Finset.mem_range] at this; omega
+  set A' := A.image (fun x => x - m) with hA'
+  have hinj : Set.InjOn (fun x => x - m) ↑A := by
+    intro x hx y hy hxy
+    have hx' := hmle x (Finset.mem_coe.mp hx)
+    have hy' := hmle y (Finset.mem_coe.mp hy)
+    have hxy' : x - m = y - m := hxy
+    omega
+  have hA'card : A'.card = 8 := by
+    rw [hA', Finset.card_image_of_injOn hinj, hc8]
+  have hA'sidon : IsSidonSet A' := by
+    intro a b c d ha hb hc hd hab hcd heq
+    rw [hA'] at ha hb hc hd
+    simp only [Finset.mem_image] at ha hb hc hd
+    obtain ⟨a₀, ha₀, rfl⟩ := ha
+    obtain ⟨b₀, hb₀, rfl⟩ := hb
+    obtain ⟨c₀, hc₀, rfl⟩ := hc
+    obtain ⟨d₀, hd₀, rfl⟩ := hd
+    have hma := hmle a₀ ha₀; have hmb := hmle b₀ hb₀
+    have hmc := hmle c₀ hc₀; have hmd := hmle d₀ hd₀
+    obtain ⟨h1, h2⟩ := hA a₀ b₀ c₀ d₀ ha₀ hb₀ hc₀ hd₀ (by omega) (by omega) (by omega)
+    exact ⟨by omega, by omega⟩
+  have hzero : (0 : ℕ) ∈ A' := by
+    rw [hA']
+    exact Finset.mem_image.mpr ⟨m, A.min'_mem hne, Nat.sub_self m⟩
+  have hA'ne : A'.Nonempty := ⟨0, hzero⟩
+  have hA'bound : ∀ x ∈ A', x ≤ 29 := by
+    intro x hx
+    rw [hA'] at hx
+    obtain ⟨x₀, hx₀, hx₀eq⟩ := Finset.mem_image.mp hx
+    have hb := hbound x₀ hx₀
+    have hx₀eq' : x₀ - m = x := hx₀eq
+    omega
+  rcases Nat.lt_or_ge (A'.max' hA'ne) 29 with hM | hM
+  · -- Span ≤ 28: the slid set lives in {0,…,28}; the h(28) obstruction applies.
+    have hsub' : A' ⊆ Finset.range 29 := fun x hx => by
+      rw [Finset.mem_range]
+      exact lt_of_le_of_lt (A'.le_max' x hx) hM
+    have := no_sidon_card_eight_range_twentynine A' hsub' hA'sidon
+    omega
+  · -- Span = 29: both endpoints pinned; the six interior elements fall to the search.
+    have h29 : (29 : ℕ) ∈ A' := by
+      have hMle : A'.max' hA'ne ≤ 29 := hA'bound _ (A'.max'_mem hA'ne)
+      have hMeq : A'.max' hA'ne = 29 := le_antisymm hMle hM
+      rw [← hMeq]
+      exact A'.max'_mem hA'ne
+    set B := (A'.erase 0).erase 29 with hB
+    have h29' : (29 : ℕ) ∈ A'.erase 0 := Finset.mem_erase.mpr ⟨by omega, h29⟩
+    have hrecon : insert 0 (insert 29 B) = A' := by
+      rw [hB, Finset.insert_erase h29', Finset.insert_erase hzero]
+    have hBcard : B.card = 6 := by
+      rw [hB, Finset.card_erase_of_mem h29', Finset.card_erase_of_mem hzero, hA'card]
+    have hBsub : B ⊆ Finset.Icc 1 28 := by
+      intro x hx
+      rw [hB] at hx
+      have hx29 := (Finset.mem_erase.mp hx).1
+      have hx' := Finset.mem_of_mem_erase hx
+      have hx0 := (Finset.mem_erase.mp hx').1
+      have hxA := Finset.mem_of_mem_erase hx'
+      have := hA'bound x hxA
+      rw [Finset.mem_Icc]
+      omega
+    have hcheckU : SidonCheck ({0, 29} ∪ B) := by
+      have hU : ({0, 29} : Finset ℕ) ∪ B = insert 0 (insert 29 B) := by
+        rw [Finset.insert_union, Finset.singleton_union]
+      rw [hU, hrecon]
+      exact sidonCheck_of_isSidonSet hA'sidon
+    have htrue : searchOK {0, 29} 1 28 6 = true :=
+      searchOK_complete 6 {0, 29} 1 28 B hBsub hBcard hcheckU
+    rw [search_zero_twentynine_eq_false] at htrue
+    exact Bool.false_ne_true htrue
+
+/-- `h(29) = 7` — the wall continues.  The optimal 8-mark Golomb ruler
+`{0,1,4,9,15,22,32,34}` has span `34`, so `h(N) = 7` is expected throughout
+`25 ≤ N ≤ 33`; this settles `N = 29`, the first value past the forced-ruler
+regime. -/
+theorem sidonNumber_twentynine : sidonNumber 29 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirty A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 29 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
 end Erdos30
