@@ -664,31 +664,27 @@ This implies the Borsuk-Ulam theorem and is equivalent to it.
 The formalization requires simplicial complex infrastructure
 (triangulations, antipodal symmetry, labeling conditions).
 
-We state the key results as axioms, documenting the mathematical
-content and what Mathlib infrastructure would be needed.
+We document the mathematical content and what Mathlib infrastructure
+would be needed, but — crucially — we do NOT axiomatize the general 2D
+statement here.
+
+**Why not axiomatize general Tucker 2D directly.** A naive axiom of the
+form "any antipodal ±{1,2}-labeling of a finite graph `(V, adj)` has a
+complementary edge" is *false*, hence kernel-inconsistent: with `adj`
+the constantly-false relation (e.g. `V := Fin 2`, `antipodal` the swap,
+`label 0 = 1`, `label 1 = -1`) all the antipodal/label hypotheses hold
+but no edge exists at all, so `False` is derivable. The real hypothesis
+— that `(V, adj)` is (the 1-skeleton of) an antipodally symmetric
+triangulation of a disk with a boundary condition — requires simplicial
+complex infrastructure not yet in Mathlib.
+
+Instead of an unsound axiom, this file provides:
+  * `tucker_2d_via_path` (below): the 2D result for the special case of
+    ±1 labels, *proved* by reduction to the 1D path lemma; and
+  * `tucker_2d_grid` (in `BorsukUlamOQ03OQ03.lean`): a *properly
+    constrained* 2D grid axiom whose hypotheses pin down a genuine
+    antipodal triangulation, so it is not vacuously refutable.
 -/
-
-/-- **Tucker's Lemma (2D)**: Any antipodal labeling of a
-    triangulated disk with labels from {±1, ±2} has a complementary edge.
-
-    A complementary edge is [v, w] with λ(v) = -λ(w).
-
-    This implies 2D Borsuk-Ulam: for continuous f: B² → ℝ², there
-    exists x with f(x) = f(-x). The proof goes through a discretization
-    argument: triangulate B², approximate f by a piecewise-linear map,
-    use Tucker to find a complementary edge, take limit.
-
-    **Infrastructure needed**: SimplicialComplex, antipodal triangulation,
-    labeling conditions, complementary edge definition. -/
-axiom tucker_2d
-    (V : Type*) [Fintype V] [DecidableEq V]
-    (adj : V → V → Prop) [DecidableRel adj]
-    (antipodal : V → V)
-    (label : V → ℤ)
-    (h_labels : ∀ v, label v ∈ ({-2, -1, 1, 2} : Set ℤ))
-    (h_antipodal_label : ∀ v, label (antipodal v) = -(label v))
-    (h_antipodal_invol : ∀ v, antipodal (antipodal v) = v) :
-    ∃ v w : V, adj v w ∧ label v + label w = 0
 
 /-
 ## Section XIX: Tucker–BU Equivalence
@@ -1136,7 +1132,9 @@ For labels from {±1, ±2}, this requires additional structure.
     any path from v to its antipode through a triangulation must contain
     a complementary edge. Since labels are ±1, Tucker 1D applies directly.
 
-    This replaces the axiom `tucker_2d` for the special case of ±1 labels. -/
+    This is the proved 2D result for the special case of ±1 labels (no
+    axiom needed; the general unconstrained-graph statement would be
+    false — see Section XVIII). -/
 theorem tucker_2d_via_path
     (V : Type*) [DecidableEq V]
     (adj : V → V → Prop)
@@ -1182,9 +1180,11 @@ theorem tucker_2d_via_path
 - Sign change count parity (proved by induction on ℕ-indexed paths)
 - All supporting lemmas including signZ properties and bridge lemma
 
-**AXIOMATIZED** (2 axioms, unchanged):
-- Tucker's Lemma 2D general (tucker_2d)
-- Tucker's Lemma n-D (tucker_nd)
+**NOT AXIOMATIZED** (0 axioms):
+- The general n-D / unconstrained-graph Tucker statement is NOT
+  asserted here: an unconstrained-graph formulation is false (see
+  Section XVIII). The properly constrained 2D grid version lives in
+  `BorsukUlamOQ03OQ03.lean` as `tucker_2d_grid`.
 
 **Infrastructure built for higher dimensions**:
 - Complementary edge counting (complementaryEdges)
