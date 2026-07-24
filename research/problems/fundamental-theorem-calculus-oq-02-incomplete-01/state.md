@@ -16,9 +16,51 @@ version — Fragment 1 is now **feature-complete for upstream** — see Iteratio
 S8 (researcher-3, 2026-07-24) added the classical *nested* directional-derivative layer:
 the general-`n` bridge `nestedFDeriv_eq_iteratedFDeriv` (Mathlib has only `n = 2`) and the
 nested Clairaut statements — see Iteration 8.
+S9 (researcher-2, 2026-07-24) transported the nested layer to the `Within` world
+(`nestedFDerivWithin`, its bridge to `iteratedFDerivWithin`, permutation symmetry incl.
+convex-body boundary points) and closed the classical loop with the honest Gateaux form
+`lineDeriv_lineDeriv_comm` — see Iteration 9.
 **Path**: full
-**Since**: 2026-07-24 (S8 nested/classical form complete)
-**Iteration**: 8
+**Since**: 2026-07-24 (S9 Within-nested + lineDeriv complete)
+**Iteration**: 9
+
+## Iteration 9 (researcher-2, 2026-07-24) — S9: `Within` nested layer + Gateaux (lineDeriv) Clairaut (0 ax / 0 sorry)
+
+**Mode**: BUILD on S8, executing the S9 target recorded in Iteration 8's "live next".
+**Outcome**: 11 new axiom-free declarations appended (host-verified v4.31 `lake env lean`
+exit 0; `#print axioms` = propext/Classical.choice/Quot.sound on all).
+
+- `nestedFDerivWithin` (def) + `_zero`/`_succ_apply`/`_one_apply` simp lemmas — the
+  `n`-fold nested `∂` built from `fderivWithin`, mirroring S8's `nestedFDeriv`.
+- `nestedFDerivWithin_univ` — on `Set.univ` the `Within` nest is the plain nest.
+- `nestedFDerivWithin_eq_iteratedFDerivWithin` — the `Within` bridge, on `UniqueDiffOn`
+  sets, at every point of `s` (boundary included). Induction as in S8; the two new
+  ingredients are `fderivWithin_congr'` (the IH only gives agreement ON `s` — EqOn +
+  `x ∈ s` replaces the global `funext`) and
+  `fderivWithin_continuousMultilinear_apply_const_apply (hs x hx) hdiff` (needs the
+  `UniqueDiffWithinAt` argument that the global version doesn't);
+  differentiability from `ContDiffOn.differentiableOn_iteratedFDerivWithin
+  (by norm_cast; omega) hs`.
+- `nestedFDerivWithin_comp_perm` (+ `_of_minSmoothness`, `_of_convex`) — nested Clairaut
+  within a set: `UniqueDiffOn s` + `s ⊆ closure (interior s)` (or convex with nonempty
+  interior over ℝ), via the bridge + S7's `iteratedFDerivWithin_comp_perm`.
+- `fderivWithin_fderivWithin_comm` — n = 2 classical form within a set (mirrors S8's
+  `fderiv_fderiv_comm` verbatim, `![a,b]` tail computations included).
+- `lineDeriv_lineDeriv_comm` — **mixed Gateaux derivatives commute** for `C²`:
+  `lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y b) x a = (a ↔ b)`. Inner nest:
+  `DifferentiableAt.lineDeriv_eq_fderiv`; outer function `y ↦ fderiv 𝕜 f y w` is
+  differentiable via `ContDiff.fderiv_right` + `DifferentiableAt.clm_apply` with a
+  constant direction; finish by S8's `fderiv_fderiv_comm`. This is the textbook
+  `∂²f/∂x∂y = ∂²f/∂y∂x` with honest one-dimensional limits.
+
+**v4.31 gotcha (new)**: `ContDiff.differentiable` now takes `(hn : n ≠ 0)` (NOT `1 ≤ n`)
+— `one_le_two` fails with "expected `2 ≠ 0`"; use `(by norm_num)`.
+
+**Live next**: the actual Mathlib upstream PR (needs a mathlib4 checkout — not on this
+host), or a general-`n` nested `lineDeriv` bridge (`nestedLineDeriv` defined from
+`lineDeriv`, equal to `nestedFDeriv` for `C^n` by the same induction — each level's
+differentiability comes from the bridge; session-sized). Fragments 2–6 (manifold Stokes)
+remain DEEP multi-session.
 
 ## Iteration 8 (researcher-3, 2026-07-24) — S8: nested directional-derivative bridge + classical Clairaut (0 ax / 0 sorry)
 

@@ -703,4 +703,194 @@ theorem fderiv_fderiv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 2 f) (
         rw [nestedFDeriv_succ_apply, hb]
         rfl
 
+/-! ### Step 8 (S9): the nested layer within a set, and line-derivative corollaries
+
+The nested directional-derivative development of Step 7 (S8), transported to the
+`Within` world (derivatives relative to a set `s`, boundary points included), plus the
+honest *Gateaux* (line-derivative) form of the classical commutation statement.
+`nestedFDerivWithin` is the `n`-fold `∂_{v}` built from `fderivWithin`; on a set with
+unique derivatives (`UniqueDiffOn`) it computes `iteratedFDerivWithin` applied to the
+direction tuple (`nestedFDerivWithin_eq_iteratedFDerivWithin`), and therefore inherits
+the full permutation symmetry of Step 6 (S7) — including at boundary points of convex
+bodies, the domains of the classical Stokes theorem.  The line-derivative corollary
+closes the loop with the most classical spelling of Clairaut/Schwarz: mixed *Gateaux*
+directional derivatives of a `C²` function commute, `∂_a ∂_b f = ∂_b ∂_a f`, where each
+`∂` is a genuine one-dimensional limit `d/dt g(x + t w)|₀` (`lineDeriv`). -/
+
+section WithinNested
+
+variable {s : Set E}
+
+variable (𝕜) in
+/-- The `n`-fold nested directional derivative *within* `s`:
+`nestedFDerivWithin 𝕜 n v f s = ∂_{v 0} (∂_{v 1} (… (∂_{v (n-1)} f)))` where
+`∂_w g = fun y => fderivWithin 𝕜 g s y w` — the `Within` counterpart of
+`nestedFDeriv`. -/
+noncomputable def nestedFDerivWithin : (n : ℕ) → (Fin n → E) → (E → F) → Set E → E → F
+  | 0, _, f, _ => f
+  | n + 1, v, f, s => fun x =>
+      fderivWithin 𝕜 (nestedFDerivWithin n (Fin.tail v) f s) s x (v 0)
+
+@[simp]
+theorem nestedFDerivWithin_zero (v : Fin 0 → E) (f : E → F) (s : Set E) :
+    nestedFDerivWithin 𝕜 0 v f s = f :=
+  rfl
+
+theorem nestedFDerivWithin_succ_apply {n : ℕ} (v : Fin (n + 1) → E) (f : E → F)
+    (s : Set E) (x : E) :
+    nestedFDerivWithin 𝕜 (n + 1) v f s x
+      = fderivWithin 𝕜 (nestedFDerivWithin 𝕜 n (Fin.tail v) f s) s x (v 0) :=
+  rfl
+
+@[simp]
+theorem nestedFDerivWithin_one_apply (v : Fin 1 → E) (f : E → F) (s : Set E) (x : E) :
+    nestedFDerivWithin 𝕜 1 v f s x = fderivWithin 𝕜 f s x (v 0) :=
+  rfl
+
+/-- On the whole space the `Within` nest is the plain nest. -/
+theorem nestedFDerivWithin_univ :
+    ∀ {n : ℕ} (v : Fin n → E) (f : E → F),
+      nestedFDerivWithin 𝕜 n v f Set.univ = nestedFDeriv 𝕜 n v f := by
+  intro n
+  induction n with
+  | zero => intro v f; rfl
+  | succ n IH =>
+    intro v f
+    funext x
+    rw [nestedFDerivWithin_succ_apply, nestedFDeriv_succ_apply, IH, fderivWithin_univ]
+
+/-- **The `Within` nested/multilinear bridge**: for a `C^n`-on-`s` function and a set
+with unique derivatives, the `n`-fold nested directional derivative within `s` computes
+the `n`-th iterated derivative within `s` applied to the direction tuple, at every point
+of `s` (boundary points included).  The inner nest agrees with the multilinear
+application only *on* `s` — exactly what `fderivWithin_congr'` transports — and
+`fderivWithin_continuousMultilinear_apply_const_apply` commutes the constant application
+past `fderivWithin`. -/
+theorem nestedFDerivWithin_eq_iteratedFDerivWithin (hs : UniqueDiffOn 𝕜 s) :
+    ∀ {n : ℕ}, ContDiffOn 𝕜 (n : ℕ) f s → ∀ (v : Fin n → E), ∀ x ∈ s,
+      nestedFDerivWithin 𝕜 n v f s x = iteratedFDerivWithin 𝕜 n f s x v := by
+  intro n
+  induction n with
+  | zero =>
+    intro _ v x _
+    exact (iteratedFDerivWithin_zero_apply v).symm
+  | succ n IH =>
+    intro hf v x hx
+    have hfn : ContDiffOn 𝕜 (n : ℕ) f s := hf.of_le (by exact_mod_cast Nat.le_succ n)
+    have heq : Set.EqOn (nestedFDerivWithin 𝕜 n (Fin.tail v) f s)
+        (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s :=
+      fun y hy => IH hfn (Fin.tail v) y hy
+    have hdiff : DifferentiableWithinAt 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x :=
+      hf.differentiableOn_iteratedFDerivWithin (by norm_cast; omega) hs x hx
+    calc nestedFDerivWithin 𝕜 (n + 1) v f s x
+        = fderivWithin 𝕜 (nestedFDerivWithin 𝕜 n (Fin.tail v) f s) s x (v 0) := rfl
+      _ = fderivWithin 𝕜 (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s x
+            (v 0) := by
+          rw [fderivWithin_congr' heq hx]
+      _ = fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x (v 0) (Fin.tail v) :=
+          fderivWithin_continuousMultilinear_apply_const_apply (hs x hx) hdiff
+            (Fin.tail v) (v 0)
+      _ = iteratedFDerivWithin 𝕜 (n + 1) f s x v :=
+          (iteratedFDerivWithin_succ_apply_left v).symm
+
+/-- **Classical nested Clairaut/Schwarz within a set**: on a set with unique derivatives
+whose interior is dense in it, nested directional derivatives within the set of a
+`C^n`-on-the-set function may be taken in any order — at every point of the set,
+boundary included. -/
+theorem nestedFDerivWithin_comp_perm [IsRCLikeNormedField 𝕜] {n : ℕ}
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s))
+    (hf : ContDiffOn 𝕜 (n : ℕ) f s) {x : E} (hxs : x ∈ s) (v : Fin n → E)
+    (σ : Equiv.Perm (Fin n)) :
+    nestedFDerivWithin 𝕜 n (v ∘ σ) f s x = nestedFDerivWithin 𝕜 n v f s x := by
+  rw [nestedFDerivWithin_eq_iteratedFDerivWithin hs hf (v ∘ σ) x hxs,
+      nestedFDerivWithin_eq_iteratedFDerivWithin hs hf v x hxs,
+      iteratedFDerivWithin_comp_perm hs h's hf hxs v σ]
+
+/-- Field-uniform `minSmoothness` form of the nested `Within` Clairaut theorem. -/
+theorem nestedFDerivWithin_comp_perm_of_minSmoothness {n : ℕ}
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s))
+    (hf : ContDiffOn 𝕜 (minSmoothness 𝕜 n) f s) {x : E} (hxs : x ∈ s) (v : Fin n → E)
+    (σ : Equiv.Perm (Fin n)) :
+    nestedFDerivWithin 𝕜 n (v ∘ σ) f s x = nestedFDerivWithin 𝕜 n v f s x := by
+  have hfn : ContDiffOn 𝕜 (n : ℕ) f s := hf.of_le le_minSmoothness
+  rw [nestedFDerivWithin_eq_iteratedFDerivWithin hs hfn (v ∘ σ) x hxs,
+      nestedFDerivWithin_eq_iteratedFDerivWithin hs hfn v x hxs,
+      iteratedFDerivWithin_comp_perm_of_minSmoothness hs h's hf hxs v σ]
+
+/-- Nested `Within` Clairaut on a **convex** set with nonempty interior over `ℝ` (closed
+balls, `Icc`, simplices, …): nested directional derivatives within the set commute at
+every point, including boundary points. -/
+theorem nestedFDerivWithin_comp_perm_of_convex [NormedSpace ℝ E] [NormedSpace ℝ F]
+    (hconv : Convex ℝ s) (hne : (interior s).Nonempty) {n : ℕ}
+    (hf : ContDiffOn ℝ (n : ℕ) f s) {x : E} (hxs : x ∈ s) (v : Fin n → E)
+    (σ : Equiv.Perm (Fin n)) :
+    nestedFDerivWithin ℝ n (v ∘ σ) f s x = nestedFDerivWithin ℝ n v f s x := by
+  have hs : UniqueDiffOn ℝ s := uniqueDiffOn_convex hconv hne
+  have h's : s ⊆ closure (interior s) := by
+    rw [hconv.closure_interior_eq_closure_of_nonempty_interior hne]
+    exact subset_closure
+  exact nestedFDerivWithin_comp_perm hs h's hf hxs v σ
+
+/-- **Second derivatives within a set commute, nested classical form**: the `Within`
+counterpart of `fderiv_fderiv_comm` — for a `C²`-on-`s` function,
+`∂_a (∂_b f) = ∂_b (∂_a f)` at every point of `s` with both `∂`'s taken within `s`. -/
+theorem fderivWithin_fderivWithin_comm [IsRCLikeNormedField 𝕜]
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s))
+    (hf : ContDiffOn 𝕜 2 f s) (a b : E) {x : E} (hxs : x ∈ s) :
+    fderivWithin 𝕜 (fun y => fderivWithin 𝕜 f s y b) s x a
+      = fderivWithin 𝕜 (fun y => fderivWithin 𝕜 f s y a) s x b := by
+  have h2 : ContDiffOn 𝕜 ((2 : ℕ) : ℕ∞ω) f s := by exact_mod_cast hf
+  have hab : (![b, a] : Fin 2 → E) ∘ ⇑(Equiv.swap 0 1) = ![a, b] := by
+    funext i
+    fin_cases i <;> simp
+  have ha : Fin.tail (![a, b] : Fin 2 → E) = ![b] := by
+    funext i
+    fin_cases i
+    rfl
+  have hb : Fin.tail (![b, a] : Fin 2 → E) = ![a] := by
+    funext i
+    fin_cases i
+    rfl
+  have key := nestedFDerivWithin_comp_perm hs h's h2 hxs (![b, a] : Fin 2 → E)
+    (Equiv.swap 0 1)
+  rw [hab] at key
+  calc fderivWithin 𝕜 (fun y => fderivWithin 𝕜 f s y b) s x a
+      = nestedFDerivWithin 𝕜 2 ![a, b] f s x := by
+        rw [nestedFDerivWithin_succ_apply, ha]
+        rfl
+    _ = nestedFDerivWithin 𝕜 2 ![b, a] f s x := key
+    _ = fderivWithin 𝕜 (fun y => fderivWithin 𝕜 f s y a) s x b := by
+        rw [nestedFDerivWithin_succ_apply, hb]
+        rfl
+
+end WithinNested
+
+/-- **Mixed Gateaux (line) derivatives commute** for `C²` functions over `ℝ` or `ℂ`:
+`∂_a (∂_b f) = ∂_b (∂_a f)` where `∂_w g x = lineDeriv 𝕜 g x w` is the genuine
+one-dimensional directional derivative `d/dt g(x + t·w)|_{t=0}`.  For `f : ℝ² → ℝ` and
+`a, b` the standard basis vectors this is literally the textbook
+`∂²f/∂x∂y = ∂²f/∂y∂x`.  Follows from `fderiv_fderiv_comm` once both nests are
+identified with Fréchet nests: the inner identification is
+`DifferentiableAt.lineDeriv_eq_fderiv` for `f` itself, the outer one applies to
+`y ↦ fderiv 𝕜 f y w`, which is differentiable because `fderiv 𝕜 f` is `C¹`
+(`ContDiff.fderiv_right`) and constant evaluation is a continuous linear map
+(`DifferentiableAt.clm_apply`). -/
+theorem lineDeriv_lineDeriv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 2 f)
+    (a b x : E) :
+    lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y b) x a
+      = lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y a) x b := by
+  have hdiff : Differentiable 𝕜 f := hf.differentiable (by norm_num)
+  have hinner : ∀ w : E, (fun y => lineDeriv 𝕜 f y w) = fun y => fderiv 𝕜 f y w := by
+    intro w
+    funext y
+    exact (hdiff y).lineDeriv_eq_fderiv
+  have hfd : Differentiable 𝕜 (fderiv 𝕜 f) := by
+    have h1 : ContDiff 𝕜 1 (fderiv 𝕜 f) := hf.fderiv_right (m := 1) (by norm_num)
+    exact h1.differentiable (by norm_num)
+  have houter : ∀ (w : E) (y : E), DifferentiableAt 𝕜 (fun z => fderiv 𝕜 f z w) y :=
+    fun w y => (hfd y).clm_apply (differentiableAt_const w)
+  rw [hinner a, hinner b, (houter b x).lineDeriv_eq_fderiv,
+      (houter a x).lineDeriv_eq_fderiv]
+  exact fderiv_fderiv_comm hf a b x
+
 end FTCOQ02Incomplete01
