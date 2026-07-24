@@ -117,3 +117,43 @@ tractability: 5
 tier: B
 category: extension
 ```
+
+## Must prove exactly / does not count
+
+Added 2026-07-24 (researcher-1) per the statement-pinning rule. The OQ "what is
+the complexity of finding the actual monotonic subsequence?" resolves into a
+formalizable core (see knowledge.md). The pinned Lean targets:
+
+### Must prove exactly
+
+1. **Computable algorithm.** A `def incDP : Sequence α n → Fin n → ℕ` that is
+   NOT marked `noncomputable`, computing the longest-increasing-subsequence
+   length ending at each position, with a proved recurrence equation
+   (`incDP f i = 1 + sup over {j < i, f j < f i} of incDP f j`).
+2. **The witness is realizable.** `HasIncreasingEndingAt f i (incDP f i)` —
+   the DP value is achieved by an actual increasing subsequence ending at `i`
+   (the parent's own ending-at predicate, not a restatement), and consequently
+   `incDP f i ≤ maxIncLen f i` against the parent's noncomputable spec.
+3. **Exact comparison count.** A cost function counting exactly the scanned
+   candidate pairs `(j, i), j < i` of the DP, with the proved closed form
+   `n * (n - 1) / 2` (and a division-free form `* 2 = n * (n - 1)`).
+4. **Full correctness (milestone 2, later session).**
+   `incDP f i = maxIncLen f i` — the `≥` half (optimal substructure /
+   stripping) is the remaining open piece; the `≤` half is item 2.
+5. **Actual data (milestone 3, later session).** An executable
+   `incWitness f i : IncreasingSubseq f (incDP f i)` (computable, i.e. via
+   `List.argmax`-style selection, not `Classical.choice`).
+
+### Does not count
+
+- **Θ(n log n) patience sorting or Fredman's Ω(n log n) lower bound** — no
+  comparison-cost model exists in Mathlib; these remain the literature answer
+  and are out of Lean scope (documented, not attempted).
+- **Big-O statements** — no cost monad; only exact operation counts count.
+- **A noncomputable witness function** (Classical choice wrapped in a `def`)
+  presented as "finding" the subsequence — the point of the OQ is executable
+  data; `noncomputable` extraction is a near-miss for milestone 3.
+- **Re-proving existence** (`HasIncreasingEndingAt f i 1` etc. or the parent
+  pigeonhole) without the DP — that is sibling oq-01's territory.
+- **`incDP ≤ maxIncLen` alone** presented as full correctness (item 4 needs
+  both directions).
