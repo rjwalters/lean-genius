@@ -1,6 +1,7 @@
 import Mathlib
 import Proofs.AmgmInequalityOQ04
 import Proofs.AmgmInequalityOQ04OQ01
+import Proofs.AmgmInequalityOQ04OQ03Wallis
 
 /-
 # AGM: Hypergeometric Series Representation of K(k)
@@ -60,10 +61,10 @@ Proving `K(k) = (π/2)·₂F₁(1/2,1/2;1;k²)` rigorously requires:
 - [x] summability + uniform convergence + continuity of ₂F₁ on (-1,1) (§6–§9)
 - [x] binomial series 1/√(1-u) = ∑ (centralBinom n/4ⁿ)uⁿ, |u| < 1 (§10)
 - [x] pointwise series expansion of the K integrand (§10)
-- [ ] K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) (axiomatized — sum/integral interchange
-      is the sole remaining leg)
+- [x] K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) — **PROVED** (§11: dominated-convergence
+      sum/integral interchange + Wallis values; formerly the file's one axiom)
 
-Axioms: 1 (ellipticK_eq_hyp2F1 — the hypergeometric series identity for K)
+Axioms: 0
 Sorries: 0
 -/
 
@@ -143,21 +144,12 @@ theorem ellipticK_hyp2F1_consistent_zero :
 -- § 5. The Hypergeometric Identity for K (Axiomatized)
 -- ============================================================================
 
-/-- **Hypergeometric series representation of K** (axiomatized deep identity):
-    for `|k| < 1`,
-      `K(k) = (π/2) · ₂F₁(1/2, 1/2; 1; k²)`.
-    See the file header for the proof outline (binomial series + Wallis
-    integrals + term-by-term integration) and why it is left axiomatized.
-    The `k = 0` instance is independently verified by
-    `ellipticK_hyp2F1_consistent_zero`. -/
-axiom ellipticK_eq_hyp2F1 (k : ℝ) (hk : k ^ 2 < 1) :
-    ellipticK k = (π / 2) * hyp2F1 (k ^ 2)
-
-/-- Sanity check: the axiom specialized at `k = 0` reproduces the independently
-    proved consistency theorem (both reduce to `K(0) = π/2`). -/
-theorem ellipticK_eq_hyp2F1_zero :
-    ellipticK 0 = (π / 2) * hyp2F1 ((0 : ℝ) ^ 2) :=
-  ellipticK_eq_hyp2F1 0 (by norm_num)
+/- **Hypergeometric series representation of K** — formerly the file's one
+   axiom, now a THEOREM: see § 11 at the end of the file
+   (`ellipticK_eq_hyp2F1`, proved by term-by-term integration of the § 10
+   binomial series against the Wallis values, with the sum/integral
+   interchange justified by dominated convergence). The statement had to move
+   below the § 6–§ 10 machinery it consumes. -/
 
 -- ============================================================================
 -- § 6. Summability of the Hypergeometric Series  (S2 ACT, 2026-06-01)
@@ -471,5 +463,96 @@ theorem hasSum_ellipticIntegrand (k θ : ℝ) (hk : k ^ 2 < 1) :
     rw [abs_of_nonneg (by positivity)]
     nlinarith [sq_nonneg k, sq_nonneg (Real.sin θ)]
   simpa [ellipticIntegrand] using hasSum_inv_sqrt_one_sub hu
+
+-- ============================================================================
+-- § 11. Term-by-Term Integration: the Main Identity, PROVED  (S7, Leg 5)
+-- ============================================================================
+--
+-- The final leg. The § 10 pointwise expansion of the integrand is integrated
+-- term by term over [0, π/2]: the sum/integral interchange is dominated
+-- convergence (`intervalIntegral.hasSum_integral_of_dominated_convergence`)
+-- with the θ-independent dominating series `(centralBinom n/4ⁿ)·(k²)ⁿ`
+-- (summable by the § 10 binomial series at u = k²), and each term integrates
+-- to `(π/2)·hypCoeff n·(k²)ⁿ` by the Wallis values `wallisHalf_even`.
+-- This discharges the former axiom: the file is now 0 axioms, 0 sorries.
+
+open MeasureTheory in
+/-- **The sum/integral interchange** (Leg 5): integrating the § 10 series
+    expansion of the K integrand term by term over `[0, π/2]`. Dominated
+    convergence with the constant-in-`θ` bound `(centralBinom n/4ⁿ)·(k²)ⁿ`,
+    whose sum is the (finite) binomial series at `u = k² < 1`. -/
+theorem hasSum_integral_ellipticIntegrand (k : ℝ) (hk : k ^ 2 < 1) :
+    HasSum
+      (fun n : ℕ => ∫ θ in (0 : ℝ)..π / 2,
+        (Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2 * Real.sin θ ^ 2) ^ n)
+      (ellipticK k) := by
+  have hk2 : |k ^ 2| < 1 := by rwa [abs_of_nonneg (sq_nonneg k)]
+  refine intervalIntegral.hasSum_integral_of_dominated_convergence
+    (bound := fun n _ => (Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2) ^ n)
+    (fun n => ?_) (fun n => ?_) ?_ ?_ ?_
+  · -- measurability of each term
+    exact (Continuous.aestronglyMeasurable (by fun_prop))
+  · -- the θ-independent bound
+    filter_upwards with θ _
+    rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+    have hsin : Real.sin θ ^ 2 ≤ 1 := Real.sin_sq_le_one θ
+    gcongr
+    · exact div_nonneg (Nat.cast_nonneg _) (by positivity)
+    · nlinarith [sq_nonneg k]
+  · -- summability of the bound
+    filter_upwards with θ _
+    exact (hasSum_inv_sqrt_one_sub hk2).summable
+  · -- integrability of the (constant) summed bound
+    exact intervalIntegrable_const
+  · -- pointwise convergence to the integrand
+    filter_upwards with θ _
+    exact hasSum_ellipticIntegrand k θ hk
+
+/-- **Each term integrates to a hypergeometric coefficient**: pulling constants
+    out and evaluating the Wallis integral `∫₀^{π/2} sin^{2n}θ dθ`. -/
+theorem integral_term_eq_hypCoeff (k : ℝ) (n : ℕ) :
+    (∫ θ in (0 : ℝ)..π / 2,
+        (Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2 * Real.sin θ ^ 2) ^ n)
+      = (π / 2) * (hypCoeff n * (k ^ 2) ^ n) := by
+  have hsplit : ∀ θ : ℝ,
+      (Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2 * Real.sin θ ^ 2) ^ n
+        = ((Nat.centralBinom n : ℝ) / 4 ^ n * (k ^ 2) ^ n)
+            * Real.sin θ ^ (2 * n) := by
+    intro θ
+    rw [mul_pow, pow_mul]
+    ring
+  simp_rw [hsplit]
+  rw [intervalIntegral.integral_const_mul]
+  rw [show (∫ θ in (0 : ℝ)..π / 2, Real.sin θ ^ (2 * n))
+      = AmgmInequalityOQ04OQ03Wallis.wallisHalf (2 * n) from rfl]
+  rw [AmgmInequalityOQ04OQ03Wallis.wallisHalf_even n]
+  unfold hypCoeff
+  ring
+
+/-- **Hypergeometric series representation of K — the main identity, PROVED**
+    (formerly this file's one axiom): for `k² < 1`,
+
+      `K(k) = (π/2) · ₂F₁(1/2, 1/2; 1; k²)`.
+
+    Proof: the § 10 binomial series expands the integrand pointwise
+    (`hasSum_ellipticIntegrand`); dominated convergence integrates it term by
+    term (`hasSum_integral_ellipticIntegrand`); each term is a Wallis integral
+    evaluating to `(π/2)·hypCoeff n·(k²)ⁿ` (`integral_term_eq_hypCoeff`); and
+    the resulting sum is `(π/2)·hyp2F1(k²)` by summability (§ 6). -/
+theorem ellipticK_eq_hyp2F1 (k : ℝ) (hk : k ^ 2 < 1) :
+    ellipticK k = (π / 2) * hyp2F1 (k ^ 2) := by
+  have hsum := hasSum_integral_ellipticIntegrand k hk
+  simp_rw [integral_term_eq_hypCoeff k] at hsum
+  have hk2 : |k ^ 2| < 1 := by rwa [abs_of_nonneg (sq_nonneg k)]
+  have h2 : HasSum (fun n : ℕ => (π / 2) * (hypCoeff n * (k ^ 2) ^ n))
+      ((π / 2) * hyp2F1 (k ^ 2)) :=
+    ((summable_hyp2F1 (k ^ 2) hk2).hasSum).mul_left _
+  exact hsum.unique h2
+
+/-- Sanity check: the theorem specialized at `k = 0` reproduces the
+    independently proved consistency theorem (both reduce to `K(0) = π/2`). -/
+theorem ellipticK_eq_hyp2F1_zero :
+    ellipticK 0 = (π / 2) * hyp2F1 ((0 : ℝ) ^ 2) :=
+  ellipticK_eq_hyp2F1 0 (by norm_num)
 
 end AmgmInequalityOQ04OQ03
