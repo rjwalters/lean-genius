@@ -100,12 +100,20 @@ theorem tetra_affineIndependent : AffineIndependent ℝ tetraVertex := by
   have h0 := congrArg (fun v : EuclideanSpace ℝ (Fin 3) => WithLp.ofLp v 0) hvsub
   have h1 := congrArg (fun v : EuclideanSpace ℝ (Fin 3) => WithLp.ofLp v 1) hvsub
   have h2 := congrArg (fun v : EuclideanSpace ℝ (Fin 3) => WithLp.ofLp v 2) hvsub
-  simp only [WithLp.ofLp_add, WithLp.ofLp_smul, WithLp.ofLp_toLp, WithLp.ofLp_zero,
+  simp only [WithLp.ofLp_add, WithLp.ofLp_smul, WithLp.ofLp_zero,
     Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
     Matrix.head_cons, Matrix.tail_cons] at h0 h1 h2
+  have hw0 : w 0 = 0 := by linarith
+  have hw1 : w 1 = 0 := by linarith
+  have hw2 : w 2 = 0 := by linarith
+  have hw3 : w 3 = 0 := by linarith
   intro i
-  fin_cases i <;> linarith
+  fin_cases i
+  · exact hw0
+  · exact hw1
+  · exact hw2
+  · exact hw3
 
 /-- The regular tetrahedron is `(k = 2)`-flat magic in ℝ³ with magic constant 3
     under the uniform weighting.
@@ -128,7 +136,6 @@ theorem tetraConfig_isKFlatMagic : IsKFlatMagic 2 tetraConfig := by
     simp
   have hle3 : (tetraConfig.filter (· ∈ F)).card ≤ 3 := by
     by_contra hgt
-    push_neg at hgt
     have hfeq : tetraConfig.filter (· ∈ F) = tetraConfig :=
       Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) (by omega)
     have hallF : ∀ i, tetraVertex i ∈ F := by
