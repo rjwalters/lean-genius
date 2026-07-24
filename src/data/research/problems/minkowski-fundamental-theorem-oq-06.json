@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-06-15T01:25:28.051Z",
     "iteration": 2,
     "focus": "Confirmed Mathlib gap and pinned constants; full proof blocked on Siegel mean-value, staged/elementary targets identified.",
@@ -31,9 +31,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT (sharpened): identified the zeta(n) factor in delta_n>=zeta(n)/2^(n-1) as the PRIMITIVE-vector (Siegel-Rogers) restriction, distinct from the ±-pairing factor 2. Corrected the staged-formalization hypothesis to the primitive mean-value identity (all-vectors+pairing only reaches 1/2^(n-1)). Added durable stdlib verification (Z^n primitive-fraction -> 1/zeta(n); shortest vector always primitive). Full proof still Docker/upstream-gated.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-24): staged target #1 EXECUTED — new MinkowskiFundamentalTheoremOQ06.lean formalizes the entire Minkowski-Hlawka averaging skeleton. Unconditional: zeta series bounds, shortest-vector-primitive, the descent bridge (below every nonzero vector of a uniformly discrete subgroup sits a primitive one), better-than-average extraction. Staged (hypothesis, NOT axiom): Siegel-Rogers primitive mean-value identity -> hlawka_avoidance (lattice avoiding S when vol S < zeta(n)) and hlawka_ball (min-distance >= r). 0 axioms, 0 sorries. Deep gap unchanged: the identity itself needs SL_n(Z)\\SL_n(R) measure theory absent from Mathlib.",
     "builtItems": [
-      "research/problems/minkowski-fundamental-theorem-oq-06/verify_minkowski_hlawka.py - durable sympy verification: (A) symmetric threshold 2*zeta(n) <-> density zeta(n)/2^(n-1); (B) hierarchy 2^-n <= MH <= delta_known; (C) improvement factor = 2*zeta(n). All pass."
+      "research/problems/minkowski-fundamental-theorem-oq-06/verify_minkowski_hlawka.py - durable sympy verification: (A) symmetric threshold 2*zeta(n) <-> density zeta(n)/2^(n-1); (B) hierarchy 2^-n <= MH <= delta_known; (C) improvement factor = 2*zeta(n). All pass.",
+      "MinkowskiFundamentalTheoremOQ06.lean (NEW, 273 lines, 0 axioms, 0 sorries): zetaSum + summability/bounds, IsPrimitive, minimal_isPrimitive, exists_primitive_norm_le (descent bridge), no_nonzero_of_no_primitive_in_ball, exists_count_zero_of_integral_lt_one (better-than-average extraction), hlawka_avoidance + hlawka_ball (staged on Siegel-Rogers primitive mean-value hypothesis)"
     ],
     "insights": [
       "Minkowski-Hlawka is the EXISTENCE complement to the gallery parent (which proves only the Minkowski convex-body OBSTRUCTION). Parent MinkowskiFundamentalTheorem.lean is sorry-free but proves a different theorem; Hlawka is absent from proofs/ (grep -i hlawka hits only Erdos997Problem.lean, unrelated).",
@@ -44,7 +45,11 @@
       "Two distinct mean-value identities on X_n=SL_n(Z)\\SL_n(R): Siegel (all nonzero v): integral = vol; Siegel-Rogers (primitive w only): integral = vol/zeta(n). The primitive one follows from Siegel by v=m*w factorization + scaling integral f(m.)=m^{-n} integral f, giving coefficient 1/sum_m m^{-n}=1/zeta(n).",
       "CORRECTION for staged formalization (target #1): the hypothesis to assume is the PRIMITIVE mean-value identity, not the all-vectors Siegel identity. Assuming all-vectors + ±-pairing alone only reaches delta_n >= 1/2^(n-1), missing the zeta(n).",
       "Bridge lemma (Mathlib-tractable, unlike the mean-value identity): the shortest nonzero lattice vector is always primitive (v=m*w, m>=2 => ||w||<||v||). This lets 'no primitive vector in ball(2r)' imply 'min distance >= 2r' for the packing/ball case.",
-      "Durable numeric witness (verify_primitive_mechanism.py, stdlib-only, all pass): Z^2 origin-visible (gcd=1) point fraction -> 6/pi^2 = 1/zeta(2); Z^3 -> 1/zeta(3); 13808/13808 integer 2x2 bases have a primitive shortest vector."
+      "Durable numeric witness (verify_primitive_mechanism.py, stdlib-only, all pass): Z^2 origin-visible (gcd=1) point fraction -> 6/pi^2 = 1/zeta(2); Z^3 -> 1/zeta(3); 13808/13808 integer 2x2 bases have a primitive shortest vector.",
+      "Staged target #1 EXECUTED (researcher-3 2026-07-24): hlawka_avoidance + hlawka_ball take the PRIMITIVE mean-value identity as explicit hypothesis hMV (per the corrected mechanism note: primitive form, threshold zeta(n), NOT the all-vectors identity)",
+      "The bridge lemma is stronger than shortest-vector-primitive: exists_primitive_norm_le shows in a UNIFORMLY discrete subgroup, below every nonzero v sits a primitive w with |w| <= |v| — norm-halving descent, strong induction on ceil(|v|/r0); key step: 2|w| <= |v| <= (k+1)r0 and |w| >= r0 give |w| <= k*r0 (no case split)",
+      "Set.ncard junk-value trap: ncard of an infinite set is 0, so the staged theorems carry hFin explicitly; proving finiteness from uniform discreteness + boundedness is a real next rung (separated set in bounded region is finite)",
+      "zetaSum over ALL of N works: the m=0 term is 1/0^n = 0 by div-zero convention, so no PNat reindexing needed; Real.summable_one_div_nat_pow gives summability for n >= 2"
     ],
     "mathlibGaps": [
       "Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: GeometryOfNumbers.lean has ONLY Blichfeldt (exists_pair_mem_lattice_not_disjoint_vadd) + Minkowski convex-body (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt/le_measure). No Hlawka.",
@@ -187,6 +192,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiFundamentalTheoremOQ06.lean",
+      "filename": "MinkowskiFundamentalTheoremOQ06.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ06.lean"
     }
   ]
 }
