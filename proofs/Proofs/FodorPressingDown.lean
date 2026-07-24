@@ -639,8 +639,7 @@ theorem isClubBelow_Ioo {κ : Cardinal.{0}} (hκ : κ.IsRegular) (hκ_unc : ℵ�
     rw [isClosedBelow_iff]
     intro p hpκ pAcc
     rw [isAcc_iff] at pAcc
-    have hp0 : (0 : Ordinal) < p :=
-      lt_of_le_of_ne (Ordinal.zero_le p) (Ne.symm pAcc.1)
+    have hp0 : (0 : Ordinal) < p := pos_iff_ne_zero.mpr pAcc.1
     obtain ⟨r, hrI, _, hrp⟩ := pAcc.2 0 hp0
     exact ⟨lt_trans hrI.1 hrp, hpκ⟩
   unbounded := by
