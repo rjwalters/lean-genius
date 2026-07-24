@@ -73,8 +73,17 @@
       "id": "determinacy",
       "title": "Part II: Power Sums Determine Elementary Symmetric Functions",
       "startLine": 62,
-      "endLine": 110,
-      "summary": "esymm_eval_eq_of_psum_eval_eq: strong induction on k — equal pⱼ (1 ≤ j ≤ n) force equal eₖ (k ≤ n), cancelling the nonzero k in the characteristic-zero domain. esymm_eval_eq_of_psum_eval_eq_card: at n = |σ| this extends to all k since higher eₖ vanish."
+      "endLine": 102,
+      "summary": "esymm_eval_eq_of_psum_eval_eq: strong induction on k — equal pⱼ (1 ≤ j ≤ n) force equal eₖ (k ≤ n), cancelling the nonzero k in the characteristic-zero domain [IsDomain K] [CharZero K].",
+      "mathContext": "$p_j(v) = p_j(w)$ for $1 \\le j \\le n$ $\\Rightarrow$ $e_k(v) = e_k(w)$ for $k \\le n$, by strong induction cancelling $(k : K) \\ne 0$."
+    },
+    {
+      "id": "determinacy-card",
+      "title": "Part II continued: Extending Past the Degree",
+      "startLine": 103,
+      "endLine": 112,
+      "summary": "esymm_eval_eq_of_psum_eval_eq_card: at n = |σ| the agreement of eₖ extends from k ≤ |σ| to ALL k, since esymm_eval_eq_zero makes both sides vanish above degree |σ| — the sharp cutoff matching the |σ| power sums assumed equal.",
+      "mathContext": "For $k > |\\sigma|$, $e_k(v) = e_k(w) = 0$ automatically, so agreement for $k \\le |\\sigma|$ upgrades to agreement for every $k$."
     },
     {
       "id": "vieta-capstone",
