@@ -48,7 +48,7 @@ as a defensive fallback if `Iff.rfl` fails at elaboration time.
 
 ### F1. The definition
 
-Parent file [`Proofs/LagrangeFourSquares.lean`](../../../../../proofs/Proofs/LagrangeFourSquares.lean) lines 159–161:
+Parent file [`Proofs/LagrangeFourSquares.lean`](../../../../proofs/Proofs/LagrangeFourSquares.lean) lines 159–161:
 
 ```lean
 /-- The obstruction to being a sum of three squares:
@@ -173,7 +173,7 @@ becomes `verified` on the lower-bound side.
 
 This pattern is **literally copy-paste** of the S2 ACT proof of
 `twenty_three_needs_nine_cubes` (shipped in PR #18176, file
-[`proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean:81–106`](../../../../../proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean#L81-L106)):
+[`proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean:81–106`](../../../../proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean#L81-L106)):
 
 | Aspect | S2 ACT (`g(3) ≥ 9`) | S6a ACT recommended (`g(2) ≥ 4`) |
 |--------|---------------------|----------------------------------|

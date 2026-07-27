@@ -136,7 +136,7 @@ inaccurate; the verification has been on main for two weeks. What's new is
 *discoverability* via the website's HomePage gallery and the proof page route.
 
 The gallery entry's `status: verified` is accurate per the
-[Axiom Integrity Policy](CLAUDE.md): 0 sorries, 0 `axiom` declarations, 0
+[Axiom Integrity Policy](../../../../CLAUDE.md): 0 sorries, 0 `axiom` declarations, 0
 structure-encoded assumptions in the Lean file. The `originalContributions`
 list is honest about scope (n = 2, 3 only — the polymorphic version is
 explicitly called out as future work in `openQuestions`).

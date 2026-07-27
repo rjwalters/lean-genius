@@ -56,14 +56,14 @@ See [ROADMAP.md](ROADMAP.md) for current plans.
 - Drizzle ORM
 
 **Proofs**
-- Lean 4.26.0
+- Lean 4.31.0
 - Mathlib
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20.19+ (Vite 7 and React Router 7 require it)
 - pnpm
 - Docker (for building proofs)
 - Wrangler CLI (for backend development)

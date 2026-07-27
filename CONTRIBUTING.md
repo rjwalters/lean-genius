@@ -42,8 +42,12 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
 
 5. **Build proofs** (optional, only if modifying Lean files):
    ```bash
-   cd proofs && lake build
+   ./proofs/scripts/docker-build.sh Proofs.YourProof
    ```
+
+   > **Never run `lake build` directly.** It can consume 100GB+ of memory in
+   > seconds and crash the host. Always use the Docker wrapper. See the DANGER
+   > section in the repository root `CLAUDE.md`.
 
 ## Research Contribution Workflow
 

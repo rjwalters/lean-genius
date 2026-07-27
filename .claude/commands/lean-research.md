@@ -123,7 +123,7 @@ fi
 > and `--revisit` filters) is currently **missing from `main`** — a
 > mass-deletion casualty, recoverable via `git show dc9fdffa30^:<path>`. See
 > the Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387).
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398).
 > Until restored: `scripts/research/claim-problem.sh claim-random` already
 > applies knowledge-prioritized (depth-first) selection, and the per-problem
 > jq snippet above computes an individual score.
@@ -346,7 +346,7 @@ Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approach
 
 > `/lean-scout` (`.claude/commands/lean-scout.md`) is currently **missing from
 > `main`** (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387)).
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398)).
 > Until restored, run the manual checks below instead.
 
 **Supplement with manual checks if needed:**
@@ -398,7 +398,7 @@ After each session, advance the problem's phase to reflect work done:
 
 > ⚠️ `.lean/scripts/research.sh` is currently **missing from `main`**
 > (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387),
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398),
 > recoverable via `git show dc9fdffa30^:.lean/scripts/research.sh`). Until
 > restored, update the phase field directly in `research/registry.json` with
 > `jq` (`.problems[] | select(.slug == $id) | .phase = $phase`).
@@ -525,7 +525,7 @@ format), keeping the last 5 sessions in `knowledge.md`.
 
 > The helper `.lean/scripts/archive-sessions.sh <problem-id>` is currently
 > **missing from `main`** (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387),
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398),
 > recoverable via `git show dc9fdffa30^:.lean/scripts/archive-sessions.sh`).
 
 ### Update Problem Knowledge (MANDATORY)
