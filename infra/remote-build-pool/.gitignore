@@ -1,0 +1,9 @@
+# Never commit real tfvars, local plugin cache, or state. This directory is an
+# unapplied skeleton (see README.md) — if a human ever does run terraform here, these
+# artifacts must stay untracked.
+terraform.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
