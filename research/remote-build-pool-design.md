@@ -225,8 +225,9 @@ Queue-depth-driven, scale-to-zero:
 
 ---
 
-## 9. First increment delivered here
+## 9. Increments delivered so far
 
+**First increment (PR #39070):**
 - This design doc.
 - `scripts/remote-build/submit-job.sh` — a **dry-run-only** stub that builds a spec-conformant
   job request (§3) from a target list + git ref and prints it. It makes **no** AWS calls unless
@@ -234,11 +235,33 @@ Queue-depth-driven, scale-to-zero:
   `curl`s a submit URL you provide; it never provisions infrastructure. Default invocation is a
   pure request-shape preview, safe to run anywhere.
 
+**Second increment:**
+- `infra/remote-build-pool/` — an **unapplied** Terraform skeleton for the queue +
+  result-store half of §10 item 1 (SQS job queue + DLQ, S3 result bucket, worker IAM
+  role/instance profile). No `terraform init`/`plan`/`apply` has been run against it;
+  every resource is marked for human review. See `infra/remote-build-pool/README.md`
+  for the safety constraints on this directory.
+- `research/remote-build-pool-cost-estimate.md` — illustrative (unverified) cost shape
+  for the queue/bucket (near-zero) vs. the not-yet-declared compute fleet (the real cost
+  driver), to help a human scope whether pursuing the remaining §10 items is worthwhile.
+
 ## 10. Follow-up work (kept in #38684 / new issues)
 
-1. Provision SQS queue + result store (S3/DynamoDB) via IaC (Terraform/CDK) — **after** the
-   §2 quota increase lands.
+1. ~~Provision SQS queue + result store (S3/DynamoDB) via IaC (Terraform/CDK)~~ —
+   **skeleton drafted** in `infra/remote-build-pool/` (SQS queue + DLQ, S3 result
+   bucket, worker IAM role). **Unapplied.** Still blocked on the §2 quota increase
+   before it's useful to actually run, and needs human review + a real backend config
+   before any `terraform apply`. See `infra/remote-build-pool/README.md`.
 2. Build & publish `lean4-arm64:v4.31.0` AMI with baked Mathlib source + warm olean cache.
-3. ASG launch template + target-tracking policy (or Karpenter provisioner).
-4. Worker-side result uploader that writes `verify-results.tsv` rows + diag blocks to the store.
-5. Wire `submit-job.sh` to the live endpoint behind `REMOTE_BUILD_LIVE=1`.
+3. ASG launch template + target-tracking policy (or Karpenter provisioner). Would consume
+   `worker_instance_profile_name` from the item-1 skeleton.
+4. Worker-side result uploader that writes `verify-results.tsv` rows + diag blocks to the
+   `result_bucket_name` output from the item-1 skeleton.
+5. Wire `submit-job.sh` to the live endpoint behind `REMOTE_BUILD_LIVE=1`, once a real
+   `job_queue_url` exists to submit against.
+6. Budget-cap Lambda + AWS Budgets alarm (§7) — bundle with item 3, not before, so the
+   cap is never deployed without the fleet it caps. See
+   `research/remote-build-pool-cost-estimate.md` §4.
+
+See `research/remote-build-pool-cost-estimate.md` for an illustrative (unverified) cost
+shape to help scope how much of the remaining work is worth pursuing.

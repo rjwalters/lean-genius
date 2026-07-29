@@ -1,0 +1,11 @@
+# UNAPPLIED SKELETON — see README.md.
+#
+# Copy to terraform.tfvars (gitignored — do not commit real account-specific values)
+# and fill in before a human runs `terraform plan`. This file is illustrative only;
+# no agent should create or populate a real terraform.tfvars.
+
+aws_region             = "us-west-2"
+environment            = "dev"
+queue_name             = "lean-remote-build-jobs"
+result_bucket_name     = "REPLACE-ME-globally-unique-bucket-name" # e.g. "lean-genius-remote-build-results-<account-id>"
+result_retention_days  = 30
