@@ -145,4 +145,42 @@ theorem excess_loss_forces_later_switch_endpoint
   rw [heq]
   exact hlt
 
+/-- In a successful final switch, every target-tight vertex with positive
+cross-edge loss must itself be one of the two switch endpoints. -/
+theorem tight_positive_loss_is_endpoint_of_successful_crossEdgeSwitch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    {d : ℕ} (hfinal : ∀ u, d ≤ (crossEdgeSwitch H x w).degree u)
+    (hdeg : H.degree v = d)
+    (hloss : 1 ≤ crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset w) v) :
+    v = x ∨ v = w := by
+  by_contra h
+  push_neg at h
+  have hlt := crossEdgeSwitch_degree_lt_of_tight_of_positive_loss
+    H x w v hdeg h.1 h.2 hloss
+  have := hfinal v
+  omega
+
+/-- Equivalently, away from the two endpoints a successful final switch must
+have zero loss at every target-tight old vertex. -/
+theorem crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    {d : ℕ} (hfinal : ∀ u, d ≤ (crossEdgeSwitch H x w).degree u)
+    (hdeg : H.degree v = d) (hvx : v ≠ x) (hvw : v ≠ w) :
+    crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) v = 0 := by
+  by_contra h
+  have hp := Nat.one_le_iff_ne_zero.mpr h
+  rcases tight_positive_loss_is_endpoint_of_successful_crossEdgeSwitch
+    H x w v hfinal hdeg hp with rfl | rfl
+  · exact hvx rfl
+  · exact hvw rfl
+
 end Erdos85

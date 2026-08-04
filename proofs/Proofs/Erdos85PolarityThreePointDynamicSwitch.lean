@@ -641,4 +641,132 @@ theorem firstPairPoleSwitch_unique_defect
     change H.degree v = Nat.card K + 1 at hhigh
     omega
 
+/-- Every surviving absolute point stays target-tight of degree `q` through
+the first dynamic defect-pair switch. -/
+theorem firstPairPoleSwitch_degree_surviving_absolute
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hvabs : Projectivization.orthogonal v.1 v.1)
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj] :
+    (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).degree v = Nat.card K := by
+  classical
+  let H : SimpleGraph {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    threePointCore K
+  let x := threePointPairDefect K ha hb hc hab
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let D := deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)
+  let J := crossEdgeSwitch H x y
+  have hva : v.1 ≠ a := by intro h; exact v.2 (by simp [h])
+  have hvb : v.1 ≠ b := by intro h; exact v.2 (by simp [h])
+  have hvc : v.1 ≠ c := by intro h; exact v.2 (by simp [h])
+  have hxv : ¬ H.Adj x v := by
+    intro h
+    exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      ha hb hab hvabs hva hvb)
+        (by simpa [H, x, threePointPairDefect] using SimpleGraph.induce_adj.mp h)
+  have hyv : ¬ H.Adj y v := by
+    intro h
+    exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      ha hc hac hvabs hva hvc)
+        (by simpa [H, y, threePointOuterPairDefectAC] using SimpleGraph.induce_adj.mp h)
+  have hloss : crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset y) v = 0 := by
+    apply crossEdgeLoss_eq_zero_of_not_mem <;>
+      simpa only [SimpleGraph.mem_neighborFinset]
+  have hbase : H.degree v = Nat.card K := by
+    simpa [H] using threePointCore_degree_surviving_absolute K ha hb hc v hvabs
+  have hD : D.degree v = Nat.card K := by
+    have hs := degree_deleteCrossEdges_add_loss H
+      (H.neighborFinset x) (H.neighborFinset y) v
+    change H.degree v = D.degree v + _ at hs
+    rw [hbase, hloss] at hs
+    omega
+  have hvx : v ≠ x := by
+    intro h
+    exact (absolutePairCommonNeighbor_spec K ha hb hab).2.2
+      (by simpa [x, threePointPairDefect, h] using hvabs)
+  have hvy : v ≠ y := by
+    intro h
+    exact (absolutePairCommonNeighbor_spec K ha hc hac).2.2
+      (by simpa [y, threePointOuterPairDefectAC, h] using hvabs)
+  change J.degree v = Nat.card K
+  rw [crossEdgeSwitch_degree_eq_deleteCrossEdges_of_ne_endpoints H x y v hvx hvy]
+  exact hD
+
+/-- Any successful second switch must avoid cross-loss at every surviving
+absolute point other than its freely chosen second endpoint. -/
+theorem secondPairPoleSwitch_avoids_surviving_absolute
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (w v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hvabs : Projectivization.orthogonal v.1 v.1) (hvw : v ≠ w)
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc) w).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset w)).Adj]
+    (hfinal : ∀ u, Nat.card K ≤
+      (crossEdgeSwitch
+        (crossEdgeSwitch (threePointCore K)
+          (threePointPairDefect K ha hb hc hab)
+          (threePointOuterPairDefectAC K ha hb hc hac))
+        (threePointOuterPairDefectBC K ha hb hc hbc) w).degree u) :
+    crossEdgeLoss
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset w) v = 0 := by
+  let J := crossEdgeSwitch (threePointCore K)
+    (threePointPairDefect K ha hb hc hab)
+    (threePointOuterPairDefectAC K ha hb hc hac)
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hvz : v ≠ z := by
+    intro h
+    exact (absolutePairCommonNeighbor_spec K hb hc hbc).2.2
+      (by simpa [z, threePointOuterPairDefectBC, h] using hvabs)
+  apply crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch
+    J z w v hfinal
+  · exact firstPairPoleSwitch_degree_surviving_absolute K h2 ha hb hc
+      hab hac hbc v hvabs
+  · exact hvz
+  · exact hvw
+
 end Erdos85.Polarity

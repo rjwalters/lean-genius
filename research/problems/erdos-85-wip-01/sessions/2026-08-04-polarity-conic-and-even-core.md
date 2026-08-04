@@ -426,3 +426,25 @@ The switched endpoints rise from `q-1` to `q`, and the third pole belongs to
 neither deletion neighborhood and stays at `q-1`.  The checked theorem
 `firstPairPoleSwitch_unique_defect` therefore proves that the dynamic first
 switch leaves the third pair pole as the unique sub-`q` vertex.
+
+## Tight-set obstruction to the second switch
+
+The first switch preserves every surviving absolute point at degree exactly
+`q`; this is checked by
+`firstPairPoleSwitch_degree_surviving_absolute`.  Hence the intermediate
+graph contains the explicit tight set of all `q-2` surviving absolutes in
+addition to its unique defect.
+
+The generic final-switch lemma
+`crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch` says that a
+successful universal switch cannot delete any incident cross edge at a tight
+vertex unless that vertex is one of the two new endpoints.  Its polarity
+specialization `secondPairPoleSwitch_avoids_surviving_absolute` now proves:
+if a second switch centered at the remaining pair-pole defect raises the
+minimum degree to `q`, then every surviving absolute other than the chosen
+partner has cross-edge loss zero.  Thus any one-switch completion must choose
+a partner whose cross-deletion simultaneously avoids `q-3` (or `q-2` when
+the partner is nonabsolute) specified tight vertices.  The finite searches
+for `q=5,7,11` show that no partner satisfies this condition; the remaining
+geometric target is to prove that impossibility uniformly from polarity
+incidence.
