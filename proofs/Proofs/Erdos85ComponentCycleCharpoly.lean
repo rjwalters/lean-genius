@@ -99,7 +99,7 @@ theorem secondOrderDefect_component_resolvent_chebyshev
     (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
     (hmin : d ≤ G.minDegree) (hcard : Fintype.card V = d * (d - 1) + 3)
     (c : (secondOrderDefectGraph G).ConnectedComponent) (a : ℤ) :
-    ∃ r : ℕ, 3 ≤ r ∧
+    ∃ r : ℕ, 3 ≤ r ∧ r = c.supp.ncard ∧
       Matrix.det (Matrix.diagonal (fun _ : c.supp ↦ a) -
         ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ) =
         (Polynomial.Chebyshev.C ℤ (r : ℤ) - 2).eval a := by
@@ -110,7 +110,12 @@ theorem secondOrderDefect_component_resolvent_chebyshev
   letI : DecidableRel p.toSubgraph.coe.Adj := Classical.decRel _
   letI : DecidableRel ((secondOrderDefectGraph G).induce p.toSubgraph.verts).Adj :=
     Classical.decRel _
-  refine ⟨p.length, hp.three_le_length, ?_⟩
+  have hrsize : p.length = c.supp.ncard := by
+    calc
+      p.length = Nat.card p.toSubgraph.verts := (isCycle_card_verts_eq_length hp).symm
+      _ = p.toSubgraph.verts.ncard := Nat.card_coe_set_eq _
+      _ = c.supp.ncard := congrArg Set.ncard hpverts
+  refine ⟨p.length, hp.three_le_length, hrsize, ?_⟩
   have hpoly := isCycle_induce_charpoly_chebyshev hp hgraph
   have htrans := induce_resolvent_det_eq_of_set_eq
     (G := secondOrderDefectGraph G) hpverts a
