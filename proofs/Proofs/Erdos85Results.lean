@@ -28,6 +28,7 @@ import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85CrossEdgeSwitch
+import Proofs.Erdos85CrossEdgeSwitchProgram
 import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85PolaritySwitchCoordinates
@@ -115,6 +116,11 @@ cross-edge switch can raise degrees only at its two endpoints, so no such
 switch can repair a graph with three distinct sub-target vertices.  The
 three-absolute-point core and each of its pair-pole defects are now defined;
 each pair pole still has degree `q-1` after the third deletion.
+Arbitrary finite switch programs are also now formalized and remain
+`C₄`-free.  A vertex never named as an endpoint can only lose degree over the
+whole program, so every initial defect must be named; a program of length `m`
+can cover at most `2m` distinct initial defects.  Thus the three-point core
+requires at least two switches before incidence losses are even considered.
 -/
 
 namespace Erdos85

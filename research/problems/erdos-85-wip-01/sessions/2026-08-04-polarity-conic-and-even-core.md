@@ -300,3 +300,28 @@ as `threePointCore`, with the checked per-pair degree theorem
 `threePointPairDefect_degree`.  Thus extending the new plateau one step
 further requires a genuinely multi-endpoint or multi-switch construction;
 choosing a more clever single tangent endpoint cannot suffice.
+
+## Finite switch programs and the cumulative endpoint obstruction
+
+The universal surgery can be iterated.  `crossEdgeSwitchProgram` folds a list
+of endpoint pairs through the current graph, recomputing the two neighborhoods
+at every stage.  Since each individual switch preserves `C₄`-freeness with no
+extra hypothesis, `crossEdgeSwitchProgram_not_containsC4` proves the entire
+finite program is `C₄`-free.
+
+This does not remove the degree obstruction.  The checked theorem
+`crossEdgeSwitchProgram_degree_le_of_not_mem_endpoints` says that a vertex
+which never occurs as either endpoint has final degree at most its initial
+degree.  Therefore every initial sub-target vertex must be named by a
+successful program.  The endpoint set has cardinality at most twice the
+program length, giving
+
+```text
+number of initial sub-target vertices ≤ 2 · number of switches.
+```
+
+Thus the three pair-pole defects force at least two switches.  Computation for
+`q=5,7,11` indicates that merely touching all three poles is far from enough:
+a two-edge path on the poles stays `C₄`-free and repairs the original poles,
+but creates `q-2` new degree-`q-1` vertices.  This identifies cumulative loss,
+not cycle creation, as the next decisive bottleneck.
