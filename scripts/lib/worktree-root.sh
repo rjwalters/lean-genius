@@ -45,6 +45,23 @@
 #     documented v1 limitation (see the issue), not a bug this helper guards.
 #   - This helper never creates directories; callers `mkdir -p` the parent as
 #     needed (git worktree add creates only the leaf).
+#   - LOCAL DIVERGENCE from the upstream helper (#43644): an override root
+#     that exists but cannot be read (macOS TCC denial on an external volume
+#     returns EPERM from readdir while stat still succeeds) is rejected with
+#     a loud stderr warning and the function falls back to the default root,
+#     instead of letting every agent die mid-session on an unreadable volume.
+
+# _loom_root_unreadable <dir>
+#
+# True (0) iff <dir> exists but its contents cannot be listed. In that state
+# `[[ -d ]]` and `stat` still succeed, so an actual readdir is the only
+# reliable probe. A nonexistent dir returns 1 (not-unreadable): callers may
+# legitimately `mkdir -p` it later.
+_loom_root_unreadable() {
+    local d="$1"
+    [[ -d "$d" ]] || return 1
+    ! command ls "$d" >/dev/null 2>&1
+}
 
 # loom_worktree_root <repo_root>
 #
@@ -56,7 +73,15 @@ loom_worktree_root() {
     # 1. Env var override — highest priority.
     if [[ -n "${LOOM_WORKTREE_ROOT:-}" ]]; then
         if [[ "$LOOM_WORKTREE_ROOT" == /* ]]; then
-            echo "${LOOM_WORKTREE_ROOT%/}/$(basename "$repo_root")"
+            local env_base="${LOOM_WORKTREE_ROOT%/}"
+            local env_resolved
+            env_resolved="$env_base/$(basename "$repo_root")"
+            if _loom_root_unreadable "$env_base" || _loom_root_unreadable "$env_resolved"; then
+                echo "loom_worktree_root: WARNING: worktree root '$env_resolved' exists but is UNREADABLE (EPERM — volume access lost? macOS TCC denial? see #43644); falling back to default $repo_root/.loom/worktrees" >&2
+                echo "$repo_root/.loom/worktrees"
+                return 0
+            fi
+            echo "$env_resolved"
             return 0
         fi
         echo "loom_worktree_root: LOOM_WORKTREE_ROOT must be an absolute path (got: '$LOOM_WORKTREE_ROOT'); falling back to default" >&2
@@ -72,7 +97,15 @@ loom_worktree_root() {
         cfg_root=$(jq -r '.worktree.root? // empty' "$config_file" 2>/dev/null)
         if [[ -n "$cfg_root" ]]; then
             if [[ "$cfg_root" == /* ]]; then
-                echo "${cfg_root%/}/$(basename "$repo_root")"
+                local cfg_base="${cfg_root%/}"
+                local cfg_resolved
+                cfg_resolved="$cfg_base/$(basename "$repo_root")"
+                if _loom_root_unreadable "$cfg_base" || _loom_root_unreadable "$cfg_resolved"; then
+                    echo "loom_worktree_root: WARNING: worktree root '$cfg_resolved' exists but is UNREADABLE (EPERM — volume access lost? macOS TCC denial? see #43644); falling back to default $repo_root/.loom/worktrees" >&2
+                    echo "$repo_root/.loom/worktrees"
+                    return 0
+                fi
+                echo "$cfg_resolved"
                 return 0
             fi
             echo "loom_worktree_root: worktree.root in .loom/config.json must be an absolute path (got: '$cfg_root'); falling back to default" >&2
