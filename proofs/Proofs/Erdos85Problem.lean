@@ -3317,4 +3317,153 @@ theorem minDegreeForC4_sixteen_mem :
 
 end Sixteen
 
+section Seventeen
+
+/-- The twenty-seven edges of the `16`-vertex six-times-extended Petersen
+graph: `petersen15Edges` with the edge `(6, 8)` deleted and the new vertex
+`15` joined to `6`, `8`, and `5` — the `f(16)` surgery, materialised. -/
+def petersen16Edges : List (Fin 16 × Fin 16) :=
+  [(1,2), (3,4),
+   (5,7), (7,9), (9,6), (8,5),
+   (1,6), (2,7), (3,8),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8),
+   (12,4), (12,9), (12,7),
+   (13,0), (13,4), (13,3),
+   (14,0), (14,5), (14,7),
+   (15,6), (15,8), (15,5)]
+
+/-- **A `16`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after six vertex-adding surgeries. -/
+def petersen16 : SimpleGraph (Fin 16) where
+  Adj i j := (i, j) ∈ petersen16Edges ∨ (j, i) ∈ petersen16Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen16.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen16Edges ∨ (j, i) ∈ petersen16Edges) Iff.rfl
+
+/-- Every vertex of `petersen16` has degree at least `3` — a `16`-vertex
+kernel check. -/
+theorem petersen16_degree : ∀ v, 3 ≤ petersen16.degree v := by decide
+
+/-- **Every pair of distinct `petersen16` vertices has at most one common
+neighbour** — the `16 × 16` kernel check certifying `C₄`-freeness. -/
+theorem petersen16_common_le_one : ∀ x y : Fin 16, x ≠ y →
+    (petersen16.neighborFinset x ∩ petersen16.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`f(17) ≥ 4`** — the abstract surgery applied to `petersen16` with the
+configuration `a = 9, b = 6, c = 15`: the edges `9–6` and `6–15` are
+triangle-free, `9 ≁ 15`, and all remaining hypotheses are `16`-vertex kernel
+checks.  No `17`-vertex graph is ever `decide`d. -/
+theorem four_le_minDegreeForC4_seventeen : 4 ≤ minDegreeForC4 17 := by
+  have hab : petersen16.Adj 9 6 := by decide
+  have hbc : petersen16.Adj 6 15 := by decide
+  have hac : ¬ petersen16.Adj 9 15 := by decide
+  have hane : (9 : Fin 16) ≠ 15 := by decide
+  have htriab : ∀ z, petersen16.Adj 9 z → petersen16.Adj 6 z → False := by decide
+  have htribc : ∀ z, petersen16.Adj 6 z → petersen16.Adj 15 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen16_common_le_one
+  have hC4 : ¬ containsC4 (Fin 17) (surgeryFin petersen16 9 6 15) :=
+    surgeryFin_not_containsC4 petersen16 9 6 15
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen16 9 6 15).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen16 9 6 15 u)
+    rcases h : finSuccEquiv 16 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen16_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen16 9 6 15) hdeg hC4
+
+/-- **`f(17) ∈ {4, 5}`**: seventh surgery rung below, counting bound
+(`17 ≤ 5·4`) above. -/
+theorem minDegreeForC4_seventeen_mem :
+    minDegreeForC4 17 = 4 ∨ minDegreeForC4 17 = 5 := by
+  have hle : minDegreeForC4 17 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_seventeen
+  omega
+
+end Seventeen
+
+section Eighteen
+
+/-- The twenty-nine edges of the `17`-vertex seven-times-extended Petersen
+graph: `petersen16Edges` with the edge `(9, 6)` deleted and the new vertex
+`16` joined to `9`, `6`, and `15` — the `f(17)` surgery, materialised. -/
+def petersen17Edges : List (Fin 17 × Fin 17) :=
+  [(1,2), (3,4),
+   (5,7), (7,9), (8,5),
+   (1,6), (2,7), (3,8),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8),
+   (12,4), (12,9), (12,7),
+   (13,0), (13,4), (13,3),
+   (14,0), (14,5), (14,7),
+   (15,6), (15,8), (15,5),
+   (16,9), (16,6), (16,15)]
+
+/-- **A `17`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after seven vertex-adding surgeries. -/
+def petersen17 : SimpleGraph (Fin 17) where
+  Adj i j := (i, j) ∈ petersen17Edges ∨ (j, i) ∈ petersen17Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen17.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen17Edges ∨ (j, i) ∈ petersen17Edges) Iff.rfl
+
+/-- Every vertex of `petersen17` has degree at least `3` — a `17`-vertex
+kernel check. -/
+theorem petersen17_degree : ∀ v, 3 ≤ petersen17.degree v := by decide
+
+/-- **Every pair of distinct `petersen17` vertices has at most one common
+neighbour** — the `17 × 17` kernel check certifying `C₄`-freeness. -/
+theorem petersen17_common_le_one : ∀ x y : Fin 17, x ≠ y →
+    (petersen17.neighborFinset x ∩ petersen17.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`f(18) ≥ 4`** — the abstract surgery applied to `petersen17` with the
+configuration `a = 10, b = 0, c = 13`: the edges `10–0` and `0–13` are
+triangle-free, `10 ≁ 13`, and all remaining hypotheses are `17`-vertex kernel
+checks.  No `18`-vertex graph is ever `decide`d. -/
+theorem four_le_minDegreeForC4_eighteen : 4 ≤ minDegreeForC4 18 := by
+  have hab : petersen17.Adj 10 0 := by decide
+  have hbc : petersen17.Adj 0 13 := by decide
+  have hac : ¬ petersen17.Adj 10 13 := by decide
+  have hane : (10 : Fin 17) ≠ 13 := by decide
+  have htriab : ∀ z, petersen17.Adj 10 z → petersen17.Adj 0 z → False := by decide
+  have htribc : ∀ z, petersen17.Adj 0 z → petersen17.Adj 13 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen17_common_le_one
+  have hC4 : ¬ containsC4 (Fin 18) (surgeryFin petersen17 10 0 13) :=
+    surgeryFin_not_containsC4 petersen17 10 0 13
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen17 10 0 13).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen17 10 0 13 u)
+    rcases h : finSuccEquiv 17 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen17_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen17 10 0 13) hdeg hC4
+
+/-- **`f(18) ∈ {4, 5}`**: eighth surgery rung below, counting bound
+(`18 ≤ 5·4`) above. -/
+theorem minDegreeForC4_eighteen_mem :
+    minDegreeForC4 18 = 4 ∨ minDegreeForC4 18 = 5 := by
+  have hle : minDegreeForC4 18 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_eighteen
+  omega
+
+end Eighteen
+
 end Erdos85
