@@ -172,4 +172,29 @@ theorem top_nonneighbor_reduction_lt {n : ℕ} (hn : 4 ≤ n)
   (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hreduced).1
     (exists_top_nonneighbor_reduction hn)
 
+/-- The order in the top-witness reduction simplifies to `n - f(n)`. -/
+theorem top_nonneighbor_reduced_order_eq {n : ℕ} (hn : 4 ≤ n) :
+    n - (minDegreeForC4 n - 1) - 1 = n - minDegreeForC4 n := by
+  have hlower : 1 ≤ minDegreeForC4 n := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    have htwo := two_le_minDegreeForC4 (n := m) (by omega)
+    omega
+  have hupper := minDegreeForC4_le_sub_two hn
+  omega
+
+/-- Clean form of the recursive witness reduction: a top witness at `n`
+produces degree `f(n)-2` at order `n-f(n)`. -/
+theorem exists_top_nonneighbor_reduction_sub_threshold {n : ℕ} (hn : 4 ≤ n) :
+    C4FreeMinDegreeWitness (n - minDegreeForC4 n)
+      (minDegreeForC4 n - 2) := by
+  rw [← top_nonneighbor_reduced_order_eq hn]
+  exact exists_top_nonneighbor_reduction hn
+
+/-- Recursive threshold inequality in its clean numerical form. -/
+theorem top_nonneighbor_reduction_sub_threshold_lt {n : ℕ} (hn : 4 ≤ n)
+    (hreduced : 4 ≤ n - minDegreeForC4 n) :
+    minDegreeForC4 n - 2 < minDegreeForC4 (n - minDegreeForC4 n) :=
+  (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hreduced).1
+    (exists_top_nonneighbor_reduction_sub_threshold hn)
+
 end Erdos85
