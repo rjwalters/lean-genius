@@ -120,6 +120,7 @@ def SixFlow.toZModEight (sf : G.SixFlow) : G.NowhereZeroFlow (ZMod 8) where
     obtain ⟨hpos, hlt⟩ := sf.bound e
     rcases Int.natAbs_eq (sf.val e) with hcase | hcase <;> omega
 
+omit [DecidableEq E] in
 @[simp]
 theorem SixFlow.toZModEight_val (sf : G.SixFlow) (e : E) :
     (sf.toZModEight).val e = ((sf.val e : ℤ) : ZMod 8) :=
@@ -139,11 +140,3 @@ end FiniteGraph
 
 end CycleDoubleCover
 
-section AxiomAudit
-#print axioms CycleDoubleCover.FiniteGraph.IsFlow.map
-#print axioms CycleDoubleCover.FiniteGraph.SixFlow.val_ne_zero
-#print axioms CycleDoubleCover.FiniteGraph.SixFlow.natAbs_le_five
-#print axioms CycleDoubleCover.FiniteGraph.SixFlow.toZModEight
-#print axioms CycleDoubleCover.FiniteGraph.SixFlow.toZModEight_val
-#print axioms CycleDoubleCover.FiniteGraph.nonempty_nowhereZeroFlow_zmodEight_of_seymour
-end AxiomAudit
