@@ -17,9 +17,34 @@
     * `oneflat_eq_parent`                        (d = 2, k = 1, parent reduction)
     * `oneflat_classification_higher_dim`        (d ≥ 3, k = 1, AXIOM, ABKPR ext.)
 
-  Counts (S5 ACT): 0 sorries, 1 axiom, 4 supporting class predicates
-  (`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`, `IsIncenterConfigD`).
-  Docker build-verified against Mathlib v4.26.0.
+  Counts (S5 ACT, class-4 repaired in S8): 0 sorries, 1 axiom, 4 supporting
+  class predicates (`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`,
+  `IsFailedFanoD`).  Docker build-verified.
+
+  ## S8 repair (2026-07-24): class 4 was wrong — and made the axiom FALSE
+
+  The original S5 class 4 (`IsIncenterConfigD`) was an admitted "structural
+  skeleton": an injective `Fin (d + 2)`-family inside `P` plus a designated
+  point, with `P.card = d + 3` — and NO affine-independence or metric
+  condition.  That skeleton is *cardinality-trivial*: it holds for EVERY
+  configuration of exactly `d + 3` points
+  (`Erdos735OQ04TwoTriples.isIncenterSkeletonD_of_card`).  Since two parallel
+  triples in ℝ³ form a 6-point configuration that is provably NOT 1-flat magic
+  (`Erdos735OQ04TwoTriples.twoTriples_not_oneFlatMagic`), the pre-repair axiom
+  was refutable — the statement it asserted is provably false
+  (`Erdos735OQ04TwoTriples.skeleton_classification_false`), so the axiom made
+  the whole environment inconsistent.
+
+  The repair replaces class 4 by the class ABKPR 2008 actually proves
+  (Theorem 1 of "There are not too many magic configurations"): a **failed
+  Fano** configuration — 7 points that are, up to a projective transformation,
+  a triangle, its three edge midpoints, and its centroid (magic weights 1/4 on
+  vertices and centroid, 1/2 on midpoints).  The widespread "triangle +
+  incenter" description (also in this repo's earlier prose) coincides with the
+  equilateral representative (midpoints = bisector feet, centroid = incenter)
+  but is not the general class; the paper's own name is used here.
+  `IsFailedFanoD` embeds a planar projective image of the reference failed
+  Fano into a 2-flat of ℝᵈ via an injective affine map.
 
   The parent reduction `oneflat_eq_parent` (S4 ACT) was unblocked after the
   stale "parent is broken" claim was corrected (parent builds clean against
@@ -47,6 +72,8 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Matrix.Mul
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Tactic
 import Proofs.Erdos735Problem
 
@@ -111,39 +138,82 @@ def IsNearPencilD {d : ℕ} (P : PointConfigD d) : Prop :=
     Module.rank ℝ L.direction = 1 ∧
     ∃ p ∈ P, p ∉ L ∧ (∀ q ∈ P, q ≠ p → q ∈ L)
 
-/-- Class 4 — `ℝᵈ` analogue of `Erdos735.IsIncenterConfig`: the projective image
-    of a `(d+1)`-simplex extended by the unique point equidistant from all
-    facets (the insphere centre).  **Honest framing**: the body below is a
-    *structural skeleton* (a simplex injection into `P` plus an extra point),
-    not the precise ABKPR-style incenter characterisation.  A semantically
-    tight `ℝᵈ` version of the parent's `IsIncenterConfig` requires the
-    `Mathlib.Geometry.Euclidean.Triangle` / `EuclideanSpace.angle` /
-    `AffineSubspace.bisector` API at the `ℝᵈ`-level, which Mathlib v4.26.0
-    does **not** provide for `d ≥ 3`.  Documented in
-    `research/problems/erdos-735-oq-04/sessions/2026-06-05-s5-prep-conjecture-refinement.md`
-    §3.D and §9. -/
-def IsIncenterConfigD {d : ℕ} (P : PointConfigD d) : Prop :=
-  ∃ simplex : Fin (d + 2) → EuclideanSpace ℝ (Fin d),
-    ∃ incenter : EuclideanSpace ℝ (Fin d),
-    (∀ i, simplex i ∈ P) ∧ incenter ∈ P ∧
-    Function.Injective simplex ∧
-    P.card = d + 2 + 1
+/- ### Class 4 — the failed Fano configuration (S8 repair)
 
-/-- **S5 axiom — extension of ABKPR 2008 to higher ambient dimension** (1-flat
-    case only).  For `d ≥ 3`, a configuration `P ⊂ ℝᵈ` is 1-flat magic iff it
-    is collinear, in general position, a near-pencil, or a `ℝᵈ`-incenter
-    analogue (in the sense of `IsIncenterConfigD`'s structural skeleton).
+The pre-S8 class 4 (`IsIncenterConfigD`) was a cardinality-trivial skeleton
+that made the classification axiom provably false; see the file header and
+`Proofs.Erdos735OQ04TwoTriples` for the machine-checked refutation.  The
+definitions below encode the class ABKPR 2008 actually proves. -/
+
+/-- Homogenisation `ℝ² → ℝ³` into the affine chart `z = 1`:
+    `(x, y) ↦ (x, y, 1)`. -/
+def homogenize (p : EuclideanSpace ℝ (Fin 2)) : Fin 3 → ℝ :=
+  ![WithLp.ofLp p 0, WithLp.ofLp p 1, 1]
+
+/-- Dehomogenisation `ℝ³ ⇀ ℝ²` (meaningful on the chart `z ≠ 0`):
+    `(x, y, z) ↦ (x/z, y/z)`. -/
+noncomputable def dehomogenize (v : Fin 3 → ℝ) : EuclideanSpace ℝ (Fin 2) :=
+  !₂[v 0 / v 2, v 1 / v 2]
+
+/-- The reference **failed Fano** configuration (ABKPR 2008, Figure 1): a
+    triangle `(0,0), (2,0), (0,2)`, its three edge midpoints, and its
+    centroid — 7 points.  It is magic with weights `1/4` on the vertices and
+    the centroid and `1/2` on the midpoints (every configuration line sums to
+    `1`), and ABKPR 2008 Theorem 1 states these 7 points are — up to
+    projective transformation — the ONLY magic configuration that is neither
+    (near-)collinear nor in general position.  For the equilateral
+    representative the midpoints are the bisector feet and the centroid is the
+    incenter, which is where the folklore "triangle + incenter" description
+    comes from. -/
+noncomputable def failedFanoBase : PointConfigD 2 :=
+  {!₂[0, 0], !₂[2, 0], !₂[0, 2], !₂[1, 0], !₂[0, 1], !₂[1, 1], !₂[2/3, 2/3]}
+
+/-- `P ⊂ ℝ²` is a projective image of the failed Fano configuration: some
+    nonsingular `3 × 3` matrix, acting on homogeneous coordinates with every
+    image point remaining in the affine chart `z ≠ 0`, carries
+    `failedFanoBase` onto `P`. -/
+noncomputable def IsFailedFanoPlane (P : PointConfigD 2) : Prop :=
+  ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧
+    (∀ p ∈ failedFanoBase, M.mulVec (homogenize p) 2 ≠ 0) ∧
+    P = failedFanoBase.image (fun p => dehomogenize (M.mulVec (homogenize p)))
+
+/-- Class 4 — `P ⊂ ℝᵈ` lies in an affinely embedded plane and is there a
+    projective image of the failed Fano configuration.  (An injective affine
+    map preserves collinearity in both directions, so the line-incidence
+    structure — and hence 1-flat magicness — of the planar configuration is
+    exactly reproduced inside the 2-flat `f '' ℝ²`.) -/
+noncomputable def IsFailedFanoD {d : ℕ} (P : PointConfigD d) : Prop :=
+  ∃ Q : PointConfigD 2, IsFailedFanoPlane Q ∧
+    ∃ f : EuclideanSpace ℝ (Fin 2) →ᵃ[ℝ] EuclideanSpace ℝ (Fin d),
+      Function.Injective f ∧ P = Q.image f
+
+/-- **S5 axiom (S8-repaired) — extension of ABKPR 2008 to higher ambient
+    dimension** (1-flat case only).  For `d ≥ 3`, a configuration `P ⊂ ℝᵈ` is
+    1-flat magic iff it is collinear, in general position, a near-pencil, or a
+    planar projective image of the failed Fano configuration.
 
     **Status**: research-level open.  No published proof of the higher-dim
     classification exists in any `ℝᵈ` for `d ≥ 3` to the formaliser's
-    knowledge as of 2026-06.  The conjecture is the natural lift of ABKPR
-    2008's planar four-class theorem.  Axiomatised pending future proof.
+    knowledge as of 2026-07.  The conjecture is the natural lift of ABKPR 2008
+    Theorem 1 (whose planar classes are exactly: `n-1` or `n` collinear
+    points, general position, failed Fano); a configuration spanning ≥ 3
+    dimensions has only the collinear/general-position/near-pencil routes
+    available (the failed Fano is planar), so the genuinely open content is
+    that a magic configuration with a full-rank span and a 3-point line cannot
+    exist.  Axiomatised pending future proof.
 
-    For `d = 2`, the corresponding statement is the parent's `Erdos735.magic_classification`
-    composed with this slug's S4 ACT `oneflat_eq_parent`. -/
+    **History**: the pre-S8 form of this axiom (over the cardinality-trivial
+    `IsIncenterConfigD` skeleton) was provably FALSE — see
+    `Erdos735OQ04TwoTriples.skeleton_classification_false` for the
+    machine-checked refutation and the file header for the repair rationale.
+
+    For `d = 2`, the corresponding statement is the parent's
+    `Erdos735.magic_classification` composed with this slug's S4 ACT
+    `oneflat_eq_parent` (but note the parent's own class-4 encoding has the
+    analogous defect; see issue filed 2026-07-24). -/
 axiom oneflat_classification_higher_dim {d : ℕ} (hd : 3 ≤ d) (P : PointConfigD d) :
     IsKFlatMagic 1 P ↔
-      IsCollinearD P ∨ IsGeneralPositionD P ∨ IsNearPencilD P ∨ IsIncenterConfigD P
+      IsCollinearD P ∨ IsGeneralPositionD P ∨ IsNearPencilD P ∨ IsFailedFanoD P
 
 /-- Trivial case k = 0. Every rank-0 affine subspace is a single ambient point
     `{x}`; the `card ≥ 1` constraint forces `x ∈ P`, so each `ConfigKFlat 0 P`
