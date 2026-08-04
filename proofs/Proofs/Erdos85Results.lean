@@ -29,6 +29,7 @@ import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
 import Proofs.Erdos85FiveSelectorPacking
+import Proofs.Erdos85PolarityFourPointLabels
 import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85CompensatedGadget

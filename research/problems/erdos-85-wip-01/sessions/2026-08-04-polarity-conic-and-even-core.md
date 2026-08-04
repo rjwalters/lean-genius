@@ -653,10 +653,17 @@ whereas gadget compatibility permits two distinct selectors to intersect in
 at most one old vertex.  Lean now checks both the rank-two star theorem and
 this five-selector packing contradiction, together with a gadget-facing
 theorem deriving selector size `q-2` from the degree-two five-cycle.
-The remaining geometric transport is to verify the rank-two label hypotheses
-for arbitrary safe selectors in the four-absolute deletion core.  Once that
-is supplied, the successful order-32 gadget is formally isolated as a
-small-field exception rather than an infinite-family template.
+The geometric transport is now also complete.  For nonabsolute survivors,
+the deleted-absolute label has size at most two; distinct points in one safe
+selector share a deleted label, and equal two-labels force equal projective
+points.  Each deleted-label fibre has size at most `q`.  Finally, a safe
+selector containing a surviving absolute point has size at most two, so a
+selector of required size `q-2 >= 5` is automatically entirely nonabsolute.
+The theorem
+`fiveCycleAttachment_impossible_of_four_absolute_deletions` therefore gives
+an unconditional contradiction for every field of odd characteristic and
+order at least seven.  The successful order-32 gadget is formally isolated
+as a small-field exception rather than an infinite-family template.
 
 ## Rigidity of any putative degree-six graph at order 32
 
