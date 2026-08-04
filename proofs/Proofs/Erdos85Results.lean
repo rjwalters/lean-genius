@@ -203,12 +203,17 @@ tight survivors with loss at least any prescribed `q`.
 Specializing to delete one vertex with no additional survivor-edge deletion,
 the weighted loss is at most `d+1`, whereas Moore-order replacement requires
 at least `2(d-2)`.  Hence for every `d≥6`, no arbitrary compatible
-delete-one/add-two replacement exists for a `d`-regular graph on
-`d(d-1)+1` vertices, regardless of the two selector choices.
+delete-one/add-two replacement exists at a tight degree-`d` vertex of any
+minimum-degree-at-least-`d` graph on `d(d-1)+1` vertices, regardless of the
+two selector choices.  Consequently every exact-minimum-degree-`d` graph at
+this order has a vertex at which all such replacements fail; regularity is
+not required.
 More generally, deletion-only delete-`k`/add-`k+1` replacement is impossible
 whenever `(k+1)² + k*choose(k+1,2) < d`.  Hence every fixed-size replacement
-scheme of this form fails for all sufficiently large regular degree; `k` must
-grow with `d` or additional survivor-edge surgery must be essential.
+scheme of this form fails for all sufficiently large target degree provided
+the deleted vertices are tight; the rest of the graph need not be regular.
+Thus `k` must grow with `d`, the deletion set must include higher-degree
+vertices, or additional survivor-edge surgery must be essential.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the

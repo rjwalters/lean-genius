@@ -4,7 +4,8 @@ import Proofs.Erdos85DeleteOnePairObstruction
 # Bounded delete-set/replacement-gadget obstruction
 
 With no additional survivor-edge deletion, a fixed-size delete-`k`/add-`k+1`
-repair cannot work at Moore-layer order once the regular degree is large.
+repair cannot work at Moore-layer order once the target degree is large and
+the deleted vertices are tight.  Global regularity is unnecessary.
 -/
 
 open SimpleGraph
@@ -65,6 +66,20 @@ theorem sum_deletedNeighborLoss_le_card_mul_degree_of_regular
       k * d := by
   have hcut := sum_card_neighbor_inter_deleted_le_sum_degrees G D
   simpa [hDcard, hreg] using hcut
+
+/-- Global regularity is unnecessary for the cut bound: it is enough that
+every vertex actually placed in the deleted set has degree `d`. -/
+theorem sum_deletedNeighborLoss_le_card_mul_degree_of_tight_set
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V) {d k : ℕ}
+    (hDcard : D.card = k) (hDtight : ∀ x ∈ D, G.degree x = d) :
+    (∑ v : {v : V // v ∉ D}, (G.neighborFinset v.1 ∩ D).card) ≤
+      k * d := by
+  have hcut := sum_card_neighbor_inter_deleted_le_sum_degrees G D
+  calc
+    _ ≤ ∑ x ∈ D, G.degree x := hcut
+    _ = ∑ _x ∈ D, d := Finset.sum_congr rfl fun x hx => hDtight x hx
+    _ = k * d := by simp [hDcard]
 
 /-- Weighted deleted-neighbor loss obeys the same `kd + k*choose(m,2)` bound
 for selectors compatible with any survivor subgraph `K`. -/
@@ -156,6 +171,82 @@ theorem sum_replacementLoss_le_card_mul_degree_add_card_mul_choose_of_regular
       · exact Nat.mul_le_mul_left k
           (hcompat.sum_choose_two_attachmentMultiplicity_le
             (deleteVertexSetGraph G D) F A)
+
+/-- The deletion-only weighted-loss bound only requires the deleted set,
+rather than the whole graph, to consist of degree-`d` vertices. -/
+theorem sum_replacementLoss_le_card_mul_degree_add_card_mul_choose_of_tight_set
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d k : ℕ}
+    (hDcard : D.card = k) (hDtight : ∀ x ∈ D, G.degree x = d)
+    (hcompat : GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A) :
+    (∑ w : W, ∑ a ∈ A w,
+      replacementDegreeLoss G D (deleteVertexSetGraph G D) a) ≤
+      k * d + k * (Fintype.card W).choose 2 := by
+  let loss : {v : V // v ∉ D} → ℕ := fun v =>
+    (G.neighborFinset v.1 ∩ D).card
+  have hloss : ∀ v : {v : V // v ∉ D},
+      replacementDegreeLoss G D (deleteVertexSetGraph G D) v = loss v := by
+    intro v
+    simp [replacementDegreeLoss, subgraphDegreeLoss, loss]
+  rw [sum_sum_weight_eq_sum_weight_mul_attachmentMultiplicity]
+  simp_rw [hloss]
+  have hlossle : ∀ v, loss v ≤ k := by
+    intro v
+    rw [← hDcard]
+    exact Finset.card_le_card Finset.inter_subset_right
+  have hpoint : ∀ v, loss v * attachmentMultiplicity A v ≤
+      loss v + k * (attachmentMultiplicity A v).choose 2 := by
+    intro v
+    have ht := le_one_add_choose_two (attachmentMultiplicity A v)
+    have hmul := Nat.mul_le_mul_left (loss v) ht
+    have hchoose := Nat.mul_le_mul_right
+      ((attachmentMultiplicity A v).choose 2) (hlossle v)
+    nlinarith
+  calc
+    (∑ v, loss v * attachmentMultiplicity A v) ≤
+        ∑ v, (loss v + k * (attachmentMultiplicity A v).choose 2) :=
+      Finset.sum_le_sum fun v _ => hpoint v
+    _ = (∑ v, loss v) +
+        k * ∑ v, (attachmentMultiplicity A v).choose 2 := by
+      rw [Finset.sum_add_distrib, Finset.mul_sum]
+    _ ≤ k * d + k * (Fintype.card W).choose 2 := by
+      apply Nat.add_le_add
+      · exact sum_deletedNeighborLoss_le_card_mul_degree_of_tight_set
+          G D hDcard hDtight
+      · exact Nat.mul_le_mul_left k
+          (hcompat.sum_choose_two_attachmentMultiplicity_le
+            (deleteVertexSetGraph G D) F A)
+
+/-- **Fixed-size replacement no-go for a tight deleted set.**  Global
+regularity can be weakened to minimum degree at least `d` together with
+degree exactly `d` on the vertices selected for deletion. -/
+theorem not_gadgetCompatible_bounded_replacement_of_moore_tight_set
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d k : ℕ}
+    (hd : 1 ≤ d) (hk : k ≤ d - 1)
+    (hlarge : (k + 1) * (k + 1) + k * (k + 1).choose 2 < d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hDcard : D.card = k) (hWcard : Fintype.card W = k + 1)
+    (hmin : d ≤ G.minDegree) (hDtight : ∀ x ∈ D, G.degree x = d)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) :
+    ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A := by
+  intro hcompat
+  have hlower :=
+    card_succ_mul_degree_pred_sub_card_le_replacementLoss_of_mooreOrder
+      G D (deleteVertexSetGraph G D) (le_refl _) F A hd hk hcard
+        hDcard hWcard hmin hnew hcompat
+  have hupper :=
+    sum_replacementLoss_le_card_mul_degree_add_card_mul_choose_of_tight_set
+      G D F A hDcard hDtight hcompat
+  rw [hWcard] at hupper
+  have hksub : d - 1 - k + (k + 1) = d := by omega
+  nlinarith
 
 /-- **Fixed-size replacement no-go.**  In a `d`-regular Moore-layer graph,
 delete-`k`/add-`k+1` repair without additional survivor-edge deletion is

@@ -974,10 +974,11 @@ and a pair-design cap on how that loss can be distributed.
 
 ## Arbitrary delete-one/add-pair no-go
 
-The true replacement bound has a sharp first specialization.  Delete one
-vertex `x` from a `d`-regular graph.  With no additional survivor-edge
-deletion, total replacement loss is at most one and is supported exactly on
-the `d` old neighbors of `x`.  Weighted selector-incidence double counting
+The true replacement bound has a sharp first specialization.  Delete a tight
+vertex `x` of degree `d` from any graph of minimum degree at least `d`.  With
+no additional survivor-edge deletion, total replacement loss is at most one
+and is supported exactly on the `d` old neighbors of `x`.  Weighted
+selector-incidence double counting
 and the fact that two compatible selectors intersect in at most one vertex
 give the upper bound
 
@@ -987,21 +988,25 @@ give the upper bound
 
 for every two-vertex gadget.  The Moore-order replacement theorem gives the
 opposite bound `2(d-2)`.  Therefore Lean proves that for every `d ≥ 6`, no
-compatible delete-one/add-two replacement exists in a `d`-regular graph on
-`d(d-1)+1` vertices when both new vertices must reach degree `d`.
+compatible delete-one/add-two replacement exists at a tight vertex in any
+minimum-degree-at-least-`d` graph on `d(d-1)+1` vertices when both new
+vertices must reach degree `d`.  In particular, every graph of exact minimum
+degree `d` has a minimum-degree vertex at which all such replacements fail;
+regularity of the rest of the graph is unnecessary.
 
 This is strictly broader than the earlier canonical repair-set obstruction:
 both attachment selectors and the internal two-vertex gadget are arbitrary.
 Thus the most immediate local order-raising surgery is ruled out uniformly in
-the critical regular regime, not merely for the canonical neighborhood
+the critical Moore-layer regime, not merely for the canonical neighborhood
 choice.
 
 ## Fixed-`k` replacement obstruction
 
 The delete-one/add-pair contradiction extends to every fixed deletion size.
 With no additional survivor-edge deletion, double-counting the cut from a
-deleted `k`-set in a `d`-regular graph gives total unweighted survivor loss at
-most `kd`.  If `t_v` is selector multiplicity, then
+deleted `k`-set of degree-`d` tight vertices gives total unweighted survivor
+loss at most `kd`; no regularity is required away from the deleted set.  If
+`t_v` is selector multiplicity, then
 
 ```text
 loss(v) t_v ≤ loss(v) + k choose(t_v,2).

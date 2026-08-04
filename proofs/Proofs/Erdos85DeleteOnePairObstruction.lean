@@ -3,7 +3,7 @@ import Proofs.Erdos85ReplacementGadgetObstruction
 /-!
 # Delete-one/add-pair obstruction at Moore-layer order
 
-For a regular Moore-layer graph, deleting one vertex creates unit loss exactly
+For a Moore-layer graph, deleting a tight vertex creates unit loss exactly
 on its old neighborhood.  Pairwise selector intersection bounds the weighted
 loss by `d+1`, while the replacement degree-square inequality requires at
 least `2(d-2)`.  Hence no arbitrary compatible two-vertex replacement exists
@@ -98,9 +98,61 @@ theorem sum_delete_one_replacementLoss_le_degree_add_choose
     (mem_deletedNeighborSupport_of_pos_replacementDegreeLoss G x)
   simpa [card_deletedNeighborSupport] using hbound
 
-/-- **Arbitrary delete-one/add-pair no-go.**  In a `d`-regular graph of order
-`d(d-1)+1`, no compatible two-vertex replacement can give both new vertices
-degree at least `d` when `d ≥ 6`, even with completely arbitrary selectors. -/
+/-- **Arbitrary delete-one/add-pair no-go at a tight vertex.**  At Moore-layer
+order, minimum degree at least `d` and tightness of the single deleted vertex
+already rule out every compatible two-vertex replacement for `d ≥ 6`.  No
+regularity assumption on the other old vertices is needed. -/
+theorem not_gadgetCompatible_delete_one_add_pair_of_moore_tight
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ ({x} : Finset V)})
+    {d : ℕ} (hd : 6 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hmin : d ≤ G.minDegree)
+    (hxdeg : G.degree x = d)
+    (hWcard : Fintype.card W = 2)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) :
+    ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G {x}) F A := by
+  intro hcompat
+  letI : Nonempty V := ⟨x⟩
+  have hlower :=
+    card_succ_mul_degree_pred_sub_card_le_replacementLoss_of_mooreOrder
+      G ({x} : Finset V) (deleteVertexSetGraph G {x}) (le_refl _)
+        F A (d := d) (k := 1) (by omega) (by omega) hcard
+        (by simp) hWcard hmin hnew hcompat
+  have hupper := sum_delete_one_replacementLoss_le_degree_add_choose
+    G x F A hcompat
+  rw [hxdeg, hWcard] at hupper
+  norm_num at hupper
+  have hsub : d - 1 - 1 + 2 = d := by omega
+  nlinarith
+
+/-- If the graph has exact minimum degree `d`, one can choose a minimum-degree
+vertex at which *every* delete-one/add-two compatible replacement fails.  The
+quantifiers over the gadget and its selectors come after the choice of the
+tight vertex. -/
+theorem exists_tight_vertex_forall_no_delete_one_add_pair_of_moore
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 6 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hmindeg : G.minDegree = d) :
+    ∃ x : V, G.degree x = d ∧
+      ∀ (F : SimpleGraph (Fin 2)) [DecidableRel F.Adj]
+        (A : Fin 2 → Finset {v : V // v ∉ ({x} : Finset V)}),
+        (∀ w : Fin 2, d ≤ (A w).card + F.degree w) →
+        ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G {x}) F A := by
+  obtain ⟨x, hx⟩ := G.exists_minimal_degree_vertex
+  have hxdeg : G.degree x = d := by rw [← hx, hmindeg]
+  refine ⟨x, hxdeg, ?_⟩
+  intro F _ A hnew
+  apply not_gadgetCompatible_delete_one_add_pair_of_moore_tight
+    G x F A hd hcard (by omega) hxdeg (by simp) hnew
+
+/-- The regular-graph formulation is an immediate specialization of the
+tight-vertex obstruction. -/
 theorem not_gadgetCompatible_delete_one_add_pair_of_moore_regular
     {V W : Type*} [Fintype V] [Fintype W]
     [DecidableEq V] [DecidableEq W]
@@ -113,22 +165,14 @@ theorem not_gadgetCompatible_delete_one_add_pair_of_moore_regular
     (hWcard : Fintype.card W = 2)
     (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) :
     ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G {x}) F A := by
-  intro hcompat
   letI : Nonempty V := ⟨x⟩
-  have hmin : d ≤ G.minDegree := by
-    apply SimpleGraph.le_minDegree_of_forall_le_degree
+  apply not_gadgetCompatible_delete_one_add_pair_of_moore_tight
+    G x F A hd hcard
+  · apply SimpleGraph.le_minDegree_of_forall_le_degree
     intro v
     rw [hreg v]
-  have hlower :=
-    card_succ_mul_degree_pred_sub_card_le_replacementLoss_of_mooreOrder
-      G ({x} : Finset V) (deleteVertexSetGraph G {x}) (le_refl _)
-        F A (d := d) (k := 1) (by omega) (by omega) hcard
-        (by simp) hWcard hmin hnew hcompat
-  have hupper := sum_delete_one_replacementLoss_le_degree_add_choose
-    G x F A hcompat
-  rw [hreg x, hWcard] at hupper
-  norm_num at hupper
-  have hsub : d - 1 - 1 + 2 = d := by omega
-  nlinarith
+  · exact hreg x
+  · exact hWcard
+  · exact hnew
 
 end Erdos85
