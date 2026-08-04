@@ -178,6 +178,7 @@ theorem quotient_reachable_of_supportGraph_adj (S : Finset E) (P : Setoid V) {x 
     · exact hadj.reachable
     · exact hadj.reachable.symm
 
+omit [DecidableEq V] [DecidableEq E] in
 open Classical in
 /-- Contracting the classes of a partition preserves connectedness. -/
 theorem quotientGraph_connected_of_connects [Nonempty V] (S : Finset E) (P : Setoid V)
