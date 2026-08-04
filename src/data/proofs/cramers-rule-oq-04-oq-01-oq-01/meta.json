@@ -111,15 +111,23 @@
     },
     {
       "id": "explicit-formula",
-      "title": "Section II: The Explicit Formula and Uniqueness",
+      "title": "Section II: The Explicit Formula",
       "startLine": 68,
+      "endLine": 85,
+      "summary": "cramer_solution: xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0 — the OQ's literal target, obtained from the algebraic core by eq_div_iff. cramer_solution_eq packages this componentwise result as the full closed-form vector x = fun i => det(Aᵢ)/det A.",
+      "mathContext": "Division by the nonzero determinant turns the invertibility-free algebraic core into the classical scalar formula stated in every textbook."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Section III: Uniqueness",
+      "startLine": 87,
       "endLine": 92,
-      "summary": "cramer_solution (xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0 — the OQ's target), cramer_solution_eq (full vector form), and cramer_solution_unique (any two solutions coincide).",
-      "mathContext": "Division by the nonzero determinant turns the algebraic core into the classical scalar formula, which is therefore the unique solution."
+      "summary": "cramer_solution_unique: any two solutions x, y of A x = b coincide when det A ≠ 0, since both must equal the same closed form cramer_solution_eq produces. Uniqueness alone needs no cancellation — it is immediate once every solution is pinned to one formula.",
+      "mathContext": "Together with cramer_formula_isSolution (existence, below) this shows Ax = b has exactly one solution when det A ≠ 0, given explicitly in closed form."
     },
     {
       "id": "existence",
-      "title": "Section III: Existence — the Formula Solves the System",
+      "title": "Section IV: Existence — the Formula Solves the System",
       "startLine": 94,
       "endLine": 107,
       "summary": "cramer_formula_isSolution: A *ᵥ (fun i => det(Aᵢ)/det A) = b, writing the formula as A.det⁻¹ • cramer A b and cancelling via mulVec_cramer and inv_mul_cancel₀.",
