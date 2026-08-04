@@ -64,4 +64,34 @@ theorem threePointPairDefect_degree {a b c : P K}
   have hq := three_le_card_of_two_ne_zero K h2
   omega
 
+/-- Every surviving absolute point in a three-absolute deletion core remains
+target-tight, of degree exactly `q`. -/
+theorem threePointCore_degree_surviving_absolute {a b c : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : Projectivization.orthogonal v.1 v.1) :
+    (threePointCore K).degree v = Nat.card K := by
+  have hs := degree_deleteVertexSetGraph_add (graph K)
+    ({a,b,c} : Finset (P K)) v
+  rw [degree_eq_card_of_selfOrthogonal hv] at hs
+  have hinc : ((graph K).neighborFinset v.1 ∩
+      ({a,b,c} : Finset (P K))).card = 0 := by
+    rw [Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro z hz
+    rcases Finset.mem_inter.mp hz with ⟨hvz, hz⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl | rfl
+    · exact (not_selfOrthogonal_of_adj_selfOrthogonal
+        (by simpa using hvz) hv) ha
+    · exact (not_selfOrthogonal_of_adj_selfOrthogonal
+        (by simpa using hvz) hv) hb
+    · exact (not_selfOrthogonal_of_adj_selfOrthogonal
+        (by simpa using hvz) hv) hc
+  change (threePointCore K).degree v + _ = Nat.card K at hs
+  rw [hinc, Nat.add_zero] at hs
+  exact hs
+
 end Erdos85.Polarity

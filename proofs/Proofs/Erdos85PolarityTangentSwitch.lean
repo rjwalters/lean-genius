@@ -302,8 +302,15 @@ theorem minDegreeForC4_odd_three_order_plateau
         minDegreeForC4 ((Nat.card K + 1) * Nat.card K) ∧
       minDegreeForC4 ((Nat.card K + 1) * Nat.card K) =
         minDegreeForC4 ((Nat.card K + 1) * Nat.card K + 1) := by
-  rw [minDegreeForC4_odd_twoPoint_order K h2,
-    minDegreeForC4_projectivePlane_pred K,
-    minDegreeForC4_projectivePlane K]
+  have htwo := minDegreeForC4_odd_twoPoint_order K h2
+  have hpred := minDegreeForC4_projectivePlane_pred K
+  have hplane := minDegreeForC4_projectivePlane K
+  change minDegreeForC4 ((Nat.card K + 1) * Nat.card K + 1 - 2) =
+    Nat.card K + 1 at htwo
+  change minDegreeForC4 ((Nat.card K + 1) * Nat.card K) =
+    Nat.card K + 1 at hpred
+  change minDegreeForC4 ((Nat.card K + 1) * Nat.card K + 1) =
+    Nat.card K + 1 at hplane
+  exact ⟨htwo.trans hpred.symm, hpred.trans hplane.symm⟩
 
 end Erdos85.Polarity
