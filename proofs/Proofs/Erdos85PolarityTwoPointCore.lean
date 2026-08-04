@@ -1,5 +1,6 @@
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85PolarityEven
+import Proofs.Erdos85PolaritySwitchCoordinates
 
 /-! Exact identification of the unique defect after deleting two absolute points. -/
 
@@ -11,6 +12,13 @@ namespace Erdos85.Polarity
 universe u
 variable (K : Type u) [Field K] [Finite K] [DecidableEq K]
 private noncomputable abbrev P := ℙ K (Fin 3 → K)
+
+noncomputable def switchParameter (h2 : (2 : K) ≠ 0) : K :=
+  Classical.choose (exists_ne_zero_not_isSquare_one_add_sq h2)
+
+theorem switchParameter_spec (h2 : (2 : K) ≠ 0) :
+    switchParameter K h2 ≠ 0 ∧ ¬ IsSquare (1 + switchParameter K h2 ^ 2) :=
+  Classical.choose_spec (exists_ne_zero_not_isSquare_one_add_sq h2)
 
 noncomputable abbrev twoPointCore {a b : P K} :=
   deleteVertexSetGraph (graph K) {a,b}
@@ -131,5 +139,168 @@ theorem eq_twoPointDefect_of_degree_eq_sub_one {a b : P K}
     exact (Classical.choose_spec
       (existsUnique_nonabsolute_commonNeighbor_of_absolute K ha hb hab)).2
         v.1 ⟨hva, hvb, hvabs⟩
+
+noncomputable def twoPointSwitchVector {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) : Fin 3 → K :=
+  polaritySwitchVector a.rep b.rep
+    (absolutePairCommonNeighbor K ha hb hab).rep (switchParameter K h2)
+
+theorem absolute_rep_dot_ne_zero {a b : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    a.rep ⬝ᵥ b.rep ≠ 0 := by
+  intro hz
+  have haborth : Projectivization.orthogonal a b := by
+    simpa using
+      (Projectivization.orthogonal_mk a.rep_nonzero b.rep_nonzero).mpr hz
+  have hadj : (graph K).Adj a b := (graph_adj_iff a b).mpr ⟨hab, haborth⟩
+  exact (not_selfOrthogonal_of_adj_selfOrthogonal hadj ha) hb
+
+theorem twoPointSwitchVector_ne_zero {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    twoPointSwitchVector K h2 ha hb hab ≠ 0 := by
+  let x := absolutePairCommonNeighbor K ha hb hab
+  have hs := absolutePairCommonNeighbor_spec K ha hb hab
+  have hxa : x.rep ⬝ᵥ a.rep = 0 := by
+    rw [dotProduct_comm]
+    exact (Projectivization.orthogonal_mk a.rep_nonzero x.rep_nonzero).mp
+      (by simpa using ((graph_adj_iff a x).mp hs.1).2)
+  have hxb : x.rep ⬝ᵥ b.rep = 0 := by
+    rw [dotProduct_comm]
+    exact (Projectivization.orthogonal_mk b.rep_nonzero x.rep_nonzero).mp
+      (by simpa using ((graph_adj_iff b x).mp hs.2.1).2)
+  have hxx : x.rep ⬝ᵥ x.rep ≠ 0 := by
+    intro hz
+    exact hs.2.2 (by simpa [x] using
+      (Projectivization.orthogonal_mk x.rep_nonzero x.rep_nonzero).mpr hz)
+  exact polaritySwitchVector_ne_zero a.rep b.rep x.rep
+    (switchParameter K h2) hxa hxb hxx
+
+noncomputable def twoPointSwitchPoint {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) : P K :=
+  Projectivization.mk K (twoPointSwitchVector K h2 ha hb hab)
+    (twoPointSwitchVector_ne_zero K h2 ha hb hab)
+
+theorem not_orthogonal_twoPointSwitchPoint_left {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    ¬ Projectivization.orthogonal a (twoPointSwitchPoint K h2 ha hb hab) := by
+  intro horth
+  have hdot : a.rep ⬝ᵥ twoPointSwitchVector K h2 ha hb hab = 0 :=
+    (Projectivization.orthogonal_mk a.rep_nonzero
+      (twoPointSwitchVector_ne_zero K h2 ha hb hab)).mp
+      (by simpa [twoPointSwitchPoint] using horth)
+  dsimp [twoPointSwitchVector] at hdot
+  rw [dot_switchVector_left] at hdot
+  · exact mul_ne_zero (switchParameter_spec K h2).1
+      (absolute_rep_dot_ne_zero K ha hb hab) hdot
+  · exact (Projectivization.orthogonal_mk a.rep_nonzero a.rep_nonzero).mp
+      (by simpa using ha)
+  · let x := absolutePairCommonNeighbor K ha hb hab
+    exact (Projectivization.orthogonal_mk x.rep_nonzero a.rep_nonzero).mp
+      (by simpa [x] using (Projectivization.orthogonal_comm.mp
+        (((graph_adj_iff a x).mp
+          (absolutePairCommonNeighbor_spec K ha hb hab).1).2)))
+
+theorem not_orthogonal_twoPointSwitchPoint_right {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    ¬ Projectivization.orthogonal b (twoPointSwitchPoint K h2 ha hb hab) := by
+  intro horth
+  let x := absolutePairCommonNeighbor K ha hb hab
+  have hdot : b.rep ⬝ᵥ twoPointSwitchVector K h2 ha hb hab = 0 :=
+    (Projectivization.orthogonal_mk b.rep_nonzero
+      (twoPointSwitchVector_ne_zero K h2 ha hb hab)).mp
+      (by simpa [twoPointSwitchPoint] using horth)
+  have hxb : x.rep ⬝ᵥ b.rep = 0 :=
+    (Projectivization.orthogonal_mk x.rep_nonzero b.rep_nonzero).mp
+      (by simpa [x] using (Projectivization.orthogonal_comm.mp
+        (((graph_adj_iff b x).mp
+          (absolutePairCommonNeighbor_spec K ha hb hab).2.1).2)))
+  have hbb : b.rep ⬝ᵥ b.rep = 0 :=
+    (Projectivization.orthogonal_mk b.rep_nonzero b.rep_nonzero).mp
+      (by simpa using hb)
+  dsimp [twoPointSwitchVector] at hdot
+  rw [dot_switchVector_right h2 _ _ _ _ hbb hxb
+    (absolute_rep_dot_ne_zero K ha hb hab)] at hdot
+  exact div_ne_zero (mul_ne_zero (switchParameter_spec K h2).1 (by
+      intro hz
+      exact (absolutePairCommonNeighbor_spec K ha hb hab).2.2
+        (by simpa [x] using
+          (Projectivization.orthogonal_mk x.rep_nonzero x.rep_nonzero).mpr hz))) h2 hdot
+
+theorem twoPointSwitchPoint_not_mem {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    twoPointSwitchPoint K h2 ha hb hab ∉ ({a,b} : Finset (P K)) := by
+  intro hm
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hm
+  rcases hm with hm | hm
+  · exact not_orthogonal_twoPointSwitchPoint_left K h2 ha hb hab
+      (by simpa [hm] using ha)
+  · exact not_orthogonal_twoPointSwitchPoint_right K h2 ha hb hab
+      (by simpa [hm] using hb)
+
+noncomputable def twoPointSwitchVertex {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    {v : P K // v ∉ ({a,b} : Finset (P K))} :=
+  ⟨twoPointSwitchPoint K h2 ha hb hab,
+    twoPointSwitchPoint_not_mem K h2 ha hb hab⟩
+
+theorem twoPointDefect_ne_switchVertex {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    twoPointDefect K ha hb hab ≠ twoPointSwitchVertex K h2 ha hb hab := by
+  intro heq
+  have hax : Projectivization.orthogonal a
+      (absolutePairCommonNeighbor K ha hb hab) :=
+    ((graph_adj_iff a _).mp
+      (absolutePairCommonNeighbor_spec K ha hb hab).1).2
+  apply not_orthogonal_twoPointSwitchPoint_left K h2 ha hb hab
+  have hp : absolutePairCommonNeighbor K ha hb hab =
+      twoPointSwitchPoint K h2 ha hb hab := congrArg Subtype.val heq
+  rw [← hp]
+  exact hax
+
+theorem twoPointCore_not_adj_defect_switchVertex {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    ¬ (twoPointCore K).Adj (twoPointDefect K ha hb hab)
+      (twoPointSwitchVertex K h2 ha hb hab) := by
+  intro hadj
+  let x := absolutePairCommonNeighbor K ha hb hab
+  have horth : Projectivization.orthogonal x
+      (twoPointSwitchPoint K h2 ha hb hab) :=
+    ((graph_adj_iff x _).mp hadj).2
+  have hdot : x.rep ⬝ᵥ twoPointSwitchVector K h2 ha hb hab = 0 :=
+    (Projectivization.orthogonal_mk x.rep_nonzero
+      (twoPointSwitchVector_ne_zero K h2 ha hb hab)).mp
+      (by simpa [x, twoPointSwitchPoint] using horth)
+  have hs := absolutePairCommonNeighbor_spec K ha hb hab
+  have hxa : x.rep ⬝ᵥ a.rep = 0 :=
+    (Projectivization.orthogonal_mk x.rep_nonzero a.rep_nonzero).mp
+      (by simpa [x] using (Projectivization.orthogonal_comm.mp
+        (((graph_adj_iff a x).mp hs.1).2)))
+  have hxb : x.rep ⬝ᵥ b.rep = 0 :=
+    (Projectivization.orthogonal_mk x.rep_nonzero b.rep_nonzero).mp
+      (by simpa [x] using (Projectivization.orthogonal_comm.mp
+        (((graph_adj_iff b x).mp hs.2.1).2)))
+  dsimp [twoPointSwitchVector] at hdot
+  rw [dot_switchVector_common _ _ _ _ hxa hxb] at hdot
+  exact hs.2.2 (by simpa [x] using
+    (Projectivization.orthogonal_mk x.rep_nonzero x.rep_nonzero).mpr hdot)
 
 end Erdos85.Polarity
