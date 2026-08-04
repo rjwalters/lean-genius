@@ -525,4 +525,31 @@ theorem boundedDegreeGadgetAttachment_impossible_of_absolute_deletions
       (hnonabsolute i x hx) (hnonabsolute i y hy) hxcard hlabel
   · exact card_deletedAbsoluteLabel_fiber_le K D hDabs
 
+/-- Quantitative consequence for a net-one repair.  If `|W|=|D|+1`, then
+every internal gadget degree is at most `|D|`; consequently a successful
+absolute-deletion repair at degree `q` must satisfy `q ≤ 2|D|+1`. -/
+theorem card_field_le_twice_deleted_add_one_of_netOne_gadget
+    (h2 : (2 : K) ≠ 0)
+    (D : Finset (P K)) (hDtwo : 2 ≤ D.card)
+    (hDabs : ∀ z ∈ D, Projectivization.orthogonal z z)
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (hWcard : Fintype.card W = D.card + 1)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : P K // v ∉ D})
+    (hcompat : GadgetAttachmentCompatible
+      (deleteVertexSetGraph (graph K) D) F A)
+    (hnewDegree : ∀ w, Nat.card K ≤
+      (attachGadget (deleteVertexSetGraph (graph K) D) F A).degree (.inr w)) :
+    Nat.card K ≤ 2 * D.card + 1 := by
+  by_contra hbad
+  have hqr : 2 * D.card + 2 ≤ Nat.card K := by omega
+  have hFdegree : ∀ w, F.degree w ≤ D.card := by
+    intro w
+    have hd := F.degree_le_card_sub_one w
+    rw [hWcard] at hd
+    omega
+  exact boundedDegreeGadgetAttachment_impossible_of_absolute_deletions
+    K h2 D.card hDtwo hqr D hDabs F A hcompat hFdegree hnewDegree
+    (by rw [hWcard]; omega)
+
 end Erdos85.Polarity

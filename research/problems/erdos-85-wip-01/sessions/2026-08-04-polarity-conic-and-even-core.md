@@ -686,6 +686,19 @@ eventually.  A scalable repair based only on absolute deletions must therefore
 have internal gadget degree growing at least roughly `q/2`, or leave this
 attachment model through nonabsolute deletions or survivor-edge surgery.
 
+For the most relevant net-one case `|W|=|D|+1`, the bounded-degree theorem
+has a sharp immediate consequence.  Every internal gadget degree is at most
+`|D|`, so any successful absolute-deletion repair must satisfy
+
+```text
+q <= 2|D|+1,
+```
+
+or equivalently `|D| >= (q-1)/2`.  Thus no bounded-size deletion can underlie
+an eventual construction, regardless of the attached gadget's shape.  Any
+net-one repair remaining inside this polarity model must replace a linear
+fraction of the absolute conic and use a correspondingly dense gadget.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
