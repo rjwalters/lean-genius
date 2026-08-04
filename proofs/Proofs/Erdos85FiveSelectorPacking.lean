@@ -1,4 +1,5 @@
 import Proofs.Erdos85GadgetExtension
+import Proofs.Erdos85IntersectingPairs
 
 /-!
 # A five-selector packing obstruction
@@ -12,6 +13,68 @@ in at most one point.
 -/
 
 namespace Erdos85
+
+/-- A rank-two intersecting multifamily with at least four indexed members is
+a star, provided repeated two-element labels can only come from the same
+index.  Singleton labels force the star directly; otherwise this is
+`pair_intersecting_star_or_card_le_three` transported along the label map. -/
+theorem intersecting_rank_two_multifamily_star_of_four
+    {X C : Type*} [DecidableEq X] [Fintype C] [DecidableEq C]
+    (S : Finset X) (label : X → Finset C)
+    (hfour : 4 ≤ S.card)
+    (hnonempty : ∀ x ∈ S, (label x).Nonempty)
+    (hcard : ∀ x ∈ S, (label x).card ≤ 2)
+    (hinter : ∀ x ∈ S, ∀ y ∈ S, ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ x ∈ S, ∀ y ∈ S,
+      (label x).card = 2 → label x = label y → x = y) :
+    ∃ c : C, ∀ x ∈ S, c ∈ label x := by
+  classical
+  by_cases hone : ∃ x ∈ S, (label x).card = 1
+  · obtain ⟨x, hx, hcardx⟩ := hone
+    obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hcardx
+    refine ⟨c, ?_⟩
+    intro y hy
+    have hxy := hinter x hx y hy
+    rw [Finset.not_disjoint_iff] at hxy
+    obtain ⟨z, hzx, hzy⟩ := hxy
+    rw [hc] at hzx
+    simp only [Finset.mem_singleton] at hzx
+    subst z
+    exact hzy
+  · push Not at hone
+    have htwo : ∀ x ∈ S, (label x).card = 2 := by
+      intro x hx
+      have hp := Finset.card_pos.mpr (hnonempty x hx)
+      have hl := hcard x hx
+      have hn := hone x hx
+      omega
+    let emb : {x // x ∈ S} ↪ Finset C :=
+      ⟨fun x => label x.1, fun x y h => by
+        apply Subtype.ext
+        exact hinj_two x.1 x.2 y.1 y.2 (htwo x.1 x.2) h⟩
+    let A : Finset (Finset C) := Finset.univ.map emb
+    have hAcard : A.card = S.card := by
+      simp [A, Fintype.card_coe]
+    have hAsized : (A : Set (Finset C)).Sized 2 := by
+      intro T hT
+      rw [Finset.mem_coe, Finset.mem_map] at hT
+      obtain ⟨x, hx, rfl⟩ := hT
+      exact htwo x.1 x.2
+    have hAint : (A : Set (Finset C)).Intersecting := by
+      intro T hT U hU hdisj
+      rw [Finset.mem_coe, Finset.mem_map] at hT hU
+      obtain ⟨x, hx, rfl⟩ := hT
+      obtain ⟨y, hy, rfl⟩ := hU
+      exact hinter x.1 x.2 y.1 y.2 hdisj
+    rcases pair_intersecting_star_or_card_le_three A hAint hAsized with hstar | hsmall
+    · obtain ⟨c, hc⟩ := hstar
+      refine ⟨c, ?_⟩
+      intro x hx
+      let xs : {x // x ∈ S} := ⟨x, hx⟩
+      apply hc (label x)
+      exact Finset.mem_map.mpr ⟨xs, Finset.mem_univ _, rfl⟩
+    · rw [hAcard] at hsmall
+      omega
 
 /-- Five subsets of size at least `q-2`, each lying in a `q`-element fibre
 over one of at most four centres, cannot have pairwise intersections of size
