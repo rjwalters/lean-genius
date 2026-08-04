@@ -48,6 +48,19 @@ theorem degree_eq_card_add_one_of_not_selfOrthogonal {y : P K}
   rw [Finset.erase_eq_self.mpr hy, card_incidentFinset,
     projectivePlane_order_eq_card K]
 
+/-- A self-orthogonal point has degree exactly `q`: its incidence line has
+`q+1` points, but the loop at the point itself is removed. -/
+theorem degree_eq_card_of_selfOrthogonal {y : P K}
+    (hyy : Projectivization.orthogonal y y) :
+    (graph K).degree y = q K := by
+  classical
+  rw [SimpleGraph.degree, neighborFinset_eq_erase_incidentFinset]
+  have hy : y ∈ incidentFinset y := by
+    simpa [incidentFinset, Configuration.ofField.mem_iff] using hyy
+  rw [Finset.card_erase_of_mem hy, card_incidentFinset,
+    projectivePlane_order_eq_card K]
+  simp [q]
+
 /-- The graph obtained by deleting a projective point. -/
 noncomputable def deletePointGraph (x : P K) :
     SimpleGraph {y : P K // y ≠ x} :=
