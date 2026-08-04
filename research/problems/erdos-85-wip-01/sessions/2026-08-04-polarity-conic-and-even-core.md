@@ -1261,11 +1261,9 @@ Consequently its nontrivial eigenvalues are `±sqrt(d-2)`.  Rationality of the
 characteristic polynomial forces `d-2` to be a square; writing
 `d-2=t²`, the trace multiplicities force `t | d=t²+2`, hence `t | 2`.
 Since `d` is even, `t` is even, so `t=2` and `d=6`.  The already formalized
-exact result `f(32)=6` then excludes this last case.  This would eliminate
-the even first-order order as well and strengthen the strict lower bound by
-one for every `d≥3`.  The integral antipodal quotient is now formalized as
-well.  Lean constructs the quotient graph on the two-element antipodal fibers
-and checks
+exact result `f(32)=6` then excludes this last case.  This program is now
+formalized end to end.  Lean constructs the quotient graph on the two-element
+antipodal fibers and checks
 
 ```text
 |Q| = |V|/2,    degree_Q(X)=d,
@@ -1273,11 +1271,20 @@ and checks
 Q^2 = (d-2)I + 2J.
 ```
 
-Thus the quotient is strongly regular with parameters
-`(d(d-1)/2+1, d, 2, 2)`.  The remaining task is now purely algebraic: adapt
-the axiom-free characteristic-polynomial machinery already used for the
-friendship theorem to this matrix identity, obtaining that `d-2` is a square
-and that its square root divides `d`.
+The quotient is strongly regular with parameters
+`(d(d-1)/2+1, d, 2, 2)`.  A rank-one determinant calculation gives the exact
+product identity for its nontrivial characteristic factor.  Unique
+factorization forces `d-2` to be a square, and splitting the factor over the
+rationals plus the zero-trace coefficient proves `sqrt(d-2) | d`.  The
+arithmetic contradiction above is checked as well.  Combining this even case
+with the earlier odd modular-trace argument gives the new parity-free theorem
+
+```text
+d(d-1)+3 <= |V|,
+minDegreeForC4 (d(d-1)+2) <= d
+```
+
+for every `d>=3`.
 
 There is already an unconditional modular consequence short of the full
 square argument.  The centered plus-space matrix
@@ -1301,10 +1308,8 @@ This argument is formalized end to end, including the consequence
 d - 2 = 2^k
 ```
 
-for some `k`.  Thus any remaining even first-order counterexample lies in
-the thin degree family `d=2+2^k`; the missing characteristic-polynomial
-step should further force `k` even and then the trace multiplicity should
-force `k=2`, i.e. `d=6`.
+for some `k`.  This formerly surviving family is now eliminated by the
+quotient characteristic-polynomial argument above.
 
 The exact small-order results have also been transported from `Fin n` to
 arbitrary finite vertex types.  They exclude `d=4` (order 14) and `d=6`
