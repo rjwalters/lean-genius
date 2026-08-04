@@ -116,4 +116,106 @@ theorem card_absolutePoints_eq_card_add_one
   · exact card_absolutePoints_eq_card_add_one_of_two_eq_zero (K := K) h2
   · exact card_absolutePoints_eq_card_add_one_of_two_ne_zero K h2
 
+/-- In characteristic two, delete the full absolute line and its nucleus.
+Every survivor is nonabsolute, is not adjacent to the nucleus, and has at most
+one neighbor on the absolute line.  The resulting graph has order `q² - 1`
+and minimum degree at least `q`. -/
+theorem c4FreeMinDegreeWitness_even_delete_absolute_nucleus (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    C4FreeMinDegreeWitness (Nat.card K * Nat.card K - 1) (Nat.card K) := by
+  let E : Finset (Projectivization K (Fin 3 → K)) :=
+    insert (nucleus K) (absolutePoints K)
+  have hnself : ¬ Projectivization.orthogonal (nucleus K) (nucleus K) := by
+    intro hn
+    exact (graph K).irrefl
+      ((selfOrthogonal_iff_nucleus_adj h2 (nucleus K)).mp hn)
+  have hnmem : nucleus K ∉ absolutePoints K := by
+    simpa [mem_absolutePoints] using hnself
+  have hEcard : E.card = Nat.card K + 2 := by
+    rw [Finset.card_insert_of_notMem hnmem,
+      card_absolutePoints_eq_card_add_one K]
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  have hremain : 1 ≤ (Nat.card K + 1) * Nat.card K + 1 - E.card := by
+    rw [hEcard]
+    apply Nat.le_sub_of_add_le
+    nlinarith
+  have habsEq : absolutePoints K = (graph K).neighborFinset (nucleus K) := by
+    ext p
+    rw [mem_absolutePoints, SimpleGraph.mem_neighborFinset]
+    exact selfOrthogonal_iff_nucleus_adj h2 p
+  have hw : C4FreeMinDegreeWitness
+      ((Nat.card K + 1) * Nat.card K + 1 - E.card) (Nat.card K) := by
+    apply c4FreeMinDegreeWitness_delete_vertex_set_of_compensated_degrees
+      (graph K) E
+    · rw [Fintype.card_eq_nat_card, card_points_tight K]
+    · rfl
+    · exact hremain
+    · exact graph_not_containsC4
+    · intro v
+      have hvnotabs : v.1 ∉ absolutePoints K := by
+        intro hv
+        exact v.2 (by simp [E, hv])
+      have hvself : ¬ Projectivization.orthogonal v.1 v.1 := by
+        simpa [mem_absolutePoints] using hvnotabs
+      have hvn : v.1 ≠ nucleus K := by
+        intro heq
+        apply v.2
+        simp [E, heq]
+      have hnadj : ¬ (graph K).Adj (nucleus K) v.1 := by
+        simpa [selfOrthogonal_iff_nucleus_adj h2 v.1] using hvself
+      have hinter : (graph K).neighborFinset v.1 ∩ E =
+          (graph K).neighborFinset v.1 ∩ absolutePoints K := by
+        ext y
+        simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+          E, Finset.mem_insert]
+        constructor
+        · rintro ⟨hvy, rfl | hyabs⟩
+          · exact False.elim
+              (hnadj (((graph K).adj_comm (nucleus K) v.1).mpr hvy))
+          · exact ⟨hvy, hyabs⟩
+        · rintro ⟨hvy, hyabs⟩
+          exact ⟨hvy, Or.inr hyabs⟩
+      have hinc : ((graph K).neighborFinset v.1 ∩ E).card ≤ 1 := by
+        rw [hinter, habsEq]
+        exact commonNeighbors_le_one v.1 (nucleus K) hvn
+      rw [degree_eq_card_add_one_of_not_selfOrthogonal hvself]
+      change Nat.card K + ((graph K).neighborFinset v.1 ∩ E).card ≤
+        Nat.card K + 1
+      omega
+  have hN : (Nat.card K + 1) * Nat.card K + 1 =
+      Nat.card K * Nat.card K + Nat.card K + 1 := by ring
+  have horderEq : (Nat.card K + 1) * Nat.card K + 1 - E.card =
+      Nat.card K * Nat.card K - 1 := by
+    rw [hEcard, hN]
+    omega
+  rw [horderEq] at hw
+  exact hw
+
+/-- The characteristic-two nucleus deletion pins down another exact value:
+`f(q² - 1) = q + 1`. -/
+theorem minDegreeForC4_even_square_sub_one
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    minDegreeForC4 (Nat.card K * Nat.card K - 1) = Nat.card K + 1 := by
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  by_cases hq2 : Nat.card K = 2
+  · rw [hq2]
+    norm_num
+    exact minDegreeForC4_eq_self_of_le_three (by omega) (by omega)
+  · have hq3 : 3 ≤ Nat.card K := by omega
+    apply Nat.le_antisymm
+    · apply minDegreeForC4_le_of_le_mul_pred
+      · apply Nat.le_sub_of_add_le
+        nlinarith
+      · rw [Nat.add_sub_cancel_right]
+        exact (Nat.sub_le _ _).trans (by nlinarith)
+    · have hw := c4FreeMinDegreeWitness_even_delete_absolute_nucleus K h2
+      have horder : 4 ≤ Nat.card K * Nat.card K - 1 := by
+        apply Nat.le_sub_of_add_le
+        nlinarith
+      have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 horder).1 hw
+      omega
+
+
+
 end Erdos85.Polarity
