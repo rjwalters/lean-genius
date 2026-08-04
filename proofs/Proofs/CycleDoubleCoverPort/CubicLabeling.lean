@@ -187,12 +187,10 @@ def compatibilityMap (G : CubicGraph V E) (f : GammaFlow G) :
   toFun x e := x.1 (G.endAt e 0) + x.1 (G.endAt e 1) + x.2 e • f.val e
   map_add' x y := by
     funext e
-    dsimp only
     simp only [Prod.fst_add, Prod.snd_add, Pi.add_apply, add_smul]
     abel
   map_smul' c x := by
     funext e
-    dsimp only
     simp only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, RingHom.id_apply,
       smul_add, mul_smul]
 
@@ -300,7 +298,6 @@ theorem dual_end_sum (G : CubicGraph V E) (φ : Module.Dual F₂ (E → Gamma))
         coordinateFunctional φ (G.edgeAt v i) (q v (G.edgeAt v i)) := by
   have key := G.sum_edgeEnds_eq_sum_vertexSlots
     (fun (e : E) (j : Fin 2) => coordinateFunctional φ e (q (G.endAt e j) e))
-  dsimp only at key
   simp only [CubicGraph.endAt_edgeAt_incidence] at key
   rw [dual_apply_eq_sum_coordinates, ← key]
   refine Finset.sum_congr rfl fun e _ => ?_
@@ -443,7 +440,6 @@ theorem compatibility_solvable (G : CubicGraph V E) (f : GammaFlow G) :
   -- The remaining quantity lives on edge ends: every edge is counted twice.
   have hcount := G.sum_edgeEnds_eq_sum_vertexSlots
     (fun (e : E) (_ : Fin 2) => functionalNonzero (coordinateFunctional φ e))
-  dsimp only at hcount
   rw [← hcount]
   refine Finset.sum_eq_zero fun e _ => ?_
   rw [Fin.sum_univ_two]
@@ -474,7 +470,7 @@ theorem compatibility_rearrange :
   calc
     a + c + (b + d) = a + b + (c + d) := by ring
     _ = a + b + (a + b + ε • h) := by rw [← hab]
-    _ = a + b + (a + b) + ε • h := by rw [add_assoc]
+    _ = a + b + (a + b) + ε • h := (add_assoc _ _ _).symm
     _ = ε • h := by rw [gamma_add_self, zero_add]
 
 section Construction
