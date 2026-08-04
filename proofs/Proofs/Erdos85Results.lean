@@ -21,6 +21,8 @@ import Proofs.Erdos85PolarityAbsoluteSetDeletion
 import Proofs.Erdos85PolarityOddSecant
 import Proofs.Erdos85PolarityConic
 import Proofs.Erdos85PolarityEven
+import Proofs.Erdos85SafeSetCounting
+import Proofs.Erdos85PolarityOddSecantCount
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
@@ -55,6 +57,11 @@ The resulting `q`-regular core has no common-neighbor-independent attachment
 set of size `q`; its common-neighbor conflict graph has independence number
 exactly `q-1`.  Thus this natural
 witness cannot settle the following monotonicity step by direct attachment.
+In odd characteristic, the degree-`q-1` vertices after deleting the full
+absolute conic are classified by unordered absolute pairs, so there are
+exactly `choose (q+1) 2` of them.  A disjoint-neighborhood counting bound then
+proves that no common-neighbor-independent selector can cover all these
+defects; direct one-vertex repair of the full deleted-conic core is impossible.
 -/
 
 namespace Erdos85

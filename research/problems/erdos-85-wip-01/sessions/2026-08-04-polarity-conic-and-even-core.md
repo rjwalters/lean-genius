@@ -82,3 +82,27 @@ The characteristic-two development is in `Erdos85PolarityEven.lean`.
    two-valued interval `{q,q+1}` at additional orders.
 3. Use the exact conflict graph geometry of the even core to classify near-safe
    sets and possible edge-switching repairs.
+
+## Later continuation: odd secant defects
+
+The odd-characteristic full-conic deletion is now understood at the defect
+level.  Its degree-`q-1` vertices are in bijection with unordered pairs of
+absolute points, hence their number is exactly
+
+```text
+choose (q + 1) 2.
+```
+
+A reusable selector-counting theorem was also proved: if `S` is
+common-neighbor-independent in a finite graph, then
+
+```text
+∑ x ∈ S, degree(x) ≤ number of vertices.
+```
+
+In particular, `|S| d ≤ n` whenever the minimum degree is at least `d`.
+Applying this to the `q²`-vertex deleted-conic core shows that no safe selector
+can contain all `choose (q+1) 2` degree defects.  Therefore the standard
+one-new-vertex attachment cannot repair this core at degree `q`.  As with the
+even-core obstruction, this rules out a natural witness-extension mechanism,
+not monotonicity itself.
