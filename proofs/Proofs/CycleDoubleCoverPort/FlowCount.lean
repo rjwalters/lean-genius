@@ -334,6 +334,32 @@ theorem hasCycleCorrection_of_integerPath
 
 /-! ### The edge-addition recurrence -/
 
+omit [DecidableEq V] in
+/-- Adding a multiple of the correction chain keeps a flow vanishing on the
+smaller forbidden set. Stated on raw edge labellings so that the equivalence
+below needs no subtype bookkeeping. -/
+theorem allowEdge_forward_zero {A : Type*} [AddCommGroup A] (S : Finset E) (e : E)
+    (c : E → ℤ) (hc0 : ∀ k ∈ S.erase e, c k = 0)
+    (f : E → A) (hf : ∀ k ∈ S, f k = 0) (x : A) :
+    ∀ k ∈ S.erase e, f k + c k • x = 0 := by
+  intro k hk
+  rw [hf k (Finset.mem_of_mem_erase hk), hc0 k hk, zero_smul, add_zero]
+
+omit [DecidableEq V] in
+/-- Subtracting the value on `e` along the correction chain restores vanishing on
+the larger forbidden set: on `e` itself because `c e = 1`, elsewhere because both
+terms already vanish. -/
+theorem allowEdge_backward_zero {A : Type*} [AddCommGroup A] (S : Finset E) (e : E)
+    (c : E → ℤ) (hce : c e = 1) (hc0 : ∀ k ∈ S.erase e, c k = 0)
+    (g : E → A) (hg : ∀ k ∈ S.erase e, g k = 0) :
+    ∀ k ∈ S, g k - c k • g e = 0 := by
+  intro k hk
+  by_cases hke : k = e
+  · subst hke
+    rw [hce, one_smul, sub_self]
+  · have hk' : k ∈ S.erase e := Finset.mem_erase.mpr ⟨hke, hk⟩
+    rw [hg k hk', hc0 k hk', zero_smul, sub_zero]
+
 /-- Edge-addition step, with the unit circulation supplied as explicit data.
 Allowing an edge equipped with a cycle correction amounts to choosing an old flow
 together with one free coefficient-group value: the value on `e`. -/
@@ -342,16 +368,12 @@ def allowEdgeEquivOf {A : Type*} [AddCommGroup A] (S : Finset E) (e : E) (he : e
     (G.ZeroOnFlows A S × A) ≃ G.ZeroOnFlows A (S.erase e) where
   toFun p :=
     ⟨fun k => p.1.1 k + c k • p.2,
-      G.isFlow_add p.1.2.1 (G.isFlow_int_smul hc p.2), fun k hk => by
-        rw [p.1.2.2 k (Finset.mem_of_mem_erase hk), hc0 k hk, zero_smul, add_zero]⟩
+      G.isFlow_add p.1.2.1 (G.isFlow_int_smul hc p.2),
+      allowEdge_forward_zero S e c hc0 p.1.1 p.1.2.2 p.2⟩
   invFun g :=
     (⟨fun k => g.1 k - c k • g.1 e,
-      G.isFlow_sub g.2.1 (G.isFlow_int_smul hc (g.1 e)), fun k hk => by
-        by_cases hke : k = e
-        · subst hke
-          rw [hce, one_smul, sub_self]
-        · have hk' : k ∈ S.erase e := Finset.mem_erase.mpr ⟨hke, hk⟩
-          rw [g.2.2 k hk', hc0 k hk', zero_smul, sub_zero]⟩,
+      G.isFlow_sub g.2.1 (G.isFlow_int_smul hc (g.1 e)),
+      allowEdge_backward_zero S e c hce hc0 g.1 g.2.2⟩,
      g.1 e)
   left_inv p := by
     have hpe : p.1.1 e = 0 := p.1.2.2 e he
@@ -407,14 +429,14 @@ theorem sum_divergence_eq_cut {A : Type*} [AddCommGroup A] (f : E → A) (U : Fi
   simp only [divergence]
   rw [Finset.sum_sub_distrib, hside 0, hside 1, ← Finset.sum_sub_distrib]
 
-omit [DecidableEq E] in
+omit [DecidableEq V] [DecidableEq E] in
 /-- `Crosses` in readable form: an edge fails to cross `U` exactly when its two
 ends agree about membership in `U`. -/
 theorem not_crosses_iff (U : Finset V) (k : E) :
     ¬ G.Crosses U k ↔ ((G.endAt k 0 ∈ U) ↔ (G.endAt k 1 ∈ U)) := by
   simp only [Crosses, not_ne_iff, eq_iff_iff]
 
-omit [DecidableEq E] in
+omit [DecidableEq V] [DecidableEq E] in
 theorem crosses_iff (U : Finset V) (k : E) :
     G.Crosses U k ↔ ¬ ((G.endAt k 0 ∈ U) ↔ (G.endAt k 1 ∈ U)) := by
   rw [← G.not_crosses_iff U k]
