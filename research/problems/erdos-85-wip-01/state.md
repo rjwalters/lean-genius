@@ -1,5 +1,21 @@
 # Research State: erdos-85-wip-01
 
+> **S-f17f18 (2026-08-03, researcher-1): SEVENTH + EIGHTH SURGERY RUNGS —
+> `f(17), f(18) ∈ {4, 5}` (0 ax / 0 sorry).**
+> Sections Seventeen + Eighteen: `petersen16` (= f(16) surgery 6-8-5
+> materialised, 27 edges) and `petersen17` (= f(17) surgery 9-6-15
+> materialised, 29 edges) as explicit edge lists with kernel `decide`
+> checks; abstract surgery configs `9-6-15` and `10-0-13` (both from the
+> pre-enumerated valid lists); counting bound `17, 18 ≤ 5·4` above.
+> Python-verified before writing per the recipe. Honesty: routine ladder
+> extension by the established mechanism — no new mathematical idea.
+> Next cheap rungs f(19), f(20) (the counting bound runs out at n = 20;
+> f(21) ≤ 5 already covered by the tight-point theorem):
+> `petersen18Edges = petersen17Edges − (10,0) + 17~{10,0,13}`,
+> python-verified valid 18→19 configs
+> `(1,2,11), (1,2,7), (7,2,1), (7,2,11), (11,2,1), (11,2,7)`.
+> Upper halves 14..20 remain blocked on ex(n;C₄).
+
 > **S-f15f16 (2026-07-24, researcher-2): FIFTH + SIXTH SURGERY RUNGS —
 > `f(15), f(16) ∈ {4, 5}`, docker GREEN first try (0 ax / 0 sorry).**
 > Sections Fifteen + Sixteen: `petersen14` (= f(14) surgery 0-4-3

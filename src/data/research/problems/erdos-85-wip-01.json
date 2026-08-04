@@ -19,9 +19,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 7,
-    "focus": "S-f15f16 (researcher-2, 2026-07-24): fifth+sixth surgery rungs — f(15), f(16) both in {4,5} (petersen14/petersen15 edge lists materialised, kernel decides, configs 0-5-7 and 6-8-5; docker GREEN first try). Exact table 1..13, membership {4,5} for 14,15,16.",
+    "since": "2026-08-03T00:00:00+00:00",
+    "iteration": 8,
+    "focus": "S-f17f18 (researcher-1, 2026-08-03): seventh+eighth surgery rungs — f(17), f(18) both in {4,5}. petersen16 (= petersen15Edges - (6,8) + 15~{6,8,5}) and petersen17 (= petersen16Edges - (9,6) + 16~{9,6,15}) materialised as edge lists; configs 9-6-15 (16->17) and 10-0-13 (17->18); all python-verified before Lean per the recipe. Kernel checks stay at 16/17 vertices. Exact table 1..13, membership {4,5} for 14..18.",
     "blockers": [
       {
         "route": "RESOLVED 2026-07-22 (was: f(7)=3, then f(8)=3): handshake-parity boost proved f(7)=3; a LOCAL triangle-partition argument (no ex(n;C4) input) proved f(8)=3. Residual blocked part: upper-Beatty points beyond j=1 (n = s^2+s+j, j>=2), odd-s points, and f(9) still need ex(n;C4)-strength input.",
@@ -54,7 +54,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "Optional: f(17)..f(20) rungs by the same recipe — materialise petersen16 (= petersen15Edges - (6,8) + vertex 15 ~ {6,8,5}), valid 16->17 configs already enumerated: (10,0,13),(10,0,14),(13,0,14),(1,2,11),(1,2,7),(7,2,11),(9,6,15). Upper halves for 14..20 blocked on ex(n;C4). Deep: monotonicity conjecture (the actual Erdos 85 question).",
+    "nextAction": "Optional: f(19), f(20) rungs by the same recipe. petersen18Edges = petersen17Edges - (10,0) + vertex 17 ~ {10,0,13}; python-verified valid 18->19 configs: (1,2,11),(1,2,7),(7,2,1),(7,2,11),(11,2,1),(11,2,7). Note 20 = 5*4 is the last n the counting upper bound f(n) <= 5 covers — f(21) <= 5 already exists via minDegreeForC4_le_tight (k=5); beyond n=20 non-tight upper halves stay blocked on ex(n;C4). Deep: monotonicity conjecture (the actual Erdos 85 question).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -62,7 +62,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: exact table f(1..13) + f(14) in {4,5} (lower rung via fourth surgery); f(21)<=5, f(31)<=6 tight-point bounds; next rungs f(15..19) same recipe, upper halves blocked on ex(n;C4)",
+    "progressSummary": "PROGRESS (S-f17f18, 2026-08-03, researcher-1): f(17) and f(18) membership rungs — minDegreeForC4_seventeen_mem and minDegreeForC4_eighteen_mem (both = 4 or = 5) via sections Seventeen/Eighteen of Erdos85Problem.lean: petersen16/petersen17 witness graphs materialised (27/29 edges), surgery configs 9-6-15 and 10-0-13, counting bound n <= 5*4 above. Routine ladder extension by the established recipe (python-verify first), not new mechanism. 0 new sorries/axioms. | PROGRESS: exact table f(1..13) + f(14) in {4,5} (lower rung via fourth surgery); f(21)<=5, f(31)<=6 tight-point bounds; next rungs f(15..19) same recipe, upper halves blocked on ex(n;C4)",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -113,7 +113,8 @@
       "containsC4_of_thirteen_minDegree_four: 13 vertices, min degree >= 4, C4-free is impossible (cherry tightness + friendship theorem)",
       "minDegreeForC4_le_four_thirteen + minDegreeForC4_thirteen: f(13) = 4, the fourth exact value, first beyond the counting range",
       "petersen13/petersen13_degree/petersen13_common_le_one + four_le_minDegreeForC4_fourteen + minDegreeForC4_fourteen_mem (section Fourteen, Erdos85Problem.lean)",
-      "Sections Fifteen+Sixteen in Erdos85Problem.lean: petersen14/petersen15 edge-list witnesses + four_le_minDegreeForC4_fifteen/sixteen + fifteen_mem/sixteen_mem (both in {4,5})"
+      "Sections Fifteen+Sixteen in Erdos85Problem.lean: petersen14/petersen15 edge-list witnesses + four_le_minDegreeForC4_fifteen/sixteen + fifteen_mem/sixteen_mem (both in {4,5})",
+      "Sections Seventeen+Eighteen of Erdos85Problem.lean (S-f17f18): petersen16Edges/petersen16 + petersen17Edges/petersen17 + degree/common-le-one kernel checks + four_le_minDegreeForC4_seventeen/_eighteen + minDegreeForC4_seventeen_mem/_eighteen_mem"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -159,7 +160,8 @@
       "Classical-instance-baked defs (Archive Friendship): prove the statement with the synthesized instance in a have, then convert h using 2 — Subsingleton.elim closes the Fintype instance mismatch; refine/rw/@-hole all fail on kernel defeq",
       "f(14) rung landed: materialise the previous surgery result as an explicit edge list (petersen13), then apply the abstract surgery again — config a=0,b=4,c=3 (edges 0-4, 4-3 triangle-free; triangles of petersen13 are exactly 10-1-6, 11-3-8, 12-9-7, one per surgery vertex). Only 13-vertex kernel decides; no 14-vertex graph decided. f(14) ∈ {4,5}; pinning 4 blocked (14 not a tight point, friendship argument inapplicable).",
       "Surgery-rung chaining is fully mechanical: python-verify edge list + config (min degree, common<=1, triangle-free path edges, a not~ c) before writing Lean — both new rungs compiled first try",
-      "petersen16 construction + seven valid 16->17 configs pre-enumerated (see knowledge.md) — f(17)..f(20) are cheap future rungs"
+      "petersen16 construction + seven valid 16->17 configs pre-enumerated (see knowledge.md) — f(17)..f(20) are cheap future rungs",
+      "S-f17f18: the surgery-rung recipe scales unchanged to 16/17-vertex kernel decides (no maxRecDepth bump needed at the section level); config choice matters for pipeline health — 9-6-15 at 16->17 preserves 12 valid 17->18 configs vs 8 for the vertex-0 family. The counting upper bound f(n) <= 5 runs out at n = 20 (= 5*4): f(19),f(20) are the last cheap rungs of this vein; f(21) <= 5 is already covered by the tight-point bound."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
@@ -190,7 +192,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.783Z",
-  "lastUpdate": "2026-07-22",
+  "lastUpdate": "2026-08-03T00:00:00+00:00",
   "significance": 7,
   "tractability": 6,
   "lastUpdatedAt": "2026-07-24"
