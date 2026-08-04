@@ -260,4 +260,88 @@ theorem degreeTwoGadgetAttachment_impossible_of_rank_two_labels
     q hq A label hcenters hlarge hnonempty hcard hlabel_inter hinj_two
     hfiber (fun i j hij => hcompat.card_selector_inter_le_one G F A hij)
 
+/-- Parameterized packing obstruction.  If there are more selectors than
+centres, every selector has size at least `q-r`, and `q ≥ 2r+2`, then two
+selectors routed to the same `q`-point centre fibre must overlap in at least
+two points, contradicting the compatibility budget. -/
+theorem too_many_large_rank_two_selectors_impossible_of_sub_degree
+    {I X C : Type*} [Fintype I] [DecidableEq I]
+    [Fintype X] [DecidableEq X] [Fintype C] [DecidableEq C]
+    (q r : ℕ) (hr : 2 ≤ r) (hqr : 2 * r + 2 ≤ q)
+    (S : I → Finset X) (label : X → Finset C)
+    (hcenters : Fintype.card C < Fintype.card I)
+    (hlarge : ∀ i, q - r ≤ (S i).card)
+    (hnonempty : ∀ i x, x ∈ S i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ S i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q)
+    (hinter : ∀ i j, i ≠ j → (S i ∩ S j).card ≤ 1) :
+    False := by
+  classical
+  have hfour : ∀ i, 4 ≤ (S i).card := by
+    intro i
+    have hi := hlarge i
+    omega
+  choose center hcenter using fun i =>
+    intersecting_rank_two_multifamily_star_of_four
+      (S i) label (hfour i)
+      (hnonempty i) (hcard i) (hlabel_inter i) (hinj_two i)
+  have hninj : ¬ Function.Injective center := by
+    intro hinj
+    exact (not_le_of_gt hcenters) (Fintype.card_le_of_injective center hinj)
+  rw [Function.not_injective_iff] at hninj
+  obtain ⟨i, j, hc, hij⟩ := hninj
+  have hsubi : S i ⊆ Finset.univ.filter fun x => center i ∈ label x := by
+    intro x hx
+    simp [hcenter i x hx]
+  have hsubj : S j ⊆ Finset.univ.filter fun x => center i ∈ label x := by
+    intro x hx
+    simp [hc, hcenter j x hx]
+  have hunion : S i ∪ S j ⊆
+      Finset.univ.filter fun x => center i ∈ label x :=
+    Finset.union_subset hsubi hsubj
+  have hucard : (S i ∪ S j).card ≤ q :=
+    (Finset.card_le_card hunion).trans (hfiber (center i))
+  have hcards := Finset.card_union_add_card_inter (S i) (S j)
+  have hicard := hinter i j hij
+  have hi := hlarge i
+  have hj := hlarge j
+  omega
+
+/-- Gadget-facing bounded-degree form.  A net-positive gadget whose new
+vertices have old-gadget degree at most `r` cannot reach degree `q` when
+`q ≥ 2r+2`, under the rank-two label hypotheses. -/
+theorem boundedDegreeGadgetAttachment_impossible_of_rank_two_labels
+    {V W C : Type*} [Fintype V] [DecidableEq V]
+    [Fintype W] [DecidableEq W] [Fintype C] [DecidableEq C]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (q r : ℕ) (hr : 2 ≤ r) (hqr : 2 * r + 2 ≤ q)
+    (A : W → Finset V) (label : V → Finset C)
+    (hcompat : GadgetAttachmentCompatible G F A)
+    (hFdegree : ∀ w, F.degree w ≤ r)
+    (hnewDegree : ∀ w, q ≤ (attachGadget G F A).degree (.inr w))
+    (hcenters : Fintype.card C < Fintype.card W)
+    (hnonempty : ∀ i x, x ∈ A i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ A i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q) :
+    False := by
+  have hlarge : ∀ i, q - r ≤ (A i).card := by
+    intro i
+    have hi := hnewDegree i
+    rw [attachGadget_degree_new] at hi
+    have hir := hFdegree i
+    omega
+  exact too_many_large_rank_two_selectors_impossible_of_sub_degree
+    q r hr hqr A label hcenters hlarge hnonempty hcard hlabel_inter
+    hinj_two hfiber
+    (fun i j hij => hcompat.card_selector_inter_le_one G F A hij)
+
 end Erdos85

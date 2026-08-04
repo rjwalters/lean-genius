@@ -447,4 +447,82 @@ theorem degreeTwoGadgetAttachment_impossible_of_absolute_deletions
       (hnonabsolute i x hx) (hnonabsolute i y hy) hxcard hlabel
   · exact card_deletedAbsoluteLabel_fiber_le K D hDabs
 
+/-- Bounded-degree polarity obstruction.  After deleting any absolute set,
+a gadget with more new vertices than deletions and maximum internal degree
+`r` cannot restore degree `q` once `q ≥ 2r+2`.  Hence every fixed-degree
+net-positive gadget architecture fails for all sufficiently large fields. -/
+theorem boundedDegreeGadgetAttachment_impossible_of_absolute_deletions
+    (h2 : (2 : K) ≠ 0) (r : ℕ) (hr : 2 ≤ r)
+    (hqr : 2 * r + 2 ≤ Nat.card K)
+    (D : Finset (P K))
+    (hDabs : ∀ z ∈ D, Projectivization.orthogonal z z)
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : P K // v ∉ D})
+    (hcompat : GadgetAttachmentCompatible
+      (deleteVertexSetGraph (graph K) D) F A)
+    (hFdegree : ∀ w, F.degree w ≤ r)
+    (hnewDegree : ∀ w, Nat.card K ≤
+      (attachGadget (deleteVertexSetGraph (graph K) D) F A).degree (.inr w))
+    (hmore : D.card < Fintype.card W) :
+    False := by
+  classical
+  have hlarge : ∀ i, Nat.card K - r ≤ (A i).card := by
+    intro i
+    have hi := hnewDegree i
+    rw [attachGadget_degree_new] at hi
+    have hir := hFdegree i
+    omega
+  have hfour : ∀ i, 4 ≤ (A i).card := by
+    intro i
+    have hi := hlarge i
+    omega
+  have hnonabsolute : ∀ i x, x ∈ A i →
+      ¬ Projectivization.orthogonal x.1 x.1 := by
+    intro i x hx hxabs
+    have hsmall := card_safe_le_two_of_contains_absolute K D hDabs (A i)
+      (GadgetAttachmentCompatible.selector_safe _ _ _ hcompat i) x hx hxabs
+    have hi := hfour i
+    omega
+  have hnonempty : ∀ i x, x ∈ A i →
+      (deletedAbsoluteLabel K D x).Nonempty := by
+    intro i x hx
+    have hex : ∃ y ∈ A i, y ≠ x := by
+      by_contra hn
+      push_neg at hn
+      have hsub : A i ⊆ {x} := by
+        intro y hy
+        simpa [hn y hy]
+      have hc := Finset.card_le_card hsub
+      simp at hc
+      have hi := hfour i
+      omega
+    obtain ⟨y, hy, hyx⟩ := hex
+    obtain ⟨a, ha⟩ := deletedAbsoluteLabel_inter_nonempty_of_safe K D (A i)
+      (GadgetAttachmentCompatible.selector_safe _ _ _ hcompat i)
+      x y hx hy hyx.symm (hnonabsolute i x hx) (hnonabsolute i y hy)
+    exact ⟨a, (Finset.mem_inter.mp ha).1⟩
+  apply Erdos85.boundedDegreeGadgetAttachment_impossible_of_rank_two_labels
+    (deleteVertexSetGraph (graph K) D) F (Nat.card K) r hr hqr A
+    (deletedAbsoluteLabel K D) hcompat hFdegree hnewDegree
+  · simpa [Fintype.card_coe] using hmore
+  · exact hnonempty
+  · intro i x hx
+    exact card_deletedAbsoluteLabel_le_two K h2 D hDabs x
+      (hnonabsolute i x hx)
+  · intro i x hx y hy
+    rw [Finset.not_disjoint_iff]
+    by_cases hxy : x = y
+    · subst y
+      obtain ⟨a, ha⟩ := hnonempty i x hx
+      exact ⟨a, ha, ha⟩
+    · obtain ⟨a, ha⟩ := deletedAbsoluteLabel_inter_nonempty_of_safe K D (A i)
+        (GadgetAttachmentCompatible.selector_safe _ _ _ hcompat i)
+        x y hx hy hxy (hnonabsolute i x hx) (hnonabsolute i y hy)
+      exact ⟨a, (Finset.mem_inter.mp ha).1, (Finset.mem_inter.mp ha).2⟩
+  · intro i x hx y hy hxcard hlabel
+    exact eq_of_deletedAbsoluteLabel_eq_of_card_two K D hDabs x y
+      (hnonabsolute i x hx) (hnonabsolute i y hy) hxcard hlabel
+  · exact card_deletedAbsoluteLabel_fiber_le K D hDabs
+
 end Erdos85.Polarity

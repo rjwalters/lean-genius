@@ -673,6 +673,19 @@ Thus every delete-`k`/attach-more-than-`k` two-regular repair is excluded at
 once; escaping this obstruction requires a denser new gadget, nonabsolute
 deletions, edge surgery among survivors, or no net vertex gain.
 
+The degree-two hypothesis can itself be removed.  If the new gadget has
+maximum internal degree at most `r >= 2`, then every selector needed to raise
+a new vertex to degree `q` has size at least `q-r`.  Pigeonholing more new
+vertices than deleted absolute centres into their forced star fibres gives
+two selectors with union at most `q`; compatibility gives intersection at
+most one.  Hence `2(q-r) <= q+1`, contradicting `q >= 2r+2`.  Lean checks the
+generic rank-two packing statement and its full polarity transport as
+`boundedDegreeGadgetAttachment_impossible_of_absolute_deletions`.  In
+particular, every fixed-bounded-degree, net-positive gadget family fails
+eventually.  A scalable repair based only on absolute deletions must therefore
+have internal gadget degree growing at least roughly `q/2`, or leave this
+attachment model through nonabsolute deletions or survivor-edge surgery.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
