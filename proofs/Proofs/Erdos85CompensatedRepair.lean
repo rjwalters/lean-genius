@@ -21,6 +21,20 @@ def deleteCrossEdges {V : Type*} [DecidableEq V]
     (H : SimpleGraph V) (S T : Finset V) : SimpleGraph V :=
   H.deleteEdges (crossEdgeSet S T)
 
+@[simp] theorem pair_mem_crossEdgeSet_iff
+    {V : Type*} [DecidableEq V] (S T : Finset V) (v w : V) :
+    s(v, w) ∈ crossEdgeSet S T ↔
+      (v ∈ S ∧ w ∈ T) ∨ (v ∈ T ∧ w ∈ S) := by
+  constructor
+  · rintro ⟨a, ha, b, hb, hab⟩
+    rw [Sym2.eq_iff] at hab
+    rcases hab with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact Or.inl ⟨ha, hb⟩
+    · exact Or.inr ⟨hb, ha⟩
+  · rintro (⟨hv, hw⟩ | ⟨hv, hw⟩)
+    · exact ⟨v, hv, w, hw, rfl⟩
+    · exact ⟨w, hw, v, hv, by simp⟩
+
 /-- The number of edges incident to `v` that are removed when all `S`–`T`
 cross edges are deleted. -/
 noncomputable def crossEdgeLoss {V : Type*} [Fintype V] [DecidableEq V]
@@ -29,6 +43,35 @@ noncomputable def crossEdgeLoss {V : Type*} [Fintype V] [DecidableEq V]
     classical
     exact ((H.neighborFinset v).filter
       (fun w => s(v, w) ∈ crossEdgeSet S T)).card
+
+/-- For a vertex in `S \ T`, cross-edge loss is its number of neighbors in
+`T`. -/
+theorem crossEdgeLoss_eq_card_neighbor_inter_right
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V) (v : V)
+    (hvS : v ∈ S) (hvT : v ∉ T) :
+    crossEdgeLoss H S T v = (H.neighborFinset v ∩ T).card := by
+  classical
+  simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT]
+
+/-- For a vertex in `T \ S`, cross-edge loss is its number of neighbors in
+`S`. -/
+theorem crossEdgeLoss_eq_card_neighbor_inter_left
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V) (v : V)
+    (hvT : v ∈ T) (hvS : v ∉ S) :
+    crossEdgeLoss H S T v = (H.neighborFinset v ∩ S).card := by
+  classical
+  simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT, and_comm]
+
+/-- Vertices outside both attachment sets lose no cross edge. -/
+theorem crossEdgeLoss_eq_zero_of_not_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V) (v : V)
+    (hvS : v ∉ S) (hvT : v ∉ T) :
+    crossEdgeLoss H S T v = 0 := by
+  classical
+  simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT]
 
 /-- Deleting the cross edges subtracts exactly `crossEdgeLoss` from every
 vertex degree.  The additive form avoids truncated subtraction. -/
