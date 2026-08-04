@@ -2,7 +2,7 @@
   "slug": "erdos-53-wip-01",
   "title": "Complete the Lean Formalization of Erdős Problem #53 (Sums and Products of Distinct Elements)",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -98,7 +98,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-23T00:00:00.000Z",
+  "lastUpdate": "2026-08-03",
   "significance": 7,
   "tractability": 6,
   "nextAction": "Optional extensions: (a) general polynomial-vs-exponential domination ∀k ∃N ∀n≥N, n^k ≤ 2^n (needs induction/analysis) to lift the prime-set connection to every k; (b) an additive richness lower bound for prime sets on the SUM side (subset sums of primes are not generally injective — quantify collisions). Chang’s theorem for arbitrary large sets remains the deep open crux and should stay axiom-documented, not axiomatized."
