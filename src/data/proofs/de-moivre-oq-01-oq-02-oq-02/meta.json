@@ -30,10 +30,16 @@
       "summary": "States the parent's OQ #2 — does the $T_n$ cos/cosh unification extend to $U_n$ and the sine ratios? — and the answer: yes, via the purely algebraic Laurent identity $U_n((w+w^{-1})/2)(w-w^{-1}) = w^{n+1}-w^{-(n+1)}$."
     },
     {
-      "title": "Part 1 — The unifying algebraic Laurent identity (★)",
+      "title": "Part 1a — The two-variable resolvent by paired induction",
       "startLine": 37,
+      "endLine": 79,
+      "summary": "`U_resolvent_aux` proves $U_n((w+v)/2)(w-v) = w^{n+1}-v^{n+1}$ for $wv=1$ by ordinary induction on the paired statement $P(m)\\wedge P(m+1)$, matching the Chebyshev recurrence's two-step structure. The constraint $wv=1$ enters exactly once in the successor case, closed by `linear_combination (w^{k+1}-v^{k+1}) * hwv`; the base cases $n=0,1$ reduce to `ring` after evaluating $U_0=1$, $U_1=2X$."
+    },
+    {
+      "title": "Part 1b — Specializing to the single-variable resolvent",
+      "startLine": 81,
       "endLine": 92,
-      "summary": "`U_resolvent_aux` proves the two-variable identity for $wv=1$ by paired induction on the Chebyshev recurrence, the constraint entering once via `linear_combination`. `U_resolvent` specializes $v=w^{-1}$. No transcendental functions appear — this is the common algebraic root of both analytic ratios."
+      "summary": "`U_resolvent` sets $v = w^{-1}$ in `U_resolvent_aux` (discharging $w\\cdot w^{-1}=1$ via `mul_inv_cancel₀`), giving the headline Laurent identity $U_n((w+w^{-1})/2)(w-w^{-1}) = w^{n+1}-w^{-(n+1)}$ for any nonzero $w$ — no transcendental functions appear, the common algebraic root of both analytic ratios."
     },
     {
       "title": "Part 2 — Both ratios as specializations of (★)",
