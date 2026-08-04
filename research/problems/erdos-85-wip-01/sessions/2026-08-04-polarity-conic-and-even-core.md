@@ -1286,6 +1286,28 @@ minDegreeForC4 (d(d-1)+2) <= d
 
 for every `d>=3`.
 
+The next order `d(d-1)+3` also has an exact two-slack classification (for
+`d>=4`).  If `E_x` is the number of vertices beyond distance two from `x`
+and `S_x` is the degree sum in the induced neighborhood, Lean proves
+
+```text
+E_x + d = 2 + S_x,    E_x <= 2,    d-2 <= S_x <= d.
+```
+
+Because `S_x` is even, odd `d` forces `E_x=1` and `S_x=d-1` at every
+vertex.  The beyond-distance-two graph would therefore be one-regular.  But
+its vertex count `d(d-1)+3` is odd, contradicting the handshake lemma.  This
+gives the additional checked odd-degree bounds
+
+```text
+d(d-1)+4 <= |V|,
+minDegreeForC4 (d(d-1)+3) <= d.
+```
+
+For even `d`, the same classification leaves exactly two vertex types:
+`(E_x,S_x)=(0,d-2)` or `(2,d)`.  Understanding the global interaction of
+these two types is the next extremal obstruction.
+
 There is already an unconditional modular consequence short of the full
 square argument.  The centered plus-space matrix
 
