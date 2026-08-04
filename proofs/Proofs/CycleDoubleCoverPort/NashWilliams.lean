@@ -477,6 +477,7 @@ theorem kaiserPartition_succ_refines {k : ℕ} (χ : E → Fin k) (n : ℕ) {u v
       rw [G.refineOnce_of_some hcol] at h
       exact h.1
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem kaiserPartition_refines_of_le {k : ℕ} (χ : E → Fin k) {m n : ℕ} (hmn : m ≤ n)
     {u v : V} (h : G.kaiserPartition χ n u v) : G.kaiserPartition χ m u v := by
   induction n, hmn using Nat.le_induction with
