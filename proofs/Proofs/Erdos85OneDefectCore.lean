@@ -1,4 +1,5 @@
 import Proofs.Erdos85DeletePair
+import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 
 /-!
 # One-defect cores for Erdős Problem 85
@@ -34,6 +35,79 @@ def IntrinsicOneDefectCore (n d : ℕ) : Prop :=
     d ≤ S.card ∧
     (∀ v, d - 1 ≤ H.degree v) ∧
     ∀ v, H.degree v = d - 1 → v ∈ S
+
+theorem degree_deleteIncidenceSet_of_ne {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) (hy : y ≠ x) :
+    (G.deleteIncidenceSet x).degree y =
+      G.degree y - if G.Adj y x then 1 else 0 := by
+  rw [degree, degree]
+  have hfin : (G.deleteIncidenceSet x).neighborFinset y =
+      (G.neighborFinset y).erase x := by
+    ext z
+    simp [SimpleGraph.deleteIncidenceSet_adj, hy, and_comm]
+  rw [hfin]
+  by_cases hyx : G.Adj y x
+  · rw [if_pos hyx, Finset.card_erase_of_mem
+      ((G.mem_neighborFinset y x).2 hyx)]
+  · rw [if_neg hyx, Nat.sub_zero, Finset.erase_eq_of_notMem]
+    exact fun h => hyx ((G.mem_neighborFinset y x).1 h)
+
+theorem commonNeighborIndependent_neighborFinset_deleteIncidenceSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (hfree : ¬ containsC4 V G) :
+    CommonNeighborIndependent (G.deleteIncidenceSet x) (G.neighborFinset x) := by
+  intro a ha b hb hab
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+  intro z hz
+  rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mem_neighborFinset] at hz
+  have haz : G.Adj a z := (SimpleGraph.deleteIncidenceSet_adj.mp hz.1).1
+  have hbz : G.Adj b z := (SimpleGraph.deleteIncidenceSet_adj.mp hz.2).1
+  have hzx : z ≠ x := (SimpleGraph.deleteIncidenceSet_adj.mp hz.1).2.2
+  rw [SimpleGraph.mem_neighborFinset] at ha hb
+  exact hfree (containsC4_of_rim (a := a) (b := z) (c := b) (d := x)
+    haz hbz.symm hb.symm ha hab hzx
+    (G.ne_of_adj haz).symm (G.ne_of_adj hbz.symm)
+    (G.ne_of_adj ha) (G.ne_of_adj hb))
+
+/-- Star deletion produces the required large safe selector and repairs every
+possible deficient vertex except the now-isolated center. -/
+theorem exists_starDeleted_almostIntrinsic {V : Type*} [Fintype V]
+    [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) {d : ℕ}
+    (hd : 1 ≤ d) (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G) :
+    let H := G.deleteIncidenceSet x
+    let S := G.neighborFinset x
+    ¬ containsC4 V H ∧
+      CommonNeighborIndependent H S ∧
+      d ≤ S.card ∧
+      H.degree x = 0 ∧
+      (∀ y, y ≠ x → d - 1 ≤ H.degree y) ∧
+      ∀ y, y ≠ x → H.degree y = d - 1 → y ∈ S := by
+  dsimp
+  refine ⟨fun h => hfree (containsC4_mono (G.deleteIncidenceSet_le x) h),
+    commonNeighborIndependent_neighborFinset_deleteIncidenceSet G x hfree,
+    ?_, ?_, ?_, ?_⟩
+  · simpa [SimpleGraph.card_neighborFinset_eq_degree] using
+      hmin.trans (G.minDegree_le_degree x)
+  · rw [degree]
+    have hfin : (G.deleteIncidenceSet x).neighborFinset x = ∅ := by
+      ext y
+      simp [SimpleGraph.deleteIncidenceSet_adj]
+    rw [hfin]
+    simp
+  · intro y hy
+    rw [degree_deleteIncidenceSet_of_ne G x y hy]
+    have hydeg := hmin.trans (G.minDegree_le_degree y)
+    split <;> omega
+  · intro y hy hydeg
+    rw [degree_deleteIncidenceSet_of_ne G x y hy] at hydeg
+    have hymin := hmin.trans (G.minDegree_le_degree y)
+    by_contra hyS
+    rw [SimpleGraph.mem_neighborFinset] at hyS
+    have hyS' : ¬ G.Adj y x := fun h => hyS h.symm
+    rw [if_neg hyS', Nat.sub_zero] at hydeg
+    omega
 
 /-- **Intrinsic normal form for a one-defect core.**  When `d` is positive,
 the core has minimum degree at least `d - 1`, and every vertex at that lower
