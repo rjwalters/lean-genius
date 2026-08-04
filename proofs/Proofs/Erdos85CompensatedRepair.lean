@@ -21,6 +21,33 @@ def deleteCrossEdges {V : Type*} [DecidableEq V]
     (H : SimpleGraph V) (S T : Finset V) : SimpleGraph V :=
   H.deleteEdges (crossEdgeSet S T)
 
+/-- The number of edges incident to `v` that are removed when all `S`–`T`
+cross edges are deleted. -/
+noncomputable def crossEdgeLoss {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V) (v : V) : ℕ :=
+  by
+    classical
+    exact ((H.neighborFinset v).filter
+      (fun w => s(v, w) ∈ crossEdgeSet S T)).card
+
+/-- Deleting the cross edges subtracts exactly `crossEdgeLoss` from every
+vertex degree.  The additive form avoids truncated subtraction. -/
+theorem degree_deleteCrossEdges_add_loss
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V)
+    [DecidableRel (deleteCrossEdges H S T).Adj] (v : V) :
+    H.degree v = (deleteCrossEdges H S T).degree v + crossEdgeLoss H S T v := by
+  letI : DecidablePred (fun w : V => s(v, w) ∈ crossEdgeSet S T) := Classical.decPred _
+  have hneighbors : (deleteCrossEdges H S T).neighborFinset v =
+      (H.neighborFinset v).filter (fun w => s(v, w) ∉ crossEdgeSet S T) := by
+    ext w
+    simp [deleteCrossEdges, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.deleteEdges_adj]
+  simp only [SimpleGraph.degree, hneighbors, crossEdgeLoss]
+  rw [add_comm]
+  exact (Finset.card_filter_add_card_filter_not
+    (fun w => s(v, w) ∈ crossEdgeSet S T)).symm
+
 /-- Common-neighbor independence is preserved when edges are deleted. -/
 theorem CommonNeighborIndependent.mono
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -114,6 +141,30 @@ theorem c4FreeMinDegreeWitness_add_pair_deleteCrossEdges
       hSsafe hTsafe hinter
   · intro v
     simpa [K] using hcomp v
+
+/-- A directly checkable form of cross-edge compensation.  Each old degree
+may pay for the exact number of deleted incident cross edges, while membership
+in the attachment sets contributes one new edge apiece. -/
+theorem c4FreeMinDegreeWitness_add_pair_deleteCrossEdges_of_loss
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] {n d : ℕ}
+    (hcard : Fintype.card V = n) (hfree : ¬ containsC4 V H)
+    (S T : Finset V)
+    [DecidableRel (deleteCrossEdges H S T).Adj]
+    (hS : d - 1 ≤ S.card) (hT : d - 1 ≤ T.card) (hd : 1 ≤ d)
+    (hSsafe : CommonNeighborIndependent H S)
+    (hTsafe : CommonNeighborIndependent H T)
+    (hinter : (S ∩ T).card ≤ 1)
+    (hloss : ∀ v : V,
+      d + crossEdgeLoss H S T v ≤ H.degree v +
+        (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) :
+    C4FreeMinDegreeWitness (n + 2) d := by
+  apply c4FreeMinDegreeWitness_add_pair_deleteCrossEdges H hcard hfree S T
+      hS hT hd hSsafe hTsafe hinter
+  intro v
+  have hdeg := degree_deleteCrossEdges_add_loss H S T v
+  have hv := hloss v
+  omega
 
 /-- **Broad delete-one/add-pair surgery.**  After deleting `x`, one may replace
 the induced survivor graph by any spanning subgraph `K`.  Compatibility and
