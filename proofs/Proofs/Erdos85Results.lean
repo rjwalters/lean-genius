@@ -11,6 +11,7 @@ import Proofs.Erdos85PrimeFamily
 import Proofs.Erdos85PrimeSequence
 import Proofs.Erdos85VertexDeletion
 import Proofs.Erdos85IteratedDeletion
+import Proofs.Erdos85ControlledDeletion
 import Proofs.Erdos85ConsecutiveRamsey
 import Proofs.Erdos85ProblemConflict
 import Proofs.Erdos85PolarityDeletion
