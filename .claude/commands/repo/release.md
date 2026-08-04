@@ -136,10 +136,10 @@ release tag), **[c]** continue and leave the gap, or **[a]** abort.
 
 Detect the host repo's bump mechanism. **First match wins**, in this order. An
 explicit `scripts/version.sh` is honored first; a plain `VERSION` file is the
-most-general fallback. Because `npm` is matched on `package.json` alone — before
-the `VERSION` fallback — the result is **provisional** whenever both files
-coexist: reconcile it against the root `VERSION` file (see *Cross-source
-reconciliation* below) before treating `VERSION_TOOL` as final.
+most-general fallback. Because `npm` is matched on any version-bearing
+`package.json` — before the `VERSION` fallback — the result is **provisional**
+whenever both files coexist: reconcile it against the root `VERSION` file (see
+*Cross-source reconciliation* below) before treating `VERSION_TOOL` as final.
 
 ```bash
 VERSION_TOOL="" ; WHY=""
@@ -157,7 +157,10 @@ elif command -v bump2version >/dev/null 2>&1 && [ -f .bumpversion.cfg ]; then
   VERSION_TOOL="bump2version"; WHY="bump2version + .bumpversion.cfg"
 elif command -v poetry >/dev/null 2>&1 && [ -f pyproject.toml ] && grep -q '\[tool.poetry\]' pyproject.toml; then
   VERSION_TOOL="poetry"; WHY="poetry + [tool.poetry]"
-elif command -v npm >/dev/null 2>&1 && [ -f package.json ]; then
+elif [ -f pyproject.toml ] && grep -qE '^\[project\]' pyproject.toml && \
+     awk '/^\[project\]/{f=1;next} /^\[/{f=0} f' pyproject.toml | grep -qE '^version[[:space:]]*='; then
+  VERSION_TOOL="pyproject"; WHY="pyproject.toml [project].version (PEP 621)"
+elif command -v npm >/dev/null 2>&1 && [ -f package.json ] && grep -q '"version"' package.json; then
   VERSION_TOOL="npm"; WHY="npm + package.json"
 elif [ -f VERSION ]; then
   VERSION_TOOL="version-file"; WHY="plain VERSION file at repo root"
@@ -165,18 +168,31 @@ fi
 echo "${VERSION_TOOL:-<none>} — ${WHY:-no tool detected}"
 ```
 
+Two branch details are load-bearing:
+
+- **`poetry` stays ahead of `pyproject`.** Modern poetry projects also carry a
+  `[project]` table, so ordering is what keeps `poetry version` (the correct
+  apply path for those repos) winning over a raw TOML edit.
+- **The PEP 621 check is scoped to the `[project]` table.** The `awk`
+  block-extractor feeds `grep` only the lines *inside* `[project]`, so an
+  unrelated `version = …` in e.g. `[tool.poetry.dependencies]` can't
+  false-positive the branch. Likewise `npm` now requires a `"version"` field
+  rather than the mere presence of `package.json` — a version-less scaffold
+  (`{"private": true}`) cannot be the version source, so it falls through the
+  chain instead of misdirecting the bump.
+
 **Surface the detected tool to the user.** If none is detected, do not proceed
 silently — offer: **[m]** manual (they edit manifests, you commit + tag), or
 **[a]** abort.
 
 ### Cross-source reconciliation (VERSION vs package.json)
 
-`npm` is matched on the mere presence of `package.json`, so a repo that keeps a
-plain root `VERSION` file **and** a `package.json` detects as `npm` even when
-`VERSION` is the maintained source of truth — a blind `npm version` would then
-bump and tag the wrong line. Whenever the provisional tool is `npm` **and** a
-root `VERSION` file also exists **and** `package.json` carries a `version` field,
-read both and reconcile before finalizing `VERSION_TOOL`:
+`npm` is matched on any `package.json` carrying a `version` field, so a repo that
+keeps a plain root `VERSION` file **and** a versioned `package.json` detects as
+`npm` even when `VERSION` is the maintained source of truth — a blind `npm
+version` would then bump and tag the wrong line. Whenever the provisional tool is
+`npm` **and** a root `VERSION` file also exists, read both and reconcile before
+finalizing `VERSION_TOOL`:
 
 ```bash
 # Runs only when detection landed on npm but a root VERSION file also coexists.
@@ -233,9 +249,12 @@ git diff "${last}..HEAD" --stat
 ```
 
 Read the current version per tool (`./scripts/version.sh`; `grep -m1 '^version'
-Cargo.toml`; `poetry version -s`; `node -p "require('./package.json').version"`;
-`cat VERSION`; …). If there are **zero** commits since the last tag, stop —
-nothing to release.
+Cargo.toml`; `poetry version -s`; `python3 -c "import tomllib;
+print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])"` for
+`pyproject` (Python 3.11+; on older Python fall back to the same
+`awk`-scoped-then-`sed` one-liner the Phase 2 branch uses); `node -p
+"require('./package.json').version"`; `cat VERSION`; …). If there are **zero**
+commits since the last tag, stop — nothing to release.
 
 Present a semver analysis (https://semver.org) against whatever public surface
 the repo exposes (API, CLI, protocol, config, file formats):
@@ -320,15 +339,35 @@ Once approved:
      bumpversion)       bumpversion <level> --tag --commit ;;
      bump2version)      bump2version <level> --tag --commit ;;
      poetry)            poetry version <level> ;;  # then commit + tag v$(poetry version -s)
+     pyproject)         python3 -c 'import re,sys;p="pyproject.toml";t=open(p).read();n=re.subn(r"(?ms)(^\[project\][^\n]*\n(?:(?!^\[)[^\n]*\n)*?version[ \t]*=[ \t]*)\"[^\"]*\"",lambda m:m.group(1)+f"\"{sys.argv[1]}\"",t,count=1);sys.exit("ERROR: no [project].version found in pyproject.toml") if n[1]==0 else open(p,"w").write(n[0])' "$NEW" && { [ -f uv.lock ] && command -v uv >/dev/null 2>&1 && uv lock || : ; } ;;  # then commit (with CHANGELOG) + tag v$NEW
      npm)               npm version <level> -m "chore: bump version to %s" ;;
      version-file)      printf '%s\n' "$NEW" > VERSION ;;  # then commit (with CHANGELOG) + tag v$NEW
    esac
    ```
 
    For tools that don't self-commit (`cargo-set-version`, `cargo-workspace`,
-   `poetry`, `version-file`), stage the bumped files **plus `CHANGELOG.md`**,
-   commit, and `git tag -a "v$NEW" -m "v$NEW"` — match the repo's existing
-   commit/tag convention (check `git log` and `git tag`).
+   `poetry`, `pyproject`, `version-file`), stage the bumped files **plus
+   `CHANGELOG.md`**, commit, and `git tag -a "v$NEW" -m "v$NEW"` — match the
+   repo's existing commit/tag convention (check `git log` and `git tag`).
+
+   The `pyproject` branch rewrites only the `version` line **inside** the
+   `[project]` table and leaves every other line byte-identical. Three details
+   are load-bearing, each guarding a failure this branch would otherwise cause:
+
+   - **Scoping is line-anchored** (`(?:(?!^\[)[^\n]*\n)*?`), matching lines up
+     to the next table *header*, rather than "any run of non-`[` characters".
+     The looser form silently matches nothing whenever a list-valued key
+     (`classifiers`, `dependencies`, `keywords`) appears before `version` in
+     `[project]` — a no-op bump that would still get committed and tagged.
+   - **A zero-substitution result is fatal**, not a no-op: the branch exits
+     non-zero with `ERROR: no [project].version found` so a mis-shaped
+     `pyproject.toml` fails the apply instead of tagging a stale version.
+   - **`uv.lock` is refreshed when present**, so `uv sync --locked` CI doesn't
+     break on the now-stale locked version. It's gated on both the lock file
+     existing and `uv` being on `PATH` (with a trailing `|| :` so a flit- or
+     setuptools-only PEP 621 repo with no lock file doesn't fail the branch on
+     the gate's own false status). Stage the regenerated `uv.lock` alongside
+     `pyproject.toml` and `CHANGELOG.md` in the version commit.
 3. **Verify**: re-read the version and confirm the tag exists
    (`git tag --sort=-v:refname | head -1`). For cargo, `cargo check --workspace`.
    Also confirm the `## Unreleased` fold (Phase 4) actually landed: grep the

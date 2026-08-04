@@ -965,9 +965,127 @@ function qsplit(s,   out, n, i, c, j, qc, ci, inner, SQ, DQ) {
 #     smuggled payload is never hidden behind an opening quote.
 #   - An unterminated quote copies the remainder verbatim (best-effort; never
 #     widens a deny into an allow).
+#
+# HEREDOC AWARENESS (#84)
+#
+# The lexer above tracked quote state only — it had no concept of heredoc syntax
+# (`<<WORD`, `<<-WORD`, `<<'WORD'`, `<<"WORD"`). A composite like
+#   gh issue create --body "$(cat <<'EOF'
+#   shutdown Iq is specified at ...
+#   EOF
+#   )"
+# therefore fell through to the default "a raw newline splits" rule (the outer
+# double-quoted span carries `$(`, so by the #3679 safety floor its separators
+# stay ACTIVE), and every heredoc BODY line became its own phantom top-level
+# segment. lifecycle_or_cloud_reason() then read `toks[1]` of that phantom
+# segment and hard-denied on the word `shutdown`; the same phantom segments
+# reach parse_force_ops() and extract_rm_targets(). Heredoc body lines are DATA,
+# never command boundaries, so:
+#   - A heredoc opener seen OUTSIDE any inert quoted span records its terminator
+#     word (quotes/backslash stripped) and the `<<-` leading-TAB-strip flag. The
+#     REST of the opener line is segmented normally, so `cat <<EOF | grep x`
+#     still splits at the pipe.
+#   - The newline that ends the opener line closes that segment (it IS a real
+#     command boundary), and the body lines through the terminator are then
+#     SKIPPED entirely — they are data, so they contribute no segment and no
+#     tokens. Normal segmentation resumes on the line after the terminator, so a
+#     real command following the terminator still gets its own segment and still
+#     denies.
+#   - Multiple heredocs on one line (`cmd <<A <<B`) consume body A in full before
+#     body B, matching real shell semantics.
+#   - An UNTERMINATED heredoc skips the remainder of the buffer — which is
+#     exactly what a real shell does with it (the rest of the input IS the body
+#     and never executes), and mirrors the unterminated-quote fallback above.
+#     Anything BEFORE the opener is still segmented normally.
+#   - SAFETY CARVE-OUT: a body attached to a BARE (unquoted) delimiter is still
+#     parameter/command-expanded by the shell, so if such a body carries `$(` or
+#     a backtick the whole pending-heredoc region reverts to the legacy
+#     separator-active treatment — the same #3679 floor the quoted-span branch
+#     applies. A quoted/escaped delimiter (`<<'EOF'`, `<<"EOF"`, `<<\EOF`)
+#     suppresses expansion, so its body is unconditionally inert.
+#   - `<<<` is a here-STRING, not a heredoc, and is deliberately not matched.
+#   - A `<<` inside a shell COMMENT (`echo hi # <<EOF`) is not an operator at
+#     all, so the opener probe is SUPPRESSED from a word-initial unquoted `#`
+#     through the end of that physical line. Without this, the phantom opener's
+#     terminator never appears and the unterminated-heredoc rule would skip the
+#     rest of the buffer — hiding a real command on the NEXT line from
+#     extract_rm_targets(), which parses raw $COMMAND rather than
+#     $COMMAND_NO_COMMENT. Only the probe is suppressed (the characters still
+#     flow through normal separator handling), because skipping to the newline
+#     would in turn hide a trailing `; <cmd>` after a `#` that sits inside a
+#     command-substitution-bearing quoted span.
+#   - A newline preceded by an ODD number of backslashes is a LINE CONTINUATION,
+#     not the end of the logical line, so the pending bodies do NOT start there
+#     (`cat <<EOF \` + newline + `&& <cmd>` really does run `<cmd>`). Such a
+#     newline falls through to the legacy separator handling, so the continued
+#     line is segmented as the real commands it is; the bodies then start at the
+#     first NON-continued newline, matching the shell.
+# Safety floor unchanged: the raw ALWAYS_BLOCK_PATTERNS catastrophic scan reads
+# the command string directly (never through ml_segment), so a `$(...)`-smuggled
+# payload inside a heredoc body still denies, and a GENUINE multi-line command
+# whose later real line is dangerous still yields a real segment and still denies.
 # =============================================================================
 _ML_QSPLIT_AWK='
-function ml_segment(buf, segs,   SQ, DQ, s, n, seg, segc, i, c, qc, ci, j, inner) {
+# Probe for a heredoc redirection operator at position i (the caller guarantees
+# substr(s, i, 2) is "<<"). On success fills out["delim"] (terminator word, with
+# any surrounding quotes/backslash stripped), out["strip"] (1 for the `<<-` form,
+# which strips leading TABs from the terminator line) and out["quoted"] (1 when
+# the delimiter was quoted or backslash-escaped, i.e. the body is NOT expanded)
+# and returns the index of the first character AFTER the operator. Returns 0 when
+# this is NOT a heredoc opener: a `<<<` here-string, a `<<` with no delimiter
+# word, or a delimiter whose opening quote is never closed.
+function hd_opener(s, n, i, out,   j, c, q, w, SQ, DQ) {
+    SQ = sprintf("%c", 39)   # single quote
+    DQ = sprintf("%c", 34)   # double quote
+    j = i + 2
+    if (substr(s, j, 1) == "<") return 0        # `<<<` here-string, not a heredoc
+    out["strip"] = 0
+    out["quoted"] = 0
+    if (substr(s, j, 1) == "-") { out["strip"] = 1; j++ }
+    while (j <= n && (substr(s, j, 1) == " " || substr(s, j, 1) == "\t")) j++
+    w = ""
+    c = substr(s, j, 1)
+    if (c == SQ || c == DQ) {
+        q = c
+        out["quoted"] = 1                       # no expansion inside the body
+        j++
+        while (j <= n && substr(s, j, 1) != q) { w = w substr(s, j, 1); j++ }
+        if (j > n) return 0                     # unterminated delimiter quote
+        j++                                     # consume the closing quote
+    } else {
+        if (c == "\\") { out["quoted"] = 1; j++ }   # `<<\EOF` (escaped, unexpanded)
+        while (j <= n) {
+            c = substr(s, j, 1)
+            if (c ~ /[A-Za-z0-9_.:@%+=\/-]/) { w = w c; j++ } else break
+        }
+    }
+    if (w == "") return 0
+    # Reject shapes that are far more likely to be an arithmetic left-shift than
+    # a heredoc, so `$((1 << 3))` / `(( x << 2 ))` are not misread as openers that
+    # would swallow the rest of the buffer:
+    #   - an all-digit BARE delimiter (`<< 3`) — real delimiters are words;
+    #   - a delimiter not followed by a redirection/separator/whitespace boundary
+    #     (`<< 3))` — a genuine opener is always followed by more redirections,
+    #     a separator, or end of line.
+    if (!out["quoted"] && w ~ /^[0-9]+$/) return 0
+    c = substr(s, j, 1)
+    if (j <= n && c != " " && c != "\t" && c != "\n" && c != ";" && c != "&" &&
+        c != "|" && c != "<" && c != ">") return 0
+    out["delim"] = w
+    return j
+}
+# A newline at position i is a LINE CONTINUATION when it is preceded by an ODD
+# number of backslashes (`\` + newline is removed by the shell; `\\` + newline is
+# a literal backslash followed by a REAL newline). A continued newline does not
+# end the logical line, so heredoc bodies must NOT start there.
+function cont_nl(s, i,   bs, p) {
+    bs = 0
+    for (p = i - 1; p >= 1 && substr(s, p, 1) == "\\"; p--) bs++
+    return (bs % 2)
+}
+function ml_segment(buf, segs,   SQ, DQ, s, n, seg, segc, i, c, qc, ci, j, inner,
+                    hdc, hddelim, hdstrip, hdquoted, hdo, hdnext, h, k, unsafe,
+                    arO, arC, eol, nexti, line, t, incmt, pc) {
     SQ = sprintf("%c", 39)   # single quote
     DQ = sprintf("%c", 34)   # double quote
     split("", segs)          # clear the caller-supplied out-array
@@ -975,6 +1093,8 @@ function ml_segment(buf, segs,   SQ, DQ, s, n, seg, segc, i, c, qc, ci, j, inner
     n = length(s)
     seg = ""
     segc = 0
+    hdc = 0                  # heredoc openers pending a body on the next line
+    incmt = 0                # a shell COMMENT is open on the current line
     i = 1
     while (i <= n) {
         c = substr(s, i, 1)
@@ -990,6 +1110,13 @@ function ml_segment(buf, segs,   SQ, DQ, s, n, seg, segc, i, c, qc, ci, j, inner
             inner = substr(s, i + 1, ci - i - 1)
             if (index(inner, "$(") == 0 && index(inner, "`") == 0) {
                 seg = seg substr(s, i, ci - i + 1)   # inert span: verbatim (newlines stay literal)
+                # NOTE: `incmt` is deliberately NOT cleared here even when the
+                # span carries a newline. A real comment ends at that newline, so
+                # leaving the flag set can only suppress the opener probe for
+                # LONGER than the shell would — and over-suppression is strictly
+                # narrowing (it just restores the legacy pre-#84 treatment).
+                # Clearing it here would re-enable the probe on text the shell may
+                # still regard as commented, which is the widening direction.
                 i = ci + 1
                 continue
             }
@@ -997,7 +1124,94 @@ function ml_segment(buf, segs,   SQ, DQ, s, n, seg, segc, i, c, qc, ci, j, inner
             i++
             continue
         }
+        # A `#` that STARTS a word opens a shell COMMENT that runs to the end of
+        # the physical line, so any `<<WORD` after it is TEXT, not an operator.
+        # A word starts at the beginning of the buffer or right after an unquoted
+        # blank or shell METACHARACTER (` ` \t \n ; & | ( ) < >) — the full set
+        # bash uses to delimit words, so `;#`, `&&#`, `|#` and `(cmd)#` are all
+        # comment starts. A `#` in any OTHER position is part of a word
+        # (`http://x#y`, `${#arr}`, `ab#cd`) and is correctly NOT a comment.
+        #
+        # Only the heredoc-opener PROBE is suppressed while the flag is set — the
+        # characters still flow through the normal separator handling below,
+        # because skipping to the newline here would hide a trailing `; <cmd>` in
+        # a shape like `echo "$(id) # x" ; <cmd>` (a `#` inside a
+        # command-substitution-bearing quoted span is walked by this loop, and
+        # bash really does run that command). Probe suppression is strictly
+        # NARROWING: it can only restore the legacy pre-#84 treatment, never
+        # widen a deny into an allow — which is why the metacharacter set is
+        # chosen as a SUPERSET of the shapes bash actually treats as comments.
+        if (c == "#" && !incmt) {
+            pc = (i == 1) ? "" : substr(s, i - 1, 1)
+            if (i == 1 || pc == " " || pc == "\t" || pc == "\n" || pc == ";" ||
+                pc == "&" || pc == "|" || pc == "(" || pc == ")" ||
+                pc == "<" || pc == ">") incmt = 1
+        }
+        if (c == "<" && i < n && substr(s, i + 1, 1) == "<" && !incmt) {
+            if (substr(s, i + 2, 1) == "<") {
+                # `<<<` is a here-STRING: consume the whole operator so its third
+                # `<` cannot be re-probed as the start of a `<< WORD` heredoc.
+                seg = seg substr(s, i, 3)
+                i += 3
+                continue
+            }
+            # Inside an unclosed arithmetic expansion (`$((` / `((`) a `<<` is a
+            # left-shift operator, never a heredoc — count the unbalanced opens
+            # in the segment so far and skip the probe when we are inside one.
+            t = seg; arO = gsub(/\(\(/, "", t)
+            t = seg; arC = gsub(/\)\)/, "", t)
+            hdnext = (arO > arC) ? 0 : hd_opener(s, n, i, hdo)
+            if (hdnext > 0) {
+                # Record the pending heredoc and copy the operator verbatim (this
+                # also consumes a quoted delimiter, so its quotes never open a
+                # phantom quoted span). The REST of this line segments normally.
+                seg = seg substr(s, i, hdnext - i)
+                hdc++
+                hddelim[hdc] = hdo["delim"]
+                hdstrip[hdc] = hdo["strip"]
+                hdquoted[hdc] = hdo["quoted"]
+                i = hdnext
+                continue
+            }
+        }
+        if (c == "\n" && hdc > 0 && !cont_nl(s, i)) {
+            # End of the opener line: the pending heredoc BODIES follow. Look
+            # ahead across every pending body, in opener order, to find where the
+            # last one ends — and whether any EXPANSION-CAPABLE body (bare
+            # delimiter) carries a command substitution, which a real shell WOULD
+            # execute. That case keeps the legacy separator-active treatment
+            # (same #3679 floor the quoted-span branch above applies), so a
+            # smuggled payload is never hidden behind a heredoc opener.
+            k = i + 1
+            unsafe = 0
+            for (h = 1; h <= hdc; h++) {
+                while (k <= n) {
+                    eol = index(substr(s, k), "\n")
+                    nexti = (eol == 0) ? n + 1 : k + eol
+                    line = substr(s, k, nexti - k)
+                    t = line
+                    sub(/\n$/, "", t)
+                    if (hdstrip[h]) sub(/^\t+/, "", t)
+                    k = nexti
+                    if (t == hddelim[h]) break        # terminator line, body done
+                    if (!hdquoted[h] && (index(line, "$(") > 0 || index(line, "`") > 0)) unsafe = 1
+                }
+            }
+            hdc = 0
+            if (!unsafe) {
+                # The opener line is a complete simple command; the body (through
+                # its terminator, or through end-of-buffer when unterminated) is
+                # inert DATA and contributes no segment at all.
+                segs[++segc] = seg
+                seg = ""
+                incmt = 0
+                i = k
+                continue
+            }
+            # else: fall through to the ordinary separator handling below.
+        }
         if (c == ";" || c == "&" || c == "|" || c == "\n") {
+            if (c == "\n") incmt = 0   # a comment ends at the physical newline
             segs[++segc] = seg; seg = ""; i++; continue
         }
         seg = seg c
