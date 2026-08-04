@@ -1,4 +1,6 @@
 import Proofs.Erdos85SecondOrderStructure
+import Mathlib.LinearAlgebra.Matrix.Gershgorin
+import Mathlib.LinearAlgebra.Matrix.SchurComplement
 
 /-!
 # The even second-order combined defect graph
@@ -315,6 +317,64 @@ theorem adjMatrix_comm_secondOrderDefect_of_even
   simp only [C, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
     Matrix.one_mul]
   noncomm_ring
+
+/-- Over the rationals, `(d-1)I-D` is nonsingular.  Strict diagonal
+dominance is enough: its diagonal has size at least three and each row has
+exactly two off-diagonal unit entries. -/
+theorem secondOrder_scalar_sub_defect_det_ne_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) :
+    Matrix.det ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+      (secondOrderDefectGraph G).adjMatrix ℚ) ≠ 0 := by
+  let D := secondOrderDefectGraph G
+  let B := (d - 1 : ℚ) • (1 : Matrix V V ℚ) - D.adjMatrix ℚ
+  apply det_ne_zero_of_sum_row_lt_diag
+  intro x
+  have hdegree : D.degree x = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard x
+  have hoff : ∑ y ∈ Finset.univ.erase x, ‖B x y‖ = (2 : ℝ) := by
+    change ∑ y ∈ Finset.univ.erase x,
+      ‖((d - 1 : ℚ) • (1 : Matrix V V ℚ) - D.adjMatrix ℚ) x y‖ = _
+    calc
+      _ = ∑ y ∈ Finset.univ.erase x, if D.Adj x y then (1 : ℝ) else 0 := by
+        apply Finset.sum_congr rfl
+        intro y hy
+        have hne : x ≠ y := by
+          simpa using (Finset.mem_erase.mp hy).1.symm
+        simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+          SimpleGraph.adjMatrix_apply, hne, if_false, smul_eq_mul,
+          mul_zero, zero_sub]
+        by_cases hadj : D.Adj x y <;> simp [hadj]
+      _ = ((Finset.univ.erase x).filter (fun y => D.Adj x y)).card := by
+        simpa using (Finset.sum_boole (R := ℝ)
+          (fun y : V => D.Adj x y) (Finset.univ.erase x))
+      _ = 2 := by
+        congr 1
+        have hfilt : (Finset.univ.erase x).filter (fun y => D.Adj x y) =
+            D.neighborFinset x := by
+          ext y
+          simp only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ,
+            and_true, SimpleGraph.mem_neighborFinset]
+          constructor
+          · exact fun h => h.2
+          · intro hadj
+            exact ⟨(D.ne_of_adj hadj).symm, hadj⟩
+        rw [hfilt, D.card_neighborFinset_eq_degree, hdegree]
+  rw [hoff]
+  change (2 : ℝ) < ‖B x x‖
+  dsimp only [B]
+  simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+    SimpleGraph.adjMatrix_apply, D.loopless.irrefl, if_false, sub_zero,
+    smul_eq_mul]
+  simp only [if_pos, mul_one]
+  rw [← Rat.norm_cast_real, Real.norm_eq_abs, abs_of_nonneg]
+  · exact_mod_cast (show (2 : ℤ) < (d : ℤ) - 1 by omega)
+  · exact_mod_cast (show (0 : ℤ) ≤ (d : ℤ) - 1 by omega)
 
 end
 

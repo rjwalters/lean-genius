@@ -1419,3 +1419,10 @@ be even.  This determinant/cycle factorization remains to be formalized; it
 is a constraint rather than yet a contradiction.  The stronger prospective
 route is to use `AD=DA` on the cyclotomic eigenspaces of each monochromatic
 cycle and exploit that `A` is an integral square root of `(d-1)I-D` there.
+
+The nonsingularity needed for the rank-one determinant step is now checked:
+over `Q`, `(d-1)I-D` is strictly diagonally dominant, because every diagonal
+entry has norm `d-1>=3` while every row has exactly two off-diagonal unit
+entries.  Hence its determinant is nonzero.  This permits the matrix
+determinant lemma to be applied to the addition of `J` without any unproved
+spectral assumption.
