@@ -696,3 +696,37 @@ distinct quotient vertices have exactly two common neighbors
 (`thirtyTwoQuotient_common_eq_two`).  Thus the full `(16,6,2,2)` strongly
 regular parameter reduction is formal; only the nonexistence of the required
 real signing remains outside Lean.
+
+## Finite signing certificates
+
+The signing obstruction has now been split into a graph-structure part and a
+pure parity part.  `Erdos85SignedSRGObstruction` checks two parity certificates
+inside Lean.  If the quotient contains a `K₄`, the three distinct four-cycles
+on those vertices are all required to be negative; adding the three parity
+equations cancels every edge sign and gives a contradiction.  In the
+Shrikhande case, an explicit list of eleven endpoint/common-neighbor
+quadruples similarly cancels every sign.  Lean verifies both contradictions,
+and `noNegativeSigning1622_of_certificateDichotomy` shows that the structural
+dichotomy between these two certificates would prove `NoNegativeSigning1622`.
+
+There is also a classification-free computational route.  After relabeling a
+chosen vertex as `0` and its six neighbors as `1,...,6`, a neighbor triangle
+is the `K₄` case.  In the remaining case the induced 2-regular neighborhood
+is a six-cycle, whose cyclic order can be fixed.  Switching signs at vertices
+normalizes the zeroth sign row to zero.  The resulting problem is encoded by
+two row-major 256-bit matrices.  Degree and common-neighbor constraints are
+population counts, while negative common-path parity is the population-one
+condition
+
+```text
+cpop ((rowA x & rowA y) & (rowS x xor rowS y)) = 1.
+```
+
+Lean's verified bit-vector/SAT procedure has checked that the normalized
+constraints are inconsistent.  The theorem is
+`no_bvNegativeCompact1622_of_normalizedCycle` in
+`Erdos85SignedSRGSAT`.  What remains before claiming the exact value is to
+formalize the transport from an arbitrary `(16,6,2,2)` signing to the
+normalized Boolean matrices (finite relabeling, the local degree-two
+dichotomy, and sign switching).  Thus `f(32)=6` is extremely close but is not
+yet claimed here.
