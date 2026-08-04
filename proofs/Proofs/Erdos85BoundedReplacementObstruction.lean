@@ -220,6 +220,107 @@ theorem sum_replacementLoss_le_card_mul_degree_add_card_mul_choose_of_tight_set
           (hcompat.sum_choose_two_attachmentMultiplicity_le
             (deleteVertexSetGraph G D) F A)
 
+/-- Without any regularity or tightness assumption, the natural upper bound
+is the sum of the degrees of the deleted vertices plus the selector-pair
+amplification budget. -/
+theorem sum_replacementLoss_le_sum_deletedDegrees_add_card_mul_choose
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {k : ℕ}
+    (hDcard : D.card = k)
+    (hcompat : GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A) :
+    (∑ w : W, ∑ a ∈ A w,
+      replacementDegreeLoss G D (deleteVertexSetGraph G D) a) ≤
+      (∑ x ∈ D, G.degree x) + k * (Fintype.card W).choose 2 := by
+  let loss : {v : V // v ∉ D} → ℕ := fun v =>
+    (G.neighborFinset v.1 ∩ D).card
+  have hloss : ∀ v : {v : V // v ∉ D},
+      replacementDegreeLoss G D (deleteVertexSetGraph G D) v = loss v := by
+    intro v
+    simp [replacementDegreeLoss, subgraphDegreeLoss, loss]
+  rw [sum_sum_weight_eq_sum_weight_mul_attachmentMultiplicity]
+  simp_rw [hloss]
+  have hlossle : ∀ v, loss v ≤ k := by
+    intro v
+    rw [← hDcard]
+    exact Finset.card_le_card Finset.inter_subset_right
+  have hpoint : ∀ v, loss v * attachmentMultiplicity A v ≤
+      loss v + k * (attachmentMultiplicity A v).choose 2 := by
+    intro v
+    have ht := le_one_add_choose_two (attachmentMultiplicity A v)
+    have hmul := Nat.mul_le_mul_left (loss v) ht
+    have hchoose := Nat.mul_le_mul_right
+      ((attachmentMultiplicity A v).choose 2) (hlossle v)
+    nlinarith
+  calc
+    (∑ v, loss v * attachmentMultiplicity A v) ≤
+        ∑ v, (loss v + k * (attachmentMultiplicity A v).choose 2) :=
+      Finset.sum_le_sum fun v _ => hpoint v
+    _ = (∑ v, loss v) +
+        k * ∑ v, (attachmentMultiplicity A v).choose 2 := by
+      rw [Finset.sum_add_distrib, Finset.mul_sum]
+    _ ≤ (∑ x ∈ D, G.degree x) +
+        k * (Fintype.card W).choose 2 := by
+      apply Nat.add_le_add
+      · exact sum_card_neighbor_inter_deleted_le_sum_degrees G D
+      · exact Nat.mul_le_mul_left k
+          (hcompat.sum_choose_two_attachmentMultiplicity_le
+            (deleteVertexSetGraph G D) F A)
+
+/-- **Deleted-degree-surplus obstruction.**  In an arbitrary Moore-layer
+minimum-degree-`d` graph, successful deletion-only delete-`k`/add-`k+1`
+replacement forces the deleted vertices collectively to have large degree
+surplus above `d`. -/
+theorem degree_sub_replacementPolynomial_le_deletedDegreeSurplus_of_moore
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d k : ℕ}
+    (hd : 1 ≤ d) (hk : k ≤ d - 1)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hDcard : D.card = k) (hWcard : Fintype.card W = k + 1)
+    (hmin : d ≤ G.minDegree)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w)
+    (hcompat : GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A) :
+    d - ((k + 1) * (k + 1) + k * (k + 1).choose 2) ≤
+      ∑ x ∈ D, (G.degree x - d) := by
+  let P := (k + 1) * (k + 1) + k * (k + 1).choose 2
+  let E := ∑ x ∈ D, (G.degree x - d)
+  have hlower :=
+    card_succ_mul_degree_pred_sub_card_le_replacementLoss_of_mooreOrder
+      G D (deleteVertexSetGraph G D) (le_refl _) F A hd hk hcard
+        hDcard hWcard hmin hnew hcompat
+  have hupper :=
+    sum_replacementLoss_le_sum_deletedDegrees_add_card_mul_choose
+      G D F A hDcard hcompat
+  have hdegrees : ∀ x : V, d ≤ G.degree x := by
+    intro x
+    exact hmin.trans (G.minDegree_le_degree x)
+  have hsum : (∑ x ∈ D, G.degree x) = k * d + E := by
+    calc
+      (∑ x ∈ D, G.degree x) = ∑ x ∈ D, (d + (G.degree x - d)) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        exact (Nat.add_sub_of_le (hdegrees x)).symm
+      _ = k * d + E := by simp [E, hDcard, Finset.sum_add_distrib]
+  rw [hsum, hWcard] at hupper
+  change d - P ≤ E
+  by_cases hPd : P ≤ d
+  · have hPsub : d - P + P = d := Nat.sub_add_cancel hPd
+    have hksub : d - 1 - k + (k + 1) = d := by omega
+    have heq : (k + 1) * (d - 1 - k) =
+        k * d + k * (k + 1).choose 2 + (d - P) := by
+      dsimp [P] at hPsub ⊢
+      nlinarith
+    have htotal : (k + 1) * (d - 1 - k) ≤
+        k * d + E + k * (k + 1).choose 2 := hlower.trans hupper
+    rw [heq] at htotal
+    omega
+  · simp [Nat.sub_eq_zero_of_le (Nat.le_of_not_ge hPd)]
+
 /-- **Fixed-size replacement no-go for a tight deleted set.**  Global
 regularity can be weakened to minimum degree at least `d` together with
 degree exactly `d` on the vertices selected for deletion. -/

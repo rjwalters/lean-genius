@@ -1015,6 +1015,23 @@ loss(v) t_v ≤ loss(v) + k choose(t_v,2).
 Summing and using the selector-pair bound yields
 
 ```text
+weighted deleted-neighbor loss
+  ≤ ∑_{x∈D} degree(x) + k choose(k+1,2).
+```
+
+Writing the deleted degrees as `kd` plus their surplus above the target gives
+the fully nonregular necessary condition
+
+```text
+d - ((k+1)^2 + k choose(k+1,2))
+  ≤ ∑_{x∈D} (degree(x)-d).
+```
+
+Thus a fixed-size deletion-only scheme in an arbitrary Moore-layer witness
+must locate a deleted set whose total degree surplus grows linearly with `d`.
+The tight-set no-go is the zero-surplus specialization.
+
+```text
 ∑_w ∑_{a∈A(w)} replacementLoss(a)
   ≤ kd + k choose(m,2).
 ```
@@ -1027,10 +1044,12 @@ proves nonexistence whenever
 ```
 
 Thus for every fixed `k`, arbitrary delete-`k`/add-`k+1` replacement without
-extra survivor-edge surgery fails for all sufficiently large regular degree.
-The `k=1` case recovers the exact threshold `d≥6`.  Any eventual extension
-strategy in this framework must therefore let `k` grow with `d` or make
-essential use of compensated old-edge modification.
+extra survivor-edge surgery fails on tight deletion sets for all sufficiently
+large target degrees.  The `k=1` case recovers the exact threshold `d≥6` for
+the tight vertex that every exact-minimum-degree graph possesses.  Any
+eventual extension strategy in this framework must therefore let `k` grow
+with `d`, find enough degree surplus in the deleted set, or make essential use
+of compensated old-edge modification.
 
 ## Quantitative bounded-replacement dichotomy
 

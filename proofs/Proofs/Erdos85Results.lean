@@ -214,6 +214,11 @@ scheme of this form fails for all sufficiently large target degree provided
 the deleted vertices are tight; the rest of the graph need not be regular.
 Thus `k` must grow with `d`, the deletion set must include higher-degree
 vertices, or additional survivor-edge surgery must be essential.
+The higher-degree escape is quantitative in complete generality: every
+successful deletion-only replacement in a minimum-degree-`d` Moore-layer
+graph forces the deleted-set degree surplus
+`Σ_{x∈D}(degree(x)-d)` to be at least
+`d-((k+1)²+k*choose(k+1,2))`.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the
