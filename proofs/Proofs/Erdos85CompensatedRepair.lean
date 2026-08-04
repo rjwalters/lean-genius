@@ -200,4 +200,42 @@ theorem c4FreeMinDegreeWitness_delete_add_pair_of_compensated_subgraph
   rw [← heq]
   exact hw
 
+/-- **Delete-one/cross-delete/add-pair surgery.**  Delete `x`, remove all
+cross edges between two safe attachment sets in the survivor graph, and then
+attach an adjacent pair.  The exact loss inequality is sufficient to obtain
+an order-`n+1` witness. -/
+theorem c4FreeMinDegreeWitness_delete_add_pair_deleteCrossEdges_of_loss
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) {n d : ℕ}
+    (hn : 1 ≤ n) (hcard : Fintype.card V = n)
+    (hfree : ¬ containsC4 V G)
+    (S T : Finset {y : V // y ≠ x})
+    [DecidableRel (G.induce {y | y ≠ x}).Adj]
+    [DecidableRel
+      (deleteCrossEdges (G.induce {y | y ≠ x}) S T).Adj]
+    (hS : d - 1 ≤ S.card) (hT : d - 1 ≤ T.card) (hd : 1 ≤ d)
+    (hSsafe : CommonNeighborIndependent (G.induce {y | y ≠ x}) S)
+    (hTsafe : CommonNeighborIndependent (G.induce {y | y ≠ x}) T)
+    (hinter : (S ∩ T).card ≤ 1)
+    (hloss : ∀ v : {y : V // y ≠ x},
+      d + crossEdgeLoss (G.induce {y | y ≠ x}) S T v ≤
+        (G.induce {y | y ≠ x}).degree v +
+          (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) :
+    C4FreeMinDegreeWitness (n + 1) d := by
+  have hHcard : Fintype.card {y : V // y ≠ x} = n - 1 := by
+    simp [hcard]
+  have hHfree : ¬ containsC4 {y : V // y ≠ x}
+      (G.induce {y : V | y ≠ x}) := by
+    intro hC4
+    apply hfree
+    rcases hC4 with ⟨f, hf, hadj⟩
+    exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
+      fun i j hij => hadj i j hij⟩
+  have hw := c4FreeMinDegreeWitness_add_pair_deleteCrossEdges_of_loss
+    (G.induce {y : V | y ≠ x}) hHcard hHfree S T
+      hS hT hd hSsafe hTsafe hinter hloss
+  have heq : n - 1 + 2 = n + 1 := by omega
+  rw [← heq]
+  exact hw
+
 end Erdos85
