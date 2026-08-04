@@ -120,6 +120,21 @@ theorem mem_inter_of_one_defect_pos_crossEdgeLoss
     · simp only [if_neg hvS, add_zero] at hbudget
       omega
 
+/-- With the paired-attachment intersection bound, at most one one-defect
+vertex can suffer positive cross-edge loss. -/
+theorem card_one_defect_pos_loss_le_one
+    {V : Type*} [DecidableEq V] (D S T : Finset V)
+    {d : ℕ} (degree loss : V → ℕ) (hd : 1 ≤ d)
+    (hdeg : ∀ v ∈ D, degree v = d - 1)
+    (hbudget : ∀ v ∈ D, d + loss v ≤ degree v +
+      (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0))
+    (hloss : ∀ v ∈ D, 1 ≤ loss v)
+    (hinter : (S ∩ T).card ≤ 1) : D.card ≤ 1 := by
+  apply (Finset.card_le_card ?_).trans hinter
+  intro v hv
+  exact mem_inter_of_one_defect_pos_crossEdgeLoss S T hd v
+    (hdeg v hv) (hbudget v hv) (hloss v hv)
+
 
 /-- Deleting the cross edges subtracts exactly `crossEdgeLoss` from every
 vertex degree.  The additive form avoids truncated subtraction. -/
