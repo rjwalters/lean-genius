@@ -185,4 +185,22 @@ theorem crossEdgeSwitch_minDegree_of_unique_defect {V : Type*} [Fintype V]
   · exact (hother v hv).trans
       (degree_deleteCrossEdges_le_crossEdgeSwitch H x w v)
 
+/-- Witness-level form of the unique-defect switch theorem.  This is the
+final abstract assembly interface used by finite-geometry constructions. -/
+theorem c4FreeMinDegreeWitness_crossEdgeSwitch_of_unique_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).Adj]
+    {n d : ℕ} (hcard : Fintype.card V = n)
+    (hfree : ¬ containsC4 V H) (hxw : ¬ H.Adj x w) (hne : x ≠ w)
+    (hx : (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).degree x = d - 1)
+    (hother : ∀ v ≠ x, d ≤ (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).degree v) :
+    C4FreeMinDegreeWitness n d := by
+  apply c4FreeMinDegreeWitness_of_card_eq (crossEdgeSwitch H x w) hcard
+  · exact crossEdgeSwitch_minDegree_of_unique_defect H x w d hxw hne hx hother
+  · exact crossEdgeSwitch_not_containsC4 H x w hfree
+
 end Erdos85
