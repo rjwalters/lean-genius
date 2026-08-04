@@ -83,12 +83,20 @@
       "mathContext": "The 'almost definitional' part the open question identifies."
     },
     {
-      "id": "aperiodic",
-      "title": "The Orbit Never Returns",
+      "id": "aperiodic-orbit",
+      "title": "The Orbit Never Returns to 1",
       "startLine": 50,
+      "endLine": 68,
+      "summary": "exp_two_pi_ne_one_of_irrational: e^{2πiαn} ≠ 1 for n ≠ 0, when α is irrational. e^{2πiαn} = 1 forces n·α = k for some integer k (via exp_eq_one_iff and cancelling I, 2π), but n·α is irrational (n ≠ 0) while k is an integer — contradiction via Int.not_irrational.",
+      "mathContext": "$e^{2\\pi i\\alpha n}=1 \\Rightarrow n\\alpha = k \\in \\mathbb{Z}$, contradicting irrationality of $n\\alpha$ for $n\\neq 0$."
+    },
+    {
+      "id": "branch-injectivity",
+      "title": "Branch Injectivity from Aperiodicity",
+      "startLine": 70,
       "endLine": 88,
-      "summary": "exp_two_pi_ne_one_of_irrational (e^{2πiαn} ≠ 1 for n ≠ 0) and branch_injective (k ↦ e^{2πiαk} injective) — the real single-valuedness content.",
-      "mathContext": "Irrational α ⟹ no finite cyclic ambiguity, unlike the rational q-fold case."
+      "summary": "branch_injective: k ↦ e^{2πiαk} is injective on ℤ for irrational α — reduces e^{2πiαj} = e^{2πiαk} to e^{2πiα(j−k)} = 1 (via exp_eq_exp_iff_exp_sub_eq_one and a push_cast/ring rewrite) and applies exp_two_pi_ne_one_of_irrational to force j = k.",
+      "mathContext": "Injectivity follows directly from aperiodicity: $e^{2\\pi i\\alpha j}=e^{2\\pi i\\alpha k} \\Rightarrow e^{2\\pi i\\alpha(j-k)}=1 \\Rightarrow j=k$."
     },
     {
       "id": "bundle",
