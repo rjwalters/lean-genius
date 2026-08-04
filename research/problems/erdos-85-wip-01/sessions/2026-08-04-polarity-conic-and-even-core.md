@@ -867,3 +867,32 @@ paid once per gadget vertex through deletions incident to attachment
 vertices.  Those same losses must then be compensated by the final
 attachments, quantitatively linking the gadget-size obstruction to the
 previous repair-cascade obstruction.
+
+## Selector multiplicity obstruction
+
+The weighted loss `L` cannot be concentrated without limit.  Let `t_x` be
+the number of gadget selectors containing an old vertex `x`.  Since any two
+distinct compatible selectors intersect in at most one old vertex,
+double-counting pairs of selectors through old vertices gives
+
+```text
+∑_x choose(t_x,2) ≤ choose(m,2).
+```
+
+This is formalized by mapping each incidence `(x,{u,w})` to the selector pair
+`{u,w}`; compatibility makes that map injective.
+
+If `H` has degree exactly `d` at `x` and replacing `H` by `K` deletes
+`ℓ_x` incident edges, final degree at least `d` forces `t_x ≥ ℓ_x`.
+More generally, attachments must cover loss beyond the old degree surplus.
+Consequently, for every `q`,
+
+```text
+#{x : deg_H(x)=d and ℓ_x≥q} * choose(q,2) ≤ choose(m,2).
+```
+
+In particular, at most `choose(m,2)` tight vertices can each suffer loss at
+least two.  This is a global cascade restriction complementary to the
+weighted-loss lower bound: small gadgets may need substantial old-edge loss
+to overcome the Moore deficit, but compatibility prevents that loss from
+being repaid at too many tight vertices with high selector multiplicity.

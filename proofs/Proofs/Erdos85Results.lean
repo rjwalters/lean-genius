@@ -31,6 +31,7 @@ import Proofs.Erdos85GadgetExtension
 import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85CompensatedGadget
+import Proofs.Erdos85GadgetMultiplicity
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -177,6 +178,11 @@ the replacement gadget.  The pure bound then gains precisely the
 attachment-weighted old-degree loss `L`.  At Moore-layer order it forces
 `m(d-1-(m-1)²) ≤ L`, so every unit of gadget-size deficit must be paid by
 old-edge losses at attachment vertices and subsequently compensated.
+Such compensation cannot be concentrated arbitrarily.  If `t_x` is the
+number of selectors containing `x`, compatibility gives
+`Σ_x choose(t_x,2) ≤ choose(m,2)`.  At a degree-`d` tight vertex, incident
+old-edge loss `ℓ_x` forces `t_x ≥ ℓ_x`; hence the number of tight vertices
+with loss at least `q` times `choose(q,2)` is at most `choose(m,2)`.
 -/
 
 namespace Erdos85
