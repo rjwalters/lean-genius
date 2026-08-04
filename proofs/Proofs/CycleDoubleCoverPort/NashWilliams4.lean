@@ -238,6 +238,7 @@ theorem satisfiesTreePackingCondition_of_hasTreePacking [Nonempty V] {k : ℕ}
       simpa [U] using (Finset.card_biUnion hpair)
     _ ≤ (G.crossingEdges P).card := Finset.card_le_card hUsub
 
+omit [DecidableEq V] in
 /-- At a stable Kaiser partition, the partition inequality forces a cyclic residual
 edge crossing that partition; hence that edge has a finite level and is superfluous. -/
 theorem hasSuperfluousEdge_of_condition_of_disconnected [Nonempty V] {k : ℕ}
