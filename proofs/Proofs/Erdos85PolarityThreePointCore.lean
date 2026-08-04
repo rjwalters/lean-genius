@@ -230,6 +230,53 @@ theorem card_pairPole_commonNeighbors_third_absolute_eq_one
     ha hb hab hc hca hcb
       ((graph_adj_iff _ _).mpr ⟨hne, hortho⟩)
 
+/-- The canonical intersection of a pair pole's polar line with the polar
+line of a third absolute point. -/
+noncomputable def pairPoleThirdAbsoluteAnchor {a b c : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) : P K :=
+  Classical.choose (Finset.card_pos.mp (by
+    rw [card_pairPole_commonNeighbors_third_absolute_eq_one K
+      h2 ha hb hc hab hca hcb]
+    decide : 0 < ((graph K).neighborFinset
+      (absolutePairCommonNeighbor K ha hb hab) ∩
+      (graph K).neighborFinset c).card))
+
+theorem pairPoleThirdAbsoluteAnchor_mem {a b c : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
+    pairPoleThirdAbsoluteAnchor K h2 ha hb hc hab hca hcb ∈
+      (graph K).neighborFinset (absolutePairCommonNeighbor K ha hb hab) ∩
+      (graph K).neighborFinset c := by
+  exact Classical.choose_spec (Finset.card_pos.mp (by
+    rw [card_pairPole_commonNeighbors_third_absolute_eq_one K
+      h2 ha hb hc hab hca hcb]
+    decide : 0 < ((graph K).neighborFinset
+      (absolutePairCommonNeighbor K ha hb hab) ∩
+      (graph K).neighborFinset c).card))
+
+theorem pairPoleThirdAbsoluteAnchor_not_absolute {a b c : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
+    ¬ Projectivization.orthogonal
+      (pairPoleThirdAbsoluteAnchor K h2 ha hb hc hab hca hcb)
+      (pairPoleThirdAbsoluteAnchor K h2 ha hb hc hab hca hcb) := by
+  have hm := (Finset.mem_inter.mp
+    (pairPoleThirdAbsoluteAnchor_mem K h2 ha hb hc hab hca hcb)).2
+  have hadj : (graph K).Adj c
+      (pairPoleThirdAbsoluteAnchor K h2 ha hb hc hab hca hcb) := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hm
+  exact not_selfOrthogonal_of_adj_selfOrthogonal hadj hc
+
 /-- Pair poles of two secants sharing exactly one absolute endpoint are
 distinct. -/
 theorem absolutePairCommonNeighbor_ne_shared

@@ -37,6 +37,7 @@ import Proofs.Erdos85PolarityTangentSwitch
 import Proofs.Erdos85PolarityThreePointCore
 import Proofs.Erdos85PolarityThreePointPathSwitch
 import Proofs.Erdos85PolarityThreePointDynamicSwitch
+import Proofs.Erdos85PolarityThreePointSecondSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness

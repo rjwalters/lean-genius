@@ -470,3 +470,26 @@ requirements on any proposed completion: the partner is distinct, the old
 pair is nonadjacent, and the defect endpoint has zero loss.  Together with
 the tight-set avoidance theorem, this gives a compact certificate that every
 hypothetical second-stage partner must satisfy.
+
+## Canonical tight anchor at the remaining defect
+
+There is a distinguished vertex in the remaining pair pole's neighborhood:
+the unique common neighbor of that `{b,c}` pole and the third deleted
+absolute point `a`.  The new definition `pairPoleThirdAbsoluteAnchor`
+packages this projective-line intersection, and `remainingPairPoleAnchor`
+places it in the three-point core.  The checked lemmas prove that this anchor
+is nonabsolute, is adjacent among the deleted points only to `a`, and has
+three-point-core degree exactly `q`.  It is adjacent to neither endpoint of
+the first switch, so it suffers zero first-stage loss and
+`firstPairPoleSwitch_degree_remainingPairPoleAnchor` proves that it remains
+degree `q` in the intermediate graph.
+
+This identifies a single canonical tight neighbor of the remaining defect.
+The finite computations show that every eligible partner off the tangent at
+`a`, with a small adjacency subcase, damages this anchor.  Partners on that
+tangent are nonabsolute secant points: except for the two old pair poles they
+have a second surviving absolute neighbor, which is itself tight and is
+damaged by the second cross deletion.  For the two old pair poles, the
+previous `q-2` clean-neighbor path obstruction supplies the damaged tight
+vertices.  These cases now give a concrete route to the uniform incidence
+lemma rather than an undifferentiated search over all projective points.
