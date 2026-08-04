@@ -634,4 +634,21 @@ theorem degree_le_order_sub_max_reduced_bound_sub_one
     G hfour hdegree hfree x
   omega
 
+/-- Near the bottom of the admissible order range, the combined reduced-core
+bound leaves no room for a high-degree vertex, so the witness is regular. -/
+theorem regular_of_order_lt_degree_add_two_add_max_reduced_bound
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G)
+    (hsmall : n < d + 2 +
+      max ((d + 1).choose 2) ((d - 1) * (d - 2) + 1)) :
+    ∀ x, G.degree x = d := by
+  intro x
+  have hxlow : d ≤ G.degree x := by
+    rw [← hdegree]
+    exact G.minDegree_le_degree x
+  have hxbound := degree_add_one_add_max_reduced_bound_le_order
+    G hfour hdegree hfree x
+  omega
+
 end Erdos85
