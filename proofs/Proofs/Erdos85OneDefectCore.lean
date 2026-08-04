@@ -25,19 +25,22 @@ def OneDefectCore (n d : ℕ) : Prop :=
     d ≤ S.card ∧
     ∀ v, d ≤ (attachVertex H S).degree (some v)
 
+/-- The intrinsic selector-cover formulation of a one-defect core. -/
+def IntrinsicOneDefectCore (n d : ℕ) : Prop :=
+  ∃ (H : SimpleGraph (Fin n)) (_ : DecidableRel H.Adj)
+      (S : Finset (Fin n)),
+    ¬ containsC4 (Fin n) H ∧
+    CommonNeighborIndependent H S ∧
+    d ≤ S.card ∧
+    (∀ v, d - 1 ≤ H.degree v) ∧
+    ∀ v, H.degree v = d - 1 → v ∈ S
+
 /-- **Intrinsic normal form for a one-defect core.**  When `d` is positive,
 the core has minimum degree at least `d - 1`, and every vertex at that lower
 degree must be selected for repair.  Thus the remaining extension problem is
 precisely to find a large safe selector covering all deficient vertices. -/
 theorem oneDefectCore_iff_intrinsic {n d : ℕ} (hd : 1 ≤ d) :
-    OneDefectCore n d ↔
-      ∃ (H : SimpleGraph (Fin n)) (_ : DecidableRel H.Adj)
-          (S : Finset (Fin n)),
-        ¬ containsC4 (Fin n) H ∧
-        CommonNeighborIndependent H S ∧
-        d ≤ S.card ∧
-        (∀ v, d - 1 ≤ H.degree v) ∧
-        ∀ v, H.degree v = d - 1 → v ∈ S := by
+    OneDefectCore n d ↔ IntrinsicOneDefectCore n d := by
   constructor
   · rintro ⟨H, hdec, S, hfree, hsafe, hcard, hold⟩
     letI : DecidableRel H.Adj := hdec
@@ -184,5 +187,17 @@ theorem minDegreeForC4_le_succ_iff_top_oneDefectCore {n : ℕ} (hn : 4 ≤ n) :
     have hw := c4FreeMinDegreeWitness_succ_iff_oneDefectCore.mpr hcore
     have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).1 hw
     omega
+
+/-- **Intrinsic top-level reduction of Erdős 85.**  Once the threshold is at
+least two, one-step monotonicity says exactly that there is a `C₄`-free core
+of minimum degree `f(n)-2` whose deficient vertices can all be covered by a
+safe selector of size `f(n)-1`. -/
+theorem minDegreeForC4_le_succ_iff_intrinsicOneDefectCore {n : ℕ}
+    (hn : 4 ≤ n) (hthreshold : 2 ≤ minDegreeForC4 n) :
+    minDegreeForC4 n ≤ minDegreeForC4 (n + 1) ↔
+      IntrinsicOneDefectCore n (minDegreeForC4 n - 1) := by
+  rw [minDegreeForC4_le_succ_iff_top_oneDefectCore hn,
+    oneDefectCore_iff_intrinsic]
+  omega
 
 end Erdos85
