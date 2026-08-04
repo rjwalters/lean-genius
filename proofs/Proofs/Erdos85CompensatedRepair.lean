@@ -77,6 +77,50 @@ theorem crossEdgeLoss_eq_zero_of_not_mem
   classical
   simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT]
 
+/-- A vertex with the one-unit deletion defect must receive at least one of
+the two new attachment edges. -/
+theorem mem_union_of_one_defect_compensated
+    {V : Type*} [DecidableEq V] (S T : Finset V)
+    {d degree loss : ℕ} (hd : 1 ≤ d) (v : V) (hdeg : degree = d - 1)
+    (hbudget : d + loss ≤ degree +
+      (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) :
+    v ∈ S ∪ T := by
+  by_contra hv
+  have hvS : v ∉ S := fun h => hv (Finset.mem_union_left T h)
+  have hvT : v ∉ T := fun h => hv (Finset.mem_union_right S h)
+  rw [hdeg] at hbudget
+  simp only [if_neg hvS, if_neg hvT, add_zero] at hbudget
+  omega
+
+/-- If a one-defect vertex also loses a cross edge, both new attachment edges
+are forced. -/
+theorem mem_inter_of_one_defect_pos_crossEdgeLoss
+    {V : Type*} [DecidableEq V] (S T : Finset V)
+    {d degree loss : ℕ} (hd : 1 ≤ d) (v : V) (hdeg : degree = d - 1)
+    (hbudget : d + loss ≤ degree +
+      (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0))
+    (hloss : 1 ≤ loss) :
+    v ∈ S ∩ T := by
+  rw [Finset.mem_inter]
+  constructor
+  · by_contra hvS
+    rw [hdeg] at hbudget
+    simp only [if_neg hvS] at hbudget
+    by_cases hvT : v ∈ T
+    · simp only [if_pos hvT] at hbudget
+      omega
+    · simp only [if_neg hvT, add_zero] at hbudget
+      omega
+  · by_contra hvT
+    rw [hdeg] at hbudget
+    simp only [if_neg hvT, add_zero] at hbudget
+    by_cases hvS : v ∈ S
+    · simp only [if_pos hvS] at hbudget
+      omega
+    · simp only [if_neg hvS, add_zero] at hbudget
+      omega
+
+
 /-- Deleting the cross edges subtracts exactly `crossEdgeLoss` from every
 vertex degree.  The additive form avoids truncated subtraction. -/
 theorem degree_deleteCrossEdges_add_loss
