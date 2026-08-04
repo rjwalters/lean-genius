@@ -93,6 +93,74 @@ theorem exists_third_absolute {a b : P K}
   obtain ⟨w, hwabs, hwout⟩ := Finset.exists_of_ssubset hss
   refine ⟨w, (mem_absolutePoints K w).mp hwabs, ?_, ?_⟩
   · intro h; exact hwout (by simp [h])
+
+/-- The pole of the secant through `a,b` is nonadjacent to every third
+absolute point: its polar line already meets the odd conic at `a,b`. -/
+theorem not_adj_absolutePairCommonNeighbor_of_third_absolute {a b w : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b)
+    (hw : Projectivization.orthogonal w w) (hwa : w ≠ a) (hwb : w ≠ b) :
+    ¬ (graph K).Adj (absolutePairCommonNeighbor K ha hb hab) w := by
+  intro hxw
+  let x := absolutePairCommonNeighbor K ha hb hab
+  have hs := absolutePairCommonNeighbor_spec K ha hb hab
+  have hle := absoluteTwoSecant_of_two_ne_zero K h2 x hs.2.2
+  have hsub : ({a,b,w} : Finset (P K)) ⊆
+      (graph K).neighborFinset x ∩ absolutePoints K := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rw [Finset.mem_inter]
+    rcases hz with rfl | rfl | rfl
+    · exact ⟨by simpa [x] using hs.1.symm, (mem_absolutePoints K _).mpr ha⟩
+    · exact ⟨by simpa [x] using hs.2.1.symm, (mem_absolutePoints K _).mpr hb⟩
+    · exact ⟨by simpa [x] using hxw, (mem_absolutePoints K _).mpr hw⟩
+  have hc := Finset.card_le_card hsub
+  have hcard : ({a,b,w} : Finset (P K)).card = 3 := by
+    simp [hab, Ne.symm hwa, Ne.symm hwb]
+  rw [hcard] at hc
+  omega
+
+def thirdAbsoluteVertex {a b w : P K} (hwa : w ≠ a) (hwb : w ≠ b) :
+    {v : P K // v ∉ ({a,b} : Finset (P K))} :=
+  ⟨w, by simp [hwa, hwb]⟩
+
+theorem twoPointCore_not_adj_defect_thirdAbsolute {a b w : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b)
+    (hw : Projectivization.orthogonal w w) (hwa : w ≠ a) (hwb : w ≠ b) :
+    ¬ (twoPointCore K).Adj (twoPointDefect K ha hb hab)
+      (thirdAbsoluteVertex K hwa hwb) := by
+  intro h
+  exact not_adj_absolutePairCommonNeighbor_of_third_absolute K h2 ha hb hab
+    hw hwa hwb (by
+      have hf := SimpleGraph.induce_adj.mp h
+      simpa [twoPointDefect, thirdAbsoluteVertex] using hf)
+
+theorem twoPointCore_tangent_thirdAbsolute {a b w : P K}
+    (hwa : w ≠ a) (hwb : w ≠ b) (hw : Projectivization.orthogonal w w)
+    (z : {v : P K // v ∉ ({a,b} : Finset (P K))})
+    (hzw : (twoPointCore K).Adj z (thirdAbsoluteVertex K hwa hwb)) :
+    (twoPointCore K).neighborFinset z ∩
+      (twoPointCore K).neighborFinset (thirdAbsoluteVertex K hwa hwb) = ∅ := by
+  have hempty := neighborFinset_inter_eq_empty_of_adj_absolute
+    (K := K) (z := z.1) (w := w) (by
+      have hf := SimpleGraph.induce_adj.mp hzw
+      simpa [thirdAbsoluteVertex] using hf) hw
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro y hy
+  rw [Finset.mem_inter] at hy
+  have hm : y.1 ∈ (graph K).neighborFinset z.1 ∩ (graph K).neighborFinset w := by
+    rw [Finset.mem_inter]
+    simp only [SimpleGraph.mem_neighborFinset]
+    have hy1 := SimpleGraph.induce_adj.mp
+      ((twoPointCore K).mem_neighborFinset z y |>.mp hy.1)
+    have hy2 := SimpleGraph.induce_adj.mp
+      ((twoPointCore K).mem_neighborFinset (thirdAbsoluteVertex K hwa hwb) y |>.mp hy.2)
+    exact ⟨hy1, by simpa [thirdAbsoluteVertex] using hy2⟩
+  rw [hempty] at hm
+  simp at hm
   · intro h; exact hwout (by simp [h])
 
 noncomputable def absolutePairCommonNeighbor {a b : P K}
