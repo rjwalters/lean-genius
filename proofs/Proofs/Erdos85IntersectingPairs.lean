@@ -252,4 +252,61 @@ theorem pair_intersecting_cover_card_ge {α I : Type*} [Fintype α] [DecidableEq
         _ ≤ R.card * R.card := Nat.mul_le_mul_left _ hr
     nlinarith [hprod, hrr]
 
+/-- An explicit optimal rank-two Kneser cover: one triangle on three chosen
+points, and one star for every point outside that triangle. -/
+abbrev PairCoverIndex {α : Type*} [DecidableEq α] (T : Finset α) :=
+  Option {x : α // x ∉ T}
+
+noncomputable def pairCoverFamily {α : Type*} [Fintype α] [DecidableEq α]
+    (T : Finset α) : PairCoverIndex T → Finset (Finset α)
+  | none => T.powersetCard 2
+  | some x => Finset.univ.powersetCard 2 |>.filter fun D => x.1 ∈ D
+
+theorem pairCoverFamily_sized {α : Type*} [Fintype α] [DecidableEq α]
+    (T : Finset α) (i : PairCoverIndex T) :
+    (pairCoverFamily T i : Set (Finset α)).Sized 2 := by
+  intro D hD
+  cases i with
+  | none => exact (Finset.mem_powersetCard.mp hD).2
+  | some x => exact (Finset.mem_powersetCard.mp (Finset.mem_filter.mp hD).1).2
+
+theorem pairCoverFamily_intersecting {α : Type*} [Fintype α] [DecidableEq α]
+    (T : Finset α) (hT : T.card = 3) (i : PairCoverIndex T) :
+    (pairCoverFamily T i : Set (Finset α)).Intersecting := by
+  intro D hD E hE hdisj
+  cases i with
+  | some x =>
+      exact Finset.disjoint_left.mp hdisj
+        (Finset.mem_filter.mp hD).2 (Finset.mem_filter.mp hE).2
+  | none =>
+      have hD' := Finset.mem_powersetCard.mp hD
+      have hE' := Finset.mem_powersetCard.mp hE
+      have hUsub : D ∪ E ⊆ T := Finset.union_subset hD'.1 hE'.1
+      have hUcard : (D ∪ E).card = 4 := by
+        rw [Finset.card_union_of_disjoint hdisj, hD'.2, hE'.2]
+      have := Finset.card_le_card hUsub
+      rw [hUcard, hT] at this
+      omega
+
+theorem pairCoverFamily_cover {α : Type*} [Fintype α] [DecidableEq α]
+    (T : Finset α) :
+    (Finset.univ : Finset α).powersetCard 2 ⊆
+      Finset.univ.biUnion (pairCoverFamily T) := by
+  intro D hD
+  rw [Finset.mem_biUnion]
+  by_cases hDT : D ⊆ T
+  · refine ⟨none, Finset.mem_univ _, ?_⟩
+    exact Finset.mem_powersetCard.mpr ⟨hDT, (Finset.mem_powersetCard.mp hD).2⟩
+  · simp only [Finset.not_subset] at hDT
+    obtain ⟨x, hxD, hxT⟩ := hDT
+    let xx : {x : α // x ∉ T} := ⟨x, hxT⟩
+    refine ⟨some xx, Finset.mem_univ _, Finset.mem_filter.mpr ⟨hD, hxD⟩⟩
+
+theorem card_pairCoverIndex {α : Type*} [Fintype α] [DecidableEq α]
+    (T : Finset α) (hT : T.card = 3) (hcard : 3 ≤ Fintype.card α) :
+    Fintype.card (PairCoverIndex T) = Fintype.card α - 2 := by
+  rw [Fintype.card_option, Fintype.card_subtype_compl
+    (fun x : α => x ∈ T), Fintype.card_coe, hT]
+  omega
+
 end Erdos85

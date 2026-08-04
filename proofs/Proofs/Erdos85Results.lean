@@ -73,6 +73,9 @@ Consequently, any direct cover of every defect by independently safe
 attachment selectors indexed by `I` satisfies `q+1 ≤ 2|I|`; this witness
 cannot be repaired by a bounded number of such new vertices as `q` grows.
 The rank-two Kneser cover argument sharpens this to `q-1 ≤ |I|`.
+This is exact: one triangle selector on three absolute points together with
+one star selector for each remaining absolute point gives `q-1` safe
+selectors covering every defect.
 -/
 
 namespace Erdos85

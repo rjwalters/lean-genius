@@ -183,3 +183,15 @@ q - 1 ≤ number_of_selectors.
 This is `numSelectors_ge_card_sub_one`.  It improves the earlier elementary
 counting bound `q+1 ≤ 2·number_of_selectors` and shows that direct safe repair
 of the odd core needs essentially one new vertex per field element.
+
+The lower bound is exact.  Choose three absolute points, use the three pair
+poles among them as one triangle selector, and use a full defect star for
+every remaining absolute point.  These `q-1` selectors are independently
+safe and cover every defect.  The generic optimal pair cover is implemented
+by `PairCoverIndex` and `pairCoverFamily`; its geometric transport is
+`exists_optimal_safe_lowVertex_cover`.
+
+This exact cover result does **not** itself attach all `q-1` vertices: a
+simultaneous extension must additionally control common neighbors and edges
+involving different new vertices.  It precisely identifies the scale and
+shape of any direct multi-selector repair.
