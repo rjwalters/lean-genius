@@ -329,4 +329,141 @@ theorem firstOrder_structure_of_odd
   rw [Nat.even_iff] at hSeven
   omega
 
+/-- Neighbors of `x` whose edge to `x` lies in no triangle.  In a C4-free
+graph these are exactly the isolated vertices of the graph induced by
+`N(x)`. -/
+def triangleFreeNeighborIndices
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    Finset {z : V // z ∈ G.neighborSet x} :=
+  Finset.univ.filter fun y =>
+    (G.induce (G.neighborSet x)).degree y = 0
+
+/-- Vertex-level version of `triangleFreeNeighborIndices`. -/
+def triangleFreeNeighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) : Finset V :=
+  (triangleFreeNeighborIndices G x).map
+    ⟨Subtype.val, Subtype.val_injective⟩
+
+@[simp] theorem mem_triangleFreeNeighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    y ∈ triangleFreeNeighbors G x ↔
+      G.Adj x y ∧
+        (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+  constructor
+  · intro hy
+    rw [triangleFreeNeighbors, Finset.mem_map] at hy
+    obtain ⟨z, hz, rfl⟩ := hy
+    have hz0 : (G.induce (G.neighborSet x)).degree z = 0 := by
+      simpa [triangleFreeNeighborIndices] using hz
+    rw [degree_induce_neighborSet_eq_card_common] at hz0
+    exact ⟨z.2, hz0⟩
+  · rintro ⟨hxy, hcommon⟩
+    let z : {w : V // w ∈ G.neighborSet x} := ⟨y, hxy⟩
+    rw [triangleFreeNeighbors, Finset.mem_map]
+    refine ⟨z, ?_, rfl⟩
+    simp only [triangleFreeNeighborIndices, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact hcommon
+
+/-- Being joined by a triangle-free edge is symmetric. -/
+theorem mem_triangleFreeNeighbors_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    y ∈ triangleFreeNeighbors G x ↔ x ∈ triangleFreeNeighbors G y := by
+  rw [mem_triangleFreeNeighbors, mem_triangleFreeNeighbors]
+  constructor
+  · rintro ⟨hxy, hzero⟩
+    exact ⟨hxy.symm, by simpa [Finset.inter_comm] using hzero⟩
+  · rintro ⟨hyx, hzero⟩
+    exact ⟨hyx.symm, by simpa [Finset.inter_comm] using hzero⟩
+
+/-- In the odd first-order template every vertex is incident with exactly one
+triangle-free edge. -/
+theorem card_triangleFreeNeighborIndices_eq_one_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (triangleFreeNeighborIndices G x).card = 1 := by
+  classical
+  let H := G.induce (G.neighborSet x)
+  let S := ∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y
+  have hstructure := firstOrder_structure_of_odd
+    G hfree hd hdodd hmin hcard x
+  have hS : S = d - 1 := hstructure.2
+  have hle : ∀ y : {z : V // z ∈ G.neighborSet x}, H.degree y ≤ 1 := by
+    intro y
+    change (G.induce (G.neighborSet x)).degree y ≤ 1
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x y.1 (G.ne_of_adj y.2)
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hdeg := degree_eq_of_minDegree_card_lt_nextMooreLayer
+    G hfree (by omega) hmin hbelow x
+  have hNcard : Fintype.card {z : V // z ∈ G.neighborSet x} = d := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+        G.neighborFinset x := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hdeg]
+  have hnonzero : S =
+      (Finset.univ.filter fun y : {z : V // z ∈ G.neighborSet x} =>
+        H.degree y ≠ 0).card := by
+    change (∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y) = _
+    calc
+      (∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y) =
+          (∑ y : {z : V // z ∈ G.neighborSet x},
+            if H.degree y ≠ 0 then 1 else 0) := by
+        apply Finset.sum_congr rfl
+        intro y _
+        have hyLe := hle y
+        split_ifs with hy
+        · omega
+        · omega
+      _ = _ := by simpa using
+        (Finset.sum_boole (R := ℕ)
+          (fun y : {z : V // z ∈ G.neighborSet x} => H.degree y ≠ 0)
+          Finset.univ)
+  have hpartition := Finset.card_filter_add_card_filter_not
+    (fun y : {z : V // z ∈ G.neighborSet x} => H.degree y = 0)
+    (s := Finset.univ)
+  have hnonzeroCard :
+      (Finset.univ.filter fun y : {z : V // z ∈ G.neighborSet x} =>
+        H.degree y ≠ 0).card = d - 1 := hnonzero.symm.trans hS
+  have hisolated :
+      (Finset.univ.filter fun y : {z : V // z ∈ G.neighborSet x} =>
+        H.degree y = 0).card = 1 := by
+    simp only [Finset.card_univ, hNcard] at hpartition
+    have hnot : (Finset.univ.filter fun y : {z : V // z ∈ G.neighborSet x} =>
+        ¬H.degree y = 0) =
+        Finset.univ.filter fun y => H.degree y ≠ 0 := by
+      ext y
+      simp
+    rw [hnot] at hpartition
+    rw [hnonzeroCard] at hpartition
+    omega
+  simpa [triangleFreeNeighborIndices, H] using hisolated
+
+/-- Vertex-level form: the triangle-free edges constitute a one-regular
+spanning subgraph in the odd first-order template. -/
+theorem card_triangleFreeNeighbors_eq_one_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (triangleFreeNeighbors G x).card = 1 := by
+  rw [triangleFreeNeighbors, Finset.card_map]
+  exact card_triangleFreeNeighborIndices_eq_one_of_firstOrder_odd
+    G hfree hd hdodd hmin hcard x
+
 end Erdos85
