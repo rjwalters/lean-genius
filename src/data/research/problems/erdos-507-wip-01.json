@@ -2,7 +2,7 @@
   "slug": "erdos-507-wip-01",
   "title": "Complete the Lean Formalization of Erdős Problem #507 (Heilbronn's Triangle Problem)",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,7 +27,7 @@
     "goal": "Formalize the elementary geometry of triangleArea / IsInUnitDisk from Mathlib; keep the deep α(n) bounds cleanly isolated as the open target."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-23T17:50:00Z",
     "iteration": 4,
     "focus": "Elementary witness ladder: explicit rational configurations + le_csSup + ordered-triple case bash, rung by rung (n=3,4,5 done).",
@@ -147,7 +147,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T12:30:00.000Z",
-  "lastUpdate": "2026-07-23",
+  "lastUpdate": "2026-08-03",
   "significance": 6,
   "tractability": 5
 }
