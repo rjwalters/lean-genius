@@ -89,6 +89,105 @@ theorem secondLayerBranch_pairwiseDisjoint
     exact (Finset.mem_sdiff.mp hwy).2 (by simp)
   exact hfree (containsC4_of_two_common hyzne hxw hxy hxz hyw.symm hzw.symm)
 
+/-- The closed neighborhood, the second layer, and the external repair
+reservoir exhaust the vertex set.  This partition is purely definitional and
+does not require the graph to be `C₄`-free. -/
+theorem closedNeighborhood_union_secondLayer_union_external_eq_univ
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    insert x (G.neighborFinset x) ∪ secondLayer G x ∪
+        (externalRepairCandidates G x).map
+          ⟨Subtype.val, Subtype.val_injective⟩ = Finset.univ := by
+  classical
+  apply Finset.eq_univ_of_forall
+  intro z
+  by_cases hzx : z = x
+  · subst z
+    exact Finset.mem_union_left _ (Finset.mem_union_left _ (by simp))
+  by_cases hxz : G.Adj x z
+  · exact Finset.mem_union_left _ (Finset.mem_union_left _
+      (Finset.mem_insert.mpr (Or.inr ((G.mem_neighborFinset x z).mpr hxz))))
+  by_cases hnear : ∃ y : V, G.Adj x y ∧ G.Adj y z
+  · obtain ⟨y, hxy, hyz⟩ := hnear
+    have hzD : z ∈ secondLayer G x := by
+      rw [secondLayer, Finset.mem_biUnion]
+      let y' : {w : V // w ∈ G.neighborSet x} := ⟨y, hxy⟩
+      refine ⟨y', Finset.mem_univ _, Finset.mem_sdiff.mpr ⟨?_, ?_⟩⟩
+      · exact (G.mem_neighborFinset y z).mpr hyz
+      · intro hzC
+        rcases Finset.mem_insert.mp hzC with hzx' | hzxN
+        · exact hzx hzx'
+        · exact hxz ((G.mem_neighborFinset x z).mp hzxN)
+    exact Finset.mem_union_left _ (Finset.mem_union_right _ hzD)
+  · have ha : ⟨z, hzx⟩ ∈ externalRepairCandidates G x := by
+      rw [mem_externalRepairCandidates]
+      refine ⟨?_, ?_⟩
+      · exact fun h => hxz h.symm
+      · intro b hbx hzb
+        exact hnear ⟨b.1, hbx.symm, hzb.symm⟩
+    apply Finset.mem_union_right
+    rw [Finset.mem_map]
+    exact ⟨⟨z, hzx⟩, ha, rfl⟩
+
+/-- Exact cardinal form of the distance partition.  In particular, the size
+of the external repair reservoir is exactly the number of vertices beyond
+distance two from `x`. -/
+theorem card_externalRepairCandidates_add_card_secondLayer_add_degree_add_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    (externalRepairCandidates G x).card + (secondLayer G x).card +
+        G.degree x + 1 = Fintype.card V := by
+  classical
+  let C : Finset V := insert x (G.neighborFinset x)
+  let D : Finset V := secondLayer G x
+  let F : Finset V := (externalRepairCandidates G x).map
+    ⟨Subtype.val, Subtype.val_injective⟩
+  have hCD : Disjoint C D := by
+    rw [Finset.disjoint_left]
+    intro z hzC hzD
+    change z ∈ secondLayer G x at hzD
+    rw [secondLayer, Finset.mem_biUnion] at hzD
+    obtain ⟨y, _, hy⟩ := hzD
+    exact (Finset.mem_sdiff.mp hy).2 hzC
+  have hCF : Disjoint C F := by
+    rw [Finset.disjoint_left]
+    intro z hzC hzF
+    rw [Finset.mem_map] at hzF
+    obtain ⟨a, ha, rfl⟩ := hzF
+    rcases Finset.mem_insert.mp hzC with hax | hax
+    · exact a.2 hax
+    · exact (mem_externalRepairCandidates G x a).mp ha |>.1
+        (((G.mem_neighborFinset x a.1).mp hax).symm)
+  have hDF : Disjoint D F := by
+    rw [Finset.disjoint_left]
+    intro z hzD hzF
+    rw [Finset.mem_map] at hzF
+    obtain ⟨a, ha, rfl⟩ := hzF
+    change a.1 ∈ secondLayer G x at hzD
+    rw [secondLayer, Finset.mem_biUnion] at hzD
+    obtain ⟨y, _, hy⟩ := hzD
+    have hya : G.Adj y.1 a.1 := (G.mem_neighborFinset y.1 a.1).mp
+      (Finset.mem_sdiff.mp hy).1
+    let b : {z : V // z ≠ x} := ⟨y.1, (G.ne_of_adj y.2).symm⟩
+    exact ((mem_externalRepairCandidates G x a).mp ha |>.2 b y.2.symm) hya.symm
+  have hUnionDisj : Disjoint (C ∪ D) F :=
+    Finset.disjoint_union_left.mpr ⟨hCF, hDF⟩
+  have hcover : C ∪ D ∪ F = Finset.univ := by
+    simpa [C, D, F] using
+      closedNeighborhood_union_secondLayer_union_external_eq_univ G x
+  have hcard := congrArg Finset.card hcover
+  rw [Finset.card_union_of_disjoint hUnionDisj,
+    Finset.card_union_of_disjoint hCD] at hcard
+  have hCcard : C.card = G.degree x + 1 := by
+    have hxN : x ∉ G.neighborFinset x := by simp
+    simp [C, Finset.card_insert_of_notMem hxN,
+      G.card_neighborFinset_eq_degree]
+  have hFcard : F.card = (externalRepairCandidates G x).card := by simp [F]
+  simp only [Finset.card_univ] at hcard
+  change C.card + D.card + F.card = Fintype.card V at hcard
+  simp only [hCcard, hFcard] at hcard
+  simpa [D, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hcard
+
 /-- In a regular `C₄`-free graph, every first-neighbor branch contains at
 least `d-2` second-layer vertices. -/
 theorem sub_two_le_card_secondLayerBranch_of_regular
@@ -580,6 +679,30 @@ theorem degree_induce_neighborSet_eq_card_common
   rw [Finset.inter_comm]
   congr 1
 
+/-- In a `C₄`-free graph the graph induced by any neighborhood has maximum
+degree at most one, hence is a matching together with isolated vertices. -/
+theorem sum_localNeighborhood_degrees_le_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V) :
+    (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y) ≤ G.degree x := by
+  classical
+  calc
+    (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) ≤
+        ∑ _y : {z : V // z ∈ G.neighborSet x}, 1 := by
+      apply Finset.sum_le_sum
+      intro y _
+      rw [degree_induce_neighborSet_eq_card_common]
+      exact common_le_one_of_not_containsC4 hfree x y.1 (G.ne_of_adj y.2)
+    _ = G.degree x := by
+      rw [Finset.sum_const, Finset.card_univ, Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+          G.neighborFinset x := by ext z; simp
+      rw [heq, G.card_neighborFinset_eq_degree]
+      simp
+
 /-- Exact branch accounting: the neighbors of `y` are partitioned into the
 second-layer branch, the center `x`, and the common neighbors of `x,y`. -/
 theorem card_secondLayerBranch_add_common_add_one
@@ -609,6 +732,64 @@ theorem card_secondLayerBranch_add_common_add_one
       ((G.neighborFinset x ∩ G.neighborFinset y.1).card + 1) =
         (G.neighborFinset y.1).card at hpart
   rw [G.card_neighborFinset_eq_degree] at hpart
+  omega
+
+/-- Exact regular reservoir identity.  The deficit from the Moore tree is
+precisely the total degree inside the neighborhood of the center (equivalently,
+twice the number of triangles through the center):
+`external + d² + 1 = |V| + Σ deg(G[N(x)])`. -/
+theorem card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ v, G.degree v = d) (x : V) :
+    (externalRepairCandidates G x).card + d * d + 1 =
+      Fintype.card V +
+        ∑ y : {z : V // z ∈ G.neighborSet x},
+          (G.induce (G.neighborSet x)).degree y := by
+  classical
+  let S := ∑ y : {z : V // z ∈ G.neighborSet x},
+    (G.induce (G.neighborSet x)).degree y
+  have hdisj := secondLayerBranch_pairwiseDisjoint G hfree x
+  have hD : (secondLayer G x).card =
+      ∑ y : {z : V // z ∈ G.neighborSet x},
+        (secondLayerBranch G x y).card := by
+    rw [secondLayer, Finset.card_biUnion hdisj]
+  have hNcard : Fintype.card {z : V // z ∈ G.neighborSet x} = d := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+        G.neighborFinset x := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hreg x]
+  have hNcardAdj : Fintype.card {z : V // G.Adj x z} = d := by
+    let e : {z : V // z ∈ G.neighborSet x} ≃ {z : V // G.Adj x z} :=
+      Equiv.subtypeEquivRight (fun _ => Iff.rfl)
+    rw [← Fintype.card_congr e]
+    exact hNcard
+  have hbranches :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          ((secondLayerBranch G x y).card +
+            (G.induce (G.neighborSet x)).degree y + 1)) =
+        ∑ _y : {z : V // z ∈ G.neighborSet x}, d := by
+    apply Finset.sum_congr rfl
+    intro y _
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact card_secondLayerBranch_add_common_add_one G x y |>.trans (hreg y.1)
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hbranches
+  have hones : (∑ _y : {z : V // z ∈ G.neighborSet x}, 1) = d := by
+    simp [hNcardAdj]
+  have hds : (∑ _y : {z : V // z ∈ G.neighborSet x}, d) = d * d := by
+    simp [hNcardAdj]
+  rw [hones, hds] at hbranches
+  have hbranches' : (secondLayer G x).card + S + d = d * d := by
+    rw [hD]
+    omega
+  have hpartition :=
+    card_externalRepairCandidates_add_card_secondLayer_add_degree_add_one G x
+  rw [hreg x] at hpartition
+  change (externalRepairCandidates G x).card + (secondLayer G x).card + d + 1 =
+    Fintype.card V at hpartition
+  change (externalRepairCandidates G x).card + d * d + 1 =
+    Fintype.card V + S
   omega
 
 /-- Symmetry of length-three walk counting, expressed through common-neighbour
