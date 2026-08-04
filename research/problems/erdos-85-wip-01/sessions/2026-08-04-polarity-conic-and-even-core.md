@@ -1266,3 +1266,30 @@ the even first-order order as well and strengthen the strict lower bound by
 one for every `d≥3`.  The graph/matrix input is now checked; the remaining
 task is to formalize the integral antipodal quotient and this elementary
 characteristic-polynomial multiplicity argument.
+
+There is already an unconditional modular consequence short of the full
+square argument.  The centered plus-space matrix
+
+```text
+T = A ( |V|(I+P) - 2J )
+```
+
+now satisfies, in Lean,
+
+```text
+T³ = 4|V|²(d-2) T,    tr(T) = -2d|V|.
+```
+
+If a prime `p` divides `d-2`, reduction modulo `p` makes `T` nilpotent, so
+`p | 2d|V|`.  But modulo such a prime, `d ≡ 2` and
+`|V|=d(d-1)+2 ≡ 4`; hence `p | 16` and primality forces `p=2`.
+This argument is formalized end to end, including the consequence
+
+```text
+d - 2 = 2^k
+```
+
+for some `k`.  Thus any remaining even first-order counterexample lies in
+the thin degree family `d=2+2^k`; the missing characteristic-polynomial
+step should further force `k` even and then the trace multiplicity should
+force `k=2`, i.e. `d=6`.
