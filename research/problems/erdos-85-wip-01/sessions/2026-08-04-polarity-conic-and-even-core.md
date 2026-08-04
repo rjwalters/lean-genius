@@ -1571,3 +1571,38 @@ connected component's support subtype, then substitute the individual
 Chebyshev factors into the already-proved dependent block product.  This is
 an instance/reindexing issue rather than a remaining combinatorial or spectral
 identity.
+
+## Completed global cycle factorization and parity obstruction
+
+That final transport is now checked.  Each component factor is indexed by its
+actual support cardinality, and Lean proves the global identity
+
+```text
+det(aI-D) = product_c (C_{|c|}(a)-2).
+```
+
+Specializing to `a=d-1`, casting the integral determinant identity to the
+rationals, and combining it with the already-proved rank-one square identity
+and nonsingularity gives an unconditional theorem.  There is a list `rs`
+of the actual defect-component orders such that every entry is at least
+three,
+
+```text
+sum(rs) = |V| = d(d-1)+3,
+Odd(sum(rs)),
+Even(evenCycleCount(rs)).
+```
+
+Thus the former conditional bridge is completely discharged.  In particular,
+the number of odd defect cycles is odd, and hence the total number of defect
+components is odd.
+
+This is still a structural obstruction rather than a contradiction.  A
+further rational eigenspace audit explains why the determinant captures the
+obvious square-root parity information: every nonexceptional eigenvalue of a
+cycle occurs with multiplicity two.  The only simple cycle eigenvalues are
+`2`, and additionally `-2` for even cycles; these yield respectively the
+component-count and even-cycle-count parity conditions.  Further progress
+therefore has to use integral lattice information, modular/Jordan structure,
+the monochromatic defect coloring, or return to the witness-repair program,
+rather than merely repeat the rational square-class calculation.
