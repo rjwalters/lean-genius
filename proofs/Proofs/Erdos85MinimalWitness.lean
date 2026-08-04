@@ -150,4 +150,17 @@ theorem exists_top_exact_minDegree {n : ℕ} (hn : 4 ≤ n) :
   apply (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).2
   omega
 
+
+/-- A tight threshold witness has a vertex whose degree is exactly f(n)-1. -/
+theorem exists_top_tight_vertex {n : ℕ} (hn : 4 ≤ n) :
+    ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj) (x : Fin n),
+      G.minDegree = minDegreeForC4 n - 1 ∧
+      G.degree x = minDegreeForC4 n - 1 ∧
+      ¬ containsC4 (Fin n) G := by
+  letI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  obtain ⟨G, hdec, hdegree, hfree⟩ := exists_top_exact_minDegree hn
+  letI : DecidableRel G.Adj := hdec
+  obtain ⟨x, hx⟩ := G.exists_minimal_degree_vertex
+  exact ⟨G, hdec, x, hdegree, (hdegree ▸ hx).symm, hfree⟩
+
 end Erdos85

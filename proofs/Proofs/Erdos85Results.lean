@@ -17,6 +17,7 @@ import Proofs.Erdos85PolarityAbsolute
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85MinimalWitness
+import Proofs.Erdos85TightCore
 import Proofs.Erdos85OneDefectCore
 
 /-!
