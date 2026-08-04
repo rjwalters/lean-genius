@@ -38,6 +38,14 @@ noncomputable def cycleVertexEquiv
     ((hp.nodup_dropLast_support.getEquiv p.support.dropLast).trans
       (Equiv.setCongr (isCycle_setOf_mem_dropLast_support_eq_verts hp)))
 
+/-- A simple cycle has as many distinct vertices as edges. -/
+theorem isCycle_card_verts_eq_length
+    {V : Type*} [Fintype V] [DecidableEq V] {G : SimpleGraph V} {x : V}
+    {p : G.Walk x x} (hp : p.IsCycle) :
+    Nat.card p.toSubgraph.verts = p.length := by
+  symm
+  simpa using Nat.card_congr (cycleVertexEquiv hp)
+
 @[simp] theorem cycleVertexEquiv_apply_val
     {V : Type*} [DecidableEq V] {G : SimpleGraph V} {x : V}
     {p : G.Walk x x} (hp : p.IsCycle) (i : Fin p.length) :
