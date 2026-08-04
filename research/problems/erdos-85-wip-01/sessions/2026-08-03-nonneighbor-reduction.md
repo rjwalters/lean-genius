@@ -114,6 +114,52 @@ canonical delete-one/add-pair surgery.  In particular, every 4-regular
 order-15 computational stress-test failure.  Eventual monotonicity will need
 either nonregular witnesses or a genuinely broader surgery in this regime.
 
+## Degree-compensated paired surgery
+
+The paired-attachment construction has now been generalized in two stages.
+First, the survivor graph may be replaced by an arbitrary spanning subgraph
+before the adjacent pair is attached.  The exact sufficient condition at an
+old vertex `v` is
+
+```text
+d ≤ degree_after_deletions(v) + 1[v ∈ S] + 1[v ∈ T].
+```
+
+Second, there is a concrete version which deletes every edge crossing between
+the two attachment sets `S,T`.  This makes cross-compatibility automatic while
+preserving the two within-set safety conditions.  The formal quantity
+`crossEdgeLoss H S T v` counts precisely the incident edges removed at `v`,
+and Lean checks the exact identity
+
+```text
+degree_H(v) = degree_after_cross_deletion(v) + crossEdgeLoss(H,S,T,v).
+```
+
+For `v ∈ S \ T`, this loss is `|N(v) ∩ T|`; for `v ∈ T \ S`, it is
+`|N(v) ∩ S|`; and outside both sets it is zero.  Thus the checkable budget is
+
+```text
+d + crossEdgeLoss(H,S,T,v)
+  ≤ degree_H(v) + 1[v ∈ S] + 1[v ∈ T].
+```
+
+The property `HasCompensatedCrossRepair G d` packages the existence of a
+deleted vertex and two safe sets satisfying these size, intersection, and
+loss inequalities.  A uniform proof of this property implies
+`C4FreeWitnessExtension n`, so it is now a precise broader target for the
+eventual-monotonicity argument.
+
+This surgery is strictly more flexible at vertices with degree slack: a
+vertex in one attachment set can pay for one deleted cross edge using its new
+incident edge, and additional old-degree slack can pay for further losses.
+In an exactly `d`-regular witness, however, a neighbor of the deleted vertex
+starts at degree `d-1`, so a single attachment merely repairs that original
+defect and cannot also pay for a cross-edge deletion.  Consequently the hard
+regular case still requires a carefully arranged covering of the deleted
+neighborhood (or a still broader local switch); arbitrary cross-edge deletion
+alone does not erase the order-15 obstruction.
+
 Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
 `c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`, `03397138eb`, `1e66a25d51`,
-`a3227cd3e2`.
+`a3227cd3e2`, `d204a06c79`, `3c5c7c3f81`, `f8cffd864a`, `be7fcbf754`,
+`e90b783a5f`, `f52aaf1305`.
