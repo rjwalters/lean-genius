@@ -1,7 +1,7 @@
 {
   "slug": "erdos-735-oq-04",
   "title": "Magic configurations on k-flats in ℝ^d (Erdős #735 extension)",
-  "phase": "ACT (S6a scaffold — build-gated)",
+  "phase": "ACT (S8/S9 axiom repair complete)",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -36,7 +36,11 @@
     "focus": "S6a ACT scaffold (researcher-2, 2026-06-12): landed a new leaf file proofs/Proofs/Erdos735OQ04Tetrahedron.lean (registered in Proofs.lean) realizing the regular tetrahedron at alternate-cube-vertices as a concrete PointConfigD 3. The file states two theorems — tetra_affineIndependent : AffineIndependent ℝ tetraVertex and tetraConfig_isKFlatMagic : IsKFlatMagic 2 tetraConfig — plus the tetraVertex / tetraConfig defs; both theorem *statements* typecheck (Docker build-verify clean, 3063 jobs, only the two expected `declaration uses 'sorry'` warnings), with both proofs isolated as documented `sorry`s (counts: 0 axioms, 2 sorries in the new file). Architecture: leaner affine-independence route (every rank-2 flat meets the 4 affinely-independent vertices in exactly 3 points) rather than the S6a PREP #18486 face-enumeration plan; in-file discharge route documented (affineIndependent_iff_linearIndependent_vsub on the 3 difference vectors, det −16; then AffineIndependent.finrank_vectorSpan + affineSpan_le + direction monotonicity). BLOCKED: the only forward path is discharging these 2 sorries, which requires Docker build-verify (daemon down, 2026-06-13 verification blackout) or Aristotle (backend 404s — probed this session). No build-free path advances the proof.",
     "blockers": [
       "S5 axiom (oneflat_classification_higher_dim): genuinely open in the literature (no published k-flat classification beyond ABKPR's R^2 case); intentionally axiomatized.",
-      "IsIncenterConfigD tightening: requires Mathlib R^d bisector / insphere API that v4.31 does not provide for d >= 3."
+      {
+        "route": "class-4 via incenter/bisector metric encoding",
+        "reopenCriterion": "superseded by S8 failed-Fano repair; reopen only if ABKPR class needs metric (non-projective) characterisation",
+        "blockedAt": "2026-08-04"
+      }
     ],
     "nextAction": "When Docker (or Aristotle) returns: discharge the 2 sorries in Erdos735OQ04Tetrahedron.lean via the in-file affine-independence route (affineIndependent_iff_linearIndependent_vsub → AffineIndependent.finrank_vectorSpan → affineSpan_le + direction monotonicity to bound the rank-2 flat filter card at 3). Then S6b/c refutations (octa+cube, PREP #18541), S6e general-position uniform-weight theorem (1 ≤ k ≤ d−1), and S7 gallery integration (status: axiomatized). All build-gated until the blackout lifts.",
     "attemptCounts": {
@@ -62,7 +66,10 @@
       "S5 ACT recipe (2026-06-10, researcher-8): paste S5 PREP §3.A–E (2026-06-05) verbatim into proofs/Proofs/Erdos735OQ04.lean. 4 new def-Props (IsCollinearD = ∃L rank-1 ⊃ P; IsGeneralPositionD = no 3-pt collinear; IsNearPencilD = n-1 on L + 1 off; IsIncenterConfigD = structural skeleton: simplex injection Fin(d+2) → ℝᵈ + incenter point + P.card = d+3) + 1 axiom (oneflat_classification_higher_dim : ∀ d ≥ 3 P, IsKFlatMagic 1 P ↔ disjunction of the 4). All bearers (Module.rank, AffineSubspace.direction, Function.Injective, Finset.card, EuclideanSpace ℝ (Fin d)) already pinned per S2 PREP #19278 audit; no new imports. File 180 → 243 LOC (+63; PREP projected +40, delta from per-predicate docstrings). The IsIncenterConfigD skeleton is *intentional and documented* (S5 PREP §3.D, §9; S5 ACT memo §7); Mathlib v4.26.0 has no ℝᵈ bisector / insphere API for d ≥ 3, so a semantically tight definition is deferred to a follow-up that ships the Mathlib infrastructure first. The axiom is the natural lift of ABKPR 2008's planar 4-class theorem to ℝᵈ; no published proof exists for d ≥ 3. Docker build-verified at pinned Mathlib v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
       "S6b/c refutations need NO symmetry averaging: 4 explicit 2-flats per polytope give a linear system that forces a sum of two positive weights to be 0 (octahedron: planes z=0, y=0, x+y+z=+-1 force a1+a2=0; cube: faces x=+-1 plus corner planes x+y+z=+-1 force a(1,1,1)+a(-1,-1,-1)=0).",
       "Hyperplane-flat recipe for NEGATIVE membership decisions: build flats as AffineSubspace.mk' p (LinearMap.ker phi) with phi from EuclideanSpace.projl; membership becomes phi x = phi p (one coordinate check either way), direction rank 2 by rank-nullity; filter sets computed exactly by Finset.filter_insert chains — no affine independence, no fin_cases, no injectivity lemma.",
-      "Of the three polytopes named by S1 OBSERVE, only the tetrahedron is 2-flat magic — now machine-checked in Lean (S6a positive + S6b/c negative certificates)."
+      "Of the three polytopes named by S1 OBSERVE, only the tetrahedron is 2-flat magic — now machine-checked in Lean (S6a positive + S6b/c negative certificates).",
+      "S8/S9: the S5 class-4 skeleton (IsIncenterConfigD) was cardinality-trivial — it holds for EVERY (d+3)-point configuration — so the pre-repair classification axiom was provably FALSE (machine-checked: Erdos735OQ04TwoTriples.skeleton_classification_false via the 6-point two-parallel-triples configuration in R^3, which is not 1-flat magic).",
+      "The class ABKPR 2008 Theorem 1 actually proves is the failed Fano: triangle + edge midpoints + centroid up to projective transformation (weights 1/4,1/2,1/4). The folklore 'triangle + incenter' description is only the equilateral representative.",
+      "S9: parent Erdos735Problem.lean has an analogous (likely worse) defect — IsIncenterConfig doesn't pin A,B,C,I into P and ProjectivelyEquivalent is an arbitrary plane bijection, so parent class 4 looks satisfiable by every configuration, making the parent magic_classification axiom likely refutable too (issue filed S9)."
     ],
     "builtItems": [
       "S6e (researcher-3, 2026-07-24): Erdos735OQ04GeneralPosition.lean — general-position uniform-weight theorem: IsKFlatGeneralPositionD, isKFlatMagic_of_kFlatGeneralPosition (uniform weight, constant k+1), isKFlatMagic_of_affineIndependent (simplex configs magic for EVERY k), isKFlatMagic_one_of_generalPosition (class-2 forward implication of the S5 classification axiom proved outright, all d). 0 ax / 0 sorry; host-verified v4.31.0; #print axioms = 3 foundational (no dependence on the S5 axiom).",
@@ -82,9 +89,11 @@
       "Added 4 new class predicates (IsCollinearD, IsGeneralPositionD, IsNearPencilD, IsIncenterConfigD) + axiom oneflat_classification_higher_dim to proofs/Proofs/Erdos735OQ04.lean — discharges S5 ACT by pasting S5 PREP §3.A–E recipe verbatim. File 180 LOC → 243 LOC (+63), 3 → 3 theorems, 4 → 8 defs (+4), 0 → 1 axioms (+1), 0 → 0 sorries. Slug acquires its first axiom satisfying gallery status: axiomatized requirement. Docker build-verified at pinned Mathlib v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. IsIncenterConfigD is a documented structural skeleton (per S5 PREP §3.D, S5 ACT memo §7) pending Mathlib ℝᵈ bisector / insphere API. — S5 ACT (this PR).",
       "Wrote proofs/Proofs/Erdos735OQ04Tetrahedron.lean (new leaf file, registered in Proofs.lean): realizes the regular tetrahedron at alternate-cube-vertices as a concrete PointConfigD 3 (tetraVertex, tetraConfig defs) and states tetra_affineIndependent + tetraConfig_isKFlatMagic (IsKFlatMagic 2 tetraConfig). Both theorem statements typecheck; both proofs are documented `sorry`s (0 axioms, 2 sorries in this file). Docker build-verify clean (3063 jobs; only the two expected `declaration uses 'sorry'` warnings). In-file discharge route documented (affine-independence: det −16 of the 3 vsub vectors). — S6a ACT scaffold (researcher-2, 2026-06-12).",
       "Erdos735OQ04Octahedron.lean: octa_not_isKFlatMagic (0 axioms, 0 sorries) + generic helpers ne_of_coord/coordL/sumL/mem_mk'_ker_iff/rank_ker_two",
-      "Erdos735OQ04Cube.lean: cube_not_isKFlatMagic (0 axioms, 0 sorries), reuses octahedron helpers via import"
+      "Erdos735OQ04Cube.lean: cube_not_isKFlatMagic (0 axioms, 0 sorries), reuses octahedron helpers via import",
+      "Repaired class 4 in Erdos735OQ04.lean: IsFailedFanoD (homogenize/dehomogenize + nonsingular 3x3 matrix projective image of failedFanoBase, affinely embedded in a 2-flat); axiom restated over it (still 1 axiom, 0 sorries)",
+      "Erdos735OQ04TwoTriples.lean (~660 lines, 0 axioms beyond foundational, 0 sorries): isIncenterSkeletonD_of_card (skeleton is card-trivial), twoTriples_not_oneFlatMagic (7-line certificate: 6-point config with a 3-point line whose weight system is infeasible), skeleton_classification_false (refutation of the pre-S8 axiom form)"
     ],
-    "progressSummary": "S6a/b/c/e complete: tetrahedron witness (k=2 magic), octa/cube refutations, and the S6e general-position uniform-weight theorem — affinely independent configurations are k-flat magic for every k, and the class-2 ('general position ⟹ magic') implication of the axiomatized higher-dim classification is now a machine-checked theorem in every dimension. Slug axiom count stays 1 (the S5 classification iff). Remaining: S6d dodeca/icosa, S7 gallery JSON, IsIncenterConfigD tightening.",
+    "progressSummary": "S8/S9 COMPLETE: found and repaired an INCONSISTENT S5 axiom. The pre-S8 class-4 predicate was cardinality-trivial, making oneflat_classification_higher_dim provably false; repaired to the faithful ABKPR failed-Fano class (IsFailedFanoD) with a machine-checked refutation of the old form (Erdos735OQ04TwoTriples.lean). Host-verified on v4.31. Parent file has an analogous defect (issue filed). Prior state: S6a/b/c/e complete (tetrahedron witness, octa/cube refutations, general-position uniform-weight theorem).",
     "nextSteps": [
       "S6d: dodecahedron/icosahedron — witness vs refutation (check face lattices; likely refutations à la octa/cube).",
       "S7: gallery JSON — slug still has NO src/data/proofs entry.",
@@ -106,8 +115,8 @@
   ],
   "significance": 6,
   "tractability": 5,
-  "lastUpdated": "2026-06-13",
-  "lastUpdate": "2026-06-13T00:00:00Z",
+  "lastUpdated": "2026-08-04",
+  "lastUpdate": "2026-08-04T06:20:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos735OQ04.lean",
@@ -141,6 +150,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos735OQ04TwoTriples.lean",
+      "filename": "Erdos735OQ04TwoTriples.lean",
+      "lineCount": 660,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04TwoTriples.lean"
     }
   ],
   "relatedProofs": [
@@ -148,5 +168,5 @@
     "erdos-73",
     "erdos-735"
   ],
-  "iteration": 13
+  "iteration": 14
 }
