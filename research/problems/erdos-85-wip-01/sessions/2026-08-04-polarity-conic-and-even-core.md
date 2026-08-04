@@ -1498,3 +1498,20 @@ work therefore no longer needs to construct or justify the cycle
 decomposition: it starts with an explicit spanning cycle for each component
 and only needs to reindex its adjacency matrix and prove the Chebyshev
 characteristic-polynomial identity.
+
+That reindexing step is now formal as well.  For every simple closed walk
+`p`, Lean constructs an explicit graph isomorphism
+
+```text
+cycleGraph(p.length) ≃g p.toSubgraph.coe.
+```
+
+The construction enumerates the duplicate-free `dropLast` of the walk's
+support, proves that this list is exactly the vertex set of the traversed
+subgraph, and checks both ordinary successor edges and the wraparound edge.
+The induced matrix reindexing is proved to carry the standard cycle adjacency
+matrix to the component adjacency matrix, so their characteristic polynomials
+are equal.  Thus the graph/component half of the former bridge is closed.  Its
+only remaining local ingredient is now the pure matrix identity
+`charpoly(adj(C_r)) = C_r(X)-2`; after that, the already-formal square-class
+bookkeeping applies component by component.
