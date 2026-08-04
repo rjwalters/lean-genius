@@ -66,7 +66,7 @@ help:
 	@echo "  make restart-aristotle - Restart aristotle if stopped"
 	@echo "  make restart-enhancers - Restart enhancer agents if stopped"
 	@echo ""
-	@echo "Options:
+	@echo "Options:"
 	@echo "  DEEP=1    - Enable deep cleaning (worktrees, branches, logs)"
 	@echo "  FORCE=1   - Non-interactive mode"
 	@echo "  DRY=1     - Dry-run mode (show what would be done)"
@@ -164,7 +164,7 @@ build:
 	pnpm build
 
 test:
-	pnpm test
+	pnpm test:oq-slug && pnpm test:oq-group
 
 lint:
 	pnpm lint
