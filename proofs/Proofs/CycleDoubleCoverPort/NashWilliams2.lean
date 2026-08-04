@@ -143,6 +143,7 @@ theorem inside_induce_connected [Nonempty V] (S : Finset E) (P : Setoid V) (u : 
 
 /-! ## Contraction: routes upstairs and downstairs -/
 
+omit [DecidableEq V] [DecidableEq E] in
 open Classical in
 /-- A crossing edge object becomes a genuine edge of the contracted multigraph. -/
 theorem quotientGraph_adj_of_mem_crossingClass (S : Finset E) (P : Setoid V) {e : E}
@@ -207,6 +208,7 @@ theorem insideEdges_subset_erase_of_crossing {S : Finset E} {P : Setoid V} {e : 
   rintro rfl
   exact (G.mem_crossingClass.mp he).2 (P.trans' h0 (P.symm' h1))
 
+omit [DecidableEq V] [DecidableEq E] in
 open Classical in
 /-- Lift a route of the contracted multigraph to a route of `G`, between chosen
 representatives of the two endpoints.
