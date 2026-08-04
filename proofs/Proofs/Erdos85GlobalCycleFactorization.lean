@@ -30,13 +30,18 @@ theorem secondOrderDefect_resolvent_eq_prod_chebyshev
       Matrix.diagonal (fun _ : c.supp ↦ a) := rfl
   rw [hscalar, hdet c]
 
-example
+/-- The actual defect-component lengths are all at least three and partition
+the vertex set.  Their total order is odd, while the number of even-order
+components is even.  This discharges the former conditional factorization
+hypothesis in the cycle-resolvent obstruction. -/
+theorem secondOrderDefect_cycle_lengths_parity
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj] [DecidableRel (triangleFreeEdgeGraph G).Adj]
     (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
     (hmin : d ≤ G.minDegree) (hcard : Fintype.card V = d * (d - 1) + 3) :
-    ∃ rs : List ℕ, Odd rs.sum ∧ Even (evenCycleCount rs) := by
+    ∃ rs : List ℕ, (∀ r ∈ rs, 3 ≤ r) ∧
+      rs.sum = Fintype.card V ∧ Odd rs.sum ∧ Even (evenCycleCount rs) := by
   classical
   let D := secondOrderDefectGraph G
   obtain ⟨r, hr, hrsize, hfactorZ⟩ :=
@@ -75,7 +80,12 @@ example
     rw [hcard]
     exact (heven.mul_right (d - 1)).add_odd (by norm_num)
   have hodd : Odd rs.sum := hrsum ▸ hoddcard
-  refine ⟨rs, hodd, ?_⟩
+  have hrthree : ∀ n ∈ rs, 3 ≤ n := by
+    intro n hn
+    simp only [rs, List.mem_map] at hn
+    obtain ⟨c, hc, rfl⟩ := hn
+    exact hr c
+  refine ⟨rs, hrthree, hrsum, hodd, ?_⟩
   let fZ : D.ConnectedComponent → ℤ := fun c => cycleResolventAt d (r c)
   have hprod_toList (s : Finset D.ConnectedComponent) :
       (s.toList.map fZ).prod = ∏ c ∈ s, fZ c := by
