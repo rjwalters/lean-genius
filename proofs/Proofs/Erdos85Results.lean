@@ -49,6 +49,8 @@ characteristic.  In odd characteristic, deleting any `k ≤ q+1` absolute
 points traps the threshold between `q` and `q+1`; in characteristic two,
 deleting the absolute line together with its nucleus gives the additional
 exact value `f(q²-1) = q+1`.
+This also verifies the monotonicity step immediately preceding every such
+characteristic-two value.
 -/
 
 namespace Erdos85

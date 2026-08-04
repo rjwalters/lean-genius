@@ -216,6 +216,21 @@ theorem minDegreeForC4_even_square_sub_one
       have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 horder).1 hw
       omega
 
+/-- Characteristic-two polarity graphs therefore supply an infinite family of
+verified monotone steps, immediately before the exact `q² - 1` values. -/
+theorem minDegreeForC4_even_monotone_before_square_sub_one
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    minDegreeForC4 (Nat.card K * Nat.card K - 2) ≤
+      minDegreeForC4 (Nat.card K * Nat.card K - 1) := by
+  rw [minDegreeForC4_even_square_sub_one K h2]
+  apply minDegreeForC4_le_of_le_mul_pred
+  · have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+    apply Nat.le_sub_of_add_le
+    nlinarith
+  · rw [Nat.add_sub_cancel_right]
+    exact (Nat.sub_le _ _).trans (by nlinarith)
+
 
 
 end Erdos85.Polarity
