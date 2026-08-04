@@ -11,6 +11,20 @@ noncomputable def canonicalDegree
     {V : Type*} (H : SimpleGraph V) (v : V) : ℕ :=
   H.neighborSet v |>.ncard
 
+/-- The intrinsic set-cardinality degree agrees with `SimpleGraph.degree`
+when adjacency is decidable. -/
+theorem canonicalDegree_eq_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (v : V) :
+    canonicalDegree H v = H.degree v := by
+  classical
+  unfold canonicalDegree
+  rw [Set.ncard_eq_toFinset_card', ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply congrArg Finset.card
+  ext w
+  simp only [Set.mem_toFinset, SimpleGraph.mem_neighborSet,
+    SimpleGraph.mem_neighborFinset]
+
 /-- The cross-edge switch with its finite adjacency decision chosen internally. -/
 noncomputable def canonicalCrossEdgeSwitch
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -158,5 +172,3 @@ theorem low_vertices_card_le_twice_switchProgram_length
     H P v hmin (hlow v hv)
 
 end Erdos85
-
-

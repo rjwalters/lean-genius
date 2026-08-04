@@ -538,3 +538,13 @@ repair scheme, not a proof that no degree-`q` graph exists on `q²+q-2`
 vertices and not a solution of eventual monotonicity.  Any successful
 polarity repair at this order must now use a non-universal deletion pattern,
 more than one further stage, or a different initial surgery.
+
+The obstruction has also been propagated into arbitrary longer switch
+programs.  `exists_lowDegree_after_secondPairPoleSwitch` extracts an actual
+sub-`q` vertex after every possible second switch.  Since a vertex untouched
+by later switch endpoints can only lose degree,
+`exists_forced_endpoint_after_secondPairPoleSwitch` proves that any later
+program which eventually recovers degree `q` everywhere must explicitly name
+one of those second-stage defects as a subsequent endpoint.  Thus a longer
+universal-switch cascade cannot bypass the failure; it must chase the defect
+created at stage two.

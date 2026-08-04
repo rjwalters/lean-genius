@@ -1966,4 +1966,104 @@ theorem no_successful_secondPairPoleSwitch
   · exact outerACPairPole_not_successful_secondPartner K h2 ha hb hc
       hab hac hbc hfinal
 
+/-- Every second universal switch leaves at least one genuine degree defect. -/
+theorem exists_lowDegree_after_secondPairPoleSwitch
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (w : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc) w).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset w)).Adj] :
+    ∃ v, (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc) w).degree v < Nat.card K := by
+  by_contra h
+  push Not at h
+  exact no_successful_secondPairPoleSwitch K h2 ha hb hc hab hac hbc w h
+
+/-- Any longer successful switch cascade must explicitly name a defect left
+by its second stage as one of its later endpoints. -/
+theorem exists_forced_endpoint_after_secondPairPoleSwitch
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (w : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc) w).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset w)).Adj]
+    (Pgm : List
+      ({v : P K // v ∉ ({a,b,c} : Finset (P K))} ×
+       {v : P K // v ∉ ({a,b,c} : Finset (P K))}))
+    (hfinal : ∀ u, Nat.card K ≤ canonicalDegree
+      (crossEdgeSwitchProgram
+        (crossEdgeSwitch
+          (crossEdgeSwitch (threePointCore K)
+            (threePointPairDefect K ha hb hc hab)
+            (threePointOuterPairDefectAC K ha hb hc hac))
+          (threePointOuterPairDefectBC K ha hb hc hbc) w) Pgm) u) :
+    ∃ v, v ∈ crossEdgeSwitchProgramEndpoints Pgm ∧
+      (crossEdgeSwitch
+        (crossEdgeSwitch (threePointCore K)
+          (threePointPairDefect K ha hb hc hab)
+          (threePointOuterPairDefectAC K ha hb hc hac))
+        (threePointOuterPairDefectBC K ha hb hc hbc) w).degree v < Nat.card K := by
+  let J2 := crossEdgeSwitch
+    (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac))
+    (threePointOuterPairDefectBC K ha hb hc hbc) w
+  obtain ⟨v, hv⟩ := exists_lowDegree_after_secondPairPoleSwitch K h2
+    ha hb hc hab hac hbc w
+  refine ⟨v, ?_, hv⟩
+  apply low_degree_vertex_mem_crossEdgeSwitchProgramEndpoints J2 Pgm v hfinal
+  rw [canonicalDegree_eq_degree]
+  exact hv
+
 end Erdos85.Polarity
