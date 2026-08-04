@@ -515,3 +515,26 @@ tight-set avoidance.  The checked theorem
 that a successful partner would have to be exactly one of the two endpoints
 of the first switch.  Only those two symmetric endpoint cases remain; the
 existing clean-neighbor path family is designed to eliminate them.
+
+## Uniform exclusion of every second universal switch
+
+The endpoint cases are now complete.  For partner `{a,b}`, the original
+`q-2` clean center-neighbors have degree `q+1` in the three-point core, lose
+exactly one edge in the first `{a,b}`--`{a,c}` switch, and hence are tight of
+degree `q` in the intermediate graph.  Their distinct `{b,c}`-arm edge
+survives stage one and is deleted at stage two, contradicting the tight loss
+budget.  A mirrored family `outerACCleanCenterNeighbors`, also of cardinality
+`q-2`, gives the same contradiction for partner `{a,c}`.
+
+Combining these endpoint obstructions with the tangent/secant classification
+gives the checked theorem `no_successful_secondPairPoleSwitch`: for every odd
+finite field and every possible partner `w`, after the canonical first switch
+there is no second universal cross-edge switch centered at the remaining
+pair-pole defect whose final graph has degree at least `q` everywhere.  This
+upgrades the exhaustive `q=5,7,11` computation to a uniform theorem.
+
+This is an obstruction to the entire two-stage *universal cross-edge switch*
+repair scheme, not a proof that no degree-`q` graph exists on `q²+q-2`
+vertices and not a solution of eventual monotonicity.  Any successful
+polarity repair at this order must now use a non-universal deletion pattern,
+more than one further stage, or a different initial surgery.

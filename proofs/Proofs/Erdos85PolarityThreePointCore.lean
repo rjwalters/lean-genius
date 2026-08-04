@@ -9,6 +9,57 @@ universe u
 variable (K : Type u) [Field K] [Finite K] [DecidableEq K]
 private noncomputable abbrev P := ℙ K (Fin 3 → K)
 
+/-- A unique full-graph common neighbor remains unique after an induced
+deletion whenever that neighbor is guaranteed to survive. -/
+theorem card_induce_commonNeighbors_eq_one_of_survives
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (v w : {x : V // x ∉ D})
+    (hone : (G.neighborFinset v.1 ∩ G.neighborFinset w.1).card = 1)
+    (hsurv : ∀ p, G.Adj v.1 p → G.Adj w.1 p → p ∉ D) :
+    ((G.induce {x | x ∉ D}).neighborFinset v ∩
+      (G.induce {x | x ∉ D}).neighborFinset w).card = 1 := by
+  classical
+  rw [Finset.card_eq_one] at hone
+  obtain ⟨p, hp⟩ := hone
+  have hpm : p ∈ G.neighborFinset v.1 ∩ G.neighborFinset w.1 := by
+    rw [hp]
+    simp
+  have hpv : G.Adj v.1 p := by
+    simpa only [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hpm).1
+  have hpw : G.Adj w.1 p := by
+    simpa only [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hpm).2
+  let ps : {x : V // x ∉ D} := ⟨p, hsurv p hpv hpw⟩
+  apply le_antisymm
+  · rw [Finset.card_le_one_iff]
+    intro r s hr hs
+    apply Subtype.ext
+    have hrfull : r.1 ∈ G.neighborFinset v.1 ∩ G.neighborFinset w.1 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨SimpleGraph.induce_adj.mp
+        ((G.induce {x | x ∉ D}).mem_neighborFinset v r |>.mp
+          (Finset.mem_inter.mp hr).1),
+        SimpleGraph.induce_adj.mp
+        ((G.induce {x | x ∉ D}).mem_neighborFinset w r |>.mp
+          (Finset.mem_inter.mp hr).2)⟩
+    have hsfull : s.1 ∈ G.neighborFinset v.1 ∩ G.neighborFinset w.1 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨SimpleGraph.induce_adj.mp
+        ((G.induce {x | x ∉ D}).mem_neighborFinset v s |>.mp
+          (Finset.mem_inter.mp hs).1),
+        SimpleGraph.induce_adj.mp
+        ((G.induce {x | x ∉ D}).mem_neighborFinset w s |>.mp
+          (Finset.mem_inter.mp hs).2)⟩
+    have hrp : r.1 = p := by simpa [hp] using hrfull
+    have hsp : s.1 = p := by simpa [hp] using hsfull
+    exact hrp.trans hsp.symm
+  · rw [Finset.one_le_card]
+    refine ⟨ps, Finset.mem_inter.mpr ⟨?_, ?_⟩⟩
+    · simpa only [SimpleGraph.mem_neighborFinset] using
+        SimpleGraph.induce_adj.mpr hpv
+    · simpa only [SimpleGraph.mem_neighborFinset] using
+        SimpleGraph.induce_adj.mpr hpw
+
 noncomputable abbrev threePointCore {a b c : P K} :=
   deleteVertexSetGraph (graph K) {a,b,c}
 

@@ -169,6 +169,51 @@ theorem remainingPairPole_not_adj_firstPairPoles {a b c : P K}
       exact ⟨hbase, hzc.symm⟩
     rw [hem] at hm
     simp at hm
+
+/-- The first `{a,b}` pole and remaining `{b,c}` pole have disjoint core
+neighborhoods; their unique full-graph common neighbor `b` was deleted. -/
+theorem firstPairPole_neighborFinset_inter_remainingPairPole_eq_empty
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    (threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab) ∩
+      (threePointCore K).neighborFinset
+        (threePointOuterPairDefectBC K ha hb hc hbc) = ∅ := by
+  classical
+  let x := threePointPairDefect K ha hb hc hab
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hne : x.1 ≠ z.1 := by
+    intro h
+    have hxa : (graph K).Adj a x.1 := by
+      simpa [x, threePointPairDefect] using
+        (absolutePairCommonNeighbor_spec K ha hb hab).1
+    have hza := not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      hb hc hbc ha hab hac
+    exact hza (by simpa [z, threePointOuterPairDefectBC, h] using hxa.symm)
+  have hle := commonNeighbors_le_one x.1 z.1 hne
+  rw [Finset.card_le_one_iff] at hle
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro t ht
+  rcases Finset.mem_inter.mp ht with ⟨htx, htz⟩
+  have htxb := SimpleGraph.induce_adj.mp
+    ((threePointCore K).mem_neighborFinset x t |>.mp htx)
+  have htzb := SimpleGraph.induce_adj.mp
+    ((threePointCore K).mem_neighborFinset z t |>.mp htz)
+  have hbm : b ∈ (graph K).neighborFinset x.1 ∩
+      (graph K).neighborFinset z.1 := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨by simpa [x, threePointPairDefect] using
+      (absolutePairCommonNeighbor_spec K ha hb hab).2.1.symm,
+      by simpa [z, threePointOuterPairDefectBC] using
+        (absolutePairCommonNeighbor_spec K hb hc hbc).1.symm⟩
+  have htm : t.1 ∈ (graph K).neighborFinset x.1 ∩
+      (graph K).neighborFinset z.1 := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨htxb, htzb⟩
+  have htb : t.1 = b := hle htm hbm
+  exact t.2 (by simp [htb])
 theorem threePointCore_degree_remainingPairPoleAnchor {a b c : P K}
     (h2 : (2 : K) ≠ 0)
     (ha : Projectivization.orthogonal a a)
@@ -1269,5 +1314,656 @@ theorem successful_secondSwitch_partner_eq_firstPairPole_or_outerAC
   have hp := one_le_secondCrossLoss_at_surviving_absolute K h2
     ha hb hc hab hac hbc w d hdabs hwd
   omega
+
+/-- Every clean center neighbor becomes tight, of degree exactly `q`, after
+the first pair-pole switch. -/
+theorem firstPairPoleSwitch_degree_cleanCenter
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ pairPoleCleanCenterNeighbors K ha hb hab (c := c))
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj] :
+    (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).degree v = Nat.card K := by
+  classical
+  let H : SimpleGraph {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    threePointCore K
+  let x := threePointPairDefect K ha hb hc hab
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let D := deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)
+  have hvx : H.Adj x v := by
+    have hm := Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hv).1
+    apply SimpleGraph.induce_adj.mpr
+    simpa [x, threePointPairDefect] using
+      ((graph K).mem_neighborFinset
+        (absolutePairCommonNeighbor K ha hb hab) v.1).mp hm.1
+  have hvNx : v ∈ H.neighborFinset x := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hvx
+  have hdisj := centerPairDefect_neighborFinset_inter_outerAC_eq_empty K
+    h2 ha hb hc hab hac hbc
+  have hvNy : v ∉ H.neighborFinset y := by
+    intro h
+    have hm : v ∈ H.neighborFinset x ∩ H.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hvNx, h⟩
+    rw [hdisj] at hm
+    simp at hm
+  have hloss : crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset y) v = 1 := by
+    rw [crossEdgeLoss_eq_card_neighbor_inter_right H _ _ v hvNx hvNy]
+    exact cleanCenter_commonNeighbors_outerAC_card_one K h2 ha hb hc
+      hab hac hbc v hv
+  have hbase : H.degree v = Nat.card K + 1 := by
+    exact threePointCore_degree_of_mem_pairPoleCleanCenterNeighbors K h2
+      ha hb hc hab (Ne.symm hac) (Ne.symm hbc) v hv
+  have hD : D.degree v = Nat.card K := by
+    have hs := degree_deleteCrossEdges_add_loss H
+      (H.neighborFinset x) (H.neighborFinset y) v
+    change H.degree v = D.degree v + _ at hs
+    rw [hbase, hloss] at hs
+    omega
+  have hvneX : v ≠ x := by
+    intro h
+    exact H.loopless.irrefl x (by simpa [h] using hvx)
+  have hvneY : v ≠ y := by
+    intro h
+    have hvm := Finset.mem_sdiff.mp hv
+    have hvnc : ¬ (graph K).Adj c v.1 := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hvm.2
+    exact hvnc (by simpa [y, threePointOuterPairDefectAC, h] using
+      (absolutePairCommonNeighbor_spec K ha hc hac).2.1)
+  rw [crossEdgeSwitch_degree_eq_deleteCrossEdges_of_ne_endpoints H x y v
+    hvneX hvneY]
+  exact hD
+
+/-- In the second switch using the first `{a,b}` pole as partner, every clean
+center neighbor loses its other outer-arm edge. -/
+theorem one_le_secondCrossLoss_at_cleanCenter_for_firstPairPole
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ pairPoleCleanCenterNeighbors K ha hb hab (c := c))
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj] :
+    1 ≤ crossEdgeLoss
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointPairDefect K ha hb hc hab)) v := by
+  classical
+  let H : SimpleGraph {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    threePointCore K
+  let J := crossEdgeSwitch H
+    (threePointPairDefect K ha hb hc hab)
+    (threePointOuterPairDefectAC K ha hb hc hac)
+  let x := threePointPairDefect K ha hb hc hab
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  obtain ⟨r, s, hrs, hvr, hry, hvs, hsz⟩ :=
+    exists_two_distinct_outer_cross_edges_of_cleanCenter K h2
+      ha hb hc hab hac hbc v hv
+  have hvx : H.Adj x v := by
+    have hm := Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hv).1
+    apply SimpleGraph.induce_adj.mpr
+    simpa [x, threePointPairDefect] using
+      ((graph K).mem_neighborFinset
+        (absolutePairCommonNeighbor K ha hb hab) v.1).mp hm.1
+  have hsNx : s ∉ H.neighborFinset x := by
+    intro hsx
+    have hm : s ∈ H.neighborFinset x ∩ H.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hsx, hsz⟩
+    rw [firstPairPole_neighborFinset_inter_remainingPairPole_eq_empty K
+      h2 ha hb hc hab hac hbc] at hm
+    simp at hm
+  have hsNy : s ∉ H.neighborFinset y := by
+    intro hsy
+    have hm : s ∈ H.neighborFinset y ∩ H.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hsy, hsz⟩
+    rw [outerPairDefects_neighborFinset_inter_eq_empty K h2
+      ha hb hc hab hac hbc] at hm
+    simp at hm
+  have hsx : ¬ H.Adj x s := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hsNx
+  have hsy : ¬ H.Adj y s := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hsNy
+  have hvsJ : J.Adj v s := by
+    exact (crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y s v
+      hvs.symm hsx hsy).symm
+  have hzout := remainingPairPole_not_adj_firstPairPoles K h2 ha hb hc
+    hab hac hbc
+  have hzsH : H.Adj z s := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hsz
+  have hzsJ : J.Adj z s :=
+    crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y z s
+      hzsH hzout.1 hzout.2
+  have hxy := centerPairDefect_not_adj_outerAC K ha hb hc hab hac
+  have hxvJ : J.Adj x v :=
+    crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y x v hvx
+      (H.loopless.irrefl x) (fun h => hxy h.symm)
+  apply one_le_crossEdgeLoss_of_adj_of_pair_mem J _ _ hvsJ
+  rw [pair_mem_crossEdgeSet_iff]
+  right
+  simp only [SimpleGraph.mem_neighborFinset]
+  exact ⟨hxvJ, hzsJ⟩
+
+/-- The first `{a,b}` pole cannot serve as a successful second-stage partner. -/
+theorem firstPairPole_not_successful_secondPartner
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc)
+      (threePointPairDefect K ha hb hc hab)).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointPairDefect K ha hb hc hab))).Adj] :
+    ¬ ∀ u, Nat.card K ≤
+      (crossEdgeSwitch
+        (crossEdgeSwitch (threePointCore K)
+          (threePointPairDefect K ha hb hc hab)
+          (threePointOuterPairDefectAC K ha hb hc hac))
+        (threePointOuterPairDefectBC K ha hb hc hbc)
+        (threePointPairDefect K ha hb hc hab)).degree u := by
+  intro hfinal
+  classical
+  have hcard := pairPoleCleanCenterNeighbors_card K h2 ha hb hc hab
+    (Ne.symm hac) (Ne.symm hbc)
+  have hq := three_le_card_of_two_ne_zero K h2
+  have hpos : 0 < (pairPoleCleanCenterNeighbors K ha hb hab (c := c)).card := by
+    rw [hcard]
+    omega
+  obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
+  have hpD : p ∉ ({a,b,c} : Finset (P K)) :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hp).1).2
+  let v : {v : P K // v ∉ ({a,b,c} : Finset (P K))} := ⟨p, hpD⟩
+  let J := crossEdgeSwitch (threePointCore K)
+    (threePointPairDefect K ha hb hc hab)
+    (threePointOuterPairDefectAC K ha hb hc hac)
+  let x := threePointPairDefect K ha hb hc hab
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hvdeg : J.degree v = Nat.card K :=
+    firstPairPoleSwitch_degree_cleanCenter K h2 ha hb hc hab hac hbc v
+      (by simpa [v] using hp)
+  have hvxAdj : (threePointCore K).Adj x v := by
+    have hm := Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hp).1
+    apply SimpleGraph.induce_adj.mpr
+    simpa [x, threePointPairDefect, v] using
+      ((graph K).mem_neighborFinset
+        (absolutePairCommonNeighbor K ha hb hab) p).mp hm.1
+  have hvx : v ≠ x := by
+    intro h
+    exact (threePointCore K).loopless.irrefl x (by simpa [h] using hvxAdj)
+  have hvz : v ≠ z := by
+    intro h
+    have hvm := Finset.mem_sdiff.mp hp
+    have hvnc : ¬ (graph K).Adj c p := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hvm.2
+    have hpz : p = z.1 := congrArg Subtype.val h
+    exact hvnc (by
+      rw [hpz]
+      simpa [z, threePointOuterPairDefectBC] using
+        (absolutePairCommonNeighbor_spec K hb hc hbc).2.1)
+  have hzero := crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch
+    J z x v hfinal hvdeg hvz hvx
+  have hloss := one_le_secondCrossLoss_at_cleanCenter_for_firstPairPole K h2
+    ha hb hc hab hac hbc v (by simpa [v] using hp)
+  change crossEdgeLoss J (J.neighborFinset z) (J.neighborFinset x) v = 0 at hzero
+  change 1 ≤ crossEdgeLoss J (J.neighborFinset z) (J.neighborFinset x) v at hloss
+  rw [hzero] at hloss
+  omega
+
+/-- Clean neighbors centered at the other first-switch endpoint `{a,c}`. -/
+noncomputable def outerACCleanCenterNeighbors {a b c : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hc : Projectivization.orthogonal c c) (hac : a ≠ c) : Finset (P K) :=
+  ((graph K).neighborFinset (absolutePairCommonNeighbor K ha hc hac) \
+      ({a,b,c} : Finset (P K))) \
+    (graph K).neighborFinset b
+
+theorem outerACCleanCenterNeighbors_card {a b c : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    (outerACCleanCenterNeighbors K ha hc hac (b := b)).card = Nat.card K - 2 := by
+  classical
+  have hD : ({a,b,c} : Finset (P K)) = {a,c,b} := by
+    ext t
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  rw [outerACCleanCenterNeighbors, hD]
+  exact pairPoleCleanCenterNeighbors_card K h2 ha hc hb hac
+    (Ne.symm hab) hbc
+
+theorem outerACCleanCenter_spec {a b c : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ outerACCleanCenterNeighbors K ha hc hac (b := b)) :
+    (threePointCore K).Adj (threePointOuterPairDefectAC K ha hb hc hac) v ∧
+      ¬ (graph K).Adj a v.1 ∧ ¬ (graph K).Adj b v.1 ∧
+      ¬ (graph K).Adj c v.1 ∧
+      ¬ Projectivization.orthogonal v.1 v.1 ∧
+      (threePointCore K).degree v = Nat.card K + 1 := by
+  classical
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  have hvm := Finset.mem_sdiff.mp hv
+  have hvfirst := Finset.mem_sdiff.mp hvm.1
+  have hyvbase : (graph K).Adj y.1 v.1 := by
+    change (graph K).Adj (absolutePairCommonNeighbor K ha hc hac) v.1
+    exact
+      ((graph K).mem_neighborFinset
+        (absolutePairCommonNeighbor K ha hc hac) v.1).mp hvfirst.1
+  have hyv : (threePointCore K).Adj y v := SimpleGraph.induce_adj.mpr hyvbase
+  have hvb : ¬ (graph K).Adj b v.1 := by
+    simpa [outerACCleanCenterNeighbors, SimpleGraph.mem_neighborFinset] using hvm.2
+  have hva : ¬ (graph K).Adj a v.1 := by
+    intro hav
+    have hya : (graph K).Adj y.1 a := by
+      simpa [y, threePointOuterPairDefectAC] using
+        (absolutePairCommonNeighbor_spec K ha hc hac).1.symm
+    have hem := neighborFinset_inter_eq_empty_of_adj_absolute (K := K) hya ha
+    have hm : v.1 ∈ (graph K).neighborFinset y.1 ∩
+        (graph K).neighborFinset a := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hyvbase, hav⟩
+    rw [hem] at hm
+    simp at hm
+  have hvc : ¬ (graph K).Adj c v.1 := by
+    intro hcv
+    have hyc : (graph K).Adj y.1 c := by
+      simpa [y, threePointOuterPairDefectAC] using
+        (absolutePairCommonNeighbor_spec K ha hc hac).2.1.symm
+    have hem := neighborFinset_inter_eq_empty_of_adj_absolute (K := K) hyc hc
+    have hm : v.1 ∈ (graph K).neighborFinset y.1 ∩
+        (graph K).neighborFinset c := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hyvbase, hcv⟩
+    rw [hem] at hm
+    simp at hm
+  have hvnon : ¬ Projectivization.orthogonal v.1 v.1 := by
+    intro hvabs
+    have hvan : v.1 ≠ a := by intro h; exact v.2 (by simp [h])
+    have hvcn : v.1 ≠ c := by intro h; exact v.2 (by simp [h])
+    exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      ha hc hac hvabs hvan hvcn)
+        (by simpa [y, threePointOuterPairDefectAC] using hyvbase)
+  exact ⟨hyv, hva, hvb, hvc, hvnon,
+    threePointCore_degree_eq_card_add_one_of_clean K v hvnon hva hvb hvc⟩
+
+theorem outerACCleanCenter_commonNeighbors_firstPair_card_one
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ outerACCleanCenterNeighbors K ha hc hac (b := b)) :
+    ((threePointCore K).neighborFinset v ∩
+      (threePointCore K).neighborFinset
+        (threePointPairDefect K ha hb hc hab)).card = 1 := by
+  classical
+  let x := threePointPairDefect K ha hb hc hab
+  have hs := outerACCleanCenter_spec K h2 ha hb hc hab hac hbc v hv
+  have hxnon : ¬ Projectivization.orthogonal x.1 x.1 := by
+    simpa [x, threePointPairDefect] using
+      (absolutePairCommonNeighbor_spec K ha hb hab).2.2
+  have hvx : v.1 ≠ x.1 := by
+    intro h
+    exact hs.2.2.1 (by simpa [x, threePointPairDefect, h] using
+      (absolutePairCommonNeighbor_spec K ha hb hab).2.1)
+  have hone := card_commonNeighbors_eq_one_of_nonabsolute K hvx hs.2.2.2.2.1 hxnon
+  apply card_induce_commonNeighbors_eq_one_of_survives
+    (graph K) ({a,b,c} : Finset (P K)) v x hone
+  intro p hpv hpx
+  simp only [Finset.mem_insert, Finset.mem_singleton]
+  rintro (rfl | rfl | rfl)
+  · exact hs.2.1 hpv.symm
+  · exact hs.2.2.1 hpv.symm
+  · exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      ha hb hab hc (Ne.symm hac) (Ne.symm hbc))
+        (by simpa [x, threePointPairDefect] using hpx)
+
+theorem outerACCleanCenter_commonNeighbors_remainingPair_card_one
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ outerACCleanCenterNeighbors K ha hc hac (b := b)) :
+    ((threePointCore K).neighborFinset v ∩
+      (threePointCore K).neighborFinset
+        (threePointOuterPairDefectBC K ha hb hc hbc)).card = 1 := by
+  classical
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hs := outerACCleanCenter_spec K h2 ha hb hc hab hac hbc v hv
+  have hznon : ¬ Projectivization.orthogonal z.1 z.1 := by
+    simpa [z, threePointOuterPairDefectBC] using
+      (absolutePairCommonNeighbor_spec K hb hc hbc).2.2
+  have hvz : v.1 ≠ z.1 := by
+    intro h
+    exact hs.2.2.2.1 (by simpa [z, threePointOuterPairDefectBC, h] using
+      (absolutePairCommonNeighbor_spec K hb hc hbc).2.1)
+  have hone := card_commonNeighbors_eq_one_of_nonabsolute K hvz hs.2.2.2.2.1 hznon
+  apply card_induce_commonNeighbors_eq_one_of_survives
+    (graph K) ({a,b,c} : Finset (P K)) v z hone
+  intro p hpv hzp
+  simp only [Finset.mem_insert, Finset.mem_singleton]
+  rintro (rfl | rfl | rfl)
+  · exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      hb hc hbc ha hab hac)
+        (by simpa [z, threePointOuterPairDefectBC] using hzp)
+  · exact hs.2.2.1 hpv.symm
+  · exact hs.2.2.2.1 hpv.symm
+
+theorem firstPairPoleSwitch_degree_outerACCleanCenter
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ outerACCleanCenterNeighbors K ha hc hac (b := b))
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj] :
+    (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).degree v = Nat.card K := by
+  classical
+  let H : SimpleGraph {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    threePointCore K
+  let x := threePointPairDefect K ha hb hc hab
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let D := deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)
+  have hs := outerACCleanCenter_spec K h2 ha hb hc hab hac hbc v hv
+  have hvNy : v ∈ H.neighborFinset y := by
+    simpa only [SimpleGraph.mem_neighborFinset] using hs.1
+  have hdisj := centerPairDefect_neighborFinset_inter_outerAC_eq_empty K
+    h2 ha hb hc hab hac hbc
+  have hvNx : v ∉ H.neighborFinset x := by
+    intro h
+    have hm : v ∈ H.neighborFinset x ∩ H.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨h, hvNy⟩
+    rw [hdisj] at hm
+    simp at hm
+  have hloss : crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset y) v = 1 := by
+    rw [crossEdgeLoss_eq_card_neighbor_inter_left H _ _ v hvNy hvNx]
+    exact outerACCleanCenter_commonNeighbors_firstPair_card_one K h2
+      ha hb hc hab hac hbc v hv
+  have hbase : H.degree v = Nat.card K + 1 := hs.2.2.2.2.2
+  have hD : D.degree v = Nat.card K := by
+    have hsplit := degree_deleteCrossEdges_add_loss H
+      (H.neighborFinset x) (H.neighborFinset y) v
+    change H.degree v = D.degree v + _ at hsplit
+    rw [hbase, hloss] at hsplit
+    omega
+  have hvy : v ≠ y := by
+    intro h
+    have hloop : H.Adj y v := hs.1
+    rw [h] at hloop
+    exact H.loopless.irrefl y hloop
+  have hvx : v ≠ x := by
+    intro h
+    exact hs.2.2.1 (by simpa [x, threePointPairDefect, h] using
+      (absolutePairCommonNeighbor_spec K ha hb hab).2.1)
+  rw [crossEdgeSwitch_degree_eq_deleteCrossEdges_of_ne_endpoints H x y v
+    hvx hvy]
+  exact hD
+
+theorem one_le_secondCrossLoss_at_outerACCleanCenter
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ outerACCleanCenterNeighbors K ha hc hac (b := b))
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj] :
+    1 ≤ crossEdgeLoss
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectAC K ha hb hc hac)) v := by
+  classical
+  let H : SimpleGraph {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    threePointCore K
+  let J := crossEdgeSwitch H
+    (threePointPairDefect K ha hb hc hab)
+    (threePointOuterPairDefectAC K ha hb hc hac)
+  let x := threePointPairDefect K ha hb hc hab
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hcard := outerACCleanCenter_commonNeighbors_remainingPair_card_one K h2
+    ha hb hc hab hac hbc v hv
+  rw [Finset.card_eq_one] at hcard
+  obtain ⟨s, hs⟩ := hcard
+  have hsm : s ∈ H.neighborFinset v ∩ H.neighborFinset z := by
+    rw [hs]
+    simp
+  have hvs : H.Adj v s := by
+    simpa only [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hsm).1
+  have hzs : H.Adj z s := by
+    simpa only [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hsm).2
+  have hsNx : s ∉ H.neighborFinset x := by
+    intro hsx
+    have hm : s ∈ H.neighborFinset x ∩ H.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hsx, by simpa only [SimpleGraph.mem_neighborFinset] using hzs⟩
+    rw [firstPairPole_neighborFinset_inter_remainingPairPole_eq_empty K
+      h2 ha hb hc hab hac hbc] at hm
+    simp at hm
+  have hsNy : s ∉ H.neighborFinset y := by
+    intro hsy
+    have hm : s ∈ H.neighborFinset y ∩ H.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hsy, by simpa only [SimpleGraph.mem_neighborFinset] using hzs⟩
+    rw [outerPairDefects_neighborFinset_inter_eq_empty K h2
+      ha hb hc hab hac hbc] at hm
+    simp at hm
+  have hvsJ : J.Adj v s := by
+    exact (crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y s v hvs.symm
+      (by simpa only [SimpleGraph.mem_neighborFinset] using hsNx)
+      (by simpa only [SimpleGraph.mem_neighborFinset] using hsNy)).symm
+  have hzout := remainingPairPole_not_adj_firstPairPoles K h2 ha hb hc
+    hab hac hbc
+  have hzsJ : J.Adj z s :=
+    crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y z s hzs
+      hzout.1 hzout.2
+  have hyv := (outerACCleanCenter_spec K h2 ha hb hc hab hac hbc v hv).1
+  have hxy := centerPairDefect_not_adj_outerAC K ha hb hc hab hac
+  have hyvJ : J.Adj y v :=
+    crossEdgeSwitch_adj_of_adj_of_endpoint_outside H x y y v hyv
+      hxy (H.loopless.irrefl y)
+  apply one_le_crossEdgeLoss_of_adj_of_pair_mem J _ _ hvsJ
+  rw [pair_mem_crossEdgeSet_iff]
+  right
+  simp only [SimpleGraph.mem_neighborFinset]
+  exact ⟨hyvJ, hzsJ⟩
+
+/-- The other first-switch endpoint `{a,c}` cannot be a successful final
+partner either. -/
+theorem outerACPairPole_not_successful_secondPartner
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectAC K ha hb hc hac))).Adj] :
+    ¬ ∀ u, Nat.card K ≤
+      (crossEdgeSwitch
+        (crossEdgeSwitch (threePointCore K)
+          (threePointPairDefect K ha hb hc hab)
+          (threePointOuterPairDefectAC K ha hb hc hac))
+        (threePointOuterPairDefectBC K ha hb hc hbc)
+        (threePointOuterPairDefectAC K ha hb hc hac)).degree u := by
+  intro hfinal
+  classical
+  have hcard := outerACCleanCenterNeighbors_card K h2 ha hb hc hab hac hbc
+  have hq := three_le_card_of_two_ne_zero K h2
+  have hpos : 0 < (outerACCleanCenterNeighbors K ha hc hac (b := b)).card := by
+    rw [hcard]
+    omega
+  obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
+  have hpD : p ∉ ({a,b,c} : Finset (P K)) :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hp).1).2
+  let v : {v : P K // v ∉ ({a,b,c} : Finset (P K))} := ⟨p, hpD⟩
+  let J := crossEdgeSwitch (threePointCore K)
+    (threePointPairDefect K ha hb hc hab)
+    (threePointOuterPairDefectAC K ha hb hc hac)
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  let z := threePointOuterPairDefectBC K ha hb hc hbc
+  have hvdeg : J.degree v = Nat.card K :=
+    firstPairPoleSwitch_degree_outerACCleanCenter K h2 ha hb hc hab hac hbc
+      v (by simpa [v] using hp)
+  have hs := outerACCleanCenter_spec K h2 ha hb hc hab hac hbc v
+    (by simpa [v] using hp)
+  have hvy : v ≠ y := by
+    intro h
+    have hloop : (threePointCore K).Adj y v := hs.1
+    rw [h] at hloop
+    exact (threePointCore K).loopless.irrefl y hloop
+  have hvz : v ≠ z := by
+    intro h
+    exact hs.2.2.2.1 (by simpa [z, threePointOuterPairDefectBC, h] using
+      (absolutePairCommonNeighbor_spec K hb hc hbc).2.1)
+  have hzero := crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch
+    J z y v hfinal hvdeg hvz hvy
+  have hloss := one_le_secondCrossLoss_at_outerACCleanCenter K h2 ha hb hc
+    hab hac hbc v (by simpa [v] using hp)
+  change crossEdgeLoss J (J.neighborFinset z) (J.neighborFinset y) v = 0 at hzero
+  change 1 ≤ crossEdgeLoss J (J.neighborFinset z) (J.neighborFinset y) v at hloss
+  rw [hzero] at hloss
+  omega
+
+/-- **Uniform two-switch obstruction.**  After the canonical first switch
+repairs two of the three pair-pole defects, no universal cross-edge switch
+between the remaining defect and any partner can raise the minimum degree to
+`q`. -/
+theorem no_successful_secondPairPoleSwitch
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (w : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    [DecidableRel (crossEdgeSwitch (threePointCore K)
+      (threePointPairDefect K ha hb hc hab)
+      (threePointOuterPairDefectAC K ha hb hc hac)).Adj]
+    [DecidableRel (deleteCrossEdges (threePointCore K)
+      ((threePointCore K).neighborFinset (threePointPairDefect K ha hb hc hab))
+      ((threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac))).Adj]
+    [DecidableRel (crossEdgeSwitch
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      (threePointOuterPairDefectBC K ha hb hc hbc) w).Adj]
+    [DecidableRel (deleteCrossEdges
+      (crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset
+          (threePointOuterPairDefectBC K ha hb hc hbc))
+      ((crossEdgeSwitch (threePointCore K)
+        (threePointPairDefect K ha hb hc hab)
+        (threePointOuterPairDefectAC K ha hb hc hac)).neighborFinset w)).Adj] :
+    ¬ ∀ u, Nat.card K ≤
+      (crossEdgeSwitch
+        (crossEdgeSwitch (threePointCore K)
+          (threePointPairDefect K ha hb hc hab)
+          (threePointOuterPairDefectAC K ha hb hc hac))
+        (threePointOuterPairDefectBC K ha hb hc hbc) w).degree u := by
+  intro hfinal
+  rcases successful_secondSwitch_partner_eq_firstPairPole_or_outerAC K h2
+    ha hb hc hab hac hbc w hfinal with rfl | rfl
+  · exact firstPairPole_not_successful_secondPartner K h2 ha hb hc
+      hab hac hbc hfinal
+  · exact outerACPairPole_not_successful_secondPartner K h2 ha hb hc
+      hab hac hbc hfinal
 
 end Erdos85.Polarity
