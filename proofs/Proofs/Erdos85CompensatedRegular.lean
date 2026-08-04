@@ -61,5 +61,25 @@ theorem card_damagedDeletedNeighborhood_le_one_of_regular_budget
     exact (mem_damagedDeletedNeighborhood G x S T v).mp hv |>.2
   · exact hinter
 
-end Erdos85
+/-- In the regular case the two attachment sets must cover the entire deleted
+neighborhood. -/
+theorem deletedNeighborhood_subset_union_of_regular_budget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (S T : Finset {y : V // y ≠ x}) {d : ℕ}
+    (hd : 1 ≤ d) (hreg : ∀ v, G.degree v = d)
+    (hbudget : ∀ v : {y : V // y ≠ x},
+      d + crossEdgeLoss (G.induce {y | y ≠ x}) S T v ≤
+        (G.induce {y | y ≠ x}).degree v +
+          (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)) :
+    deletedNeighborhood G x ⊆ S ∪ T := by
+  intro v hv
+  have hvx := (mem_deletedNeighborhood G x v).mp hv
+  exact mem_union_of_one_defect_compensated
+    (d := d) (degree := (G.induce {y | y ≠ x}).degree v)
+    (loss := crossEdgeLoss (G.induce {y | y ≠ x}) S T v)
+    S T hd v (by
+      rw [degree_induce_delete_eq, hreg]
+      simp [hvx]) (hbudget v)
 
+end Erdos85
