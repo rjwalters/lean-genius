@@ -92,4 +92,32 @@ theorem induce_resolvent_det_eq_of_set_eq
     _ = Matrix.det (Matrix.diagonal (fun _ : t ↦ a) - (G.induce t).adjMatrix ℤ) :=
       congrArg Matrix.det hM
 
+theorem secondOrderDefect_component_resolvent_chebyshev
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj] [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree) (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) (a : ℤ) :
+    ∃ r : ℕ, 3 ≤ r ∧
+      Matrix.det (Matrix.diagonal (fun _ : c.supp ↦ a) -
+        ((secondOrderDefectGraph G).induce c.supp).adjMatrix ℤ) =
+        (Polynomial.Chebyshev.C ℤ (r : ℤ) - 2).eval a := by
+  obtain ⟨x, p, hp, hpverts, hgraph⟩ :=
+    secondOrderDefect_component_induce_eq_cycleSubgraph
+      G hfree hd heven hmin hcard c
+  letI : Fintype p.toSubgraph.verts := Fintype.ofFinite _
+  letI : DecidableRel p.toSubgraph.coe.Adj := Classical.decRel _
+  letI : DecidableRel ((secondOrderDefectGraph G).induce p.toSubgraph.verts).Adj :=
+    Classical.decRel _
+  refine ⟨p.length, hp.three_le_length, ?_⟩
+  have hpoly := isCycle_induce_charpoly_chebyshev hp hgraph
+  have htrans := induce_resolvent_det_eq_of_set_eq
+    (G := secondOrderDefectGraph G) hpverts a
+  rw [← htrans]
+  have hdiag : Matrix.diagonal (fun _ : p.toSubgraph.verts ↦ a) =
+      Matrix.scalar p.toSubgraph.verts a := by
+    rfl
+  rw [hdiag, ← Matrix.eval_charpoly, hpoly]
+
 end Erdos85
