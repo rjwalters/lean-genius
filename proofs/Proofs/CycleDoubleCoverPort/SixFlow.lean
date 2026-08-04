@@ -1,7 +1,6 @@
 import Proofs.CycleDoubleCoverPort.GeneralGraph
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Int.Cast.Lemmas
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 /-
 # Cycle Double Cover port, step 5a: reducing an integral 6-flow modulo eight
