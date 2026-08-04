@@ -7,8 +7,9 @@ import Proofs.CycleDoubleCover
 # Even edge-set circuit decomposition (Veblen 1912)
 
 This file is the **foundational layer** for porting the openai/cdc-lean proof of
-the Cycle Double Cover theorem (see `Proofs/CycleDoubleCover.lean`, which states
-the theorem as `axiom cycleDoubleCover_of_bridgeless`). It corresponds, in the
+the Cycle Double Cover theorem (see `Proofs/CycleDoubleCover.lean` for the
+statement layer; the theorem `cycleDoubleCover_of_bridgeless` itself is proved
+in `Proofs/CycleDoubleCoverPort/Main.lean`). It corresponds, in the
 upstream porting order, to the role of `GeneralGraph.lean` + `CycleDecomposition.lean`:
 the core even-edge-set / circuit machinery on general finite multigraphs.
 

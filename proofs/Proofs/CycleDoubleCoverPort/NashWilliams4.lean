@@ -68,7 +68,8 @@ CubicLabeling/CubicTheorem, Main) remain.
 
 There are no `sorry`s, no `native_decide`, and no `axiom` declarations here.
 This file does **not** discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless`;
-that is step 8 of the port.
+that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 -/
 
 namespace CycleDoubleCover

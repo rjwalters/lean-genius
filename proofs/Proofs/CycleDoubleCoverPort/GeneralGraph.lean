@@ -35,11 +35,13 @@ entry was created:
 Rather than restate them (which would risk exactly the statement drift the
 epic warns about), this file **imports and extends** that namespace. Every
 definition below therefore refers to *the very same* `FiniteGraph` against
-which `CycleDoubleCover.cycleDoubleCover_of_bridgeless` is currently
-axiomatized, so no equivalence bridge is needed and no drift is possible.
+which `CycleDoubleCover.cycleDoubleCover_of_bridgeless` is stated, so no
+equivalence bridge is needed and no drift is possible. (When this file landed,
+that name was an `axiom` in `Proofs/CycleDoubleCover.lean`; it is now a theorem
+proved by `CycleDoubleCoverPort/Main.lean`, under the same name and statement.)
 
-This file does **not** discharge that axiom; that is the final step of the
-port (see #37507).
+This file does **not** itself prove that theorem; that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port (#37507).
 
 ## Contents
 

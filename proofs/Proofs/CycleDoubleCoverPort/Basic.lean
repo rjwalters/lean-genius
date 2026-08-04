@@ -52,7 +52,8 @@ around a vertex are pairwise distinct, hence form one of the seven nonzero
 of the proof runs on.
 
 This file does **not** discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless`;
-that is the final step of the port.
+that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 
 ## Relationship to the general encoding
 

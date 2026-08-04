@@ -11,7 +11,7 @@ Every finite bridgeless loopless multigraph has a cycle double cover: a finite
 multiset of cycles such that every edge lies in exactly two members, counted
 with multiplicity.
 
-## Status: RESOLVED (2026), axiomatized here pending port
+## Status: RESOLVED (2026), PROVED HERE — no axioms
 
 On 2026-07-10 OpenAI announced a proof produced by GPT-5.6 Sol Ultra, together
 with a complete Lean 4 formalization:
@@ -33,9 +33,27 @@ converts that flow into an exact even double cover, which projects back and
 decomposes into cycles. Classically an 8-flow was only known to yield a cycle
 QUADRUPLE cover; the 8-flow → double-cover conversion is the new content.
 
-This file ports the *statement* (definitions follow upstream `CDCLean` exactly,
-modulo naming) and axiomatizes the theorem until the 7,134-line proof is ported
-to our Mathlib pin. The axiom is the upstream kernel-checked theorem.
+From 2026-07-11 to 2026-08-03 this file carried the theorem as an
+`axiom cycleDoubleCover_of_bridgeless`, pending a port of the upstream proof.
+**That axiom is gone.** The full 7,134-line development has been ported to this
+repository's Mathlib pin under `Proofs/CycleDoubleCoverPort/` (epic #37507), and
+`Proofs/CycleDoubleCoverPort/Main.lean` now proves
+
+```
+theorem CycleDoubleCover.cycleDoubleCover_of_bridgeless
+    {V E : Type*} [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E]
+    (G : FiniteGraph V E) (hb : G.Bridgeless) :
+    Nonempty G.CycleDoubleCover
+```
+
+under exactly the name and statement the axiom used to occupy. The theorem lives
+in the port rather than in this file only because every file of the port imports
+this one; it must sit at the top of the import graph. `#print axioms` on it
+reports exactly `[propext, Classical.choice, Quot.sound]`.
+
+This file therefore holds the *statement layer*: the definitions (which follow
+upstream `CDCLean` exactly, modulo naming) plus the elementary facts below,
+which are proved directly and never depended on the axiom.
 
 ## Definitions (mirroring openai/cdc-lean)
 
@@ -106,20 +124,16 @@ structure CycleDoubleCover where
 end FiniteGraph
 
 -- ============================================================
--- The theorem (axiomatized; kernel-checked upstream, see header)
+-- The theorem: see Proofs/CycleDoubleCoverPort/Main.lean
 -- ============================================================
-
-/-- **The Cycle Double Cover theorem** (Szekeres–Seymour conjecture, resolved
-2026): every finite bridgeless loopless multigraph has a cycle double cover.
-
-Axiomatized pending a port of the upstream proof. The upstream artifact
-(`CDCLean.cycleDoubleCover_of_bridgeless` in openai/cdc-lean) was independently
-rebuilt and kernel-audited for this gallery on 2026-07-11; it depends only on
-`propext`, `Classical.choice`, and `Quot.sound`. -/
-axiom cycleDoubleCover_of_bridgeless
-    {V E : Type*} [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E]
-    (G : FiniteGraph V E) (hb : G.Bridgeless) :
-    Nonempty G.CycleDoubleCover
+--
+-- `CycleDoubleCover.cycleDoubleCover_of_bridgeless` — "every finite bridgeless
+-- loopless multigraph has a cycle double cover" — was declared here as an
+-- `axiom` from 2026-07-11 until 2026-08-03. It is now a *theorem*, proved in
+-- `Proofs/CycleDoubleCoverPort/Main.lean` with the same fully qualified name
+-- and a character-identical statement. It cannot be stated in this file:
+-- every module of the port imports this one, so the proof must sit at the top
+-- of the import graph. Nothing in this file ever depended on the axiom.
 
 -- ============================================================
 -- Elementary facts proved directly (no axiom dependence)

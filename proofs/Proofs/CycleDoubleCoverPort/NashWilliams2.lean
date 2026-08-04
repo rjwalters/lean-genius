@@ -92,7 +92,8 @@ proof scripts under the operator's recorded risk acceptance (see their headers):
 
 There are no `sorry`s, no `native_decide`, and no `axiom` declarations here.
 This file does **not** discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless`;
-that is the final step of the port (see #37507).
+that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port (#37507).
 -/
 
 namespace CycleDoubleCover

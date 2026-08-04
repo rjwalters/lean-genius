@@ -73,8 +73,8 @@ Three things have to be checked, and each is a named result below.
    edge of `G` is literally a spoke of the expansion.
 
 This file does **not** discharge
-`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is the final step of the
-port.
+`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 
 ## Deliberate omission: upstream `PathCut.lean`
 

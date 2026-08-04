@@ -117,8 +117,8 @@ ported: `inside_induce_connected`, `quotientGraph_connected_of_connects`,
 
 Nothing in this file is `sorry`-free by accident: there are no `sorry`s, no
 `native_decide`, and no `axiom` declarations. This file does **not** discharge
-`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is the final step of the
-port.
+`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 -/
 
 namespace CycleDoubleCover
