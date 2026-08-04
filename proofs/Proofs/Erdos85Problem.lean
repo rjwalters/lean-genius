@@ -2758,6 +2758,256 @@ theorem common_le_one_of_not_containsC4 {V : Type*} [Fintype V] [DecidableEq V]
     (G.ne_of_adj hv.1).symm (G.ne_of_adj hv.2).symm
     (G.ne_of_adj hv'.1).symm (G.ne_of_adj hv'.2).symm)
 
+/-! ## Safe vertex attachment from common-neighbour-independent sets
+
+The witness-extension formulation above reduces the open problem to a concrete
+selection question.  Given a `C₄`-free graph `G`, choose a set `S` of vertices
+such that no two distinct members of `S` have a common neighbour.  Adding a new
+vertex adjacent exactly to `S` then creates no `C₄`: any new cycle would have
+the form `new-a-z-b-new`, making `z` a common neighbour of distinct `a,b ∈ S`.
+If `|S| ≥ d`, the new vertex has degree at least `d`, while all old degrees
+can only increase.  The results below formalize that complete reduction. -/
+
+/-- A vertex set in which no distinct pair has a common neighbour in `G`. -/
+def CommonNeighborIndependent {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) : Prop :=
+  ∀ ⦃a⦄, a ∈ S → ∀ ⦃b⦄, b ∈ S → a ≠ b →
+    (G.neighborFinset a ∩ G.neighborFinset b).card = 0
+
+/-- Add one new vertex (`none`) adjacent exactly to the selected old vertices. -/
+def attachVertex {V : Type*} [DecidableEq V] (G : SimpleGraph V) (S : Finset V) :
+    SimpleGraph (Option V) where
+  Adj
+    | some x, some y => G.Adj x y
+    | some x, none => x ∈ S
+    | none, some y => y ∈ S
+    | none, none => False
+  symm.symm := by
+    intro p q h
+    match p, q with
+    | some x, some y => exact h.symm
+    | some _, none => exact h
+    | none, some _ => exact h
+    | none, none => exact h.elim
+  loopless.irrefl := by
+    intro p h
+    match p with
+    | some x => exact G.loopless.irrefl x h
+    | none => exact h
+
+instance attachVertexDecidableRel {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
+    DecidableRel (attachVertex G S).Adj := fun p q =>
+  match p, q with
+  | some x, some y => inferInstanceAs (Decidable (G.Adj x y))
+  | some x, none => inferInstanceAs (Decidable (x ∈ S))
+  | none, some y => inferInstanceAs (Decidable (y ∈ S))
+  | none, none => inferInstanceAs (Decidable False)
+
+@[simp] theorem attachVertex_adj_some_some {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {x y : V} :
+    (attachVertex G S).Adj (some x) (some y) ↔ G.Adj x y := Iff.rfl
+
+@[simp] theorem attachVertex_adj_some_none {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {x : V} :
+    (attachVertex G S).Adj (some x) none ↔ x ∈ S := Iff.rfl
+
+@[simp] theorem attachVertex_adj_none_some {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {y : V} :
+    (attachVertex G S).Adj none (some y) ↔ y ∈ S := Iff.rfl
+
+@[simp] theorem attachVertex_not_adj_none_none {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} :
+    ¬ (attachVertex G S).Adj none none := fun h => h
+
+/-- Attaching a new vertex never decreases an old vertex's degree. -/
+theorem degree_le_attachVertex_degree_some {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) (x : V) :
+    G.degree x ≤ (attachVertex G S).degree (some x) := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn some
+  · intro y hy
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hy ⊢
+    exact hy
+  · intro _ _ _ _ h
+    exact Option.some.inj h
+
+/-- The attached vertex has at least one neighbour for every member of `S`. -/
+theorem card_le_attachVertex_degree_none {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
+    S.card ≤ (attachVertex G S).degree none := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn some
+  · intro x hx
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset,
+      attachVertex_adj_none_some] at hx ⊢
+    exact hx
+  · intro _ _ _ _ h
+    exact Option.some.inj h
+
+/-- **Safe attachment preserves the common-neighbour bound.** -/
+theorem attachVertex_common_le_one {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {S : Finset V}
+    (hfree : ¬ containsC4 V G) (hsafe : CommonNeighborIndependent G S) :
+    ∀ p q : Option V, p ≠ q →
+      ((attachVertex G S).neighborFinset p ∩
+        (attachVertex G S).neighborFinset q).card ≤ 1 := by
+  have hold : ∀ x y z₁ z₂ : V, x ≠ y → G.Adj x z₁ → G.Adj y z₁ →
+      G.Adj x z₂ → G.Adj y z₂ → z₁ = z₂ := by
+    intro x y z₁ z₂ hxy hx₁ hy₁ hx₂ hy₂
+    refine Finset.card_le_one.mp (common_le_one_of_not_containsC4 hfree x y hxy)
+      z₁ ?_ z₂ ?_
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hx₁, hy₁⟩
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hx₂, hy₂⟩
+  have hselected : ∀ a b z : V, a ∈ S → b ∈ S → a ≠ b →
+      G.Adj a z → G.Adj b z → False := by
+    intro a b z ha hb hab haz hbz
+    have hz : z ∈ G.neighborFinset a ∩ G.neighborFinset b := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨haz, hbz⟩
+    have hpos : 0 < (G.neighborFinset a ∩ G.neighborFinset b).card :=
+      Finset.card_pos.mpr ⟨z, hz⟩
+    rw [hsafe ha hb hab] at hpos
+    omega
+  intro p q hpq
+  rw [Finset.card_le_one]
+  intro w₁ hw₁ w₂ hw₂
+  rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mem_neighborFinset] at hw₁ hw₂
+  obtain ⟨hw₁p, hw₁q⟩ := hw₁
+  obtain ⟨hw₂p, hw₂q⟩ := hw₂
+  rcases p with _ | x <;> rcases q with _ | y
+  · exact absurd rfl hpq
+  · rcases w₁ with _ | a
+    · exact (attachVertex_not_adj_none_none hw₁p).elim
+    rcases w₂ with _ | b
+    · exact (attachVertex_not_adj_none_none hw₂p).elim
+    by_contra hab
+    exact hselected a b y (by simpa using hw₁p) (by simpa using hw₂p)
+      (fun h => hab (congrArg some h)) (by simpa using hw₁q.symm)
+      (by simpa using hw₂q.symm)
+  · rcases w₁ with _ | a
+    · exact (attachVertex_not_adj_none_none hw₁q).elim
+    rcases w₂ with _ | b
+    · exact (attachVertex_not_adj_none_none hw₂q).elim
+    by_contra hab
+    exact hselected a b x (by simpa using hw₁q) (by simpa using hw₂q)
+      (fun h => hab (congrArg some h)) (by simpa using hw₁p.symm)
+      (by simpa using hw₂p.symm)
+  · have hxy : x ≠ y := fun h => hpq (by rw [h])
+    rcases w₁ with _ | z₁ <;> rcases w₂ with _ | z₂
+    · rfl
+    · have hxS : x ∈ S := by simpa using hw₁p
+      have hyS : y ∈ S := by simpa using hw₁q
+      exact (hselected x y z₂ hxS hyS hxy (by simpa using hw₂p)
+        (by simpa using hw₂q)).elim
+    · have hxS : x ∈ S := by simpa using hw₂p
+      have hyS : y ∈ S := by simpa using hw₂q
+      exact (hselected x y z₁ hxS hyS hxy (by simpa using hw₁p)
+        (by simpa using hw₁q)).elim
+    · exact congrArg some (hold x y z₁ z₂ hxy
+        (by simpa using hw₁p) (by simpa using hw₁q)
+        (by simpa using hw₂p) (by simpa using hw₂q))
+
+/-- **Safe attachment is an exact criterion.**  Adding a vertex adjacent to
+`S` is `C₄`-free iff the old graph is `C₄`-free and `S` is common-neighbour
+independent. -/
+theorem attachVertex_not_containsC4_iff {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {S : Finset V} :
+    ¬ containsC4 (Option V) (attachVertex G S) ↔
+      ¬ containsC4 V G ∧ CommonNeighborIndependent G S := by
+  constructor
+  · intro hattach
+    constructor
+    · rintro ⟨f, hinj, hadj⟩
+      exact hattach ⟨fun i => some (f i), fun i j h => hinj (Option.some.inj h),
+        fun i j hij => hadj i j hij⟩
+    · intro a ha b hb hab
+      rw [Finset.card_eq_zero]
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro z hz
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset] at hz
+      exact hattach (containsC4_of_rim (G := attachVertex G S)
+        (a := none) (b := some a) (c := some z) (d := some b)
+        (by simpa using ha) (by simpa using hz.1)
+        (by simpa using hz.2.symm) (by simpa using hb)
+        (by simp) (fun h => hab (Option.some.inj h)) (by simp)
+        (fun h => (G.ne_of_adj hz.1) (Option.some.inj h)) (by simp)
+        (fun h => (G.ne_of_adj hz.2) (Option.some.inj h)))
+  · rintro ⟨hfree, hsafe⟩
+    exact not_containsC4_of_forall_common_le_one
+      (attachVertex_common_le_one hfree hsafe)
+
+/-- The attachment graph transported from `Option (Fin n)` to `Fin (n + 1)`. -/
+def attachFin {n : ℕ} (G : SimpleGraph (Fin n)) (S : Finset (Fin n)) :
+    SimpleGraph (Fin (n + 1)) :=
+  SimpleGraph.comap (⇑(finSuccEquiv n)) (attachVertex G S)
+
+instance attachFinDecidableRel {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (S : Finset (Fin n)) : DecidableRel (attachFin G S).Adj :=
+  fun u v => inferInstanceAs
+    (Decidable ((attachVertex G S).Adj (finSuccEquiv n u) (finSuccEquiv n v)))
+
+theorem attachFin_degree_ge {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (S : Finset (Fin n)) (u : Fin (n + 1)) :
+    (attachVertex G S).degree (finSuccEquiv n u) ≤ (attachFin G S).degree u := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn (fun w => (finSuccEquiv n).symm w)
+  · intro w hw
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hw ⊢
+    show (attachVertex G S).Adj (finSuccEquiv n u)
+      (finSuccEquiv n ((finSuccEquiv n).symm w))
+    rw [Equiv.apply_symm_apply]
+    exact hw
+  · intro w₁ _ w₂ _ h
+    exact (finSuccEquiv n).symm.injective h
+
+theorem attachFin_not_containsC4 {n : ℕ} (G : SimpleGraph (Fin n))
+    (S : Finset (Fin n)) (h : ¬ containsC4 (Option (Fin n)) (attachVertex G S)) :
+    ¬ containsC4 (Fin (n + 1)) (attachFin G S) := by
+  rintro ⟨f, hinj, hadj⟩
+  exact h ⟨fun i => finSuccEquiv n (f i), (finSuccEquiv n).injective.comp hinj,
+    fun i j hij => hadj i j hij⟩
+
+/-- **The selector criterion produces an extended witness.** -/
+theorem c4FreeMinDegreeWitness_succ_of_commonNeighborIndependent {n d : ℕ}
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (hdeg : d ≤ G.minDegree)
+    (hfree : ¬ containsC4 (Fin n) G) (S : Finset (Fin n)) (hcard : d ≤ S.card)
+    (hsafe : CommonNeighborIndependent G S) : C4FreeMinDegreeWitness (n + 1) d := by
+  refine ⟨attachFin G S, inferInstance, ?_, ?_⟩
+  · apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (attachFin_degree_ge G S u)
+    rcases h : finSuccEquiv n u with _ | x
+    · exact le_trans hcard (card_le_attachVertex_degree_none G S)
+    · exact le_trans (le_trans hdeg (G.minDegree_le_degree x))
+        (degree_le_attachVertex_degree_some G S x)
+  · apply attachFin_not_containsC4 G S
+    exact not_containsC4_of_forall_common_le_one
+      (attachVertex_common_le_one hfree hsafe)
+
+/-- **The common-neighbour selector statement implies witness extension.**
+This is the formal version of the graph-theoretic subproblem highlighted in
+issue #43623. -/
+theorem witnessExtension_of_commonNeighborIndependent {n : ℕ}
+    (hselect : ∀ d (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      d ≤ G.minDegree → ¬ containsC4 (Fin n) G →
+      ∃ S : Finset (Fin n), d ≤ S.card ∧ CommonNeighborIndependent G S) :
+    C4FreeWitnessExtension n := by
+  rintro d ⟨G, hdec, hdeg, hfree⟩
+  letI := hdec
+  obtain ⟨S, hcard, hsafe⟩ := hselect d G hdec hdeg hfree
+  exact c4FreeMinDegreeWitness_succ_of_commonNeighborIndependent
+    G hdeg hfree S hcard hsafe
+
 /-- **The projective-plane threshold.**  Every graph on `13` vertices with
 minimum degree `≥ 4` contains a `4`-cycle.  Cherry-counting is exactly tight
 (`13·C(4,2) = C(13,2) = 78`), so a `C₄`-free such graph would be `4`-regular
