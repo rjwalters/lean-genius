@@ -81,7 +81,10 @@ Finally, a universal compensated surgery is now available: delete every old
 edge between the neighborhoods of two vertices `x,w`, then add `xw`.  If the
 old graph is `C₄`-free, the switched graph is still `C₄`-free.  This reduces
 the new two-absolute-point construction to degree bookkeeping and explicit
-finite-geometry incidence counts.
+finite-geometry incidence counts.  When the endpoints are nonadjacent with
+disjoint neighborhoods, every vertex loses at most one cross edge; an abstract
+completion theorem repairs a unique one-unit defect provided all other
+vertices retain the target degree after cross deletion.
 -/
 
 namespace Erdos85

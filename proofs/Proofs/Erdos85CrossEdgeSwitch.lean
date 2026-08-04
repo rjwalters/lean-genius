@@ -120,4 +120,69 @@ theorem crossEdgeLoss_neighborFinsets_le_one {V : Type*} [Fintype V]
     · rw [crossEdgeLoss_eq_zero_of_not_mem H _ _ v hvx hvw]
       omega
 
+/-- The newly inserted edge raises the left endpoint's degree by exactly one
+when it was absent from the old graph. -/
+theorem crossEdgeSwitch_degree_left {V : Type*} [Fintype V]
+    [DecidableEq V] (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).Adj]
+    (hxw : ¬ H.Adj x w) (hne : x ≠ w) :
+    (crossEdgeSwitch H x w).degree x =
+      (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).degree x + 1 := by
+  classical
+  let D := deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)
+  have hneighbors : (crossEdgeSwitch H x w).neighborFinset x =
+      insert w (D.neighborFinset x) := by
+    ext v
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_insert]
+    rw [crossEdgeSwitch_adj_iff]
+    change _ ↔ v = w ∨ D.Adj x v
+    simp only [D, deleteCrossEdges, SimpleGraph.deleteEdges_adj]
+    aesop
+  rw [SimpleGraph.degree, hneighbors]
+  have hnot : w ∉ D.neighborFinset x := by
+    rw [SimpleGraph.mem_neighborFinset]
+    intro h
+    exact hxw (SimpleGraph.deleteEdges_le _ h)
+  rw [Finset.card_insert_of_notMem hnot,
+    SimpleGraph.card_neighborFinset_eq_degree]
+
+/-- Adding the switch edge cannot lower any degree relative to the graph after
+cross-edge deletion. -/
+theorem degree_deleteCrossEdges_le_crossEdgeSwitch {V : Type*} [Fintype V]
+    [DecidableEq V] (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).Adj] :
+    (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).degree v ≤
+      (crossEdgeSwitch H x w).degree v := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card
+  intro y hy
+  rw [SimpleGraph.mem_neighborFinset] at hy ⊢
+  exact (show deleteCrossEdges H _ _ ≤
+      deleteCrossEdges H _ _ ⊔ SimpleGraph.edge x w from le_sup_left) hy
+
+/-- Abstract completion theorem for the compensated switch: after the cross
+deletion, a unique one-unit defect at `x` is repaired by the edge `xw`. -/
+theorem crossEdgeSwitch_minDegree_of_unique_defect {V : Type*} [Fintype V]
+    [DecidableEq V] (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).Adj]
+    (d : ℕ) (hxw : ¬ H.Adj x w) (hne : x ≠ w)
+    (hx : (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).degree x = d - 1)
+    (hother : ∀ v ≠ x, d ≤ (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).degree v) :
+    d ≤ (crossEdgeSwitch H x w).minDegree := by
+  letI : Nonempty V := ⟨x⟩
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  intro v
+  by_cases hv : v = x
+  · subst v
+    rw [crossEdgeSwitch_degree_left H x w hxw hne, hx]
+    omega
+  · exact (hother v hv).trans
+      (degree_deleteCrossEdges_le_crossEdgeSwitch H x w v)
+
 end Erdos85
