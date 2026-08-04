@@ -163,7 +163,133 @@ theorem exists_spanning_minDegree_eq
   have hv : d < H.degree v := lt_of_le_of_ne hvMin (Ne.symm htight.2)
   exact hdelete u v huv (le_minDegree_deleteEdge_of_lt_degrees H u v hHmin hu hv)
 
-/-- Exact-degree normalization preserves C4-freeness. -/
+/-- Vertices whose degree is exactly the normalized target. -/
+def tightVertices {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Finset V :=
+  Finset.univ.filter fun v => G.degree v = d
+
+/-- Vertices strictly above the normalized target. -/
+def aboveMinVertices {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Finset V :=
+  Finset.univ.filter fun v => d < G.degree v
+
+theorem aboveMinVertices_isIndepSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d) :
+    G.IsIndepSet (aboveMinVertices G d) := by
+  rw [SimpleGraph.isIndepSet_iff]
+  intro u hu v hv _ huv
+  have hu' : d < G.degree u := by simpa [aboveMinVertices] using hu
+  have hv' : d < G.degree v := by simpa [aboveMinVertices] using hv
+  rcases hcover huv with huEq | hvEq <;> omega
+
+/-- Restricted cherry packing for an edge-covered C4-free graph: all cherries
+centered above minimum have endpoints in the tight layer, and no endpoint pair
+can occur at two distinct centers. -/
+theorem sum_choose_degree_aboveMin_le_choose_card_tight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hfree : ¬ containsC4 V G)
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d) :
+    ∑ u ∈ aboveMinVertices G d, (G.degree u).choose 2 ≤
+      (tightVertices G d).card.choose 2 := by
+  classical
+  let U := aboveMinVertices G d
+  let L := tightVertices G d
+  let C : Finset (Σ _ : V, Finset V) :=
+    U.sigma (fun u => (G.neighborFinset u).powersetCard 2)
+  let T : Finset (Finset V) := L.powersetCard 2
+  have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+    intro p hp
+    rw [show C = U.sigma
+      (fun u => (G.neighborFinset u).powersetCard 2) from rfl,
+      Finset.mem_sigma] at hp
+    rw [show T = L.powersetCard 2 from rfl, Finset.mem_powersetCard]
+    refine ⟨?_, (Finset.mem_powersetCard.mp hp.2).2⟩
+    intro z hz
+    have huz : G.Adj p.1 z := (G.mem_neighborFinset p.1 z).mp
+      ((Finset.mem_powersetCard.mp hp.2).1 hz)
+    have huHigh : d < G.degree p.1 := by
+      simpa [U, aboveMinVertices] using hp.1
+    rcases hcover huz with huEq | hzEq
+    · omega
+    · simpa [L, tightVertices] using hzEq
+  have hinj : Set.InjOn (fun p : Σ _ : V, Finset V => p.2) C := by
+    intro p hp q hq heq
+    obtain ⟨u, e⟩ := p
+    obtain ⟨v, e'⟩ := q
+    simp only at heq
+    subst e'
+    by_contra hpq
+    have huv : u ≠ v := by
+      intro h
+      subst v
+      exact hpq rfl
+    change ⟨u, e⟩ ∈ C at hp
+    change ⟨v, e⟩ ∈ C at hq
+    rw [show C = U.sigma
+      (fun u => (G.neighborFinset u).powersetCard 2) from rfl,
+      Finset.mem_sigma] at hp hq
+    obtain ⟨hsubu, hecard⟩ := Finset.mem_powersetCard.mp hp.2
+    obtain ⟨hsubv, _⟩ := Finset.mem_powersetCard.mp hq.2
+    obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hecard
+    have hxu : G.Adj u x := (G.mem_neighborFinset u x).mp (hsubu (by simp))
+    have hyu : G.Adj u y := (G.mem_neighborFinset u y).mp (hsubu (by simp))
+    have hxv : G.Adj v x := (G.mem_neighborFinset v x).mp (hsubv (by simp))
+    have hyv : G.Adj v y := (G.mem_neighborFinset v y).mp (hsubv (by simp))
+    exact hfree (containsC4_of_rim hxu.symm hyu hyv.symm hxv hxy huv
+      (G.ne_of_adj hxu) (G.ne_of_adj hyu)
+      (G.ne_of_adj hxv) (G.ne_of_adj hyv))
+  have hcard := Finset.card_le_card_of_injOn (fun p : Σ _ : V, Finset V => p.2)
+    hmaps hinj
+  rw [show C.card = ∑ u ∈ U, (G.degree u).choose 2 by
+    rw [show C = U.sigma
+      (fun u => (G.neighborFinset u).powersetCard 2) from rfl,
+      Finset.card_sigma]
+    apply Finset.sum_congr rfl
+    intro u _
+    rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree]] at hcard
+  rw [show T.card = L.card.choose 2 by
+    rw [show T = L.powersetCard 2 from rfl, Finset.card_powersetCard]] at hcard
+  exact hcard
+
+/-- Numerical consequence of restricted cherry packing. -/
+theorem card_aboveMin_mul_choose_succ_le_choose_card_tight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hfree : ¬ containsC4 V G)
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d) :
+    (aboveMinVertices G d).card * (d + 1).choose 2 ≤
+      (tightVertices G d).card.choose 2 := by
+  calc
+    _ = ∑ u ∈ aboveMinVertices G d, (d + 1).choose 2 := by
+      simp
+    _ ≤ ∑ u ∈ aboveMinVertices G d, (G.degree u).choose 2 := by
+      apply Finset.sum_le_sum
+      intro u hu
+      apply Nat.choose_le_choose 2
+      have huHigh : d < G.degree u := by
+        simpa [aboveMinVertices] using hu
+      omega
+    _ ≤ _ := sum_choose_degree_aboveMin_le_choose_card_tight G hfree hcover
+
+theorem neighborFinset_subset_tightVertices_of_aboveMin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d)
+    {u : V} (hu : u ∈ aboveMinVertices G d) :
+    G.neighborFinset u ⊆ tightVertices G d := by
+  intro v hv
+  have hu' : d < G.degree u := by simpa [aboveMinVertices] using hu
+  have huv : G.Adj u v := (G.mem_neighborFinset u v).mp hv
+  rcases hcover huv with huEq | hvEq
+  · omega
+  · simpa [tightVertices] using hvEq
 
 theorem not_adj_of_lt_degrees_of_edgeCovered
     {V : Type*} [Fintype V] [DecidableEq V]
