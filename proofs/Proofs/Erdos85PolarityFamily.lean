@@ -9,22 +9,27 @@ open scoped LinearAlgebra.Projectivization
 
 namespace Erdos85.Polarity
 
+universe u
+
 variable (K : Type*) [Field K] [Finite K] [DecidableEq K]
 
-private abbrev q : ℕ := Nat.card K
-private abbrev P : Type* := ℙ K (Fin 3 → K)
+private noncomputable abbrev q (K : Type u) : ℕ := Nat.card K
+private abbrev P (K : Type u) [Field K] : Type u := ℙ K (Fin 3 → K)
 
 theorem card_points_eq : Nat.card (P K) = (q K) ^ 2 + q K + 1 := by
-  rw [Projectivization.card_of_finrank K (Fin 3 → K)]
-  · simp [q, Finset.sum_range_succ, pow_two]
+  rw [Projectivization.card_of_finrank K (Fin 3 → K) (n := 3)]
+  · simp [q, Finset.sum_range_succ, pow_two, Nat.add_comm,
+      Nat.add_left_comm, Nat.add_assoc]
   · simp
 
 theorem projectivePlane_order_eq_card :
     Configuration.ProjectivePlane.order (P K) (P K) = q K := by
-  let r := Configuration.ProjectivePlane.order (P K) (P K)
   have hp := Configuration.ProjectivePlane.card_points (P K) (P K)
   rw [← Nat.card_eq_fintype_card, card_points_eq K] at hp
-  have hrq : r ^ 2 + r = (q K) ^ 2 + q K := by omega
+  have hrq :
+      Configuration.ProjectivePlane.order (P K) (P K) ^ 2 +
+          Configuration.ProjectivePlane.order (P K) (P K) =
+        (q K) ^ 2 + q K := by omega
   nlinarith
 
 theorem card_points_tight : Nat.card (P K) = (q K + 1) * q K + 1 := by
@@ -43,6 +48,7 @@ noncomputable instance finGraphDecidableAdj : DecidableRel (finGraph K).Adj :=
 
 theorem finGraph_minDegree : q K ≤ (finGraph K).minDegree := by
   have hi := SimpleGraph.Iso.comap (pointEquivFin K).symm (graph K)
+  change q K ≤ ((graph K).comap (pointEquivFin K).symm).minDegree
   rw [hi.minDegree_eq]
   rw [← projectivePlane_order_eq_card K]
   exact order_le_minDegree
@@ -65,6 +71,7 @@ theorem minDegreeForC4_projectivePlane :
     minDegreeForC4 ((q K + 1) * q K + 1) = q K + 1 := by
   apply minDegreeForC4_eq_tight_of_witness
   · have := Finite.one_lt_card (α := K)
+    change 3 ≤ Nat.card K + 1
     omega
   · simpa [TightC4Witness] using tightC4Witness K
 

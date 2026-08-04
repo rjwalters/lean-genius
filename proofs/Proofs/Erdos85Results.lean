@@ -7,6 +7,9 @@ import Proofs.Erdos85Polarity
 import Proofs.Erdos85PolarityDegree
 import Proofs.Erdos85PolarityFamily
 import Proofs.Erdos85Relabel
+import Proofs.Erdos85PrimeFamily
+import Proofs.Erdos85PrimeSequence
+import Proofs.Erdos85VertexDeletion
 
 /-!
 # Headline results for Erdős Problem 85
