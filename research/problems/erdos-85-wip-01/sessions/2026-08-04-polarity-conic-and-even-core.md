@@ -1213,16 +1213,19 @@ be perfect squares, impossible for `d≥3`.
 A useful basis-free route to the last statement is a reusable cubic-trace
 lemma.  For an integer matrix `T`, if `T³=qT`, `q>0`, and `tr(T)≠0`, then the
 quadratic factor `X²-q` must split over the rationals, hence `q` is a square.
-The first matrix instantiation is now checked in
-`Erdos85OddFirstOrderSpectral`: `A(I-M)` has cubic parameter `4d` and trace
-`-|V|`.  The complementary instantiation should use
+Both matrix instantiations are now checked in
+`Erdos85OddFirstOrderSpectral`.  The matrix `A(I-M)` has cubic parameter `4d`
+and trace `-|V|`.  The complementary matrix is
 
 ```text
 |V| A(I+M) - 2dJ,
 ```
 
 whose cubic parameter is `4|V|²(d-2)` and whose trace is
-`|V|(|V|-2d)≠0`.  The remaining formal gap is precisely this generic
-cubic-trace/characteristic-polynomial lemma and the complementary matrix
-instantiation.  Completing it would rule out `d(d-1)+2` for every odd `d`
+`|V|(|V|-2d)≠0`; these identities are formal too.  A final conditional
+theorem applies the cubic-trace square principle twice, removes the explicit
+square factors, and checks modulo four that `d` and `d-2` cannot both be
+squares.  Thus the remaining formal gap is precisely the generic
+cubic-trace/characteristic-polynomial lemma.  Completing it would rule out
+`d(d-1)+2` for every odd `d`
 and improve the strict Moore bound there to `d(d-1)+3`.

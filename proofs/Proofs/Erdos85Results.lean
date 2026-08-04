@@ -259,10 +259,12 @@ In the odd case, the triangle-free edges are now formally extracted as a
 one-regular spanning defect graph with adjacency matrix `M`.  The checked
 identities are `A²=(d-1)I+J-M`, `AM=MA`, `M²=I`, and `tr(AM)=|V|`.  Thus the
 minus-space matrix `A(I-M)` formally satisfies `B³=4dB` and
-`tr(B)=-|V|`.  The remaining proposed exclusion of this first order is
-isolated to a generic characteristic-polynomial fact about nonzero traces on
-quadratic eigenspaces, together with the complementary plus-space instance;
-that final spectral step is not yet claimed here.
+`tr(B)=-|V|`.  A complementary integral matrix formally satisfies
+`C³=4|V|²(d-2)C` and has trace `|V|(|V|-2d)`.  The checked conditional closure
+shows that the generic cubic-trace square principle would force `d` and
+`d-2` to be squares and hence give a contradiction.  Thus only that generic
+characteristic-polynomial lemma remains; the unconditional stronger odd
+bound is not yet claimed here.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the
