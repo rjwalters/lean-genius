@@ -22,27 +22,24 @@ This file contains detailed reference documentation for the Architect role, incl
 - **You scan**: Codebase across all domains for improvement opportunities
 - **You create**: Issues with comprehensive proposals
 - **You label**: Add `loom:architect` (blue badge) immediately
-- **You wait**: User will add `loom:issue` to approve (or close to reject)
+- **You wait**: Champion (or a human) will add `loom:issue` to approve (or close to reject)
 
 ### What Happens Next (Not Your Job)
 
-- **User reviews**: Issues with `loom:architect` label
-- **User approves**: Adds `loom:issue` label (human-approved, ready for implementation)
-- **User rejects**: Closes issue with explanation
+- **Champion/human reviews**: Issues with `loom:architect` label
+- **Champion/human approves**: Adds `loom:issue` label (approved for work, ready for implementation)
+- **Champion/human rejects**: Closes issue with explanation
 - **Curator enhances**: Finds issues needing enhancement, adds details, marks `loom:curated`
-- **Worker implements**: Picks up `loom:issue` issues (human-approved work)
+- **Worker implements**: Picks up `loom:issue` issues (approved work)
 
 ### Key Commands
 
 ```bash
 # Check if there are already open proposals (don't spam)
-gh issue list --label="loom:architect" --state=open
+gh issue list --label="loom:architect" --state=open --limit 500
 
-# Create new proposal
-gh issue create --title "..." --body "..."
-
-# Add proposal label (blue badge)
-gh issue edit <number> --add-label "loom:architect"
+# Create new proposal — blue-badge label applied atomically at creation (#5047)
+./.loom/scripts/create-issue.sh --title "..." --body "..." --label "loom:architect"
 ```
 
 **Important**: Don't create too many proposals at once. If there are already 3+ open proposals, wait for the user to approve/reject some before creating more.
@@ -67,9 +64,8 @@ When the user explicitly instructs you to analyze a specific area or create a pr
 
 1. **Proceed immediately** - Focus on the specified area
 2. **Interpret as approval** - User instruction = implicit approval to analyze and create proposal
-3. **Apply working label** - Add `loom:architecting` to any created issues to track work
-4. **Document override** - Note in issue: "Created per user request to analyze [area]"
-5. **Follow normal completion** - Apply `loom:architect` label to proposal
+3. **Document override** - Note in issue: "Created per user request to analyze [area]"
+4. **Follow normal completion** - Apply `loom:architect` label to proposal (this label is itself the proposal's state signal — there is no separate claim label)
 
 ### Example
 
@@ -80,8 +76,12 @@ When the user explicitly instructs you to analyze a specific area or create a pr
 # Analyze the specified area
 # ... examine code, identify opportunities ...
 
-# Create proposal with clear context
-gh issue create --title "Refactor terminal state management to use reducer pattern" --body "$(cat <<'EOF'
+# Create proposal with clear context, applying its label ATOMICALLY at
+# creation (#5047) — a follow-up `gh issue edit --add-label` doubles the
+# request count and can half-fail, leaving an unlabelled issue behind.
+./.loom/scripts/create-issue.sh --title "Refactor terminal state management to use reducer pattern" \
+  --label "loom:architect" \
+  --body "$(cat <<'EOF'
 ## Problem Statement
 Per user request to analyze terminal state management architecture...
 
@@ -93,8 +93,6 @@ Per user request to analyze terminal state management architecture...
 EOF
 )"
 
-# Apply architect label
-gh issue edit <number> --add-label "loom:architect" --add-label "loom:architecting"
 gh issue comment <number> --body "Created per user request to analyze terminal state management"
 ```
 
@@ -125,16 +123,15 @@ gh issue comment <number> --body "Created per user request to analyze terminal s
 
 ### Applying Tier Labels
 
-```bash
-# After creating a proposal, add the appropriate tier label
-gh issue edit <number> --add-label "loom:architect"
+Apply `loom:architect` AND the tier label in the SAME `create-issue.sh` call
+that files the proposal (#5047) — never a follow-up `gh issue edit
+--add-label`, which doubles the request count and can half-fail into an
+unlabelled issue no queue query finds:
 
-# AND add the tier label based on goal alignment
-gh issue edit <number> --add-label "tier:goal-advancing"     # Tier 1
-# OR
-gh issue edit <number> --add-label "tier:goal-supporting"    # Tier 2
-# OR
-gh issue edit <number> --add-label "tier:maintenance"        # Tier 3
+```bash
+./.loom/scripts/create-issue.sh --title "..." --body "..." \
+  --label "loom:architect" \
+  --label "tier:goal-advancing"     # or tier:goal-supporting | tier:maintenance
 ```
 
 ---
@@ -154,8 +151,8 @@ gh issue edit <number> --add-label "tier:maintenance"        # Tier 3
 9. **Document alternatives considered**: Briefly mention other options and why they were ruled out
 10. **Estimate impact**: Complexity, risks, dependencies
 11. **Assess priority**: Determine if `loom:urgent` label is warranted
-12. **Create the issue**: Use `gh issue create` with focused recommendation
-13. **Add proposal label**: Run `gh issue edit <number> --add-label "loom:architect"`
+12. **Create the issue**: Use `./.loom/scripts/create-issue.sh` with focused recommendation
+13. **Add proposal label**: Pass `--label "loom:architect"` on that same creation call — never a follow-up `gh issue edit --add-label`
 
 **Key Difference from old workflow**: Steps 3-6 are about requirements gathering. You ask questions BEFORE creating issues, enabling you to recommend ONE approach instead of presenting multiple options without guidance.
 
@@ -163,7 +160,7 @@ gh issue edit <number> --add-label "tier:maintenance"        # Tier 3
 
 ## Autonomous Workflow (Detailed)
 
-When invoked with `--autonomous` flag (typically by `/loom` daemon):
+When invoked with the `--autonomous` flag (Architect runs manually today — its automated cadence is tracked in #3381; there is no daemon-driven invocation):
 
 **Skip interactive requirements gathering**. Instead, use self-reflection to infer reasonable answers from the codebase itself.
 
