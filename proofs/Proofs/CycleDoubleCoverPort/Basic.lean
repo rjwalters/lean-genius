@@ -147,7 +147,7 @@ theorem sum_edgeEnds_eq_sum_vertexSlots
   have hR : ∑ p : V × Fin 3,
       h (G.edgeAt p.1 p.2) (G.incidence (p.1, p.2)).2 =
         ∑ v : V, ∑ i : Fin 3, h (G.edgeAt v i) (G.incidence (v, i)).2 :=
-    Fintype.sum_prod_type' _
+    Fintype.sum_prod_type' (fun v i => h (G.edgeAt v i) (G.incidence (v, i)).2)
   have hE : ∑ p : V × Fin 3, h (G.incidence p).1 (G.incidence p).2 =
       ∑ q : E × Fin 2, h q.1 q.2 :=
     G.incidence.sum_comp (fun q : E × Fin 2 => h q.1 q.2)
