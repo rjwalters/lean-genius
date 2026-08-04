@@ -101,6 +101,32 @@ Skipped:      remote (never part of /repo:all)
 List anything intentionally left behind — deferred findings, kept stashes,
 UNKNOWN branches — so the user knows exactly what state the repo is in.
 
+### Re-verify before printing
+
+A fix applied in stage 2 can be gone by the time this summary prints. A
+concurrent writer — another agent in the same clone, a background `git stash`
+or `git checkout --`, a Loom sweep quarantining the primary clone's working
+tree — reverts the working tree without touching this run, and the stage that
+applied the edit has long since reported success.
+
+So **immediately before printing the consolidated summary, each stage
+re-verifies that the edits it applied are still present on disk** (the same
+unconditional verify-after-write check each command documents — see [[docs]],
+[[readme]], [[gitignore]], [[links]]). A stage's `N fixed` count only ever
+includes edits confirmed still on disk at print time.
+
+Any edit found reverted gets its **own line**, never folded into that stage's
+fixed count — same convention as deferred findings and kept stashes above:
+
+```
+Docs:         1 fixed (README table), 1 reverted after apply — needs re-run: CHANGELOG entry
+```
+
+Only the affected stage's line changes; stages whose edits survived report
+exactly as they otherwise would. In a repo with no concurrent writer the
+re-verification always finds every edit still applied, so the summary is
+byte-for-byte what it was before this check existed.
+
 ## Principles
 
 Same as every hygiene command: **apply safe fixes, gate destructive ones**

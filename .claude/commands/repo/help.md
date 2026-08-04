@@ -57,13 +57,17 @@ stashes, untracked files) always need an explicit opt-in.
 | Command | When to reach for it |
 |---------|----------------------|
 | /repo:reset | Done with a task — get back on main, synced, stale state reviewed |
+| /repo:handoff | Rolling the session (context full, CLI update) — preserve what only the session knows, then restart |
 | /repo:tidy  | Working tree cluttered with build artifacts and temp files |
 | /repo:remote | Need a cloud dev box (GCP/AWS) with this repo ready to go |
-| /repo:release | Cut a release — pre-flight, semver, CHANGELOG, version bump, tag, GitHub Release |
+| /repo:sudo | One-time machine setup — grant passwordless sudo (validated drop-in) so an agent over SSH isn't blocked on password prompts |
+| /repo:release | Cut a release — pre-flight, semver, CHANGELOG, version bump, tag, GitHub Release. Supports per-project release policy via named phase-boundary seams in `.repo/release-policy.md` |
 
 ### Periodic maintenance
 | /repo:audit | Monthly sweep, or after a big refactor/import |
+| /repo:host-optimize | Prep/re-check a Mac (or Linux box) for heavy Loom/agent build use — Gatekeeper churn, backup-agent interference, build-tree bloat |
 | /repo:update-tools | Keep Loom/Anvil/Repo Skills installs current |
+| /repo:deps | Keep third-party deps current — verify/scaffold Dependabot (config + security flag), triage open Dependabot PRs |
 
 ### Focused checks
 | /repo:docs | Documentation health — content, README structure, cross-refs |
@@ -90,7 +94,9 @@ their frontmatter descriptions.
   confirmed-safe branches/worktrees (after a permanent-loss check)
 - Full details per command: `/repo:help <command>` or the files in
   `.claude/commands/repo/`
-- Updating: `/repo:update-tools` (source: https://github.com/rjwalters/repo)
+- Updating: `/repo:update-tools` for installed tool packages (source:
+  https://github.com/rjwalters/repo); `/repo:deps` for third-party dependencies
+  (Dependabot setup + bot-PR triage)
 
 ## Steps — with a command argument
 
