@@ -626,6 +626,38 @@ cycle gadgets are a viable replacement architecture.  The next structural
 question is whether the five-cycle selector pattern has a coordinate
 description that generalizes from `q=5` to an infinite family.
 
+### The five-cycle certificate does not scale directly
+
+The exact gadget compatibility constraints were encoded over `GF(7)`.
+For all tested four-absolute deletion configurations (including
+representatives of all six pairwise-dot-square invariants), five selectors of
+the required size `q-2=5` are unsatisfiable.  This computation is exploratory,
+not part of the trusted proof.
+
+It exposed a clean proof-level obstruction.  A large safe selector in the
+four-deletion core has rank-two labels given by its deleted absolute
+neighbours.  Any intersecting rank-two multifamily with at least four indexed
+members is a star (singleton labels force this directly, while two-labels use
+the checked pair-family star-or-triangle theorem).  Thus every selector of
+size at least `q-2` for `q>=7` is routed into the surviving
+`q`-point neighbour fibre of one of the four deleted absolutes.
+
+Five selectors force two to use the same fibre.  Their intersection then has
+size at least
+
+```text
+2(q-2)-q = q-4 >= 3,
+```
+
+whereas gadget compatibility permits two distinct selectors to intersect in
+at most one old vertex.  Lean now checks both the rank-two star theorem and
+this five-selector packing contradiction, together with a gadget-facing
+theorem deriving selector size `q-2` from the degree-two five-cycle.
+The remaining geometric transport is to verify the rank-two label hypotheses
+for arbitrary safe selectors in the four-absolute deletion core.  Once that
+is supplied, the successful order-32 gadget is formally isolated as a
+small-field exception rather than an infinite-family template.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
