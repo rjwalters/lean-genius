@@ -38,7 +38,8 @@ Two facts are established:
 
 All definitions extend the namespace of `Proofs/CycleDoubleCover.lean`, so
 `Cycle` and `CycleDoubleCover` here are literally the ones appearing in the
-statement of the (still undischarged) `cycleDoubleCover_of_bridgeless` axiom.
+statement of `cycleDoubleCover_of_bridgeless` (an axiom when this file landed,
+now the theorem proved in `CycleDoubleCoverPort/Main.lean`).
 -/
 
 namespace CycleDoubleCover
@@ -211,10 +212,11 @@ end IndexedEvenDoubleCover
 
 /-- Statement-drift guard, machine-checked. The object produced by the ported
 machinery inhabits *exactly* the type `Nonempty G.CycleDoubleCover` that forms
-the conclusion of `CycleDoubleCover.cycleDoubleCover_of_bridgeless` in
-`Proofs/CycleDoubleCover.lean`. Since this file extends that namespace rather
-than restating it, no equivalence bridge is required: `G.CycleDoubleCover` here
-and in the axiom are the same declaration.
+the conclusion of `CycleDoubleCover.cycleDoubleCover_of_bridgeless`, whose
+`FiniteGraph` and `CycleDoubleCover` come from `Proofs/CycleDoubleCover.lean`.
+Since this file extends that namespace rather than restating it, no equivalence
+bridge is required: `G.CycleDoubleCover` here and in the headline theorem are
+the same declaration.
 
 The remaining work for the epic is therefore exactly to produce a
 `G.IndexedEvenDoubleCover` from `G.Bridgeless` — that is the 8-flow route and

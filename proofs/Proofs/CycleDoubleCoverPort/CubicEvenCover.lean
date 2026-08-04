@@ -62,7 +62,8 @@ rather than the quadruple cover available from weaker hypotheses.
 ## Deliberate omissions
 
 All of `CDCLean/CubicTheorem.lean` remains unported, and this file does **not**
-discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless` — that is step 8.
+discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless` — that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 The two merged files this one builds on, `EvenCover.lean` and
 `CubicLabeling.lean`, are left untouched.
 -/

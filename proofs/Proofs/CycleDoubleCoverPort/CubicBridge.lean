@@ -49,8 +49,8 @@ work:
   end-sums coincides with their sum.
 
 This file does **not** discharge
-`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is the final step of the
-port.
+`CycleDoubleCover.cycleDoubleCover_of_bridgeless`; that is done in
+`CycleDoubleCoverPort/Main.lean`, the last file of the port.
 
 ## Delta from upstream
 
