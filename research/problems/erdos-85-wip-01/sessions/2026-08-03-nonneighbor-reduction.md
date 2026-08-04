@@ -66,5 +66,23 @@ degree five, and is weaker thereafter.  It is therefore a useful sharpened
 low-degree obstruction and a general witness-spectrum normal form, but still
 does not settle eventual monotonicity.
 
+## Equality rigidity
+
+The vertex-sensitive version of the reduction gives
+
+```text
+degree(x) + 1 + C(d + 1, 2) ≤ n
+```
+
+for every vertex of an exact minimum-degree-`d` witness, `d ≥ 4`.  Hence a
+witness attaining the triangular order `n = C(d + 2, 2)` must be `d`-regular.
+Moreover, deleting the closed neighborhood of any vertex then produces a
+degree-`d-1` witness on exactly `C(d + 1, 2)` vertices.
+
+Finally, the classical count strictly exceeds the triangular bound for
+`d ≥ 6`.  Thus triangular equality can occur only for `d ≤ 5`; the nontrivial
+regular equality cases are precisely reduced to degrees four and five, at the
+sharp orders 15 and 21.
+
 Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
-`c1b828e493`.
+`c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`.

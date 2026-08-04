@@ -574,4 +574,29 @@ theorem closedNeighborhood_witness_of_card_eq_choose_degree_add_two
     G hfree x (d := d - 1) (by omega) hpos
   rwa [horder] at hreduced
 
+/-- From degree six onward, the classical quadratic count strictly exceeds
+the triangular reduction bound. -/
+theorem choose_degree_add_two_lt_mul_pred_succ {d : ℕ} (hsix : 6 ≤ d) :
+    (d + 2).choose 2 < d * (d - 1) + 1 := by
+  rw [Nat.choose_two_right, Nat.div_lt_iff_lt_mul (by norm_num)]
+  have hsub : d + 2 - 1 = d + 1 := by omega
+  have hpred : d - 1 + 1 = d := by omega
+  rw [hsub]
+  nlinarith
+
+/-- Consequently triangular equality can occur only in degrees at most five.
+Together with the regularity theorem, the nontrivial equality cases are reduced
+to the sharp degree-four and degree-five orders 15 and 21. -/
+theorem degree_le_five_of_witness_card_eq_choose_degree_add_two
+    {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d)
+    (hcard : n = (d + 2).choose 2) : d ≤ 5 := by
+  by_contra hnot
+  have hsix : 6 ≤ d := by omega
+  have hcombined := max_choose_add_two_mul_pred_succ_le_order_of_witness
+    hthree hw
+  have hcount : d * (d - 1) + 1 ≤ n :=
+    (le_max_right _ _).trans hcombined
+  have hstrict := choose_degree_add_two_lt_mul_pred_succ hsix
+  omega
+
 end Erdos85
