@@ -65,4 +65,16 @@ theorem exists_ne_zero_not_isSquare_one_add_sq
     simp at ht
   · simpa [add_comm] using ht
 
+/-- The nonsquare discriminant condition rules out every root of the
+quadratic governing absolute opposite endpoints in the polarity switch. -/
+theorem switch_quadratic_ne_zero {K : Type u} [Field K]
+    (h2 : (2 : K) ≠ 0) {t : K} (ht : ¬ IsSquare (1 + t ^ 2)) (z : K) :
+    t ^ 2 * (z + 1) ^ 2 + 4 * z ≠ 0 := by
+  intro hz
+  apply ht
+  refine ⟨(t ^ 2 * z + t ^ 2 + 2) / 2, ?_⟩
+  field_simp [h2]
+  ring_nf at hz ⊢
+  linear_combination -t ^ 2 * hz
+
 end Erdos85
