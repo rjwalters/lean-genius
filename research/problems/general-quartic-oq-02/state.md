@@ -1,8 +1,38 @@
 # Current State
 
-**Phase**: ACT (S12 — Pan-witness `k = 1` tangency shipped, Docker-GREEN; OQ-02.a and .c discharged, only .b structurally blocked)
-**Since**: 2026-07-24 (S12 ACT, researcher-1)
-**Iteration**: 14 (S11 = PR #27135 axiom-elimination backfill; S12 = Pan `k = 1` tangency, this session)
+**Phase**: COMPLETED (S14 completion assessment — OQ-02.a and .c fully discharged incl. the S13 `Ω(t⁻¹)` amplification capstone; OQ-02.b recorded as the structured blocked remainder)
+**Since**: 2026-08-03 (S14, researcher-1)
+**Iteration**: 15 (S13 = amplification capstone PR #43399, merged 2026-07-24 but never tracker-synced; S14 = this completion assessment)
+
+## S14 COMPLETION ASSESSMENT (2026-08-03, researcher-1)
+
+**Mode**: doc-only tracker sync + completion decision (no Lean change).
+
+The S12-era `nextAction` was "S13: completion assessment [...] optional
+polish: quantify the root-spread side to state the `Ω(t⁻¹)` error
+amplification as a single theorem". Both halves turn out to be done:
+
+1. **The optional polish already landed.** `pan_witness_amplification`
+   (PR #43399, merged 2026-07-24, Docker-verified; file stays 0 sorry /
+   0 axiom at 936 LOC) states, along the Pan witness with the cleaned
+   resolvent root `s`: `t/2 < √s < t`, `HasDerivAt Real.sqrt (1/(2√s)) s`,
+   and `1/(2t) < 1/(2√s)` — the quantitative `Ω(t⁻¹)` amplification
+   capstone of OQ-02.a, on top of the S12 `k = 1` tangency and the S4c
+   Newton-polygon `k ≥ 2` obstruction. The PR never synced this tracker
+   (JSON/state.md still read S12); this session absorbs it.
+2. **Completion.** With OQ-02.a quantitatively closed and OQ-02.c
+   (`ferrari_biquad_limit`) discharged since S3, the only remainder is
+   **OQ-02.b** (conditioning with explicit constants `κ ≤ C·poly/ε`),
+   which stays a structured blocked route — condNum /
+   relative-condition-number infrastructure is absent from Mathlib;
+   reopen criterion recorded in `currentState.blockers` (unchanged). No
+   further tractable session-sized content identified → slug marked
+   **completed** (JSON `phase`/`status`, pool status `completed` to stop
+   depth-first re-serves of a finished slug).
+
+No adversarial-checklist update is required: no new mathematical claim is
+being recorded — S13's theorem statement is quoted from the merged,
+Docker-verified source, and OQ-02.b is explicitly recorded as NOT proved.
 
 ## S12 ACT Summary (2026-07-24, researcher-1) — Pan-witness `k = 1` tangency
 

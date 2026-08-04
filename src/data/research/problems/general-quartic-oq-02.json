@@ -1,8 +1,8 @@
 {
   "slug": "general-quartic-oq-02",
   "title": "Numerical Instabilities in Ferrari's Quartic Formula",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,10 +28,10 @@
     "goal": "S2: scaffold and state ferrari_biquad_limit (OQ-02.c) in proofs/Proofs/GeneralQuartic.lean; S3+: discharge it. OQ-02.a and OQ-02.b are deferred indefinitely."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-07-24",
-    "iteration": 14,
-    "focus": "S12 ACT (researcher-1, 2026-07-24): Pan-witness k=1 tangency SHIPPED (Docker-GREEN 3356 jobs, 0 sorry / 0 axiom, 816->936 LOC). panCleanedResolvent (real cleaned resolvent) + bridge to complex resolventCubic; pan_witness_no_root_below (R < 0 on [0, t^2/4] — no cancellation faster than t^2 in s = alpha^2); IVT root in (t^2/4, t^2) via intermediate_value_Ioo; capstone pan_witness_k1_resolvent_root (real resolvent root m with t^2/4 < 2m-1 < t^2). With the S4c Newton-polygon obstruction (k>=2 unattainable in smooth families) the tangency order is PINNED at k=1: OQ-02.a done in re-scoped form. Also backfilled S11 = PR #27135 (all 3 remaining axioms eliminated; file 0-axiom 0-sorry since then — registry had stayed BLOCKED, causing re-serves).",
+    "phase": "COMPLETED",
+    "since": "2026-08-03T00:00:00+00:00",
+    "iteration": 15,
+    "focus": "S14 COMPLETION ASSESSMENT (researcher-1, 2026-08-03): slug marked COMPLETED with OQ-02.b as the recorded blocked remainder, per the S13-era nextAction. Basis: OQ-02.a fully discharged — S12 Pan-witness k=1 tangency (PR #43276) + S4c Newton-polygon k>=2 obstruction + S13 Omega(t^-1) amplification capstone pan_witness_amplification (PR #43399, merged 2026-07-24, Docker-verified, file 0 sorry / 0 axiom) — the S13 theorem was on origin/main but the tracker was never synced; this session absorbs it. OQ-02.c (biquadratic limit, ferrari_biquad_limit) discharged since S3. OQ-02.b (conditioning with explicit constants) remains a structured blocked route: condNum / relative-condition-number infrastructure absent from Mathlib; reopen criterion recorded in currentState.blockers. No further tractable session-sized content identified.",
     "blockers": [
       {
         "route": "OQ-02.b conditioning with explicit constants (kappa <= C poly/eps)",
@@ -39,7 +39,7 @@
         "blockedAt": "2026-06-13"
       }
     ],
-    "nextAction": "S13: completion assessment. OQ-02.a (k=1 tangency) and OQ-02.c (biquadratic limit) are discharged; OQ-02.b (conditioning with explicit constants) is a structured blocked route needing condNum infrastructure absent from Mathlib. If no further tractable content is identified, mark the slug completed with (b) as the recorded blocked remainder; optional polish: quantify the root-spread side (Theta(t) separation of the quartic roots) to state the Omega(t^{-1}) error amplification as a single theorem.",
+    "nextAction": "None — slug completed. OQ-02.b reopens only per its blocked-route criterion (condNum infrastructure lands in Mathlib, or a materially new mechanism avoiding it).",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: OQ-02.a and OQ-02.c fully discharged, 0 axioms / 0 sorries throughout (GeneralQuartic.lean 936 LOC, 30 theorems, Docker-GREEN). S11 (#27135) eliminated the last 3 axioms; S12 pinned the Pan-witness tangency at k=1 (alpha in (t/2, t), no faster cancellation) via real IVT + sign certificates. Remaining: OQ-02.b conditioning — blocked on condNum infrastructure (structured blocker).",
+    "progressSummary": "COMPLETED (S14 completion assessment, 2026-08-03, researcher-1): doc-only tracker sync + completion. Absorbs the un-synced S13 ACT (PR #43399, merged 2026-07-24): pan_witness_amplification — along the Pan witness, the cleaned-resolvent root s has t/2 < sqrt(s) < t, HasDerivAt Real.sqrt (1/(2 sqrt s)) s, and 1/(2t) < 1/(2 sqrt s), i.e. the Ferrari square-root extraction has Omega(t^-1) sensitivity while the family approaches the biquadratic stratum — the quantitative OQ-02.a capstone on top of S12 k=1 tangency + S4c k>=2 Newton-polygon obstruction. With OQ-02.c (ferrari_biquad_limit) long since discharged, the only remainder is OQ-02.b (explicit-constant conditioning), blocked on condNum infrastructure absent from Mathlib (structured blocker retained). Slug marked completed; pool status completed to stop depth-first re-serves. | PROGRESS: OQ-02.a and OQ-02.c fully discharged, 0 axioms / 0 sorries throughout (GeneralQuartic.lean 936 LOC, 30 theorems, Docker-GREEN). S11 (#27135) eliminated the last 3 axioms; S12 pinned the Pan-witness tangency at k=1 (alpha in (t/2, t), no faster cancellation) via real IVT + sign certificates. Remaining: OQ-02.b conditioning — blocked on condNum infrastructure (structured blocker).",
     "builtItems": [
       "proofs/Proofs/GeneralQuartic.lean (S8, 2026-06-13) — axiom count 6 -> 3: deleted ferrari_factorization_forward/backward axioms (ferrari_factorization delegates to S7 *_ne proofs + hypothesis alpha != 0); replaced ferrari_roots_verify axiom with proved ferrari_roots_verify_ne (hypothesis 2m+p != 0); ferrari_roots_are_roots + ferrari_biquad_limit hsub_B thread non-degeneracy. theoremCount 20 -> 21, lineCount 728 -> 758. Docker build 3058 jobs success.",
       "research/problems/general-quartic-oq-02/sessions/2026-06-13-s8-act-axiom-elimination-three-axioms.md (S8) — full record: factorization-axiom deletion, ferrari_roots_verify latent-false discovery with concrete counterexample, sound ferrari_roots_verify_ne proof outline, build verification, next-action (biquadratic axioms).",
@@ -63,7 +63,8 @@
       "panCleanedResolvent + panCleanedResolvent_bridge in GeneralQuartic.lean — real cleaned resolvent along the Pan witness, bridged to resolventCubic",
       "pan_witness_no_root_below / pan_witness_pos_at_t_sq in GeneralQuartic.lean — sign bracket: no cancellation faster than t^2",
       "pan_witness_k1_tangency in GeneralQuartic.lean — IVT root s = alpha^2 in (t^2/4, t^2): k=1 attained",
-      "pan_witness_k1_resolvent_root in GeneralQuartic.lean — capstone: real resolvent-cubic root m with t^2/4 < 2m-1 < t^2"
+      "pan_witness_k1_resolvent_root in GeneralQuartic.lean — capstone: real resolvent-cubic root m with t^2/4 < 2m-1 < t^2",
+      "S13 (absorbed by S14 sync): pan_witness_amplification in Proofs/GeneralQuartic.lean (PR #43399) — Omega(t^-1) amplification capstone, Docker-verified, 0 sorry / 0 axiom"
     ],
     "insights": [
       "S8 (2026-06-13): the latent-false-at-alpha=0 soundness gap is SYSTEMIC across this file's Ferrari axioms, not a one-off. S7 found it in ferrari_factorization_*; S8 found the identical gap in ferrari_roots_verify (counterexample (0,0,1,0) proves 1=0). Root cause: ferrariRoots' beta := if alpha=0 then 0 else q/(2alpha) leaves the degenerate branch unconstrained, and resolvent root m=-p/2 (which gives alpha=0) is admissible whenever q=0. LESSON: any future axiom/theorem quantifying over arbitrary resolvent roots m must carry 2m+p != 0, OR explicitly handle the m=-p/2 branch (valid only when r=p^2/4). Audit the remaining biquadratic_* axioms for the analogous p^2=4r degenerate gap before discharging.",
@@ -90,8 +91,7 @@
       "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
     ],
     "nextSteps": [
-      "S13: completion assessment — mark completed with OQ-02.b as recorded blocked remainder, unless the root-spread quantification (single-theorem Omega(t^{-1}) amplification statement) is judged worth one more session.",
-      "OQ-02.b: blocked route — condNum infrastructure absent from Mathlib."
+      "None — completed. OQ-02.b reopen bar: condNum / relative-condition-number infrastructure in Mathlib, or a materially new mechanism avoiding it (structured blocker in currentState.blockers)."
     ],
     "lastUpdated": "2026-07-24"
   },
@@ -125,7 +125,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.448Z",
-  "lastUpdate": "2026-07-24",
+  "lastUpdate": "2026-08-03T00:00:00+00:00",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
