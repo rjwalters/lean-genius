@@ -8,6 +8,15 @@ open SimpleGraph
 
 namespace Erdos85
 
+private theorem two_mul_choose_two_add_self_layered (n : ℕ) :
+    2 * n.choose 2 + n = n * n := by
+  induction n with
+  | zero => norm_num
+  | succ n ih =>
+    rw [Nat.choose]
+    simp only [Nat.choose_one_right]
+    nlinarith
+
 theorem card_tightVertices_add_card_aboveMinVertices
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
@@ -160,6 +169,108 @@ theorem exists_tight_deletion_set_of_two_mul_lt_card
   intro x hx
   have hxT := hsub hx
   simpa [tightVertices] using hxT
+
+/-- At Moore-layer order, C4-free cherry packing strengthens the majority
+bound: fewer than two fifths of the vertices can lie above minimum. -/
+theorem five_mul_card_aboveMin_lt_two_mul_card_of_moore
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hd : 2 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 V G)
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d) :
+    5 * (aboveMinVertices G d).card < 2 * Fintype.card V := by
+  let U := (aboveMinVertices G d).card
+  let T := (tightVertices G d).card
+  have hpart : T + U = Fintype.card V :=
+    card_tightVertices_add_card_aboveMinVertices G hdegree
+  have hpack :=
+    card_aboveMin_mul_choose_succ_le_choose_card_tight G hfree hcover
+  have hdid := two_mul_choose_two_add_self_layered (d + 1)
+  have hTid := two_mul_choose_two_add_self_layered T
+  have hdchoose : 2 * (d + 1).choose 2 = d * (d + 1) := by
+    nlinarith
+  have hdouble := Nat.mul_le_mul_left 2 hpack
+  have hdouble' : U * (d * (d + 1)) ≤ 2 * T.choose 2 := by
+    calc
+      U * (d * (d + 1)) = 2 * (U * (d + 1).choose 2) := by
+        rw [← hdchoose]
+        ring
+      _ ≤ 2 * T.choose 2 := hdouble
+  have hpoly : U * (d * (d + 1)) + T ≤ T * T := by
+    have := Nat.add_le_add_right hdouble' T
+    nlinarith
+  by_contra hnot
+  have hbad : 2 * Fintype.card V ≤ 5 * U := Nat.le_of_not_gt hnot
+  rw [hcard] at hpart hbad
+  have hUpos : 0 < U := by
+    have hnpos : 0 < d * (d - 1) + 1 := by positivity
+    omega
+  have hTpos : 0 < T := by
+    by_contra hTzero
+    have hT : T = 0 := Nat.eq_zero_of_not_pos hTzero
+    rw [hT] at hpoly
+    have hQpos : 0 < d * (d + 1) := by positivity
+    nlinarith
+  have hcore : U * (d * (d + 1)) < T * T := by omega
+  have hTU : 2 * T ≤ 3 * U := by omega
+  have hTmul : 2 * T * T ≤ 3 * U * T :=
+    Nat.mul_le_mul_right T hTU
+  have hcore2 : 2 * (U * (d * (d + 1))) < 3 * U * T := by
+    have := (Nat.mul_lt_mul_left (by norm_num : 0 < 2)).mpr hcore
+    nlinarith
+  have hlower : 2 * (d * (d + 1)) < 3 * T := by
+    apply (Nat.mul_lt_mul_left hUpos).mp
+    calc
+      U * (2 * (d * (d + 1))) = 2 * (U * (d * (d + 1))) := by ring
+      _ < 3 * U * T := hcore2
+      _ = U * (3 * T) := by ring
+  have hupper : 5 * T ≤ 3 * (d * (d - 1) + 1) := by omega
+  have hlower5 := (Nat.mul_lt_mul_left (by norm_num : 0 < 5)).mpr hlower
+  have hupper3 := Nat.mul_le_mul_left 3 hupper
+  obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 2 := ⟨d - 2, by omega⟩
+  norm_num at hlower5 hupper3
+  nlinarith
+
+/-- Equivalently, more than three fifths of a normalized Moore-layer witness
+are tight. -/
+theorem three_mul_card_lt_five_mul_card_tight_of_moore
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hd : 2 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 V G)
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d) :
+    3 * Fintype.card V < 5 * (tightVertices G d).card := by
+  have hpart := card_tightVertices_add_card_aboveMinVertices G hdegree
+  have habove := five_mul_card_aboveMin_lt_two_mul_card_of_moore
+    G hd hcard hdegree hfree hcover
+  omega
+
+/-- Every size up to three fifths of Moore-layer order has a deletion set
+consisting entirely of tight vertices. -/
+theorem exists_tight_deletion_set_of_five_mul_le_three_mul_card_of_moore
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d k : ℕ}
+    (hd : 2 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 V G)
+    (hcover : ∀ ⦃u v⦄, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d)
+    (hk : 5 * k ≤ 3 * Fintype.card V) :
+    ∃ D : Finset V, D.card = k ∧ ∀ x ∈ D, G.degree x = d := by
+  have hT := three_mul_card_lt_five_mul_card_tight_of_moore
+    G hd hcard hdegree hfree hcover
+  have hkT : k ≤ (tightVertices G d).card := by nlinarith
+  obtain ⟨D, hsub, hDcard⟩ := Finset.exists_subset_card_eq hkT
+  refine ⟨D, hDcard, ?_⟩
+  intro x hx
+  simpa [tightVertices] using hsub hx
 
 /-- **Layered threshold normal form.** At every order n at least four, a top
 C4-free witness may be chosen with tight vertices covering every edge. Its

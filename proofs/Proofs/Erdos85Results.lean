@@ -225,6 +225,10 @@ these high vertices independent and, by direct incidence counting, strictly
 less numerous than the tight vertices.  Thus more than half of every
 normalized witness is tight, and every deletion set drawn wholly from that
 majority is ruled out for fixed sufficiently large `d`.
+At Moore-layer order the C4-free cherry-packing inequality sharpens this:
+the above-minimum layer has size strictly below `2n/5`, so the tight layer has
+size strictly above `3n/5`.  Tight deletion sets therefore exist for every
+`k` with `5k≤3n`.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the

@@ -1045,6 +1045,16 @@ replacement-polynomial threshold every successful deleted set must intersect
 the smaller independent layer `U`; a strategy confined to the tight majority
 cannot work.
 
+At the Moore-layer order, the stronger C4-free cherry bound gives
+
+```text
+|U| choose(d+1,2) ≤ choose(|T|,2),
+```
+
+which Lean converts to the convenient rational estimate `5|U|<2n`, or
+equivalently `3n<5|T|`.  Thus over three fifths of a normalized Moore-layer
+witness is tight, and tight deletion sets exist for every `k` with `5k≤3n`.
+
 ```text
 ∑_w ∑_{a∈A(w)} replacementLoss(a)
   ≤ kd + k choose(m,2).
