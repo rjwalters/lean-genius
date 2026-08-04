@@ -169,12 +169,14 @@ open Classical in
 noncomputable def crossingClass (S : Finset E) (P : Setoid V) : Finset E :=
   S.filter fun e => ¬ P (G.endAt e 0) (G.endAt e 1)
 
+omit [DecidableEq V] [DecidableEq E] in
 @[simp]
 theorem mem_crossingEdges {P : Setoid V} {e : E} :
     e ∈ G.crossingEdges P ↔ ¬ P (G.endAt e 0) (G.endAt e 1) := by
   classical
   simp [crossingEdges]
 
+omit [DecidableEq V] [DecidableEq E] in
 @[simp]
 theorem mem_crossingClass {S : Finset E} {P : Setoid V} {e : E} :
     e ∈ G.crossingClass S P ↔ e ∈ S ∧ ¬ P (G.endAt e 0) (G.endAt e 1) := by
@@ -203,6 +205,7 @@ noncomputable def quotientGraph (S : Finset E) (P : Setoid V) :
 def SatisfiesTreePackingCondition (k : ℕ) : Prop :=
   ∀ P : Setoid V, k * (Nat.card (Quotient P) - 1) ≤ (G.crossingEdges P).card
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem satisfiesTreePackingCondition_mono {a b : ℕ} (hab : a ≤ b)
     (h : G.SatisfiesTreePackingCondition b) : G.SatisfiesTreePackingCondition a := by
   intro P
@@ -219,6 +222,7 @@ open Classical in
 noncomputable def insideEdges (S : Finset E) (P : Setoid V) (u : V) : Finset E :=
   S.filter fun e => P (G.endAt e 0) u ∧ P (G.endAt e 1) u
 
+omit [DecidableEq V] [DecidableEq E] in
 @[simp]
 theorem mem_insideEdges {S : Finset E} {P : Setoid V} {u : V} {e : E} :
     e ∈ G.insideEdges S P u ↔ e ∈ S ∧ P (G.endAt e 0) u ∧ P (G.endAt e 1) u := by
@@ -274,6 +278,7 @@ sets makes disjointness and coverage definitional. -/
 def colorClass {k : ℕ} (χ : E → Fin k) (i : Fin k) : Finset E :=
   Finset.univ.filter fun e => χ e = i
 
+omit [DecidableEq E] in
 @[simp]
 theorem mem_colorClass {k : ℕ} {χ : E → Fin k} {i : Fin k} {e : E} :
     e ∈ colorClass χ i ↔ χ e = i := by simp [colorClass]
@@ -336,6 +341,7 @@ open Classical in
 noncomputable def badColors {k : ℕ} (χ : E → Fin k) (P : Setoid V) : Finset (Fin k) :=
   Finset.univ.filter fun i => ¬ G.InternallyConnected (colorClass χ i) P
 
+omit [DecidableEq V] [DecidableEq E] in
 @[simp]
 theorem mem_badColors {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin k} :
     i ∈ G.badColors χ P ↔ ¬ G.InternallyConnected (colorClass χ i) P := by
@@ -370,7 +376,7 @@ theorem firstDisconnectedColor_eq_some_iff {k : ℕ} {χ : E → Fin k} {P : Set
         le_antisymm (Finset.min'_le _ i hi) (hle _ (Finset.min'_mem _ h))
       rw [hmin]
   · rw [dif_neg h]
-    refine ⟨fun hi => Option.noConfusion hi, ?_⟩
+    refine ⟨fun hi => by simp at hi, ?_⟩
     rintro ⟨hi, -⟩
     exact absurd ⟨i, hi⟩ h
 
@@ -429,17 +435,15 @@ theorem refineOnce_of_some {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin 
   simp [refineOnce, hcol]
 
 /-- Kaiser's nested sequence of partitions, starting from the one-class partition. -/
-noncomputable def kaiserPartition {k : ℕ} (χ : E → Fin k) : ℕ → Setoid V
-  | 0 => ⊤
-  | n + 1 => G.refineOnce χ (G.kaiserPartition χ n)
+noncomputable def kaiserPartition {k : ℕ} (χ : E → Fin k) (n : ℕ) : Setoid V :=
+  Nat.rec (motive := fun _ => Setoid V) ⊤ (fun _ P => G.refineOnce χ P) n
 
+@[simp]
 theorem kaiserPartition_zero {k : ℕ} (χ : E → Fin k) :
-    G.kaiserPartition χ 0 = ⊤ := by
-  simp [kaiserPartition]
+    G.kaiserPartition χ 0 = ⊤ := rfl
 
 theorem kaiserPartition_succ {k : ℕ} (χ : E → Fin k) (n : ℕ) :
-    G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := by
-  simp [kaiserPartition]
+    G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := rfl
 
 theorem kaiserPartition_succ_refines {k : ℕ} (χ : E → Fin k) (n : ℕ) {u v : V}
     (h : G.kaiserPartition χ (n + 1) u v) : G.kaiserPartition χ n u v := by
@@ -462,6 +466,7 @@ refinement process into stabilising. -/
 noncomputable def setoidGraph (P : Setoid V) : Finset (V × V) :=
   Finset.univ.filter fun p => P p.1 p.2
 
+omit [DecidableEq V] in
 @[simp]
 theorem mem_setoidGraph {P : Setoid V} {u v : V} :
     (u, v) ∈ setoidGraph (V := V) P ↔ P u v := by
@@ -553,8 +558,9 @@ theorem exists_finiteLevel_of_not_rel {k : ℕ} {χ : E → Fin k} {e : E} {n : 
     rw [kaiserPartition_zero]
     trivial
   obtain ⟨m, hm⟩ := Nat.exists_eq_succ_of_ne_zero hpos
-  rw [hm] at hspec
-  refine ⟨?_, hspec⟩
+  have hm' : Nat.find hex = m + 1 := by omega
+  rw [hm'] at hspec
+  refine ⟨m, ?_, hspec⟩
   by_contra hbad
   exact Nat.find_min hex (by omega) hbad
 
@@ -573,6 +579,7 @@ def HasSuperfluousEdge {k : ℕ} (χ : E → Fin (k + 1)) : Prop :=
 
 /-! ## Support-graph basics -/
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem supportGraph_adj_iff (S : Finset E) (u v : V) :
     (G.supportGraph S).Adj u v ↔
       u ≠ v ∧ ∃ e ∈ S,
@@ -662,6 +669,7 @@ theorem first_partition_is_residual_components [Nonempty V] {k : ℕ}
   have h1 : G.kaiserPartition χ 1 = G.refineOnce χ (⊤ : Setoid V) := by
     rw [kaiserPartition_succ, kaiserPartition_zero]
   rw [h1, G.refineOnce_of_some hcol]
+  rfl
 
 /-! ## The colour-swap exchange -/
 
@@ -670,16 +678,19 @@ theorem first_partition_is_residual_components [Nonempty V] {k : ℕ}
 noncomputable def swapColor {k : ℕ} (χ : E → Fin k) (e e' : E) : E → Fin k :=
   Function.update (Function.update χ e (χ e')) e' (χ e)
 
+omit [Fintype E] in
 theorem swapColor_apply_left {k : ℕ} (χ : E → Fin k) {e e' : E} (h : e ≠ e') :
     swapColor χ e e' e = χ e' := by
   classical
   simp [swapColor, h]
 
+omit [Fintype E] in
 theorem swapColor_apply_right {k : ℕ} (χ : E → Fin k) (e e' : E) :
     swapColor χ e e' e' = χ e := by
   classical
   simp [swapColor]
 
+omit [Fintype E] in
 theorem swapColor_apply_of_ne {k : ℕ} (χ : E → Fin k) {e e' x : E} (hxe : x ≠ e)
     (hxe' : x ≠ e') : swapColor χ e e' x = χ x := by
   classical
@@ -702,7 +713,7 @@ theorem colorClass_swap_right {k : ℕ} (χ : E → Fin k) {e e' : E} (hee' : e 
   rcases eq_or_ne x e with rfl | hxe
   · simp [mem_colorClass, swapColor_apply_left χ hee', hee', hcol]
   · rcases eq_or_ne x e' with rfl | hxe'
-    · simp [mem_colorClass, swapColor_apply_right, hee', hcol]
+    · simp [mem_colorClass, swapColor_apply_right, hcol, hxe]
     · simp [mem_colorClass, swapColor_apply_of_ne χ hxe hxe', hxe, hxe']
 
 theorem colorClass_swap_other {k : ℕ} (χ : E → Fin k) {e e' : E} {i : Fin k} (hee' : e ≠ e')
@@ -758,6 +769,7 @@ theorem walk_support_subset_of_adj {H : SimpleGraph V} {s : Set V} {u v : V} (p 
       · exact (hedge hadj).1
       · exact ih (hedge hadj).2 x hx
 
+omit [Fintype V] [DecidableEq V] in
 /-- Acyclicity is inherited by subgraphs. This repository's Mathlib pin already
 provides the fact as `SimpleGraph.IsAcyclic.anti`; it is re-exported here under
 the name the rest of the port uses. -/
@@ -773,6 +785,7 @@ theorem isCyclicEdge_mono {S T : Finset E} (hST : S ⊆ T) {e : E} (he : G.IsCyc
   obtain ⟨hne, hfS⟩ := Finset.mem_erase.mp hf
   exact Finset.mem_erase.mpr ⟨hne, hST hfS⟩
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem component_card_le_vertex_card (S : Finset E) :
     Nat.card (G.supportGraph S).ConnectedComponent ≤ Fintype.card V := by
   have hsurj : Function.Surjective (G.supportGraph S).connectedComponentMk := by
@@ -791,6 +804,7 @@ theorem card_exchange {S : Finset E} {e e' : E} (he' : e' ∈ S) (he : e ∉ S) 
     Finset.card_erase_of_mem he']
   omega
 
+omit [DecidableEq V] in
 theorem isSpanningTree_of_exchange {T : Finset E} {e e' : E} (hT : G.IsSpanningTree T)
     (he' : e' ∈ T) (he : e ∉ T) (hconn : G.Connects ((T.erase e') ∪ {e})) :
     G.IsSpanningTree ((T.erase e') ∪ {e}) := by
@@ -826,6 +840,7 @@ noncomputable def quotientSigmaEquiv (P : Setoid V) :
     rfl
   right_inv _ := rfl
 
+omit [DecidableEq V] in
 theorem sum_card_setoid_classes (P : Setoid V) :
     (∑ q : Quotient P, Nat.card {v : V // P v (Quotient.out q)}) = Fintype.card V := by
   classical
