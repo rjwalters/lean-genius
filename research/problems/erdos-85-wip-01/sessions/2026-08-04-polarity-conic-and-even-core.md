@@ -1189,20 +1189,40 @@ resulting parity dichotomy:
 - if `d` is odd, `G[N(x)]` is a matching with exactly one isolated vertex and
   there is no vertex beyond distance two from `x`.
 
-The odd case suggests a further obstruction not yet formalized.  The unique
-triangle-free edge incident with each vertex forms a perfect matching with
-adjacency matrix `M`.  Exact common-neighbor counts give
+The odd case now has a formal defect-matching reduction.  The unique
+triangle-free edge incident with each vertex forms a one-regular spanning
+subgraph with adjacency matrix `M`.  Exact common-neighbor counts give the
+Lean-checked identity
 
 ```text
 A² = (d-1)I + J - M.
 ```
 
-Regularity implies that `A` commutes with `J`, hence with `M`.  On the
-orthogonal complement of the all-ones vector, the `M=+1` subspace has
-`A²=d-2`, while the `M=-1` subspace has `A²=d`.  Moreover `tr(AM)=|V|`
-because every matching edge is an edge of `G`.  Splitting `tr(A)` and
-`tr(AM)` gives nonzero rational traces on both subspaces.  Characteristic
-polynomials over the integers should then force both `d` and `d-2` to be
-perfect squares, impossible for `d≥3`.  Completing this argument would rule
-out `d(d-1)+2` for every odd `d` and improve the strict Moore bound there to
-`d(d-1)+3`.
+Lean also checks
+
+```text
+AM = MA,    M² = I,    tr(AM) = |V|.
+```
+
+On the orthogonal complement of the all-ones vector, the `M=+1` subspace has
+`A²=d-2`, while the `M=-1` subspace has `A²=d`.  Since `tr(A)=0` and
+`tr(AM)=|V|`, the traces on both subspaces are nonzero.  Characteristic
+polynomials over the integers should therefore force both `d` and `d-2` to
+be perfect squares, impossible for `d≥3`.
+
+A useful basis-free route to the last statement is a reusable cubic-trace
+lemma.  For an integer matrix `T`, if `T³=qT`, `q>0`, and `tr(T)≠0`, then the
+quadratic factor `X²-q` must split over the rationals, hence `q` is a square.
+The first matrix instantiation is now checked in
+`Erdos85OddFirstOrderSpectral`: `A(I-M)` has cubic parameter `4d` and trace
+`-|V|`.  The complementary instantiation should use
+
+```text
+|V| A(I+M) - 2dJ,
+```
+
+whose cubic parameter is `4|V|²(d-2)` and whose trace is
+`|V|(|V|-2d)≠0`.  The remaining formal gap is precisely this generic
+cubic-trace/characteristic-polynomial lemma and the complementary matrix
+instantiation.  Completing it would rule out `d(d-1)+2` for every odd `d`
+and improve the strict Moore bound there to `d(d-1)+3`.

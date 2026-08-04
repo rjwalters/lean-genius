@@ -58,6 +58,7 @@ import Proofs.Erdos85PolarityThreePointSecondSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MooreFriendship
+import Proofs.Erdos85OddFirstOrderSpectral
 import Proofs.Erdos85MinimalWitness
 import Proofs.Erdos85TightCore
 import Proofs.Erdos85LayeredWitness
@@ -254,6 +255,14 @@ beyond distance two.  If `d` is odd, every neighborhood matching has exactly
 one isolated vertex and every vertex of the graph is within distance two of
 the center.  These checked templates substantially narrow the next extremal
 case rather than treating Moore equality in isolation.
+In the odd case, the triangle-free edges are now formally extracted as a
+one-regular spanning defect graph with adjacency matrix `M`.  The checked
+identities are `A²=(d-1)I+J-M`, `AM=MA`, `M²=I`, and `tr(AM)=|V|`.  Thus the
+minus-space matrix `A(I-M)` formally satisfies `B³=4dB` and
+`tr(B)=-|V|`.  The remaining proposed exclusion of this first order is
+isolated to a generic characteristic-polynomial fact about nonzero traces on
+quadratic eigenspaces, together with the complementary plus-space instance;
+that final spectral step is not yet claimed here.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the
