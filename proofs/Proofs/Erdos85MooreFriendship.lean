@@ -381,6 +381,32 @@ theorem mem_triangleFreeNeighbors_comm
   · rintro ⟨hyx, hzero⟩
     exact ⟨hyx.symm, by simpa [Finset.inter_comm] using hzero⟩
 
+/-- The spanning subgraph consisting of edges that lie in no triangle. -/
+def triangleFreeEdgeGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : SimpleGraph V where
+  Adj x y := y ∈ triangleFreeNeighbors G x
+  symm := ⟨by
+    intro x y hxy
+    exact (mem_triangleFreeNeighbors_comm G x y).mp hxy⟩
+  loopless := ⟨by
+    intro x hx
+    exact G.loopless.irrefl x ((mem_triangleFreeNeighbors G x x).mp hx).1⟩
+
+@[simp] theorem triangleFreeEdgeGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    (triangleFreeEdgeGraph G).Adj x y ↔ y ∈ triangleFreeNeighbors G x :=
+  by rfl
+
+theorem triangleFreeEdgeGraph_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] (x : V) :
+    (triangleFreeEdgeGraph G).neighborFinset x = triangleFreeNeighbors G x := by
+  ext y
+  simp [SimpleGraph.mem_neighborFinset]
+
 /-- In the odd first-order template every vertex is incident with exactly one
 triangle-free edge. -/
 theorem card_triangleFreeNeighborIndices_eq_one_of_firstOrder_odd
@@ -465,5 +491,129 @@ theorem card_triangleFreeNeighbors_eq_one_of_firstOrder_odd
   rw [triangleFreeNeighbors, Finset.card_map]
   exact card_triangleFreeNeighborIndices_eq_one_of_firstOrder_odd
     G hfree hd hdodd hmin hcard x
+
+/-- Consequently the triangle-free-edge subgraph is one-regular: it is the
+perfect matching that carries the odd first-order defect. -/
+theorem triangleFreeEdgeGraph_degree_eq_one_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (triangleFreeEdgeGraph G).degree x = 1 := by
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset]
+  exact card_triangleFreeNeighbors_eq_one_of_firstOrder_odd
+    G hfree hd hdodd hmin hcard x
+
+/-- In the odd first-order template there is no vertex beyond distance two
+from any center. -/
+theorem externalRepairCandidates_eq_empty_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    externalRepairCandidates G x = ∅ := by
+  apply Finset.card_eq_zero.mp
+  exact (firstOrder_structure_of_odd G hfree hd hdodd hmin hcard x).1
+
+/-- Exact common-neighbor table in the odd first-order template.  Distinct
+pairs have one common neighbor except for the defect-matching edges, which
+have none. -/
+theorem card_common_eq_if_triangleFreeEdge_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x y : V) (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card =
+      if y ∈ triangleFreeNeighbors G x then 0 else 1 := by
+  classical
+  by_cases hdefect : y ∈ triangleFreeNeighbors G x
+  · rw [if_pos hdefect]
+    exact ((mem_triangleFreeNeighbors G x y).mp hdefect).2
+  · rw [if_neg hdefect]
+    have hupper := common_le_one_of_not_containsC4 hfree x y hxy
+    apply le_antisymm hupper
+    by_contra hnot
+    have hzero : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+      omega
+    by_cases hadj : G.Adj x y
+    · exact hdefect ((mem_triangleFreeNeighbors G x y).mpr ⟨hadj, hzero⟩)
+    · have hext := externalRepairCandidates_eq_empty_of_firstOrder_odd
+        G hfree hd hdodd hmin hcard x
+      let a : {z : V // z ≠ x} := ⟨y, hxy.symm⟩
+      have ha : a ∈ externalRepairCandidates G x := by
+        rw [mem_externalRepairCandidates]
+        refine ⟨(fun hyx => hadj hyx.symm), ?_⟩
+        intro b hbx hby
+        have hbmem : b.1 ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset x b.1).mpr hbx.symm,
+            (G.mem_neighborFinset y b.1).mpr hby⟩
+        rw [Finset.card_eq_zero.mp hzero] at hbmem
+        exact Finset.notMem_empty _ hbmem
+      rw [hext] at ha
+      exact Finset.notMem_empty _ ha
+
+/-- Generic matrix translation: an entry of `A²` is the number of common
+neighbors. -/
+theorem adjMatrix_sq_apply_eq_card_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    (G.adjMatrix ℤ * G.adjMatrix ℤ) x y =
+      ((G.neighborFinset x ∩ G.neighborFinset y).card : ℤ) := by
+  rw [G.adjMatrix_mul_apply]
+  simp only [SimpleGraph.adjMatrix_apply]
+  rw [Finset.sum_boole]
+  have hfilt : (G.neighborFinset x).filter (fun z => G.Adj z y) =
+      G.neighborFinset x ∩ G.neighborFinset y := by
+    ext z
+    simp [SimpleGraph.mem_neighborFinset, G.adj_comm]
+  rw [hfilt]
+
+/-- **Odd first-order matrix equation.**  If `M` is the perfect matching of
+triangle-free edges, then `A² = (d-1)I + J - M`.  This is the precise
+algebraic input for the two-eigenspace obstruction. -/
+theorem adjMatrix_sq_eq_sub_triangleFreeEdgeGraph_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    G.adjMatrix ℤ * G.adjMatrix ℤ =
+      (↑d - 1 : ℤ) • (1 : Matrix V V ℤ) +
+        FriendshipTheoremOQ01.onesMatrix V -
+          (triangleFreeEdgeGraph G).adjMatrix ℤ := by
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hreg : ∀ x : V, G.degree x = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  ext x y
+  simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+    Matrix.one_apply, FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply,
+    smul_eq_mul]
+  by_cases hxy : x = y
+  · subst y
+    rw [G.adjMatrix_mul_self_apply_self, hreg x]
+    simp [SimpleGraph.adjMatrix_apply]
+  · rw [adjMatrix_sq_apply_eq_card_common]
+    have hcommon := card_common_eq_if_triangleFreeEdge_of_firstOrder_odd
+      G hfree hd hdodd hmin hcard x y hxy
+    by_cases hdefect : y ∈ triangleFreeNeighbors G x
+    · rw [if_pos hdefect] at hcommon
+      simp [SimpleGraph.adjMatrix_apply, hxy, hdefect, hcommon]
+    · rw [if_neg hdefect] at hcommon
+      simp [SimpleGraph.adjMatrix_apply, hxy, hdefect, hcommon]
 
 end Erdos85
