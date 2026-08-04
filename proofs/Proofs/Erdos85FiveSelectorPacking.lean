@@ -19,7 +19,7 @@ a star, provided repeated two-element labels can only come from the same
 index.  Singleton labels force the star directly; otherwise this is
 `pair_intersecting_star_or_card_le_three` transported along the label map. -/
 theorem intersecting_rank_two_multifamily_star_of_four
-    {X C : Type*} [DecidableEq X] [Fintype C] [DecidableEq C]
+    {X C : Type*} [Fintype X] [DecidableEq X] [Fintype C] [DecidableEq C]
     (S : Finset X) (label : X → Finset C)
     (hfour : 4 ≤ S.card)
     (hnonempty : ∀ x ∈ S, (label x).Nonempty)
@@ -110,5 +110,42 @@ theorem five_large_star_selectors_impossible
   have hi := hlarge i
   have hj := hlarge j
   omega
+
+/-- Combined rank-two form.  If every one of five large selectors has an
+intersecting rank-two label family, repeated two-labels identify the same
+point, each centre fibre has at most `q` points, and distinct selectors meet
+in at most one point, then `q ≥ 7` is impossible. -/
+theorem five_large_rank_two_selectors_impossible
+    {X C : Type*} [Fintype X] [DecidableEq X] [Fintype C] [DecidableEq C]
+    (q : ℕ) (hq : 7 ≤ q)
+    (S : Fin 5 → Finset X) (label : X → Finset C)
+    (hcenters : Fintype.card C ≤ 4)
+    (hlarge : ∀ i, q - 2 ≤ (S i).card)
+    (hnonempty : ∀ i x, x ∈ S i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ S i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q)
+    (hinter : ∀ i j, i ≠ j → (S i ∩ S j).card ≤ 1) :
+    False := by
+  classical
+  have hfour : ∀ i, 4 ≤ (S i).card := by
+    intro i
+    have hi := hlarge i
+    omega
+  choose center hcenter using fun i =>
+    intersecting_rank_two_multifamily_star_of_four
+      (S i) label (hfour i)
+      (hnonempty i) (hcard i) (hlabel_inter i) (hinj_two i)
+  apply five_large_star_selectors_impossible
+    q hq S center (fun c => Finset.univ.filter fun x => c ∈ label x)
+    hcenters hlarge
+  · intro i x hx
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact hcenter i x hx
+  · exact hfiber
+  · exact hinter
 
 end Erdos85
