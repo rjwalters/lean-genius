@@ -365,7 +365,7 @@ theorem fifteen_le_order_of_c4FreeMinDegreeWitness_four {n : ℕ}
   exact h
 
 /-- A `C₄`-free graph of minimum degree at least five has at least twenty-one
-vertices.  This is also sharp, as witnessed by the order-21 construction. -/
+vertices.  Parity below strengthens this to twenty-two. -/
 theorem twentyone_le_order_of_c4FreeMinDegreeWitness_five {n : ℕ}
     (hw : C4FreeMinDegreeWitness n 5) : 21 ≤ n := by
   have h := iterated_nonneighbor_degree_three_core_bound (n := n) (d := 5)
@@ -375,7 +375,7 @@ theorem twentyone_le_order_of_c4FreeMinDegreeWitness_five {n : ℕ}
 
 /-- A uniform consequence of the reduction: a `C₄`-free minimum-degree-`d`
 witness, for `d ≥ 3`, has at least `C(d+2,2)` vertices.  This is sharp for
-`d = 3,4,5` in the present development. -/
+`d = 3,4`; the degree-five equality case is excluded by parity below. -/
 theorem choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness
     {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d) :
     (d + 2).choose 2 ≤ n := by
@@ -574,6 +574,47 @@ theorem closedNeighborhood_witness_of_card_eq_choose_degree_add_two
     G hfree x (d := d - 1) (by omega) hpos
   rwa [horder] at hreduced
 
+/-- The triangular equality case obeys the handshake parity constraint: since
+equality forces `d`-regularity, `n*d` must be even. -/
+theorem even_card_mul_degree_of_card_eq_choose_degree_add_two
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G)
+    (hcard : n = (d + 2).choose 2) :
+    Even (n * d) := by
+  have hregular := regular_of_card_eq_choose_degree_add_two
+    G hfour hdegree hfree hcard
+  have hsum : ∑ x, G.degree x = n * d := by
+    calc
+      _ = ∑ _x : Fin n, d := Finset.sum_congr rfl
+        (fun x _ => hregular x)
+      _ = n * d := by simp
+  have hhandshake := SimpleGraph.sum_degrees_eq_twice_card_edges G
+  refine ⟨G.edgeFinset.card, ?_⟩
+  omega
+
+/-- The degree-five triangular order `21 = C(7,2)` is impossible: equality
+would force a 5-regular graph on an odd number of vertices. -/
+theorem not_c4FreeMinDegreeWitness_twentyone_five :
+    ¬ C4FreeMinDegreeWitness 21 5 := by
+  intro hw
+  obtain ⟨G, hdec, hdegree, hfree⟩ :=
+    (c4FreeMinDegreeWitness_iff_exists_exact (n := 21) (d := 5)
+      (by norm_num) (by norm_num)).1 hw
+  letI : DecidableRel G.Adj := hdec
+  have heven := even_card_mul_degree_of_card_eq_choose_degree_add_two
+    G (by norm_num) hdegree hfree (by norm_num [Nat.choose])
+  norm_num at heven
+
+/-- Therefore every degree-five witness has at least twenty-two vertices. -/
+theorem twentytwo_le_order_of_c4FreeMinDegreeWitness_five {n : ℕ}
+    (hw : C4FreeMinDegreeWitness n 5) : 22 ≤ n := by
+  have h21 := twentyone_le_order_of_c4FreeMinDegreeWitness_five hw
+  by_contra h22
+  have hn : n = 21 := by omega
+  subst n
+  exact not_c4FreeMinDegreeWitness_twentyone_five hw
+
 /-- From degree six onward, the classical quadratic count strictly exceeds
 the triangular reduction bound. -/
 theorem choose_degree_add_two_lt_mul_pred_succ {d : ℕ} (hsix : 6 ≤ d) :
@@ -585,8 +626,8 @@ theorem choose_degree_add_two_lt_mul_pred_succ {d : ℕ} (hsix : 6 ≤ d) :
   nlinarith
 
 /-- Consequently triangular equality can occur only in degrees at most five.
-Together with the regularity theorem, the nontrivial equality cases are reduced
-to the sharp degree-four and degree-five orders 15 and 21. -/
+Together with regularity and parity, degree four is the last nontrivial
+triangular equality case not excluded here. -/
 theorem degree_le_five_of_witness_card_eq_choose_degree_add_two
     {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d)
     (hcard : n = (d + 2).choose 2) : d ≤ 5 := by

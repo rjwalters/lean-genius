@@ -54,8 +54,11 @@ C(d + 2, 2) ≤ n
 ```
 
 for every `C₄`-free minimum-degree-`d` witness with `d ≥ 3`.  In particular the
-result gives the sharp minimum orders 10, 15, and 21 for certified degrees 3,
-4, and 5.  Combining it with the classical common-neighbor count yields
+result gives the sharp minimum orders 10 and 15 for certified degrees 3 and 4,
+and the preliminary lower bound 21 for degree 5.  Equality at degree 5 would
+force a 5-regular graph on 21 vertices, which the handshake parity excludes;
+the checked degree-5 lower bound is therefore 22.  Combining the general bound
+with the classical common-neighbor count yields
 
 ```text
 max(C(d + 2, 2), d(d - 1) + 1) ≤ n.
@@ -80,9 +83,9 @@ Moreover, deleting the closed neighborhood of any vertex then produces a
 degree-`d-1` witness on exactly `C(d + 1, 2)` vertices.
 
 Finally, the classical count strictly exceeds the triangular bound for
-`d ≥ 6`.  Thus triangular equality can occur only for `d ≤ 5`; the nontrivial
-regular equality cases are precisely reduced to degrees four and five, at the
-sharp orders 15 and 21.
+`d ≥ 6`.  Thus triangular equality can occur only for `d ≤ 5`; parity excludes
+the degree-five order 21, leaving degree four/order 15 as the last nontrivial
+equality case not excluded by these arguments.
 
 Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
 `c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`.
