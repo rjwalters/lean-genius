@@ -1,0 +1,1732 @@
+# Erdős 85 polarity conic and even-core checkpoint — 2026-08-04
+
+## Status
+
+Eventual monotonicity remains open.  This session substantially extended the
+finite-field polarity families and identified an exact obstruction to the
+most natural one-vertex extension of a new regular witness.
+
+All results below compile with pinned Lean 4.31 and have the standard axiom
+inventory `[propext, Classical.choice, Quot.sound]`.
+
+## Odd characteristic
+
+The absolute locus was parametrized explicitly.  Starting from an absolute
+vector `a` and a transverse vector `b`, put `w = a × b` and
+
+```text
+x(t) = b + t w
+       - (b·b + t²(w·w)) / (2(a·b)) a.
+```
+
+The map `Option K → absolutePoints K` sending `none` to `[a]` and `some t`
+to `[x(t)]` is bijective.  Consequently the absolute conic has exactly
+`q + 1` points.  The odd two-secant theorem then gives, for every
+`k ≤ q + 1`,
+
+```text
+q ≤ f(q² + q + 1 - k) ≤ q + 1.
+```
+
+The main implementation is `Erdos85PolarityConic.lean`.
+
+## Characteristic two
+
+For `n = [1,1,1]`, the identity
+
+```text
+x·x = 0  ↔  n·x = 0
+```
+
+shows that the absolute locus is the polar line of the nonabsolute nucleus
+`[n]`.  This proves the same exact cardinality `q + 1` in characteristic two,
+and hence over every finite field.
+
+Deleting the absolute line and its nucleus leaves a `C₄`-free graph on
+`q² - 1` vertices.  Every survivor loses exactly one neighbor, so this core is
+exactly `q`-regular.  The counting upper bound matches the witness:
+
+```text
+f(q² - 1) = q + 1.
+```
+
+It follows that the immediately preceding step is monotone:
+
+```text
+f(q² - 2) ≤ f(q² - 1).
+```
+
+## Exact attachment obstruction
+
+For the characteristic-two regular core, every
+common-neighbor-independent attachment set has cardinality at most `q - 1`.
+The bound is sharp: the surviving points on the polar line of any absolute
+point form such a set.  Equivalently,
+
+```text
+indepNum (commonNeighborConflict evenCore) = q - 1.
+```
+
+Thus the standard one-new-vertex attachment cannot extend this `q`-regular
+core while preserving minimum degree `q`; it is exactly one selector vertex
+short.  This is an obstruction for this witness and this extension mechanism,
+not a counterexample to monotonicity at `q² - 1 → q²`.
+
+The characteristic-two development is in `Erdos85PolarityEven.lean`.
+
+## Next directions
+
+1. Investigate compensated or multi-vertex extensions of the even core that
+   bypass its exact selector obstruction.
+2. Determine whether the odd deletion band can be sharpened from the
+   two-valued interval `{q,q+1}` at additional orders.
+3. Use the exact conflict graph geometry of the even core to classify near-safe
+   sets and possible edge-switching repairs.
+
+## Later continuation: odd secant defects
+
+The odd-characteristic full-conic deletion is now understood at the defect
+level.  Its degree-`q-1` vertices are in bijection with unordered pairs of
+absolute points, hence their number is exactly
+
+```text
+choose (q + 1) 2.
+```
+
+A reusable selector-counting theorem was also proved: if `S` is
+common-neighbor-independent in a finite graph, then
+
+```text
+∑ x ∈ S, degree(x) ≤ number of vertices.
+```
+
+In particular, `|S| d ≤ n` whenever the minimum degree is at least `d`.
+Applying this to the `q²`-vertex deleted-conic core shows that no safe selector
+can contain all `choose (q+1) 2` degree defects.  Therefore the standard
+one-new-vertex attachment cannot repair this core at degree `q`.  As with the
+even-core obstruction, this rules out a natural witness-extension mechanism,
+not monotonicity itself.
+
+## Full odd-core degree distribution
+
+A double count gives exactly `q(q+1)` incidences between projective points and
+the absolute conic.  The `choose(q+1,2)` classified secant poles, with two
+incidences each, already exhaust this total.  Consequently no nonabsolute
+point is incident with exactly one absolute point.  The deleted-conic core is
+therefore exactly biregular:
+
+```text
+choose(q+1,2) vertices have degree q-1,
+q² - choose(q+1,2) vertices have degree q+1.
+```
+
+The checked statements are `sum_absoluteIncidences`,
+`absoluteIncidences_ne_one`, `oddCore_degree_eq_low_or_high`, and
+`card_oddCoreHighVertices` in `Erdos85PolarityOddSecantCount.lean`.
+
+## Kneser structure of the odd defects
+
+The absolute-neighbor pair of each low-degree vertex determines it uniquely.
+If two such pairs are disjoint, the two poles have a nonabsolute common
+neighbor and therefore conflict inside the core.  Thus every safe family of
+low-degree defects maps to an intersecting family of two-subsets of the
+`q+1` absolute points.  The checked Erdős--Ko--Rado bridge yields
+
+```text
+|safe defect family| ≤ q.
+```
+
+This is formalized as `safe_lowVertices_card_le`; the general finite-type EKR
+transport is `pair_intersecting_card_le` in
+`Erdos85IntersectingPairs.lean`.
+
+The bound is sharp.  Fixing one absolute point `a`, the poles of the `q`
+absolute pairs `{a,b}` form `oddCoreDefectStar`.  Any two share `a` as a
+common neighbor in the full polarity graph, and uniqueness of line
+intersection shows that they have no common neighbor after the conic is
+deleted.  The checked theorems are
+
+```text
+card_oddCoreDefectStar = q,
+oddCoreDefectStar_subset_low,
+oddCoreDefectStar_safe,
+exists_safe_lowVertices_card_eq.
+```
+
+Hence the largest safe family contained in the odd defect locus has exact
+cardinality `q`.
+
+Covering all `q(q+1)/2` defects by independently safe selectors therefore
+requires a linearly growing number of selectors.  The division-free checked
+bound is
+
+```text
+q + 1 ≤ 2 · number_of_selectors.
+```
+
+This is `two_mul_numSelectors_ge_card_add_one`.  In particular, no bounded
+number of direct safe attachments repairs the full deleted-conic odd core
+uniformly in `q`.
+
+The underlying rank-two combinatorics has also been sharpened independently.
+Every intersecting family of pairs is either a star or has at most three
+members, and a family of intersecting pair-families covering every pair of an
+`n`-element set has at least `n-2` members.  These checked statements are
+`pair_intersecting_star_or_card_le_three` and
+`pair_intersecting_cover_card_ge`; transporting the latter through the defect
+bijection gives the checked geometric bound
+
+```text
+q - 1 ≤ number_of_selectors.
+```
+
+This is `numSelectors_ge_card_sub_one`.  It improves the earlier elementary
+counting bound `q+1 ≤ 2·number_of_selectors` and shows that direct safe repair
+of the odd core needs essentially one new vertex per field element.
+
+The lower bound is exact.  Choose three absolute points, use the three pair
+poles among them as one triangle selector, and use a full defect star for
+every remaining absolute point.  These `q-1` selectors are independently
+safe and cover every defect.  The generic optimal pair cover is implemented
+by `PairCoverIndex` and `pairCoverFamily`; its geometric transport is
+`exists_optimal_safe_lowVertex_cover`.
+
+This exact cover result does **not** itself attach all `q-1` vertices: a
+simultaneous extension must additionally control common neighbors and edges
+involving different new vertices.  It precisely identifies the scale and
+shape of any direct multi-selector repair.
+
+## Two-point core and compensated switch
+
+A new operation `crossEdgeSwitch H x w` deletes every edge between `N(x)`
+and `N(w)` and then inserts `xw`.  The checked theorem
+`crossEdgeSwitch_not_containsC4` proves this preserves `C₄`-freeness for every
+finite `C₄`-free graph.  The degree lemmas show that the new edge raises the
+degree of `x` by exactly one and give a completion theorem whenever the cross
+deletion leaves `x` as the unique one-unit defect.
+
+For distinct absolute points `a,b`, `twoPointCore` deletes `{a,b}`.  Their
+unique nonabsolute common neighbor `x` has degree `q-1`, and the checked
+theorem `eq_twoPointDefect_of_degree_eq_sub_one` proves it is the only vertex
+of that degree.  Thus a successful switch would give a `q`-minimum-degree
+graph on `q²+q-1` vertices, hence the new lower bound
+`q < minDegreeForC4 (q²+q-1)`.
+
+The remaining coordinate problem is now narrow.  Write isotropic
+representatives `A,B`, put `α=A·B ≠ 0`, and choose a representative `X` of
+their common neighbor, with `X·A=X·B=0` and `β=X·X ≠ 0`.  In the pencil
+
+```text
+W = X + t(B-A),       t ≠ 0,
+```
+
+we always have `X·W=β ≠ 0`, so `x,w` are nonadjacent, while `w` is adjacent
+to neither deleted point.  A neighbor of `x` has representative
+`U=sA+rB` with `s,r≠0`; it is nonabsolute and has no deleted incidence, hence
+degree `q+1` in the two-point core.  If `V` is the opposite endpoint of a
+deleted cross edge, then in the basis `A,B,X`, after scaling,
+
+```text
+V = -(s/r) A + B + t α ((s/r)+1)/β X.
+```
+
+Both `V·A` and `V·B` are nonzero.  Its only possible lack of one-unit slack
+is therefore absoluteness.  Setting `z=s/r`, the absolute condition reduces
+to the quadratic
+
+```text
+c(z+1)² - 2z = 0,     c = t² α/β,
+```
+
+whose discriminant is `4(1-2c)`.  Consequently it is enough to choose `t`
+so that `1-2t²α/β` is a nonsquare (with the small/degenerate cases treated
+separately).  This is the exact finite-field character-sum existence lemma
+still needed for the candidate `q²+q-1` construction.
+
+### Correction: the nonsquare pencil still has a double-loss vertex
+
+The nonsquare condition does prove that every opposite endpoint is
+nonabsolute, and the required finite-field lemma has now been checked.
+However, an exact multiplicity audit shows that the sole vertex in
+`N(x) ∩ N(w)` loses two cross edges.  It begins at degree `q+1` and falls to
+`q-1`, so this pencil moves the defect instead of repairing it.  The earlier
+claim that all cross-edge losses were at most one was false.
+
+Exhaustive computations for `q=5,7,11,13` reveal the correct pattern: take
+`w` to be any surviving absolute point.  Then `xw` is absent, the cross edges
+form a matching of size `q-2`, and the switched graph has minimum degree `q`.
+The geometric reason is tangency.  If `w` is absolute and `z~w`, the polar
+lines of `z` and `w` intersect at `w`; because the simple graph omits the loop
+at `w`, `z` and `w` have no graph-theoretic common neighbor.  This removes one
+of the two possible losses at the unique vertex in `N(x)∩N(w)`.
+
+The revised formal target is therefore:
+
+1. prove adjacent vertices `z,w` with `w` absolute have no common neighbor;
+2. deduce cross-edge loss at most one for `N(x),N(w)` when `xw` is absent;
+3. show every positive-loss endpoint other than the absolute `w` has original
+   two-point-core degree `q+1`;
+4. apply the checked unique-defect switch witness theorem.
+
+All four steps are now checked.  The tangent right endpoint makes every
+cross-edge loss at most one; every vertex of positive loss has two-point-core
+degree exactly `q+1`; the unique pole retains degree `q-1` through deletion
+and gains the new switch edge.  Therefore, for every finite field `K` with
+`(2 : K) ≠ 0`, the development now proves
+
+```text
+C4FreeMinDegreeWitness (q²+q-1) q,
+minDegreeForC4 (q²+q-1) = q+1.
+```
+
+The checked headline theorem is `minDegreeForC4_odd_twoPoint_order` in
+`Erdos85PolarityTangentSwitch.lean`.  This extends the known consecutive
+polarity values at `q²+q` and `q²+q+1` to a run of three exact orders in odd
+characteristic.
+
+## Why the same surgery stops at three deleted absolute points
+
+The general checked theorem `crossEdgeSwitch_degree_le_of_ne_endpoints` says
+that a cross-edge switch cannot increase the degree of any old vertex other
+than its two endpoints.  Consequently
+`crossEdgeSwitch_minDegree_lt_of_three_low_vertices` proves that one switch
+cannot reach target degree `d` when the old graph has three distinct vertices
+of degree below `d`.
+
+After deleting three distinct absolute points, every deleted pair still has
+its nonabsolute pair pole at degree `q-1`: the third absolute point is not
+adjacent to that pole by the odd two-secant theorem.  This core is introduced
+as `threePointCore`, with the checked per-pair degree theorem
+`threePointPairDefect_degree`.  Thus extending the new plateau one step
+further requires a genuinely multi-endpoint or multi-switch construction;
+choosing a more clever single tangent endpoint cannot suffice.
+
+## Finite switch programs and the cumulative endpoint obstruction
+
+The universal surgery can be iterated.  `crossEdgeSwitchProgram` folds a list
+of endpoint pairs through the current graph, recomputing the two neighborhoods
+at every stage.  Since each individual switch preserves `C₄`-freeness with no
+extra hypothesis, `crossEdgeSwitchProgram_not_containsC4` proves the entire
+finite program is `C₄`-free.
+
+This does not remove the degree obstruction.  The checked theorem
+`crossEdgeSwitchProgram_degree_le_of_not_mem_endpoints` says that a vertex
+which never occurs as either endpoint has final degree at most its initial
+degree.  Therefore every initial sub-target vertex must be named by a
+successful program.  The endpoint set has cardinality at most twice the
+program length, giving
+
+```text
+number of initial sub-target vertices ≤ 2 · number of switches.
+```
+
+Thus the three pair-pole defects force at least two switches.  Computation for
+`q=5,7,11` indicates that merely touching all three poles is far from enough:
+a static simultaneous two-edge path surgery on the poles stays `C₄`-free and
+repairs the original poles, but creates `q-2` new degree-`q-1` vertices.  (This
+is not the dynamically recomputed sequential program above.)  This identifies
+cumulative loss, not cycle creation, as the next decisive bottleneck.
+
+The first general cascade theorem is now checked.  Away from the two inserted
+edge endpoints, a switch has exactly the degree left after cross deletion.  If
+a vertex begins that stage with degree exactly `d` and has positive cross-edge
+loss, it ends the stage below `d`.  Therefore
+`positive_loss_forces_later_switch_endpoint` proves that any continuation
+which finally restores minimum degree `d` must name this newly damaged vertex
+as a later endpoint.  A successful finite repair program must consequently be
+closed under all target-tight vertices hit by its evolving cross deletions.
+
+There is also a checked tight-vertex inventory independent of any switch.
+Exactly `q-2` absolute points survive deletion of three distinct absolute
+points, and every surviving absolute retains degree exactly `q` because
+distinct absolute points are nonadjacent.  The theorem
+`exists_tight_absolute_set_threePointCore` packages these as a canonical
+`q-2`-element set of tight vertices.  These are not the `q-2` new defects seen
+in the static pole-path experiment: every pair pole is nonadjacent to every
+third absolute point, so surviving absolutes lie in none of the pole
+neighborhoods and incur no such cross-edge loss.  The spawned defects belong
+to a different tight incidence class that still needs classification.
+
+A finer computation corrects the last sentence: the spawned vertices are not
+initially tight.  They are precisely `q-2` clean neighbors of the center pair
+pole, each initially of degree `q+1`; the two arms of the static path delete
+two incident edges at each, dropping them directly to `q-1`.  This prompted
+the stronger checked theorem `excess_loss_forces_later_switch_endpoint`: a
+vertex must become a later endpoint whenever its cross-edge loss exceeds its
+available slack above the target.  The earlier tight/positive-loss theorem is
+the zero-slack special case.  What remains is to formalize the projective-plane
+incidence statement producing those `q-2` clean center-neighbors and their two
+distinct losses.
+
+The clean family and its cardinality are now formalized.  For the center pole
+of the pair `{a,b}`, remove the three deleted absolute points from its
+neighborhood and then remove all neighbors of `c`.  The resulting finset
+`pairPoleCleanCenterNeighbors` has exactly `q-2` members.  Every member is
+nonabsolute and adjacent to none of `a,b,c`, so
+`threePointCore_degree_of_mem_pairPoleCleanCenterNeighbors` proves its core
+degree is exactly `q+1`.  The unique excluded surviving center neighbor is the
+unique common neighbor of the pair pole and `c`.  The remaining task for the
+static-path obstruction is now only to show that each clean member has one
+distinct deleted cross edge toward each outer pole neighborhood.
+
+The first arm is checked: `cleanCenter_commonNeighbors_outerAC_card_one`
+proves that every clean center neighbor has exactly one common neighbor in the
+three-point core with the outer pole of `{a,c}`.  Equivalently, exactly one
+incident edge is selected by that arm's cross deletion.  The proof uses the
+unique intersection of two projective lines and verifies that the intersection
+point is none of the three deleted absolutes.  The `{b,c}` arm and distinctness
+of the two selected edges remain to be mirrored.
+
+Both arms are now checked, as is their distinctness.  The outer pair poles
+have only `c` as a common neighbor in the full polarity graph, so their
+neighborhoods are disjoint in the three-point core.  Hence every clean center
+neighbor supports two distinct incident cross edges, one selected by each
+arm.
+
+The simultaneous operation is formalized as `twoArmPathSwitch`.  Its generic
+degree theorem says that deleting two distinct incident selected edges lowers
+the degree by at least two away from the three path endpoints.  Specializing
+to the pair-pole path gives
+
+```text
+degree after the path switch ≤ q-1
+```
+
+for every member of the `q-2` clean family.  Thus the computational defect
+propagation is now a theorem: the static path repairs the three original pair
+poles only by creating a growing family of at least `q-2` new sub-target
+vertices.  (A separate `C₄`-freeness theorem for this static operation is not
+needed for the obstruction, though the finite computations show it in the
+tested fields.)
+
+Finally, `threePairPolePathSwitch_minDegree_le_sub_one` packages the nonempty
+clean family into the global conclusion that the simultaneous path graph has
+minimum degree at most `q-1`.  Thus this repair is now formally excluded as a
+degree-`q` witness on `q²+q-2` vertices.
+
+## Dynamic first switch: a new unique-defect core
+
+The dynamic operation behaves much better at its first stage.  For
+`q=5,7,11`, switching any two of the three pair poles deletes `q-2` cross
+edges, repairs those two degree-`q-1` endpoints, creates no new sub-target
+vertex, and leaves exactly the third pair pole at degree `q-1`.  Exhaustively
+trying every possible partner for a second universal switch produced no
+degree-`q` graph in those fields, but the first stage is a canonical reduction
+from three defects to one and deserves a structural proof.  The next formal
+target is to show that the shared-absolute pair poles are nonadjacent with
+disjoint core neighborhoods and that every positive-loss vertex has the one
+unit of required slack.
+
+That target is now complete.  The three degree-`q-1` vertices are classified
+exactly as the three pair poles.  Two pair poles sharing an absolute endpoint
+are nonadjacent and have disjoint neighborhoods after that absolute point is
+deleted.  Every vertex of positive cross-edge loss in their first switch is
+proved to have old degree exactly `q+1`, while every loss is at most one.
+The switched endpoints rise from `q-1` to `q`, and the third pole belongs to
+neither deletion neighborhood and stays at `q-1`.  The checked theorem
+`firstPairPoleSwitch_unique_defect` therefore proves that the dynamic first
+switch leaves the third pair pole as the unique sub-`q` vertex.
+
+## Tight-set obstruction to the second switch
+
+The first switch preserves every surviving absolute point at degree exactly
+`q`; this is checked by
+`firstPairPoleSwitch_degree_surviving_absolute`.  Hence the intermediate
+graph contains the explicit tight set of all `q-2` surviving absolutes in
+addition to its unique defect.
+
+The generic final-switch lemma
+`crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch` says that a
+successful universal switch cannot delete any incident cross edge at a tight
+vertex unless that vertex is one of the two new endpoints.  Its polarity
+specialization `secondPairPoleSwitch_avoids_surviving_absolute` now proves:
+if a second switch centered at the remaining pair-pole defect raises the
+minimum degree to `q`, then every surviving absolute other than the chosen
+partner has cross-edge loss zero.  Thus any one-switch completion must choose
+a partner whose cross-deletion simultaneously avoids `q-3` (or `q-2` when
+the partner is nonabsolute) specified tight vertices.  The finite searches
+for `q=5,7,11` show that no partner satisfies this condition; the remaining
+geometric target is to prove that impossibility uniformly from polarity
+incidence.
+
+Two further generic endpoint constraints are now checked.  A switch proposed
+at an already adjacent pair is a subgraph of the old graph, since its inserted
+edge was already present; a switch with equal endpoints is likewise a
+subgraph.  Consequently `successful_crossEdgeSwitch_not_adjacent_at_defect`
+and `successful_crossEdgeSwitch_ne_at_defect` show that repairing a strict
+defect requires a distinct nonneighbor.  Applied to the second polarity
+stage, only distinct nonneighbors of the remaining pair pole can be candidate
+partners.  Computation over these reduced candidate sets still finds, for
+every partner at `q=5,7,11`, at least one nonendpoint degree-`q` vertex with
+positive cross-edge loss.  Proving that last incidence assertion uniformly
+would rule out the entire two-switch repair scheme.
+
+The defect endpoint has no loss budget either.  The generic theorem
+`crossEdgeLoss_eq_zero_at_repaired_one_defect` observes that a vertex starting
+at degree `q-1` must spend the entire one-unit gain from the inserted edge to
+reach `q`; consequently its incident cross-edge loss is exactly zero.
+`successful_crossEdgeSwitch_one_defect_constraints` bundles the three local
+requirements on any proposed completion: the partner is distinct, the old
+pair is nonadjacent, and the defect endpoint has zero loss.  Together with
+the tight-set avoidance theorem, this gives a compact certificate that every
+hypothetical second-stage partner must satisfy.
+
+## Canonical tight anchor at the remaining defect
+
+There is a distinguished vertex in the remaining pair pole's neighborhood:
+the unique common neighbor of that `{b,c}` pole and the third deleted
+absolute point `a`.  The new definition `pairPoleThirdAbsoluteAnchor`
+packages this projective-line intersection, and `remainingPairPoleAnchor`
+places it in the three-point core.  The checked lemmas prove that this anchor
+is nonabsolute, is adjacent among the deleted points only to `a`, and has
+three-point-core degree exactly `q`.  It is adjacent to neither endpoint of
+the first switch, so it suffers zero first-stage loss and
+`firstPairPoleSwitch_degree_remainingPairPoleAnchor` proves that it remains
+degree `q` in the intermediate graph.
+
+This identifies a single canonical tight neighbor of the remaining defect.
+The finite computations show that every eligible partner off the tangent at
+`a`, with a small adjacency subcase, damages this anchor.  Partners on that
+tangent are nonabsolute secant points: except for the two old pair poles they
+have a second surviving absolute neighbor, which is itself tight and is
+damaged by the second cross deletion.  For the two old pair poles, the
+previous `q-2` clean-neighbor path obstruction supplies the damaged tight
+vertices.  These cases now give a concrete route to the uniform incidence
+lemma rather than an undifferentiated search over all projective points.
+
+That route is now formalized almost to its endpoint.  The first switch changes
+no edge incident to the canonical anchor.  If a hypothetical successful
+partner is different from and nonadjacent to the anchor, tight-set avoidance
+also forces their intermediate common-neighbor intersection to be empty.
+Projective-line intersection then proves that every point with these three
+separation properties must lie on the tangent at `a`.  Thus
+`successful_secondSwitch_partner_adj_deletedSharedAbsolute` reduces all
+`q²+q-2` possible partners to the `q-1` surviving tangent points other than
+the anchor.
+
+The ordinary tangent points are now excluded as well.  In odd characteristic
+every nonabsolute point incident with `a` lies on a two-secant of the conic.
+Unless it is one of the pair poles `{a,b}` or `{a,c}`, its second absolute
+neighbor survives the three deletions.  That absolute point stays degree `q`
+after the first switch, while its unique intersection with the remaining
+pair pole produces a positive second-stage cross loss.  This contradicts
+tight-set avoidance.  The checked theorem
+`successful_secondSwitch_partner_eq_firstPairPole_or_outerAC` therefore says
+that a successful partner would have to be exactly one of the two endpoints
+of the first switch.  Only those two symmetric endpoint cases remain; the
+existing clean-neighbor path family is designed to eliminate them.
+
+## Uniform exclusion of every second universal switch
+
+The endpoint cases are now complete.  For partner `{a,b}`, the original
+`q-2` clean center-neighbors have degree `q+1` in the three-point core, lose
+exactly one edge in the first `{a,b}`--`{a,c}` switch, and hence are tight of
+degree `q` in the intermediate graph.  Their distinct `{b,c}`-arm edge
+survives stage one and is deleted at stage two, contradicting the tight loss
+budget.  A mirrored family `outerACCleanCenterNeighbors`, also of cardinality
+`q-2`, gives the same contradiction for partner `{a,c}`.
+
+Combining these endpoint obstructions with the tangent/secant classification
+gives the checked theorem `no_successful_secondPairPoleSwitch`: for every odd
+finite field and every possible partner `w`, after the canonical first switch
+there is no second universal cross-edge switch centered at the remaining
+pair-pole defect whose final graph has degree at least `q` everywhere.  This
+upgrades the exhaustive `q=5,7,11` computation to a uniform theorem.
+
+This is an obstruction to the entire two-stage *universal cross-edge switch*
+repair scheme, not a proof that no degree-`q` graph exists on `q²+q-2`
+vertices and not a solution of eventual monotonicity.  Any successful
+polarity repair at this order must now use a non-universal deletion pattern,
+more than one further stage, or a different initial surgery.
+
+The obstruction has also been propagated into arbitrary longer switch
+programs.  `exists_lowDegree_after_secondPairPoleSwitch` extracts an actual
+sub-`q` vertex after every possible second switch.  Since a vertex untouched
+by later switch endpoints can only lose degree,
+`exists_forced_endpoint_after_secondPairPoleSwitch` proves that any later
+program which eventually recovers degree `q` everywhere must explicitly name
+one of those second-stage defects as a subsequent endpoint.  Thus a longer
+universal-switch cascade cannot bypass the failure; it must chase the defect
+created at stage two.
+
+## Exactness of the broader connected-pair surgery
+
+The paired attachment framework has been strengthened from a sufficient
+criterion to an exact one.  The new converse
+`pairedAttachmentCompatible_of_not_containsC4` proves that if attaching a
+connected pair along old-neighbor sets `S,T` is `C₄`-free, then `S` and `T`
+must each be common-neighbor independent, their intersection must have size
+at most one, and there can be no old edge crossing from `S` to `T`.
+`pairedAttachment_not_containsC4_iff` packages the equivalence.
+
+Consequently, a non-universal improvement cannot simply retain selected
+cross edges while keeping the same attachment sets: every such edge creates
+a four-cycle through the new pair.  A genuinely better extension must change
+the attachment architecture itself, distribute compensation across more new
+vertices, or alter the old graph and selectors together.
+
+This optimality is now graph-order exact.  If `K ≤ H` is any spanning
+subgraph compatible with attaching the pair along the fixed selectors
+`S,T`, then `le_deleteCrossEdges_of_pairedAttachmentCompatible` proves
+
+```text
+K ≤ deleteCrossEdges H S T.
+```
+
+Thus canonical cross deletion is the *largest* compatible spanning subgraph,
+and its degree loss is minimal among all repairs using those selectors.  The
+companion degree theorem and the selector-wise cross-neighbor inequalities
+make the unavoidable loss explicit.  Beating the failed polarity switch
+therefore requires changing selectors or using a different multi-vertex
+attachment graph, not merely a more selective deletion of the same cross
+edges.
+
+## Arbitrary gadget attachments and a new step at order 32
+
+The extension theory now allows an arbitrary finite graph `F` of new
+vertices, with a selector `A w` of old neighbors for each gadget vertex.
+For the graph `attachGadget G F A`, its common-neighbor sets split into old
+and new contributions in three ways:
+
+* old--old: old common neighbors plus gadget selectors containing both;
+* new--new: selector overlap plus common neighbors inside `F`;
+* old--new: neighbors in the new selector plus adjacent gadget vertices whose
+  selectors contain the old vertex.
+
+`attachGadget_not_containsC4_iff_compatible` proves that requiring each of
+these three exact sums to be at most one is necessary and sufficient for
+`C₄`-freeness.  The degree formulas are also exact: an old vertex gains one
+for each selector containing it, while a gadget vertex has degree
+`|A w| + deg_F(w)`.  The theorem
+`c4FreeMinDegreeWitness_add_of_gadgetCompatible` transports any such
+construction to `Fin (n+m)` and packages it as a witness.
+
+This broader architecture produces a positive result that the one- and
+two-vertex schemes miss.  At `q=5`, delete four absolute points from the
+31-point orthogonal polarity graph and attach a five-cycle.  Each new cycle
+vertex uses three old neighbors.  Exhaustive checking of the exact budgets
+found a compatible system covering all six degree-four pair poles.  The
+resulting graph has 32 vertices, 90 edges, minimum degree five, and at most
+one common neighbor for every distinct vertex pair.
+
+The certificate is recorded as the explicit graph `polarityCycle32`, rather
+than trusted as search output.  Lean checks its degree and full `32 × 32`
+common-neighbor matrix and proves
+
+```text
+six_le_minDegreeForC4_thirtytwo : 6 ≤ minDegreeForC4 32
+minDegreeForC4_thirtyone_le_thirtytwo :
+  minDegreeForC4 31 ≤ minDegreeForC4 32
+```
+
+Thus the monotonicity step immediately after the order-five projective plane
+is now verified.  This is still not eventual monotonicity: it is one new
+finite step and, more importantly, evidence that delete-`k`/attach-`k+1`
+cycle gadgets are a viable replacement architecture.  The next structural
+question is whether the five-cycle selector pattern has a coordinate
+description that generalizes from `q=5` to an infinite family.
+
+### The five-cycle certificate does not scale directly
+
+The exact gadget compatibility constraints were encoded over `GF(7)`.
+For all tested four-absolute deletion configurations (including
+representatives of all six pairwise-dot-square invariants), five selectors of
+the required size `q-2=5` are unsatisfiable.  This computation is exploratory,
+not part of the trusted proof.
+
+It exposed a clean proof-level obstruction.  A large safe selector in the
+four-deletion core has rank-two labels given by its deleted absolute
+neighbours.  Any intersecting rank-two multifamily with at least four indexed
+members is a star (singleton labels force this directly, while two-labels use
+the checked pair-family star-or-triangle theorem).  Thus every selector of
+size at least `q-2` for `q>=7` is routed into the surviving
+`q`-point neighbour fibre of one of the four deleted absolutes.
+
+Five selectors force two to use the same fibre.  Their intersection then has
+size at least
+
+```text
+2(q-2)-q = q-4 >= 3,
+```
+
+whereas gadget compatibility permits two distinct selectors to intersect in
+at most one old vertex.  Lean now checks both the rank-two star theorem and
+this five-selector packing contradiction, together with a gadget-facing
+theorem deriving selector size `q-2` from the degree-two five-cycle.
+The geometric transport is now also complete.  For nonabsolute survivors,
+the deleted-absolute label has size at most two; distinct points in one safe
+selector share a deleted label, and equal two-labels force equal projective
+points.  Each deleted-label fibre has size at most `q`.  Finally, a safe
+selector containing a surviving absolute point has size at most two, so a
+selector of required size `q-2 >= 5` is automatically entirely nonabsolute.
+The theorem
+`fiveCycleAttachment_impossible_of_four_absolute_deletions` therefore gives
+an unconditional contradiction for every field of odd characteristic and
+order at least seven.  The successful order-32 gadget is formally isolated
+as a small-field exception rather than an infinite-family template.
+
+The same argument has now been generalized beyond four points and a
+five-cycle.  If `D` is any deleted set of absolute points and `F` is any
+two-regular gadget with more vertices than `D`, then compatible selectors
+whose new vertices all reach degree `q` are impossible for `q >= 6`.
+Thus every delete-`k`/attach-more-than-`k` two-regular repair is excluded at
+once; escaping this obstruction requires a denser new gadget, nonabsolute
+deletions, edge surgery among survivors, or no net vertex gain.
+
+The degree-two hypothesis can itself be removed.  If the new gadget has
+maximum internal degree at most `r >= 2`, then every selector needed to raise
+a new vertex to degree `q` has size at least `q-r`.  Pigeonholing more new
+vertices than deleted absolute centres into their forced star fibres gives
+two selectors with union at most `q`; compatibility gives intersection at
+most one.  Hence `2(q-r) <= q+1`, contradicting `q >= 2r+2`.  Lean checks the
+generic rank-two packing statement and its full polarity transport as
+`boundedDegreeGadgetAttachment_impossible_of_absolute_deletions`.  In
+particular, every fixed-bounded-degree, net-positive gadget family fails
+eventually.  A scalable repair based only on absolute deletions must therefore
+have internal gadget degree growing at least roughly `q/2`, or leave this
+attachment model through nonabsolute deletions or survivor-edge surgery.
+
+For the most relevant net-one case `|W|=|D|+1`, the bounded-degree theorem
+has a sharp immediate consequence.  Every internal gadget degree is at most
+`|D|`, so any successful absolute-deletion repair must satisfy
+
+```text
+q <= 2|D|+1,
+```
+
+or equivalently `|D| >= (q-1)/2`.  Thus no bounded-size deletion can underlie
+an eventual construction, regardless of the attached gadget's shape.  Any
+net-one repair remaining inside this polarity model must replace a linear
+fraction of the absolute conic and use a correspondingly dense gadget.
+
+The mixed compatibility budget supplies an additional local restriction for
+that dense regime: selectors attached to two distinct neighbours of the same
+gadget vertex are disjoint.  This is now isolated as
+`GadgetAttachmentCompatible.disjoint_selectors_of_adjacent_to`.  In
+particular, a high-degree hub forces a large family of pairwise-disjoint
+selectors, which can now be combined with the polarity star-fibre description
+to attack the remaining hub-heavy gadget shapes.
+
+Both sides of the hub budget are now globally counted.  The selectors of the
+neighbours of `w` are pairwise disjoint, giving
+
+```text
+sum_{u~w} |A_u| <= |V_old|.
+```
+
+On the gadget side, the sets `N_F(u)\{w}` for distinct `u~w` are pairwise
+disjoint, giving
+
+```text
+sum_{u~w} (deg_F(u)-1) <= |W|-1.
+```
+
+When all gadget degrees are at most the target `q`, these combine into the
+checked inequality
+
+```text
+deg_F(w)(q-1) <= |V_old|+|W|-1.
+```
+
+The polarity specialization also records the exact old order
+`q^2+q+1-|D|`.  The next strengthening must exploit more than ambient vertex
+count: star fibres for distinct deleted absolutes meet in distinct pair poles,
+so disjoint hub-neighbour selectors must collectively omit at least one pole
+for every pair of their centres.
+
+The cardinal part of that final double count is now formalized independently
+of the geometry.  If unordered centre pairs inject into omitted points in one
+of their endpoint fibres, and selector `i` omits at most `deficit(i)` points,
+then
+
+```text
+choose(|I|,2) <= sum_i deficit(i).
+```
+
+This is checked as
+`choose_two_le_sum_deficit_of_injective_omission_route`.  What remains is to
+construct the injection from polarity pair poles: the common neighbour of two
+distinct deleted absolutes lies in both star fibres; disjoint selectors omit
+it from at least one endpoint, and the rank-two label bound recovers the
+unordered centre pair from the omitted point.
+
+## Rigidity of any putative degree-six graph at order 32
+
+The lower bound raises the natural exact-value question `f(32)=6` versus
+`f(32)=7`.  The distance-layer machinery now gives a strong reduction of the
+second case.  A new asymmetric Moore bound requires only minimum degree:
+
+```text
+1 + deg(x) + deg(x)(d-2) ≤ |V|
+```
+
+for every `C₄`-free graph of minimum degree at least `d`.  Consequently, a
+`C₄`-free graph on 32 vertices with minimum degree six cannot have a vertex of
+degree seven: its first two layers would already contain at least 36 vertices.
+The checked theorem `degree_eq_six_of_thirtytwo_minDegree_six` therefore
+forces exact 6-regularity.
+
+Parity sharpens the local structure.  The graph induced by the six neighbors
+of a vertex has maximum degree one.  Exact branch accounting, the 32-vertex
+cap, and the handshake parity of that local graph force it to be a perfect
+matching.  Thus every edge lies in a unique triangle
+(`card_common_eq_one_of_thirtytwo_minDegree_six`), every second layer has
+exactly 24 vertices, and precisely one vertex remains outside the first two
+layers.  The latter has no adjacency and no common neighbor with the center.
+The definitions and theorems `thirtyTwoAntipodes`,
+`card_thirtyTwoAntipodes_eq_one`, `mem_thirtyTwoAntipodes_iff`, and
+`mem_thirtyTwoAntipodes_comm` show that these unique antipodes symmetrically
+pair the 32 vertices into 16 fibers.
+
+Quotienting a hypothetical graph by these fibers yields a 6-regular graph on
+16 vertices in which every two distinct quotient vertices have two common
+neighbors, i.e. parameters `(16,6,2,2)`.  Edges between fibers form matchings,
+and the lift signs must make every quotient four-cycle negative.  A separate
+finite calculation shows that this signing system is inconsistent for both
+classical `(16,6,2,2)` graphs (the rook and Shrikhande graphs).  That last
+classification-and-signing step is not yet formalized, so the development
+does **not** yet claim `f(32)=6`; it records the fully checked reduction up to
+the antipodal quotient.
+
+The antipodal reduction is now stronger still.  Unique existence defines a
+canonical map `thirtyTwoAntipode`; it is checked to be fixed-point free and
+involutive.  A general double-counting lemma
+`sum_card_common_over_neighbors_comm` expresses symmetry of length-three
+walk counts.  In the rigid order-32 graph, all common-neighbor counts equal
+one except on the diagonal (six) and at the antipode (zero), so that identity
+shows that moving an antipode from one endpoint of an adjacency to the other
+preserves adjacency.  Consequently
+`thirtyTwoAntipode_adj_iff` proves that the antipode involution is a graph
+automorphism.  The 16-fiber quotient is therefore a canonical graph cover;
+constructing that quotient and formalizing the final negative-signing
+obstruction is the remaining exact-value task.
+
+Equivalently, if `A` is the quotient adjacency matrix and `S` records the
+matching choices with signs, then the rigid identities are
+`A² = 4I + 2J` and `S² = 6I`, with `|S| = A`.  Thus the last object is a
+balanced weighing matrix supported on a symmetric `2-(16,6,2)` design.  This
+matrix formulation agrees with the direct negative-four-cycle calculation
+and may offer a shorter formal nonexistence certificate than explicit graph
+classification.
+
+The canonical quotient has now been constructed in
+`Erdos85ThirtyTwoQuotient`.  The equivalence relation is “equal or
+antipodal”; every class is checked to contain exactly two vertices, hence the
+quotient has cardinality 16.  Quotient adjacency records whether the two
+fibers support an edge and is independent of representatives.  The checked
+neighbor-image theorem shows the quotient is 6-regular.  Finally, lifting
+common neighbors into the two possible orientations proves that every two
+distinct quotient vertices have exactly two common neighbors
+(`thirtyTwoQuotient_common_eq_two`).  Thus the full `(16,6,2,2)` strongly
+regular parameter reduction is formal; only the nonexistence of the required
+real signing remains outside Lean.
+
+## Finite signing certificates
+
+The signing obstruction has now been split into a graph-structure part and a
+pure parity part.  `Erdos85SignedSRGObstruction` checks two parity certificates
+inside Lean.  If the quotient contains a `K₄`, the three distinct four-cycles
+on those vertices are all required to be negative; adding the three parity
+equations cancels every edge sign and gives a contradiction.  In the
+Shrikhande case, an explicit list of eleven endpoint/common-neighbor
+quadruples similarly cancels every sign.  Lean verifies both contradictions,
+and `noNegativeSigning1622_of_certificateDichotomy` shows that the structural
+dichotomy between these two certificates would prove `NoNegativeSigning1622`.
+
+There is also a classification-free computational route.  After relabeling a
+chosen vertex as `0` and its six neighbors as `1,...,6`, a neighbor triangle
+is the `K₄` case.  In the remaining case the induced 2-regular neighborhood
+is a six-cycle, whose cyclic order can be fixed.  Switching signs at vertices
+normalizes the zeroth sign row to zero.  The resulting problem is encoded by
+two row-major 256-bit matrices.  Degree and common-neighbor constraints are
+population counts, while negative common-path parity is the population-one
+condition
+
+```text
+cpop ((rowA x & rowA y) & (rowS x xor rowS y)) = 1.
+```
+
+Lean's verified bit-vector/SAT procedure has checked that the normalized
+constraints are inconsistent.  The theorem is
+`no_bvNegativeCompact1622_of_normalizedCycle` in
+`Erdos85SignedSRGSAT`.  What remains before claiming the exact value is to
+formalize the transport from an arbitrary `(16,6,2,2)` signing to the
+normalized Boolean matrices (finite relabeling, the local degree-two
+dichotomy, and sign switching).  Thus `f(32)=6` is extremely close but is not
+yet claimed here.
+
+That transport has now been completed.  A second, much smaller verified SAT
+lemma proves that every loopless symmetric 2-regular triangle-free graph on
+six vertices has a cyclic ordering.  Applied to a quotient neighborhood, a
+triangle gives the already-impossible `K₄` case; otherwise the local graph is
+a six-cycle.  The seven named vertices (center plus cycle) are extended to a
+global `Fin 16` labeling by a finite permutation.  The abstract signing is
+converted entry-for-entry to Boolean matrices, and a vertex-switching gauge
+is proved to preserve negative path parity while zeroing the zeroth sign row.
+
+Consequently Lean now proves
+
+```text
+noNegativeSigning1622 : NoNegativeSigning1622
+minDegreeForC4_thirtytwo_eq_six : minDegreeForC4 32 = 6
+```
+
+This **does** close the exact order-32 subproblem and gives the verified
+monotonicity step `f(31) ≤ f(32)`.  It does not solve the full eventual
+monotonicity problem Erdős 85; the general repair/extension theorem remains
+open.
+
+## Exact repair-reservoir accounting
+
+The distance-layer analysis is now an identity rather than only an
+inequality.  For every center `x`, the closed neighborhood, second layer, and
+external repair candidates form an exhaustive disjoint partition of the
+vertex set.  For a `d`-regular `C₄`-free graph, summing the exact branch
+sizes gives
+
+```text
+|externalRepairCandidates(x)| + d² + 1
+  = |V| + ∑_{y∈N(x)} deg_{G[N(x)]}(y).
+```
+
+Moreover `G[N(x)]` has maximum degree at most one, so it is a matching plus
+isolated vertices.  Thus the correction term is exactly twice the number of
+triangles through `x` and is at most `d`.  This pinpoints all slack in the
+previous Moore-reservoir inequality: local triangles are the only mechanism
+that can create external repair candidates below the girth-five Moore bound.
+It also confirms that any successful general extension argument must exploit
+more structure than the canonical one-reservoir repair criterion near the
+orders where extremal witnesses are regular and locally sparse.
+
+## Delete-set/add-gadget extension
+
+Controlled deletion and arbitrary gadget attachment have now been composed
+into a single exact surgery.  One may delete any `k` old vertices and add an
+arbitrary `m`-vertex graph `F`.  Each new vertex `w` has an old attachment
+selector `A(w)`.  The final order is `N-k+m`; a surviving old vertex is
+required to pay exactly for its neighbors in the deleted set and is credited
+exactly for the gadget vertices whose selectors contain it.  The existing
+three common-neighbor budgets are necessary and sufficient for the final
+graph to remain `C₄`-free.
+
+The specialization `m=k+1` is a genuine order-raising surgery, and
+`witnessExtension_of_delete_set_add_gadget` reduces one-step monotonicity to
+finding such data uniformly for every witness.  The old delete-one/add-pair
+repair is its `k=1` special case, but internal gadget degree can now replace
+old attachments and deletion can remove a structured obstruction rather than
+only one center.
+
+Compatibility itself yields three useful necessary conditions, all now
+formalized: every selector `A(w)` is common-neighbor independent; two distinct
+selectors intersect in at most one vertex; and selectors belonging to
+adjacent gadget vertices satisfy the same cross-anticompleteness condition as
+the connected-pair construction.  Thus larger gadgets provide additional
+internal degree, but their internal edges consume mixed common-neighbor
+budget.  This is the precise tradeoff a future eventual construction must
+exploit.
+
+## Global gadget counting obstruction
+
+Summing every mixed compatibility budget and double-counting incidences gives
+a global restriction.  If the old graph has minimum degree `d`, every new
+gadget vertex reaches degree `d`, and the internal gadget degrees are `r_w`,
+then
+
+```text
+∑_w (d-r_w)(d+r_w) ≤ |V||W|.
+```
+
+For a nonempty `r`-regular gadget this simplifies to
+`(d-r)(d+r) ≤ |V|`.  The connected pair has `r=1`, recovering the earlier
+coarse obstruction `d²-1 ≤ |V|` from a much more general theorem.
+
+More importantly, an `m`-vertex simple gadget has every `r_w ≤ m-1`.
+Whenever `m-1 ≤ d`, compatibility therefore forces
+
+```text
+d² - (m-1)² ≤ |V|.
+```
+
+At the Moore-layer order `|V| = d(d-1)+1`, this implies
+`(m-1)² ≥ d-1`.  Thus no bounded-size family of pure attachment gadgets
+can establish eventual witness extension in this regime: gadget size must
+grow at least on the square-root scale, or the construction must also modify
+old edges.  This cleanly separates two viable future routes—large structured
+gadgets versus combined attachment/switching surgery.
+
+## Edge-compensated gadget surgery
+
+The two remaining routes are now unified formally.  After deleting a set of
+old vertices, the induced survivor graph may be replaced by any spanning
+subgraph `K` before an arbitrary finite gadget is attached.  The exact degree
+bookkeeping charges each survivor for both its deleted neighbors and every
+additional incident survivor edge removed, then credits one unit for every
+gadget selector containing it.  Taking a `k+1` vertex gadget after deleting
+`k` vertices raises the order by one.  A uniform existence theorem for this
+data implies `C4FreeWitnessExtension n`.
+
+The global counting obstruction has a matching loss-corrected form.  If `H`
+is the pre-deletion survivor graph, `K ≤ H`, and
+
+```text
+L = ∑_w ∑_{a∈A(w)} (deg_H(a)-deg_K(a)),
+```
+
+then compatibility forces
+
+```text
+∑_w (d-r_w)(d+r_w) ≤ |V||W| + L.
+```
+
+Thus old-edge deletion is not a free escape from the gadget obstruction: it
+relaxes the bound by exactly its attachment-weighted degree loss.  At
+`|V|=d(d-1)+1`, for an `m`-vertex gadget with `(m-1)² ≤ d-1`, Lean proves
+
+```text
+m (d-1-(m-1)²) ≤ L.
+```
+
+Every unit by which the gadget misses the square-root size threshold must be
+paid once per gadget vertex through deletions incident to attachment
+vertices.  Those same losses must then be compensated by the final
+attachments, quantitatively linking the gadget-size obstruction to the
+previous repair-cascade obstruction.
+
+## Selector multiplicity obstruction
+
+The weighted loss `L` cannot be concentrated without limit.  Let `t_x` be
+the number of gadget selectors containing an old vertex `x`.  Since any two
+distinct compatible selectors intersect in at most one old vertex,
+double-counting pairs of selectors through old vertices gives
+
+```text
+∑_x choose(t_x,2) ≤ choose(m,2).
+```
+
+This is formalized by mapping each incidence `(x,{u,w})` to the selector pair
+`{u,w}`; compatibility makes that map injective.
+
+If `H` has degree exactly `d` at `x` and replacing `H` by `K` deletes
+`ℓ_x` incident edges, final degree at least `d` forces `t_x ≥ ℓ_x`.
+More generally, attachments must cover loss beyond the old degree surplus.
+Consequently, for every `q`,
+
+```text
+#{x : deg_H(x)=d and ℓ_x≥q} * choose(q,2) ≤ choose(m,2).
+```
+
+In particular, at most `choose(m,2)` tight vertices can each suffer loss at
+least two.  This is a global cascade restriction complementary to the
+weighted-loss lower bound: small gadgets may need substantial old-edge loss
+to overcome the Moore deficit, but compatibility prevents that loss from
+being repaid at too many tight vertices with high selector multiplicity.
+
+## Gadget degree-square obstruction
+
+Compatibility forces not only every selector to be safe but also the gadget
+graph `F` itself to be `C₄`-free.  Cherry counting inside `F` gives
+
+```text
+∑_w choose(r_w,2) ≤ choose(m,2),
+```
+
+and therefore `∑_w r_w² ≤ 2m(m-1)`.  Substituting this global bound into
+the gadget counting inequality dramatically strengthens the earlier estimate:
+
+```text
+d² ≤ |V| + 2(m-1).
+```
+
+At `|V|=d(d-1)+1`, this first gives the linear requirement
+`d-1 ≤ 2(m-1)`.  Applying Cauchy--Schwarz to the gadget degree sequence and
+retaining the sharper identity
+`∑ r_w² ≤ m(m-1)+∑ r_w` yields
+
+```text
+(d-m)² ≤ 2(m-1).
+```
+
+Hence every pure compatible replacement gadget at Moore-layer order has
+`m = d - O(√d)`: it must contain almost `d` vertices.  This supersedes the
+earlier square-root-size obstruction and shows that even moderately sized
+attachment gadgets cannot establish eventual witness extension in the
+critical regime.
+
+The edge-compensated version is also sharpened.  Its degree-square balance is
+
+```text
+m d² ≤ |V|m + 2m(m-1) + L,
+```
+
+so below the linear threshold at Moore-layer order, old-edge deletion must pay
+`m(d-1-2(m-1)) ≤ L`.  Thus the only way to use a substantially smaller gadget
+is through a quantitatively large compensated edge surgery, still subject to
+the selector-multiplicity cascade bounds above.
+
+## True replacement-surgery obstruction
+
+The compensated bounds are now stated directly for the actual order-raising
+operation.  For a survivor `v`, its total replacement loss is
+
+```text
+|N_G(v) ∩ D| + (deg_{G-D}(v) - deg_K(v)),
+```
+
+combining neighbors lost with the deleted vertex set `D` and additional
+survivor edges removed when passing to `K`.  Lean proves that final survivor
+degree plus this quantity is exactly the original degree.
+
+For an original graph of minimum degree `d`, delete-`k`/add-`k+1` repair at
+the Moore-layer order `|V|=d(d-1)+1` must satisfy
+
+```text
+(k+1)(d-1-k)
+  ≤ ∑_w ∑_{a∈A(w)} totalReplacementLoss(a).
+```
+
+This directly relevant version does not assume that the already-deleted
+survivor graph still has minimum degree `d`.  When `k` is small relative to
+`d`, the necessary weighted loss is linear in both `k+1` and `d`.
+
+The selector cascade bound also extends to total replacement loss.  At every
+original degree-`d` survivor, total loss is at most its attachment
+multiplicity.  Hence for every `q`, the number of such survivors with total
+loss at least `q`, multiplied by `choose(q,2)`, is at most `choose(k+1,2)`.
+For an original `d`-regular graph the tightness condition is automatic.  True
+replacement surgery therefore faces both a large aggregate-loss requirement
+and a pair-design cap on how that loss can be distributed.
+
+## Arbitrary delete-one/add-pair no-go
+
+The true replacement bound has a sharp first specialization.  Delete a tight
+vertex `x` of degree `d` from any graph of minimum degree at least `d`.  With
+no additional survivor-edge deletion, total replacement loss is at most one
+and is supported exactly on the `d` old neighbors of `x`.  Weighted
+selector-incidence double counting
+and the fact that two compatible selectors intersect in at most one vertex
+give the upper bound
+
+```text
+∑_w ∑_{a∈A(w)} totalReplacementLoss(a) ≤ d+1
+```
+
+for every two-vertex gadget.  The Moore-order replacement theorem gives the
+opposite bound `2(d-2)`.  Therefore Lean proves that for every `d ≥ 6`, no
+compatible delete-one/add-two replacement exists at a tight vertex in any
+minimum-degree-at-least-`d` graph on `d(d-1)+1` vertices when both new
+vertices must reach degree `d`.  In particular, every graph of exact minimum
+degree `d` has a minimum-degree vertex at which all such replacements fail;
+regularity of the rest of the graph is unnecessary.
+
+This is strictly broader than the earlier canonical repair-set obstruction:
+both attachment selectors and the internal two-vertex gadget are arbitrary.
+Thus the most immediate local order-raising surgery is ruled out uniformly in
+the critical Moore-layer regime, not merely for the canonical neighborhood
+choice.
+
+## Fixed-`k` replacement obstruction
+
+The delete-one/add-pair contradiction extends to every fixed deletion size.
+With no additional survivor-edge deletion, double-counting the cut from a
+deleted `k`-set of degree-`d` tight vertices gives total unweighted survivor
+loss at most `kd`; no regularity is required away from the deleted set.  If
+`t_v` is selector multiplicity, then
+
+```text
+loss(v) t_v ≤ loss(v) + k choose(t_v,2).
+```
+
+Summing and using the selector-pair bound yields
+
+```text
+weighted deleted-neighbor loss
+  ≤ ∑_{x∈D} degree(x) + k choose(k+1,2).
+```
+
+Writing the deleted degrees as `kd` plus their surplus above the target gives
+the fully nonregular necessary condition
+
+```text
+d - ((k+1)^2 + k choose(k+1,2))
+  ≤ ∑_{x∈D} (degree(x)-d).
+```
+
+Thus a fixed-size deletion-only scheme in an arbitrary Moore-layer witness
+must locate a deleted set whose total degree surplus grows linearly with `d`.
+The tight-set no-go is the zero-surplus specialization.
+
+Edge-minimal normalization makes this restriction genuinely structural.  If
+`U` is the above-minimum layer and `T` the tight layer, every neighbor of a
+vertex in `U` lies in `T`.  Swapping the endpoints of these incidences gives
+
+```text
+|U|(d+1) ≤ |T|d.
+```
+
+Consequently `|U|<|T|`: more than half the vertices are tight, and a tight
+deletion set of every size `k` with `2k<n` exists.  Moreover, above the
+replacement-polynomial threshold every successful deleted set must intersect
+the smaller independent layer `U`; a strategy confined to the tight majority
+cannot work.
+
+At the Moore-layer order, the stronger C4-free cherry bound gives
+
+```text
+|U| choose(d+1,2) ≤ choose(|T|,2),
+```
+
+which Lean converts to the convenient rational estimate `5|U|<2n`, or
+equivalently `3n<5|T|`.  Thus over three fifths of a normalized Moore-layer
+witness is tight, and tight deletion sets exist for every `k` with `5k≤3n`.
+
+## Moore-layer rigidity closes the degree-surplus escape
+
+The asymmetric distance-layer estimate is stronger still.  In any C4-free
+graph of minimum degree at least `d`, centering the disjoint branch count at
+an arbitrary vertex `x` gives
+
+```text
+1 + degree(x) + degree(x)(d-2) ≤ |V|.
+```
+
+At exact Moore order `|V|=d(d-1)+1` and `d≥2`, this forces
+`degree(x)≤d`.  Minimum degree gives the reverse inequality, so Lean proves
+
+```text
+∀ x, degree(x)=d.
+```
+
+Thus every genuine C4-free Moore-layer witness is automatically regular; the
+above-minimum layer and deleted-degree surplus are actually zero.  Feeding
+this rigidity into the replacement bound removes all normalization and
+regularity hypotheses: whenever
+
+```text
+(k+1)^2 + k choose(k+1,2) < d,
+```
+
+no deletion-only delete-`k`/add-`k+1` compatible replacement works for any
+deleted set in any C4-free minimum-degree-`d` witness at this order.  For
+`k=1`, every vertex and every arbitrary two-vertex gadget fail once `d≥6`.
+
+The equality case is in fact impossible beyond the triangle.  Exact reservoir
+accounting forces the induced graph on every neighborhood to be one-regular
+and leaves no vertex beyond distance two.  Hence adjacent and nonadjacent
+pairs alike have exactly one common neighbor: the hypothetical graph is a
+regular friendship graph.  Applying the repository's axiom-free formal
+Friendship Theorem forces `d=2`.  Lean therefore proves the strict bound
+
+```text
+d(d-1)+2 ≤ |V|
+```
+
+for every nonempty C4-free graph of minimum degree at least `d≥3`, together
+with the threshold form
+
+```text
+minDegreeForC4 (d(d-1)+1) ≤ d.
+```
+
+Accordingly, the natural C4-free-witness replacement statements at exact
+Moore equality are vacuous for `d≥3`; their useful content survives in the
+general loss inequalities and in near-Moore orders, while equality itself is
+now completely classified.
+
+```text
+∑_w ∑_{a∈A(w)} replacementLoss(a)
+  ≤ kd + k choose(m,2).
+```
+
+For true order raising `m=k+1`, comparison with the Moore-order lower bound
+proves nonexistence whenever
+
+```text
+(k+1)² + k choose(k+1,2) < d.
+```
+
+Thus for every fixed `k`, arbitrary delete-`k`/add-`k+1` replacement without
+extra survivor-edge surgery fails on tight deletion sets for all sufficiently
+large target degrees.  The `k=1` case recovers the exact threshold `d≥6` for
+the tight vertex that every exact-minimum-degree graph possesses.  Any
+eventual extension strategy in this framework must therefore let `k` grow
+with `d`, find enough degree surplus in the deleted set, or make essential use
+of compensated old-edge modification.
+
+## Quantitative bounded-replacement dichotomy
+
+The fixed-`k` theorem now has both existence and compensated forms.  Any
+compatible deletion-only replacement forces
+
+```text
+d ≤ (k+1)² + k choose(k+1,2) ≤ (k+1)³.
+```
+
+Thus the deletion size must grow at least on a cube-root scale even before
+the stronger gadget-degree constraints are applied.
+
+For a fully compensated repair, total replacement loss splits exactly into
+deleted-neighbor loss and additional survivor-edge loss.  The former still
+obeys `kd + k choose(k+1,2)`.  Comparing it with the Moore-order aggregate
+lower bound proves
+
+```text
+d - ((k+1)² + k choose(k+1,2))
+  ≤ ∑_w ∑_{a∈A(w)} (deg_{G-D}(a)-deg_K(a)).
+```
+
+Consequently, for fixed `k`, any repair beyond the deletion-only range must
+perform attachment-weighted survivor-edge deletion growing linearly with
+`d`.  This makes the earlier dichotomy quantitative: either replacement size
+grows, or increasingly extensive old-edge surgery is unavoidable.
+
+## Near-Moore stability and the first-order defect template
+
+The asymmetric layer inequality gives more than rigidity at the now-excluded
+equality point.  If
+
+```text
+|V| < (d+1)(d-1)+1 = d²,
+```
+
+then a vertex of degree at least `d+1` would already force too many vertices
+in its first two distance layers.  Hence every C4-free graph of minimum degree
+at least `d≥2` in this entire range is `d`-regular.  This has been formalized
+as `regular_of_minDegree_card_lt_nextMooreLayer`.
+
+At the first order left open by the strict bound,
+
+```text
+|V| = d(d-1)+2,
+```
+
+the exact regular reservoir identity reduces at every center `x` to
+
+```text
+|external(x)| + d = 1 + Σ_{y∈N(x)} deg_{G[N(x)]}(y).
+```
+
+The local degrees are at most one and their sum is even.  Lean now checks the
+resulting parity dichotomy:
+
+- if `d` is even, `G[N(x)]` is a perfect matching and there is exactly one
+  vertex beyond distance two from `x`;
+- if `d` is odd, `G[N(x)]` is a matching with exactly one isolated vertex and
+  there is no vertex beyond distance two from `x`.
+
+The odd case now has a formal defect-matching reduction.  The unique
+triangle-free edge incident with each vertex forms a one-regular spanning
+subgraph with adjacency matrix `M`.  Exact common-neighbor counts give the
+Lean-checked identity
+
+```text
+A² = (d-1)I + J - M.
+```
+
+Lean also checks
+
+```text
+AM = MA,    M² = I,    tr(AM) = |V|.
+```
+
+On the orthogonal complement of the all-ones vector, the `M=+1` subspace has
+`A²=d-2`, while the `M=-1` subspace has `A²=d`.  Since `tr(A)=0` and
+`tr(AM)=|V|`, the traces on both subspaces are nonzero.  Characteristic
+polynomials over the integers should therefore force both `d` and `d-2` to
+be perfect squares, impossible for `d≥3`.
+
+A useful basis-free route to the last statement is a reusable cubic-trace
+lemma.  For an integer matrix `T`, if `T³=qT`, `q>0`, and `tr(T)≠0`, then the
+quadratic factor `X²-q` must split over the rationals, hence `q` is a square.
+Both matrix instantiations are checked in
+`Erdos85OddFirstOrderSpectral`.  The matrix `A(I-M)` has cubic parameter `4d`
+and trace `-|V|`.  The complementary matrix is
+
+```text
+|V| A(I+M) - 2dJ,
+```
+
+whose cubic parameter is `4|V|²(d-2)` and whose trace is
+`|V|(|V|-2d)≠0`; these identities are formal too.  The earlier conditional
+cubic-trace route is no longer needed.  If `p` is any prime divisor of odd
+`d`, reducing `B=A(I-M)` modulo `p` turns `B³=4dB` into `B³=0`.  The trace of
+a nilpotent matrix over `ZMod p` is zero, so `p` divides the integer trace
+`-|V|`.  But `p∣d` and `|V|=d(d-1)+2` imply `p∣2`, hence `p=2`, contradicting
+oddness.  Lean now checks this argument end to end.  Therefore
+`d(d-1)+2` is impossible for every odd `d≥3`, giving the unconditional bounds
+
+```text
+d(d-1)+3 ≤ |V|,
+minDegreeForC4 (d(d-1)+2) ≤ d.
+```
+
+The even first-order case now has an equally precise, but importantly
+different, formal reduction.  The unique vertex beyond distance two from
+each `x` defines a symmetric one-regular spanning graph, the antipodal
+matching `P`.  Lean checks the full common-neighbor table and
+
+```text
+P² = I,    AP = PA,
+A² = (d-1)I + J - P,    tr(AP) = 0.
+```
+
+Thus the odd modular trace contradiction does not simply repeat: the defect
+matching in the odd case consists of edges and has `tr(AM)=|V|`, whereas the
+even antipodal matching consists of nonedges and has zero mixed trace.
+
+The displayed equations nevertheless expose a sharper spectral route.  On
+the `P=+1` space (one coordinate per antipodal pair), the induced integral
+quotient matrix `Q` satisfies
+
+```text
+Q² = (d-2)I + 2J,    Q 1 = d 1,    tr(Q)=0.
+```
+
+Consequently its nontrivial eigenvalues are `±sqrt(d-2)`.  Rationality of the
+characteristic polynomial forces `d-2` to be a square; writing
+`d-2=t²`, the trace multiplicities force `t | d=t²+2`, hence `t | 2`.
+Since `d` is even, `t` is even, so `t=2` and `d=6`.  The already formalized
+exact result `f(32)=6` then excludes this last case.  This program is now
+formalized end to end.  Lean constructs the quotient graph on the two-element
+antipodal fibers and checks
+
+```text
+|Q| = |V|/2,    degree_Q(X)=d,
+|N_Q(X) intersection N_Q(Y)|=2  for X != Y,
+Q^2 = (d-2)I + 2J.
+```
+
+The quotient is strongly regular with parameters
+`(d(d-1)/2+1, d, 2, 2)`.  A rank-one determinant calculation gives the exact
+product identity for its nontrivial characteristic factor.  Unique
+factorization forces `d-2` to be a square, and splitting the factor over the
+rationals plus the zero-trace coefficient proves `sqrt(d-2) | d`.  The
+arithmetic contradiction above is checked as well.  Combining this even case
+with the earlier odd modular-trace argument gives the new parity-free theorem
+
+```text
+d(d-1)+3 <= |V|,
+minDegreeForC4 (d(d-1)+2) <= d
+```
+
+for every `d>=3`.
+
+The next order `d(d-1)+3` also has an exact two-slack classification (for
+`d>=4`).  If `E_x` is the number of vertices beyond distance two from `x`
+and `S_x` is the degree sum in the induced neighborhood, Lean proves
+
+```text
+E_x + d = 2 + S_x,    E_x <= 2,    d-2 <= S_x <= d.
+```
+
+Because `S_x` is even, odd `d` forces `E_x=1` and `S_x=d-1` at every
+vertex.  The beyond-distance-two graph would therefore be one-regular.  But
+its vertex count `d(d-1)+3` is odd, contradicting the handshake lemma.  This
+gives the additional checked odd-degree bounds
+
+```text
+d(d-1)+4 <= |V|,
+minDegreeForC4 (d(d-1)+3) <= d.
+```
+
+For even `d`, the same classification leaves exactly two vertex types:
+`(E_x,S_x)=(0,d-2)` or `(2,d)`.  Understanding the global interaction of
+these two types is the next extremal obstruction.
+
+There is already an unconditional modular consequence short of the full
+square argument.  The centered plus-space matrix
+
+```text
+T = A ( |V|(I+P) - 2J )
+```
+
+now satisfies, in Lean,
+
+```text
+T³ = 4|V|²(d-2) T,    tr(T) = -2d|V|.
+```
+
+If a prime `p` divides `d-2`, reduction modulo `p` makes `T` nilpotent, so
+`p | 2d|V|`.  But modulo such a prime, `d ≡ 2` and
+`|V|=d(d-1)+2 ≡ 4`; hence `p | 16` and primality forces `p=2`.
+This argument is formalized end to end, including the consequence
+
+```text
+d - 2 = 2^k
+```
+
+for some `k`.  This formerly surviving family is now eliminated by the
+quotient characteristic-polynomial argument above.
+
+The exact small-order results have also been transported from `Fin n` to
+arbitrary finite vertex types.  They exclude `d=4` (order 14) and `d=6`
+(order 32) directly.  Together with parity, Lean therefore sharpens the
+surviving family to
+
+```text
+d = 2 + 2^k,    k ≥ 3.
+```
+
+In particular, once the quotient characteristic-polynomial argument forces
+`k` even and its trace forces `k≤2`, the contradiction will close without
+any further finite computation.
+
+## Even second-order defect two-factor
+
+The remaining even case at order `d(d-1)+3` has now been globalized.  Define
+`D` as the union of two zero-common-neighbor relations:
+
+```text
+M: nonadjacent pairs beyond distance two,
+N: adjacent pairs lying in no triangle,
+D = M union N.
+```
+
+The local identity also gives
+
+```text
+|N(x)| + S_x = d.
+```
+
+Combined with the even local alternatives, this proves that every vertex has
+degree two in `D`.  More sharply, its two incident defect edges always have
+the same kind:
+
+```text
+(deg_M(x),deg_N(x)) = (0,2) or (2,0).
+```
+
+Therefore `D` is a spanning disjoint union of cycles, and every connected
+defect cycle is monochromatic: it consists entirely of distant nonedges or
+entirely of triangle-free edges of the original graph.
+
+For every distinct pair `x,y`, Lean now checks the exact table
+
+```text
+|N_G(x) intersection N_G(y)| = 0  if xy is an edge of D,
+                                1  otherwise.
+```
+
+Consequently, with `A` the original adjacency matrix,
+
+```text
+A^2 = (d-1)I + J - D.
+```
+
+Regularity then implies `AJ=JA=dJ`, so the defect matrix is a polynomial in
+`A` and `J` and hence
+
+```text
+AD = DA.
+```
+
+This is the new spectral entry point.  Since `d` is even, the common order
+`d(d-1)+3` is odd, so the two-factor has odd total order.  On the subspace
+orthogonal to the all-ones vector the equation becomes
+
+```text
+A^2 = (d-1)I - D.
+```
+
+A determinant calculation predicts a useful cycle-parity constraint.  For a
+cycle of length `r`,
+
+```text
+det((d-1)I - A(C_r)) =
+  (d-3) * square                         if r is odd,
+  (d-3)(d+1) * square                   if r is even.
+```
+
+The all-ones direction changes the `d-3` eigenvalue to `d^2`.  Since the
+left side is `det(A)^2`, and `(d-3)(d+1)=(d-1)^2-4` is strictly between
+consecutive squares for even `d>=4`, the number of even defect cycles should
+be even.  This determinant/cycle factorization remains to be formalized; it
+is a constraint rather than yet a contradiction.  The stronger prospective
+route is to use `AD=DA` on the cyclotomic eigenspaces of each monochromatic
+cycle and exploit that `A` is an integral square root of `(d-1)I-D` there.
+
+The nonsingularity needed for the rank-one determinant step is now checked:
+over `Q`, `(d-1)I-D` is strictly diagonally dominant, because every diagonal
+entry has norm `d-1>=3` while every row has exactly two off-diagonal unit
+entries.  Hence its determinant is nonzero.  This permits the matrix
+determinant lemma to be applied to the addition of `J` without any unproved
+spectral assumption.
+
+The rank-one calculation and its square consequence are now also checked in
+Lean.  Writing `B=(d-1)I-D`, the exact identities are
+
+```text
+(d-3) det(B+J) = d^2 det(B),
+(d-3) det(A)^2 = d^2 det(B).
+```
+
+The second follows from the rational matrix version of `A^2=B+J`; that
+version is proved entrywise rather than assumed from scalar extension.  In
+particular Lean packages the consequence
+
+```text
+det(B) = (d-3) q^2
+```
+
+for an explicit rational `q=det(A)/d`.  Thus the proposed cycle-factor
+argument now has a formally verified square target.  What remains is to
+reindex the two-regular graph by its cycle components and prove the individual
+cycle determinant formulas, after which comparison of rational square classes
+will constrain the number and lengths of even defect cycles.
+
+The polynomial part of those individual factors is now formalized too.  In
+terms of mathlib's rescaled Chebyshev polynomials `C_m,S_m`, Lean proves
+
+```text
+C_m(X)^2 - 4 = (X^2-4) S_{m-1}(X)^2,
+C_{2m}(X)-2 = (X-2)(X+2) S_{m-1}(X)^2,
+C_{2m+1}(X)-2 = (X-2)(S_m(X)+S_{m-1}(X))^2.
+```
+
+After evaluation at `X=d-1`, an even cycle therefore contributes square
+class `(d-3)(d+1)`, while an odd cycle contributes square class `d-3`.
+These are checked polynomial identities, not numerical experiments.  The
+remaining bridge is the standard but as yet unformalized identity
+`charpoly(C_r)=C_r(X)-2` together with block factorization over the connected
+components of the defect two-factor.
+
+The square-class bookkeeping for a whole cycle list is now checked as well.
+For a list `rs` of cycle lengths, Lean defines `evenCycleCount rs` and proves
+
+```text
+product_{r in rs} (C_r(d-1)-2)
+  = (d-3)^{|rs|} (d+1)^{evenCycleCount(rs)} s^2
+```
+
+for an integer `s`.  It also proves that parity of the sum of the lengths is
+parity of the number of odd lengths.  Combining these facts with the verified
+global rational-square identity and the strict-between-squares lemma gives the
+fully checked conditional conclusion:
+
+```text
+if sum(rs) is odd and the defect resolvent determinant is the above
+cycle-factor product, then evenCycleCount(rs) is even.
+```
+
+Thus all arithmetic after the component/characteristic-polynomial bridge is
+now formal; only that graph-to-block-polynomial bridge remains for this
+particular obstruction.
+
+The graph side of that bridge has now also been tightened.  Lean proves that
+the triangle-free-edge summand contains no triangle, and in a `C4`-free
+ambient graph it contains no simple four-cycle.  Hence every cycle component
+of this color has length at least five.  More importantly, the pointwise
+degree-two statement has been promoted to Mathlib's global `IsCycles`
+predicate, and every connected component is now supplied with a simple closed
+walk whose vertex set is exactly the component.  The remaining determinant
+work therefore no longer needs to construct or justify the cycle
+decomposition: it starts with an explicit spanning cycle for each component
+and only needs to reindex its adjacency matrix and prove the Chebyshev
+characteristic-polynomial identity.
+
+That reindexing step is now formal as well.  For every simple closed walk
+`p`, Lean constructs an explicit graph isomorphism
+
+```text
+cycleGraph(p.length) ≃g p.toSubgraph.coe.
+```
+
+The construction enumerates the duplicate-free `dropLast` of the walk's
+support, proves that this list is exactly the vertex set of the traversed
+subgraph, and checks both ordinary successor edges and the wraparound edge.
+The induced matrix reindexing is proved to carry the standard cycle adjacency
+matrix to the component adjacency matrix, so their characteristic polynomials
+are equal.  Thus the graph/component half of the former bridge is closed.  Its
+only remaining local ingredient is now the pure matrix identity
+`charpoly(adj(C_r)) = C_r(X)-2`; after that, the already-formal square-class
+bookkeeping applies component by component.
+
+The global block factorization is now checked independently of that identity.
+Lean constructs the canonical equivalence
+
+```text
+V ≃ Σ c : D.ConnectedComponent, c.supp
+```
+
+and proves that reindexing `D.adjMatrix` along it gives the dependent block
+diagonal matrix of the adjacency matrices induced on the component supports.
+Using the existing general determinant theorem for dependent block diagonals,
+this yields, over every commutative ring,
+
+```text
+det(aI - adj(D))
+  = product over components c of det(aI - adj(D induced on c.supp)).
+```
+
+Thus neither component enumeration nor determinant multiplicativity remains
+conditional.
+
+The standard individual cycle block has now been evaluated too.  A direct
+Laplace-expansion proof first establishes the continuant recurrence
+
+```text
+charpoly(P_(n+2)) = X charpoly(P_(n+1)) - charpoly(P_n),
+```
+
+including both base cases, and hence identifies `charpoly(P_n)` with the
+rescaled Chebyshev polynomial `S_n`.  Expanding the cycle matrix then leaves
+the two path cofactors and two shifted triangular minors; the latter have
+diagonal `-1` and supply exactly the two wraparound terms.  Lean consequently
+proves, without `sorry` or `admit`,
+
+```text
+charpoly(adj(cycleGraph(n+3))) = C_(n+3)(X) - 2.
+```
+
+There was one subtle graph-theoretic gap between a *spanning cycle walk* and
+the full induced component: a priori the induced component might contain
+extra chords.  This is now closed by a general formal lemma.  If every vertex
+of a finite graph has degree two and a simple cycle spans a vertex set, then
+the cycle subgraph equals the graph induced on that set.  Indeed the cycle
+neighbor set is contained in the ambient neighbor set and both have cardinality
+two, so they are equal at every vertex.  Applied to the second-order defect
+graph, each connected component is therefore genuinely an induced cycle.
+The induced cycle characteristic polynomial is then the Chebyshev factor
+above.
+
+At this point the mathematical component-factor bridge is complete.  The
+remaining Lean plumbing for the global headline is to transport matrices
+across the equality between the spanning walk's vertex subtype and the
+connected component's support subtype, then substitute the individual
+Chebyshev factors into the already-proved dependent block product.  This is
+an instance/reindexing issue rather than a remaining combinatorial or spectral
+identity.
+
+## Completed global cycle factorization and parity obstruction
+
+That final transport is now checked.  Each component factor is indexed by its
+actual support cardinality, and Lean proves the global identity
+
+```text
+det(aI-D) = product_c (C_{|c|}(a)-2).
+```
+
+Specializing to `a=d-1`, casting the integral determinant identity to the
+rationals, and combining it with the already-proved rank-one square identity
+and nonsingularity gives an unconditional theorem.  There is a list `rs`
+of the actual defect-component orders such that every entry is at least
+three,
+
+```text
+sum(rs) = |V| = d(d-1)+3,
+Odd(sum(rs)),
+Even(evenCycleCount(rs)).
+```
+
+Thus the former conditional bridge is completely discharged.  In particular,
+the number of odd defect cycles is odd, and hence the total number of defect
+components is odd.
+
+This is still a structural obstruction rather than a contradiction.  A
+further rational eigenspace audit explains why the determinant captures the
+obvious square-root parity information: every nonexceptional eigenvalue of a
+cycle occurs with multiplicity two.  The only simple cycle eigenvalues are
+`2`, and additionally `-2` for even cycles; these yield respectively the
+component-count and even-cycle-count parity conditions.  Further progress
+therefore has to use integral lattice information, modular/Jordan structure,
+the monochromatic defect coloring, or return to the witness-repair program,
+rather than merely repeat the rational square-class calculation.
