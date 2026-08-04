@@ -71,7 +71,7 @@ namespace CycleDoubleCover
 
 open scoped BigOperators
 
-variable {V E : Type*} [Fintype V] [Fintype E] [DecidableEq E]
+variable {V E : Type*} [Fintype V] [Fintype E]
 
 /-- Membership in the affine pair `{p, p + h}`, read off the indicator. This is
 the pointwise form of `pairIndicator_filter` from step 2b, which is where the
@@ -133,6 +133,12 @@ theorem base_add_flow_mem_support (P : CubicLabeling G f) (e : E) :
   (P.mem_support_toIndexedEvenDoubleCover _ e).mpr (Or.inr rfl)
 
 end CubicLabeling
+
+/- Only the labelling *construction* of step 7a needs decidable equality on
+edges (`localBase` branches on `e = G.edgeAt v 1`); nothing above this point
+does, so the instance is introduced here rather than in the file's opening
+`variable` block. -/
+variable [DecidableEq E]
 
 /-- **A cubic multigraph with a nowhere-zero `Gamma`-flow carries an exact
 indexed even double cover.** This is the conclusion of the cubic half of the
