@@ -46,6 +46,24 @@ theorem card_filter_eq_one_of_card_eq_two_of_xor
     rw [heq]
     simp
 
+/-- Complementing a Boolean predicate on a two-element finset preserves the
+property that exactly one element is selected. -/
+theorem card_filter_xor_const_eq_one
+    {V : Type*} [DecidableEq V] (C : Finset V) (p : V → Bool) (c : Bool)
+    (hcard : C.card = 2)
+    (hone : (C.filter fun z => p z = true).card = 1) :
+    (C.filter fun z => (p z ^^ c) = true).card = 1 := by
+  cases c
+  · simpa using hone
+  · have hsum := Finset.card_filter_add_card_filter_not
+        (s := C) (p := fun z => p z = true)
+    have heq : (C.filter fun z => (p z ^^ true) = true) =
+        C.filter fun z => ¬ p z = true := by
+      ext z
+      cases hp : p z <;> simp [hp]
+    rw [heq]
+    omega
+
 /-- Package a Boolean relation on `Fin 16` as a row-major bit matrix. -/
 def matrixBV (r : Fin 16 → Fin 16 → Bool) : BitVec 256 :=
   (BitVec.ofBoolListLE (List.ofFn fun i : Fin 256 =>
@@ -232,5 +250,116 @@ theorem boolNegativeCompact1622_of_pathXor
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, C, p,
       Finset.mem_inter, SimpleGraph.mem_neighborFinset, graphBool, signingBool,
       decide_eq_true_eq, Bool.and_eq_true, hboolxor]
+
+/-- Gauge used to switch a signing so that all signs incident with vertex
+zero vanish. -/
+def zeroGauge (s : Fin 16 → Fin 16 → Bool) (x : Fin 16) : Bool :=
+  if x = 0 then false else s 0 x
+
+/-- Switch by `zeroGauge` and separately clear the irrelevant diagonal. -/
+def zeroNormalizeSigning (s : Fin 16 → Fin 16 → Bool) :
+    Fin 16 → Fin 16 → Bool := fun x y =>
+  if x = y then false else s x y ^^ zeroGauge s x ^^ zeroGauge s y
+
+theorem zeroNormalizeSigning_symm
+    {s : Fin 16 → Fin 16 → Bool}
+    (hsym : ∀ x y, s x y = s y x) :
+    ∀ x y, zeroNormalizeSigning s x y = zeroNormalizeSigning s y x := by
+  intro x y
+  by_cases hxy : x = y
+  · subst y
+    rfl
+  · have hyx : y ≠ x := Ne.symm hxy
+    simp only [zeroNormalizeSigning, hxy, hyx, ↓reduceIte, hsym x y]
+    bv_decide
+
+/-- The normalized Boolean signing has an identically zero zeroth row. -/
+theorem row256_matrixBV_zeroNormalizeSigning_zero
+    (s : Fin 16 → Fin 16 → Bool) :
+    row256 (matrixBV (zeroNormalizeSigning s)) 0 = 0 := by
+  apply BitVec.eq_of_getLsbD_eq
+  intro i hi
+  let y : Fin 16 := ⟨i, hi⟩
+  rw [show (row256 (matrixBV (zeroNormalizeSigning s)) 0).getLsbD i =
+      zeroNormalizeSigning s 0 y by
+    simpa [y] using row256_matrixBV_getLsbD (zeroNormalizeSigning s) 0 y]
+  by_cases hy : y = 0
+  · rw [hy]
+    simp [zeroNormalizeSigning]
+  · simp [zeroNormalizeSigning, zeroGauge, hy]
+
+/-- Gauge switching preserves compact negative parity on a simple graph. -/
+theorem boolNegativeCompact1622_zeroNormalizeSigning
+    (H : SimpleGraph (Fin 16)) [DecidableRel H.Adj]
+    (s : Fin 16 → Fin 16 → Bool)
+    (hcommon : ∀ x y : Fin 16, x ≠ y →
+      (H.neighborFinset x ∩ H.neighborFinset y).card = 2)
+    (hneg : BoolNegativeCompact1622 (graphBool H) s) :
+    BoolNegativeCompact1622 (graphBool H) (zeroNormalizeSigning s) := by
+  rcases hneg with ⟨hsym, hparity⟩
+  refine ⟨zeroNormalizeSigning_symm hsym, ?_⟩
+  intro x y hxy
+  let C := H.neighborFinset x ∩ H.neighborFinset y
+  let p : Fin 16 → Bool := fun z => s x z ^^ s y z
+  let q : Fin 16 → Bool := fun z =>
+    zeroNormalizeSigning s x z ^^ zeroNormalizeSigning s y z
+  let c : Bool := zeroGauge s x ^^ zeroGauge s y
+  have hcard : C.card = 2 := hcommon x y hxy
+  have hone : (C.filter fun z => p z = true).card = 1 := by
+    rw [← hparity x y hxy]
+    congr 1
+    ext z
+    simp [C, p, graphBool]
+  have hpq : ∀ z ∈ C, q z = (p z ^^ c) := by
+    intro z hz
+    have hz' : z ∈ H.neighborFinset x ∧ z ∈ H.neighborFinset y := by
+      simpa [C] using hz
+    have hxzAdj : H.Adj x z := by simpa using hz'.1
+    have hyzAdj : H.Adj y z := by simpa using hz'.2
+    have hxz : x ≠ z := fun hxz => H.loopless.irrefl x (hxz ▸ hxzAdj)
+    have hyz : y ≠ z := fun hyz => H.loopless.irrefl y (hyz ▸ hyzAdj)
+    simp only [q, p, c, zeroNormalizeSigning, hxz, hyz, ↓reduceIte]
+    bv_decide
+  have hqone : (C.filter fun z => q z = true).card = 1 := by
+    rw [show C.filter (fun z => q z = true) =
+        C.filter (fun z => (p z ^^ c) = true) by
+      ext z
+      by_cases hz : z ∈ C
+      · simp [hz, hpq z hz]
+      · simp [hz]]
+    exact card_filter_xor_const_eq_one C p c hcard hone
+  rw [← hqone]
+  congr 1
+  ext z
+  simp [C, q, graphBool]
+
+/-- No abstract negative signing exists once an SRG on `Fin 16` is put into
+the normalized six-cycle labeling used by the verified SAT certificate. -/
+theorem not_isNegativeSignedSRG1622_of_normalizedCycle
+    (H : SimpleGraph (Fin 16)) [DecidableRel H.Adj]
+    (s : Fin 16 → Fin 16 → Prop) [DecidableRel s]
+    (ha0 : row256 (matrixBV (graphBool H)) 0 = 0x007e)
+    (h12 : H.Adj 1 2) (h23 : H.Adj 2 3) (h34 : H.Adj 3 4)
+    (h45 : H.Adj 4 5) (h56 : H.Adj 5 6) (h61 : H.Adj 6 1) :
+    ¬ IsNegativeSignedSRG1622 H s := by
+  rintro ⟨_, hreg, hcommon, hsym, hpath⟩
+  let sb := signingBool s
+  let sn := zeroNormalizeSigning sb
+  have ha : BoolSRG1622 (graphBool H) :=
+    boolSRG1622_graphBool H hreg hcommon
+  have hb : BoolNegativeCompact1622 (graphBool H) sb :=
+    boolNegativeCompact1622_of_pathXor H s hcommon hsym @hpath
+  have hn : BoolNegativeCompact1622 (graphBool H) sn :=
+    boolNegativeCompact1622_zeroNormalizeSigning H sb hcommon hb
+  exact not_boolNegativeCompact1622_of_normalizedCycle
+    (graphBool H) sn ha0
+    (row256_matrixBV_zeroNormalizeSigning_zero sb)
+    (by simpa [graphBool] using h12)
+    (by simpa [graphBool] using h23)
+    (by simpa [graphBool] using h34)
+    (by simpa [graphBool] using h45)
+    (by simpa [graphBool] using h56)
+    (by simpa [graphBool] using h61)
+    ha hn
 
 end Erdos85
