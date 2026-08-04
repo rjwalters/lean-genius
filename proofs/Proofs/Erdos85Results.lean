@@ -19,6 +19,8 @@ import Proofs.Erdos85PolarityAbsolute
 import Proofs.Erdos85PolarityBand
 import Proofs.Erdos85PolarityAbsoluteSetDeletion
 import Proofs.Erdos85PolarityOddSecant
+import Proofs.Erdos85PolarityConic
+import Proofs.Erdos85PolarityEven
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
@@ -42,6 +44,11 @@ family.  In particular, for every finite field of order `q`, the development
 proves `minDegreeForC4 (q² + q + 1) = q + 1`.
 Chevalley--Warning and deletion of an absolute point strengthen this to the
 consecutive pair `f(q²+q) = f(q²+q+1) = q+1`.
+The absolute locus is shown to have exactly `q+1` points in every
+characteristic.  In odd characteristic, deleting any `k ≤ q+1` absolute
+points traps the threshold between `q` and `q+1`; in characteristic two,
+deleting the absolute line together with its nucleus gives the additional
+exact value `f(q²-1) = q+1`.
 -/
 
 namespace Erdos85
