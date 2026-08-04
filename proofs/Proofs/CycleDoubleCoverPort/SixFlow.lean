@@ -65,9 +65,12 @@ namespace CycleDoubleCover
 
 namespace FiniteGraph
 
-variable {V E : Type*} [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E]
+universe u v
+
+variable {V : Type u} {E : Type v} [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E]
   (G : FiniteGraph V E)
 
+omit [DecidableEq E] in
 /-- Flows push forward along additive homomorphisms. Conservation is a linear
 identity in the edge values, so any `φ : A →+ B` carries an `A`-valued flow to a
 `B`-valued one; no hypothesis on `φ` beyond additivity is needed, and in
@@ -80,6 +83,7 @@ theorem IsFlow.map {A B : Type*} [AddCommGroup A] [AddCommGroup B] (φ : A →+ 
     rw [hf v, map_zero]
   simpa only [map_sub, map_sum, apply_ite, map_zero] using h
 
+omit [DecidableEq E] in
 /-- The edge values of an integral 6-flow are nonzero. Immediate from the lower
 half of the bound, but worth naming: it is the hypothesis that survives the
 reduction. -/
@@ -89,6 +93,7 @@ theorem SixFlow.val_ne_zero (sf : G.SixFlow) (e : E) : sf.val e ≠ 0 := by
   rw [hz] at h
   simp at h
 
+omit [DecidableEq E] in
 /-- The edge values of an integral 6-flow have absolute value at most five: the
 numerical slack that makes reduction modulo eight harmless. -/
 theorem SixFlow.natAbs_le_five (sf : G.SixFlow) (e : E) :
@@ -126,10 +131,19 @@ Seymour's six-flow theorem. Seymour's theorem is taken as an explicit hypothesis
 axiom, so this statement is unconditional Lean content: it says precisely that
 the reduction step above loses nothing. -/
 theorem nonempty_nowhereZeroFlow_zmodEight_of_seymour
-    (hs : SeymourSixFlowStatement) (hb : G.Bridgeless) :
+    (hs : SeymourSixFlowStatement.{u, v}) (hb : G.Bridgeless) :
     Nonempty (G.NowhereZeroFlow (ZMod 8)) :=
   (hs V E G hb).map fun sf => sf.toZModEight
 
 end FiniteGraph
 
 end CycleDoubleCover
+
+section AxiomAudit
+#print axioms CycleDoubleCover.FiniteGraph.IsFlow.map
+#print axioms CycleDoubleCover.FiniteGraph.SixFlow.val_ne_zero
+#print axioms CycleDoubleCover.FiniteGraph.SixFlow.natAbs_le_five
+#print axioms CycleDoubleCover.FiniteGraph.SixFlow.toZModEight
+#print axioms CycleDoubleCover.FiniteGraph.SixFlow.toZModEight_val
+#print axioms CycleDoubleCover.FiniteGraph.nonempty_nowhereZeroFlow_zmodEight_of_seymour
+end AxiomAudit
