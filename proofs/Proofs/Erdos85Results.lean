@@ -15,6 +15,7 @@ import Proofs.Erdos85ProblemConflict
 import Proofs.Erdos85PolarityDeletion
 import Proofs.Erdos85PolarityAbsolute
 import Proofs.Erdos85DeletePair
+import Proofs.Erdos85RepairSet
 import Proofs.Erdos85OneDefectCore
 
 /-!
