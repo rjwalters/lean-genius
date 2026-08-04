@@ -47,6 +47,35 @@ theorem degree_deleteVertexSetGraph_add
       exact hpartition
     _ = G.degree v := by simp [N]
 
+/-- Exact per-vertex form of controlled deletion.  The original degree of each
+survivor pays for precisely its number of deleted neighbors. -/
+theorem c4FreeMinDegreeWitness_delete_vertex_set_of_compensated_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : Finset V) {N k d' : ℕ}
+    (hcard : Fintype.card V = N) (hDcard : D.card = k)
+    (hremain : 1 ≤ N - k) (hfree : ¬ containsC4 V G)
+    (hcomp : ∀ v : {v : V // v ∉ D},
+      d' + (G.neighborFinset v ∩ D).card ≤ G.degree v) :
+    C4FreeMinDegreeWitness (N - k) d' := by
+  let H := deleteVertexSetGraph G D
+  have hHcard : Fintype.card {v : V // v ∉ D} = N - k := by
+    rw [Fintype.card_subtype_compl (fun v : V => v ∈ D)]
+    simp [hcard, hDcard]
+  letI : Nonempty {v : V // v ∉ D} :=
+    Fintype.card_pos_iff.mp (hHcard.trans_gt (by omega))
+  apply c4FreeMinDegreeWitness_of_card_eq H hHcard
+  · apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro v
+    have hsplit := degree_deleteVertexSetGraph_add G D v
+    have hv := hcomp v
+    dsimp [H]
+    omega
+  · rintro ⟨f, hf, hadj⟩
+    apply hfree
+    exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
+      fun i j hij => hadj i j hij⟩
+
 /-- Controlled set deletion: if each survivor has at most r neighbors in the
 deleted k-set, an order-N degree-d witness yields order N-k and degree d-r. -/
 theorem c4FreeMinDegreeWitness_delete_vertex_set
