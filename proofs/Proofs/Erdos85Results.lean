@@ -30,6 +30,7 @@ import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85FiniteFieldNonsquare
+import Proofs.Erdos85PolaritySwitchCoordinates
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -96,6 +97,10 @@ for every nonzero `a` in a finite field of odd characteristic, `t²-a` is a
 nonsquare for some `t`; in particular some nonzero `t` makes `1+t²` a
 nonsquare.  Representative rescaling reduces the coordinate switch condition
 to precisely this lemma.
+The normalized coordinate calculation is checked as well: every parametrized
+opposite endpoint of a deleted cross edge has nonzero self-dot-product under
+that nonsquare condition.  Thus these endpoints are nonabsolute and possess
+the one unit of degree slack required by the compensated switch.
 -/
 
 namespace Erdos85
