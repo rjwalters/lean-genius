@@ -28,6 +28,7 @@ import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85CrossEdgeSwitch
+import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -85,6 +86,10 @@ finite-geometry incidence counts.  When the endpoints are nonadjacent with
 disjoint neighborhoods, every vertex loses at most one cross edge; an abstract
 completion theorem repairs a unique one-unit defect provided all other
 vertices retain the target degree after cross deletion.
+For the polarity graph with two distinct absolute points deleted, the unique
+degree-`q-1` vertex is now identified exactly: it is their unique nonabsolute
+common neighbor.  Hence the proposed switch has a canonical left endpoint;
+only the choice and incidence analysis of its right endpoint remain.
 -/
 
 namespace Erdos85
