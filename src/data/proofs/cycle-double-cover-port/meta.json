@@ -1,0 +1,151 @@
+{
+  "id": "cycle-double-cover-port",
+  "title": "CDC Port: The Cubic Labeling Argument (8-Flow to Exact Double Cover)",
+  "slug": "cycle-double-cover-port",
+  "description": "The novel mathematical core of the 2026 Cycle Double Cover proof, presented with line-anchored annotations. Classically a nowhere-zero 8-flow yields only an even-subgraph quadruple cover (Bermond–Jackson–Jaeger 1983); this file constructs a labeling of the edges of a cubic graph whose compatibility system is solvable by a dual-obstruction argument over F₂, forcing every edge into exactly two of eight even edge sets — an exact double cover. Companion to the cycle-double-cover entry: that entry carries the statement layer and headline theorem, this one walks the new mathematics line by line. Independent re-derivation of upstream CDCLean/CubicLabeling.lean: statements consulted, every proof script written from scratch against this repository's Mathlib pin. 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Proof route by GPT-5.6 Sol Ultra (OpenAI, 2026); independent Lean re-derivation for this repository (epic #37507)",
+    "sourceUrl": "https://github.com/openai/cdc-lean",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CycleDoubleCoverPort/CubicLabeling.lean",
+    "tags": [
+      "graph theory",
+      "cycle double cover",
+      "nowhere-zero flows",
+      "linear algebra over F2",
+      "duality",
+      "ported proof",
+      "ai-generated proof"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. 0 axiom declarations, 0 sorries, 0 uses of native_decide, and no assumption-carrying structure or typeclass fields. The four closed finite facts about the eight-element group Gamma = F₂³ (local_pair_parity, pairIndicator_eq_of_difference, gamma_third_eq_add, f2_add_self) and the three-dimensional local_dual_identity are discharged by kernel `decide` — exhaustive kernel reduction over a finite type, which does NOT invoke Lean.ofReduceBool (that axiom is only incurred by native_decide, which this file never uses). This file is part of the 22-file Proofs/CycleDoubleCoverPort/ tree whose headline theorem CycleDoubleCover.cycleDoubleCover_of_bridgeless (proved in Main.lean) reports exactly [propext, Classical.choice, Quot.sound] under #print axioms. Provenance: upstream openai/cdc-lean carries no license file, so default copyright applies; this file is an independent re-derivation — the upstream source was consulted only for the shapes of definitions and statements of results, and every proof script was written from scratch — vendored under the operator risk acceptance recorded on #37507, not under a license.",
+    "mathlib_version": "4.31.0",
+    "theoremCount": 21,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "When OpenAI's GPT-5.6 Sol Ultra resolved the Cycle Double Cover Conjecture in 2026, the genuinely new mathematics was not the 8-flow theorem (Jaeger 1976/1979, sharpened by Jaeger–Kilpatrick) but a conversion: turning a nowhere-zero (ℤ/2)³-flow on a cubic graph into an *exact double* cover by even subgraphs. Classically such a flow was known to give only a *quadruple* cover (Bermond–Jackson–Jaeger 1983), and closing the gap from four to two had resisted five decades of effort. This entry presents the port of that conversion — upstream CDCLean/CubicLabeling.lean, ported as step 7a of epic #37507 — as an independent re-derivation against this repository's Mathlib pin. It exists as a companion to the main cycle-double-cover entry because the gallery anchors line-level annotations to a single Lean file per entry: the main entry is anchored on the statement layer (Proofs/CycleDoubleCover.lean), so the novel labeling mathematics, which lives in the port tree, gets its line-anchored presentation here.",
+    "problemStatement": "Fix a cubic multigraph $G$ and a nowhere-zero flow $f$ on it with values in $\\Gamma = \\mathbb{F}_2^3$ (an *8-flow* in classical language). The goal is to attach to every edge $e$ a base point $p\\,e \\in \\Gamma$ such that, writing the affine pair $\\{p\\,e,\\; p\\,e + f\\,e\\}$ for the set of indices $s \\in \\Gamma$ whose edge set receives $e$, every one of the eight resulting edge sets is even at every vertex. Since $f$ is nowhere zero each pair is a genuine two-element set, so each edge lands in *exactly two* of the eight even sets: the cover is an exact double cover, not merely a quadruple one. That is the whole reason the 8-flow route proves CDC.",
+    "proofStrategy": "(1) **Local base points.** At a vertex $v$ with slot values $x, y, x+y$ (nowhere-zero and pairwise distinct), the kernel-checked fact `local_pair_parity` says three affine pairs based off a single value $t$ cover every index of $\\Gamma$ an even number of times. So evenness at $v$ is automatic provided the three base points around $v$ are read off from one vertex value via `localBase`. (2) **The compatibility system.** Each edge sits at two vertices but gets one base point, so the two candidate values must agree up to a shift by a multiple of $f\\,e$ — harmless, because a shift by $f\\,e$ leaves the pair unchanged (`pairIndicator_eq_of_difference`). Existence of coherent base points is thus a linear system over $\\mathbb{F}_2$: find a vertex potential $t : V \\to \\Gamma$ and per-edge shifts $\\varepsilon : E \\to \\mathbb{F}_2$ with $t(e^0) + t(e^1) + \\varepsilon\\,e \\cdot f\\,e$ equal to the endpoint discrepancy of the local base points. (3) **Dual obstruction.** Over a field, a vector lies in the range of a linear map iff every functional killing the range kills it. A functional $\\varphi$ killing the range satisfies two families of identities — edge tests give $\\eta_e(f\\,e) = 0$, vertex tests give $\\eta_{e_0} + \\eta_{e_1} + \\eta_{e_2} = 0$ at each vertex — and the kernel-checked `local_dual_identity` converts each vertex's contribution to $\\varphi(\\text{rhs})$ into the count of nonzero coordinate functionals at that vertex. Summing over vertices counts each edge once per *end*, i.e. twice — zero in $\\mathbb{F}_2$. So the system is solvable (`compatibility_solvable`). (4) **Assembly.** A solution is chosen once with `Classical.choose`, and the base points it induces satisfy the vertex parity condition by construction: `cubic_labeling` packages them as a `CubicLabeling`, the object later steps (CubicEvenCover, CubicTheorem) turn into an indexed even double cover and finally into the cycle double cover.",
+    "keyInsights": [
+      "The exactness is free once the pairs are genuine pairs: because the flow is nowhere zero, $\\{p\\,e, p\\,e + f\\,e\\}$ always has two elements, so each edge lies in exactly two of the eight even sets. The entire difficulty is coherence — making one global choice of base points whose local behavior at every vertex matches the parity pattern `local_pair_parity` controls.",
+      "The per-edge slack $\\varepsilon$ is what makes the system solvable at all. Without it, the demand would be that a coboundary hit a prescribed edge function — generally impossible. The slack is available precisely because shifting a base point by its own flow value does not move the affine pair (`pairIndicator_eq_of_difference`), so the pair, not the base point, is the invariant that matters.",
+      "Solvability is proved by pure duality, with no rank or dimension computation: over a field, an element is in the range of a linear map iff every functional annihilating the range annihilates it (`mem_range_of_dual_obstructions_vanish`). The only three-dimensional input in the whole argument is the closed finite statement `local_dual_identity`, checked exhaustively by the kernel — no cardinality or dimension lemma about $\\Gamma$ is imported anywhere.",
+      "The final cancellation is a double count in characteristic two: `local_dual_identity` rewrites each vertex's contribution as a count of nonzero coordinate functionals, a quantity attached to edge *ends*; summing over all vertices counts every edge exactly twice, and $a + a = 0$ in $\\mathbb{F}_2$ kills the total. Bridgelessness, connectivity, and the global structure of the graph play no role in this step — only the incidence bookkeeping that every edge end is a vertex slot exactly once.",
+      "This file is an independent re-derivation, not a transcription. Upstream openai/cdc-lean has no license, so default copyright applies; the upstream source was consulted only for the shapes of the definitions and statements. The port's proofs are organized differently — the dual-obstruction argument is split into reusable named lemmas (coordinateFunctional_flow_eq_zero, sum_coordinateFunctional_edgeAt_eq_zero, dual_local_slot_identity) rather than one long tactic block, the labeling construction is factored into named data with separately stated properties so the final structure instance is three lines, and DecidableEq on the vertex type is never assumed."
+    ],
+    "approachRationale": "Two presentation choices define this entry. First, its existence: the gallery's Annotation.range is a line range into a single proofRepoPath, so the main cycle-double-cover entry — anchored on the statement layer — cannot carry line-anchored annotations into the port tree. Rather than dilute that entry's anchoring, the novel content gets a companion entry anchored directly on CubicLabeling.lean, the 561-line file that carries the new mathematics (issue #43642, closing out epic #37507's last acceptance criterion). Second, the file's own architecture, which the annotations follow: every dimension-dependent fact about $\\Gamma = \\mathbb{F}_2^3$ is isolated into four kernel-checked `decide` statements at the top, the compatibility system is set up as an honest `F₂`-linear map so Mathlib's duality applies verbatim, and the construction phase is factored into named pieces (compatibilitySolution, labelPotential, labelDefect, endLabel, labelBase) so that the culminating `cubic_labeling` instance is three lines long.",
+    "prerequisites": [
+      "Linear maps, dual spaces, and range membership over a field",
+      "Nowhere-zero flows on graphs; the group F₂³ under addition",
+      "Cubic (3-regular) multigraphs and vertex–edge incidence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Provenance & Mathematical Content",
+      "startLine": 1,
+      "endLine": 110,
+      "summary": "Module docstring recording what this file is: step 7a of the CDC port (epic #37507), carrying the new mathematics of the upstream result — the 8-flow to exact-double-cover conversion. Documents the licensing posture (upstream has no license file; this is an independent re-derivation, statements consulted, proofs written from scratch) and the structural departures from upstream: named reusable lemmas instead of monolithic tactic blocks, factored construction data, no DecidableEq assumption on vertices."
+    },
+    {
+      "id": "finite-facts",
+      "title": "Kernel-Checked Finite Facts about Γ = F₂³",
+      "startLine": 116,
+      "endLine": 155,
+      "summary": "Four closed statements over the finite types Γ and F₂, each discharged by kernel decide: local_pair_parity (three affine pairs based at a common point in directions x, y, x+y cover every index evenly), pairIndicator_eq_of_difference (shifting a base point by a multiple of the direction does not move the pair), gamma_third_eq_add and f2_add_self (characteristic-two bookkeeping). Isolating them here keeps every dimension-dependent input visible in one place."
+    },
+    {
+      "id": "compatibility-system",
+      "title": "Local Base Points and the Compatibility System",
+      "startLine": 157,
+      "endLine": 196,
+      "summary": "localBase breaks symmetry harmlessly (one distinguished slot per vertex); compatibilityRhs is the discrepancy between the base points an edge's two endpoints propose; compatibilityMap is the F₂-linear map whose solvability at compatibilityRhs is exactly the existence of a coherent global labeling — a vertex potential plus per-edge shifts reproducing the discrepancy."
+    },
+    {
+      "id": "dual-coordinates",
+      "title": "Functionals, Coordinates, and the Local Dual Identity",
+      "startLine": 197,
+      "endLine": 286,
+      "summary": "The duality toolkit: coordinateFunctional restricts a functional on E → Γ to one summand; mem_range_of_dual_obstructions_vanish is finite-dimensional separation in exactly the form consumed later; functionalCode/gammaPairing identify Dual F₂ Γ with Γ via the standard dot product. The centerpiece is local_dual_identity — the only place the dimension of Γ enters the argument, as a decide-checked closed statement: three codes summing to zero and orthogonal to x, y, x+y satisfy ⟨b,x⟩ = [a≠0] + [b≠0] + [c≠0]."
+    },
+    {
+      "id": "reindexing",
+      "title": "Reindexing Edge-End Sums as Vertex-Slot Sums",
+      "startLine": 288,
+      "endLine": 330,
+      "summary": "dual_end_sum transports a functional applied to an endpoint sum into a double sum over vertices and their three slots — pure incidence bookkeeping (every edge end is a vertex slot exactly once). Its two specializations split the compatibility map into its vertex-potential half and its edge-shift half, dualised."
+    },
+    {
+      "id": "obstructions",
+      "title": "The Two Dual Obstructions and the Local Slot Identity",
+      "startLine": 332,
+      "endLine": 408,
+      "summary": "A functional φ annihilating the range of the compatibility map satisfies: the edge obstruction (testing against ε = Pi.single e 1) — each coordinate functional kills its flow value — and the vertex obstruction (testing against t = Pi.single v c) — the three coordinate functionals at each vertex sum to zero. dual_local_slot_identity combines them with local_dual_identity: at every vertex, φ's distinguished-slot value equals the F₂-count of nonzero coordinate functionals there."
+    },
+    {
+      "id": "solvability",
+      "title": "Solvability of the Compatibility System",
+      "startLine": 410,
+      "endLine": 446,
+      "summary": "compatibility_solvable, the heart of the file: pair an arbitrary annihilating functional against the right-hand side, rewrite as a sum over vertex slots, replace each vertex's contribution by its nonzero-functional count via dual_local_slot_identity, and observe the count is attached to edge ends — every edge is counted twice, and the total vanishes in F₂. By duality the system is solvable."
+    },
+    {
+      "id": "labeling",
+      "title": "The Labeling Exists",
+      "startLine": 448,
+      "endLine": 561,
+      "summary": "CubicLabeling packages the goal: base points whose affine pairs are even at every vertex. The construction chooses a solution of the compatibility system once (Classical.choose), reads off vertex potential and edge shifts, and shows both endpoint proposals for an edge describe the same pair (endLabel_add + pairIndicator_eq_of_difference). cubic_labeling assembles the structure; its vertexParity field reduces to local_pair_parity at each vertex."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every cubic multigraph carrying a nowhere-zero F₂³-flow admits a cubic labeling: a coherent choice of base points placing each edge in exactly two of eight even edge sets. This is the conversion that closes the classical gap between Jaeger's 8-flow (which gives a quadruple cover) and the double cover the conjecture demands. Downstream in the port, CubicEvenCover turns the labeling into an indexed even double cover, CubicTheorem decomposes the even sets into circuits, and Main.lean assembles the unconditional theorem cycleDoubleCover_of_bridgeless presented in the companion cycle-double-cover entry.",
+    "implications": "The labeling argument is self-contained linear algebra over F₂ plus one kernel-checked three-dimensional identity — no graph connectivity, no matroid theory, no flow theory beyond nowhere-vanishing. That makes it a candidate for upstreaming into Mathlib's flow or matroid libraries largely as-is, and a reusable pattern: isolate the dimension-dependent content of an argument into closed decide-checked statements, and run the structural part through Mathlib's generic duality. It is also the gallery's most detailed record of what the new mathematics in the 2026 CDC resolution actually is.",
+    "openQuestions": [
+      "Does the labeling technique extend to the 5-cycle-double-cover conjecture or the oriented cycle double cover conjecture, where the index group is not an F₂-vector space?",
+      "Can the dual-obstruction calculation be replaced by an explicit construction of the solution (a spanning-tree potential), avoiding Classical.choose?",
+      "Upstream the compatibility-system pattern (linear system with per-edge slack, solvability by dual obstructions) into Mathlib in a reusable form."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "cycle-double-cover",
+      "relationship": "Parent entry: statement layer and headline theorem of the same development",
+      "description": "The cycle-double-cover entry is anchored on the statement layer (Proofs/CycleDoubleCover.lean) and presents the resolved conjecture, the port's architecture, and the axiom discharge. This entry is its line-anchored companion for the novel mathematics: the labeling file sits in the middle of the port's dependency chain, between the Jaeger–Kilpatrick 8-flow theorem below and the even-cover assembly above."
+    },
+    {
+      "proofId": "four-color-theorem",
+      "relationship": "Nowhere-zero flows are the shared engine",
+      "description": "For planar bridgeless cubic graphs, four-colorability is equivalent to a nowhere-zero 4-flow, which yields a cycle double cover directly. The labeling argument here is what replaces that planar shortcut in general: it extracts an exact double cover from the weaker 8-flow that every bridgeless graph possesses."
+    }
+  ],
+  "references": [
+    {
+      "title": "A Proof of the Cycle Double Cover Conjecture",
+      "authors": "GPT-5.6 Sol Ultra (OpenAI)",
+      "year": 2026,
+      "url": "https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_proof.pdf"
+    },
+    {
+      "title": "cdc-lean: Lean 4 formalization of the Cycle Double Cover theorem (upstream CDCLean/CubicLabeling.lean)",
+      "authors": "OpenAI",
+      "year": 2026,
+      "url": "https://github.com/openai/cdc-lean"
+    },
+    {
+      "title": "Shortest coverings of graphs with cycles (the classical 8-flow ⇒ quadruple cover)",
+      "authors": "J.-C. Bermond, B. Jackson, F. Jaeger",
+      "year": 1983,
+      "url": "https://doi.org/10.1016/0095-8956(83)90056-4"
+    },
+    {
+      "title": "Flows and generalized coloring theorems in graphs (8-flow theorem)",
+      "authors": "François Jaeger",
+      "year": 1979,
+      "url": "https://doi.org/10.1016/0095-8956(79)90057-1"
+    }
+  ]
+}
