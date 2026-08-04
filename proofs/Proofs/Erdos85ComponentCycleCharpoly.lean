@@ -72,4 +72,24 @@ theorem isCycle_induce_charpoly_chebyshev
   rw [hn]
   exact cycleGraph_charpoly_eq_chebyshev_C_sub_two n
 
+theorem induce_resolvent_det_eq_of_set_eq
+    {V : Type*} [DecidableEq V] {G : SimpleGraph V} [DecidableRel G.Adj] {s t : Set V}
+    [Fintype s] [Fintype t] [DecidableRel (G.induce s).Adj]
+    [DecidableRel (G.induce t).Adj] (h : s = t) (a : ℤ) :
+    Matrix.det (Matrix.diagonal (fun _ : s ↦ a) - (G.induce s).adjMatrix ℤ) =
+      Matrix.det (Matrix.diagonal (fun _ : t ↦ a) - (G.induce t).adjMatrix ℤ) := by
+  let e : s ≃ t := Equiv.setCongr h
+  let M : Matrix s s ℤ := Matrix.diagonal (fun _ ↦ a) - (G.induce s).adjMatrix ℤ
+  have hM : Matrix.reindex e e M =
+      Matrix.diagonal (fun _ ↦ a) - (G.induce t).adjMatrix ℤ := by
+    ext u v
+    simp [M, Matrix.reindex_apply, e, SimpleGraph.adjMatrix_apply,
+      Matrix.diagonal_apply]
+    simp [Subtype.ext_iff]
+  calc
+    Matrix.det M = Matrix.det (Matrix.reindex e e M) :=
+      (Matrix.det_reindex_self e M).symm
+    _ = Matrix.det (Matrix.diagonal (fun _ : t ↦ a) - (G.induce t).adjMatrix ℤ) :=
+      congrArg Matrix.det hM
+
 end Erdos85
