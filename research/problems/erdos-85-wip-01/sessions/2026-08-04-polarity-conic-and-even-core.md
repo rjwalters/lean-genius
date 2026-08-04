@@ -676,3 +676,11 @@ preserves adjacency.  Consequently
 automorphism.  The 16-fiber quotient is therefore a canonical graph cover;
 constructing that quotient and formalizing the final negative-signing
 obstruction is the remaining exact-value task.
+
+Equivalently, if `A` is the quotient adjacency matrix and `S` records the
+matching choices with signs, then the rigid identities are
+`A² = 4I + 2J` and `S² = 6I`, with `|S| = A`.  Thus the last object is a
+balanced weighing matrix supported on a symmetric `2-(16,6,2)` design.  This
+matrix formulation agrees with the direct negative-four-cycle calculation
+and may offer a shorter formal nonexistence certificate than explicit graph
+classification.
