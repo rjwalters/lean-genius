@@ -11,20 +11,27 @@
   sum).
 
   Roadmap:
-  * Part I  : Setup (`MTProblem`, `State`, `isViolated`, `pickBad`).
-  * Part II : Algorithm (`resampleVbl`, `step`, `run`).
-  * Part III: LLL admissibility predicate (`LLLAdmissible`).
-  * Part IV : Placeholder main theorems
-              (`mt_expected_step_bound`, `mt_terminates_as`).
-  * Part V  : Refined uniform-draw layer (`uniformDrawProb`, `collisionAdj`,
-              `LLLAdmissibleUniform`, `LLLAdmissibleUniform.toLLLAdmissible`).
-  * Part VI : Witness trees (`inductive WitnessTree`, `labelOf`, `inclNbhd`,
-              `isProper` + sanity lemmas) — OQ-01-B skeleton (S13 design,
-              landed S16).
+  * Part I   : Setup (`MTProblem`, `State`, `isViolated`, `pickBad`).
+  * Part II  : Algorithm (`resampleAt`, `step`, `run`).
+  * Part III : LLL admissibility predicate (`LLLAdmissible`).
+  * Part IV  : Placeholder main theorems
+               (`mt_expected_step_bound`, `mt_terminates_as`).
+  * Part V   : Refined uniform-draw layer (`uniformDrawProb`, `collisionAdj`,
+               `LLLAdmissibleUniform`, `LLLAdmissibleUniform.toLLLAdmissible`).
+  * Part VI  : Witness trees (`inductive WitnessTree`, `labelOf`, `inclNbhd`,
+               `isProper`) — OQ-01-B skeleton (landed S16) — plus the
+               deepest-attachment extraction (`Attach`, `ExtractsFrom`) and
+               the propriety theorem `witness_valid` (landed S17).
+  * Part VII : Instrumented runner `stepLog` / `runLog` emitting the resample
+               log in execution order, with conservativity over `step` / `run`
+               (landed S18-prep; log order fixed S18a).
+  * Part VIII: Uniform initialization `mtRun` and the witness-tree weight
+               `WitnessTree.weight` — the two statement-level ingredients of
+               `witness_prob_bd` (landed S18a).
 
   Deferred (future PRs):
-  * `theorem witness_valid`, `theorem witness_prob_bd`  — OQ-01-B
-  * `def gwTreeProb`, `theorem gw_sum_bound`            — OQ-01-C
+  * `theorem witness_prob_bd` (resample-table coupling)  — OQ-01-B
+  * `def gwTreeProb`, `theorem gw_sum_bound`             — OQ-01-C
   * Replace the Part IV placeholders with the full statements — OQ-01-C
 
   References:
@@ -689,10 +696,16 @@ theorem isProper_attach {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
           · exact ht'
           · exact hproper u (List.mem_append_right _ (List.mem_cons_of_mem _ hu''))
 
-/-- Relational form of the Moser–Tardos §4 extraction over a log segment
-    (entries processed head-first, i.e. backwards in execution time): start
-    from a bare root labelled `j`, attach each entry by the deepest-vertex
-    rule when a match exists, and skip entries with no matching vertex. -/
+/-- Relational form of the Moser–Tardos §4 extraction over a log segment.
+
+    The list is expected in **execution order** — oldest resample at the
+    head, as emitted by `runLog` (Part VII). Because the `attach`/`skip`
+    constructors recurse on the tail *before* handling the head, a
+    derivation attaches entries starting from the **end** of the list, i.e.
+    most recent resample first — exactly the backward pass of Moser–Tardos
+    §4: start from a bare root labelled `j`, walk the log backwards in
+    time, attach each entry at a deepest matching vertex when a match
+    exists, and skip entries with no matching vertex. -/
 inductive ExtractsFrom (j : Fin P.numEvents) :
     List (Fin P.numEvents) → WitnessTree P → Prop
   | nil : ExtractsFrom j [] (.node j [])
@@ -729,8 +742,11 @@ relation consumes. This part instruments the Part II runner with that log
 and proves the instrumentation conservative:
 
 * `stepLog` / `runLog` — the Part II chain, additionally emitting the
-  indices of the resampled events, most recent entry first (the
-  `ExtractsFrom` convention);
+  indices of the resampled events in **execution order** (oldest entry
+  first). Part VI's `ExtractsFrom` consumes such a list from the tail
+  forward — most recent entry first — which is the Moser–Tardos §4
+  backward pass (see the S18a session memo for why the opposite emission
+  order would extract the wrong trees);
 * `stepLog_map_fst` / `runLog_map_fst` — projecting the log away recovers
   `step` / `run` on the nose, so `runLog` is the *same* random process
   carrying extra bookkeeping;
@@ -755,13 +771,20 @@ noncomputable def stepLog (v : P.State) :
 
 /-- Instrumented runner: `runLog n v` runs `n` Moser–Tardos steps from `v`
     and returns the final state together with the log of resampled event
-    indices, **most recent entry first** — the order in which Part VI's
-    `ExtractsFrom` consumes the log. -/
+    indices in **execution order** (oldest entry first).
+
+    Part VI's `ExtractsFrom` recurses on the tail of its list before
+    handling the head, so on an execution-order log it attaches the most
+    recent resample first — the Moser–Tardos §4 backward pass. (S18a fix:
+    an earlier revision emitted the log most-recent-first, under which
+    `ExtractsFrom` would have attached entries *oldest*-first — the reverse
+    of MT §4; the S18a session memo records a two-event counterexample
+    where the two orders extract genuinely different trees.) -/
 noncomputable def runLog : ℕ → P.State → PMF (P.State × List (Fin P.numEvents))
   | 0, v => PMF.pure (v, [])
   | n + 1, v =>
       (P.stepLog v).bind fun p =>
-        (runLog n p.1).map fun q => (q.1, q.2 ++ p.2.toList)
+        (runLog n p.1).map fun q => (q.1, p.2.toList ++ q.2)
 
 /-- Projecting the log away from one instrumented step recovers `step`. -/
 theorem stepLog_map_fst (v : P.State) :
@@ -783,13 +806,13 @@ theorem runLog_map_fst (n : ℕ) (v : P.State) :
   | succ n ih =>
       simp only [runLog, run, PMF.map_bind]
       have hinner : ∀ p : P.State × Option (Fin P.numEvents),
-          ((P.runLog n p.1).map fun q => (q.1, q.2 ++ p.2.toList)).map Prod.fst
+          ((P.runLog n p.1).map fun q => (q.1, p.2.toList ++ q.2)).map Prod.fst
             = P.run n p.1 := by
         intro p
         rw [PMF.map_comp]
         have hcomp :
             (Prod.fst ∘ fun q : P.State × List (Fin P.numEvents) =>
-              (q.1, q.2 ++ p.2.toList)) = Prod.fst := rfl
+              (q.1, p.2.toList ++ q.2)) = Prod.fst := rfl
         rw [hcomp, ih p.1]
       simp only [hinner]
       rw [← P.stepLog_map_fst v, PMF.bind_map]
@@ -857,7 +880,6 @@ theorem mem_log_pickBad (n : ℕ) (v : P.State) :
       rw [PMF.mem_support_map_iff] at hwl
       obtain ⟨q, hq, rfl⟩ := hwl
       rcases List.mem_append.mp hk with hk' | hk'
-      · exact ih p.1 q hq k hk'
       · -- `k` was reported by this step
         revert hp
         cases hpb : P.pickBad v with
@@ -871,8 +893,114 @@ theorem mem_log_pickBad (n : ℕ) (v : P.State) :
             simp only [Option.toList_some, List.mem_singleton] at hk'
             subst hk'
             exact ⟨v, hpb, P.pickBad_isBad hpb⟩
+      · exact ih p.1 q hq k hk'
 
 end RunLog
+
+/-! ## Part VIII — Uniform initialization and tree weight (S18a)
+
+Statement-level preparation for the witness-tree probability bound
+`witness_prob_bd`, driven by two observations recorded in the S18a session
+memo:
+
+* **Random initialization is part of the statement.** Moser–Tardos sample
+  the initial assignment uniformly at random, and the per-tree bound is
+  genuinely false over a *fixed* initial state: with a single 2-valued
+  variable, one bad event `A = {v = 0}` and a violated fixed start, the
+  path tree on `m + 1` vertices is extracted from the run's log with
+  probability `2⁻ᵐ`, exceeding the would-be bound
+  `∏_v uniformDrawProb = 2⁻⁽ᵐ⁺¹⁾`. Under uniform initialization the same
+  computation gives exactly `2⁻⁽ᵐ⁺¹⁾` — the bound holds with equality, so
+  it is also as sharp as it can be. `mtRun` packages the
+  uniformly-initialized chain that `witness_prob_bd` quantifies over.
+
+* **Tree weight.** `WitnessTree.weight τ = ∏_{v ∈ τ} uniformDrawProb
+  (labelOf v)` is the right-hand side of `witness_prob_bd`, defined by
+  structural recursion over the nested tree; its unit-interval bounds
+  follow from the Part V bounds on `uniformDrawProb`. -/
+
+section MTRun
+
+/-- The **full Moser–Tardos process**: sample the initial assignment
+    uniformly at random (`PMF.uniformOfFintype` on the finite product state
+    space — i.e. every variable independently uniform on its alphabet),
+    then run `n` instrumented steps, returning the final state and the
+    resample log in execution order. `witness_prob_bd` is a statement about
+    this process; see the Part VIII header for why the initial sample
+    cannot be fixed. -/
+noncomputable def mtRun (n : ℕ) : PMF (P.State × List (Fin P.numEvents)) :=
+  (PMF.uniformOfFintype P.State).bind (P.runLog n)
+
+/-- Projecting the log away recovers the uninstrumented uniformly-initialized
+    chain: `mtRun` is the Part II process with random initialization plus
+    bookkeeping. -/
+theorem mtRun_map_fst (n : ℕ) :
+    (P.mtRun n).map Prod.fst
+      = (PMF.uniformOfFintype P.State).bind (P.run n) := by
+  simp only [mtRun, PMF.map_bind, runLog_map_fst]
+
+end MTRun
+
+namespace WitnessTree
+
+variable {P}
+
+/-- The **weight** of a witness tree: the product, over all vertices `v` of
+    the tree, of the uniform-draw probabilities of their labels,
+    `∏_{v ∈ τ} uniformDrawProb (labelOf v)`.
+
+    This is the right-hand side of the Moser–Tardos per-tree probability
+    bound `witness_prob_bd` (Moser–Tardos 2010, §5): a fixed proper tree is
+    extracted from the uniformly-initialized run with probability at most
+    its weight. -/
+noncomputable def weight : WitnessTree P → ℚ
+  | .node i ch => P.uniformDrawProb i * (ch.map weight).prod
+
+@[simp] theorem weight_node (i : Fin P.numEvents)
+    (ch : List (WitnessTree P)) :
+    weight (.node i ch) = P.uniformDrawProb i * (ch.map weight).prod := by
+  simp [weight]
+
+/-- Auxiliary: a product of rationals from `[0, 1]` stays in `[0, 1]`. -/
+private lemma list_prod_mem_unit_interval {l : List ℚ}
+    (h : ∀ x ∈ l, 0 ≤ x ∧ x ≤ 1) : 0 ≤ l.prod ∧ l.prod ≤ 1 := by
+  induction l with
+  | nil => simp
+  | cons a l ih =>
+      have ha : 0 ≤ a ∧ a ≤ 1 := h a (by simp)
+      have hl : 0 ≤ l.prod ∧ l.prod ≤ 1 :=
+        ih fun x hx => h x (by simp [hx])
+      simp only [List.prod_cons]
+      refine ⟨mul_nonneg ha.1 hl.1, ?_⟩
+      calc a * l.prod ≤ 1 * 1 := mul_le_mul ha.2 hl.2 hl.1 zero_le_one
+        _ = 1 := one_mul 1
+
+/-- The weight of a witness tree lies in `[0, 1]` — the sanity bound needed
+    before `weight` can appear as a probability upper bound. -/
+theorem weight_mem_unit_interval :
+    ∀ τ : WitnessTree P, 0 ≤ weight τ ∧ weight τ ≤ 1
+  | .node i ch => by
+      have hch : ∀ x ∈ ch.map weight, 0 ≤ x ∧ x ≤ 1 := by
+        intro x hx
+        obtain ⟨t, ht, rfl⟩ := List.mem_map.mp hx
+        exact weight_mem_unit_interval t
+      obtain ⟨hp0, hp1⟩ := list_prod_mem_unit_interval hch
+      obtain ⟨hu0, hu1⟩ := P.uniformDrawProb_mem_unit_interval i
+      rw [weight_node]
+      refine ⟨mul_nonneg hu0 hp0, ?_⟩
+      calc P.uniformDrawProb i * (ch.map weight).prod
+          ≤ 1 * 1 := mul_le_mul hu1 hp1 hp0 zero_le_one
+        _ = 1 := one_mul 1
+
+/-- Weight is non-negative. -/
+theorem weight_nonneg (τ : WitnessTree P) : 0 ≤ weight τ :=
+  (weight_mem_unit_interval τ).1
+
+/-- Weight is at most one. -/
+theorem weight_le_one (τ : WitnessTree P) : weight τ ≤ 1 :=
+  (weight_mem_unit_interval τ).2
+
+end WitnessTree
 
 end MTProblem
 
