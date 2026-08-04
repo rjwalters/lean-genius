@@ -57,6 +57,128 @@ def HasRepairSet {V : Type*} [Fintype V] [DecidableEq V]
     ∀ ⦃a⦄, a ∈ R → ∀ ⦃b⦄, b ∈ deletedNeighborhood G x →
       ¬ (G.induce {y | y ≠ x}).Adj a b
 
+/-- Remaining vertices that are anticomplete to the deleted vertex's old
+neighborhood.  Every member of a repair set must lie in this reservoir. -/
+def repairCandidates {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    Finset {y : V // y ≠ x} :=
+  Finset.univ.filter fun a =>
+    ∀ b ∈ deletedNeighborhood G x,
+      ¬ (G.induce {y | y ≠ x}).Adj a b
+
+/-- Candidate vertices outside the deleted vertex's old neighborhood.  These
+are precisely the surviving nonneighbors with no edge into that neighborhood. -/
+def externalRepairCandidates {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    Finset {y : V // y ≠ x} :=
+  repairCandidates G x \ deletedNeighborhood G x
+
+@[simp] theorem mem_repairCandidates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (a : {y : V // y ≠ x}) :
+    a ∈ repairCandidates G x ↔
+      ∀ b ∈ deletedNeighborhood G x,
+        ¬ (G.induce {y | y ≠ x}).Adj a b := by
+  simp [repairCandidates]
+
+@[simp] theorem mem_externalRepairCandidates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (a : {y : V // y ≠ x}) :
+    a ∈ externalRepairCandidates G x ↔
+      ¬ G.Adj a x ∧ ∀ b : {y : V // y ≠ x},
+        G.Adj b x → ¬ G.Adj a b := by
+  rw [externalRepairCandidates, Finset.mem_sdiff,
+    mem_repairCandidates, mem_deletedNeighborhood]
+  constructor
+  · rintro ⟨hcandidate, houtside⟩
+    exact ⟨houtside, fun b hb =>
+      hcandidate b ((mem_deletedNeighborhood G x b).mpr hb)⟩
+  · rintro ⟨houtside, hcandidate⟩
+    exact ⟨fun b hb =>
+      hcandidate b ((mem_deletedNeighborhood G x b).mp hb), houtside⟩
+
+/-- The cross-anticompleteness clause is exactly containment in the candidate
+reservoir. -/
+theorem subset_repairCandidates_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (R : Finset {y : V // y ≠ x}) :
+    R ⊆ repairCandidates G x ↔
+      ∀ ⦃a⦄, a ∈ R → ∀ ⦃b⦄, b ∈ deletedNeighborhood G x →
+        ¬ (G.induce {y | y ≠ x}).Adj a b := by
+  constructor
+  · intro hR a ha b hb
+    exact (mem_repairCandidates G x a).mp (hR ha) b hb
+  · intro hcross a ha
+    exact (mem_repairCandidates G x a).mpr (fun b hb => hcross ha hb)
+
+/-- Candidate-reservoir form of `HasRepairSet`. -/
+theorem hasRepairSet_iff_exists_subset_candidates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) :
+    HasRepairSet G d ↔
+      ∃ (x : V) (R : Finset {y : V // y ≠ x}),
+        d - 1 ≤ R.card ∧
+        CommonNeighborIndependent (G.induce {y | y ≠ x}) R ∧
+        (R ∩ deletedNeighborhood G x).card ≤ 1 ∧
+        R ⊆ repairCandidates G x := by
+  simp only [HasRepairSet]
+  apply exists_congr
+  intro x
+  apply exists_congr
+  intro R
+  rw [subset_repairCandidates_iff]
+
+/-- A necessary cardinal obstruction for the canonical repair surgery. -/
+theorem exists_card_repairCandidates_of_hasRepairSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hrepair : HasRepairSet G d) :
+    ∃ x : V, d - 1 ≤ (repairCandidates G x).card := by
+  rw [hasRepairSet_iff_exists_subset_candidates] at hrepair
+  obtain ⟨x, R, hRcard, _, _, hsub⟩ := hrepair
+  exact ⟨x, hRcard.trans (Finset.card_le_card hsub)⟩
+
+/-- Since a repair set uses at most one old neighbor, it requires at least
+`d-2` external candidates. -/
+theorem exists_card_externalRepairCandidates_of_hasRepairSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hrepair : HasRepairSet G d) :
+    ∃ x : V, d - 2 ≤ (externalRepairCandidates G x).card := by
+  rw [hasRepairSet_iff_exists_subset_candidates] at hrepair
+  obtain ⟨x, R, hRcard, _, hinter, hsub⟩ := hrepair
+  have hdiffSub : R \ deletedNeighborhood G x ⊆
+      externalRepairCandidates G x := by
+    intro a ha
+    exact Finset.mem_sdiff.mpr
+      ⟨hsub (Finset.mem_sdiff.mp ha).1, (Finset.mem_sdiff.mp ha).2⟩
+  have hpartition := Finset.card_sdiff_add_card_inter R (deletedNeighborhood G x)
+  have hdiffCard := Finset.card_le_card hdiffSub
+  exact ⟨x, by omega⟩
+
+/-- If every candidate reservoir is too small, no canonical repair set exists. -/
+theorem not_hasRepairSet_of_card_repairCandidates_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hsmall : ∀ x : V, (repairCandidates G x).card < d - 1) :
+    ¬ HasRepairSet G d := by
+  intro hrepair
+  obtain ⟨x, hx⟩ := exists_card_repairCandidates_of_hasRepairSet G hrepair
+  exact (not_lt_of_ge hx) (hsmall x)
+
+/-- External-reservoir obstruction, often sharper to check in concrete graphs. -/
+theorem not_hasRepairSet_of_card_externalRepairCandidates_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hsmall : ∀ x : V, (externalRepairCandidates G x).card < d - 2) :
+    ¬ HasRepairSet G d := by
+  intro hrepair
+  obtain ⟨x, hx⟩ := exists_card_externalRepairCandidates_of_hasRepairSet G hrepair
+  exact (not_lt_of_ge hx) (hsmall x)
+
 /-- The deleted vertex's old neighbourhood is automatically safe in the graph
 induced on the remaining vertices. -/
 theorem commonNeighborIndependent_deletedNeighborhood
