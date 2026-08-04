@@ -376,6 +376,181 @@ theorem secondOrder_scalar_sub_defect_det_ne_zero
   · exact_mod_cast (show (2 : ℤ) < (d : ℤ) - 1 by omega)
   · exact_mod_cast (show (0 : ℤ) ≤ (d : ℤ) - 1 by omega)
 
+/-- Exact rank-one determinant relation for the second-order defect
+resolvent.  The factor on the all-ones direction is changed from `d-3` to
+`d²`. -/
+theorem secondOrder_defect_rankOne_det
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) :
+    (d - 3 : ℚ) * Matrix.det
+        ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+          (secondOrderDefectGraph G).adjMatrix ℚ +
+            Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ))) =
+      (d : ℚ) ^ 2 * Matrix.det
+        ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+          (secondOrderDefectGraph G).adjMatrix ℚ) := by
+  let D := secondOrderDefectGraph G
+  let B := (d - 1 : ℚ) • (1 : Matrix V V ℚ) - D.adjMatrix ℚ
+  let u : V → ℚ := fun _ => 1
+  let c : ℚ := d - 3
+  have hdet : B.det ≠ 0 :=
+    secondOrder_scalar_sub_defect_det_ne_zero
+      G hfree hd heven hmin hcard
+  have hunit : IsUnit B.det := (isUnit_iff_ne_zero).mpr hdet
+  letI : Invertible B := Matrix.invertibleOfIsUnitDet B hunit
+  have hBu : B.mulVec u = c • u := by
+    funext x
+    change (∑ y, B x y * 1) = c * 1
+    simp only [mul_one]
+    dsimp only [B, c]
+    simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+      SimpleGraph.adjMatrix_apply, smul_eq_mul]
+    rw [Finset.sum_sub_distrib]
+    have hdiag : ∑ y : V, (d - 1 : ℚ) * (if x = y then 1 else 0) = d - 1 := by
+      simp
+    rw [hdiag, Finset.sum_boole]
+    have hfilt : Finset.univ.filter (fun y => D.Adj x y) = D.neighborFinset x := by
+      ext y
+      simp [SimpleGraph.mem_neighborFinset]
+    rw [hfilt, D.card_neighborFinset_eq_degree,
+      secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard x]
+    ring
+  have hc : c ≠ 0 := by
+    dsimp only [c]
+    exact_mod_cast (show (d : ℤ) - 3 ≠ 0 by omega)
+  have hinvu : B⁻¹.mulVec u = c⁻¹ • u := by
+    apply Matrix.inv_mulVec_eq_vec
+    calc
+      u = c⁻¹ • (c • u) := by
+        ext x
+        simp [hc]
+      _ = c⁻¹ • B.mulVec u := by rw [hBu]
+      _ = B.mulVec (c⁻¹ • u) := by rw [Matrix.mulVec_smul]
+  have hJ : Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ)) =
+      Matrix.replicateCol Unit u * Matrix.replicateRow Unit u := by
+    ext x y
+    simp [Matrix.mul_apply, u]
+  change c * Matrix.det (B + Matrix.of (fun (_ : V) (_ : V) => (1 : ℚ))) =
+    (d : ℚ) ^ 2 * B.det
+  rw [hJ, Matrix.det_add_replicateCol_mul_replicateRow hunit]
+  have hscalar :
+      Matrix.det ((1 : Matrix Unit Unit ℚ) +
+        Matrix.replicateRow Unit u * B⁻¹ * Matrix.replicateCol Unit u) =
+        1 + (Fintype.card V : ℚ) * c⁻¹ := by
+    rw [Matrix.mul_assoc, ← Matrix.replicateCol_mulVec, hinvu,
+      Matrix.replicateRow_mul_replicateCol]
+    rw [Matrix.det_unique]
+    simp only [Matrix.add_apply, Matrix.one_apply, Matrix.of_apply,
+      if_pos, u, Pi.smul_apply, smul_eq_mul, one_mul]
+    simp [dotProduct, c]
+  rw [hscalar]
+  have hn : (Fintype.card V : ℚ) =
+      (d : ℚ) * ((d : ℚ) - 1) + 3 := by
+    rw [hcard, Nat.cast_add, Nat.cast_mul, Nat.cast_sub (by omega)]
+    norm_num
+  rw [hn]
+  field_simp [hc]
+  ring
+
+/-- The determinant of the defect resolvent is constrained by the square of
+the original adjacency determinant:
+`(d-3) det(A)^2 = d^2 det((d-1)I-D)`. -/
+theorem secondOrder_defect_det_square
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) :
+    (d - 3 : ℚ) * Matrix.det (G.adjMatrix ℚ) ^ 2 =
+      (d : ℚ) ^ 2 * Matrix.det
+        ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+          (secondOrderDefectGraph G).adjMatrix ℚ) := by
+  let A := G.adjMatrix ℚ
+  let B := (d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+    (secondOrderDefectGraph G).adjMatrix ℚ
+  let J : Matrix V V ℚ := Matrix.of fun _ _ => 1
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hreg : ∀ x : V, G.degree x = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer G hfree (by omega) hmin hbelow
+  have hsq : A * A = B + J := by
+    ext x y
+    dsimp only [A, B, J]
+    simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.of_apply, smul_eq_mul]
+    by_cases hxy : x = y
+    · subst y
+      rw [G.adjMatrix_mul_self_apply_self, hreg x]
+      simp [SimpleGraph.adjMatrix_apply]
+    · have hsquare :
+          (G.adjMatrix ℚ * G.adjMatrix ℚ) x y =
+            ((G.neighborFinset x ∩ G.neighborFinset y).card : ℚ) := by
+        rw [G.adjMatrix_mul_apply]
+        simp only [SimpleGraph.adjMatrix_apply]
+        rw [Finset.sum_boole]
+        have hfilt : (G.neighborFinset x).filter (fun z => G.Adj z y) =
+            G.neighborFinset x ∩ G.neighborFinset y := by
+          ext z
+          simp [SimpleGraph.mem_neighborFinset, G.adj_comm]
+        rw [hfilt]
+      rw [hsquare]
+      have hcommon := card_common_eq_if_secondOrderDefect_of_even
+        G hfree hd heven hmin hcard x y hxy
+      by_cases hdefect : y ∈ (secondOrderDefectGraph G).neighborFinset x
+      · rw [if_pos hdefect] at hcommon
+        have hadj : (secondOrderDefectGraph G).Adj x y :=
+          ((secondOrderDefectGraph G).mem_neighborFinset x y).mp hdefect
+        simp [SimpleGraph.adjMatrix_apply, hxy, hadj, hcommon]
+      · rw [if_neg hdefect] at hcommon
+        have hadj : ¬(secondOrderDefectGraph G).Adj x y := by
+          intro hadj
+          apply hdefect
+          exact ((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hadj
+        simp [SimpleGraph.adjMatrix_apply, hxy, hadj, hcommon]
+  have hrank := secondOrder_defect_rankOne_det
+    G hfree hd heven hmin hcard
+  change (d - 3 : ℚ) * A.det ^ 2 = (d : ℚ) ^ 2 * B.det
+  calc
+    (d - 3 : ℚ) * A.det ^ 2 =
+        (d - 3 : ℚ) * Matrix.det (A * A) := by
+      rw [Matrix.det_mul, pow_two]
+    _ = (d - 3 : ℚ) * Matrix.det (B + J) := by rw [hsq]
+    _ = (d : ℚ) ^ 2 * B.det := hrank
+
+/-- Equivalently, after removing the one all-ones eigenvalue, the defect
+resolvent determinant is `(d-3)` times a rational square. -/
+theorem secondOrder_defect_resolvent_is_square_mul
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) :
+    ∃ q : ℚ,
+      Matrix.det ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+        (secondOrderDefectGraph G).adjMatrix ℚ) = (d - 3 : ℚ) * q ^ 2 := by
+  let a := Matrix.det (G.adjMatrix ℚ)
+  let b := Matrix.det ((d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+    (secondOrderDefectGraph G).adjMatrix ℚ)
+  have h := secondOrder_defect_det_square G hfree hd heven hmin hcard
+  have hd0 : (d : ℚ) ≠ 0 := by positivity
+  refine ⟨a / d, ?_⟩
+  change b = (d - 3 : ℚ) * (a / d) ^ 2
+  change (d - 3 : ℚ) * a ^ 2 = (d : ℚ) ^ 2 * b at h
+  field_simp [hd0]
+  nlinarith
+
 end
 
 end Erdos85

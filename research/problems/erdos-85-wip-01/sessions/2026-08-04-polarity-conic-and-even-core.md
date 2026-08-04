@@ -1426,3 +1426,25 @@ entry has norm `d-1>=3` while every row has exactly two off-diagonal unit
 entries.  Hence its determinant is nonzero.  This permits the matrix
 determinant lemma to be applied to the addition of `J` without any unproved
 spectral assumption.
+
+The rank-one calculation and its square consequence are now also checked in
+Lean.  Writing `B=(d-1)I-D`, the exact identities are
+
+```text
+(d-3) det(B+J) = d^2 det(B),
+(d-3) det(A)^2 = d^2 det(B).
+```
+
+The second follows from the rational matrix version of `A^2=B+J`; that
+version is proved entrywise rather than assumed from scalar extension.  In
+particular Lean packages the consequence
+
+```text
+det(B) = (d-3) q^2
+```
+
+for an explicit rational `q=det(A)/d`.  Thus the proposed cycle-factor
+argument now has a formally verified square target.  What remains is to
+reindex the two-regular graph by its cycle components and prove the individual
+cycle determinant formulas, after which comparison of rational square classes
+will constrain the number and lengths of even defect cycles.
