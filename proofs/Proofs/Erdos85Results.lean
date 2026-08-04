@@ -229,6 +229,15 @@ At Moore-layer order the C4-free cherry-packing inequality sharpens this:
 the above-minimum layer has size strictly below `2n/5`, so the tight layer has
 size strictly above `3n/5`.  Tight deletion sets therefore exist for every
 `k` with `5k≤3n`.
+More decisively, the asymmetric Moore bound centered at each vertex proves
+full rigidity: every C4-free graph with minimum degree at least `d≥2` and
+exact order `d(d-1)+1` is `d`-regular.  Hence the high-degree layer is in fact
+empty for a genuine witness at this order.  The bounded deletion-only no-go
+therefore applies intrinsically to every such witness, every deleted `k`-set,
+and every compatible `k+1`-vertex gadget whenever
+`(k+1)²+k*choose(k+1,2)<d`.  In particular, for `d≥6`, no arbitrary
+delete-one/add-two replacement works at any vertex of any Moore-layer
+C4-free minimum-degree-`d` witness.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the

@@ -1,4 +1,5 @@
 import Proofs.Erdos85DeleteOnePairObstruction
+import Proofs.Erdos85DistanceLayers
 
 /-!
 # Bounded delete-set/replacement-gadget obstruction
@@ -414,6 +415,48 @@ theorem not_gadgetCompatible_bounded_replacement_of_moore_regular
   rw [hWcard] at hupper
   have hksub : d - 1 - k + (k + 1) = d := by omega
   nlinarith
+
+/-- **Intrinsic fixed-size replacement no-go.**  Regularity need not be
+assumed: C4-freeness, minimum degree `d`, and exact Moore-layer order force it.
+Thus every deletion-only delete-`k`/add-`k+1` replacement fails above the same
+polynomial threshold for every witness at this order. -/
+theorem not_gadgetCompatible_bounded_replacement_of_c4Free_moore
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d k : ℕ}
+    (hd : 2 ≤ d) (hk : k ≤ d - 1)
+    (hlarge : (k + 1) * (k + 1) + k * (k + 1).choose 2 < d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hDcard : D.card = k) (hWcard : Fintype.card W = k + 1)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) :
+    ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A := by
+  have hreg : ∀ x : V, G.degree x = d :=
+    regular_of_minDegree_mooreOrder G hfree hd hmin hcard
+  exact not_gadgetCompatible_bounded_replacement_of_moore_regular
+    G D F A (by omega) hk hlarge hcard hDcard hWcard hreg hnew
+
+/-- The arbitrary delete-one/add-two obstruction in natural witness form:
+for `d≥6`, it applies to every C4-free minimum-degree-`d` graph at Moore-layer
+order and every choice of the deleted vertex. -/
+theorem not_gadgetCompatible_delete_one_add_pair_of_c4Free_moore
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ ({x} : Finset V)})
+    {d : ℕ} (hd : 6 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hWcard : Fintype.card W = 2)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) :
+    ¬ GadgetAttachmentCompatible (deleteVertexSetGraph G {x}) F A := by
+  have hreg : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_mooreOrder G hfree (by omega) hmin hcard
+  exact not_gadgetCompatible_delete_one_add_pair_of_moore_regular
+    G x F A hd hcard hreg hWcard hnew
 
 /-- Existence form of the fixed-size obstruction: every compatible
 deletion-only replacement forces the explicit cubic-scale inequality on `d`. -/

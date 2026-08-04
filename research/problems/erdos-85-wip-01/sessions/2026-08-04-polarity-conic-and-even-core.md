@@ -1055,6 +1055,36 @@ which Lean converts to the convenient rational estimate `5|U|<2n`, or
 equivalently `3n<5|T|`.  Thus over three fifths of a normalized Moore-layer
 witness is tight, and tight deletion sets exist for every `k` with `5k≤3n`.
 
+## Moore-layer rigidity closes the degree-surplus escape
+
+The asymmetric distance-layer estimate is stronger still.  In any C4-free
+graph of minimum degree at least `d`, centering the disjoint branch count at
+an arbitrary vertex `x` gives
+
+```text
+1 + degree(x) + degree(x)(d-2) ≤ |V|.
+```
+
+At exact Moore order `|V|=d(d-1)+1` and `d≥2`, this forces
+`degree(x)≤d`.  Minimum degree gives the reverse inequality, so Lean proves
+
+```text
+∀ x, degree(x)=d.
+```
+
+Thus every genuine C4-free Moore-layer witness is automatically regular; the
+above-minimum layer and deleted-degree surplus are actually zero.  Feeding
+this rigidity into the replacement bound removes all normalization and
+regularity hypotheses: whenever
+
+```text
+(k+1)^2 + k choose(k+1,2) < d,
+```
+
+no deletion-only delete-`k`/add-`k+1` compatible replacement works for any
+deleted set in any C4-free minimum-degree-`d` witness at this order.  For
+`k=1`, every vertex and every arbitrary two-vertex gadget fail once `d≥6`.
+
 ```text
 ∑_w ∑_{a∈A(w)} replacementLoss(a)
   ≤ kd + k choose(m,2).

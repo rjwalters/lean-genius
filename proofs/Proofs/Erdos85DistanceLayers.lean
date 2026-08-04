@@ -665,6 +665,37 @@ theorem one_add_degree_add_mul_sub_two_le_card_of_minDegree
   change G.degree x * (d - 2) ≤ D.card at hDlower
   omega
 
+/-- **Moore-layer rigidity.**  A C4-free graph of minimum degree at least
+`d` on exactly `d(d-1)+1` vertices is forced to be `d`-regular.  Applying the
+asymmetric Moore bound at each center rules out even one higher-degree
+vertex. -/
+theorem degree_eq_of_minDegree_mooreOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (x : V) :
+    G.degree x = d := by
+  have hdx : d ≤ G.degree x := hmin.trans (G.minDegree_le_degree x)
+  have hbound := one_add_degree_add_mul_sub_two_le_card_of_minDegree
+    G hfree hmin x
+  rw [hcard] at hbound
+  obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 2 := ⟨d - 2, by omega⟩
+  norm_num at hdx hbound ⊢
+  nlinarith
+
+/-- Global regularity formulation of Moore-layer rigidity. -/
+theorem regular_of_minDegree_mooreOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1) :
+    ∀ x : V, G.degree x = d := by
+  intro x
+  exact degree_eq_of_minDegree_mooreOrder G hfree hd hmin hcard x
+
 /-- Degree inside the graph induced by `N(x)` is the number of common
 neighbours with `x`. -/
 theorem degree_induce_neighborSet_eq_card_common
