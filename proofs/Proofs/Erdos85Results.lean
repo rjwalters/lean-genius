@@ -31,6 +31,7 @@ import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85PolaritySwitchCoordinates
+import Proofs.Erdos85PolarityTangentSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -103,7 +104,10 @@ that nonsquare condition.  This candidate nevertheless has a unique
 common-neighborhood vertex of cross-edge loss two, so it does not by itself
 complete the repair.  The surviving route is instead to choose the right
 endpoint to be a third absolute point: tangency removes that double-loss
-configuration.  Its projective degree transport remains under development.
+configuration.  The tangent construction is now complete: for every finite
+field of odd characteristic and order `q`, it gives a `C₄`-free graph of
+minimum degree `q` on `q²+q-1` vertices and proves the new exact value
+`f(q²+q-1)=q+1`.
 -/
 
 namespace Erdos85
