@@ -30,6 +30,7 @@ import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
+import Proofs.Erdos85SignedSRGObstruction
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85CrossEdgeSwitchProgram
 import Proofs.Erdos85CrossEdgeSwitchCascade

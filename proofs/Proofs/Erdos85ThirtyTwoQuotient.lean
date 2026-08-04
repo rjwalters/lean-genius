@@ -14,6 +14,27 @@ namespace Erdos85
 
 open SimpleGraph
 
+/-- A signing of a 6-regular `(16,6,2,2)` graph in which the two common paths
+between every distinct pair have opposite parity. -/
+def IsNegativeSignedSRG1622
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (s : V → V → Prop) : Prop :=
+  Fintype.card V = 16 ∧
+  (∀ x : V, H.degree x = 6) ∧
+  (∀ x y : V, x ≠ y →
+    (H.neighborFinset x ∩ H.neighborFinset y).card = 2) ∧
+  (∀ x y : V, s x y ↔ s y x) ∧
+  ∀ ⦃x y u v : V⦄, x ≠ y → u ≠ v →
+    H.Adj x u → H.Adj u y → H.Adj x v → H.Adj v y →
+    Xor (s x u ↔ s u y) (s x v ↔ s v y)
+
+/-- The one finite statement remaining in the exact order-32 problem. -/
+def NoNegativeSigning1622 : Prop :=
+  ∀ (V : Type) [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (s : V → V → Prop),
+    ¬ IsNegativeSignedSRG1622 H s
+
 noncomputable section
 
 variable (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
@@ -415,6 +436,274 @@ theorem thirtyTwoQuotient_common_eq_two
   change C.card = 2
   omega
 
+/-! ## The signing selected by the double cover -/
+
+/-- A quotient edge is *direct* when the chosen representatives supplied by
+`Quotient.out` are adjacent. -/
+def thirtyTwoFiberDirect
+    (X Y : ThirtyTwoQuotient G hfree hmin) : Prop :=
+  G.Adj X.out Y.out
+
+noncomputable instance thirtyTwoFiberDirect.instDecidable
+    (X Y : ThirtyTwoQuotient G hfree hmin) :
+    Decidable (thirtyTwoFiberDirect G hfree hmin X Y) :=
+  Classical.propDecidable _
+
+theorem thirtyTwoQuotientAdj_iff_out (X Y : ThirtyTwoQuotient G hfree hmin) :
+    (thirtyTwoQuotientGraph G hfree hmin).Adj X Y ↔
+      thirtyTwoFiberAdj G hfree hmin X.out Y.out := by
+  conv_lhs =>
+    rw [← Quotient.out_eq X, ← Quotient.out_eq Y]
+  exact thirtyTwoQuotientAdj_mk G hfree hmin X.out Y.out
+
+theorem thirtyTwoFiberDirect_comm (X Y : ThirtyTwoQuotient G hfree hmin) :
+    thirtyTwoFiberDirect G hfree hmin X Y ↔
+      thirtyTwoFiberDirect G hfree hmin Y X := by
+  simpa [thirtyTwoFiberDirect] using G.adj_comm X.out Y.out
+
+/-- Over every quotient edge, exactly one of the direct and cross matchings is
+selected by the original graph. -/
+theorem thirtyTwoFiberDirect_xor_cross
+    {X Y : ThirtyTwoQuotient G hfree hmin}
+    (hXY : (thirtyTwoQuotientGraph G hfree hmin).Adj X Y) :
+    Xor (thirtyTwoFiberDirect G hfree hmin X Y)
+      (G.Adj X.out (p G hfree hmin Y.out)) := by
+  have hor := (thirtyTwoQuotientAdj_iff_out G hfree hmin X Y).1 hXY
+  have hexclusive : ¬ (thirtyTwoFiberDirect G hfree hmin X Y ∧
+      G.Adj X.out (p G hfree hmin Y.out)) := by
+    rintro ⟨hdirect, hcross⟩
+    have hzero := (thirtyTwoAntipode_spec G hfree hmin Y.out).2
+    have hxmem : X.out ∈ G.neighborFinset Y.out ∩
+        G.neighborFinset (p G hfree hmin Y.out) :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset Y.out X.out).2 hdirect.symm,
+          (G.mem_neighborFinset (p G hfree hmin Y.out) X.out).2 hcross.symm⟩
+    rw [Finset.card_eq_zero.mp hzero] at hxmem
+    exact Finset.notMem_empty _ hxmem
+  rcases hor with hd | hc
+  · exact Or.inl ⟨hd, fun hc => hexclusive ⟨hd, hc⟩⟩
+  · exact Or.inr ⟨hc, fun hd => hexclusive ⟨hd, hc⟩⟩
+
+/-- The lift of a quotient neighbor `U` that is adjacent to the chosen
+representative of `X`. -/
+def thirtyTwoOrientedLift
+    (X U : ThirtyTwoQuotient G hfree hmin) : Fin 32 :=
+  if thirtyTwoFiberDirect G hfree hmin X U then U.out
+  else p G hfree hmin U.out
+
+theorem thirtyTwoOrientedLift_quotient
+    (X U : ThirtyTwoQuotient G hfree hmin) :
+    Quotient.mk (thirtyTwoAntipodeSetoid G hfree hmin)
+        (thirtyTwoOrientedLift G hfree hmin X U) = U := by
+  rw [thirtyTwoOrientedLift]
+  split
+  · exact Quotient.out_eq U
+  · calc
+      Quotient.mk (thirtyTwoAntipodeSetoid G hfree hmin)
+          (p G hfree hmin U.out) =
+          Quotient.mk (thirtyTwoAntipodeSetoid G hfree hmin) U.out :=
+        Quotient.sound (Or.inr rfl)
+      _ = U := Quotient.out_eq U
+
+theorem thirtyTwoOrientedLift_adj
+    {X U : ThirtyTwoQuotient G hfree hmin}
+    (hXU : (thirtyTwoQuotientGraph G hfree hmin).Adj X U) :
+    G.Adj X.out (thirtyTwoOrientedLift G hfree hmin X U) := by
+  rw [thirtyTwoOrientedLift]
+  by_cases hd : thirtyTwoFiberDirect G hfree hmin X U
+  · rw [if_pos hd]
+    exact hd
+  · rw [if_neg hd]
+    rcases thirtyTwoFiberDirect_xor_cross G hfree hmin hXU with hdirect | hcross
+    · exact absurd hdirect.1 hd
+    · exact hcross.1
+
+/-- The oriented lift through `U` ends at the chosen representative of `Y`
+exactly when the two quotient edge signs agree. -/
+theorem thirtyTwoOrientedLift_adj_out_iff
+    {X U Y : ThirtyTwoQuotient G hfree hmin}
+    (_hXU : (thirtyTwoQuotientGraph G hfree hmin).Adj X U)
+    (hUY : (thirtyTwoQuotientGraph G hfree hmin).Adj U Y) :
+    G.Adj (thirtyTwoOrientedLift G hfree hmin X U) Y.out ↔
+      (thirtyTwoFiberDirect G hfree hmin X U ↔
+        thirtyTwoFiberDirect G hfree hmin U Y) := by
+  by_cases hXUd : thirtyTwoFiberDirect G hfree hmin X U
+  · rw [thirtyTwoOrientedLift, if_pos hXUd]
+    change G.Adj X.out U.out at hXUd
+    change G.Adj U.out Y.out ↔
+      (G.Adj X.out U.out ↔ G.Adj U.out Y.out)
+    simp [hXUd]
+  · rw [thirtyTwoOrientedLift, if_neg hXUd]
+    by_cases hUYd : thirtyTwoFiberDirect G hfree hmin U Y
+    · have hnot : ¬ G.Adj (p G hfree hmin U.out) Y.out := by
+        intro h
+        have hcross : G.Adj U.out (p G hfree hmin Y.out) :=
+          (adj_thirtyTwoAntipode_iff G hfree hmin U.out Y.out).2 h.symm
+        rcases thirtyTwoFiberDirect_xor_cross G hfree hmin hUY with hd | hc
+        · exact hd.2 hcross
+        · exact hc.2 hUYd
+      simp [hXUd, hUYd, hnot]
+    · have hcross : G.Adj U.out (p G hfree hmin Y.out) := by
+        rcases thirtyTwoFiberDirect_xor_cross G hfree hmin hUY with hd | hc
+        · exact absurd hd.1 hUYd
+        · exact hc.1
+      have hadj : G.Adj (p G hfree hmin U.out) Y.out :=
+        ((adj_thirtyTwoAntipode_iff G hfree hmin U.out Y.out).1 hcross).symm
+      simp [hXUd, hUYd, hadj]
+
+/-- Complementary endpoint: disagreement of the two signs sends the lifted
+two-edge path to the antipodal representative of `Y`. -/
+theorem thirtyTwoOrientedLift_adj_antipode_iff
+    {X U Y : ThirtyTwoQuotient G hfree hmin}
+    (hXU : (thirtyTwoQuotientGraph G hfree hmin).Adj X U)
+    (hUY : (thirtyTwoQuotientGraph G hfree hmin).Adj U Y) :
+    G.Adj (thirtyTwoOrientedLift G hfree hmin X U)
+        (p G hfree hmin Y.out) ↔
+      ¬ (thirtyTwoFiberDirect G hfree hmin X U ↔
+        thirtyTwoFiberDirect G hfree hmin U Y) := by
+  have hchosen := thirtyTwoOrientedLift_adj G hfree hmin hXU
+  have hquot := thirtyTwoOrientedLift_quotient G hfree hmin X U
+  by_cases hp : (thirtyTwoFiberDirect G hfree hmin X U ↔
+      thirtyTwoFiberDirect G hfree hmin U Y)
+  · have hout := (thirtyTwoOrientedLift_adj_out_iff G hfree hmin hXU hUY).2 hp
+    have hnot : ¬ G.Adj (thirtyTwoOrientedLift G hfree hmin X U)
+        (p G hfree hmin Y.out) := by
+      intro hant
+      have hzero := (thirtyTwoAntipode_spec G hfree hmin Y.out).2
+      have hm : thirtyTwoOrientedLift G hfree hmin X U ∈
+          G.neighborFinset Y.out ∩ G.neighborFinset (p G hfree hmin Y.out) :=
+        Finset.mem_inter.mpr
+          ⟨(G.mem_neighborFinset Y.out _).2 hout.symm,
+            (G.mem_neighborFinset (p G hfree hmin Y.out) _).2 hant.symm⟩
+      rw [Finset.card_eq_zero.mp hzero] at hm
+      exact Finset.notMem_empty _ hm
+    constructor
+    · intro hant hp'
+      exact hnot hant
+    · intro hnp
+      exact (hnp hp).elim
+  · have hnotOut : ¬ G.Adj (thirtyTwoOrientedLift G hfree hmin X U) Y.out :=
+      fun h => hp ((thirtyTwoOrientedLift_adj_out_iff G hfree hmin hXU hUY).1 h)
+    have hfiber : thirtyTwoFiberAdj G hfree hmin
+        (thirtyTwoOrientedLift G hfree hmin X U) Y.out := by
+      have hadjUY := hUY
+      rw [← hquot, ← Quotient.out_eq Y] at hadjUY
+      exact (thirtyTwoQuotientAdj_mk G hfree hmin _ _).1 hadjUY
+    exact ⟨fun _ => hp, fun _ => hfiber.resolve_left hnotOut⟩
+
+/-- Agreement of the two direct/cross signs along a quotient two-path. -/
+def thirtyTwoPathSignAgreement
+    (X U Y : ThirtyTwoQuotient G hfree hmin) : Prop :=
+  thirtyTwoFiberDirect G hfree hmin X U ↔
+    thirtyTwoFiberDirect G hfree hmin U Y
+
+noncomputable instance thirtyTwoPathSignAgreement.instDecidable
+    (X U Y : ThirtyTwoQuotient G hfree hmin) :
+    Decidable (thirtyTwoPathSignAgreement G hfree hmin X U Y) :=
+  Classical.propDecidable _
+
+/-- **Every quotient four-cycle is negative.**  The two common-neighbor paths
+between distinct quotient vertices have opposite sign parity. -/
+theorem thirtyTwo_common_paths_opposite_sign
+    {X Y U V : ThirtyTwoQuotient G hfree hmin}
+    (hXY : X ≠ Y) (hUV : U ≠ V)
+    (hXU : (thirtyTwoQuotientGraph G hfree hmin).Adj X U)
+    (hUY : (thirtyTwoQuotientGraph G hfree hmin).Adj U Y)
+    (hXV : (thirtyTwoQuotientGraph G hfree hmin).Adj X V)
+    (hVY : (thirtyTwoQuotientGraph G hfree hmin).Adj V Y) :
+    Xor (thirtyTwoPathSignAgreement G hfree hmin X U Y)
+      (thirtyTwoPathSignAgreement G hfree hmin X V Y) := by
+  let u := thirtyTwoOrientedLift G hfree hmin X U
+  let v := thirtyTwoOrientedLift G hfree hmin X V
+  have hux : G.Adj X.out u := thirtyTwoOrientedLift_adj G hfree hmin hXU
+  have hvx : G.Adj X.out v := thirtyTwoOrientedLift_adj G hfree hmin hXV
+  have huv : u ≠ v := by
+    intro huv
+    apply hUV
+    calc
+      U = Quotient.mk (thirtyTwoAntipodeSetoid G hfree hmin) u :=
+        (thirtyTwoOrientedLift_quotient G hfree hmin X U).symm
+      _ = Quotient.mk (thirtyTwoAntipodeSetoid G hfree hmin) v := by
+        congr 1
+      _ = V := thirtyTwoOrientedLift_quotient G hfree hmin X V
+  have hxyOut : X.out ≠ Y.out := by
+    intro h
+    apply hXY
+    rw [← Quotient.out_eq X, ← Quotient.out_eq Y, h]
+  have hxpyOut : X.out ≠ p G hfree hmin Y.out := by
+    intro h
+    apply hXY
+    rw [← Quotient.out_eq X, ← Quotient.out_eq Y]
+    apply Quotient.sound
+    exact Or.inr h
+  have hnotBothTrue : ¬
+      (thirtyTwoPathSignAgreement G hfree hmin X U Y ∧
+        thirtyTwoPathSignAgreement G hfree hmin X V Y) := by
+    rintro ⟨hu, hv⟩
+    have huy : G.Adj u Y.out :=
+      (thirtyTwoOrientedLift_adj_out_iff G hfree hmin hXU hUY).2 hu
+    have hvy : G.Adj v Y.out :=
+      (thirtyTwoOrientedLift_adj_out_iff G hfree hmin hXV hVY).2 hv
+    exact hfree (containsC4_of_two_common hxyOut huv
+      hux.symm huy hvx.symm hvy)
+  have hnotBothFalse : ¬
+      (¬ thirtyTwoPathSignAgreement G hfree hmin X U Y ∧
+        ¬ thirtyTwoPathSignAgreement G hfree hmin X V Y) := by
+    rintro ⟨hu, hv⟩
+    have huy : G.Adj u (p G hfree hmin Y.out) :=
+      (thirtyTwoOrientedLift_adj_antipode_iff G hfree hmin hXU hUY).2 hu
+    have hvy : G.Adj v (p G hfree hmin Y.out) :=
+      (thirtyTwoOrientedLift_adj_antipode_iff G hfree hmin hXV hVY).2 hv
+    exact hfree (containsC4_of_two_common hxpyOut huv
+      hux.symm huy hvx.symm hvy)
+  by_cases hu : thirtyTwoPathSignAgreement G hfree hmin X U Y
+  · have hv : ¬ thirtyTwoPathSignAgreement G hfree hmin X V Y :=
+      fun hv => hnotBothTrue ⟨hu, hv⟩
+    exact Or.inl ⟨hu, hv⟩
+  · have hv : thirtyTwoPathSignAgreement G hfree hmin X V Y := by
+      by_contra hv
+      exact hnotBothFalse ⟨hu, hv⟩
+    exact Or.inr ⟨hv, hu⟩
+
+/-- The quotient and its direct/cross signs realize precisely the abstract
+finite signing obstruction. -/
+theorem thirtyTwoQuotient_isNegativeSignedSRG1622 :
+    IsNegativeSignedSRG1622
+      (thirtyTwoQuotientGraph G hfree hmin)
+      (thirtyTwoFiberDirect G hfree hmin) := by
+  refine ⟨card_thirtyTwoQuotient G hfree hmin,
+    thirtyTwoQuotient_degree G hfree hmin, ?_,
+    thirtyTwoFiberDirect_comm G hfree hmin, ?_⟩
+  · intro X Y hXY
+    exact thirtyTwoQuotient_common_eq_two G hfree hmin hXY
+  · intro X Y U V hXY hUV hXU hUY hXV hVY
+    exact thirtyTwo_common_paths_opposite_sign G hfree hmin
+      hXY hUV hXU hUY hXV hVY
+
 end
+
+/-- Nonexistence of the finite signed quotient rules out every 32-vertex
+`C₄`-free graph of minimum degree six. -/
+theorem containsC4_of_thirtytwo_minDegree_six_of_noNegativeSigning
+    (hno : NoNegativeSigning1622)
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hmin : 6 ≤ G.minDegree) : containsC4 (Fin 32) G := by
+  by_contra hfree
+  exact hno
+    (ThirtyTwoQuotient G hfree hmin)
+    (thirtyTwoQuotientGraph G hfree hmin)
+    (thirtyTwoFiberDirect G hfree hmin)
+    (thirtyTwoQuotient_isNegativeSignedSRG1622 G hfree hmin)
+
+/-- Conditional exact value: the remaining 16-vertex signing theorem would
+finish `f(32)=6`. -/
+theorem minDegreeForC4_thirtytwo_eq_six_of_noNegativeSigning
+    (hno : NoNegativeSigning1622) :
+    minDegreeForC4 32 = 6 := by
+  apply le_antisymm
+  · apply Nat.sInf_le
+    intro G _ hmin
+    exact containsC4_of_thirtytwo_minDegree_six_of_noNegativeSigning hno G hmin
+  · exact six_le_minDegreeForC4_thirtytwo
 
 end Erdos85
