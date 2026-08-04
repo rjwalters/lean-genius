@@ -301,6 +301,103 @@ theorem trace_oddFirstOrderPlusMatrix
   rw [Matrix.trace_smul, htraceJ]
   ring
 
+/-! ## Modular trace obstruction
+
+The odd first-order case can in fact be closed without the full cubic-trace
+square principle.  Modulo a prime divisor of the cubic parameter, the matrix
+is nilpotent, so its trace vanishes modulo that prime.
+-/
+
+/-- If an integer matrix satisfies `T³=qT`, every prime divisor of `q` also
+divides its integer trace. -/
+theorem prime_dvd_trace_of_matrix_cubic
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (T : Matrix V V ℤ) {q p : ℕ} (hp : p.Prime) (hpq : p ∣ q)
+    (hcubic : T * T * T = (q : ℤ) • T) :
+    (p : ℤ) ∣ Matrix.trace T := by
+  letI : Fact p.Prime := ⟨hp⟩
+  let f : ℤ →+* ZMod p := Int.castRingHom (ZMod p)
+  let U : Matrix V V (ZMod p) := T.map f
+  have hqzero : (q : ZMod p) = 0 :=
+    (ZMod.natCast_eq_zero_iff q p).mpr hpq
+  have hcubeZero : U * U * U = 0 := by
+    calc
+      U * U * U = (T * T * T).map f := by
+        simp [U, Matrix.map_mul]
+      _ = ((q : ℤ) • T).map f := by rw [hcubic]
+      _ = 0 := by
+        ext x y
+        simp only [Matrix.map_apply, Matrix.smul_apply, Matrix.zero_apply,
+          smul_eq_mul]
+        rw [map_mul]
+        have hfq : f (q : ℤ) = (q : ZMod p) := by simp [f]
+        rw [hfq, hqzero, zero_mul]
+  have hnil : IsNilpotent U := by
+    refine ⟨3, ?_⟩
+    simpa [pow_succ, pow_two, Matrix.mul_assoc] using hcubeZero
+  have htraceZero : Matrix.trace U = 0 :=
+    (Matrix.isNilpotent_trace_of_isNilpotent hnil).eq_zero
+  have hcastTrace : (↑(Matrix.trace T) : ZMod p) = 0 := by
+    simpa [U, f, Matrix.trace] using htraceZero
+  exact (ZMod.intCast_zmod_eq_zero_iff_dvd (Matrix.trace T) p).mp hcastTrace
+
+/-- **Unconditional exclusion of the first possible order for odd degree.**
+A prime divisor `p` of odd `d` divides the cubic parameter `4d`.  Nilpotent
+trace reduction makes `p ∣ |V|`; the order formula then gives `p ∣ 2`, forcing
+`p=2`, contrary to oddness. -/
+theorem containsC4_of_odd_firstOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    containsC4 V G := by
+  by_contra hfree
+  letI : DecidableRel (triangleFreeEdgeGraph G).Adj := Classical.decRel _
+  obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : d ≠ 1)
+  have hp4d : p ∣ 4 * d := dvd_mul_of_dvd_right hpd 4
+  have hptrace : (p : ℤ) ∣ Matrix.trace (oddFirstOrderMinusMatrix G) :=
+    prime_dvd_trace_of_matrix_cubic (oddFirstOrderMinusMatrix G)
+      hp hp4d (oddFirstOrderMinusMatrix_cubic
+        G hfree hd hdodd hmin hcard)
+  have htrace := trace_oddFirstOrderMinusMatrix
+    G hfree hd hdodd hmin hcard
+  rw [htrace] at hptrace
+  have hpCardInt : (p : ℤ) ∣ (Fintype.card V : ℤ) := by
+    exact dvd_neg.mp hptrace
+  have hpCard : p ∣ Fintype.card V :=
+    Int.natCast_dvd_natCast.mp hpCardInt
+  have hpProd : p ∣ d * (d - 1) := dvd_mul_of_dvd_left hpd (d - 1)
+  have hpSum : p ∣ d * (d - 1) + 2 := by rwa [← hcard]
+  have hpTwo : p ∣ 2 := (Nat.dvd_add_iff_right hpProd).mpr hpSum
+  have hpEqTwo : p = 2 := by
+    rcases (Nat.dvd_prime Nat.prime_two).mp hpTwo with hp1 | hp2
+    · exact (hp.ne_one hp1).elim
+    · exact hp2
+  have htwoDvd : 2 ∣ d := by rwa [← hpEqTwo]
+  exact (Nat.not_even_iff_odd.mpr hdodd) ((even_iff_two_dvd.mpr htwoDvd))
+
+/-- **Odd-degree strict Moore bound, sharpened by two over equality.** -/
+theorem mul_pred_add_three_le_card_of_c4Free_minDegree_odd
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G) :
+    d * (d - 1) + 3 ≤ Fintype.card V := by
+  have hbase := mul_pred_add_two_le_card_of_c4Free_minDegree
+    G hd hmin hfree
+  by_contra hnot
+  have heq : Fintype.card V = d * (d - 1) + 2 := by omega
+  exact hfree (containsC4_of_odd_firstOrder G hd hdodd hmin heq)
+
+/-- Threshold form of the sharpened odd-degree bound. -/
+theorem minDegreeForC4_firstOrder_le_of_odd
+    {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d) :
+    minDegreeForC4 (d * (d - 1) + 2) ≤ d := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_odd_firstOrder G hd hdodd hmin (by simp)
+
 /-! ## Exact final algebraic interface
 
 The graph theory is now reduced to the following generic fact about integer

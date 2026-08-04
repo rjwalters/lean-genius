@@ -1213,7 +1213,7 @@ be perfect squares, impossible for `d≥3`.
 A useful basis-free route to the last statement is a reusable cubic-trace
 lemma.  For an integer matrix `T`, if `T³=qT`, `q>0`, and `tr(T)≠0`, then the
 quadratic factor `X²-q` must split over the rationals, hence `q` is a square.
-Both matrix instantiations are now checked in
+Both matrix instantiations are checked in
 `Erdos85OddFirstOrderSpectral`.  The matrix `A(I-M)` has cubic parameter `4d`
 and trace `-|V|`.  The complementary matrix is
 
@@ -1222,10 +1222,15 @@ and trace `-|V|`.  The complementary matrix is
 ```
 
 whose cubic parameter is `4|V|²(d-2)` and whose trace is
-`|V|(|V|-2d)≠0`; these identities are formal too.  A final conditional
-theorem applies the cubic-trace square principle twice, removes the explicit
-square factors, and checks modulo four that `d` and `d-2` cannot both be
-squares.  Thus the remaining formal gap is precisely the generic
-cubic-trace/characteristic-polynomial lemma.  Completing it would rule out
-`d(d-1)+2` for every odd `d`
-and improve the strict Moore bound there to `d(d-1)+3`.
+`|V|(|V|-2d)≠0`; these identities are formal too.  The earlier conditional
+cubic-trace route is no longer needed.  If `p` is any prime divisor of odd
+`d`, reducing `B=A(I-M)` modulo `p` turns `B³=4dB` into `B³=0`.  The trace of
+a nilpotent matrix over `ZMod p` is zero, so `p` divides the integer trace
+`-|V|`.  But `p∣d` and `|V|=d(d-1)+2` imply `p∣2`, hence `p=2`, contradicting
+oddness.  Lean now checks this argument end to end.  Therefore
+`d(d-1)+2` is impossible for every odd `d≥3`, giving the unconditional bounds
+
+```text
+d(d-1)+3 ≤ |V|,
+minDegreeForC4 (d(d-1)+2) ≤ d.
+```

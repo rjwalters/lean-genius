@@ -259,12 +259,12 @@ In the odd case, the triangle-free edges are now formally extracted as a
 one-regular spanning defect graph with adjacency matrix `M`.  The checked
 identities are `A²=(d-1)I+J-M`, `AM=MA`, `M²=I`, and `tr(AM)=|V|`.  Thus the
 minus-space matrix `A(I-M)` formally satisfies `B³=4dB` and
-`tr(B)=-|V|`.  A complementary integral matrix formally satisfies
-`C³=4|V|²(d-2)C` and has trace `|V|(|V|-2d)`.  The checked conditional closure
-shows that the generic cubic-trace square principle would force `d` and
-`d-2` to be squares and hence give a contradiction.  Thus only that generic
-characteristic-polynomial lemma remains; the unconditional stronger odd
-bound is not yet claimed here.
+`tr(B)=-|V|`.  Reducing this cubic identity modulo a prime divisor `p` of
+odd `d` makes `B` nilpotent, so its trace vanishes modulo `p`.  Hence
+`p∣|V|`; but `|V|=d(d-1)+2` then forces `p∣2`, contradicting oddness.
+Consequently the first possible order is unconditionally excluded for odd
+`d≥3`: every such C4-free graph has at least `d(d-1)+3` vertices and
+`f(d(d-1)+2)≤d`.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the
