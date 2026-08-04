@@ -896,3 +896,45 @@ least two.  This is a global cascade restriction complementary to the
 weighted-loss lower bound: small gadgets may need substantial old-edge loss
 to overcome the Moore deficit, but compatibility prevents that loss from
 being repaid at too many tight vertices with high selector multiplicity.
+
+## Gadget degree-square obstruction
+
+Compatibility forces not only every selector to be safe but also the gadget
+graph `F` itself to be `C₄`-free.  Cherry counting inside `F` gives
+
+```text
+∑_w choose(r_w,2) ≤ choose(m,2),
+```
+
+and therefore `∑_w r_w² ≤ 2m(m-1)`.  Substituting this global bound into
+the gadget counting inequality dramatically strengthens the earlier estimate:
+
+```text
+d² ≤ |V| + 2(m-1).
+```
+
+At `|V|=d(d-1)+1`, this first gives the linear requirement
+`d-1 ≤ 2(m-1)`.  Applying Cauchy--Schwarz to the gadget degree sequence and
+retaining the sharper identity
+`∑ r_w² ≤ m(m-1)+∑ r_w` yields
+
+```text
+(d-m)² ≤ 2(m-1).
+```
+
+Hence every pure compatible replacement gadget at Moore-layer order has
+`m = d - O(√d)`: it must contain almost `d` vertices.  This supersedes the
+earlier square-root-size obstruction and shows that even moderately sized
+attachment gadgets cannot establish eventual witness extension in the
+critical regime.
+
+The edge-compensated version is also sharpened.  Its degree-square balance is
+
+```text
+m d² ≤ |V|m + 2m(m-1) + L,
+```
+
+so below the linear threshold at Moore-layer order, old-edge deletion must pay
+`m(d-1-2(m-1)) ≤ L`.  Thus the only way to use a substantially smaller gadget
+is through a quantitatively large compensated edge surgery, still subject to
+the selector-multiplicity cascade bounds above.

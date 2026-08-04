@@ -256,6 +256,30 @@ theorem GadgetAttachmentCompatible.neighbor_inter_selector_eq_empty_of_adj
     Finset.one_le_card.mpr ⟨y, hy⟩
   omega
 
+/-- Compatibility forces the old graph itself to be `C₄`-free. -/
+theorem GadgetAttachmentCompatible.old_not_containsC4
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A) :
+    ¬ containsC4 V G := by
+  apply (not_containsC4_iff_forall_common_le_one G).2
+  intro x y hxy
+  have hbudget := hcompat.1 x y hxy
+  omega
+
+/-- Compatibility also forces the internal gadget graph to be `C₄`-free. -/
+theorem GadgetAttachmentCompatible.gadget_not_containsC4
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A) :
+    ¬ containsC4 W F := by
+  apply (not_containsC4_iff_forall_common_le_one F).2
+  intro u w huw
+  have hbudget := hcompat.2.1 u w huw
+  omega
+
 /-- Exact safety theorem for an arbitrary finite gadget attachment.  No
 additional hypotheses are hidden: the old-old, new-new, and mixed budgets are
 jointly necessary and sufficient. -/

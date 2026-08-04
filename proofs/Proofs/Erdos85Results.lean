@@ -32,6 +32,7 @@ import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85CompensatedGadget
 import Proofs.Erdos85GadgetMultiplicity
+import Proofs.Erdos85GadgetDegreeSquares
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -183,6 +184,13 @@ number of selectors containing `x`, compatibility gives
 `Σ_x choose(t_x,2) ≤ choose(m,2)`.  At a degree-`d` tight vertex, incident
 old-edge loss `ℓ_x` forces `t_x ≥ ℓ_x`; hence the number of tight vertices
 with loss at least `q` times `choose(q,2)` is at most `choose(m,2)`.
+Compatibility also makes the gadget graph itself `C₄`-free.  Cherry counting
+and Cauchy--Schwarz on its degree sequence strengthen the pure gadget-size
+obstruction at Moore-layer order to `(d-m)² ≤ 2(m-1)`.  Thus a compatible
+replacement gadget must have `m=d-O(√d)` vertices.  With compensated old-edge
+deletion the corresponding balance is
+`md² ≤ nm+2m(m-1)+L`, quantifying the large loss required to use a smaller
+gadget.
 -/
 
 namespace Erdos85
