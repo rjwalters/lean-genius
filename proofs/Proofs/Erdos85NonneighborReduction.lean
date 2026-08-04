@@ -258,6 +258,20 @@ theorem four_le_order_of_c4FreeMinDegreeWitness {n d : ℕ} (hthree : 3 ≤ d)
     simp only [Fintype.card_fin] at hdeg
     omega
 
+/-- The checked values `f(4),…,f(9) = 2,3,3,3,3,3` imply that a
+degree-three witness needs at least ten vertices. -/
+theorem ten_le_order_of_c4FreeMinDegreeWitness_three {n : ℕ}
+    (hw : C4FreeMinDegreeWitness n 3) : 10 ≤ n := by
+  have hfour : 4 ≤ n := four_le_order_of_c4FreeMinDegreeWitness (by omega) hw
+  have hlt : 3 < minDegreeForC4 n :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hfour).1 hw
+  by_contra hten
+  have hnine : n ≤ 9 := by omega
+  interval_cases n <;>
+    simp [minDegreeForC4_four, minDegreeForC4_five,
+      minDegreeForC4_six, minDegreeForC4_seven,
+      minDegreeForC4_eight, minDegreeForC4_nine] at hlt
+
 /-- Iterated nonneighbor reduction.  As long as every intermediate order is at
 least four, `k` reductions lower the certified degree from `d` to `d-k` and
 produce a witness on `iteratedNonneighborOrder n d k` vertices. -/
@@ -323,5 +337,40 @@ theorem iterated_nonneighbor_auto_lt_minDegreeForC4
   have hthree : 3 ≤ d - k := by omega
   exact (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4
     (four_le_order_of_c4FreeMinDegreeWitness hthree hw')).1 hw'
+
+/-- Iterating all the way down to degree three must leave at least ten
+vertices.  Equivalently, the original order pays for every deleted closed
+neighborhood and for a final degree-three core of order at least ten. -/
+theorem iterated_nonneighbor_degree_three_core_bound
+    {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d) :
+    iteratedNonneighborRemoval d (d - 3) + 10 ≤ n := by
+  have hk : (d - 3) + 3 ≤ d := by omega
+  have hiter := c4FreeMinDegreeWitness_iterated_nonneighbor_auto
+    (n := n) (d := d) (k := d - 3) hw (by omega)
+  have hdegree : d - (d - 3) = 3 := by omega
+  have hcore : C4FreeMinDegreeWitness
+      (iteratedNonneighborOrder n d (d - 3)) 3 := by
+    rwa [hdegree] at hiter
+  have hten := ten_le_order_of_c4FreeMinDegreeWitness_three hcore
+  rw [iteratedNonneighborOrder_eq_sub_removal] at hten
+  omega
+
+/-- A `C₄`-free graph of minimum degree at least four has at least fifteen
+vertices.  The bound is sharp (the 15-vertex polarity witness realizes it). -/
+theorem fifteen_le_order_of_c4FreeMinDegreeWitness_four {n : ℕ}
+    (hw : C4FreeMinDegreeWitness n 4) : 15 ≤ n := by
+  have h := iterated_nonneighbor_degree_three_core_bound (n := n) (d := 4)
+    (by omega) hw
+  norm_num [iteratedNonneighborRemoval] at h ⊢
+  exact h
+
+/-- A `C₄`-free graph of minimum degree at least five has at least twenty-one
+vertices.  This is also sharp, as witnessed by the order-21 construction. -/
+theorem twentyone_le_order_of_c4FreeMinDegreeWitness_five {n : ℕ}
+    (hw : C4FreeMinDegreeWitness n 5) : 21 ≤ n := by
+  have h := iterated_nonneighbor_degree_three_core_bound (n := n) (d := 5)
+    (by omega) hw
+  norm_num [iteratedNonneighborRemoval] at h ⊢
+  exact h
 
 end Erdos85
