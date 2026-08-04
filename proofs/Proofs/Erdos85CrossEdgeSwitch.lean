@@ -95,4 +95,29 @@ theorem crossEdgeSwitch_not_containsC4 {V : Type*} [Fintype V] [DecidableEq V]
   · exact habbc ((special_eq hab).trans (special_eq hbc).symm)
   · exact habbc ((special_eq hab).trans (special_eq hbc).symm)
 
+/-- When the switched endpoints are nonadjacent and have disjoint
+neighborhoods, every vertex loses at most one edge in the cross deletion. -/
+theorem crossEdgeLoss_neighborFinsets_le_one {V : Type*} [Fintype V]
+    [DecidableEq V] (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    (hfree : ¬ containsC4 V H) (hxw : ¬ H.Adj x w)
+    (hdisj : Disjoint (H.neighborFinset x) (H.neighborFinset w)) :
+    crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) v ≤ 1 := by
+  classical
+  by_cases hvx : v ∈ H.neighborFinset x
+  · have hvw : v ∉ H.neighborFinset w := Finset.disjoint_left.mp hdisj hvx
+    rw [crossEdgeLoss_eq_card_neighbor_inter_right H _ _ v hvx hvw]
+    apply card_inter_neighborFinset_le_one hfree
+    intro hv
+    subst v
+    exact hxw (by simpa using hvx)
+  · by_cases hvw : v ∈ H.neighborFinset w
+    · rw [crossEdgeLoss_eq_card_neighbor_inter_left H _ _ v hvw hvx]
+      rw [Finset.inter_comm]
+      apply card_inter_neighborFinset_le_one hfree
+      intro hv
+      subst v
+      exact hxw ((by simpa using hvw : H.Adj w x).symm)
+    · rw [crossEdgeLoss_eq_zero_of_not_mem H _ _ v hvx hvw]
+      omega
+
 end Erdos85
