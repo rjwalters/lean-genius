@@ -267,3 +267,19 @@ The revised formal target is therefore:
 3. show every positive-loss endpoint other than the absolute `w` has original
    two-point-core degree `q+1`;
 4. apply the checked unique-defect switch witness theorem.
+
+All four steps are now checked.  The tangent right endpoint makes every
+cross-edge loss at most one; every vertex of positive loss has two-point-core
+degree exactly `q+1`; the unique pole retains degree `q-1` through deletion
+and gains the new switch edge.  Therefore, for every finite field `K` with
+`(2 : K) ≠ 0`, the development now proves
+
+```text
+C4FreeMinDegreeWitness (q²+q-1) q,
+minDegreeForC4 (q²+q-1) = q+1.
+```
+
+The checked headline theorem is `minDegreeForC4_odd_twoPoint_order` in
+`Erdos85PolarityTangentSwitch.lean`.  This extends the known consecutive
+polarity values at `q²+q` and `q²+q+1` to a run of three exact orders in odd
+characteristic.
