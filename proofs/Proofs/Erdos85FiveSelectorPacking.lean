@@ -14,6 +14,8 @@ in at most one point.
 
 namespace Erdos85
 
+open SimpleGraph
+
 /-- A rank-two intersecting multifamily with at least four indexed members is
 a star, provided repeated two-element labels can only come from the same
 index.  Singleton labels force the star directly; otherwise this is
@@ -147,5 +149,36 @@ theorem five_large_rank_two_selectors_impossible
     exact hcenter i x hx
   · exact hfiber
   · exact hinter
+
+/-- Gadget-facing form: a compatible five-cycle attachment whose new
+vertices all reach degree `q ≥ 7` is impossible whenever the old selector
+labels satisfy the rank-two four-centre hypotheses. -/
+theorem fiveCycleAttachment_impossible_of_rank_two_labels
+    {V C : Type*} [Fintype V] [DecidableEq V]
+    [Fintype C] [DecidableEq C]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (q : ℕ) (hq : 7 ≤ q)
+    (A : Fin 5 → Finset V) (label : V → Finset C)
+    (hcompat : GadgetAttachmentCompatible G (cycleGraph 5) A)
+    (hnewDegree : ∀ w : Fin 5,
+      q ≤ (attachGadget G (cycleGraph 5) A).degree (.inr w))
+    (hcenters : Fintype.card C ≤ 4)
+    (hnonempty : ∀ i x, x ∈ A i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ A i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q) :
+    False := by
+  have hlarge : ∀ i, q - 2 ≤ (A i).card := by
+    intro i
+    have hi := hnewDegree i
+    rw [attachGadget_degree_new, cycleGraph_degree_three_le] at hi
+    omega
+  exact five_large_rank_two_selectors_impossible
+    q hq A label hcenters hlarge hnonempty hcard hlabel_inter hinj_two
+    hfiber (fun i j hij =>
+      hcompat.card_selector_inter_le_one G (cycleGraph 5) A hij)
 
 end Erdos85
