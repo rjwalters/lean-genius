@@ -102,6 +102,7 @@ statement that the two end sums agree at every vertex. -/
 def endSum {A : Type*} [AddCommMonoid A] (j : Fin 2) (f : E → A) (v : V) : A :=
   ∑ k : E, if G.endAt k j = v then f k else 0
 
+omit [DecidableEq E] in
 /-- An end sum is an ordinary `Finset` sum over the fibre of the incidence map.
 This is the only place the `if`-form is unpacked; all algebraic properties of end
 sums below are read off from the standard `Finset.sum` lemmas through it. -/
@@ -109,14 +110,17 @@ theorem endSum_eq_sum_filter {A : Type*} [AddCommMonoid A] (j : Fin 2) (f : E �
     G.endSum j f v = ∑ k ∈ Finset.univ.filter fun k => G.endAt k j = v, f k :=
   (Finset.sum_filter _ _).symm
 
+omit [DecidableEq E] in
 theorem endSum_add {A : Type*} [AddCommMonoid A] (j : Fin 2) (f g : E → A) (v : V) :
     G.endSum j (f + g) v = G.endSum j f v + G.endSum j g v := by
   simp only [endSum_eq_sum_filter, Pi.add_apply, Finset.sum_add_distrib]
 
+omit [DecidableEq E] in
 theorem endSum_neg {A : Type*} [AddCommGroup A] (j : Fin 2) (f : E → A) (v : V) :
     G.endSum j (-f) v = -G.endSum j f v := by
   simp only [endSum_eq_sum_filter, Pi.neg_apply, Finset.sum_neg_distrib]
 
+omit [DecidableEq E] in
 /-- Evaluating an integral chain at a fixed group element commutes with taking end
 sums. -/
 theorem endSum_zsmul {A : Type*} [AddCommGroup A] (j : Fin 2) (c : E → ℤ) (x : A) (v : V) :
@@ -128,6 +132,7 @@ end sums. -/
 def divergence {A : Type*} [AddCommGroup A] (f : E → A) (v : V) : A :=
   G.endSum 0 f v - G.endSum 1 f v
 
+omit [DecidableEq E] in
 /-- The flow condition of step 1 is exactly the vanishing of the divergence. Both
 sides are the same proposition; naming the identification keeps the rest of the
 file readable. -/
@@ -233,17 +238,23 @@ theorem card_zeroOnFlows_univ (A : Type*) [AddCommGroup A] [Fintype A] :
     Fintype.card (G.ZeroOnFlows A (Finset.univ : Finset E)) = 1 := by
   simpa using Fintype.card_congr (G.zeroOnFlowsUnivEquiv A)
 
+omit [Fintype V] [Fintype E] [DecidableEq V] in
+/-- An additive hom carries a labelling vanishing on `S` to one vanishing on `S`. -/
+theorem map_zero_on {A B : Type*} [AddCommGroup A] [AddCommGroup B] (φ : A →+ B)
+    (S : Finset E) (f : E → A) (hf : ∀ k ∈ S, f k = 0) : ∀ k ∈ S, φ (f k) = 0 :=
+  fun k hk => by rw [hf k hk, map_zero]
+
 /-- Coefficient functoriality: an additive equivalence of coefficient groups
 transports flows vanishing on `S`. Conservation transports by `IsFlow.map`
 (step 5a), which needs only additivity. -/
 def zeroOnFlowsCongr {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     (φ : A ≃+ B) (S : Finset E) : G.ZeroOnFlows A S ≃ G.ZeroOnFlows B S where
   toFun f :=
-    ⟨fun k => φ (f.1 k), IsFlow.map G φ.toAddMonoidHom f.2.1, fun k hk => by
-      rw [f.2.2 k hk, map_zero]⟩
+    ⟨fun k => φ (f.1 k), IsFlow.map G φ.toAddMonoidHom f.2.1,
+      map_zero_on φ.toAddMonoidHom S f.1 f.2.2⟩
   invFun f :=
-    ⟨fun k => φ.symm (f.1 k), IsFlow.map G φ.symm.toAddMonoidHom f.2.1, fun k hk => by
-      rw [f.2.2 k hk, map_zero]⟩
+    ⟨fun k => φ.symm (f.1 k), IsFlow.map G φ.symm.toAddMonoidHom f.2.1,
+      map_zero_on φ.symm.toAddMonoidHom S f.1 f.2.2⟩
   left_inv _ := Subtype.ext (funext fun _ => φ.symm_apply_apply _)
   right_inv _ := Subtype.ext (funext fun _ => φ.apply_symm_apply _)
 
@@ -259,6 +270,7 @@ theorem card_zeroOnFlows_eq_of_addEquiv
 `0` to end `1`. -/
 def unitChain (k : E) : E → ℤ := fun l => if l = k then 1 else 0
 
+omit [Fintype E] in
 theorem unitChain_of_ne {k l : E} (h : l ≠ k) : unitChain k l = 0 := by
   simp [unitChain, h]
 
@@ -334,7 +346,7 @@ theorem hasCycleCorrection_of_integerPath
 
 /-! ### The edge-addition recurrence -/
 
-omit [DecidableEq V] in
+omit [Fintype E] [DecidableEq V] in
 /-- Adding a multiple of the correction chain keeps a flow vanishing on the
 smaller forbidden set. Stated on raw edge labellings so that the equivalence
 below needs no subtype bookkeeping. -/
@@ -345,7 +357,7 @@ theorem allowEdge_forward_zero {A : Type*} [AddCommGroup A] (S : Finset E) (e : 
   intro k hk
   rw [hf k (Finset.mem_of_mem_erase hk), hc0 k hk, zero_smul, add_zero]
 
-omit [DecidableEq V] in
+omit [Fintype E] [DecidableEq V] in
 /-- Subtracting the value on `e` along the correction chain restores vanishing on
 the larger forbidden set: on `e` itself because `c e = 1`, elsewhere because both
 terms already vanish. -/
