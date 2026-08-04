@@ -98,12 +98,20 @@
   ],
   "sections": [
     {
-      "id": "header-overview",
-      "title": "Module Header: Doubling the Cube via the Algebraic Characterization",
+      "id": "header-framing",
+      "title": "Framing: Constructibility via the Algebraic Characterization",
       "startLine": 1,
-      "endLine": 49,
+      "endLine": 27,
       "mathContext": "Constructible$(\\alpha) :\\Leftrightarrow \\alpha$ lies in a tower $\\mathbb{Q}=K_0\\subseteq\\cdots\\subseteq K_n$, each $[K_{i+1}:K_i]=2$.",
-      "summary": "The module docstring frames this entry as the geometric corollary of the parent's degree computation [ℚ(∛3):ℚ] = 3. Since Mathlib lacks a geometric development of ruler-and-compass constructibility, the file adopts the classical algebraic characterization directly as the definition IsQuadraticTower — a real number is constructible iff it lies in a field reached from ℚ by a finite tower of quadratic extensions — explicitly flagging the geometry⟺algebra equivalence itself (Wantzel's reduction) as the one unformalized, universally-accepted step. It previews the four results proved: quadratic towers have 2-power degree, constructible numbers inherit 2-power degree, any non-2-power degree obstructs constructibility, and ∛3 (degree 3) fails this test, resolving the Delian problem of doubling the cube."
+      "summary": "The module docstring frames this entry as the geometric corollary of the parent's degree computation [ℚ(∛3):ℚ] = 3. Since Mathlib lacks a geometric development of ruler-and-compass constructibility, the file adopts the classical algebraic characterization directly as the definition of IsConstructible — a real number is constructible iff it lies in a field reached from ℚ by a finite tower of quadratic extensions — explicitly flagging the geometry⟺algebra equivalence (Wantzel's reduction) as the one unformalized, universally-accepted step."
+    },
+    {
+      "id": "header-preview",
+      "title": "Docstring Preview: The Degree Obstruction",
+      "startLine": 29,
+      "endLine": 49,
+      "mathContext": "Preview: $[K:\\mathbb{Q}]=2^n$ for towers $K$; constructible $\\alpha$ has $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\mid 2^n$; $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}]=3\\neq 2^n$.",
+      "summary": "The docstring's second half previews the four results the file proves: quadratic towers have 2-power degree; constructible numbers inherit 2-power degree; any non-2-power degree obstructs constructibility; and ∛3 (degree 3) fails this test, resolving the Delian problem of doubling the cube. Imports Mathlib and the parent CubeRoot3IrrationalOQ03 file, opening the namespaces used throughout."
     },
     {
       "id": "quadratic-towers",
