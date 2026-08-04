@@ -33,6 +33,7 @@ import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85CompensatedGadget
 import Proofs.Erdos85GadgetMultiplicity
 import Proofs.Erdos85GadgetDegreeSquares
+import Proofs.Erdos85ReplacementGadgetObstruction
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -191,6 +192,12 @@ replacement gadget must have `m=d-O(√d)` vertices.  With compensated old-edge
 deletion the corresponding balance is
 `md² ≤ nm+2m(m-1)+L`, quantifying the large loss required to use a smaller
 gadget.
+For the actual order-raising delete-`k`/add-`k+1` surgery, total survivor loss
+includes both neighbors in the deleted set and additional deleted survivor
+edges.  At Moore-layer order this directly forces `(k+1)(d-1-k)` to be at
+most the attachment-weighted total replacement loss.  The selector-pair
+bound applies to this total loss as well, limiting the number of original
+tight survivors with loss at least any prescribed `q`.
 -/
 
 namespace Erdos85

@@ -938,3 +938,36 @@ so below the linear threshold at Moore-layer order, old-edge deletion must pay
 `m(d-1-2(m-1)) ≤ L`.  Thus the only way to use a substantially smaller gadget
 is through a quantitatively large compensated edge surgery, still subject to
 the selector-multiplicity cascade bounds above.
+
+## True replacement-surgery obstruction
+
+The compensated bounds are now stated directly for the actual order-raising
+operation.  For a survivor `v`, its total replacement loss is
+
+```text
+|N_G(v) ∩ D| + (deg_{G-D}(v) - deg_K(v)),
+```
+
+combining neighbors lost with the deleted vertex set `D` and additional
+survivor edges removed when passing to `K`.  Lean proves that final survivor
+degree plus this quantity is exactly the original degree.
+
+For an original graph of minimum degree `d`, delete-`k`/add-`k+1` repair at
+the Moore-layer order `|V|=d(d-1)+1` must satisfy
+
+```text
+(k+1)(d-1-k)
+  ≤ ∑_w ∑_{a∈A(w)} totalReplacementLoss(a).
+```
+
+This directly relevant version does not assume that the already-deleted
+survivor graph still has minimum degree `d`.  When `k` is small relative to
+`d`, the necessary weighted loss is linear in both `k+1` and `d`.
+
+The selector cascade bound also extends to total replacement loss.  At every
+original degree-`d` survivor, total loss is at most its attachment
+multiplicity.  Hence for every `q`, the number of such survivors with total
+loss at least `q`, multiplied by `choose(q,2)`, is at most `choose(k+1,2)`.
+For an original `d`-regular graph the tightness condition is automatic.  True
+replacement surgery therefore faces both a large aggregate-loss requirement
+and a pair-design cap on how that loss can be distributed.
