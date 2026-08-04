@@ -100,4 +100,30 @@ theorem c4FreeMinDegreeWitness_delete_add_pair_of_repairSet
     exact Finset.mem_union_right R
       ((mem_deletedNeighborhood G x y).mpr hyx)
 
+/-- A uniform one-set repair choice extends every witness at order n. -/
+theorem witnessExtension_of_repairSet {n : ℕ} (hn : 1 ≤ n)
+    (hrepair : ∀ d (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      1 ≤ d → d ≤ G.minDegree → ¬ containsC4 (Fin n) G →
+      ∃ (x : Fin n) (R : Finset {y : Fin n // y ≠ x}),
+        d - 1 ≤ R.card ∧
+        CommonNeighborIndependent (G.induce {y | y ≠ x}) R ∧
+        (R ∩ deletedNeighborhood G x).card ≤ 1 ∧
+        (∀ ⦃a⦄, a ∈ R → ∀ ⦃b⦄, b ∈ deletedNeighborhood G x →
+          ¬ (G.induce {y | y ≠ x}).Adj a b)) :
+    C4FreeWitnessExtension n := by
+  rintro d ⟨G, hdec, hmin, hfree⟩
+  letI : DecidableRel G.Adj := hdec
+  by_cases hd0 : d = 0
+  · subst d
+    refine ⟨⊥, Classical.decRel _, Nat.zero_le _, ?_⟩
+    rintro ⟨f, _, hadj⟩
+    simpa using hadj 0 1 (by decide)
+  · have hd : 1 ≤ d := Nat.one_le_iff_ne_zero.mpr hd0
+    obtain ⟨x, R, hRcard, hRsafe, hinter, hcross⟩ :=
+      hrepair d G hdec hd hmin hfree
+    have hw := c4FreeMinDegreeWitness_delete_add_pair_of_repairSet
+      G x (n := n - 1) (d := d) (by simp [Nat.sub_add_cancel hn]) hd hmin hfree R
+      hRcard hRsafe hinter hcross
+    convert hw using 1 <;> omega
+
 end Erdos85
