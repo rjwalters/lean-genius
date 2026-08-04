@@ -1534,4 +1534,40 @@ det(aI - adj(D))
 ```
 
 Thus neither component enumeration nor determinant multiplicativity remains
-conditional.  Only evaluation of the standard individual cycle block remains.
+conditional.
+
+The standard individual cycle block has now been evaluated too.  A direct
+Laplace-expansion proof first establishes the continuant recurrence
+
+```text
+charpoly(P_(n+2)) = X charpoly(P_(n+1)) - charpoly(P_n),
+```
+
+including both base cases, and hence identifies `charpoly(P_n)` with the
+rescaled Chebyshev polynomial `S_n`.  Expanding the cycle matrix then leaves
+the two path cofactors and two shifted triangular minors; the latter have
+diagonal `-1` and supply exactly the two wraparound terms.  Lean consequently
+proves, without `sorry` or `admit`,
+
+```text
+charpoly(adj(cycleGraph(n+3))) = C_(n+3)(X) - 2.
+```
+
+There was one subtle graph-theoretic gap between a *spanning cycle walk* and
+the full induced component: a priori the induced component might contain
+extra chords.  This is now closed by a general formal lemma.  If every vertex
+of a finite graph has degree two and a simple cycle spans a vertex set, then
+the cycle subgraph equals the graph induced on that set.  Indeed the cycle
+neighbor set is contained in the ambient neighbor set and both have cardinality
+two, so they are equal at every vertex.  Applied to the second-order defect
+graph, each connected component is therefore genuinely an induced cycle.
+The induced cycle characteristic polynomial is then the Chebyshev factor
+above.
+
+At this point the mathematical component-factor bridge is complete.  The
+remaining Lean plumbing for the global headline is to transport matrices
+across the equality between the spanning walk's vertex subtype and the
+connected component's support subtype, then substitute the individual
+Chebyshev factors into the already-proved dependent block product.  This is
+an instance/reindexing issue rather than a remaining combinatorial or spectral
+identity.
