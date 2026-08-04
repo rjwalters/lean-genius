@@ -460,3 +460,13 @@ partners.  Computation over these reduced candidate sets still finds, for
 every partner at `q=5,7,11`, at least one nonendpoint degree-`q` vertex with
 positive cross-edge loss.  Proving that last incidence assertion uniformly
 would rule out the entire two-switch repair scheme.
+
+The defect endpoint has no loss budget either.  The generic theorem
+`crossEdgeLoss_eq_zero_at_repaired_one_defect` observes that a vertex starting
+at degree `q-1` must spend the entire one-unit gain from the inserted edge to
+reach `q`; consequently its incident cross-edge loss is exactly zero.
+`successful_crossEdgeSwitch_one_defect_constraints` bundles the three local
+requirements on any proposed completion: the partner is distinct, the old
+pair is nonadjacent, and the defect endpoint has zero loss.  Together with
+the tight-set avoidance theorem, this gives a compact certificate that every
+hypothetical second-stage partner must satisfy.

@@ -252,4 +252,40 @@ theorem successful_crossEdgeSwitch_ne_at_defect
     exact crossEdgeSwitch_le_of_eq H x w hxw hy
   omega
 
+/-- Repairing a vertex which is exactly one below target uses the entire
+one-edge gain: no incident cross edge at that defect may be deleted. -/
+theorem crossEdgeLoss_eq_zero_at_repaired_one_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    {d : ℕ} (hpos : 0 < d) (hdefect : H.degree x = d - 1)
+    (hfinal : d ≤ (crossEdgeSwitch H x w).degree x) :
+    crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) x = 0 := by
+  have hlt : H.degree x < d := by omega
+  have hne := successful_crossEdgeSwitch_ne_at_defect H x w hlt hfinal
+  have hadj := successful_crossEdgeSwitch_not_adjacent_at_defect H x w hlt hfinal
+  have hs := degree_deleteCrossEdges_add_loss H
+    (H.neighborFinset x) (H.neighborFinset w) x
+  have hleft := crossEdgeSwitch_degree_left H x w hadj hne
+  omega
+
+/-- Complete local certificate required of a switch repairing a one-unit
+defect. -/
+theorem successful_crossEdgeSwitch_one_defect_constraints
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    {d : ℕ} (hpos : 0 < d) (hdefect : H.degree x = d - 1)
+    (hfinal : d ≤ (crossEdgeSwitch H x w).degree x) :
+    x ≠ w ∧ ¬ H.Adj x w ∧
+      crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) x = 0 := by
+  have hlt : H.degree x < d := by omega
+  exact ⟨successful_crossEdgeSwitch_ne_at_defect H x w hlt hfinal,
+    successful_crossEdgeSwitch_not_adjacent_at_defect H x w hlt hfinal,
+    crossEdgeLoss_eq_zero_at_repaired_one_defect H x w hpos hdefect hfinal⟩
+
 end Erdos85
