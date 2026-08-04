@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 16,
-    "focus": "S15 (researcher-1, 2026-07-24): CORRESPONDENCE AXIOM ELIMINATED. Part XV added to FurstenbergCorrespondenceOQ01.lean (967->1203 LOC): moving-base limit invariance, clopen measurable cylinders, limit_measurePreserving (pi-system upgrade via ext_of_generate_finite over measurableCylinders), limit_positive_implies_ap, package theorem exists_invariant_measure_correspondence. Parent FurstenbergCorrespondence.lean: axiom furstenberg_correspondence -> theorem (foundational axioms only), file 2 -> 1 axioms. szemeredi_k2_ergodic now fully verified; szemeredi_ergodic depends only on multiple_recurrence_ge3. Docker GREEN 8577 jobs.",
+    "iteration": 17,
+    "focus": "S16 ORIENT (researcher-3, 2026-08-03): mandated upstream survey DONE — the sole remaining axiom multiple_recurrence_ge3 STANDS. Pinned Mathlib (v4.31 era, rev 9a9483a) has: ergodic measures as extreme points of invariant measures (Mathlib/Dynamics/Ergodic/Extreme.lean — NEW upstream movement, the first stone of ergodic decomposition), Poincare recurrence via Conservative, BirkhoffSum/Average definitions (no pointwise ergodic theorem), Szemeredi regularity + triangle removal. It has NO ergodic decomposition, NO characteristic factors, NO Furstenberg multiple recurrence. No Lean changes this session (doc-only ORIENT per honesty standards); stale nextSteps pruned (S15 already assembled the system and eliminated the correspondence axiom).",
     "blockers": [
       "RESOLVED (S13, 2026-07-23): the 28-error v4.26 build regression was repaired by the v4.31 toolchain migration (#39062); baseline and post-fill docker builds are clean."
     ],
-    "nextAction": "S16: the sole remaining axiom multiple_recurrence_ge3 (Furstenberg multiple recurrence, k>=3) — deep ergodic theory (ergodic decomposition + characteristic factors, ~2000+ LOC, not in Mathlib v4.31). NOT session-sized. Before any attempt, grep current Mathlib for ergodic decomposition (S14 meta-lesson: upstream growth retires local axioms wholesale).",
+    "nextAction": "Sole remaining axiom multiple_recurrence_ge3 = deep ergodic theory (~2000+ LOC: ergodic decomposition + characteristic factors), NOT session-sized. Watch upstream: when Mathlib gains ergodic decomposition (Extreme.lean is the first step; re-grep Dynamics/Ergodic each session), reassess. A deliberate multi-session build is the only local route; requires operator sign-off.",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
@@ -74,7 +74,8 @@
       "S14 meta-lesson: before hand-assembling a stated-as-axiom classical analysis fact, grep the CURRENT Mathlib tree for the exact instance (ls Mathlib/MeasureTheory/Measure/ | grep -i prokhorov) — upstream growth between toolchain bumps retires local axioms wholesale.",
       "pi-system upgrade recipe (S15, reusable): clopen-set measure equality extends to all Borel sets via ext_of_generate_finite (measurableCylinders alpha) generateFrom_measurableCylinders.symm isPiSystem_measurableCylinders — the exact IsProjectiveLimit.unique invocation pattern; measurable cylinders over (nat -> Bool) are clopen because the finite discrete target makes every base set clopen (Pi.discreteTopology + isClopen_discrete).",
       "Moving base points are REQUIRED for upper Banach density: the windows [a_k, a_k+N_k) move, so Cesaro measures sit at varying orbit points shift^[a_k](1_A); the telescoping approximate-invariance bounds are uniform in the base point, so the fixed-base limit argument generalizes verbatim.",
-      "v4.31 gotchas (S15): omega cannot see through tactic-let bindings (show-unfold first); simp with an IsClopen fact stated at (cylinder 0 true) fails against a goal at cylinderZero (regular def) — restate the fact at cylinderZero via defeq have; structure-literal projection goals need an explicit defeq have before rw."
+      "v4.31 gotchas (S15): omega cannot see through tactic-let bindings (show-unfold first); simp with an IsClopen fact stated at (cylinder 0 true) fails against a goal at cylinderZero (regular def) — restate the fact at cylinderZero via defeq have; structure-literal projection goals need an explicit defeq have before rw.",
+      "S16 upstream survey (2026-08-03): Mathlib v4.31-era rev 9a9483a now has ergodic-measures-as-extreme-points (Dynamics/Ergodic/Extreme.lean) — the standard first step toward ergodic decomposition via Choquet theory — plus BirkhoffSum/Average (definitions only, no a.e. convergence theorem). Still absent: ergodic decomposition, pointwise ergodic theorem, characteristic factors, multiple recurrence. multiple_recurrence_ge3 not retirable from upstream yet; the watch-point is Dynamics/Ergodic gaining a decomposition file."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -84,8 +85,8 @@
       "FurstenbergCorrespondenceOQ01.lean Mathlib upgrade: ~35 specific errors (see knowledge.md session 5)"
     ],
     "nextSteps": [
-      "S15: assemble Furstenberg.System on (CantorSpace, shift, cylinderZero) from the proved Prokhorov/T-invariance/density pieces.",
-      "S16+: eliminate the furstenberg_correspondence axiom in the parent FurstenbergCorrespondence.lean using the assembled system."
+      "Watch upstream: re-grep pinned Mathlib Dynamics/Ergodic for ergodic decomposition each session (Extreme.lean landed; decomposition is the next natural upstream step and would unlock retiring multiple_recurrence_ge3 machinery).",
+      "Only local route to eliminate multiple_recurrence_ge3: deliberate multi-session ergodic-theory build (ergodic decomposition + characteristic factors, ~2000+ LOC). Not claimable as a single session; needs operator sign-off."
     ]
   },
   "tags": [
