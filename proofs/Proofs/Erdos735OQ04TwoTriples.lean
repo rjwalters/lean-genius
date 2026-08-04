@@ -166,7 +166,7 @@ lemma mem_mk'_ker_prod_iff (g₁ g₂ : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] �
     x ∈ AffineSubspace.mk' p (LinearMap.ker (g₁.prod g₂)) ↔
       g₁ x = g₁ p ∧ g₂ x = g₂ p := by
   rw [AffineSubspace.mem_mk', LinearMap.mem_ker, vsub_eq_sub, LinearMap.prod_apply]
-  simp only [Pi.prod, Prod.mk_eq_zero, map_sub, sub_eq_zero]
+  simp only [Function.prod, Prod.mk_eq_zero, map_sub, sub_eq_zero]
 
 /-- Rank-nullity: the kernel of an independent pair of functionals on ℝ³ is a
     rank-1 subspace.  Independence is certified by two explicit witnesses `u`,
@@ -510,6 +510,7 @@ lemma filter_lineA : twoTriplesConfig.filter (· ∈ lineA) = {a₁, a₂, a₃}
   rw [Finset.filter_insert, if_pos hA_a₁, Finset.filter_insert, if_pos hA_a₂,
     Finset.filter_insert, if_pos hA_a₃, Finset.filter_insert, if_neg hA_b₁,
     Finset.filter_insert, if_neg hA_b₂, Finset.filter_singleton, if_neg hA_b₃]
+  rfl
 
 lemma filter_lineB : twoTriplesConfig.filter (· ∈ lineB) = {b₁, b₂, b₃} := by
   rw [twoTriplesConfig]
@@ -536,7 +537,6 @@ lemma filter_lineC13 : twoTriplesConfig.filter (· ∈ lineC13) = {a₁, b₃} :
   rw [Finset.filter_insert, if_pos hC13_a₁, Finset.filter_insert, if_neg hC13_a₂,
     Finset.filter_insert, if_neg hC13_a₃, Finset.filter_insert, if_neg hC13_b₁,
     Finset.filter_insert, if_neg hC13_b₂, Finset.filter_singleton, if_pos hC13_b₃]
-  rfl
 
 lemma filter_lineC21 : twoTriplesConfig.filter (· ∈ lineC21) = {a₂, b₁} := by
   rw [twoTriplesConfig]
