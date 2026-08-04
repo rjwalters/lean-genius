@@ -348,4 +348,37 @@ theorem c4FreeMinDegreeWitness_tangentSwitch_of_slack
       have := hslack v hp
       omega
 
+theorem crossEdgeSwitch_comm {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x y : V) :
+    crossEdgeSwitch H x y = crossEdgeSwitch H y x := by
+  ext a b
+  rw [crossEdgeSwitch_adj_iff, crossEdgeSwitch_adj_iff]
+  simp only [pair_mem_crossEdgeSet_iff, SimpleGraph.mem_neighborFinset]
+  tauto
+
+theorem crossEdgeSwitch_degree_right {V : Type*} [Fintype V]
+    [DecidableEq V] (H : SimpleGraph V) [DecidableRel H.Adj] (x y : V)
+    [DecidableRel (crossEdgeSwitch H x y).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)).Adj]
+    (hxy : ¬ H.Adj x y) (hne : x ≠ y) :
+    (crossEdgeSwitch H x y).degree y =
+      (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)).degree y + 1 := by
+  classical
+  let D := deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset y)
+  have hneighbors : (crossEdgeSwitch H x y).neighborFinset y =
+      insert x (D.neighborFinset y) := by
+    ext v
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_insert]
+    rw [crossEdgeSwitch_adj_iff]
+    change _ ↔ v = x ∨ D.Adj y v
+    simp only [D, deleteCrossEdges, SimpleGraph.deleteEdges_adj]
+    aesop
+  rw [SimpleGraph.degree, hneighbors]
+  have hnot : x ∉ D.neighborFinset y := by
+    rw [SimpleGraph.mem_neighborFinset]
+    intro h
+    exact hxy ((SimpleGraph.deleteEdges_le _ h).symm)
+  rw [Finset.card_insert_of_notMem hnot,
+    SimpleGraph.card_neighborFinset_eq_degree]
+
 end Erdos85

@@ -416,3 +416,13 @@ from three defects to one and deserves a structural proof.  The next formal
 target is to show that the shared-absolute pair poles are nonadjacent with
 disjoint core neighborhoods and that every positive-loss vertex has the one
 unit of required slack.
+
+That target is now complete.  The three degree-`q-1` vertices are classified
+exactly as the three pair poles.  Two pair poles sharing an absolute endpoint
+are nonadjacent and have disjoint neighborhoods after that absolute point is
+deleted.  Every vertex of positive cross-edge loss in their first switch is
+proved to have old degree exactly `q+1`, while every loss is at most one.
+The switched endpoints rise from `q-1` to `q`, and the third pole belongs to
+neither deletion neighborhood and stays at `q-1`.  The checked theorem
+`firstPairPoleSwitch_unique_defect` therefore proves that the dynamic first
+switch leaves the third pair pole as the unique sub-`q` vertex.

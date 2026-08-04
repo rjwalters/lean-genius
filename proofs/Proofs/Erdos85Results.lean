@@ -36,6 +36,7 @@ import Proofs.Erdos85PolaritySwitchCoordinates
 import Proofs.Erdos85PolarityTangentSwitch
 import Proofs.Erdos85PolarityThreePointCore
 import Proofs.Erdos85PolarityThreePointPathSwitch
+import Proofs.Erdos85PolarityThreePointDynamicSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -144,6 +145,9 @@ at most `q-1`, so this natural multi-edge repair provably creates a growing
 new defect family.
 In particular, the switched graph has minimum degree at most `q-1`; the
 static pair-pole path is formally ruled out as a degree-`q` witness.
+By contrast, one dynamic switch between two pair poles is completely clean:
+it repairs those two defects to degree `q`, creates no new sub-target vertex,
+and leaves the third pair pole as the unique degree-`q-1` vertex.
 -/
 
 namespace Erdos85
