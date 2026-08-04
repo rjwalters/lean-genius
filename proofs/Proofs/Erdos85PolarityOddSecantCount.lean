@@ -699,6 +699,46 @@ theorem exists_safe_lowVertices_card_eq (h2 : (2 : K) ≠ 0) :
   exact ⟨oddCoreDefectStar K h2 a, oddCoreDefectStar_subset_low K h2 a,
     oddCoreDefectStar_safe K h2 a, card_oddCoreDefectStar K h2 a⟩
 
+/-- A direct repair that covers every odd-core defect by independently safe
+attachment selectors needs at least `ceil((q+1)/2)` new vertices.  The
+division-free conclusion says `q+1 ≤ 2|I|`. -/
+theorem two_mul_numSelectors_ge_card_add_one
+    (h2 : (2 : K) ≠ 0) {I : Type*} [Fintype I]
+    (S : I → Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : ∀ i, S i ⊆ oddCoreLowVertices K)
+    (hsafe : ∀ i, CommonNeighborIndependent (oddCore K) (S i))
+    (hcover : oddCoreLowVertices K ⊆ Finset.univ.biUnion S) :
+    Nat.card K + 1 ≤ 2 * Fintype.card I := by
+  have hdefects : (oddCoreLowVertices K).card ≤
+      (Finset.univ.biUnion S).card := Finset.card_le_card hcover
+  have hunion : (Finset.univ.biUnion S).card ≤
+      ∑ i : I, (S i).card := Finset.card_biUnion_le
+  have hsum : (∑ i : I, (S i).card) ≤
+      ∑ _i : I, Nat.card K := by
+    apply Finset.sum_le_sum
+    intro i _
+    exact safe_lowVertices_card_le K h2 (S i) (hsub i) (hsafe i)
+  have hcount : Nat.choose (Nat.card K + 1) 2 ≤
+      Fintype.card I * Nat.card K := by
+    rw [← card_oddCoreLowVertices K h2]
+    calc
+      (oddCoreLowVertices K).card ≤ (Finset.univ.biUnion S).card := hdefects
+      _ ≤ ∑ i : I, (S i).card := hunion
+      _ ≤ ∑ _i : I, Nat.card K := hsum
+      _ = Fintype.card I * Nat.card K := by simp
+  have hdouble := Nat.mul_le_mul_left 2 hcount
+  rw [mul_comm 2, Nat.choose_two_right,
+    Nat.div_two_mul_two_of_even
+      (Nat.even_mul_pred_self (Nat.card K + 1))] at hdouble
+  simp only [Nat.add_sub_cancel] at hdouble
+  have hrearr : (Nat.card K + 1) * Nat.card K ≤
+      (2 * Fintype.card I) * Nat.card K := by
+    calc
+      (Nat.card K + 1) * Nat.card K ≤
+          2 * (Fintype.card I * Nat.card K) := hdouble
+      _ = (2 * Fintype.card I) * Nat.card K := by ring
+  exact Nat.le_of_mul_le_mul_right hrearr Nat.card_pos
+
 /-- The complementary degree class in the deleted-conic odd core. -/
 noncomputable def oddCoreHighVertices :
     Finset {v : P K // v ∉ absolutePoints K} := by

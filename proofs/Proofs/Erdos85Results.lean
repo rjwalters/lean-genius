@@ -69,6 +69,9 @@ defects; direct one-vertex repair of the full deleted-conic core is impossible.
 More sharply, the defect-to-absolute-pair map and Erdős--Ko--Rado show that a
 safe selector consisting of defects has cardinality at most `q`; the bound is
 sharp, realized by all defect pairs through one fixed absolute point.
+Consequently, any direct cover of every defect by independently safe
+attachment selectors indexed by `I` satisfies `q+1 ≤ 2|I|`; this witness
+cannot be repaired by a bounded number of such new vertices as `q` grows.
 -/
 
 namespace Erdos85

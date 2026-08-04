@@ -155,3 +155,15 @@ exists_safe_lowVertices_card_eq.
 
 Hence the largest safe family contained in the odd defect locus has exact
 cardinality `q`.
+
+Covering all `q(q+1)/2` defects by independently safe selectors therefore
+requires a linearly growing number of selectors.  The division-free checked
+bound is
+
+```text
+q + 1 ≤ 2 · number_of_selectors.
+```
+
+This is `two_mul_numSelectors_ge_card_add_one`.  In particular, no bounded
+number of direct safe attachments repairs the full deleted-conic odd core
+uniformly in `q`.
