@@ -107,6 +107,83 @@ theorem pairedAttachment_not_containsC4
   · exact (attachVertex_not_containsC4_iff).2 ⟨hfree, hcompat.1⟩
   · exact commonNeighborIndependent_pairedSelector G S T hcompat
 
+/-- The compatibility conditions are also necessary: if the connected-pair
+attachment is `C₄`-free, both selectors are safe, their overlap has size at
+most one, and no old edge crosses between them. -/
+theorem pairedAttachmentCompatible_of_not_containsC4
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S T : Finset V)
+    (hfree : ¬ containsC4 (Option (Option V))
+      (attachVertex (attachVertex G S) (pairedSelector T))) :
+    PairedAttachmentCompatible G S T := by
+  have hsecond := (attachVertex_not_containsC4_iff.mp hfree).2
+  have hfirstFree := (attachVertex_not_containsC4_iff.mp hfree).1
+  have hS := (attachVertex_not_containsC4_iff.mp hfirstFree).2
+  refine ⟨hS, ?_, ?_, ?_⟩
+  · intro a ha b hb hab
+    have haSel : some a ∈ pairedSelector T := by simpa using ha
+    have hbSel : some b ∈ pairedSelector T := by simpa using hb
+    have hz := hsecond haSel hbSel (by simpa using hab)
+    rw [Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro z hzm
+    have hz' : some z ∈
+        (attachVertex G S).neighborFinset (some a) ∩
+          (attachVertex G S).neighborFinset (some b) := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      rcases Finset.mem_inter.mp hzm with ⟨hza, hzb⟩
+      exact ⟨by simpa using hza, by simpa using hzb⟩
+    rw [Finset.card_eq_zero] at hz
+    rw [hz] at hz'
+    simp at hz'
+  · rw [Finset.card_le_one_iff]
+    intro a b ha hb
+    by_contra hab
+    have haI := Finset.mem_inter.mp ha
+    have hbI := Finset.mem_inter.mp hb
+    have haSel : some a ∈ pairedSelector T := by simpa using haI.2
+    have hbSel : some b ∈ pairedSelector T := by simpa using hbI.2
+    have hz := hsecond haSel hbSel (by simpa using hab)
+    have hnone : none ∈
+        (attachVertex G S).neighborFinset (some a) ∩
+          (attachVertex G S).neighborFinset (some b) := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨by simpa using haI.1, by simpa using hbI.1⟩
+    rw [Finset.card_eq_zero] at hz
+    rw [hz] at hnone
+    simp at hnone
+  · intro a ha b hb hab
+    have hnoneSel : (none : Option V) ∈ pairedSelector T := by simp
+    have hbSel : some b ∈ pairedSelector T := by simpa using hb
+    have hne : (none : Option V) ≠ some b := by simp
+    have hz := hsecond hnoneSel hbSel hne
+    have hsomea : some a ∈
+        (attachVertex G S).neighborFinset none ∩
+          (attachVertex G S).neighborFinset (some b) := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨by simpa using ha, by simpa using hab.symm⟩
+    rw [Finset.card_eq_zero] at hz
+    rw [hz] at hsomea
+    simp at hsomea
+
+/-- **Exact connected-pair attachment criterion.** -/
+theorem pairedAttachment_not_containsC4_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S T : Finset V) :
+    ¬ containsC4 (Option (Option V))
+        (attachVertex (attachVertex G S) (pairedSelector T)) ↔
+      ¬ containsC4 V G ∧ PairedAttachmentCompatible G S T := by
+  constructor
+  · intro h
+    have hfirst := (attachVertex_not_containsC4_iff.mp h).1
+    exact ⟨(attachVertex_not_containsC4_iff.mp hfirst).1,
+      pairedAttachmentCompatible_of_not_containsC4 G S T h⟩
+  · rintro ⟨hG, hcompat⟩
+    exact pairedAttachment_not_containsC4 G S T hG hcompat
+
 /-- Degree-facing form of paired attachment: if `T` has at least `d - 1`
 old vertices, the second endpoint's selector has at least `d` vertices (the
 first endpoint supplies the extra neighbour). -/

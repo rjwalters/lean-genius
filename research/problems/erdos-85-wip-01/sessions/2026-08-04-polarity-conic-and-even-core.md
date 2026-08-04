@@ -548,3 +548,19 @@ program which eventually recovers degree `q` everywhere must explicitly name
 one of those second-stage defects as a subsequent endpoint.  Thus a longer
 universal-switch cascade cannot bypass the failure; it must chase the defect
 created at stage two.
+
+## Exactness of the broader connected-pair surgery
+
+The paired attachment framework has been strengthened from a sufficient
+criterion to an exact one.  The new converse
+`pairedAttachmentCompatible_of_not_containsC4` proves that if attaching a
+connected pair along old-neighbor sets `S,T` is `C₄`-free, then `S` and `T`
+must each be common-neighbor independent, their intersection must have size
+at most one, and there can be no old edge crossing from `S` to `T`.
+`pairedAttachment_not_containsC4_iff` packages the equivalence.
+
+Consequently, a non-universal improvement cannot simply retain selected
+cross edges while keeping the same attachment sets: every such edge creates
+a four-cycle through the new pair.  A genuinely better extension must change
+the attachment architecture itself, distribute compensation across more new
+vertices, or alter the old graph and selectors together.
