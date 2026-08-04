@@ -112,6 +112,99 @@ theorem card_filter_attachment_eq_attachmentMultiplicity
     (Finset.univ.filter fun w => x ∈ A w).card =
       attachmentMultiplicity A x := rfl
 
+/-- Weighted double count of old-vertex/gadget-selector incidences. -/
+theorem sum_sum_weight_eq_sum_weight_mul_attachmentMultiplicity
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (A : W → Finset V) (weight : V → ℕ) :
+    (∑ w : W, ∑ x ∈ A w, weight x) =
+      ∑ x : V, weight x * attachmentMultiplicity A x := by
+  classical
+  calc
+    (∑ w : W, ∑ x ∈ A w, weight x) =
+        ∑ w : W, ∑ x : V, if x ∈ A w then weight x else 0 := by
+      apply Finset.sum_congr rfl
+      intro w _
+      rw [← Finset.sum_filter]
+      apply Finset.sum_congr
+      · ext x
+        simp
+      · intro x _
+        rfl
+    _ = ∑ x : V, ∑ w : W, if x ∈ A w then weight x else 0 := by
+      rw [Finset.sum_comm]
+    _ = ∑ x : V, weight x * attachmentMultiplicity A x := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rw [← Finset.sum_filter]
+      simp [attachmentMultiplicity, attachmentIndices, Nat.mul_comm]
+
+/-- Elementary multiplicity estimate `t ≤ 1 + choose(t,2)`. -/
+theorem le_one_add_choose_two (t : ℕ) : t ≤ 1 + t.choose 2 := by
+  cases t with
+  | zero => norm_num
+  | succ t =>
+    rw [Nat.choose]
+    simp only [Nat.choose_one_right]
+    omega
+
+/-- On any old-vertex set `S`, total selector multiplicity is at most
+`|S| + choose(m,2)`. -/
+theorem GadgetAttachmentCompatible.sum_attachmentMultiplicity_le_card_add_choose
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (S : Finset V) :
+    (∑ x ∈ S, attachmentMultiplicity A x) ≤
+      S.card + (Fintype.card W).choose 2 := by
+  have hpair := hcompat.sum_choose_two_attachmentMultiplicity_le G F A
+  calc
+    (∑ x ∈ S, attachmentMultiplicity A x) ≤
+        ∑ x ∈ S, (1 + (attachmentMultiplicity A x).choose 2) := by
+      exact Finset.sum_le_sum fun x _ => le_one_add_choose_two _
+    _ = S.card + ∑ x ∈ S, (attachmentMultiplicity A x).choose 2 := by
+      simp [Finset.sum_add_distrib]
+    _ ≤ S.card + ∑ x : V, (attachmentMultiplicity A x).choose 2 := by
+      exact Nat.add_le_add_left
+        (Finset.sum_le_univ_sum_of_nonneg fun _ => Nat.zero_le _) _
+    _ ≤ S.card + (Fintype.card W).choose 2 := Nat.add_le_add_left hpair _
+
+/-- A weight supported on `S` and bounded by one has total weighted selector
+incidence at most `|S| + choose(m,2)`. -/
+theorem GadgetAttachmentCompatible.sum_weight_mul_attachmentMultiplicity_le
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (weight : V → ℕ) (S : Finset V)
+    (hone : ∀ x, weight x ≤ 1)
+    (hsupport : ∀ x, 0 < weight x → x ∈ S) :
+    (∑ x : V, weight x * attachmentMultiplicity A x) ≤
+      S.card + (Fintype.card W).choose 2 := by
+  calc
+    (∑ x : V, weight x * attachmentMultiplicity A x) ≤
+        ∑ x ∈ S, attachmentMultiplicity A x := by
+      calc
+        _ ≤ ∑ x : V,
+            if x ∈ S then attachmentMultiplicity A x else 0 := by
+          apply Finset.sum_le_sum
+          intro x _
+          by_cases hxzero : weight x = 0
+          · simp [hxzero]
+          · have hxpos : 0 < weight x := Nat.pos_of_ne_zero hxzero
+            have hxS := hsupport x hxpos
+            simp only [hxS, if_true]
+            have hw := hone x
+            nlinarith
+        _ = ∑ x ∈ S, attachmentMultiplicity A x := by
+          classical
+          simp
+    _ ≤ S.card + (Fintype.card W).choose 2 :=
+      hcompat.sum_attachmentMultiplicity_le_card_add_choose G F A S
+
 /-- At a baseline-tight old vertex, every deleted incident edge must be
 repaid by a distinct gadget attachment. -/
 theorem subgraphDegreeLoss_le_attachmentMultiplicity_of_tight

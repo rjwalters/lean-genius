@@ -34,6 +34,7 @@ import Proofs.Erdos85CompensatedGadget
 import Proofs.Erdos85GadgetMultiplicity
 import Proofs.Erdos85GadgetDegreeSquares
 import Proofs.Erdos85ReplacementGadgetObstruction
+import Proofs.Erdos85DeleteOnePairObstruction
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -198,6 +199,11 @@ edges.  At Moore-layer order this directly forces `(k+1)(d-1-k)` to be at
 most the attachment-weighted total replacement loss.  The selector-pair
 bound applies to this total loss as well, limiting the number of original
 tight survivors with loss at least any prescribed `q`.
+Specializing to delete one vertex with no additional survivor-edge deletion,
+the weighted loss is at most `d+1`, whereas Moore-order replacement requires
+at least `2(d-2)`.  Hence for every `d≥6`, no arbitrary compatible
+delete-one/add-two replacement exists for a `d`-regular graph on
+`d(d-1)+1` vertices, regardless of the two selector choices.
 -/
 
 namespace Erdos85
