@@ -294,4 +294,16 @@ theorem minDegreeForC4_odd_twoPoint_order
       (c4FreeMinDegreeWitness_odd_tangent_switch K h2)
     omega
 
+/-- Odd-characteristic polarity constructions now give three consecutive
+orders with the same exact threshold. -/
+theorem minDegreeForC4_odd_three_order_plateau
+    (h2 : (2 : K) ≠ 0) :
+    minDegreeForC4 ((Nat.card K + 1) * Nat.card K + 1 - 2) =
+        minDegreeForC4 ((Nat.card K + 1) * Nat.card K) ∧
+      minDegreeForC4 ((Nat.card K + 1) * Nat.card K) =
+        minDegreeForC4 ((Nat.card K + 1) * Nat.card K + 1) := by
+  rw [minDegreeForC4_odd_twoPoint_order K h2,
+    minDegreeForC4_projectivePlane_pred K,
+    minDegreeForC4_projectivePlane K]
+
 end Erdos85.Polarity

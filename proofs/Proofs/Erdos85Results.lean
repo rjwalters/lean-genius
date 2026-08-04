@@ -107,7 +107,8 @@ endpoint to be a third absolute point: tangency removes that double-loss
 configuration.  The tangent construction is now complete: for every finite
 field of odd characteristic and order `q`, it gives a `C₄`-free graph of
 minimum degree `q` on `q²+q-1` vertices and proves the new exact value
-`f(q²+q-1)=q+1`.
+`f(q²+q-1)=q+1`.  Together with the preceding polarity values this gives an
+exact three-order plateau at `q²+q-1`, `q²+q`, and `q²+q+1`.
 -/
 
 namespace Erdos85
