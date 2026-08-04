@@ -800,3 +800,32 @@ the connected-pair construction.  Thus larger gadgets provide additional
 internal degree, but their internal edges consume mixed common-neighbor
 budget.  This is the precise tradeoff a future eventual construction must
 exploit.
+
+## Global gadget counting obstruction
+
+Summing every mixed compatibility budget and double-counting incidences gives
+a global restriction.  If the old graph has minimum degree `d`, every new
+gadget vertex reaches degree `d`, and the internal gadget degrees are `r_w`,
+then
+
+```text
+∑_w (d-r_w)(d+r_w) ≤ |V||W|.
+```
+
+For a nonempty `r`-regular gadget this simplifies to
+`(d-r)(d+r) ≤ |V|`.  The connected pair has `r=1`, recovering the earlier
+coarse obstruction `d²-1 ≤ |V|` from a much more general theorem.
+
+More importantly, an `m`-vertex simple gadget has every `r_w ≤ m-1`.
+Whenever `m-1 ≤ d`, compatibility therefore forces
+
+```text
+d² - (m-1)² ≤ |V|.
+```
+
+At the Moore-layer order `|V| = d(d-1)+1`, this implies
+`(m-1)² ≥ d-1`.  Thus no bounded-size family of pure attachment gadgets
+can establish eventual witness extension in this regime: gadget size must
+grow at least on the square-root scale, or the construction must also modify
+old edges.  This cleanly separates two viable future routes—large structured
+gadgets versus combined attachment/switching surgery.

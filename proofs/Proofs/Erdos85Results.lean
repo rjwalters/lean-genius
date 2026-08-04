@@ -29,6 +29,7 @@ import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
 import Proofs.Erdos85DeleteGadget
+import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -164,6 +165,11 @@ composed into an exact delete-`k`/add-`m` surgery.  Taking `m=k+1` gives a
 uniform order-raising criterion strictly broader than canonical
 delete-one/add-pair repair, with exact compensation for every deleted and
 newly attached incidence.
+Global mixed-budget counting nevertheless limits this generalization: an
+`m`-vertex compatible gadget attached to a degree-`d` old graph forces
+`d²-(m-1)² ≤ n` when `m-1 ≤ d`.  At order `d(d-1)+1`, any such gadget
+must satisfy `(m-1)² ≥ d-1`; bounded attachment gadgets cannot by themselves
+settle eventual witness extension near the Moore-layer scale.
 -/
 
 namespace Erdos85
