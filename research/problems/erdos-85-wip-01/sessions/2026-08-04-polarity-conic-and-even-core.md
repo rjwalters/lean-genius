@@ -195,3 +195,50 @@ This exact cover result does **not** itself attach all `q-1` vertices: a
 simultaneous extension must additionally control common neighbors and edges
 involving different new vertices.  It precisely identifies the scale and
 shape of any direct multi-selector repair.
+
+## Two-point core and compensated switch
+
+A new operation `crossEdgeSwitch H x w` deletes every edge between `N(x)`
+and `N(w)` and then inserts `xw`.  The checked theorem
+`crossEdgeSwitch_not_containsC4` proves this preserves `C₄`-freeness for every
+finite `C₄`-free graph.  The degree lemmas show that the new edge raises the
+degree of `x` by exactly one and give a completion theorem whenever the cross
+deletion leaves `x` as the unique one-unit defect.
+
+For distinct absolute points `a,b`, `twoPointCore` deletes `{a,b}`.  Their
+unique nonabsolute common neighbor `x` has degree `q-1`, and the checked
+theorem `eq_twoPointDefect_of_degree_eq_sub_one` proves it is the only vertex
+of that degree.  Thus a successful switch would give a `q`-minimum-degree
+graph on `q²+q-1` vertices, hence the new lower bound
+`q < minDegreeForC4 (q²+q-1)`.
+
+The remaining coordinate problem is now narrow.  Write isotropic
+representatives `A,B`, put `α=A·B ≠ 0`, and choose a representative `X` of
+their common neighbor, with `X·A=X·B=0` and `β=X·X ≠ 0`.  In the pencil
+
+```text
+W = X + t(B-A),       t ≠ 0,
+```
+
+we always have `X·W=β ≠ 0`, so `x,w` are nonadjacent, while `w` is adjacent
+to neither deleted point.  A neighbor of `x` has representative
+`U=sA+rB` with `s,r≠0`; it is nonabsolute and has no deleted incidence, hence
+degree `q+1` in the two-point core.  If `V` is the opposite endpoint of a
+deleted cross edge, then in the basis `A,B,X`, after scaling,
+
+```text
+V = -(s/r) A + B + t α ((s/r)+1)/β X.
+```
+
+Both `V·A` and `V·B` are nonzero.  Its only possible lack of one-unit slack
+is therefore absoluteness.  Setting `z=s/r`, the absolute condition reduces
+to the quadratic
+
+```text
+c(z+1)² - 2z = 0,     c = t² α/β,
+```
+
+whose discriminant is `4(1-2c)`.  Consequently it is enough to choose `t`
+so that `1-2t²α/β` is a nonsquare (with the small/degenerate cases treated
+separately).  This is the exact finite-field character-sum existence lemma
+still needed for the candidate `q²+q-1` construction.
