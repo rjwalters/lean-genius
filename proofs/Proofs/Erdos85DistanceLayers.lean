@@ -429,6 +429,30 @@ theorem not_hasRepairSet_of_regular_card_lt_degree_sq
   exact (not_lt_of_ge
     (degree_sq_le_card_of_regular_hasRepairSet G hfree hd hreg hrepair)) hsmall
 
+/-- In particular, every regular witness at the common-neighbor counting bound
+`d(d-1)+1` fails the canonical repair surgery. -/
+theorem not_hasRepairSet_of_regular_card_eq_mul_pred_add_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hreg : ∀ v, G.degree v = d)
+    (hcard : Fintype.card V = d * (d - 1) + 1) :
+    ¬ HasRepairSet G d := by
+  apply not_hasRepairSet_of_regular_card_lt_degree_sq G hfree hd hreg
+  rw [hcard]
+  have hsub : d - 1 + 1 = d := by omega
+  nlinarith
+
+/-- Uniform explanation of the order-15 stress-test failure: no 4-regular
+`C₄`-free graph on 15 vertices has a canonical repair set. -/
+theorem not_hasRepairSet_four_regular_fifteen
+    (G : SimpleGraph (Fin 15)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 15) G)
+    (hreg : ∀ v, G.degree v = 4) :
+    ¬ HasRepairSet G 4 := by
+  exact not_hasRepairSet_of_regular_card_lt_degree_sq
+    (d := 4) G hfree (by norm_num) hreg (by norm_num)
+
 /-- Below order `d²-1`, a regular `C₄`-free witness cannot satisfy the
 canonical repair-set criterion. -/
 theorem not_hasRepairSet_of_regular_card_lt_degree_sq_sub_one
