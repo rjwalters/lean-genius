@@ -107,6 +107,11 @@
   },
   "crossReferences": [
     {
+      "proofId": "cycle-double-cover-port",
+      "relationship": "Companion entry: line-anchored walkthrough of the port's novel mathematics",
+      "description": "This entry is anchored on the statement layer, so it cannot carry line-anchored annotations into the port tree. The companion entry cycle-double-cover-port is anchored directly on Proofs/CycleDoubleCoverPort/CubicLabeling.lean — the 561-line file carrying the genuinely new content of the 2026 resolution — and annotates the local pair construction, the compatibility linear system, the dual-obstruction solvability proof, and the final cubic_labeling construction line by line."
+    },
+    {
       "proofId": "four-color-theorem",
       "relationship": "Deeply linked via nowhere-zero flows and a shared machine-proof lineage",
       "description": "For planar bridgeless cubic graphs the Four Color Theorem is equivalent to the existence of a nowhere-zero 4-flow, which in turn yields a cycle double cover — so CDC is a non-planar generalization of the flow content behind four-colorability. Both are landmark graph-theory results whose accepted artifact of record is machine-produced: Appel–Haken's 1976 computer case-check for four colors, and a kernel-checked Lean formalization for CDC."
