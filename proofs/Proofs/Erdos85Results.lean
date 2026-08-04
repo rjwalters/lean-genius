@@ -29,6 +29,7 @@ import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85CrossEdgeSwitchProgram
+import Proofs.Erdos85CrossEdgeSwitchCascade
 import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85PolaritySwitchCoordinates
@@ -121,6 +122,9 @@ Arbitrary finite switch programs are also now formalized and remain
 whole program, so every initial defect must be named; a program of length `m`
 can cover at most `2m` distinct initial defects.  Thus the three-point core
 requires at least two switches before incidence losses are even considered.
+Moreover, deleting one incident cross edge at an untouched target-tight vertex
+makes it a new strict defect.  Any successful continuation must use that
+vertex as a later endpoint, giving a formal repair-cascade obstruction.
 -/
 
 namespace Erdos85

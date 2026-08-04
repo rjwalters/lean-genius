@@ -322,6 +322,16 @@ number of initial sub-target vertices ≤ 2 · number of switches.
 
 Thus the three pair-pole defects force at least two switches.  Computation for
 `q=5,7,11` indicates that merely touching all three poles is far from enough:
-a two-edge path on the poles stays `C₄`-free and repairs the original poles,
-but creates `q-2` new degree-`q-1` vertices.  This identifies cumulative loss,
-not cycle creation, as the next decisive bottleneck.
+a static simultaneous two-edge path surgery on the poles stays `C₄`-free and
+repairs the original poles, but creates `q-2` new degree-`q-1` vertices.  (This
+is not the dynamically recomputed sequential program above.)  This identifies
+cumulative loss, not cycle creation, as the next decisive bottleneck.
+
+The first general cascade theorem is now checked.  Away from the two inserted
+edge endpoints, a switch has exactly the degree left after cross deletion.  If
+a vertex begins that stage with degree exactly `d` and has positive cross-edge
+loss, it ends the stage below `d`.  Therefore
+`positive_loss_forces_later_switch_endpoint` proves that any continuation
+which finally restores minimum degree `d` must name this newly damaged vertex
+as a later endpoint.  A successful finite repair program must consequently be
+closed under all target-tight vertices hit by its evolving cross deletions.
