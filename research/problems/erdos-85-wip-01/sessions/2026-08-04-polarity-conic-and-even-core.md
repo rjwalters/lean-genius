@@ -1448,3 +1448,19 @@ argument now has a formally verified square target.  What remains is to
 reindex the two-regular graph by its cycle components and prove the individual
 cycle determinant formulas, after which comparison of rational square classes
 will constrain the number and lengths of even defect cycles.
+
+The polynomial part of those individual factors is now formalized too.  In
+terms of mathlib's rescaled Chebyshev polynomials `C_m,S_m`, Lean proves
+
+```text
+C_m(X)^2 - 4 = (X^2-4) S_{m-1}(X)^2,
+C_{2m}(X)-2 = (X-2)(X+2) S_{m-1}(X)^2,
+C_{2m+1}(X)-2 = (X-2)(S_m(X)+S_{m-1}(X))^2.
+```
+
+After evaluation at `X=d-1`, an even cycle therefore contributes square
+class `(d-3)(d+1)`, while an odd cycle contributes square class `d-3`.
+These are checked polynomial identities, not numerical experiments.  The
+remaining bridge is the standard but as yet unformalized identity
+`charpoly(C_r)=C_r(X)-2` together with block factorization over the connected
+components of the defect two-factor.

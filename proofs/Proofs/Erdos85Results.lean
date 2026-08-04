@@ -63,6 +63,7 @@ import Proofs.Erdos85EvenFirstOrderAntipodal
 import Proofs.Erdos85EvenAntipodalQuotient
 import Proofs.Erdos85SecondOrderStructure
 import Proofs.Erdos85SecondOrderEvenDefect
+import Proofs.Erdos85CycleResolvent
 import Proofs.Erdos85MinimalWitness
 import Proofs.Erdos85TightCore
 import Proofs.Erdos85LayeredWitness
