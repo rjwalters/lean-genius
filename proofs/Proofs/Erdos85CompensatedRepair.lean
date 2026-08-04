@@ -238,4 +238,55 @@ theorem c4FreeMinDegreeWitness_delete_add_pair_deleteCrossEdges_of_loss
   rw [← heq]
   exact hw
 
+/-- A witness has a compensated cross-edge repair when some deleted vertex
+and two safe attachment sets satisfy the exact degree-loss budget.  Unlike
+`HasRepairSet`, this permits edges between the attachment sets: those edges
+are removed and paid for by degree slack or by the new attachments. -/
+def HasCompensatedCrossRepair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Prop :=
+  ∃ (x : V) (S T : Finset {y : V // y ≠ x}),
+    d - 1 ≤ S.card ∧ d - 1 ≤ T.card ∧
+    CommonNeighborIndependent (G.induce {y | y ≠ x}) S ∧
+    CommonNeighborIndependent (G.induce {y | y ≠ x}) T ∧
+    (S ∩ T).card ≤ 1 ∧
+    ∀ v : {y : V // y ≠ x},
+      d + crossEdgeLoss (G.induce {y | y ≠ x}) S T v ≤
+        (G.induce {y | y ≠ x}).degree v +
+          (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0)
+
+/-- A compensated cross-edge repair extends a positive-degree witness by one
+vertex. -/
+theorem c4FreeMinDegreeWitness_succ_of_compensatedCrossRepair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {n d : ℕ}
+    (hn : 1 ≤ n) (hcard : Fintype.card V = n)
+    (hd : 1 ≤ d) (hfree : ¬ containsC4 V G)
+    (hrepair : HasCompensatedCrossRepair G d) :
+    C4FreeMinDegreeWitness (n + 1) d := by
+  obtain ⟨x, S, T, hS, hT, hSsafe, hTsafe, hinter, hloss⟩ := hrepair
+  letI : DecidableRel
+      (deleteCrossEdges (G.induce {y : V | y ≠ x}) S T).Adj :=
+    Classical.decRel _
+  exact c4FreeMinDegreeWitness_delete_add_pair_deleteCrossEdges_of_loss
+    G x hn hcard hfree S T hS hT hd hSsafe hTsafe hinter hloss
+
+/-- A uniform compensated-repair choice is sufficient for witness extension,
+and hence is a new concrete route to eventual monotonicity. -/
+theorem witnessExtension_of_compensatedCrossRepair {n : ℕ} (hn : 1 ≤ n)
+    (hrepair : ∀ d (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      1 ≤ d → d ≤ G.minDegree → ¬ containsC4 (Fin n) G →
+      HasCompensatedCrossRepair G d) :
+    C4FreeWitnessExtension n := by
+  rintro d ⟨G, hdec, hmin, hfree⟩
+  letI : DecidableRel G.Adj := hdec
+  by_cases hd0 : d = 0
+  · subst d
+    refine ⟨⊥, Classical.decRel _, Nat.zero_le _, ?_⟩
+    rintro ⟨f, _, hadj⟩
+    simpa using hadj 0 1 (by decide)
+  · have hd : 1 ≤ d := Nat.one_le_iff_ne_zero.mpr hd0
+    exact c4FreeMinDegreeWitness_succ_of_compensatedCrossRepair
+      G hn (by simp) hd hfree (hrepair d G hdec hd hmin hfree)
+
 end Erdos85
