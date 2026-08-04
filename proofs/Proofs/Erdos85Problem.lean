@@ -3570,6 +3570,133 @@ theorem minDegreeForC4_fifteen_mem :
   have hge := four_le_minDegreeForC4_fifteen
   omega
 
+/-! ## The sharp `15`-vertex witness: `f(15) = 5`
+
+Unlike the minimum-degree-`3` surgery ladder above, the following graph is
+`4`-regular.  It can be viewed as an independent triple, a six-cycle, and two
+triangles, with the cross edges displayed explicitly below.  Its pairwise
+common-neighbour counts are all at most one, so it is `C₄`-free.  This gives
+the missing lower bound `f(15) ≥ 5`; the cherry-counting upper bound already
+gives `f(15) ≤ 5`. -/
+
+/-- The thirty edges of a `4`-regular `C₄`-free graph on fifteen vertices. -/
+def fifteenRegularEdges : List (Fin 15 × Fin 15) :=
+  [(0,1), (0,2), (0,3), (0,4),
+   (1,3), (1,11), (1,12),
+   (2,4), (2,7), (2,14),
+   (3,6), (3,10),
+   (4,8), (4,13),
+   (5,6), (5,8), (5,12), (5,14),
+   (6,10), (6,14),
+   (7,9), (7,10), (7,12),
+   (8,12), (8,13),
+   (9,10), (9,11), (9,13),
+   (11,13), (11,14)]
+
+/-- A sharp `15`-vertex witness for the lower bound `f(15) ≥ 5`. -/
+def fifteenRegular : SimpleGraph (Fin 15) where
+  Adj i j := (i, j) ∈ fifteenRegularEdges ∨ (j, i) ∈ fifteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel fifteenRegular.Adj := fun i j =>
+  decidable_of_iff
+    ((i, j) ∈ fifteenRegularEdges ∨ (j, i) ∈ fifteenRegularEdges) Iff.rfl
+
+/-- The sharp witness is `4`-regular. -/
+theorem fifteenRegular_degree : ∀ v, fifteenRegular.degree v = 4 := by decide
+
+/-- Every distinct vertex pair has at most one common neighbour. -/
+theorem fifteenRegular_common_le_one : ∀ x y : Fin 15, x ≠ y →
+    (fifteenRegular.neighborFinset x ∩ fifteenRegular.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- The sharp witness contains no `C₄`. -/
+theorem fifteenRegular_not_containsC4 : ¬ containsC4 (Fin 15) fifteenRegular :=
+  not_containsC4_of_forall_common_le_one fifteenRegular_common_le_one
+
+/-- The sharp witness has minimum degree at least `4`. -/
+theorem four_le_fifteenRegular_minDegree : 4 ≤ fifteenRegular.minDegree := by
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  intro v
+  rw [fifteenRegular_degree v]
+
+/-- The sharp witness forces the lower bound `f(15) ≥ 5`. -/
+theorem five_le_minDegreeForC4_fifteen : 5 ≤ minDegreeForC4 15 := by
+  have hw : C4FreeMinDegreeWitness 15 4 :=
+    ⟨fifteenRegular, inferInstance, four_le_fifteenRegular_minDegree,
+      fifteenRegular_not_containsC4⟩
+  have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).1 hw
+  omega
+
+/-- **The exact fifteenth value: `f(15) = 5`.** -/
+theorem minDegreeForC4_fifteen : minDegreeForC4 15 = 5 := by
+  have hle : minDegreeForC4 15 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  exact Nat.le_antisymm hle five_le_minDegreeForC4_fifteen
+
+/-! ### A sharp obstruction to direct safe attachment
+
+The same witness also shows why the common-neighbour selector criterion cannot
+prove the general extension theorem, even at degree `4`: its largest safe set
+has only three vertices.  This refutes the *per-graph attachment strategy*, not
+`C4FreeWitnessExtension 15`, which may choose an unrelated witness at order 16. -/
+
+/-- A three-colouring whose colour classes are cliques in the common-neighbour
+graph of `fifteenRegular`. -/
+def fifteenSelectorColor : Fin 15 → Fin 3 :=
+  ![0,0,1,0,1,1,0,0,1,2,0,1,1,1,0]
+
+/-- Distinct vertices of the same selector colour share a common neighbour. -/
+theorem fifteenRegular_same_color_common : ∀ x y, x ≠ y →
+    fifteenSelectorColor x = fifteenSelectorColor y →
+    0 < (fifteenRegular.neighborFinset x ∩
+      fifteenRegular.neighborFinset y).card := by
+  decide
+
+/-- Every common-neighbour-independent set in the sharp witness has at most
+three vertices. -/
+theorem card_le_three_of_fifteenRegular_commonNeighborIndependent
+    (S : Finset (Fin 15)) (hS : CommonNeighborIndependent fifteenRegular S) :
+    S.card ≤ 3 := by
+  have hinj : Set.InjOn fifteenSelectorColor ↑S := by
+    intro x hx y hy hcolor
+    by_contra hxy
+    have hpos := fifteenRegular_same_color_common x y hxy hcolor
+    have hzero := hS (by simpa only [Finset.mem_coe] using hx)
+      (by simpa only [Finset.mem_coe] using hy) hxy
+    omega
+  calc
+    S.card ≤ (Finset.univ : Finset (Fin 3)).card := by
+      apply Finset.card_le_card_of_injOn fifteenSelectorColor
+      · intro _ _
+        exact Finset.mem_univ _
+      · exact hinj
+    _ = 3 := by simp
+
+/-- A safe triple, showing the upper bound `3` is attained. -/
+def fifteenSafeTriple : Finset (Fin 15) := {0, 5, 9}
+
+theorem fifteenSafeTriple_commonNeighborIndependent :
+    CommonNeighborIndependent fifteenRegular fifteenSafeTriple := by
+  unfold CommonNeighborIndependent
+  decide
+
+theorem fifteenSafeTriple_card : fifteenSafeTriple.card = 3 := by decide
+
+/-- **The degree-4 selector claim is false.**  The graph `fifteenRegular` is
+`C₄`-free with minimum degree four, yet has no safe attachment set of size
+four. -/
+theorem exists_degree_four_witness_without_safe_four :
+    ∃ (G : SimpleGraph (Fin 15)) (_ : DecidableRel G.Adj),
+      4 ≤ G.minDegree ∧ ¬ containsC4 (Fin 15) G ∧
+      ∀ S : Finset (Fin 15), CommonNeighborIndependent G S → S.card < 4 := by
+  refine ⟨fifteenRegular, inferInstance, four_le_fifteenRegular_minDegree,
+    fifteenRegular_not_containsC4, ?_⟩
+  intro S hS
+  have := card_le_three_of_fifteenRegular_commonNeighborIndependent S hS
+  omega
+
 end Fifteen
 
 section Sixteen
@@ -3644,5 +3771,149 @@ theorem minDegreeForC4_sixteen_mem :
   omega
 
 end Sixteen
+
+/-! ## Exact plateau `f(15) = ⋯ = f(20) = 5`
+
+The sharp witness above at order `15` is not isolated.  Explicit `4`-regular,
+`C₄`-free graphs exist at every order through `20`; together with the counting
+bound `n ≤ 5·4`, each pins `f(n) = 5`.  The certificates below are checked by
+their degree vectors and pairwise common-neighbour matrices, not by enumerating
+cycle embeddings. -/
+
+/-- A `4`-regular `C₄`-free witness between orders `15` and `20` pins `f(n)=5`. -/
+theorem minDegreeForC4_eq_five_of_witness {n : ℕ} (hn : 15 ≤ n) (hn20 : n ≤ 20)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hdeg : ∀ v, G.degree v = 4)
+    (hcommon : ∀ x y, x ≠ y → (G.neighborFinset x ∩ G.neighborFinset y).card ≤ 1) :
+    minDegreeForC4 n = 5 := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  have hmin : 4 ≤ G.minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro v
+    rw [hdeg v]
+  have hfree : ¬ containsC4 (Fin n) G :=
+    not_containsC4_of_forall_common_le_one hcommon
+  have hw : C4FreeMinDegreeWitness n 4 := ⟨G, inferInstance, hmin, hfree⟩
+  have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).1 hw
+  have hle : minDegreeForC4 n ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by omega) (by norm_num; omega)
+  omega
+
+def sixteenRegularEdges : List (Fin 16 × Fin 16) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,2),(1,8),(1,13),(2,6),(2,12),
+   (3,7),(3,11),(3,15),(4,5),(4,10),(4,14),(5,6),(5,10),(5,15),
+   (6,12),(6,15),(7,9),(7,10),(7,11),(8,9),(8,13),(8,15),
+   (9,10),(9,12),(11,13),(11,14),(12,14),(13,14)]
+
+def sixteenRegular : SimpleGraph (Fin 16) where
+  Adj i j := (i,j) ∈ sixteenRegularEdges ∨ (j,i) ∈ sixteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel sixteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ sixteenRegularEdges ∨ (j,i) ∈ sixteenRegularEdges) Iff.rfl
+
+theorem sixteenRegular_degree : ∀ v, sixteenRegular.degree v = 4 := by decide
+theorem sixteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (sixteenRegular.neighborFinset x ∩ sixteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(16) = 5`.** -/
+theorem minDegreeForC4_sixteen : minDegreeForC4 16 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    sixteenRegular sixteenRegular_degree sixteenRegular_common_le_one
+
+def seventeenRegularEdges : List (Fin 17 × Fin 17) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,5),(1,9),(1,15),(2,3),(2,7),(2,16),
+   (3,8),(3,11),(4,6),(4,13),(4,14),(5,6),(5,11),(5,16),
+   (6,14),(6,16),(7,9),(7,10),(7,14),(8,12),(8,14),(8,15),
+   (9,10),(9,15),(10,11),(10,13),(11,13),(12,13),(12,15),(12,16)]
+
+def seventeenRegular : SimpleGraph (Fin 17) where
+  Adj i j := (i,j) ∈ seventeenRegularEdges ∨ (j,i) ∈ seventeenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel seventeenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ seventeenRegularEdges ∨ (j,i) ∈ seventeenRegularEdges) Iff.rfl
+
+theorem seventeenRegular_degree : ∀ v, seventeenRegular.degree v = 4 := by decide
+theorem seventeenRegular_common_le_one : ∀ x y, x ≠ y →
+    (seventeenRegular.neighborFinset x ∩ seventeenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(17) = 5`.** -/
+theorem minDegreeForC4_seventeen : minDegreeForC4 17 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    seventeenRegular seventeenRegular_degree seventeenRegular_common_le_one
+
+def eighteenRegularEdges : List (Fin 18 × Fin 18) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,3),(1,10),(1,12),(2,4),(2,13),(2,14),
+   (3,8),(3,15),(4,7),(4,17),(5,6),(5,10),(5,14),(5,15),
+   (6,14),(6,16),(6,17),(7,10),(7,11),(7,17),(8,9),(8,11),(8,15),
+   (9,11),(9,12),(9,14),(10,11),(12,13),(12,16),(13,15),(13,16),(16,17)]
+
+def eighteenRegular : SimpleGraph (Fin 18) where
+  Adj i j := (i,j) ∈ eighteenRegularEdges ∨ (j,i) ∈ eighteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel eighteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ eighteenRegularEdges ∨ (j,i) ∈ eighteenRegularEdges) Iff.rfl
+
+theorem eighteenRegular_degree : ∀ v, eighteenRegular.degree v = 4 := by decide
+theorem eighteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (eighteenRegular.neighborFinset x ∩ eighteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(18) = 5`.** -/
+theorem minDegreeForC4_eighteen : minDegreeForC4 18 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    eighteenRegular eighteenRegular_degree eighteenRegular_common_le_one
+
+def nineteenRegularEdges : List (Fin 19 × Fin 19) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,6),(1,14),(1,16),(2,3),(2,9),(2,18),
+   (3,11),(3,17),(4,10),(4,13),(4,15),(5,7),(5,10),(5,14),(5,18),
+   (6,8),(6,16),(6,17),(7,15),(7,16),(7,18),(8,12),(8,13),(8,18),
+   (9,10),(9,12),(9,16),(10,17),(11,14),(11,15),(11,17),
+   (12,13),(12,14),(13,15)]
+
+def nineteenRegular : SimpleGraph (Fin 19) where
+  Adj i j := (i,j) ∈ nineteenRegularEdges ∨ (j,i) ∈ nineteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel nineteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ nineteenRegularEdges ∨ (j,i) ∈ nineteenRegularEdges) Iff.rfl
+
+theorem nineteenRegular_degree : ∀ v, nineteenRegular.degree v = 4 := by decide
+theorem nineteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (nineteenRegular.neighborFinset x ∩ nineteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(19) = 5`.** -/
+theorem minDegreeForC4_nineteen : minDegreeForC4 19 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    nineteenRegular nineteenRegular_degree nineteenRegular_common_le_one
+
+def twentyRegularEdges : List (Fin 20 × Fin 20) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,7),(1,17),(1,18),(2,6),(2,9),(2,16),
+   (3,8),(3,11),(3,19),(4,5),(4,10),(4,13),(5,7),(5,11),(5,13),
+   (6,12),(6,14),(6,16),(7,16),(7,18),(8,13),(8,15),(8,16),
+   (9,13),(9,17),(9,19),(10,14),(10,15),(10,19),(11,12),(11,17),
+   (12,14),(12,18),(14,15),(15,17),(18,19)]
+
+def twentyRegular : SimpleGraph (Fin 20) where
+  Adj i j := (i,j) ∈ twentyRegularEdges ∨ (j,i) ∈ twentyRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel twentyRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ twentyRegularEdges ∨ (j,i) ∈ twentyRegularEdges) Iff.rfl
+
+theorem twentyRegular_degree : ∀ v, twentyRegular.degree v = 4 := by decide
+theorem twentyRegular_common_le_one : ∀ x y, x ≠ y →
+    (twentyRegular.neighborFinset x ∩ twentyRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(20) = 5`.** -/
+theorem minDegreeForC4_twenty : minDegreeForC4 20 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    twentyRegular twentyRegular_degree twentyRegular_common_le_one
 
 end Erdos85
