@@ -131,4 +131,75 @@ theorem minDegreeForC4_odd_delete_absolute_card_lower
   exact (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hremain).1
     (c4FreeMinDegreeWitness_odd_delete_absolute_card K h2 hk (by omega))
 
+/-- Every odd-characteristic orthogonal polarity has at least two distinct
+absolute points.  Starting from one isotropic line, a second is obtained by
+solving the quadratic equation along a transverse affine line. -/
+theorem two_le_card_absolutePoints_of_two_ne_zero
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) ≠ 0) :
+    2 ≤ (absolutePoints K).card := by
+  obtain ⟨a, haa⟩ := exists_selfOrthogonal K
+  obtain ⟨b, habno⟩ := Projectivization.exists_not_self_orthogonal a
+  have haavec : a.rep ⬝ᵥ a.rep = 0 :=
+    (Projectivization.orthogonal_mk a.rep_nonzero a.rep_nonzero).mp
+      (by simpa using haa)
+  have habvec : a.rep ⬝ᵥ b.rep ≠ 0 := by
+    intro hdot
+    apply habno
+    simpa using
+      (Projectivization.orthogonal_mk a.rep_nonzero b.rep_nonzero).mpr hdot
+  let t : K := -(b.rep ⬝ᵥ b.rep) / (2 * (a.rep ⬝ᵥ b.rep))
+  let c : Fin 3 → K := b.rep + t • a.rep
+  have hcprops : c ⬝ᵥ c = 0 ∧ a.rep ⬝ᵥ c = a.rep ⬝ᵥ b.rep := by
+    dsimp [c, t]
+    have hden : 2 * (a.rep ⬝ᵥ b.rep) ≠ 0 := mul_ne_zero h2 habvec
+    constructor
+    · simp only [add_dotProduct, dotProduct_add, dotProduct_smul,
+        smul_dotProduct, smul_eq_mul, haavec, mul_zero, add_zero]
+      rw [show b.rep ⬝ᵥ a.rep = a.rep ⬝ᵥ b.rep by
+        exact dotProduct_comm b.rep a.rep]
+      field_simp
+      ring
+    · simp only [dotProduct_add, dotProduct_smul, smul_eq_mul, haavec,
+        mul_zero, add_zero]
+  have hc0 : c ≠ 0 := by
+    intro hc
+    have hz : a.rep ⬝ᵥ c = 0 := by rw [hc]; simp
+    exact habvec (hcprops.2.symm.trans hz)
+  let cp := Projectivization.mk K c hc0
+  have hcpabs : Projectivization.orthogonal cp cp :=
+    (Projectivization.orthogonal_mk hc0 hc0).mpr hcprops.1
+  have hacno : ¬ Projectivization.orthogonal a cp := by
+    intro hac
+    have hdot : a.rep ⬝ᵥ c = 0 :=
+      (Projectivization.orthogonal_mk a.rep_nonzero hc0).mp
+        (by simpa [cp] using hac)
+    exact habvec (hcprops.2.symm.trans hdot)
+  have hac : a ≠ cp := by
+    intro heq
+    apply hacno
+    rw [← heq]
+    exact haa
+  have hsub : {a, cp} ⊆ absolutePoints K := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact (mem_absolutePoints K _).mpr haa
+    · exact (mem_absolutePoints K _).mpr hcpabs
+  have hcard := Finset.card_le_card hsub
+  simpa [hac] using hcard
+
+/-- Unconditional two-absolute-point deletion in odd characteristic. -/
+theorem c4FreeMinDegreeWitness_odd_delete_two
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) ≠ 0) :
+    C4FreeMinDegreeWitness
+      ((Nat.card K + 1) * Nat.card K + 1 - 2) (Nat.card K - 1) := by
+  apply c4FreeMinDegreeWitness_odd_delete_absolute_card K h2
+    (two_le_card_absolutePoints_of_two_ne_zero K h2)
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  have hN : 3 ≤ (Nat.card K + 1) * Nat.card K + 1 := by nlinarith
+  omega
+
+
 end Erdos85.Polarity
