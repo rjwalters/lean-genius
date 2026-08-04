@@ -697,6 +697,37 @@ theorem regular_of_minDegree_mooreOrder
   intro x
   exact degree_eq_of_minDegree_mooreOrder G hfree hd hmin hcard x
 
+/-- **Near-Moore regularity.**  The asymmetric layer bound rules out a
+vertex of degree `d+1` throughout the whole interval below the next layer
+threshold `(d+1)(d-1)+1`.  Thus every C4-free graph of minimum degree at
+least `d≥2` in this range is already `d`-regular. -/
+theorem degree_eq_of_minDegree_card_lt_nextMooreLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V < (d + 1) * (d - 1) + 1)
+    (x : V) :
+    G.degree x = d := by
+  have hdx : d ≤ G.degree x := hmin.trans (G.minDegree_le_degree x)
+  have hbound := one_add_degree_add_mul_sub_two_le_card_of_minDegree
+    G hfree hmin x
+  obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 2 := ⟨d - 2, by omega⟩
+  norm_num at hdx hbound hcard ⊢
+  nlinarith
+
+/-- Global formulation of near-Moore regularity. -/
+theorem regular_of_minDegree_card_lt_nextMooreLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V < (d + 1) * (d - 1) + 1) :
+    ∀ x : V, G.degree x = d := by
+  intro x
+  exact degree_eq_of_minDegree_card_lt_nextMooreLayer
+    G hfree hd hmin hcard x
+
 /-- **Odd-degree strictness of the Moore bound.**  When `d≥3` is odd, exact
 Moore-layer order is impossible: rigidity would give a `d`-regular graph on
 the odd number `d(d-1)+1` of vertices, contradicting the handshake lemma. -/

@@ -207,4 +207,126 @@ theorem minDegreeForC4_mooreOrder_le {d : ℕ} (hd : 3 ≤ d) :
   exact containsC4_of_minDegree_mooreOrder_of_three_le
     G hd hmin (by simp)
 
+/-! ## Stability at the first possible order
+
+The strict bound leaves `d(d-1)+2` as the first order at which a C4-free
+minimum-degree-`d` graph could exist.  This order is still below the next
+asymmetric layer threshold, so near-Moore regularity applies.  Exact branch
+accounting then leaves only one unit of slack: every center has at most one
+vertex beyond distance two, and all but at most one of its neighbors are
+paired inside its neighborhood.
+-/
+
+/-- Exact one-slack identity at the first order not excluded by the strict
+Moore bound. -/
+theorem card_external_add_degree_eq_one_add_localDegreeSum_of_firstOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (externalRepairCandidates G x).card + d =
+      1 + ∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y := by
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hreg : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  rw [hcard] at hid
+  obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+  norm_num at hid ⊢
+  nlinarith
+
+/-- At the first possible order, each center has at most one external vertex,
+and at most one isolated vertex in its induced neighborhood. -/
+theorem firstOrder_external_le_one_and_localDegreeSum_large
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (externalRepairCandidates G x).card ≤ 1 ∧
+      d - 1 ≤ ∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y := by
+  have hid := card_external_add_degree_eq_one_add_localDegreeSum_of_firstOrder
+    G hfree hd hmin hcard x
+  have hlocal := sum_localNeighborhood_degrees_le_degree G hfree x
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hdeg := degree_eq_of_minDegree_card_lt_nextMooreLayer
+    G hfree (by omega) hmin hbelow x
+  rw [hdeg] at hlocal
+  omega
+
+/-- For even `d`, the unique unit of first-order slack is an external vertex:
+every induced neighborhood is a perfect matching and there is exactly one
+vertex beyond distance two from the center. -/
+theorem firstOrder_structure_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdeven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (externalRepairCandidates G x).card = 1 ∧
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) = d := by
+  let S := ∑ y : {z : V // z ∈ G.neighborSet x},
+    (G.induce (G.neighborSet x)).degree y
+  have hid := card_external_add_degree_eq_one_add_localDegreeSum_of_firstOrder
+    G hfree hd hmin hcard x
+  have hbounds := firstOrder_external_le_one_and_localDegreeSum_large
+    G hfree hd hmin hcard x
+  have hSeven : Even S := by
+    change Even (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y)
+    rw [(G.induce (G.neighborSet x)).sum_degrees_eq_twice_card_edges]
+    exact even_two_mul _
+  change (externalRepairCandidates G x).card + d = 1 + S at hid
+  change (externalRepairCandidates G x).card ≤ 1 ∧ d - 1 ≤ S at hbounds
+  change (externalRepairCandidates G x).card = 1 ∧ S = d
+  rw [Nat.even_iff] at hdeven hSeven
+  omega
+
+/-- For odd `d`, the unique unit of first-order slack is the isolated vertex
+in each induced neighborhood; there is no vertex beyond distance two. -/
+theorem firstOrder_structure_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) :
+    (externalRepairCandidates G x).card = 0 ∧
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) = d - 1 := by
+  let S := ∑ y : {z : V // z ∈ G.neighborSet x},
+    (G.induce (G.neighborSet x)).degree y
+  have hid := card_external_add_degree_eq_one_add_localDegreeSum_of_firstOrder
+    G hfree hd hmin hcard x
+  have hbounds := firstOrder_external_le_one_and_localDegreeSum_large
+    G hfree hd hmin hcard x
+  have hSeven : Even S := by
+    change Even (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y)
+    rw [(G.induce (G.neighborSet x)).sum_degrees_eq_twice_card_edges]
+    exact even_two_mul _
+  change (externalRepairCandidates G x).card + d = 1 + S at hid
+  change (externalRepairCandidates G x).card ≤ 1 ∧ d - 1 ≤ S at hbounds
+  change (externalRepairCandidates G x).card = 0 ∧ S = d - 1
+  rw [Nat.odd_iff] at hdodd
+  rw [Nat.even_iff] at hSeven
+  omega
+
 end Erdos85

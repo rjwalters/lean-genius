@@ -1154,3 +1154,55 @@ Consequently, for fixed `k`, any repair beyond the deletion-only range must
 perform attachment-weighted survivor-edge deletion growing linearly with
 `d`.  This makes the earlier dichotomy quantitative: either replacement size
 grows, or increasingly extensive old-edge surgery is unavoidable.
+
+## Near-Moore stability and the first-order defect template
+
+The asymmetric layer inequality gives more than rigidity at the now-excluded
+equality point.  If
+
+```text
+|V| < (d+1)(d-1)+1 = d²,
+```
+
+then a vertex of degree at least `d+1` would already force too many vertices
+in its first two distance layers.  Hence every C4-free graph of minimum degree
+at least `d≥2` in this entire range is `d`-regular.  This has been formalized
+as `regular_of_minDegree_card_lt_nextMooreLayer`.
+
+At the first order left open by the strict bound,
+
+```text
+|V| = d(d-1)+2,
+```
+
+the exact regular reservoir identity reduces at every center `x` to
+
+```text
+|external(x)| + d = 1 + Σ_{y∈N(x)} deg_{G[N(x)]}(y).
+```
+
+The local degrees are at most one and their sum is even.  Lean now checks the
+resulting parity dichotomy:
+
+- if `d` is even, `G[N(x)]` is a perfect matching and there is exactly one
+  vertex beyond distance two from `x`;
+- if `d` is odd, `G[N(x)]` is a matching with exactly one isolated vertex and
+  there is no vertex beyond distance two from `x`.
+
+The odd case suggests a further obstruction not yet formalized.  The unique
+triangle-free edge incident with each vertex forms a perfect matching with
+adjacency matrix `M`.  Exact common-neighbor counts give
+
+```text
+A² = (d-1)I + J - M.
+```
+
+Regularity implies that `A` commutes with `J`, hence with `M`.  On the
+orthogonal complement of the all-ones vector, the `M=+1` subspace has
+`A²=d-2`, while the `M=-1` subspace has `A²=d`.  Moreover `tr(AM)=|V|`
+because every matching edge is an edge of `G`.  Splitting `tr(A)` and
+`tr(AM)` gives nonzero rational traces on both subspaces.  Characteristic
+polynomials over the integers should then force both `d` and `d-2` to be
+perfect squares, impossible for `d≥3`.  Completing this argument would rule
+out `d(d-1)+2` for every odd `d` and improve the strict Moore bound there to
+`d(d-1)+3`.

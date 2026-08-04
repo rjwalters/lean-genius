@@ -245,6 +245,15 @@ has at least `d(d-1)+2` vertices, and
 at exact Moore equality are vacuous; the non-vacuous output is the strict
 Moore bound itself and the more general replacement inequalities away from
 equality.
+The same asymmetric estimate is stable on a full near-Moore band: below
+`(d+1)(d-1)+1=d²`, every C4-free minimum-degree-`d` graph is necessarily
+`d`-regular.  At the first potentially attainable order `d(d-1)+2`, exact
+accounting leaves precisely one unit of slack.  If `d` is even, every
+neighborhood is a perfect matching and every center has exactly one vertex
+beyond distance two.  If `d` is odd, every neighborhood matching has exactly
+one isolated vertex and every vertex of the graph is within distance two of
+the center.  These checked templates substantially narrow the next extremal
+case rather than treating Moore equality in isolation.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the
