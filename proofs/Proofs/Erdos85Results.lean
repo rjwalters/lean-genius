@@ -27,6 +27,7 @@ import Proofs.Erdos85PolarityOddSecantCount
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
+import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -76,6 +77,11 @@ The rank-two Kneser cover argument sharpens this to `q-1 ≤ |I|`.
 This is exact: one triangle selector on three absolute points together with
 one star selector for each remaining absolute point gives `q-1` safe
 selectors covering every defect.
+Finally, a universal compensated surgery is now available: delete every old
+edge between the neighborhoods of two vertices `x,w`, then add `xw`.  If the
+old graph is `C₄`-free, the switched graph is still `C₄`-free.  This reduces
+the new two-absolute-point construction to degree bookkeeping and explicit
+finite-geometry incidence counts.
 -/
 
 namespace Erdos85
