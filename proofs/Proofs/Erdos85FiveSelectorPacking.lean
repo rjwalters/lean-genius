@@ -181,4 +181,83 @@ theorem fiveCycleAttachment_impossible_of_rank_two_labels
     hfiber (fun i j hij =>
       hcompat.card_selector_inter_le_one G (cycleGraph 5) A hij)
 
+/-- General pigeonhole form of the selector obstruction.  More large
+rank-two selectors than available centres are impossible once `q ≥ 6`. -/
+theorem too_many_large_rank_two_selectors_impossible
+    {I X C : Type*} [Fintype I] [DecidableEq I]
+    [Fintype X] [DecidableEq X] [Fintype C] [DecidableEq C]
+    (q : ℕ) (hq : 6 ≤ q)
+    (S : I → Finset X) (label : X → Finset C)
+    (hcenters : Fintype.card C < Fintype.card I)
+    (hlarge : ∀ i, q - 2 ≤ (S i).card)
+    (hnonempty : ∀ i x, x ∈ S i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ S i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ S i → ∀ y, y ∈ S i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q)
+    (hinter : ∀ i j, i ≠ j → (S i ∩ S j).card ≤ 1) :
+    False := by
+  classical
+  have hfour : ∀ i, 4 ≤ (S i).card := by
+    intro i
+    have hi := hlarge i
+    omega
+  choose center hcenter using fun i =>
+    intersecting_rank_two_multifamily_star_of_four
+      (S i) label (hfour i)
+      (hnonempty i) (hcard i) (hlabel_inter i) (hinj_two i)
+  have hninj : ¬ Function.Injective center := by
+    intro hinj
+    exact (not_le_of_gt hcenters) (Fintype.card_le_of_injective center hinj)
+  rw [Function.not_injective_iff] at hninj
+  obtain ⟨i, j, hc, hij⟩ := hninj
+  have hsubi : S i ⊆ Finset.univ.filter fun x => center i ∈ label x := by
+    intro x hx
+    simp [hcenter i x hx]
+  have hsubj : S j ⊆ Finset.univ.filter fun x => center i ∈ label x := by
+    intro x hx
+    simp [hc, hcenter j x hx]
+  have hunion : S i ∪ S j ⊆
+      Finset.univ.filter fun x => center i ∈ label x :=
+    Finset.union_subset hsubi hsubj
+  have hucard : (S i ∪ S j).card ≤ q :=
+    (Finset.card_le_card hunion).trans (hfiber (center i))
+  have hcards := Finset.card_union_add_card_inter (S i) (S j)
+  have hicard := hinter i j hij
+  have hi := hlarge i
+  have hj := hlarge j
+  omega
+
+/-- Gadget-facing general form for a two-regular new gadget: if there are
+more new vertices than rank-two label centres, degree `q ≥ 6` is impossible. -/
+theorem degreeTwoGadgetAttachment_impossible_of_rank_two_labels
+    {V W C : Type*} [Fintype V] [DecidableEq V]
+    [Fintype W] [DecidableEq W] [Fintype C] [DecidableEq C]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (q : ℕ) (hq : 6 ≤ q)
+    (A : W → Finset V) (label : V → Finset C)
+    (hcompat : GadgetAttachmentCompatible G F A)
+    (hFdegree : ∀ w, F.degree w = 2)
+    (hnewDegree : ∀ w, q ≤ (attachGadget G F A).degree (.inr w))
+    (hcenters : Fintype.card C < Fintype.card W)
+    (hnonempty : ∀ i x, x ∈ A i → (label x).Nonempty)
+    (hcard : ∀ i x, x ∈ A i → (label x).card ≤ 2)
+    (hlabel_inter : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      ¬ Disjoint (label x) (label y))
+    (hinj_two : ∀ i x, x ∈ A i → ∀ y, y ∈ A i →
+      (label x).card = 2 → label x = label y → x = y)
+    (hfiber : ∀ c, (Finset.univ.filter fun x => c ∈ label x).card ≤ q) :
+    False := by
+  have hlarge : ∀ i, q - 2 ≤ (A i).card := by
+    intro i
+    have hi := hnewDegree i
+    rw [attachGadget_degree_new, hFdegree] at hi
+    omega
+  exact too_many_large_rank_two_selectors_impossible
+    q hq A label hcenters hlarge hnonempty hcard hlabel_inter hinj_two
+    hfiber (fun i j hij => hcompat.card_selector_inter_le_one G F A hij)
+
 end Erdos85

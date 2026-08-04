@@ -665,6 +665,14 @@ an unconditional contradiction for every field of odd characteristic and
 order at least seven.  The successful order-32 gadget is formally isolated
 as a small-field exception rather than an infinite-family template.
 
+The same argument has now been generalized beyond four points and a
+five-cycle.  If `D` is any deleted set of absolute points and `F` is any
+two-regular gadget with more vertices than `D`, then compatible selectors
+whose new vertices all reach degree `q` are impossible for `q >= 6`.
+Thus every delete-`k`/attach-more-than-`k` two-regular repair is excluded at
+once; escaping this obstruction requires a denser new gadget, nonabsolute
+deletions, edge surgery among survivors, or no net vertex gain.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
