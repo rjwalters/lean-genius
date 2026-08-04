@@ -18,6 +18,7 @@ import Proofs.Erdos85PolarityDeletion
 import Proofs.Erdos85PolarityAbsolute
 import Proofs.Erdos85PolarityBand
 import Proofs.Erdos85PolarityAbsoluteSetDeletion
+import Proofs.Erdos85PolarityOddSecant
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
