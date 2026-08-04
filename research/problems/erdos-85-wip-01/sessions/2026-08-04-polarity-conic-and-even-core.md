@@ -1515,3 +1515,23 @@ are equal.  Thus the graph/component half of the former bridge is closed.  Its
 only remaining local ingredient is now the pure matrix identity
 `charpoly(adj(C_r)) = C_r(X)-2`; after that, the already-formal square-class
 bookkeeping applies component by component.
+
+The global block factorization is now checked independently of that identity.
+Lean constructs the canonical equivalence
+
+```text
+V ≃ Σ c : D.ConnectedComponent, c.supp
+```
+
+and proves that reindexing `D.adjMatrix` along it gives the dependent block
+diagonal matrix of the adjacency matrices induced on the component supports.
+Using the existing general determinant theorem for dependent block diagonals,
+this yields, over every commutative ring,
+
+```text
+det(aI - adj(D))
+  = product over components c of det(aI - adj(D induced on c.supp)).
+```
+
+Thus neither component enumeration nor determinant multiplicativity remains
+conditional.  Only evaluation of the standard individual cycle block remains.
