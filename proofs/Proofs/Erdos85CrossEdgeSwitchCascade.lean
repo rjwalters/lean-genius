@@ -183,4 +183,73 @@ theorem crossEdgeLoss_eq_zero_of_tight_of_successful_crossEdgeSwitch
   · exact hvx rfl
   · exact hvw rfl
 
+/-- If the proposed switch endpoints are already adjacent, the switch is a
+subgraph of the old graph: its nominal inserted edge was already present. -/
+theorem crossEdgeSwitch_le_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V) (hxw : H.Adj x w) :
+    crossEdgeSwitch H x w ≤ H := by
+  intro a b h
+  rw [crossEdgeSwitch_adj_iff] at h
+  rcases h with h | h
+  · exact h.1
+  · rcases h.1 with h | h
+    · simpa [h.1, h.2] using hxw
+    · simpa [h.1, h.2] using hxw.symm
+
+theorem crossEdgeSwitch_degree_le_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj] (hxw : H.Adj x w) :
+    (crossEdgeSwitch H x w).degree v ≤ H.degree v := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card
+  intro y hy
+  rw [SimpleGraph.mem_neighborFinset] at hy ⊢
+  exact crossEdgeSwitch_le_of_adj H x w hxw hy
+
+/-- A switch which repairs a strict defect must join it to a nonneighbor. -/
+theorem successful_crossEdgeSwitch_not_adjacent_at_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    {d : ℕ} (hdefect : H.degree x < d)
+    (hfinal : d ≤ (crossEdgeSwitch H x w).degree x) : ¬ H.Adj x w := by
+  intro hxw
+  have hle := crossEdgeSwitch_degree_le_of_adj H x w x hxw
+  omega
+
+/-- A switch with two equal endpoints inserts no edge and is a subgraph. -/
+theorem crossEdgeSwitch_le_of_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V) (hxw : x = w) :
+    crossEdgeSwitch H x w ≤ H := by
+  subst w
+  intro a b h
+  rw [crossEdgeSwitch_adj_iff] at h
+  rcases h with h | h
+  · exact h.1
+  · rcases h with ⟨hnew, hne⟩
+    rcases hnew with ⟨hax, hbx⟩ | ⟨hax, hbx⟩
+    · exact (hne (hax.trans hbx.symm)).elim
+    · exact (hne (hax.trans hbx.symm)).elim
+
+/-- A switch which repairs a strict defect has two distinct endpoints. -/
+theorem successful_crossEdgeSwitch_ne_at_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    {d : ℕ} (hdefect : H.degree x < d)
+    (hfinal : d ≤ (crossEdgeSwitch H x w).degree x) : x ≠ w := by
+  intro hxw
+  have hle : (crossEdgeSwitch H x w).degree x ≤ H.degree x := by
+    rw [← SimpleGraph.card_neighborFinset_eq_degree,
+      ← SimpleGraph.card_neighborFinset_eq_degree]
+    apply Finset.card_le_card
+    intro y hy
+    rw [SimpleGraph.mem_neighborFinset] at hy ⊢
+    exact crossEdgeSwitch_le_of_eq H x w hxw hy
+  omega
+
 end Erdos85

@@ -448,3 +448,15 @@ the partner is nonabsolute) specified tight vertices.  The finite searches
 for `q=5,7,11` show that no partner satisfies this condition; the remaining
 geometric target is to prove that impossibility uniformly from polarity
 incidence.
+
+Two further generic endpoint constraints are now checked.  A switch proposed
+at an already adjacent pair is a subgraph of the old graph, since its inserted
+edge was already present; a switch with equal endpoints is likewise a
+subgraph.  Consequently `successful_crossEdgeSwitch_not_adjacent_at_defect`
+and `successful_crossEdgeSwitch_ne_at_defect` show that repairing a strict
+defect requires a distinct nonneighbor.  Applied to the second polarity
+stage, only distinct nonneighbors of the remaining pair pole can be candidate
+partners.  Computation over these reduced candidate sets still finds, for
+every partner at `q=5,7,11`, at least one nonendpoint degree-`q` vertex with
+positive cross-edge loss.  Proving that last incidence assertion uniformly
+would rule out the entire two-switch repair scheme.
