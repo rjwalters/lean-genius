@@ -409,4 +409,125 @@ theorem threePointCore_degree_of_mem_pairPoleCleanCenterNeighbors
   exact hs
 
 
+noncomputable def threePointOuterPairDefectAC {a b c : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c) (hac : a ≠ c) :
+    {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+  ⟨absolutePairCommonNeighbor K ha hc hac, by
+    intro hm
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hm
+    rcases hm with hm | hm | hm
+    · exact (absolutePairCommonNeighbor_spec K ha hc hac).2.2 (by simpa [hm] using ha)
+    · exact (absolutePairCommonNeighbor_spec K ha hc hac).2.2 (by simpa [hm] using hb)
+    · exact (absolutePairCommonNeighbor_spec K ha hc hac).2.2 (by simpa [hm] using hc)⟩
+
+/-- Every clean center neighbor has exactly one common neighbor in the
+three-point core with the outer `{a,c}` pair pole. -/
+theorem cleanCenter_commonNeighbors_outerAC_card_one
+    {a b c : P K} (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (v : {v : P K // v ∉ ({a,b,c} : Finset (P K))})
+    (hv : v.1 ∈ pairPoleCleanCenterNeighbors K ha hb hab (c := c)) :
+    ((threePointCore K).neighborFinset v ∩
+      (threePointCore K).neighborFinset
+        (threePointOuterPairDefectAC K ha hb hc hac)).card = 1 := by
+  classical
+  let y := threePointOuterPairDefectAC K ha hb hc hac
+  have hvy : v.1 ≠ y.1 := by
+    intro heq
+    have hvm := Finset.mem_sdiff.mp hv
+    have hvnc : ¬ (graph K).Adj c v.1 := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hvm.2
+    exact hvnc (by simpa [y, threePointOuterPairDefectAC, heq] using
+      (absolutePairCommonNeighbor_spec K ha hc hac).2.1)
+  have hvnon : ¬ Projectivization.orthogonal v.1 v.1 := by
+    intro hvabs
+    have hvm := Finset.mem_sdiff.mp hv
+    have hvfirst := Finset.mem_sdiff.mp hvm.1
+    have hvx : (graph K).Adj
+        (absolutePairCommonNeighbor K ha hb hab) v.1 := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hvfirst.1
+    have hva : v.1 ≠ a := by intro h; exact hvfirst.2 (by simp [h])
+    have hvb : v.1 ≠ b := by intro h; exact hvfirst.2 (by simp [h])
+    exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+      ha hb hab hvabs hva hvb) hvx
+  have hynon : ¬ Projectivization.orthogonal y.1 y.1 := by
+    simpa [y, threePointOuterPairDefectAC] using
+      (absolutePairCommonNeighbor_spec K ha hc hac).2.2
+  have hbase := card_commonNeighbors_eq_one_of_nonabsolute K hvy hvnon hynon
+  rw [Finset.card_eq_one] at hbase
+  obtain ⟨p, hp⟩ := hbase
+  have hpBoth : p ∈ (graph K).neighborFinset v.1 ∩
+      (graph K).neighborFinset y.1 := by rw [hp]; simp
+  have hpv : (graph K).Adj v.1 p := by
+    simpa only [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp hpBoth).1
+  have hpy : (graph K).Adj y.1 p := by
+    have hm : p ∈ (graph K).neighborFinset y.1 := by
+      exact Finset.mem_inter.mp hpBoth |>.2
+    simpa only [SimpleGraph.mem_neighborFinset] using hm
+  have hpout : p ∉ ({a,b,c} : Finset (P K)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (rfl | rfl | rfl)
+    · have hvm := Finset.mem_sdiff.mp hv
+      have hvx := (Finset.mem_sdiff.mp hvm.1).1
+      have hempty := neighborFinset_inter_eq_empty_of_adj_absolute
+        (K := K) (z := absolutePairCommonNeighbor K ha hb hab) (w := _)
+        (absolutePairCommonNeighbor_spec K ha hb hab).1.symm ha
+      have hm : v.1 ∈ (graph K).neighborFinset
+          (absolutePairCommonNeighbor K ha hb hab) ∩
+          (graph K).neighborFinset p := by
+        rw [Finset.mem_inter]
+        exact ⟨hvx, by simpa only [SimpleGraph.mem_neighborFinset] using hpv.symm⟩
+      rw [hempty] at hm
+      simp at hm
+    · exact (not_adj_absolutePairCommonNeighbor_of_third_absolute K h2
+        ha hc hac hb (Ne.symm hab) hbc)
+          (by simpa [y, threePointOuterPairDefectAC] using hpy)
+    · have hvm := Finset.mem_sdiff.mp hv
+      exact hvm.2 (by simpa using hpv.symm)
+  let ps : {z : P K // z ∉ ({a,b,c} : Finset (P K))} := ⟨p, hpout⟩
+  apply le_antisymm
+  · rw [Finset.card_le_one_iff]
+    intro r s hr hs
+    apply Subtype.ext
+    have rb : r.1 ∈ (graph K).neighborFinset v.1 ∩
+        (graph K).neighborFinset y.1 := by
+      rw [Finset.mem_inter]
+      constructor
+      · rw [SimpleGraph.mem_neighborFinset]
+        exact SimpleGraph.induce_adj.mp
+          ((threePointCore K).mem_neighborFinset v r |>.mp
+            (Finset.mem_inter.mp hr).1)
+      · rw [SimpleGraph.mem_neighborFinset]
+        exact SimpleGraph.induce_adj.mp
+          ((threePointCore K).mem_neighborFinset y r |>.mp
+            (Finset.mem_inter.mp hr).2)
+    have sb : s.1 ∈ (graph K).neighborFinset v.1 ∩
+        (graph K).neighborFinset y.1 := by
+      rw [Finset.mem_inter]
+      constructor
+      · rw [SimpleGraph.mem_neighborFinset]
+        exact SimpleGraph.induce_adj.mp
+          ((threePointCore K).mem_neighborFinset v s |>.mp
+            (Finset.mem_inter.mp hs).1)
+      · rw [SimpleGraph.mem_neighborFinset]
+        exact SimpleGraph.induce_adj.mp
+          ((threePointCore K).mem_neighborFinset y s |>.mp
+            (Finset.mem_inter.mp hs).2)
+    rw [hp] at rb sb
+    simpa using (Finset.mem_singleton.mp rb).trans
+      (Finset.mem_singleton.mp sb).symm
+  · rw [Finset.one_le_card]
+    refine ⟨ps, Finset.mem_inter.mpr ⟨?_, ?_⟩⟩
+    · rw [SimpleGraph.mem_neighborFinset]
+      exact SimpleGraph.induce_adj.mpr hpv
+    · rw [SimpleGraph.mem_neighborFinset]
+      exact SimpleGraph.induce_adj.mpr hpy
+
+
 end Erdos85.Polarity

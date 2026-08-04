@@ -368,3 +368,11 @@ degree is exactly `q+1`.  The unique excluded surviving center neighbor is the
 unique common neighbor of the pair pole and `c`.  The remaining task for the
 static-path obstruction is now only to show that each clean member has one
 distinct deleted cross edge toward each outer pole neighborhood.
+
+The first arm is checked: `cleanCenter_commonNeighbors_outerAC_card_one`
+proves that every clean center neighbor has exactly one common neighbor in the
+three-point core with the outer pole of `{a,c}`.  Equivalently, exactly one
+incident edge is selected by that arm's cross deletion.  The proof uses the
+unique intersection of two projective lines and verifies that the intersection
+point is none of the three deleted absolutes.  The `{b,c}` arm and distinctness
+of the two selected edges remain to be mirrored.

@@ -134,6 +134,9 @@ packaged explicitly for subsequent loss-incidence arguments.
 The center pair pole's neighborhood is classified further: exactly `q-2`
 surviving neighbors avoid the third deleted absolute point, and every member
 of this family has full degree `q+1` in the three-point core.
+Each clean center neighbor is now proved to have exactly one common neighbor
+inside the core with the first outer pair pole, supplying one of the two
+cross-edge losses in the static path obstruction.
 -/
 
 namespace Erdos85
