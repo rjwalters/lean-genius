@@ -77,6 +77,19 @@ theorem crossEdgeLoss_eq_zero_of_not_mem
   classical
   simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT]
 
+/-- Every incident edge selected for cross deletion contributes positive loss
+at its endpoint. -/
+theorem one_le_crossEdgeLoss_of_adj_of_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (S T : Finset V) {v w : V}
+    (hvw : H.Adj v w) (hvS : v ∈ S) (hwT : w ∈ T) :
+    1 ≤ crossEdgeLoss H S T v := by
+  classical
+  rw [crossEdgeLoss, Finset.one_le_card]
+  exact ⟨w, Finset.mem_filter.mpr
+    ⟨by simpa using hvw,
+      pair_mem_crossEdgeSet_iff S T v w |>.mpr (Or.inl ⟨hvS, hwT⟩)⟩⟩
+
 /-- A vertex with the one-unit deletion defect must receive at least one of
 the two new attachment edges. -/
 theorem mem_union_of_one_defect_compensated
