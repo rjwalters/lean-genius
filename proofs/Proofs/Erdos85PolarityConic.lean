@@ -51,7 +51,7 @@ private theorem eq_smul_isotropic_of_two_orthogonal
 /-- In odd characteristic, the absolute locus of the orthogonal polarity has
 at least `q + 1` points.  An explicit rational parametrization of the conic
 gives an injection from `Option K` into the absolute locus. -/
-theorem card_absolutePoints_eq_card_add_one
+theorem card_absolutePoints_eq_card_add_one_of_two_ne_zero
     (K : Type u) [Field K] [Finite K] [DecidableEq K]
     (h2 : (2 : K) ≠ 0) :
     (absolutePoints K).card = Nat.card K + 1 := by
@@ -233,7 +233,7 @@ theorem card_absolutePoints_ge_card_add_one
     (K : Type u) [Field K] [Finite K] [DecidableEq K]
     (h2 : (2 : K) ≠ 0) :
     Nat.card K + 1 ≤ (absolutePoints K).card := by
-  rw [card_absolutePoints_eq_card_add_one K h2]
+  rw [card_absolutePoints_eq_card_add_one_of_two_ne_zero K h2]
 
 /-- Deleting any number of absolute points up to `q + 1` leaves an
 odd-characteristic polarity witness with minimum degree at least `q - 1`. -/
