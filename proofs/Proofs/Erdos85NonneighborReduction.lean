@@ -444,4 +444,134 @@ theorem max_choose_add_two_mul_pred_succ_le_order_of_witness
   have hcount := mul_pred_lt_order_of_c4FreeMinDegreeWitness hthree hw
   omega
 
+/-- In a `C₄`-free graph of minimum degree at least three, no vertex is
+universal. -/
+theorem degree_add_two_le_order_of_not_containsC4
+    {n : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hmin : 3 ≤ G.minDegree) (hfree : ¬ containsC4 (Fin n) G) (x : Fin n) :
+    G.degree x + 2 ≤ n := by
+  have hxdeg : 3 ≤ G.degree x := hmin.trans (G.minDegree_le_degree x)
+  have hxlt := G.degree_lt_card_verts x
+  simp only [Fintype.card_fin] at hxlt
+  by_contra hnot
+  have hxeq : G.degree x = n - 1 := by omega
+  have hsub : G.neighborFinset x ⊆ Finset.univ.erase x := by
+    intro z hz
+    exact Finset.mem_erase.mpr
+      ⟨(G.ne_of_adj ((G.mem_neighborFinset x z).mp hz)).symm,
+        Finset.mem_univ z⟩
+  have hcard : (Finset.univ.erase x).card ≤ (G.neighborFinset x).card := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ,
+      Fintype.card_fin, G.card_neighborFinset_eq_degree, hxeq]
+  have hxall : G.neighborFinset x = Finset.univ.erase x :=
+    Finset.eq_of_subset_of_card_le hsub hcard
+  have hxpos : 0 < (G.neighborFinset x).card := by
+    rw [G.card_neighborFinset_eq_degree]
+    omega
+  obtain ⟨y, hyx⟩ := Finset.card_pos.mp hxpos
+  have hxy : G.Adj x y := (G.mem_neighborFinset x y).mp hyx
+  have hxyMem : x ∈ G.neighborFinset y :=
+    (G.mem_neighborFinset y x).mpr hxy.symm
+  have hydeg : 3 ≤ G.degree y := hmin.trans (G.minDegree_le_degree y)
+  have herase : 1 < ((G.neighborFinset y).erase x).card := by
+    rw [Finset.card_erase_of_mem hxyMem, G.card_neighborFinset_eq_degree]
+    omega
+  obtain ⟨z, hz, w, hw, hzw⟩ := Finset.one_lt_card.mp herase
+  have hyz : G.Adj y z := (G.mem_neighborFinset y z).mp (Finset.mem_erase.mp hz).2
+  have hyw : G.Adj y w := (G.mem_neighborFinset y w).mp (Finset.mem_erase.mp hw).2
+  have hzx : z ≠ x := (Finset.mem_erase.mp hz).1
+  have hwx : w ≠ x := (Finset.mem_erase.mp hw).1
+  have hxz : G.Adj x z := by
+    apply (G.mem_neighborFinset x z).mp
+    rw [hxall]
+    exact Finset.mem_erase.mpr ⟨hzx, Finset.mem_univ z⟩
+  have hxw : G.Adj x w := by
+    apply (G.mem_neighborFinset x w).mp
+    rw [hxall]
+    exact Finset.mem_erase.mpr ⟨hwx, Finset.mem_univ w⟩
+  exact hfree (containsC4_of_rim (a := y) (b := z) (c := x) (d := w)
+    hyz hxz.symm hxw hyw.symm
+    (G.ne_of_adj hxy).symm hzw
+    (G.ne_of_adj hyz).symm hzx (G.ne_of_adj hyw).symm hwx)
+
+/-- Deleting the closed neighborhood of any vertex and applying the triangular
+bound to the reduced witness gives a vertex-sensitive order inequality. -/
+theorem degree_add_one_add_choose_le_order
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G) (x : Fin n) :
+    G.degree x + 1 + (d + 1).choose 2 ≤ n := by
+  have hmin3 : 3 ≤ G.minDegree := by omega
+  have hnonuniv := degree_add_two_le_order_of_not_containsC4 G hmin3 hfree x
+  have hpos : 1 ≤ Fintype.card (Fin n) - G.degree x - 1 := by
+    simp only [Fintype.card_fin]
+    omega
+  have hreduced := c4FreeMinDegreeWitness_of_outsideClosedNeighborhood
+    G hfree x (d := d - 1) (by omega) hpos
+  have hbound := choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness
+    (d := d - 1) (by omega) hreduced
+  simp only [Fintype.card_fin] at hbound
+  have hchooseArg : d - 1 + 2 = d + 1 := by omega
+  rw [hchooseArg] at hbound
+  omega
+
+/-- A vertex strictly above the exact minimum forces one full vertex of slack
+beyond the triangular order bound. -/
+theorem choose_degree_add_two_add_one_le_order_of_high_vertex
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G) {x : Fin n}
+    (hxhigh : d < G.degree x) :
+    (d + 2).choose 2 + 1 ≤ n := by
+  have hvertex := degree_add_one_add_choose_le_order
+    G hfour hdegree hfree x
+  have hchoose : (d + 2).choose 2 = (d + 1) + (d + 1).choose 2 := by
+    rw [show d + 2 = (d + 1) + 1 by omega, Nat.choose_succ_succ]
+    simp
+  rw [hchoose]
+  omega
+
+/-- Equality in the triangular witness bound forces exact regularity. -/
+theorem regular_of_card_eq_choose_degree_add_two
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G)
+    (hcard : n = (d + 2).choose 2) :
+    ∀ x, G.degree x = d := by
+  intro x
+  have hxlow : d ≤ G.degree x := by
+    rw [← hdegree]
+    exact G.minDegree_le_degree x
+  by_contra hxne
+  have hxhigh : d < G.degree x := lt_of_le_of_ne hxlow (Ne.symm hxne)
+  have hstrict := choose_degree_add_two_add_one_le_order_of_high_vertex
+    G hfour hdegree hfree hxhigh
+  omega
+
+/-- At triangular equality, deleting the closed neighborhood of *any* vertex
+lands exactly on the next triangular witness order. -/
+theorem closedNeighborhood_witness_of_card_eq_choose_degree_add_two
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G)
+    (hcard : n = (d + 2).choose 2) (x : Fin n) :
+    C4FreeMinDegreeWitness ((d + 1).choose 2) (d - 1) := by
+  have hregular := regular_of_card_eq_choose_degree_add_two
+    G hfour hdegree hfree hcard
+  have hx := hregular x
+  have hchoose : (d + 2).choose 2 = (d + 1) + (d + 1).choose 2 := by
+    rw [show d + 2 = (d + 1) + 1 by omega, Nat.choose_succ_succ]
+    simp
+  have horder : Fintype.card (Fin n) - G.degree x - 1 =
+      (d + 1).choose 2 := by
+    simp only [Fintype.card_fin]
+    omega
+  have hpos : 1 ≤ Fintype.card (Fin n) - G.degree x - 1 := by
+    rw [horder]
+    have : 0 < (d + 1).choose 2 := Nat.choose_pos (by omega)
+    omega
+  have hreduced := c4FreeMinDegreeWitness_of_outsideClosedNeighborhood
+    G hfree x (d := d - 1) (by omega) hpos
+  rwa [horder] at hreduced
+
 end Erdos85
