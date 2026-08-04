@@ -160,6 +160,27 @@ theorem existsUnique_nonabsolute_commonNeighbor_of_absolute
   · simp [haz, hbz]
   · simp [hw.1, hw.2.1]
 
+/-- In characteristic two, the unique common neighbor of every distinct pair
+of absolute points is the nucleus. -/
+theorem commonNeighbor_eq_nucleus_of_even_absolute
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0)
+    {a b z : Projectivization K (Fin 3 → K)}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b)
+    (haz : (graph K).Adj a z) (hbz : (graph K).Adj b z) :
+    z = nucleus K := by
+  have hna : (graph K).Adj a (nucleus K) :=
+    ((graph K).adj_comm (nucleus K) a).mp
+      ((selfOrthogonal_iff_nucleus_adj h2 a).mp ha)
+  have hnb : (graph K).Adj b (nucleus K) :=
+    ((graph K).adj_comm (nucleus K) b).mp
+      ((selfOrthogonal_iff_nucleus_adj h2 b).mp hb)
+  have hle := Finset.card_le_one.mp (commonNeighbors_le_one a b hab)
+  apply hle z
+  · simp [haz, hbz]
+  · simp [hna, hnb]
+
 /-- Away from the nucleus, every nonabsolute polar line in characteristic two
 meets the absolute line in exactly one point. -/
 theorem card_neighborFinset_inter_absolute_eq_one_of_even (K : Type u) [Field K] [Finite K] [DecidableEq K]
