@@ -167,3 +167,11 @@ q + 1 ≤ 2 · number_of_selectors.
 This is `two_mul_numSelectors_ge_card_add_one`.  In particular, no bounded
 number of direct safe attachments repairs the full deleted-conic odd core
 uniformly in `q`.
+
+The underlying rank-two combinatorics has also been sharpened independently.
+Every intersecting family of pairs is either a star or has at most three
+members, and a family of intersecting pair-families covering every pair of an
+`n`-element set has at least `n-2` members.  These checked statements are
+`pair_intersecting_star_or_card_le_three` and
+`pair_intersecting_cover_card_ge`; transporting the latter through the defect
+bijection will upgrade the geometric selector bound to `q-1`.
