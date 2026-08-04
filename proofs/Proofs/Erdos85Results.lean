@@ -30,6 +30,7 @@ import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
 import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85GadgetCounting
+import Proofs.Erdos85CompensatedGadget
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -170,6 +171,12 @@ Global mixed-budget counting nevertheless limits this generalization: an
 `d²-(m-1)² ≤ n` when `m-1 ≤ d`.  At order `d(d-1)+1`, any such gadget
 must satisfy `(m-1)² ≥ d-1`; bounded attachment gadgets cannot by themselves
 settle eventual witness extension near the Moore-layer scale.
+The remaining escape route is now integrated exactly: after deleting old
+vertices, one may delete arbitrary additional survivor edges before attaching
+the replacement gadget.  The pure bound then gains precisely the
+attachment-weighted old-degree loss `L`.  At Moore-layer order it forces
+`m(d-1-(m-1)²) ≤ L`, so every unit of gadget-size deficit must be paid by
+old-edge losses at attachment vertices and subsequently compensated.
 -/
 
 namespace Erdos85

@@ -829,3 +829,41 @@ can establish eventual witness extension in this regime: gadget size must
 grow at least on the square-root scale, or the construction must also modify
 old edges.  This cleanly separates two viable future routes—large structured
 gadgets versus combined attachment/switching surgery.
+
+## Edge-compensated gadget surgery
+
+The two remaining routes are now unified formally.  After deleting a set of
+old vertices, the induced survivor graph may be replaced by any spanning
+subgraph `K` before an arbitrary finite gadget is attached.  The exact degree
+bookkeeping charges each survivor for both its deleted neighbors and every
+additional incident survivor edge removed, then credits one unit for every
+gadget selector containing it.  Taking a `k+1` vertex gadget after deleting
+`k` vertices raises the order by one.  A uniform existence theorem for this
+data implies `C4FreeWitnessExtension n`.
+
+The global counting obstruction has a matching loss-corrected form.  If `H`
+is the pre-deletion survivor graph, `K ≤ H`, and
+
+```text
+L = ∑_w ∑_{a∈A(w)} (deg_H(a)-deg_K(a)),
+```
+
+then compatibility forces
+
+```text
+∑_w (d-r_w)(d+r_w) ≤ |V||W| + L.
+```
+
+Thus old-edge deletion is not a free escape from the gadget obstruction: it
+relaxes the bound by exactly its attachment-weighted degree loss.  At
+`|V|=d(d-1)+1`, for an `m`-vertex gadget with `(m-1)² ≤ d-1`, Lean proves
+
+```text
+m (d-1-(m-1)²) ≤ L.
+```
+
+Every unit by which the gadget misses the square-root size threshold must be
+paid once per gadget vertex through deletions incident to attachment
+vertices.  Those same losses must then be compensated by the final
+attachments, quantitatively linking the gadget-size obstruction to the
+previous repair-cascade obstruction.
