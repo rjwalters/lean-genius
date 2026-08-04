@@ -373,4 +373,51 @@ theorem twentyone_le_order_of_c4FreeMinDegreeWitness_five {n : ℕ}
   norm_num [iteratedNonneighborRemoval] at h ⊢
   exact h
 
+/-- A uniform consequence of the reduction: a `C₄`-free minimum-degree-`d`
+witness, for `d ≥ 3`, has at least `C(d+2,2)` vertices.  This is sharp for
+`d = 3,4,5` in the present development. -/
+theorem choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness
+    {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d) :
+    (d + 2).choose 2 ≤ n := by
+  induction d using Nat.strong_induction_on generalizing n with
+  | h d ih =>
+      by_cases hd : d = 3
+      · subst d
+        norm_num
+        exact ten_le_order_of_c4FreeMinDegreeWitness_three hw
+      · obtain ⟨e, rfl⟩ : ∃ e, d = e + 1 := ⟨d - 1, by omega⟩
+        have hethree : 3 ≤ e := by omega
+        have hfour : 4 ≤ n :=
+          four_le_order_of_c4FreeMinDegreeWitness (by omega) hw
+        have hstep : C4FreeMinDegreeWitness (n - (e + 1) - 1) e :=
+          c4FreeMinDegreeWitness_nonneighbor_step hfour hw
+        have hbound : (e + 2).choose 2 ≤ n - (e + 1) - 1 :=
+          ih e (by omega) hethree hstep
+        have hen : e + 2 ≤ n := by
+          have hthreshold : e + 1 < minDegreeForC4 n :=
+            (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hfour).1 hw
+          have hupper := minDegreeForC4_le_sub_two hfour
+          omega
+        have hadd : (e + 2) + (e + 2).choose 2 ≤ n := by omega
+        have hchoose : ((e + 2) + 1).choose 2 =
+            (e + 2) + (e + 2).choose 2 := by
+          rw [Nat.choose_succ_succ]
+          simp
+        have heq : e + 1 + 2 = (e + 2) + 1 := by omega
+        rw [heq, hchoose]
+        exact hadd
+
+/-- Contrapositive threshold form of the uniform order bound. -/
+theorem minDegreeForC4_le_of_lt_choose_degree_add_two
+    {n d : ℕ} (hn : 4 ≤ n) (hthree : 3 ≤ d)
+    (hsmall : n < (d + 2).choose 2) :
+    minDegreeForC4 n ≤ d := by
+  by_contra hnot
+  have hlt : d < minDegreeForC4 n := by omega
+  have hw : C4FreeMinDegreeWitness n d :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).2 hlt
+  have horder :=
+    choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness hthree hw
+  omega
+
 end Erdos85
