@@ -603,6 +603,29 @@ theorem commonNeighborConflict_evenCore_indepNum
     rw [← hcard]
     exact hind.card_le_indepNum
 
+/-- Direct failure of the conflict-independence sufficient criterion at
+degree `q` for the even core. -/
+theorem not_card_le_commonNeighborConflict_evenCore_indepNum
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    ¬ Nat.card K ≤ (commonNeighborConflict (evenCore K)).indepNum := by
+  rw [commonNeighborConflict_evenCore_indepNum K h2]
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  omega
+
+/-- Equivalently, no safe old-neighbor set can give one attached vertex
+degree `q` over the even core. -/
+theorem not_exists_commonNeighborIndependent_evenCore_card_ge
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    ¬ ∃ S : Finset
+        {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K},
+      Nat.card K ≤ S.card ∧ CommonNeighborIndependent (evenCore K) S := by
+  rintro ⟨S, hcard, hsafe⟩
+  have hle := card_commonNeighborIndependent_evenCore_le K h2 S hsafe
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  omega
+
 
 
 
