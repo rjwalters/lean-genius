@@ -116,6 +116,114 @@ theorem card_absolutePoints_eq_card_add_one
   · exact card_absolutePoints_eq_card_add_one_of_two_eq_zero (K := K) h2
   · exact card_absolutePoints_eq_card_add_one_of_two_ne_zero K h2
 
+/-- Away from the nucleus, every nonabsolute polar line in characteristic two
+meets the absolute line in exactly one point. -/
+theorem card_neighborFinset_inter_absolute_eq_one_of_even (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0)
+    (v : Projectivization K (Fin 3 → K))
+    (hvself : ¬ Projectivization.orthogonal v v)
+    (hvn : v ≠ nucleus K) :
+    ((graph K).neighborFinset v ∩ absolutePoints K).card = 1 := by
+  obtain ⟨p, hpv, hpn⟩ :=
+    Configuration.HasPoints.existsUnique_point
+      (Projectivization K (Fin 3 → K)) (Projectivization K (Fin 3 → K))
+      v (nucleus K) hvn |>.exists
+  have hpvOrtho : Projectivization.orthogonal p v :=
+    (Configuration.ofField.mem_iff p v).mp hpv
+  have hpnOrtho : Projectivization.orthogonal p (nucleus K) :=
+    (Configuration.ofField.mem_iff p (nucleus K)).mp hpn
+  have hpne_v : p ≠ v := by
+    intro heq
+    apply hvself
+    simpa [heq] using hpvOrtho
+  have hpne_n : p ≠ nucleus K := by
+    intro heq
+    have hnself : Projectivization.orthogonal (nucleus K) (nucleus K) := by
+      simpa [heq] using hpnOrtho
+    exact (graph K).irrefl
+      ((selfOrthogonal_iff_nucleus_adj h2 (nucleus K)).mp hnself)
+  have hvp : (graph K).Adj v p :=
+    (graph_adj_iff v p).mpr
+      ⟨Ne.symm hpne_v, Projectivization.orthogonal_comm.mp hpvOrtho⟩
+  have hnp : (graph K).Adj (nucleus K) p :=
+    (graph_adj_iff (nucleus K) p).mpr
+      ⟨Ne.symm hpne_n, Projectivization.orthogonal_comm.mp hpnOrtho⟩
+  have hpabs : p ∈ absolutePoints K :=
+    (mem_absolutePoints K p).mpr
+      ((selfOrthogonal_iff_nucleus_adj h2 p).mpr hnp)
+  have hpos : 0 < ((graph K).neighborFinset v ∩ absolutePoints K).card :=
+    Finset.card_pos.mpr ⟨p, by simp [hvp, hpabs]⟩
+  have habsEq : absolutePoints K = (graph K).neighborFinset (nucleus K) := by
+    ext y
+    rw [mem_absolutePoints, SimpleGraph.mem_neighborFinset]
+    exact selfOrthogonal_iff_nucleus_adj h2 y
+  have hle : ((graph K).neighborFinset v ∩ absolutePoints K).card ≤ 1 := by
+    rw [habsEq]
+    exact commonNeighbors_le_one v (nucleus K) hvn
+  omega
+
+/-- The characteristic-two deletion set: the absolute line together with its
+nucleus. -/
+noncomputable def evenDeletedSet
+    (K : Type u) [Field K] [Finite K] [DecidableEq K] :
+    Finset (Projectivization K (Fin 3 → K)) :=
+  insert (nucleus K) (absolutePoints K)
+
+/-- The induced polarity graph after deleting the absolute line and nucleus. -/
+noncomputable abbrev evenCore
+    (K : Type u) [Field K] [Finite K] [DecidableEq K] :=
+  deleteVertexSetGraph (graph K) (evenDeletedSet K)
+
+theorem card_neighborFinset_inter_evenDeletedSet_eq_one
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0)
+    (v : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K}) :
+    ((graph K).neighborFinset v.1 ∩ evenDeletedSet K).card = 1 := by
+  have hvnotabs : v.1 ∉ absolutePoints K := by
+    intro hv
+    exact v.2 (by simp [evenDeletedSet, hv])
+  have hvself : ¬ Projectivization.orthogonal v.1 v.1 := by
+    simpa [mem_absolutePoints] using hvnotabs
+  have hvn : v.1 ≠ nucleus K := by
+    intro heq
+    apply v.2
+    simp [evenDeletedSet, heq]
+  have hnadj : ¬ (graph K).Adj (nucleus K) v.1 := by
+    simpa [selfOrthogonal_iff_nucleus_adj h2 v.1] using hvself
+  have hinter : (graph K).neighborFinset v.1 ∩ evenDeletedSet K =
+      (graph K).neighborFinset v.1 ∩ absolutePoints K := by
+    ext y
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      evenDeletedSet, Finset.mem_insert]
+    constructor
+    · rintro ⟨hvy, rfl | hyabs⟩
+      · exact False.elim
+          (hnadj (((graph K).adj_comm (nucleus K) v.1).mpr hvy))
+      · exact ⟨hvy, hyabs⟩
+    · rintro ⟨hvy, hyabs⟩
+      exact ⟨hvy, Or.inr hyabs⟩
+  rw [hinter]
+  exact card_neighborFinset_inter_absolute_eq_one_of_even K h2 v.1 hvself hvn
+
+/-- The characteristic-two core on `q² - 1` vertices is exactly `q`-regular,
+not merely of minimum degree at least `q`. -/
+theorem evenCore_isRegular
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    (evenCore K).IsRegularOfDegree (Nat.card K) := by
+  intro v
+  have hvnotabs : v.1 ∉ absolutePoints K := by
+    intro hv
+    exact v.2 (by simp [evenDeletedSet, hv])
+  have hvself : ¬ Projectivization.orthogonal v.1 v.1 := by
+    simpa [mem_absolutePoints] using hvnotabs
+  have hs := degree_deleteVertexSetGraph_add (graph K) (evenDeletedSet K) v
+  rw [card_neighborFinset_inter_evenDeletedSet_eq_one K h2 v,
+    degree_eq_card_add_one_of_not_selfOrthogonal hvself] at hs
+  have hs' : (evenCore K).degree v + 1 = Nat.card K + 1 := by
+    simpa [evenCore] using hs
+  omega
+
 /-- In characteristic two, delete the full absolute line and its nucleus.
 Every survivor is nonabsolute, is not adjacent to the nucleus, and has at most
 one neighbor on the absolute line.  The resulting graph has order `q² - 1`
