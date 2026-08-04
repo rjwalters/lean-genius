@@ -1,8 +1,8 @@
 {
   "slug": "erdos-szekeres-oq-02",
   "title": "Complexity of finding the actual Erdos-Szekeres monotonic subsequence",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,9 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-06-13T00:00:00-07:00",
-    "iteration": 2,
-    "focus": "First survey complete (researcher-9 2026-06-13, build-free during the Docker/Aristotle verification blackout). The OQ is resolved on paper and decomposed into a formalizable core (computable DP + correctness + constructive witness + exact comparison count) plus a cost-model-gated remainder (Theta(n log n) optimality).",
+    "since": "2026-08-03T00:00:00+00:00",
+    "iteration": 3,
+    "focus": "S7 JSON SYNC (researcher-1, 2026-08-03): tracker JSON aligned to the S6 completion already recorded in state.md (COMPLETED since 2026-07-24) — the S6 session's JSON update never merged, leaving JSON=active vs state.md=COMPLETED, which kept the depth-first tier re-serving a finished slug. S6 outcome (all on origin/main, ErdosSzekeresOQ02.lean): milestone-2 pinned statement incDP = maxIncLen REFUTED via incDP_lt_maxIncLen_counterexample (![1,2,0] at i=2); corrected closure exactIncEnd_iff_le_incDP + maxIncLen_eq_sup_Iic + lisLength/lisLength_eq_sup_maxIncLen; milestone 3 executable IncChain/incChain/incWitness/lisWitness via argmax backtracking. 0 sorry / 0 axiom. Theta(n log n) optimality remains literature-only by design (no comparison-cost model in Mathlib).",
     "blockers": [
       {
         "route": "correctness <= direction via oq-01 extension lemma maxIncLen_lt_of_lt",
@@ -39,7 +39,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "ACT milestone 1 (oq-01-independent, ~40-60 LOC): computable incDP via strong recursion with DecidablePred from LinearOrder's decidableLT, and the exact comparison count incDPcost n = n(n-1)/2. Then milestone 2 (correctness incDP = maxIncLen, after oq-01 ACT-2) and milestone 3 (constructive incWitness : (i : Fin n) -> IncreasingSubseq f (incDP f i)).",
+    "nextAction": "None — node completed (see state.md S6). Reopen only if a comparison-cost model lands in Mathlib (Theta(n log n) optimality tier) or the parent ErdosSzekeres.lean docstring mismatch repair surfaces new content.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (2026-07-24 S6): all three pinned milestones closed. Milestone 2 closed in corrected form — the naive pin incDP = maxIncLen is FALSE (parent ending-at predicate is a running maximum; formalized counterexample) and the honest bridge maxIncLen f i = (Iic i).sup (incDP f) plus the exact characterization ExactIncEnd f i len iff len <= incDP f i are proved. Milestone 3 closed: fully executable witness pipeline (incWitness per position, lisWitness global) via Finset.sort/List.finRange argmax backtracking, no Classical.choice in data, #eval prints actual indices. 0 sorry / 0 axiom throughout. Out of Lean scope by design: patience sorting and Fredman lower bound (no comparison-cost model).",
+    "progressSummary": "COMPLETED (S7 JSON sync, 2026-08-03, researcher-1): doc-only alignment of this JSON to the S6 completion (2026-07-24) already recorded in state.md and the merged Lean source — S6 closed milestones 2+3 in corrected form (naive incDP=maxIncLen pin refuted with a formal counterexample; corrected bridge + executable witness extraction landed; 0 sorry / 0 axiom). | COMPLETED (2026-07-24 S6): all three pinned milestones closed. Milestone 2 closed in corrected form — the naive pin incDP = maxIncLen is FALSE (parent ending-at predicate is a running maximum; formalized counterexample) and the honest bridge maxIncLen f i = (Iic i).sup (incDP f) plus the exact characterization ExactIncEnd f i len iff len <= incDP f i are proved. Milestone 3 closed: fully executable witness pipeline (incWitness per position, lisWitness global) via Finset.sort/List.finRange argmax backtracking, no Classical.choice in data, #eval prints actual indices. 0 sorry / 0 axiom throughout. Out of Lean scope by design: patience sorting and Fredman lower bound (no comparison-cost model).",
     "builtItems": [
       "ErdosSzekeresOQ02.lean (NEW, 319 LOC, 0 sorry, 0 axiom): incDP (computable DP), incDP_eq, one_le_incDP, incDP_le_index_succ",
       "ExactIncEnd + exactIncEnd_one + ExactIncEnd.extend + ExactIncEnd.hasIncreasingEndingAt (snoc extension machinery)",
@@ -116,7 +116,7 @@
     ]
   },
   "started": "2026-06-10T11:02:48-07:00",
-  "lastUpdate": "2026-06-14T19:00:00Z",
+  "lastUpdate": "2026-08-03T00:00:00+00:00",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [
