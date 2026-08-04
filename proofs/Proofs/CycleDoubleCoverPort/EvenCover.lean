@@ -61,9 +61,6 @@ theorem pairIndicator_base (p h : Gamma) : pairIndicator p h p = 1 := by
 theorem pairIndicator_shift (p h : Gamma) : pairIndicator p h (p + h) = 1 := by
   simp [pairIndicator]
 
-/-- `F₂` is nontrivial, so an indicator value determines its branch. -/
-private theorem f2_zero_ne_one : (0 : F₂) ≠ 1 := by decide
-
 /-- The fibre of `pairIndicator p h` over `1` is literally the pair
 `{p, p + h}`. -/
 theorem pairIndicator_filter (p h : Gamma) :
@@ -73,7 +70,7 @@ theorem pairIndicator_filter (p h : Gamma) :
     Finset.mem_singleton, pairIndicator]
   by_cases hs : s = p ∨ s = p + h
   · simp [hs]
-  · simp [hs, f2_zero_ne_one]
+  · simp [hs]
 
 /-- A nondegenerate affine pair in `Gamma` has exactly two members. The
 nondegeneracy hypothesis `h ≠ 0` is essential: it is what stops the two chosen
@@ -84,7 +81,9 @@ theorem pairIndicator_card (p h : Gamma) (hh : h ≠ 0) :
   rw [pairIndicator_filter]
   refine Finset.card_pair ?_
   intro hpe
-  exact hh (self_eq_add_right.mp hpe)
+  refine hh (add_left_cancel (a := p) ?_)
+  rw [add_zero]
+  exact hpe.symm
 
 namespace CubicGraph
 
