@@ -52,7 +52,9 @@ theorem crossEdgeLoss_eq_card_neighbor_inter_right
     (hvS : v ∈ S) (hvT : v ∉ T) :
     crossEdgeLoss H S T v = (H.neighborFinset v ∩ T).card := by
   classical
-  simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT]
+  apply congrArg Finset.card
+  ext w
+  simp [pair_mem_crossEdgeSet_iff, hvS, hvT]
 
 /-- For a vertex in `T \ S`, cross-edge loss is its number of neighbors in
 `S`. -/
@@ -62,7 +64,9 @@ theorem crossEdgeLoss_eq_card_neighbor_inter_left
     (hvT : v ∈ T) (hvS : v ∉ S) :
     crossEdgeLoss H S T v = (H.neighborFinset v ∩ S).card := by
   classical
-  simp [crossEdgeLoss, pair_mem_crossEdgeSet_iff, hvS, hvT, and_comm]
+  apply congrArg Finset.card
+  ext w
+  simp [pair_mem_crossEdgeSet_iff, hvS, hvT]
 
 /-- Vertices outside both attachment sets lose no cross edge. -/
 theorem crossEdgeLoss_eq_zero_of_not_mem
@@ -253,7 +257,6 @@ theorem c4FreeMinDegreeWitness_delete_add_pair_deleteCrossEdges_of_loss
     (hn : 1 ≤ n) (hcard : Fintype.card V = n)
     (hfree : ¬ containsC4 V G)
     (S T : Finset {y : V // y ≠ x})
-    [DecidableRel (G.induce {y | y ≠ x}).Adj]
     [DecidableRel
       (deleteCrossEdges (G.induce {y | y ≠ x}) S T).Adj]
     (hS : d - 1 ≤ S.card) (hT : d - 1 ≤ T.card) (hd : 1 ≤ d)
