@@ -283,3 +283,20 @@ The checked headline theorem is `minDegreeForC4_odd_twoPoint_order` in
 `Erdos85PolarityTangentSwitch.lean`.  This extends the known consecutive
 polarity values at `q²+q` and `q²+q+1` to a run of three exact orders in odd
 characteristic.
+
+## Why the same surgery stops at three deleted absolute points
+
+The general checked theorem `crossEdgeSwitch_degree_le_of_ne_endpoints` says
+that a cross-edge switch cannot increase the degree of any old vertex other
+than its two endpoints.  Consequently
+`crossEdgeSwitch_minDegree_lt_of_three_low_vertices` proves that one switch
+cannot reach target degree `d` when the old graph has three distinct vertices
+of degree below `d`.
+
+After deleting three distinct absolute points, every deleted pair still has
+its nonabsolute pair pole at degree `q-1`: the third absolute point is not
+adjacent to that pole by the odd two-secant theorem.  This core is introduced
+as `threePointCore`, with the checked per-pair degree theorem
+`threePointPairDefect_degree`.  Thus extending the new plateau one step
+further requires a genuinely multi-endpoint or multi-switch construction;
+choosing a more clever single tangent endpoint cannot suffice.
