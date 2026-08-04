@@ -403,3 +403,16 @@ Finally, `threePairPolePathSwitch_minDegree_le_sub_one` packages the nonempty
 clean family into the global conclusion that the simultaneous path graph has
 minimum degree at most `q-1`.  Thus this repair is now formally excluded as a
 degree-`q` witness on `q²+q-2` vertices.
+
+## Dynamic first switch: a new unique-defect core
+
+The dynamic operation behaves much better at its first stage.  For
+`q=5,7,11`, switching any two of the three pair poles deletes `q-2` cross
+edges, repairs those two degree-`q-1` endpoints, creates no new sub-target
+vertex, and leaves exactly the third pair pole at degree `q-1`.  Exhaustively
+trying every possible partner for a second universal switch produced no
+degree-`q` graph in those fields, but the first stage is a canonical reduction
+from three defects to one and deserves a structural proof.  The next formal
+target is to show that the shared-absolute pair poles are nonadjacent with
+disjoint core neighborhoods and that every positive-loss vertex has the one
+unit of required slack.
