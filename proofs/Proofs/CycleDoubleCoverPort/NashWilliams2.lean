@@ -155,6 +155,7 @@ theorem quotientGraph_adj_of_mem_crossingClass (S : Finset E) (P : Setoid V) {e 
   intro hq
   exact (G.mem_crossingClass.mp he).2 (Quotient.exact hq)
 
+omit [DecidableEq V] [DecidableEq E] in
 open Classical in
 /-- Contraction sends an edge of the support graph either to an edge of the
 contracted support graph or to a single point. -/
@@ -243,6 +244,7 @@ theorem reachableIn_out_of_quotient_reachable {S R : Finset E} {P : Setoid V}
   · exact (hstep h0).trans (hadj.reachable.trans (hstep h1).symm)
   · exact (hstep h1).trans (hadj.reachable.symm.trans (hstep h0).symm)
 
+omit [DecidableEq V] [DecidableEq E] in
 open Classical in
 /-- Converse of `quotientGraph_connected_of_connects` in the presence of internal
 connectedness. -/
@@ -262,6 +264,7 @@ theorem connects_of_internal_of_quotient_connects [Nonempty V] (S : Finset E) (P
     (hQ.preconnected (Quotient.mk P u) (Quotient.mk P v))
   exact hu.trans (hmid.trans hv.symm)
 
+omit [DecidableEq V] in
 open Classical in
 /-- A circuit through a contracted edge lifts to a circuit through the underlying
 edge object: the internal detours avoid it because it crosses the partition. -/
