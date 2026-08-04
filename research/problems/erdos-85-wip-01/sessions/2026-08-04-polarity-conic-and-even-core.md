@@ -580,3 +580,48 @@ make the unavoidable loss explicit.  Beating the failed polarity switch
 therefore requires changing selectors or using a different multi-vertex
 attachment graph, not merely a more selective deletion of the same cross
 edges.
+
+## Arbitrary gadget attachments and a new step at order 32
+
+The extension theory now allows an arbitrary finite graph `F` of new
+vertices, with a selector `A w` of old neighbors for each gadget vertex.
+For the graph `attachGadget G F A`, its common-neighbor sets split into old
+and new contributions in three ways:
+
+* old--old: old common neighbors plus gadget selectors containing both;
+* new--new: selector overlap plus common neighbors inside `F`;
+* old--new: neighbors in the new selector plus adjacent gadget vertices whose
+  selectors contain the old vertex.
+
+`attachGadget_not_containsC4_iff_compatible` proves that requiring each of
+these three exact sums to be at most one is necessary and sufficient for
+`C₄`-freeness.  The degree formulas are also exact: an old vertex gains one
+for each selector containing it, while a gadget vertex has degree
+`|A w| + deg_F(w)`.  The theorem
+`c4FreeMinDegreeWitness_add_of_gadgetCompatible` transports any such
+construction to `Fin (n+m)` and packages it as a witness.
+
+This broader architecture produces a positive result that the one- and
+two-vertex schemes miss.  At `q=5`, delete four absolute points from the
+31-point orthogonal polarity graph and attach a five-cycle.  Each new cycle
+vertex uses three old neighbors.  Exhaustive checking of the exact budgets
+found a compatible system covering all six degree-four pair poles.  The
+resulting graph has 32 vertices, 90 edges, minimum degree five, and at most
+one common neighbor for every distinct vertex pair.
+
+The certificate is recorded as the explicit graph `polarityCycle32`, rather
+than trusted as search output.  Lean checks its degree and full `32 × 32`
+common-neighbor matrix and proves
+
+```text
+six_le_minDegreeForC4_thirtytwo : 6 ≤ minDegreeForC4 32
+minDegreeForC4_thirtyone_le_thirtytwo :
+  minDegreeForC4 31 ≤ minDegreeForC4 32
+```
+
+Thus the monotonicity step immediately after the order-five projective plane
+is now verified.  This is still not eventual monotonicity: it is one new
+finite step and, more importantly, evidence that delete-`k`/attach-`k+1`
+cycle gadgets are a viable replacement architecture.  The next structural
+question is whether the five-cycle selector pattern has a coordinate
+description that generalizes from `q=5` to an infinite family.

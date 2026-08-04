@@ -27,6 +27,8 @@ import Proofs.Erdos85PolarityOddSecantCount
 import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
+import Proofs.Erdos85GadgetExtension
+import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85CrossEdgeSwitchProgram
 import Proofs.Erdos85CrossEdgeSwitchCascade
