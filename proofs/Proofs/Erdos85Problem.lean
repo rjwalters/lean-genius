@@ -312,6 +312,84 @@ theorem minDegreeForC4_le_sub_one {n : ℕ} (hn : 4 ≤ n) :
   rw [eq_top_of_minDegree_ge G hmin]
   exact completeGraph_containsC4 hn
 
+/-! ## Monotonicity as witness extension
+
+The threshold definition is contravariant to concrete `C₄`-free witnesses:
+`d < f(n)` exactly when some graph on `n` vertices has minimum degree at least
+`d` and contains no `C₄`.  Consequently the Erdős question is equivalent to
+eventual extension of every such witness from `n` to `n + 1`, preserving its
+minimum-degree lower bound.  This isolates the genuinely graph-theoretic content
+of the open problem from the order-theoretic bookkeeping around `sInf`. -/
+
+/-- A `C₄`-free graph on `n` vertices whose minimum degree is at least `d`. -/
+def C4FreeMinDegreeWitness (n d : ℕ) : Prop :=
+  ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+    d ≤ G.minDegree ∧ ¬ containsC4 (Fin n) G
+
+/-- **Threshold/witness duality.** For `n ≥ 4`, the threshold `f(n)` is
+strictly greater than `d` exactly when a `C₄`-free minimum-degree-`d` witness
+exists.  This packages the `sInf` argument used by all concrete lower bounds. -/
+theorem c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 {n d : ℕ} (hn : 4 ≤ n) :
+    C4FreeMinDegreeWitness n d ↔ d < minDegreeForC4 n := by
+  let S : Set ℕ := {k : ℕ | ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+    G.minDegree ≥ k → containsC4 (Fin n) G}
+  have hne : S.Nonempty := by
+    refine ⟨n - 1, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 hn
+  change (∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      d ≤ G.minDegree ∧ ¬ containsC4 (Fin n) G) ↔ d < sInf S
+  constructor
+  · rintro ⟨G, hdec, hdeg, hfree⟩
+    letI := hdec
+    by_contra hlt
+    have hsinf : sInf S ∈ S := Nat.sInf_mem hne
+    exact hfree (hsinf G (le_trans (Nat.le_of_not_gt hlt) hdeg))
+  · intro hlt
+    by_contra hex
+    have hdS : d ∈ S := by
+      intro G hdec hdeg
+      by_contra hfree
+      exact hex ⟨G, hdec, hdeg, hfree⟩
+    exact Nat.notMem_of_lt_sInf hlt hdS
+
+/-- Every `C₄`-free minimum-degree witness on `n` vertices can be extended
+to one more vertex without lowering the certified minimum degree. -/
+def C4FreeWitnessExtension (n : ℕ) : Prop :=
+  ∀ d, C4FreeMinDegreeWitness n d → C4FreeMinDegreeWitness (n + 1) d
+
+/-- **One-step monotonicity is exactly witness extension.**  This is the local
+form of the reduction underlying Erdős #85. -/
+theorem minDegreeForC4_mono_iff_witnessExtension {n : ℕ} (hn : 4 ≤ n) :
+    minDegreeForC4 n ≤ minDegreeForC4 (n + 1) ↔ C4FreeWitnessExtension n := by
+  constructor
+  · intro hmono d hd
+    apply (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).2
+    exact lt_of_lt_of_le
+      ((c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).1 hd) hmono
+  · intro hext
+    by_contra hmono
+    have hlt : minDegreeForC4 (n + 1) < minDegreeForC4 n := Nat.lt_of_not_ge hmono
+    have hw : C4FreeMinDegreeWitness n (minDegreeForC4 (n + 1)) :=
+      (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).2 hlt
+    have hw' := hext (minDegreeForC4 (n + 1)) hw
+    exact (Nat.lt_irrefl (minDegreeForC4 (n + 1)))
+      ((c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).1 hw')
+
+/-- **Erdős #85, reformulated.**  Eventual monotonicity of `f` is equivalent
+to eventual extension of every `C₄`-free minimum-degree witness.  Thus the
+open question has no remaining `sInf` content: it is precisely the graph
+extension problem represented by `C4FreeWitnessExtension`. -/
+theorem erdos85Question_iff_eventually_witnessExtension :
+    Erdos85Question ↔ ∀ᶠ n in atTop, C4FreeWitnessExtension n := by
+  constructor
+  · intro h
+    filter_upwards [h, eventually_ge_atTop 4] with n hmono hn
+    exact (minDegreeForC4_mono_iff_witnessExtension hn).1 hmono
+  · intro h
+    filter_upwards [h, eventually_ge_atTop 4] with n hext hn
+    exact (minDegreeForC4_mono_iff_witnessExtension hn).2 hext
+
 /-- **Degenerate small cases: `f(n) = n` for `1 ≤ n ≤ 3`.**  When `n < 4` *no*
 graph on `Fin n` can contain a `C₄` at all (`not_containsC4_of_card_lt_four`), so
 the defining threshold "minimum degree `≥ k` forces a `C₄`" holds only *vacuously*
