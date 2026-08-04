@@ -319,7 +319,7 @@ def residualClass {k : ℕ} (χ : E → Fin (k + 1)) : Finset E :=
 
 /-- The number of connected components of the residual subgraph. -/
 noncomputable def residualComponents {k : ℕ} (χ : E → Fin (k + 1)) : ℕ :=
-  Nat.card (G.supportGraph (G.residualClass χ)).ConnectedComponent
+  Nat.card (G.supportGraph (residualClass χ)).ConnectedComponent
 
 /-! ## Kaiser's refinement process -/
 
@@ -434,10 +434,12 @@ noncomputable def kaiserPartition {k : ℕ} (χ : E → Fin k) : ℕ → Setoid 
   | n + 1 => G.refineOnce χ (G.kaiserPartition χ n)
 
 theorem kaiserPartition_zero {k : ℕ} (χ : E → Fin k) :
-    G.kaiserPartition χ 0 = ⊤ := rfl
+    G.kaiserPartition χ 0 = ⊤ := by
+  simp [kaiserPartition]
 
 theorem kaiserPartition_succ {k : ℕ} (χ : E → Fin k) (n : ℕ) :
-    G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := rfl
+    G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := by
+  simp [kaiserPartition]
 
 theorem kaiserPartition_succ_refines {k : ℕ} (χ : E → Fin k) (n : ℕ) {u v : V}
     (h : G.kaiserPartition χ (n + 1) u v) : G.kaiserPartition χ n u v := by
@@ -503,7 +505,7 @@ theorem exists_stable_kaiserPartition {k : ℕ} (χ : E → Fin k) :
       exfalso
       have hbad := G.firstDisconnectedColor_spec hcol
       rw [InternallyConnected] at hbad
-      push_neg at hbad
+      push Not at hbad
       obtain ⟨u, v, huv, hnreach⟩ := hbad
       have hnext := hstep u v huv
       rw [kaiserPartition_succ, G.refineOnce_of_some hcol] at hnext
@@ -551,10 +553,10 @@ theorem exists_finiteLevel_of_not_rel {k : ℕ} {χ : E → Fin k} {e : E} {n : 
     rw [kaiserPartition_zero]
     trivial
   obtain ⟨m, hm⟩ := Nat.exists_eq_succ_of_ne_zero hpos
-  refine ⟨m, ?_, ?_⟩
-  · by_contra hbad
-    exact Nat.find_min hex (by omega) hbad
-  · exact hm ▸ hspec
+  rw [hm] at hspec
+  refine ⟨?_, hspec⟩
+  by_contra hbad
+  exact Nat.find_min hex (by omega) hbad
 
 /-! ## Cyclic and superfluous edges -/
 
@@ -564,7 +566,7 @@ def IsCyclicEdge (S : Finset E) (e : E) : Prop :=
   e ∈ S ∧ G.ReachableIn (S.erase e) (G.endAt e 0) (G.endAt e 1)
 
 def IsSuperfluousAt {k : ℕ} (χ : E → Fin (k + 1)) (e : E) (m : ℕ) : Prop :=
-  G.IsCyclicEdge (G.residualClass χ) e ∧ G.HasFiniteLevel χ e m
+  G.IsCyclicEdge (residualClass χ) e ∧ G.HasFiniteLevel χ e m
 
 def HasSuperfluousEdge {k : ℕ} (χ : E → Fin (k + 1)) : Prop :=
   ∃ e m, G.IsSuperfluousAt χ e m
@@ -644,8 +646,8 @@ theorem internallyConnected_top_iff_connects [Nonempty V] (S : Finset E) :
 /-- The first refinement step of a prefix-of-trees colouring splits exactly along
 the components of the residual class. -/
 theorem first_partition_is_residual_components [Nonempty V] {k : ℕ}
-    (χ : E → Fin (k + 1)) (hprefix : G.PrefixTrees χ) (hdisc : ¬ G.Connects (G.residualClass χ)) :
-    G.kaiserPartition χ 1 = G.refineSetoid ⊤ (G.residualClass χ) := by
+    (χ : E → Fin (k + 1)) (hprefix : G.PrefixTrees χ) (hdisc : ¬ G.Connects (residualClass χ)) :
+    G.kaiserPartition χ 1 = G.refineSetoid ⊤ (residualClass χ) := by
   have hlast : ¬ G.InternallyConnected (colorClass χ (Fin.last k)) ⊤ := by
     rw [G.internallyConnected_top_iff_connects]
     exact hdisc
@@ -659,7 +661,7 @@ theorem first_partition_is_residual_components [Nonempty V] {k : ℕ}
     G.firstDisconnectedColor_eq_some_of_spec hlast hbefore
   have h1 : G.kaiserPartition χ 1 = G.refineOnce χ (⊤ : Setoid V) := by
     rw [kaiserPartition_succ, kaiserPartition_zero]
-  rw [h1, G.refineOnce_of_some hcol, residualClass]
+  rw [h1, G.refineOnce_of_some hcol]
 
 /-! ## The colour-swap exchange -/
 
