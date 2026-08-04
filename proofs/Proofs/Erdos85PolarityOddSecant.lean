@@ -105,5 +105,30 @@ theorem absoluteTwoSecant_of_two_ne_zero
       simpa using
         (Projectivization.orthogonal_mk b.rep_nonzero c.rep_nonzero).mpr hdot)
 
-end Erdos85.Polarity
+/-- Every cardinality up to the absolute locus gives an odd-characteristic
+controlled-deletion witness of degree `q-1`. -/
+theorem c4FreeMinDegreeWitness_odd_delete_absolute_card
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) ≠ 0) {k : ℕ}
+    (hk : k ≤ (absolutePoints K).card)
+    (hremain : 1 ≤ (Nat.card K + 1) * Nat.card K + 1 - k) :
+    C4FreeMinDegreeWitness
+      ((Nat.card K + 1) * Nat.card K + 1 - k) (Nat.card K - 1) := by
+  obtain ⟨D, hDsub, hDcard⟩ := Finset.exists_subset_card_eq hk
+  apply c4FreeMinDegreeWitness_delete_absolute_set
+    K (absoluteTwoSecant_of_two_ne_zero K h2) D hDcard hremain
+  intro y hy
+  exact (mem_absolutePoints K y).mp (hDsub hy)
 
+/-- Corresponding threshold lower bound at every attainable deleted order. -/
+theorem minDegreeForC4_odd_delete_absolute_card_lower
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) ≠ 0) {k : ℕ}
+    (hk : k ≤ (absolutePoints K).card)
+    (hremain : 4 ≤ (Nat.card K + 1) * Nat.card K + 1 - k) :
+    Nat.card K - 1 < minDegreeForC4
+      ((Nat.card K + 1) * Nat.card K + 1 - k) := by
+  exact (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hremain).1
+    (c4FreeMinDegreeWitness_odd_delete_absolute_card K h2 hk (by omega))
+
+end Erdos85.Polarity
