@@ -131,6 +131,9 @@ continuation must name that vertex as a later endpoint.
 In the three-point core, exactly `q-2` absolute points survive and all of them
 are target-tight of degree exactly `q`; this canonical tight set is now
 packaged explicitly for subsequent loss-incidence arguments.
+The center pair pole's neighborhood is classified further: exactly `q-2`
+surviving neighbors avoid the third deleted absolute point, and every member
+of this family has full degree `q+1` in the three-point core.
 -/
 
 namespace Erdos85

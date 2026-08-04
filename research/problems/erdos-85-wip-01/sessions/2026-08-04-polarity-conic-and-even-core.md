@@ -357,3 +357,14 @@ available slack above the target.  The earlier tight/positive-loss theorem is
 the zero-slack special case.  What remains is to formalize the projective-plane
 incidence statement producing those `q-2` clean center-neighbors and their two
 distinct losses.
+
+The clean family and its cardinality are now formalized.  For the center pole
+of the pair `{a,b}`, remove the three deleted absolute points from its
+neighborhood and then remove all neighbors of `c`.  The resulting finset
+`pairPoleCleanCenterNeighbors` has exactly `q-2` members.  Every member is
+nonabsolute and adjacent to none of `a,b,c`, so
+`threePointCore_degree_of_mem_pairPoleCleanCenterNeighbors` proves its core
+degree is exactly `q+1`.  The unique excluded surviving center neighbor is the
+unique common neighbor of the pair pole and `c`.  The remaining task for the
+static-path obstruction is now only to show that each clean member has one
+distinct deleted cross edge toward each outer pole neighborhood.
