@@ -159,7 +159,24 @@ regular case still requires a carefully arranged covering of the deleted
 neighborhood (or a still broader local switch); arbitrary cross-edge deletion
 alone does not erase the order-15 obstruction.
 
+The regular case has now been sharpened formally.  If `G` is `d`-regular and
+the compensated budget holds after deleting `x`, then
+
+```text
+N_G(x) ⊆ S ∪ T,
+```
+
+so every one-unit deletion defect is covered.  Moreover, a defect vertex that
+loses even one cross edge must lie in `S ∩ T`.  Since compatibility requires
+`|S ∩ T| ≤ 1`, at most one vertex of `N_G(x)` can suffer positive cross-edge
+loss.  In particular there is no survivor edge from `N_G(x) ∩ S` to
+`N_G(x) ∩ T`.  Thus in a regular witness all deleted cross edges, except
+possibly those incident to one exceptional defect vertex, must involve
+external vertices.  This precisely identifies where the broader surgery has
+room beyond the canonical anticomplete repair.
+
 Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
 `c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`, `03397138eb`, `1e66a25d51`,
 `a3227cd3e2`, `d204a06c79`, `3c5c7c3f81`, `f8cffd864a`, `be7fcbf754`,
-`e90b783a5f`, `f52aaf1305`.
+`e90b783a5f`, `f52aaf1305`, `98a35768d0`, `d3853b89f1`, `e3b21f6aee`,
+`f50e91c46f`, `3444152dfc`, `d6f76009fe`.
