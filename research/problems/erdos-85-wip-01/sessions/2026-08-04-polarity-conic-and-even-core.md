@@ -1026,3 +1026,30 @@ extra survivor-edge surgery fails for all sufficiently large regular degree.
 The `k=1` case recovers the exact threshold `d≥6`.  Any eventual extension
 strategy in this framework must therefore let `k` grow with `d` or make
 essential use of compensated old-edge modification.
+
+## Quantitative bounded-replacement dichotomy
+
+The fixed-`k` theorem now has both existence and compensated forms.  Any
+compatible deletion-only replacement forces
+
+```text
+d ≤ (k+1)² + k choose(k+1,2) ≤ (k+1)³.
+```
+
+Thus the deletion size must grow at least on a cube-root scale even before
+the stronger gadget-degree constraints are applied.
+
+For a fully compensated repair, total replacement loss splits exactly into
+deleted-neighbor loss and additional survivor-edge loss.  The former still
+obeys `kd + k choose(k+1,2)`.  Comparing it with the Moore-order aggregate
+lower bound proves
+
+```text
+d - ((k+1)² + k choose(k+1,2))
+  ≤ ∑_w ∑_{a∈A(w)} (deg_{G-D}(a)-deg_K(a)).
+```
+
+Consequently, for fixed `k`, any repair beyond the deletion-only range must
+perform attachment-weighted survivor-edge deletion growing linearly with
+`d`.  This makes the earlier dichotomy quantitative: either replacement size
+grows, or increasingly extensive old-edge surgery is unavoidable.

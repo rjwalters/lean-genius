@@ -209,6 +209,11 @@ More generally, deletion-only delete-`k`/add-`k+1` replacement is impossible
 whenever `(k+1)² + k*choose(k+1,2) < d`.  Hence every fixed-size replacement
 scheme of this form fails for all sufficiently large regular degree; `k` must
 grow with `d` or additional survivor-edge surgery must be essential.
+In existence form, deletion-only repair forces
+`d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
+the excess of `d` above this polynomial is a lower bound for the
+attachment-weighted additional survivor-edge loss.  Thus fixed-size repair
+requires edge modification whose cost grows linearly with `d`.
 -/
 
 namespace Erdos85
