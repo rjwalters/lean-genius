@@ -23,6 +23,78 @@ theorem switchParameter_spec (h2 : (2 : K) ≠ 0) :
 noncomputable abbrev twoPointCore {a b : P K} :=
   deleteVertexSetGraph (graph K) {a,b}
 
+/-- Tangency in graph form: if `w` is absolute and adjacent to `z`, their
+neighbor sets are disjoint.  Their two polar lines meet at `w` itself, whose
+loop is omitted from the simple polarity graph. -/
+omit [DecidableEq K] in
+theorem neighborFinset_inter_eq_empty_of_adj_absolute
+    {z w : P K} (hzw : (graph K).Adj z w)
+    (hww : Projectivization.orthogonal w w) :
+    (graph K).neighborFinset z ∩ (graph K).neighborFinset w = ∅ := by
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro y hy
+  rw [Finset.mem_inter] at hy
+  simp only [SimpleGraph.mem_neighborFinset] at hy
+  have hyz : y ∈ z := (Configuration.ofField.mem_iff y z).2
+    (Projectivization.orthogonal_comm.mp ((graph_adj_iff z y).mp hy.1).2)
+  have hyw : y ∈ w := (Configuration.ofField.mem_iff y w).2
+    (Projectivization.orthogonal_comm.mp ((graph_adj_iff w y).mp hy.2).2)
+  have hwz : w ∈ z := (Configuration.ofField.mem_iff w z).2
+    (Projectivization.orthogonal_comm.mp ((graph_adj_iff z w).mp hzw).2)
+  have hwwm : w ∈ w := (Configuration.ofField.mem_iff w w).2 hww
+  have hne : z ≠ w := (graph_adj_iff z w).mp hzw |>.1
+  have hyEq : y = w :=
+    (Configuration.Nondegenerate.eq_or_eq hyz hwz hyw hwwm).resolve_right hne
+  exact (graph K).loopless.irrefl w (by simpa [hyEq] using hy.2)
+
+theorem three_le_card_of_two_ne_zero (h2 : (2 : K) ≠ 0) :
+    3 ≤ Nat.card K := by
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  by_contra hq3
+  have hq2 : Nat.card K = 2 := by omega
+  obtain ⟨y, hy, hyuniq⟩ := (Nat.card_eq_two_iff' (0 : K)).mp hq2
+  have hsum0 : (1 : K) + 1 = 0 := by
+    by_contra hsum
+    have hsumy : (1 : K) + 1 = y := hyuniq _ hsum
+    have h1y : (1 : K) = y := hyuniq _ one_ne_zero
+    have hbad : (1 : K) + 1 = 1 := hsumy.trans h1y.symm
+    have : (1 : K) = 0 := by
+      apply add_left_cancel (a := (1 : K))
+      rw [add_zero]
+      exact hbad
+    exact one_ne_zero this
+  apply h2
+  rw [← one_add_one_eq_two]
+  exact hsum0
+
+/-- Odd characteristic supplies a third absolute point distinct from any
+fixed absolute pair. -/
+theorem exists_third_absolute {a b : P K}
+    (h2 : (2 : K) ≠ 0)
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    ∃ w, Projectivization.orthogonal w w ∧ w ≠ a ∧ w ≠ b := by
+  classical
+  have hsub : ({a,b} : Finset (P K)) ⊆ absolutePoints K := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact (mem_absolutePoints K _).mpr ha
+    · exact (mem_absolutePoints K _).mpr hb
+  have hlt : ({a,b} : Finset (P K)).card < (absolutePoints K).card := by
+    rw [card_absolutePoints_eq_card_add_one K]
+    simp [hab]
+    have hq3 := three_le_card_of_two_ne_zero K h2
+    omega
+  have hss : ({a,b} : Finset (P K)) ⊂ absolutePoints K :=
+    Finset.ssubset_iff_subset_ne.mpr ⟨hsub, fun heq => by
+      have := congrArg Finset.card heq
+      omega⟩
+  obtain ⟨w, hwabs, hwout⟩ := Finset.exists_of_ssubset hss
+  refine ⟨w, (mem_absolutePoints K w).mp hwabs, ?_, ?_⟩
+  · intro h; exact hwout (by simp [h])
+  · intro h; exact hwout (by simp [h])
+
 noncomputable def absolutePairCommonNeighbor {a b : P K}
     (ha : Projectivization.orthogonal a a)
     (hb : Projectivization.orthogonal b b) (hab : a ≠ b) : P K :=

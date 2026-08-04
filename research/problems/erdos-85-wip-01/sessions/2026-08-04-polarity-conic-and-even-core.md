@@ -242,3 +242,28 @@ whose discriminant is `4(1-2c)`.  Consequently it is enough to choose `t`
 so that `1-2t²α/β` is a nonsquare (with the small/degenerate cases treated
 separately).  This is the exact finite-field character-sum existence lemma
 still needed for the candidate `q²+q-1` construction.
+
+### Correction: the nonsquare pencil still has a double-loss vertex
+
+The nonsquare condition does prove that every opposite endpoint is
+nonabsolute, and the required finite-field lemma has now been checked.
+However, an exact multiplicity audit shows that the sole vertex in
+`N(x) ∩ N(w)` loses two cross edges.  It begins at degree `q+1` and falls to
+`q-1`, so this pencil moves the defect instead of repairing it.  The earlier
+claim that all cross-edge losses were at most one was false.
+
+Exhaustive computations for `q=5,7,11,13` reveal the correct pattern: take
+`w` to be any surviving absolute point.  Then `xw` is absent, the cross edges
+form a matching of size `q-2`, and the switched graph has minimum degree `q`.
+The geometric reason is tangency.  If `w` is absolute and `z~w`, the polar
+lines of `z` and `w` intersect at `w`; because the simple graph omits the loop
+at `w`, `z` and `w` have no graph-theoretic common neighbor.  This removes one
+of the two possible losses at the unique vertex in `N(x)∩N(w)`.
+
+The revised formal target is therefore:
+
+1. prove adjacent vertices `z,w` with `w` absolute have no common neighbor;
+2. deduce cross-edge loss at most one for `N(x),N(w)` when `xw` is absent;
+3. show every positive-loss endpoint other than the absolute `w` has original
+   two-point-core degree `q+1`;
+4. apply the checked unique-defect switch witness theorem.

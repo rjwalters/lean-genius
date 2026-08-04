@@ -120,6 +120,57 @@ theorem crossEdgeLoss_neighborFinsets_le_one {V : Type*} [Fintype V]
     · rw [crossEdgeLoss_eq_zero_of_not_mem H _ _ v hvx hvw]
       omega
 
+/-- A tangent right endpoint also forces matching-like cross deletion, even
+when the two neighborhoods meet: adjacent vertices to `w` have no common
+neighbor with `w`, so every vertex loses at most one edge. -/
+theorem crossEdgeLoss_neighborFinsets_le_one_of_tangent_right
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    (hfree : ¬ containsC4 V H) (hxw : ¬ H.Adj x w)
+    (htangent : ∀ z, H.Adj z w →
+      H.neighborFinset z ∩ H.neighborFinset w = ∅) :
+    crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) v ≤ 1 := by
+  classical
+  by_cases hvx : v ∈ H.neighborFinset x
+  · by_cases hvw : v ∈ H.neighborFinset w
+    · have hempty := htangent v ((by simpa using hvw : H.Adj w v).symm)
+      have hloss : crossEdgeLoss H (H.neighborFinset x)
+          (H.neighborFinset w) v =
+          (H.neighborFinset v ∩ H.neighborFinset x).card := by
+        rw [crossEdgeLoss]
+        apply congrArg Finset.card
+        ext y
+        simp only [Finset.mem_filter, SimpleGraph.mem_neighborFinset,
+          pair_mem_crossEdgeSet_iff, hvx, hvw, true_and,
+          Finset.mem_inter]
+        have hnot : ¬ (H.Adj v y ∧ H.Adj w y) := by
+          intro h
+          have hm : y ∈ H.neighborFinset v ∩ H.neighborFinset w := by
+            exact Finset.mem_inter.mpr
+              ⟨by simpa using h.1, by simpa using h.2⟩
+          rw [hempty] at hm
+          simp at hm
+        tauto
+      rw [hloss]
+      apply card_inter_neighborFinset_le_one hfree
+      intro h
+      subst v
+      exact H.loopless.irrefl x (by simpa using hvx)
+    · rw [crossEdgeLoss_eq_card_neighbor_inter_right H _ _ v hvx hvw]
+      apply card_inter_neighborFinset_le_one hfree
+      intro h
+      subst v
+      exact hxw (by simpa using hvx)
+  · by_cases hvw : v ∈ H.neighborFinset w
+    · rw [crossEdgeLoss_eq_card_neighbor_inter_left H _ _ v hvw hvx]
+      rw [Finset.inter_comm]
+      apply card_inter_neighborFinset_le_one hfree
+      intro h
+      subst v
+      exact hxw ((by simpa using hvw : H.Adj w x).symm)
+    · rw [crossEdgeLoss_eq_zero_of_not_mem H _ _ v hvx hvw]
+      omega
+
 /-- The newly inserted edge raises the left endpoint's degree by exactly one
 when it was absent from the old graph. -/
 theorem crossEdgeSwitch_degree_left {V : Type*} [Fintype V]

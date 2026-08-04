@@ -99,8 +99,11 @@ nonsquare.  Representative rescaling reduces the coordinate switch condition
 to precisely this lemma.
 The normalized coordinate calculation is checked as well: every parametrized
 opposite endpoint of a deleted cross edge has nonzero self-dot-product under
-that nonsquare condition.  Thus these endpoints are nonabsolute and possess
-the one unit of degree slack required by the compensated switch.
+that nonsquare condition.  This candidate nevertheless has a unique
+common-neighborhood vertex of cross-edge loss two, so it does not by itself
+complete the repair.  The surviving route is instead to choose the right
+endpoint to be a third absolute point: tangency removes that double-loss
+configuration.  Its projective degree transport remains under development.
 -/
 
 namespace Erdos85
