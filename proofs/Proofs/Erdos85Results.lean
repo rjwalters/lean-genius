@@ -219,6 +219,12 @@ successful deletion-only replacement in a minimum-degree-`d` Moore-layer
 graph forces the deleted-set degree surplus
 `Σ_{x∈D}(degree(x)-d)` to be at least
 `d-((k+1)²+k*choose(k+1,2))`.
+Above this polynomial threshold, every successful deleted set must therefore
+contain a vertex strictly above degree `d`.  Edge-minimal normalization makes
+these high vertices independent and, by direct incidence counting, strictly
+less numerous than the tight vertices.  Thus more than half of every
+normalized witness is tight, and every deletion set drawn wholly from that
+majority is ruled out for fixed sufficiently large `d`.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the

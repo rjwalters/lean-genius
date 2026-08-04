@@ -321,6 +321,39 @@ theorem degree_sub_replacementPolynomial_le_deletedDegreeSurplus_of_moore
     omega
   · simp [Nat.sub_eq_zero_of_le (Nat.le_of_not_ge hPd)]
 
+/-- Above the fixed-`k` polynomial threshold, every successful deletion-only
+replacement must delete at least one vertex whose degree is strictly above
+the target. -/
+theorem exists_above_target_in_deleted_set_of_moore_replacement
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d k : ℕ}
+    (hd : 1 ≤ d) (hk : k ≤ d - 1)
+    (hlarge : (k + 1) * (k + 1) + k * (k + 1).choose 2 < d)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (hDcard : D.card = k) (hWcard : Fintype.card W = k + 1)
+    (hmin : d ≤ G.minDegree)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w)
+    (hcompat : GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A) :
+    ∃ x ∈ D, d < G.degree x := by
+  have hsurplus :=
+    degree_sub_replacementPolynomial_le_deletedDegreeSurplus_of_moore
+      G D F A hd hk hcard hDcard hWcard hmin hnew hcompat
+  by_contra hnone
+  have hle : ∀ x ∈ D, G.degree x ≤ d := by
+    intro x hx
+    by_contra hnot
+    apply hnone
+    exact ⟨x, hx, by omega⟩
+  have hzero : (∑ x ∈ D, (G.degree x - d)) = 0 := by
+    apply Finset.sum_eq_zero
+    intro x hx
+    exact Nat.sub_eq_zero_of_le (hle x hx)
+  rw [hzero] at hsurplus
+  omega
+
 /-- **Fixed-size replacement no-go for a tight deleted set.**  Global
 regularity can be weakened to minimum degree at least `d` together with
 degree exactly `d` on the vertices selected for deletion. -/

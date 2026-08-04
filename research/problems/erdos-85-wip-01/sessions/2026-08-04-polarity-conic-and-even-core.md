@@ -1031,6 +1031,20 @@ Thus a fixed-size deletion-only scheme in an arbitrary Moore-layer witness
 must locate a deleted set whose total degree surplus grows linearly with `d`.
 The tight-set no-go is the zero-surplus specialization.
 
+Edge-minimal normalization makes this restriction genuinely structural.  If
+`U` is the above-minimum layer and `T` the tight layer, every neighbor of a
+vertex in `U` lies in `T`.  Swapping the endpoints of these incidences gives
+
+```text
+|U|(d+1) ≤ |T|d.
+```
+
+Consequently `|U|<|T|`: more than half the vertices are tight, and a tight
+deletion set of every size `k` with `2k<n` exists.  Moreover, above the
+replacement-polynomial threshold every successful deleted set must intersect
+the smaller independent layer `U`; a strategy confined to the tight majority
+cannot work.
+
 ```text
 ∑_w ∑_{a∈A(w)} replacementLoss(a)
   ≤ kd + k choose(m,2).
