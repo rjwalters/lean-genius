@@ -254,4 +254,46 @@ theorem c4FreeMinDegreeWitness_crossEdgeSwitch_of_unique_defect
   · exact crossEdgeSwitch_minDegree_of_unique_defect H x w d hxw hne hx hother
   · exact crossEdgeSwitch_not_containsC4 H x w hfree
 
+/-- Reusable tangent-switch criterion in terms of the old graph.  The defect
+has degree `d-1`, every other vertex starts at degree at least `d`, and every
+vertex actually touched by cross deletion has one additional unit of slack. -/
+theorem c4FreeMinDegreeWitness_tangentSwitch_of_slack
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x) (H.neighborFinset w)).Adj]
+    {n d : ℕ} (hcard : Fintype.card V = n)
+    (hfree : ¬ containsC4 V H) (hxw : ¬ H.Adj x w) (hne : x ≠ w)
+    (htangent : ∀ z, H.Adj z w →
+      H.neighborFinset z ∩ H.neighborFinset w = ∅)
+    (hx : H.degree x = d - 1)
+    (hbase : ∀ v ≠ x, d ≤ H.degree v)
+    (hslack : ∀ v, 1 ≤ crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset w) v → d + 1 ≤ H.degree v) :
+    C4FreeMinDegreeWitness n d := by
+  apply c4FreeMinDegreeWitness_crossEdgeSwitch_of_unique_defect
+    H x w hcard hfree hxw hne
+  · have hxS : x ∉ H.neighborFinset x := by simp
+    have hxT : x ∉ H.neighborFinset w := by
+      rw [SimpleGraph.mem_neighborFinset]
+      exact fun h => hxw h.symm
+    have hloss := crossEdgeLoss_eq_zero_of_not_mem H
+      (H.neighborFinset x) (H.neighborFinset w) x hxS hxT
+    have hsplit := degree_deleteCrossEdges_add_loss H
+      (H.neighborFinset x) (H.neighborFinset w) x
+    omega
+  · intro v hvx
+    have hlossle := crossEdgeLoss_neighborFinsets_le_one_of_tangent_right
+      H x w v hfree hxw htangent
+    have hsplit := degree_deleteCrossEdges_add_loss H
+      (H.neighborFinset x) (H.neighborFinset w) v
+    by_cases hz : crossEdgeLoss H (H.neighborFinset x)
+        (H.neighborFinset w) v = 0
+    · have := hbase v hvx
+      omega
+    · have hp : 1 ≤ crossEdgeLoss H (H.neighborFinset x)
+          (H.neighborFinset w) v := Nat.one_le_iff_ne_zero.mpr hz
+      have := hslack v hp
+      omega
+
 end Erdos85
