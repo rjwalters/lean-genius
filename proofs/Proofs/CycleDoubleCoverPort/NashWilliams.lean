@@ -273,6 +273,7 @@ noncomputable def refineSetoid (P : Setoid V) (S : Finset E) : Setoid V where
         rw [G.insideEdges_eq_of_rel (S := S) h1] at h2 ⊢
         exact h2.trans h4 }
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem refineSetoid_le (P : Setoid V) (S : Finset E) {u v : V}
     (h : G.refineSetoid P S u v) : P u v := h.1
 
@@ -294,7 +295,7 @@ theorem colorClass_disjoint {k : ℕ} (χ : E → Fin k) {i j : Fin k} (hij : i 
   refine Finset.disjoint_left.2 fun e hei hej => hij ?_
   rw [← mem_colorClass.mp hei, mem_colorClass.mp hej]
 
-omit [DecidableEq V] in
+omit [DecidableEq V] [DecidableEq E] in
 theorem crossingClass_colorClass_disjoint {k : ℕ} (χ : E → Fin k) (P : Setoid V)
     {i j : Fin k} (hij : i ≠ j) :
     Disjoint (G.crossingClass (colorClass χ i) P) (G.crossingClass (colorClass χ j) P) := by
@@ -316,6 +317,7 @@ theorem crossingEdges_eq_biUnion_crossingClass {k : ℕ} [NeZero k] (χ : E → 
     mem_crossingClass, mem_colorClass]
   exact ⟨fun h => ⟨χ e, rfl, h⟩, fun ⟨_, _, h⟩ => h⟩
 
+omit [DecidableEq V] in
 theorem crossingEdges_card_eq_sum_crossingClass {k : ℕ} [NeZero k] (χ : E → Fin k)
     (P : Setoid V) :
     (G.crossingEdges P).card =
@@ -391,6 +393,7 @@ theorem firstDisconnectedColor_eq_some_iff {k : ℕ} {χ : E → Fin k} {P : Set
     rintro ⟨hi, -⟩
     exact absurd ⟨i, hi⟩ h
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem firstDisconnectedColor_eq_none_iff {k : ℕ} (χ : E → Fin k) (P : Setoid V) :
     G.firstDisconnectedColor χ P = none ↔ ¬ G.NeedsRefinement χ P := by
   rw [← G.badColors_nonempty_iff]
@@ -399,11 +402,13 @@ theorem firstDisconnectedColor_eq_none_iff {k : ℕ} (χ : E → Fin k) (P : Set
   · rw [dif_pos h]; simp [h]
   · rw [dif_neg h]; simp [h]
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem firstDisconnectedColor_spec {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin k}
     (h : G.firstDisconnectedColor χ P = some i) :
     ¬ G.InternallyConnected (colorClass χ i) P :=
   G.mem_badColors.mp (G.firstDisconnectedColor_eq_some_iff.mp h).1
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem firstDisconnectedColor_internal_of_lt {k : ℕ} {χ : E → Fin k} {P : Setoid V}
     {c d : Fin k} (hc : G.firstDisconnectedColor χ P = some c) (hdc : d < c) :
     G.InternallyConnected (colorClass χ d) P := by
@@ -411,6 +416,7 @@ theorem firstDisconnectedColor_internal_of_lt {k : ℕ} {χ : E → Fin k} {P : 
   exact absurd ((G.firstDisconnectedColor_eq_some_iff.mp hc).2 d (G.mem_badColors.mpr hbad))
     (not_le.mpr hdc)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem firstDisconnectedColor_eq_some_of_spec {k : ℕ} {χ : E → Fin k} {P : Setoid V}
     {c : Fin k} (hbad : ¬ G.InternallyConnected (colorClass χ c) P)
     (hbefore : ∀ d : Fin k, d < c → G.InternallyConnected (colorClass χ d) P) :
@@ -419,6 +425,7 @@ theorem firstDisconnectedColor_eq_some_of_spec {k : ℕ} {χ : E → Fin k} {P :
   by_contra hlt
   exact (G.mem_badColors.mp hj) (hbefore j (not_le.mp hlt))
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem internallyConnected_iff_of_refineSetoid_eq {S T : Finset E} {P : Setoid V}
     (hEq : G.refineSetoid P S = G.refineSetoid P T) :
     G.InternallyConnected S P ↔ G.InternallyConnected T P := by
@@ -436,10 +443,12 @@ theorem internallyConnected_iff_of_refineSetoid_eq {S T : Finset E} {P : Setoid 
 noncomputable def refineOnce {k : ℕ} (χ : E → Fin k) (P : Setoid V) : Setoid V :=
   (G.firstDisconnectedColor χ P).elim P fun i => G.refineSetoid P (colorClass χ i)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem refineOnce_of_none {k : ℕ} {χ : E → Fin k} {P : Setoid V}
     (hcol : G.firstDisconnectedColor χ P = none) : G.refineOnce χ P = P := by
   simp [refineOnce, hcol]
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem refineOnce_of_some {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin k}
     (hcol : G.firstDisconnectedColor χ P = some i) :
     G.refineOnce χ P = G.refineSetoid P (colorClass χ i) := by
@@ -449,10 +458,12 @@ theorem refineOnce_of_some {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin 
 noncomputable def kaiserPartition {k : ℕ} (χ : E → Fin k) (n : ℕ) : Setoid V :=
   Nat.rec (motive := fun _ => Setoid V) ⊤ (fun _ P => G.refineOnce χ P) n
 
+omit [DecidableEq V] [DecidableEq E] in
 @[simp]
 theorem kaiserPartition_zero {k : ℕ} (χ : E → Fin k) :
     G.kaiserPartition χ 0 = ⊤ := rfl
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem kaiserPartition_succ {k : ℕ} (χ : E → Fin k) (n : ℕ) :
     G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := rfl
 
@@ -637,6 +648,7 @@ theorem edgeFinset_supportGraph (S : Finset E) [Fintype (G.supportGraph S).edgeS
         rintro rfl
         exact G.loopless e (h0.trans h1.symm)
 
+omit [DecidableEq E] in
 theorem exists_edge_of_mem_supportGraph_edgeSet (S : Finset E) {z : Sym2 V}
     (hz : z ∈ (G.supportGraph S).edgeSet) : ∃ e ∈ S, G.symEdge e = z := by
   classical
@@ -645,13 +657,16 @@ theorem exists_edge_of_mem_supportGraph_edgeSet (S : Finset E) {z : Sym2 V}
   rw [G.edgeFinset_supportGraph S] at hz'
   exact Finset.mem_image.mp hz'
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem reachableIn_mono {S T : Finset E} (hST : S ⊆ T) {u v : V}
     (h : G.ReachableIn S u v) : G.ReachableIn T u v :=
   h.mono (G.supportGraph_mono hST)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem connects_mono {S T : Finset E} (hST : S ⊆ T) (h : G.Connects S) : G.Connects T :=
   h.mono (G.supportGraph_mono hST)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem internallyConnected_top_iff_connects [Nonempty V] (S : Finset E) :
     G.InternallyConnected S ⊤ ↔ G.Connects S := by
   constructor
