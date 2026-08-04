@@ -1,4 +1,4 @@
-import Proofs.Erdos85Problem
+import Proofs.Erdos85DeletePair
 
 /-!
 # One-defect cores for Erdős Problem 85
@@ -24,6 +24,46 @@ def OneDefectCore (n d : ℕ) : Prop :=
     CommonNeighborIndependent H S ∧
     d ≤ S.card ∧
     ∀ v, d ≤ (attachVertex H S).degree (some v)
+
+/-- **Intrinsic normal form for a one-defect core.**  When `d` is positive,
+the core has minimum degree at least `d - 1`, and every vertex at that lower
+degree must be selected for repair.  Thus the remaining extension problem is
+precisely to find a large safe selector covering all deficient vertices. -/
+theorem oneDefectCore_iff_intrinsic {n d : ℕ} (hd : 1 ≤ d) :
+    OneDefectCore n d ↔
+      ∃ (H : SimpleGraph (Fin n)) (_ : DecidableRel H.Adj)
+          (S : Finset (Fin n)),
+        ¬ containsC4 (Fin n) H ∧
+        CommonNeighborIndependent H S ∧
+        d ≤ S.card ∧
+        (∀ v, d - 1 ≤ H.degree v) ∧
+        ∀ v, H.degree v = d - 1 → v ∈ S := by
+  constructor
+  · rintro ⟨H, hdec, S, hfree, hsafe, hcard, hold⟩
+    letI : DecidableRel H.Adj := hdec
+    refine ⟨H, hdec, S, hfree, hsafe, hcard, ?_, ?_⟩
+    · intro v
+      have hv := hold v
+      rw [attachVertex_degree_some_eq] at hv
+      split at hv <;> omega
+    · intro v hvdeg
+      by_contra hvS
+      have hv := hold v
+      rw [attachVertex_degree_some_eq, if_neg hvS, hvdeg] at hv
+      omega
+  · rintro ⟨H, hdec, S, hfree, hsafe, hcard, hlow, htight⟩
+    letI : DecidableRel H.Adj := hdec
+    refine ⟨H, hdec, S, hfree, hsafe, hcard, ?_⟩
+    intro v
+    rw [attachVertex_degree_some_eq]
+    by_cases hvS : v ∈ S
+    · rw [if_pos hvS]
+      have hv := hlow v
+      omega
+    · rw [if_neg hvS, Nat.add_zero]
+      have hne : H.degree v ≠ d - 1 := fun h => hvS (htight v h)
+      have hlt : d - 1 < H.degree v := lt_of_le_of_ne (hlow v) (Ne.symm hne)
+      omega
 
 /-- Split a graph on `Option V` into its old-old part. -/
 def oldPart {V : Type*} (K : SimpleGraph (Option V)) : SimpleGraph V :=
