@@ -32,6 +32,7 @@ import Proofs.Erdos85PolarityTwoPointCore
 import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85PolaritySwitchCoordinates
 import Proofs.Erdos85PolarityTangentSwitch
+import Proofs.Erdos85PolarityThreePointCore
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -109,6 +110,11 @@ field of odd characteristic and order `q`, it gives a `C₄`-free graph of
 minimum degree `q` on `q²+q-1` vertices and proves the new exact value
 `f(q²+q-1)=q+1`.  Together with the preceding polarity values this gives an
 exact three-order plateau at `q²+q-1`, `q²+q`, and `q²+q+1`.
+The next deletion already exposes a qualitative obstruction: a single
+cross-edge switch can raise degrees only at its two endpoints, so no such
+switch can repair a graph with three distinct sub-target vertices.  The
+three-absolute-point core and each of its pair-pole defects are now defined;
+each pair pole still has degree `q-1` after the third deletion.
 -/
 
 namespace Erdos85

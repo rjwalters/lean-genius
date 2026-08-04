@@ -214,6 +214,58 @@ theorem degree_deleteCrossEdges_le_crossEdgeSwitch {V : Type*} [Fintype V]
   exact (show deleteCrossEdges H _ _ ≤
       deleteCrossEdges H _ _ ⊔ SimpleGraph.edge x w from le_sup_left) hy
 
+/-- Away from its two endpoints, a cross-edge switch can only remove edges. -/
+theorem crossEdgeSwitch_degree_le_of_ne_endpoints
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    (hvx : v ≠ x) (hvw : v ≠ w) :
+    (crossEdgeSwitch H x w).degree v ≤ H.degree v := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card
+  intro y hy
+  rw [SimpleGraph.mem_neighborFinset] at hy ⊢
+  rcases (crossEdgeSwitch_adj_iff H x w v y).mp hy with hold | hnew
+  · exact hold.1
+  · rcases hnew.1 with ⟨h, _⟩ | ⟨h, _⟩
+    · exact (hvx h).elim
+    · exact (hvw h).elim
+
+/-- Every old vertex below the target degree must be one of the two switch
+endpoints if the switched graph reaches that target. -/
+theorem low_degree_vertex_is_switch_endpoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj] {d : ℕ}
+    (hmin : d ≤ (crossEdgeSwitch H x w).minDegree)
+    (hlow : H.degree v < d) : v = x ∨ v = w := by
+  by_contra h
+  push_neg at h
+  have hle := crossEdgeSwitch_degree_le_of_ne_endpoints H x w v h.1 h.2
+  have htarget := hmin.trans ((crossEdgeSwitch H x w).minDegree_le_degree v)
+  omega
+
+/-- A single cross-edge switch cannot repair three distinct old vertices
+whose degrees are all below the target. -/
+theorem crossEdgeSwitch_minDegree_lt_of_three_low_vertices
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    (D : Finset V) {d : ℕ} (hD : 3 ≤ D.card)
+    (hlow : ∀ v ∈ D, H.degree v < d) :
+    (crossEdgeSwitch H x w).minDegree < d := by
+  by_contra h
+  have hmin : d ≤ (crossEdgeSwitch H x w).minDegree := by omega
+  have hsub : D ⊆ {x,w} := by
+    intro v hv
+    have hend := low_degree_vertex_is_switch_endpoint H x w v hmin (hlow v hv)
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using hend
+  have hc := Finset.card_le_card hsub
+  have hp : ({x,w} : Finset V).card ≤ 2 :=
+    (Finset.card_insert_le x {w}).trans_eq (by simp)
+  omega
+
 /-- Abstract completion theorem for the compensated switch: after the cross
 deletion, a unique one-unit defect at `x` is repaired by the edge `xw`. -/
 theorem crossEdgeSwitch_minDegree_of_unique_defect {V : Type*} [Fintype V]
