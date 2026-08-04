@@ -1,5 +1,16 @@
 import Proofs.Erdos85Problem
 
+/-!
+# The exact value `f(14) = 4`
+
+This module gives a direct structural proof, independent of published extremal
+tables.  If a `C₄`-free graph on 14 vertices had minimum degree four, cherry
+counting would force it to be 4-regular.  A local packing argument then forces
+each edge into a unique triangle, making the graph locally linear.  Mathlib's
+`SimpleGraph.LocallyLinear.card_edgeFinset` would make its 28 edges divisible
+by three, a contradiction.
+-/
+
 open SimpleGraph Finset
 
 namespace Erdos85
@@ -295,6 +306,8 @@ theorem locallyLinear_of_four_regular_not_containsC4
   · intro x y hxy
     obtain ⟨z, hz, -⟩ := huniq x y hxy
     exact ⟨{x, y, z}, (is3Clique_triple_iff.mpr ⟨hxy, hz.1, hz.2⟩), by simp, by simp⟩
+/-- Every graph on 14 vertices with minimum degree at least four contains a
+four-cycle. -/
 theorem containsC4_of_fourteen_minDegree_four
     (G : SimpleGraph (Fin 14)) [DecidableRel G.Adj]
     (hmin : 4 ≤ G.minDegree) : containsC4 (Fin 14) G := by
@@ -319,6 +332,7 @@ theorem minDegreeForC4_le_four_fourteen : minDegreeForC4 14 ≤ 4 := by
   intro G _ hmin
   exact containsC4_of_fourteen_minDegree_four G hmin
 
+/-- **`f(14) = 4`.** -/
 theorem minDegreeForC4_fourteen : minDegreeForC4 14 = 4 := by
   exact le_antisymm minDegreeForC4_le_four_fourteen
     four_le_minDegreeForC4_fourteen

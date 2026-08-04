@@ -11,7 +11,12 @@ Is it true that f(n+1) ≥ f(n) for all large n?
 **Known Results**:
 - f(n) = (1 + o(1))√n asymptotically
 - f(n) < √n + 1
-- f(4) = 2
+- This development checks the exact values through n = 20; companion modules
+  extend the table through n = 21 and give a direct structural proof at n = 14
+- Eventual monotonicity is equivalent here to eventual extension of C₄-free
+  minimum-degree witnesses
+- A one-vertex attachment is characterized exactly by common-neighbor
+  independence; a sharp 15-vertex witness refutes the universal selector route
 - Connected to Ramsey number R(C₄, K_{1,n})
 
 Reference: https://erdosproblems.com/85
