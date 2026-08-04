@@ -223,6 +223,28 @@ theorem GadgetAttachmentCompatible.selector_safe
   have hbudget := hcompat.1 a b hab
   omega
 
+/-- Selectors belonging to two distinct neighbours of one gadget vertex are
+disjoint.  Otherwise an old vertex in both selectors would consume at least
+two units of that vertex's mixed common-neighbour budget. -/
+theorem GadgetAttachmentCompatible.disjoint_selectors_of_adjacent_to
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    {w u v : W} (huw : F.Adj w u) (hvw : F.Adj w v) (huv : u ≠ v) :
+    Disjoint (A u) (A v) := by
+  rw [Finset.disjoint_left]
+  intro x hxu hxv
+  have hu : u ∈ (F.neighborFinset w).filter fun t => x ∈ A t := by
+    simp [SimpleGraph.mem_neighborFinset, huw, hxu]
+  have hv : v ∈ (F.neighborFinset w).filter fun t => x ∈ A t := by
+    simp [SimpleGraph.mem_neighborFinset, hvw, hxv]
+  have htwo : 2 ≤ ((F.neighborFinset w).filter fun t => x ∈ A t).card := by
+    rw [Finset.two_le_card]
+    exact ⟨u, hu, v, hv, huv⟩
+  have hbudget := hcompat.2.2 x w
+  omega
+
 /-- Distinct compatible gadget selectors intersect in at most one old
 vertex. -/
 theorem GadgetAttachmentCompatible.card_selector_inter_le_one

@@ -699,6 +699,14 @@ an eventual construction, regardless of the attached gadget's shape.  Any
 net-one repair remaining inside this polarity model must replace a linear
 fraction of the absolute conic and use a correspondingly dense gadget.
 
+The mixed compatibility budget supplies an additional local restriction for
+that dense regime: selectors attached to two distinct neighbours of the same
+gadget vertex are disjoint.  This is now isolated as
+`GadgetAttachmentCompatible.disjoint_selectors_of_adjacent_to`.  In
+particular, a high-degree hub forces a large family of pairwise-disjoint
+selectors, which can now be combined with the polarity star-fibre description
+to attack the remaining hub-heavy gadget shapes.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
