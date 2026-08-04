@@ -197,4 +197,131 @@ theorem top_nonneighbor_reduction_sub_threshold_lt {n : ℕ} (hn : 4 ≤ n)
   (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hreduced).1
     (exists_top_nonneighbor_reduction_sub_threshold hn)
 
+/-- One normalized reduction step for an arbitrary witness. -/
+theorem c4FreeMinDegreeWitness_nonneighbor_step {n d : ℕ} (hn : 4 ≤ n)
+    (hw : C4FreeMinDegreeWitness n (d + 1)) :
+    C4FreeMinDegreeWitness (n - (d + 1) - 1) d := by
+  letI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  obtain ⟨G, hdec, hdegree, hfree⟩ :=
+    (c4FreeMinDegreeWitness_iff_exists_exact (by omega) (by omega)).1 hw
+  letI : DecidableRel G.Adj := hdec
+  obtain ⟨x, hx⟩ := G.exists_minimal_degree_vertex
+  have hthreshold : d + 1 < minDegreeForC4 n :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).1 hw
+  have hupper := minDegreeForC4_le_sub_two hn
+  have hpos : 1 ≤ Fintype.card (Fin n) - G.degree x - 1 := by
+    simp only [Fintype.card_fin]
+    rw [← hx, hdegree]
+    omega
+  simpa [← hx, hdegree] using
+    c4FreeMinDegreeWitness_of_outsideClosedNeighborhood G hfree x
+      (d := d) (by omega) hpos
+
+/-- Orders produced by repeatedly normalizing a witness and deleting the
+closed neighborhood of a minimum-degree vertex. -/
+def iteratedNonneighborOrder (n d : ℕ) : ℕ → ℕ
+  | 0 => n
+  | k + 1 => iteratedNonneighborOrder n d k - (d - k) - 1
+
+/-- Total number of vertices removed by the first `k` normalized
+closed-neighborhood deletions. -/
+def iteratedNonneighborRemoval (d k : ℕ) : ℕ :=
+  ∑ i ∈ Finset.range k, (d - i + 1)
+
+/-- The recursive order is the original order minus the accumulated closed
+neighborhood sizes. -/
+theorem iteratedNonneighborOrder_eq_sub_removal (n d k : ℕ) :
+    iteratedNonneighborOrder n d k = n - iteratedNonneighborRemoval d k := by
+  induction k with
+  | zero => simp [iteratedNonneighborOrder, iteratedNonneighborRemoval]
+  | succ k ih =>
+      rw [iteratedNonneighborOrder, ih]
+      simp only [iteratedNonneighborRemoval, Finset.sum_range_succ]
+      omega
+
+/-- A witness of certified degree at least three necessarily has at least four
+vertices. -/
+theorem four_le_order_of_c4FreeMinDegreeWitness {n d : ℕ} (hthree : 3 ≤ d)
+    (hw : C4FreeMinDegreeWitness n d) : 4 ≤ n := by
+  by_contra hn
+  have hnle : n ≤ 3 := by omega
+  rcases hw with ⟨G, hdec, hmin, _⟩
+  letI : DecidableRel G.Adj := hdec
+  by_cases hn0 : n = 0
+  · subst n
+    simp at hmin
+    omega
+  · have hnpos : 1 ≤ n := by omega
+    let v : Fin n := ⟨0, hnpos⟩
+    have hdeg := G.degree_lt_card_verts v
+    have hmd := G.minDegree_le_degree v
+    simp only [Fintype.card_fin] at hdeg
+    omega
+
+/-- Iterated nonneighbor reduction.  As long as every intermediate order is at
+least four, `k` reductions lower the certified degree from `d` to `d-k` and
+produce a witness on `iteratedNonneighborOrder n d k` vertices. -/
+theorem c4FreeMinDegreeWitness_iterated_nonneighbor
+    {n d k : ℕ} (hw : C4FreeMinDegreeWitness n d)
+    (hk : k ≤ d)
+    (horders : ∀ i, i < k → 4 ≤ iteratedNonneighborOrder n d i) :
+    C4FreeMinDegreeWitness (iteratedNonneighborOrder n d k) (d - k) := by
+  induction k with
+  | zero => simpa [iteratedNonneighborOrder] using hw
+  | succ k ih =>
+      have hklt : k < d := by omega
+      have hprev : C4FreeMinDegreeWitness
+          (iteratedNonneighborOrder n d k) (d - k) :=
+        ih (by omega) (fun i hi => horders i (by omega))
+      have hdegree : d - k = (d - (k + 1)) + 1 := by omega
+      have hprev' : C4FreeMinDegreeWitness
+          (iteratedNonneighborOrder n d k) ((d - (k + 1)) + 1) := by
+        rwa [← hdegree]
+      have hstep := c4FreeMinDegreeWitness_nonneighbor_step
+        (horders k (by omega)) hprev'
+      rw [← hdegree] at hstep
+      simpa [iteratedNonneighborOrder] using hstep
+
+/-- Every admissible iterate gives a strict lower bound for the threshold at
+the reduced order. -/
+theorem iterated_nonneighbor_lt_minDegreeForC4
+    {n d k : ℕ} (hw : C4FreeMinDegreeWitness n d)
+    (hk : k ≤ d)
+    (horders : ∀ i, i < k → 4 ≤ iteratedNonneighborOrder n d i)
+    (hfinal : 4 ≤ iteratedNonneighborOrder n d k) :
+    d - k < minDegreeForC4 (iteratedNonneighborOrder n d k) :=
+  (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hfinal).1
+    (c4FreeMinDegreeWitness_iterated_nonneighbor hw hk horders)
+
+/-- Up to degree two, the intermediate-order hypotheses in the iterated
+reduction are automatic: the current certified degree is at least three, so
+the current graph has at least four vertices. -/
+theorem c4FreeMinDegreeWitness_iterated_nonneighbor_auto
+    {n d k : ℕ} (hw : C4FreeMinDegreeWitness n d) (hk : k + 2 ≤ d) :
+    C4FreeMinDegreeWitness (iteratedNonneighborOrder n d k) (d - k) := by
+  induction k with
+  | zero => simpa [iteratedNonneighborOrder] using hw
+  | succ k ih =>
+      have hprev := ih (by omega)
+      have hthree : 3 ≤ d - k := by omega
+      have horder := four_le_order_of_c4FreeMinDegreeWitness hthree hprev
+      have hdegree : d - k = (d - (k + 1)) + 1 := by omega
+      have hprev' : C4FreeMinDegreeWitness
+          (iteratedNonneighborOrder n d k) ((d - (k + 1)) + 1) := by
+        rwa [← hdegree]
+      have hstep := c4FreeMinDegreeWitness_nonneighbor_step horder hprev'
+      rw [← hdegree] at hstep
+      simpa [iteratedNonneighborOrder] using hstep
+
+/-- Automatic recursive threshold constraints for every iterate that leaves
+certified degree at least three. -/
+theorem iterated_nonneighbor_auto_lt_minDegreeForC4
+    {n d k : ℕ} (hw : C4FreeMinDegreeWitness n d) (hk : k + 3 ≤ d) :
+    d - k < minDegreeForC4 (iteratedNonneighborOrder n d k) := by
+  have hw' := c4FreeMinDegreeWitness_iterated_nonneighbor_auto
+    (n := n) (d := d) (k := k) hw (by omega)
+  have hthree : 3 ≤ d - k := by omega
+  exact (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4
+    (four_le_order_of_c4FreeMinDegreeWitness hthree hw')).1 hw'
+
 end Erdos85
