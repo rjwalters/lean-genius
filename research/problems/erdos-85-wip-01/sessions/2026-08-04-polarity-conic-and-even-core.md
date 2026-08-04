@@ -335,3 +335,14 @@ loss, it ends the stage below `d`.  Therefore
 which finally restores minimum degree `d` must name this newly damaged vertex
 as a later endpoint.  A successful finite repair program must consequently be
 closed under all target-tight vertices hit by its evolving cross deletions.
+
+There is also a checked tight-vertex inventory independent of any switch.
+Exactly `q-2` absolute points survive deletion of three distinct absolute
+points, and every surviving absolute retains degree exactly `q` because
+distinct absolute points are nonadjacent.  The theorem
+`exists_tight_absolute_set_threePointCore` packages these as a canonical
+`q-2`-element set of tight vertices.  These are not the `q-2` new defects seen
+in the static pole-path experiment: every pair pole is nonadjacent to every
+third absolute point, so surviving absolutes lie in none of the pole
+neighborhoods and incur no such cross-edge loss.  The spawned defects belong
+to a different tight incidence class that still needs classification.

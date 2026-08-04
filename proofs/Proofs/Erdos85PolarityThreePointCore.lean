@@ -94,4 +94,60 @@ theorem threePointCore_degree_surviving_absolute {a b c : P K}
   rw [hinc, Nat.add_zero] at hs
   exact hs
 
+/-- Exactly `q-2` absolute points survive deletion of three distinct absolute
+points. -/
+theorem card_absolutePoints_sdiff_three {a b c : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    (absolutePoints K \ ({a,b,c} : Finset (P K))).card = Nat.card K - 2 := by
+  have hsub : ({a,b,c} : Finset (P K)) ⊆ absolutePoints K := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl | rfl
+    · exact (mem_absolutePoints K _).mpr ha
+    · exact (mem_absolutePoints K _).mpr hb
+    · exact (mem_absolutePoints K _).mpr hc
+  rw [Finset.card_sdiff_of_subset hsub, card_absolutePoints_eq_card_add_one K]
+  have hthree : ({a,b,c} : Finset (P K)).card = 3 := by
+    simp [hab, hac, hbc]
+  rw [hthree]
+  omega
+
+noncomputable def remainingAbsoluteEmbedding {a b c : P K} :
+    {v // v ∈ absolutePoints K \ ({a,b,c} : Finset (P K))} ↪
+      {v // v ∉ ({a,b,c} : Finset (P K))} where
+  toFun v := ⟨v.1, (Finset.mem_sdiff.mp v.2).2⟩
+  inj' := by
+    intro x y h
+    apply Subtype.ext
+    exact congrArg (fun z : {v : P K //
+      v ∉ ({a,b,c} : Finset (P K))} => z.val) h
+
+/-- The three-point core contains a canonical set of `q-2` target-tight
+vertices, namely its surviving absolute points. -/
+theorem exists_tight_absolute_set_threePointCore {a b c : P K}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b)
+    (hc : Projectivization.orthogonal c c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ T : Finset {v : P K // v ∉ ({a,b,c} : Finset (P K))},
+      T.card = Nat.card K - 2 ∧
+      ∀ v ∈ T, (threePointCore K).degree v = Nat.card K := by
+  classical
+  let e := remainingAbsoluteEmbedding K (a := a) (b := b) (c := c)
+  let T : Finset {v : P K // v ∉ ({a,b,c} : Finset (P K))} :=
+    Finset.univ.map e
+  refine ⟨T, ?_, ?_⟩
+  · dsimp only [T]
+    rw [Finset.card_map, Finset.card_univ, Fintype.card_coe]
+    exact card_absolutePoints_sdiff_three K ha hb hc hab hac hbc
+  · intro v hvT
+    dsimp only [T] at hvT
+    rw [Finset.mem_map] at hvT
+    obtain ⟨r, _, rfl⟩ := hvT
+    apply threePointCore_degree_surviving_absolute K ha hb hc
+    exact (mem_absolutePoints K r.1).mp (Finset.mem_sdiff.mp r.2).1
+
 end Erdos85.Polarity

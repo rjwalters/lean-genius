@@ -125,6 +125,9 @@ requires at least two switches before incidence losses are even considered.
 Moreover, deleting one incident cross edge at an untouched target-tight vertex
 makes it a new strict defect.  Any successful continuation must use that
 vertex as a later endpoint, giving a formal repair-cascade obstruction.
+In the three-point core, exactly `q-2` absolute points survive and all of them
+are target-tight of degree exactly `q`; this canonical tight set is now
+packaged explicitly for subsequent loss-incidence arguments.
 -/
 
 namespace Erdos85
