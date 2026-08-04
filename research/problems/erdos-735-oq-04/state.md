@@ -17,7 +17,7 @@ Theorem 1 actually proves. The axiom is restated over the repaired class (still 
 0 sorries). Host-verified v4.31. **Parent alert**: `Erdos735Problem.lean` has an analogous
 (likely worse) defect — `IsIncenterConfig` doesn't pin `A,B,C,I ∈ P` and
 `ProjectivelyEquivalent` is an arbitrary plane bijection, so the parent's
-`magic_classification` axiom is likely refutable too; issue filed this session.
+`magic_classification` axiom is likely refutable too; issue #43666 filed.
 Prior state (S6d, 2026-07-24): Platonic-solid audit finished — only the tetrahedron is
 2-flat magic. Remaining milestones: parent-file repair (separate issue), and the honest
 open frontier (the S5 higher-dim classification itself, now stated over a sound class 4).
