@@ -12,6 +12,10 @@ import Proofs.Erdos85PrimeSequence
 import Proofs.Erdos85VertexDeletion
 import Proofs.Erdos85ConsecutiveRamsey
 import Proofs.Erdos85ProblemConflict
+import Proofs.Erdos85PolarityDeletion
+import Proofs.Erdos85PolarityAbsolute
+import Proofs.Erdos85DeletePair
+import Proofs.Erdos85OneDefectCore
 
 /-!
 # Headline results for Erdős Problem 85
@@ -23,6 +27,8 @@ complete checked table through order 21, one- and two-vertex attachment theory,
 and the finite-field polarity construction underlying the classical infinite
 family.  In particular, for every finite field of order `q`, the development
 proves `minDegreeForC4 (q² + q + 1) = q + 1`.
+Chevalley--Warning and deletion of an absolute point strengthen this to the
+consecutive pair `f(q²+q) = f(q²+q+1) = q+1`.
 -/
 
 namespace Erdos85
