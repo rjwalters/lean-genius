@@ -616,4 +616,152 @@ theorem adjMatrix_sq_eq_sub_triangleFreeEdgeGraph_of_firstOrder_odd
     · rw [if_neg hdefect] at hcommon
       simp [SimpleGraph.adjMatrix_apply, hxy, hdefect, hcommon]
 
+/-- For a regular graph the all-ones matrix also commutes from the left with
+the adjacency matrix. -/
+theorem onesMatrix_mul_adjMatrix_of_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : ℕ) (hreg : ∀ x : V, G.degree x = d) :
+    FriendshipTheoremOQ01.onesMatrix V * G.adjMatrix ℤ =
+      (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+  ext x y
+  simp only [Matrix.mul_apply, Matrix.smul_apply,
+    FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply, one_mul, smul_eq_mul]
+  simp only [SimpleGraph.adjMatrix_apply]
+  rw [Finset.sum_boole]
+  have hfilt : Finset.univ.filter (fun z => G.Adj z y) =
+      G.neighborFinset y := by
+    ext z
+    simp [SimpleGraph.mem_neighborFinset, G.adj_comm]
+  rw [hfilt, G.card_neighborFinset_eq_degree, hreg y]
+  norm_num
+
+/-- The original adjacency matrix commutes with the defect matching matrix.
+This follows algebraically from `M=(d-1)I+J-A²` and regularity. -/
+theorem adjMatrix_comm_triangleFreeEdgeGraph_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ =
+      (triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ := by
+  let A := G.adjMatrix ℤ
+  let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix V
+  let C := (↑d - 1 : ℤ) • (1 : Matrix V V ℤ)
+  have hsq : A * A = C + J - M := by
+    exact adjMatrix_sq_eq_sub_triangleFreeEdgeGraph_of_firstOrder_odd
+      G hfree hd hdodd hmin hcard
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hreg : ∀ x : V, G.degree x = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hAJ : A * J = (d : ℤ) • J := by
+    exact FriendshipTheoremOQ01.adjMatrix_mul_ones G d hreg
+  have hJA : J * A = (d : ℤ) • J := by
+    exact onesMatrix_mul_adjMatrix_of_regular G d hreg
+  have hM : M = C + J - A * A := by
+    rw [hsq]
+    noncomm_ring
+  change A * M = M * A
+  rw [hM]
+  rw [mul_sub, sub_mul, mul_add, add_mul, hAJ, hJA]
+  simp only [C, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+    Matrix.one_mul]
+  noncomm_ring
+
+/-- The adjacency matrix of any finite one-regular simple graph is an
+involution. -/
+theorem adjMatrix_sq_eq_one_of_degree_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdegree : ∀ x : V, H.degree x = 1) :
+    H.adjMatrix ℤ * H.adjMatrix ℤ = (1 : Matrix V V ℤ) := by
+  ext x y
+  rw [adjMatrix_sq_apply_eq_card_common, Matrix.one_apply]
+  by_cases hxy : x = y
+  · subst y
+    simp [H.card_neighborFinset_eq_degree, hdegree x]
+  · have hinter : H.neighborFinset x ∩ H.neighborFinset y = ∅ := by
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro z hz
+      have hzx : x ∈ H.neighborFinset z :=
+        (H.mem_neighborFinset z x).mpr
+          ((H.mem_neighborFinset x z).mp (Finset.mem_inter.mp hz).1).symm
+      have hzy : y ∈ H.neighborFinset z :=
+        (H.mem_neighborFinset z y).mpr
+          ((H.mem_neighborFinset y z).mp (Finset.mem_inter.mp hz).2).symm
+      have hpair : ({x, y} : Finset V) ⊆ H.neighborFinset z := by
+        intro w hw
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+        rcases hw with rfl | rfl
+        · exact hzx
+        · exact hzy
+      have hcardPair := Finset.card_le_card hpair
+      rw [Finset.card_pair hxy, H.card_neighborFinset_eq_degree, hdegree z]
+        at hcardPair
+      omega
+    rw [hinter]
+    simp [hxy]
+
+/-- The odd first-order defect matching matrix satisfies `M²=I`. -/
+theorem triangleFreeEdgeGraph_adjMatrix_sq_eq_one_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    (triangleFreeEdgeGraph G).adjMatrix ℤ *
+        (triangleFreeEdgeGraph G).adjMatrix ℤ = (1 : Matrix V V ℤ) := by
+  apply adjMatrix_sq_eq_one_of_degree_one
+  intro x
+  exact triangleFreeEdgeGraph_degree_eq_one_of_firstOrder_odd
+    G hfree hd hdodd hmin hcard x
+
+/-- The mixed trace counts the oriented defect-matching incidences.  Since
+every defect edge is also an edge of `G` and every vertex has one defect
+neighbor, `tr(AM)=|V|`. -/
+theorem trace_adjMatrix_mul_triangleFreeEdgeGraph_of_firstOrder_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    Matrix.trace (G.adjMatrix ℤ *
+      (triangleFreeEdgeGraph G).adjMatrix ℤ) = Fintype.card V := by
+  rw [Matrix.trace]
+  have hentry : ∀ x : V,
+      (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) x x = 1 := by
+    intro x
+    rw [(triangleFreeEdgeGraph G).mul_adjMatrix_apply]
+    have hN := triangleFreeEdgeGraph_neighborFinset G x
+    rw [hN]
+    calc
+      (∑ z ∈ triangleFreeNeighbors G x, G.adjMatrix ℤ x z) =
+          ∑ _z ∈ triangleFreeNeighbors G x, 1 := by
+        apply Finset.sum_congr rfl
+        intro z hz
+        rw [SimpleGraph.adjMatrix_apply, if_pos]
+        exact ((mem_triangleFreeNeighbors G x z).mp hz).1
+      _ = (triangleFreeNeighbors G x).card := by simp
+      _ = 1 := by
+        exact_mod_cast card_triangleFreeNeighbors_eq_one_of_firstOrder_odd
+          G hfree hd hdodd hmin hcard x
+  calc
+    (∑ x : V, (G.adjMatrix ℤ *
+        (triangleFreeEdgeGraph G).adjMatrix ℤ) x x) =
+        ∑ _x : V, (1 : ℤ) := by
+      apply Finset.sum_congr rfl
+      intro x _
+      exact hentry x
+    _ = Fintype.card V := by simp
+
 end Erdos85
