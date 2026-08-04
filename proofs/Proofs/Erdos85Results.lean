@@ -52,7 +52,8 @@ exact value `f(q²-1) = q+1`.
 This also verifies the monotonicity step immediately preceding every such
 characteristic-two value.
 The resulting `q`-regular core has no common-neighbor-independent attachment
-set of size `q`; every such safe set has size at most `q-1`.  Thus this natural
+set of size `q`; its common-neighbor conflict graph has independence number
+exactly `q-1`.  Thus this natural
 witness cannot settle the following monotonicity step by direct attachment.
 -/
 

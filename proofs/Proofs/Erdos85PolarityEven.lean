@@ -1,4 +1,5 @@
 import Proofs.Erdos85PolarityConic
+import Proofs.Erdos85ProblemConflict
 
 open SimpleGraph Matrix
 open scoped LinearAlgebra.Projectivization
@@ -497,6 +498,111 @@ theorem card_commonNeighborIndependent_evenCore_le (K : Type u) [Field K] [Finit
   have hcard := Finset.card_le_card hsub
   rw [Finset.card_map, htarget] at hcard
   omega
+
+/-- The `q - 1` upper bound is sharp: the surviving points on the polar line
+of any absolute point form a safe attachment set of cardinality `q - 1`. -/
+theorem exists_commonNeighborIndependent_evenCore_card_eq (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    ∃ S : Finset {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K},
+      CommonNeighborIndependent (evenCore K) S ∧ S.card = Nat.card K - 1 := by
+  obtain ⟨p, hp⟩ := exists_selfOrthogonal K
+  have hpabs : p ∈ absolutePoints K := (mem_absolutePoints K p).mpr hp
+  let T : Finset (Projectivization K (Fin 3 → K)) :=
+    (graph K).neighborFinset p \ {nucleus K}
+  let S : Finset {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K} :=
+    Finset.univ.filter fun v => v.1 ∈ T
+  have hnAdj : (graph K).Adj p (nucleus K) :=
+    ((graph K).adj_comm (nucleus K) p).mp
+      ((selfOrthogonal_iff_nucleus_adj h2 p).mp hp)
+  have hTcard : T.card = Nat.card K - 1 := by
+    have hnmem : nucleus K ∈ (graph K).neighborFinset p := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hnAdj
+    rw [Finset.card_sdiff, SimpleGraph.card_neighborFinset_eq_degree,
+      degree_eq_card_of_selfOrthogonal hp]
+    simp [hnmem]
+  let emb : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K} ↪
+      Projectivization K (Fin 3 → K) := Function.Embedding.subtype _
+  have hmap : S.map emb = T := by
+    ext z
+    constructor
+    · intro hz
+      rw [Finset.mem_map] at hz
+      obtain ⟨v, hv, rfl⟩ := hz
+      dsimp [emb]
+      simpa [S] using hv
+    · intro hz
+      have hzAdj : (graph K).Adj p z := by
+        simpa only [SimpleGraph.mem_neighborFinset] using
+          (Finset.mem_sdiff.mp hz).1
+      have hzNeN : z ≠ nucleus K := by
+        simpa using (Finset.mem_sdiff.mp hz).2
+      have hznotabs : z ∉ absolutePoints K := by
+        intro hzabs
+        exact (not_selfOrthogonal_of_adj_selfOrthogonal hzAdj hp)
+          ((mem_absolutePoints K z).mp hzabs)
+      have hzcore : z ∉ evenDeletedSet K := by
+        simp [evenDeletedSet, hzNeN, hznotabs]
+      let v : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K} :=
+        ⟨z, hzcore⟩
+      rw [Finset.mem_map]
+      refine ⟨v, ?_, rfl⟩
+      simp [S, v, hz]
+  refine ⟨S, ?_, ?_⟩
+  · intro x hx y hy hxy
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+    intro z hz
+    rw [Finset.mem_inter] at hz
+    have hpx : (graph K).Adj p x.1 := by
+      have hxT : x.1 ∈ T := by simpa [S] using hx
+      simpa only [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hxT).1
+    have hpy : (graph K).Adj p y.1 := by
+      have hyT : y.1 ∈ T := by simpa [S] using hy
+      simpa only [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_sdiff.mp hyT).1
+    have hxz : (graph K).Adj x.1 z.1 := by
+      have hxzCore : (evenCore K).Adj x z := by
+        simpa only [SimpleGraph.mem_neighborFinset] using hz.1
+      change (graph K).Adj x.1 z.1 at hxzCore
+      exact hxzCore
+    have hyz : (graph K).Adj y.1 z.1 := by
+      have hyzCore : (evenCore K).Adj y z := by
+        simpa only [SimpleGraph.mem_neighborFinset] using hz.2
+      change (graph K).Adj y.1 z.1 at hyzCore
+      exact hyzCore
+    have hxyv : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
+    have hone := Finset.card_le_one.mp (commonNeighbors_le_one x.1 y.1 hxyv)
+    have hpMem : p ∈ (graph K).neighborFinset x.1 ∩
+        (graph K).neighborFinset y.1 := by simp [hpx.symm, hpy.symm]
+    have hzMem : z.1 ∈ (graph K).neighborFinset x.1 ∩
+        (graph K).neighborFinset y.1 := by simp [hxz, hyz]
+    have hpz : p = z.1 := hone p hpMem z.1 hzMem
+    apply z.2
+    rw [← hpz]
+    simp [evenDeletedSet, hpabs]
+  · have hc : S.card = T.card := by
+      rw [← hmap]
+      exact (Finset.card_map emb).symm
+    rw [hc, hTcard]
+
+/-- Exact obstruction invariant: the common-neighbor conflict graph of the
+even core has independence number precisely `q - 1`. -/
+theorem commonNeighborConflict_evenCore_indepNum
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0) :
+    (commonNeighborConflict (evenCore K)).indepNum = Nat.card K - 1 := by
+  apply Nat.le_antisymm
+  · obtain ⟨S, hsafe, hcard⟩ :=
+      exists_commonNeighborIndependent_card_eq_indepNum (evenCore K)
+    rw [← hcard]
+    exact card_commonNeighborIndependent_evenCore_le K h2 S hsafe
+  · obtain ⟨S, hsafe, hcard⟩ :=
+      exists_commonNeighborIndependent_evenCore_card_eq K h2
+    have hind : (commonNeighborConflict (evenCore K)).IsIndepSet S :=
+      (commonNeighborIndependent_iff_isIndepSet (evenCore K) S).mp hsafe
+    rw [← hcard]
+    exact hind.card_le_indepNum
+
 
 
 
