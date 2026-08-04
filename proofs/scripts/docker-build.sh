@@ -8,9 +8,19 @@
 #   ./proofs/scripts/docker-build.sh --repair-cache   # repair corrupt oleans, then exit
 #
 # Environment variables:
-#   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
-#   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
-#   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
+#   LEAN_MEMORY_LIMIT    - Memory limit in MB (default: 32768 = 32GB)
+#   LEAN_BUILD_TIMEOUT   - Build timeout (default: 60m)
+#   LEAN_SKIP_CACHE      - Skip Mathlib cache download (default: false)
+#   LEAN_ALLOW_COLD_CACHE - Skip the cold-cache preflight and download inline
+#                           on a fresh host instead of failing fast
+#                           (default: false; see check-cache-primed.sh)
+#
+# First time on a fresh host? Run the one-time cache prime FIRST (foreground,
+# several GB / several minutes):
+#     ./proofs/scripts/prime-cache.sh
+# Skipping this makes the first `docker-build.sh` invocation start that same
+# multi-GB download inline, which an unattended/headless agent session can
+# abandon mid-download when it ends its turn (see #43620).
 #
 # Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
 #   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
@@ -91,6 +101,15 @@ if ! docker info &>/dev/null; then
     echo "ERROR: Docker daemon is not running"
     echo "Please start Docker Desktop"
     exit 1
+fi
+
+# Fail fast on a cold cache instead of silently kicking off a multi-GB
+# download inline (issue #43620) — an autonomous/headless session that
+# starts that download and ends its turn loses it when the process exits.
+# Set LEAN_ALLOW_COLD_CACHE=1 to opt back into the old inline-download
+# behavior (e.g. an attended interactive first-time setup).
+if [[ "${LEAN_ALLOW_COLD_CACHE:-false}" != "true" ]]; then
+    "${SCRIPT_DIR}/check-cache-primed.sh" || exit 1
 fi
 
 # Check if image exists, build if needed

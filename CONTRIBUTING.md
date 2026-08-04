@@ -42,7 +42,13 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
 
 5. **Build proofs** (optional, only if modifying Lean files):
    ```bash
-   cd proofs && lake build
+   # First time on this host? Prime the Docker cache once (see CLAUDE.md's
+   # "One-Time Host Setup" section) - several GB / several minutes:
+   ./proofs/scripts/prime-cache.sh
+
+   # Then build - never run `lake build` directly (see CLAUDE.md's
+   # "DANGER: Never Run `lake build` Directly"; it can crash the host):
+   ./proofs/scripts/docker-build.sh Proofs.YourProof
    ```
 
 ## Research Contribution Workflow

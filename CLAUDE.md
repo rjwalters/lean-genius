@@ -50,6 +50,32 @@ services worktrees at both the resolved root and the legacy
 
 ---
 
+## One-Time Host Setup (required before autonomous/loom operation)
+
+A freshly cloned host has not built the Lean Docker image (installs elan +
+the Lean 4.31.0 toolchain) or downloaded the Mathlib olean cache (several
+GB) yet. Both are one-time, multi-minute, network-heavy steps that a
+headless/autonomous agent session cannot safely absorb inline: a session
+that starts this work, treats it as backgroundable, and ends its turn loses
+the download when the process exits — the session reports "no work done"
+even though it "started" the build (see #43620).
+
+**Before running any autonomous builder/researcher session on a new host**,
+prime the cache once, in the foreground, as a human-attended step:
+
+```bash
+./proofs/scripts/prime-cache.sh
+```
+
+This is idempotent and resumable — safe to re-run if interrupted. Once
+primed, `./proofs/scripts/docker-build.sh` only needs to fetch incremental
+cache updates. `docker-build.sh` itself fails fast with this same
+instruction if it detects a cold cache, rather than starting the download
+inline (`LEAN_ALLOW_COLD_CACHE=1` opts back into the old inline-download
+behavior for attended interactive use).
+
+---
+
 ## DANGER: Never Run `lake build` Directly
 
 ```
