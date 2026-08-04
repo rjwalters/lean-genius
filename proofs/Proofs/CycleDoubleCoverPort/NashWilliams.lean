@@ -502,6 +502,7 @@ theorem setoid_eq_of_setoidGraph_eq {P Q : Setoid V}
     (h : setoidGraph (V := V) P = setoidGraph (V := V) Q) (u v : V) : P u v ↔ Q u v := by
   rw [← mem_setoidGraph (P := P) (u := u) (v := v), h, mem_setoidGraph]
 
+omit [DecidableEq V] [DecidableEq E] in
 /-- The refinement process stabilises: this is the finite termination fact behind
 Kaiser's notation `P∞`. Proved by pigeonholing the graphs of the partitions,
 which live in the finite type `Finset (V × V)`. -/
@@ -566,6 +567,7 @@ def HasFiniteLevel {k : ℕ} (χ : E → Fin k) (e : E) (m : ℕ) : Prop :=
   G.kaiserPartition χ m (G.endAt e 0) (G.endAt e 1) ∧
     ¬ G.kaiserPartition χ (m + 1) (G.endAt e 0) (G.endAt e 1)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem finiteLevel_unique {k : ℕ} {χ : E → Fin k} {e : E} {m n : ℕ}
     (hm : G.HasFiniteLevel χ e m) (hn : G.HasFiniteLevel χ e n) : m = n := by
   by_contra hne
