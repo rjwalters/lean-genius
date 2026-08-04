@@ -206,6 +206,56 @@ def GadgetAttachmentCompatible
     (G.neighborFinset x ∩ A w).card +
       (F.neighborFinset w |>.filter fun u => x ∈ A u).card ≤ 1)
 
+/-- Every individual selector in a compatible gadget attachment is
+common-neighbor independent in the old graph. -/
+theorem GadgetAttachmentCompatible.selector_safe
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (w : W) : CommonNeighborIndependent G (A w) := by
+  intro a ha b hb hab
+  have hw : w ∈ Finset.univ.filter (fun u => a ∈ A u ∧ b ∈ A u) := by
+    simp [ha, hb]
+  have hone : 1 ≤
+      (Finset.univ.filter (fun u => a ∈ A u ∧ b ∈ A u)).card :=
+    Finset.one_le_card.mpr ⟨w, hw⟩
+  have hbudget := hcompat.1 a b hab
+  omega
+
+/-- Distinct compatible gadget selectors intersect in at most one old
+vertex. -/
+theorem GadgetAttachmentCompatible.card_selector_inter_le_one
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    {u w : W} (huw : u ≠ w) : (A u ∩ A w).card ≤ 1 := by
+  have hbudget := hcompat.2.1 u w huw
+  omega
+
+/-- If `u` and `w` are adjacent inside the gadget, every old vertex attached
+to `u` is anticomplete to the selector of `w`.  This is the general form of
+the cross-anticompleteness constraint in connected-pair repair. -/
+theorem GadgetAttachmentCompatible.neighbor_inter_selector_eq_empty_of_adj
+    {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    {u w : W} (huw : F.Adj u w) {x : V} (hxu : x ∈ A u) :
+    G.neighborFinset x ∩ A w = ∅ := by
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro y hy
+  have hu : u ∈ (F.neighborFinset w).filter (fun z => x ∈ A z) := by
+    simp [SimpleGraph.mem_neighborFinset, huw.symm, hxu]
+  have hone : 1 ≤
+      ((F.neighborFinset w).filter (fun z => x ∈ A z)).card :=
+    Finset.one_le_card.mpr ⟨u, hu⟩
+  have hbudget := hcompat.2.2 x w
+  have hpos : 1 ≤ (G.neighborFinset x ∩ A w).card :=
+    Finset.one_le_card.mpr ⟨y, hy⟩
+  omega
+
 /-- Exact safety theorem for an arbitrary finite gadget attachment.  No
 additional hypotheses are hidden: the old-old, new-new, and mixed budgets are
 jointly necessary and sufficient. -/

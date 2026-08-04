@@ -28,6 +28,7 @@ import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
+import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -158,6 +159,11 @@ static pair-pole path is formally ruled out as a degree-`q` witness.
 By contrast, one dynamic switch between two pair poles is completely clean:
 it repairs those two defects to degree `q`, creates no new sub-target vertex,
 and leaves the third pair pole as the unique degree-`q-1` vertex.
+More generally, controlled deletion and finite-gadget attachment are now
+composed into an exact delete-`k`/add-`m` surgery.  Taking `m=k+1` gives a
+uniform order-raising criterion strictly broader than canonical
+delete-one/add-pair repair, with exact compensation for every deleted and
+newly attached incidence.
 -/
 
 namespace Erdos85

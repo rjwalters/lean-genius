@@ -773,3 +773,30 @@ that can create external repair candidates below the girth-five Moore bound.
 It also confirms that any successful general extension argument must exploit
 more structure than the canonical one-reservoir repair criterion near the
 orders where extremal witnesses are regular and locally sparse.
+
+## Delete-set/add-gadget extension
+
+Controlled deletion and arbitrary gadget attachment have now been composed
+into a single exact surgery.  One may delete any `k` old vertices and add an
+arbitrary `m`-vertex graph `F`.  Each new vertex `w` has an old attachment
+selector `A(w)`.  The final order is `N-k+m`; a surviving old vertex is
+required to pay exactly for its neighbors in the deleted set and is credited
+exactly for the gadget vertices whose selectors contain it.  The existing
+three common-neighbor budgets are necessary and sufficient for the final
+graph to remain `C₄`-free.
+
+The specialization `m=k+1` is a genuine order-raising surgery, and
+`witnessExtension_of_delete_set_add_gadget` reduces one-step monotonicity to
+finding such data uniformly for every witness.  The old delete-one/add-pair
+repair is its `k=1` special case, but internal gadget degree can now replace
+old attachments and deletion can remove a structured obstruction rather than
+only one center.
+
+Compatibility itself yields three useful necessary conditions, all now
+formalized: every selector `A(w)` is common-neighbor independent; two distinct
+selectors intersect in at most one vertex; and selectors belonging to
+adjacent gadget vertices satisfy the same cross-anticompleteness condition as
+the connected-pair construction.  Thus larger gadgets provide additional
+internal degree, but their internal edges consume mixed common-neighbor
+budget.  This is the precise tradeoff a future eventual construction must
+exploit.
