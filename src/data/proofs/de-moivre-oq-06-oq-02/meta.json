@@ -68,7 +68,8 @@
       "The blow-up of the pointwise Dirichlet bound at θ ∈ 2πℤ is the only obstruction to uniformity; excising a δ-neighbourhood of the singularities makes the bound uniform with an explicit δ-dependent constant",
       "sin(θ/2) ≥ sin(δ/2) on the arc is an endpoint-minimum fact: sin is concave on [0, π] with equal values sin(δ/2) at the two endpoints δ/2 and π−δ/2 of the half-angle range, so the minimum sits at the boundary",
       "The product identity sin x − sin y = 2 sin((x−y)/2) cos((x+y)/2) turns the monotonicity claim into a sign check on two factors, each pinned nonnegative purely by its argument lying in [0, π/2]",
-      "A single constant C = 1/sin(δ/2) governs both the cosine and sine families at once — the ∃ C, ∀ n θ shape is exactly the uniform-boundedness hypothesis of Dirichlet's test for the convergence of Fourier series"
+      "A single constant C = 1/sin(δ/2) governs both the cosine and sine families at once — the ∃ C, ∀ n θ shape is exactly the uniform-boundedness hypothesis of Dirichlet's test for the convergence of Fourier series",
+      "As δ → 0⁺, sin(δ/2) ~ δ/2, so C = 1/sin(δ/2) blows up like 2/δ: the price of uniformity grows without bound as the excised arc shrinks toward the full singularity θ ∈ 2πℤ, which is exactly why no single constant bounds the Dirichlet kernel on the whole circle — the quantitative seed of the Gibbs phenomenon at that endpoint"
     ],
     "prerequisites": [
       "Parent formalization de-moivre-oq-06 (pointwise Dirichlet kernel bounds)",
