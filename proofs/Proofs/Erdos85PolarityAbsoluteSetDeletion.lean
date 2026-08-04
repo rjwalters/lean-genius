@@ -24,6 +24,34 @@ private noncomputable abbrev P := ℙ K (Fin 3 → K)
 private noncomputable abbrev q : ℕ := Nat.card K
 private noncomputable abbrev N : ℕ := (q K + 1) * q K + 1
 
+/-- The finite set of all absolute points of the orthogonal polarity. -/
+noncomputable def absolutePoints : Finset (P K) := by
+  classical
+  exact Finset.univ.filter fun x => Projectivization.orthogonal x x
+
+@[simp] theorem mem_absolutePoints (x : P K) :
+    x ∈ absolutePoints K ↔ Projectivization.orthogonal x x := by
+  classical
+  simp [absolutePoints]
+
+/-- The precise finite-geometry input needed for multi-absolute deletion:
+every nonabsolute polar line meets the absolute locus in at most two points. -/
+def AbsoluteTwoSecant : Prop :=
+  ∀ v : P K, ¬ Projectivization.orthogonal v v →
+    ((graph K).neighborFinset v ∩ absolutePoints K).card ≤ 2
+
+/-- The two-secant property descends from the full absolute locus to every
+chosen subset of absolute points. -/
+theorem card_neighborFinset_inter_le_two_of_subset_absolute
+    (hsec : AbsoluteTwoSecant K) (D : Finset (P K))
+    (hDabs : ∀ y ∈ D, Projectivization.orthogonal y y)
+    (v : P K) (hv : ¬ Projectivization.orthogonal v v) :
+    ((graph K).neighborFinset v ∩ D).card ≤ 2 := by
+  apply (Finset.card_le_card ?_).trans (hsec v hv)
+  intro y hy
+  rw [Finset.mem_inter] at hy ⊢
+  exact ⟨hy.1, (mem_absolutePoints K y).mpr (hDabs y hy.2)⟩
+
 /-- A surviving absolute point has no neighbor in a deleted set consisting
 entirely of absolute points. -/
 theorem card_neighborFinset_inter_eq_zero_of_absolute_set
@@ -83,5 +111,18 @@ theorem minDegreeForC4_delete_absolute_set_lower
   apply (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hremain).1
   exact c4FreeMinDegreeWitness_delete_absolute_set_of_incidence_two
     K D hDcard (by omega) hDabs hinc
+
+/-- Under the global two-secant property, every chosen absolute subset gives
+the controlled degree-`q-1` witness automatically. -/
+theorem c4FreeMinDegreeWitness_delete_absolute_set
+    (hsec : AbsoluteTwoSecant K) (D : Finset (P K)) {k : ℕ}
+    (hDcard : D.card = k) (hremain : 1 ≤ N K - k)
+    (hDabs : ∀ y ∈ D, Projectivization.orthogonal y y) :
+    C4FreeMinDegreeWitness (N K - k) (q K - 1) := by
+  apply c4FreeMinDegreeWitness_delete_absolute_set_of_incidence_two
+    K D hDcard hremain hDabs
+  intro v hv
+  exact card_neighborFinset_inter_le_two_of_subset_absolute
+    K hsec D hDabs v hv
 
 end Erdos85.Polarity
