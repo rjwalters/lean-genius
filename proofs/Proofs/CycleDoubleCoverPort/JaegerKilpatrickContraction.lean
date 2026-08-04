@@ -1,4 +1,4 @@
-import Proofs.CycleDoubleCoverPort.GeneralGraph
+import Proofs.CycleDoubleCoverPort.NashWilliams
 import Mathlib.Algebra.CharP.Two
 
 /-
@@ -37,7 +37,13 @@ adaptation surface is small. It consists of:
   re-derivation that routes the same computation through its own `divergence` /
   `endSum` primitives and does not export a lemma of this shape, so upstream's
   version is vendored here rather than imported. It is self-contained — only
-  `Finset` lemmas and `endAt` — and this file therefore imports step 1 only.
+  `Finset` lemmas and `endAt` — so this file needs nothing else from step 5b.
+
+The only import beyond `Mathlib.Algebra.CharP.Two` is step 4's
+`NashWilliams.lean` (which re-exports step 1). Upstream's `JaegerKilpatrick.lean`
+imports it too, and what is needed from it here is exactly one instance:
+`instFintypeQuotientSetoid`, upstream's `quotientFintype`, without which the
+`Fintype` argument in the type of `contractEdge` cannot be synthesised.
 
 ## Mathematical content
 
