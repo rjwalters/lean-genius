@@ -684,3 +684,15 @@ balanced weighing matrix supported on a symmetric `2-(16,6,2)` design.  This
 matrix formulation agrees with the direct negative-four-cycle calculation
 and may offer a shorter formal nonexistence certificate than explicit graph
 classification.
+
+The canonical quotient has now been constructed in
+`Erdos85ThirtyTwoQuotient`.  The equivalence relation is “equal or
+antipodal”; every class is checked to contain exactly two vertices, hence the
+quotient has cardinality 16.  Quotient adjacency records whether the two
+fibers support an edge and is independent of representatives.  The checked
+neighbor-image theorem shows the quotient is 6-regular.  Finally, lifting
+common neighbors into the two possible orientations proves that every two
+distinct quotient vertices have exactly two common neighbors
+(`thirtyTwoQuotient_common_eq_two`).  Thus the full `(16,6,2,2)` strongly
+regular parameter reduction is formal; only the nonexistence of the required
+real signing remains outside Lean.

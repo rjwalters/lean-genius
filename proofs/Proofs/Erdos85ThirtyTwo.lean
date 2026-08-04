@@ -354,6 +354,22 @@ theorem thirtyTwoAntipode_spec
         G.neighborFinset (thirtyTwoAntipode G hfree hmin x)).card = 0 :=
   (Classical.choose_spec (existsUnique_thirtyTwoAntipode G hfree hmin x)).1
 
+/-- Every distinct non-antipodal pair has exactly one common neighbour. -/
+theorem card_common_eq_one_of_ne_of_ne_antipode
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    {x y : Fin 32} (hxy : x ≠ y)
+    (hxpy : x ≠ thirtyTwoAntipode G hfree hmin y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 1 := by
+  have hle := common_le_one_of_not_containsC4 hfree x y hxy
+  by_contra hne
+  have hzero : (G.neighborFinset y ∩ G.neighborFinset x).card = 0 := by
+    have : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by omega
+    simpa [Finset.inter_comm] using this
+  have heq := (existsUnique_thirtyTwoAntipode G hfree hmin y).unique
+    (thirtyTwoAntipode_spec G hfree hmin y) ⟨hxy, hzero⟩
+  exact hxpy heq.symm
+
 /-- The canonical antipode map is a fixed-point-free involution. -/
 theorem thirtyTwoAntipode_involutive
     (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
