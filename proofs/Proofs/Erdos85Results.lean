@@ -4,6 +4,7 @@ import Proofs.Erdos85Ramsey
 import Proofs.Erdos85PairedWitness
 import Proofs.Erdos85TightWitness
 import Proofs.Erdos85Polarity
+import Proofs.Erdos85PolarityDegree
 
 /-!
 # Headline results for Erdős Problem 85
