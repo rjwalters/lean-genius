@@ -1234,3 +1234,35 @@ oddness.  Lean now checks this argument end to end.  Therefore
 d(d-1)+3 ≤ |V|,
 minDegreeForC4 (d(d-1)+2) ≤ d.
 ```
+
+The even first-order case now has an equally precise, but importantly
+different, formal reduction.  The unique vertex beyond distance two from
+each `x` defines a symmetric one-regular spanning graph, the antipodal
+matching `P`.  Lean checks the full common-neighbor table and
+
+```text
+P² = I,    AP = PA,
+A² = (d-1)I + J - P,    tr(AP) = 0.
+```
+
+Thus the odd modular trace contradiction does not simply repeat: the defect
+matching in the odd case consists of edges and has `tr(AM)=|V|`, whereas the
+even antipodal matching consists of nonedges and has zero mixed trace.
+
+The displayed equations nevertheless expose a sharper spectral route.  On
+the `P=+1` space (one coordinate per antipodal pair), the induced integral
+quotient matrix `Q` satisfies
+
+```text
+Q² = (d-2)I + 2J,    Q 1 = d 1,    tr(Q)=0.
+```
+
+Consequently its nontrivial eigenvalues are `±sqrt(d-2)`.  Rationality of the
+characteristic polynomial forces `d-2` to be a square; writing
+`d-2=t²`, the trace multiplicities force `t | d=t²+2`, hence `t | 2`.
+Since `d` is even, `t` is even, so `t=2` and `d=6`.  The already formalized
+exact result `f(32)=6` then excludes this last case.  This would eliminate
+the even first-order order as well and strengthen the strict lower bound by
+one for every `d≥3`.  The graph/matrix input is now checked; the remaining
+task is to formalize the integral antipodal quotient and this elementary
+characteristic-polynomial multiplicity argument.

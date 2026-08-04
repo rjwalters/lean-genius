@@ -299,6 +299,56 @@ theorem firstOrder_structure_of_even
   rw [Nat.even_iff] at hdeven hSeven
   omega
 
+/-- Pointwise version of the even first-order structure: every vertex of the
+induced neighborhood has degree one, so each neighborhood is a perfect
+matching. -/
+theorem localNeighborhood_degree_eq_one_of_firstOrder_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdeven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2)
+    (x : V) (y : {z : V // z ∈ G.neighborSet x}) :
+    (G.induce (G.neighborSet x)).degree y = 1 := by
+  classical
+  let S := ∑ z : {w : V // w ∈ G.neighborSet x},
+    (G.induce (G.neighborSet x)).degree z
+  have hS : S = d :=
+    (firstOrder_structure_of_even G hfree hd hdeven hmin hcard x).2
+  have hle : ∀ z : {w : V // w ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree z ≤ 1 := by
+    intro z
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x z.1 (G.ne_of_adj z.2)
+  by_contra hy
+  have hylt : (G.induce (G.neighborSet x)).degree y < 1 := by
+    have := hle y
+    omega
+  have hsumlt : S < ∑ _z : {w : V // w ∈ G.neighborSet x}, 1 := by
+    change (∑ z : {w : V // w ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree z) < _
+    apply Finset.sum_lt_sum
+    · intro z _
+      exact hle z
+    · exact ⟨y, Finset.mem_univ _, hylt⟩
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    norm_num
+    nlinarith
+  have hdeg := degree_eq_of_minDegree_card_lt_nextMooreLayer
+    G hfree (by omega) hmin hbelow x
+  have hNcard : Fintype.card {w : V // w ∈ G.neighborSet x} = d := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+        G.neighborFinset x := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hdeg]
+  have hsumones : (∑ _z : {w : V // w ∈ G.neighborSet x}, 1) = d := by
+    rw [Finset.sum_const, Finset.card_univ, hNcard]
+    simp
+  rw [hsumones, hS] at hsumlt
+  omega
+
 /-- For odd `d`, the unique unit of first-order slack is the isolated vertex
 in each induced neighborhood; there is no vertex beyond distance two. -/
 theorem firstOrder_structure_of_odd
