@@ -117,6 +117,49 @@ theorem card_absolutePoints_eq_card_add_one
   · exact card_absolutePoints_eq_card_add_one_of_two_eq_zero (K := K) h2
   · exact card_absolutePoints_eq_card_add_one_of_two_ne_zero K h2
 
+/-- Any two distinct absolute points have a unique common neighbor in the
+polarity graph, and that common neighbor is nonabsolute. -/
+theorem existsUnique_nonabsolute_commonNeighbor_of_absolute
+    (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    {a b : Projectivization K (Fin 3 → K)}
+    (ha : Projectivization.orthogonal a a)
+    (hb : Projectivization.orthogonal b b) (hab : a ≠ b) :
+    ∃! z, (graph K).Adj a z ∧ (graph K).Adj b z ∧
+      ¬ Projectivization.orthogonal z z := by
+  have habno : ¬ Projectivization.orthogonal a b := by
+    intro hortho
+    have hadj : (graph K).Adj a b := (graph_adj_iff a b).mpr ⟨hab, hortho⟩
+    exact (not_selfOrthogonal_of_adj_selfOrthogonal hadj ha) hb
+  obtain ⟨z, hza, hzb⟩ :=
+    Configuration.HasPoints.existsUnique_point
+      (Projectivization K (Fin 3 → K)) (Projectivization K (Fin 3 → K))
+      a b hab |>.exists
+  have hzaOrtho : Projectivization.orthogonal z a :=
+    (Configuration.ofField.mem_iff z a).mp hza
+  have hzbOrtho : Projectivization.orthogonal z b :=
+    (Configuration.ofField.mem_iff z b).mp hzb
+  have hzneA : z ≠ a := by
+    intro h
+    apply habno
+    simpa [h] using hzbOrtho
+  have hzneB : z ≠ b := by
+    intro h
+    apply habno
+    exact Projectivization.orthogonal_comm.mp (by simpa [h] using hzaOrtho)
+  have haz : (graph K).Adj a z := (graph_adj_iff a z).mpr
+    ⟨Ne.symm hzneA, Projectivization.orthogonal_comm.mp hzaOrtho⟩
+  have hbz : (graph K).Adj b z := (graph_adj_iff b z).mpr
+    ⟨Ne.symm hzneB, Projectivization.orthogonal_comm.mp hzbOrtho⟩
+  have hznon : ¬ Projectivization.orthogonal z z :=
+    not_selfOrthogonal_of_adj_selfOrthogonal haz ha
+  refine ⟨z, ⟨haz, hbz, hznon⟩, ?_⟩
+  intro w hw
+  have hle := Finset.card_le_one.mp (commonNeighbors_le_one a b hab)
+  symm
+  apply hle z
+  · simp [haz, hbz]
+  · simp [hw.1, hw.2.1]
+
 /-- Away from the nucleus, every nonabsolute polar line in characteristic two
 meets the absolute line in exactly one point. -/
 theorem card_neighborFinset_inter_absolute_eq_one_of_even (K : Type u) [Field K] [Finite K] [DecidableEq K]
