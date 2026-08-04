@@ -1345,3 +1345,77 @@ d = 2 + 2^k,    k ≥ 3.
 In particular, once the quotient characteristic-polynomial argument forces
 `k` even and its trace forces `k≤2`, the contradiction will close without
 any further finite computation.
+
+## Even second-order defect two-factor
+
+The remaining even case at order `d(d-1)+3` has now been globalized.  Define
+`D` as the union of two zero-common-neighbor relations:
+
+```text
+M: nonadjacent pairs beyond distance two,
+N: adjacent pairs lying in no triangle,
+D = M union N.
+```
+
+The local identity also gives
+
+```text
+|N(x)| + S_x = d.
+```
+
+Combined with the even local alternatives, this proves that every vertex has
+degree two in `D`.  More sharply, its two incident defect edges always have
+the same kind:
+
+```text
+(deg_M(x),deg_N(x)) = (0,2) or (2,0).
+```
+
+Therefore `D` is a spanning disjoint union of cycles, and every connected
+defect cycle is monochromatic: it consists entirely of distant nonedges or
+entirely of triangle-free edges of the original graph.
+
+For every distinct pair `x,y`, Lean now checks the exact table
+
+```text
+|N_G(x) intersection N_G(y)| = 0  if xy is an edge of D,
+                                1  otherwise.
+```
+
+Consequently, with `A` the original adjacency matrix,
+
+```text
+A^2 = (d-1)I + J - D.
+```
+
+Regularity then implies `AJ=JA=dJ`, so the defect matrix is a polynomial in
+`A` and `J` and hence
+
+```text
+AD = DA.
+```
+
+This is the new spectral entry point.  Since `d` is even, the common order
+`d(d-1)+3` is odd, so the two-factor has odd total order.  On the subspace
+orthogonal to the all-ones vector the equation becomes
+
+```text
+A^2 = (d-1)I - D.
+```
+
+A determinant calculation predicts a useful cycle-parity constraint.  For a
+cycle of length `r`,
+
+```text
+det((d-1)I - A(C_r)) =
+  (d-3) * square                         if r is odd,
+  (d-3)(d+1) * square                   if r is even.
+```
+
+The all-ones direction changes the `d-3` eigenvalue to `d^2`.  Since the
+left side is `det(A)^2`, and `(d-3)(d+1)=(d-1)^2-4` is strictly between
+consecutive squares for even `d>=4`, the number of even defect cycles should
+be even.  This determinant/cycle factorization remains to be formalized; it
+is a constraint rather than yet a contradiction.  The stronger prospective
+route is to use `AD=DA` on the cyclotomic eigenspaces of each monochromatic
+cycle and exploit that `A` is an integral square root of `(d-1)I-D` there.
