@@ -98,8 +98,8 @@ gh pr create --title "Research: <topic>" --body "Summary of findings..."
 | File Type | Purpose | Version Controlled |
 |-----------|---------|-------------------|
 | `src/data/research/problems/*.json` | Problem definitions, current knowledge | Yes |
-| `.lean/state/candidate-pool.json` | Problem registry and status | Yes |
-| `research/db/data/*.sql` | Historical sessions, detailed records | Yes |
+| `.lean/state/candidate-pool.json` | Problem registry and status | No (gitignored; lives in the main checkout) |
+| `research/db/data/*.sql` | Historical sessions, detailed records | No (gitignored; dir may not exist) |
 | `research/db/schema.sql` | Database schema | Yes |
 | `research/db/knowledge.db` | Local SQLite database | No (gitignored) |
 
