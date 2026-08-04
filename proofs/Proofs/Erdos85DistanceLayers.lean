@@ -467,4 +467,148 @@ theorem not_hasRepairSet_of_regular_card_lt_degree_sq_sub_one
     G hfree hreg hrepair
   omega
 
+/-! ## A minimum-degree Moore-layer bound
+
+The preceding branch argument does not intrinsically require regularity.  A
+minimum-degree lower bound controls every branch, while the number of branches
+is the actual degree of the center.  This sharper asymmetric form is useful at
+order 32.
+-/
+
+/-- Every branch has at least `d-2` vertices under minimum degree `d`. -/
+theorem sub_two_le_card_secondLayerBranch_of_minDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hmin : d ≤ G.minDegree)
+    (x : V) (y : {z : V // z ∈ G.neighborSet x}) :
+    d - 2 ≤ (secondLayerBranch G x y).card := by
+  let N := G.neighborFinset x
+  let M := G.neighborFinset y.1
+  have hxy : G.Adj x y.1 := y.2
+  have hcommon := common_le_one_of_not_containsC4 hfree x y.1
+    (G.ne_of_adj hxy)
+  have hinter : insert x N ∩ M = insert x (N ∩ M) := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_insert]
+    constructor
+    · rintro ⟨hzx | hzN, hzM⟩
+      · exact Or.inl hzx
+      · exact Or.inr ⟨hzN, hzM⟩
+    · rintro (rfl | ⟨hzN, hzM⟩)
+      · exact ⟨Or.inl rfl, by simpa [M] using hxy.symm⟩
+      · exact ⟨Or.inr hzN, hzM⟩
+  have hxnot : x ∉ N ∩ M := by simp [N]
+  have hinterCard : (insert x N ∩ M).card ≤ 2 := by
+    rw [hinter, Finset.card_insert_of_notMem hxnot]
+    change (G.neighborFinset x ∩ G.neighborFinset y.1).card + 1 ≤ 2
+    omega
+  have hpart := Finset.card_sdiff_add_card_inter M (insert x N)
+  rw [Finset.inter_comm] at hpart
+  change (secondLayerBranch G x y).card + (insert x N ∩ M).card = M.card at hpart
+  have hMlower : d ≤ M.card := by
+    change d ≤ (G.neighborFinset y.1).card
+    rw [G.card_neighborFinset_eq_degree]
+    exact le_trans hmin (G.minDegree_le_degree y.1)
+  omega
+
+/-- The second layer has at least `deg(x)(d-2)` vertices when the whole graph
+has minimum degree at least `d`. -/
+theorem degree_mul_sub_two_le_card_secondLayer_of_minDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hmin : d ≤ G.minDegree)
+    (x : V) :
+    G.degree x * (d - 2) ≤ (secondLayer G x).card := by
+  classical
+  have hdisj := secondLayerBranch_pairwiseDisjoint G hfree x
+  rw [secondLayer, Finset.card_biUnion hdisj]
+  calc
+    G.degree x * (d - 2) =
+        ∑ _y : {z : V // z ∈ G.neighborSet x}, (d - 2) := by
+      rw [Finset.sum_const, Finset.card_univ, Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+          G.neighborFinset x := by ext z; simp
+      rw [heq, G.card_neighborFinset_eq_degree]
+      simp
+    _ ≤ ∑ y, (secondLayerBranch G x y).card :=
+      Finset.sum_le_sum fun y _ =>
+        sub_two_le_card_secondLayerBranch_of_minDegree G hfree hmin x y
+
+/-- Closed first layer and second layer give the asymmetric Moore bound
+`1 + deg(x) + deg(x)(d-2) ≤ |V|`. -/
+theorem one_add_degree_add_mul_sub_two_le_card_of_minDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hmin : d ≤ G.minDegree)
+    (x : V) :
+    1 + G.degree x + G.degree x * (d - 2) ≤ Fintype.card V := by
+  classical
+  let C : Finset V := insert x (G.neighborFinset x)
+  let D : Finset V := secondLayer G x
+  have hCD : Disjoint C D := by
+    rw [Finset.disjoint_left]
+    intro z hzC hzD
+    change z ∈ secondLayer G x at hzD
+    rw [secondLayer, Finset.mem_biUnion] at hzD
+    obtain ⟨y, _, hzy⟩ := hzD
+    exact (Finset.mem_sdiff.mp hzy).2 hzC
+  have hcardUnion : C.card + D.card ≤ Fintype.card V := by
+    rw [← Finset.card_union_of_disjoint hCD]
+    exact Finset.card_le_univ _
+  have hCcard : C.card = 1 + G.degree x := by
+    change (insert x (G.neighborFinset x)).card = 1 + G.degree x
+    rw [Finset.card_insert_of_notMem]
+    · rw [G.card_neighborFinset_eq_degree]
+      omega
+    · simp
+  have hDlower := degree_mul_sub_two_le_card_secondLayer_of_minDegree
+    G hfree hmin x
+  change G.degree x * (d - 2) ≤ D.card at hDlower
+  omega
+
+/-- Degree inside the graph induced by `N(x)` is the number of common
+neighbours with `x`. -/
+theorem degree_induce_neighborSet_eq_card_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (y : {z : V // z ∈ G.neighborSet x}) :
+    (G.induce (G.neighborSet x)).degree y =
+      (G.neighborFinset x ∩ G.neighborFinset y.1).card := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← Finset.card_map (f := Function.Embedding.subtype (· ∈ G.neighborSet x)),
+    G.map_neighborFinset_induce]
+  rw [Finset.inter_comm]
+  congr 1
+
+/-- Exact branch accounting: the neighbors of `y` are partitioned into the
+second-layer branch, the center `x`, and the common neighbors of `x,y`. -/
+theorem card_secondLayerBranch_add_common_add_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (y : {z : V // z ∈ G.neighborSet x}) :
+    (secondLayerBranch G x y).card +
+      (G.neighborFinset x ∩ G.neighborFinset y.1).card + 1 =
+        G.degree y.1 := by
+  let N := G.neighborFinset x
+  let M := G.neighborFinset y.1
+  have hxy : G.Adj x y.1 := y.2
+  have hinter : insert x N ∩ M = insert x (N ∩ M) := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_insert]
+    constructor
+    · rintro ⟨hzx | hzN, hzM⟩
+      · exact Or.inl hzx
+      · exact Or.inr ⟨hzN, hzM⟩
+    · rintro (rfl | ⟨hzN, hzM⟩)
+      · exact ⟨Or.inl rfl, by simpa [M] using hxy.symm⟩
+      · exact ⟨Or.inr hzN, hzM⟩
+  have hxnot : x ∉ N ∩ M := by simp [N]
+  have hpart := Finset.card_sdiff_add_card_inter M (insert x N)
+  rw [Finset.inter_comm, hinter, Finset.card_insert_of_notMem hxnot] at hpart
+  change (secondLayerBranch G x y).card +
+      ((G.neighborFinset x ∩ G.neighborFinset y.1).card + 1) =
+        (G.neighborFinset y.1).card at hpart
+  rw [G.card_neighborFinset_eq_degree] at hpart
+  omega
+
 end Erdos85

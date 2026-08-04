@@ -625,3 +625,41 @@ finite step and, more importantly, evidence that delete-`k`/attach-`k+1`
 cycle gadgets are a viable replacement architecture.  The next structural
 question is whether the five-cycle selector pattern has a coordinate
 description that generalizes from `q=5` to an infinite family.
+
+## Rigidity of any putative degree-six graph at order 32
+
+The lower bound raises the natural exact-value question `f(32)=6` versus
+`f(32)=7`.  The distance-layer machinery now gives a strong reduction of the
+second case.  A new asymmetric Moore bound requires only minimum degree:
+
+```text
+1 + deg(x) + deg(x)(d-2) ≤ |V|
+```
+
+for every `C₄`-free graph of minimum degree at least `d`.  Consequently, a
+`C₄`-free graph on 32 vertices with minimum degree six cannot have a vertex of
+degree seven: its first two layers would already contain at least 36 vertices.
+The checked theorem `degree_eq_six_of_thirtytwo_minDegree_six` therefore
+forces exact 6-regularity.
+
+Parity sharpens the local structure.  The graph induced by the six neighbors
+of a vertex has maximum degree one.  Exact branch accounting, the 32-vertex
+cap, and the handshake parity of that local graph force it to be a perfect
+matching.  Thus every edge lies in a unique triangle
+(`card_common_eq_one_of_thirtytwo_minDegree_six`), every second layer has
+exactly 24 vertices, and precisely one vertex remains outside the first two
+layers.  The latter has no adjacency and no common neighbor with the center.
+The definitions and theorems `thirtyTwoAntipodes`,
+`card_thirtyTwoAntipodes_eq_one`, `mem_thirtyTwoAntipodes_iff`, and
+`mem_thirtyTwoAntipodes_comm` show that these unique antipodes symmetrically
+pair the 32 vertices into 16 fibers.
+
+Quotienting a hypothetical graph by these fibers yields a 6-regular graph on
+16 vertices in which every two distinct quotient vertices have two common
+neighbors, i.e. parameters `(16,6,2,2)`.  Edges between fibers form matchings,
+and the lift signs must make every quotient four-cycle negative.  A separate
+finite calculation shows that this signing system is inconsistent for both
+classical `(16,6,2,2)` graphs (the rook and Shrikhande graphs).  That last
+classification-and-signing step is not yet formalized, so the development
+does **not** yet claim `f(32)=6`; it records the fully checked reduction up to
+the antipodal quotient.
