@@ -1464,3 +1464,25 @@ These are checked polynomial identities, not numerical experiments.  The
 remaining bridge is the standard but as yet unformalized identity
 `charpoly(C_r)=C_r(X)-2` together with block factorization over the connected
 components of the defect two-factor.
+
+The square-class bookkeeping for a whole cycle list is now checked as well.
+For a list `rs` of cycle lengths, Lean defines `evenCycleCount rs` and proves
+
+```text
+product_{r in rs} (C_r(d-1)-2)
+  = (d-3)^{|rs|} (d+1)^{evenCycleCount(rs)} s^2
+```
+
+for an integer `s`.  It also proves that parity of the sum of the lengths is
+parity of the number of odd lengths.  Combining these facts with the verified
+global rational-square identity and the strict-between-squares lemma gives the
+fully checked conditional conclusion:
+
+```text
+if sum(rs) is odd and the defect resolvent determinant is the above
+cycle-factor product, then evenCycleCount(rs) is even.
+```
+
+Thus all arithmetic after the component/characteristic-polynomial bridge is
+now formal; only that graph-to-block-polynomial bridge remains for this
+particular obstruction.
