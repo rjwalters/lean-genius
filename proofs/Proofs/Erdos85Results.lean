@@ -29,6 +29,7 @@ import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85CrossEdgeSwitch
 import Proofs.Erdos85PolarityTwoPointCore
+import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -90,6 +91,11 @@ For the polarity graph with two distinct absolute points deleted, the unique
 degree-`q-1` vertex is now identified exactly: it is their unique nonabsolute
 common neighbor.  Hence the proposed switch has a canonical left endpoint;
 only the choice and incidence analysis of its right endpoint remain.
+The required field-theoretic existence input is also checked independently:
+for every nonzero `a` in a finite field of odd characteristic, `t²-a` is a
+nonsquare for some `t`; in particular some nonzero `t` makes `1+t²` a
+nonsquare.  Representative rescaling reduces the coordinate switch condition
+to precisely this lemma.
 -/
 
 namespace Erdos85
