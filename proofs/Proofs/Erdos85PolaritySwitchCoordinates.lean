@@ -9,6 +9,48 @@ open Matrix
 
 universe u
 
+def switchNormalizedA {K : Type u} [Field K] (A B X : Fin 3 → K) : Fin 3 → K :=
+  (-(X ⬝ᵥ X) / (2 * (A ⬝ᵥ B))) • A
+
+def polaritySwitchVector {K : Type u} [Field K]
+    (A B X : Fin 3 → K) (t : K) : Fin 3 → K :=
+  X + t • (B - switchNormalizedA A B X)
+
+theorem dot_switchVector_left {K : Type u} [Field K]
+    (A B X : Fin 3 → K) (t : K)
+    (hAA : A ⬝ᵥ A = 0) (hXA : X ⬝ᵥ A = 0) :
+    A ⬝ᵥ polaritySwitchVector A B X t = t * (A ⬝ᵥ B) := by
+  have hAX : A ⬝ᵥ X = 0 := by rw [dotProduct_comm]; exact hXA
+  simp [polaritySwitchVector, switchNormalizedA, dotProduct_add,
+    dotProduct_smul, dotProduct_sub, hAX, hAA]
+
+theorem dot_switchVector_common {K : Type u} [Field K]
+    (A B X : Fin 3 → K) (t : K)
+    (hXA : X ⬝ᵥ A = 0) (hXB : X ⬝ᵥ B = 0) :
+    X ⬝ᵥ polaritySwitchVector A B X t = X ⬝ᵥ X := by
+  simp [polaritySwitchVector, switchNormalizedA, dotProduct_add,
+    dotProduct_smul, dotProduct_sub, hXA, hXB]
+
+theorem dot_switchVector_right {K : Type u} [Field K]
+    (h2 : (2 : K) ≠ 0) (A B X : Fin 3 → K) (t : K)
+    (hBB : B ⬝ᵥ B = 0) (hXB : X ⬝ᵥ B = 0) (hAB : A ⬝ᵥ B ≠ 0) :
+    B ⬝ᵥ polaritySwitchVector A B X t = t * (X ⬝ᵥ X) / 2 := by
+  have hBX : B ⬝ᵥ X = 0 := by rw [dotProduct_comm]; exact hXB
+  have hBA : B ⬝ᵥ A = A ⬝ᵥ B := dotProduct_comm B A
+  simp only [polaritySwitchVector, switchNormalizedA, dotProduct_add,
+    dotProduct_smul, dotProduct_sub, smul_eq_mul, hBX, zero_add, hBB,
+    zero_sub, hBA]
+  field_simp [h2, hAB]
+
+theorem polaritySwitchVector_ne_zero {K : Type u} [Field K]
+    (A B X : Fin 3 → K) (t : K)
+    (hXA : X ⬝ᵥ A = 0) (hXB : X ⬝ᵥ B = 0) (hXX : X ⬝ᵥ X ≠ 0) :
+    polaritySwitchVector A B X t ≠ 0 := by
+  intro hz
+  have h := dot_switchVector_common A B X t hXA hXB
+  rw [hz, dotProduct_zero] at h
+  exact hXX h.symm
+
 /-- Normalize one isotropic representative so its pairing with the other is
 `-X²/2`.  For the resulting switch pencil, every explicitly parametrized
 opposite cross-edge endpoint is nonisotropic when `1+t²` is a nonsquare. -/
