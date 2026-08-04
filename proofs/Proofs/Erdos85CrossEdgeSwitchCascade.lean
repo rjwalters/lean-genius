@@ -62,6 +62,24 @@ theorem crossEdgeSwitch_degree_lt_of_tight_of_positive_loss
     H x w v hvx hvw]
   omega
 
+/-- More generally, an untouched vertex becomes a strict defect whenever its
+cross-edge loss exceeds its available slack above the target. -/
+theorem crossEdgeSwitch_degree_lt_of_loss_exceeds_slack
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    {d : ℕ} (hvx : v ≠ x) (hvw : v ≠ w)
+    (hexcess : H.degree v < d + crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset w) v) :
+    (crossEdgeSwitch H x w).degree v < d := by
+  have hsplit := degree_deleteCrossEdges_add_loss H
+    (H.neighborFinset x) (H.neighborFinset w) v
+  rw [crossEdgeSwitch_degree_eq_deleteCrossEdges_of_ne_endpoints
+    H x w v hvx hvw]
+  omega
+
 /-- A target-tight vertex damaged at one stage must occur as an endpoint in
 the remaining program if the final graph recovers the target everywhere. -/
 theorem positive_loss_forces_later_switch_endpoint
@@ -95,5 +113,36 @@ theorem positive_loss_forces_later_switch_endpoint
   rw [heq]
   exact hlt
 
-end Erdos85
+/-- Any vertex whose loss exceeds its slack must be named by a successful
+continuation of the switch program. -/
+theorem excess_loss_forces_later_switch_endpoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v : V)
+    [DecidableRel (crossEdgeSwitch H x w).Adj]
+    [DecidableRel (deleteCrossEdges H (H.neighborFinset x)
+      (H.neighborFinset w)).Adj]
+    (P : List (V × V)) {d : ℕ} (hvx : v ≠ x) (hvw : v ≠ w)
+    (hexcess : H.degree v < d + crossEdgeLoss H (H.neighborFinset x)
+      (H.neighborFinset w) v)
+    (hfinal : ∀ u, d ≤ canonicalDegree
+      (crossEdgeSwitchProgram (canonicalCrossEdgeSwitch H x w) P) u) :
+    v ∈ crossEdgeSwitchProgramEndpoints P := by
+  apply low_degree_vertex_mem_crossEdgeSwitchProgramEndpoints
+    (canonicalCrossEdgeSwitch H x w) P v hfinal
+  have hlt := crossEdgeSwitch_degree_lt_of_loss_exceeds_slack
+    H x w v hvx hvw hexcess
+  have heq : canonicalDegree (canonicalCrossEdgeSwitch H x w) v =
+      (crossEdgeSwitch H x w).degree v := by
+    classical
+    rw [canonicalCrossEdgeSwitch_eq_crossEdgeSwitch H x w]
+    unfold canonicalDegree
+    rw [Set.ncard_eq_toFinset_card']
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]
+    apply congrArg Finset.card
+    ext y
+    simp only [Set.mem_toFinset, SimpleGraph.mem_neighborSet,
+      SimpleGraph.mem_neighborFinset]
+  rw [heq]
+  exact hlt
 
+end Erdos85

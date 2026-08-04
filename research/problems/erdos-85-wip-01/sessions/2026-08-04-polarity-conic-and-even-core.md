@@ -346,3 +346,14 @@ in the static pole-path experiment: every pair pole is nonadjacent to every
 third absolute point, so surviving absolutes lie in none of the pole
 neighborhoods and incur no such cross-edge loss.  The spawned defects belong
 to a different tight incidence class that still needs classification.
+
+A finer computation corrects the last sentence: the spawned vertices are not
+initially tight.  They are precisely `q-2` clean neighbors of the center pair
+pole, each initially of degree `q+1`; the two arms of the static path delete
+two incident edges at each, dropping them directly to `q-1`.  This prompted
+the stronger checked theorem `excess_loss_forces_later_switch_endpoint`: a
+vertex must become a later endpoint whenever its cross-edge loss exceeds its
+available slack above the target.  The earlier tight/positive-loss theorem is
+the zero-slack special case.  What remains is to formalize the projective-plane
+incidence statement producing those `q-2` clean center-neighbors and their two
+distinct losses.
