@@ -420,4 +420,28 @@ theorem minDegreeForC4_le_of_lt_choose_degree_add_two
     choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness hthree hw
   omega
 
+/-- The classical common-neighbor count, expressed as a necessary order bound
+for a witness. -/
+theorem mul_pred_lt_order_of_c4FreeMinDegreeWitness
+    {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d) :
+    d * (d - 1) < n := by
+  have hfour : 4 ≤ n := four_le_order_of_c4FreeMinDegreeWitness hthree hw
+  have hthreshold : d < minDegreeForC4 n :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hfour).1 hw
+  by_contra hnot
+  have hupper := minDegreeForC4_le_of_le_mul_pred (by omega)
+    (Nat.le_of_not_gt hnot)
+  omega
+
+/-- Combined surgery-and-counting lower bound.  The triangular reduction bound
+is stronger in the first sharp cases; the classical quadratic count dominates
+from degree six onward. -/
+theorem max_choose_add_two_mul_pred_succ_le_order_of_witness
+    {n d : ℕ} (hthree : 3 ≤ d) (hw : C4FreeMinDegreeWitness n d) :
+    max ((d + 2).choose 2) (d * (d - 1) + 1) ≤ n := by
+  rw [max_le_iff]
+  refine ⟨choose_degree_add_two_le_order_of_c4FreeMinDegreeWitness hthree hw, ?_⟩
+  have hcount := mul_pred_lt_order_of_c4FreeMinDegreeWitness hthree hw
+  omega
+
 end Erdos85

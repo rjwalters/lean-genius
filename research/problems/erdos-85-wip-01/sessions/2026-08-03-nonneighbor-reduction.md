@@ -38,4 +38,33 @@ the reduction and to determine whether edge-minimal/layered witnesses force a
 strictly better loss or a useful compatibility condition between successive
 reduced witnesses.
 
-Commits: `22d1b67541`, `d7129b8e31`.
+## Iterated reduction
+
+The reduction has since been iterated formally.  After every step the witness
+is normalized back to exact minimum degree before a new tight vertex is chosen.
+If the starting certified degree is `d`, the successive closed neighborhoods
+have sizes `d+1, d, d-1, ...`.  Intermediate order assumptions are automatic
+while the surviving certified degree is at least three.
+
+Reducing all the way to degree three and using the checked fact that a
+degree-three witness needs at least ten vertices gives
+
+```text
+C(d + 2, 2) ≤ n
+```
+
+for every `C₄`-free minimum-degree-`d` witness with `d ≥ 3`.  In particular the
+result gives the sharp minimum orders 10, 15, and 21 for certified degrees 3,
+4, and 5.  Combining it with the classical common-neighbor count yields
+
+```text
+max(C(d + 2, 2), d(d - 1) + 1) ≤ n.
+```
+
+The first term improves the usual count for degrees three and four, agrees at
+degree five, and is weaker thereafter.  It is therefore a useful sharpened
+low-degree obstruction and a general witness-spectrum normal form, but still
+does not settle eventual monotonicity.
+
+Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
+`c1b828e493`.
