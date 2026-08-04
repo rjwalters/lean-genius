@@ -611,4 +611,44 @@ theorem card_secondLayerBranch_add_common_add_one
   rw [G.card_neighborFinset_eq_degree] at hpart
   omega
 
+/-- Symmetry of length-three walk counting, expressed through common-neighbour
+counts at the two endpoints. -/
+theorem sum_card_common_over_neighbors_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    (∑ z ∈ G.neighborFinset x,
+      (G.neighborFinset z ∩ G.neighborFinset y).card) =
+    ∑ z ∈ G.neighborFinset y,
+      (G.neighborFinset x ∩ G.neighborFinset z).card := by
+  classical
+  let A := (G.neighborFinset x).sigma fun z =>
+    G.neighborFinset z ∩ G.neighborFinset y
+  let B := (G.neighborFinset y).sigma fun z =>
+    G.neighborFinset x ∩ G.neighborFinset z
+  rw [← Finset.card_sigma, ← Finset.card_sigma]
+  change A.card = B.card
+  apply Finset.card_bij (fun p _ => ⟨p.2, p.1⟩)
+  · intro p hp
+    simp only [A, Finset.mem_sigma] at hp
+    simp only [B, Finset.mem_sigma]
+    have hp2 := Finset.mem_inter.mp hp.2
+    exact ⟨hp2.2, Finset.mem_inter.mpr
+      ⟨hp.1, (G.mem_neighborFinset p.2 p.1).mpr
+        ((G.mem_neighborFinset p.1 p.2).mp hp2.1).symm⟩⟩
+  · intro p hp q hq heq
+    cases p
+    cases q
+    cases heq
+    rfl
+  · intro p hp
+    simp only [B, Finset.mem_sigma] at hp
+    have hp2 := Finset.mem_inter.mp hp.2
+    let q : (z : V) × V := ⟨p.2, p.1⟩
+    have hq : q ∈ A := by
+      simp only [A, Finset.mem_sigma]
+      exact ⟨hp2.1, Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset p.2 p.1).mpr
+          ((G.mem_neighborFinset p.1 p.2).mp hp2.2).symm, hp.1⟩⟩
+    exact ⟨q, hq, by simp [q]⟩
+
 end Erdos85

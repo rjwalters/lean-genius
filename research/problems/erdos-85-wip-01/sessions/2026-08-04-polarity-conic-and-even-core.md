@@ -663,3 +663,16 @@ classical `(16,6,2,2)` graphs (the rook and Shrikhande graphs).  That last
 classification-and-signing step is not yet formalized, so the development
 does **not** yet claim `f(32)=6`; it records the fully checked reduction up to
 the antipodal quotient.
+
+The antipodal reduction is now stronger still.  Unique existence defines a
+canonical map `thirtyTwoAntipode`; it is checked to be fixed-point free and
+involutive.  A general double-counting lemma
+`sum_card_common_over_neighbors_comm` expresses symmetry of length-three
+walk counts.  In the rigid order-32 graph, all common-neighbor counts equal
+one except on the diagonal (six) and at the antipode (zero), so that identity
+shows that moving an antipode from one endpoint of an adjacency to the other
+preserves adjacency.  Consequently
+`thirtyTwoAntipode_adj_iff` proves that the antipode involution is a graph
+automorphism.  The 16-fiber quotient is therefore a canonical graph cover;
+constructing that quotient and formalizing the final negative-signing
+obstruction is the remaining exact-value task.

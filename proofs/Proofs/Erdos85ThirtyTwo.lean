@@ -322,6 +322,155 @@ theorem mem_thirtyTwoAntipodes_comm
   · rintro ⟨hne, hzero⟩
     exact ⟨hne.symm, by simpa [Finset.inter_comm] using hzero⟩
 
+/-- Intrinsic unique-existence form of the antipode theorem. -/
+theorem existsUnique_thirtyTwoAntipode
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x : Fin 32) :
+    ∃! a : Fin 32, a ≠ x ∧
+      (G.neighborFinset x ∩ G.neighborFinset a).card = 0 := by
+  obtain ⟨a, ha⟩ := Finset.card_eq_one.mp
+    (card_thirtyTwoAntipodes_eq_one G hfree hmin x)
+  have hamem : a ∈ thirtyTwoAntipodes G x := by rw [ha]; simp
+  refine ⟨a, (mem_thirtyTwoAntipodes_iff G hfree hmin x a).1 hamem, ?_⟩
+  intro y hy
+  have hymem := (mem_thirtyTwoAntipodes_iff G hfree hmin x y).2 hy
+  rw [ha] at hymem
+  simpa using hymem
+
+/-- The canonical antipode selected from the unique-existence theorem. -/
+noncomputable def thirtyTwoAntipode
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x : Fin 32) : Fin 32 :=
+  Classical.choose (existsUnique_thirtyTwoAntipode G hfree hmin x)
+
+theorem thirtyTwoAntipode_spec
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x : Fin 32) :
+    thirtyTwoAntipode G hfree hmin x ≠ x ∧
+      (G.neighborFinset x ∩
+        G.neighborFinset (thirtyTwoAntipode G hfree hmin x)).card = 0 :=
+  (Classical.choose_spec (existsUnique_thirtyTwoAntipode G hfree hmin x)).1
+
+/-- The canonical antipode map is a fixed-point-free involution. -/
+theorem thirtyTwoAntipode_involutive
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree) :
+    Function.Involutive (thirtyTwoAntipode G hfree hmin) := by
+  intro x
+  let a := thirtyTwoAntipode G hfree hmin x
+  have hxa : x ≠ a ∧
+      (G.neighborFinset a ∩ G.neighborFinset x).card = 0 := by
+    have hs := thirtyTwoAntipode_spec G hfree hmin x
+    exact ⟨hs.1.symm, by simpa [Finset.inter_comm] using hs.2⟩
+  simpa [a] using
+    (existsUnique_thirtyTwoAntipode G hfree hmin a).unique
+      (thirtyTwoAntipode_spec G hfree hmin a) hxa
+
+/-- Exact length-three-walk count in terms of the two exceptional vertices
+`y` and its antipode. -/
+theorem sum_common_add_antipode_indicator
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x y : Fin 32) :
+    (∑ z ∈ G.neighborFinset x,
+      (G.neighborFinset z ∩ G.neighborFinset y).card) +
+        (if G.Adj x (thirtyTwoAntipode G hfree hmin y) then 1 else 0) =
+      6 + (if G.Adj x y then 5 else 0) := by
+  classical
+  let p := thirtyTwoAntipode G hfree hmin y
+  have hreg := degree_eq_six_of_thirtytwo_minDegree_six G hfree hmin
+  have hp := thirtyTwoAntipode_spec G hfree hmin y
+  have hpoint : ∀ z ∈ G.neighborFinset x,
+      (G.neighborFinset z ∩ G.neighborFinset y).card +
+          (if z = p then 1 else 0) =
+        1 + (if z = y then 5 else 0) := by
+    intro z hz
+    by_cases hzy : z = y
+    · subst z
+      have hyp : y ≠ p := hp.1.symm
+      simp [hyp, hreg y, SimpleGraph.card_neighborFinset_eq_degree]
+    · by_cases hzp : z = p
+      · subst z
+        have hzero : (G.neighborFinset p ∩ G.neighborFinset y).card = 0 := by
+          simpa [p, Finset.inter_comm] using hp.2
+        rw [if_pos rfl, if_neg hzy, hzero]
+      · have hcommon :
+          (G.neighborFinset z ∩ G.neighborFinset y).card = 1 := by
+          have hle := common_le_one_of_not_containsC4 hfree z y hzy
+          by_contra hne
+          have hzero :
+              (G.neighborFinset y ∩ G.neighborFinset z).card = 0 := by
+            have : (G.neighborFinset z ∩ G.neighborFinset y).card = 0 := by
+              omega
+            simpa [Finset.inter_comm] using this
+          have heq := (existsUnique_thirtyTwoAntipode G hfree hmin y).unique
+            hp ⟨hzy, hzero⟩
+          exact hzp heq.symm
+        simp [hzy, hzp, hcommon]
+  have hsum := Finset.sum_congr rfl hpoint
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsum
+  simp only [Finset.sum_const, Nat.nsmul_eq_mul] at hsum
+  have hNx : (G.neighborFinset x).card = 6 := by
+    rw [G.card_neighborFinset_eq_degree, hreg x]
+  rw [hNx] at hsum
+  simpa [p, SimpleGraph.mem_neighborFinset, G.adj_comm] using hsum
+
+/-- Moving an antipode from one endpoint to the other preserves adjacency. -/
+theorem adj_thirtyTwoAntipode_iff
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x y : Fin 32) :
+    G.Adj x (thirtyTwoAntipode G hfree hmin y) ↔
+      G.Adj y (thirtyTwoAntipode G hfree hmin x) := by
+  have hsum := sum_card_common_over_neighbors_comm G x y
+  have hx := sum_common_add_antipode_indicator G hfree hmin x y
+  have hy := sum_common_add_antipode_indicator G hfree hmin y x
+  have hy' :
+      (∑ z ∈ G.neighborFinset y,
+        (G.neighborFinset x ∩ G.neighborFinset z).card) +
+          (if G.Adj y (thirtyTwoAntipode G hfree hmin x) then 1 else 0) =
+        6 + (if G.Adj y x then 5 else 0) := by
+    simpa only [Finset.inter_comm] using hy
+  rw [hsum] at hx
+  constructor
+  · intro hxp
+    by_contra hyp
+    by_cases hxy : G.Adj x y
+    · have hyx : G.Adj y x := hxy.symm
+      rw [if_pos hxp, if_pos hxy] at hx
+      rw [if_neg hyp, if_pos hyx] at hy'
+      omega
+    · have hyx : ¬ G.Adj y x := fun h => hxy h.symm
+      rw [if_pos hxp, if_neg hxy] at hx
+      rw [if_neg hyp, if_neg hyx] at hy'
+      omega
+  · intro hyp
+    by_contra hxp
+    by_cases hxy : G.Adj x y
+    · have hyx : G.Adj y x := hxy.symm
+      rw [if_neg hxp, if_pos hxy] at hx
+      rw [if_pos hyp, if_pos hyx] at hy'
+      omega
+    · have hyx : ¬ G.Adj y x := fun h => hxy h.symm
+      rw [if_neg hxp, if_neg hxy] at hx
+      rw [if_pos hyp, if_neg hyx] at hy'
+      omega
+
+/-- The antipode involution is a graph automorphism. -/
+theorem thirtyTwoAntipode_adj_iff
+    (G : SimpleGraph (Fin 32)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 32) G) (hmin : 6 ≤ G.minDegree)
+    (x y : Fin 32) :
+    G.Adj (thirtyTwoAntipode G hfree hmin x)
+        (thirtyTwoAntipode G hfree hmin y) ↔ G.Adj x y := by
+  have h := adj_thirtyTwoAntipode_iff G hfree hmin
+    (thirtyTwoAntipode G hfree hmin x) y
+  have hinv := thirtyTwoAntipode_involutive G hfree hmin x
+  simpa [hinv, G.adj_comm] using h
+
 /-- **New lower bound at order 32:** `f(32) ≥ 6`. -/
 theorem six_le_minDegreeForC4_thirtytwo :
     6 ≤ minDegreeForC4 32 := by
