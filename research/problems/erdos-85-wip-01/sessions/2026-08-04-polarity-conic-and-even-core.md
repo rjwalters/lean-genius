@@ -995,3 +995,34 @@ both attachment selectors and the internal two-vertex gadget are arbitrary.
 Thus the most immediate local order-raising surgery is ruled out uniformly in
 the critical regular regime, not merely for the canonical neighborhood
 choice.
+
+## Fixed-`k` replacement obstruction
+
+The delete-one/add-pair contradiction extends to every fixed deletion size.
+With no additional survivor-edge deletion, double-counting the cut from a
+deleted `k`-set in a `d`-regular graph gives total unweighted survivor loss at
+most `kd`.  If `t_v` is selector multiplicity, then
+
+```text
+loss(v) t_v ≤ loss(v) + k choose(t_v,2).
+```
+
+Summing and using the selector-pair bound yields
+
+```text
+∑_w ∑_{a∈A(w)} replacementLoss(a)
+  ≤ kd + k choose(m,2).
+```
+
+For true order raising `m=k+1`, comparison with the Moore-order lower bound
+proves nonexistence whenever
+
+```text
+(k+1)² + k choose(k+1,2) < d.
+```
+
+Thus for every fixed `k`, arbitrary delete-`k`/add-`k+1` replacement without
+extra survivor-edge surgery fails for all sufficiently large regular degree.
+The `k=1` case recovers the exact threshold `d≥6`.  Any eventual extension
+strategy in this framework must therefore let `k` grow with `d` or make
+essential use of compensated old-edge modification.

@@ -35,6 +35,7 @@ import Proofs.Erdos85GadgetMultiplicity
 import Proofs.Erdos85GadgetDegreeSquares
 import Proofs.Erdos85ReplacementGadgetObstruction
 import Proofs.Erdos85DeleteOnePairObstruction
+import Proofs.Erdos85BoundedReplacementObstruction
 import Proofs.Erdos85ThirtyTwo
 import Proofs.Erdos85ThirtyTwoQuotient
 import Proofs.Erdos85SignedSRGObstruction
@@ -204,6 +205,10 @@ the weighted loss is at most `d+1`, whereas Moore-order replacement requires
 at least `2(d-2)`.  Hence for every `d≥6`, no arbitrary compatible
 delete-one/add-two replacement exists for a `d`-regular graph on
 `d(d-1)+1` vertices, regardless of the two selector choices.
+More generally, deletion-only delete-`k`/add-`k+1` replacement is impossible
+whenever `(k+1)² + k*choose(k+1,2) < d`.  Hence every fixed-size replacement
+scheme of this form fails for all sufficiently large regular degree; `k` must
+grow with `d` or additional survivor-edge surgery must be essential.
 -/
 
 namespace Erdos85
