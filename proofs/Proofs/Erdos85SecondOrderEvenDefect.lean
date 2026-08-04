@@ -117,6 +117,43 @@ theorem disjoint_antipodal_triangleFreeNeighbors
   exact ((mem_antipodalNeighbors G x y).mp hyA).2.1
     ((mem_triangleFreeNeighbors G x y).mp hyT).1
 
+/-- Three triangle-free edges of `G` cannot form a triangle: the third vertex
+would be a common neighbor of the endpoints of the first edge. -/
+theorem triangleFreeEdgeGraph_not_triangle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {x y z : V}
+    (hxy : (triangleFreeEdgeGraph G).Adj x y)
+    (hyz : (triangleFreeEdgeGraph G).Adj y z)
+    (hzx : (triangleFreeEdgeGraph G).Adj z x) : False := by
+  have hxy' := (mem_triangleFreeNeighbors G x y).mp hxy
+  have hyz' := (mem_triangleFreeNeighbors G y z).mp hyz
+  have hzx' := (mem_triangleFreeNeighbors G z x).mp hzx
+  have hzmem : z ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hzx'.1.symm, hyz'.1⟩
+  rw [Finset.card_eq_zero.mp hxy'.2] at hzmem
+  exact Finset.notMem_empty z hzmem
+
+/-- If `G` is `C₄`-free, four triangle-free edges cannot form a simple
+four-cycle. -/
+theorem triangleFreeEdgeGraph_not_four_cycle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {a b c d : V}
+    (hab : (triangleFreeEdgeGraph G).Adj a b)
+    (hbc : (triangleFreeEdgeGraph G).Adj b c)
+    (hcd : (triangleFreeEdgeGraph G).Adj c d)
+    (hda : (triangleFreeEdgeGraph G).Adj d a)
+    (hac : a ≠ c) (hbd : b ≠ d) (hba : b ≠ a)
+    (hbc' : b ≠ c) (hda' : d ≠ a) (hdc : d ≠ c) : False := by
+  apply hfree
+  exact containsC4_of_rim
+    ((mem_triangleFreeNeighbors G a b).mp hab).1
+    ((mem_triangleFreeNeighbors G b c).mp hbc).1
+    ((mem_triangleFreeNeighbors G c d).mp hcd).1
+    ((mem_triangleFreeNeighbors G d a).mp hda).1
+    hac hbd hba hbc' hda' hdc
+
 /-- In the even second-order template the combined defect graph is
 two-regular, independent of which of the two local vertex types occurs. -/
 theorem secondOrderDefectGraph_degree_eq_two
@@ -142,6 +179,45 @@ theorem secondOrderDefectGraph_degree_eq_two
   · rw [h.2] at hsum
     rw [h.1]
     omega
+
+/-- The combined defect graph is literally a disjoint union of cycles: every
+vertex, and hence every nonisolated vertex in the `IsCycles` interface, has
+exactly two neighbors. -/
+theorem secondOrderDefectGraph_isCycles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) :
+    (secondOrderDefectGraph G).IsCycles := by
+  intro x _
+  rw [← Set.fintypeCard_eq_ncard]
+  exact ((secondOrderDefectGraph G).card_neighborSet_eq_degree x).trans
+    (secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard x)
+
+/-- Every connected component of the second-order defect graph is traced by
+a simple cycle whose vertex set is exactly that component. -/
+theorem exists_secondOrderDefect_cycle_spanning_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {x : V}
+    (hx : x ∈ c.supp) :
+    ∃ p : (secondOrderDefectGraph G).Walk x x,
+      p.IsCycle ∧ p.toSubgraph.verts = c.supp := by
+  have hdeg := secondOrderDefectGraph_degree_eq_two
+    G hfree hd heven hmin hcard x
+  have hn : ((secondOrderDefectGraph G).neighborSet x).Nonempty :=
+    (secondOrderDefectGraph G).neighborSet_nonempty.mpr
+      (((secondOrderDefectGraph G).degree_pos x).mp (by omega))
+  exact SimpleGraph.IsCycles.exists_cycle_toSubgraph_verts_eq_connectedComponentSupp
+    (secondOrderDefectGraph_isCycles G hfree hd heven hmin hcard) hx hn
 
 /-- At each vertex the two defect edges have the same kind: either two
 distant-pair edges and no triangle-free edges, or conversely. -/

@@ -1486,3 +1486,15 @@ cycle-factor product, then evenCycleCount(rs) is even.
 Thus all arithmetic after the component/characteristic-polynomial bridge is
 now formal; only that graph-to-block-polynomial bridge remains for this
 particular obstruction.
+
+The graph side of that bridge has now also been tightened.  Lean proves that
+the triangle-free-edge summand contains no triangle, and in a `C4`-free
+ambient graph it contains no simple four-cycle.  Hence every cycle component
+of this color has length at least five.  More importantly, the pointwise
+degree-two statement has been promoted to Mathlib's global `IsCycles`
+predicate, and every connected component is now supplied with a simple closed
+walk whose vertex set is exactly the component.  The remaining determinant
+work therefore no longer needs to construct or justify the cycle
+decomposition: it starts with an explicit spanning cycle for each component
+and only needs to reindex its adjacency matrix and prove the Chebyshev
+characteristic-polynomial identity.
