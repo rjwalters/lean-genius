@@ -5,6 +5,8 @@ import Proofs.Erdos85PairedWitness
 import Proofs.Erdos85TightWitness
 import Proofs.Erdos85Polarity
 import Proofs.Erdos85PolarityDegree
+import Proofs.Erdos85PolarityFamily
+import Proofs.Erdos85Relabel
 
 /-!
 # Headline results for Erdős Problem 85
@@ -14,7 +16,8 @@ development.  The main problem—eventual monotonicity of `minDegreeForC4`—rem
 open.  We provide its exact Ramsey and witness-extension reformulations, a
 complete checked table through order 21, one- and two-vertex attachment theory,
 and the finite-field polarity construction underlying the classical infinite
-family.
+family.  In particular, for every finite field of order `q`, the development
+proves `minDegreeForC4 (q² + q + 1) = q + 1`.
 -/
 
 namespace Erdos85
