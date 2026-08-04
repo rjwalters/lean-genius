@@ -98,9 +98,17 @@
       "id": "criterion",
       "title": "The Rationality Criterion",
       "startLine": 44,
-      "endLine": 81,
-      "summary": "rational_rpow_inv_iff: ¬Irrational (m^(1/n)) ↔ ∃ k, kⁿ = m, and its contrapositive irrational_rpow_inv_iff. The (⇒) direction uses irrational_nrt_of_notint_nrt to force an integer root; (⇐) simplifies (kⁿ)^(1/n) to k.",
+      "endLine": 74,
+      "summary": "rational_rpow_inv_iff: ¬Irrational (m^(1/n)) ↔ ∃ k, kⁿ = m. The (⇒) direction uses irrational_nrt_of_notint_nrt to force an integer root, then non-negativity to lift it to ℕ; (⇐) simplifies (kⁿ)^(1/n) to k via rpow composition.",
       "mathContext": "$m^{1/n} \\in \\mathbb{Q} \\iff \\exists k,\\ k^n = m$."
+    },
+    {
+      "id": "irrational-form",
+      "title": "The Irrationality Form",
+      "startLine": 76,
+      "endLine": 81,
+      "summary": "irrational_rpow_inv_iff: the contrapositive packaging m^(1/n) irrational ↔ m is not a perfect n-th power, obtained from rational_rpow_inv_iff by not_iff_not / not_not — the form applied directly to conclude irrationality from a non-perfect-power radicand.",
+      "mathContext": "$\\mathrm{Irrational}(m^{1/n}) \\iff \\neg\\,\\mathrm{IsPerfectNthPow}(m,n)$."
     },
     {
       "id": "prime-corollary",
