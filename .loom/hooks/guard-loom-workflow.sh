@@ -115,10 +115,177 @@ ask() {
 }
 
 # =============================================================================
-# LOOM: Prefer merge-pr.sh over gh pr merge
+# LOOM: Prefer merge-pr.sh over gh pr merge (issue #43639)
+#
+# Detects a genuine `gh pr merge` INVOCATION -- the phrase anchored at a
+# command position (start of the command string, or immediately after one of
+# the shell command separators ; & && | || $( or a literal newline) -- not a
+# bare substring match anywhere in the command text. The original
+# `grep -qE 'gh\s+pr\s+merge'` matched the phrase ANYWHERE in the command
+# string, so it false-positived on read-only commands that merely MENTION the
+# phrase, e.g.:
+#   grep -n "auto|graphql|gh pr merge|gh api" ./.loom/scripts/merge-pr.sh
+#   echo "=== hook gh pr merge block ==="; gh api 'search/issues?...'
+# Both of those are read-only / unrelated to merging and must pass through
+# unblocked; only an actual `gh pr merge ...` invocation should deny.
+#
+# gh_pr_merge_invocation() runs two passes:
+#
+#   1. mask_heredocs(): a line-oriented pre-pass that blanks out heredoc
+#      BODY lines (e.g. `git commit -m "$(cat <<'EOF' ... EOF)"`, used
+#      constantly for commit messages / PR bodies). Without this, a commit
+#      message that merely prose-mentions "gh pr merge" would itself get
+#      denied, since heredoc body text is otherwise indistinguishable from
+#      real command lines to the per-line scan below (#43639 follow-up: this
+#      was caught by the fix's own commit message during testing). A heredoc
+#      whose delimiter is quoted (<<'EOF'/<<"EOF") never expands $(...) or
+#      backticks, so its body is unconditionally inert; an UNQUOTED
+#      delimiter (<<EOF) still expands substitutions, so a body line
+#      containing $( or a backtick is left in place (not blanked) so a
+#      smuggled `<<EOF` \n `$(gh pr merge 1)` \n `EOF` is still caught below.
+#
+#   2. check(), run per remaining line: a quote-aware command-position
+#      scanner (mirrors the qsplit() quote-tracking approach used for the
+#      same class of bug in guard-destructive.sh, #3755/#71). Each input
+#      line is its own scan (awk's default per-record split on \n already
+#      gives "start of a new line = a command position", which covers plain
+#      multi-line commands); within a line it walks character by character,
+#      tracking whether the current position is a command position (start of
+#      line, or right after ; & && | || $() and whether it is inside a
+#      quoted span. A quoted span with no $( or backtick inside is INERT --
+#      its contents (including any literal "gh pr merge" text used as a grep
+#      pattern or echo label) are skipped entirely and never checked. Only
+#      text sitting at an actual command position is tested against
+#      ^gh[ \t]+pr[ \t]+merge<boundary>. A quoted span that DOES carry a $(
+#      or backtick is walked char-by-char with separators kept active, so a
+#      merge smuggled inside command substitution (e.g.
+#      `echo "$(gh pr merge 1)"`) is still caught. Best-effort/fail-safe: an
+#      unterminated quote treats the remainder as inert text (never
+#      escalates a parse failure into a spurious deny).
 # =============================================================================
 
-if echo "$COMMAND" | grep -qE 'gh\s+pr\s+merge'; then
+gh_pr_merge_invocation() {
+    # Args: <command string>. Echoes "1" if a genuine `gh pr merge` invocation
+    # is found at a command position, "0" otherwise. Portable awk only.
+    printf '%s' "$1" | awk '
+    # Blank heredoc body lines so they cannot manufacture a phantom match or
+    # a phantom command-position boundary in the per-line scan below.
+    BEGIN {
+        SQ = sprintf("%c", 39)
+        DQ = sprintf("%c", 34)
+        in_hd = 0
+        delim = ""
+        quoted = 0
+    }
+    {
+        line = $0
+        if (!in_hd) {
+            idx = index(line, "<<")
+            if (idx > 0) {
+                rest = substr(line, idx + 2)
+                sub(/^-/, "", rest)          # <<- (tab-stripping variant)
+                sub(/^[ \t]+/, "", rest)
+                if (substr(rest, 1, 1) == DQ || substr(rest, 1, 1) == SQ) {
+                    q = substr(rest, 1, 1)
+                    rest2 = substr(rest, 2)
+                    ci = index(rest2, q)
+                    if (ci > 0) {
+                        delim = substr(rest2, 1, ci - 1)
+                        quoted = 1
+                        in_hd = (delim != "")
+                    }
+                } else if (match(rest, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+                    delim = substr(rest, 1, RLENGTH)
+                    quoted = 0
+                    in_hd = 1
+                }
+            }
+            print line
+            next
+        }
+        check_line = line
+        sub(/^[ \t]+/, "", check_line)
+        if (check_line == delim) {
+            in_hd = 0
+            print line
+            next
+        }
+        if (!quoted && (index(line, "$(") > 0 || index(line, "`") > 0)) {
+            print line
+        } else {
+            print ""
+        }
+    }
+    ' | awk '
+    function check(s,    n, i, c, qc, j, ci, inner, at_start, rest, SQ, DQ) {
+        SQ = sprintf("%c", 39)   # single quote
+        DQ = sprintf("%c", 34)   # double quote
+        n = length(s)
+        i = 1
+        at_start = 1
+        while (i <= n) {
+            c = substr(s, i, 1)
+            if (c == DQ || c == SQ) {
+                qc = c
+                ci = 0
+                for (j = i + 1; j <= n; j++) {
+                    if (substr(s, j, 1) == qc) { ci = j; break }
+                }
+                if (ci == 0) {
+                    # Unterminated quote: treat remainder as inert text.
+                    return 0
+                }
+                inner = substr(s, i + 1, ci - i - 1)
+                if (index(inner, "$(") == 0 && index(inner, "`") == 0) {
+                    # Inert quoted span: skip entirely -- its contents are
+                    # argument text (grep pattern, echo label, ...), never a
+                    # command position.
+                    i = ci + 1
+                    at_start = 0
+                    continue
+                }
+                # Carries command substitution: keep separators ACTIVE by
+                # consuming only the opening quote and continuing the scan
+                # char-by-char, so a nested $( is still checked.
+                i++
+                at_start = 0
+                continue
+            }
+            if (c == ";") { at_start = 1; i++; continue }
+            if (c == "&") {
+                at_start = 1
+                if (i < n && substr(s, i + 1, 1) == "&") { i += 2 } else { i++ }
+                continue
+            }
+            if (c == "|") {
+                at_start = 1
+                if (i < n && substr(s, i + 1, 1) == "|") { i += 2 } else { i++ }
+                continue
+            }
+            if (c == "$" && i < n && substr(s, i + 1, 1) == "(") {
+                at_start = 1
+                i += 2
+                continue
+            }
+            if (c == " " || c == "\t") { i++; continue }
+            if (at_start) {
+                rest = substr(s, i)
+                if (rest ~ /^gh[ \t]+pr[ \t]+merge([ \t;&|)<>]|$)/) {
+                    return 1
+                }
+                at_start = 0
+            }
+            i++
+        }
+        return 0
+    }
+    { if (check($0)) found = 1 }
+    END { print (found ? "1" : "0") }
+    '
+}
+
+GH_PR_MERGE_MATCH=$(gh_pr_merge_invocation "$COMMAND" 2>/dev/null) || GH_PR_MERGE_MATCH=""
+if [[ "$GH_PR_MERGE_MATCH" == "1" ]]; then
     # Resolve the merge-pr.sh path for the current repo context. Prefer an
     # in-repo installed copy (./.loom/scripts/merge-pr.sh); fall back to the
     # loom-checkout copy under defaults/scripts/ (via $LOOM_HOME) when the repo
