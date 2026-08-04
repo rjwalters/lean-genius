@@ -1,4 +1,5 @@
 import Proofs.Erdos85PolarityTwoPointCore
+import Proofs.Erdos85PolarityOddSecantCount
 
 open SimpleGraph
 open scoped LinearAlgebra.Projectivization
@@ -276,6 +277,31 @@ theorem pairPoleThirdAbsoluteAnchor_not_absolute {a b c : P K}
       (pairPoleThirdAbsoluteAnchor K h2 ha hb hc hab hca hcb) := by
     simpa only [SimpleGraph.mem_neighborFinset] using hm
   exact not_selfOrthogonal_of_adj_selfOrthogonal hadj hc
+
+/-- In odd characteristic, a nonabsolute point incident with one absolute
+point is incident with a second, distinct absolute point. -/
+theorem exists_second_absolute_neighbor {v a : P K}
+    (h2 : (2 : K) ≠ 0)
+    (hvnon : ¬ Projectivization.orthogonal v v)
+    (ha : Projectivization.orthogonal a a)
+    (hva : (graph K).Adj v a) :
+    ∃ d : P K, d ≠ a ∧ Projectivization.orthogonal d d ∧
+      (graph K).Adj v d := by
+  classical
+  let S := (graph K).neighborFinset v ∩ absolutePoints K
+  have hle : S.card ≤ 2 :=
+    absoluteTwoSecant_of_two_ne_zero K h2 v hvnon
+  have hne : S.card ≠ 1 := absoluteIncidences_ne_one K h2 v hvnon
+  have hpos : 0 < S.card := by
+    rw [Finset.card_pos]
+    refine ⟨a, Finset.mem_inter.mpr ⟨?_, ?_⟩⟩
+    · simpa only [SimpleGraph.mem_neighborFinset] using hva
+    · exact (mem_absolutePoints K a).mpr ha
+  have hcard : S.card = 2 := by omega
+  obtain ⟨d, hdS, hda⟩ := Finset.exists_mem_ne (by omega : 1 < S.card) a
+  rcases Finset.mem_inter.mp hdS with ⟨hdv, hdabs⟩
+  exact ⟨d, hda, (mem_absolutePoints K d).mp hdabs,
+    by simpa only [SimpleGraph.mem_neighborFinset] using hdv⟩
 
 /-- Pair poles of two secants sharing exactly one absolute endpoint are
 distinct. -/

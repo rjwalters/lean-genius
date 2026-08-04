@@ -288,4 +288,31 @@ theorem successful_crossEdgeSwitch_one_defect_constraints
     successful_crossEdgeSwitch_not_adjacent_at_defect H x w hlt hfinal,
     crossEdgeLoss_eq_zero_at_repaired_one_defect H x w hpos hdefect hfinal⟩
 
+/-- A common neighbor of `v` and the right switch endpoint selects an
+incident cross edge at every neighbor `v` of the left endpoint. -/
+theorem one_le_crossEdgeLoss_neighborFinsets_of_commonNeighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w v t : V)
+    (hxv : H.Adj x v) (hvt : H.Adj v t) (hwt : H.Adj w t) :
+    1 ≤ crossEdgeLoss H (H.neighborFinset x) (H.neighborFinset w) v := by
+  apply one_le_crossEdgeLoss_of_adj_of_mem H
+  · exact hvt
+  · simpa only [SimpleGraph.mem_neighborFinset] using hxv
+  · simpa only [SimpleGraph.mem_neighborFinset] using hwt
+
+/-- An old edge survives a cross-edge switch whenever one of its endpoints
+lies in neither switch neighborhood. -/
+theorem crossEdgeSwitch_adj_of_adj_of_endpoint_outside
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (x w p q : V)
+    (hpq : H.Adj p q) (hxp : ¬ H.Adj x p) (hwp : ¬ H.Adj w p) :
+    (crossEdgeSwitch H x w).Adj p q := by
+  rw [crossEdgeSwitch_adj_iff]
+  left
+  refine ⟨hpq, ?_⟩
+  rw [pair_mem_crossEdgeSet_iff]
+  simp only [SimpleGraph.mem_neighborFinset]
+  push Not
+  exact ⟨fun hp => (hxp hp).elim, fun hp => (hwp hp).elim⟩
+
 end Erdos85

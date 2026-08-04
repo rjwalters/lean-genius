@@ -493,3 +493,25 @@ damaged by the second cross deletion.  For the two old pair poles, the
 previous `q-2` clean-neighbor path obstruction supplies the damaged tight
 vertices.  These cases now give a concrete route to the uniform incidence
 lemma rather than an undifferentiated search over all projective points.
+
+That route is now formalized almost to its endpoint.  The first switch changes
+no edge incident to the canonical anchor.  If a hypothetical successful
+partner is different from and nonadjacent to the anchor, tight-set avoidance
+also forces their intermediate common-neighbor intersection to be empty.
+Projective-line intersection then proves that every point with these three
+separation properties must lie on the tangent at `a`.  Thus
+`successful_secondSwitch_partner_adj_deletedSharedAbsolute` reduces all
+`q²+q-2` possible partners to the `q-1` surviving tangent points other than
+the anchor.
+
+The ordinary tangent points are now excluded as well.  In odd characteristic
+every nonabsolute point incident with `a` lies on a two-secant of the conic.
+Unless it is one of the pair poles `{a,b}` or `{a,c}`, its second absolute
+neighbor survives the three deletions.  That absolute point stays degree `q`
+after the first switch, while its unique intersection with the remaining
+pair pole produces a positive second-stage cross loss.  This contradicts
+tight-set avoidance.  The checked theorem
+`successful_secondSwitch_partner_eq_firstPairPole_or_outerAC` therefore says
+that a successful partner would have to be exactly one of the two endpoints
+of the first switch.  Only those two symmetric endpoint cases remain; the
+existing clean-neighbor path family is designed to eliminate them.
