@@ -2,7 +2,7 @@
   "slug": "combinations-formula-oq-03-oq-04",
   "title": "Unimodality of Gaussian (q-)binomial coefficients",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -752,15 +752,40 @@
       "Bounded-partition counting: no Mathlib API for #{partitions of j into ≤k parts each ≤ N} as a function whose first-half monotonicity (in j) can be established. This is the object needed to discharge qBinomCoeff_unimodal_of_first_half_mono for k≥3; the size bound binds on the first half so the count is not the (formulaic) unbounded ≤k-part count."
     ],
     "nextSteps": [
-      "Attempt the UNIMODALITY half: the real open question. Routes are (a) sl_2 raising/lowering operator action on the subspace lattice (Proctor 1982), (b) O'Hara-style explicit injection between coefficient levels. Both substantial; assess buildability first.",
-      "Cheaper structural step: formalize DEGREE = k(n-k) and NONNEGATIVITY of coefficients over the polynomial ring (specialize parent to Polynomial over the integers, q = X); with palindromy this pins the extreme coefficients.",
-      "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array.",
-      "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels.",
-      "k=3 box-binding tail N<j<=floor((3N-2)/2): needs strict/quantitative monotonicity or an explicit injection (OHara k=3 special case) to compensate the negative [n,2] increment past its peak. Assess an explicit-formula route: coeff_{n,3}(j) via inclusion-exclusion a_N(j)=P3(j)-P3(j-N-1)-... with P3(j)=round((j+3)^2/12), then finite-difference monotonicity on the tail."
+      "Only live route for the open interior 5 <= k <= n-5: sl_2 raising/lowering on the box poset (Proctor 1982) or O'Hara's explicit injection (1990). Both are deliberate multi-session foundational builds (bounded-partition monotonicity API + operator/injection machinery absent from Mathlib, >1000 lines) — a long-horizon project, not a single-session target.",
+      "Do NOT re-attempt the k=5 band recursion or add a conditional band-dominance lemma; see currentState.blockers for the reopen bars. Stale steps removed 2026-08-03 (S9): degree/nonnegativity/extreme-coefficients and the full symmetry of the coefficient array are already in CombinationsFormulaOQ03OQ04.lean (qBinom_X_natDegree, qBinom_X_coeff_nonneg, qBinom_X_extreme_coeffs, qBinom_X_coeff_symm), and the k=3 box-binding tail was closed in S5 (qBinom_X_three_coeff_first_half_mono)."
     ],
     "progressSummary": "PROGRESS: Sylvester unimodality closed for k <= 4 and codim <= 4 (0 axioms, 0 sorries throughout). k=4 fell via the exactly-solvable two-point band recursion (v=0, u=delta); open interior is now 5 <= k <= n-5 (first instance [10,5]_q), which needs either a genuinely new band mechanism or sl2/O.Hara."
   },
-  "currentState": "S7 ORIENT (mandated k=5 feasibility check): band analysis does NOT extend to k=5 as-is; wall confirmed and SHARPENED to a single dominance inequality. Band decomposition verified exactly for N=2..29: d5_{N+1}(j) = e4_N(j-(N+1)) - d5_N(5N-1-j) at band indices; all non-band indices propagate by induction + proven k=4 first-half mono. Wall = dominance e4 at ~70% depth of k=4 first half >= d5 near-center; both grow quasi-polynomially (e4 band: 2,3,5,8,13,17,23,29,...; d5 near-center: 1,2,4,7,12,16,21,...); k=4's pinned solution (u=delta, v=0) covers only the last two positions, and e4 >= 0 is strictly insufficient.",
-  "lastUpdate": "2026-07-24",
-  "nextAction": "Blocked-route entry extended with reopen bar: reopening k=5 requires controlling near-center increment GROWTH (not just sign) — explicit quasi-polynomial asymptotics for near-center Gaussian-binomial increments, or the sl2/Proctor-O'Hara route. Do NOT add a conditional unimodal_five_of_band_dominance lemma (would restate the entry without discharging anything). Elementary ladder k<=4 / codim<=4 remains the completed perimeter."
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-09T16:03:14-07:00",
+    "iteration": 9,
+    "focus": "S9 (researcher-3, 2026-08-03): BLOCKED at the elementary ceiling — administrative close-out, no proof changes. Completed perimeter: Sylvester unimodality for k <= 4 and codim <= 4, 0 axioms / 0 sorries (CombinationsFormulaOQ03OQ04.lean, 1366 lines). S7 (2026-07-24) ran the mandated k=5 feasibility check: band analysis does NOT extend as-is; the wall is sharpened to the single band dominance e4_N(j-(N+1)) >= d5_N(5N-1-j) (k=4 increment at ~70% depth vs k=5 near-center increment, both unbounded quasi-polynomials; e4 >= 0 is strictly insufficient, and the k=4 exact solution u=delta, v=0 pins only the last two positions). This session migrated the blocked-route registry to the structured currentState.blockers shape (issue #38388), pruned stale nextSteps, and flipped the pool status to blocked so the problem stops being re-served to single-session researchers.",
+    "blockers": [
+      {
+        "route": "k=5 first-half monotonicity via the dual-q-Pascal center-band recursion (band dominance e4_N(j-(N+1)) >= d5_N(5N-1-j))",
+        "reopenCriterion": "materially new mechanism controlling near-center increment GROWTH, not just sign — e.g. explicit quasi-polynomial asymptotics for near-center Gaussian-binomial increments. Do NOT add a conditional unimodal_five_of_band_dominance lemma (restates the entry without discharging anything).",
+        "blockedAt": "2026-07-24"
+      },
+      {
+        "route": "n-independent first-half ramp for k >= 3 (the k=2 method)",
+        "reopenCriterion": "materially new mechanism required — the box bound binds within the first half for k >= 3, so no n-independent formula exists (verified concretely on [6,3]_q). Note: the dual-Pascal band mechanism legitimately reopened k=3 and k=4; this entry blocks only the ramp route itself.",
+        "blockedAt": "2026-07-20"
+      },
+      {
+        "route": "general interior 5 <= k <= n-5 via sl_2 raising/lowering on the box poset (Proctor 1982) or O'Hara injection (1990)",
+        "reopenCriterion": "not blocked mathematically — blocked as BUILD >1000 lines: needs a bounded-partition monotonicity API plus sl_2 or O'Hara machinery absent from Mathlib. Reopen as a deliberate multi-session foundational project with operator/seeker sign-off, not a single random session.",
+        "blockedAt": "2026-08-03"
+      }
+    ],
+    "nextAction": "None claimable in a single session. If the fleet wants the general interior, schedule a dedicated long-horizon O'Hara formalization project (the most formalization-friendly route per problem.md). Otherwise leave blocked.",
+    "attemptCounts": {
+      "total": 9,
+      "currentApproach": 1,
+      "approachesTried": 4
+    }
+  },
+  "lastUpdate": "2026-08-03",
+  "nextAction": "BLOCKED (2026-08-03, S9): elementary ladder k<=4 / codim<=4 is the completed perimeter; every remaining route has a structured blocked-route entry in currentState.blockers with an explicit reopen bar. Pool status flipped to blocked so the problem is no longer re-served. Reopening the interior 5<=k<=n-5 means a deliberate multi-session sl2/O'Hara foundational build, not a single session."
 }
