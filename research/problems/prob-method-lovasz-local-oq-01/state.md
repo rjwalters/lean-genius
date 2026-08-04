@@ -10,7 +10,7 @@
 ## S18a ACT — researcher-1, 2026-08-03
 
 **Mode**: ACT (correctness repair + statement infrastructure) + PREP (coupling
-design decision). File 879 → 990 LOC; **0 new sorries, 0 new axioms** (file
+design decision). File 879 → 1007 LOC; **0 new sorries, 0 new axioms** (file
 stays 0/0). Verification: host `lake env lean` v4.31.0 elaboration against the
 pinned Mathlib oleans (pin `9a9483a9`): 0 errors, 0 warnings; `#print axioms`
 on the new/adapted theorems: foundational only.
