@@ -87,5 +87,33 @@ Finally, the classical count strictly exceeds the triangular bound for
 the degree-five order 21, leaving degree four/order 15 as the last nontrivial
 equality case not excluded by these arguments.
 
+## Distance layers and the repair obstruction
+
+The canonical repair criterion has been factored through explicit candidate
+reservoirs.  Its external reservoir consists of vertices at distance at least
+three from the deleted vertex.  In a `d`-regular `C₄`-free graph, the
+second-neighbor branches are pairwise disjoint and each has at least `d-2`
+vertices, giving
+
+```text
+|external candidates at x| + d(d-1) + 1 ≤ n.
+```
+
+A repair set needs `d-1` candidates and may use at most one from `N(x)`.  If it
+uses such an internal candidate, that neighbor has no edge inside `N(x)`, so
+its second-layer branch gains one vertex.  This exactly cancels the internal
+allowance and yields the necessary condition
+
+```text
+HasRepairSet G d  →  d² ≤ |V(G)|
+```
+
+for regular witnesses.  Hence every regular witness below `d²` fails the
+canonical delete-one/add-pair surgery.  In particular, every 4-regular
+`C₄`-free graph on 15 vertices has no `HasRepairSet`, uniformly explaining the
+order-15 computational stress-test failure.  Eventual monotonicity will need
+either nonregular witnesses or a genuinely broader surgery in this regime.
+
 Commits: `22d1b67541`, `d7129b8e31`, `9d36eaf269`, `361d6606b7`,
-`c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`.
+`c1b828e493`, `2bcb1c2ef4`, `8f5f13e696`, `03397138eb`, `1e66a25d51`,
+`a3227cd3e2`.
