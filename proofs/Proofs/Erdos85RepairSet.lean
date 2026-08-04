@@ -47,6 +47,16 @@ theorem card_deletedNeighborhood {V : Type*} [Fintype V] [DecidableEq V]
         ((G.mem_neighborFinset x y).mp hy).symm
   rw [← hmap, Finset.card_map]
 
+/-- A witness admits the canonical delete/add-pair repair at degree d. -/
+def HasRepairSet {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Prop :=
+  ∃ (x : V) (R : Finset {y : V // y ≠ x}),
+    d - 1 ≤ R.card ∧
+    CommonNeighborIndependent (G.induce {y | y ≠ x}) R ∧
+    (R ∩ deletedNeighborhood G x).card ≤ 1 ∧
+    ∀ ⦃a⦄, a ∈ R → ∀ ⦃b⦄, b ∈ deletedNeighborhood G x →
+      ¬ (G.induce {y | y ≠ x}).Adj a b
+
 /-- The deleted vertex's old neighbourhood is automatically safe in the graph
 induced on the remaining vertices. -/
 theorem commonNeighborIndependent_deletedNeighborhood
