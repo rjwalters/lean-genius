@@ -376,3 +376,30 @@ incident edge is selected by that arm's cross deletion.  The proof uses the
 unique intersection of two projective lines and verifies that the intersection
 point is none of the three deleted absolutes.  The `{b,c}` arm and distinctness
 of the two selected edges remain to be mirrored.
+
+Both arms are now checked, as is their distinctness.  The outer pair poles
+have only `c` as a common neighbor in the full polarity graph, so their
+neighborhoods are disjoint in the three-point core.  Hence every clean center
+neighbor supports two distinct incident cross edges, one selected by each
+arm.
+
+The simultaneous operation is formalized as `twoArmPathSwitch`.  Its generic
+degree theorem says that deleting two distinct incident selected edges lowers
+the degree by at least two away from the three path endpoints.  Specializing
+to the pair-pole path gives
+
+```text
+degree after the path switch ≤ q-1
+```
+
+for every member of the `q-2` clean family.  Thus the computational defect
+propagation is now a theorem: the static path repairs the three original pair
+poles only by creating a growing family of at least `q-2` new sub-target
+vertices.  (A separate `C₄`-freeness theorem for this static operation is not
+needed for the obstruction, though the finite computations show it in the
+tested fields.)
+
+Finally, `threePairPolePathSwitch_minDegree_le_sub_one` packages the nonempty
+clean family into the global conclusion that the simultaneous path graph has
+minimum degree at most `q-1`.  Thus this repair is now formally excluded as a
+degree-`q` witness on `q²+q-2` vertices.

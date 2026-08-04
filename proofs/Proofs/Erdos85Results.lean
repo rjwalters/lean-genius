@@ -35,6 +35,7 @@ import Proofs.Erdos85FiniteFieldNonsquare
 import Proofs.Erdos85PolaritySwitchCoordinates
 import Proofs.Erdos85PolarityTangentSwitch
 import Proofs.Erdos85PolarityThreePointCore
+import Proofs.Erdos85PolarityThreePointPathSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
 import Proofs.Erdos85MinimalWitness
@@ -137,6 +138,12 @@ of this family has full degree `q+1` in the three-point core.
 Each clean center neighbor is now proved to have exactly one common neighbor
 inside the core with the first outer pair pole, supplying one of the two
 cross-edge losses in the static path obstruction.
+Both arms and their distinctness are now checked.  The simultaneous pair-pole
+path drops every one of the `q-2` clean center neighbors from degree `q+1` to
+at most `q-1`, so this natural multi-edge repair provably creates a growing
+new defect family.
+In particular, the switched graph has minimum degree at most `q-1`; the
+static pair-pole path is formally ruled out as a degree-`q` witness.
 -/
 
 namespace Erdos85
