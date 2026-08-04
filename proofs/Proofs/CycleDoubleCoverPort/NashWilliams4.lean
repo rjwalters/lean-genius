@@ -1055,6 +1055,7 @@ theorem hasTreePacking_of_kaiser_steps [Nonempty V]
               (colorClass_disjoint χ' (Fin.castSucc_ne_last b)) heb' heLast).elim
           · exact (hij rfl).elim
 
+/-- Sufficiency in the Nash-Williams--Tutte theorem, obtained by applying the
 Kaiser improvement step at each inductive stage. -/
 theorem hasTreePacking_of_condition [Nonempty V] :
     ∀ k : ℕ, G.SatisfiesTreePackingCondition k → G.HasTreePacking k := by
