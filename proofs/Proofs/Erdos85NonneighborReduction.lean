@@ -599,4 +599,39 @@ theorem degree_le_five_of_witness_card_eq_choose_degree_add_two
   have hstrict := choose_degree_add_two_lt_mul_pred_succ hsix
   omega
 
+/-- Strongest combined vertex-sensitive form currently available: the graph
+must accommodate the closed neighborhood of `x` and both lower bounds for the
+degree-`d-1` witness that remains outside it. -/
+theorem degree_add_one_add_max_reduced_bound_le_order
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G) (x : Fin n) :
+    G.degree x + 1 +
+      max ((d + 1).choose 2) ((d - 1) * (d - 2) + 1) ≤ n := by
+  have hmin3 : 3 ≤ G.minDegree := by omega
+  have hnonuniv := degree_add_two_le_order_of_not_containsC4 G hmin3 hfree x
+  have hpos : 1 ≤ Fintype.card (Fin n) - G.degree x - 1 := by
+    simp only [Fintype.card_fin]
+    omega
+  have hreduced := c4FreeMinDegreeWitness_of_outsideClosedNeighborhood
+    G hfree x (d := d - 1) (by omega) hpos
+  have hbound := max_choose_add_two_mul_pred_succ_le_order_of_witness
+    (d := d - 1) (by omega) hreduced
+  simp only [Fintype.card_fin] at hbound
+  have hchooseArg : d - 1 + 2 = d + 1 := by omega
+  have hpredArg : d - 1 - 1 = d - 2 := by omega
+  rw [hchooseArg, hpredArg] at hbound
+  omega
+
+/-- Equivalent explicit upper bound on every vertex degree. -/
+theorem degree_le_order_sub_max_reduced_bound_sub_one
+    {n d : ℕ} (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hfour : 4 ≤ d) (hdegree : G.minDegree = d)
+    (hfree : ¬ containsC4 (Fin n) G) (x : Fin n) :
+    G.degree x ≤ n -
+      max ((d + 1).choose 2) ((d - 1) * (d - 2) + 1) - 1 := by
+  have h := degree_add_one_add_max_reduced_bound_le_order
+    G hfour hdegree hfree x
+  omega
+
 end Erdos85
