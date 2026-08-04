@@ -28,6 +28,7 @@ import Proofs.Erdos85DeletePair
 import Proofs.Erdos85RepairSet
 import Proofs.Erdos85CompensatedRepair
 import Proofs.Erdos85GadgetExtension
+import Proofs.Erdos85FiveSelectorPacking
 import Proofs.Erdos85DeleteGadget
 import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85CompensatedGadget
@@ -64,6 +65,7 @@ import Proofs.Erdos85EvenAntipodalQuotient
 import Proofs.Erdos85SecondOrderStructure
 import Proofs.Erdos85SecondOrderEvenDefect
 import Proofs.Erdos85CycleResolvent
+import Proofs.Erdos85GlobalCycleFactorization
 import Proofs.Erdos85MinimalWitness
 import Proofs.Erdos85TightCore
 import Proofs.Erdos85LayeredWitness
