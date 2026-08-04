@@ -1,5 +1,6 @@
 import Proofs.Erdos85PolarityEven
 import Proofs.Erdos85SafeSetCounting
+import Proofs.Erdos85IntersectingPairs
 
 /-!
 # Counting odd-characteristic secant defects
@@ -86,6 +87,41 @@ omit [DecidableEq K] in
         ((graph K).neighborFinset v ∩ absolutePoints K).card = 2 := by
   classical
   simp [oddSecantVertices]
+
+/-- Absolute neighbors of a point, typed as elements of the absolute locus. -/
+noncomputable def absoluteNeighborPair (v : P K) :
+    Finset {a : P K // a ∈ absolutePoints K} := by
+  classical
+  exact Finset.univ.filter fun a => (graph K).Adj v a.1
+
+omit [DecidableEq K] in
+@[simp] theorem mem_absoluteNeighborPair (v : P K)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    a ∈ absoluteNeighborPair K v ↔ (graph K).Adj v a.1 := by
+  classical
+  simp [absoluteNeighborPair]
+
+omit [DecidableEq K] in
+theorem card_absoluteNeighborPair (v : P K) :
+    (absoluteNeighborPair K v).card =
+      ((graph K).neighborFinset v ∩ absolutePoints K).card := by
+  let emb : {a : P K // a ∈ absolutePoints K} ↪ P K :=
+    Function.Embedding.subtype _
+  have heq : (absoluteNeighborPair K v).map emb =
+      (graph K).neighborFinset v ∩ absolutePoints K := by
+    ext a
+    constructor
+    · intro ha
+      rw [Finset.mem_map] at ha
+      obtain ⟨b, hb, rfl⟩ := ha
+      exact Finset.mem_inter.mpr
+        ⟨by simpa [emb] using (mem_absoluteNeighborPair K v b).mp hb, b.2⟩
+    · intro ha
+      have ha' := Finset.mem_inter.mp ha
+      rw [Finset.mem_map]
+      refine ⟨⟨a, ha'.2⟩, ?_, rfl⟩
+      exact (mem_absoluteNeighborPair K v _).mpr (by simpa using ha'.1)
+  rw [← heq, Finset.card_map]
 
 private theorem pair_incidence_eq (h2 : (2 : K) ≠ 0)
     (D : AbsolutePairs K) :
@@ -283,6 +319,68 @@ theorem absoluteIncidences_ne_one (h2 : (2 : K) ≠ 0) (v : P K)
   simp only [Nat.add_sub_cancel] at hle
   omega
 
+private theorem three_le_card_of_two_ne_zero (h2 : (2 : K) ≠ 0) :
+    3 ≤ Nat.card K := by
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  by_contra hq3
+  have hq2 : Nat.card K = 2 := by omega
+  obtain ⟨y, hy, hyuniq⟩ := (Nat.card_eq_two_iff' (0 : K)).mp hq2
+  have hsum0 : (1 : K) + 1 = 0 := by
+    by_contra hsum
+    have hsumy : (1 : K) + 1 = y := hyuniq _ hsum
+    have h1y : (1 : K) = y := hyuniq _ one_ne_zero
+    have hbad : (1 : K) + 1 = 1 := hsumy.trans h1y.symm
+    have : (1 : K) = 0 := by
+      apply add_left_cancel (a := (1 : K))
+      rw [add_zero]
+      exact hbad
+    exact one_ne_zero this
+  apply h2
+  rw [← one_add_one_eq_two]
+  exact hsum0
+
+/-- Distinct nonabsolute points whose absolute-neighbor pairs are disjoint
+have a common neighbor that is itself nonabsolute. -/
+theorem exists_nonabsolute_commonNeighbor_of_disjoint_absoluteIncidences
+    (x y : P K)
+    (hxnon : ¬ Projectivization.orthogonal x x)
+    (hynon : ¬ Projectivization.orthogonal y y) (hxy : x ≠ y)
+    (hdisj : Disjoint
+      ((graph K).neighborFinset x ∩ absolutePoints K)
+      ((graph K).neighborFinset y ∩ absolutePoints K)) :
+    ∃ z, ¬ Projectivization.orthogonal z z ∧
+      (graph K).Adj x z ∧ (graph K).Adj y z := by
+  obtain ⟨z, hzx, hzy⟩ :=
+    Configuration.HasPoints.existsUnique_point
+      (Projectivization K (Fin 3 → K))
+      (Projectivization K (Fin 3 → K)) x y hxy |>.exists
+  have hzxo : Projectivization.orthogonal z x :=
+    (Configuration.ofField.mem_iff z x).mp hzx
+  have hzyo : Projectivization.orthogonal z y :=
+    (Configuration.ofField.mem_iff z y).mp hzy
+  have hzxne : z ≠ x := by
+    intro h
+    apply hxnon
+    simpa [h] using hzxo
+  have hzyne : z ≠ y := by
+    intro h
+    apply hynon
+    simpa [h] using hzyo
+  have hxz : (graph K).Adj x z := (graph_adj_iff x z).mpr
+    ⟨Ne.symm hzxne, Projectivization.orthogonal_comm.mp hzxo⟩
+  have hyz : (graph K).Adj y z := (graph_adj_iff y z).mpr
+    ⟨Ne.symm hzyne, Projectivization.orthogonal_comm.mp hzyo⟩
+  have hznon : ¬ Projectivization.orthogonal z z := by
+    intro hzabs
+    have hzX : z ∈ (graph K).neighborFinset x ∩ absolutePoints K :=
+      Finset.mem_inter.mpr
+        ⟨by simpa using hxz, (mem_absolutePoints K z).mpr hzabs⟩
+    have hzY : z ∈ (graph K).neighborFinset y ∩ absolutePoints K :=
+      Finset.mem_inter.mpr
+        ⟨by simpa using hyz, (mem_absolutePoints K z).mpr hzabs⟩
+    exact Finset.disjoint_left.mp hdisj hzX hzY
+  exact ⟨z, hznon, hxz, hyz⟩
+
 /-- The induced graph after deleting the full odd-characteristic absolute
 conic. -/
 noncomputable abbrev oddCore :=
@@ -352,6 +450,123 @@ theorem card_oddCoreLowVertices (h2 : (2 : K) ≠ 0) :
     exact (Finset.card_map emb).symm
   rw [hc, card_oddSecantVertices K h2]
 
+private theorem absoluteNeighborPair_injective_on_low
+    (h2 : (2 : K) ≠ 0)
+    {x y : {v : P K // v ∉ absolutePoints K}}
+    (hx : x ∈ oddCoreLowVertices K)
+    (hpairs : absoluteNeighborPair K x.1 = absoluteNeighborPair K y.1) :
+    x = y := by
+  apply Subtype.ext
+  by_contra hxy
+  have hcard : (absoluteNeighborPair K x.1).card = 2 := by
+    rw [card_absoluteNeighborPair]
+    exact (mem_oddSecantVertices K x.1).mp
+      ((mem_oddCoreLowVertices_iff_secant K h2 x).mp hx) |>.2
+  obtain ⟨a, b, hab, hp⟩ := Finset.card_eq_two.mp hcard
+  have hle := Finset.card_le_one.mp (commonNeighbors_le_one x.1 y.1 hxy)
+  apply hab
+  apply Subtype.ext
+  apply hle a.1
+  · have haX : a ∈ absoluteNeighborPair K x.1 := by rw [hp]; simp
+    have haY : a ∈ absoluteNeighborPair K y.1 := by rw [← hpairs]; exact haX
+    simp [(mem_absoluteNeighborPair K x.1 a).mp haX,
+      (mem_absoluteNeighborPair K y.1 a).mp haY]
+  · have hbX : b ∈ absoluteNeighborPair K x.1 := by rw [hp]; simp
+    have hbY : b ∈ absoluteNeighborPair K y.1 := by rw [← hpairs]; exact hbX
+    simp [(mem_absoluteNeighborPair K x.1 b).mp hbX,
+      (mem_absoluteNeighborPair K y.1 b).mp hbY]
+
+/-- A safe family consisting only of odd-core defects has at most `q`
+members.  Under `absoluteNeighborPair` it is an intersecting family of
+two-subsets of the `q+1` absolute points, so this is the `r=2` case of the
+Erdős--Ko--Rado theorem. -/
+theorem safe_lowVertices_card_le (h2 : (2 : K) ≠ 0)
+    (S : Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : S ⊆ oddCoreLowVertices K)
+    (hsafe : CommonNeighborIndependent (oddCore K) S) :
+    S.card ≤ Nat.card K := by
+  let emb : {v // v ∈ S} ↪ Finset {a : P K // a ∈ absolutePoints K} :=
+    ⟨fun v => absoluteNeighborPair K v.1.1, fun x y hxy => by
+      apply Subtype.ext
+      exact absoluteNeighborPair_injective_on_low K h2
+        (hsub x.2) hxy⟩
+  let 𝒜 := Finset.univ.map emb
+  have h𝒜card : 𝒜.card = S.card := by
+    rw [Finset.card_map, Finset.card_univ, Fintype.card_coe]
+  have h𝒜sized :
+      (𝒜 : Set (Finset {a : P K // a ∈ absolutePoints K})).Sized 2 := by
+    intro A hA
+    rw [Finset.mem_coe, Finset.mem_map] at hA
+    obtain ⟨x, _, rfl⟩ := hA
+    dsimp [emb]
+    rw [card_absoluteNeighborPair]
+    exact (mem_oddSecantVertices K x.1.1).mp
+      ((mem_oddCoreLowVertices_iff_secant K h2 x.1).mp (hsub x.2)) |>.2
+  have h𝒜int :
+      (𝒜 : Set (Finset {a : P K // a ∈ absolutePoints K})).Intersecting := by
+    intro A hA B hB hdisj
+    rw [Finset.mem_coe, Finset.mem_map] at hA hB
+    obtain ⟨x, _, rfl⟩ := hA
+    obtain ⟨y, _, rfl⟩ := hB
+    dsimp [emb] at hdisj
+    by_cases hxy : x.1 = y.1
+    · have hp : absoluteNeighborPair K x.1.1 =
+          absoluteNeighborPair K y.1.1 := congrArg
+            (fun v => absoluteNeighborPair K v.1) hxy
+      rw [← hp] at hdisj
+      have hcard : (absoluteNeighborPair K x.1.1).card = 2 := by
+        rw [card_absoluteNeighborPair]
+        exact (mem_oddSecantVertices K x.1.1).mp
+          ((mem_oddCoreLowVertices_iff_secant K h2 x.1).mp (hsub x.2)) |>.2
+      have hempty := disjoint_self.mp hdisj
+      rw [hempty] at hcard
+      simp at hcard
+    · have hxnon : ¬ Projectivization.orthogonal x.1.1 x.1.1 := by
+        simpa [mem_absolutePoints] using x.1.2
+      have hynon : ¬ Projectivization.orthogonal y.1.1 y.1.1 := by
+        simpa [mem_absolutePoints] using y.1.2
+      have hraw : Disjoint
+          ((graph K).neighborFinset x.1.1 ∩ absolutePoints K)
+          ((graph K).neighborFinset y.1.1 ∩ absolutePoints K) := by
+        rw [Finset.disjoint_left] at hdisj ⊢
+        intro a haX haY
+        let aa : {a : P K // a ∈ absolutePoints K} :=
+          ⟨a, (Finset.mem_inter.mp haX).2⟩
+        apply hdisj (a := aa)
+        · apply (mem_absoluteNeighborPair K x.1.1 aa).mpr
+          simpa using (Finset.mem_inter.mp haX).1
+        · apply (mem_absoluteNeighborPair K y.1.1 aa).mpr
+          simpa using (Finset.mem_inter.mp haY).1
+      obtain ⟨z, hznon, hxz, hyz⟩ :=
+        exists_nonabsolute_commonNeighbor_of_disjoint_absoluteIncidences
+          K x.1.1 y.1.1 hxnon hynon (fun h => hxy (Subtype.ext h)) hraw
+      have hzcore : z ∉ absolutePoints K := by
+        simpa [mem_absolutePoints] using hznon
+      let zc : {v : P K // v ∉ absolutePoints K} := ⟨z, hzcore⟩
+      have hzero := hsafe x.2 y.2 hxy
+      have hzmem : zc ∈ (oddCore K).neighborFinset x.1 ∩
+          (oddCore K).neighborFinset y.1 := by
+        apply Finset.mem_inter.mpr
+        constructor
+        · rw [SimpleGraph.mem_neighborFinset]
+          change (graph K).Adj x.1.1 z
+          exact hxz
+        · rw [SimpleGraph.mem_neighborFinset]
+          change (graph K).Adj y.1.1 z
+          exact hyz
+      rw [Finset.card_eq_zero] at hzero
+      have := congrArg (fun T => zc ∈ T) hzero
+      simp [hzmem] at this
+  have habscard : Fintype.card {a : P K // a ∈ absolutePoints K} =
+      Nat.card K + 1 := by
+    rw [Fintype.card_coe, card_absolutePoints_eq_card_add_one K]
+  have hq3 : 3 ≤ Nat.card K := three_le_card_of_two_ne_zero K h2
+  have hbound := pair_intersecting_card_le 𝒜 h𝒜int h𝒜sized (by
+    rw [habscard]
+    omega)
+  rw [h𝒜card, habscard] at hbound
+  omega
+
 /-- The complementary degree class in the deleted-conic odd core. -/
 noncomputable def oddCoreHighVertices :
     Finset {v : P K // v ∉ absolutePoints K} := by
@@ -413,26 +628,6 @@ theorem card_oddCoreHighVertices_compl (h2 : (2 : K) ≠ 0) :
   rw [oddCoreLowVertices_union_highVertices K h2, Finset.card_univ,
     card_oddCoreLowVertices K h2] at hcard
   omega
-
-private theorem three_le_card_of_two_ne_zero (h2 : (2 : K) ≠ 0) :
-    3 ≤ Nat.card K := by
-  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
-  by_contra hq3
-  have hq2 : Nat.card K = 2 := by omega
-  obtain ⟨y, hy, hyuniq⟩ := (Nat.card_eq_two_iff' (0 : K)).mp hq2
-  have hsum0 : (1 : K) + 1 = 0 := by
-    by_contra hsum
-    have hsumy : (1 : K) + 1 = y := hyuniq _ hsum
-    have h1y : (1 : K) = y := hyuniq _ one_ne_zero
-    have hbad : (1 : K) + 1 = 1 := hsumy.trans h1y.symm
-    have : (1 : K) = 0 := by
-      apply add_left_cancel (a := (1 : K))
-      rw [add_zero]
-      exact hbad
-    exact one_ne_zero this
-  apply h2
-  rw [← one_add_one_eq_two]
-  exact hsum0
 
 theorem card_oddCore :
     Fintype.card {v : P K // v ∉ absolutePoints K} =

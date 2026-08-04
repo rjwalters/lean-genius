@@ -123,3 +123,19 @@ q² - choose(q+1,2) vertices have degree q+1.
 The checked statements are `sum_absoluteIncidences`,
 `absoluteIncidences_ne_one`, `oddCore_degree_eq_low_or_high`, and
 `card_oddCoreHighVertices` in `Erdos85PolarityOddSecantCount.lean`.
+
+## Kneser structure of the odd defects
+
+The absolute-neighbor pair of each low-degree vertex determines it uniquely.
+If two such pairs are disjoint, the two poles have a nonabsolute common
+neighbor and therefore conflict inside the core.  Thus every safe family of
+low-degree defects maps to an intersecting family of two-subsets of the
+`q+1` absolute points.  The checked Erdős--Ko--Rado bridge yields
+
+```text
+|safe defect family| ≤ q.
+```
+
+This is formalized as `safe_lowVertices_card_le`; the general finite-type EKR
+transport is `pair_intersecting_card_le` in
+`Erdos85IntersectingPairs.lean`.
