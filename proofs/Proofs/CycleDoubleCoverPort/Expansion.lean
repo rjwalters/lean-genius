@@ -244,10 +244,8 @@ one, since a fibre with at least two elements is rotated nontrivially. -/
 theorem rotationPerm_ne (hne : ∀ v : V, G.degree v ≠ 1) (h : HalfEdge E) :
     rotationPerm G h ≠ h := by
   intro hfix
-  have hval : ((fiberCycle G (G.vertex h) ⟨h, rfl⟩ : G.halfEdgesAt (G.vertex h)) :
-      HalfEdge E) = h := hfix
   have hsub : fiberCycle G (G.vertex h) ⟨h, rfl⟩
-      = (⟨h, rfl⟩ : G.halfEdgesAt (G.vertex h)) := Subtype.ext hval
+      = (⟨h, rfl⟩ : G.halfEdgesAt (G.vertex h)) := Subtype.ext hfix
   have hfin : finRotate (Fintype.card (G.halfEdgesAt (G.vertex h)))
       (Fintype.equivFin (G.halfEdgesAt (G.vertex h)) ⟨h, rfl⟩)
       = Fintype.equivFin (G.halfEdgesAt (G.vertex h)) ⟨h, rfl⟩ := by
@@ -389,7 +387,8 @@ def cubicExpansion : CubicGraph G.ExpandedVertex G.ExpandedEdge where
   loopless := by
     rintro (e | h)
     · intro hEq
-      exact absurd (congrArg Prod.snd hEq) (by decide)
+      have h01 : (0 : Fin 2) = 1 := congrArg Prod.snd hEq
+      exact absurd h01 (by decide)
     · intro hEq
       exact R.next_ne h hEq.symm
 
@@ -403,7 +402,8 @@ def expansionGraph : FiniteGraph G.ExpandedVertex G.ExpandedEdge where
   loopless := by
     rintro (e | h)
     · intro hEq
-      exact absurd (congrArg Prod.snd hEq) (by decide)
+      have h01 : (0 : Fin 2) = 1 := congrArg Prod.snd hEq
+      exact absurd h01 (by decide)
     · intro hEq
       exact R.next_ne h hEq.symm
 
@@ -488,9 +488,11 @@ theorem expansionGraph_bridgeless (hb : G.Bridgeless) :
         · rw [if_neg (fun hc => hc (propext ⟨fun _ => hB, fun _ => hA⟩)), if_pos hA,
             if_pos hB]
           decide
-        · rw [if_pos (prop_ne_of hA hB), if_pos hA, if_neg hB]
+        · rw [if_pos (show (expansionGraph G R).Crosses S (Sum.inr h) from prop_ne_of hA hB),
+            if_pos hA, if_neg hB]
           decide
-        · rw [if_pos (prop_ne_of' hA hB), if_neg hA, if_pos hB]
+        · rw [if_pos (show (expansionGraph G R).Crosses S (Sum.inr h) from prop_ne_of' hA hB),
+            if_neg hA, if_pos hB]
           decide
         · rw [if_neg (fun hc =>
               hc (propext ⟨fun hp => absurd hp hA, fun hq => absurd hq hB⟩)),
@@ -500,7 +502,7 @@ theorem expansionGraph_bridgeless (hb : G.Bridgeless) :
           (if (expansionGraph G R).Crosses S (Sum.inr h) then (1 : F₂) else 0)) = 0 := by
         have hshift : (∑ h : G.ExpandedVertex, (if R.next h ∈ S then (1 : F₂) else 0))
             = ∑ h : G.ExpandedVertex, (if h ∈ S then (1 : F₂) else 0) :=
-          R.next.sum_comp (fun k : G.ExpandedVertex => if k ∈ S then (1 : F₂) else 0)
+          Equiv.sum_comp R.next (fun k : G.ExpandedVertex => if k ∈ S then (1 : F₂) else 0)
         calc (∑ h : G.ExpandedVertex,
                 (if (expansionGraph G R).Crosses S (Sum.inr h) then (1 : F₂) else 0))
             = ∑ h : G.ExpandedVertex,
@@ -570,6 +572,7 @@ theorem expansionGraph_bridgeless (hb : G.Bridgeless) :
           propext (hT (e, 1))
         show ((G.endAt e 0 ∈ T) ≠ (G.endAt e 1 ∈ T)) ↔ _
         rw [p0, p1]
+        exact Iff.rfl
       have horig : G.cut T = {e0} := by
         ext e
         rw [G.mem_cut, Finset.mem_singleton, hbridge e, hcross (Sum.inl e)]
@@ -633,7 +636,7 @@ theorem projected_vertex_even
       simp only
       rw [hsame]
     rw [Finset.sum_congr rfl fun h (_ : h ∈ (Finset.univ : Finset (HalfEdge E))) => hpoint h]
-    exact R.next.symm.sum_comp
+    exact Equiv.sum_comp R.next.symm
       (fun k : HalfEdge E => if G.endAt k.1 k.2 = v then C.member s (Sum.inr k) else 0)
   have htotal :
       (∑ h : HalfEdge E, (if G.endAt h.1 h.2 = v then C.member s (Sum.inl h.1) else 0))
@@ -652,7 +655,9 @@ theorem projected_vertex_even
         ((if G.endAt e 0 = v then C.member s (Sum.inl e) else 0) +
          (if G.endAt e 1 = v then C.member s (Sum.inl e) else 0))
       = ∑ e : E, ∑ j : Fin 2, (if G.endAt e j = v then C.member s (Sum.inl e) else 0) :=
-        Finset.sum_congr rfl fun e _ => (Fin.sum_univ_two _).symm
+        Finset.sum_congr rfl fun e _ =>
+          (Fin.sum_univ_two
+            (fun j : Fin 2 => if G.endAt e j = v then C.member s (Sum.inl e) else 0)).symm
     _ = ∑ h : HalfEdge E, (if G.endAt h.1 h.2 = v then C.member s (Sum.inl h.1) else 0) :=
         (Fintype.sum_prod_type'
           (fun (e : E) (j : Fin 2) =>
