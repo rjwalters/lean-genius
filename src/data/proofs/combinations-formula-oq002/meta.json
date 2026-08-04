@@ -52,7 +52,8 @@
       "The quadratic weight splits as k² = k(k-1) + k, and each summand is its own absorption: k(k-1) C(n,k) = n(n-1) C(n-2,k-2) shifts the row down by two, while k C(n,k) = n C(n-1,k-1) shifts it down by one. The two shifts land on different rows, so they cannot merge — the closed form has exactly two binomial coefficients, one per shift.",
       "Stated with C(n+3,k) and cut-off j+2 the identity needs no natural-number subtraction and holds for all n, making the induction clean; the literal (n-1) C(n-3,j-2) + C(n-2,j-1) form is a one-line specialisation for n ≥ 3.",
       "The inductive step's new term (j+3)² C(n+3,j+3) is reduced by composing two absorptions: (j+3)² = (j+3)·(j+3), one factor absorbed against row n+3 and the residual (j+3) split as (j+2) + 1 to absorb against row n+2. This is packaged as the lemma key and supplied to linear_combination as a single hypothesis.",
-      "The classical full-row vanishing is not assumed but derived: at j = n both coefficients C(n-3,n-2) and C(n-2,n-1) are 0, so this entry is strictly stronger than the bare anchor and exhibits exactly how the cancellation happens term by term."
+      "The classical full-row vanishing is not assumed but derived: at j = n both coefficients C(n-3,n-2) and C(n-2,n-1) are 0, so this entry is strictly stronger than the bare anchor and exhibits exactly how the cancellation happens term by term.",
+      "The two-shift decomposition k² = k(k-1) + k is the d = 2 case of the falling-factorial expansion k^d = Σ_r S(d,r) (k)_r (Stirling numbers of the second kind), where each falling factorial (k)_r = k(k-1)···(k-r+1) absorbs r rows in one shot via r applications of the same absorption identity Nat.add_one_mul_choose_eq. This entry's two-application key lemma is therefore not an ad hoc trick for k² but the r = 2 instance of a technique that scales uniformly with the weight's degree, exactly as the open questions anticipate for k³."
     ]
   },
   "sections": [
