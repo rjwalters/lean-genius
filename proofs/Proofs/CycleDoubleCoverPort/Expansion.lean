@@ -596,6 +596,7 @@ theorem cubicExpansion_bridgeless (hb : G.Bridgeless) :
 -- Projecting an even double cover back along the spokes
 -- ============================================================
 
+omit [DecidableEq E] in
 /-- Around an original vertex the two ring contributions cancel in
 characteristic two, leaving the parity condition for the spokes alone.
 
