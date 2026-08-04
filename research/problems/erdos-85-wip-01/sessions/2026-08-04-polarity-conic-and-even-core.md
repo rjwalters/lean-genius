@@ -707,6 +707,33 @@ particular, a high-degree hub forces a large family of pairwise-disjoint
 selectors, which can now be combined with the polarity star-fibre description
 to attack the remaining hub-heavy gadget shapes.
 
+Both sides of the hub budget are now globally counted.  The selectors of the
+neighbours of `w` are pairwise disjoint, giving
+
+```text
+sum_{u~w} |A_u| <= |V_old|.
+```
+
+On the gadget side, the sets `N_F(u)\{w}` for distinct `u~w` are pairwise
+disjoint, giving
+
+```text
+sum_{u~w} (deg_F(u)-1) <= |W|-1.
+```
+
+When all gadget degrees are at most the target `q`, these combine into the
+checked inequality
+
+```text
+deg_F(w)(q-1) <= |V_old|+|W|-1.
+```
+
+The polarity specialization also records the exact old order
+`q^2+q+1-|D|`.  The next strengthening must exploit more than ambient vertex
+count: star fibres for distinct deleted absolutes meet in distinct pair poles,
+so disjoint hub-neighbour selectors must collectively omit at least one pole
+for every pair of their centres.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus

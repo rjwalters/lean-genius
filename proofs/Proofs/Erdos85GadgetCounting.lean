@@ -95,6 +95,148 @@ theorem sum_neighbor_weight_eq_sum_degree_mul
       rw [hfilter, Finset.sum_const, F.card_neighborFinset_eq_degree]
       simp [Nat.mul_comm]
 
+/-- Around a fixed gadget vertex, compatibility makes all neighbouring
+selectors pairwise disjoint, so their total size is at most the number of old
+vertices. -/
+theorem GadgetAttachmentCompatible.sum_card_neighbor_selectors_le_card
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (w : W) :
+    (∑ u ∈ F.neighborFinset w, (A u).card) ≤ Fintype.card V := by
+  classical
+  have hpair : (F.neighborFinset w : Set W).Pairwise
+      (fun u v => Disjoint (A u) (A v)) := by
+    intro u hu v hv huv
+    exact hcompat.disjoint_selectors_of_adjacent_to G F A
+      ((F.mem_neighborFinset w u).mp hu)
+      ((F.mem_neighborFinset w v).mp hv) huv
+  calc
+    (∑ u ∈ F.neighborFinset w, (A u).card) =
+        ((F.neighborFinset w).biUnion A).card := by
+      rw [Finset.card_biUnion hpair]
+    _ ≤ Fintype.card V := by
+      rw [← Finset.card_univ]
+      exact Finset.card_le_card (Finset.subset_univ _)
+
+/-- Degree-sequence form of the same hub budget.  If every new vertex reaches
+degree `q`, the sum of its attachment deficits `q-deg_F(u)` over the
+neighbours of any gadget vertex is bounded by the old graph order. -/
+theorem GadgetAttachmentCompatible.sum_neighbor_degree_deficits_le_card
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (q : ℕ)
+    (hnewDegree : ∀ u, q ≤ (attachGadget G F A).degree (.inr u))
+    (w : W) :
+    (∑ u ∈ F.neighborFinset w, (q - F.degree u)) ≤ Fintype.card V := by
+  apply le_trans (Finset.sum_le_sum fun u _ => ?_)
+    (hcompat.sum_card_neighbor_selectors_le_card G F A w)
+  have hu := hnewDegree u
+  rw [attachGadget_degree_new] at hu
+  omega
+
+/-- The gadget-side distance-two budget at a hub.  After removing the hub,
+the neighbour sets of its distinct neighbours are pairwise disjoint; hence
+the sum of their excess degrees is at most the number of other gadget
+vertices. -/
+theorem GadgetAttachmentCompatible.sum_neighbor_degree_sub_one_le
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (w : W) :
+    (∑ u ∈ F.neighborFinset w, (F.degree u - 1)) ≤
+      Fintype.card W - 1 := by
+  classical
+  let branch : W → Finset W := fun u => F.neighborFinset u \ {w}
+  have hpair : (F.neighborFinset w : Set W).Pairwise
+      (fun u v => Disjoint (branch u) (branch v)) := by
+    intro u hu v hv huv
+    rw [Finset.disjoint_left]
+    intro z hzu hzv
+    have hzu' := (Finset.mem_sdiff.mp hzu).1
+    have hzv' := (Finset.mem_sdiff.mp hzv).1
+    have hzw : z ≠ w := by simpa using (Finset.mem_sdiff.mp hzu).2
+    have hwcommon : w ∈ F.neighborFinset u ∩ F.neighborFinset v := by
+      rw [Finset.mem_inter]
+      exact ⟨by simpa [SimpleGraph.mem_neighborFinset] using hu,
+        by simpa [SimpleGraph.mem_neighborFinset] using hv⟩
+    have hzcommon : z ∈ F.neighborFinset u ∩ F.neighborFinset v :=
+      Finset.mem_inter.mpr ⟨hzu', hzv'⟩
+    have htwo : 2 ≤ (F.neighborFinset u ∩ F.neighborFinset v).card := by
+      rw [Finset.two_le_card]
+      exact ⟨w, hwcommon, z, hzcommon, Ne.symm hzw⟩
+    have hbudget := hcompat.2.1 u v huv
+    omega
+  have hbranch_card : ∀ u ∈ F.neighborFinset w,
+      (branch u).card = F.degree u - 1 := by
+    intro u hu
+    dsimp [branch]
+    rw [Finset.card_sdiff]
+    have hmem : w ∈ F.neighborFinset u := by
+      simpa [SimpleGraph.mem_neighborFinset] using hu
+    rw [Finset.inter_singleton_eq_singleton.mpr hmem]
+    simp [F.card_neighborFinset_eq_degree]
+  have hunion_sub : (F.neighborFinset w).biUnion branch ⊆
+      Finset.univ \ {w} := by
+    intro z hz
+    rw [Finset.mem_biUnion] at hz
+    obtain ⟨u, hu, hzu⟩ := hz
+    exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _,
+      (Finset.mem_sdiff.mp hzu).2⟩
+  calc
+    (∑ u ∈ F.neighborFinset w, (F.degree u - 1)) =
+        ∑ u ∈ F.neighborFinset w, (branch u).card := by
+      apply Finset.sum_congr rfl
+      intro u hu
+      rw [hbranch_card u hu]
+    _ = ((F.neighborFinset w).biUnion branch).card := by
+      rw [Finset.card_biUnion hpair]
+    _ ≤ (Finset.univ \ {w}).card := Finset.card_le_card hunion_sub
+    _ = Fintype.card W - 1 := by simp
+
+/-- Combined old-side and gadget-side hub inequality.  When gadget degrees
+are at most the target `q`, every neighbour of `w` contributes exactly
+`q-1` across the two budgets. -/
+theorem GadgetAttachmentCompatible.degree_mul_target_sub_one_le_cards
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset V) (hcompat : GadgetAttachmentCompatible G F A)
+    (q : ℕ) (hdegree : ∀ u, F.degree u ≤ q)
+    (hnewDegree : ∀ u, q ≤ (attachGadget G F A).degree (.inr u))
+    (w : W) :
+    F.degree w * (q - 1) ≤ Fintype.card V + Fintype.card W - 1 := by
+  have hold := hcompat.sum_neighbor_degree_deficits_le_card
+    G F A q hnewDegree w
+  have hnew := hcompat.sum_neighbor_degree_sub_one_le G F A w
+  have heq : (∑ u ∈ F.neighborFinset w,
+      ((q - F.degree u) + (F.degree u - 1))) =
+      F.degree w * (q - 1) := by
+    calc
+      _ = ∑ _u ∈ F.neighborFinset w, (q - 1) := by
+        apply Finset.sum_congr rfl
+        intro u hu
+        have huone : 1 ≤ F.degree u := by
+          rw [← F.card_neighborFinset_eq_degree]
+          exact Finset.one_le_card.mpr ⟨w, by
+            simpa [SimpleGraph.mem_neighborFinset] using hu⟩
+        have hule := hdegree u
+        omega
+      _ = F.degree w * (q - 1) := by
+        rw [Finset.sum_const, F.card_neighborFinset_eq_degree]
+        simp [Nat.mul_comm]
+  rw [← heq]
+  rw [← Finset.sum_add_distrib]
+  omega
+
 /-- Global form of all mixed compatibility budgets. -/
 theorem GadgetAttachmentCompatible.sum_mixed_budgets_le
     {V W : Type*} [Fintype V] [Fintype W]

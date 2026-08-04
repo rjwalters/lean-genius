@@ -1,4 +1,5 @@
 import Proofs.Erdos85FiveSelectorPacking
+import Proofs.Erdos85GadgetCounting
 import Proofs.Erdos85PolarityOddSecantCount
 
 /-!
@@ -551,5 +552,27 @@ theorem card_field_le_twice_deleted_add_one_of_netOne_gadget
   exact boundedDegreeGadgetAttachment_impossible_of_absolute_deletions
     K h2 D.card hDtwo hqr D hDabs F A hcompat hFdegree hnewDegree
     (by rw [hWcard]; omega)
+
+/-- Exact hub budget in a deleted polarity core.  Around every new gadget
+vertex, the total attachment deficit of its gadget neighbours is bounded by
+the number `q²+q+1-|D|` of surviving projective points. -/
+theorem sum_neighbor_degree_deficits_le_card_field_square_of_gadget
+    (D : Finset (P K))
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : P K // v ∉ D})
+    (hcompat : GadgetAttachmentCompatible
+      (deleteVertexSetGraph (graph K) D) F A)
+    (hnewDegree : ∀ w, Nat.card K ≤
+      (attachGadget (deleteVertexSetGraph (graph K) D) F A).degree (.inr w))
+    (w : W) :
+    (∑ u ∈ F.neighborFinset w, (Nat.card K - F.degree u)) ≤
+      (Nat.card K + 1) * Nat.card K + 1 - D.card := by
+  have h := hcompat.sum_neighbor_degree_deficits_le_card
+    (deleteVertexSetGraph (graph K) D) F A (Nat.card K) hnewDegree w
+  change _ ≤ Fintype.card {v : P K // v ∉ D} at h
+  rw [Fintype.card_subtype_compl] at h
+  rw [Fintype.card_eq_nat_card, card_points_tight K, Fintype.card_coe] at h
+  exact h
 
 end Erdos85.Polarity
