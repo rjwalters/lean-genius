@@ -62,7 +62,7 @@ interface and `PathCut.lean` discharges for every finite graph.
 | `divergence` restated ad hoc; `isFlow_add`, `isFlow_int_smul`, `divergence_add`, `divergence_neg` each re-prove the same `if`-splitting sum identity | one primitive `endSum`, identified with a sum over the incidence fibre (`endSum_eq_sum_filter`); additivity, negation and `ℤ`-scaling then fall out of `Finset.sum_add_distrib` / `sum_neg_distrib` / `sum_smul`, and all six flow/divergence lemmas are one-liners on top |
 | `IsFlow` and `divergence` related only implicitly | `isFlow_iff_divergence` records `G.IsFlow f ↔ ∀ v, G.divergence f v = 0` |
 | `Pi.single k 1` for the one-edge chain | explicit `unitChain`, avoiding `Pi.single` API |
-| `GoodFlows`, `BadOnFlows` and four equivalences (`nowhereZeroFlowsEquivGood`, `zeroOnFlowsEquivBad`, plus two more built inside the inclusion–exclusion proof) | dropped; two equivalences (`zeroOnFlowsEquivCoe`, `nowhereZeroFlowsEquivCoe`) go straight to the `Finset` coercion that inclusion–exclusion wants |
+| `GoodFlows`, `BadOnFlows` and four equivalences (`nowhereZeroFlowsEquivGood`, `zeroOnFlowsEquivBad`, plus two more built inside the inclusion–exclusion proof) | dropped; two inline equivalences inside `card_nowhereZeroFlows_eq_sum_zeroOn` go straight to the `Finset` coercion that inclusion–exclusion wants |
 | `mem_finset_inf` by `Finset.cons_induction` | `mem_finsetInf` from the lattice adjunction (`Finset.le_inf` / `Finset.inf_le`) |
 | `allowEdgeEquiv` opens the existential with `Classical.choose` inside the equivalence | choice-free core `allowEdgeEquivOf` taking the circulation as data, with a one-line `Exists.choose` wrapper |
 | `zeroOnFlowsCongr` rewrites the conservation law by hand on both sides | reuses `IsFlow.map` from step 5a |
@@ -238,7 +238,7 @@ theorem card_zeroOnFlows_univ (A : Type*) [AddCommGroup A] [Fintype A] :
     Fintype.card (G.ZeroOnFlows A (Finset.univ : Finset E)) = 1 := by
   simpa using Fintype.card_congr (G.zeroOnFlowsUnivEquiv A)
 
-omit [Fintype V] [Fintype E] [DecidableEq V] in
+omit [Fintype V] [Fintype E] [DecidableEq V] [DecidableEq E] in
 /-- An additive hom carries a labelling vanishing on `S` to one vanishing on `S`. -/
 theorem map_zero_on {A B : Type*} [AddCommGroup A] [AddCommGroup B] (φ : A →+ B)
     (S : Finset E) (f : E → A) (hf : ∀ k ∈ S, f k = 0) : ∀ k ∈ S, φ (f k) = 0 :=
@@ -302,7 +302,7 @@ theorem hasIntegerPath_refl (S : Finset E) (u : V) : G.HasIntegerPath S u u :=
 ends. -/
 theorem hasIntegerPath_single (S : Finset E) (k : E) (hk : k ∉ S) :
     G.HasIntegerPath S (G.endAt k 0) (G.endAt k 1) :=
-  ⟨unitChain k, fun l hl => unitChain_of_ne fun h => hk (h ▸ hl), G.divergence_unitChain k⟩
+  ⟨unitChain k, fun _ hl => unitChain_of_ne fun h => hk (h ▸ hl), G.divergence_unitChain k⟩
 
 omit [DecidableEq E] in
 theorem HasIntegerPath.symm {S : Finset E} {u v : V}

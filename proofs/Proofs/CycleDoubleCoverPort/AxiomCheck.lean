@@ -64,7 +64,6 @@ namespace FiniteGraph
 #print axioms flowCardinalityInvariant_of_zeroOn
 #print axioms flowCardinalityInvariant_of_pathCut
 #print axioms nowhereZeroFlowEquiv
-#print axioms that
 #print axioms transfer_of_cardinality
 #print axioms card_zmodEight_eq_gamma
 #print axioms zmodEight_to_gamma
