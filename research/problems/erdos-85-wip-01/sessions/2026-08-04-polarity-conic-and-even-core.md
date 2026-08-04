@@ -139,3 +139,19 @@ low-degree defects maps to an intersecting family of two-subsets of the
 This is formalized as `safe_lowVertices_card_le`; the general finite-type EKR
 transport is `pair_intersecting_card_le` in
 `Erdos85IntersectingPairs.lean`.
+
+The bound is sharp.  Fixing one absolute point `a`, the poles of the `q`
+absolute pairs `{a,b}` form `oddCoreDefectStar`.  Any two share `a` as a
+common neighbor in the full polarity graph, and uniqueness of line
+intersection shows that they have no common neighbor after the conic is
+deleted.  The checked theorems are
+
+```text
+card_oddCoreDefectStar = q,
+oddCoreDefectStar_subset_low,
+oddCoreDefectStar_safe,
+exists_safe_lowVertices_card_eq.
+```
+
+Hence the largest safe family contained in the odd defect locus has exact
+cardinality `q`.

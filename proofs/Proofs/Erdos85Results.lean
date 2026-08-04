@@ -67,7 +67,8 @@ A disjoint-neighborhood counting bound then
 proves that no common-neighbor-independent selector can cover all these
 defects; direct one-vertex repair of the full deleted-conic core is impossible.
 More sharply, the defect-to-absolute-pair map and Erdős--Ko--Rado show that a
-safe selector consisting of defects has cardinality at most `q`.
+safe selector consisting of defects has cardinality at most `q`; the bound is
+sharp, realized by all defect pairs through one fixed absolute point.
 -/
 
 namespace Erdos85

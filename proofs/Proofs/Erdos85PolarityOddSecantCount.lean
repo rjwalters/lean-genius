@@ -567,6 +567,138 @@ theorem safe_lowVertices_card_le (h2 : (2 : K) ≠ 0)
   rw [h𝒜card, habscard] at hbound
   omega
 
+private noncomputable def starPair
+    (a : {a : P K // a ∈ absolutePoints K})
+    (b : {b : {a : P K // a ∈ absolutePoints K} // b ≠ a}) :
+    AbsolutePairs K := by
+  refine ⟨{a.1, b.1.1}, Finset.mem_powersetCard.mpr ⟨?_, ?_⟩⟩
+  · intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact a.2
+    · exact b.1.2
+  · rw [Finset.card_pair]
+    intro h
+    exact b.2 (Subtype.ext h.symm)
+
+private noncomputable def starVertex
+    (a : {a : P K // a ∈ absolutePoints K})
+    (b : {b : {a : P K // a ∈ absolutePoints K} // b ≠ a}) :
+    {v : P K // v ∉ absolutePoints K} :=
+  ⟨pairCommonNeighbor K (starPair K a b), by
+    simpa [mem_absolutePoints] using
+      (pairCommonNeighbor_spec K (starPair K a b)).2.2⟩
+
+private theorem starVertex_low (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K})
+    (b : {b : {a : P K // a ∈ absolutePoints K} // b ≠ a}) :
+    starVertex K a b ∈ oddCoreLowVertices K := by
+  rw [mem_oddCoreLowVertices_iff_secant K h2]
+  exact (pairToSecant K h2 (starPair K a b)).2
+
+private noncomputable def starEmbedding (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    {b : {a : P K // a ∈ absolutePoints K} // b ≠ a} ↪
+      {v : P K // v ∉ absolutePoints K} :=
+  ⟨starVertex K a, fun b c hbc => by
+    have hp : pairToSecant K h2 (starPair K a b) =
+        pairToSecant K h2 (starPair K a c) := by
+      apply Subtype.ext
+      exact congrArg (fun v : {v : P K // v ∉ absolutePoints K} => v.1) hbc
+    have hD := pairToSecant_injective K h2 hp
+    have hsets : ({a.1, b.1.1} : Finset (P K)) = {a.1, c.1.1} :=
+      congrArg Subtype.val hD
+    apply Subtype.ext
+    apply Subtype.ext
+    have hbmem : b.1.1 ∈ ({a.1, c.1.1} : Finset (P K)) := by
+      rw [← hsets]
+      simp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hbmem
+    exact hbmem.resolve_left (fun h => b.2 (Subtype.ext h))⟩
+
+/-- The `q` secant defects whose absolute-neighbor pairs contain `a`. -/
+noncomputable def oddCoreDefectStar (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    Finset {v : P K // v ∉ absolutePoints K} :=
+  Finset.univ.map (starEmbedding K h2 a)
+
+theorem card_oddCoreDefectStar (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    (oddCoreDefectStar K h2 a).card = Nat.card K := by
+  rw [oddCoreDefectStar, Finset.card_map, Finset.card_univ]
+  rw [Fintype.card_subtype_compl (fun b :
+    {a : P K // a ∈ absolutePoints K} => b = a)]
+  simp only [Fintype.card_unique]
+  rw [Fintype.card_coe, card_absolutePoints_eq_card_add_one K]
+  omega
+
+theorem oddCoreDefectStar_subset_low (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    oddCoreDefectStar K h2 a ⊆ oddCoreLowVertices K := by
+  intro v hv
+  rw [oddCoreDefectStar, Finset.mem_map] at hv
+  obtain ⟨b, _, rfl⟩ := hv
+  exact starVertex_low K h2 a b
+
+private theorem starVertex_adj_center (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K})
+    (b : {b : {a : P K // a ∈ absolutePoints K} // b ≠ a}) :
+    (graph K).Adj (starVertex K a b).1 a.1 := by
+  have ha : a.1 ∈ (graph K).neighborFinset
+      (pairCommonNeighbor K (starPair K a b)) ∩ absolutePoints K := by
+    rw [pair_incidence_eq K h2 (starPair K a b)]
+    change a.1 ∈ ({a.1, b.1.1} : Finset (P K))
+    simp
+  simpa [starVertex] using (Finset.mem_inter.mp ha).1
+
+/-- The defect star is a common-neighbor-independent selector in the odd
+core: two of its poles share the deleted center `a`, hence by uniqueness they
+cannot share a surviving neighbor. -/
+theorem oddCoreDefectStar_safe (h2 : (2 : K) ≠ 0)
+    (a : {a : P K // a ∈ absolutePoints K}) :
+    CommonNeighborIndependent (oddCore K) (oddCoreDefectStar K h2 a) := by
+  intro x hx y hy hxy
+  rw [oddCoreDefectStar, Finset.mem_map] at hx hy
+  obtain ⟨b, _, rfl⟩ := hx
+  obtain ⟨c, _, rfl⟩ := hy
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro z hz
+  have hz' := Finset.mem_inter.mp hz
+  have hxz := hz'.1
+  have hyz := hz'.2
+  rw [SimpleGraph.mem_neighborFinset] at hxz hyz
+  change (graph K).Adj (starVertex K a b).1 z.1 at hxz
+  change (graph K).Adj (starVertex K a c).1 z.1 at hyz
+  have hxyval : (starVertex K a b).1 ≠ (starVertex K a c).1 := by
+    intro h
+    apply hxy
+    exact Subtype.ext h
+  have hle := Finset.card_le_one.mp
+    (commonNeighbors_le_one (starVertex K a b).1
+      (starVertex K a c).1 hxyval)
+  have heq := hle a.1
+    (by simp [starVertex_adj_center K h2 a b,
+      starVertex_adj_center K h2 a c]) z.1 (by simp [hxz, hyz])
+  exact z.2 (by
+    rw [← heq]
+    exact a.2)
+
+/-- The EKR upper bound on safe odd defects is sharp. -/
+theorem exists_safe_lowVertices_card_eq (h2 : (2 : K) ≠ 0) :
+    ∃ S : Finset {v : P K // v ∉ absolutePoints K},
+      S ⊆ oddCoreLowVertices K ∧
+      CommonNeighborIndependent (oddCore K) S ∧ S.card = Nat.card K := by
+  have habs : (absolutePoints K).Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty]
+    intro hempty
+    have hc := card_absolutePoints_eq_card_add_one K
+    rw [hempty] at hc
+    simp at hc
+  let a : {a : P K // a ∈ absolutePoints K} := ⟨habs.choose, habs.choose_spec⟩
+  exact ⟨oddCoreDefectStar K h2 a, oddCoreDefectStar_subset_low K h2 a,
+    oddCoreDefectStar_safe K h2 a, card_oddCoreDefectStar K h2 a⟩
+
 /-- The complementary degree class in the deleted-conic odd core. -/
 noncomputable def oddCoreHighVertices :
     Finset {v : P K // v ∉ absolutePoints K} := by
