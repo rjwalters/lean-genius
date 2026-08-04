@@ -76,25 +76,19 @@ not the propositions themselves.
 `exists_isSpanningTree_subset_of_connects`,
 `supportGraph_isTree_of_spanningTree`, `symEdge_injOn_of_spanningTree`.
 
-## Still deferred (later parts of step 4)
+## What follows this part
 
-`reachableIn_inside_of_walk_of_no_crossing`,
-`exists_crossing_tree_edge_of_not_internal_reachable`,
-`rel_of_reachableIn_inside`, `path_edge_ends_rel_start_of_no_crossing`, the
-whole `*_exchange_of_path_edge` family, `refineSetoid_exchange_eq_of_path_internal`,
-`prefixTrees_swap_of_path_edge`, the `residualComponents_swap_*` family,
-`exists_internal_tree_subset`,
-`crossingClass_card_eq_of_spanningTree_of_internal`,
-`quotient_card_sub_one_le_crossingClass_card`,
-`quotient_card_sub_one_le_crossingEdges_card`,
-`satisfiesTreePackingCondition_of_hasTreePacking`,
-`hasSuperfluousEdge_of_condition_of_disconnected`, the
-`exists_*_level_tree_edge_*` family, `finiteLevelValue*`,
-`kaiserPartition_eq_upto_of_min_exchange`, `HasSuperfluousLevel`,
-`minSuperfluousLevel*`, `HasKaiserImprovementStep`,
-`hasKaiserImprovementStep_of_condition`,
-`exists_connected_residual_of_kaiser_step`, `hasTreePacking_of_kaiser_steps`,
-`hasTreePacking_of_condition` and the headline `nashWilliamsTutte`.
+The rest of upstream `CDCLean/NashWilliams.lean` is ported in the two companion
+files landed alongside this one, which — unlike this file — vendor upstream
+proof scripts under the operator's recorded risk acceptance (see their headers):
+
+* `NashWilliams3.lean` — the local-exchange layer (upstream ~1348-2528): walk
+  transport for internal routes, the fundamental-cycle exchange family, the
+  colour-swap effect on the residual class and its component count, and
+  `exists_internal_tree_subset`.
+* `NashWilliams4.lean` — Kaiser's counting equality, necessity of the partition
+  condition, the level/superfluous-edge machinery, Kaiser's improvement step,
+  and the headline `nashWilliamsTutte`.
 
 There are no `sorry`s, no `native_decide`, and no `axiom` declarations here.
 This file does **not** discharge `CycleDoubleCover.cycleDoubleCover_of_bridgeless`;
