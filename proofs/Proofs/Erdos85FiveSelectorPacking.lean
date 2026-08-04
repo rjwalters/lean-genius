@@ -344,4 +344,49 @@ theorem boundedDegreeGadgetAttachment_impossible_of_rank_two_labels
     hinj_two hfiber
     (fun i j hij => hcompat.card_selector_inter_le_one G F A hij)
 
+/-- Abstract pair-pole omission count.  If every unordered pair of selector
+centres can be injected into a point omitted by one of its endpoint
+selectors, then the number of centre pairs is at most the total selector
+deficit.  The geometric work in applications is exactly the construction of
+`route`. -/
+theorem choose_two_le_sum_deficit_of_injective_omission_route
+    {I X C : Type*} [Fintype I] [DecidableEq I]
+    [Fintype X] [DecidableEq X] [Fintype C] [DecidableEq C]
+    (q : ℕ) (S : I → Finset X) (center : I → C)
+    (fiber : C → Finset X) (deficit : I → ℕ)
+    (hsub : ∀ i, S i ⊆ fiber (center i))
+    (hfiber : ∀ c, (fiber c).card ≤ q)
+    (hlarge : ∀ i, q - deficit i ≤ (S i).card)
+    (route :
+      {T : Finset I // T ∈ (Finset.univ : Finset I).powersetCard 2} →
+        Σ i : I, {x : X // x ∈ fiber (center i) \ S i})
+    (hroute : Function.Injective route) :
+    (Fintype.card I).choose 2 ≤ ∑ i : I, deficit i := by
+  classical
+  have hcard_route := Fintype.card_le_of_injective route hroute
+  have hpairs : Fintype.card
+      {T : Finset I // T ∈ (Finset.univ : Finset I).powersetCard 2} =
+      (Fintype.card I).choose 2 := by
+    rw [Fintype.card_coe]
+    simp
+  have htarget : Fintype.card
+      (Σ i : I, {x : X // x ∈ fiber (center i) \ S i}) =
+      ∑ i : I, (fiber (center i) \ S i).card := by
+    rw [Fintype.card_sigma]
+    apply Finset.sum_congr rfl
+    intro i _
+    exact Fintype.card_coe _
+  rw [hpairs, htarget] at hcard_route
+  apply hcard_route.trans
+  apply Finset.sum_le_sum
+  intro i _
+  have hdiff : (fiber (center i) \ S i).card + (S i).card =
+      (fiber (center i)).card := by
+    rw [Finset.card_sdiff_add_card_inter]
+    congr 1
+    exact Finset.inter_eq_right.mpr (hsub i)
+  have hf := hfiber (center i)
+  have hl := hlarge i
+  omega
+
 end Erdos85

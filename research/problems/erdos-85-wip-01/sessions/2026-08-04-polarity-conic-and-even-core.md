@@ -734,6 +734,22 @@ count: star fibres for distinct deleted absolutes meet in distinct pair poles,
 so disjoint hub-neighbour selectors must collectively omit at least one pole
 for every pair of their centres.
 
+The cardinal part of that final double count is now formalized independently
+of the geometry.  If unordered centre pairs inject into omitted points in one
+of their endpoint fibres, and selector `i` omits at most `deficit(i)` points,
+then
+
+```text
+choose(|I|,2) <= sum_i deficit(i).
+```
+
+This is checked as
+`choose_two_le_sum_deficit_of_injective_omission_route`.  What remains is to
+construct the injection from polarity pair poles: the common neighbour of two
+distinct deleted absolutes lies in both star fibres; disjoint selectors omit
+it from at least one endpoint, and the rank-two label bound recovers the
+unordered centre pair from the omitted point.
+
 ## Rigidity of any putative degree-six graph at order 32
 
 The lower bound raises the natural exact-value question `f(32)=6` versus
