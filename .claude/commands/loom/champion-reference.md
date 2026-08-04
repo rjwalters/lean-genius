@@ -14,8 +14,15 @@ This section documents how Champion handles non-standard situations during PR au
 
 **Handling**:
 ```bash
-# gh pr checks returns "no checks reported"
-if echo "$CHECKS" | grep -q "no checks reported"; then
+# With no checks, `gh pr checks --json bucket,name` prints "no checks reported..."
+# to STDERR, exits non-zero, and emits EMPTY stdout. Detect via empty stdout
+# (robust) rather than matching error text. CHECKS captured with 2>/dev/null.
+# NOTE: `printf '%s\n' "$VAR" | jq`, never `echo "$VAR" | jq` — zsh's `echo`
+# builtin reinterprets `\n`/`\t` escapes by default, which corrupts captured
+# `gh --json` output (embedded newlines in body/comment text are represented
+# as literal `\n` inside the JSON string) before jq ever parses it (#5094).
+CHECKS=$(gh pr checks "$PR_NUMBER" --json bucket,name 2>/dev/null)
+if [ -z "$CHECKS" ] || [ "$(printf '%s\n' "$CHECKS" | jq 'length')" = "0" ]; then
   echo "PASS: No CI checks required"
   # Continue to merge
 fi
@@ -33,8 +40,8 @@ fi
 
 **Handling**:
 ```bash
-# Check for pending/running checks
-PENDING=$(echo "$CHECKS" | jq -r '.[] | select(.status == "IN_PROGRESS" or .status == "QUEUED") | .name')
+# Check for pending/running checks (bucket == "pending")
+PENDING=$(printf '%s\n' "$CHECKS" | jq -r '.[] | select(.bucket == "pending") | .name')
 if [ -n "$PENDING" ]; then
   echo "SKIP: CI checks still running - will retry next iteration"
   # Skip this PR, try again later
@@ -68,7 +75,7 @@ fi
 
 **Handling**:
 ```bash
-MERGEABLE=$(gh pr view "$PR_NUMBER" --json mergeable --jq -r '.mergeable')
+MERGEABLE=$(gh pr view "$PR_NUMBER" --json mergeable --jq '.mergeable')
 if [ "$MERGEABLE" != "MERGEABLE" ]; then
   echo "FAIL: Merge conflicts detected"
   # Add comment explaining conflict
@@ -97,11 +104,76 @@ if [ "$HOURS_AGO" -gt 24 ]; then
 fi
 ```
 
-**Decision**: **Skip and comment** - do not merge stale PRs.
+**Decision**: **Comment once, then route out of the queue** - do not merge stale PRs, and do not re-comment every cron tick.
 
 **Rationale**: Main branch may have evolved significantly. Stale PRs should be rebased or re-reviewed.
 
-**Recommended action**: Remove `loom:pr` label on stale PRs, request rebase from Builder.
+**Action** (single authoritative policy — implemented in `champion-pr-merge.md` → "PR Rejection Workflow → Stale PR"): post the stale notice **once**, guarded by an idempotency marker (`<!-- champion:stale-pr-notice -->`) so the 10-minute cron does not spam the PR, and **swap `loom:pr` → `loom:changes-requested`** to route the PR to Doctor for a rebase/refresh. This removes `loom:pr` (unlike the transient-failure path, which keeps it), because a stale PR cannot clear itself and must leave the auto-merge queue. See `champion-pr-merge.md` for the exact commands.
+
+---
+
+### Edge Case 5b: Doctor-Cycle-Capped PR (`loom:blocked` + `loom:changes-requested`)
+
+**Scenario**: A PR exhausted `sweep.max_doctor_cycles` and `/loom:sweep` parked it with **both** `loom:blocked` and `loom:changes-requested`. Nothing else in the pipeline reconsiders that state — the work-finder skips blocked items and Mode C pre-flight skips blocked PRs — so it is terminal for automation until Champion looks at it (#4574).
+
+**Handling**:
+```bash
+# Parked set (gh ANDs repeated --label values). Skip any that also carry
+# loom:operator-only — already routed to a human.
+gh pr list --label "loom:blocked" --label "loom:changes-requested" --state open --limit 500 \
+  --json number,title,labels --jq '.[] | "#\(.number) \(.title)"'
+
+# Decide from the FULL history, not the last comment alone.
+gh pr view "$PR_NUMBER" --comments
+```
+
+**Decision**: **Three-way, on the forward-progress test** — never a default grant.
+
+| Finding in the rejection history | Decision | Action |
+|----------------------------------|----------|--------|
+| Latest rejection names defects demonstrably **distinct** from the prior one (prior fix landed, new defects only reachable because of it), fixable in one bounded cycle, chain still converging | **Grant one more Doctor cycle** | Comment with `<!-- champion:capped-pr-grant -->` naming both rejections and the distinction, then remove **`loom:blocked` only** (leave `loom:changes-requested` — it is what routes the PR to Doctor) |
+| Same defect **re-litigated**, comparison **ambiguous**, only one rejection exists, or the chain is no longer converging | **Keep parked** | Comment the *specific* human judgment needed, guarded by a `<!-- champion:capped-pr-parked:<latest-rejection-comment-id> -->` marker so the 10-minute cron does not re-post per tick; change no labels |
+| The **approach** (not the implementation) is the problem — repeated design rejections, superseded premise | **Recommend closing, route to the operator** | Comment with `<!-- champion:capped-pr-close-recommended -->` and add `loom:operator-only` (keeping `loom:blocked`); **do not close the PR** — Champion routes, the human decides |
+
+**Rationale**: This is the *same* forward-progress mechanism as the sweep's in-sweep distinct-defect grace cycle (`sweep.md` → "Doctor-cycle cap"), applied at a different decision point — periodically, post-mortem, with the complete history rather than the dying sweep's local context. There is **no hard grant cap**: repeat grants are allowed as long as each new rejection shows fresh progress, because the anti-thrash guarantee comes from re-applying the test every round, not from a counter. Nor is there a double-grant path: a PR only reaches `loom:blocked` after the sweep-side single-use exception was consumed or was not applicable.
+
+**Entry guards**: the label pair alone is not proof of a cap block. Skip PRs also carrying `loom:operator-only`, keep parked any PR whose history shows no cap block (fewer than two Judge rejections, no `doctor cycle exhausted` line), and never grant over an explicit human hold (`hold until` / `wait until` / `defer` / `not before` / `do not start` phrasing — the sweep's explicit-hold convention).
+
+**Human vs. parked**: `loom:operator-only` means *the approach needs a human ruling and automation should stop touching this PR*; plain `loom:blocked` + a keep-parked comment means *a human should look, but a future rejection could still change the answer* — Champion re-evaluates that PR when a new Judge rejection lands.
+
+**Action** (single authoritative policy — implemented in `champion-pr-merge.md` → "Capped-PR Recovery Pass"): see that section for the exact commands, the full grant/never-grant criteria, and the rationale comment templates.
+
+---
+
+### Edge Case 5c: Unrevised Proposal Re-Entering the Evaluation Queue Every Cycle (#4954)
+
+**Scenario**: A `loom:curated`/`loom:architect`/`loom:hermit`/`loom:auditor` proposal fails promotion criteria and gets a "NEEDS REVISION" comment, but the author never revises it. Every subsequent Champion pass (cron tick, role-runner tick, or a fresh `/loom:sweep` dispatch) re-discovers the same unchanged issue in its Priority 2/3 listing and, without a guard, re-evaluates it from scratch and posts an equivalent rejection comment — observed live as 6 duplicate "NEEDS REVISION" comments over ~6.5 hours on one proposal, with two of them landing 40 seconds apart because nothing claimed the issue mid-evaluation.
+
+**Handling**: `champion-issue-promo.md`'s "Concurrency Guard and Idempotency (`loom:evaluating`)" section (adapted from this file's own Capped-PR Recovery pattern — `PARK_MARKER`/`CLOSE_MARKER` below — and from Judge's `loom:reviewing` claim/stale-check convention):
+
+```bash
+# Idempotency: skip without commenting if already evaluated at this revision.
+# $BODY_HASH = sha256(title + body), first 16 hex chars — NOT the issue's
+# aggregate updatedAt, which Champion's own comment would bump (see #4966).
+VERDICT_MARKER="<!-- champion:proposal-verdict:body-$BODY_HASH -->"
+
+# Concurrency: claim before evaluating, staleness-aware (LOOM_STALE_EVALUATING_MINUTES, default 15m).
+gh issue edit <number> --add-label "loom:evaluating"
+```
+
+**Decision**:
+
+| Finding | Decision | Action |
+|---------|----------|--------|
+| A prior Champion verdict comment already carries `VERDICT_MARKER` for the issue's **current** title+body hash | **Unrevised since last review — skip** | No comment, no claim, no label change. A genuine title/body edit changes the hash and always produces a fresh marker and a fresh evaluation; comments and label churn do not. |
+| Issue already carries `loom:evaluating` and the claim is younger than `LOOM_STALE_EVALUATING_MINUTES` | **Concurrent evaluation in progress** | Skip, do not stomp the claim; continue the batch. |
+| Issue already carries `loom:evaluating` and the claim is older than `LOOM_STALE_EVALUATING_MINUTES` | **Stale claim — a prior Champion pass likely died mid-evaluation** | Reclaim (`--add-label "loom:evaluating"` again) then evaluate normally. |
+| ≥2 prior "NEEDS REVISION" comments exist and the issue is not already `loom:operator-only` | **N=2 threshold reached** | Escalate instead of posting a third+ near-identical rejection: comment with `<!-- champion:proposal-escalated -->` and add `loom:operator-only` (Champion routes, a human decides — the proposal label stays, nothing is closed). |
+| Fewer than 2 prior rejections | **Ordinary reject** | Post the `VERDICT_MARKER`-tagged "NEEDS REVISION" comment as before, release `loom:evaluating`. |
+
+**Rationale**: This is the *same* idempotency-marker + escalation-marker + operator-routing shape as Edge Case 5b's Capped-PR Recovery Pass, applied to the proposal-evaluation side of Champion instead of the PR-merge side — a marker keyed to the thing whose change would invalidate it (here, the proposal's own title+body text; there, the latest Judge rejection comment ID) stops duplicate comments, and a bounded escalation threshold (here, N=2 identical verdicts; there, the Doctor-cycle cap) converts an infinite silent loop into a single human-visible routing decision.
+
+**Anchor discipline (#4966)**: neither half of this mechanism may key off the issue's aggregate `updatedAt` — Champion's own verdict comment bumps it, so a marker stamped with it can never match on the next pass and the skip never fires. Content staleness anchors on the title+body hash; claim staleness anchors on the `loom:evaluating` label's own `labeled` timeline event. Both are invisible to Champion's own comment writes. This is the same rule `judge.md`/`daemon-reference.md` already apply to `loom:reviewing`/`loom:treating` staleness.
 
 ---
 
@@ -113,19 +185,19 @@ fi
 
 **Decision**: **Allow merge if criteria pass** - test-only changes are safe.
 
-**Rationale**: Size limit (configurable, default 200 lines) and CI checks provide sufficient protection.
+**Rationale**: The merge-risk judgment (criterion #2) and CI checks provide sufficient protection — a test-only diff is green on diff composition and revertability by construction, however many lines it is.
 
 ---
 
-### Edge Case 7: PR with `loom:manual-merge` Added Mid-Evaluation
+### Edge Case 7: PR with `loom:pr` Removed Mid-Evaluation
 
-**Scenario**: Human adds `loom:manual-merge` label while Champion is evaluating the PR.
+**Scenario**: Human removes the `loom:pr` label (or adds `loom:changes-requested`) to hold a PR while Champion is evaluating it.
 
-**Handling**: Label check (#1) runs first, catches override immediately.
+**Handling**: Label check (#1) runs first, catches the missing `loom:pr` immediately.
 
-**Decision**: **Skip immediately** - respect human override.
+**Decision**: **Skip immediately** - a PR without `loom:pr` is not a merge candidate.
 
-**Rationale**: Champion re-fetches labels at start of each evaluation, race condition window is minimal.
+**Rationale**: Champion re-fetches labels at start of each evaluation, so the human hold takes effect on the next evaluation; the race-condition window is minimal.
 
 ---
 
@@ -144,7 +216,7 @@ LINKED_ISSUES=$(forge_pr_close_targets "$PR_NUMBER")
 
 # Verify each issue closed after merge
 for issue in $LINKED_ISSUES; do
-  STATE=$(gh issue view "$issue" --json state --jq -r '.state')
+  STATE=$(gh issue view "$issue" --json state --jq '.state')
   if [ "$STATE" != "CLOSED" ]; then
     echo "Warning: Issue #$issue not auto-closed, closing manually"
     gh issue close "$issue" --comment "Closed by PR #$PR_NUMBER (auto-merged by Champion)"
@@ -164,16 +236,17 @@ done
 
 **Handling**:
 ```bash
-# Any non-SUCCESS conclusion fails the check
-FAILING=$(echo "$CHECKS" | jq -r '.[] | select(.conclusion != "SUCCESS" and .conclusion != null) | .name')
+# A "fail" or "cancel" bucket blocks the merge; "pending" defers; "pass" and
+# "skipping" are acceptable. (gh buckets: pass, fail, pending, skipping, cancel.)
+FAILING=$(printf '%s\n' "$CHECKS" | jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | .name')
 if [ -n "$FAILING" ]; then
   echo "FAIL: Some checks did not pass"
 fi
 ```
 
-**Decision**: **Fail if any check is not SUCCESS** - conservative approach.
+**Decision**: **Fail on any `fail`/`cancel` bucket; defer on `pending`** - conservative but not falsely blocking.
 
-**Rationale**: "Skipped" or "Neutral" conclusions indicate incomplete validation.
+**Rationale**: A `skipping` bucket (a conditionally-skipped job) is not a failure and does not block auto-merge; only `fail`/`cancel` block and `pending` defers.
 
 ---
 
@@ -191,21 +264,47 @@ fi
 
 ---
 
-### Edge Case 11: PR Size Exactly at Limit
+### Edge Case 11: Size and Risk Point in Opposite Directions
 
-**Scenario**: PR has exactly the configured limit of lines changed (e.g., if limit is 200: 100 additions + 100 deletions).
+**Scenario A — large but low-risk**: An 886-line PR that is ~700 lines of new tests plus one self-contained new module, approved by a Judge whose review names the module's functions and what it verified.
 
-**Handling**:
+**Scenario B — small but high-risk**: A 40-line PR that changes the ordering guard in `.loom/scripts/merge-pr.sh` (or a `.loom/hooks/guard-*.sh` hook), approved with a one-line "LGTM".
+
+**Handling**: There is no line-count gate. Criterion #2 (Merge-Risk Judgment) scores each PR on diff composition, blast radius, Judge review depth, and revertability.
+
+**Decision**:
+- **Scenario A: allow merge** — green on all four axes (test-heavy composition, single-module blast radius, specific review, plain `git revert`).
+- **Scenario B: hold for a human** — red on blast radius (merge/guard automation the whole fleet depends on) *and* on review depth (a generic approval), with revertability weak because a bad guard can delete a branch before the revert lands. Comment names that concern, `loom:pr` stays, Champion retries next tick.
+
+**Rationale**: Size was never the risk; it was a proxy that inverted in both directions. The `champion.auto_merge_max_lines` knob that produced this edge case is retired — see the migration note in `champion-pr-merge.md` → "Safety Criteria → 2. Merge-Risk Judgment". `loom:auto-merge-ok` still exists, repurposed: it is an explicit human/Judge override of a Champion merge-risk hold (it does not waive the critical-file check).
+
+---
+
+### Edge Case 11b: Prior Merge-Risk Hold, Later Tick Scores the Same Diff Green
+
+**Scenario**: An earlier Champion tick posted `<!-- champion:merge-risk-hold -->` on a red axis. A later tick re-reads the *same* diff and — axis scoring being a judgment call, not an arithmetic one — scores it green. Nothing external changed: no `loom:auto-merge-ok`, no new push, no new review. (Observed live on PR #4700, 2026-07-31: hold at 04:16Z, merge at 11:21Z, no override label, and no comment of any kind accompanying the merge — the last comment on the PR is still the hold notice. #4742.)
+
+**Handling**: The merge-risk hold is **sticky**. Before scoring the axes, criterion #2 runs a precheck that looks for an existing hold marker and, if found, requires a durable release signal:
+
 ```bash
-SIZE_LIMIT=$(jq -r '.champion.auto_merge_max_lines // 200' .loom/config.json 2>/dev/null || echo 200)
-if [ "$TOTAL" -gt "$SIZE_LIMIT" ]; then  # Strictly greater than
-  echo "FAIL: Too large"
-fi
+# Plain `gh` — merge-gating, so never "$GH_READ".
+PR_JSON=$(gh pr view "$PR_NUMBER" --json comments,commits,labels,headRefOid)
+HOLD_BODY=$(jq -r --arg m "<!-- champion:merge-risk-hold -->" \
+  '[.comments[] | select(.body | contains($m))] | last | .body // ""' <<<"$PR_JSON")
+# Released only by: loom:auto-merge-ok | an explicit operator clearing comment
+# posted after the hold (the instruction must OPEN the comment's leading clause
+# and not be a question — "do not merge anyway" / "is it ok to merge?" do NOT
+# release) | a new head SHA (recorded as `champion:hold-state head=<sha>` in the
+# hold comment) | a new Judge review after the hold.
 ```
 
-**Decision**: **Allow merge** - limit is inclusive (<= configured limit allowed).
+**Decision**: **Hold stands** — skip the PR for this pass whatever the axes say this tick. A green re-read of an unchanged diff is not a release signal, and Champion's own comments never count as one.
 
-**Rationale**: PRs exactly at the limit are still considered acceptable for auto-merge purposes. The limit is configurable via `champion.auto_merge_max_lines` in `.loom/config.json` (default: 200). PRs can also bypass the size limit entirely with the `loom:auto-merge-ok` label.
+**On release, one mandatory comment**: when a release signal *does* exist and the PR merges, the pre-merge comment must carry a `<!-- champion:merge-risk-hold-cleared -->` block naming what released the hold (which override was honored, or which axis flipped and why, citing the new commit/review). The `<!-- champion:merge-risk-hold -->` idempotency guard governs **repeat hold notices only** — it must never suppress a hold-to-merge transition, which is a distinct event that always produces exactly one new comment.
+
+**Rationale**: A hold that a later subjective re-read can silently evaporate is not a hold. Because every fleet agent acts under the operator's forge identity, `mergedBy` cannot distinguish a human override from a Champion tick that scored the axes differently — so the comment is the *only* audit trail, and the anti-spam guard that (correctly) suppresses repeat holds was suppressing precisely the comment that would have explained the reversal.
+
+**Action** (single authoritative policy — implemented in `champion-pr-merge.md` → "Safety Criteria → 2. Merge-Risk Judgment → Sticky holds"): see that section for the precheck, the four outcomes, and the reversal-comment template.
 
 ---
 
@@ -256,10 +355,10 @@ NOTES=$(gh api repos/.../pulls/$PR_NUMBER/comments --jq '...')
 # - Otherwise -> skip (too noisy)
 
 # Stage 5: Duplicate detection
-EXISTING=$(gh issue list --search "Follow-on from PR #$PR_NUMBER")
+EXISTING=$(gh issue list --search "Follow-on from PR #$PR_NUMBER" --limit 500)
 
 # Stage 6: Create issue with proper linking
-gh issue create --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "$LABEL"
+./.loom/scripts/create-issue.sh --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "$LABEL"
 ```
 
 **Decision**: **Create follow-on issue if thresholds met** - captures future work.
@@ -275,9 +374,7 @@ gh issue create --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "
 | Standard TODOs | 3+ | Create consolidated |
 | Below threshold | < 3 TODOs, no sections | Skip |
 
-**Force Mode Behavior**:
-- Normal mode: Create with `loom:curated` label (goes to Champion evaluation)
-- Force mode: Create with `loom:issue` label (goes directly to Builder queue)
+**Follow-on Issue Labeling**: Follow-on issues are created with the `loom:curated` label (goes to Champion evaluation).
 
 **Edge Cases Within Follow-on**:
 
@@ -285,7 +382,6 @@ gh issue create --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "
 2. **TODO without colon**: Pattern requires `TODO:` not just `TODO` to avoid false positives
 3. **Multi-line TODOs**: Only first line captured, truncated at 200 chars
 4. **Duplicate follow-on issue exists**: Search before creation, skip if found
-5. **Force mode with no daemon state file**: Fall back to `loom:curated` label
 
 ---
 
@@ -297,13 +393,19 @@ gh issue create --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "
 | Pending CI checks | Skip | Defer to next iteration |
 | Force-push after approval | Allow | If criteria still pass |
 | Merge conflicts | Fail | Comment and skip |
-| Stale PR (>24h) | Fail | Comment and skip |
+| Stale PR (>24h) | Route to Doctor | Comment once (idempotent marker), swap `loom:pr` → `loom:changes-requested` |
+| Doctor-cycle-capped PR (`loom:blocked` + `loom:changes-requested`) | Three-way on forward progress | Distinct new defects → grant a cycle (remove `loom:blocked` only); same-defect/ambiguous → keep parked with rationale; approach not viable → add `loom:operator-only`, recommend closing (never close it) |
+| Unrevised proposal re-entering the queue every cycle | Idempotency marker + N=2 escalation | Unrevised since last review → skip silently (title+body hash marker match, never `updatedAt`); ≥2 prior rejections → escalate to `loom:operator-only` instead of a 3rd+ duplicate comment; `loom:evaluating` claim prevents concurrent double-evaluation |
 | Test-only changes | Allow | Standard criteria apply |
-| Manual-merge override | Skip | Respect human decision |
+| Human holds PR (removes `loom:pr`) | Skip | Not a merge candidate without `loom:pr` |
 | Multiple linked issues | Allow | Verify all closed |
-| Mixed-state CI | Fail | Require all SUCCESS |
+| Mixed-state CI | Fail on `fail`/`cancel` | `pending` defers; `skipping` is OK |
 | Unknown critical file | Miss | Needs pattern update |
-| Exactly at size limit | Allow | Limit is inclusive |
+| Large but low-risk PR (e.g. mostly tests) | Allow | Judged on the 4 risk axes, not line count |
+| Small but high-blast-radius PR | Hold for human | Comment names the specific concern, keep `loom:pr`, retry next tick |
+| Prior merge-risk hold, later tick scores the same diff green | **Hold stands (sticky)** | Skip silently, post nothing (anti-spam guard already covers it). Release only on `loom:auto-merge-ok`, an explicit operator clearing comment after the hold (leading-clause instruction, not a negation or a question), a new head SHA, or a new Judge review |
+| Prior merge-risk hold released, PR merges | Allow + **mandatory reversal comment** | Pre-merge comment carries `<!-- champion:merge-risk-hold-cleared -->` naming the override honored or the axis that flipped and why; never suppressed by the hold idempotency guard |
+| `loom:auto-merge-ok` present | Allow | Explicit human/Judge override of a merge-risk hold (does not waive critical files); a *previously posted* hold still requires the reversal comment |
 | API rate limit | Error | Comment and continue |
 | Multiple approvals | Allow | Label is source of truth |
 | Follow-on indicators found | Create | If thresholds met |
@@ -312,290 +414,11 @@ gh issue create --title "Follow-on: Work identified in PR #$PR_NUMBER" --label "
 
 ## Complete Auto-Merge Workflow Script
 
-This section provides the full end-to-end implementation integrating all steps.
+**The auto-merge workflow lives in a single source of truth: [`champion-pr-merge.md`](champion-pr-merge.md).**
 
-```bash
-#!/bin/bash
-# Complete Champion PR auto-merge workflow
-# Usage: champion_automerge <pr-number>
+This file previously carried a second, full copy of the end-to-end merge script. That duplicate diverged from `champion-pr-merge.md` over time (it lacked Step 5.5 Follow-on Issue Creation and repeated the same bugs — invalid `gh pr checks --json` fields, etc.), forcing every fix to be applied twice. It has been removed to eliminate the drift (issue #3781).
 
-PR_NUMBER=$1
-
-if [ -z "$PR_NUMBER" ]; then
-  echo "Usage: $0 <pr-number>"
-  exit 1
-fi
-
-echo "========================================="
-echo "Champion Auto-Merge Workflow: PR #$PR_NUMBER"
-echo "========================================="
-echo ""
-
-# ============================================
-# STEP 1: Verify Safety Criteria
-# ============================================
-
-echo "STEP 1/5: Verifying safety criteria..."
-echo ""
-
-# Criterion 1: Label Check
-LABELS=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | tr '\n' ' ')
-if ! echo "$LABELS" | grep -q "loom:pr"; then
-  echo "FAIL: Missing loom:pr label"
-  exit 1
-fi
-if echo "$LABELS" | grep -q "loom:manual-merge"; then
-  echo "SKIP: Has loom:manual-merge label (human override)"
-  exit 1
-fi
-echo "PASS: Label check"
-
-# Criterion 2: Size Check
-FORCE_MODE=$(cat .loom/daemon-state.json 2>/dev/null | jq -r '.force_mode // false')
-PR_DATA=$(gh pr view "$PR_NUMBER" --json additions,deletions)
-ADDITIONS=$(echo "$PR_DATA" | jq -r '.additions')
-DELETIONS=$(echo "$PR_DATA" | jq -r '.deletions')
-TOTAL=$((ADDITIONS + DELETIONS))
-if [ "$FORCE_MODE" != "true" ]; then
-  HAS_AUTO_MERGE_OK=$(gh pr view "$PR_NUMBER" --json labels --jq '[.labels[].name] | any(. == "loom:auto-merge-ok")')
-  if [ "$HAS_AUTO_MERGE_OK" != "true" ]; then
-    SIZE_LIMIT=$(jq -r '.champion.auto_merge_max_lines // 200' .loom/config.json 2>/dev/null || echo 200)
-    if [ "$TOTAL" -gt "$SIZE_LIMIT" ]; then
-      echo "FAIL: Too large ($TOTAL lines, limit is $SIZE_LIMIT)"
-      exit 1
-    fi
-  fi
-fi
-echo "PASS: Size check ($TOTAL lines)"
-
-# Criterion 3: Critical File Exclusion
-if [ "$FORCE_MODE" != "true" ]; then
-  FILES=$(gh pr view "$PR_NUMBER" --json files --jq -r '.files[].path')
-  CRITICAL_PATTERNS=(
-    "Cargo.toml"
-    "loom-daemon/Cargo.toml"
-    "loom-api/Cargo.toml"
-    "package.json"
-    ".github/workflows/"
-    ".sql"
-    "migration"
-  )
-  for file in $FILES; do
-    for pattern in "${CRITICAL_PATTERNS[@]}"; do
-      if [[ "$file" == *"$pattern"* ]]; then
-        echo "FAIL: Critical file modified: $file"
-        exit 1
-      fi
-    done
-  done
-fi
-echo "PASS: No critical files modified"
-
-# Criterion 4: Merge Conflict Check
-MERGEABLE=$(gh pr view "$PR_NUMBER" --json mergeable --jq -r '.mergeable')
-if [ "$MERGEABLE" != "MERGEABLE" ]; then
-  echo "FAIL: Not mergeable (state: $MERGEABLE)"
-  exit 1
-fi
-echo "PASS: No merge conflicts"
-
-# Criterion 5: Recency Check
-UPDATED_AT=$(gh pr view "$PR_NUMBER" --json updatedAt --jq -r '.updatedAt')
-UPDATED_TS=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s 2>/dev/null || \
-             date -d "$UPDATED_AT" +%s 2>/dev/null)
-NOW_TS=$(date +%s)
-HOURS_AGO=$(( (NOW_TS - UPDATED_TS) / 3600 ))
-if [ "$FORCE_MODE" = "true" ]; then
-  RECENCY_LIMIT=72
-else
-  RECENCY_LIMIT=24
-fi
-if [ "$HOURS_AGO" -gt "$RECENCY_LIMIT" ]; then
-  echo "FAIL: Stale PR (updated $HOURS_AGO hours ago)"
-  exit 1
-fi
-echo "PASS: Recently updated ($HOURS_AGO hours ago)"
-
-# Criterion 6: CI Status Check
-CHECKS=$(gh pr checks "$PR_NUMBER" --json name,conclusion,status 2>&1)
-if ! echo "$CHECKS" | grep -q "no checks reported"; then
-  FAILING=$(echo "$CHECKS" | jq -r '.[] | select(.conclusion != "SUCCESS" and .conclusion != null) | .name')
-  PENDING=$(echo "$CHECKS" | jq -r '.[] | select(.status == "IN_PROGRESS" or .status == "QUEUED") | .name')
-  if [ -n "$FAILING" ]; then
-    echo "FAIL: CI checks failing:"
-    echo "$FAILING"
-    exit 1
-  fi
-  if [ -n "$PENDING" ]; then
-    echo "SKIP: CI checks still running:"
-    echo "$PENDING"
-    exit 1
-  fi
-fi
-echo "PASS: All CI checks passing"
-
-echo ""
-echo "All safety criteria passed"
-echo ""
-
-# ============================================
-# STEP 2: Post Pre-Merge Comment
-# ============================================
-
-echo "STEP 2/5: Posting pre-merge comment..."
-echo ""
-
-# Determine CI status text
-if echo "$CHECKS" | grep -q "no checks reported"; then
-  CI_STATUS="No CI checks required"
-else
-  CI_STATUS="All CI checks passing"
-fi
-
-# Post comment
-gh pr comment "$PR_NUMBER" --body "$(cat <<EOF
-**Champion Auto-Merge**
-
-This PR meets all safety criteria for automatic merging:
-
-- Judge approved (\`loom:pr\` label)
-- Size check passed ($TOTAL lines: +$ADDITIONS/-$DELETIONS)
-- No critical files modified
-- No merge conflicts
-- Updated recently ($HOURS_AGO hours ago)
-- $CI_STATUS
-- No manual-merge override
-
-**Proceeding with squash merge...** If this was merged in error, you can revert with:
-\`git revert <commit-sha>\`
-
----
-*Automated by Champion role*
-EOF
-)"
-
-echo "Posted pre-merge comment"
-echo ""
-
-# ============================================
-# STEP 3: Execute Merge
-# ============================================
-
-echo "STEP 3/5: Executing squash merge..."
-echo ""
-
-# Ensure we're on main so .loom/scripts exists (issue #2289)
-git checkout main 2>/dev/null || true
-
-# Use merge-pr.sh for worktree-safe merge via GitHub API
-./.loom/scripts/merge-pr.sh "$PR_NUMBER" --auto || {
-  echo "Merge failed!"
-  exit 1
-}
-echo "Successfully merged PR #$PR_NUMBER"
-echo ""
-
-# ============================================
-# STEP 4: Verify Issue Closure
-# ============================================
-
-echo "STEP 4/5: Verifying linked issue closure..."
-echo ""
-
-# Use GitHub's own parser via closingIssuesReferences (see issue #3267).
-# Correctly excludes `Updates #N` and substring traps like `Discloses #N`.
-source "$(git rev-parse --show-toplevel)/.loom/scripts/lib/forge-helpers.sh"
-forge_detect
-LINKED_ISSUES=$(forge_pr_close_targets "$PR_NUMBER")
-
-if [ -z "$LINKED_ISSUES" ]; then
-  echo "No linked issues found - skipping closure verification"
-else
-  echo "Found linked issues: $LINKED_ISSUES"
-  for issue in $LINKED_ISSUES; do
-    echo "Checking issue #$issue..."
-    ISSUE_STATE=$(gh issue view "$issue" --json state --jq -r '.state' 2>&1)
-    if [ "$ISSUE_STATE" = "CLOSED" ]; then
-      echo "Issue #$issue is closed"
-    else
-      echo "Issue #$issue still open - closing manually..."
-      gh issue close "$issue" --comment "Closed by PR #$PR_NUMBER (auto-merged by Champion)"
-      echo "Manually closed issue #$issue"
-    fi
-  done
-fi
-
-echo ""
-
-# ============================================
-# STEP 5: Unblock Dependent Issues
-# ============================================
-
-echo "STEP 5/5: Checking for dependent issues to unblock..."
-echo ""
-
-for closed_issue in $LINKED_ISSUES; do
-  echo "Checking for issues blocked by #$closed_issue..."
-  BLOCKED_ISSUES=$(gh issue list --label "loom:blocked" --state open --json number,body --jq ".[] | select(.body | test(\"(Blocked by|Depends on|Requires) #$closed_issue\"; \"i\")) | .number")
-
-  if [ -z "$BLOCKED_ISSUES" ]; then
-    echo "  No issues found blocked by #$closed_issue"
-    continue
-  fi
-
-  for blocked in $BLOCKED_ISSUES; do
-    echo "  Checking if #$blocked can be unblocked..."
-    BLOCKED_BODY=$(gh issue view "$blocked" --json body --jq -r '.body')
-    ALL_DEPS=$(echo "$BLOCKED_BODY" | grep -Eo "(Blocked by|Depends on|Requires) #[0-9]+" | grep -Eo "[0-9]+" | sort -u)
-
-    ALL_RESOLVED=true
-    for dep in $ALL_DEPS; do
-      DEP_STATE=$(gh issue view "$dep" --json state --jq -r '.state' 2>/dev/null)
-      if [ "$DEP_STATE" != "CLOSED" ]; then
-        echo "    Still blocked: dependency #$dep is still open"
-        ALL_RESOLVED=false
-        break
-      fi
-    done
-
-    if [ "$ALL_RESOLVED" = true ]; then
-      echo "    All dependencies resolved - unblocking #$blocked"
-      gh issue edit "$blocked" --remove-label "loom:blocked" --add-label "loom:issue"
-      gh issue comment "$blocked" --body "**Unblocked** by merge of PR #$PR_NUMBER (resolved #$closed_issue)
-
-All dependencies are now resolved. This issue is ready for implementation.
-
----
-*Automated by Champion role*"
-      echo "    Unblocked issue #$blocked"
-    fi
-  done
-done
-
-echo ""
-echo "========================================="
-echo "Champion auto-merge complete!"
-echo "========================================="
-echo ""
-echo "Summary:"
-echo "- PR #$PR_NUMBER: Merged successfully"
-echo "- Lines changed: $TOTAL (+$ADDITIONS/-$DELETIONS)"
-echo "- Linked issues: ${LINKED_ISSUES:-none}"
-echo ""
-exit 0
-```
-
-**Usage**:
-
-```bash
-# Auto-merge a single PR
-./champion_automerge.sh 123
-
-# Use in Champion iteration loop
-for pr in $(gh pr list --label="loom:pr" --json number --jq '.[].number' | head -3); do
-  ./champion_automerge.sh "$pr" || echo "Failed to merge PR #$pr, continuing..."
-done
-```
+For the authoritative, end-to-end implementation — the Verdict-State Janitor (run before all else, resolves a contradictory `loom:pr` + `loom:changes-requested` state fail-safe, #4570), the 6 safety criteria, the pre-merge comment, the squash merge via `merge-pr.sh`, linked-issue closure verification, dependent-issue unblocking, and Step 5.5 Follow-on Issue Creation — see **`champion-pr-merge.md`**. The edge cases and decision matrix above remain here as the reference for non-standard situations; they describe *behavior*, and defer to `champion-pr-merge.md` for the *script*.
 
 ---
 
@@ -614,7 +437,9 @@ done
 - Manual close may be needed for cross-repo references
 
 **Blocked issues not unblocking**
-- Verify dependency format: "Blocked by #123" or "Depends on #123"
+- Verify dependency format: "Blocked by #123" or "Depends on #123" — markdown
+  emphasis and an optional colon before `#N` are also tolerated, e.g.
+  "**Blocked by:** #123 (reason)" or "_Depends on_ #123" (#4508)
 - Check if all dependencies are truly closed
 - Manual unblock may be needed for complex dependency patterns
 
@@ -632,11 +457,8 @@ gh pr view <number> --json state,mergeable,statusCheckRollup
 # View linked issues (uses GitHub's authoritative parser; `Updates #N` is excluded)
 gh pr view <number> --json closingIssuesReferences --jq '.closingIssuesReferences[].number'
 
-# Check daemon state
-cat .loom/daemon-state.json | jq '.force_mode'
-
 # List blocked issues
-gh issue list --label "loom:blocked" --state open
+gh issue list --label "loom:blocked" --state open --limit 500
 
 # Check API rate limit
 gh api rate_limit

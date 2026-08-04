@@ -123,6 +123,7 @@ __pycache__/
 # Loom runtime state (don't commit these)
 .loom-in-use
 .loom-checkpoint
+.no-changes-needed
 .loom/.daemon.pid
 .loom/.daemon.log
 .loom/daemon.sock
@@ -130,9 +131,12 @@ __pycache__/
 .loom/daemon-metrics.json
 .loom/loom-source-path
 .loom/spawn-loop-state.json
+.loom/spawn-loop.pid
+.loom/stop-spawn-loop
 .loom/issue-failures.json
 .loom/interventions/
 .loom/worktrees/
+.loom/worktrees-local/
 .loom/state.json
 .loom/mcp-command.json
 .loom/activity.db
@@ -140,6 +144,8 @@ __pycache__/
 .loom/signals/
 .loom/status/
 .loom/retry-state/
+.loom/sweep-run/
+.loom/stats/
 .loom/diagnostics/
 .loom/guide-docs-state.json
 .loom/metrics_state.json
@@ -148,8 +154,13 @@ __pycache__/
 .loom/metrics/
 .loom/usage-cache.json
 .loom/claude-config/
+.loom/account-health.json
+.loom/account-health.lock
+.loom/CANARY
 .loom/*.log
 .loom/*.sock
+.loom/*.tmp
+.loom/*.bak
 .loom/logs/
 # <<< loom-managed <<<
 

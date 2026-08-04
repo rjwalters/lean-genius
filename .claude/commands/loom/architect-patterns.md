@@ -85,21 +85,18 @@ Briefly document other options you evaluated and why they were ruled out:
 ## Issue Creation Command
 
 ```bash
-# Create proposal issue
-gh issue create --title "..." --body "$(cat <<'EOF'
+# Create proposal issue with ALL labels applied ATOMICALLY (#5047) — a
+# follow-up `gh issue edit --add-label` doubles the request count and can
+# half-fail, leaving an unlabelled issue no queue query finds. Choose the
+# tier label that matches goal alignment.
+./.loom/scripts/create-issue.sh --title "..." \
+  --label "loom:architect" \
+  --label "tier:goal-advancing" \
+  --body "$(cat <<'EOF'
 [issue content here]
 EOF
 )"
-
-# Add proposal label (blue badge - awaiting user approval)
-gh issue edit <number> --add-label "loom:architect"
-
-# Add tier label based on goal alignment
-gh issue edit <number> --add-label "tier:goal-advancing"     # Tier 1
-# OR
-gh issue edit <number> --add-label "tier:goal-supporting"    # Tier 2
-# OR
-gh issue edit <number> --add-label "tier:maintenance"        # Tier 3
+# tier label above is one of: tier:goal-advancing | tier:goal-supporting | tier:maintenance
 ```
 
 ---
@@ -250,14 +247,13 @@ How do we know this epic is complete?
 ### Creating an Epic
 
 ```bash
-# Create epic issue
-gh issue create --title "Epic: [Title]" --body "$(cat <<'EOF'
+# Create epic issue, with its label (NOT loom:architect) applied atomically
+./.loom/scripts/create-issue.sh --title "Epic: [Title]" \
+  --label "loom:epic" \
+  --body "$(cat <<'EOF'
 [epic content using template above]
 EOF
 )"
-
-# Add epic label (NOT loom:architect)
-gh issue edit <number> --add-label "loom:epic"
 ```
 
 **Important**: Use `loom:epic` label, not `loom:architect`. Epics follow a different approval workflow.
@@ -418,6 +414,14 @@ This issue requires the users table from Phase 1.
 ---
 
 ## Goal Discovery Script
+
+> **Why this script is duplicated across role files (intentional).** The
+> `discover_project_goals()` and `check_backlog_balance()` snippets here also
+> appear in `hermit-patterns.md` and (a trimmed variant) in `guide.md`. This is
+> deliberate **per-role prompt isolation**: each role agent loads only its own
+> prompt-file family at runtime, and there is no shared file an agent can
+> `source`, so a cross-file pointer would break role self-containment. Keep each
+> copy standalone; if you change the goal-discovery logic, update all three.
 
 Full script for discovering project goals:
 

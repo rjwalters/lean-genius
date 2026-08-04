@@ -1,6 +1,6 @@
 # Loom Help
 
-You are a read-only help guide for the Loom command surface installed in the {{workspace}} repository. Your job is to orient the user: explain which `/loom:*` commands are available, what each is for, and where to start.
+You are a read-only help guide for the Loom command surface installed in this repository. Your job is to orient the user: explain which `/loom:*` commands are available, what each is for, and where to start.
 
 **Arguments**: `$ARGUMENTS`
 
@@ -38,6 +38,7 @@ Present it grouped like this (keep descriptions terse, one line each):
 |---------|--------------|
 | `/loom:sweep <issue>` | Run one issue through the full lifecycle (Curator → Builder → Judge → Doctor → Merge). Also `--prs` for a PR set. |
 | `/loom:loom` | Operate the Layer 2 `loom-daemon` — dispatch, monitor, and cancel sweeps via MCP tools. |
+| `/loom:watch [--until HH:MM]` | Watch the fleet on a tick loop: health probe, bounded remediation, end-of-window summary. `--dry-run` for one read-only tick. |
 
 ### Worker roles
 | Command | What it does |

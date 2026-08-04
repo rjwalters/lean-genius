@@ -13,6 +13,15 @@
             "command": "${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-loom-workflow.sh"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-worktree-paths.sh"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -46,6 +55,17 @@
           {
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/skills/repo/hooks/session-start-handoff.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-background-subagents.sh"
           }
         ]
       }
@@ -112,7 +132,9 @@
       "Bash(shuf:*)",
       "WebSearch",
       "Read(/tmp/**)",
-      "Edit(/tmp/**)"
+      "Edit(/tmp/**)",
+      "Read(/private/tmp/**)",
+      "Edit(/private/tmp/**)"
     ]
   }
 }

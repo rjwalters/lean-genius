@@ -181,9 +181,7 @@ Thumbs.db
 # Loom runtime state (don't commit these)
 .loom-in-use
 .loom/state.json
-.loom/daemon-state.json
-.loom/[0-9][0-9]-daemon-state.json
-.loom/daemon-metrics.json
+.loom/sweep-checkpoint/
 .loom/health-metrics.json
 .loom/stuck-history.json
 .loom/alerts.json
@@ -238,7 +236,7 @@ Install Loom into the new repository:
 sleep 2
 
 # Find and merge the installation PR
-PR_NUMBER=$(gh pr list --label "loom:review-requested" --json number --jq '.[0].number')
+PR_NUMBER=$(gh pr list --label "loom:review-requested" --limit 500 --json number --jq '.[0].number')
 
 if [ -n "$PR_NUMBER" ]; then
   echo "Merging Loom installation PR #$PR_NUMBER..."
@@ -284,11 +282,12 @@ Target: Core scaffolding, build setup, and initial feature implementation
 
 ## Development
 
-This project is developed using Loom orchestration. To start autonomous development:
+This project is developed using Loom orchestration. To run the full
+Curator → Builder → Judge → Doctor → Merge lifecycle on a ready issue:
 
 \`\`\`bash
 cd {{PROJECT_NAME}}
-/loom  # Start the Loom daemon
+/loom:sweep <issue>   # Drive one issue from curation to merge
 \`\`\`
 
 ## License
@@ -323,7 +322,7 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 ## In Progress
 
-Issues actively being worked by shepherds (`loom:building`).
+Issues actively being worked (`loom:building`).
 
 *No issues currently being built.*
 
@@ -391,14 +390,14 @@ git push origin main
 
 ## Phase 7: Seed GitHub Issues
 
-Create 3-5 GitHub issues from the user's feature list so `/loom` has work ready immediately. Shepherds can start building without waiting for Architect proposals or manual issue creation.
+Create 3-5 GitHub issues from the user's feature list so `/loom:sweep` has work ready immediately. Builders can start on them without waiting for Architect proposals or manual issue creation.
 
 ```bash
 # Create issues from the discovery phase features
-# Each issue gets the loom:issue label so shepherds can claim them
+# Each issue gets the loom:issue label so builders can claim them
 
 # Issue 1: Project scaffolding (always included)
-gh issue create \
+./.loom/scripts/create-issue.sh \
   --title "Project scaffolding and build setup" \
   --label "loom:issue" \
   --label "tier:goal-advancing" \
@@ -416,7 +415,7 @@ BODY
 )"
 
 # Issue 2: Core component (always included)
-gh issue create \
+./.loom/scripts/create-issue.sh \
   --title "Core {{CORE_COMPONENT}} implementation" \
   --label "loom:issue" \
   --label "tier:goal-advancing" \
@@ -432,19 +431,19 @@ BODY
 )"
 
 # Issues 3-5: User-requested features
-gh issue create \
+./.loom/scripts/create-issue.sh \
   --title "{{FEATURE_1}}" \
   --label "loom:issue" \
   --label "tier:goal-advancing" \
   --body "## Summary\n\n{{FEATURE_1_DESCRIPTION}}\n\n## Acceptance Criteria\n\n- [ ] Feature implemented\n- [ ] Tests passing"
 
-gh issue create \
+./.loom/scripts/create-issue.sh \
   --title "{{FEATURE_2}}" \
   --label "loom:issue" \
   --label "tier:goal-supporting" \
   --body "## Summary\n\n{{FEATURE_2_DESCRIPTION}}\n\n## Acceptance Criteria\n\n- [ ] Feature implemented\n- [ ] Tests passing"
 
-gh issue create \
+./.loom/scripts/create-issue.sh \
   --title "{{FEATURE_3}}" \
   --label "loom:issue" \
   --label "tier:goal-supporting" \
@@ -470,7 +469,7 @@ Provide a clear summary and next steps:
 - README.md with project vision and milestone markers
 - WORK_PLAN.md with seeded backlog for Guide
 - WORK_LOG.md with bootstrapping entry
-- {{ISSUE_COUNT}} GitHub issues with `loom:issue` labels, ready for shepherds
+- {{ISSUE_COUNT}} GitHub issues with `loom:issue` labels, ready to build
 
 ### Next steps:
 
@@ -480,16 +479,18 @@ Provide a clear summary and next steps:
    claude
    \`\`\`
 
-2. In the new session, start autonomous development:
+2. In the new session, run the full lifecycle on a seeded issue:
    \`\`\`bash
-   /loom
+   /loom:sweep <issue>
    \`\`\`
 
-   The daemon will immediately find your seeded issues and start building.
+   Sweep drives that issue through Curator → Builder → Judge → Doctor → Merge.
+   Repeat for each seeded issue (or dispatch several via
+   `mcp__loom__dispatch_sweep` against a running `loom-daemon`).
 
 > **Important**: You must open a **new** Claude Code session in the project
-> directory. Running `/loom` from this session (the Loom source repo) will
-> not work — the daemon needs to run from within your new project.
+> directory. Running `/loom:sweep` from this session (the Loom source repo)
+> will not work — sweep operates on the repository it is launched from.
 
 Happy building! Your AI development team is ready.
 ```
@@ -600,7 +601,7 @@ Creating project...
 Open a new Claude Code session to start:
   cd ../dotweave
   claude
-  /loom
+  /loom:sweep <issue>
 ```
 
 ## Terminal Probe Protocol
