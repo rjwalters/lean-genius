@@ -151,6 +151,60 @@ function scanLeanFiles(): Map<string, string> {
 }
 
 /**
+ * Blank out Lean comments while preserving line structure.
+ *
+ * Removes nested `/- ... -/` block comments (including `/-!` doc blocks) and
+ * `--`-to-EOL line comments, replacing their characters with spaces so that
+ * line count and per-line column anchors are preserved. This prevents `sorry`,
+ * `axiom`, etc. mentioned inside comments from being counted as real
+ * declarations (see issue #43651: Sqrt2MinpolyOQ03.lean has 0 real sorries but
+ * 4 `\bsorry\b` hits, all in comments).
+ */
+function stripLeanComments(content: string): string {
+  let result = ''
+  let i = 0
+  let blockDepth = 0
+  const n = content.length
+  while (i < n) {
+    const two = content.substr(i, 2)
+    if (blockDepth === 0) {
+      if (two === '--') {
+        // Line comment: blank to end of line, preserving the newline.
+        while (i < n && content[i] !== '\n') {
+          result += ' '
+          i++
+        }
+        continue
+      }
+      if (two === '/-') {
+        blockDepth++
+        result += '  '
+        i += 2
+        continue
+      }
+      result += content[i]
+      i++
+    } else {
+      if (two === '/-') {
+        blockDepth++
+        result += '  '
+        i += 2
+        continue
+      }
+      if (two === '-/') {
+        blockDepth--
+        result += '  '
+        i += 2
+        continue
+      }
+      result += content[i] === '\n' ? '\n' : ' '
+      i++
+    }
+  }
+  return result
+}
+
+/**
  * Extract metadata from a Lean file.
  */
 function extractLeanMetadata(filePath: string): LeanFileInfo {
@@ -164,7 +218,12 @@ function extractLeanMetadata(filePath: string): LeanFileInfo {
   let defCount = 0
   let sorryCount = 0
 
-  for (const line of lines) {
+  // Count declarations over a comment-stripped copy so that `sorry`/`axiom`
+  // mentioned only in comments are not counted (issue #43651). Line structure
+  // is preserved, so `lineCount` (from `lines`) and column anchors are intact.
+  const codeLines = stripLeanComments(content).split('\n')
+
+  for (const line of codeLines) {
     if (/^(theorem|lemma) /.test(line)) {
       theoremCount++
     }
