@@ -730,3 +730,24 @@ formalize the transport from an arbitrary `(16,6,2,2)` signing to the
 normalized Boolean matrices (finite relabeling, the local degree-two
 dichotomy, and sign switching).  Thus `f(32)=6` is extremely close but is not
 yet claimed here.
+
+That transport has now been completed.  A second, much smaller verified SAT
+lemma proves that every loopless symmetric 2-regular triangle-free graph on
+six vertices has a cyclic ordering.  Applied to a quotient neighborhood, a
+triangle gives the already-impossible `K₄` case; otherwise the local graph is
+a six-cycle.  The seven named vertices (center plus cycle) are extended to a
+global `Fin 16` labeling by a finite permutation.  The abstract signing is
+converted entry-for-entry to Boolean matrices, and a vertex-switching gauge
+is proved to preserve negative path parity while zeroing the zeroth sign row.
+
+Consequently Lean now proves
+
+```text
+noNegativeSigning1622 : NoNegativeSigning1622
+minDegreeForC4_thirtytwo_eq_six : minDegreeForC4 32 = 6
+```
+
+This **does** close the exact order-32 subproblem and gives the verified
+monotonicity step `f(31) ≤ f(32)`.  It does not solve the full eventual
+monotonicity problem Erdős 85; the general repair/extension theorem remains
+open.

@@ -39,7 +39,8 @@ theorem hasSixCycleNeighborhood_of_srg1622_of_not_hasK4
   have eAdj (i : Fin 6) : H.Adj x (e i : V) := by
     have hp := (e i).property
     change (e i : V) ∈ H.neighborFinset x at hp
-    simpa using hp
+    rw [SimpleGraph.mem_neighborFinset] at hp
+    exact hp
   let r : Fin 6 → Fin 6 → Bool := fun i j => decide (H.Adj (e i) (e j))
   have hr : BoolLocalTwoRegularTriangleFree r := by
     refine ⟨?_, ?_, ?_, ?_⟩
@@ -61,7 +62,11 @@ theorem hasSixCycleNeighborhood_of_srg1622_of_not_hasK4
             rw [Finset.mem_filter] at hj
             have hjadj : H.Adj (e i : V) (e j : V) := by
               simpa [r] using hj.2
-            exact Finset.mem_inter.mpr ⟨by simpa using eAdj j, by simpa using hjadj⟩
+            exact Finset.mem_inter.mpr ⟨by
+              rw [SimpleGraph.mem_neighborFinset]
+              exact eAdj j, by
+              rw [SimpleGraph.mem_neighborFinset]
+              exact hjadj⟩
           · intro a ha b hb hab
             exact e.injective (Subtype.ext hab)
           · intro z hz
