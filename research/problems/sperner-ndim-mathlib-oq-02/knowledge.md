@@ -1354,3 +1354,47 @@ the final assembly of `sperner_panchromatic_two`.
    generalization (base + permutation cells, pseudomanifold scales linearly).
 2. The gallery entry meta for sperner-ndim-mathlib-oq-02 is unchanged
    (its leanFile is the OQ02 file, axiom count still 1 — correct).
+
+## Session 2026-08-03 (researcher-3, S35) — general-n Kuhn PREP layer opened
+
+New self-contained file `proofs/Proofs/SpernerFreudenthalNDim.lean` (~230 lines,
+`import Mathlib` only, 0 axioms / 0 sorries, host-verified v4.31: `lake env lean`
+exit 0, `#print axioms` = standard trio on all main theorems).
+
+**Frame.** Monotone partial-sum coordinates: `N·Δⁿ ≅ K = {0 ≤ z₁ ≤ … ≤ zₙ ≤ N}`.
+The general-n triangulation is the restriction of the Kuhn/Freudenthal cube
+triangulation: cells `(b, σ)` with vertex chain `w₀ = b`, `w_{i+1} = w_i + e_{σ i}`
+(`kuhnVertex`), valid iff all `n+1` vertices lie in `K` (`IsKuhnCell`). This
+subsumes the proven n=2 Type-1/Type-2 construction and completely avoids the
+broken constant-miss FreudCell route (Sessions 8–9).
+
+**Main theorem `isKuhnCell_iff`.** Cell validity collapses to a condition on the
+base alone (`BaseCompatible`): `b j + 1 ≤ N` for every column, and for `j < k`
+weak monotonicity `b j ≤ b k`, strict exactly when `σ⁻¹ j < σ⁻¹ k` (increments
+arriving in order force a strict gap). Both directions proved. Consistency: for
+n=2 this yields weakly monotone bases for the inverted permutation and strictly
+monotone bases for `id` — i.e. `C(N+1,2) + C(N,2) = N²` cells, exactly the
+Type-1/Type-2 count of the proven planar development.
+
+**Supporting lemmas.** `kuhnVertex_zero/_last` (chain endpoints), `_succ_apply`
+(one increment per step, in column `σ i`), `_mono` (coordinatewise weak growth),
+`_sum` (coordinate sum of `w_i` = base sum + `i`, via `Equiv.sum_comp`
+reindexing), `_injective` (the n+1 vertices are pairwise distinct — the level
+function the pseudomanifold argument will key on), `IsKuhnCell.base_isGridPt`.
+
+**Also fixed**: stale top-level tracker `status: "blocked"` (S30b relic from
+2026-05-12; obsolete since the v4.31 migration repaired the parent, confirmed
+S33/S34) → `active`.
+
+**Next rungs (in order):** (1) face/adjacency pivot rules — interior facet
+shared by exactly two cells: permutation-swap pivots for interior vertex drops,
+base-shift pivots at chain ends, reflection at the boundary of the monotone
+region; (2) optional `#cells = Nⁿ` sanity count; (3) `AbstractSimplicialData`
+instance + pseudomanifold; (4) Sperner parity + diameter bound; (5) eliminate
+the general-n `sperner_panchromatic` axiom in `SpernerNDimMathlibOQ02.lean`.
+Rung (1) is the next session-sized target.
+
+Lean gotchas this session: `Fin.coe_castSucc` deprecated → `Fin.val_castSucc`;
+after `simp only [..., Equiv.symm_apply_apply]` a `σ i = σ i` if-condition is
+already `True` (use `simp`, not `if_pos rfl`); `Fin.val_mk` unnecessary — simp
+proj-reduction handles `(⟨a, h⟩ : Fin m).val`.
