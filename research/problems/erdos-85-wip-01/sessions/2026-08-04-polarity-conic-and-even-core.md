@@ -1293,3 +1293,16 @@ for some `k`.  Thus any remaining even first-order counterexample lies in
 the thin degree family `d=2+2^k`; the missing characteristic-polynomial
 step should further force `k` even and then the trace multiplicity should
 force `k=2`, i.e. `d=6`.
+
+The exact small-order results have also been transported from `Fin n` to
+arbitrary finite vertex types.  They exclude `d=4` (order 14) and `d=6`
+(order 32) directly.  Together with parity, Lean therefore sharpens the
+surviving family to
+
+```text
+d = 2 + 2^k,    k ≥ 3.
+```
+
+In particular, once the quotient characteristic-polynomial argument forces
+`k` even and its trace forces `k≤2`, the contradiction will close without
+any further finite computation.

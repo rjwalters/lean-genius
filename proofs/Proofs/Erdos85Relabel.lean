@@ -42,4 +42,21 @@ theorem c4FreeMinDegreeWitness_of_card_eq {V : Type*} [Fintype V]
   · intro hC4
     exact hfree ((containsC4_iff_of_iso e).mpr hC4)
 
+/-- Transport a universal finite-order `C₄` theorem from `Fin n` to an
+arbitrary finite vertex type of cardinality `n`. -/
+theorem containsC4_of_card_eq_of_fin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {n d : ℕ}
+    (hcard : Fintype.card V = n) (hmin : d ≤ G.minDegree)
+    (hfin : ∀ (H : SimpleGraph (Fin n)), [DecidableRel H.Adj] →
+      d ≤ H.minDegree → containsC4 (Fin n) H) :
+    containsC4 V G := by
+  classical
+  let H : SimpleGraph (Fin n) := G.overFin hcard
+  let e : G ≃g H := G.overFinIso hcard
+  letI : DecidableRel H.Adj := Classical.decRel H.Adj
+  have hminH : d ≤ H.minDegree := by
+    simpa [e] using hmin.trans_eq e.minDegree_eq
+  exact (containsC4_iff_of_iso e).mpr (hfin H hminH)
+
 end Erdos85

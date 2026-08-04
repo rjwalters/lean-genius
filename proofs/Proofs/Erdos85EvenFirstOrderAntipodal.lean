@@ -1,4 +1,8 @@
 import Proofs.Erdos85OddFirstOrderSpectral
+import Proofs.Erdos85Relabel
+import Proofs.Erdos85Problem14
+import Proofs.Erdos85ThirtyTwoQuotient
+import Proofs.Erdos85FiniteSigningClosure
 
 /-!
 # The antipodal matching in the even first-order template
@@ -513,5 +517,57 @@ theorem sub_two_eq_two_pow_of_firstOrder_even
   intro p hp hpdiv
   exact prime_eq_two_of_dvd_sub_two_of_firstOrder_even
     G hfree hd hdeven hmin hcard hp hpdiv
+
+/-- The first two power-of-two candidates, `d=4` and `d=6`, are already
+excluded by the exact computations at orders 14 and 32. -/
+theorem degree_ne_four_and_ne_six_of_firstOrder_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    d ≠ 4 ∧ d ≠ 6 := by
+  constructor
+  · intro hd4
+    subst d
+    have hc : containsC4 V G := containsC4_of_card_eq_of_fin G
+      (by norm_num at hcard ⊢; exact hcard) hmin
+      (fun H _ hH => containsC4_of_fourteen_minDegree_four H hH)
+    exact hfree hc
+  · intro hd6
+    subst d
+    have hc : containsC4 V G := containsC4_of_card_eq_of_fin G
+      (by norm_num at hcard ⊢; exact hcard) hmin
+      (fun H _ hH =>
+        containsC4_of_thirtytwo_minDegree_six_of_noNegativeSigning
+          noNegativeSigning1622 H hH)
+    exact hfree hc
+
+/-- Combining modular rigidity with the exact small orders, every surviving
+even first-order candidate has degree `2+2^k` with `k≥3`. -/
+theorem exists_large_power_degree_of_firstOrder_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hdeven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 2) :
+    ∃ k : ℕ, 3 ≤ k ∧ d = 2 + 2 ^ k := by
+  obtain ⟨k, hk⟩ := sub_two_eq_two_pow_of_firstOrder_even
+    G hfree hd hdeven hmin hcard
+  have hsmall := degree_ne_four_and_ne_six_of_firstOrder_even
+    G hfree hmin hcard
+  have hdk : d = 2 + 2 ^ k := by omega
+  refine ⟨k, ?_, hdk⟩
+  by_contra hnot
+  have hk_le : k ≤ 2 := by omega
+  interval_cases k
+  · norm_num at hdk
+    subst d
+    norm_num [Nat.even_iff] at hdeven
+  · norm_num at hdk
+    exact hsmall.1 hdk
+  · norm_num at hdk
+    exact hsmall.2 hdk
 
 end Erdos85
