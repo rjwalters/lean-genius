@@ -82,4 +82,40 @@ theorem deletedNeighborhood_subset_union_of_regular_budget
       rw [degree_induce_delete_eq, hreg]
       simp [hvx]) (hbudget v)
 
+/-- No deleted-neighborhood vertex in `S` can be adjacent to a
+deleted-neighborhood vertex in `T`: both endpoints would have positive loss,
+contradicting the one-exception bound. -/
+theorem not_adj_between_deleted_cross_parts_of_regular_budget
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    (S T : Finset {y : V // y ≠ x}) {d : ℕ}
+    (hd : 1 ≤ d) (hreg : ∀ v, G.degree v = d)
+    (hbudget : ∀ v : {y : V // y ≠ x},
+      d + crossEdgeLoss (G.induce {y | y ≠ x}) S T v ≤
+        (G.induce {y | y ≠ x}).degree v +
+          (if v ∈ S then 1 else 0) + (if v ∈ T then 1 else 0))
+    (hinter : (S ∩ T).card ≤ 1)
+    {a b : {y : V // y ≠ x}}
+    (haN : a ∈ deletedNeighborhood G x)
+    (hbN : b ∈ deletedNeighborhood G x)
+    (haS : a ∈ S) (hbT : b ∈ T) :
+    ¬ (G.induce {y | y ≠ x}).Adj a b := by
+  intro hab
+  have hcard := card_damagedDeletedNeighborhood_le_one_of_regular_budget
+    G x S T hd hreg hbudget hinter
+  have haLoss : 1 ≤ crossEdgeLoss (G.induce {y | y ≠ x}) S T a :=
+    one_le_crossEdgeLoss_of_adj_of_pair_mem _ S T hab
+      ((pair_mem_crossEdgeSet_iff S T a b).mpr (Or.inl ⟨haS, hbT⟩))
+  have hbLoss : 1 ≤ crossEdgeLoss (G.induce {y | y ≠ x}) S T b :=
+    one_le_crossEdgeLoss_of_adj_of_pair_mem _ S T hab.symm
+      ((pair_mem_crossEdgeSet_iff S T b a).mpr (Or.inr ⟨hbT, haS⟩))
+  have ha : a ∈ damagedDeletedNeighborhood G x S T :=
+    (mem_damagedDeletedNeighborhood G x S T a).mpr
+      ⟨(mem_deletedNeighborhood G x a).mp haN, haLoss⟩
+  have hb : b ∈ damagedDeletedNeighborhood G x S T :=
+    (mem_damagedDeletedNeighborhood G x S T b).mpr
+      ⟨(mem_deletedNeighborhood G x b).mp hbN, hbLoss⟩
+  have habEq := (Finset.card_le_one.mp hcard) a ha b hb
+  exact (G.induce {y | y ≠ x}).ne_of_adj hab habEq
+
 end Erdos85
