@@ -208,6 +208,38 @@ theorem pairedAttachmentCompatible_deleteCrossEdges
     exact (SimpleGraph.deleteEdges_adj.mp hab).2
   exact hnot ⟨a, ha, b, hb, rfl⟩
 
+/-- **Maximality of canonical cross deletion.**  Among spanning subgraphs of
+`H` compatible with attaching a connected pair along fixed sets `S,T`,
+`deleteCrossEdges H S T` is the largest: every compatible subgraph must omit
+every original cross edge. -/
+theorem le_deleteCrossEdges_of_pairedAttachmentCompatible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H K : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    (S T : Finset V) (hKH : K ≤ H)
+    (hcompat : PairedAttachmentCompatible K S T) :
+    K ≤ deleteCrossEdges H S T := by
+  intro a b hab
+  apply SimpleGraph.deleteEdges_adj.mpr
+  refine ⟨hKH hab, ?_⟩
+  rw [pair_mem_crossEdgeSet_iff]
+  rintro (⟨haS, hbT⟩ | ⟨haT, hbS⟩)
+  · exact hcompat.2.2.2 haS hbT hab
+  · exact hcompat.2.2.2 hbS haT hab.symm
+
+theorem degree_le_deleteCrossEdges_of_pairedAttachmentCompatible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H K : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    (S T : Finset V) [DecidableRel (deleteCrossEdges H S T).Adj]
+    (hKH : K ≤ H) (hcompat : PairedAttachmentCompatible K S T) (v : V) :
+    K.degree v ≤ (deleteCrossEdges H S T).degree v := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card
+  intro w hw
+  rw [SimpleGraph.mem_neighborFinset] at hw ⊢
+  exact le_deleteCrossEdges_of_pairedAttachmentCompatible
+    H K S T hKH hcompat hw
+
 /-- Add an adjacent pair to an arbitrary finite `C₄`-free graph.  Old vertices
 may start below degree `d`, provided membership in `S` and `T` supplies enough
 new incident edges to restore degree `d`. -/

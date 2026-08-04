@@ -184,6 +184,50 @@ theorem pairedAttachment_not_containsC4_iff
   · rintro ⟨hG, hcompat⟩
     exact pairedAttachment_not_containsC4 G S T hG hcompat
 
+/-- The degree cost of cross-edge removal is unavoidable for *any* spanning
+subgraph supporting the same paired attachment, not only for the canonical
+`deleteCrossEdges` construction. -/
+theorem degree_add_crossNeighbors_le_of_pairedCompatible_subgraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H K : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    (hKH : K ≤ H) (S T : Finset V)
+    (hcompat : PairedAttachmentCompatible K S T)
+    (v : V) (hvS : v ∈ S) :
+    K.degree v + (H.neighborFinset v ∩ T).card ≤ H.degree v := by
+  classical
+  let A := K.neighborFinset v
+  let B := H.neighborFinset v ∩ T
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro u huA huB
+    have hvu : K.Adj v u := by
+      simpa [A, SimpleGraph.mem_neighborFinset] using huA
+    have huT : u ∈ T := (Finset.mem_inter.mp huB).2
+    exact hcompat.2.2.2 hvS huT hvu
+  have hsub : A ∪ B ⊆ H.neighborFinset v := by
+    intro u hu
+    rcases Finset.mem_union.mp hu with huA | huB
+    · rw [SimpleGraph.mem_neighborFinset]
+      apply hKH
+      simpa [A, SimpleGraph.mem_neighborFinset] using huA
+    · exact (Finset.mem_inter.mp huB).1
+  have hcard := Finset.card_le_card hsub
+  rw [Finset.card_union_of_disjoint hdisj] at hcard
+  simpa [A, B, SimpleGraph.card_neighborFinset_eq_degree] using hcard
+
+theorem degree_add_crossNeighbors_le_of_pairedCompatible_subgraph_right
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H K : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel K.Adj]
+    (hKH : K ≤ H) (S T : Finset V)
+    (hcompat : PairedAttachmentCompatible K S T)
+    (v : V) (hvT : v ∈ T) :
+    K.degree v + (H.neighborFinset v ∩ S).card ≤ H.degree v := by
+  have hcompat' : PairedAttachmentCompatible K T S := by
+    exact ⟨hcompat.2.1, hcompat.1, by simpa [Finset.inter_comm] using hcompat.2.2.1,
+      fun a ha b hb hab => hcompat.2.2.2 hb ha hab.symm⟩
+  exact degree_add_crossNeighbors_le_of_pairedCompatible_subgraph
+    H K hKH T S hcompat' v hvT
+
 /-- Degree-facing form of paired attachment: if `T` has at least `d - 1`
 old vertices, the second endpoint's selector has at least `d` vertices (the
 first endpoint supplies the extra neighbour). -/

@@ -564,3 +564,19 @@ cross edges while keeping the same attachment sets: every such edge creates
 a four-cycle through the new pair.  A genuinely better extension must change
 the attachment architecture itself, distribute compensation across more new
 vertices, or alter the old graph and selectors together.
+
+This optimality is now graph-order exact.  If `K ≤ H` is any spanning
+subgraph compatible with attaching the pair along the fixed selectors
+`S,T`, then `le_deleteCrossEdges_of_pairedAttachmentCompatible` proves
+
+```text
+K ≤ deleteCrossEdges H S T.
+```
+
+Thus canonical cross deletion is the *largest* compatible spanning subgraph,
+and its degree loss is minimal among all repairs using those selectors.  The
+companion degree theorem and the selector-wise cross-neighbor inequalities
+make the unavoidable loss explicit.  Beating the failed polarity switch
+therefore requires changing selectors or using a different multi-vertex
+attachment graph, not merely a more selective deletion of the same cross
+edges.
