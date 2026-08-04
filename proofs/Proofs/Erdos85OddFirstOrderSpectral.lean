@@ -399,4 +399,22 @@ theorem containsC4_of_odd_firstOrder_of_cubicTraceSquare
     ring
   exact not_consecutive_distance_two_squares (by omega) ⟨hdSquare, hd2Square⟩
 
+/-- Conditional numerical payoff: the generic cubic-trace principle improves
+the strict Moore bound by one further vertex for every odd `d≥3`. -/
+theorem mul_pred_add_three_le_card_of_c4Free_minDegree_odd_of_cubicTraceSquare
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 3 ≤ d) (hdodd : Odd d)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hcubic : ∀ (T : Matrix V V ℤ) (q : ℕ),
+      T * T * T = (q : ℤ) • T → Matrix.trace T ≠ 0 →
+        ∃ s : ℕ, q = s * s) :
+    d * (d - 1) + 3 ≤ Fintype.card V := by
+  have hbase := mul_pred_add_two_le_card_of_c4Free_minDegree
+    G hd hmin hfree
+  by_contra hnot
+  have heq : Fintype.card V = d * (d - 1) + 2 := by omega
+  exact hfree (containsC4_of_odd_firstOrder_of_cubicTraceSquare
+    G hd hdodd hmin heq hcubic)
+
 end Erdos85
