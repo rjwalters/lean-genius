@@ -174,4 +174,12 @@ members, and a family of intersecting pair-families covering every pair of an
 `n`-element set has at least `n-2` members.  These checked statements are
 `pair_intersecting_star_or_card_le_three` and
 `pair_intersecting_cover_card_ge`; transporting the latter through the defect
-bijection will upgrade the geometric selector bound to `q-1`.
+bijection gives the checked geometric bound
+
+```text
+q - 1 ≤ number_of_selectors.
+```
+
+This is `numSelectors_ge_card_sub_one`.  It improves the earlier elementary
+counting bound `q+1 ≤ 2·number_of_selectors` and shows that direct safe repair
+of the odd core needs essentially one new vertex per field element.

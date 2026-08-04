@@ -72,6 +72,7 @@ sharp, realized by all defect pairs through one fixed absolute point.
 Consequently, any direct cover of every defect by independently safe
 attachment selectors indexed by `I` satisfies `q+1 ≤ 2|I|`; this witness
 cannot be repaired by a bounded number of such new vertices as `q` grows.
+The rank-two Kneser cover argument sharpens this to `q-1 ≤ |I|`.
 -/
 
 namespace Erdos85

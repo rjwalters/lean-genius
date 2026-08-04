@@ -102,26 +102,31 @@ omit [DecidableEq K] in
   simp [absoluteNeighborPair]
 
 omit [DecidableEq K] in
+theorem map_absoluteNeighborPair (v : P K) :
+    (absoluteNeighborPair K v).map (Function.Embedding.subtype
+      (fun a : P K => a ∈ absolutePoints K)) =
+      (graph K).neighborFinset v ∩ absolutePoints K := by
+  classical
+  ext a
+  constructor
+  · intro ha
+    rw [Finset.mem_map] at ha
+    obtain ⟨b, hb, rfl⟩ := ha
+    exact Finset.mem_inter.mpr
+      ⟨by simpa using (mem_absoluteNeighborPair K v b).mp hb, b.2⟩
+  · intro ha
+    have ha' := Finset.mem_inter.mp ha
+    rw [Finset.mem_map]
+    refine ⟨⟨a, ha'.2⟩, ?_, rfl⟩
+    exact (mem_absoluteNeighborPair K v _).mpr (by simpa using ha'.1)
+
+omit [DecidableEq K] in
 theorem card_absoluteNeighborPair (v : P K) :
     (absoluteNeighborPair K v).card =
       ((graph K).neighborFinset v ∩ absolutePoints K).card := by
-  let emb : {a : P K // a ∈ absolutePoints K} ↪ P K :=
-    Function.Embedding.subtype _
-  have heq : (absoluteNeighborPair K v).map emb =
-      (graph K).neighborFinset v ∩ absolutePoints K := by
-    ext a
-    constructor
-    · intro ha
-      rw [Finset.mem_map] at ha
-      obtain ⟨b, hb, rfl⟩ := ha
-      exact Finset.mem_inter.mpr
-        ⟨by simpa [emb] using (mem_absoluteNeighborPair K v b).mp hb, b.2⟩
-    · intro ha
-      have ha' := Finset.mem_inter.mp ha
-      rw [Finset.mem_map]
-      refine ⟨⟨a, ha'.2⟩, ?_, rfl⟩
-      exact (mem_absoluteNeighborPair K v _).mpr (by simpa using ha'.1)
-  rw [← heq, Finset.card_map]
+  classical
+  have h := congrArg Finset.card (map_absoluteNeighborPair K v)
+  simpa only [Finset.card_map] using h
 
 private theorem pair_incidence_eq (h2 : (2 : K) ≠ 0)
     (D : AbsolutePairs K) :
@@ -476,6 +481,93 @@ private theorem absoluteNeighborPair_injective_on_low
     simp [(mem_absoluteNeighborPair K x.1 b).mp hbX,
       (mem_absoluteNeighborPair K y.1 b).mp hbY]
 
+private noncomputable def lowPairEmbedding (h2 : (2 : K) ≠ 0)
+    (S : Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : S ⊆ oddCoreLowVertices K) :
+    {v // v ∈ S} ↪ Finset {a : P K // a ∈ absolutePoints K} :=
+  ⟨fun v => absoluteNeighborPair K v.1.1, fun x y hxy => by
+    apply Subtype.ext
+    exact absoluteNeighborPair_injective_on_low K h2 (hsub x.2) hxy⟩
+
+private noncomputable def lowPairFamily (h2 : (2 : K) ≠ 0)
+    (S : Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : S ⊆ oddCoreLowVertices K) :
+    Finset (Finset {a : P K // a ∈ absolutePoints K}) :=
+  Finset.univ.map (lowPairEmbedding K h2 S hsub)
+
+private theorem lowPairFamily_sized (h2 : (2 : K) ≠ 0)
+    (S : Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : S ⊆ oddCoreLowVertices K) :
+    (lowPairFamily K h2 S hsub :
+      Set (Finset {a : P K // a ∈ absolutePoints K})).Sized 2 := by
+  intro A hA
+  rw [lowPairFamily, Finset.mem_coe, Finset.mem_map] at hA
+  obtain ⟨x, _, rfl⟩ := hA
+  dsimp [lowPairEmbedding]
+  rw [card_absoluteNeighborPair]
+  exact (mem_oddSecantVertices K x.1.1).mp
+    ((mem_oddCoreLowVertices_iff_secant K h2 x.1).mp (hsub x.2)) |>.2
+
+private theorem lowPairFamily_intersecting (h2 : (2 : K) ≠ 0)
+    (S : Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : S ⊆ oddCoreLowVertices K)
+    (hsafe : CommonNeighborIndependent (oddCore K) S) :
+    (lowPairFamily K h2 S hsub :
+      Set (Finset {a : P K // a ∈ absolutePoints K})).Intersecting := by
+  intro A hA B hB hdisj
+  rw [lowPairFamily, Finset.mem_coe, Finset.mem_map] at hA hB
+  obtain ⟨x, _, rfl⟩ := hA
+  obtain ⟨y, _, rfl⟩ := hB
+  dsimp [lowPairEmbedding] at hdisj
+  by_cases hxy : x.1 = y.1
+  · have hp : absoluteNeighborPair K x.1.1 =
+        absoluteNeighborPair K y.1.1 := congrArg
+          (fun v => absoluteNeighborPair K v.1) hxy
+    rw [← hp] at hdisj
+    have hcard : (absoluteNeighborPair K x.1.1).card = 2 := by
+      rw [card_absoluteNeighborPair]
+      exact (mem_oddSecantVertices K x.1.1).mp
+        ((mem_oddCoreLowVertices_iff_secant K h2 x.1).mp (hsub x.2)) |>.2
+    have hempty := disjoint_self.mp hdisj
+    rw [hempty] at hcard
+    simp at hcard
+  · have hxnon : ¬ Projectivization.orthogonal x.1.1 x.1.1 := by
+      simpa [mem_absolutePoints] using x.1.2
+    have hynon : ¬ Projectivization.orthogonal y.1.1 y.1.1 := by
+      simpa [mem_absolutePoints] using y.1.2
+    have hraw : Disjoint
+        ((graph K).neighborFinset x.1.1 ∩ absolutePoints K)
+        ((graph K).neighborFinset y.1.1 ∩ absolutePoints K) := by
+      rw [Finset.disjoint_left] at hdisj ⊢
+      intro a haX haY
+      let aa : {a : P K // a ∈ absolutePoints K} :=
+        ⟨a, (Finset.mem_inter.mp haX).2⟩
+      apply hdisj (a := aa)
+      · apply (mem_absoluteNeighborPair K x.1.1 aa).mpr
+        simpa using (Finset.mem_inter.mp haX).1
+      · apply (mem_absoluteNeighborPair K y.1.1 aa).mpr
+        simpa using (Finset.mem_inter.mp haY).1
+    obtain ⟨z, hznon, hxz, hyz⟩ :=
+      exists_nonabsolute_commonNeighbor_of_disjoint_absoluteIncidences
+        K x.1.1 y.1.1 hxnon hynon (fun h => hxy (Subtype.ext h)) hraw
+    have hzcore : z ∉ absolutePoints K := by
+      simpa [mem_absolutePoints] using hznon
+    let zc : {v : P K // v ∉ absolutePoints K} := ⟨z, hzcore⟩
+    have hzero := hsafe x.2 y.2 hxy
+    have hzmem : zc ∈ (oddCore K).neighborFinset x.1 ∩
+        (oddCore K).neighborFinset y.1 := by
+      apply Finset.mem_inter.mpr
+      constructor
+      · rw [SimpleGraph.mem_neighborFinset]
+        change (graph K).Adj x.1.1 z
+        exact hxz
+      · rw [SimpleGraph.mem_neighborFinset]
+        change (graph K).Adj y.1.1 z
+        exact hyz
+    rw [Finset.card_eq_zero] at hzero
+    have := congrArg (fun T => zc ∈ T) hzero
+    simp [hzmem] at this
+
 /-- A safe family consisting only of odd-core defects has at most `q`
 members.  Under `absoluteNeighborPair` it is an intersecting family of
 two-subsets of the `q+1` absolute points, so this is the `r=2` case of the
@@ -738,6 +830,67 @@ theorem two_mul_numSelectors_ge_card_add_one
           2 * (Fintype.card I * Nat.card K) := hdouble
       _ = (2 * Fintype.card I) * Nat.card K := by ring
   exact Nat.le_of_mul_le_mul_right hrearr Nat.card_pos
+
+/-- Sharp Kneser lower bound for direct safe repair: covering every odd-core
+defect by independently safe selectors requires at least `q-1` selectors. -/
+theorem numSelectors_ge_card_sub_one
+    (h2 : (2 : K) ≠ 0) {I : Type*} [Fintype I] [DecidableEq I]
+    (S : I → Finset {v : P K // v ∉ absolutePoints K})
+    (hsub : ∀ i, S i ⊆ oddCoreLowVertices K)
+    (hsafe : ∀ i, CommonNeighborIndependent (oddCore K) (S i))
+    (hcover : oddCoreLowVertices K ⊆ Finset.univ.biUnion S) :
+    Nat.card K - 1 ≤ Fintype.card I := by
+  let 𝒜 : I → Finset (Finset {a : P K // a ∈ absolutePoints K}) :=
+    fun i => lowPairFamily K h2 (S i) (hsub i)
+  have h𝒜int : ∀ i, (𝒜 i :
+      Set (Finset {a : P K // a ∈ absolutePoints K})).Intersecting :=
+    fun i => lowPairFamily_intersecting K h2 (S i) (hsub i) (hsafe i)
+  have h𝒜sized : ∀ i, (𝒜 i :
+      Set (Finset {a : P K // a ∈ absolutePoints K})).Sized 2 :=
+    fun i => lowPairFamily_sized K h2 (S i) (hsub i)
+  have hcoverPairs :
+      (Finset.univ : Finset {a : P K // a ∈ absolutePoints K}).powersetCard 2 ⊆
+        Finset.univ.biUnion 𝒜 := by
+    intro D hD
+    let absEmb : {a : P K // a ∈ absolutePoints K} ↪ P K :=
+      Function.Embedding.subtype _
+    let Draw : Finset (P K) := D.map absEmb
+    have hDrawSub : Draw ⊆ absolutePoints K := by
+      intro a ha
+      dsimp [Draw] at ha
+      rw [Finset.mem_map] at ha
+      obtain ⟨b, _, rfl⟩ := ha
+      exact b.2
+    have hDrawCard : Draw.card = 2 := by
+      dsimp [Draw]
+      rw [Finset.card_map]
+      exact (Finset.mem_powersetCard.mp hD).2
+    let DP : AbsolutePairs K :=
+      ⟨Draw, Finset.mem_powersetCard.mpr ⟨hDrawSub, hDrawCard⟩⟩
+    let v : {v : P K // v ∉ absolutePoints K} :=
+      ⟨pairCommonNeighbor K DP, by
+        simpa [mem_absolutePoints] using (pairCommonNeighbor_spec K DP).2.2⟩
+    have hvlow : v ∈ oddCoreLowVertices K := by
+      rw [mem_oddCoreLowVertices_iff_secant K h2]
+      exact (pairToSecant K h2 DP).2
+    have hvcover := hcover hvlow
+    rw [Finset.mem_biUnion] at hvcover ⊢
+    obtain ⟨i, _, hvi⟩ := hvcover
+    refine ⟨i, Finset.mem_univ _, ?_⟩
+    change D ∈ lowPairFamily K h2 (S i) (hsub i)
+    rw [lowPairFamily, Finset.mem_map]
+    refine ⟨⟨v, hvi⟩, Finset.mem_univ _, ?_⟩
+    apply Finset.map_injective absEmb
+    dsimp [lowPairEmbedding]
+    rw [map_absoluteNeighborPair K v.1, pair_incidence_eq K h2 DP]
+  have habscard : Fintype.card {a : P K // a ∈ absolutePoints K} =
+      Nat.card K + 1 := by
+    rw [Fintype.card_coe, card_absolutePoints_eq_card_add_one K]
+  have hq3 := three_le_card_of_two_ne_zero K h2
+  have hbound := pair_intersecting_cover_card_ge 𝒜 h𝒜int h𝒜sized
+    hcoverPairs (by rw [habscard]; omega)
+  rw [habscard] at hbound
+  omega
 
 /-- The complementary degree class in the deleted-conic odd core. -/
 noncomputable def oddCoreHighVertices :
