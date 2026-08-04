@@ -140,14 +140,21 @@ theorem sum_edgeEnds_eq_sum_vertexSlots
     {A : Type*} [AddCommMonoid A] (h : E → Fin 2 → A) :
     ∑ e : E, ∑ j : Fin 2, h e j =
       ∑ v : V, ∑ i : Fin 3,
-        h (G.edgeAt v i) (G.incidence (v, i)).2 :=
-  calc ∑ e : E, ∑ j : Fin 2, h e j
-      = ∑ q : E × Fin 2, h q.1 q.2 := (Fintype.sum_prod_type _).symm
-    _ = ∑ p : V × Fin 3, h (G.incidence p).1 (G.incidence p).2 :=
-        (G.incidence.sum_comp _).symm
-    _ = ∑ v : V, ∑ i : Fin 3, h (G.edgeAt v i) (G.incidence (v, i)).2 :=
-        Fintype.sum_prod_type _
+        h (G.edgeAt v i) (G.incidence (v, i)).2 := by
+  -- Uncurry both iterated sums, then transport the single sum along `incidence`.
+  have hL : ∑ q : E × Fin 2, h q.1 q.2 = ∑ e : E, ∑ j : Fin 2, h e j :=
+    Fintype.sum_prod_type' h
+  have hR : ∑ p : V × Fin 3,
+      h (G.edgeAt p.1 p.2) (G.incidence (p.1, p.2)).2 =
+        ∑ v : V, ∑ i : Fin 3, h (G.edgeAt v i) (G.incidence (v, i)).2 :=
+    Fintype.sum_prod_type' _
+  have hE : ∑ p : V × Fin 3, h (G.incidence p).1 (G.incidence p).2 =
+      ∑ q : E × Fin 2, h q.1 q.2 :=
+    G.incidence.sum_comp (fun q : E × Fin 2 => h q.1 q.2)
+  rw [← hL, ← hR]
+  exact hE.symm
 
+include G in
 /-- The numerical shadow of `incidence`: a cubic multigraph has `3|V| = 2|E|`.
 Recorded as a sanity check that the slot encoding really is 3-regular. -/
 theorem card_slots_eq_card_ends : Fintype.card V * 3 = Fintype.card E * 2 := by
@@ -155,6 +162,10 @@ theorem card_slots_eq_card_ends : Fintype.card V * 3 = Fintype.card E * 2 := by
   simpa [Fintype.card_prod] using h
 
 end CubicGraph
+
+/-- `Gamma` has characteristic two: every element is its own additive inverse.
+Eight elements, checked by the kernel. -/
+theorem gamma_add_self : ∀ x : Gamma, x + x = 0 := by decide
 
 /-- A nowhere-zero `Gamma = F₂³` flow on a cubic multigraph. In characteristic
 two every element is its own negation, so the orientation signs of the general
@@ -168,10 +179,6 @@ structure GammaFlow {V E : Type*} [Fintype V] [Fintype E] (G : CubicGraph V E) w
 namespace GammaFlow
 
 variable {V E : Type*} [Fintype V] [Fintype E] {G : CubicGraph V E}
-
-/-- `Gamma` has characteristic two: every element is its own additive inverse.
-Eight elements, checked by the kernel. -/
-theorem gamma_add_self (x : Gamma) : x + x = 0 := by decide
 
 /-- Conservation with the three-term sum spelled out. -/
 theorem sum_three (f : GammaFlow G) (v : V) :
