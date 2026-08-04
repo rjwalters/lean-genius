@@ -183,6 +183,7 @@ theorem mem_crossingClass {S : Finset E} {P : Setoid V} {e : E} :
   classical
   simp [crossingClass]
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem crossingClass_subset_crossingEdges (S : Finset E) (P : Setoid V) :
     G.crossingClass S P ⊆ G.crossingEdges P := by
   intro e he
@@ -229,6 +230,7 @@ theorem mem_insideEdges {S : Finset E} {P : Setoid V} {u : V} {e : E} :
   classical
   simp [insideEdges]
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem insideEdges_eq_of_rel {S : Finset E} {P : Setoid V} {u v : V} (huv : P u v) :
     G.insideEdges S P u = G.insideEdges S P v := by
   ext e
@@ -237,15 +239,18 @@ theorem insideEdges_eq_of_rel {S : Finset E} {P : Setoid V} {u v : V} (huv : P u
     and_congr (⟨fun h => P.trans' h huv, fun h => P.trans' h (P.symm' huv)⟩)
       (⟨fun h => P.trans' h huv, fun h => P.trans' h (P.symm' huv)⟩)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem insideEdges_subset (S : Finset E) (P : Setoid V) (u : V) :
     G.insideEdges S P u ⊆ S := fun _ he => (G.mem_insideEdges.mp he).1
 
+omit [DecidableEq V] in
 theorem insideEdges_erase (S : Finset E) (P : Setoid V) (u : V) (e : E) :
     G.insideEdges (S.erase e) P u = (G.insideEdges S P u).erase e := by
   ext f
   simp only [mem_insideEdges, Finset.mem_erase]
   tauto
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem insideEdges_top (S : Finset E) (u : V) : G.insideEdges S ⊤ u = S := by
   have htop : ∀ x y : V, (⊤ : Setoid V) x y := fun _ _ => trivial
   ext e
@@ -283,11 +288,13 @@ omit [DecidableEq E] in
 theorem mem_colorClass {k : ℕ} {χ : E → Fin k} {i : Fin k} {e : E} :
     e ∈ colorClass χ i ↔ χ e = i := by simp [colorClass]
 
+omit [DecidableEq E] in
 theorem colorClass_disjoint {k : ℕ} (χ : E → Fin k) {i j : Fin k} (hij : i ≠ j) :
     Disjoint (colorClass χ i) (colorClass χ j) := by
   refine Finset.disjoint_left.2 fun e hei hej => hij ?_
   rw [← mem_colorClass.mp hei, mem_colorClass.mp hej]
 
+omit [DecidableEq V] in
 theorem crossingClass_colorClass_disjoint {k : ℕ} (χ : E → Fin k) (P : Setoid V)
     {i j : Fin k} (hij : i ≠ j) :
     Disjoint (G.crossingClass (colorClass χ i) P) (G.crossingClass (colorClass χ j) P) := by
@@ -295,9 +302,11 @@ theorem crossingClass_colorClass_disjoint {k : ℕ} (χ : E → Fin k) (P : Seto
   exact Finset.disjoint_left.mp (colorClass_disjoint χ hij)
     (G.mem_crossingClass.mp hei).1 (G.mem_crossingClass.mp hej).1
 
+omit [DecidableEq E] in
 theorem mem_some_colorClass {k : ℕ} (χ : E → Fin k) (e : E) :
     ∃ i : Fin k, e ∈ colorClass χ i := ⟨χ e, mem_colorClass.mpr rfl⟩
 
+omit [DecidableEq V] in
 theorem crossingEdges_eq_biUnion_crossingClass {k : ℕ} [NeZero k] (χ : E → Fin k)
     (P : Setoid V) :
     G.crossingEdges P =
@@ -348,6 +357,7 @@ theorem mem_badColors {k : ℕ} {χ : E → Fin k} {P : Setoid V} {i : Fin k} :
   classical
   simp [badColors]
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem badColors_nonempty_iff {k : ℕ} (χ : E → Fin k) (P : Setoid V) :
     (G.badColors χ P).Nonempty ↔ G.NeedsRefinement χ P :=
   ⟨fun ⟨i, hi⟩ => ⟨i, G.mem_badColors.mp hi⟩, fun ⟨i, hi⟩ => ⟨i, G.mem_badColors.mpr hi⟩⟩
@@ -357,6 +367,7 @@ noncomputable def firstDisconnectedColor {k : ℕ} (χ : E → Fin k) (P : Setoi
     Option (Fin k) :=
   if h : (G.badColors χ P).Nonempty then some ((G.badColors χ P).min' h) else none
 
+omit [DecidableEq V] [DecidableEq E] in
 /-- Complete characterisation of the selector: it returns exactly the minimum of
 the bad-colour set. Everything else about `firstDisconnectedColor` follows. -/
 theorem firstDisconnectedColor_eq_some_iff {k : ℕ} {χ : E → Fin k} {P : Setoid V}
@@ -473,6 +484,7 @@ theorem mem_setoidGraph {P : Setoid V} {u v : V} :
   classical
   simp [setoidGraph]
 
+omit [DecidableEq V] in
 theorem setoid_eq_of_setoidGraph_eq {P Q : Setoid V}
     (h : setoidGraph (V := V) P = setoidGraph (V := V) Q) (u v : V) : P u v ↔ Q u v := by
   rw [← mem_setoidGraph (P := P) (u := u) (v := v), h, mem_setoidGraph]
@@ -596,6 +608,7 @@ theorem supportGraph_adj_iff (S : Finset E) (u v : V) :
 /-- The unordered pair of ends of a genuine multiedge. -/
 def symEdge (e : E) : Sym2 V := s(G.endAt e 0, G.endAt e 1)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem supportGraph_mono {S T : Finset E} (hST : S ⊆ T) :
     G.supportGraph S ≤ G.supportGraph T := by
   intro u v huv
@@ -603,6 +616,7 @@ theorem supportGraph_mono {S T : Finset E} (hST : S ⊆ T) :
   obtain ⟨hne, e, he, hends⟩ := huv
   exact ⟨hne, e, hST he, hends⟩
 
+omit [DecidableEq E] in
 theorem edgeFinset_supportGraph (S : Finset E) [Fintype (G.supportGraph S).edgeSet] :
     (G.supportGraph S).edgeFinset = S.image G.symEdge := by
   ext z
@@ -703,7 +717,7 @@ theorem colorClass_swap_left {k : ℕ} (χ : E → Fin k) {e e' : E} (hee' : e �
   rcases eq_or_ne x e with rfl | hxe
   · simp [mem_colorClass, swapColor_apply_left χ hee', hcol.symm, hee']
   · rcases eq_or_ne x e' with rfl | hxe'
-    · simp [mem_colorClass, swapColor_apply_right, hee', hcol.symm]
+    · simp [mem_colorClass, swapColor_apply_right, hcol.symm]
     · simp [mem_colorClass, swapColor_apply_of_ne χ hxe hxe', hxe, hxe']
 
 theorem colorClass_swap_right {k : ℕ} (χ : E → Fin k) {e e' : E} (hee' : e ≠ e')
