@@ -106,3 +106,20 @@ can contain all `choose (q+1) 2` degree defects.  Therefore the standard
 one-new-vertex attachment cannot repair this core at degree `q`.  As with the
 even-core obstruction, this rules out a natural witness-extension mechanism,
 not monotonicity itself.
+
+## Full odd-core degree distribution
+
+A double count gives exactly `q(q+1)` incidences between projective points and
+the absolute conic.  The `choose(q+1,2)` classified secant poles, with two
+incidences each, already exhaust this total.  Consequently no nonabsolute
+point is incident with exactly one absolute point.  The deleted-conic core is
+therefore exactly biregular:
+
+```text
+choose(q+1,2) vertices have degree q-1,
+q² - choose(q+1,2) vertices have degree q+1.
+```
+
+The checked statements are `sum_absoluteIncidences`,
+`absoluteIncidences_ne_one`, `oddCore_degree_eq_low_or_high`, and
+`card_oddCoreHighVertices` in `Erdos85PolarityOddSecantCount.lean`.

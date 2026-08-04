@@ -206,6 +206,83 @@ theorem card_oddSecantVertices (h2 : (2 : K) ≠ 0) :
         card_absolutePoints_eq_card_add_one K] at hc
       simpa [Nat.card_eq_fintype_card] using hc)
 
+/-- The total number of incidences between all projective points and the
+absolute conic is `q(q+1)`.  This is the same incidence set counted first by
+points and then by absolute vertices, each of which has degree `q`. -/
+theorem sum_absoluteIncidences :
+    ∑ v : P K, ((graph K).neighborFinset v ∩ absolutePoints K).card =
+      (absolutePoints K).card * Nat.card K := by
+  classical
+  calc
+    ∑ v : P K, ((graph K).neighborFinset v ∩ absolutePoints K).card
+        = ∑ v : P K, ∑ a ∈ absolutePoints K,
+            if a ∈ (graph K).neighborFinset v then 1 else 0 := by
+              apply Finset.sum_congr rfl
+              intro v _
+              rw [Finset.sum_boole]
+              congr 1
+              ext a
+              simp [and_comm]
+    _ = ∑ a ∈ absolutePoints K, ∑ v : P K,
+          if a ∈ (graph K).neighborFinset v then 1 else 0 := by
+            rw [Finset.sum_comm]
+    _ = ∑ a ∈ absolutePoints K, (graph K).degree a := by
+          apply Finset.sum_congr rfl
+          intro a ha
+          rw [SimpleGraph.degree, Finset.sum_boole]
+          apply congrArg Finset.card
+          ext v
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+            SimpleGraph.mem_neighborFinset]
+          exact ((graph K).adj_comm a v).symm
+    _ = (absolutePoints K).card * Nat.card K := by
+          calc
+            ∑ a ∈ absolutePoints K, (graph K).degree a =
+                ∑ _a ∈ absolutePoints K, Nat.card K := by
+                  apply Finset.sum_congr rfl
+                  intro a ha
+                  exact degree_eq_card_of_selfOrthogonal
+                    ((mem_absolutePoints K a).mp ha)
+            _ = (absolutePoints K).card * Nat.card K := by simp
+
+/-- In odd characteristic a nonabsolute point cannot be tangent to the
+absolute conic.  The classified secants already contribute all `q(q+1)`
+point-conic incidences, so one further incidence would exceed the double
+count. -/
+theorem absoluteIncidences_ne_one (h2 : (2 : K) ≠ 0) (v : P K)
+    (hvnon : ¬ Projectivization.orthogonal v v) :
+    ((graph K).neighborFinset v ∩ absolutePoints K).card ≠ 1 := by
+  intro hvone
+  let w : P K → ℕ := fun x =>
+    ((graph K).neighborFinset x ∩ absolutePoints K).card
+  have hvnot : v ∉ oddSecantVertices K := by
+    rw [mem_oddSecantVertices]
+    simp [hvnon, hvone]
+  have hsumS : ∑ x ∈ oddSecantVertices K, w x =
+      2 * (oddSecantVertices K).card := by
+    calc
+      ∑ x ∈ oddSecantVertices K, w x =
+          ∑ _x ∈ oddSecantVertices K, 2 := by
+            apply Finset.sum_congr rfl
+            intro x hx
+            exact (mem_oddSecantVertices K x).mp hx |>.2
+      _ = 2 * (oddSecantVertices K).card := by simp [Nat.mul_comm]
+  have hle : ∑ x ∈ insert v (oddSecantVertices K), w x ≤
+      ∑ x : P K, w x := by
+    exact Finset.sum_le_sum_of_subset_of_nonneg (by simp)
+      (fun _ _ _ => Nat.zero_le _)
+  have hwv : w v = 1 := hvone
+  rw [Finset.sum_insert hvnot, hwv, hsumS] at hle
+  have htotal : ∑ x : P K, w x = (Nat.card K + 1) * Nat.card K := by
+    dsimp [w]
+    rw [sum_absoluteIncidences K, card_absolutePoints_eq_card_add_one K]
+  rw [htotal, card_oddSecantVertices K h2, mul_comm 2,
+    Nat.choose_two_right,
+    Nat.div_two_mul_two_of_even
+      (Nat.even_mul_pred_self (Nat.card K + 1))] at hle
+  simp only [Nat.add_sub_cancel] at hle
+  omega
+
 /-- The induced graph after deleting the full odd-characteristic absolute
 conic. -/
 noncomputable abbrev oddCore :=
@@ -275,6 +352,68 @@ theorem card_oddCoreLowVertices (h2 : (2 : K) ≠ 0) :
     exact (Finset.card_map emb).symm
   rw [hc, card_oddSecantVertices K h2]
 
+/-- The complementary degree class in the deleted-conic odd core. -/
+noncomputable def oddCoreHighVertices :
+    Finset {v : P K // v ∉ absolutePoints K} := by
+  classical
+  exact Finset.univ.filter fun v => (oddCore K).degree v = Nat.card K + 1
+
+omit [DecidableEq K] in
+@[simp] theorem mem_oddCoreHighVertices
+    (v : {v : P K // v ∉ absolutePoints K}) :
+    v ∈ oddCoreHighVertices K ↔ (oddCore K).degree v = Nat.card K + 1 := by
+  classical
+  simp [oddCoreHighVertices]
+
+/-- Every vertex of the odd deleted-conic core has one of exactly two
+degrees: `q-1` for a secant pole and `q+1` for an external pole. -/
+theorem oddCore_degree_eq_low_or_high (h2 : (2 : K) ≠ 0)
+    (v : {v : P K // v ∉ absolutePoints K}) :
+    (oddCore K).degree v = Nat.card K - 1 ∨
+      (oddCore K).degree v = Nat.card K + 1 := by
+  have hvnon : ¬ Projectivization.orthogonal v.1 v.1 := by
+    simpa [mem_absolutePoints] using v.2
+  let c := ((graph K).neighborFinset v.1 ∩ absolutePoints K).card
+  have hcle : c ≤ 2 :=
+    absoluteTwoSecant_of_two_ne_zero K h2 v.1 hvnon
+  have hcne : c ≠ 1 := absoluteIncidences_ne_one K h2 v.1 hvnon
+  have hs := degree_deleteVertexSetGraph_add (graph K) (absolutePoints K) v
+  rw [degree_eq_card_add_one_of_not_selfOrthogonal hvnon] at hs
+  have hs' : (oddCore K).degree v + c = Nat.card K + 1 := by
+    simpa [oddCore, c] using hs
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  omega
+
+/-- The low- and high-degree classes partition the whole odd core. -/
+theorem oddCoreLowVertices_union_highVertices (h2 : (2 : K) ≠ 0) :
+    oddCoreLowVertices K ∪ oddCoreHighVertices K = Finset.univ := by
+  ext v
+  rw [Finset.mem_union, mem_oddCoreLowVertices, mem_oddCoreHighVertices]
+  simp only [Finset.mem_univ, iff_true]
+  exact oddCore_degree_eq_low_or_high K h2 v
+
+omit [DecidableEq K] in
+theorem oddCoreLowVertices_disjoint_highVertices :
+    Disjoint (oddCoreLowVertices K) (oddCoreHighVertices K) := by
+  apply Finset.disjoint_left.mpr
+  intro v hlo hhi
+  rw [mem_oddCoreLowVertices] at hlo
+  rw [mem_oddCoreHighVertices] at hhi
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  omega
+
+/-- Exact count of the high-degree (`q+1`) vertices.  Together with
+`card_oddCoreLowVertices`, this is the full odd-core degree distribution. -/
+theorem card_oddCoreHighVertices_compl (h2 : (2 : K) ≠ 0) :
+    (oddCoreHighVertices K).card =
+      Fintype.card {v : P K // v ∉ absolutePoints K} -
+        Nat.choose (Nat.card K + 1) 2 := by
+  have hcard := Finset.card_union_of_disjoint
+    (oddCoreLowVertices_disjoint_highVertices K)
+  rw [oddCoreLowVertices_union_highVertices K h2, Finset.card_univ,
+    card_oddCoreLowVertices K h2] at hcard
+  omega
+
 private theorem three_le_card_of_two_ne_zero (h2 : (2 : K) ≠ 0) :
     3 ≤ Nat.card K := by
   have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
@@ -306,6 +445,11 @@ theorem card_oddCore :
       Nat.card K * Nat.card K + Nat.card K + 1 := by ring
   rw [hN]
   omega
+
+theorem card_oddCoreHighVertices (h2 : (2 : K) ≠ 0) :
+    (oddCoreHighVertices K).card =
+      Nat.card K * Nat.card K - Nat.choose (Nat.card K + 1) 2 := by
+  rw [card_oddCoreHighVertices_compl K h2, card_oddCore K]
 
 theorem oddCore_minDegree_ge (h2 : (2 : K) ≠ 0) :
     Nat.card K - 1 ≤ (oddCore K).minDegree := by

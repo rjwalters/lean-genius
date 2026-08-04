@@ -59,7 +59,10 @@ exactly `q-1`.  Thus this natural
 witness cannot settle the following monotonicity step by direct attachment.
 In odd characteristic, the degree-`q-1` vertices after deleting the full
 absolute conic are classified by unordered absolute pairs, so there are
-exactly `choose (q+1) 2` of them.  A disjoint-neighborhood counting bound then
+exactly `choose (q+1) 2` of them.  Double-counting point-conic incidences
+shows there are no tangent nonabsolute points: the core is exactly biregular,
+and its other `q² - choose (q+1) 2` vertices all have degree `q+1`.
+A disjoint-neighborhood counting bound then
 proves that no common-neighbor-independent selector can cover all these
 defects; direct one-vertex repair of the full deleted-conic core is impossible.
 -/
