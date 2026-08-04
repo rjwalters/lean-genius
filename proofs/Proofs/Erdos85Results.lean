@@ -1,14 +1,19 @@
 import Proofs.Erdos85Problem14
 import Proofs.Erdos85Problem21
+import Proofs.Erdos85Ramsey
+import Proofs.Erdos85PairedWitness
+import Proofs.Erdos85TightWitness
+import Proofs.Erdos85Polarity
 
 /-!
 # Headline results for Erdős Problem 85
 
 This module collects the publication-facing statements proved by the detailed
 development.  The main problem—eventual monotonicity of `minDegreeForC4`—remains
-open.  We provide its exact witness-extension reformulation, a complete checked
-table through order 21, and an exact obstruction to the most direct attachment
-strategy.
+open.  We provide its exact Ramsey and witness-extension reformulations, a
+complete checked table through order 21, one- and two-vertex attachment theory,
+and the finite-field polarity construction underlying the classical infinite
+family.
 -/
 
 namespace Erdos85
