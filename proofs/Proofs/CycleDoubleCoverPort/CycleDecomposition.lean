@@ -69,8 +69,10 @@ def parallelPairCycle (e f : E) (hef : e ≠ f) (hpar : G.AreParallel e f) : G.C
     intro v
     rw [Finset.sum_pair hef]
     have hEq : G.edgeIncidence v e = G.edgeIncidence v f := by
-      rcases hpar with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;>
-        simp only [edgeIncidence, h0, h1] <;> try ring
+      rcases hpar with ⟨h0, h1⟩ | ⟨h0, h1⟩
+      · simp only [edgeIncidence, h0, h1]
+      · simp only [edgeIncidence, h0, h1]
+        ring
     rw [hEq]
     exact CharTwo.add_self_eq_zero _
   minimal := by
@@ -162,21 +164,31 @@ cover. -/
 def support (C : G.IndexedEvenDoubleCover) (s : Gamma) : Finset E :=
   Finset.univ.filter fun e => C.member s e = 1
 
+omit [DecidableEq E] in
 theorem mem_support {C : G.IndexedEvenDoubleCover} {s : Gamma} {e : E} :
     e ∈ C.support s ↔ C.member s e = 1 := by
   simp [support]
 
+omit [DecidableEq E] in
 /-- Each of the eight selected edge sets is even, because the `F₂`-indicator of
 membership agrees with the incidence contribution edge by edge. -/
 theorem support_even (C : G.IndexedEvenDoubleCover) (s : Gamma) :
     G.IsEvenEdgeSet (C.support s) := by
   classical
   intro v
-  rw [support, Finset.sum_filter, ← C.vertexEven s v]
-  refine Finset.sum_congr rfl fun e _ => ?_
-  rcases f2_eq_zero_or_one (C.member s e) with h0 | h1
-  · simp [h0]
-  · simp [h1, edgeIncidence]
+  have hpt : ∀ e : E, (if C.member s e = 1 then G.edgeIncidence v e else 0)
+      = ((if G.endAt e 0 = v then C.member s e else 0) +
+         (if G.endAt e 1 = v then C.member s e else 0)) := by
+    intro e
+    rcases f2_eq_zero_or_one (C.member s e) with h0 | h1
+    · simp [h0]
+    · simp [h1, edgeIncidence]
+  rw [support, Finset.sum_filter]
+  calc ∑ e : E, (if C.member s e = 1 then G.edgeIncidence v e else 0)
+      = ∑ e : E, ((if G.endAt e 0 = v then C.member s e else 0) +
+          (if G.endAt e 1 = v then C.member s e else 0)) :=
+        Finset.sum_congr rfl fun e _ => hpt e
+    _ = 0 := C.vertexEven s v
 
 /-- An exact indexed even double cover flattens into a conventional cycle
 double cover: decompose each of the eight even sets into cycles, concatenate,
@@ -187,13 +199,29 @@ noncomputable def toCycleDoubleCover (C : G.IndexedEvenDoubleCover) :
   choose pieces hpieces using fun s : Gamma =>
     G.decompose_even_edge_set (C.support s) (C.support_even s)
   refine ⟨(Finset.univ : Finset Gamma).toList.flatMap pieces, fun e => ?_⟩
+  have hcard := C.coveredTwice e
+  rw [Finset.card_filter] at hcard
   rw [List.filter_flatMap, List.length_flatMap, Finset.sum_map_toList]
   simp_rw [hpieces]
-  rw [← C.coveredTwice e, Finset.card_filter]
+  refine Eq.trans ?_ hcard
   refine Finset.sum_congr rfl fun s _ => ?_
   by_cases h : C.member s e = 1 <;> simp [mem_support, h]
 
 end IndexedEvenDoubleCover
+
+/-- Statement-drift guard, machine-checked. The object produced by the ported
+machinery inhabits *exactly* the type `Nonempty G.CycleDoubleCover` that forms
+the conclusion of `CycleDoubleCover.cycleDoubleCover_of_bridgeless` in
+`Proofs/CycleDoubleCover.lean`. Since this file extends that namespace rather
+than restating it, no equivalence bridge is required: `G.CycleDoubleCover` here
+and in the axiom are the same declaration.
+
+The remaining work for the epic is therefore exactly to produce a
+`G.IndexedEvenDoubleCover` from `G.Bridgeless` — that is the 8-flow route and
+the novel labelling argument of upstream steps 2-7. -/
+theorem nonempty_cycleDoubleCover_of_indexedEvenDoubleCover
+    (C : G.IndexedEvenDoubleCover) : Nonempty G.CycleDoubleCover :=
+  ⟨C.toCycleDoubleCover⟩
 
 end FiniteGraph
 

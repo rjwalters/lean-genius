@@ -130,12 +130,13 @@ structure IndexedEvenDoubleCover where
 promised *eight*-set object and `coveredTwice` asks for two out of eight. -/
 theorem card_gamma : Fintype.card Gamma = 8 := by decide
 
-/-- Degree as the cardinality of a `Finset` of half-edges. -/
 omit [DecidableEq E] in
+/-- Degree as the cardinality of a `Finset` of half-edges. -/
 theorem degree_eq_card_filter (v : V) :
     G.degree v = (Finset.univ.filter fun h : HalfEdge E => G.vertex h = v).card :=
   Fintype.card_subtype _
 
+omit [DecidableEq E] in
 /-- Handshake lemma for multigraphs: the degrees sum to twice the number of
 edge objects. Each edge contributes exactly its two ends. -/
 theorem sum_degree_eq_two_mul_card_edges :
@@ -146,18 +147,18 @@ theorem sum_degree_eq_two_mul_card_edges :
     (f := fun h : HalfEdge E => G.vertex h) (fun _ _ => Finset.mem_univ _)]
   rw [Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Nat.mul_comm]
 
+omit [DecidableEq E] in
 /-- The zero labelling is a flow. (Sanity check on `IsFlow`; it is of course
 not nowhere-zero unless there are no edges.) -/
-omit [DecidableEq E] in
 theorem zero_isFlow {A : Type*} [AddCommGroup A] : G.IsFlow (fun _ : E => (0 : A)) := by
   intro v
   simp
 
+omit [DecidableEq V] [DecidableEq E] in
 /-- A bridgeless graph has no vertex whose incident edges form a one-element
 cut; specialised to the empty subset this says the empty cut is not a single
 edge, which is immediate. Recorded as a smoke test that `Bridgeless` from
 `Proofs/CycleDoubleCover.lean` is usable from this file. -/
-omit [DecidableEq V] [DecidableEq E] in
 theorem cut_empty_card_ne_one (hb : G.Bridgeless) : (G.cut ∅).card ≠ 1 := hb ∅
 
 end FiniteGraph
