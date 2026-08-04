@@ -57,6 +57,7 @@ import Proofs.Erdos85PolarityThreePointDynamicSwitch
 import Proofs.Erdos85PolarityThreePointSecondSwitch
 import Proofs.Erdos85CompensatedRegular
 import Proofs.Erdos85DistanceLayers
+import Proofs.Erdos85MooreFriendship
 import Proofs.Erdos85MinimalWitness
 import Proofs.Erdos85TightCore
 import Proofs.Erdos85LayeredWitness
@@ -232,12 +233,18 @@ size strictly above `3n/5`.  Tight deletion sets therefore exist for every
 More decisively, the asymmetric Moore bound centered at each vertex proves
 full rigidity: every C4-free graph with minimum degree at least `d≥2` and
 exact order `d(d-1)+1` is `d`-regular.  Hence the high-degree layer is in fact
-empty for a genuine witness at this order.  The bounded deletion-only no-go
-therefore applies intrinsically to every such witness, every deleted `k`-set,
-and every compatible `k+1`-vertex gadget whenever
-`(k+1)²+k*choose(k+1,2)<d`.  In particular, for `d≥6`, no arbitrary
-delete-one/add-two replacement works at any vertex of any Moore-layer
-C4-free minimum-degree-`d` witness.
+empty for a hypothetical witness at this order.  Equality accounting goes
+further: every adjacent pair must have one common neighbor and no vertex lies
+beyond distance two, so every distinct pair has exactly one common neighbor.
+The graph would be a regular friendship graph.  The axiom-free Friendship
+Theorem forces its degree to be `2`; consequently no C4-free
+minimum-degree-`d` graph of order `d(d-1)+1` exists for any `d≥3`.
+Equivalently, every nonempty C4-free graph of minimum degree at least `d≥3`
+has at least `d(d-1)+2` vertices, and
+`f(d(d-1)+1)≤d`.  Thus the natural-witness versions of the replacement no-go
+at exact Moore equality are vacuous; the non-vacuous output is the strict
+Moore bound itself and the more general replacement inequalities away from
+equality.
 In existence form, deletion-only repair forces
 `d ≤ (k+1)²+k*choose(k+1,2) ≤ (k+1)³`.  In the fully compensated form,
 the excess of `d` above this polynomial is a lower bound for the

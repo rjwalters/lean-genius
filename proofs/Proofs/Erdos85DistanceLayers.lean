@@ -1,4 +1,5 @@
 import Proofs.Erdos85RepairSet
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 
 /-!
 # Distance layers in regular C4-free witnesses
@@ -695,6 +696,30 @@ theorem regular_of_minDegree_mooreOrder
     ∀ x : V, G.degree x = d := by
   intro x
   exact degree_eq_of_minDegree_mooreOrder G hfree hd hmin hcard x
+
+/-- **Odd-degree strictness of the Moore bound.**  When `d≥3` is odd, exact
+Moore-layer order is impossible: rigidity would give a `d`-regular graph on
+the odd number `d(d-1)+1` of vertices, contradicting the handshake lemma. -/
+theorem containsC4_of_minDegree_mooreOrder_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 2 ≤ d) (hodd : Odd d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1) :
+    containsC4 V G := by
+  by_contra hfree
+  have hreg : ∀ x : V, G.degree x = d :=
+    regular_of_minDegree_mooreOrder G hfree hd hmin hcard
+  have hevenCard : Even (Fintype.card V) := by
+    have hevenOdd := G.even_card_odd_degree_vertices
+    simpa [hreg, hodd] using hevenOdd
+  have hpred : Even (d - 1) := by
+    apply (Nat.even_sub' (m := d) (n := 1) (by omega)).2
+    simpa using hodd
+  have horderOdd : Odd (d * (d - 1) + 1) :=
+    (hpred.mul_left d).add_one
+  have hcardOdd : Odd (Fintype.card V) := by rwa [hcard]
+  exact (Nat.not_even_iff_odd.mpr hcardOdd) hevenCard
 
 /-- Degree inside the graph induced by `N(x)` is the number of common
 neighbours with `x`. -/

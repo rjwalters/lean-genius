@@ -1085,6 +1085,29 @@ no deletion-only delete-`k`/add-`k+1` compatible replacement works for any
 deleted set in any C4-free minimum-degree-`d` witness at this order.  For
 `k=1`, every vertex and every arbitrary two-vertex gadget fail once `d≥6`.
 
+The equality case is in fact impossible beyond the triangle.  Exact reservoir
+accounting forces the induced graph on every neighborhood to be one-regular
+and leaves no vertex beyond distance two.  Hence adjacent and nonadjacent
+pairs alike have exactly one common neighbor: the hypothetical graph is a
+regular friendship graph.  Applying the repository's axiom-free formal
+Friendship Theorem forces `d=2`.  Lean therefore proves the strict bound
+
+```text
+d(d-1)+2 ≤ |V|
+```
+
+for every nonempty C4-free graph of minimum degree at least `d≥3`, together
+with the threshold form
+
+```text
+minDegreeForC4 (d(d-1)+1) ≤ d.
+```
+
+Accordingly, the natural C4-free-witness replacement statements at exact
+Moore equality are vacuous for `d≥3`; their useful content survives in the
+general loss inequalities and in near-Moore orders, while equality itself is
+now completely classified.
+
 ```text
 ∑_w ∑_{a∈A(w)} replacementLoss(a)
   ≤ kd + k choose(m,2).

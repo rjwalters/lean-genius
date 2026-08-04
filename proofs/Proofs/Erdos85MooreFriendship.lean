@@ -1,0 +1,210 @@
+import Proofs.Erdos85DistanceLayers
+import Proofs.FriendshipTheoremOQ01
+
+/-!
+# Equality in the C4 Moore bound forces a friendship graph
+
+At order `d(d-1)+1`, the asymmetric Moore bound first forces regularity.
+Exact distance-layer accounting then forces every adjacent pair to have one
+common neighbor and leaves no vertex beyond distance two.  C4-freeness makes
+the common neighbor unique for nonadjacent pairs as well.  The axiom-free
+Friendship Theorem already formalized in this repository then forces `d=2`.
+-/
+
+open SimpleGraph
+
+namespace Erdos85
+
+/-- At exact Moore order there is no vertex beyond distance two from any
+chosen center. -/
+theorem externalRepairCandidates_eq_empty_of_moore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (x : V) :
+    externalRepairCandidates G x = ∅ := by
+  have hreg : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_mooreOrder G hfree hd hmin hcard
+  have hid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  have hlocal := sum_localNeighborhood_degrees_le_degree G hfree x
+  rw [hreg x] at hlocal
+  rw [hcard] at hid
+  have hsq : d * d = d * (d - 1) + d := by
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 2 := ⟨d - 2, by omega⟩
+    norm_num
+    ring
+  have hzero : (externalRepairCandidates G x).card = 0 := by
+    rw [hsq] at hid
+    omega
+  exact Finset.card_eq_zero.mp hzero
+
+/-- Equality also forces the graph induced by every neighborhood to be
+one-regular: each adjacent pair has exactly one common neighbor. -/
+theorem localNeighborhood_degree_eq_one_of_moore
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1)
+    (x : V) (y : {z : V // z ∈ G.neighborSet x}) :
+    (G.induce (G.neighborSet x)).degree y = 1 := by
+  classical
+  have hreg : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_mooreOrder G hfree hd hmin hcard
+  let S := ∑ z : {w : V // w ∈ G.neighborSet x},
+    (G.induce (G.neighborSet x)).degree z
+  have hid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  have hlocal := sum_localNeighborhood_degrees_le_degree G hfree x
+  rw [hreg x] at hlocal
+  rw [hcard] at hid
+  have hsq : d * d = d * (d - 1) + d := by
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 2 := ⟨d - 2, by omega⟩
+    norm_num
+    ring
+  have hext := externalRepairCandidates_eq_empty_of_moore
+    G hfree hd hmin hcard x
+  have hSeq : S = d := by
+    rw [hext] at hid
+    simp only [Finset.card_empty, zero_add] at hid
+    change S ≤ d at hlocal
+    change d * d + 1 = d * (d - 1) + 1 + S at hid
+    rw [hsq] at hid
+    omega
+  have hle : ∀ z : {w : V // w ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree z ≤ 1 := by
+    intro z
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x z.1 (G.ne_of_adj z.2)
+  by_contra hy
+  have hley := hle y
+  have hylt : (G.induce (G.neighborSet x)).degree y < 1 := by omega
+  have hsumlt : S < ∑ _z : {w : V // w ∈ G.neighborSet x}, 1 := by
+    change (∑ z : {w : V // w ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree z) < _
+    apply Finset.sum_lt_sum
+    · intro z _
+      exact hle z
+    · exact ⟨y, Finset.mem_univ _, hylt⟩
+  have hNcard : Fintype.card {w : V // w ∈ G.neighborSet x} = d := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+        G.neighborFinset x := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hreg x]
+  have hsumones : (∑ _z : {w : V // w ∈ G.neighborSet x}, 1) = d := by
+    rw [Finset.sum_const, Finset.card_univ, hNcard]
+    simp
+  rw [hsumones, hSeq] at hsumlt
+  omega
+
+/-- Equality in the Moore bound makes the graph a friendship graph: every
+distinct pair has exactly one common neighbor. -/
+theorem isFriendshipGraph_of_c4Free_minDegree_mooreOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1) :
+    FriendshipTheoremOQ01.IsFriendshipGraph G := by
+  intro u v huv
+  have hupper := common_le_one_of_not_containsC4 hfree u v huv
+  have hlower : 1 ≤ (G.neighborFinset u ∩ G.neighborFinset v).card := by
+    by_cases huvAdj : G.Adj u v
+    · let y : {z : V // z ∈ G.neighborSet u} := ⟨v, huvAdj⟩
+      have hy := localNeighborhood_degree_eq_one_of_moore
+        G hfree hd hmin hcard u y
+      rw [degree_induce_neighborSet_eq_card_common] at hy
+      exact hy.ge
+    · have hext := externalRepairCandidates_eq_empty_of_moore
+        G hfree hd hmin hcard u
+      have hvu : v ≠ u := Ne.symm huv
+      let a : {z : V // z ≠ u} := ⟨v, hvu⟩
+      by_contra hzero
+      have hinter : G.neighborFinset u ∩ G.neighborFinset v = ∅ :=
+        Finset.card_eq_zero.mp (by omega)
+      have ha : a ∈ externalRepairCandidates G u := by
+        rw [mem_externalRepairCandidates]
+        refine ⟨(fun hva => huvAdj hva.symm), ?_⟩
+        intro b hbu hbva
+        have hbmem : b.1 ∈ G.neighborFinset u ∩ G.neighborFinset v :=
+          Finset.mem_inter.mpr ⟨
+            (G.mem_neighborFinset u b.1).mpr hbu.symm,
+            (G.mem_neighborFinset v b.1).mpr hbva⟩
+        rw [hinter] at hbmem
+        exact Finset.notMem_empty _ hbmem
+      rw [hext] at ha
+      exact Finset.notMem_empty _ ha
+  have hcardOne : (G.neighborFinset u ∩ G.neighborFinset v).card = 1 :=
+    le_antisymm hupper hlower
+  have hset : G.commonNeighbors u v =
+      ↑(G.neighborFinset u ∩ G.neighborFinset v) := by
+    ext z
+    simp [SimpleGraph.mem_commonNeighbors, SimpleGraph.mem_neighborFinset]
+  rw [hset, Set.ncard_coe_finset, hcardOne]
+
+/-- **Strict C4 Moore bound for every degree above two.**  Exact order
+`d(d-1)+1` would be a regular friendship graph, while the axiom-free
+Friendship Theorem forces every such graph of degree at least two to have
+degree exactly two. -/
+theorem containsC4_of_minDegree_mooreOrder_of_three_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 3 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 1) :
+    containsC4 V G := by
+  by_contra hfree
+  letI : Nonempty V := Fintype.card_pos_iff.mp (by rw [hcard]; positivity)
+  have hreg : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_mooreOrder G hfree (by omega) hmin hcard
+  have hfriend := isFriendshipGraph_of_c4Free_minDegree_mooreOrder
+    G hfree (by omega) hmin hcard
+  let u : V := Classical.choice (inferInstance : Nonempty V)
+  have hd2 := FriendshipTheoremOQ01.k_eq_two_no_axiom
+    G hfriend u d (by omega) hreg
+  omega
+
+/-- Numerical strict Moore bound: every nonempty C4-free graph of minimum
+degree at least `d≥3` has at least `d(d-1)+2` vertices. -/
+theorem mul_pred_add_two_le_card_of_c4Free_minDegree
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hd : 3 ≤ d)
+    (hmin : d ≤ G.minDegree)
+    (hfree : ¬ containsC4 V G) :
+    d * (d - 1) + 2 ≤ Fintype.card V := by
+  let x : V := Classical.choice (inferInstance : Nonempty V)
+  have hdx : d ≤ G.degree x := hmin.trans (G.minDegree_le_degree x)
+  have hbound := one_add_degree_add_mul_sub_two_le_card_of_minDegree
+    G hfree hmin x
+  have hrewrite :
+      1 + G.degree x + G.degree x * (d - 2) =
+        1 + G.degree x * (d - 1) := by
+    obtain ⟨e, rfl⟩ : ∃ e : ℕ, d = e + 3 := ⟨d - 3, by omega⟩
+    have hsub2 : e + 3 - 2 = e + 1 := by omega
+    have hsub1 : e + 3 - 1 = e + 2 := by omega
+    rw [hsub2, hsub1]
+    ring
+  have hmul := Nat.mul_le_mul_right (d - 1) hdx
+  have hbase : d * (d - 1) + 1 ≤ Fintype.card V := by
+    rw [hrewrite] at hbound
+    omega
+  have hne : Fintype.card V ≠ d * (d - 1) + 1 := by
+    intro heq
+    exact hfree (containsC4_of_minDegree_mooreOrder_of_three_le
+      G hd hmin heq)
+  omega
+
+/-- Threshold form of the strict Moore bound.  This improves the elementary
+cherry-counting upper bound by one order at every `d≥3`, including even `d`. -/
+theorem minDegreeForC4_mooreOrder_le {d : ℕ} (hd : 3 ≤ d) :
+    minDegreeForC4 (d * (d - 1) + 1) ≤ d := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_minDegree_mooreOrder_of_three_le
+    G hd hmin (by simp)
+
+end Erdos85
