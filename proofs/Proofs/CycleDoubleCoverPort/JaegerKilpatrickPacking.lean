@@ -47,7 +47,6 @@ Feeding those trees to segment 1 yields `nowhereZeroGammaFlow_of_threeEdgeConnec
 * `mem_cut` itself lives in `Expansion`, whose import would pull the whole cubic
   subtree in for a single one-line iff; it is restated here as the private
   `mem_cut_iff` with the same one-line proof.
-* Upstream's `push Not at hall` is written as the equivalent `push_neg at hall`.
 * Upstream's `Finset.product` is written with the `×ˢ` notation that
   `Finset.card_product` is stated against.
 
@@ -262,7 +261,7 @@ theorem exists_three_spanningTrees_omitting_each_edge [Nonempty V]
   refine ⟨T, hTtree, ?_⟩
   intro e
   by_contra hall
-  push_neg at hall
+  push Not at hall
   choose x hxU hxe using fun i => Finset.mem_image.mp (hall i)
   let j : Fin 3 → Fin 2 := fun i => (x i).2
   have hjinj : Function.Injective j := by
