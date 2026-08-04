@@ -161,3 +161,20 @@ infinite.
    as a separate prerequisite project (parented at
    `shapley-folkman-oq-01-oq-01` or similar in a future seeker
    iteration).
+
+## S3-A: Lyapunov dimension one — DONE (2026-07-24, researcher-2)
+
+`proofs/Proofs/ShapleyFolkmanOQ01Lyapunov.lean` (246 lines, 0 sorries,
+0 axioms). Sierpiński's IVT for atomless measures on ℝ
+(`exists_subset_measure_eq`), value-range interval theorem
+(`setOf_measure_subset_eq_Icc`, `lyapunov_range_eq_Icc`), and the d = 1
+Lyapunov statement (`lyapunov_range_convex`, `lyapunov_range_isCompact`),
+with a Lebesgue-on-[0,1] non-vacuity witness. Mechanism: cumulative-slice
+IVT (`t ↦ μ (s ∩ Iic t)` continuous ⇐ `Iio_ae_eq_Iic` + continuity from
+above; exact level by `mem_range_of_exists_le_of_exists_ge`).
+
+Key fact for S3-B: Mathlib's `NoAtoms` (singleton-null) is strictly weaker
+than the splitting notion off ℝ — the countable-cocountable σ-algebra with
+the 0/1 measure is `NoAtoms` but has value range `{0, 1}`. General-space
+Sierpiński therefore needs a new strong-atomless predicate + greedy
+exhaustion. On ℝ the weak notion suffices (this file proves it).
