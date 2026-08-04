@@ -751,3 +751,25 @@ This **does** close the exact order-32 subproblem and gives the verified
 monotonicity step `f(31) ≤ f(32)`.  It does not solve the full eventual
 monotonicity problem Erdős 85; the general repair/extension theorem remains
 open.
+
+## Exact repair-reservoir accounting
+
+The distance-layer analysis is now an identity rather than only an
+inequality.  For every center `x`, the closed neighborhood, second layer, and
+external repair candidates form an exhaustive disjoint partition of the
+vertex set.  For a `d`-regular `C₄`-free graph, summing the exact branch
+sizes gives
+
+```text
+|externalRepairCandidates(x)| + d² + 1
+  = |V| + ∑_{y∈N(x)} deg_{G[N(x)]}(y).
+```
+
+Moreover `G[N(x)]` has maximum degree at most one, so it is a matching plus
+isolated vertices.  Thus the correction term is exactly twice the number of
+triangles through `x` and is at most `d`.  This pinpoints all slack in the
+previous Moore-reservoir inequality: local triangles are the only mechanism
+that can create external repair candidates below the girth-five Moore bound.
+It also confirms that any successful general extension argument must exploit
+more structure than the canonical one-reservoir repair criterion near the
+orders where extremal witnesses are regular and locally sparse.
