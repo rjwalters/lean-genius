@@ -467,6 +467,7 @@ omit [DecidableEq V] [DecidableEq E] in
 theorem kaiserPartition_succ {k : ℕ} (χ : E → Fin k) (n : ℕ) :
     G.kaiserPartition χ (n + 1) = G.refineOnce χ (G.kaiserPartition χ n) := rfl
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem kaiserPartition_succ_refines {k : ℕ} (χ : E → Fin k) (n : ℕ) {u v : V}
     (h : G.kaiserPartition χ (n + 1) u v) : G.kaiserPartition χ n u v := by
   rw [kaiserPartition_succ] at h
@@ -539,12 +540,14 @@ theorem exists_stable_kaiserPartition {k : ℕ} (χ : E → Fin k) :
       rw [kaiserPartition_succ, G.refineOnce_of_some hcol] at hnext
       exact hnreach hnext.2
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem internallyConnected_of_stable {k : ℕ} {χ : E → Fin k} {n : ℕ}
     (hstable : G.firstDisconnectedColor χ (G.kaiserPartition χ n) = none) (i : Fin k) :
     G.InternallyConnected (colorClass χ i) (G.kaiserPartition χ n) := by
   by_contra hnot
   exact (G.firstDisconnectedColor_eq_none_iff χ _).mp hstable ⟨i, hnot⟩
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem kaiserPartition_stable_after {k : ℕ} {χ : E → Fin k} {n : ℕ}
     (hstable : G.firstDisconnectedColor χ (G.kaiserPartition χ n) = none) :
     ∀ t : ℕ, G.kaiserPartition χ (n + t) = G.kaiserPartition χ n := by
@@ -569,6 +572,7 @@ theorem finiteLevel_unique {k : ℕ} {χ : E → Fin k} {e : E} {m n : ℕ}
   · exact hm.2 (G.kaiserPartition_refines_of_le χ (Nat.succ_le_of_lt h) hn.1)
   · exact hn.2 (G.kaiserPartition_refines_of_le χ (Nat.succ_le_of_lt h) hm.1)
 
+omit [DecidableEq V] [DecidableEq E] in
 theorem exists_finiteLevel_of_not_rel {k : ℕ} {χ : E → Fin k} {e : E} {n : ℕ}
     (hnot : ¬ G.kaiserPartition χ n (G.endAt e 0) (G.endAt e 1)) :
     ∃ m : ℕ, G.HasFiniteLevel χ e m := by
@@ -679,6 +683,7 @@ theorem internallyConnected_top_iff_connects [Nonempty V] (S : Finset E) :
     rw [ReachableIn, G.insideEdges_top S u]
     exact h.preconnected u v
 
+omit [DecidableEq V] [DecidableEq E] in
 /-- The first refinement step of a prefix-of-trees colouring splits exactly along
 the components of the residual class. -/
 theorem first_partition_is_residual_components [Nonempty V] {k : ℕ}
@@ -807,6 +812,7 @@ theorem isAcyclic_of_le {H K : SimpleGraph V} (hHK : H ≤ K) (hK : K.IsAcyclic)
 
 /-! ## Elementary cardinality facts -/
 
+omit [DecidableEq V] in
 theorem isCyclicEdge_mono {S T : Finset E} (hST : S ⊆ T) {e : E} (he : G.IsCyclicEdge S e) :
     G.IsCyclicEdge T e := by
   refine ⟨hST he.1, G.reachableIn_mono ?_ he.2⟩
