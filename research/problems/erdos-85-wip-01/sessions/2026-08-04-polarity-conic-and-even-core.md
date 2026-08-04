@@ -1263,9 +1263,21 @@ characteristic polynomial forces `d-2` to be a square; writing
 Since `d` is even, `t` is even, so `t=2` and `d=6`.  The already formalized
 exact result `f(32)=6` then excludes this last case.  This would eliminate
 the even first-order order as well and strengthen the strict lower bound by
-one for every `d≥3`.  The graph/matrix input is now checked; the remaining
-task is to formalize the integral antipodal quotient and this elementary
-characteristic-polynomial multiplicity argument.
+one for every `d≥3`.  The integral antipodal quotient is now formalized as
+well.  Lean constructs the quotient graph on the two-element antipodal fibers
+and checks
+
+```text
+|Q| = |V|/2,    degree_Q(X)=d,
+|N_Q(X) intersection N_Q(Y)|=2  for X != Y,
+Q^2 = (d-2)I + 2J.
+```
+
+Thus the quotient is strongly regular with parameters
+`(d(d-1)/2+1, d, 2, 2)`.  The remaining task is now purely algebraic: adapt
+the axiom-free characteristic-polynomial machinery already used for the
+friendship theorem to this matrix identity, obtaining that `d-2` is a square
+and that its square root divides `d`.
 
 There is already an unconditional modular consequence short of the full
 square argument.  The centered plus-space matrix
