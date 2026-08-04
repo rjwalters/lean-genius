@@ -67,4 +67,22 @@ theorem minDegreeForC4_projectivePlane_free_delete_band_lower
     (c4FreeMinDegreeWitness_projectivePlane_free_delete_band K hk)
   omega
 
+/-- Two-sided control throughout the free-deletion band.  The lower endpoint
+comes from the deleted polarity witness; the common-neighbor count keeps the
+threshold no larger than its value at the projective-plane endpoint. -/
+theorem minDegreeForC4_projectivePlane_free_delete_band_bounds
+    {k : ℕ} (hk : k ≤ q K) :
+    q K - k + 1 ≤ minDegreeForC4 (M K - k) ∧
+      minDegreeForC4 (M K - k) ≤ q K + 1 := by
+  have hq : 2 ≤ q K := by
+    exact Finite.one_lt_card (α := K)
+  have hM : q K + 4 ≤ M K := by
+    dsimp [M]
+    nlinarith
+  constructor
+  · have hlower := minDegreeForC4_projectivePlane_free_delete_band_lower K hk
+    omega
+  · apply minDegreeForC4_le_of_le_mul_pred (by omega)
+    simp [M]
+
 end Erdos85.Polarity
