@@ -50,7 +50,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S15 complete — bi-infinite parity necessity: every finite-degree vertex even (no start exception; exact Z-shift pairing), one odd vertex rules out bi-infinite Euler paths, parity re-proof of the S13 ray impossibility, and the combined parity_picture (one-way: odd set subsingleton; bi-infinite: odd set empty). File KonigsbergOQ03.lean 1186 LOC, 0 sorry / 0 axiom. Necessity side of EGW parity now complete for BOTH path notions — natural park point.",
+    "progressSummary": "S16 (researcher-1, 2026-07-24): ACT — EGW connectivity necessity. InfiniteGraph.Joined finite-chain relation with full equivalence-on-support API; walk segments are chains for both index types; connectivity necessity for BOTH path notions (connectivity_picture headline); twoLinesGraph disconnected witness shows the S15 bi-infinite parity condition is NOT sufficient (every vertex even degree, no Euler path), completing the insufficiency picture begun by lineGraph_parity_not_sufficient (S14). File 1511 LOC, 0 sorry / 0 axiom. Necessity side now covers parity AND connectivity for both notions; remaining routes still the blocked pair (EGW sufficiency compactness, r>=3 NP-complete). PROGRESS: S15 complete — bi-infinite parity necessity: every finite-degree vertex even (no start exception; exact Z-shift pairing), one odd vertex rules out bi-infinite Euler paths, parity re-proof of the S13 ray impossibility, and the combined parity_picture (one-way: odd set subsingleton; bi-infinite: odd set empty). File KonigsbergOQ03.lean 1186 LOC, 0 sorry / 0 axiom. Necessity side of EGW parity now complete for BOTH path notions — natural park point.",
     "builtItems": [
       "InfiniteWalk structure in Proofs/KonigsbergOQ03.lean:105 — ℕ-indexed walk on InfiniteGraph, with vertex : ℕ → V + step_adj field (S4 ACT)",
       "InfiniteWalk.sameEdge in Proofs/KonigsbergOQ03.lean:115 — two step indices traverse same undirected edge (S4 ACT)",
@@ -74,7 +74,11 @@
       "not_hasInfiniteEulerPath_rayGraph in KonigsbergOQ03.lean — ray graph has no bi-infinite Euler path (degree-1 vertex argument)",
       "not_hasOneWayEulerPath_lineGraph in KonigsbergOQ03.lean — line graph has no one-way Euler path (unique cut-crossing + confinement + pigeonhole)",
       "not_oneWay_imp_biInfinite / not_biInfinite_imp_oneWay in KonigsbergOQ03.lean — formal incomparability capstones",
-      "KonigsbergOQ03.lean S15 (930->1186 LOC): BiInfiniteWalk.outSteps/inSteps/step_ne/disjoint/image_succ_inSteps, IsBiInfiniteEulerWalk census (ncard_neighbors_eq = 2x, even_ncard_neighbors, infiniteDegree_eq_two_mul), noOddVertex_of_hasInfiniteEulerPath, not_hasInfiniteEulerPath_of_odd_vertex, not_hasInfiniteEulerPath_rayGraph_parity, parity_picture; 0 ax / 0 sorry host-verified v4.31"
+      "KonigsbergOQ03.lean S15 (930->1186 LOC): BiInfiniteWalk.outSteps/inSteps/step_ne/disjoint/image_succ_inSteps, IsBiInfiniteEulerWalk census (ncard_neighbors_eq = 2x, even_ncard_neighbors, infiniteDegree_eq_two_mul), noOddVertex_of_hasInfiniteEulerPath, not_hasInfiniteEulerPath_of_odd_vertex, not_hasInfiniteEulerPath_rayGraph_parity, parity_picture; 0 ax / 0 sorry host-verified v4.31",
+      "S16: InfiniteGraph.Joined + refl/of_adj/symm/trans API (KonigsbergOQ03.lean)",
+      "S16: InfiniteWalk.joined_of_le/joined_vertex, BiInfiniteWalk.joined_of_le/joined_vertex (walk segments are chains, both index types)",
+      "S16: IsEulerWalk.exists_vertex_eq/joined, IsBiInfiniteEulerWalk.exists_vertex_eq/joined, joined_of_hasOneWayEulerPath, joined_of_hasInfiniteEulerPath, not_has{OneWay,Infinite}EulerPath_of_not_joined, connectivity_picture",
+      "S16: twoLinesGraph witness — neighbors/even_ncard/joined_emod parity invariant/not_joined_zero_one, twoLinesGraph_not_has{Infinite,OneWay}EulerPath, biInfinite_parity_not_sufficient"
     ],
     "insights": [
       "**True placeholders are dishonest formalisation**: KonigsbergOQ03.lean has 0 sorries and 0 axioms but until 2026-06-03 had 3 (later 2) :=True propositions, which makes its 0-sorry count misleading. Per CLAUDE.md Aristotle rule #3 (No placeholder True theorems), the same principle applies broadly — True propositions are gaps masquerading as completeness. As of S4 ACT, all 3 are discharged.",
@@ -95,7 +99,10 @@
       "S13: rayGraph and lineGraph now separate HasOneWayEulerPath and HasInfiniteEulerPath in both directions — the number of ends (one vs two) is exactly what distinguishes the two Euler-path notions, the formal core of the EGW picture.",
       "S15 bi-infinite parity: over Z the arrival-shift is EXACT — (.+1) image of inSteps v equals outSteps v with no removed index (the N-indexed census had outSteps minus {0}) — so degree v = 2|outSteps v| and EVERY finite-degree vertex on a bi-infinite Euler walk is even; no start exception exists because there is no start.",
       "Parity now separates the two Euler-path notions quantitatively: one-way allows at most ONE odd finite-degree vertex (S14, the start), bi-infinite allows NONE (S15, parity_picture). One odd vertex kills bi-infinite outright (not_hasInfiniteEulerPath_of_odd_vertex).",
-      "The ray graph impossibility (S13) now has a second independent proof by pure degree counting: vertex 0 has odd degree 1 (not_hasInfiniteEulerPath_rayGraph_parity); S13 went via walk surjectivity onto arcs."
+      "The ray graph impossibility (S13) now has a second independent proof by pure degree counting: vertex 0 has odd degree 1 (not_hasInfiniteEulerPath_rayGraph_parity); S13 went via walk surjectivity onto arcs.",
+      "S16: EGW necessity has a connectivity clause independent of parity — every edge lies on the single Euler walk, so any two non-isolated vertices are joined by a finite chain (a segment of the walk). Formalized via InfiniteGraph.Joined (finite chains f : N -> V with consecutive adjacency).",
+      "S16: twoLinesGraph (m ~ n iff |m-n| = 2; two disjoint lines on even/odd integers) satisfies the S14/S15 parity conditions at EVERY vertex (all degrees 2) yet has no Euler path of either kind — parity invariant u % 2 along chains separates the components. Completes the parity-insufficiency picture: lineGraph covered one-way (S14), twoLinesGraph covers bi-infinite.",
+      "S16 Lean idioms: chain concatenation via if i <= n then f i else g (i - n) with explicit `show` to force beta reduction before rw on if-conditions; chain reversal f (n - i) needs the n-i-1+1 = n-i rewrite before G.symm; omega handles Int.toNat goals in the Z-indexed segment lemma directly."
     ],
     "mathlibGaps": [
       "r-uniform hypergraph type (Mathlib.Combinatorics has nothing).",
@@ -103,9 +110,9 @@
       "Erdős-Grünwald-Weiszfeld (1936) theorem characterising countable-graph Euler paths (the predicates HasInfiniteEulerPath / HasOneWayEulerPath are now defined in this file, but a Mathlib-level statement and proof of EGW remains an open formalisation target)."
     ],
     "nextSteps": [
+      "Optional S17: end-structure necessity — a one-way Euler path forces at most one 'infinite-edge end' after deleting finitely many edges (the remaining elementary EGW necessary condition beyond parity + connectivity); needs a finite-edge-deletion subgraph construction, ~1 session.",
       "EGW sufficiency (Konig lemma compactness) — multi-week, structured blocked route.",
-      "r>=3 hypergraph Euler tours — NP-complete (Lonc-Naroski), blocked route.",
-      "Optional polish: extract the shared census pattern (N and Z) into a single parametrized lemma if a third index type ever appears."
+      "r>=3 hypergraph Euler tours — NP-complete (Lonc-Naroski), blocked route."
     ],
     "progressHistory": [
       {

@@ -1183,4 +1183,329 @@ theorem parity_picture {V : Type*} (G : InfiniteGraph V) :
 #check @not_hasInfiniteEulerPath_rayGraph_parity
 #check @parity_picture
 
+/-! ### EGW necessity: connectivity (S16)
+
+The degree-parity conditions (S14/S15) are only part of the
+Erdős–Grünwald–Weiszfeld necessary conditions: EGW also requires the graph
+to be *connected apart from isolated vertices*. The reason is immediate —
+every edge lies on the single Euler walk, so any two non-isolated vertices
+are linked by a finite segment of that walk.
+
+This section formalises the joinedness relation `InfiniteGraph.Joined`
+(finite chains of edges), proves connectivity necessity for BOTH path
+notions (`connectivity_picture`), and exhibits `twoLinesGraph` — two
+disjoint copies of the line graph, living on the even and the odd integers —
+for which *every* vertex has even degree yet no Euler path of either kind
+exists. Together with `lineGraph_parity_not_sufficient` (one-way case, S14)
+this shows the parity clauses of `parity_picture` are insufficient for both
+notions: connectivity is an independent necessary condition. -/
+
+namespace InfiniteGraph
+
+/-- Two vertices are *joined* in `G` if a finite chain of edges connects
+them: a sequence `f : ℕ → V` with `f 0 = u`, `f n = v`, and consecutive
+values adjacent below index `n`. Taking `n = 0` gives reflexivity, so
+isolated vertices are joined to themselves but to nothing else. -/
+def Joined {V : Type*} (G : InfiniteGraph V) (u v : V) : Prop :=
+  ∃ (n : ℕ) (f : ℕ → V), f 0 = u ∧ f n = v ∧ ∀ i < n, G.adj (f i) (f (i + 1))
+
+/-- Joinedness is reflexive (the empty chain). -/
+theorem Joined.refl {V : Type*} (G : InfiniteGraph V) (v : V) : G.Joined v v :=
+  ⟨0, fun _ => v, rfl, rfl, fun i hi => absurd hi (Nat.not_lt_zero i)⟩
+
+/-- Adjacent vertices are joined (a chain of length one). -/
+theorem Joined.of_adj {V : Type*} {G : InfiniteGraph V} {u v : V}
+    (h : G.adj u v) : G.Joined u v := by
+  refine ⟨1, fun i => if i = 0 then u else v, by simp, by simp, ?_⟩
+  intro i hi
+  interval_cases i
+  simpa using h
+
+/-- Joinedness is symmetric: reverse the chain, flipping each edge with
+`G.symm`. -/
+theorem Joined.symm {V : Type*} {G : InfiniteGraph V} {u v : V}
+    (h : G.Joined u v) : G.Joined v u := by
+  obtain ⟨n, f, h0, hn, hadj⟩ := h
+  refine ⟨n, fun i => f (n - i), by simpa using hn, by simpa using h0, ?_⟩
+  intro i hi
+  show G.adj (f (n - i)) (f (n - (i + 1)))
+  have hstep := hadj (n - i - 1) (by omega)
+  have h1 : n - i - 1 + 1 = n - i := by omega
+  have h2 : n - (i + 1) = n - i - 1 := by omega
+  rw [h1] at hstep
+  rw [h2]
+  exact G.symm _ _ hstep
+
+/-- Joinedness is transitive: concatenate the two chains. -/
+theorem Joined.trans {V : Type*} {G : InfiniteGraph V} {u v x : V}
+    (h1 : G.Joined u v) (h2 : G.Joined v x) : G.Joined u x := by
+  obtain ⟨n, f, hf0, hfn, hf⟩ := h1
+  obtain ⟨m, g, hg0, hgm, hg⟩ := h2
+  refine ⟨n + m, fun i => if i ≤ n then f i else g (i - n), by simp [hf0], ?_, ?_⟩
+  · show (if n + m ≤ n then f (n + m) else g (n + m - n)) = x
+    by_cases hm : m = 0
+    · subst hm
+      rw [if_pos (by omega : n + 0 ≤ n), Nat.add_zero, hfn, ← hg0]
+      exact hgm
+    · rw [if_neg (by omega : ¬ n + m ≤ n)]
+      have hnm : n + m - n = m := by omega
+      rw [hnm]
+      exact hgm
+  · intro i hi
+    show G.adj (if i ≤ n then f i else g (i - n))
+      (if i + 1 ≤ n then f (i + 1) else g (i + 1 - n))
+    by_cases hc : i + 1 ≤ n
+    · rw [if_pos (by omega : i ≤ n), if_pos hc]
+      exact hf i (by omega)
+    · by_cases hc2 : i ≤ n
+      · have hin : i = n := by omega
+        subst hin
+        rw [if_pos hc2, if_neg hc]
+        have h1 : i + 1 - i = 1 := by omega
+        rw [h1]
+        have hstep := hg 0 (by omega)
+        rw [hg0, ← hfn] at hstep
+        exact hstep
+      · rw [if_neg hc2, if_neg hc]
+        have h1 : i + 1 - n = (i - n) + 1 := by omega
+        rw [h1]
+        exact hg (i - n) (by omega)
+
+end InfiniteGraph
+
+namespace InfiniteWalk
+
+/-- The walk segment between two increasing step indices is a chain, so the
+two vertices are joined. -/
+theorem joined_of_le {V : Type*} {G : InfiniteGraph V} (w : InfiniteWalk G)
+    {m n : ℕ} (h : m ≤ n) : G.Joined (w.vertex m) (w.vertex n) := by
+  refine ⟨n - m, fun i => w.vertex (m + i), by simp, ?_, ?_⟩
+  · show w.vertex (m + (n - m)) = w.vertex n
+    congr 1
+    omega
+  · intro i hi
+    show G.adj (w.vertex (m + i)) (w.vertex (m + (i + 1)))
+    have h2 : m + (i + 1) = (m + i) + 1 := by omega
+    rw [h2]
+    exact w.step_adj (m + i)
+
+/-- Any two vertices on a one-way walk are joined. -/
+theorem joined_vertex {V : Type*} {G : InfiniteGraph V} (w : InfiniteWalk G)
+    (m n : ℕ) : G.Joined (w.vertex m) (w.vertex n) := by
+  rcases Nat.le_total m n with h | h
+  · exact w.joined_of_le h
+  · exact (w.joined_of_le h).symm
+
+end InfiniteWalk
+
+namespace BiInfiniteWalk
+
+/-- The walk segment between two increasing integer step indices is a chain,
+so the two vertices are joined. -/
+theorem joined_of_le {V : Type*} {G : InfiniteGraph V} (w : BiInfiniteWalk G)
+    {m n : ℤ} (h : m ≤ n) : G.Joined (w.vertex m) (w.vertex n) := by
+  refine ⟨(n - m).toNat, fun i => w.vertex (m + i), by simp, ?_, ?_⟩
+  · show w.vertex (m + ((n - m).toNat : ℤ)) = w.vertex n
+    congr 1
+    omega
+  · intro i hi
+    show G.adj (w.vertex (m + i)) (w.vertex (m + ((i + 1 : ℕ) : ℤ)))
+    have h2 : m + ((i + 1 : ℕ) : ℤ) = (m + i) + 1 := by push_cast; ring
+    rw [h2]
+    exact w.step_adj (m + i)
+
+/-- Any two vertices on a bi-infinite walk are joined. -/
+theorem joined_vertex {V : Type*} {G : InfiniteGraph V} (w : BiInfiniteWalk G)
+    (m n : ℤ) : G.Joined (w.vertex m) (w.vertex n) := by
+  rcases le_total m n with h | h
+  · exact w.joined_of_le h
+  · exact (w.joined_of_le h).symm
+
+end BiInfiniteWalk
+
+namespace IsEulerWalk
+
+/-- Every non-isolated vertex appears on a one-way Euler walk: its incident
+edge is covered by some step, and one endpoint of that step is the vertex. -/
+theorem exists_vertex_eq {V : Type*} {G : InfiniteGraph V} {w : InfiniteWalk G}
+    (hE : IsEulerWalk G w) {v x : V} (h : G.adj v x) :
+    ∃ n, w.vertex n = v := by
+  rcases hE.covers v x h with ⟨n, h1, _⟩ | ⟨n, _, h2⟩
+  · exact ⟨n, h1⟩
+  · exact ⟨n + 1, h2⟩
+
+/-- **Connectivity necessity, one-way**: a one-way Euler walk joins any two
+non-isolated vertices — both appear on the walk, and the walk segment
+between their appearances is a chain of edges. -/
+theorem joined {V : Type*} {G : InfiniteGraph V} {w : InfiniteWalk G}
+    (hE : IsEulerWalk G w) {u v : V}
+    (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y) : G.Joined u v := by
+  obtain ⟨x, hx⟩ := hu
+  obtain ⟨y, hy⟩ := hv
+  obtain ⟨a, ha⟩ := hE.exists_vertex_eq hx
+  obtain ⟨b, hb⟩ := hE.exists_vertex_eq hy
+  rw [← ha, ← hb]
+  exact w.joined_vertex a b
+
+end IsEulerWalk
+
+namespace IsBiInfiniteEulerWalk
+
+/-- Every non-isolated vertex appears on a bi-infinite Euler walk. -/
+theorem exists_vertex_eq {V : Type*} {G : InfiniteGraph V}
+    {w : BiInfiniteWalk G} (hE : IsBiInfiniteEulerWalk G w) {v x : V}
+    (h : G.adj v x) : ∃ n : ℤ, w.vertex n = v := by
+  rcases hE.covers v x h with ⟨n, h1, _⟩ | ⟨n, _, h2⟩
+  · exact ⟨n, h1⟩
+  · exact ⟨n + 1, h2⟩
+
+/-- **Connectivity necessity, bi-infinite**: a bi-infinite Euler walk joins
+any two non-isolated vertices. -/
+theorem joined {V : Type*} {G : InfiniteGraph V} {w : BiInfiniteWalk G}
+    (hE : IsBiInfiniteEulerWalk G w) {u v : V}
+    (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y) : G.Joined u v := by
+  obtain ⟨x, hx⟩ := hu
+  obtain ⟨y, hy⟩ := hv
+  obtain ⟨a, ha⟩ := hE.exists_vertex_eq hx
+  obtain ⟨b, hb⟩ := hE.exists_vertex_eq hy
+  rw [← ha, ← hb]
+  exact w.joined_vertex a b
+
+end IsBiInfiniteEulerWalk
+
+/-- A graph with a one-way Euler path joins any two non-isolated vertices. -/
+theorem joined_of_hasOneWayEulerPath {V : Type*} {G : InfiniteGraph V}
+    (h : HasOneWayEulerPath G) {u v : V}
+    (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y) : G.Joined u v := by
+  obtain ⟨w, hE⟩ := h
+  exact hE.joined hu hv
+
+/-- A graph with a bi-infinite Euler path joins any two non-isolated
+vertices. -/
+theorem joined_of_hasInfiniteEulerPath {V : Type*} {G : InfiniteGraph V}
+    (h : HasInfiniteEulerPath G) {u v : V}
+    (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y) : G.Joined u v := by
+  obtain ⟨w, hE⟩ := h
+  exact hE.joined hu hv
+
+/-- **Disconnection obstruction, one-way**: two non-isolated vertices not
+joined by any chain rule out a one-way Euler path. -/
+theorem not_hasOneWayEulerPath_of_not_joined {V : Type*} {G : InfiniteGraph V}
+    {u v : V} (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y)
+    (hnj : ¬ G.Joined u v) : ¬ HasOneWayEulerPath G :=
+  fun h => hnj (joined_of_hasOneWayEulerPath h hu hv)
+
+/-- **Disconnection obstruction, bi-infinite**: two non-isolated vertices not
+joined by any chain rule out a bi-infinite Euler path. -/
+theorem not_hasInfiniteEulerPath_of_not_joined {V : Type*} {G : InfiniteGraph V}
+    {u v : V} (hu : ∃ x, G.adj u x) (hv : ∃ y, G.adj v y)
+    (hnj : ¬ G.Joined u v) : ¬ HasInfiniteEulerPath G :=
+  fun h => hnj (joined_of_hasInfiniteEulerPath h hu hv)
+
+/-- The combined S16 connectivity picture: an Euler path of either kind
+forces any two non-isolated vertices to be joined. The connectivity clause
+of the EGW characterisation, in necessity form. -/
+theorem connectivity_picture {V : Type*} (G : InfiniteGraph V) :
+    (HasOneWayEulerPath G →
+      ∀ u v : V, (∃ x, G.adj u x) → (∃ y, G.adj v y) → G.Joined u v) ∧
+    (HasInfiniteEulerPath G →
+      ∀ u v : V, (∃ x, G.adj u x) → (∃ y, G.adj v y) → G.Joined u v) :=
+  ⟨fun h _ _ hu hv => joined_of_hasOneWayEulerPath h hu hv,
+   fun h _ _ hu hv => joined_of_hasInfiniteEulerPath h hu hv⟩
+
+/-! #### The disconnected witness: two disjoint lines
+
+`twoLinesGraph` places a line graph on the even integers and another on the
+odd integers: `m ~ n` iff they differ by exactly `2`. Every vertex has
+degree two, so the S14/S15 parity conditions are satisfied everywhere —
+yet no Euler path of either kind exists, because the two components cannot
+both be exhausted by a single walk. Parity cannot see this obstruction:
+connectivity is an independent necessary condition. -/
+
+/-- Two disjoint copies of the line graph, on the even and the odd
+integers: `m` and `n` are adjacent iff they differ by exactly `2`. -/
+def twoLinesGraph : InfiniteGraph ℤ where
+  adj m n := m + 2 = n ∨ n + 2 = m
+  symm := fun _ _ h => h.symm
+  loopless := fun _ h => by omega
+
+/-- Every vertex of `twoLinesGraph` has exactly the two neighbours `n ± 2`. -/
+theorem twoLinesGraph_neighbors (n : ℤ) :
+    {u | twoLinesGraph.adj n u} = {n + 2, n - 2} := by
+  ext u
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | h) <;> omega
+  · rintro (rfl | rfl)
+    · exact Or.inl rfl
+    · exact Or.inr (by ring)
+
+/-- Every vertex of `twoLinesGraph` has even degree (namely two): the
+S14/S15 parity conditions hold everywhere. -/
+theorem twoLinesGraph_even_ncard_neighbors (n : ℤ) :
+    Even {u | twoLinesGraph.adj n u}.ncard := by
+  rw [twoLinesGraph_neighbors n, Set.ncard_pair (by omega : n + 2 ≠ n - 2)]
+  exact ⟨1, rfl⟩
+
+/-- Parity is invariant along chains in `twoLinesGraph`: every edge changes
+the vertex by `±2`, so `u % 2` is constant on each component. -/
+theorem twoLinesGraph_joined_emod {u v : ℤ}
+    (h : twoLinesGraph.Joined u v) : u % 2 = v % 2 := by
+  obtain ⟨n, f, h0, hn, hadj⟩ := h
+  have key : ∀ i ≤ n, f i % 2 = f 0 % 2 := by
+    intro i
+    induction i with
+    | zero => intro _; rfl
+    | succ k ih =>
+      intro hk
+      have hstep := hadj k (by omega)
+      have hkm := ih (by omega)
+      rcases hstep with hs | hs <;> omega
+  rw [← h0, ← hn]
+  exact (key n le_rfl).symm
+
+/-- The even vertex `0` and the odd vertex `1` are not joined: they live in
+different components of `twoLinesGraph`. -/
+theorem twoLinesGraph_not_joined_zero_one :
+    ¬ twoLinesGraph.Joined 0 1 := by
+  intro h
+  have hmod := twoLinesGraph_joined_emod h
+  omega
+
+/-- **`twoLinesGraph` has no bi-infinite Euler path**: the non-isolated
+vertices `0` and `1` are not joined, contradicting connectivity necessity. -/
+theorem twoLinesGraph_not_hasInfiniteEulerPath :
+    ¬ HasInfiniteEulerPath twoLinesGraph :=
+  not_hasInfiniteEulerPath_of_not_joined
+    ⟨2, Or.inl (by norm_num)⟩ ⟨3, Or.inl (by norm_num)⟩
+    twoLinesGraph_not_joined_zero_one
+
+/-- **`twoLinesGraph` has no one-way Euler path** either, by the same
+disconnection obstruction. -/
+theorem twoLinesGraph_not_hasOneWayEulerPath :
+    ¬ HasOneWayEulerPath twoLinesGraph :=
+  not_hasOneWayEulerPath_of_not_joined
+    ⟨2, Or.inl (by norm_num)⟩ ⟨3, Or.inl (by norm_num)⟩
+    twoLinesGraph_not_joined_zero_one
+
+/-- **Bi-infinite parity is not sufficient**: `twoLinesGraph` satisfies the
+S15 parity condition at every vertex — no odd-degree vertex at all — yet
+has no bi-infinite Euler path. Together with
+`lineGraph_parity_not_sufficient` (the one-way analogue, S14) this shows
+BOTH parity clauses of `parity_picture` are strictly weaker than the full
+EGW characterisation: connectivity enters independently. -/
+theorem biInfinite_parity_not_sufficient :
+    (∀ n : ℤ, Even {u | twoLinesGraph.adj n u}.ncard) ∧
+      ¬ HasInfiniteEulerPath twoLinesGraph :=
+  ⟨twoLinesGraph_even_ncard_neighbors, twoLinesGraph_not_hasInfiniteEulerPath⟩
+
+#check @InfiniteGraph.Joined
+#check @InfiniteWalk.joined_vertex
+#check @BiInfiniteWalk.joined_vertex
+#check @joined_of_hasOneWayEulerPath
+#check @joined_of_hasInfiniteEulerPath
+#check @connectivity_picture
+#check @twoLinesGraph_not_hasInfiniteEulerPath
+#check @biInfinite_parity_not_sufficient
+
 end KonigsbergOQ03
