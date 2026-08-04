@@ -339,6 +339,166 @@ theorem minDegreeForC4_even_monotone_before_square_sub_one
   · rw [Nat.add_sub_cancel_right]
     exact (Nat.sub_le _ _).trans (by nlinarith)
 
+/-- A safe pair in the even core determines a deleted absolute common
+neighbor in the ambient projective plane. -/
+
+private theorem safe_pair_common_absolute (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0)
+    (S : Finset {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K})
+    (hsafe : CommonNeighborIndependent (evenCore K) S)
+    {x y : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K}}
+    (hx : x ∈ S) (hy : y ∈ S) (hxy : x ≠ y) :
+    ∃ p ∈ absolutePoints K, x.1 ∈ p ∧ y.1 ∈ p := by
+  have hxyv : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
+  obtain ⟨p, hpx, hpy⟩ :=
+    Configuration.HasPoints.existsUnique_point
+      (Projectivization K (Fin 3 → K)) (Projectivization K (Fin 3 → K))
+      x.1 y.1 hxyv |>.exists
+  have hxnotabs : x.1 ∉ absolutePoints K := by
+    intro h
+    exact x.2 (by simp [evenDeletedSet, h])
+  have hynotabs : y.1 ∉ absolutePoints K := by
+    intro h
+    exact y.2 (by simp [evenDeletedSet, h])
+  have hxself : ¬ Projectivization.orthogonal x.1 x.1 := by
+    simpa [mem_absolutePoints] using hxnotabs
+  have hyself : ¬ Projectivization.orthogonal y.1 y.1 := by
+    simpa [mem_absolutePoints] using hynotabs
+  have hpnex : p ≠ x.1 := by
+    intro heq
+    apply hxself
+    exact (Configuration.ofField.mem_iff x.1 x.1).mp (by simpa [heq] using hpx)
+  have hpney : p ≠ y.1 := by
+    intro heq
+    apply hyself
+    exact (Configuration.ofField.mem_iff y.1 y.1).mp (by simpa [heq] using hpy)
+  have hxp : (graph K).Adj x.1 p := by
+    apply (graph_adj_iff x.1 p).mpr
+    refine ⟨Ne.symm hpnex, ?_⟩
+    exact Projectivization.orthogonal_comm.mp
+      ((Configuration.ofField.mem_iff p x.1).mp hpx)
+  have hyp : (graph K).Adj y.1 p := by
+    apply (graph_adj_iff y.1 p).mpr
+    refine ⟨Ne.symm hpney, ?_⟩
+    exact Projectivization.orthogonal_comm.mp
+      ((Configuration.ofField.mem_iff p y.1).mp hpy)
+  have hpdel : p ∈ evenDeletedSet K := by
+    by_contra hp
+    let z : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K} := ⟨p, hp⟩
+    have hxz : (evenCore K).Adj x z := by
+      change (graph K).Adj x.1 p
+      exact hxp
+    have hyz : (evenCore K).Adj y z := by
+      change (graph K).Adj y.1 p
+      exact hyp
+    have hzmem : z ∈ (evenCore K).neighborFinset x ∩
+        (evenCore K).neighborFinset y := by
+      rw [Finset.mem_inter]
+      constructor <;> simpa only [SimpleGraph.mem_neighborFinset]
+    have hzero := hsafe hx hy hxy
+    rw [Finset.card_eq_zero] at hzero
+    exact Finset.notMem_empty z (hzero ▸ hzmem)
+  have hpneN : p ≠ nucleus K := by
+    intro heq
+    have hnx : (graph K).Adj (nucleus K) x.1 := by simpa [heq] using hxp.symm
+    have hxself' := (selfOrthogonal_iff_nucleus_adj h2 x.1).mpr hnx
+    exact hxself hxself'
+  have hpabs : p ∈ absolutePoints K := by
+    simpa [evenDeletedSet, hpneN] using hpdel
+  have hxpMem : x.1 ∈ p := (Configuration.ofField.mem_iff x.1 p).mpr
+    (Projectivization.orthogonal_comm.mp
+      ((Configuration.ofField.mem_iff p x.1).mp hpx))
+  have hypMem : y.1 ∈ p := (Configuration.ofField.mem_iff y.1 p).mpr
+    (Projectivization.orthogonal_comm.mp
+      ((Configuration.ofField.mem_iff p y.1).mp hpy))
+  exact ⟨p, hpabs, hxpMem, hypMem⟩
+
+/-- A safe one-vertex attachment set in the even polarity core has at most
+`q - 1` vertices.  Geometrically, any two of its points determine a deleted
+absolute common neighbor, forcing the whole set onto one polar line through
+the nucleus.  Thus the natural `q`-regular core cannot be extended at degree
+`q` by the standard common-neighbor-independent attachment. -/
+theorem card_commonNeighborIndependent_evenCore_le (K : Type u) [Field K] [Finite K] [DecidableEq K]
+    (h2 : (2 : K) = 0)
+    (S : Finset {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K})
+    (hsafe : CommonNeighborIndependent (evenCore K) S) :
+    S.card ≤ Nat.card K - 1 := by
+  have hq : 2 ≤ Nat.card K := Finite.one_lt_card (α := K)
+  by_contra hbound
+  have hqS : Nat.card K ≤ S.card := by omega
+  have htwo : 1 < S.card := lt_of_lt_of_le (by omega) hqS
+  rw [Finset.one_lt_card] at htwo
+  obtain ⟨x, hx, y, hy, hxy⟩ := htwo
+  obtain ⟨p₀, hp₀abs, hxp₀, hyp₀⟩ :=
+    safe_pair_common_absolute K h2 S hsafe hx hy hxy
+  have hxneN : x.1 ≠ nucleus K := by
+    intro heq
+    exact x.2 (by simp [evenDeletedSet, heq])
+  have hnmem₀ : nucleus K ∈ p₀ := by
+    apply (Configuration.ofField.mem_iff (nucleus K) p₀).mpr
+    have hnp₀ : (graph K).Adj (nucleus K) p₀ :=
+      (selfOrthogonal_iff_nucleus_adj h2 p₀).mp
+        ((mem_absolutePoints K p₀).mp hp₀abs)
+    exact ((graph_adj_iff (nucleus K) p₀).mp hnp₀).2
+  have hall : ∀ z ∈ S, z.1 ∈ p₀ := by
+    intro z hz
+    by_cases hzx : z = x
+    · simpa [hzx] using hxp₀
+    · obtain ⟨p, hpabs, hxp, hzp⟩ :=
+        safe_pair_common_absolute K h2 S hsafe hx hz (Ne.symm hzx)
+      have hnmem : nucleus K ∈ p := by
+        apply (Configuration.ofField.mem_iff (nucleus K) p).mpr
+        have hnp : (graph K).Adj (nucleus K) p :=
+          (selfOrthogonal_iff_nucleus_adj h2 p).mp
+            ((mem_absolutePoints K p).mp hpabs)
+        exact ((graph_adj_iff (nucleus K) p).mp hnp).2
+      have hlines : p₀ = p :=
+        (Configuration.Nondegenerate.eq_or_eq hxp₀ hnmem₀ hxp hnmem).resolve_left
+          hxneN
+      simpa [hlines] using hzp
+  let emb : {v : Projectivization K (Fin 3 → K) // v ∉ evenDeletedSet K} ↪
+      Projectivization K (Fin 3 → K) := Function.Embedding.subtype _
+  let T := S.map emb
+  have hsub : T ⊆ (graph K).neighborFinset p₀ \ {nucleus K} := by
+    intro z hz
+    rw [Finset.mem_map] at hz
+    obtain ⟨z, hzS, rfl⟩ := hz
+    have hznotabs : z.1 ∉ absolutePoints K := by
+      intro ha
+      exact z.2 (by simp [evenDeletedSet, ha])
+    have hpne : p₀ ≠ z.1 := by
+      intro heq
+      exact hznotabs (by simpa [← heq] using hp₀abs)
+    have hadj : (graph K).Adj p₀ z.1 := by
+      apply (graph_adj_iff p₀ z.1).mpr
+      refine ⟨hpne, ?_⟩
+      exact Projectivization.orthogonal_comm.mp
+        ((Configuration.ofField.mem_iff z.1 p₀).mp (hall z hzS))
+    have hzne : z.1 ≠ nucleus K := by
+      intro heq
+      exact z.2 (by simp [evenDeletedSet, heq])
+    simp only [Finset.mem_sdiff, SimpleGraph.mem_neighborFinset,
+      Finset.mem_singleton]
+    dsimp [emb]
+    exact ⟨hadj, hzne⟩
+  have hnAdj : (graph K).Adj p₀ (nucleus K) := by
+    exact ((graph K).adj_comm (nucleus K) p₀).mp
+      ((selfOrthogonal_iff_nucleus_adj h2 p₀).mp
+        ((mem_absolutePoints K p₀).mp hp₀abs))
+  have htarget : ((graph K).neighborFinset p₀ \ {nucleus K}).card =
+      Nat.card K - 1 := by
+    have hnmem : nucleus K ∈ (graph K).neighborFinset p₀ := by
+      simpa only [SimpleGraph.mem_neighborFinset] using hnAdj
+    rw [Finset.card_sdiff]
+    rw [SimpleGraph.card_neighborFinset_eq_degree,
+      degree_eq_card_of_selfOrthogonal
+        ((mem_absolutePoints K p₀).mp hp₀abs)]
+    simp [hnmem]
+  have hcard := Finset.card_le_card hsub
+  rw [Finset.card_map, htarget] at hcard
+  omega
+
+
 
 
 end Erdos85.Polarity
