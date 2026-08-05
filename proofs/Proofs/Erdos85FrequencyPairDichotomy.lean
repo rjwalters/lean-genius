@@ -54,7 +54,7 @@ theorem false_of_graph_frequencyPair_prime
       hr hrOdd hp7 hpPrime hpdiv hoddQuotient u hu huRange huD hsep
         hoddComponents b hb hζ hs0 hκ
   · exact false_of_graph_frequencyPair_nonsquare G hfree hd hdeven hmin
-      hcard hr hrOdd hp7 hpPrime hpdiv hoddQuotient u hu huRange huD hsep
+      hcard (by omega) hrOdd (by omega) hpPrime hpdiv hoddQuotient u hu huRange huD hsep
         hoddComponents b hb hζ hsquare
 
 end

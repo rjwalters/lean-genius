@@ -247,6 +247,32 @@ theorem threePoint_card_and_anchor_of_large_modulus
       exact ⟨Ne.symm ha0, Ne.symm (neg_ne_zero.mpr ha0)⟩
   · exact cyclicConvolution_threePoint_at_anchor a ha0 hfar
 
+/-- The three half-step exceptions are already distinct for every modulus
+at least four.  The stronger `p ≥ 7` bound is needed only for finding a
+residue outside the five-element convolution exceptional set. -/
+theorem threePoint_card_of_modulus_ge_four
+    (hp : 4 ≤ p) (a : ZMod p) (hdouble : a + a = 1) :
+    ({0, a, -a} : Finset (ZMod p)).card = 3 := by
+  letI : Fact (1 < p) := ⟨by omega⟩
+  have hone : (1 : ZMod p) ≠ 0 := one_ne_zero
+  have ha0 : a ≠ 0 := by
+    intro ha
+    rw [ha, zero_add] at hdouble
+    exact hone hdouble.symm
+  have haneg : a ≠ -a := by
+    intro ha
+    have hz : a + a = 0 := by
+      calc
+        a + a = a + (-a) := congrArg (a + ·) ha
+        _ = 0 := add_neg_cancel a
+    exact hone (hdouble.symm.trans hz)
+  rw [Finset.card_insert_of_notMem]
+  · rw [Finset.card_insert_of_notMem]
+    · simp
+    · simpa using haneg
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨Ne.symm ha0, Ne.symm (neg_ne_zero.mpr ha0)⟩
+
 /-- Fully assembled `p ≥ 7` convolution obstruction.  This is the terminal
 lemma consumed by the square Fourier branch: once the projected multiplicity
 has the three-hole parity pattern and its self-convolution is constant from

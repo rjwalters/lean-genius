@@ -29,8 +29,9 @@ theorem orderFiveNorm_not_isSquare (x : ℕ) (hx : 2 ≤ x) :
   have hyx : y < x + 1 := Nat.mul_self_lt_mul_self_iff.mp hhi
   omega
 
-/-- The norm at primitive ninth roots, parametrized by the odd integer
-`x = 2v+3`.  The expanded form avoids truncated subtraction in `ℕ`. -/
+/-- The combined order-three/order-nine Dirichlet norm, parametrized by the
+odd integer `x = 2v+3`.  The expanded form avoids truncated subtraction in
+`ℕ`. -/
 def orderNineNorm (v : ℕ) : ℕ :=
   16 * v ^ 4 + 104 * v ^ 3 + 240 * v ^ 2 + 230 * v + 76
 
@@ -43,16 +44,25 @@ theorem orderNineNorm_eq_dirichletPolynomial (v : ℕ) :
   push_cast
   ring
 
-/-- The primitive order-nine norm has an exact consecutive-square
-sandwich. -/
+/-- The quartic `P₄` is the product of the order-three norm `x+1` and
+the primitive order-nine real norm `x³-3x+1`.  In particular, nonsquareness
+of `P₄` alone does not imply that the primitive order-nine factor is
+nonsquare. -/
+theorem orderNineDirichletPolynomial_factor (x : ℤ) :
+    x ^ 4 + x ^ 3 - 3 * x ^ 2 - 2 * x + 1 =
+      (x + 1) * (x ^ 3 - 3 * x + 1) := by
+  ring
+
+/-- The combined order-three/order-nine norm has an exact
+consecutive-square sandwich. -/
 theorem orderNineNorm_eq_square_add (v : ℕ) :
     orderNineNorm v =
       (4 * v ^ 2 + 13 * v + 8) ^ 2 + (7 * v ^ 2 + 22 * v + 12) := by
   simp only [orderNineNorm]
   ring
 
-/-- The primitive order-nine real-cyclotomic norm is never a square for an
-odd graph parameter `x ≥ 3`. -/
+/-- The combined order-three/order-nine real-cyclotomic norm is never a
+square for an odd graph parameter `x ≥ 3`. -/
 theorem orderNineNorm_not_isSquare (v : ℕ) :
     ¬ IsSquare (orderNineNorm v) := by
   intro hsquare
