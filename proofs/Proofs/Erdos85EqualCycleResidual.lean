@@ -1,6 +1,8 @@
 import Proofs.Erdos85EqualCycleLabeling
 import Proofs.Erdos85FrequencyPairDichotomy
 import Proofs.Erdos85FrequencyPairFive
+import Proofs.Erdos85FrequencyPairNine
+import Proofs.Erdos85TriangleTerminal
 
 /-!
 # Residual arithmetic of the equal-cycle branch
@@ -78,6 +80,40 @@ theorem equalCycle_three_pow
   · exact (false_of_equalCycle_five_dvd
       G hfree hd hdeven hmin hcard hlen h5).elim
   · exact h3
+
+/-- **Complete equal-cycle classification.**  Every common defect-cycle
+length other than three is eliminated by the prime-frequency terminals.
+The remaining triangle case forces one of the two exceptional small
+degrees. -/
+theorem equalCycle_degree_eq_four_or_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d r : ℕ}
+    (hd : 4 ≤ d) (hdeven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hlen : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = r) :
+    d = 4 ∨ d = 12 := by
+  classical
+  obtain ⟨hr3, -, -, -⟩ :=
+    equalCycle_length_facts G hfree hd hdeven hmin hcard hlen
+  obtain ⟨k, hk⟩ :=
+    equalCycle_three_pow G hfree hd hdeven hmin hcard hlen
+  by_cases hk2 : 2 ≤ k
+  · exfalso
+    apply false_of_equalCycle_nine_dvd
+      G hfree hd hdeven hmin hcard hlen
+    rw [hk]
+    show 3 ^ 2 ∣ 3 ^ k
+    exact pow_dvd_pow 3 hk2
+  · have hk1 : k ≤ 1 := by omega
+    interval_cases k
+    · omega
+    · have hr : r = 3 := by simpa using hk
+      exact secondOrder_triangleComponents_degree_eq_four_or_twelve
+        G hfree hd hdeven hmin hcard (fun c => by rw [hlen c, hr])
 
 end
 
