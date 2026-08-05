@@ -26,8 +26,8 @@ theorem false_of_graph_prime_frequency_nonsquare
     (hfree : ¬ containsC4 V G) {d r p : ℕ} [NeZero r] [NeZero p]
     (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
     (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hr : 7 ≤ r) (hrOdd : Odd r)
-    (hpPrime : p.Prime) (hp : 7 ≤ p) (hpdiv : p ∣ r)
+    (hr : 4 ≤ r) (hrOdd : Odd r)
+    (hpPrime : p.Prime) (hp : 4 ≤ p) (hpdiv : p ∣ r)
     (hoddQuotient : Odd (r / p))
     (u : (secondOrderDefectGraph G).ConnectedComponent → ZMod r → V)
     (hbij : Function.Bijective (cycleLabeling u))
@@ -106,8 +106,8 @@ theorem false_of_graph_frequencyPair_nonsquare
     (hfree : ¬ containsC4 V G) {d r p : ℕ} [NeZero r] [NeZero p]
     (hd : 4 ≤ d) (hdeven : Even d) (hmin : d ≤ G.minDegree)
     (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hr : 7 ≤ r) (hrOdd : Odd r)
-    (hp7 : 7 ≤ p) (hpPrime : p.Prime) (hpdiv : p ∣ r)
+    (hr : 4 ≤ r) (hrOdd : Odd r)
+    (hp4 : 4 ≤ p) (hpPrime : p.Prime) (hpdiv : p ∣ r)
     (hoddQuotient : Odd (r / p))
     (u : (secondOrderDefectGraph G).ConnectedComponent → ZMod r → V)
     (hu : ∀ c, Function.Injective (u c))
@@ -139,7 +139,7 @@ theorem false_of_graph_frequencyPair_nonsquare
   have hsqZ := adjMatrix_sq_eq_sub_secondOrderDefect_of_even
     G hfree hd hdeven hmin hcard
   exact false_of_graph_prime_frequency_nonsquare G hfree hd hdeven hmin
-    hcard hr hrOdd hpPrime hp7 hpdiv hoddQuotient u hbij hu huRange huD
+    hcard hr hrOdd hpPrime hp4 hpdiv hoddQuotient u hbij hu huRange huD
       hsep hoddComponents hcommZ hsqZ b hb hζ hζ.pow_eq_one
       (hζ.pow_ne_one_of_pos_of_lt (by norm_num) (by omega)) hnonsquare
 

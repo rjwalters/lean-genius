@@ -59,6 +59,30 @@ theorem odd_card_projectionFiber_zmod_castHom
   rw [card_projectionFiber_zmod_castHom hdiv y]
   exact hoddQuotient
 
+/-- Reduction modulo a divisor preserves negation symmetry of a
+multiplicity function. -/
+theorem projectedMultiplicity_neg_eq_zmod_castHom
+    {r p : ℕ} [NeZero r] [NeZero p] (hdiv : p ∣ r)
+    (m : ZMod r → ℕ) (hm : ∀ x, m (-x) = m x) (y : ZMod p) :
+    projectedMultiplicity (ZMod.castHom hdiv (ZMod p)) m (-y) =
+      projectedMultiplicity (ZMod.castHom hdiv (ZMod p)) m y := by
+  classical
+  unfold projectedMultiplicity
+  apply Finset.sum_bij (fun x _ ↦ -x)
+  · intro x hx
+    simp only [projectionFiber, Finset.mem_filter, Finset.mem_univ,
+      true_and] at hx ⊢
+    rw [map_neg, hx, neg_neg]
+  · intro x _ z _ hxz
+    simpa using congrArg Neg.neg hxz
+  · intro z hz
+    refine ⟨-z, ?_, by simp⟩
+    simp only [projectionFiber, Finset.mem_filter, Finset.mem_univ,
+      true_and] at hz ⊢
+    rw [map_neg, hz]
+  · intro x _
+    exact (hm x).symm
+
 theorem two_mul_mem_allowedCycleDifferences_iff
     {r : ℕ} [NeZero r] (hrOdd : Odd r) (hr3 : 3 ≤ r)
     (b h : ZMod r) (hdouble : b + b = 1) :
@@ -87,7 +111,7 @@ theorem two_mul_mem_allowedCycleDifferences_iff
 
 theorem card_castFiber_inter_threePoint
     {r p : ℕ} [NeZero r] [NeZero p]
-    (hdiv : p ∣ r) (hp : 7 ≤ p) (hr : 7 ≤ r)
+    (hdiv : p ∣ r) (hp : 4 ≤ p) (hr : 4 ≤ r)
     (b : ZMod r) (hdouble : b + b = 1) :
     let q := ZMod.castHom hdiv (ZMod p)
     let a := q b
@@ -106,9 +130,9 @@ theorem card_castFiber_inter_threePoint
     ext y
     simp [bad, exceptional, a, q, map_neg]
   have hbadCard : bad.card = 3 :=
-    (threePoint_card_and_anchor_of_large_modulus hr b hdouble).1
+    threePoint_card_of_modulus_ge_four hr b hdouble
   have hexceptionalCard : exceptional.card = 3 :=
-    (threePoint_card_and_anchor_of_large_modulus hp a haDouble).1
+    threePoint_card_of_modulus_ge_four hp a haDouble
   have hinj : Set.InjOn q bad := by
     rw [← Finset.card_image_iff]
     rw [himage, hbadCard, hexceptionalCard]
@@ -118,7 +142,7 @@ theorem card_castFiber_inter_threePoint
 
 theorem odd_projectedMultiplicity_zmod_castHom_iff
     {r p : ℕ} [NeZero r] [NeZero p]
-    (hdiv : p ∣ r) (hp : 7 ≤ p) (hr : 7 ≤ r)
+    (hdiv : p ∣ r) (hp : 4 ≤ p) (hr : 4 ≤ r)
     (hrOdd : Odd r) (hoddQuotient : Odd (r / p))
     (b : ZMod r) (hdouble : b + b = 1)
     (m : ZMod r → ℕ)
@@ -173,7 +197,7 @@ theorem false_of_zmod_projection_and_convolution_constancy
       y ∉ ({0, a, -a} : Finset (ZMod p)) := by
     intro y
     exact odd_projectedMultiplicity_zmod_castHom_iff
-      hdiv hp hr hrOdd hoddQuotient b hdouble m hbase y
+      hdiv (by omega) (by omega) hrOdd hoddQuotient b hdouble m hbase y
   obtain ⟨e, he⟩ := exists_integer_error_of_odd_iff
     (projectedMultiplicity q m) ({0, a, -a} : Finset (ZMod p)) hodd
   exact false_of_large_threePoint_convolution_pattern hp a haDouble

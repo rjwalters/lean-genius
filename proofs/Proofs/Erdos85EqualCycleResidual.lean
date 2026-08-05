@@ -1,5 +1,6 @@
 import Proofs.Erdos85EqualCycleLabeling
 import Proofs.Erdos85FrequencyPairDichotomy
+import Proofs.Erdos85FrequencyPairFive
 
 /-!
 # Residual arithmetic of the equal-cycle branch
@@ -58,6 +59,25 @@ theorem equalCycle_five_dvd_or_three_pow
         hsep hce x y) hoddC b hb hζ
   · exact Or.inl h5
   · exact Or.inr h3pow
+
+/-- **Residual reduction after the order-five norm argument.**  Under the
+common-length hypothesis, the defect-cycle length is a power of three. -/
+theorem equalCycle_three_pow
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d r : ℕ}
+    (hd : 4 ≤ d) (hdeven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hlen : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = r) :
+    ∃ k : ℕ, r = 3 ^ k := by
+  rcases equalCycle_five_dvd_or_three_pow
+      G hfree hd hdeven hmin hcard hlen with h5 | h3
+  · exact (false_of_equalCycle_five_dvd
+      G hfree hd hdeven hmin hcard hlen h5).elim
+  · exact h3
 
 end
 

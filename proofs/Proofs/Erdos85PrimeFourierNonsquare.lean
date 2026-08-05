@@ -36,7 +36,7 @@ theorem fourier_eq_zero_of_sq_eq_nonsquare_and_trace_eq_two_mul
 exactly three exceptional residues once the prime has size at least seven. -/
 theorem false_of_prime_fourier_zero_and_threePoint_parity
     {K : Type*} [Field K] [CharZero K]
-    {p : ℕ} [NeZero p] (hp : p.Prime) (hp7 : 7 ≤ p)
+    {p : ℕ} [NeZero p] (hp : p.Prime) (hp4 : 4 ≤ p)
     {ζ : K} (hζ : IsPrimitiveRoot ζ p)
     (c : ZMod p → ℤ) (a : ZMod p)
     (hzero : ∑ x : ZMod p,
@@ -84,7 +84,7 @@ Fourier vanishing and the projected parity pattern supplies the contradiction. -
 theorem false_of_nonsquare_frequencyPair_trace_and_threePoint_parity
     {K E : Type*} [Field K] [CharZero K]
     [AddCommGroup E] [Module K E] [FiniteDimensional K E]
-    {p : ℕ} [NeZero p] (hp : p.Prime) (hp7 : 7 ≤ p)
+    {p : ℕ} [NeZero p] (hp : p.Prime) (hp4 : 4 ≤ p)
     {ζ : K} (hζ : IsPrimitiveRoot ζ p)
     (T : E →ₗ[K] E) (scalar : K) (c : ZMod p → ℤ)
     (a : ZMod p) (hnonsquare : ¬ IsSquare scalar)
@@ -93,7 +93,7 @@ theorem false_of_nonsquare_frequencyPair_trace_and_threePoint_parity
       2 * ∑ x : ZMod p, (c x : K) * primitiveRootCharacter hζ x)
     (hparity : ∀ x, Odd (c x) ↔
       x ∉ ({0, a, -a} : Finset (ZMod p))) : False := by
-  apply false_of_prime_fourier_zero_and_threePoint_parity hp hp7 hζ c a
+  apply false_of_prime_fourier_zero_and_threePoint_parity hp hp4 hζ c a
   · exact fourier_eq_zero_of_sq_eq_nonsquare_and_trace_eq_two_mul
       hζ T scalar c hnonsquare hTsq htrace
   · exact hparity

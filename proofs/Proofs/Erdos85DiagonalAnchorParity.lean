@@ -18,6 +18,24 @@ variable {I Z : Type*} [Fintype I] [DecidableEq I]
 def anchorMultiplicity (A : I → Finset Z) (h : Z) : ℕ :=
   (Finset.univ.filter fun i ↦ h ∈ A i).card
 
+/-- An inverse-closed family has an even Fourier weight: its anchor
+multiplicity is unchanged by negating the cyclic coordinate. -/
+theorem anchorMultiplicity_neg_eq
+    {Z : Type*} [AddCommGroup Z] [Fintype Z] [DecidableEq Z]
+    (A : I → Finset Z) (hneg : ∀ i, negFinset (A i) = A i) (h : Z) :
+    anchorMultiplicity A (-h) = anchorMultiplicity A h := by
+  unfold anchorMultiplicity
+  congr 1
+  ext i
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro hh
+    rw [← hneg i]
+    exact (mem_negFinset_iff (A i) h).mpr hh
+  · intro hh
+    rw [← hneg i]
+    exact (mem_negFinset_iff (A i) (-h)).mpr (by simpa using hh)
+
 /-- Exact difference coverage makes the anchor multiplicity the indicator of
 the allowed doubled difference. -/
 theorem anchorMultiplicity_eq_one_iff

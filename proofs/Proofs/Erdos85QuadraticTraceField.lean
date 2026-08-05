@@ -13,6 +13,16 @@ namespace Erdos85
 
 open Matrix Polynomial
 
+/-- Nonsquareness pulls back along a multiplicative map.  This is the
+abstract bridge used with field norms: if the norm of a scalar is not a
+square, then the scalar itself cannot have been a square. -/
+theorem not_isSquare_of_map_not_isSquare
+    {R S : Type*} [Monoid R] [Monoid S]
+    (f : R →* S) {a : R} (ha : ¬ IsSquare (f a)) : ¬ IsSquare a := by
+  rintro ⟨b, rfl⟩
+  apply ha
+  exact ⟨f b, by simp [pow_two]⟩
+
 noncomputable def quadraticScalar {K : Type*} [Field K] (a : K) : K[X] :=
   X ^ 2 - Polynomial.C a
 
