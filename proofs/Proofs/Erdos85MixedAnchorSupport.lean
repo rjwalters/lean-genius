@@ -295,6 +295,88 @@ theorem existsUnique_anchor_of_position
     · exact h2 (hvinj h)
     · exact h1 (hvinj h)
 
+/-! ## The aggregated cover: pair multiplicities sum to the cycle length
+
+Summing the exact cover over one fixed difference gives the driving
+identity of the parity engine: for every admissible difference `δ`, the
+pair multiplicities of all anchors sum to exactly the target cycle
+length. -/
+
+/-- Number of support positions of anchor `x` whose translate by `δ` is
+also in the support: the `δ`-pair multiplicity of the anchor on the
+target cycle. -/
+def anchorPairMultiplicity (G : SimpleGraph V) [DecidableRel G.Adj]
+    (x : V) {m : ℕ} [NeZero m] (v : ZMod m → V) (δ : ZMod m) : ℕ :=
+  ((mixedAnchorSupport G x v).filter
+    (fun t ↦ t + δ ∈ mixedAnchorSupport G x v)).card
+
+/-- **Aggregated mixed cover.**  For an admissible difference
+`δ ∉ {0, 1, -1}`, each of the `m` translate pairs of the target cycle is
+covered by exactly one anchor, so the pair multiplicities over the whole
+vertex set sum to `m` — regardless of any other cycle lengths. -/
+theorem sum_anchorPairMultiplicity_eq_length
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    {m : ℕ} [NeZero m] {v : ZMod m → V}
+    (hvinj : Function.Injective v)
+    (hvD : ∀ z, (secondOrderDefectGraph G).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (δ : ZMod m) (hδ0 : δ ≠ 0) (hδ1 : δ ≠ 1) (hδ2 : δ ≠ -1) :
+    ∑ x : V, anchorPairMultiplicity G x v δ = m := by
+  have hpair : ∀ x : V,
+      anchorPairMultiplicity G x v δ =
+        (Finset.univ.filter fun t : ZMod m ↦
+          t ∈ mixedAnchorSupport G x v ∧
+            t + δ ∈ mixedAnchorSupport G x v).card := by
+    intro x
+    rw [anchorPairMultiplicity]
+    congr 1
+    ext t
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  have hcount : ∀ t : ZMod m,
+      (Finset.univ.filter fun x : V ↦
+        t ∈ mixedAnchorSupport G x v ∧
+          t + δ ∈ mixedAnchorSupport G x v).card = 1 := by
+    intro t
+    obtain ⟨x₀, hx₀, huniq⟩ := existsUnique_anchor_of_position
+      G hfree hd heven hmin hcard hvinj hvD t (t + δ)
+      (fun h ↦ hδ0 (by linear_combination h))
+      (fun h ↦ hδ1 (by linear_combination h))
+      (fun h ↦ hδ2 (by linear_combination h))
+    rw [Finset.card_eq_one]
+    refine ⟨x₀, ?_⟩
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_singleton]
+    constructor
+    · intro hy
+      exact huniq y hy
+    · rintro rfl
+      exact hx₀
+  calc
+    ∑ x : V, anchorPairMultiplicity G x v δ =
+        ∑ x : V, ∑ t : ZMod m,
+          if t ∈ mixedAnchorSupport G x v ∧
+            t + δ ∈ mixedAnchorSupport G x v then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rw [hpair x, Finset.card_filter]
+    _ = ∑ t : ZMod m, ∑ x : V,
+          if t ∈ mixedAnchorSupport G x v ∧
+            t + δ ∈ mixedAnchorSupport G x v then 1 else 0 :=
+      Finset.sum_comm
+    _ = ∑ t : ZMod m, (1 : ℕ) := by
+      apply Finset.sum_congr rfl
+      intro t _
+      rw [← Finset.card_filter]
+      exact hcount t
+    _ = m := by
+      simp [Finset.card_univ, ZMod.card]
+
 end AnchorSupport
 
 end
