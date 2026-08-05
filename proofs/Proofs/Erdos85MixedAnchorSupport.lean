@@ -179,6 +179,122 @@ theorem sum_card_mixedAnchorSupport_eq_degree
   exact sum_secondOrder_componentQuotientMatrix_row_eq_degree
     G hfree hd heven hmin hcard c
 
+/-! ## The mixed leave and the mixed exact cover
+
+Two more length-agnostic consequences of the even second-order matrix
+equation.  Together with the excess identity and the total-mass identity
+they form the complete counting substrate of the diagonal-anchor parity
+engine, now available for cycles of arbitrary lengths.
+-/
+
+/-- **Mixed leave.**  No two neighbors of an anchor vertex are consecutive
+on a target cycle: a defect-adjacent pair has zero common neighbors, but
+the anchor would be one.  Valid for target cycles of any length. -/
+theorem mixedAnchorSupport_no_consecutive
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    {m : ℕ} [NeZero m] {v : ZMod m → V}
+    (hvinj : Function.Injective v) (hm3 : 3 ≤ m)
+    (hvD : ∀ z, (secondOrderDefectGraph G).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (x : V) (s : ZMod m)
+    (hs : s ∈ mixedAnchorSupport G x v) :
+    s + 1 ∉ mixedAnchorSupport G x v := by
+  intro hs1
+  rw [mem_mixedAnchorSupport_iff] at hs hs1
+  have hone : (1 : ZMod m) ≠ 0 := by
+    intro h
+    have := ZMod.one_eq_zero_iff.mp h
+    omega
+  have hne : v s ≠ v (s + 1) := by
+    intro h
+    have hss : s = s + 1 := hvinj h
+    exact hone (by linear_combination -hss)
+  have hmem : v (s + 1) ∈
+      (secondOrderDefectGraph G).neighborFinset (v s) := by
+    rw [hvD s]
+    simp
+  have hcommon := card_common_eq_if_secondOrderDefect_of_even
+    G hfree hd heven hmin hcard (v s) (v (s + 1)) hne
+  rw [if_pos hmem] at hcommon
+  have hx : x ∈ G.neighborFinset (v s) ∩
+      G.neighborFinset (v (s + 1)) := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hs.symm, hs1.symm⟩
+  have hpos : 0 < (G.neighborFinset (v s) ∩
+      G.neighborFinset (v (s + 1))).card :=
+    Finset.card_pos.mpr ⟨x, hx⟩
+  omega
+
+/-- **Mixed exact cover.**  A same-cycle pair which is neither equal nor
+defect-adjacent has exactly one common anchor, over the whole vertex
+set. -/
+theorem existsUnique_anchor_of_pair
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    {m : ℕ} [NeZero m] {v : ZMod m → V}
+    (s t : ZMod m) (hne : v s ≠ v t)
+    (hnadj : ¬ (secondOrderDefectGraph G).Adj (v s) (v t)) :
+    ∃! x : V, s ∈ mixedAnchorSupport G x v ∧
+      t ∈ mixedAnchorSupport G x v := by
+  have hcommon := card_common_eq_if_secondOrderDefect_of_even
+    G hfree hd heven hmin hcard (v s) (v t) hne
+  rw [if_neg (fun h ↦ hnadj
+    (((secondOrderDefectGraph G).mem_neighborFinset _ _).mp h))]
+    at hcommon
+  obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hcommon
+  refine ⟨z, ?_, ?_⟩
+  · have hzmem : z ∈ G.neighborFinset (v s) ∩ G.neighborFinset (v t) := by
+      rw [hz]
+      exact Finset.mem_singleton_self z
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset] at hzmem
+    exact ⟨(mem_mixedAnchorSupport_iff G z v s).mpr hzmem.1.symm,
+      (mem_mixedAnchorSupport_iff G z v t).mpr hzmem.2.symm⟩
+  · intro y hy
+    rw [mem_mixedAnchorSupport_iff, mem_mixedAnchorSupport_iff] at hy
+    have hymem : y ∈ G.neighborFinset (v s) ∩ G.neighborFinset (v t) := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hy.1.symm, hy.2.symm⟩
+    rw [hz, Finset.mem_singleton] at hymem
+    exact hymem
+
+/-- Position form of the mixed exact cover: distinct, non-consecutive
+cycle positions have exactly one common anchor. -/
+theorem existsUnique_anchor_of_position
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    {m : ℕ} [NeZero m] {v : ZMod m → V}
+    (hvinj : Function.Injective v)
+    (hvD : ∀ z, (secondOrderDefectGraph G).neighborFinset (v z) =
+      {v (z - 1), v (z + 1)})
+    (s t : ZMod m) (h0 : t ≠ s) (h1 : t ≠ s + 1) (h2 : t ≠ s - 1) :
+    ∃! x : V, s ∈ mixedAnchorSupport G x v ∧
+      t ∈ mixedAnchorSupport G x v := by
+  apply existsUnique_anchor_of_pair G hfree hd heven hmin hcard
+  · intro h
+    exact h0 (hvinj h).symm
+  · intro hadj
+    rw [← SimpleGraph.mem_neighborFinset, hvD s] at hadj
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hadj
+    rcases hadj with h | h
+    · exact h2 (hvinj h)
+    · exact h1 (hvinj h)
+
 end AnchorSupport
 
 end
