@@ -93,6 +93,56 @@ theorem false_of_graph_prime_frequency_nonsquare
     hpPrime hp hζ T ((d : K) - 1 - (ζ + ζ⁻¹)) c a hnonsquare
       hTsq htrace hparity
 
+/-- Nonsquare-branch termination with only the equal-cycle graph data: the
+transport equations and total labeling bijection are derived internally. -/
+theorem false_of_graph_frequencyPair_nonsquare
+    {K : Type*} [Field K] [CharZero K]
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r p : ℕ} [NeZero r] [NeZero p]
+    (hd : 4 ≤ d) (hdeven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr : 7 ≤ r) (hrOdd : Odd r)
+    (hp7 : 7 ≤ p) (hpPrime : p.Prime) (hpdiv : p ∣ r)
+    (hoddQuotient : Odd (r / p))
+    (u : (secondOrderDefectGraph G).ConnectedComponent → ZMod r → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hsep : ∀ {c e : (secondOrderDefectGraph G).ConnectedComponent},
+      c ≠ e → ∀ x y, u c x ≠ u e y)
+    (hoddComponents : Odd (Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (b : ZMod r) (hb : b + b = 1)
+    {ζ : K} (hζ : IsPrimitiveRoot ζ p)
+    (hnonsquare : ¬ IsSquare ((d : K) - 1 - (ζ + ζ⁻¹))) : False := by
+  have hbij : Function.Bijective (cycleLabeling u) := by
+    constructor
+    · rintro ⟨x, c⟩ ⟨y, e⟩ h
+      by_cases hce : c = e
+      · subst hce
+        exact Prod.ext (hu c h) rfl
+      · exact absurd h (hsep hce x y)
+    · intro v
+      have hv : v ∈ ((secondOrderDefectGraph G).connectedComponentMk v).supp :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff _ v).mpr rfl
+      rw [← huRange ((secondOrderDefectGraph G).connectedComponentMk v)] at hv
+      obtain ⟨x, hx⟩ := hv
+      exact ⟨(x, _), hx⟩
+  have hcommZ := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree hd hdeven hmin hcard
+  have hsqZ := adjMatrix_sq_eq_sub_secondOrderDefect_of_even
+    G hfree hd hdeven hmin hcard
+  exact false_of_graph_prime_frequency_nonsquare G hfree hd hdeven hmin
+    hcard hr hrOdd hpPrime hp7 hpdiv hoddQuotient u hbij hu huRange huD
+      hsep hoddComponents hcommZ hsqZ b hb hζ hζ.pow_eq_one
+      (hζ.pow_ne_one_of_pos_of_lt (by norm_num) (by omega)) hnonsquare
+
 end
 
 end Erdos85
