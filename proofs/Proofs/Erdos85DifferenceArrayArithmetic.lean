@@ -53,6 +53,41 @@ theorem orderNineDirichletPolynomial_factor (x : ℤ) :
       (x + 1) * (x ^ 3 - 3 * x + 1) := by
   ring
 
+/-- The genuine primitive order-nine real norm is never a square at an odd
+integer.  Indeed `x³ - 3x + 1` is `7` modulo eight when `x = 1 (mod 4)`
+and `3` modulo eight when `x = 3 (mod 4)`, whereas neither residue is a
+square modulo eight. -/
+theorem orderNinePrimitiveNorm_not_isSquare (x : ℕ) (hodd : Odd x) :
+    ¬ IsSquare ((x : ℤ) ^ 3 - 3 * (x : ℤ) + 1) := by
+  intro hsquare
+  have hsmod : IsSquare
+      ((((x : ℤ) ^ 3 - 3 * (x : ℤ) + 1 : ℤ) : ZMod 8)) :=
+    hsquare.map (Int.castRingHom (ZMod 8))
+  rcases Nat.odd_mod_four_iff.mp (Nat.odd_iff.mp hodd) with hx | hx
+  · have hrepr : x = 4 * (x / 4) + 1 := by
+      omega
+    apply (show ¬ IsSquare (7 : ZMod 8) by decide)
+    convert hsmod using 1
+    rw [hrepr]
+    push_cast
+    ring_nf
+    rw [show (48 : ZMod 8) = 0 by decide,
+      show (64 : ZMod 8) = 0 by decide]
+    simp only [mul_zero, add_zero]
+    decide
+  · have hrepr : x = 4 * (x / 4) + 3 := by
+      omega
+    apply (show ¬ IsSquare (3 : ZMod 8) by decide)
+    convert hsmod using 1
+    rw [hrepr]
+    push_cast
+    ring_nf
+    rw [show (96 : ZMod 8) = 0 by decide,
+      show (144 : ZMod 8) = 0 by decide,
+      show (64 : ZMod 8) = 0 by decide]
+    simp only [mul_zero, add_zero]
+    decide
+
 /-- The combined order-three/order-nine norm has an exact
 consecutive-square sandwich. -/
 theorem orderNineNorm_eq_square_add (v : ℕ) :
