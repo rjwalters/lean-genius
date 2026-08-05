@@ -336,4 +336,42 @@ theorem three_dvd_sum_of_orderNine_character_eq_zero
   rw [← hsum]
   exact hdvd
 
+/-- ZMod form of simultaneous primitive ninth- and third-root vanishing. -/
+theorem nine_dvd_sum_of_orderNine_and_orderThree_character_eq_zero
+    {K : Type*} [Field K] [CharZero K]
+    {ζ η : K} (hζ : IsPrimitiveRoot ζ 9)
+    (hη : IsPrimitiveRoot η 3)
+    (c : ZMod 9 → ℤ)
+    (hzero9 : ∑ y : ZMod 9,
+      (c y : K) * primitiveRootCharacter hζ y = 0)
+    (hzero3 : ∑ y : ZMod 9, (c y : K) * η ^ y.val = 0) :
+    (9 : ℤ) ∣ ∑ y : ZMod 9, c y := by
+  let a : Fin 9 → ℤ := fun i ↦ c (ZMod.finEquiv 9 i)
+  have hzero9Fin : ∑ i : Fin 9, (a i : K) * ζ ^ i.val = 0 := by
+    calc
+      (∑ i : Fin 9, (a i : K) * ζ ^ i.val) =
+          ∑ y : ZMod 9,
+            (c y : K) * primitiveRootCharacter hζ y := by
+              refine Fintype.sum_equiv (ZMod.finEquiv 9) _ _ ?_
+              intro i
+              simp [a]
+      _ = 0 := hzero9
+  have hzero3Fin : ∑ i : Fin 9, (a i : K) * η ^ i.val = 0 := by
+    calc
+      (∑ i : Fin 9, (a i : K) * η ^ i.val) =
+          ∑ y : ZMod 9, (c y : K) * η ^ y.val := by
+              refine Fintype.sum_equiv (ZMod.finEquiv 9) _ _ ?_
+              intro i
+              dsimp only [a]
+              congr 2
+      _ = 0 := hzero3
+  have hdvd := nine_dvd_sum_of_orderNine_and_orderThree_fourier_eq_zero
+    hζ hη a hzero9Fin hzero3Fin
+  have hsum : (∑ i : Fin 9, a i) = ∑ y : ZMod 9, c y := by
+    refine Fintype.sum_equiv (ZMod.finEquiv 9) _ _ ?_
+    intro i
+    simp [a]
+  rw [← hsum]
+  exact hdvd
+
 end Erdos85
