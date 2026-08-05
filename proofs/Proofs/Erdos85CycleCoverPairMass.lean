@@ -56,6 +56,46 @@ theorem cycleCoverMap_eq_translate_iff_zero
   rw [← ZMod.natCast_zmod_val t]
   exact hind t.val
 
+/-- The kernel of a globally oriented cycle selector consists exactly of the
+target positions whose canonical natural representative is divisible by the
+source length. -/
+theorem cycleCoverMap_apply_eq_zero_iff_dvd
+    {r n : ℕ} [NeZero r] [NeZero n]
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (t : ZMod n) :
+    f t = f 0 ↔ r ∣ t.val := by
+  rcases horient with hforward | hreverse
+  · have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    calc
+      f t = f 0 ↔ f ((t.val : ℕ) : ZMod n) = f 0 := by
+        rw [ZMod.natCast_zmod_val]
+      _ ↔ f 0 + ((t.val : ℕ) : ZMod r) = f 0 := by rw [hind]
+      _ ↔ ((t.val : ℕ) : ZMod r) = 0 := by simp
+      _ ↔ r ∣ t.val := ZMod.natCast_eq_zero_iff t.val r
+  · have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    calc
+      f t = f 0 ↔ f ((t.val : ℕ) : ZMod n) = f 0 := by
+        rw [ZMod.natCast_zmod_val]
+      _ ↔ f 0 - ((t.val : ℕ) : ZMod r) = f 0 := by rw [hind]
+      _ ↔ ((t.val : ℕ) : ZMod r) = 0 := by simp
+      _ ↔ r ∣ t.val := ZMod.natCast_eq_zero_iff t.val r
+
 /-- **Cyclic-cover pair-mass quantization.**  Suppose adjacency from the
 `r`-cycle labeled by `u` to the `n`-cycle labeled by `v` is the graph of a
 globally oriented selector `f`.  For every displacement `δ`, the sum of
@@ -110,6 +150,22 @@ theorem sum_anchorPairMultiplicity_of_cycleCover
       simp only [cycleCoverMap_eq_translate_iff_zero f horient δ t]
     _ = if f δ = f 0 then n else 0 := by
       split_ifs <;> simp [Finset.card_univ, ZMod.card]
+
+/-- Divisibility form of cyclic-cover pair-mass quantization. -/
+theorem sum_anchorPairMultiplicity_of_cycleCover_eq_ite_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r n : ℕ} [NeZero r] [NeZero n]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (u : ZMod r → V) (v : ZMod n → V)
+    (f : ZMod n → ZMod r)
+    (hadj : ∀ x y, G.Adj (u x) (v y) ↔ x = f y)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (δ : ZMod n) :
+    ∑ x : ZMod r, anchorPairMultiplicity G (u x) v δ =
+      if r ∣ δ.val then n else 0 := by
+  simp only [sum_anchorPairMultiplicity_of_cycleCover G u v f hadj horient δ,
+    cycleCoverMap_apply_eq_zero_iff_dvd f horient δ]
 
 /-- Set-valued form of pair-mass quantization, convenient for downstream
 parity and partition arguments. -/
