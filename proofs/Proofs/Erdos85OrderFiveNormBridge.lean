@@ -1,5 +1,6 @@
 import Proofs.Erdos85DifferenceArrayArithmetic
 import Proofs.Erdos85PrimeFourierSquare
+import Proofs.NthRootIrrationalOQ01OQ01Real
 
 /-!
 # Algebraic norm bridge at order five
@@ -13,6 +14,34 @@ identity implies that its quadratic norm squared is
 namespace Erdos85
 
 open scoped BigOperators
+
+/-- The real parameter of a primitive fifth root satisfies its standard
+quadratic equation. -/
+theorem orderFive_realParameter_relation
+    {K : Type*} [Field K] [CharZero K]
+    {ζ : K} (hζ : IsPrimitiveRoot ζ 5) :
+    (ζ + ζ⁻¹) ^ 2 + (ζ + ζ⁻¹) - 1 = 0 := by
+  have hζ0 : ζ ≠ 0 := hζ.ne_zero (by norm_num)
+  have hsum : 1 + ζ + ζ ^ 2 + ζ ^ 3 + ζ ^ 4 = 0 := by
+    simpa [Finset.sum_range_succ] using
+      hζ.geom_sum_eq_zero (by norm_num : 1 < 5)
+  field_simp [hζ0]
+  linear_combination hsum
+
+/-- Over `ℂ`, `1` and the real fifth-root parameter are rationally linearly
+independent. -/
+theorem orderFive_realParameter_independent_complex
+    {ζ : ℂ} (hζ : IsPrimitiveRoot ζ 5) :
+    ∀ C D : ℚ, (C : ℂ) + (D : ℂ) * (ζ + ζ⁻¹) = 0 → D = 0 := by
+  intro C D hCD
+  by_contra hD
+  have hrat : ζ + ζ⁻¹ = ((-C / D : ℚ) : ℂ) := by
+    push_cast
+    apply (eq_div_iff (show (D : ℂ) ≠ 0 by exact_mod_cast hD)).2
+    linear_combination hCD
+  exact NthRootIrrationalOQ01OQ01Real.trace_not_rational
+    (n := 5) (by rw [Nat.totient_prime Nat.prime_five]; norm_num) hζ
+      ⟨-C / D, hrat.symm⟩
 
 /-- A negation-symmetric integral Fourier coefficient at order five lies in
 the real quadratic line `ℚ + ℚ(ζ+ζ⁻¹)`, with explicit coordinates. -/
@@ -142,5 +171,44 @@ theorem orderFive_coefficient_eq_zero
       ((u : K) ^ 2) * (((x : ℚ) : K) - μ)) : u = 0 := by
   exact orderFive_coefficient_eq_zero_of_norm_not_isSquare
     μ hμ hindep A B u x hsq (orderFive_rationalNorm_not_isSquare x hx)
+
+/-- Complete order-five Fourier norm step.  For a symmetric integral
+coefficient vector, the square-frequency identity has zero Fourier side. -/
+theorem orderFive_fourier_eq_zero_of_square_identity
+    {ζ : ℂ} (hζ : IsPrimitiveRoot ζ 5)
+    (c : ZMod 5 → ℤ) (hsymm : ∀ y, c (-y) = c y)
+    (x : ℕ) (hx : 2 ≤ x) (u : ℤ)
+    (hsq :
+      (∑ y : ZMod 5, (c y : ℂ) * primitiveRootCharacter hζ y) *
+          (∑ y : ZMod 5, (c y : ℂ) * primitiveRootCharacter hζ y) =
+        ((u * u : ℤ) : ℂ) * ((x : ℂ) - ζ - ζ⁻¹)) :
+    ∑ y : ZMod 5, (c y : ℂ) * primitiveRootCharacter hζ y = 0 := by
+  let H : ℂ := ∑ y : ZMod 5,
+    (c y : ℂ) * primitiveRootCharacter hζ y
+  let μ : ℂ := ζ + ζ⁻¹
+  let A : ℚ := (c 0 - c 2 : ℤ)
+  let B : ℚ := (c 1 - c 2 : ℤ)
+  have hH : H = (A : ℂ) + (B : ℂ) * μ := by
+    simpa only [H, A, B, μ, Rat.cast_intCast] using
+      orderFive_symmetric_fourier_eq_realQuadratic hζ c hsymm
+  have hsq' : ((A : ℂ) + (B : ℂ) * μ) ^ 2 =
+      ((((u : ℚ) : ℂ)) ^ 2) * ((((x : ℚ) : ℂ)) - μ) := by
+    rw [← hH]
+    dsimp only [H, μ]
+    convert hsq using 1 <;> push_cast <;> ring
+  have huQ : (u : ℚ) = 0 := orderFive_coefficient_eq_zero μ
+    (orderFive_realParameter_relation hζ)
+    (orderFive_realParameter_independent_complex hζ)
+    A B u x hx hsq'
+  have hu : u = 0 := by exact_mod_cast huQ
+  rw [hu] at hsq
+  have hHzero : H * H = 0 := by
+    dsimp only [H]
+    calc
+      (∑ y : ZMod 5, (c y : ℂ) * primitiveRootCharacter hζ y) *
+          (∑ y : ZMod 5, (c y : ℂ) * primitiveRootCharacter hζ y) =
+          (((0 : ℤ) * 0 : ℤ) : ℂ) * ((x : ℂ) - ζ - ζ⁻¹) := hsq
+      _ = 0 := by norm_num
+  exact mul_self_eq_zero.mp hHzero
 
 end Erdos85
