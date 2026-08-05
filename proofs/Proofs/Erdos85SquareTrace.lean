@@ -68,6 +68,33 @@ theorem LinearMap.exists_int_trace_eq_two_mul_of_sq_eq_sq
   rw [htraceSolved]
   ring
 
+/-- If the trace of `T` is twice a prescribed Fourier coefficient `H`, the
+square branch writes `H²` as an integral square times the scalar `s²`.
+
+This is the form needed by the frequency-pair argument: the graph-facing
+trace calculation supplies `trace T = 2 * H`, while the operator restriction
+supplies `T² = s² I`. -/
+theorem LinearMap.exists_int_fourier_sq_eq_of_trace_eq_two_mul
+    {K E : Type*} [Field K] [CharZero K]
+    [AddCommGroup E] [Module K E] [FiniteDimensional K E]
+    (T : E →ₗ[K] E) (s H : K) (hs : s ≠ 0)
+    (hsq : T * T = (s * s) • LinearMap.id)
+    (heven : Even (Module.finrank K E))
+    (htrace : LinearMap.trace K E T = 2 * H) :
+    ∃ u : ℤ, H * H = ((u : K) * (u : K)) * (s * s) := by
+  obtain ⟨u, hu⟩ :=
+    LinearMap.exists_int_trace_eq_two_mul_of_sq_eq_sq T s hs hsq heven
+  refine ⟨u, ?_⟩
+  have htwo : (2 : K) * H = (2 : K) * ((u : K) * s) := by
+    calc
+      (2 : K) * H = LinearMap.trace K E T := htrace.symm
+      _ = 2 * (u : K) * s := hu
+      _ = (2 : K) * ((u : K) * s) := by ring
+  have hH : H = (u : K) * s :=
+    mul_left_cancel₀ (by norm_num : (2 : K) ≠ 0) htwo
+  rw [hH]
+  ring
+
 end
 
 end Erdos85
