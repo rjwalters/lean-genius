@@ -125,21 +125,29 @@ theorem Matrix.trace_eq_zero_of_sq_eq_nonsquare
 /-- Endomorphism form of the field-valued nonsquare trace theorem. -/
 theorem LinearMap.trace_eq_zero_of_sq_eq_nonsquare
     {K E : Type*} [Field K] [AddCommGroup E] [Module K E]
-    [FiniteDimensional K E] [Nontrivial E]
+    [FiniteDimensional K E]
     (T : E →ₗ[K] E) (a : K) (ha : ¬ IsSquare a)
     (hT : T * T = a • LinearMap.id) : LinearMap.trace K E T = 0 := by
-  let b := Module.Free.chooseBasis K E
-  let M := LinearMap.toMatrix b b T
-  letI : Nonempty (Module.Free.ChooseBasisIndex K E) :=
-    Fintype.card_pos_iff.mp (by
-      rw [← Module.finrank_eq_card_chooseBasisIndex]
-      exact Module.finrank_pos)
-  have hM : M * M =
-      a • (1 : Matrix (Module.Free.ChooseBasisIndex K E)
-        (Module.Free.ChooseBasisIndex K E) K) := by
-    have hmapped := congrArg (LinearMap.toMatrix b b) hT
-    simpa [M, LinearMap.toMatrix_mul, LinearMap.toMatrix_id] using hmapped
-  rw [LinearMap.trace_eq_matrix_trace K b]
-  exact Matrix.trace_eq_zero_of_sq_eq_nonsquare M a ha hM
+  cases subsingleton_or_nontrivial E with
+  | inl hE =>
+      letI : Subsingleton E := hE
+      have hTzero : T = 0 := Subsingleton.elim _ _
+      rw [hTzero]
+      simp
+  | inr hE =>
+    letI : Nontrivial E := hE
+    let b := Module.Free.chooseBasis K E
+    let M := LinearMap.toMatrix b b T
+    letI : Nonempty (Module.Free.ChooseBasisIndex K E) :=
+      Fintype.card_pos_iff.mp (by
+        rw [← Module.finrank_eq_card_chooseBasisIndex]
+        exact Module.finrank_pos)
+    have hM : M * M =
+        a • (1 : Matrix (Module.Free.ChooseBasisIndex K E)
+          (Module.Free.ChooseBasisIndex K E) K) := by
+      have hmapped := congrArg (LinearMap.toMatrix b b) hT
+      simpa [M, LinearMap.toMatrix_mul, LinearMap.toMatrix_id] using hmapped
+    rw [LinearMap.trace_eq_matrix_trace K b]
+    exact Matrix.trace_eq_zero_of_sq_eq_nonsquare M a ha hM
 
 end Erdos85
