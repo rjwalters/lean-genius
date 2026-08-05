@@ -75,6 +75,7 @@ theorem submatrix_defect_eq_cycleDefectMatrix
   ext ⟨x, c⟩ ⟨y, e⟩
   rw [Matrix.submatrix_apply, SimpleGraph.adjMatrix_apply,
     cycleDefectMatrix, Matrix.blockDiagonal_apply]
+  simp only [cycleLabeling]
   have hadj : D.Adj (u c x) (u e y) ↔ e = c ∧ (y = x - 1 ∨ y = x + 1) := by
     rw [← SimpleGraph.mem_neighborFinset, huD c x]
     simp only [Finset.mem_insert, Finset.mem_singleton]
@@ -158,7 +159,7 @@ theorem labeledAdjMatrix_sq
       Matrix.smul_apply, Matrix.one_apply, Matrix.of_apply,
       FriendshipTheoremOQ01.onesMatrix, SimpleGraph.adjMatrix_apply,
       smul_eq_mul]
-    split_ifs <;> push_cast <;> ring
+    split_ifs <;> simp only [eq_intCast] <;> push_cast <;> ring
   rw [← submatrix_defect_eq_cycleDefectMatrix D u hr3 hbij.injective huD,
     labeledAdjMatrix, ← Equiv.coe_ofBijective _ hbij,
     Matrix.submatrix_mul_equiv, hsqK]
@@ -216,9 +217,7 @@ theorem sum_labeledAdjMatrix_diag_eq_anchorMultiplicity
   rw [Finset.sum_boole]
   rw [anchorMultiplicity]
   congr 2
-  exact Finset.filter_congr fun c _ ↦ by
-    rw [eq_iff_iff]
-    exact hmem c
+  exact Finset.filter_congr fun c _ ↦ hmem c
 
 end Transport
 
