@@ -110,6 +110,45 @@ theorem exists_cycleCoverMap_global_orientation
         rw [G.adj_comm, ← mem_mixedAnchorSupport_iff]
         exact ⟨fun hx ↦ hfun y x hx, fun h ↦ h ▸ hfmem y⟩)
 
+/-- **Boundary quotient form of cyclic-cover rigidity.**  A quotient entry
+`Q(e,c)=1` says that every vertex of `e` has exactly one neighbor in `c`.
+For arbitrary cyclic labelings of the two defect components, those neighbors
+therefore form a globally orientation-preserving or orientation-reversing
+cover map. -/
+theorem exists_cycleCoverMap_of_componentQuotient_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr : 3 ≤ r) (hn : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
+    ∃ f : ZMod n → ZMod r,
+      (∀ x y, G.Adj (u x) (v y) ↔ x = f y) ∧
+      ((∀ y, f (y + 1) = f y + 1) ∨
+        (∀ y, f (y + 1) = f y - 1)) := by
+  apply exists_cycleCoverMap_global_orientation hr hn G
+    (secondOrderDefectGraph G) u v huinj hvinj huD hvD
+    (adjMatrix_comm_secondOrderDefect_of_even
+      G hfree hd heven hmin hcard)
+  intro y
+  have hy : v y ∈ e.supp := by
+    rw [← hvRange]
+    exact ⟨y, rfl⟩
+  rw [card_mixedAnchorSupport_eq_componentQuotient
+    G hfree hd heven hmin hcard e c hy huinj huRange, hone]
+
 end
 
 end Erdos85
