@@ -310,6 +310,37 @@ theorem orderNine_fourier_eq_zero_of_square_identity
       _ = 0 := by norm_num
   exact mul_self_eq_zero.mp hHzero
 
+/-- For a symmetric order-nine coefficient vector, Fourier vanishing forces
+the coefficients at residues zero and three to agree. -/
+theorem orderNine_zero_implies_coeff_zero_eq_coeff_three
+    {ζ : ℂ} (hζ : IsPrimitiveRoot ζ 9)
+    (c : ZMod 9 → ℤ) (hsymm : ∀ y, c (-y) = c y)
+    (hzero : ∑ y : ZMod 9,
+      (c y : ℂ) * primitiveRootCharacter hζ y = 0) :
+    c 0 = c 3 := by
+  let μ : ℂ := ζ + ζ⁻¹
+  let A : ℚ := (c 0 - 2 * c 2 - c 3 + 2 * c 4 : ℤ)
+  let B : ℚ := (c 1 - c 4 : ℤ)
+  let C : ℚ := (c 2 - c 4 : ℤ)
+  have hcoord : (A : ℂ) + (B : ℂ) * μ + (C : ℂ) * μ ^ 2 = 0 := by
+    calc
+      (A : ℂ) + (B : ℂ) * μ + (C : ℂ) * μ ^ 2 =
+          ∑ y : ZMod 9,
+            (c y : ℂ) * primitiveRootCharacter hζ y := by
+              simpa only [A, B, C, μ, Rat.cast_intCast] using
+                (orderNine_symmetric_fourier_eq_realCubic hζ c hsymm).symm
+      _ = 0 := hzero
+  obtain ⟨hB, hC⟩ :=
+    orderNine_realParameter_independent_complex hζ A B C hcoord
+  have hA : A = 0 := by
+    rw [hB, hC, Rat.cast_zero, zero_mul, add_zero] at hcoord
+    simp only [zero_mul, add_zero] at hcoord
+    exact_mod_cast hcoord
+  dsimp only [A, B, C] at hA hB hC
+  exact_mod_cast (show (c 0 : ℚ) = c 3 by
+    push_cast at hA hC
+    linarith)
+
 /-- ZMod/character form of the primitive order-nine divisibility terminal. -/
 theorem three_dvd_sum_of_orderNine_character_eq_zero
     {K : Type*} [Field K] [CharZero K]
