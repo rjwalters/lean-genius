@@ -89,7 +89,8 @@
       "**Imaginary part of the binomial theorem**: the sine multiple-angle expansion is nothing more than $\\operatorname{Im}$ applied term-by-term to $(\\cos\\theta + i\\sin\\theta)^n = \\sum_k \\binom{n}{k}\\cos^k\\theta\\,(i\\sin\\theta)^{n-k}$ — the exact dual of the parent's real-part development.",
       "**The sign pattern is $\\operatorname{Im}(i^m)$**: the alternating $(-1)^j$ and the survival of only *odd* powers of $\\sin$ both come from the four-periodic imaginary part of the powers of $i$, complementary to the real part governing $\\cos(n\\theta)$.",
       "**Reflect, drop, reindex — odd version**: converting the raw binomial sum to the textbook closed form reuses the parent's combinatorial recipe with the parity flipped — `sum_range_reflect`, `sum_subset` (dropping even indices now), `sum_image` reindexing $i = 2j+1$.",
-      "**First vs. second kind**: where the cosine expansion lands on $T_n$, the sine expansion lands on $U_{n-1}$ — the natural appearance of $\\sin\\theta$ as an overall factor is exactly the $\\sin\\theta$ in $U_n(\\cos\\theta)\\,\\sin\\theta = \\sin((n+1)\\theta)$."
+      "**First vs. second kind**: where the cosine expansion lands on $T_n$, the sine expansion lands on $U_{n-1}$ — the natural appearance of $\\sin\\theta$ as an overall factor is exactly the $\\sin\\theta$ in $U_n(\\cos\\theta)\\,\\sin\\theta = \\sin((n+1)\\theta)$.",
+      "**No case split on $n$ itself**: the proof branches only on the parity of the *summation index* $i$ (`Nat.even_or_odd i` inside the binomial sum), never on the parity of $n$. The single argument thus covers every $n \\ge 0$ uniformly, unlike textbook treatments that often prove the even-$n$ and odd-$n$ multiple-angle formulas separately."
     ],
     "prerequisites": [
       "De Moivre's theorem and Euler's formula e^{iθ} = cos θ + i sin θ",

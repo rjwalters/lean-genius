@@ -8,6 +8,19 @@
 #   pnpm worktree <issue-number> <branch>              # Create worktree with custom branch name
 #   pnpm worktree <issue-number> --sparse <paths...>   # Cone-mode sparse checkout
 #   pnpm worktree <issue-number> --full                # Convert sparse worktree to full
+#   pnpm worktree remove <issue-number> [--keep-branch] [--force]  # Remove one managed worktree
+#   pnpm worktree snapshot <issue-number> [--include-untracked] [--json]
+#     # Write a patch file capturing the worktree's uncommitted diff to
+#     # <worktree-root>/.snapshots/issue-<N>-<UTC-timestamp>.patch — WITHOUT
+#     # touching `git stash` (which is repo-global and can be clobbered by a
+#     # concurrent builder in another worktree). Replay with `git apply`.
+#   pnpm worktree stash-push <issue-number> [--include-untracked] [--json]
+#   pnpm worktree stash-pop <issue-number> [--json]
+#     # Clean-and-restore pair for a "clean baseline vs my diff" comparison
+#     # (clippy/shellcheck/test baseline diffing) — WITHOUT touching the
+#     # shared `refs/stash` stack. Anchors captured WIP to a PER-ISSUE ref
+#     # (refs/loom/stash-baseline/issue-<N>) instead, so no other worktree's
+#     # concurrent stash op can ever land "in between" push and pop (#5217).
 #   pnpm worktree --check                              # Check if currently in a worktree
 #   pnpm worktree --json <issue-number>                # Machine-readable output
 #   pnpm worktree --return-to <dir> <issue-number>     # Store return directory
@@ -299,6 +312,834 @@ cleanup_partial_worktree_state() {
 }
 
 # --------------------------------------------------------------------------
+# Operator-facing single-worktree removal (issue #3769)
+# --------------------------------------------------------------------------
+#
+# `worktree.sh remove <N>` (alias `--remove <N>`) is the sanctioned path for an
+# operator to remove exactly one managed worktree on demand — e.g. a dead
+# builder's stale checkout that pushed nothing and needs to be re-created off an
+# updated base. Before this verb existed, the only single-worktree removal was
+# `git worktree remove` directly, which CLAUDE.md forbids because running it
+# while the shell is inside/near the worktree corrupts shell state.
+#
+# The guard order deliberately mirrors merge-pr.sh's private
+# `_remove_loom_worktree()` (defaults/scripts/merge-pr.sh:1129-1199), scoped to
+# the `issue-<N>` path convention only (no --worktree-path override, no
+# discovery fallback — those belong to merge-pr.sh's distinct call-sites):
+#   1. Idempotent no-op if the worktree dir is absent (still prune).
+#   2. Refuse to remove a dir lacking the .loom-managed sentinel (user-owned).
+#   3. Refuse to remove a worktree with uncommitted changes unless --force (#4449).
+#   4. Discover the attached branch BEFORE removal (the porcelain entry vanishes
+#      once the worktree is gone).
+#   5. Hop out of the worktree first if our cwd is inside it (CWD-safety).
+#   6. `git worktree remove --force`; warn (don't hard-fail) on failure.
+#   7. `git branch -d` the attached branch (safe delete, refuses on unmerged
+#      commits) unless --keep-branch.
+#   8. `git worktree prune`.
+#
+# Guard 3 exists because step 6 is `git worktree remove --force`, which discards
+# the working tree unconditionally — there is no "safe" variant to fall back to
+# once it runs. #4449 is the live precedent for why an unconditional destructive
+# removal is unacceptable: a tested-but-uncommitted fix was destroyed in the
+# window before its `git commit`, with no dirty-check anywhere on the path. The
+# create path already preserves a dirty worktree (see the "Worktree has
+# uncommitted changes - preserving existing work" branch); this makes the removal
+# path consistent with it, and `--force` is the explicit opt-in to the loss.
+#
+# `loom-clean` remains the bulk/stale-cleanup path across all closed issues;
+# this verb targets one specific issue's worktree.
+
+# Print the short branch name attached to a worktree path, parsed from
+# `git worktree list --porcelain`. Robust to custom branch names (worktree.sh
+# <N> <custom-branch> allows a non-`feature/issue-<N>` branch). Mirrors
+# merge-pr.sh's _worktree_branch_for(). Prints nothing for a detached/bare
+# worktree or on error.
+_worktree_attached_branch() {
+    local repo_root="$1" target="$2" target_abs
+    target_abs="$(cd "$target" 2>/dev/null && pwd -P)" || target_abs="$target"
+    # The `worktree ` path line (prefix = 9 chars) may contain spaces, so parse
+    # it with substr($0, 10) rather than $2. The `branch ` line is safe with $2
+    # (git ref names cannot contain spaces).
+    git -C "$repo_root" worktree list --porcelain 2>/dev/null | \
+        awk -v p="$target_abs" '
+            /^worktree / { wt=substr($0, 10); br=""; next }
+            /^branch /   { br=$2 }
+            /^$/         { if (wt == p && br != "" && !found) { sub(/^refs\/heads\//, "", br); print br; found=1; exit } }
+            END          { if (wt == p && br != "" && !found) { sub(/^refs\/heads\//, "", br); print br } }
+        '
+}
+
+# Print a worktree's uncommitted-change lines in `git status --porcelain`
+# format, EXCLUDING Loom runtime marker files (#4449).
+#
+# `.loom-managed` / `.loom-in-use` / `.loom-checkpoint` / `.no-changes-needed` are
+# runtime breadcrumbs every managed worktree legitimately carries. A correctly
+# installed repo gitignores them, but a stale / pre-#3838 `.gitignore` does not —
+# and if they counted as "uncommitted work", the dirty guard below would refuse
+# to remove *every* managed worktree, which is worse than no guard at all. They
+# carry no work, so they are filtered out here rather than special-cased at each
+# call site.
+#
+# Empty output ⇒ nothing worth preserving. Never fails (a non-repo path or a
+# missing git prints nothing).
+_worktree_dirty_lines() {
+    local wt="$1"
+    git -C "$wt" status --porcelain --untracked-files=all 2>/dev/null | awk '
+        {
+            # Porcelain v1: 2 status chars + 1 space, then the path. Renames
+            # render as "old -> new" and never match a bare marker name.
+            path = substr($0, 4)
+            gsub(/^"/, "", path); gsub(/"$/, "", path)
+            if (path == ".loom-managed"      || path == ".loom-in-use" ||
+                path == ".loom-checkpoint"   || path == ".no-changes-needed") next
+            print
+        }
+    ' || true
+}
+
+# Whether $branch has a MERGED pull request on the forge (#5177 / #4889).
+#
+# This repo squash-merges, so once a PR lands, the branch's original commits are
+# never reachable from the squash commit on main — `git branch -d`'s "fully
+# merged" safety check therefore refuses to delete a genuinely-landed branch.
+# When the forge confirms the PR merged, the work IS landed and `git branch -D`
+# is safe, mirroring merge-pr.sh's existing squash-aware `-d`→`-D` fallback.
+#
+# Fail-closed: a missing gh, any gh error, or an empty result all return
+# non-zero ("not merged"), so a probe failure never escalates to a force-delete.
+_worktree_pr_is_merged() {
+    local repo_root="$1" branch="$2" count
+    [[ -n "$branch" ]] || return 1
+    command -v gh >/dev/null 2>&1 || return 1
+    count="$( (cd "$repo_root" 2>/dev/null && \
+        gh pr list --head "$branch" --state merged --json number --jq 'length' 2>/dev/null) )" || return 1
+    [[ -n "$count" && "$count" != "0" ]]
+}
+
+# remove_worktree_command [--keep-branch] [--force] [--json] <issue-number>
+#
+# Invoked from the early arg dispatch below. Returns 0 on success (including the
+# idempotent no-op) and 1 on refusal / usage error / removal failure.
+remove_worktree_command() {
+    local issue_number="" keep_branch=false json=false force=false
+    local usage="Usage: pnpm worktree remove <issue-number> [--keep-branch] [--force] [--json]"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --keep-branch) keep_branch=true; shift ;;
+            --json)        json=true; shift ;;
+            --force|-f)    force=true; shift ;;
+            --*)
+                print_error "Unknown flag for remove: $1"
+                echo ""
+                echo "$usage"
+                return 1
+                ;;
+            *)
+                if [[ -z "$issue_number" ]]; then
+                    issue_number="$1"; shift
+                else
+                    print_error "Unexpected argument: $1"
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    if [[ -z "$issue_number" ]]; then
+        print_error "remove requires an issue number"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+    if ! [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+        print_error "Issue number must be numeric (got: '$issue_number')"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+
+    # In --json mode, human-readable status goes to stderr so stdout carries
+    # only the final JSON document (stdout-purity, mirrors the main script's
+    # fd-3 plumbing). print_error already writes to stderr, safe in both modes.
+    _rm_info()    { if [[ "$json" == true ]]; then echo -e "${BLUE}ℹ $*${NC}" >&2; else print_info "$*"; fi; }
+    _rm_success() { if [[ "$json" == true ]]; then echo -e "${GREEN}✓ $*${NC}" >&2; else print_success "$*"; fi; }
+    _rm_warning() { if [[ "$json" == true ]]; then echo -e "${YELLOW}⚠ $*${NC}" >&2; else print_warning "$*"; fi; }
+    _rm_json() {
+        # $1=success(bool) $2=removed(bool) $3=branchStatus
+        [[ "$json" == true ]] || return 0
+        printf '{"success": %s, "issueNumber": %s, "worktreePath": "%s", "removed": %s, "branch": "%s", "branchStatus": "%s"}\n' \
+            "$1" "$issue_number" "$worktree_path" "$2" "${attached_branch:-}" "$3"
+    }
+
+    # Resolve the repo root even when invoked from inside a worktree: the git
+    # common dir's parent is always the main workspace.
+    local git_common repo_root
+    if ! git_common=$(git rev-parse --git-common-dir 2>/dev/null); then
+        print_error "Not inside a git repository"
+        return 1
+    fi
+    repo_root=$(cd "$(dirname "$git_common")" 2>/dev/null && pwd) || repo_root="$(pwd)"
+
+    local worktree_root_dir worktree_path
+    worktree_root_dir="$(loom_worktree_root "$repo_root")"
+    worktree_path="$worktree_root_dir/issue-$issue_number"
+    local attached_branch=""
+
+    # 1. Idempotent no-op if the worktree dir is absent (still prune any stale
+    #    registration, matching the "prunes git worktree registration" AC).
+    if [[ ! -d "$worktree_path" ]]; then
+        git -C "$repo_root" worktree prune 2>/dev/null || true
+        _rm_info "No worktree found at $worktree_path — nothing to remove"
+        _rm_json true false "absent"
+        return 0
+    fi
+
+    # 2. Sentinel guard: refuse to remove a user-owned / non-managed worktree.
+    if [[ ! -f "$worktree_path/.loom-managed" ]]; then
+        print_error "Worktree at $worktree_path lacks .loom-managed sentinel — refusing to remove (user-owned)"
+        _rm_json false false "untouched"
+        return 1
+    fi
+
+    # 3. Dirty guard (#4449): step 5's `git worktree remove --force` discards the
+    #    working tree unconditionally, so uncommitted work must be surfaced and
+    #    the removal refused unless the caller explicitly opts into the loss.
+    #    Defense in depth alongside the create path, which already preserves a
+    #    dirty worktree rather than resetting it.
+    local dirty_lines dirty_count
+    dirty_lines="$(_worktree_dirty_lines "$worktree_path")"
+    if [[ -n "$dirty_lines" ]]; then
+        dirty_count=$(printf '%s\n' "$dirty_lines" | grep -c . || true)
+        if [[ "$force" != true ]]; then
+            print_error "Refusing to remove $worktree_path — it has $dirty_count uncommitted change(s):"
+            printf '%s\n' "$dirty_lines" | head -20 >&2
+            if [[ "$dirty_count" -gt 20 ]]; then
+                echo "  ... and $((dirty_count - 20)) more" >&2
+            fi
+            echo "" >&2
+            echo "Removing it would destroy that work irreversibly. To proceed, pick one:" >&2
+            echo "  1. Commit it:    git -C $worktree_path add -A && git -C $worktree_path commit -m '...'" >&2
+            echo "  2. Save a patch: git -C $worktree_path diff HEAD > /tmp/issue-$issue_number.patch" >&2
+            echo "  3. Stash it:     git -C $worktree_path stash push -u -m 'issue-$issue_number'" >&2
+            echo "  4. Discard it:   re-run with --force (the uncommitted changes are lost)" >&2
+            _rm_json false false "untouched"
+            return 1
+        fi
+        _rm_warning "Worktree has $dirty_count uncommitted change(s) - discarding them (--force)"
+        printf '%s\n' "$dirty_lines" | head -20 >&2
+    fi
+
+    # 4. Discover the attached branch BEFORE removal (porcelain entry vanishes
+    #    once the worktree is gone).
+    attached_branch="$(_worktree_attached_branch "$repo_root" "$worktree_path")" || attached_branch=""
+
+    # 5. CWD-safety: if our shell is inside the worktree, hop out first.
+    local worktree_real current_dir in_worktree=false
+    worktree_real="$(cd "$worktree_path" 2>/dev/null && pwd -P)" || worktree_real="$worktree_path"
+    current_dir="$(pwd -P 2>/dev/null || pwd)"
+    if [[ "$current_dir" == "$worktree_real"* ]]; then
+        in_worktree=true
+        cd "$repo_root" 2>/dev/null || true
+    fi
+
+    # 6. Remove the worktree.
+    _rm_info "Removing worktree: $worktree_path"
+    local removed=false remove_err
+    if remove_err="$(git -C "$repo_root" worktree remove "$worktree_path" --force 2>&1)"; then
+        removed=true
+        _rm_success "Worktree removed"
+        if [[ "$in_worktree" == true ]]; then
+            _rm_warning "Your shell's working directory was inside the removed worktree."
+            _rm_warning "Run this command to fix:  cd $repo_root"
+        fi
+    elif printf '%s' "$remove_err" | grep -qi "is not a working tree" && \
+         [[ -f "$worktree_path/.loom-managed" ]]; then
+        # #5177: git no longer tracks this path as a worktree (e.g. a stale
+        # `git worktree prune` left the directory on disk), so `git worktree
+        # remove` can never clean it and it accumulates forever. It is confirmed
+        # Loom-managed (the step-2 sentinel guard is re-checked here) and is by
+        # construction under the managed worktree root ($worktree_root_dir/issue-N),
+        # so remove the directory directly and prune the dangling registration.
+        if rm -rf "$worktree_path"; then
+            removed=true
+            _rm_success "Removed untracked worktree directory (no git worktree entry)"
+        else
+            _rm_warning "Could not remove untracked worktree directory at $worktree_path"
+        fi
+    else
+        _rm_warning "Could not remove worktree at $worktree_path"
+    fi
+
+    # 7. Branch cleanup (unless --keep-branch). Deferred until after removal so
+    #    the worktree's checkout lock on the branch is released first.
+    local branch_status="none"
+    if [[ "$keep_branch" == true ]]; then
+        if [[ -n "$attached_branch" ]]; then
+            _rm_info "Keeping local branch '$attached_branch' (--keep-branch)"
+            branch_status="kept"
+        fi
+    elif [[ "$removed" == true && -n "$attached_branch" ]]; then
+        if ! git -C "$repo_root" show-ref --verify --quiet "refs/heads/$attached_branch"; then
+            _rm_info "Local branch '$attached_branch' does not exist — skipping branch delete"
+            branch_status="absent"
+        elif git -C "$repo_root" branch -d "$attached_branch" >/dev/null 2>&1; then
+            _rm_success "Local branch '$attached_branch' deleted"
+            branch_status="deleted"
+        elif _worktree_pr_is_merged "$repo_root" "$attached_branch"; then
+            # #5177 / #4889: `git branch -d` refused because a squash-merged
+            # branch is never "fully merged" by reachability — but the forge
+            # confirms its PR merged, so the work is landed and -D is safe.
+            if git -C "$repo_root" branch -D "$attached_branch" >/dev/null 2>&1; then
+                _rm_success "Local branch '$attached_branch' force-deleted (PR merged — squash-safe)"
+                branch_status="deleted"
+            else
+                _rm_warning "Could not delete local branch '$attached_branch' even after confirming its PR merged"
+                branch_status="unmerged"
+            fi
+        else
+            _rm_warning "Could not delete local branch '$attached_branch' (may have unmerged commits — use 'git branch -D' if intentional)"
+            branch_status="unmerged"
+        fi
+    fi
+
+    # 8. Prune the git worktree registration.
+    git -C "$repo_root" worktree prune 2>/dev/null || true
+
+    if [[ "$removed" == true ]]; then
+        _rm_json true true "$branch_status"
+        return 0
+    else
+        _rm_json false false "$branch_status"
+        return 1
+    fi
+}
+
+# --------------------------------------------------------------------------
+# Worktree-scoped snapshot (issue #4778)
+# --------------------------------------------------------------------------
+#
+# `worktree.sh snapshot <N>` captures a worktree's uncommitted WIP as a
+# standalone patch file WITHOUT touching `git stash` at all. `git stash` is
+# repo-global across worktrees — one shared stash list for the whole repo —
+# so two builders stashing around the same time in different `issue-<N>`
+# worktrees can pop/clobber each other's WIP (documented cross-worktree
+# contamination class). A patch file is inherently per-invocation and
+# per-path: there is no shared mutable list to collide on.
+#
+# Deterministic, discoverable location — resolved through the SAME
+# loom_worktree_root() the rest of this script uses, so an overridden
+# LOOM_WORKTREE_ROOT / worktree.root config redirects snapshots along with
+# worktrees rather than falling back to a hardcoded `.loom/worktrees` path:
+#
+#   $(loom_worktree_root <repo_root>)/.snapshots/issue-<N>-<UTC-timestamp>.patch
+#
+# This is deliberately the same family as check-main-clean.sh's --quarantine
+# rescue path: both produce a "replay this diff inside your worktree"
+# artifact, and both are named/labeled by issue for attribution. They differ
+# in mechanism on purpose: check-main-clean.sh rescues contamination that
+# leaked into the shared MAIN checkout (its whole point is a repo-global
+# stash ref, because the dirt itself is repo-global); `snapshot` rescues one
+# worktree's own WIP (its whole point is per-path isolation, because the
+# thing it's defending against IS the shared stash list). Replay contract for
+# both is the same: `git apply <patch>` against a fresh checkout reproduces
+# the captured diff.
+snapshot_worktree_command() {
+    local issue_number="" json=false include_untracked=false
+    local usage="Usage: pnpm worktree snapshot <issue-number> [--include-untracked] [--json]"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --include-untracked) include_untracked=true; shift ;;
+            --json)               json=true; shift ;;
+            --*)
+                print_error "Unknown flag for snapshot: $1"
+                echo ""
+                echo "$usage"
+                return 1
+                ;;
+            *)
+                if [[ -z "$issue_number" ]]; then
+                    issue_number="$1"; shift
+                else
+                    print_error "Unexpected argument: $1"
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    if [[ -z "$issue_number" ]]; then
+        print_error "snapshot requires an issue number"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+    if ! [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+        print_error "Issue number must be numeric (got: '$issue_number')"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+
+    # Mirrors remove_worktree_command's stdout-purity split: in --json mode
+    # human-readable status goes to stderr so stdout carries only the final
+    # JSON document.
+    _snap_info()    { if [[ "$json" == true ]]; then echo -e "${BLUE}ℹ $*${NC}" >&2; else print_info "$*"; fi; }
+    _snap_success() { if [[ "$json" == true ]]; then echo -e "${GREEN}✓ $*${NC}" >&2; else print_success "$*"; fi; }
+    _snap_json() {
+        # $1=success(bool) $2=patchPath $3=hasChanges(bool) $4=bytes
+        [[ "$json" == true ]] || return 0
+        printf '{"success": %s, "issueNumber": %s, "patchPath": "%s", "hasChanges": %s, "bytes": %s}\n' \
+            "$1" "$issue_number" "$2" "$3" "$4"
+    }
+
+    # Resolve the repo root even when invoked from inside a worktree: the git
+    # common dir's parent is always the main workspace.
+    local git_common repo_root
+    if ! git_common=$(git rev-parse --git-common-dir 2>/dev/null); then
+        print_error "Not inside a git repository"
+        return 1
+    fi
+    repo_root=$(cd "$(dirname "$git_common")" 2>/dev/null && pwd) || repo_root="$(pwd)"
+
+    local worktree_root_dir worktree_path
+    worktree_root_dir="$(loom_worktree_root "$repo_root")"
+    worktree_path="$worktree_root_dir/issue-$issue_number"
+
+    if [[ ! -d "$worktree_path" ]]; then
+        print_error "No worktree found at $worktree_path — nothing to snapshot"
+        _snap_json false "" false 0
+        return 1
+    fi
+    if ! git -C "$worktree_path" rev-parse --git-dir >/dev/null 2>&1; then
+        print_error "$worktree_path is not a git working tree"
+        _snap_json false "" false 0
+        return 1
+    fi
+
+    local snapshot_dir="$worktree_root_dir/.snapshots"
+    if ! mkdir -p "$snapshot_dir" 2>/dev/null; then
+        print_error "Could not create snapshot directory: $snapshot_dir"
+        _snap_json false "" false 0
+        return 1
+    fi
+
+    local ts
+    ts="$(date -u +%Y%m%dT%H%M%SZ)"
+    local patch_path="$snapshot_dir/issue-$issue_number-$ts.patch"
+
+    # Optionally fold untracked files into the same patch via a temporary
+    # intent-to-add (`git add -N`), which makes `git diff HEAD` render them as
+    # new-file hunks WITHOUT staging their content. Reverted immediately after
+    # the diff is captured so the worktree ends in its exact prior state
+    # (still untracked, nothing left staged) — this never touches the index
+    # any longer than the single `git diff` call below. Loom runtime markers
+    # (.loom-managed et al) are excluded, same filter as _worktree_dirty_lines,
+    # so a snapshot never captures noise every managed worktree carries.
+    local -a added_for_diff=()
+    if [[ "$include_untracked" == true ]]; then
+        local untracked
+        untracked="$(git -C "$worktree_path" ls-files --others --exclude-standard 2>/dev/null | \
+            grep -vE '(^|/)\.loom-managed$|(^|/)\.loom-in-use$|(^|/)\.loom-checkpoint$|(^|/)\.no-changes-needed$' || true)"
+        if [[ -n "$untracked" ]]; then
+            while IFS= read -r f; do
+                [[ -n "$f" ]] || continue
+                if git -C "$worktree_path" add -N -- "$f" >/dev/null 2>&1; then
+                    added_for_diff+=("$f")
+                fi
+            done <<< "$untracked"
+        fi
+    fi
+
+    # A plain `git diff` (no --exit-code) always exits 0 unless a real error
+    # occurred (bad HEAD, corrupt worktree, etc.) — it does not use exit code
+    # to signal "has changes", so any nonzero here is a genuine failure.
+    local diff_status=0
+    git -C "$worktree_path" diff HEAD > "$patch_path" 2>/dev/null || diff_status=$?
+
+    if [[ ${#added_for_diff[@]} -gt 0 ]]; then
+        git -C "$worktree_path" reset -- "${added_for_diff[@]}" >/dev/null 2>&1 || true
+    fi
+
+    if [[ $diff_status -ne 0 ]]; then
+        rm -f "$patch_path" 2>/dev/null || true
+        print_error "git diff failed for $worktree_path (exit $diff_status)"
+        _snap_json false "" false 0
+        return 1
+    fi
+
+    local bytes has_changes=false
+    bytes=$(wc -c < "$patch_path" 2>/dev/null | tr -d ' ')
+    bytes="${bytes:-0}"
+    [[ "$bytes" -gt 0 ]] && has_changes=true
+
+    if [[ "$has_changes" == true ]]; then
+        _snap_success "Snapshot written: $patch_path ($bytes bytes)"
+    else
+        _snap_info "No uncommitted changes — wrote an empty snapshot: $patch_path"
+    fi
+    _snap_info "Replay into a fresh worktree with: git apply $patch_path"
+
+    _snap_json true "$patch_path" "$has_changes" "$bytes"
+    return 0
+}
+
+# --------------------------------------------------------------------------
+# Worktree-scoped clean-baseline stash (issue #5217)
+# --------------------------------------------------------------------------
+#
+# `worktree.sh stash-push <N>` / `worktree.sh stash-pop <N>` give headless
+# Builder/Doctor sweeps a genuinely safe replacement for the
+# `git stash && <baseline check> && git stash pop` pattern used to diff a
+# clean baseline against in-progress WIP (clippy/shellcheck/test-output
+# comparisons). That raw pattern is correctly gated by
+# guard-destructive-generic.sh's `stash-scope:worktree-collision` check
+# (#4821) whenever >=2 `.loom-managed` worktrees are active — which in this
+# repo is nearly always true — producing an unanswerable `ask` in headless
+# mode with no human to answer it (#5217).
+#
+# `snapshot` (above) already solves the ADJACENT "shelve my WIP as a patch"
+# case, but deliberately does not reset the working tree, so it cannot alone
+# produce a clean baseline to diff against. stash-push/stash-pop close that
+# gap WITHOUT touching `refs/stash` at all:
+#
+#   - stash-push captures the tracked diff via `git stash create` (which
+#     builds a stash-format commit object but — unlike `git stash push` —
+#     never writes to refs/stash), anchors it under a PER-ISSUE ref
+#     (refs/loom/stash-baseline/issue-<N>) so it survives gc, then resets the
+#     worktree's tracked files to HEAD (`git reset --hard HEAD`, scoped to
+#     this one worktree's own index/working tree). Untracked files
+#     (--include-untracked) are moved into a per-issue holding directory
+#     rather than folded into the stash entry.
+#   - stash-pop reads back the SAME per-issue ref / holding-directory pair
+#     and restores both, then clears them.
+#
+# Because every issue gets its OWN ref rather than a shared stack, there is
+# no window for another worktree's concurrent `git stash push` to land "in
+# between" your push and pop — the race that makes a same-chain push/pop
+# ALLOW heuristic in the GUARD itself unsafe (considered and rejected during
+# #5217's curation: push and pop are two separate guard-approved Bash calls
+# with an arbitrary-duration command running between them, so anything that
+# lands on the SHARED stack during that window can still be popped by
+# mistake by a same-chain heuristic that only checks command shape, not
+# actual stack state). Anchoring to a per-issue ref instead of the shared
+# stack removes the shared-mutable-state precondition for that race
+# entirely, rather than trying to detect it after the fact.
+#
+# Durability note: both halves of the captured state live OUTSIDE the
+# worktree — the ref in the repo's common git dir, the untracked holding
+# directory and the pending marker under `<worktree-root>/.stash-baseline/`.
+# So even if the worktree is removed while a push is pending, nothing is
+# unrecoverable: `git stash apply refs/loom/stash-baseline/issue-<N>` still
+# replays the captured diff.
+#
+# Raw `git stash pop/drop/clear` remains exactly as gated as before by
+# guard-destructive-generic.sh — stash-push/stash-pop are the sanctioned,
+# guard-transparent replacement path for THIS pattern, not a guard exemption:
+# neither literally invokes `git stash pop|drop|clear`, so the guard's
+# pattern match never sees them, and it keeps asking on every raw stash
+# pop/drop/clear exactly as it did before this issue.
+stash_push_worktree_command() {
+    local issue_number="" json=false include_untracked=false
+    local usage="Usage: pnpm worktree stash-push <issue-number> [--include-untracked] [--json]"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --include-untracked) include_untracked=true; shift ;;
+            --json)               json=true; shift ;;
+            --*)
+                print_error "Unknown flag for stash-push: $1"
+                echo ""
+                echo "$usage"
+                return 1
+                ;;
+            *)
+                if [[ -z "$issue_number" ]]; then
+                    issue_number="$1"; shift
+                else
+                    print_error "Unexpected argument: $1"
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    if [[ -z "$issue_number" ]]; then
+        print_error "stash-push requires an issue number"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+    if ! [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+        print_error "Issue number must be numeric (got: '$issue_number')"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+
+    _sbp_info()    { if [[ "$json" == true ]]; then echo -e "${BLUE}ℹ $*${NC}" >&2; else print_info "$*"; fi; }
+    _sbp_success() { if [[ "$json" == true ]]; then echo -e "${GREEN}✓ $*${NC}" >&2; else print_success "$*"; fi; }
+    _sbp_json() {
+        # $1=success(bool) $2=hasTrackedChanges(bool) $3=untrackedCount $4=ref
+        [[ "$json" == true ]] || return 0
+        printf '{"success": %s, "issueNumber": %s, "hasTrackedChanges": %s, "untrackedCount": %s, "ref": "%s"}\n' \
+            "$1" "$issue_number" "$2" "$3" "$4"
+    }
+
+    local git_common repo_root
+    if ! git_common=$(git rev-parse --git-common-dir 2>/dev/null); then
+        print_error "Not inside a git repository"
+        return 1
+    fi
+    repo_root=$(cd "$(dirname "$git_common")" 2>/dev/null && pwd) || repo_root="$(pwd)"
+
+    local worktree_root_dir worktree_path
+    worktree_root_dir="$(loom_worktree_root "$repo_root")"
+    worktree_path="$worktree_root_dir/issue-$issue_number"
+
+    if [[ ! -d "$worktree_path" ]]; then
+        print_error "No worktree found at $worktree_path — nothing to stash-push"
+        _sbp_json false false 0 ""
+        return 1
+    fi
+    if ! git -C "$worktree_path" rev-parse --git-dir >/dev/null 2>&1; then
+        print_error "$worktree_path is not a git working tree"
+        _sbp_json false false 0 ""
+        return 1
+    fi
+
+    local ref="refs/loom/stash-baseline/issue-$issue_number"
+    local holding_dir="$worktree_root_dir/.stash-baseline/issue-$issue_number"
+    local manifest_path="$holding_dir/untracked.manifest"
+    # The pending marker is what makes the intended headless chain
+    # `stash-push N && <baseline check> && stash-pop N` safe when the worktree
+    # happened to be CLEAN: nothing is captured, but the marker still records
+    # that a push occurred, so the paired stash-pop can succeed as a no-op
+    # instead of exiting 1 and breaking the `&&` chain mid-sweep. Without it,
+    # "there was nothing to restore" and "you never pushed" are indistinguishable.
+    local pending_marker="$holding_dir/pending"
+
+    if git -C "$worktree_path" rev-parse --verify --quiet "$ref" >/dev/null 2>&1 || [[ -f "$manifest_path" ]] || [[ -f "$pending_marker" ]]; then
+        print_error "A pending stash-push already exists for issue $issue_number — run 'stash-pop $issue_number' first (or resolve manually: ref $ref / $holding_dir)"
+        _sbp_json false false 0 ""
+        return 1
+    fi
+
+    local stash_commit=""
+    stash_commit="$(git -C "$worktree_path" stash create 2>/dev/null || true)"
+
+    local has_tracked=false
+    if [[ -n "$stash_commit" ]]; then
+        has_tracked=true
+        if ! git -C "$worktree_path" update-ref "$ref" "$stash_commit" 2>/dev/null; then
+            print_error "Failed to anchor baseline commit under $ref"
+            _sbp_json false false 0 ""
+            return 1
+        fi
+        if ! git -C "$worktree_path" reset --hard HEAD >/dev/null 2>&1; then
+            print_error "Failed to reset $worktree_path to a clean baseline after capturing WIP — baseline preserved at $ref, nothing lost"
+            _sbp_json false true 0 "$ref"
+            return 1
+        fi
+    fi
+
+    local untracked_count=0
+    if [[ "$include_untracked" == true ]]; then
+        local untracked
+        untracked="$(git -C "$worktree_path" ls-files --others --exclude-standard 2>/dev/null | \
+            grep -vE '(^|/)\.loom-managed$|(^|/)\.loom-in-use$|(^|/)\.loom-checkpoint$|(^|/)\.no-changes-needed$' || true)"
+        if [[ -n "$untracked" ]]; then
+            if ! mkdir -p "$holding_dir/untracked" 2>/dev/null; then
+                print_error "Could not create holding directory: $holding_dir/untracked"
+                _sbp_json false "$has_tracked" 0 "$ref"
+                return 1
+            fi
+            : > "$manifest_path"
+            while IFS= read -r f; do
+                [[ -n "$f" ]] || continue
+                local dest="$holding_dir/untracked/$f"
+                mkdir -p "$(dirname "$dest")" 2>/dev/null || continue
+                if mv "$worktree_path/$f" "$dest" 2>/dev/null; then
+                    echo "$f" >> "$manifest_path"
+                    untracked_count=$((untracked_count + 1))
+                fi
+            done <<< "$untracked"
+            [[ "$untracked_count" -eq 0 ]] && { rm -f "$manifest_path" 2>/dev/null || true; }
+        fi
+    fi
+
+    # Record the push itself, whether or not anything was captured, so the
+    # paired stash-pop is always a legitimate no-op rather than an error.
+    if ! mkdir -p "$holding_dir" 2>/dev/null || ! date -u +"%Y-%m-%dT%H:%M:%SZ" > "$pending_marker" 2>/dev/null; then
+        print_error "Could not record the pending-push marker at $pending_marker"
+        _sbp_json false "$has_tracked" "$untracked_count" "$ref"
+        return 1
+    fi
+
+    if [[ "$has_tracked" == false && "$untracked_count" -eq 0 ]]; then
+        _sbp_info "No uncommitted changes to push for issue $issue_number — worktree was already clean"
+    else
+        _sbp_success "Baseline captured for issue $issue_number (tracked: $has_tracked, untracked files moved: $untracked_count)"
+    fi
+    _sbp_info "Restore with: ./.loom/scripts/worktree.sh stash-pop $issue_number"
+
+    _sbp_json true "$has_tracked" "$untracked_count" "$ref"
+    return 0
+}
+
+# See stash_push_worktree_command's comment block above for the full design
+# rationale. stash-pop is the restore half: reads back the per-issue ref
+# (tracked changes) and holding directory (untracked files) written by
+# stash-push for the SAME issue number, applies both, and clears them.
+stash_pop_worktree_command() {
+    local issue_number="" json=false
+    local usage="Usage: pnpm worktree stash-pop <issue-number> [--json]"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --json) json=true; shift ;;
+            --*)
+                print_error "Unknown flag for stash-pop: $1"
+                echo ""
+                echo "$usage"
+                return 1
+                ;;
+            *)
+                if [[ -z "$issue_number" ]]; then
+                    issue_number="$1"; shift
+                else
+                    print_error "Unexpected argument: $1"
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    if [[ -z "$issue_number" ]]; then
+        print_error "stash-pop requires an issue number"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+    if ! [[ "$issue_number" =~ ^[0-9]+$ ]]; then
+        print_error "Issue number must be numeric (got: '$issue_number')"
+        echo ""
+        echo "$usage"
+        return 1
+    fi
+
+    _sbo_info()    { if [[ "$json" == true ]]; then echo -e "${BLUE}ℹ $*${NC}" >&2; else print_info "$*"; fi; }
+    _sbo_success() { if [[ "$json" == true ]]; then echo -e "${GREEN}✓ $*${NC}" >&2; else print_success "$*"; fi; }
+    _sbo_json() {
+        # $1=success(bool) $2=restoredTracked(bool) $3=restoredUntrackedCount
+        [[ "$json" == true ]] || return 0
+        printf '{"success": %s, "issueNumber": %s, "restoredTracked": %s, "restoredUntrackedCount": %s}\n' \
+            "$1" "$issue_number" "$2" "$3"
+    }
+
+    local git_common repo_root
+    if ! git_common=$(git rev-parse --git-common-dir 2>/dev/null); then
+        print_error "Not inside a git repository"
+        return 1
+    fi
+    repo_root=$(cd "$(dirname "$git_common")" 2>/dev/null && pwd) || repo_root="$(pwd)"
+
+    local worktree_root_dir worktree_path
+    worktree_root_dir="$(loom_worktree_root "$repo_root")"
+    worktree_path="$worktree_root_dir/issue-$issue_number"
+
+    if [[ ! -d "$worktree_path" ]]; then
+        print_error "No worktree found at $worktree_path"
+        _sbo_json false false 0
+        return 1
+    fi
+    if ! git -C "$worktree_path" rev-parse --git-dir >/dev/null 2>&1; then
+        print_error "$worktree_path is not a git working tree"
+        _sbo_json false false 0
+        return 1
+    fi
+
+    local ref="refs/loom/stash-baseline/issue-$issue_number"
+    local holding_dir="$worktree_root_dir/.stash-baseline/issue-$issue_number"
+    local manifest_path="$holding_dir/untracked.manifest"
+    local pending_marker="$holding_dir/pending"
+
+    local has_tracked=false stash_commit=""
+    if git -C "$worktree_path" rev-parse --verify --quiet "$ref" >/dev/null 2>&1; then
+        has_tracked=true
+        stash_commit="$(git -C "$worktree_path" rev-parse "$ref" 2>/dev/null || true)"
+    fi
+    local has_manifest=false
+    [[ -f "$manifest_path" ]] && has_manifest=true
+    local has_pending=false
+    [[ -f "$pending_marker" ]] && has_pending=true
+
+    # Nothing captured AND no record of a push => the caller never pushed.
+    # That is a real error. Nothing captured but a pending marker present
+    # means stash-push ran against an already-clean worktree — a legitimate
+    # no-op restore, so the `push && check && pop` chain must not break.
+    if [[ "$has_tracked" == false && "$has_manifest" == false && "$has_pending" == false ]]; then
+        print_error "Nothing to restore for issue $issue_number — run 'stash-push $issue_number' first"
+        _sbo_json false false 0
+        return 1
+    fi
+
+    if [[ "$has_tracked" == true ]]; then
+        if ! git -C "$worktree_path" stash apply "$stash_commit" >/dev/null 2>&1; then
+            print_error "Failed to apply baseline commit $stash_commit for issue $issue_number (likely conflicts with the current tree). The captured baseline is PRESERVED at $ref — resolve manually with 'git -C $worktree_path stash apply $stash_commit', then delete the ref with 'git -C $worktree_path update-ref -d $ref'."
+            _sbo_json false false 0
+            return 1
+        fi
+        git -C "$worktree_path" update-ref -d "$ref" >/dev/null 2>&1 || true
+    fi
+
+    local restored_untracked=0
+    if [[ "$has_manifest" == true ]]; then
+        local restore_failed=false
+        while IFS= read -r f; do
+            [[ -n "$f" ]] || continue
+            local src="$holding_dir/untracked/$f"
+            [[ -f "$src" ]] || continue
+            if ! mkdir -p "$(dirname "$worktree_path/$f")" 2>/dev/null; then
+                restore_failed=true
+                continue
+            fi
+            if mv "$src" "$worktree_path/$f" 2>/dev/null; then
+                restored_untracked=$((restored_untracked + 1))
+            else
+                restore_failed=true
+            fi
+        done < "$manifest_path"
+
+        if [[ "$restore_failed" == true ]]; then
+            print_error "Some untracked files for issue $issue_number could not be restored — remaining files are still under $holding_dir/untracked (manifest kept at $manifest_path for manual recovery)"
+            _sbo_json false "$has_tracked" "$restored_untracked"
+            return 1
+        fi
+
+        rm -f "$manifest_path" 2>/dev/null || true
+        rmdir "$holding_dir/untracked" 2>/dev/null || true
+    fi
+
+    # Clear the pending marker last: everything above either restored cleanly
+    # or returned early with the captured state preserved, so reaching here
+    # means the push/pop pair is complete.
+    rm -f "$pending_marker" 2>/dev/null || true
+    rmdir "$holding_dir" 2>/dev/null || true
+
+    if [[ "$has_tracked" == false && "$restored_untracked" -eq 0 ]]; then
+        _sbo_info "Nothing was captured for issue $issue_number — the worktree was already clean at stash-push time"
+        _sbo_json true false 0
+        return 0
+    fi
+
+    _sbo_success "Baseline restored for issue $issue_number (tracked: $has_tracked, untracked files restored: $restored_untracked)"
+    _sbo_json true "$has_tracked" "$restored_untracked"
+    return 0
+}
+
+# --------------------------------------------------------------------------
 # Sparse-checkout helpers
 # --------------------------------------------------------------------------
 #
@@ -436,8 +1277,15 @@ This script helps AI agents safely create and manage git worktrees.
 Usage:
   pnpm worktree <issue-number>                          Create worktree for issue
   pnpm worktree <issue-number> <branch>                 Create worktree with custom branch
+  pnpm worktree <issue-number> --base <branch>          Branch off <branch> (stacked PR, #3729)
   pnpm worktree <issue-number> --sparse <paths...>      Cone-mode sparse checkout
   pnpm worktree <issue-number> --full                   Convert sparse worktree to full
+  pnpm worktree remove <N> [--keep-branch] [--force]    Remove one managed worktree
+  pnpm worktree snapshot <N> [--include-untracked] [--json]
+                                                         Save uncommitted WIP as a patch file
+  pnpm worktree stash-push <N> [--include-untracked] [--json]
+                                                         Capture WIP, reset to a clean baseline
+  pnpm worktree stash-pop <N> [--json]                  Restore WIP captured by stash-push
   pnpm worktree --check                                 Check if in a worktree
   pnpm worktree --json <issue-number>                   Machine-readable JSON output
   pnpm worktree --return-to <dir> <issue-number>        Store return directory
@@ -452,6 +1300,11 @@ Examples:
     Creates: .loom/worktrees/issue-42
     Branch: feature/fix-bug
 
+  pnpm worktree 42 --base feature/issue-41
+    Creates: .loom/worktrees/issue-42
+    Branch: feature/issue-42, branched off feature/issue-41 instead of the
+    default branch (stacked-PR mode, #3729). Used by /loom:sweep --depends-on.
+
   pnpm worktree 42 --sparse src/lib defaults/scripts
     Creates a sparse worktree containing only the listed paths plus the
     always-included safety set (.claude/, .loom/, .githooks/, scripts/, and
@@ -460,6 +1313,76 @@ Examples:
   pnpm worktree 42 --full
     Converts an existing sparse worktree back to a full checkout
     (no-op on an already-full worktree).
+
+  pnpm worktree remove 42
+    Removes the managed worktree .loom/worktrees/issue-42 and deletes its local
+    branch (safe delete — refuses on unmerged commits). This is the sanctioned
+    single-worktree removal path so you never need 'git worktree remove'
+    directly. It honors the .loom-managed sentinel (refuses to remove a
+    user-provisioned worktree), REFUSES when the worktree has uncommitted
+    changes (#4449 — see --force below), is idempotent (clear no-op if absent),
+    and prunes the git worktree registration. Use 'loom-clean' for bulk/stale
+    cleanup across all closed issues.
+
+  pnpm worktree remove 42 --keep-branch
+    Same as above but leaves the local feature branch intact.
+
+  pnpm worktree remove 42 --force
+    Removes the worktree even when it has uncommitted changes, DISCARDING them.
+    Without --force, a dirty worktree makes 'remove' exit non-zero, list what it
+    found, and print how to preserve the work (commit / save a patch / stash).
+    Loom runtime markers (.loom-managed, .loom-in-use, .loom-checkpoint,
+    .no-changes-needed) never count as uncommitted work.
+
+  pnpm worktree snapshot 42
+    Writes the worktree's uncommitted diff (tracked-file changes: staged +
+    unstaged, via 'git diff HEAD') to a patch file at:
+      <worktree-root>/.snapshots/issue-42-<UTC-timestamp>.patch
+    Does NOT touch 'git stash' — unlike stash, which is repo-global across
+    every worktree in the repo, this patch file is scoped to this one
+    invocation and this one path, so concurrent snapshots from other
+    'issue-<N>' worktrees can never collide or clobber each other. Replay
+    into a fresh worktree for the same issue with:
+      git -C .loom/worktrees/issue-42 apply <patch-path>
+    A worktree with no uncommitted changes still succeeds, writing an empty
+    patch file rather than erroring.
+
+  pnpm worktree snapshot 42 --include-untracked
+    Same as above, but also folds untracked files into the patch (via a
+    temporary 'git add -N' intent-to-add that is reverted immediately after
+    the diff is captured — the worktree's index ends unchanged). Loom runtime
+    markers are excluded even with this flag.
+
+  pnpm worktree snapshot 42 --json
+    Output: {"success": true, "issueNumber": 42, "patchPath": "/path/to/.snapshots/issue-42-...patch", "hasChanges": true, "bytes": 1234}
+
+  pnpm worktree stash-push 42
+    For a "clean baseline vs my diff" comparison (clippy/shellcheck/test
+    baseline diffing, issue #5217): captures the worktree's uncommitted
+    tracked-file diff via 'git stash create' (never touches refs/stash),
+    anchors it under the PER-ISSUE ref refs/loom/stash-baseline/issue-42, and
+    resets the worktree to a clean 'git reset --hard HEAD' baseline. Unlike
+    raw 'git stash push', two builders in different worktrees can never
+    collide — each issue gets its own ref, not a shared stack — so this does
+    NOT trigger guard-destructive-generic.sh's stash-scope:worktree-collision
+    ask even with several other '.loom-managed' worktrees active.
+
+  pnpm worktree stash-push 42 --include-untracked
+    Same as above, but also moves untracked files (respecting .gitignore,
+    excluding Loom runtime markers) into a per-issue holding directory
+    instead of leaving them in the worktree.
+
+  pnpm worktree stash-pop 42
+    Restores whatever 'stash-push 42' captured (tracked diff + any moved
+    untracked files) and clears the ref / holding directory. Succeeds as a
+    no-op when the matching stash-push found an already-clean worktree, so
+    'stash-push 42 && <baseline check> && stash-pop 42' never breaks its own
+    chain. Errors loudly, WITHOUT discarding the captured baseline, if no
+    stash-push is pending at all or if re-applying conflicts with the tree.
+
+  pnpm worktree stash-push 42 --json / stash-pop 42 --json
+    Output: {"success": true, "issueNumber": 42, "hasTrackedChanges": true, "untrackedCount": 0, "ref": "refs/loom/stash-baseline/issue-42"}
+            {"success": true, "issueNumber": 42, "restoredTracked": true, "restoredUntrackedCount": 0}
 
   pnpm worktree --check
     Shows current worktree status
@@ -562,6 +1485,42 @@ if [[ "$1" == "--check" ]]; then
     exit $?
 fi
 
+# Operator-facing single-worktree removal verb (issue #3769). Dispatched HERE,
+# before the generic numeric-issue-number validation below, so `remove <N>` /
+# `--remove <N>` is not rejected as "Issue number must be numeric". The handler
+# parses its own args (issue number + optional --keep-branch / --json).
+if [[ "$1" == "remove" || "$1" == "--remove" ]]; then
+    shift
+    # Left of && so set -e does not abort on a non-zero return from the handler.
+    remove_worktree_command "$@" && exit 0
+    exit 1
+fi
+
+# Worktree-scoped WIP snapshot verb (issue #4778). Dispatched HERE, before the
+# generic numeric-issue-number validation below, for the same reason `remove`
+# is: `snapshot <N>` must not be rejected as "Issue number must be numeric".
+if [[ "$1" == "snapshot" ]]; then
+    shift
+    # Left of && so set -e does not abort on a non-zero return from the handler.
+    snapshot_worktree_command "$@" && exit 0
+    exit 1
+fi
+
+# Worktree-scoped clean-baseline stash verbs (issue #5217). Dispatched HERE
+# for the same reason `snapshot`/`remove` are: `stash-push <N>` / `stash-pop
+# <N>` must not be rejected as "Issue number must be numeric".
+if [[ "$1" == "stash-push" ]]; then
+    shift
+    stash_push_worktree_command "$@" && exit 0
+    exit 1
+fi
+
+if [[ "$1" == "stash-pop" ]]; then
+    shift
+    stash_pop_worktree_command "$@" && exit 0
+    exit 1
+fi
+
 # Check for --json flag
 JSON_OUTPUT=false
 RETURN_TO_DIR=""
@@ -630,6 +1589,11 @@ SPARSE_MODE=false
 FULL_MODE=false
 SPARSE_PATHS=()
 CUSTOM_BRANCH=""
+# Base-branch override (#3729, stacked-PR v1). When set via `--base <branch>`,
+# the new feature branch is created from (and stale worktrees reset to) that
+# branch instead of origin/$DEFAULT_BRANCH. `/loom:sweep --depends-on <parent>`
+# passes `--base feature/issue-<parent>` so the child stacks on the parent.
+BASE_BRANCH=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -645,6 +1609,14 @@ while [[ $# -gt 0 ]]; do
         --full)
             FULL_MODE=true
             shift
+            ;;
+        --base)
+            BASE_BRANCH="$2"
+            if [[ -z "$BASE_BRANCH" ]]; then
+                print_error "--base requires a branch name"
+                exit 1
+            fi
+            shift 2
             ;;
         --*)
             print_error "Unknown flag: $1"
@@ -792,6 +1764,41 @@ if [[ -n "$PRUNE_OUTPUT" ]]; then
     fi
 fi
 
+# ─── Git identity hygiene check (#4369) ─────────────────────────────────────
+# Worktrees share the parent repo's local git config, so a corrupted local
+# user.email/user.name (stacked values, or a value with a glued-on shell
+# command like "...github.comecho" — Tauri-era residue, see
+# check-git-identity.sh's header) poisons every worktree created from this
+# repo, including this one. Hard-fail on the corruption pattern (it would
+# otherwise ship a garbled commit author silently — see PR #4303); warn (but
+# proceed) on a plain multi-value that doesn't match the corruption pattern,
+# since a pre-existing-but-unambiguous local config shouldn't strand a sweep.
+GIT_IDENTITY_CHECK="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/check-git-identity.sh"
+if [[ -x "$GIT_IDENTITY_CHECK" ]]; then
+    # Note: in --json mode fd 1 is already redirected to stderr (see the
+    # stdout-purity block above), so this plain `echo`/print output lands on
+    # stderr in both modes — only the explicit `>&3` JSON document below
+    # reaches the caller's stdout.
+    # `if VAR=$(cmd); then` (rather than a bare assignment) so a non-zero exit
+    # from the check does not trip `set -e` before we can inspect $? below.
+    if GIT_IDENTITY_OUTPUT=$("$GIT_IDENTITY_CHECK" 2>&1); then
+        GIT_IDENTITY_RC=0
+    else
+        GIT_IDENTITY_RC=$?
+    fi
+    if [[ "$GIT_IDENTITY_RC" -eq 3 ]]; then
+        print_error "Corrupted local git identity detected — refusing to create a worktree."
+        echo "$GIT_IDENTITY_OUTPUT"
+        if [[ "$JSON_OUTPUT" == "true" ]]; then
+            echo '{"success": false, "error": "corrupted-git-identity", "issueNumber": '"$ISSUE_NUMBER"'}' >&3
+        fi
+        exit 1
+    elif [[ "$GIT_IDENTITY_RC" -eq 1 ]]; then
+        print_warning "Stacked local git identity values detected (non-fatal — see details below)."
+        echo "$GIT_IDENTITY_OUTPUT"
+    fi
+fi
+
 # Resolve the repo's default branch once (cwd is now the main workspace, so
 # git symbolic-ref sees refs/remotes/origin/HEAD). Hard-fail rather than proceed
 # with an empty/wrong branch — an empty `origin/` refspec is worse than the
@@ -808,6 +1815,38 @@ fi
 # Fetch latest changes from origin/$DEFAULT_BRANCH before creating the worktree
 # Uses fetch-only to avoid conflicts with worktrees that have it checked out
 fetch_latest_main
+
+# ─── Base-branch resolution (#3729, stacked-PR v1) ──────────────────────────
+# By default a new feature branch is created from origin/$DEFAULT_BRANCH. When
+# --base <branch> is passed (e.g. `--base feature/issue-<parent>` from
+# /loom:sweep --depends-on), resolve a ref for that base and use it instead so
+# the child branch stacks on top of the parent's branch. Prefer the pushed
+# origin/<base>, fall back to a local <base>. Hard-fail if neither resolves —
+# an explicit base that can't be found is worse than silently branching off
+# main (which would un-stack the child).
+BASE_REF="origin/$DEFAULT_BRANCH"
+BASE_DISPLAY="$DEFAULT_BRANCH"
+if [[ -n "$BASE_BRANCH" ]]; then
+    git fetch origin "$BASE_BRANCH" 2>/dev/null || true
+    if git show-ref --verify --quiet "refs/remotes/origin/$BASE_BRANCH"; then
+        BASE_REF="origin/$BASE_BRANCH"
+        BASE_DISPLAY="origin/$BASE_BRANCH"
+    elif git show-ref --verify --quiet "refs/heads/$BASE_BRANCH"; then
+        BASE_REF="$BASE_BRANCH"
+        BASE_DISPLAY="$BASE_BRANCH"
+    else
+        if [[ "$JSON_OUTPUT" == "true" ]]; then
+            echo '{"success": false, "error": "base-branch-not-found", "baseBranch": "'"$BASE_BRANCH"'"}' >&3
+        else
+            print_error "Requested --base '$BASE_BRANCH' not found as origin/$BASE_BRANCH or a local branch."
+            echo "  Ensure the parent sweep has created/pushed feature/issue-<parent> before stacking a child on it."
+        fi
+        exit 1
+    fi
+    if [[ "$JSON_OUTPUT" != "true" ]]; then
+        print_info "Stacked worktree base: $BASE_DISPLAY (from --base $BASE_BRANCH)"
+    fi
+fi
 
 # Determine branch name
 if [[ -n "$CUSTOM_BRANCH" ]]; then
@@ -882,9 +1921,11 @@ if [[ -d "$WORKTREE_PATH" ]]; then
 
     # Check if it's registered with git
     if git worktree list | grep -q "$WORKTREE_PATH"; then
-        # Check if worktree is stale: no commits ahead of main and behind main
-        local_commits_ahead=$(git -C "$WORKTREE_PATH" rev-list --count "origin/$DEFAULT_BRANCH..HEAD" 2>/dev/null) || local_commits_ahead="0"
-        local_commits_behind=$(git -C "$WORKTREE_PATH" rev-list --count "HEAD..origin/$DEFAULT_BRANCH" 2>/dev/null) || local_commits_behind="0"
+        # Check if worktree is stale: no commits ahead of the base and behind it.
+        # For a stacked child (--base), staleness is measured against the parent
+        # branch (BASE_REF), not the default branch (#3729).
+        local_commits_ahead=$(git -C "$WORKTREE_PATH" rev-list --count "$BASE_REF..HEAD" 2>/dev/null) || local_commits_ahead="0"
+        local_commits_behind=$(git -C "$WORKTREE_PATH" rev-list --count "HEAD..$BASE_REF" 2>/dev/null) || local_commits_behind="0"
         local_uncommitted=$(git -C "$WORKTREE_PATH" status --porcelain 2>/dev/null) || local_uncommitted=""
 
         if [[ "$local_commits_ahead" -gt 0 || -n "$local_uncommitted" ]]; then
@@ -907,18 +1948,18 @@ if [[ -d "$WORKTREE_PATH" ]]; then
             # Stale worktree: no commits ahead, no uncommitted changes
             # Reset in place instead of removing (avoids CWD corruption)
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_warning "Stale worktree detected (0 commits ahead, $local_commits_behind behind $DEFAULT_BRANCH, no uncommitted changes)"
-                print_info "Resetting worktree in place to origin/$DEFAULT_BRANCH..."
+                print_warning "Stale worktree detected (0 commits ahead, $local_commits_behind behind $BASE_DISPLAY, no uncommitted changes)"
+                print_info "Resetting worktree in place to $BASE_DISPLAY..."
             fi
 
             # Back-fill/refresh the Loom sentinel on both reset outcomes: the
             # worktree remains usable either way, so keep it cleanup-eligible
             # (#3548).
             write_loom_sentinel "$WORKTREE_PATH"
-            if git -C "$WORKTREE_PATH" fetch origin "$DEFAULT_BRANCH" 2>/dev/null && \
-               git -C "$WORKTREE_PATH" reset --hard "origin/$DEFAULT_BRANCH" 2>/dev/null; then
+            if git -C "$WORKTREE_PATH" fetch origin "${BASE_BRANCH:-$DEFAULT_BRANCH}" 2>/dev/null && \
+               git -C "$WORKTREE_PATH" reset --hard "$BASE_REF" 2>/dev/null; then
                 if [[ "$JSON_OUTPUT" != "true" ]]; then
-                    print_success "Stale worktree reset to origin/$DEFAULT_BRANCH"
+                    print_success "Stale worktree reset to $BASE_DISPLAY"
                     echo ""
                     print_info "To use this worktree: cd $WORKTREE_PATH"
                 fi
@@ -953,11 +1994,39 @@ if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
 
     CREATE_ARGS=("$WORKTREE_PATH" "$BRANCH_NAME")
 else
-    # Create new branch from the default branch
-    if [[ "$JSON_OUTPUT" != "true" ]]; then
-        print_info "Creating new branch from $DEFAULT_BRANCH"
+    # No local branch by this name. Before falling back to a fresh branch off
+    # BASE_REF, check whether origin already has a pushed branch of the exact
+    # same name — e.g. an existing PR branch from a prior Builder/Doctor cycle
+    # (#4823). Without this check, a Doctor fixing review feedback on an
+    # already-pushed PR would silently get a NEW branch created from
+    # origin/$DEFAULT_BRANCH instead of the real PR history, risking a
+    # PR-clobbering force-push or a diff against the wrong base. This is
+    # independent of --base (which only chooses the start point when we DO
+    # need to create a fresh branch, below).
+    git fetch origin "$BRANCH_NAME" 2>/dev/null || true
+    if git show-ref --verify --quiet "refs/remotes/origin/$BRANCH_NAME"; then
+        if [[ "$JSON_OUTPUT" != "true" ]]; then
+            print_info "Remote branch 'origin/$BRANCH_NAME' already exists - creating a local branch tracking it (not branching from $BASE_DISPLAY)"
+        fi
+        # Informational only: the remote branch always wins here (it IS the
+        # PR history to continue), but note when it doesn't contain all of
+        # BASE_DISPLAY's history (e.g. pushed before recent main commits
+        # landed) so a caller reading the log understands why the worktree
+        # isn't rebased on top of the latest base.
+        if ! git merge-base --is-ancestor "$BASE_REF" "refs/remotes/origin/$BRANCH_NAME" 2>/dev/null; then
+            if [[ "$JSON_OUTPUT" != "true" ]]; then
+                print_warning "origin/$BRANCH_NAME has diverged from $BASE_DISPLAY (does not contain all of its history) - tracking origin/$BRANCH_NAME as-is"
+            fi
+        fi
+        CREATE_ARGS=("$WORKTREE_PATH" "-b" "$BRANCH_NAME" "origin/$BRANCH_NAME")
+    else
+        # Create new branch from the base ref (origin/$DEFAULT_BRANCH by default, or
+        # the --base override for a stacked child — #3729).
+        if [[ "$JSON_OUTPUT" != "true" ]]; then
+            print_info "Creating new branch from $BASE_DISPLAY"
+        fi
+        CREATE_ARGS=("$WORKTREE_PATH" "-b" "$BRANCH_NAME" "$BASE_REF")
     fi
-    CREATE_ARGS=("$WORKTREE_PATH" "-b" "$BRANCH_NAME" "origin/$DEFAULT_BRANCH")
 fi
 
 # In sparse mode, defer file materialization until after we configure the cone.
@@ -1313,13 +2382,19 @@ if _try_worktree_add; then
                     -name node_modules -not -path "*/node_modules/*" -print0 2>/dev/null)
     fi
 
-    # Symlink additional gitignored paths configured in .loom/config.json under
-    # worktree.linkPaths (e.g. generated wasm-pack bindings that are expensive
-    # to rebuild per worktree). Best-effort: missing config, missing jq, malformed
-    # JSON, or an empty/absent key all silently skip this step (#3528). Mirrors
-    # the inline-jq-with-guard pattern from validate-roles.sh.
-    LOOM_CONFIG_FILE="$MAIN_WORKSPACE_DIR/.loom/config.json"
-    if command -v jq >/dev/null 2>&1 && [[ -f "$LOOM_CONFIG_FILE" ]]; then
+    # Symlink additional gitignored paths configured for worktree.linkPaths
+    # (e.g. generated wasm-pack bindings that are expensive to rebuild per
+    # worktree). Best-effort: missing config, missing jq, malformed JSON, or
+    # an empty/absent key all silently skip this step (#3528).
+    #
+    # Resolved through the config-resolver tier chain (#4062, lib/worktree-root.sh
+    # already sources lib/config-resolver.sh) ONCE, then queried locally via jq
+    # — worktree.linkPaths is an array, so loom_config_get's pretty-printed
+    # multi-line-JSON return for non-scalars must not be used here (see
+    # config-resolver.sh's docstring); resolve the merged JSON and pipe it
+    # through the existing jq expression instead.
+    if command -v jq >/dev/null 2>&1; then
+        LOOM_WORKTREE_LINKPATHS_CFG="$(loom_resolve_config "$MAIN_WORKSPACE_DIR")"
         while IFS= read -r link_path; do
             if [[ -z "$link_path" ]]; then
                 continue
@@ -1339,7 +2414,7 @@ if _try_worktree_add; then
                     fi
                 fi
             fi
-        done < <(jq -r '.worktree.linkPaths[]? // empty' "$LOOM_CONFIG_FILE" 2>/dev/null)
+        done < <(echo "$LOOM_WORKTREE_LINKPATHS_CFG" | jq -r '.worktree.linkPaths[]? // empty' 2>/dev/null)
     fi
 
     # Symlink .mcp.json from main workspace if available

@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: Relaxing 'a Prime' to 'a Squarefree at Some Prime'",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Docstring frames the generalization against the parent cube-root-3-irrational-oq-01: Eisenstein at a prime q only needs q ∣ a to the first power, so 'a prime' can be weakened to 'a squarefree at some witnessing prime q' with no loss.",
+      "mathContext": "States the target: $X^n - a$ irreducible whenever $\\exists$ prime $q$ with $q \\mid a$, $q^2 \\nmid a$, for all $n \\ge 1$ — strictly more general than the parent's prime-only hypothesis."
+    },
+    {
       "id": "general-int",
       "title": "The Squarefree-at-a-Prime Criterion over ℤ",
       "startLine": 42,

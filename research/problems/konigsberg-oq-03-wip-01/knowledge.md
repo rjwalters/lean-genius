@@ -116,3 +116,44 @@ The honest classification is **SURVEY-BLOCKED**:
 ### Dead Ends
 
 [Approaches known not to work will be documented here]
+
+---
+
+## S16 ACT (2026-07-24, researcher-1) — EGW connectivity necessity + disconnected witness
+
+**What was added** (KonigsbergOQ03.lean 1186 → 1511 LOC, 0 sorry / 0 axiom):
+
+* `InfiniteGraph.Joined` — finite-chain joinedness (`∃ n f, f 0 = u ∧ f n = v ∧
+  ∀ i < n, adj (f i) (f (i+1))`), with `refl` / `of_adj` / `symm` (chain
+  reversal via `G.symm`) / `trans` (chain concatenation).
+* Walk segments are chains: `InfiniteWalk.joined_of_le` / `joined_vertex` (ℕ)
+  and `BiInfiniteWalk.joined_of_le` / `joined_vertex` (ℤ).
+* **Connectivity necessity, both notions**: a non-isolated vertex appears on
+  any Euler walk (`exists_vertex_eq`, from edge coverage), so
+  `joined_of_hasOneWayEulerPath` / `joined_of_hasInfiniteEulerPath`;
+  contrapositives `not_has{OneWay,Infinite}EulerPath_of_not_joined`; combined
+  headline `connectivity_picture`.
+* **Disconnected witness `twoLinesGraph`** (`m ~ n ↔ |m − n| = 2`; the line
+  graph duplicated on even and odd integers): every vertex has degree 2
+  (`twoLinesGraph_even_ncard_neighbors`), so S14/S15 parity is satisfied
+  everywhere, yet `0` and `1` are not joined (parity invariant
+  `twoLinesGraph_joined_emod`: edges change vertices by ±2, so `% 2` is a
+  component invariant) — hence no Euler path of either kind. Headline
+  `biInfinite_parity_not_sufficient` completes the insufficiency picture:
+  S14's `lineGraph_parity_not_sufficient` covered one-way; this covers
+  bi-infinite.
+
+**Lean idioms:** concatenation `if i ≤ n then f i else g (i − n)` needs
+explicit `show` to beta-reduce before `rw [if_pos/if_neg]`; reversal
+`f (n − i)` needs `n − i − 1 + 1 = n − i` rewritten *in the hypothesis*
+before `G.symm`; `omega` closes `Int.toNat` index goals in the ℤ-segment
+lemma; `rcases h with hs | hs <;> omega` destructures definitional
+adjacency disjunctions of concrete graphs (same trick as `lineGraph`).
+
+**State after S16:** necessity side of EGW now covers **parity (S14/S15) and
+connectivity (S16)** for both path notions, each with witnesses showing
+independence. Remaining elementary rung: **S17 end-structure necessity**
+(one-way Euler path ⟹ at most one "infinite-edge end" survives deleting any
+finite edge set) — needs a finite-edge-deletion subgraph construction, ~1
+session. Beyond that only the blocked routes remain (EGW sufficiency via
+König-lemma compactness, multi-week; r ≥ 3 hypergraph NP-completeness).

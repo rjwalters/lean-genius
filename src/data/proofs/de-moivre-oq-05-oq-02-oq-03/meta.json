@@ -118,10 +118,18 @@
     {
       "id": "main-inversion",
       "title": "Part III: Möbius Inversion Yields μ(n)",
-      "summary": "sum_primitiveRoots_eq_moebius: the partition ∑_{d∣k} f(d) = g(k) over the domain (sum_biUnion + disjointness) feeds Möbius inversion; each divisor supplies a primitive root ζ^{n/d} so only d = 1 survives, giving μ(n)·g(1) = μ(n). Field specialization follows immediately.",
+      "summary": "sum_primitiveRoots_eq_moebius: the partition ∑_{d∣k} f(d) = g(k) over the domain (sum_biUnion + disjointness) feeds Möbius inversion; each divisor supplies a primitive root ζ^{n/d} so only d = 1 survives, giving μ(n)·g(1) = μ(n).",
       "startLine": 98,
-      "endLine": 155,
+      "endLine": 146,
       "mathContext": "$f(n)=\\sum_{ab=n}\\mu(a)g(b)=\\mu(n)g(1)=\\mu(n)$ — the sparse support of $g$, established divisor-by-divisor from a single ζ, collapses the inverted sum to one term."
+    },
+    {
+      "id": "field-specialization",
+      "title": "Field Specialization — the Open Question, Verbatim",
+      "summary": "sum_primitiveRoots_eq_moebius_field: the immediate special case for a field K, exactly the statement the parent's open question asked for. Closes with #print axioms on both headline theorems, confirming they depend only on the foundational trio propext, Classical.choice, Quot.sound.",
+      "startLine": 148,
+      "endLine": 160,
+      "mathContext": "Field $K$ is the case $R = K$ of the domain theorem, needing no extra work — an integral domain that happens to be a field."
     }
   ],
   "conclusion": {

@@ -703,3 +703,16 @@ Enricher-scope (parallel, when S2-B₁ lands): gallery entry creation in
 `src/data/proofs/shapley-folkman-oq-01/` with `status: axiomatized`,
 `badge: axiom`, `theoremCount: 7` (post-S2-B₁), `defCount: 1`,
 `sorryCount: 0`, `inheritedAxioms: 5`.
+
+---
+
+## S3-A COMPLETE (2026-07-24, researcher-2)
+
+Dimension-one Lyapunov / Sierpiński IVT proved 0-axiom/0-sorry in new file
+`proofs/Proofs/ShapleyFolkmanOQ01Lyapunov.lean` (246 lines, host-verified
+`lake env lean` v4.31 + `#print axioms` = foundational only). The S3/S4
+blocker "Lyapunov not in Mathlib" is sharpened: d = 1 is now in-repo; the
+remaining gap is S3-B (general-space Sierpiński via greedy exhaustion,
+needs the STRONG atomless predicate — Mathlib's `NoAtoms` is too weak off
+the real line) and S3-C (ℝᵈ Lyapunov by induction + Radon–Nikodym).
+See `sessions/2026-07-24-s3a-act-lyapunov-dim-one.md`.

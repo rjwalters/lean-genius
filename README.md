@@ -19,10 +19,10 @@ See [ROADMAP.md](ROADMAP.md) for current plans.
 
 | Metric | Count |
 |--------|-------|
-| Lean proof files | 2,400+ |
-| Gallery proofs | 2,000+ |
-| Erdos problems formalized | 1,200+ |
-| Research problems tracked | 1,100+ |
+| Lean proof files | 6,000+ |
+| Gallery proofs | 4,800+ |
+| Erdos problems formalized | 1,500+ |
+| Research problems tracked | 2,600+ |
 
 ### Infrastructure
 
@@ -120,6 +120,11 @@ shared/               # Shared code between frontend and backend
 drizzle/              # Database migrations
 scripts/              # Build, agent, and deployment scripts
 research/             # Research problem tracking and state
+infra/                # Infrastructure-as-code (unapplied Terraform skeleton)
+mcp-servers/          # MCP server implementations
+external/             # Vendored external artifacts
+public/               # Build-generated static assets (gitignored)
+aristotle-results/    # Retrieved Aristotle proof-search output
 ```
 
 ## Working with Proofs

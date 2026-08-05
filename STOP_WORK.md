@@ -51,8 +51,12 @@ gh pr list --limit 20
 
 ```bash
 git status
-# If there are changes worth keeping:
-git add -A && git commit -m "chore: sync data" && git push
+# If there are changes worth keeping, commit them on a BRANCH and open a PR —
+# direct pushes to main are blocked by branch protection (see CLAUDE.md):
+git checkout -b chore/stop-work-sync
+git add -A && git commit -m "chore: sync data"
+git push -u origin chore/stop-work-sync
+gh pr create --fill
 ```
 
 ## 7. Summary Check
@@ -60,10 +64,6 @@ git add -A && git commit -m "chore: sync data" && git push
 ```bash
 # See final progress
 make status
-
-# Erdős enhancement progress
-enhanced=$(find src/data/proofs/erdos-* -name "annotations.json" -exec sh -c 'test $(wc -l < "$1") -ge 90 && echo 1' _ {} \; | wc -l)
-echo "Enhanced stubs: $enhanced / 821"
 
 # Research progress
 cat .lean/state/candidate-pool.json | jq '[.candidates[] | .status] | group_by(.) | map({status: .[0], count: length})'

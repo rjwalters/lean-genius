@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-cdcport-header",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 6,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "The New Mathematics of the 2026 CDC Proof, Re-Derived",
+    "content": "This file is step 7a of the port of openai/cdc-lean (epic #37507) and carries the result's genuinely new mathematics: converting a nowhere-zero 8-flow into an *exact double* cover, where the classical argument (Bermond–Jackson–Jaeger 1983) delivers only a quadruple cover. The header records the licensing posture that shaped the port: upstream carries no license file, so default copyright applies and no proof text may be vendored. What follows is therefore an independent re-derivation — upstream was consulted only for the shapes of the definitions and the statements of the results, and every proof script was written from scratch against this repository's Mathlib pin, organized differently from upstream (named reusable lemmas instead of monolithic tactic blocks; factored construction data; no `DecidableEq V` assumption).",
+    "mathContext": "Fix a cubic multigraph $G$ and a nowhere-zero flow $f$ with values in $\\Gamma = \\mathbb{F}_2^3$. The goal: base points $p : E \\to \\Gamma$ such that the affine pairs $\\{p\\,e, p\\,e + f\\,e\\}$ make all eight edge sets even at every vertex. Nowhere-vanishing of $f$ makes each pair a genuine pair, so each edge lands in exactly two of the eight sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle double cover conjecture",
+      "nowhere-zero flows",
+      "proof porting",
+      "independent re-derivation",
+      "clean-room implementation"
+    ],
+    "prerequisites": [
+      "nowhere-zero flows",
+      "cubic graphs"
+    ]
+  },
+  {
+    "id": "ann-cdcport-finite-facts",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 124,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Four Kernel-Checked Facts — All the Dimension-Dependence in One Place",
+    "content": "Each statement here is closed and quantifies only over the finite types Γ (eight elements) and F₂, so the kernel verifies it exhaustively with `decide` — plain kernel reduction, not `native_decide`, so no extra axiom is incurred. `local_pair_parity` is the local engine of the whole file: three affine pairs based at a common point $t$, in directions $x$, $y$, $x+y$ — laid out as they occur around a cubic vertex with those slot values — cover every index of Γ an even number of times. `pairIndicator_eq_of_difference` is the slack that will make the global system solvable: shifting a base point by a multiple of its (nonzero) direction leaves the pair unchanged. The two characteristic-two facts handle bookkeeping. Isolating these four here means no cardinality or dimension lemma about Γ is used anywhere else in the file.",
+    "mathContext": "In $\\mathbb{F}_2^3$: for $x, y \\neq 0$, $x \\neq y$, the multiset $\\{t, t+x\\} \\uplus \\{t+x, t+x+y\\} \\uplus \\{t, t+x+y\\}$ covers each element of $\\Gamma$ an even number of times (0 or 2).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "kernel decide",
+      "finite exhaustive verification",
+      "affine pairs",
+      "parity arguments"
+    ],
+    "prerequisites": [
+      "F₂ vector spaces",
+      "decidability in Lean"
+    ]
+  },
+  {
+    "id": "ann-cdcport-compat-system",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 161,
+      "endLine": 195
+    },
+    "type": "definition",
+    "title": "The Compatibility Linear System",
+    "content": "The construction problem becomes linear algebra here. `localBase` breaks symmetry harmlessly: at each vertex one distinguished slot (slot 1) receives the flow value of slot 0, the others receive 0 — exactly the configuration `local_pair_parity` controls once all three base points at a vertex are read off from a single vertex value. But each edge sits at two vertices and must receive *one* base point, so the two endpoint proposals must agree up to the slack allowed by `pairIndicator_eq_of_difference`: a shift by a multiple of the edge's own flow value. `compatibilityRhs` records the endpoint discrepancy, and `compatibilityMap` is the F₂-linear map $(t, \\varepsilon) \\mapsto \\big(e \\mapsto t(e^0) + t(e^1) + \\varepsilon\\,e \\cdot f\\,e\\big)$. Coherent base points exist iff `compatibilityRhs` lies in its range. Without the $\\varepsilon$ component the system would be the generally-unsolvable demand that a coboundary hit a prescribed edge function.",
+    "mathContext": "Over $\\mathbb{F}_2$: find $t : V \\to \\Gamma$ and $\\varepsilon : E \\to \\mathbb{F}_2$ with $t(e^0) + t(e^1) + \\varepsilon\\,e \\cdot f\\,e = \\mathrm{localBase}(e^0, e) + \\mathrm{localBase}(e^1, e)$ for every edge $e$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "linear systems over F₂",
+      "coboundaries",
+      "symmetry breaking",
+      "vertex potentials"
+    ],
+    "prerequisites": [
+      "linear maps",
+      "graph incidence"
+    ]
+  },
+  {
+    "id": "ann-cdcport-dual-separation",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 199,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Range Membership by Dual Obstructions",
+    "content": "The solvability strategy is chosen here: instead of computing the rank of the compatibility map or constructing a solution explicitly, the argument uses finite-dimensional separation — over a field, an element lies in the range of a linear map as soon as every functional annihilating the range annihilates it (`mem_range_of_dual_obstructions_vanish`, a thin wrapper around Mathlib's `Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff`). `coordinateFunctional` restricts a functional on the edge-indexed product $E \\to \\Gamma$ to a single summand; `dual_apply_eq_sum_coordinates` says these coordinates determine the functional. The rest of the file is one long verification that every annihilating functional kills `compatibilityRhs`.",
+    "mathContext": "For a linear map $L : X \\to Y$ over a field and $b \\in Y$: $b \\in \\mathrm{range}(L)$ iff $\\varphi(b) = 0$ for every $\\varphi \\in Y^*$ with $\\varphi \\circ L = 0$. This is the annihilator characterization of a subspace.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dual spaces",
+      "annihilators",
+      "separation theorems",
+      "range membership"
+    ],
+    "prerequisites": [
+      "dual vector spaces",
+      "linear functionals"
+    ]
+  },
+  {
+    "id": "ann-cdcport-local-dual-identity",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 261,
+      "endLine": 277
+    },
+    "type": "theorem",
+    "title": "The Three-Dimensional Local Dual Identity",
+    "content": "The only place in the dual-obstruction argument where the *dimension* of Γ enters — and it enters as a closed finite statement verified exhaustively by the kernel, so no rank or cardinality lemma is imported. Suppose the three functional codes $a, b, c$ at a cubic vertex sum to zero (the vertex obstruction) and are orthogonal to the slot values $x$, $y$, $x+y$ respectively (the edge obstruction). Then $\\langle b, x\\rangle = [a \\neq 0] + [b \\neq 0] + [c \\neq 0]$ in $\\mathbb{F}_2$. The left side will turn out to be exactly the vertex's contribution to $\\varphi(\\text{compatibilityRhs})$; the right side counts nonzero coordinate functionals — a quantity attached to edge ends, which is what makes the global sum cancel.",
+    "mathContext": "A statement about $2^9 \\cdot 2^6 = 2^{15}$ cases over $(\\mathbb{F}_2^3)^5$ with side conditions, decided by kernel reduction. Conceptually it is a rank-nullity fact about three linearly dependent functionals against three dependent nonzero vectors, but the proof needs no such framing.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "dual pairing",
+      "kernel decide",
+      "local-global arguments",
+      "F₂ dot product"
+    ],
+    "prerequisites": [
+      "bilinear pairings",
+      "F₂ arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cdcport-obstructions",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 336,
+      "endLine": 408
+    },
+    "type": "lemma",
+    "title": "Edge Tests, Vertex Tests, and the Local Slot Identity",
+    "content": "The two families of test vectors extract everything an annihilating functional φ must satisfy. Testing against the pure edge shift $\\varepsilon = \\mathrm{Pi.single}\\,e\\,1$ gives the edge obstruction (`coordinateFunctional_flow_eq_zero`): every coordinate functional kills its own flow value. Testing against the pure vertex potential $t = \\mathrm{Pi.single}\\,v\\,c$ gives the vertex obstruction (`sum_coordinateFunctional_edgeAt_eq_zero`): the three coordinate functionals at each vertex sum to zero. `dual_local_slot_identity` then feeds both, transported to coordinate vectors and pairings, into the kernel-checked `local_dual_identity`: at every vertex, φ's value on the distinguished slot's base point equals the F₂-count of nonzero coordinate functionals at that vertex. Upstream carries this calculation inside one long tactic block; here it is three named, reusable lemmas.",
+    "mathContext": "The codes are $a = \\mathrm{code}(\\eta_{e_0})$, $b = \\mathrm{code}(\\eta_{e_1})$, $c = \\mathrm{code}(\\eta_{e_2})$ for the three slots $e_0, e_1, e_2$ at $v$; the slot values are $x, y$ and (by the flow condition, in characteristic two) $x + y$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "test vectors",
+      "coordinate functionals",
+      "flow conservation",
+      "characteristic two"
+    ],
+    "prerequisites": [
+      "Pi.single and indicator vectors",
+      "linear functionals"
+    ]
+  },
+  {
+    "id": "ann-cdcport-solvable",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 412,
+      "endLine": 446
+    },
+    "type": "theorem",
+    "title": "compatibility_solvable — The Heart of the File",
+    "content": "The dual-obstruction calculation assembles into the solvability theorem. Take any functional φ annihilating the range of the compatibility map and pair it against `compatibilityRhs`. Rewriting via `dual_end_sum` turns this into a sum over vertices and their three slots; only the distinguished slot contributes (the other local base points are zero), and `dual_local_slot_identity` replaces each vertex's contribution by its count of nonzero coordinate functionals. That count is attached to edge *ends*: reindexing back (`sum_edgeEnds_eq_sum_vertexSlots`), every edge is counted once per end — twice — and $a + a = 0$ in $\\mathbb{F}_2$ makes the total vanish. So every dual obstruction vanishes and the system is solvable. Note what is absent: no connectivity, no bridgelessness, no spanning structure — solvability is pure double counting in characteristic two.",
+    "mathContext": "$\\varphi(\\mathrm{rhs}) = \\sum_v \\#\\{i : \\eta_{e_i(v)} \\neq 0\\} = \\sum_e 2\\,[\\eta_e \\neq 0] = 0$ in $\\mathbb{F}_2$, using that each edge has exactly two ends and each end is a vertex slot exactly once.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "double counting",
+      "handshake lemma",
+      "dual obstructions",
+      "solvability of linear systems"
+    ],
+    "prerequisites": [
+      "sums over incidence structures",
+      "F₂ cancellation"
+    ]
+  },
+  {
+    "id": "ann-cdcport-labeling",
+    "proofId": "cycle-double-cover-port",
+    "range": {
+      "startLine": 450,
+      "endLine": 558
+    },
+    "type": "definition",
+    "title": "CubicLabeling: The Object the File Exists to Construct",
+    "content": "`CubicLabeling` packages the goal — a base point per edge whose affine pairs cover every index of Γ an even number of times at every vertex. The construction chooses a solution of the compatibility system once and for all (`Classical.choose`, hence `noncomputable`), reads off its vertex-potential and edge-shift components (`labelPotential`, `labelDefect`), and defines each edge's base point as the proposal of its end 0 (`endLabel`, `labelBase`). The key reconciliation: the two endpoint proposals differ by a multiple of the flow value (`endLabel_add`, the compatibility equation rearranged in characteristic two), so both describe the *same* affine pair (`pairIndicator_endLabel`). At every vertex the three pairs are therefore the ones generated by the single potential value there — precisely the configuration `local_pair_parity` controls — and the `vertexParity` field of the final instance `cubic_labeling` reduces to it. Combined with `pairIndicator_card` from step 2b, this yields the exact indexed even double cover that later steps decompose into the cycle double cover.",
+    "mathContext": "Each of the eight edge sets $C_s = \\{e : s \\in \\{p\\,e, p\\,e + f\\,e\\}\\}$ is even at every vertex; since $f$ is nowhere zero each edge lies in exactly two of them. Projection and circuit decomposition (later files) convert $\\{C_s\\}$ into a cycle double cover of the original graph.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "structure construction",
+      "Classical.choose",
+      "even subgraphs",
+      "exact double cover"
+    ],
+    "prerequisites": [
+      "Lean structures",
+      "noncomputable definitions"
+    ]
+  }
+]

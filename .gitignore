@@ -28,9 +28,12 @@ aristotle-results/llm-mapping-cache.json
 .loom/state/
 .loom/tmp/
 .loom/sweep-checkpoint/
+.loom/exit-codes/
 .loom/config.json
 .loom/model-config.env
 .loom-managed
+# host-local dev symlink to the loom-tools package source (see #43675)
+loom-tools
 research/*.pid
 research/*.log
 proofs/err.log
@@ -72,7 +75,6 @@ src/data/research/research-listings.json
 # .env.*, research/db/, research/claims/) are not repeated here.
 
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -122,6 +124,7 @@ __pycache__/
 # Loom runtime state (don't commit these)
 .loom-in-use
 .loom-checkpoint
+.no-changes-needed
 .loom/.daemon.pid
 .loom/.daemon.log
 .loom/daemon.sock
@@ -129,9 +132,12 @@ __pycache__/
 .loom/daemon-metrics.json
 .loom/loom-source-path
 .loom/spawn-loop-state.json
+.loom/spawn-loop.pid
+.loom/stop-spawn-loop
 .loom/issue-failures.json
 .loom/interventions/
 .loom/worktrees/
+.loom/worktrees-local/
 .loom/state.json
 .loom/mcp-command.json
 .loom/activity.db
@@ -139,6 +145,8 @@ __pycache__/
 .loom/signals/
 .loom/status/
 .loom/retry-state/
+.loom/sweep-run/
+.loom/stats/
 .loom/diagnostics/
 .loom/guide-docs-state.json
 .loom/metrics_state.json
@@ -147,7 +155,16 @@ __pycache__/
 .loom/metrics/
 .loom/usage-cache.json
 .loom/claude-config/
+.loom/account-health.json
+.loom/account-health.lock
+.loom/CANARY
 .loom/*.log
 .loom/*.sock
+.loom/*.tmp
+.loom/*.bak
 .loom/logs/
 # <<< loom-managed <<<
+
+# Repo Skills machine-local install metadata (absolute source path + timestamp)
+.claude/skills/repo/.install-local.json
+.squad/

@@ -16,15 +16,30 @@ When you claim an issue with `loom:building`, you are committing to ONE of these
 - Leave an issue with `loom:building` label but no PR and no sub-issues
 - Stop work because "it's too hard" without decomposing or documenting why
 
+> **File issues with `./.loom/scripts/create-issue.sh`, never a bare `gh issue create` (#5047).**
+> `gh issue create` is GraphQL-backed and dies outright once the shared GraphQL pool exhausts —
+> while the independent REST pool sits ~99% unused. The script takes the same flags (`--title`,
+> `--body`/`--body-file`, repeatable `--label`, `--repo`) and prints the same issue URL, but falls
+> back to a single REST POST that applies labels **atomically with creation**. Recipe and
+> rationale: `.loom/docs/gh-issue-create-rest-fallback.md`.
+> (`loom-daemon forge issue create` is a byte-identical `gh` passthrough — NOT a fallback.)
+> This matters most exactly here: a decomposition burst files 2-5 issues in a row, so it is the
+> single likeliest place in a Builder run to meet an exhausted GraphQL pool mid-sequence.
+
 ### If You Discover an Issue Is Too Complex
 
 When you claim an issue and realize mid-work it requires >6 hours or touches >8 files:
 
 **DO THIS** (create path forward):
 ```bash
-# 1. Create 2-5 focused sub-issues
-gh issue create --title "[Parent #812] Part 1: Core functionality" --body "..."
-gh issue create --title "[Parent #812] Part 2: Edge cases" --body "..."
+# 1. Create 2-5 focused sub-issues, each born at loom:triage -- applied
+#    atomically at creation (#5047), never a follow-up `gh issue edit
+#    --add-label`. A separate Curator pass produces loom:curated, and a
+#    human adds loom:issue; do NOT add loom:issue yourself to a sub-issue
+#    you just created -- that would skip both Curator review and the
+#    human-approval gate.
+./.loom/scripts/create-issue.sh --title "[Parent #812] Part 1: Core functionality" --body "..." --label "loom:triage"
+./.loom/scripts/create-issue.sh --title "[Parent #812] Part 2: Edge cases" --body "..." --label "loom:triage"
 # ... create remaining sub-issues ...
 
 # 2. Update parent issue explaining decomposition
@@ -33,16 +48,12 @@ gh issue comment 812 --body "This issue is complex (>6 hours). Decomposed into:
 - #YYY: Part 2 (1.5 hours)
 - #ZZZ: Part 3 (2 hours)"
 
-# 3. Close parent issue or remove loom:building
-gh issue close 812  # OR: gh issue edit 812 --remove-label "loom:building"
+# 3. Mark the parent blocked — humans close it once children are filed.
+#    NEVER close a parent issue yourself; the decomposition comment above
+#    is the record, loom:blocked is the terminal state.
+gh issue edit 812 --remove-label "loom:building" --add-label "loom:blocked"
 
-# 4. (Optional) Pick up a sub-issue once a Curator has enhanced it
-#    Sub-issues are born at loom:triage. A separate Curator pass produces
-#    loom:curated, and a human adds loom:issue. Do NOT add loom:issue
-#    yourself to a sub-issue you just created -- that would skip both
-#    Curator review and the human-approval gate.
-gh issue edit XXX --add-label "loom:triage"
-# Then exit and let the Curator/Shepherd pipeline pick it up.
+# Then exit and let the Curator/sweep pipeline pick up each sub-issue.
 ```
 
 **DON'T DO THIS** (abandon without path forward):
@@ -150,7 +161,7 @@ Before decomposing an issue into sub-issues:
    ```
 
 4. **Compare findings to issue requirements**:
-   - **Fully implemented** -> Close issue as already complete with evidence
+   - **Fully implemented** (verified — you can cite files/lines/tests) -> this is the "Already covered" close case from `builder.md` → "Issues Are Suggestions". Comment the evidence as your rationale, then **close the issue** (`gh issue close <N> --reason "not planned"`); do NOT create duplicate sub-issues. **Under `/loom:sweep` orchestration**, prefer the `.no-changes-needed` marker instead of closing directly so orchestration finalizes the lifecycle (see `builder.md` → "Signaling No Changes Needed"). If the "already implemented" call is **ambiguous** (you cannot fully verify, or it hides a still-pending human decision), do NOT close — route it to `loom:blocked` with a comment per the guardrails.
    - **Partially implemented** -> Create sub-issues only for missing parts
    - **Not implemented** -> Proceed with decomposition as planned
 
@@ -162,7 +173,7 @@ Large issue requiring decomposition
 1. AUDIT: Search codebase for existing implementations
 |
 2. ASSESS:
-   |-- Fully implemented? -> Close issue with evidence
+   |-- Fully implemented (verified)? -> Close with evidence as rationale ("Already covered"); under /loom:sweep use the .no-changes-needed marker. Ambiguous -> loom:blocked with a comment.
    |-- Partially implemented? -> Create sub-issues for gaps only
    +-- Not implemented? -> Proceed with decomposition
 |
@@ -193,7 +204,10 @@ $ find . -name "*_test*" | xargs grep -l constraint
 # Audit shows: All features fully implemented with tests
 
 # Step 4: Decision
-# -> Close issue #341 as already implemented
+# -> Comment the evidence above as the rationale, then CLOSE issue #341 as
+#    "Already covered" (gh issue close 341 --reason "not planned"). Under
+#    /loom:sweep, write a .no-changes-needed marker instead and let orchestration
+#    finalize. If the "already implemented" call is ambiguous, use loom:blocked + a comment.
 # -> Do NOT create sub-issues (would be duplicates)
 # -> Create separate issue for actual gaps: "Add SQLSTATE codes to constraint errors"
 ```
@@ -204,9 +218,9 @@ $ find . -name "*_test*" | xargs grep -l constraint
 # Issue #341: "Implement E141 Constraints"
 
 # WRONG: Skip straight to decomposition without checking
-gh issue create --title "[Parent #341] Part 1: Implement NOT NULL"
-gh issue create --title "[Parent #341] Part 2: Implement PRIMARY KEY"
-gh issue create --title "[Parent #341] Part 3: Implement UNIQUE"
+./.loom/scripts/create-issue.sh --title "[Parent #341] Part 1: Implement NOT NULL"
+./.loom/scripts/create-issue.sh --title "[Parent #341] Part 2: Implement PRIMARY KEY"
+./.loom/scripts/create-issue.sh --title "[Parent #341] Part 3: Implement UNIQUE"
 # ... creates 6 duplicate issues for already-complete features
 
 # Result: 6 issues created, all later closed as duplicates
@@ -269,7 +283,7 @@ Before claiming an issue, estimate the work required:
 **If Complex (6-12 hours, clear path)**:
 1. Assess carefully - can you complete it in one focused session?
 2. If YES: Claim and implement (larger PRs are fine if cohesive)
-3. If NO: Break down into 2-4 sub-issues, close parent with explanation
+3. If NO: Break down into 2-4 sub-issues, mark parent `loom:blocked` with an explanation (humans close)
 4. Prefer completing work over creating more issues
 
 **If Intractable (> 12 hours or unclear)**:
@@ -291,7 +305,7 @@ Before claiming an issue, estimate the work required:
 
 ```bash
 # Create focused sub-issues
-gh issue create --title "Phase 1: <component> foundation" --body "$(cat <<'EOF'
+./.loom/scripts/create-issue.sh --title "Phase 1: <component> foundation" --body "$(cat <<'EOF'
 Parent Issue: #<parent-number>
 
 ## Scope
@@ -308,7 +322,7 @@ Estimated: 1-2 hours
 EOF
 )"
 
-gh issue create --title "Phase 2: <component> integration" --body "$(cat <<'EOF'
+./.loom/scripts/create-issue.sh --title "Phase 2: <component> integration" --body "$(cat <<'EOF'
 Parent Issue: #<parent-number>
 
 ## Scope
@@ -326,10 +340,18 @@ EOF
 )"
 ```
 
-**Step 3: Close Parent Issue**
+**Step 3: Mark Parent Blocked (don't close a decomposition-parent yourself)**
+
+Record the decomposition in a comment, then move the parent to `loom:blocked`. A
+freshly-decomposed **parent** is a tracking issue for its children, so it is **not**
+a close candidate — a human (or Curator, per `curator.md` item 4) closes it once the
+children are filed and curated. This is the decomposition-parent exception, not a
+blanket rule: for a **non-parent** issue you verify is already implemented, close it
+with a rationale per `builder.md` → "Issues Are Suggestions" (or the `.no-changes-needed`
+marker under `/loom:sweep`).
 
 ```bash
-gh issue close <parent-number> --comment "$(cat <<'EOF'
+gh issue comment <parent-number> --body "$(cat <<'EOF'
 Decomposed into smaller sub-issues for incremental implementation:
 
 - #<phase1-number>: Phase 1 (1-2 hours)
@@ -339,6 +361,7 @@ Decomposed into smaller sub-issues for incremental implementation:
 Each sub-issue references this parent for full context. Curator will enhance them with implementation details.
 EOF
 )"
+gh issue edit <parent-number> --remove-label "loom:building" --add-label "loom:blocked"
 ```
 
 ### Real-World Example
@@ -350,19 +373,20 @@ EOF
 **Decomposition**:
 ```bash
 # Phase 1: Infrastructure
-gh issue create --title "Create JSON activity log structure and helper functions"
+./.loom/scripts/create-issue.sh --title "Create JSON activity log structure and helper functions"
 # -> Issue #534 (1-2 hours)
 
 # Phase 2: Integration
-gh issue create --title "Integrate activity logging into /builder and /judge"
+./.loom/scripts/create-issue.sh --title "Integrate activity logging into /builder and /judge"
 # -> Issue #535 (2-3 hours, depends on #534)
 
 # Phase 3: Querying
-gh issue create --title "Add activity querying to /loom heuristic"
+./.loom/scripts/create-issue.sh --title "Add activity querying to /loom heuristic"
 # -> Issue #536 (1-2 hours, depends on #535)
 
-# Close parent
-gh issue close 524 --comment "Decomposed into #534, #535, #536"
+# Mark parent blocked — a human closes it once the children are curated
+gh issue comment 524 --body "Decomposed into #534, #535, #536"
+gh issue edit 524 --remove-label "loom:building" --add-label "loom:blocked"
 ```
 
 **Benefits**:
@@ -489,7 +513,7 @@ Don't create issues for:
 # PAUSE: Stop trying to implement it
 # CREATE: Make an issue for it
 
-gh issue create --title "Add Vitest testing framework for frontend unit tests" --body "$(cat <<'EOF'
+./.loom/scripts/create-issue.sh --title "Add Vitest testing framework for frontend unit tests" --body "$(cat <<'EOF'
 ## Problem
 
 While working on #38, discovered we cannot write unit tests for the state management refactor because no test framework is configured for the frontend.
