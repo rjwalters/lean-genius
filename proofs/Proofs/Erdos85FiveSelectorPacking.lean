@@ -382,9 +382,10 @@ theorem choose_two_le_sum_deficit_of_injective_omission_route
   intro i _
   have hdiff : (fiber (center i) \ S i).card + (S i).card =
       (fiber (center i)).card := by
-    rw [Finset.card_sdiff_add_card_inter]
-    congr 1
-    exact Finset.inter_eq_right.mpr (hsub i)
+    have hpart := Finset.card_sdiff_add_card_inter
+      (fiber (center i)) (S i)
+    rw [Finset.inter_eq_right.mpr (hsub i)] at hpart
+    exact hpart
   have hf := hfiber (center i)
   have hl := hlarge i
   omega

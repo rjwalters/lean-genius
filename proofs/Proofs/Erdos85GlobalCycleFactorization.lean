@@ -41,13 +41,14 @@ theorem secondOrderDefect_cycle_lengths_parity
     (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
     (hmin : d ≤ G.minDegree) (hcard : Fintype.card V = d * (d - 1) + 3) :
     ∃ rs : List ℕ, (∀ r ∈ rs, 3 ≤ r) ∧
+      rs.length = Fintype.card (secondOrderDefectGraph G).ConnectedComponent ∧
       rs.sum = Fintype.card V ∧ Odd rs.sum ∧ Even (evenCycleCount rs) := by
   classical
   let D := secondOrderDefectGraph G
   obtain ⟨r, hr, hrsize, hfactorZ⟩ :=
     secondOrderDefect_resolvent_eq_prod_chebyshev
       G hfree hd heven hmin hcard ((d : ℤ) - 1)
-  let rs := (Finset.univ : Finset D.ConnectedComponent).toList.map r
+  let rs := (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent).toList.map r
   have hparts : (∑ c : D.ConnectedComponent, c.supp.ncard) = Fintype.card V := by
     calc
       (∑ c : D.ConnectedComponent, c.supp.ncard) =
@@ -85,7 +86,11 @@ theorem secondOrderDefect_cycle_lengths_parity
     simp only [rs, List.mem_map] at hn
     obtain ⟨c, hc, rfl⟩ := hn
     exact hr c
-  refine ⟨rs, hrthree, hrsum, hodd, ?_⟩
+  have hrlen : rs.length =
+      Fintype.card (secondOrderDefectGraph G).ConnectedComponent := by
+    simp [rs]
+  refine ⟨rs, hrthree, ?_, hrsum, hodd, ?_⟩
+  · exact hrlen
   let fZ : D.ConnectedComponent → ℤ := fun c => cycleResolventAt d (r c)
   have hprod_toList (s : Finset D.ConnectedComponent) :
       (s.toList.map fZ).prod = ∏ c ∈ s, fZ c := by
@@ -174,6 +179,24 @@ theorem secondOrderDefect_cycle_lengths_parity
     norm_num
   exact evenCycleCount_even_of_odd_sum_and_square_factorization
     d hd rs hodd q hfactorQ hprod0
+
+/-- At an even second-order boundary of odd order, the number of defect-cycle
+components is odd. -/
+theorem secondOrderDefect_component_count_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj] [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree) (hcard : Fintype.card V = d * (d - 1) + 3) :
+    Odd (Fintype.card (secondOrderDefectGraph G).ConnectedComponent) := by
+  obtain ⟨rs, -, hlen, -, hsumodd, hevenCycles⟩ :=
+    secondOrderDefect_cycle_lengths_parity G hfree hd heven hmin hcard
+  have hoddCycles : Odd (oddCycleCount rs) :=
+    (odd_oddCycleCount_iff_odd_sum rs).2 hsumodd
+  have hlenEq := evenCycleCount_add_oddCycleCount rs
+  rw [← hlen]
+  rw [← hlenEq]
+  exact hevenCycles.add_odd hoddCycles
 
 
 end Erdos85

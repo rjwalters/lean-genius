@@ -240,8 +240,14 @@ theorem GadgetAttachmentCompatible.disjoint_selectors_of_adjacent_to
   have hv : v ∈ (F.neighborFinset w).filter fun t => x ∈ A t := by
     simp [SimpleGraph.mem_neighborFinset, hvw, hxv]
   have htwo : 2 ≤ ((F.neighborFinset w).filter fun t => x ∈ A t).card := by
-    rw [Finset.two_le_card]
-    exact ⟨u, hu, v, hv, huv⟩
+    have hsub : {u, v} ⊆ (F.neighborFinset w).filter fun t => x ∈ A t := by
+      intro z hz
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+      rcases hz with rfl | rfl
+      · exact hu
+      · exact hv
+    rw [← Finset.card_pair huv]
+    exact Finset.card_le_card hsub
   have hbudget := hcompat.2.2 x w
   omega
 

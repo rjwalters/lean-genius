@@ -394,6 +394,34 @@ theorem adjMatrix_comm_secondOrderDefect_of_even
     Matrix.one_mul]
   noncomm_ring
 
+/-- Entrywise form of `AD = DA`: the number of neighbors of `x` among the
+two defect-neighbors of `y` equals the number of neighbors of `y` among the
+two defect-neighbors of `x`.  This is the local recurrence used by the
+commutation-aware finite classifier. -/
+theorem card_filter_adj_defectNeighbors_comm_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (x y : V) :
+    (((secondOrderDefectGraph G).neighborFinset y).filter
+          (fun z => G.Adj x z)).card =
+      (((secondOrderDefectGraph G).neighborFinset x).filter
+          (fun z => G.Adj z y)).card := by
+  let D := secondOrderDefectGraph G
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree hd heven hmin hcard
+  have hentry := congrFun (congrFun hcomm x) y
+  change (G.adjMatrix ℤ * D.adjMatrix ℤ) x y =
+    (D.adjMatrix ℤ * G.adjMatrix ℤ) x y at hentry
+  rw [D.mul_adjMatrix_apply, D.adjMatrix_mul_apply] at hentry
+  simp only [SimpleGraph.adjMatrix_apply, Finset.sum_boole,
+    Int.ofNat_inj] at hentry
+  simpa [D] using hentry
+
 /-- Over the rationals, `(d-1)I-D` is nonsingular.  Strict diagonal
 dominance is enough: its diagonal has size at least three and each row has
 exactly two off-diagonal unit entries. -/

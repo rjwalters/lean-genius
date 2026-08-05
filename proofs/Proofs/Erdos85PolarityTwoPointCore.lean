@@ -26,7 +26,6 @@ noncomputable abbrev twoPointCore {a b : P K} :=
 /-- Tangency in graph form: if `w` is absolute and adjacent to `z`, their
 neighbor sets are disjoint.  Their two polar lines meet at `w` itself, whose
 loop is omitted from the simple polarity graph. -/
-omit [DecidableEq K] in
 theorem neighborFinset_inter_eq_empty_of_adj_absolute
     {z w : P K} (hzw : (graph K).Adj z w)
     (hww : Projectivization.orthogonal w w) :

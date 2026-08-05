@@ -546,7 +546,7 @@ theorem card_field_le_twice_deleted_add_one_of_netOne_gadget
   have hqr : 2 * D.card + 2 ≤ Nat.card K := by omega
   have hFdegree : ∀ w, F.degree w ≤ D.card := by
     intro w
-    have hd := F.degree_le_card_sub_one w
+    have hd := F.degree_lt_card_verts w
     rw [hWcard] at hd
     omega
   exact boundedDegreeGadgetAttachment_impossible_of_absolute_deletions

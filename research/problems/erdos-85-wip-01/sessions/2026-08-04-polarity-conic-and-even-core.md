@@ -1730,3 +1730,1819 @@ component-count and even-cycle-count parity conditions.  Further progress
 therefore has to use integral lattice information, modular/Jordan structure,
 the monochromatic defect coloring, or return to the witness-repair program,
 rather than merely repeat the rational square-class calculation.
+
+## Restart continuation: quotient and characteristic-two leads
+
+The even second-order target must be stated with care.  It cannot be excluded
+for every even degree: `d=4`, order `15`, is realized by `fifteenRegular`.
+The meaningful classification target is therefore to prove that this is the
+only even example, or to identify a higher-degree family.
+
+Commutation of the original adjacency matrix `A` with the defect two-factor
+`D` makes the partition into connected components of `D` equitable.  If `Q`
+is the resulting component quotient and `r` is the column vector of component
+orders, restriction of
+
+```text
+A^2 = (d-1)I + J - D
+```
+
+to vectors constant on each defect component gives the exact quotient
+equation
+
+```text
+Q^2 = (d-3)I + 1 r^T,
+Q 1 = d 1,
+r_i Q_ij = r_j Q_ji.
+```
+
+For the checked 15-vertex example the defect components have colored lengths
+`M:3`, `N:6`, `M:6`, and
+
+```text
+Q = [[0,2,2],
+     [1,2,1],
+     [1,1,2]].
+```
+
+This supplies the base case any proposed obstruction must permit.
+
+There is a sharp characteristic-two obstruction under the **additional
+circulant hypothesis**.  In that model the connection set `S=-S` satisfies the
+group-ring difference equation with every nonzero difference represented
+once except the two directions of the defect cycle.  Modulo two, squaring
+`sum_{s in S} x^s` cancels all cross terms, leaving support `|S|=d`, whereas
+the required right side has support `d(d-1)`.  Hence no even `d>2` *circulant*
+example has a single cyclic defect component.  This does **not** settle the
+one-component graph case: commuting with the adjacency matrix of a cycle does
+not imply commuting with its oriented shift, because the nontrivial cycle
+eigenvalues have multiplicity two.  Direct enumeration only confirms the
+circulant subcase for `(d,n)=(4,15),(6,33),(8,59)`.
+
+For the full multi-component case, reduction modulo two gives
+
+```text
+A^2 = I + J + D.
+```
+
+On a defect cycle, the exceptional kernel of `I+D` is controlled by cycle
+lengths divisible by three.  The next promising audit is therefore to combine
+the mod-two nullity/Jordan data with the monochromatic `M/N` coloring.  The
+color is not visible in the completed rational determinant factorization and
+is the main structural input not yet spent.
+
+## Cubic color trace and the first degree-six sieve
+
+The first higher color-sensitive trace is now formalized in
+`Erdos85SecondOrderColorTrace.lean`.  In addition to `tr(A D) = 2s`, where
+`s` is the total order of the triangle-free-edge (`N`) defect components,
+Lean proves directly from the second-order matrix equation that
+
+```text
+tr(A^3) + tr(A D) = |V| d.
+```
+
+The previously informal sentence “`tr(A^3)` is six times the number of
+triangles” has now been replaced by a fully checked graph-theoretic bridge.
+Lean proves that every `C4`-free graph has edge-disjoint triangles, deletes
+the edges lying in no triangle, and proves that the remaining spanning
+subgraph is locally linear.  Mathlib's locally-linear double count then gives
+three retained edges per triangle.  The handshake lemma, together with the
+proved fact that the triangle-free summand is a union of cycles, yields the
+natural-number identity
+
+```text
+6 T + 2 s = |V| d.
+```
+
+Thus the congruence is now an actual graph theorem, with no unproved trace
+interpretation or arithmetic premise:
+
+```text
+s = |V| d / 2  (mod 3).
+```
+
+An audit found an arithmetic error in the original specialization: for
+`d=6`, `|V|=33`, the right side is `99=0 (mod 3)`, not `2`.  The Lean and
+Python sieves have been corrected accordingly.  Exact integer enumeration of
+the three-component quotient equation before applying the corrected color
+condition leaves the following length types:
+
+```text
+(3,12,18), (3,15,15), (5,8,20), (6,9,18), (11,11,11).
+```
+
+The audit also found that the old sieve discarded every partition whose
+component lengths were all divisible by three.  That was valid only for the
+incorrect target `s=2`; for the correct target `s=0`, such partitions are
+automatically color-compatible.  After removing this stale filter and adding
+the elementary antipodal-C5 obstruction, the exact search counts are:
+
+```text
+9 components: 0
+7 components: 24
+5 components: 12
+3 components: 2
+1 component:  1
+```
+
+The 11-component all-3 partition is not yet re-certified because the former
+early rejection had hidden a much larger quotient search.  Therefore the
+previous claim of a unique `(5,8,20)` survivor is withdrawn.  The earlier
+Boolean checks and residual eight-vertex matching search assumed an invalid
+color sieve and are no longer used as graph-theoretic evidence; their closed
+finite Lean evaluations remain labeled historical.  Previously, in the obsolete length-5-`N` model, the absence of edges between the 5- and
+8-components forces five perfect matchings on the 8-set to partition the
+complement of its defect 8-cycle.  This forced 1-factorization is the most
+promising hand-proof entry point for excluding the residual degree-six
+quotient.
+
+### Commutation-aware audit
+
+The quotient sieve uses only the constant vector on each defect component.
+The next audit added the full entrywise relation `AD=DA` and the exact
+second-order common-neighbor equation to a temporary Z3 model for every
+surviving quotient.  All 38 classified cases with 3, 5, or 7 components are
+UNSAT (the two 3-component cases and all 12+24 cases), each in under one
+second.  The single 33-cycle case is also UNSAT.  The eleven-triangle case
+does not finish under the same unstructured SAT encoding, but has a cleaner
+spectral obstruction: on the 22-dimensional sum of the nonconstant
+3-cycle spaces, `A²=6I`, so its rational trace is zero; on the component-
+constant space the quotient trace is six, contradicting `tr(A)=0`.
+
+This computation is exploratory evidence, not yet a trusted certificate.
+The reusable bridge needed by a sound classifier is now formalized in
+`Erdos85SecondOrderEvenDefect.lean`:
+
+```text
+|N_D(y) ∩ N_G(x)| = |N_D(x) ∩ N_G(y)|.
+```
+
+It is proved entrywise from the already checked matrix commutation theorem.
+Constraint minimization shows that commutation, quotient degrees, and the
+requirement that each non-defect pair have exactly one common neighbor are
+already enough for all 38 contradictions; the zero-common-neighbor equations
+on defect edges are not needed.  Even more sharply, it suffices to impose the
+one-common-neighbor equation on pairs in the same component and congruent
+modulo three in a cyclic labeling.  This points toward a small Fourier/
+recurrence lemma rather than a 33-vertex exhaustive certificate.
+
+The residual local matching problem has now also been exhausted, independently
+of the original 33-vertex SAT instance.  For a vertex `z` of the 20-component,
+let `e(z)` be its two-element neighborhood in the 8-component.  Summing the
+unique-common-neighbor condition over all eight vertices shows more than a
+count: the following four pairs must partition the 8-set:
+
+```text
+P0(e(z)), e(w0), e(w+), e(w-).
+```
+
+Here `P0` is the internal perfect matching of the 8-component, `w0` is the
+unique internal neighbor of `z` in its own 4-vertex fiber, and `w+`,`w-` are
+its unique neighbors in the two nonconsecutive fibers.  There are exactly 38
+one-factorizations of the complement of `C8`, 12 cyclic assignments after
+rotation/reflection normalization, and 31 choices for `P0`.  Checking all
+`38*12*31 = 14136` cases gives no solution even to these local partition
+equations.  The reproducible verifier is
+`computations/degree6_residual_matching.py` and prints
+`NO LOCAL MODELS 14136`.
+
+Thus every three-component degree-six quotient type is excluded once the
+cubic color congruence and the local common-neighbor equations are combined.
+The remaining work for a full degree-six nonexistence theorem is to prove a
+complete quotient classification, including five or more components, and to
+replace or formalize the finite 8-vertex matching lemma.
+
+The quotient classification has since been completed by exact integer
+backtracking in `computations/degree6_quotient_classification.py`.  The search
+uses the row sum, detailed balance, diagonal and off-diagonal entries of
+`Q^2`, cycle parity, and the colored length congruence.  A further elementary
+condition is decisive: the induced graph on component `i` is `Q_ii`-regular,
+so `r_i Q_ii` is even.  This immediately removes the five-component survivor
+`(3,5,5,5,15)` (its 3-component has internal degree one) and all
+`(11,11,11)` survivors (their diagonal entries are a permutation of
+`1,2,3`).  No seven- or nine-component survivor exists.  Up to permutations,
+the unique remaining quotient is therefore
+
+```text
+r = (5,8,20),  Q = [[2,0,4],[0,1,5],[1,2,3]].
+```
+
+The color congruence permits the 5- or 20-component to be `N`.  If the
+20-component is `N`, then the 5-component is `M`; its internal degree is two.
+The only 2-regular simple graph on five vertices disjoint from the defect
+5-cycle is the complementary 5-cycle, but consecutive defect vertices then
+have a common internal neighbor, contradicting their `M` status.  Hence only
+the `N`-colored 5-cycle case reaches the finite matching lemma.
+
+The matching verifier has also been simplified substantially: no SAT/SMT
+solver is needed.  In every one of the 14,136 factorization/order/internal
+matching cases, there is already a single edge `e` for which *no choices at
+all* of the other three pairs can form the required partition of the 8-set.
+Thus the obstruction is pointwise local; global consistency of the cross
+matchings is never used.  The dependency-free verifier finishes in under one
+second and prints `NO LOCAL MODELS 14136`.  This is now a realistic
+`native_decide` target for Lean.
+
+## Formal component-quotient bridge
+
+`Erdos85SecondOrderQuotient.lean` now proves the algebraic input used by the
+degree-six classifier.  For the connected components of the even
+second-order defect graph, Lean constructs the integral quotient matrix `Q`
+and proves:
+
+```text
+∑_e Q_ce = d,
+r_c Q_ce = r_e Q_ec,
+(Q^2)_ce = (d-3) [c=e] + r_e.
+```
+
+The square equation is obtained internally from `A S = S Q`, `D S = 2 S`,
+`J S = 1 rᵀ`, and the already formalized identity
+`A² = (d-1)I + J - D`.  Both real and natural-number versions are present;
+the natural version is the intended interface to a finite `native_decide`
+classifier.  The detailed-balance identity is proved by an explicit finite
+double count of edges between two defect components.  The full
+`Proofs.Erdos85Results` umbrella build succeeds with all 8,662 targets.
+
+This removes the largest trust gap in the quotient computation.  The next
+formal layer should package the remaining elementary constraints (component
+orders sum to 33, odd cycle lengths, diagonal handshake parity, and the color
+congruence), then certify that they leave only `(5,8,20)` with the displayed
+quotient.  After that, the 8-vertex local matching obstruction can be a
+separate small decidable theorem.
+
+Both finite searches have now been ported into Lean.  The file
+`Erdos85DegreeSixQuotientClassification.lean` constructs nondecreasing
+partitions of 33 and quotient rows as weak compositions of six, then performs
+the same exact row-domain/backtracking classification.  Closed
+`native_decide` theorems prove that the 9-, 7-, and 5-component survivor lists
+are empty and that the 3-component list is exactly
+
+```text
+[ ((5,8,20), ((2,0,4),(0,1,5),(1,2,3)), (mask 1, mask 4)) ].
+```
+
+The file `Erdos85DegreeSixResidualMatching.lean` independently generates all
+31 perfect matchings of the complement of `C8`, all 38 one-factorizations,
+and all 12 normalized cyclic orders.  Lean verifies the product count 14,136
+and proves that the relaxed local-model list is empty.  Both files are
+imported by `Erdos85Results.lean`; the full umbrella build now succeeds with
+8,664 targets.
+
+These are genuine closed kernel-checked computations, but assembly into a
+graph-level degree-six nonexistence theorem still requires completeness
+bridges: an arbitrary defect-component list and quotient satisfying the
+formal graph identities must be shown to enter the generated backtracking
+space, and the residual graph data must be mapped to the relaxed local
+matching model.  Those bridges, rather than the finite calculations
+themselves, are now the critical path.
+
+## Ramsey inverse reformulation and an infinite-family target
+
+A literature audit confirms that Problem 85 is still listed as open.  Write
+`R(t)=R(C4,K_{1,t})`.  Directly from the definitions,
+
+```text
+minDegreeForC4(N) = N - max { t : R(t) <= N }.
+```
+
+Consequently eventual monotonicity of `minDegreeForC4` is equivalent to
+eventual *strict* monotonicity of `R(t)`: a plateau `R(t+1)=R(t)` produces a
+one-step drop of the minimum-degree threshold, and every such drop produces a
+plateau.  This identifies the correct infinite obstruction; a finite exact
+value such as the order-33 result cannot by itself resolve Problem 85.
+
+Luis Boza's 2024 paper *Exact Values and Bounds for Ramsey Numbers of C4
+Versus a Star Graph* proves that, for `m = 2 (mod 6)`, `m >= 8`,
+
+```text
+R(C4,K_{1,m^2+3}) <= m^2+m+4.
+```
+
+At first sight, an infinite family of `C4`-free graphs on `m^2+m+3` vertices
+with minimum degree `m+1` would be decisive: it would give
+
+```text
+R(C4,K_{1,m^2+2}) = R(C4,K_{1,m^2+3}) = m^2+m+4,
+```
+
+and disprove eventual monotonicity.  However, setting `d=m+1` puts these at
+the second-order size `d(d-1)+3` with `d=3 (mod 6)` odd.  The already
+formalized theorem `containsC4_of_odd_secondOrder` rules them out completely:
+the beyond-distance-two relation would be one-regular on an odd number of
+vertices.  Thus Boza's congruence family cannot supply plateaus; the formal
+parity obstruction explains exactly why the tempting lower-bound
+construction is impossible.  Any counterexample family must occur at a
+different offset or in the even-degree branch, together with a matching
+Ramsey upper bound.
+
+The same audit also corrects the interpretation of the degree-six target.
+`minDegreeForC4` is the *forcing threshold*, not the largest attainable
+minimum degree.  Excluding minimum degree six at order 33 proves
+`minDegreeForC4(33) <= 6`; together with a minimum-degree-five construction it
+gives equality, not a drop from the already formalized value at 32.  The
+equivalent Ramsey value `R(C4,K_{1,27})=33` is already known (Boza obtains it
+from the computed extremal bound `ex(33,C4)=96`).  Our quotient/matching route
+would provide a new structural and formally verified proof of this finite
+value, but it should not be presented as a resolution or counterexample to
+Problem 85.
+
+The Ramsey inverse has now been formalized precisely in
+`Erdos85RamseyPlateau.lean`.  Define the order-`m` capacity
+
+```text
+cap(m) = m - minDegreeForC4(m).
+```
+
+Lean proves that, whenever the star fits, `C4StarRamseyAt m s` is equivalent
+to `s <= cap(m)`, and that one-step monotonicity is equivalent to
+`cap(m+1) <= cap(m)+1`.  More sharply, define a consecutive plateau at
+`(m,s)` to mean that neither star size `s,s+1` is forced at order `m`, while
+both are forced at order `m+1`.  The kernel-checked local theorem is
+
+```text
+minDegreeForC4(m+1) < minDegreeForC4(m)
+  iff exists s, ConsecutiveC4StarPlateauAt m s.
+```
+
+It is lifted both to the eventual positive statement and to the negation:
+Erdős 85 is exactly eventual absence of consecutive plateaus, while its
+negation is the existence of arbitrarily large such plateaus.  This removes
+all convention and inverse-function ambiguity from the global target.  The
+full umbrella build, including this module, succeeds with 8,665 targets.
+
+## Plateau-core normalization and Moore localization
+
+The graph side of the plateau equivalence is now normalized as well.  A
+`C4PlateauCore m d` is a C4-free graph on `m` vertices with minimum degree
+exactly `d`, with every edge incident to a degree-`d` vertex, while every
+graph on `m+1` vertices of minimum degree at least `d` contains a C4.  Lean
+proves the exact equivalence
+
+```text
+minDegreeForC4(m+1) < minDegreeForC4(m)
+  iff exists d, C4PlateauCore m d.
+```
+
+Thus Erdős 85 is also exactly the eventual absence of these edge-minimal
+cores.  This is a substantially better structural target than arbitrary
+C4-free graphs: the tight vertices form a vertex cover, and all edges among
+non-tight vertices have already been deleted.
+
+The first general restrictions on a core are kernel-checked.  Its degree is
+at least two.  If `d >= 3`, the strict Moore arguments give
+
+```text
+d(d-1)+3 <= m.
+```
+
+If additionally `m < (d+1)(d-1)+1 = d^2`, near-Moore rigidity forces the
+entire core to be `d`-regular.  At the boundary `m=d(d-1)+3`, odd `d>=4` is
+impossible by the one-regular antipodal-graph parity obstruction.  Hence the
+lowest possible core in a degree band must have even degree; odd-degree
+cores start at least one order later.  The promising next target is therefore
+the regular interval
+
+```text
+d(d-1)+3 <= m < d^2,
+```
+
+split into the even boundary case and positive-slack odd cases.  Any proof
+that such regular graphs always admit a one-vertex extension preserving
+minimum degree `d`, or that a nonregular core above this interval cannot have
+its tight vertices cover every edge, would settle the corresponding degree
+band and moves directly toward eventual monotonicity.
+
+## Exact obstruction to attachment-only extension
+
+The common-neighbour conflict formulation has now been connected directly to
+plateau cores.  Lean proves that every `C4PlateauCore m d` has a normalized
+witness `G` satisfying
+
+```text
+indepNum(commonNeighborConflict G) < d.
+```
+
+More importantly, the conflict graph can be counted exactly in the regular
+near-Moore regime.  For each vertex `x`, length-two walks from `x` are split
+according to their first edge.  C4-freeness makes these `d` branches pairwise
+disjoint, and regularity gives `d-1` endpoints in each branch.  The new file
+`Erdos85ConflictRegular.lean` formalizes the resulting identity
+
+```text
+degree(commonNeighborConflict G, x) = d(d-1).
+```
+
+It also proves the sharp elementary consequence
+
+```text
+indepNum(commonNeighborConflict G) <= |V(G)| - d(d-1).
+```
+
+Thus at second-order size `|V|=d(d-1)+3`, every safe attachment set has at
+most three vertices.  For `d>=4`, simply adjoining a vertex to a safe set can
+never preserve minimum degree `d`.  This corrects the previous suggestion
+that a pure attachment argument might eliminate regular cores in this
+interval.  Any successful proof near the Moore boundary must perform genuine
+edge surgery: attach the new vertex to at least `d` old vertices while
+deleting a controlled family of old edges that destroys all induced
+common-neighbour conflicts and compensates every tight endpoint.
+
+The structural target is consequently sharper.  Starting from a regular
+core, choose an attachment set `S` and old edges to delete.  Every pair in
+`S` that shared a common neighbour must lose at least one of its two incident
+edges to that centre, while each old vertex can lose no more edges than its
+new adjacency compensates.  This incidence-cover problem is the scalable
+version of the residual-matching constraints already encountered in the
+degree-six search.
+
+## Tight-layer majority in every plateau core
+
+The existing layered-witness theory yields a global constraint that is now
+connected explicitly to plateau cores.  Write `T` for the degree-`d` vertices and `U` for the
+vertices of degree strictly greater than `d`.  Since `T` covers every edge,
+`U` is independent and every edge incident with `U` goes into `T`.  Double
+counting this cut gives
+
+```text
+|U|(d+1) <= |T|d.
+```
+
+Together with the exact partition `|T|+|U|=|V|`, this proves `|U|<|T|`: a
+normalized plateau core has a strict majority of tight vertices.  The earlier
+restricted cherry packing simultaneously gives
+
+```text
+|U| * choose(d+1,2) <= choose(|T|,2).
+```
+
+`Erdos85RamseyPlateau.lean` now packages a core witness satisfying both
+inequalities.  This is useful above the regular range `m<d^2`, where the core
+may be nonregular: any counterexample must still have a large degree-`d`
+vertex cover and a much smaller independent high-degree layer whose
+neighbourhood pairs form a packing in that cover.
+
+A literature comparison with graphs of defect/excess two uncovered a close
+algebraic analogue but not an applicable classification theorem.  Classical
+diameter-two defect-two graphs have order `d^2-1`, whereas our second strict
+Moore order is `d(d-1)+3`; moreover our C4-free graphs may contain triangles.
+Their generalized defect matrix is still two-regular, and our existing
+cycle-factorization theorem already proves the analogous parity restriction
+that the number of even defect cycles is even.  Published work treats full
+cyclic-defect graphs or other diameter/girth hypotheses and explicitly leaves
+broad defect-two cases open, so it cannot currently be imported as a
+black-box nonexistence result for Erdős 85.
+
+## Full-sequence divergence of the threshold
+
+The polarity construction now gives more than an unbounded subsequence.
+For a finite field of order `q`, the projective-plane graph supplies a
+C4-free minimum-degree-`q` witness at order
+
+```text
+a = q^2+q+1,
+```
+
+and deletion of an absolute point supplies one at the consecutive order
+
+```text
+b = q^2+q.
+```
+
+Disjoint union preserves both C4-freeness and the minimum-degree lower
+bound.  Since `a=b+1`, every `n>=b^2` has the explicit representation
+
+```text
+r*a + (k-r)*b = n,
+where r=n mod b and k=n/b.
+```
+
+Indeed `r<b<=k`, so both coefficients are nonnegative.  Taking a Galois
+field of order `q=2^(d+1)` for each target `d` proves, in Lean, that every
+sufficiently large order has a C4-free graph of minimum degree at least `d`.
+Equivalently,
+
+```text
+Tendsto minDegreeForC4 atTop atTop.
+```
+
+This rules out any infinite counterexample family with bounded threshold
+degree: the canonical degrees `minDegreeForC4(m+1)` of hypothetical plateau
+cores must themselves tend to infinity.  It does not yet exclude high-degree
+cores, but it removes bounded-degree pathologies and justifies focusing on
+scalable surgery in the `d -> infinity` regime.
+
+The conductor has since been improved from quartic to cubic by using the
+entire deletion band.  An interval-composition lemma proves that witnesses at
+every order `A,...,A+L` generate witnesses at every order at least
+
+```text
+(A/L+1)A.
+```
+
+Choose by Bertrand a prime `p` with
+`2(d+2)<p<=4(d+2)`.  The free polarity deletion band gives degree-at-least-`d`
+witnesses throughout
+
+```text
+A = p^2+d  through  A+L = p^2+p,   L=p-d.
+```
+
+Thus every degree-`d` plateau core satisfies the kernel-checked localization
+
+```text
+m+1 < ((p^2+d)/(p-d)+1)(p^2+d)
+```
+
+for such a prime `p`.  Since `p=Theta(d)`, the right side is `O(d^3)`.
+The relaxed arithmetic estimate has also been packaged without the auxiliary
+prime:
+
+```text
+n >= 400(d+2)^3  implies  C4FreeMinDegreeWitness n d,
+m+1 < 400(d+2)^3  for every C4PlateauCore m d.
+```
+
+Together with the Moore lower bound this confines all possible cores to a
+quadratic-to-cubic window.  Closing that remaining factor of `d`, or deriving
+a contradiction from the tight/high-layer packing inside this window, is now
+the quantitative bottleneck.
+
+## Kernel-checked cycle-block soundness
+
+The full graph-to-periodicity bridge is now in place. A simple cycle walk in
+any two-regular defect graph receives additive `ZMod` coordinates whose range
+is exactly the walk's vertex set and whose two neighbors are the preceding
+and succeeding coordinates. Restricting `AD=DA` to two such cycles gives the
+rectangular recurrence, hence translation of the source coordinate by the
+target cycle length preserves every adjacency into the target component.
+
+The new graph-level quotient consequence is:
+
+```text
+q.length • 1 != 0 in ZMod p.length
+  ==> componentQuotientMatrix G D c e <= 1.
+```
+
+Here `p` and `q` span the source and target connected components. The proof
+identifies the cyclic parametrization range with the actual component support
+before applying the `C4` common-neighbor bound, closing the main semantic gap
+behind an individual `periodicCommonNeighborOK` term. The remaining
+classifier-soundness task is to aggregate all target components having the
+same nonconsecutive residue and transport an arbitrary finite component list
+into the closed list classifier.
+
+The primary-literature audit was also refreshed against version 2 (12 June
+2026) of Boza's arXiv:2409.12770. Its exact table has strict Ramsey growth
+through parameter 39 and explicitly reports no known counterexample to the
+stronger lower bound `R(C4,K1,n) >= n + ceil(sqrt n)`. Its scalable upper
+bound at `m^2+3`, `m = 2 mod 6`, remains the closest apparent plateau target,
+but it lands in precisely the odd second-order family already excluded by our
+parity theorem.
+
+The periodicity consequence has since been strengthened from a single target
+component to the exact grouped inequality used by the classifier.  If `es`
+is any finite family of target components whose lengths induce one common
+nonzero translation `s` on a fixed source cycle, Lean now proves
+
+```text
+sum (Q source target) over target in es <= 1.
+```
+
+The proof fixes one source orientation for every rectangular block, unions
+the pairwise-disjoint component-neighbor finsets, and embeds that union into
+the common-neighbor set of two distinct source vertices.  This avoids the
+otherwise serious sign ambiguity from independently choosing a dihedral
+coordinate system for each block.
+
+An exploratory exact search generalized the quotient equations to arbitrary
+even degree.  For three defect components, the quotient plus handshake and
+grouped-periodicity constraints have no survivors for every even degree
+`6 <= d <= 30` except `d=12`.  The sole exceptional quotient found is
+
+```text
+r = (15,60,60),
+Q = ((4,4,4),(1,4,7),(1,7,4)).
+```
+
+Degree four has the expected genuine boundary survivor.  For degree eight,
+the search also finds zero survivors with five or seven components; for
+degree ten it finds zero with five components.  These computations do not
+yet prove a uniform theorem, but they show that full block periodicity is a
+scalable obstruction and isolate the `d=12` quotient as the first spectral
+exception requiring separate analysis.  The parameterized verifier is
+`even_second_order_quotient_probe.py`.
+
+## Spectral elimination of the degree-twelve quotient candidate
+
+The exceptional quotient has characteristic polynomial
+
+```text
+(X-12)(X-3)(X+3)
+```
+
+and therefore trace `12`.  On the 132-dimensional rational complement of
+the three component-constant vectors, the matrix identity becomes
+
+```text
+A^2 = 11 I - D,
+D = A(C15) direct-sum A(C60) direct-sum A(C60).
+```
+
+After removing the constant root `2` from each cycle characteristic
+polynomial and substituting `11-X^2`, exact factorization over `Q` shows that
+every irreducible factor is an even polynomial.  For `C15` the factors have
+degrees `2,4,8`; for `C60` they have degrees
+`2,2,2,2,4,4,4,8,8,8,16`.  In the combined resolvent every exponent is even.
+Unique factorization then forces the characteristic polynomial of the
+component-orthogonal restriction of `A` itself to be even, so that restriction
+has trace zero.  Adding the quotient trace would give full adjacency trace
+`12`, contradicting the zero diagonal of a simple graph.
+
+The exact factorization and rational irreducibility checks are reproducible in
+`degree12_spectral_exception.py`.  Lean now contains the reusable final step
+
+```text
+Matrix.trace_eq_zero_of_charpoly_eq_expand_two
+```
+
+which proves that an even-dimensional rational matrix whose characteristic
+polynomial lies in `Q[X^2]` has trace zero.  The remaining formal work for the
+candidate is to construct the rational invariant complement and transport the
+explicit cycle-resolvent factorization to its characteristic polynomial.
+
+The exact polynomial stage is now kernel-checked rather than merely
+reproducible externally.  Lean verifies the degree-twelve `C15` and `C60`
+resolvent identities, using `C60 = C4 ∘ C15` to avoid a prohibitively large
+normalization.  It also verifies the degree-six `C33` identity and the
+triangle identity
+
+```text
+(C3 - 2)(5-X^2) = (3-X^2)(X^2-6)^2.
+```
+
+## Invariant decomposition and the eleven-triangle frontier
+
+The linear-algebra transport layer is now kernel-checked.  For two
+complementary invariant rational subspaces, Lean proves both multiplication
+of the restricted characteristic polynomials and additivity of the
+restricted traces.
+
+For the all-triangle defect case there is a particularly canonical
+decomposition.  If `D^2=D+2I`, then
+
+```text
+P = (D+I)/3
+```
+
+is idempotent.  Lean now proves that `range P` and `ker P` are complementary,
+that `D=2I` on the range and `D=-I` on the kernel, and that every `A`
+commuting with `D` preserves both spaces.  It also contains the abstract final
+trace contradiction: zero total trace, nonzero plus-space trace, and an even
+characteristic polynomial on the kernel are inconsistent.  The remaining
+eleven-triangle work is graph-specific: derive `D^2=D+2I`, identify the
+plus-space trace as `6`, certify the kernel dimension as `22`, and force its
+characteristic polynomial to `(X^2-6)^11` (or otherwise prove it is even).
+
+The first and third of those obligations are now discharged.  Lean proves
+that a 2-regular graph whose components all have order three is locally a
+union of triangles, and from this proves `D^2=D+2I` over both `Z`, `Q`, and as
+a rational endomorphism.  On 33 vertices it also proves that `(D+I)/3` has
+trace and rank 11, hence that its kernel has dimension 22.
+
+There is an elementary finite-field route to the remaining quotient trace
+that may avoid a general rational canonical-form theorem.  For the
+eleven-component quotient, `Q^2=3I+3J` and `QJ=JQ=6J`.  Frobenius invariance
+of matrix trace gives, modulo 5 from `Q^5`, and modulo 7 from `Q^7`,
+
+```text
+trace(Q) = 6 mod 5,
+trace(Q) = 6 mod 7.
+```
+
+The diagonal square equations make every quotient entry zero or one, so
+`0 <= trace(Q) <= 11`; the two congruences therefore force `trace(Q)=6`.
+This entire quotient-trace argument is now kernel-checked, including the
+finite-field power identities, Frobenius trace congruences, exact natural
+lift, and transport to the actual equitable quotient of the graph.  Equal
+triangle-component sizes give quotient symmetry by detailed balance; then
+the equality of each row sum with the corresponding diagonal entry of `Q^2`
+forces every entry to be at most one.  The component count is no longer an
+assumption: the connected-component partition and order-three hypothesis
+formally give `33 = 3 * 11`.
+
+Thus, in the eleven-triangle case, the only missing side of the final trace
+contradiction is the trace-zero statement on the 22-dimensional kernel of
+`(D+I)/3` (equivalently, evenness of its characteristic polynomial).
+The same finite-field idea may also replace part of the complement
+characteristic-polynomial argument, although an integral basis and a bound
+would then be needed.
+
+That trace-zero statement is now kernel-checked.  For a rational matrix `M`
+with `M^2=6I`, Lean verifies the determinant identity implying
+
+```text
+charpoly(M) divides (X^2-6)^n.
+```
+
+It separately verifies that `X^2-6` is irreducible over `Q`.  Unique
+factorization and the characteristic-polynomial degree therefore give, in
+dimension 22,
+
+```text
+charpoly(M) = (X^2-6)^11,
+trace(M) = 0.
+```
+
+Both matrix and endomorphism forms are available.  The triangle-projection
+module now also proves directly that the restriction satisfies `A^2=6I`
+from `A^2=5I+J-D`, `JD=2J`, and membership in the `-1` eigenspace of `D`.
+Consequently the spectral half of the eleven-triangle contradiction is
+complete.
+
+The remaining trace interface is now kernel-checked as well.  Lean reindexes
+the ambient diagonal sum over the connected-component dependent sum and
+proves, for an equitable partition into components of order three,
+
+```text
+trace(A D) = 3 * trace(Q).
+```
+
+The finite-field certificate `trace(Q)=6` therefore gives `trace(A D)=18`.
+Since `P=(D+I)/3` and `trace(A)=0`, the trace of `A` on `range P` is `6`.
+The restriction to the 22-dimensional kernel has trace zero by the quadratic
+certificate above, contradicting additivity of trace.  The graph-facing
+theorem
+
+```text
+no_degreeSix_boundary_of_secondOrder_all_triangles
+```
+
+is kernel-checked.  Thus a 33-vertex, minimum-degree-six, `C₄`-free boundary
+graph cannot have all second-order defect components of order three.  The
+remaining cycle-length multisets are useful tests, but eliminating them one
+at a time is not the main route: the proof now pivots back to statements
+uniform in the degree.
+
+Two such statements are now kernel-checked.  First, choosing one vertex from
+each ordinary connected component gives a common-neighbor-independent set,
+because vertices in different components cannot share a neighbor.  Hence
+
+```text
+number of connected components of G <= indepNum(commonNeighborConflict G),
+```
+
+and every degree-`d` plateau core has strictly fewer than `d` components.
+This explains structurally why disconnected-union examples are the natural
+barrier to a purely conflict-independence proof, rather than merely supplying
+more small cases.
+
+Second, the global cycle factorization now records the number as well as the
+lengths of the second-order defect components.  At every even second-order
+boundary, the sum of the defect-cycle lengths is odd, the number of even
+cycles is even, and consequently the total number of defect components is
+odd.  This is degree-uniform and does not enumerate partitions.  A promising
+next strengthening is ordinary connectedness at near-Moore order: every
+ordinary component should itself contain a Moore ball of at least
+`d(d-1)+1` vertices, so order `d(d-1)+3` permits only one component for
+`d >= 3`.
+
+That strengthening is now kernel-checked, in a stronger componentwise form:
+every ordinary connected component of a `C₄`-free minimum-degree-`d` graph
+has at least `d(d-1)+3` vertices.  Consequently a graph at the second strict
+Moore boundary has exactly one ordinary connected component.
+
+Connectedness feeds directly into the second-order quotient.  Every original
+edge gives a positive entry between the defect components containing its
+endpoints.  Lifting an ordinary path through the defect-component map proves
+that the positive-entry relation of the quotient is irreducible.  This bridge
+is kernel-checked in `Erdos85BoundaryQuotientIrreducible`.
+
+More importantly, periodicity now yields a degree-uniform structural theorem
+instead of a list of allowed partitions.  If quotient entry `Q[c,e]` is
+positive, then the two defect-cycle orders are comparable under divisibility:
+
+```text
+|c| divides |e|  or  |e| divides |c|.
+```
+
+For if neither divisibility holds, the rectangular-block periodicity theorem
+forces both `Q[c,e]` and `Q[e,c]` to be at most one.  Positivity and detailed
+balance make both entries one and then force `|c|=|e|`, a contradiction.
+The full graph-facing statement is kernel-checked in
+`Erdos85BoundaryQuotientDivisibility`.  Thus the support of the irreducible
+quotient lies in the comparability graph of the divisibility poset on defect
+cycle lengths.  This is the current general replacement for enumerating
+degree-six cycle partitions.
+
+The edge description is sharper when the lengths differ.  If `|c|<|e|`
+and `Q[c,e]>0`, then the reverse periodicity bound and detailed balance give
+
+```text
+Q[e,c] = 1,
+|c| divides |e|,
+|c| * Q[c,e] = |e|.
+```
+
+Thus every unequal-length quotient edge is completely determined by its two
+cycle orders: downward weight one, upward weight the integer length ratio.
+This graph-facing strengthening is also kernel-checked.  Only edges between
+equal-length cycles retain unconstrained quotient weights.
+
+Subtracting the row-sum identity from the diagonal square identity now gives
+the kernel-checked local excess formula
+
+```text
+sum_e (Q[c,e] Q[e,c] - Q[c,e]) = |c| - 3.
+```
+
+For a component of minimum order, every longer target has zero contribution:
+the upward entry is the length ratio and the downward entry is one.  Equal
+orders have symmetric quotient entries by detailed balance.  Hence
+
+```text
+|c| - 3 = sum_{|e|=|c|} Q[c,e] (Q[c,e] - 1).
+```
+
+Every summand on the right is a product of consecutive integers and is even.
+It follows, uniformly and without a partition search, that every shortest
+second-order defect cycle has odd order.  Both the minimum-component identity
+and this oddness theorem are kernel-checked in
+`Erdos85BoundaryQuotientExcess`.
+
+The missing handshake constraint from the exploratory classifier is now also
+graph-facing and kernel-checked:
+
+```text
+Even (|c| * Q[c,c]).
+```
+
+It follows by applying the degree-sum theorem to the original graph induced
+on the vertices of one defect component; equitability makes that induced
+graph `Q[c,c]`-regular.  Since every minimum component has odd order, its
+diagonal quotient entry is therefore even.  This eliminates the remaining
+equal-order abstract candidates seen in the small quotient probes without
+appealing to a Boolean classifier.
+
+As a consistency check rather than a proof step, the known degree-four
+15-vertex witness has defect orders `(3,6,6)` and quotient
+
+```text
+[0 2 2]
+[1 2 1]
+[1 1 2].
+```
+
+This realizes the new rule exactly: unequal edges have downward weight one
+and upward weight equal to the order ratio.  Exact quotient probes at degrees
+6, 8, and 10 find no candidate after the divisibility, ratio, and handshake
+constraints, suggesting that the degree-four template is the unique small
+exception and that a uniform arithmetic obstruction may hold for all even
+`d >= 6`.
+
+### Correction: square-parameter quotient families
+
+The probe originally hard-coded `trace(Q)=d`.  That trace equality is valid
+after a nonsquare/minimal-polynomial argument, but when `d-3` is a square the
+two rational eigenvalues `±sqrt(d-3)` can have unequal multiplicities.  The
+probe has been corrected so this trace constraint is optional.
+
+The three-component equations in fact contain an infinite square-parameter
+family.  For even `a`, put
+
+```text
+d = (a-1)^2 + 3,
+r = a(a-1) + 3,
+t = (a^2 - 3a + 4)/2.
+```
+
+Then orders `(r,rt,rt)` support
+
+```text
+[a t t]
+[1 e f]
+[1 f e],
+```
+
+where `{e,f}={t,d-1-t}`; handshake parity selects a branch when `rt` is
+odd.  The degree-four and degree-twelve quotients are early members.  The
+next is
+
+```text
+d=28, orders=(33,363,363),
+Q=((6,11,11),(1,16,11),(1,11,16)).
+```
+
+Degree 28 also has an equal-order quotient survivor with orders
+`(253,253,253)` and diagonal/off-diagonal weights `6/11`.  The old probe
+missed these because partial-trace pruning remained active even after the
+final trace test was removed; both uses are fixed.  Degree twelve is thus the
+first spectral exception, not an isolated one.  A parameterized spectral
+theorem is required; finite quotient searches cannot close the even case.
+
+The existence of this obstruction family is now itself kernel-checked in
+`Erdos85SquareParameterQuotient`.  Reparameterizing `a=2(k+1)` removes all
+natural-number subtraction.  Lean verifies symbolically for every `k`:
+
+```text
+d-3 = (2k+1)^2,
+sum(component orders) = d(d-1)+3,
+every quotient row sums to d,
+r_i Q_ij = r_j Q_ji,
+Q^2_ij = (d-3) delta_ij + r_j,
+Even(r_i Q_ii).
+```
+
+Thus the exact quotient equations, the newly formalized divisibility-ratio
+rules, and handshake parity are genuinely insufficient for a uniform
+contradiction.  The next proof must rule out realization of this abstract
+family by the full commuting cycle blocks.  For the small cycle of order
+`r=a(a-1)+3`, this amounts to a parameterized version of the degree-twelve
+fact that each irreducible factor of the transformed reduced cycle polynomial
+is even.  Computations suggest the relevant real-cyclotomic norms are never
+squares; establishing that uniformly appears to be the central number-theory
+lemma.
+
+### Uniform cycle-cover rigidity
+
+There is a complementary combinatorial route that uses more of the actual
+`0/1` cycle blocks.  In the square-parameter three-component family, each
+vertex of either long cycle has exactly one neighbour in the short cycle,
+while each short-cycle vertex has `t` neighbours in that long cycle.  After
+cyclically parametrizing the components, write `f(y)` for the unique short
+vertex adjacent to the long vertex `y`.  The block intertwining equation is
+
+```text
+e_{f(y)-1} + e_{f(y)+1} = e_{f(y-1)} + e_{f(y+1)}.
+```
+
+Since the short cycle has order at least three, its predecessor and successor
+are distinct.  Thus every three-term segment of `f` is either consistently
+forward or consistently backward.  Adjacent segments cannot reverse
+orientation, since that would imply `2=0` in `ZMod r`.  The local orientation
+and no-flip lemmas are now kernel-checked in
+`Erdos85CycleCoverRigidity`.  The next graph-facing theorem should propagate
+this orientation around the long cycle and identify the unequal block as the
+standard cyclic covering `ZMod (rt) -> ZMod r`, up to translation and
+reflection.
+
+This applies uniformly to every unequal pair of defect-cycle components with
+reverse quotient entry one.  Once the cover is normalized, the remaining
+long-to-long block and the exact common-neighbour equation become a
+parameterized cyclic difference-family problem.  Its Fourier transform
+should recover the same spectral obstruction, while its combinatorial form
+may admit a direct proof.
+
+The closest published framework is Delorme and Pineda-Villavicencio, *On
+graphs with cyclic defect or excess* (2010), arXiv:1010.5841.  Their real
+cyclotomic factorization and reducibility obstruction support this method,
+but their setting is a single cyclic defect component in a diameter/girth
+Moore problem.  It does not directly settle the present three-component
+square family or supply the needed uniform norm-nonsquare theorem.
+
+### Literature audit (2026-08-04)
+
+A targeted search under both formulations of the problem gives the following
+picture.
+
+* The current Erdős Problems entry still labels Problem 85 open and records no
+  claimed partial or complete solution in its comments.  Its October 2025
+  revision explicitly adds the weaker bounded-drop question.  The exact
+  problem is equivalent to the behaviour of `R(C4,K_{1,n})`, but monotonicity
+  of that Ramsey number is not the same statement and does not immediately
+  settle minimum-degree monotonicity.
+* Luis Boza, *Exact Values and Bounds for Ramsey Numbers of C4 Versus a Star
+  Graph* (arXiv:2409.12770), is the most relevant recent paper found.  It
+  determines all previously unknown values through star parameter 37, gives
+  additional exact values and recurrences, and proves a congruence-family
+  upper bound.  Its local triangle count is close in spirit to our boundary
+  regularity argument, but it does not address eventual monotonicity.  Its
+  theorem for `m = 2 mod 6` excludes a graph one vertex above a related Moore
+  boundary and concerns the odd-degree side already covered more generally by
+  our defect-spectrum argument.
+* Chen's 1997 result proves only the two-step Lipschitz bound
+  `R(C4,K_{1,n+1}) <= R(C4,K_{1,n})+2`.  Parsons' block-design bounds and the
+  later polarity-graph papers primarily provide upper bounds/exact values and
+  constructions.  None classifies the near-Moore boundary graphs needed here.
+* Delorme--Pineda-Villavicencio and the broader excess/defect-two literature
+  use the same matrix-polynomial/cyclotomic philosophy, but assume the
+  diameter/girth Moore setting, usually a single cyclic defect.  Our defect is
+  a union of cycles and permits triangles; this is the substantive gap, not a
+  change of notation.
+* Searches for the exact order `d(d-1)+3`, the matrix identity
+  `A^2=(d-1)I+J-D`, and regular `C4`-free defect-cycle graphs found no prior
+  general classification.  Recent exact-value computations use finite
+  cyclotomic scans of precisely the kind that cannot dispose of our infinite
+  square-parameter family.
+
+The audit therefore does not reveal an existing solution we are duplicating.
+It does identify two bodies of reusable technique: Boza's local
+neighbourhood partition/counting arguments and the reducibility criteria for
+cyclic defect/excess graphs.  Our new cyclic-cover/residue-partition reduction
+appears to be the missing multi-component refinement connecting them.
+
+#### Literature-audit correction and update (2026-08-05)
+
+The June 12, 2026 revision of Boza's paper is now the version that should be
+cited.  It determines the eight formerly unknown star-Ramsey values through
+star parameter 38, proves `R(C4,K_{1,27})=33`,
+`R(C4,K_{1,n})=n+7` for `28 <= n <= 33` and `n=37`, and gives the functional
+inequalities stated there.  Its concluding table reports strict growth over
+the settled initial range, but no eventual-monotonicity theorem.
+
+More importantly, the order `d(d-1)+3` is exactly Moore bound plus two for a
+*triangle-free* `d`-regular graph of girth five.  That narrower class is
+standardly called a graph of type `(d,5,2)`, or a girth-five graph of excess
+two.  The excess-two literature already proves regularity and obtains a
+2-regular excess graph together with the commuting adjacency-matrix
+identity; it also applies cyclotomic irreducibility and parity obstructions.
+Consequently those ingredients cannot be advertised as new.
+
+This does not subsume our boundary problem: Erdős 85 forbids `C4` but permits
+triangles.  In our identity the 2-factor records both adjacency pairs lying in
+no triangle and nonadjacent pairs with no common neighbour.  It is therefore
+a genuine extension of the classical girth-five excess graph, not itself an
+ordinary `(d,5,2)` graph.  The classical results remain directly applicable
+to the triangle-free terminal branch and should be invoked there rather than
+reproved.
+
+The most relevant older sources located are Delorme--Pineda-Villavicencio,
+*On graphs with cyclic defect or excess* (EJC 2010), and the subsequent paper
+*On graphs with excess or defect 2* (Discrete Applied Mathematics 2015),
+which explicitly attributes the girth-five odd-degree criterion to Kovacs.
+Their published scope is spectral nonexistence for various degrees/girths,
+not the triangle-permitting boundary classification or a descent proving
+eventual monotonicity.  Thus the general target remains open, but our novelty
+claim must be phrased as the triangle-permitting/multi-component refinement
+and, ultimately, its monotonicity consequence.
+
+### Characteristic-two obstruction and minimum-layer descent
+
+The anticipated cyclotomic norm calculation is unnecessary for the explicit
+square family. Normalizing both short-to-long blocks as cyclic covers makes
+each Gram matrix equal to `t I`, and the short-short block becomes
+`H^2 = (a-1) I + J - C_r`, where `r=a(a-1)+3`.
+
+Every zero-diagonal self-intertwiner of an odd cycle is translation invariant,
+so `H` is a circulant with binary connection function `s : ZMod r -> Nat`.
+Its ordered differences occur once at every residue except `0,+1,-1`.
+Modulo two, Frobenius sends its square to the doubled support. Doubling
+permutes `ZMod r`, so the two sides have support cardinalities `a` and
+`r-3=a(a-1)`, an impossibility for `a>=4`. This uniform argument is
+kernel-checked in `Erdos85CyclicParityObstruction`; translation rigidity is
+kernel-checked in `Erdos85CycleCoverRigidity`.
+
+The block calculation has a broader structural consequence. Restrict to the
+union of all minimum-length defect cycles. Every excursion to a longer cycle
+is a cyclic cover with reverse degree one, hence has scalar Gram contribution.
+If `b` is the degree retained inside the minimum layer, restriction gives
+`H^2 = (b-1) I + J - D_min`. Thus the minimum layer is itself a smaller
+second-boundary object of order `b(b-1)+3`; if a longer component exists,
+irreducibility gives `b<d`. The general matrix step is kernel-checked as
+`minimumLayer_square_descent` in `Erdos85SquareFamilyDescent`.
+
+Consequently the remaining obstruction is no longer an enumeration of
+quotient survivors. Infinite descent reduces a hypothetical graph to the
+terminal case in which all defect cycles have the same odd length. For `m`
+cycles of length `r`, the symmetric quotient satisfies
+`Q 1 = d 1`, `Q^2 = (d-3) I + r J`, and `mr=d(d-1)+3`.
+The associated matrix-valued cyclic difference family is now the central
+unresolved classification problem.
+
+### Equal-cycle binary block rigidity
+
+One subtlety in the terminal case is essential: a rectangular block commuting
+with an odd-cycle adjacency matrix need not be circulant over a general
+coefficient ring. Its discrete d'Alembert form is
+`B(x,y)=f(y-x)+g(y+x)`, so it may contain both a travelling and a reflected
+wave. Consequently a naive `m`-dimensional Fourier restriction, and the claim
+that odd `m` immediately forces a cyclotomic square, are not valid before the
+binary structure is used.
+
+For a `0/1` block, however, the two waves cannot both be nonconstant. Under
+the odd-cycle coordinate bijection `(x,y) -> (y-x,y+x)`, all sums
+`f(u)+g(v)` are binary. If both functions varied, a two-by-two additive
+rectangle would have to be one of the crossed binary patterns, contradicting
+the rectangle identity. Thus every nonzero equal-cycle block is either
+circulant or reverse-circulant. The additive-rectangle dichotomy and the
+orientation conclusion from a d'Alembert decomposition are kernel-checked in
+`Erdos85BinaryCycleIntertwiner`.
+
+The remaining step is to formalize the d'Alembert decomposition from the
+cycle recurrence and then exploit compatibility of the block orientations.
+Products occurring in an off-diagonal square block partition the all-ones
+matrix. A nonempty circulant support intersects every nonempty
+reverse-circulant support when the cycle order is odd, so all nonzero
+two-block products in a fixed off-diagonal equation must have the same
+orientation. This converts the terminal object into a signed quotient / gain
+graph with a strong same-sign two-walk condition. It is the correct global
+replacement for the invalid assumption that all blocks can immediately be
+oriented circulantly.
+
+The d'Alembert decomposition itself is now also kernel-checked: invariance of
+a function on `ZMod r` under translation by two implies constancy for odd
+`r`, and the cycle rectangle recurrence then integrates to `f(u)+g(v)`.
+Together with the binary rectangle lemma this gives the complete abstract
+binary block rigidity theorem, modulo only the routine coordinate bridge from
+the graph block recurrence.
+
+### Triangle terminal case and divisible design graphs
+
+A further literature search identified the terminal case `r=3` with a
+standard object. Since a 3-cycle makes every two distinct vertices in one
+defect class have zero common neighbours, while vertices in different classes
+have one, the graph is a divisible design graph with parameters
+
+```text
+(v,k,lambda1,lambda2,m,n)
+= (d^2-d+3, d, 0, 1, (d^2-d+3)/3, 3).
+```
+
+Panasenko--Shalaginov's classification through 39 vertices explicitly
+contains `(15,4,0,1,5,3)`, the line graph of the Petersen graph. Thus the
+triangle terminal case is genuinely realizable at `d=4`; a blanket terminal
+nonexistence claim would be false. Their table does not contain the candidate
+`(33,6,0,1,11,3)`, agreeing with the independent degree-six obstruction in
+this development. The DDG feasibility and construction literature is now a
+necessary input for deciding whether this parameter family can persist for
+large even `d`, and for understanding what replacement/extension operation is
+available when it does.
+
+The standard DDG trace condition initially says that `d` or `d-3` must be a
+square, but the zero diagonal of the component quotient is much stronger here.
+For a triangle row the local excess is zero, so equality of the first and
+second row moments forces every quotient entry to be binary. Handshake parity
+then makes every diagonal entry zero. Thus the quotient has trace zero and
+
+```text
+Q^2 = (d-3) I + 3 J.
+```
+
+If `d-3` were nonsquare, its conjugate eigenvalues would have equal
+multiplicity and the quotient trace would be the uncancelled principal
+eigenvalue `d`, contradiction. Hence `d-3=t^2`. Trace zero then gives `t|d`;
+as `d=t^2+3`, one has `t|3`, leaving only `d=4` and `d=12`. Therefore no
+triangle terminal exists at any even degree `d>=14`. The binary-moment lemma
+and terminal arithmetic `d=4 or d=12` are kernel-checked in
+`Erdos85TriangleTerminal`. The graph-facing spectral bridge remains to be
+packaged, but the uniform mathematical classification is now clear.
+
+The first graph-facing half is now packaged as well. Lean proves directly
+from detailed balance, the quotient square equation, and the row sum that if
+all defect components have order three then every quotient entry is at most
+one. Combining this with the already checked handshake parity proves every
+quotient diagonal entry is zero. These are
+`secondOrder_triangleComponents_quotient_le_one` and
+`secondOrder_triangleComponents_quotient_diagonal_zero` in
+`Erdos85TriangleTerminal`. What remains for the fully checked `d=4 or 12`
+theorem is only the rational spectral-conjugacy bridge from
+`Q^2=(d-3)I+3J` and `trace Q=0`.
+
+That spectral bridge is now available in parameter-uniform form. For every
+nonsquare natural `c`, Lean proves that a rational matrix satisfying `M^2=cI`
+has trace zero; equivalently its characteristic polynomial is a power of the
+irreducible quadratic `X^2-c`. The endomorphism version and an abstract
+complementary-subspace theorem show that zero total trace plus nonzero trace
+on the constant space force `c` to be a square. These results are
+kernel-checked in `Erdos85QuadraticTrace`. Instantiating its projection with
+the all-ones quotient projection will complete the fully graph-facing
+triangle classification.
+
+The instantiation is now complete. `Erdos85TriangleTerminal` constructs the
+normalized all-ones projection, proves its range and kernel trace identities,
+casts the natural component quotient to `ℚ`, derives symmetry, both constant
+sum identities, trace zero and the full square equation, and proves that the
+zero-sum kernel is nontrivial from the exact component count. The resulting
+graph-facing theorem is
+`secondOrder_triangleComponents_degree_eq_four_or_twelve`.
+
+### A uniform route through the equal-cycle orientation system
+
+The signed orientation quotient appears substantially more rigid once the
+*multiplicity* of two-step component paths is used. A pair of base components
+cannot have a unique nonzero intermediate component. If it did, two regular
+binary cyclic blocks of degrees `a,b` would have product `J_r`, so their
+connection sets would factor `ZMod r` uniquely and `ab=r`. The `C4` bound
+makes both connection sets Sidon: their nonzero ordered differences are all
+distinct. Unique factorization also makes the two difference sets disjoint,
+and hence
+
+```text
+a(a-1) + b(b-1) <= r-1 = ab-1.
+```
+
+This is impossible for `a,b>=2`; if one degree is one, the other is `r`,
+which itself violates the Sidon bound for `r>=3`. Thus every pair of distinct
+base components has at least two nonzero two-step intermediates.
+
+The additive-combinatorial bridge is now kernel-checked in
+`Erdos85UniqueSidonFactor`.  For finite connection sets `A,B` in an arbitrary
+finite additive commutative group, it defines the ordered nonzero difference
+sets, proves their exact sizes under the Sidon condition, proves that unique
+`A+B` representation makes the two difference sets disjoint, and derives
+nonexistence from `|A||B|=|Z|`.  The remaining graph-facing step is to extract
+these connection sets from the two same-orientation cyclic blocks and derive
+Sidonicity and unique representation from `C4`-freeness and the single
+intermediate block-product equation.
+
+That bridge has now been strengthened to the graph-facing circulant-block
+form.  The checked theorem
+`isOrderedSidon_of_c4Free_circulantBlock` turns a repeated ordered difference
+directly into two distinct common neighbours of two distinct parametrized
+vertices, hence a forbidden `C4`.  The theorem
+`unique_pair_sums_of_convolution_card_eq_one` converts entrywise convolution
+count one into unique additive representation.  Combining them,
+`no_circulant_block_convolution_one` rules out two binary circulant blocks in
+a `C4`-free graph whose convolution is identically one, uniformly over every
+finite additive commutative coordinate group of order at least three.
+
+Thus the only remaining boundary-specific work for the unique-intermediate
+claim is bookkeeping: obtain the three common `ZMod r` parametrizations and
+the convolution-cardinality equation from the actual component block of
+`A^2=(d-1)I+J-D`.  No additional combinatorial or arithmetic case analysis is
+needed.
+
+The orientation bookkeeping has also now been made uniform and checked.
+`binary_oddCycleIntertwiner_orientation` proves directly that every binary
+matrix intertwining two equal odd cycles is circulant or reverse-circulant.
+Its proof constructs the inverse-of-two coordinate change and feeds the
+cycle recurrence into the discrete d'Alembert decomposition; it no longer
+requires an externally assumed decomposition.  The graph wrapper
+`graph_equalOddCycleBlock_orientation` obtains that recurrence from `AD=DA`
+and the two cycle parametrizations.  Finally,
+`exists_connectionSet_of_translationInvariantBlock` extracts the actual
+finite cyclic connection set from the circulant branch.  Consequently the
+remaining instantiation only needs (i) coordinate reflection in the common
+reverse/reverse branch and (ii) the entrywise isolation of the unique
+intermediate summand in the global square equation.
+
+Both pieces have now advanced.  Four checked reflection identities show
+exactly how source or target negation toggles circulant and
+reverse-circulant blocks, so the two blocks can be normalized successively
+without an orientation case surviving in the final statement.  More
+substantively, the new graph-facing theorem
+`secondOrder_unique_common_neighbor_in_only_intermediate` is checked in
+`Erdos85UniqueIntermediateBoundary`: for distinct defect components `c,e`,
+the off-diagonal square identity gives a unique common `G`-neighbor; if `k`
+is the only quotient component with positive entries on both sides, that
+neighbor lies in `k`.  The proof uses quotient equitability to exclude every
+other component, not an enumeration of vertices or cycles.
+
+What remains to finish the unique-intermediate contradiction is now only the
+final coordinate assembly: choose the three equal-cycle parametrizations,
+normalize their two block orientations by the checked reflections, extract
+the two connection sets, transport the unique middle vertex to a unique
+middle coordinate, and invoke `no_unique_middle_circulant_blocks`.
+
+Together with the already proved fact that all contributions to a fixed
+off-diagonal square block have the same orientation, this initially suggested
+that the signed support graph might be switching-equivalent either to the
+all-positive (circulant) signing or to the all-negative (reverse-circulant)
+signing. **That purely signed inference is false.** A signed windmill can have
+different triangle signs while satisfying the same-sign condition whenever a
+two-walk exists, and duplicating each base vertex makes every pair have at
+least two intermediates without repairing the imbalance. Thus multiplicity
+of intermediates, by itself, is insufficient. Any valid switching theorem
+must use the full quotient weights/Sidon geometry, not merely signed support.
+The two branches below remain useful conditional obstructions, but they are
+not yet an exhaustive dichotomy.
+
+The two uniform terminal branches then have sharp algebraic obstructions.
+
+* In the all-reverse branch, every diagonal block is zero: a
+  reverse-circulant block has form `s(x+y)`, and its diagonal values sample
+  every residue because doubling is invertible for odd `r`. Over
+  characteristic two, evaluating the block group-algebra matrix at a
+  nontrivial `r`-th root `zeta` gives an odd-order symmetric zero-diagonal
+  (hence alternating) matrix `S(zeta)`. It is singular, while the square
+  identity gives
+  `S(zeta) S(zeta^-1) = (1+zeta+zeta^-1) I`. Therefore every nontrivial
+  `r`-th root satisfies `1+zeta+zeta^-1=0`, so it has order three. This forces
+  `r=3` and rules out the reverse branch uniformly for `r>=5`.
+
+* In the all-circulant branch, Fourier evaluation over characteristic zero
+  gives a Hermitian `m x m` matrix, where
+  `m=(d(d-1)+3)/r` is odd, whose square is
+  `(d-1-zeta-zeta^-1)I`. Taking determinants forces the real cyclotomic norm
+  factor
+  `P_s(d-1)` to be a square, where `r=2s+1` and
+  `P_0=1`, `P_1=x+1`, `P_s=x P_{s-1}-P_{s-2}` (equivalently
+  `P_s(x)=U_s(x/2)+U_{s-1}(x/2)`). Computation over all admissible parameters
+  through `d=200`, and more broadly for odd `x`, finds no square for
+  `x>=3,s>=2`. The remaining mathematical target is a uniform nonsquare
+  theorem for this Lehmer/Chebyshev sequence, preferably an elementary
+square-sandwich or Jacobi-symbol proof. This is now the precise arithmetic
+bottleneck rather than a family of cycle-length cases.
+
+## Recovery and aggregate difference packing (2026-08-05)
+
+After the external-volume interruption, the orientation-free final assembly
+in `Erdos85UniqueIntermediateBoundary` was checked directly.  The theorem
+`secondOrder_no_only_intermediate_of_equalOddCycleParams` passes Lean: all
+four apparent orientation combinations are absorbed by coordinate
+reflections, and the unique-intermediate Sidon obstruction therefore holds
+without an orientation hypothesis.  The earlier long wait was an I/O failure,
+not an elaboration problem.
+
+The more general direction is now formalized in
+`Erdos85DifferencePacking`.  Fix one cyclic source component and normalize
+each of an arbitrary family of target blocks independently to circulant
+coordinates.  If two target connection sets shared a nonzero ordered
+difference, the corresponding two source vertices would have two common
+neighbours lying in distinct target components, contradicting `C4`-freeness.
+Consequently all target ordered-difference sets are pairwise disjoint.  Since
+each block is Sidon, the checked aggregate inequality is
+
+`sum_k |A_k| (|A_k|-1) <= r-1`.
+
+Combining this packing with the minimum-component local-excess equality
+`sum_k q_ik(q_ik-1)=r-3` leaves exactly two unused nonzero residues.  The
+abstract two-hole conclusion is also checked in Lean as
+`card_unused_orderedDifferences_eq_two`.  This avoids enumerating quotient
+rows: the next target is to identify how the two-hole complements for
+different source components transform under the block orientations and the
+off-diagonal square equations.  That linked difference-family geometry is
+the leading route to a global mixed-orientation obstruction.
+
+The two holes are now identified, not merely counted.  In actual defect-cycle
+coordinates, displacement `1` cannot occur in any target connection set's
+ordered differences: it would give consecutive defect vertices a common
+`G`-neighbour, contradicting the zero entry prescribed by the global square
+identity.  Negation symmetry gives the same for `-1`, and the two-hole count
+then proves that the leave is exactly `{1,-1}`.  The checked graph-facing
+theorem is
+`unusedOrderedDifferences_eq_one_negOne_of_secondOrder_cycleBlocks`.
+
+Undirected diagonal blocks give another uniform restriction.  A circulant
+self-block has a negation-closed support.  Any negation-closed ordered Sidon
+set contains at most one inverse pair: the pairs `(a,b)` and `(-b,-a)` have
+the same ordered difference.  A reverse-circulant self-block on an odd cycle
+is zero by looplessness.  Hence every diagonal entry of the equal-odd-cycle
+component quotient is at most two; this is checked as
+`secondOrder_equalOddCycleComponent_diagonal_le_two`.
+
+Finally, `Erdos85EqualCycleTerminal` now packages the complementary spectral
+bound.  For a rational quotient satisfying
+`Q^2=(d-3)I+kJ` with row and column sum `d`, if `d-3` is nonsquare then the
+zero-sum restriction has trace zero, so `trace(Q)=d`.  Combining this with
+the diagonal bound gives `d <= 2m`, where `m` is the number of common-length
+components.  Since `mr=d(d-1)+3`, this bounds the common cycle length by
+roughly `2d` in the nonsquare branch without enumerating quotient rows.
+
+The design-theory search found the right general vocabulary (cyclic
+difference packings and linked systems of designs), but no theorem that
+directly rules out this linked variable-block-size system with leave a cycle.
+The classical excess/defect-two literature uses related commuting-cycle
+matrix equations, but its standard orders (`d^2+3` or `d^2-1`) and equations
+differ from the present `d(d-1)+3` boundary.  It supplies useful spectral
+templates, not a ready-made resolution.
+
+The off-diagonal normalization has now been isolated abstractly in
+`Erdos85TaggedFactorization`.  Once a fixed source--target pair is oriented,
+the intermediate channels produce a dependent tagged type
+`Sigma k, A_k x B_k`; unique common neighbours identify its addition map
+bijectively with `ZMod r`.  The checked consequences are
+
+* `sum_k |A_k||B_k|=r`;
+* each channel addition map is injective;
+* sumsets from distinct tags are disjoint; and
+* within each tag, the two ordered-difference sets are disjoint.
+
+For the graph-facing application, all active channels can indeed be put in
+this form simultaneously.  Each two-block product is circulant or
+reverse-circulant.  Opposite product orientations cannot coexist in the
+same binary off-diagonal square block.  Reflect the target once if their
+common product orientation is reverse, then reflect each intermediate cycle
+as necessary to make its first block circulant; the second block becomes
+circulant automatically.  The remaining formalization task is to package
+this normalization together with the unique common-neighbour theorem.
+
+The relevant additive-design terminology is close to generalized/strong
+external difference families, but the present object is more rigid and
+linked: every row is an internal cyclic difference packing with leave
+`{+/-1}`, while every pair of rows gives a unique tagged sum factorization.
+No searched result directly classifies that combination.
+### Tagged boundary and per-channel leave bound (verified 2026-08-05)
+
+The graph-facing coordinate bridge is now formalized in
+`Proofs/Erdos85TaggedBoundary.lean`.  For two distinct defect components,
+after parametrizing every component by the common cyclic coordinate type,
+every source--target coordinate pair has a unique intermediate
+`(component, coordinate)` tag.  The proof uses the off-diagonal entry of the
+second-order square identity and component support disjointness; the file
+passes Lean.
+
+In `Proofs/Erdos85TaggedFactorization.lean`, unique tagged sums together with
+the canonical leave `{1,-1}` gives, in every channel `k`,
+
+`|Diff(A_k)| + |Diff(B_k)| <= r - 3`,
+
+and hence for Sidon channel supports
+
+`a_k(a_k-1) + b_k(b_k-1) <= r - 3`.
+
+These statements are Lean-verified.  The cardinal inequality alone is not
+yet terminal: each row already has total quadratic excess `r-3`, so the
+real additional content is the *setwise disjointness* of the two channel
+difference sets.  The next useful abstraction should retain that geometry,
+most naturally as a group-ring/Fourier identity after orientation
+normalization, rather than reduce immediately to scalar inequalities.
+
+### Symmetric difference-array breakthrough
+
+There is a stronger way to retain the setwise geometry.  Write `D_ij` for
+the ordered-difference set of the cyclic connection set in block `(i,j)`.
+The canonical leave says that every row partitions
+
+`R = ZMod r \ {0,1,-1}`.
+
+The tagged off-diagonal uniqueness says that, for fixed target `j`, the
+sets `D_ij` belonging to different sources are pairwise disjoint; the
+quotient square equation gives the matching total cardinality `r-3`, so
+every column partitions `R` as well.  Transposing a graph block only negates
+or reflects its connection set, neither of which changes its *ordered*
+difference set.  Hence `D_ij=D_ji`.
+
+Fix `delta in R`.  Unique occurrence in each row defines a permutation
+`pi_delta` by `delta in D_(i,pi_delta(i))`.  Symmetry and row uniqueness give
+`pi_delta^2=1`.  The number `m` of equal odd defect components is odd, so
+this involution has a fixed point.  Therefore every allowed difference
+occurs in some diagonal block.  It follows that
+
+`r-3 <= sum_i |D_ii|`.
+
+In the nonsquare branch, the trace identity and the diagonal bound sharpen
+to exactly `d/2` diagonal quotient entries equal to two.  Each corresponding
+Sidon self-block has exactly two ordered differences, and the other
+diagonal blocks have none.  Consequently
+
+`r-3 <= d`, i.e. `r <= d+3`.
+
+The abstract involution argument and its cardinal corollary are now
+Lean-verified in `Proofs/Erdos85DifferenceArray.lean`; the exact count of
+diagonal-two entries is Lean-verified in
+`Proofs/Erdos85EqualCycleTerminal.lean`.  The remaining work is the
+graph-facing construction of the symmetric array, especially making the
+transpose-invariance and column uniqueness independent of coordinate
+reflection choices.  This is a general structural reduction, not a cycle
+length enumeration.
+
+### Orientation-free graph assembly completed
+
+The previously remaining graph construction is now Lean-verified.  The
+canonical support of a block is defined intrinsically as its zero-row
+support.  A circulant transpose negates this support, while a
+reverse-circulant transpose preserves it; ordered differences are invariant
+under negation.  Thus the difference array is symmetric without any global
+switching or balanced-sign hypothesis.
+
+The same zero-row device gives orientation-free graph theorems asserting
+that every block support is Sidon, omits difference `1`, and that distinct
+targets out of a common source have disjoint ordered-difference sets.  The
+four local orientation combinations are absorbed by reflecting only the
+relevant target parametrization.  These facts feed a new purely
+combinatorial packing lemma and prove the canonical leave `{1,-1}` directly
+for the intrinsic graph supports.
+
+Files added or strengthened:
+
+* `Erdos85ZeroRowDifference.lean`: reflection/Sidon/forbidden-step/pairwise
+  packing and intrinsic graph canonical leave;
+* `Erdos85DifferenceArray.lean`: full abstract terminal theorem and diagonal
+  trace-to-difference-mass lemma;
+* `Erdos85DifferenceArrayBoundary.lean`: graph-facing assembly proving
+  `r <= d+3` from the standard equal-cycle quotient excess, odd component
+  count, and diagonal mass, plus the exact equality between zero-row support
+  cardinality and the component quotient entry.
+
+All targeted files build successfully.  Consequently the tagged
+factorization is no longer needed merely to establish `r<=d+3`; its stronger
+sumset information remains available for the eventual contradiction.
+
+There is also a further parity refinement not yet formalized.  For each
+allowed difference `delta`, the induced permutation of components is an
+involution, hence has an odd number of fixed points.  Since `delta` and
+`-delta` induce the same involution and each nonzero diagonal block accounts
+for one negative pair, the exact diagonal count predicts
+
+`d/2 == (r-3)/2 (mod 2)`, equivalently `r == d+3 (mod 4)`.
+
+This congruence alone does not eliminate the remaining divisors of
+`d(d-1)+3`; computational inspection confirms that infinitely patterned
+arithmetic candidates remain.  The terminal step must therefore exploit
+more of the involution factorization or the tagged sumsets, rather than only
+the scalar bound and divisibility.
+
+### Fully assembled nonsquare graph theorem
+
+The quotient bridge is now complete.  `Erdos85DifferenceArrayBoundary.lean`
+proves:
+
+* zero-row support cardinality equals the corresponding component quotient
+  entry;
+* the equal-order rational quotient is symmetric and satisfies
+  `Q^2=(d-3)I+rJ`;
+* when `d-3` is nonsquare, its trace is `d`;
+* the local quotient square identity gives every row's exact excess `r-3`;
+* even diagonal quotient entries, the bound `q_ii<=2`, Sidonicity, and trace
+  `d` give total diagonal ordered-difference mass exactly `d`.
+
+These are assembled in the checked theorem
+`secondOrder_equalOddCycle_length_le_degree_add_three_of_nonsquare`, which
+starts from the actual graph boundary hypotheses and a parametrization of
+all common odd defect cycles and concludes `r<=d+3`.  No anonymous excess,
+diagonal-mass, orientation, or quotient-trace assumptions remain.
+
+A literature search located partitioned difference families, starters,
+Howell designs, and frame difference families as neighboring objects.  Their
+broad existence theory is evidence that the symmetric difference array by
+itself should not be expected to contradict existence.  The next terminal
+argument should combine its involution factorization with the rigid quotient
+square equation or with the unique tagged sumsets.
+
+### Fourier norm polynomial: structural identification and modular tests
+
+Write `r=2s+1`, `x=d-1`, and define
+
+`P_0=1`, `P_1=x+1`, `P_s=x P_{s-1}-P_{s-2}`.
+
+This is the dilated Chebyshev polynomial of the fourth kind,
+
+`P_s(x)=W_s(x/2)=sin((2s+1)theta/2)/sin(theta/2)` for `x=2 cos(theta)`.
+
+Equivalently it is the odd Dirichlet-kernel polynomial and has the real
+cyclotomic factorization
+
+`P_s(x)=prod_{e | (2s+1), e>1} Psi_e(x)`.
+
+The paper Hone--Jeffery--Selcoe, *On a Family of Sequences Related to
+Chebyshev Polynomials*, J. Integer Sequences 21 (2018), Article 18.7.2,
+studies exactly these polynomials (their `s_k(n)`).  It supplies the Lehmer
+sequence interpretation, cyclotomic factorizations, and the useful exact
+floor formula
+
+`P_s(x)=floor(lambda^(s+1)/(lambda-1))`,
+
+where `lambda=(x+sqrt(x^2-4))/2`, for `x>5/2`.  It does not state the
+perfect-square nonexistence needed here.
+
+Two special-value congruences are particularly clean:
+
+* `P_s(x) = 2s+1 (mod x-2)`, because `P_s(2)=2s+1`;
+* `P_s(x) = (-1)^s (mod x+2)`, because `P_s(-2)=(-1)^s`.
+
+The second formula corrects an earlier exploratory calculation which had
+incorrectly inserted a factor `2s+1` at `x=-2`.  Also `P_s(x)` modulo `x`
+cycles as `1,1,-1,-1` with period four.  Consequently, if `x` is odd and
+`P_s(x)` is a square, elementary nonresiduacity of `-1` gives:
+
+* for odd `s`, necessarily `x=3 (mod 4)`;
+* for `s=2 (mod 4)`, necessarily `x=1 (mod 4)`;
+* `s=3 (mod 4)` is impossible (use `x+2` when `x=1 mod 4`, and `x`
+  when `x=3 mod 4`).
+
+Thus the real-cyclotomic norm is automatically nonsquare when
+`r=7 (mod 8)`.  These congruences are uniform, but the remaining residue
+classes occur among the admissible divisors `r | x^2+x+3`, so they do not
+by themselves close the argument.
+
+The difference-array parity refinement admits a useful arithmetic
+parameterization.  If
+
+`r = d+3-4a`,
+
+then `a` is exactly half the surplus number of diagonal anchors (or the sum
+of `(f_delta-1)/2` over representatives of the pairs `{delta,-delta}`).
+The divisibility `r | d(d-1)+3` becomes
+
+`r | 16a^2-28a+15`.
+
+In particular `a=1` is impossible (for `r>=5`) and `a=0` forces `r | 15`.
+An earlier scratch calculation incorrectly factored this remainder as
+`(4a-3)(4a-5)`; the displayed quadratic is the corrected identity.  A terminal
+combinatorial bound `a<=1` would therefore reduce the whole branch to the
+two tiny divisors `r=5,15`; obtaining such a bound, rather than enumerating
+quotient rows, is now a promising alternative to the square-value theorem.
+
+### Prime-order Fourier correction and the order-five branch
+
+For composite `r`, nonsquareness of the total Dirichlet-kernel value
+`P_{(r-1)/2}(x)` is not by itself enough: that value is a product of the
+norms belonging to all orders dividing `r`, whereas Fourier inversion would
+need control of the relevant character orbit.  The correct reduction is
+prime-order.  If `p | r` is prime, evaluate on characters of order `p`.
+Nonsquareness of
+
+`P_{(p-1)/2}(x) = Norm(x-zeta_p-zeta_p^{-1})`
+
+forces trace zero throughout that Galois orbit.  The diagonal-anchor
+multiset is then uniform after projection `Z/r -> Z/p`, so `p | d`.  Since
+also `p | r | d(d-1)+3`, this forces `p | 3`.  Therefore any prime divisor
+`p>=5` for which this norm is proved nonsquare eliminates the entire cycle
+parameter `r`.
+
+The first case is completely elementary and Lean-verified in
+`Erdos85DifferenceArrayArithmetic`:
+
+`P_2(x)=x^2+x-1`
+
+lies strictly between `x^2` and `(x+1)^2` for `x>=2`.  Thus every branch
+with `5 | r` is eliminated once the prime-order Fourier bridge is
+formalized.
+
+McDaniel's *Square Lehmer Numbers* (Colloq. Math. 66 (1993), 85--93)
+studies the representation
+
+`P_s(x)=U_{2s+1}(sqrt(x+2),1)`.
+
+Its strongest square classification assumes congruence classes of the
+Lehmer parameter `Q` not containing our `Q=1` first-sequence case; the paper
+explicitly notes that the remaining parameter classes require a different
+approach.  It is therefore useful methodology, but not a theorem that can
+be cited to close our norm problem.
+
+The primitive order-nine norm is also uniformly nonsquare.  For `x=2v+3`,
+
+`P_4(x)=x^4+x^3-3x^2-2x+1`
+
+has the exact form
+
+`A^2+B`, where `A=4v^2+13v+8`, `B=7v^2+22v+12`,
+
+and `(A+1)^2-P_4(x)=v^2+4v+5>0`.  Hence it lies strictly between
+consecutive squares.  This sandwich and its identification with `P_4` are
+Lean-verified in `Erdos85DifferenceArrayArithmetic`.
+
+This closes every `9 | r` branch at the arithmetic level.  Primitive
+order-nine trace vanishing makes the projected anchor counts constant on
+each residue class modulo three, hence `3 | d`.  If `d` is a square, then
+`9 | d`; if `d` is nonsquare, order-three trace vanishing makes the full
+mod-nine projection uniform and again gives `9 | d`.  But then
+`d(d-1)+3 = 3 (mod 9)`, contradicting `9 | r | d(d-1)+3`.  The final
+dichotomy is Lean-verified as `orderNine_boundary_contradiction`; the
+remaining formal task is the Fourier-to-uniformity bridge.
+
+There was also a tempting proposed global-orientation propagation from the
+nonzero diagonal anchors.  The local theorem
+`oddCycle_no_disjoint_opposite_orientations` does prove that all two-step
+contributions to a fixed source--target block have one product orientation.
+However, an abstract signed-support search produces odd unbalanced sign
+systems satisfying this local condition even in the presence of loops.
+Thus a global all-circulant normalization does not follow from that local
+lemma alone; any such argument must use the numerical quotient equation,
+not just support and orientation consistency.
+
+### Terminal prime-frequency dichotomy: the square branch also contradicts parity
+
+The apparent need for a uniform Lehmer nonsquare theorem can be removed.
+Fix a prime `p | r` and a primitive `p`-th root `zeta`, and put
+
+`lambda = x-zeta-zeta^-1`, with `x=d-1`.
+
+Let `c_h` be the number of diagonal-anchor support elements whose cyclic
+coordinate projects to `h in Z/p`, and `H(zeta)=sum_h c_h zeta^h`.  The
+mixed frequency-pair operator has square `lambda I` and trace `2H(zeta)`.
+
+* If `lambda` is nonsquare in the real cyclotomic field, its trace is zero.
+  Prime cyclotomic irreducibility makes all `c_h` equal, hence `p | d`;
+  together with `p | d(d-1)+3`, this forces `p=3`.
+* If `lambda` is a square, diagonalization gives
+  `2H=2u sqrt(lambda)` for an integer `u` (the half-difference of the two
+  eigenvalue multiplicities).  Hence
+
+  `H(zeta)^2 = u^2 (x-zeta-zeta^-1)`.
+
+  Applying prime cyclotomic irreducibility to this Laurent-polynomial
+  identity says that the cyclic convolution `c*c` is constant at all
+  residues other than `0,+1,-1`.
+
+The symmetric difference array supplies an incompatible mod-two pattern.
+For a projected ordered difference `b`, the number of its lifts in
+`Z/r \ {0,+1,-1}` is odd unless `b` is `0,+1,-1`, when it is even.  Every
+diagonal two-set is `{h,-h}` and has ordered differences `{2h,-2h}`.
+Since doubling is invertible modulo odd `p`, this gives
+
+`c_h odd  <=>  h notin {0,+1/2,-1/2}`.
+
+Write `b_h` for this zero-one parity pattern.  Cyclic convolution modulo
+four depends only on parity:
+
+`(c*c)(t) = (b*b)(t) (mod 4)`.
+
+Indeed `c=b+2e`, and the two cross-convolutions agree, so their contribution
+is a multiple of four.  If `E={0,+a,-a}` with `a=1/2`, then
+
+`(b*b)(t)=p-6+#{(e,f) in E^2 : e+f=t}`.
+
+Thus at `t=a` (which is not `0,+1,-1`) the value is `p-4`, while at any
+`g` outside `{0,+a,-a,+1,-1}` it is `p-6`.  They differ by two modulo four,
+contradicting the convolution constancy.  Such `g` exists for every
+`p>=7` because the excluded set has five elements.
+
+Consequently every prime `p>=7` divisor of `r` is impossible in both the
+square and nonsquare cyclotomic branches.  Prime five is handled by the
+verified order-five norm sandwich, and powers of three by the verified
+order-nine argument.  This is now the leading terminal route for the whole
+equal odd-cycle branch; unlike the earlier norm plan, it uses the full
+difference-array parity and requires no unproved classification of square
+Lehmer values.
+# 2026-08-05 recovery checkpoint: mod-four branch verified
+
+The generic parity engine for the square-cyclotomic branch is now checked by
+Lean in `Erdos85CyclicConvolutionParity.lean`.  In particular, on any finite
+abelian group,
+
+```text
+c = b + 2e  ==>  (c*c)(t) = (b*b)(t) (mod 4).
+```
+
+The terminal wrapper is also formalized: constancy of `c*c` at two residues
+is impossible if the corresponding values of `b*b` differ by two modulo
+four.  Consequently the remaining `p >= 7` task is cleanly separated into
+two structural lemmas: the projected-anchor parity pattern is the complement
+of `{0, +/-1/2}`, and that three-hole pattern has convolution values `p-4`
+and `p-6` at suitable nonspecial residues.  No enumeration by prime is
+needed.
+
+The entire finite cyclic calculation is now formalized in
+`Erdos85PrimeConvolutionObstruction.lean`.  For every modulus `p >= 7` and
+every `a` with `2a=1`, Lean verifies:
+
+* `{0,a,-a}` has three elements;
+* its indicator convolution is `2` at `a`;
+* a residue outside the five-element sumset `{0,a,-a,1,-1}` exists;
+* its indicator convolution is `0` there; and
+* therefore no integral multiplicity with the complementary parity pattern
+  can have constant self-convolution at these nonspecial residues.
+
+`Erdos85ProjectedMultiplicityParity.lean` now supplies the next bridge in an
+abstract, reusable form.  An odd-cardinality-fiber projection preserves a
+pulled-back parity pattern, and the resulting natural multiplicity is
+automatically written as `b+2e`.  Its final theorem reduces the full square
+branch to exactly three graph-facing inputs: odd quotient fibers, the base
+anchor parity pattern, and convolution constancy.  Thus no arithmetic or
+mod-four work remains hidden in the graph layer.
+
+## 2026-08-05: parity bridge strengthened and made graph-facing
+
+The earlier thought that exact diagonal coverage was needed was unnecessarily
+restrictive.  For a fixed allowed difference, row uniqueness defines an
+involution on the component indices.  Its non-fixed indices occur in pairs,
+so an odd component set has an **odd number of fixed indices**, not merely at
+least one.  These fixed indices are exactly the diagonal blocks carrying the
+difference.  This survives arbitrary diagonal surplus.
+
+This refinement is now Lean-verified in
+`Erdos85DifferenceArrayParity.lean`, including the iff statement: the
+diagonal occurrence count is odd exactly for differences outside
+`{0,+/-1}`, and is zero for the forbidden differences.
+
+The graph translation is also complete and checked:
+
+* `Erdos85GraphDiagonalAnchor.lean` proves that every diagonal zero-row
+  support is inverse-closed.  The circulant case uses graph symmetry; the
+  reverse-circulant case is zero by odd-cycle looplessness.
+* A support has size at most two and excludes zero, hence `h` lies in it iff
+  its ordered-difference set contains `2h`.
+* `Erdos85GraphAnchorParity.lean` assembles the canonical leave, block
+  disjointness, involution parity, and inverse-pair description to prove the
+  actual graph theorem
+
+```text
+Odd(number of diagonal anchors containing h)
+  <-> 2h notin {0,+/-1}.
+```
+
+Thus the base anchor parity input to the prime projection is no longer a
+conjectural bridge: it is graph-facing Lean code.  The remaining parity-side
+task is only the routine cyclic quotient fiber calculation (odd when `r/p`
+is odd); the genuinely deep outstanding input is Fourier convolution
+constancy in the square branch.
+
+## 2026-08-05: cyclic projection and full conditional graph terminal
+
+The projection subtlety is now handled correctly.  Base parity is not the
+literal pullback of the three-hole pattern: the fiber over each exceptional
+residue contains exactly one forbidden lift.  Since every reduction fiber
+has odd size `r/p`, deleting that unique lift makes precisely the exceptional
+fibers even.
+
+Lean now verifies all parts of this statement:
+
+* `card_projectionFiber_zmod_castHom`: reduction `ZMod r -> ZMod p` has
+  fiber size `r/p`;
+* the three forbidden half-steps map injectively onto the three exceptional
+  quotient residues;
+* projected anchor multiplicity is odd exactly off `{0,+/-1/2}`;
+* this parity pattern produces the integral presentation `c=b+2e`; and
+* together with convolution constancy it contradicts the uniform mod-four
+  obstruction for every `p >= 7`.
+
+The final graph-facing theorem is
+`false_of_graph_projectedAnchor_convolution_constancy` in
+`Erdos85GraphProjectedConvolutionTerminal.lean`.  It discharges every graph,
+difference-array, fiber, parity, and mod-four assumption.  Its sole
+substantive remaining hypothesis is the square-Fourier conclusion that the
+projected anchor self-convolution is constant away from the special
+coefficients.  This sharply identifies the remaining proof bottleneck.

@@ -165,13 +165,23 @@ theorem GadgetAttachmentCompatible.sum_neighbor_degree_sub_one_le
     have hzw : z ≠ w := by simpa using (Finset.mem_sdiff.mp hzu).2
     have hwcommon : w ∈ F.neighborFinset u ∩ F.neighborFinset v := by
       rw [Finset.mem_inter]
-      exact ⟨by simpa [SimpleGraph.mem_neighborFinset] using hu,
-        by simpa [SimpleGraph.mem_neighborFinset] using hv⟩
+      have hwu : F.Adj w u := by
+        simpa [SimpleGraph.mem_neighborFinset] using hu
+      have hwv : F.Adj w v := by
+        simpa [SimpleGraph.mem_neighborFinset] using hv
+      exact ⟨by simpa [SimpleGraph.mem_neighborFinset] using F.adj_symm hwu,
+        by simpa [SimpleGraph.mem_neighborFinset] using F.adj_symm hwv⟩
     have hzcommon : z ∈ F.neighborFinset u ∩ F.neighborFinset v :=
       Finset.mem_inter.mpr ⟨hzu', hzv'⟩
     have htwo : 2 ≤ (F.neighborFinset u ∩ F.neighborFinset v).card := by
-      rw [Finset.two_le_card]
-      exact ⟨w, hwcommon, z, hzcommon, Ne.symm hzw⟩
+      have hsub : {w, z} ⊆ F.neighborFinset u ∩ F.neighborFinset v := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact hwcommon
+        · exact hzcommon
+      rw [← Finset.card_pair (Ne.symm hzw)]
+      exact Finset.card_le_card hsub
     have hbudget := hcompat.2.1 u v huv
     omega
   have hbranch_card : ∀ u ∈ F.neighborFinset w,
@@ -180,8 +190,12 @@ theorem GadgetAttachmentCompatible.sum_neighbor_degree_sub_one_le
     dsimp [branch]
     rw [Finset.card_sdiff]
     have hmem : w ∈ F.neighborFinset u := by
-      simpa [SimpleGraph.mem_neighborFinset] using hu
-    rw [Finset.inter_singleton_eq_singleton.mpr hmem]
+      have hwu : F.Adj w u := by
+        simpa [SimpleGraph.mem_neighborFinset] using hu
+      simpa [SimpleGraph.mem_neighborFinset] using F.adj_symm hwu
+    have hinter : {w} ∩ F.neighborFinset u = {w} :=
+      Finset.inter_eq_left.mpr (by simpa using hmem)
+    rw [hinter]
     simp [F.card_neighborFinset_eq_degree]
   have hunion_sub : (F.neighborFinset w).biUnion branch ⊆
       Finset.univ \ {w} := by
@@ -199,7 +213,9 @@ theorem GadgetAttachmentCompatible.sum_neighbor_degree_sub_one_le
     _ = ((F.neighborFinset w).biUnion branch).card := by
       rw [Finset.card_biUnion hpair]
     _ ≤ (Finset.univ \ {w}).card := Finset.card_le_card hunion_sub
-    _ = Fintype.card W - 1 := by simp
+    _ = Fintype.card W - 1 := by
+      rw [Finset.card_sdiff]
+      simp
 
 /-- Combined old-side and gadget-side hub inequality.  When gadget degrees
 are at most the target `q`, every neighbour of `w` contributes exactly
@@ -217,6 +233,8 @@ theorem GadgetAttachmentCompatible.degree_mul_target_sub_one_le_cards
   have hold := hcompat.sum_neighbor_degree_deficits_le_card
     G F A q hnewDegree w
   have hnew := hcompat.sum_neighbor_degree_sub_one_le G F A w
+  have hW : 1 ≤ Fintype.card W :=
+    Fintype.card_pos_iff.mpr ⟨w⟩
   have heq : (∑ u ∈ F.neighborFinset w,
       ((q - F.degree u) + (F.degree u - 1))) =
       F.degree w * (q - 1) := by
@@ -227,15 +245,22 @@ theorem GadgetAttachmentCompatible.degree_mul_target_sub_one_le_cards
         have huone : 1 ≤ F.degree u := by
           rw [← F.card_neighborFinset_eq_degree]
           exact Finset.one_le_card.mpr ⟨w, by
-            simpa [SimpleGraph.mem_neighborFinset] using hu⟩
+            have hwu : F.Adj w u := by
+              simpa [SimpleGraph.mem_neighborFinset] using hu
+            simpa [SimpleGraph.mem_neighborFinset] using F.adj_symm hwu⟩
         have hule := hdegree u
         omega
       _ = F.degree w * (q - 1) := by
         rw [Finset.sum_const, F.card_neighborFinset_eq_degree]
         simp [Nat.mul_comm]
-  rw [← heq]
-  rw [← Finset.sum_add_distrib]
-  omega
+  calc
+    F.degree w * (q - 1) =
+        (∑ u ∈ F.neighborFinset w, (q - F.degree u)) +
+        (∑ u ∈ F.neighborFinset w, (F.degree u - 1)) := by
+      rw [← heq, Finset.sum_add_distrib]
+    _ ≤ Fintype.card V + (Fintype.card W - 1) :=
+      Nat.add_le_add hold hnew
+    _ = Fintype.card V + Fintype.card W - 1 := by omega
 
 /-- Global form of all mixed compatibility budgets. -/
 theorem GadgetAttachmentCompatible.sum_mixed_budgets_le
