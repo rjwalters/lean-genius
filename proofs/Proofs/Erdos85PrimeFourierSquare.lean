@@ -41,6 +41,16 @@ def primitiveRootCharacter {K : Type*} [Field K] {p : ℕ} [NeZero p] {ζ : K}
     primitiveRootCharacter hζ (i : ZMod p) = ζ ^ i := by
   simp [primitiveRootCharacter]
 
+theorem primitiveRootCharacter_eq_pow_val
+    {K : Type*} [Field K] {p : ℕ} [NeZero p] {ζ : K}
+    (hζ : IsPrimitiveRoot ζ p) (x : ZMod p) :
+    primitiveRootCharacter hζ x = ζ ^ x.val := by
+  calc
+    primitiveRootCharacter hζ x =
+        primitiveRootCharacter hζ (x.val : ZMod p) :=
+      congrArg (primitiveRootCharacter hζ) (ZMod.natCast_rightInverse x).symm
+    _ = ζ ^ x.val := primitiveRootCharacter_natCast hζ x.val
+
 theorem sum_translate_mul_primitiveRootCharacter
     {K : Type*} [Field K] [CharZero K]
     {p : ℕ} [NeZero p] {ζ : K} (hζ : IsPrimitiveRoot ζ p)
