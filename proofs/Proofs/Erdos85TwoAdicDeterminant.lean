@@ -12,6 +12,48 @@ rational square with an odd denominator.
 
 namespace Erdos85
 
+/-- Reduction modulo two detects parity of an integral determinant.  This is
+the first (one invariant-factor) layer of the Smith obstruction. -/
+theorem map_zmodTwo_det_eq_zero_iff_even
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (B : Matrix ι ι ℤ) :
+    (B.map (Int.castRingHom (ZMod 2))).det = 0 ↔ Even B.det := by
+  have hmap : (B.map (Int.castRingHom (ZMod 2))).det =
+      (Int.castRingHom (ZMod 2)) B.det := by
+    simpa using (RingHom.map_det (Int.castRingHom (ZMod 2)) B).symm
+  rw [hmap]
+  change (B.det : ZMod 2) = 0 ↔ Even B.det
+  exact ZMod.intCast_eq_zero_iff_even
+
+/-- If a nonzero integer has even two-adic valuation and is itself even, its
+valuation is at least two.  Thus the determinant is divisible by four. -/
+theorem four_dvd_of_even_padicValNat_two_of_even
+    {b : ℕ} (hb : b ≠ 0) (hval : Even (padicValNat 2 b)) (hbeven : Even b) :
+    4 ∣ b := by
+  have htwo : 2 ∣ b := even_iff_two_dvd.mp hbeven
+  have hone : 1 ≤ padicValNat 2 b :=
+    one_le_padicValNat_of_dvd hb htwo
+  obtain ⟨k, hk⟩ := hval
+  have htwoVal : 2 ≤ padicValNat 2 b := by omega
+  have hpow : 2 ^ 2 ∣ b :=
+    (padicValNat_dvd_iff_le hb).mpr htwoVal
+  norm_num at hpow ⊢
+  exact hpow
+
+/-- A singular reduction modulo two upgrades an even valuation constraint to
+divisibility by four.  This is the graph-independent interface needed by the
+defect-kernel program. -/
+theorem four_dvd_det_natAbs_of_modTwo_singular_of_even_padicVal
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (B : Matrix ι ι ℤ)
+    (hdet : B.det ≠ 0)
+    (hval : Even (padicValNat 2 B.det.natAbs))
+    (hsing : (B.map (Int.castRingHom (ZMod 2))).det = 0) :
+    4 ∣ B.det.natAbs := by
+  apply four_dvd_of_even_padicValNat_two_of_even
+    (Int.natAbs_ne_zero.mpr hdet) hval
+  have hevenInt : Even B.det :=
+    (map_zmodTwo_det_eq_zero_iff_even B).mp hsing
+  exact Int.natAbs_even.mpr hevenInt
+
 /-- If `b n² = c m²` with `c,n` odd, then `v₂(b)` is even.  This is the
 cleared-denominator form needed for an integer equal to an odd rational
 square multiple. -/
@@ -129,5 +171,55 @@ theorem positiveExcess_defect_resolvent_padicVal_two_even
   push_cast [Nat.cast_sub (by omega : e ≤ d),
     Nat.cast_sub (by omega : 3 ≤ d - e)]
   rfl
+
+/-- **Graph-facing Smith base case.**  In the odd-principal-factor strata,
+any nonzero vector in the mod-two kernel of the defect resolvent forces its
+integral determinant to be divisible by four.  Thus a future computation of
+this determinant modulo four immediately closes the stratum. -/
+theorem positiveExcess_defect_resolvent_four_dvd_of_modTwo_singular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hodd : Odd (d - e - 3))
+    (hsing :
+      let B : Matrix V V ℤ :=
+        (d - 1 : ℤ) • (1 : Matrix V V ℤ) -
+          (secondOrderDefectGraph G).adjMatrix ℤ
+      (B.map (Int.castRingHom (ZMod 2))).det = 0) :
+    let B : Matrix V V ℤ :=
+      (d - 1 : ℤ) • (1 : Matrix V V ℤ) -
+        (secondOrderDefectGraph G).adjMatrix ℤ
+    4 ∣ B.det.natAbs := by
+  dsimp only at hsing ⊢
+  let Bz : Matrix V V ℤ :=
+    (d - 1 : ℤ) • (1 : Matrix V V ℤ) -
+      (secondOrderDefectGraph G).adjMatrix ℤ
+  let Bq : Matrix V V ℚ :=
+    (d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+      (secondOrderDefectGraph G).adjMatrix ℚ
+  have hmap : Bz.map (Int.castRingHom ℚ) = Bq := by
+    ext x y
+    simp only [Bz, Bq, Matrix.map_apply, Matrix.sub_apply,
+      Matrix.smul_apply, Matrix.one_apply, SimpleGraph.adjMatrix_apply,
+      smul_eq_mul, Int.coe_castRingHom]
+    split_ifs <;> push_cast <;> ring
+  have hcast : (Bz.det : ℚ) = Bq.det := by
+    rw [Int.cast_det]
+    simpa only [Int.coe_castRingHom] using congrArg Matrix.det hmap
+  have hdetZ : Bz.det ≠ 0 := by
+    intro hz
+    have hdetQ := positiveExcess_scalar_sub_defect_det_ne_zero
+      G hfree hd he hreg hcard
+    apply hdetQ
+    rw [← hcast, hz]
+    norm_num
+  apply four_dvd_det_natAbs_of_modTwo_singular_of_even_padicVal Bz hdetZ
+  · exact positiveExcess_defect_resolvent_padicVal_two_even
+      G hfree hd he hreg hcard hodd
+  · exact hsing
 
 end Erdos85
