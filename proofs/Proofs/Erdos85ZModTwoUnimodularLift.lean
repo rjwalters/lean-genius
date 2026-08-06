@@ -1,5 +1,6 @@
 import Proofs.Erdos85TwoAdicDeterminant
 import Mathlib.LinearAlgebra.Matrix.Transvection
+import Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
 # Unimodular lifts of binary row operations
@@ -127,7 +128,9 @@ theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     (B : Matrix ι ι ℤ) :
     ∃ D : ι → ZMod 2,
-      2 ^ ((Finset.univ.filter fun i => D i = 0).card) ∣ B.det.natAbs := by
+      (Finset.univ.filter fun i => D i = 0).card =
+          Fintype.card ι - (B.map (Int.castRingHom (ZMod 2))).rank ∧
+        2 ^ ((Finset.univ.filter fun i => D i = 0).card) ∣ B.det.natAbs := by
   letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   let Q : Matrix ι ι (ZMod 2) := B.map (Int.castRingHom (ZMod 2))
   obtain ⟨L, L', D, hred⟩ :=
@@ -149,6 +152,28 @@ theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
     simpa only [List.map_map] using
       Matrix.TransvectionStruct.det_toMatrix_prod
         (L'.map liftZModTwoTransvection)
+  have hrank : (Matrix.diagonal D).rank = Q.rank := by
+    rw [← hred]
+    rw [Matrix.rank_mul_eq_left_of_isUnit_det _ _
+      (show IsUnit ((L'.map Matrix.TransvectionStruct.toMatrix).prod.det) by
+        rw [Matrix.TransvectionStruct.det_toMatrix_prod]
+        exact isUnit_one)]
+    rw [Matrix.rank_mul_eq_right_of_isUnit_det _ _
+      (show IsUnit ((L.map Matrix.TransvectionStruct.toMatrix).prod.det) by
+        rw [Matrix.TransvectionStruct.det_toMatrix_prod]
+        exact isUnit_one)]
+  have hnonzero : (Finset.univ.filter fun i => D i ≠ 0).card = Q.rank := by
+    calc
+      _ = Fintype.card {i // D i ≠ 0} :=
+        (Fintype.card_subtype fun i => D i ≠ 0).symm
+      _ = (Matrix.diagonal D).rank := (Matrix.rank_diagonal D).symm
+      _ = Q.rank := hrank
+  have hpartition : S.card +
+      (Finset.univ.filter fun i => D i ≠ 0).card = Fintype.card ι := by
+    simpa [S] using
+      (Finset.card_filter_add_card_filter_not
+        (s := Finset.univ) (fun i => D i = 0))
+  have hcount : S.card = Fintype.card ι - Q.rank := by omega
   have hmap : (U * B * W).map (Int.castRingHom (ZMod 2)) =
       Matrix.diagonal D := by
     rw [Matrix.map_mul, Matrix.map_mul]
@@ -159,7 +184,8 @@ theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
         (L'.map Matrix.TransvectionStruct.toMatrix).prod by
       exact map_liftZModTwoTransvection_prod L']
     exact hred
-  refine ⟨D, ?_⟩
+  refine ⟨D, ?_, ?_⟩
+  · exact hcount
   change 2 ^ S.card ∣ B.det.natAbs
   apply pow_card_dvd_det_natAbs_of_two_sided_unimodular_even_rows
     B U W S (hUdet ▸ isUnit_one) (hWdet ▸ isUnit_one)
@@ -172,6 +198,19 @@ theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
   · subst j
     simp [hDi]
   · simp [hij]
+
+/-- **Binary nullity bounds two-adic determinant divisibility.**  This is the
+Smith inequality in its matrix-rank form, proved using only lifted Gaussian
+transvections:
+`2 ^ (number of columns - rank mod 2)` divides the integral determinant. -/
+theorem pow_modTwo_nullity_dvd_det_natAbs
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B : Matrix ι ι ℤ) :
+    2 ^ (Fintype.card ι -
+        (B.map (Int.castRingHom (ZMod 2))).rank) ∣ B.det.natAbs := by
+  obtain ⟨D, hcount, hdiv⟩ :=
+    exists_zmodTwo_diagonal_zero_pivots_dvd_det B
+  rwa [hcount] at hdiv
 
 end
 
