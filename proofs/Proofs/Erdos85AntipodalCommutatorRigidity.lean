@@ -55,6 +55,39 @@ theorem neg_trace_commutator_sq_eq_sum_entry_sq
   rw [hs]
   ring
 
+/-- The commutator of two symmetric matrices has zero diagonal. -/
+theorem commutator_diag_eq_zero_of_symmetric
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (A C : Matrix ι ι ℤ)
+    (hA : ∀ x y, A x y = A y x)
+    (hC : ∀ x y, C x y = C y x) (x : ι) :
+    (A * C - C * A) x x = 0 := by
+  simp only [Matrix.sub_apply, Matrix.mul_apply, sub_eq_zero]
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [hA x y, hC x y]
+  exact mul_comm _ _
+
+/-- A finite integral function taking only the values `-1,0,1` has squared
+mass equal to the cardinality of its support. -/
+theorem int_card_filter_ne_zero_eq_sum_sq
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (f : ι → ℤ)
+    (hf : ∀ x, f x = -1 ∨ f x = 0 ∨ f x = 1) :
+    ((Finset.univ.filter fun x => f x ≠ 0).card : ℤ) =
+      ∑ x, (f x) ^ 2 := by
+  calc
+    ((Finset.univ.filter fun x => f x ≠ 0).card : ℤ) =
+        ∑ x, if f x ≠ 0 then (1 : ℤ) else 0 := by
+      rw [Finset.card_eq_sum_ones]
+      push_cast
+      rw [Finset.sum_filter]
+    _ = ∑ x, (f x) ^ 2 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      by_cases hx : f x = 0
+      · simp [hx]
+      · rcases hf x with hx' | hx' | hx' <;> simp_all
+
 /-- An `A`--`T` mixed two-walk count between distinct vertices is at most
 one. -/
 theorem adj_mul_triangleFree_entry_le_one
@@ -141,6 +174,37 @@ theorem antipodal_commutator_entry_mem_neg_one_zero_one
   rw [hentry]
   omega
 
+/-- The local three-value rigidity also holds on the diagonal, where the
+commutator vanishes. -/
+theorem antipodal_commutator_entry_mem_neg_one_zero_one_all
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) (x y : V) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    (A * C - C * A) x y = -1 ∨
+      (A * C - C * A) x y = 0 ∨
+        (A * C - C * A) x y = 1 := by
+  by_cases hxy : x = y
+  · subst y
+    right
+    left
+    apply commutator_diag_eq_zero_of_symmetric
+    · intro u v
+      have ht : (G.adjMatrix ℤ).transpose = G.adjMatrix ℤ :=
+        SimpleGraph.transpose_adjMatrix G
+      simpa using congrFun (congrFun ht v) u
+    · intro u v
+      have ht : ((antipodalGraph G).adjMatrix ℤ).transpose =
+          (antipodalGraph G).adjMatrix ℤ :=
+        SimpleGraph.transpose_adjMatrix (antipodalGraph G)
+      simpa using congrFun (congrFun ht v) u
+  · exact antipodal_commutator_entry_mem_neg_one_zero_one
+      G hfree hreg hxy
+
 /-- **Exact antipodal mismatch mass at odd excess three.**  The squared
 entrywise mass of the antipodal commutator is completely determined by the
 number of vertices in the degree-three triangle-free sector. -/
@@ -189,6 +253,45 @@ theorem sum_antipodal_commutator_entry_sq_excessThree
             (triangleFreeEdgeGraph G).degree x = 3).card : ℤ)) := by
       rw [trace_adj_sq_antipodal_sq_sub_alternating_excessThree
         G hfree hd hodd hreg hcard]
+
+/-- **Exact support count.**  At odd excess three, the number of ordered
+vertex pairs on which the antipodal commutator is nonzero is the pinned
+affine expression below. -/
+theorem card_antipodal_commutator_support_excessThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 7 ≤ d) (hodd : Odd d)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 6) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let a := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 3).card
+    ((Finset.univ.filter fun p : V × V =>
+      (A * C - C * A) p.1 p.2 ≠ 0).card : ℤ) =
+      2 * ((d - 1 : ℤ) * (Fintype.card V : ℤ) +
+        (2 * (d : ℤ) - 8) * (a : ℤ)) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let C := (antipodalGraph G).adjMatrix ℤ
+  calc
+    ((Finset.univ.filter fun p : V × V =>
+        (A * C - C * A) p.1 p.2 ≠ 0).card : ℤ) =
+        ∑ p : V × V, ((A * C - C * A) p.1 p.2) ^ 2 := by
+      apply int_card_filter_ne_zero_eq_sum_sq
+      intro p
+      exact antipodal_commutator_entry_mem_neg_one_zero_one_all
+        G hfree hreg p.1 p.2
+    _ = ∑ x : V, ∑ y : V, ((A * C - C * A) x y) ^ 2 := by
+      rw [Fintype.sum_prod_type]
+    _ = 2 * ((d - 1 : ℤ) * (Fintype.card V : ℤ) +
+        (2 * (d : ℤ) - 8) *
+          ((Finset.univ.filter fun x : V =>
+            (triangleFreeEdgeGraph G).degree x = 3).card : ℤ)) :=
+      sum_antipodal_commutator_entry_sq_excessThree
+        G hfree hd hodd hreg hcard
 
 end
 
