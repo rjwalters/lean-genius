@@ -323,6 +323,45 @@ theorem excessOne_secondLayer_eq_outsideClosedNeighborhood
       · exact (hyout.2 ((G.mem_neighborFinset x y).mp hneighbor).symm).elim
     · exact hsecond
 
+/-- At an excess-one vertex with exactly one triangle-free incident edge,
+the failure of the second layer to cover the complement is exact: there are
+precisely two vertices at distance at least three.  These are the two slots
+that remain in the odd matching-branch pigeonhole argument. -/
+theorem excessOne_externalRepairCandidates_card_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (hx : (triangleFreeNeighbors G x).card = 1) :
+    (externalRepairCandidates G x).card = 2 := by
+  have hlocalsum :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) = d - 1 := by
+    have hsum := card_triangleFreeNeighbors_add_localDegreeSum_of_regular
+      G hfree hreg x
+    rw [hx] at hsum
+    omega
+  have hextid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  rw [hcard, hlocalsum] at hextid
+  have hd1 : 1 ≤ d := by
+    have hle := Finset.card_le_card
+      (show triangleFreeNeighbors G x ⊆ G.neighborFinset x by
+        intro y hy
+        exact (G.mem_neighborFinset x y).mpr
+          ((mem_triangleFreeNeighbors G x y).mp hy).1)
+    rw [hx, G.card_neighborFinset_eq_degree, hreg x] at hle
+    exact hle
+  have hmul : d * d = d * (d - 1) + d := by
+    calc
+      d * d = d * ((d - 1) + 1) := by rw [Nat.sub_add_cancel hd1]
+      _ = d * (d - 1) + d := by ring
+  rw [hmul] at hextid
+  omega
+
 /-- **Uniform excess-one terminal.**  A regular `C₄`-free graph of order
 `d(d-1)+4`, with `d ≥ 4`, cannot have a vertex with exactly three incident
 triangle-free edges. -/
