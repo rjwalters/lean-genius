@@ -34,6 +34,7 @@ theorem exists_boundary_cycle_chebyshev_root_with_square
       3 ≤ r ∧ r = c.supp.ncard ∧ r ≤ Fintype.card V ∧
       t ∈ IntermediateField.adjoin ℚ {μ} ∧
       t * t = (((d : ℚ) - 1 : ℚ) : AlgebraicClosure ℚ) - μ ∧
+      (Polynomial.Chebyshev.C ℤ (r : ℤ) - 2).Monic ∧
       ((Polynomial.Chebyshev.C ℤ (r : ℤ) - 2).map
         (algebraMap ℤ (AlgebraicClosure ℚ))).eval μ = 0 := by
   classical
@@ -126,6 +127,9 @@ theorem exists_boundary_cycle_chebyshev_root_with_square
         (algebraMap ℤ (AlgebraicClosure ℚ))).eval μ = 0 := by
     rw [← hpolyAC, Matrix.eval_charpoly]
     exact hdetp
+  have hmonic : (Polynomial.Chebyshev.C ℤ (p.length : ℤ) - 2).Monic := by
+    rw [← hpolyZ]
+    exact Matrix.charpoly_monic _
   have hrle : c.supp.ncard ≤ Fintype.card V := by
     calc
       c.supp.ncard ≤ (Set.univ : Set V).ncard :=
@@ -133,7 +137,7 @@ theorem exists_boundary_cycle_chebyshev_root_with_square
       _ = Fintype.card V := by
         simpa [Nat.card_eq_fintype_card] using (Set.ncard_univ V)
   exact ⟨μ, t, c, p.length, hp.three_le_length, hrsize,
-    hrsize ▸ hrle, htmem, htsq, hroot⟩
+    hrsize ▸ hrle, htmem, htsq, hmonic, hroot⟩
 
 end
 
