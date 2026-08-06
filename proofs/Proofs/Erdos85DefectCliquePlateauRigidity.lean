@@ -458,6 +458,59 @@ theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
   secondOrderDefect_neighborFinset_eq_erase_of_large_clique
     G hfree hd he hcard hreg C hCcard hclique hc
 
+/-- At the forced top excess, the vertices missed by the clique and all of
+its pairwise-disjoint open neighborhoods are counted exactly by the internal
+matching endpoints of the clique.  This is the inclusion--exclusion bridge
+from the top-excess block geometry to service counting. -/
+theorem residual_card_eq_internalOverlap_of_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    (Finset.univ \ (C ∪ C.biUnion (fun x ↦ G.neighborFinset x))).card =
+      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  classical
+  let U := C.biUnion fun x ↦ G.neighborFinset x
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  have hpair : (C : Set V).PairwiseDisjoint fun x ↦ G.neighborFinset x := by
+    intro x hx y hy hxy
+    change Disjoint (G.neighborFinset x) (G.neighborFinset y)
+    rw [Finset.disjoint_left]
+    intro z hzx hzy
+    have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hzx, hzy⟩
+    have hempty := hsafe hx hy hxy
+    rw [Finset.card_eq_zero] at hempty
+    exact Finset.notMem_empty z (hempty ▸ hz)
+  have hUcard : U.card = C.card * d := by
+    change (C.biUnion fun x ↦ G.neighborFinset x).card = _
+    rw [Finset.card_biUnion hpair]
+    calc
+      (∑ x ∈ C, (G.neighborFinset x).card) =
+          ∑ _x ∈ C, d := by
+        apply Finset.sum_congr rfl
+        intro x _
+        rw [G.card_neighborFinset_eq_degree, hreg x]
+      _ = C.card * d := by simp
+  have heq := excess_eq_sub_four_of_large_secondOrderDefectClique
+    G hfree hd he hcard hreg C hCcard hclique
+  have htotal : Fintype.card V = C.card + U.card := by
+    rw [hcard, heq, hUcard, hCcard, Nat.mul_comm (d - 1) d]
+    omega
+  have hie := Finset.card_union_add_card_inter C U
+  have hdiff := Finset.card_sdiff_add_card_eq_card
+    (Finset.subset_univ (C ∪ U))
+  have huniv : (Finset.univ : Finset V).card = Fintype.card V :=
+    Finset.card_univ
+  change (Finset.univ \ (C ∪ U)).card = (C ∩ U).card
+  omega
+
 /-- Therefore no clique vertex is incident with a triangle-free defect
 edge; all of its defect neighbors are antipodal. -/
 theorem triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
@@ -750,6 +803,34 @@ theorem secondOrderDefectClique_entangled_of_no_witness
   have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
     G hfree C hclique
   exact hsafe ha hb hab
+
+/-- Residual form of plateau rigidity.  A vertex outside both a large defect
+clique and all its open neighborhoods must receive a genuine length-two
+service path from the clique. -/
+theorem residual_exists_defectClique_service_of_no_witness
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    {n d : ℕ} (hcard : Fintype.card V = n + 1) (hd : 1 ≤ d)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hnext : ¬ C4FreeMinDegreeWitness (n + 2) d)
+    (C : Finset V) (hCcard : d - 1 ≤ C.card)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    {u : V}
+    (hu : u ∈ Finset.univ \
+      (C ∪ C.biUnion (fun x ↦ G.neighborFinset x))) :
+    ∃ a ∈ C, ∃ b : V, G.Adj b u ∧ G.Adj a b := by
+  have hent := secondOrderDefectClique_entangled_of_no_witness
+    G hcard hd hmin hfree hnext C hCcard hclique u
+  have hu' := Finset.mem_sdiff.mp hu
+  rcases hent with huC | hnear | hservice
+  · exact (hu'.2 (Finset.mem_union_left _ huC)).elim
+  · obtain ⟨c, hcC, hcu⟩ := hnear
+    have huU : u ∈ C.biUnion (fun x ↦ G.neighborFinset x) := by
+      rw [Finset.mem_biUnion]
+      exact ⟨c, hcC, (G.mem_neighborFinset c u).mpr hcu.symm⟩
+    exact (hu'.2 (Finset.mem_union_right _ huU)).elim
+  · exact hservice
 
 end
 
