@@ -99,6 +99,64 @@ theorem CommonNeighborIndependent.card_add_sum_degrees_le_card_of_isIndepSet
     rw [Fintype.card_coe, ← SimpleGraph.card_neighborFinset_eq_degree]
   rwa [hCX, hsum] at hcard
 
+/-- General packing identity with the exact correction for vertices of the
+safe set that lie in one of its open neighborhoods.  This is the form needed
+when a defect clique contains triangle-free edges of the original graph. -/
+theorem CommonNeighborIndependent.card_add_sum_degrees_le_card_add_overlap
+    (G : SimpleGraph V) [DecidableRel G.Adj] (C : Finset V)
+    (hsafe : CommonNeighborIndependent G C) :
+    C.card + ∑ x ∈ C, G.degree x ≤ Fintype.card V +
+      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  classical
+  let U := C.biUnion fun x ↦ G.neighborFinset x
+  have hpair : (C : Set V).PairwiseDisjoint fun x ↦ G.neighborFinset x := by
+    intro x hx y hy hxy
+    change Disjoint (G.neighborFinset x) (G.neighborFinset y)
+    rw [Finset.disjoint_left]
+    intro z hzx hzy
+    have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hzx, hzy⟩
+    have hempty := hsafe hx hy hxy
+    rw [Finset.card_eq_zero] at hempty
+    exact Finset.notMem_empty z (hempty ▸ hz)
+  have hUcard : U.card = ∑ x ∈ C, G.degree x := by
+    change (C.biUnion fun x ↦ G.neighborFinset x).card = _
+    rw [Finset.card_biUnion hpair]
+    apply Finset.sum_congr rfl
+    intro x _
+    exact G.card_neighborFinset_eq_degree x
+  have htotal : (C ∪ U).card ≤ Fintype.card V :=
+    Finset.card_le_univ _
+  have hie := Finset.card_union_add_card_inter C U
+  change C.card + ∑ x ∈ C, G.degree x ≤
+    Fintype.card V + (C ∩ U).card
+  omega
+
+/-- Quantitative large-clique constraint across the whole positive-excess
+band.  Any deficit below the top excess `e=d-4` must be paid for by vertices
+of the defect clique that are incident with an internal original-graph edge. -/
+theorem degree_le_four_add_excess_add_internalOverlap_of_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    d ≤ 4 + e +
+      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  have hpack := hsafe.card_add_sum_degrees_le_card_add_overlap G C
+  have hsum : (∑ x ∈ C, G.degree x) = C.card * d := by
+    simp_rw [hreg]
+    simp
+  rw [hsum, hCcard, hcard] at hpack
+  have hmul : (d - 1) * d = d * (d - 1) := Nat.mul_comm _ _
+  rw [hmul] at hpack
+  omega
+
 /-- Equality in the preceding packing bound gives an exact partition: every
 vertex is either in the safe independent set or adjacent to one of its
 members. -/
