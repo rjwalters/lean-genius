@@ -111,6 +111,24 @@ theorem degreeFourteenCyclotomicResultant_rat_eq_intCast (n : ℕ) :
       (Polynomial.cyclotomic n ℤ).natDegree
       degreeFourteenCyclotomicQuadraticInt.natDegree (Int.castRingHom ℚ)
 
+/-- Cyclotomic factorization turns the product of the conductor resultants
+into one resultant against `X^n-1`.  This is the algebraic half of the
+strong-induction comparison with the executable candidate product. -/
+theorem prod_degreeFourteenCyclotomicResultant_eq_X_pow_sub_one_resultant
+    {n : ℕ} (hn : 0 < n) :
+    ∏ k ∈ n.divisors, degreeFourteenCyclotomicResultant k =
+      (Polynomial.X ^ n - 1 : Polynomial ℤ).resultant
+        degreeFourteenCyclotomicQuadraticInt
+        (Polynomial.X ^ n - 1 : Polynomial ℤ).natDegree
+        degreeFourteenCyclotomicQuadraticInt.natDegree := by
+  rw [← Polynomial.prod_cyclotomic_eq_X_pow_sub_one hn ℤ]
+  rw [Polynomial.resultant_prod_left]
+  · simp [degreeFourteenCyclotomicResultant]
+  · simp only [(Polynomial.cyclotomic.monic _ ℤ).leadingCoeff,
+      Finset.prod_const_one]
+    norm_num
+  · exact le_rfl
+
 theorem degreeFourteenCyclotomicQuadratic_aeval
     {L : Type*} [Field L] [CharZero L] {z : L} (hz : z ≠ 0) :
     Polynomial.aeval z degreeFourteenCyclotomicQuadratic =
