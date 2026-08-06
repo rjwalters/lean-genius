@@ -38,7 +38,8 @@ theorem selector_subset_defectPartners_of_neighbors_mem
   intro b hb hba
   rw [mem_defectPartners]
   refine ⟨fun h ↦ hba (Subtype.ext h), ?_⟩
-  have hcount := hcompat.selector_safe w hb ha hba
+  have hcount := GadgetAttachmentCompatible.selector_safe
+    (G.induce s) F A hcompat w hb ha hba
   rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hcount
   rw [Finset.eq_empty_iff_forall_notMem]
   intro z hz
