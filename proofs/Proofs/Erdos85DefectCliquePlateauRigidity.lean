@@ -326,6 +326,103 @@ theorem degree_induce_neighborSet_eq_one_of_independent_large_defectClique
   exact triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
     G hfree hd he hcard hreg C hCcard hclique hind hc
 
+/-- Every block indexed by an extremal independent defect clique meets every
+vertex of any block in exactly one neighbor.  For equal indices this is the
+internal perfect matching; for distinct indices it says that the bipartite
+graph between the blocks is a perfect matching. -/
+theorem card_common_eq_one_between_independent_large_defectClique_blocks
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V))
+    {c c' : V} (hc : c ∈ C) (hc' : c' ∈ C)
+    (y : {z : V // z ∈ G.neighborSet c}) :
+    (G.neighborFinset y.1 ∩ G.neighborFinset c').card = 1 := by
+  classical
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  have hyNotC : y.1 ∉ C := by
+    intro hyC
+    rw [SimpleGraph.isIndepSet_iff] at hind
+    exact hind hc hyC (G.ne_of_adj y.2) y.2
+  have hyc' : y.1 ≠ c' := fun h ↦ hyNotC (h ▸ hc')
+  have hle :
+      (G.neighborFinset y.1 ∩ G.neighborFinset c').card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree y.1 c' hyc'
+  by_contra hone
+  have htargetZero :
+      (G.neighborFinset y.1 ∩ G.neighborFinset c').card = 0 := by
+    omega
+  let U := insert c ((C.erase c').biUnion fun a ↦
+    G.neighborFinset y.1 ∩ G.neighborFinset a)
+  have hsub : G.neighborFinset y.1 ⊆ U := by
+    intro z hz
+    have hcover :=
+      mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+        G hfree hd he hcard hreg C hCcard hclique hind z
+    rcases hcover with hzC | ⟨a, haC, haz⟩
+    · have hzc : z = c := by
+        by_contra hzc
+        have hempty := hsafe hc hzC (fun hcz ↦ hzc hcz.symm)
+        rw [Finset.card_eq_zero] at hempty
+        have hyMem : y.1 ∈ G.neighborFinset c ∩ G.neighborFinset z := by
+          rw [Finset.mem_inter, G.mem_neighborFinset,
+            G.mem_neighborFinset]
+          exact ⟨y.2,
+            (G.adj_comm z y.1).mpr ((G.mem_neighborFinset y.1 z).mp hz)⟩
+        exact Finset.notMem_empty y.1 (hempty ▸ hyMem)
+      simp [U, hzc]
+    · have hac' : a ≠ c' := by
+        intro hac'
+        subst a
+        have hzTarget : z ∈
+            G.neighborFinset y.1 ∩ G.neighborFinset c' := by
+          rw [Finset.mem_inter, G.mem_neighborFinset,
+            G.mem_neighborFinset]
+          exact ⟨(G.mem_neighborFinset y.1 z).mp hz, haz⟩
+        rw [Finset.card_eq_zero] at htargetZero
+        exact Finset.notMem_empty z (htargetZero ▸ hzTarget)
+      simp only [U, Finset.mem_insert, Finset.mem_biUnion,
+        Finset.mem_erase, Finset.mem_inter]
+      exact Or.inr ⟨a, ⟨hac', haC⟩, hz,
+        (G.mem_neighborFinset a z).mpr haz⟩
+  have hpiece : ∀ a ∈ C.erase c',
+      (G.neighborFinset y.1 ∩ G.neighborFinset a).card ≤ 1 := by
+    intro a ha
+    exact common_le_one_of_not_containsC4 hfree y.1 a
+      (fun hya ↦ hyNotC (hya ▸ (Finset.mem_erase.mp ha).2))
+  have hsum : (∑ a ∈ C.erase c',
+      (G.neighborFinset y.1 ∩ G.neighborFinset a).card) ≤
+      (C.erase c').card := by
+    calc
+      (∑ a ∈ C.erase c',
+          (G.neighborFinset y.1 ∩ G.neighborFinset a).card) ≤
+          ∑ _a ∈ C.erase c', 1 :=
+        Finset.sum_le_sum fun a ha ↦ hpiece a ha
+      _ = (C.erase c').card := by simp
+  have hUcard : U.card ≤ 1 + (C.erase c').card := by
+    calc
+      U.card ≤ 1 + ((C.erase c').biUnion fun a ↦
+          G.neighborFinset y.1 ∩ G.neighborFinset a).card := by
+        simpa [Nat.add_comm] using Finset.card_insert_le c
+          ((C.erase c').biUnion fun a ↦
+            G.neighborFinset y.1 ∩ G.neighborFinset a)
+      _ ≤ 1 + ∑ a ∈ C.erase c',
+          (G.neighborFinset y.1 ∩ G.neighborFinset a).card := by
+        exact Nat.add_le_add_left Finset.card_biUnion_le 1
+      _ ≤ 1 + (C.erase c').card := Nat.add_le_add_left hsum 1
+  have hdegreeLe : G.degree y.1 ≤ 1 + (C.erase c').card := by
+    rw [← G.card_neighborFinset_eq_degree y.1]
+    exact (Finset.card_le_card hsub).trans hUcard
+  rw [hreg y.1, Finset.card_erase_of_mem hc', hCcard] at hdegreeLe
+  omega
+
 /-- The exact block geometry also forces even degree.  Indeed, for any
 `c ∈ C`, the other `d-2` clique vertices exhaust the entire degree-`d-2`
 defect neighborhood of `c`.  Since `C` is independent in `G`, none of these
