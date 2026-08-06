@@ -804,6 +804,34 @@ theorem secondOrderDefectClique_entangled_of_no_witness
     G hfree C hclique
   exact hsafe ha hb hab
 
+/-- Residual form of plateau rigidity.  A vertex outside both a large defect
+clique and all its open neighborhoods must receive a genuine length-two
+service path from the clique. -/
+theorem residual_exists_defectClique_service_of_no_witness
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    {n d : ℕ} (hcard : Fintype.card V = n + 1) (hd : 1 ≤ d)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hnext : ¬ C4FreeMinDegreeWitness (n + 2) d)
+    (C : Finset V) (hCcard : d - 1 ≤ C.card)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    {u : V}
+    (hu : u ∈ Finset.univ \
+      (C ∪ C.biUnion (fun x ↦ G.neighborFinset x))) :
+    ∃ a ∈ C, ∃ b : V, G.Adj b u ∧ G.Adj a b := by
+  have hent := secondOrderDefectClique_entangled_of_no_witness
+    G hcard hd hmin hfree hnext C hCcard hclique u
+  have hu' := Finset.mem_sdiff.mp hu
+  rcases hent with huC | hnear | hservice
+  · exact (hu'.2 (Finset.mem_union_left _ huC)).elim
+  · obtain ⟨c, hcC, hcu⟩ := hnear
+    have huU : u ∈ C.biUnion (fun x ↦ G.neighborFinset x) := by
+      rw [Finset.mem_biUnion]
+      exact ⟨c, hcC, (G.mem_neighborFinset c u).mpr hcu.symm⟩
+    exact (hu'.2 (Finset.mem_union_right _ huU)).elim
+  · exact hservice
+
 end
 
 end Erdos85
