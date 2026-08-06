@@ -343,6 +343,43 @@ theorem externalAdjMatrix_sq_entry_partition_of_ne
     hxy, if_false, smul_eq_mul, mul_zero] at h
   omega
 
+/-- The matrix `B = AM` is a square incidence realization of the cubic
+deficiency graph.  Since `M² = I`, its Gram matrix is exactly `A²`, hence
+`(d-1)I + J - C - M`.  Together with the diagonal-one and no-reciprocal-one
+lemmas above, this packages the excess-one graph as an oriented symmetric
+partial design. -/
+theorem matchingIncidence_gram_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    let J := FriendshipTheoremOQ01.onesMatrix V
+    (A * M) * (M * A) =
+      (d - 1 : ℤ) • (1 : Matrix V V ℤ) + J - C - M := by
+  dsimp only
+  have hM2 := triangleFreeEdgeGraph_adjMatrix_sq_eq_one_of_odd_excessOne
+    G hfree hd hodd hreg hcard
+  have hA2 := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular
+    G hfree hreg
+  have hD := secondOrderDefectGraph_adjMatrix_eq_antipodal_add_triangleFree
+    G
+  rw [hD] at hA2
+  calc
+    (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+        ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) =
+      G.adjMatrix ℤ *
+        ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ) * G.adjMatrix ℤ := by
+            simp only [Matrix.mul_assoc]
+    _ = G.adjMatrix ℤ * G.adjMatrix ℤ := by rw [hM2]; simp
+    _ = _ := by rw [hA2]; module
+
 end
 
 end Erdos85
