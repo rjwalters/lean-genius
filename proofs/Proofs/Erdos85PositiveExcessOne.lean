@@ -362,6 +362,170 @@ theorem excessOne_externalRepairCandidates_card_eq_two
   rw [hmul] at hextid
   omega
 
+/-- An isolated vertex in a second-layer branch whose root is paired inside
+the first neighborhood must see the external reservoir.  Otherwise its
+`d-1` non-root neighbors inject into only the `d-2` branches other than the
+root and its partner.  This is the corrected pigeonhole statement for the
+triangle-free-degree-one case. -/
+theorem exists_adj_external_of_isolated_matched_secondLayerBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d) (x : V)
+    (u v : {z : V // z ∈ G.neighborSet x}) (huv : G.Adj u.1 v.1)
+    (a : secondLayerBranch G x u)
+    (haIso : (G.induce (secondLayerBranch G x u)).degree a = 0) :
+    ∃ z : {y : V // y ≠ x},
+      z ∈ externalRepairCandidates G x ∧ G.Adj a.1 z.1 := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+  let B := (G.neighborFinset a.1).erase u.1
+  have hua : G.Adj u.1 a.1 :=
+    (G.mem_neighborFinset u.1 a.1).mp (Finset.mem_sdiff.mp a.2).1
+  have huMem : u.1 ∈ G.neighborFinset a.1 :=
+    (G.mem_neighborFinset a.1 u.1).mpr hua.symm
+  have hBcard : B.card = d - 1 := by
+    simp only [B]
+    rw [Finset.card_erase_of_mem huMem,
+      G.card_neighborFinset_eq_degree, hreg a.1]
+  have hroot : ∀ b, b ∈ B →
+      ∃ r : {z : V // z ∈ G.neighborSet x},
+        b ∈ secondLayerBranch G x r := by
+    intro b hb
+    have hab : G.Adj a.1 b :=
+      (G.mem_neighborFinset a.1 b).mp (Finset.mem_erase.mp hb).2
+    have hbu : b ≠ u.1 := (Finset.mem_erase.mp hb).1
+    have hbClosed : b ∉ insert x (G.neighborFinset x) := by
+      intro hbcl
+      rcases Finset.mem_insert.mp hbcl with hbx | hbx
+      · subst b
+        exact (Finset.mem_sdiff.mp a.2).2
+          (Finset.mem_insert.mpr (Or.inr
+            ((G.mem_neighborFinset x a.1).mpr hab.symm)))
+      · have hxb : G.Adj x b := (G.mem_neighborFinset x b).mp hbx
+        have hxa : x ≠ a.1 := by
+          intro h
+          exact (Finset.mem_sdiff.mp a.2).2
+            (Finset.mem_insert.mpr (Or.inl h.symm))
+        exact hfree (containsC4_of_two_common
+          (x := x) (y := a.1) (v := u.1) (v' := b)
+          hxa hbu.symm u.2.symm hua hxb.symm hab.symm)
+    have hcover := closedNeighborhood_union_secondLayer_union_external_eq_univ G x
+    have hbcover : b ∈ insert x (G.neighborFinset x) ∪ secondLayer G x ∪
+        (externalRepairCandidates G x).map
+          ⟨Subtype.val, Subtype.val_injective⟩ := by
+      rw [hcover]
+      exact Finset.mem_univ b
+    rcases Finset.mem_union.mp hbcover with hleft | hext
+    · rcases Finset.mem_union.mp hleft with hclosed | hsecond
+      · exact (hbClosed hclosed).elim
+      · rw [secondLayer, Finset.mem_biUnion] at hsecond
+        obtain ⟨r, _, hr⟩ := hsecond
+        exact ⟨r, hr⟩
+    · rw [Finset.mem_map] at hext
+      obtain ⟨z, hz, hzb⟩ := hext
+      have := hnone z hz
+      exact (this (by simpa [← hzb] using hab)).elim
+  let root : B → {z : V // z ∈ G.neighborSet x} := fun b =>
+    Classical.choose (hroot b.1 b.2)
+  have hrootMem : ∀ b : B, b.1 ∈ secondLayerBranch G x (root b) := by
+    intro b
+    exact Classical.choose_spec (hroot b.1 b.2)
+  have hroot_ne_u : ∀ b : B, root b ≠ u := by
+    intro b hru
+    have hbA : b.1 ∈ secondLayerBranch G x u := by
+      simpa [hru] using hrootMem b
+    have habK : (G.induce (secondLayerBranch G x u)).Adj
+        a ⟨b.1, hbA⟩ := by
+      change G.Adj a.1 b.1
+      exact (G.mem_neighborFinset a.1 b.1).mp
+        (Finset.mem_erase.mp b.2).2
+    have hbK : (⟨b.1, hbA⟩ : secondLayerBranch G x u) ∈
+        (G.induce (secondLayerBranch G x u)).neighborFinset a :=
+      ((G.induce (secondLayerBranch G x u)).mem_neighborFinset a _).mpr habK
+    have hempty :
+        (G.induce (secondLayerBranch G x u)).neighborFinset a = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(G.induce (secondLayerBranch G x u)).card_neighborFinset_eq_degree,
+        haIso]
+    rw [hempty] at hbK
+    exact Finset.notMem_empty _ hbK
+  have hroot_ne_v : ∀ b : B, root b ≠ v := by
+    intro b hrv
+    have hbV : b.1 ∈ secondLayerBranch G x v := by
+      simpa [hrv] using hrootMem b
+    have hab : G.Adj a.1 b.1 :=
+      (G.mem_neighborFinset a.1 b.1).mp (Finset.mem_erase.mp b.2).2
+    exact (not_adj_between_secondLayerBranches_of_adj_roots
+      G hfree x u v huv a ⟨b.1, hbV⟩) hab
+  have hrootInj : Function.Injective root := by
+    intro b c hbc
+    apply Subtype.ext
+    by_contra hbval
+    have htwo : 2 ≤
+        (G.neighborFinset a.1 ∩ secondLayerBranch G x (root b)).card := by
+      have hcMem : c.1 ∈ secondLayerBranch G x (root b) := by
+        rw [hbc]
+        exact hrootMem c
+      have hsub : ({b.1, c.1} : Finset V) ⊆
+          G.neighborFinset a.1 ∩ secondLayerBranch G x (root b) := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact Finset.mem_inter.mpr
+            ⟨(Finset.mem_erase.mp b.2).2, hrootMem b⟩
+        · exact Finset.mem_inter.mpr
+            ⟨(Finset.mem_erase.mp c.2).2, hcMem⟩
+      have hpair : ({b.1, c.1} : Finset V).card = 2 := by simp [hbval]
+      rw [← hpair]
+      exact Finset.card_le_card hsub
+    have hroot_ne_a : a.1 ≠ (root b).1 := by
+      intro h
+      exact (Finset.mem_sdiff.mp a.2).2
+        (Finset.mem_insert.mpr (Or.inr
+          ((G.mem_neighborFinset x a.1).mpr (h ▸ (root b).2))))
+    have hone := card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree x a.1 (root b) hroot_ne_a
+    omega
+  have huv_ne : u ≠ v := by
+    intro h
+    exact (G.ne_of_adj huv) (congrArg Subtype.val h)
+  let target := (Finset.univ.erase u).erase v
+  let root' : B → target := fun b => ⟨root b, by
+    simp only [target, Finset.mem_erase, Finset.mem_univ, and_true]
+    exact ⟨hroot_ne_v b, hroot_ne_u b⟩⟩
+  have hroot'Inj : Function.Injective root' := by
+    intro b c h
+    apply hrootInj
+    exact congrArg Subtype.val h
+  have hlecard : Fintype.card B ≤ Fintype.card target :=
+    Fintype.card_le_of_injective root' hroot'Inj
+  have hNcard : Fintype.card {z : V // z ∈ G.neighborSet x} = d := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) =
+        G.neighborFinset x := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hreg x]
+  have hd2 : 2 ≤ d := by
+    have hpair : ({u, v} : Finset {z : V // z ∈ G.neighborSet x}).card = 2 := by
+      simp [huv_ne]
+    have hpairle : ({u, v} : Finset {z : V // z ∈ G.neighborSet x}).card ≤
+        Fintype.card {z : V // z ∈ G.neighborSet x} := by
+      simpa [Fintype.card_subtype] using
+        (Finset.card_le_card (Finset.subset_univ ({u, v} :
+          Finset {z : V // z ∈ G.neighborSet x})))
+    rw [hpair, hNcard] at hpairle
+    exact hpairle
+  have htargetcard : Fintype.card target = d - 2 := by
+    simp only [target, Fintype.card_coe]
+    rw [Finset.card_erase_of_mem]
+    · rw [Finset.card_erase_of_mem (Finset.mem_univ u),
+        Finset.card_univ, hNcard]
+      omega
+    · exact Finset.mem_erase.mpr ⟨huv_ne.symm, Finset.mem_univ v⟩
+  rw [Fintype.card_coe, hBcard, htargetcard] at hlecard
+  omega
+
 /-- **Uniform excess-one terminal.**  A regular `C₄`-free graph of order
 `d(d-1)+4`, with `d ≥ 4`, cannot have a vertex with exactly three incident
 triangle-free edges. -/
