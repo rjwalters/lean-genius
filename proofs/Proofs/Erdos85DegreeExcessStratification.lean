@@ -265,4 +265,48 @@ theorem sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
         G hfree hd hmin hcard x
     _ = Fintype.card V * q := by simp
 
+/-- **Total irregularity bound.**  Every unit of degree excess consumes at
+least `2d` units of the global order-excess budget. -/
+theorem two_mul_degree_mul_sum_degreeExcess_le_card_mul_orderExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q) :
+    2 * d * (∑ x : V, (G.degree x - d)) ≤ Fintype.card V * q := by
+  have hglobal :=
+    sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
+      G hfree hd hmin hcard
+  have hweighted :
+      (∑ x : V, ((G.degree x - d) * (d - 1) +
+        G.degree x * (G.degree x - d))) ≤ Fintype.card V * q := by
+    omega
+  have hpoint : ∀ x : V,
+      2 * d * (G.degree x - d) ≤
+        (G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d) := by
+    intro x
+    let s := G.degree x - d
+    have hx := hmin x
+    have hdeg : G.degree x = s + d := by
+      dsimp [s]
+      omega
+    by_cases hs : s = 0
+    · simp [s, hs]
+    obtain ⟨d', hdEq⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
+    obtain ⟨s', hsEq⟩ : ∃ s', s = s' + 1 := ⟨s - 1, by omega⟩
+    rw [show G.degree x - d = s by rfl, hdeg, hdEq, hsEq]
+    simp only [Nat.add_sub_cancel]
+    nlinarith [Nat.zero_le (s' * s')]
+  calc
+    2 * d * (∑ x : V, (G.degree x - d)) =
+        ∑ x : V, 2 * d * (G.degree x - d) := by
+          rw [Finset.mul_sum]
+    _ ≤ ∑ x : V, ((G.degree x - d) * (d - 1) +
+        G.degree x * (G.degree x - d)) :=
+      Finset.sum_le_sum fun x _ ↦ hpoint x
+    _ ≤ Fintype.card V * q := hweighted
+
 end Erdos85
