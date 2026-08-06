@@ -323,6 +323,254 @@ theorem excessOne_secondLayer_eq_outsideClosedNeighborhood
       · exact (hyout.2 ((G.mem_neighborFinset x y).mp hneighbor).symm).elim
     · exact hsecond
 
+/-- **Uniform excess-one terminal.**  A regular `C₄`-free graph of order
+`d(d-1)+4`, with `d ≥ 4`, cannot have a vertex with exactly three incident
+triangle-free edges. -/
+theorem false_of_excessOne_triangleFreeNeighbors_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (hx : (triangleFreeNeighbors G x).card = 3) : False := by
+  classical
+  let N := G.neighborFinset x
+  let H := G.induce (G.neighborSet x)
+  have hlocalsum :
+      (∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y) = d - 3 := by
+    have hsum := card_triangleFreeNeighbors_add_localDegreeSum_of_regular
+      G hfree hreg x
+    rw [hx] at hsum
+    change (∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y) = d - 3
+    change 3 + (∑ y : {z : V // z ∈ G.neighborSet x}, H.degree y) = d at hsum
+    omega
+  have hhand := H.sum_degrees_eq_twice_card_edges
+  have hodd : Odd d := by
+    rw [hlocalsum] at hhand
+    obtain ⟨k, hk⟩ : Even (d - 3) := by
+      refine ⟨H.edgeFinset.card, ?_⟩
+      omega
+    exact ⟨k + 1, by omega⟩
+  have hNcard : N.card = d := by
+    simp only [N]
+    rw [G.card_neighborFinset_eq_degree, hreg x]
+  have hlt : (triangleFreeNeighbors G x).card < N.card := by
+    rw [hx, hNcard]
+    omega
+  obtain ⟨u0, huN, huTF⟩ :=
+    Finset.exists_mem_notMem_of_card_lt_card hlt
+  let u : {z : V // z ∈ G.neighborSet x} := ⟨u0, by simpa [N] using huN⟩
+  have huLocal : H.degree u = 1 := by
+    have hle : H.degree u ≤ 1 := by
+      change (G.induce (G.neighborSet x)).degree u ≤ 1
+      rw [degree_induce_neighborSet_eq_card_common]
+      exact common_le_one_of_not_containsC4 hfree x u.1 (G.ne_of_adj u.2)
+    have hne : H.degree u ≠ 0 := by
+      intro hz
+      apply huTF
+      rw [mem_triangleFreeNeighbors]
+      refine ⟨u.2, ?_⟩
+      change (G.induce (G.neighborSet x)).degree u = 0 at hz
+      rw [degree_induce_neighborSet_eq_card_common] at hz
+      exact hz
+    omega
+  have huNonempty : H.neighborFinset u |>.Nonempty := by
+    rw [← Finset.card_pos, H.card_neighborFinset_eq_degree, huLocal]
+    decide
+  obtain ⟨v0, hv0⟩ := huNonempty
+  let v : {z : V // z ∈ G.neighborSet x} := v0
+  have huv : G.Adj u.1 v.1 := by
+    simpa [H, SimpleGraph.mem_neighborFinset] using hv0
+  have huv_ne : u ≠ v := by
+    intro h
+    exact (G.ne_of_adj huv) (congrArg Subtype.val h)
+  let A := secondLayerBranch G x u
+  have hAcard : A.card = d - 2 := by
+    have hcardA := card_secondLayerBranch_eq_degree_sub_localDegree_sub_one
+      G hreg x u
+    rw [huLocal] at hcardA
+    change A.card = d - 1 - 1 at hcardA
+    omega
+  have hAodd : Odd (Fintype.card A) := by
+    rw [Fintype.card_coe, hAcard]
+    obtain ⟨k, hk⟩ := hodd
+    exact ⟨k - 1, by omega⟩
+  let K := G.induce A
+  have hKle : ∀ a : A, K.degree a ≤ 1 := by
+    intro a
+    exact degree_induce_secondLayerBranch_le_one G hfree x u a
+  obtain ⟨a, haIso⟩ :=
+    exists_degree_eq_zero_of_odd_card_of_degree_le_one K hAodd hKle
+  let B := (G.neighborFinset a.1).erase u.1
+  have hua : G.Adj u.1 a.1 :=
+    (G.mem_neighborFinset u.1 a.1).mp (Finset.mem_sdiff.mp a.2).1
+  have huMem : u.1 ∈ G.neighborFinset a.1 :=
+    (G.mem_neighborFinset a.1 u.1).mpr hua.symm
+  have hBcard : B.card = d - 1 := by
+    simp only [B]
+    rw [Finset.card_erase_of_mem huMem,
+      G.card_neighborFinset_eq_degree, hreg a.1]
+  have hlayer := excessOne_secondLayer_eq_outsideClosedNeighborhood
+    G hfree hreg hcard x hx
+  have hroot : ∀ b, b ∈ B →
+      ∃ r : {z : V // z ∈ G.neighborSet x},
+        b ∈ secondLayerBranch G x r := by
+    intro b hb
+    have hab : G.Adj a.1 b :=
+      (G.mem_neighborFinset a.1 b).mp (Finset.mem_erase.mp hb).2
+    have hbu : b ≠ u.1 := (Finset.mem_erase.mp hb).1
+    have hbOut : b ∈ outsideClosedNeighborhood G x := by
+      simp only [outsideClosedNeighborhood, Finset.mem_filter]
+      refine ⟨Finset.mem_univ b, ?_, ?_⟩
+      · intro hbx
+        subst b
+        have hnax : ¬ G.Adj x a.1 := by
+          intro hxa
+          exact (Finset.mem_sdiff.mp a.2).2
+            (Finset.mem_insert.mpr (Or.inr
+              ((G.mem_neighborFinset x a.1).mpr hxa)))
+        exact hnax hab.symm
+      · intro hbx
+        have hxu : G.Adj x u.1 := u.2
+        have hxa : x ≠ a.1 := by
+          intro h
+          have hax : a.1 = x := h.symm
+          exact (Finset.mem_sdiff.mp a.2).2
+            (Finset.mem_insert.mpr (Or.inl hax))
+        exact hfree (containsC4_of_two_common
+          (x := x) (y := a.1) (v := u.1) (v' := b)
+          hxa hbu.symm hxu.symm hua hbx hab.symm)
+    rw [← hlayer, secondLayer, Finset.mem_biUnion] at hbOut
+    obtain ⟨r, _, hr⟩ := hbOut
+    exact ⟨r, hr⟩
+  let root : B → {z : V // z ∈ G.neighborSet x} := fun b =>
+    Classical.choose (hroot b.1 b.2)
+  have hrootMem : ∀ b : B, b.1 ∈ secondLayerBranch G x (root b) := by
+    intro b
+    exact Classical.choose_spec (hroot b.1 b.2)
+  have hroot_ne_u : ∀ b : B, root b ≠ u := by
+    intro b hru
+    have hbA : b.1 ∈ A := by simpa [A, hru] using hrootMem b
+    have habK : K.Adj a ⟨b.1, hbA⟩ := by
+      change G.Adj a.1 b.1
+      exact (G.mem_neighborFinset a.1 b.1).mp
+        (Finset.mem_erase.mp b.2).2
+    have hbK : (⟨b.1, hbA⟩ : A) ∈ K.neighborFinset a :=
+      (K.mem_neighborFinset a _).mpr habK
+    have : K.neighborFinset a = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rwa [K.card_neighborFinset_eq_degree]
+    rw [this] at hbK
+    exact Finset.notMem_empty _ hbK
+  have hroot_ne_v : ∀ b : B, root b ≠ v := by
+    intro b hrv
+    have hbV : b.1 ∈ secondLayerBranch G x v := by
+      simpa [hrv] using hrootMem b
+    have hab : G.Adj a.1 b.1 :=
+      (G.mem_neighborFinset a.1 b.1).mp (Finset.mem_erase.mp b.2).2
+    exact (not_adj_between_secondLayerBranches_of_adj_roots
+      G hfree x u v huv a ⟨b.1, hbV⟩) hab
+  have hrootInj : Function.Injective root := by
+    intro b c hbc
+    apply Subtype.ext
+    by_contra hbval
+    have htwo : 2 ≤
+        (G.neighborFinset a.1 ∩ secondLayerBranch G x (root b)).card := by
+      have hcMem : c.1 ∈ secondLayerBranch G x (root b) := by
+        rw [hbc]
+        exact hrootMem c
+      have hsub : ({b.1, c.1} : Finset V) ⊆
+          G.neighborFinset a.1 ∩ secondLayerBranch G x (root b) := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact Finset.mem_inter.mpr
+            ⟨(Finset.mem_erase.mp b.2).2, hrootMem b⟩
+        · exact Finset.mem_inter.mpr
+            ⟨(Finset.mem_erase.mp c.2).2, hcMem⟩
+      have hpair : ({b.1, c.1} : Finset V).card = 2 := by
+        simp [hbval]
+      rw [← hpair]
+      exact Finset.card_le_card hsub
+    have hroot_ne_a : a.1 ≠ (root b).1 := by
+      intro h
+      have haN : a.1 ∈ G.neighborFinset x := by
+        rw [h]
+        exact (G.mem_neighborFinset x (root b).1).mpr (root b).2
+      exact (Finset.mem_sdiff.mp a.2).2
+        (Finset.mem_insert.mpr (Or.inr haN))
+    have hone := card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree x a.1 (root b) hroot_ne_a
+    omega
+  let target := (Finset.univ.erase u).erase v
+  let root' : B → target := fun b => ⟨root b, by
+    simp only [target, Finset.mem_erase, Finset.mem_univ, and_true]
+    exact ⟨hroot_ne_v b, hroot_ne_u b⟩⟩
+  have hroot'Inj : Function.Injective root' := by
+    intro b c h
+    apply hrootInj
+    exact congrArg Subtype.val h
+  have hlecard : Fintype.card B ≤ Fintype.card target :=
+    Fintype.card_le_of_injective root' hroot'Inj
+  have htargetcard : Fintype.card target = d - 2 := by
+    simp only [target, Fintype.card_coe]
+    rw [Finset.card_erase_of_mem]
+    · rw [Finset.card_erase_of_mem (Finset.mem_univ u),
+        Finset.card_univ, Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet x) = N := by
+        ext z
+        simp [N]
+      rw [heq, hNcard]
+      omega
+    · exact Finset.mem_erase.mpr ⟨huv_ne.symm, Finset.mem_univ v⟩
+  rw [Fintype.card_coe, hBcard, htargetcard] at hlecard
+  omega
+
+/-- There is no regular `C₄`-free excess-one graph in the congruence class
+`d ≡ 3 (mod 6)` once `d ≥ 4`. -/
+theorem no_c4Free_regular_excessOne_of_degree_mod_six_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hmod : d % 6 = 3) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) : False := by
+  obtain ⟨x, hx⟩ := exists_excessOne_triangleFreeNeighbors_card_eq_three
+    G hfree hmod hreg hcard
+  exact false_of_excessOne_triangleFreeNeighbors_card_eq_three
+    G hfree hd hreg hcard x hx
+
+/-- Minimum-degree form of the uniform excess-one obstruction.  The Moore
+layer bound first forces regularity, after which the preceding theorem
+applies. -/
+theorem no_c4Free_minDegree_excessOne_of_degree_mod_six_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hmod : d % 6 = 3) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 4) : False := by
+  have hd9 : 9 ≤ d := by omega
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    have hid : (d + 1) * (d - 1) + 1 = d * (d - 1) + d := by
+      calc
+        (d + 1) * (d - 1) + 1 = d * (d - 1) + ((d - 1) + 1) := by ring
+        _ = d * (d - 1) + d := by rw [Nat.sub_add_cancel (by omega)]
+    rw [hid]
+    omega
+  have hreg : ∀ x, G.degree x = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  exact no_c4Free_regular_excessOne_of_degree_mod_six_three
+    G hfree hd hmod hreg hcard
+
 end
 
 end Erdos85
