@@ -42,6 +42,83 @@ theorem excessThreeServiceQuadraticRemainder_nonneg
   dsimp [excessThreeServiceQuadraticRemainder]
   linarith
 
+/-- **Local sum-of-squares decomposition of the remainder.**  On the
+negative-or-symmetric matching locus the summand is `(s-1)(s-2)`; off that
+locus it is the full factorial term `s(s-1)`.  Both are nonnegative for the
+integer service count `s`. -/
+theorem excessThreeServiceQuadraticRemainder_eq_local_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] :
+    let S := G.adjMatrix ℤ * (antipodalGraph G).adjMatrix ℤ
+    let U := matchingNegativeSlots G ∪ symmetricServicePairs G
+    excessThreeServiceQuadraticRemainder G =
+      (∑ p ∈ U, (S p.1 p.2 - 1) * (S p.1 p.2 - 2)) +
+      ∑ p ∈ (Finset.univ : Finset (V × V)) \ U,
+        S p.1 p.2 * (S p.1 p.2 - 1) := by
+  classical
+  dsimp only
+  let S := G.adjMatrix ℤ * (antipodalGraph G).adjMatrix ℤ
+  let U := matchingNegativeSlots G ∪ symmetricServicePairs G
+  let f : V × V → ℤ := fun p => S p.1 p.2 * (S p.1 p.2 - 1)
+  let q : V × V → ℤ := fun p =>
+    (S p.1 p.2 - 1) * (S p.1 p.2 - 2)
+  have hsplit := Finset.sum_sdiff
+    (show U ⊆ (Finset.univ : Finset (V × V)) by simp) (f := f)
+  have hpoint : ∀ p : V × V,
+      f p = 2 * (S p.1 p.2 - 1) + q p := by
+    intro p
+    dsimp [f, q]
+    ring
+  have hselected :
+      (∑ p ∈ U, f p) =
+        2 * (∑ p ∈ U, (S p.1 p.2 - 1)) + ∑ p ∈ U, q p := by
+    calc
+      (∑ p ∈ U, f p) =
+          ∑ p ∈ U, (2 * (S p.1 p.2 - 1) + q p) := by
+            apply Finset.sum_congr rfl
+            intro p _
+            exact hpoint p
+      _ = (∑ p ∈ U, 2 * (S p.1 p.2 - 1)) + ∑ p ∈ U, q p := by
+            rw [Finset.sum_add_distrib]
+      _ = 2 * (∑ p ∈ U, (S p.1 p.2 - 1)) + ∑ p ∈ U, q p := by
+            rw [Finset.mul_sum]
+  have hdisj := matchingNegativeSlots_disjoint_symmetricServicePairs G
+  have hcharge :
+      2 * (∑ p ∈ U, (S p.1 p.2 - 1)) =
+        2 * negativeSlotServiceSlack G +
+          2 * (∑ p ∈ symmetricServicePairs G, S p.1 p.2) -
+          2 * ((symmetricServicePairs G).card : ℤ) := by
+    dsimp [U]
+    rw [Finset.sum_union hdisj, negativeSlotServiceSlack]
+    change
+      2 * ((∑ p ∈ matchingNegativeSlots G, (S p.1 p.2 - 1)) +
+        ∑ p ∈ symmetricServicePairs G, (S p.1 p.2 - 1)) = _
+    have hsymdiff :
+        (∑ p ∈ symmetricServicePairs G, (S p.1 p.2 - 1)) =
+          (∑ p ∈ symmetricServicePairs G, S p.1 p.2) -
+            ((symmetricServicePairs G).card : ℤ) := by
+      rw [Finset.sum_sub_distrib]
+      simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
+    rw [hsymdiff]
+    ring
+  have htotal :
+      (∑ p : V × V, f p) =
+        ∑ x : V, ∑ y : V,
+          (G.adjMatrix ℤ * (antipodalGraph G).adjMatrix ℤ) x y *
+            ((G.adjMatrix ℤ * (antipodalGraph G).adjMatrix ℤ) x y - 1) := by
+    rw [Fintype.sum_prod_type]
+  dsimp [excessThreeServiceQuadraticRemainder]
+  rw [← htotal]
+  change (∑ p : V × V, f p) -
+      (2 * negativeSlotServiceSlack G +
+        2 * (∑ p ∈ symmetricServicePairs G, S p.1 p.2) -
+        2 * ((symmetricServicePairs G).card : ℤ)) =
+      (∑ p ∈ U, q p) + ∑ p ∈ (Finset.univ : Finset (V × V)) \ U, f p
+  rw [← hcharge]
+  linarith [hsplit, hselected]
+
 /-- **Exact triangle/chord/remainder identity.**  At odd excess three,
 
 `remainder + tr(C³) = tr(T C²) + 4|V| - 2a`.
