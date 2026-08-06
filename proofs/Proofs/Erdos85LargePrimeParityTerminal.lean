@@ -1,6 +1,7 @@
 import Proofs.Erdos85MixedParityComplete
 import Proofs.Erdos85PrimeSectorSize
 import Proofs.Erdos85MixedSelection
+import Proofs.Erdos85LargePrimeSectorClosure
 
 /-!
 # The parity terminal is self-terminating at large primes
@@ -237,6 +238,65 @@ theorem exists_window_selection_or_obstructed
     · exact (false_of_secondOrder_countOdd_of_large_prime G hfree hd heven
         hmin hcard hp hp7 hgt u hu huRange huD hℓ3 hodd hcountOdd).elim
     · exact hle
+  · right
+    exact hobs
+
+/-- **The refined selection window.**  A usable parity-terminal prime is
+confined to `p(p-3) ≤ 2(d(d-1)+3)`, and moreover lies at or below the
+degree — or else it divides the boundary order itself and `d-3` is
+automatically a quadratic residue there.  Nonresidue selection primes
+are therefore confined to `p ≤ d`. -/
+theorem exists_refined_window_selection_or_obstructed
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard) :
+    (∃ p : ℕ, p.Prime ∧ 7 ≤ p ∧
+      p * (p - 3) ≤ 2 * (d * (d - 1) + 3) ∧
+      (p ≤ d ∨ (p ∣ d * (d - 1) + 3 ∧
+        IsSquare ((d - 3 : ℕ) : ZMod p))) ∧
+      (∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+        p ∣ c.supp.ncard → Odd c.supp.ncard) ∧
+      Odd (Finset.univ.filter (fun c :
+        (secondOrderDefectGraph G).ConnectedComponent ↦
+          p ∣ c.supp.ncard)).card) ∨
+    SelectionObstructed (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent ↦ c.supp.ncard) := by
+  rcases exists_window_selection_or_obstructed G hfree hd heven hmin
+    hcard u hu huRange huD hℓ3 with
+    ⟨p, hp, hp7, hwin, hodd, hcountOdd⟩ | hobs
+  · left
+    refine ⟨p, hp, hp7, hwin, ?_, hodd, hcountOdd⟩
+    rcases Nat.lt_or_ge d p with hdp | hpd
+    · right
+      have hpos : 0 < (Finset.univ.filter (fun c :
+          (secondOrderDefectGraph G).ConnectedComponent ↦
+            p ∣ c.supp.ncard)).card := by
+        rcases hcountOdd with ⟨k, hk⟩
+        omega
+      obtain ⟨c, hc⟩ := Finset.card_pos.mp hpos
+      have hpc : p ∣ c.supp.ncard := (Finset.mem_filter.mp hc).2
+      constructor
+      · have := largePrime_dvd_card_of_dvd_component_order G hfree hd
+          heven hmin hcard hp hdp c hpc
+        rwa [hcard] at this
+      · exact isSquare_d_sub_three_mod_largePrime_of_dvd_component_order
+          G hfree hd heven hmin hcard hp hdp c hpc
+    · exact Or.inl hpd
   · right
     exact hobs
 
