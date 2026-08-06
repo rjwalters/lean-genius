@@ -317,6 +317,48 @@ theorem orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
     exact Finset.notMem_empty y.1 hyTF
   omega
 
+/-- Distinct degree-eight vertices are nonadjacent. -/
+theorem orderFortyNine_not_adj_degreeEight_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x y : V}
+    (hx : G.degree x = 8) (hy : G.degree y = 8) :
+    ¬ G.Adj x y := by
+  intro hxy
+  have hytight := orderFortyNine_neighbor_degree_seven_of_degreeEight
+    G hfree hmin hcard hx hxy
+  omega
+
+/-- Every pair of distinct degree-eight vertices has exactly one common
+degree-seven neighbor.  This is the pairwise-balanced-design core of the
+order-49 laboratory. -/
+theorem orderFortyNine_card_common_degreeEight_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x y : V}
+    (hx : G.degree x = 8) (_hy : G.degree y = 8) (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 1 := by
+  have hconflictSet := orderFortyNine_conflictNeighborFinset_degreeEight
+    G hfree hmin hcard hx
+  have hyErase : y ∈ (Finset.univ : Finset V).erase x := by simp [hxy.symm]
+  have hyConflictMem : y ∈ (commonNeighborConflict G).neighborFinset x := by
+    rw [hconflictSet]
+    exact hyErase
+  have hnonempty :=
+    (((commonNeighborConflict G).mem_neighborFinset x y).mp hyConflictMem).2
+  have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+    Finset.card_pos.mpr hnonempty
+  have hle := common_le_one_of_not_containsC4 hfree x y hxy
+  omega
+
 end
 
 end Erdos85
