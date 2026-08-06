@@ -248,6 +248,56 @@ theorem adjMatrix_mul_triangleFreeEdgeGraph_apply_mul_transpose
     exact adjMatrix_mul_triangleFreeEdgeGraph_opposite_mul_eq_zero
       G hfree hd hodd hreg hcard hxy
 
+/-- The matching-twisted incidence matrix `B = AM` has constant row and
+column sum `d`. -/
+theorem matchingIncidence_mul_ones_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    let B := G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ
+    let J := FriendshipTheoremOQ01.onesMatrix V
+    B * J = (d : ℤ) • J ∧ J * B = (d : ℤ) • J := by
+  dsimp only
+  have hmreg : ∀ x,
+      (triangleFreeEdgeGraph G).degree x = 1 :=
+    triangleFreeEdgeGraph_degree_eq_one_of_odd_excessOne
+      G hfree hd hodd hreg hcard
+  constructor
+  · calc
+      (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+          FriendshipTheoremOQ01.onesMatrix V =
+        G.adjMatrix ℤ *
+          ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+            FriendshipTheoremOQ01.onesMatrix V) := by
+              simp only [Matrix.mul_assoc]
+      _ = G.adjMatrix ℤ * FriendshipTheoremOQ01.onesMatrix V := by
+        rw [FriendshipTheoremOQ01.adjMatrix_mul_ones
+          (triangleFreeEdgeGraph G) 1 hmreg]
+        simp
+      _ = (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V :=
+        FriendshipTheoremOQ01.adjMatrix_mul_ones G d hreg
+  · calc
+      FriendshipTheoremOQ01.onesMatrix V *
+          (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) =
+        (FriendshipTheoremOQ01.onesMatrix V * G.adjMatrix ℤ) *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ := by
+            simp only [Matrix.mul_assoc]
+      _ = ((d : ℤ) • FriendshipTheoremOQ01.onesMatrix V) *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ := by
+        rw [onesMatrix_mul_adjMatrix_of_regular G d hreg]
+      _ = (d : ℤ) •
+          (FriendshipTheoremOQ01.onesMatrix V *
+            (triangleFreeEdgeGraph G).adjMatrix ℤ) := by
+        rw [Matrix.smul_mul]
+      _ = (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+        rw [onesMatrix_mul_adjMatrix_of_regular
+          (triangleFreeEdgeGraph G) 1 hmreg]
+        simp
+
 /-- The first genuinely noncommutative matching moment is nevertheless
 forced: `tr((AM)²)=|V|`.  Its diagonal contribution is one per vertex and
 all off-diagonal directed two-cycles are forbidden by `C₄`-freeness. -/
