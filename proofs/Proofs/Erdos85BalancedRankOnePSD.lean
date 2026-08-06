@@ -1,6 +1,4 @@
-import Mathlib.Data.Matrix.Mul
-import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Data.Fintype.Card
+import Proofs.Erdos85OrientedMassBounds
 
 /-!
 # The balanced negative rank-one positivity obstruction
