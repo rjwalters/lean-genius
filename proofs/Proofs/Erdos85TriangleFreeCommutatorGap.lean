@@ -282,6 +282,31 @@ theorem trace_adj_sq_triangleFree_sq_sub_fourth_excessThree
       G hfree hreg, hsum1, hsum2]
   ring
 
+/-- **Pinned antipodal commutator gap at odd excess three.**  Combining the
+color-commutator equation with the preceding normalization determines the
+previously unknown antipodal fourth-word difference exactly. -/
+theorem trace_adj_sq_antipodal_sq_sub_alternating_excessThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 7 ≤ d) (hodd : Odd d)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 6) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let a := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 3).card
+    Matrix.trace ((A * A) * (C * C)) -
+        Matrix.trace ((A * C) * (A * C)) =
+      (d - 1 : ℤ) * (Fintype.card V : ℤ) +
+        (2 * (d : ℤ) - 8) * (a : ℤ) := by
+  dsimp only
+  rw [trace_adj_sq_antipodal_sq_sub_alternating_eq_triangleFree_gap
+      G hfree hreg,
+    trace_adj_sq_triangleFree_sq_sub_fourth_excessThree
+      G hfree hd hodd hreg hcard]
+
 end
 
 end Erdos85
