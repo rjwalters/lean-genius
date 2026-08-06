@@ -1,5 +1,6 @@
 import Proofs.Erdos85MixedParityComplete
 import Proofs.Erdos85PrimeSectorSize
+import Proofs.Erdos85MixedSelection
 
 /-!
 # The parity terminal is self-terminating at large primes
@@ -193,6 +194,51 @@ theorem even_pDivisible_filter_card_of_large_prime
   · exact he
   · exact (false_of_secondOrder_countOdd_of_large_prime G hfree hd heven
       hmin hcard hp hp7 hbig u hu huRange huD hℓ3 hodd ho).elim
+
+/-- **The selection window is finite.**  At the exact even boundary with a
+cycle labeling, either some prime in the window
+`7 ≤ p`, `p(p-3) ≤ 2(d(d-1)+3)` satisfies both parity-terminal
+hypotheses, or the length family is selection-obstructed: usable primes
+beyond the window are annihilated by the large-prime parity terminal. -/
+theorem exists_window_selection_or_obstructed
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard) :
+    (∃ p : ℕ, p.Prime ∧ 7 ≤ p ∧
+      p * (p - 3) ≤ 2 * (d * (d - 1) + 3) ∧
+      (∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+        p ∣ c.supp.ncard → Odd c.supp.ncard) ∧
+      Odd (Finset.univ.filter (fun c :
+        (secondOrderDefectGraph G).ConnectedComponent ↦
+          p ∣ c.supp.ncard)).card) ∨
+    SelectionObstructed (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent ↦ c.supp.ncard) := by
+  rcases exists_selection_or_obstructed (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent ↦ c.supp.ncard) with
+    ⟨p, hp, hp7, hodd, hcountOdd⟩ | hobs
+  · left
+    refine ⟨p, hp, hp7, ?_, hodd, hcountOdd⟩
+    rcases Nat.le_or_lt (p * (p - 3)) (2 * (d * (d - 1) + 3)) with hle | hgt
+    · exact hle
+    · exact (false_of_secondOrder_countOdd_of_large_prime G hfree hd heven
+        hmin hcard hp hp7 hgt u hu huRange huD hℓ3 hodd hcountOdd).elim
+  · right
+    exact hobs
 
 end
 
