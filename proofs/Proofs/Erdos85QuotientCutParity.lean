@@ -187,6 +187,69 @@ theorem secondOrder_pDivisible_quotient_cut_even
       G hfree hd heven hmin hcard c) hinternal
   simpa [S, Q] using hcut
 
+/-- Across the prime-divisibility cut, every quotient entry is at most one.
+Indeed `p ∣ |e|` and `p ∤ |c|` rule out `|e| ∣ |c|`, which is exactly the
+one-neighbour criterion for the boundary quotient. -/
+theorem secondOrder_pDivisible_cut_entry_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hpe : p ∣ e.supp.ncard) (hpc : ¬p ∣ c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e c ≤ 1 := by
+  apply secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+    G hfree hd heven hmin hcard e c
+  intro hec
+  exact hpc (dvd_trans hpe hec)
+
+/-- Consequently the even cut mass is literally the parity of the number of
+positive quotient blocks crossing the cut. -/
+theorem secondOrder_pDivisible_positive_cut_card_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hodd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ c.supp.ncard → Odd c.supp.ncard) :
+    Even (((Finset.univ.filter (fun e :
+        (secondOrderDefectGraph G).ConnectedComponent ↦ p ∣ e.supp.ncard)) ×ˢ
+      (Finset.univ.filter (fun c :
+        (secondOrderDefectGraph G).ConnectedComponent ↦ ¬p ∣ c.supp.ncard)))
+      |>.filter (fun q ↦ 0 < componentQuotientMatrix G
+        (secondOrderDefectGraph G) q.1 q.2)).card := by
+  let C := (secondOrderDefectGraph G).ConnectedComponent
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset C := Finset.univ.filter (fun e ↦ p ∣ e.supp.ncard)
+  let T : Finset C := Finset.univ.filter (fun c ↦ ¬p ∣ c.supp.ncard)
+  have hmass := secondOrder_pDivisible_quotient_cut_even G hfree hd heven
+    hmin hcard hodd
+  have hcardmass : ((S ×ˢ T).filter (fun q ↦ 0 < Q q.1 q.2)).card =
+      ∑ e ∈ S, ∑ c ∈ T, Q e c := by
+    rw [Finset.card_filter, Finset.sum_product]
+    apply Finset.sum_congr rfl
+    intro e he
+    apply Finset.sum_congr rfl
+    intro c hc
+    have hpe : p ∣ e.supp.ncard := by simpa [S] using he
+    have hpc : ¬p ∣ c.supp.ncard := by simpa [T] using hc
+    have hle := secondOrder_pDivisible_cut_entry_le_one G hfree hd heven
+      hmin hcard e c hpe hpc
+    change Q e c ≤ 1 at hle
+    change (if 0 < Q e c then 1 else 0) = Q e c
+    split_ifs with hpos <;> omega
+  rw [hcardmass]
+  simpa [S, T, Q] using hmass
+
 end
 
 end Erdos85
