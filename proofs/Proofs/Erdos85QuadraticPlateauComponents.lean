@@ -91,4 +91,50 @@ theorem C4PlateauCore.exists_component_count_lt_seventyTwo
       ⟨G, hdec, hmin, hfree, hcount⟩
     exact ⟨G, hdec, hmin, hfree, by omega⟩
 
+/-- A sharper use of the same clean Moore bound gives the uniform constant
+`44`: for `d ≥ 3`, `5d² ≤ 6(d(d-1)+2)`. -/
+theorem C4PlateauCore.exists_component_count_lt_fortyFour
+    {m d : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m d) :
+    ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
+      G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
+      Fintype.card G.ConnectedComponent < 44 := by
+  have hd2 : 2 ≤ d := hcore.two_le_degree hm
+  by_cases hd : 3 ≤ d
+  · rcases hcore with ⟨G, hdec, hmin, hfree, hcover, hnext⟩
+    letI : DecidableRel G.Adj := hdec
+    let L := d * (d - 1) + 2
+    let k := Fintype.card G.ConnectedComponent
+    have hcomp : k * L ≤ m := by
+      simpa [k, L] using connectedComponent_count_mul_cleanMoore_le_card
+        G hfree hd hmin.ge
+    have hmUpper : m < 36 * d * d := by
+      have hs := C4PlateauCore.order_succ_lt_quadratic hm
+        ⟨G, hdec, hmin, hfree, hcover, hnext⟩
+      omega
+    have hratio : 5 * (d * d) ≤ 6 * L := by
+      obtain ⟨a, rfl⟩ : ∃ a, d = a + 3 := ⟨d - 3, by omega⟩
+      dsimp [L]
+      nlinarith
+    refine ⟨G, hdec, hmin, hfree, ?_⟩
+    by_contra hnot
+    have hk44 : 44 ≤ k := by omega
+    have hA : 44 * (5 * (d * d)) ≤ k * (5 * (d * d)) :=
+      Nat.mul_le_mul_right (5 * (d * d)) hk44
+    have hB : k * (5 * (d * d)) ≤ k * (6 * L) :=
+      Nat.mul_le_mul_left k hratio
+    have hC : 6 * (k * L) ≤ 6 * m := Nat.mul_le_mul_left 6 hcomp
+    have hchain : 220 * d * d ≤ 6 * m := by
+      calc
+        220 * d * d = 44 * (5 * (d * d)) := by ring
+        _ ≤ k * (5 * (d * d)) := hA
+        _ ≤ k * (6 * L) := hB
+        _ = 6 * (k * L) := by ring
+        _ ≤ 6 * m := hC
+    nlinarith
+  · have hdEq : d = 2 := by omega
+    subst d
+    rcases hcore.connectedComponent_count_lt with
+      ⟨G, hdec, hmin, hfree, hcount⟩
+    exact ⟨G, hdec, hmin, hfree, by omega⟩
+
 end Erdos85
