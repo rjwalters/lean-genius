@@ -70,6 +70,63 @@ theorem false_of_cycleCover_between_triangleFree_cycles
     (hsep (f 0) 0).symm
     hvne
 
+/-- **Graph-facing color restriction on a minimum-to-larger quotient
+edge.**  If a minimum defect component has a positive quotient edge to a
+strictly larger component, their cyclic defect edges cannot both be edges
+of `G`.  In the second-order coloring, at least one endpoint component is
+therefore antipodal-colored. -/
+theorem not_both_triangleFree_of_minimumComponent_longer_edge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr : 3 ≤ r) (hn : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ l.supp.ncard)
+    (hlt : c.supp.ncard < e.supp.ncard)
+    (hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c e)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)}) :
+    ¬ ((∀ x, G.Adj (u x) (u (x + 1))) ∧
+      (∀ y, G.Adj (v y) (v (y + 1)))) := by
+  rintro ⟨huTri, hvTri⟩
+  obtain ⟨f, hcover, horient, _⟩ :=
+    exists_minimumComponent_longer_cycleCover G hfree hd heven hmin hcard
+      hr hn c e hcmin hlt hpos u v hu hv huRange hvRange huD hvD
+  have hce : c ≠ e := by
+    intro h
+    rw [h] at hlt
+    omega
+  have hsep : ∀ x y, u x ≠ v y := by
+    intro x y hxy
+    have hux : u x ∈ c.supp := by
+      rw [← huRange]
+      exact ⟨x, rfl⟩
+    have hvy : v y ∈ e.supp := by
+      rw [← hvRange]
+      exact ⟨y, rfl⟩
+    have hc : (secondOrderDefectGraph G).connectedComponentMk (u x) = c :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c (u x)).mp hux
+    have he : (secondOrderDefectGraph G).connectedComponentMk (v y) = e :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff e (v y)).mp hvy
+    apply hce
+    rw [hxy] at hc
+    exact hc.symm.trans he
+  exact false_of_cycleCover_between_triangleFree_cycles hr hn G u v hu hv
+    hsep f hcover horient huTri hvTri hfree
+
 end
 
 end Erdos85
