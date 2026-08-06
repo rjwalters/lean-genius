@@ -31,7 +31,7 @@ theorem exists_boundary_cycle_chebyshev_root_with_square
     (hcard : Fintype.card V = d * (d - 1) + 3) :
     ∃ (μ t : AlgebraicClosure ℚ)
         (c : (secondOrderDefectGraph G).ConnectedComponent) (r : ℕ),
-      3 ≤ r ∧ r = c.supp.ncard ∧
+      3 ≤ r ∧ r = c.supp.ncard ∧ r ≤ Fintype.card V ∧
       t ∈ IntermediateField.adjoin ℚ {μ} ∧
       t * t = (((d : ℚ) - 1 : ℚ) : AlgebraicClosure ℚ) - μ ∧
       ((Polynomial.Chebyshev.C ℤ (r : ℤ) - 2).map
@@ -126,8 +126,14 @@ theorem exists_boundary_cycle_chebyshev_root_with_square
         (algebraMap ℤ (AlgebraicClosure ℚ))).eval μ = 0 := by
     rw [← hpolyAC, Matrix.eval_charpoly]
     exact hdetp
+  have hrle : c.supp.ncard ≤ Fintype.card V := by
+    calc
+      c.supp.ncard ≤ (Set.univ : Set V).ncard :=
+        Set.ncard_le_ncard (Set.subset_univ _)
+      _ = Fintype.card V := by
+        simpa [Nat.card_eq_fintype_card] using (Set.ncard_univ V)
   exact ⟨μ, t, c, p.length, hp.three_le_length, hrsize,
-    htmem, htsq, hroot⟩
+    hrsize ▸ hrle, htmem, htsq, hroot⟩
 
 end
 
