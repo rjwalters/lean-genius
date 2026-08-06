@@ -139,4 +139,83 @@ theorem secondOrderDefect_degree_add_degreeExcess_mul_pred_eq_orderExcess
   rw [hexact, hprod, hcard] at hsum
   omega
 
+/-- Total degree excess among the neighbors of `x`. -/
+def neighborDegreeExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : ℕ) (x : V) : ℕ :=
+  ∑ y : {z : V // z ∈ G.neighborSet x}, (G.degree y.1 - d)
+
+/-- **Local excess conservation.**  At order `d(d-1)+1+q`, the order
+excess splits at every vertex into its defect degree, its own degree excess
+weighted by `d-1`, and the degree excess carried by its neighbors.  No
+edge-minimality assumption is needed for this identity. -/
+theorem secondOrderDefect_degree_add_weightedExcess_add_neighborExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q)
+    (x : V) :
+    (secondOrderDefectGraph G).degree x +
+        (G.degree x - d) * (d - 1) + neighborDegreeExcess G d x = q := by
+  have hdual := commonNeighborConflict_compl_eq_secondOrderDefectGraph
+    G hfree
+  have hcompl := (commonNeighborConflict G).degree_compl x
+  have hDdegree : (secondOrderDefectGraph G).degree x =
+      ((commonNeighborConflict G)ᶜ).degree x := by
+    rw [← (secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+      ← ((commonNeighborConflict G)ᶜ).card_neighborFinset_eq_degree]
+    apply congrArg Finset.card
+    ext y
+    simp only [SimpleGraph.mem_neighborFinset]
+    rw [hdual]
+  rw [← hDdegree] at hcompl
+  have hconfLt := (commonNeighborConflict G).degree_lt_card_verts x
+  have hconfLe : (commonNeighborConflict G).degree x ≤
+      Fintype.card V - 1 := by omega
+  have hsum : (secondOrderDefectGraph G).degree x +
+      (commonNeighborConflict G).degree x = Fintype.card V - 1 := by
+    rw [hcompl]
+    exact Nat.sub_add_cancel hconfLe
+  have hconflict :=
+    degree_commonNeighborConflict_eq_sum_neighbor_degree_sub_one
+      G hfree x
+  have hterm : ∀ y : {z : V // z ∈ G.neighborSet x},
+      G.degree y.1 - 1 = (d - 1) + (G.degree y.1 - d) := by
+    intro y
+    have := hmin y.1
+    omega
+  have hconflictSplit : (commonNeighborConflict G).degree x =
+      G.degree x * (d - 1) + neighborDegreeExcess G d x := by
+    rw [hconflict]
+    calc
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          (G.degree y.1 - 1)) =
+          ∑ y : {z : V // z ∈ G.neighborSet x},
+            ((d - 1) + (G.degree y.1 - d)) := by
+              apply Finset.sum_congr rfl
+              intro y _
+              exact hterm y
+      _ = (∑ _y : {z : V // z ∈ G.neighborSet x}, (d - 1)) +
+          ∑ y : {z : V // z ∈ G.neighborSet x},
+            (G.degree y.1 - d) := by rw [Finset.sum_add_distrib]
+      _ = G.degree x * (d - 1) + neighborDegreeExcess G d x := by
+        rw [Finset.sum_const, Finset.card_univ,
+          SimpleGraph.card_neighborSet_eq_degree]
+        simp [neighborDegreeExcess]
+  have hxlow := hmin x
+  have hsplit : G.degree x = (G.degree x - d) + d := by omega
+  have hprod : G.degree x * (d - 1) =
+      d * (d - 1) + (G.degree x - d) * (d - 1) := by
+    calc
+      G.degree x * (d - 1) =
+          ((G.degree x - d) + d) * (d - 1) :=
+        congrArg (fun z : ℕ ↦ z * (d - 1)) hsplit
+      _ = d * (d - 1) + (G.degree x - d) * (d - 1) := by ring
+  rw [hconflictSplit, hprod, hcard] at hsum
+  omega
+
 end Erdos85
