@@ -115,6 +115,101 @@ theorem orderFortyNine_exists_degreeEight
   exact false_of_odd_degree_even_excess G hfree
     (d := 7) (e := 4) (by norm_num) (by norm_num) hreg (by omega)
 
+/-- The total degree excess is literally the number `h` of degree-eight
+vertices. -/
+theorem orderFortyNine_sum_degreeExcess_eq_card_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (∑ x : V, (G.degree x - 7)) =
+      (Finset.univ.filter fun x : V => G.degree x = 8).card := by
+  calc
+    (∑ x : V, (G.degree x - 7)) =
+        ∑ x : V, if G.degree x = 8 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard x with hx | hx <;> simp [hx]
+    _ = (Finset.univ.filter fun x : V => G.degree x = 8).card := by
+      rw [← Finset.sum_filter]
+      simp
+
+/-- The square-excess sum is the same count, since every degree excess is
+zero or one. -/
+theorem orderFortyNine_sum_degreeExcess_sq_eq_card_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (∑ x : V, (G.degree x - 7) * (G.degree x - 7)) =
+      (Finset.univ.filter fun x : V => G.degree x = 8).card := by
+  calc
+    (∑ x : V, (G.degree x - 7) * (G.degree x - 7)) =
+        ∑ x : V, (G.degree x - 7) := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard x with hx | hx <;> simp [hx]
+    _ = _ := orderFortyNine_sum_degreeExcess_eq_card_degreeEight
+      G hfree hmin hcard
+
+/-- The degree-eight sector has odd cardinality, by the handshake lemma. -/
+theorem orderFortyNine_card_degreeEight_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    Odd (Finset.univ.filter fun x : V => G.degree x = 8).card := by
+  let h := (Finset.univ.filter fun x : V => G.degree x = 8).card
+  have hexcess := orderFortyNine_sum_degreeExcess_eq_card_degreeEight
+    G hfree hmin hcard
+  have hsum : (∑ x : V, G.degree x) = 7 * 49 + h := by
+    calc
+      (∑ x : V, G.degree x) =
+          ∑ x : V, (7 + (G.degree x - 7)) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        have hx := hmin x
+        omega
+      _ = 7 * Fintype.card V + ∑ x : V, (G.degree x - 7) := by
+        rw [Finset.sum_add_distrib]
+        simp [Nat.mul_comm]
+      _ = 7 * 49 + h := by rw [hcard, hexcess]
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhand
+  apply Nat.odd_iff.mpr
+  omega
+
+/-- Global quadratic conservation bounds the odd high-degree sector by 21.
+Equivalently, `2|E(D)| + 14h = 294`. -/
+theorem orderFortyNine_card_degreeEight_le_twentyOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (Finset.univ.filter fun x : V => G.degree x = 8).card ≤ 21 := by
+  have hglobal := two_mul_defectEdges_add_linearExcess_add_squareExcess_eq
+    G hfree (d := 7) (q := 6) (by norm_num) hmin (by omega)
+  have hsum := orderFortyNine_sum_degreeExcess_eq_card_degreeEight
+    G hfree hmin hcard
+  have hsquares := orderFortyNine_sum_degreeExcess_sq_eq_card_degreeEight
+    G hfree hmin hcard
+  rw [hcard, hsum, hsquares] at hglobal
+  omega
+
 end
 
 end Erdos85
