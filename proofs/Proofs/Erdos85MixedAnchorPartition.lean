@@ -105,6 +105,39 @@ theorem existsUnique_fullMass_of_quantized_sum
   rw [hc, he, hsum] at hle
   omega
 
+/-- Finset-indexed version of full-mass uniqueness. -/
+theorem existsUnique_mem_fullMass_of_quantized_sum
+    {C : Type*} [DecidableEq C] (S : Finset C)
+    (M : C → ℕ) {m : ℕ} (hm : 0 < m)
+    (hquant : ∀ c ∈ S, M c ∈ ({0, m} : Set ℕ))
+    (hsum : ∑ c ∈ S, M c = m) :
+    ∃! c, c ∈ S ∧ M c = m := by
+  have hex : ∃ c ∈ S, M c = m := by
+    by_contra hnone
+    push_neg at hnone
+    have hz : ∀ c ∈ S, M c = 0 := by
+      intro c hc
+      rcases hquant c hc with h | h
+      · exact h
+      · exact absurd h (hnone c hc)
+    have hzero : ∑ c ∈ S, M c = 0 :=
+      Finset.sum_eq_zero (fun c hc ↦ hz c hc)
+    omega
+  obtain ⟨c, hcS, hc⟩ := hex
+  refine ⟨c, ⟨hcS, hc⟩, ?_⟩
+  intro e he
+  by_contra hne
+  have hle : M c + M e ≤ ∑ z ∈ S, M z := by
+    have heErase : e ∈ S.erase c := by simp [he.1, hne]
+    calc
+      M c + M e ≤ M c + ∑ z ∈ S.erase c, M z :=
+        Nat.add_le_add_left (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _)
+          heErase) _
+      _ = (∑ z ∈ S.erase c, M z) + M c := by omega
+      _ = ∑ z ∈ S, M z := Finset.sum_erase_add _ _ hcS
+  rw [hc, he.2, hsum] at hle
+  omega
+
 end
 
 end Erdos85
