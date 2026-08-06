@@ -14,6 +14,97 @@ namespace Erdos85
 
 noncomputable section
 
+open SimpleGraph
+
+/-- The components whose chosen cyclic rim consists of edges of `G`.  By the
+local monochromaticity theorem, this is exactly the triangle-free-colored
+sector; phrasing it through a mixed cycle labeling makes the quotient
+interfaces immediately usable. -/
+def triangleFreeCycleSector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V) :
+    Finset (secondOrderDefectGraph G).ConnectedComponent :=
+  Finset.univ.filter fun c ↦ ∀ x, G.Adj (u c x) (u c (x + 1))
+
+@[simp] theorem mem_triangleFreeCycleSector_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    c ∈ triangleFreeCycleSector G u ↔
+      ∀ x, G.Adj (u c x) (u c (x + 1)) := by
+  simp [triangleFreeCycleSector]
+
+/-- The graph triangle-free cycle sector is diagonal-two. -/
+theorem triangleFreeCycleSector_diagonalQuotient_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    {c : (secondOrderDefectGraph G).ConnectedComponent}
+    (hc : c ∈ triangleFreeCycleSector G u) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 := by
+  exact triangleFreeCycleComponent_diagonalQuotient_eq_two G hfree hd heven
+    hmin hcard (hr c) c (u c) (hu c) (huRange c) (huD c)
+    ((mem_triangleFreeCycleSector_iff G u c).mp hc)
+
+/-- Distinct graph triangle-free cycle components have zero quotient entry. -/
+theorem triangleFreeCycleSector_offDiagonalQuotient_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    {c e : (secondOrderDefectGraph G).ConnectedComponent}
+    (hc : c ∈ triangleFreeCycleSector G u)
+    (he : e ∈ triangleFreeCycleSector G u) (hce : c ≠ e) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c e = 0 := by
+  exact componentQuotient_eq_zero_of_both_triangleFree_cycles G hfree hd
+    heven hmin hcard (hr c) (hr e) c e hce (u c) (u e) (hu c) (hu e)
+    (huRange c) (huRange e) (huD c) (huD e)
+    ((mem_triangleFreeCycleSector_iff G u c).mp hc)
+    ((mem_triangleFreeCycleSector_iff G u e).mp he)
+
 /-- If a sector `S` has diagonal two and no off-diagonal entries, then the
 off-diagonal square entry between two distinct vertices of `S` factors
 entirely through its complement. -/
