@@ -100,6 +100,47 @@ theorem excessThree_degreeThreeSector_count_identity
     2 * S.card + 6 * (H.cliqueFinset 3).card
   omega
 
+/-- The mixed adjacency--defect trace at odd excess three is the order plus
+twice the degree-three color-sector size.  This is the excess-three analogue
+of `tr(AD)=|V|` at excess one. -/
+theorem trace_adjMatrix_mul_secondOrderDefect_excessThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 7 ≤ d) (hodd : Odd d)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 6) :
+    Matrix.trace (G.adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) =
+      (Fintype.card V : ℤ) + 2 *
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 3).card : ℤ) := by
+  rw [trace_adjMatrix_mul_secondOrderDefect_eq_sum_triangleFreeDegrees]
+  let T := triangleFreeEdgeGraph G
+  have hdegT : ∀ x : V, T.degree x = 1 ∨ T.degree x = 3 := by
+    intro x
+    rw [← T.card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset]
+    exact excessThree_triangleFreeNeighbors_card_eq_one_or_three_of_odd
+      G hfree hd hodd hreg hcard x
+  calc
+    (∑ x : V, (T.degree x : ℤ)) =
+        ∑ x : V, ((1 : ℤ) + if T.degree x = 3 then 2 else 0) := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rcases hdegT x with hx | hx
+      · simp [hx]
+      · simp [hx]
+    _ = (Fintype.card V : ℤ) +
+        ∑ x : V, if T.degree x = 3 then 2 else 0 := by
+      rw [Finset.sum_add_distrib]
+      simp
+    _ = (Fintype.card V : ℤ) + 2 *
+        ((Finset.univ.filter fun x : V => T.degree x = 3).card : ℤ) := by
+      rw [← Finset.sum_filter]
+      simp [mul_comm]
+
 /-- If `d ≡ 2 (mod 3)`, some vertex belongs to the degree-three
 triangle-free sector. -/
 theorem exists_excessThree_triangleFreeNeighbors_card_eq_three_of_mod_three_two
