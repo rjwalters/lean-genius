@@ -7,6 +7,8 @@ import Mathlib.Algebra.Polynomial.Div
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Adjugate
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
+import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
 /-!
 # The nonprincipal adjacency characteristic factor
@@ -121,6 +123,7 @@ theorem exists_asymmetric_nonprincipal_root
       Irreducible f ∧ f.Monic ∧ f ∣ q ∧
       Polynomial.signedReflection f ≠ f ∧
       Polynomial.aeval θ f = 0 ∧ Polynomial.aeval θ q = 0 ∧
+      Polynomial.aeval θ (G.adjMatrix ℚ).charpoly = 0 ∧
       θ ∈ IntermediateField.adjoin ℚ {θ ^ 2} := by
   obtain ⟨q, f, hfactor, hfirr, hfmonic, hfdvd, hfasym⟩ :=
     exists_asymmetric_nonprincipal_irreducible G d hd hcard hreg
@@ -134,9 +137,38 @@ theorem exists_asymmetric_nonprincipal_root
   have hθq : Polynomial.aeval θ q = 0 := by
     obtain ⟨r, hr⟩ := hfdvd
     rw [hr, map_mul, hθf, zero_mul]
+  have hθchar : Polynomial.aeval θ (G.adjMatrix ℚ).charpoly = 0 := by
+    rw [hfactor, map_mul, hθq, mul_zero]
   have hθmem : θ ∈ IntermediateField.adjoin ℚ {θ ^ 2} :=
     mem_adjoin_sq_of_aeval_eq_zero_of_signedReflection_ne
       f hfirr hfmonic hfasym θ hθf
-  exact ⟨q, f, θ, hfactor, hfirr, hfmonic, hfdvd, hfasym, hθf, hθq, hθmem⟩
+  exact ⟨q, f, θ, hfactor, hfirr, hfmonic, hfdvd, hfasym, hθf, hθq,
+    hθchar, hθmem⟩
+
+/-- A rational characteristic root in the algebraic closure is represented by
+a genuine adjacency eigenvector after scalar extension. -/
+theorem exists_adjMatrix_eigenvector_of_aeval_charpoly_eq_zero
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (θ : AlgebraicClosure ℚ)
+    (hθ : Polynomial.aeval θ (G.adjMatrix ℚ).charpoly = 0) :
+    ∃ v : V → AlgebraicClosure ℚ,
+      v ≠ 0 ∧ (G.adjMatrix (AlgebraicClosure ℚ)).mulVec v = θ • v := by
+  let ι : ℚ →+* AlgebraicClosure ℚ := algebraMap ℚ (AlgebraicClosure ℚ)
+  have hAmap : (G.adjMatrix ℚ).map ι = G.adjMatrix (AlgebraicClosure ℚ) := by
+    ext i j
+    simp [SimpleGraph.adjMatrix_apply, ι]
+  have hroot : Polynomial.IsRoot
+      (G.adjMatrix (AlgebraicClosure ℚ)).charpoly θ := by
+    change (G.adjMatrix (AlgebraicClosure ℚ)).charpoly.eval θ = 0
+    rw [← hAmap, Matrix.charpoly_map]
+    simpa [Polynomial.aeval_def, ι] using hθ
+  have hspec : θ ∈ spectrum (AlgebraicClosure ℚ)
+      (G.adjMatrix (AlgebraicClosure ℚ)) :=
+    Matrix.mem_spectrum_of_isRoot_charpoly hroot
+  have heig : Module.End.HasEigenvalue
+      (G.adjMatrix (AlgebraicClosure ℚ)).toLin' θ :=
+    Module.End.HasEigenvalue.of_mem_spectrum (by simpa using hspec)
+  obtain ⟨v, hv⟩ := heig.exists_hasEigenvector
+  exact ⟨v, hv.2, hv.apply_eq_smul⟩
 
 end Erdos85
