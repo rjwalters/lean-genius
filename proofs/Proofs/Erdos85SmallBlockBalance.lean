@@ -72,4 +72,22 @@ theorem exists_take_balanced_of_le_two
   rw [← hsum] at htotal
   omega
 
+/-- Numerical core of the parity refinement.  From `q` blocks of weight two
+and `r` blocks of weight one, a target can be represented exactly provided
+the total is at least twice the target and either the target is even or a
+weight-one block exists. -/
+theorem exists_two_one_count_exact
+    (q r target : ℕ) (htotal : 2 * target ≤ 2 * q + r)
+    (hparity : target % 2 = 0 ∨ 1 ≤ r) :
+    ∃ a b, a ≤ q ∧ b ≤ r ∧ 2 * a + b = target := by
+  by_cases hq : 2 * q ≤ target
+  · refine ⟨q, target - 2 * q, Nat.le_refl q, ?_, ?_⟩ <;> omega
+  · refine ⟨target / 2, target % 2, ?_, ?_, ?_⟩
+    · omega
+    · rcases hparity with htEven | hr
+      · simpa [htEven]
+      · have hmod : target % 2 < 2 := Nat.mod_lt _ (by omega)
+        omega
+    · omega
+
 end Erdos85
