@@ -318,8 +318,36 @@ theorem CommonNeighborIndependent.mem_or_exists_adj_of_count_eq_card
     obtain ⟨c, hc, hcv⟩ := hvU
     exact ⟨c, hc, (G.mem_neighborFinset c v).mp hcv⟩
 
-/-- An independent defect clique of size `d-1` can occur in the regular
-positive-excess band only at its top endpoint `e=d-4`. -/
+/-- A defect clique of size `d-1` can occur in the regular positive-excess
+band only at its top endpoint `e=d-4`.  This is forced directly by the
+regular defect degree `e+2`; no independence assumption in `G` is needed. -/
+theorem excess_eq_sub_four_of_large_secondOrderDefectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    e = d - 4 := by
+  have hCpos : 0 < C.card := by rw [hCcard]; omega
+  obtain ⟨c, hc⟩ := Finset.card_pos.mp hCpos
+  have hsub : C.erase c ⊆
+      (secondOrderDefectGraph G).neighborFinset c := by
+    intro y hy
+    have hy' := Finset.mem_erase.mp hy
+    apply ((secondOrderDefectGraph G).mem_neighborFinset c y).mpr
+    exact hclique hc hy'.2 hy'.1.symm
+  have hcardLe := Finset.card_le_card hsub
+  rw [Finset.card_erase_of_mem hc, hCcard,
+    (secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+    secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcard c] at hcardLe
+  omega
+
+/-- Independent-set specialization retained as a compatibility interface. -/
 theorem excess_eq_sub_four_of_independent_large_secondOrderDefectClique
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -330,19 +358,10 @@ theorem excess_eq_sub_four_of_independent_large_secondOrderDefectClique
     (hreg : ∀ x, G.degree x = d)
     (C : Finset V) (hCcard : C.card = d - 1)
     (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
-    (hind : G.IsIndepSet (C : Set V)) :
+    (_hind : G.IsIndepSet (C : Set V)) :
     e = d - 4 := by
-  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
-    G hfree C hclique
-  have hcount :=
-    hsafe.card_add_sum_degrees_le_card_of_isIndepSet G C hind
-  have hsum : (∑ x ∈ C, G.degree x) = C.card * d := by
-    simp_rw [hreg]
-    simp
-  rw [hsum, hCcard, hcard] at hcount
-  have hmul : (d - 1) * d = d * (d - 1) := Nat.mul_comm _ _
-  rw [hmul] at hcount
-  omega
+  exact excess_eq_sub_four_of_large_secondOrderDefectClique
+    G hfree hd he hcard hreg C hCcard hclique
 
 /-- At that forced top endpoint the independent defect clique and its
 pairwise-disjoint open neighborhoods exhaust the entire cardinal budget. -/
@@ -392,7 +411,7 @@ theorem mem_or_exists_adj_of_independent_large_secondOrderDefectClique
 
 /-- At the top excess, the defect neighborhood of a clique vertex consists
 exactly of the other clique vertices. -/
-theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
+theorem secondOrderDefect_neighborFinset_eq_erase_of_large_clique
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
@@ -402,11 +421,11 @@ theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
     (hreg : ∀ x, G.degree x = d)
     (C : Finset V) (hCcard : C.card = d - 1)
     (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
-    (hind : G.IsIndepSet (C : Set V)) {c : V} (hc : c ∈ C) :
+    {c : V} (hc : c ∈ C) :
     (secondOrderDefectGraph G).neighborFinset c = C.erase c := by
   have heq :=
-    excess_eq_sub_four_of_independent_large_secondOrderDefectClique
-      G hfree hd he hcard hreg C hCcard hclique hind
+    excess_eq_sub_four_of_large_secondOrderDefectClique
+      G hfree hd he hcard hreg C hCcard hclique
   have hDdegree : (secondOrderDefectGraph G).degree c = d - 2 := by
     have h := secondOrderDefectGraph_degree_eq_excess_add_two
       G hfree hreg hcard c
@@ -422,6 +441,22 @@ theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
   rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree,
     hDdegree, Finset.card_erase_of_mem hc, hCcard]
   omega
+
+/-- Compatibility wrapper for the earlier independent-clique interface. -/
+theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (_hind : G.IsIndepSet (C : Set V)) {c : V} (hc : c ∈ C) :
+    (secondOrderDefectGraph G).neighborFinset c = C.erase c :=
+  secondOrderDefect_neighborFinset_eq_erase_of_large_clique
+    G hfree hd he hcard hreg C hCcard hclique hc
 
 /-- Therefore no clique vertex is incident with a triangle-free defect
 edge; all of its defect neighbors are antipodal. -/
@@ -442,8 +477,8 @@ theorem triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
   have hyD : y ∈ (secondOrderDefectGraph G).neighborFinset c := by
     rw [secondOrderDefectGraph_neighborFinset]
     exact Finset.mem_union_right _ hy
-  rw [secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
-    G hfree hd he hcard hreg C hCcard hclique hind hc] at hyD
+  rw [secondOrderDefect_neighborFinset_eq_erase_of_large_clique
+    G hfree hd he hcard hreg C hCcard hclique hc] at hyD
   have hyC := (Finset.mem_erase.mp hyD).2
   have hcy : G.Adj c y := (mem_triangleFreeNeighbors G c y).mp hy |>.1
   rw [SimpleGraph.isIndepSet_iff] at hind
