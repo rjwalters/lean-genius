@@ -1,5 +1,6 @@
 import Proofs.Erdos85UniqueSquareTraceTerminal
 import Proofs.Erdos85ResidualTraceOrbit
+import Proofs.Erdos85FrequencyPairEigenspace
 import Proofs.CayleyHamiltonOQ01OQ04
 import Mathlib.Algebra.DirectSum.LinearMap
 
@@ -264,6 +265,27 @@ theorem exists_asymmetric_factor_of_kerAevalRestrict_trace_ne_zero
       q ∣ (kerAevalRestrict S T hcomm r).charpoly ∧
         Polynomial.signedReflection q ≠ q :=
   LinearMap.exists_asymmetric_charpoly_factor_of_trace_ne_zero _ h
+
+/-- Commuting matrices induce commuting endomorphisms. -/
+theorem toLin'_comm_of_matrix_comm {V : Type*} [Fintype V] [DecidableEq V]
+    {A D : Matrix V V K} (h : A * D = D * A) :
+    Matrix.toLin' A * Matrix.toLin' D = Matrix.toLin' D * Matrix.toLin' A := by
+  have hmap := congrArg Matrix.toLin' h
+  rw [Matrix.toLin'_mul, Matrix.toLin'_mul] at hmap
+  exact hmap
+
+/-- The frequency eigenspace of a defect matrix is the linear primary
+sector of the induced endomorphism.  This identifies the sectors of the
+primary trace split with the `defectEigenspace` framework of the
+frequency-pair bridge. -/
+theorem defectEigenspace_eq_ker_aeval {V : Type*} [Fintype V] [DecidableEq V]
+    (D : Matrix V V K) (μ : K) :
+    defectEigenspace D μ =
+      LinearMap.ker (aeval (Matrix.toLin' D) (X - C μ)) := by
+  ext v
+  rw [mem_defectEigenspace_iff, LinearMap.mem_ker, aeval_X_sub_C_eq,
+    LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply,
+    sub_eq_zero, Matrix.toLin'_apply]
 
 /-- **Unique square-sector divisibility, fed by the primary trace
 split.**  Suppose `T` is annihilated by `p·(X - μ)·r` with the three
