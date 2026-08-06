@@ -191,6 +191,58 @@ theorem trace_triangleFree_mul_triangular_cube_eq_zero
     · simp [SimpleGraph.adjMatrix_apply, hzw]
   · simp [SimpleGraph.adjMatrix_apply, hwx]
 
+/-- Deleting the triangle-free-edge color is ordinary matrix subtraction,
+because that color is a spanning subgraph of `G`. -/
+theorem triangularEdgeGraph_adjMatrix_eq_sub_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj] :
+    (triangularEdgeGraph G).adjMatrix ℤ =
+      G.adjMatrix ℤ - (triangleFreeEdgeGraph G).adjMatrix ℤ := by
+  classical
+  ext x y
+  simp only [Matrix.sub_apply, SimpleGraph.adjMatrix_apply]
+  have hsub : (triangleFreeEdgeGraph G).Adj x y → G.Adj x y := by
+    intro h
+    exact ((mem_triangleFreeNeighbors G x y).mp h).1
+  by_cases hg : G.Adj x y
+  · by_cases hm : (triangleFreeEdgeGraph G).Adj x y
+    · have ht : ¬(triangularEdgeGraph G).Adj x y := by
+        intro ht
+        exact ((sdiff_adj G (triangleFreeEdgeGraph G) x y).mp ht).2 hm
+      have hempty : G.neighborFinset x ∩ G.neighborFinset y = ∅ :=
+        Finset.card_eq_zero.mp
+          ((mem_triangleFreeNeighbors G x y).mp hm).2
+      simp [hg, hm, ht, hempty]
+    · have ht : (triangularEdgeGraph G).Adj x y :=
+        (sdiff_adj G (triangleFreeEdgeGraph G) x y).mpr ⟨hg, hm⟩
+      have hneempty : G.neighborFinset x ∩ G.neighborFinset y ≠ ∅ := by
+        intro hempty
+        apply hm
+        apply (mem_triangleFreeNeighbors G x y).mpr
+        exact ⟨hg, Finset.card_eq_zero.mpr hempty⟩
+      simp [hg, hm, ht, hneempty]
+  · have hm : ¬(triangleFreeEdgeGraph G).Adj x y := fun hm => hg (hsub hm)
+    have ht : ¬(triangularEdgeGraph G).Adj x y := by
+      intro ht
+      exact hg ((sdiff_adj G (triangleFreeEdgeGraph G) x y).mp ht).1
+    simp [hg, hm, ht]
+
+/-- External-edge form of the mixed fourth-moment vanishing. -/
+theorem trace_matching_mul_external_cube_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) :
+    let A := G.adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    Matrix.trace (((M * (A - M)) * (A - M)) * (A - M)) = 0 := by
+  dsimp only
+  rw [← triangularEdgeGraph_adjMatrix_eq_sub_triangleFree G]
+  exact trace_triangleFree_mul_triangular_cube_eq_zero G hfree
+
 /-- Off the diagonal, the two opposite entries of `AM` cannot both be one.
 Equivalently, the directed support of `AM` has no directed two-cycle away
 from its forced diagonal. -/
