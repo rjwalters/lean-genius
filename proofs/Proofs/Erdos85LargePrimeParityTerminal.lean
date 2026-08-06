@@ -26,11 +26,13 @@ open SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-- **Large-prime parity contradiction.**  At the exact even boundary,
-`hodd` together with an odd `p`-divisible component count is impossible
-once `p(p-3) > 2(d(d-1)+3)`: the three-point parity forces anchor mass at
-least `p-3`, while the sector size bounds it by `2(d(d-1)+3)/p`. -/
-theorem false_of_secondOrder_countOdd_of_large_prime
+/-- **The parity-terminal mass floor.**  Whenever the three-point parity
+terminal fires — `hodd` plus an odd `p`-divisible count at any prime
+`p ≥ 7` — the selected anchor mass is at least `p - 3`: the projected
+anchor count is odd, hence positive, at every frequency outside the
+three exceptional points.  This is the quantitative output of the
+terminal for the small-prime window. -/
+theorem le_pDivisibleAnchorMass_of_countOdd
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
@@ -42,7 +44,6 @@ theorem false_of_secondOrder_countOdd_of_large_prime
     (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
     (hcard : Fintype.card V = d * (d - 1) + 3)
     (hp : Nat.Prime p) (hp7 : 7 ≤ p)
-    (hbig : 2 * (d * (d - 1) + 3) < p * (p - 3))
     (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
       ZMod c.supp.ncard → V)
     (hu : ∀ c, Function.Injective (u c))
@@ -56,7 +57,7 @@ theorem false_of_secondOrder_countOdd_of_large_prime
     (hcountOdd : Odd (Finset.univ.filter (fun c :
       (secondOrderDefectGraph G).ConnectedComponent ↦
         p ∣ c.supp.ncard)).card) :
-    False := by
+    p - 3 ≤ pDivisibleAnchorMass G u p := by
   letI : NeZero p := ⟨hp.ne_zero⟩
   letI : Fact p.Prime := ⟨hp⟩
   have h2 : (2 : ZMod p) ≠ 0 := by
@@ -104,6 +105,41 @@ theorem false_of_secondOrder_countOdd_of_large_prime
         Finset.sum_le_sum_of_subset Finset.sdiff_subset
       _ = pDivisibleAnchorMass G u p :=
         sum_mixedProjectedAnchor_eq_mass G u
+  exact hlower
+
+/-- **Large-prime parity contradiction.**  At the exact even boundary,
+`hodd` together with an odd `p`-divisible component count is impossible
+once `p(p-3) > 2(d(d-1)+3)`: the three-point parity forces anchor mass at
+least `p-3`, while the sector size bounds it by `2(d(d-1)+3)/p`. -/
+theorem false_of_secondOrder_countOdd_of_large_prime
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d p : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : Nat.Prime p) (hp7 : 7 ≤ p)
+    (hbig : 2 * (d * (d - 1) + 3) < p * (p - 3))
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hodd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ c.supp.ncard → Odd c.supp.ncard)
+    (hcountOdd : Odd (Finset.univ.filter (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent ↦
+        p ∣ c.supp.ncard)).card) :
+    False := by
+  have hlower := le_pDivisibleAnchorMass_of_countOdd G hfree hd heven
+    hmin hcard hp hp7 u hu huRange huD hℓ3 hodd hcountOdd
   have hupper := pDivisibleAnchorMass_le_two_mul_component_card
     G hfree hd heven hmin hcard u hu huRange huD hℓ3 hodd
   have hsize := prime_mul_pDivisible_component_card_le_card
