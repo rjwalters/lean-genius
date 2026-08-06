@@ -222,6 +222,110 @@ theorem mem_or_exists_adj_of_independent_large_secondOrderDefectClique
   exact independent_large_secondOrderDefectClique_count_eq_card
     G hfree hd he hcard hreg C hCcard hclique hind
 
+/-- At the top excess, the defect neighborhood of a clique vertex consists
+exactly of the other clique vertices. -/
+theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V)) {c : V} (hc : c ∈ C) :
+    (secondOrderDefectGraph G).neighborFinset c = C.erase c := by
+  have heq :=
+    excess_eq_sub_four_of_independent_large_secondOrderDefectClique
+      G hfree hd he hcard hreg C hCcard hclique hind
+  have hDdegree : (secondOrderDefectGraph G).degree c = d - 2 := by
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcard c
+    rw [heq] at h
+    omega
+  have hsub : C.erase c ⊆
+      (secondOrderDefectGraph G).neighborFinset c := by
+    intro y hy
+    have hy' := Finset.mem_erase.mp hy
+    apply ((secondOrderDefectGraph G).mem_neighborFinset c y).mpr
+    exact hclique hc hy'.2 hy'.1.symm
+  apply (Finset.eq_of_subset_of_card_le hsub ?_).symm
+  rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+    hDdegree, Finset.card_erase_of_mem hc, hCcard]
+  omega
+
+/-- Therefore no clique vertex is incident with a triangle-free defect
+edge; all of its defect neighbors are antipodal. -/
+theorem triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V)) {c : V} (hc : c ∈ C) :
+    (triangleFreeNeighbors G c).card = 0 := by
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+  intro y hy
+  have hyD : y ∈ (secondOrderDefectGraph G).neighborFinset c := by
+    rw [secondOrderDefectGraph_neighborFinset]
+    exact Finset.mem_union_right _ hy
+  rw [secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
+    G hfree hd he hcard hreg C hCcard hclique hind hc] at hyD
+  have hyC := (Finset.mem_erase.mp hyD).2
+  have hcy : G.Adj c y := (mem_triangleFreeNeighbors G c y).mp hy |>.1
+  rw [SimpleGraph.isIndepSet_iff] at hind
+  exact hind hc hyC (G.ne_of_adj hcy) hcy
+
+/-- If no edge at `c` is triangle-free, then the graph induced by the open
+neighborhood of `c` is 1-regular.  The upper bound is the usual local
+matching consequence of `C₄`-freeness; the absence of triangle-free edges
+rules out isolated vertices. -/
+theorem degree_induce_neighborSet_eq_one_of_triangleFreeNeighbors_card_eq_zero
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (c : V)
+    (hzero : (triangleFreeNeighbors G c).card = 0)
+    (y : {z : V // z ∈ G.neighborSet c}) :
+    (G.induce (G.neighborSet c)).degree y = 1 := by
+  have hle : (G.induce (G.neighborSet c)).degree y ≤ 1 := by
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree c y.1
+      (G.ne_of_adj y.2)
+  have hne : (G.induce (G.neighborSet c)).degree y ≠ 0 := by
+    intro hdegzero
+    have hcommonzero :
+        (G.neighborFinset c ∩ G.neighborFinset y.1).card = 0 := by
+      rwa [degree_induce_neighborSet_eq_card_common] at hdegzero
+    have hyTF : y.1 ∈ triangleFreeNeighbors G c :=
+      (mem_triangleFreeNeighbors G c y.1).mpr ⟨y.2, hcommonzero⟩
+    rw [Finset.card_eq_zero] at hzero
+    exact Finset.notMem_empty y.1 (hzero ▸ hyTF)
+  omega
+
+/-- Every block indexed by a vertex of an extremal independent defect clique
+induces a perfect matching (equivalently, is 1-regular). -/
+theorem degree_induce_neighborSet_eq_one_of_independent_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V)) {c : V} (hc : c ∈ C)
+    (y : {z : V // z ∈ G.neighborSet c}) :
+    (G.induce (G.neighborSet c)).degree y = 1 := by
+  apply degree_induce_neighborSet_eq_one_of_triangleFreeNeighbors_card_eq_zero
+    G hfree c
+  exact triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
+    G hfree hd he hcard hreg C hCcard hclique hind hc
+
 /-- The exact block geometry also forces even degree.  Indeed, for any
 `c ∈ C`, the other `d-2` clique vertices exhaust the entire degree-`d-2`
 defect neighborhood of `c`.  Since `C` is independent in `G`, none of these
@@ -240,42 +344,11 @@ theorem even_degree_of_independent_large_secondOrderDefectClique
     (hind : G.IsIndepSet (C : Set V)) :
     Even d := by
   classical
-  have heq :=
-    excess_eq_sub_four_of_independent_large_secondOrderDefectClique
-      G hfree hd he hcard hreg C hCcard hclique hind
   have hCpos : 0 < C.card := by rw [hCcard]; omega
   obtain ⟨c, hc⟩ := Finset.card_pos.mp hCpos
-  have hDdegree : (secondOrderDefectGraph G).degree c = d - 2 := by
-    have h := secondOrderDefectGraph_degree_eq_excess_add_two
-      G hfree hreg hcard c
-    rw [heq] at h
-    omega
-  have hsub : C.erase c ⊆
-      (secondOrderDefectGraph G).neighborFinset c := by
-    intro y hy
-    have hy' := Finset.mem_erase.mp hy
-    apply ((secondOrderDefectGraph G).mem_neighborFinset c y).mpr
-    exact hclique hc hy'.2 hy'.1.symm
-  have herase : (C.erase c).card = d - 2 := by
-    rw [Finset.card_erase_of_mem hc, hCcard]
-    omega
-  have hDNcard : ((secondOrderDefectGraph G).neighborFinset c).card =
-      d - 2 := by
-    rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDdegree]
-  have hDNeq : (secondOrderDefectGraph G).neighborFinset c = C.erase c :=
-    (Finset.eq_of_subset_of_card_le hsub
-      (by rw [hDNcard, herase])).symm
-  have hTFzero : (triangleFreeNeighbors G c).card = 0 := by
-    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
-    intro y hy
-    have hyD : y ∈ (secondOrderDefectGraph G).neighborFinset c := by
-      rw [secondOrderDefectGraph_neighborFinset]
-      exact Finset.mem_union_right _ hy
-    rw [hDNeq] at hyD
-    have hyC := (Finset.mem_erase.mp hyD).2
-    have hcy : G.Adj c y := (mem_triangleFreeNeighbors G c y).mp hy |>.1
-    rw [SimpleGraph.isIndepSet_iff] at hind
-    exact hind hc hyC (G.ne_of_adj hcy) hcy
+  have hTFzero :=
+    triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
+      G hfree hd he hcard hreg C hCcard hclique hind hc
   have hparity := triangleFreeNeighbors_card_mod_two_eq_degree
     G hfree hreg c
   rw [hTFzero] at hparity
