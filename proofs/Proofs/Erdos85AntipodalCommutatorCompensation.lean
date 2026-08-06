@@ -69,6 +69,54 @@ def antipodalCommutatorRowCompensation
   let C := (antipodalGraph G).adjMatrix ℤ
   intCompensationMass fun y => (A * C - C * A) x y
 
+/-- **Entrywise service orientation.**  Off the diagonal, a positive
+antipodal commutator entry is exactly a `T A` service without the competing
+`A T` service, and a negative entry is the reverse situation. -/
+theorem antipodal_commutator_entry_sign_iff_oriented_service
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d) {x y : V} (hxy : x ≠ y) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    (((A * C - C * A) x y = 1 ↔
+        (T * A) x y = 1 ∧ (A * T) x y = 0) ∧
+      ((A * C - C * A) x y = -1 ↔
+        (A * T) x y = 1 ∧ (T * A) x y = 0)) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let C := (antipodalGraph G).adjMatrix ℤ
+  let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+  have hcomm : A * (C + T) = (C + T) * A := by
+    dsimp [A, C, T]
+    rw [← secondOrderDefectGraph_adjMatrix_eq_antipodal_add_triangleFree G]
+    exact adjMatrix_comm_secondOrderDefect_of_regular G hfree hreg
+  have hentry :
+      (A * C - C * A) x y = -((A * T - T * A) x y) :=
+    congrFun (congrFun
+      (commutator_eq_neg_of_commutes_add A C T hcomm) x) y
+  simp only [Matrix.sub_apply] at hentry
+  have hATle : (A * T) x y ≤ 1 :=
+    adj_mul_triangleFree_entry_le_one G hfree hxy
+  have hTAle : (T * A) x y ≤ 1 :=
+    triangleFree_mul_adj_entry_le_one G hfree hxy
+  have hATnonneg : 0 ≤ (A * T) x y := by
+    rw [adjMatrix_mul_subgraph_apply_eq_card_mixed]
+    exact Int.natCast_nonneg _
+  have hTAnonneg : 0 ≤ (T * A) x y := by
+    rw [adjMatrix_mul_subgraph_apply_eq_card_mixed]
+    exact Int.natCast_nonneg _
+  change
+    (((A * C) x y - (C * A) x y = 1 ↔
+        (T * A) x y = 1 ∧ (A * T) x y = 0) ∧
+      ((A * C) x y - (C * A) x y = -1 ↔
+        (A * T) x y = 1 ∧ (T * A) x y = 0))
+  rw [hentry]
+  omega
+
 /-- **Exact row decomposition at odd excess three.** -/
 theorem card_commutator_row_support_eq_cross_add_compensation
     {V : Type*} [Fintype V] [DecidableEq V]
