@@ -109,6 +109,66 @@ theorem trace_triangleFreeEdgeGraph_cube_eq_zero
       rw [SimpleGraph.adjMatrix_apply, if_neg hzx]
     rw [hz, mul_zero]
 
+/-- An antipodal pair cannot be closed by two triangle-free original edges,
+because their middle vertex would be a common original neighbor. -/
+theorem false_of_antipodal_two_triangleFree_triangle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x y z : V} (hxy : (antipodalGraph G).Adj x y)
+    (hyz : (triangleFreeEdgeGraph G).Adj y z)
+    (hzx : (triangleFreeEdgeGraph G).Adj z x) : False := by
+  have hzero : G.neighborFinset x ∩ G.neighborFinset y = ∅ :=
+    Finset.card_eq_zero.mp
+      ((mem_antipodalNeighbors G x y).mp
+        ((antipodalGraph_adj G x y).mp hxy)).2.2
+  have hxz : G.Adj x z :=
+    ((mem_triangleFreeNeighbors G z x).mp hzx).1.symm
+  have hyzG : G.Adj y z :=
+    ((mem_triangleFreeNeighbors G y z).mp hyz).1
+  have hzmem : z ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hxz, hyzG⟩
+  rw [hzero] at hzmem
+  exact Finset.notMem_empty z hzmem
+
+/-- The mixed color triangle `C T²` is absent at every excess. -/
+theorem trace_antipodal_mul_triangleFree_sq_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] :
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    Matrix.trace (C * (T * T)) = 0 := by
+  dsimp only
+  rw [← Matrix.mul_assoc, Matrix.trace]
+  apply Finset.sum_eq_zero
+  intro x _
+  change ((antipodalGraph G).adjMatrix ℤ *
+    (triangleFreeEdgeGraph G).adjMatrix ℤ *
+    (triangleFreeEdgeGraph G).adjMatrix ℤ) x x = 0
+  rw [Matrix.mul_apply]
+  apply Finset.sum_eq_zero
+  intro z _
+  by_cases hzx : (triangleFreeEdgeGraph G).Adj z x
+  · rw [SimpleGraph.adjMatrix_apply, if_pos hzx, mul_one]
+    rw [Matrix.mul_apply]
+    apply Finset.sum_eq_zero
+    intro y _
+    by_cases hxy : (antipodalGraph G).Adj x y
+    · by_cases hyz : (triangleFreeEdgeGraph G).Adj y z
+      · exact (false_of_antipodal_two_triangleFree_triangle
+          G hxy hyz hzx).elim
+      · have hz : (triangleFreeEdgeGraph G).adjMatrix ℤ y z = 0 := by
+          rw [SimpleGraph.adjMatrix_apply, if_neg hyz]
+        rw [hz, mul_zero]
+    · have hx : (antipodalGraph G).adjMatrix ℤ x y = 0 := by
+        rw [SimpleGraph.adjMatrix_apply, if_neg hxy]
+      rw [hx, zero_mul]
+  · have hz : (triangleFreeEdgeGraph G).adjMatrix ℤ z x = 0 := by
+      rw [SimpleGraph.adjMatrix_apply, if_neg hzx]
+    rw [hz, mul_zero]
+
 /-- The triangle-free side of the commutator gap in degree-moment form. -/
 theorem trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments_sub_mixed
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -152,6 +212,26 @@ theorem trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments_sub_mixed
     Matrix.trace_smul, hT2, hJT2, hT3', hT4]
   ring
 
+/-- With the forbidden `C T²` triangle removed, the triangle-free
+commutator gap depends only on its first two degree moments. -/
+theorem trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) :
+    let A := G.adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    Matrix.trace ((A * A) * (T * T)) -
+        Matrix.trace ((T * T) * (T * T)) =
+      (d : ℤ) * (∑ x : V, ((triangleFreeEdgeGraph G).degree x : ℤ)) -
+        (∑ x : V, ((triangleFreeEdgeGraph G).degree x : ℤ) ^ 2) := by
+  dsimp only
+  rw [trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments_sub_mixed
+      G hfree hreg,
+    trace_antipodal_mul_triangleFree_sq_eq_zero G, sub_zero]
+
 /-- **Odd excess-three normalization.**  The whole triangle-free side is a
 known affine expression in the degree-three sector size, apart from the
 single mixed count `tr(C T²)`. -/
@@ -164,15 +244,13 @@ theorem trace_adj_sq_triangleFree_sq_sub_fourth_excessThree
     (hreg : ∀ z, G.degree z = d)
     (hcard : Fintype.card V = d * (d - 1) + 6) :
     let A := G.adjMatrix ℤ
-    let C := (antipodalGraph G).adjMatrix ℤ
     let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
     let a := (Finset.univ.filter fun x : V =>
       (triangleFreeEdgeGraph G).degree x = 3).card
     Matrix.trace ((A * A) * (T * T)) -
         Matrix.trace ((T * T) * (T * T)) =
       (d - 1 : ℤ) * (Fintype.card V : ℤ) +
-        (2 * (d : ℤ) - 8) * (a : ℤ) -
-          Matrix.trace (C * (T * T)) := by
+        (2 * (d : ℤ) - 8) * (a : ℤ) := by
   dsimp only
   let Tgraph := triangleFreeEdgeGraph G
   let a := (Finset.univ.filter fun x : V => Tgraph.degree x = 3).card
@@ -200,7 +278,7 @@ theorem trace_adj_sq_triangleFree_sq_sub_fourth_excessThree
         dsimp [a]
         rw [Finset.sum_add_distrib, ← Finset.sum_filter]
         simp [mul_comm]
-  rw [trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments_sub_mixed
+  rw [trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments
       G hfree hreg, hsum1, hsum2]
   ring
 
