@@ -31,6 +31,31 @@ def IsMatchingChordalCenter
   ∀ a ∈ antipodalNeighbors G X, ∀ b ∈ antipodalNeighbors G X,
     a ≠ b → b ∈ triangleFreeNeighbors G a
 
+/-- The set of matching-chordal antipodal centres. -/
+noncomputable def matchingChordalCenters
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : Finset V := by
+  classical
+  exact Finset.univ.filter (IsMatchingChordalCenter G)
+
+/-- Ordered root/target pairs for which the root hits every antipodal
+neighbour of the target.  Actual double-service slots form a subfinset of
+this one. -/
+noncomputable def antipodalDoubleHitPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : Finset (V × V) := by
+  classical
+  exact (Finset.univ.product Finset.univ).filter fun p =>
+    ∀ z ∈ antipodalNeighbors G p.2, G.Adj p.1 z
+
+@[simp] theorem mem_antipodalDoubleHitPairs_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (p : V × V) :
+    p ∈ antipodalDoubleHitPairs G ↔
+      ∀ z ∈ antipodalNeighbors G p.2, G.Adj p.1 z := by
+  classical
+  simp [antipodalDoubleHitPairs]
+
 /-- A triangle-free matching chord has no common original neighbour.
 Consequently a chordal centre cannot carry a double-service root. -/
 theorem not_adj_both_of_triangleFree_chord
@@ -73,6 +98,61 @@ theorem eq_of_two_doubleHits
   exact hfree (containsC4_of_two_common
     (x := u) (y := v) (v := a) (v' := b)
     huv hab hua.symm hva.symm hub.symm hvb.symm)
+
+/-- There is at most one double-hitting root over each target, and a
+matching-chordal target has none.  Hence all double-hit pairs inject into
+the nonchordal targets. -/
+theorem card_antipodalDoubleHitPairs_le_nonchordal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hanti : ∀ X, (antipodalNeighbors G X).card = 2) :
+    (antipodalDoubleHitPairs G).card ≤
+      Fintype.card V - (matchingChordalCenters G).card := by
+  classical
+  let N : Finset V := Finset.univ.filter fun X =>
+    ¬ IsMatchingChordalCenter G X
+  have hNcard : N.card = Fintype.card V - (matchingChordalCenters G).card := by
+    have hpart := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (Finset.univ : Finset V))
+      (p := IsMatchingChordalCenter G)
+    change (matchingChordalCenters G).card + N.card = Fintype.card V at hpart
+    omega
+  rw [← hNcard]
+  apply Finset.card_le_card_of_injOn (fun p : V × V => p.2)
+  · intro p hp
+    change p ∈ antipodalDoubleHitPairs G at hp
+    rw [mem_antipodalDoubleHitPairs_iff] at hp
+    change p.2 ∈ N
+    simp only [N, Finset.mem_filter, Finset.mem_univ, true_and]
+    intro hchord
+    obtain ⟨a, b, hab, hpairs⟩ := Finset.card_eq_two.mp (hanti p.2)
+    have ha : a ∈ antipodalNeighbors G p.2 := by simp [hpairs]
+    have hb : b ∈ antipodalNeighbors G p.2 := by simp [hpairs]
+    exact matchingChordalCenter_no_doubleHit G hchord ha hb hab
+      ⟨hp a ha, hp b hb⟩
+  · intro p hp r hr hpr
+    change p ∈ antipodalDoubleHitPairs G at hp
+    change r ∈ antipodalDoubleHitPairs G at hr
+    rw [mem_antipodalDoubleHitPairs_iff] at hp hr
+    change p.2 = r.2 at hpr
+    apply Prod.ext
+    · obtain ⟨a, b, hab, hpairs⟩ := Finset.card_eq_two.mp (hanti p.2)
+      have ha : a ∈ antipodalNeighbors G p.2 := by simp [hpairs]
+      have hb : b ∈ antipodalNeighbors G p.2 := by simp [hpairs]
+      have hpHit := hp
+      have hrHit := hr
+      have hra : a ∈ antipodalNeighbors G r.2 := by
+        rw [← hpr]
+        exact ha
+      have hrb : b ∈ antipodalNeighbors G r.2 := by
+        rw [← hpr]
+        exact hb
+      apply eq_of_two_doubleHits G hfree hab
+          (hpHit a ha) (hpHit b hb)
+      · exact hrHit a hra
+      · exact hrHit b hrb
+    · exact hpr
 
 /-- Arithmetic heart of the service/chord pincer. -/
 theorem service_chord_pincer
