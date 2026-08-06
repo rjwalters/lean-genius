@@ -76,6 +76,64 @@ theorem odd_sum_admissibleFibers_iff_odd_componentCount
       exact ⟨hc, hterm c hc⟩
   rw [hfilter]
 
+/-- At any of the three exceptional residues `0, ±1`, every odd target
+cycle contributes an even admissible-fiber count (`odd quotient - 1`). -/
+theorem even_sum_admissibleFibers_of_exceptional
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (ℓ : C → ℕ) [∀ c, NeZero (ℓ c)]
+    {p : ℕ} [NeZero p] (hp : Nat.Prime p) (hp7 : 7 ≤ p)
+    (hℓ3 : ∀ c, 3 ≤ ℓ c)
+    (hodd : ∀ c, p ∣ ℓ c → Odd (ℓ c))
+    (t : ZMod p) (ht : t ∈ ({0, 1, -1} : Finset (ZMod p))) :
+    Even (∑ c ∈ Finset.univ.filter (fun c ↦ p ∣ ℓ c),
+      ((admissibleDifferences (ℓ c)).filter (fun δ ↦
+        ((δ.val : ℕ) : ZMod p) = t)).card) := by
+  let S : Finset C := Finset.univ.filter (fun c ↦ p ∣ ℓ c)
+  apply Finset.even_sum
+  intro c hc
+  have hpc : p ∣ ℓ c := by simpa [S] using hc
+  have hfilt : (admissibleDifferences (ℓ c)).filter (fun δ ↦
+        ((δ.val : ℕ) : ZMod p) = t) =
+      (admissibleDifferences (ℓ c)).filter (fun δ ↦
+        ZMod.castHom hpc (ZMod p) δ = t) := by
+    ext δ
+    simp only [Finset.mem_filter]
+    have hcast : ZMod.castHom hpc (ZMod p) δ =
+        ((δ.val : ℕ) : ZMod p) := by
+      calc
+        ZMod.castHom hpc (ZMod p) δ =
+            ZMod.castHom hpc (ZMod p) ((δ.val : ℕ) : ZMod (ℓ c)) :=
+          congrArg _ (ZMod.natCast_zmod_val δ).symm
+        _ = ((δ.val : ℕ) : ZMod p) := map_natCast _ _
+    rw [hcast]
+  rw [hfilt, card_admissible_fiber (hℓ3 c) hpc hp7 t]
+  have hqOdd := odd_div_of_odd_of_dvd (hodd c hpc)
+    (hp.odd_of_ne_two (by omega)) hpc
+  have hp1 : (1 : ZMod p) ≠ 0 := by
+    intro h
+    have := ZMod.one_eq_zero_iff.mp h
+    omega
+  have hpm0 : (-1 : ZMod p) ≠ 0 := neg_ne_zero.mpr hp1
+  have hpm1 : (-1 : ZMod p) ≠ 1 := by
+    intro h
+    have h2 : ((2 : ℕ) : ZMod p) = 0 := by
+      push_cast
+      linear_combination -h
+    have := Nat.le_of_dvd (by norm_num)
+      ((ZMod.natCast_eq_zero_iff 2 p).mp h2)
+    omega
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ht
+  rcases ht with rfl | rfl | rfl
+  · simp only [if_pos, if_neg hp1.symm, if_neg hpm0.symm]
+    obtain ⟨k, hk⟩ := hqOdd
+    refine ⟨k, by omega⟩
+  · simp only [if_neg hp1, if_pos, if_neg hpm1.symm, zero_add]
+    obtain ⟨k, hk⟩ := hqOdd
+    refine ⟨k, by omega⟩
+  · simp only [if_neg hpm0, if_neg hpm1, if_pos, zero_add]
+    obtain ⟨k, hk⟩ := hqOdd
+    refine ⟨k, by omega⟩
+
 end
 
 end Erdos85
