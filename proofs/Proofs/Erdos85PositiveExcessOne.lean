@@ -42,6 +42,49 @@ theorem exists_degree_eq_zero_of_odd_card_of_degree_le_one
   obtain ⟨k, hk⟩ := hodd
   omega
 
+/-- In an odd graph of maximum degree one, the number of isolated vertices
+is itself odd.  The non-isolated vertices contribute one each to the even
+degree sum. -/
+theorem odd_card_isolatedVertices_of_odd_card_of_degree_le_one
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (H : SimpleGraph W) [DecidableRel H.Adj]
+    (hodd : Odd (Fintype.card W)) (hle : ∀ w, H.degree w ≤ 1) :
+    Odd ((Finset.univ.filter fun w => H.degree w = 0).card) := by
+  let I := Finset.univ.filter fun w => H.degree w = 0
+  let P := Finset.univ.filter fun w => H.degree w ≠ 0
+  have hsum : ∑ w, H.degree w = P.card := by
+    calc
+      ∑ w, H.degree w = ∑ w, if H.degree w = 0 then 0 else 1 := by
+        apply Finset.sum_congr rfl
+        intro w _
+        by_cases hw : H.degree w = 0
+        · simp [hw]
+        · simp [hw]
+          have hwle := hle w
+          omega
+      _ = ∑ w, if H.degree w ≠ 0 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro w _
+        by_cases hw : H.degree w = 0 <;> simp [hw]
+      _ = P.card := by
+        simpa [P] using
+          (Finset.sum_boole (R := ℕ) (fun w : W => H.degree w ≠ 0)
+            (Finset.univ : Finset W))
+  have hPeven : Even P.card := by
+    have hhand := H.sum_degrees_eq_twice_card_edges
+    rw [hsum] at hhand
+    exact ⟨H.edgeFinset.card, by omega⟩
+  have hpartition : I.card + P.card = Fintype.card W := by
+    have h := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset W)) (p := fun w => H.degree w = 0)
+    simpa [I, P, Finset.card_univ] using h
+  change Odd I.card
+  obtain ⟨i, hi⟩ := hodd
+  obtain ⟨p, hp⟩ := hPeven
+  have hpi : p ≤ i := by omega
+  refine ⟨i - p, ?_⟩
+  omega
+
 /-- Every graph induced on a second-layer branch has maximum degree at most
 one: two neighbors in the same branch, together with its first-layer root,
 would form a four-cycle. -/
@@ -525,6 +568,121 @@ theorem exists_adj_external_of_isolated_matched_secondLayerBranch
     · exact Finset.mem_erase.mpr ⟨huv_ne.symm, Finset.mem_univ v⟩
   rw [Fintype.card_coe, hBcard, htargetcard] at hlecard
   omega
+
+/-- In the odd excess-one, triangle-free-degree-one regime, every branch
+whose root is paired inside the first neighborhood has exactly one isolated
+vertex.  Oddness gives an odd number of isolated vertices; each must choose
+one of the two external vertices, and `C₄`-freeness makes that choice
+injective. -/
+theorem isolatedVertices_card_eq_one_of_matched_secondLayerBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hodd : Odd d)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (hx : (triangleFreeNeighbors G x).card = 1)
+    (u v : {z : V // z ∈ G.neighborSet x}) (huv : G.Adj u.1 v.1) :
+    ((Finset.univ : Finset (secondLayerBranch G x u)).filter fun a =>
+      (G.induce (secondLayerBranch G x u)).degree a = 0).card = 1 := by
+  classical
+  let A := secondLayerBranch G x u
+  let K := G.induce A
+  let I := (Finset.univ : Finset A).filter fun a => K.degree a = 0
+  have huLocal : (G.induce (G.neighborSet x)).degree u = 1 := by
+    have hle : (G.induce (G.neighborSet x)).degree u ≤ 1 := by
+      rw [degree_induce_neighborSet_eq_card_common]
+      exact common_le_one_of_not_containsC4 hfree x u.1 (G.ne_of_adj u.2)
+    have hvMem : v ∈ (G.induce (G.neighborSet x)).neighborFinset u := by
+      rw [(G.induce (G.neighborSet x)).mem_neighborFinset]
+      exact huv
+    have hpos : 0 < (G.induce (G.neighborSet x)).degree u := by
+      rw [← (G.induce (G.neighborSet x)).card_neighborFinset_eq_degree,
+        Finset.card_pos]
+      exact ⟨v, hvMem⟩
+    omega
+  have hAcard : Fintype.card A = d - 2 := by
+    rw [Fintype.card_coe]
+    have h := card_secondLayerBranch_eq_degree_sub_localDegree_sub_one
+      G hreg x u
+    rw [huLocal] at h
+    change A.card = d - 1 - 1 at h
+    omega
+  have hd2 : 2 ≤ d := by
+    have huDeg := hreg x
+    have huv_ne : u ≠ v := by
+      intro h
+      exact (G.ne_of_adj huv) (congrArg Subtype.val h)
+    have huv_val_ne : u.1 ≠ v.1 := fun h => huv_ne (Subtype.ext h)
+    have hpair : ({u.1, v.1} : Finset V).card = 2 := by
+      simp [huv_val_ne]
+    have hsub : ({u.1, v.1} : Finset V) ⊆ G.neighborFinset x := by
+      intro z hz
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+      rcases hz with rfl | rfl
+      · exact (G.mem_neighborFinset x u.1).mpr u.2
+      · exact (G.mem_neighborFinset x v.1).mpr v.2
+    have := Finset.card_le_card hsub
+    rw [hpair, G.card_neighborFinset_eq_degree, huDeg] at this
+    exact this
+  have hAodd : Odd (Fintype.card A) := by
+    rw [hAcard]
+    obtain ⟨k, hk⟩ := hodd
+    refine ⟨k - 1, ?_⟩
+    omega
+  have hKle : ∀ a : A, K.degree a ≤ 1 := by
+    intro a
+    exact degree_induce_secondLayerBranch_le_one G hfree x u a
+  have hIodd : Odd I.card := by
+    exact odd_card_isolatedVertices_of_odd_card_of_degree_le_one
+      K hAodd hKle
+  let E := externalRepairCandidates G x
+  have hEcard : E.card = 2 :=
+    excessOne_externalRepairCandidates_card_eq_two
+      G hfree hreg hcard x hx
+  have hchoose : ∀ a : I,
+      ∃ z : {y : V // y ≠ x}, z ∈ E ∧ G.Adj a.1.1 z.1 := by
+    intro a
+    exact exists_adj_external_of_isolated_matched_secondLayerBranch
+      G hfree hreg x u v huv ⟨a.1.1, a.1.2⟩ (by
+        change K.degree a.1 = 0
+        exact (Finset.mem_filter.mp a.2).2)
+  let pick : I → {z : {y : V // y ≠ x} // z ∈ E} := fun a =>
+    ⟨Classical.choose (hchoose a), (Classical.choose_spec (hchoose a)).1⟩
+  have hpickAdj : ∀ a : I, G.Adj a.1.1 (pick a).1.1 := by
+    intro a
+    exact (Classical.choose_spec (hchoose a)).2
+  have hpickInj : Function.Injective pick := by
+    intro a b hab
+    apply Subtype.ext
+    apply Subtype.ext
+    by_contra habv
+    have hzu : (pick a).1.1 ≠ u.1 := by
+      intro h
+      have hzext := (mem_externalRepairCandidates G x (pick a).1).mp (pick a).2
+      exact hzext.1 (h ▸ u.2.symm)
+    have hua : G.Adj u.1 a.1.1 :=
+      (G.mem_neighborFinset u.1 a.1.1).mp (Finset.mem_sdiff.mp a.1.2).1
+    have hub : G.Adj u.1 b.1.1 :=
+      (G.mem_neighborFinset u.1 b.1.1).mp (Finset.mem_sdiff.mp b.1.2).1
+    have hzb : G.Adj b.1.1 (pick a).1.1 := by
+      have := hpickAdj b
+      simpa [hab] using this
+    exact hfree (containsC4_of_two_common
+      (x := u.1) (y := (pick a).1.1) (v := a.1.1) (v' := b.1.1)
+      hzu.symm habv hua.symm (hpickAdj a) hub.symm hzb)
+  have hIle : Fintype.card I ≤ Fintype.card {z : {y : V // y ≠ x} // z ∈ E} :=
+    Fintype.card_le_of_injective pick hpickInj
+  have hIle2 : I.card ≤ 2 := by
+    rw [Fintype.card_coe, Fintype.card_subtype] at hIle
+    have heq : Finset.univ.filter (fun z => z ∈ E) = E := by ext z; simp
+    rw [heq, hEcard] at hIle
+    exact hIle
+  have hIeq : I.card = 1 := by
+    obtain ⟨k, hk⟩ := hIodd
+    omega
+  simpa [I, K, A] using hIeq
 
 /-- **Uniform excess-one terminal.**  A regular `C₄`-free graph of order
 `d(d-1)+4`, with `d ≥ 4`, cannot have a vertex with exactly three incident
