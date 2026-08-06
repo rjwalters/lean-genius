@@ -77,4 +77,39 @@ theorem Polynomial.coeff_natDegree_sub_one_eq_zero_of_signStable
     (mul_eq_zero.mp hz).resolve_left (mul_ne_zero htwo hunit)
   simpa [n] using hc
 
+/-- Removing a monic linear factor `X-d` from a trace-zero monic
+characteristic polynomial leaves next-to-leading coefficient `d`.  Thus for
+`d ≠ 0` the nonprincipal factor cannot be sign-stable. -/
+theorem Polynomial.coeff_natDegree_sub_one_eq_of_linearFactor_trace_zero
+    {K : Type*} [Field K]
+    (q : K[X]) (hq : q.Monic) (hdeg : 0 < q.natDegree) (d : K)
+    (htrace : ((X - C d) * q).coeff q.natDegree = 0) :
+    q.coeff (q.natDegree - 1) = d := by
+  let n := q.natDegree
+  have hnpos : 0 < n := by simpa [n] using hdeg
+  have hnk : n = (n - 1) + 1 := by omega
+  have hlead : q.coeff n = 1 := by
+    simpa [n] using hq.coeff_natDegree
+  change ((X - C d) * q).coeff n = 0 at htrace
+  rw [sub_mul, coeff_sub, hnk, coeff_X_mul, coeff_C_mul] at htrace
+  rw [Nat.sub_add_cancel hnpos, hlead, mul_one] at htrace
+  change q.coeff (n - 1) = d
+  exact sub_eq_zero.mp htrace
+
+/-- A trace-zero polynomial with a nonzero principal root has a
+non-sign-stable complementary factor. -/
+theorem Polynomial.not_signStable_of_linearFactor_trace_zero
+    {K : Type*} [Field K] [CharZero K]
+    (q : K[X]) (hq : q.Monic) (hdeg : 0 < q.natDegree)
+    (d : K) (hd : d ≠ 0)
+    (htrace : ((X - C d) * q).coeff q.natDegree = 0) :
+    q.comp (-X) ≠ (-1 : K) ^ q.natDegree • q := by
+  intro hsign
+  have hz := Erdos85.Polynomial.coeff_natDegree_sub_one_eq_zero_of_signStable
+    q hdeg hsign
+  have hdcoeff :=
+    Erdos85.Polynomial.coeff_natDegree_sub_one_eq_of_linearFactor_trace_zero
+      q hq hdeg d htrace
+  exact hd (hdcoeff ▸ hz)
+
 end Erdos85
