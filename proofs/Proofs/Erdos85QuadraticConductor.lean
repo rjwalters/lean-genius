@@ -15,14 +15,14 @@ open SimpleGraph
 
 namespace Erdos85
 
-/-- **Quadratic all-order conductor.** Every order at least `40d²` supports a
+/-- **Quadratic all-order conductor.** Every order at least `36d²` supports a
 `C₄`-free graph of minimum degree at least `d`.
 
 Even orders use the parabola Sidon Cayley graph directly.  For an odd order,
 Bertrand supplies an odd prime `q ∈ (d,2d]`; split off the polarity graph of
 order `q²+q+1`, leaving a sufficiently large even remainder. -/
 theorem c4FreeMinDegreeWitness_quadratic
-    {n d : ℕ} (hd : 2 ≤ d) (hn : 40 * d * d ≤ n) :
+    {n d : ℕ} (hd : 2 ≤ d) (hn : 36 * d * d ≤ n) :
     C4FreeMinDegreeWitness n d := by
   rcases Nat.even_or_odd n with hnEven | hnOdd
   · obtain ⟨M, rfl⟩ := hnEven
@@ -32,6 +32,9 @@ theorem c4FreeMinDegreeWitness_quadratic
   · obtain ⟨q, hqPrime, hdq, hqd⟩ :=
       Nat.exists_prime_lt_and_le_two_mul d (by omega)
     have hqOdd : Odd q := hqPrime.odd_of_ne_two (by omega)
+    have hqStrict : q < 2 * d := by
+      obtain ⟨a, ha⟩ := hqOdd
+      omega
     let b := (q + 1) * q + 1
     have hbOdd : Odd b := by
       dsimp [b]
@@ -47,15 +50,15 @@ theorem c4FreeMinDegreeWitness_quadratic
       refine ⟨a - c, ?_⟩
       omega
     have hNlarge : 16 * d * d ≤ N := by
-      have hb : b ≤ 8 * d * d := by
-        have hmul : (q + 1) * q ≤ (2 * d + 1) * (2 * d) :=
-          Nat.mul_le_mul (Nat.add_le_add_right hqd 1) hqd
+      have hb : b ≤ 4 * d * d := by
+        have hmul : (q + 1) * q ≤ (2 * d) * (2 * d - 1) :=
+          Nat.mul_le_mul (by omega) (by omega)
         dsimp [b]
         nlinarith
       have hbn : b ≤ n := by
         calc
-          b ≤ 8 * d * d := hb
-          _ ≤ 40 * d * d := by nlinarith
+          b ≤ 4 * d * d := hb
+          _ ≤ 36 * d * d := by nlinarith
           _ ≤ n := hn
       have hnDecomp : n = b + 2 * N := by omega
       simp only [Nat.mul_assoc] at hn hb ⊢
@@ -81,7 +84,7 @@ theorem c4FreeMinDegreeWitness_quadratic
 /-- A minimal plateau core occurs strictly before the quadratic conductor. -/
 theorem C4PlateauCore.order_succ_lt_quadratic
     {m d : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m d) :
-    m + 1 < 40 * d * d := by
+    m + 1 < 36 * d * d := by
   have hd : 2 ≤ d := hcore.two_le_degree hm
   by_contra hnot
   have hw : C4FreeMinDegreeWitness (m + 1) d :=
