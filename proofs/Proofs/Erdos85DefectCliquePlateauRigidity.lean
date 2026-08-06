@@ -423,6 +423,80 @@ theorem card_common_eq_one_between_independent_large_defectClique_blocks
   rw [hreg y.1, Finset.card_erase_of_mem hc', hCcard] at hdegreeLe
   omega
 
+/-- The extremal block geometry is a sharp obstruction to direct attachment:
+every common-neighbor-independent set has size at most `d-1`.  A safe set
+meeting the anchor clique cannot contain a block vertex; a safe set avoiding
+the anchors injects into the anchors by assigning each vertex its unique
+dominating block. -/
+theorem commonNeighborIndependent_card_le_pred_of_independent_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V))
+    (S : Finset V) (hS : CommonNeighborIndependent G S) :
+    S.card ≤ d - 1 := by
+  classical
+  by_cases hmeet : ∃ c ∈ C, c ∈ S
+  · obtain ⟨c, hcC, hcS⟩ := hmeet
+    have hSC : S ⊆ C := by
+      intro y hyS
+      by_contra hyC
+      obtain ⟨a, haC, hay⟩ :=
+        (mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+          G hfree hd he hcard hreg C hCcard hclique hind y).resolve_left hyC
+      let ya : {z : V // z ∈ G.neighborSet a} := ⟨y, hay⟩
+      have hone :=
+        card_common_eq_one_between_independent_large_defectClique_blocks
+          G hfree hd he hcard hreg C hCcard hclique hind haC hcC ya
+      by_cases hyc : y = c
+      · exact hyC (hyc ▸ hcC)
+      · have hzero := hS hyS hcS hyc
+        have hcomm : G.neighborFinset y ∩ G.neighborFinset c =
+            G.neighborFinset ya.1 ∩ G.neighborFinset c := rfl
+        rw [hcomm, hone] at hzero
+        omega
+    rw [← hCcard]
+    exact Finset.card_le_card hSC
+  · have hdisj : ∀ y ∈ S, y ∉ C := by
+      intro y hyS hyC
+      exact hmeet ⟨y, hyC, hyS⟩
+    let anchor : ∀ y : {z : V // z ∈ S}, {c : V // c ∈ C} := fun y ↦
+      ⟨Classical.choose
+          ((mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+            G hfree hd he hcard hreg C hCcard hclique hind y.1).resolve_left
+              (hdisj y.1 y.2)),
+        (Classical.choose_spec
+          ((mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+            G hfree hd he hcard hreg C hCcard hclique hind y.1).resolve_left
+              (hdisj y.1 y.2))).1⟩
+    have hanchorAdj : ∀ y : {z : V // z ∈ S},
+        G.Adj (anchor y).1 y.1 := by
+      intro y
+      exact (Classical.choose_spec
+        ((mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+          G hfree hd he hcard hreg C hCcard hclique hind y.1).resolve_left
+            (hdisj y.1 y.2))).2
+    have hinj : Function.Injective anchor := by
+      intro y z hyz
+      apply Subtype.ext
+      by_contra hyzVal
+      have hzero := hS y.2 z.2 hyzVal
+      rw [Finset.card_eq_zero] at hzero
+      have haMem : (anchor y).1 ∈
+          G.neighborFinset y.1 ∩ G.neighborFinset z.1 := by
+        rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+        exact ⟨(hanchorAdj y).symm,
+          (hyz ▸ hanchorAdj z).symm⟩
+      exact Finset.notMem_empty (anchor y).1 (hzero ▸ haMem)
+    have hcardLe := Fintype.card_le_of_injective anchor hinj
+    simpa [Fintype.card_coe, hCcard] using hcardLe
+
 /-- The exact block geometry also forces even degree.  Indeed, for any
 `c ∈ C`, the other `d-2` clique vertices exhaust the entire degree-`d-2`
 defect neighborhood of `c`.  Since `C` is independent in `G`, none of these
