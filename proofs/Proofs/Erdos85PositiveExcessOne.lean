@@ -453,6 +453,68 @@ theorem card_localDegreeOneRoots_eq_degree_sub_one
   change P.card = d - 1
   omega
 
+/-- If a vertex is isolated inside the second-layer branch rooted at `u`,
+then its edge back to `u` lies in no triangle.  Thus `u` is the canonical
+triangle-free partner of the isolated vertex. -/
+theorem root_mem_triangleFreeNeighbors_of_isolated_secondLayerBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (u : {z : V // z ∈ G.neighborSet x})
+    (a : secondLayerBranch G x u)
+    (haIso : (G.induce (secondLayerBranch G x u)).degree a = 0) :
+    u.1 ∈ triangleFreeNeighbors G a.1 := by
+  classical
+  rw [mem_triangleFreeNeighbors]
+  have hua : G.Adj u.1 a.1 :=
+    (G.mem_neighborFinset u.1 a.1).mp (Finset.mem_sdiff.mp a.2).1
+  refine ⟨hua.symm, Finset.card_eq_zero.mpr ?_⟩
+  ext w
+  rw [Finset.mem_inter]
+  constructor
+  · rintro ⟨hwa, hwu⟩
+    have haw : G.Adj a.1 w :=
+      (G.mem_neighborFinset a.1 w).mp hwa
+    have huw : G.Adj u.1 w :=
+      (G.mem_neighborFinset u.1 w).mp hwu
+    have hax : ¬G.Adj a.1 x := by
+      intro hax
+      exact (Finset.mem_sdiff.mp a.2).2
+        (Finset.mem_insert.mpr (Or.inr
+          ((G.mem_neighborFinset x a.1).mpr hax.symm)))
+    have hwx : w ≠ x := by
+      intro h
+      exact hax (h ▸ haw)
+    have hxw : ¬G.Adj x w := by
+      intro hxw
+      have hxa : x ≠ a.1 := by
+        intro h
+        exact (Finset.mem_sdiff.mp a.2).2
+          (Finset.mem_insert.mpr (Or.inl h.symm))
+      have huw_ne : u.1 ≠ w := G.ne_of_adj huw
+      exact hfree (containsC4_of_two_common
+        (x := x) (y := a.1) (v := u.1) (v' := w)
+        hxa huw_ne u.2.symm hua hxw.symm haw.symm)
+    have hwBranch : w ∈ secondLayerBranch G x u := by
+      rw [secondLayerBranch, Finset.mem_sdiff]
+      refine ⟨(G.mem_neighborFinset u.1 w).mpr huw, ?_⟩
+      rw [Finset.mem_insert]
+      push_neg
+      exact ⟨hwx, fun h => hxw ((G.mem_neighborFinset x w).mp h)⟩
+    let b : secondLayerBranch G x u := ⟨w, hwBranch⟩
+    have hbMem : b ∈
+        (G.induce (secondLayerBranch G x u)).neighborFinset a := by
+      rw [(G.induce (secondLayerBranch G x u)).mem_neighborFinset]
+      exact haw
+    have hempty :
+        (G.induce (secondLayerBranch G x u)).neighborFinset a = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(G.induce (secondLayerBranch G x u)).card_neighborFinset_eq_degree,
+        haIso]
+    rw [hempty] at hbMem
+    exact (Finset.notMem_empty b hbMem).elim
+  · simp
+
 /-- An isolated vertex in a second-layer branch whose root is paired inside
 the first neighborhood must see the external reservoir.  Otherwise its
 `d-1` non-root neighbors inject into only the `d-2` branches other than the
@@ -1036,6 +1098,35 @@ theorem excessOne_triangleFreeNeighbors_card_eq_one_of_odd
   · exact hx
   · exact (false_of_excessOne_triangleFreeNeighbors_card_eq_three
       G hfree hd hreg hcard x hx).elim
+
+/-- An isolated matched-branch vertex has its branch root as its unique
+triangle-free partner.  Consequently none of the center's external repair
+candidates can be joined to it by a triangle-free edge.  This removes one
+arc per vertex in the global canonical-isolate capacity count. -/
+theorem external_not_triangleFreePartner_of_isolated_matched_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ y, G.degree y = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (u : {y : V // y ∈ G.neighborSet x})
+    (a : secondLayerBranch G x u)
+    (haIso : (G.induce (secondLayerBranch G x u)).degree a = 0)
+    (z : {y : V // y ≠ x}) (hz : z ∈ externalRepairCandidates G x) :
+    z.1 ∉ triangleFreeNeighbors G a.1 := by
+  intro hza
+  have hua := root_mem_triangleFreeNeighbors_of_isolated_secondLayerBranch
+    G hfree x u a haIso
+  have hone := excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+    G hfree hd hodd hreg hcard a.1
+  have hle : (triangleFreeNeighbors G a.1).card ≤ 1 := by omega
+  have hzu : z.1 = u.1 :=
+    Finset.card_le_one.mp hle z.1 hza u.1 hua
+  have hzNotAdjX : ¬G.Adj z.1 x :=
+    (mem_externalRepairCandidates G x z).mp hz |>.1
+  exact hzNotAdjX (hzu ▸ u.2.symm)
 
 /-- Operator-facing form: the triangle-free-edge color is one-regular, hence
 a perfect matching, in every odd-degree excess-one graph. -/
