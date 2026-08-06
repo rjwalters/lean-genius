@@ -317,6 +317,32 @@ theorem externalAdjMatrix_sq_of_odd_excessOne
           (triangleFreeEdgeGraph G).adjMatrix ℤ := by noncomm_ring
     _ = _ := by rw [hA2, hM2]; module
 
+/-- Entrywise saturated form of `externalAdjMatrix_sq_of_odd_excessOne`.
+For two distinct vertices, the external two-path count and the four defect
+colors sum to exactly one. -/
+theorem externalAdjMatrix_sq_entry_partition_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {x y : V} (hxy : x ≠ y) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    ((A - M) * (A - M)) x y + C x y + M x y +
+      (A * M) x y + (M * A) x y = 1 := by
+  dsimp only
+  have h := congrFun (congrFun
+    (externalAdjMatrix_sq_of_odd_excessOne
+      G hfree hd hodd hreg hcard) x) y
+  simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+    Matrix.one_apply, FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply,
+    hxy, if_false, smul_eq_mul, mul_zero] at h
+  omega
+
 end
 
 end Erdos85
