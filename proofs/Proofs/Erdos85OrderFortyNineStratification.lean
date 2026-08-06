@@ -261,6 +261,62 @@ theorem orderFortyNine_conflictNeighborFinset_degreeEight
         G hfree hmin hcard hx,
       Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
 
+/-- Every edge incident to a degree-eight vertex lies in a triangle. -/
+theorem orderFortyNine_triangleFreeNeighbors_degreeEight_eq_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 8) :
+    triangleFreeNeighbors G x = ∅ := by
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro y hy
+  have hyData := (mem_triangleFreeNeighbors G x y).mp hy
+  have hconflictSet := orderFortyNine_conflictNeighborFinset_degreeEight
+    G hfree hmin hcard hx
+  have hyErase : y ∈ (Finset.univ : Finset V).erase x := by
+    simp [G.ne_of_adj hyData.1 |>.symm]
+  have hyConflictMem : y ∈ (commonNeighborConflict G).neighborFinset x := by
+    rw [hconflictSet]
+    exact hyErase
+  have hyConflict :=
+    ((commonNeighborConflict G).mem_neighborFinset x y).mp hyConflictMem
+  obtain ⟨z, hz⟩ := hyConflict.2
+  have hzero := hyData.2
+  rw [Finset.card_eq_zero] at hzero
+  rw [hzero] at hz
+  exact Finset.notMem_empty z hz
+
+/-- Consequently the neighborhood induced by a degree-eight vertex is
+1-regular: its eight neighbors form four disjoint triangle pairs. -/
+theorem orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 8)
+    (y : {z : V // z ∈ G.neighborSet x}) :
+    (G.induce (G.neighborSet x)).degree y = 1 := by
+  have hle : (G.induce (G.neighborSet x)).degree y ≤ 1 := by
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x y.1
+      (G.ne_of_adj y.2)
+  have hne : (G.induce (G.neighborSet x)).degree y ≠ 0 := by
+    intro hzero
+    have hcommonzero :
+        (G.neighborFinset x ∩ G.neighborFinset y.1).card = 0 := by
+      rwa [degree_induce_neighborSet_eq_card_common] at hzero
+    have hyTF : y.1 ∈ triangleFreeNeighbors G x :=
+      (mem_triangleFreeNeighbors G x y.1).mpr ⟨y.2, hcommonzero⟩
+    rw [orderFortyNine_triangleFreeNeighbors_degreeEight_eq_empty
+      G hfree hmin hcard hx] at hyTF
+    exact Finset.notMem_empty y.1 hyTF
+  omega
+
 end
 
 end Erdos85
