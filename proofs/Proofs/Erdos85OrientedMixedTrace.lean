@@ -172,6 +172,84 @@ theorem trace_mul_mixedFreqProjector_oriented [CharZero K]
   rw [Finset.sum_congr rfl fun c _ ↦ hstep c, ← Finset.sum_filter,
     Finset.mul_sum]
 
+/-- **The oriented mixed frequency-pair trace identity.**  The trace of
+the restricted operator on the mixed `μ = ζ + ζ⁻¹` eigenspace equals
+twice the prime Fourier transform of the anchor weights of the
+*forward-oriented* divisible components; reverse-oriented components of
+any length are invisible.  This is the odd-length-free replacement for
+`trace_defectEigenspaceRestrict_mixed`. -/
+theorem trace_defectEigenspaceRestrict_mixed_oriented [CharZero K]
+    {M : Matrix (Σ c : C, ZMod (ℓ c)) (Σ c : C, ZMod (ℓ c)) K}
+    (hcomm : M * mixedDefectMatrix K ℓ = mixedDefectMatrix K ℓ * M)
+    (o : C → Prop) [DecidablePred o]
+    (hfwd : ∀ c : C, p ∣ ℓ c → o c → ∀ x y : ZMod (ℓ c),
+      M ⟨c, x + 1⟩ ⟨c, y + 1⟩ = M ⟨c, x⟩ ⟨c, y⟩)
+    (hrevo : ∀ c : C, p ∣ ℓ c → ¬ o c → ∀ x y : ZMod (ℓ c),
+      M ⟨c, x + 1⟩ ⟨c, y - 1⟩ = M ⟨c, x⟩ ⟨c, y⟩)
+    (hsymm : M.IsSymm)
+    (hp : p.Prime) (hp2 : 2 < p) [NeZero p] {ζ : K}
+    (hζ : IsPrimitiveRoot ζ p) :
+    LinearMap.trace K
+        (defectEigenspace (mixedDefectMatrix K ℓ) (ζ + ζ⁻¹))
+        (defectEigenspaceRestrict M hcomm (ζ + ζ⁻¹)) =
+      2 * ∑ s : ZMod p,
+        (∑ c ∈ Finset.univ.filter fun c : C ↦ p ∣ ℓ c ∧ o c,
+          ∑ t ∈ Finset.univ.filter
+            (fun t : ZMod (ℓ c) ↦ ((t.val : ℕ) : ZMod p) = s),
+            M ⟨c, 0⟩ ⟨c, t⟩) * ζ ^ s.val := by
+  classical
+  have hζp : ζ ^ p = 1 := hζ.pow_eq_one
+  have hζsq : ζ ^ 2 ≠ 1 :=
+    hζ.pow_ne_one_of_pos_of_lt (by norm_num) hp2
+  set P := mixedFreqProjector p ζ ℓ with hP
+  set N := P * (M * P) with hN
+  have hforall : ∀ x : (Σ c : C, ZMod (ℓ c)) → K, Matrix.toLin' N x ∈
+      defectEigenspace (mixedDefectMatrix K ℓ) (ζ + ζ⁻¹) := by
+    intro x
+    rw [Matrix.toLin'_apply, hN, ← Matrix.mulVec_mulVec]
+    exact mixedFreqProjector_mulVec_mem hζp _
+  have hrestrict :
+      (Matrix.toLin' N).restrict (fun x _ ↦ hforall x) =
+        defectEigenspaceRestrict M hcomm (ζ + ζ⁻¹) := by
+    refine LinearMap.ext fun v ↦ Subtype.ext ?_
+    rw [LinearMap.coe_restrict_apply, defectEigenspaceRestrict_coe,
+      Matrix.toLin'_apply, hN, ← Matrix.mulVec_mulVec,
+      ← Matrix.mulVec_mulVec,
+      mixedFreqProjector_mulVec_of_mem hp hp2 hζ v.2,
+      mixedFreqProjector_mulVec_of_mem hp hp2 hζ
+        (mulVec_mem_defectEigenspace hcomm v.2)]
+  have htr := LinearMap.trace_restrict_eq_of_forall_mem
+    (defectEigenspace (mixedDefectMatrix K ℓ) (ζ + ζ⁻¹))
+    (Matrix.toLin' N) hforall (fun x _ ↦ hforall x)
+  rw [hrestrict] at htr
+  rw [htr, Matrix.trace_toLin'_eq, hN, hP, Matrix.trace_mul_comm,
+    Matrix.mul_assoc, mixedFreqProjector_mul_self hζp hζsq,
+    trace_mul_mixedFreqProjector_oriented o hfwd hrevo hsymm hζp hζsq]
+  congr 1
+  have hfiber : ∀ c : C, p ∣ ℓ c →
+      ∑ t : ZMod (ℓ c), M ⟨c, 0⟩ ⟨c, t⟩ * cyclePow ζ t =
+        ∑ s : ZMod p,
+          (∑ t ∈ Finset.univ.filter
+            (fun t : ZMod (ℓ c) ↦ ((t.val : ℕ) : ZMod p) = s),
+            M ⟨c, 0⟩ ⟨c, t⟩) * ζ ^ s.val := by
+    intro c hdvd
+    haveI : NeZero (ℓ c) := inferInstance
+    rw [sum_mul_cyclePow_eq_fiberwise hdvd hζp
+      (fun t ↦ M ⟨c, 0⟩ ⟨c, t⟩)]
+    apply Finset.sum_congr rfl
+    intro s _
+    congr 1
+    apply Finset.sum_congr ?_ fun t _ ↦ rfl
+    apply Finset.filter_congr
+    intro t _
+    rw [ZMod.castHom_apply, ← ZMod.natCast_val]
+  rw [Finset.sum_congr rfl fun c hc ↦
+    hfiber c ((Finset.mem_filter.mp hc).2).1]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro s _
+  rw [Finset.sum_mul]
+
 end
 
 end Erdos85
