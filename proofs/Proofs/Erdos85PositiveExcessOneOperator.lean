@@ -280,6 +280,69 @@ theorem secondOrderDefectGraph_adjMatrix_eq_antipodal_add_triangleFree
   by_cases h : (antipodalGraph G ⊔ triangleFreeEdgeGraph G).Adj x y <;>
     simp [secondOrderDefectGraph, h]
 
+/-- Let `E = A - M` be the adjacency matrix after deleting the canonical
+triangle-free matching.  Its square has an exact five-color decomposition.
+This is the matrix form of the saturated matching-pair quotient: a missing
+external two-path is accounted for by an antipodal pair or by one of the
+two matching-assisted orientations of an original edge. -/
+theorem externalAdjMatrix_sq_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    let J := FriendshipTheoremOQ01.onesMatrix V
+    (A - M) * (A - M) =
+      (d : ℤ) • (1 : Matrix V V ℤ) + J - C - M - A * M - M * A := by
+  dsimp only
+  have hA2 := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular
+    G hfree hreg
+  have hD := secondOrderDefectGraph_adjMatrix_eq_antipodal_add_triangleFree
+    G
+  have hM2 := triangleFreeEdgeGraph_adjMatrix_sq_eq_one_of_odd_excessOne
+    G hfree hd hodd hreg hcard
+  rw [hD] at hA2
+  calc
+    (G.adjMatrix ℤ - (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+        (G.adjMatrix ℤ - (triangleFreeEdgeGraph G).adjMatrix ℤ) =
+      G.adjMatrix ℤ * G.adjMatrix ℤ -
+        G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ -
+        (triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ +
+        (triangleFreeEdgeGraph G).adjMatrix ℤ *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ := by noncomm_ring
+    _ = _ := by rw [hA2, hM2]; module
+
+/-- Entrywise saturated form of `externalAdjMatrix_sq_of_odd_excessOne`.
+For two distinct vertices, the external two-path count and the four defect
+colors sum to exactly one. -/
+theorem externalAdjMatrix_sq_entry_partition_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {x y : V} (hxy : x ≠ y) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    ((A - M) * (A - M)) x y + C x y + M x y +
+      (A * M) x y + (M * A) x y = 1 := by
+  dsimp only
+  have h := congrFun (congrFun
+    (externalAdjMatrix_sq_of_odd_excessOne
+      G hfree hd hodd hreg hcard) x) y
+  simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+    Matrix.one_apply, FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply,
+    hxy, if_false, smul_eq_mul, mul_zero] at h
+  omega
+
 end
 
 end Erdos85
