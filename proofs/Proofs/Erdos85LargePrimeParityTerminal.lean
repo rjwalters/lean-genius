@@ -233,7 +233,7 @@ theorem exists_window_selection_or_obstructed
     ⟨p, hp, hp7, hodd, hcountOdd⟩ | hobs
   · left
     refine ⟨p, hp, hp7, ?_, hodd, hcountOdd⟩
-    rcases Nat.le_or_lt (p * (p - 3)) (2 * (d * (d - 1) + 3)) with hle | hgt
+    rcases le_or_lt (p * (p - 3)) (2 * (d * (d - 1) + 3)) with hle | hgt
     · exact hle
     · exact (false_of_secondOrder_countOdd_of_large_prime G hfree hd heven
         hmin hcard hp hp7 hgt u hu huRange huD hℓ3 hodd hcountOdd).elim
