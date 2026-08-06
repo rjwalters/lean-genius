@@ -108,6 +108,79 @@ theorem trace_adjMatrix_fifth_eq_colorTrace_add_antipodalService
   rw [hAJ, Matrix.trace_smul, htraceJ, hservice] at hbase
   simpa [smul_eq_mul] using hbase
 
+/-- The cubic color partition requires only regularity, not an exact-boundary
+parity hypothesis. -/
+theorem trace_adjMatrix_cube_add_colorTrace_eq_card_mul_degree_of_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) :
+    Matrix.trace
+        (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ) +
+      Matrix.trace (G.adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) =
+      (Fintype.card V : ℤ) * d := by
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix V
+  have hsq : A * A = ((d : ℤ) - 1) • (1 : Matrix V V ℤ) + J - D :=
+    adjMatrix_sq_eq_sub_secondOrderDefect_of_regular G hfree hreg
+  have hJA : J * A = (d : ℤ) • J :=
+    onesMatrix_mul_adjMatrix_of_regular G d hreg
+  have hcube : A * A * A =
+      ((d : ℤ) - 1) • A + (d : ℤ) • J - D * A := by
+    rw [show A * A * A = (A * A) * A by rfl, hsq,
+      Matrix.sub_mul, Matrix.add_mul, Matrix.smul_mul,
+      Matrix.one_mul, hJA]
+  change Matrix.trace (A * A * A) + Matrix.trace (A * D) = _
+  rw [hcube, Matrix.trace_sub, Matrix.trace_add, Matrix.trace_smul,
+    Matrix.trace_smul, Matrix.trace_mul_comm D A]
+  have htraceA : Matrix.trace A = 0 := SimpleGraph.trace_adjMatrix ℤ G
+  have htraceJ : Matrix.trace J = (Fintype.card V : ℤ) :=
+    FriendshipTheoremOQ01.trace_onesMatrix
+  rw [htraceA, htraceJ]
+  simp
+  ring
+
+/-- Algebraic endpoint for the forthcoming closed-walk count: any integer
+`q₅` satisfying the standard length-five walk decomposition obeys the exact
+five-cycle/antipodal-service equation. -/
+theorem ten_mul_fiveCycleCount_eq_antipodalService_of_walk_decomposition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ}
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (q₅ : ℤ)
+    (hwalk : Matrix.trace
+        (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ *
+          G.adjMatrix ℤ * G.adjMatrix ℤ) =
+      10 * q₅ + 5 * ((d : ℤ) - 1) *
+        Matrix.trace
+          (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ)) :
+    10 * q₅ =
+      Matrix.trace
+          (G.adjMatrix ℤ * (antipodalGraph G).adjMatrix ℤ *
+            (antipodalGraph G).adjMatrix ℤ) +
+        ((Fintype.card V : ℤ) - 3 * ((d : ℤ) - 1) -
+            2 * ((e : ℤ) + 2)) *
+            ((d : ℤ) * (Fintype.card V : ℤ)) +
+          3 * ((d : ℤ) - 1) *
+            Matrix.trace (G.adjMatrix ℤ *
+              (secondOrderDefectGraph G).adjMatrix ℤ) := by
+  have hfive := trace_adjMatrix_fifth_eq_colorTrace_add_antipodalService
+    G hfree hreg hcard
+  dsimp only at hfive
+  have hcube :=
+    trace_adjMatrix_cube_add_colorTrace_eq_card_mul_degree_of_regular
+      G hfree hreg
+  rw [hwalk] at hfive
+  linear_combination hfive - 5 * ((d : ℤ) - 1) * hcube
+
 end
 
 end Erdos85
