@@ -249,6 +249,25 @@ theorem positiveExcess_minimumOrderComponent_unit_reverse
     · exact (hzero (Int.ofNat_inj.mp hcast)).elim
     · exact_mod_cast (sub_eq_zero.mp hreverse)
 
+/-- In particular, the original graph induced on a minimum-order defect
+component is either independent or one-regular. -/
+theorem positiveExcess_minimumOrderComponent_diagonal_zero_or_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = e + 3) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 ∨
+      componentQuotientMatrix G (secondOrderDefectGraph G) c c = 1 :=
+  positiveExcess_minimumOrderComponent_unit_reverse
+    G hfree hd he hreg hcard c hc c
+
 /-- **Positive-excess weighted trace identity.**  If the transverse scalar
 `d-e-3` is nonsquare, the component quotient trace is exactly `d`. -/
 theorem positiveExcess_componentQuotient_trace_eq_degree_of_nonsquare
