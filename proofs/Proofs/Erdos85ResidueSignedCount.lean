@@ -45,15 +45,12 @@ theorem Matrix.trace_eq_smul_rank_sub_of_sq_eq_smul_one
       show (2 : K) * s = s + s by ring, add_smul, add_smul]
     abel
   have hPP : P * P = P := by
-    calc
-      P * P = (2 * s)⁻¹ • ((2 * s)⁻¹ •
-          ((s • (1 : Matrix I I K) + M) *
-            (s • (1 : Matrix I I K) + M))) := by
-        rw [hPdef, smul_mul_assoc, mul_smul_comm]
-      _ = (2 * s)⁻¹ • (((2 * s)⁻¹ * (2 * s)) •
-          (s • (1 : Matrix I I K) + M)) := by
-        rw [hexpand, smul_smul]
-      _ = P := by rw [inv_mul_cancel₀ ht, one_smul, hPdef]
+    have h1 : P * P = ((2 * s)⁻¹ * (2 * s)⁻¹) •
+        ((2 * s) • (s • (1 : Matrix I I K) + M)) := by
+      rw [hPdef, smul_mul_assoc, mul_smul_comm, smul_smul, hexpand]
+    rw [h1, smul_smul, hPdef]
+    congr 1
+    rw [mul_assoc, inv_mul_cancel₀ ht, mul_one]
   have hfP : IsIdempotentElem (Matrix.toLin' P) := by
     show Matrix.toLin' P * Matrix.toLin' P = Matrix.toLin' P
     rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hPP]
@@ -74,9 +71,12 @@ theorem Matrix.trace_eq_smul_rank_sub_of_sq_eq_smul_one
   refine ⟨a, Fintype.card I - a, by omega, ?_⟩
   have hcast : ((Fintype.card I - a : ℕ) : K) =
       (Fintype.card I : K) - (a : K) := Nat.cast_sub haLe
-  rw [hM, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_smul,
-    Matrix.trace_one, htrP, hcast]
-  simp only [smul_eq_mul]
+  have htrOne : Matrix.trace (s • (1 : Matrix I I K)) =
+      s * (Fintype.card I : K) := by
+    rw [Matrix.trace_smul, Matrix.trace_one, smul_eq_mul]
+  have htrTwoP : Matrix.trace ((2 * s) • P) = (2 * s) * (a : K) := by
+    rw [Matrix.trace_smul, smul_eq_mul, htrP]
+  rw [hM, Matrix.trace_sub, htrTwoP, htrOne, hcast]
   ring
 
 /-- **Odd small dimension forces nonzero trace.**  Over `ZMod p` a square
@@ -135,7 +135,7 @@ order divisible by `p`. -/
 theorem pDivisible_filter_card_lt_of_card_lt_sq
     {V : Type*} [Fintype V] (D : SimpleGraph V)
     [Fintype D.ConnectedComponent] {p n : ℕ}
-    (hp : 0 < p) (hcard : Fintype.card V = n) (hlt : n < p * p) :
+    (hcard : Fintype.card V = n) (hlt : n < p * p) :
     (Finset.univ.filter (fun c : D.ConnectedComponent ↦
       p ∣ c.supp.ncard)).card < p := by
   classical
@@ -159,12 +159,14 @@ theorem pDivisible_filter_card_lt_of_card_lt_sq
         Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
       _ = Fintype.card V := sum_connectedComponent_supp_ncard D
       _ = n := hcard
-  by_contra hge
-  push_neg at hge
-  have hpp : p * p ≤ p * (Finset.univ.filter
-      (fun c : D.ConnectedComponent ↦ p ∣ c.supp.ncard)).card :=
-    Nat.mul_le_mul_left p hge
-  omega
+  rcases Nat.lt_or_ge (Finset.univ.filter (fun c : D.ConnectedComponent ↦
+      p ∣ c.supp.ncard)).card p with h | hge
+  · exact h
+  · exfalso
+    have hpp : p * p ≤ p * (Finset.univ.filter
+        (fun c : D.ConnectedComponent ↦ p ∣ c.supp.ncard)).card :=
+      Nat.mul_le_mul_left p hge
+    omega
 
 /-- **The residue signed-count obstruction.**  At the exact even boundary,
 if the number of `p`-divisible defect components is odd and smaller than
@@ -217,7 +219,8 @@ theorem secondOrder_not_dvd_sector_diagonal_trace_of_odd_small
     unfold pDivisibleComponent
     rw [Fintype.card_subtype]
     exact hsmall
-  have hsub : (∑ c : pDivisibleComponent (secondOrderDefectGraph G) p,
+  have hsub : (∑ c : {c : (secondOrderDefectGraph G).ConnectedComponent //
+      p ∣ c.supp.ncard},
       ((componentQuotientMatrix G (secondOrderDefectGraph G) c.1 c.1 : ℕ) :
         ZMod p)) =
       ∑ c ∈ Finset.univ.filter (fun c :
@@ -240,7 +243,8 @@ theorem secondOrder_not_dvd_sector_diagonal_trace_of_odd_small
         componentQuotientMatrix G (secondOrderDefectGraph G) c c : ℕ) :
           ZMod p) := by
     rw [Matrix.trace]
-    change (∑ c : pDivisibleComponent (secondOrderDefectGraph G) p,
+    change (∑ c : {c : (secondOrderDefectGraph G).ConnectedComponent //
+      p ∣ c.supp.ncard},
       ((componentQuotientMatrix G (secondOrderDefectGraph G) c.1 c.1 : ℕ) :
         ZMod p)) = _
     rw [hsub, Nat.cast_sum]
@@ -277,11 +281,10 @@ theorem exists_positive_diagonalQuotient_of_odd_pDivisible_of_large_prime
       p ∣ c.supp.ncard ∧
         0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
   have hsmall := pDivisible_filter_card_lt_of_card_lt_sq
-    (secondOrderDefectGraph G) hp.pos hcard hbig
+    (secondOrderDefectGraph G) hcard hbig
   have hnotdvd := secondOrder_not_dvd_sector_diagonal_trace_of_odd_small
     G hfree hd heven hmin hcard hp hp2 hnd hodd hsmall
   by_contra hnone
-  push_neg at hnone
   apply hnotdvd
   have hzero : (∑ c ∈ Finset.univ.filter (fun c :
       (secondOrderDefectGraph G).ConnectedComponent ↦
@@ -289,8 +292,8 @@ theorem exists_positive_diagonalQuotient_of_odd_pDivisible_of_large_prime
       componentQuotientMatrix G (secondOrderDefectGraph G) c c) = 0 := by
     apply Finset.sum_eq_zero
     intro c hc
-    have h := hnone c (Finset.mem_filter.mp hc).2
-    omega
+    by_contra hne
+    exact hnone ⟨c, (Finset.mem_filter.mp hc).2, Nat.pos_of_ne_zero hne⟩
   rw [hzero]
   exact dvd_zero p
 
@@ -327,7 +330,7 @@ theorem not_dvd_pDivisibleAnchorMass_of_odd_pDivisible_of_large_prime
   exact secondOrder_not_dvd_sector_diagonal_trace_of_odd_small
     G hfree hd heven hmin hcard hp hp2 hnd hodd
     (pDivisible_filter_card_lt_of_card_lt_sq
-      (secondOrderDefectGraph G) hp.pos hcard hbig)
+      (secondOrderDefectGraph G) hcard hbig)
 
 /-- Positivity form: the selected anchor mass cannot vanish at an odd
 residue prime beyond the vertex-count square root. -/
