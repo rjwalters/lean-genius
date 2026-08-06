@@ -168,7 +168,7 @@ theorem even_of_forward_support_card_eq_one
   · rw [hempty] at hone
     simp at hone
   · exact even_of_self_eq_neg htneg ht0
-  · rw [hpair, Finset.card_insert_of_not_mem (by
+  · rw [hpair, Finset.card_insert_of_notMem (by
       simpa using fun h ↦ htneg h), Finset.card_singleton] at hone
     omega
 
