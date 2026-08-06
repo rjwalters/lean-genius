@@ -15,6 +15,48 @@ noncomputable section
 
 open SimpleGraph
 
+/-- Components whose orders are divisible by `p`. -/
+def pDivisibleComponent {V : Type*} (D : SimpleGraph V) (p : ℕ) :=
+  {c : D.ConnectedComponent // p ∣ c.supp.ncard}
+
+noncomputable instance pDivisibleComponentFintype
+    {V : Type*} (D : SimpleGraph V) (p : ℕ)
+    [Fintype D.ConnectedComponent] : Fintype (pDivisibleComponent D p) :=
+  by
+    unfold pDivisibleComponent
+    infer_instance
+
+noncomputable instance pDivisibleComponentDecidableEq
+    {V : Type*} (D : SimpleGraph V) (p : ℕ) :
+    DecidableEq (pDivisibleComponent D p) := Classical.decEq _
+
+/-- The principal component-quotient block on `p`-divisible components,
+reduced to `ZMod p`. -/
+noncomputable def pDivisibleComponentQuotientMatrix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent] (p : ℕ) :
+    Matrix (pDivisibleComponent D p) (pDivisibleComponent D p) (ZMod p) :=
+  fun c e ↦ componentQuotientMatrix G D c.1 e.1
+
+/-- An odd-dimensional square root of a scalar matrix forces the scalar to
+be a square.  This determinant lemma is field-generic. -/
+theorem Matrix.isSquare_scalar_of_sq_eq_scalar_one_of_odd_card
+    {K I : Type*} [Field K] [Fintype I] [DecidableEq I]
+    (M : Matrix I I K) (a : K) (hodd : Odd (Fintype.card I))
+    (hsq : M * M = a • (1 : Matrix I I K)) : IsSquare a := by
+  obtain ⟨k, hk⟩ := hodd
+  have hdet := congrArg Matrix.det hsq
+  rw [Matrix.det_mul, Matrix.det_smul, Matrix.det_one, mul_one] at hdet
+  rw [hk] at hdet
+  by_cases ha : a = 0
+  · subst a
+    exact ⟨0, by simp⟩
+  · refine ⟨Matrix.det M / a ^ k, ?_⟩
+    rw [div_mul_div_comm, hdet]
+    field_simp [ha]
+    ring
+
 /-- A quotient entry from a component whose order is prime to `p` into a
 component whose order is divisible by `p` is itself divisible by `p`. -/
 theorem prime_dvd_componentQuotient_of_targetLength_dvd
@@ -126,6 +168,114 @@ theorem pDivisible_componentQuotient_sector_sq_modEq
     _ ≡ (d - 3) * (if s = e then 1 else 0) [MOD p] := by
       simpa only [add_zero] using
         hlen0.add_left ((d - 3) * (if s = e then 1 else 0))
+
+/-- Matrix form of the sector square equation over `ZMod p`. -/
+theorem pDivisibleComponentQuotientMatrix_sq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {d p : ℕ} [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime) :
+    let I := pDivisibleComponent (secondOrderDefectGraph G) p
+    let Qp := pDivisibleComponentQuotientMatrix G
+      (secondOrderDefectGraph G) p
+    Qp * Qp = ((d - 3 : ℕ) : ZMod p) • (1 : Matrix I I (ZMod p)) := by
+  dsimp only
+  ext s e
+  have hm := pDivisible_componentQuotient_sector_sq_modEq
+    G hfree hd heven hmin hcard hp s.1 e.1 s.2 e.2
+  have hc := (ZMod.natCast_eq_natCast_iff _ _ p).mpr hm
+  simp only [Matrix.mul_apply, pDivisibleComponentQuotientMatrix,
+    Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
+  have hsum :
+      (∑ x : {c : (secondOrderDefectGraph G).ConnectedComponent //
+          p ∣ c.supp.ncard},
+        (componentQuotientMatrix G (secondOrderDefectGraph G) s.1 x.1 :
+          ZMod p) *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) x.1 e.1 :
+          ZMod p)) =
+      ∑ x ∈ Finset.univ.filter (fun c :
+          (secondOrderDefectGraph G).ConnectedComponent ↦
+            p ∣ c.supp.ncard),
+        (componentQuotientMatrix G (secondOrderDefectGraph G) s.1 x :
+          ZMod p) *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) x e.1 :
+          ZMod p) := by
+    simpa using Finset.sum_subtype_eq_sum_filter
+      (s := (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent))
+      (p := fun c ↦ p ∣ c.supp.ncard)
+      (fun x ↦
+        (componentQuotientMatrix G (secondOrderDefectGraph G) s.1 x :
+          ZMod p) *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) x e.1 :
+          ZMod p))
+  change (∑ x : {c : (secondOrderDefectGraph G).ConnectedComponent //
+      p ∣ c.supp.ncard},
+    (componentQuotientMatrix G (secondOrderDefectGraph G) s.1 x.1 : ZMod p) *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) x.1 e.1 : ZMod p)) = _
+  rw [hsum]
+  simp only [Nat.cast_sum, Nat.cast_mul, Nat.cast_ite, Nat.cast_one,
+    Nat.cast_zero] at hc
+  by_cases hse : s = e
+  · subst e
+    simpa using hc
+  · have hval : s.1 ≠ e.1 := by
+      intro h
+      exact hse (Subtype.ext h)
+    simp only [hse, hval, if_false] at hc ⊢
+    exact hc
+
+/-- If an odd number of defect components have order divisible by `p`, then
+`d-3` is a square modulo `p`. -/
+theorem isSquare_d_sub_three_mod_prime_of_odd_pDivisibleComponent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {d p : ℕ} [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime)
+    (hodd : Odd (Fintype.card
+      (pDivisibleComponent (secondOrderDefectGraph G) p))) :
+    IsSquare ((d - 3 : ℕ) : ZMod p) := by
+  let Qp := pDivisibleComponentQuotientMatrix G
+    (secondOrderDefectGraph G) p
+  have hsq := pDivisibleComponentQuotientMatrix_sq
+    G hfree hd heven hmin hcard hp
+  letI : Fact p.Prime := ⟨hp⟩
+  exact Matrix.isSquare_scalar_of_sq_eq_scalar_one_of_odd_card
+    Qp ((d - 3 : ℕ) : ZMod p) hodd hsq
+
+/-- Filter-cardinality interface matching the mixed-selection layer. -/
+theorem isSquare_d_sub_three_mod_prime_of_odd_pDivisible_filter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {d p : ℕ} [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime)
+    (hodd : Odd ((Finset.univ.filter (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent ↦
+        p ∣ c.supp.ncard)).card)) :
+    IsSquare ((d - 3 : ℕ) : ZMod p) := by
+  apply isSquare_d_sub_three_mod_prime_of_odd_pDivisibleComponent
+    G hfree hd heven hmin hcard hp
+  unfold pDivisibleComponent
+  rw [Fintype.card_subtype]
+  exact hodd
 
 end
 
