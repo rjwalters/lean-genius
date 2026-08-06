@@ -571,6 +571,64 @@ theorem no_c4Free_minDegree_excessOne_of_degree_mod_six_three
   exact no_c4Free_regular_excessOne_of_degree_mod_six_three
     G hfree hd hmod hreg hcard
 
+/-- Without any congruence condition, odd-degree excess-one graphs have
+exactly one triangle-free incident edge at every vertex.  The alternative
+value three is excluded by the exceptional-vertex terminal. -/
+theorem excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x : V) :
+    (triangleFreeNeighbors G x).card = 1 := by
+  rcases excessOne_triangleFreeNeighbors_card_eq_one_or_three
+      G hfree hodd hreg hcard x with hx | hx
+  · exact hx
+  · exact (false_of_excessOne_triangleFreeNeighbors_card_eq_three
+      G hfree hd hreg hcard x hx).elim
+
+/-- Operator-facing form: the triangle-free-edge color is one-regular, hence
+a perfect matching, in every odd-degree excess-one graph. -/
+theorem triangleFreeEdgeGraph_degree_eq_one_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x : V) :
+    (triangleFreeEdgeGraph G).degree x = 1 := by
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset]
+  exact excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+    G hfree hd hodd hreg hcard x
+
+/-- The complementary antipodal color is two-regular.  Thus every odd-degree
+excess-one defect graph canonically splits as a 2-factor plus a perfect
+matching. -/
+theorem antipodalGraph_degree_eq_two_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x : V) :
+    (antipodalGraph G).degree x = 2 := by
+  have hD := secondOrderDefectGraph_degree_eq_excess_add_two
+    G hfree hreg (e := 1) (by simpa using hcard) x
+  have hT := excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+    G hfree hd hodd hreg hcard x
+  rw [← (antipodalGraph G).card_neighborFinset_eq_degree,
+    antipodalGraph_neighborFinset]
+  rw [← (secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+    secondOrderDefectGraph_neighborFinset,
+    Finset.card_union_of_disjoint
+      (disjoint_antipodal_triangleFreeNeighbors G x)] at hD
+  omega
+
 end
 
 end Erdos85
