@@ -167,6 +167,35 @@ theorem sum_anchorPairMultiplicity_of_cycleCover_eq_ite_dvd
   simp only [sum_anchorPairMultiplicity_of_cycleCover G u v f hadj horient δ,
     cycleCoverMap_apply_eq_zero_iff_dvd f horient δ]
 
+/-- If the prime modulus divides the source-cycle length, every displacement
+covered by the cyclic cover projects to the zero fiber.  Thus covering blocks
+of this type are invisible in every nonzero projected fiber. -/
+theorem castHom_eq_zero_of_sourceLength_dvd_val
+    {p r n : ℕ} [NeZero p] [NeZero n]
+    (hpr : p ∣ r) (hrn : r ∣ n) (δ : ZMod n) (hδ : r ∣ δ.val) :
+    ZMod.castHom (dvd_trans hpr hrn) (ZMod p) δ = 0 := by
+  rw [← ZMod.natCast_zmod_val δ]
+  simp only [map_natCast]
+  exact (ZMod.natCast_eq_zero_iff δ.val p).mpr (dvd_trans hpr hδ)
+
+/-- Counting form of the preceding observation: a nonzero mod-`p` fiber
+contains no displacement selected by a cover whose source length is divisible
+by `p`. -/
+theorem filter_sourceLength_dvd_val_eq_empty_of_ne_zero
+    {p r n : ℕ} [NeZero p] [NeZero n]
+    (hpr : p ∣ r) (hrn : r ∣ n) (t : ZMod p) (ht : t ≠ 0) :
+    (Finset.univ.filter fun δ : ZMod n ↦
+      ZMod.castHom (dvd_trans hpr hrn) (ZMod p) δ = t ∧ r ∣ δ.val) = ∅ := by
+  ext δ
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨hcast, hδ⟩
+    have hzero := castHom_eq_zero_of_sourceLength_dvd_val hpr hrn δ hδ
+    exact (ht (hcast.symm.trans hzero)).elim
+  · intro h
+    have : False := by simpa using h
+    exact this.elim
+
 /-- Set-valued form of pair-mass quantization, convenient for downstream
 parity and partition arguments. -/
 theorem sum_anchorPairMultiplicity_of_cycleCover_mem
