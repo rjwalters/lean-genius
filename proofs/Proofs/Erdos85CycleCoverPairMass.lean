@@ -96,6 +96,46 @@ theorem cycleCoverMap_apply_eq_zero_iff_dvd
       _ ↔ ((t.val : ℕ) : ZMod r) = 0 := by simp
       _ ↔ r ∣ t.val := ZMod.natCast_eq_zero_iff t.val r
 
+/-- Existence of a globally oriented cyclic cover forces the source-cycle
+length to divide the target-cycle length. -/
+theorem sourceLength_dvd_targetLength_of_cycleCoverMap
+    {r n : ℕ} [NeZero r] [NeZero n]
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    r ∣ n := by
+  rcases horient with hforward | hreverse
+  · have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    have hn := hind n
+    have hn0 : ((n : ℕ) : ZMod n) = 0 :=
+      (ZMod.natCast_eq_zero_iff n n).mpr (dvd_refl n)
+    rw [hn0] at hn
+    have : ((n : ℕ) : ZMod r) = 0 := by
+      simpa only [add_eq_left] using hn.symm
+    exact (ZMod.natCast_eq_zero_iff n r).mp this
+  · have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    have hn := hind n
+    have hn0 : ((n : ℕ) : ZMod n) = 0 :=
+      (ZMod.natCast_eq_zero_iff n n).mpr (dvd_refl n)
+    rw [hn0] at hn
+    have : ((n : ℕ) : ZMod r) = 0 := by
+      simpa only [sub_eq_self] using hn.symm
+    exact (ZMod.natCast_eq_zero_iff n r).mp this
+
 /-- **Cyclic-cover pair-mass quantization.**  Suppose adjacency from the
 `r`-cycle labeled by `u` to the `n`-cycle labeled by `v` is the graph of a
 globally oriented selector `f`.  For every displacement `δ`, the sum of
