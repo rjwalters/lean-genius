@@ -1,5 +1,6 @@
 import Proofs.Erdos85BinaryCycleIntertwiner
 import Proofs.Erdos85EvenCycleSelfIntertwiner
+import Proofs.Erdos85FrequencyPairGraphBlocks
 import Proofs.Erdos85SecondOrderEvenDefect
 
 /-!
@@ -468,6 +469,58 @@ theorem graph_equalEvenCycle_diagBlock_orientation
           simp only [H, SimpleGraph.adjMatrix_apply]
           rw [if_neg (hnoOdd (x + 1) (y + 1) hpar')]
         simpa only [H, h0, h0']
+
+/-- Uniform odd/even wrapper: every labeled diagonal block of a commuting
+cycle factor in a `C4`-free graph has a global cyclic orientation. -/
+theorem graph_cycle_diagBlock_orientation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (huinj : Function.Injective u)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) =
+      {u (x - 1), u (x + 1)}) :
+    (∀ x y, G.adjMatrix ℤ (u (x + 1)) (u (y + 1)) =
+        G.adjMatrix ℤ (u x) (u y)) ∨
+      (∀ x y, G.adjMatrix ℤ (u (x + 1)) (u (y - 1)) =
+        G.adjMatrix ℤ (u x) (u y)) := by
+  rcases Nat.even_or_odd r with hrEven | hrOdd
+  · exact graph_equalEvenCycle_diagBlock_orientation hr3 hrEven G D hfree
+      u huinj hcomm huD
+  · exact Or.inl (graph_equalOddCycle_diagBlock_translationInvariant
+      hr3 hrOdd G D u huinj hcomm huD)
+
+/-- Field-valued form consumed by the frequency projector trace layer. -/
+theorem graph_cycle_diagBlock_orientation_field
+    {K V : Type*} [Field K] [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (huinj : Function.Injective u)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) =
+      {u (x - 1), u (x + 1)}) :
+    (∀ x y, G.adjMatrix K (u (x + 1)) (u (y + 1)) =
+        G.adjMatrix K (u x) (u y)) ∨
+      (∀ x y, G.adjMatrix K (u (x + 1)) (u (y - 1)) =
+        G.adjMatrix K (u x) (u y)) := by
+  rcases graph_cycle_diagBlock_orientation hr3 G D hfree u huinj hcomm
+    huD with htrans | hrev
+  · left
+    intro x y
+    have h := htrans x y
+    simp only [SimpleGraph.adjMatrix_apply] at h ⊢
+    by_cases h₁ : G.Adj (u (x + 1)) (u (y + 1)) <;>
+      by_cases h₂ : G.Adj (u x) (u y) <;> simp_all
+  · right
+    intro x y
+    have h := hrev x y
+    simp only [SimpleGraph.adjMatrix_apply] at h ⊢
+    by_cases h₁ : G.Adj (u (x + 1)) (u (y - 1)) <;>
+      by_cases h₂ : G.Adj (u x) (u y) <;> simp_all
 
 end
 
