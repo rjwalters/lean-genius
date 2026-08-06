@@ -42,23 +42,24 @@ theorem exists_even_component_of_largePrime_dvd
   push_neg at hnone
   have hallOdd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
       Odd c.supp.ncard := fun c ↦
-    Nat.odd_iff_not_even.mpr (hnone c)
+    Nat.not_even_iff_odd.mp (hnone c)
   have hall := all_component_orders_dvd_of_largePrime_dvd_one
     G hfree hd heven hmin hcard hp hdp c₀ hpc
   have hcardVodd : Odd (Fintype.card V) := by
     rw [hcard]
-    rcases heven with ⟨k, hk⟩
+    obtain ⟨k, hk⟩ := heven
     subst hk
-    refine ⟨(k + k) * (k + k - 1) / 2 + 1, by
-      have h2 : 2 ∣ (k + k) * (k + k - 1) := Dvd.dvd.mul_right ⟨k, rfl⟩ _
-      omega⟩
+    have h2 : (k + k) * (k + k - 1) = 2 * (k * (k + k - 1)) := by
+      rw [← two_mul, mul_assoc]
+    rw [Nat.odd_iff, h2]
+    omega
   have hcountOdd := countOdd_of_all_pDivisible
     (secondOrderDefectGraph G) hall hallOdd hcardVodd
   have hobs := secondOrder_componentOrders_selectionObstructed
     G hfree hd heven hmin hcard
   rcases hobs p hp hp7 with ⟨c, _, hceven⟩ | hcount
   · exact hnone c hceven
-  · exact (Nat.odd_iff_not_even.mp hcountOdd) hcount
+  · exact (Nat.not_even_iff_odd.mpr hcountOdd) hcount
 
 end
 
