@@ -405,6 +405,54 @@ theorem excessOne_externalRepairCandidates_card_eq_two
   rw [hmul] at hextid
   omega
 
+/-- A triangle-free-degree-one center has `d-1` matched roots, not merely
+`(d-1)/2`: the latter counts matching edges.  This is the indexing count for
+the canonical isolated-branch incidence system. -/
+theorem card_localDegreeOneRoots_eq_degree_sub_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) (x : V)
+    (hx : (triangleFreeNeighbors G x).card = 1) :
+    ((Finset.univ : Finset {z : V // z ∈ G.neighborSet x}).filter fun y =>
+      (G.induce (G.neighborSet x)).degree y = 1).card = d - 1 := by
+  let P := (Finset.univ : Finset {z : V // z ∈ G.neighborSet x}).filter
+    fun y => (G.induce (G.neighborSet x)).degree y = 1
+  have hle : ∀ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y ≤ 1 := by
+    intro y
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x y.1 (G.ne_of_adj y.2)
+  have hlocalsum :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) = d - 1 := by
+    have hsum := card_triangleFreeNeighbors_add_localDegreeSum_of_regular
+      G hfree hreg x
+    rw [hx] at hsum
+    change 1 + (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y) = d at hsum
+    omega
+  have hsumP : (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y) = P.card := by
+    calc
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          (G.induce (G.neighborSet x)).degree y) =
+          ∑ y, if (G.induce (G.neighborSet x)).degree y = 1 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro y _
+        have hy := hle y
+        by_cases h1 : (G.induce (G.neighborSet x)).degree y = 1
+        · simp [h1]
+        · have h0 : (G.induce (G.neighborSet x)).degree y = 0 := by omega
+          simp [h0]
+      _ = P.card := by
+        simpa [P] using
+          (Finset.sum_boole (R := ℕ) (fun y : {z : V // z ∈ G.neighborSet x} =>
+            (G.induce (G.neighborSet x)).degree y = 1)
+              (Finset.univ : Finset {z : V // z ∈ G.neighborSet x}))
+  change P.card = d - 1
+  omega
+
 /-- An isolated vertex in a second-layer branch whose root is paired inside
 the first neighborhood must see the external reservoir.  Otherwise its
 `d-1` non-root neighbors inject into only the `d-2` branches other than the
