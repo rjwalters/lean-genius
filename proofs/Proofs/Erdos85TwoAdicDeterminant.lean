@@ -80,4 +80,54 @@ theorem even_padicValNat_two_natAbs_of_int_eq_odd_mul_rat_sq
     (z.natAbs : ℚ) = (z : ℚ) := by exact habsQ
     _ = (c : ℚ) * q ^ 2 := h
 
+/-- **Graph-facing two-adic parity.**  Whenever the principal factor
+`d-e-3` is odd, the integral positive-excess defect resolvent has even
+two-adic determinant valuation. -/
+theorem positiveExcess_defect_resolvent_padicVal_two_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hodd : Odd (d - e - 3)) :
+    let B : Matrix V V ℤ :=
+      (d - 1 : ℤ) • (1 : Matrix V V ℤ) -
+        (secondOrderDefectGraph G).adjMatrix ℤ
+    Even (padicValNat 2 B.det.natAbs) := by
+  dsimp only
+  let Bz : Matrix V V ℤ :=
+    (d - 1 : ℤ) • (1 : Matrix V V ℤ) -
+      (secondOrderDefectGraph G).adjMatrix ℤ
+  let Bq : Matrix V V ℚ :=
+    (d - 1 : ℚ) • (1 : Matrix V V ℚ) -
+      (secondOrderDefectGraph G).adjMatrix ℚ
+  obtain ⟨q, hqeq⟩ := positiveExcess_defect_resolvent_is_square_mul
+    G hfree hd he hreg hcard
+  have hmap : Bz.map (Int.castRingHom ℚ) = Bq := by
+    ext x y
+    simp only [Bz, Bq, Matrix.map_apply, Matrix.sub_apply,
+      Matrix.smul_apply, Matrix.one_apply, SimpleGraph.adjMatrix_apply,
+      smul_eq_mul, map_sub, map_mul, Int.coe_castRingHom]
+    split_ifs <;> push_cast <;> ring
+  have hcast : (Bz.det : ℚ) = Bq.det := by
+    rw [Int.cast_det]
+    simpa only [Int.coe_castRingHom] using congrArg Matrix.det hmap
+  have hcPos : 0 < d - e - 3 := by omega
+  have hdet : Bq.det ≠ 0 :=
+    positiveExcess_scalar_sub_defect_det_ne_zero
+      G hfree hd he hreg hcard
+  have hq : q ≠ 0 := by
+    intro hq0
+    rw [hq0, zero_pow (by decide), mul_zero] at hqeq
+    exact hdet hqeq
+  apply even_padicValNat_two_natAbs_of_int_eq_odd_mul_rat_sq
+    hcPos hodd q hq
+  rw [hcast, hqeq]
+  congr 1
+  push_cast [Nat.cast_sub (by omega : e ≤ d),
+    Nat.cast_sub (by omega : 3 ≤ d - e)]
+  rfl
+
 end Erdos85
