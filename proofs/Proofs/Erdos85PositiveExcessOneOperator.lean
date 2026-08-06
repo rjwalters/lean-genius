@@ -111,6 +111,86 @@ theorem false_of_two_crossEdges_between_triangleFreeEdges
   · exact ((mem_triangleFreeNeighbors G x x').mp hxx').1.symm
   · exact hx'y'
 
+/-- A three-edge path of triangular edges cannot connect the endpoints of a
+triangle-free edge: closing it with that edge would give a `C₄`.  This is
+the combinatorial content of the mixed fourth-moment vanishing
+`tr(M E³) = 0`. -/
+theorem false_of_triangleFreeEdge_and_three_triangularEdges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {x y z w : V}
+    (hxy : (triangleFreeEdgeGraph G).Adj x y)
+    (hyz : (triangularEdgeGraph G).Adj y z)
+    (hzw : (triangularEdgeGraph G).Adj z w)
+    (hwx : (triangularEdgeGraph G).Adj w x) : False := by
+  have hGxy : G.Adj x y :=
+    ((mem_triangleFreeNeighbors G x y).mp hxy).1
+  have hGyz : G.Adj y z := (triangularEdgeGraph_adj G y z).mp hyz |>.1
+  have hGzw : G.Adj z w := (triangularEdgeGraph_adj G z w).mp hzw |>.1
+  have hGwx : G.Adj w x := (triangularEdgeGraph_adj G w x).mp hwx |>.1
+  have hxz : x ≠ z := by
+    intro hxz
+    subst z
+    have hnonzero := (triangularEdgeGraph_adj G y x).mp hyz |>.2
+    have hzero := ((mem_triangleFreeNeighbors G x y).mp hxy).2
+    rw [Finset.inter_comm] at hzero
+    exact hnonzero hzero
+  have hyw : y ≠ w := by
+    intro hyw
+    subst w
+    have hnonzero := (triangularEdgeGraph_adj G y x).mp hwx |>.2
+    have hzero := ((mem_triangleFreeNeighbors G x y).mp hxy).2
+    rw [Finset.inter_comm] at hzero
+    exact hnonzero hzero
+  exact hfree (containsC4_of_rim hGxy hGyz hGzw hGwx
+    hxz hyw (G.ne_of_adj hGxy).symm (G.ne_of_adj hGyz)
+    (G.ne_of_adj hGwx) (G.ne_of_adj hGzw).symm)
+
+/-- Matrix-moment form of the preceding path exclusion. -/
+theorem trace_triangleFree_mul_triangular_cube_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) :
+    Matrix.trace
+      (((triangleFreeEdgeGraph G).adjMatrix ℤ *
+        (triangularEdgeGraph G).adjMatrix ℤ) *
+        (triangularEdgeGraph G).adjMatrix ℤ *
+        (triangularEdgeGraph G).adjMatrix ℤ) = 0 := by
+  rw [Matrix.trace]
+  apply Finset.sum_eq_zero
+  intro x _
+  change (((triangleFreeEdgeGraph G).adjMatrix ℤ *
+    (triangularEdgeGraph G).adjMatrix ℤ) *
+    (triangularEdgeGraph G).adjMatrix ℤ *
+    (triangularEdgeGraph G).adjMatrix ℤ) x x = 0
+  rw [Matrix.mul_apply]
+  apply Finset.sum_eq_zero
+  intro w _
+  by_cases hwx : (triangularEdgeGraph G).Adj w x
+  · rw [SimpleGraph.adjMatrix_apply, if_pos hwx, mul_one]
+    rw [Matrix.mul_apply]
+    apply Finset.sum_eq_zero
+    intro z _
+    by_cases hzw : (triangularEdgeGraph G).Adj z w
+    · rw [SimpleGraph.adjMatrix_apply, if_pos hzw, mul_one]
+      rw [Matrix.mul_apply]
+      apply Finset.sum_eq_zero
+      intro y _
+      by_cases hxy : (triangleFreeEdgeGraph G).Adj x y
+      · by_cases hyz : (triangularEdgeGraph G).Adj y z
+        · exact (false_of_triangleFreeEdge_and_three_triangularEdges
+            G hfree hxy hyz hzw hwx).elim
+        · have htzero : (triangularEdgeGraph G).adjMatrix ℤ y z = 0 := by
+            rw [SimpleGraph.adjMatrix_apply, if_neg hyz]
+          rw [htzero, mul_zero]
+      · have hmzero : (triangleFreeEdgeGraph G).adjMatrix ℤ x y = 0 := by
+          rw [SimpleGraph.adjMatrix_apply, if_neg hxy]
+        rw [hmzero, zero_mul]
+    · simp [SimpleGraph.adjMatrix_apply, hzw]
+  · simp [SimpleGraph.adjMatrix_apply, hwx]
+
 /-- Off the diagonal, the two opposite entries of `AM` cannot both be one.
 Equivalently, the directed support of `AM` has no directed two-cycle away
 from its forced diagonal. -/
