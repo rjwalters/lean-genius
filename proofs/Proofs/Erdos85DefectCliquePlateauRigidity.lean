@@ -132,6 +132,91 @@ theorem CommonNeighborIndependent.card_add_sum_degrees_le_card_add_overlap
     Fintype.card V + (C ∩ U).card
   omega
 
+/-- The graph induced on a common-neighbor-independent set has maximum
+degree at most one: two internal neighbors would have their center as a
+common neighbor. -/
+theorem CommonNeighborIndependent.degree_induce_le_one
+    (G : SimpleGraph V) [DecidableRel G.Adj] (C : Finset V)
+    (hsafe : CommonNeighborIndependent G C)
+    (x : {z : V // z ∈ (C : Set V)}) :
+    (G.induce (C : Set V)).degree x ≤ 1 := by
+  classical
+  rw [← (G.induce (C : Set V)).card_neighborFinset_eq_degree]
+  rw [Finset.card_le_one]
+  intro a ha b hb
+  apply Subtype.ext
+  by_contra hab
+  have hxa : G.Adj x.1 a.1 := by
+    simpa [SimpleGraph.mem_neighborFinset] using ha
+  have hxb : G.Adj x.1 b.1 := by
+    simpa [SimpleGraph.mem_neighborFinset] using hb
+  have hzero := hsafe (Finset.mem_coe.mp a.2) (Finset.mem_coe.mp b.2)
+    hab
+  rw [Finset.card_eq_zero] at hzero
+  have hxMem : x.1 ∈ G.neighborFinset a.1 ∩ G.neighborFinset b.1 := by
+    rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+    exact ⟨hxa.symm, hxb.symm⟩
+  exact Finset.notMem_empty x.1 (hzero ▸ hxMem)
+
+/-- The overlap correction in the general safe-packing identity is even:
+it is exactly the set of non-isolated vertices of the matching induced on
+the safe set. -/
+theorem CommonNeighborIndependent.even_card_overlap
+    (G : SimpleGraph V) [DecidableRel G.Adj] (C : Finset V)
+    (hsafe : CommonNeighborIndependent G C) :
+    Even (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  classical
+  let H := G.induce (C : Set V)
+  let P := (Finset.univ : Finset {z : V // z ∈ (C : Set V)}).filter
+    (fun x ↦ H.degree x = 1)
+  have hle : ∀ x, H.degree x ≤ 1 :=
+    fun x ↦ hsafe.degree_induce_le_one G C x
+  have hcard : (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card =
+      P.card := by
+    apply Finset.card_bij
+        (fun x hx ↦ (⟨x, Finset.mem_coe.mpr (Finset.mem_inter.mp hx).1⟩ :
+          {z : V // z ∈ (C : Set V)}))
+    · intro x hx
+      simp only [P, Finset.mem_filter, Finset.mem_univ, true_and]
+      have hxU := (Finset.mem_inter.mp hx).2
+      rw [Finset.mem_biUnion] at hxU
+      obtain ⟨a, haC, hax⟩ := hxU
+      have hpos : 0 < H.degree
+          (⟨x, Finset.mem_coe.mpr (Finset.mem_inter.mp hx).1⟩ :
+            {z : V // z ∈ (C : Set V)}) := by
+        rw [H.degree_pos_iff_exists_adj]
+        exact ⟨⟨a, Finset.mem_coe.mpr haC⟩,
+          (G.mem_neighborFinset a x).mp hax |>.symm⟩
+      have := hle
+        (⟨x, Finset.mem_coe.mpr (Finset.mem_inter.mp hx).1⟩ :
+          {z : V // z ∈ (C : Set V)})
+      omega
+    · intro x hx y hy hxy
+      exact congrArg Subtype.val hxy
+    · intro y hy
+      simp only [P, Finset.mem_filter, Finset.mem_univ, true_and] at hy
+      have hpos : 0 < H.degree y := by omega
+      obtain ⟨a, hya⟩ := (H.degree_pos_iff_exists_adj y).mp hpos
+      refine ⟨y.1, ?_, rfl⟩
+      rw [Finset.mem_inter, Finset.mem_biUnion]
+      exact ⟨Finset.mem_coe.mp y.2,
+        ⟨a.1, Finset.mem_coe.mp a.2,
+          (G.mem_neighborFinset a.1 y.1).mpr hya.symm⟩⟩
+  have hPodd : P = (Finset.univ :
+      Finset {z : V // z ∈ (C : Set V)}).filter
+        (fun x ↦ Odd (H.degree x)) := by
+    ext x
+    simp only [P, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro hx
+      rw [hx]
+      exact odd_one
+    · rintro ⟨k, hk⟩
+      have := hle x
+      omega
+  rw [hcard, hPodd]
+  exact H.even_card_odd_degree_vertices
+
 /-- Quantitative large-clique constraint across the whole positive-excess
 band.  Any deficit below the top excess `e=d-4` must be paid for by vertices
 of the defect clique that are incident with an internal original-graph edge. -/
@@ -155,6 +240,31 @@ theorem degree_le_four_add_excess_add_internalOverlap_of_large_defectClique
   rw [hsum, hCcard, hcard] at hpack
   have hmul : (d - 1) * d = d * (d - 1) := Nat.mul_comm _ _
   rw [hmul] at hpack
+  omega
+
+/-- Parity rounds the overlap bound up by one when the deficit below the top
+excess is odd.  In particular, an odd-degree exact-boundary clique must have
+at least `d-3` internally incident vertices, not merely `d-4`. -/
+theorem degree_add_one_le_four_add_excess_add_internalOverlap_of_odd_deficit
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd (d - (4 + e)))
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    d + 1 ≤ 4 + e +
+      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  have hbound :=
+    degree_le_four_add_excess_add_internalOverlap_of_large_defectClique
+      G hfree hd hcard hreg C hCcard hclique
+  have heven :=
+    (commonNeighborIndependent_of_secondOrderDefect_isClique
+      G hfree C hclique).even_card_overlap G C
+  obtain ⟨a, ha⟩ := hodd
+  obtain ⟨b, hb⟩ := heven
   omega
 
 /-- Equality in the preceding packing bound gives an exact partition: every
