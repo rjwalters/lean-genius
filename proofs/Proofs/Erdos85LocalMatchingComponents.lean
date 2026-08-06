@@ -457,15 +457,18 @@ theorem exists_balanced_noCross_partition_finset
     obtain ⟨b₀, hb₀, rfl⟩ := hb
     exact hcross₀ ha₀ hb₀ hab
 
-/-- Even-target refinement of the Finset-facing partition theorem: only
+/-- Parity/singleton refinement of the Finset-facing partition theorem: only
 `2 * target` vertices are required. -/
-theorem exists_balanced_noCross_partition_finset_of_even
+theorem exists_balanced_noCross_partition_finset_of_parity
     {V : Type*} [Fintype V] [DecidableEq V]
     (H : SimpleGraph V) [DecidableRel H.Adj]
     (U : Finset V) (target : ℕ)
     (hdegree : ∀ v : {x : V // x ∈ (U : Set V)},
       ((H.induce (fun x ↦ x ∈ (U : Set V))).neighborSet v).ncard ≤ 1)
-    (hcard : 2 * target ≤ U.card) (heven : target % 2 = 0) :
+    (hcard : 2 * target ≤ U.card)
+    (hparity : target % 2 = 0 ∨
+      ∃ c : (H.induce (fun x ↦ x ∈ (U : Set V))).ConnectedComponent,
+        c.supp.ncard = 1) :
     ∃ S T : Finset V,
       S ⊆ U ∧ T ⊆ U ∧ Disjoint S T ∧ S ∪ T = U ∧
       target ≤ S.card ∧ target ≤ T.card ∧
@@ -484,7 +487,7 @@ theorem exists_balanced_noCross_partition_finset_of_even
   have hKcard : Fintype.card {x : V // x ∈ (U : Set V)} = U.card := by simp
   obtain ⟨S₀, T₀, hdisj₀, hcover₀, hScard₀, hTcard₀, hcross₀⟩ :=
     exists_balanced_noCross_partition_of_degree_le_one_of_parity
-      K hdegreeK target (by rwa [hKcard]) (Or.inl heven)
+      K hdegreeK target (by rwa [hKcard]) hparity
   let e : {x : V // x ∈ (U : Set V)} ↪ V :=
     ⟨Subtype.val, Subtype.val_injective⟩
   let S := S₀.map e
@@ -521,5 +524,20 @@ theorem exists_balanced_noCross_partition_finset_of_even
     obtain ⟨a₀, ha₀, rfl⟩ := ha
     obtain ⟨b₀, hb₀, rfl⟩ := hb
     exact hcross₀ ha₀ hb₀ hab
+
+/-- Even-target specialization of the parity-refined Finset partition. -/
+theorem exists_balanced_noCross_partition_finset_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (U : Finset V) (target : ℕ)
+    (hdegree : ∀ v : {x : V // x ∈ (U : Set V)},
+      ((H.induce (fun x ↦ x ∈ (U : Set V))).neighborSet v).ncard ≤ 1)
+    (hcard : 2 * target ≤ U.card) (heven : target % 2 = 0) :
+    ∃ S T : Finset V,
+      S ⊆ U ∧ T ⊆ U ∧ Disjoint S T ∧ S ∪ T = U ∧
+      target ≤ S.card ∧ target ≤ T.card ∧
+      ∀ ⦃a⦄, a ∈ S → ∀ ⦃b⦄, b ∈ T → ¬ H.Adj a b := by
+  exact exists_balanced_noCross_partition_finset_of_parity
+    H U target hdegree hcard (Or.inl heven)
 
 end Erdos85

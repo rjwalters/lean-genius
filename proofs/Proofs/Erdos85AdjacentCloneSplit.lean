@@ -15,6 +15,16 @@ open SimpleGraph
 
 namespace Erdos85
 
+/-- The graph induced by the neighbours of `x`, represented after deleting
+`x` from the ambient vertex type. -/
+def deletedNeighborhoodInducedGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    SimpleGraph {y : {v : V // v ≠ x} //
+      y ∈ (deletedNeighborhood G x : Set {v : V // v ≠ x})} :=
+  (G.induce (fun v ↦ v ≠ x)).induce
+    (fun y ↦ y ∈ (deletedNeighborhood G x : Set {v : V // v ≠ x}))
+
 /-- Disjoint subsets of a deleted vertex's neighbourhood, with no edge
 crossing between them, satisfy connected-pair attachment compatibility. -/
 theorem adjacentCloneSelectors_compatible
@@ -120,6 +130,15 @@ theorem deletedNeighborhood_induced_degree_ncard_le_one
     (fun h ↦ z.1.2 h)
     ha hb hax.symm hbx.symm
 
+theorem deletedNeighborhoodInducedGraph_degree_ncard_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (z : {y : {v : V // v ≠ x} //
+      y ∈ (deletedNeighborhood G x : Set {v : V // v ≠ x})}) :
+    ((deletedNeighborhoodInducedGraph G x).neighborSet z).ncard ≤ 1 := by
+  exact deletedNeighborhood_induced_degree_ncard_le_one G hfree x z
+
 /-- **Sharp adjacent-clone split.**  If a `C₄`-free minimum-degree-`d`
 graph has a vertex of degree at least `2*d-1`, split the local matching into
 two intact balanced component unions and replace the vertex by an adjacent
@@ -203,5 +222,67 @@ theorem degree_le_two_mul_sub_three_of_odd_not_witness_succ
   exact hno
     (c4FreeMinDegreeWitness_succ_of_odd_vertex_degree_ge_two_mul_sub_two
       G v hVcard hmin hfree hd hdOdd hvhigh)
+
+/-- At degree `2*d-2`, a singleton component of the local matching removes
+the parity obstruction and again permits adjacent-clone splitting. -/
+theorem c4FreeMinDegreeWitness_succ_of_vertex_degree_ge_two_mul_sub_two_of_localSingleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    {N d : ℕ} (hVcard : Fintype.card V = N)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hd : 1 ≤ d) (hxdegree : 2 * d - 2 ≤ G.degree x)
+    (hsingleton : ∃ c : (deletedNeighborhoodInducedGraph G x).ConnectedComponent,
+      c.supp.ncard = 1) :
+    C4FreeMinDegreeWitness (N + 1) d := by
+  classical
+  let H : SimpleGraph {v : V // v ≠ x} := G.induce (fun v ↦ v ≠ x)
+  let U : Finset {v : V // v ≠ x} := deletedNeighborhood G x
+  have hUcard : 2 * (d - 1) ≤ U.card := by
+    change 2 * (d - 1) ≤ (deletedNeighborhood G x).card
+    rw [card_deletedNeighborhood]
+    omega
+  have hs : ∃ c : (H.induce (fun y ↦ y ∈ (U : Set {v : V // v ≠ x}))).ConnectedComponent,
+      c.supp.ncard = 1 := by
+    change ∃ c : (deletedNeighborhoodInducedGraph G x).ConnectedComponent,
+      c.supp.ncard = 1
+    exact hsingleton
+  obtain ⟨S, T, hS, hT, hdisj, hcover, hScard, hTcard, hcross⟩ :=
+    exists_balanced_noCross_partition_finset_of_parity H U (d - 1)
+      (deletedNeighborhood_induced_degree_ncard_le_one G hfree x)
+      hUcard (Or.inr hs)
+  exact c4FreeMinDegreeWitness_succ_of_balanced_adjacentClone_partition
+    G x hVcard hmin hfree hd S T hS hT hdisj hcover
+      hScard hTcard hcross
+
+/-- Equality-case rigidity for a nonextendable witness: every local component
+at a vertex of degree at least `2*d-2` has size two.  Equivalently, that
+vertex's induced neighbourhood is a perfect matching. -/
+theorem localComponents_eq_two_of_not_witness_succ_of_degree_ge_two_mul_sub_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    {N d : ℕ} (hVcard : Fintype.card V = N)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hd : 1 ≤ d) (hno : ¬ C4FreeMinDegreeWitness (N + 1) d)
+    (hxdegree : 2 * d - 2 ≤ G.degree x) :
+    ∀ c : (deletedNeighborhoodInducedGraph G x).ConnectedComponent,
+      c.supp.ncard = 2 := by
+  classical
+  let K := deletedNeighborhoodInducedGraph G x
+  have hdegreeK : ∀ z, K.degree z ≤ 1 := by
+    intro z
+    have heq : K.degree z = (K.neighborSet z).ncard := by
+      rw [Set.ncard_eq_toFinset_card']
+      rfl
+    rw [heq]
+    exact deletedNeighborhoodInducedGraph_degree_ncard_le_one G hfree x z
+  intro c
+  have hle := connectedComponent_supp_ncard_le_two_of_degree_le_one
+    K hdegreeK c
+  have hpos := c.nonempty_supp.ncard_pos
+  by_contra hc
+  have hone : c.supp.ncard = 1 := by omega
+  exact hno
+    (c4FreeMinDegreeWitness_succ_of_vertex_degree_ge_two_mul_sub_two_of_localSingleton
+      G x hVcard hmin hfree hd hxdegree ⟨c, hone⟩)
 
 end Erdos85
