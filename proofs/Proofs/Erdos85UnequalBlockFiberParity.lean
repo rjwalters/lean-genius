@@ -302,6 +302,7 @@ theorem even_unequal_selected_fullMass_fiber
     · rw [longer_fullMass_fiber_eq_empty G hfree hd heven hmin hcard
         u hu huRange c e hgt 0]
       simp
+
   · rcases lt_or_gt_of_ne hlen with hlt | hgt
     · by_cases hpos : 0 < componentQuotientMatrix G
           (secondOrderDefectGraph G) c e
@@ -335,6 +336,49 @@ theorem even_unequal_selected_fullMass_fiber
     · rw [longer_fullMass_fiber_eq_empty G hfree hd heven hmin hcard
         u hu huRange c e hgt t]
       simp
+
+/-- At the zero residue, every unequal block into a selected odd target has
+even full-mass fiber, with no condition on the source's prime divisibility. -/
+theorem even_unequal_fullMass_zeroFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ a : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero a.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d p : ℕ} [NeZero p]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : Nat.Prime p)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hodd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ c.supp.ncard → Odd c.supp.ncard)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hlen : c.supp.ncard ≠ e.supp.ncard) (hpe : p ∣ e.supp.ncard) :
+    Even ((admissibleDifferences e.supp.ncard).filter (fun δ ↦
+      ((δ.val : ℕ) : ZMod p) = 0 ∧
+        (∑ z : ZMod c.supp.ncard,
+          anchorPairMultiplicity G (u c z) (u e) δ) = e.supp.ncard)).card := by
+  rcases lt_or_gt_of_ne hlen with hlt | hgt
+  · by_cases hpos : 0 < componentQuotientMatrix G
+        (secondOrderDefectGraph G) c e
+    · exact shorter_positive_fullMass_zeroFiber_even G hfree hd heven
+        hmin hcard hp u hu huRange huD hℓ3 hodd c e hlt hpos hpe
+    · have hq0 := Nat.eq_zero_of_not_pos hpos
+      rw [shorter_zero_fullMass_fiber_eq_empty G hfree hd heven hmin
+        hcard u hu huRange c e hq0 0]
+      simp
+  · rw [longer_fullMass_fiber_eq_empty G hfree hd heven hmin hcard
+      u hu huRange c e hgt 0]
+    simp
 
 end
 
