@@ -1,5 +1,6 @@
 import Proofs.Erdos85ExcessDefectRegular
 import Proofs.Erdos85SecondOrderColorTrace
+import Proofs.Erdos85NonneighborReduction
 
 /-!
 # The excess-one local dichotomy
@@ -19,6 +20,118 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- A graph of odd order and maximum degree at most one has an isolated
+vertex.  This is the parity step used inside an odd second-layer branch. -/
+theorem exists_degree_eq_zero_of_odd_card_of_degree_le_one
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (H : SimpleGraph W) [DecidableRel H.Adj]
+    (hodd : Odd (Fintype.card W)) (hle : ∀ w, H.degree w ≤ 1) :
+    ∃ w, H.degree w = 0 := by
+  by_contra hnone
+  push_neg at hnone
+  have hone : ∀ w, H.degree w = 1 := by
+    intro w
+    have := hle w
+    have := hnone w
+    omega
+  have hsum : ∑ w, H.degree w = Fintype.card W := by
+    simp_rw [hone]
+    simp
+  have hhand := H.sum_degrees_eq_twice_card_edges
+  obtain ⟨k, hk⟩ := hodd
+  omega
+
+/-- Every graph induced on a second-layer branch has maximum degree at most
+one: two neighbors in the same branch, together with its first-layer root,
+would form a four-cycle. -/
+theorem degree_induce_secondLayerBranch_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (y : {z : V // z ∈ G.neighborSet x})
+    (w : secondLayerBranch G x y) :
+    (G.induce (secondLayerBranch G x y)).degree w ≤ 1 := by
+  classical
+  rw [← (G.induce (secondLayerBranch G x y)).card_neighborFinset_eq_degree]
+  rw [Finset.card_le_one]
+  intro a ha b hb
+  apply Subtype.ext
+  by_contra hab
+  have hwa : G.Adj w.1 a.1 := by
+    simpa [SimpleGraph.mem_neighborFinset] using ha
+  have hwb : G.Adj w.1 b.1 := by
+    simpa [SimpleGraph.mem_neighborFinset] using hb
+  have hya : G.Adj y.1 a.1 :=
+    (G.mem_neighborFinset y.1 a.1).mp (Finset.mem_sdiff.mp a.2).1
+  have hyb : G.Adj y.1 b.1 :=
+    (G.mem_neighborFinset y.1 b.1).mp (Finset.mem_sdiff.mp b.2).1
+  have hyw_ne : y.1 ≠ w.1 := by
+    intro h
+    exact (Finset.mem_sdiff.mp w.2).2
+      (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset x w.1).mpr (h ▸ y.2))))
+  exact hfree (containsC4_of_two_common
+    (x := a.1) (y := b.1) (v := w.1) (v' := y.1)
+    hab hyw_ne.symm hwa hwb hya hyb)
+
+/-- A vertex has at most one neighbor in any second-layer branch whose root
+is distinct from it. -/
+theorem card_neighborFinset_inter_secondLayerBranch_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x a : V)
+    (y : {z : V // z ∈ G.neighborSet x}) (hay : a ≠ y.1) :
+    (G.neighborFinset a ∩ secondLayerBranch G x y).card ≤ 1 := by
+  have hsub : G.neighborFinset a ∩ secondLayerBranch G x y ⊆
+      G.neighborFinset a ∩ G.neighborFinset y.1 := by
+    intro z hz
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hz).1,
+      (Finset.mem_sdiff.mp (Finset.mem_inter.mp hz).2).1⟩
+  exact (Finset.card_le_card hsub).trans
+    (common_le_one_of_not_containsC4 hfree a y.1 hay)
+
+/-- Branches rooted at adjacent first-layer vertices have no edges between
+them.  Such an edge would close a four-cycle through the two roots. -/
+theorem not_adj_between_secondLayerBranches_of_adj_roots
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (u v : {z : V // z ∈ G.neighborSet x}) (huv : G.Adj u.1 v.1)
+    (a : secondLayerBranch G x u) (b : secondLayerBranch G x v) :
+    ¬ G.Adj a.1 b.1 := by
+  intro hab
+  have hua : G.Adj u.1 a.1 :=
+    (G.mem_neighborFinset u.1 a.1).mp (Finset.mem_sdiff.mp a.2).1
+  have hvb : G.Adj v.1 b.1 :=
+    (G.mem_neighborFinset v.1 b.1).mp (Finset.mem_sdiff.mp b.2).1
+  have hub : u.1 ≠ b.1 := by
+    intro h
+    exact (Finset.mem_sdiff.mp b.2).2
+      (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset x b.1).mpr (h ▸ u.2))))
+  have hva : v.1 ≠ a.1 := by
+    intro h
+    exact (Finset.mem_sdiff.mp a.2).2
+      (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset x a.1).mpr (h ▸ v.2))))
+  exact hfree (containsC4_of_two_common
+    (x := u.1) (y := b.1) (v := v.1) (v' := a.1)
+    hub hva huv.symm hvb hua.symm hab)
+
+/-- Exact size of a second-layer branch in a regular graph: its only
+neighbors omitted from the branch are the center and the neighbors it shares
+with the center. -/
+theorem card_secondLayerBranch_eq_degree_sub_localDegree_sub_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) (x : V)
+    (y : {z : V // z ∈ G.neighborSet x}) :
+    (secondLayerBranch G x y).card =
+      d - (G.induce (G.neighborSet x)).degree y - 1 := by
+  have hcount := card_secondLayerBranch_add_common_add_one G x y
+  rw [← degree_induce_neighborSet_eq_card_common, hreg y.1] at hcount
+  omega
 
 /-- At positive excess one and odd degree, exactly one or three incident
 edges at every vertex lie in no triangle. -/
@@ -140,6 +253,75 @@ theorem exists_excessOne_triangleFreeNeighbors_card_eq_three
     rw [Nat.mul_mod, hnmod, hdminus]
   have := congrArg (· % 3) harith
   omega
+
+/-- At an excess-one vertex with three triangle-free incident edges there is
+no third distance layer: the pairwise-disjoint branches through its neighbors
+partition the whole complement of its closed neighborhood. -/
+theorem excessOne_secondLayer_eq_outsideClosedNeighborhood
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (hx : (triangleFreeNeighbors G x).card = 3) :
+    secondLayer G x = outsideClosedNeighborhood G x := by
+  classical
+  have hlocalsum :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) = d - 3 := by
+    have hsum := card_triangleFreeNeighbors_add_localDegreeSum_of_regular
+      G hfree hreg x
+    rw [hx] at hsum
+    omega
+  have hextid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  rw [hcard, hlocalsum] at hextid
+  have hextcard : (externalRepairCandidates G x).card = 0 := by
+    have hd3 : 3 ≤ d := by
+      have hle := (Finset.card_le_card
+        (show triangleFreeNeighbors G x ⊆ G.neighborFinset x by
+          intro y hy
+          exact (G.mem_neighborFinset x y).mpr
+            ((mem_triangleFreeNeighbors G x y).mp hy).1))
+      rw [hx, G.card_neighborFinset_eq_degree, hreg x] at hle
+      exact hle
+    have hmul : d * d = d * (d - 1) + d := by
+      calc
+        d * d = d * ((d - 1) + 1) := by rw [Nat.sub_add_cancel (by omega)]
+        _ = d * (d - 1) + d := by ring
+    rw [hmul] at hextid
+    omega
+  have hext : externalRepairCandidates G x = ∅ := Finset.card_eq_zero.mp hextcard
+  apply Finset.Subset.antisymm
+  · intro y hy
+    simp only [outsideClosedNeighborhood, Finset.mem_filter]
+    change y ∈ secondLayer G x at hy
+    rw [secondLayer, Finset.mem_biUnion] at hy
+    obtain ⟨z, _, hz⟩ := hy
+    have hout := (Finset.mem_sdiff.mp hz).2
+    refine ⟨Finset.mem_univ y, ?_, ?_⟩
+    · intro hyx
+      exact hout (Finset.mem_insert.mpr (Or.inl hyx))
+    · intro hyadj
+      exact hout (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset x y).mpr hyadj.symm)))
+  · intro y hy
+    have hcover := closedNeighborhood_union_secondLayer_union_external_eq_univ G x
+    have hycover : y ∈ insert x (G.neighborFinset x) ∪ secondLayer G x ∪
+        (externalRepairCandidates G x).map
+          ⟨Subtype.val, Subtype.val_injective⟩ := by
+      rw [hcover]
+      exact Finset.mem_univ y
+    rw [hext] at hycover
+    simp only [Finset.map_empty, Finset.union_empty] at hycover
+    rcases Finset.mem_union.mp hycover with hclosed | hsecond
+    · have hyout := (Finset.mem_filter.mp hy).2
+      rcases Finset.mem_insert.mp hclosed with rfl | hneighbor
+      · exact (hyout.1 rfl).elim
+      · exact (hyout.2 ((G.mem_neighborFinset x y).mp hneighbor).symm).elim
+    · exact hsecond
 
 end
 
