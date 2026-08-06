@@ -458,6 +458,59 @@ theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
   secondOrderDefect_neighborFinset_eq_erase_of_large_clique
     G hfree hd he hcard hreg C hCcard hclique hc
 
+/-- At the forced top excess, the vertices missed by the clique and all of
+its pairwise-disjoint open neighborhoods are counted exactly by the internal
+matching endpoints of the clique.  This is the inclusion--exclusion bridge
+from the top-excess block geometry to service counting. -/
+theorem residual_card_eq_internalOverlap_of_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    (Finset.univ \ (C ∪ C.biUnion (fun x ↦ G.neighborFinset x))).card =
+      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card := by
+  classical
+  let U := C.biUnion fun x ↦ G.neighborFinset x
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  have hpair : (C : Set V).PairwiseDisjoint fun x ↦ G.neighborFinset x := by
+    intro x hx y hy hxy
+    change Disjoint (G.neighborFinset x) (G.neighborFinset y)
+    rw [Finset.disjoint_left]
+    intro z hzx hzy
+    have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hzx, hzy⟩
+    have hempty := hsafe hx hy hxy
+    rw [Finset.card_eq_zero] at hempty
+    exact Finset.notMem_empty z (hempty ▸ hz)
+  have hUcard : U.card = C.card * d := by
+    change (C.biUnion fun x ↦ G.neighborFinset x).card = _
+    rw [Finset.card_biUnion hpair]
+    calc
+      (∑ x ∈ C, (G.neighborFinset x).card) =
+          ∑ _x ∈ C, d := by
+        apply Finset.sum_congr rfl
+        intro x _
+        rw [G.card_neighborFinset_eq_degree, hreg x]
+      _ = C.card * d := by simp
+  have heq := excess_eq_sub_four_of_large_secondOrderDefectClique
+    G hfree hd he hcard hreg C hCcard hclique
+  have htotal : Fintype.card V = C.card + U.card := by
+    rw [hcard, heq, hUcard, hCcard, Nat.mul_comm (d - 1) d]
+    omega
+  have hie := Finset.card_union_add_card_inter C U
+  have hdiff := Finset.card_sdiff_add_card_eq_card
+    (Finset.subset_univ (C ∪ U))
+  have huniv : (Finset.univ : Finset V).card = Fintype.card V :=
+    Finset.card_univ
+  change (Finset.univ \ (C ∪ U)).card = (C ∩ U).card
+  omega
+
 /-- Therefore no clique vertex is incident with a triangle-free defect
 edge; all of its defect neighbors are antipodal. -/
 theorem triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
