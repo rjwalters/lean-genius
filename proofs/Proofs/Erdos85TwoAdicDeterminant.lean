@@ -54,6 +54,56 @@ theorem four_dvd_det_natAbs_of_modTwo_singular_of_even_padicVal
     (map_zmodTwo_det_eq_zero_iff_even B).mp hsing
   exact Int.natAbs_even.mpr hevenInt
 
+/-- If the rows indexed by `S` are entrywise even, each contributes a factor
+of two to the determinant.  This is the elementary endpoint of Gaussian
+elimination over `ZMod 2`: after lifting the row operations integrally, a
+nullity-`k` reduction exposes `k` such rows. -/
+theorem pow_card_dvd_det_natAbs_of_even_rows
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (M : Matrix ι ι ℤ) (S : Finset ι)
+    (hrows : ∀ i ∈ S, ∀ j, Even (M i j)) :
+    2 ^ S.card ∣ M.det.natAbs := by
+  classical
+  let C : Matrix ι ι ℤ := fun i j =>
+    if hi : i ∈ S then Classical.choose (hrows i hi j) else M i j
+  let r : ι → ℤ := fun i => if i ∈ S then 2 else 1
+  have hfactor : M = Matrix.diagonal r * C := by
+    ext i j
+    by_cases hi : i ∈ S
+    · have hs := Classical.choose_spec (hrows i hi j)
+      simp only [Matrix.mul_apply]
+      rw [Finset.sum_eq_single i]
+      · simp [Matrix.diagonal, r, C, hi]
+        omega
+      · intro b _ hbi
+        simp [Matrix.diagonal, hbi, Ne.symm hbi]
+      · simp
+    · simp only [Matrix.mul_apply]
+      rw [Finset.sum_eq_single i]
+      · simp [Matrix.diagonal, r, C, hi]
+      · intro b _ hbi
+        simp [Matrix.diagonal, hbi, Ne.symm hbi]
+      · simp
+  have hrprod : ∏ i, r i = (2 : ℤ) ^ S.card := by
+    simp [r, Finset.prod_ite_mem_eq, Finset.prod_const]
+  have hdet : M.det = (2 : ℤ) ^ S.card * C.det := by
+    rw [hfactor, Matrix.det_mul, Matrix.det_diagonal, hrprod]
+  have hdvdInt : (2 : ℤ) ^ S.card ∣ M.det := ⟨C.det, hdet⟩
+  simpa using Int.natAbs_dvd_natAbs.mpr hdvdInt
+
+/-- Unimodular integral row operations do not change the absolute
+determinant.  Hence exposing `S.card` even rows after such operations proves
+the expected `2 ^ S.card` determinant divisibility. -/
+theorem pow_card_dvd_det_natAbs_of_unimodular_even_rows
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B U : Matrix ι ι ℤ) (S : Finset ι)
+    (hU : IsUnit U.det)
+    (hrows : ∀ i ∈ S, ∀ j, Even ((U * B) i j)) :
+    2 ^ S.card ∣ B.det.natAbs := by
+  have hdiv := pow_card_dvd_det_natAbs_of_even_rows (U * B) S hrows
+  have hUabs : U.det.natAbs = 1 := Int.isUnit_iff_natAbs_eq.mp hU
+  simpa [Matrix.det_mul, Int.natAbs_mul, hUabs] using hdiv
+
 /-- If `b n² = c m²` with `c,n` odd, then `v₂(b)` is even.  This is the
 cleared-denominator form needed for an integer equal to an odd rational
 square multiple. -/
