@@ -100,6 +100,45 @@ theorem excessTwo_triangleFreeNeighbors_card_eq_one_or_three_of_odd
   obtain ⟨k, hk⟩ := hodd
   omega
 
+/-- **Exact third-layer defect formula.**  At second-order excess `e`, the
+number of vertices beyond distance two from `x` is exactly the unused part
+of the local defect budget:
+
+`|externalRepairCandidates x| = e + 2 - |triangleFreeNeighbors x|`.
+
+This interpolates between the full-cover case (maximum triangle-free degree)
+and the surviving odd band, where at least two external candidates remain. -/
+theorem card_externalRepairCandidates_eq_excess_add_two_sub_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 1 ≤ d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (x : V) :
+    (externalRepairCandidates G x).card =
+      e + 2 - (triangleFreeNeighbors G x).card := by
+  have htfle := triangleFreeNeighbors_card_le_excess_add_two
+    G hfree hreg hcard x
+  have hsum := card_triangleFreeNeighbors_add_localDegreeSum_of_regular
+    G hfree hreg x
+  have hlocalsum :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) =
+          d - (triangleFreeNeighbors G x).card := by
+    omega
+  have hextid := card_external_add_degree_sq_add_one_eq_card_add_localDegreeSum
+    G hfree hreg x
+  rw [hcard, hlocalsum] at hextid
+  have hmul : d * d = d * (d - 1) + d := by
+    calc
+      d * d = d * ((d - 1) + 1) := by
+        rw [Nat.sub_add_cancel hd]
+      _ = d * (d - 1) + d := by ring
+  rw [hmul] at hextid
+  omega
+
 /-- If a vertex attains the maximum possible triangle-free degree `e+2`,
 then its distance-two branches cover the whole complement of its closed
 neighbourhood.  Equivalently, its third distance layer is empty. -/
@@ -405,6 +444,24 @@ theorem triangleFreeNeighbors_card_le_excess_of_odd
   have heq : (triangleFreeNeighbors G x).card = e + 2 := by omega
   exact false_of_positiveExcess_maxTriangleFreeNeighbors
     G hfree hd hoddD he hreg hcard x heq
+
+/-- In the surviving odd-degree/odd-excess band, every vertex has at least
+two genuine third-layer repair candidates. -/
+theorem two_le_card_externalRepairCandidates_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (hoddD : Odd d) (hoddE : Odd e) (he : e ≤ d - 4)
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (x : V) : 2 ≤ (externalRepairCandidates G x).card := by
+  rw [card_externalRepairCandidates_eq_excess_add_two_sub_triangleFree
+    G hfree (by omega) hreg hcard x]
+  have hle := triangleFreeNeighbors_card_le_excess_of_odd
+    G hfree hd hoddD hoddE he hreg hcard x
+  omega
 
 /-- At excess three and odd degree, the triangle-free-edge graph has local
 degree exactly `1` or `3`. -/
