@@ -292,15 +292,16 @@ theorem graphCycleBlockZeroSupport_eq_empty_of_reverse_of_odd
   obtain ⟨w, hw⟩ := hunit.exists_right_inv
   have hx : (w * t) + (w * t) = t := by
     have h2 : ((2 : ℕ) : ZMod r) * (w * t) = t := by
-      rw [← mul_assoc, mul_comm ((2 : ℕ) : ZMod r) w, hw, one_mul]
+      rw [← mul_assoc, hw, one_mul]
     calc
       (w * t) + (w * t) = ((2 : ℕ) : ZMod r) * (w * t) := by
         push_cast
         ring
       _ = t := h2
   intro ht
+  rw [← hx] at ht
   exact add_self_not_mem_graphCycleBlockZeroSupport_of_reverse G u hrev
-    (w * t) (hx ▸ ht)
+    (w * t) ht
 
 end
 
