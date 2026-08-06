@@ -58,7 +58,7 @@ theorem c4FreeMinDegreeWitness_of_defectClique_anticomplete
   apply c4FreeMinDegreeWitness_delete_add_pair_of_repairSet G u hcard hd
     hmin hfree R hRcard
   · intro a ha b hb hab
-    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
     intro z hz
     rw [Finset.mem_inter, mem_neighborFinset, mem_neighborFinset] at hz
     have hzab : G.Adj a.1 z.1 ∧ G.Adj b.1 z.1 := by
@@ -67,12 +67,12 @@ theorem c4FreeMinDegreeWitness_of_defectClique_anticomplete
       · exact hz.2
     have hone := hCsafe ((hmemR a).mp ha) ((hmemR b).mp hb)
       (fun h ↦ hab (Subtype.ext h))
-    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem] at hone
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hone
     exact hone z.1 (by
       rw [Finset.mem_inter, mem_neighborFinset, mem_neighborFinset]
       exact hzab)
   · have hempty : R ∩ deletedNeighborhood G u = ∅ := by
-      rw [Finset.eq_empty_iff_forall_not_mem]
+      rw [Finset.eq_empty_iff_forall_notMem]
       intro a ha
       rw [Finset.mem_inter, mem_deletedNeighborhood] at ha
       exact hCN ((hmemR a).mp ha.1) (ha.2.symm)
