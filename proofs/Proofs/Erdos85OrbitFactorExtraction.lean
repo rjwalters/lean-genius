@@ -126,4 +126,50 @@ theorem Polynomial.exists_count_ne_of_not_signStable
   contrapose! hne
   exact Multiset.ext.mpr hne
 
+/-- The discrepancy can be oriented onto an actual normalized irreducible
+factor of `q`: that factor and its signed reflection occur with unequal
+multiplicities. -/
+theorem Polynomial.exists_normalizedFactor_reflection_count_ne_of_not_signStable
+    {K : Type*} [Field K] [DecidableEq K] (q : Polynomial K) (hq : q.Monic)
+    (hnot : q.comp (-(Polynomial.X : Polynomial K)) ≠
+      (-1 : K) ^ q.natDegree • q) :
+    ∃ f ∈ UniqueFactorizationMonoid.normalizedFactors q,
+      (UniqueFactorizationMonoid.normalizedFactors q).count (signedReflection f) ≠
+        (UniqueFactorizationMonoid.normalizedFactors q).count f := by
+  let s := UniqueFactorizationMonoid.normalizedFactors q
+  have hchange : s.map signedReflection ≠ s := by
+    exact normalizedFactors_not_reflectionStable_of_not_signStable q hq hnot
+  have hmonic : ∀ f ∈ s, f.Monic := by
+    intro f hf
+    have hnorm := UniqueFactorizationMonoid.normalize_normalized_factor f hf
+    exact (Polynomial.normalize_eq_self_iff_monic
+      (UniqueFactorizationMonoid.irreducible_of_normalized_factor f hf).ne_zero).mp hnorm
+  have hinj : Set.InjOn signedReflection {f : Polynomial K | f ∈ s} := by
+    intro a ha b hb hab
+    calc
+      a = signedReflection (signedReflection a) := (signedReflection_involutive (hmonic a ha)).symm
+      _ = signedReflection (signedReflection b) := congrArg signedReflection hab
+      _ = b := signedReflection_involutive (hmonic b hb)
+  by_contra hex
+  push_neg at hex
+  apply hchange
+  apply Multiset.ext.mpr
+  intro x
+  by_cases hxmap : x ∈ s.map signedReflection
+  · obtain ⟨f, hf, rfl⟩ := Multiset.mem_map.mp hxmap
+    rw [Multiset.count_map_eq_count signedReflection s hinj f hf]
+    exact (hex f hf).symm
+  · have hleft : (s.map signedReflection).count x = 0 :=
+      Multiset.count_eq_zero.mpr hxmap
+    rw [hleft]
+    apply (Multiset.count_eq_zero.mpr ?_).symm
+    intro hx
+    have hrx : signedReflection x ∈ s := by
+      have hpos : 0 < s.count x := Multiset.count_pos.mpr hx
+      have := hex x hx
+      exact Multiset.count_pos.mp (this.symm ▸ hpos)
+    apply hxmap
+    refine Multiset.mem_map.mpr ⟨signedReflection x, hrx, ?_⟩
+    exact signedReflection_involutive (hmonic x hx)
+
 end Erdos85
