@@ -267,59 +267,6 @@ theorem degree_add_one_le_four_add_excess_add_internalOverlap_of_odd_deficit
   obtain ⟨b, hb⟩ := heven
   omega
 
-/-- At the exact boundary and in even degree, a defect clique of size `d-1`
-has only two possible internal matching supports: `d-4` or `d-2` vertices.
-Equivalently, the matching leaves three or one clique vertices isolated. -/
-theorem internalOverlap_card_eq_sub_four_or_sub_two_of_even_large_defectClique
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
-    (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hreg : ∀ x, G.degree x = d)
-    (C : Finset V) (hCcard : C.card = d - 1)
-    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
-    (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card = d - 4 ∨
-      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card = d - 2 := by
-  have hlower :=
-    degree_le_four_add_excess_add_internalOverlap_of_large_defectClique
-      G hfree hd (e := 0) (by simpa using hcard) hreg C hCcard hclique
-  have hupper : (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card ≤ d - 1 := by
-    rw [← hCcard]
-    exact Finset.card_le_card Finset.inter_subset_left
-  have hoverlapEven :=
-    (commonNeighborIndependent_of_secondOrderDefect_isClique
-      G hfree C hclique).even_card_overlap G C
-  obtain ⟨a, ha⟩ := heven
-  obtain ⟨b, hb⟩ := hoverlapEven
-  omega
-
-/-- Odd degree has the analogous two exact-boundary matching supports:
-`d-3` or `d-1`, leaving two or zero isolated clique vertices. -/
-theorem internalOverlap_card_eq_sub_three_or_sub_one_of_odd_large_defectClique
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (hodd : Odd d)
-    (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hreg : ∀ x, G.degree x = d)
-    (C : Finset V) (hCcard : C.card = d - 1)
-    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
-    (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card = d - 3 ∨
-      (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card = d - 1 := by
-  have hlower :=
-    degree_le_four_add_excess_add_internalOverlap_of_large_defectClique
-      G hfree hd (e := 0) (by simpa using hcard) hreg C hCcard hclique
-  have hupper : (C ∩ C.biUnion (fun x ↦ G.neighborFinset x)).card ≤ d - 1 := by
-    rw [← hCcard]
-    exact Finset.card_le_card Finset.inter_subset_left
-  have hoverlapEven :=
-    (commonNeighborIndependent_of_secondOrderDefect_isClique
-      G hfree C hclique).even_card_overlap G C
-  obtain ⟨a, ha⟩ := hodd
-  obtain ⟨b, hb⟩ := hoverlapEven
-  omega
-
 /-- Equality in the preceding packing bound gives an exact partition: every
 vertex is either in the safe independent set or adjacent to one of its
 members. -/
