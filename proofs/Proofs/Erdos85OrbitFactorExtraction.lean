@@ -172,4 +172,23 @@ theorem Polynomial.exists_normalizedFactor_reflection_count_ne_of_not_signStable
     refine Multiset.mem_map.mpr ⟨signedReflection x, hrx, ?_⟩
     exact signedReflection_involutive (hmonic x hx)
 
+/-- Clean consumer interface: a non-sign-stable monic polynomial has a monic
+irreducible divisor which is not fixed by signed reflection. -/
+theorem Polynomial.exists_irreducible_dvd_not_reflection_fixed_of_not_signStable
+    {K : Type*} [Field K] [DecidableEq K] (q : Polynomial K) (hq : q.Monic)
+    (hnot : q.comp (-(Polynomial.X : Polynomial K)) ≠
+      (-1 : K) ^ q.natDegree • q) :
+    ∃ f : Polynomial K,
+      Irreducible f ∧ f.Monic ∧ f ∣ q ∧ signedReflection f ≠ f := by
+  obtain ⟨f, hf, hcount⟩ :=
+    exists_normalizedFactor_reflection_count_ne_of_not_signStable q hq hnot
+  refine ⟨f, UniqueFactorizationMonoid.irreducible_of_normalized_factor f hf, ?_,
+    UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hf, ?_⟩
+  · have hnorm := UniqueFactorizationMonoid.normalize_normalized_factor f hf
+    exact (Polynomial.normalize_eq_self_iff_monic
+      (UniqueFactorizationMonoid.irreducible_of_normalized_factor f hf).ne_zero).mp hnorm
+  · intro hfix
+    exact hcount (congrArg
+      (fun g => (UniqueFactorizationMonoid.normalizedFactors q).count g) hfix)
+
 end Erdos85
