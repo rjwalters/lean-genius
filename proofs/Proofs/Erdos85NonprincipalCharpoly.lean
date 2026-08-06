@@ -1,10 +1,12 @@
 import Proofs.Erdos85OrbitFactorExtraction
+import Proofs.Erdos85AdjoinSquareConjugation
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Adjugate
+import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
 /-!
 # The nonprincipal adjacency characteristic factor
@@ -106,5 +108,35 @@ theorem exists_asymmetric_nonprincipal_irreducible
     Polynomial.exists_irreducible_dvd_not_reflection_fixed_of_linearFactor_trace_zero
       q hqmonic hqdeg (d : ℚ) (by exact_mod_cast hd.ne') htrace
   exact ⟨q, f, hfactor, hfirr, hfmonic, hfdvd, hfasym⟩
+
+/-- The asymmetric factor has a root in the algebraic closure, and that root
+also annihilates the nonprincipal characteristic factor. -/
+theorem exists_asymmetric_nonprincipal_root
+    (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (d : ℕ) (hd : 0 < d) (hcard : 2 ≤ Fintype.card V)
+    (hreg : ∀ v : V, G.degree v = d) :
+    ∃ (q f : Polynomial ℚ) (θ : AlgebraicClosure ℚ),
+      (G.adjMatrix ℚ).charpoly =
+        (Polynomial.X - Polynomial.C (d : ℚ)) * q ∧
+      Irreducible f ∧ f.Monic ∧ f ∣ q ∧
+      Polynomial.signedReflection f ≠ f ∧
+      Polynomial.aeval θ f = 0 ∧ Polynomial.aeval θ q = 0 ∧
+      θ ∈ IntermediateField.adjoin ℚ {θ ^ 2} := by
+  obtain ⟨q, f, hfactor, hfirr, hfmonic, hfdvd, hfasym⟩ :=
+    exists_asymmetric_nonprincipal_irreducible G d hd hcard hreg
+  let ι : ℚ →+* AlgebraicClosure ℚ := algebraMap ℚ (AlgebraicClosure ℚ)
+  have hdeg : (f.map ι).degree ≠ 0 := by
+    rw [Polynomial.degree_map_eq_of_injective ι.injective]
+    exact (Polynomial.degree_pos_of_irreducible hfirr).ne'
+  obtain ⟨θ, hθ⟩ := IsAlgClosed.exists_root (f.map ι) hdeg
+  have hθf : Polynomial.aeval θ f = 0 := by
+    simpa [Polynomial.aeval_def, ι] using hθ.eq_zero
+  have hθq : Polynomial.aeval θ q = 0 := by
+    obtain ⟨r, hr⟩ := hfdvd
+    rw [hr, map_mul, hθf, zero_mul]
+  have hθmem : θ ∈ IntermediateField.adjoin ℚ {θ ^ 2} :=
+    mem_adjoin_sq_of_aeval_eq_zero_of_signedReflection_ne
+      f hfirr hfmonic hfasym θ hθf
+  exact ⟨q, f, θ, hfactor, hfirr, hfmonic, hfdvd, hfasym, hθf, hθq, hθmem⟩
 
 end Erdos85
