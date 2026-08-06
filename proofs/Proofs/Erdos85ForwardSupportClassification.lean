@@ -255,6 +255,53 @@ theorem even_supp_ncard_of_forwardOriented_diagonalQuotient_eq_one
   exact even_of_forward_support_card_eq_one G u hfwd
     (by rw [hbridge, hone])
 
+/-- Reverse-oriented diagonal supports avoid the doubling image: the
+anti-diagonal normal form sends `B 0 (x+x)` to the loop `B x x`. -/
+theorem add_self_not_mem_graphCycleBlockZeroSupport_of_reverse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {r : ℕ} [NeZero r]
+    (u : ZMod r → V)
+    (hrev : ∀ x y : ZMod r,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y))
+    (x : ZMod r) : x + x ∉ graphCycleBlockZeroSupport G u u := by
+  have h := reverse_block_apply_eq_zero_row
+    (Matrix.of fun a b : ZMod r ↦ G.adjMatrix ℤ (u a) (u b))
+    (fun a b ↦ by
+      simp only [Matrix.of_apply, SimpleGraph.adjMatrix_apply, hrev a b])
+    x x
+  simp only [Matrix.of_apply, SimpleGraph.adjMatrix_apply] at h
+  rw [mem_graphCycleBlockZeroSupport_iff_adj]
+  intro hadj
+  rw [if_neg G.irrefl, if_pos hadj] at h
+  exact one_ne_zero h.symm
+
+/-- On an odd cycle, a reverse-oriented diagonal block is empty: doubling
+is surjective. -/
+theorem graphCycleBlockZeroSupport_eq_empty_of_reverse_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {r : ℕ} [NeZero r]
+    (hrOdd : Odd r) (u : ZMod r → V)
+    (hrev : ∀ x y : ZMod r,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y)) :
+    graphCycleBlockZeroSupport G u u = ∅ := by
+  ext t
+  simp only [Finset.notMem_empty, iff_false]
+  have hcop : Nat.Coprime 2 r := Nat.coprime_two_left.mpr hrOdd
+  have hunit : IsUnit ((2 : ℕ) : ZMod r) :=
+    (ZMod.isUnit_iff_coprime 2 r).mpr hcop
+  obtain ⟨w, hw⟩ := hunit.exists_right_inv
+  have hx : (w * t) + (w * t) = t := by
+    have h2 : ((2 : ℕ) : ZMod r) * (w * t) = t := by
+      rw [← mul_assoc, mul_comm ((2 : ℕ) : ZMod r) w, hw, one_mul]
+    calc
+      (w * t) + (w * t) = ((2 : ℕ) : ZMod r) * (w * t) := by
+        push_cast
+        ring
+      _ = t := h2
+  intro ht
+  exact add_self_not_mem_graphCycleBlockZeroSupport_of_reverse G u hrev
+    (w * t) (hx ▸ ht)
+
 end
 
 end Erdos85
