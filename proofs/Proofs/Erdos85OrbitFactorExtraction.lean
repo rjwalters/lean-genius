@@ -191,4 +191,17 @@ theorem Polynomial.exists_irreducible_dvd_not_reflection_fixed_of_not_signStable
     exact hcount (congrArg
       (fun g => (UniqueFactorizationMonoid.normalizedFactors q).count g) hfix)
 
+/-- Combined trace-to-orbit interface.  Removing a nonzero principal linear
+factor from a trace-zero monic polynomial forces an asymmetric irreducible
+factor in the complement. -/
+theorem Polynomial.exists_irreducible_dvd_not_reflection_fixed_of_linearFactor_trace_zero
+    {K : Type*} [Field K] [CharZero K] [DecidableEq K]
+    (q : Polynomial K) (hq : q.Monic) (hdeg : 0 < q.natDegree)
+    (d : K) (hd : d ≠ 0)
+    (htrace : ((Polynomial.X - Polynomial.C d) * q).coeff q.natDegree = 0) :
+    ∃ f : Polynomial K,
+      Irreducible f ∧ f.Monic ∧ f ∣ q ∧ signedReflection f ≠ f := by
+  apply exists_irreducible_dvd_not_reflection_fixed_of_not_signStable q hq
+  exact Polynomial.not_signStable_of_linearFactor_trace_zero q hq hdeg d hd htrace
+
 end Erdos85
