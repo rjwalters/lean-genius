@@ -139,6 +139,63 @@ theorem card_le_one_of_balanced_negative_rankOne
   have hkey := hform.symm.trans hform'
   linarith
 
+/-- **Positive rank-one factorization bounds the sector.**  When
+`A·B = a·I + 1·sᵀ` with `a > 0` and `s ≥ 0`, the right factor is
+injective — the perturbed identity kills only constant vectors, and the
+positive trace weight kills those — so `|S| ≤ |T|`.  No balance
+hypothesis is needed. -/
+theorem card_le_card_of_positive_rankOne_factorization
+    {S T : Type*} [Fintype S] [Fintype T] [DecidableEq S] [DecidableEq T]
+    (A : Matrix S T ℚ) (B : Matrix T S ℚ)
+    (s : S → ℚ) (hs : ∀ i, 0 ≤ s i)
+    {a : ℚ} (ha : 0 < a)
+    (hAB : ∀ i j, (A * B) i j = (if i = j then a else 0) + s j) :
+    Fintype.card S ≤ Fintype.card T := by
+  classical
+  have hMx : ∀ x : S → ℚ, B.mulVec x = 0 → x = 0 := by
+    intro x hBx
+    have hABx : (A * B).mulVec x = 0 := by
+      rw [← Matrix.mulVec_mulVec, hBx, Matrix.mulVec_zero]
+    have hentry : ∀ i, a * x i + (∑ j, s j * x j) = 0 := by
+      intro i
+      have h : (∑ j, (A * B) i j * x j) = 0 := congrFun hABx i
+      rw [Finset.sum_congr rfl (fun j _ ↦ by
+        rw [hAB, add_mul, ite_mul, zero_mul])] at h
+      rw [Finset.sum_add_distrib, Finset.sum_ite_eq] at h
+      simpa using h
+    rcases isEmpty_or_nonempty S with hS | hS
+    · funext i
+      exact isEmptyElim i
+    · obtain ⟨i₀⟩ := hS
+      have hconst : ∀ i, x i = x i₀ := by
+        intro i
+        have h1 := hentry i
+        have h2 := hentry i₀
+        have h3 : a * x i = a * x i₀ := by linarith
+        exact mul_left_cancel₀ (ne_of_gt ha) h3
+      have hσc : (∑ j, s j * x j) = (∑ j, s j) * x i₀ := by
+        rw [Finset.sum_mul]
+        exact Finset.sum_congr rfl fun j _ ↦ by rw [hconst j]
+      have h0 := hentry i₀
+      rw [hσc] at h0
+      have hx0 : x i₀ = 0 := by
+        have hpos : 0 < a + ∑ j, s j := by
+          have := Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) ↦ hs j
+          linarith
+        have hzero : (a + ∑ j, s j) * x i₀ = 0 := by
+          rw [add_mul]
+          exact h0
+        exact (mul_eq_zero.mp hzero).resolve_left (ne_of_gt hpos)
+      funext i
+      rw [hconst i, hx0]
+      rfl
+  have hinj : Function.Injective B.mulVecLin := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro x hx
+    exact hMx x (by simpa using hx)
+  have hle := LinearMap.finrank_le_finrank_of_injective hinj
+  rwa [Module.finrank_pi, Module.finrank_pi] at hle
+
 end
 
 end Erdos85
