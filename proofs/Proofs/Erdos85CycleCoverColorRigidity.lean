@@ -1,4 +1,5 @@
 import Proofs.Erdos85OddComponentClosure
+import Proofs.Erdos85OrientedMassBounds
 
 /-!
 # Color rigidity of cyclic quotient covers
@@ -15,6 +16,145 @@ namespace Erdos85
 open SimpleGraph
 
 noncomputable section
+
+/-- A C4-free cycle diagonal block which contains all of its cycle edges
+cannot take the reverse orientation.  Two reverse shifts of the edge
+`0--1` produce the closing edge `2--(-1)`; this is either a loop (order
+three) or closes the four-cycle `-1,0,1,2`. -/
+theorem cycleBlock_forward_of_contains_cycle_edges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr : 3 ≤ r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (huD : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huTri : ∀ x, G.Adj (u x) (u (x + 1)))
+    (hfree : ¬ containsC4 V G) :
+    ∀ x y : ZMod r,
+    G.Adj (u (x + 1)) (u (y + 1)) ↔ G.Adj (u x) (u y)
+    := by
+  rcases graph_cycle_diagBlock_orientation hr G D hfree u hu hcomm huD with
+      hfwd | hrev
+  · intro x y
+    exact adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+  · exfalso
+    have hrevAdj : ∀ x y : ZMod r,
+        G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y) := by
+      intro x y
+      exact adj_iff_of_adjMatrix_int_eq G (hrev x y)
+    have hforced : G.Adj (u 2) (u (-1)) := by
+      have h10 : G.Adj (u 1) (u 0) := by
+        have h01 : G.Adj (u 0) (u 1) := by
+          convert huTri 0 using 1 <;> norm_num
+        convert (hrevAdj 0 1).mpr h01 using 1 <;> norm_num
+      convert (hrevAdj 1 0).mpr h10 using 1 <;> norm_num
+    by_cases heq : (2 : ZMod r) = -1
+    · rw [heq] at hforced
+      exact G.loopless.irrefl _ hforced
+    · apply hfree
+      have h01 : G.Adj (u 0) (u 1) := by simpa using huTri (0 : ZMod r)
+      have h12 : G.Adj (u 1) (u 2) := by
+        convert huTri (1 : ZMod r) using 1 <;> norm_num
+      have hm10 : G.Adj (u (-1)) (u 0) := by
+        simpa using huTri (-1 : ZMod r)
+      have hne01 : u 0 ≠ u 1 := fun h ↦ by
+        have hz := hu h
+        haveI : Fact (1 < r) := ⟨by omega⟩
+        exact (zero_ne_one : (0 : ZMod r) ≠ 1) hz
+      have hne12 : u 1 ≠ u 2 := fun h ↦ by
+        have hz := hu h
+        have hone : (0 : ZMod r) = 1 := by linear_combination hz
+        haveI : Fact (1 < r) := ⟨by omega⟩
+        exact zero_ne_one hone
+      have hnem10 : u (-1) ≠ u 0 := fun h ↦ by
+        have hz := hu h
+        have hone : (1 : ZMod r) = 0 := by
+          have := congrArg Neg.neg hz
+          simpa using this
+        haveI : Fact (1 < r) := ⟨by omega⟩
+        exact one_ne_zero hone
+      exact containsC4_of_rim hm10 h01 h12 hforced
+        (fun h ↦ zmod_sub_one_ne_add_one_of_three_le hr 0
+          (by apply hu; simpa using h))
+        (fun h ↦ by
+          have hz := hu h
+          have htwo : (2 : ZMod r) = 0 := hz.symm
+          have hdvd : r ∣ 2 := (ZMod.natCast_eq_zero_iff 2 r).mp htwo
+          have := Nat.le_of_dvd (by norm_num) hdvd
+          omega)
+        hnem10.symm hne01 (fun h ↦ heq (hu h)) hne12.symm
+
+/-- A defect component whose cycle edges lie in the triangle-free color has
+diagonal quotient entry exactly two.  Its rim supplies the two diagonal
+neighbors, while color rigidity forces the diagonal block to be forward and
+the parity-free Sidon bound supplies the matching upper bound. -/
+theorem triangleFreeCycleComponent_diagonalQuotient_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hr : 3 ≤ r)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (huTri : ∀ x, G.Adj (u x) (u (x + 1))) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 := by
+  let D := secondOrderDefectGraph G
+  have hfwd := cycleBlock_forward_of_contains_cycle_edges hr G D u hu huD
+    (adjMatrix_comm_secondOrderDefect_of_even G hfree hd heven hmin hcard)
+    huTri hfree
+  have hle := forwardComponent_diagonalQuotient_le_two G hfree hd heven
+    hmin hcard c u hu huRange hfwd
+  have hu0c : u 0 ∈ c.supp := by
+    rw [← huRange]
+    exact ⟨0, rfl⟩
+  have hQ := componentQuotientMatrix_apply_eq G D 2
+    (secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard)
+    (adjMatrix_comm_secondOrderDefect_of_even_real
+      G hfree hd heven hmin hcard) c c hu0c
+  have hmAdj : G.Adj (u 0) (u (-1)) := by
+    simpa using (huTri (-1 : ZMod r)).symm
+  have hpAdj : G.Adj (u 0) (u 1) := by
+    simpa using huTri (0 : ZMod r)
+  have hmMem : u (-1) ∈ componentNeighborFinset G D c (u 0) := by
+    have hmc : u (-1) ∈ c.supp := by
+      rw [← huRange]
+      exact ⟨-1, rfl⟩
+    have hmk : D.connectedComponentMk (u (-1)) = c :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c (u (-1))).mp hmc
+    simp [componentNeighborFinset, hmAdj, hmk]
+  have hpMem : u 1 ∈ componentNeighborFinset G D c (u 0) := by
+    have hpc : u 1 ∈ c.supp := by
+      rw [← huRange]
+      exact ⟨1, rfl⟩
+    have hmk : D.connectedComponentMk (u 1) = c :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c (u 1)).mp hpc
+    simp [componentNeighborFinset, hpAdj, hmk]
+  have hne : u (-1) ≠ u 1 := by
+    intro h
+    exact zmod_sub_one_ne_add_one_of_three_le hr 0 (by
+      apply hu
+      simpa using h)
+  have hsub : {u (-1), u 1} ⊆ componentNeighborFinset G D c (u 0) := by
+    intro y hy
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+    rcases hy with rfl | rfl
+    · exact hmMem
+    · exact hpMem
+  have hlower := Finset.card_le_card hsub
+  rw [hQ] at hle
+  rw [hQ]
+  have hlower' : 2 ≤ (componentNeighborFinset G D c (u 0)).card := by
+    simpa [hne] using hlower
+  omega
+
 
 /-- **No-cross-edge theorem.**  Two disjoint cyclic vertex sets whose cycle
 edges are edges of `G` cannot have any cross edge when their cycle adjacency
