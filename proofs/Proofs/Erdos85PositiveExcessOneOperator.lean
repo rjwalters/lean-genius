@@ -203,6 +203,51 @@ theorem adjMatrix_mul_triangleFreeEdgeGraph_apply_self
       exact_mod_cast excessOne_triangleFreeNeighbors_card_eq_one_of_odd
         G hfree hd hodd hreg hcard x
 
+/-- Every entry of the matching-twisted adjacency matrix `AM` is binary.
+Multiplication by the perfect-matching matrix merely permutes the columns
+of the original adjacency matrix. -/
+theorem adjMatrix_mul_triangleFreeEdgeGraph_apply_eq_zero_or_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x y : V) :
+    (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) x y = 0 ∨
+      (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) x y = 1 := by
+  have hcardy : (triangleFreeNeighbors G y).card = 1 :=
+    excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+      G hfree hd hodd hreg hcard y
+  obtain ⟨my, hmy⟩ := Finset.card_eq_one.mp hcardy
+  rw [(triangleFreeEdgeGraph G).mul_adjMatrix_apply,
+    triangleFreeEdgeGraph_neighborFinset, hmy]
+  simp only [Finset.sum_singleton, SimpleGraph.adjMatrix_apply]
+  by_cases h : G.Adj x my <;> simp [h]
+
+/-- Exact skew-incidence law for `B = AM`: its diagonal entries are one,
+while no off-diagonal pair of transposed entries can both be one. -/
+theorem adjMatrix_mul_triangleFreeEdgeGraph_apply_mul_transpose
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x y : V) :
+    (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) x y *
+      (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) y x =
+        if x = y then 1 else 0 := by
+  by_cases hxy : x = y
+  · subst y
+    rw [if_pos rfl,
+      adjMatrix_mul_triangleFreeEdgeGraph_apply_self
+        G hfree hd hodd hreg hcard x]
+    norm_num
+  · rw [if_neg hxy]
+    exact adjMatrix_mul_triangleFreeEdgeGraph_opposite_mul_eq_zero
+      G hfree hd hodd hreg hcard hxy
+
 /-- The first genuinely noncommutative matching moment is nevertheless
 forced: `tr((AM)²)=|V|`.  Its diagonal contribution is one per vertex and
 all off-diagonal directed two-cycles are forbidden by `C₄`-freeness. -/
