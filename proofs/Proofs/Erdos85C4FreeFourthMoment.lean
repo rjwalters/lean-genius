@@ -75,7 +75,7 @@ private theorem sum_card_common_eq_sum_neighbor_degrees
       exact (H.adj_comm z y).symm
 
 /-- Double-counting oriented length-two walks. -/
-private theorem sum_sum_card_common_eq_sum_degree_sq
+theorem sum_sum_card_common_eq_sum_degree_sq
     {V : Type*} [Fintype V] [DecidableEq V]
     (H : SimpleGraph V) [DecidableRel H.Adj] :
     (∑ x : V, ∑ y : V,
