@@ -98,6 +98,57 @@ theorem CommonNeighborIndependent.card_add_sum_degrees_le_card_of_isIndepSet
     rw [Fintype.card_coe, ← SimpleGraph.card_neighborFinset_eq_degree]
   rwa [hCX, hsum] at hcard
 
+/-- Equality in the preceding packing bound gives an exact partition: every
+vertex is either in the safe independent set or adjacent to one of its
+members. -/
+theorem CommonNeighborIndependent.mem_or_exists_adj_of_count_eq_card
+    (G : SimpleGraph V) [DecidableRel G.Adj] (C : Finset V)
+    (hsafe : CommonNeighborIndependent G C)
+    (hind : G.IsIndepSet (C : Set V))
+    (hcount : C.card + ∑ x ∈ C, G.degree x = Fintype.card V)
+    (v : V) : v ∈ C ∨ ∃ c ∈ C, G.Adj c v := by
+  classical
+  let U := C.biUnion fun c ↦ G.neighborFinset c
+  have hpair : (C : Set V).PairwiseDisjoint fun c ↦ G.neighborFinset c := by
+    intro x hx y hy hxy
+    change Disjoint (G.neighborFinset x) (G.neighborFinset y)
+    rw [Finset.disjoint_left]
+    intro z hzx hzy
+    have hz : z ∈ G.neighborFinset x ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hzx, hzy⟩
+    have hempty := hsafe hx hy hxy
+    rw [Finset.card_eq_zero] at hempty
+    exact Finset.notMem_empty z (hempty ▸ hz)
+  have hUcard : U.card = ∑ x ∈ C, G.degree x := by
+    change (C.biUnion fun c ↦ G.neighborFinset c).card = _
+    rw [Finset.card_biUnion hpair]
+    apply Finset.sum_congr rfl
+    intro x _
+    exact G.card_neighborFinset_eq_degree x
+  rw [SimpleGraph.isIndepSet_iff] at hind
+  have hdisj : Disjoint C U := by
+    change Disjoint C (C.biUnion fun c ↦ G.neighborFinset c)
+    rw [Finset.disjoint_left]
+    intro x hx hxU
+    rw [Finset.mem_biUnion] at hxU
+    obtain ⟨y, hy, hyx⟩ := hxU
+    have hadj : G.Adj y x := (G.mem_neighborFinset y x).mp hyx
+    by_cases hxy : y = x
+    · subst y
+      exact G.loopless.irrefl x hadj
+    · exact hind hy hx hxy hadj
+  have hCUcard : (C ∪ U).card = Fintype.card V := by
+    rw [Finset.card_union_of_disjoint hdisj, hUcard, hcount]
+  have hCU : C ∪ U = Finset.univ := Finset.eq_univ_of_card _ hCUcard
+  have hv : v ∈ C ∪ U := by rw [hCU]; simp
+  rcases Finset.mem_union.mp hv with hvC | hvU
+  · exact Or.inl hvC
+  · right
+    change v ∈ C.biUnion (fun c ↦ G.neighborFinset c) at hvU
+    rw [Finset.mem_biUnion] at hvU
+    obtain ⟨c, hc, hcv⟩ := hvU
+    exact ⟨c, hc, (G.mem_neighborFinset c v).mp hcv⟩
+
 /-- An independent defect clique of size `d-1` can occur in the regular
 positive-excess band only at its top endpoint `e=d-4`. -/
 theorem excess_eq_sub_four_of_independent_large_secondOrderDefectClique
@@ -148,6 +199,27 @@ theorem independent_large_secondOrderDefectClique_count_eq_card
   have hmul : (d - 1) * d = d * (d - 1) := Nat.mul_comm _ _
   rw [hmul]
   omega
+
+/-- Consequently, at the forced top excess an independent `D`-clique of
+size `d-1` is an exact dominating part: every other vertex has a neighbor
+in the clique. -/
+theorem mem_or_exists_adj_of_independent_large_secondOrderDefectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    (hind : G.IsIndepSet (C : Set V)) (v : V) :
+    v ∈ C ∨ ∃ c ∈ C, G.Adj c v := by
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  apply hsafe.mem_or_exists_adj_of_count_eq_card G C hind
+  exact independent_large_secondOrderDefectClique_count_eq_card
+    G hfree hd he hcard hreg C hCcard hclique hind
 
 /-- **Defect-clique plateau rigidity.**  In a graph with no degree-`d`
 witness one order higher, every second-order-defect clique of size at least
