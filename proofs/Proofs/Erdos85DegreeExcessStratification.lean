@@ -1,5 +1,6 @@
 import Proofs.Erdos85ConflictDegreeAccounting
 import Proofs.Erdos85ConflictDefectDuality
+import Proofs.Erdos85GadgetCounting
 
 /-!
 # Degree stratification by order excess
@@ -146,6 +147,17 @@ def neighborDegreeExcess
     (d : ℕ) (x : V) : ℕ :=
   ∑ y : {z : V // z ∈ G.neighborSet x}, (G.degree y.1 - d)
 
+theorem neighborDegreeExcess_eq_sum_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) (x : V) :
+    neighborDegreeExcess G d x =
+      ∑ y ∈ G.neighborFinset x, (G.degree y - d) := by
+  classical
+  letI : Fintype {z : V // G.Adj x z} := Fintype.ofFinite _
+  rw [neighborDegreeExcess,
+    Finset.sum_subtype (G.neighborFinset x) (fun y ↦ G.mem_neighborFinset x y)]
+  rfl
+
 /-- **Local excess conservation.**  At order `d(d-1)+1+q`, the order
 excess splits at every vertex into its defect degree, its own degree excess
 weighted by `d-1`, and the degree excess carried by its neighbors.  No
@@ -217,5 +229,40 @@ theorem secondOrderDefect_degree_add_weightedExcess_add_neighborExcess
       _ = d * (d - 1) + (G.degree x - d) * (d - 1) := by ring
   rw [hconflictSplit, hprod, hcard] at hsum
   omega
+
+/-- **Global excess conservation.**  Summing the local law counts neighbor
+excess by incidences: every unit at `x` is seen once for each of its
+`degree x` neighbors. -/
+theorem sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q) :
+    (∑ x : V, (secondOrderDefectGraph G).degree x) +
+        ∑ x : V, ((G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d)) = Fintype.card V * q := by
+  have hneighbor : (∑ x : V, neighborDegreeExcess G d x) =
+      ∑ x : V, G.degree x * (G.degree x - d) := by
+    simp_rw [neighborDegreeExcess_eq_sum_neighborFinset]
+    exact sum_neighbor_weight_eq_sum_degree_mul G
+      (fun x ↦ G.degree x - d)
+  calc
+    (∑ x : V, (secondOrderDefectGraph G).degree x) +
+          ∑ x : V, ((G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d)) =
+        ∑ x : V, ((secondOrderDefectGraph G).degree x +
+          (G.degree x - d) * (d - 1) + neighborDegreeExcess G d x) := by
+            simp only [Finset.sum_add_distrib]
+            rw [hneighbor]
+            ac_rfl
+    _ = ∑ _x : V, q := by
+      apply Finset.sum_congr rfl
+      intro x _
+      exact secondOrderDefect_degree_add_weightedExcess_add_neighborExcess
+        G hfree hd hmin hcard x
+    _ = Fintype.card V * q := by simp
 
 end Erdos85
