@@ -1,4 +1,5 @@
 import Proofs.Erdos85MixedDiagonalDichotomy
+import Proofs.Erdos85ZeroDiagonalSectorExpansion
 
 /-!
 # Size bounds for prime-divisible defect sectors
@@ -215,6 +216,101 @@ theorem pDivisibleAnchorMass_eq_zero_of_dvd_of_degree_le_prime
   · have hsmall := pDivisibleAnchorMass_lt_two_mul_of_degree_le_prime
       G hfree hd heven hmin hcard hdp u hu huRange huD hℓ3 hodd
     omega
+
+/-- A zero-mass even sector containing a globally minimum component of order
+at least four occupies at least `4p` vertices. -/
+theorem four_mul_prime_le_card_of_zero_even_minimum_sector
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d p : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hc4 : 4 ≤ c.supp.ncard) (hpc : p ∣ c.supp.ncard)
+    (hsectorEven : Even ((Finset.univ.filter (fun x :
+      (secondOrderDefectGraph G).ConnectedComponent ↦
+        p ∣ x.supp.ncard)).card))
+    (hmassZero : pDivisibleAnchorMass G u p = 0) :
+    4 * p ≤ Fintype.card V := by
+  classical
+  let S := Finset.univ.filter (fun x :
+    (secondOrderDefectGraph G).ConnectedComponent ↦ p ∣ x.supp.ncard)
+  have hbridge := pDivisibleAnchorMass_eq_sum_diagonalQuotient
+    G hfree hd heven hmin hcard u hu huRange (p := p)
+  have hsumZero : (∑ x ∈ S, componentQuotientMatrix G
+      (secondOrderDefectGraph G) x x) = 0 := by
+    rw [← hbridge]
+    exact hmassZero
+  have hdiag : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ x.supp.ncard →
+        componentQuotientMatrix G (secondOrderDefectGraph G) x x = 0 := by
+    intro x hpx
+    exact (Finset.sum_eq_zero_iff_of_nonneg (by simp)).mp hsumZero x
+      (by simp [S, hpx])
+  have hfour :=
+    four_le_pDivisible_filter_card_of_even_zeroDiagonal_minimum_order_four
+      G hfree hd heven hmin hcard c hcmin hc4 hpc hdiag hsectorEven
+  have hsize := prime_mul_pDivisible_component_card_le_card
+    (secondOrderDefectGraph G) (by
+      exact Nat.pos_of_dvd_of_pos hpc c.nonempty_supp.ncard_pos)
+  have hmul : 4 * p ≤ p * S.card := by
+    rw [mul_comm 4 p]
+    exact Nat.mul_le_mul_left p hfour
+  exact hmul.trans (by simpa [S] using hsize)
+
+/-- **Large nonresidue-sector terminal, in arithmetic interface form.**
+If `p ≥ d`, divisibility quantizes the mass to zero; even zero-sector
+geometry then forces `4p ≤ |V|`.  Therefore a prime larger than one quarter
+of the boundary order cannot divide the global minimum component order. -/
+theorem false_of_large_even_minimum_sector_mass_divisibility
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) {d p : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hpOdd : Odd p) (hdp : d ≤ p)
+    (hlarge : Fintype.card V < 4 * p)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hodd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ c.supp.ncard → Odd c.supp.ncard)
+    (hdvdMass : p ∣ pDivisibleAnchorMass G u p)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hc4 : 4 ≤ c.supp.ncard) (hpc : p ∣ c.supp.ncard)
+    (hsectorEven : Even ((Finset.univ.filter (fun x :
+      (secondOrderDefectGraph G).ConnectedComponent ↦
+        p ∣ x.supp.ncard)).card)) : False := by
+  have hzero := pDivisibleAnchorMass_eq_zero_of_dvd_of_degree_le_prime
+    G hfree hd heven hmin hcard hpOdd hdp u hu huRange huD hℓ3 hodd
+      hdvdMass
+  have hfour := four_mul_prime_le_card_of_zero_even_minimum_sector
+    G hfree hd heven hmin hcard u hu huRange c hcmin hc4 hpc
+      hsectorEven hzero
+  omega
 
 end
 
