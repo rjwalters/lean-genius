@@ -281,8 +281,7 @@ theorem exists_refined_window_selection_or_obstructed
     ⟨p, hp, hp7, hwin, hodd, hcountOdd⟩ | hobs
   · left
     refine ⟨p, hp, hp7, hwin, ?_, hodd, hcountOdd⟩
-    rcases Nat.le_or_lt p d with hpd | hdp
-    · exact Or.inl hpd
+    rcases Nat.lt_or_ge d p with hdp | hpd
     · right
       have hpos : 0 < (Finset.univ.filter (fun c :
           (secondOrderDefectGraph G).ConnectedComponent ↦
@@ -297,6 +296,7 @@ theorem exists_refined_window_selection_or_obstructed
         rwa [hcard] at this
       · exact isSquare_d_sub_three_mod_largePrime_of_dvd_component_order
           G hfree hd heven hmin hcard hp hdp c hpc
+    · exact Or.inl hpd
   · right
     exact hobs
 
