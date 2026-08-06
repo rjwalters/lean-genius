@@ -20,6 +20,45 @@ noncomputable def Polynomial.signedReflection {K : Type*} [Ring K]
     (p : Polynomial K) : Polynomial K :=
   (-1 : K) ^ p.natDegree • p.comp (-(Polynomial.X : Polynomial K))
 
+theorem Polynomial.signedReflection_monic
+    {K : Type*} [Field K] {p : Polynomial K} (hp : p.Monic) :
+    (signedReflection p).Monic := by
+  have ha : (-1 : K) ^ p.natDegree * (-1 : K) ^ p.natDegree = 1 := by
+    rw [← mul_pow]
+    simp
+  have hreg : IsSMulRegular K ((-1 : K) ^ p.natDegree) :=
+    IsSMulRegular.of_mul_eq_one (M := K) ha
+  rw [Polynomial.Monic, signedReflection,
+    Polynomial.leadingCoeff_smul_of_smul_regular _ hreg]
+  simp [hp, ← pow_add]
+
+theorem Polynomial.natDegree_signedReflection
+    {K : Type*} [Field K] {p : Polynomial K} (hp : p.Monic) :
+    (signedReflection p).natDegree = p.natDegree := by
+  have ha : (-1 : K) ^ p.natDegree * (-1 : K) ^ p.natDegree = 1 := by
+    rw [← mul_pow]
+    simp
+  have hreg : IsSMulRegular K ((-1 : K) ^ p.natDegree) :=
+    IsSMulRegular.of_mul_eq_one (M := K) ha
+  rw [signedReflection,
+    Polynomial.natDegree_smul_of_smul_regular _ hreg,
+    Polynomial.natDegree_comp_eq_of_mul_ne_zero]
+  · simp
+  · simp [hp.ne_zero]
+
+theorem Polynomial.signedReflection_involutive
+    {K : Type*} [Field K] {p : Polynomial K} (hp : p.Monic) :
+    signedReflection (signedReflection p) = p := by
+  have ha : (-1 : K) ^ p.natDegree * (-1 : K) ^ p.natDegree = 1 := by
+    rw [← mul_pow]
+    simp
+  unfold signedReflection
+  rw [show ((-1 : K) ^ p.natDegree •
+      p.comp (-(Polynomial.X : Polynomial K))).natDegree = p.natDegree from
+        natDegree_signedReflection hp]
+  simp only [Polynomial.smul_comp, Polynomial.comp_neg_X_comp_neg_X, ← mul_smul, ha,
+    one_smul]
+
 theorem Polynomial.signedReflection_mul
     {K : Type*} [Field K] (p q : Polynomial K) (hp : p ≠ 0) (hq : q ≠ 0) :
     signedReflection (p * q) = signedReflection p * signedReflection q := by
