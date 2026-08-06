@@ -684,6 +684,45 @@ theorem isolatedVertices_card_eq_one_of_matched_secondLayerBranch
     omega
   simpa [I, K, A] using hIeq
 
+/-- The canonical isolated vertex of a matched branch sees either one or
+both of the center's two antipodes. -/
+theorem card_neighbor_inter_antipodal_of_isolated_matched_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    (x : V) (hx : (triangleFreeNeighbors G x).card = 1)
+    (u v : {z : V // z ∈ G.neighborSet x}) (huv : G.Adj u.1 v.1)
+    (a : secondLayerBranch G x u)
+    (haIso : (G.induce (secondLayerBranch G x u)).degree a = 0) :
+    (G.neighborFinset a.1 ∩ antipodalNeighbors G x).card = 1 ∨
+      (G.neighborFinset a.1 ∩ antipodalNeighbors G x).card = 2 := by
+  classical
+  have hext := exists_adj_external_of_isolated_matched_secondLayerBranch
+    G hfree hreg x u v huv a haIso
+  obtain ⟨z, hzE, haz⟩ := hext
+  have hzAnti : z.1 ∈ antipodalNeighbors G x := by
+    rw [antipodalNeighbors, Finset.mem_map]
+    exact ⟨z, hzE, rfl⟩
+  have hzInter : z.1 ∈ G.neighborFinset a.1 ∩ antipodalNeighbors G x :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset a.1 z.1).mpr haz, hzAnti⟩
+  have hpos : 0 < (G.neighborFinset a.1 ∩ antipodalNeighbors G x).card :=
+    Finset.card_pos.mpr ⟨z.1, hzInter⟩
+  have hAntiCard : (antipodalNeighbors G x).card = 2 := by
+    rw [antipodalNeighbors, Finset.card_map]
+    exact excessOne_externalRepairCandidates_card_eq_two
+      G hfree hreg hcard x hx
+  have hle : (G.neighborFinset a.1 ∩ antipodalNeighbors G x).card ≤ 2 := by
+    calc
+      (G.neighborFinset a.1 ∩ antipodalNeighbors G x).card ≤
+          (antipodalNeighbors G x).card :=
+        Finset.card_le_card Finset.inter_subset_right
+      _ = 2 := hAntiCard
+  omega
+
 /-- **Uniform excess-one terminal.**  A regular `C₄`-free graph of order
 `d(d-1)+4`, with `d ≥ 4`, cannot have a vertex with exactly three incident
 triangle-free edges. -/
