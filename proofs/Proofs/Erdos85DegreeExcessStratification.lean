@@ -20,6 +20,15 @@ namespace Erdos85
 
 open SimpleGraph
 
+private theorem two_mul_choose_two (k : ℕ) :
+    2 * k.choose 2 = k * (k - 1) := by
+  have h₁ : k.descFactorial 2 = 2 * k.choose 2 := by
+    rw [Nat.descFactorial_eq_factorial_mul_choose]
+    rfl
+  have h₂ : k.descFactorial 2 = (k - 1) * k := by
+    simp [Nat.descFactorial]
+  rw [← h₁, h₂, Nat.mul_comm]
+
 /-- **Order excess controls degree excess.** -/
 theorem degree_sub_mul_pred_le_order_excess
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -329,6 +338,62 @@ theorem two_mul_defectEdges_add_linearExcess_add_squareExcess_eq
             G.degree x * (G.degree x - d)) := by
               rw [Nat.add_assoc, hsum]
     _ = Fintype.card V * q := hglobal
+
+/-- **Triangular irregularity conservation.**  The quadratic normal form has
+an exact halved interpretation: a vertex of excess `s` spends
+`d*s + choose s 2` units in addition to each defect edge. -/
+theorem two_mul_defectEdges_add_degreeExcess_add_chooseExcess_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q) :
+    2 * ((secondOrderDefectGraph G).edgeFinset.card +
+      d * (∑ x : V, (G.degree x - d)) +
+      ∑ x : V, (G.degree x - d).choose 2) = Fintype.card V * q := by
+  have hquad :=
+    two_mul_defectEdges_add_linearExcess_add_squareExcess_eq
+      G hfree hd hmin hcard
+  have hlocal : ∀ s : ℕ,
+      2 * (d * s + s.choose 2) = (2 * d - 1) * s + s * s := by
+    intro s
+    by_cases hs : s = 0
+    · simp [hs]
+    obtain ⟨t, rfl⟩ : ∃ t, s = t + 1 := ⟨s - 1, by omega⟩
+    have hchoose := two_mul_choose_two (t + 1)
+    obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
+    simp only [Nat.succ_sub_one] at hchoose
+    have hcoeff : 2 * (d' + 1) - 1 = 2 * d' + 1 := by omega
+    rw [hcoeff]
+    calc
+      2 * ((d' + 1) * (t + 1) + (t + 1).choose 2) =
+          2 * ((d' + 1) * (t + 1)) + 2 * (t + 1).choose 2 := by ring
+      _ = 2 * ((d' + 1) * (t + 1)) + (t + 1) * t := by rw [hchoose]
+      _ = (2 * d' + 1) * (t + 1) + (t + 1) * (t + 1) := by ring
+  have hsum :
+      2 * (d * (∑ x : V, (G.degree x - d)) +
+          ∑ x : V, (G.degree x - d).choose 2) =
+        (2 * d - 1) * (∑ x : V, (G.degree x - d)) +
+          ∑ x : V, (G.degree x - d) * (G.degree x - d) := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib,
+      Finset.mul_sum, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    exact hlocal (G.degree x - d)
+  calc
+    2 * ((secondOrderDefectGraph G).edgeFinset.card +
+        d * (∑ x : V, (G.degree x - d)) +
+        ∑ x : V, (G.degree x - d).choose 2) =
+      2 * (secondOrderDefectGraph G).edgeFinset.card +
+        2 * (d * (∑ x : V, (G.degree x - d)) +
+          ∑ x : V, (G.degree x - d).choose 2) := by ring
+    _ = 2 * (secondOrderDefectGraph G).edgeFinset.card +
+        (2 * d - 1) * (∑ x : V, (G.degree x - d)) +
+        ∑ x : V, (G.degree x - d) * (G.degree x - d) := by
+          rw [Nat.add_assoc, hsum]
+    _ = Fintype.card V * q := hquad
 
 /-- **Total irregularity bound.**  Every unit of degree excess consumes at
 least `2d` units of the global order-excess budget. -/
