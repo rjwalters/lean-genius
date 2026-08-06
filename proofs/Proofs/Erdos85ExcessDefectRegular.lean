@@ -119,6 +119,101 @@ theorem secondOrderDefectGraph_degree_eq_two_of_regular_boundary
     G hfree hreg (e := 0)
   simpa using hcard
 
+/-- Distinct pairs have no common neighbor exactly when they are adjacent in
+the combined defect graph.  Otherwise C4-freeness forces exactly one common
+neighbor.  This fact is independent of the graph order and of parity. -/
+theorem card_common_eq_if_secondOrderDefect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (x y : V) (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card =
+      if y ∈ (secondOrderDefectGraph G).neighborFinset x then 0 else 1 := by
+  classical
+  rw [secondOrderDefectGraph_neighborFinset G x]
+  by_cases hdefect : y ∈ antipodalNeighbors G x ∪ triangleFreeNeighbors G x
+  · rw [if_pos hdefect]
+    rcases Finset.mem_union.mp hdefect with hanti | htri
+    · exact ((mem_antipodalNeighbors G x y).mp hanti).2.2
+    · exact ((mem_triangleFreeNeighbors G x y).mp htri).2
+  · rw [if_neg hdefect]
+    have hupper := common_le_one_of_not_containsC4 hfree x y hxy
+    apply le_antisymm hupper
+    by_contra hnot
+    have hzero : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by omega
+    by_cases hadj : G.Adj x y
+    · exact hdefect (Finset.mem_union_right _
+        ((mem_triangleFreeNeighbors G x y).mpr ⟨hadj, hzero⟩))
+    · exact hdefect (Finset.mem_union_left _
+        ((mem_antipodalNeighbors G x y).mpr ⟨hxy.symm, hadj, hzero⟩))
+
+/-- **Order-free defect matrix equation.**  For every regular C4-free graph,
+`A² = (d-1)I + J - D`; positive excess changes the degree and geometry of
+`D`, but not the operator identity. -/
+theorem adjMatrix_sq_eq_sub_secondOrderDefect_of_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) :
+    G.adjMatrix ℤ * G.adjMatrix ℤ =
+      (↑d - 1 : ℤ) • (1 : Matrix V V ℤ) +
+        FriendshipTheoremOQ01.onesMatrix V -
+          (secondOrderDefectGraph G).adjMatrix ℤ := by
+  ext x y
+  simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+    Matrix.one_apply, FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply,
+    smul_eq_mul]
+  by_cases hxy : x = y
+  · subst y
+    rw [G.adjMatrix_mul_self_apply_self, hreg x]
+    simp [SimpleGraph.adjMatrix_apply]
+  · rw [adjMatrix_sq_apply_eq_card_common]
+    have hcommon := card_common_eq_if_secondOrderDefect G hfree x y hxy
+    by_cases hdefect : y ∈ (secondOrderDefectGraph G).neighborFinset x
+    · rw [if_pos hdefect] at hcommon
+      have hadj : (secondOrderDefectGraph G).Adj x y :=
+        ((secondOrderDefectGraph G).mem_neighborFinset x y).mp hdefect
+      simp [SimpleGraph.adjMatrix_apply, hxy, hadj, hcommon]
+    · rw [if_neg hdefect] at hcommon
+      have hadj : ¬(secondOrderDefectGraph G).Adj x y := by
+        intro hadj
+        exact hdefect
+          (((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hadj)
+      simp [SimpleGraph.adjMatrix_apply, hxy, hadj, hcommon]
+
+/-- The adjacency matrix commutes with the combined defect matrix at every
+excess, not only when the latter is a two-factor. -/
+theorem adjMatrix_comm_secondOrderDefect_of_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ x, G.degree x = d) :
+    G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ =
+      (secondOrderDefectGraph G).adjMatrix ℤ * G.adjMatrix ℤ := by
+  let A := G.adjMatrix ℤ
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let J := FriendshipTheoremOQ01.onesMatrix V
+  let C := (↑d - 1 : ℤ) • (1 : Matrix V V ℤ)
+  have hsq : A * A = C + J - D :=
+    adjMatrix_sq_eq_sub_secondOrderDefect_of_regular G hfree hreg
+  have hAJ : A * J = (d : ℤ) • J :=
+    FriendshipTheoremOQ01.adjMatrix_mul_ones G d hreg
+  have hJA : J * A = (d : ℤ) • J :=
+    onesMatrix_mul_adjMatrix_of_regular G d hreg
+  have hD : D = C + J - A * A := by
+    rw [hsq]
+    noncomm_ring
+  change A * D = D * A
+  rw [hD, mul_sub, sub_mul, mul_add, add_mul, hAJ, hJA]
+  simp only [C, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+    Matrix.one_mul]
+  noncomm_ring
+
 end
 
 end Erdos85
