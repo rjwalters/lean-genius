@@ -1,6 +1,7 @@
 import Proofs.Erdos85ConflictDegreeAccounting
 import Proofs.Erdos85ConflictDefectDuality
 import Proofs.Erdos85GadgetCounting
+import Proofs.Erdos85MinimalWitness
 
 /-!
 # Degree stratification by order excess
@@ -308,5 +309,74 @@ theorem two_mul_degree_mul_sum_degreeExcess_le_card_mul_orderExcess
         G.degree x * (G.degree x - d)) :=
       Finset.sum_le_sum fun x _ ↦ hpoint x
     _ ≤ Fintype.card V * q := hweighted
+
+/-- **Defect-edge/irregular-vertex tradeoff.**  Each defect edge consumes two
+units of the global excess budget, while every vertex above the target degree
+consumes at least `2d`.  Thus irregularity and residual defect structure cannot
+both be large. -/
+theorem two_mul_defectEdges_add_two_mul_degree_mul_card_aboveMin_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q) :
+    2 * (secondOrderDefectGraph G).edgeFinset.card +
+        2 * d * (aboveMinVertices G d).card ≤ Fintype.card V * q := by
+  classical
+  have hglobal :=
+    sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
+      G hfree hd hmin hcard
+  have hedge :
+      (∑ x : V, (secondOrderDefectGraph G).degree x) =
+        2 * (secondOrderDefectGraph G).edgeFinset.card :=
+    (secondOrderDefectGraph G).sum_degrees_eq_twice_card_edges
+  have hpoint : ∀ x : V,
+      2 * d * (G.degree x - d) ≤
+        (G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d) := by
+    intro x
+    let s := G.degree x - d
+    have hx := hmin x
+    have hdeg : G.degree x = s + d := by
+      dsimp [s]
+      omega
+    by_cases hs : s = 0
+    · simp [s, hs]
+    obtain ⟨d', hdEq⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
+    obtain ⟨s', hsEq⟩ : ∃ s', s = s' + 1 := ⟨s - 1, by omega⟩
+    rw [show G.degree x - d = s by rfl, hdeg, hdEq, hsEq]
+    simp only [Nat.add_sub_cancel]
+    nlinarith [Nat.zero_le (s' * s')]
+  have habove : (aboveMinVertices G d).card ≤
+      ∑ x : V, (G.degree x - d) := by
+    calc
+      (aboveMinVertices G d).card =
+          ∑ x ∈ aboveMinVertices G d, 1 := by simp
+      _ ≤ ∑ x ∈ aboveMinVertices G d, (G.degree x - d) := by
+        apply Finset.sum_le_sum
+        intro x hx
+        have hx' : d < G.degree x := by
+          simpa [aboveMinVertices] using hx
+        omega
+      _ ≤ ∑ x : V, (G.degree x - d) := by
+        exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+  have hweighted :
+      2 * d * (∑ x : V, (G.degree x - d)) ≤
+        ∑ x : V, ((G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d)) := by
+    calc
+      2 * d * (∑ x : V, (G.degree x - d)) =
+          ∑ x : V, 2 * d * (G.degree x - d) := by
+            rw [Finset.mul_sum]
+      _ ≤ _ := Finset.sum_le_sum fun x _ ↦ hpoint x
+  have haboveWeighted :
+      2 * d * (aboveMinVertices G d).card ≤
+        ∑ x : V, ((G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d)) :=
+    (Nat.mul_le_mul_left (2 * d) habove).trans hweighted
+  rw [hedge] at hglobal
+  omega
 
 end Erdos85
