@@ -47,7 +47,7 @@ theorem reverse_block_apply_eq_zero_row {α : Type*}
   have hx : ((x.val : ℕ) : ZMod r) = x := ZMod.natCast_rightInverse x
   have hmain := haux x.val (x + y)
   rw [hx, show x + y - x = y from by ring] at hmain
-  exact hmain.symm
+  exact hmain
 
 /-- **Reverse blocks have zero spectral trace.**  A block satisfying the
 reverse translation relation has vanishing trace against the
@@ -74,6 +74,7 @@ theorem trace_mul_circulant_freqPairKernel_eq_zero_of_reverse
     intro x
     apply Fintype.sum_equiv (Equiv.addLeft x)
     intro y
+    simp only [Equiv.coe_addLeft]
     rw [hBrow x y, show x + y - 2 * x = y - x from by ring]
   have hstep : (∑ x : ZMod r, ∑ y : ZMod r,
       B x y * freqPairKernel ζ (y - x)) =
@@ -101,6 +102,7 @@ theorem trace_mul_circulant_freqPairKernel_eq_zero_of_reverse
           ∑ x : ZMod r, cyclePow ζ (2 * x + u) := by
         apply Fintype.sum_equiv (Equiv.neg (ZMod r))
         intro x
+        simp only [Equiv.neg_apply]
         rw [show 2 * (-x) + u = u - 2 * x from by ring]
       rw [hneg]
       exact sum_cyclePow_two_mul_add_eq_zero_of_sq hζr hζsq u
