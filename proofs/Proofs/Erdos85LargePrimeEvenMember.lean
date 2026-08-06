@@ -36,15 +36,15 @@ theorem exists_even_component_of_largePrime_dvd
     (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
     (hpc : p ∣ c₀.supp.ncard) :
     ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
-      Even c.supp.ncard := by
+      p ∣ c.supp.ncard ∧ Even c.supp.ncard := by
   classical
+  have hall := all_component_orders_dvd_of_largePrime_dvd_one
+    G hfree hd heven hmin hcard hp hdp c₀ hpc
   by_contra hnone
   push_neg at hnone
   have hallOdd : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
       Odd c.supp.ncard := fun c ↦
-    Nat.not_even_iff_odd.mp (hnone c)
-  have hall := all_component_orders_dvd_of_largePrime_dvd_one
-    G hfree hd heven hmin hcard hp hdp c₀ hpc
+    Nat.not_even_iff_odd.mp (hnone c (hall c))
   have hcardVodd : Odd (Fintype.card V) := by
     rw [hcard]
     obtain ⟨k, hk⟩ := heven
@@ -57,8 +57,8 @@ theorem exists_even_component_of_largePrime_dvd
     (secondOrderDefectGraph G) hall hallOdd hcardVodd
   have hobs := secondOrder_componentOrders_selectionObstructed
     G hfree hd heven hmin hcard
-  rcases hobs p hp hp7 with ⟨c, _, hceven⟩ | hcount
-  · exact hnone c hceven
+  rcases hobs p hp hp7 with ⟨c, hcdvd, hceven⟩ | hcount
+  · exact hnone c hcdvd hceven
   · exact (Nat.not_even_iff_odd.mpr hcountOdd) hcount
 
 end
