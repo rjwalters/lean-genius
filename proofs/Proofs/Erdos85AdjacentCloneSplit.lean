@@ -1,5 +1,6 @@
 import Proofs.Erdos85NonadjacentCloneSplit
 import Proofs.Erdos85DeletePair
+import Proofs.Erdos85LocalMatchingComponents
 
 /-!
 # Adjacent-clone splitting
@@ -91,5 +92,57 @@ theorem noCross_iff_localMatching_edges_not_cut
       ¬ (G.induce (setOf fun v => v ≠ x)).Adj a b) ↔
     (∀ ⦃a⦄, a ∈ S → ∀ ⦃b⦄, b ∈ T → ¬ G.Adj a.1 b.1) := by
   rfl
+
+/-- The graph induced by the surviving neighbours of a deleted vertex has
+degree at most one: two distinct local neighbours would form a `C₄` together
+with the deleted vertex. -/
+theorem deletedNeighborhood_induced_degree_ncard_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (z : {y : {v : V // v ≠ x} //
+      y ∈ (deletedNeighborhood G x : Set {v : V // v ≠ x})}) :
+    ((((G.induce (fun v ↦ v ≠ x)).induce
+      (fun y ↦ y ∈ (deletedNeighborhood G x : Set {v : V // v ≠ x}))).neighborSet z).ncard) ≤ 1 := by
+  classical
+  rw [Set.ncard_le_one_iff_subsingleton]
+  intro a ha b hb
+  by_contra hab
+  change G.Adj z.1.1 a.1.1 at ha
+  change G.Adj z.1.1 b.1.1 at hb
+  have hax : G.Adj a.1.1 x :=
+    (mem_deletedNeighborhood G x a.1).1 a.2
+  have hbx : G.Adj b.1.1 x :=
+    (mem_deletedNeighborhood G x b.1).1 b.2
+  apply hfree
+  exact containsC4_of_two_common
+    (fun h ↦ hab (Subtype.ext (Subtype.ext h)))
+    (fun h ↦ z.1.2 h)
+    ha hb hax.symm hbx.symm
+
+/-- **Sharp adjacent-clone split.**  If a `C₄`-free minimum-degree-`d`
+graph has a vertex of degree at least `2*d-1`, split the local matching into
+two intact balanced component unions and replace the vertex by an adjacent
+pair.  This raises the order by one while preserving minimum degree `d`. -/
+theorem c4FreeMinDegreeWitness_succ_of_vertex_degree_ge_two_mul_sub_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V)
+    {N d : ℕ} (hVcard : Fintype.card V = N)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hd : 1 ≤ d) (hxdegree : 2 * d - 1 ≤ G.degree x) :
+    C4FreeMinDegreeWitness (N + 1) d := by
+  classical
+  let H : SimpleGraph {v : V // v ≠ x} := G.induce (fun v ↦ v ≠ x)
+  let U : Finset {v : V // v ≠ x} := deletedNeighborhood G x
+  have hUcard : 2 * (d - 1) + 1 ≤ U.card := by
+    change 2 * (d - 1) + 1 ≤ (deletedNeighborhood G x).card
+    rw [card_deletedNeighborhood]
+    omega
+  obtain ⟨S, T, hS, hT, hdisj, hcover, hScard, hTcard, hcross⟩ :=
+    exists_balanced_noCross_partition_finset H U (d - 1)
+      (deletedNeighborhood_induced_degree_ncard_le_one G hfree x) hUcard
+  exact c4FreeMinDegreeWitness_succ_of_balanced_adjacentClone_partition
+    G x hVcard hmin hfree hd S T hS hT hdisj hcover
+      hScard hTcard hcross
 
 end Erdos85
