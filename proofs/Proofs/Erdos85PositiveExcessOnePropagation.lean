@@ -184,6 +184,73 @@ theorem card_adj_antipodal_eq_one_of_root_sees_both
   change Cpart.card = 1
   omega
 
+/-- Every row of the matching commutator has exactly `d-1` negative
+entries.  These are the global capacity slots for canonical-isolate demands. -/
+theorem card_matchingCommutator_negative_support
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ z, G.degree z = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) (x : V) :
+    let B := G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ
+    ((Finset.univ : Finset V).filter fun y => B x y - B y x = -1).card =
+      d - 1 := by
+  classical
+  dsimp only
+  let B := G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ
+  have hcardTF := excessOne_triangleFreeNeighbors_card_eq_one_of_odd
+    G hfree hd hodd hreg hcard x
+  obtain ⟨mx, hmx⟩ := Finset.card_eq_one.mp hcardTF
+  have hmxMem : mx ∈ triangleFreeNeighbors G x := by simp [hmx]
+  have hBcol : ∀ y,
+      B y x = G.adjMatrix ℤ y mx := by
+    intro y
+    simp only [B]
+    rw [(triangleFreeEdgeGraph G).mul_adjMatrix_apply,
+      triangleFreeEdgeGraph_neighborFinset, hmx]
+    simp only [Finset.sum_singleton]
+  have heq : ((Finset.univ : Finset V).filter fun y =>
+      B x y - B y x = -1) = (G.neighborFinset mx).erase x := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_erase]
+    constructor
+    · intro hy
+      have hByx := adjMatrix_mul_triangleFreeEdgeGraph_apply_eq_zero_or_one
+        G hfree hd hodd hreg hcard y x
+      have hBxy := adjMatrix_mul_triangleFreeEdgeGraph_apply_eq_zero_or_one
+        G hfree hd hodd hreg hcard x y
+      change B y x = 0 ∨ B y x = 1 at hByx
+      change B x y = 0 ∨ B x y = 1 at hBxy
+      have hvals : B x y = 0 ∧ B y x = 1 := by
+        rcases hBxy with h0 | h1 <;> rcases hByx with h0' | h1' <;> omega
+      have hyx : y ≠ x := by
+        intro h
+        subst y
+        omega
+      refine ⟨hyx, ?_⟩
+      apply (G.mem_neighborFinset mx y).mpr
+      have : G.Adj y mx := by
+        simpa [hBcol, SimpleGraph.adjMatrix_apply] using hvals.2
+      exact this.symm
+    · rintro ⟨hyx, hymx⟩
+      have hByx : B y x = 1 := by
+        rw [hBcol, SimpleGraph.adjMatrix_apply,
+          if_pos ((G.mem_neighborFinset mx y).mp hymx |>.symm)]
+      have hprod := adjMatrix_mul_triangleFreeEdgeGraph_opposite_mul_eq_zero
+        G hfree hd hodd hreg hcard hyx
+      change B y x * B x y = 0 at hprod
+      have hBxy : B x y = 0 := by
+        rw [hByx] at hprod
+        simpa using hprod
+      omega
+  rw [heq, Finset.card_erase_of_mem]
+  · rw [G.card_neighborFinset_eq_degree, hreg mx]
+  · exact (G.mem_neighborFinset mx x).mpr
+      ((mem_triangleFreeNeighbors G x mx).mp hmxMem).1.symm
+
 end
 
 end Erdos85
