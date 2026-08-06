@@ -68,9 +68,7 @@ theorem defectPartners_card_le (G : SimpleGraph V) [DecidableRel G.Adj]
       have hdeg : d ≤ (G.neighborFinset x).card := by
         rw [G.card_neighborFinset_eq_degree]
         exact hmin.trans (G.minDegree_le_degree x)
-      have herase := Finset.card_erase_le (a := v)
-        (s := G.neighborFinset x)
-      have hle := Finset.le_card_erase (a := v)
+      have herase := Finset.pred_card_le_card_erase (a := v)
         (s := G.neighborFinset x)
       omega
     calc
