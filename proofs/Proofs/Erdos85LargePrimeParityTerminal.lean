@@ -58,6 +58,7 @@ theorem false_of_secondOrder_countOdd_of_large_prime
         p ∣ c.supp.ncard)).card) :
     False := by
   letI : NeZero p := ⟨hp.ne_zero⟩
+  letI : Fact p.Prime := ⟨hp⟩
   have h2 : (2 : ZMod p) ≠ 0 := by
     have hpne : p ≠ 2 := by omega
     intro h20
