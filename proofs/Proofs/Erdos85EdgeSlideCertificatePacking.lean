@@ -204,4 +204,24 @@ theorem degree_le_conflict_common_add_two_of_slideSaturated
     (Nat.add_le_add_right
       (card_eligibleDonorNeighbors_le_conflict_common G hfree x y hsat) 2)
 
+/-- Graph-facing form: every degree-square minimizer with a two-step degree
+gap satisfies the conflict-codegree packing inequality. -/
+theorem degree_le_conflict_common_add_two_of_degreeSquareMinimizer
+    {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {d : ℕ}
+    (hfree : ¬ containsC4 V G) (hmin : d ≤ G.minDegree)
+    (hminimal : IsDegreeSquareMinimizer G d) {x y : V}
+    (hgap : G.degree y + 1 < G.degree x) :
+    G.degree x ≤
+      ((commonNeighborConflict G).neighborFinset x ∩
+        (commonNeighborConflict G).neighborFinset y).card + 2 := by
+  have hxy : x ≠ y := by
+    intro h
+    subst y
+    omega
+  apply degree_le_conflict_common_add_two_of_slideSaturated G hfree hxy
+  intro z hyz hxz hnot
+  exact hasThreeEdgeWalk_deleteEdge_of_degreeSquareMinimizer
+    G hfree hmin hminimal x y z hyz.symm hxz hnot hgap
+
 end Erdos85
