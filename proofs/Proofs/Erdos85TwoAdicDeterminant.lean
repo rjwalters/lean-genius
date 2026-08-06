@@ -104,6 +104,19 @@ theorem pow_card_dvd_det_natAbs_of_unimodular_even_rows
   have hUabs : U.det.natAbs = 1 := Int.isUnit_iff_natAbs_eq.mp hU
   simpa [Matrix.det_mul, Int.natAbs_mul, hUabs] using hdiv
 
+/-- Two-sided version suited to Gaussian diagonal reduction: unimodular row
+and column operations preserve the absolute determinant. -/
+theorem pow_card_dvd_det_natAbs_of_two_sided_unimodular_even_rows
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B U W : Matrix ι ι ℤ) (S : Finset ι)
+    (hU : IsUnit U.det) (hW : IsUnit W.det)
+    (hrows : ∀ i ∈ S, ∀ j, Even ((U * B * W) i j)) :
+    2 ^ S.card ∣ B.det.natAbs := by
+  have hdiv := pow_card_dvd_det_natAbs_of_even_rows (U * B * W) S hrows
+  have hUabs : U.det.natAbs = 1 := Int.isUnit_iff_natAbs_eq.mp hU
+  have hWabs : W.det.natAbs = 1 := Int.isUnit_iff_natAbs_eq.mp hW
+  simpa [Matrix.det_mul, Int.natAbs_mul, hUabs, hWabs] using hdiv
+
 /-- If `b n² = c m²` with `c,n` odd, then `v₂(b)` is even.  This is the
 cleared-denominator form needed for an integer equal to an odd rational
 square multiple. -/

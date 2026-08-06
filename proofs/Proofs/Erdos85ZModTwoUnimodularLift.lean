@@ -120,6 +120,59 @@ theorem exists_unimodular_int_lift_zmodTwo
     rw [hUL, hUD, hUR]
     exact hfac.symm
 
+/-- Binary diagonal reduction, lifted integrally: every zero pivot contributes
+a factor of two to the original integral determinant.  The number of zero
+pivots is the mod-two nullity; that final identification is kept separate. -/
+theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B : Matrix ι ι ℤ) :
+    ∃ D : ι → ZMod 2,
+      2 ^ ((Finset.univ.filter fun i => D i = 0).card) ∣ B.det.natAbs := by
+  letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  let Q : Matrix ι ι (ZMod 2) := B.map (Int.castRingHom (ZMod 2))
+  obtain ⟨L, L', D, hred⟩ :=
+    Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal Q
+  let U : Matrix ι ι ℤ :=
+    (L.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let W : Matrix ι ι ℤ :=
+    (L'.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let S : Finset ι := Finset.univ.filter fun i => D i = 0
+  have hUdet : U.det = 1 := by
+    change (L.map (Matrix.TransvectionStruct.toMatrix ∘
+      liftZModTwoTransvection)).prod.det = 1
+    simpa only [List.map_map] using
+      Matrix.TransvectionStruct.det_toMatrix_prod
+        (L.map liftZModTwoTransvection)
+  have hWdet : W.det = 1 := by
+    change (L'.map (Matrix.TransvectionStruct.toMatrix ∘
+      liftZModTwoTransvection)).prod.det = 1
+    simpa only [List.map_map] using
+      Matrix.TransvectionStruct.det_toMatrix_prod
+        (L'.map liftZModTwoTransvection)
+  have hmap : (U * B * W).map (Int.castRingHom (ZMod 2)) =
+      Matrix.diagonal D := by
+    rw [Matrix.map_mul, Matrix.map_mul]
+    rw [show U.map (Int.castRingHom (ZMod 2)) =
+        (L.map Matrix.TransvectionStruct.toMatrix).prod by
+      exact map_liftZModTwoTransvection_prod L]
+    rw [show W.map (Int.castRingHom (ZMod 2)) =
+        (L'.map Matrix.TransvectionStruct.toMatrix).prod by
+      exact map_liftZModTwoTransvection_prod L']
+    exact hred
+  refine ⟨D, ?_⟩
+  change 2 ^ S.card ∣ B.det.natAbs
+  apply pow_card_dvd_det_natAbs_of_two_sided_unimodular_even_rows
+    B U W S (hUdet ▸ isUnit_one) (hWdet ▸ isUnit_one)
+  intro i hi j
+  have hDi : D i = 0 := (Finset.mem_filter.mp hi).2
+  apply ZMod.intCast_eq_zero_iff_even.mp
+  change ((U * B * W).map (Int.castRingHom (ZMod 2))) i j = 0
+  rw [hmap]
+  by_cases hij : i = j
+  · subst j
+    simp [hDi]
+  · simp [hij]
+
 end
 
 end Erdos85
