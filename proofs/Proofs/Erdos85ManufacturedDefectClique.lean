@@ -58,4 +58,27 @@ theorem commonNeighborIndependent_survivingNeighborSelector
     (fun h => hab (Subtype.ext h)) hxz
     hax.symm hbx.symm haz.symm hbz.symm)
 
+/-- Any family obtained by taking subsets of manufactured pivot selectors is
+automatically supported on vertices damaged by the deletion.  This supplies
+the support hypothesis of the manufactured-clique counting pivot; the
+remaining construction problem is compatibility and degree coverage. -/
+theorem selectorFamily_deleted_support_of_subset_survivingNeighborSelector
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : Finset V) (pivot : W → V)
+    (hpivot : ∀ w, pivot w ∈ D)
+    (A : W → Finset {v : V // v ∉ D})
+    (hA : ∀ w, A w ⊆ survivingNeighborSelector G D (pivot w)) :
+    ∀ ⦃v⦄, v ∈ Finset.univ.biUnion A →
+      1 ≤ (G.neighborFinset v.1 ∩ D).card := by
+  intro v hv
+  rw [Finset.mem_biUnion] at hv
+  obtain ⟨w, _, hvw⟩ := hv
+  rw [Finset.one_le_card]
+  refine ⟨pivot w, Finset.mem_inter.mpr ⟨?_, hpivot w⟩⟩
+  rw [mem_neighborFinset]
+  exact ((mem_survivingNeighborSelector G D (pivot w) v).mp
+    (hA w hvw)).symm
+
 end Erdos85
