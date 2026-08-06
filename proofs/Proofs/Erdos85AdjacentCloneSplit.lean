@@ -145,4 +145,20 @@ theorem c4FreeMinDegreeWitness_succ_of_vertex_degree_ge_two_mul_sub_one
     G x hVcard hmin hfree hd S T hS hT hdisj hcover
       hScard hTcard hcross
 
+/-- Contrapositive obstruction form of the sharp split: if this particular
+witness cannot be extended by any construction, every one of its degrees is
+at most `2*d-2`. -/
+theorem degree_le_two_mul_sub_two_of_not_witness_succ
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {N d : ℕ} (hVcard : Fintype.card V = N)
+    (hmin : d ≤ G.minDegree) (hfree : ¬ containsC4 V G)
+    (hd : 1 ≤ d) (hno : ¬ C4FreeMinDegreeWitness (N + 1) d) :
+    ∀ v, G.degree v ≤ 2 * d - 2 := by
+  intro v
+  by_contra hv
+  have hvhigh : 2 * d - 1 ≤ G.degree v := by omega
+  exact hno (c4FreeMinDegreeWitness_succ_of_vertex_degree_ge_two_mul_sub_one
+    G v hVcard hmin hfree hd hvhigh)
+
 end Erdos85
