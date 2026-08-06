@@ -15,6 +15,57 @@ noncomputable section
 
 open SimpleGraph
 
+/-- Every positive quotient neighbor of a globally minimum component has
+order divisible by the minimum component order.  In particular, every
+prime sector containing the minimum component is closed across its entire
+quotient row. -/
+theorem minimumComponent_order_dvd_of_quotient_pos
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c e) :
+    c.supp.ncard ∣ e.supp.ncard := by
+  rcases secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+      G hfree hd heven hmin hcard c e hpos with hce | hec
+  · exact hce
+  · have hecLe : e.supp.ncard ≤ c.supp.ncard :=
+      Nat.le_of_dvd c.nonempty_supp.ncard_pos hec
+    have heq : e.supp.ncard = c.supp.ncard :=
+      Nat.le_antisymm hecLe (hcmin e)
+    rw [heq]
+
+/-- Prime-sector form of `minimumComponent_order_dvd_of_quotient_pos`. -/
+theorem prime_dvd_neighbor_order_of_minimumComponent_quotient_pos
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hpc : p ∣ c.supp.ncard)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c e) :
+    p ∣ e.supp.ncard := by
+  exact dvd_trans hpc
+    (minimumComponent_order_dvd_of_quotient_pos
+      G hfree hd heven hmin hcard c hcmin e hpos)
+
 /-- **Zero diagonal forces a same-size companion.** A minimum defect
 component of order at least four with `Q(c,c)=0` has a distinct component
 of the same order with quotient multiplicity at least two. -/
