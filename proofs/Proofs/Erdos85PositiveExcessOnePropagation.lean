@@ -14,6 +14,51 @@ namespace Erdos85
 
 noncomputable section
 
+/-- A triangle-free partner is automatically the isolated vertex in the
+corresponding branch around every other neighbor of its partner. -/
+theorem triangleFreePartner_isolated_in_secondLayerBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (u a x : V) (haTF : a ∈ triangleFreeNeighbors G u)
+    (hxu : G.Adj x u) (hax : a ≠ x) :
+    ∃ ha : a ∈ secondLayerBranch G x ⟨u, hxu⟩,
+      (G.induce (secondLayerBranch G x ⟨u, hxu⟩)).degree ⟨a, ha⟩ = 0 := by
+  classical
+  have hua : G.Adj u a := (mem_triangleFreeNeighbors G u a).mp haTF |>.1
+  have hcommon : (G.neighborFinset u ∩ G.neighborFinset a).card = 0 :=
+    (mem_triangleFreeNeighbors G u a).mp haTF |>.2
+  have hxa : ¬G.Adj x a := by
+    intro hxa
+    have hxmem : x ∈ G.neighborFinset u ∩ G.neighborFinset a :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset u x).mpr hxu.symm,
+          (G.mem_neighborFinset a x).mpr hxa.symm⟩
+    have := Finset.card_pos.mpr ⟨x, hxmem⟩
+    omega
+  have haBranch : a ∈ secondLayerBranch G x ⟨u, hxu⟩ := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨(G.mem_neighborFinset u a).mpr hua, ?_⟩
+    rw [Finset.mem_insert]
+    push_neg
+    exact ⟨hax, fun haN => hxa ((G.mem_neighborFinset x a).mp haN)⟩
+  refine ⟨haBranch, ?_⟩
+  rw [← (G.induce (secondLayerBranch G x ⟨u, hxu⟩)).card_neighborFinset_eq_degree,
+    Finset.card_eq_zero]
+  ext b
+  constructor
+  · intro hb
+    have hab : G.Adj a b.1 := by
+      simpa [SimpleGraph.mem_neighborFinset] using hb
+    have hub : G.Adj u b.1 :=
+      (G.mem_neighborFinset u b.1).mp (Finset.mem_sdiff.mp b.2).1
+    have hbmem : b.1 ∈ G.neighborFinset u ∩ G.neighborFinset a :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset u b.1).mpr hub,
+          (G.mem_neighborFinset a b.1).mpr hab⟩
+    have := Finset.card_pos.mpr ⟨b.1, hbmem⟩
+    omega
+  · simp
+
 /-- Entrywise `AD = DA` for an arbitrary regular `C₄`-free graph. -/
 theorem card_filter_adj_secondOrderDefect_comm_of_regular
     {V : Type*} [Fintype V] [DecidableEq V]
