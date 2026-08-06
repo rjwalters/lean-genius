@@ -266,6 +266,70 @@ theorem sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
         G hfree hd hmin hcard x
     _ = Fintype.card V * q := by simp
 
+/-- **Quadratic global normal form.**  Writing `s(x) = degree x - d`, the
+global conservation law is
+
+`2|E(D)| + (2d-1) ∑ s(x) + ∑ s(x)^2 = |V|q`.
+
+The square term is the precise variance penalty hidden by the coarser total
+irregularity estimate. -/
+theorem two_mul_defectEdges_add_linearExcess_add_squareExcess_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d q : ℕ} (hd : 1 ≤ d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q) :
+    2 * (secondOrderDefectGraph G).edgeFinset.card +
+        (2 * d - 1) * (∑ x : V, (G.degree x - d)) +
+        ∑ x : V, (G.degree x - d) * (G.degree x - d) =
+      Fintype.card V * q := by
+  have hglobal :=
+    sum_defectDegree_add_sum_weightedDegreeExcess_eq_card_mul_orderExcess
+      G hfree hd hmin hcard
+  have hedge :
+      (∑ x : V, (secondOrderDefectGraph G).degree x) =
+        2 * (secondOrderDefectGraph G).edgeFinset.card :=
+    (secondOrderDefectGraph G).sum_degrees_eq_twice_card_edges
+  have hpoint : ∀ x : V,
+      (G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d) =
+        (2 * d - 1) * (G.degree x - d) +
+          (G.degree x - d) * (G.degree x - d) := by
+    intro x
+    have hx := hmin x
+    have hdeg : G.degree x = (G.degree x - d) + d := by omega
+    have hcoeff : (d - 1) + d = 2 * d - 1 := by omega
+    calc
+      (G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d) =
+        (G.degree x - d) * (d - 1) +
+          ((G.degree x - d) + d) * (G.degree x - d) := by rw [← hdeg]
+      _ = ((d - 1) + d) * (G.degree x - d) +
+          (G.degree x - d) * (G.degree x - d) := by ring
+      _ = (2 * d - 1) * (G.degree x - d) +
+          (G.degree x - d) * (G.degree x - d) := by rw [hcoeff]
+  rw [hedge] at hglobal
+  have hsum :
+      (2 * d - 1) * (∑ x : V, (G.degree x - d)) +
+          ∑ x : V, (G.degree x - d) * (G.degree x - d) =
+        ∑ x : V, ((G.degree x - d) * (d - 1) +
+          G.degree x * (G.degree x - d)) := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro x _
+    exact (hpoint x).symm
+  calc
+    2 * (secondOrderDefectGraph G).edgeFinset.card +
+          (2 * d - 1) * (∑ x : V, (G.degree x - d)) +
+          ∑ x : V, (G.degree x - d) * (G.degree x - d) =
+        2 * (secondOrderDefectGraph G).edgeFinset.card +
+          ∑ x : V, ((G.degree x - d) * (d - 1) +
+            G.degree x * (G.degree x - d)) := by
+              rw [Nat.add_assoc, hsum]
+    _ = Fintype.card V * q := hglobal
+
 /-- **Total irregularity bound.**  Every unit of degree excess consumes at
 least `2d` units of the global order-excess budget. -/
 theorem two_mul_degree_mul_sum_degreeExcess_le_card_mul_orderExcess
