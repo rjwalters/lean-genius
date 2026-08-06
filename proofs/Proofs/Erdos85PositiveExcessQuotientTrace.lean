@@ -146,6 +146,109 @@ theorem positiveExcess_componentQuotientMatrix_sq_apply
   simp only [Matrix.mul_apply, componentQuotientMatrixReal] at hr ⊢
   exact_mod_cast hr
 
+/-- **Local positive-excess interaction budget.**  Subtracting the quotient
+row sum from its diagonal square equation leaves exactly the component order
+above the minimum `(e+3)` for an `(e+2)`-regular defect component. -/
+theorem positiveExcess_componentQuotientMatrix_local_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    (∑ f, ((componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) f c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ))) =
+      (c.supp.ncard : ℤ) - e - 3 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hrow : (∑ f, Q c f) = d := by
+    rw [sum_componentQuotientMatrix_row, hreg]
+  have hsq0 := positiveExcess_componentQuotientMatrix_sq_apply
+    G hfree hd he hreg hcard c c
+  have hsq : (∑ f, Q c f * Q f c) = d - e - 3 + c.supp.ncard := by
+    simpa only [Matrix.mul_apply, Q, D, if_pos, mul_one] using hsq0
+  change (∑ f, ((Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ))) = _
+  rw [Finset.sum_sub_distrib]
+  have hsqZ : (∑ f, (Q c f : ℤ) * (Q f c : ℤ)) =
+      ((d - e - 3 : ℕ) : ℤ) + (c.supp.ncard : ℤ) := by
+    exact_mod_cast hsq
+  have hrowZ : (∑ f, (Q c f : ℤ)) = (d : ℤ) := by
+    exact_mod_cast hrow
+  rw [hsqZ, hrowZ]
+  rw [Nat.cast_sub (by omega : 3 ≤ d - e),
+    Nat.cast_sub (by omega : e ≤ d)]
+  ring
+
+/-- A minimum-order defect component has only unit reverse multiplicity:
+every quotient block leaving it is either empty or is covered once in the
+reverse direction.  This is the positive-excess analogue of the local
+cycle-cover condition at the exact boundary. -/
+theorem positiveExcess_minimumOrderComponent_unit_reverse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = e + 3) :
+    ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f = 0 ∨
+        componentQuotientMatrix G (secondOrderDefectGraph G) f c = 1 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hDreg : ∀ x, D.degree x = e + 2 :=
+    secondOrderDefectGraph_degree_eq_excess_add_two G hfree hreg hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_regular_real G hfree hreg
+  have hnonneg : ∀ f : D.ConnectedComponent,
+      0 ≤ (Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ) := by
+    intro f
+    by_cases hzero : Q c f = 0
+    · simp [hzero]
+    · have hbalance := componentQuotientMatrix_balance G D (e + 2)
+        hDreg hcomm c f
+      change c.supp.ncard * Q c f = f.supp.ncard * Q f c at hbalance
+      have hcpos : 0 < c.supp.ncard := c.nonempty_supp.ncard_pos
+      have hcfpos : 0 < Q c f := Nat.pos_of_ne_zero hzero
+      have hfcpos : 0 < Q f c := by
+        by_contra hn
+        have hz : Q f c = 0 := by omega
+        have hlpos : 0 < c.supp.ncard * Q c f := Nat.mul_pos hcpos hcfpos
+        rw [hbalance, hz, Nat.mul_zero] at hlpos
+        omega
+      calc
+        (0 : ℤ) ≤ (Q c f : ℤ) * ((Q f c : ℤ) - 1) := by
+          apply mul_nonneg
+          · positivity
+          · exact sub_nonneg.mpr (by exact_mod_cast hfcpos)
+        _ = (Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ) := by ring
+  have hsum := positiveExcess_componentQuotientMatrix_local_excess
+    G hfree hd he hreg hcard c
+  have hsum0 :
+      (∑ f, ((Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ))) = 0 := by
+    rw [hsum, hc]
+    push_cast
+    ring
+  intro f
+  have hfzero := (Finset.sum_eq_zero_iff_of_nonneg
+    (fun x _ => hnonneg x)).mp hsum0 f (Finset.mem_univ f)
+  by_cases hzero : Q c f = 0
+  · exact Or.inl hzero
+  · right
+    have hmul : (Q c f : ℤ) * ((Q f c : ℤ) - 1) = 0 := by
+      nlinarith
+    rcases mul_eq_zero.mp hmul with hcast | hreverse
+    · exact (hzero (Int.ofNat_inj.mp hcast)).elim
+    · exact_mod_cast (sub_eq_zero.mp hreverse)
+
 /-- **Positive-excess weighted trace identity.**  If the transverse scalar
 `d-e-3` is nonsquare, the component quotient trace is exactly `d`. -/
 theorem positiveExcess_componentQuotient_trace_eq_degree_of_nonsquare
