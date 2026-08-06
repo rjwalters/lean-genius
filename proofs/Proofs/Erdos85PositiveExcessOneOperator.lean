@@ -430,6 +430,110 @@ theorem matchingIncidence_mul_ones_of_odd_excessOne
           (triangleFreeEdgeGraph G) 1 hmreg]
         simp
 
+/-- The skew part of the matching-twisted incidence matrix annihilates the
+constant sector on both sides.  Thus its full Pfaffian is never the desired
+obstruction; the useful skew information lives on the balanced matching
+sectors. -/
+theorem matchingCommutator_mul_ones_eq_zero_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    let A := G.adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    let J := FriendshipTheoremOQ01.onesMatrix V
+    (A * M - M * A) * J = 0 ∧ J * (A * M - M * A) = 0 := by
+  dsimp only
+  have hmreg : ∀ x, (triangleFreeEdgeGraph G).degree x = 1 :=
+    triangleFreeEdgeGraph_degree_eq_one_of_odd_excessOne
+      G hfree hd hodd hreg hcard
+  have hAJ := FriendshipTheoremOQ01.adjMatrix_mul_ones G d hreg
+  have hJA := onesMatrix_mul_adjMatrix_of_regular G d hreg
+  have hAJ' : G.adjMatrix ℤ * FriendshipTheoremOQ01.onesMatrix V =
+      (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+    simpa using hAJ
+  have hMJ := FriendshipTheoremOQ01.adjMatrix_mul_ones
+    (triangleFreeEdgeGraph G) 1 hmreg
+  have hJM := onesMatrix_mul_adjMatrix_of_regular
+    (triangleFreeEdgeGraph G) 1 hmreg
+  have hlines := matchingIncidence_mul_ones_of_odd_excessOne
+    G hfree hd hodd hreg hcard
+  have hMAJ :
+      ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) *
+          FriendshipTheoremOQ01.onesMatrix V =
+        (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+    calc
+      ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) *
+          FriendshipTheoremOQ01.onesMatrix V =
+        (triangleFreeEdgeGraph G).adjMatrix ℤ *
+          (G.adjMatrix ℤ * FriendshipTheoremOQ01.onesMatrix V) := by
+            rw [Matrix.mul_assoc]
+      _ = (triangleFreeEdgeGraph G).adjMatrix ℤ *
+          ((d : ℤ) • FriendshipTheoremOQ01.onesMatrix V) := by rw [hAJ']
+      _ = (d : ℤ) •
+          ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+            FriendshipTheoremOQ01.onesMatrix V) := by rw [Matrix.mul_smul]
+      _ = (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+        rw [hMJ]
+        simp
+  have hJMA :
+      FriendshipTheoremOQ01.onesMatrix V *
+          ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) =
+        (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := by
+    calc
+      FriendshipTheoremOQ01.onesMatrix V *
+          ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) =
+        (FriendshipTheoremOQ01.onesMatrix V *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ) * G.adjMatrix ℤ := by
+            rw [Matrix.mul_assoc]
+      _ = FriendshipTheoremOQ01.onesMatrix V * G.adjMatrix ℤ := by
+        rw [hJM]
+        simp
+      _ = (d : ℤ) • FriendshipTheoremOQ01.onesMatrix V := hJA
+  constructor
+  · rw [Matrix.sub_mul, hlines.1, hMAJ, sub_self]
+  · rw [Matrix.mul_sub, hlines.2, hJMA, sub_self]
+
+/-- Conjugating the matching commutator by the matching reverses its sign.
+Equivalently, it exchanges the symmetric and antisymmetric matching
+sectors. -/
+theorem matchingCommutator_conj_eq_neg_of_odd_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hodd : Odd d) (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    let A := G.adjMatrix ℤ
+    let M := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    M * (A * M - M * A) * M = -(A * M - M * A) := by
+  dsimp only
+  have hM2 := triangleFreeEdgeGraph_adjMatrix_sq_eq_one_of_odd_excessOne
+    G hfree hd hodd hreg hcard
+  calc
+    (triangleFreeEdgeGraph G).adjMatrix ℤ *
+          (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ -
+            (triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ =
+      ((triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) *
+          ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+            (triangleFreeEdgeGraph G).adjMatrix ℤ) -
+        ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+            (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+          (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ) := by
+            noncomm_ring
+    _ = (triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ -
+        G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ := by
+          rw [hM2]
+          simp
+    _ = - (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ -
+          (triangleFreeEdgeGraph G).adjMatrix ℤ * G.adjMatrix ℤ) := by
+            module
+
 /-- The first genuinely noncommutative matching moment is nevertheless
 forced: `tr((AM)²)=|V|`.  Its diagonal contribution is one per vertex and
 all off-diagonal directed two-cycles are forbidden by `C₄`-freeness. -/
