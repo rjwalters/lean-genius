@@ -1,0 +1,90 @@
+import Proofs.Erdos85OrbitParity
+import Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors
+import Mathlib.RingTheory.Polynomial.UniqueFactorization
+
+/-!
+# Extracting an asymmetric irreducible orbit
+
+This file converts failure of sign stability into failure of reflection
+stability of the normalized irreducible-factor multiset.  Multiplicities are
+retained: the witness may be a reflected pair occurring unequally often.
+-/
+
+namespace Erdos85
+
+open Polynomial
+open scoped Polynomial
+
+/-- The monic normalization of the reflection `p(X) ↦ p(-X)`. -/
+noncomputable def Polynomial.signedReflection {K : Type*} [Ring K]
+    (p : Polynomial K) : Polynomial K :=
+  (-1 : K) ^ p.natDegree • p.comp (-(Polynomial.X : Polynomial K))
+
+theorem Polynomial.signedReflection_mul
+    {K : Type*} [Field K] (p q : Polynomial K) (hp : p ≠ 0) (hq : q ≠ 0) :
+    signedReflection (p * q) = signedReflection p * signedReflection q := by
+  unfold signedReflection
+  rw [Polynomial.natDegree_mul hp hq, pow_add, Polynomial.mul_comp, mul_smul]
+  simp only [smul_mul_assoc, mul_smul_comm]
+  rw [smul_comm]
+
+theorem Polynomial.signedReflection_multiset_prod
+    {K : Type*} [Field K] (s : Multiset (Polynomial K))
+    (hs : ∀ p ∈ s, p ≠ 0) :
+    signedReflection s.prod = (s.map signedReflection).prod := by
+  induction s using Multiset.induction_on with
+  | empty => simp [signedReflection]
+  | @cons p s ih =>
+      have hp : p ≠ 0 := hs p (by simp)
+      have hsTail : ∀ q ∈ s, q ≠ 0 := fun q hq => hs q (by simp [hq])
+      have hs0 : s.prod ≠ 0 := by
+        rw [ne_eq, Multiset.prod_eq_zero_iff]
+        exact fun hzero => hsTail 0 hzero rfl
+      rw [Multiset.prod_cons, signedReflection_mul p s.prod hp hs0, Multiset.map_cons,
+        Multiset.prod_cons, ih]
+      exact hsTail
+
+theorem Polynomial.signedReflection_eq_self_iff
+    {K : Type*} [Field K] (p : Polynomial K) :
+    signedReflection p = p ↔
+      p.comp (-(Polynomial.X : Polynomial K)) = (-1 : K) ^ p.natDegree • p := by
+  let a : K := (-1 : K) ^ p.natDegree
+  have ha : a * a = 1 := by simp [a, ← pow_add]
+  constructor
+  · intro h
+    have hh := congrArg (fun q : Polynomial K => a • q) h
+    simpa only [signedReflection, a, ← mul_smul, ha, one_smul] using hh
+  · intro h
+    unfold signedReflection
+    rw [h, ← mul_smul, ha, one_smul]
+
+theorem Polynomial.normalizedFactors_not_reflectionStable_of_not_signStable
+    {K : Type*} [Field K] [DecidableEq K] (q : Polynomial K) (hq : q.Monic)
+    (hnot : q.comp (-(Polynomial.X : Polynomial K)) ≠
+      (-1 : K) ^ q.natDegree • q) :
+    (UniqueFactorizationMonoid.normalizedFactors q).map signedReflection ≠
+      UniqueFactorizationMonoid.normalizedFactors q := by
+  intro hmap
+  have hq0 : q ≠ 0 := hq.ne_zero
+  let s := UniqueFactorizationMonoid.normalizedFactors q
+  have hs0 : ∀ p ∈ s, p ≠ 0 := by
+    intro p hp
+    exact (UniqueFactorizationMonoid.irreducible_of_normalized_factor p hp).ne_zero
+  have hprod := signedReflection_multiset_prod s hs0
+  have hprodq : s.prod = q := by
+    rw [UniqueFactorizationMonoid.prod_normalizedFactors_eq hq0, hq.normalize_eq_self]
+  have hfix : signedReflection q = q := by rw [← hprodq, hprod, hmap]
+  exact hnot ((signedReflection_eq_self_iff q).mp hfix)
+
+theorem Polynomial.exists_count_ne_of_not_signStable
+    {K : Type*} [Field K] [DecidableEq K] (q : Polynomial K) (hq : q.Monic)
+    (hnot : q.comp (-(Polynomial.X : Polynomial K)) ≠
+      (-1 : K) ^ q.natDegree • q) :
+    ∃ f : Polynomial K,
+      ((UniqueFactorizationMonoid.normalizedFactors q).map signedReflection).count f ≠
+        (UniqueFactorizationMonoid.normalizedFactors q).count f := by
+  have hne := normalizedFactors_not_reflectionStable_of_not_signStable q hq hnot
+  contrapose! hne
+  exact Multiset.ext.mpr hne
+
+end Erdos85
