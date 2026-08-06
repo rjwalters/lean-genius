@@ -109,14 +109,71 @@ theorem degree_commonNeighborConflict_le_of_degree_le_two_mul_sub_two
     _ ≤ (2 * d - 2) * (2 * d - 3) :=
       Nat.mul_le_mul_right _ (hupper x)
 
+/-- Edge-minimality halves the conflict-degree constant.  If `x` is tight it
+has only `d` branches; if it is not tight, every neighbor is tight. -/
+theorem degree_commonNeighborConflict_le_of_tight_edge_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 2 ≤ d)
+    (hupper : ∀ v, G.degree v ≤ 2 * d - 2)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (x : V) :
+    (commonNeighborConflict G).degree x ≤ d * (2 * d - 3) := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    neighborFinset_commonNeighborConflict_eq_biUnion_conflictBranch,
+    Finset.card_biUnion (conflictBranch_pairwiseDisjoint G hfree x)]
+  by_cases hx : G.degree x = d
+  · calc
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          (conflictBranch G x y).card) ≤
+          ∑ _y : {z : V // z ∈ G.neighborSet x}, (2 * d - 3) := by
+        apply Finset.sum_le_sum
+        intro y _
+        rw [conflictBranch, Finset.card_erase_of_mem]
+        · rw [G.card_neighborFinset_eq_degree]
+          have hy := hupper y.1
+          omega
+        · exact (G.mem_neighborFinset y.1 x).mpr y.2.symm
+      _ = G.degree x * (2 * d - 3) := by
+        rw [Finset.sum_const, Finset.card_univ,
+          SimpleGraph.card_neighborSet_eq_degree]
+        simp
+      _ = d * (2 * d - 3) := by rw [hx]
+  · have hneighborTight : ∀ y : {z : V // z ∈ G.neighborSet x},
+        G.degree y.1 = d := by
+      intro y
+      rcases hcover y.2 with hxtight | hytight
+      · exact (hx hxtight).elim
+      · exact hytight
+    calc
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          (conflictBranch G x y).card) =
+          ∑ _y : {z : V // z ∈ G.neighborSet x}, (d - 1) := by
+        apply Finset.sum_congr rfl
+        intro y _
+        rw [conflictBranch, Finset.card_erase_of_mem]
+        · rw [G.card_neighborFinset_eq_degree, hneighborTight y]
+        · exact (G.mem_neighborFinset y.1 x).mpr y.2.symm
+      _ = G.degree x * (d - 1) := by
+        rw [Finset.sum_const, Finset.card_univ,
+          SimpleGraph.card_neighborSet_eq_degree]
+        simp
+      _ ≤ (2 * d - 2) * (d - 1) :=
+        Nat.mul_le_mul_right _ (hupper x)
+      _ ≤ d * (2 * d - 3) := by
+        have h1 : 2 * d - 2 + 2 = 2 * d := by omega
+        have h2 : d - 1 + 1 = d := by omega
+        have h3 : 2 * d - 3 + 3 = 2 * d := by omega
+        nlinarith
+
 /-- **Sharp cubic localization of plateau cores.**  The conflict graph
 greedy bound and the universal plateau degree window improve the coarse
 prime-band constant `400` to a leading constant `4`. -/
 theorem C4PlateauCore.order_le_conflict_cubic
     {m d : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m d) :
-    m ≤ (d - 1) * ((2 * d - 2) * (2 * d - 3) + 1) := by
+    m ≤ (d - 1) * (d * (2 * d - 3) + 1) := by
   have hd : 2 ≤ d := hcore.two_le_degree hm
-  rcases hcore with ⟨G, hdec, hmin, hfree, _hcover, hnext⟩
+  rcases hcore with ⟨G, hdec, hmin, hfree, hcover, hnext⟩
   letI : DecidableRel G.Adj := hdec
   have hno : ¬ C4FreeMinDegreeWitness (m + 1) d := by
     rintro ⟨H, hHdec, hHmin, hHfree⟩
@@ -125,11 +182,11 @@ theorem C4PlateauCore.order_le_conflict_cubic
     degree_le_two_mul_sub_two_of_not_witness_succ
       G (N := m) (by simp) hmin.ge hfree (by omega) hno
   let C := commonNeighborConflict G
-  have hCdeg : ∀ x, C.degree x ≤ (2 * d - 2) * (2 * d - 3) := by
+  have hCdeg : ∀ x, C.degree x ≤ d * (2 * d - 3) := by
     intro x
-    exact degree_commonNeighborConflict_le_of_degree_le_two_mul_sub_two
-      G hfree hd hupper x
-  have hCmax : C.maxDegree ≤ (2 * d - 2) * (2 * d - 3) :=
+    exact degree_commonNeighborConflict_le_of_tight_edge_cover
+      G hfree hd hupper hcover x
+  have hCmax : C.maxDegree ≤ d * (2 * d - 3) :=
     C.maxDegree_le_of_forall_degree_le _ hCdeg
   have hind : C.indepNum < d := by
     by_contra hnot
@@ -141,7 +198,7 @@ theorem C4PlateauCore.order_le_conflict_cubic
   have hgreedy := card_le_indepNum_mul_maxDegree_add_one C
   have halpha : C.indepNum ≤ d - 1 := by omega
   have hproduct : C.indepNum * (C.maxDegree + 1) ≤
-      (d - 1) * ((2 * d - 2) * (2 * d - 3) + 1) :=
+      (d - 1) * (d * (2 * d - 3) + 1) :=
     Nat.mul_le_mul halpha (Nat.add_le_add_right hCmax 1)
   simpa using hgreedy.trans hproduct
 
