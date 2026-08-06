@@ -210,6 +210,57 @@ theorem orderFortyNine_card_degreeEight_le_twentyOne
   rw [hcard, hsum, hsquares] at hglobal
   omega
 
+/-- A degree-eight vertex has maximum possible common-neighbor conflict
+degree: all 48 other vertices lie in its radius-two conflict layer. -/
+theorem orderFortyNine_degree_commonNeighborConflict_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 8) :
+    (commonNeighborConflict G).degree x = 48 := by
+  rw [degree_commonNeighborConflict_eq_sum_neighbor_degree_sub_one
+    G hfree x]
+  have hneighbor : ∀ y : {z : V // z ∈ G.neighborSet x},
+      G.degree y.1 = 7 := by
+    intro y
+    exact orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hx y.2
+  calc
+    (∑ y : {z : V // z ∈ G.neighborSet x}, (G.degree y.1 - 1)) =
+        ∑ _y : {z : V // z ∈ G.neighborSet x}, 6 := by
+      apply Finset.sum_congr rfl
+      intro y _
+      rw [hneighbor y]
+    _ = 8 * 6 := by
+      rw [Finset.sum_const, Finset.card_univ,
+        SimpleGraph.card_neighborSet_eq_degree, hx]
+      simp
+    _ = 48 := by norm_num
+
+/-- Equivalently, the conflict neighborhood of a degree-eight vertex is the
+entire punctured vertex set. -/
+theorem orderFortyNine_conflictNeighborFinset_degreeEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 8) :
+    (commonNeighborConflict G).neighborFinset x = Finset.univ.erase x := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro y hy
+    have hyAdj := ((commonNeighborConflict G).mem_neighborFinset x y).mp hy
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    exact hyAdj.ne.symm
+  · rw [(commonNeighborConflict G).card_neighborFinset_eq_degree,
+      orderFortyNine_degree_commonNeighborConflict_degreeEight
+        G hfree hmin hcard hx,
+      Finset.card_erase_of_mem (Finset.mem_univ x), Finset.card_univ, hcard]
+
 end
 
 end Erdos85
