@@ -633,6 +633,97 @@ theorem minimumLayer_saturated_childDefect_lifts_matching
     G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
       a b habne hcommon
 
+/-- Degree exhaustion: every parent-defect neighbor of an exterior point is
+in the exterior row of a child-defect neighbor of its owner.  Hence the
+exterior parent-defect graph is genuinely a cover of the child defect graph,
+with no additional cross-layer or unrelated-row defect edges. -/
+theorem minimumLayer_saturated_defectNeighbor_has_childOwner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    {z y : V}
+    (hza : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ a)
+    (hzyD : (secondOrderDefectGraph G).Adj z y) :
+    ∃ b : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (secondOrderDefectGraph
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀)).Adj a b ∧
+      y ∈ minimumLayerExternalNeighborFinset
+        G (secondOrderDefectGraph G) c₀ b := by
+  classical
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let DH := secondOrderDefectGraph H
+  let B := DH.neighborFinset a
+  have hfreeH : ¬containsC4 _ H := minimumLayerGraph_c4Free G D c₀ hfree
+  have hDHdegree : DH.degree a = 2 :=
+    secondOrderDefectGraph_degree_eq_two_of_regular_boundary
+      H hfreeH hregChild hcardChild a
+  have hcardB : B.card = 2 := by
+    rw [DH.card_neighborFinset_eq_degree, hDHdegree]
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, d = t + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hDdegree : D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two_of_regular_boundary
+      G hfree hregParent hcard z
+  have hcardDz : (D.neighborFinset z).card = 2 := by
+    rw [D.card_neighborFinset_eq_degree, hDdegree]
+  have hlift : ∀ b : ↥B, ∃! y : ↥(E b.1), D.Adj z y.1 := by
+    intro b
+    exact minimumLayer_saturated_childDefect_lifts_matching
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        a b.1 ((DH.mem_neighborFinset a b.1).mp b.2) z hza
+  let f : ↥B → V := fun b => (Classical.choose (hlift b)).1
+  have hfrow : ∀ b : ↥B, f b ∈ E b.1 := fun b => (Classical.choose (hlift b)).2
+  have hfD : ∀ b : ↥B, D.Adj z (f b) := fun b =>
+    (Classical.choose_spec (hlift b)).1
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hfinj : Function.Injective f := by
+    intro b b' hbb'
+    apply Subtype.ext
+    by_contra hnebb'
+    have hdisj := hpair (Finset.mem_univ b.1) (Finset.mem_univ b'.1) hnebb'
+    exact Finset.disjoint_left.mp hdisj (hfrow b) (hbb' ▸ hfrow b')
+  let fD : ↥B → ↥(D.neighborFinset z) := fun b =>
+    ⟨f b, (D.mem_neighborFinset z (f b)).mpr (hfD b)⟩
+  have hfDinj : Function.Injective fD := by
+    intro b b' h
+    apply hfinj
+    exact congrArg Subtype.val h
+  have hcardTypes : Fintype.card ↥B = Fintype.card ↥(D.neighborFinset z) := by
+    rw [Fintype.card_coe B, Fintype.card_coe (D.neighborFinset z),
+      hcardB, hcardDz]
+  have hfDbij : Function.Bijective fD :=
+    (Fintype.bijective_iff_injective_and_card fD).2 ⟨hfDinj, hcardTypes⟩
+  have hymem : y ∈ D.neighborFinset z := (D.mem_neighborFinset z y).mpr hzyD
+  obtain ⟨b, hby⟩ := hfDbij.2 ⟨y, hymem⟩
+  refine ⟨b.1, (DH.mem_neighborFinset a b.1).mp b.2, ?_⟩
+  have hfval : f b = y := congrArg Subtype.val hby
+  exact hfval ▸ hfrow b
+
 end
 
 end Erdos85
