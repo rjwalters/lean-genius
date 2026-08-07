@@ -362,6 +362,56 @@ theorem orderFortyNine_card_pairFiber
       (orderFortyNineLabeledHighSupport G e x)] at hone
     simpa [hxEq] using hone
 
+theorem orderFortyNineLabeledHighSupport_eq_empty_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (x : V) :
+    orderFortyNineLabeledHighSupport G e x = ∅ ↔
+      (orderFortyNineHighSupport G x).card = 0 := by
+  rw [← card_orderFortyNineLabeledHighSupport G e x]
+  exact Finset.card_eq_zero.symm
+
+/-- The empty labeled-support fiber consists of all high vertices together
+with the low vertices counted by incidence class zero. -/
+theorem orderFortyNine_card_emptySupportFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9) :
+    (orderFortyNineLabeledSupportFiber G e ∅).card =
+      (orderFortyNineHighVertices G).card +
+        orderFortyNineHighIncidenceCount G 0 := by
+  let H := orderFortyNineHighVertices G
+  let L0 := (orderFortyNineLowVertices G).filter fun x =>
+    (orderFortyNineHighSupport G x).card = 0
+  have hfiber : orderFortyNineLabeledSupportFiber G e ∅ = H ∪ L0 := by
+    ext x
+    simp only [orderFortyNineLabeledSupportFiber, Finset.mem_filter,
+      Finset.mem_univ, true_and, Finset.mem_union]
+    rw [orderFortyNineLabeledHighSupport_eq_empty_iff]
+    constructor
+    · intro hx0
+      by_cases hxH : x ∈ H
+      · exact Or.inl hxH
+      · exact Or.inr (by
+          refine Finset.mem_filter.mpr ⟨?_, hx0⟩
+          exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ x, hxH⟩)
+    · rintro (hxH | hxL0)
+      · exact orderFortyNine_highNeighborCount_eq_zero_of_high
+          G hfree hmin hcard hxH
+      · exact (Finset.mem_filter.mp hxL0).2
+  have hdisjoint : Disjoint H L0 := by
+    rw [Finset.disjoint_left]
+    intro x hxH hxL0
+    exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hxL0).1).2 hxH
+  rw [hfiber, Finset.card_union_of_disjoint hdisjoint]
+  rfl
+
 /-- The graph's three-point high supports, in a chosen labeling, are exactly
 the triples of `rep` (viewed as ordinary finite sets of natural numbers). -/
 def OrderFortyNineCanonicalTripleSystemSpec
