@@ -204,6 +204,50 @@ theorem secondOrder_odd_square_coefficient_mul_prime_le
         hcard hp hboundary hdEq hpEq hNEq hall c
     _ ≤ N * (s + 2) := Nat.mul_le_mul_left N (Nat.add_le_add_left hdiag s)
 
+/-- For the relevant primes `p ≥ 7`, the preceding bound simplifies to
+`|c|/p ≤ s`: indeed `N(s+2) - ps = 6-2s ≤ 0`. -/
+theorem secondOrder_odd_square_coefficient_le_root
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p N s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime) (hp7 : 7 ≤ p)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hdEq : d = s * s + 3) (hpEq : p = d + s) (hNEq : N = d - s)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcOdd : Odd c.supp.ncard) :
+    c.supp.ncard / p ≤ s := by
+  have hbase := secondOrder_odd_square_coefficient_mul_prime_le
+    G hfree hd heven hmin hcard hp hboundary hdEq hpEq hNEq hall c hcOdd
+  have hsOdd : Odd s := by
+    rw [← Nat.not_even_iff_odd]
+    intro hsEven
+    have hsSqEven : Even (s * s) := (Nat.even_mul).2 (Or.inl hsEven)
+    obtain ⟨a, ha⟩ := heven
+    obtain ⟨b, hb⟩ := hsSqEven
+    omega
+  have hsTwo : 2 ≤ s := by
+    by_contra hs
+    have hsLe : s ≤ 1 := by omega
+    nlinarith [hdEq, hpEq, hp7]
+  have hsThree : 3 ≤ s := by
+    obtain ⟨k, hk⟩ := hsOdd
+    omega
+  have hsd : s ≤ d := by rw [hdEq]; nlinarith
+  have hNadd : N + s = d := by rw [hNEq, Nat.sub_add_cancel hsd]
+  have hupper : N * (s + 2) ≤ p * s := by
+    nlinarith [hdEq, hpEq, hNadd]
+  have hmul : p * (c.supp.ncard / p) ≤ p * s := hbase.trans hupper
+  exact Nat.le_of_mul_le_mul_left hmul hpPos
+    where hpPos : 0 < p := hp.pos
+
 end
 
 end Erdos85
