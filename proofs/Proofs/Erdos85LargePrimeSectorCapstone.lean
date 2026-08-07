@@ -3,6 +3,7 @@ import Proofs.Erdos85MinimumSectorAssemblyArithmetic
 import Proofs.Erdos85MinimumSectorAssemblyInterface
 import Proofs.Erdos85UnitMinimumLayerTerminal
 import Proofs.Erdos85DoubleCoverTargetUniqueness
+import Proofs.Erdos85LargePrimeSectorClosure
 
 /-!
 # The large-prime sector capstone
@@ -725,6 +726,35 @@ theorem false_of_secondOrder_largePrime_sector
   exact false_of_secondOrder_lone_unit_minimum
     G hfree hd heven hmin hcard hp7 hpOdd c₀ hc₀min hc₀p
     (by rw [← hM]; omega)
+
+/-- **Smoothness of defect-cycle lengths.**  At the exact even boundary
+with `d ∉ {4, 12}`, no prime above the degree divides any second-order
+defect component order: every defect-cycle length is a product of primes
+at most `d`.  Sector closure spreads a single divisible order to all of
+them and to the vertex count, landing in the sector capstone. -/
+theorem secondOrder_no_largePrime_dvd_component_order
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hd4 : d ≠ 4) (hd12 : d ≠ 12)
+    (hp : p.Prime) (hdp : d < p)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    ¬ p ∣ c.supp.ncard := by
+  intro hpc
+  have hall := all_component_orders_dvd_of_largePrime_dvd_one
+    G hfree hd heven hmin hcard hp hdp c hpc
+  have hpV := largePrime_dvd_card_of_dvd_component_order
+    G hfree hd heven hmin hcard hp hdp c hpc
+  rw [hcard] at hpV
+  obtain ⟨N, hN⟩ := hpV
+  exact false_of_secondOrder_largePrime_sector G hfree hd heven hmin
+    hcard hp hdp (hN.trans (Nat.mul_comm p N)) hall hd4 hd12
 
 end
 
