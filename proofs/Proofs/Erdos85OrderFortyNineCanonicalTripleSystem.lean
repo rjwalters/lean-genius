@@ -467,6 +467,92 @@ theorem OrderFortyNineCanonicalTripleSystemSpec.tripleSupportSet_eq
     refine ⟨x, hx, ?_⟩
     exact hEq.trans hTS
 
+/-- The number of graph triple blocks through a labeled point is read
+directly from the canonical representative triple set. -/
+theorem OrderFortyNineCanonicalTripleSystemSpec.card_tripleIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (rep : OrderFortyNineH9System)
+    (hcanon : OrderFortyNineCanonicalTripleSystemSpec G e rep)
+    (w : Fin 9) :
+    (Finset.univ.filter fun x =>
+      (orderFortyNineLabeledHighSupport G e x).card = 3 ∧
+        w ∈ orderFortyNineLabeledHighSupport G e x).card =
+    ((orderFortyNineRepresentativeTripleSet rep).filter fun T =>
+      w.val ∈ T).card := by
+  let X := (orderFortyNineLowVertices G).filter fun x =>
+    (orderFortyNineHighSupport G x).card = 3
+  let A := X.filter fun x => w ∈ orderFortyNineLabeledHighSupport G e x
+  let f : V → Finset Nat := fun x =>
+    (orderFortyNineLabeledHighSupport G e x).image Fin.val
+  have hA : (Finset.univ.filter fun x =>
+      (orderFortyNineLabeledHighSupport G e x).card = 3 ∧
+        w ∈ orderFortyNineLabeledHighSupport G e x) = A := by
+    ext x
+    simp only [A, X, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨hx3, hxw⟩
+      have hxOrig3 : (orderFortyNineHighSupport G x).card = 3 := by
+        rw [← card_orderFortyNineLabeledHighSupport G e x]
+        exact hx3
+      have hxLow : x ∈ orderFortyNineLowVertices G := by
+        apply Finset.mem_sdiff.mpr
+        refine ⟨Finset.mem_univ x, ?_⟩
+        intro hxHigh
+        have hz := orderFortyNine_highNeighborCount_eq_zero_of_high
+          G hfree hmin hcard hxHigh
+        change (orderFortyNineHighSupport G x).card = 0 at hz
+        omega
+      exact ⟨⟨hxLow, hxOrig3⟩, hxw⟩
+    · rintro ⟨⟨hxLow, hx3⟩, hxw⟩
+      refine ⟨?_, hxw⟩
+      rw [card_orderFortyNineLabeledHighSupport]
+      exact hx3
+  have hinj : Set.InjOn f A := by
+    intro x hx y hy hxy
+    have hx3 : (orderFortyNineLabeledHighSupport G e x).card = 3 := by
+      rw [card_orderFortyNineLabeledHighSupport]
+      exact (Finset.mem_filter.mp (Finset.mem_filter.mp hx).1).2
+    have hsupp : orderFortyNineLabeledHighSupport G e x =
+        orderFortyNineLabeledHighSupport G e y := by
+      exact Finset.image_injective Fin.val_injective hxy
+    exact orderFortyNineLabeledHighSupport_injective_of_two_le
+      G hfree e (by omega) hsupp
+  have himage : A.image f =
+      (orderFortyNineLabeledTripleSupportSet G e).filter fun T =>
+        w.val ∈ T := by
+    ext T
+    constructor
+    · intro hT
+      obtain ⟨x, hx, hxT⟩ := Finset.mem_image.mp hT
+      refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+      · apply Finset.mem_image.mpr
+        exact ⟨x, (Finset.mem_filter.mp hx).1, hxT⟩
+      · rw [← hxT]
+        exact Finset.mem_image.mpr
+          ⟨w, (Finset.mem_filter.mp hx).2, rfl⟩
+    · intro hT
+      obtain ⟨hTset, hwT⟩ := Finset.mem_filter.mp hT
+      obtain ⟨x, hx, hxT⟩ := Finset.mem_image.mp hTset
+      apply Finset.mem_image.mpr
+      refine ⟨x, ?_, hxT⟩
+      apply Finset.mem_filter.mpr
+      refine ⟨hx, ?_⟩
+      have : w.val ∈ f x := by
+        change w.val ∈ (orderFortyNineLabeledHighSupport G e x).image Fin.val
+        rw [hxT]
+        exact hwT
+      obtain ⟨u, hu, huv⟩ := Finset.mem_image.mp this
+      exact Fin.ext huv.symm ▸ hu
+  rw [hA, ← (Finset.card_image_iff.mpr hinj), himage,
+    hcanon.tripleSupportSet_eq G e rep]
+
 /-- A semantic table witness for a list enumerating all triple-support
 vertices produces a canonical graph labeling. -/
 theorem exists_canonicalTripleSystem_of_row
