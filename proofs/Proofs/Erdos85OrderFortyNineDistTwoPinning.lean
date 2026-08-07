@@ -214,6 +214,71 @@ theorem orderFortyNineDistTwo_exists_partner_not_adj_foreign_highs
         tLocal := by simpa [htLocal] using hqmem
     exact congrArg Subtype.val heq
 
+/-- The matching partners of `sStar` in the two foreign high neighborhoods
+are distinct low vertices in the same branch around `v1`. -/
+theorem orderFortyNineDistTwo_exists_distinct_low_siblings_in_common_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 sStar : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3) (h23 : v2 ≠ v3)
+    (hs1 : G.Adj sStar v1) (hs2 : G.Adj sStar v2)
+    (hs3 : G.Adj sStar v3) :
+    let parent : {z : V // z ∈ G.neighborSet v1} :=
+      ⟨sStar, by simpa using hs1.symm⟩
+    ∃ x2 x3 : V,
+      x2 ≠ x3 ∧
+      G.degree x2 = 7 ∧ G.degree x3 = 7 ∧
+      G.Adj sStar x2 ∧ G.Adj v2 x2 ∧
+      G.Adj sStar x3 ∧ G.Adj v3 x3 ∧
+      x2 ∈ secondLayerBranch G v1 parent ∧
+      x3 ∈ secondLayerBranch G v1 parent := by
+  dsimp
+  rcases (orderFortyNineDistTwo_exists_partner_not_adj_foreign_highs
+    G hfree hmin hcard hv2 hv1 hv3 h12.symm h23 hs2 hs1 hs3).exists with
+    ⟨x2, hx2s, hx2v2, hx2notv1, _hx2notv3⟩
+  rcases (orderFortyNineDistTwo_exists_partner_not_adj_foreign_highs
+    G hfree hmin hcard hv3 hv1 hv2 h13.symm h23.symm hs3 hs1 hs2).exists with
+    ⟨x3, hx3s, hx3v3, hx3notv1, _hx3notv2⟩
+  have hx2deg : G.degree x2 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv2 hx2v2
+  have hx3deg : G.degree x3 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv3 hx3v3
+  have hx2Branch : x2 ∈ secondLayerBranch G v1
+      (⟨sStar, by simpa using hs1.symm⟩ :
+        {z : V // z ∈ G.neighborSet v1}) := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨by simpa [SimpleGraph.mem_neighborFinset] using hx2s, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    exact ⟨(fun h => by subst x2; omega), fun h => hx2notv1 h.symm⟩
+  have hx3Branch : x3 ∈ secondLayerBranch G v1
+      (⟨sStar, by simpa using hs1.symm⟩ :
+        {z : V // z ∈ G.neighborSet v1}) := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨by simpa [SimpleGraph.mem_neighborFinset] using hx3s, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    exact ⟨(fun h => by subst x3; omega), fun h => hx3notv1 h.symm⟩
+  have hx23 : x2 ≠ x3 := by
+    intro heq
+    have hxCommon : x2 ∈
+        G.neighborFinset v2 ∩ G.neighborFinset v3 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hx2v2, heq ▸ hx3v3⟩
+    have hcommon := orderFortyNineDistTwo_common_highPair_eq_singleton
+      G hfree hmin hcard hv2 hv3 h23 hs2 hs3
+    have hxStar : x2 = sStar := by simpa [hcommon] using hxCommon
+    exact G.loopless.irrefl sStar (hxStar ▸ hx2s)
+  exact ⟨x2, x3, hx23, hx2deg, hx3deg, hx2s, hx2v2,
+    hx3s, hx3v3, hx2Branch, hx3Branch⟩
+
 end
 
 end Erdos85
