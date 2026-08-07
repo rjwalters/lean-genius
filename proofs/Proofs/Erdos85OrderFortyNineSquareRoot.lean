@@ -35,6 +35,17 @@ theorem orderFortyNineHighDiagonal_apply_of_ne
     orderFortyNineHighDiagonal G x y = 0 := by
   simp [orderFortyNineHighDiagonal, hxy]
 
+/-- The integral matrix whose square-root feasibility is forced by an
+order-49 graph. -/
+noncomputable def orderFortyNineSquareCandidate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] : Matrix V V ℤ :=
+  (6 : ℤ) • (1 : Matrix V V ℤ) + orderFortyNineHighDiagonal G +
+    FriendshipTheoremOQ01.onesMatrix V -
+      (secondOrderDefectGraph G).adjMatrix ℤ
+
 /-- In the order-49 degree band, the degree-minus-one diagonal is exactly
 `6I` plus the indicator of the high sector. -/
 theorem orderFortyNine_degreePredDiagonal_eq_six_add_highDiagonal
@@ -84,5 +95,42 @@ theorem orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
     G hfree,
     orderFortyNine_degreePredDiagonal_eq_six_add_highDiagonal
       G hfree hmin hcard]
+
+/-- A hypothetical order-49 graph supplies an integral symmetric trace-zero
+square root of its candidate matrix.  This packages all three properties
+needed by exact spectral feasibility checks. -/
+theorem orderFortyNine_exists_integral_symmetric_trace_zero_squareRoot
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    ∃ A : Matrix V V ℤ,
+      A * A = orderFortyNineSquareCandidate G ∧
+      A.transpose = A ∧ Matrix.trace A = 0 := by
+  refine ⟨G.adjMatrix ℤ, ?_, SimpleGraph.transpose_adjMatrix G, ?_⟩
+  · exact orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+      G hfree hmin hcard
+  · simpa using (SimpleGraph.trace_adjMatrix (G := G) ℤ)
+
+/-- The determinant of every graph-realizable order-49 candidate matrix is
+an integer square.  A nonsquare determinant is therefore an immediate exact
+certificate of non-realizability. -/
+theorem orderFortyNine_squareCandidate_det_isSquare
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    IsSquare (orderFortyNineSquareCandidate G).det := by
+  refine ⟨(G.adjMatrix ℤ).det, ?_⟩
+  rw [← Matrix.det_mul,
+    orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+      G hfree hmin hcard]
+  rfl
 
 end Erdos85
