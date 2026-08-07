@@ -7,6 +7,8 @@
 namespace Erdos85
 namespace OrderFortyNineWitnessTable
 
+set_option maxRecDepth 100000
+
 /-- (system triples, rep index, witness permutation as image list) -/
 abbrev Row := List (List Nat) × Nat × List Nat
 def tableT2 : List Row := [
