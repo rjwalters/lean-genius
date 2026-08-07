@@ -398,6 +398,241 @@ theorem minimumLayer_saturated_zeroCommon_uniqueOmitted
   exact ⟨f, hfinj, hfpath,
     existsUnique_not_mem_range_of_card_add_one f hfinj hcardTypes⟩
 
+/-- Every common neighbor of exterior points in distinct rows is exterior,
+and its owner is a common nonneighbor of the endpoint owners. -/
+theorem minimumLayer_saturated_commonNeighbor_has_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habne : a ≠ b)
+    {z y x : V}
+    (hza : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ a)
+    (hyb : y ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ b)
+    (hzx : G.Adj z x) (hxy : G.Adj x y) :
+    let H := minimumLayerGraph G (secondOrderDefectGraph G) c₀
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    ∃ c : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      c ∈ commonNonneighborFinset H a b ∧ x ∈ E c := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hza' := Finset.mem_sdiff.mp hza
+  have hyb' := Finset.mem_sdiff.mp hyb
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hxOutside : x ∉ U := by
+    intro hxU
+    obtain ⟨u, _hu, hux⟩ := Finset.mem_image.mp hxU
+    have hzu : z ∈ E u := by
+      apply Finset.mem_sdiff.mpr
+      refine ⟨?_, hza'.2⟩
+      change u.2.1 = x at hux
+      exact (G.mem_neighborFinset u.2.1 z).mpr (by simpa [hux] using hzx.symm)
+    have hyu : y ∈ E u := by
+      apply Finset.mem_sdiff.mpr
+      refine ⟨?_, hyb'.2⟩
+      change u.2.1 = x at hux
+      exact (G.mem_neighborFinset u.2.1 y).mpr (by simpa [hux] using hxy)
+    have hua : u = a := by
+      by_contra hua
+      have hdisj := hpair (Finset.mem_univ u) (Finset.mem_univ a) hua
+      exact (Finset.disjoint_left.mp hdisj hzu hza).elim
+    have hub : u = b := by
+      by_contra hub
+      have hdisj := hpair (Finset.mem_univ u) (Finset.mem_univ b) hub
+      exact (Finset.disjoint_left.mp hdisj hyu hyb).elim
+    exact habne (hua.symm.trans hub)
+  obtain ⟨c, hxc, _hcUnique⟩ :=
+    minimumLayer_existsUnique_externalOwner_of_saturated
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat hxOutside
+  have hnca : ¬H.Adj c a := by
+    intro hca
+    have hempty := minimumLayer_saturated_externalBlock_eq_empty_of_adj
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        c a hza hca
+    have hxmem : x ∈ G.neighborFinset z ∩ E c :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset z x).mpr hzx, hxc⟩
+    rw [hempty] at hxmem
+    exact Finset.notMem_empty x hxmem
+  have hncb : ¬H.Adj c b := by
+    intro hcb
+    have hempty := minimumLayer_saturated_externalBlock_eq_empty_of_adj
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        c b hyb hcb
+    have hxmem : x ∈ G.neighborFinset y ∩ E c :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset y x).mpr hxy.symm, hxc⟩
+    rw [hempty] at hxmem
+    exact Finset.notMem_empty x hxmem
+  refine ⟨c, ?_, hxc⟩
+  exact (mem_commonNonneighborFinset_iff H a b c).mpr
+    ⟨fun hac => hnca hac.symm, fun hbc => hncb hbc.symm⟩
+
+/-- The unique endpoint omitted by the zero-common two-step resolution is
+exactly the unique parent-defect neighbor in the target exterior row. -/
+theorem minimumLayer_saturated_existsUnique_defectNeighbor_in_row
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habne : a ≠ b)
+    (hcommon :
+      ((minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset a ∩
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset b).card = 0) :
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    ∀ z ∈ E a, ∃! y : ↥(E b), (secondOrderDefectGraph G).Adj z y.1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let C := commonNonneighborFinset H a b
+  intro z hza
+  obtain ⟨f, hfinj, hfpath, y, hyomit, hyunique⟩ :=
+    minimumLayer_saturated_zeroCommon_uniqueOmitted
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        a b habne hcommon z hza
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hzy : z ≠ y.1 := by
+    intro hzy
+    have hdisj := hpair (Finset.mem_univ a) (Finset.mem_univ b) habne
+    exact (Finset.disjoint_left.mp hdisj hza (hzy ▸ y.2)).elim
+  have hyCommonZero : (G.neighborFinset z ∩ G.neighborFinset y.1).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro x hx
+    have hxparts := Finset.mem_inter.mp hx
+    have hzx : G.Adj z x := (G.mem_neighborFinset z x).mp hxparts.1
+    have hxy : G.Adj x y.1 :=
+      ((G.mem_neighborFinset y.1 x).mp hxparts.2).symm
+    obtain ⟨c, hcC, hxc⟩ := minimumLayer_saturated_commonNeighbor_has_owner
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        a b habne hza y.2 hzx hxy
+    let cs : ↥C := ⟨c, hcC⟩
+    obtain ⟨x₀, hx₀c, hzx₀, hx₀f⟩ := hfpath cs
+    have hcdata := (mem_commonNonneighborFinset_iff H a b c).mp hcC
+    obtain ⟨r₁, hr₁, hr₁uniq⟩ :=
+      minimumLayer_saturated_externalBlock_existsUnique_of_not_adj
+        G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+          c a hza (fun hca => hcdata.1 hca.symm)
+    have hxx₀ : x = x₀ :=
+      (hr₁uniq x ⟨hxc, hzx⟩).trans (hr₁uniq x₀ ⟨hx₀c, hzx₀⟩).symm
+    obtain ⟨r₂, hr₂, hr₂uniq⟩ :=
+      minimumLayer_saturated_externalBlock_existsUnique_of_not_adj
+        G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+          b c hx₀c (fun hbc => hcdata.2 hbc)
+    have hyf : y.1 = (f cs).1 := by
+      exact (hr₂uniq y.1 ⟨y.2, by simpa [hxx₀] using hxy⟩).trans
+        (hr₂uniq (f cs) ⟨(f cs).2, hx₀f⟩).symm
+    exact hyomit cs (Subtype.ext hyf.symm)
+  have hyD : D.Adj z y.1 := by
+    have hformula := card_common_eq_if_secondOrderDefect G hfree z y.1 hzy
+    by_contra hyD
+    have hynmem : y.1 ∉ D.neighborFinset z := by
+      simpa [D.mem_neighborFinset] using hyD
+    rw [if_neg hynmem, hyCommonZero] at hformula
+    omega
+  refine ⟨y, hyD, ?_⟩
+  intro y' hy'D
+  have hzy' : z ≠ y'.1 := D.ne_of_adj hy'D
+  have hy'CommonZero :
+      (G.neighborFinset z ∩ G.neighborFinset y'.1).card = 0 := by
+    have hformula := card_common_eq_if_secondOrderDefect G hfree z y'.1 hzy'
+    have hy'mem : y'.1 ∈ D.neighborFinset z :=
+      (D.mem_neighborFinset z y'.1).mpr hy'D
+    rw [if_pos hy'mem] at hformula
+    exact hformula
+  have hy'omit : ∀ c : ↥C, f c ≠ y' := by
+    intro c hfc
+    obtain ⟨x, hxc, hzx, hxf⟩ := hfpath c
+    have hxmem : x ∈ G.neighborFinset z ∩ G.neighborFinset y'.1 := by
+      apply Finset.mem_inter.mpr
+      refine ⟨(G.mem_neighborFinset z x).mpr hzx, ?_⟩
+      exact (G.mem_neighborFinset y'.1 x).mpr (by
+        have : G.Adj x y'.1 := by simpa [hfc] using hxf
+        exact this.symm)
+    rw [Finset.card_eq_zero.mp hy'CommonZero] at hxmem
+    exact Finset.notMem_empty x hxmem
+  exact hyunique y' hy'omit
+
+/-- Cover-facing form: every child defect edge lifts to a perfect matching
+between the corresponding exterior rows in the parent defect graph. -/
+theorem minimumLayer_saturated_childDefect_lifts_matching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habD : (secondOrderDefectGraph
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀)).Adj a b) :
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    ∀ z ∈ E a, ∃! y : ↥(E b), (secondOrderDefectGraph G).Adj z y.1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  have hfreeH : ¬containsC4 _ H := minimumLayerGraph_c4Free G D c₀ hfree
+  have habne : a ≠ b := (secondOrderDefectGraph H).ne_of_adj habD
+  have hcommon : (H.neighborFinset a ∩ H.neighborFinset b).card = 0 := by
+    have hformula := card_common_eq_if_secondOrderDefect H hfreeH a b habne
+    have hbmem : b ∈ (secondOrderDefectGraph H).neighborFinset a :=
+      ((secondOrderDefectGraph H).mem_neighborFinset a b).mpr habD
+    rw [if_pos hbmem] at hformula
+    exact hformula
+  exact minimumLayer_saturated_existsUnique_defectNeighbor_in_row
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+      a b habne hcommon
+
 end
 
 end Erdos85
