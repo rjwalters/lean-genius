@@ -78,6 +78,38 @@ theorem minimumLayer_disjointTarget_collapse
         _ = 1 := hau
     exact ⟨by omega, by omega⟩
 
+/-- Prime-free form of the minimum-layer squeeze.  Let `w` be the literal
+minimum component order and `u` the number of components of that order.  The
+cross-pair identity and disjoint-target mass bound imply that either every
+vertex lies in the minimum layer or that layer has at most `2*d-1` vertices.
+
+Unlike `minimumLayer_disjointTarget_collapse`, this statement uses neither a
+common prime divisor nor a large-prime window, so it remains available in the
+smooth and small-prime residual cases. -/
+theorem minimumLayer_orderMass_le_or_all
+    (d n w u S R : ℕ)
+    (huw : u * w ≤ n)
+    (hS : w * S ≤ n - u * w)
+    (hidentity : u * (n - u * w) + R = (2 * d - 1) * S) :
+    n = u * w ∨ u * w ≤ 2 * d - 1 := by
+  by_cases hall : n = u * w
+  · exact Or.inl hall
+  · right
+    have houtside : 0 < n - u * w :=
+      Nat.sub_pos_of_lt (lt_of_le_of_ne huw (Ne.symm hall))
+    have hmain : u * (n - u * w) ≤ (2 * d - 1) * S := by
+      omega
+    have hscaled : (n - u * w) * (u * w) ≤
+        (n - u * w) * (2 * d - 1) := by
+      calc
+        (n - u * w) * (u * w) = w * (u * (n - u * w)) := by ring
+        _ ≤ w * ((2 * d - 1) * S) := Nat.mul_le_mul_left w hmain
+        _ = (2 * d - 1) * (w * S) := by ring
+        _ ≤ (2 * d - 1) * (n - u * w) :=
+          Nat.mul_le_mul_left (2 * d - 1) hS
+        _ = (n - u * w) * (2 * d - 1) := by ring
+    exact Nat.le_of_mul_le_mul_left hscaled houtside
+
 /-- If each target is used by at most one source and a positive incidence
 has value equal to the target weight, total incidence mass is bounded by
 total target weight. -/
