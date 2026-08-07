@@ -46,4 +46,20 @@ theorem minimumLayer_card_odd_of_design
       exact (Nat.even_mul_pred_self s).add_odd (by norm_num)
   exact (Nat.odd_mul.mp hprod).1
 
+/-- In the nonsquare spectral branch, the trace bound `s ≤ 2u` turns the
+design equation into the much sharper order bound `w ≤ 2s`. -/
+theorem minimumLayer_order_le_two_mul_rowSum
+    (u w s : ℕ) (hs3 : 3 ≤ s)
+    (hdesign : s * s + 3 = u * w + s)
+    (htrace : s ≤ 2 * u) : w ≤ 2 * s := by
+  have hspos : 0 < s := by omega
+  have hmul : s * w ≤ (2 * u) * w := Nat.mul_le_mul_right w htrace
+  have hdesignZ : (s : ℤ) * s + 3 = (u : ℤ) * w + s := by
+    exact_mod_cast hdesign
+  have hmulZ : (s : ℤ) * w ≤ (2 * u : ℕ) * w := by
+    exact_mod_cast hmul
+  have hs3Z : (3 : ℤ) ≤ s := by exact_mod_cast hs3
+  have : (w : ℤ) ≤ 2 * s := by nlinarith
+  exact_mod_cast this
+
 end Erdos85
