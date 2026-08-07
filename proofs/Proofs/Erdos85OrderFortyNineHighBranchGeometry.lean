@@ -113,6 +113,30 @@ theorem orderFortyNine_not_adj_between_paired_highBranches
   exact hfree (containsC4_of_two_common hsb hat
     hsa.symm hab hst.symm htb)
 
+/-- An outer vertex has at most one neighbor in any fixed high-root branch.
+This is the basic cross-branch `C₄` restriction. -/
+theorem orderFortyNine_card_neighbors_inter_highBranch_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v a : V}
+    (haOutside : a ∉ insert v (G.neighborFinset v))
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    (G.neighborFinset a ∩ secondLayerBranch G v t).card ≤ 1 := by
+  have hat : a ≠ t.1 := by
+    intro h
+    subst a
+    apply haOutside
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+    exact Or.inr t.2
+  have hsub : G.neighborFinset a ∩ secondLayerBranch G v t ⊆
+      G.neighborFinset a ∩ G.neighborFinset t.1 := by
+    intro b hb
+    have hab := (Finset.mem_inter.mp hb).1
+    have htb := (Finset.mem_sdiff.mp (Finset.mem_inter.mp hb).2).1
+    exact Finset.mem_inter.mpr ⟨hab, htb⟩
+  exact (Finset.card_le_card hsub).trans
+    (common_le_one_of_not_containsC4 hfree a t.1 hat)
+
 end
 
 end Erdos85
