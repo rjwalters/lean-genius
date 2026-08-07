@@ -50,13 +50,33 @@ instance : DecidableRel boza48Adj := fun i j => by
 
 def boza48Graph : SimpleGraph (Fin 48) where
   Adj := boza48Adj
-  symm := by
+  symm.symm := by
     intro i j h
     unfold boza48Adj at h ⊢
     tauto
-  loopless := by
-    intro i h
-    unfold boza48Adj at h
-    rcases h with h | h <;> · revert h; native_decide +kernel
+  loopless.irrefl := by native_decide
+
+instance : DecidableRel boza48Graph.Adj := fun i j =>
+  decidable_of_iff (boza48Adj i j) Iff.rfl
+
+/-- The nonabelian Cayley witness is 7-regular. -/
+theorem boza48Graph_degree : ∀ v, boza48Graph.degree v = 7 := by
+  native_decide
+
+/-- Every two distinct vertices have at most one common neighbor. -/
+theorem boza48Graph_common_le_one : ∀ x y : Fin 48, x ≠ y →
+    (boza48Graph.neighborFinset x ∩ boza48Graph.neighborFinset y).card ≤ 1 := by
+  native_decide
+
+theorem boza48Graph_not_containsC4 :
+    ¬ containsC4 (Fin 48) boza48Graph :=
+  not_containsC4_of_forall_common_le_one boza48Graph_common_le_one
+
+/-- The fully checked order-48, minimum-degree-7 witness. -/
+theorem boza48_degreeSeven_witness : C4FreeMinDegreeWitness 48 7 := by
+  refine ⟨boza48Graph, inferInstance, ?_, boza48Graph_not_containsC4⟩
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  intro v
+  rw [boza48Graph_degree v]
 
 end Erdos85
