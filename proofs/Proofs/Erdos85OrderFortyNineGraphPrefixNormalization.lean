@@ -443,6 +443,94 @@ theorem orderFortyNine_exists_tableT3_row_of_disjoint_prefix
     OrderFortyNineWitnessTable.exists_tableT3_row_of_mem_rawT3 hraw'
   exact ⟨e, row, hrow, hroweq⟩
 
+/-- L1 for the three-triple profile: after choosing an intersecting pair when
+one exists (and otherwise using the disjoint prefix), the complete graph
+triple system is represented by a verified `tableT3` row. -/
+theorem orderFortyNine_exists_tableT3_row_of_tripleSupportCount_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    (hcount : orderFortyNineHighIncidenceCount G 3 = 3) :
+    ∃ x y z : V,
+      let T := (orderFortyNineLowVertices G).filter fun w =>
+        (orderFortyNineHighSupport G w).card = 3
+      T = {x, y, z} ∧
+      ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9,
+        ∃ row ∈ OrderFortyNineWitnessTable.tableT3,
+          row.1 =
+            [OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e x),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e y),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e z)] := by
+  let T := (orderFortyNineLowVertices G).filter fun w =>
+    (orderFortyNineHighSupport G w).card = 3
+  have hTcard : T.card = 3 := by
+    change orderFortyNineHighIncidenceCount G 3 = 3
+    exact hcount
+  obtain ⟨a, b, c, hab, hac, hbc, hT⟩ := Finset.card_eq_three.mp hTcard
+  have ha : a ∈ T := by rw [hT]; simp
+  have hb : b ∈ T := by rw [hT]; simp
+  have hc : c ∈ T := by rw [hT]; simp
+  have ha3 : (orderFortyNineHighSupport G a).card = 3 :=
+    (Finset.mem_filter.mp ha).2
+  have hb3 : (orderFortyNineHighSupport G b).card = 3 :=
+    (Finset.mem_filter.mp hb).2
+  have hc3 : (orderFortyNineHighSupport G c).card = 3 :=
+    (Finset.mem_filter.mp hc).2
+  have habLe := orderFortyNine_card_inter_highSupport_le_one G hfree hab
+  have hacLe := orderFortyNine_card_inter_highSupport_le_one G hfree hac
+  have hbcLe := orderFortyNine_card_inter_highSupport_le_one G hfree hbc
+  have habCases :
+      ((orderFortyNineHighSupport G a) ∩
+        orderFortyNineHighSupport G b).card = 0 ∨
+      ((orderFortyNineHighSupport G a) ∩
+        orderFortyNineHighSupport G b).card = 1 := by omega
+  rcases habCases with hab0 | hab1
+  · have hacCases :
+        ((orderFortyNineHighSupport G a) ∩
+          orderFortyNineHighSupport G c).card = 0 ∨
+        ((orderFortyNineHighSupport G a) ∩
+          orderFortyNineHighSupport G c).card = 1 := by omega
+    rcases hacCases with hac0 | hac1
+    · have hbcCases :
+          ((orderFortyNineHighSupport G b) ∩
+            orderFortyNineHighSupport G c).card = 0 ∨
+          ((orderFortyNineHighSupport G b) ∩
+            orderFortyNineHighSupport G c).card = 1 := by omega
+      rcases hbcCases with hbc0 | hbc1
+      · obtain ⟨e, row, hrow, hroweq⟩ :=
+          orderFortyNine_exists_tableT3_row_of_disjoint_prefix
+            G hHigh ha3 hb3 hc3 hab0 hac0 hbc0
+        exact ⟨a, b, c, hT, e, row, hrow, hroweq⟩
+      · obtain ⟨e, row, hrow, hroweq⟩ :=
+          orderFortyNine_exists_tableT3_row_of_intersecting_prefix
+            G hHigh hb3 hc3 ha3 hbc1 (by
+              simpa [Finset.inter_comm] using habLe) (by
+              simpa [Finset.inter_comm] using hacLe)
+        refine ⟨b, c, a, ?_, e, row, hrow, hroweq⟩
+        change T = {b, c, a}
+        rw [hT]
+        ext v
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
+    · obtain ⟨e, row, hrow, hroweq⟩ :=
+        orderFortyNine_exists_tableT3_row_of_intersecting_prefix
+          G hHigh ha3 hc3 hb3 hac1 habLe (by
+            simpa [Finset.inter_comm] using hbcLe)
+      refine ⟨a, c, b, ?_, e, row, hrow, hroweq⟩
+      change T = {a, c, b}
+      rw [hT]
+      ext v
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      tauto
+  · obtain ⟨e, row, hrow, hroweq⟩ :=
+      orderFortyNine_exists_tableT3_row_of_intersecting_prefix
+        G hHigh ha3 hb3 hc3 hab1 hacLe hbcLe
+    exact ⟨a, b, c, hT, e, row, hrow, hroweq⟩
+
 end
 
 end Erdos85
