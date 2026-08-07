@@ -54,6 +54,16 @@ Atmost block = atmostN([1..5], 2): aux 12..17; clauses
 `[-1,12],[-12,13],[-2,-12,14],[-14,15],[-3,-14],[-2,13],[-13,16],
 [-3,-13,15],[-15,17],[-4,-15],[-3,16],[-4,-16,17],[-5,-17]`.
 
+## Verified allocation order at n = 48 (the lab's per-vertex size)
+
+Replicating the loop above reproduces pysat's allocation exactly. First-use
+order interleaves columns j and j+1 (eq 18 touches s(k,j+1) before eq 19
+allocates s(k+1,j)): for the first column the order is
+(0,0),(0,1),(1,0),(1,1),(2,0),(2,1),… Verified counts:
+- equals(48, 7): atleast block = atmostN(¬lits, 41) → 41·7 = 287 aux;
+  atmost block = atmostN(lits, 7) → 7·41 = 287 aux; total 574 aux, 1148 clauses.
+- equals(48, 8): 40·8 + 8·40 = 640 aux, 1280 clauses.
+
 ## Usage in the 49-lab instances
 
 Each vertex x gets `CardEnc.equals(lits = edge vars of x in lex order of the
