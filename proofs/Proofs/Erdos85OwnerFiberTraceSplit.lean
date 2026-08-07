@@ -32,6 +32,43 @@ def normalizedOwnerProjection
     (Matrix.transpose (ownerIncidenceMatrix (K := K) owner) *
       ownerIncidenceMatrix (K := K) owner)
 
+/-- The normalized fiber-constant projection fixes the all-ones row space. -/
+theorem onesMatrix_mul_normalizedOwnerProjection
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Field K]
+    (owner : X → Y) (m : ℕ) (hm : (m : K) ≠ 0)
+    (huniform : ∀ a, (ownerFiberFinset owner a).card = m) :
+    (Matrix.of (fun _ _ => (1 : K)) : Matrix X X K) *
+        normalizedOwnerProjection owner m =
+      Matrix.of (fun _ _ => (1 : K)) := by
+  let C := ownerIncidenceMatrix (K := K) owner
+  let JXX : Matrix X X K := Matrix.of fun _ _ => 1
+  let JXY : Matrix X Y K := Matrix.of fun _ _ => 1
+  have hJC : JXX * Matrix.transpose C = (m : K) • JXY := by
+    ext x a
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, JXX, JXY,
+      Matrix.of_apply, one_mul, Matrix.smul_apply, C,
+      ownerIncidenceMatrix, smul_eq_mul, mul_one]
+    rw [← huniform a]
+    simpa [ownerFiberFinset] using
+      (Finset.sum_boole (R := K) (fun y : X => owner y = a) Finset.univ)
+  have hJYC : JXY * C = JXX := by
+    ext x z
+    simp only [Matrix.mul_apply, JXY, JXX, Matrix.of_apply, one_mul, C,
+      ownerIncidenceMatrix]
+    simpa using
+      (Finset.sum_boole (R := K) (fun a : Y => owner z = a) Finset.univ)
+  change JXX * normalizedOwnerProjection owner m = JXX
+  calc
+    JXX * normalizedOwnerProjection owner m =
+        (m : K)⁻¹ • ((JXX * Matrix.transpose C) * C) := by
+          simp only [normalizedOwnerProjection, C, Matrix.mul_smul,
+            Matrix.mul_assoc]
+    _ = (m : K)⁻¹ • (((m : K) • JXY) * C) := by rw [hJC]
+    _ = ((m : K)⁻¹ * (m : K)) • (JXY * C) := by
+          rw [Matrix.smul_mul, smul_smul]
+    _ = JXX := by rw [inv_mul_cancel₀ hm, one_smul, hJYC]
+
 theorem normalizedOwnerProjection_isIdempotent
     {X Y K : Type*} [Fintype X] [Fintype Y]
     [DecidableEq X] [DecidableEq Y] [Field K]
