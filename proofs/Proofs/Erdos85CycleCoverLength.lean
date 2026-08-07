@@ -127,4 +127,52 @@ theorem cycleCover_length_dvd_of_localBijection
     · exact Or.inr ⟨hvinj h.1, hvinj h.2⟩
   exact cycleMap_length_dvd hr f hpair
 
+/-- For a locally bijective cycle cover, membership of one owner in the
+target cycle propagates around the whole source cycle.  Thus a single base
+point replaces the global range hypothesis. -/
+theorem cycleCover_length_dvd_of_localBijection_of_start
+    {X Y : Type*} [Fintype X] [DecidableEq X]
+    [Fintype Y] [DecidableEq Y]
+    (DX : SimpleGraph X) [DecidableRel DX.Adj]
+    (DY : SimpleGraph Y) [DecidableRel DY.Adj]
+    (owner : X → Y)
+    {n r : ℕ} [NeZero n] [NeZero r]
+    (hr : 3 ≤ r)
+    (u : ZMod n → X) (v : ZMod r → Y)
+    (hvinj : Function.Injective v)
+    (hu : ∀ z, DX.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (hv : ∀ z, DY.neighborFinset (v z) = {v (z - 1), v (z + 1)})
+    (hmap : ∀ {x y}, DX.Adj x y → DY.Adj (owner x) (owner y))
+    (hlift : ∀ (x : X) (b : Y), DY.Adj (owner x) b →
+      ∃ w : X, DX.Adj x w ∧ owner w = b)
+    (hstart : owner (u 0) ∈ Set.range v) :
+    r ∣ n := by
+  have hnat : ∀ m : ℕ, owner (u (m : ZMod n)) ∈ Set.range v := by
+    intro m
+    induction m with
+    | zero => simpa using hstart
+    | succ m ih =>
+        obtain ⟨t, ht⟩ := ih
+        have hadjSource : DX.Adj (u (m : ZMod n)) (u ((m : ZMod n) + 1)) := by
+          apply (DX.mem_neighborFinset (u (m : ZMod n)) _).mp
+          rw [hu]
+          simp
+        have hadjTarget : DY.Adj (v t) (owner (u ((m : ZMod n) + 1))) := by
+          rw [ht]
+          exact hmap hadjSource
+        have hmem : owner (u ((m : ZMod n) + 1)) ∈
+            DY.neighborFinset (v t) :=
+          (DY.mem_neighborFinset (v t) _).mpr hadjTarget
+        rw [hv t] at hmem
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+        rcases hmem with hminus | hplus
+        · refine ⟨t - 1, ?_⟩
+          simpa [Nat.cast_succ] using hminus.symm
+        · refine ⟨t + 1, ?_⟩
+          simpa [Nat.cast_succ] using hplus.symm
+  apply cycleCover_length_dvd_of_localBijection
+    DX DY owner hr u v hvinj hu hv hmap hlift
+  intro z
+  simpa only [ZMod.natCast_zmod_val] using hnat z.val
+
 end Erdos85
