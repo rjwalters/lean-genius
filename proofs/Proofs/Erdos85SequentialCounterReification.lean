@@ -619,6 +619,17 @@ theorem dimacsFormulaBounded_mono {a b : Nat} {clauses : Array DimacsClause}
   intro clause hclause lit hlit
   exact (hbounded clause hclause lit hlit).trans hab
 
+theorem dimacsFormulaBounded_append {top : Nat}
+    {left right : Array DimacsClause}
+    (hleft : dimacsFormulaBounded top left)
+    (hright : dimacsFormulaBounded top right) :
+    dimacsFormulaBounded top (left ++ right) := by
+  intro clause hclause
+  simp only [Array.mem_append] at hclause
+  rcases hclause with hclause | hclause
+  · exact hleft clause hclause
+  · exact hright clause hclause
+
 theorem dimacsFormulaBounded_emit {top : Nat} {st : SeqCounterGenState}
     {clause : DimacsClause}
     (hprevious : dimacsFormulaBounded top st.clauses)
@@ -1809,5 +1820,53 @@ theorem seqCounterEqualsCore_formulaSatisfied
         hinputUpper t (by omega)
   simpa [seqCounterEqualsCore, lower, upper] using
     dimacsFormulaSatisfied_append hlowerSatUpper hupperSat
+
+/-- A complete equality block allocates only above its incoming DIMACS top. -/
+theorem seqCounterEqualsCore_top_bound
+    (top : Nat) (vars : Array Int) (t : Nat) :
+    top ≤ (seqCounterEqualsCore top vars t).top := by
+  let lower := seqCounterAtLeastCore top vars t
+  let upper := seqCounterAtMostCore lower.top vars t
+  have hlower : top ≤ lower.top := by
+    simpa [lower, seqCounterAtLeastCore] using
+      (seqCounterAtMostCore_allocationInvariant top
+        (vars.map fun v => -v) (vars.size - t)).top_bound
+  have hupper : lower.top ≤ upper.top := by
+    simpa [upper] using
+      (seqCounterAtMostCore_allocationInvariant lower.top vars t).top_bound
+  simpa [seqCounterEqualsCore, lower, upper] using hlower.trans hupper
+
+/-- Every literal emitted by a complete equality block is bounded by the
+block's final DIMACS top. -/
+theorem seqCounterEqualsCore_formulaBounded
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x) (t : Nat) :
+    dimacsFormulaBounded (seqCounterEqualsCore top vars t).top
+      (seqCounterEqualsCore top vars t).clauses := by
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeastCore top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMostCore lower.top vars t
+  have hlowerInv : SeqCounterAllocationInvariant top lower := by
+    simpa [lower, seqCounterAtLeastCore] using
+      seqCounterAtMostCore_allocationInvariant top
+        (vars.map fun v => -v) (vars.size - t)
+  have hinputUpper : SeqCounterInputReifies lowerVal lower.top vars x := by
+    exact hinput.liftBlock negRow lower.ids hlowerInv.top_bound
+  have hlowerBound : dimacsFormulaBounded lower.top lower.clauses := by
+    simpa [lower] using
+      seqCounterAtLeastCore_formulaBounded inputVal top vars x hinput t
+  have hupperBound : dimacsFormulaBounded upper.top upper.clauses := by
+    simpa [upper] using
+      seqCounterAtMostCore_formulaBounded lowerVal lower.top vars x
+        hinputUpper t
+  have hlowerFinal : dimacsFormulaBounded upper.top lower.clauses :=
+    dimacsFormulaBounded_mono
+      (by simpa [upper] using
+        (seqCounterAtMostCore_allocationInvariant lower.top vars t).top_bound)
+      hlowerBound
+  simpa [seqCounterEqualsCore, lower, upper] using
+    dimacsFormulaBounded_append hlowerFinal hupperBound
 
 end Erdos85
