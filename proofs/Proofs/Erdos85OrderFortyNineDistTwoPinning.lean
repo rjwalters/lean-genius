@@ -74,6 +74,84 @@ theorem orderFortyNineDistTwo_foreign_highs_in_common_branch
     simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
     exact ⟨h13.symm, fun h => hnot13 h⟩
 
+/-- If the displayed vertices are exactly the three high vertices, removing
+the two foreign highs from their common branch leaves precisely three low
+vertices.  This is the canonical finset form of the five-point branch
+decomposition, avoiding arbitrary labels for the three lows. -/
+theorem orderFortyNineDistTwo_exists_three_low_branch_remainder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 sStar : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3) (h23 : v2 ≠ v3)
+    (hs1 : G.Adj sStar v1) (hs2 : G.Adj sStar v2)
+    (hs3 : G.Adj sStar v3)
+    (hHigh : orderFortyNineHighVertices G = {v1, v2, v3}) :
+    let parent : {z : V // z ∈ G.neighborSet v1} :=
+      ⟨sStar, by simpa using hs1.symm⟩
+    ∃ L : Finset V,
+      L.card = 3 ∧
+      secondLayerBranch G v1 parent = insert v2 (insert v3 L) ∧
+      (∀ z ∈ L, G.degree z = 7) := by
+  dsimp
+  let parent : {z : V // z ∈ G.neighborSet v1} :=
+    ⟨sStar, by simpa using hs1.symm⟩
+  let B := secondLayerBranch G v1 parent
+  let L := B \ {v2, v3}
+  have hforeign := orderFortyNineDistTwo_foreign_highs_in_common_branch
+    G hfree hmin hcard hv1 hv2 hv3 h12 h13 hs1 hs2 hs3
+  change v2 ∈ B ∧ v3 ∈ B at hforeign
+  have hpairSub : ({v2, v3} : Finset V) ⊆ B := by
+    simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff]
+    exact ⟨hforeign.1, hforeign.2⟩
+  have hBcard : B.card = 5 :=
+    orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv1 parent
+  have hpairCard : ({v2, v3} : Finset V).card = 2 := by
+    simp [h23]
+  have hLcard : L.card = 3 := by
+    change (B \ ({v2, v3} : Finset V)).card = 3
+    rw [Finset.card_sdiff_of_subset hpairSub, hBcard, hpairCard]
+  have hdecomp : B = insert v2 (insert v3 L) := by
+    ext z
+    simp only [Finset.mem_insert, Finset.mem_sdiff, Finset.mem_singleton,
+      L]
+    constructor
+    · intro hz
+      by_cases hz2 : z = v2
+      · exact Or.inl hz2
+      by_cases hz3 : z = v3
+      · exact Or.inr (Or.inl hz3)
+      · exact Or.inr (Or.inr ⟨hz, by simpa [hz2, hz3]⟩)
+    · rintro (rfl | rfl | ⟨hz, _⟩)
+      · exact hforeign.1
+      · exact hforeign.2
+      · exact hz
+  refine ⟨L, hLcard, hdecomp, ?_⟩
+  intro z hzL
+  rcases orderFortyNine_degree_eq_seven_or_eight
+    G hfree hmin hcard z with hz7 | hz8
+  · exact hz7
+  · exfalso
+    have hzHigh : z ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hz8]
+    rw [hHigh] at hzHigh
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hzHigh
+    have hzNotPair : z ∉ ({v2, v3} : Finset V) :=
+      (Finset.mem_sdiff.mp hzL).2
+    rcases hzHigh with hz1 | hz2 | hz3
+    · have hzB : z ∈ B := (Finset.mem_sdiff.mp hzL).1
+      have hzOutside := (Finset.mem_sdiff.mp hzB).2
+      exact hzOutside (by simp [hz1])
+    · exact hzNotPair (by simp [hz2])
+    · exact hzNotPair (by simp [hz3])
+
 /-- The common low vertex has a unique partner inside the first high
 neighborhood.  That partner cannot see either foreign high, since it would
 be a second common neighbor of the corresponding high pair. -/
