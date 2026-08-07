@@ -46,10 +46,139 @@ theorem exists_perm_normalizing_intersecting_prefix
     ∃ σ : Equiv.Perm (Fin 9), ∀ i, σ (f i) = Fin.castLE (by omega) i :=
   exists_perm_send_to_initialSegment (by omega) f hf
 
+/-- Point-level form of the disjoint-block normalization. -/
+theorem exists_perm_normalizing_disjoint_triples
+    (a b c d e f : Fin 9)
+    (hinj : Function.Injective ![a, b, c, d, e, f]) :
+    ∃ σ : Equiv.Perm (Fin 9),
+      ({σ a, σ b, σ c} : Finset (Fin 9)) = {0, 1, 2} ∧
+      ({σ d, σ e, σ f} : Finset (Fin 9)) = {3, 4, 5} := by
+  obtain ⟨σ, hσ⟩ := exists_perm_normalizing_disjoint_prefix
+    ![a, b, c, d, e, f] hinj
+  have h0 := hσ (0 : Fin 6)
+  have h1 := hσ (1 : Fin 6)
+  have h2 := hσ (2 : Fin 6)
+  have h3 := hσ (3 : Fin 6)
+  have h4 := hσ (4 : Fin 6)
+  have h5 := hσ (5 : Fin 6)
+  refine ⟨σ, ?_, ?_⟩ <;> ext x <;> fin_cases x <;>
+    simp_all
+
+/-- Point-level form of the one-point-intersection normalization. -/
+theorem exists_perm_normalizing_intersecting_triples
+    (x a b d e : Fin 9)
+    (hinj : Function.Injective ![x, a, b, d, e]) :
+    ∃ σ : Equiv.Perm (Fin 9),
+      ({σ x, σ a, σ b} : Finset (Fin 9)) = {0, 1, 2} ∧
+      ({σ x, σ d, σ e} : Finset (Fin 9)) = {0, 3, 4} := by
+  obtain ⟨σ, hσ⟩ := exists_perm_normalizing_intersecting_prefix
+    ![x, a, b, d, e] hinj
+  have h0 := hσ (0 : Fin 5)
+  have h1 := hσ (1 : Fin 5)
+  have h2 := hσ (2 : Fin 5)
+  have h3 := hσ (3 : Fin 5)
+  have h4 := hσ (4 : Fin 5)
+  refine ⟨σ, ?_, ?_⟩ <;> ext y <;> fin_cases y <;>
+    simp_all
+
+set_option maxHeartbeats 1000000 in
+/-- Two abstract three-subsets meeting in at most one point admit exactly one
+of the two prefixes used by the exhaustive table.  This is the WLOG step that
+the graph's pairwise-linear high supports need. -/
+theorem exists_perm_normalizing_two_threeFinsets
+    (A B : Finset (Fin 9)) (hA : A.card = 3) (hB : B.card = 3)
+    (hlin : (A ∩ B).card ≤ 1) :
+    ∃ σ : Equiv.Perm (Fin 9),
+      A.map σ.toEmbedding = {0, 1, 2} ∧
+      (B.map σ.toEmbedding = {3, 4, 5} ∨
+       B.map σ.toEmbedding = {0, 3, 4}) := by
+  have hcases : (A ∩ B).card = 0 ∨ (A ∩ B).card = 1 := by omega
+  rcases hcases with hzero | hone
+  · have hinter : A ∩ B = ∅ := Finset.card_eq_zero.mp hzero
+    have hdisj : Disjoint A B := Finset.disjoint_iff_inter_eq_empty.mpr hinter
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hA
+    obtain ⟨d, e, f, hde, hdf, hef, rfl⟩ := Finset.card_eq_three.mp hB
+    simp only [Finset.disjoint_insert_left, Finset.mem_insert,
+      Finset.mem_singleton, not_or] at hdisj
+    have hinj : Function.Injective ![a, b, c, d, e, f] := by
+      intro i j
+      fin_cases i <;> fin_cases j <;> simp <;> aesop
+    obtain ⟨σ, hfirst, hsecond⟩ :=
+      exists_perm_normalizing_disjoint_triples a b c d e f hinj
+    refine ⟨σ, ?_, Or.inl ?_⟩
+    · simpa using hfirst
+    · simpa using hsecond
+  · obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hone
+    have hxA : x ∈ A := by
+      have : x ∈ A ∩ B := by simp [hx]
+      exact (Finset.mem_inter.mp this).1
+    have hxB : x ∈ B := by
+      have : x ∈ A ∩ B := by simp [hx]
+      exact (Finset.mem_inter.mp this).2
+    have hAsub : ({x} : Finset (Fin 9)) ⊆ A := by simpa
+    have hBsub : ({x} : Finset (Fin 9)) ⊆ B := by simpa
+    have hAdiff : (A \ {x}).card = 2 := by
+      rw [Finset.card_sdiff_of_subset hAsub, hA]
+      simp
+    have hBdiff : (B \ {x}).card = 2 := by
+      rw [Finset.card_sdiff_of_subset hBsub, hB]
+      simp
+    obtain ⟨a, b, hab, hArest⟩ := Finset.card_eq_two.mp hAdiff
+    obtain ⟨d, e, hde, hBrest⟩ := Finset.card_eq_two.mp hBdiff
+    have hAform : A = {x, a, b} := by
+      rw [← Finset.sdiff_union_of_subset hAsub, hArest]
+      ext y
+      simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+      tauto
+    have hBform : B = {x, d, e} := by
+      rw [← Finset.sdiff_union_of_subset hBsub, hBrest]
+      ext y
+      simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+      tauto
+    have haRest : a ∈ A \ {x} := by rw [hArest]; simp
+    have hbRest : b ∈ A \ {x} := by rw [hArest]; simp
+    have hdRest : d ∈ B \ {x} := by rw [hBrest]; simp
+    have heRest : e ∈ B \ {x} := by rw [hBrest]; simp
+    have hcross {y z : Fin 9} (hy : y ∈ A \ {x}) (hz : z ∈ B \ {x}) :
+        y ≠ z := by
+      intro hyz
+      have hyI : y ∈ A ∩ B := Finset.mem_inter.mpr
+        ⟨(Finset.mem_sdiff.mp hy).1, hyz ▸ (Finset.mem_sdiff.mp hz).1⟩
+      have hyx : y = x := by simpa [hx] using hyI
+      exact (Finset.mem_sdiff.mp hy).2 (by simpa [hyx])
+    have had := hcross haRest hdRest
+    have hae := hcross haRest heRest
+    have hbd := hcross hbRest hdRest
+    have hbe := hcross hbRest heRest
+    have hinj : Function.Injective ![x, a, b, d, e] := by
+      intro i j
+      fin_cases i <;> fin_cases j <;> simp <;> aesop
+    obtain ⟨σ, hfirst, hsecond⟩ :=
+      exists_perm_normalizing_intersecting_triples x a b d e hinj
+    refine ⟨σ, ?_, Or.inr ?_⟩
+    · rw [hAform]
+      simpa using hfirst
+    · rw [hBform]
+      simpa using hsecond
+
 /-- Mathematical membership criterion for the executable list of triples. -/
 theorem mem_allTriples_iff {a b c : Nat} :
     [a, b, c] ∈ allTriples ↔ a < b ∧ b < c ∧ c < 9 := by
   simp [allTriples]
+  omega
+
+@[simp] theorem encTriple_three (a b c : Nat) :
+    encTriple [a, b, c] = 100 * a + 10 * b + c := by
+  simp [encTriple]
+  omega
+
+/-- Decimal encoding is injective on the triples used by the enumeration. -/
+theorem encTriple_injective_of_lt_nine
+    {a b c d e f : Nat} (hb : b < 9) (hc : c < 9)
+    (he : e < 9) (hf : f < 9)
+    (henc : encTriple [a, b, c] = encTriple [d, e, f]) :
+    a = d ∧ b = e ∧ c = f := by
+  simp only [encTriple_three] at henc
   omega
 
 /-- For triples with distinct entries, the Boolean enumeration test is the
