@@ -146,6 +146,28 @@ theorem two_mul_card_le_sum_add_one_of_atMostOne_unit
     rw [hcard, hsum, hw₀]
     omega
 
+/-- Exact unit-count form of the preceding estimate: for positive natural
+weights, the only loss from the ideal inequality `2|S| ≤ ∑ w` is one for
+each unit weight. -/
+theorem two_mul_card_le_sum_add_unit_card
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (w : C → ℕ)
+    (hpos : ∀ c ∈ S, 1 ≤ w c) :
+    2 * S.card ≤
+      (∑ c ∈ S, w c) + (S.filter fun c ↦ w c = 1).card := by
+  classical
+  rw [Finset.card_filter, ← Finset.sum_add_distrib]
+  calc
+    2 * S.card = ∑ _c ∈ S, 2 := by simp [Nat.mul_comm]
+    _ ≤ ∑ c ∈ S, (w c + if w c = 1 then 1 else 0) := by
+      apply Finset.sum_le_sum
+      intro c hc
+      have hcpos := hpos c hc
+      by_cases hc1 : w c = 1
+      · simp [hc1]
+      · simp [hc1]
+        omega
+
 /-- The unique-unit version of the mass terminal.  Allowing one normalized
 component coefficient to equal one weakens `2*C ≤ N` only to
 `2*C ≤ N+1`; a gap of five still gives a contradiction.  The exact-square
@@ -157,6 +179,19 @@ theorem false_of_threePoint_odd_pattern_of_atMostOne_unit
     (h : ZMod p → ℕ)
     (hodd : ∀ t, t ∉ ({0, b, -b} : Finset (ZMod p)) → Odd (h t))
     (hmass : ∑ t, h t ≤ 2 * C) (hcount : 2 * C ≤ N + 1) : False := by
+  have hlower := threePoint_odd_pattern_mass_lower_bound hp7 b hb h hodd
+  omega
+
+/-- Unit-count form of the residual mass terminal.  If the number `U` of
+unit normalized components is at most `gap - 4`, then the lower bound
+`p - 3` and upper bound `N + U` are incompatible. -/
+theorem false_of_threePoint_odd_pattern_of_unit_count
+    {p N gap C U : ℕ} [NeZero p]
+    (hp7 : 7 ≤ p) (hpEq : p = N + gap) (hU : U + 4 ≤ gap)
+    (b : ZMod p) (hb : b + b = 1)
+    (h : ZMod p → ℕ)
+    (hodd : ∀ t, t ∉ ({0, b, -b} : Finset (ZMod p)) → Odd (h t))
+    (hmass : ∑ t, h t ≤ 2 * C) (hcount : 2 * C ≤ N + U) : False := by
   have hlower := threePoint_odd_pattern_mass_lower_bound hp7 b hb h hodd
   omega
 
