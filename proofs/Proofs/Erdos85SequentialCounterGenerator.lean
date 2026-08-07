@@ -38,43 +38,54 @@ def seqCounterMkYvar (key : Nat × Nat) : StateM SeqCounterGenState Nat := fun s
 def seqCounterEmit (clause : DimacsClause) : StateM SeqCounterGenState Unit :=
   modify fun st => { st with clauses := st.clauses.push clause }
 
+/-- The inner `k=0,...,t-2` portion of a fixed PySAT outer iteration. -/
+def seqCounterAtMostKLoop (vars : Array Int) (t j : Nat) :
+    Nat → Nat → SeqCounterGenState → SeqCounterGenState
+  | 0, _, st => st
+  | fuel + 1, k, st =>
+      let (skj, st) := seqCounterMkYvar (k, j) st
+      let st :=
+        if j < vars.size - t - 1 then
+          let (skj1, st) := seqCounterMkYvar (k, j + 1) st
+          (seqCounterEmit [-(skj : Int), (skj1 : Int)] st).2
+        else st
+      let (sk1j, st) := seqCounterMkYvar (k + 1, j) st
+      let st := (seqCounterEmit
+        [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st).2
+      seqCounterAtMostKLoop vars t j fuel (k + 1) st
+
+/-- One complete outer iteration at coordinate `j`. -/
+def seqCounterAtMostJStep (vars : Array Int) (t j : Nat)
+    (st : SeqCounterGenState) : SeqCounterGenState :=
+  let (s0j, st) := seqCounterMkYvar (0, j) st
+  let st := (seqCounterEmit [-(vars.getD j 0), (s0j : Int)] st).2
+  let st := seqCounterAtMostKLoop vars t j (t - 1) 0 st
+  let (stj, st) := seqCounterMkYvar (t - 1, j) st
+  let st :=
+    if j < vars.size - t - 1 then
+      let (stj1, st) := seqCounterMkYvar (t - 1, j + 1) st
+      (seqCounterEmit [-(stj : Int), (stj1 : Int)] st).2
+    else st
+  (seqCounterEmit [-(vars.getD (j + t) 0), -(stj : Int)] st).2
+
+/-- The outer `j=0,...,n-t-1` loop as structural recursion. -/
+def seqCounterAtMostJLoop (vars : Array Int) (t : Nat) :
+    Nat → Nat → SeqCounterGenState → SeqCounterGenState
+  | 0, _, st => st
+  | fuel + 1, j, st =>
+      seqCounterAtMostJLoop vars t fuel (j + 1)
+        (seqCounterAtMostJStep vars t j st)
+
 /-- Core of PySAT's `seqcounter_encode_atmostN` in the nontrivial range
 `0 < t < vars.length - 1`.  Outside that range this core intentionally emits
 nothing; the trivial unit/single-clause cases are handled by the surrounding
 cardinality generator. -/
 def seqCounterAtMostCore
-    (top : Nat) (vars : Array Int) (t : Nat) : SeqCounterGenState := Id.run do
-  let mut st : SeqCounterGenState := { top := top }
+    (top : Nat) (vars : Array Int) (t : Nat) : SeqCounterGenState :=
   if 0 < t ∧ t + 1 < vars.size then
-    for j in [:vars.size - t] do
-      let (s0j, st') := seqCounterMkYvar (0, j) st
-      st := st'
-      let (_, st') := seqCounterEmit [-(vars.getD j 0), (s0j : Int)] st
-      st := st'
-      for k in [:t - 1] do
-        let (skj, st') := seqCounterMkYvar (k, j) st
-        st := st'
-        if j < vars.size - t - 1 then
-          let (skj1, st') := seqCounterMkYvar (k, j + 1) st
-          st := st'
-          let (_, st') := seqCounterEmit [-(skj : Int), (skj1 : Int)] st
-          st := st'
-        let (sk1j, st') := seqCounterMkYvar (k + 1, j) st
-        st := st'
-        let (_, st') := seqCounterEmit
-          [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st
-        st := st'
-      let (stj, st') := seqCounterMkYvar (t - 1, j) st
-      st := st'
-      if j < vars.size - t - 1 then
-        let (stj1, st') := seqCounterMkYvar (t - 1, j + 1) st
-        st := st'
-        let (_, st') := seqCounterEmit [-(stj : Int), (stj1 : Int)] st
-        st := st'
-      let (_, st') := seqCounterEmit
-        [-(vars.getD (j + t) 0), -(stj : Int)] st
-      st := st'
-  return st
+    seqCounterAtMostJLoop vars t (vars.size - t) 0 { top := top }
+  else
+    { top := top }
 
 /-- PySAT's `seqcounter_encode_atleastN`: negate the input literals and
 encode an at-most bound of `n-t`. -/
