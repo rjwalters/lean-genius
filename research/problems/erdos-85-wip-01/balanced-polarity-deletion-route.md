@@ -4,7 +4,7 @@ Status: exploratory.  No claim below is yet part of the verified Lean result.
 
 ## Motivation
 
-The current cofinal construction uses the deterministic deletion band
+The direct polarity-band construction uses the deterministic deletion band
 
 \[
   q^2+d,\ldots,q^2+q
@@ -12,8 +12,11 @@ The current cofinal construction uses the deterministic deletion band
 
 of a polarity graph.  This band has lower endpoint of order `q²` but length
 only of order `q`.  The interval-composition lemma therefore gives a
-conductor of order `q³`, and the present plateau-core localization is
-`m = O(d³)`.
+conductor of order `q³`.  Separately, `Erdos85QuadraticConductor` already
+supplies a verified all-order conductor at `36d²` using parabola Sidon graphs
+and a polarity component.  Thus balanced deletion is valuable not merely for
+reaching quadratic order, but for moving the conductor close to the Moore
+scale `d²` with a subquadratic error term.
 
 Arbitrary deletion is unnecessarily pessimistic: it charges every retained
 vertex one degree for every deleted vertex.  A balanced deletion set only
@@ -102,16 +105,16 @@ Choose a prime power `q` in a constant-factor interval above `2d`.  Then
 
 In fact, for `q` sufficiently close to `2d`, the band length is at least a
 positive constant times its lower endpoint.  Feeding `[n₀,N]` into the
-existing interval-composition theorem gives witnesses of minimum degree `d`
-at every order above `C d²` for an absolute constant `C`.  Consequently every
-degree-`d` plateau core would satisfy
+existing interval-composition theorem gives another quadratic conductor,
+potentially with a much smaller constant than the verified `36d²` bound.
+Consequently every degree-`d` plateau core would satisfy
 
 \[
   d(d-1)+3 \le m < C d²,
 \]
 
-improving the presently verified cubic upper localization by a full factor
-of `d`.
+This constant-factor form alone would sharpen the existing quadratic
+localization; the near-diagonal choice below is the materially stronger goal.
 
 This does not alone settle Erdős 85: the remaining window still has quadratic
 width.  It does, however, put all possible cores on the same scale as the
