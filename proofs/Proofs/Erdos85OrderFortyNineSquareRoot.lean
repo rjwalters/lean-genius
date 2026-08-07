@@ -1,4 +1,5 @@
 import Proofs.Erdos85NonregularDefectOperator
+import Proofs.Erdos85AlternatingParity
 import Proofs.Erdos85OrderFortyNineIncidence
 import Proofs.Erdos85OrderFortyNineStratification
 
@@ -132,5 +133,53 @@ theorem orderFortyNine_squareCandidate_det_isSquare
     orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
       G hfree hmin hcard]
   rfl
+
+/-- The determinant of an integer adjacency matrix on an odd number of
+vertices is even: modulo two it is a symmetric zero-diagonal (alternating)
+matrix of odd order. -/
+theorem even_det_adjMatrix_of_odd_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hodd : Odd (Fintype.card V)) : Even (G.adjMatrix ℤ).det := by
+  let B := G.adjMatrix (ZMod 2)
+  have hBsymm : ∀ i j, B i j = B j i := by
+    intro i j
+    simp [B, SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hBdiag : ∀ i, B i i = 0 := by
+    intro i
+    simp [B, SimpleGraph.adjMatrix_apply]
+  have hBdet : B.det = 0 :=
+    det_eq_zero_of_symm_diag_zero_of_odd_card hodd B hBsymm hBdiag
+  have hmap : (Int.castRingHom (ZMod 2)).mapMatrix (G.adjMatrix ℤ) = B := by
+    ext i j
+    simp [B, Matrix.map_apply, SimpleGraph.adjMatrix_apply]
+  rw [← ZMod.intCast_eq_zero_iff_even]
+  have hdetmap := (Int.castRingHom (ZMod 2)).map_det (G.adjMatrix ℤ)
+  rw [hmap, hBdet] at hdetmap
+  exact hdetmap
+
+/-- At odd order, graph realizability forces the candidate determinant to be
+divisible by four.  This is stronger than merely being an integer square
+when used as a direct modular certificate. -/
+theorem orderFortyNine_four_dvd_squareCandidate_det
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    4 ∣ (orderFortyNineSquareCandidate G).det := by
+  have hodd : Odd (Fintype.card V) := by rw [hcard]; decide
+  rcases even_det_adjMatrix_of_odd_card G hodd with ⟨k, hk⟩
+  have hdet : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin hcard]
+    rfl
+  refine ⟨k * k, ?_⟩
+  rw [hdet, hk]
+  ring
 
 end Erdos85
