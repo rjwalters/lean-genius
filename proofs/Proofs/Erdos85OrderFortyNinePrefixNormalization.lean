@@ -15,6 +15,60 @@ namespace OrderFortyNineWitnessTable
 
 def firstTriple : List Nat := [0, 1, 2]
 
+/-! ## Relabeling primitives
+
+The graph-facing normalization only has to choose an ordered injection of the
+points already used by its first two blocks.  These lemmas extend that partial
+labeling to a permutation of all nine high points.  Keeping the extension step
+separate avoids making any arbitrary enumeration of the unused high points
+part of the eventual theorem statement.
+-/
+
+/-- Any ordered list of at most nine distinct high points can be sent to the
+same initial segment of `Fin 9` by a permutation. -/
+theorem exists_perm_send_to_initialSegment {n : Nat} (hn : n ≤ 9)
+    (f : Fin n → Fin 9) (hf : Function.Injective f) :
+    ∃ σ : Equiv.Perm (Fin 9), ∀ i, σ (f i) = Fin.castLE hn i := by
+  exact Equiv.Perm.exists_extending_pair f (Fin.castLE hn) hf
+    (Fin.castLE_injective hn)
+
+/-- Relabel six selected distinct points as `0,1,2,3,4,5`.  This is the
+extension step for two disjoint triple blocks. -/
+theorem exists_perm_normalizing_disjoint_prefix
+    (f : Fin 6 → Fin 9) (hf : Function.Injective f) :
+    ∃ σ : Equiv.Perm (Fin 9), ∀ i, σ (f i) = Fin.castLE (by omega) i :=
+  exists_perm_send_to_initialSegment (by omega) f hf
+
+/-- Relabel five selected distinct points as `0,1,2,3,4`.  Ordering the common
+point first gives the prefix `012,034` for two triples meeting once. -/
+theorem exists_perm_normalizing_intersecting_prefix
+    (f : Fin 5 → Fin 9) (hf : Function.Injective f) :
+    ∃ σ : Equiv.Perm (Fin 9), ∀ i, σ (f i) = Fin.castLE (by omega) i :=
+  exists_perm_send_to_initialSegment (by omega) f hf
+
+/-- Mathematical membership criterion for the executable list of triples. -/
+theorem mem_allTriples_iff {a b c : Nat} :
+    [a, b, c] ∈ allTriples ↔ a < b ∧ b < c ∧ c < 9 := by
+  simp [allTriples]
+  omega
+
+/-- For triples with distinct entries, the Boolean enumeration test is the
+usual statement that their underlying sets meet in at most one point. -/
+theorem linB_eq_true_iff_card_inter_le_one
+    {a b c d e f : Nat} (hS : List.Nodup [a, b, c]) :
+    linB [a, b, c] [d, e, f] = true ↔
+      (({a, b, c} : Finset Nat) ∩ {d, e, f}).card ≤ 1 := by
+  simp only [linB, Nat.ble_eq]
+  rw [List.countP_eq_length_filter]
+  rw [← List.toFinset_card_of_nodup (hS.filter _)]
+  rw [List.toFinset_filter]
+  have heq :
+      [a, b, c].toFinset.filter (fun x => [d, e, f].contains x) =
+        ({a, b, c} : Finset Nat) ∩ {d, e, f} := by
+    ext x
+    simp
+  rw [heq]
+
 theorem mem_rawT2_iff {T2 : List Nat} :
     [firstTriple, T2] ∈ rawT2 ↔ T2 ∈ secondTriples := by
   simp [rawT2, firstTriple]
