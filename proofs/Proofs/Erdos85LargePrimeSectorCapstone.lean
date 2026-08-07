@@ -39,7 +39,7 @@ theorem secondOrder_minLayer_leakage_add_le
     (hfree : ¬ containsC4 V G) {d p N : ℕ}
     (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
     (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hp : p.Prime)
+    (hp : Odd p)
     (hboundary : d * (d - 1) + 3 = N * p)
     (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
       p ∣ c.supp.ncard)
@@ -70,7 +70,9 @@ theorem secondOrder_minLayer_leakage_add_le
   set a := c₀.supp.ncard / p with ha
   set m : (secondOrderDefectGraph G).ConnectedComponent → ℕ :=
     fun f ↦ f.supp.ncard / p with hm
-  have hpPos : 0 < p := hp.pos
+  have hpPos : 0 < p := by
+    rcases hp with ⟨k, hk⟩
+    omega
   have hsize : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
       f.supp.ncard = m f * p := by
     intro f
@@ -203,7 +205,7 @@ theorem false_of_secondOrder_largePrime_sector
     (hfree : ¬ containsC4 V G) {d p N : ℕ}
     (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
     (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hp : p.Prime) (hdp : d < p)
+    (hp : Odd p) (hdp : d < p)
     (hboundary : d * (d - 1) + 3 = N * p)
     (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
       p ∣ c.supp.ncard)
@@ -238,7 +240,7 @@ theorem false_of_secondOrder_largePrime_sector
     Finset.univ.filter
       (fun c ↦ c.supp.ncard = c₀.supp.ncard) with hM
   set QM := componentQuotientMatrix G (secondOrderDefectGraph G) with hQM
-  have hpPos : 0 < p := hp.pos
+  have hpPos : 0 < p := by omega
   set a := c₀.supp.ncard / p with ha
   have hc₀size : c₀.supp.ncard = a * p := by
     rw [ha, Nat.div_mul_cancel (hall c₀)]
@@ -383,7 +385,7 @@ theorem false_of_secondOrder_largePrime_sector
     rcases heven with ⟨k, hk⟩
     omega
   have hp7 : 7 ≤ p := by omega
-  have hpOdd : Odd p := hp.odd_of_ne_two (by omega)
+  have hpOdd : Odd p := hp
   have hc₀p : c₀.supp.ncard = p := by
     rw [hc₀size, haEqN, one_mul]
   exact false_of_secondOrder_lone_unit_minimum
@@ -417,7 +419,8 @@ theorem secondOrder_no_largePrime_dvd_component_order
   rw [hcard] at hpV
   obtain ⟨N, hN⟩ := hpV
   exact false_of_secondOrder_largePrime_sector G hfree hd heven hmin
-    hcard hp hdp (hN.trans (Nat.mul_comm p N)) hall hd4 hd12
+    hcard (hp.odd_of_ne_two (by omega)) hdp (hN.trans (Nat.mul_comm p N))
+    hall hd4 hd12
 
 end
 
