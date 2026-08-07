@@ -293,6 +293,93 @@ theorem secondOrder_minimumLayer_gramSquare_diag
     _ = ((c₀.supp.ncard : ℤ) - 3) + ∑ e ∈ M, (QM c e : ℤ) := by
       rw [hex]
 
+/-- **The minimum-layer diagonal is at most two.**  Every minimum-layer
+component is a minimum, has odd order, and carries a cyclic labeling, so
+the odd-cycle diagonal bound applies. -/
+theorem secondOrder_minimumLayer_diag_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = c₀.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≤ 2 := by
+  classical
+  have hcmin : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ l.supp.ncard := by
+    intro l
+    rw [hc]
+    exact hc₀min l
+  have hcOdd : Odd c.supp.ncard :=
+    secondOrder_minimumComponent_order_odd
+      G hfree hd heven hmin hcard c hcmin
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+  letI : NeZero c.supp.ncard := ⟨by have := hthree c; omega⟩
+  exact secondOrder_equalOddCycleComponent_diagonal_le_two
+    G hfree hd heven hmin hcard (hthree c) hcOdd c (u c) (hu c)
+      (huRange c) (huD c)
+
+/-- **The minimum-layer row excess.**  Each minimum-layer row of the
+restricted quotient carries the equal-size excess `w - 3`. -/
+theorem secondOrder_minimumLayer_row_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = c₀.supp.ncard) :
+    (∑ e ∈ Finset.univ.filter
+        (fun x : (secondOrderDefectGraph G).ConnectedComponent ↦
+          x.supp.ncard = c₀.supp.ncard),
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) *
+        ((componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) -
+          1)) =
+      (c₀.supp.ncard : ℤ) - 3 := by
+  classical
+  set M : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    Finset.univ.filter
+      (fun x ↦ x.supp.ncard = c₀.supp.ncard) with hM
+  set QM := componentQuotientMatrix G (secondOrderDefectGraph G) with hQM
+  have hcmin : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ l.supp.ncard := by
+    intro l
+    rw [hc]
+    exact hc₀min l
+  have hex := secondOrder_minimumComponent_equalSize_excess
+    G hfree hd heven hmin hcard c hcmin
+  rw [← hQM] at hex
+  have hcond : ∀ e' : (secondOrderDefectGraph G).ConnectedComponent,
+      (e'.supp.ncard = c.supp.ncard) =
+        (e'.supp.ncard = c₀.supp.ncard) := by
+    intro e'
+    rw [hc]
+  simp only [hcond, hc] at hex
+  have hfold :
+      (∑ e' : (secondOrderDefectGraph G).ConnectedComponent,
+        if e'.supp.ncard = c₀.supp.ncard then
+          (QM c e' : ℤ) * ((QM c e' : ℤ) - 1) else 0) =
+        ∑ e ∈ M, (QM c e : ℤ) * ((QM c e : ℤ) - 1) := by
+    simp only [hM, Finset.sum_filter]
+  rw [hfold] at hex
+  exact hex
+
 end
 
 end Erdos85
