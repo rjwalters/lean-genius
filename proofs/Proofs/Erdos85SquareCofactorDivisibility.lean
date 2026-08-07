@@ -123,4 +123,30 @@ theorem square_boundary_prime_thin_window
   rw [hBq]
   exact Nat.le_mul_of_pos_right p hqpos
 
+/-- **Exact square-branch factorization.**  Since `p > d` while `s < d`,
+the positive multiplier in the thin-window theorem must equal one.  Thus
+the apparently continuous square branch is confined to the single
+factorization `p = d+s`, `N = d-s`. -/
+theorem square_boundary_exact_factors
+    {d p N : ℕ} (hd : 4 ≤ d) (hp : p.Prime) (hdp : d < p)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hsquare : IsSquare (d - 3)) :
+    ∃ s : ℕ, d = s * s + 3 ∧ p = d + s ∧ N = d - s := by
+  obtain ⟨s, q, hdEq, hqpos, hsum, hcofactor, _⟩ :=
+    square_boundary_prime_thin_window hd hp hdp hboundary hsquare
+  have hsd : s < d := by
+    rw [hdEq]
+    nlinarith
+  have hqOne : q = 1 := by
+    by_contra hq
+    have hqTwo : 2 ≤ q := by omega
+    have htwoP : 2 * p ≤ p * q := by
+      simpa [mul_comm] using Nat.mul_le_mul_left p hqTwo
+    have hsumLt : d + s < 2 * p := by omega
+    rw [← hsum] at htwoP
+    omega
+  subst q
+  simp only [mul_one] at hsum hcofactor
+  exact ⟨s, hdEq, hsum.symm, hcofactor⟩
+
 end Erdos85
