@@ -1,0 +1,86 @@
+import Proofs.Erdos85SquareMinimumDoubleCoverEscape
+
+/-!
+# Deck-odd cancellation for the mass-two double cover
+
+The unique mass-two escape is a cyclic double cover.  Its incidence map is
+constant on the two points in every deck fiber, so it annihilates functions
+which are odd under the deck involution.  This is the valid local operator
+consequence of the double-cover structure; the full adjacency operator need
+not preserve functions supported on the doubled component.
+-/
+
+namespace Erdos85
+
+noncomputable section
+
+/-- A function on a cyclic double cover which changes sign under the deck
+half-turn has total sum zero. -/
+theorem sum_eq_zero_of_halfTurn_antiInvariant
+    {K : Type*} [AddCommGroup K] {r : ℕ} [NeZero r]
+    (F : ZMod (2 * r) → K)
+    (hanti : ∀ y, F (y + (r : ZMod (2 * r))) = -F y) :
+    ∑ y, F y = 0 := by
+  classical
+  apply Finset.sum_involution
+      (s := Finset.univ) (f := F)
+      (fun y _ ↦ y + (r : ZMod (2 * r)))
+  · intro y _
+    rw [hanti]
+    exact add_neg_cancel (F y)
+  · intro y _ _
+    have hrPos : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
+    have hrCast : (r : ZMod (2 * r)) ≠ 0 := by
+      intro hz
+      have hdvd : 2 * r ∣ r :=
+        (ZMod.natCast_eq_zero_iff r (2 * r)).mp hz
+      have hle : 2 * r ≤ r := Nat.le_of_dvd hrPos hdvd
+      omega
+    intro heq
+    apply hrCast
+    have h := congrArg (fun z : ZMod (2 * r) ↦ z - y) heq
+    simpa using h
+  · intro y _
+    simp
+  · intro y _
+    calc
+      y + (r : ZMod (2 * r)) + (r : ZMod (2 * r)) =
+          y + ((r : ZMod (2 * r)) + (r : ZMod (2 * r))) := add_assoc _ _ _
+      _ = y + ((2 * r : ℕ) : ZMod (2 * r)) := by
+        rw [← Nat.cast_add, show r + r = 2 * r by omega]
+      _ = y := by rw [ZMod.natCast_self, add_zero]
+
+/-- A deck-invariant selector has zero pairing with every deck-odd
+function.  In the graph application the selector is a row of the incidence
+block from the minimum cycle to its doubled target. -/
+theorem sum_indicator_eq_zero_of_halfTurn
+    {K : Type*} [AddCommGroup K] {r : ℕ} [NeZero r]
+    (f : ZMod (2 * r) → ZMod r)
+    (hf : ∀ y, f (y + (r : ZMod (2 * r))) = f y)
+    (w : ZMod (2 * r) → K)
+    (hw : ∀ y, w (y + (r : ZMod (2 * r))) = -w y)
+    (x : ZMod r) :
+    ∑ y, (if x = f y then w y else 0) = 0 := by
+  apply sum_eq_zero_of_halfTurn_antiInvariant
+  intro y
+  rw [hf, hw]
+  split_ifs <;> simp_all
+
+/-- Oriented cyclic double-cover incidence annihilates deck-odd functions.
+This packages the preceding cancellation using the orientation hypothesis
+already produced by cycle-cover rigidity. -/
+theorem cycleCover_indicator_mulVec_deckOdd_eq_zero
+    {K : Type*} [AddCommGroup K] {r : ℕ} [NeZero r]
+    (f : ZMod (2 * r) → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (w : ZMod (2 * r) → K)
+    (hw : ∀ y, w (y + (r : ZMod (2 * r))) = -w y)
+    (x : ZMod r) :
+    ∑ y, (if x = f y then w y else 0) = 0 := by
+  exact sum_indicator_eq_zero_of_halfTurn f
+    (cycleCoverMap_halfTurn_invariant f horient) w hw x
+
+end
+
+end Erdos85
