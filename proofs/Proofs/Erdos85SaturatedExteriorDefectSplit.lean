@@ -92,6 +92,69 @@ theorem exists_minimumLayer_saturated_owner_commonNeighbor_iff
       exact ((G.mem_neighborFinset (owner w).2.1 w.1).mp
         (Finset.mem_sdiff.mp (hownerMem w)).1).symm
 
+/-- The canonical owner fibers all have the expected external-neighborhood
+size `d-s`; in the residual case this is `112`. -/
+theorem exists_minimumLayer_saturated_owner_uniformFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3) :
+    ∃ owner : minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀ →
+        minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      ∀ a, (Finset.univ.filter fun z => owner z = a).card = d - s := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  obtain ⟨owner, hownerMem, _hcommon⟩ :=
+    exists_minimumLayer_saturated_owner_commonNeighbor_iff
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, d = t + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  refine ⟨owner, ?_⟩
+  intro a
+  calc
+    (Finset.univ.filter fun z => owner z = a).card = (E a).card := by
+      apply Finset.card_bij (fun z _ => z.1)
+      · intro z hz
+        have hza : owner z = a := (Finset.mem_filter.mp hz).2
+        simpa [hza] using hownerMem z
+      · intro z₁ _ z₂ _ heq
+        exact Subtype.ext heq
+      · intro y hy
+        have hyOut : y ∉ minimumLayerImageFinset D c₀ :=
+          (Finset.mem_sdiff.mp hy).2
+        let z : minimumLayerExteriorVertex D c₀ := ⟨y, hyOut⟩
+        have hza : owner z = a := by
+          by_contra hne
+          have hdj := hpair (Finset.mem_univ (owner z))
+            (Finset.mem_univ a) hne
+          exact (Finset.disjoint_left.mp hdj (hownerMem z) hy).elim
+        refine ⟨z, ?_, rfl⟩
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hza⟩
+    _ = d - s := card_minimumLayerExternalNeighborFinset
+      G D c₀ hregParent hregChild a
+
 end
 
 end Erdos85
