@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineHighPartnerBound
+import Proofs.Erdos85OrderFortyNineLocalEdgePartition
 
 /-!
 # Census of low vertices by high incidence at order 49
@@ -377,6 +378,33 @@ theorem orderFortyNine_disjoint_otherHighNeighbors_of_highLocalEdge
     simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
   exact hfree (containsC4_of_two_common (G.ne_of_adj hxy) hvw
     hvx hvy hwAdjX hwAdjY)
+
+/-- A low vertex incident with three highs has exactly one edge which lies in
+no triangle.  Its three high incidences exhaust the local triangle budget. -/
+theorem orderFortyNine_triangleFreeEdgeGraph_degree_eq_one_of_three_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {x : V} (hx : G.degree x = 7)
+    (hk : (G.neighborFinset x ∩
+      orderFortyNineHighVertices G).card = 3) :
+    (triangleFreeEdgeGraph G).degree x = 1 := by
+  have hr := orderFortyNine_lowLowLocalEdgeCount_eq_zero_of_three_high
+    G hfree hmin hcard hx hk
+  have hlocal := orderFortyNine_high_add_lowLow_eq_localTriangleEdges
+    G hfree hmin hcard hx
+  rw [hk, hr] at hlocal
+  have htriangleFree := card_triangleFreeNeighbors_add_two_mul_localEdges
+    G hfree x
+  rw [← hlocal, hx] at htriangleFree
+  have hcardTF : (triangleFreeNeighbors G x).card = 1 := by omega
+  rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+    triangleFreeEdgeGraph_neighborFinset]
+  exact hcardTF
 
 end
 
