@@ -1,0 +1,118 @@
+import Proofs.Erdos85OrderFortyNineLowTriangleIncidence
+
+/-!
+# Zero-slack branches around a high vertex at order 49
+
+Each of the eight neighbors of a high vertex has five vertices in its
+second-layer branch.  These branches are pairwise disjoint and exhaust all
+forty vertices outside the closed high neighborhood.  Branches whose parents
+form one of the four local triangle pairs have no edges between them.
+-/
+
+open SimpleGraph
+
+namespace Erdos85
+
+noncomputable section
+
+/-- Every second-layer branch rooted at a neighbor of a high vertex has size
+five. -/
+theorem orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (secondLayerBranch G v s).card = 5 := by
+  have hs7 := orderFortyNine_neighbor_degree_seven_of_degreeEight
+    G hfree hmin hcard hv s.2
+  have hcommon := orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+    G hfree hmin hcard hv s
+  rw [degree_induce_neighborSet_eq_card_common] at hcommon
+  have haccount := card_secondLayerBranch_add_common_add_one G v s
+  omega
+
+/-- The second layer of a high vertex has exactly forty vertices. -/
+theorem orderFortyNine_card_secondLayer_degreeEight_eq_forty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8) :
+    (secondLayer G v).card = 40 := by
+  have hdisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  rw [secondLayer, Finset.card_biUnion hdisj]
+  calc
+    (∑ s : {z : V // z ∈ G.neighborSet v},
+        (secondLayerBranch G v s).card) =
+        ∑ _s : {z : V // z ∈ G.neighborSet v}, 5 := by
+      apply Finset.sum_congr rfl
+      intro s _
+      exact orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv s
+    _ = 40 := by
+      rw [Finset.sum_const, Finset.card_univ, Fintype.card_subtype]
+      have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+          G.neighborFinset v := by ext z; simp
+      rw [heq, G.card_neighborFinset_eq_degree, hv]
+      norm_num
+
+/-- No vertex lies beyond distance two from a high vertex. -/
+theorem orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8) :
+    externalRepairCandidates G v = ∅ := by
+  have hpartition :=
+    card_externalRepairCandidates_add_card_secondLayer_add_degree_add_one G v
+  rw [orderFortyNine_card_secondLayer_degreeEight_eq_forty
+      G hfree hmin hcard hv, hv, hcard] at hpartition
+  apply Finset.card_eq_zero.mp
+  omega
+
+/-- If two parents are paired inside the neighborhood of a high vertex,
+there are no edges between their five-vertex second-layer branches. -/
+theorem orderFortyNine_not_adj_between_paired_highBranches
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    {s t : {z : V // z ∈ G.neighborSet v}} (hst : G.Adj s.1 t.1)
+    {a b : V} (ha : a ∈ secondLayerBranch G v s)
+    (hb : b ∈ secondLayerBranch G v t) :
+    ¬ G.Adj a b := by
+  intro hab
+  have hsa : G.Adj s.1 a := by
+    exact (G.mem_neighborFinset s.1 a).mp (Finset.mem_sdiff.mp ha).1
+  have htb : G.Adj t.1 b := by
+    exact (G.mem_neighborFinset t.1 b).mp (Finset.mem_sdiff.mp hb).1
+  have haOutside : a ∉ insert v (G.neighborFinset v) :=
+    (Finset.mem_sdiff.mp ha).2
+  have hbOutside : b ∉ insert v (G.neighborFinset v) :=
+    (Finset.mem_sdiff.mp hb).2
+  have hsb : s.1 ≠ b := by
+    intro h
+    subst b
+    apply hbOutside
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+    exact Or.inr s.2
+  have hat : a ≠ t.1 := by
+    intro h
+    subst a
+    apply haOutside
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+    exact Or.inr t.2
+  exact hfree (containsC4_of_two_common hsb hat
+    hsa.symm hab hst.symm htb)
+
+end
+
+end Erdos85
