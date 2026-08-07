@@ -97,6 +97,100 @@ def highBranchMatchedCount
   ((secondLayerBranch G v s).filter fun a =>
     (G.neighborFinset a ∩ secondLayerBranch G v s).card = 1).card
 
+/-- The induced degree inside a branch is the cardinality used in
+`highBranchMatchedCount`. -/
+theorem degree_induce_secondLayerBranch_eq_card_inter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (s : {z : V // z ∈ G.neighborSet v})
+    (a : secondLayerBranch G v s) :
+    (G.induce (secondLayerBranch G v s)).degree a =
+      (G.neighborFinset a.1 ∩ secondLayerBranch G v s).card := by
+  classical
+  rw [← (G.induce (secondLayerBranch G v s)).card_neighborFinset_eq_degree]
+  apply Finset.card_bij (fun b _ => b.1)
+  · intro b hb
+    have hab : G.Adj a.1 b.1 := by
+      exact ((G.induce (secondLayerBranch G v s)).mem_neighborFinset a b).mp hb
+    exact Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset a.1 b.1).mpr hab, b.2⟩
+  · intro b hb c hc hbc
+    exact Subtype.ext hbc
+  · intro q hq
+    let b : secondLayerBranch G v s :=
+      ⟨q, (Finset.mem_inter.mp hq).2⟩
+    refine ⟨b, ?_, rfl⟩
+    apply ((G.induce (secondLayerBranch G v s)).mem_neighborFinset a b).mpr
+    change G.Adj a.1 q
+    exact (G.mem_neighborFinset a.1 q).mp (Finset.mem_inter.mp hq).1
+
+/-- The internally matched vertices of every high-root branch occur in
+pairs, so their count is even. -/
+theorem even_highBranchMatchedCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    Even (highBranchMatchedCount G v s) := by
+  classical
+  let B := secondLayerBranch G v s
+  let H := G.induce B
+  let P := (Finset.univ : Finset B).filter fun a => H.degree a ≠ 0
+  have hle : ∀ a : B, H.degree a ≤ 1 := by
+    intro a
+    exact degree_induce_secondLayerBranch_le_one G hfree v s a
+  have hsum : ∑ a : B, H.degree a = P.card := by
+    calc
+      (∑ a : B, H.degree a) =
+          ∑ a : B, if H.degree a ≠ 0 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro a _
+        by_cases ha : H.degree a = 0
+        · simp [ha]
+        · simp [ha]
+          have := hle a
+          omega
+      _ = P.card := by
+        simpa [P] using
+          (Finset.sum_boole (R := ℕ) (fun a : B => H.degree a ≠ 0)
+            (Finset.univ : Finset B))
+  have hPeven : Even P.card := by
+    have hhand := H.sum_degrees_eq_twice_card_edges
+    change (∑ a : B, H.degree a) = 2 * H.edgeFinset.card at hhand
+    rw [hsum] at hhand
+    exact ⟨H.edgeFinset.card, by omega⟩
+  have hmatchedEq : highBranchMatchedCount G v s = P.card := by
+    rw [highBranchMatchedCount]
+    apply Finset.card_bij (fun a ha =>
+      (⟨a, (Finset.mem_filter.mp ha).1⟩ : B))
+    · intro a ha
+      simp only [P, Finset.mem_filter, Finset.mem_univ, true_and]
+      have hdeg : H.degree (⟨a, (Finset.mem_filter.mp ha).1⟩ : B) = 1 := by
+        change (G.induce (secondLayerBranch G v s)).degree
+          (⟨a, (Finset.mem_filter.mp ha).1⟩ :
+            secondLayerBranch G v s) = 1
+        rw [degree_induce_secondLayerBranch_eq_card_inter]
+        exact (Finset.mem_filter.mp ha).2
+      omega
+    · intro a ha b hb hab
+      exact congrArg Subtype.val hab
+    · intro a ha
+      have haNonzero : H.degree a ≠ 0 := by
+        simpa [P] using ha
+      have haOne :
+          (G.neighborFinset a.1 ∩ secondLayerBranch G v s).card = 1 := by
+        have hdegOne : H.degree a = 1 := by
+          have := hle a
+          omega
+        change (G.neighborFinset a.1 ∩
+          secondLayerBranch G v s).card = 1
+        rw [← degree_induce_secondLayerBranch_eq_card_inter]
+        exact hdegOne
+      refine ⟨a.1, Finset.mem_filter.mpr ⟨a.2, haOne⟩, ?_⟩
+      rfl
+  rw [hmatchedEq]
+  exact hPeven
+
 /-- Equal-sized high-root branches have symmetric directed miss counts. -/
 theorem highBranchMissCount_comm_of_equal_card
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -677,6 +771,30 @@ theorem squareOrder_sub_two_le_add_matchedCounts_of_paired
   rw [card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
     G (by omega) hv hneigh hlocal s] at hsave
   exact hsave
+
+/-- For odd `d`, both matched counts are even, so the paired lower bound
+rounds up from the odd number `d-2` to `d-1`. -/
+theorem squareOrder_sub_one_le_add_matchedCounts_of_paired_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hodd : Odd d) {v : V}
+    (hv : G.degree v = d + 1)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = d)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = d)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    d - 1 ≤ highBranchMatchedCount G v s + highBranchMatchedCount G v t := by
+  have hbase := squareOrder_sub_two_le_add_matchedCounts_of_paired
+    G hfree hd hv hneigh hlocal hexternal houterDegree s t hst
+  have hevenS := even_highBranchMatchedCount G hfree s
+  have hevenT := even_highBranchMatchedCount G hfree t
+  rcases hodd with ⟨k, hk⟩
+  rcases hevenS with ⟨m, hm⟩
+  rcases hevenT with ⟨n, hn⟩
+  omega
 
 end
 
