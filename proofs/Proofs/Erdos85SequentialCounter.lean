@@ -158,4 +158,50 @@ theorem seqCounterWitness_no_overflow {n : Nat} (x : Fin n → Bool)
     seqPrefixTrue_le_total x (by omega)
   omega
 
+/-! ## Knuth/Healy coordinates used by PySAT -/
+
+/-- Clause 19 at `k=0`: `x(j) → s(0,j)`. -/
+theorem seqCounterKnuth_base {n : Nat} (x : Fin n → Bool)
+    (j : Nat) (hj : j < n) (hx : x ⟨j, hj⟩ = true) :
+    seqCounterWitness x j 0 = true :=
+  seqCounterWitness_input x j hj hx
+
+/-- Clause 18: `s(k,j) → s(k,j+1)`, under the interpretation
+`s(k,j) = [k+1 ≤ count(x₀,...,x_{j+k})]`. -/
+theorem seqCounterKnuth_horizontal {n : Nat} (x : Fin n → Bool)
+    (k j : Nat) (hnext : j + k + 1 < n)
+    (hs : seqCounterWitness x (j + k) k = true) :
+    seqCounterWitness x (j + 1 + k) k = true := by
+  have hp := seqCounterWitness_propagate x (j + k + 1) k hnext
+  have heq₁ : (j + k + 1) - 1 = j + k := by omega
+  have heq₂ : j + k + 1 = j + 1 + k := by omega
+  rw [heq₁] at hp
+  rw [← heq₂]
+  exact hp hs
+
+/-- Clause 19 for `k+1`:
+`x(j+k+1) ∧ s(k,j) → s(k+1,j)`. -/
+theorem seqCounterKnuth_diagonal {n : Nat} (x : Fin n → Bool)
+    (k j : Nat) (hidx : j + k + 1 < n)
+    (hx : x ⟨j + k + 1, hidx⟩ = true)
+    (hs : seqCounterWitness x (j + k) k = true) :
+    seqCounterWitness x (j + (k + 1)) (k + 1) = true := by
+  have hd := seqCounterWitness_diagonal x (j + k + 1) (k + 1)
+    hidx (by omega) (by omega) hx
+  have heq : (j + k + 1) - 1 = j + k := by omega
+  rw [heq] at hd
+  simpa [Nat.add_assoc] using hd hs
+
+/-- Terminal overflow clause:
+`x(j+t) → ¬s(t-1,j)` whenever the complete row has at most `t` true bits. -/
+theorem seqCounterKnuth_no_overflow {n : Nat} (x : Fin n → Bool)
+    (t j : Nat) (ht : 0 < t) (hidx : j + t < n)
+    (htotal : seqPrefixTrue x n ≤ t)
+    (hx : x ⟨j + t, hidx⟩ = true) :
+    seqCounterWitness x (j + (t - 1)) (t - 1) = false := by
+  have hn := seqCounterWitness_no_overflow x (j + t) t hidx
+    (by omega) ht htotal hx
+  have heq : (j + t) - 1 = j + (t - 1) := by omega
+  simpa [heq] using hn
+
 end Erdos85
