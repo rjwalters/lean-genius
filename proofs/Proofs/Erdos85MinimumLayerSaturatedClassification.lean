@@ -14,6 +14,35 @@ namespace Erdos85
 
 noncomputable section
 
+/-- The frequency-pair residual analysis actually determines the common
+defect-cycle length, independently of which exceptional degree survives:
+every equal-cycle exact even boundary has common length three. -/
+theorem equalCycle_common_length_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d r : ℕ}
+    (hd : 4 ≤ d) (hdeven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hlen : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = r) :
+    r = 3 := by
+  obtain ⟨hr3, -, -, -⟩ :=
+    equalCycle_length_facts G hfree hd hdeven hmin hcard hlen
+  obtain ⟨k, hk⟩ :=
+    equalCycle_three_pow G hfree hd hdeven hmin hcard hlen
+  by_cases hk2 : 2 ≤ k
+  · exfalso
+    apply false_of_equalCycle_nine_dvd
+      G hfree hd hdeven hmin hcard hlen
+    rw [hk]
+    exact pow_dvd_pow 3 hk2
+  · have hk1 : k ≤ 1 := by omega
+    interval_cases k
+    · omega
+    · simpa using hk
+
 /-- A saturated exact-boundary descent whose child degree is itself in the
 even boundary range has child degree `4` or `12`; consequently the parent
 degree is `12` or `124`. -/
@@ -35,7 +64,7 @@ theorem minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
         s * (s - 1) + 3)
     (hs4 : 4 ≤ s) (hsEven : Even s)
     (hsat : d = (s - 1) * (s - 1) + 3) :
-    d = 12 ∨ d = 124 := by
+    (d = 12 ∨ d = 124) ∧ c₀.supp.ncard = 3 := by
   classical
   let D := secondOrderDefectGraph G
   let H := minimumLayerGraph G D c₀
@@ -80,6 +109,10 @@ theorem minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
   have hsClass : s = 4 ∨ s = 12 :=
     equalCycle_degree_eq_four_or_twelve
       H hfreeChild hs4 hsEven hminChild hcardChild hlen
+  have hc₀three : c₀.supp.ncard = 3 :=
+    equalCycle_common_length_eq_three
+      H hfreeChild hs4 hsEven hminChild hcardChild hlen
+  refine ⟨?_, hc₀three⟩
   rcases hsClass with rfl | rfl <;> omega
 
 /-- **Sharp-descent capstone.**  Away from the genuine degree-`4` and
@@ -107,7 +140,8 @@ theorem secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
       Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
         s * (s - 1) + 3 ∧
       Even s ∧ s < d ∧
-      (d = 124 ∨ s * (s - 1) + 4 ≤ d) := by
+      ((d = 124 ∧ c₀.supp.ncard = 3) ∨
+        s * (s - 1) + 4 ≤ d) := by
   obtain ⟨s, hreg, _hfreeChild, hcardChild, hsEven, hdesc⟩ :=
     secondOrder_minimumLayer_sharp_descent
       G hfree hd heven hmin hcard c₀ hc₀min
@@ -126,7 +160,7 @@ theorem secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
         exact hd4 hsat
     have hdClass := minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
       G hfree hd heven hmin hcard c₀ hreg hcardChild hs4 hsEven hsat
-    exact Or.inl (hdClass.resolve_left hd12)
+    exact Or.inl ⟨hdClass.1.resolve_left hd12, hdClass.2⟩
   · exact Or.inr hgap
 
 end
