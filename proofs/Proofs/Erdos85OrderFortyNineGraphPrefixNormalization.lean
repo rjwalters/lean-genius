@@ -531,6 +531,127 @@ theorem orderFortyNine_exists_tableT3_row_of_tripleSupportCount_three
         G hHigh ha3 hb3 hc3 hab1 hacLe hbcLe
     exact ⟨a, b, c, hT, e, row, hrow, hroweq⟩
 
+/-- Four specified graph blocks, with an intersecting first pair, produce a
+verified `tableT4` row; the two residual blocks are ordered automatically. -/
+theorem orderFortyNine_exists_tableT4_row_of_intersecting_prefix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    {x y z w : V}
+    (hx3 : (orderFortyNineHighSupport G x).card = 3)
+    (hy3 : (orderFortyNineHighSupport G y).card = 3)
+    (hz3 : (orderFortyNineHighSupport G z).card = 3)
+    (hw3 : (orderFortyNineHighSupport G w).card = 3)
+    (hxy : ((orderFortyNineHighSupport G x) ∩
+      orderFortyNineHighSupport G y).card = 1)
+    (hxz : ((orderFortyNineHighSupport G x) ∩
+      orderFortyNineHighSupport G z).card ≤ 1)
+    (hyz : ((orderFortyNineHighSupport G y) ∩
+      orderFortyNineHighSupport G z).card ≤ 1)
+    (hxw : ((orderFortyNineHighSupport G x) ∩
+      orderFortyNineHighSupport G w).card ≤ 1)
+    (hyw : ((orderFortyNineHighSupport G y) ∩
+      orderFortyNineHighSupport G w).card ≤ 1)
+    (hzw : ((orderFortyNineHighSupport G z) ∩
+      orderFortyNineHighSupport G w).card ≤ 1) :
+    ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9,
+      ∃ row ∈ OrderFortyNineWitnessTable.tableT4,
+        (row.1 =
+          [OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e x),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e y),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e z),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e w)] ∨
+         row.1 =
+          [OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e x),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e y),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e w),
+           OrderFortyNineWitnessTable.tripleDigits
+              (orderFortyNineLabeledHighSupport G e z)]) := by
+  obtain ⟨e, hA, hB⟩ :=
+    orderFortyNine_exists_highLabeling_normalizing_intersecting_tripleSupports
+      G hHigh hx3 hy3 hxy
+  let R := orderFortyNineLabeledHighSupport G e z
+  let S := orderFortyNineLabeledHighSupport G e w
+  have hR : R.card = 3 := by rw [card_orderFortyNineLabeledHighSupport, hz3]
+  have hS : S.card = 3 := by rw [card_orderFortyNineLabeledHighSupport, hw3]
+  have hR1 : (({0, 1, 2} : Finset (Fin 9)) ∩ R).card ≤ 1 := by
+    rw [← hA, card_inter_orderFortyNineLabeledHighSupport]
+    exact hxz
+  have hR2 : (({0, 3, 4} : Finset (Fin 9)) ∩ R).card ≤ 1 := by
+    rw [← hB, card_inter_orderFortyNineLabeledHighSupport]
+    exact hyz
+  have hS1 : (({0, 1, 2} : Finset (Fin 9)) ∩ S).card ≤ 1 := by
+    rw [← hA, card_inter_orderFortyNineLabeledHighSupport]
+    exact hxw
+  have hS2 : (({0, 3, 4} : Finset (Fin 9)) ∩ S).card ≤ 1 := by
+    rw [← hB, card_inter_orderFortyNineLabeledHighSupport]
+    exact hyw
+  have hRS : (R ∩ S).card ≤ 1 := by
+    rw [card_inter_orderFortyNineLabeledHighSupport]
+    exact hzw
+  have hRne1 : R ≠ {0, 1, 2} := by
+    intro h
+    rw [h] at hR1
+    have hc : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 1, 2}).card = 3 := by
+      native_decide
+    omega
+  have hRne2 : R ≠ {0, 3, 4} := by
+    intro h
+    rw [h] at hR2
+    have hc : (({0, 3, 4} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 3 := by
+      native_decide
+    omega
+  have hSne1 : S ≠ {0, 1, 2} := by
+    intro h
+    rw [h] at hS1
+    have hc : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 1, 2}).card = 3 := by
+      native_decide
+    omega
+  have hSne2 : S ≠ {0, 3, 4} := by
+    intro h
+    rw [h] at hS2
+    have hc : (({0, 3, 4} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 3 := by
+      native_decide
+    omega
+  have hRneS : R ≠ S := by
+    intro h
+    rw [h, Finset.inter_self, hS] at hRS
+    omega
+  rcases OrderFortyNineWitnessTable.mem_rawT4_of_intersectingPrefix
+      hR hS hR1 hR2 hS1 hS2 hRS hRne1 hRne2 hSne1 hSne2 hRneS with
+    hraw | hraw
+  · have hraw' :
+        [OrderFortyNineWitnessTable.tripleDigits
+            (orderFortyNineLabeledHighSupport G e x),
+         OrderFortyNineWitnessTable.tripleDigits
+            (orderFortyNineLabeledHighSupport G e y),
+         OrderFortyNineWitnessTable.tripleDigits R,
+         OrderFortyNineWitnessTable.tripleDigits S] ∈
+          OrderFortyNineWitnessTable.rawT4 := by
+      simpa [hA, hB, OrderFortyNineWitnessTable.firstTriple] using hraw
+    obtain ⟨row, hrow, hroweq⟩ :=
+      OrderFortyNineWitnessTable.exists_tableT4_row_of_mem_rawT4 hraw'
+    exact ⟨e, row, hrow, Or.inl hroweq⟩
+  · have hraw' :
+        [OrderFortyNineWitnessTable.tripleDigits
+            (orderFortyNineLabeledHighSupport G e x),
+         OrderFortyNineWitnessTable.tripleDigits
+            (orderFortyNineLabeledHighSupport G e y),
+         OrderFortyNineWitnessTable.tripleDigits S,
+         OrderFortyNineWitnessTable.tripleDigits R] ∈
+          OrderFortyNineWitnessTable.rawT4 := by
+      simpa [hA, hB, OrderFortyNineWitnessTable.firstTriple] using hraw
+    obtain ⟨row, hrow, hroweq⟩ :=
+      OrderFortyNineWitnessTable.exists_tableT4_row_of_mem_rawT4 hraw'
+    exact ⟨e, row, hrow, Or.inr hroweq⟩
+
 end
 
 end Erdos85
