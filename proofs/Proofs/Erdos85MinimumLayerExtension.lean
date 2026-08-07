@@ -690,6 +690,34 @@ theorem minimumLayer_extension_saturation_or_childOrder_le
       G hfree hd heven hmin hcard c₀ hregChild hcardChild z hzOutside hzUnused
     simpa [hcardChild] using hle
 
+/-- In the even-degree setting, the nonsaturated lower bound improves by
+one because the child boundary order is odd. -/
+theorem minimumLayer_extension_even_saturation_or_gap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hsd : s < d) :
+    d = (s - 1) * (s - 1) + 3 ∨ s * (s - 1) + 4 ≤ d := by
+  rcases minimumLayer_extension_saturation_or_childOrder_le
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hsd with heq | hle
+  · exact Or.inl heq
+  · right
+    obtain ⟨a, ha⟩ := heven
+    obtain ⟨b, hb⟩ := Nat.even_mul_pred_self s
+    omega
+
 /-- Graph-facing sharp capstone for the descent tower. -/
 theorem secondOrder_minimumLayer_sharp_descent
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -713,14 +741,14 @@ theorem secondOrder_minimumLayer_sharp_descent
         s * (s - 1) + 3 ∧
       Even s ∧
       (d ≠ 4 → d ≠ 12 → s < d ∧
-        (d = (s - 1) * (s - 1) + 3 ∨ s * (s - 1) + 3 ≤ d)) := by
+        (d = (s - 1) * (s - 1) + 3 ∨ s * (s - 1) + 4 ≤ d)) := by
   obtain ⟨s, hreg, hfreeChild, hcardChild, hsEven, hlt⟩ :=
     secondOrder_minimumLayer_descent
       G hfree hd heven hmin hcard c₀ hc₀min
   refine ⟨s, hreg, hfreeChild, hcardChild, hsEven, ?_⟩
   intro hd4 hd12
   have hsd := hlt hd4 hd12
-  exact ⟨hsd, minimumLayer_extension_saturation_or_childOrder_le
+  exact ⟨hsd, minimumLayer_extension_even_saturation_or_gap
     G hfree hd heven hmin hcard c₀ hreg hcardChild hsd⟩
 
 end
