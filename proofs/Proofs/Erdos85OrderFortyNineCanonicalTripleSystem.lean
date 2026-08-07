@@ -426,6 +426,47 @@ def OrderFortyNineCanonicalTripleSystemSpec
   (∀ T ∈ h9SystemTriples rep, ∃ x ∈ X,
     (orderFortyNineLabeledHighSupport G e x).image Fin.val = T.toFinset)
 
+/-- The set of natural-number triples encoded by the graph's size-three
+supports. -/
+def orderFortyNineLabeledTripleSupportSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9) :
+    Finset (Finset Nat) :=
+  ((orderFortyNineLowVertices G).filter fun x =>
+    (orderFortyNineHighSupport G x).card = 3).image fun x =>
+      (orderFortyNineLabeledHighSupport G e x).image Fin.val
+
+/-- The underlying set of triples of a canonical representative. -/
+def orderFortyNineRepresentativeTripleSet
+    (rep : OrderFortyNineH9System) : Finset (Finset Nat) :=
+  (h9SystemTriples rep).toFinset.image List.toFinset
+
+/-- A canonical-system specification is equivalently equality of the two
+finite triple-support sets. -/
+theorem OrderFortyNineCanonicalTripleSystemSpec.tripleSupportSet_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (rep : OrderFortyNineH9System)
+    (hcanon : OrderFortyNineCanonicalTripleSystemSpec G e rep) :
+    orderFortyNineLabeledTripleSupportSet G e =
+      orderFortyNineRepresentativeTripleSet rep := by
+  ext S
+  constructor
+  · intro hS
+    obtain ⟨x, hx, hxS⟩ := Finset.mem_image.mp hS
+    obtain ⟨T, hT, hEq⟩ := hcanon.1 x hx
+    apply Finset.mem_image.mpr
+    refine ⟨T, List.mem_toFinset.mpr hT, ?_⟩
+    exact hEq.symm.trans hxS
+  · intro hS
+    obtain ⟨T, hT, hTS⟩ := Finset.mem_image.mp hS
+    obtain ⟨x, hx, hEq⟩ := hcanon.2 T (List.mem_toFinset.mp hT)
+    apply Finset.mem_image.mpr
+    refine ⟨x, hx, ?_⟩
+    exact hEq.trans hTS
+
 /-- A semantic table witness for a list enumerating all triple-support
 vertices produces a canonical graph labeling. -/
 theorem exists_canonicalTripleSystem_of_row
