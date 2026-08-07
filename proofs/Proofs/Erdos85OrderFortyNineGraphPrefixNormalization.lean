@@ -52,6 +52,46 @@ theorem inter_finsetInSubtype
   ext x
   simp
 
+/-- A finite family of blocks either contains an intersecting distinct pair,
+or every distinct pair is disjoint. -/
+theorem exists_intersecting_pair_or_pairwise_disjoint
+    {α : Type*} [DecidableEq α] (T : Finset (Finset α)) :
+    (∃ A ∈ T, ∃ B ∈ T, A ≠ B ∧ (A ∩ B).Nonempty) ∨
+      ∀ A ∈ T, ∀ B ∈ T, A ≠ B → (A ∩ B).card = 0 := by
+  by_cases h : ∃ A ∈ T, ∃ B ∈ T, A ≠ B ∧ (A ∩ B).Nonempty
+  · exact Or.inl h
+  · apply Or.inr
+    intro A hA B hB hAB
+    apply Finset.card_eq_zero.mpr
+    exact Finset.not_nonempty_iff_eq_empty.mp fun hne =>
+      h ⟨A, hA, B, hB, hAB, hne⟩
+
+/-- Graph-specialized selection dichotomy for the triple-support vertices. -/
+theorem orderFortyNine_tripleSupports_intersecting_or_pairwise_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    let T := (orderFortyNineLowVertices G).filter fun x =>
+      (orderFortyNineHighSupport G x).card = 3
+    (∃ x ∈ T, ∃ y ∈ T, x ≠ y ∧
+      ((orderFortyNineHighSupport G x) ∩
+        orderFortyNineHighSupport G y).Nonempty) ∨
+    ∀ x ∈ T, ∀ y ∈ T, x ≠ y →
+      ((orderFortyNineHighSupport G x) ∩
+        orderFortyNineHighSupport G y).card = 0 := by
+  dsimp only
+  by_cases h : ∃ x ∈ (orderFortyNineLowVertices G).filter (fun x =>
+      (orderFortyNineHighSupport G x).card = 3),
+      ∃ y ∈ (orderFortyNineLowVertices G).filter (fun x =>
+        (orderFortyNineHighSupport G x).card = 3),
+        x ≠ y ∧ ((orderFortyNineHighSupport G x) ∩
+          orderFortyNineHighSupport G y).Nonempty
+  · exact Or.inl h
+  · apply Or.inr
+    intro x hx y hy hxy
+    apply Finset.card_eq_zero.mpr
+    exact Finset.not_nonempty_iff_eq_empty.mp fun hne =>
+      h ⟨x, hx, y, hy, hxy, hne⟩
+
 /-- Two size-three high supports in the nine-high stratum can be labeled as
 the prefix `012,345` or `012,034`. -/
 theorem orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
