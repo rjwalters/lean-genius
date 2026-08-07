@@ -50,6 +50,32 @@ theorem minDegreeForC4_fortyNine_lt_fortyEight
   simpa using minDegreeForC4_drop_of_witness_of_no_succ_witness
     (n := 48) (d := 7) (by norm_num) hw48 hno49
 
+/-- The order-48 witness is automatically sharp: elementary cherry counting
+gives the matching upper bound `f(48) ≤ 8`. -/
+theorem minDegreeForC4_fortyEight_eq_eight
+    (hw48 : C4FreeMinDegreeWitness 48 7) :
+    minDegreeForC4 48 = 8 := by
+  have hlower : 7 < minDegreeForC4 48 :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).1 hw48
+  have hupper : minDegreeForC4 48 ≤ 8 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  omega
+
+/-- If a degree-six order-49 witness is also supplied, the two finite values
+are pinned exactly.  Keeping this lower-bound input explicit makes the
+certificate boundary transparent. -/
+theorem minDegreeForC4_fortyEight_fortyNine_exact
+    (hw48 : C4FreeMinDegreeWitness 48 7)
+    (hw49 : C4FreeMinDegreeWitness 49 6)
+    (hno49 : ¬ C4FreeMinDegreeWitness 49 7) :
+    minDegreeForC4 48 = 8 ∧ minDegreeForC4 49 = 7 := by
+  refine ⟨minDegreeForC4_fortyEight_eq_eight hw48, ?_⟩
+  have hlower : 6 < minDegreeForC4 49 :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).1 hw49
+  have hupper : minDegreeForC4 49 ≤ 7 :=
+    (not_c4FreeMinDegreeWitness_iff_minDegreeForC4_le (by norm_num)).1 hno49
+  omega
+
 /-- The same conditional finite result in the convention-free Ramsey language:
 star sizes 41 and 42 first become forced at order 49. -/
 theorem consecutiveC4StarPlateauAt_fortyEight
