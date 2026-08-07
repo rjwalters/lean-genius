@@ -139,6 +139,39 @@ theorem orderFortyNineHighLowFixedClauses_satisfied
         hsupp', hbitFalse]
       rfl
 
+theorem orderFortyNineHighHighFixedClauses_bounded :
+    dimacsFormulaBounded 1176 orderFortyNineHighHighFixedClauses := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNineHighHighFixedClauses, List.mem_toArray,
+    List.mem_map] at hclause
+  obtain ⟨ab, hab, rfl⟩ := hclause
+  simp only [List.mem_singleton] at hlit
+  subst lit
+  exact orderFortyNineNegEdgeLiteral_bounded _ _
+    (fun heq => orderFortyNineHighPairs_ne ab hab
+      (orderFortyNineHighVertex_injective heq))
+
+theorem orderFortyNineHighLowFixedClauses_bounded (masks : Array Nat) :
+    dimacsFormulaBounded 1176
+      (orderFortyNineHighLowFixedClauses masks) := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNineHighLowFixedClauses, List.mem_toArray,
+    List.mem_flatMap, List.mem_finRange, true_and, List.mem_map] at hclause
+  obtain ⟨y, w, rfl⟩ := hclause
+  simp only [List.mem_singleton] at hlit
+  subst lit
+  unfold orderFortyNineSupportUnitLiteral
+  split
+  · exact orderFortyNineEdgeLiteral_bounded _ _
+      (orderFortyNineLowVertex_ne_highVertex y w)
+  · exact orderFortyNineNegEdgeLiteral_bounded _ _
+      (orderFortyNineLowVertex_ne_highVertex y w)
+
+theorem orderFortyNineFixedClauses_bounded (masks : Array Nat) :
+    dimacsFormulaBounded 1176 (orderFortyNineFixedClauses masks) :=
+  dimacsFormulaBounded_append orderFortyNineHighHighFixedClauses_bounded
+    (orderFortyNineHighLowFixedClauses_bounded masks)
+
 theorem orderFortyNineFixedClauses_satisfied
     {masks : Array Nat} {edges : BitVec 1176}
     (hc : orderFortyNineBooleanConstraints 9 masks edges)

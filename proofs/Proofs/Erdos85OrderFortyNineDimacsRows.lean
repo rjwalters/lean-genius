@@ -123,6 +123,18 @@ theorem orderFortyNineDimacsEdgeVal_negEdgeLiteral
   simp only [dimacsLitValue, hneg, if_false, Int.natAbs_neg]
   rw [hpositive]
 
+theorem orderFortyNineEdgeLiteral_bounded
+    (i j : Fin 49) (hij : i ≠ j) :
+    (orderFortyNineEdgeLiteral i j).natAbs ≤ 1176 := by
+  have hlt := orderFortyNineEdgeIndex_lt i j hij
+  simp [orderFortyNineEdgeLiteral]
+  omega
+
+theorem orderFortyNineNegEdgeLiteral_bounded
+    (i j : Fin 49) (hij : i ≠ j) :
+    (-orderFortyNineEdgeLiteral i j).natAbs ≤ 1176 := by
+  simpa using orderFortyNineEdgeLiteral_bounded i j hij
+
 /-- The graph-edge assignment reifies every literal in the exact PySAT row. -/
 theorem orderFortyNineDimacsRow_reifies
     (edges : BitVec 1176) (i : Fin 49) :
