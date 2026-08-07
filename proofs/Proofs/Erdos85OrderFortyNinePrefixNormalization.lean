@@ -161,6 +161,33 @@ theorem exists_perm_normalizing_two_threeFinsets
     · rw [hBform]
       simpa using hsecond
 
+/-- Coordinate-free form: on any nine-point type, two linear triple blocks
+can be made the prescribed prefix by choosing the labeling itself. -/
+theorem exists_labeling_normalizing_two_threeFinsets
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (hcard : Fintype.card α = 9)
+    (A B : Finset α) (hA : A.card = 3) (hB : B.card = 3)
+    (hlin : (A ∩ B).card ≤ 1) :
+    ∃ e : α ≃ Fin 9,
+      A.map e.toEmbedding = {0, 1, 2} ∧
+      (B.map e.toEmbedding = {3, 4, 5} ∨
+       B.map e.toEmbedding = {0, 3, 4}) := by
+  let e₀ : α ≃ Fin 9 := Fintype.equivFinOfCardEq hcard
+  have hAmap : (A.map e₀.toEmbedding).card = 3 := by simpa [hA]
+  have hBmap : (B.map e₀.toEmbedding).card = 3 := by simpa [hB]
+  have hinter :
+      (A.map e₀.toEmbedding ∩ B.map e₀.toEmbedding).card ≤ 1 := by
+    rw [← Finset.map_inter]
+    simpa using hlin
+  obtain ⟨σ, hfirst, hsecond⟩ :=
+    exists_perm_normalizing_two_threeFinsets
+      (A.map e₀.toEmbedding) (B.map e₀.toEmbedding) hAmap hBmap hinter
+  refine ⟨e₀.trans σ, ?_, ?_⟩
+  · simpa [Finset.map_map] using hfirst
+  · rcases hsecond with hsecond | hsecond
+    · exact Or.inl (by simpa [Finset.map_map] using hsecond)
+    · exact Or.inr (by simpa [Finset.map_map] using hsecond)
+
 /-- Mathematical membership criterion for the executable list of triples. -/
 theorem mem_allTriples_iff {a b c : Nat} :
     [a, b, c] ∈ allTriples ↔ a < b ∧ b < c ∧ c < 9 := by
