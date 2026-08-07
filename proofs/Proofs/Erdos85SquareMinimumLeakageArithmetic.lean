@@ -78,6 +78,38 @@ theorem minimumLayer_disjointTarget_collapse
         _ = 1 := hau
     exact ⟨by omega, by omega⟩
 
+/-- Prime-free form of the minimum-layer squeeze.  Let `w` be the literal
+minimum component order and `u` the number of components of that order.  The
+cross-pair identity and disjoint-target mass bound imply that either every
+vertex lies in the minimum layer or that layer has at most `2*d-1` vertices.
+
+Unlike `minimumLayer_disjointTarget_collapse`, this statement uses neither a
+common prime divisor nor a large-prime window, so it remains available in the
+smooth and small-prime residual cases. -/
+theorem minimumLayer_orderMass_le_or_all
+    (d n w u S R : ℕ)
+    (huw : u * w ≤ n)
+    (hS : w * S ≤ n - u * w)
+    (hidentity : u * (n - u * w) + R = (2 * d - 1) * S) :
+    n = u * w ∨ u * w ≤ 2 * d - 1 := by
+  by_cases hall : n = u * w
+  · exact Or.inl hall
+  · right
+    have houtside : 0 < n - u * w :=
+      Nat.sub_pos_of_lt (lt_of_le_of_ne huw (Ne.symm hall))
+    have hmain : u * (n - u * w) ≤ (2 * d - 1) * S := by
+      omega
+    have hscaled : (n - u * w) * (u * w) ≤
+        (n - u * w) * (2 * d - 1) := by
+      calc
+        (n - u * w) * (u * w) = w * (u * (n - u * w)) := by ring
+        _ ≤ w * ((2 * d - 1) * S) := Nat.mul_le_mul_left w hmain
+        _ = (2 * d - 1) * (w * S) := by ring
+        _ ≤ (2 * d - 1) * (n - u * w) :=
+          Nat.mul_le_mul_left (2 * d - 1) hS
+        _ = (n - u * w) * (2 * d - 1) := by ring
+    exact Nat.le_of_mul_le_mul_left hscaled houtside
+
 /-- If each target is used by at most one source and a positive incidence
 has value equal to the target weight, total incidence mass is bounded by
 total target weight. -/
@@ -136,6 +168,45 @@ theorem disjoint_target_finset_total_incidence_le_weight
           exact (hiNot hiS).elim
       _ = w j := hexact i hiS j hj hipos
       _ ≤ w j := le_rfl
+
+/-- Scaled form of disjoint target incidence.  If every used target `j` is
+used by a unique source and its full weight is `scale * q i j`, then the
+scaled total incidence is bounded by the total target weight.  No
+divisibility hypothesis is imposed on unused targets. -/
+theorem disjoint_target_finset_scaled_incidence_le_weight
+    {I J : Type*} [DecidableEq I] [DecidableEq J]
+    (S : Finset I) (T : Finset J) (q : I → J → ℕ)
+    (weight : J → ℕ) (scale : ℕ)
+    (hunique : ∀ i₁ ∈ S, ∀ i₂ ∈ S, ∀ j ∈ T,
+      0 < q i₁ j → 0 < q i₂ j → i₁ = i₂)
+    (hexact : ∀ i ∈ S, ∀ j ∈ T,
+      0 < q i j → scale * q i j = weight j) :
+    scale * (∑ i ∈ S, ∑ j ∈ T, q i j) ≤ ∑ j ∈ T, weight j := by
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_le_sum
+  intro j hj
+  by_cases hnone : ∀ i ∈ S, q i j = 0
+  · have hz : ∑ i ∈ S, scale * q i j = 0 :=
+      Finset.sum_eq_zero fun i hi ↦ by rw [hnone i hi, mul_zero]
+    rw [hz]
+    exact Nat.zero_le _
+  · push Not at hnone
+    obtain ⟨i, hiS, hi⟩ := hnone
+    have hipos : 0 < q i j := Nat.pos_of_ne_zero hi
+    calc
+      ∑ a ∈ S, scale * q a j = scale * q i j := by
+        apply Finset.sum_eq_single i
+        · intro b hb hbi
+          have hb0 : q b j = 0 := by
+            by_contra hbne
+            exact hbi (hunique b hb i hiS j hj
+              (Nat.pos_of_ne_zero hbne) hipos)
+          rw [hb0, mul_zero]
+        · intro hiNot
+          exact (hiNot hiS).elim
+      _ = weight j := hexact i hiS j hj hipos
+      _ ≤ weight j := le_rfl
 
 /-- With unit weight on the source layer, disjoint target incidence is
 bounded by the coefficient mass outside that layer. -/
