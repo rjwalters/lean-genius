@@ -202,6 +202,68 @@ theorem no_halfTurn_matching_of_cycle_edges
     (hne (by rw [hvalr, hval0]; omega))
     (hne (by rw [hvalr, hvalr1]; omega))
 
+/-- The kernel of doubling on a cyclic double cover consists exactly of
+zero and the deck half-turn. -/
+theorem two_mul_eq_zero_iff_eq_zero_or_halfTurn
+    {r : ℕ} [NeZero r] (z : ZMod (2 * r)) :
+    2 * z = 0 ↔ z = 0 ∨ z = (r : ZMod (2 * r)) := by
+  constructor
+  · intro hz
+    have hcast : (((2 * z.val : ℕ) : ZMod (2 * r))) = 0 := by
+      calc
+        (((2 * z.val : ℕ) : ZMod (2 * r))) =
+            2 * ((z.val : ℕ) : ZMod (2 * r)) := by push_cast; ring
+        _ = 2 * z := by rw [ZMod.natCast_zmod_val]
+        _ = 0 := hz
+    have hdvd : 2 * r ∣ 2 * z.val :=
+      (ZMod.natCast_eq_zero_iff (2 * z.val) (2 * r)).mp hcast
+    obtain ⟨k, hk⟩ := hdvd
+    have hrPos : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
+    have hcancel : 2 * z.val = 2 * (r * k) := by
+      rw [hk, Nat.mul_assoc]
+    have hzval : z.val = r * k :=
+      Nat.eq_of_mul_eq_mul_left (by omega) hcancel
+    have hklt : k < 2 := by
+      have := ZMod.val_lt z
+      rw [hzval] at this
+      nlinarith
+    rcases (by omega : k = 0 ∨ k = 1) with rfl | rfl
+    · left
+      apply ZMod.val_injective
+      simpa [hzval]
+    · right
+      apply ZMod.val_injective
+      rw [hzval, mul_one, ZMod.val_cast_of_lt]
+      omega
+  · rintro (rfl | rfl)
+    · simp
+    · have hcast : ((2 * r : ℕ) : ZMod (2 * r)) = 0 :=
+        ZMod.natCast_self (2 * r)
+      calc
+        2 * (r : ZMod (2 * r)) =
+            ((2 * r : ℕ) : ZMod (2 * r)) := by push_cast; ring
+        _ = 0 := hcast
+
+/-- Once a support contains at most one point in every deck fiber,
+doubling is injective on that support even though it is not injective on
+the ambient even cycle. -/
+theorem two_mul_injOn_of_no_halfTurn_pairs
+    {r : ℕ} [NeZero r] (A : Finset (ZMod (2 * r)))
+    (hdeck : ∀ y ∈ A,
+      y + (r : ZMod (2 * r)) ∉ A) :
+    Set.InjOn (fun y : ZMod (2 * r) ↦ 2 * y) A := by
+  intro x hx y hy hxy
+  have hzero : 2 * (x - y) = 0 := by
+    linear_combination hxy
+  rcases (two_mul_eq_zero_iff_eq_zero_or_halfTurn (x - y)).mp hzero with
+      h0 | hr
+  · exact sub_eq_zero.mp h0
+  · exfalso
+    apply hdeck y hy
+    have hxy' : x = y + (r : ZMod (2 * r)) := by
+      linear_combination hr
+    rwa [← hxy']
+
 end
 
 end Erdos85
