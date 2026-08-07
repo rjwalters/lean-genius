@@ -56,6 +56,13 @@ theorem seqCounterLookup_mem {key : Nat × Nat} {id : Nat}
           simp [hentry]
       · next _ => exact List.mem_cons_of_mem _ (ih h)
 
+/-- The identifier returned by `mk_yvar` is immediately present in its
+updated allocation table. -/
+theorem seqCounterMkYvar_mem (key : Nat × Nat) (st : SeqCounterGenState) :
+    let out := seqCounterMkYvar key st
+    (key, out.1) ∈ out.2.ids := by
+  exact seqCounterLookup_mem (seqCounterMkYvar_lookup key st)
+
 /-- If a key was already allocated, `mk_yvar` is observationally the
 identity and returns its existing identifier. -/
 theorem seqCounterMkYvar_of_lookup {key : Nat × Nat} {id : Nat}
@@ -183,6 +190,44 @@ theorem seqCounterIdsExtend_preserves_mem {before after : SeqCounterGenState}
     (hext : SeqCounterIdsExtend before after) {entry : (Nat × Nat) × Nat}
     (hentry : entry ∈ before.ids) : entry ∈ after.ids :=
   hext entry hentry
+
+/-- Later generator states retain every clause emitted by earlier states. -/
+def SeqCounterClausesExtend (before after : SeqCounterGenState) : Prop :=
+  ∀ clause ∈ before.clauses, clause ∈ after.clauses
+
+theorem SeqCounterClausesExtend.refl (st : SeqCounterGenState) :
+    SeqCounterClausesExtend st st := by
+  intro clause hclause
+  exact hclause
+
+theorem SeqCounterClausesExtend.trans {a b c : SeqCounterGenState}
+    (hab : SeqCounterClausesExtend a b)
+    (hbc : SeqCounterClausesExtend b c) :
+    SeqCounterClausesExtend a c := by
+  intro clause hclause
+  exact hbc clause (hab clause hclause)
+
+theorem seqCounterClausesExtend_mkYvar (key : Nat × Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterClausesExtend st (seqCounterMkYvar key st).2 := by
+  intro clause hclause
+  rw [seqCounterMkYvar_clauses]
+  exact hclause
+
+theorem seqCounterClausesExtend_emit (clause : DimacsClause)
+    (st : SeqCounterGenState) :
+    SeqCounterClausesExtend st (seqCounterEmit clause st).2 := by
+  intro old hold
+  change old ∈ st.clauses.push clause
+  have hdisj : old ∈ st.clauses ∨ old = clause := Or.inl hold
+  simpa using hdisj
+
+/-- A just-emitted clause belongs to the updated state. -/
+theorem seqCounterEmit_mem (clause : DimacsClause)
+    (st : SeqCounterGenState) :
+    clause ∈ (seqCounterEmit clause st).2.clauses := by
+  change clause ∈ st.clauses.push clause
+  exact Array.mem_push_self
 
 /-- Reverse lookup used to interpret a final numeric auxiliary identifier. -/
 def seqCounterKeyLookup (id : Nat) :
