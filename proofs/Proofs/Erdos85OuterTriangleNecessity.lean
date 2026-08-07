@@ -98,6 +98,83 @@ theorem exists_triangleFreeNeighbors_card_le_of_odd_defectClique
   refine ⟨x, hxC, ?_⟩
   exact Nat.le_sub_of_add_le (by simpa [Nat.add_comm] using hsum)
 
+/-- At excess seven and degree six, every antipodal degree is odd. -/
+theorem odd_antipodalDegree_of_sixRegular_orderForty
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (R : SimpleGraph W) [DecidableRel R.Adj]
+    [DecidableRel (antipodalGraph R).Adj]
+    [DecidableRel (triangleFreeEdgeGraph R).Adj]
+    (hfree : ¬ containsC4 W R)
+    (hreg : ∀ x, R.degree x = 6)
+    (hcard : Fintype.card W = 40)
+    (x : W) : Odd (antipodalNeighbors R x).card := by
+  have hDdeg := secondOrderDefectGraph_degree_eq_excess_add_two
+    R hfree (d := 6) (e := 7) hreg (by omega) x
+  have hsum : (antipodalNeighbors R x).card +
+      (triangleFreeNeighbors R x).card = 9 := by
+    calc
+      (antipodalNeighbors R x).card +
+          (triangleFreeNeighbors R x).card =
+          ((secondOrderDefectGraph R).neighborFinset x).card := by
+            rw [secondOrderDefectGraph_neighborFinset,
+              Finset.card_union_of_disjoint
+                (disjoint_antipodal_triangleFreeNeighbors R x)]
+      _ = (secondOrderDefectGraph R).degree x :=
+        (secondOrderDefectGraph R).card_neighborFinset_eq_degree x
+      _ = 9 := hDdeg
+  have hTFpar := triangleFreeNeighbors_card_mod_two_eq_degree
+    R hfree hreg x
+  norm_num at hTFpar
+  obtain ⟨k, hk⟩ : Even (triangleFreeNeighbors R x).card :=
+    Nat.even_iff.mpr (by omega)
+  use 4 - k
+  omega
+
+/-- In a five-point defect clique, an internally unmatched vertex has an
+odd, hence nonzero, number of antipodes outside the clique whenever its
+total antipodal degree is odd. -/
+theorem odd_antipodal_outside_five_defectClique_of_unmatched
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (R : SimpleGraph W) [DecidableRel R.Adj]
+    [DecidableRel (antipodalGraph R).Adj]
+    [DecidableRel (triangleFreeEdgeGraph R).Adj]
+    (C : Finset W) (hCcard : C.card = 5)
+    (hclique : (secondOrderDefectGraph R).IsClique (C : Set W))
+    (x : W) (hxC : x ∈ C)
+    (hxNoAdj : ∀ y ∈ C, ¬ R.Adj x y)
+    (hAntiOdd : Odd (antipodalNeighbors R x).card) :
+    Odd ((antipodalNeighbors R x) \ C).card := by
+  classical
+  have hsub : C.erase x ⊆ antipodalNeighbors R x := by
+    intro y hy
+    have hyC := Finset.mem_of_mem_erase hy
+    have hyx : y ≠ x := Finset.ne_of_mem_erase hy
+    have hD := hclique hxC hyC hyx.symm
+    change (antipodalGraph R ⊔ triangleFreeEdgeGraph R).Adj x y at hD
+    rcases hD with hanti | htf
+    · exact hanti
+    · exact (hxNoAdj y hyC ((mem_triangleFreeNeighbors R x y).mp htf).1).elim
+  have hinter : antipodalNeighbors R x ∩ C = C.erase x := by
+    ext y
+    constructor
+    · intro hy
+      rcases Finset.mem_inter.mp hy with ⟨hanti, hyC⟩
+      have hyx : y ≠ x := by
+        intro heq
+        subst y
+        exact ((mem_antipodalNeighbors R x x).mp hanti).1 rfl
+      exact Finset.mem_erase.mpr ⟨hyx, hyC⟩
+    · intro hy
+      exact Finset.mem_inter.mpr ⟨hsub hy, Finset.mem_of_mem_erase hy⟩
+  have hfour : (C.erase x).card = 4 := by
+    rw [Finset.card_erase_of_mem hxC, hCcard]
+  have hle := Finset.card_le_card hsub
+  rw [hfour] at hle
+  rw [Finset.card_sdiff, Finset.inter_comm, hinter, hfour]
+  obtain ⟨k, hk⟩ := hAntiOdd
+  use k - 2
+  omega
+
 /-- A six-regular `C₄`-free graph of order forty in which every edge is
 triangle-free has no five-vertex clique in its second-order defect graph. -/
 theorem no_five_secondOrderDefect_clique_of_all_edges_triangleFree
