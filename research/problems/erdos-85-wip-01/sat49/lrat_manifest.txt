@@ -1,0 +1,25 @@
+# h=9 terminal LRAT certificates — all drat-trim "s VERIFIED" against the
+# lex-var-convention CNFs (regenerable via certify_t34.py / the t2 builder).
+# Solver: CaDiCaL 1.9.5 via python-sat 1.9.dev7 (with_proof → DRAT), EXCEPT
+# t3_rep1 whose CaDiCaL proof capture is truncated (missing terminal conflict);
+# its certificate is from Glucose 4.2 (34,771-line DRAT, verified).
+# Converter/verifier: drat-trim (github.com/marijnheule/drat-trim, built from
+# source 2026-08-07). SHA256 of each LRAT:
+fbb6093345fe5ebbb18442dd9aedd0eac5a7d2f880f3f6caf74ff209cae8fcff  t2_repA.lrat  ((0,1,2),(3,4,5))
+93be4365ea975542bc1595c8c4ee1ddb505f11367f788d834f68e4054229ee09  t2_repB.lrat  ((0,1,2),(0,3,4))
+09f2e3728e4a68f33d5fe4f15d07c99d3958755fc1e6a78f8f0119cc2ec5c2c3  t3_rep0.lrat  ((0,1,2),(3,4,5),(3,6,7))
+2e1f81259872164c81892d2bde505a9b2e115cb213bc060bccd52f8d2732a2db  t3_rep1.lrat  ((0,1,2),(3,4,5),(6,7,8)) [glucose]
+9b8002e14b5cc597518198fc787ca520004b822bfcaaf982c5b2aa1af6a0c153  t3_rep2.lrat  ((0,1,2),(0,3,4),(0,5,6))
+58c2edc375c0e295d07640fa55ebb23c0a44c71b5014b35a42b4854747c2b71f  t3_rep3.lrat  ((0,1,2),(0,3,4),(1,3,5))
+6809e1efde580dfb5fb3bf368deb07d39bc535aff7327521a6cd57b0f132aa23  t3_rep4.lrat  ((0,1,2),(0,3,4),(1,5,6))
+46aafce0a651877459c3002aa5f44f42dcc8ac7c5cd37d86ad87fcfb8ec3b558  t4_rep0.lrat  ((0,1,2),(3,4,5),(3,6,7),(4,6,8))
+1bc8408ef0be9664f747d3c89d9683f7240fd3951fc03c33fb910b1d338a5902  t4_rep1.lrat  ((0,1,2),(0,3,4),(0,5,6),(0,7,8))
+e2a4e1c304aa2c0a67183585e9c9998bb5d24081a359496cbf26034395541b41  t4_rep2.lrat  ((0,1,2),(0,3,4),(0,5,6),(1,3,5))
+dda89125d3240d804e9ce60d42c2299a84e8401cc44fd1caefe81671d8570487  t4_rep3.lrat  ((0,1,2),(0,3,4),(0,5,6),(1,3,7))
+cbe38d84b8fb477beeeb48000a0b4bbc6295c2ab2d4ec012dc2065dd908fc527  t4_rep4.lrat  ((0,1,2),(0,3,4),(0,5,6),(1,7,8))
+7c330f53ac5de1b5a260ef14ad4308b0f9bfb5614d9ee69d5329027eff313141  t4_rep5.lrat  ((0,1,2),(0,3,4),(1,3,5),(2,4,5))
+2fcc507bee37d4d712430c9aa775380952d5dade9fc0df1950b895b6a0934194  t4_rep6.lrat  ((0,1,2),(0,3,4),(1,3,5),(2,4,6))
+68e7b79bfb227d084f9d54ff991f7f6696cc414720f13404439eca4dc3147727  t4_rep7.lrat  ((0,1,2),(0,3,4),(1,3,5),(2,6,7))
+1a2c1383b8ae9fcfe489e088fd0ba4007b0cb149a3dfb4b22ce9445d86ac0998  t4_rep8.lrat  ((0,1,2),(0,3,4),(1,5,6),(2,7,8))
+fb40f35580d0b33c960cd61d582b1995046dd67b7e49ab2d2320d58546577ac8  t4_rep9.lrat  ((0,1,2),(0,3,4),(1,5,6),(3,5,7))
+e8f99be2e290508c16f6e3ad9a4fc3dedc8778b6eb65d04c8ec69b910b5f0633  t4_rep10.lrat ((0,1,2),(0,3,4),(1,5,6),(3,7,8))

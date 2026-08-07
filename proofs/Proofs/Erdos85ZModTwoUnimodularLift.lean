@@ -1,0 +1,217 @@
+import Proofs.Erdos85TwoAdicDeterminant
+import Mathlib.LinearAlgebra.Matrix.Transvection
+import Mathlib.LinearAlgebra.Matrix.Rank
+
+/-!
+# Unimodular lifts of binary row operations
+
+Every invertible matrix over `ZMod 2` is a product of transvections and an
+invertible diagonal matrix.  Lifting each binary coefficient to its canonical
+integer representative gives a matrix of determinant one over `ℤ` whose
+reduction modulo two is the original matrix.
+-/
+
+namespace Erdos85
+
+open Matrix Matrix.TransvectionStruct
+
+noncomputable section
+
+private theorem zmodTwo_intCast_val_local :
+    ∀ x : ZMod 2, ((x.val : ℤ) : ZMod 2) = x := by
+  decide
+
+private def liftZModTwoTransvection {ι : Type*}
+    (t : Matrix.TransvectionStruct ι (ZMod 2)) :
+    Matrix.TransvectionStruct ι ℤ where
+  i := t.i
+  j := t.j
+  hij := t.hij
+  c := t.c.val
+
+private theorem map_liftZModTwoTransvection
+    {ι : Type*} [DecidableEq ι]
+    (t : Matrix.TransvectionStruct ι (ZMod 2)) :
+    (liftZModTwoTransvection t).toMatrix.map
+        (Int.castRingHom (ZMod 2)) = t.toMatrix := by
+  change ((1 + Matrix.single t.i t.j (t.c.val : ℤ)).map
+      (Int.castRingHom (ZMod 2))) = 1 + Matrix.single t.i t.j t.c
+  ext i j
+  by_cases hi : t.i = i <;> by_cases hj : t.j = j <;>
+    simp [Matrix.map_apply, Matrix.add_apply, Matrix.one_apply,
+      Matrix.single_apply, hi, hj, zmodTwo_intCast_val_local]
+
+private theorem map_liftZModTwoTransvection_prod
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (L : List (Matrix.TransvectionStruct ι (ZMod 2))) :
+    ((L.map fun t => (liftZModTwoTransvection t).toMatrix).prod.map
+        (Int.castRingHom (ZMod 2))) =
+      (L.map Matrix.TransvectionStruct.toMatrix).prod := by
+  induction L with
+  | nil => simp
+  | cons t L ih =>
+      simp only [List.map_cons, List.prod_cons, Matrix.map_mul]
+      rw [map_liftZModTwoTransvection, ih]
+
+/-- Every invertible binary matrix is the reduction of a unimodular integral
+matrix.  In fact the lift constructed here has determinant exactly one. -/
+theorem exists_unimodular_int_lift_zmodTwo
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (Q : Matrix ι ι (ZMod 2)) (hQ : Q.det ≠ 0) :
+    ∃ U : Matrix ι ι ℤ,
+      U.det = 1 ∧ U.map (Int.castRingHom (ZMod 2)) = Q := by
+  letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  obtain ⟨L, L', D, hfac⟩ :=
+    Matrix.Pivot.exists_list_transvec_mul_diagonal_mul_list_transvec Q
+  have hDdet : (Matrix.diagonal D).det ≠ 0 := by
+    intro hzero
+    apply hQ
+    rw [hfac, Matrix.det_mul, Matrix.det_mul, hzero]
+    simp
+  have hD : ∀ i, D i ≠ 0 := by
+    rw [Matrix.det_diagonal, Finset.prod_ne_zero_iff] at hDdet
+    exact fun i => hDdet i (Finset.mem_univ i)
+  have hDval : ∀ i, (D i).val = 1 := by
+    intro i
+    have hlt := (D i).val_lt
+    have hne : (D i).val ≠ 0 := by
+      intro hz
+      apply hD i
+      apply ZMod.val_injective
+      simpa [hz]
+    omega
+  let UL : Matrix ι ι ℤ :=
+    (L.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let UR : Matrix ι ι ℤ :=
+    (L'.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let UD : Matrix ι ι ℤ := Matrix.diagonal fun i => (D i).val
+  refine ⟨UL * UD * UR, ?_, ?_⟩
+  · rw [Matrix.det_mul, Matrix.det_mul]
+    have hUL : UL.det = 1 := by
+      change (L.map (Matrix.TransvectionStruct.toMatrix ∘
+        liftZModTwoTransvection)).prod.det = 1
+      simpa only [List.map_map] using
+        Matrix.TransvectionStruct.det_toMatrix_prod
+          (L.map liftZModTwoTransvection)
+    have hUR : UR.det = 1 := by
+      change (L'.map (Matrix.TransvectionStruct.toMatrix ∘
+        liftZModTwoTransvection)).prod.det = 1
+      simpa only [List.map_map] using
+        Matrix.TransvectionStruct.det_toMatrix_prod
+          (L'.map liftZModTwoTransvection)
+    have hUD : UD.det = 1 := by
+      change (Matrix.diagonal (fun i => ((D i).val : ℤ))).det = 1
+      rw [Matrix.det_diagonal]
+      simp [hDval]
+    rw [hUL, hUD, hUR]
+    norm_num
+  · rw [Matrix.map_mul, Matrix.map_mul]
+    have hUL : UL.map (Int.castRingHom (ZMod 2)) =
+        (L.map Matrix.TransvectionStruct.toMatrix).prod := by
+      exact map_liftZModTwoTransvection_prod L
+    have hUR : UR.map (Int.castRingHom (ZMod 2)) =
+        (L'.map Matrix.TransvectionStruct.toMatrix).prod := by
+      exact map_liftZModTwoTransvection_prod L'
+    have hUD : UD.map (Int.castRingHom (ZMod 2)) = Matrix.diagonal D := by
+      ext i j
+      by_cases hij : i = j
+      · subst j
+        simp [UD, zmodTwo_intCast_val_local]
+      · simp [UD, hij]
+    rw [hUL, hUD, hUR]
+    exact hfac.symm
+
+/-- Binary diagonal reduction, lifted integrally: every zero pivot contributes
+a factor of two to the original integral determinant.  The number of zero
+pivots is the mod-two nullity; that final identification is kept separate. -/
+theorem exists_zmodTwo_diagonal_zero_pivots_dvd_det
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B : Matrix ι ι ℤ) :
+    ∃ D : ι → ZMod 2,
+      (Finset.univ.filter fun i => D i = 0).card =
+          Fintype.card ι - (B.map (Int.castRingHom (ZMod 2))).rank ∧
+        2 ^ ((Finset.univ.filter fun i => D i = 0).card) ∣ B.det.natAbs := by
+  letI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  let Q : Matrix ι ι (ZMod 2) := B.map (Int.castRingHom (ZMod 2))
+  obtain ⟨L, L', D, hred⟩ :=
+    Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal Q
+  let U : Matrix ι ι ℤ :=
+    (L.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let W : Matrix ι ι ℤ :=
+    (L'.map fun t => (liftZModTwoTransvection t).toMatrix).prod
+  let S : Finset ι := Finset.univ.filter fun i => D i = 0
+  have hUdet : U.det = 1 := by
+    change (L.map (Matrix.TransvectionStruct.toMatrix ∘
+      liftZModTwoTransvection)).prod.det = 1
+    simpa only [List.map_map] using
+      Matrix.TransvectionStruct.det_toMatrix_prod
+        (L.map liftZModTwoTransvection)
+  have hWdet : W.det = 1 := by
+    change (L'.map (Matrix.TransvectionStruct.toMatrix ∘
+      liftZModTwoTransvection)).prod.det = 1
+    simpa only [List.map_map] using
+      Matrix.TransvectionStruct.det_toMatrix_prod
+        (L'.map liftZModTwoTransvection)
+  have hrank : (Matrix.diagonal D).rank = Q.rank := by
+    rw [← hred]
+    rw [Matrix.rank_mul_eq_left_of_isUnit_det _ _
+      (show IsUnit ((L'.map Matrix.TransvectionStruct.toMatrix).prod.det) by
+        rw [Matrix.TransvectionStruct.det_toMatrix_prod]
+        exact isUnit_one)]
+    rw [Matrix.rank_mul_eq_right_of_isUnit_det _ _
+      (show IsUnit ((L.map Matrix.TransvectionStruct.toMatrix).prod.det) by
+        rw [Matrix.TransvectionStruct.det_toMatrix_prod]
+        exact isUnit_one)]
+  have hnonzero : (Finset.univ.filter fun i => D i ≠ 0).card = Q.rank := by
+    calc
+      _ = Fintype.card {i // D i ≠ 0} :=
+        (Fintype.card_subtype fun i => D i ≠ 0).symm
+      _ = (Matrix.diagonal D).rank := (Matrix.rank_diagonal D).symm
+      _ = Q.rank := hrank
+  have hpartition : S.card +
+      (Finset.univ.filter fun i => D i ≠ 0).card = Fintype.card ι := by
+    simpa [S] using
+      (Finset.card_filter_add_card_filter_not
+        (s := Finset.univ) (fun i => D i = 0))
+  have hcount : S.card = Fintype.card ι - Q.rank := by omega
+  have hmap : (U * B * W).map (Int.castRingHom (ZMod 2)) =
+      Matrix.diagonal D := by
+    rw [Matrix.map_mul, Matrix.map_mul]
+    rw [show U.map (Int.castRingHom (ZMod 2)) =
+        (L.map Matrix.TransvectionStruct.toMatrix).prod by
+      exact map_liftZModTwoTransvection_prod L]
+    rw [show W.map (Int.castRingHom (ZMod 2)) =
+        (L'.map Matrix.TransvectionStruct.toMatrix).prod by
+      exact map_liftZModTwoTransvection_prod L']
+    exact hred
+  refine ⟨D, ?_, ?_⟩
+  · exact hcount
+  change 2 ^ S.card ∣ B.det.natAbs
+  apply pow_card_dvd_det_natAbs_of_two_sided_unimodular_even_rows
+    B U W S (hUdet ▸ isUnit_one) (hWdet ▸ isUnit_one)
+  intro i hi j
+  have hDi : D i = 0 := (Finset.mem_filter.mp hi).2
+  apply ZMod.intCast_eq_zero_iff_even.mp
+  change ((U * B * W).map (Int.castRingHom (ZMod 2))) i j = 0
+  rw [hmap]
+  by_cases hij : i = j
+  · subst j
+    simp [hDi]
+  · simp [hij]
+
+/-- **Binary nullity bounds two-adic determinant divisibility.**  This is the
+Smith inequality in its matrix-rank form, proved using only lifted Gaussian
+transvections:
+`2 ^ (number of columns - rank mod 2)` divides the integral determinant. -/
+theorem pow_modTwo_nullity_dvd_det_natAbs
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (B : Matrix ι ι ℤ) :
+    2 ^ (Fintype.card ι -
+        (B.map (Int.castRingHom (ZMod 2))).rank) ∣ B.det.natAbs := by
+  obtain ⟨D, hcount, hdiv⟩ :=
+    exists_zmodTwo_diagonal_zero_pivots_dvd_det B
+  rwa [hcount] at hdiv
+
+end
+
+end Erdos85

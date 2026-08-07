@@ -11,7 +11,12 @@ Is it true that f(n+1) ≥ f(n) for all large n?
 **Known Results**:
 - f(n) = (1 + o(1))√n asymptotically
 - f(n) < √n + 1
-- f(4) = 2
+- This development checks the exact values through n = 20; companion modules
+  extend the table through n = 21 and give a direct structural proof at n = 14
+- Eventual monotonicity is equivalent here to eventual extension of C₄-free
+  minimum-degree witnesses
+- A one-vertex attachment is characterized exactly by common-neighbor
+  independence; a sharp 15-vertex witness refutes the universal selector route
 - Connected to Ramsey number R(C₄, K_{1,n})
 
 Reference: https://erdosproblems.com/85
@@ -311,6 +316,84 @@ theorem minDegreeForC4_le_sub_one {n : ℕ} (hn : 4 ≤ n) :
   intro G _ hmin
   rw [eq_top_of_minDegree_ge G hmin]
   exact completeGraph_containsC4 hn
+
+/-! ## Monotonicity as witness extension
+
+The threshold definition is contravariant to concrete `C₄`-free witnesses:
+`d < f(n)` exactly when some graph on `n` vertices has minimum degree at least
+`d` and contains no `C₄`.  Consequently the Erdős question is equivalent to
+eventual extension of every such witness from `n` to `n + 1`, preserving its
+minimum-degree lower bound.  This isolates the genuinely graph-theoretic content
+of the open problem from the order-theoretic bookkeeping around `sInf`. -/
+
+/-- A `C₄`-free graph on `n` vertices whose minimum degree is at least `d`. -/
+def C4FreeMinDegreeWitness (n d : ℕ) : Prop :=
+  ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+    d ≤ G.minDegree ∧ ¬ containsC4 (Fin n) G
+
+/-- **Threshold/witness duality.** For `n ≥ 4`, the threshold `f(n)` is
+strictly greater than `d` exactly when a `C₄`-free minimum-degree-`d` witness
+exists.  This packages the `sInf` argument used by all concrete lower bounds. -/
+theorem c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 {n d : ℕ} (hn : 4 ≤ n) :
+    C4FreeMinDegreeWitness n d ↔ d < minDegreeForC4 n := by
+  let S : Set ℕ := {k : ℕ | ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+    G.minDegree ≥ k → containsC4 (Fin n) G}
+  have hne : S.Nonempty := by
+    refine ⟨n - 1, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 hn
+  change (∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      d ≤ G.minDegree ∧ ¬ containsC4 (Fin n) G) ↔ d < sInf S
+  constructor
+  · rintro ⟨G, hdec, hdeg, hfree⟩
+    letI := hdec
+    by_contra hlt
+    have hsinf : sInf S ∈ S := Nat.sInf_mem hne
+    exact hfree (hsinf G (le_trans (Nat.le_of_not_gt hlt) hdeg))
+  · intro hlt
+    by_contra hex
+    have hdS : d ∈ S := by
+      intro G hdec hdeg
+      by_contra hfree
+      exact hex ⟨G, hdec, hdeg, hfree⟩
+    exact Nat.notMem_of_lt_sInf hlt hdS
+
+/-- Every `C₄`-free minimum-degree witness on `n` vertices can be extended
+to one more vertex without lowering the certified minimum degree. -/
+def C4FreeWitnessExtension (n : ℕ) : Prop :=
+  ∀ d, C4FreeMinDegreeWitness n d → C4FreeMinDegreeWitness (n + 1) d
+
+/-- **One-step monotonicity is exactly witness extension.**  This is the local
+form of the reduction underlying Erdős #85. -/
+theorem minDegreeForC4_mono_iff_witnessExtension {n : ℕ} (hn : 4 ≤ n) :
+    minDegreeForC4 n ≤ minDegreeForC4 (n + 1) ↔ C4FreeWitnessExtension n := by
+  constructor
+  · intro hmono d hd
+    apply (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).2
+    exact lt_of_lt_of_le
+      ((c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).1 hd) hmono
+  · intro hext
+    by_contra hmono
+    have hlt : minDegreeForC4 (n + 1) < minDegreeForC4 n := Nat.lt_of_not_ge hmono
+    have hw : C4FreeMinDegreeWitness n (minDegreeForC4 (n + 1)) :=
+      (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 hn).2 hlt
+    have hw' := hext (minDegreeForC4 (n + 1)) hw
+    exact (Nat.lt_irrefl (minDegreeForC4 (n + 1)))
+      ((c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).1 hw')
+
+/-- **Erdős #85, reformulated.**  Eventual monotonicity of `f` is equivalent
+to eventual extension of every `C₄`-free minimum-degree witness.  Thus the
+open question has no remaining `sInf` content: it is precisely the graph
+extension problem represented by `C4FreeWitnessExtension`. -/
+theorem erdos85Question_iff_eventually_witnessExtension :
+    Erdos85Question ↔ ∀ᶠ n in atTop, C4FreeWitnessExtension n := by
+  constructor
+  · intro h
+    filter_upwards [h, eventually_ge_atTop 4] with n hmono hn
+    exact (minDegreeForC4_mono_iff_witnessExtension hn).1 hmono
+  · intro h
+    filter_upwards [h, eventually_ge_atTop 4] with n hext hn
+    exact (minDegreeForC4_mono_iff_witnessExtension hn).2 hext
 
 /-- **Degenerate small cases: `f(n) = n` for `1 ≤ n ≤ 3`.**  When `n < 4` *no*
 graph on `Fin n` can contain a `C₄` at all (`not_containsC4_of_card_lt_four`), so
@@ -2680,6 +2763,256 @@ theorem common_le_one_of_not_containsC4 {V : Type*} [Fintype V] [DecidableEq V]
     (G.ne_of_adj hv.1).symm (G.ne_of_adj hv.2).symm
     (G.ne_of_adj hv'.1).symm (G.ne_of_adj hv'.2).symm)
 
+/-! ## Safe vertex attachment from common-neighbour-independent sets
+
+The witness-extension formulation above reduces the open problem to a concrete
+selection question.  Given a `C₄`-free graph `G`, choose a set `S` of vertices
+such that no two distinct members of `S` have a common neighbour.  Adding a new
+vertex adjacent exactly to `S` then creates no `C₄`: any new cycle would have
+the form `new-a-z-b-new`, making `z` a common neighbour of distinct `a,b ∈ S`.
+If `|S| ≥ d`, the new vertex has degree at least `d`, while all old degrees
+can only increase.  The results below formalize that complete reduction. -/
+
+/-- A vertex set in which no distinct pair has a common neighbour in `G`. -/
+def CommonNeighborIndependent {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) : Prop :=
+  ∀ ⦃a⦄, a ∈ S → ∀ ⦃b⦄, b ∈ S → a ≠ b →
+    (G.neighborFinset a ∩ G.neighborFinset b).card = 0
+
+/-- Add one new vertex (`none`) adjacent exactly to the selected old vertices. -/
+def attachVertex {V : Type*} [DecidableEq V] (G : SimpleGraph V) (S : Finset V) :
+    SimpleGraph (Option V) where
+  Adj
+    | some x, some y => G.Adj x y
+    | some x, none => x ∈ S
+    | none, some y => y ∈ S
+    | none, none => False
+  symm.symm := by
+    intro p q h
+    match p, q with
+    | some x, some y => exact h.symm
+    | some _, none => exact h
+    | none, some _ => exact h
+    | none, none => exact h.elim
+  loopless.irrefl := by
+    intro p h
+    match p with
+    | some x => exact G.loopless.irrefl x h
+    | none => exact h
+
+instance attachVertexDecidableRel {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
+    DecidableRel (attachVertex G S).Adj := fun p q =>
+  match p, q with
+  | some x, some y => inferInstanceAs (Decidable (G.Adj x y))
+  | some x, none => inferInstanceAs (Decidable (x ∈ S))
+  | none, some y => inferInstanceAs (Decidable (y ∈ S))
+  | none, none => inferInstanceAs (Decidable False)
+
+@[simp] theorem attachVertex_adj_some_some {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {x y : V} :
+    (attachVertex G S).Adj (some x) (some y) ↔ G.Adj x y := Iff.rfl
+
+@[simp] theorem attachVertex_adj_some_none {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {x : V} :
+    (attachVertex G S).Adj (some x) none ↔ x ∈ S := Iff.rfl
+
+@[simp] theorem attachVertex_adj_none_some {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} {y : V} :
+    (attachVertex G S).Adj none (some y) ↔ y ∈ S := Iff.rfl
+
+@[simp] theorem attachVertex_not_adj_none_none {V : Type*} [DecidableEq V]
+    {G : SimpleGraph V} {S : Finset V} :
+    ¬ (attachVertex G S).Adj none none := fun h => h
+
+/-- Attaching a new vertex never decreases an old vertex's degree. -/
+theorem degree_le_attachVertex_degree_some {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) (x : V) :
+    G.degree x ≤ (attachVertex G S).degree (some x) := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn some
+  · intro y hy
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hy ⊢
+    exact hy
+  · intro _ _ _ _ h
+    exact Option.some.inj h
+
+/-- The attached vertex has at least one neighbour for every member of `S`. -/
+theorem card_le_attachVertex_degree_none {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
+    S.card ≤ (attachVertex G S).degree none := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn some
+  · intro x hx
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset,
+      attachVertex_adj_none_some] at hx ⊢
+    exact hx
+  · intro _ _ _ _ h
+    exact Option.some.inj h
+
+/-- **Safe attachment preserves the common-neighbour bound.** -/
+theorem attachVertex_common_le_one {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {S : Finset V}
+    (hfree : ¬ containsC4 V G) (hsafe : CommonNeighborIndependent G S) :
+    ∀ p q : Option V, p ≠ q →
+      ((attachVertex G S).neighborFinset p ∩
+        (attachVertex G S).neighborFinset q).card ≤ 1 := by
+  have hold : ∀ x y z₁ z₂ : V, x ≠ y → G.Adj x z₁ → G.Adj y z₁ →
+      G.Adj x z₂ → G.Adj y z₂ → z₁ = z₂ := by
+    intro x y z₁ z₂ hxy hx₁ hy₁ hx₂ hy₂
+    refine Finset.card_le_one.mp (common_le_one_of_not_containsC4 hfree x y hxy)
+      z₁ ?_ z₂ ?_
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hx₁, hy₁⟩
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hx₂, hy₂⟩
+  have hselected : ∀ a b z : V, a ∈ S → b ∈ S → a ≠ b →
+      G.Adj a z → G.Adj b z → False := by
+    intro a b z ha hb hab haz hbz
+    have hz : z ∈ G.neighborFinset a ∩ G.neighborFinset b := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨haz, hbz⟩
+    have hpos : 0 < (G.neighborFinset a ∩ G.neighborFinset b).card :=
+      Finset.card_pos.mpr ⟨z, hz⟩
+    rw [hsafe ha hb hab] at hpos
+    omega
+  intro p q hpq
+  rw [Finset.card_le_one]
+  intro w₁ hw₁ w₂ hw₂
+  rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mem_neighborFinset] at hw₁ hw₂
+  obtain ⟨hw₁p, hw₁q⟩ := hw₁
+  obtain ⟨hw₂p, hw₂q⟩ := hw₂
+  rcases p with _ | x <;> rcases q with _ | y
+  · exact absurd rfl hpq
+  · rcases w₁ with _ | a
+    · exact (attachVertex_not_adj_none_none hw₁p).elim
+    rcases w₂ with _ | b
+    · exact (attachVertex_not_adj_none_none hw₂p).elim
+    by_contra hab
+    exact hselected a b y (by simpa using hw₁p) (by simpa using hw₂p)
+      (fun h => hab (congrArg some h)) (by simpa using hw₁q.symm)
+      (by simpa using hw₂q.symm)
+  · rcases w₁ with _ | a
+    · exact (attachVertex_not_adj_none_none hw₁q).elim
+    rcases w₂ with _ | b
+    · exact (attachVertex_not_adj_none_none hw₂q).elim
+    by_contra hab
+    exact hselected a b x (by simpa using hw₁q) (by simpa using hw₂q)
+      (fun h => hab (congrArg some h)) (by simpa using hw₁p.symm)
+      (by simpa using hw₂p.symm)
+  · have hxy : x ≠ y := fun h => hpq (by rw [h])
+    rcases w₁ with _ | z₁ <;> rcases w₂ with _ | z₂
+    · rfl
+    · have hxS : x ∈ S := by simpa using hw₁p
+      have hyS : y ∈ S := by simpa using hw₁q
+      exact (hselected x y z₂ hxS hyS hxy (by simpa using hw₂p)
+        (by simpa using hw₂q)).elim
+    · have hxS : x ∈ S := by simpa using hw₂p
+      have hyS : y ∈ S := by simpa using hw₂q
+      exact (hselected x y z₁ hxS hyS hxy (by simpa using hw₁p)
+        (by simpa using hw₁q)).elim
+    · exact congrArg some (hold x y z₁ z₂ hxy
+        (by simpa using hw₁p) (by simpa using hw₁q)
+        (by simpa using hw₂p) (by simpa using hw₂q))
+
+/-- **Safe attachment is an exact criterion.**  Adding a vertex adjacent to
+`S` is `C₄`-free iff the old graph is `C₄`-free and `S` is common-neighbour
+independent. -/
+theorem attachVertex_not_containsC4_iff {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {S : Finset V} :
+    ¬ containsC4 (Option V) (attachVertex G S) ↔
+      ¬ containsC4 V G ∧ CommonNeighborIndependent G S := by
+  constructor
+  · intro hattach
+    constructor
+    · rintro ⟨f, hinj, hadj⟩
+      exact hattach ⟨fun i => some (f i), fun i j h => hinj (Option.some.inj h),
+        fun i j hij => hadj i j hij⟩
+    · intro a ha b hb hab
+      rw [Finset.card_eq_zero]
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro z hz
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset] at hz
+      exact hattach (containsC4_of_rim (G := attachVertex G S)
+        (a := none) (b := some a) (c := some z) (d := some b)
+        (by simpa using ha) (by simpa using hz.1)
+        (by simpa using hz.2.symm) (by simpa using hb)
+        (by simp) (fun h => hab (Option.some.inj h)) (by simp)
+        (fun h => (G.ne_of_adj hz.1) (Option.some.inj h)) (by simp)
+        (fun h => (G.ne_of_adj hz.2) (Option.some.inj h)))
+  · rintro ⟨hfree, hsafe⟩
+    exact not_containsC4_of_forall_common_le_one
+      (attachVertex_common_le_one hfree hsafe)
+
+/-- The attachment graph transported from `Option (Fin n)` to `Fin (n + 1)`. -/
+def attachFin {n : ℕ} (G : SimpleGraph (Fin n)) (S : Finset (Fin n)) :
+    SimpleGraph (Fin (n + 1)) :=
+  SimpleGraph.comap (⇑(finSuccEquiv n)) (attachVertex G S)
+
+instance attachFinDecidableRel {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (S : Finset (Fin n)) : DecidableRel (attachFin G S).Adj :=
+  fun u v => inferInstanceAs
+    (Decidable ((attachVertex G S).Adj (finSuccEquiv n u) (finSuccEquiv n v)))
+
+theorem attachFin_degree_ge {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (S : Finset (Fin n)) (u : Fin (n + 1)) :
+    (attachVertex G S).degree (finSuccEquiv n u) ≤ (attachFin G S).degree u := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+    ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn (fun w => (finSuccEquiv n).symm w)
+  · intro w hw
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hw ⊢
+    show (attachVertex G S).Adj (finSuccEquiv n u)
+      (finSuccEquiv n ((finSuccEquiv n).symm w))
+    rw [Equiv.apply_symm_apply]
+    exact hw
+  · intro w₁ _ w₂ _ h
+    exact (finSuccEquiv n).symm.injective h
+
+theorem attachFin_not_containsC4 {n : ℕ} (G : SimpleGraph (Fin n))
+    (S : Finset (Fin n)) (h : ¬ containsC4 (Option (Fin n)) (attachVertex G S)) :
+    ¬ containsC4 (Fin (n + 1)) (attachFin G S) := by
+  rintro ⟨f, hinj, hadj⟩
+  exact h ⟨fun i => finSuccEquiv n (f i), (finSuccEquiv n).injective.comp hinj,
+    fun i j hij => hadj i j hij⟩
+
+/-- **The selector criterion produces an extended witness.** -/
+theorem c4FreeMinDegreeWitness_succ_of_commonNeighborIndependent {n d : ℕ}
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (hdeg : d ≤ G.minDegree)
+    (hfree : ¬ containsC4 (Fin n) G) (S : Finset (Fin n)) (hcard : d ≤ S.card)
+    (hsafe : CommonNeighborIndependent G S) : C4FreeMinDegreeWitness (n + 1) d := by
+  refine ⟨attachFin G S, inferInstance, ?_, ?_⟩
+  · apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (attachFin_degree_ge G S u)
+    rcases h : finSuccEquiv n u with _ | x
+    · exact le_trans hcard (card_le_attachVertex_degree_none G S)
+    · exact le_trans (le_trans hdeg (G.minDegree_le_degree x))
+        (degree_le_attachVertex_degree_some G S x)
+  · apply attachFin_not_containsC4 G S
+    exact not_containsC4_of_forall_common_le_one
+      (attachVertex_common_le_one hfree hsafe)
+
+/-- **The common-neighbour selector statement implies witness extension.**
+This is the formal version of the graph-theoretic subproblem highlighted in
+issue #43623. -/
+theorem witnessExtension_of_commonNeighborIndependent {n : ℕ}
+    (hselect : ∀ d (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      d ≤ G.minDegree → ¬ containsC4 (Fin n) G →
+      ∃ S : Finset (Fin n), d ≤ S.card ∧ CommonNeighborIndependent G S) :
+    C4FreeWitnessExtension n := by
+  rintro d ⟨G, hdec, hdeg, hfree⟩
+  letI := hdec
+  obtain ⟨S, hcard, hsafe⟩ := hselect d G hdec hdeg hfree
+  exact c4FreeMinDegreeWitness_succ_of_commonNeighborIndependent
+    G hdeg hfree S hcard hsafe
+
 /-- **The projective-plane threshold.**  Every graph on `13` vertices with
 minimum degree `≥ 4` contains a `4`-cycle.  Cherry-counting is exactly tight
 (`13·C(4,2) = C(13,2) = 78`), so a `C₄`-free such graph would be `4`-regular
@@ -3242,6 +3575,133 @@ theorem minDegreeForC4_fifteen_mem :
   have hge := four_le_minDegreeForC4_fifteen
   omega
 
+/-! ## The sharp `15`-vertex witness: `f(15) = 5`
+
+Unlike the minimum-degree-`3` surgery ladder above, the following graph is
+`4`-regular.  It can be viewed as an independent triple, a six-cycle, and two
+triangles, with the cross edges displayed explicitly below.  Its pairwise
+common-neighbour counts are all at most one, so it is `C₄`-free.  This gives
+the missing lower bound `f(15) ≥ 5`; the cherry-counting upper bound already
+gives `f(15) ≤ 5`. -/
+
+/-- The thirty edges of a `4`-regular `C₄`-free graph on fifteen vertices. -/
+def fifteenRegularEdges : List (Fin 15 × Fin 15) :=
+  [(0,1), (0,2), (0,3), (0,4),
+   (1,3), (1,11), (1,12),
+   (2,4), (2,7), (2,14),
+   (3,6), (3,10),
+   (4,8), (4,13),
+   (5,6), (5,8), (5,12), (5,14),
+   (6,10), (6,14),
+   (7,9), (7,10), (7,12),
+   (8,12), (8,13),
+   (9,10), (9,11), (9,13),
+   (11,13), (11,14)]
+
+/-- A sharp `15`-vertex witness for the lower bound `f(15) ≥ 5`. -/
+def fifteenRegular : SimpleGraph (Fin 15) where
+  Adj i j := (i, j) ∈ fifteenRegularEdges ∨ (j, i) ∈ fifteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel fifteenRegular.Adj := fun i j =>
+  decidable_of_iff
+    ((i, j) ∈ fifteenRegularEdges ∨ (j, i) ∈ fifteenRegularEdges) Iff.rfl
+
+/-- The sharp witness is `4`-regular. -/
+theorem fifteenRegular_degree : ∀ v, fifteenRegular.degree v = 4 := by decide
+
+/-- Every distinct vertex pair has at most one common neighbour. -/
+theorem fifteenRegular_common_le_one : ∀ x y : Fin 15, x ≠ y →
+    (fifteenRegular.neighborFinset x ∩ fifteenRegular.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- The sharp witness contains no `C₄`. -/
+theorem fifteenRegular_not_containsC4 : ¬ containsC4 (Fin 15) fifteenRegular :=
+  not_containsC4_of_forall_common_le_one fifteenRegular_common_le_one
+
+/-- The sharp witness has minimum degree at least `4`. -/
+theorem four_le_fifteenRegular_minDegree : 4 ≤ fifteenRegular.minDegree := by
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  intro v
+  rw [fifteenRegular_degree v]
+
+/-- The sharp witness forces the lower bound `f(15) ≥ 5`. -/
+theorem five_le_minDegreeForC4_fifteen : 5 ≤ minDegreeForC4 15 := by
+  have hw : C4FreeMinDegreeWitness 15 4 :=
+    ⟨fifteenRegular, inferInstance, four_le_fifteenRegular_minDegree,
+      fifteenRegular_not_containsC4⟩
+  have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).1 hw
+  omega
+
+/-- **The exact fifteenth value: `f(15) = 5`.** -/
+theorem minDegreeForC4_fifteen : minDegreeForC4 15 = 5 := by
+  have hle : minDegreeForC4 15 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  exact Nat.le_antisymm hle five_le_minDegreeForC4_fifteen
+
+/-! ### A sharp obstruction to direct safe attachment
+
+The same witness also shows why the common-neighbour selector criterion cannot
+prove the general extension theorem, even at degree `4`: its largest safe set
+has only three vertices.  This refutes the *per-graph attachment strategy*, not
+`C4FreeWitnessExtension 15`, which may choose an unrelated witness at order 16. -/
+
+/-- A three-colouring whose colour classes are cliques in the common-neighbour
+graph of `fifteenRegular`. -/
+def fifteenSelectorColor : Fin 15 → Fin 3 :=
+  ![0,0,1,0,1,1,0,0,1,2,0,1,1,1,0]
+
+/-- Distinct vertices of the same selector colour share a common neighbour. -/
+theorem fifteenRegular_same_color_common : ∀ x y, x ≠ y →
+    fifteenSelectorColor x = fifteenSelectorColor y →
+    0 < (fifteenRegular.neighborFinset x ∩
+      fifteenRegular.neighborFinset y).card := by
+  decide
+
+/-- Every common-neighbour-independent set in the sharp witness has at most
+three vertices. -/
+theorem card_le_three_of_fifteenRegular_commonNeighborIndependent
+    (S : Finset (Fin 15)) (hS : CommonNeighborIndependent fifteenRegular S) :
+    S.card ≤ 3 := by
+  have hinj : Set.InjOn fifteenSelectorColor ↑S := by
+    intro x hx y hy hcolor
+    by_contra hxy
+    have hpos := fifteenRegular_same_color_common x y hxy hcolor
+    have hzero := hS (by simpa only [Finset.mem_coe] using hx)
+      (by simpa only [Finset.mem_coe] using hy) hxy
+    omega
+  calc
+    S.card ≤ (Finset.univ : Finset (Fin 3)).card := by
+      apply Finset.card_le_card_of_injOn fifteenSelectorColor
+      · intro _ _
+        exact Finset.mem_univ _
+      · exact hinj
+    _ = 3 := by simp
+
+/-- A safe triple, showing the upper bound `3` is attained. -/
+def fifteenSafeTriple : Finset (Fin 15) := {0, 5, 9}
+
+theorem fifteenSafeTriple_commonNeighborIndependent :
+    CommonNeighborIndependent fifteenRegular fifteenSafeTriple := by
+  unfold CommonNeighborIndependent
+  decide
+
+theorem fifteenSafeTriple_card : fifteenSafeTriple.card = 3 := by decide
+
+/-- **The degree-4 selector claim is false.**  The graph `fifteenRegular` is
+`C₄`-free with minimum degree four, yet has no safe attachment set of size
+four. -/
+theorem exists_degree_four_witness_without_safe_four :
+    ∃ (G : SimpleGraph (Fin 15)) (_ : DecidableRel G.Adj),
+      4 ≤ G.minDegree ∧ ¬ containsC4 (Fin 15) G ∧
+      ∀ S : Finset (Fin 15), CommonNeighborIndependent G S → S.card < 4 := by
+  refine ⟨fifteenRegular, inferInstance, four_le_fifteenRegular_minDegree,
+    fifteenRegular_not_containsC4, ?_⟩
+  intro S hS
+  have := card_le_three_of_fifteenRegular_commonNeighborIndependent S hS
+  omega
+
 end Fifteen
 
 section Sixteen
@@ -3316,5 +3776,149 @@ theorem minDegreeForC4_sixteen_mem :
   omega
 
 end Sixteen
+
+/-! ## Exact plateau `f(15) = ⋯ = f(20) = 5`
+
+The sharp witness above at order `15` is not isolated.  Explicit `4`-regular,
+`C₄`-free graphs exist at every order through `20`; together with the counting
+bound `n ≤ 5·4`, each pins `f(n) = 5`.  The certificates below are checked by
+their degree vectors and pairwise common-neighbour matrices, not by enumerating
+cycle embeddings. -/
+
+/-- A `4`-regular `C₄`-free witness between orders `15` and `20` pins `f(n)=5`. -/
+theorem minDegreeForC4_eq_five_of_witness {n : ℕ} (hn : 15 ≤ n) (hn20 : n ≤ 20)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hdeg : ∀ v, G.degree v = 4)
+    (hcommon : ∀ x y, x ≠ y → (G.neighborFinset x ∩ G.neighborFinset y).card ≤ 1) :
+    minDegreeForC4 n = 5 := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  have hmin : 4 ≤ G.minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro v
+    rw [hdeg v]
+  have hfree : ¬ containsC4 (Fin n) G :=
+    not_containsC4_of_forall_common_le_one hcommon
+  have hw : C4FreeMinDegreeWitness n 4 := ⟨G, inferInstance, hmin, hfree⟩
+  have hlt := (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by omega)).1 hw
+  have hle : minDegreeForC4 n ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by omega) (by norm_num; omega)
+  omega
+
+def sixteenRegularEdges : List (Fin 16 × Fin 16) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,2),(1,8),(1,13),(2,6),(2,12),
+   (3,7),(3,11),(3,15),(4,5),(4,10),(4,14),(5,6),(5,10),(5,15),
+   (6,12),(6,15),(7,9),(7,10),(7,11),(8,9),(8,13),(8,15),
+   (9,10),(9,12),(11,13),(11,14),(12,14),(13,14)]
+
+def sixteenRegular : SimpleGraph (Fin 16) where
+  Adj i j := (i,j) ∈ sixteenRegularEdges ∨ (j,i) ∈ sixteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel sixteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ sixteenRegularEdges ∨ (j,i) ∈ sixteenRegularEdges) Iff.rfl
+
+theorem sixteenRegular_degree : ∀ v, sixteenRegular.degree v = 4 := by decide
+theorem sixteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (sixteenRegular.neighborFinset x ∩ sixteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(16) = 5`.** -/
+theorem minDegreeForC4_sixteen : minDegreeForC4 16 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    sixteenRegular sixteenRegular_degree sixteenRegular_common_le_one
+
+def seventeenRegularEdges : List (Fin 17 × Fin 17) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,5),(1,9),(1,15),(2,3),(2,7),(2,16),
+   (3,8),(3,11),(4,6),(4,13),(4,14),(5,6),(5,11),(5,16),
+   (6,14),(6,16),(7,9),(7,10),(7,14),(8,12),(8,14),(8,15),
+   (9,10),(9,15),(10,11),(10,13),(11,13),(12,13),(12,15),(12,16)]
+
+def seventeenRegular : SimpleGraph (Fin 17) where
+  Adj i j := (i,j) ∈ seventeenRegularEdges ∨ (j,i) ∈ seventeenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel seventeenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ seventeenRegularEdges ∨ (j,i) ∈ seventeenRegularEdges) Iff.rfl
+
+theorem seventeenRegular_degree : ∀ v, seventeenRegular.degree v = 4 := by decide
+theorem seventeenRegular_common_le_one : ∀ x y, x ≠ y →
+    (seventeenRegular.neighborFinset x ∩ seventeenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(17) = 5`.** -/
+theorem minDegreeForC4_seventeen : minDegreeForC4 17 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    seventeenRegular seventeenRegular_degree seventeenRegular_common_le_one
+
+def eighteenRegularEdges : List (Fin 18 × Fin 18) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,3),(1,10),(1,12),(2,4),(2,13),(2,14),
+   (3,8),(3,15),(4,7),(4,17),(5,6),(5,10),(5,14),(5,15),
+   (6,14),(6,16),(6,17),(7,10),(7,11),(7,17),(8,9),(8,11),(8,15),
+   (9,11),(9,12),(9,14),(10,11),(12,13),(12,16),(13,15),(13,16),(16,17)]
+
+def eighteenRegular : SimpleGraph (Fin 18) where
+  Adj i j := (i,j) ∈ eighteenRegularEdges ∨ (j,i) ∈ eighteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel eighteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ eighteenRegularEdges ∨ (j,i) ∈ eighteenRegularEdges) Iff.rfl
+
+theorem eighteenRegular_degree : ∀ v, eighteenRegular.degree v = 4 := by decide
+theorem eighteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (eighteenRegular.neighborFinset x ∩ eighteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(18) = 5`.** -/
+theorem minDegreeForC4_eighteen : minDegreeForC4 18 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    eighteenRegular eighteenRegular_degree eighteenRegular_common_le_one
+
+def nineteenRegularEdges : List (Fin 19 × Fin 19) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,6),(1,14),(1,16),(2,3),(2,9),(2,18),
+   (3,11),(3,17),(4,10),(4,13),(4,15),(5,7),(5,10),(5,14),(5,18),
+   (6,8),(6,16),(6,17),(7,15),(7,16),(7,18),(8,12),(8,13),(8,18),
+   (9,10),(9,12),(9,16),(10,17),(11,14),(11,15),(11,17),
+   (12,13),(12,14),(13,15)]
+
+def nineteenRegular : SimpleGraph (Fin 19) where
+  Adj i j := (i,j) ∈ nineteenRegularEdges ∨ (j,i) ∈ nineteenRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel nineteenRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ nineteenRegularEdges ∨ (j,i) ∈ nineteenRegularEdges) Iff.rfl
+
+theorem nineteenRegular_degree : ∀ v, nineteenRegular.degree v = 4 := by decide
+theorem nineteenRegular_common_le_one : ∀ x y, x ≠ y →
+    (nineteenRegular.neighborFinset x ∩ nineteenRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(19) = 5`.** -/
+theorem minDegreeForC4_nineteen : minDegreeForC4 19 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    nineteenRegular nineteenRegular_degree nineteenRegular_common_le_one
+
+def twentyRegularEdges : List (Fin 20 × Fin 20) :=
+  [(0,1),(0,2),(0,3),(0,4),(1,7),(1,17),(1,18),(2,6),(2,9),(2,16),
+   (3,8),(3,11),(3,19),(4,5),(4,10),(4,13),(5,7),(5,11),(5,13),
+   (6,12),(6,14),(6,16),(7,16),(7,18),(8,13),(8,15),(8,16),
+   (9,13),(9,17),(9,19),(10,14),(10,15),(10,19),(11,12),(11,17),
+   (12,14),(12,18),(14,15),(15,17),(18,19)]
+
+def twentyRegular : SimpleGraph (Fin 20) where
+  Adj i j := (i,j) ∈ twentyRegularEdges ∨ (j,i) ∈ twentyRegularEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel twentyRegular.Adj := fun i j =>
+  decidable_of_iff ((i,j) ∈ twentyRegularEdges ∨ (j,i) ∈ twentyRegularEdges) Iff.rfl
+
+theorem twentyRegular_degree : ∀ v, twentyRegular.degree v = 4 := by decide
+theorem twentyRegular_common_le_one : ∀ x y, x ≠ y →
+    (twentyRegular.neighborFinset x ∩ twentyRegular.neighborFinset y).card ≤ 1 := by decide
+
+/-- **`f(20) = 5`.** -/
+theorem minDegreeForC4_twenty : minDegreeForC4 20 = 5 :=
+  minDegreeForC4_eq_five_of_witness (by norm_num) (by norm_num)
+    twentyRegular twentyRegular_degree twentyRegular_common_le_one
 
 end Erdos85
