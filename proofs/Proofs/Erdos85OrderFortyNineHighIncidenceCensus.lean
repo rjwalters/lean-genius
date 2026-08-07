@@ -103,6 +103,15 @@ def orderFortyNineHighIncidenceCount
   ((orderFortyNineLowVertices G).filter fun x =>
     (G.neighborFinset x ∩ orderFortyNineHighVertices G).card = i).card
 
+/-- Number of low vertices of a specified second-order defect degree. -/
+def orderFortyNineLowDefectDegreeCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] (j : ℕ) : ℕ :=
+  ((orderFortyNineLowVertices G).filter fun x =>
+    (secondOrderDefectGraph G).degree x = j).card
+
 /-- The four high-incidence bins on the low sector satisfy the exact size,
 first-moment, and second-moment equations. -/
 theorem orderFortyNine_highIncidence_census
@@ -455,6 +464,80 @@ theorem orderFortyNine_defectDegree_add_highNeighborCount_eq_six
   rw [← orderFortyNine_neighborDegreeExcess_eq_highNeighborCount
     G hfree hmin hcard x]
   exact orderFortyNine_degreeSeven_local_budget G hfree hmin hcard hx
+
+/-- The `k=i` incidence fiber is exactly the low defect-degree `6-i` fiber. -/
+theorem orderFortyNine_highIncidenceCount_eq_lowDefectDegreeCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {i : ℕ} (hi : i ≤ 3) :
+    orderFortyNineHighIncidenceCount G i =
+      orderFortyNineLowDefectDegreeCount G (6 - i) := by
+  unfold orderFortyNineHighIncidenceCount
+  unfold orderFortyNineLowDefectDegreeCount
+  congr 1
+  ext x
+  simp only [Finset.mem_filter]
+  constructor
+  · rintro ⟨hxlow, hk⟩
+    refine ⟨hxlow, ?_⟩
+    have hxnot : x ∉ orderFortyNineHighVertices G := by
+      exact (Finset.mem_sdiff.mp hxlow).2
+    have hxdeg : G.degree x = 7 := by
+      rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard x with hx7 | hx8
+      · exact hx7
+      · exact (hxnot (by simp [orderFortyNineHighVertices, hx8])).elim
+    have hbudget := orderFortyNine_defectDegree_add_highNeighborCount_eq_six
+      G hfree hmin hcard hxdeg
+    omega
+  · rintro ⟨hxlow, hD⟩
+    refine ⟨hxlow, ?_⟩
+    have hxnot : x ∉ orderFortyNineHighVertices G := by
+      exact (Finset.mem_sdiff.mp hxlow).2
+    have hxdeg : G.degree x = 7 := by
+      rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard x with hx7 | hx8
+      · exact hx7
+      · exact (hxnot (by simp [orderFortyNineHighVertices, hx8])).elim
+    have hbudget := orderFortyNine_defectDegree_add_highNeighborCount_eq_six
+      G hfree hmin hcard hxdeg
+    omega
+
+/-- The five `h=9` incidence profiles are equivalently the following five
+defect-degree distributions on the forty low vertices. -/
+theorem orderFortyNine_lowDefectDegree_profile_of_nine_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 9) :
+    let d := orderFortyNineLowDefectDegreeCount G
+    (d 6 = 4 ∧ d 5 = 0 ∧ d 4 = 36 ∧ d 3 = 0) ∨
+    (d 6 = 3 ∧ d 5 = 3 ∧ d 4 = 33 ∧ d 3 = 1) ∨
+    (d 6 = 2 ∧ d 5 = 6 ∧ d 4 = 30 ∧ d 3 = 2) ∨
+    (d 6 = 1 ∧ d 5 = 9 ∧ d 4 = 27 ∧ d 3 = 3) ∨
+    (d 6 = 0 ∧ d 5 = 12 ∧ d 4 = 24 ∧ d 3 = 4) := by
+  dsimp only
+  have heq0 := orderFortyNine_highIncidenceCount_eq_lowDefectDegreeCount
+    G hfree hmin hcard (i := 0) (by omega)
+  have heq1 := orderFortyNine_highIncidenceCount_eq_lowDefectDegreeCount
+    G hfree hmin hcard (i := 1) (by omega)
+  have heq2 := orderFortyNine_highIncidenceCount_eq_lowDefectDegreeCount
+    G hfree hmin hcard (i := 2) (by omega)
+  have heq3 := orderFortyNine_highIncidenceCount_eq_lowDefectDegreeCount
+    G hfree hmin hcard (i := 3) (by omega)
+  norm_num at heq0 heq1 heq2 heq3
+  rcases orderFortyNine_highIncidence_profile_of_nine_high
+      G hfree hmin hcard hHigh with hp | hp | hp | hp | hp <;>
+    omega
 
 /-- The second-order defect graph has exactly `7(21-h)` edges, where `h` is
 the number of high vertices. -/
