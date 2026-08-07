@@ -591,6 +591,48 @@ theorem minimumLayer_saturated_existsUnique_defectNeighbor_in_row
     exact Finset.notMem_empty x hxmem
   exact hyunique y' hy'omit
 
+/-- Cover-facing form: every child defect edge lifts to a perfect matching
+between the corresponding exterior rows in the parent defect graph. -/
+theorem minimumLayer_saturated_childDefect_lifts_matching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habD : (secondOrderDefectGraph
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀)).Adj a b) :
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    ∀ z ∈ E a, ∃! y : ↥(E b), (secondOrderDefectGraph G).Adj z y.1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  have hfreeH : ¬containsC4 _ H := minimumLayerGraph_c4Free G D c₀ hfree
+  have habne : a ≠ b := (secondOrderDefectGraph H).ne_of_adj habD
+  have hcommon : (H.neighborFinset a ∩ H.neighborFinset b).card = 0 := by
+    have hformula := card_common_eq_if_secondOrderDefect H hfreeH a b habne
+    have hbmem : b ∈ (secondOrderDefectGraph H).neighborFinset a :=
+      ((secondOrderDefectGraph H).mem_neighborFinset a b).mpr habD
+    rw [if_pos hbmem] at hformula
+    exact hformula
+  exact minimumLayer_saturated_existsUnique_defectNeighbor_in_row
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+      a b habne hcommon
+
 end
 
 end Erdos85
