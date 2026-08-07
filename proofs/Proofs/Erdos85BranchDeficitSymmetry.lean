@@ -796,6 +796,60 @@ theorem squareOrder_sub_one_le_add_matchedCounts_of_paired_of_odd
   rcases hevenT with ⟨n, hn⟩
   omega
 
+/-- A matched count is bounded by its branch size. -/
+theorem highBranchMatchedCount_le_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    highBranchMatchedCount G v s ≤ (secondLayerBranch G v s).card := by
+  exact Finset.card_le_card (Finset.filter_subset _ _)
+
+/-- For odd `d`, a square-order branch has odd size `d-2`, while its matched
+count is even; hence at least one branch vertex is unmatched. -/
+theorem squareOrder_highBranchMatchedCount_le_sub_three_of_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hodd : Odd d) {v : V}
+    (hv : G.degree v = d + 1)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = d)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    highBranchMatchedCount G v s ≤ d - 3 := by
+  have hle := highBranchMatchedCount_le_card G s
+  rw [card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
+    G (by omega) hv hneigh hlocal s] at hle
+  have heven := even_highBranchMatchedCount G hfree s
+  rcases hodd with ⟨k, hk⟩
+  rcases heven with ⟨m, hm⟩
+  omega
+
+/-- **Every branch is dirty.**  Under the odd square-order unique-high degree
+pattern, each branch contains at least two matched vertices (and therefore
+an internal branch edge). -/
+theorem two_le_highBranchMatchedCount_of_paired_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) (hodd : Odd d) {v : V}
+    (hv : G.degree v = d + 1)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = d)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = d)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    2 ≤ highBranchMatchedCount G v s ∧
+      2 ≤ highBranchMatchedCount G v t := by
+  have hpair :=
+    squareOrder_sub_one_le_add_matchedCounts_of_paired_of_odd
+      G hfree hd hodd hv hneigh hlocal hexternal houterDegree s t hst
+  have hsUpper := squareOrder_highBranchMatchedCount_le_sub_three_of_odd
+    G hfree hd hodd hv hneigh hlocal s
+  have htUpper := squareOrder_highBranchMatchedCount_le_sub_three_of_odd
+    G hfree hd hodd hv hneigh hlocal t
+  constructor <;> omega
+
 end
 
 end Erdos85
