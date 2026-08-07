@@ -150,4 +150,19 @@ theorem orderFortyNineC4Clauses_satisfied
   obtain ⟨q, hq, rfl⟩ := hclause
   exact orderFortyNineC4Clause_satisfied hc.2.2.2.1 q hq
 
+theorem orderFortyNineC4Clauses_bounded :
+    dimacsFormulaBounded 1176 orderFortyNineC4Clauses := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNineC4Clauses, List.mem_toArray, List.mem_map] at hclause
+  obtain ⟨q, hq, rfl⟩ := hclause
+  rcases q with ⟨⟨i, j⟩, ⟨w, w'⟩⟩
+  obtain ⟨hij, hww', hwi, hwj, hw'i, hw'j⟩ :=
+    orderFortyNineC4Tuples_properties hq
+  simp [orderFortyNineC4Clause] at hlit
+  rcases hlit with rfl | rfl | rfl | rfl
+  · exact orderFortyNineNegEdgeLiteral_bounded i w hwi.symm
+  · exact orderFortyNineNegEdgeLiteral_bounded j w hwj.symm
+  · exact orderFortyNineNegEdgeLiteral_bounded i w' hw'i.symm
+  · exact orderFortyNineNegEdgeLiteral_bounded j w' hw'j.symm
+
 end Erdos85

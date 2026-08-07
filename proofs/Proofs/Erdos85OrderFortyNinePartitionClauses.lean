@@ -110,4 +110,17 @@ theorem orderFortyNinePartitionClauses_satisfied
   obtain ⟨y, w, rfl⟩ := hclause
   exact orderFortyNinePartitionClause_satisfied hc hzero y w
 
+theorem orderFortyNinePartitionClauses_bounded (masks : Array Nat) :
+    dimacsFormulaBounded 1176 (orderFortyNinePartitionClauses masks) := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNinePartitionClauses, List.mem_toArray,
+    List.mem_flatMap, List.mem_finRange, true_and, List.mem_map] at hclause
+  obtain ⟨y, w, rfl⟩ := hclause
+  simp only [orderFortyNinePartitionClause, List.mem_map] at hlit
+  obtain ⟨x, hx, rfl⟩ := hlit
+  have hxyDec := (List.mem_filter.mp hx).2
+  have hxy : x ≠ orderFortyNineLowVertex y :=
+    of_decide_eq_true hxyDec
+  exact orderFortyNineEdgeLiteral_bounded _ _ hxy.symm
+
 end Erdos85
