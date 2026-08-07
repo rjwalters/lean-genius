@@ -54,3 +54,17 @@ Clause groups:
 Solver: CaDiCaL 1.9.5 via python-sat 1.9.dev7 (`Cadical195`, with_proof=True →
 DRAT). Certificate path to Lean: DRAT → LRAT → Std bv_decide LRAT checker,
 with the graph→CNF faithfulness bridge riding on the formalized layers.
+
+## Artifact storage
+
+The 18 certificate triples {t2_repA, t2_repB, t3_rep0..4, t4_rep0..10}
+.{cnf, drat, lrat} (~1.1 GB) are stored durably at
+`/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/` (host artifact volume)
+together with copies of both manifests; all 18 LRAT SHA256s verified against
+`lrat_manifest.txt` in place. Everything is regenerable bit-for-bit from
+`certify_t34.py` (CNF, and DRAT up to solver nondeterminism-free rerun) plus
+`drat-trim`. Note: `t3_rep1.drat` in the artifact dir is a post-manifest
+re-solve (CaDiCaL's capture of this instance's proof is truncated —
+reproducible quirk); the authoritative certificate for t3_rep1 is
+`t3_rep1_g.drat` (Glucose 4.2) whose derived `t3_rep1.lrat` matches the
+manifest hash.
