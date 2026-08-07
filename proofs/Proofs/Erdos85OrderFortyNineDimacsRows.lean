@@ -96,6 +96,33 @@ theorem orderFortyNineDimacsEdgeVal_literal
   rw [if_pos (by omega)]
   congr 1
 
+/-- Reification of an arbitrary off-diagonal positive edge literal. -/
+theorem orderFortyNineDimacsEdgeVal_edgeLiteral
+    (edges : BitVec 1176) (i j : Fin 49) (hij : i ≠ j) :
+    dimacsLitValue (orderFortyNineDimacsEdgeVal edges)
+      (orderFortyNineEdgeLiteral i j) = orderFortyNineBitAdj edges i j := by
+  have hlt := orderFortyNineEdgeIndex_lt i j hij
+  have hpos : 0 < orderFortyNineEdgeIndex i j + 1 := Nat.zero_lt_succ _
+  simp only [orderFortyNineEdgeLiteral]
+  rw [dimacsLitValue_natCast _ hpos]
+  simp only [orderFortyNineDimacsEdgeVal, orderFortyNineBitAdj, hij, if_false]
+  rw [if_pos (by omega)]
+  congr 1
+
+/-- Reification of an arbitrary off-diagonal negative edge literal. -/
+theorem orderFortyNineDimacsEdgeVal_negEdgeLiteral
+    (edges : BitVec 1176) (i j : Fin 49) (hij : i ≠ j) :
+    dimacsLitValue (orderFortyNineDimacsEdgeVal edges)
+      (-orderFortyNineEdgeLiteral i j) =
+      !(orderFortyNineBitAdj edges i j) := by
+  have hpos : 0 < orderFortyNineEdgeLiteral i j := by
+    simp [orderFortyNineEdgeLiteral]
+  have hneg : ¬0 < -orderFortyNineEdgeLiteral i j := by omega
+  have hpositive := orderFortyNineDimacsEdgeVal_edgeLiteral edges i j hij
+  simp only [dimacsLitValue, hpos, if_true] at hpositive
+  simp only [dimacsLitValue, hneg, if_false, Int.natAbs_neg]
+  rw [hpositive]
+
 /-- The graph-edge assignment reifies every literal in the exact PySAT row. -/
 theorem orderFortyNineDimacsRow_reifies
     (edges : BitVec 1176) (i : Fin 49) :
