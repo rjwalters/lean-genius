@@ -128,6 +128,52 @@ theorem orderFortyNine_singletonMultiplicity_eq_tripleMultiplicity
     orderFortyNine_highNeighborhood_count_one_eq_count_three
       G hfree hmin hcard hHigh hv8
 
+/-- Three pairwise-linear triples cannot be supported on only five points.
+This is the structural obstruction that removes the apparent three-triple
+profile in the `h=5` stratum, without enumerating triple systems. -/
+theorem not_three_pairwise_linear_triples_of_card_five
+    {α : Type*} [DecidableEq α] (H A B C : Finset α)
+    (hH : H.card = 5)
+    (hAH : A ⊆ H) (hBH : B ⊆ H) (hCH : C ⊆ H)
+    (hA : A.card = 3) (hB : B.card = 3) (hC : C.card = 3)
+    (hAB : (A ∩ B).card ≤ 1)
+    (hAC : (A ∩ C).card ≤ 1)
+    (hBC : (B ∩ C).card ≤ 1) : False := by
+  have hUnionSub : A ∪ B ⊆ H := Finset.union_subset hAH hBH
+  have hUnionGe : 5 ≤ (A ∪ B).card := by
+    have hcount := Finset.card_union_add_card_inter A B
+    omega
+  have hUnionLe : (A ∪ B).card ≤ 5 := by
+    rw [← hH]
+    exact Finset.card_le_card hUnionSub
+  have hUnionEq : A ∪ B = H := by
+    apply Finset.eq_of_subset_of_card_le hUnionSub
+    rw [hH]
+    exact hUnionGe
+  have hCeq : C = C ∩ (A ∪ B) := by
+    rw [hUnionEq]
+    ext x
+    simp only [Finset.mem_inter]
+    exact ⟨fun hx => ⟨hx, hCH hx⟩, fun hx => hx.1⟩
+  have hsplit : C ∩ (A ∪ B) = (C ∩ A) ∪ (C ∩ B) := by
+    ext x
+    simp only [Finset.mem_inter, Finset.mem_union]
+    tauto
+  have hcardLe : C.card ≤ (C ∩ A).card + (C ∩ B).card := by
+    calc
+      C.card = ((C ∩ A) ∪ (C ∩ B)).card :=
+        congrArg Finset.card (hCeq.trans hsplit)
+      _ ≤ (C ∩ A).card + (C ∩ B).card :=
+        Finset.card_union_le (C ∩ A) (C ∩ B)
+  have hAC' : (C ∩ A).card ≤ 1 := by
+    rw [Finset.inter_comm]
+    exact hAC
+  have hBC' : (C ∩ B).card ≤ 1 := by
+    rw [Finset.inter_comm]
+    exact hBC
+  rw [hC] at hcardLe
+  omega
+
 end
 
 end Erdos85
