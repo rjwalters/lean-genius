@@ -80,18 +80,18 @@ theorem mem_allH9Reps_of_mem_t2 {sys : OrderFortyNineH9System}
     (h : sys ∈ orderFortyNineH9T2Systems.toList) :
     sys ∈ orderFortyNineAllH9Reps := by
   unfold orderFortyNineAllH9Reps
-  exact List.mem_append.mpr (Or.inl h)
+  exact List.mem_append.mpr (Or.inl (List.mem_append.mpr (Or.inl h)))
 
 theorem mem_allH9Reps_of_mem_t3 {sys : OrderFortyNineH9System}
     (h : sys ∈ orderFortyNineH9T3Systems.toList) :
     sys ∈ orderFortyNineAllH9Reps := by
   unfold orderFortyNineAllH9Reps
-  exact List.mem_append.mpr (Or.inr (List.mem_append.mpr (Or.inl h)))
+  exact List.mem_append.mpr (Or.inl (List.mem_append.mpr (Or.inr h)))
 
 theorem mem_allH9Reps_of_mem_t4 {sys : OrderFortyNineH9System}
     (h : sys ∈ orderFortyNineH9T4Systems.toList) :
     sys ∈ orderFortyNineAllH9Reps := by
   unfold orderFortyNineAllH9Reps
-  exact List.mem_append.mpr (Or.inr (List.mem_append.mpr (Or.inr h)))
+  exact List.mem_append.mpr (Or.inr h)
 
 end Erdos85
