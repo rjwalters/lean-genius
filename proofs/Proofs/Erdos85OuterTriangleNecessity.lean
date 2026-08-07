@@ -23,6 +23,81 @@ namespace Erdos85
 
 noncomputable section
 
+/-- **Odd defect-clique triangle pressure.**  In the positive-excess regular
+band, an odd second-order-defect clique contains a vertex whose number of
+triangle-free incident edges is at most `e + 3 - |C|`.
+
+Indeed the original graph induced on a defect clique is a matching.  The
+odd clique therefore has an unmatched vertex, and all its other clique
+vertices must be antipodes of that vertex. -/
+theorem exists_triangleFreeNeighbors_card_le_of_odd_defectClique
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (R : SimpleGraph W) [DecidableRel R.Adj]
+    [DecidableRel (antipodalGraph R).Adj]
+    [DecidableRel (triangleFreeEdgeGraph R).Adj]
+    (hfree : ¬ containsC4 W R) {d e : ℕ}
+    (hreg : ∀ x, R.degree x = d)
+    (hcard : Fintype.card W = d * (d - 1) + 3 + e)
+    (C : Finset W) (hCodd : Odd C.card)
+    (hclique : (secondOrderDefectGraph R).IsClique (C : Set W)) :
+    ∃ x ∈ C, (triangleFreeNeighbors R x).card ≤ e + 3 - C.card := by
+  classical
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    R hfree C hclique
+  let O := C ∩ C.biUnion (fun x => R.neighborFinset x)
+  have hOeven : Even O.card := hsafe.even_card_overlap R C
+  have hOsub : O ⊆ C := Finset.inter_subset_left
+  have hOlt : O.card < C.card := by
+    have hOle := Finset.card_le_card hOsub
+    by_contra hnot
+    have heq : O.card = C.card := by omega
+    obtain ⟨a, ha⟩ := hOeven
+    obtain ⟨b, hb⟩ := hCodd
+    omega
+  have hdiffPos : 0 < (C \ O).card := by
+    rw [Finset.card_sdiff_of_subset hOsub]
+    omega
+  obtain ⟨x, hxDiff⟩ := Finset.card_pos.mp hdiffPos
+  have hxC : x ∈ C := (Finset.mem_sdiff.mp hxDiff).1
+  have hxO : x ∉ O := (Finset.mem_sdiff.mp hxDiff).2
+  have hxNoAdj : ∀ y ∈ C, ¬ R.Adj x y := by
+    intro y hyC hxy
+    apply hxO
+    refine Finset.mem_inter.mpr ⟨hxC, ?_⟩
+    rw [Finset.mem_biUnion]
+    exact ⟨y, hyC, (R.mem_neighborFinset y x).mpr hxy.symm⟩
+  have hsub : C.erase x ⊆ antipodalNeighbors R x := by
+    intro y hy
+    have hyC := Finset.mem_of_mem_erase hy
+    have hyx : y ≠ x := Finset.ne_of_mem_erase hy
+    have hD := hclique hxC hyC hyx.symm
+    change (antipodalGraph R ⊔ triangleFreeEdgeGraph R).Adj x y at hD
+    rcases hD with hanti | htf
+    · exact hanti
+    · exact (hxNoAdj y hyC ((mem_triangleFreeNeighbors R x y).mp htf).1).elim
+  have hsumAT : (antipodalNeighbors R x).card +
+      (triangleFreeNeighbors R x).card = e + 2 := by
+    calc
+      (antipodalNeighbors R x).card +
+          (triangleFreeNeighbors R x).card =
+          ((secondOrderDefectGraph R).neighborFinset x).card := by
+            rw [secondOrderDefectGraph_neighborFinset,
+              Finset.card_union_of_disjoint
+                (disjoint_antipodal_triangleFreeNeighbors R x)]
+      _ = (secondOrderDefectGraph R).degree x :=
+        (secondOrderDefectGraph R).card_neighborFinset_eq_degree x
+      _ = e + 2 := secondOrderDefectGraph_degree_eq_excess_add_two
+        R hfree hreg hcard x
+  have hErase : (C.erase x).card = C.card - 1 :=
+    Finset.card_erase_of_mem hxC
+  have hle := Finset.card_le_card hsub
+  rw [hErase] at hle
+  have hCpos : 0 < C.card := Finset.card_pos.mpr ⟨x, hxC⟩
+  have hsum : C.card + (triangleFreeNeighbors R x).card ≤ e + 3 := by
+    omega
+  refine ⟨x, hxC, ?_⟩
+  exact Nat.le_sub_of_add_le (by simpa [Nat.add_comm] using hsum)
+
 /-- A six-regular `C₄`-free graph of order forty in which every edge is
 triangle-free has no five-vertex clique in its second-order defect graph. -/
 theorem no_five_secondOrderDefect_clique_of_all_edges_triangleFree
