@@ -150,6 +150,40 @@ theorem seqCounterAllocationInvariant_emit
   · exact hinv.ids_nodup
   · exact hinv.id_bounds
 
+/-- Later generator states retain every earlier key-to-ID correspondence. -/
+def SeqCounterIdsExtend (before after : SeqCounterGenState) : Prop :=
+  ∀ entry ∈ before.ids, entry ∈ after.ids
+
+theorem SeqCounterIdsExtend.refl (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st st := by
+  intro entry hentry
+  exact hentry
+
+theorem SeqCounterIdsExtend.trans {a b c : SeqCounterGenState}
+    (hab : SeqCounterIdsExtend a b) (hbc : SeqCounterIdsExtend b c) :
+    SeqCounterIdsExtend a c := by
+  intro entry hentry
+  exact hbc entry (hab entry hentry)
+
+theorem seqCounterIdsExtend_mkYvar (key : Nat × Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterMkYvar key st).2 := by
+  unfold seqCounterMkYvar
+  split
+  · exact SeqCounterIdsExtend.refl st
+  · intro entry hentry
+    exact List.mem_cons_of_mem _ hentry
+
+theorem seqCounterIdsExtend_emit (clause : DimacsClause)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterEmit clause st).2 := by
+  exact SeqCounterIdsExtend.refl st
+
+theorem seqCounterIdsExtend_preserves_mem {before after : SeqCounterGenState}
+    (hext : SeqCounterIdsExtend before after) {entry : (Nat × Nat) × Nat}
+    (hentry : entry ∈ before.ids) : entry ∈ after.ids :=
+  hext entry hentry
+
 /-- Reverse lookup used to interpret a final numeric auxiliary identifier. -/
 def seqCounterKeyLookup (id : Nat) :
     List ((Nat × Nat) × Nat) → Option (Nat × Nat)
