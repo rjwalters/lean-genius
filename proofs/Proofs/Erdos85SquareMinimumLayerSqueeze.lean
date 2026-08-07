@@ -417,6 +417,35 @@ theorem false_of_secondOrder_square_minimum_threeQuarter
   · rw [hd12] at hdEq
     omega
 
+/-- **Residual wedge for the exact-square branch.**  The normalized order of
+every minimum defect component is strictly below `3s/4`.  This is the form
+used by subsequent layer-descent arguments. -/
+theorem secondOrder_square_minimum_lt_threeQuarter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p N s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hminDegree : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hdEq : d = s * s + 3) (hpEq : p = d + s) (hNEq : N = d - s)
+    (hall : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ e.supp.ncard)
+    (hs7 : 7 ≤ s)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard) :
+    4 * (c.supp.ncard / p) < 3 * s := by
+  by_contra hnot
+  have haLarge : 3 * s ≤ 4 * (c.supp.ncard / p) := by omega
+  exact false_of_secondOrder_square_minimum_threeQuarter
+    G hfree hd heven hminDegree hcard hp hboundary hdEq hpEq hNEq hall
+    hs7 c hcmin haLarge
+
 end
 
 end Erdos85
