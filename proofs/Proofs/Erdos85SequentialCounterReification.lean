@@ -1776,6 +1776,37 @@ theorem dimacsFormulaSatisfied_append {val : DimacsValuation}
   · exact hleft clause hclause
   · exact hright clause hclause
 
+/-- The canonical layered valuation of a complete equality block: first its
+negated-input lower counter, then its positive-input upper counter. -/
+def seqCounterEqualsCoreVal (inputVal : DimacsValuation) (top : Nat)
+    (vars : Array Int) (x : Fin vars.size → Bool) (t : Nat) :
+    DimacsValuation :=
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeastCore top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMostCore lower.top vars t
+  seqCounterBlockVal lowerVal lower.top x upper.ids
+
+/-- A complete equality block changes no assignment at or below its incoming
+DIMACS top. -/
+theorem seqCounterEqualsCoreVal_input
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool) (t id : Nat) (hid : id ≤ top) :
+    seqCounterEqualsCoreVal inputVal top vars x t id = inputVal id := by
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeastCore top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMostCore lower.top vars t
+  have hlower : top ≤ lower.top := by
+    simpa [lower, seqCounterAtLeastCore] using
+      (seqCounterAtMostCore_allocationInvariant top
+        (vars.map fun v => -v) (vars.size - t)).top_bound
+  rw [seqCounterEqualsCoreVal, show
+    seqCounterBlockVal lowerVal lower.top x upper.ids id = lowerVal id by
+      exact seqCounterBlockVal_input lowerVal lower.top x upper.ids
+        (hid.trans hlower)]
+  exact seqCounterBlockVal_input inputVal top negRow lower.ids hid
+
 /-- Soundness of the full PySAT equality block.  Its valuation is layered:
 first the complemented-row lower counter, then the original-row upper counter
 above `lower.top`. -/
@@ -1820,6 +1851,17 @@ theorem seqCounterEqualsCore_formulaSatisfied
         hinputUpper t (by omega)
   simpa [seqCounterEqualsCore, lower, upper] using
     dimacsFormulaSatisfied_append hlowerSatUpper hupperSat
+
+theorem seqCounterEqualsCoreVal_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hcount : seqPrefixTrue x vars.size = t) :
+    dimacsFormulaSatisfied
+      (seqCounterEqualsCoreVal inputVal top vars x t)
+      (seqCounterEqualsCore top vars t).clauses := by
+  simpa [seqCounterEqualsCoreVal] using
+    seqCounterEqualsCore_formulaSatisfied inputVal top vars x hinput t hcount
 
 /-- A complete equality block allocates only above its incoming DIMACS top. -/
 theorem seqCounterEqualsCore_top_bound
