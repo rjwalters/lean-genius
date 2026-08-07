@@ -103,6 +103,35 @@ theorem ownerFiberCliqueMatrix_apply
     simp
   · simp [Matrix.one_apply, hxz]
 
+/-- An edge-disjoint graph split into a base relation and equal-owner
+cliques becomes an additive adjacency-matrix decomposition. -/
+theorem adjMatrix_eq_add_ownerFiberClique_of_split
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Ring K]
+    (D P : SimpleGraph X) [DecidableRel D.Adj] [DecidableRel P.Adj]
+    (owner : X → Y)
+    (hsplit : ∀ {x z}, x ≠ z →
+      (D.Adj x z ↔ P.Adj x z ∨ owner x = owner z))
+    (hdisj : ∀ {x z}, P.Adj x z → owner x ≠ owner z) :
+    D.adjMatrix K = P.adjMatrix K + ownerFiberCliqueMatrix (K := K) owner := by
+  ext x z
+  rw [Matrix.add_apply, ownerFiberCliqueMatrix_apply]
+  by_cases hxz : x = z
+  · subst z
+    simp [SimpleGraph.adjMatrix_apply]
+  · rw [if_neg hxz]
+    rw [SimpleGraph.adjMatrix_apply, SimpleGraph.adjMatrix_apply]
+    by_cases hp : P.Adj x z
+    · have ho : owner x ≠ owner z := hdisj hp
+      have hd : D.Adj x z := (hsplit hxz).mpr (Or.inl hp)
+      simp [hp, ho, hd]
+    · by_cases ho : owner x = owner z
+      · have hd : D.Adj x z := (hsplit hxz).mpr (Or.inr ho)
+        simp [hp, ho, hd]
+      · have hd : ¬D.Adj x z := fun hd =>
+          (hsplit hxz).mp hd |>.elim hp ho
+        simp [hp, ho, hd]
+
 /-- Uniform fiber size makes `CCᵀ` a scalar matrix. -/
 theorem ownerIncidence_mul_transpose_eq_smul_one
     {X Y K : Type*} [Fintype X] [Fintype Y]
