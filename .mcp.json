@@ -1,4 +1,15 @@
 {
   "_comment": "Claude Code MCP server registry for lean-genius. The aristotle MCP server (Harmonic's Aristotle prover via septract/lean-aristotle-mcp) was REMOVED in issue #38098: the wrapper pins aristotlelib ~=0.6.0, but Harmonic cut over to the v1+ API server-side (~2026-03-18), so 0.6.x clients now get HTTP 426 Upgrade Required (surfaced as 'Resource not found'). No official MCP server ships with aristotlelib 2.x. Use the CLI-based pipeline instead: scripts/aristotle/{submit-batch,check-jobs,retrieve-integrate}.sh (which wrap `uvx --from aristotlelib aristotle ...`). ARISTOTLE_API_KEY must be set in the shell environment (source it from ~/.aristotle_key).",
-  "mcpServers": {}
+  "mcpServers": {
+    "squad": {
+      "command": "node",
+      "args": [
+        "/Users/rwalters/GitHub/squad/dist/index.js"
+      ],
+      "env": {
+        "SQUAD_PERSONA": "claude",
+        "SQUAD_DIR": "/Users/rwalters/GitHub/lean-genius/.squad"
+      }
+    }
+  }
 }
