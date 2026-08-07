@@ -279,6 +279,166 @@ theorem orderFortyNineDistTwo_exists_distinct_low_siblings_in_common_branch
   exact ⟨x2, x3, hx23, hx2deg, hx3deg, hx2s, hx2v2,
     hx3s, hx3v3, hx2Branch, hx3Branch⟩
 
+/-- Full pinned neighborhood census in the three-high distance-two case.
+Besides the three highs and their three local partners, `sStar` has exactly
+one residual low neighbor; that neighbor also belongs to the common branch
+around `v1`. -/
+theorem orderFortyNineDistTwo_exists_exact_pinned_neighborhood
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 sStar : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8) (hsLow : G.degree sStar = 7)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3) (h23 : v2 ≠ v3)
+    (hs1 : G.Adj sStar v1) (hs2 : G.Adj sStar v2)
+    (hs3 : G.Adj sStar v3)
+    (hHigh : orderFortyNineHighVertices G = {v1, v2, v3}) :
+    let parent : {z : V // z ∈ G.neighborSet v1} :=
+      ⟨sStar, by simpa using hs1.symm⟩
+    ∃ t x2 x3 l3 : V,
+      G.neighborFinset sStar = {v1, v2, v3, t, x2, x3, l3} ∧
+      G.degree t = 7 ∧ G.degree x2 = 7 ∧ G.degree x3 = 7 ∧
+      G.degree l3 = 7 ∧
+      G.Adj v1 t ∧ G.Adj v2 x2 ∧ G.Adj v3 x3 ∧
+      t ∉ ({x2, x3} : Finset V) ∧ x2 ≠ x3 ∧
+      l3 ∈ secondLayerBranch G v1 parent := by
+  dsimp
+  rcases orderFortyNineDistTwo_exists_partner_not_adj_foreign_highs
+    G hfree hmin hcard hv1 hv2 hv3 h12 h13 hs1 hs2 hs3 with
+    ⟨t, ⟨hts, ht1, htNot2, htNot3⟩, htUnique⟩
+  rcases orderFortyNineDistTwo_exists_distinct_low_siblings_in_common_branch
+    G hfree hmin hcard hv1 hv2 hv3 h12 h13 h23 hs1 hs2 hs3 with
+    ⟨x2, x3, hx23, hx2deg, hx3deg, hx2s, hx2v2,
+      hx3s, hx3v3, _hx2Branch, _hx3Branch⟩
+  have htdeg : G.degree t = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv1 ht1
+  have htx2 : t ≠ x2 := by
+    intro h
+    subst x2
+    exact htNot2 hx2v2.symm
+  have htx3 : t ≠ x3 := by
+    intro h
+    subst x3
+    exact htNot3 hx3v3.symm
+  have low_ne_high : ∀ {a b : V}, G.degree a = 7 →
+      G.degree b = 8 → a ≠ b := by
+    intro a b ha hb hab
+    subst b
+    omega
+  have hv1t : v1 ≠ t := (low_ne_high htdeg hv1).symm
+  have hv2t : v2 ≠ t := (low_ne_high htdeg hv2).symm
+  have hv3t : v3 ≠ t := (low_ne_high htdeg hv3).symm
+  have hv1x2 : v1 ≠ x2 := (low_ne_high hx2deg hv1).symm
+  have hv2x2 : v2 ≠ x2 := (low_ne_high hx2deg hv2).symm
+  have hv3x2 : v3 ≠ x2 := (low_ne_high hx2deg hv3).symm
+  have hv1x3 : v1 ≠ x3 := (low_ne_high hx3deg hv1).symm
+  have hv2x3 : v2 ≠ x3 := (low_ne_high hx3deg hv2).symm
+  have hv3x3 : v3 ≠ x3 := (low_ne_high hx3deg hv3).symm
+  let K : Finset V := {v1, v2, v3, t, x2, x3}
+  have hKcard : K.card = 6 := by
+    simp [K, h12, h13, h23, htx2, htx3, hx23,
+      hv1t, hv2t, hv3t, hv1x2, hv2x2, hv3x2,
+      hv1x3, hv2x3, hv3x3]
+  have hKsub : K ⊆ G.neighborFinset sStar := by
+    intro z hz
+    simp only [K, Finset.mem_insert, Finset.mem_singleton] at hz
+    simp only [SimpleGraph.mem_neighborFinset]
+    rcases hz with rfl | rfl | rfl | rfl | rfl | rfl
+    · exact hs1
+    · exact hs2
+    · exact hs3
+    · exact hts
+    · exact hx2s
+    · exact hx3s
+  have hNcard : (G.neighborFinset sStar).card = 7 := by
+    rw [G.card_neighborFinset_eq_degree, hsLow]
+  have hresCard : (G.neighborFinset sStar \ K).card = 1 := by
+    rw [Finset.card_sdiff_of_subset hKsub, hNcard, hKcard]
+  rw [Finset.card_eq_one] at hresCard
+  rcases hresCard with ⟨l3, hl3res⟩
+  have hl3mem : l3 ∈ G.neighborFinset sStar \ K := by simp [hl3res]
+  have hl3adj : G.Adj sStar l3 := by
+    simpa [SimpleGraph.mem_neighborFinset] using (Finset.mem_sdiff.mp hl3mem).1
+  have hl3notK : l3 ∉ K := (Finset.mem_sdiff.mp hl3mem).2
+  have hNdecomp : G.neighborFinset sStar = insert l3 K := by
+    ext z
+    constructor
+    · intro hz
+      by_cases hzK : z ∈ K
+      · exact Finset.mem_insert.mpr (Or.inr hzK)
+      · have hzres : z ∈ G.neighborFinset sStar \ K :=
+          Finset.mem_sdiff.mpr ⟨hz, hzK⟩
+        have : z = l3 := by simpa [hl3res] using hzres
+        exact Finset.mem_insert.mpr (Or.inl this)
+    · intro hz
+      rcases Finset.mem_insert.mp hz with rfl | hzK
+      · exact (Finset.mem_sdiff.mp hl3mem).1
+      · exact hKsub hzK
+  have hl3deg : G.degree l3 = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard l3 with h7 | h8
+    · exact h7
+    · exfalso
+      have hl3High : l3 ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, h8]
+      rw [hHigh] at hl3High
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hl3High
+      apply hl3notK
+      rcases hl3High with h | h | h
+      · simp [K, h]
+      · simp [K, h]
+      · simp [K, h]
+  have hl3Branch : l3 ∈ secondLayerBranch G v1
+      (⟨sStar, by simpa using hs1.symm⟩ :
+        {z : V // z ∈ G.neighborSet v1}) := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨by simpa [SimpleGraph.mem_neighborFinset] using hl3adj, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    constructor
+    · intro h
+      subst l3
+      apply hl3notK
+      simp [K]
+    · intro h1l3
+      have hl3Not2 : ¬ G.Adj l3 v2 := by
+        intro hl32
+        have hcommon := orderFortyNineDistTwo_common_highPair_eq_singleton
+          G hfree hmin hcard hv1 hv2 h12 hs1 hs2
+        have hl3Common : l3 ∈
+            G.neighborFinset v1 ∩ G.neighborFinset v2 := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨h1l3, hl32.symm⟩
+        have hl3eq : l3 = sStar := by simpa [hcommon] using hl3Common
+        exact G.loopless.irrefl sStar (hl3eq ▸ hl3adj)
+      have hl3Not3 : ¬ G.Adj l3 v3 := by
+        intro hl33
+        have hcommon := orderFortyNineDistTwo_common_highPair_eq_singleton
+          G hfree hmin hcard hv1 hv3 h13 hs1 hs3
+        have hl3Common : l3 ∈
+            G.neighborFinset v1 ∩ G.neighborFinset v3 := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨h1l3, hl33.symm⟩
+        have hl3eq : l3 = sStar := by simpa [hcommon] using hl3Common
+        exact G.loopless.irrefl sStar (hl3eq ▸ hl3adj)
+      have hl3t : l3 = t := htUnique l3
+        ⟨hl3adj, h1l3, hl3Not2, hl3Not3⟩
+      apply hl3notK
+      simp [K, hl3t]
+  have hNshape : G.neighborFinset sStar =
+      {v1, v2, v3, t, x2, x3, l3} := by
+    rw [hNdecomp]
+    ext z
+    simp [K, or_comm, or_left_comm, or_assoc]
+  refine ⟨t, x2, x3, l3, hNshape, htdeg, hx2deg, hx3deg,
+    hl3deg, ht1, hx2v2, hx3v3, ?_, hx23, hl3Branch⟩
+  simp [htx2, htx3]
+
 end
 
 end Erdos85
