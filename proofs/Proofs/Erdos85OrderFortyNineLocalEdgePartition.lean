@@ -104,6 +104,179 @@ def orderFortyNineLowLowLocalEdgeCount
   (G.induce (G.neighborSet x)).edgeFinset.card -
     (G.neighborFinset x ∩ orderFortyNineHighVertices G).card
 
+/-- The genuine low--low edges in the local graph: both endpoints have
+degree seven in the ambient graph. -/
+def orderFortyNineActualLowLowLocalEdges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) : Finset
+      (Sym2 {z : V // z ∈ G.neighborSet x}) :=
+  (G.induce (G.neighborSet x)).edgeFinset.filter fun e =>
+    ∀ y ∈ e, G.degree y.1 = 7
+
+/-- The arithmetic residual is exactly the number of genuine low--low local
+edges. -/
+theorem orderFortyNine_lowLowLocalEdgeCount_eq_actual_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 7) :
+    orderFortyNineLowLowLocalEdgeCount G x =
+      (orderFortyNineActualLowLowLocalEdges G x).card := by
+  classical
+  let S : Finset V :=
+    G.neighborFinset x ∩ orderFortyNineHighVertices G
+  let N := {z : V // z ∈ G.neighborSet x}
+  let H : SimpleGraph N := G.induce (G.neighborSet x)
+  let L : Finset N := Finset.univ.filter fun y => G.degree y.1 = 7
+  let R : Finset (Sym2 N) := H.edgeFinset.filter fun e =>
+    ∀ y ∈ e, G.degree y.1 = 7
+  have hS_high : ∀ v ∈ S, G.degree v = 8 := by
+    intro v hv
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hv).2).2
+  have hS_adj : ∀ v ∈ S, G.Adj v x := by
+    intro v hv
+    have := (Finset.mem_inter.mp hv).1
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+  have hpartner_card : ∀ v : {v // v ∈ S},
+      (G.neighborFinset v.1 ∩ G.neighborFinset x).card = 1 := by
+    intro v
+    let xv : {z : V // z ∈ G.neighborSet v.1} :=
+      ⟨x, hS_adj v.1 v.2⟩
+    have hdeg := orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard (hS_high v.1 v.2) xv
+    rwa [degree_induce_neighborSet_eq_card_common] at hdeg
+  let partner : {v // v ∈ S} → V := fun v =>
+    ((Finset.card_pos.mp (by rw [hpartner_card v]; norm_num)).choose)
+  have hpartner_mem : ∀ v : {v // v ∈ S},
+      partner v ∈ G.neighborFinset v.1 ∩ G.neighborFinset x := by
+    intro v
+    exact (Finset.card_pos.mp (by rw [hpartner_card v]; norm_num)).choose_spec
+  let highLocal : {v // v ∈ S} → N := fun v =>
+    ⟨v.1, by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_inter.mp v.2).1⟩
+  let partnerLocal : {v // v ∈ S} → N := fun v =>
+    ⟨partner v, by
+      simpa [SimpleGraph.mem_neighborFinset] using
+        (Finset.mem_inter.mp (hpartner_mem v)).2⟩
+  let chargedEdge : {v // v ∈ S} → Sym2 N := fun v =>
+    s(highLocal v, partnerLocal v)
+  have hcharged_mem : ∀ v : {v // v ∈ S},
+      chargedEdge v ∈ H.edgeFinset := by
+    intro v
+    apply H.mem_edgeFinset.mpr
+    change G.Adj v.1 (partner v)
+    simpa [SimpleGraph.mem_neighborFinset] using
+      (Finset.mem_inter.mp (hpartner_mem v)).1
+  have hcharged_not_R : ∀ v : {v // v ∈ S}, chargedEdge v ∉ R := by
+    intro v hvR
+    have hall := (Finset.mem_filter.mp hvR).2
+    have h7 := hall (highLocal v) (Sym2.mem_mk_left _ _)
+    have h8 : G.degree (highLocal v).1 = 8 := hS_high v.1 v.2
+    omega
+  have hcharged_injective : Function.Injective chargedEdge := by
+    intro v w heq
+    have hor := (Sym2.mk_eq_mk_iff
+      (p := (highLocal v, partnerLocal v))
+      (q := (highLocal w, partnerLocal w))).mp heq
+    rcases hor with hsame | hswap
+    · apply Subtype.ext
+      exact congrArg (fun q : N × N => q.1.1) hsame
+    · exfalso
+      have hvw : G.Adj v.1 w.1 := by
+        have hpv : partner v = w.1 :=
+          congrArg (fun q : N × N => q.2.1) hswap
+        have hvp := (Finset.mem_inter.mp (hpartner_mem v)).1
+        simpa [SimpleGraph.mem_neighborFinset, hpv] using hvp
+      exact orderFortyNine_not_adj_degreeEight_degreeEight
+        G hfree hmin hcard (hS_high v.1 v.2) (hS_high w.1 w.2) hvw
+  have hsurj : ∀ e ∈ H.edgeFinset \ R,
+      ∃ v : {v // v ∈ S}, chargedEdge v = e := by
+    intro e he
+    rcases Finset.mem_sdiff.mp he with ⟨heH, heR⟩
+    induction e using Sym2.inductionOn with
+    | _ a b =>
+      have hab : H.Adj a b := H.mem_edgeFinset.mp heH
+      have ha7or8 := orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard a.1
+      have hb7or8 := orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard b.1
+      have hnotboth : ¬(G.degree a.1 = 7 ∧ G.degree b.1 = 7) := by
+        intro hlows
+        apply heR
+        rw [Finset.mem_filter]
+        refine ⟨heH, ?_⟩
+        intro y hy
+        rcases Sym2.mem_iff.mp hy with rfl | rfl
+        · exact hlows.1
+        · exact hlows.2
+      rcases ha7or8 with ha7 | ha8
+      · have hb8 : G.degree b.1 = 8 := hb7or8.resolve_left
+          (fun hb7 => hnotboth ⟨ha7, hb7⟩)
+        have hbS : b.1 ∈ S := by
+          simp only [S, Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨b.2, by simp [orderFortyNineHighVertices, hb8]⟩
+        let v : {v // v ∈ S} := ⟨b.1, hbS⟩
+        refine ⟨v, ?_⟩
+        have haMem : a.1 ∈ G.neighborFinset v.1 ∩ G.neighborFinset x := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨hab.symm, a.2⟩
+        have hpa : partner v = a.1 := by
+          have hone := hpartner_card v
+          rw [Finset.card_eq_one] at hone
+          rcases hone with ⟨q, hq⟩
+          have hpq : partner v = q := by
+            simpa [hq] using hpartner_mem v
+          have haq : a.1 = q := by simpa [hq] using haMem
+          exact hpq.trans haq.symm
+        have hvb : highLocal v = b := Subtype.ext rfl
+        have hva : partnerLocal v = a := Subtype.ext hpa
+        change s(highLocal v, partnerLocal v) = s(a, b)
+        rw [hvb, hva]
+        exact Sym2.eq_swap
+      · have haS : a.1 ∈ S := by
+          simp only [S, Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨a.2, by simp [orderFortyNineHighVertices, ha8]⟩
+        let v : {v // v ∈ S} := ⟨a.1, haS⟩
+        refine ⟨v, ?_⟩
+        have hbMem : b.1 ∈ G.neighborFinset v.1 ∩ G.neighborFinset x := by
+          simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+          exact ⟨hab, b.2⟩
+        have hpb : partner v = b.1 := by
+          have hone := hpartner_card v
+          rw [Finset.card_eq_one] at hone
+          rcases hone with ⟨q, hq⟩
+          have hpq : partner v = q := by
+            simpa [hq] using hpartner_mem v
+          have hbq : b.1 = q := by simpa [hq] using hbMem
+          exact hpq.trans hbq.symm
+        change s(highLocal v, partnerLocal v) = s(a, b)
+        apply Sym2.eq_iff.mpr
+        left
+        exact ⟨rfl, Subtype.ext hpb⟩
+  have hcompCard : (H.edgeFinset \ R).card = S.card := by
+    let f : {v // v ∈ S} → {e // e ∈ H.edgeFinset \ R} := fun v =>
+      ⟨chargedEdge v, Finset.mem_sdiff.mpr
+        ⟨hcharged_mem v, hcharged_not_R v⟩⟩
+    have hfbij : Function.Bijective f := by
+      constructor
+      · intro v w hvw
+        apply hcharged_injective
+        exact congrArg Subtype.val hvw
+      · intro e
+        rcases hsurj e.1 e.2 with ⟨v, hv⟩
+        exact ⟨v, Subtype.ext hv⟩
+    have := Fintype.card_congr (Equiv.ofBijective f hfbij)
+    simpa only [Fintype.card_coe] using this.symm
+  have hRsub : R ⊆ H.edgeFinset := Finset.filter_subset _ _
+  have hpartition := Finset.card_sdiff_add_card_eq_card hRsub
+  unfold orderFortyNineLowLowLocalEdgeCount
+  change H.edgeFinset.card - S.card = R.card
+  omega
+
 /-- Exact local partition: charged high--low edges plus the residual low--low
 edge count give all local triangle edges. -/
 theorem orderFortyNine_high_add_lowLow_eq_localTriangleEdges
