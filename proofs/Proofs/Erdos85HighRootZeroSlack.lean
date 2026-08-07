@@ -171,6 +171,74 @@ theorem externalRepairCandidates_eq_empty_of_squareOrder_degree_succ
   exact externalRepairCandidates_eq_empty_of_squareOrder_highRoot
     G hfree hd hcard hv hneigh hlocal
 
+/-- Under the tight-edge cover supplied by an edge-minimal witness, square
+order admits only degrees `d` and `d+1`. -/
+theorem squareOrder_degree_eq_or_succ_of_tightEdgeCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) (x : V) :
+    G.degree x = d ∨ G.degree x = d + 1 := by
+  have hcard' : Fintype.card V = d * (d - 1) + 1 + (d - 1) := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e, d = e + 2 :=
+      ⟨d - 2, (Nat.sub_add_cancel hd).symm⟩
+    norm_num
+    ring
+  have hupper := degree_le_succ_of_order_excess_lt_two_mul_pred
+    G hfree hmin hcover hcard' (by omega) x
+  have hlower := hmin x
+  omega
+
+/-- Two degree-`d+1` vertices are nonadjacent under the tight-edge cover. -/
+theorem squareOrder_not_adj_degree_succ_of_tightEdgeCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {d : ℕ} (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = d ∨ G.degree v = d)
+    {x y : V} (hx : G.degree x = d + 1) (hy : G.degree y = d + 1) :
+    ¬ G.Adj x y := by
+  intro hxy
+  rcases hcover hxy with hx' | hy' <;> omega
+
+/-- Distinct high vertices at square order have exactly one common neighbor.
+Thus their low-neighborhood incidence matrix has Gram matrix `d I + J`. -/
+theorem squareOrder_card_common_degree_succ_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) {x y : V}
+    (hx : G.degree x = d + 1) (hy : G.degree y = d + 1)
+    (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 1 := by
+  have hnadj := squareOrder_not_adj_degree_succ_of_tightEdgeCover
+    G hcover hx hy
+  have hle := common_le_one_of_not_containsC4 hfree x y hxy
+  have hDzero :=
+    (squareOrder_degree_succ_highRoot_structure
+      G hfree hd hmin hcard hx).1
+  have hDempty : (secondOrderDefectGraph G).neighborFinset x = ∅ := by
+    rw [← Finset.card_eq_zero,
+      (secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDzero]
+  have hpos : 0 < (G.neighborFinset x ∩ G.neighborFinset y).card := by
+    by_contra hzero
+    have hzero' : (G.neighborFinset x ∩ G.neighborFinset y).card = 0 := by
+      omega
+    have hyAnti : y ∈ antipodalNeighbors G x :=
+      (mem_antipodalNeighbors G x y).mpr ⟨hxy.symm, hnadj, hzero'⟩
+    have hyD : y ∈ (secondOrderDefectGraph G).neighborFinset x := by
+      rw [secondOrderDefectGraph_neighborFinset G x]
+      exact Finset.mem_union_left _ hyAnti
+    rw [hDempty] at hyD
+    exact Finset.notMem_empty y hyD
+  omega
+
 end
 
 end Erdos85
