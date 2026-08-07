@@ -31,6 +31,42 @@ noncomputable instance minimumLayerExteriorVertexFintype
   unfold minimumLayerExteriorVertex
   infer_instance
 
+/-- A cyclic parametrization in the parent defect graph lifts to the
+exterior subtype whenever all of its vertices lie outside the minimum layer. -/
+theorem minimumLayer_exteriorCycleParam_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent)
+    {n : ℕ} [NeZero n]
+    (u : ZMod n → V)
+    (hu : ∀ z, D.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (hout : ∀ z, u z ∉ minimumLayerImageFinset D c₀) :
+    let ux : ZMod n → minimumLayerExteriorVertex D c₀ :=
+      fun z => ⟨u z, hout z⟩
+    ∀ z, (D.comap Subtype.val).neighborFinset (ux z) =
+      {ux (z - 1), ux (z + 1)} := by
+  classical
+  dsimp only
+  intro z
+  ext w
+  rw [(D.comap Subtype.val).mem_neighborFinset]
+  change D.Adj (u z) w.1 ↔ _
+  rw [← D.mem_neighborFinset, hu z]
+  constructor
+  · intro h
+    rcases Finset.mem_insert.mp h with h | h
+    · exact Finset.mem_insert.mpr (Or.inl (Subtype.ext h))
+    · have h' := Finset.mem_singleton.mp h
+      exact Finset.mem_insert.mpr
+        (Or.inr (Finset.mem_singleton.mpr (Subtype.ext h')))
+  · intro h
+    rcases Finset.mem_insert.mp h with h | h
+    · exact Finset.mem_insert.mpr (Or.inl (congrArg Subtype.val h))
+    · have h' := Finset.mem_singleton.mp h
+      exact Finset.mem_insert.mpr
+        (Or.inr (Finset.mem_singleton.mpr (congrArg Subtype.val h')))
+
 /-- **Saturated exterior defect cover.**  There is an owner projection from
 the exterior parent vertices to child vertices.  It maps every parent defect
 edge to a child defect edge, and every child defect edge out of an owner has
