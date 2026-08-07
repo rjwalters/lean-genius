@@ -82,6 +82,53 @@ theorem minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
       H hfreeChild hs4 hsEven hminChild hcardChild hlen
   rcases hsClass with rfl | rfl <;> omega
 
+/-- **Sharp-descent capstone.**  Away from the genuine degree-`4` and
+degree-`12` equal-cycle exceptions, the minimum-layer descent either has
+the strict order gap, or the ambient degree is the single residual value
+`124`.  Thus the formerly infinite saturated branch is reduced to one
+degree. -/
+theorem secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hd4 : d ≠ 4) (hd12 : d ≠ 12)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3 ∧
+      Even s ∧ s < d ∧
+      (d = 124 ∨ s * (s - 1) + 4 ≤ d) := by
+  obtain ⟨s, hreg, _hfreeChild, hcardChild, hsEven, hdesc⟩ :=
+    secondOrder_minimumLayer_sharp_descent
+      G hfree hd heven hmin hcard c₀ hc₀min
+  obtain ⟨hsd, hbranch⟩ := hdesc hd4 hd12
+  refine ⟨s, hreg, hcardChild, hsEven, hsd, ?_⟩
+  rcases hbranch with hsat | hgap
+  · have hs4 : 4 ≤ s := by
+      by_contra hnot
+      have hslt : s < 4 := Nat.lt_of_not_ge hnot
+      obtain ⟨k, hk⟩ := hsEven
+      have hsSmall : s = 0 ∨ s = 2 := by omega
+      rcases hsSmall with rfl | rfl
+      · norm_num at hsat
+        omega
+      · norm_num at hsat
+        exact hd4 hsat
+    have hdClass := minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
+      G hfree hd heven hmin hcard c₀ hreg hcardChild hs4 hsEven hsat
+    exact Or.inl (hdClass.resolve_left hd12)
+  · exact Or.inr hgap
+
 end
 
 end Erdos85
