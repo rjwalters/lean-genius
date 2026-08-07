@@ -32,6 +32,105 @@ def normalizedOwnerProjection
     (Matrix.transpose (ownerIncidenceMatrix (K := K) owner) *
       ownerIncidenceMatrix (K := K) owner)
 
+/-- The normalized fiber-constant projection fixes the all-ones row space. -/
+theorem onesMatrix_mul_normalizedOwnerProjection
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Field K]
+    (owner : X → Y) (m : ℕ) (hm : (m : K) ≠ 0)
+    (huniform : ∀ a, (ownerFiberFinset owner a).card = m) :
+    (Matrix.of (fun _ _ => (1 : K)) : Matrix X X K) *
+        normalizedOwnerProjection owner m =
+      Matrix.of (fun _ _ => (1 : K)) := by
+  let C := ownerIncidenceMatrix (K := K) owner
+  let JXX : Matrix X X K := Matrix.of fun _ _ => 1
+  let JXY : Matrix X Y K := Matrix.of fun _ _ => 1
+  have hJC : JXX * Matrix.transpose C = (m : K) • JXY := by
+    ext x a
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, JXX, JXY,
+      Matrix.of_apply, one_mul, Matrix.smul_apply, C,
+      ownerIncidenceMatrix, smul_eq_mul, mul_one]
+    rw [← huniform a]
+    simpa [ownerFiberFinset] using
+      (Finset.sum_boole (R := K) (fun y : X => owner y = a) Finset.univ)
+  have hJYC : JXY * C = JXX := by
+    ext x z
+    simp only [Matrix.mul_apply, JXY, JXX, Matrix.of_apply, one_mul, C,
+      ownerIncidenceMatrix]
+    simpa using
+      (Finset.sum_boole (R := K) (fun a : Y => owner z = a) Finset.univ)
+  change JXX * normalizedOwnerProjection owner m = JXX
+  calc
+    JXX * normalizedOwnerProjection owner m =
+        (m : K)⁻¹ • ((JXX * Matrix.transpose C) * C) := by
+          simp only [normalizedOwnerProjection, C, Matrix.mul_smul,
+            Matrix.mul_assoc]
+    _ = (m : K)⁻¹ • (((m : K) • JXY) * C) := by rw [hJC]
+    _ = ((m : K)⁻¹ * (m : K)) • (JXY * C) := by
+          rw [Matrix.smul_mul, smul_smul]
+    _ = JXX := by rw [inv_mul_cancel₀ hm, one_smul, hJYC]
+
+theorem normalizedOwnerProjection_isIdempotent
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Field K]
+    (owner : X → Y) (m : ℕ) (hm : (m : K) ≠ 0)
+    (huniform : ∀ a, (ownerFiberFinset owner a).card = m) :
+    IsIdempotentElem (normalizedOwnerProjection (K := K) owner m) := by
+  let C := ownerIncidenceMatrix (K := K) owner
+  have hCC : C * Matrix.transpose C = (m : K) • (1 : Matrix Y Y K) :=
+    ownerIncidence_mul_transpose_eq_smul_one owner m huniform
+  have hGram : (Matrix.transpose C * C) * (Matrix.transpose C * C) =
+      (m : K) • (Matrix.transpose C * C) := by
+    calc
+      (Matrix.transpose C * C) * (Matrix.transpose C * C) =
+          Matrix.transpose C * (C * Matrix.transpose C) * C := by
+            simp only [Matrix.mul_assoc]
+      _ = Matrix.transpose C * ((m : K) • (1 : Matrix Y Y K)) * C := by
+            rw [hCC]
+      _ = (m : K) • (Matrix.transpose C * C) := by simp
+  rw [IsIdempotentElem]
+  change (((m : K)⁻¹) • (Matrix.transpose C * C)) *
+      (((m : K)⁻¹) • (Matrix.transpose C * C)) =
+    ((m : K)⁻¹) • (Matrix.transpose C * C)
+  rw [Matrix.smul_mul, Matrix.mul_smul, hGram, smul_smul, smul_smul]
+  congr 1
+  calc
+    (m : K)⁻¹ * (m : K)⁻¹ * (m : K) =
+        (m : K)⁻¹ * ((m : K)⁻¹ * (m : K)) := by rw [mul_assoc]
+    _ = (m : K)⁻¹ * 1 := by
+      rw [inv_mul_cancel₀ hm]
+    _ = (m : K)⁻¹ := mul_one _
+
+theorem complement_normalizedOwnerProjection_isIdempotent
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Field K]
+    (owner : X → Y) (m : ℕ) (hm : (m : K) ≠ 0)
+    (huniform : ∀ a, (ownerFiberFinset owner a).card = m) :
+    IsIdempotentElem
+      (1 - normalizedOwnerProjection owner m : Matrix X X K) := by
+  let E : Matrix X X K := normalizedOwnerProjection owner m
+  have hE : E * E = E := normalizedOwnerProjection_isIdempotent
+    (K := K) owner m hm huniform
+  rw [IsIdempotentElem]
+  change (1 - E) * (1 - E) = 1 - E
+  rw [sub_mul, one_mul, mul_sub, Matrix.mul_one, hE]
+  abel
+
+theorem adjMatrix_comm_normalizedOwnerProjection_relation
+    {X Y K : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Field K]
+    (P : SimpleGraph X) [DecidableRel P.Adj]
+    (R : Y → Y → Prop) [DecidableRel R]
+    (owner : X → Y) (hsymm : Symmetric R) (m : ℕ)
+    (hmap : ∀ {x z}, P.Adj x z → R (owner x) (owner z))
+    (hlift : ∀ (x : X) (b : Y), R (owner x) b →
+      ∃! z : X, P.Adj x z ∧ owner z = b) :
+    P.adjMatrix K * normalizedOwnerProjection (K := K) owner m =
+      normalizedOwnerProjection (K := K) owner m * P.adjMatrix K := by
+  have hcomm := adjMatrix_comm_ownerFiberGram_relation
+    P R owner hsymm hmap hlift (K := K)
+  simp only [normalizedOwnerProjection, Matrix.mul_smul, Matrix.smul_mul]
+  rw [hcomm]
+
 /-- The trace of the cover adjacency on the fiber-constant projection is
 the trace of the base relation matrix. -/
 theorem trace_mul_normalizedOwnerProjection_eq_trace_base
