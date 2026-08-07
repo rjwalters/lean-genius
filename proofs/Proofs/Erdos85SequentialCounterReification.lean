@@ -273,10 +273,44 @@ theorem seqCounterTableVal_of_mem {n : Nat} (x : Fin n → Bool)
 
 abbrev DimacsValuation := Nat → Bool
 
+/-- Final valuation of one counter block: identifiers belonging to the
+pre-existing CNF retain their supplied values, while freshly allocated IDs
+are read from the counter table. -/
+def seqCounterBlockVal {n : Nat} (inputVal : DimacsValuation)
+    (initialTop : Nat) (x : Fin n → Bool)
+    (ids : List ((Nat × Nat) × Nat)) : DimacsValuation := fun id =>
+  if id ≤ initialTop then inputVal id else seqCounterTableVal x ids id
+
+theorem seqCounterBlockVal_input {n : Nat} (inputVal : DimacsValuation)
+    (initialTop : Nat) (x : Fin n → Bool)
+    (ids : List ((Nat × Nat) × Nat)) {id : Nat}
+    (hid : id ≤ initialTop) :
+    seqCounterBlockVal inputVal initialTop x ids id = inputVal id := by
+  simp [seqCounterBlockVal, hid]
+
+theorem seqCounterBlockVal_aux {n : Nat} (inputVal : DimacsValuation)
+    {initialTop : Nat} (x : Fin n → Bool) {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    {key : Nat × Nat} {id : Nat} (hmem : (key, id) ∈ st.ids) :
+    seqCounterBlockVal inputVal initialTop x st.ids id =
+      seqCounterWitness x (key.2 + key.1) key.1 := by
+  have hbound := hinv.id_bounds (key, id) hmem
+  rw [seqCounterBlockVal]
+  simp only [not_le.mpr hbound.1]
+  exact seqCounterTableVal_of_mem x hinv.ids_nodup hmem
+
 /-- DIMACS variables are positive integers; a negative integer denotes the
 Boolean negation of the variable with the same absolute identifier. -/
 def dimacsLitValue (val : DimacsValuation) (lit : Int) : Bool :=
   if 0 < lit then val lit.natAbs else !(val lit.natAbs)
+
+theorem dimacsLitValue_block_of_natAbs_le {n : Nat}
+    (inputVal : DimacsValuation) (initialTop : Nat) (x : Fin n → Bool)
+    (ids : List ((Nat × Nat) × Nat)) {lit : Int}
+    (hlit : lit.natAbs ≤ initialTop) :
+    dimacsLitValue (seqCounterBlockVal inputVal initialTop x ids) lit =
+      dimacsLitValue inputVal lit := by
+  simp [dimacsLitValue, seqCounterBlockVal, hlit]
 
 def dimacsClauseSatisfied (val : DimacsValuation)
     (clause : DimacsClause) : Prop :=
@@ -371,6 +405,64 @@ theorem dimacs_seqCounter_overflow_clause_satisfied {n : Nat}
   · refine ⟨-(inputId : Int), by simp, ?_⟩
     rw [dimacsLitValue_neg val (by exact_mod_cast hinput.ne'),
       dimacsLitValue_natCast val hinput, hinputVal]
+    cases hval : x ⟨j + t, hidx⟩ <;> simp_all
+
+/-! The generator's at-least block passes negated input literals to the same
+at-most core.  The following variants therefore allow the input literal
+itself to have either sign. -/
+
+theorem dimacs_seqCounter_base_clause_satisfied_signed {n : Nat}
+    (x : Fin n → Bool) (val : DimacsValuation) (j : Nat) (hj : j < n)
+    (inputLit : Int) (auxId : Nat) (hinput : inputLit ≠ 0)
+    (haux : 0 < auxId)
+    (hinputVal : dimacsLitValue val inputLit = x ⟨j, hj⟩)
+    (hauxVal : val auxId = seqCounterWitness x j 0) :
+    dimacsClauseSatisfied val [-inputLit, (auxId : Int)] := by
+  by_cases hx : x ⟨j, hj⟩ = true
+  · refine ⟨(auxId : Int), by simp, ?_⟩
+    rw [dimacsLitValue_natCast val haux, hauxVal,
+      seqCounterKnuth_base x j hj hx]
+  · refine ⟨-inputLit, by simp, ?_⟩
+    rw [dimacsLitValue_neg val hinput, hinputVal]
+    cases hval : x ⟨j, hj⟩ <;> simp_all
+
+theorem dimacs_seqCounter_diagonal_clause_satisfied_signed {n : Nat}
+    (x : Fin n → Bool) (val : DimacsValuation) (k j : Nat)
+    (hidx : j + k + 1 < n) (inputLit : Int) (leftId rightId : Nat)
+    (hinput : inputLit ≠ 0) (hleft : 0 < leftId) (hright : 0 < rightId)
+    (hinputVal : dimacsLitValue val inputLit = x ⟨j + k + 1, hidx⟩)
+    (hleftVal : val leftId = seqCounterWitness x (j + k) k)
+    (hrightVal : val rightId = seqCounterWitness x (j + (k + 1)) (k + 1)) :
+    dimacsClauseSatisfied val [-inputLit, -(leftId : Int), (rightId : Int)] := by
+  by_cases hx : x ⟨j + k + 1, hidx⟩ = true
+  · by_cases hs : seqCounterWitness x (j + k) k = true
+    · refine ⟨(rightId : Int), by simp, ?_⟩
+      rw [dimacsLitValue_natCast val hright, hrightVal,
+        seqCounterKnuth_diagonal x k j hidx hx hs]
+    · refine ⟨-(leftId : Int), by simp, ?_⟩
+      rw [dimacsLitValue_neg val (by exact_mod_cast hleft.ne'),
+        dimacsLitValue_natCast val hleft, hleftVal]
+      cases hval : seqCounterWitness x (j + k) k <;> simp_all
+  · refine ⟨-inputLit, by simp, ?_⟩
+    rw [dimacsLitValue_neg val hinput, hinputVal]
+    cases hval : x ⟨j + k + 1, hidx⟩ <;> simp_all
+
+theorem dimacs_seqCounter_overflow_clause_satisfied_signed {n : Nat}
+    (x : Fin n → Bool) (val : DimacsValuation) (t j : Nat)
+    (ht : 0 < t) (hidx : j + t < n) (htotal : seqPrefixTrue x n ≤ t)
+    (inputLit : Int) (auxId : Nat) (hinput : inputLit ≠ 0)
+    (haux : 0 < auxId)
+    (hinputVal : dimacsLitValue val inputLit = x ⟨j + t, hidx⟩)
+    (hauxVal : val auxId = seqCounterWitness x (j + (t - 1)) (t - 1)) :
+    dimacsClauseSatisfied val [-inputLit, -(auxId : Int)] := by
+  by_cases hx : x ⟨j + t, hidx⟩ = true
+  · refine ⟨-(auxId : Int), by simp, ?_⟩
+    rw [dimacsLitValue_neg val (by exact_mod_cast haux.ne'),
+      dimacsLitValue_natCast val haux, hauxVal,
+      seqCounterKnuth_no_overflow x t j ht hidx htotal hx]
+    rfl
+  · refine ⟨-inputLit, by simp, ?_⟩
+    rw [dimacsLitValue_neg val hinput, hinputVal]
     cases hval : x ⟨j + t, hidx⟩ <;> simp_all
 
 end Erdos85
