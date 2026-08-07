@@ -154,6 +154,68 @@ theorem minimumLayer_saturated_twoStep_bijection
   intro c
   exact ⟨p c, (hp c).1, (hp c).2, (hf c).2⟩
 
+/-- Graph-facing form of the Latin resolution law: for every pair of
+exterior points over `a,b`, there is a unique common-nonneighbor owner row
+containing the middle point of a two-edge exterior path between them. -/
+theorem minimumLayer_saturated_existsUnique_twoStep_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habne : a ≠ b)
+    (hcommon :
+      ((minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset a ∩
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset b).card = 1)
+    {z y : V}
+    (hza : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ a)
+    (hyb : y ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ b) :
+    let H := minimumLayerGraph G (secondOrderDefectGraph G) c₀
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    ∃! c : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      c ∈ commonNonneighborFinset H a b ∧
+        ∃ x : V, x ∈ E c ∧ G.Adj z x ∧ G.Adj x y := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let C := commonNonneighborFinset H a b
+  obtain ⟨f, hfbij, hfpath⟩ := minimumLayer_saturated_twoStep_bijection
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+      a b habne hcommon z hza
+  obtain ⟨c, hfc⟩ := hfbij.2 ⟨y, hyb⟩
+  obtain ⟨x, hxc, hzx, hxf⟩ := hfpath c
+  have hfval : (f c).1 = y := congrArg Subtype.val hfc
+  have hxy : G.Adj x y := by simpa [hfval] using hxf
+  refine ⟨c.1, ⟨c.2, ⟨x, hxc, hzx, hxy⟩⟩, ?_⟩
+  intro c' hc'
+  by_contra hne
+  obtain ⟨x', hxc', hzx', hx'y⟩ := hc'.2
+  exact minimumLayer_externalBlock_no_closed_fourStep
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+      a c.1 b c' habne (by
+        intro h
+        apply hne
+        exact h.symm)
+      hza hxc hyb hxc' hzx hxy hx'y.symm hzx'.symm
+
 end
 
 end Erdos85
