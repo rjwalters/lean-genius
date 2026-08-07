@@ -92,6 +92,15 @@ theorem orderFortyNine_tripleSupports_intersecting_or_pairwise_disjoint
     exact Finset.not_nonempty_iff_eq_empty.mp fun hne =>
       h ⟨x, hx, y, hy, hxy, hne⟩
 
+/-- A high support after choosing coordinates on the nine high vertices. -/
+def orderFortyNineLabeledHighSupport
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9) (x : V) :
+    Finset (Fin 9) :=
+  (finsetInSubtype (orderFortyNineHighVertices G)
+    (orderFortyNineHighSupport G x)).map e.toEmbedding
+
 /-- Two size-three high supports in the nine-high stratum can be labeled as
 the prefix `012,345` or `012,034`. -/
 theorem orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
@@ -168,6 +177,67 @@ theorem orderFortyNine_exists_normalized_two_tripleSupports_of_count_ge_two
     orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
       G hHigh hx3 hy3 hlin
   exact ⟨x, y, hxy, hx3, hy3, e, he1, he2⟩
+
+/-- L1 for the two-triple profile: the complete graph-derived triple system
+is represented by a row of the verified `tableT2`. -/
+theorem orderFortyNine_exists_tableT2_row_of_tripleSupportCount_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    (hcount : orderFortyNineHighIncidenceCount G 3 = 2) :
+    ∃ x y : V,
+      let T := (orderFortyNineLowVertices G).filter fun z =>
+        (orderFortyNineHighSupport G z).card = 3
+      T = {x, y} ∧ x ≠ y ∧
+      ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9,
+        ∃ row ∈ OrderFortyNineWitnessTable.tableT2,
+          row.1 =
+            [OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e x),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e y)] := by
+  let T := (orderFortyNineLowVertices G).filter fun z =>
+    (orderFortyNineHighSupport G z).card = 3
+  have hTcard : T.card = 2 := by
+    change orderFortyNineHighIncidenceCount G 3 = 2
+    exact hcount
+  obtain ⟨x, y, hxy, hT⟩ := Finset.card_eq_two.mp hTcard
+  have hx : x ∈ T := by rw [hT]; simp
+  have hy : y ∈ T := by rw [hT]; simp
+  have hx3 : (orderFortyNineHighSupport G x).card = 3 :=
+    (Finset.mem_filter.mp hx).2
+  have hy3 : (orderFortyNineHighSupport G y).card = 3 :=
+    (Finset.mem_filter.mp hy).2
+  have hlin := orderFortyNine_card_inter_highSupport_le_one G hfree hxy
+  obtain ⟨e, he1, he2⟩ :=
+    orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
+      G hHigh hx3 hy3 hlin
+  let A := orderFortyNineLabeledHighSupport G e x
+  let B := orderFortyNineLabeledHighSupport G e y
+  have hA : A = {0, 1, 2} := he1
+  have hBmem : OrderFortyNineWitnessTable.tripleDigits B ∈
+      OrderFortyNineWitnessTable.secondTriples := by
+    rcases he2 with he2 | he2
+    · have hB : B = {3, 4, 5} := he2
+      rw [hB]
+      simp [OrderFortyNineWitnessTable.secondTriples]
+    · have hB : B = {0, 3, 4} := he2
+      rw [hB]
+      simp [OrderFortyNineWitnessTable.secondTriples]
+  have hraw :
+      [OrderFortyNineWitnessTable.firstTriple,
+        OrderFortyNineWitnessTable.tripleDigits B] ∈
+        OrderFortyNineWitnessTable.rawT2 :=
+    OrderFortyNineWitnessTable.mem_rawT2_iff.mpr hBmem
+  have hraw' :
+      [OrderFortyNineWitnessTable.tripleDigits A,
+        OrderFortyNineWitnessTable.tripleDigits B] ∈
+        OrderFortyNineWitnessTable.rawT2 := by
+    simpa [hA, OrderFortyNineWitnessTable.firstTriple] using hraw
+  obtain ⟨row, hrow, hroweq⟩ :=
+    OrderFortyNineWitnessTable.exists_tableT2_row_of_mem_rawT2 hraw'
+  exact ⟨x, y, hT, hxy, e, row, hrow, hroweq⟩
 
 end
 
