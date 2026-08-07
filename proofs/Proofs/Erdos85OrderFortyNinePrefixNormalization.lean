@@ -46,10 +46,59 @@ theorem exists_perm_normalizing_intersecting_prefix
     ∃ σ : Equiv.Perm (Fin 9), ∀ i, σ (f i) = Fin.castLE (by omega) i :=
   exists_perm_send_to_initialSegment (by omega) f hf
 
+/-- Point-level form of the disjoint-block normalization. -/
+theorem exists_perm_normalizing_disjoint_triples
+    (a b c d e f : Fin 9)
+    (hinj : Function.Injective ![a, b, c, d, e, f]) :
+    ∃ σ : Equiv.Perm (Fin 9),
+      ({σ a, σ b, σ c} : Finset (Fin 9)) = {0, 1, 2} ∧
+      ({σ d, σ e, σ f} : Finset (Fin 9)) = {3, 4, 5} := by
+  obtain ⟨σ, hσ⟩ := exists_perm_normalizing_disjoint_prefix
+    ![a, b, c, d, e, f] hinj
+  have h0 := hσ (0 : Fin 6)
+  have h1 := hσ (1 : Fin 6)
+  have h2 := hσ (2 : Fin 6)
+  have h3 := hσ (3 : Fin 6)
+  have h4 := hσ (4 : Fin 6)
+  have h5 := hσ (5 : Fin 6)
+  refine ⟨σ, ?_, ?_⟩ <;> ext x <;> fin_cases x <;>
+    simp_all
+
+/-- Point-level form of the one-point-intersection normalization. -/
+theorem exists_perm_normalizing_intersecting_triples
+    (x a b d e : Fin 9)
+    (hinj : Function.Injective ![x, a, b, d, e]) :
+    ∃ σ : Equiv.Perm (Fin 9),
+      ({σ x, σ a, σ b} : Finset (Fin 9)) = {0, 1, 2} ∧
+      ({σ x, σ d, σ e} : Finset (Fin 9)) = {0, 3, 4} := by
+  obtain ⟨σ, hσ⟩ := exists_perm_normalizing_intersecting_prefix
+    ![x, a, b, d, e] hinj
+  have h0 := hσ (0 : Fin 5)
+  have h1 := hσ (1 : Fin 5)
+  have h2 := hσ (2 : Fin 5)
+  have h3 := hσ (3 : Fin 5)
+  have h4 := hσ (4 : Fin 5)
+  refine ⟨σ, ?_, ?_⟩ <;> ext y <;> fin_cases y <;>
+    simp_all
+
 /-- Mathematical membership criterion for the executable list of triples. -/
 theorem mem_allTriples_iff {a b c : Nat} :
     [a, b, c] ∈ allTriples ↔ a < b ∧ b < c ∧ c < 9 := by
   simp [allTriples]
+  omega
+
+@[simp] theorem encTriple_three (a b c : Nat) :
+    encTriple [a, b, c] = 100 * a + 10 * b + c := by
+  simp [encTriple]
+  omega
+
+/-- Decimal encoding is injective on the triples used by the enumeration. -/
+theorem encTriple_injective_of_lt_nine
+    {a b c d e f : Nat} (hb : b < 9) (hc : c < 9)
+    (he : e < 9) (hf : f < 9)
+    (henc : encTriple [a, b, c] = encTriple [d, e, f]) :
+    a = d ∧ b = e ∧ c = f := by
+  simp only [encTriple_three] at henc
   omega
 
 /-- For triples with distinct entries, the Boolean enumeration test is the
