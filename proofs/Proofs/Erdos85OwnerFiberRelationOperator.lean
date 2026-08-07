@@ -22,6 +22,17 @@ def relationMatrix
     [DecidableRel R] : Matrix Y Y K :=
   fun a b => if R a b then 1 else 0
 
+/-- The reflexive nonadjacency relation of a simple graph is represented by
+the all-ones matrix minus adjacency. -/
+theorem relationMatrix_not_adj_eq_ones_sub_adjMatrix
+    {Y K : Type*} [Fintype Y] [DecidableEq Y] [Ring K]
+    (H : SimpleGraph Y) [DecidableRel H.Adj] :
+    relationMatrix (K := K) (fun a b => ¬H.Adj a b) =
+      (fun _ _ => (1 : K)) - H.adjMatrix K := by
+  ext a b
+  simp only [relationMatrix, Matrix.sub_apply, SimpleGraph.adjMatrix_apply]
+  by_cases h : H.Adj a b <;> simp [h]
+
 theorem transpose_relationMatrix
     {Y K : Type*} [Zero K] [One K] (R : Y → Y → Prop)
     [DecidableRel R] (hsymm : Symmetric R) :
