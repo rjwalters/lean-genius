@@ -71,6 +71,61 @@ theorem orderFortyNine_common_highPair_witness_trichotomy
         simpa [hcommon12] using hu23Common12
       exact h1213 (hu23u12.symm.trans h1323.symm)
 
+/-- Three distinct degree-eight vertices canonically determine their three
+pairwise common-neighbor witnesses.  Those witnesses exhibit exactly the two
+geometric strata used downstream: either one vertex is common to all three
+highs, or the three pair witnesses are pairwise distinct. -/
+theorem orderFortyNine_exists_common_highPair_witnesses_trichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3) (h23 : v2 ≠ v3) :
+    ∃ u12 u13 u23 : V,
+      G.neighborFinset v1 ∩ G.neighborFinset v2 = {u12} ∧
+      G.neighborFinset v1 ∩ G.neighborFinset v3 = {u13} ∧
+      G.neighborFinset v2 ∩ G.neighborFinset v3 = {u23} ∧
+      ((u12 = u13 ∧ u13 = u23) ∨
+        (u12 ≠ u13 ∧ u12 ≠ u23 ∧ u13 ≠ u23)) := by
+  have hc12 := orderFortyNine_card_common_degreeEight_eq_one
+    G hfree hmin hcard hv1 hv2 h12
+  have hc13 := orderFortyNine_card_common_degreeEight_eq_one
+    G hfree hmin hcard hv1 hv3 h13
+  have hc23 := orderFortyNine_card_common_degreeEight_eq_one
+    G hfree hmin hcard hv2 hv3 h23
+  rw [Finset.card_eq_one] at hc12 hc13 hc23
+  rcases hc12 with ⟨u12, hu12⟩
+  rcases hc13 with ⟨u13, hu13⟩
+  rcases hc23 with ⟨u23, hu23⟩
+  have hu12mem : u12 ∈
+      G.neighborFinset v1 ∩ G.neighborFinset v2 := by simp [hu12]
+  have hu13mem : u13 ∈
+      G.neighborFinset v1 ∩ G.neighborFinset v3 := by simp [hu13]
+  have hu23mem : u23 ∈
+      G.neighborFinset v2 ∩ G.neighborFinset v3 := by simp [hu23]
+  have hu12adj : G.Adj u12 v1 ∧ G.Adj u12 v2 := by
+    have h : G.Adj v1 u12 ∧ G.Adj v2 u12 := by
+      simpa [SimpleGraph.mem_neighborFinset] using hu12mem
+    exact ⟨h.1.symm, h.2.symm⟩
+  have hu13adj : G.Adj u13 v1 ∧ G.Adj u13 v3 := by
+    have h : G.Adj v1 u13 ∧ G.Adj v3 u13 := by
+      simpa [SimpleGraph.mem_neighborFinset] using hu13mem
+    exact ⟨h.1.symm, h.2.symm⟩
+  have hu23adj : G.Adj u23 v2 ∧ G.Adj u23 v3 := by
+    have h : G.Adj v2 u23 ∧ G.Adj v3 u23 := by
+      simpa [SimpleGraph.mem_neighborFinset] using hu23mem
+    exact ⟨h.1.symm, h.2.symm⟩
+  refine ⟨u12, u13, u23, hu12, hu13, hu23, ?_⟩
+  exact orderFortyNine_common_highPair_witness_trichotomy
+    G hfree hmin hcard hv1 hv2 hv3 h12 h13 h23
+      hu12adj.1 hu12adj.2 hu13adj.1 hu13adj.2 hu23adj.1 hu23adj.2
+
 /-- The siblings of `u12` and `u13` in the two foreign high neighborhoods
 cannot both be the third pairwise common neighbor `u23`. -/
 theorem orderFortyNineDistOne_not_both_siblings_eq_u23
