@@ -406,6 +406,56 @@ theorem orderFortyNine_triangleFreeEdgeGraph_degree_eq_one_of_three_high
     triangleFreeEdgeGraph_neighborFinset]
   exact hcardTF
 
+/-- At order 49, neighbor degree excess above seven is exactly the number of
+high neighbors. -/
+theorem orderFortyNine_neighborDegreeExcess_eq_highNeighborCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) (x : V) :
+    neighborDegreeExcess G 7 x =
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+  rw [neighborDegreeExcess_eq_sum_neighborFinset]
+  have hterm : ∀ y ∈ G.neighborFinset x,
+      G.degree y - 7 = if G.degree y = 8 then 1 else 0 := by
+    intro y _hy
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard y with hy7 | hy8
+    · simp [hy7]
+    · simp [hy8]
+  calc
+    (∑ y ∈ G.neighborFinset x, (G.degree y - 7)) =
+        ∑ y ∈ G.neighborFinset x, if G.degree y = 8 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      exact hterm y hy
+    _ = ((G.neighborFinset x).filter fun y => G.degree y = 8).card := by
+      rw [Finset.card_filter]
+    _ = (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+      congr 1
+      ext y
+      simp [orderFortyNineHighVertices, and_comm]
+
+/-- **Defect/PBD conservation law.**  A low vertex of high-incidence `k`
+has defect degree `6-k`. -/
+theorem orderFortyNine_defectDegree_add_highNeighborCount_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {x : V} (hx : G.degree x = 7) :
+    (secondOrderDefectGraph G).degree x +
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card = 6 := by
+  rw [← orderFortyNine_neighborDegreeExcess_eq_highNeighborCount
+    G hfree hmin hcard x]
+  exact orderFortyNine_degreeSeven_local_budget G hfree hmin hcard hx
+
 end
 
 end Erdos85
