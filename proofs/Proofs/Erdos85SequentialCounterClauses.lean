@@ -106,4 +106,44 @@ theorem seqCounter_overflow_clause_satisfied {n : Nat} (x : Fin n → Bool)
     cases hval : x ⟨j + t, hidx⟩ <;>
       simp_all [seqCounterLitValue, seqCounterAtomValue, seqCounterNegLit]
 
+/-- All clause schemas traversed by PySAT's nontrivial at-most loop.  The
+four fields use exactly its bounds: base and overflow for `j < n-t`,
+horizontal propagation for `k<t, j<n-t-1`, and diagonal propagation for
+`k<t-1, j<n-t`. -/
+structure SeqCounterKnuthSchemasHold {n : Nat} (x : Fin n → Bool)
+    (t : Nat) (ht : 0 < t) (hnontrivial : t + 1 < n) : Prop where
+  base : ∀ j, ∀ hj : j < n - t,
+    seqCounterClauseSatisfied x
+      [seqCounterNegLit (.input ⟨j, lt_of_lt_of_le hj (Nat.sub_le n t)⟩),
+       seqCounterPos (.aux 0 j)]
+  horizontal : ∀ k j, ∀ _hk : k < t, ∀ _hj : j < n - t - 1,
+    seqCounterClauseSatisfied x
+      [seqCounterNegLit (.aux k j),
+       seqCounterPos (.aux k (j + 1))]
+  diagonal : ∀ k j, ∀ hk : k < t - 1, ∀ hj : j < n - t,
+    seqCounterClauseSatisfied x
+      [seqCounterNegLit (.input ⟨j + k + 1, by omega⟩),
+       seqCounterNegLit (.aux k j),
+       seqCounterPos (.aux (k + 1) j)]
+  overflow : ∀ j, ∀ hj : j < n - t,
+    seqCounterClauseSatisfied x
+      [seqCounterNegLit (.input ⟨j + t, by omega⟩),
+       seqCounterNegLit (.aux (t - 1) j)]
+
+/-- A row satisfying the at-most bound canonically satisfies every symbolic
+clause visited by the exact PySAT loop. -/
+theorem seqCounter_knuthSchemasHold {n : Nat} (x : Fin n → Bool)
+    (t : Nat) (ht : 0 < t) (hnontrivial : t + 1 < n)
+    (htotal : seqPrefixTrue x n ≤ t) :
+    SeqCounterKnuthSchemasHold x t ht hnontrivial := by
+  constructor
+  · intro j hj
+    exact seqCounter_base_clause_satisfied x j (by omega)
+  · intro k j hk hj
+    exact seqCounter_horizontal_clause_satisfied x k j (by omega)
+  · intro k j hk hj
+    exact seqCounter_diagonal_clause_satisfied x k j (by omega)
+  · intro j hj
+    exact seqCounter_overflow_clause_satisfied x t j ht (by omega) htotal
+
 end Erdos85
