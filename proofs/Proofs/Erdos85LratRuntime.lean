@@ -209,10 +209,27 @@ def checkProfileCnf (tag : String) (idx : Nat) (cnfPath : System.FilePath) :
   IO.println s!"partition segment: {partitionOk}"
   return fixedOk && c4Ok && degreeOk && partitionOk
 
+def replayGeneratedProfileLrat
+    (tag : String) (idx : Nat) (lratPath : System.FilePath) : IO Bool := do
+  let some sys := h9System? tag idx
+    | throw <| .userError s!"unknown profile {tag}[{idx}]"
+  let masks := orderFortyNineH9ProfileMasks sys
+  let cnf := orderFortyNineGeneratedSatCnf masks
+  let rawProof ← Std.Tactic.BVDecide.LRAT.loadLRATProof lratPath
+  let proof ← IO.ofExcept (LratRenumber.renumber cnf.clauses.size rawProof)
+  IO.println s!"generated CNF clauses: {cnf.clauses.size}; LRAT actions: {proof.size}"
+  return Std.Tactic.BVDecide.LRAT.check proof cnf
+
 end Erdos85
 
 def main (args : List String) : IO UInt32 := do
   match args with
+  | ["generated", tag, idxText, lratPath] =>
+      let some idx := idxText.toNat?
+        | throw <| .userError s!"invalid profile index {idxText}"
+      let accepted ← Erdos85.replayGeneratedProfileLrat tag idx lratPath
+      IO.println s!"generated-profile LRAT accepted: {accepted}"
+      return if accepted then 0 else 1
   | ["profile", tag, idxText, cnfPath] =>
       let some idx := idxText.toNat?
         | throw <| .userError s!"invalid profile index {idxText}"
