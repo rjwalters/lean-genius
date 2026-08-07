@@ -51,6 +51,60 @@ theorem existsUnique_eq_two_of_sum_eq_two_of_pos_ge_two
   rw [hiEq, hsum] at hsplit
   omega
 
+/-- A globally oriented degree-two cyclic cover is invariant under the
+half-turn of its source cycle.  This identifies the deck involution without
+choosing either global orientation. -/
+theorem cycleCoverMap_halfTurn_invariant
+    {r : ℕ} [NeZero r]
+    (f : ZMod (2 * r) → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    ∀ y, f (y + (r : ZMod (2 * r))) = f y := by
+  intro y
+  rcases horient with hforward | hreverse
+  · have hind : ∀ k : ℕ,
+        f (y + (k : ZMod (2 * r))) = f y + (k : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, show y + ((k : ZMod (2 * r)) + 1) =
+            (y + (k : ZMod (2 * r))) + 1 by ring, hforward, ih,
+            Nat.cast_succ]
+          ring
+    have hr := hind r
+    rw [ZMod.natCast_self] at hr
+    simpa using hr
+  · have hind : ∀ k : ℕ,
+        f (y + (k : ZMod (2 * r))) = f y - (k : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, show y + ((k : ZMod (2 * r)) + 1) =
+            (y + (k : ZMod (2 * r))) + 1 by ring, hreverse, ih,
+            Nat.cast_succ]
+          ring
+    have hr := hind r
+    rw [ZMod.natCast_self] at hr
+    simpa using hr
+
+/-- The two antipodal target vertices of an oriented double cover have
+identical neighbours in the source cycle. -/
+theorem cycleCover_adjacency_halfTurn_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (u : ZMod r → V) (v : ZMod (2 * r) → V)
+    (f : ZMod (2 * r) → ZMod r)
+    (hadj : ∀ x y, G.Adj (u x) (v y) ↔ x = f y)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    ∀ x y, G.Adj (u x) (v (y + (r : ZMod (2 * r)))) ↔
+      G.Adj (u x) (v y) := by
+  intro x y
+  rw [hadj, hadj, cycleCoverMap_halfTurn_invariant f horient y]
+
 /-- **Unique double-cover escape.**  If the total quotient row mass from a
 minimum defect component to longer components is two, there is a unique such
 component.  Its forward quotient entry is two, its reverse entry is one, and
