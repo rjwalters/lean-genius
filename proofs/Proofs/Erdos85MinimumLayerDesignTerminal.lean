@@ -183,6 +183,71 @@ theorem secondOrder_minimumLayer_design_equation
     rw [hcardI] at hscalar
     simpa [M, w] using hscalar
 
+/-- Natural-number form of the minimum-layer design equation. -/
+theorem secondOrder_minimumLayer_design_equation_nat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+        c.supp.ncard = c₀.supp.ncard →
+          (∑ e ∈ Finset.univ.filter
+              (fun x : (secondOrderDefectGraph G).ConnectedComponent ↦
+                x.supp.ncard = c₀.supp.ncard),
+            componentQuotientMatrix G (secondOrderDefectGraph G) c e) = s) ∧
+      s * s + 3 =
+        (Finset.univ.filter
+          (fun x : (secondOrderDefectGraph G).ConnectedComponent ↦
+            x.supp.ncard = c₀.supp.ncard)).card * c₀.supp.ncard + s := by
+  classical
+  obtain ⟨s, hrows, hscalar⟩ := secondOrder_minimumLayer_design_equation
+    G hfree hd heven hmin hcard c₀ hc₀min
+  let M := Finset.univ.filter
+    (fun x : (secondOrderDefectGraph G).ConnectedComponent ↦
+      x.supp.ncard = c₀.supp.ncard)
+  let sN := ∑ e ∈ M,
+    componentQuotientMatrix G (secondOrderDefectGraph G) c₀ e
+  have hc₀size : c₀.supp.ncard = c₀.supp.ncard := rfl
+  have hsCast : (sN : ℤ) = s := by
+    simpa [M, sN] using hrows c₀ hc₀size
+  refine ⟨sN, ?_, ?_⟩
+  · intro c hc
+    have hr := hrows c hc
+    rw [← hsCast] at hr
+    exact_mod_cast hr
+  · rw [← hsCast] at hscalar
+    exact_mod_cast hscalar
+
+/-- In particular, the number of minimum-order defect components is odd. -/
+theorem secondOrder_minimumLayer_card_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    Odd (Finset.univ.filter
+      (fun x : (secondOrderDefectGraph G).ConnectedComponent ↦
+        x.supp.ncard = c₀.supp.ncard)).card := by
+  obtain ⟨s, _hrows, hdesign⟩ := secondOrder_minimumLayer_design_equation_nat
+    G hfree hd heven hmin hcard c₀ hc₀min
+  exact minimumLayer_card_odd_of_design _ _ s hdesign
+
 end
 
 end Erdos85
