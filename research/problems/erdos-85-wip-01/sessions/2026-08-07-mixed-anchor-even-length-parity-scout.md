@@ -1,5 +1,47 @@
 # Scout: length-agnostic mixed-anchor parity (goal #1 / #9d bottleneck)
 
+## CORRECTION (v2 — supersedes the involution route below)
+
+The involution `x ↦ −x−t` does NOT act on the displacement-t solution set
+without a reflection symmetry of the labeled adjacency (it maps the pair
+(x, x+t) to the negated-reversed pair, which is a different edge unless
+`Adj (u a) (u b) = Adj (u (−a)) (u (−b))`). The corrected — and stronger —
+route comes from the 0/1 wave equation:
+
+`[B, S + S⁻¹] = 0` for a 0/1 block B says
+`B(x−1,y) + B(x+1,y) = B(x,y−1) + B(x,y+1)`; over ℝ the solutions are
+`c(y−x) + h(y+x)`, and 0/1-valuedness forces, on EACH parity class of
+(y−x, y+x) (two classes when ℓ is even), that B is EITHER pure circulant
+(function of y−x) OR pure Hankel (function of y+x) — a 3-value collision
+argument (c and h each ≤2-valued, non-constant both ⟹ ≥3 distinct sums).
+This is exactly the even-sector circulant/reverse classification
+(`EvenCycleSelfIntertwiner`).
+
+Parity consequences for the anchored count A(t) = #{x : B(x, x+t) = 1}:
+- **Hankel classes contribute evenly** to every A(t): solutions of
+  `2x ≡ h − t` come 0-or-2 at even ℓ.
+- **Circulant classes** contribute `(ℓ/2)·[t ∈ supp]` per class:
+  even when ℓ ≡ 0 (mod 4); the support indicator when ℓ ≡ 2 (mod 4).
+- Odd ℓ: whole block circulant (known), contribution `ℓ·[t ∈ supp]`, odd
+  iff t in support.
+
+So: **p-divisible blocks of length ≡ 0 (mod 4) vanish from the parity
+terminal entirely; blocks of length ≡ 2 (mod 4) contribute exactly their
+circulant-class support parity; odd blocks as before.** The length-agnostic
+three-point terminal then requires only the refined count hypothesis: the
+number of p-divisible components with ℓ odd or ℓ ≡ 2 (mod 4) — weighted by
+their circulant-class support — is odd. `hodd` is replaced by this weaker,
+automatically-satisfiable-or-checkable condition, and length-≡0(4)
+components are unconditionally harmless.
+
+Formalization order (corrected):
+1. 0/1 wave-equation class dichotomy (or specialize EvenCycleSelfIntertwiner).
+2. Hankel-class evenness: `2x ≡ c` has an even solution count at even ℓ.
+3. ℓ mod 4 split of the circulant contribution.
+4. Refined terminal with the weighted count hypothesis.
+
+--- (original note, involution route DEPRECATED) ---
+
 Problem: `odd_mixedProjectedAnchor_iff_threePoint` needs `hodd` (every
 p-divisible defect component has odd length) because the diagonal-block
 translation invariance (`mixedLabeledAdjMatrix_diag_translationInvariant`)
