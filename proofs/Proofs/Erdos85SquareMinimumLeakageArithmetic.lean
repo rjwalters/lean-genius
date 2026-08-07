@@ -18,6 +18,66 @@ forced.  The zero row then collapses all remaining coefficient mass.
 
 namespace Erdos85
 
+/-- The arithmetic core of the minimum-layer cross-pair argument.
+
+Write `a` for the minimum normalized component order, `u` for the number of
+minimum components, `S` for their total quotient mass toward larger
+components, and `R` for the (nonnegative) sum of the squared leakages.  The
+cross-pair identity is
+
+`u * (N - u*a) * p + R = (2*d - 1) * S`.
+
+If larger targets are incident to at most one minimum component, detailed
+balance gives `a*S ≤ N-u*a`.  For `p>d`, these two facts force either the
+outside coefficient mass to vanish or both `a` and `u` to equal one. -/
+theorem minimumLayer_disjointTarget_collapse
+    (d p N a u S R : ℕ)
+    (hdp : d < p) (ha : 0 < a) (hu : 0 < u)
+    (hua : u * a ≤ N)
+    (hS : a * S ≤ N - u * a)
+    (hidentity : u * (N - u * a) * p + R = (2 * d - 1) * S) :
+    N = u * a ∨ (a = 1 ∧ u = 1) := by
+  by_cases hall : N = u * a
+  · exact Or.inl hall
+  · right
+    have houtside : 0 < N - u * a := Nat.sub_pos_of_lt (lt_of_le_of_ne hua (Ne.symm hall))
+    have hmain : u * (N - u * a) * p ≤ (2 * d - 1) * S := by
+      omega
+    have hscaled : (N - u * a) * (a * u * p) ≤
+        (N - u * a) * (2 * d - 1) := by
+      calc
+        (N - u * a) * (a * u * p) = a * (u * (N - u * a) * p) := by ring
+        _ ≤ a * ((2 * d - 1) * S) := Nat.mul_le_mul_left a hmain
+        _ = (2 * d - 1) * (a * S) := by ring
+        _ ≤ (2 * d - 1) * (N - u * a) :=
+          Nat.mul_le_mul_left (2 * d - 1) hS
+        _ = (N - u * a) * (2 * d - 1) := by ring
+    have haup : a * u * p ≤ 2 * d - 1 :=
+      Nat.le_of_mul_le_mul_left hscaled houtside
+    have hau : a * u = 1 := by
+      by_contra hne
+      have hau2 : 2 ≤ a * u := by
+        have hau0 : 0 < a * u := Nat.mul_pos ha hu
+        omega
+      have hpLower : d + 1 ≤ p := by omega
+      have hcontra : 2 * d + 2 ≤ a * u * p := by
+        calc
+          2 * d + 2 = 2 * (d + 1) := by ring
+          _ ≤ 2 * p := Nat.mul_le_mul_left 2 hpLower
+          _ ≤ a * u * p := Nat.mul_le_mul_right p hau2
+      omega
+    have ha_le : a ≤ 1 := by
+      calc
+        a = a * 1 := by omega
+        _ ≤ a * u := Nat.mul_le_mul_left a (by omega)
+        _ = 1 := hau
+    have hu_le : u ≤ 1 := by
+      calc
+        u = 1 * u := by omega
+        _ ≤ a * u := Nat.mul_le_mul_right u (by omega)
+        _ = 1 := hau
+    exact ⟨by omega, by omega⟩
+
 /-- If each target is used by at most one source and a positive incidence
 has value equal to the target weight, total incidence mass is bounded by
 total target weight. -/
