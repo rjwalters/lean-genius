@@ -94,6 +94,53 @@ theorem orderFortyNineDistOne_not_both_siblings_eq_u23
   exact hfree (containsC4_of_two_common hu hv1u23
     hu12_1.symm hu13_1.symm hu12u23.symm hu13u23.symm)
 
+/-- In the partner case neither foreign sibling can coincide with `u23`.
+Each proposed coincidence immediately gives a four-cycle through the partner
+edge and the remaining high vertex. -/
+theorem orderFortyNineDistOne_partner_forces_no_sibling_coincidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 u12 u13 u23 x2 x3 : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (hu12_1 : G.Adj u12 v1) (hu12_2 : G.Adj u12 v2)
+    (hu13_1 : G.Adj u13 v1) (hu13_3 : G.Adj u13 v3)
+    (hu23_2 : G.Adj u23 v2) (hu23_3 : G.Adj u23 v3)
+    (hpair : G.Adj u12 u13)
+    (hx2 : G.Adj u12 x2) (hx3 : G.Adj u13 x3)
+    (hu12u23 : u12 ≠ u23) (hu13u23 : u13 ≠ u23) :
+    x2 ≠ u23 ∧ x3 ≠ u23 := by
+  have hu12low : G.degree u12 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv1 hu12_1.symm
+  have hu13low : G.degree u13 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv1 hu13_1.symm
+  constructor
+  · intro hx2eq
+    have hu23u12 : G.Adj u23 u12 := by
+      simpa [hx2eq] using hx2.symm
+    have hv3u12 : v3 ≠ u12 := by
+      intro h
+      rw [h] at hv3
+      omega
+    exact hfree (containsC4_of_two_common hu13u23.symm hv3u12
+      hu23_3.symm hu13_3.symm hu23u12.symm hpair)
+  · intro hx3eq
+    have hu23u13 : G.Adj u23 u13 := by
+      simpa [hx3eq] using hx3.symm
+    have hv2u13 : v2 ≠ u13 := by
+      intro h
+      rw [h] at hv2
+      omega
+    exact hfree (containsC4_of_two_common hu12u23.symm hv2u13
+      hu23_2.symm hu12_2.symm hu23u13.symm hpair.symm)
+
 /-- The two foreign highs occupy the branches rooted at their respective
 common neighbors with the first high. -/
 theorem orderFortyNineDistOne_foreign_highs_in_respective_branches
