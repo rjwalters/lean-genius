@@ -64,7 +64,8 @@ theorem minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
         s * (s - 1) + 3)
     (hs4 : 4 ≤ s) (hsEven : Even s)
     (hsat : d = (s - 1) * (s - 1) + 3) :
-    (d = 12 ∨ d = 124) ∧ c₀.supp.ncard = 3 := by
+    (s = 4 ∨ s = 12) ∧ (d = 12 ∨ d = 124) ∧
+      c₀.supp.ncard = 3 := by
   classical
   let D := secondOrderDefectGraph G
   let H := minimumLayerGraph G D c₀
@@ -112,7 +113,7 @@ theorem minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
   have hc₀three : c₀.supp.ncard = 3 :=
     equalCycle_common_length_eq_three
       H hfreeChild hs4 hsEven hminChild hcardChild hlen
-  refine ⟨?_, hc₀three⟩
+  refine ⟨hsClass, ?_, hc₀three⟩
   rcases hsClass with rfl | rfl <;> omega
 
 /-- **Sharp-descent capstone.**  Away from the genuine degree-`4` and
@@ -140,7 +141,10 @@ theorem secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
       Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
         s * (s - 1) + 3 ∧
       Even s ∧ s < d ∧
-      ((d = 124 ∧ c₀.supp.ncard = 3) ∨
+      ((d = 124 ∧ s = 12 ∧ c₀.supp.ncard = 3 ∧
+          (Finset.univ.filter (fun c :
+            (secondOrderDefectGraph G).ConnectedComponent ↦
+              c.supp.ncard = c₀.supp.ncard)).card = 45) ∨
         s * (s - 1) + 4 ≤ d) := by
   obtain ⟨s, hreg, _hfreeChild, hcardChild, hsEven, hdesc⟩ :=
     secondOrder_minimumLayer_sharp_descent
@@ -160,7 +164,24 @@ theorem secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
         exact hd4 hsat
     have hdClass := minimumLayer_saturated_degree_eq_twelve_or_oneTwentyFour
       G hfree hd heven hmin hcard c₀ hreg hcardChild hs4 hsEven hsat
-    exact Or.inl ⟨hdClass.1.resolve_left hd12, hdClass.2⟩
+    have hd124 : d = 124 := hdClass.2.1.resolve_left hd12
+    have hs12 : s = 12 := by
+      rcases hdClass.1 with hs4eq | hs12eq
+      · rw [hs4eq] at hsat
+        norm_num at hsat
+        exact absurd hsat hd12
+      · exact hs12eq
+    have hcount :
+        (Finset.univ.filter (fun c :
+          (secondOrderDefectGraph G).ConnectedComponent ↦
+            c.supp.ncard = c₀.supp.ncard)).card = 45 := by
+      have hlayer := card_minimumLayerVertex
+        (secondOrderDefectGraph G) c₀
+      rw [hcardChild, hs12, hdClass.2.2] at hlayer
+      norm_num at hlayer
+      rw [hdClass.2.2]
+      omega
+    exact Or.inl ⟨hd124, hs12, hdClass.2.2, hcount⟩
   · exact Or.inr hgap
 
 end
