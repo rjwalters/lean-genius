@@ -1,5 +1,6 @@
 import Proofs.Erdos85SquareMinimumLayerSqueeze
 import Proofs.Erdos85OddComponentClosure
+import Proofs.Erdos85SquareQuotientGraphBound
 
 /-!
 # The mass-two escape from the square minimum squeeze
@@ -321,6 +322,54 @@ theorem secondOrder_minimum_mass_three_unique_tripleCover
   intro j hj
   apply heUnique
   refine ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj.1⟩, hj.2.1⟩
+
+/-- In the exact-square family, the mass-three case already lies strictly
+below the one-third wedge: its unique target is odd and has normalized order
+`3a`, so the strict odd-component bound applies. -/
+theorem secondOrder_square_minimum_mass_three_lt_third
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p N s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime) (hp7 : 7 ≤ p)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hdEq : d = s * s + 3) (hpEq : p = d + s) (hNEq : N = d - s)
+    (hall : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ l.supp.ncard)
+    (hmass :
+      (∑ e ∈ Finset.univ.filter
+          (fun e : (secondOrderDefectGraph G).ConnectedComponent ↦
+            c.supp.ncard < e.supp.ncard),
+        componentQuotientMatrix G (secondOrderDefectGraph G) c e) = 3) :
+    3 * (c.supp.ncard / p) < s := by
+  obtain ⟨e, he, _⟩ := secondOrder_minimum_mass_three_unique_tripleCover
+    G hfree hd heven hmin hcard c hcmin hmass
+  have heBound := secondOrder_odd_square_coefficient_lt_root
+    G hfree hd heven hmin hcard hp hp7 hboundary hdEq hpEq hNEq hall
+      e he.2.2.2.2
+  have hpPos : 0 < p := hp.pos
+  have hcSize : c.supp.ncard = p * (c.supp.ncard / p) :=
+    (Nat.mul_div_cancel' (hall c)).symm
+  have heSize : e.supp.ncard = p * (e.supp.ncard / p) :=
+    (Nat.mul_div_cancel' (hall e)).symm
+  have hcoeff : e.supp.ncard / p = 3 * (c.supp.ncard / p) := by
+    apply Nat.eq_of_mul_eq_mul_left hpPos
+    calc
+      p * (e.supp.ncard / p) = e.supp.ncard := heSize.symm
+      _ = 3 * c.supp.ncard := he.2.2.2.1
+      _ = 3 * (p * (c.supp.ncard / p)) :=
+        congrArg (fun n : ℕ ↦ 3 * n) hcSize
+      _ = p * (3 * (c.supp.ncard / p)) :=
+        Nat.mul_left_comm 3 p (c.supp.ncard / p)
+  rwa [hcoeff] at heBound
 
 end
 
