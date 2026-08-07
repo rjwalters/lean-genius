@@ -208,6 +208,150 @@ theorem orderFortyNine_highIncidence_profile_of_nine_high
   have hn3 : n3 ≤ 4 := by omega
   interval_cases n3 <;> omega
 
+/-- Around a fixed high vertex, the high-incidence counts of its eight
+neighbors sum to `h + 7`.  The diagonal high contributes eight, while each
+other high contributes its unique common neighbor with the root. -/
+theorem orderFortyNine_sum_highIncidence_over_highNeighborhood
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8) :
+    (∑ x ∈ G.neighborFinset v,
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card) =
+      (orderFortyNineHighVertices G).card + 7 := by
+  let H := orderFortyNineHighVertices G
+  have hvH : v ∈ H := by simp [H, orderFortyNineHighVertices, hv]
+  change (∑ x ∈ G.neighborFinset v,
+      (G.neighborFinset x ∩ H).card) = H.card + 7
+  have hcount (x : V) :
+      (G.neighborFinset x ∩ H).card =
+        ∑ w ∈ H, if G.Adj x w then 1 else 0 := by
+    calc
+      (G.neighborFinset x ∩ H).card =
+          (H.filter fun w => G.Adj x w).card := by
+        congr 1
+        ext w
+        simp [SimpleGraph.mem_neighborFinset, and_comm]
+      _ = ∑ w ∈ H, if G.Adj x w then 1 else 0 := by
+        rw [Finset.card_filter]
+  simp_rw [hcount]
+  rw [Finset.sum_comm]
+  have hterm : ∀ w ∈ H,
+      (∑ x ∈ G.neighborFinset v, if G.Adj x w then 1 else 0) =
+        if w = v then 8 else 1 := by
+    intro w hw
+    have hw8 : G.degree w = 8 := (Finset.mem_filter.mp hw).2
+    have hsumCommon :
+        (∑ x ∈ G.neighborFinset v, if G.Adj x w then 1 else 0) =
+          (G.neighborFinset v ∩ G.neighborFinset w).card := by
+      rw [Finset.card_eq_sum_ones, ← Finset.sum_filter]
+      apply Finset.sum_congr
+      · ext x
+        simp [SimpleGraph.mem_neighborFinset, G.adj_comm]
+      · intro x hx
+        have hxw : G.Adj x w := by
+          have := (Finset.mem_inter.mp hx).2
+          simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+        simp [hxw]
+    rw [hsumCommon]
+    by_cases hwv : w = v
+    · subst w
+      simp [hv]
+    · rw [if_neg hwv]
+      exact orderFortyNine_card_common_degreeEight_eq_one
+        G hfree hmin hcard hv hw8 (fun h => hwv h.symm)
+  calc
+    (∑ w ∈ H, ∑ x ∈ G.neighborFinset v,
+        if G.Adj x w then 1 else 0) =
+        ∑ w ∈ H, if w = v then 8 else 1 := by
+      apply Finset.sum_congr rfl
+      intro w hw
+      exact hterm w hw
+    _ = H.card + 7 := by
+      calc
+        (∑ w ∈ H, if w = v then 8 else 1) =
+            (∑ w ∈ H.erase v, if w = v then 8 else 1) + 8 := by
+          rw [← Finset.sum_erase_add _ _ hvH]
+          simp
+        _ = (∑ _w ∈ H.erase v, 1) + 8 := by
+          congr 1
+          apply Finset.sum_congr rfl
+          intro w hw
+          simp [(Finset.mem_erase.mp hw).1]
+        _ = H.card + 7 := by
+          have hsumones : (∑ _w ∈ H.erase v, 1) = (H.erase v).card := by
+            simp
+          rw [hsumones, Finset.card_erase_of_mem hvH]
+          have hpos : 0 < H.card := Finset.card_pos.mpr ⟨v, hvH⟩
+          omega
+
+/-- At `h = 9`, every high neighborhood contains equally many `k=1` and
+`k=3` lows; the remaining neighbors have `k=2`.  Thus its local PBD profile
+is one of five matching-compatible possibilities. -/
+theorem orderFortyNine_highNeighborhood_profile_of_nine_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    {v : V} (hv : G.degree v = 8) :
+    let a := fun i => ((G.neighborFinset v).filter fun x =>
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card = i).card
+    (a 1 = 0 ∧ a 2 = 8 ∧ a 3 = 0) ∨
+    (a 1 = 1 ∧ a 2 = 6 ∧ a 3 = 1) ∨
+    (a 1 = 2 ∧ a 2 = 4 ∧ a 3 = 2) ∨
+    (a 1 = 3 ∧ a 2 = 2 ∧ a 3 = 3) ∨
+    (a 1 = 4 ∧ a 2 = 0 ∧ a 3 = 4) := by
+  dsimp only
+  let k : V → ℕ := fun x =>
+    (G.neighborFinset x ∩ orderFortyNineHighVertices G).card
+  let a1 := ((G.neighborFinset v).filter fun x => k x = 1).card
+  let a2 := ((G.neighborFinset v).filter fun x => k x = 2).card
+  let a3 := ((G.neighborFinset v).filter fun x => k x = 3).card
+  change (a1 = 0 ∧ a2 = 8 ∧ a3 = 0) ∨
+    (a1 = 1 ∧ a2 = 6 ∧ a3 = 1) ∨
+    (a1 = 2 ∧ a2 = 4 ∧ a3 = 2) ∨
+    (a1 = 3 ∧ a2 = 2 ∧ a3 = 3) ∨
+    (a1 = 4 ∧ a2 = 0 ∧ a3 = 4)
+  have hk : ∀ x ∈ G.neighborFinset v, k x ≤ 3 := by
+    intro x hx
+    have hxAdj : G.Adj v x := (G.mem_neighborFinset v x).mp hx
+    have hxdeg := orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv hxAdj
+    exact orderFortyNine_highNeighborCount_le_three
+      G hfree hmin hcard hxdeg
+  have hcensus := finset_census_le_three (G.neighborFinset v) k hk
+  let a0 := ((G.neighborFinset v).filter fun x => k x = 0).card
+  change G.degree v = a0 + a1 + a2 + a3 ∧
+      (∑ x ∈ G.neighborFinset v, k x) = a1 + 2 * a2 + 3 * a3 ∧
+      (∑ x ∈ G.neighborFinset v, (k x) ^ 2) =
+        a1 + 4 * a2 + 9 * a3 at hcensus
+  have ha0 : a0 = 0 := by
+    rw [Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro x hx
+    have hxmem := (Finset.mem_filter.mp hx).1
+    have hxAdj : G.Adj v x := (G.mem_neighborFinset v x).mp hxmem
+    have hvx : v ∈ G.neighborFinset x ∩ orderFortyNineHighVertices G := by
+      simp [SimpleGraph.mem_neighborFinset, hxAdj.symm,
+        orderFortyNineHighVertices, hv]
+    have hkpos : 0 < k x := Finset.card_pos.mpr ⟨v, hvx⟩
+    exact hkpos.ne' (Finset.mem_filter.mp hx).2
+  have hsum := orderFortyNine_sum_highIncidence_over_highNeighborhood
+    G hfree hmin hcard hv
+  change (∑ x ∈ G.neighborFinset v, k x) =
+    (orderFortyNineHighVertices G).card + 7 at hsum
+  rw [hHigh] at hsum
+  have ha3 : a3 ≤ 4 := by omega
+  interval_cases a3 <;> omega
+
 end
 
 end Erdos85
