@@ -1,5 +1,4 @@
-import Proofs.Erdos85DimacsSatBridge
-import Proofs.Erdos85OrderFortyNineProfileMasks
+import Proofs.Erdos85OrderFortyNineLratCertificateBase
 
 /-!
 # Checked LRAT certificate for the first order-49 two-triple profile
@@ -18,9 +17,7 @@ def orderFortyNineT2RepAProofText : String :=
   include_str "Certificates" / "t2_repA.compact.lrat"
 
 def orderFortyNineT2RepAProof : Array LRAT.IntAction :=
-  match LRAT.parseLRATProof orderFortyNineT2RepAProofText.toUTF8 with
-  | .ok proof => proof
-  | .error _ => #[]
+  parseOrderFortyNineLratProof orderFortyNineT2RepAProofText
 
 theorem orderFortyNineT2RepAProof_size :
     orderFortyNineT2RepAProof.size = 9145 := by
