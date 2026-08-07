@@ -28,7 +28,7 @@ theorem relationMatrix_not_adj_eq_ones_sub_adjMatrix
     {Y K : Type*} [Fintype Y] [DecidableEq Y] [Ring K]
     (H : SimpleGraph Y) [DecidableRel H.Adj] :
     relationMatrix (K := K) (fun a b => ¬H.Adj a b) =
-      (fun _ _ => (1 : K)) - H.adjMatrix K := by
+      (show Matrix Y Y K from fun _ _ => (1 : K)) - H.adjMatrix K := by
   ext a b
   simp only [relationMatrix, Matrix.sub_apply, SimpleGraph.adjMatrix_apply]
   by_cases h : H.Adj a b <;> simp [h]
