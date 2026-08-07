@@ -130,6 +130,29 @@ theorem doubleCover_admissible_sourceLength_dvd_eq_singleton
         (by rw [hval])).2
     · rw [hval]
 
+/-- The diagonal anchor support on the doubled target contains at most one
+point from each deck fiber.  The other common neighbor of an antipodal pair
+is already its base-cycle vertex, so `C₄`-freeness excludes the target
+anchor from being a second one. -/
+theorem cycleCover_diagAnchor_not_both_halfTurns
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (v : ZMod (2 * r) → V)
+    (hsep : ∀ x y, u x ≠ v y)
+    (hvinj : Function.Injective v)
+    (f : ZMod (2 * r) → ZMod r)
+    (hadj : ∀ x y, G.Adj (u x) (v y) ↔ x = f y)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (y : ZMod (2 * r)) :
+    ¬ (y ∈ mixedAnchorSupport G (v 0) v ∧
+      y + (r : ZMod (2 * r)) ∈ mixedAnchorSupport G (v 0) v) := by
+  rw [mem_mixedAnchorSupport_iff, mem_mixedAnchorSupport_iff]
+  exact cycleCover_halfTurn_commonNeighbor_exclusive G hfree u v hvinj f
+    hadj horient y (v 0) (Ne.symm (hsep (f y) 0))
+
 end
 
 end Erdos85
