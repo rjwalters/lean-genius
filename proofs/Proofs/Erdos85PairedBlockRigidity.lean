@@ -40,6 +40,60 @@ theorem card_le_card_filter_and_add_filter_not_add_filter_not
   rw [hgood] at hQ
   omega
 
+/-- Equality in the preceding inclusion--exclusion bound says that no element
+can fail both predicates.  This is the abstract equality case used below to
+turn sharp path counts into marked branch rigidity. -/
+theorem disjoint_filter_not_of_card_eq_filter_and_add_filter_not
+    {α : Type*} [DecidableEq α]
+    (S : Finset α) (P Q : α → Prop) [DecidablePred P] [DecidablePred Q]
+    (hEq : S.card = (S.filter fun x ↦ P x ∧ Q x).card +
+      (S.filter fun x ↦ ¬P x).card + (S.filter fun x ↦ ¬Q x).card) :
+    Disjoint (S.filter fun x ↦ ¬P x) (S.filter fun x ↦ ¬Q x) := by
+  let Good := S.filter fun x ↦ P x ∧ Q x
+  let A := S.filter fun x ↦ ¬P x
+  let B := S.filter fun x ↦ ¬Q x
+  have hcover : Good ∪ (A ∪ B) = S := by
+    ext x
+    simp only [Good, A, B, Finset.mem_union, Finset.mem_filter]
+    tauto
+  have hdisj : Disjoint Good (A ∪ B) := by
+    rw [Finset.disjoint_left]
+    intro x hxGood hxMiss
+    simp only [Good, Finset.mem_filter] at hxGood
+    simp only [A, B, Finset.mem_union, Finset.mem_filter] at hxMiss
+    rcases hxMiss with hxA | hxB
+    · exact hxA.2 hxGood.2.1
+    · exact hxB.2 hxGood.2.2
+  have hpart : S.card = Good.card + (A ∪ B).card := by
+    rw [← Finset.card_union_of_disjoint hdisj, hcover]
+  have hunion : (A ∪ B).card = A.card + B.card := by
+    dsimp [Good, A, B] at hEq hpart ⊢
+    omega
+  exact Finset.card_union_eq_card_add_card.mp hunion
+
+/-- Count a filtered Cartesian product by first fixing its left coordinate. -/
+theorem card_product_filter_eq_sum_card_filter
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (A : Finset α) (B : Finset β) (R : α → β → Prop) [DecidableRel R] :
+    ((A ×ˢ B).filter fun p ↦ R p.1 p.2).card =
+      ∑ a ∈ A, (B.filter fun b ↦ R a b).card := by
+  rw [← Finset.card_sigma]
+  apply Finset.card_bij (fun p _ ↦ ⟨p.1, p.2⟩)
+  · intro p hp
+    have hm := Finset.mem_filter.mp hp
+    have hprod := Finset.mem_product.mp hm.1
+    exact Finset.mem_sigma.mpr
+      ⟨hprod.1, Finset.mem_filter.mpr ⟨hprod.2, hm.2⟩⟩
+  · intro p _ q _ hpq
+    exact Prod.ext (congrArg Sigma.fst hpq)
+      (by simpa using congrArg Sigma.snd hpq)
+  · intro p hp
+    have hm := Finset.mem_sigma.mp hp
+    refine ⟨(p.1, p.2), ?_, rfl⟩
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_product.mpr ⟨hm.1, (Finset.mem_filter.mp hm.2).1⟩,
+        (Finset.mem_filter.mp hm.2).2⟩
+
 /-- Middle-branch vertices which have a neighbor in each of two specified
 outer branches.  The branch matching property makes both neighbors unique. -/
 def twoSidedMiddleVertices
@@ -386,6 +440,45 @@ def twoSidedMiddleVerticesAcross
     (s t : {z : V // z ∈ G.neighborSet v}) : Finset V :=
   U.biUnion fun u ↦ twoSidedMiddleVertices G v u s t
 
+/-- Raw summed inclusion-exclusion bound before the selector union is injected
+into the endpoint block. -/
+theorem five_mul_card_le_twoSidedAcross_add_sum_misses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (U : Finset {z : V // z ∈ G.neighborSet v})
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    5 * U.card ≤ (twoSidedMiddleVerticesAcross G v U s t).card +
+      (∑ u ∈ U, highBranchMissCount G v u s) +
+      (∑ u ∈ U, highBranchMissCount G v u t) := by
+  classical
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hdisj : (↑U : Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint
+      (fun u ↦ twoSidedMiddleVertices G v u s t) := by
+    intro u _hu w _hw huw
+    change Disjoint (twoSidedMiddleVertices G v u s t)
+      (twoSidedMiddleVertices G v w s t)
+    rw [Finset.disjoint_left]
+    intro q hqu hqw
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) huw))
+        (Finset.mem_filter.mp hqu).1 (Finset.mem_filter.mp hqw).1
+  have hunionCard : (twoSidedMiddleVerticesAcross G v U s t).card =
+      ∑ u ∈ U, (twoSidedMiddleVertices G v u s t).card :=
+    Finset.card_biUnion hdisj
+  have hsum : (∑ _u ∈ U, 5) ≤
+      ∑ u ∈ U, ((twoSidedMiddleVertices G v u s t).card +
+        highBranchMissCount G v u s + highBranchMissCount G v u t) := by
+    apply Finset.sum_le_sum
+    intro u _hu
+    exact five_le_twoSidedMiddle_add_misses G hfree hmin hcard hv u s t
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib] at hsum
+  simp only [Finset.sum_const, Nat.nsmul_eq_mul] at hsum
+  omega
+
 /-- Contributions from distinct middle branches are disjoint and jointly
 inject into the nondefect endpoint block.  Summing the five-point
 inclusion-exclusion bound gives the multi-branch path inequality. -/
@@ -705,6 +798,754 @@ theorem twenty_add_cross_misses_le_far_nondefectBlock
   rw [hUcomm] at hcolT
   exact twenty_add_cross_misses_le_far_nondefectBlock_of_column_sums
     G hfree hmin hcard hv U s t mateT mateS hst hUcard hcolS hcolT
+
+private theorem six_far_bounds_rigid_core
+    {ι : Type*} [DecidableEq ι]
+    (I : Finset ι) (d a b : ι → ℕ) (paired M N : ℕ)
+    (hIcard : I.card = 6)
+    (ha : ∑ i ∈ I, a i = M)
+    (hb : ∑ i ∈ I, b i = N)
+    (hfar : ∀ i ∈ I, d i + a i + b i ≤ 5)
+    (hpaired : paired + 5 ≤ M + N)
+    (htotal : paired + ∑ i ∈ I, d i = 25) :
+    paired + 5 = M + N ∧ ∀ i ∈ I, d i + a i + b i = 5 := by
+  have hsumLe : (∑ i ∈ I, (d i + a i + b i)) ≤ ∑ _i ∈ I, 5 :=
+    Finset.sum_le_sum fun i hi => hfar i hi
+  have hconst : (∑ _i ∈ I, 5) = 30 := by simp [hIcard]
+  have hsplit : (∑ i ∈ I, (d i + a i + b i)) =
+      (∑ i ∈ I, d i) + (∑ i ∈ I, a i) + (∑ i ∈ I, b i) := by
+    simp only [Finset.sum_add_distrib]
+  have hreverse : M + N ≤ paired + 5 := by
+    rw [hsplit, ha, hb, hconst] at hsumLe
+    omega
+  have hpairedEq : paired + 5 = M + N := by omega
+  have hsumEq : (∑ i ∈ I, (d i + a i + b i)) = ∑ _i ∈ I, 5 := by
+    rw [hsplit, ha, hb, hconst]
+    omega
+  exact ⟨hpairedEq, (Finset.sum_eq_sum_iff_of_le hfar).mp hsumEq⟩
+
+private theorem six_branch_path_counts_rigid_core
+    {ι : Type*} [DecidableEq ι]
+    (I : Finset ι)
+    (defect common a b : ι → ℕ) (pairedDefect pairedCommon M N : ℕ)
+    (hIcard : I.card = 6)
+    (ha : ∑ i ∈ I, a i = M)
+    (hb : ∑ i ∈ I, b i = N)
+    (hfarPartition : ∀ i ∈ I, defect i + common i = 25)
+    (hfarPaths : ∀ i ∈ I, 20 + a i + b i ≤ common i)
+    (hpairedPartition : pairedDefect + pairedCommon = 25)
+    (hpairedPaths : 30 ≤ pairedCommon + M + N)
+    (htotal : pairedDefect + ∑ i ∈ I, defect i = 25) :
+    pairedDefect + 5 = M + N ∧
+      pairedCommon + M + N = 30 ∧
+      ∀ i ∈ I,
+        defect i + a i + b i = 5 ∧ common i = 20 + a i + b i := by
+  have hfar : ∀ i ∈ I, defect i + a i + b i ≤ 5 := by
+    intro i hi
+    have hp := hfarPartition i hi
+    have hl := hfarPaths i hi
+    omega
+  have hpaired : pairedDefect + 5 ≤ M + N := by omega
+  obtain ⟨hpairedEq, hfarEq⟩ := six_far_bounds_rigid_core
+    I defect a b pairedDefect M N hIcard ha hb hfar hpaired htotal
+  refine ⟨hpairedEq, ?_, ?_⟩
+  · omega
+  · intro i hi
+    refine ⟨hfarEq i hi, ?_⟩
+    have hp := hfarPartition i hi
+    have he := hfarEq i hi
+    omega
+
+/-- The seven off-branch defect blocks from a fixed five-point branch contain
+exactly 25 ordered pairs: every one of its five vertices has cross-defect
+degree five. -/
+theorem sum_outerDefectBlocks_erase_eq_twentyFive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (∑ u ∈ (Finset.univ.erase s),
+      (orderFortyNineOuterDefectBlock G v s u).card) = 25 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let R := squareOrderOuterGraph G v
+  let D := secondOrderDefectGraph R
+  let Bs := orderFortyNineOuterBranch G v s
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have houterBranchDisj :
+      (↑(Finset.univ : Finset P) : Set P).PairwiseDisjoint
+        (fun u ↦ orderFortyNineOuterBranch G v u) := by
+    intro u _ w _ huw
+    change Disjoint (orderFortyNineOuterBranch G v u)
+      (orderFortyNineOuterBranch G v w)
+    rw [Finset.disjoint_left]
+    intro x hxu hxw
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) huw))
+        (Finset.mem_filter.mp hxu).2 (Finset.mem_filter.mp hxw).2
+  have hblock : ∀ u : P,
+      (orderFortyNineOuterDefectBlock G v s u).card =
+        ∑ x ∈ Bs,
+          (D.neighborFinset x ∩ orderFortyNineOuterBranch G v u).card := by
+    intro u
+    rw [orderFortyNineOuterDefectBlock,
+      card_product_filter_eq_sum_card_filter]
+    apply Finset.sum_congr rfl
+    intro x _
+    congr 1
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_inter,
+      SimpleGraph.mem_neighborFinset]
+    constructor <;> rintro ⟨h₁, h₂⟩ <;> exact ⟨h₂, h₁⟩
+  have hpoint : ∀ x ∈ Bs,
+      (∑ u ∈ (Finset.univ.erase s),
+        (D.neighborFinset x ∩ orderFortyNineOuterBranch G v u).card) = 5 := by
+    intro x hx
+    let U : Finset P := Finset.univ.erase s
+    have hdisj : (↑U : Set P).PairwiseDisjoint (fun u ↦
+        D.neighborFinset x ∩ orderFortyNineOuterBranch G v u) := by
+      intro u hu w hw huw
+      change Disjoint
+        (D.neighborFinset x ∩ orderFortyNineOuterBranch G v u)
+        (D.neighborFinset x ∩ orderFortyNineOuterBranch G v w)
+      rw [Finset.disjoint_left]
+      intro y hyu hyw
+      exact (Finset.disjoint_left.mp
+        (hbranchDisj (by simp) (by simp) huw))
+          (Finset.mem_filter.mp (Finset.mem_inter.mp hyu).2).2
+          (Finset.mem_filter.mp (Finset.mem_inter.mp hyw).2).2
+    have hunion : D.neighborFinset x \ Bs =
+        U.biUnion (fun u ↦
+          D.neighborFinset x ∩ orderFortyNineOuterBranch G v u) := by
+      ext y
+      constructor
+      · intro hy
+        have hyD := (Finset.mem_sdiff.mp hy).1
+        have hyNot := (Finset.mem_sdiff.mp hy).2
+        have hySecond : y.1 ∈ secondLayer G v := y.2
+        change y.1 ∈ Finset.univ.biUnion (secondLayerBranch G v) at hySecond
+        rcases Finset.mem_biUnion.mp hySecond with ⟨u, _hu, hyu⟩
+        have hus : u ≠ s := by
+          intro h
+          subst u
+          exact hyNot (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hyu⟩)
+        exact Finset.mem_biUnion.mpr ⟨u, by simp [U, hus],
+          Finset.mem_inter.mpr ⟨hyD,
+            Finset.mem_filter.mpr ⟨Finset.mem_univ _, hyu⟩⟩⟩
+      · intro hy
+        rcases Finset.mem_biUnion.mp hy with ⟨u, hu, hyu⟩
+        have huNe : u ≠ s := by simpa [U] using hu
+        apply Finset.mem_sdiff.mpr
+        refine ⟨(Finset.mem_inter.mp hyu).1, ?_⟩
+        intro hys
+        exact (Finset.disjoint_left.mp
+          (hbranchDisj (by simp) (by simp) huNe))
+            (Finset.mem_filter.mp (Finset.mem_inter.mp hyu).2).2
+            (Finset.mem_filter.mp hys).2
+    have hcardUnion := Finset.card_biUnion hdisj
+    rw [← hunion] at hcardUnion
+    have hcross := orderFortyNine_outerDefect_crossDegree_eq_five
+      G hfree hmin hcard hv hunique s x (Finset.mem_filter.mp hx).2
+    rw [← hcardUnion]
+    simpa [D, R, Bs] using hcross
+  calc
+    (∑ u ∈ (Finset.univ.erase s),
+        (orderFortyNineOuterDefectBlock G v s u).card) =
+        ∑ u ∈ (Finset.univ.erase s), ∑ x ∈ Bs,
+          (D.neighborFinset x ∩ orderFortyNineOuterBranch G v u).card := by
+      apply Finset.sum_congr rfl
+      intro u _
+      exact hblock u
+    _ = ∑ x ∈ Bs, ∑ u ∈ (Finset.univ.erase s),
+          (D.neighborFinset x ∩ orderFortyNineOuterBranch G v u).card := by
+      rw [Finset.sum_comm]
+    _ = ∑ _x ∈ Bs, 5 := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      exact hpoint x hx
+    _ = 25 := by
+      rw [Finset.sum_const, card_orderFortyNineOuterBranch_eq_five
+        G hfree hmin hcard hv s]
+      norm_num
+
+/-- **Exact block rigidity with an explicit mate involution.**  Once the
+six far defect blocks and the paired defect block have the known total 25,
+the graph-facing path bounds force every block formula to be an equality. -/
+theorem exact_outerDefectBlocks_of_mate_involution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (htotal :
+      (orderFortyNineOuterDefectBlock G v s (mate s)).card +
+        (∑ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (orderFortyNineOuterDefectBlock G v s u).card) = 25) :
+    (orderFortyNineOuterDefectBlock G v s (mate s)).card + 5 =
+        highBranchMatchedCount G v s +
+          highBranchMatchedCount G v (mate s) ∧
+      ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+        (orderFortyNineOuterDefectBlock G v s u).card +
+          highBranchMissCount G v s (mate u) +
+          highBranchMissCount G v u (mate s) = 5 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let U : Finset P := (Finset.univ.erase s).erase (mate s)
+  have hmateNe : s ≠ mate s := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hmateAdj s)
+  have hIndexCard : Fintype.card P = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hUcard : U.card = 6 := by
+    dsimp [U]
+    rw [Finset.card_erase_of_mem (by simp [hmateNe.symm] :
+      mate s ∈ (Finset.univ : Finset P).erase s)]
+    rw [Finset.card_erase_of_mem (by simp : s ∈ (Finset.univ : Finset P))]
+    rw [Finset.card_univ, hIndexCard]
+  have hmateInj : Function.Injective mate := hmateInv.injective
+  have hmateMem : ∀ u ∈ U, mate u ∈ U := by
+    intro u hu
+    have huRaw : u ≠ mate s ∧ u ≠ s := by simpa [U] using hu
+    have hu' : u ≠ s ∧ u ≠ mate s := ⟨huRaw.2, huRaw.1⟩
+    have hmus : mate u ≠ s := by
+      intro h
+      have hh := congrArg mate h
+      rw [hmateInv u] at hh
+      exact hu'.2 hh
+    have hmums : mate u ≠ mate s := by
+      intro h
+      exact hu'.1 (hmateInj h)
+    simp [U, hmus, hmums]
+  have hmateSum :
+      (∑ u ∈ U, highBranchMissCount G v s (mate u)) =
+        ∑ u ∈ U, highBranchMissCount G v s u := by
+    apply Finset.sum_bij (fun u _ ↦ mate u)
+    · intro u hu
+      exact hmateMem u hu
+    · intro a _ha b _hb hab
+      exact hmateInj hab
+    · intro z hz
+      refine ⟨mate z, hmateMem z hz, ?_⟩
+      exact hmateInv z
+    · intro u _
+      rfl
+  have hrowS : (∑ u ∈ U, highBranchMissCount G v s u) =
+      highBranchMatchedCount G v s := by
+    exact sum_far_highBranchMissCount_eq_matchedCount
+      G hfree hv hexternal s (mate s) (hmateAdj s) (by
+        intro a ha
+        apply houterDegree
+        rw [secondLayer]
+        exact Finset.mem_biUnion.mpr ⟨s, Finset.mem_univ _, ha⟩)
+  have hsymm : ∀ a b : P,
+      highBranchMissCount G v a b = highBranchMissCount G v b a := by
+    intro a b
+    apply highBranchMissCount_comm_of_equal_card G hfree a b
+    rw [orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv a,
+      orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv b]
+  have hrowMate : (∑ u ∈ U, highBranchMissCount G v u (mate s)) =
+      highBranchMatchedCount G v (mate s) := by
+    have hUcomm : ((Finset.univ.erase (mate s)).erase s) = U := by
+      ext u
+      simp [U, and_comm]
+    calc
+      (∑ u ∈ U, highBranchMissCount G v u (mate s)) =
+          ∑ u ∈ U, highBranchMissCount G v (mate s) u := by
+        apply Finset.sum_congr rfl
+        intro u _
+        exact hsymm u (mate s)
+      _ = highBranchMatchedCount G v (mate s) := by
+        rw [← hUcomm]
+        exact sum_far_highBranchMissCount_eq_matchedCount
+          G hfree hv hexternal (mate s) s
+            (by simpa [hmateInv s] using hmateAdj (mate s)) (by
+              intro a ha
+              apply houterDegree
+              rw [secondLayer]
+              exact Finset.mem_biUnion.mpr
+                ⟨mate s, Finset.mem_univ _, ha⟩)
+  have hpairedPartition :=
+    orderFortyNine_outerBlock_defect_add_nondefect_eq_twentyFive
+      G hfree hmin hcard hv s (mate s)
+  have hpairedPaths := thirty_le_paired_nondefectBlock_add_matchedCounts
+    G hfree hmin hcard hv hexternal houterDegree s (mate s) (hmateAdj s)
+  have hfarPartition : ∀ u ∈ U,
+      (orderFortyNineOuterDefectBlock G v s u).card +
+        (orderFortyNineOuterNondefectBlock G v s u).card = 25 := by
+    intro u _
+    exact orderFortyNine_outerBlock_defect_add_nondefect_eq_twentyFive
+      G hfree hmin hcard hv s u
+  have hfarPaths : ∀ u ∈ U,
+      20 + highBranchMissCount G v s (mate u) +
+          highBranchMissCount G v u (mate s) ≤
+        (orderFortyNineOuterNondefectBlock G v s u).card := by
+    intro u hu
+    have huRaw : u ≠ mate s ∧ u ≠ s := by simpa [U] using hu
+    have hu' : u ≠ s ∧ u ≠ mate s := ⟨huRaw.2, huRaw.1⟩
+    have hmatedist : mate s ≠ mate u := by
+      intro h
+      exact hu'.1 (hmateInj h.symm)
+    exact twenty_add_cross_misses_le_far_nondefectBlock
+      G hfree hmin hcard hv hexternal houterDegree
+        s u (mate s) (mate u) hu'.1.symm
+          (hmateAdj s) (hmateAdj u) hmatedist
+  have hr := six_branch_path_counts_rigid_core U
+    (fun u ↦ (orderFortyNineOuterDefectBlock G v s u).card)
+    (fun u ↦ (orderFortyNineOuterNondefectBlock G v s u).card)
+    (fun u ↦ highBranchMissCount G v s (mate u))
+    (fun u ↦ highBranchMissCount G v u (mate s))
+    (orderFortyNineOuterDefectBlock G v s (mate s)).card
+    (orderFortyNineOuterNondefectBlock G v s (mate s)).card
+    (highBranchMatchedCount G v s)
+    (highBranchMatchedCount G v (mate s))
+    hUcard (hmateSum.trans hrowS) hrowMate hfarPartition hfarPaths
+    hpairedPartition hpairedPaths (by simpa [U] using htotal)
+  exact ⟨hr.1, fun u hu ↦ (hr.2.2 u hu).1⟩
+
+/-- Graph-facing exact block rigidity.  The cross-total hypothesis of
+`exact_outerDefectBlocks_of_mate_involution` follows from outer defect
+regularity, so no numerical block assumption remains. -/
+theorem graph_exact_outerDefectBlocks_of_mate_involution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineOuterDefectBlock G v s (mate s)).card + 5 =
+        highBranchMatchedCount G v s +
+          highBranchMatchedCount G v (mate s) ∧
+      ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+        (orderFortyNineOuterDefectBlock G v s u).card +
+          highBranchMissCount G v s (mate u) +
+          highBranchMissCount G v u (mate s) = 5 := by
+  classical
+  have hmateNe : mate s ≠ s := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ (hmateAdj s).symm)
+  have hall := sum_outerDefectBlocks_erase_eq_twentyFive
+    G hfree hmin hcard hv hunique s
+  have hmem : mate s ∈
+      (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).erase s := by
+    simp [hmateNe]
+  have hsplit := Finset.sum_erase_add
+    ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).erase s)
+    (fun u ↦ (orderFortyNineOuterDefectBlock G v s u).card) hmem
+  have htotal :
+      (orderFortyNineOuterDefectBlock G v s (mate s)).card +
+        (∑ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (orderFortyNineOuterDefectBlock G v s u).card) = 25 := by
+    omega
+  exact exact_outerDefectBlocks_of_mate_involution
+    G hfree hmin hcard hv hexternal houterDegree
+      mate hmateInv hmateAdj s htotal
+
+/-- Complementary form of exact block rigidity: the paired and far
+nondefect blocks attain their path-count lower bounds. -/
+theorem graph_exact_outerNondefectBlocks_of_mate_involution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineOuterNondefectBlock G v s (mate s)).card +
+        highBranchMatchedCount G v s +
+          highBranchMatchedCount G v (mate s) = 30 ∧
+      ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+        (orderFortyNineOuterNondefectBlock G v s u).card =
+          20 + highBranchMissCount G v s (mate u) +
+            highBranchMissCount G v u (mate s) := by
+  have hdef := graph_exact_outerDefectBlocks_of_mate_involution
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s
+  have hpaired :=
+    orderFortyNine_outerBlock_defect_add_nondefect_eq_twentyFive
+      G hfree hmin hcard hv s (mate s)
+  constructor
+  · omega
+  · intro u hu
+    have hpart :=
+      orderFortyNine_outerBlock_defect_add_nondefect_eq_twentyFive
+        G hfree hmin hcard hv s u
+    have hfar := hdef.2 u hu
+    omega
+
+/-- **Equality-case coverage for a far block.**  The six allowed middle
+branches do not merely inject into the nondefect endpoint block: their
+two-sided middle vertices cover it with exactly the same cardinality. -/
+theorem card_twoSidedAcross_eq_far_nondefectBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s u : {z : V // z ∈ G.neighborSet v})
+    (hu : u ∈ ((Finset.univ.erase s).erase (mate s))) :
+    (twoSidedMiddleVerticesAcross G v
+      ((Finset.univ.erase (mate s)).erase (mate u)) s u).card =
+        (orderFortyNineOuterNondefectBlock G v s u).card := by
+  classical
+  let U : Finset {z : V // z ∈ G.neighborSet v} :=
+    (Finset.univ.erase (mate s)).erase (mate u)
+  have huRaw : u ≠ mate s ∧ u ≠ s := by simpa using hu
+  have hsu : s ≠ u := huRaw.2.symm
+  have hmateInj : Function.Injective mate := hmateInv.injective
+  have hmates : mate s ≠ mate u := by
+    intro h
+    exact hsu (hmateInj h)
+  have hIndexCard :
+      Fintype.card {z : V // z ∈ G.neighborSet v} = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hUcard : U.card = 6 := by
+    dsimp [U]
+    rw [Finset.card_erase_of_mem (by simp [hmates.symm] :
+      mate u ∈ (Finset.univ :
+        Finset {z : V // z ∈ G.neighborSet v}).erase (mate s))]
+    rw [Finset.card_erase_of_mem (by simp :
+      mate s ∈ (Finset.univ :
+        Finset {z : V // z ∈ G.neighborSet v}))]
+    rw [Finset.card_univ, hIndexCard]
+  have hselector : (twoSidedMiddleVerticesAcross G v U s u).card ≤
+      (orderFortyNineOuterNondefectBlock G v s u).card := by
+    apply card_middleSelectors_le_nondefectBlock G hfree
+      (twoSidedMiddleVerticesAcross G v U s u) s u hsu
+    · intro q hq
+      rcases Finset.mem_biUnion.mp hq with ⟨w, _hw, hqw⟩
+      have hqBranch := (Finset.mem_filter.mp hqw).1
+      rw [secondLayer]
+      exact Finset.mem_biUnion.mpr ⟨w, Finset.mem_univ _, hqBranch⟩
+    · intro q hq
+      rcases Finset.mem_biUnion.mp hq with ⟨w, _hw, hqw⟩
+      exact (Finset.mem_filter.mp hqw).2.1
+    · intro q hq
+      rcases Finset.mem_biUnion.mp hq with ⟨w, _hw, hqw⟩
+      exact (Finset.mem_filter.mp hqw).2.2
+  have hraw := five_mul_card_le_twoSidedAcross_add_sum_misses
+    G hfree hmin hcard hv U s u
+  have hcolS := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      s (mate s) (mate u) (hmateAdj s) hmates.symm
+  have hcolU := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      u (mate u) (mate s) (hmateAdj u) hmates
+  have hUcomm : ((Finset.univ.erase (mate u)).erase (mate s)) = U := by
+    ext w
+    simp [U, and_comm]
+  rw [hUcomm] at hcolU
+  have hcommon :=
+    (graph_exact_outerNondefectBlocks_of_mate_involution
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s).2 u hu
+  rw [hUcard] at hraw
+  norm_num at hraw
+  dsimp [U] at hraw hcolS hcolU hselector ⊢
+  omega
+
+/-- Every individual middle-branch inclusion-exclusion bound in a far block
+is sharp.  This is the pointwise marked-defect equality underlying the v5
+constraints. -/
+theorem five_eq_twoSidedMiddle_add_misses_of_far
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s u : {z : V // z ∈ G.neighborSet v})
+    (hu : u ∈ ((Finset.univ.erase s).erase (mate s))) :
+    ∀ w ∈ ((Finset.univ.erase (mate s)).erase (mate u)),
+      (twoSidedMiddleVertices G v w s u).card +
+        highBranchMissCount G v w s +
+        highBranchMissCount G v w u = 5 := by
+  classical
+  let U : Finset {z : V // z ∈ G.neighborSet v} :=
+    (Finset.univ.erase (mate s)).erase (mate u)
+  have huRaw : u ≠ mate s ∧ u ≠ s := by simpa using hu
+  have hsu : s ≠ u := huRaw.2.symm
+  have hmateInj : Function.Injective mate := hmateInv.injective
+  have hmates : mate s ≠ mate u := by
+    intro h
+    exact hsu (hmateInj h)
+  have hIndexCard :
+      Fintype.card {z : V // z ∈ G.neighborSet v} = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hUcard : U.card = 6 := by
+    dsimp [U]
+    rw [Finset.card_erase_of_mem (by simp [hmates.symm] :
+      mate u ∈ (Finset.univ :
+        Finset {z : V // z ∈ G.neighborSet v}).erase (mate s))]
+    rw [Finset.card_erase_of_mem (by simp :
+      mate s ∈ (Finset.univ :
+        Finset {z : V // z ∈ G.neighborSet v}))]
+    rw [Finset.card_univ, hIndexCard]
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hdisj : (↑U : Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint
+      (fun w ↦ twoSidedMiddleVertices G v w s u) := by
+    intro w _ z _ hwz
+    change Disjoint (twoSidedMiddleVertices G v w s u)
+      (twoSidedMiddleVertices G v z s u)
+    rw [Finset.disjoint_left]
+    intro q hqw hqz
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) hwz))
+        (Finset.mem_filter.mp hqw).1 (Finset.mem_filter.mp hqz).1
+  have hunionCard : (twoSidedMiddleVerticesAcross G v U s u).card =
+      ∑ w ∈ U, (twoSidedMiddleVertices G v w s u).card :=
+    Finset.card_biUnion hdisj
+  have hcoverage := card_twoSidedAcross_eq_far_nondefectBlock
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s u hu
+  have hcolS := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      s (mate s) (mate u) (hmateAdj s) hmates.symm
+  have hcolU := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      u (mate u) (mate s) (hmateAdj u) hmates
+  have hUcomm : ((Finset.univ.erase (mate u)).erase (mate s)) = U := by
+    ext z
+    simp [U, and_comm]
+  rw [hUcomm] at hcolU
+  have hcommon :=
+    (graph_exact_outerNondefectBlocks_of_mate_involution
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s).2 u hu
+  have hsumEq : (∑ _w ∈ U, 5) =
+      ∑ w ∈ U, ((twoSidedMiddleVertices G v w s u).card +
+        highBranchMissCount G v w s + highBranchMissCount G v w u) := by
+    rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+    simp only [Finset.sum_const, Nat.nsmul_eq_mul]
+    dsimp [U] at hUcard hunionCard hcoverage hcolS hcolU ⊢
+    omega
+  have hle : ∀ w ∈ U, 5 ≤
+      (twoSidedMiddleVertices G v w s u).card +
+        highBranchMissCount G v w s + highBranchMissCount G v w u := by
+    intro w _
+    exact five_le_twoSidedMiddle_add_misses G hfree hmin hcard hv w s u
+  have hpoint := (Finset.sum_eq_sum_iff_of_le hle).mp hsumEq
+  intro w hw
+  exact (hpoint w (by simpa [U] using hw)).symm
+
+/-- **Marked equality-case rigidity.**  For a far endpoint pair `s,u` and
+any of the six allowed middle branches, no middle vertex can miss both
+endpoint branches.  Thus the two deficit sets whose cardinalities occur in
+the exact block formula are genuinely disjoint, not merely numerically
+constrained. -/
+theorem disjoint_highBranchMissSets_of_far
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s u : {z : V // z ∈ G.neighborSet v})
+    (hu : u ∈ ((Finset.univ.erase s).erase (mate s))) :
+    ∀ w ∈ ((Finset.univ.erase (mate s)).erase (mate u)),
+      Disjoint
+        ((secondLayerBranch G v w).filter fun q ↦
+          (G.neighborFinset q ∩ secondLayerBranch G v s).card = 0)
+        ((secondLayerBranch G v w).filter fun q ↦
+          (G.neighborFinset q ∩ secondLayerBranch G v u).card = 0) := by
+  classical
+  intro w hw
+  let B := secondLayerBranch G v w
+  let P : V → Prop := fun q ↦
+    (G.neighborFinset q ∩ secondLayerBranch G v s).card = 1
+  let Q : V → Prop := fun q ↦
+    (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1
+  have hsharp := five_eq_twoSidedMiddle_add_misses_of_far
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s u hu w hw
+  have hBcard : B.card = 5 :=
+    orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv w
+  have hnotP : B.filter (fun q ↦ ¬P q) =
+      B.filter fun q ↦
+        (G.neighborFinset q ∩ secondLayerBranch G v s).card = 0 := by
+    ext q
+    simp only [Finset.mem_filter]
+    refine and_congr_right fun hq ↦ ?_
+    have hqs : q ≠ s.1 := by
+      intro h
+      have hout := (Finset.mem_sdiff.mp hq).2
+      apply hout
+      simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+      exact Or.inr (h ▸ s.2)
+    have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v q s hqs
+    dsimp [P]
+    omega
+  have hnotQ : B.filter (fun q ↦ ¬Q q) =
+      B.filter fun q ↦
+        (G.neighborFinset q ∩ secondLayerBranch G v u).card = 0 := by
+    ext q
+    simp only [Finset.mem_filter]
+    refine and_congr_right fun hq ↦ ?_
+    have hqu : q ≠ u.1 := by
+      intro h
+      have hout := (Finset.mem_sdiff.mp hq).2
+      apply hout
+      simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+      exact Or.inr (h ▸ u.2)
+    have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v q u hqu
+    dsimp [Q]
+    omega
+  have hEq : B.card = (B.filter fun q ↦ P q ∧ Q q).card +
+      (B.filter fun q ↦ ¬P q).card + (B.filter fun q ↦ ¬Q q).card := by
+    rw [hBcard, hnotP, hnotQ]
+    simpa [B, P, Q, twoSidedMiddleVertices,
+      highBranchMissCount] using hsharp.symm
+  have hdisj :=
+    disjoint_filter_not_of_card_eq_filter_and_add_filter_not B P Q hEq
+  rw [hnotP, hnotQ] at hdisj
+  simpa [B] using hdisj
+
+/-- A one-regular induced neighborhood has a canonical-up-to-choice mate
+involution. -/
+theorem exists_localMate_involution
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧ ∀ s, G.Adj s.1 (mate s).1 := by
+  classical
+  let H := G.induce (G.neighborSet v)
+  have hex : ∀ s : {z : V // z ∈ G.neighborSet v},
+      ∃! t, H.Adj s t := by
+    intro s
+    exact degree_eq_one_iff_existsUnique_adj.mp (hlocal s)
+  choose mate hmateAdj hmateUnique using hex
+  refine ⟨mate, ?_, ?_⟩
+  · intro s
+    exact (hmateUnique (mate s) s (hmateAdj s).symm).symm
+  · intro s
+    exact hmateAdj s
+
+/-- **Unique-high order-49 exact defect-block theorem.**  All mate choices,
+path counts, miss-column identities, and the cross total are discharged from
+the graph hypotheses. -/
+theorem orderFortyNine_exists_mate_exact_outerDefectBlocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        (orderFortyNineOuterDefectBlock G v s (mate s)).card + 5 =
+            highBranchMatchedCount G v s +
+              highBranchMatchedCount G v (mate s) ∧
+        ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (orderFortyNineOuterDefectBlock G v s u).card +
+            highBranchMissCount G v s (mate u) +
+            highBranchMissCount G v u (mate s) = 5 := by
+  classical
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  obtain ⟨mate, hmateInv, hmateAdj⟩ :=
+    exists_localMate_involution G v hlocal
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  exact graph_exact_outerDefectBlocks_of_mate_involution
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s
 
 /-- Six local bounds of the form `dᵢ + aᵢ + bᵢ ≤ 5`, together with the paired
 bound and the exact total `25`, are all sharp.  In the graph application, `dᵢ`
