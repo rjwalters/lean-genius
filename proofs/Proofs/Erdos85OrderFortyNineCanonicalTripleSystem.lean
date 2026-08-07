@@ -125,6 +125,243 @@ theorem orderFortyNine_card_labeledHighSupportFiber_eq_one
   rw [hfilter]
   simp
 
+/-- Vertices carrying one prescribed labeled high support. -/
+def orderFortyNineLabeledSupportFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (S : Finset (Fin 9)) : Finset V :=
+  Finset.univ.filter fun x => orderFortyNineLabeledHighSupport G e x = S
+
+theorem card_orderFortyNineLabeledSupportFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (S : Finset (Fin 9)) :
+    (orderFortyNineLabeledSupportFiber G e S).card =
+      Fintype.card {x : V // orderFortyNineLabeledHighSupport G e x = S} := by
+  rw [Fintype.card_subtype]
+  rfl
+
+/-- Membership in a labeled support is adjacency to the corresponding high
+vertex. -/
+theorem mem_orderFortyNineLabeledHighSupport_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (x : V) (w : Fin 9) :
+    w ∈ orderFortyNineLabeledHighSupport G e x ↔
+      G.Adj x (e.symm w).1 := by
+  constructor
+  · intro hw
+    obtain ⟨v, hv, hev⟩ := Finset.mem_map.mp hw
+    have hvSupport : v.1 ∈ orderFortyNineHighSupport G x :=
+      (mem_finsetInSubtype_iff.mp hv)
+    have hvAdj := (Finset.mem_inter.mp hvSupport).1
+    have hve : v = e.symm w := by
+      apply e.injective
+      simpa using hev
+    simpa [hve, SimpleGraph.mem_neighborFinset] using hvAdj
+  · intro hxw
+    apply Finset.mem_map.mpr
+    refine ⟨e.symm w, ?_, by simp⟩
+    apply mem_finsetInSubtype_iff.mpr
+    exact Finset.mem_inter.mpr
+      ⟨by simpa [SimpleGraph.mem_neighborFinset] using hxw,
+       (e.symm w).2⟩
+
+theorem orderFortyNineLabeledHighSupport_eq_singleton_iff
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (x : V) (w : Fin 9) :
+    orderFortyNineLabeledHighSupport G e x = {w} ↔
+      G.Adj x (e.symm w).1 ∧ (orderFortyNineHighSupport G x).card = 1 := by
+  constructor
+  · intro hsupport
+    have hw : w ∈ orderFortyNineLabeledHighSupport G e x := by
+      rw [hsupport]
+      simp
+    refine ⟨(mem_orderFortyNineLabeledHighSupport_iff G e x w).mp hw, ?_⟩
+    rw [← card_orderFortyNineLabeledHighSupport G e x, hsupport]
+    simp
+  · rintro ⟨hadj, hcard⟩
+    have hw : w ∈ orderFortyNineLabeledHighSupport G e x :=
+      (mem_orderFortyNineLabeledHighSupport_iff G e x w).mpr hadj
+    have hcard' : (orderFortyNineLabeledHighSupport G e x).card = 1 := by
+      rw [card_orderFortyNineLabeledHighSupport, hcard]
+    obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hcard'
+    have : w = u := by
+      rw [hu] at hw
+      simpa using hw
+    simpa [this] using hu
+
+/-- In labeled coordinates, singleton-support multiplicity at a high point
+equals the number of triple supports through that point. -/
+theorem orderFortyNine_card_singletonFiber_eq_tripleIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (w : Fin 9) :
+    (orderFortyNineLabeledSupportFiber G e {w}).card =
+      (Finset.univ.filter fun x =>
+        (orderFortyNineLabeledHighSupport G e x).card = 3 ∧
+          w ∈ orderFortyNineLabeledHighSupport G e x).card := by
+  let v : V := (e.symm w).1
+  have hv : v ∈ orderFortyNineHighVertices G := (e.symm w).2
+  have hlocal := orderFortyNine_singletonMultiplicity_eq_tripleMultiplicity
+    G hfree hmin hcard hHigh hv
+  have hone : orderFortyNineLabeledSupportFiber G e {w} =
+      (G.neighborFinset v).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 1 := by
+    ext x
+    simp only [orderFortyNineLabeledSupportFiber, Finset.mem_filter,
+      Finset.mem_univ, true_and, SimpleGraph.mem_neighborFinset]
+    rw [orderFortyNineLabeledHighSupport_eq_singleton_iff]
+    change (G.Adj x v ∧ _) ↔ (G.Adj v x ∧ _)
+    rw [G.adj_comm]
+  have hthree : (Finset.univ.filter fun x =>
+      (orderFortyNineLabeledHighSupport G e x).card = 3 ∧
+        w ∈ orderFortyNineLabeledHighSupport G e x) =
+      (G.neighborFinset v).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 3 := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+      SimpleGraph.mem_neighborFinset]
+    rw [card_orderFortyNineLabeledHighSupport,
+      mem_orderFortyNineLabeledHighSupport_iff]
+    change (_ ∧ G.Adj x v) ↔ (G.Adj v x ∧ _)
+    rw [G.adj_comm]
+    tauto
+  rw [hone, hthree]
+  exact hlocal
+
+/-- Every labeled pair of high points lies in a unique size-two or size-three
+support block. -/
+theorem orderFortyNine_existsUnique_labeled_pairBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    {a b : Fin 9} (hab : a ≠ b) :
+    ∃! x : V, ({a, b} : Finset (Fin 9)) ⊆
+        orderFortyNineLabeledHighSupport G e x ∧
+      ((orderFortyNineLabeledHighSupport G e x).card = 2 ∨
+       (orderFortyNineLabeledHighSupport G e x).card = 3) := by
+  let va := e.symm a
+  let vb := e.symm b
+  have hvab : va.1 ≠ vb.1 := by
+    intro h
+    apply hab
+    have : va = vb := Subtype.ext h
+    simpa [va, vb] using congrArg e this
+  obtain ⟨x, hx, huniq⟩ := orderFortyNine_existsUnique_pairBlock_of_highs
+    G hfree hmin hcard va.2 vb.2 hvab
+  refine ⟨x, ?_, ?_⟩
+  · refine ⟨?_, ?_⟩
+    · intro w hw
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with hwa | hwb
+      · subst w
+        apply (mem_orderFortyNineLabeledHighSupport_iff G e x _).mpr
+        simpa [va, G.adj_comm] using hx.1
+      · subst w
+        apply (mem_orderFortyNineLabeledHighSupport_iff G e x _).mpr
+        simpa [vb, G.adj_comm] using hx.2.1
+    · simpa [card_orderFortyNineLabeledHighSupport] using hx.2.2.2
+  · intro y hy
+    apply huniq y
+    have haMem := hy.1 (by simp : a ∈ ({a, b} : Finset (Fin 9)))
+    have hbMem := hy.1 (by simp : b ∈ ({a, b} : Finset (Fin 9)))
+    have hvaAdj : G.Adj va.1 y := by
+      simpa [va, G.adj_comm] using
+        (mem_orderFortyNineLabeledHighSupport_iff G e y a).mp haMem
+    have hvbAdj : G.Adj vb.1 y := by
+      simpa [vb, G.adj_comm] using
+        (mem_orderFortyNineLabeledHighSupport_iff G e y b).mp hbMem
+    refine ⟨hvaAdj, hvbAdj, ?_, ?_⟩
+    · exact orderFortyNine_neighbor_degree_seven_of_degreeEight
+        G hfree hmin hcard (Finset.mem_filter.mp va.2).2 hvaAdj
+    · rcases hy.2 with h2 | h3
+      · left
+        simpa [card_orderFortyNineLabeledHighSupport] using h2
+      · right
+        simpa [card_orderFortyNineLabeledHighSupport] using h3
+
+/-- Exact pair-support multiplicity is one precisely when the pair is not
+already covered by a triple support. -/
+theorem orderFortyNine_card_pairFiber
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    {a b : Fin 9} (hab : a ≠ b) :
+    (orderFortyNineLabeledSupportFiber G e {a, b}).card =
+      if ∃ x : V,
+          (orderFortyNineLabeledHighSupport G e x).card = 3 ∧
+          ({a, b} : Finset (Fin 9)) ⊆
+            orderFortyNineLabeledHighSupport G e x
+        then 0 else 1 := by
+  obtain ⟨x, hx, huniq⟩ := orderFortyNine_existsUnique_labeled_pairBlock
+    G hfree hmin hcard e hab
+  by_cases htriple : ∃ z : V,
+      (orderFortyNineLabeledHighSupport G e z).card = 3 ∧
+      ({a, b} : Finset (Fin 9)) ⊆
+        orderFortyNineLabeledHighSupport G e z
+  · rw [if_pos htriple, Finset.card_eq_zero]
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    intro hnonempty
+    obtain ⟨y, hy⟩ := hnonempty
+    have hyEq : orderFortyNineLabeledHighSupport G e y = {a, b} :=
+      (Finset.mem_filter.mp hy).2
+    have hyCard : (orderFortyNineLabeledHighSupport G e y).card = 2 := by
+      rw [hyEq]
+      simp [hab]
+    have hyQual : ({a, b} : Finset (Fin 9)) ⊆
+          orderFortyNineLabeledHighSupport G e y ∧
+        ((orderFortyNineLabeledHighSupport G e y).card = 2 ∨
+         (orderFortyNineLabeledHighSupport G e y).card = 3) := by
+      refine ⟨by rw [hyEq], Or.inl hyCard⟩
+    obtain ⟨z, hzCard, hzSub⟩ := htriple
+    have hzQual : ({a, b} : Finset (Fin 9)) ⊆
+          orderFortyNineLabeledHighSupport G e z ∧
+        ((orderFortyNineLabeledHighSupport G e z).card = 2 ∨
+         (orderFortyNineLabeledHighSupport G e z).card = 3) :=
+      ⟨hzSub, Or.inr hzCard⟩
+    have hyx := huniq y hyQual
+    have hzx := huniq z hzQual
+    have hyz : y = z := hyx.trans hzx.symm
+    have hcards := congrArg
+      (fun u => (orderFortyNineLabeledHighSupport G e u).card) hyz
+    omega
+  · rw [if_neg htriple]
+    have hxCard : (orderFortyNineLabeledHighSupport G e x).card = 2 := by
+      rcases hx.2 with h2 | h3
+      · exact h2
+      · exact False.elim (htriple ⟨x, h3, hx.1⟩)
+    have hpairCard : ({a, b} : Finset (Fin 9)).card = 2 := by simp [hab]
+    have hxEq : orderFortyNineLabeledHighSupport G e x = {a, b} :=
+      (Finset.eq_of_subset_of_card_le hx.1 (by omega)).symm
+    have hone := orderFortyNine_card_labeledHighSupportFiber_eq_one
+      G hfree e x (by omega)
+    rw [← card_orderFortyNineLabeledSupportFiber G e
+      (orderFortyNineLabeledHighSupport G e x)] at hone
+    simpa [hxEq] using hone
+
 /-- The graph's three-point high supports, in a chosen labeling, are exactly
 the triples of `rep` (viewed as ordinary finite sets of natural numbers). -/
 def OrderFortyNineCanonicalTripleSystemSpec
