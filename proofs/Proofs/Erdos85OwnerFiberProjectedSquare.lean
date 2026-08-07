@@ -58,7 +58,7 @@ theorem ownerFiberCliqueMatrix_eq_smul_normalizedOwnerProjection_sub_one
   rw [mul_inv_cancel₀ hm, one_smul]
 
 /-- Rational transport of the regular `C₄`-free square identity. -/
-theorem adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_rat
+theorem adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_rat_exterior
     {X : Type*} [Fintype X] [DecidableEq X]
     (G : SimpleGraph X) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -270,7 +270,7 @@ theorem exists_minimumLayer_saturated_124_hardSector_square
       G hfree (d := 124) (s := 12) (by norm_num) (by norm_num)
         hmin hcard c₀ hregChild hcardChild (by norm_num) (by norm_num)
           (by norm_num) z
-  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_rat
+  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_regular_rat_exterior
     AG hfreeAG hregAG
   have hclique : ownerFiberCliqueMatrix (K := ℚ) owner₁ =
       (112 : ℚ) • E - 1 :=
