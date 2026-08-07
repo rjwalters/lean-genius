@@ -1,4 +1,4 @@
-import Proofs.Erdos85OrderFortyNineHighBranchGeometry
+import Proofs.Erdos85OrderFortyNineDistTwoPinning
 
 /-!
 # Pinning the three-high distinct-common-neighbor configuration
@@ -15,6 +15,84 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- The three pairwise common neighbors of three high vertices are either
+all the same or pairwise distinct.  A two-equal middle pattern collapses to
+the all-equal distance-two case by uniqueness of high-pair common neighbors. -/
+theorem orderFortyNine_common_highPair_witness_trichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 u12 u13 u23 : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3) (h23 : v2 ≠ v3)
+    (hu12_1 : G.Adj u12 v1) (hu12_2 : G.Adj u12 v2)
+    (hu13_1 : G.Adj u13 v1) (hu13_3 : G.Adj u13 v3)
+    (hu23_2 : G.Adj u23 v2) (hu23_3 : G.Adj u23 v3) :
+    (u12 = u13 ∧ u13 = u23) ∨
+      (u12 ≠ u13 ∧ u12 ≠ u23 ∧ u13 ≠ u23) := by
+  have hcommon12 := orderFortyNineDistTwo_common_highPair_eq_singleton
+    G hfree hmin hcard hv1 hv2 h12 hu12_1 hu12_2
+  have hcommon13 := orderFortyNineDistTwo_common_highPair_eq_singleton
+    G hfree hmin hcard hv1 hv3 h13 hu13_1 hu13_3
+  have hcommon23 := orderFortyNineDistTwo_common_highPair_eq_singleton
+    G hfree hmin hcard hv2 hv3 h23 hu23_2 hu23_3
+  by_cases h1213 : u12 = u13
+  · left
+    refine ⟨h1213, ?_⟩
+    have hu12Common23 : u12 ∈
+        G.neighborFinset v2 ∩ G.neighborFinset v3 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hu12_2.symm, h1213 ▸ hu13_3.symm⟩
+    have hu12u23 : u12 = u23 := by
+      simpa [hcommon23] using hu12Common23
+    exact h1213.symm.trans hu12u23
+  · right
+    refine ⟨h1213, ?_, ?_⟩
+    · intro h1223
+      have hu23Common13 : u23 ∈
+          G.neighborFinset v1 ∩ G.neighborFinset v3 := by
+        simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+        exact ⟨h1223 ▸ hu12_1.symm, hu23_3.symm⟩
+      have hu23u13 : u23 = u13 := by
+        simpa [hcommon13] using hu23Common13
+      exact h1213 (h1223.trans hu23u13)
+    · intro h1323
+      have hu23Common12 : u23 ∈
+          G.neighborFinset v1 ∩ G.neighborFinset v2 := by
+        simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+        exact ⟨h1323 ▸ hu13_1.symm, hu23_2.symm⟩
+      have hu23u12 : u23 = u12 := by
+        simpa [hcommon12] using hu23Common12
+      exact h1213 (hu23u12.symm.trans h1323.symm)
+
+/-- The siblings of `u12` and `u13` in the two foreign high neighborhoods
+cannot both be the third pairwise common neighbor `u23`. -/
+theorem orderFortyNineDistOne_not_both_siblings_eq_u23
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {v1 v2 v3 u12 u13 u23 x2 x3 : V}
+    (hv1 : G.degree v1 = 8)
+    (hu23low : G.degree u23 = 7)
+    (hu : u12 ≠ u13)
+    (hu12_1 : G.Adj u12 v1) (hu13_1 : G.Adj u13 v1)
+    (hx2 : G.Adj u12 x2) (hx3 : G.Adj u13 x3) :
+    ¬(x2 = u23 ∧ x3 = u23) := by
+  rintro ⟨hx2eq, hx3eq⟩
+  have hv1u23 : v1 ≠ u23 := by
+    intro h
+    rw [h] at hv1
+    omega
+  have hu12u23 : G.Adj u12 u23 := by simpa [hx2eq] using hx2
+  have hu13u23 : G.Adj u13 u23 := by simpa [hx3eq] using hx3
+  exact hfree (containsC4_of_two_common hu hv1u23
+    hu12_1.symm hu13_1.symm hu12u23.symm hu13u23.symm)
 
 /-- The two foreign highs occupy the branches rooted at their respective
 common neighbors with the first high. -/
