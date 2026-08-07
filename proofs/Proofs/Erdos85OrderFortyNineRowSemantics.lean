@@ -174,12 +174,8 @@ theorem systemSetEqB_eq_true_iff (A B : List (List Nat)) :
         ⟨S, hS, (tripleSetEqB_eq_true_iff T S).mpr
           ⟨hEq.1.symm, hEq.2.symm⟩⟩
 
-/-- Complete semantic payload of a valid row: a selected representative, an
-actual permutation of the nine labels agreeing with the stored value list,
-and setwise equality of the permuted raw system with that representative. -/
-theorem exists_rep_rowPerm_systemSpec
-    (reps : Array OrderFortyNineH9System) (row : Row)
-    (hvalid : rowValid reps row = true) :
+/-- The ordinary mathematical payload asserted by a valid witness row. -/
+def RowSemanticSpec (reps : Array OrderFortyNineH9System) (row : Row) : Prop :=
     ∃ rep, ∃ σ : Equiv.Perm (Fin 9),
       reps[row.2.1]? = some rep ∧
       (∀ i : Fin 9, (σ i).val = row.2.2.getD i.val 0) ∧
@@ -190,11 +186,36 @@ theorem exists_rep_rowPerm_systemSpec
           S.length = T.length ∧ S.toFinset = T.toFinset) ∧
       (∀ T ∈ h9SystemTriples rep,
         ∃ S ∈ row.1.map (applyPermTriple row.2.2),
-          S.length = T.length ∧ S.toFinset = T.toFinset) := by
+          S.length = T.length ∧ S.toFinset = T.toFinset)
+
+/-- Complete semantic payload of a valid row: a selected representative, an
+actual permutation of the nine labels agreeing with the stored value list,
+and setwise equality of the permuted raw system with that representative. -/
+theorem exists_rep_rowPerm_systemSpec
+    (reps : Array OrderFortyNineH9System) (row : Row)
+    (hvalid : rowValid reps row = true) : RowSemanticSpec reps row := by
   obtain ⟨rep, hrep, hlen, hall, hsys⟩ := rowValid_spec reps row hvalid
   obtain ⟨σ, hσ⟩ := exists_rowPerm reps row hvalid
   have hsem := (systemSetEqB_eq_true_iff _ _).mp hsys
   exact ⟨rep, σ, hrep, hσ, hsem.1, hsem.2.1, hsem.2.2⟩
+
+theorem exists_rep_rowPerm_systemSpec_of_mem_tableT2
+    {row : Row} (hrow : row ∈ tableT2) :
+    RowSemanticSpec orderFortyNineH9T2Systems row :=
+  exists_rep_rowPerm_systemSpec orderFortyNineH9T2Systems row
+    (rowValid_of_mem_tableT2 hrow)
+
+theorem exists_rep_rowPerm_systemSpec_of_mem_tableT3
+    {row : Row} (hrow : row ∈ tableT3) :
+    RowSemanticSpec orderFortyNineH9T3Systems row :=
+  exists_rep_rowPerm_systemSpec orderFortyNineH9T3Systems row
+    (rowValid_of_mem_tableT3 hrow)
+
+theorem exists_rep_rowPerm_systemSpec_of_mem_tableT4
+    {row : Row} (hrow : row ∈ tableT4) :
+    RowSemanticSpec orderFortyNineH9T4Systems row :=
+  exists_rep_rowPerm_systemSpec orderFortyNineH9T4Systems row
+    (rowValid_of_mem_tableT4 hrow)
 
 end OrderFortyNineWitnessTable
 end Erdos85
