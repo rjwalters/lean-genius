@@ -95,4 +95,26 @@ theorem common_eq_base_of_neighbors
   rw [Finset.mem_singleton] at hxmem
   rw [hxmem]
 
+/-- **Matching injectivity.**  Let `x` and `x'` be non-adjacent.  Two
+distinct neighbors of `x` cannot share a neighbor inside `N(x')`: their
+only common neighbor is `x`, which is not in `N(x')`.  Hence the
+partner map `N(x) → N(x')` (each `y` to its unique common neighbor with
+`x'`) is injective. -/
+theorem matching_partner_injective
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {x x' y y' v : V}
+    (hxx' : ¬ G.Adj x x')
+    (hy : G.Adj x y) (hy' : G.Adj x y') (hne : y ≠ y')
+    (hvy : G.Adj y v) (hvy' : G.Adj y' v) (hvx' : G.Adj x' v) :
+    False := by
+  have hbase := common_eq_base_of_neighbors G hfree hy hy' hne
+  have hvmem : v ∈ G.neighborFinset y ∩ G.neighborFinset y' := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hvy, hvy'⟩
+  rw [hbase, Finset.mem_singleton] at hvmem
+  rw [hvmem] at hvx'
+  exact hxx' hvx'.symm
+
 end Erdos85
