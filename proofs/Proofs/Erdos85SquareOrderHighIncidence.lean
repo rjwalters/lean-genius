@@ -123,6 +123,104 @@ theorem squareOrder_highNeighborCount_eq_zero_of_high
   exact squareOrder_not_adj_degree_succ_of_tightEdgeCover
     G hcover hxHigh hyHigh hxy
 
+/-- Every high neighbor of a low vertex has a distinct low triangle partner.
+Consequently, if `k_x` is the number of high neighbors of a degree-`d`
+vertex, then `2 k_x ≤ d`.  This is the parametric form of the order-49
+bound `k_x ≤ 3`. -/
+theorem squareOrder_two_mul_highNeighborCount_le_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) {x : V} (hx : G.degree x = d) :
+    2 * (G.neighborFinset x ∩ squareOrderHighVertices G d).card ≤ d := by
+  classical
+  let S : Finset V :=
+    G.neighborFinset x ∩ squareOrderHighVertices G d
+  have hS_high : ∀ v ∈ S, G.degree v = d + 1 := by
+    intro v hv
+    exact (Finset.mem_filter.mp (Finset.mem_inter.mp hv).2).2
+  have hS_adj : ∀ v ∈ S, G.Adj v x := by
+    intro v hv
+    have := (Finset.mem_inter.mp hv).1
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+  have hpartner_card : ∀ v : {v // v ∈ S},
+      (G.neighborFinset v.1 ∩ G.neighborFinset x).card = 1 := by
+    intro v
+    let xv : {z : V // z ∈ G.neighborSet v.1} :=
+      ⟨x, hS_adj v.1 v.2⟩
+    have hdeg :=
+      (squareOrder_degree_succ_highRoot_structure
+        G hfree hd hmin hcard (hS_high v.1 v.2)).2.2 xv
+    rwa [degree_induce_neighborSet_eq_card_common] at hdeg
+  let partner : {v // v ∈ S} → V := fun v =>
+    ((Finset.card_pos.mp (by rw [hpartner_card v]; norm_num)).choose)
+  have hpartner_mem : ∀ v : {v // v ∈ S},
+      partner v ∈ G.neighborFinset v.1 ∩ G.neighborFinset x := by
+    intro v
+    exact (Finset.card_pos.mp
+      (by rw [hpartner_card v]; norm_num)).choose_spec
+  have hpartner_low : ∀ v : {v // v ∈ S},
+      partner v ∉ squareOrderHighVertices G d := by
+    intro v hvhigh
+    have hpHigh : G.degree (partner v) = d + 1 :=
+      (Finset.mem_filter.mp hvhigh).2
+    have hvp : G.Adj v.1 (partner v) := by
+      have := (Finset.mem_inter.mp (hpartner_mem v)).1
+      simpa [SimpleGraph.mem_neighborFinset] using this
+    exact squareOrder_not_adj_degree_succ_of_tightEdgeCover
+      G hcover (hS_high v.1 v.2) hpHigh hvp
+  have hpartner_injective : Function.Injective partner := by
+    intro v w hp
+    apply Subtype.ext
+    by_contra hvw
+    have hcommon := squareOrder_card_common_degree_succ_eq_one
+      G hfree hd hmin hcover hcard
+      (hS_high v.1 v.2) (hS_high w.1 w.2) hvw
+    rcases Finset.card_eq_one.mp hcommon with ⟨q, hq⟩
+    have hxmem : x ∈ G.neighborFinset v.1 ∩ G.neighborFinset w.1 := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨hS_adj v.1 v.2, hS_adj w.1 w.2⟩
+    have hpmem : partner v ∈
+        G.neighborFinset v.1 ∩ G.neighborFinset w.1 := by
+      simp only [Finset.mem_inter]
+      have hvp := (Finset.mem_inter.mp (hpartner_mem v)).1
+      have hwp := (Finset.mem_inter.mp (hpartner_mem w)).1
+      rw [← hp] at hwp
+      exact ⟨hvp, hwp⟩
+    have hxq : x = q := by simpa [hq] using hxmem
+    have hpq : partner v = q := by simpa [hq] using hpmem
+    have hpx : partner v = x := hpq.trans hxq.symm
+    have hpadj : G.Adj x (partner v) := by
+      have := (Finset.mem_inter.mp (hpartner_mem v)).2
+      simpa [SimpleGraph.mem_neighborFinset] using this
+    exact G.loopless.irrefl x (hpx ▸ hpadj)
+  let T : Finset V :=
+    G.neighborFinset x \ squareOrderHighVertices G d
+  let partnerLow : {v // v ∈ S} → {y // y ∈ T} := fun v =>
+    ⟨partner v, by
+      simp only [T, Finset.mem_sdiff]
+      exact ⟨(Finset.mem_inter.mp (hpartner_mem v)).2,
+        hpartner_low v⟩⟩
+  have hpartnerLow_injective : Function.Injective partnerLow := by
+    intro v w hp
+    apply hpartner_injective
+    exact congrArg Subtype.val hp
+  have hST : S.card ≤ T.card := by
+    simpa only [Fintype.card_coe] using Fintype.card_le_of_injective
+      partnerLow hpartnerLow_injective
+  have hTcard : T.card = d - S.card := by
+    dsimp [T]
+    rw [Finset.card_sdiff, G.card_neighborFinset_eq_degree, hx]
+    congr 1
+    rw [Finset.inter_comm]
+  rw [hTcard] at hST
+  change 2 * S.card ≤ d
+  omega
+
 /-- The symbolic Cauchy constraint for the high-sector partial design.
 Writing `h` for the number of high vertices, it says
 `(d+1)^2 h^2 ≤ (d^2-h) h(h+d)`. -/
