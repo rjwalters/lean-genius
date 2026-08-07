@@ -137,6 +137,47 @@ theorem orderFortyNine_card_neighbors_inter_highBranch_le_one
   exact (Finset.card_le_card hsub).trans
     (common_le_one_of_not_containsC4 hfree a t.1 hat)
 
+/-- For two distinct high vertices, their unique common neighbor is exactly
+the unique parent in the first high vertex's neighborhood whose second-layer
+branch contains the second high vertex. -/
+theorem orderFortyNine_existsUnique_highBranch_containing_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v w : V}
+    (hv : G.degree v = 8) (hw : G.degree w = 8) (hvw : v ≠ w) :
+    ∃! c : {z : V // z ∈ G.neighborSet v},
+      w ∈ secondLayerBranch G v c := by
+  have hcommon := orderFortyNine_card_common_degreeEight_eq_one
+    G hfree hmin hcard hv hw hvw
+  rcases Finset.card_eq_one.mp hcommon with ⟨c, hc⟩
+  have hcmem : c ∈ G.neighborFinset v ∩ G.neighborFinset w := by
+    simp [hc]
+  have hcv : G.Adj v c := by
+    simpa [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hcmem).1
+  have hcw : G.Adj c w := by
+    have := (Finset.mem_inter.mp hcmem).2
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+  let C : {z : V // z ∈ G.neighborSet v} := ⟨c, hcv⟩
+  refine ⟨C, ?_, ?_⟩
+  · apply Finset.mem_sdiff.mpr
+    refine ⟨(G.mem_neighborFinset c w).mpr hcw, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    exact ⟨hvw.symm,
+      orderFortyNine_not_adj_degreeEight_degreeEight
+        G hfree hmin hcard hv hw⟩
+  · intro D hwD
+    apply Subtype.ext
+    have hDcommon : D.1 ∈ G.neighborFinset v ∩ G.neighborFinset w := by
+      have hDw : G.Adj D.1 w :=
+        (G.mem_neighborFinset D.1 w).mp (Finset.mem_sdiff.mp hwD).1
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨D.2, by simpa [G.adj_comm] using hDw⟩
+    simpa [hc] using hDcommon
+
 end
 
 end Erdos85
