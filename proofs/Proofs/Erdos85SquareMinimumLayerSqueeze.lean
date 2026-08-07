@@ -1,4 +1,5 @@
 import Proofs.Erdos85SquareMinimumDenseBlock
+import Proofs.Erdos85EqualCycleResidual
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -354,6 +355,67 @@ theorem secondOrder_square_minimum_no_larger_neighbor_of_threeQuarter
     rw [hcSize, heSize] at hce
     exact_mod_cast (Nat.lt_of_mul_lt_mul_left hce)
   exact hclosed ⟨e, hae, hqpos⟩
+
+/-- **Closed-layer collapse.**  Quotient irreducibility turns the preceding
+local closure into a common component order; the completed equal-cycle
+classification then contradicts `s ≥ 7`.  Hence the unequal exact-square
+branch necessarily has minimum coefficient strictly below `3s/4`. -/
+theorem false_of_secondOrder_square_minimum_threeQuarter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p N s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hminDegree : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hdEq : d = s * s + 3) (hpEq : p = d + s) (hNEq : N = d - s)
+    (hall : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ e.supp.ncard)
+    (hs7 : 7 ≤ s)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (haLarge : 3 * s ≤ 4 * (c.supp.ncard / p)) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hclosed (x : D.ConnectedComponent) (hx : x.supp.ncard = c.supp.ncard) :
+      ∀ e : D.ConnectedComponent, x.supp.ncard < e.supp.ncard → Q x e = 0 := by
+    have hxmin : ∀ e : D.ConnectedComponent, x.supp.ncard ≤ e.supp.ncard := by
+      intro e
+      rw [hx]
+      exact hcmin e
+    have hax : 3 * s ≤ 4 * (x.supp.ncard / p) := by simpa [hx] using haLarge
+    exact secondOrder_square_minimum_no_larger_neighbor_of_threeQuarter
+      G hfree hd heven hminDegree hcard hp hboundary hdEq hpEq hNEq hall
+      hs7 x hxmin hax
+  letI : Nonempty V :=
+    ⟨componentRepresentative D c⟩
+  have hlen : ∀ e : D.ConnectedComponent, e.supp.ncard = c.supp.ncard := by
+    intro e
+    have hwalk := secondOrder_componentQuotientMatrix_irreducible_clean
+      G hfree hd heven hminDegree hcard c e
+    induction hwalk with
+    | refl => rfl
+    | @tail x y hxy hpos ih =>
+        have hyMin : c.supp.ncard ≤ y.supp.ncard := hcmin y
+        by_contra hne
+        have hlt : x.supp.ncard < y.supp.ncard := by omega
+        have hz := hclosed x ih y hlt
+        change 0 < Q x y at hpos
+        rw [hz] at hpos
+        omega
+  have hclass := equalCycle_degree_eq_four_or_twelve
+    G hfree hd heven hminDegree hcard hlen
+  have h49 : 49 ≤ s * s := Nat.mul_le_mul hs7 hs7
+  rcases hclass with hd4 | hd12
+  · rw [hd4] at hdEq
+    omega
+  · rw [hd12] at hdEq
+    omega
 
 end
 
