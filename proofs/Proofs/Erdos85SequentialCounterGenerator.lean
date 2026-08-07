@@ -38,28 +38,37 @@ def seqCounterMkYvar (key : Nat × Nat) : StateM SeqCounterGenState Nat := fun s
 def seqCounterEmit (clause : DimacsClause) : StateM SeqCounterGenState Unit :=
   modify fun st => { st with clauses := st.clauses.push clause }
 
+/-- One inner-loop iteration at coordinate `(k,j)`. -/
+def seqCounterAtMostKStep (vars : Array Int) (t j k : Nat)
+    (st : SeqCounterGenState) : SeqCounterGenState :=
+  let (skj, st) := seqCounterMkYvar (k, j) st
+  let st :=
+    if j < vars.size - t - 1 then
+      let (skj1, st) := seqCounterMkYvar (k, j + 1) st
+      (seqCounterEmit [-(skj : Int), (skj1 : Int)] st).2
+    else st
+  let (sk1j, st) := seqCounterMkYvar (k + 1, j) st
+  (seqCounterEmit
+    [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st).2
+
 /-- The inner `k=0,...,t-2` portion of a fixed PySAT outer iteration. -/
 def seqCounterAtMostKLoop (vars : Array Int) (t j : Nat) :
     Nat → Nat → SeqCounterGenState → SeqCounterGenState
   | 0, _, st => st
   | fuel + 1, k, st =>
-      let (skj, st) := seqCounterMkYvar (k, j) st
-      let st :=
-        if j < vars.size - t - 1 then
-          let (skj1, st) := seqCounterMkYvar (k, j + 1) st
-          (seqCounterEmit [-(skj : Int), (skj1 : Int)] st).2
-        else st
-      let (sk1j, st) := seqCounterMkYvar (k + 1, j) st
-      let st := (seqCounterEmit
-        [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st).2
-      seqCounterAtMostKLoop vars t j fuel (k + 1) st
+      seqCounterAtMostKLoop vars t j fuel (k + 1)
+        (seqCounterAtMostKStep vars t j k st)
 
-/-- One complete outer iteration at coordinate `j`. -/
-def seqCounterAtMostJStep (vars : Array Int) (t j : Nat)
+/-- Allocate and emit the base clause at the start of outer iteration `j`. -/
+def seqCounterAtMostJPrefix (vars : Array Int) (j : Nat)
     (st : SeqCounterGenState) : SeqCounterGenState :=
   let (s0j, st) := seqCounterMkYvar (0, j) st
-  let st := (seqCounterEmit [-(vars.getD j 0), (s0j : Int)] st).2
-  let st := seqCounterAtMostKLoop vars t j (t - 1) 0 st
+  (seqCounterEmit [-(vars.getD j 0), (s0j : Int)] st).2
+
+/-- Emit the last horizontal clause, when present, and overflow clause at the
+end of outer iteration `j`. -/
+def seqCounterAtMostJFinish (vars : Array Int) (t j : Nat)
+    (st : SeqCounterGenState) : SeqCounterGenState :=
   let (stj, st) := seqCounterMkYvar (t - 1, j) st
   let st :=
     if j < vars.size - t - 1 then
@@ -67,6 +76,13 @@ def seqCounterAtMostJStep (vars : Array Int) (t j : Nat)
       (seqCounterEmit [-(stj : Int), (stj1 : Int)] st).2
     else st
   (seqCounterEmit [-(vars.getD (j + t) 0), -(stj : Int)] st).2
+
+/-- One complete outer iteration at coordinate `j`. -/
+def seqCounterAtMostJStep (vars : Array Int) (t j : Nat)
+    (st : SeqCounterGenState) : SeqCounterGenState :=
+  seqCounterAtMostJFinish vars t j <|
+    seqCounterAtMostKLoop vars t j (t - 1) 0 <|
+      seqCounterAtMostJPrefix vars j st
 
 /-- The outer `j=0,...,n-t-1` loop as structural recursion. -/
 def seqCounterAtMostJLoop (vars : Array Int) (t : Nat) :

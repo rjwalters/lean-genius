@@ -157,6 +157,142 @@ theorem seqCounterAllocationInvariant_emit
   · exact hinv.ids_nodup
   · exact hinv.id_bounds
 
+/-- One inner-loop iteration preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_kStep
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (t j k : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostKStep vars t j k st) := by
+  simp only [seqCounterAtMostKStep]
+  generalize h₁ : seqCounterMkYvar (k, j) st = out₁
+  rcases out₁ with ⟨skj, st₁⟩
+  have hinv₁ : SeqCounterAllocationInvariant initialTop st₁ := by
+    have h := seqCounterAllocationInvariant_mkYvar hinv (k, j)
+    rw [h₁] at h
+    exact h
+  by_cases hj : j < vars.size - t - 1
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (k, j + 1) st₁ = out₂
+    rcases out₂ with ⟨skj1, st₂⟩
+    have hinv₂ : SeqCounterAllocationInvariant initialTop st₂ := by
+      have h := seqCounterAllocationInvariant_mkYvar hinv₁ (k, j + 1)
+      rw [h₂] at h
+      exact h
+    let st₃ := (seqCounterEmit [-(skj : Int), (skj1 : Int)] st₂).2
+    have hinv₃ : SeqCounterAllocationInvariant initialTop st₃ :=
+      seqCounterAllocationInvariant_emit hinv₂ _
+    generalize h₄ : seqCounterMkYvar (k + 1, j) st₃ = out₄
+    rcases out₄ with ⟨sk1j, st₄⟩
+    have hinv₄ : SeqCounterAllocationInvariant initialTop st₄ := by
+      have h := seqCounterAllocationInvariant_mkYvar hinv₃ (k + 1, j)
+      rw [h₄] at h
+      exact h
+    exact seqCounterAllocationInvariant_emit hinv₄ _
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (k + 1, j) st₁ = out₂
+    rcases out₂ with ⟨sk1j, st₂⟩
+    have hinv₂ : SeqCounterAllocationInvariant initialTop st₂ := by
+      have h := seqCounterAllocationInvariant_mkYvar hinv₁ (k + 1, j)
+      rw [h₂] at h
+      exact h
+    exact seqCounterAllocationInvariant_emit hinv₂ _
+
+/-- The structurally recursive inner loop preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_kLoop
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (t j fuel k : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostKLoop vars t j fuel k st) := by
+  induction fuel generalizing k st with
+  | zero => exact hinv
+  | succ fuel ih =>
+      simp only [seqCounterAtMostKLoop]
+      apply ih
+      exact seqCounterAllocationInvariant_kStep hinv vars t j k
+
+/-- The base-clause prefix preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_jPrefix
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (j : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostJPrefix vars j st) := by
+  simp only [seqCounterAtMostJPrefix]
+  generalize h₁ : seqCounterMkYvar (0, j) st = out₁
+  rcases out₁ with ⟨s0j, st₁⟩
+  have hinv₁ : SeqCounterAllocationInvariant initialTop st₁ := by
+    have h := seqCounterAllocationInvariant_mkYvar hinv (0, j)
+    rw [h₁] at h
+    exact h
+  exact seqCounterAllocationInvariant_emit hinv₁ _
+
+/-- The terminal horizontal/overflow suffix preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_jFinish
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (t j : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostJFinish vars t j st) := by
+  simp only [seqCounterAtMostJFinish]
+  generalize h₁ : seqCounterMkYvar (t - 1, j) st = out₁
+  rcases out₁ with ⟨stj, st₁⟩
+  have hinv₁ : SeqCounterAllocationInvariant initialTop st₁ := by
+    have h := seqCounterAllocationInvariant_mkYvar hinv (t - 1, j)
+    rw [h₁] at h
+    exact h
+  by_cases hj : j < vars.size - t - 1
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (t - 1, j + 1) st₁ = out₂
+    rcases out₂ with ⟨stj1, st₂⟩
+    have hinv₂ : SeqCounterAllocationInvariant initialTop st₂ := by
+      have h := seqCounterAllocationInvariant_mkYvar hinv₁ (t - 1, j + 1)
+      rw [h₂] at h
+      exact h
+    let st₃ := (seqCounterEmit [-(stj : Int), (stj1 : Int)] st₂).2
+    have hinv₃ : SeqCounterAllocationInvariant initialTop st₃ :=
+      seqCounterAllocationInvariant_emit hinv₂ _
+    exact seqCounterAllocationInvariant_emit hinv₃ _
+  · simp only [hj, ↓reduceIte]
+    exact seqCounterAllocationInvariant_emit hinv₁ _
+
+/-- One outer-loop iteration preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_jStep
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (t j : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostJStep vars t j st) := by
+  apply seqCounterAllocationInvariant_jFinish
+  apply seqCounterAllocationInvariant_kLoop
+  exact seqCounterAllocationInvariant_jPrefix hinv vars j
+
+/-- The structurally recursive outer loop preserves allocation integrity. -/
+theorem seqCounterAllocationInvariant_jLoop
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (vars : Array Int) (t fuel j : Nat) :
+    SeqCounterAllocationInvariant initialTop
+      (seqCounterAtMostJLoop vars t fuel j st) := by
+  induction fuel generalizing j st with
+  | zero => exact hinv
+  | succ fuel ih =>
+      simp only [seqCounterAtMostJLoop]
+      apply ih
+      exact seqCounterAllocationInvariant_jStep hinv vars t j
+
+/-- The exact PySAT at-most generator always has a conflict-free allocation
+table above its supplied initial top. -/
+theorem seqCounterAtMostCore_allocationInvariant
+    (top : Nat) (vars : Array Int) (t : Nat) :
+    SeqCounterAllocationInvariant top (seqCounterAtMostCore top vars t) := by
+  unfold seqCounterAtMostCore
+  split
+  · apply seqCounterAllocationInvariant_jLoop
+    exact seqCounterAllocationInvariant_initial top
+  · exact seqCounterAllocationInvariant_initial top
+
 /-- Later generator states retain every earlier key-to-ID correspondence. -/
 def SeqCounterIdsExtend (before after : SeqCounterGenState) : Prop :=
   ∀ entry ∈ before.ids, entry ∈ after.ids
