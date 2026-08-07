@@ -105,6 +105,34 @@ theorem secondOrder_minimumLayer_allEqual_or_totalOrder_le
   · right
     simpa only [M] using hsmall
 
+/-- Away from the two genuine equal-cycle degrees, only the bounded
+minimum-sector branch of the universal dichotomy remains. -/
+theorem secondOrder_minimumLayer_totalOrder_le_of_degree_ne_four_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hd4 : d ≠ 4) (hd12 : d ≠ 12)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    (Finset.univ.filter
+      (fun c : (secondOrderDefectGraph G).ConnectedComponent ↦
+        c.supp.ncard = c₀.supp.ncard)).card * c₀.supp.ncard ≤
+      2 * d - 1 := by
+  rcases secondOrder_minimumLayer_allEqual_or_totalOrder_le
+      G hfree hd heven hmin hcard c₀ hc₀min with hall | hsmall
+  · rcases equalCycle_degree_eq_four_or_twelve
+      G hfree hd heven hmin hcard hall with h4 | h12
+    · exact (hd4 h4).elim
+    · exact (hd12 h12).elim
+  · exact hsmall
+
 end
 
 end Erdos85
