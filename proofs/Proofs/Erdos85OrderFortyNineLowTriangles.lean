@@ -85,6 +85,34 @@ theorem orderFortyNine_localNeighborhoodDegreeSum_pos_of_all_neighbors_low
       G hfree hcard hx hneigh
   omega
 
+/-- The antipodal degree of such a center is odd: its successor is twice the
+number of triangles through the center. -/
+theorem orderFortyNine_antipodalNeighbors_card_odd_of_all_neighbors_low
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 49) {x : V}
+    (hx : G.degree x = 7)
+    (hneigh : ∀ y, G.Adj x y → G.degree y = 7) :
+    Odd (antipodalNeighbors G x).card := by
+  have hexact :=
+    orderFortyNine_external_add_one_eq_localNeighborhoodDegreeSum_of_all_neighbors_low
+      G hfree hcard hx hneigh
+  have hmap : (antipodalNeighbors G x).card =
+      (externalRepairCandidates G x).card := by
+    simp [antipodalNeighbors]
+  have hhand :
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+        (G.induce (G.neighborSet x)).degree y) =
+        2 * (G.induce (G.neighborSet x)).edgeFinset.card :=
+    SimpleGraph.sum_degrees_eq_twice_card_edges
+      (G.induce (G.neighborSet x))
+  rw [← hmap, hhand] at hexact
+  refine ⟨(G.induce (G.neighborSet x)).edgeFinset.card - 1, ?_⟩
+  have hpos : 0 < (G.induce (G.neighborSet x)).edgeFinset.card := by
+    omega
+  omega
+
 /-- A low vertex with no high neighbor belongs to a triangle all three of
 whose vertices are low. -/
 theorem orderFortyNine_exists_allLow_triangle_of_highNeighborCount_zero
