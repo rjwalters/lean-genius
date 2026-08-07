@@ -327,6 +327,125 @@ theorem seqCounterIdsExtend_preserves_mem {before after : SeqCounterGenState}
     (hentry : entry ∈ before.ids) : entry ∈ after.ids :=
   hext entry hentry
 
+theorem seqCounterIdsExtend_kStep (vars : Array Int) (t j k : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostKStep vars t j k st) := by
+  simp only [seqCounterAtMostKStep]
+  generalize h₁ : seqCounterMkYvar (k, j) st = out₁
+  rcases out₁ with ⟨skj, st₁⟩
+  have hext₁ : SeqCounterIdsExtend st st₁ := by
+    have h := seqCounterIdsExtend_mkYvar (k, j) st
+    rw [h₁] at h
+    exact h
+  by_cases hj : j < vars.size - t - 1
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (k, j + 1) st₁ = out₂
+    rcases out₂ with ⟨skj1, st₂⟩
+    have hext₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (k, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    let st₃ := (seqCounterEmit [-(skj : Int), (skj1 : Int)] st₂).2
+    have hext₃ : SeqCounterIdsExtend st₂ st₃ :=
+      seqCounterIdsExtend_emit _ st₂
+    generalize h₄ : seqCounterMkYvar (k + 1, j) st₃ = out₄
+    rcases out₄ with ⟨sk1j, st₄⟩
+    have hext₄ : SeqCounterIdsExtend st₃ st₄ := by
+      have h := seqCounterIdsExtend_mkYvar (k + 1, j) st₃
+      rw [h₄] at h
+      exact h
+    have hext₅ : SeqCounterIdsExtend st₄
+        (seqCounterEmit
+          [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st₄).2 :=
+      seqCounterIdsExtend_emit _ st₄
+    exact hext₁.trans (hext₂.trans (hext₃.trans (hext₄.trans hext₅)))
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (k + 1, j) st₁ = out₂
+    rcases out₂ with ⟨sk1j, st₂⟩
+    have hext₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (k + 1, j) st₁
+      rw [h₂] at h
+      exact h
+    have hext₃ : SeqCounterIdsExtend st₂
+        (seqCounterEmit
+          [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)] st₂).2 :=
+      seqCounterIdsExtend_emit _ st₂
+    exact hext₁.trans (hext₂.trans hext₃)
+
+theorem seqCounterIdsExtend_kLoop (vars : Array Int) (t j fuel k : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostKLoop vars t j fuel k st) := by
+  induction fuel generalizing k st with
+  | zero => exact SeqCounterIdsExtend.refl st
+  | succ fuel ih =>
+      simp only [seqCounterAtMostKLoop]
+      exact (seqCounterIdsExtend_kStep vars t j k st).trans (ih _ _)
+
+theorem seqCounterIdsExtend_jPrefix (vars : Array Int) (j : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostJPrefix vars j st) := by
+  simp only [seqCounterAtMostJPrefix]
+  generalize h₁ : seqCounterMkYvar (0, j) st = out₁
+  rcases out₁ with ⟨s0j, st₁⟩
+  have hext₁ : SeqCounterIdsExtend st st₁ := by
+    have h := seqCounterIdsExtend_mkYvar (0, j) st
+    rw [h₁] at h
+    exact h
+  exact hext₁.trans (seqCounterIdsExtend_emit _ st₁)
+
+theorem seqCounterIdsExtend_jFinish (vars : Array Int) (t j : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostJFinish vars t j st) := by
+  simp only [seqCounterAtMostJFinish]
+  generalize h₁ : seqCounterMkYvar (t - 1, j) st = out₁
+  rcases out₁ with ⟨stj, st₁⟩
+  have hext₁ : SeqCounterIdsExtend st st₁ := by
+    have h := seqCounterIdsExtend_mkYvar (t - 1, j) st
+    rw [h₁] at h
+    exact h
+  by_cases hj : j < vars.size - t - 1
+  · simp only [hj, ↓reduceIte]
+    generalize h₂ : seqCounterMkYvar (t - 1, j + 1) st₁ = out₂
+    rcases out₂ with ⟨stj1, st₂⟩
+    have hext₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (t - 1, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    let st₃ := (seqCounterEmit [-(stj : Int), (stj1 : Int)] st₂).2
+    have hext₃ : SeqCounterIdsExtend st₂ st₃ :=
+      seqCounterIdsExtend_emit _ st₂
+    have hext₄ : SeqCounterIdsExtend st₃
+        (seqCounterEmit [-(vars.getD (j + t) 0), -(stj : Int)] st₃).2 :=
+      seqCounterIdsExtend_emit _ st₃
+    exact hext₁.trans (hext₂.trans (hext₃.trans hext₄))
+  · simp only [hj, ↓reduceIte]
+    exact hext₁.trans (seqCounterIdsExtend_emit _ st₁)
+
+theorem seqCounterIdsExtend_jStep (vars : Array Int) (t j : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostJStep vars t j st) := by
+  exact (seqCounterIdsExtend_jPrefix vars j st).trans <|
+    (seqCounterIdsExtend_kLoop vars t j (t - 1) 0 _).trans <|
+      seqCounterIdsExtend_jFinish vars t j _
+
+theorem seqCounterIdsExtend_jLoop (vars : Array Int) (t fuel j : Nat)
+    (st : SeqCounterGenState) :
+    SeqCounterIdsExtend st (seqCounterAtMostJLoop vars t fuel j st) := by
+  induction fuel generalizing j st with
+  | zero => exact SeqCounterIdsExtend.refl st
+  | succ fuel ih =>
+      simp only [seqCounterAtMostJLoop]
+      exact (seqCounterIdsExtend_jStep vars t j st).trans (ih _ _)
+
+theorem seqCounterAtMostCore_idsExtend
+    (top : Nat) (vars : Array Int) (t : Nat) :
+    SeqCounterIdsExtend ({ top := top } : SeqCounterGenState)
+      (seqCounterAtMostCore top vars t) := by
+  unfold seqCounterAtMostCore
+  split
+  · exact seqCounterIdsExtend_jLoop vars t (vars.size - t) 0 _
+  · exact SeqCounterIdsExtend.refl _
+
 /-- Later generator states retain every clause emitted by earlier states. -/
 def SeqCounterClausesExtend (before after : SeqCounterGenState) : Prop :=
   ∀ clause ∈ before.clauses, clause ∈ after.clauses
