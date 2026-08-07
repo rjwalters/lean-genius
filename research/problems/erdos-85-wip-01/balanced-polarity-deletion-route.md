@@ -118,6 +118,58 @@ width.  It does, however, put all possible cores on the same scale as the
 Moore/defect identities and may make a uniform slack or packing contradiction
 possible.
 
+## Stronger near-diagonal parameter choice
+
+The constant-factor choice `q ≈ 2d` is robust but far from optimal.  The
+probabilistic estimate predicts a retained-order threshold
+
+\[
+  n_0 = dq + O\!\left(q\sqrt{d\log q}\right).
+\]
+
+Consequently one should take `q` as close to `d` as the concentration slack
+and the availability of prime powers allow.  Write `q = d + g`.  Provided
+`g` dominates `sqrt(d log d)`, the deletion budget `q-d=g` still leaves room
+for a union-bound construction, while
+
+\[
+  n_0 = d^2 + dg + O\!\left(d^{3/2}\sqrt{\log d}
+                    + g\sqrt{d\log d}\right).
+\]
+
+A quantitative prime-gap theorem of the form
+
+\[
+  q-d = O(d^\theta), \qquad \tfrac12 < \theta < 1,
+\]
+
+would therefore give
+
+\[
+  n_0 = d^2 + O(d^{1+\theta}).
+\]
+
+For example, the classical exponent `θ = 0.525` would reduce the possible
+plateau-core window to
+
+\[
+  d(d-1)+3 \le m < d^2 + O(d^{1.525}),
+\]
+
+up to logarithmic and absolute-point bookkeeping terms.  This is much
+stronger than a bare `O(d²)` localization: the unresolved width becomes
+subquadratic.  It is also exactly the regime in which the Moore identity has
+small total degree defect relative to the ambient order, so a stability or
+PSD-slack argument becomes substantially more plausible.
+
+This observation depends on two inputs that must not be conflated:
+
+1. a sufficiently close prime or prime power `q ≥ d`, and
+2. enough surplus `q-d` to absorb the simultaneous neighborhood-loss tail.
+
+The optimal choice is therefore the first available `q` above
+`d + C sqrt(d log d)`, not simply the first `q ≥ d`.
+
 ## Required checks
 
 1. Choose the exact polarity witness (regular looped model, simple graph after
