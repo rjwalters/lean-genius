@@ -101,6 +101,52 @@ theorem secondOrder_square_minimum_exists_large_equalSize_entry
   rw [hpEqInt, hdEqInt] at hsumLe
   nlinarith
 
+/-- The dense block is either a distinct equal-size block, or the minimum
+coefficient is exactly one and the diagonal quotient is exactly two. -/
+theorem secondOrder_square_minimum_unitDiagonal_or_distinct_dense
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d p s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hp : p.Prime) (hdEq : d = s * s + 3) (hpEq : p = d + s)
+    (hall : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      p ∣ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard) :
+    (c.supp.ncard / p = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) ∨
+      ∃ e : (secondOrderDefectGraph G).ConnectedComponent, e ≠ c ∧
+        e.supp.ncard = c.supp.ncard ∧
+          c.supp.ncard / p + 1 ≤
+            componentQuotientMatrix G (secondOrderDefectGraph G) c e := by
+  obtain ⟨e, heSize, heLarge⟩ :=
+    secondOrder_square_minimum_exists_large_equalSize_entry
+      G hfree hd heven hmin hcard hp hdEq hpEq hall c hcmin
+  by_cases hec : e = c
+  · subst e
+    left
+    have hcOdd := secondOrder_minimumComponent_order_odd
+      G hfree hd heven hmin hcard c hcmin
+    obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+      exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+    letI : NeZero c.supp.ncard :=
+      ⟨Nat.ne_of_gt (by have := hthree c; omega)⟩
+    have hdiag := secondOrder_equalOddCycleComponent_diagonal_le_two
+      G hfree hd heven hmin hcard (hthree c) hcOdd c
+        (u c) (hu c) (huRange c) (huD c)
+    have haPos : 0 < c.supp.ncard / p := by
+      have hcPos := c.nonempty_supp.ncard_pos
+      exact Nat.div_pos (Nat.le_of_dvd hcPos (hall c)) hp.pos
+    omega
+  · right
+    exact ⟨e, hec, heSize, heLarge⟩
+
 end
 
 end Erdos85
