@@ -7,10 +7,11 @@ import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import { BadgeFilter } from '@/components/ui/proof-badge'
 import { GalleryCard } from '@/components/proof'
+import { LoadMore } from '@/components/ui/load-more'
 import { groupListings } from '@/lib/oq-group'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
 import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
@@ -144,6 +145,9 @@ export function HomePage() {
   // (issue #39826). Grouping is derived purely from slugs and preserves the
   // sorted order of the group headers.
   const groups = useMemo(() => groupListings(proofs), [proofs])
+
+  // Mount the grid in batches rather than all ~1,600 cards at once.
+  const { visible: visibleGroups, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(groups)
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -449,10 +453,18 @@ export function HomePage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => (
+          {visibleGroups.map((group) => (
             <GalleryCard key={group.rootSlug} group={group} />
           ))}
         </div>
+        {hasMore && (
+          <LoadMore
+            sentinelRef={sentinelRef}
+            remaining={remaining}
+            onShowAll={showAll}
+            noun="proofs"
+          />
+        )}
 
         {/* Empty state when filters result in no proofs */}
         {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly) && (

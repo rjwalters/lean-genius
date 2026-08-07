@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   BookOpen,
@@ -113,8 +113,13 @@ function DescendantRow({
  * - Groups with descendants add a collapsible rollup footer: a summary line
  *   ("N sub-results (…)") and, when expanded, the nested descendant tree. Every
  *   descendant remains individually linkable via `/proof/:slug`.
+ *
+ * Memoized: the gallery page re-renders on unrelated state (filter panel
+ * toggle, "Copied!" flash) and would otherwise rebuild every card's element
+ * tree each time. `group` keeps its identity across those renders because
+ * `groupListings` only re-runs when the filtered list actually changes.
  */
-export function GalleryCard({ group }: { group: ProofGroup }) {
+export const GalleryCard = memo(function GalleryCard({ group }: { group: ProofGroup }) {
   const { header, descendants, summary } = group
   const [expanded, setExpanded] = useState(false)
   const hasDescendants = descendants.length > 0
@@ -212,4 +217,4 @@ export function GalleryCard({ group }: { group: ProofGroup }) {
       )}
     </div>
   )
-}
+})

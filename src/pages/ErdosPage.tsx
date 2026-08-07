@@ -5,10 +5,12 @@ import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
-import { ProofBadge, ErdosBadge, MathlibIndicator, BadgeFilter } from '@/components/ui/proof-badge'
+import { BadgeFilter } from '@/components/ui/proof-badge'
 import { BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
-import { ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calendar, Trophy } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calendar, Trophy } from 'lucide-react'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
+import { ErdosGalleryCard } from '@/components/proof'
+import { LoadMore } from '@/components/ui/load-more'
 import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
@@ -131,6 +133,9 @@ export function ErdosPage() {
       }
     })
   }, [erdosListings, haystacks, sortKeys, searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
+
+  // Mount the grid in batches rather than all ~1,600 cards at once.
+  const { visible: visibleProofs, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(erdosProofs)
 
   // Compute statistics
   const stats = useMemo(() => ({
@@ -422,66 +427,18 @@ export function ErdosPage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {erdosProofs.map((listing) => (
-            <Link
-              key={listing.slug}
-              to={`/proof/${listing.slug}`}
-              className="group block bg-card border border-border rounded-xl p-6 hover:border-annotation/50 hover:bg-card/80 transition-all"
-            >
-              {/* Badge row */}
-              <div className="flex items-start justify-between mb-4">
-                <ProofBadge badge={listing.badge} />
-                <StatusBadge status={listing.status} />
-              </div>
-
-              <div className="flex items-start gap-3 mb-3">
-                <ErdosBadge number={listing.erdosNumber} size="md" />
-                <h3 className="text-lg font-semibold group-hover:text-annotation transition-colors pt-1">
-                  {listing.title}
-                </h3>
-              </div>
-
-              {/* Date */}
-              {listing.dateAdded && (
-                <p className="text-xs text-muted-foreground mb-2">
-                  {listing.dateAdded}
-                </p>
-              )}
-
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-5">
-                {listing.description}
-              </p>
-
-              {/* Mathlib dependency indicator */}
-              <MathlibIndicator
-                dependencyCount={listing.mathlibCount}
-                sorries={listing.sorries}
-                className="mb-4"
-              />
-
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex flex-wrap gap-2">
-                  {listing.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  {listing.annotationCount} annotations
-                </span>
-              </div>
-
-              <div className="mt-4 flex items-center text-sm text-annotation opacity-0 group-hover:opacity-100 transition-opacity">
-                <span>Explore proof</span>
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </div>
-            </Link>
+          {visibleProofs.map((listing) => (
+            <ErdosGalleryCard key={listing.slug} listing={listing} />
           ))}
         </div>
+        {hasMore && (
+          <LoadMore
+            sentinelRef={sentinelRef}
+            remaining={remaining}
+            onShowAll={showAll}
+            noun="problems"
+          />
+        )}
 
         {/* Empty state */}
         {erdosProofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showAiSolvedOnly) && (
@@ -530,45 +487,6 @@ export function ErdosPage() {
 
       <Footer />
     </div>
-  )
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { icon: typeof CheckCircle; className: string; label: string }> = {
-    verified: {
-      icon: CheckCircle,
-      className: 'bg-green-500/20 text-green-400',
-      label: 'Verified',
-    },
-    pending: {
-      icon: Clock,
-      className: 'bg-yellow-500/20 text-yellow-400',
-      label: 'Pending',
-    },
-    disputed: {
-      icon: AlertCircle,
-      className: 'bg-red-500/20 text-red-400',
-      label: 'Disputed',
-    },
-    axiomatized: {
-      icon: AlertCircle,
-      className: 'bg-purple-500/20 text-purple-400',
-      label: 'Axiomatized',
-    },
-    revised: {
-      icon: Clock,
-      className: 'bg-blue-500/20 text-blue-400',
-      label: 'Revised',
-    },
-  }
-
-  const { icon: Icon, className, label } = config[status] || config.pending
-
-  return (
-    <span className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${className}`}>
-      <Icon className="h-3 w-3" />
-      {label}
-    </span>
   )
 }
 

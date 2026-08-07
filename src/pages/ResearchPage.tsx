@@ -8,7 +8,8 @@ import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
+import { LoadMore } from '@/components/ui/load-more'
 import { buildHaystacks, compareTitles } from '@/lib/gallery-search'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
@@ -139,6 +140,9 @@ export function ResearchPage() {
       }
     })
   }, [researchListings, haystacks, sortKeys, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
+
+  // Mount the grid in batches rather than every card at once.
+  const { visible: visibleProblems, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(problems)
 
   const handlePhaseToggle = (phase: ResearchPhase) => {
     setSelectedPhases((prev) =>
@@ -462,10 +466,18 @@ export function ResearchPage() {
 
         {/* Problem Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {problems.map((problem) => (
+          {visibleProblems.map((problem) => (
             <ResearchCard key={problem.slug} problem={problem} />
           ))}
         </div>
+        {hasMore && (
+          <LoadMore
+            sentinelRef={sentinelRef}
+            remaining={remaining}
+            onShowAll={showAll}
+            noun="problems"
+          />
+        )}
 
         {/* Empty state */}
         {problems.length === 0 && hasFilters && (
