@@ -1212,4 +1212,71 @@ theorem seqCounterAtMostCore_formulaSatisfied
     · exact dimacsFormulaSatisfied_empty _
   next _ => exact dimacsFormulaSatisfied_empty _
 
+/-! ## Complement and at-least blocks -/
+
+/-- Boolean complement transported to the index type of the mapped negative
+literal array. -/
+def seqCounterMappedNegRow (vars : Array Int) (x : Fin vars.size → Bool) :
+    Fin (vars.map fun v => -v).size → Bool := fun i =>
+  !x ⟨i.val, by simpa using i.isLt⟩
+
+theorem seqCounterInputReifies_map_neg
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x) :
+    SeqCounterInputReifies inputVal top (vars.map fun v => -v)
+      (seqCounterMappedNegRow vars x) := by
+  constructor
+  · rfl
+  · intro i hi
+    have hi' : i < vars.size := by simpa using hi
+    have hn := hinput.nonzero i hi'
+    simp [Array.getD, hi'] at hn
+    simpa [Array.getD, hi'] using hn
+  · intro i hi
+    have hi' : i < vars.size := by simpa using hi
+    have hb := hinput.bounded i hi'
+    simp [Array.getD, hi'] at hb
+    simpa [Array.getD, hi', Int.natAbs_neg] using hb
+  · intro i hi
+    have hi' : i < vars.size := by simpa using hi
+    have hn := hinput.nonzero i hi'
+    have hv := hinput.value i hi'
+    simp [Array.getD, hi'] at hn hv ⊢
+    rw [dimacsLitValue_neg inputVal hn, hv]
+    rfl
+
+theorem seqPrefixTrue_mappedNeg_add (vars : Array Int)
+    (x : Fin vars.size → Bool) :
+    seqPrefixTrue x vars.size +
+      seqPrefixTrue (seqCounterMappedNegRow vars x)
+        (vars.map fun v => -v).size = vars.size := by
+  convert seqPrefixTrue_neg_add x using 1
+  congr 1
+  simp only [Array.size_map]
+  unfold seqPrefixTrue
+  congr 1
+  ext i
+  simp [seqCounterMappedNegRow, seqNeg]
+
+/-- Soundness of PySAT's at-least block, obtained exactly as PySAT does:
+negate the input literals and invoke the at-most core at bound `n-t`. -/
+theorem seqCounterAtLeastCore_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hlower : t ≤ seqPrefixTrue x vars.size) :
+    let negRow := seqCounterMappedNegRow vars x
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal top negRow
+        (seqCounterAtLeastCore top vars t).ids)
+      (seqCounterAtLeastCore top vars t).clauses := by
+  dsimp only
+  unfold seqCounterAtLeastCore
+  apply seqCounterAtMostCore_formulaSatisfied inputVal top
+    (vars.map fun v => -v) (seqCounterMappedNegRow vars x)
+    (seqCounterInputReifies_map_neg inputVal top vars x hinput)
+  have hsum := seqPrefixTrue_mappedNeg_add vars x
+  omega
+
 end Erdos85
