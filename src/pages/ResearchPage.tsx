@@ -9,6 +9,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { buildHaystacks, compareTitles } from '@/lib/gallery-search'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
   FlaskConical,
@@ -28,8 +29,11 @@ export function ResearchPage() {
   // Listings are fetched at runtime rather than bundled (issue #35117).
   const { data: researchListings, error: listingsError } = useFetchedData(getResearchListings)
 
-  // URL-synced state
-  const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+  // URL-synced state. `searchInput` tracks every keystroke and drives the text
+  // box; `searchQuery` is the debounced value and is what the (expensive)
+  // filter/sort pipeline and the search-index fetch key off, so typing does not
+  // re-filter the whole list on every character.
+  const [searchInput, setSearchInput, searchQuery] = useDebouncedUrlState('q', '', serializers.string)
 
   // Full-text search index (issue #35117): fetched lazily only once the user
   // searches, so first paint never pays for it. Restores description search
@@ -61,24 +65,40 @@ export function ResearchPage() {
   const [showFilters, setShowFilters] = useState(false)
   const filterPanelId = 'research-gallery-filters'
 
+  // Pre-lowercased searchable text per slug, rebuilt only when the listings or
+  // the search index change — not on every keystroke. Description matching
+  // consults the full-text search index (issue #35117) when available so
+  // matches past the 140-char listing excerpt still surface; the truncated
+  // problem.description is the fallback while the index loads or for entries
+  // absent from it.
+  const haystacks = useMemo(
+    () => buildHaystacks(researchListings ?? [], (problem) => [
+      problem.title,
+      searchIndex?.[problem.slug] ?? problem.description,
+      ...(problem.tags ?? []),
+    ]),
+    [researchListings, searchIndex]
+  )
+
+  // Numeric date keys so the comparators below never parse dates.
+  const sortKeys = useMemo(() => {
+    const keys = new Map<string, { started: number; activity: number }>()
+    for (const problem of researchListings ?? []) {
+      const started = new Date(problem.started).getTime() || 0
+      // `activity` falls back to `started` when the entry has no lastUpdate.
+      const activity = problem.lastUpdate ? new Date(problem.lastUpdate).getTime() || started : started
+      keys.set(problem.slug, { started, activity })
+    }
+    return keys
+  }, [researchListings])
+
   // Filter and sort problems
   const problems = useMemo(() => {
     let filtered: ResearchListing[] = [...(researchListings ?? [])]
 
-    // Filter by search query. Description matching consults the full-text
-    // search index (issue #35117) when available so matches past the 140-char
-    // listing excerpt still surface; the truncated problem.description is the
-    // fallback while the index loads or for entries absent from it.
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter((problem) => {
-        const fullDescription = searchIndex?.[problem.slug]
-        return (
-          problem.title.toLowerCase().includes(query) ||
-          (fullDescription ?? problem.description.toLowerCase()).includes(query) ||
-          (problem.tags ?? []).some(tag => tag.toLowerCase().includes(query))
-        )
-      })
+      filtered = filtered.filter((problem) => haystacks.get(problem.slug)?.includes(query))
     }
 
     // Filter by phase
@@ -102,25 +122,23 @@ export function ResearchPage() {
       )
     }
 
-    // Sort problems
+    // Sort problems (date keys precomputed in `sortKeys`).
+    const keyFor = (slug: string) => sortKeys.get(slug) ?? { started: 0, activity: 0 }
     return filtered.sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return new Date(b.started).getTime() - new Date(a.started).getTime()
-        case 'activity': {
-          const aUpdate = a.lastUpdate || a.started
-          const bUpdate = b.lastUpdate || b.started
-          return new Date(bUpdate).getTime() - new Date(aUpdate).getTime()
-        }
+          return keyFor(b.slug).started - keyFor(a.slug).started
+        case 'activity':
+          return keyFor(b.slug).activity - keyFor(a.slug).activity
         case 'significance':
           return (b.significance || 0) - (a.significance || 0)
         case 'alphabetical':
-          return a.title.localeCompare(b.title)
+          return compareTitles(a.title, b.title)
         default:
           return 0
       }
     })
-  }, [researchListings, searchIndex, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
+  }, [researchListings, haystacks, sortKeys, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
 
   const handlePhaseToggle = (phase: ResearchPhase) => {
     setSelectedPhases((prev) =>
@@ -144,7 +162,7 @@ export function ResearchPage() {
     setSelectedPhases([])
     setSelectedTiers([])
     setSelectedStatus([])
-    setSearchQuery('')
+    setSearchInput('')
   }
 
   const hasFilters = selectedPhases.length > 0 || selectedTiers.length > 0 || selectedStatus.length > 0 || searchQuery.trim()
@@ -291,8 +309,8 @@ export function ResearchPage() {
               <input
                 type="text"
                 placeholder="Search problems..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-full sm:w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
               />
             </div>

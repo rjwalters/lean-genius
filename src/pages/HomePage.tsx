@@ -11,16 +11,10 @@ import { groupListings } from '@/lib/oq-group'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'updated'
-
-// Parse MM/DD/YY to Date object
-function parseDateAdded(dateStr?: string): Date {
-  if (!dateStr) return new Date(0)
-  const [month, day, year] = dateStr.split('/').map(Number)
-  return new Date(2000 + year, month - 1, day)
-}
 
 export function HomePage() {
   const { isAuthenticated } = useAuth()
@@ -35,8 +29,11 @@ export function HomePage() {
     if (proof) navigate(`/proof/${proof.slug}`)
   }, [navigate, listings])
 
-  // URL-synced state
-  const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+  // URL-synced state. `searchInput` tracks every keystroke and drives the text
+  // box; `searchQuery` is the debounced value and is what the (expensive)
+  // filter/sort/group pipeline and the search-index fetch key off, so typing
+  // does not re-filter the whole gallery on every character.
+  const [searchInput, setSearchInput, searchQuery] = useDebouncedUrlState('q', '', serializers.string)
 
   // Full-text search index (issue #35117): fetched lazily only once the user
   // searches, so first paint never pays for it. Restores description search
@@ -62,24 +59,31 @@ export function HomePage() {
   const [showFilters, setShowFilters] = useState(false)
   const filterPanelId = 'proof-gallery-filters'
 
+  // Pre-lowercased searchable text per slug, rebuilt only when the listings or
+  // the search index change — not on every keystroke. Description matching
+  // consults the full-text search index (issue #35117) when available so
+  // matches past the 140-char listing excerpt still surface; the truncated
+  // listing.description is the fallback while the index loads or for entries
+  // absent from it.
+  const haystacks = useMemo(
+    () => buildHaystacks(listings ?? [], (listing) => [
+      listing.title,
+      searchIndex?.[listing.slug] ?? listing.description,
+      ...listing.tags,
+    ]),
+    [listings, searchIndex]
+  )
+
+  // Numeric date keys so the comparators below never parse dates.
+  const sortKeys = useMemo(() => buildSortKeys(listings ?? []), [listings])
+
   // Filter and sort proofs
   const proofs = useMemo(() => {
     let filtered: ProofListing[] = listings ?? []
 
-    // Filter by search query. Description matching consults the full-text
-    // search index (issue #35117) when available so matches past the 140-char
-    // listing excerpt still surface; the truncated listing.description is the
-    // fallback while the index loads or for entries absent from it.
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter((listing) => {
-        const fullDescription = searchIndex?.[listing.slug]
-        return (
-          listing.title.toLowerCase().includes(query) ||
-          (fullDescription ?? listing.description.toLowerCase()).includes(query) ||
-          listing.tags.some(tag => tag.toLowerCase().includes(query))
-        )
-      })
+      filtered = filtered.filter((listing) => haystacks.get(listing.slug)?.includes(query))
     }
 
     // Filter by badge type
@@ -117,28 +121,23 @@ export function HomePage() {
       )
     }
 
-    // Sort proofs
+    // Sort proofs (keys precomputed in `sortKeys`; `updated` already falls back
+    // to dateAdded so the list stays stable on pre-rebuild data).
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return parseDateAdded(b.dateAdded).getTime() - parseDateAdded(a.dateAdded).getTime()
+          return sortKeysFor(sortKeys, b.slug).added - sortKeysFor(sortKeys, a.slug).added
         case 'oldest':
-          return parseDateAdded(a.dateAdded).getTime() - parseDateAdded(b.dateAdded).getTime()
+          return sortKeysFor(sortKeys, a.slug).added - sortKeysFor(sortKeys, b.slug).added
         case 'alphabetical':
-          return a.title.localeCompare(b.title)
-        case 'updated': {
-          // Sort by git-derived updatedAt (ISO) descending. Fall back to
-          // dateAdded for any entry missing the field so the list stays
-          // stable on pre-rebuild data.
-          const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : parseDateAdded(a.dateAdded).getTime()
-          const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : parseDateAdded(b.dateAdded).getTime()
-          return bUpdated - aUpdated
-        }
+          return compareTitles(a.title, b.title)
+        case 'updated':
+          return sortKeysFor(sortKeys, b.slug).updated - sortKeysFor(sortKeys, a.slug).updated
         default:
           return 0
       }
     })
-  }, [listings, searchIndex, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
+  }, [listings, haystacks, sortKeys, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
 
   // Group each problem's recursive OQ descendants under their root problem so a
   // family like erdos-396 renders as one rollup card instead of 15 flat cards
@@ -161,7 +160,7 @@ export function HomePage() {
     setShowHilbertOnly(false)
     setShowMillenniumOnly(false)
     setShowErdosOnly(false)
-    setSearchQuery('')
+    setSearchInput('')
   }
 
   const hasActiveFilters = searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly || sortBy !== 'newest'
@@ -266,8 +265,8 @@ export function HomePage() {
               <input
                 type="text"
                 placeholder="Search proofs..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-full sm:w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
               />
             </div>

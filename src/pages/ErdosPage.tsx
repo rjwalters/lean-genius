@@ -9,16 +9,10 @@ import { ProofBadge, ErdosBadge, MathlibIndicator, BadgeFilter } from '@/compone
 import { BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calendar, Trophy } from 'lucide-react'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
+import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'problem-number' | 'newest' | 'updated' | 'alphabetical'
-
-// Parse MM/DD/YY to Date object
-function parseDateAdded(dateStr?: string): Date {
-  if (!dateStr) return new Date(0)
-  const [month, day, year] = dateStr.split('/').map(Number)
-  return new Date(2000 + year, month - 1, day)
-}
 
 // AI Milestones - hardcoded historic events
 const AI_MILESTONES = [
@@ -44,8 +38,11 @@ export function ErdosPage() {
   // Listings are fetched at runtime rather than bundled (issue #35117).
   const { data: listings, error: listingsError } = useFetchedData(getListings)
 
-  // URL-synced state
-  const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+  // URL-synced state. `searchInput` tracks every keystroke and drives the text
+  // box; `searchQuery` is the debounced value and is what the (expensive)
+  // filter/sort pipeline and the search-index fetch key off, so typing does not
+  // re-filter the whole gallery on every character.
+  const [searchInput, setSearchInput, searchQuery] = useDebouncedUrlState('q', '', serializers.string)
 
   // Full-text search index (issue #35117): fetched lazily only once the user
   // searches, so first paint never pays for it. Restores description search
@@ -70,26 +67,39 @@ export function ErdosPage() {
   const filterPanelId = 'erdos-gallery-filters'
   const milestonesPanelId = 'erdos-ai-milestones'
 
+  // The Erdős subset is independent of the query/filters, so slice it once
+  // rather than re-scanning all ~4.8k listings on every filter change.
+  const erdosListings = useMemo(
+    () => (listings ?? []).filter(l => l.erdosNumber !== undefined),
+    [listings]
+  )
+
+  // Pre-lowercased searchable text per slug, rebuilt only when the listings or
+  // the search index change — not on every keystroke. Description matching
+  // consults the full-text search index (issue #35117) when available so
+  // matches past the 140-char listing excerpt still surface; the truncated
+  // listing.description is the fallback while the index loads or for entries
+  // absent from it.
+  const haystacks = useMemo(
+    () => buildHaystacks(erdosListings, (listing) => [
+      listing.title,
+      searchIndex?.[listing.slug] ?? listing.description,
+      ...listing.tags,
+      listing.erdosNumber,
+    ]),
+    [erdosListings, searchIndex]
+  )
+
+  // Numeric date keys so the comparators below never parse dates.
+  const sortKeys = useMemo(() => buildSortKeys(erdosListings), [erdosListings])
+
   // Filter to Erdős problems only, then apply additional filters
   const erdosProofs = useMemo(() => {
-    // Start with only Erdős problems
-    let filtered: ProofListing[] = (listings ?? []).filter(l => l.erdosNumber !== undefined)
+    let filtered: ProofListing[] = erdosListings
 
-    // Filter by search query. Description matching consults the full-text
-    // search index (issue #35117) when available so matches past the 140-char
-    // listing excerpt still surface; the truncated listing.description is the
-    // fallback while the index loads or for entries absent from it.
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter((listing) => {
-        const fullDescription = searchIndex?.[listing.slug]
-        return (
-          listing.title.toLowerCase().includes(query) ||
-          (fullDescription ?? listing.description.toLowerCase()).includes(query) ||
-          listing.tags.some(tag => tag.toLowerCase().includes(query)) ||
-          (listing.erdosNumber && listing.erdosNumber.toString().includes(query))
-        )
-      })
+      filtered = filtered.filter((listing) => haystacks.get(listing.slug)?.includes(query))
     }
 
     // Filter by badge type
@@ -104,40 +114,30 @@ export function ErdosPage() {
       filtered = filtered.filter((listing) => listing.badge === 'ai-solved')
     }
 
-    // Sort proofs
+    // Sort proofs (keys precomputed in `sortKeys`; `updated` already falls back
+    // to dateAdded so the list stays stable on pre-rebuild data).
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'problem-number':
           return (a.erdosNumber || 0) - (b.erdosNumber || 0)
         case 'newest':
-          return parseDateAdded(b.dateAdded).getTime() - parseDateAdded(a.dateAdded).getTime()
+          return sortKeysFor(sortKeys, b.slug).added - sortKeysFor(sortKeys, a.slug).added
         case 'alphabetical':
-          return a.title.localeCompare(b.title)
-        case 'updated': {
-          // Sort by git-derived updatedAt (ISO) descending. Fall back to
-          // dateAdded for any entry missing the field so the list stays
-          // stable on pre-rebuild data.
-          const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : parseDateAdded(a.dateAdded).getTime()
-          const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : parseDateAdded(b.dateAdded).getTime()
-          return bUpdated - aUpdated
-        }
+          return compareTitles(a.title, b.title)
+        case 'updated':
+          return sortKeysFor(sortKeys, b.slug).updated - sortKeysFor(sortKeys, a.slug).updated
         default:
           return 0
       }
     })
-  }, [listings, searchIndex, searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
+  }, [erdosListings, haystacks, sortKeys, searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
 
   // Compute statistics
-  const stats = useMemo(() => {
-    const all = (listings ?? []).filter(l => l.erdosNumber !== undefined)
-    const aiSolved = all.filter(l => l.badge === 'ai-solved')
-    const complete = all.filter(l => l.sorries === 0)
-    return {
-      total: all.length,
-      aiSolved: aiSolved.length,
-      complete: complete.length,
-    }
-  }, [listings])
+  const stats = useMemo(() => ({
+    total: erdosListings.length,
+    aiSolved: erdosListings.filter(l => l.badge === 'ai-solved').length,
+    complete: erdosListings.filter(l => l.sorries === 0).length,
+  }), [erdosListings])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -151,7 +151,7 @@ export function ErdosPage() {
   const clearFilters = () => {
     setSelectedBadges([])
     setShowAiSolvedOnly(false)
-    setSearchQuery('')
+    setSearchInput('')
   }
 
   const hasActiveFilters = searchQuery.trim() || selectedBadges.length > 0 || showAiSolvedOnly || sortBy !== 'problem-number'
@@ -328,8 +328,8 @@ export function ErdosPage() {
               <input
                 type="text"
                 placeholder="Search problems..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-full sm:w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
               />
             </div>
