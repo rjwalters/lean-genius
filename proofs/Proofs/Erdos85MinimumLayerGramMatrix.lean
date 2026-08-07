@@ -45,6 +45,79 @@ theorem componentQuotientMatrix_symm_of_ncard_eq
   have hpos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
   exact Nat.eq_of_mul_eq_mul_left hpos hbal
 
+/-- **Off-diagonal quotient entries are strictly below the target order.**
+If every vertex of one component were adjacent to all of another, any two
+vertices of each would form a four-cycle. -/
+theorem componentQuotientMatrix_lt_ncard_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c c' : (secondOrderDefectGraph G).ConnectedComponent) (hne : c ≠ c')
+    (hc2 : 2 ≤ c.supp.ncard) (hc'2 : 2 ≤ c'.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c' <
+      c'.supp.ncard := by
+  classical
+  have hreg : ∀ x : V, (secondOrderDefectGraph G).degree x = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree hd heven hmin hcard
+  have hsubset : ∀ x : V,
+      componentNeighborFinset G (secondOrderDefectGraph G) c' x ⊆
+        c'.supp.toFinset := by
+    intro x y hy
+    rw [Set.mem_toFinset]
+    rw [SimpleGraph.ConnectedComponent.mem_supp_iff]
+    exact (Finset.mem_filter.mp hy).2
+  have hle : componentQuotientMatrix G (secondOrderDefectGraph G) c c' ≤
+      c'.supp.ncard := by
+    rw [componentQuotientMatrix]
+    calc
+      (componentNeighborFinset G (secondOrderDefectGraph G) c'
+          (componentRepresentative (secondOrderDefectGraph G) c)).card ≤
+          c'.supp.toFinset.card :=
+        Finset.card_le_card (hsubset _)
+      _ = c'.supp.ncard := (Set.ncard_eq_toFinset_card' c'.supp).symm
+  rcases lt_or_eq_of_le hle with hlt | heq
+  · exact hlt
+  exfalso
+  -- Equality forces every vertex of `c` to see all of `c'`.
+  have hall : ∀ x ∈ c.supp, ∀ y ∈ c'.supp, G.Adj x y := by
+    intro x hx y hy
+    have hxcard : (componentNeighborFinset G (secondOrderDefectGraph G)
+        c' x).card = c'.supp.ncard := by
+      rw [← componentQuotientMatrix_apply_eq G (secondOrderDefectGraph G)
+        2 hreg hcomm c c' hx]
+      exact heq
+    have hfull : componentNeighborFinset G (secondOrderDefectGraph G)
+        c' x = c'.supp.toFinset := by
+      apply Finset.eq_of_subset_of_card_le (hsubset x)
+      rw [hxcard, Set.ncard_eq_toFinset_card' c'.supp]
+    have hymem : y ∈ componentNeighborFinset G
+        (secondOrderDefectGraph G) c' x := by
+      rw [hfull, Set.mem_toFinset]
+      exact hy
+    have := (Finset.mem_filter.mp hymem).1
+    exact (SimpleGraph.mem_neighborFinset G x y).mp this
+  -- Two vertices on each side give a four-cycle.
+  have hcfin : c.supp.toFinset.card = c.supp.ncard :=
+    (Set.ncard_eq_toFinset_card' c.supp).symm
+  have hc'fin : c'.supp.toFinset.card = c'.supp.ncard :=
+    (Set.ncard_eq_toFinset_card' c'.supp).symm
+  obtain ⟨x, hx, x', hx', hxx⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < c.supp.toFinset.card)
+  obtain ⟨y, hy, y', hy', hyy⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < c'.supp.toFinset.card)
+  rw [Set.mem_toFinset] at hx hx'
+  rw [Set.mem_toFinset] at hy hy' 
+  exact hfree (containsC4_of_two_common hxx hyy
+    (hall x hx y hy).symm (hall x' hx' y hy).symm
+    (hall x hx y' hy').symm (hall x' hx' y' hy').symm)
+
 /-- **The restricted Gram square is constant off the diagonal.**  For two
 distinct minimum-layer components, the minimum-layer product sum equals the
 minimum order. -/
