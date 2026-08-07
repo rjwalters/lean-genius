@@ -652,6 +652,171 @@ theorem orderFortyNine_exists_tableT4_row_of_intersecting_prefix
       OrderFortyNineWitnessTable.exists_tableT4_row_of_mem_rawT4 hraw'
     exact ⟨e, row, hrow, Or.inr hroweq⟩
 
+/-- L1 for the four-triple profile: four disjoint triples cannot fit on the
+nine high vertices, so an intersecting pair exists and the complete system is
+represented by a verified `tableT4` row. -/
+theorem orderFortyNine_exists_tableT4_row_of_tripleSupportCount_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    (hcount : orderFortyNineHighIncidenceCount G 3 = 4) :
+    ∃ x y z w : V,
+      let T := (orderFortyNineLowVertices G).filter fun u =>
+        (orderFortyNineHighSupport G u).card = 3
+      T = {x, y, z, w} ∧
+      ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9,
+        ∃ row ∈ OrderFortyNineWitnessTable.tableT4,
+          (row.1 =
+            [OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e x),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e y),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e z),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e w)] ∨
+           row.1 =
+            [OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e x),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e y),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e w),
+             OrderFortyNineWitnessTable.tripleDigits
+                (orderFortyNineLabeledHighSupport G e z)]) := by
+  let T := (orderFortyNineLowVertices G).filter fun u =>
+    (orderFortyNineHighSupport G u).card = 3
+  have hTcard : T.card = 4 := by
+    change orderFortyNineHighIncidenceCount G 3 = 4
+    exact hcount
+  rcases orderFortyNine_tripleSupports_intersecting_or_pairwise_disjoint G with
+    hinter | hdisjoint
+  · obtain ⟨x, hx, y, hy, hxy, hnonempty⟩ := hinter
+    have hxT : x ∈ T := hx
+    have hyT : y ∈ T := hy
+    have hx3 : (orderFortyNineHighSupport G x).card = 3 :=
+      (Finset.mem_filter.mp hxT).2
+    have hy3 : (orderFortyNineHighSupport G y).card = 3 :=
+      (Finset.mem_filter.mp hyT).2
+    have hxyLe := orderFortyNine_card_inter_highSupport_le_one G hfree hxy
+    have hxy1 : ((orderFortyNineHighSupport G x) ∩
+        orderFortyNineHighSupport G y).card = 1 := by
+      have hpos := Finset.card_pos.mpr hnonempty
+      omega
+    have hpairSub : ({x, y} : Finset V) ⊆ T := by
+      intro u hu
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hu
+      rcases hu with rfl | rfl
+      · exact hxT
+      · exact hyT
+    have hrestCard : (T \ {x, y}).card = 2 := by
+      rw [Finset.card_sdiff_of_subset hpairSub, hTcard]
+      simp [hxy]
+    obtain ⟨z, w, hzw, hrest⟩ := Finset.card_eq_two.mp hrestCard
+    have hzRest : z ∈ T \ {x, y} := by rw [hrest]; simp
+    have hwRest : w ∈ T \ {x, y} := by rw [hrest]; simp
+    have hzT := (Finset.mem_sdiff.mp hzRest).1
+    have hwT := (Finset.mem_sdiff.mp hwRest).1
+    have hz3 : (orderFortyNineHighSupport G z).card = 3 :=
+      (Finset.mem_filter.mp hzT).2
+    have hw3 : (orderFortyNineHighSupport G w).card = 3 :=
+      (Finset.mem_filter.mp hwT).2
+    have hzx : z ≠ x := by
+      intro h
+      exact (Finset.mem_sdiff.mp hzRest).2 (by simp [h])
+    have hzy : z ≠ y := by
+      intro h
+      exact (Finset.mem_sdiff.mp hzRest).2 (by simp [h])
+    have hwx : w ≠ x := by
+      intro h
+      exact (Finset.mem_sdiff.mp hwRest).2 (by simp [h])
+    have hwy : w ≠ y := by
+      intro h
+      exact (Finset.mem_sdiff.mp hwRest).2 (by simp [h])
+    have hxz := orderFortyNine_card_inter_highSupport_le_one G hfree hzx.symm
+    have hyz := orderFortyNine_card_inter_highSupport_le_one G hfree hzy.symm
+    have hxw := orderFortyNine_card_inter_highSupport_le_one G hfree hwx.symm
+    have hyw := orderFortyNine_card_inter_highSupport_le_one G hfree hwy.symm
+    have hzwLin := orderFortyNine_card_inter_highSupport_le_one G hfree hzw
+    obtain ⟨e, row, hrow, hroweq⟩ :=
+      orderFortyNine_exists_tableT4_row_of_intersecting_prefix
+        G hHigh hx3 hy3 hz3 hw3 hxy1 hxz hyz hxw hyw hzwLin
+    refine ⟨x, y, z, w, ?_, e, row, hrow, hroweq⟩
+    change T = {x, y, z, w}
+    have hunion := Finset.sdiff_union_of_subset hpairSub
+    rw [hrest] at hunion
+    rw [← hunion]
+    ext u
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  · obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, hT⟩ :=
+      Finset.card_eq_four.mp hTcard
+    have ha : a ∈ T := by rw [hT]; simp
+    have hb : b ∈ T := by rw [hT]; simp
+    have hc : c ∈ T := by rw [hT]; simp
+    have hd : d ∈ T := by rw [hT]; simp
+    let A := orderFortyNineHighSupport G a
+    let B := orderFortyNineHighSupport G b
+    let C := orderFortyNineHighSupport G c
+    let D := orderFortyNineHighSupport G d
+    have hA : A.card = 3 := (Finset.mem_filter.mp ha).2
+    have hB : B.card = 3 := (Finset.mem_filter.mp hb).2
+    have hC : C.card = 3 := (Finset.mem_filter.mp hc).2
+    have hD : D.card = 3 := (Finset.mem_filter.mp hd).2
+    have hAB0 := hdisjoint a ha b hb hab
+    have hAC0 := hdisjoint a ha c hc hac
+    have hAD0 := hdisjoint a ha d hd had
+    have hBC0 := hdisjoint b hb c hc hbc
+    have hBD0 := hdisjoint b hb d hd hbd
+    have hCD0 := hdisjoint c hc d hd hcd
+    have hAB : Disjoint A B := Finset.disjoint_iff_inter_eq_empty.mpr
+      (Finset.card_eq_zero.mp hAB0)
+    have hABC : Disjoint (A ∪ B) C := by
+      rw [Finset.disjoint_left]
+      intro u hu huc
+      rcases Finset.mem_union.mp hu with hua | hub
+      · have : u ∈ A ∩ C := Finset.mem_inter.mpr ⟨hua, huc⟩
+        have hempty : A ∩ C = ∅ := Finset.card_eq_zero.mp hAC0
+        rw [hempty] at this
+        simpa using this
+      · have : u ∈ B ∩ C := Finset.mem_inter.mpr ⟨hub, huc⟩
+        have hempty : B ∩ C = ∅ := Finset.card_eq_zero.mp hBC0
+        rw [hempty] at this
+        simpa using this
+    have hABCD : Disjoint (A ∪ B ∪ C) D := by
+      rw [Finset.disjoint_left]
+      intro u hu hud
+      rcases Finset.mem_union.mp hu with huab | huc
+      · rcases Finset.mem_union.mp huab with hua | hub
+        · have : u ∈ A ∩ D := Finset.mem_inter.mpr ⟨hua, hud⟩
+          have hempty : A ∩ D = ∅ := Finset.card_eq_zero.mp hAD0
+          rw [hempty] at this
+          simpa using this
+        · have : u ∈ B ∩ D := Finset.mem_inter.mpr ⟨hub, hud⟩
+          have hempty : B ∩ D = ∅ := Finset.card_eq_zero.mp hBD0
+          rw [hempty] at this
+          simpa using this
+      · have : u ∈ C ∩ D := Finset.mem_inter.mpr ⟨huc, hud⟩
+        have hempty : C ∩ D = ∅ := Finset.card_eq_zero.mp hCD0
+        rw [hempty] at this
+        simpa using this
+    have hUnionCard : (A ∪ B ∪ C ∪ D).card = 12 := by
+      rw [Finset.card_union_of_disjoint hABCD,
+        Finset.card_union_of_disjoint hABC,
+        Finset.card_union_of_disjoint hAB, hA, hB, hC, hD]
+    have hUnionSub : A ∪ B ∪ C ∪ D ⊆ orderFortyNineHighVertices G := by
+      intro u hu
+      simp only [Finset.mem_union] at hu
+      rcases hu with ((huA | huB) | huC) | huD
+      · exact (Finset.mem_inter.mp huA).2
+      · exact (Finset.mem_inter.mp huB).2
+      · exact (Finset.mem_inter.mp huC).2
+      · exact (Finset.mem_inter.mp huD).2
+    have := Finset.card_le_card hUnionSub
+    rw [hUnionCard, hHigh] at this
+    omega
+
 end
 
 end Erdos85
