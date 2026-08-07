@@ -96,6 +96,50 @@ theorem orderFortyNine_twice_tripleMultiplicity_add_one_le_highCount
   dsimp only at hp
   omega
 
+/-- **Universal global PBD profile.**  Put `nᵢ` for the number of low
+vertices with high-support size `i`, `h` for the number of highs, and
+`t = n₃`.  The three moment equations reduce to the following identities:
+
+* `2n₂ + 6t = h(h-1)` (pair coverage),
+* `n₁ = h(9-h) + 3t`,
+* `2n₀ = h² - 19h + 98 - 2t`.
+
+They are stated without truncated subtraction, so they remain convenient in
+all five possible high-count strata. -/
+theorem orderFortyNine_highIncidence_general_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    let H := orderFortyNineHighVertices G
+    let n := orderFortyNineHighIncidenceCount G
+    2 * n 2 + 6 * n 3 + H.card = H.card * H.card ∧
+      n 1 + H.card * H.card = 9 * H.card + 3 * n 3 ∧
+      2 * n 0 + 2 * n 3 + 19 * H.card =
+        H.card * H.card + 98 := by
+  dsimp only
+  let H := orderFortyNineHighVertices G
+  let n := orderFortyNineHighIncidenceCount G
+  change 2 * n 2 + 6 * n 3 + H.card = H.card * H.card ∧
+    n 1 + H.card * H.card = 9 * H.card + 3 * n 3 ∧
+    2 * n 0 + 2 * n 3 + 19 * H.card = H.card * H.card + 98
+  have hcensus := orderFortyNine_highIncidence_census
+    G hfree hmin hcard
+  change n 0 + n 1 + n 2 + n 3 = 49 - H.card ∧
+    n 1 + 2 * n 2 + 3 * n 3 = 8 * H.card ∧
+    n 1 + 4 * n 2 + 9 * n 3 = H.card * (H.card + 7) at hcensus
+  have hHle : H.card ≤ 9 := by
+    simpa [H] using orderFortyNine_card_high_le_nine G hfree hmin hcard
+  have hprod : H.card * (H.card + 7) =
+      H.card * H.card + 7 * H.card := by ring
+  rw [hprod] at hcensus
+  have htotal : n 0 + n 1 + n 2 + n 3 + H.card = 49 := by
+    omega
+  omega
+
 end
 
 end Erdos85
