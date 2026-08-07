@@ -175,6 +175,74 @@ theorem odd_antipodal_outside_five_defectClique_of_unmatched
   use k - 2
   omega
 
+/-- Graph-facing cross-antipode parity for an unmatched outer branch vertex
+in the unique-high order-49 sector. -/
+theorem orderFortyNine_odd_crossAntipodes_of_unmatched
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (x : {a : V // a ∈ secondLayer G v})
+    (hx : x.1 ∈ secondLayerBranch G v s)
+    (hxUnmatched :
+      (G.neighborFinset x.1 ∩ secondLayerBranch G v s).card = 0) :
+    Odd ((antipodalNeighbors (squareOrderOuterGraph G v) x) \
+      orderFortyNineOuterBranch G v s).card := by
+  let R := squareOrderOuterGraph G v
+  let C := orderFortyNineOuterBranch G v s
+  letI : DecidableRel (antipodalGraph R).Adj := Classical.decRel _
+  letI : DecidableRel (triangleFreeEdgeGraph R).Adj := Classical.decRel _
+  have hstructure := squareOrder_degree_succ_highRoot_structure
+    G hfree (by omega : 2 ≤ 7) hmin (by simpa using hcard) hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨t, _, hat⟩
+      exact ((Finset.mem_sdiff.mp hat).2 (by simp [hav])).elim
+  have hRreg : ∀ y, R.degree y = 6 := by
+    simpa [R] using squareOrderOuterGraph_regular
+      G hfree (by omega : 2 ≤ 7) (by simpa using hcard) hv
+        hstructure.2.1 hstructure.2.2 houterDegree
+  have hRcard : Fintype.card {a : V // a ∈ secondLayer G v} = 40 := by
+    simpa using orderFortyNine_card_secondLayer_degreeEight_eq_forty
+      G hfree hmin hcard hv
+  have hCcard : C.card = 5 := by
+    simpa [C] using card_orderFortyNineOuterBranch_eq_five
+      G hfree hmin hcard hv s
+  have hCclique : (secondOrderDefectGraph R).IsClique (C : Set _) := by
+    intro a ha b hb hab
+    exact orderFortyNine_outerDefect_adj_of_sameBranch G hfree s a b
+      (Finset.mem_filter.mp ha).2 (Finset.mem_filter.mp hb).2 hab
+  have hxC : x ∈ C := by
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩
+  have hxNoAdj : ∀ y ∈ C, ¬ R.Adj x y := by
+    intro y hyC hxy
+    have hxyG : G.Adj x.1 y.1 := hxy
+    have hyBranch : y.1 ∈ secondLayerBranch G v s :=
+      (Finset.mem_filter.mp hyC).2
+    have hymem : y.1 ∈
+        G.neighborFinset x.1 ∩ secondLayerBranch G v s :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x.1 y.1).mpr hxyG,
+        hyBranch⟩
+    have hempty := Finset.card_eq_zero.mp hxUnmatched
+    exact Finset.notMem_empty y.1 (hempty ▸ hymem)
+  have hAntiOdd : Odd (antipodalNeighbors R x).card :=
+    odd_antipodalDegree_of_sixRegular_orderForty
+      R (squareOrderOuterGraph_not_containsC4 G hfree) hRreg hRcard x
+  simpa [R, C] using
+    odd_antipodal_outside_five_defectClique_of_unmatched
+      R C hCcard hCclique x hxC hxNoAdj hAntiOdd
+
 /-- A six-regular `C₄`-free graph of order forty in which every edge is
 triangle-free has no five-vertex clique in its second-order defect graph. -/
 theorem no_five_secondOrderDefect_clique_of_all_edges_triangleFree
