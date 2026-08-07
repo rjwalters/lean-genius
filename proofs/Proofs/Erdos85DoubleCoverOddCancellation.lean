@@ -1,4 +1,5 @@
 import Proofs.Erdos85SquareMinimumDoubleCoverEscape
+import Proofs.Erdos85CoverAdmissibleFiberParity
 
 /-!
 # Deck-odd cancellation for the mass-two double cover
@@ -80,6 +81,54 @@ theorem cycleCover_indicator_mulVec_deckOdd_eq_zero
     ∑ y, (if x = f y then w y else 0) = 0 := by
   exact sum_indicator_eq_zero_of_halfTurn f
     (cycleCoverMap_halfTurn_invariant f horient) w hw x
+
+/-- The parity defect of a cyclic double cover is completely explicit: the
+only admissible displacement divisible by the source length is the deck
+half-turn.  Thus the exceptional zero fiber is a singleton, rather than an
+unspecified odd set. -/
+theorem doubleCover_admissible_sourceLength_dvd_eq_singleton
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r) :
+    (admissibleDifferences (2 * r)).filter
+        (fun δ : ZMod (2 * r) ↦ r ∣ δ.val) =
+      {(r : ZMod (2 * r))} := by
+  classical
+  ext δ
+  simp only [Finset.mem_filter, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hadm, hdvd⟩
+    have hδ0 : δ ≠ 0 := (mem_admissibleDifferences_iff δ).mp hadm |>.1
+    obtain ⟨k, hk⟩ := hdvd
+    have hrPos : 0 < r := by omega
+    have hkLt : k < 2 := by
+      have hvalLt := ZMod.val_lt δ
+      rw [hk] at hvalLt
+      nlinarith
+    have hkPos : 0 < k := by
+      by_contra hkNot
+      have hk0 : k = 0 := by omega
+      have hval0 : δ.val = 0 := by rw [hk, hk0, mul_zero]
+      exact hδ0 (δ.val_eq_zero.mp hval0)
+    have hk1 : k = 1 := by omega
+    apply ZMod.val_injective
+    rw [hk, hk1, mul_one, ZMod.val_cast_of_lt]
+    omega
+  · rintro rfl
+    have hrn : r ∣ 2 * r := by
+      use 2
+      omega
+    have hval : ((r : ZMod (2 * r))).val = r := by
+      rw [ZMod.val_cast_of_lt]
+      omega
+    refine ⟨(mem_admissibleDifferences_iff _).mpr ⟨?_, ?_, ?_⟩, ?_⟩
+    · intro hz
+      have hzero : r = 0 := by
+        simpa [hval] using congrArg ZMod.val hz
+      omega
+    · exact (sourceLength_dvd_val_ne_one_negOne hr3 hrn _
+        (by rw [hval])).1
+    · exact (sourceLength_dvd_val_ne_one_negOne hr3 hrn _
+        (by rw [hval])).2
+    · rw [hval]
 
 end
 
