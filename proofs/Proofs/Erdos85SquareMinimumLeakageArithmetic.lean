@@ -169,6 +169,45 @@ theorem disjoint_target_finset_total_incidence_le_weight
       _ = w j := hexact i hiS j hj hipos
       _ ≤ w j := le_rfl
 
+/-- Scaled form of disjoint target incidence.  If every used target `j` is
+used by a unique source and its full weight is `scale * q i j`, then the
+scaled total incidence is bounded by the total target weight.  No
+divisibility hypothesis is imposed on unused targets. -/
+theorem disjoint_target_finset_scaled_incidence_le_weight
+    {I J : Type*} [DecidableEq I] [DecidableEq J]
+    (S : Finset I) (T : Finset J) (q : I → J → ℕ)
+    (weight : J → ℕ) (scale : ℕ)
+    (hunique : ∀ i₁ ∈ S, ∀ i₂ ∈ S, ∀ j ∈ T,
+      0 < q i₁ j → 0 < q i₂ j → i₁ = i₂)
+    (hexact : ∀ i ∈ S, ∀ j ∈ T,
+      0 < q i j → scale * q i j = weight j) :
+    scale * (∑ i ∈ S, ∑ j ∈ T, q i j) ≤ ∑ j ∈ T, weight j := by
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_le_sum
+  intro j hj
+  by_cases hnone : ∀ i ∈ S, q i j = 0
+  · have hz : ∑ i ∈ S, scale * q i j = 0 :=
+      Finset.sum_eq_zero fun i hi ↦ by rw [hnone i hi, mul_zero]
+    rw [hz]
+    exact Nat.zero_le _
+  · push Not at hnone
+    obtain ⟨i, hiS, hi⟩ := hnone
+    have hipos : 0 < q i j := Nat.pos_of_ne_zero hi
+    calc
+      ∑ a ∈ S, scale * q a j = scale * q i j := by
+        apply Finset.sum_eq_single i
+        · intro b hb hbi
+          have hb0 : q b j = 0 := by
+            by_contra hbne
+            exact hbi (hunique b hb i hiS j hj
+              (Nat.pos_of_ne_zero hbne) hipos)
+          rw [hb0, mul_zero]
+        · intro hiNot
+          exact (hiNot hiS).elim
+      _ = weight j := hexact i hiS j hj hipos
+      _ ≤ weight j := le_rfl
+
 /-- With unit weight on the source layer, disjoint target incidence is
 bounded by the coefficient mass outside that layer. -/
 theorem unitLayer_total_incidence_le_outsideWeight
