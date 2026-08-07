@@ -305,6 +305,63 @@ theorem card_minimumLayerExternalNeighborFinset
     Finset.card_map, G.card_neighborFinset_eq_degree,
     H.card_neighborFinset_eq_degree, hregParent, hregChild]
 
+/-- The external-neighborhood rows of distinct child vertices are pairwise
+disjoint. -/
+theorem minimumLayer_externalNeighbor_pairwiseDisjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    (↑(Finset.univ : Finset
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀)) : Set _).PairwiseDisjoint
+      (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀) := by
+  classical
+  intro x _hx y _hy hxy
+  change Disjoint
+    (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀ x)
+    (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀ y)
+  rw [Finset.disjoint_left]
+  intro z hzx hzy
+  have hzx' := Finset.mem_sdiff.mp hzx
+  have hzy' := Finset.mem_sdiff.mp hzy
+  exact minimumLayer_no_common_external_neighbor G hfree hd heven hmin hcard
+    c₀ hregChild hcardChild hxy
+    (by
+      intro hzRange
+      obtain ⟨q, hq⟩ := hzRange
+      apply hzx'.2
+      change z ∈ Finset.univ.image
+        (minimumLayerVertexValue
+          (D := secondOrderDefectGraph G) (c₀ := c₀))
+      exact Finset.mem_image.mpr ⟨q, Finset.mem_univ _, hq⟩)
+    ((G.mem_neighborFinset x.2.1 z).mp hzx'.1).symm
+    ((G.mem_neighborFinset y.2.1 z).mp hzy'.1).symm
+
+/-- Every external-neighborhood row lies in the complement of the child. -/
+theorem minimumLayer_externalBiUnion_subset_complement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) :
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀) ⊆
+      Finset.univ \ minimumLayerImageFinset D c₀ := by
+  classical
+  intro z hz
+  obtain ⟨x, _hx, hzx⟩ := Finset.mem_biUnion.mp hz
+  have hdiff := Finset.mem_sdiff.mp hzx
+  exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hdiff.2⟩
+
 /-- The disjoint external neighborhoods inject the `|U|(d-s)` cross
 incidences into the complement of the child. -/
 theorem minimumLayer_cross_incidence_le_complement
@@ -750,6 +807,115 @@ theorem secondOrder_minimumLayer_sharp_descent
   have hsd := hlt hd4 hd12
   exact ⟨hsd, minimumLayer_extension_even_saturation_or_gap
     G hfree hd heven hmin hcard c₀ hreg hcardChild hsd⟩
+
+/-- In the saturated branch, the disjoint external-neighborhood rows cover
+the entire complement of the child. -/
+theorem minimumLayer_externalBiUnion_eq_complement_of_saturated
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3) :
+    Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀) =
+      Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀ := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hsub : Finset.univ.biUnion E ⊆ Finset.univ \ U :=
+    minimumLayer_externalBiUnion_subset_complement G D c₀
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨a, rfl⟩ : ∃ a : ℕ, d = a + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hcardE : ∀ x : minimumLayerVertex D c₀, (E x).card = d - s := by
+    intro x
+    exact card_minimumLayerExternalNeighborFinset G D c₀
+      hregParent hregChild x
+  have hsatOrder : s * (s - 1) + 3 = d + s - 1 := by
+    rw [hsat]
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, s = t + 1 := ⟨s - 1, by omega⟩
+    norm_num
+    ring
+  have horderDiff := exactBoundary_order_difference_factor d s hsd
+  have hcardEq : (Finset.univ.biUnion E).card = (Finset.univ \ U).card := by
+    calc
+      (Finset.univ.biUnion E).card =
+          ∑ x : minimumLayerVertex D c₀, (E x).card :=
+        Finset.card_biUnion hpair
+      _ = Fintype.card (minimumLayerVertex D c₀) * (d - s) := by
+        simp_rw [hcardE]
+        simp
+      _ = (s * (s - 1) + 3) * (d - s) := by rw [hcardChild]
+      _ = (d * (d - 1) + 3) - (s * (s - 1) + 3) := by
+        rw [horderDiff, ← hsatOrder]
+        exact Nat.mul_comm _ _
+      _ = Fintype.card V - Fintype.card (minimumLayerVertex D c₀) := by
+        rw [hcard, hcardChild]
+      _ = (Finset.univ \ U).card := by
+        rw [Finset.card_sdiff_of_subset (Finset.subset_univ U),
+          Finset.card_univ, card_minimumLayerImageFinset]
+  exact Finset.eq_of_subset_of_card_le hsub hcardEq.ge
+
+/-- Saturation turns the exterior rows into a perfect one-design: every
+exterior vertex has a unique child owner. -/
+theorem minimumLayer_existsUnique_externalOwner_of_saturated
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    {z : V}
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) :
+    ∃! x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      z ∈ minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀ x := by
+  classical
+  let E := minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀
+  have hcover := minimumLayer_externalBiUnion_eq_complement_of_saturated
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+  have hzComp : z ∈ Finset.univ \
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀ :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hzOutside⟩
+  rw [← hcover] at hzComp
+  obtain ⟨x, _hx, hzx⟩ := Finset.mem_biUnion.mp hzComp
+  refine ⟨x, hzx, ?_⟩
+  intro y hzy
+  by_contra hxy
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hdisj := hpair (Finset.mem_univ x) (Finset.mem_univ y) (Ne.symm hxy)
+  exact (Finset.disjoint_left.mp hdisj hzx hzy).elim
 
 end
 
