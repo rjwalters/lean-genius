@@ -6,6 +6,7 @@ from pysat.solvers import Cadical195
 from pysat.card import CardEnc, EncType
 from pysat.formula import IDPool, CNF
 
+T2REPS = [((0,1,2),(3,4,5)), ((0,1,2),(0,3,4))]
 T3REPS = [((0,1,2),(3,4,5),(3,6,7)), ((0,1,2),(3,4,5),(6,7,8)), ((0,1,2),(0,3,4),(0,5,6)),
           ((0,1,2),(0,3,4),(1,3,5)), ((0,1,2),(0,3,4),(1,5,6))]
 T4REPS = [((0,1,2),(3,4,5),(3,6,7),(4,6,8)), ((0,1,2),(0,3,4),(0,5,6),(0,7,8)),
@@ -64,7 +65,7 @@ def build(SYS):
 
 if __name__ == "__main__":
     manifest = []
-    for tag, reps in (("t3", T3REPS), ("t4", T4REPS)):
+    for tag, reps in (("t2", T2REPS), ("t3", T3REPS), ("t4", T4REPS)):
         for i, SYS in enumerate(reps):
             cl = build(SYS)
             name = f"{tag}_rep{i}"
