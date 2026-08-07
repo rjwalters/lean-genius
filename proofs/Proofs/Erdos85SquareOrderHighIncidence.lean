@@ -23,6 +23,59 @@ def squareOrderHighVertices
     (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Finset V :=
   Finset.univ.filter fun x => G.degree x = d + 1
 
+/-- Since every degree is `d` or `d+1`, total degree excess is exactly the
+number of high vertices. -/
+theorem squareOrder_sum_degreeExcess_eq_card_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) :
+    (∑ x : V, (G.degree x - d)) = (squareOrderHighVertices G d).card := by
+  calc
+    (∑ x : V, (G.degree x - d)) =
+        ∑ x : V, if G.degree x = d + 1 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree hd hmin hcover hcard x with hx | hx <;> simp [hx]
+    _ = (squareOrderHighVertices G d).card := by
+      rw [← Finset.sum_filter]
+      simp [squareOrderHighVertices]
+
+/-- Handshake parity: at square order, `d^3 + h` is even.  Equivalently the
+high count has the same parity as `d`. -/
+theorem squareOrder_even_cube_add_card_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) :
+    Even (d * d * d + (squareOrderHighVertices G d).card) := by
+  let h := (squareOrderHighVertices G d).card
+  have hexcess := squareOrder_sum_degreeExcess_eq_card_high
+    G hfree hd hmin hcover hcard
+  have hsum : (∑ x : V, G.degree x) = d * (d * d) + h := by
+    calc
+      (∑ x : V, G.degree x) =
+          ∑ x : V, (d + (G.degree x - d)) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        have hx := hmin x
+        omega
+      _ = d * Fintype.card V + ∑ x : V, (G.degree x - d) := by
+        rw [Finset.sum_add_distrib]
+        simp [Nat.mul_comm]
+      _ = d * (d * d) + h := by rw [hcard, hexcess]
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhand
+  rcases hhand with hhand
+  refine ⟨G.edgeFinset.card, ?_⟩
+  change d * d * d + h = G.edgeFinset.card + G.edgeFinset.card
+  nlinarith [hhand]
+
 /-- Every high vertex contributes `d+1` incidences. -/
 theorem squareOrder_sum_highNeighborCount_eq
     {V : Type*} [Fintype V] [DecidableEq V]
