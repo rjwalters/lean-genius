@@ -80,6 +80,51 @@ theorem orderFortyNineLabeledHighSupport_trans
   rw [Finset.map_map]
   rfl
 
+/-- In a `C₄`-free graph, a labeled high support of size at least two
+determines its vertex uniquely.  This supplies the multiplicity-one part of
+the canonical pair/triple profile without any finite enumeration. -/
+theorem orderFortyNineLabeledHighSupport_injective_of_two_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    {x y : V}
+    (hx : 2 ≤ (orderFortyNineLabeledHighSupport G e x).card)
+    (hxy : orderFortyNineLabeledHighSupport G e x =
+      orderFortyNineLabeledHighSupport G e y) : x = y := by
+  by_contra hne
+  have hle := orderFortyNine_card_inter_highSupport_le_one G hfree hne
+  have hinter := card_inter_orderFortyNineLabeledHighSupport G e x y
+  have hcards := congrArg Finset.card hxy
+  rw [hxy, Finset.inter_self] at hinter
+  omega
+
+/-- Consequently every support of size at least two has a singleton fiber. -/
+theorem orderFortyNine_card_labeledHighSupportFiber_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (x : V)
+    (hx : 2 ≤ (orderFortyNineLabeledHighSupport G e x).card) :
+    Fintype.card {y : V // orderFortyNineLabeledHighSupport G e y =
+      orderFortyNineLabeledHighSupport G e x} = 1 := by
+  rw [Fintype.card_subtype]
+  have hfilter : (Finset.univ.filter fun y : V =>
+      orderFortyNineLabeledHighSupport G e y =
+        orderFortyNineLabeledHighSupport G e x) = {x} := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_singleton]
+    constructor
+    · intro hy
+      exact (orderFortyNineLabeledHighSupport_injective_of_two_le
+        G hfree e hx hy.symm).symm
+    · rintro rfl
+      rfl
+  rw [hfilter]
+  simp
+
 /-- The graph's three-point high supports, in a chosen labeling, are exactly
 the triples of `rep` (viewed as ordinary finite sets of natural numbers). -/
 def OrderFortyNineCanonicalTripleSystemSpec
