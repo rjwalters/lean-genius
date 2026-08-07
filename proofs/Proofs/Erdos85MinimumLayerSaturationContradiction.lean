@@ -46,9 +46,121 @@ theorem card_commonNonneighborFinset
     Finset.card_sdiff_of_subset (Finset.subset_univ _), Finset.card_univ,
     hunion]
 
+/-- An injection between finite types whose codomain has one extra point has
+a unique omitted value. -/
+theorem existsUnique_not_mem_range_of_card_add_one
+    {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β]
+    (f : α → β) (hf : Function.Injective f)
+    (hcard : Fintype.card α + 1 = Fintype.card β) :
+    ∃! y : β, ∀ x : α, f x ≠ y := by
+  classical
+  let R : Finset β := Finset.univ.image f
+  have hcardR : R.card = Fintype.card α := by
+    simpa [R] using Finset.card_image_of_injective Finset.univ hf
+  have hcardComp : (Finset.univ \ R).card = 1 := by
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ R), Finset.card_univ,
+      hcardR]
+    omega
+  obtain ⟨y, hy⟩ := Finset.card_eq_one.mp hcardComp
+  have hyComp : y ∈ Finset.univ \ R := by
+    rw [hy]
+    exact Finset.mem_singleton_self y
+  refine ⟨y, ?_, ?_⟩
+  · intro x hxy
+    have hyR : y ∈ R := by
+      subst y
+      exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+    exact (Finset.mem_sdiff.mp hyComp).2 hyR
+  · intro y' hy'
+    have hy'notR : y' ∉ R := by
+      intro hy'R
+      obtain ⟨x, _hx, hxy'⟩ := Finset.mem_image.mp hy'R
+      exact hy' x hxy'
+    have hy'Comp : y' ∈ Finset.univ \ R :=
+      Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hy'notR⟩
+    rw [hy] at hy'Comp
+    exact Finset.mem_singleton.mp hy'Comp
+
 end
 
 section
+
+/-- For arbitrary distinct child owners, matching composition through their
+common-nonneighbor rows is injective into the target exterior row.  The
+one-common and zero-common cases differ only in whether this injection is
+surjective or misses one point. -/
+theorem minimumLayer_saturated_twoStep_injection
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habne : a ≠ b) :
+    let H := minimumLayerGraph G (secondOrderDefectGraph G) c₀
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    let C := commonNonneighborFinset H a b
+    ∀ z ∈ E a, ∃ f : ↥C → ↥(E b),
+      Function.Injective f ∧
+        ∀ c : ↥C, ∃ x : V,
+          x ∈ E c.1 ∧ G.Adj z x ∧ G.Adj x (f c).1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let C := commonNonneighborFinset H a b
+  intro z hza
+  have hfirst : ∀ c : ↥C, ∃! r : V, r ∈ E c.1 ∧ G.Adj z r := by
+    intro c
+    apply minimumLayer_saturated_externalBlock_existsUnique_of_not_adj
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        c.1 a hza
+    intro hca
+    exact ((mem_commonNonneighborFinset_iff H a b c.1).mp c.2).1 hca.symm
+  let p : ↥C → V := fun c => Classical.choose (hfirst c)
+  have hp : ∀ c : ↥C, p c ∈ E c.1 ∧ G.Adj z (p c) := fun c =>
+    Classical.choose_spec (hfirst c) |>.1
+  have hsecond : ∀ c : ↥C, ∃! r : V, r ∈ E b ∧ G.Adj (p c) r := by
+    intro c
+    apply minimumLayer_saturated_externalBlock_existsUnique_of_not_adj
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+        b c.1 (hp c).1
+    exact (mem_commonNonneighborFinset_iff H a b c.1).mp c.2 |>.2
+  let f : ↥C → V := fun c => Classical.choose (hsecond c)
+  have hf : ∀ c : ↥C, f c ∈ E b ∧ G.Adj (p c) (f c) := fun c =>
+    Classical.choose_spec (hsecond c) |>.1
+  let fE : ↥C → ↥(E b) := fun c => ⟨f c, (hf c).1⟩
+  have hfEinj : Function.Injective fE := by
+    intro c c' hcc'
+    by_contra hnecc'
+    have hfc : f c = f c' :=
+      congrArg (fun x : ↥(E b) => x.1) hcc'
+    exact minimumLayer_externalBlock_no_closed_fourStep
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild
+        a c.1 b c'.1 habne (by
+          intro h
+          apply hnecc'
+          exact Subtype.ext h)
+        hza (hp c).1 (hf c).1 (hp c').1
+        (hp c).2 (hf c).2 (by simpa [hfc] using (hf c').2.symm)
+        (hp c').2.symm
+  refine ⟨fE, hfEinj, ?_⟩
+  intro c
+  exact ⟨p c, (hp c).1, (hp c).2, (hf c).2⟩
 
 /-- **Latin resolution law.**  Fix `z` in the exterior row over `a`.  If
 `a,b` are nonadjacent child vertices with one common child neighbor, then
@@ -215,6 +327,76 @@ theorem minimumLayer_saturated_existsUnique_twoStep_owner
         apply hne
         exact h.symm)
       hza hxc hyb hxc' hzx hxy hx'y.symm hzx'.symm
+
+/-- For a zero-common child pair, the two-step matching injection misses
+exactly one point of the target exterior row.  This is the combinatorial
+precursor of the exterior defect-matching lift. -/
+theorem minimumLayer_saturated_zeroCommon_uniqueOmitted
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (a b : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (habne : a ≠ b)
+    (hcommon :
+      ((minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset a ∩
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).neighborFinset b).card = 0) :
+    let H := minimumLayerGraph G (secondOrderDefectGraph G) c₀
+    let E := minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀
+    let C := commonNonneighborFinset H a b
+    ∀ z ∈ E a, ∃ f : ↥C → ↥(E b),
+      Function.Injective f ∧
+      (∀ c : ↥C, ∃ x : V,
+        x ∈ E c.1 ∧ G.Adj z x ∧ G.Adj x (f c).1) ∧
+      ∃! y : ↥(E b), ∀ c : ↥C, f c ≠ y := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let C := commonNonneighborFinset H a b
+  have hsatOrder : s * (s - 1) + 3 = d + s - 1 := by
+    rw [hsat]
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, s = t + 1 := ⟨s - 1, by omega⟩
+    norm_num
+    ring
+  have hcardC : C.card + 1 = d - s := by
+    rw [card_commonNonneighborFinset H hregChild a b hcommon, hcardChild,
+      hsatOrder]
+    omega
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, d = t + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hcardEb : (E b).card = d - s :=
+    card_minimumLayerExternalNeighborFinset G D c₀
+      hregParent hregChild b
+  intro z hza
+  obtain ⟨f, hfinj, hfpath⟩ := minimumLayer_saturated_twoStep_injection
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+      a b habne z hza
+  have hcardTypes : Fintype.card ↥C + 1 = Fintype.card ↥(E b) := by
+    simpa [hcardC, hcardEb]
+  exact ⟨f, hfinj, hfpath,
+    existsUnique_not_mem_range_of_card_add_one f hfinj hcardTypes⟩
 
 end
 
