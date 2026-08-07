@@ -178,6 +178,89 @@ theorem orderFortyNine_existsUnique_highBranch_containing_high
       exact ⟨D.2, by simpa [G.adj_comm] using hDw⟩
     simpa [hc] using hDcommon
 
+/-- Let `w` lie in the branch of parent `c` around a high root `v`.  Then
+`w` has exactly one neighbor in every branch whose parent is not paired with
+`c`.  This is the basic compatibility law between two high-root branch
+systems. -/
+theorem orderFortyNine_card_highNeighbors_in_unpaired_branch_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v w : V}
+    (hv : G.degree v = 8) (hw : G.degree w = 8)
+    {c u : {z : V // z ∈ G.neighborSet v}}
+    (hwc : w ∈ secondLayerBranch G v c)
+    (hcu : ¬ G.Adj c.1 u.1) :
+    (G.neighborFinset w ∩ secondLayerBranch G v u).card = 1 := by
+  have hwOutside : w ∉ insert v (G.neighborFinset v) :=
+    (Finset.mem_sdiff.mp hwc).2
+  have hle := orderFortyNine_card_neighbors_inter_highBranch_le_one
+    G hfree hwOutside u
+  have hwu : w ≠ u.1 := by
+    intro h
+    subst w
+    have hu7 := orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv u.2
+    omega
+  have hconflictSet := orderFortyNine_conflictNeighborFinset_degreeEight
+    G hfree hmin hcard hw
+  have huErase : u.1 ∈ (Finset.univ : Finset V).erase w := by
+    simp [hwu.symm]
+  have huConflictMem :
+      u.1 ∈ (commonNeighborConflict G).neighborFinset w := by
+    rw [hconflictSet]
+    exact huErase
+  obtain ⟨q, hq⟩ :=
+    (((commonNeighborConflict G).mem_neighborFinset w u.1).mp
+      huConflictMem).2
+  have hqCommon : q ∈ G.neighborFinset w ∩ G.neighborFinset u.1 := hq
+  have hqw : G.Adj w q := by
+    simpa [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hqCommon).1
+  have hqu : G.Adj u.1 q := by
+    simpa [SimpleGraph.mem_neighborFinset] using (Finset.mem_inter.mp hqCommon).2
+  have hqv : q ≠ v := by
+    intro h
+    subst q
+    exact (orderFortyNine_not_adj_degreeEight_degreeEight
+      G hfree hmin hcard hv hw) hqw.symm
+  have hqNotNv : q ∉ G.neighborFinset v := by
+    intro hqNv
+    have hqvc : q ∈ G.neighborFinset v ∩ G.neighborFinset w := by
+      exact Finset.mem_inter.mpr ⟨hqNv,
+        (G.mem_neighborFinset w q).mpr hqw⟩
+    have hcvc : c.1 ∈ G.neighborFinset v ∩ G.neighborFinset w := by
+      have hcw : G.Adj c.1 w :=
+        (G.mem_neighborFinset c.1 w).mp (Finset.mem_sdiff.mp hwc).1
+      exact Finset.mem_inter.mpr ⟨
+        (G.mem_neighborFinset v c.1).mpr c.2,
+        (G.mem_neighborFinset w c.1).mpr hcw.symm⟩
+    have hone := orderFortyNine_card_common_degreeEight_eq_one
+      G hfree hmin hcard hv hw (by
+        intro h
+        subst w
+        exact hwOutside (by simp))
+    rcases Finset.card_eq_one.mp hone with ⟨r, hr⟩
+    have hqr : q = r := by simpa [hr] using hqvc
+    have hcr : c.1 = r := by simpa [hr] using hcvc
+    have hqc : q = c.1 := hqr.trans hcr.symm
+    exact hcu (hqc ▸ hqu.symm)
+  have hqBranch : q ∈ secondLayerBranch G v u := by
+    apply Finset.mem_sdiff.mpr
+    refine ⟨(G.mem_neighborFinset u.1 q).mpr hqu, ?_⟩
+    simp only [Finset.mem_insert, hqv, false_or,
+      SimpleGraph.mem_neighborFinset]
+    intro hvq
+    exact hqNotNv ((G.mem_neighborFinset v q).mpr hvq)
+  have hpos : 0 <
+      (G.neighborFinset w ∩ secondLayerBranch G v u).card := by
+    apply Finset.card_pos.mpr
+    exact ⟨q, Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset w q).mpr hqw, hqBranch⟩⟩
+  omega
+
 end
 
 end Erdos85
