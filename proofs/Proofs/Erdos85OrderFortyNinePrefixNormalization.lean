@@ -208,22 +208,119 @@ theorem encTriple_injective_of_lt_nine
   simp only [encTriple_three] at henc
   omega
 
-/-- For triples with distinct entries, the Boolean enumeration test is the
-usual statement that their underlying sets meet in at most one point. -/
-theorem linB_eq_true_iff_card_inter_le_one
-    {a b c d e f : Nat} (hS : List.Nodup [a, b, c]) :
-    linB [a, b, c] [d, e, f] = true ↔
-      (({a, b, c} : Finset Nat) ∩ {d, e, f}).card ≤ 1 := by
+/-- For a list without repetition, the Boolean enumeration test counts the
+intersection of the underlying finsets. -/
+theorem linB_eq_true_iff_toFinset_inter_le_one
+    {S T : List Nat} (hS : S.Nodup) :
+    linB S T = true ↔ (S.toFinset ∩ T.toFinset).card ≤ 1 := by
   simp only [linB, Nat.ble_eq]
   rw [List.countP_eq_length_filter]
   rw [← List.toFinset_card_of_nodup (hS.filter _)]
   rw [List.toFinset_filter]
   have heq :
-      [a, b, c].toFinset.filter (fun x => [d, e, f].contains x) =
-        ({a, b, c} : Finset Nat) ∩ {d, e, f} := by
+      S.toFinset.filter (fun x => T.contains x) = S.toFinset ∩ T.toFinset := by
     ext x
     simp
   rw [heq]
+
+/-- Triple-specialized form used by the raw-enumeration interface. -/
+theorem linB_eq_true_iff_card_inter_le_one
+    {a b c d e f : Nat} (hS : List.Nodup [a, b, c]) :
+    linB [a, b, c] [d, e, f] = true ↔
+      (({a, b, c} : Finset Nat) ∩ {d, e, f}).card ≤ 1 := by
+  simpa using linB_eq_true_iff_toFinset_inter_le_one (T := [d, e, f]) hS
+
+/-- The canonical ascending digit list of a labeled high-support block. -/
+def tripleDigits (S : Finset (Fin 9)) : List Nat :=
+  (S.sort (· ≤ ·)).map Fin.val
+
+@[simp] theorem length_tripleDigits (S : Finset (Fin 9)) :
+    (tripleDigits S).length = S.card := by
+  simp [tripleDigits]
+
+theorem nodup_tripleDigits (S : Finset (Fin 9)) :
+    (tripleDigits S).Nodup := by
+  exact (Finset.sort_nodup S (· ≤ ·)).map Fin.val_injective
+
+theorem toFinset_tripleDigits (S : Finset (Fin 9)) :
+    (tripleDigits S).toFinset = S.image Fin.val := by
+  ext x
+  simp [tripleDigits]
+
+/-- Every three-subset of `Fin 9`, written in increasing order, belongs to
+the executable enumeration's `allTriples`. -/
+theorem tripleDigits_mem_allTriples {S : Finset (Fin 9)} (hS : S.card = 3) :
+    tripleDigits S ∈ allTriples := by
+  have hlen : (S.sort (· ≤ ·)).length = 3 := by simpa using hS
+  obtain ⟨a, b, c, hlist⟩ := List.length_eq_three.mp hlen
+  have hsorted := Finset.sortedLT_sort S
+  rw [hlist] at hsorted
+  have hpairs : (a < b ∧ a < c) ∧ b < c := by
+    simpa using hsorted.pairwise
+  have habc : a < b ∧ b < c := ⟨hpairs.1.1, hpairs.2⟩
+  rw [tripleDigits, hlist]
+  exact mem_allTriples_iff.mpr ⟨habc.1, habc.2, c.isLt⟩
+
+/-- The Boolean linearity test on canonical digit lists is exactly finset
+linearity before forgetting the `Fin 9` bounds. -/
+theorem linB_tripleDigits_eq_true_iff {S T : Finset (Fin 9)} :
+    linB (tripleDigits S) (tripleDigits T) = true ↔
+      (S ∩ T).card ≤ 1 := by
+  rw [linB_eq_true_iff_toFinset_inter_le_one (nodup_tripleDigits S)]
+  rw [toFinset_tripleDigits, toFinset_tripleDigits]
+  rw [← Finset.image_inter S T Fin.val_injective]
+  rw [Finset.card_image_of_injective _ Fin.val_injective]
+
+/-- Distinct labeled triple blocks have distinct decimal encodings. -/
+theorem eq_of_encTriple_tripleDigits_eq
+    {S T : Finset (Fin 9)} (hS : S.card = 3) (hT : T.card = 3)
+    (henc : encTriple (tripleDigits S) = encTriple (tripleDigits T)) :
+    S = T := by
+  have hSlen : (tripleDigits S).length = 3 := (length_tripleDigits S).trans hS
+  have hTlen : (tripleDigits T).length = 3 := (length_tripleDigits T).trans hT
+  obtain ⟨a, b, c, hSd⟩ := List.length_eq_three.mp hSlen
+  obtain ⟨d, e, f, hTd⟩ := List.length_eq_three.mp hTlen
+  have hSmem := tripleDigits_mem_allTriples hS
+  have hTmem := tripleDigits_mem_allTriples hT
+  rw [hSd] at hSmem henc
+  rw [hTd] at hTmem henc
+  have hSb := mem_allTriples_iff.mp hSmem
+  have hTb := mem_allTriples_iff.mp hTmem
+  have hb9 : b < 9 := lt_trans hSb.2.1 hSb.2.2
+  have he9 : e < 9 := lt_trans hTb.2.1 hTb.2.2
+  obtain ⟨rfl, rfl, rfl⟩ := encTriple_injective_of_lt_nine
+    hb9 hSb.2.2 he9 hTb.2.2 henc
+  have hdigits : tripleDigits S = tripleDigits T := hSd.trans hTd.symm
+  apply Finset.image_injective Fin.val_injective
+  rw [← toFinset_tripleDigits, ← toFinset_tripleDigits, hdigits]
+
+/-! The two prefix choices also force the remaining blocks to occur later in
+the executable order.  These are tiny closed nine-point facts; expressing
+them here keeps the graph-facing selection argument conceptual. -/
+
+theorem encTriple_intersectingPrefix_lt_remaining :
+    ∀ S : Finset (Fin 9), S.card = 3 →
+      (({0, 1, 2} : Finset (Fin 9)) ∩ S).card ≤ 1 →
+      (({0, 3, 4} : Finset (Fin 9)) ∩ S).card ≤ 1 →
+      S ≠ {0, 1, 2} → S ≠ {0, 3, 4} →
+      encTriple [0, 3, 4] < encTriple (tripleDigits S) := by
+  native_decide
+
+theorem encTriple_disjointPrefix_lt_remaining :
+    ∀ S : Finset (Fin 9), S.card = 3 →
+      (({0, 1, 2} : Finset (Fin 9)) ∩ S).card = 0 →
+      (({3, 4, 5} : Finset (Fin 9)) ∩ S).card = 0 →
+      encTriple [3, 4, 5] < encTriple (tripleDigits S) := by
+  native_decide
+
+@[simp] theorem tripleDigits_012 :
+    tripleDigits ({0, 1, 2} : Finset (Fin 9)) = [0, 1, 2] := by native_decide
+
+@[simp] theorem tripleDigits_034 :
+    tripleDigits ({0, 3, 4} : Finset (Fin 9)) = [0, 3, 4] := by native_decide
+
+@[simp] theorem tripleDigits_345 :
+    tripleDigits ({3, 4, 5} : Finset (Fin 9)) = [3, 4, 5] := by native_decide
 
 theorem mem_rawT2_iff {T2 : List Nat} :
     [firstTriple, T2] ∈ rawT2 ↔ T2 ∈ secondTriples := by
@@ -247,6 +344,92 @@ theorem mem_rawT4_iff {T2 T3 T4 : List Nat} :
       linB T4 firstTriple = true ∧ linB T4 T2 = true ∧
       linB T4 T3 = true := by
   simp [rawT4, firstTriple, Bool.and_eq_true, Nat.ble_eq] <;> tauto
+
+/-- An additional block after an intersecting normalized prefix gives a raw
+three-block row. -/
+theorem mem_rawT3_of_intersectingPrefix
+    {S : Finset (Fin 9)} (hS : S.card = 3)
+    (hS1 : (({0, 1, 2} : Finset (Fin 9)) ∩ S).card ≤ 1)
+    (hS2 : (({0, 3, 4} : Finset (Fin 9)) ∩ S).card ≤ 1)
+    (hne1 : S ≠ {0, 1, 2}) (hne2 : S ≠ {0, 3, 4}) :
+    [firstTriple, [0, 3, 4], tripleDigits S] ∈ rawT3 := by
+  rw [mem_rawT3_iff]
+  refine ⟨by simp [secondTriples], tripleDigits_mem_allTriples hS,
+    encTriple_intersectingPrefix_lt_remaining S hS hS1 hS2 hne1 hne2, ?_, ?_⟩
+  · change linB (tripleDigits S) [0, 1, 2] = true
+    rw [← tripleDigits_012, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hS1
+  · rw [← tripleDigits_034, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hS2
+
+/-- An additional block after a disjoint normalized prefix gives a raw
+three-block row. -/
+theorem mem_rawT3_of_disjointPrefix
+    {S : Finset (Fin 9)} (hS : S.card = 3)
+    (hS1 : (({0, 1, 2} : Finset (Fin 9)) ∩ S).card = 0)
+    (hS2 : (({3, 4, 5} : Finset (Fin 9)) ∩ S).card = 0) :
+    [firstTriple, [3, 4, 5], tripleDigits S] ∈ rawT3 := by
+  rw [mem_rawT3_iff]
+  refine ⟨by simp [secondTriples], tripleDigits_mem_allTriples hS,
+    encTriple_disjointPrefix_lt_remaining S hS hS1 hS2, ?_, ?_⟩
+  · change linB (tripleDigits S) [0, 1, 2] = true
+    rw [← tripleDigits_012, linB_tripleDigits_eq_true_iff]
+    rw [Finset.inter_comm]
+    omega
+  · rw [← tripleDigits_345, linB_tripleDigits_eq_true_iff]
+    rw [Finset.inter_comm]
+    omega
+
+/-- Two additional blocks after an intersecting prefix can be ordered by
+their injective decimal encodings to give a raw four-block row. -/
+theorem mem_rawT4_of_intersectingPrefix
+    {S T : Finset (Fin 9)} (hS : S.card = 3) (hT : T.card = 3)
+    (hS1 : (({0, 1, 2} : Finset (Fin 9)) ∩ S).card ≤ 1)
+    (hS2 : (({0, 3, 4} : Finset (Fin 9)) ∩ S).card ≤ 1)
+    (hT1 : (({0, 1, 2} : Finset (Fin 9)) ∩ T).card ≤ 1)
+    (hT2 : (({0, 3, 4} : Finset (Fin 9)) ∩ T).card ≤ 1)
+    (hSTlin : (S ∩ T).card ≤ 1)
+    (hSne1 : S ≠ {0, 1, 2}) (hSne2 : S ≠ {0, 3, 4})
+    (hTne1 : T ≠ {0, 1, 2}) (hTne2 : T ≠ {0, 3, 4})
+    (hST : S ≠ T) :
+    [firstTriple, [0, 3, 4], tripleDigits S, tripleDigits T] ∈ rawT4 ∨
+    [firstTriple, [0, 3, 4], tripleDigits T, tripleDigits S] ∈ rawT4 := by
+  have hencne : encTriple (tripleDigits S) ≠ encTriple (tripleDigits T) := by
+    intro heq
+    exact hST (eq_of_encTriple_tripleDigits_eq hS hT heq)
+  have hSfirst : linB (tripleDigits S) firstTriple = true := by
+    change linB (tripleDigits S) [0, 1, 2] = true
+    rw [← tripleDigits_012, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hS1
+  have hSsecond : linB (tripleDigits S) [0, 3, 4] = true := by
+    rw [← tripleDigits_034, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hS2
+  have hTfirst : linB (tripleDigits T) firstTriple = true := by
+    change linB (tripleDigits T) [0, 1, 2] = true
+    rw [← tripleDigits_012, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hT1
+  have hTsecond : linB (tripleDigits T) [0, 3, 4] = true := by
+    rw [← tripleDigits_034, linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hT2
+  have hSTb : linB (tripleDigits T) (tripleDigits S) = true := by
+    rw [linB_tripleDigits_eq_true_iff]
+    simpa [Finset.inter_comm] using hSTlin
+  have hTSb : linB (tripleDigits S) (tripleDigits T) = true := by
+    rw [linB_tripleDigits_eq_true_iff]
+    exact hSTlin
+  rcases lt_or_gt_of_ne hencne with hlt | hgt
+  · apply Or.inl
+    rw [mem_rawT4_iff]
+    exact ⟨by simp [secondTriples], tripleDigits_mem_allTriples hS,
+      tripleDigits_mem_allTriples hT,
+      encTriple_intersectingPrefix_lt_remaining S hS hS1 hS2 hSne1 hSne2,
+      hlt, hSfirst, hSsecond, hTfirst, hTsecond, hSTb⟩
+  · apply Or.inr
+    rw [mem_rawT4_iff]
+    exact ⟨by simp [secondTriples], tripleDigits_mem_allTriples hT,
+      tripleDigits_mem_allTriples hS,
+      encTriple_intersectingPrefix_lt_remaining T hT hT1 hT2 hTne1 hTne2,
+      hgt, hTfirst, hTsecond, hSfirst, hSsecond, hTSb⟩
 
 theorem exists_tableT2_row_of_mem_rawT2
     {S : List (List Nat)} (hS : S ∈ rawT2) :
