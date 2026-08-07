@@ -14,6 +14,103 @@ namespace Erdos85
 
 noncomputable section
 
+open SimpleGraph
+
+/-- Ordered endpoint pairs in two outer branches which are adjacent in the
+outer second-order defect graph. -/
+def orderFortyNineOuterDefectBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    Finset ({x : V // x ∈ secondLayer G v} ×
+      {x : V // x ∈ secondLayer G v}) :=
+  (orderFortyNineOuterBranch G v s ×ˢ orderFortyNineOuterBranch G v t).filter
+    fun xy ↦ (secondOrderDefectGraph (squareOrderOuterGraph G v)).Adj xy.1 xy.2
+
+/-- The complementary ordered endpoint pairs in two outer branches.  Under
+C4-freeness and for distinct branches, these are precisely the pairs having
+one common neighbor in the outer graph. -/
+def orderFortyNineOuterNondefectBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    Finset ({x : V // x ∈ secondLayer G v} ×
+      {x : V // x ∈ secondLayer G v}) :=
+  (orderFortyNineOuterBranch G v s ×ˢ orderFortyNineOuterBranch G v t).filter
+    fun xy ↦ ¬(secondOrderDefectGraph (squareOrderOuterGraph G v)).Adj xy.1 xy.2
+
+/-- Every ordered pair of five-point outer branches is either a defect pair or
+a nondefect pair, so their block cardinalities add to 25. -/
+theorem orderFortyNine_outerBlock_defect_add_nondefect_eq_twentyFive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineOuterDefectBlock G v s t).card +
+        (orderFortyNineOuterNondefectBlock G v s t).card = 25 := by
+  classical
+  rw [orderFortyNineOuterDefectBlock, orderFortyNineOuterNondefectBlock]
+  rw [Finset.card_filter_add_card_filter_not, Finset.card_product,
+    card_orderFortyNineOuterBranch_eq_five G hfree hmin hcard hv s,
+    card_orderFortyNineOuterBranch_eq_five G hfree hmin hcard hv t]
+
+/-- On two distinct outer branches, membership in the nondefect block is
+equivalent to having exactly one common neighbor in the outer graph. -/
+theorem mem_orderFortyNineOuterNondefectBlock_iff_common_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (s t : {z : V // z ∈ G.neighborSet v}) (hst : s ≠ t)
+    (x y : {z : V // z ∈ secondLayer G v}) :
+    (x, y) ∈ orderFortyNineOuterNondefectBlock G v s t ↔
+      x.1 ∈ secondLayerBranch G v s ∧
+      y.1 ∈ secondLayerBranch G v t ∧
+      ((squareOrderOuterGraph G v).neighborFinset x ∩
+        (squareOrderOuterGraph G v).neighborFinset y).card = 1 := by
+  classical
+  let R := squareOrderOuterGraph G v
+  have hRfree : ¬ containsC4 _ R :=
+    squareOrderOuterGraph_not_containsC4 G hfree
+  have hxy_of_mem : x.1 ∈ secondLayerBranch G v s →
+      y.1 ∈ secondLayerBranch G v t → x ≠ y := by
+    intro hx hy hxy
+    have hdisj := secondLayerBranch_pairwiseDisjoint G hfree v
+      (by simp) (by simp) hst
+    apply (Finset.disjoint_left.mp hdisj) hx
+    have hval : x.1 = y.1 := congrArg Subtype.val hxy
+    simpa [hval] using hy
+  constructor
+  · intro hmem
+    have hm := Finset.mem_filter.mp hmem
+    have hp := Finset.mem_product.mp hm.1
+    have hx := (Finset.mem_filter.mp hp.1).2
+    have hy := (Finset.mem_filter.mp hp.2).2
+    have hxy : x ≠ y := hxy_of_mem hx hy
+    have hnotmem : y ∉ (secondOrderDefectGraph R).neighborFinset x := by
+      simpa [SimpleGraph.mem_neighborFinset, R] using hm.2
+    have hc := card_common_eq_if_secondOrderDefect R hRfree x y hxy
+    rw [if_neg hnotmem] at hc
+    exact ⟨hx, hy, by simpa [R] using hc⟩
+  · rintro ⟨hx, hy, hc⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_product.mpr ⟨?_, ?_⟩, ?_⟩
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hy⟩
+    · intro hD
+      have hxy : x ≠ y := hxy_of_mem hx hy
+      have hmem : y ∈ (secondOrderDefectGraph R).neighborFinset x := by
+        simpa [SimpleGraph.mem_neighborFinset, R] using hD
+      have hz := card_common_eq_if_secondOrderDefect R hRfree x y hxy
+      rw [if_pos hmem] at hz
+      have hz' :
+          ((squareOrderOuterGraph G v).neighborFinset x ∩
+            (squareOrderOuterGraph G v).neighborFinset y).card = 0 := by
+        simpa [R] using hz
+      omega
+
 /-- Six local bounds of the form `dᵢ + aᵢ + bᵢ ≤ 5`, together with the paired
 bound and the exact total `25`, are all sharp.  In the graph application, `dᵢ`
 is a far defect-block cardinality and `aᵢ,bᵢ` are the two crossed miss counts. -/
