@@ -181,6 +181,36 @@ theorem exists_minimumLayer_saturated_exterior_complement_trace
   refine ⟨owner, ?_⟩
   rw [htrace, htraceA, htraceB, zero_sub]
 
+/-- Numeric form of the trace split in the sole saturated residual. -/
+theorem exists_minimumLayer_saturated_124_exterior_complement_trace
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (hmin : 124 ≤ G.minDegree)
+    (hcard : Fintype.card V = 124 * (124 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)]
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 12)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        12 * (12 - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let X := minimumLayerExteriorVertex D c₀
+    let A := (G.comap (fun z : X => z.1)).adjMatrix ℚ
+    ∃ owner : X → minimumLayerVertex D c₀,
+      Matrix.trace (A * (1 - normalizedOwnerProjection owner 112)) = -135 := by
+  dsimp only
+  have h := exists_minimumLayer_saturated_exterior_complement_trace
+    G hfree (d := 124) (s := 12) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild (by norm_num) (by norm_num) (by norm_num)
+  norm_num at hcardChild
+  simpa [hcardChild] using h
+
 end
 
 end Erdos85
