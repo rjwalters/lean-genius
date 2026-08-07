@@ -105,6 +105,96 @@ theorem orderFortyNine_outerDefect_adj_of_sameBranch
   exact hfree (containsC4_of_two_common
     (Subtype.val_injective.ne hab) hsq hsa hsb hqaG hqbG)
 
+/-- A root branch, regarded as a finset of vertices of the induced outer
+graph. -/
+def orderFortyNineOuterBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    Finset {x : V // x ∈ secondLayer G v} :=
+  Finset.univ.filter fun x => x.1 ∈ secondLayerBranch G v s
+
+/-- Each outer branch still has five vertices after passage to the induced
+outer graph. -/
+theorem card_orderFortyNineOuterBranch_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineOuterBranch G v s).card = 5 := by
+  rw [← orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+    G hfree hmin hcard hv s]
+  apply Finset.card_bij (fun x _ => x.1)
+  · intro x hx
+    exact (Finset.mem_filter.mp hx).2
+  · intro x hx y hy hxy
+    exact Subtype.ext hxy
+  · intro a ha
+    have haSecond : a ∈ secondLayer G v := by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨s, Finset.mem_univ _, ha⟩
+    let a' : {x : V // x ∈ secondLayer G v} := ⟨a, haSecond⟩
+    refine ⟨a', ?_, rfl⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, ha⟩
+
+/-- The four same-branch vertices are exactly the same-branch defect
+neighbors of an outer vertex. -/
+theorem orderFortyNine_outerDefect_neighbors_inter_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (s : {z : V // z ∈ G.neighborSet v})
+    (x : {a : V // a ∈ secondLayer G v})
+    (hx : x.1 ∈ secondLayerBranch G v s) :
+    (secondOrderDefectGraph (squareOrderOuterGraph G v)).neighborFinset x ∩
+        orderFortyNineOuterBranch G v s =
+      (orderFortyNineOuterBranch G v s).erase x := by
+  classical
+  ext y
+  simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    Finset.mem_erase, orderFortyNineOuterBranch, Finset.mem_filter,
+    Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨hxy, hy⟩
+    exact ⟨((secondOrderDefectGraph
+      (squareOrderOuterGraph G v)).ne_of_adj hxy).symm, hy⟩
+  · rintro ⟨hyx, hy⟩
+    exact ⟨orderFortyNine_outerDefect_adj_of_sameBranch
+      G hfree s x y hx hy hyx.symm, hy⟩
+
+/-- **Exact cross-defect degree.**  After removing its four same-branch
+defect neighbors, every outer vertex has exactly five defect neighbors in
+the other seven branches. -/
+theorem orderFortyNine_outerDefect_crossDegree_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (x : {a : V // a ∈ secondLayer G v})
+    (hx : x.1 ∈ secondLayerBranch G v s) :
+    ((secondOrderDefectGraph (squareOrderOuterGraph G v)).neighborFinset x \
+      orderFortyNineOuterBranch G v s).card = 5 := by
+  classical
+  rw [Finset.card_sdiff]
+  have hdeg := orderFortyNine_outerDefect_regular
+    G hfree hmin hcard hv hunique x
+  rw [(secondOrderDefectGraph (squareOrderOuterGraph G v)).card_neighborFinset_eq_degree,
+    hdeg, Finset.inter_comm,
+    orderFortyNine_outerDefect_neighbors_inter_branch G hfree s x hx,
+    Finset.card_erase_of_mem]
+  · rw [card_orderFortyNineOuterBranch_eq_five G hfree hmin hcard hv s]
+  · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩
+
 end
 
 end Erdos85
