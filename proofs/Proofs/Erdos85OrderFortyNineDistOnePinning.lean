@@ -126,6 +126,51 @@ theorem orderFortyNine_exists_common_highPair_witnesses_trichotomy
     G hfree hmin hcard hv1 hv2 hv3 h12 h13 h23
       hu12adj.1 hu12adj.2 hu13adj.1 hu13adj.2 hu23adj.1 hu23adj.2
 
+/-- A graph with exactly three degree-eight vertices admits a complete named
+normal form for the high sector and its pairwise common-neighbor geometry.
+This is the assumption-free front end for the two three-high certificate
+strata. -/
+theorem orderFortyNine_three_high_normal_form
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHighCard : (orderFortyNineHighVertices G).card = 3) :
+    ∃ v1 v2 v3 u12 u13 u23 : V,
+      orderFortyNineHighVertices G = {v1, v2, v3} ∧
+      G.degree v1 = 8 ∧ G.degree v2 = 8 ∧ G.degree v3 = 8 ∧
+      v1 ≠ v2 ∧ v1 ≠ v3 ∧ v2 ≠ v3 ∧
+      G.neighborFinset v1 ∩ G.neighborFinset v2 = {u12} ∧
+      G.neighborFinset v1 ∩ G.neighborFinset v3 = {u13} ∧
+      G.neighborFinset v2 ∩ G.neighborFinset v3 = {u23} ∧
+      ((u12 = u13 ∧ u13 = u23) ∨
+        (u12 ≠ u13 ∧ u12 ≠ u23 ∧ u13 ≠ u23)) := by
+  rcases Finset.card_eq_three.mp hHighCard with
+    ⟨v1, v2, v3, h12, h13, h23, hHigh⟩
+  have hv1mem : v1 ∈ orderFortyNineHighVertices G := by
+    rw [hHigh]
+    simp
+  have hv2mem : v2 ∈ orderFortyNineHighVertices G := by
+    rw [hHigh]
+    simp
+  have hv3mem : v3 ∈ orderFortyNineHighVertices G := by
+    rw [hHigh]
+    simp
+  have hv1 : G.degree v1 = 8 := by
+    simpa [orderFortyNineHighVertices] using hv1mem
+  have hv2 : G.degree v2 = 8 := by
+    simpa [orderFortyNineHighVertices] using hv2mem
+  have hv3 : G.degree v3 = 8 := by
+    simpa [orderFortyNineHighVertices] using hv3mem
+  rcases orderFortyNine_exists_common_highPair_witnesses_trichotomy
+      G hfree hmin hcard hv1 hv2 hv3 h12 h13 h23 with
+    ⟨u12, u13, u23, hu12, hu13, hu23, htri⟩
+  exact ⟨v1, v2, v3, u12, u13, u23, hHigh, hv1, hv2, hv3,
+    h12, h13, h23, hu12, hu13, hu23, htri⟩
+
 /-- The siblings of `u12` and `u13` in the two foreign high neighborhoods
 cannot both be the third pairwise common neighbor `u23`. -/
 theorem orderFortyNineDistOne_not_both_siblings_eq_u23
