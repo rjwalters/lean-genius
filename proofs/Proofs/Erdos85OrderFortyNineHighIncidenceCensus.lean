@@ -456,6 +456,75 @@ theorem orderFortyNine_defectDegree_add_highNeighborCount_eq_six
     G hfree hmin hcard x]
   exact orderFortyNine_degreeSeven_local_budget G hfree hmin hcard hx
 
+/-- The second-order defect graph has exactly `7(21-h)` edges, where `h` is
+the number of high vertices. -/
+theorem orderFortyNine_secondOrderDefect_edge_count
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (secondOrderDefectGraph G).edgeFinset.card =
+      7 * (21 - (orderFortyNineHighVertices G).card) := by
+  let H := orderFortyNineHighVertices G
+  let L := orderFortyNineLowVertices G
+  let D := secondOrderDefectGraph G
+  let k : V → ℕ := fun x => (G.neighborFinset x ∩ H).card
+  have hlow : ∀ x ∈ L, D.degree x + k x = 6 := by
+    intro x hx
+    have hxnot : x ∉ H := (Finset.mem_sdiff.mp hx).2
+    have hxdeg : G.degree x = 7 := by
+      rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard x with hx7 | hx8
+      · exact hx7
+      · exact (hxnot (by simp [H, orderFortyNineHighVertices, hx8])).elim
+    exact orderFortyNine_defectDegree_add_highNeighborCount_eq_six
+      G hfree hmin hcard hxdeg
+  have hsumLocal :
+      (∑ x ∈ L, D.degree x) + (∑ x ∈ L, k x) = 6 * L.card := by
+    rw [← Finset.sum_add_distrib]
+    calc
+      (∑ x ∈ L, (D.degree x + k x)) = ∑ _x ∈ L, 6 := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hlow x hx
+      _ = 6 * L.card := by simp [Nat.mul_comm]
+  have hfirst : (∑ x ∈ L, k x) = 8 * H.card := by
+    simpa [H, L, k, orderFortyNineLowVertices] using
+      orderFortyNine_sum_low_highNeighborCount_eq G hfree hmin hcard
+  have hLcard : L.card = 49 - H.card := by
+    dsimp [L, orderFortyNineLowVertices]
+    rw [Finset.card_sdiff, Finset.card_univ, hcard]
+    simp [H]
+  have hhighZero : (∑ x ∈ H, D.degree x) = 0 := by
+    apply Finset.sum_eq_zero
+    intro x hx
+    have hx8 : G.degree x = 8 := (Finset.mem_filter.mp hx).2
+    exact (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+      G hfree hmin hcard hx8).1
+  have hsplit := Finset.sum_sdiff
+    (show H ⊆ (Finset.univ : Finset V) by simp)
+    (f := fun x => D.degree x)
+  have hsumAll : (∑ x : V, D.degree x) = ∑ x ∈ L, D.degree x := by
+    change (∑ x ∈ (Finset.univ : Finset V), D.degree x) = _
+    change (∑ x ∈ (Finset.univ : Finset V) \ H, D.degree x) +
+      (∑ x ∈ H, D.degree x) =
+      (∑ x ∈ (Finset.univ : Finset V), D.degree x) at hsplit
+    rw [hhighZero, add_zero] at hsplit
+    exact hsplit.symm
+  have hHle : H.card ≤ 9 := by
+    simpa [H] using orderFortyNine_card_high_le_nine G hfree hmin hcard
+  have hdegreeSum : (∑ x : V, D.degree x) = 14 * (21 - H.card) := by
+    rw [hsumAll]
+    rw [hfirst, hLcard] at hsumLocal
+    omega
+  have hhand := D.sum_degrees_eq_twice_card_edges
+  rw [hdegreeSum] at hhand
+  change D.edgeFinset.card = 7 * (21 - H.card)
+  omega
+
 end
 
 end Erdos85
