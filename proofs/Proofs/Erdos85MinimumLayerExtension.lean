@@ -234,6 +234,247 @@ theorem minimumLayer_no_common_external_neighbor
       ((H.mem_neighborFinset x q).mp hqx).symm
       ((H.mem_neighborFinset y q).mp hqy).symm hzx hzy)
 
+def minimumLayerImageFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent] (c₀ : D.ConnectedComponent) : Finset V :=
+  Finset.univ.image
+    (minimumLayerVertexValue (D := D) (c₀ := c₀))
+
+def minimumLayerExternalNeighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) (x : minimumLayerVertex D c₀) : Finset V :=
+  G.neighborFinset x.2.1 \ minimumLayerImageFinset D c₀
+
+theorem card_minimumLayerImageFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent] (c₀ : D.ConnectedComponent) :
+    (minimumLayerImageFinset D c₀).card =
+      Fintype.card (minimumLayerVertex D c₀) := by
+  classical
+  rw [minimumLayerImageFinset,
+    Finset.card_image_of_injective _
+      (minimumLayerVertexValue_injective (D := D) (c₀ := c₀)),
+    Finset.card_univ]
+
+/-- Exactly the `s` internal neighbors of a child vertex are removed from
+its ambient neighborhood, leaving `d-s` external neighbors. -/
+theorem card_minimumLayerExternalNeighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) {d s : ℕ}
+    (hregParent : ∀ v : V, G.degree v = d)
+    (hregChild : ∀ x : minimumLayerVertex D c₀,
+      (minimumLayerGraph G D c₀).degree x = s)
+    (x : minimumLayerVertex D c₀) :
+    (minimumLayerExternalNeighborFinset G D c₀ x).card = d - s := by
+  classical
+  let H := minimumLayerGraph G D c₀
+  let ι : minimumLayerVertex D c₀ ↪ V :=
+    ⟨minimumLayerVertexValue,
+      minimumLayerVertexValue_injective (D := D) (c₀ := c₀)⟩
+  have hinter : minimumLayerImageFinset D c₀ ∩ G.neighborFinset x.2.1 =
+      (H.neighborFinset x).map ι := by
+    ext z
+    constructor
+    · intro hz
+      obtain ⟨hzU, hzN⟩ := Finset.mem_inter.mp hz
+      change z ∈ Finset.univ.image
+        (minimumLayerVertexValue (D := D) (c₀ := c₀)) at hzU
+      obtain ⟨q, _hqUniv, hq⟩ := Finset.mem_image.mp hzU
+      subst z
+      apply Finset.mem_map.mpr
+      refine ⟨q, (H.mem_neighborFinset x q).mpr ?_, rfl⟩
+      exact (G.mem_neighborFinset x.2.1 q.2.1).mp hzN
+    · intro hz
+      obtain ⟨q, hqN, hq⟩ := Finset.mem_map.mp hz
+      subst z
+      exact Finset.mem_inter.mpr
+        ⟨by
+          change minimumLayerVertexValue q ∈
+            Finset.univ.image
+              (minimumLayerVertexValue (D := D) (c₀ := c₀))
+          exact Finset.mem_image.mpr ⟨q, Finset.mem_univ _, rfl⟩,
+         (G.mem_neighborFinset x.2.1 q.2.1).mpr
+            ((H.mem_neighborFinset x q).mp hqN)⟩
+  rw [minimumLayerExternalNeighborFinset, Finset.card_sdiff, hinter,
+    Finset.card_map, G.card_neighborFinset_eq_degree,
+    H.card_neighborFinset_eq_degree, hregParent, hregChild]
+
+/-- The disjoint external neighborhoods inject the `|U|(d-s)` cross
+incidences into the complement of the child. -/
+theorem minimumLayer_cross_incidence_le_complement
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) * (d - s) ≤
+      Fintype.card V -
+        Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨a, rfl⟩ : ∃ a : ℕ, d = a + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hcardE : ∀ x : minimumLayerVertex D c₀, (E x).card = d - s := by
+    intro x
+    exact card_minimumLayerExternalNeighborFinset G D c₀
+      hregParent hregChild x
+  have hpair :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint E := by
+    intro x _hx y _hy hxy
+    change Disjoint (E x) (E y)
+    rw [Finset.disjoint_left]
+    intro z hzx hzy
+    have hzx' := Finset.mem_sdiff.mp hzx
+    have hzy' := Finset.mem_sdiff.mp hzy
+    exact minimumLayer_no_common_external_neighbor G hfree hd heven hmin hcard
+      c₀ hregChild hcardChild hxy
+      (by
+        intro hzRange
+        obtain ⟨q, hq⟩ := hzRange
+        apply hzx'.2
+        change z ∈ Finset.univ.image
+          (minimumLayerVertexValue (D := D) (c₀ := c₀))
+        exact Finset.mem_image.mpr ⟨q, Finset.mem_univ _, hq⟩)
+      ((G.mem_neighborFinset x.2.1 z).mp hzx'.1).symm
+      ((G.mem_neighborFinset y.2.1 z).mp hzy'.1).symm
+  have hunionSub : (Finset.univ.biUnion E) ⊆ Finset.univ \ U := by
+    intro z hz
+    obtain ⟨x, _hx, hzx⟩ := Finset.mem_biUnion.mp hz
+    have hdiff := Finset.mem_sdiff.mp hzx
+    exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hdiff.2⟩
+  calc
+    Fintype.card (minimumLayerVertex D c₀) * (d - s) =
+        ∑ x : minimumLayerVertex D c₀, (E x).card := by
+          simp_rw [hcardE]
+          simp
+    _ = (Finset.univ.biUnion E).card :=
+      (Finset.card_biUnion hpair).symm
+    _ ≤ (Finset.univ \ U).card := Finset.card_le_card hunionSub
+    _ = Fintype.card V - Fintype.card (minimumLayerVertex D c₀) := by
+      rw [Finset.card_sdiff_of_subset (Finset.subset_univ U),
+        Finset.card_univ, card_minimumLayerImageFinset]
+
+private theorem extension_degree_gap_arithmetic
+    (d s : ℕ) (hd : 4 ≤ d) (hsd : s < d)
+    (hcross :
+      (s * (s - 1) + 3) * (d - s) ≤
+        (d * (d - 1) + 3) - (s * (s - 1) + 3)) :
+    (s - 1) * (s - 1) + 3 ≤ d := by
+  have hdiff :
+      (d * (d - 1) + 3) - (s * (s - 1) + 3) =
+        (d - s) * (d + s - 1) := by
+    have hmul : s * (s - 1) ≤ d * (d - 1) :=
+      Nat.mul_le_mul (Nat.le_of_lt hsd)
+        (Nat.sub_le_sub_right (Nat.le_of_lt hsd) 1)
+    have hle : s * (s - 1) + 3 ≤ d * (d - 1) + 3 := by omega
+    rw [Nat.sub_eq_iff_eq_add hle]
+    obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_lt hsd
+    cases s with
+    | zero => simp
+    | succ n =>
+        have h₁ : n + 1 - 1 = n := by omega
+        have h₂ : n + 1 + t + 1 - (n + 1) = t + 1 := by omega
+        have h₃ : n + 1 + t + 1 - 1 = n + t + 1 := by omega
+        have h₄ : n + 1 + t + 1 + (n + 1) - 1 = 2 * n + t + 2 := by
+          omega
+        rw [h₁, h₂, h₃, h₄]
+        ring
+  rw [hdiff, Nat.mul_comm (d - s)] at hcross
+  have hpos : 0 < d - s := Nat.sub_pos_of_lt hsd
+  have hcancel : s * (s - 1) + 3 ≤ d + s - 1 :=
+    Nat.le_of_mul_le_mul_right hcross hpos
+  by_cases hs : s ≤ 1
+  · interval_cases s <;> omega
+  · have hs2 : 2 ≤ s := by omega
+    obtain ⟨t, rfl⟩ : ∃ t : ℕ, s = t + 2 := ⟨s - 2, by omega⟩
+    norm_num at hcancel ⊢
+    nlinarith
+
+/-- **Quadratic extension gap.**  A strict exact-boundary parent of degree
+`d` containing its minimum-layer child of degree `s` must satisfy
+`d ≥ (s-1)²+3`.  Thus descent steps shrink at least at a square-root rate. -/
+theorem minimumLayer_extension_degree_gap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hsd : s < d) :
+    (s - 1) * (s - 1) + 3 ≤ d := by
+  have hcross := minimumLayer_cross_incidence_le_complement
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  rw [hcard, hcardChild] at hcross
+  exact extension_degree_gap_arithmetic d s hd hsd hcross
+
+/-- Graph-facing capstone: outside degrees `4` and `12`, every exact even
+boundary graph contains a strictly smaller exact even boundary graph, and
+the parent degree is at least quadratic in the child degree. -/
+theorem secondOrder_minimumLayer_quadratic_descent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s) ∧
+      ¬ containsC4 (minimumLayerVertex (secondOrderDefectGraph G) c₀)
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3 ∧
+      Even s ∧
+      (d ≠ 4 → d ≠ 12 →
+        s < d ∧ (s - 1) * (s - 1) + 3 ≤ d) := by
+  obtain ⟨s, hreg, hfreeChild, hcardChild, hsEven, hlt⟩ :=
+    secondOrder_minimumLayer_descent
+      G hfree hd heven hmin hcard c₀ hc₀min
+  refine ⟨s, hreg, hfreeChild, hcardChild, hsEven, ?_⟩
+  intro hd4 hd12
+  have hsd := hlt hd4 hd12
+  exact ⟨hsd, minimumLayer_extension_degree_gap
+    G hfree hd heven hmin hcard c₀ hreg hcardChild hsd⟩
+
 end
 
 end Erdos85
