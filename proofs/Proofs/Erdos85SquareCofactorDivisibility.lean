@@ -149,4 +149,62 @@ theorem square_boundary_exact_factors
   simp only [mul_one] at hsum hcofactor
   exact ⟨s, hdEq, hsum.symm, hcofactor⟩
 
+/-- At an even degree, the exact square family has `s ≡ 1 (mod 6)` and
+its cofactor is divisible by three.  Thus every surviving square case feeds
+directly into the three-primary part of the structural program. -/
+theorem three_dvd_cofactor_of_square_boundary
+    {d p N : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hp : p.Prime) (hdp : d < p)
+    (hboundary : d * (d - 1) + 3 = N * p)
+    (hsquare : IsSquare (d - 3)) :
+    ∃ s : ℕ, d = s * s + 3 ∧ p = d + s ∧ N = d - s ∧
+      s % 6 = 1 ∧ 3 ∣ N := by
+  obtain ⟨s, hdEq, hpEq, hNEq⟩ :=
+    square_boundary_exact_factors hd hp hdp hboundary hsquare
+  have hsOdd : Odd s := by
+    rw [← Nat.not_even_iff_odd]
+    intro hsEven
+    have hsSqEven : Even (s * s) := (Nat.even_mul).2 (Or.inl hsEven)
+    obtain ⟨a, ha⟩ := heven
+    obtain ⟨b, hb⟩ := hsSqEven
+    omega
+  have hpNotThree : p ≠ 3 := by omega
+  have hsModThree : s % 3 = 1 := by
+    have hcases : s % 3 = 0 ∨ s % 3 = 1 ∨ s % 3 = 2 := by omega
+    rcases hcases with h0 | h1 | h2
+    · exfalso
+      have h3p : 3 ∣ p := by
+        rw [Nat.dvd_iff_mod_eq_zero]
+        rw [hpEq, hdEq]
+        simp [Nat.add_mod, Nat.mul_mod, h0]
+      have : 3 = p :=
+        (Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).mp h3p
+      exact hpNotThree this.symm
+    · exact h1
+    · exfalso
+      have h3p : 3 ∣ p := by
+        rw [Nat.dvd_iff_mod_eq_zero]
+        rw [hpEq, hdEq]
+        simp [Nat.add_mod, Nat.mul_mod, h2]
+      have : 3 = p :=
+        (Nat.prime_dvd_prime_iff_eq Nat.prime_three hp).mp h3p
+      exact hpNotThree this.symm
+  have hsModSix : s % 6 = 1 := by
+    obtain ⟨k, hk⟩ := hsOdd
+    have hdecompThree := Nat.mod_add_div s 3
+    have hdecompSix := Nat.mod_add_div s 6
+    omega
+  have h3N : 3 ∣ N := by
+    have hdecompThree := Nat.mod_add_div s 3
+    let k := s / 3
+    have hsForm : s = 3 * k + 1 := by omega
+    refine ⟨3 * k * k + k + 1, ?_⟩
+    rw [hNEq]
+    have hdSplit : d = 3 * (3 * k * k + k + 1) + s := by
+      rw [hdEq, hsForm]
+      ring
+    rw [hdSplit]
+    omega
+  exact ⟨s, hdEq, hpEq, hNEq, hsModSix, h3N⟩
+
 end Erdos85
