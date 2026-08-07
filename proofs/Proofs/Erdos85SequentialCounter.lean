@@ -25,6 +25,9 @@ def seqPrefixTrue {n : Nat} (x : Fin n → Bool) (m : Nat) : Nat :=
 def seqCounterWitness {n : Nat} (x : Fin n → Bool) (i j : Nat) : Bool :=
   decide (j + 1 ≤ seqPrefixTrue x (i + 1))
 
+/-- Pointwise Boolean complement of an input row. -/
+def seqNeg {n : Nat} (x : Fin n → Bool) : Fin n → Bool := fun i => !x i
+
 theorem seqPrefixTrue_succ {n : Nat} (x : Fin n → Bool)
     (i : Nat) (hi : i < n) :
     seqPrefixTrue x (i + 1) =
@@ -60,6 +63,40 @@ theorem seqPrefixTrue_mono {n : Nat} (x : Fin n → Bool)
 theorem seqPrefixTrue_le_total {n : Nat} (x : Fin n → Bool)
     {m : Nat} (hm : m ≤ n) : seqPrefixTrue x m ≤ seqPrefixTrue x n :=
   seqPrefixTrue_mono x hm
+
+/-- A row and its Boolean complement contain `n` true bits altogether. -/
+theorem seqPrefixTrue_neg_add {n : Nat} (x : Fin n → Bool) :
+    seqPrefixTrue x n + seqPrefixTrue (seqNeg x) n = n := by
+  let p : Nat → Prop := fun i =>
+    if h : i < n then x ⟨i, h⟩ = true else False
+  have hp : seqPrefixTrue x n = ((Finset.range n).filter p).card := by
+    unfold seqPrefixTrue p
+    congr 1
+    ext i
+    by_cases hi : i < n <;> simp [hi]
+  have hn : seqPrefixTrue (seqNeg x) n =
+      ((Finset.range n).filter fun i => ¬p i).card := by
+    unfold seqPrefixTrue seqNeg p
+    congr 1
+    ext i
+    by_cases hi : i < n
+    · have hproof : ∀ h : i < n, x ⟨i, h⟩ = x ⟨i, hi⟩ := by
+        intro h
+        rfl
+      cases hx : x ⟨i, hi⟩ <;> simp [hi, hproof, hx]
+    · simp [hi]
+  rw [hp, hn, Finset.card_filter_add_card_filter_not]
+  simp
+
+/-- Exact cardinality splits into the two bounds consumed by PySAT's
+`equals/seqcounter` encoding. -/
+theorem seqPrefixTrue_bounds_of_eq {n k : Nat} (x : Fin n → Bool)
+    (hcount : seqPrefixTrue x n = k) :
+    seqPrefixTrue x n ≤ k ∧ seqPrefixTrue (seqNeg x) n ≤ n - k := by
+  constructor
+  · omega
+  · have hsum := seqPrefixTrue_neg_add x
+    omega
 
 /-- First sequential-counter clause: a true first input raises the first
 counter bit. -/
