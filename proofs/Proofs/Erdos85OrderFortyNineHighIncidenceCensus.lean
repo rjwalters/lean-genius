@@ -352,6 +352,32 @@ theorem orderFortyNine_highNeighborhood_profile_of_nine_high
   have ha3 : a3 ≤ 4 := by omega
   interval_cases a3 <;> omega
 
+/-- The foreign-high blocks carried by the two endpoints of a local matching
+edge at a high root are disjoint.  Otherwise the root and a repeated foreign
+high would be two common neighbors of the matched low endpoints. -/
+theorem orderFortyNine_disjoint_otherHighNeighbors_of_highLocalEdge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {v x y : V}
+    (hvx : G.Adj v x) (hvy : G.Adj v y) (hxy : G.Adj x y) :
+    Disjoint
+      ((G.neighborFinset x ∩ orderFortyNineHighVertices G).erase v)
+      ((G.neighborFinset y ∩ orderFortyNineHighVertices G).erase v) := by
+  rw [Finset.disjoint_left]
+  intro w hwx hwy
+  have hwx' := Finset.mem_erase.mp hwx
+  have hwy' := Finset.mem_erase.mp hwy
+  have hvw : v ≠ w := fun h => hwx'.1 h.symm
+  have hwAdjX : G.Adj w x := by
+    have := (Finset.mem_inter.mp hwx'.2).1
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+  have hwAdjY : G.Adj w y := by
+    have := (Finset.mem_inter.mp hwy'.2).1
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+  exact hfree (containsC4_of_two_common (G.ne_of_adj hxy) hvw
+    hvx hvy hwAdjX hwAdjY)
+
 end
 
 end Erdos85
