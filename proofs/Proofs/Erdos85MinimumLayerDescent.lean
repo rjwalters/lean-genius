@@ -336,6 +336,51 @@ theorem secondOrder_minimumLayer_descent
     omega
   omega
 
+/-- At ambient degree six, the self-similar minimum layer can only have
+degree zero or two.  Thus it is respectively an edgeless three-vertex graph
+or a two-regular five-vertex graph. -/
+theorem secondOrder_degree_six_minimumLayer_degree_zero_or_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 6 * (6 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (s = 0 ∨ s = 2) ∧
+      (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3 := by
+  classical
+  obtain ⟨s, hreg, _hfreeLayer, hn, hsEven, _hslt⟩ :=
+    secondOrder_minimumLayer_descent G hfree (d := 6)
+      (by norm_num) (by norm_num) hmin hcard c₀ hc₀min
+  have hsmall := secondOrder_minimumLayer_totalOrder_le_of_degree_ne_four_twelve
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin hcard
+      (by norm_num) (by norm_num) c₀ hc₀min
+  have hnSmall :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) ≤ 11 := by
+    simpa [card_minimumLayerVertex] using hsmall
+  have hsltFour : s < 4 := by
+    rw [hn] at hnSmall
+    by_contra hs
+    have h4s : 4 ≤ s := Nat.le_of_not_gt hs
+    have hpred : 3 ≤ s - 1 := by omega
+    have hprod : 12 ≤ s * (s - 1) := by
+      calc
+        12 = 4 * 3 := by norm_num
+        _ ≤ s * (s - 1) := Nat.mul_le_mul h4s hpred
+    omega
+  obtain ⟨q, hq⟩ := hsEven
+  refine ⟨s, ?_, hreg, hn⟩
+  omega
+
 end
 
 end Erdos85
