@@ -933,4 +933,283 @@ theorem seqCounterAtMostKStep_formulaSatisfied
         hinputValue hleftValue hrightValue
     exact dimacsFormulaSatisfied_emit hsat₂ hdiagSat
 
+/-- Every inner-loop iteration preserves satisfaction under the eventual
+final table. -/
+theorem seqCounterAtMostKLoop_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal initialTop vars x)
+    (t j fuel k : Nat) (hkfuel : k + fuel ≤ t - 1)
+    (hj : j < vars.size - t) (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostKLoop vars t j fuel k st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostKLoop vars t j fuel k st).clauses := by
+  induction fuel generalizing k st with
+  | zero => exact hprevious
+  | succ fuel ih =>
+      simp only [seqCounterAtMostKLoop] at hfuture ⊢
+      let stepOut := seqCounterAtMostKStep vars t j k st
+      have hext : SeqCounterIdsExtend stepOut final :=
+        (seqCounterIdsExtend_kLoop vars t j fuel (k + 1) stepOut).trans hfuture
+      have hstep : dimacsFormulaSatisfied
+          (seqCounterBlockVal inputVal initialTop x final.ids)
+          stepOut.clauses :=
+        seqCounterAtMostKStep_formulaSatisfied inputVal initialTop vars x
+          hinput t j k (by omega) hj st final hfinalInv hext hprevious
+      apply ih
+      · omega
+      · exact hfuture
+      · exact hstep
+
+/-- The base clause at the start of one outer iteration is sound. -/
+theorem seqCounterAtMostJPrefix_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal initialTop vars x)
+    (j : Nat) (hj : j < vars.size) (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostJPrefix vars j st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostJPrefix vars j st).clauses := by
+  let val := seqCounterBlockVal inputVal initialTop x final.ids
+  simp only [seqCounterAtMostJPrefix] at hfuture ⊢
+  generalize h₁ : seqCounterMkYvar (0, j) st = out₁ at hfuture ⊢
+  rcases out₁ with ⟨s0j, st₁⟩
+  have hmem₁ : ((0, j), s0j) ∈ st₁.ids := by
+    have h := seqCounterMkYvar_mem (0, j) st
+    rw [h₁] at h
+    exact h
+  have hext₁o : SeqCounterIdsExtend st₁
+      (seqCounterEmit [-(vars.getD j 0), (s0j : Int)] st₁).2 :=
+    seqCounterIdsExtend_emit _ st₁
+  have hmem₁f := (hext₁o.trans hfuture) _ hmem₁
+  have hsat₁ : dimacsFormulaSatisfied val st₁.clauses := by
+    have h := dimacsFormulaSatisfied_mkYvar (0, j) hprevious
+    rw [h₁] at h
+    exact h
+  have hinputValue : dimacsLitValue val (vars.getD j 0) = x ⟨j, hj⟩ := by
+    simpa [val] using hinput.block_value final.ids j hj
+  have hauxValue : val s0j = seqCounterWitness x j 0 := by
+    simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+  have hbase : dimacsClauseSatisfied val
+      [-(vars.getD j 0), (s0j : Int)] :=
+    dimacs_seqCounter_base_clause_satisfied_signed x val j hj
+      (vars.getD j 0) s0j (hinput.nonzero j hj)
+      (seqCounterAux_positive_of_mem hfinalInv hmem₁f)
+      hinputValue hauxValue
+  exact dimacsFormulaSatisfied_emit hsat₁ hbase
+
+/-- The last horizontal clause and overflow clause ending an outer iteration
+are sound. -/
+theorem seqCounterAtMostJFinish_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal initialTop vars x)
+    (t j : Nat) (ht : 0 < t) (hj : j < vars.size - t)
+    (htotal : seqPrefixTrue x vars.size ≤ t)
+    (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostJFinish vars t j st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostJFinish vars t j st).clauses := by
+  let val := seqCounterBlockVal inputVal initialTop x final.ids
+  simp only [seqCounterAtMostJFinish] at hfuture ⊢
+  generalize h₁ : seqCounterMkYvar (t - 1, j) st = out₁ at hfuture ⊢
+  rcases out₁ with ⟨stj, st₁⟩
+  have hmem₁ : ((t - 1, j), stj) ∈ st₁.ids := by
+    have h := seqCounterMkYvar_mem (t - 1, j) st
+    rw [h₁] at h
+    exact h
+  have hsat₁ : dimacsFormulaSatisfied val st₁.clauses := by
+    have h := dimacsFormulaSatisfied_mkYvar (t - 1, j) hprevious
+    rw [h₁] at h
+    exact h
+  have htSize : t ≤ vars.size := by omega
+  have hoverIdx : j + t < vars.size := by
+    have hsub : vars.size - t + t = vars.size := Nat.sub_add_cancel htSize
+    omega
+  by_cases hhorizontal : j < vars.size - t - 1
+  · simp only [hhorizontal, ↓reduceIte] at hfuture ⊢
+    generalize h₂ : seqCounterMkYvar (t - 1, j + 1) st₁ = out₂ at hfuture ⊢
+    rcases out₂ with ⟨stj1, st₂⟩
+    have hext₁₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (t - 1, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    have hmem₂ : ((t - 1, j + 1), stj1) ∈ st₂.ids := by
+      have h := seqCounterMkYvar_mem (t - 1, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    have hsat₂ : dimacsFormulaSatisfied val st₂.clauses := by
+      have h := dimacsFormulaSatisfied_mkYvar (t - 1, j + 1) hsat₁
+      rw [h₂] at h
+      exact h
+    let horizontal := [-(stj : Int), (stj1 : Int)]
+    let st₃ := (seqCounterEmit horizontal st₂).2
+    have hext₂₃ : SeqCounterIdsExtend st₂ st₃ :=
+      seqCounterIdsExtend_emit horizontal st₂
+    let overflow := [-(vars.getD (j + t) 0), -(stj : Int)]
+    let finishOut := (seqCounterEmit overflow st₃).2
+    have hext₃o : SeqCounterIdsExtend st₃ finishOut :=
+      seqCounterIdsExtend_emit overflow st₃
+    have hext₁f : SeqCounterIdsExtend st₁ final :=
+      hext₁₂.trans (hext₂₃.trans (hext₃o.trans hfuture))
+    have hext₂f : SeqCounterIdsExtend st₂ final :=
+      hext₂₃.trans (hext₃o.trans hfuture)
+    have hmem₁f := hext₁f _ hmem₁
+    have hmem₂f := hext₂f _ hmem₂
+    have hhorizontalSat : dimacsClauseSatisfied val horizontal := by
+      apply dimacs_seqCounter_horizontal_clause_satisfied x val (t - 1) j
+      · omega
+      · exact seqCounterAux_positive_of_mem hfinalInv hmem₁f
+      · exact seqCounterAux_positive_of_mem hfinalInv hmem₂f
+      · simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+      · simpa [val, Nat.add_assoc] using
+          seqCounterBlockVal_aux inputVal x hfinalInv hmem₂f
+    have hsat₃ : dimacsFormulaSatisfied val st₃.clauses :=
+      dimacsFormulaSatisfied_emit hsat₂ hhorizontalSat
+    have hinputValue : dimacsLitValue val (vars.getD (j + t) 0) =
+        x ⟨j + t, hoverIdx⟩ := by
+      simpa [val] using hinput.block_value final.ids _ hoverIdx
+    have hauxValue : val stj =
+        seqCounterWitness x (j + (t - 1)) (t - 1) := by
+      simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+    have hoverflowSat : dimacsClauseSatisfied val overflow :=
+      dimacs_seqCounter_overflow_clause_satisfied_signed x val t j ht
+        hoverIdx htotal (vars.getD (j + t) 0) stj
+        (hinput.nonzero _ hoverIdx)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₁f)
+        hinputValue hauxValue
+    exact dimacsFormulaSatisfied_emit hsat₃ hoverflowSat
+  · simp only [hhorizontal, ↓reduceIte] at hfuture ⊢
+    let overflow := [-(vars.getD (j + t) 0), -(stj : Int)]
+    let finishOut := (seqCounterEmit overflow st₁).2
+    have hext₁o : SeqCounterIdsExtend st₁ finishOut :=
+      seqCounterIdsExtend_emit overflow st₁
+    have hmem₁f := (hext₁o.trans hfuture) _ hmem₁
+    have hinputValue : dimacsLitValue val (vars.getD (j + t) 0) =
+        x ⟨j + t, hoverIdx⟩ := by
+      simpa [val] using hinput.block_value final.ids _ hoverIdx
+    have hauxValue : val stj =
+        seqCounterWitness x (j + (t - 1)) (t - 1) := by
+      simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+    have hoverflowSat : dimacsClauseSatisfied val overflow :=
+      dimacs_seqCounter_overflow_clause_satisfied_signed x val t j ht
+        hoverIdx htotal (vars.getD (j + t) 0) stj
+        (hinput.nonzero _ hoverIdx)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₁f)
+        hinputValue hauxValue
+    exact dimacsFormulaSatisfied_emit hsat₁ hoverflowSat
+
+/-- A complete outer iteration preserves satisfaction under the final table. -/
+theorem seqCounterAtMostJStep_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal initialTop vars x)
+    (t j : Nat) (ht : 0 < t) (hj : j < vars.size - t)
+    (htotal : seqPrefixTrue x vars.size ≤ t)
+    (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostJStep vars t j st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostJStep vars t j st).clauses := by
+  let prefixOut := seqCounterAtMostJPrefix vars j st
+  let innerOut := seqCounterAtMostKLoop vars t j (t - 1) 0 prefixOut
+  have hpq : SeqCounterIdsExtend prefixOut innerOut :=
+    seqCounterIdsExtend_kLoop vars t j (t - 1) 0 prefixOut
+  have hqo : SeqCounterIdsExtend innerOut
+      (seqCounterAtMostJFinish vars t j innerOut) :=
+    seqCounterIdsExtend_jFinish vars t j innerOut
+  have hpFuture : SeqCounterIdsExtend prefixOut final :=
+    hpq.trans (hqo.trans hfuture)
+  have hqFuture : SeqCounterIdsExtend innerOut final := hqo.trans hfuture
+  have hjSize : j < vars.size := lt_of_lt_of_le hj (Nat.sub_le _ _)
+  have hprefixSat : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) prefixOut.clauses :=
+    seqCounterAtMostJPrefix_formulaSatisfied inputVal initialTop vars x hinput
+      j hjSize st final hfinalInv hpFuture hprevious
+  have hinnerSat : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) innerOut.clauses :=
+    seqCounterAtMostKLoop_formulaSatisfied inputVal initialTop vars x hinput
+      t j (t - 1) 0 (by omega) hj prefixOut final hfinalInv hqFuture hprefixSat
+  exact seqCounterAtMostJFinish_formulaSatisfied inputVal initialTop vars x
+    hinput t j ht hj htotal innerOut final hfinalInv hfuture hinnerSat
+
+/-- Every outer-loop iteration preserves satisfaction under the eventual
+final table. -/
+theorem seqCounterAtMostJLoop_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal initialTop vars x)
+    (t fuel j : Nat) (ht : 0 < t)
+    (hjfuel : j + fuel ≤ vars.size - t)
+    (htotal : seqPrefixTrue x vars.size ≤ t)
+    (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostJLoop vars t fuel j st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostJLoop vars t fuel j st).clauses := by
+  induction fuel generalizing j st with
+  | zero => exact hprevious
+  | succ fuel ih =>
+      simp only [seqCounterAtMostJLoop] at hfuture ⊢
+      let stepOut := seqCounterAtMostJStep vars t j st
+      have hext : SeqCounterIdsExtend stepOut final :=
+        (seqCounterIdsExtend_jLoop vars t fuel (j + 1) stepOut).trans hfuture
+      have hstep : dimacsFormulaSatisfied
+          (seqCounterBlockVal inputVal initialTop x final.ids)
+          stepOut.clauses :=
+        seqCounterAtMostJStep_formulaSatisfied inputVal initialTop vars x
+          hinput t j ht (by omega) htotal st final hfinalInv hext hprevious
+      apply ih
+      · omega
+      · exact hfuture
+      · exact hstep
+
+/-- Soundness of the exact byte-matched PySAT at-most core: the canonical
+extension of any reified input row satisfying the bound satisfies every
+generated clause. -/
+theorem seqCounterAtMostCore_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (htotal : seqPrefixTrue x vars.size ≤ t) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal top x
+        (seqCounterAtMostCore top vars t).ids)
+      (seqCounterAtMostCore top vars t).clauses := by
+  unfold seqCounterAtMostCore
+  split
+  next hnontrivial =>
+    apply seqCounterAtMostJLoop_formulaSatisfied inputVal top vars x hinput
+      t (vars.size - t) 0 hnontrivial.1 (by omega) htotal
+      ({ top := top } : SeqCounterGenState)
+      (seqCounterAtMostJLoop vars t (vars.size - t) 0 { top := top })
+    · apply seqCounterAllocationInvariant_jLoop
+      exact seqCounterAllocationInvariant_initial top
+    · exact SeqCounterIdsExtend.refl _
+    · exact dimacsFormulaSatisfied_empty _
+  next _ => exact dimacsFormulaSatisfied_empty _
+
 end Erdos85
