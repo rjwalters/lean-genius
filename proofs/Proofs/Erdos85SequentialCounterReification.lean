@@ -74,6 +74,122 @@ theorem seqCounterMkYvar_of_fresh {key : Nat × Nat}
           clauses := st.clauses }) := by
   simp [seqCounterMkYvar, h]
 
+/-! ## Allocation-table integrity -/
+
+/-- Keys and identifiers are unique, and every auxiliary identifier lies in
+the interval opened above the block's initial `top`. -/
+structure SeqCounterAllocationInvariant (initialTop : Nat)
+    (st : SeqCounterGenState) : Prop where
+  top_bound : initialTop ≤ st.top
+  keys_nodup : (st.ids.map Prod.fst).Nodup
+  ids_nodup : (st.ids.map Prod.snd).Nodup
+  id_bounds : ∀ entry ∈ st.ids,
+    initialTop < entry.2 ∧ entry.2 ≤ st.top
+
+theorem seqCounterLookup_eq_none_iff (key : Nat × Nat)
+    (ids : List ((Nat × Nat) × Nat)) :
+    seqCounterLookup key ids = none ↔ key ∉ ids.map Prod.fst := by
+  induction ids with
+  | nil => simp [seqCounterLookup]
+  | cons entry rest ih =>
+      by_cases heq : entry.1 = key
+      · simp [seqCounterLookup, heq]
+      · have hne : key ≠ entry.1 := fun h => heq h.symm
+        simp [seqCounterLookup, heq, hne, ih]
+
+theorem seqCounterLookup_eq_none_of_not_mem (key : Nat × Nat)
+    {ids : List ((Nat × Nat) × Nat)}
+    (hkey : key ∉ ids.map Prod.fst) :
+    seqCounterLookup key ids = none :=
+  (seqCounterLookup_eq_none_iff key ids).mpr hkey
+
+theorem seqCounterAllocationInvariant_initial (top : Nat) :
+    SeqCounterAllocationInvariant top ({ top := top } : SeqCounterGenState) := by
+  constructor <;> simp
+
+/-- `mk_yvar` preserves allocation integrity.  This is the key fact that
+makes the final table a genuine reification rather than a many-to-one map. -/
+theorem seqCounterAllocationInvariant_mkYvar
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (key : Nat × Nat) :
+    SeqCounterAllocationInvariant initialTop (seqCounterMkYvar key st).2 := by
+  unfold seqCounterMkYvar
+  split
+  next id hlookup => simpa using hinv
+  next hlookup =>
+    simp only
+    constructor
+    · exact hinv.top_bound.trans (Nat.le_succ _)
+    · simp only [List.map_cons, List.nodup_cons]
+      exact ⟨(seqCounterLookup_eq_none_iff key st.ids).mp hlookup,
+        hinv.keys_nodup⟩
+    · simp only [List.map_cons, List.nodup_cons]
+      constructor
+      · intro hmem
+        obtain ⟨entry, hentry, heq⟩ := List.mem_map.mp hmem
+        have hbound := (hinv.id_bounds entry hentry).2
+        omega
+      · exact hinv.ids_nodup
+    · intro entry hentry
+      simp only [List.mem_cons] at hentry
+      rcases hentry with rfl | hentry
+      · change initialTop < st.top + 1 ∧ st.top + 1 ≤ st.top + 1
+        exact ⟨Nat.lt_succ_of_le hinv.top_bound, le_rfl⟩
+      · have hb := hinv.id_bounds entry hentry
+        exact ⟨hb.1, hb.2.trans (Nat.le_succ _)⟩
+
+theorem seqCounterAllocationInvariant_emit
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    (clause : DimacsClause) :
+    SeqCounterAllocationInvariant initialTop (seqCounterEmit clause st).2 := by
+  constructor
+  · exact hinv.top_bound
+  · exact hinv.keys_nodup
+  · exact hinv.ids_nodup
+  · exact hinv.id_bounds
+
+/-- Reverse lookup used to interpret a final numeric auxiliary identifier. -/
+def seqCounterKeyLookup (id : Nat) :
+    List ((Nat × Nat) × Nat) → Option (Nat × Nat)
+  | [] => none
+  | entry :: rest =>
+      if entry.2 = id then some entry.1 else seqCounterKeyLookup id rest
+
+theorem seqCounterKeyLookup_of_mem {key : Nat × Nat} {id : Nat}
+    {ids : List ((Nat × Nat) × Nat)}
+    (hnodup : (ids.map Prod.snd).Nodup)
+    (hmem : (key, id) ∈ ids) :
+    seqCounterKeyLookup id ids = some key := by
+  induction ids with
+  | nil => simp at hmem
+  | cons entry rest ih =>
+      simp only [List.map_cons, List.nodup_cons] at hnodup
+      simp only [List.mem_cons] at hmem
+      rcases hmem with rfl | hmem
+      · simp [seqCounterKeyLookup]
+      · have hidmem : id ∈ rest.map Prod.snd := by
+          exact List.mem_map.mpr ⟨(key, id), hmem, rfl⟩
+        have hne : entry.2 ≠ id := fun heq => hnodup.1 (heq ▸ hidmem)
+        simp [seqCounterKeyLookup, hne, ih hnodup.2 hmem]
+
+/-- Canonical truth value assigned to a numeric auxiliary ID by the final
+allocation table.  Unallocated IDs default to `false`. -/
+def seqCounterTableVal {n : Nat} (x : Fin n → Bool)
+    (ids : List ((Nat × Nat) × Nat)) : Nat → Bool := fun id =>
+  match seqCounterKeyLookup id ids with
+  | some (k, j) => seqCounterWitness x (j + k) k
+  | none => false
+
+theorem seqCounterTableVal_of_mem {n : Nat} (x : Fin n → Bool)
+    {key : Nat × Nat} {id : Nat} {ids : List ((Nat × Nat) × Nat)}
+    (hnodup : (ids.map Prod.snd).Nodup)
+    (hmem : (key, id) ∈ ids) :
+    seqCounterTableVal x ids id =
+      seqCounterWitness x (key.2 + key.1) key.1 := by
+  rw [seqCounterTableVal, seqCounterKeyLookup_of_mem hnodup hmem]
+
 /-! ## Signed DIMACS semantics -/
 
 abbrev DimacsValuation := Nat → Bool
