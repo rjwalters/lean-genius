@@ -917,6 +917,258 @@ theorem minimumLayer_existsUnique_externalOwner_of_saturated
   have hdisj := hpair (Finset.mem_univ x) (Finset.mem_univ y) (Ne.symm hxy)
   exact (Finset.disjoint_left.mp hdisj hzx hzy).elim
 
+/-- **Saturated block law.**  If an exterior vertex `z` is owned by `v`,
+then its degree into the exterior row owned by `u` is zero over an edge
+`u-v` of the child and one over a nonedge. -/
+theorem minimumLayer_saturated_externalBlock_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z : V}
+    (hzv : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ v) :
+    (G.neighborFinset z ∩ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u).card =
+        if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
+        then 0 else 1 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hzv' := Finset.mem_sdiff.mp hzv
+  have hzOutside : z ∉ minimumLayerImageFinset D c₀ := hzv'.2
+  have huz : u.2.1 ≠ z := by
+    intro huz
+    apply hzOutside
+    change z ∈ Finset.univ.image
+      (minimumLayerVertexValue (D := D) (c₀ := c₀))
+    exact Finset.mem_image.mpr ⟨u, Finset.mem_univ _, huz⟩
+  have hzNotD : ¬ D.Adj u.2.1 z := by
+    intro hD
+    have hcomp : D.connectedComponentMk z = u.1.1 :=
+      (ConnectedComponent.connectedComponentMk_eq_of_adj hD.symm).trans
+        ((ConnectedComponent.mem_supp_iff u.1.1 u.2.1).mp u.2.2)
+    have hzSupp : z ∈ u.1.1.supp :=
+      (ConnectedComponent.mem_supp_iff u.1.1 z).mpr hcomp
+    apply hzOutside
+    change z ∈ Finset.univ.image
+      (minimumLayerVertexValue (D := D) (c₀ := c₀))
+    exact Finset.mem_image.mpr
+      ⟨⟨u.1, ⟨z, hzSupp⟩⟩, Finset.mem_univ _, rfl⟩
+  have hcommon := card_common_eq_if_secondOrderDefect
+    G hfree u.2.1 z huz
+  have hzNotMem : z ∉ D.neighborFinset u.2.1 := by
+    simpa [D.mem_neighborFinset] using hzNotD
+  rw [if_neg hzNotMem] at hcommon
+  obtain ⟨q, hqset⟩ := Finset.card_eq_one.mp hcommon
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have howner : ∀ {w : minimumLayerVertex D c₀}, z ∈ E w → w = v := by
+    intro w hzw
+    by_contra hwv
+    have hdisj := hpair (Finset.mem_univ w) (Finset.mem_univ v) hwv
+    exact (Finset.disjoint_left.mp hdisj hzw hzv).elim
+  by_cases huv : H.Adj u v
+  · rw [if_pos huv]
+    apply Finset.card_eq_zero.mpr
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro r hr
+    have ⟨hrz, hru⟩ := Finset.mem_inter.mp hr
+    have hru' := Finset.mem_sdiff.mp hru
+    have hrv : v.2.1 ≠ r := by
+      intro hvr
+      apply hru'.2
+      change r ∈ Finset.univ.image
+        (minimumLayerVertexValue (D := D) (c₀ := c₀))
+      exact Finset.mem_image.mpr ⟨v, Finset.mem_univ _, hvr⟩
+    exact hfree (containsC4_of_two_common huz hrv
+      huv.symm ((G.mem_neighborFinset v.2.1 z).mp hzv'.1)
+        ((G.mem_neighborFinset u.2.1 r).mp hru'.1).symm
+        ((G.mem_neighborFinset z r).mp hrz).symm)
+  · rw [if_neg huv]
+    have hqmem : q ∈ G.neighborFinset u.2.1 ∩ G.neighborFinset z := by
+      rw [hqset]
+      exact Finset.mem_singleton_self q
+    have ⟨hqu, hqz⟩ := Finset.mem_inter.mp hqmem
+    have hqOutside : q ∉ minimumLayerImageFinset D c₀ := by
+      intro hqU
+      obtain ⟨w, _hw, hwq⟩ := Finset.mem_image.mp hqU
+      have hzw : z ∈ E w := by
+        apply Finset.mem_sdiff.mpr
+        refine ⟨?_, hzOutside⟩
+        have hzq : G.Adj z q := (G.mem_neighborFinset z q).mp hqz
+        change w.2.1 = q at hwq
+        exact (G.mem_neighborFinset w.2.1 z).mpr (by simpa [hwq] using hzq.symm)
+      have hwv := howner hzw
+      apply huv
+      change G.Adj u.2.1 v.2.1
+      change w.2.1 = q at hwq
+      rw [← hwv, hwq]
+      exact (G.mem_neighborFinset u.2.1 q).mp hqu
+    apply Finset.card_eq_one.mpr
+    refine ⟨q, ?_⟩
+    ext r
+    constructor
+    · intro hr
+      have ⟨hrz, hru⟩ := Finset.mem_inter.mp hr
+      have hru' := Finset.mem_sdiff.mp hru
+      have hrCommon : r ∈ G.neighborFinset u.2.1 ∩ G.neighborFinset z :=
+        Finset.mem_inter.mpr
+          ⟨hru'.1, by
+            exact (G.mem_neighborFinset z r).mpr
+              ((G.mem_neighborFinset z r).mp hrz)⟩
+      rw [hqset] at hrCommon
+      simpa using hrCommon
+    · intro hr
+      have hrq : r = q := Finset.mem_singleton.mp hr
+      subst r
+      exact Finset.mem_inter.mpr
+        ⟨hqz, Finset.mem_sdiff.mpr ⟨hqu, hqOutside⟩⟩
+
+/-- Above a child edge there are no edges between the corresponding exterior
+rows.  This is the empty-block half of the saturated matching lift. -/
+theorem minimumLayer_saturated_externalBlock_eq_empty_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z : V}
+    (hzv : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ v)
+    (huv : (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v) :
+    G.neighborFinset z ∩ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u = ∅ := by
+  apply Finset.card_eq_zero.mp
+  simpa [huv] using minimumLayer_saturated_externalBlock_card
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat u v hzv
+
+/-- Above a child nonedge, every vertex in one exterior row has a unique
+neighbor in the other row.  Together with symmetry this says that the block
+is a perfect matching. -/
+theorem minimumLayer_saturated_externalBlock_existsUnique_of_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z : V}
+    (hzv : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ v)
+    (huv : ¬(minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v) :
+    ∃! r : V,
+      r ∈ minimumLayerExternalNeighborFinset
+        G (secondOrderDefectGraph G) c₀ u ∧ G.Adj z r := by
+  have hcardBlock :
+      (G.neighborFinset z ∩ minimumLayerExternalNeighborFinset
+        G (secondOrderDefectGraph G) c₀ u).card = 1 := by
+    simpa [huv] using minimumLayer_saturated_externalBlock_card
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat u v hzv
+  obtain ⟨r, hr⟩ := Finset.card_eq_one.mp hcardBlock
+  refine ⟨r, ?_, ?_⟩
+  · have hrmem : r ∈ G.neighborFinset z ∩
+        minimumLayerExternalNeighborFinset
+          G (secondOrderDefectGraph G) c₀ u := by
+      rw [hr]
+      exact Finset.mem_singleton_self r
+    exact ⟨(Finset.mem_inter.mp hrmem).2,
+      (G.mem_neighborFinset z r).mp (Finset.mem_inter.mp hrmem).1⟩
+  · intro q hq
+    have hqmem : q ∈ G.neighborFinset z ∩
+        minimumLayerExternalNeighborFinset
+          G (secondOrderDefectGraph G) c₀ u :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset z q).mpr hq.2, hq.1⟩
+    rw [hr] at hqmem
+    exact Finset.mem_singleton.mp hqmem
+
+/-- The first permutation-lift coherence constraint: a four-step chain of
+exterior matching blocks cannot close when opposite owner rows are distinct.
+In permutation language, the corresponding fourfold product has no fixed
+point. -/
+theorem minimumLayer_externalBlock_no_closed_fourStep
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (u₀ u₁ u₂ u₃ : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (hu₀₂ : u₀ ≠ u₂) (hu₁₃ : u₁ ≠ u₃)
+    {z₀ z₁ z₂ z₃ : V}
+    (hz₀ : z₀ ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u₀)
+    (hz₁ : z₁ ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u₁)
+    (hz₂ : z₂ ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u₂)
+    (hz₃ : z₃ ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u₃)
+    (h₀₁ : G.Adj z₀ z₁) (h₁₂ : G.Adj z₁ z₂)
+    (h₂₃ : G.Adj z₂ z₃) (h₃₀ : G.Adj z₃ z₀) : False := by
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hz₀₂ : z₀ ≠ z₂ := by
+    intro h
+    subst z₂
+    have hdisj := hpair (Finset.mem_univ u₀) (Finset.mem_univ u₂) hu₀₂
+    exact Finset.disjoint_left.mp hdisj hz₀ hz₂
+  have hz₁₃ : z₁ ≠ z₃ := by
+    intro h
+    subst z₃
+    have hdisj := hpair (Finset.mem_univ u₁) (Finset.mem_univ u₃) hu₁₃
+    exact Finset.disjoint_left.mp hdisj hz₁ hz₃
+  exact hfree (containsC4_of_two_common hz₀₂ hz₁₃
+    h₀₁.symm h₁₂ h₃₀ h₂₃.symm)
+
 end
 
 end Erdos85
