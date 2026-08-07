@@ -114,4 +114,21 @@ theorem seqCounterEqualsCore_reference_five_two :
        [-3, 16], [-4, -16, 17], [-5, -17]] := by
   native_decide
 
+def seqCounterReferenceVars48 : Array Int :=
+  (Array.range 48).map fun i => (i + 1 : Nat)
+
+/-- Production-size checks against PySAT: the degree-seven equality block
+uses `574` auxiliaries and emits `1148` clauses. -/
+theorem seqCounterEqualsCore_reference_48_7 :
+    let out := seqCounterEqualsCore 1176 seqCounterReferenceVars48 7
+    out.top = 1750 ∧ out.clauses.size = 1148 := by
+  native_decide
+
+/-- The degree-eight equality block uses `640` auxiliaries and emits `1280`
+clauses, exactly as the certificate generator. -/
+theorem seqCounterEqualsCore_reference_48_8 :
+    let out := seqCounterEqualsCore 1176 seqCounterReferenceVars48 8
+    out.top = 1816 ∧ out.clauses.size = 1280 := by
+  native_decide
+
 end Erdos85
