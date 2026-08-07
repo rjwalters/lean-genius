@@ -4,7 +4,7 @@ Status: exploratory.  No claim below is yet part of the verified Lean result.
 
 ## Motivation
 
-The current cofinal construction uses the deterministic deletion band
+The direct polarity-band construction uses the deterministic deletion band
 
 \[
   q^2+d,\ldots,q^2+q
@@ -12,8 +12,11 @@ The current cofinal construction uses the deterministic deletion band
 
 of a polarity graph.  This band has lower endpoint of order `q²` but length
 only of order `q`.  The interval-composition lemma therefore gives a
-conductor of order `q³`, and the present plateau-core localization is
-`m = O(d³)`.
+conductor of order `q³`.  Separately, `Erdos85QuadraticConductor` already
+supplies a verified all-order conductor at `36d²` using parabola Sidon graphs
+and a polarity component.  Thus balanced deletion is valuable not merely for
+reaching quadratic order, but for moving the conductor close to the Moore
+scale `d²` with a subquadratic error term.
 
 Arbitrary deletion is unnecessarily pessimistic: it charges every retained
 vertex one degree for every deleted vertex.  A balanced deletion set only
@@ -102,21 +105,73 @@ Choose a prime power `q` in a constant-factor interval above `2d`.  Then
 
 In fact, for `q` sufficiently close to `2d`, the band length is at least a
 positive constant times its lower endpoint.  Feeding `[n₀,N]` into the
-existing interval-composition theorem gives witnesses of minimum degree `d`
-at every order above `C d²` for an absolute constant `C`.  Consequently every
-degree-`d` plateau core would satisfy
+existing interval-composition theorem gives another quadratic conductor,
+potentially with a much smaller constant than the verified `36d²` bound.
+Consequently every degree-`d` plateau core would satisfy
 
 \[
   d(d-1)+3 \le m < C d²,
 \]
 
-improving the presently verified cubic upper localization by a full factor
-of `d`.
+This constant-factor form alone would sharpen the existing quadratic
+localization; the near-diagonal choice below is the materially stronger goal.
 
 This does not alone settle Erdős 85: the remaining window still has quadratic
 width.  It does, however, put all possible cores on the same scale as the
 Moore/defect identities and may make a uniform slack or packing contradiction
 possible.
+
+## Stronger near-diagonal parameter choice
+
+The constant-factor choice `q ≈ 2d` is robust but far from optimal.  The
+probabilistic estimate predicts a retained-order threshold
+
+\[
+  n_0 = dq + O\!\left(q\sqrt{d\log q}\right).
+\]
+
+Consequently one should take `q` as close to `d` as the concentration slack
+and the availability of prime powers allow.  Write `q = d + g`.  Provided
+`g` dominates `sqrt(d log d)`, the deletion budget `q-d=g` still leaves room
+for a union-bound construction, while
+
+\[
+  n_0 = d^2 + dg + O\!\left(d^{3/2}\sqrt{\log d}
+                    + g\sqrt{d\log d}\right).
+\]
+
+A quantitative prime-gap theorem of the form
+
+\[
+  q-d = O(d^\theta), \qquad \tfrac12 < \theta < 1,
+\]
+
+would therefore give
+
+\[
+  n_0 = d^2 + O(d^{1+\theta}).
+\]
+
+For example, the classical exponent `θ = 0.525` would reduce the possible
+plateau-core window to
+
+\[
+  d(d-1)+3 \le m < d^2 + O(d^{1.525}),
+\]
+
+up to logarithmic and absolute-point bookkeeping terms.  This is much
+stronger than a bare `O(d²)` localization: the unresolved width becomes
+subquadratic.  It is also exactly the regime in which the Moore identity has
+small total degree defect relative to the ambient order, so a stability or
+PSD-slack argument becomes substantially more plausible.
+
+This observation depends on two inputs that must not be conflated:
+
+1. a sufficiently close prime or prime power `q ≥ d`, and
+2. enough surplus `q-d` to absorb the simultaneous neighborhood-loss tail.
+
+The optimal choice is therefore the first available `q` above
+`d + C sqrt(d log d)`, not simply the first `q ≥ d`.
 
 ## Required checks
 

@@ -29,6 +29,20 @@ def satAssignmentOfDimacs (val : DimacsValuation) : Nat → Bool :=
 def DimacsClauseNonzero (clause : DimacsClause) : Prop :=
   ∀ lit ∈ clause, lit ≠ 0
 
+/-- Translate a generated DIMACS segment clausewise. -/
+def dimacsFormulaToSatClauses (formula : Array DimacsClause) :
+    Array (CNF.Clause Nat) :=
+  formula.map dimacsClauseToSatClause
+
+/-- The SAT CNF assembled directly from the four verified order-49 clause
+segments, in exactly the order used by the certificate generator. -/
+def orderFortyNineGeneratedSatCnf (masks : Array Nat) : CNF Nat where
+  clauses :=
+    dimacsFormulaToSatClauses (orderFortyNineFixedClauses masks) ++
+    dimacsFormulaToSatClauses orderFortyNineC4Clauses ++
+    dimacsFormulaToSatClauses (orderFortyNineDegreeBlocks 9).clauses ++
+    dimacsFormulaToSatClauses (orderFortyNinePartitionClauses masks)
+
 theorem dimacsLiteral_toSat_eval (val : DimacsValuation) {lit : Int}
     (hlit : lit ≠ 0) :
     (satAssignmentOfDimacs val (lit.natAbs - 1) == (0 < lit)) =
@@ -68,6 +82,107 @@ structure OrderFortyNineCnfCoveredBySegments
       DimacsClauseNonzero source ∧ clause = dimacsClauseToSatClause source) ∨
     (∃ source ∈ orderFortyNinePartitionClauses masks,
       DimacsClauseNonzero source ∧ clause = dimacsClauseToSatClause source)
+
+/-- Clausewise nonzeroness of the four generated DIMACS segments. -/
+structure OrderFortyNineCnfSegmentsNonzero (masks : Array Nat) : Prop where
+  fixed : ∀ clause ∈ orderFortyNineFixedClauses masks,
+    DimacsClauseNonzero clause
+  c4 : ∀ clause ∈ orderFortyNineC4Clauses,
+    DimacsClauseNonzero clause
+  degree : ∀ clause ∈ (orderFortyNineDegreeBlocks 9).clauses,
+    DimacsClauseNonzero clause
+  partition : ∀ clause ∈ orderFortyNinePartitionClauses masks,
+    DimacsClauseNonzero clause
+
+theorem orderFortyNineFixedClauses_nonzero (masks : Array Nat) :
+    ∀ clause ∈ orderFortyNineFixedClauses masks,
+      DimacsClauseNonzero clause := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNineFixedClauses, Array.mem_append] at hclause
+  rcases hclause with hhigh | hlow
+  · simp only [orderFortyNineHighHighFixedClauses, List.mem_toArray,
+      List.mem_map] at hhigh
+    obtain ⟨ab, hab, rfl⟩ := hhigh
+    simp only [List.mem_singleton] at hlit
+    subst lit
+    simp [orderFortyNineEdgeLiteral] <;> omega
+  · simp only [orderFortyNineHighLowFixedClauses, List.mem_toArray,
+      List.mem_flatMap, List.mem_finRange, true_and, List.mem_map] at hlow
+    obtain ⟨y, w, rfl⟩ := hlow
+    simp only [List.mem_singleton] at hlit
+    subst lit
+    unfold orderFortyNineSupportUnitLiteral
+    split <;> simp [orderFortyNineEdgeLiteral] <;> omega
+
+theorem orderFortyNineC4Clauses_nonzero :
+    ∀ clause ∈ orderFortyNineC4Clauses,
+      DimacsClauseNonzero clause := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNineC4Clauses, List.mem_toArray, List.mem_map] at hclause
+  obtain ⟨q, hq, rfl⟩ := hclause
+  rcases q with ⟨⟨i, j⟩, ⟨w, w'⟩⟩
+  simp [orderFortyNineC4Clause] at hlit
+  rcases hlit with rfl | rfl | rfl | rfl <;>
+    simp [orderFortyNineEdgeLiteral] <;> omega
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 2000000 in
+theorem orderFortyNineDegreeBlocks_nonzero :
+    ∀ clause ∈ (orderFortyNineDegreeBlocks 9).clauses,
+      DimacsClauseNonzero clause := by
+  have hcheck :
+      (orderFortyNineDegreeBlocks 9).clauses.all fun clause =>
+        clause.all fun lit => lit != 0 := by
+    native_decide
+  simp only [Array.all_eq_true] at hcheck
+  intro clause hclause lit hlit
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
+  have hclauseCheck := hcheck i hi
+  simp only [List.all_eq_true] at hclauseCheck
+  have hlitCheck := hclauseCheck lit hlit
+  simpa using hlitCheck
+
+theorem orderFortyNinePartitionClauses_nonzero (masks : Array Nat) :
+    ∀ clause ∈ orderFortyNinePartitionClauses masks,
+      DimacsClauseNonzero clause := by
+  intro clause hclause lit hlit
+  simp only [orderFortyNinePartitionClauses, List.mem_toArray,
+    List.mem_flatMap, List.mem_finRange, true_and, List.mem_map] at hclause
+  obtain ⟨y, w, rfl⟩ := hclause
+  simp only [orderFortyNinePartitionClause, List.mem_map] at hlit
+  obtain ⟨x, hx, rfl⟩ := hlit
+  simp [orderFortyNineEdgeLiteral] <;> omega
+
+theorem orderFortyNineCnfSegments_nonzero (masks : Array Nat) :
+    OrderFortyNineCnfSegmentsNonzero masks where
+  fixed := orderFortyNineFixedClauses_nonzero masks
+  c4 := orderFortyNineC4Clauses_nonzero
+  degree := orderFortyNineDegreeBlocks_nonzero
+  partition := orderFortyNinePartitionClauses_nonzero masks
+
+/-- The CNF assembled from the Lean generators is covered by its four source
+segments by construction.  No comparison with an external DIMACS file is
+needed at the logical boundary. -/
+theorem orderFortyNineGeneratedSatCnf_covered
+    (masks : Array Nat) :
+    OrderFortyNineCnfCoveredBySegments masks
+      (orderFortyNineGeneratedSatCnf masks) := by
+  let hnz := orderFortyNineCnfSegments_nonzero masks
+  constructor
+  intro clause hclause
+  simp only [orderFortyNineGeneratedSatCnf, Array.mem_append,
+    dimacsFormulaToSatClauses, Array.mem_map] at hclause
+  rcases hclause with ((hfixed | hc4) | hdegree) | hpartition
+  · obtain ⟨source, hsource, rfl⟩ := hfixed
+    exact Or.inl ⟨source, hsource, hnz.fixed source hsource, rfl⟩
+  · obtain ⟨source, hsource, rfl⟩ := hc4
+    exact Or.inr <| Or.inl ⟨source, hsource, hnz.c4 source hsource, rfl⟩
+  · obtain ⟨source, hsource, rfl⟩ := hdegree
+    exact Or.inr <| Or.inr <| Or.inl
+      ⟨source, hsource, hnz.degree source hsource, rfl⟩
+  · obtain ⟨source, hsource, rfl⟩ := hpartition
+    exact Or.inr <| Or.inr <| Or.inr
+      ⟨source, hsource, hnz.partition source hsource, rfl⟩
 
 theorem sat_of_orderFortyNineCnfSegmentsSatisfied_of_covered
     {masks : Array Nat} {cnf : CNF Nat} {val : DimacsValuation}
@@ -117,5 +232,18 @@ theorem false_of_orderFortyNine_lrat
     (hcheck : Std.Tactic.BVDecide.LRAT.check proof cnf) : False :=
   false_of_orderFortyNine_cnf_unsat hc hzero hcovered
     (Std.Tactic.BVDecide.LRAT.check_sound proof cnf hcheck)
+
+/-- Closed generator-facing entry point: the certificate is checked against
+the CNF assembled directly from the four Lean segments, so no external-file
+coverage hypothesis remains. -/
+theorem false_of_orderFortyNine_generated_lrat
+    {masks : Array Nat} {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 9 masks edges)
+    (hzero : OrderFortyNineHighMasksZero masks)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedSatCnf masks)) : False :=
+  false_of_orderFortyNine_lrat hc hzero
+    (orderFortyNineGeneratedSatCnf_covered masks) proof hcheck
 
 end Erdos85
