@@ -73,6 +73,8 @@ theorem finsetExterior_secondOrderDefect_adj_iff
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     (U : Finset V)
+    [Fintype (finsetExteriorVertex U)]
+    [DecidableEq (finsetExteriorVertex U)]
     [DecidableRel (finsetExteriorGraph G U).Adj]
     [DecidableRel (antipodalGraph (finsetExteriorGraph G U)).Adj]
     [DecidableRel (triangleFreeEdgeGraph (finsetExteriorGraph G U)).Adj]

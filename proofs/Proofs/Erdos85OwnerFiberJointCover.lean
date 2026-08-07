@@ -104,6 +104,7 @@ theorem exists_minimumLayer_saturated_jointOwnerOperators
     let P := (D.comap (fun z : X => z.1)).adjMatrix ℚ
     let A := (G.comap (fun z : X => z.1)).adjMatrix ℚ
     ∃ owner : X → minimumLayerVertex D c₀,
+      (∀ z, z.1 ∈ minimumLayerExternalNeighborFinset G D c₀ (owner z)) ∧
       (∀ a, (ownerFiberFinset owner a).card = d - s) ∧
       A * normalizedOwnerProjection owner (d - s) =
         normalizedOwnerProjection owner (d - s) * A ∧
@@ -184,7 +185,7 @@ theorem exists_minimumLayer_saturated_jointOwnerOperators
   have htraceB : Matrix.trace B =
       (Fintype.card (minimumLayerVertex D c₀) : ℚ) :=
     trace_relationMatrix_not_adj H
-  refine ⟨owner, huniform, hcommA, hcommP, ?_⟩
+  refine ⟨owner, hownerMem, huniform, hcommA, hcommP, ?_⟩
   rw [htrace, htraceA, htraceB, zero_sub]
 
 end
