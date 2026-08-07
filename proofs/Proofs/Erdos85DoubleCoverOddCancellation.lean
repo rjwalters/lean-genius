@@ -264,6 +264,85 @@ theorem two_mul_injOn_of_no_halfTurn_pairs
       linear_combination hr
     rwa [← hxy']
 
+/-- Away from the doubling kernel, an inverse-closed Sidon support detects a
+doubled ordered difference exactly when one of the two deck lifts belongs to
+the support.  This is the even-cycle replacement for the odd-cycle
+`h ∈ A ↔ 2h ∈ ODS(A)` lemma. -/
+theorem two_mul_mem_orderedDifferenceSet_iff_mem_or_halfTurn_mem
+    {r : ℕ} [NeZero r]
+    (A : Finset (ZMod (2 * r)))
+    (hneg : negFinset A = A) (hsidon : IsOrderedSidon A)
+    (h : ZMod (2 * r)) (h2 : 2 * h ≠ 0) :
+    2 * h ∈ orderedDifferenceSet A ↔
+      h ∈ A ∨ h + (r : ZMod (2 * r)) ∈ A := by
+  have hnegMem (x : ZMod (2 * r)) (hx : x ∈ A) : -x ∈ A := by
+    rw [← hneg]
+    exact (mem_negFinset_iff A (-x)).mpr (by simpa using hx)
+  constructor
+  · intro hd
+    simp only [orderedDifferenceSet, Finset.mem_image] at hd
+    obtain ⟨⟨x, y⟩, hxyMem, hdiff⟩ := hd
+    obtain ⟨hx, hy, hxy⟩ := mem_orderedDistinctPairs_iff.mp hxyMem
+    have hpairNeg : ((-y, -x) : ZMod (2 * r) × ZMod (2 * r)) ∈
+        orderedDistinctPairs A := by
+      rw [mem_orderedDistinctPairs_iff]
+      exact ⟨hnegMem y hy, hnegMem x hx, fun heq ↦ hxy (by
+        have := congrArg Neg.neg heq
+        simpa using this.symm)⟩
+    have hdiffNeg :
+        (fun q : ZMod (2 * r) × ZMod (2 * r) ↦ q.1 - q.2) (x, y) =
+        (fun q : ZMod (2 * r) × ZMod (2 * r) ↦ q.1 - q.2) (-y, -x) := by
+      simp only
+      ring
+    have hpairs := hsidon (Finset.mem_coe.mpr hxyMem)
+      (Finset.mem_coe.mpr hpairNeg) hdiffNeg
+    have hxyNeg : x = -y := congrArg Prod.fst hpairs
+    have hxDouble : 2 * x = 2 * h := by
+      rw [hxyNeg] at hdiff ⊢
+      linear_combination hdiff
+    have hkernel : 2 * (x - h) = 0 := by
+      linear_combination hxDouble
+    rcases (two_mul_eq_zero_iff_eq_zero_or_halfTurn (x - h)).mp hkernel with
+        hzero | hhalf
+    · left
+      have : x = h := sub_eq_zero.mp hzero
+      rwa [← this]
+    · right
+      have : x = h + (r : ZMod (2 * r)) := by
+        linear_combination hhalf
+      rwa [← this]
+  · rintro (hh | hh)
+    · have hne : h ≠ -h := by
+        intro heq
+        apply h2
+        calc
+          2 * h = h + h := two_mul h
+          _ = h + (-h) := congrArg (h + ·) heq
+          _ = 0 := add_neg_cancel h
+      simp only [orderedDifferenceSet, Finset.mem_image]
+      refine ⟨(h, -h), mem_orderedDistinctPairs_iff.mpr
+        ⟨hh, hnegMem h hh, hne⟩, ?_⟩
+      ring
+    · let q : ZMod (2 * r) := h + (r : ZMod (2 * r))
+      have hq2 : 2 * q = 2 * h := by
+        dsimp only [q]
+        have hr2 : 2 * (r : ZMod (2 * r)) = 0 := by
+          exact (two_mul_eq_zero_iff_eq_zero_or_halfTurn
+            (r : ZMod (2 * r))).mpr (Or.inr rfl)
+        linear_combination hr2
+      have hqne : q ≠ -q := by
+        intro heq
+        apply h2
+        rw [← hq2]
+        calc
+          2 * q = q + q := two_mul q
+          _ = q + (-q) := congrArg (q + ·) heq
+          _ = 0 := add_neg_cancel q
+      simp only [orderedDifferenceSet, Finset.mem_image]
+      refine ⟨(q, -q), mem_orderedDistinctPairs_iff.mpr
+        ⟨hh, hnegMem q hh, hqne⟩, ?_⟩
+      rw [show q - -q = 2 * q by ring, hq2]
+
 end
 
 end Erdos85
