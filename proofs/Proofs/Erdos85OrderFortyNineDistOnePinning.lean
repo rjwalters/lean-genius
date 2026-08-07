@@ -141,6 +141,137 @@ theorem orderFortyNineDistOne_partner_forces_no_sibling_coincidence
     exact hfree (containsC4_of_two_common hu12u23.symm hv2u13
       hu23_2.symm hu12_2.symm hu23u13.symm hpair.symm)
 
+/-- Every neighbor of a high vertex has a unique partner inside that high
+vertex's induced neighborhood matching. -/
+theorem orderFortyNine_existsUnique_local_partner_of_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v s : V} (hv : G.degree v = 8) (hsv : G.Adj s v) :
+    ∃! x : V, G.Adj s x ∧ G.Adj v x := by
+  let sLocal : {z : V // z ∈ G.neighborSet v} :=
+    ⟨s, by simpa using hsv.symm⟩
+  have hdeg := orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+    G hfree hmin hcard hv sLocal
+  rw [← (G.induce (G.neighborSet v)).card_neighborFinset_eq_degree,
+    Finset.card_eq_one] at hdeg
+  rcases hdeg with ⟨xLocal, hxLocal⟩
+  refine ⟨xLocal.1, ?_, ?_⟩
+  · have hxmem : xLocal ∈
+        (G.induce (G.neighborSet v)).neighborFinset sLocal := by
+      simp [hxLocal]
+    exact ⟨((G.induce (G.neighborSet v)).mem_neighborFinset
+      sLocal xLocal).mp hxmem, xLocal.2⟩
+  · intro y hy
+    have hymem : (⟨y, hy.2⟩ : {z : V // z ∈ G.neighborSet v}) ∈
+        (G.induce (G.neighborSet v)).neighborFinset sLocal := by
+      exact ((G.induce (G.neighborSet v)).mem_neighborFinset sLocal
+        (⟨y, hy.2⟩ : {z : V // z ∈ G.neighborSet v})).mpr hy.1
+    have heq : (⟨y, hy.2⟩ : {z : V // z ∈ G.neighborSet v}) =
+        xLocal := by simpa [hxLocal] using hymem
+    exact congrArg Subtype.val heq
+
+/-- Canonical siblings in the distinct-common-neighbor case, together with
+the exhaustive (and mutually constrained) coincidence alternatives with
+`u23`. -/
+theorem orderFortyNineDistOne_exists_siblings_and_coincidence_split
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v1 v2 v3 u12 u13 u23 : V}
+    (hv1 : G.degree v1 = 8) (hv2 : G.degree v2 = 8)
+    (hv3 : G.degree v3 = 8)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3)
+    (hu12u13 : u12 ≠ u13)
+    (hu12_1 : G.Adj u12 v1) (hu12_2 : G.Adj u12 v2)
+    (hu13_1 : G.Adj u13 v1) (hu13_3 : G.Adj u13 v3)
+    (hu23_2 : G.Adj u23 v2) (hu23_3 : G.Adj u23 v3) :
+    let p12 : {z : V // z ∈ G.neighborSet v1} :=
+      ⟨u12, by simpa using hu12_1.symm⟩
+    let p13 : {z : V // z ∈ G.neighborSet v1} :=
+      ⟨u13, by simpa using hu13_1.symm⟩
+    ∃ x2 x3 : V,
+      G.degree x2 = 7 ∧ G.degree x3 = 7 ∧
+      G.Adj u12 x2 ∧ G.Adj v2 x2 ∧
+      G.Adj u13 x3 ∧ G.Adj v3 x3 ∧
+      x2 ∈ secondLayerBranch G v1 p12 ∧
+      x3 ∈ secondLayerBranch G v1 p13 ∧
+      ((x2 = u23 ∧ x3 ≠ u23) ∨
+       (x2 ≠ u23 ∧ x3 = u23) ∨
+       (x2 ≠ u23 ∧ x3 ≠ u23)) := by
+  dsimp
+  rcases (orderFortyNine_existsUnique_local_partner_of_high
+    G hfree hmin hcard hv2 hu12_2).exists with ⟨x2, hx2u12, hx2v2⟩
+  rcases (orderFortyNine_existsUnique_local_partner_of_high
+    G hfree hmin hcard hv3 hu13_3).exists with ⟨x3, hx3u13, hx3v3⟩
+  have hx2deg : G.degree x2 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv2 hx2v2
+  have hx3deg : G.degree x3 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv3 hx3v3
+  have hx2Branch : x2 ∈ secondLayerBranch G v1
+      (⟨u12, by simpa using hu12_1.symm⟩ :
+        {z : V // z ∈ G.neighborSet v1}) := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨by simpa [SimpleGraph.mem_neighborFinset] using hx2u12, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    constructor
+    · intro h
+      have hdeg := hv1
+      rw [← h] at hdeg
+      omega
+    · intro hv1x2
+      have hcommon := orderFortyNineDistTwo_common_highPair_eq_singleton
+        G hfree hmin hcard hv1 hv2 h12 hu12_1 hu12_2
+      have hx2Common : x2 ∈
+          G.neighborFinset v1 ∩ G.neighborFinset v2 := by
+        simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+        exact ⟨hv1x2, hx2v2⟩
+      have hx2eq : x2 = u12 := by simpa [hcommon] using hx2Common
+      exact G.loopless.irrefl u12 (hx2eq ▸ hx2u12)
+  have hx3Branch : x3 ∈ secondLayerBranch G v1
+      (⟨u13, by simpa using hu13_1.symm⟩ :
+        {z : V // z ∈ G.neighborSet v1}) := by
+    rw [secondLayerBranch, Finset.mem_sdiff]
+    refine ⟨by simpa [SimpleGraph.mem_neighborFinset] using hx3u13, ?_⟩
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset, not_or]
+    constructor
+    · intro h
+      have hdeg := hv1
+      rw [← h] at hdeg
+      omega
+    · intro hv1x3
+      have hcommon := orderFortyNineDistTwo_common_highPair_eq_singleton
+        G hfree hmin hcard hv1 hv3 h13 hu13_1 hu13_3
+      have hx3Common : x3 ∈
+          G.neighborFinset v1 ∩ G.neighborFinset v3 := by
+        simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+        exact ⟨hv1x3, hx3v3⟩
+      have hx3eq : x3 = u13 := by simpa [hcommon] using hx3Common
+      exact G.loopless.irrefl u13 (hx3eq ▸ hx3u13)
+  have hu23low : G.degree u23 = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv2 hu23_2.symm
+  have hnotBoth := orderFortyNineDistOne_not_both_siblings_eq_u23
+    G hfree (v2 := v2) (v3 := v3) hv1 hu23low hu12u13
+      hu12_1 hu13_1 hx2u12 hx3u13
+  refine ⟨x2, x3, hx2deg, hx3deg, hx2u12, hx2v2,
+    hx3u13, hx3v3, hx2Branch, hx3Branch, ?_⟩
+  by_cases h2 : x2 = u23
+  · exact Or.inl ⟨h2, fun h3 => hnotBoth ⟨h2, h3⟩⟩
+  by_cases h3 : x3 = u23
+  · exact Or.inr (Or.inl ⟨h2, h3⟩)
+  · exact Or.inr (Or.inr ⟨h2, h3⟩)
+
 /-- The two foreign highs occupy the branches rooted at their respective
 common neighbors with the first high. -/
 theorem orderFortyNineDistOne_foreign_highs_in_respective_branches
