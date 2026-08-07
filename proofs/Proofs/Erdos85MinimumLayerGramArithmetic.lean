@@ -85,4 +85,59 @@ theorem sum_rowSquare_sub_sumSq_of_offDiagonal_gram
             rw [Finset.sum_const, nsmul_eq_mul]
             ring
 
+/-- Normalize the integer minimum-layer cross-pair identity to the natural
+number identity used by `minimumLayer_orderMass_le_or_all`. -/
+theorem minimumLayer_crossPair_identity_nat
+    {I : Type*} [DecidableEq I]
+    (M : Finset I) (L : I → ℕ) (d n w : ℕ)
+    (hd1 : 1 ≤ d) (huw : M.card * w ≤ n)
+    (hboundary : n = d * (d - 1) + 3)
+    (hidentity :
+      (∑ c ∈ M,
+        (((d : ℤ) - (L c : ℤ)) * ((d : ℤ) - (L c : ℤ)) -
+          ((d : ℤ) - (L c : ℤ)) - ((w : ℤ) - 3))) =
+        (M.card : ℤ) * ((M.card : ℤ) - 1) * (w : ℤ)) :
+    M.card * (n - M.card * w) + ∑ c ∈ M, L c * L c =
+      (2 * d - 1) * ∑ c ∈ M, L c := by
+  have hboundaryZ : (n : ℤ) =
+      (d : ℤ) * ((d : ℤ) - 1) + 3 := by
+    rw [hboundary, Nat.cast_add, Nat.cast_mul,
+      Nat.cast_sub hd1]
+    norm_num
+  have hexpand :
+      (∑ c ∈ M,
+        (((d : ℤ) - (L c : ℤ)) * ((d : ℤ) - (L c : ℤ)) -
+          ((d : ℤ) - (L c : ℤ)) - ((w : ℤ) - 3))) =
+        (M.card : ℤ) * ((n : ℤ) - (w : ℤ)) -
+          ((2 : ℤ) * d - 1) * (∑ c ∈ M, (L c : ℤ)) +
+          ∑ c ∈ M, ((L c : ℤ) * (L c : ℤ)) := by
+    calc
+      _ = ∑ c ∈ M,
+          (((n : ℤ) - (w : ℤ)) -
+            (((2 : ℤ) * d - 1) * (L c : ℤ)) +
+              (L c : ℤ) * (L c : ℤ)) := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rw [hboundaryZ]
+        ring
+      _ = (M.card : ℤ) * ((n : ℤ) - (w : ℤ)) -
+          ((2 : ℤ) * d - 1) * (∑ c ∈ M, (L c : ℤ)) +
+          ∑ c ∈ M, ((L c : ℤ) * (L c : ℤ)) := by
+        rw [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+          Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum]
+  have hZ :
+      (M.card : ℤ) * ((n : ℤ) - (M.card : ℤ) * (w : ℤ)) +
+          ∑ c ∈ M, ((L c : ℤ) * (L c : ℤ)) =
+        ((2 : ℤ) * d - 1) * (∑ c ∈ M, (L c : ℤ)) := by
+    rw [hexpand] at hidentity
+    linarith
+  have htwo : 1 ≤ 2 * d := by omega
+  have hcoef : (((2 * d - 1 : ℕ) : ℤ)) =
+      ((2 : ℤ) * d - 1) := by
+    rw [Nat.cast_sub htwo]
+    push_cast
+    ring
+  rw [← hcoef] at hZ
+  exact_mod_cast hZ
+
 end Erdos85
