@@ -59,6 +59,46 @@ theorem orderFortyNine_highIncidenceCount_three_le_two_of_five_high
     (orderFortyNine_card_inter_highSupport_le_one G hfree hxz)
     (orderFortyNine_card_inter_highSupport_le_one G hfree hyz)
 
+/-- The five-high stratum has exactly three possible incidence profiles,
+parameterized by a linear triple system with zero, one, or two blocks. -/
+theorem orderFortyNine_highIncidence_profile_of_five_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 5) :
+    let n := orderFortyNineHighIncidenceCount G
+    (n 0 = 14 ∧ n 1 = 20 ∧ n 2 = 10 ∧ n 3 = 0) ∨
+    (n 0 = 13 ∧ n 1 = 23 ∧ n 2 = 7 ∧ n 3 = 1) ∨
+    (n 0 = 12 ∧ n 1 = 26 ∧ n 2 = 4 ∧ n 3 = 2) := by
+  dsimp only
+  let n := orderFortyNineHighIncidenceCount G
+  change (n 0 = 14 ∧ n 1 = 20 ∧ n 2 = 10 ∧ n 3 = 0) ∨
+    (n 0 = 13 ∧ n 1 = 23 ∧ n 2 = 7 ∧ n 3 = 1) ∨
+    (n 0 = 12 ∧ n 1 = 26 ∧ n 2 = 4 ∧ n 3 = 2)
+  have hp := orderFortyNine_highIncidence_general_profile
+    G hfree hmin hcard
+  dsimp only at hp
+  change 2 * n 2 + 6 * n 3 +
+      (orderFortyNineHighVertices G).card =
+        (orderFortyNineHighVertices G).card *
+          (orderFortyNineHighVertices G).card ∧
+    n 1 + (orderFortyNineHighVertices G).card *
+        (orderFortyNineHighVertices G).card =
+      9 * (orderFortyNineHighVertices G).card + 3 * n 3 ∧
+    2 * n 0 + 2 * n 3 + 19 * (orderFortyNineHighVertices G).card =
+      (orderFortyNineHighVertices G).card *
+        (orderFortyNineHighVertices G).card + 98 at hp
+  have ht : n 3 ≤ 2 := by
+    simpa [n] using
+      orderFortyNine_highIncidenceCount_three_le_two_of_five_high
+        G hfree hHigh
+  rw [hHigh] at hp
+  interval_cases n 3 <;> omega
+
 end
 
 end Erdos85
