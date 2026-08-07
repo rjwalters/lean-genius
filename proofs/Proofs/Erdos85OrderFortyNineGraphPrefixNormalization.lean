@@ -94,6 +94,41 @@ theorem orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
   exact Erdos85.OrderFortyNineWitnessTable.exists_labeling_normalizing_two_threeFinsets
     hcardSubtype A B hA hB hAB
 
+/-- Whenever the nine-high profile contains at least two triple blocks, choose
+two distinct witnessing low vertices and normalize their supports. -/
+theorem orderFortyNine_exists_normalized_two_tripleSupports_of_count_ge_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hHigh : (orderFortyNineHighVertices G).card = 9)
+    (hcount : 2 ≤ orderFortyNineHighIncidenceCount G 3) :
+    ∃ x y : V,
+      x ≠ y ∧
+      (orderFortyNineHighSupport G x).card = 3 ∧
+      (orderFortyNineHighSupport G y).card = 3 ∧
+      ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9,
+        (finsetInSubtype (orderFortyNineHighVertices G)
+            (orderFortyNineHighSupport G x)).map e.toEmbedding = {0, 1, 2} ∧
+        ((finsetInSubtype (orderFortyNineHighVertices G)
+            (orderFortyNineHighSupport G y)).map e.toEmbedding = {3, 4, 5} ∨
+         (finsetInSubtype (orderFortyNineHighVertices G)
+            (orderFortyNineHighSupport G y)).map e.toEmbedding = {0, 3, 4}) := by
+  let T := (orderFortyNineLowVertices G).filter fun x =>
+    (orderFortyNineHighSupport G x).card = 3
+  have hTcard : T.card = orderFortyNineHighIncidenceCount G 3 := by
+    rfl
+  have hTone : 1 < T.card := by omega
+  obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp hTone
+  have hx3 : (orderFortyNineHighSupport G x).card = 3 :=
+    (Finset.mem_filter.mp hx).2
+  have hy3 : (orderFortyNineHighSupport G y).card = 3 :=
+    (Finset.mem_filter.mp hy).2
+  have hlin := orderFortyNine_card_inter_highSupport_le_one G hfree hxy
+  obtain ⟨e, he1, he2⟩ :=
+    orderFortyNine_exists_highLabeling_normalizing_two_tripleSupports
+      G hHigh hx3 hy3 hlin
+  exact ⟨x, y, hxy, hx3, hy3, e, he1, he2⟩
+
 end
 
 end Erdos85
