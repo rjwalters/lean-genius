@@ -1089,7 +1089,7 @@ deploy_website() {
     # Verify we have the account pinned
     if [[ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
         print_error "CLOUDFLARE_ACCOUNT_ID not set. Add it to .env to prevent wrong-account deploys."
-        print_info "Expected: 251e6e8626d921603fdc3f0d75576bc6 (Personal Account)"
+        print_info "Expected: the Personal Account (see scripts/deploy/check-account.sh)"
         return 1
     fi
 

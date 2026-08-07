@@ -9,7 +9,7 @@
 # claude-monitor migration (#41033/#41044/#41045) the PRIMARY source is
 # ~/.claude-monitor/accounts.env, which carries EMAIL + KEY only:
 #
-#     ACCOUNT_EMAIL_N       account email  (e.g. robb@2amlogic.com)
+#     ACCOUNT_EMAIL_N       account email  (e.g. alice@example.com)
 #     ACCOUNT_KEY_N         the OAuth token value                    (SECRET)
 #     ACCOUNT_TOKEN_FILE_N  OPTIONAL explicit token filename (legacy .env only)
 #
@@ -18,9 +18,9 @@
 # strip '.' and '-' from the email local-part, append '-<first-domain-label>',
 # lowercase, drop unsafe chars, then '.token'. Examples:
 #
-#     robb@2amlogic.com             -> robb-2amlogic.token
-#     r.j.walters@gmail.com         -> rjwalters-gmail.token
-#     robb@integratedplasmonics.com -> robb-integratedplasmonics.token
+#     alice@example.com             -> alice-example.token
+#     a.b.carol@example.net         -> abcarol-example.token
+#     dave@example.org              -> dave-example.token
 #     agent-1@2amlogic.com          -> agent1-2amlogic.token
 #     agent-2@2amlogic.com          -> agent2-2amlogic.token
 #

@@ -10,9 +10,9 @@
 # the email local-part, append '-<first-domain-label>', lowercase, drop unsafe
 # chars, then '.token'. Examples:
 #
-#     robb@2amlogic.com             -> robb-2amlogic.token
-#     r.j.walters@gmail.com         -> rjwalters-gmail.token
-#     robb@integratedplasmonics.com -> robb-integratedplasmonics.token
+#     alice@example.com             -> alice-example.token
+#     a.b.carol@example.net         -> abcarol-example.token
+#     dave@example.org              -> dave-example.token
 #     agent-1@2amlogic.com          -> agent1-2amlogic.token
 #     agent-2@2amlogic.com          -> agent2-2amlogic.token
 #
