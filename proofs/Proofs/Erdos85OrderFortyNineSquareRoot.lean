@@ -47,6 +47,14 @@ noncomputable def orderFortyNineSquareCandidate
     FriendshipTheoremOQ01.onesMatrix V -
       (secondOrderDefectGraph G).adjMatrix ℤ
 
+/-- Reduction modulo two of the order-49 square candidate. -/
+noncomputable def orderFortyNineSquareCandidateModTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] : Matrix V V (ZMod 2) :=
+  (Int.castRingHom (ZMod 2)).mapMatrix (orderFortyNineSquareCandidate G)
+
 /-- In the order-49 degree band, the degree-minus-one diagonal is exactly
 `6I` plus the indicator of the high sector. -/
 theorem orderFortyNine_degreePredDiagonal_eq_six_add_highDiagonal
@@ -181,5 +189,39 @@ theorem orderFortyNine_four_dvd_squareCandidate_det
   refine ⟨k * k, ?_⟩
   rw [hdet, hk]
   ring
+
+/-- The mod-two candidate matrix of every realizable order-49 graph is
+singular.  This is the rank-parity interface for extracting aggregate cuts
+from the matching/miss geometry. -/
+theorem orderFortyNine_squareCandidateModTwo_det_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (orderFortyNineSquareCandidateModTwo G).det = 0 := by
+  rcases orderFortyNine_four_dvd_squareCandidate_det
+      G hfree hmin hcard with ⟨k, hk⟩
+  rw [orderFortyNineSquareCandidateModTwo, ← RingHom.map_det, hk]
+  rw [map_mul]
+  exact mul_eq_zero.mpr (Or.inl (by decide : (4 : ZMod 2) = 0))
+
+/-- Equivalently, realizability supplies a nonzero mod-two null vector of
+the candidate. -/
+theorem orderFortyNine_exists_nonzero_squareCandidateModTwo_kernel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    ∃ w : V → ZMod 2,
+      w ≠ 0 ∧ (orderFortyNineSquareCandidateModTwo G).mulVec w = 0 := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  exact Matrix.exists_mulVec_eq_zero_iff.mpr
+    (orderFortyNine_squareCandidateModTwo_det_eq_zero G hfree hmin hcard)
 
 end Erdos85
