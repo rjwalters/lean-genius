@@ -197,4 +197,35 @@ theorem square_unit_bouquet_of_quotient_system
       hdefect hmpos htpos hmt htargetMass
   exact ⟨hj, ht, hk⟩
 
+/-- The quotient-system bouquet is impossible when a target can serve at
+most one unit component.  Graphically, this injectivity follows from the
+four-cycle obstruction for two sources of one cyclic double cover. -/
+theorem false_of_square_unit_quotient_system_of_injective_target
+    {U T : Type*} [Fintype U] [DecidableEq U]
+    [Fintype T] [DecidableEq T] [Nonempty U]
+    (Q : U → U → ℕ) (target : U → T)
+    (s p N j : ℕ)
+    (hs7 : 7 ≤ s) (hsOdd : Odd s)
+    (hp : p = s * s + s + 3)
+    (hN : N = s * s - s + 3)
+    (hkj : Fintype.card U + j = N)
+    (htargetSurj : Function.Surjective target)
+    (htargetInj : Function.Injective target)
+    (htargetMass : 2 * Fintype.card T ≤ j)
+    (hrow : ∀ c, ∑ e, Q c e = s * s + 1)
+    (hsq : ∀ c e,
+      (∑ f, Q c f * Q f e) +
+          2 * (if target c = target e then 1 else 0) =
+        s * s * (if c = e then 1 else 0) + p) : False := by
+  obtain ⟨-, ht, hk⟩ := square_unit_bouquet_of_quotient_system
+    Q target s p N j hs7 hsOdd hp hN hkj htargetSurj htargetMass hrow hsq
+  have hcardLe : Fintype.card U ≤ Fintype.card T :=
+    Fintype.card_le_of_injective target htargetInj
+  have hss : s ≤ s * s := by nlinarith
+  have hNadd : N + s = s * s + 3 := by omega
+  have h49 : 49 ≤ s * s := Nat.mul_le_mul hs7 hs7
+  have h7s : 7 * s ≤ s * s := Nat.mul_le_mul_right s hs7
+  rw [ht, hk] at hcardLe
+  omega
+
 end Erdos85
