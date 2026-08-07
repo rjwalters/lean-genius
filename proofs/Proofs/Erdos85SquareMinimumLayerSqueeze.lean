@@ -78,6 +78,61 @@ theorem false_of_square_minimum_layer_cauchy
   dsimp only [C, F] at htail hF
   nlinarith
 
+/-- Strengthened arithmetic core once the mass-two escape is excluded.  If
+the row mass toward larger components is at least four, the same moment
+inequality already contradicts `a ≥ s/2`. -/
+theorem false_of_square_minimum_layer_cauchy_four
+    (s a L : ℚ) (hs : 7 ≤ s) (haHalf : s ≤ 2 * a) (hL : 4 ≤ L)
+    (hineq :
+      a * (s * s + 3 - L) ^ 2 ≤
+        (s * s - s + 3 - a * L) *
+          ((s * s + s + 3) * a + s * s - L)) : False := by
+  let p : ℚ := s * s + s + 3
+  let C : ℚ :=
+    -p * a ^ 2 + (s * s + 6) * a - s * s + s - 3
+  let R4 : ℚ :=
+    -4 * p * a ^ 2 + (3 * s * s + 24) * a +
+      s ^ 4 - s ^ 3 - s * s + 4 * s - 12
+  have hs0 : 0 < s := by linarith
+  have hp0 : 0 < p := by dsimp only [p]; positivity
+  have hbaseC :
+      0 < s ^ 4 - s ^ 3 + 7 * s * s - 16 * s + 12 := by
+    have hs3 : 0 ≤ s ^ 3 := by positivity
+    have hs1 : 0 ≤ s - 1 := by linarith
+    have h1 : 0 ≤ s ^ 3 * (s - 1) := mul_nonneg hs3 hs1
+    have h2 : 0 < 7 * s * s - 16 * s + 12 := by nlinarith
+    nlinarith
+  have hbracketC :
+      0 < p * (a + s / 2) - (s * s + 6) := by
+    dsimp only [p]
+    have hnonneg : 0 ≤ (2 * a - s) * (s * s + s + 3) := by positivity
+    nlinarith [sq_nonneg s]
+  have hprodC :
+      0 ≤ (a - s / 2) *
+        (p * (a + s / 2) - (s * s + 6)) :=
+    mul_nonneg (by linarith) hbracketC.le
+  have hC : C < 0 := by
+    dsimp only [C, p] at hprodC ⊢
+    nlinarith
+  have hbaseR : 0 < (s - 2) * (s * s + 10 * s - 12) := by
+    apply mul_pos <;> nlinarith [sq_nonneg s]
+  have hbracketR :
+      0 < 4 * p * (a + s / 2) - (3 * s * s + 24) := by
+    dsimp only [p]
+    have hnonneg : 0 ≤ (2 * a - s) * (s * s + s + 3) := by positivity
+    nlinarith [sq_nonneg s]
+  have hprodR :
+      0 ≤ (a - s / 2) *
+        (4 * p * (a + s / 2) - (3 * s * s + 24)) :=
+    mul_nonneg (by linarith) hbracketR.le
+  have hR4 : R4 < 0 := by
+    dsimp only [R4, p] at hprodR ⊢
+    nlinarith
+  have htail : (L - 4) * C ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos (by linarith) hC.le
+  dsimp only [C, R4, p] at htail hR4
+  nlinarith
+
 /-- Abstract minimum-layer form.  The weights are the normalized component
 orders, and `Q` is the quotient row out of a minimum-weight state.  Exact
 mass, row, and excess identities plus the integral ratio-two gap exclude a
