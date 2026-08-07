@@ -153,6 +153,55 @@ theorem cycleCover_diagAnchor_not_both_halfTurns
   exact cycleCover_halfTurn_commonNeighbor_exclusive G hfree u v hvinj f
     hadj horient y (v 0) (Ne.symm (hsep (f y) 0))
 
+/-- An antipodal matching on a doubled cycle cannot coexist with all cycle
+edges: two consecutive matching edges and the corresponding two cycle edges
+are the rim of a `C₄`.  Consequently, if the exceptional half-turn diagonal
+edge occurs, the doubled defect component cannot be triangle-free colored. -/
+theorem no_halfTurn_matching_of_cycle_edges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (v : ZMod (2 * r) → V) (hvinj : Function.Injective v)
+    (hcycle : ∀ y, G.Adj (v y) (v (y + 1)))
+    (hmatch : ∀ y, G.Adj (v y)
+      (v (y + (r : ZMod (2 * r))))) : False := by
+  letI : Fact (1 < 2 * r) := ⟨by omega⟩
+  let z0 : ZMod (2 * r) := 0
+  let z1 : ZMod (2 * r) := 1
+  let zr : ZMod (2 * r) := (r : ZMod (2 * r))
+  let zr1 : ZMod (2 * r) := ((r + 1 : ℕ) : ZMod (2 * r))
+  have hval0 : z0.val = 0 := by simp [z0]
+  have hval1 : z1.val = 1 := by
+    simp [z1, ZMod.val_one]
+  have hvalr : zr.val = r := by
+    dsimp only [zr]
+    rw [ZMod.val_cast_of_lt]
+    omega
+  have hvalr1 : zr1.val = r + 1 := by
+    dsimp only [zr1]
+    rw [ZMod.val_cast_of_lt]
+    omega
+  have hne {x y : ZMod (2 * r)} (hxy : x.val ≠ y.val) : v x ≠ v y :=
+    hvinj.ne (fun h ↦ hxy (congrArg ZMod.val h))
+  have h01 : G.Adj (v z0) (v z1) := by
+    simpa [z0, z1] using hcycle 0
+  have h1r1 : G.Adj (v z1) (v zr1) := by
+    simpa [z1, zr1, Nat.cast_add, add_comm] using hmatch 1
+  have hr1r : G.Adj (v zr1) (v zr) := by
+    have h := (hcycle zr).symm
+    simpa [zr, zr1, Nat.cast_add, add_assoc] using h
+  have hr0 : G.Adj (v zr) (v z0) := by
+    simpa [zr, z0] using (hmatch 0).symm
+  apply hfree
+  exact containsC4_of_rim h01 h1r1 hr1r hr0
+    (hne (by rw [hval0, hvalr1]; omega))
+    (hne (by rw [hval1, hvalr]; omega))
+    (hne (by rw [hval1, hval0]; omega))
+    (hne (by rw [hval1, hvalr1]; omega))
+    (hne (by rw [hvalr, hval0]; omega))
+    (hne (by rw [hvalr, hvalr1]; omega))
+
 end
 
 end Erdos85
