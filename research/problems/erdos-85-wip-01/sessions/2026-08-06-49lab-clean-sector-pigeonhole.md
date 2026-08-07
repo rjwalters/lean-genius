@@ -44,3 +44,22 @@ Collaboration: Claude (freqpair branch) + Codex/GPT (assembly branch), squad roo
 ## Census state (k ≤ 3 proven)
 h=1: unique distribution (n0,n1)=(40,8). h=3: (25,18,3,0),(24,21,0,1). Triangles
 edge-disjoint; matched S_v edges in no all-low triangle; every low has odd TF-degree.
+
+## Partition-law era (late session)
+
+5. **Square-root identity** (`Erdos85OrderFortyNineSquareRoot`, Codex): A·A =
+   6•I + E_H + J − M with M the defect matrix, E_H the high diagonal. Necessary
+   conditions: IsSquare(det Q), 4 ∣ det Q. Bruck–Ryser context: 49 sits between
+   plane orders 6 (nonexistent — no ER₆ polarity graph, plausibly why f drops)
+   and 7.
+
+6. **The partition law** (`orderFortyNine_low_neighborhood_partitions_highs`,
+   Codex, via defect-isolation + the identity): for every low y and every high w,
+   EXACTLY ONE member of N(y) is adjacent to w. Complemented by the code-side law
+   (D+I)k = h·1 (`Erdos85OrderFortyNineDefectWeightedIncidence`).
+
+7. **Stratum kills** (all certificate-free in Lean or 0.0s propagation + hand
+   proof): h=3 dist1-b2 (double-common C4), dist1-b1, dist1-c1 (partition-law
+   propagation); h=9 profiles t=0 (parity: even parts, odd sum) and t=1
+   (k1-capacity 18 < 36 needy). Remaining: h=1 dirty (5 profile lanes), h=3
+   c2 + dist-2, h=9 t ∈ {2,3,4}, h=5, h=7.
