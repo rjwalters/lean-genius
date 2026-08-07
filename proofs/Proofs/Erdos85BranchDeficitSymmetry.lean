@@ -135,6 +135,75 @@ theorem squareOrder_highBranchMissCount_comm
     card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
       G hd hv hneigh hlocal t]
 
+/-- Arithmetic core of the dirty row-sum identity.  On `d+1` branches, if
+all branch counts are zero or one, their total is `d-1`, and the paired
+branch count is zero, then the number of missing far branches is exactly the
+count in the vertex's own branch. -/
+theorem card_far_misses_eq_self_of_branch_sum
+    {P : Type*} [Fintype P] [DecidableEq P]
+    {d : ℕ} (hPcard : Fintype.card P = d + 1)
+    (s t : P) (hst : s ≠ t) (f : P → ℕ)
+    (hle : ∀ u, f u ≤ 1) (hsum : ∑ u : P, f u = d - 1)
+    (htzero : f t = 0) :
+    ((((Finset.univ : Finset P).erase s).erase t).filter fun u =>
+      f u = 0).card = f s := by
+  let M : Finset P := ((Finset.univ.erase s).erase t)
+  have hMcard : M.card = d - 1 := by
+    dsimp [M]
+    rw [Finset.card_erase_of_mem (by simp [hst.symm] :
+      t ∈ (Finset.univ : Finset P).erase s)]
+    rw [Finset.card_erase_of_mem (by simp : s ∈ (Finset.univ : Finset P))]
+    rw [Finset.card_univ, hPcard]
+    omega
+  have hsMem : s ∈ (Finset.univ : Finset P) := by simp
+  have htMem : t ∈ (Finset.univ : Finset P).erase s := by simp [hst.symm]
+  have hsErase := Finset.sum_erase_add
+    (Finset.univ : Finset P) f hsMem
+  have htErase := Finset.sum_erase_add
+    ((Finset.univ : Finset P).erase s) f htMem
+  have hsumM : (∑ u ∈ M, f u) + f s = d - 1 := by
+    have ht : (∑ u ∈ M, f u) =
+        ∑ u ∈ (Finset.univ : Finset P).erase s, f u := by
+      dsimp [M]
+      rw [← htErase, htzero, add_zero]
+    calc
+      (∑ u ∈ M, f u) + f s =
+          (∑ u ∈ (Finset.univ : Finset P).erase s, f u) + f s := by rw [ht]
+      _ = ∑ u : P, f u := hsErase
+      _ = d - 1 := hsum
+  have haccount := sum_add_card_filter_eq_card_of_le_one M f (by
+    intro u _
+    exact hle u)
+  dsimp [M] at haccount ⊢
+  dsimp [M] at hMcard
+  omega
+
+/-- Double-count a Boolean relation between two finsets. -/
+theorem sum_card_filter_relation_comm
+    {A B : Type*} [DecidableEq A] [DecidableEq B]
+    (S : Finset A) (T : Finset B) (R : A → B → Prop)
+    [DecidableRel R] :
+    (∑ a ∈ S, (T.filter fun b => R a b).card) =
+      ∑ b ∈ T, (S.filter fun a => R a b).card := by
+  classical
+  rw [← Finset.card_sigma, ← Finset.card_sigma]
+  apply Finset.card_bij (fun p _ => ⟨p.2, p.1⟩)
+  · intro p hp
+    simp only [Finset.mem_sigma, Finset.mem_filter] at hp ⊢
+    exact ⟨hp.2.1, hp.1, hp.2.2⟩
+  · intro p hp q hq hpq
+    cases p
+    cases q
+    cases hpq
+    rfl
+  · intro p hp
+    simp only [Finset.mem_sigma, Finset.mem_filter] at hp
+    refine ⟨⟨p.2, p.1⟩, ?_, ?_⟩
+    · simp only [Finset.mem_sigma, Finset.mem_filter]
+      exact ⟨hp.2.1, hp.1, hp.2.2⟩
+    · cases p
+      rfl
+
 end
 
 end Erdos85
