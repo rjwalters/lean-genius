@@ -19,6 +19,54 @@ noncomputable section
 
 open OrderFortyNineWitnessTable
 
+/-- Equal cardinalities of every fiber are enough to relabel one finite
+function as another.  This is the abstract mechanism used below to turn a
+support census into a full vertex labeling. -/
+noncomputable def equivOfFiberCardEq
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    (f : α → γ) (g : β → γ)
+    (hcard : ∀ c, Fintype.card {a // f a = c} =
+      Fintype.card {b // g b = c}) : α ≃ β :=
+  Equiv.ofFiberEquiv fun c =>
+    (Fintype.equivFinOfCardEq (hcard c)).trans
+      (Fintype.equivFinOfCardEq rfl).symm
+
+theorem equivOfFiberCardEq_map
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    (f : α → γ) (g : β → γ)
+    (hcard : ∀ c, Fintype.card {a // f a = c} =
+      Fintype.card {b // g b = c}) (a : α) :
+    g (equivOfFiberCardEq f g hcard a) = f a :=
+  Equiv.ofFiberEquiv_map _ _
+
+/-- The finite support represented by one entry of a canonical mask array. -/
+def orderFortyNineMaskSupport (masks : Array Nat) (i : Fin 49) :
+    Finset (Fin 9) :=
+  Finset.univ.filter fun w =>
+    (orderFortyNineSupportMask masks i).getLsbD w.val
+
+/-- Once the graph and a canonical mask array have equally large fibers for
+every high support, a full `V ≃ Fin 49` labeling preserving all supports is
+automatic.  This isolates the remaining mathematical obligation as a pure
+fiber-cardinality census. -/
+theorem exists_orderFortyNine_vertexLabeling_of_supportFiberCardEq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 9)
+    (masks : Array Nat)
+    (hcard : ∀ S : Finset (Fin 9),
+      Fintype.card {x : V // orderFortyNineLabeledHighSupport G e x = S} =
+      Fintype.card {i : Fin 49 // orderFortyNineMaskSupport masks i = S}) :
+    ∃ E : V ≃ Fin 49, ∀ x,
+      orderFortyNineMaskSupport masks (E x) =
+        orderFortyNineLabeledHighSupport G e x := by
+  let E := equivOfFiberCardEq
+    (orderFortyNineLabeledHighSupport G e)
+    (orderFortyNineMaskSupport masks) hcard
+  exact ⟨E, fun x => equivOfFiberCardEq_map _ _ hcard x⟩
+
 /-- Relabeling the high coordinates acts on every labeled support by the
 corresponding `Finset.map`. -/
 theorem orderFortyNineLabeledHighSupport_trans
