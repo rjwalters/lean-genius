@@ -137,6 +137,61 @@ theorem orderFortyNine_high_add_lowLow_le_three
     G hfree hmin hcard hx]
   exact (localTriangleEdges_le_three_of_degree_seven G hfree hx).1
 
+/-- Equivalent residual form of the local budget. -/
+theorem orderFortyNine_lowLowLocalEdgeCount_le_three_sub_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 7) :
+    orderFortyNineLowLowLocalEdgeCount G x ≤
+      3 - (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+  have hbudget := orderFortyNine_high_add_lowLow_le_three
+    G hfree hmin hcard hx
+  omega
+
+/-- A low vertex incident with three high vertices has no residual all-low
+local triangle edge. -/
+theorem orderFortyNine_lowLowLocalEdgeCount_eq_zero_of_three_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 7)
+    (hk : (G.neighborFinset x ∩
+      orderFortyNineHighVertices G).card = 3) :
+    orderFortyNineLowLowLocalEdgeCount G x = 0 := by
+  have hbudget := orderFortyNine_high_add_lowLow_le_three
+    G hfree hmin hcard hx
+  omega
+
+/-- A low vertex with no high neighbor has a positive residual local edge,
+recovering the forced all-low triangle numerically. -/
+theorem orderFortyNine_lowLowLocalEdgeCount_pos_of_no_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x : V} (hx : G.degree x = 7)
+    (hk : (G.neighborFinset x ∩
+      orderFortyNineHighVertices G).card = 0) :
+    0 < orderFortyNineLowLowLocalEdgeCount G x := by
+  rcases orderFortyNine_exists_allLow_triangle_of_highNeighborCount_zero
+    G hfree hmin hcard hx hk with ⟨y, z, _hy, _hz, hxy, hxz, hyz⟩
+  have hedge : 0 < (G.induce (G.neighborSet x)).edgeFinset.card := by
+    rw [Finset.card_pos]
+    refine ⟨s(⟨y, hxy⟩, ⟨z, hxz⟩), ?_⟩
+    exact (G.induce (G.neighborSet x)).mem_edgeFinset.mpr hyz
+  unfold orderFortyNineLowLowLocalEdgeCount
+  rw [hk, Nat.sub_zero]
+  exact hedge
+
 end
 
 end Erdos85
