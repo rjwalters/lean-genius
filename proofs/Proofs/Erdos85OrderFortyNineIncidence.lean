@@ -294,6 +294,30 @@ theorem orderFortyNine_card_high_le_nine
   rcases hodd with ⟨m, hm⟩
   omega
 
+/-- **Complete high-count stratification.**  Every hypothetical order-49
+graph has exactly `1`, `3`, `5`, `7`, or `9` degree-eight vertices.  This
+exposes the three large-high strata that must not be omitted from a complete
+order-49 obstruction. -/
+theorem orderFortyNine_card_high_eq_one_or_three_or_five_or_seven_or_nine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (orderFortyNineHighVertices G).card = 1 ∨
+      (orderFortyNineHighVertices G).card = 3 ∨
+      (orderFortyNineHighVertices G).card = 5 ∨
+      (orderFortyNineHighVertices G).card = 7 ∨
+      (orderFortyNineHighVertices G).card = 9 := by
+  have hle := orderFortyNine_card_high_le_nine G hfree hmin hcard
+  have hodd := orderFortyNine_card_degreeEight_odd G hfree hmin hcard
+  change Odd (orderFortyNineHighVertices G).card at hodd
+  rcases hodd with ⟨m, hm⟩
+  rw [hm] at hle ⊢
+  omega
+
 end
 
 end Erdos85
