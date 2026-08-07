@@ -440,6 +440,244 @@ theorem sum_far_highBranchMissCount_eq_matchedCount
       exact hpoint a ha
     _ = highBranchMatchedCount G v s := hsumInternal
 
+/-- **Paired-branch saver inequality.**  Every internally unmatched vertex
+of one branch needs a distinct matched saver for its fan into the paired
+branch.  Consequently the source branch size is at most the sum of the two
+matched counts. -/
+theorem card_branch_le_add_matchedCounts_of_paired
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) {v : V}
+    (hv : G.degree v = d + 1)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = d)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = d)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    (secondLayerBranch G v s).card ≤
+      highBranchMatchedCount G v s + highBranchMatchedCount G v t := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let M : Finset P := (Finset.univ.erase s).erase t
+  let Bs := secondLayerBranch G v s
+  let Bt := secondLayerBranch G v t
+  let unmatched : Finset V := Bs.filter fun a =>
+    (G.neighborFinset a ∩ Bs).card = 0
+  let saver : Finset V := M.biUnion fun u =>
+    (secondLayerBranch G v u).filter fun q =>
+      (G.neighborFinset q ∩ Bt).card = 0
+  have hstne : s ≠ t := fun h => G.loopless.irrefl s.1
+    (congrArg Subtype.val h ▸ hst)
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hsaverDisj : (↑M : Set P).PairwiseDisjoint (fun u =>
+      (secondLayerBranch G v u).filter fun q =>
+        (G.neighborFinset q ∩ Bt).card = 0) := by
+    intro u hu w hw huw
+    change Disjoint
+      ((secondLayerBranch G v u).filter fun q =>
+        (G.neighborFinset q ∩ Bt).card = 0)
+      ((secondLayerBranch G v w).filter fun q =>
+        (G.neighborFinset q ∩ Bt).card = 0)
+    rw [Finset.disjoint_left]
+    intro q hqu hqw
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) huw))
+        (Finset.mem_filter.mp hqu).1 (Finset.mem_filter.mp hqw).1
+  have hsaverCard : saver.card = highBranchMatchedCount G v t := by
+    rw [show saver = M.biUnion (fun u =>
+        (secondLayerBranch G v u).filter fun q =>
+          (G.neighborFinset q ∩ Bt).card = 0) by rfl,
+      Finset.card_biUnion hsaverDisj]
+    calc
+      (∑ u ∈ M, ((secondLayerBranch G v u).filter fun q =>
+          (G.neighborFinset q ∩ Bt).card = 0).card) =
+          ∑ u ∈ M, highBranchMissCount G v u t := by rfl
+      _ = ∑ u ∈ M, highBranchMissCount G v t u := by
+        apply Finset.sum_congr rfl
+        intro u _
+        exact highBranchMissCount_comm_of_equal_card G hfree u t (by
+          rw [card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
+              G (by omega) hv hneigh hlocal u,
+            card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
+              G (by omega) hv hneigh hlocal t])
+      _ = highBranchMatchedCount G v t := by
+        have hrow := sum_far_highBranchMissCount_eq_matchedCount
+          G hfree hv hexternal t s hst.symm (by
+            intro a ha
+            apply houterDegree
+            rw [secondLayer]
+            exact Finset.mem_biUnion.mpr ⟨t, by simp, ha⟩)
+        have herase : ((Finset.univ : Finset P).erase s).erase t =
+            ((Finset.univ : Finset P).erase t).erase s := by
+          ext u
+          simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+          tauto
+        change (∑ u ∈ ((Finset.univ : Finset P).erase s).erase t,
+          highBranchMissCount G v t u) = highBranchMatchedCount G v t
+        rw [herase]
+        exact hrow
+  have hunmatchedExistsSaver : ∀ a ∈ unmatched,
+      (G.neighborFinset a ∩ saver).Nonempty := by
+    intro a haU
+    have haBs : a ∈ Bs := (Finset.mem_filter.mp haU).1
+    have haInternalZero : (G.neighborFinset a ∩ Bs).card = 0 :=
+      (Finset.mem_filter.mp haU).2
+    have haSecond : a ∈ secondLayer G v := by
+      rw [secondLayer]
+      exact Finset.mem_biUnion.mpr ⟨s, by simp, haBs⟩
+    have hmiss := card_farBranch_misses_eq_internalDegree
+      G hfree hv hexternal s t hst a haBs (houterDegree haSecond)
+    rw [haInternalZero] at hmiss
+    have hfirst : ∀ u : {u : P // u ∈ M},
+        (G.neighborFinset a ∩ secondLayerBranch G v u.1).card = 1 := by
+      intro u
+      have hle : (G.neighborFinset a ∩
+          secondLayerBranch G v u.1).card ≤ 1 := by
+        have hau : a ≠ u.1.1 := by
+          intro hau
+          exact (Finset.mem_sdiff.mp haBs).2 (by
+            simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+            exact Or.inr (hau ▸ u.1.2))
+        exact card_neighborFinset_inter_secondLayerBranch_le_one
+          G hfree v a u.1 hau
+      by_contra hne
+      have hzero : (G.neighborFinset a ∩
+          secondLayerBranch G v u.1).card = 0 := by omega
+      have huFilter : u.1 ∈ (M.filter fun w =>
+          (G.neighborFinset a ∩ secondLayerBranch G v w).card = 0) :=
+        Finset.mem_filter.mpr ⟨u.2, hzero⟩
+      have hempty : (M.filter fun w =>
+          (G.neighborFinset a ∩ secondLayerBranch G v w).card = 0) = ∅ :=
+        Finset.card_eq_zero.mp (by simpa [M, Bs] using hmiss)
+      rw [hempty] at huFilter
+      exact Finset.notMem_empty _ huFilter
+    by_contra hnone
+    have hinterEmpty : G.neighborFinset a ∩ saver = ∅ := by
+      exact Finset.not_nonempty_iff_eq_empty.mp hnone
+    have hsecond : ∀ u : {u : P // u ∈ M},
+        ∀ q ∈ G.neighborFinset a ∩ secondLayerBranch G v u.1,
+          (G.neighborFinset q ∩ secondLayerBranch G v t).card = 1 := by
+      intro u q hq
+      have hle : (G.neighborFinset q ∩
+          secondLayerBranch G v t).card ≤ 1 := by
+        have hqt : q ≠ t.1 := by
+          intro hqt
+          subst q
+          exact (Finset.mem_sdiff.mp (Finset.mem_inter.mp hq).2).2 (by
+            simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+            exact Or.inr t.2)
+        exact card_neighborFinset_inter_secondLayerBranch_le_one
+          G hfree v q t hqt
+      by_contra hne
+      have hzero : (G.neighborFinset q ∩
+          secondLayerBranch G v t).card = 0 := by omega
+      have hqSaver : q ∈ saver := by
+        apply Finset.mem_biUnion.mpr
+        refine ⟨u.1, u.2, ?_⟩
+        exact Finset.mem_filter.mpr ⟨(Finset.mem_inter.mp hq).2, hzero⟩
+      have hqInter : q ∈ G.neighborFinset a ∩ saver :=
+        Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hq).1, hqSaver⟩
+      rw [hinterEmpty] at hqInter
+      exact Finset.notMem_empty _ hqInter
+    exact false_of_squareOrder_pairedBranch_fullFan
+      G hfree hd hv hneigh hlocal s t hst a haBs hfirst hsecond
+  let chooseSaver : {a // a ∈ unmatched} → V := fun a =>
+    (hunmatchedExistsSaver a.1 a.2).choose
+  have hchooseSaverMem : ∀ a : {a // a ∈ unmatched},
+      chooseSaver a ∈ G.neighborFinset a.1 ∩ saver := by
+    intro a
+    exact (hunmatchedExistsSaver a.1 a.2).choose_spec
+  let chooseSaverSubtype : {a // a ∈ unmatched} → {q // q ∈ saver} := fun a =>
+    ⟨chooseSaver a, (Finset.mem_inter.mp (hchooseSaverMem a)).2⟩
+  have hchooseInjective : Function.Injective chooseSaverSubtype := by
+    intro a b hab
+    apply Subtype.ext
+    by_contra habv
+    have hqeq : chooseSaver a = chooseSaver b :=
+      congrArg Subtype.val hab
+    have hqa : G.Adj (chooseSaver a) a.1 := by
+      have := (Finset.mem_inter.mp (hchooseSaverMem a)).1
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+    have hqb : G.Adj (chooseSaver a) b.1 := by
+      have := (Finset.mem_inter.mp (hchooseSaverMem b)).1
+      rw [← hqeq] at this
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using this
+    have hsa : G.Adj s.1 a.1 := by
+      have haBs := (Finset.mem_filter.mp a.2).1
+      exact (G.mem_neighborFinset s.1 a.1).mp
+        (Finset.mem_sdiff.mp haBs).1
+    have hsb : G.Adj s.1 b.1 := by
+      have hbBs := (Finset.mem_filter.mp b.2).1
+      exact (G.mem_neighborFinset s.1 b.1).mp
+        (Finset.mem_sdiff.mp hbBs).1
+    have hqs : chooseSaver a ≠ s.1 := by
+      intro hqs
+      have hqSaver := (Finset.mem_inter.mp (hchooseSaverMem a)).2
+      rcases Finset.mem_biUnion.mp hqSaver with ⟨u, _, hqu⟩
+      have hqBranch := (Finset.mem_filter.mp hqu).1
+      exact (Finset.mem_sdiff.mp hqBranch).2 (by
+        simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+        exact Or.inr (hqs ▸ s.2))
+    exact hfree (containsC4_of_two_common habv hqs
+      hqa hqb hsa hsb)
+  have hUle : unmatched.card ≤ saver.card := by
+    simpa only [Fintype.card_coe] using
+      Fintype.card_le_of_injective chooseSaverSubtype hchooseInjective
+  have hinternalLe : ∀ a ∈ Bs,
+      (G.neighborFinset a ∩ Bs).card ≤ 1 := by
+    intro a ha
+    have has : a ≠ s.1 := by
+      intro has
+      subst a
+      exact (Finset.mem_sdiff.mp ha).2 (by
+        simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+        exact Or.inr s.2)
+    exact card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v a s has
+  have hpartition : unmatched.card + highBranchMatchedCount G v s = Bs.card := by
+    have hfilters := Finset.card_filter_add_card_filter_not
+      (s := Bs) (p := fun a =>
+        (G.neighborFinset a ∩ Bs).card = 0)
+    have hnotEq : (Bs.filter fun a =>
+        ¬(G.neighborFinset a ∩ Bs).card = 0) =
+        Bs.filter fun a => (G.neighborFinset a ∩ Bs).card = 1 := by
+      ext a
+      simp only [Finset.mem_filter]
+      constructor
+      · rintro ⟨ha, hzero⟩
+        have hle := hinternalLe a ha
+        exact ⟨ha, by omega⟩
+      · rintro ⟨ha, hone⟩
+        exact ⟨ha, by omega⟩
+    rw [hnotEq] at hfilters
+    simpa [unmatched, Bs, highBranchMatchedCount] using hfilters
+  rw [hsaverCard] at hUle
+  dsimp [unmatched, Bs] at hUle hpartition ⊢
+  omega
+
+/-- At square order the paired saver inequality reads
+`d - 2 ≤ M_s + M_t`. -/
+theorem squareOrder_sub_two_le_add_matchedCounts_of_paired
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 3 ≤ d) {v : V}
+    (hv : G.degree v = d + 1)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = d)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = d)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    d - 2 ≤ highBranchMatchedCount G v s + highBranchMatchedCount G v t := by
+  have hsave := card_branch_le_add_matchedCounts_of_paired
+    G hfree hd hv hneigh hlocal hexternal houterDegree s t hst
+  rw [card_secondLayerBranch_eq_sub_two_of_squareOrder_highRoot
+    G (by omega) hv hneigh hlocal s] at hsave
+  exact hsave
+
 end
 
 end Erdos85
