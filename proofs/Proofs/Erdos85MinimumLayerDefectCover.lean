@@ -31,6 +31,42 @@ noncomputable instance minimumLayerExteriorVertexFintype
   unfold minimumLayerExteriorVertex
   infer_instance
 
+/-- A cyclic parametrization in the parent defect graph lifts to the
+exterior subtype whenever all of its vertices lie outside the minimum layer. -/
+theorem minimumLayer_exteriorCycleParam_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent)
+    {n : ℕ} [NeZero n]
+    (u : ZMod n → V)
+    (hu : ∀ z, D.neighborFinset (u z) = {u (z - 1), u (z + 1)})
+    (hout : ∀ z, u z ∉ minimumLayerImageFinset D c₀) :
+    let ux : ZMod n → minimumLayerExteriorVertex D c₀ :=
+      fun z => ⟨u z, hout z⟩
+    ∀ z, (D.comap Subtype.val).neighborFinset (ux z) =
+      {ux (z - 1), ux (z + 1)} := by
+  classical
+  dsimp only
+  intro z
+  ext w
+  rw [(D.comap Subtype.val).mem_neighborFinset]
+  change D.Adj (u z) w.1 ↔ _
+  rw [← D.mem_neighborFinset, hu z]
+  constructor
+  · intro h
+    rcases Finset.mem_insert.mp h with h | h
+    · exact Finset.mem_insert.mpr (Or.inl (Subtype.ext h))
+    · have h' := Finset.mem_singleton.mp h
+      exact Finset.mem_insert.mpr
+        (Or.inr (Finset.mem_singleton.mpr (Subtype.ext h')))
+  · intro h
+    rcases Finset.mem_insert.mp h with h | h
+    · exact Finset.mem_insert.mpr (Or.inl (congrArg Subtype.val h))
+    · have h' := Finset.mem_singleton.mp h
+      exact Finset.mem_insert.mpr
+        (Or.inr (Finset.mem_singleton.mpr (congrArg Subtype.val h')))
+
 /-- **Saturated exterior defect cover.**  There is an owner projection from
 the exterior parent vertices to child vertices.  It maps every parent defect
 edge to a child defect edge, and every child defect edge out of an owner has
@@ -111,6 +147,61 @@ theorem exists_minimumLayer_saturated_defectCover
     rw [← hw'.2]
     exact hownerMem w'
   exact congrArg Subtype.val (hyuniq ⟨w'.1, hw'mem⟩ hw'.1)
+
+/-- **Component-size divisibility for the saturated defect cover.**  No
+cycle labeling or orientation data is required: for every exterior vertex,
+the child defect component containing its owner has cardinality dividing
+the exterior parent-defect component containing the vertex. -/
+theorem exists_minimumLayer_saturated_component_card_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let X := minimumLayerExteriorVertex D c₀
+    let DX := D.comap (fun z : X => z.1)
+    let H := minimumLayerGraph G D c₀
+    let DH := secondOrderDefectGraph H
+    ∃ owner : X → minimumLayerVertex D c₀, ∀ z : X,
+      (DH.connectedComponentMk (owner z)).supp.ncard ∣
+        (DX.connectedComponentMk z).supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let X := minimumLayerExteriorVertex D c₀
+  let DX := D.comap (fun z : X => z.1)
+  let H := minimumLayerGraph G D c₀
+  let DH := secondOrderDefectGraph H
+  obtain ⟨owner, _howner, hmap, hlift⟩ :=
+    exists_minimumLayer_saturated_defectCover
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+  have hfreeChild : ¬ containsC4 _ H :=
+    minimumLayerGraph_c4Free G D c₀ hfree
+  have hdegDH : ∀ a, DH.degree a = 2 := by
+    intro a
+    apply secondOrderDefectGraph_degree_eq_excess_add_two
+      H hfreeChild hregChild (e := 0)
+    simpa using hcardChild
+  refine ⟨owner, fun z => ?_⟩
+  apply cycleCover_component_card_dvd_of_localBijection
+    DX DH owner hdegDH
+  · intro x y hxy
+    exact hmap hxy
+  · intro x b hxb
+    exact hlift x b hxb
 
 /-- Graph-specific cyclic-cover consequence.  Once an exterior parent cycle
 and a child cycle are parametrized and one starting exterior point is known

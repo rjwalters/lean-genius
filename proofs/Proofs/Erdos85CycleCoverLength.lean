@@ -175,4 +175,118 @@ theorem cycleCover_length_dvd_of_localBijection_of_start
   intro z
   simpa only [ZMod.natCast_zmod_val] using hnat z.val
 
+/-- A locally bijective map between finite two-regular graphs makes the size
+of the target component divide the size of the source component.  This is
+the component-level form of cyclic-cover divisibility: the cycle coordinates
+and the relevant target component are constructed internally. -/
+theorem cycleCover_component_card_dvd_of_localBijection
+    {X Y : Type*} [Fintype X] [DecidableEq X]
+    [Fintype Y] [DecidableEq Y]
+    (DX : SimpleGraph X) [DecidableRel DX.Adj]
+    (DY : SimpleGraph Y) [DecidableRel DY.Adj]
+    (owner : X → Y)
+    (hdegY : ∀ y, DY.degree y = 2)
+    (hmap : ∀ {x y}, DX.Adj x y → DY.Adj (owner x) (owner y))
+    (hlift : ∀ (x : X) (b : Y), DY.Adj (owner x) b →
+      ∃! w : X, DX.Adj x w ∧ owner w = b)
+    (x : X) :
+    (DY.connectedComponentMk (owner x)).supp.ncard ∣
+      (DX.connectedComponentMk x).supp.ncard := by
+  classical
+  let cx := DX.connectedComponentMk x
+  let cy := DY.connectedComponentMk (owner x)
+  have hx : x ∈ cx.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff _ x).mpr rfl
+  have hy : owner x ∈ cy.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff _ (owner x)).mpr rfl
+  have hdegX : ∀ z, DX.degree z = 2 := by
+    intro z
+    have himage : (DX.neighborFinset z).image owner =
+        DY.neighborFinset (owner z) := by
+      ext b
+      constructor
+      · intro hb
+        obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hb
+        exact (DY.mem_neighborFinset _ _).mpr
+          (hmap ((DX.mem_neighborFinset _ _).mp hw))
+      · intro hb
+        obtain ⟨w, hw, _⟩ := hlift z b ((DY.mem_neighborFinset _ _).mp hb)
+        exact Finset.mem_image.mpr
+          ⟨w, (DX.mem_neighborFinset _ _).mpr hw.1, hw.2⟩
+    have hinj : Set.InjOn owner (DX.neighborFinset z : Set X) := by
+      intro w₁ hw₁ w₂ hw₂ heq
+      have htarget : DY.Adj (owner z) (owner w₁) :=
+        hmap ((DX.mem_neighborFinset _ _).mp hw₁)
+      obtain ⟨_w, _hw, huniq⟩ := hlift z (owner w₁) htarget
+      exact (huniq w₁
+        ⟨(DX.mem_neighborFinset _ _).mp hw₁, rfl⟩).trans
+          (huniq w₂
+            ⟨(DX.mem_neighborFinset _ _).mp hw₂, heq.symm⟩).symm
+    rw [← DX.card_neighborFinset_eq_degree,
+      ← Finset.card_image_iff.mpr hinj, himage,
+      DY.card_neighborFinset_eq_degree, hdegY]
+  have hcyclesX : DX.IsCycles := by
+    intro z _
+    rw [← Set.fintypeCard_eq_ncard, DX.card_neighborSet_eq_degree]
+    exact hdegX z
+  have hcyclesY : DY.IsCycles := by
+    intro z _
+    rw [← Set.fintypeCard_eq_ncard, DY.card_neighborSet_eq_degree]
+    exact hdegY z
+  have hneighX : (DX.neighborSet x).Nonempty :=
+    DX.neighborSet_nonempty.mpr ((DX.degree_pos x).mp (by rw [hdegX]; omega))
+  have hneighY : (DY.neighborSet (owner x)).Nonempty :=
+    DY.neighborSet_nonempty.mpr
+      ((DY.degree_pos (owner x)).mp (by rw [hdegY]; omega))
+  obtain ⟨p, hp, hpverts⟩ :=
+    hcyclesX.exists_cycle_toSubgraph_verts_eq_connectedComponentSupp hx hneighX
+  obtain ⟨q, hq, hqverts⟩ :=
+    hcyclesY.exists_cycle_toSubgraph_verts_eq_connectedComponentSupp hy hneighY
+  obtain ⟨u, _huinj, hurange, hu⟩ :=
+    exists_zmod_cycleParam_neighborFinset hp hdegX
+  obtain ⟨v, hvinj, hvrange, hv⟩ :=
+    exists_zmod_cycleParam_neighborFinset hq hdegY
+  letI : NeZero p.length := ⟨by
+    have := hp.three_le_length
+    omega⟩
+  letI : NeZero q.length := ⟨by
+    have := hq.three_le_length
+    omega⟩
+  have hxRange : x ∈ Set.range u := by
+    rw [hurange, hpverts]
+    exact hx
+  obtain ⟨t, ht⟩ := hxRange
+  let u' : ZMod p.length → X := fun z => u (z + t)
+  have hu' : ∀ z, DX.neighborFinset (u' z) =
+      {u' (z - 1), u' (z + 1)} := by
+    intro z
+    rw [show u' z = u (z + t) by rfl, hu]
+    change ({u (z + t - 1), u (z + t + 1)} : Finset X) =
+      {u (z - 1 + t), u (z + 1 + t)}
+    congr 2 <;> abel_nf
+  have hu'zero : u' 0 = x := by
+    simpa [u'] using ht
+  have hyRange : owner x ∈ Set.range v := by
+    rw [hvrange, hqverts]
+    exact hy
+  have hdiv : q.length ∣ p.length := by
+    apply cycleCover_length_dvd_of_localBijection_of_start
+      DX DY owner hq.three_le_length u' v hvinj hu' hv hmap
+        (fun a b hab => (hlift a b hab).exists)
+    rw [hu'zero]
+    exact hyRange
+  have hpCard : p.length = cx.supp.ncard := by
+    calc
+      p.length = p.toSubgraph.verts.ncard := by
+        rw [← Set.fintypeCard_eq_ncard]
+        simpa using (isCycle_card_verts_eq_length hp).symm
+      _ = cx.supp.ncard := congrArg Set.ncard hpverts
+  have hqCard : q.length = cy.supp.ncard := by
+    calc
+      q.length = q.toSubgraph.verts.ncard := by
+        rw [← Set.fintypeCard_eq_ncard]
+        simpa using (isCycle_card_verts_eq_length hq).symm
+      _ = cy.supp.ncard := congrArg Set.ncard hqverts
+  simpa [hpCard, hqCard] using hdiv
+
 end Erdos85
