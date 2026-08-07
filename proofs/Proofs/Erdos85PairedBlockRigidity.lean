@@ -1532,6 +1532,48 @@ theorem unmatched_vertex_meets_every_far_branch
     G hfree v q u hqu
   omega
 
+/-- The exact paired-block identity collapses the internal matching state of
+each five-point branch to `2` or `4` matched vertices, and a mate pair cannot
+have state `(2,2)`.  Equivalently, every branch has one or three internally
+unmatched vertices, with at most one three-unmatched branch in each mate
+pair. -/
+theorem paired_highBranchMatchedCount_states
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (highBranchMatchedCount G v s = 2 ∨
+        highBranchMatchedCount G v s = 4) ∧
+      (highBranchMatchedCount G v (mate s) = 2 ∨
+        highBranchMatchedCount G v (mate s) = 4) ∧
+      (highBranchMatchedCount G v s = 4 ∨
+        highBranchMatchedCount G v (mate s) = 4) := by
+  have hpair :=
+    (graph_exact_outerDefectBlocks_of_mate_involution
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s).1
+  have hsLe := highBranchMatchedCount_le_card G s
+  have hmLe := highBranchMatchedCount_le_card G (mate s)
+  rw [orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv s] at hsLe
+  rw [orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv (mate s)] at hmLe
+  rcases even_highBranchMatchedCount G hfree s with ⟨a, ha⟩
+  rcases even_highBranchMatchedCount G hfree (mate s) with ⟨b, hb⟩
+  omega
+
 /-- A one-regular induced neighborhood has a canonical-up-to-choice mate
 involution. -/
 theorem exists_localMate_involution
