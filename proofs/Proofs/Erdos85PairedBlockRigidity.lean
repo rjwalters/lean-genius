@@ -47,6 +47,43 @@ theorem six_far_bounds_rigid_of_cross_total
   refine ⟨hpairedEq, ?_⟩
   exact (Finset.sum_eq_sum_iff_of_le hfar).mp hsumEq
 
+/-- Path-count form of `six_far_bounds_rigid_of_cross_total`.  Every pair of
+five-point branches splits into `common` and `defect` endpoint pairs.  Four
+intermediate branches and the two endpoint branches give the far lower bound
+`20 + aᵢ + bᵢ`; the six intermediate branches give the paired lower bound.
+If the cross-defect total is 25, all these path lower bounds are exact. -/
+theorem six_branch_path_counts_rigid
+    {ι : Type*} [DecidableEq ι]
+    (I : Finset ι)
+    (defect common a b : ι → ℕ) (pairedDefect pairedCommon M N : ℕ)
+    (hIcard : I.card = 6)
+    (ha : ∑ i ∈ I, a i = M)
+    (hb : ∑ i ∈ I, b i = N)
+    (hfarPartition : ∀ i ∈ I, defect i + common i = 25)
+    (hfarPaths : ∀ i ∈ I, 20 + a i + b i ≤ common i)
+    (hpairedPartition : pairedDefect + pairedCommon = 25)
+    (hpairedPaths : 30 ≤ pairedCommon + M + N)
+    (htotal : pairedDefect + ∑ i ∈ I, defect i = 25) :
+    pairedDefect + 5 = M + N ∧
+      pairedCommon + M + N = 30 ∧
+      ∀ i ∈ I,
+        defect i + a i + b i = 5 ∧ common i = 20 + a i + b i := by
+  have hfar : ∀ i ∈ I, defect i + a i + b i ≤ 5 := by
+    intro i hi
+    have hp := hfarPartition i hi
+    have hl := hfarPaths i hi
+    omega
+  have hpaired : pairedDefect + 5 ≤ M + N := by omega
+  obtain ⟨hpairedEq, hfarEq⟩ := six_far_bounds_rigid_of_cross_total
+    I defect a b pairedDefect M N hIcard ha hb hfar hpaired htotal
+  refine ⟨hpairedEq, ?_, ?_⟩
+  · omega
+  · intro i hi
+    refine ⟨hfarEq i hi, ?_⟩
+    have hp := hfarPartition i hi
+    have he := hfarEq i hi
+    omega
+
 end
 
 end Erdos85
