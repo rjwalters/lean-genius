@@ -31,6 +31,18 @@ instance squareOrderOuterGraph_decidableAdj
     change Decidable (G.Adj a.1 b.1)
     infer_instance
 
+/-- Inducing on the second layer preserves `C4`-freeness. -/
+theorem squareOrderOuterGraph_not_containsC4
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (hfree : ¬ containsC4 V G) :
+    ¬ containsC4 {x : V // x ∈ secondLayer G v}
+      (squareOrderOuterGraph G v) := by
+  rintro ⟨f, hf, hadj⟩
+  apply hfree
+  exact ⟨fun i => (f i).1, Subtype.val_injective.comp hf,
+    fun i j hij => hadj i j hij⟩
+
 /-- Its vertex count at a saturated square-order high root. -/
 theorem card_squareOrderOuterGraph
     {V : Type*} [Fintype V] [DecidableEq V]
