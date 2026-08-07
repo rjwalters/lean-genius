@@ -1474,6 +1474,64 @@ theorem disjoint_highBranchMissSets_of_far
   rw [hnotP, hnotQ] at hdisj
   simpa [B] using hdisj
 
+/-- An endpoint vertex which is unmatched inside its own five-point branch
+must meet every far branch.  Since C4-freeness gives at most one neighbor in
+any other branch, it has exactly one neighbor there.  Thus every internally
+unmatched vertex is a universal transversal across the six far branches. -/
+theorem unmatched_vertex_meets_every_far_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s u : {z : V // z ∈ G.neighborSet v})
+    (hu : u ∈ ((Finset.univ.erase s).erase (mate s)))
+    (q : V) (hq : q ∈ secondLayerBranch G v s)
+    (hqUnmatched :
+      (G.neighborFinset q ∩ secondLayerBranch G v s).card = 0) :
+    (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 := by
+  classical
+  have hmateNe : s ≠ mate s := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hmateAdj s)
+  have huRaw : u ≠ mate s ∧ u ≠ s := by simpa using hu
+  have hsMateU : s ≠ mate u := by
+    intro h
+    have hh := congrArg mate h
+    rw [hmateInv u] at hh
+    exact huRaw.1 hh.symm
+  have hsAllowed :
+      s ∈ ((Finset.univ.erase (mate s)).erase (mate u)) := by
+    simp [hmateNe, hsMateU]
+  have hdisj := disjoint_highBranchMissSets_of_far
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s u hu s hsAllowed
+  have hnotZero :
+      (G.neighborFinset q ∩ secondLayerBranch G v u).card ≠ 0 := by
+    intro hzero
+    exact (Finset.disjoint_left.mp hdisj)
+      (Finset.mem_filter.mpr ⟨hq, hqUnmatched⟩)
+      (Finset.mem_filter.mpr ⟨hq, hzero⟩)
+  have hqu : q ≠ u.1 := by
+    intro h
+    have hout := (Finset.mem_sdiff.mp hq).2
+    apply hout
+    simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+    exact Or.inr (h ▸ u.2)
+  have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+    G hfree v q u hqu
+  omega
+
 /-- A one-regular induced neighborhood has a canonical-up-to-choice mate
 involution. -/
 theorem exists_localMate_involution
