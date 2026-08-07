@@ -162,6 +162,109 @@ theorem ownerFiberCliqueMatrix_mul_self_eq_neg_zmodThree
   apply ownerFiberCliqueMatrix_mul_self_eq_neg owner 112 hcard
   decide
 
+/-- A locally bijective graph map intertwines adjacency with the transpose
+of its owner-incidence matrix. -/
+theorem adjMatrix_mul_ownerIncidence_transpose
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (P : SimpleGraph X) [DecidableRel P.Adj]
+    (B : SimpleGraph Y) [DecidableRel B.Adj]
+    (owner : X → Y)
+    (hmap : ∀ {x z}, P.Adj x z → B.Adj (owner x) (owner z))
+    (hlift : ∀ (x : X) (b : Y), B.Adj (owner x) b →
+      ∃! z : X, P.Adj x z ∧ owner z = b) :
+    P.adjMatrix ℕ * Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner) =
+      Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner) *
+        B.adjMatrix ℕ := by
+  ext x b
+  have hleft :
+      (P.adjMatrix ℕ *
+        Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner)) x b =
+      (Finset.univ.filter fun z => P.Adj x z ∧ owner z = b).card := by
+    simp only [Matrix.mul_apply, Matrix.transpose_apply,
+      ownerIncidenceMatrix, SimpleGraph.adjMatrix_apply]
+    calc
+      (∑ z, (if P.Adj x z then 1 else 0) *
+          if owner z = b then 1 else 0) =
+          ∑ z, if P.Adj x z ∧ owner z = b then 1 else 0 := by
+            apply Finset.sum_congr rfl
+            intro z _
+            by_cases hp : P.Adj x z <;>
+              by_cases ho : owner z = b <;> simp [hp, ho]
+      _ = _ := by
+        simpa using (Finset.sum_boole (R := ℕ)
+          (fun z : X => P.Adj x z ∧ owner z = b) Finset.univ)
+  rw [hleft]
+  have hright :
+      (Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner) *
+        B.adjMatrix ℕ) x b = if B.Adj (owner x) b then 1 else 0 := by
+    simp only [Matrix.mul_apply, Matrix.transpose_apply,
+      ownerIncidenceMatrix, SimpleGraph.adjMatrix_apply]
+    rw [Finset.sum_eq_single (owner x)]
+    · by_cases hb : B.Adj (owner x) b <;> simp [hb]
+    · intro a _ ha
+      have hne : owner x ≠ a := Ne.symm ha
+      simp [hne]
+    · simp
+  rw [hright]
+  by_cases hb : B.Adj (owner x) b
+  · rw [if_pos hb]
+    obtain ⟨z, hz, huniq⟩ := hlift x b hb
+    have hfilter :
+        Finset.univ.filter (fun w => P.Adj x w ∧ owner w = b) = {z} := by
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+        Finset.mem_singleton]
+      constructor
+      · intro hw
+        exact huniq w hw
+      · intro hw
+        subst w
+        exact hz
+    rw [hfilter]
+    simp
+  · rw [if_neg hb]
+    apply Finset.card_eq_zero.mpr
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    rintro ⟨z, hz⟩
+    have hz' := (Finset.mem_filter.mp hz).2
+    exact hb (by simpa [hz'.2] using hmap hz'.1)
+
+/-- Consequently a locally bijective cover adjacency commutes with the
+fiber Gram operator `CᵀC`, and hence with the fiber-clique operator. -/
+theorem adjMatrix_comm_ownerFiberGram
+    {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y]
+    (P : SimpleGraph X) [DecidableRel P.Adj]
+    (B : SimpleGraph Y) [DecidableRel B.Adj]
+    (owner : X → Y)
+    (hmap : ∀ {x z}, P.Adj x z → B.Adj (owner x) (owner z))
+    (hlift : ∀ (x : X) (b : Y), B.Adj (owner x) b →
+      ∃! z : X, P.Adj x z ∧ owner z = b) :
+    P.adjMatrix ℕ *
+        (Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner) *
+          ownerIncidenceMatrix (K := ℕ) owner) =
+      (Matrix.transpose (ownerIncidenceMatrix (K := ℕ) owner) *
+          ownerIncidenceMatrix (K := ℕ) owner) * P.adjMatrix ℕ := by
+  let C := ownerIncidenceMatrix (K := ℕ) owner
+  have hPC : P.adjMatrix ℕ * Matrix.transpose C =
+      Matrix.transpose C * B.adjMatrix ℕ :=
+    adjMatrix_mul_ownerIncidence_transpose P B owner hmap hlift
+  have hCP : C * P.adjMatrix ℕ = B.adjMatrix ℕ * C := by
+    have h := congrArg Matrix.transpose hPC
+    simpa only [Matrix.transpose_mul, Matrix.transpose_transpose,
+      SimpleGraph.transpose_adjMatrix] using h
+  calc
+    P.adjMatrix ℕ * (Matrix.transpose C * C) =
+        (P.adjMatrix ℕ * Matrix.transpose C) * C := by
+          rw [Matrix.mul_assoc]
+    _ = (Matrix.transpose C * B.adjMatrix ℕ) * C := by rw [hPC]
+    _ = Matrix.transpose C * (B.adjMatrix ℕ * C) := by
+      rw [Matrix.mul_assoc]
+    _ = Matrix.transpose C * (C * P.adjMatrix ℕ) := by rw [hCP]
+    _ = (Matrix.transpose C * C) * P.adjMatrix ℕ := by
+      rw [Matrix.mul_assoc]
+
 end
 
 end Erdos85
