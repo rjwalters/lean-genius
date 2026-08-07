@@ -571,6 +571,62 @@ def dimacsClauseSatisfied (val : DimacsValuation)
     (clause : DimacsClause) : Prop :=
   ∃ lit ∈ clause, dimacsLitValue val lit = true
 
+def dimacsFormulaSatisfied (val : DimacsValuation)
+    (clauses : Array DimacsClause) : Prop :=
+  ∀ clause ∈ clauses, dimacsClauseSatisfied val clause
+
+/-- The signed input-literal array reifies a Boolean row below the block's
+initial auxiliary-variable boundary. -/
+structure SeqCounterInputReifies {n : Nat} (inputVal : DimacsValuation)
+    (initialTop : Nat) (vars : Array Int) (x : Fin n → Bool) : Prop where
+  size_eq : vars.size = n
+  nonzero : ∀ i, ∀ _hi : i < n, vars.getD i 0 ≠ 0
+  bounded : ∀ i, ∀ _hi : i < n, (vars.getD i 0).natAbs ≤ initialTop
+  value : ∀ i, ∀ hi : i < n,
+    dimacsLitValue inputVal (vars.getD i 0) = x ⟨i, hi⟩
+
+theorem SeqCounterInputReifies.block_value {n : Nat}
+    {inputVal : DimacsValuation} {initialTop : Nat} {vars : Array Int}
+    {x : Fin n → Bool} (h : SeqCounterInputReifies inputVal initialTop vars x)
+    (ids : List ((Nat × Nat) × Nat)) (i : Nat) (hi : i < n) :
+    dimacsLitValue (seqCounterBlockVal inputVal initialTop x ids)
+      (vars.getD i 0) = x ⟨i, hi⟩ := by
+  rw [dimacsLitValue_block_of_natAbs_le inputVal initialTop x ids
+    (h.bounded i hi)]
+  exact h.value i hi
+
+theorem dimacsFormulaSatisfied_empty (val : DimacsValuation) :
+    dimacsFormulaSatisfied val #[] := by
+  intro clause hclause
+  simp at hclause
+
+theorem dimacsFormulaSatisfied_emit {val : DimacsValuation}
+    {st : SeqCounterGenState} {clause : DimacsClause}
+    (hprevious : dimacsFormulaSatisfied val st.clauses)
+    (hclause : dimacsClauseSatisfied val clause) :
+    dimacsFormulaSatisfied val (seqCounterEmit clause st).2.clauses := by
+  intro candidate hcandidate
+  change candidate ∈ st.clauses.push clause at hcandidate
+  simp only [Array.mem_push] at hcandidate
+  rcases hcandidate with hold | rfl
+  · exact hprevious candidate hold
+  · exact hclause
+
+theorem dimacsFormulaSatisfied_mkYvar {val : DimacsValuation}
+    {st : SeqCounterGenState} (key : Nat × Nat)
+    (hprevious : dimacsFormulaSatisfied val st.clauses) :
+    dimacsFormulaSatisfied val (seqCounterMkYvar key st).2.clauses := by
+  rw [seqCounterMkYvar_clauses]
+  exact hprevious
+
+theorem seqCounterAux_positive_of_mem
+    {initialTop : Nat} {st : SeqCounterGenState}
+    (hinv : SeqCounterAllocationInvariant initialTop st)
+    {key : Nat × Nat} {id : Nat} (hmem : (key, id) ∈ st.ids) :
+    0 < id := by
+  have hbound := (hinv.id_bounds (key, id) hmem).1
+  omega
+
 theorem dimacsLitValue_neg (val : DimacsValuation) {lit : Int}
     (hlit : lit ≠ 0) :
     dimacsLitValue val (-lit) = !(dimacsLitValue val lit) := by
@@ -719,5 +775,162 @@ theorem dimacs_seqCounter_overflow_clause_satisfied_signed {n : Nat}
   · refine ⟨-inputLit, by simp, ?_⟩
     rw [dimacsLitValue_neg val hinput, hinputVal]
     cases hval : x ⟨j + t, hidx⟩ <;> simp_all
+
+/-! ## Soundness of the recursive generator steps -/
+
+/-- One inner generator step preserves satisfaction under any eventual final
+table extending the step's output. -/
+theorem seqCounterAtMostKStep_formulaSatisfied
+    (inputVal : DimacsValuation) (initialTop : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool) (hinput :
+      SeqCounterInputReifies inputVal initialTop vars x)
+    (t j k : Nat) (hk : k < t - 1) (hj : j < vars.size - t)
+    (st final : SeqCounterGenState)
+    (hfinalInv : SeqCounterAllocationInvariant initialTop final)
+    (hfuture : SeqCounterIdsExtend
+      (seqCounterAtMostKStep vars t j k st) final)
+    (hprevious : dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids) st.clauses) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal initialTop x final.ids)
+      (seqCounterAtMostKStep vars t j k st).clauses := by
+  let val := seqCounterBlockVal inputVal initialTop x final.ids
+  simp only [seqCounterAtMostKStep] at hfuture ⊢
+  generalize h₁ : seqCounterMkYvar (k, j) st = out₁ at hfuture ⊢
+  rcases out₁ with ⟨skj, st₁⟩
+  have hmem₁ : ((k, j), skj) ∈ st₁.ids := by
+    have h := seqCounterMkYvar_mem (k, j) st
+    rw [h₁] at h
+    exact h
+  have hsat₁ : dimacsFormulaSatisfied val st₁.clauses := by
+    have h := dimacsFormulaSatisfied_mkYvar (k, j) hprevious
+    rw [h₁] at h
+    exact h
+  by_cases hhorizontal : j < vars.size - t - 1
+  · simp only [hhorizontal, ↓reduceIte] at hfuture ⊢
+    generalize h₂ : seqCounterMkYvar (k, j + 1) st₁ = out₂ at hfuture ⊢
+    rcases out₂ with ⟨skj1, st₂⟩
+    have hext₁₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (k, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    have hmem₂ : ((k, j + 1), skj1) ∈ st₂.ids := by
+      have h := seqCounterMkYvar_mem (k, j + 1) st₁
+      rw [h₂] at h
+      exact h
+    have hsat₂ : dimacsFormulaSatisfied val st₂.clauses := by
+      have h := dimacsFormulaSatisfied_mkYvar (k, j + 1) hsat₁
+      rw [h₂] at h
+      exact h
+    let horizontal := [-(skj : Int), (skj1 : Int)]
+    let st₃ := (seqCounterEmit horizontal st₂).2
+    have hext₂₃ : SeqCounterIdsExtend st₂ st₃ :=
+      seqCounterIdsExtend_emit horizontal st₂
+    generalize h₄ : seqCounterMkYvar (k + 1, j) st₃ = out₄ at hfuture ⊢
+    rcases out₄ with ⟨sk1j, st₄⟩
+    have hext₃₄ : SeqCounterIdsExtend st₃ st₄ := by
+      have h := seqCounterIdsExtend_mkYvar (k + 1, j) st₃
+      rw [h₄] at h
+      exact h
+    let diagonal :=
+      [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)]
+    let stepOut := (seqCounterEmit diagonal st₄).2
+    have hext₄o : SeqCounterIdsExtend st₄ stepOut :=
+      seqCounterIdsExtend_emit diagonal st₄
+    have hext₁f : SeqCounterIdsExtend st₁ final :=
+      hext₁₂.trans (hext₂₃.trans (hext₃₄.trans (hext₄o.trans hfuture)))
+    have hext₂f : SeqCounterIdsExtend st₂ final :=
+      hext₂₃.trans (hext₃₄.trans (hext₄o.trans hfuture))
+    have hext₃f : SeqCounterIdsExtend st₃ final :=
+      hext₃₄.trans (hext₄o.trans hfuture)
+    have hext₄f : SeqCounterIdsExtend st₄ final := hext₄o.trans hfuture
+    have hmem₁f := hext₁f _ hmem₁
+    have hmem₂f := hext₂f _ hmem₂
+    have hhorizontalSat : dimacsClauseSatisfied val horizontal := by
+      apply dimacs_seqCounter_horizontal_clause_satisfied x val k j
+      · omega
+      · exact seqCounterAux_positive_of_mem hfinalInv hmem₁f
+      · exact seqCounterAux_positive_of_mem hfinalInv hmem₂f
+      · simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+      · simpa [val, Nat.add_assoc] using
+          seqCounterBlockVal_aux inputVal x hfinalInv hmem₂f
+    have hsat₃ : dimacsFormulaSatisfied val st₃.clauses :=
+      dimacsFormulaSatisfied_emit hsat₂ hhorizontalSat
+    have hmem₄ : ((k + 1, j), sk1j) ∈ st₄.ids := by
+      have h := seqCounterMkYvar_mem (k + 1, j) st₃
+      rw [h₄] at h
+      exact h
+    have hmem₄f := hext₄f _ hmem₄
+    have hsat₄ : dimacsFormulaSatisfied val st₄.clauses := by
+      have h := dimacsFormulaSatisfied_mkYvar (k + 1, j) hsat₃
+      rw [h₄] at h
+      exact h
+    have hdiagSat : dimacsClauseSatisfied val diagonal := by
+      have htSize : t ≤ vars.size := by omega
+      have hidx : j + k + 1 < vars.size := by
+        have hsub : vars.size - t + t = vars.size := Nat.sub_add_cancel htSize
+        omega
+      have hinputValue : dimacsLitValue val
+          (vars.getD (j + k + 1) 0) = x ⟨j + k + 1, hidx⟩ := by
+        simpa [val] using hinput.block_value final.ids _ hidx
+      have hleftValue : val skj = seqCounterWitness x (j + k) k := by
+        simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+      have hrightValue : val sk1j =
+          seqCounterWitness x (j + (k + 1)) (k + 1) := by
+        simpa [val, Nat.add_assoc] using
+          seqCounterBlockVal_aux inputVal x hfinalInv hmem₄f
+      exact dimacs_seqCounter_diagonal_clause_satisfied_signed x val k j hidx
+        (vars.getD (j + k + 1) 0) skj sk1j
+        (hinput.nonzero _ hidx)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₁f)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₄f)
+        hinputValue hleftValue hrightValue
+    exact dimacsFormulaSatisfied_emit hsat₄ hdiagSat
+  · simp only [hhorizontal, ↓reduceIte] at hfuture ⊢
+    generalize h₂ : seqCounterMkYvar (k + 1, j) st₁ = out₂ at hfuture ⊢
+    rcases out₂ with ⟨sk1j, st₂⟩
+    have hext₁₂ : SeqCounterIdsExtend st₁ st₂ := by
+      have h := seqCounterIdsExtend_mkYvar (k + 1, j) st₁
+      rw [h₂] at h
+      exact h
+    let diagonal :=
+      [-(vars.getD (j + k + 1) 0), -(skj : Int), (sk1j : Int)]
+    let stepOut := (seqCounterEmit diagonal st₂).2
+    have hext₂o : SeqCounterIdsExtend st₂ stepOut :=
+      seqCounterIdsExtend_emit diagonal st₂
+    have hext₁f : SeqCounterIdsExtend st₁ final :=
+      hext₁₂.trans (hext₂o.trans hfuture)
+    have hext₂f : SeqCounterIdsExtend st₂ final := hext₂o.trans hfuture
+    have hmem₁f := hext₁f _ hmem₁
+    have hmem₂ : ((k + 1, j), sk1j) ∈ st₂.ids := by
+      have h := seqCounterMkYvar_mem (k + 1, j) st₁
+      rw [h₂] at h
+      exact h
+    have hmem₂f := hext₂f _ hmem₂
+    have hsat₂ : dimacsFormulaSatisfied val st₂.clauses := by
+      have h := dimacsFormulaSatisfied_mkYvar (k + 1, j) hsat₁
+      rw [h₂] at h
+      exact h
+    have hdiagSat : dimacsClauseSatisfied val diagonal := by
+      have htSize : t ≤ vars.size := by omega
+      have hidx : j + k + 1 < vars.size := by
+        have hsub : vars.size - t + t = vars.size := Nat.sub_add_cancel htSize
+        omega
+      have hinputValue : dimacsLitValue val
+          (vars.getD (j + k + 1) 0) = x ⟨j + k + 1, hidx⟩ := by
+        simpa [val] using hinput.block_value final.ids _ hidx
+      have hleftValue : val skj = seqCounterWitness x (j + k) k := by
+        simpa [val] using seqCounterBlockVal_aux inputVal x hfinalInv hmem₁f
+      have hrightValue : val sk1j =
+          seqCounterWitness x (j + (k + 1)) (k + 1) := by
+        simpa [val, Nat.add_assoc] using
+          seqCounterBlockVal_aux inputVal x hfinalInv hmem₂f
+      exact dimacs_seqCounter_diagonal_clause_satisfied_signed x val k j hidx
+        (vars.getD (j + k + 1) 0) skj sk1j
+        (hinput.nonzero _ hidx)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₁f)
+        (seqCounterAux_positive_of_mem hfinalInv hmem₂f)
+        hinputValue hleftValue hrightValue
+    exact dimacsFormulaSatisfied_emit hsat₂ hdiagSat
 
 end Erdos85
