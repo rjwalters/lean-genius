@@ -31,13 +31,6 @@ noncomputable instance minimumLayerExteriorVertexFintype
   unfold minimumLayerExteriorVertex
   infer_instance
 
-noncomputable instance minimumLayerExteriorVertexDecidableEq
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
-    [DecidableEq D.ConnectedComponent]
-    (c₀ : D.ConnectedComponent) :
-    DecidableEq (minimumLayerExteriorVertex D c₀) := Classical.decEq _
-
 /-- **Saturated exterior defect cover.**  There is an owner projection from
 the exterior parent vertices to child vertices.  It maps every parent defect
 edge to a child defect edge, and every child defect edge out of an owner has
@@ -75,6 +68,7 @@ theorem exists_minimumLayer_saturated_defectCover
   dsimp only
   let D := secondOrderDefectGraph G
   let X := minimumLayerExteriorVertex D c₀
+  letI : DecidableEq X := Subtype.instDecidableEq
   let H := minimumLayerGraph G D c₀
   let DH := secondOrderDefectGraph H
   let E := minimumLayerExternalNeighborFinset G D c₀
@@ -117,6 +111,72 @@ theorem exists_minimumLayer_saturated_defectCover
     rw [← hw'.2]
     exact hownerMem w'
   exact congrArg Subtype.val (hyuniq ⟨w'.1, hw'mem⟩ hw'.1)
+
+/-- Graph-specific cyclic-cover consequence.  Once an exterior parent cycle
+and a child cycle are parametrized and one starting exterior point is known
+to lie over the child cycle, the child length divides the parent length. -/
+theorem minimumLayer_saturated_cycle_length_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (hspos : 0 < s) (hsd : s < d)
+    (hsat : d = (s - 1) * (s - 1) + 3)
+    {n r : ℕ} [NeZero n] [NeZero r]
+    (hr : 3 ≤ r)
+    (u : ZMod n → minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)
+    (v : ZMod r → minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (hvinj : Function.Injective v)
+    (hu : ∀ z,
+      ((secondOrderDefectGraph G).comap Subtype.val).neighborFinset (u z) =
+        {u (z - 1), u (z + 1)})
+    (hv : ∀ z,
+      (secondOrderDefectGraph
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀)).neighborFinset (v z) =
+        {v (z - 1), v (z + 1)})
+    (t₀ : ZMod r)
+    (hstart : (u 0).1 ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ (v t₀)) :
+    r ∣ n := by
+  classical
+  let D := secondOrderDefectGraph G
+  let X := minimumLayerExteriorVertex D c₀
+  letI : DecidableEq X := Subtype.instDecidableEq
+  let H := minimumLayerGraph G D c₀
+  let DH := secondOrderDefectGraph H
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let DX := D.comap (fun z : X => z.1)
+  obtain ⟨owner, hownerMem, hmap, hlift⟩ :=
+    exists_minimumLayer_saturated_defectCover
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild hspos hsd hsat
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hownerStart : owner (u 0) = v t₀ := by
+    by_contra hne
+    have hdisj := hpair (Finset.mem_univ (owner (u 0)))
+      (Finset.mem_univ (v t₀)) hne
+    exact (Finset.disjoint_left.mp hdisj (hownerMem (u 0)) hstart).elim
+  have hstartRange : owner (u 0) ∈ Set.range v :=
+    ⟨t₀, hownerStart.symm⟩
+  apply cycleCover_length_dvd_of_localBijection_of_start
+    DX DH owner hr u v hvinj hu hv
+  · intro x y hxy
+    exact hmap hxy
+  · intro x b hxb
+    obtain ⟨w, hw, _huniq⟩ := hlift x b hxb
+    exact ⟨w, hw⟩
+  · exact hstartRange
 
 end
 
