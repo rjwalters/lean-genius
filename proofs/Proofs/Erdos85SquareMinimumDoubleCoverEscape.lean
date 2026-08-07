@@ -105,6 +105,48 @@ theorem cycleCover_adjacency_halfTurn_iff
   intro x y
   rw [hadj, hadj, cycleCoverMap_halfTurn_invariant f horient y]
 
+/-- Apart from their common source-cycle neighbour, the two vertices in a
+deck-involution fiber cannot have another common neighbour in a `C4`-free
+graph.  This is the local exclusivity input needed by parity arguments on the
+even target cycle. -/
+theorem cycleCover_halfTurn_commonNeighbor_exclusive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (v : ZMod (2 * r) → V)
+    (hvinj : Function.Injective v)
+    (f : ZMod (2 * r) → ZMod r)
+    (hadj : ∀ x y, G.Adj (u x) (v y) ↔ x = f y)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (y : ZMod (2 * r)) (w : V) (hw : w ≠ u (f y)) :
+    ¬ (G.Adj w (v y) ∧
+      G.Adj w (v (y + (r : ZMod (2 * r))))) := by
+  intro hboth
+  have hrPos : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
+  have hrCast : (r : ZMod (2 * r)) ≠ 0 := by
+    intro hz
+    have hdvd : 2 * r ∣ r :=
+      (ZMod.natCast_eq_zero_iff r (2 * r)).mp hz
+    have hle : 2 * r ≤ r := Nat.le_of_dvd hrPos hdvd
+    omega
+  have hyShift : y ≠ y + (r : ZMod (2 * r)) := by
+    intro heq
+    apply hrCast
+    have := congrArg (fun z : ZMod (2 * r) ↦ z - y) heq
+    simpa using this.symm
+  have hvNe : v y ≠ v (y + (r : ZMod (2 * r))) :=
+    hvinj.ne hyShift
+  have hsrcY : G.Adj (u (f y)) (v y) :=
+    (hadj (f y) y).mpr rfl
+  have hsrcShift : G.Adj (u (f y))
+      (v (y + (r : ZMod (2 * r)))) := by
+    apply (hadj (f y) (y + (r : ZMod (2 * r)))).mpr
+    exact (cycleCoverMap_halfTurn_invariant f horient y).symm
+  exact hfree (containsC4_of_two_common hvNe hw hboth.1 hboth.2
+    hsrcY hsrcShift)
+
 /-- **Unique double-cover escape.**  If the total quotient row mass from a
 minimum defect component to longer components is two, there is a unique such
 component.  Its forward quotient entry is two, its reverse entry is one, and
