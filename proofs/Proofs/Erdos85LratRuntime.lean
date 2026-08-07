@@ -1,5 +1,6 @@
-import Std.Tactic.BVDecide.LRAT
 import Std.Data.HashMap
+import Proofs.Erdos85DimacsSatBridge
+import Proofs.Erdos85OrderFortyNineProfileMasks
 
 /-!
 # Runtime DIMACS/LRAT replay for the Erdős 85 certificates
@@ -74,7 +75,7 @@ partial def parseClauses (data : ByteArray) (start : Nat)
         let id := lit.natAbs
         if id == 0 then
           throw s!"illegal zero DIMACS identifier at byte {i}"
-        let literal : Sat.Literal Nat := (id - 1, 0 < lit)
+        let literal : Nat × Bool := (id - 1, 0 < lit)
         parseClauses data next clauses (literal :: currentRev)
   else
     if currentRev.isEmpty then
@@ -151,10 +152,73 @@ def replayLrat (cnfPath lratPath : System.FilePath) : IO Bool := do
   let proof ← IO.ofExcept (LratRenumber.renumber cnf.clauses.size rawProof)
   return LRAT.check proof cnf
 
+partial def cnfSegmentEq (cnf : Sat.CNF Nat) (offset : Nat)
+    (segment : Array DimacsClause) (idx : Nat := 0) : Bool :=
+  if h : idx < segment.size then
+    cnf.clauses[offset + idx]? ==
+      some (dimacsClauseToSatClause segment[idx]) &&
+      cnfSegmentEq cnf offset segment (idx + 1)
+  else
+    true
+
+def c4CnfSegmentEq (cnf : Sat.CNF Nat) (offset : Nat) : Bool × Nat := Id.run do
+  let mut idx := 0
+  let mut ok := true
+  for ij in orderFortyNineStrictPairs (List.finRange 49) do
+    let away := orderFortyNineVerticesAway ij.1 ij.2
+    for ww in orderFortyNineStrictPairs away do
+      let clause := dimacsClauseToSatClause
+        (orderFortyNineC4Clause (ij, ww))
+      ok := ok && cnf.clauses[offset + idx]? == some clause
+      idx := idx + 1
+  return (ok, idx)
+
+def h9System? (tag : String) (idx : Nat) : Option OrderFortyNineH9System :=
+  match tag with
+  | "t2" => orderFortyNineH9T2Systems[idx]?
+  | "t3" => orderFortyNineH9T3Systems[idx]?
+  | "t4" => orderFortyNineH9T4Systems[idx]?
+  | _ => none
+
+def checkProfileCnf (tag : String) (idx : Nat) (cnfPath : System.FilePath) :
+    IO Bool := do
+  let some sys := h9System? tag idx
+    | throw <| .userError s!"unknown profile {tag}[{idx}]"
+  let cnf ← DimacsRuntime.load cnfPath
+  let masks := orderFortyNineH9ProfileMasks sys
+  let fixed := orderFortyNineFixedClauses masks
+  let degree := (orderFortyNineDegreeBlocks 9).clauses
+  let partition := orderFortyNinePartitionClauses masks
+  let fixedOffset := 0
+  let c4Offset := fixedOffset + fixed.size
+  let c4Result := c4CnfSegmentEq cnf c4Offset
+  let degreeOffset := c4Offset + c4Result.2
+  let partitionOffset := degreeOffset + degree.size
+  let expectedSize := partitionOffset + partition.size
+  IO.println s!"segment sizes: fixed={fixed.size}, c4={c4Result.2}, degree={degree.size}, partition={partition.size}"
+  if cnf.clauses.size != expectedSize then
+    IO.println s!"clause-count mismatch: parsed={cnf.clauses.size}, generated={expectedSize}"
+    return false
+  let fixedOk := cnfSegmentEq cnf fixedOffset fixed
+  IO.println s!"fixed segment: {fixedOk}"
+  let c4Ok := c4Result.1
+  IO.println s!"C4 segment: {c4Ok}"
+  let degreeOk := cnfSegmentEq cnf degreeOffset degree
+  IO.println s!"degree segment: {degreeOk}"
+  let partitionOk := cnfSegmentEq cnf partitionOffset partition
+  IO.println s!"partition segment: {partitionOk}"
+  return fixedOk && c4Ok && degreeOk && partitionOk
+
 end Erdos85
 
 def main (args : List String) : IO UInt32 := do
   match args with
+  | ["profile", tag, idxText, cnfPath] =>
+      let some idx := idxText.toNat?
+        | throw <| .userError s!"invalid profile index {idxText}"
+      let matched ← Erdos85.checkProfileCnf tag idx cnfPath
+      IO.println s!"profile CNF matched: {matched}"
+      return if matched then 0 else 1
   | [cnfPath, lratPath] =>
       let cnf ← Erdos85.DimacsRuntime.load cnfPath
       let rawProof ← Std.Tactic.BVDecide.LRAT.loadLRATProof lratPath
