@@ -525,6 +525,187 @@ theorem thirty_le_paired_nondefectBlock_add_matchedCounts
   norm_num at hpaths ⊢
   exact hpaths
 
+/-- In a five-point branch, the vertices missed by its internal matching and
+the vertices covered by that matching partition the branch. -/
+theorem selfMiss_add_matchedCount_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    highBranchMissCount G v s s + highBranchMatchedCount G v s = 5 := by
+  classical
+  let B := secondLayerBranch G v s
+  let P : V → Prop := fun q ↦
+    (G.neighborFinset q ∩ B).card = 1
+  have hnot : B.filter (fun q ↦ ¬P q) =
+      B.filter fun q ↦ (G.neighborFinset q ∩ B).card = 0 := by
+    ext q
+    simp only [Finset.mem_filter]
+    refine and_congr_right fun hq ↦ ?_
+    have hqs : q ≠ s.1 := by
+      intro h
+      exact (Finset.mem_sdiff.mp hq).2 (by
+        simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+        exact Or.inr (h ▸ s.2))
+    have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v q s hqs
+    dsimp [B, P]
+    omega
+  have hpartition := Finset.card_filter_add_card_filter_not (s := B) (p := P)
+  rw [hnot] at hpartition
+  have hBcard : B.card = 5 :=
+    orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv s
+  rw [hBcard] at hpartition
+  simpa [B, P, highBranchMissCount, highBranchMatchedCount, add_comm]
+    using hpartition
+
+/-- Uniform far-block lower bound once the two six-branch miss-column sums
+are identified.  The subsequent graph lemma supplies these identities from
+the row-sum theorem and the two omitted mate branches. -/
+theorem twenty_add_cross_misses_le_far_nondefectBlock_of_column_sums
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (U : Finset {z : V // z ∈ G.neighborSet v})
+    (s t sCross tCross : {z : V // z ∈ G.neighborSet v})
+    (hst : s ≠ t) (hUcard : U.card = 6)
+    (hcolS : (∑ u ∈ U, highBranchMissCount G v u s) +
+      highBranchMissCount G v s sCross = 5)
+    (hcolT : (∑ u ∈ U, highBranchMissCount G v u t) +
+      highBranchMissCount G v t tCross = 5) :
+    20 + highBranchMissCount G v s sCross +
+        highBranchMissCount G v t tCross ≤
+      (orderFortyNineOuterNondefectBlock G v s t).card := by
+  have hpaths := five_mul_card_le_nondefectBlock_add_sum_middle_misses
+    G hfree hmin hcard hv U s t hst
+  rw [hUcard] at hpaths
+  norm_num at hpaths
+  omega
+
+/-- Remove a branch's mate and one additional branch from the index set.  The
+remaining miss column, plus the crossed miss to the additionally omitted
+branch, has total five. -/
+theorem sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (s mate cross : {z : V // z ∈ G.neighborSet v})
+    (hsmate : G.Adj s.1 mate.1) (hcrossmate : cross ≠ mate) :
+    (∑ u ∈ ((Finset.univ.erase mate).erase cross),
+        highBranchMissCount G v u s) +
+      highBranchMissCount G v s cross = 5 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let f : P → ℕ := fun u ↦ highBranchMissCount G v s u
+  have hsmateNe : s ≠ mate := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hsmate)
+  have hsymm : ∀ u : P,
+      highBranchMissCount G v u s = highBranchMissCount G v s u := by
+    intro u
+    apply highBranchMissCount_comm_of_equal_card G hfree u s
+    rw [orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv u,
+      orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv s]
+  have hrow : (∑ u ∈ ((Finset.univ.erase s).erase mate), f u) =
+      highBranchMatchedCount G v s := by
+    exact sum_far_highBranchMissCount_eq_matchedCount
+      G hfree hv hexternal s mate hsmate (by
+        intro a ha
+        apply houterDegree
+        rw [secondLayer]
+        exact Finset.mem_biUnion.mpr ⟨s, Finset.mem_univ _, ha⟩)
+  have hself := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv s
+  have hcrossMem : cross ∈ (Finset.univ : Finset P).erase mate := by
+    simp [hcrossmate]
+  have hsMem : s ∈ (Finset.univ : Finset P).erase mate := by
+    simp [hsmateNe]
+  have hcrossErase := Finset.sum_erase_add
+    ((Finset.univ : Finset P).erase mate) f hcrossMem
+  have hsErase := Finset.sum_erase_add
+    ((Finset.univ : Finset P).erase mate) f hsMem
+  have hrowSet : ((Finset.univ : Finset P).erase mate).erase s =
+      (Finset.univ.erase s).erase mate := by
+    ext u
+    simp [and_comm]
+  rw [hrowSet, hrow] at hsErase
+  have hcol : (∑ u ∈ ((Finset.univ.erase mate).erase cross),
+      highBranchMissCount G v u s) =
+      ∑ u ∈ ((Finset.univ.erase mate).erase cross), f u := by
+    apply Finset.sum_congr rfl
+    intro u _
+    exact hsymm u
+  rw [hcol]
+  change f s + highBranchMatchedCount G v s = 5 at hself
+  calc
+    (∑ u ∈ ((Finset.univ.erase mate).erase cross), f u) + f cross =
+        ∑ u ∈ (Finset.univ : Finset P).erase mate, f u := hcrossErase
+    _ = highBranchMatchedCount G v s + f s := hsErase.symm
+    _ = f s + highBranchMatchedCount G v s := Nat.add_comm _ _
+    _ = 5 := hself
+
+/-- **Far-block path lower bound.**  If `s,t` have distinct mates, the six
+branches other than those mates give at least
+`20 + m_{s,bar t} + m_{t,bar s}` nondefect endpoint pairs. -/
+theorem twenty_add_cross_misses_le_far_nondefectBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (s t mateS mateT : {z : V // z ∈ G.neighborSet v})
+    (hst : s ≠ t)
+    (hsMate : G.Adj s.1 mateS.1) (htMate : G.Adj t.1 mateT.1)
+    (hmates : mateS ≠ mateT) :
+    20 + highBranchMissCount G v s mateT +
+        highBranchMissCount G v t mateS ≤
+      (orderFortyNineOuterNondefectBlock G v s t).card := by
+  classical
+  let U : Finset {z : V // z ∈ G.neighborSet v} :=
+    (Finset.univ.erase mateS).erase mateT
+  have hIndexCard : Fintype.card {z : V // z ∈ G.neighborSet v} = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hUcard : U.card = 6 := by
+    dsimp [U]
+    rw [Finset.card_erase_of_mem (by simp [hmates.symm] :
+      mateT ∈ (Finset.univ :
+        Finset {z : V // z ∈ G.neighborSet v}).erase mateS)]
+    rw [Finset.card_erase_of_mem (by simp :
+      mateS ∈ (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}))]
+    rw [Finset.card_univ, hIndexCard]
+  have hcolS := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      s mateS mateT hsMate hmates.symm
+  have hcolT := sum_omit_mate_omit_cross_add_crossMiss_eq_five
+    G hfree hmin hcard hv hexternal houterDegree
+      t mateT mateS htMate hmates
+  have hUcomm : ((Finset.univ.erase mateT).erase mateS) = U := by
+    ext u
+    simp [U, and_comm]
+  rw [hUcomm] at hcolT
+  exact twenty_add_cross_misses_le_far_nondefectBlock_of_column_sums
+    G hfree hmin hcard hv U s t mateT mateS hst hUcard hcolS hcolT
+
 /-- Six local bounds of the form `dᵢ + aᵢ + bᵢ ≤ 5`, together with the paired
 bound and the exact total `25`, are all sharp.  In the graph application, `dᵢ`
 is a far defect-block cardinality and `aᵢ,bᵢ` are the two crossed miss counts. -/
