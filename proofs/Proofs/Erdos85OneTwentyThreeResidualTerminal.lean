@@ -14,6 +14,7 @@ wrapper transports the saturated owner-fiber hard sector into this engine.
 -/
 
 open Polynomial
+open SimpleGraph
 
 namespace Erdos85
 
@@ -161,6 +162,172 @@ theorem secondOrder_degree_sixteen_minimumLayer_degree_zero_two_or_four
   have hcases : s = 0 ∨ s = 2 ∨ s = 4 := by
     interval_cases s <;> norm_num at hgap <;> omega
   exact ⟨s, hcases, hreg, hcardChild⟩
+
+/-- Exact cardinality of the exterior vertices missed by every disjoint
+child-to-complement incidence row. -/
+theorem minimumLayer_unused_exterior_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    ((Finset.univ \ U) \ Finset.univ.biUnion E).card =
+      (d * (d - 1) + 3 - (s * (s - 1) + 3)) -
+        (s * (s - 1) + 3) * (d - s) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨a, rfl⟩ : ∃ a : ℕ, d = a + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hcardE : ∀ x : minimumLayerVertex D c₀, (E x).card = d - s := by
+    intro x
+    exact card_minimumLayerExternalNeighborFinset G D c₀
+      hregParent hregChild x
+  have hcardChildD : Fintype.card (minimumLayerVertex D c₀) =
+      s * (s - 1) + 3 := by
+    simpa [D] using hcardChild
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hunionCard : (Finset.univ.biUnion E).card =
+      (s * (s - 1) + 3) * (d - s) := by
+    rw [Finset.card_biUnion hpair]
+    rw [Finset.sum_congr rfl (fun x _ => hcardE x)]
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    rw [hcardChildD]
+    norm_num
+  have hunionSub : Finset.univ.biUnion E ⊆ Finset.univ \ U :=
+    minimumLayer_externalBiUnion_subset_complement G D c₀
+  rw [Finset.card_sdiff_of_subset hunionSub, hunionCard,
+    Finset.card_sdiff_of_subset (Finset.subset_univ U),
+    Finset.card_univ, card_minimumLayerImageFinset, hcard, hcardChild]
+
+/-- In the tight d=16, s=4 extension, exactly 48 exterior vertices are
+orphans—missed by every child external-neighborhood row. -/
+theorem degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    ((Finset.univ \ U) \ Finset.univ.biUnion E).card = 48 := by
+  have h := minimumLayer_unused_exterior_card G hfree (d := 16) (s := 4)
+    (by norm_num) (by norm_num) hmin hcard c₀ hregChild (by
+      norm_num
+      exact hcardChild)
+  norm_num at h ⊢
+  exact h
+
+/-- Every orphan exterior vertex is serviced exactly once by each child
+row: its neighborhood meets that row's external-neighbor set in one point. -/
+theorem minimumLayer_orphan_service_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀))
+    (u : minimumLayerVertex (secondOrderDefectGraph G) c₀) :
+    (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀ u ∩
+      G.neighborFinset z).card = 1 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hzNoChildAdj : ∀ v : minimumLayerVertex D c₀, ¬ G.Adj z v.2.1 := by
+    intro v hzv
+    apply hzUnused
+    apply Finset.mem_biUnion.mpr
+    refine ⟨v, Finset.mem_univ _, ?_⟩
+    exact Finset.mem_sdiff.mpr
+      ⟨(G.mem_neighborFinset v.2.1 z).mpr hzv.symm, hzOutside⟩
+  have hzNotD : ¬ D.Adj u.2.1 z := by
+    intro hD
+    have hcomp : D.connectedComponentMk z = u.1.1 :=
+      (ConnectedComponent.connectedComponentMk_eq_of_adj hD.symm).trans
+        ((ConnectedComponent.mem_supp_iff u.1.1 u.2.1).mp u.2.2)
+    have hzSupp : z ∈ u.1.1.supp :=
+      (ConnectedComponent.mem_supp_iff u.1.1 z).mpr hcomp
+    apply hzOutside
+    exact Finset.mem_image.mpr
+      ⟨⟨u.1, ⟨z, hzSupp⟩⟩, Finset.mem_univ _, rfl⟩
+  have huz : u.2.1 ≠ z := by
+    intro huz
+    apply hzOutside
+    exact Finset.mem_image.mpr ⟨u, Finset.mem_univ _, huz⟩
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree u.2.1 z huz
+  have hzNotMem : z ∉ D.neighborFinset u.2.1 := by
+    simpa [D.mem_neighborFinset] using hzNotD
+  rw [if_neg hzNotMem] at hcommon
+  have hnonempty : (G.neighborFinset u.2.1 ∩ G.neighborFinset z).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  let q := hnonempty.choose
+  have hqmem := hnonempty.choose_spec
+  have ⟨hqu, hqz⟩ := Finset.mem_inter.mp hqmem
+  have hqOutside : q ∉ U := by
+    intro hqU
+    obtain ⟨v, _hv, hvq⟩ := Finset.mem_image.mp hqU
+    apply hzNoChildAdj v
+    have hzq : G.Adj z q := (G.mem_neighborFinset z q).mp hqz
+    change v.2.1 = q at hvq
+    rwa [hvq]
+  have hserviceNonempty : (E u ∩ G.neighborFinset z).Nonempty := by
+    exact ⟨q, Finset.mem_inter.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨hqu, hqOutside⟩, hqz⟩⟩
+  have hsub : E u ∩ G.neighborFinset z ⊆
+      G.neighborFinset u.2.1 ∩ G.neighborFinset z := by
+    intro y hy
+    exact Finset.mem_inter.mpr
+      ⟨(Finset.mem_sdiff.mp (Finset.mem_inter.mp hy).1).1,
+        (Finset.mem_inter.mp hy).2⟩
+  have hle := Finset.card_le_card hsub
+  have hpos := Finset.card_pos.mpr hserviceNonempty
+  change (E u ∩ G.neighborFinset z).card = 1
+  omega
 
 end
 
