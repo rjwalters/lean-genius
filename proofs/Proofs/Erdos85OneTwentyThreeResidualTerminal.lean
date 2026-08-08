@@ -132,6 +132,36 @@ theorem secondOrder_minimumLayer_strict_gap
       G hfree hmin hcard c₀ hreg hcardChild)
   · exact hgap
 
+/-- At ambient degree sixteen, unconditional sharp descent leaves only the
+three even child degrees `0`, `2`, and `4`. -/
+theorem secondOrder_degree_sixteen_minimumLayer_degree_zero_two_or_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)]
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (s = 0 ∨ s = 2 ∨ s = 4) ∧
+      (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3 := by
+  obtain ⟨s, hreg, hcardChild, hsEven, hsd, hgap⟩ :=
+    secondOrder_minimumLayer_strict_gap G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard (by norm_num) (by norm_num)
+        c₀ hc₀min
+  obtain ⟨k, hk⟩ := hsEven
+  have hcases : s = 0 ∨ s = 2 ∨ s = 4 := by
+    interval_cases s <;> norm_num at hgap <;> omega
+  exact ⟨s, hcases, hreg, hcardChild⟩
+
 end
 
 end Erdos85
