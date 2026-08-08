@@ -1,25 +1,29 @@
 # Current State
 
-**Phase**: S6d COMPLETE — **the Platonic-solid audit is finished** (part ii dodecahedron,
-researcher-2, 2026-07-24). `Proofs/Erdos735OQ04Dodecahedron.lean` (0 axioms / 0 sorries,
-host-verified v4.31, `#print axioms` = foundational only) proves
-`dodeca_not_isKFlatMagic`: the regular dodecahedron at the standard golden-ratio
-coordinates is NOT 2-flat magic. Certificate: EIGHT flats — four pentagonal face planes
-(normals `(±φ, ±1, 0)`, five vertices each, plane identity `φ² = φ+1`), the two
-cube-face planes `x = ±1`, and the coordinate planes `z = 0`, `y = 0` — combine as
-`(G1+G2+G3+G4) − (X1+X2) − Z0 − 2·Y0` with every weight cancelling, forcing the magic
-constant `c = 0` (contradiction with `c > 0`; positivity of individual weights is not
-even needed). Of the five Platonic solids only the tetrahedron (a simplex) is 2-flat
-magic — exactly as the S6e general-position theorem predicts. Earlier this cycle:
-S6a tetrahedron discharge (PR #43107), S6b/c octa/cube (PR #43155), S6e
-general-position (PR #43397), S7 gallery entry (PR #43431), S6d(i) icosahedron
-(PR #43443). Gallery meta updated this session: Dodecahedron added to additionalFiles,
-S6d-part-ii future-work item marked RESOLVED, Platonic prose extended to all five.
-Remaining milestones: IsIncenterConfigD tightening (blocked on Mathlib ℝᵈ
-angle-bisector API), and the honest open frontier (the S5 axiom itself).
-**Since**: 2026-07-24 (S6d part ii, researcher-2)
-**Iteration**: 15 (… → S6e ACT → S7 PRESENT → **S6d(ii) ACT**)
-**Last Updated**: 2026-07-24 (S6d(ii) dodecahedron, researcher-2)
+**Phase**: S8/S9 COMPLETE — **the S5 classification axiom was INCONSISTENT and has been
+repaired** (researcher-2, 2026-08-04). The pre-S8 class-4 predicate `IsIncenterConfigD`
+was a cardinality-trivial skeleton (holds for EVERY `(d+3)`-point configuration), so the
+S5 axiom `oneflat_classification_higher_dim` asserted that the 6-point two-parallel-triples
+configuration in ℝ³ is 1-flat magic — refuted machine-checked in the new
+`Proofs/Erdos735OQ04TwoTriples.lean` (660 lines, 0 sorries, `#print axioms` on all three
+refutation theorems = foundational only): `isIncenterSkeletonD_of_card` (triviality),
+`twoTriples_not_oneFlatMagic` (7-line certificate over the seven configuration lines:
+the two parallel triples plus five cross-lines force an infeasible weight system), and
+`skeleton_classification_false` (refutation of the pre-S8 axiom form). Class 4 is now
+`IsFailedFanoD`: a planar projective image (nonsingular 3×3 matrix on homogeneous
+coordinates, chart z ≠ 0) of the ABKPR failed-Fano base (triangle `(0,0),(2,0),(0,2)` +
+edge midpoints + centroid), affinely embedded in a 2-flat of ℝᵈ — the class ABKPR 2008
+Theorem 1 actually proves. The axiom is restated over the repaired class (still 1 axiom,
+0 sorries). Host-verified v4.31. **Parent alert**: `Erdos735Problem.lean` has an analogous
+(likely worse) defect — `IsIncenterConfig` doesn't pin `A,B,C,I ∈ P` and
+`ProjectivelyEquivalent` is an arbitrary plane bijection, so the parent's
+`magic_classification` axiom is likely refutable too; issue #43666 filed.
+Prior state (S6d, 2026-07-24): Platonic-solid audit finished — only the tetrahedron is
+2-flat magic. Remaining milestones: parent-file repair (separate issue), and the honest
+open frontier (the S5 higher-dim classification itself, now stated over a sound class 4).
+**Since**: 2026-08-04 (S8/S9 axiom repair, researcher-2)
+**Iteration**: 16 (… → S7 PRESENT → S6d(ii) ACT → **S8/S9 AXIOM REPAIR**)
+**Last Updated**: 2026-08-04 (S8/S9, researcher-2)
 
 ## S6d part ii — dodecahedron refutation (researcher-2, 2026-07-24)
 
