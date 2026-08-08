@@ -3026,10 +3026,8 @@ theorem degree_sixteen_twoLayer_used_component_quotient_entries
       (secondOrderDefectGraph G) c₀)) :
     let D := secondOrderDefectGraph G
     let e := D.connectedComponentMk z
-    ∃ c : D.ConnectedComponent,
-      c.supp.ncard = 5 ∧
-      componentQuotientMatrix G D e c = 1 ∧
-      5 * componentQuotientMatrix G D c e = e.supp.ncard := by
+    componentQuotientMatrix G D e c₀ = 1 ∧
+      5 * componentQuotientMatrix G D c₀ e = e.supp.ncard := by
   classical
   dsimp only
   have hbase := (degree_sixteen_smallLayer_component_card
@@ -3038,8 +3036,29 @@ theorem degree_sixteen_twoLayer_used_component_quotient_entries
   obtain ⟨c, hc, hone, hratio⟩ :=
     degree_sixteen_minimumLayer_used_component_quotient_entries
       G hfree hmin hcard c₀ hc₀min z hz
-  refine ⟨c, hc.trans hbase, hone, ?_⟩
-  simpa [hc, hbase] using hratio
+  have hcount : (Finset.univ.filter (fun a :
+      (secondOrderDefectGraph G).ConnectedComponent =>
+        a.supp.ncard = c₀.supp.ncard)).card = 1 := by
+    have hlayer := card_minimumLayerVertex (secondOrderDefectGraph G) c₀
+    rw [hcardChild, hbase] at hlayer
+    have hcountFive : (Finset.univ.filter (fun a :
+        (secondOrderDefectGraph G).ConnectedComponent =>
+          a.supp.ncard = 5)).card = 1 := by
+      omega
+    simpa [hbase] using hcountFive
+  have hcMem : c ∈ Finset.univ.filter (fun a :
+      (secondOrderDefectGraph G).ConnectedComponent =>
+        a.supp.ncard = c₀.supp.ncard) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ _, hc⟩
+  have hc₀Mem : c₀ ∈ Finset.univ.filter (fun a :
+      (secondOrderDefectGraph G).ConnectedComponent =>
+        a.supp.ncard = c₀.supp.ncard) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩
+  have hcc₀ : c = c₀ :=
+    Finset.card_le_one.mp (by rw [hcount]) c hcMem c₀ hc₀Mem
+  subst c
+  refine ⟨hone, ?_⟩
+  simpa [hbase] using hratio
 
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
