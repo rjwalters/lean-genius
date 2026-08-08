@@ -123,6 +123,21 @@ theorem false_of_six_centers_four_neighbors_in_eight
     norm_num [Nat.choose]
   · exact hdegree
 
+/-- Arithmetic certificate for the three weighted row signatures in the
+remaining `(12,36)` two-component orphan branch.  Here `S_a` is the total
+reduced R-order carried by rows with `a` neighbors in the order-12 orphan
+component. -/
+theorem twelve_thirtysix_weighted_row_signature
+    (S₀ S₁ S₂ S₃ S₄ : ℕ)
+    (hmass : S₀ + S₁ + S₂ + S₃ + S₄ = 60)
+    (hedges : S₁ + 2 * S₂ + 3 * S₃ + 4 * S₄ = 60)
+    (hcherries : S₂ + 3 * S₃ + 6 * S₄ = 18)
+    (hthree : S₃ = 0) (hfour : S₄ ≠ 1) :
+    (S₀ = 18 ∧ S₁ = 24 ∧ S₂ = 18 ∧ S₃ = 0 ∧ S₄ = 0) ∨
+      (S₀ = 12 ∧ S₁ = 40 ∧ S₂ = 6 ∧ S₃ = 0 ∧ S₄ = 2) ∨
+      (S₀ = 9 ∧ S₁ = 48 ∧ S₂ = 0 ∧ S₃ = 0 ∧ S₄ = 3) := by
+  omega
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
