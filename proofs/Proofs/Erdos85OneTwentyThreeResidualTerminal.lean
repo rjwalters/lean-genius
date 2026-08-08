@@ -1356,6 +1356,72 @@ theorem degree_sixteen_minimumLayer_used_exterior_orphan_degree
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- The first adjacency image of the orphan indicator, written on the three
+residual cells.  This packages the exact quotient column for `O`. -/
+theorem degree_sixteen_minimumLayer_adjMatrix_mulVec_orphanIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (x : V) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (G.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) x =
+      if x ∈ U then 0
+      else if x ∈ R then 16 - (1 + (s * (s - 1) + 3 - s))
+      else 16 - (s * (s - 1) + 3) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  let O := (Finset.univ \ U) \ R
+  rw [adjMatrix_mulVec_vertexFinsetIndicator]
+  by_cases hxU : x ∈ U
+  · rw [if_pos hxU]
+    have hempty : O ∩ G.neighborFinset x = ∅ := by
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro y hy
+      obtain ⟨u, _hu, hux⟩ := Finset.mem_image.mp hxU
+      have hyO := (Finset.mem_inter.mp hy).1
+      have hxy := (G.mem_neighborFinset x y).mp (Finset.mem_inter.mp hy).2
+      have hyE : y ∈ E u := by
+        apply Finset.mem_sdiff.mpr
+        change u.2.1 = x at hux
+        refine ⟨(G.mem_neighborFinset u.2.1 y).mpr (by simpa [hux] using hxy), ?_⟩
+        exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hyO).1).2
+      exact (Finset.mem_sdiff.mp hyO).2
+        (Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hyE⟩)
+    change ((O ∩ G.neighborFinset x).card : ℤ) = 0
+    rw [hempty]
+    simp
+  · rw [if_neg hxU]
+    by_cases hxR : x ∈ R
+    · rw [if_pos hxR]
+      obtain ⟨v, _hv, hxv⟩ := Finset.mem_biUnion.mp hxR
+      norm_cast
+      exact degree_sixteen_minimumLayer_used_exterior_orphan_degree
+        G hfree (s := s) hmin hcard c₀ hregChild hcardChild v hxv
+    · rw [if_neg hxR]
+      have hxO : x ∈ O := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hxU⟩, hxR⟩
+      norm_cast
+      exact degree_sixteen_minimumLayer_orphan_neighbor_card
+        G hfree hmin hcard c₀ hregChild hcardChild x hxO
+
 /-- Compatibility form for the `s=4` branch: every used exterior vertex
 has exactly four orphan neighbors. -/
 theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
