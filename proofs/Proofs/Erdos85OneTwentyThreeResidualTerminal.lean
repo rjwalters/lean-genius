@@ -1358,9 +1358,37 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     G hfree (s := 4) hmin hcard c₀ hregChild
       (by norm_num; exact hcardChild) v hyv
 
-/-- Correct row-by-row used-exterior split at `d=16,s=4`: an owned point
+/-- Correct row-by-row used-exterior split at `d=16`: an owned point
 has one neighbor in every child-nonadjacent exterior row, including exactly
 one in its own row, and none in a child-adjacent row. -/
+theorem degree_sixteen_minimumLayer_used_exterior_row_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u ∩ G.neighborFinset y).card =
+      if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
+        then 0 else 1 := by
+  rw [Finset.inter_comm]
+  exact minimumLayer_externalBlock_card_of_owned
+    G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild u v hyv
+
+/-- Compatibility wrapper for the `s=4` residual branch. -/
 theorem degree_sixteen_fourLayer_used_exterior_row_neighbor_card
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -1382,10 +1410,9 @@ theorem degree_sixteen_fourLayer_used_exterior_row_neighbor_card
         (secondOrderDefectGraph G) c₀ u ∩ G.neighborFinset y).card =
       if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
         then 0 else 1 := by
-  rw [Finset.inter_comm]
-  exact minimumLayer_externalBlock_card_of_owned
-    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
-      c₀ hregChild (by norm_num; exact hcardChild) u v hyv
+  simpa using degree_sixteen_minimumLayer_used_exterior_row_neighbor_card
+    G hfree (s := 4) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) u v hyv
 
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
