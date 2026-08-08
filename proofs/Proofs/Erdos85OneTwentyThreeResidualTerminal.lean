@@ -291,6 +291,28 @@ theorem degree_sixteen_secondOrder_colorOrder_mod_three
   norm_num at hcolor ⊢
   exact hcolor
 
+/-- At the degree-sixteen exact boundary, an odd defect component cannot
+carry internal quotient degree three.  This labeling-free parity form is the
+outer-signature constraint used in the small-layer quotient enumeration:
+the internal handshake makes every odd component's diagonal quotient even. -/
+theorem degree_sixteen_odd_component_diagonalQuotient_ne_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hodd : Odd c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≠ 3 := by
+  have heven := oddComponent_diagonalQuotient_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c hodd
+  intro hthree
+  rw [hthree] at heven
+  norm_num at heven
+
 /-- Arithmetic kernel for the two-layer O--R quotient.  Detailed balance
 between a 5-divisible R component and a non-5-divisible O component forces
 every positive O-to-R entry (which is bounded by the total O-to-R degree
