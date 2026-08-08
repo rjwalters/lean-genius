@@ -86,19 +86,19 @@ theorem containsC4_of_restricted_cherry_count
     (G.ne_of_adj avx) (G.ne_of_adj avy)
     (G.ne_of_adj av'x) (G.ne_of_adj av'y)
 
-/-- The numerical obstruction used by the rigid `(8,40)` four-layer
-transport branch: six centers cannot each have four neighbors in an
-eight-vertex endpoint set in a `C₄`-free graph. -/
-theorem false_of_six_centers_four_neighbors_in_eight
+/-- Uniform restricted-cherry obstruction for a center set whose vertices
+each have exactly four neighbors in the endpoint set. -/
+theorem false_of_centers_four_neighbors
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 V G) (A B : Finset V)
-    (hAcard : A.card = 6) (hBcard : B.card = 8)
+    (hcount : B.card.choose 2 < A.card * 6)
     (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 4) : False := by
   apply hfree
   apply containsC4_of_restricted_cherry_count G A B
   have hsum :
-      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) = 36 := by
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+        A.card * 6 := by
     calc
       (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
           ∑ _a ∈ A, 6 := by
@@ -107,9 +107,21 @@ theorem false_of_six_centers_four_neighbors_in_eight
             rw [hdegree a ha]
             norm_num [Nat.choose]
       _ = A.card * 6 := by simp
-      _ = 36 := by rw [hAcard]
-  rw [hBcard, hsum]
-  norm_num [Nat.choose]
+  rw [hsum]
+  exact hcount
+
+/-- The small numerical instance first exposed by the rigid `(8,40)`
+four-layer transport branch. -/
+theorem false_of_six_centers_four_neighbors_in_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hAcard : A.card = 6) (hBcard : B.card = 8)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 4) : False := by
+  apply false_of_centers_four_neighbors G hfree A B
+  · rw [hAcard, hBcard]
+    norm_num [Nat.choose]
+  · exact hdegree
 
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
