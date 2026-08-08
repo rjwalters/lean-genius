@@ -8745,6 +8745,70 @@ theorem false_of_degree_sixteen_fourLayer_orderSix_orphan
               ((G.mem_neighborFinset z q).mp hqG)
         simp [f, hzero]
 
+/-- Once order-six orphan components are excluded, every orphan component
+has order at least nine.  Hence the exact orphan mass forty-eight supports
+at most five components. -/
+theorem false_of_degree_sixteen_fourLayer_six_le_orphan_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount : 6 ≤
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  have hnine : ∀ c ∈ C, 9 ≤ c.supp.ncard := by
+    intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rw [hrep] at hge hdvd
+    by_contra hnot
+    have hsix : c.supp.ncard = 6 := by
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+    exact false_of_degree_sixteen_fourLayer_orderSix_orphan
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hrepO (by
+        simpa [D, hrep] using hsix)
+  have hlower : 9 * C.card ≤ ∑ c ∈ C, c.supp.ncard := by
+    calc
+      9 * C.card = ∑ _c ∈ C, 9 := by simp [mul_comm]
+      _ ≤ ∑ c ∈ C, c.supp.ncard := by
+        apply Finset.sum_le_sum
+        intro c hc
+        exact hnine c hc
+  have hsum := degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ c ∈ C, c.supp.ncard) = 48 at hsum
+  change 6 ≤ C.card at hcount
+  omega
+
 /-- If the four-layer orphan cell has seven defect components, every order
 is one of six, nine, or twelve. -/
 theorem degree_sixteen_fourLayer_seven_orphan_component_orders
