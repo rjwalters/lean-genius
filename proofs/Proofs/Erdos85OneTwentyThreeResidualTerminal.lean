@@ -1506,6 +1506,79 @@ theorem degree_sixteen_fourLayer_used_exterior_row_neighbor_card
     G hfree (s := 4) hmin hcard c₀ hregChild
       (by norm_num; exact hcardChild) u v hyv
 
+/-- Summing the row block law: an exterior point has one used-exterior
+neighbor for each child vertex not adjacent to its owner. -/
+theorem degree_sixteen_minimumLayer_used_exterior_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset y).card =
+      s * (s - 1) + 3 - s := by
+  classical
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have hpairInter :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ G.neighborFinset y) := by
+    intro u hu w hw huw
+    exact Finset.disjoint_of_subset_left (Finset.inter_subset_left)
+      (Finset.disjoint_of_subset_right (Finset.inter_subset_left)
+        (hpair hu hw huw))
+  have heq : Finset.univ.biUnion E ∩ G.neighborFinset y =
+      Finset.univ.biUnion (fun u => E u ∩ G.neighborFinset y) := by
+    ext q
+    simp
+  rw [heq, Finset.card_biUnion hpairInter]
+  have hrow : ∀ u : minimumLayerVertex D c₀,
+      (E u ∩ G.neighborFinset y).card = if H.Adj u v then 0 else 1 := by
+    intro u
+    exact degree_sixteen_minimumLayer_used_exterior_row_neighbor_card
+      G hfree hmin hcard c₀ hregChild hcardChild u v hyv
+  simp_rw [hrow]
+  have hadjFilter :
+      Finset.univ.filter (fun u : minimumLayerVertex D c₀ => H.Adj u v) =
+        H.neighborFinset v := by
+    ext u
+    simp [H.adj_comm]
+  have hsplit := Finset.card_filter_add_card_filter_not
+    (s := (Finset.univ : Finset (minimumLayerVertex D c₀)))
+    (fun u => H.Adj u v)
+  rw [hadjFilter, H.card_neighborFinset_eq_degree, hregChild v,
+    Finset.card_univ, hcardChild] at hsplit
+  have hnonadj :
+      (Finset.univ.filter (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card =
+        s * (s - 1) + 3 - s := by omega
+  have hbool :
+      (∑ u : minimumLayerVertex D c₀, if ¬H.Adj u v then 1 else 0) =
+        (Finset.univ.filter (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card := by
+    simpa only [Nat.cast_id] using
+      (Finset.sum_boole (R := ℕ)
+        (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v) Finset.univ)
+  rw [← hnonadj, ← hbool]
+  apply Finset.sum_congr rfl
+  intro u _hu
+  by_cases huv : H.Adj u v <;> simp [huv]
+
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
