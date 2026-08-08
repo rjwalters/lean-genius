@@ -306,6 +306,114 @@ theorem false_of_two_unit_rows_three_even_columns_no_shared
   · exact hno₁ h.1 h.2
   · exact hno₂ h.1 h.2
 
+/-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
+distinct minimum order-six components cannot each have one reverse-quotient
+incidence among the same three order-twelve targets when all three column
+sums are even.  The arithmetic selector finds a common target; detailed
+balance turns its reverse quotient one into a positive forward quotient,
+and minimum-to-larger target-source uniqueness identifies the two sources. -/
+theorem false_of_two_orderSix_sources_three_orderTwelve_targets
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₁ c₂ e₀ e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₁min : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
+      c₁.supp.ncard ≤ l.supp.ncard)
+    (hc₁ : c₁.supp.ncard = 6) (hc₂ : c₂.supp.ncard = 6)
+    (he₀ : e₀.supp.ncard = 12) (he₁ : e₁.supp.ncard = 12)
+    (he₂ : e₂.supp.ncard = 12) (hcne : c₁ ≠ c₂)
+    (hrow₁ : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₁ = 1)
+    (hrow₂ : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₂ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₂ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₂ = 1)
+    (hcol₀ : Even
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₂))
+    (hcol₁ : Even
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₂))
+    (hcol₂ : Even
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₂)) : False := by
+  let D := secondOrderDefectGraph G
+  have hshared := two_unit_rows_three_even_columns_share
+    (componentQuotientMatrix G D e₀ c₁)
+    (componentQuotientMatrix G D e₁ c₁)
+    (componentQuotientMatrix G D e₂ c₁)
+    (componentQuotientMatrix G D e₀ c₂)
+    (componentQuotientMatrix G D e₁ c₂)
+    (componentQuotientMatrix G D e₂ c₂)
+    hrow₁ hrow₂ hcol₀ hcol₁ hcol₂
+  have hsame : c₂.supp.ncard = c₁.supp.ncard := hc₂.trans hc₁.symm
+  rcases hshared with h | h | h
+  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₀
+    have hbal₂ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₀
+    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₀ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₁ = 1 := by
+        simpa [D] using h.1
+      rw [hc₁, he₀, hrev] at hbal₁
+      dsimp only [D]
+      omega
+    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₀ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₂ = 1 := by
+        simpa [D] using h.2
+      rw [hc₂, he₀, hrev] at hbal₂
+      dsimp only [D]
+      omega
+    have heq := secondOrder_minimum_largerTarget_source_unique
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        c₁ c₂ e₀ hc₁min hsame (by omega) hpos₁ hpos₂
+    exact hcne heq
+  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₁
+    have hbal₂ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₁
+    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₁ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₁ = 1 := by
+        simpa [D] using h.1
+      rw [hc₁, he₁, hrev] at hbal₁
+      dsimp only [D]
+      omega
+    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₁ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₂ = 1 := by
+        simpa [D] using h.2
+      rw [hc₂, he₁, hrev] at hbal₂
+      dsimp only [D]
+      omega
+    have heq := secondOrder_minimum_largerTarget_source_unique
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        c₁ c₂ e₁ hc₁min hsame (by omega) hpos₁ hpos₂
+    exact hcne heq
+  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₂
+    have hbal₂ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₂
+    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₂ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₁ = 1 := by
+        simpa [D] using h.1
+      rw [hc₁, he₂, hrev] at hbal₁
+      dsimp only [D]
+      omega
+    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₂ := by
+      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₂ = 1 := by
+        simpa [D] using h.2
+      rw [hc₂, he₂, hrev] at hbal₂
+      dsimp only [D]
+      omega
+    have heq := secondOrder_minimum_largerTarget_source_unique
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        c₁ c₂ e₂ hc₁min hsame (by omega) hpos₁ hpos₂
+    exact hcne heq
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
