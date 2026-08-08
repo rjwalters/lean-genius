@@ -251,4 +251,23 @@ theorem card_cycleBlock_targetNeighbors_le_one
   obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hy
   exact hperiod z j
 
+/-- In a `9`-by-`12` cycle block, target-length periodicity translates the
+source coordinate by the nonzero class of `12 = 3 mod 9`.  Hence a source
+vertex cannot have four neighbors in the target cycle of a `C₄`-free graph. -/
+theorem false_of_nine_twelve_cycleBlock_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod 9 → V) (v : ZMod 12 → V)
+    (huinj : Function.Injective u)
+    (hperiod : ∀ z j,
+      G.Adj (u (z + (12 : ZMod 9))) (v j) ↔ G.Adj (u z) (v j))
+    (z : ZMod 9)
+    (hfour :
+      (((Finset.univ.image v).filter fun y => G.Adj (u z) y).card) = 4) :
+    False := by
+  have hle := card_cycleBlock_targetNeighbors_le_one G hfree u v huinj
+    (12 : ZMod 9) hperiod (by decide) z
+  omega
+
 end Erdos85
