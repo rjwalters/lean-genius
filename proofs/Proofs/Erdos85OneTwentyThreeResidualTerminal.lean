@@ -4432,6 +4432,95 @@ theorem degree_sixteen_fourLayer_matching_stable_orphan_component_even
   rw [hdiagOne, mul_one] at heven
   exact heven
 
+/-- If an orphan matching edge crosses between two defect components, those
+components have equal order.  The matching is the unique orphan neighbor at
+both endpoints, so both cross-quotient entries are one; detailed balance
+then identifies the component orders. -/
+theorem degree_sixteen_fourLayer_matched_orphan_component_card_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z') :
+    ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard =
+      ((secondOrderDefectGraph G).connectedComponentMk z').supp.ncard := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  let c := D.connectedComponentMk z
+  let e := D.connectedComponentMk z'
+  have hquotient (x x' : V) (hx : x ∈ O) (hx' : x' ∈ O)
+      (hxx' : G.Adj x x') :
+      componentQuotientMatrix G D (D.connectedComponentMk x)
+          (D.connectedComponentMk x') = 1 := by
+    have hxSupp : x ∈ (D.connectedComponentMk x).supp :=
+      ConnectedComponent.connectedComponentMk_mem
+    rw [componentQuotientMatrix_apply_eq G D 2
+      (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard)
+      (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard)
+      (D.connectedComponentMk x) (D.connectedComponentMk x') hxSupp]
+    have hone : (O ∩ G.neighborFinset x).card = 1 :=
+      degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+        G hfree hmin hcard c₀ hregChild hcardChild x hx
+    have hx'Mem : x' ∈ O ∩ G.neighborFinset x :=
+      Finset.mem_inter.mpr
+        ⟨hx', (G.mem_neighborFinset x x').mpr hxx'⟩
+    have hmatch : O ∩ G.neighborFinset x = {x'} := by
+      obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hone
+      have hx'w : x' = w := by simpa [hw] using hx'Mem
+      simpa [hx'w] using hw
+    have hcomponent :
+        componentNeighborFinset G D (D.connectedComponentMk x') x = {x'} := by
+      ext q
+      constructor
+      · intro hq
+        have hqData := Finset.mem_filter.mp hq
+        have hqSupp : q ∈ (D.connectedComponentMk x').supp :=
+          (ConnectedComponent.mem_supp_iff (D.connectedComponentMk x') q).mpr
+            hqData.2
+        have hqO := degree_sixteen_fourLayer_orphan_component_subset
+          G hfree hmin hcard c₀ hregChild hcardChild x' hx' hqSupp
+        have hqMatch : q ∈ O ∩ G.neighborFinset x :=
+          Finset.mem_inter.mpr ⟨hqO, hqData.1⟩
+        simpa [hmatch] using hqMatch
+      · intro hq
+        have hqx' : q = x' := by simpa using hq
+        subst q
+        exact Finset.mem_filter.mpr
+          ⟨(G.mem_neighborFinset x x').mpr hxx', rfl⟩
+    rw [hcomponent]
+    simp
+  have hce : componentQuotientMatrix G D c e = 1 := by
+    simpa [c, e] using hquotient z z' hz hz' hzz'
+  have hec : componentQuotientMatrix G D e c = 1 := by
+    simpa [c, e] using hquotient z' z hz' hz hzz'.symm
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c e
+  rw [hce, hec, mul_one, mul_one] at hbal
+  exact hbal
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
