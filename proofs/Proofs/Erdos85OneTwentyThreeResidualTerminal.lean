@@ -676,6 +676,62 @@ theorem twentyfour_twentyfour_weighted_row_signature
   have hn₃ : n₃ ≤ 7 := by omega
   interval_cases n₁ <;> interval_cases n₃ <;> interval_cases n₄₂ <;> omega
 
+/-- Finite-sum bookkeeping for the `(24,24)` row-order classification. -/
+theorem twentyfour_twentyfour_weighted_count_decomposition
+    {α : Type*} [DecidableEq α] (C : Finset α) (r q : α → ℕ)
+    (hone : ∀ c ∈ C, q c = 1 → r c = 24)
+    (htwo : ∀ c ∈ C, q c = 2 → r c = 12 ∨ r c = 24)
+    (hthree : ∀ c ∈ C, q c = 3 → r c = 24) :
+    let S := fun a : ℕ ↦ ∑ c ∈ C, if q c = a then r c / 3 else 0
+    let n₁ := (C.filter fun c ↦ q c = 1).card
+    let n₃ := (C.filter fun c ↦ q c = 3).card
+    let n₄₂ := (C.filter fun c ↦ q c = 2 ∧ r c = 12).card
+    let n₈₂ := (C.filter fun c ↦ q c = 2 ∧ r c = 24).card
+    S 1 = 8 * n₁ ∧ S 3 = 8 * n₃ ∧ S 2 = 4 * n₄₂ + 8 * n₈₂ := by
+  classical
+  dsimp only
+  let S := fun a : ℕ ↦ ∑ c ∈ C, if q c = a then r c / 3 else 0
+  let n₁ := (C.filter fun c ↦ q c = 1).card
+  let n₃ := (C.filter fun c ↦ q c = 3).card
+  let n₄₂ := (C.filter fun c ↦ q c = 2 ∧ r c = 12).card
+  let n₈₂ := (C.filter fun c ↦ q c = 2 ∧ r c = 24).card
+  have hS₁ : S 1 = 8 * n₁ := by
+    calc
+      S 1 = ∑ c ∈ C, if q c = 1 then 8 else 0 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        by_cases hq : q c = 1
+        · rw [hone c hc hq]
+        · simp [S, hq]
+      _ = 8 * n₁ := by
+        rw [← Finset.sum_filter]
+        simp [n₁, Nat.mul_comm]
+  have hS₃ : S 3 = 8 * n₃ := by
+    calc
+      S 3 = ∑ c ∈ C, if q c = 3 then 8 else 0 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        by_cases hq : q c = 3
+        · rw [hthree c hc hq]
+        · simp [S, hq]
+      _ = 8 * n₃ := by
+        rw [← Finset.sum_filter]
+        simp [n₃, Nat.mul_comm]
+  have hS₂ : S 2 = 4 * n₄₂ + 8 * n₈₂ := by
+    calc
+      S 2 = ∑ c ∈ C, (
+          (if q c = 2 ∧ r c = 12 then 4 else 0) +
+            (if q c = 2 ∧ r c = 24 then 8 else 0)) := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        by_cases hq : q c = 2
+        · rcases htwo c hc hq with hr | hr <;> simp [S, hq, hr]
+        · simp [S, hq]
+      _ = 4 * n₄₂ + 8 * n₈₂ := by
+        rw [Finset.sum_add_distrib, ← Finset.sum_filter, ← Finset.sum_filter]
+        simp [n₄₂, n₈₂, Nat.mul_comm]
+  exact ⟨hS₁, hS₃, hS₂⟩
+
 /-- Exact pair-ledger certificate for the last periodicity-feasible
 three-component orphan partition `(12,12,24)`.  The variables enumerate the
 seventeen possible reduced R-order/row types after periodicity.  The final
@@ -9782,6 +9838,68 @@ theorem degree_sixteen_fourLayer_orphan_reduced_quotient_stratification
       C (fun e ↦ e.supp.ncard) q hdiv hq
         (o.supp.ncard * 15) (o.supp.ncard.choose 2 - o.supp.ncard)
         hmass hedge hcherry
+
+/-- Graph instantiation of the symmetric-orphan weighted count
+decomposition. -/
+theorem degree_sixteen_fourLayer_twentyfour_twentyfour_count_decomposition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂) (ho₁ : o₁.supp.ncard = 24)
+    (ho₂ : o₂.supp.ncard = 24)
+    (hpair :
+      Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \
+            minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀)) = {o₁, o₂}) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    let r := fun e : D.ConnectedComponent ↦ e.supp.ncard
+    let q := fun e : D.ConnectedComponent ↦ componentQuotientMatrix G D e o₁
+    let S := fun a : ℕ ↦ ∑ e ∈ C, if q e = a then r e / 3 else 0
+    let n₁ := (C.filter fun e ↦ q e = 1).card
+    let n₃ := (C.filter fun e ↦ q e = 3).card
+    let n₄₂ := (C.filter fun e ↦ q e = 2 ∧ r e = 12).card
+    let n₈₂ := (C.filter fun e ↦ q e = 2 ∧ r e = 24).card
+    S 1 = 8 * n₁ ∧ S 3 = 8 * n₃ ∧ S 2 = 4 * n₄₂ + 8 * n₈₂ := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let r := fun e : D.ConnectedComponent ↦ e.supp.ncard
+  let q := fun e : D.ConnectedComponent ↦ componentQuotientMatrix G D e o₁
+  apply twentyfour_twentyfour_weighted_count_decomposition C r q
+  · intro e he hq
+    exact (degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        o₁ o₂ hne ho₁ ho₂ hpair e (Finset.mem_filter.mp he).2).1 hq
+  · intro e he hq
+    exact (degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        o₁ o₂ hne ho₁ ho₂ hpair e (Finset.mem_filter.mp he).2).2.1 hq
+  · intro e he hq
+    exact (degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        o₁ o₂ hne ho₁ ho₂ hpair e (Finset.mem_filter.mp he).2).2.2 hq
 
 /-- The order-twelve member of a `(12,36)` orphan pair has the unique
 remaining reduced quotient signature `(9,48,0,0,3)`. -/
