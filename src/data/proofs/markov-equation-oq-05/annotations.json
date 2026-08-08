@@ -30,7 +30,7 @@
       "startLine": 56,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reducing the Ternary Equation to a Monic Quadratic",
     "content": "markov_quadratic rearranges x² + y² + z² = 3xyz into z² − 3xy·z + (x² + y²) = 0 via a single linear_combination of the Markov equation, exhibiting z as a root of the monic quadratic g(t) = t² − 3xy·t + (x² + y²). The linear coefficient is recorded by markov_vieta_sum, the Vieta sum z + (3xy − z) = 3xy — the additive companion of the parent's product formula z·(3xy − z) = x² + y². Together the sum and product are the two Vieta data that determine g and drive the uniqueness factorization below.",
     "mathContext": "$z + (3xy - z) = 3xy, \\qquad z\\,(3xy - z) = x^2+y^2.$",

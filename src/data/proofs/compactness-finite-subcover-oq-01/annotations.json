@@ -3,7 +3,7 @@
     "id": "compactness-oq01-header",
     "proofId": "compactness-finite-subcover-oq-01",
     "range": { "startLine": 1, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "Compactness via Finite Subcovers — a Non-Wrapper Re-Derivation",
     "content": "The header frames what the file proves and why it is not a mere Mathlib restatement. The headline is the Heine–Borel characterization: a set s is compact iff every open cover admits a finite subcover (Mathlib's isCompact_iff_finite_subcover), the form powering the extreme value theorem, the tube lemma, and 'continuous images of compacts are compact'. The genuine content is that the structural consequences are re-derived by running the subcover characterization by hand, deliberately NOT via the ready-made IsCompact.union: isCompact_union_of_finite_subcover extracts a finite subcover of s and of t from any cover of s ∪ t and unions the two finite index Finsets; isCompact_finset_biUnion lifts this to a finite indexed union by Finset induction; isCompact_finset_coe derives that every finite set is compact (↑s = ⋃_{x∈s}{x}, singletons compact); isCompact_image_of_continuous / _union cross-check via continuous images; and isCompact_two_intervals gives the concrete ℝ instance [0,1] ∪ [2,3]. The re-derivation, finite-family induction, finite-set corollary, and concrete instance are the mathematical substance. Verified, 0 axioms, 0 sorries.",
     "mathContext": "$s$ compact $\\iff$ every open cover of $s$ has a finite subcover; union case: a cover of $s\\cup t$ yields finite subcovers of $s$ and $t$ whose index sets union to a finite subcover of $s\\cup t$.",

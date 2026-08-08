@@ -30,7 +30,7 @@
       "startLine": 87,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Non-Fixed Points of an Involution Pair Up (Even Count)",
     "content": "The base fact of the parity engine: even_card_not_fixed shows #{a | σ a ≠ a} is even. Restricting σ to the subtype {a // ¬ σ a = a} makes it a fixed-point-free involution there, so that subtype has even cardinality by SpernerTuckerAntipodalSymmetry.even_card_of_free_involution; transporting along Fintype.card_subtype gives the count over the ambient type. This is the involution analogue of the handshaking lemma — non-fixed points split into free antipodal 2-orbits — and the exact dual of the fixed-point-free 'even cardinality' fact.",
     "mathContext": "$\\#\\{a \\mid \\sigma a \\neq a\\}$ is even: the non-fixed points split into free 2-orbits $\\{a, \\sigma a\\}$.",
@@ -54,7 +54,7 @@
       "startLine": 120,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "All Parity Lives on the Fixed Points",
     "content": "odd_card_iff_odd_fixed partitions α into fixed and non-fixed points via Finset.filter_card_add_filter_neg_card_eq_card; since the non-fixed part is even (even_card_not_fixed), an omega on residues mod 2 gives Odd (Fintype.card α) ↔ Odd #{a | σ a = a} — the whole type's parity is carried entirely by the fixed points. odd_card_of_unique_fixed is the usable corollary: an involution with exactly one fixed point forces odd cardinality, the cleanest way to manufacture the odd count that drives Tucker's lemma.",
     "mathContext": "$\\mathrm{Odd}\\,|\\alpha| \\iff \\mathrm{Odd}\\,\\#\\{a \\mid \\sigma a = a\\}$; one fixed point $\\Rightarrow$ $|\\alpha|$ odd.",
@@ -78,7 +78,7 @@
       "startLine": 137,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The predicate-restricted fixed-point parity",
     "content": "The engine relativised to a σ-invariant decidable predicate P (P (σ a) ↔ P a). even_card_not_fixed_of_invariant: on the subtype {a // P a ∧ ¬ σ a = a} the predicate-preserving involution σ is fixed-point free, so the non-fixed P-points are even in number. odd_card_filter_iff_odd_fixed: partitioning the P-points by whether σ fixes them and using that evenness gives Odd #{a | P a} ↔ Odd #{a | P a ∧ σ a = a} — among the P-points the parity is carried by the σ-fixed ones. This is the exact form the Tucker specialisation consumes.",
     "mathContext": "For $\\sigma$-invariant $P$: $\\#\\{a \\mid P a \\wedge \\sigma a = a\\} + \\#\\{a \\mid P a \\wedge \\sigma a \\neq a\\} = \\#\\{a \\mid P a\\}$, the second summand even, so $\\mathrm{Odd}\\,\\#\\{a \\mid P a\\} \\leftrightarrow \\mathrm{Odd}\\,\\#\\{a \\mid P a \\wedge \\sigma a = a\\}$.",

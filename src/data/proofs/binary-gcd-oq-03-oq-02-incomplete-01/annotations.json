@@ -32,7 +32,7 @@
       "startLine": 79,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Determinant Multiplicativity and the Composition Law",
     "content": "Two identities power everything downstream. **Determinant multiplicativity** `det_mul` ($\\det(MN) = \\det M \\cdot \\det N$) is the engine of the $\\det = \\pm 1$ invariant: it is what makes $\\pm 1$ a *closed* condition under products. The **composition law** `apply_mul` states that the action of a product is the composition of the actions — $(M\\cdot N)$ applied to $(a,b)$ equals $M$ applied to $N$'s output. This is the algebraic glue that lets Schönhage's two recursive calls chain into one correct reduction, and here it is exactly what turns the matrix inverse into a left/right inverse on pairs.",
     "mathContext": "For $2\\times 2$ matrices both facts are polynomial identities closed by `ring` after unfolding the definitions; `apply_mul` is proved componentwise via `Prod.ext_iff`.",

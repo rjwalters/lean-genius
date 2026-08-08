@@ -3,7 +3,7 @@
     "id": "ann-header",
     "proofId": "erdos-1002-oq-02",
     "range": { "startLine": 1, "endLine": 54 },
-    "type": "context",
+    "type": "concept",
     "title": "Background: Kesten's Cauchy Limit and the Sibling's CDF-Only Gap",
     "content": "Erdős #1002 asks whether the weighted fractional sum f(α,n) = (1/log n)·Σ_{k≤n}(1/2−{αk}) has an asymptotic distribution function; Kesten (1960) proved the two-parameter variant converges to a Cauchy law, while the one-parameter case remains open. The sibling entry Erdos1002OQ01 records the Cauchy law only through its CDF cauchyDistribution ρ c = (1/π)·arctan(ρc)+1/2. This file supplies the missing connection to the Cauchy probability density cauchyDensity ρ x = ρ/(π(1+(ρx)²)) via three results: the CDF differentiates to the density (cauchyDistribution_hasDerivAt), the CDF is the running integral of the density (integral_cauchyDensity, the FTC form), and the density integrates to 1 over all of ℝ for ρ > 0 (integral_cauchyDensity_univ, the normalization that certifies it as a genuine probability density), together with supporting positivity, symmetry, and continuity facts.",
     "mathContext": "Kesten's limit law is Cauchy with CDF $g_\\rho(c)=\\tfrac1\\pi\\arctan(\\rho c)+\\tfrac12$ and density $f_\\rho$; this file proves $g_\\rho'=f_\\rho$ and $\\int_{\\mathbb R} f_\\rho = 1$.",

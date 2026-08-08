@@ -31,7 +31,7 @@
       "startLine": 61,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Two Fiber Counts: 3 Pairs per Line, 1 Line per Pair",
     "content": "The double count rests on two elementary fiber cardinalities. card_pairs_of_line: a 3-element line contains exactly C(3,2)=3 pairs, via Finset.card_powersetCard. powersetCard_two_eq_filter: for a line l ⊆ V, the pairs inside l are exactly the pairs of V that l contains, l.powersetCard 2 = (V.powersetCard 2).filter (· ⊆ l) — proved by set extensionality using that p ⊆ l and l ⊆ V give p ⊆ V. card_lines_through_pair: the unique-cover hypothesis (∃! line through each pair) makes the filter of lines through a fixed pair a singleton, so its cardinality is 1, via Finset.card_eq_one.",
     "mathContext": "$|\\{p:\\ p\\subseteq l,\\ |p|=2\\}| = \\binom{3}{2} = 3,\\qquad |\\{l\\in L:\\ p\\subseteq l\\}| = 1$",

@@ -31,7 +31,7 @@
       "startLine": 81,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Coprime cofactors by cancelling the gcd in its own Bézout identity",
     "content": "Mathlib has no ready lemma that u/gcd and v/gcd are coprime for a general Euclidean domain (unlike Nat.coprime_div_gcd_div_gcd), so this is proved by hand in four lines. Take the Bézout identity for the gcd itself, d = u·gcdA + v·gcdB (EuclideanDomain.gcd_eq_gcd_ab). Substitute u = d·u₁, v = d·v₁ to get d = d·(u₁·gcdA + v₁·gcdB), then cancel d — nonzero exactly when (u,v) ≠ (0,0), via gcd_eq_zero_iff and mul_left_cancel₀ — to obtain 1 = u₁·gcdA + v₁·gcdB, a Bézout certificate for IsCoprime u₁ v₁. Implementation note: the gcd, gcdA, gcdB are frozen with `set` (after the Bézout hypothesis is created) so that `rw [hu, hv]` rewrites only the standalone u, v and never descends into `gcd u v`; and the cancellation goal is closed with `linear_combination` rather than `rw` to avoid rewriting every copy of d at once.",
     "mathContext": "From $d = u\\,A + v\\,B$ with $u = d\\,u_1$, $v = d\\,v_1$: $d = d(u_1 A + v_1 B)$. Since $d = \\gcd(u,v) \\neq 0$ when $(u,v)\\neq(0,0)$, cancel it to get $1 = u_1 A + v_1 B$, i.e. $\\operatorname{IsCoprime}(u_1, v_1)$. This is the Euclidean-domain analogue of $\\gcd\\!\\left(\\tfrac{u}{d},\\tfrac{v}{d}\\right)=1$.",
@@ -56,7 +56,7 @@
       "startLine": 97,
       "endLine": 116
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "p = (gcd u v)² · (positive-definite primitive 2-SOS)",
     "content": "Assembling the pieces: with u = d·u₁ and v = d·v₁ (d = gcd u v), u² + v² = d²·(u₁² + v₁²) by ring, the cofactors are coprime (previous step), and the primitive part u₁² + v₁² is positive definite (Bézout-at-a-point step). So exists_primitive_factorization exhibits every real 2-SOS as a perfect square times a strictly positive polynomial — the multiplicative normal form that answers the parent entry's second open question. The gcd_dvd_left/right divisibilities supply the cofactors u₁, v₁; the `set d := gcd u v` freeze keeps the goal readable while `rw [hu₁, hv₁]; ring` verifies the algebraic identity and `sq_add_sq_pos_of_isCoprime hcop` supplies the strict positivity of the primitive part.",
     "mathContext": "$u = d\\,u_1,\\; v = d\\,v_1,\\; d=\\gcd(u,v)\\;\\Rightarrow\\; u^2+v^2 = d^2\\,(u_1^2+v_1^2)$, with $\\operatorname{IsCoprime}(u_1,v_1)$ and $(u_1^2+v_1^2)(t) > 0\\ \\forall t$. Every real $p = u^2+v^2$ is thus a perfect square times a strictly positive polynomial.",
@@ -81,7 +81,7 @@
       "startLine": 118,
       "endLine": 143
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The gcd carries every real zero: rootMult = 2·rootMult(gcd)",
     "content": "The root-multiplicity corollary makes the parent entry's 2·min formula transparent. In p = d²·q with q = u₁² + v₁² positive definite, q has no real root, so rootMultiplicity r q = 0 (rootMultiplicity_eq_zero applied to the not-a-root fact). Then rootMultiplicity_mul splits rootMult r (d²·q) = rootMult r (d²) + 0, and a second application to d² = d·d (rootMultiplicity_mul again, pow_two) gives 2·rootMult r d. Both applications need the nonvanishing side conditions d ≠ 0 (from gcd_eq_zero_iff) and q ≠ 0 (from positivity at r). Since rootMultiplicity r (gcd u v) = min(rootMultiplicity r u, rootMultiplicity r v), this recovers the parent's rootMult(u²+v²) = 2·min(rootMult u, rootMult v) directly from the factorisation.",
     "mathContext": "$\\operatorname{rootMult}_r(u^2+v^2) = \\operatorname{rootMult}_r(d^2\\,q) = \\operatorname{rootMult}_r(d^2) + \\operatorname{rootMult}_r(q) = 2\\,\\operatorname{rootMult}_r(d) + 0$, using additivity of root multiplicity over products (both factors $\\neq 0$) and $\\operatorname{rootMult}_r(q)=0$ since $q>0$. With $\\operatorname{rootMult}_r(\\gcd) = \\min$, this is the parent's $2\\min$ law.",

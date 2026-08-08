@@ -28,7 +28,7 @@
       "startLine": 85,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Full period n from a single residue identity",
     "content": "`kronecker_add_mul_left` upgrades the residue-class dependence `kronecker_congr_left` to full periodicity: `(a + n·k / n) = (a/n)` for every integer k. The entire content is the one-line arithmetic fact `(a + n·k) % n = a % n` (`Int.add_mul_emod_self_left`) fed into `kronecker_congr_left` — no case analysis on n is needed. `kronecker_periodic_left` is then just the k = 1 specialization (`simpa`), the textbook 'period n' statement. Notably the value is preserved for arbitrary integer k, including negative shifts, so (·/n) is genuinely a function on ℤ/nℤ.",
     "mathContext": "$(a + nk\\,/\\,n) = (a/n)$ for all $k \\in \\mathbb{Z}$, from $(a+nk)\\bmod n = a\\bmod n$; the $k=1$ case is the character period.",
@@ -51,7 +51,7 @@
       "startLine": 100,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reducing kronecker2 to a function of a mod 8",
     "content": "The private helper `kronecker2_mod_eight` re-derives that `kronecker2 x = kronecker2 (x % 8)` by unfolding the definition and collapsing the nested moduli with `Int.emod_emod_of_dvd` (using 2 ∣ 8 and 8 ∣ 8). This is the pivot that turns period-8 periodicity into pure arithmetic: once kronecker2 is known to factor through `x % 8`, `kronecker2_congr` (equal values on congruent-mod-8 inputs) is a two-line rewrite. The reduction to residues, rather than a direct computation, is what makes the subsequent full-period statement free.",
     "mathContext": "$\\mathrm{kronecker2}(x) = \\mathrm{kronecker2}(x \\bmod 8)$; with $(x\\bmod 8)\\bmod 2 = x\\bmod 2$ and $(x\\bmod 8)\\bmod 8 = x\\bmod 8$.",
@@ -164,7 +164,7 @@
       "startLine": 309,
       "endLine": 365
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The shift-4 autocorrelation peak, from anti-periodicity alone",
     "content": "`kronecker2_autocorr_four` computes the first off-diagonal value of the length-8 autocorrelation C(t) := ∑_a χ₈(a)χ₈(a+t): at t = 4, anti-periodicity turns every term (a/2)(a+4/2) into −(a/2)², so the sum collapses to the negative of the diagonal L²-norm, C(4) = −4 = −C(0). `kronecker2_autocorr_four_shifted` is the same one-line argument reduced against the translation-invariant L²-norm instead of the base-window one, giving C(4) = −4 over every window. No new casework is introduced anywhere in this section — both results are algebraic corollaries of `kronecker2_add_four` and the L²-norm lemmas just proved, illustrating how far anti-periodicity alone carries the autocorrelation computation before the harder even/odd case analysis of Section F is needed.",
     "mathContext": "$C(4) := \\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+4) = -4$, the exact negative of the diagonal $C(0)=4$, for every window: $\\sum_{a=0}^{7}\\chi_8(c+a)\\chi_8(c+a+4) = -4$.",

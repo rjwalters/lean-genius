@@ -77,7 +77,7 @@
       "startLine": 183,
       "endLine": 196
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Mass Preservation: Convolution Stays Among Probability Densities",
     "content": "gaussian_density_integral_eq_one proves ∫_ℝ φ_σ(x) dx = 1 — each centred Gaussian density has total mass 1. This is the invariant that makes the convolution semigroup law (★) a statement about probability densities: since φ_{σ₁} and φ_{σ₂} are probability densities, their convolution φ_{√(σ₁²+σ₂²)} is too. The proof factors out the leading reciprocal (σ√(2π))⁻¹, evaluates the remaining bare Gaussian integral with Mathlib's integral_gaussian, and observes that the resulting √(π/(1/2σ²)) = σ√(2π) exactly cancels the reciprocal.",
     "mathContext": "$\\int_{\\mathbb R} \\varphi_\\sigma(x)\\,dx = (\\sigma\\sqrt{2\\pi})^{-1}\\int e^{-x^2/(2\\sigma^2)}dx = (\\sigma\\sqrt{2\\pi})^{-1}\\cdot \\sigma\\sqrt{2\\pi} = 1$.",

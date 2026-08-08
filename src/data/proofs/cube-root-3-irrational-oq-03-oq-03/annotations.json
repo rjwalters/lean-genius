@@ -3,7 +3,7 @@
     "id": "map-x-cubed",
     "proofId": "cube-root-3-irrational-oq-03-oq-03",
     "range": { "startLine": 51, "endLine": 54 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Transporting X³ − 3 from ℚ to ℝ",
     "content": "`map_X_cubed_sub_three` records that applying `algebraMap ℚ ℝ` to `(X³ − 3 : ℚ[X])` yields `X³ − 3 : ℝ[X]`, discharged by `simp` because the ring hom fixes the integer coefficients. This tiny rewrite is the pivot of the whole argument: it lets a splitting fact stated over the intermediate field ℚ(∛3) be re-expressed as a splitting fact over ℝ, where the single-real-root obstruction lives. Polynomial `map` along a ring homomorphism is a ring homomorphism `ℚ[X] → ℝ[X]`, so it commutes with `X`, `C`, powers, and subtraction.",
     "mathContext": "$\\varphi_*(X^3 - 3) = X^3 - 3$ where $\\varphi = \\mathrm{algebraMap}\\,\\mathbb{Q}\\,\\mathbb{R}$, since $\\varphi(3)=3$.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: an arbitrary field and a finite-dimensional space",
     "content": "The header states the theorem and the quotient-free proof idea, and the declarations fix the working generality. The variable line `{K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]` assumes only that K is an arbitrary field and V a finite-dimensional K-vector space — no algebraic closure, no perfect-field or characteristic hypothesis, and no Jordan normal form. This is exactly why the concavity comes out as a pure rank inequality valid over ANY field and machine-checked with 0 axioms: everything downstream is built from `LinearMap.ker`, `Submodule.map`, and rank–nullity, all of which live at this level of generality. `open Module LinearMap` brings `Module.End`, `finrank`, and the kernel/range API into scope; `import Mathlib` supplies the rank–nullity theorem and `genEigenspace_nat`.",
     "mathContext": "Working over an arbitrary field $K$ with $\\dim_K V < \\infty$; the endomorphism ring is $\\operatorname{End}_K(V) = \\operatorname{Module.End}\\,K\\,V$, and $a_k = \\dim_K \\ker N^k$ for $N \\in \\operatorname{End}_K(V)$.",
@@ -30,7 +30,7 @@
       "startLine": 51,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Powers of N and their nested kernels",
     "content": "Two elementary facts set up the whole argument. First, pow_succ_apply factors an extra application of N out of a power: Nᵏ⁺¹ x = Nᵏ(N x). Second, ker_pow_le_succ shows the kernels of successive powers form an increasing chain: if x is killed by Nᵏ it is killed by Nᵏ⁺¹, because Nᵏ⁺¹ x = N(Nᵏ x) = N 0 = 0. This ascending kernel chain ker N⁰ ≤ ker N¹ ≤ ker N² ≤ ⋯ is exactly the generalized-eigenspace filtration once N = f − μ.",
     "mathContext": "$\\ker N^0 \\subseteq \\ker N^1 \\subseteq \\ker N^2 \\subseteq \\cdots$, with $N^{k+1}x = N^k(Nx) = N(N^k x)$; the sequence stabilizes at $\\ker N^{\\dim V}$ (the maximal generalized eigenspace).",
@@ -124,7 +124,7 @@
       "startLine": 100,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Transporting concavity to generalized eigenspaces",
     "content": "The abstract concavity is stated for an arbitrary N; specializing N = f − μ·1 gives the spectral version. Mathlib's genEigenspace_nat identifies the generalized eigenspace genEigenspace μ k with ker (f − μ·1)ᵏ, so rewriting all three terms reduces the eigenspace concavity to finrank_ker_pow_concave applied to f − μ•1. Nothing about μ being an actual eigenvalue is needed: if μ is not in the spectrum every aₖ is 0 and the inequality holds trivially.",
     "mathContext": "$\\operatorname{genEigenspace}(\\mu,k) = \\ker(f-\\mu\\cdot 1)^k$, so $\\dim\\operatorname{genEig}(\\mu,k) + \\dim\\operatorname{genEig}(\\mu,k{+}2) \\le 2\\dim\\operatorname{genEig}(\\mu,k{+}1)$.",

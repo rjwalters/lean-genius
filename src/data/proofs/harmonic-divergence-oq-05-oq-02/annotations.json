@@ -74,7 +74,7 @@
       "startLine": 166,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convergent Regime p > 1: Each Block is a Geometric Term",
     "content": "On the convergent side the per-block estimate flips direction. In `block_le_geom`, for $k \\ge 2^n$ we have $2^n \\le k+1$, so $(2^n)^p \\le (k+1)^p$ (`Real.rpow_le_rpow`, valid since the exponent $p \\ge 0$) and hence $1/(k+1)^p \\le 1/(2^n)^p$; summing the $2^n$ equal-sized terms in the block and applying the ratio identity $2^n/(2^n)^p = (2^{1-p})^n$ bounds the whole block above by $(2^{1-p})^n$. The companion `geom_partial_le` bounds the resulting geometric partial sum, $\\sum_{i<n} r^i \\le 1/(1-r)$ for $0 \\le r < 1$: multiply through by $(1-r) > 0$ and use the telescoping identity `geom_sum_mul` ($\\sum_{i<n} r^i \\cdot (1-r) = 1 - r^n$), then drop the non-negative $r^n$. These two lemmas are the convergent-regime analogues of the divergent side's `block_ge_half` — the same dyadic block, now majorised instead of minorised.",
     "mathContext": "For $k \\ge 2^n$: $1/(k+1)^p \\le 1/(2^n)^p$, so block $\\le 2^n \\cdot (2^n)^{-p} = (2^{1-p})^n$; and $\\sum_{i<n} r^i \\le \\frac{1}{1-r}$ for $0 \\le r < 1$ via $\\sum r^i (1-r) = 1 - r^n$.",

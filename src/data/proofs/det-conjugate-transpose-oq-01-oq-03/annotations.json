@@ -119,7 +119,7 @@
       "startLine": 134,
       "endLine": 160
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Instances: Both Signs are Attained",
     "content": "The identity matrix has determinant 1 and lies in SO(2) — a rotation. reflection_orthogonal verifies that the reflection diag(-1, 1) satisfies OᵀO = 1 (a direct 2×2 computation via mul_apply and Fin.sum_univ_two), and reflection_det computes its determinant as -1 (det_fin_two_of). So this reflection lies in O(2) but not in SO(2): the sign character is surjective onto {±1}, and SO(2) is a proper index-two subgroup of O(2). This is the algebraic form of the rotations-vs-reflections split.",
     "mathContext": "$\\det \\mathbf 1 = 1$ (rotation, in $SO(2)$); $\\det \\operatorname{diag}(-1,1) = -1$ (reflection, in $O(2)\\setminus SO(2)$).",

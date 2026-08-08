@@ -15,7 +15,7 @@
     "id": "ann-imports",
     "proofId": "area-of-circle-oq003",
     "range": { "startLine": 43, "endLine": 51 },
-    "type": "context",
+    "type": "concept",
     "title": "The Import Surface: Exactly Three Analytic Ingredients",
     "content": "The proof pulls in precisely the machinery it needs and nothing structural beyond it. `Mathlib.Analysis.SpecialFunctions.Stirling` supplies the single deep input — Stirling's formula $k! \\sim \\sqrt{2\\pi k}\\,(k/e)^k$ in `IsEquivalent` form; `...Gamma.Basic` provides $\\Gamma$, its positivity, and the recurrence $\\Gamma(s+1)=s\\,\\Gamma(s)$ used to define $\\omega$ and prove the dimension recurrence; and `...Asymptotics.AsymptoticEquivalent` gives the $\\sim$ calculus (`IsEquivalent.mul`, `.inv`, `.congr_right`, `isEquivalent_iff_tendsto_one`) that transports Stirling for $k!$ into the statement about $\\omega_{2k}$. `open ... Asymptotics Nat` and `open scoped Topology` let the `~[atTop]` notation and factorial be written unqualified. Notably the file does *not* import `EuclideanSpace.volume_ball`: $\\omega$ is taken as the Gamma closed form directly, keeping the entry self-contained and independent of the non-compiling ancestor.",
     "mathContext": "Deep input: $k! \\sim_{\\mathrm{atTop}} \\sqrt{2\\pi k}(k/e)^k$. Everything else is the algebra of $\\sim$ and the recurrence $\\Gamma(s+1)=s\\,\\Gamma(s)$.",

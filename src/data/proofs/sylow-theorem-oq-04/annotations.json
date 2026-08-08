@@ -102,7 +102,7 @@
       "startLine": 111,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pinning the Exact Counts n₂=5, n₃=10, n₅=6",
     "content": "Where the abstract constraints leave several candidates, `native_decide` settles the *exact* Sylow numbers for $A_5$ by exhaustive enumeration over the 60 elements: $n_2 = 5$ (the Klein four-groups $V_4$), $n_3 = 10$ (cyclic $\\langle(ijk)\\rangle$), $n_5 = 6$ (cyclic $\\langle(ijklm)\\rangle$). `all_sylow_numbers_gt_one` then packages the crucial consequence — every $n_p > 1$ — with a trivial `rw`+`omega`. This step is what distinguishes $A_5$ from other order-60 groups and forces non-normality.",
     "mathContext": "$n_2 = 5,\\ n_3 = 10,\\ n_5 = 6$, all $> 1$; the Sylow 2-subgroups are $\\cong V_4$, the 3- and 5-subgroups cyclic.",
@@ -287,7 +287,7 @@
       "startLine": 237,
       "endLine": 261
     },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: 18 Verified Results, 0 Axioms",
     "content": "The closing table catalogues all 18 theorems by statement and method, recording 0 axioms and 0 sorries. The methods split cleanly into three families: `native_decide` for the concrete finite facts (order, valuations, exact Sylow counts), Mathlib's Sylow-III lemmas for the abstract counting constraints, and `decide` for the conjugacy-class subset-sum. Together they give two independent proofs of simplicity — Sylow-counting and conjugacy-class — plus the headline corollaries that $A_5$ is not solvable (the Abel–Ruffini connection) and that its only normal subgroups are $\\bot$ and $\\top$.",
     "mathContext": "18 results: $|A_5|=60$, exact Sylow numbers $5,10,6$, non-normality, simplicity, non-solvability — all machine-checked.",

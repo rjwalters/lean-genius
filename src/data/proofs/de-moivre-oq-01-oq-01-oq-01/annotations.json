@@ -6,7 +6,7 @@
       "startLine": 57,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Imaginary-part extraction: sin(nθ) = Im((cos θ + i sin θ)ⁿ)",
     "content": "The base point is identified with the complex exponential: `cos_add_sin_I_eq_exp` rewrites $\\cos\\theta + i\\sin\\theta$ as $e^{i\\theta}$ through Mathlib's `Complex.exp_mul_I` together with `ofReal_cos`/`ofReal_sin`. Then `sin_nsmul_eq_im_pow` powers up — $(\\cos\\theta + i\\sin\\theta)^n = (e^{i\\theta})^n = e^{in\\theta}$ via `exp_nat_mul` — and reads off the imaginary part with `exp_ofReal_mul_I_im`, giving $\\sin(n\\theta) = \\operatorname{Im}((\\cos\\theta + i\\sin\\theta)^n)$. This is the exact dual of the parent entry's real-part extraction, and the precise machine-checked meaning of 'compare imaginary parts in De Moivre's theorem'.",
     "mathContext": "$\\cos\\theta + i\\sin\\theta = e^{i\\theta},\\quad \\sin(n\\theta) = \\operatorname{Im}\\big((\\cos\\theta + i\\sin\\theta)^n\\big).$",
@@ -29,7 +29,7 @@
       "startLine": 75,
       "endLine": 95
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The imaginary part of the binomial theorem",
     "content": "`sin_nsmul_binomial_im` applies `add_pow` to $(\\cos\\theta + i\\sin\\theta)^n$ and distributes the imaginary part over the resulting sum with `Complex.im_sum`. Each summand is normalised to the form $(\\text{real scalar})\\cdot i^{\\,n-k}$, so that `Complex.im_ofReal_mul` peels the real coefficient out of the imaginary part, leaving the factor $\\operatorname{Im}(i^{n-k})$. The output is the full expansion $\\sin(n\\theta) = \\sum_{k=0}^n \\binom{n}{k}\\cos^k\\theta\\,\\sin^{n-k}\\theta\\,\\operatorname{Im}(i^{n-k})$ — every term still present, with the sign/vanishing pattern quarantined into the single $\\operatorname{Im}(i^{n-k})$ factor.",
     "mathContext": "$\\sin(n\\theta) = \\sum_{k=0}^n \\binom{n}{k}\\cos^k\\theta\\,\\sin^{n-k}\\theta\\,\\operatorname{Im}(i^{n-k}).$",
@@ -53,7 +53,7 @@
       "startLine": 97,
       "endLine": 159
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Parity of Im(iᵐ) and the odd-index closed form",
     "content": "The two parity lemmas `im_I_pow_even` ($\\operatorname{Im}(i^{2j}) = 0$, since $i^{2j} = (-1)^j$ is real) and `im_I_pow_two_mul_add_one` ($\\operatorname{Im}(i^{2j+1}) = (-1)^j$, since $i^{2j+1} = (-1)^j i$) fix exactly which terms survive: dual to the cosine case, the *odd* powers of $\\sin$ remain. `sin_nsmul_binomial_odd` then converts the raw sum to the textbook closed form by the parent's three-move recipe with the parity flipped — `sum_range_reflect` to orient the index onto $\\sin$, `sum_subset` to discard the vanishing *even*-index terms, and `sum_image` to reindex the odd indices $i = 2j+1$ via the injection $j \\mapsto 2j+1$.",
     "mathContext": "$\\operatorname{Im}(i^{2j}) = 0,\\ \\operatorname{Im}(i^{2j+1}) = (-1)^j \\ \\Rightarrow\\ \\sin(n\\theta) = \\sum_{j} (-1)^j \\binom{n}{2j+1}\\cos^{n-2j-1}\\theta\\,\\sin^{2j+1}\\theta.$",
@@ -99,7 +99,7 @@
       "startLine": 178,
       "endLine": 199
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Connection to Chebyshev U: U_n(cos θ)·sin θ = the binomial sum",
     "content": "`chebyshev_U_eq_binomial_sum` closes the analogy with the parent's $T_n$ result. Instantiating the odd-index expansion at $n+1$ gives the explicit binomial sum for $\\sin((n+1)\\theta)$; Mathlib's `U_real_cos` states $U_n(\\cos\\theta)\\cdot\\sin\\theta = \\sin((n+1)\\theta)$; composing the two (with a `push_cast; ring` to reconcile the $\\mathbb{N}\\to\\mathbb{Z}\\to\\mathbb{R}$ index casts) proves $U_n(\\cos\\theta)\\cdot\\sin\\theta$ equals the explicit odd-index binomial sum. Where the parent landed the *real* part on the first-kind polynomial $T_n$, the *imaginary* part lands here on the second-kind polynomial $U_n$ — completing the real+imaginary decomposition of De Moivre's theorem.",
     "mathContext": "$U_n(\\cos\\theta)\\,\\sin\\theta = \\sin((n+1)\\theta) = \\sum_{j} (-1)^j \\binom{n+1}{2j+1}\\cos^{n-2j}\\theta\\,\\sin^{2j+1}\\theta.$",

@@ -79,7 +79,7 @@
       "startLine": 135,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Torsion Counts Multiply Over a Product",
     "content": "Two building blocks assemble the answer. card_torsion_pi shows the torsion count is multiplicative across the factors of a finite product ∏ᵢ Gᵢ: since xⁿ = 1 holds coordinatewise (funext_iff with Pi.pow_apply, Pi.one_apply), Equiv.subtypeEquivRight composed with Equiv.subtypePiEquivPi exhibits the torsion subtype {x : xⁿ = 1} as the dependent product ∏ᵢ {yᵢ : yᵢⁿ = 1}, and Fintype.card_pi multiplies the per-factor cardinalities. card_torsion_cyclic then evaluates one factor: on a finite cyclic group of order m the count of solutions of xⁿ = 1 is gcd(n, m), obtained by specializing the parent's uniform fibre count card_fiber_pow at the basepoint b = 1.",
     "mathContext": "$$\\#\\{x\\in\\textstyle\\prod_iG_i:x^n=1\\}=\\prod_i\\#\\{y\\in G_i:y^n=1\\},\\qquad \\#\\{x\\in C_m:x^n=1\\}=\\gcd(n,m).$$",

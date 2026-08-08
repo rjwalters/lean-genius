@@ -6,7 +6,7 @@
       "startLine": 4,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: from conditional to absolute convergence for log 2",
     "content": "The companion entry HarmonicDivergenceOQ03 proves the alternating harmonic series 1 − 1/2 + 1/3 − 1/4 + ⋯ converges conditionally to log 2 — its value exists only as an ordered limit of partial sums (¬ Summable). This file groups consecutive terms, (1 − 1/2) + (1/3 − 1/4) + ⋯, producing a series of positive terms 1/((2k+1)(2k+2)) with the same sum log 2. Because each term is O(1/k²), the regrouped series is absolutely summable and so has an honest HasSum/tsum value. This is the classic 'the sum of an alternating series equals the sum of its consecutive pairings' made concrete for the Mercator series, and it imports altHarmonic_tendsto_log_two from the parent rather than reproving convergence — keeping the file 0-sorry and 0-axiom.",
     "mathContext": "Parent: $\\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n}=\\log 2$ conditionally ($\\neg\\,\\mathrm{Summable}$). Here: $\\sum_{k\\ge0}\\frac1{(2k+1)(2k+2)}=\\log2$ absolutely, since $\\frac1{(2k+1)(2k+2)}=O(k^{-2})$.",

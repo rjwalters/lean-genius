@@ -88,7 +88,7 @@
       "startLine": 91,
       "endLine": 147
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Operands Never Grow: Cost ≤ Steps × Initial Bit-Length",
     "content": "**The mathematical heart.** `binaryGcdCost_le_steps_mul_size`: $\\mathtt{binaryGcdCost}\\,a\\,b \\le \\mathtt{binaryGcdSteps}\\,a\\,b \\cdot (\\mathtt{Nat.size}\\,a + \\mathtt{Nat.size}\\,b)$. A fuelled strong induction on $a+b$ (`binaryGcdCost_le_aux`). In the $(a'{+}1, b'{+}1)$ branch the cost recursion and the step recursion are unfolded **in lockstep** (`binaryGcdCost.eq_3`, `binaryGcdSteps.eq_3`) so a single `split_ifs` aligns their identical five-way if-trees. One reusable closer discharges every leaf: the reduced operands satisfy $r_a \\le a'{+}1$, $r_b \\le b'{+}1$ (each `Nat.div_le_self` / `Nat.sub_le`), so by **monotonicity of $\\mathtt{Nat.size}$** ($\\mathtt{Nat.size\\_le\\_size}$) $\\mathtt{size}\\,r_a + \\mathtt{size}\\,r_b \\le S$; the induction hypothesis bounds the recursive cost by $(\\text{recursive steps})\\cdot(\\mathtt{size}\\,r_a + \\mathtt{size}\\,r_b) \\le (\\text{recursive steps})\\cdot S$; and $(1+\\text{steps})\\cdot S = S + \\text{steps}\\cdot S$ closes the leaf.",
     "mathContext": "Because neither operand ever grows, every step is at most as expensive as the first: the leading $S$ pays the current step, and $\\text{steps}\\cdot S$ dominates the rest via the IH. Hence total cost $\\le$ (step count) $\\times$ (initial bit-length).",
@@ -118,7 +118,7 @@
       "startLine": 149,
       "endLine": 168
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Classical O((log N)²) Total Bit-Complexity",
     "content": "**Composition.** `binaryGcdCost_le_quadratic`: for $a,b>0$, $\\mathtt{binaryGcdCost}\\,a\\,b \\le (2(\\log_2 a + \\log_2 b) + 2)\\,(\\log_2 a + \\log_2 b + 2)$. Two $O(\\log)$ factors multiplied: the parent $\\mathtt{binaryGcdSteps\\_le\\_log}$ bounds the step count by $2(\\log_2 a + \\log_2 b)+2$, and the size/log bridge $\\mathtt{Nat.size}\\,a \\le \\log_2 a + 1$ — from $\\mathtt{Nat.size\\_le}$ and $\\mathtt{Nat.lt\\_pow\\_succ\\_log\\_self}$ (the witness $a < 2^{\\log_2 a + 1}$) — bounds the initial bit-length $S \\le \\log_2 a + \\log_2 b + 2$. `gcongr` multiplies the two monotone bounds.",
     "mathContext": "$O(\\log N)$ steps each costing $O(\\log N)$ bits gives the textbook $O((\\log N)^2)$ bit-complexity of the Binary GCD (Brent 1976, Knuth TAOCP 4.5.2), now derived formally from the step bound plus the per-step bit cost.",

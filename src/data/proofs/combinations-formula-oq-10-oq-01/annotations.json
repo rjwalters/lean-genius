@@ -90,7 +90,7 @@
     "id": "ann-combo1001-checks",
     "proofId": "combinations-formula-oq-10-oq-01",
     "range": { "startLine": 124, "endLine": 132 },
-    "type": "observation",
+    "type": "concept",
     "title": "Sanity Checks",
     "content": "Three axiom-free decide verifications confirm the closed form on small cases: ∑_{k} k·C(3,k)² = 1·9 + 2·9 + 3·1 = 9+18+3 = 30 = 3·C(5,2) = 3·10; ∑_{k} k·C(4,k)² = 140 = 4·C(7,3) = 4·35; ∑_{k} k·C(5,k)² = 630 = 5·C(9,4) = 5·126. Using decide (kernel reduction) rather than native_decide keeps these checks free of the Lean.ofReduceBool axiom.",
     "mathContext": "$\\sum_k k\\binom{3}{k}^2 = 30 = 3\\binom{5}{2}$, $\\sum_k k\\binom{4}{k}^2 = 140 = 4\\binom{7}{3}$, $\\sum_k k\\binom{5}{k}^2 = 630 = 5\\binom{9}{4}$.",

@@ -117,7 +117,7 @@
       "startLine": 103,
       "endLine": 119
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Cases and Sharpness",
     "content": "**Worked instances.** `neg_pell_three_no_sol` and `neg_pell_seven_no_sol` instantiate the mod-4 obstruction at the textbook unsolvable cases $D = 3, 7$ (each discharged by `neg_pell_no_sol_of_D_three_mod_four (by norm_num)`). `neg_pell_two_example` is the sharpness witness: $(x, y) = (1, 1)$ solves $x^2 - 2y^2 = -1$ since $1 - 2 = -1$. Because $D = 2 \\not\\equiv 3 \\pmod 4$ and has no prime factor $\\equiv 3 \\pmod 4$, both obstructions correctly permit it — confirming they genuinely depend on $D$'s residue class rather than forbidding every $D$.",
     "mathContext": "Necessary but not sufficient: e.g. $D = 34 = 2\\cdot 17$ passes both tests yet $x^2 - 34y^2 = -1$ is unsolvable.",

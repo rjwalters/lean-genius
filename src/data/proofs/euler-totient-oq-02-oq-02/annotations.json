@@ -49,7 +49,7 @@
       "startLine": 92,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Exponent Reduction: a^k = a^(k mod φ(n))",
     "content": "The practically important corollary of `a^φ(n) = 1` is that exponents may be reduced modulo `φ(n)`:\n```\ntheorem pow_mod_totient [NeZero n] (a : (ZMod n)ˣ) (k : ℕ) :\n    a ^ k = a ^ (k % φ n) := by\n  conv_lhs => rw [← Nat.mod_add_div k (φ n)]\n  rw [pow_add, pow_mul, euler_units, one_pow, mul_one]\n```\nThe proof splits `k = (k % φ(n)) + φ(n)·(k / φ(n))`, so `a^k = a^(k % φ(n)) · (a^φ(n))^(k/φ(n))` and the second factor collapses to `1` by Euler's theorem. `pow_mod_totient_modEq` is the `ℕ`-congruence version for coprime `a`.\n\nThis is exactly why modular exponentiation is fast — and why RSA decryption `m^(ed) ≡ m` works, since `ed ≡ 1 (mod φ(n))`.",
     "mathContext": "$a^k = a^{k \\bmod \\varphi(n)}$ because $a^{\\varphi(n)} = 1$: with $k = (k \\bmod \\varphi(n)) + \\varphi(n) q$, one has $a^k = a^{k \\bmod \\varphi(n)} \\cdot (a^{\\varphi(n)})^q = a^{k \\bmod \\varphi(n)}$.",

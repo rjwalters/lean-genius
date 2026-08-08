@@ -465,7 +465,7 @@
       "startLine": 213,
       "endLine": 221
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Dvořák–Hu–Sereni Counterexample (Restated)",
     "content": "A comment restating the Dvořák–Hu–Sereni (2019) theorem in prose: there exists a graph that is $(4,1)$-choosable but NOT $(8,2)$-choosable. This is exactly the content already captured by the `ert_4_1_to_8_2_false` axiom above — no separate Lean declaration exists here, only documentation.",
     "mathContext": "$\\exists G,\\; \\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$, equivalent to `ert_4_1_to_8_2_false`. The DHS construction (not formalized here) builds $G$ from Kneser-type structures with $n > 100$ vertices.",
@@ -530,7 +530,7 @@
       "startLine": 253,
       "endLine": 268
     },
-    "type": "context",
+    "type": "concept",
     "title": "Placeholder Headers and the List Coloring Conjecture",
     "content": "Parts IX (\"Positive Results\") and X (\"Connections to Other Problems\") are empty section headers with no formalized content — despite their framing, the file does **not** formalize fractional choosability, or the complete/bipartite/planar special cases. The one substantive item here is `ListColoringConjecture`, an unformalized `True` stub gesturing at the classical (still-open) List Coloring Conjecture $\\chi_L(L(G)) = \\chi'(G)$ for the list-edge-chromatic number of line graphs.",
     "mathContext": "`ListColoringConjecture` is stated as `∀ V G, True`, i.e. not actually encoded — the real statement $\\chi_L(L(G)) = \\chi'(G)$ (list chromatic index equals ordinary chromatic index for line graphs) requires `listChromaticNumber (lineGraph G) = edgeChromaticNumber G`, left as a comment.",
@@ -551,7 +551,7 @@
       "startLine": 270,
       "endLine": 302
     },
-    "type": "context",
+    "type": "concept",
     "title": "Final Restatement of the Disproof",
     "content": "Parts XI (\"Construction Details\") and XII (\"Main Result\") — Part XI is another empty placeholder header. Part XII restates the already-proved `erdos_632_disproved : ¬ERT_Conjecture` (identical to `ert_conjecture_false`/`erdos_632` above) with an expanded docstring, plus two documentation-only `String` defs (`erdos_632_answer`, `erdos_632_counterexample`) summarizing the DHS result in prose for display purposes.",
     "mathContext": "`erdos_632_disproved := ert_conjecture_false` — a pure restatement, not new mathematical content. The `String` defs carry no logical content; they exist for gallery/documentation display.",

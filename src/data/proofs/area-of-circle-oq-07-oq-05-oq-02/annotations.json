@@ -85,7 +85,7 @@
     "id": "ann-aoc0705oq02-consistency",
     "proofId": "area-of-circle-oq-07-oq-05-oq-02",
     "range": { "startLine": 125, "endLine": 131 },
-    "type": "key-step",
+    "type": "insight",
     "title": "gaussian_second_moment_Ioi_eq — the half-line/full-line factor of two",
     "content": "The consistency corollary records the explicit half-line value $\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{4} = \\tfrac12\\Gamma(\\tfrac32)$. Because the integrand $x^2 e^{-x^2}$ is even, the half-line integral is exactly half the full-line one, so this pins the factor of two between the substitution route (which naturally produces the $(0,\\infty)$ integral $\\Gamma(\\tfrac32) = \\int_{u>0} e^{-u} u^{1/2}$ of Part II) and the parent's whole-line moment. Having both the $(0,\\infty)$ form $\\tfrac{\\sqrt\\pi}{4}$ and the $(-\\infty,\\infty)$ form $\\tfrac{\\sqrt\\pi}{2}$ verified against the same $\\Gamma(\\tfrac32)$ closes the cross-check: the elementary integration-by-parts computation and the Gamma-substitution computation agree on the nose.",
     "mathContext": "∫_0^∞ x²e^{-x²} dx = √π/4 = ½·Γ(3/2); by even symmetry this is half the full-line moment √π/2, fixing the half-line/full-line factor of two.",

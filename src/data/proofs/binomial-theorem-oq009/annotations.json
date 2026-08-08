@@ -51,7 +51,7 @@
     "id": "ann-corollaries",
     "proofId": "binomial-theorem-oq009",
     "range": { "startLine": 164, "endLine": 211 },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Mean, Second and Third Factorial Moments",
     "content": "Specializations of the main theorem: $r=0$ is normalization $E[1]=1$; $r=1$ gives the mean $E[X]=n p$; $r=2$ gives $E[X(X-1)] = n(n-1)p^2$; $r=3$ gives the new third factorial moment $E[X(X-1)(X-2)] = n(n-1)(n-2)p^3$. The mean and second-moment forms hold for every $n$, dropping the $1 \\le n$ and $2 \\le n$ hypotheses that `BinomialTheoremOQ03` needed because it peeled off a fixed number of leading terms; those bounds were proof artefacts, not mathematics.",
     "mathContext": "$E[X] = np,\\quad E[X(X-1)] = n(n-1)p^2,\\quad E[X(X-1)(X-2)] = n(n-1)(n-2)p^3.$",

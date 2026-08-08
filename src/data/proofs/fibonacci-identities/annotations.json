@@ -15,7 +15,7 @@
     "id": "fibid-ann-template",
     "proofId": "fibonacci-identities",
     "range": { "startLine": 35, "endLine": 70 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Shared Induction Template",
     "content": "All three theorems are instances of one reusable proof skeleton, which is worth isolating on its own: `induction n with | zero => simp | succ k ih => rw [Finset.sum_range_succ, ih, …, Nat.fib_add_two]; <closer>`. Every proof (a) reduces the empty/singleton base case by `simp`, (b) peels the final summand with `Finset.sum_range_succ`, (c) rewrites with the inductive hypothesis, (d) normalizes the doubled/successor index (`show 2*(k+1) = 2*k+2 from by ring`, etc.) so that (e) the single Fibonacci fact `Nat.fib_add_two` fires. Only the *closer* varies with the algebraic degree of the identity: `ring` for the quadratic sum of squares, the bare recurrence rewrite for the linear odd-indexed sum, and `omega` for the even-indexed sum's off-by-one linear bookkeeping. Recognizing this template is the practical lesson: a whole family of Fibonacci summation identities is formalizable by filling in one slot of a fixed induction.",
     "mathContext": "Uniform skeleton: peel last term ($\\texttt{sum\\_range\\_succ}$) $\\to$ apply IH $\\to$ collapse via $F_{n+2}=F_{n+1}+F_n$ ($\\texttt{fib\\_add\\_two}$) $\\to$ close with $\\texttt{ring}$ / recurrence / $\\texttt{omega}$.",

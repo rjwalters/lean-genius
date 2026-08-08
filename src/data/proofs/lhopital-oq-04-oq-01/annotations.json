@@ -51,7 +51,7 @@
     "id": "ann-lhoq0401-example",
     "proofId": "lhopital-oq-04-oq-01",
     "range": { "startLine": 148, "endLine": 198 },
-    "type": "example",
+    "type": "concept",
     "title": "(1 − cos x)/x² → 1/2, a true second-order case",
     "content": "The worked example instantiates the order-2 rule where single-step L'Hôpital is still indeterminate: f = 1 − cos x has f(0) = f′(0) = 0, and g = x² has g(0) = g′(0) = 0, so f(x)/g(x) is 0/0 even after one differentiation. The rule reads off the limit from the second derivatives: f″(0) = cos 0 = 1 and g″(0) = 2, giving 1/2. The second derivatives are computed explicitly — deriv_one_sub_cos (deriv (1 − cos x) = sin x) and deriv_sq (deriv (x²) = 2x) via HasDerivAt, then one more derivative through iteratedDeriv_succ. Vanishing of the order-0 and order-1 derivatives is handled by interval_cases. No native_decide, so the entry stays 0-axiom.",
     "mathContext": "$\\lim_{x\\to 0}\\dfrac{1-\\cos x}{x^2}=\\dfrac{f''(0)}{g''(0)}=\\dfrac{1}{2}$; both vanish to order 2 so a single L'Hôpital step gives $0/0$.",

@@ -23,7 +23,7 @@
     "id": "ann-sqrt2357-oq04-squaring-chain",
     "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04",
     "range": { "startLine": 67, "endLine": 89 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Successive-Squaring Chain via linear_combination",
     "content": "Theorem `key` derives p(σ) = 0 (where σ = a+b+c) by three squarings that eliminate one radical at a time. Step e1: σ² = 2σc + 2ab, a direct linear combination of a²=2, b²=3, c²=5 (using a²+b²−c²=0). Step e2: squaring and using c²=5, (ab)²=6 gives σ⁴ − 20σ² − 24 = 8σ·(abc), isolating the odd-in-radical term on the right. Final step: squaring again and using (abc)²=30 collapses to a pure polynomial in σ equal to p(σ) = 0. Each equation is closed by `linear_combination` over the square relations, so the whole proof is a chain of polynomial identities verified by `ring` — no minimal-polynomial search, no numerical certificate, no native_decide. The explicit cofactors keep every step low-degree, avoiding the unwieldy degree-6 cofactors a single-shot linear_combination would require.",
     "mathContext": "Constructing the minimal polynomial of a sum of square roots by repeated squaring is classical (it realizes the resultant / norm form). Casting each squaring as a `linear_combination` of the defining relations aᵢ² = dᵢ turns the algebra into machine-checkable ring identities and sidesteps the large Gröbner-basis cofactors of a direct ideal-membership certificate.",

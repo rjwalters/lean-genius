@@ -30,7 +30,7 @@
       "startLine": 58,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Jumping the First Coordinate by Conjugation",
     "content": "The parent only jumps the third coordinate (markov_vieta: z ↦ 3xy − z). To jump the first coordinate instead, conjugate by transpositions: swap the target coordinate into third position, jump it, and swap back. markov_vieta_fst does x ↦ 3yz − x as markov_swap12 ∘ markov_swap23 ∘ markov_vieta ∘ markov_swap23 ∘ markov_swap12. markov_ascent_isMarkov is the same idea packaged for the sorted move (a,b,c) ↦ (b, c, 3bc − a): swap a to the end, jump it, and the natural output order is already b ≤ c ≤ 3bc − a. No new arithmetic is needed — the symmetry lemmas of the parent do all the work.",
     "mathContext": "$\\mathrm{IsMarkov}\\,x\\,y\\,z \\Rightarrow \\mathrm{IsMarkov}\\,(3yz-x)\\,y\\,z, \\qquad \\mathrm{IsMarkov}\\,a\\,b\\,c \\Rightarrow \\mathrm{IsMarkov}\\,b\\,c\\,(3bc-a).$",
@@ -51,7 +51,7 @@
       "startLine": 71,
       "endLine": 84
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "One Ascent Step Strictly Grows the Maximum",
     "content": "ascent_spec is the heart of the argument. Starting from a sorted Markov triple 1 ≤ a ≤ b ≤ c, the move produces (b, c, 3bc − a) which is again sorted (b ≤ c ≤ 3bc − a) and Markov, and — crucially — its top coordinate is strictly larger: c < 3bc − a. The whole inequality rests on one positive product: c·(3b − 2) = 3bc − 2c > 0, valid because b ≥ 1 gives 3b − 2 ≥ 1 and c ≥ 1 > 0. Adding a ≤ c then yields 3bc − a − c ≥ c(3b − 2) + (c − a) > 0. A single nlinarith call with the product hint discharges both the non-strict bound c ≤ 3bc − a and the strict growth c < 3bc − a.",
     "mathContext": "$c\\,(3b-2) = 3bc - 2c > 0 \\ \\wedge\\ a \\le c \\ \\Rightarrow\\ 0 < (3bc - 2c) + (c - a) = 3bc - a - c.$",
@@ -73,7 +73,7 @@
       "startLine": 88,
       "endLine": 112
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Canonical Ascent Sequence and Its Invariant",
     "content": "ascent is the raw map (a,b,c) ↦ (b, c, 3bc − a) on triples, and seq iterates it from (1,1,1). Its first four terms, checked by the axiom-free decide, are exactly the classical head of the Markov tree: (1,1,1), (1,1,2), (1,2,5), (2,5,29). seq_spec is the load-bearing invariant: by induction, using ascent_spec at the successor step, every term is a sorted Markov triple 1 ≤ a ≤ b ≤ c. This is what lets the sequence keep ascending forever — each term satisfies the hypotheses needed to take the next step.",
     "mathContext": "$\\mathrm{seq}\\,0 = (1,1,1), \\quad \\mathrm{seq}\\,(n{+}1) = \\mathrm{ascent}(\\mathrm{seq}\\,n), \\quad \\mathrm{seq}\\,3 = (2,5,29).$",
@@ -95,7 +95,7 @@
       "startLine": 118,
       "endLine": 131
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Strict Monotonicity Gives Injectivity for Free",
     "content": "seq_top_strictMono shows the top coordinate n ↦ (seq n).2.2 is strictly monotone: each ascent step strictly increases it (the c < 3bc − a from ascent_spec), and strictMono_nat_of_lt_succ upgrades one-step growth to full strict monotonicity. Injectivity of the whole sequence is then immediate — StrictMono.injective on the top-coordinate map means distinct indices already give triples that differ in that coordinate, so seq_injective needs no separate distinctness computation.",
     "mathContext": "$m \\ne n \\Rightarrow (\\mathrm{seq}\\,m).2.2 \\ne (\\mathrm{seq}\\,n).2.2 \\Rightarrow \\mathrm{seq}\\,m \\ne \\mathrm{seq}\\,n.$",

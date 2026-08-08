@@ -30,7 +30,7 @@
       "startLine": 65,
       "endLine": 78
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Deriving the Prime Case from the General Criterion",
     "content": "`prime_sum_two_squares_iff` recovers Fermat's prime classification (∃ a b, p = a²+b² ↔ p % 4 ≠ 3) as a corollary of the general criterion — NOT by re-citing Mathlib's Nat.Prime.sq_add_sq. The mechanism: `Nat.Prime.primeFactors` rewrites p.primeFactors to the singleton {p}, and `simp [Finset.mem_singleton, forall_eq]` collapses the bounded quantifier to a single implication about p. Then `padicValNat.self hp.one_lt` gives padicValNat p p = 1, and `Nat.not_even_one` refutes Even 1. So the even-exponent condition can only be met when p ≢ 3 (mod 4). The prime and composite statements are thus one theorem instantiated twice.",
     "mathContext": "For prime $p$: $p.\\mathrm{primeFactors} = \\{p\\}$ and $\\nu_p(p) = 1$ (odd). The criterion collapses to $p \\not\\equiv 3 \\pmod 4$.",
@@ -77,7 +77,7 @@
       "startLine": 105,
       "endLine": 123
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "The q=3 Divisibility Obstruction",
     "content": "`not_sq_add_sq_of_three_dvd_not_nine_dvd` proves that 3 ∣ n with 9 ∤ n forbids n = x²+y². From a representation, `ZMod.natCast_eq_zero_iff` turns 3 ∣ x²+y² into (x²+y² : ZMod 3) = 0; `push_cast` exposes (x)²+(y)², and the core lemma forces (x : ZMod 3) = 0 and (y : ZMod 3) = 0. Casting back gives 3 ∣ x and 3 ∣ y, so x = 3a, y = 3b and x²+y² = 9(a²+b²), i.e. 9 ∣ n — contradicting 9 ∤ n. This is the smallest concrete instance of the general criterion (the prime q=3 to an odd power), proved with no reference to padicValNat, and crucially it detects failures the mod-4 obstruction cannot.",
     "mathContext": "$3 \\mid x^2+y^2 \\Rightarrow 3\\mid x \\wedge 3\\mid y \\Rightarrow 9 \\mid x^2+y^2$. Contrapositive: $3\\mid n,\\ 9\\nmid n \\Rightarrow n \\ne x^2+y^2$.",

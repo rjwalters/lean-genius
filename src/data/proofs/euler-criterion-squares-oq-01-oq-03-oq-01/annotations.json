@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 41
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sophie Germain primes and Mersenne divisors",
     "content": "The module docstring states the goal: if p ≡ 3 (mod 4) is prime and q = 2p+1 is also prime (making p a Sophie Germain prime of this residue class), then q divides the Mersenne number M_p = 2^p − 1. The mechanism chains three classical facts: a residue computation (p ≡ 3 mod 4 ⟹ q ≡ 7 mod 8), the second supplement to quadratic reciprocity (q ≡ 7 mod 8 ⟹ 2 is a square mod q), and Fermat's little theorem (2^p = x^(q−1) = 1 in ZMod q). This is the classical reason 23 ∣ 2^11−1, 47 ∣ 2^23−1, etc., and shows those Mersenne numbers are composite.",
     "mathContext": "$p\\equiv 3\\pmod 4,\\ q=2p+1\\text{ prime}\\ \\Rightarrow\\ q\\mid 2^p-1$. Here $2p=q-1$, so a square root $x$ of $2$ mod $q$ gives $2^p=(x^2)^p=x^{q-1}=1$.",
@@ -31,7 +31,7 @@
       "startLine": 47,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Residue step: p ≡ 3 (mod 4) forces q ≡ 7 (mod 8)",
     "content": "The first link in the chain is pure arithmetic: if p ≡ 3 (mod 4) then q = 2p+1 ≡ 2·3+1 = 7 (mod 8). Lean discharges this entirely with `omega`, the linear-arithmetic decision procedure, which handles the mod-4-to-mod-8 lifting without any manual case analysis. Landing q in the residue class 7 mod 8 is exactly what the next step needs.",
     "mathContext": "$p\\equiv 3\\pmod 4\\Rightarrow 2p+1\\equiv 7\\pmod 8$ (since $2\\cdot 3+1=7$).",
@@ -53,7 +53,7 @@
       "startLine": 51,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Second supplement: 2 is a quadratic residue mod q",
     "content": "This applies the second supplement to quadratic reciprocity, IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7 — the very result formalized in the parent entry euler-criterion-squares-oq-01-oq-03. Since q ≡ 7 (mod 8) lands in the right branch, `ZMod.exists_sq_eq_two_iff` yields that 2 is a square in ZMod q. The side condition q ≠ 2 (needed because the criterion is stated for odd primes) again falls to `omega`.",
     "mathContext": "$2\\text{ is a QR mod }q \\iff q\\equiv \\pm 1\\pmod 8$; here $q\\equiv 7\\equiv -1\\pmod 8$.",
@@ -101,7 +101,7 @@
       "startLine": 88,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Linear-vs-exponential gap: 2p + 2 < 2^p for p ≥ 5",
     "content": "A supporting lemma establishing that the candidate divisor q = 2p+1 is strictly smaller than the Mersenne number 2^p − 1 once p ≥ 5. The bound 2p + 2 < 2^p is proved by induction on p: base cases p < 5 are checked directly (`interval_cases` + `norm_num`/`omega`), and the inductive step uses 2^(n+1) = 2^n + 2^n so that the exponential outruns the linear term. This is what makes q a *proper* divisor.",
     "mathContext": "$2p+2<2^p$ for $p\\ge 5$, proved by induction using $2^{n+1}=2^n+2^n$; hence $q=2p+1<2^p-1$.",
@@ -148,7 +148,7 @@
       "startLine": 111,
       "endLine": 128
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete instances: 23 ∣ 2^11−1, 47 ∣ 2^23−1, 167 ∣ 2^83−1",
     "content": "The file closes with machine-checked instances: 23 ∣ 2^11−1 (= 2047 = 23·89), 47 ∣ 2^23−1, and 167 ∣ 2^83−1, plus a compositeness witness ¬Prime(2^11−1). Each is discharged by applying `dvd_mersenne`/`mersenne_not_prime` with `norm_num` verifying the three primality/residue hypotheses. These make the abstract theorem tangible and double as regression tests for the general result.",
     "mathContext": "$p=11\\Rightarrow 23\\mid 2^{11}-1$; $p=23\\Rightarrow 47\\mid 2^{23}-1$; $p=83\\Rightarrow 167\\mid 2^{83}-1$.",

@@ -72,7 +72,7 @@
     "id": "ann-witnesses",
     "proofId": "cyclotomic-polynomials-oq-01",
     "range": { "startLine": 96, "endLine": 119 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete witnesses and sample computations",
     "content": "Explicit low-degree cases ground the abstract results: Φ₁ = X − 1, Φ₂ = X + 1, Φ₃ = 1 + X + X² (the last unfolded from the prime geometric-sum form at p = 3). Samples deg Φ₇ = 6 and Φ₅(1) = 5 instantiate the prime degree and evaluation results, and ∑_{d∣12} φ(d) = 12 instantiates Gauss's identity.",
     "mathContext": "$\\Phi_1=X-1$, $\\Phi_2=X+1$, $\\Phi_3=1+X+X^2$; $\\deg\\Phi_7=6$, $\\Phi_5(1)=5$, $\\sum_{d\\mid 12}\\varphi(d)=12$.",

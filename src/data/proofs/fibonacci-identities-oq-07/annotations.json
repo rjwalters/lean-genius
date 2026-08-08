@@ -55,7 +55,7 @@
       "startLine": 48,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Clearing the Boundary: forcing gcd(m,n) ≥ 2 before injectivity",
     "content": "Injectivity of fib only holds on [2,∞) — fib repeats the value 1 at indices 1 and 2 and is 0 at index 0. So before invoking Nat.fib_strictMonoOn.injOn the proof must know gcd(m,n) ≥ 2. It gets this from F_{gcd(m,n)} = Fₘ ≥ 2: a by_contra assumes gcd(m,n) < 2, interval_cases splits on gcd(m,n) ∈ {0,1}, decide evaluates fib 0 = 0 and fib 1 = 1 (both ≤ 1), and omega contradicts F_{gcd(m,n)} ≥ 2. This is the technical heart of why m ≥ 3 is exactly the right hypothesis: it guarantees Fₘ ≥ 2, which propagates through the strong-divisibility identity to place the gcd in the injectivity domain.",
     "mathContext": "$F_{\\gcd(m,n)} = F_m \\ge 2$ rules out $\\gcd(m,n) \\in \\{0,1\\}$ (where $F = 0, 1$), so $\\gcd(m,n) \\ge 2$ lands in $[2,\\infty)$ where $F$ is injective.",
@@ -101,7 +101,7 @@
       "startLine": 75,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "not_fib_dvd_of_not_dvd: the Contrapositive Form",
     "content": "A convenience restatement of the biconditional in its most-used negative direction: for m ≥ 3, if m ∤ n then Fₘ ∤ Fₙ. It is a one-line contrapositive of fib_dvd_iff — assume Fₘ ∣ Fₙ, feed it through the forward .mp to get m ∣ n, and contradict the hypothesis. This is the shape needed in applications such as Fibonacci primality arguments, where one wants to conclude non-divisibility of values from non-divisibility of indices.",
     "mathContext": "For $m \\ge 3$: $m \\nmid n \\Rightarrow F_m \\nmid F_n$. Contrapositive of the $\\Leftarrow$ direction of $F_m \\mid F_n \\iff m \\mid n$.",

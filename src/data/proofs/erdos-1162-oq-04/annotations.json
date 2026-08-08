@@ -71,7 +71,7 @@
       "startLine": 89,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "numSubgroupsAn_le: g(n) ≤ f(n) UNCONDITIONALLY",
     "content": "The heart of the free upper half: A_n ↪ S_n is an injective hom, so Subgroup.map along its subtype is injective on the subgroup lattice, and Nat.card is monotone under injections into the finite type Subgroup(S_n). No axiom used.",
     "mathContext": "The inclusion $\\iota:A_n\\hookrightarrow S_n$ is injective, hence $H\\mapsto \\iota_*(H)=H.\\mathrm{map}\\,\\iota$ is injective on subgroup lattices (Subgroup.map_injective). As $\\mathrm{Subgroup}(S_n)$ is finite, $\\mathrm{Nat.card}$ monotonicity gives $g(n)\\le f(n)$.",
@@ -93,7 +93,7 @@
       "startLine": 104,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "log/ratio transfer to the normalized asymptotic",
     "content": "Monotonicity of log (log_numSubgroupsAn_le) and division by n² (An_ratio_le) push the count bound into the n²-normalized log ratio, so log g(n)/n² ≤ log f(n)/n² for all n.",
     "mathContext": "From $g(n)\\le f(n)$ and $g(n)\\ge 1$, monotonicity of $\\log$ gives $\\log g(n)\\le\\log f(n)$; dividing by $n^2\\ge 0$ preserves the inequality (both sides are $0$ at $n=0$).",
@@ -114,7 +114,7 @@
       "startLine": 123,
       "endLine": 140
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "An_ratio_eventually_lt: the upper half is FREE",
     "content": "Using ONLY the parent RDT asymptotic, the A_n ratio is eventually below 1/16 + ε for every ε > 0 — i.e. limsup log g(n)/n² ≤ 1/16 with no new axiom.",
     "mathContext": "$\\limsup_n \\log g(n)/n^2 \\le 1/16$: for each $\\varepsilon>0$, eventually $\\log f(n)/n^2 < 1/16+\\varepsilon$ (from RDT), and $\\log g(n)/n^2 \\le \\log f(n)/n^2$ gives the same bound for $g$.",
@@ -156,7 +156,7 @@
       "startLine": 150,
       "endLine": 203
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "alternating_asymptotic and pyber_alternating",
     "content": "Combining the free upper half with the one lower-bound axiom yields the full A_n asymptotic log g(n) = (1/16 + o(1))n², and the Pyber-analog c₁n² ≤ log g(n) ≤ c₂n² for large n follows (proved, no extra axiom).",
     "mathContext": "$\\log g(n)/n^2 \\to 1/16$ (alternating_asymptotic) and hence $\\tfrac1{32}n^2 \\le \\log g(n) \\le \\tfrac3{32}n^2$ for large $n$ (pyber_alternating), exactly mirroring how Pyber's theorem follows from RDT for $S_n$.",

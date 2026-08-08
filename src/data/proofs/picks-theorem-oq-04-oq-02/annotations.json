@@ -75,7 +75,7 @@
       "startLine": 100,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The edgeSum Bridge: Decoupling Symmetry from Basepoint",
     "content": "edgeSum sums cross over consecutive pairs of a list with NO closing edge — the open polyline sum. The bridge shoelaceAux_eq_edgeSum proves shoelaceAux first l = edgeSum (l ++ [first]): the closed shoelace loop is exactly the open edge sum of the list with its start appended as the closing vertex. This is the pivotal move. On the closed loop the head vertex plays a double role (start and loop-close), which entangles reversal and rotation; on the open polyline there is no distinguished basepoint, so each symmetry becomes a clean structural induction. Every later theorem transports its result back to shoelace through this one lemma.",
     "mathContext": "Proved by two-step list induction: the a :: b :: t recursion of shoelaceAux matches that of edgeSum after cons_append normalization.",
@@ -96,7 +96,7 @@
       "startLine": 136,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Snoc Law: One Appended Vertex Adds Exactly One Edge",
     "content": "edgeSum (l ++ [y] ++ [x]) = edgeSum (l ++ [y]) + cross y x: appending a vertex x after a polyline that currently ends in y contributes exactly the single new edge term cross y x, leaving all interior edges untouched. This incremental-accounting lemma is the workhorse behind both later results. The reversal induction (edgeSum_reverse) uses it to peel the newly-exposed last edge after a List.reverse_cons, and the rotation argument (shoelace_rotate_one) uses it to attach the wrapped-around basepoint edge. It is proved by induction on l with a two-element base case, closing with `ring`.",
     "mathContext": "The open edge sum is a telescoping sum over consecutive pairs; snoc is the statement that it is additive in the final edge, i.e. edgeSum is a left fold whose last step is isolated.",
@@ -163,7 +163,7 @@
       "startLine": 249,
       "endLine": 269
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Verification: Triangles and a Rectangle, All by `decide`",
     "content": "Because every quantity is ℤ-valued and the definitions are computable, the abstract laws are pinned to ground truth by kernel computation. The unit right triangle taken counter-clockwise gives S = 1; the same triangle reversed (clockwise) gives S = -1, exhibiting orientation reversal; a cyclic relabelling of its vertices keeps S = 1, exhibiting rotation invariance; and the one-step rotation law is checked verbatim. The 3×4 rectangle gives S = 24 = 2·(area 12), with its reversal giving -24. Each `example ... := by decide` is discharged without appeal to the general theorems, so they serve as an independent computational cross-check on the symbolic proofs above.",
     "mathContext": "S equals twice the oriented area; a positive value means counter-clockwise orientation. decide evaluates the recursive definitions in the kernel, so these are genuine end-to-end computations, not restatements.",

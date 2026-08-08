@@ -37,7 +37,7 @@
     "id": "picard-explicit-oq010102-helpers",
     "proofId": "banach-fixed-point-oq-01-oq-01-oq-02",
     "range": { "startLine": 55, "endLine": 74 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Taylor partial sum and the monomial integral",
     "content": "Three auxiliary pieces feed the induction of picardIter_eq. partialExp n t = ∑_{k∈range(n+1)} tᵏ/k! is the (n+1)-term Taylor partial sum, the explicit target the iterates will match. continuous_partialExp records that each partial sum is continuous (a finite sum of monomials, via continuous_finset_sum + fun_prop), which is what makes it interval-integrable in the induction step. integral_term evaluates a single monomial: ∫₀ᵗ sᵏ/k! ds = tᵏ⁺¹/(k+1)!, pulling out 1/k! with integral_div, applying integral_pow, killing the lower endpoint with zero_pow, and absorbing the extra factor via Nat.factorial_succ and div_div.",
     "mathContext": "$\\int_0^t \\frac{s^k}{k!}\\,ds = \\frac{t^{k+1}}{(k+1)!}$ — integrating the $k$-th Taylor term raises it to the $(k+1)$-th, which is exactly why one Picard step advances the partial sum by one term.",

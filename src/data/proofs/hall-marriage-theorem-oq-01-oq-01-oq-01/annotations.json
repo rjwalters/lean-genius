@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 3
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: Mathlib and the Parent Defect Theorem",
     "content": "The two imports fix this file as a child of the defect-form entry. `import Mathlib` supplies `Finset`, `Finset.sup`, truncated ℕ subtraction, and the `Fintype`/`DecidableEq` machinery; `import Proofs.HallMarriageTheoremOQ01OQ01` brings in the parent's defect (Ore) form of Hall's theorem — specifically `deficiency_matching_iff`, `exists_matching_of_deficiency_le`, and `deficiency_le_of_matching`. Those three are the only external facts the closed-form optimum consumes: nothing about matchings is re-proved here, and the whole result is assembled by feeding the parametrised parent `iff` a single sharp value of its deficiency parameter.",
     "mathContext": "Parent fact reused (defect/Ore form): a matching missing at most $d$ indices exists $\\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t) + d$.",
@@ -52,7 +52,7 @@
       "startLine": 39,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Open, Namespace, and the Typeclass Variable Context",
     "content": "`open Finset Function` brings `univ`, `Finset.sup`, `biUnion`, and injectivity vocabulary into scope unqualified; `namespace HallDefect` isolates `deficiency` and the optimum theorems from the parent file's identically-shaped lemmas. The `variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α]` line fixes the ambient assumptions for everything that follows: `ι` (the index type) is finite so `#ι` and the `Finset.sup` over all sub-families are well-defined, `DecidableEq` on both types makes `biUnion` and its cardinality computable, and `Nonempty α` guarantees a target set for representatives. These are exactly the hypotheses under which the deficiency defined just below is well-posed. Not every declaration needs all four, though: the three pure-counting facts below carry `omit [DecidableEq ι] [Nonempty α] in`, since a statement about biUnion cardinalities needs neither decidable equality on ι nor a nonempty target — only the transversal-existence results use the full context.",
     "mathContext": "$\\delta(t) = \\max_{s}\\big(\\#s - \\#(s.\\mathrm{biUnion}\\,t)\\big)$ as a `Finset.sup` over all sub-families $s \\subseteq \\iota$ (truncated subtraction $\\Rightarrow \\delta \\ge 0$).",

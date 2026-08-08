@@ -93,7 +93,7 @@
       "startLine": 63,
       "endLine": 71
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sharpness of the n ≥ 2 bound",
     "content": "Two theorems show the compositeness corollary is sharp. one_pow_four_add_four_prime proves 1⁴ + 4 = 5 is prime (norm_num), so n = 1 is a genuine exception and the hypothesis n ≥ 2 cannot be relaxed. five_pow_four_add_four_eq gives the concrete composite witness 5⁴ + 4 = 629 = 17·37 — exactly the values of the two quadratic factors (5²−2·5+2 = 17 and 5²+2·5+2 = 37) of the Sophie Germain identity at n = 5, b = 1.",
     "mathContext": "The Sophie Germain identity forces n⁴ + 4 to factor for every n, but over ℕ the smaller factor n²−2n+2 = (n−1)²+1 equals 1 exactly when n = 1, which is why 5 is the unique prime in the family. These checks pin down that boundary and tie the abstract factorization to explicit integers.",

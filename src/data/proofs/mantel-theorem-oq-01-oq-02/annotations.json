@@ -30,7 +30,7 @@
       "startLine": 47,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Chebyshev Counting, Stripped of Graph Theory",
     "content": "abstract_low_value_count_le is the probabilistic heart, stated for an arbitrary real sequence d on a finite index set. Writing μ = T/n for the mean and using the variance identity ∑ (d i − μ)² = ∑ d² − T²/n, it observes that every index with d i ≤ m ≤ μ sits at least μ − m below the mean and so contributes at least (μ − m)² to the variance. Hence #{i : d i ≤ m}·(μ − m)² ≤ ∑ d² − T²/n. The hypothesis m ≤ μ is essential: a constant sequence with m above the mean would violate the bound, and the lemma carries m ≤ (∑ d)/n explicitly.",
     "mathContext": "$\\#\\{i : d_i \\le m\\}\\,(\\mu - m)^2 \\le \\sum_i (d_i - \\mu)^2 = \\sum_i d_i^2 - T^2/n$.",
@@ -54,7 +54,7 @@
       "startLine": 115,
       "endLine": 132
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Disjoint Neighbourhoods: d(u) + d(v) ≤ n",
     "content": "adjacent_degree_add_le is where triangle-freeness enters. If u and v are adjacent, a common neighbour w would make {u,v,w} a triangle; is3Clique_triple_iff turns the three adjacencies into IsNClique 3 {u,v,w}, contradicting CliqueFree 3. So the neighbourhoods N(u) and N(v) are disjoint, and d(u) + d(v) = #(N(u) ∪ N(v)) ≤ #V = n. This per-edge inequality is the only structural fact the whole argument needs.",
     "mathContext": "$u \\sim v \\Rightarrow N(u) \\cap N(v) = \\varnothing \\Rightarrow d(u) + d(v) \\le n$.",
@@ -78,7 +78,7 @@
       "startLine": 134,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Summing Over Darts: ∑ d(fst) = ∑ d(v)²",
     "content": "sum_degree_fst_eq_sum_sq expresses ∑ d(v)² as a sum over darts (ordered adjacent pairs). Grouping darts by their tail vertex — via Finset.sum_fiberwise_of_maps_to and the fact that v is the tail of exactly d(v) darts (dart_fst_fiber_card_eq_degree) — turns ∑_{darts} d(dart.fst) into ∑_v d(v)·d(v). Working with darts rather than unordered edges is what lets the dart-reversal involution symmetrise the next step cleanly.",
     "mathContext": "$\\sum_{\\text{darts } (u,w)} d(u) = \\sum_v d(v)\\cdot\\#\\{\\text{darts with tail } v\\} = \\sum_v d(v)^2$.",
@@ -101,7 +101,7 @@
       "startLine": 147,
       "endLine": 175
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Triangle-Free Second Moment: ∑ d(v)² ≤ n·e",
     "content": "sum_sq_degree_le_card_mul_card_edge assembles the second-moment bound. The dart-reversal involution Dart.symm gives ∑_{darts} d(snd) = ∑_{darts} d(fst) = ∑ d(v)², so 2∑ d(v)² = ∑_{darts}(d(fst) + d(snd)). Each dart obeys d(fst) + d(snd) ≤ n by adjacent_degree_add_le, and there are #darts = 2e of them, so 2∑ d(v)² ≤ 2ne. Cancelling the factor 2 gives ∑ d(v)² ≤ n·e, entirely in ℕ.",
     "mathContext": "$2\\sum_v d(v)^2 = \\sum_{\\text{darts}}(d(\\mathrm{fst}) + d(\\mathrm{snd})) \\le n \\cdot 2e \\Rightarrow \\sum_v d(v)^2 \\le n e$.",
@@ -125,7 +125,7 @@
       "startLine": 177,
       "endLine": 263
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Assembling the O(εn) Bound",
     "content": "low_degree_count_le casts the two ℕ facts to ℝ (∑ d(v) = 2e and ∑ d(v)² ≤ ne), reproves Mantel's inequality 4e ≤ n² from Cauchy–Schwarz to avoid an external import, and checks that the threshold 2n/5 lies below the mean 2e/n ≥ n/2 − 2εn (this needs ε ≤ 1/40). Feeding Q = ne into abstract_low_value_count_le bounds the variance budget by (e/n)(n² − 4e) ≤ (n/4)(4εn²) = εn³. Since a degree-2n/5 vertex is at least n/20 below the mean, the count times (n/20)² = n²/400 is at most εn³, giving #{v : d(v) ≤ 2n/5} ≤ 400εn.",
     "mathContext": "$\\#\\{v : d(v) \\le 2n/5\\}\\cdot \\tfrac{n^2}{400} \\le \\mathrm{Var} \\le \\varepsilon n^3 \\Rightarrow \\#\\{v : d(v)\\le 2n/5\\} \\le 400\\varepsilon n$.",

@@ -27,7 +27,7 @@
     "id": "ann-dm-explicit-cheb",
     "proofId": "de-moivre-oq-01-oq-02",
     "range": { "startLine": 86, "endLine": 114 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Computing T₃–T₅ and U₃–U₄ via the recurrence",
     "content": "The explicit Chebyshev polynomials are derived over $\\mathbb{C}$ from the three-term recurrence $T_{n+2} = 2X\\,T_{n+1} - T_n$ (and the identical $U$ recurrence). Each proof instantiates `T_add_two` at the right index, rewrites the integer-index arithmetic with `decide`, substitutes the two previous polynomials, and closes with `ring`. These closed forms ($T_4 = 8X^4 - 8X^2 + 1$, $T_5 = 16X^5 - 20X^3 + 5X$, etc.) are the algebraic payload evaluated in the next two parts.",
     "mathContext": "$T_3 = 4X^3 - 3X,\\ T_4 = 8X^4 - 8X^2 + 1,\\ T_5 = 16X^5 - 20X^3 + 5X,\\ U_3 = 8X^3 - 4X,\\ U_4 = 16X^4 - 12X^2 + 1.$",

@@ -78,7 +78,7 @@
       "startLine": 54,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Why the Diagonal Works: the Γ(1) = 1 Collapse",
     "content": "The whole derivation hinges on one arithmetic coincidence: on the diagonal t = 1−s the argument sum s + t equals 1, and Γ(1) = 1. In Lean this is the line `rw [show s + (1 - s) = 1 by ring, Complex.Gamma_one, one_mul]`, which turns the Beta–Gamma relation Γ(s)·Γ(1−s) = Γ(s+t)·B(s,t) into the bare equation Γ(s)·Γ(1−s) = B(s,1−s). The second positivity hypothesis `ht : 0 < (1 - s).re` — needed to apply the Beta–Gamma relation, whose both arguments must have positive real part — is exactly what forces the strip 0 < Re s < 1: 0 < Re(1−s) unfolds to Re s < 1. Only after the collapse does Euler's reflection formula enter, rewriting the surviving Gamma product as π/sin(πs). No other Gamma value is ever evaluated; the identity is 'Gamma-free' apart from Γ(1).",
     "mathContext": "$s + (1-s) = 1$, so $\\Gamma(s+t) = \\Gamma(1) = 1$; the hypothesis $0 < \\operatorname{Re}(1-s)$ is equivalent to $\\operatorname{Re} s < 1$, pinning the strip $0 < \\operatorname{Re} s < 1$.",
@@ -102,7 +102,7 @@
       "startLine": 82,
       "endLine": 93
     },
-    "type": "context",
+    "type": "concept",
     "title": "A Rational Multiple of π from Transcendental Factors",
     "content": "The concrete value Γ(1/3)·Γ(2/3) = 2π/√3 is more than a numeric check: it exhibits the reflection formula as a mechanism that tames individually wild numbers. By the Chudnovsky brothers' 1984 theorem, Γ(1/3) is transcendental and, together with π, algebraically independent, so no closed form expresses Γ(1/3) alone in elementary constants. Yet the complementary product Γ(1/3)·Γ(2/3) is the tame quantity 2π/√3 — algebraic multiple of π — because reflection pairs s with 1−s and collapses the two transcendental factors into a single sine value. The proof mirrors the midpoint case but with a non-trivial denominator: `Real.sin_pi_div_three` supplies sin(π/3) = √3/2, and `div_div_eq_mul_div` plus `ring` normalise π/(√3/2) to 2π/√3.",
     "mathContext": "$\\Gamma(1/3)$ transcendental (Chudnovsky, 1984), yet $\\Gamma(1/3)\\,\\Gamma(2/3) = \\pi/\\sin(\\pi/3) = \\pi/(\\sqrt3/2) = 2\\pi/\\sqrt3$, a rational multiple of $\\pi$.",

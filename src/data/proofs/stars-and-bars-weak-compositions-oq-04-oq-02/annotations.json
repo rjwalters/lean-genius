@@ -29,7 +29,7 @@
       "startLine": 61,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "splitArrow: the split-at-index-k₁ arrow bijection",
     "content": "splitArrow assembles (Fin (k₁+k₂) → ℕ) ≃ (Fin k₁ → ℕ) × (Fin k₂ → ℕ) from Equiv.arrowCongr finSumFinEquiv.symm and Equiv.sumArrowEquivProdArrow. The apply lemmas splitArrow_apply_fst and splitArrow_apply_snd compute the two components as the first k₁ coordinates f (Fin.castAdd k₂ i) and the last k₂ coordinates f (Fin.natAdd k₁ i); they hold by rfl since the underlying combinator apply lemmas are definitional.",
     "mathContext": "$(\\mathrm{Fin}(k_1+k_2)\\to\\mathbb N)\\simeq(\\mathrm{Fin}\\,k_1\\to\\mathbb N)\\times(\\mathrm{Fin}\\,k_2\\to\\mathbb N)$.",
@@ -51,7 +51,7 @@
       "startLine": 76,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "sum_split: the split preserves the total",
     "content": "sum_split proves (∑ᵢ f(castAdd i)) + (∑ᵢ f(natAdd i)) = ∑ᵢ f(i) by transporting the total along finSumFinEquiv (Equiv.sum_comp), splitting the sum over Fin k₁ ⊕ Fin k₂ with Fintype.sum_sum_type, and simplifying the summands with finSumFinEquiv_apply_left/right. This weight-splitting invariant is what lets the constraint ∑ f = n ride along the arrow bijection.",
     "mathContext": "$\\left(\\sum_i f(\\mathrm{castAdd}\\,i)\\right)+\\left(\\sum_i f(\\mathrm{natAdd}\\,i)\\right)=\\sum_i f(i)$.",
@@ -71,7 +71,7 @@
       "startLine": 84,
       "endLine": 92
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "weakCompositionSplitEquiv: carrying the constraint through",
     "content": "weakCompositionSplitEquiv transports splitArrow to the constrained subtypes with Equiv.subtypeEquiv. The biconditional (∑ f = n) ↔ ((∑ g)+(∑ h) = n) for (g,h) = splitArrow f is closed by rewriting the components with splitArrow_apply_fst/snd and applying sum_split — the split preserves the total, so the two constraints coincide.",
     "mathContext": "$\\{f\\mid \\sum f=n\\}\\simeq\\{(g,h)\\mid \\sum g+\\sum h=n\\}$.",
@@ -91,7 +91,7 @@
       "startLine": 94,
       "endLine": 124
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Fibering over the partial sums",
     "content": "splitToAntidiagonal sends (g,h) to (∑g,∑h) ∈ antidiagonal n, and fibreEquiv identifies its fibre over a fixed split p = (p₁,p₂) with {g // ∑g=p₁} × {h // ∑h=p₂}. The forward map extracts ∑g=p₁, ∑h=p₂ from the fibre condition (via congrArg Subtype.val and Prod.ext_iff); the inverse merely repackages a pair, so both round-trips are definitional. Fibering (rather than building the dependent sigma by hand) avoids any heterogeneous equality between fibres over different splits.",
     "mathContext": "$\\{(g,h)\\mid(\\sum g,\\sum h)=p\\}\\simeq\\{g\\mid\\sum g=p_1\\}\\times\\{h\\mid\\sum h=p_2\\}$.",
@@ -112,7 +112,7 @@
       "startLine": 126,
       "endLine": 140
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "weakCompositionSigmaEquiv: the requested bijection",
     "content": "weakCompositionSigmaEquiv composes the pair form with (Equiv.sigmaFiberEquiv splitToAntidiagonal).symm and Equiv.sigmaCongrRight fibreEquiv, producing the explicit Equiv {f : Fin (k₁+k₂) → ℕ // ∑ f = n} ≃ Σ p ∈ antidiagonal n, ({g // ∑ g = p.1} × {h // ∑ h = p.2}) requested by the parent's open question #2.",
     "mathContext": "$\\{f\\mid \\sum f=n\\}\\simeq\\coprod_{p\\in\\mathrm{antidiagonal}\\,n}(\\{g\\mid\\sum g=p_1\\}\\times\\{h\\mid\\sum h=p_2\\})$.",
@@ -132,7 +132,7 @@
       "startLine": 142,
       "endLine": 155
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "card_weakComposition_split: the convolution, bijectively",
     "content": "card_weakComposition_split takes cardinalities of the sigma Equiv: Fintype.card_congr transports along the bijection, Fintype.card_sigma turns it into a sum over the antidiagonal subtype, Fintype.card_prod splits each fibre count into a product, and Finset.sum_coe_sort descends to a sum over Finset.antidiagonal n. The result is the parent's negative-binomial Vandermonde convolution obtained with no generating functions.",
     "mathContext": "$\\#\\{f\\mid\\sum f=n\\}=\\sum_{(p_1,p_2)\\in\\mathrm{antidiagonal}\\,n}\\#\\{g\\mid\\sum g=p_1\\}\\cdot\\#\\{h\\mid\\sum h=p_2\\}$.",

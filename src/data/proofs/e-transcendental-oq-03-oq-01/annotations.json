@@ -29,7 +29,7 @@
       "startLine": 41,
       "endLine": 61
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Upper Bound via Denominator Monotonicity",
     "content": "convs_dist_le_one_div_den_sq sharpens Mathlib's abs_sub_convs_le. Mathlib gives |v − convs n| ≤ 1/(qₙ qₙ₊₁). Since the convergent denominators are monotone (of_den_mono: qₙ ≤ qₙ₊₁) and positive (succ_nth_fib_le_of_nth_den gives qₙ ≥ fib(n+1) ≥ 1), we have qₙ² ≤ qₙ qₙ₊₁, hence 1/(qₙ qₙ₊₁) ≤ 1/qₙ². The positivity is routed through the Fibonacci lower bound on denominators, and the final inequality is discharged by nlinarith. This is the classical |v − pₙ/qₙ| < 1/qₙ² statement of the best-approximation property.",
     "mathContext": "$q_n \\ge \\mathrm{fib}(n+1) \\ge 1 > 0$ and $q_n \\le q_{n+1}$ give $q_n^2 \\le q_n q_{n+1}$, so $1/(q_n q_{n+1}) \\le 1/q_n^2$.",
@@ -95,7 +95,7 @@
       "startLine": 117,
       "endLine": 133
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Assembling the Strict Inequality",
     "content": "With the exact identity giving |v − convs n| = 1/den' where den' = Bₙ(frₙ⁻¹Bₙ + Bₙ₋₁), the goal reduces (via one_div_lt_one_div_of_lt, both denominators positive) to den' < Bₙ(Bₙ₊₁ + Bₙ). Substituting the continuant recurrence Bₙ₊₁ = Bₙ₋₁ + bₙ₊₁Bₙ, the difference between the two sides is Bₙ² · (bₙ₊₁ + 1 − frₙ⁻¹), which is strictly positive because Bₙ > 0 (Fibonacci bound) and bₙ₊₁ + 1 − frₙ⁻¹ > 0 (the floor bound). nlinarith closes it from the product of Bₙ² > 0 and the floor inequality. Positivity of Bₙ and Bₙ₋₁ comes from fib_le_of_contsAux_b.",
     "mathContext": "$B_n(B_{n+1}+B_n) - B_n(fr_n^{-1}B_n + B_{n-1}) = B_n^2\\,(b_{n+1}+1 - fr_n^{-1}) > 0$, using $B_{n+1} = B_{n-1} + b_{n+1}B_n$.",

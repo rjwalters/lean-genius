@@ -31,7 +31,7 @@
       "startLine": 58,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Null Step, Now for Signed Weights",
     "content": "`tendsto_toeplitz_zero` is the reusable core: a matrix with bounded row absolute sums (∑_{k<n} |A n k| ≤ C) and null columns (A · k → 0) sends every null sequence to a null transform. The proof is the archetypal ε/2 split. Choose N past which |e_k| < δ = ε/(2(C+1)); the tail ∑_{N≤k<n} A n k e k is bounded in absolute value by δ·∑|A n k| ≤ δ·C ≤ ε/2 via the triangle inequality; the fixed head ∑_{k<N} A n k e k is a finite sum of columns, each → 0, hence eventually < ε/2. Unlike the earlier version the weights carry arbitrary sign — only their absolute-sum bound is used.",
     "mathContext": "The tail estimate is $\\bigl|\\sum_{N\\le k<n} A_{n,k} e_k\\bigr| \\le \\sum_{N\\le k<n} |A_{n,k}|\\,|e_k| \\le \\delta \\sum_{k<n} |A_{n,k}| \\le \\delta C$ with $\\delta = \\varepsilon/(2(C+1))$, so $\\delta C \\le \\varepsilon/2$ with no case split on $C = 0$. The head $\\sum_{k<N} A_{n,k} e_k \\to \\sum_{k<N} 0 \\cdot e_k = 0$ by `tendsto_finset_sum` since each column $A_{\\cdot,k} \\to 0$.",
@@ -98,7 +98,7 @@
       "startLine": 42,
       "endLine": 57
     },
-    "type": "context",
+    "type": "concept",
     "title": "Subsuming the Nonnegative-Weight Toeplitz Step",
     "content": "The theorem's docstring pins the exact relationship to the companion Kronecker entry. That entry's step tendsto_weighted_average_zero used a nonnegative normaliser matrix A n k = c k / A_norm n with c ≥ 0 and ∑_{k<n} c k ≤ A_norm n; its row absolute sums are automatically ≤ 1 and its columns c k / A_norm n → 0. So it is precisely the C = 1, nonnegative instance of tendsto_toeplitz_zero here. The generalization is twofold: the row bound C is now an arbitrary constant rather than 1, and the weights may carry any sign — the null-step proof never uses positivity, only the absolute-sum bound ∑|A n k| ≤ C in the triangle-inequality tail estimate. This is what lets a single theorem cover the Kronecker weights, signed averaging matrices, and Mathlib's Cesàro mean at once.",
     "mathContext": "Only two of the three Toeplitz conditions — (bnd) $\\sum_{k<n}|A_{n,k}| \\le C$ and (col) $A_{\\cdot,k}\\to 0$ — enter the null step; the row-sum condition (row) is reserved for fixing the limit in the regular form. Dropping the sign constraint costs nothing because the tail is controlled through $|A_{n,k}|$, not $A_{n,k}$.",

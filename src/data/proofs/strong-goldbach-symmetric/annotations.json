@@ -76,7 +76,7 @@
       "startLine": 112,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Decidability and Axiom-Free Verified Examples",
     "content": "`decidableHasSymmetricPrimePair` derives a `Decidable` instance by rewriting the bounded existential $\\exists k < m$ as $\\exists k \\in \\text{Finset.range } m$ (via `decidable_of_iff`), which Lean can decide because `Nat.Prime` is decidable. This lets `decide` certify concrete symmetric partitions — $10 = 3+7$ ($m=5,k=2$), $12 = 5+7$, $18 = 7+11$ — by kernel reduction. Crucially these use `decide`, not `native_decide`, so the file introduces no `Lean.ofReduceBool` axiom and stays fully axiom-free. `¬HasSymmetricPrimePair 1` confirms $n = 2$ is correctly excluded, matching the $n > 2$ hypothesis.",
     "mathContext": "Bounded existential over a decidable predicate is decidable; kernel `decide` keeps the proof axiom-free.",

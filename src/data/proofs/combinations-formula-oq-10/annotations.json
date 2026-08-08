@@ -26,7 +26,7 @@
     "id": "ann-combo10-method",
     "proofId": "combinations-formula-oq-10",
     "range": { "startLine": 38, "endLine": 52 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Proof method: a subtraction-free ℕ specialization",
     "content": "The `## Method` block records the single strategy behind both theorems. Rather than proving the sum-of-squares identity directly, the file specializes Mathlib's Vandermonde `Nat.add_choose_eq` at m=n, r=n-d, then routes every rewrite through one lemma, `Nat.choose_symm_of_eq_add` (n = a+b ⟹ C(n,a) = C(n,b)): once to fold the inner coefficient C(n,(n-d)-k) into C(n,k+d), and once to flip the closed form C(2n,n-d) into C(2n,n+d). The design deliberately avoids reasoning about truncated ℕ-subtraction — the two index splits n = ((n-d)-k)+(k+d) and 2n = (n-d)+(n+d) are each a one-line `omega` fact under the hypothesis d ≤ n, so the subtraction never underflows. `import Mathlib` and `open Nat Finset` bring the Vandermonde, antidiagonal-to-range, and `choose`-symmetry API into scope.",
     "mathContext": "Every subtraction is an additive split validated by omega: $n = ((n-d)-k) + (k+d)$ and $2n = (n-d) + (n+d)$, both under $d \\le n$. The lone tool is $n = a+b \\Rightarrow \\binom{n}{a} = \\binom{n}{b}$.",

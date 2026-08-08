@@ -29,7 +29,7 @@
       "startLine": 47,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Base Change: Reusing the Parent's Real Identity over ℚ",
     "content": "The minimal polynomial lives in ℚ[X], but the parent proved Tₙ(cos 2π/n) = 1 over ℝ. aeval_cos_cheb bridges the two: aeval equals eval-after-map (aeval_def, eval₂_eq_eval_map), and Polynomial.Chebyshev.map_T sends the rational Chebyshev polynomial to the real one under algebraMap ℚ ℝ. So the parent's real theorem is reused verbatim as the ℚ-algebra evaluation, with no new analysis.",
     "mathContext": "$\\operatorname{aeval}_x(p) = (\\operatorname{map}\\,\\iota\\,p).\\operatorname{eval}(x)$ and $\\operatorname{map}\\,\\iota\\,(T_n^{\\mathbb Q}) = T_n^{\\mathbb R}$.",
@@ -51,7 +51,7 @@
       "startLine": 54,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nonvanishing of Tₙ − 1 via One Off-Root Evaluation",
     "content": "Integrality and the degree bound both need Tₙ − 1 ≠ 0. Mathlib has no natDegree lemma for Chebyshev Tₙ, so chebT_sub_one_ne_zero instead evaluates at cos(π/n): if Tₙ − 1 = 0 then Tₙ = 1 as a polynomial, but Tₙ(cos(π/n)) = cos(n·π/n) = cos π = −1 ≠ 1 (T_real_cos + Real.cos_pi). One carefully chosen point that is NOT a root of Tₙ − 1 settles nonvanishing for every n ≥ 1.",
     "mathContext": "$T_n(\\cos(\\pi/n)) = \\cos\\pi = -1 \\ne 1$, so $T_n \\ne 1$ as a polynomial.",
@@ -73,7 +73,7 @@
       "startLine": 70,
       "endLine": 77
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Integrality: The Bridge to the Minimal Polynomial",
     "content": "cos_isIntegral is the hinge that turns the two preceding evaluation facts into a statement about the minimal polynomial. Because minpoly ℚ (cos 2π/n) is only well-behaved (divides, is irreducible) when cos 2π/n is integral over ℚ, this theorem must be established first. The witness is the very polynomial the rest of the file studies: cos 2π/n is a root of Tₙ − 1 (aeval_cos_cheb gives aeval(Tₙ−1) = 0) and Tₙ − 1 ≠ 0 (chebT_sub_one_ne_zero), so IsAlgebraic holds by definition, and over the field ℚ algebraic ⟹ integral (IsAlgebraic.isIntegral). Everything downstream — minpoly.dvd, minpoly.irreducible, the degree bound — consumes this single integrality hypothesis.",
     "mathContext": "$\\cos 2\\pi/n$ is a root of the nonzero $T_n - 1 \\in \\mathbb Q[X]$, hence algebraic, hence integral over the field $\\mathbb Q$.",
@@ -96,7 +96,7 @@
       "startLine": 81,
       "endLine": 94
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "minpoly.dvd and minpoly.irreducible: The Irreducible Factor",
     "content": "The two headline results. minpoly_cos_dvd_chebT applies minpoly.dvd to aeval(cos 2π/n)(Tₙ − 1) = 0, giving minpoly ℚ (cos 2π/n) ∣ (Tₙ − 1) — the minimal polynomial is a factor of Tₙ − 1. minpoly_cos_irreducible applies minpoly.irreducible to the integrality proof. Together they say precisely that the minimal polynomial is an irreducible factor of Tₙ − 1, the structural content of the parent's open question.",
     "mathContext": "$\\operatorname{minpoly}_{\\mathbb Q}(\\cos 2\\pi/n) \\mid (T_n - 1)$ and is irreducible.",

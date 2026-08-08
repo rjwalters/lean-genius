@@ -173,7 +173,7 @@
       "startLine": 270,
       "endLine": 295
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Dichotomy: α·L/d at Codimension 1, Zero Otherwise",
     "content": "Summing the per-segment counts over a noodle gives expectedFlatCrossings. Case-splitting on codim = 1 discharges both branches. In codimension 1, every per-segment term rewrites to the parent segmentCrossings, the sum becomes Noodle.expectedCrossings, and noodle_highdim closes it to α·L/d — length-proportionality survives, and the family is precisely a hyperplane family. In every other codimension the per-segment term is 0, so the sum is identically 0 regardless of the noodle's length or shape. Thus Barbier's length-proportionality is a strictly codimension-1 phenomenon: generalizing the target to lower-dimensional flats does not enlarge the regime, it extinguishes it.",
     "mathContext": "$E = \\alpha \\cdot L / d$ if $c = 1$; $\\quad E = 0$ if $c \\neq 1$.",
@@ -195,7 +195,7 @@
       "startLine": 334,
       "endLine": 355
     },
-    "type": "example",
+    "type": "concept",
     "title": "Planes vs Lines in ℝ³: the Dichotomy Made Concrete",
     "content": "The dichotomy is witnessed side by side in three dimensions. Parallel planes (k = 2) are codimension 1, so with the spatial crossing factor α₃ = 1/2 a noodle crosses them E = L/(2d) times. Parallel lines (k = 1) are codimension 2, so the same noodle almost surely misses them: E = 0, whatever its length or shape. The planar case (lines in ℝ², codimension 1) recovers the classical Buffon–Barbier constant E = 2L/(πd) with α₂ = 2/π. A curve dropped in space crosses planes but not lines — the geometric heart of the codimension question.",
     "mathContext": "$\\mathbb{R}^3$ planes: $E = L/(2d)$; $\\quad \\mathbb{R}^3$ lines: $E = 0$; $\\quad \\mathbb{R}^2$ lines: $E = 2L/(\\pi d)$.",

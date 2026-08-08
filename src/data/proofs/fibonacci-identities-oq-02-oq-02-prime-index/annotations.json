@@ -34,7 +34,7 @@
       "startLine": 33,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Namespace and the open Nat Number-Theory Layer",
     "content": "The `namespace FibonacciIdentitiesOQ02OQ02PrimeIndex` wrapper isolates this child file's lemmas from the parent `FibonacciIdentitiesOQ02.lean`, whose index-divisibility law $F_m \\mid F_n \\iff m \\mid n$ this entry consumes. `open Nat` is what lets the proof name `Nat.Prime`, `Nat.fib`, and the divisor-existence lemmas (`exists_dvd_of_not_prime2`) unqualified — the entire argument lives in $\\mathbb{N}$, reasoning about prime versus composite *indices*, so pulling the `Nat` namespace into scope keeps the primality and divisibility statements readable.",
     "mathContext": "Scope for $\\mathbb{N}$-level reasoning: `Nat.Prime`, `Nat.fib`, and `Nat.exists_dvd_of_not_prime2` become available unqualified.",
@@ -61,7 +61,7 @@
       "startLine": 38,
       "endLine": 54
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Isolating a Nontrivial Index Divisor (and why 4 is special)",
     "content": "`exists_divisor_ge_three` proves every composite $n \\neq 4$ has a divisor $d$ with $3 \\le d < n$. From `Nat.exists_dvd_of_not_prime2` we get a proper divisor $m$ with $2 \\le m < n$; if $m \\ge 3$ we use it, and if $m = 2$ (so $n$ is even) the cofactor $n/2$ works — it is $\\ge 3$ *exactly because* $n \\ne 4$ (an `omega` fact from $n = 2k$). This is the crux: $4$'s only proper divisor above $1$ is $2$, and $F_2 = 1$ is a unit, so no divisor of $4$ lands in the productive $3 \\le d < n$ range. Every other composite index has one.",
     "mathContext": "Composite $n \\neq 4 \\Rightarrow \\exists d \\mid n,\\ 3 \\le d < n$.",

@@ -46,7 +46,7 @@
     "id": "ann-hypothesis-variant",
     "proofId": "abel-ruffini-oq-06-oq-01-oq-03",
     "range": { "startLine": 59, "endLine": 69 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Instance form vs. hypothesis form",
     "content": "isSolvable_of_normal_of_quotient takes IsSolvable N and IsSolvable (G ⧸ N) as typeclass instances, which is convenient when instance search can find them. isSolvable_of_normal_of_isSolvable_quotient restates the identical conclusion with those two facts as explicit term arguments, then promotes them to instances with haveI before delegating. This is the ergonomic form when the solvability certificates are produced constructively — e.g. isSolvable_of_comm applied to an abelian kernel and quotient — rather than resolved automatically.",
     "mathContext": "The two versions are logically identical; the distinction is purely about how the solvability data reaches the lemma (Lean instance resolution vs. an explicit proof term). Providing both mirrors the common Mathlib practice of pairing an instance-driven lemma with a hypothesis-driven one.",

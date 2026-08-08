@@ -43,7 +43,7 @@
       "startLine": 82,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The bridge ports verbatim: r is never used as a number",
     "content": "`cliqueFree_deleteEdges_iff_rCovers` proves G.deleteEdges F is K_r-free iff F meets every r-clique. The forward direction: an uncovered clique survives deletion (all its edges stay), contradicting K_r-freeness; the reverse: a surviving clique in G−F is a clique of G that F must meet, but then that edge is gone in G−F. Crucially the parent's r = 3 proof uses only the clique's pairwise adjacency (`hs.1`) and its cardinality proof (`hs.2`), never the value 3, so it generalizes with no change to the tactics — only the statement's `3` becomes `r`.",
     "mathContext": "$(G\\setminus F)\\text{ is }K_r\\text{-free} \\iff \\forall s,\\ G.\\mathrm{IsNClique}\\,r\\,s \\to \\exists e\\in s,\\ e\\in F$.",
@@ -61,7 +61,7 @@
       "startLine": 120,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Weak duality via an injective covering-edge charge",
     "content": "`rPacking_card_le_cover_card` proves |P| ≤ |F| for any edge-disjoint K_r-packing P and any cover F. Each packed clique gets a covering edge of F (Classical.choose on the bridge output); this charge P.attach → F is shown injective with `Finset.card_le_card_of_injOn`. If two cliques a, b are charged the same edge s(xa,ya) = s(xb,yb), then by `Sym2.eq_iff` both endpoints xa, ya lie in b, so |a ∩ b| ≥ 2 — contradicting the packing's |a ∩ b| ≤ 1. This is exactly where edge-disjointness (and not the false r − 2 bound) is needed.",
     "mathContext": "König-type weak duality: $\\nu_r \\le$ (any cover size). Injectivity fails under $|s\\cap t|\\le r-2$ for $r\\ge 4$.",

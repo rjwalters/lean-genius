@@ -166,7 +166,7 @@
       "startLine": 132,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Zero Derivative Implies Constant",
     "content": "**If F'(x) = 0 for all x, then F is constant.**\n\nThis is a consequence of the Mean Value Theorem:\n\nFor any two points x and y, there exists c between them with\n$F(y) - F(x) = F'(c)(y - x) = 0 \\cdot (y - x) = 0$\n\nSo F(y) = F(x) for all x, y.\n\nThis lemma is essential for proving uniqueness of antiderivatives.",
     "mathContext": "Mean Value Theorem: $F(y) - F(x) = F'(c)(y - x)$ for some $c \\in (x, y)$\n\nIf $F' \\equiv 0$, then $F(y) = F(x)$ for all $x, y$.",

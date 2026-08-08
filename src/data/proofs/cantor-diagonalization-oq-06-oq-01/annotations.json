@@ -72,7 +72,7 @@
       "startLine": 66,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Summability by geometric comparison",
     "content": "Before the series can be manipulated it must be shown to converge. Each term is nonnegative (term_nonneg) and bounded by a shifted geometric term 2·(1/10)^(i+1) (term_le'). Since the geometric majorant is summable (summable_geo_shift), the comparison test (Summable.of_nonneg_of_le) gives summability of the defining series. This is what licenses splitting the sum into a finite head plus an infinite tail in the crux lemma.",
     "mathContext": "$0 \\le \\frac{\\mathrm{db}(f,k)}{10^{\\,k+1}} \\le 2\\left(\\tfrac{1}{10}\\right)^{k+1}, \\quad \\sum_k 2\\left(\\tfrac{1}{10}\\right)^{k+1} < \\infty \\;\\Rightarrow\\; \\text{series summable}.$",
@@ -94,7 +94,7 @@
       "startLine": 94,
       "endLine": 128
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The head/tail decomposition and its last digit",
     "content": "The engine of the proof. Multiplying diagonalReal f by 10^(n+1) turns the first n+1 digits into an integer head (headInt f n) plus a small real tail. head_real_eq proves the finite prefix scales exactly to the integer headInt f n. headInt_emod then shows the head's last decimal digit is db f n: every earlier term contributes a multiple of 10 (so vanishes mod 10), leaving only the position-n term. This localizes the whole construction to a single controllable digit.",
     "mathContext": "$A := \\mathrm{headInt}(f,n) = \\sum_{i \\le n} \\mathrm{db}(f,i)\\,10^{\\,n-i} \\in \\mathbb{Z}, \\qquad A \\bmod 10 = \\mathrm{db}(f,n).$",

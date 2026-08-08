@@ -150,7 +150,7 @@
       "startLine": 42,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Key lemma: C(n,k) ≤ nᵏ",
     "content": "A clean counting bound used inside the Sauer–Shelah proof: the binomial coefficient never exceeds the corresponding power. The one-line calc proof factors C(n,k) as a falling factorial divided by k!, drops the division (Nat.div_le_self), then bounds the falling factorial n·(n−1)⋯(n−k+1) by nᵏ via Mathlib's Nat.descFactorial_le_pow. Working over ℕ keeps every step an honest inequality with no real-analysis overhead.",
     "mathContext": "$\\binom{n}{k} = \\frac{n^{\\underline{k}}}{k!} \\le n^{\\underline{k}} = n(n-1)\\cdots(n-k+1) \\le n^k$.",
@@ -199,7 +199,7 @@
       "startLine": 85,
       "endLine": 91
     },
-    "type": "context",
+    "type": "concept",
     "title": "PAC sample-complexity target bound",
     "content": "Records the standard (ε,δ)-PAC sample-complexity target m = O((d/ε)·log(1/ε) + (1/ε)·log(1/δ)) with the explicit constant 8d/ε + 4·log(2/δ)/ε. As formalized the theorem is deliberately weak — it merely asserts the existence of an m below the stated ceiling (witnessed by the ceiling itself), so it fixes the intended bound as a landmark rather than deriving it from a uniform-convergence argument. The full derivation (union bound over the growth function together with the Sauer–Shelah bound above) is the natural next step flagged by the Part IV placeholder.",
     "mathContext": "$m = O\\!\\left(\\tfrac{d}{\\varepsilon}\\log\\tfrac1\\varepsilon + \\tfrac1\\varepsilon\\log\\tfrac1\\delta\\right)$; here $m \\le \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon\\rceil$.",

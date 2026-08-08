@@ -3,7 +3,7 @@
     "id": "ann-overview",
     "proofId": "urysohns-lemma-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "Tietze from Urysohn: the Strategy and What Is New",
     "content": "The module docstring states the direction that matters. The parent entry (tietze-extension-theorem-oq-01) derived Urysohn's lemma FROM Tietze — the easy direction. This file does the harder, classical direction: Tietze FROM Urysohn, and it makes the engine of that classical argument explicit. The strategy is the standard one-step-plus-geometric-iteration: a single approximation lemma reduces the sup-error by a factor 2/3 using a globally defined function of norm ≤ M/3 supplied by Urysohn's lemma; iterating gives (2/3)ⁿ decay; the uniform limit is the extension. The value added over Mathlib is that urysohn_approx_step and urysohn_approx_iterate are stated in elementary set form (a closed subset s and ordinary continuous functions), not the bundled closed-embedding / →ᵇ form Mathlib folds into its internal proof. Everything is machine-checked with no sorry and no extra axioms.",
     "mathContext": "Goal: closed $s\\subseteq X$ normal, $f\\in C(s,\\mathbb{R})\\Rightarrow\\exists g\\in C(X,\\mathbb{R}),\\ g|_s=f$, built as a uniform limit with $(2/3)^n$ error decay.",

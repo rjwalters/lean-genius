@@ -3,7 +3,7 @@
     "id": "ann-793oq03-header",
     "proofId": "erdos-793-oq-03",
     "range": { "startLine": 1, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "The r-product primitive framework and OQ-03",
     "content": "The parent Erdős #793 studies F(n), the largest A ⊆ {1,…,n} in which no element divides the product of two other distinct elements, with conjectured second-order asymptotic F(n) = π(n) + (C + o(1))·n^{2/3}(log n)^{-2}. This file generalizes 'two' to r: F_r(n) forbids an element dividing a product of r distinct others, shifting the exponent 2/3 → 2/(r+1). OQ-03 asks whether the normalized secondary term (F_r(n) − π(n)) converges to a constant C_r. The file verifies the r-independent structural core — heredity, primes-are-free, the lower bound F_r(n) ≥ π(n), the descending chain in r, and the r=1 / r=2 endpoint identifications — while isolating the open constant as an unproven proposition. Imports Mathlib and the parent Erdos793Problem.",
     "mathContext": "$F_r(n) = \\max\\{|A| : A \\subseteq \\{1,\\dots,n\\},\\ \\forall a\\in A,\\ a \\nmid \\textstyle\\prod_{b\\in B} b\\ \\text{for all } B \\subseteq A\\setminus\\{a\\},\\ |B|=r\\}$; OQ-03: does $\\big(F_r(n) - \\pi(n)\\big)\\big/\\big(n^{2/(r+1)}(\\log n)^{-2}\\big) \\to C_r$?",

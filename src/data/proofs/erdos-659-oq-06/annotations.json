@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "Scope and the Metric Subtlety This File Fixes",
     "content": "The single `import Mathlib` and the docstring set up the whole entry. Erdős #659 concerns planar point sets with few distinct distances; the classification skeleton is the six four-point *two-distance sets* (square, 60° rhombus, two isosceles trapezoids, a kite, four vertices of a regular pentagon), enumerated abstractly as `TwoDistanceConfig` in the parent `Erdos659Problem.lean`.\n\nThe docstring flags the bug this file repairs: the parent measures distance with Mathlib's default `dist` on ℝ×ℝ, which is the **Chebyshev (ℓ∞) product metric**, not the Euclidean one. Under ℓ∞ the unit square's six pairwise distances are all 1 — a *one*-distance set — so the abstract classification has no correct concrete witness there. This file works instead with the honest Euclidean *squared* distance, under which the square correctly has spectrum {1,2}. `open scoped Finset` brings in the finite-set notation used to express each distance spectrum.",
     "mathContext": "Euclidean squared distance $\\operatorname{sqDist}(p,q) = (p_1-q_1)^2 + (p_2-q_2)^2$ versus the Chebyshev metric $d_\\infty(p,q) = \\max(|p_1-q_1|,|p_2-q_2|)$. Under $d_\\infty$ the unit square has all six pairwise distances equal to $1$; under $\\operatorname{sqDist}$ the spectrum is $\\{1,2\\}$.",

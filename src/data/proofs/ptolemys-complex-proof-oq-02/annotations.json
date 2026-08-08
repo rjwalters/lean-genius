@@ -109,7 +109,7 @@
       "startLine": 199,
       "endLine": 236
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Section III: Non-Degeneracy — the Ptolemy Quotient is Well-Defined",
     "content": "Before the sine addition formula can be extracted from Ptolemy's chord identity, two non-vanishing conditions must be discharged so the algebraic rearrangement is legitimate. `hdenom_ne_zero` proves the product of chord lengths in the denominator is nonzero (each chord 1−exp(θI) has strictly positive length for 0<θ<π), and `hnumer_ne_zero` handles the numerator. Both rely on the angle constraints 0<α,β and α+β<π/2 established earlier, which keep every point distinct on the unit circle. These lemmas are the bridge that turns the geometric chord identity into a valid equation between real quotients — without them the final `field_simp`/division step in Section IV would be unjustified.",
     "mathContext": "On the unit circle a chord between $e^{i\\theta_1}$ and $e^{i\\theta_2}$ has length $\\lvert e^{i\\theta_1}-e^{i\\theta_2}\\rvert = 2\\lvert\\sin\\tfrac{\\theta_1-\\theta_2}{2}\\rvert$, which is strictly positive iff the two points are distinct. The constraints $0<\\alpha,\\beta$ and $\\alpha+\\beta<\\tfrac{\\pi}{2}$ force the four points into distinct positions, so every chord length is nonzero and Ptolemy's relation may be divided through.",

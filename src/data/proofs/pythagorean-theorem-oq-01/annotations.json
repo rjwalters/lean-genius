@@ -50,7 +50,7 @@
       "startLine": 126,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Altitude Foot as an Explicit Affine Combination",
     "content": "Rather than invoke Mathlib's orthogonal-projection API, altitudeFoot A B C := A + (‖A − C‖²/‖A − B‖²)·(B − A) writes the foot H directly as an affine combination of A and B, with parameter t = |CA|²/|AB|² — precisely the similar-triangle ratio. foot_perp then proves ⟪C − H, A − B⟫ = 0 by expanding two inner products: ⟪C − A, A − B⟫ = −‖A − C‖² (using the right angle ⟪A − C, B − C⟫ = 0) and ⟪B − A, A − B⟫ = −‖A − B‖². Substituting t makes the combination vanish, confirming H is genuinely the altitude foot. Everything downstream is then a direct computation with no projection machinery.",
     "mathContext": "$H = A + \\frac{|CA|^2}{|AB|^2}(B-A),\\quad \\langle C-H,\\ A-B\\rangle = 0$.",

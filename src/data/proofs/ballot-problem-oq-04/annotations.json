@@ -54,7 +54,7 @@
       "startLine": 97,
       "endLine": 109
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Crossings need four points: every partition of [n], n ≤ 3, is non-crossing",
     "content": "isNonCrossing_of_n_le_three establishes that when n ≤ 3, EVERY Setoid (Fin n) is non-crossing — a crossing requires four strictly-ordered indices a<b<c<d, which simply do not exist below four points. In Lean this is discharged by observing that the crossing hypothesis provides d : Fin n with a<b<c<d, forcing d ≥ 3 hence n ≥ 4, contradicting hn : n ≤ 3. Combinatorially this is exactly why the Catalan and Bell numbers first diverge at n = 4: for n ≤ 3 every partition is non-crossing, so the counts agree (C₀=B₀=1, C₁=B₁=1, C₂=B₂=2, C₃=B₃=5), and the first partition that is NOT non-crossing appears only at n = 4. This lemma pins the base of that agreement and marks where the genuine combinatorics begins.",
     "mathContext": "n ≤ 3 ⇒ every Setoid (Fin n) is non-crossing (a crossing needs a<b<c<d, i.e. n ≥ 4). Hence Cₙ = Bₙ for n ≤ 3, diverging first at n = 4 (C₄ = 14 < 15 = B₄).",

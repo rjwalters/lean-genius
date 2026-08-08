@@ -61,7 +61,7 @@
       "startLine": 99,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cayley–Hamilton (Minpoly Form) in Additive Form",
     "content": "The bridge from the annihilation identity to the inverse. `Polynomial.divX_mul_X_add` splits any polynomial as $\\mathrm{div}_X m \\cdot X + C(m.\\mathrm{coeff}\\ 0) = m$; evaluating this at $A$ (using `map_add`, `map_mul`, `aeval_X`, `aeval_C`) and using $\\mathrm{aeval}\\ A\\ m = 0$ (the matrix is a root of its own minimal polynomial, `minpoly.aeval`) yields $(\\mathrm{div}_X m)(A)\\cdot A + c_0\\cdot 1 = 0$. This isolates a relation of the shape (polynomial in $A$)$\\cdot A = $ scalar, which — once $c_0$ is known to be a unit — is exactly what can be divided through to expose $A^{-1}$ as a polynomial in $A$.",
     "mathContext": "$(\\mathrm{div}_X m)(A)\\cdot A + c_0\\, I = 0$, the additive rearrangement of $\\mathrm{aeval}\\ A\\ (\\mathrm{minpoly}_K A) = 0$ after peeling off the constant term.",

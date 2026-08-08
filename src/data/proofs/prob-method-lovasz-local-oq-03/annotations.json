@@ -118,7 +118,7 @@
       "startLine": 102,
       "endLine": 115
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Marginal Bound: prob_i ≤ x_i",
     "content": "Every factor $1 - x_j \\le 1$, so the avoidance product over the dependency neighborhood is $\\le 1$, and the LLL bound collapses to $prob_i \\le x_i$:\n\n```lean\nhave hprod : (adj i).prod (fun j => 1 - x j) ≤ 1 :=\n  Finset.prod_le_one\n    (fun j _ => by linarith [(hx j).2])\n    (fun j _ => by linarith [(hx j).1])\ncalc prob i ≤ x i * (adj i).prod (fun j => 1 - x j) := hb i\n  _ ≤ x i * 1 := mul_le_mul_of_nonneg_left hprod (hx i).1\n  _ = x i := mul_one _\n```\n\nThis mirrors the parent entry's `lll_prob_bound`; composing it with negative correlation (`le_trans`) yields the conditional bound $condProb_i \\le x_i$ that the LLL induction propagates.",
     "mathContext": "$prob_i \\le x_i \\prod_{j \\in adj_i}(1-x_j) \\le x_i \\cdot 1 = x_i$.",

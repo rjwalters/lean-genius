@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: From Necessity to a Full Characterisation",
     "content": "The parent entry law-of-cosines-oq-07 derives the parallelogram law ‖x+y‖²+‖x−y‖²=2(‖x‖²+‖y‖²) from Apollonius's median identity, showing it is necessary for an inner-product norm. Its open question asks the converse — is the identity also sufficient? This file answers yes, the classical Fréchet–von Neumann–Jordan theorem (1935). The whole development is stated over an arbitrary RCLike field 𝕜 (so ℝ and ℂ at once) with E a normed 𝕜-space; note the norm-squared is written ‖x‖·‖x‖ rather than ‖x‖^2 to match Mathlib's parallelogram_law_with_norm verbatim and avoid a rewrite.",
     "mathContext": "$\\|x+y\\|^2+\\|x-y\\|^2=2(\\|x\\|^2+\\|y\\|^2)$; characterise when a norm comes from an inner product.",
@@ -81,7 +81,7 @@
       "startLine": 97,
       "endLine": 102
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sanity Check on the Euclidean Plane",
     "content": "A concrete example confirms the characterisation recognises the standard model EuclideanSpace ℝ (Fin 2): being an honest inner-product space it supplies a Nonempty (InnerProductSpace ℝ _) instance via inferInstance, and the forward direction (.1) then yields the parallelogram identity. This closes the loop — the abstract biconditional fires on the very space (the Euclidean plane) whose median geometry motivated the parent entry.",
     "mathContext": "$\\mathbb{R}^2$ with the dot product satisfies $\\|x+y\\|^2+\\|x-y\\|^2=2(\\|x\\|^2+\\|y\\|^2)$.",

@@ -53,7 +53,7 @@
       "startLine": 59,
       "endLine": 59
     },
-    "type": "context",
+    "type": "concept",
     "title": "The four opened namespaces map the API this file composes",
     "content": "Before the two theorems, `open Polynomial NumberField Ideal RingOfIntegers` and `namespace DedekindKummerToTower` fix the ambient API surface — and the choice of exactly these four namespaces is itself a summary of what the proof touches. `Polynomial` exposes `minpoly`, `natDegree`, and the mod-p factor `Q : (ZMod p)[X]` fed to Kummer–Dedekind. `NumberField` / `RingOfIntegers` provide `𝓞 K`, `RingOfIntegers.exponent`, and `RingOfIntegers.monicFactorsMod` — the arithmetic of the number field K and its integers θ. `Ideal` supplies the central objects `span {(p:ℤ)}`, `inertiaDeg`, `inertiaDegIn`, `IsMaximal`, and the going-up lemma `Ideal.exists_maximal_ideal_liesOver_of_isIntegral`. Opening them lets the two-theorem body read as pure mathematics rather than fully-qualified paths, and the `namespace` keeps the local names (`span_p_isMaximal`, `dvd_inertiaDegIn_of_dvd_natDegree_factor`) from colliding with the imported bricks.",
     "mathContext": "The proof lives at the intersection of four theories: polynomial factorization mod $p$ ($\\texttt{Polynomial}$), the arithmetic of $\\mathcal{O}_K$ ($\\texttt{NumberField}$, $\\texttt{RingOfIntegers}$), and prime/inertia structure of ideals ($\\texttt{Ideal}$).",

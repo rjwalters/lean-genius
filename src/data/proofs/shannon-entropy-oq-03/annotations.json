@@ -31,7 +31,7 @@
       "startLine": 41,
       "endLine": 52
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Re-Export Design: Reusing the Parent's Verified Development",
     "content": "The file `import`s the parent `Proofs.ShannonEntropy` and works in the `InformationTheory.SSA` namespace, opening `InformationTheory` to reference the parent's verified names (`shannonEntropy`, `marginalXY`, `marginalYZ`, `marginalY`, `strong_subadditivity`). The three-variable data lives over `α × β × γ` with `Fintype`/`DecidableEq` instances. A previous revision instead re-derived the entire marginal / chain-rule / SSA infrastructure inline *and* imported the parent, so the duplicated declarations in the same namespace made the file fail to elaborate (\"already declared\"). This revision reuses the parent directly, so it builds cleanly and inherits the parent's axiom-free status.",
     "mathContext": "The joint type `α × β × γ` is right-associated, so a marginal such as `marginalY : (α × β × γ → ℝ) → (β → ℝ)` is applied directly to `pXYZ`. Keeping the definitions in a single source of truth (the parent) avoids namespace collisions and guarantees the corollaries here rest on the same $0\\log 0 = 0$ convention and the same verified `strong_subadditivity`.",

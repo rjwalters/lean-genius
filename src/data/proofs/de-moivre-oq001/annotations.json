@@ -6,7 +6,7 @@
       "startLine": 65,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The summand and the explicit sum",
     "content": "The building block `term m k` is $(-1)^k \\binom{m-k}{k}(2X)^{m-2k}$, an element of `Polynomial ℤ`, and `Uexpl n` sums it over $k \\in \\mathrm{range}(\\lfloor n/2\\rfloor + 1)$. Working with a named summand (rather than an inline lambda) is what makes the later termwise recurrence `term_succ_rec` a clean, reusable lemma. Note the binomial coefficient uses the *natural-number* subtraction $m-k$ and the exponent the natural-number subtraction $m-2k$; both are honest values exactly on the summation support and are neutralized off it by the vanishing lemma.",
     "mathContext": "$\\mathrm{term}(m,k) = (-1)^k \\binom{m-k}{k}(2X)^{m-2k},\\qquad U_{\\mathrm{expl}}(n) = \\sum_{k=0}^{\\lfloor n/2\\rfloor} \\mathrm{term}(n,k).$",
@@ -28,7 +28,7 @@
       "startLine": 74,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Vanishing tails give a uniform summation range",
     "content": "`term_eq_zero` observes that when $2k > m$ we have $m - k < k$, so $\\binom{m-k}{k} = 0$ by `Nat.choose_eq_zero_of_lt` and the whole summand collapses. `Uexpl_eq_sum_range` then uses `Finset.sum_subset` to enlarge the summation range from $\\mathrm{range}(\\lfloor n/2\\rfloor+1)$ to any $\\mathrm{range}(N)$ with $N \\ge \\lfloor n/2\\rfloor+1$: the newly included terms are exactly those with $2k > n$, all zero. This is the single move that removes floor arithmetic from the entire development — the recurrence proof can put every sum on a common range and never track $\\lfloor n/2\\rfloor$ again.",
     "mathContext": "$2k > m \\;\\Rightarrow\\; \\binom{m-k}{k} = 0,\\qquad U_{\\mathrm{expl}}(n) = \\sum_{k \\in \\mathrm{range}(N)} \\mathrm{term}(n,k)\\ \\text{ for any } N \\ge \\lfloor n/2\\rfloor+1.$",
@@ -50,7 +50,7 @@
       "startLine": 92,
       "endLine": 119
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The termwise Pascal recurrence (combinatorial core)",
     "content": "The crux is `term (n+2) (k+1) = 2X · term (n+1) (k+1) - term n k`, an identity of summands rather than sums. Shifting the index by one is deliberate: it forces every binomial coefficient into the successor shape $\\binom{(n-k)+1}{k+1}$, which `Nat.choose_succ_succ` (Pascal's rule) splits as $\\binom{n-k}{k} + \\binom{n-k}{k+1}$ — the first piece produces $-\\mathrm{term}(n,k)$, the second $2X\\cdot\\mathrm{term}(n+1,k+1)$. A case split governs the exponents: on $n \\ge 2k+1$ all natural-number subtractions are genuine and `push_cast; ring` finishes after rewriting them; on $n \\le 2k$ the $\\mathrm{term}(n+1,k+1)$ factor is a vanishing binomial coefficient, and a further split $n = 2k$ (both survivors are $\\pm 1$) versus $n < 2k$ (both survivors vanish) closes the degenerate boundary.",
     "mathContext": "$\\binom{(n-k)+1}{k+1} = \\binom{n-k}{k} + \\binom{n-k}{k+1}\\ \\Longrightarrow\\ \\mathrm{term}(n+2,k+1) = 2X\\,\\mathrm{term}(n+1,k+1) - \\mathrm{term}(n,k).$",
@@ -72,7 +72,7 @@
       "startLine": 121,
       "endLine": 146
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Lifting the termwise identity to the U-recurrence",
     "content": "`Uexpl_rec` assembles `Uexpl (n+2) = 2X · Uexpl (n+1) - Uexpl n`. All three sums are first placed on the common range $\\mathrm{range}(n+2)$ via `Uexpl_eq_sum_range`. The $k=0$ term is peeled off the bottom with `Finset.sum_range_succ'` (shifting the remaining indices to $k+1$, exactly where `term_succ_rec` applies), the shifted recurrence is summed under `Finset.sum_congr`, and the pieces are recombined with `Finset.mul_sum` and `Finset.sum_sub_distrib`. The leftover $k=0$ contributions match because $\\mathrm{term}(n+2,0) = (2X)^{n+2} = 2X\\cdot(2X)^{n+1} = 2X\\,\\mathrm{term}(n+1,0)$, and a final `ring` closes the bookkeeping.",
     "mathContext": "$U_{\\mathrm{expl}}(n+2) = \\Big(\\sum_{k} \\mathrm{term}(n+2,k+1)\\Big) + \\mathrm{term}(n+2,0) = 2X\\,U_{\\mathrm{expl}}(n+1) - U_{\\mathrm{expl}}(n).$",

@@ -3,7 +3,7 @@
     "id": "ann-cfoq0201-header",
     "proofId": "combinations-formula-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Closed Form Needs Restating: No Square Root on Q[[X]]",
     "content": "The module docstring frames the open question — prove the Catalan generating function C(x) = (1 - sqrt(1-4x))/(2x) — and explains why it cannot be stated verbatim over a formal power series ring: sqrt(1-4x) presupposes an analytic square-root operation that a general power series ring does not have. The file instead formalizes the two algebraic identities that carry the closed form's exact content: the functional equation C = 1 + X*C^2 (the power-series shadow of the Segner convolution recurrence catalan_succ') and the square-root form (2XC-1)^2 = 1-4X (the quadratic the closed form solves). It notes that Mathlib records the convolution recurrence but not the generating-function identity, so this packaging is original.",
     "mathContext": "$\\sqrt{1-4x}$ is not an operation on $\\mathbb{Q}\\llbracket X\\rrbracket$, so the closed form $C(x)=\\frac{1-\\sqrt{1-4x}}{2x}$ is replaced by $C = 1+XC^2$ and $(2XC-1)^2 = 1-4X$.",

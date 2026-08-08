@@ -66,7 +66,7 @@
       "startLine": 243,
       "endLine": 263
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Step Congruence, Closed by linear_combination in ZMod",
     "content": "The heart of Garner correctness is one congruence: x + ((r − x)·P⁻¹ mod m)·P ≡ r (mod m).\n\nThe proof casts everything into ZMod m via `ZMod.natCast_eq_natCast_iff`. After `push_cast` (with `ZMod.natCast_mod` to strip inner reductions and `Nat.cast_sub` for the truncation-safe subtraction, justified by x % m ≤ m) and killing the cast of m via `ZMod.natCast_self`, the goal is the ring identity x + (r − x)·w·P = r given the inverse identity P·w = 1. That is exactly `linear_combination (r − x) * hw` — the difference of the two sides is (r − x)·(P·w − 1).\n\nThis is why the incremental proof beats the textbook telescoping route: no products of inverses ever accumulate; each step needs only one inverse identity and one ring identity.",
     "mathContext": "$x + \\left((r-x) \\cdot w \\bmod m\\right) \\cdot P \\equiv r \\pmod m$ given $P \\cdot w \\equiv 1 \\pmod m$; algebraically, $\\left(x + (r-x)wP\\right) - r = (r-x)(Pw - 1) = 0$.",
@@ -126,7 +126,7 @@
       "startLine": 466,
       "endLine": 494
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Grounding the Charge: the Reduced Horner Inner Loop",
     "content": "Why does step i cost exactly i single-precision operations? Because the partial solution x_{i−1} — which the step must reduce mod mᵢ — is the Horner value of the i−1 digits computed so far, and `hornerMod` evaluates that value mod n by reducing after every multiply-add:\n\n    hornerMod n ((m, v) :: rest) = (v + m · hornerMod n rest) % n.\n\nTwo theorems make the charge honest: `hornerMod_lt` shows every intermediate stays below n after reduction (so each step really is single-precision — operands bounded by the individual moduli, never the big product), and `hornerMod_modEq` shows reducing eagerly does not change the value mod n, by a straightforward induction with `Nat.mod_modEq` and congruence lemmas.\n\nThis is precisely Garner's 1959 point, machine-checked: residue number systems support multi-precision arithmetic through single-precision operations; only the optional final `ofDigits` reconstruction touches big integers.",
     "mathContext": "$\\mathrm{hornerMod}(n,\\, (m,v){::}\\mathrm{rest}) = (v + m \\cdot \\mathrm{hornerMod}(n,\\mathrm{rest})) \\bmod n$, with every intermediate value $< n$ and the result $\\equiv$ the true Horner value $\\pmod n$.",

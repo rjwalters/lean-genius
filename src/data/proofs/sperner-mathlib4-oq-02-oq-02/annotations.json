@@ -30,7 +30,7 @@
       "startLine": 70,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A free involution preserving a predicate forces an even fibre",
     "content": "Two lemmas. even_card_of_free_involution reproves that a fixed-point-free involution has even domain cardinality: sum the constant 1 : ZMod 2 over the universe and cancel each antipodal pair via Finset.sum_ninvolution (1 + 1 = 0), so the total — which is the cardinality reduced mod 2 — vanishes. even_card_filter_of_free_involution upgrades this to any σ-invariant decidable predicate P: restrict σ to the subtype {a // P a}, where it is still a free involution, and transport the base fact along Fintype.card_subtype to conclude Even #{a | P a}. This second lemma is the reusable engine of the whole file and a genuine Mathlib gap.",
     "mathContext": "If $\\sigma : \\alpha \\to \\alpha$ is a free involution and $P(\\sigma a) \\leftrightarrow P(a)$ for all $a$, then $\\sigma$ restricts to a free involution on $\\{a \\mid P a\\}$, so $\\#\\{a \\mid P a\\}$ is even. The base case is the empty-predicate specialisation.",
@@ -54,7 +54,7 @@
       "startLine": 115,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A graph automorphism preserves degree",
     "content": "degree_eq_of_aut shows that an involutive graph automorphism σ preserves every vertex degree. Rewriting each degree as the cardinality of the neighbour finset, the map w ↦ σ w carries the neighbours of σ v bijectively onto the neighbours of v: it lands in the target because G.Adj (σ v) w ↔ G.Adj v (σ w) (the automorphism hypothesis with the involution), is injective because σ is injective, and is surjective with inverse again σ. A single Finset.card_bij closes it. This makes the endpoint predicates σ-invariant in the next section.",
     "mathContext": "$G.\\deg(\\sigma v) = \\#\\,G.\\mathrm{neighborFinset}(\\sigma v) = \\#\\,G.\\mathrm{neighborFinset}(v) = G.\\deg(v)$, the middle equality by the bijection $w \\mapsto \\sigma w$ between the two neighbour finsets.",
@@ -76,7 +76,7 @@
       "startLine": 153,
       "endLine": 191
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Even interior and boundary endpoint counts under symmetry",
     "content": "The interior-endpoint predicate G.degree v = 1 ∧ ¬ B v and the boundary-endpoint predicate G.degree v = 1 ∧ B v are both σ-invariant: the degree part by degree_eq_of_aut, the boundary part by the boundary-preserving hypothesis. Feeding each into even_card_filter_of_free_involution gives even_card_interiorEndpoints and even_card_boundaryEndpoints — both endpoint classes split into antipodal 2-orbits, so both counts are even. not_odd_card_interiorEndpoints records the immediate corollary that the interior count is never odd.",
     "mathContext": "Under the symmetry hypotheses, $\\#\\,\\mathrm{interiorEndpoints}\\,G\\,B$ and $\\#\\,\\mathrm{boundaryEndpoints}\\,G\\,B$ are both even; in particular the interior count is not odd.",
@@ -99,7 +99,7 @@
       "startLine": 193,
       "endLine": 211
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The no-go theorem: a symmetric door graph is never a Tucker level",
     "content": "symmetric_graph_not_tucker_level combines the previous section with the tower requirement: a free, automorphic, boundary-preserving antipodal involution together with an ODD interior-endpoint count is contradictory (the count is even). Since the verified TuckerTower.tower_interior_odd forces an odd interior count at every Tucker level, an antipodally-symmetric door graph can never be a level. The oddness can therefore appear only after the symmetry is broken — on a hemisphere fundamental domain, where σ swaps the two hemispheres and is no longer an automorphism (cf. SpernerTuckerHemisphere.card_eq_two_mul_hemisphere). The labelling-induced asymmetry of the almost-complementary door graph is essential, not incidental.",
     "mathContext": "The verified recursion gives $\\mathrm{Odd}\\,\\#\\,\\mathrm{interiorEndpoints}$ at every level, but antipodal graph symmetry gives $\\mathrm{Even}\\,\\#\\,\\mathrm{interiorEndpoints}$; the two are incompatible, so a Tucker level's door graph must break the antipodal symmetry.",

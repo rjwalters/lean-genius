@@ -126,7 +126,7 @@
       "startLine": 200,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Polygonal → Smooth by Continuity of x ↦ αx/d",
     "content": "approx_limit is the bridge that justifies extending the polygonal theorem to genuinely curved noodles: if a sequence of polygonal noodles has total lengths converging to L (as an inscribed polygon refines toward a rectifiable curve), their expected crossings converge to α·L/d. The proof is a clean instance of composing a convergent sequence with a continuous map. After simp_rw [noodle_highdim] rewrites the sequence to k ↦ α·(N k).totalLength/d, the affine map x ↦ α·x/d is continuous (continuous_const.mul continuous_id |>.div_const d), so its continuousAt composed with hConverge (the length limit) delivers the crossing-count limit. No new probabilistic input is needed — continuity does all the work, exactly as in the planar parent's approximation theorem.",
     "mathContext": "$L_k \\to L \\implies \\dfrac{\\alpha L_k}{d} \\to \\dfrac{\\alpha L}{d}$, since $x \\mapsto \\dfrac{\\alpha x}{d}$ is continuous.",

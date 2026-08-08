@@ -15,7 +15,7 @@
     "id": "ann-offset-power",
     "proofId": "erdos-10-wip-01-oq-03",
     "range": { "startLine": 98, "endLine": 111 },
-    "type": "technique",
+    "type": "tactic",
     "title": "At k = 1 a Positive Offset is a Single Power of Two",
     "content": "eq_two_pow_of_pos_of_popcount_le_one turns popcount w ≤ 1 into RepWithAtMost 1 w via the parent lemma popcount_le_iff, unfolding to a multiset s of exponents with s.card ≤ 1 and powSum s = w. Positivity of w rules out the empty multiset (powSum 0 = 0), forcing s.card = 1; Multiset.card_eq_one then names the single exponent a and powSum {a} = 2^a gives w = 2^a. This is what makes the k = 1 covering tractable — the only positive offsets it must kill are the single powers 2^a, precisely what Erdős's six-prime CRT system is built to control.",
     "mathContext": "$\\mathrm{popcount}(w) \\le 1 \\wedge w > 0 \\Rightarrow \\exists a,\\ w = 2^a$.",

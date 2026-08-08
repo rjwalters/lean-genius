@@ -6,7 +6,7 @@
       "startLine": 4,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Column-Replacement Setup Inherited from the Parent",
     "content": "The file imports `Proofs.CramersRuleOQ04OQ01OQ01`, whose `cramer_solution` supplies the general scalar formula $x_i = \\det(A_i)/\\det A$ over a field with $\\det A \\neq 0$, where $A_i = A.\\mathrm{updateCol}\\ i\\ b$ is $A$ with its $i$-th column overwritten by the right-hand side $b$. The whole entry is the bookkeeping of that column replacement in the small cases: nothing new is assumed, and no fresh determinant theory is developed. `updateCol` replaces a column (acting on the second matrix index), which is why `updateCol_self` fires on the replaced column (returning $b$) and `updateCol_ne` on all others (returning the original $A$ entries). Everything reduces to `cramer_solution` composed with Mathlib's `det_fin_two` / `det_fin_three`.",
     "mathContext": "$A_i = A.\\mathrm{updateCol}\\ i\\ b$, and $x_i = \\dfrac{\\det(A_i)}{\\det A}$ is the parent's `cramer_solution`; this file expands $\\det(A_i)$ and $\\det A$ for $n = 2, 3$.",

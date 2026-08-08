@@ -89,7 +89,7 @@
       "startLine": 57,
       "endLine": 79
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Peel, re-index, and collapse the inductive step",
     "content": "**The mechanics of the step.** Four moves close it. (1) Peel the $k=0$ term of the $(n+1)$-st row with `sum_range_succ'`; it vanishes since $c(n+1,0)=0$ (`stirlingFirst_succ_zero`), and each remaining $c(n+1,i+1)$ is expanded by `stirlingFirst_succ_succ`. (2) `sum_add_distrib` + `mul_sum` distribute to $n(\\sum_i c(n,i+1)) + (\\sum_i c(n,i))$; the right summand is the IH $n!$. (3) The re-index lemma `hsplit` proves $(\\sum_i c(n,i+1)) + c(n,0) = n!$ — a shifted sum plus its dropped boundary term reassemble the full $n$-th row, with `stirlingFirst_eq_zero_of_lt` killing the out-of-range top term $c(n,n+1)$. (4) Multiply `hsplit` by $n$ and erase $n\\cdot c(n,0)$ via `mul_stirlingFirst_zero`, yielding $n(\\sum_i c(n,i+1)) = n\\cdot n!$; then `Nat.factorial_succ` + `ring` finish $(n+1)\\,n! = (n+1)!$. The dropped boundary term costs nothing precisely because it always reappears multiplied by $n$.",
     "mathContext": "$\\bigl(\\textstyle\\sum_i c(n,i{+}1)\\bigr) + c(n,0) = n!$ and $n\\cdot c(n,0) = 0$, so $n\\bigl(\\textstyle\\sum_i c(n,i{+}1)\\bigr) = n\\cdot n!$, whence $n\\cdot n! + n! = (n+1)!$.",

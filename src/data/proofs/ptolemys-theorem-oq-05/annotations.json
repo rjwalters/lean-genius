@@ -51,7 +51,7 @@
     "id": "ann-ptolemy-3d",
     "proofId": "ptolemys-theorem-oq-05",
     "range": { "startLine": 147, "endLine": 151 },
-    "type": "context",
+    "type": "concept",
     "title": "A Three-Dimensional Witness",
     "content": "The closing example instantiates ptolemy_dist in EuclideanSpace ℝ (Fin 3), exhibiting Ptolemy's inequality for four points of ordinary 3-space by a one-line application. This is the concrete payoff of the entire OQ-05 entry: the gallery's original proof relies on the complex algebraic identity (z₁−z₃)(z₂−z₄) = (z₁−z₂)(z₃−z₄) + (z₁−z₄)(z₂−z₃), which lives in the field ℂ and is therefore locked to the plane. The inversion-based proof formalized here has no such ceiling, and this 3D instance makes the gain visible — a configuration the planar proof simply cannot address.",
     "mathContext": "The same inequality holds in $\\mathbb{R}^3$ (and every $\\mathbb{R}^n$), witnessed here in $\\texttt{EuclideanSpace}\\ \\mathbb{R}\\ (\\texttt{Fin}\\ 3)$, beyond the reach of the $\\mathbb{C}$-based planar proof.",

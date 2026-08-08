@@ -26,7 +26,7 @@
   {
     "id": "ann-completeness",
     "title": "Why the Projection Exists Without Assuming E Complete",
-    "type": "technique",
+    "type": "tactic",
     "startLine": 54,
     "endLine": 66,
     "mathContext": "Mathlib's orthogonalProjection/starProjection require the subspace to have a HasOrthogonalProjection instance, which follows from completeness. Here S = span(range e) is spanned by finitely many vectors, so FiniteDimensional.span_of_finite (applied to Set.finite_range e) makes it finite-dimensional, and FiniteDimensional.complete over the complete field 𝕜 makes it complete. These are registered as instances so the projection elaborates automatically — no completeness hypothesis on the ambient E is needed.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-residual-span",
     "title": "From Basis-Orthogonality to Subspace-Orthogonality",
-    "type": "technique",
+    "type": "tactic",
     "startLine": 92,
     "endLine": 114,
     "mathContext": "Coordinate preservation gives ⟪e j, x − subProj e x⟫ = 0 for each basis vector. To identify subProj with the orthogonal projection we need the residual orthogonal to ALL of S, not just to each e j. Since w ↦ ⟪x − subProj e x, w⟫ is 𝕜-linear and vanishes on the spanning set range e (using conjugate symmetry inner_eq_zero_symm), Submodule.span_induction extends the vanishing to every w ∈ S.",

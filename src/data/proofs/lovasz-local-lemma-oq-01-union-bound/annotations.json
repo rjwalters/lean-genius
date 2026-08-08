@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "The two computable extremes of the Lovász Local Lemma",
     "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, with the conclusion $\\mu(\\bigcap_i A_i^c) > 0$. The companion entry `lovasz-local-lemma-oq-01` proved one extreme of the landscape — the **mutually independent** ($d = 0$) case, where the avoidance probability factors *exactly* as $\\prod_i (1 - \\mu(A_i))$. This file proves the opposite extreme: the **dependency-free** case, where *nothing* is assumed about how the events interact. There the best one can say is the crude first-moment (union / Bonferroni) bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$, positive as soon as the total mass $\\sum_i \\mu(A_i) < 1$. The genuine open target — the bounded-dependency-degree symmetric LLL, budget $e\\,p\\,(d+1) \\le 1$ — lives *between* these two extremes: it is exactly the statement that a bounded *local* dependency structure lets one relax the crude *global* threshold $n\\,p < 1$ proved here to a budget independent of the number of events $n$.",
     "mathContext": "Arbitrary measurable family $A : \\iota \\to \\mathrm{Set}\\,\\Omega$ over a `Fintype` index and an `IsProbabilityMeasure` $\\mu$; goal $\\mu\\!\\left(\\bigcap_i A_i^c\\right) \\ge 1 - \\sum_i \\mu(A_i)$, with no independence hypothesis.",
@@ -31,7 +31,7 @@
       "startLine": 36,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "The probability-space frame and ℝ≥0∞ truncated subtraction",
     "content": "```lean\nimport Mathlib.Probability.Independence.Basic\nopen MeasureTheory Finset\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01UnionBound\nvariable {Ω : Type*} [MeasurableSpace Ω] {ι : Type*} [Fintype ι]\nvariable {μ : Measure Ω} [IsProbabilityMeasure μ] {A : ι → Set Ω}\n```\n\nThree typeclass choices carry the whole argument. `[Fintype ι]` makes the family *finite*, so the union bound is finite subadditivity (`measure_iUnion_fintype_le`) rather than the countable version — and lets $\\sum_i \\mu(A_i)$ and $n = |\\iota|$ be honest finite quantities. `[IsProbabilityMeasure μ]` is what turns a bound on $\\mu(\\bigcup_i A_i)$ into a bound on its complement via $\\mu(s^c) = 1 - \\mu(s)$; without total mass $1$ there is no complementation identity to exploit. Crucially all measures live in $\\mathbb{R}_{\\ge 0}^\\infty$ (`open scoped ENNReal`), where subtraction is **truncated** ($a - b = 0$ when $b \\ge a$). This is not a defect but the reason the lower bound $1 - \\sum_i \\mu(A_i)$ is stated unconditionally: when the total mass is supercritical the expression is simply $0$, and only the hypothesis $\\sum_i \\mu(A_i) < 1$ (via `tsub_pos_iff_lt`) makes it strictly positive.",
     "mathContext": "Measures valued in $\\mathbb{R}_{\\ge 0}^\\infty$ with truncated subtraction: $1 - x = 0$ for $x \\ge 1$. `IsProbabilityMeasure` supplies $\\mu(\\Omega) = 1$ and hence $\\mu(s^c) = 1 - \\mu(s)$; `Fintype ι` supplies finite subadditivity and a finite $n = |\\iota|$.",

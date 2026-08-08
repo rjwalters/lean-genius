@@ -3,7 +3,7 @@
     "id": "ann-header",
     "proofId": "frobenius-number-oq-02-oq-02",
     "range": { "startLine": 1, "endLine": 45 },
-    "type": "context",
+    "type": "concept",
     "title": "Kunz's Duality and the Combinatorial Half",
     "content": "Kunz (1970): the numerical semigroup ring k[S] is Gorenstein iff S is symmetric — the involution z ↦ F − z (F the Frobenius number) swaps gaps and non-gaps in the window [0,F]. The numerical fingerprint of symmetry is 2·(#gaps in [0,F]) = F + 1, i.e. exactly half of {0,…,F} are gaps (the Gorenstein ring has type 1). Mathlib has NO Gorenstein-ring or numerical-semigroup-ring machinery (a grep for 'gorenstein' returns nothing; building it is a >1000-line effort), so the ring-theoretic direction is honestly out of reach. This file formalizes the full combinatorial content of the duality — the piece carrying the actual mathematics — abstractly and then for the two-generator semigroup ⟨a,b⟩.",
     "mathContext": "$k[S]$ Gorenstein $\\iff S$ symmetric $\\iff 2\\cdot\\#\\{\\text{gaps in }[0,F]\\}=F+1$.",

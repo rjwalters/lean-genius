@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "The undischarged non-nullness side condition of the LLL strong induction",
     "content": "The measure-theoretic OQ-01 development has assembled the Erdős–Lovász induction step over arbitrary subset histories and the neighbour-block denominator recursion. But two of those results — `cond_iInter_compl_ge_prod` and `cond_failure_le_x_prod` — carry a side condition that is *assumed but never proved*:\n$$\\texttt{hpos}: \\quad \\forall\\, T \\subseteq S,\\ \\mu\\!\\left(\\Big(\\bigcap_{j\\in T} A_j^c\\Big) \\cap C\\right) \\ne 0.$$\nThe chain-rule entry `lovasz-local-lemma-oq-01-chain-rule` discharges the analogous fact, but **only over prefix histories** $\\bigcap_{j<n} A_j^c$ (a `Finset.range` induction) and with no extra conditioning block $C$. The genuine dependency-graph induction conditions on the avoidance of an *unstructured subset* $S$ on top of a fixed non-neighbour block $C$, so the prefix result cannot supply its `hpos`. This file discharges the subset-history version.",
     "mathContext": "The LLL strong induction maintains two invariants over subset histories: the per-event failure bounds $\\mu[A_i \\mid \\text{avoidance}] \\le x_i$ and the non-nullness of the histories. This entry supplies the second half.",
@@ -31,7 +31,7 @@
       "startLine": 30,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Proof Strategy: Telescoping the Subset Induction",
     "content": "The positivity is proved by `Finset.induction` on the history set $S$. **Base:** for $S = \\emptyset$ the intersection $\\bigcap_{j\\in\\emptyset}A_j^c$ is `univ`, so the survival set is just $C$, non-null by hypothesis $\\mu(C)\\ne 0$. **Step** ($\\text{insert }a\\ s$, $a\\notin s$): write $H = (\\bigcap_{j\\in s}A_j^c)\\cap C$; the survival set factors as $(A_a)^c \\cap H$, and the telescoping identity `cond_mul_eq_inter` gives $\\mu((A_a)^c\\cap H) = \\mu[(A_a)^c\\mid H]\\cdot\\mu(H)$. The second factor is nonzero by the induction hypothesis (the sub-block failure bounds restrict from $\\text{insert }a\\ s$ down to $s$); the first is $1 - \\mu[A_a\\mid H]$ (`prob_compl_eq_one_sub`, valid on the positive history $H$), strictly positive because the failure bound at $a$ over sub-block $s$ is $< 1$. The two exported results are `survival_pos_of_failure_lt_one_subset` (the positivity itself) and `survival_pos_subset_forall` (the $\\forall T\\subseteq S$ packaging the denominator recursion consumes as `hpos`).",
     "mathContext": "$\\mu((A_a)^c\\cap H) = \\underbrace{(1 - \\mu[A_a\\mid H])}_{>0}\\cdot\\underbrace{\\mu(H)}_{\\ne 0\\ (\\text{IH})} \\ne 0$, with $H = (\\bigcap_{j\\in s}A_j^c)\\cap C$; base case $S=\\emptyset$ gives $C$.",
@@ -55,7 +55,7 @@
       "startLine": 51,
       "endLine": 74
     },
-    "type": "context",
+    "type": "concept",
     "title": "Frame: self-contained on Mathlib",
     "content": "```lean\nimport Mathlib.Probability.ConditionalProbability\nopen MeasureTheory ProbabilityTheory Finset\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01SubsetHistoryPos\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A : ℕ → Set Ω}\n```\n\nThe entry imports **only** `Mathlib.Probability.ConditionalProbability` — no sibling OQ-01 file — so it is a self-contained lemma about conditional probability. The three tools it needs all come from that import: the telescoping identity `cond_mul_eq_inter` ($\\mu[t\\mid s]\\cdot\\mu(s) = \\mu(s\\cap t)$), the fact that conditioning on a positive-measure set gives a probability measure (`cond_isProbabilityMeasure`), and the complement rule `prob_compl_eq_one_sub`.",
     "mathContext": "`μ[t|s]` is `ProbabilityTheory.cond μ s t`; `[IsProbabilityMeasure μ]` supplies the finiteness needed by `cond_mul_eq_inter` and the probability-measure structure on `μ[·|H]`.",
@@ -76,7 +76,7 @@
       "startLine": 75,
       "endLine": 119
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "survival_pos_of_failure_lt_one_subset — the Finset.induction",
     "content": "```lean\ntheorem survival_pos_of_failure_lt_one_subset (hA : ∀ i, MeasurableSet (A i))\n    {C : Set Ω} (hCmeas : MeasurableSet C) (hCpos : μ C ≠ 0) :\n    ∀ S : Finset ℕ,\n      (∀ a ∈ S, ∀ T ⊆ S, a ∉ T → μ[A a | (⋂ j ∈ T, (A j)ᶜ) ∩ C] < 1) →\n      μ ((⋂ j ∈ S, (A j)ᶜ) ∩ C) ≠ 0\n```\n\n**Empty history**: $\\bigcap_{j\\in\\emptyset} A_j^c = \\text{univ}$, so the set is $\\text{univ}\\cap C = C$, non-null by `hCpos`.\n\n**Insert step** `insert a s` ($a\\notin s$): restrict the sub-block bounds to $s$ and get $\\mu(H)\\ne 0$ by the induction hypothesis, where $H = (\\bigcap_{j\\in s} A_j^c)\\cap C$. Factor the survival set as $(A_a)^c \\cap H$ (`Finset.set_biInter_insert`, `Set.inter_assoc`) and telescope with `cond_mul_eq_inter`:\n$$\\mu\\big((A_a)^c \\cap H\\big) = \\mu[(A_a)^c \\mid H]\\cdot \\mu(H).$$\nThe survival conditional is nonzero: on the positive history $H$, `cond_isProbabilityMeasure` makes $\\mu[\\cdot\\mid H]$ a probability measure, so `prob_compl_eq_one_sub` gives $\\mu[(A_a)^c\\mid H] = 1 - \\mu[A_a\\mid H]$, which is $\\ne 0$ because the failure bound at $a$ over sub-block $s$ is $<1$. Both factors nonzero $\\Rightarrow$ the product is nonzero (`mul_ne_zero`).",
     "mathContext": "The only quantitative input is $1 - \\mu[A_a\\mid H] > 0$: as long as no event is certain given the history, each conditioning step multiplies by a strictly positive survival factor, so positivity propagates. No independence, dependency graph, or numeric LLL budget is used.",
@@ -101,7 +101,7 @@
       "startLine": 121,
       "endLine": 129
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "survival_pos_subset_forall — the hpos term the recursion consumes",
     "content": "```lean\ntheorem survival_pos_subset_forall (hA : ∀ i, MeasurableSet (A i))\n    {C : Set Ω} (hCmeas : MeasurableSet C) (hCpos : μ C ≠ 0) (S : Finset ℕ)\n    (hfail : ∀ a ∈ S, ∀ T ⊆ S, a ∉ T → μ[A a | (⋂ j ∈ T, (A j)ᶜ) ∩ C] < 1) :\n    ∀ T ⊆ S, μ ((⋂ j ∈ T, (A j)ᶜ) ∩ C) ≠ 0 := by\n  intro T hT\n  exact survival_pos_of_failure_lt_one_subset hA hCmeas hCpos T\n    (fun a ha U hU haU => hfail a (hT ha) U (hU.trans hT) haU)\n```\n\nEach $T \\subseteq S$ inherits the sub-block failure bounds (its sub-blocks are sub-blocks of $S$), so the main lemma applies to $T$. The conclusion $\\forall T \\subseteq S,\\ \\mu((\\bigcap_{j\\in T} A_j^c)\\cap C)\\ne 0$ matches the `hpos` hypothesis of `DenominatorRecursion.cond_iInter_compl_ge_prod` and `cond_failure_le_x_prod` **character-for-character**, so supplying it discharges one of the two undischarged side conditions of the LLL strong induction.",
     "mathContext": "The failure hypothesis here (μ[A a|H] < 1) is strictly weaker than the induction's invariant (μ[A a|H] ≤ x a with x a < 1), so this positivity slots in for free wherever the induction has established its numeric bounds.",

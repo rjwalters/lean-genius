@@ -101,7 +101,7 @@
       "startLine": 88,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Explicit Divergence: Partial Sums Tend to +∞",
     "content": "tendsto_sum_one_div_scaled_atTop (a : ℝ) (ha : 0 < a): the partial sums Σ_{i<n} 1/(a·(i+1)) tend to atTop. Because the terms are nonnegative (positivity discharges 0 ≤ 1/(a·(i+1))), not_summable_iff_tendsto_nat_atTop_of_nonneg converts non-summability into an honest limit statement; the non-summability itself is not_summable_one_div_multiples. This is the concrete 'the running total blows up' form of the abstract ¬ Summable claim.",
     "mathContext": "For nonnegative terms, $\\neg\\,\\text{Summable}\\,f \\iff \\sum_{i<n} f(i) \\to +\\infty$; here $f(i) = 1/(a(i+1)) \\ge 0$, so the partial sums diverge to $+\\infty$.",

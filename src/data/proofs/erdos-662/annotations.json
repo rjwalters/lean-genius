@@ -324,7 +324,7 @@
       "startLine": 101,
       "endLine": 248
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Geometry of unit neighbors",
     "content": "The technical core studies, for a point $p$ in a $1$-separated set, its *unit neighbors* at exactly unit distance. Each such neighbor is a unit vector from $p$; converting to complex numbers, a unit vector has $\\|z\\|=1$ and its direction is captured by an argument normalized to $[0,2\\pi)$. Two distinct unit neighbors subtend an angle $\\ge \\pi/3$: if $|\\theta|<\\pi/3$ then $\\cos\\theta>1/2$, but separation forces $\\cos\\theta\\le 1/2$ (dot product $=\\cos$ of the argument difference for unit vectors). This angular gap is the crux of the kissing bound.",
     "mathContext": "Unit neighbors are unit vectors; for distinct ones the angle $\\theta$ satisfies $\\cos\\theta\\le 1/2$, i.e. $|\\theta|\\ge\\pi/3$. Dot product of unit vectors $=\\cos(\\arg z_1-\\arg z_2)$.",

@@ -24,7 +24,7 @@
     "id": "vdw-oq0101-ann-endpoints",
     "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
     "range": { "startLine": 47, "endLine": 99 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Endpoint Recovery Without min'/max'",
     "content": "A fitting AP (a+(k-1)d < n) has all terms < n, so casting ℕ → Fin n is wraparound-free (Fin.val_cast_of_lt) and the Fin n order matches the natural order on the terms. The first term a is isolated as a member ≤ every member (vdwAP_fst_mem, vdwAP_fst_le); the last term a+(k-1)d as a member ≥ every member (vdwAP_last_mem, vdwAP_last_ge). Phrasing the extrema by membership (rather than Finset.min'/max') lets them transport across an equality of two AP sets by plain ≤-antisymmetry, dodging the dependent Nonempty proof that min'/max' carry.",
     "mathContext": "For $m < n$: $(\\uparrow m : \\mathrm{Fin}\\,n).\\mathrm{val} = m$, so $\\uparrow x \\le \\uparrow y \\iff x \\le y$ on the AP's terms.",

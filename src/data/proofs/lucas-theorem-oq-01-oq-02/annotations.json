@@ -30,7 +30,7 @@
       "startLine": 39,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Binary Digit-Sum Recurrence, Extended to n = 0",
     "content": "s2_step establishes the workhorse recursion s₂ n = (n mod 2) + s₂(n/2): the last binary digit is n mod 2 and the rest is the digit sum of n/2. The parent entry's s2_pos proves this only for 0 < n; s2_step closes the n = 0 case (0 = 0 + 0 by simp) so the recurrence holds unconditionally. This total version is what lets later inductions peel one bit at a time without carrying a positivity hypothesis.",
     "mathContext": "$s_2(n) = (n \\bmod 2) + s_2(\\lfloor n/2\\rfloor)$, for all $n \\ge 0$.",

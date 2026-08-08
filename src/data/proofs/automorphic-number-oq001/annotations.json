@@ -30,7 +30,7 @@
       "startLine": 57,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "idemEquivBool: the two local idempotents named by a single Bool",
     "content": "In a prime-power ring ZMod (p^v) with p prime and v ≥ 1, the only idempotents are 0 and 1 (the sibling AutomorphicNumberOQ01.idem_eq_zero_or_one), so the idempotent subtype is equivalent to Bool: true ↔ 1, false ↔ 0. The forward map is fun a => decide (a.1 = 1); the inverse sends b to ⟨cond b 1 0, _⟩. Both round-trips are discharged by casing on the idempotent (0 or 1 via idem_eq_zero_or_one) or on the Bool, using zero_ne_one — which holds because Fact (1 < p^v) makes the local ring nontrivial (lt_of_lt_of_le hp.out.one_lt (Nat.le_self_pow hv.ne' p)). This is the explicit Bool-named form of the sibling's cardinality fact idem_card_prime_pow.",
     "mathContext": "A finite local ring $\\mathbb{Z}/p^v$ has exactly the two trivial idempotents $0,1$, so its idempotent set is canonically the two-element type $\\mathrm{Bool}$.",
@@ -53,7 +53,7 @@
       "startLine": 80,
       "endLine": 100
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "idemEquivPrimeBool: transport by CRT, split, then name each prime by Bool",
     "content": "The global bijection {e : ZMod (m^k) // e*e = e} ≃ ((m^k).primeFactors → Bool) composes three equivalences. First idemCongr (ZMod.equivPi (m^k) hn).toMulEquiv transports the idempotent subtype across the finite-product Chinese Remainder isomorphism into the idempotent subtype of ∏ p ∈ (m^k).primeFactors, ZMod (p^v_p). Then idemPi splits that into ∏ p, (idempotents of the factor). Finally Equiv.piCongrRight applies idemEquivBool at every prime: each factor exponent is positive because p ∈ (m^k).primeFactors gives Nat.Prime.factorization_pos_of_dvd, and Nat.prime_of_mem_primeFactors supplies the Fact p.Prime instance. The result identifies an idempotent with the function p ↦ (its local value is 1) — the subset of primes at which the idempotent is the local unit.",
     "mathContext": "$\\{e:e^2=e\\}\\;\\xrightarrow{\\text{CRT}}\\;\\prod_p\\{e_p:e_p^2=e_p\\}\\;\\xrightarrow{\\text{local}}\\;\\prod_p\\mathrm{Bool}\\;=\\;(\\mathrm{primeFactors}\\to\\mathrm{Bool})$.",
@@ -78,7 +78,7 @@
       "startLine": 102,
       "endLine": 110
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "card_idempotents_via_bool: the count 2^ω(m) as a subset count",
     "content": "The headline theorem re-derives the parent count from the structural bijection. Fintype.card_congr (idemEquivPrimeBool m k hk) rewrites the idempotent count as Fintype.card ((m^k).primeFactors → Bool); Fintype.card_pi turns that into a product over the primes, Fintype.card_bool makes each factor 2, and Finset.prod_const collapses ∏ 2 to 2^(#primeFactors). Fintype.card_coe converts the coe-Fintype card to the Finset card and Nat.primeFactors_pow (needing k ≠ 0, obtained from hk by omega) rewrites (m^k).primeFactors = m.primeFactors, landing on 2 ^ m.primeFactors.card. Now the power of two is visibly the number of subsets of the prime factors — the structural content the parent's bare cardinality left implicit.",
     "mathContext": "$\\#\\{e:e^2=e\\}=\\#(\\mathrm{primeFactors}\\to\\mathrm{Bool})=2^{\\#\\mathrm{primeFactors}}=2^{\\omega(m)}$, independent of $k$.",

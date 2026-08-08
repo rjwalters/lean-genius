@@ -27,7 +27,7 @@
     "id": "ann-deficiency-eq",
     "proofId": "handshake-lemma-oq-01",
     "range": { "startLine": 61, "endLine": 67 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Deficiency as an Ideal Shortfall",
     "content": "Under the pointwise bound `deg v ≤ d`, `Finset.sum_tsub_distrib` distributes the truncated subtraction across the sum — this step is exactly where the hypothesis `hbound` is spent, since ℕ subtraction only distributes when each subtrahend is dominated. `Finset.sum_const` then collapses `∑_v d` to `|V|·d`, yielding `deficiency = n·d − ∑ deg = n·d − 2|E|`. The identity converts a sum-of-shortfalls into a single subtraction against the regular ideal degree sum `n·d`, the reference point for everything that follows.",
     "mathContext": "$\\deg v \\le d\\ \\forall v \\ \\Rightarrow\\ \\sum_v (d-\\deg v) = \\sum_v d - \\sum_v \\deg v = n\\cdot d - 2|E|$.",

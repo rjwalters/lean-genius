@@ -3,7 +3,7 @@
     "id": "aoc05inc-ann-00",
     "proofId": "area-of-circle-oq-05-incomplete-01",
     "range": { "startLine": 27, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: one Gaussian import and the normalization constant √(2π)",
     "content": "The whole family is built from a single mathematical import, `Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral`, which supplies `integral_gaussian : ∫ e^{-b·x²} = √(π/b)`. Every theorem below is a specialization of this one lemma at a different rate `b`: `b = 1` gives √π, `b = 1/2` gives √(2π), `b = 1/(2σ²)` gives σ√(2π). Opening `Real` and `MeasureTheory` lets `exp`, `sqrt`, `π`, and the Bochner integral `∫` appear unqualified. The helper `sqrt_two_pi_pos : 0 < √(2π)` is proved by `positivity`; it is the nonvanishing side condition that makes the reciprocals `1/√(2π)` and `1/(σ√(2π))` legitimate when the normalization theorems cancel them against the integral value.",
     "mathContext": "$\\int_{\\mathbb R} e^{-b x^2}\\,dx = \\sqrt{\\pi/b}$; the constant $\\sqrt{2\\pi} > 0$ normalizes the density.",

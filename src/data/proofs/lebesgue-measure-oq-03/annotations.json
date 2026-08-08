@@ -127,7 +127,7 @@
       "startLine": 113,
       "endLine": 137
     },
-    "type": "context",
+    "type": "concept",
     "title": "File Summary and the Prose-Only '3 Axioms' Claim",
     "content": "Closes with a second, near-duplicate paraphrase of the concentration-of-measure remark, then a 'Summary' comment listing four key results (impossibility of translation-invariant measure, Gaussian measures as replacement, Wiener measure for Brownian motion, vanishing unit-ball volume) and a status line. The status line says '3 axioms (impossibility, Gaussian existence, Wiener existence)', but this file declares no `axiom`s at all — those three results are documented only in prose comments (Part I-III above), never formalized as Lean `axiom` or `theorem` declarations. The gallery's meta.json correctly reports `axiomCount: 0` and `theoremCount: 2` (only `orthonormal_dist` and `orthonormal_balls_disjoint` are proved); the in-source comment's axiom count is aspirational, describing a future formalization pass rather than this file's actual content.",
     "mathContext": "Only 2 declarations are proved in this file: `orthonormal_dist` and `orthonormal_balls_disjoint`. The impossibility theorem, Gaussian measure existence, and Wiener measure existence remain informal prose — 0 of the '3 axioms' mentioned in the closing comment are actually declared as `axiom` in the source.",

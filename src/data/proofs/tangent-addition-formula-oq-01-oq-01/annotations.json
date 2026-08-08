@@ -27,7 +27,7 @@
     "id": "ann-three-arg-collapse",
     "proofId": "tangent-addition-formula-oq-01-oq-01",
     "range": { "startLine": 64, "endLine": 72 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Common-Denominator Collapse",
     "content": "The finish writes both the claimed numerator e₁ − e₃ and denominator 1 − e₂ over the single common denominator cos x·cos y·cos z (hnum, hden — each proved by tan_eq_sin_div_cos then field_simp <;> ring). The numerator-over-c is exactly hs and the denominator-over-c exactly hc, so tan(x+y+z) = sin/cos = (N/c)/(D/c), which collapses by div_div_div_cancel_right₀ (using cos x·cos y·cos z ≠ 0) to N/D — the claimed formula. This common-denominator strategy sidesteps the brittle nested-fraction route of substituting tan(x+y) into a second tan_add.",
     "mathContext": "$(N/c)/(D/c) = N/D$ via $\\texttt{div\\_div\\_div\\_cancel\\_right}_0$, with $c = \\cos x\\cos y\\cos z \\ne 0$.",

@@ -6,7 +6,7 @@
       "startLine": 58,
       "endLine": 74
     },
-    "type": "context",
+    "type": "concept",
     "title": "Repackaging σ*'s summand as an arithmetic function",
     "content": "The setup makes one decisive modelling choice. Jacobi's modified divisor sum σ*(n) = Σ_{d∣n, 4∤d} d is defined directly (sigmaStar), but the summand [4∤d]·d is ALSO packaged as a Mathlib ArithmeticFunction weightedId. An ArithmeticFunction ℕ is a function ℕ→ℕ required to vanish at 0; here weightedId 0 = 0 holds automatically because 4∣0, so the packaging is legitimate. This is the pivot of the whole proof: once the summand is an ArithmeticFunction, σ* becomes a Dirichlet convolution ζ ⋆ g and multiplicativity follows from Mathlib's convolution machinery rather than from any hand computation.",
     "mathContext": "$\\sigma^*(n)=\\sum_{d\\mid n}g(d)$ with $g(d)=[4\\nmid d]\\cdot d$; $g(0)=0$ since $4\\mid 0$, so $g$ is a valid ArithmeticFunction.",
@@ -131,7 +131,7 @@
       "startLine": 210,
       "endLine": 245
     },
-    "type": "context",
+    "type": "concept",
     "title": "Jacobi's r₄ prediction and multiplicativity in action",
     "content": "jacobiR4 n is DEFINED as 8·σ*(n) — the arithmetic side of Jacobi's four-square formula, not the geometric representation count (that would need the q-expansion of jacobiTheta⁴ and remains open). jacobiR4_two_pow_mul_odd propagates the closed form: for odd m and k≥1, r₄(2ᵏ·m)=24·σ(m), since 8·3=24. The numeric instances are genuine consequences of the general theorems, not separate calculations: σ*(12)=12 (k=2,m=3), r₄(12)=96, and most tellingly σ*(45)=σ*(9)·σ*(5)=13·6=78 displays multiplicativity directly on 45=9·5. All are proved with kernel `decide`, never native_decide, so the entry stays fully 0-axiom.",
     "mathContext": "$r_4(2^k m)=8\\cdot\\sigma^*(2^k m)=24\\,\\sigma(m)$ for odd $m$, $k\\ge1$; e.g. $\\sigma^*(45)=\\sigma^*(9)\\sigma^*(5)=13\\cdot6=78$.",

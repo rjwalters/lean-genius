@@ -15,7 +15,7 @@
     "id": "newton-ps-oq01-setup",
     "proofId": "newton-power-sum-identities-oq-01",
     "range": { "startLine": 32, "endLine": 37 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ambient setting and the reusable unrolling recipe",
     "content": "`variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` fixes the generality once for all three lemmas: an *arbitrary* commutative ring `R` and any *finite* index type `σ`. Nothing stronger (no integral domain, no characteristic-zero, no ordering) is assumed, so the identities are universal in `MvPolynomial σ R`. The two non-trivial proofs (degrees 2 and 3) then share one four-step recipe worth naming: (1) apply `psum_eq_mul_esymm_sub_sum` at the target `k`; (2) rewrite the recurrence's inner index set {a ∈ antidiagonal k | 0 < a.1 < k} to an explicit finite set with an `omega`-proved `ext` lemma; (3) collapse the now-finite sum with `Finset.sum_singleton`/`Finset.sum_pair`; (4) substitute the already-proved lower-degree identities and close with `push_cast; ring`. Only steps (2)–(3) change with `k`; extending to degree 4, 5, … is purely mechanical.",
     "mathContext": "The recurrence's inner sum $\\sum_{0<i<k}(-1)^i e_i\\,p_{k-i}$ is finite for each fixed $k$; the only per-degree work is enumerating $\\{(i,k-i) : 0<i<k\\}$, a linear-arithmetic fact `omega` settles. Working in $\\mathrm{MvPolynomial}\\,\\sigma\\,R$ over a bare `CommRing` means `ring` — not `field_simp` or numeric evaluation — discharges the final algebra.",

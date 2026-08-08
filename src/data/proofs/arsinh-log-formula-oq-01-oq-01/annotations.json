@@ -74,7 +74,7 @@
       "startLine": 92,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Normalisation (C = 0) and the Symmetric-Interval Doubling",
     "content": "Two standard antiderivative manoeuvres. Anchoring the lower limit at 0, where arsinh 0 = 0, pins the integration constant: integral_zero_to gives ∫_0^b 1/√(1+t²) dt = arsinh b (the genuine 'arsinh x + C with C = 0'), and integral_zero_to_log its logarithmic form log(b+√(1+b²)). integral_symmetric then combines two symmetries — the integrand 1/√(1+t²) is EVEN and arsinh is ODD (arsinh_neg) — to collapse ∫_{-a}^a 1/√(1+t²) dt = arsinh a − arsinh(−a) = 2·arsinh a, the doubling identity for the symmetric interval.",
     "mathContext": "$\\int_0^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b$; and since $\\operatorname{arsinh}(-a) = -\\operatorname{arsinh} a$, $\\int_{-a}^a = \\operatorname{arsinh} a - \\operatorname{arsinh}(-a) = 2\\operatorname{arsinh} a$.",

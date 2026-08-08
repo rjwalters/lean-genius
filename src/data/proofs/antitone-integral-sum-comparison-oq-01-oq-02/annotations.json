@@ -3,7 +3,7 @@
     "id": "ann-isc-oq0102-setup",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 44 },
-    "type": "context",
+    "type": "concept",
     "title": "From a Bounded Defect to Its Limit γ: the Open Question",
     "content": "The module docstring frames the entry as the answer to the parent's open question. The parent file (AntitoneIntegralSumComparison, \"The Integral Test\") ran the antitone integral comparison on f(x) = 1/x to pin the harmonic defect aₙ = Hₙ − log(n+1) between two integrals, proving 0 ≤ aₙ ≤ 1 — boundedness, but not the limit. Since the defect is also monotone increasing, a bounded-monotone argument forces convergence, and the limit is the Euler–Mascheroni constant γ ≈ 0.5772. This file bridges the parent's setup to Mathlib's Real.eulerMascheroniConstant, then derives the textbook asymptotic Hₙ ∼ log n + γ, a two-sided bracket trapping γ, the bracket width → 0, the numeric bounds 1/2 < γ < 2/3, and a concrete rational enclosure at n = 6. `import Mathlib` supplies the Euler–Mascheroni development; the namespace opens the Filter, Topology, and Real scopes.",
     "mathContext": "a_n = H_n - \\log(n+1) \\uparrow \\gamma,\\qquad H_n = \\log n + \\gamma + o(1),\\qquad \\gamma \\approx 0.5772",

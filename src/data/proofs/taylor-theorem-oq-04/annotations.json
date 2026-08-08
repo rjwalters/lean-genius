@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 31
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Uniform-Derivative-Bound Route (One of Three Sibling Proofs)",
     "content": "This entry is one of three sibling children giving DIFFERENT proofs that the Taylor polynomials of sin and cos converge to the functions everywhere: oq-02 uses abstract formal power series, oq-03 uses NormedSpace.exp summability, and THIS file uses the uniform derivative bound. The argument is the classic one for entire functions: because every iterated derivative of sin/cos is bounded by 1 uniformly in the order and the point, the Lagrange remainder satisfies |f x - Tₙ(x)| ≤ |x|^{n+1}/n! → 0. Nothing here is reproved from scratch — the file assembles named Mathlib lemmas (taylor_mean_remainder_bound with C=1, the trig derivative bounds abs_iteratedDeriv_sin/cos_le_one, and Real.summable_pow_div_factorial for the factorial decay), so all results are fully verified with 0 axioms.",
     "mathContext": "$|f^{(n)}|\\le 1 \\Rightarrow |f(x)-T_n(x)|\\le \\dfrac{|x|^{n+1}}{n!}\\to 0$ — bounded derivatives force an everywhere-convergent Taylor series.",

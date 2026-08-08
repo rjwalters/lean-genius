@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Roadmap: the separability half of ℚ̄",
     "content": "The module docstring sets this file against its parent (AlgebraicNumbersCountableOQ01OQ01), which realized the algebraic numbers as algebraicNumbersField : IntermediateField ℚ ℂ and proved it algebraically closed. This file supplies the complementary separability picture and answers the parent's open question, in four steps: (1) ℚ is perfect, so its algebraic extensions are separable and minimal polynomials are squarefree; (2) ℚ̄ is perfect for two independent reasons (algebraic closedness, and being algebraic over the perfect field ℚ); (3) consequently ℚ̄ has no inseparable algebraic extension; (4) as an arithmetic payoff, a degree-n number field has exactly n embeddings. The imports pull in FieldTheory.Perfect and FieldTheory.SeparableDegree; everything is developed in the namespace AlgebraicNumbersCountableOQ01OQ01OQ01, reusing the parent's instances through open AlgebraicNumbersCountableOQ01OQ01.",
     "mathContext": "Parent: $\\overline{\\mathbb{Q}}$ is algebraically closed. This file: $\\overline{\\mathbb{Q}}$ is perfect $\\Rightarrow$ every algebraic extension of $\\mathbb{Q}$ (and of $\\overline{\\mathbb{Q}}$) is separable.",
@@ -127,7 +127,7 @@
       "startLine": 135,
       "endLine": 144
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked examples: squarefree minimal polynomials and a separable extension",
     "content": "The Examples section instantiates the abstract results on the concrete objects of interest. The first example takes any complex z algebraic over ℚ and, via minpoly_squarefree_rat applied to hz.isIntegral, concludes Squarefree (minpoly ℚ z) — every algebraic number's minimal polynomial has distinct roots. The second records Algebra.IsSeparable ℚ algebraicNumbersField by reusing isSeparable_rat_algebraicNumbers, confirming ℚ̄/ℚ is a separable (indeed perfect) extension. Both are one-liners that discharge directly from the named theorems, serving as executable sanity checks that the general statements specialise as intended.",
     "mathContext": "For $z$ algebraic over $\\mathbb{Q}$: $\\operatorname{minpoly}_{\\mathbb{Q}}(z)$ is squarefree; and $\\overline{\\mathbb{Q}}/\\mathbb{Q}$ is separable.",

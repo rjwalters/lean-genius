@@ -81,7 +81,7 @@
       "startLine": 124,
       "endLine": 170
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "liftHom — the missing DihedralGroup.lift, proved without `decide`",
     "content": "`liftHom : DihedralGroup n →* G` sends $r\\,i \\mapsto \\sigma^{i.\\mathrm{val}}$ and $sr\\,i \\mapsto \\tau\\,\\sigma^{i.\\mathrm{val}}$. `map_one'` is immediate; `map_mul'` is a **four-case match** on the constructors of $D_n$ — $r\\cdot r$, $r\\cdot sr$, $sr\\cdot r$, $sr\\cdot sr$ — each discharged by the corresponding Mathlib multiplication simp lemma (`r_mul_r`, `r_mul_sr`, `sr_mul_r`, `sr_mul_sr`) followed by a §1–§3 law.\n\nThe decisive design point: **none of this is a finite `decide`.** The homomorphism law is proved from the abstract relations, so `liftHom` works for an *arbitrary* carrier group $G$ — not merely a finite permutation group $S_k$ where a `decide` would be available. That is precisely what makes it the reusable constructor Mathlib lacks. The two `@[simp]` lemmas `liftHom_r_one : \\mathrm{liftHom}(r\\,1) = \\sigma$ and `liftHom_sr_zero : \\mathrm{liftHom}(sr\\,0) = \\tau$ pin the generator images for the recognition step.",
     "significance": "key",
@@ -106,7 +106,7 @@
       "startLine": 172,
       "endLine": 205
     },
-    "type": "key-result",
+    "type": "theorem",
     "title": "The recognition theorem: generation + order match ⟹ D_n",
     "content": "`nonempty_mulEquiv_dihedralGroup` is the payoff. For a **finite** $G$ carrying generators $\\sigma, \\tau$ with the dihedral relations, if additionally $\\langle \\sigma, \\tau\\rangle = G$ (`Subgroup.closure {σ, τ} = ⊤`) and $|G| = 2n$ with $n \\ge 2$, then $G \\cong D_n$.\n\nThe proof is short because it buys injectivity for free:\n\n1. **Surjectivity** of `liftHom` from generation: its range is a subgroup containing both $\\sigma = \\mathrm{liftHom}(r\\,1)$ and $\\tau = \\mathrm{liftHom}(sr\\,0)$, hence contains $\\langle\\sigma,\\tau\\rangle = G$, so it is $\\top$.\n2. **Bijectivity** from the order match: $\\mathrm{Fintype.card}(D_n) = 2n = \\mathrm{Nat.card}\\ G$, so `Fintype.bijective_iff_surjective_and_card` promotes the surjection to a bijection — **no kernel computation, no hand-checked injectivity**.\n3. `MulEquiv.ofBijective … |>.symm` delivers $G \\simeq^* D_n$.\n\nThis is the $n$-uniform tool: any Galois group $\\mathrm{Gal}(X^n - a / \\mathbb{Q})$ exhibited with a rotation/reflection generating pair of the right order is identified as $D_n$ with no further group theory — replacing the parent's $n=4$-specific Sylow argument.",
     "significance": "key",

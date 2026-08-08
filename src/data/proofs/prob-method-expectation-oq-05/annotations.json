@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "From Existence to Rigidity in the First-Moment Method",
     "content": "The header states what this entry adds to the probabilistic-method family. The parent `prob-method-expectation` and siblings prove the *existence* half of the first-moment method: over a nonempty finite set some element meets or beats the average (`exists_ge_average`, and dually `exists_le_average`). That element could sit strictly above the mean while others sit below. This file supplies the *rigidity* half the family left open: the averaging inequality saturates — every element attains the mean — exactly when `f` is constant. Note the generality: everything is stated over an arbitrary linearly ordered field `𝕜` (`[Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜]`), not just ℝ, so nothing analytic or measure-theoretic is used — the results are purely order-algebraic. No `sorry`, no `axiom`, no `native_decide`.",
     "mathContext": "First-moment method: if $\\mathbb{E}[X] = \\mu$ then $\\exists\\,\\omega,\\ X(\\omega)\\ge\\mu$ and $\\exists\\,\\omega,\\ X(\\omega)\\le\\mu$. Rigidity/equality case: $X(\\omega)=\\mu$ for *all* $\\omega$ iff $X$ is constant — equivalently the variance $\\mathbb{E}[(X-\\mu)^2]$ is zero.",
@@ -35,7 +35,7 @@
       "startLine": 68,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "One Lemma Powers Every Rigidity Result",
     "content": "Both `eq_mean_of_forall_le` and `eq_mean_of_forall_ge` — and through them the packaged iffs and the strict-compensation statements — reduce to a single Mathlib lemma: `Finset.sum_eq_zero_iff_of_nonneg`, which says a sum of nonnegative terms is zero iff *every* term is zero. The pattern is uniform: from one-sided domination each deviation `mean − f a` (or `f a − mean`) is nonnegative; the conservation law `sum_sub_mean_eq_zero` makes their sum zero; hence each deviation is individually zero, i.e. `f a = mean`. The ≤ side flips the sign of the conservation identity with `sum_neg_distrib`/`neg_sub` first. This 'nonnegative-sum-is-zero ⟹ termwise-zero' move is the workhorse of every equality-case argument here, and reappears in `variance_pos_of_exists_ne` applied to squared deviations.",
     "mathContext": "If $t_a \\ge 0$ for all $a\\in s$ and $\\sum_{a\\in s} t_a = 0$, then $t_a = 0$ for every $a$. Applied with $t_a = \\mathrm{mean} - f(a)\\ge 0$ (or $f(a)-\\mathrm{mean}$, or $(f(a)-\\mathrm{mean})^2$).",

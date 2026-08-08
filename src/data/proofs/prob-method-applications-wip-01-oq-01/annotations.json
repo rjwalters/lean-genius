@@ -3,7 +3,7 @@
     "id": "wipoq01-framing",
     "proofId": "prob-method-applications-wip-01-oq-01",
     "range": { "startLine": 1, "endLine": 58 },
-    "type": "context",
+    "type": "concept",
     "title": "The Missing Bridge: From Abstract Engine to Erdős's Bound",
     "content": "The module docstring frames the whole entry. The companion file ProbMethodApplicationsWIP.lean proves the abstract first-moment / union-bound avoidance engine ProbMethod.Core.ramsey_avoidance over an arbitrary finite 'edge' set E: if a family of bad blocks is few enough relative to 2^{|E|}, some subset S avoids every block (no block is entirely inside S or entirely outside it). That engine's docstring asserts — but never proves — that instantiating E as the edges of K_n recovers Erdős's 1947 lower bound R(k,k) > n. This file is the missing instantiation: it takes E to be the C(n,2) edges of K_n, the blocks to be the induced clique-edge sets EdgesIn n K, reduces the abstract counting hypothesis to the classical criterion 2·C(n,k) < 2^{C(k,2)}, and translates the resulting avoiding set back into an edge colouring — reproducing exactly RamseyFirstMoment.first_moment_ramsey, now as a genuine corollary of the abstract engine rather than a bespoke count.",
     "mathContext": "$\\text{engine: } |\\text{cliques}|\\cdot 2^{|E|-m+1} < 2^{|E|} \\Rightarrow \\exists S \\text{ avoiding all blocks};\\quad \\text{here } E = \\text{edges}(K_n),\\ m = \\binom{k}{2},\\ |E| = \\binom{n}{2}.$",

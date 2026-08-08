@@ -30,7 +30,7 @@
       "startLine": 45,
       "endLine": 60
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Complex Geometric Sum of Exponentials",
     "content": "`geom_exp_partial_sum` proves $\\sum_{k=0}^{n} e^{ik\\theta} = \\frac{e^{i(n+1)\\theta}-1}{e^{i\\theta}-1}$ for $e^{i\\theta}\\ne 1$. The proof is three moves: (1) rewrite every summand $e^{ik\\theta}=(e^{i\\theta})^k$ using `Complex.exp_nat_mul` (the exponential power law), under the sum binder via `simp_rw`; (2) apply Mathlib's `geom_sum_eq`, whose hypothesis $e^{i\\theta}\\ne 1$ is exactly the given `h`; (3) re-express the top power $(e^{i\\theta})^{n+1}=e^{i(n+1)\\theta}$ by running the exponential power law backwards and normalising the cast $\\uparrow(n+1)=n+1$. No analysis beyond the exponential functional equation is needed.",
     "mathContext": "$\\sum_{k=0}^{n}(e^{i\\theta})^k = \\frac{(e^{i\\theta})^{n+1}-1}{e^{i\\theta}-1}$, with $(e^{i\\theta})^{n+1}=e^{i(n+1)\\theta}$.",
@@ -52,7 +52,7 @@
       "startLine": 62,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Product-to-Sum Telescoping Step",
     "content": "`two_sin_half_mul_cos` and `two_sin_half_mul_sin` establish the integrating-factor identities $2\\sin(\\theta/2)\\cos(m\\theta)=\\sin((m+\\tfrac12)\\theta)-\\sin((m-\\tfrac12)\\theta)$ and $2\\sin(\\theta/2)\\sin(m\\theta)=\\cos((m-\\tfrac12)\\theta)-\\cos((m+\\tfrac12)\\theta)$. Each is proved by rewriting the half-integer-shifted arguments $(m\\pm\\tfrac12)\\theta = m\\theta\\pm\\theta/2$, expanding with the angle-addition formulas `Real.sin_add`/`Real.sin_sub` (resp. `Real.cos_add`/`Real.cos_sub`), and closing with `ring`. Multiplying a summand by the factor $2\\sin(\\theta/2)$ turns it into a difference of consecutive terms — the algebraic heart of the telescope.",
     "mathContext": "$2\\sin(\\theta/2)\\cos(m\\theta)=\\sin((m+\\tfrac12)\\theta)-\\sin((m-\\tfrac12)\\theta)$; sine analogue with cosines. Both are the addition formulas $\\sin(a\\pm b)$, $\\cos(a\\pm b)$ specialised at $b=\\theta/2$.",
@@ -74,7 +74,7 @@
       "startLine": 82,
       "endLine": 115
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Collapsing the Sum by Telescoping Induction",
     "content": "`lagrange_cos_key` and `lagrange_sin_key` prove the denominator-cleared identities $2\\sin(\\theta/2)\\sum_{k=0}^{n}\\cos(k\\theta)=\\sin((n+\\tfrac12)\\theta)+\\sin(\\theta/2)$ and $2\\sin(\\theta/2)\\sum_{k=0}^{n}\\sin(k\\theta)=\\cos(\\theta/2)-\\cos((n+\\tfrac12)\\theta)$. The proof is induction on $n$: `Finset.sum_range_succ` peels the top term, the inductive hypothesis handles the head, and the peeled term is rewritten by the matching product-to-sum step. Casting $\\uparrow(n+1)=n+1$ and cancelling the two half-integer-shifted sines (which coincide, since $(n+1-\\tfrac12)\\theta=(n+\\tfrac12)\\theta$) leaves exactly the endpoint terms — the telescope collapses, closed by `ring`.",
     "mathContext": "Endpoints: $\\sum_{k=0}^{n} 2\\sin(\\theta/2)\\cos(k\\theta) = \\sin((n+\\tfrac12)\\theta)-\\sin(-\\theta/2) = \\sin((n+\\tfrac12)\\theta)+\\sin(\\theta/2)$.",
@@ -96,7 +96,7 @@
       "startLine": 117,
       "endLine": 142
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Lagrange Identities and the Dirichlet Kernel",
     "content": "`lagrange_cos_sum` and `lagrange_sin_sum` divide the telescoped identities by $2\\sin(\\theta/2)\\ne 0$ to reach the closed forms $\\sum_{k=0}^{n}\\cos(k\\theta)=\\tfrac12+\\frac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$ and $\\sum_{k=0}^{n}\\sin(k\\theta)=\\frac{\\cos(\\theta/2)-\\cos((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$. The cosine form is exactly the **Dirichlet kernel** $D_n(\\theta)$ governing Fourier-series convergence; the sine form is its conjugate. The hypothesis $\\sin(\\theta/2)\\ne 0$ ($\\theta\\notin 2\\pi\\mathbb{Z}$) is the removable singularity of the kernel: at $\\theta=0$ every term is $1$ and the sum is $n+1=D_n(0)$, while the closed form's denominator vanishes.",
     "mathContext": "$D_n(\\theta)=\\tfrac12+\\frac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$, the Dirichlet kernel; division uses `eq_div_iff` and `linear_combination` against the telescoped key.",

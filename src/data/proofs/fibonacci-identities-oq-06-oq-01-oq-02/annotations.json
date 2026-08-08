@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Golden-Ratio Motivation: the x = −1 Companion Transform",
     "content": "The binomial transform sends a sequence (aₖ) to (∑ C(n,k) aₖ); the alternating variant uses signed weights (−1)ᵏ C(n,k) and is the n-th finite difference up to sign. For Fibonacci, the positive transform ∑ C(n,k) Fₖ = F₂ₙ is the discrete shadow of 1 + φ = φ²: applying ∑ C(n,k)(·)ᵏ to the golden ratio φ sends φ ↦ (1+φ)ⁿ = φ²ⁿ. This file supplies the x = −1 companion: applying ∑ C(n,k)(−1)ᵏ(·)ᵏ sends φ ↦ (1−φ)ⁿ = ψⁿ, where ψ = (1−√5)/2 is the conjugate root and φψ = −1. Since ψ = −1/φ, the index falls by n and picks up a sign, and the √5-normalized Binet combination collapses to (−1)ⁿ F₍ₘ₋ₙ₎. The parent formalized the positive transform; this entry supplies the signed dual entirely within ℤ, parametrizing the shift as d = m − n ≥ 0 to avoid negative-index Fibonacci.",
     "mathContext": "Positive: $\\sum_k \\binom{n}{k} F_{m+k} = F_{2n+m}$ (shadow of $1+\\varphi=\\varphi^2$). Alternating: $\\sum_k (-1)^k \\binom{n}{k} F_{m+k} = (-1)^n F_{m-n}$ (shadow of $1-\\varphi=\\psi$, $\\varphi\\psi=-1$).",

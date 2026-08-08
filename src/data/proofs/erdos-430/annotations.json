@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 15
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #430: Composite Numbers in Greedy Large-Factor Sequences",
     "content": "The file header states Erdős Problem #430 in full: starting from $a_1 = n-1$, repeatedly take the greatest integer below the previous term whose every prime factor exceeds the current gap to $n$. Selfridge's computations suggest the resulting sequence always eventually contains a composite for $n$ large enough, but no proof is known. The header also records Sarosh Adenwalla's observation that #430 is equivalent to the first part of Erdős Problem #385 — the file later proves this equivalence (`erdos_385_equivalence`) and axiomatizes only the genuinely open pieces (`erdos_430_conjecture`, `small_n_all_prime`).",
     "mathContext": "Greedy sequence: $a_1 = n-1$, $a_{k+1} = \\max\\{m \\in [1,a_k) : \\forall p \\mid m,\\, p \\text{ prime} \\Rightarrow p > n-m\\}$, terminating at $0$. Open question: does $\\exists N_0,\\, \\forall n \\geq N_0$, some nonzero $a_k$ composite?",

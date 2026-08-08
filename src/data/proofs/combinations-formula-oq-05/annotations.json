@@ -83,7 +83,7 @@
     "id": "worked-verification",
     "proofId": "combinations-formula-oq-05",
     "range": { "startLine": 109, "endLine": 114 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Verification (Row 4)",
     "content": "A closing example evaluates the even part of row 4 by decide: ∑_{k even, k ≤ 4} C(4,k) = C(4,0)+C(4,2)+C(4,4) = 1+6+1 = 8. This is exactly 2^{4-1} = 2^3, a concrete instance of sum_even_choose. Because every quantity is a literal natural number, decide discharges the goal by kernel computation without invoking the general theorem — an independent cross-check of the formalized identity.",
     "mathContext": "For $n=4$: the even-indexed terms are $\\binom{4}{0}+\\binom{4}{2}+\\binom{4}{4} = 1+6+1 = 8 = 2^3 = 2^{n-1}$, and correspondingly the odd part $\\binom{4}{1}+\\binom{4}{3} = 4+4 = 8$. Both halves equal $2^{n-1}$, matching the general result.",

@@ -30,7 +30,7 @@
       "startLine": 56,
       "endLine": 62
     },
-    "type": "context",
+    "type": "concept",
     "title": "The internally-graded ring and module setup",
     "content": "𝒜 : ℕ → σA is an internally graded ring (GradedRing 𝒜) and 𝓜 : ℕ → σM an internal graded module over it (SetLike.GradedSMul 𝒜 𝓜 with DirectSum.Decomposition 𝓜). The graded pieces 𝓜 n are additive submonoids of M (AddSubmonoidClass), NOT R-submodules — the faithful model, in which degree shifting Rᵢ • Mₑ ⊆ M_{i+e} is nontrivial. In this encoding the hypothesis R₊M = M is (HomogeneousIdeal.irrelevant 𝒜).toIdeal • ⊤ = ⊤ in Submodule R M, and the conclusion M = 0 is Subsingleton M (equivalently ⊤ = ⊥).",
     "mathContext": "$\\mathcal A:\\mathbb N\\to\\sigma A$ a GradedRing, $\\mathcal M:\\mathbb N\\to\\sigma M$ with $\\mathcal A_i\\cdot\\mathcal M_e\\subseteq\\mathcal M_{i+e}$; pieces are additive submonoids of $M$.",

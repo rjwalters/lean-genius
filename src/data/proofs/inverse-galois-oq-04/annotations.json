@@ -81,7 +81,7 @@
       "startLine": 55,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The brick: inertiaDeg p P ∣ inertiaDegIn p T",
     "content": "inertiaDeg_dvd_inertiaDegIn is the core theorem. Its proof is a two-line assembly: `inertiaDeg_algebra_tower` gives the multiplicativity inertiaDeg p Q = inertiaDeg p P · inertiaDeg P Q (no Galois hypothesis on S), and `inertiaDegIn_eq_inertiaDeg` uses the Galois action to identify inertiaDegIn p T with inertiaDeg p Q. Rewriting with both and applying `dvd_mul_right` exhibits inertiaDeg p P as a factor. Transitivity of lying-over (Q lies over p) comes from `LiesOver.trans`.",
     "mathContext": "$\\mathrm{inertiaDegIn}\\,p\\,T = f(Q\\mid p) = f(P\\mid p)\\,f(Q\\mid P)$, so $f(P\\mid p) \\mid \\mathrm{inertiaDegIn}\\,p\\,T$.",

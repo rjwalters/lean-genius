@@ -99,7 +99,7 @@
     "id": "ann-pt040401-example345",
     "proofId": "pythagorean-theorem-oq-04-oq-01",
     "range": { "startLine": 156, "endLine": 162 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked example: the (3, 4, 5) triple",
     "content": "The canonical generator of (3, 4, 5) is 2 + i: it is canonical because its real part 2 > 0, and (2 + i)² = 4 + 4i − 1 = 3 + 4i. The Gaussian square roots of 3 + 4i are exactly the two-element set {2 + i, −2 − i}, confirming the general two-to-one count on the smallest primitive triple.",
     "mathContext": "$(2 + i)^2 = 3 + 4i$, and $\\{h : h^2 = 3 + 4i\\} = \\{2 + i,\\ -2 - i\\}$.",

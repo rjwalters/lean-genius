@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 65
     },
-    "type": "context",
+    "type": "concept",
     "title": "What This File Completes — and Why It Is 'Incomplete'",
     "content": "The header states the scope precisely. This file discharges the RATIONAL (square-root-free) core of Huzita–Hatori axiom HH-5 for the open problem angle-trisection-oq-05-oq-04 (strengthening the HH origami axioms). HH-5 asks: given distinct points P₁, P₂ and a line ℓ, produce a fold through P₂ that lands P₁ onto ℓ. Since the fold is a reflection fixing P₂, the landing point P₁' must satisfy |P₁'−P₂| = |P₁−P₂| — it lies on the circle centred at P₂ through P₁ — so HH-5 is solvable iff that circle meets ℓ, and locating P₁' is a genuine Real.sqrt circle–line intersection. The 'incomplete' in the slug is exactly this: the file deliberately ISOLATES that one irrational existence step, keeping the landing point P₁' as a hypothesis (a witness), and proves everything else purely rationally. What remains fully verified here is the fold construction and its characterisation; what is factored out (not sorried, but hypothesised) is the existence of the witness. This honest separation pins ALL of HH-5's algebraic degree to the single circle–line intersection.",
     "mathContext": "HH-5 solvable for $(P_1,P_2,\\ell)$ $\\iff$ $\\ell$ meets the circle $\\{X : |X-P_2| = |P_1-P_2|\\}$; the fold is then the perpendicular bisector of $P_1P_1'$, rational in the witness $P_1'$.",

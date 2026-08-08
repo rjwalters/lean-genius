@@ -6,7 +6,7 @@
       "startLine": 58,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Lifting Termwise Congruence to Indexed Sums",
     "content": "`mapIdx_sum_modEq` is the workhorse lemma: if two positional weight functions $f, g : \\mathbb{N} \\to \\mathbb{N} \\to \\mathbb{N}$ satisfy $f\\,i\\,d \\equiv g\\,i\\,d \\pmod m$ at every index $i$, then the sums $\\sum \\mathrm{mapIdx}\\,f\\,L$ and $\\sum \\mathrm{mapIdx}\\,g\\,L$ agree modulo $m$. It is proved by induction on $L$ **generalizing over $f$ and $g$**: the cons case uses `List.mapIdx_cons`, which rewrites $\\mathrm{mapIdx}\\,f\\,(a::t)$ to $f\\,0\\,a :: \\mathrm{mapIdx}\\,(\\lambda i \\Rightarrow f(i+1))\\,t$, so the induction hypothesis must apply to the *shifted* weight functions. Generalizing the functions makes this automatic.",
     "mathContext": "$(\\forall i\\,d,\\ f\\,i\\,d \\equiv g\\,i\\,d \\ [\\mathrm{MOD}\\ m]) \\implies (\\mathrm{mapIdx}\\,f\\,L).\\mathrm{sum} \\equiv (\\mathrm{mapIdx}\\,g\\,L).\\mathrm{sum} \\ [\\mathrm{MOD}\\ m]$",
@@ -95,7 +95,7 @@
       "startLine": 128,
       "endLine": 152
     },
-    "type": "example",
+    "type": "concept",
     "title": "Divisibility by 7 in Base 10",
     "content": "The motivating case: $7 \\nmid 9$, so **no** unweighted digit-sum rule exists. The weighted rule `seven_dvd_iff` supplies $7 \\mid n \\iff 7 \\mid W_{10,7}(n)$ with weights $10^i \\bmod 7$ cycling $[1,3,2,6,4,5]$. `weights_seven_period` proves period 6 from $10^6 \\equiv 1 \\pmod 7$ (Fermat's little theorem, $7$ prime). Worked witness: $1001 = 7 \\cdot 11 \\cdot 13$ has digits $[1,0,0,1]$, weighted sum $1\\cdot 1 + 1 \\cdot 6 = 7$, and $7 \\mid 7$. The non-example $1000$ gives weighted sum $6$, and $7 \\nmid 6$.",
     "mathContext": "Weights $10^i \\bmod 7 = [1,3,2,6,4,5]$, period 6; $1001$: $1\\cdot1 + 0 + 0 + 1\\cdot6 = 7$",
@@ -131,7 +131,7 @@
       "startLine": 193,
       "endLine": 221
     },
-    "type": "example",
+    "type": "concept",
     "title": "Divisibility by 13, and Consistency with Casting-Out-Nines",
     "content": "`thirteen_dvd_iff` gives a second non-$(b-1)$ modulus: weights $10^i \\bmod 13$ have period 6 ($10^6 \\equiv 1 \\pmod{13}$), witnessed by $13 \\mid 1001$. At the other extreme, `nine_weights_all_one` shows every base-10 weight for $m = 9$ is $1$ (since $9 \\mid (10-1)$), so `nine_dvd_iff` reduces the weighted rule to casting-out-nines — confirming continuity with the parent proof across the full range of moduli.",
     "mathContext": "$13$: period 6 ($10^6 \\equiv 1 \\bmod 13$); $9$: all weights $1$ (recovers digit-sum rule)",

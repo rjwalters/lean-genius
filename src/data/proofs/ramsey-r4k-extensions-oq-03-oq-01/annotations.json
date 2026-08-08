@@ -51,7 +51,7 @@
     "id": "r4k-oq0301-ann-triangle",
     "proofId": "ramsey-r4k-extensions-oq-03-oq-01",
     "range": { "startLine": 134, "endLine": 139 },
-    "type": "example",
+    "type": "concept",
     "title": "triangle_monochromatic_count: the k=3 sanity check",
     "content": "For triangles (k=3) the module specializes to 2 of 8: a triangle has C(3,2)=3 edges, hence 2^3=8 colourings, of which exactly 2 are monochromatic. This gives the classical per-triangle monochromaticity probability 2/8 = 1/4 = 2^(1−3), matching the value Spencer uses in the triangle case.",
     "mathContext": "The smallest nontrivial clique; the same value appears in the union-bound analysis of triangle-free Ramsey constructions.",

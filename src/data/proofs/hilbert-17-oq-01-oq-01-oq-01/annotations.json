@@ -31,7 +31,7 @@
       "startLine": 39,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "coeff_sq_two: Reading the Diagonal Term of a Square",
     "content": "coeff_sq_two is the reusable engine: for deg w ≤ n, the coefficient of w² at index 2n is exactly (w.coeff n)². The proof splits on deg w < n versus deg w = n. In the strict case both sides vanish — the coefficient of w² above its degree is 0 (via natDegree_pow_le) and w.coeff n = 0. In the equality case it is precisely the leading coefficient: (w²).coeff(2n) = leadingCoeff(w²) = (leadingCoeff w)² = (w.coeff n)², using natDegree_mul and leadingCoeff_mul over the polynomial domain ℝ[X]. Uniformly capturing both cases as (w.coeff n)² is what lets the later lemmas read leading data off a sum of squares without case analysis.",
     "mathContext": "$\\deg w \\le n \\implies (w^2)_{2n} = (w_n)^2$: for $\\deg w < n$ both sides are $0$; for $\\deg w = n$ it is $(\\operatorname{lc} w)^2$.",

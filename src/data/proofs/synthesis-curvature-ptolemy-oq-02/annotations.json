@@ -54,7 +54,7 @@
       "startLine": 120,
       "endLine": 171
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Hyperbolic Ptolemy Inequality by Common-Denominator Reduction",
     "content": "`hyperbolic_ptolemy_inequality`: for ANY four points in the open disk (no concyclicity), `s(z₁,z₃)·s(z₂,z₄) ≤ s(z₁,z₂)·s(z₃,z₄) + s(z₂,z₃)·s(z₁,z₄)`. The proof rewrites each of the three products over the common denominator `√((1-‖z₁‖²)(1-‖z₂‖²)(1-‖z₃‖²)(1-‖z₄‖²))` using `field_simp`, combines the two right-hand fractions with `← add_div`, and then divides the Euclidean `ptolemy_inequality` by the common positive denominator using `gcongr`. No hyperbolic-metric machinery is invoked.",
     "mathContext": "Writing $s(z_i,z_j) = |z_i-z_j|/(a_i a_j)$ with $a_k = \\sqrt{1-|z_k|^2}>0$, each product $s(z_i,z_j)s(z_k,z_l) = |z_i-z_j||z_k-z_l|/(a_1a_2a_3a_4)$ because $\\{i,j,k,l\\}=\\{1,2,3,4\\}$. So the inequality is the Euclidean one scaled by the single positive constant $1/(a_1a_2a_3a_4)$, valid unconditionally.",
@@ -77,7 +77,7 @@
       "startLine": 172,
       "endLine": 221
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Hyperbolic Ptolemy Equality under the Concyclicity Condition",
     "content": "`hyperbolic_ptolemy_equality`: when the opposite-side products are positively proportional in ℂ — `(z₂-z₃)(z₁-z₄) = t·(z₁-z₂)(z₃-z₄)` with `t ≥ 0`, the algebraic form of concyclicity in cyclic order — the hyperbolic inequality is an equality. Identical common-denominator reduction, closing with the Euclidean `ptolemy_equality_of_proportional` instead of the inequality.",
     "mathContext": "Ptolemy equality holds exactly on the concyclicity locus, captured algebraically by the cross-ratio being real and nonnegative, i.e. the opposite-side products being positively proportional. Since the conformal denominators cancel identically, the Euclidean equality lifts verbatim to the hyperbolic chords.",

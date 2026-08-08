@@ -30,7 +30,7 @@
       "startLine": 40,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Reusing the Parent's Ascent Infrastructure",
     "content": "The file imports the verified parent leaf Proofs.MarkovEquationOQ06 (and, transitively, Proofs.MarkovEquation) and opens both namespaces. Everything about the ascent itself is inherited: `seq n` is the parent's iterated Vieta-jump of (1,1,1), `seq_spec n` certifies that `seq n` is a sorted Markov triple 1 ≤ a ≤ b ≤ c, and `seq_zero` records (seq 0) = (1,1,1). This entry adds no new definitions (definitionCount = 0) — it consumes these three facts as black boxes and contributes only the quantitative growth estimate, so the whole geometric bound is a thin, axiom-free layer over already-checked infrastructure rather than a fresh construction of the Markov tree.",
     "mathContext": "$\\text{seq},\\ \\text{seq\\_spec},\\ \\text{seq\\_zero}\\ \\text{imported};\\qquad (\\mathrm{seq}\\,0) = (1,1,1),\\ \\ 1 \\le a \\le b \\le c.$",
@@ -53,7 +53,7 @@
       "startLine": 47,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Each Ascent Step At Least Doubles the Maximum",
     "content": "two_mul_top_le_succ is the engine. The parent's seq_spec hands over a sorted Markov triple 1 ≤ a ≤ b ≤ c for seq n, and the successor's top coordinate is 3bc − a — read off definitionally by rfl from the ascent map. The inequality 2c ≤ 3bc − a is exactly 3bc − a − 2c ≥ 0, and 3bc − a − 2c ≥ 3c(b − 1) ≥ 0 since c ≥ 0 and b − 1 ≥ 0. A single nlinarith fed the nonnegative product c·(b − 1) together with a ≤ c closes it — no case split on whether b = 1 or b > 1.",
     "mathContext": "$2\\,(\\mathrm{seq}\\,n)_3 \\le (\\mathrm{seq}\\,(n{+}1))_3 = 3bc - a, \\qquad 3bc - a - 2c \\ge 3c(b-1) \\ge 0.$",
@@ -75,7 +75,7 @@
       "startLine": 68,
       "endLine": 85
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Geometric Lower Bound 2ⁿ",
     "content": "seq_top_ge_two_pow packages the doubling step into an induction. The base case is (seq 0).top = 1 = 2⁰. The inductive step chains 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).top ≤ (seq (n+1)).top: the first inequality is the induction hypothesis multiplied by the nonnegative constant 2 (mul_le_mul_of_nonneg_left), and the second is the doubling lemma. So the maximal coordinate of the n-th ascent triple is at least 2ⁿ — an exponential lower bound obtained from one linear inequality on a sorted triple.",
     "mathContext": "$(2:\\mathbb{Z})^n \\le (\\mathrm{seq}\\ n)_3, \\qquad 2^{n+1} = 2\\cdot 2^n \\le 2\\,(\\mathrm{seq}\\,n)_3 \\le (\\mathrm{seq}\\,(n{+}1))_3.$",
@@ -97,7 +97,7 @@
       "startLine": 86,
       "endLine": 93
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Unboundedness of the Markov Numbers on the Ascent",
     "content": "seq_top_unbounded turns the geometric bound into unboundedness. Given any bound B, archimedeanity of ℤ (pow_unbounded_of_one_lt with base 2 > 1) produces n with B < 2ⁿ, and 2ⁿ ≤ (seq n).top by the geometric bound, so B < (seq n).top. The top coordinates of the ascent sequence therefore exceed every bound — a second, quantitative route to the parent's infinitude conclusion, now phrased about the Markov numbers themselves rather than the set of triples.",
     "mathContext": "$\\forall B\\ \\exists n,\\ B < (\\mathrm{seq}\\ n)_3, \\qquad B < 2^n \\le (\\mathrm{seq}\\ n)_3.$",

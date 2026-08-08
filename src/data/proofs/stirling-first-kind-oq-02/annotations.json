@@ -52,7 +52,7 @@
       "startLine": 60,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Pascal Recurrence from Coefficient Extraction",
     "content": "The identity is proved by induction on n (generalizing k). The base case uses ascPochhammer ℤ 0 = 1, whose coefficients (1 at k=0, else 0) match c(0,k). The inductive step rewrites ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) (ascPochhammer_succ_right) and takes the Xᵏ-coefficient: Polynomial.coeff_mul_X handles the X factor by shifting the index (yielding c(n,k−1)) and Polynomial.coeff_mul_C handles the constant n (yielding n·c(n,k)). Their sum is exactly the Pascal recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) (Nat.stirlingFirst_succ_succ), closed by push_cast; ring; the k=0 case gives 0 = c(n+1,0), since coeff (p·X) 0 = 0 and n·c(n,0) = 0. So polynomial coefficient extraction mechanically reproduces the combinatorial recurrence.",
     "mathContext": "Extracting the coefficient of $X^k$ from the factor $(X+n)$ reproduces the recurrence $c(n+1,k+1) = n\\,c(n,k+1) + c(n,k)$.",

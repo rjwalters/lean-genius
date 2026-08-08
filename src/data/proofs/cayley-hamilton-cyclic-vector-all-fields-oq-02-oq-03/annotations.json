@@ -31,7 +31,7 @@
       "startLine": 67,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Krylov Independence = Cyclicity",
     "content": "endKrylov_linearIndependent proves that the Krylov vectors {Tᵏ·v}_{k<finrank K V} are linearly independent. Via Fintype.linearIndependent_iff, a dependence ∑ cₖ (Tᵏ·v) = 0 is turned into the polynomial p = ∑ cₖ Xᵏ of degree < finrank with (aeval T p)·v = 0; cyclicity forces p = 0, and reading off coefficients of the monomial sum gives every cₖ = 0. The apply-a-sum-of-operators step uses LinearMap.sum_apply and LinearMap.smul_apply to turn (∑ cₖ Tᵏ)·v into ∑ cₖ (Tᵏ·v). No FiniteDimensional hypothesis is needed for this lemma, so it is stated with omit.",
     "mathContext": "$\\sum_k c_k T^k v = 0 \\Rightarrow p(T)v = 0,\\ \\deg p < n \\Rightarrow p = 0 \\Rightarrow \\forall k,\\ c_k = 0$.",
@@ -55,7 +55,7 @@
       "startLine": 98,
       "endLine": 108
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Polynomials in T Commute with Powers of T",
     "content": "aeval_end_commute_pow shows p(T)·Tʲ = Tʲ·p(T). Because aeval T is a K-algebra homomorphism, p(T)·T = T·p(T) follows from mul_comm p X (using aeval_X : aeval T X = T); Commute.pow_right then upgrades commutation with T to commutation with every power Tʲ. This is the endomorphism analogue of the parent's aeval_commute_pow and supplies one of the two commutations used to compare A and p(T) on basis vectors.",
     "mathContext": "$p(T)\\,T = T\\,p(T)$ since $\\mathrm{aeval}\\,T$ is an algebra hom, hence $p(T)\\,T^j = T^j\\,p(T)$.",
@@ -77,7 +77,7 @@
       "startLine": 114,
       "endLine": 168
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Commuting Endomorphisms are Polynomials in T",
     "content": "commuting_end_is_polynomial builds a basis b from the Krylov vectors (basisOfLinearIndependentOfCardEqFinrank), reads the coordinates of A·v to form p = ∑ (b.repr (A·v) k) Xᵏ, and proves p(T)·v = A·v via Basis.sum_repr. Then A and p(T) agree on every basis vector Tⁱ·v: A·(Tⁱ·v) = Tⁱ·(A·v) [A commutes with Tⁱ] = Tⁱ·(p(T)·v) = p(T)·(Tⁱ·v) [p(T) commutes with Tⁱ]. Because two linear maps agreeing on a basis are equal (Basis.ext), A = p(T). This is precisely where the endomorphism formulation beats the matrix parent — the parent recovers the matrix equality column-by-column (ext i j with Pi.single), whereas Basis.ext closes it in one step. The finrank = 0 case is a Subsingleton on Module.End K V.",
     "mathContext": "$A(T^i v) = T^i (A v) = T^i (p(T) v) = p(T)(T^i v)$ for all $i$, so $A = p(T)$ by $\\textsf{Basis.ext}$.",

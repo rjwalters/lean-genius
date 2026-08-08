@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Log-Convexity: The Organizing Idea",
     "content": "The file header frames the whole entry through one principle: the map t ↦ log‖f‖_(1/t) is convex. Writing the exponent constraint as an average, 1/r = θ·(1/p) + (1-θ)·(1/q), places 1/r on the line segment between 1/p and 1/q at parameter θ; the interpolation inequality is then exactly the statement that log‖f‖ at that interior reciprocal-exponent lies below the corresponding convex combination θ·log‖f‖_p + (1-θ)·log‖f‖_q of the endpoint values. Under this lens Cauchy–Schwarz and Hölder are not distinct theorems but named faces of a single convex curve — the θ = 1/2 midpoint and the diagonal p = q instance. Everything downstream (the conjugate pair, the Hölder call, the final power) is bookkeeping that turns this geometric picture into a Lean term.",
     "mathContext": "$\\log\\|f\\|_{1/(\\theta t_1 + (1-\\theta)t_2)} \\;\\leq\\; \\theta\\,\\log\\|f\\|_{1/t_1} + (1-\\theta)\\,\\log\\|f\\|_{1/t_2}$, i.e. $t \\mapsto \\log\\|f\\|_{1/t}$ is convex, with $t_1 = 1/p,\\ t_2 = 1/q,\\ 1/r = \\theta t_1 + (1-\\theta)t_2$.",
@@ -58,7 +58,7 @@
       "startLine": 54,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Building the Conjugate Pair from the Interpolation Identity",
     "content": "The heart of the argument is that the interpolation constraint 1/r = θ/p + (1-θ)/q is precisely the Hölder-conjugacy of the derived exponents a = p/(rθ) and b = q/(r(1-θ)). Multiplying the constraint by r gives r·θ/p + r·(1-θ)/q = 1, i.e. a⁻¹ + b⁻¹ = 1. This identity (hsum) is discharged by field_simp followed by nlinarith against the cleared form of the hypothesis. The Real.HolderConjugate value is then assembled as an anonymous structure ⟨inv_add_inv_eq_inv, left_pos, right_pos⟩, with positivity of a and b following from p,q,r,θ > 0 and 1-θ > 0.",
     "mathContext": "$a = \\dfrac{p}{r\\theta},\\quad b = \\dfrac{q}{r(1-\\theta)},\\qquad \\frac1a + \\frac1b = \\frac{r\\theta}{p} + \\frac{r(1-\\theta)}{q} = r\\left(\\frac{\\theta}{p}+\\frac{1-\\theta}{q}\\right) = r\\cdot\\frac1r = 1.$",
@@ -82,7 +82,7 @@
       "startLine": 66,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Zero-Safe Summand Split via rpow_add'",
     "content": "Before Hölder can be applied, each summand must factor as f_i^r = f_i^(rθ)·f_i^(r(1-θ)). Over the reals this factorization is delicate: the general law x^(y+z) = x^y·x^z can fail at x = 0 because of the 0^0 convention, forcing a case split on whether f_i vanishes. Working in ℝ≥0 with NNReal.rpow_add' sidesteps this entirely — its side condition is only that the total exponent y + z ≠ 0, which holds here since rθ + r(1-θ) = r > 0. So hprod establishes the split uniformly over all i, including the coordinates where f_i = 0, and the proof never branches on the support of f. This is a recurring payoff of formulating discrete-norm inequalities in ℝ≥0 rather than ℝ.",
     "mathContext": "$f_i^{r\\theta}\\cdot f_i^{r(1-\\theta)} = f_i^{\\,r\\theta + r(1-\\theta)} = f_i^{\\,r}$, valid for all $f_i \\geq 0$ because $r\\theta + r(1-\\theta) = r \\neq 0$ (the side condition of $\\texttt{rpow\\_add'}$).",
@@ -106,7 +106,7 @@
       "startLine": 74,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Collapsing the Powers and Raising to 1/r",
     "content": "After the Hölder application the bound reads ∑ f_i^r ≤ (∑ (f_i^(rθ))^a)^(1/a)·(∑ (f_i^(r(1-θ)))^b)^(1/b). The nested powers collapse by NNReal.rpow_mul: (f_i^(rθ))^a = f_i^(rθ·a) = f_i^p exactly because a = p/(rθ) makes rθ·a = p (proved by haθ via field_simp), and symmetrically (f_i^(r(1-θ)))^b = f_i^q. Rewriting with simp only [hprod, hFa, hGb] turns Hölder into ∑ f_i^r ≤ (∑ f_i^p)^(1/a)·(∑ f_i^q)^(1/b). The final step raises both sides to 1/r ≥ 0 (monotone, NNReal.rpow_le_rpow), distributes across the product with NNReal.mul_rpow, and folds the nested exponents with rpow_mul; the arithmetic (1/a)(1/r) = θ/p and (1/b)(1/r) = (1-θ)/q lands exactly on the target exponents.",
     "mathContext": "$(f_i^{r\\theta})^{a} = f_i^{r\\theta\\, a} = f_i^{p}$ since $r\\theta\\,a = r\\theta\\cdot\\tfrac{p}{r\\theta} = p$; and $\\tfrac1a\\cdot\\tfrac1r = \\tfrac{r\\theta}{p}\\cdot\\tfrac1r = \\tfrac{\\theta}{p}$, giving the endpoint exponent $\\theta/p$ (symmetrically $(1-\\theta)/q$).",

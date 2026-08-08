@@ -31,7 +31,7 @@
       "startLine": 45,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "|A₄| = 12",
     "content": "`card_A4` records that $A_4$ has twelve elements. It is a direct instantiation of Mathlib's `alternatingGroup.card_of_card_eq_four`, which states $\\mathrm{Nat.card}\\,(\\text{alternatingGroup } \\alpha) = 12$ whenever the base type has four elements. The only work is supplying the hypothesis $\\mathrm{Nat.card}\\,(\\text{Fin } 4) = 4$, obtained by rewriting through `Nat.card_eq_fintype_card` and `Fintype.card_fin`.\n\nGeneral fact: $|A_n| = n!/2$, so $|A_4| = 24/2 = 12$. This $12 = 2^2 \\cdot 3$ factorization is what makes $6$ a divisor and hence a candidate subgroup order — the whole point of the counterexample.",
     "mathContext": "$|A_n| = n!/2$, so $|A_4| = 24/2 = 12 = 2^2\\cdot 3$; the factor $3$ and factor $2^2$ make $6=2\\cdot3$ a divisor.",
@@ -53,7 +53,7 @@
       "startLine": 49,
       "endLine": 53
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Counting the Eight 3-Cycles",
     "content": "The combinatorial engine of the whole proof. A $3$-cycle in $S_4$ is an even permutation whose cycle type is the singleton multiset $\\{3\\}$. Mathlib's `AlternatingGroup.card_of_cycleType_singleton` evaluates the number of even permutations of cycle type $\\{n\\}$: for odd $n$ it is $(n-1)!\\cdot\\binom{|\\alpha|}{n}$, and for even $n$ it is $0$ (those permutations are odd).\n\nAt $n = 3$, $|\\alpha| = 4$: since $3$ is odd, the count is $(3-1)!\\cdot\\binom{4}{3} = 2!\\cdot 4 = 2\\cdot 4 = 8$. After rewriting `Fintype.card (Fin 4)` to $4$, the residual arithmetic $\\big(\\text{if Odd }3\\text{ then }2!\\cdot\\binom{4}{3}\\text{ else }0\\big) = 8$ is closed by `decide` — a kernel decision procedure over concrete numerals, so no `native_decide` (and hence no `Lean.ofReduceBool`) is involved.\n\nWhy eight matters: an order-$6$ subgroup has only six slots, but the next step forces all eight $3$-cycles into it. Eight $>$ six is the contradiction.",
     "mathContext": "# of even permutations of cycle type $\\{n\\}$ on $|\\alpha|$ letters $= (n-1)!\\binom{|\\alpha|}{n}$ for odd $n$, else $0$. At $n=3,|\\alpha|=4$: $2!\\cdot\\binom{4}{3}=8$.",
@@ -77,7 +77,7 @@
       "startLine": 55,
       "endLine": 64
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "An Order-6 Subgroup Would Have Index Two",
     "content": "The proof of `no_subgroup_card_six` is by contradiction: assume $H \\le A_4$ with $\\mathrm{Nat.card}\\,H = 6$. Mathlib's `Subgroup.card_mul_index` gives the fundamental identity $|H| \\cdot [G:H] = |G|$. Substituting $|H| = 6$ and $|A_4| = 12$ turns this into $6 \\cdot [G:H] = 12$, and `omega` concludes $[G:H] = 2$.\n\nIndex two is the pivotal structural fact. It is what makes $H$ *normal* and, more usefully here, what forces $H$ to contain a large, explicit set of elements — the squares — which the next steps exploit.",
     "mathContext": "$|H|\\cdot[G:H]=|G|$; with $|H|=6,|G|=12$ gives $[G:H]=2$. Index-two subgroups are normal.",
@@ -100,7 +100,7 @@
       "startLine": 65,
       "endLine": 86
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Every 3-Cycle Is a Square, So H Overflows",
     "content": "This block establishes $8 \\le \\mathrm{Nat.card}\\,H$, contradicting $|H| = 6$. It shows the eight $3$-cycles all lie in $H$ by proving each one is a square:\n\n1. **Squares live in an index-two subgroup.** `Subgroup.sq_mem_of_index_two` gives $g^2 \\in H$ for *every* $g$ — because in the two-element quotient $G/H$ the image of any $g^2$ is the identity.\n\n2. **A 3-cycle is a square of itself.** For a $3$-cycle $g$, `Equiv.Perm.lcm_cycleType` gives $\\mathrm{orderOf}\\,g = \\mathrm{lcm}\\,\\{3\\} = 3$, so $g^3 = 1$. Then $g = g^4 = (g^2)^2$ (the `calc` block: $(g^2)^2 = g^{2\\cdot 2} = g^3\\cdot g = 1\\cdot g = g$). Since $g^2 \\in H$ and $H$ is closed under powers, $g = (g^2)^2 \\in H$.\n\n3. **Counting collision.** Every $3$-cycle is therefore in $H$, so the eight-element set of $3$-cycles injects into $H$. Formally the $3$-cycle filter is a subset of $H$'s membership filter, and `Finset.card_le_card` combined with `card_threeCycles` yields $8 \\le |H|$.\n\nWith $|H| = 6$, the final `omega` closes $8 \\le 6 \\to \\bot$. The subtlety handled by `push_cast`/`SetLike.coe_eq_coe` is transporting $g^3 = 1$ between the ambient permutation group and the subgroup $\\uparrow(\\text{alternatingGroup})$: the underlying permutation having cube $1$ is equivalent to the group element having cube $1$.",
     "mathContext": "Index two $\\Rightarrow g^2\\in H$ for all $g$. A 3-cycle $g$ has $\\mathrm{ord}\\,g=\\mathrm{lcm}\\{3\\}=3$, so $g=g^4=(g^2)^2\\in H$. All $8$ three-cycles lie in $H$, so $8\\le|H|=6$, contradiction.",

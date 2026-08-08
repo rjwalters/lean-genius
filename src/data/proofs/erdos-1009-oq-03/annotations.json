@@ -3,7 +3,7 @@
     "id": "ek4gap-overview",
     "proofId": "erdos-1009-oq-03",
     "range": { "startLine": 1, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "The Integrality-Gap Question and the K₄ Witness",
     "content": "The docstring frames OQ-03 against the parent Erdős #1009 result (Györi 1988): once large edge-disjoint triangle packings are known to exist, the algorithmic question is how hard they are to compute. Maximum edge-disjoint triangle packing is NP-hard, while its linear-programming relaxation is polynomial; whenever the fractional optimum ν* strictly exceeds the integer optimum ν, the LP value cannot recover the integer answer. This file certifies that separation on the smallest possible witness, K₄: only one triangle fits in an integer packing (any two of K₄'s four triangles share an edge), yet the uniform ½-weighting on all four triangles is a feasible fractional packing of value 2, since each of the six edges lies in exactly two triangles. The file is self-contained, adapting the parent's Triangle/edgeDisjoint idea to a concrete decidable Fin 4 model rather than the parent's non-computable sSup-based maximum.",
     "mathContext": "$\\nu(K_4) = 1$ (integer optimum) vs. $\\nu^*(K_4) \\ge 2$ (fractional optimum via uniform weight $\\tfrac12$): a factor-2 integrality gap on the canonical smallest witness.",

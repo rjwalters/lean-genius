@@ -3,7 +3,7 @@
     "id": "ann-isc-oq010102-setup",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 44 },
-    "type": "context",
+    "type": "concept",
     "title": "From a Uniform Bound to a Quantitative Rate: the Open Question",
     "content": "The module docstring frames the entry as the open-question companion to the parent AntitoneIntegralSumComparisonOQ01OQ01. The parent used the antitone integral test to bound every p-series partial sum by the single constant 1/(p−1) = ∫₁^∞ x^{−p} dx, proving convergence for p > 1 — but that constant says nothing about the *speed* of convergence. The refinement here runs the identical integral comparison from base point x = N rather than x = 1, pinning the tail: ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}). The docstring previews the four results (tail partial-sum bound, tail tsum bound, genuine remainder bound, explicit textbook form) and the Basel specialization ∑_{n>N} 1/n² ≤ 1/N. `import Mathlib` pulls in the integral-test and interval-integral machinery; the namespace is opened with the BigOperators, Finset, and intervalIntegral scopes.",
     "mathContext": "\\sum_{n>N}\\frac{1}{n^p} \\;\\le\\; \\int_N^\\infty x^{-p}\\,dx \\;=\\; \\frac{N^{1-p}}{p-1} \\;=\\; \\frac{1}{(p-1)\\,N^{p-1}} \\quad (p>1,\\ N\\ge 1)",

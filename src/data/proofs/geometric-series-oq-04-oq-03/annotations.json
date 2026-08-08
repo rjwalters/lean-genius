@@ -52,7 +52,7 @@
       "startLine": 93,
       "endLine": 108
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Boundary laws by structural recursion on the pair",
     "content": "qBinom_eq_zero_of_lt proves [n choose k]_q = 0 for n < k by recursion: the q-Pascal step reduces [n+1 choose k+1]_q to [n choose k]_q and [n choose k+1]_q, both zero since n < k. qBinom_self ([n choose n]_q = 1) then follows by induction, the off-diagonal term vanishing by qBinom_eq_zero_of_lt.",
     "mathContext": "These pin down the support of the q-Pascal triangle: $\\binom{n}{k}_q \\ne 0$ exactly on $0 \\le k \\le n$, with $1$'s along both boundaries $k=0$ and $k=n$.",
@@ -72,7 +72,7 @@
       "startLine": 110,
       "endLine": 117
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The k=1 column is the quantum integer",
     "content": "qBinom_one_right: [n choose 1]_q = [n]_q. Proved by induction using the prepend recurrence [n+1]_q = q·[n]_q + 1 (qNat_succ', established from Finset.sum_range_succ'), which matches the q-Pascal step at k=0.",
     "mathContext": "The first column of the q-Pascal triangle reproduces the parent's quantum integer $[n]_q = 1 + q + \\cdots + q^{n-1}$, so this entry sits directly on top of geometric-series-oq-04.",
@@ -93,7 +93,7 @@
       "startLine": 119,
       "endLine": 130
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Classical limit: the counting interpretation",
     "content": "qBinom_at_one: [n choose k]_1 = C(n,k). Structural recursion whose successor step is exactly the classical Pascal identity Nat.choose_succ_succ (with q=1 collapsing q^{k+1} to 1), cast into R. The example [4 choose 2]_q = 1 + q + 2q^2 + q^3 + q^4 exhibits the polynomial whose q=1 value is C(4,2) = 6.",
     "mathContext": "At $q = 1$ the Gaussian binomial degenerates to the ordinary binomial coefficient $\\binom{n}{k}$, which counts the $k$-element subsets of an $n$-set. This is the $q=1$ shadow of the subspace count $\\#\\{W \\le \\mathbb{F}_q^n : \\dim W = k\\}$.",

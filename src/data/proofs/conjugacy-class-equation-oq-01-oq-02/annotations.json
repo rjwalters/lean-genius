@@ -3,7 +3,7 @@
     "id": "imports-parent-classequation",
     "proofId": "conjugacy-class-equation-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 2 },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: the parent divisibility lemma and Mathlib's class equation",
     "content": "The derivation stands on two imported pillars. `import Proofs.ConjugacyClassEquationOQ01` (the parent entry) supplies the sorry-free per-class divisibility lemma conjClass_card_dvd_card, |class(g)| ∣ |G|, which this file lifts from a chosen representative to an arbitrary class over the quotient ConjClasses G. `import Mathlib` brings in the numeric class equation Group.nat_card_center_add_sum_card_noncenter_eq_card (module Mathlib.GroupTheory.ClassEquation) — the identity |Z(G)| + Σ|class| = |G| that the whole modular argument reads off — together with the p-group cardinality lemmas IsPGroup.iff_card and Nat.dvd_prime_pow. The proof deliberately routes through this explicit numeric class equation rather than Mathlib's own fixed-point proof of the same theorem (IsPGroup.center_nontrivial), which is exactly the alternative derivation the parent's open question asked for.",
     "mathContext": "Parent: $|\\mathrm{class}(g)| \\mid |G|$. Mathlib: $|Z(G)| + \\sum_{\\text{noncentral}} |x| = |G|$.",

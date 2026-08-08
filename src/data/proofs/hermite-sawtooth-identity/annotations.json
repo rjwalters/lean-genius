@@ -97,7 +97,7 @@
     "id": "ann-hermitesawtooth-bernoulli-context",
     "proofId": "hermite-sawtooth-identity",
     "range": { "startLine": 55, "endLine": 72 },
-    "type": "context",
+    "type": "concept",
     "title": "Context: The Distribution Relation for the Sawtooth Bernoulli Function",
     "content": "Beyond its elementary proof, this identity is a named classical fact in disguise: the n-fold *distribution (multiplication) relation* for the first periodic Bernoulli function P₁(t) = {t} − 1/2. Subtracting 1/2 from each of the n fractional parts turns the statement ∑_{k<n} {x + k/n} = {n·x} + (n−1)/2 into ∑_{k<n} P₁(x + k/n) = P₁(n·x): the sum over the n equally spaced translates x + k/n reproduces the same function evaluated at the dilated point n·x. This is the m = 1 case of the general Bernoulli distribution relation ∑_{k<n} B_m(x + k/n) = n^{1−m} B_m(n·x) (Raabe's multiplication formula), and the periodic P_m are exactly the functions satisfying the Kubert identities. Such distribution relations are the arithmetic backbone of the Hurwitz zeta functional equation and of the theory of Bernoulli distributions on p-adic integers (Mazur measures), so this humble fractional-part identity is the ground floor of a large tower. The parent Hermite floor identity is its companion m = 1 floor face.",
     "mathContext": "$\\sum_{k=0}^{n-1} P_1\\!\\left(x + \\tfrac{k}{n}\\right) = P_1(nx)$, where $P_1(t) = \\{t\\} - \\tfrac12$ — the $m=1$ Bernoulli distribution relation $\\sum_{k<n} B_m(x+\\tfrac{k}{n}) = n^{1-m}B_m(nx)$.",

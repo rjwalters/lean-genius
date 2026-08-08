@@ -30,7 +30,7 @@
       "startLine": 41,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ambient Context: DecidableEq α Powers the Whole Combinatorics",
     "content": "Before any definition, the file fixes a single ambient hypothesis: `variable {α : Type*} [DecidableEq α]`. The type `α` of feature points is left completely general — no finiteness, no order, no cardinality assumption — because every finiteness fact the theory needs is carried by the `Finset` structure itself, not by `α`. The one instance that is load-bearing is `[DecidableEq α]`: it is exactly what makes the core operations computable as finite sets. Intersection `h ∩ S` needs `DecidableEq α`; `H.image (· ∩ S)` (the definition of `trace`) needs a `DecidableEq` on its codomain `Finset α`, which is *derived* from `DecidableEq α`; and `S.powerset` together with the equality `trace H S = S.powerset` that defines `Shatters` again relies on decidable membership in `Finset α`. Drop this instance and none of `trace`, `Shatters`, or a single cardinality bound below would typecheck.",
     "mathContext": "`DecidableEq α ⟹ DecidableEq (Finset α)`, which is what `Finset.image`, `∩`, `Finset.powerset`, and Finset equality require. Generality of `α` (no `Fintype`) is deliberate: the growth quantity $\\Pi_H(S)$ and the shattering relation are statements about *finite subsets*, so finiteness lives in the `Finset (Finset α)` model, not in the ground type.",

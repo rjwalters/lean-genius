@@ -110,7 +110,7 @@
       "startLine": 59,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Unfolding the Computation",
     "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
     "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. The `unfold` tactic makes each definitional step explicit: first expanding `one` and `two`, then applying the recursive and base cases of `add`. After unfolding, both sides are syntactically identical, so `rfl` closes the goal.",
@@ -306,7 +306,7 @@
       "startLine": 83,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Successor Distributes Left",
     "content": "This lemma shows that $S(n) + m = S(n + m)$—the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry—one direction is trivial, the other requires proof—reflects the inherent asymmetry in our recursive definition.",
     "mathContext": "$S(n) + m = S(n + m)$. This lemma is the key asymmetry: `add_succ` ($n + S(m) = S(n+m)$) is *definitional* (it IS the recursive case), but `succ_add` ($S(n)+m = S(n+m)$) requires induction. Lean's `simp` and `omega` tactics know both forms, but proving it from scratch requires understanding which direction the recursion unfolds.",

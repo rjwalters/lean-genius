@@ -35,7 +35,7 @@
       "startLine": 43,
       "endLine": 75
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pascal Convolution: Splitting a Binomial Sum",
     "content": "**The reusable engine.** `pascal_conv` proves, for *any* summand $f:\\mathbb{N}\\to\\mathbb{N}$, that\n$$\\sum_{k=0}^{n+1}\\binom{n+1}{k}f(k) \\;=\\; \\sum_{k=0}^{n}\\binom{n}{k}f(k) \\;+\\; \\sum_{k=0}^{n}\\binom{n}{k}f(k+1).$$\nThe proof peels the $k=0$ term with `Finset.sum_range_succ'` (which reindexes the tail by $k\\mapsto k+1$), applies Pascal's rule `Nat.choose_succ_succ'` $\\binom{n+1}{k+1}=\\binom{n}{k}+\\binom{n}{k+1}$ to each coefficient, distributes with `add_mul`, and splits via `Finset.sum_add_distrib`. The offset-1 sub-sum lands exactly on the target's second summand; the leftover $\\binom{n}{k+1}$-weighted sum plus the peeled boundary term is reconciled with the first summand by peeling *its* $k=0$ term and dropping the vanishing top term $\\binom{n}{n+1}=0$ (`Nat.choose_succ_self`). This is the binomial-weighted analogue of `Finset.sum_range_succ`, and is Fibonacci-free — it splits the binomial transform of any sequence.",
     "mathContext": "$\\sum_{k=0}^{n+1}\\binom{n+1}{k}f(k) = \\sum_{k=0}^{n}\\binom{n}{k}f(k) + \\sum_{k=0}^{n}\\binom{n}{k}f(k+1)$, from Pascal's rule and the two range peels.",

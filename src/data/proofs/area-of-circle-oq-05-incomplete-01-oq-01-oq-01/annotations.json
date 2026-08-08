@@ -30,7 +30,7 @@
    "startLine": 79,
    "endLine": 95
   },
-  "type": "technique",
+  "type": "tactic",
   "title": "The MGF ODE g'(t) = t·g(t)",
   "content": "Writing $g(t)=M_X(t)=\\exp(t^2/2)$, the chain rule gives the defining first-order ODE $g'(t)=t\\,g(t)$ (`deriv_g`), since $\\frac{d}{dt}\\exp(t^2/2)=\\exp(t^2/2)\\cdot t$. This single differential relation is the engine of the whole computation: no integrability estimates are needed because everything is done on the smooth generating function. Smoothness ($g \\in C^\\infty$, `g_contDiff`) supplies the differentiability of every iterated derivative used below.",
   "mathContext": "$g(t)=e^{t^2/2}$, $g'(t)=t\\,e^{t^2/2}=t\\,g(t)$.",
@@ -52,7 +52,7 @@
    "startLine": 93,
    "endLine": 147
   },
-  "type": "technique",
+  "type": "tactic",
   "title": "The Parity-Preserving Moment Recursion",
   "content": "Differentiating the ODE $n$ times by Leibniz against the linear factor $t$ (whose second derivative vanishes) yields the closed derivative recursion $g^{(n+2)}(t) = t\\,g^{(n+1)}(t) + (n+1)\\,g^{(n)}(t)$ (`iteratedDeriv_add_two_g`), proved by induction with no Nat subtraction using `HasDerivAt` product and sum rules. Evaluating at $t=0$, where the $t\\,g^{(n+1)}(t)$ term vanishes, collapses it to $g^{(n+2)}(0)=(n+1)\\,g^{(n)}(0)$ (`iteratedDeriv_add_two_g_zero`). Via Mathlib's `iteratedDeriv_mgf_zero` this is exactly the moment recursion $E[X^{n+2}]=(n+1)\\,E[X^n]$ (`moment_recursion`).",
   "mathContext": "$g^{(n+2)}(0) = (n+1)\\,g^{(n)}(0) \\iff E[X^{n+2}] = (n+1)\\,E[X^n]$.",
@@ -75,7 +75,7 @@
    "startLine": 166,
    "endLine": 174
   },
-  "type": "technique",
+  "type": "tactic",
   "title": "From Probability Integral to Analytic Derivative",
   "content": "`moment_eq_iteratedDeriv` bridges the probability integral to the analytic derivative: $\\int x^n\\,d\\mathrm{stdNormal} = g^{(n)}(0)$. It discharges the interior side-condition of `iteratedDeriv_mgf_zero` by showing `integrableExpSet id stdNormal = Set.univ` (so $0$ lies in its interior — the standard normal MGF is defined on all of $\\mathbb{R}$), then reconciles `mgf id stdNormal` with the explicit $g(t)=\\exp(t^2/2)$ recorded by the grandparent.",
   "mathContext": "$\\int_{\\mathbb R} x^n\\, dN(0,1) = \\frac{d^n}{dt^n}M_X(t)\\big|_{t=0} = g^{(n)}(0)$.",
@@ -97,7 +97,7 @@
    "startLine": 176,
    "endLine": 220
   },
-  "type": "key-step",
+  "type": "insight",
   "title": "Unwinding to the Double Factorial and the Vanishing Odd Moments",
   "content": "Unwinding the recursion from the base $E[X^0]=1$ accumulates $E[X^{2k}] = \\prod_{i<k}(2i+1)$ (`stdNormal_even_moment`), while the base $E[X^1]=g'(0)=0\\cdot g(0)=0$ annihilates the odd chain, giving $E[X^{2k+1}]=0$ (`stdNormal_odd_moment`). The product of the first $k$ odd numbers is matched to Mathlib's `Nat.doubleFactorial` via the odd successor identity $(2n+1)!! = (2n+1)\\cdot(2n-1)!!$ (`odd_df_succ`, `prod_odd_eq_doubleFactorial`), yielding the headline closed form $E[X^{2k}] = (2k-1)!!$ (`stdNormal_even_moment_doubleFactorial`).",
   "mathContext": "$\\prod_{i<k}(2i+1) = (2k-1)!!$; both open strands (even and odd) follow from one recursion.",

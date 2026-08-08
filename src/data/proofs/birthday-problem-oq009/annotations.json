@@ -52,7 +52,7 @@
       "startLine": 58,
       "endLine": 114
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Single-Day Ladder Identity",
     "content": "**`R_peel_single`:** $R\\,n\\,e\\,(s{+}1) = R\\,n\\,e\\,s + n\\cdot R\\,(n{-}1)\\,e\\,s$. Adding one already-occupied day multiplies the generating function by the single-day factor $(1+x)$, and extracting the $x^n$ coefficient of $(1+x)\\cdot g$ produces exactly $g$ plus $n$ times the shifted coefficient. This is the one lemma that lets us extract a *two-parameter* recurrence from the one-step slot recurrence without dragging the $(e,s)$ state through the induction. It is proved by strong induction on $n$: the step expands $R\\,(m{+}2)\\,e\\,(s{+}1)$ by the recurrence, applies the identity at level $m{+}1$, and closes the residual algebra with a `linear_combination` over $\\mathbb{Z}$ (Nat subtraction is kept honest by casing on $s=0$).",
     "mathContext": "$R\\,n\\,e\\,(s{+}1) = R\\,n\\,e\\,s + n\\cdot R\\,(n{-}1)\\,e\\,s$ — the $x^n$-coefficient of $(1+x)\\cdot g$.",
@@ -74,7 +74,7 @@
       "startLine": 116,
       "endLine": 125
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Two-Term Recurrence",
     "content": "**`birthdayCount3_rec`:** $\\mathrm{birthdayCount3}\\,(n{+}1)\\,d = d\\big(\\mathrm{birthdayCount3}\\,n\\,(d{-}1) + n\\cdot\\mathrm{birthdayCount3}\\,(n{-}1)\\,(d{-}1)\\big)$. Person $n{+}1$ takes one of the $d$ days; the remaining $n$ people are then seated on a board where that day is already **singly** occupied. Applying `R_peel_single` at $s=0$ splits this into 'the day stays a pair-free single' (the $\\mathrm{birthdayCount3}\\,n\\,(d{-}1)$ term) versus 'someone joins person $n{+}1$' (the $n\\cdot\\mathrm{birthdayCount3}\\,(n{-}1)\\,(d{-}1)$ term). This is the recurrence the induction runs on.",
     "mathContext": "$\\mathrm{birthdayCount3}\\,(n{+}1)\\,d = d\\big(\\mathrm{birthdayCount3}\\,n\\,(d{-}1) + n\\cdot\\mathrm{birthdayCount3}\\,(n{-}1)\\,(d{-}1)\\big)$.",
@@ -96,7 +96,7 @@
       "startLine": 127,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pascal + Absorption: the Coefficient Engine",
     "content": "The matching numbers satisfy $M(p{+}1) = (2p{+}1)\\,M(p)$, and the closed form is $F\\,n\\,d = \\sum_p \\binom{n}{2p}\\,M(p)\\,(d)_{n-p}$. Checking that $F$ obeys the recurrence reduces, coefficient by coefficient, to two standard facts: **Pascal's rule** $\\binom{n+2}{2q+2} = \\binom{n+1}{2q+1}+\\binom{n+1}{2q+2}$ and the **absorption identity** $(2q{+}1)\\binom{n+1}{2q+1} = (n{+}1)\\binom{n}{2q}$ (`Nat.succ_mul_choose_eq`). Together (`choose_absorb`, then `choose_absorb_M` after factoring out $M(q)$) they give $\\binom{n+2}{2(q+1)}M(q{+}1) = \\binom{n+1}{2(q+1)}M(q{+}1) + (n{+}1)\\binom{n}{2q}M(q)$ — the entire arithmetic content of the induction. `descFactorial_pull` ($(d{+}1)(d)_k = (d{+}1)_{k+1}$) threads the recurrence's extra day into the shared falling-factorial term.",
     "mathContext": "Pascal $\\binom{n+2}{2q+2}=\\binom{n+1}{2q+1}+\\binom{n+1}{2q+2}$ and absorption $(2q{+}1)\\binom{n+1}{2q+1}=(n{+}1)\\binom{n}{2q}$; matching numbers $M(p{+}1)=(2p{+}1)M(p)$.",
@@ -119,7 +119,7 @@
       "startLine": 188,
       "endLine": 250
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Closed Form Satisfies the Recurrence",
     "content": "**`F_rec`:** $F\\,(n{+}2)\\,(d{+}1) = (d{+}1)\\big(F\\,(n{+}1)\\,d + (n{+}1)\\,F\\,n\\,d\\big)$. Each of the three pieces is rewritten as a sum over $p$ of $(\\text{coefficient})\\cdot(d{+}1)_{n+2-p}$ — the same falling-factorial basis — using `descFactorial_pull` to absorb the $(d{+}1)$ prefactor and range extension to align the summation bounds. The $F\\,n$ contribution is reindexed $p\\mapsto p{+}1$ so that its power $(d+1)_{n+1-p}$ lands on the same basis element as the others. Matching the coefficient of each basis element is precisely `choose_absorb_M`, with the $p=0$ term handled separately.",
     "mathContext": "$F\\,(n{+}2)\\,(d{+}1) = (d{+}1)\\big(F\\,(n{+}1)\\,d + (n{+}1)\\,F\\,n\\,d\\big)$, matched coefficient-by-coefficient on the falling-factorial basis $(d+1)_{n+2-p}$.",
@@ -142,7 +142,7 @@
       "startLine": 252,
       "endLine": 290
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Main Theorem by Strong Induction",
     "content": "**`birthdayCount3_closed`:** $\\mathrm{birthdayCount3}\\,n\\,d = F\\,n\\,d$ for all $n,d$. Strong induction on $n$: the base cases $n=0,1$ are direct, and the $d=0$ case is a shared vanishing (both sides are $0$ for $n\\ge 1$, the falling factorial and the choose factor each killing their terms). For $n=m{+}2$, $d=d'{+}1$, the two-term recurrence `birthdayCount3_rec` plus the induction hypothesis at levels $m{+}1$ and $m$ turn the goal into exactly `F_rec`. The whole development is over $\\mathbb{N}$, sorry-free and axiom-free (no `native_decide`), so it depends only on `propext`, `Classical.choice`, `Quot.sound`.",
     "mathContext": "$\\mathrm{birthdayCount3}\\,n\\,d = F\\,n\\,d$ for all $n,d$; strong induction reducing $\\mathrm{birthdayCount3\\_rec}$ + IH to $F\\_rec$.",

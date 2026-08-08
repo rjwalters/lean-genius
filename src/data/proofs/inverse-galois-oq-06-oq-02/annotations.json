@@ -31,7 +31,7 @@
       "startLine": 71,
       "endLine": 78
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: 𝔽₇ Is a Field",
     "content": "The file opens by registering Fact (Nat.Prime 7), which powers Lean's typeclass resolution: because 7 is prime, ZMod 7 is a field and (ZMod 7)[X] a Euclidean domain. Every downstream irreducibility, coprimality, and squarefreeness argument relies on working over a field, so this one instance is the quiet foundation of the whole arithmetic half. The goal of the file is to supply, with zero axioms, exactly the input Dedekind's theorem consumes at p = 7 to force 3 ∣ |Gal(q)| in the parent A₅ realization.",
     "mathContext": "$\\mathbb{Z}/7\\mathbb{Z}$ is a field since $7$ is prime, so $(\\mathbb{Z}/7\\mathbb{Z})[X]$ is a PID/Euclidean domain where irreducible $=$ prime and unique factorization holds.",

@@ -94,7 +94,7 @@
       "startLine": 111,
       "endLine": 115
     },
-    "type": "main-result",
+    "type": "theorem",
     "title": "Main Result: g(N) ≥ ⌊√N⌋",
     "content": "The unconditional lower bound is now a two-line assembly. First, ⌊√N⌋ ∈ lcmBoundedCards N: the witness `Finset.Icc 1 (Nat.sqrt N)` is LCM-bounded (`interval_isLCMBounded`) and has cardinality `Nat.card_Icc` = ⌊√N⌋ − 1 + 1 = ⌊√N⌋ (closed by `omega`). Then `le_csSup lcmBoundedCards_bddAbove hmem` pins g(N) = sSup ≥ ⌊√N⌋. This already fixes the correct order of magnitude g(N) = Θ(√N); the deep Chen–Dai work only sharpens the constant from 1 to (9/8)^{1/2}. Crucially the proof uses no axioms beyond propext/Classical/Quot — it does not touch the axiomatized material of the parent entry.",
     "mathContext": "g(N) ≥ ⌊√N⌋ combined with the trivial g(N) ≤ N — or better, the Chen–Dai g(N) ~ (9N/8)^{1/2} — yields g(N) = Θ(√N). The whole content is exhibiting one witness of size ⌊√N⌋ and invoking the sup's defining inequality.",
@@ -117,7 +117,7 @@
       "startLine": 118,
       "endLine": 123
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Nontriviality for N ≥ 1: g(N) ≥ 1",
     "content": "A sanity corollary: for N ≥ 1 the extremal set is nonempty, g(N) ≥ 1. It follows from the main bound because ⌊√N⌋ ≥ 1 whenever N ≥ 1 (`Nat.sqrt_le_sqrt hN` with `Nat.sqrt_one`), and `omega` chains ⌊√N⌋ ≤ g(N) with 1 ≤ ⌊√N⌋. Concretely the singleton {1} is always LCM-bounded (lcm(1,1) = 1 ≤ N), so the maximum is never zero for a nonempty ambient interval.",
     "mathContext": "For N ≥ 1, 1 ≤ ⌊√N⌋ ≤ g(N). The witness {1} shows g is a maximum over a nonempty family, so the supremum is attained and positive.",

@@ -31,7 +31,7 @@
       "startLine": 47,
       "endLine": 112
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "hasSum_eta_of_hasSum_zeta — the exponent-independent bridge",
     "content": "The core lemma: for any natural exponent m and any Z with ζ(m) = Z (as a HasSum), the alternating series ∑ (-1)^(n+1)/nᵐ has sum (1 − 2/2ᵐ)·Z. Four moves. (1) heven_plain: the plain even part ∑_k 1/(2k)ᵐ = (1/2ᵐ)·Z, because ((2k))ᵐ = 2ᵐ·kᵐ (push_cast + mul_pow) and h.mul_left rescales the entire hypothesis. (2) hodd: the plain odd part ∑_k 1/(2k+1)ᵐ = B is summable as the image under the injection k ↦ 2k+1 of the summable family h (Summable.comp_injective); reassembling even + odd = full (HasSum.even_add_odd) and comparing with h via HasSum.unique pins (1/2ᵐ)·Z + B = Z, so B = Z − (1/2ᵐ)·Z without ever evaluating B in closed form. (3) heven_alt / hodd_alt: in the alternating series the sign is set by parity — (-1)^(2k+1) = -1 negates the even part to −(1/2ᵐ)·Z while (-1)^(2k+2) = +1 leaves the odd part equal to B (pow_succ / pow_mul + norm_num). (4) Reassembling gives η(m) = −(1/2ᵐ)·Z + B, and one linear_combination on hZ rewrites this to (1 − 2/2ᵐ)·Z. Each subseries HasSum is stated with an explicit summand, so HasSum.even_add_odd matches the ambient function by definitional reduction rather than higher-order unification.",
     "mathContext": "$\\eta(m) = -\\tfrac{1}{2^m}Z + B,\\quad B = Z - \\tfrac{1}{2^m}Z \\;\\Rightarrow\\; \\eta(m) = \\left(1 - \\tfrac{2}{2^m}\\right)Z.$",
@@ -56,7 +56,7 @@
       "startLine": 114,
       "endLine": 130
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "hasSum_eta_two_mul_nat / eta_factor_eq — the uniform even family",
     "content": "hasSum_eta_two_mul_nat feeds Mathlib's Bernoulli closed form hasSum_zeta_nat (ζ(2k) = (-1)^(k+1)·2^{2k−1}·π^{2k}·bernoulli(2k)/(2k)!) directly into the bridge, yielding η(2k) = (1 − 2/2^{2k})·ζ(2k) for every k ≥ 1 as a single term-mode application. eta_factor_eq then confirms the rational factor equals the classical source form: 1 − 2/2^{2k} = 1 − 2^{1−2k}, using zpow_sub₀ and zpow_natCast to reconcile the negative integer exponent with the natural power.",
     "mathContext": "$\\eta(2k) = \\left(1 - 2^{1-2k}\\right)\\zeta(2k),\\quad \\zeta(2k) = \\frac{(-1)^{k+1}2^{2k-1}\\pi^{2k}B_{2k}}{(2k)!}.$",
@@ -79,7 +79,7 @@
       "startLine": 132,
       "endLine": 155
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "hasSum_eta_two / hasSum_eta_four — π²/12 and 7π⁴/720",
     "content": "The two lowest even eta values fall out as one-line specializations of the bridge. Feeding hasSum_zeta_two (ζ(2) = π²/6) gives (1 − 2/2²)·(π²/6) = (1/2)·(π²/6), simplified to π²/12 by ring. Feeding hasSum_zeta_four (ζ(4) = π⁴/90) gives (1 − 2/2⁴)·(π⁴/90) = (7/8)·(π⁴/90), simplified to 7π⁴/720 — reproving the sibling BaselProblemOQ13OQ01 from the uniform statement. The tsum corollaries record the ∑' forms.",
     "mathContext": "$\\eta(2) = \\tfrac12\\zeta(2) = \\tfrac{\\pi^2}{12}, \\qquad \\eta(4) = \\tfrac78\\zeta(4) = \\tfrac{7\\pi^4}{720}.$",
@@ -101,7 +101,7 @@
       "startLine": 158,
       "endLine": 177
     },
-    "type": "context",
+    "type": "concept",
     "title": "Results Table: One Bridge, Every Eta Value",
     "content": "The closing summary tabulates the exports and states the entry's organizing idea: a single analytic-free lemma hasSum_eta_of_hasSum_zeta packages the even/odd parity split once, so every Dirichlet eta value is a specialisation of it composed with a zeta HasSum. From ζ(m) = Z it gives η(m) = (1 − 2/2ᵐ)·Z for any exponent m; hasSum_eta_two_mul_nat specializes to the even family η(2k) = (1 − 2^{1−2k})ζ(2k) (with eta_factor_eq proving 1 − 2/2^{2k} = 1 − 2^{1−2k}), and composing with hasSum_zeta_two / hasSum_zeta_four yields η(2) = π²/12 and η(4) = 7π⁴/720, each also given in tsum form. This factor-out-the-parity-split design avoids re-deriving the split per exponent, unlike the sibling entries that prove η(2) and η(4) separately. 0 sorries, 0 axioms.",
     "mathContext": "\\zeta(m) = Z \\;\\Rightarrow\\; \\eta(m) = \\Big(1 - \\tfrac{2}{2^m}\\Big) Z = \\big(1 - 2^{1-m}\\big)\\zeta(m)",

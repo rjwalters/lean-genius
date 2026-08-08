@@ -75,7 +75,7 @@
       "startLine": 36,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reifying √ as an Opaque Variable with (√x)² = x",
     "content": "All three analytic theorems (agm_gap_eq, agm_gap_quadratic, agm_gap_le) share one Lean tactic idiom worth isolating: rather than reasoning about √ directly, each proof first asserts the two defining facts `Real.sq_sqrt : (√a)² = a` and `(√b)² = b` as hypotheses, then hands the goal to `nlinarith` (or `field_simp` then `nlinarith`). This lets the nonlinear arithmetic engine treat √a and √b as fresh opaque variables constrained only by those two quadratic equations — the transcendental content of the square root is fully captured by (√x)² = x, and the rest is polynomial algebra. The one extra ingredient needed for inequalities is monotonicity/positivity of √ (Real.sqrt_le_sqrt, Real.sqrt_pos), used in agm_gap_le to bound (√a+√b)² ≥ 4b before `gcongr`. Recognizing this 'reify the root, then nlinarith' pattern is the practical key to formalizing square-root identities of this kind.",
     "mathContext": "Replace $\\sqrt a, \\sqrt b$ by variables $s, t \\ge 0$ with $s^2 = a$, $t^2 = b$; every gap identity becomes a polynomial identity in $s, t$ that $\\texttt{nlinarith}$/$\\texttt{field\\_simp}$ can discharge.",

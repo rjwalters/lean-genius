@@ -29,7 +29,7 @@
       "startLine": 84,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Degenerate Interval: A Point Noodle Has No Crossings",
     "content": "`expectedCrossings_self` records the base case: over an empty parameter interval [a, a] the functional is 0, since ∫_a^a = 0 (`integral_same`) and the 1/(πd) factor then multiplies zero (`mul_zero`). Tagging it `@[simp]` lets the simplifier discharge degenerate pieces automatically — a partition point that coincides with its neighbour drops out of any sum without manual bookkeeping. It is the additive identity that makes the concatenation lemmas well-behaved at trivial splits.",
     "mathContext": "$E(\\gamma, a, a, d) = \\frac{1}{\\pi d}\\int_a^a \\text{angularIntegrand}\\,dt = 0.$",
@@ -96,7 +96,7 @@
       "startLine": 113,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Two Splits by Composition (Three-Piece Noodle)",
     "content": "`expectedCrossings_additive3` shows the single-split lemma composes: a three-piece noodle [a,c₁]∪[c₁,c₂]∪[c₂,b] splits by applying `expectedCrossings_additive` twice — first at c₁, whose right-hand integrability hypothesis on [c₁,b] is assembled from the two sub-pieces via `IntervalIntegrable.trans`, then at c₂ — and closing with `ring` to reassociate the three-term sum. This is the n = 3 instance of the general partition lemma, spelled out explicitly because the `trans` composition of integrability across the merged right interval is exactly the reusable pattern the `Finset`-indexed version generalizes.",
     "mathContext": "$E(\\gamma,a,b,d) = E(\\gamma,a,c_1,d) + E(\\gamma,c_1,c_2,d) + E(\\gamma,c_2,b,d)$, obtained by nesting two one-split additivities; `IntervalIntegrable.trans` supplies integrability on $[c_1,b]$ from that on $[c_1,c_2]$ and $[c_2,b]$.",

@@ -18,7 +18,7 @@
       "startLine": 63,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Eigenvalues Are Independent of the Dimension Proof",
     "content": "`LinearMap.IsSymmetric.eigenvalues` is indexed by `Fin m` through a *proof* `finrank 𝕜 E = m`, so the operator statement (using `finrank_euclideanSpace_fin`) and the literal `eigenvalues₀` statement (using `finrank_euclideanSpace`) name the same list against two different indexings. `eigenvalues_finrank_congr` discharges this once: since both `m` and `m'` equal `finrank 𝕜 E`, the equality `m = m'` is forced, and after `obtain rfl` the reindexing `Fin.cast` collapses to the identity (`Fin.cast_eq_self`). This single lemma is the only bridge needed between the abstract-operator proof and Mathlib's `Matrix.IsHermitian.eigenvalues₀` indexing.",
     "mathContext": "The eigenvalue list of a symmetric operator on an $m$-dimensional space is canonical; two proofs of $\\dim E = m$ yield the same list up to the forced identity $\\mathrm{Fin}\\,m \\simeq \\mathrm{Fin}\\,m'$.",

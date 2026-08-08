@@ -63,7 +63,7 @@
     "id": "ann-et-examples",
     "proofId": "euler-totient-oq-07-oq-03",
     "range": { "startLine": 150, "endLine": 184 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked examples by kernel decide",
     "content": "Four concrete tuples illustrate the theorems, all discharged by kernel `decide` (not `native_decide`, so no extra axioms): $(1,2,9)$ is pairwise coprime since only 9 is non-unital ($\\varphi = 1,1,6$); $(9,15)$ is NOT pairwise coprime as both are non-unital and $\\varphi9 = 6$, $\\varphi15 = 8$ share 2; $(5,7,9)$ with $\\varphi = 4,6,6$ has family gcd $\\ge 2$; and the Fermat primes $(3,5,17)$ with $\\varphi = 2,4,16$ give a power-of-2 family gcd.",
     "mathContext": "$\\varphi(1,2,9) = (1,1,6),\\ \\varphi(9,15) = (6,8),\\ \\varphi(5,7,9) = (4,6,6),\\ \\varphi(3,5,17) = (2,4,16).$",

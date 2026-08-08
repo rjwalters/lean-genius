@@ -56,7 +56,7 @@
       "startLine": 107,
       "endLine": 140
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Variance in Lowest Terms",
     "content": "variance_eq establishes (∑_{k=0}^{n} (k − n/2)²·C(n,k)²)/C(2n,n) = n²/(4(2n−1)) for n ≥ 1, over ℚ. It pushes the integer identity centred_second_moment into ℚ, rewrites the centred square (k − n/2)² = (2k − n)²/4 termwise inside the sum (Finset.sum_div), and clears denominators with field_simp and nlinarith using C(2n,n) ≠ 0 (Nat.choose_pos) and 2n−1 ≠ 0. The result is the variance of the squared-binomial law in reduced rational form — the hypergeometric variance n·(K/N)·(1−K/N)·(N−n)/(N−1) at N = 2n, K = n.",
     "mathContext": "$\\dfrac{\\sum_{k=0}^{n}(k-n/2)^2\\binom{n}{k}^2}{\\binom{2n}{n}} = \\dfrac{n^2}{4(2n-1)}$, with $(k-n/2)^2 = (2k-n)^2/4$.",
@@ -103,7 +103,7 @@
       "startLine": 72,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Stay in ℤ: centre on 2k−n and expand into raw moments",
     "content": "The reusable engine of the proof. Rather than compute the variance directly over ℚ (which drags in the mean n/2 and denominators), the deviation is doubled to 2k − n so it is an INTEGER, keeping the whole cleared identity (★) inside ℤ. Expanding (2k−n)² = 4k² − 4nk + n² (hexpand) turns the centred second moment into a linear combination of the family's three already-proved raw moments ∑C², ∑kC², ∑k²C² (hS0/hS1/hS2). The two central-binomial relations — halving C(2n,n)=2C(2n−1,n−1) and the recurrence n·C(2n,n)=2(2n−1)C(2n−2,n−1) — then collapse everything in a single `linear_combination`, so no new combinatorial identity is proved from scratch.",
     "mathContext": "$\\sum (2k-n)^2 C(n,k)^2 = 4\\sum k^2C^2 - 4n\\sum kC^2 + n^2\\sum C^2$, closed by $c=2a$ and $nc=2(2n-1)b$.",

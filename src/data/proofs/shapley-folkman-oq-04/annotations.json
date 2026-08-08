@@ -52,7 +52,7 @@
       "startLine": 105,
       "endLine": 143
     },
-    "type": "main-theorem",
+    "type": "theorem",
     "title": "The Refined Bound: excess ≤ min(d, #nonConvex)",
     "content": "`excess_card_le_nonConvex` turns the subset lemma into a counting bound via `Finset.card_le_card`: the excess count is at most the number of non-convex summands, with **no** dimension hypothesis.\n\n`shapley_folkman_refined` is the headline result. It takes the base `shapley_folkman` decomposition (excess ≤ dim E) and the non-convex bound (excess ≤ #nonConvex) and combines them with `le_min`:\n\n    D.excessIndices.card ≤ min (Module.finrank ℝ E) (nonConvexIndices S t).card.\n\n`sum_close_refined` lifts this to the `sum_close_to_convexHull` corollary: for x ∈ conv(∑Sᵢ) there is a summand family f with ∑f = x and (filter of convexification indices).card ≤ min(d, #nonConvex).",
     "mathContext": "$\\text{excess} \\le d$ (base lemma) and $\\text{excess} \\le k$ (subset lemma) together give $\\text{excess} \\le \\min(d,k)$ by `le_min`.",
@@ -96,7 +96,7 @@
       "startLine": 181,
       "endLine": 254
     },
-    "type": "main-theorem",
+    "type": "theorem",
     "title": "Refined Starr Bound: dist ≤ min(d, #nonConvex)·δ",
     "content": "In a finite-dimensional normed space F, `shapley_folkman_starr_refined` sharpens OQ03's Starr theorem. Given x ∈ conv(∑Sᵢ) with each Sᵢ of diameter ≤ δ, it produces x' ∈ ∑Sᵢ with\n\n    dist(x, x') ≤ min(dim F, #nonConvex)·δ.\n\nThe proof reuses OQ03's point-selection argument: take the refined decomposition from `sum_close_refined` (excess filter J with |J| ≤ min(d, k)), replace each excess summand by a genuine point of its set, and estimate ‖x - x'‖ = ‖∑_{j∈J}(fⱼ - gⱼ)‖ ≤ |J|·δ ≤ min(d,k)·δ via the triangle inequality and the local `convexHull_dist_le_diam` lemma.\n\nEconomic reading: a market with n agents but only k non-convex ones is within min(d, k)·δ of exactly convex — a strictly better guarantee than d·δ whenever k < d, and uniform in n.",
     "mathContext": "$\\|x - x'\\| = \\|\\sum_{j \\in J}(f_j - g_j)\\| \\le \\sum_{j \\in J}\\delta = |J|\\cdot\\delta \\le \\min(\\dim F, k)\\cdot\\delta$, since only excess indices contribute and $|J| \\le \\min(\\dim F, k)$.",

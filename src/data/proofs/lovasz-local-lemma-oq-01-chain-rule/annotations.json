@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "The measure-theoretic scaffold shared by every LLL proof",
     "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, conclusion $\\mu(\\bigcap_i A_i^c) > 0$. The gallery already has the two *computable extremes* — the mutually independent case `lovasz-local-lemma-oq-01` (exact product $\\prod(1 - \\mu(A_i))$) and the dependency-free union bound `lovasz-local-lemma-oq-01-union-bound` ($\\mu(\\bigcap A_i^c) \\ge 1 - \\sum \\mu(A_i)$). What both extremes, and the still-open bounded-degree LLL, quietly share is a single **independence-free** identity: the conditional-probability chain rule\n$$\\mu\\!\\left(\\bigcap_{i} A_i\\right) = \\prod_{k} \\mu\\!\\left[A_k \\;\\middle|\\; \\bigcap_{j<k} A_j\\right].$$\nRead at the complements it becomes the survival-product form, and it converts the LLL's global question 'can every bad event be avoided?' into the purely local question 'is every conditional survival probability positive?'. This file isolates that scaffold. The mathematical work the LLL actually does — bounding each conditional factor using the dependency structure — is precisely what is *not* here; the chain rule is the frame that work fills in.",
     "mathContext": "Arbitrary measurable family $A : \\mathbb{N} \\to \\mathrm{Set}\\,\\Omega$ over an `IsProbabilityMeasure` $\\mu$. The $\\mathbb{N}$-index supplies the total order the chain rule needs; no independence, no dependency graph, no LLL hypothesis.",
@@ -31,7 +31,7 @@
       "startLine": 52,
       "endLine": 74
     },
-    "type": "context",
+    "type": "concept",
     "title": "Frame: probability measure, ℕ-ordered events, measurable histories",
     "content": "```lean\nimport Mathlib.Probability.ConditionalProbability\nopen MeasureTheory ProbabilityTheory Finset\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01ChainRule\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A : ℕ → Set Ω}\n\ntheorem measurableSet_hist (hA : ∀ i, MeasurableSet (A i)) (n : ℕ) :\n    MeasurableSet (⋂ j ∈ Finset.range n, A j) :=\n  Finset.measurableSet_biInter _ (fun b _ => hA b)\n```\n\nTwo design choices carry the file. Indexing the events by $\\mathbb{N}$ (rather than a `Fintype` as in the two extreme entries) is deliberate: the chain rule requires a *total order* on the events — 'each event conditioned on the earlier ones' — and `Finset.range n` is the canonical prefix order that makes the induction and `Finset.prod_range_succ` line up. The **history** $\\bigcap_{j \\in \\mathrm{range}\\,k} A_j$ is the conditioning event at step $k$; `measurableSet_hist` records that it is measurable, being a *finite* intersection of measurable sets (`Finset.measurableSet_biInter`). Measurability of the history is exactly the side condition Mathlib's telescoping lemma `cond_mul_eq_inter` needs, so this one-line lemma is what lets the main induction fire at every step.",
     "mathContext": "`μ[t|s]` denotes `ProbabilityTheory.cond μ s t`. Histories are finite intersections over `Finset.range k`, hence measurable; `IsProbabilityMeasure` gives $\\mu(\\Omega) = 1$, used for the base case of the chain rule.",

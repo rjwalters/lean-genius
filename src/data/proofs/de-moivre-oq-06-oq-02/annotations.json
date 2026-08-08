@@ -29,7 +29,7 @@
       "startLine": 52,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Half-Angle Sine Attains its Minimum at the Endpoints",
     "content": "`sin_half_ge_of_mem_arc` proves $\\sin(\\delta/2)\\le\\sin(\\theta/2)$ for $\\theta\\in[\\delta,2\\pi-\\delta]$, $0<\\delta\\le\\pi$. The half-angle $\\theta/2$ ranges over $[\\delta/2,\\pi-\\delta/2]$, on which $\\sin$ — concave on $[0,\\pi]$ with equal endpoint values $\\sin(\\delta/2)$ — is minimised at the boundary. Rather than a concavity argument, the difference is cleared through the product identity $\\sin x-\\sin y=2\\sin(\\tfrac{x-y}{2})\\cos(\\tfrac{x+y}{2})$ with $x=\\theta/2,\\ y=\\delta/2$: the factor $\\sin(\\tfrac{\\theta-\\delta}{4})\\ge0$ because its argument lies in $[0,\\pi/2]\\subseteq[0,\\pi]$, and $\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$ because its argument lies in $[0,\\pi/2]\\subseteq[-\\pi/2,\\pi/2]$. Both factors nonnegative gives the difference nonnegative. The block also records the small private helper `sin_half_pos` ($\\sin(\\delta/2)>0$ for $0<\\delta\\le\\pi$, from `Real.sin_pos_of_pos_of_lt_pi`), factored out once because every uniform-bound proof below needs the strict positivity of the endpoint value to divide by it.",
     "mathContext": "$\\sin(\\theta/2)-\\sin(\\delta/2)=2\\sin(\\tfrac{\\theta-\\delta}{4})\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$; and $\\sin(\\delta/2)>0$ (helper `sin_half_pos`).",
@@ -51,7 +51,7 @@
       "startLine": 78,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cosine Kernel: Removing θ-Dependence by Reciprocal Monotonicity",
     "content": "`dirichlet_kernel_uniform_bound` upgrades the parent's *pointwise* cosine estimate to a bound uniform in $n$ and $\\theta$. The cosine partial sum $\\sum_{k\\le n}\\cos(k\\theta)$ centred at $\\tfrac12$ is exactly the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$, so the parent bound has the $\\theta$-dependent denominator $2\\sin(\\theta/2)$. Since $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$ on the arc, $|\\sin(\\theta/2)|=\\sin(\\theta/2)$ and reciprocal monotonicity (`one_div_le_one_div_of_le`) replaces it by the constant denominator: $\\frac{1}{2\\sin(\\theta/2)}\\le\\frac{1}{2\\sin(\\delta/2)}$. Chaining with the pointwise bound (`le_trans`) yields the uniform constant $\\frac{1}{2\\sin(\\delta/2)}$, independent of both $n$ and $\\theta$.",
     "mathContext": "$|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2\\sin(\\delta/2)}$ for all $n$ and all $\\theta\\in[\\delta,2\\pi-\\delta]$; the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$.",

@@ -95,7 +95,7 @@
       "startLine": 148,
       "endLine": 166
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reverse Direction: Pulling a Subtype Subgroup Back to G",
     "content": "The harder (⇐) half of the bridge must produce subtype-lattice maximality from the ambient predicate. Given an arbitrary M : Subgroup ↥K with H.subgroupOf K ≤ M and (M).Normal, it sets N := M.map K.subtype — the image of M back in G — and rebuilds every hypothesis in the ambient interval: N ≤ K is map_subtype_le; the key round trip N.subgroupOf K = M is comap_map_eq_self_of_injective applied through injectivity of K.subtype; H ≤ N follows by mapping H.subgroupOf K ≤ M forward with map_mono and rewriting map_subgroupOf_eq_of_le; and normality (N.subgroupOf K).Normal transports back along that same identity. Feeding N to the ambient maximality IsMaxNorm.hmax returns N = H or N = K, which the round trip and subgroupOf_self convert back to M = H.subgroupOf K or M = ⊤.",
     "mathContext": "The pair $M \\mapsto M.\\mathrm{map}\\,K.\\mathrm{subtype}$ and $N \\mapsto N.\\mathrm{subgroupOf}\\,K$ are mutually inverse on $\\mathrm{Subgroup}\\,\\uparrow K$ and the interval $[\\bot, K]$; the reverse direction is exactly this inverse applied to every quantified subgroup and its normality/inclusion side-conditions.",

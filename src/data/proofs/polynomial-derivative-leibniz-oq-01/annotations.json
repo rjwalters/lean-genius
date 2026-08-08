@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "What This File Adds Beyond Mathlib's Product Rules",
     "content": "Mathlib's formal polynomial derivative `Polynomial.derivative` already has the two-factor Leibniz rule `derivative_mul`, the iterated rule `iterate_derivative_mul` (the nth derivative of a product, with binomial coefficients), and a product rule over a `Multiset` (`derivative_prod`). What it lacks is the everyday **Finset** product rule and the standard consequence for the split polynomial ∏ᵢ(X − rᵢ). This file fills that gap over an arbitrary commutative ring: the Finset Leibniz rule, its specialization to linear factors, the value of the derivative at a root (the Lagrange-interpolation denominator), and — over an integral domain with distinct roots — the nonvanishing of the derivative at each root. The single `import Mathlib` is a gallery convention; the content only needs the polynomial-derivative and big-operators APIs.",
     "mathContext": "The formal derivative $D:R[X]\\to R[X]$ is the unique $R$-linear derivation with $D(X)=1$; it obeys $D(fg)=f\\,D g+g\\,D f$ over any commutative ring $R$, with no analytic input. The Finset product rule is $D\\big(\\prod_{i\\in s} f_i\\big)=\\sum_{i\\in s} Df_i\\cdot\\prod_{j\\in s\\setminus\\{i\\}} f_j$.",
@@ -34,7 +34,7 @@
       "startLine": 54,
       "endLine": 80
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Finset Leibniz Rule by Induction, and the Erase/Insert Bookkeeping",
     "content": "`derivative_finset_prod` is proved by `Finset.induction`. The empty case is the derivative of the empty product (the constant 1), which is 0. The insert step is where all the work is: after `Finset.prod_insert`, `derivative_mul` and the inductive hypothesis, the goal splits into the i = a term and the sum over i ∈ s. The i = a term matches because `(insert a s).erase a = s` (`Finset.erase_insert`, using a ∉ s). For each i ∈ s the identity `(insert a s).erase i = insert a (s.erase i)` (`Finset.erase_insert_of_ne`, valid since i ≠ a) lets `Finset.prod_insert` pull the factor f a out front, after which `ring` finishes. This purely combinatorial index bookkeeping is the entire difficulty; the algebra is just the two-factor rule iterated. `derivative_prod_pair` then specializes to s = {a, b}, recovering `Polynomial.derivative_mul` as a sanity check.",
     "mathContext": "Induction on $s$: $D\\big(f_a\\prod_{s} f\\big)=Df_a\\prod_{s}f+f_a\\,D\\big(\\prod_s f\\big)$, and the inductive hypothesis rewrites the second factor. The set identities $(a\\cup s)\\setminus\\{a\\}=s$ and $(a\\cup s)\\setminus\\{i\\}=a\\cup(s\\setminus\\{i\\})$ align the erased index sets.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 45
     },
-    "type": "context",
+    "type": "concept",
     "title": "λ(6) and λ(8): pushing the parity split past Mathlib's zeta table",
     "content": "The parent entry formalized λ(4) = π⁴/96 by splitting Mathlib's ζ(4) = π⁴/90 into even- and odd-indexed parts. This follow-up asks for the same at s = 6 and s = 8. The obstruction is that Mathlib supplies ζ(2) and ζ(4) explicitly but nothing higher as a standalone HasSum. The header records the plan: obtain ζ(6) = π⁶/945 and ζ(8) = π⁸/9450 from the general even-zeta formula hasSum_zeta_nat (which needs the Bernoulli numbers B₆, B₈), then reuse the identical even/odd split λ(s) = (1 − 2^(−s))ζ(s).",
     "mathContext": "$\\lambda(s)=\\sum_{k\\ge 0}\\frac{1}{(2k+1)^s}=(1-2^{-s})\\zeta(s)$; at $s=6,8$: $\\lambda(6)=\\tfrac{63}{64}\\cdot\\tfrac{\\pi^6}{945}=\\tfrac{\\pi^6}{960}$, $\\lambda(8)=\\tfrac{255}{256}\\cdot\\tfrac{\\pi^8}{9450}=\\tfrac{17\\pi^8}{161280}$.",
@@ -29,7 +29,7 @@
       "startLine": 60,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 1: Bernoulli numbers B₆ = 1/42, B₈ = −1/30 from the recurrence",
     "content": "Mathlib evaluates bernoulli' only up to 4 (bernoulli'_four), so the two Bernoulli inputs to Euler's ζ(2k) formula must be computed here. bernoulli'_def unfolds B_n = 1 − ∑_{k<n} C(n,k)/(n−k+1)·B_k over range n; expanding with sum_range_succ and substituting the known lower values closes B₆ and B₈ by norm_num. The odd terms B₃ = B₅ = B₇ = 0 are supplied by bernoulli'_eq_zero_of_odd. The even-index sign lemma bernoulli_eq_bernoulli'_of_ne_one then gives bernoulli 6 = 1/42 and bernoulli 8 = −1/30 with a `+` sign.",
     "mathContext": "$B_6=\\tfrac{1}{42},\\ B_8=-\\tfrac{1}{30}$, from $B_n = 1-\\sum_{k<n}\\binom{n}{k}\\tfrac{B_k}{n-k+1}$ with $B_3=B_5=B_7=0$.",
@@ -52,7 +52,7 @@
       "startLine": 87,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 2: ζ(6) = π⁶/945 and ζ(8) = π⁸/9450 via hasSum_zeta_nat",
     "content": "The general formula hasSum_zeta_nat gives ζ(2k) = (−1)^(k+1) 2^(2k−1) π^(2k) B_(2k) / (2k)!. Instantiating at k = 3, 4 and matching against the target closed form is `convert hasSum_zeta_nat … using 1` (the summand functions unify definitionally once 2·k reduces), leaving a scalar equation closed by rewriting the Bernoulli value and `push_cast [Nat.factorial]; ring`: 2⁵·(1/42)/6! = 1/945 and −2⁷·(−1/30)/8! = 1/9450. These standalone HasSum lemmas for ζ(6), ζ(8) are not otherwise in Mathlib.",
     "mathContext": "$\\zeta(6)=\\tfrac{2^{5}\\pi^{6}B_6}{6!}=\\tfrac{\\pi^6}{945}$, $\\ \\zeta(8)=\\tfrac{-2^{7}\\pi^{8}B_8}{8!}=\\tfrac{\\pi^8}{9450}$.",
@@ -75,7 +75,7 @@
       "startLine": 103,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 3: even parts π⁶/60480 and π⁸/2419200 as scaled ζ",
     "content": "Pulling the factor 2 out of (2k)^s gives 1/(2k)^s = 2^(−s)(1/k^s), so the even-indexed subseries is exactly 2^(−s)ζ(s): a 64-th of ζ(6) and a 256-th of ζ(8). Each is a one-line HasSum.mul_left after a `funext; push_cast; ring` rewrite of the summand (valid even at k = 0, where both sides are 0 in ℝ). This is the sixth/eighth-power analogue of the sixteenth-scaling used for λ(4).",
     "mathContext": "$\\sum_k \\tfrac{1}{(2k)^6}=\\tfrac{1}{64}\\zeta(6)=\\tfrac{\\pi^6}{60480}$, $\\ \\sum_k\\tfrac{1}{(2k)^8}=\\tfrac{1}{256}\\zeta(8)=\\tfrac{\\pi^8}{2419200}$.",
@@ -97,7 +97,7 @@
       "startLine": 127,
       "endLine": 162
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Step 4: λ(6) = π⁶/960 and λ(8) = 17π⁸/161280 by uniqueness",
     "content": "Each odd subseries is summable (Summable.comp_injective with k ↦ 2k+1), so reassembling ζ(s) = even + odd via HasSum.even_add_odd and applying HasSum.unique against the Step-2 zeta value forces the odd sum. No summand is evaluated directly. For s = 6: π⁶/945 − π⁶/60480 = π⁶/960. For s = 8: π⁸/9450 − π⁸/2419200 = 17π⁸/161280 — the numerator 17 survives because 255 = 3·5·17 shares only 15 with the denominator, unlike the clean unit fraction λ(6).",
     "mathContext": "$\\lambda(6)=\\zeta(6)-\\tfrac{\\pi^6}{60480}=\\tfrac{\\pi^6}{960}$, $\\ \\lambda(8)=\\zeta(8)-\\tfrac{\\pi^8}{2419200}=\\tfrac{17\\pi^8}{161280}$.",

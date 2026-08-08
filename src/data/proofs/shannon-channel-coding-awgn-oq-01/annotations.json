@@ -30,7 +30,7 @@
       "startLine": 61,
       "endLine": 66
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Translation Invariance of Differential Entropy",
     "content": "theorem differentialEntropy_shift is the single analytic fact of the file: $h(y\\mapsto f_Z(y-x))=h(f_Z)$. Unfold $h(f)=-\\int f\\cdot\\log f$; the integrand becomes $u\\mapsto f_Z(u)\\log f_Z(u)$ evaluated at $u=y-x$, and Mathlib's `integral_sub_right_eq_self` — translation invariance of the Lebesgue integral under the right-invariant volume measure, with NO integrability hypothesis — gives $\\int F(y-x)\\,dy=\\int F(y)\\,dy$. At the channel level this says the conditional output entropy $h(Y\\mid X=x)$ does not depend on the conditioning value $x$ and equals the noise entropy $h(Z)$.",
     "mathContext": "$h\\big(y\\mapsto f_Z(y-x)\\big)=h(f_Z)$",
@@ -75,7 +75,7 @@
       "startLine": 108,
       "endLine": 121
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Mutual Information and the Chain-Rule Decomposition",
     "content": "def mutualInfoAdditive fX fZ fY $=h(f_Y)-$ condDiffEntropyAdditive fX fZ is the operational mutual information $I(X;Y)=h(Y)-h(Y\\mid X)$. theorem mutualInfoAdditive_eq is the chain-rule decomposition $I(X;Y)=h(Y)-h(Z)$: unfold the definition and substitute $h(Y\\mid X)=h(Z)$ from Part II. This is the continuous-alphabet mutual-information statement the parent AWGN entry used implicitly, now proved.",
     "mathContext": "$I(X;Y)=h(Y)-h(Y\\mid X)=h(Y)-h(Z)$",

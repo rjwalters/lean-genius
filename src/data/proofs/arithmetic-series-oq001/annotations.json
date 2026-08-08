@@ -102,7 +102,7 @@
     "id": "ann-qbt-sanity-checks",
     "proofId": "arithmetic-series-oq001",
     "range": { "startLine": 189, "endLine": 222 },
-    "type": "context",
+    "type": "concept",
     "title": "Small-Case Sanity Checks (decide, not native_decide)",
     "content": "Section 5 evaluates the master identity on concrete numbers, each proved by rewriting with the already-established theorem rather than a separate computation. check_n2_q2_x3 verifies the n=2, q=2, x=3 case over ℤ: the product (1+3)(1+3·2) = 4·7 = 28 matches the RHS 1 + [2,1]₂·3 + 2·[2,2]₂·9 = 1 + 9 + 18 = 28, closed by `rw [qBinomialTheorem]`. check_n3_q1_x1 verifies the q=1 collapse (1+1)³ = 8 = ∑ C(3,k) = 1+3+3+1 via `rw [qBinomialTheorem_q_one]`. The trailing docstring summarizes the five sections. Crucially these use `decide`, not `native_decide`, so they add no axioms — the entry remains 0-axiom, 0-sorry, and its verified status is honest.",
     "mathContext": "$n=2,q=2,x=3$: $(1+3)(1+6)=28$; $n=3,q=1,x=1$: $(1+1)^3 = \\sum_k \\binom{3}{k} = 8$.",

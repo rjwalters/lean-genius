@@ -95,7 +95,7 @@
       "startLine": 78,
       "endLine": 82
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity check: D(4) = 9",
     "content": "The closing example verifies numDerangements 4 = 9 by kernel `decide` (not native_decide, so no Lean.ofReduceBool axiom is introduced), grounding the recurrence numerically: 9 = 4·D(3) + (-1)^4 = 4·2 + 1. It simultaneously witnesses the ±1 remainder (9 − 8 = 1) and the modular consequence (9 ≡ 1 ≡ (-1)^4 mod 4). Concretely the derangement counts run 1, 0, 1, 2, 9, 44, 265, … (Mathlib's numDerangements), and D(4) = 9 is the first value large enough to make the +1 correction visibly nontrivial.",
     "mathContext": "$D(4) = 9 = 4\\cdot D(3) + (-1)^4 = 4\\cdot 2 + 1$; and $9 \\equiv 1 \\equiv (-1)^4 \\pmod 4$.",

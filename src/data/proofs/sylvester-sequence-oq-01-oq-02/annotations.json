@@ -27,7 +27,7 @@
     "id": "ann-invariant-step",
     "proofId": "sylvester-sequence-oq-01-oq-02",
     "range": { "startLine": 62, "endLine": 80 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The inductive step: closing a degree-2 bound in ℤ",
     "content": "The self-sustaining step. With $B = 2^{2^k}$ and $a = a_{k+1} \\ge B+1$, one needs $a_{k+2} = a^2 - a + 1 \\ge B^2 + 1 = 2^{2^{k+1}} + 1$. Two Lean-specific moves make this go through: (1) everything is lifted to $\\mathbb{Z}$ via `syl_cast_succ` so that the $-a_n$ term is genuine subtraction rather than truncated $\\mathbb{N}$ subtraction, and (2) $2^{2^{k+1}}$ is rewritten as $B^2$ using `pow_succ` (to get $2^{k+1} = 2^k \\cdot 2$) and `pow_mul`. The degree-2 inequality is then discharged by `nlinarith` with the single hint `sq_nonneg (a - B - 1)` — encoding $(a-B-1)^2 \\ge 0$, which together with $a \\ge B+1$ and $B \\ge 1$ certifies $a^2 - a + 1 \\ge B^2 + 1$. Finally `exact_mod_cast` transports the ℤ result back to ℕ.",
     "mathContext": "$(a-B-1)^2 \\ge 0$ and $a \\ge B+1 \\Rightarrow a^2 - a + 1 \\ge B^2 + B + 1 \\ge B^2 + 1$; with $2^{2^{k+1}} = (2^{2^k})^2 = B^2$.",

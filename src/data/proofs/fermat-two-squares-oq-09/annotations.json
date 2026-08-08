@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Brahmagupta–Fibonacci identity as Gaussian norm multiplicativity",
     "content": "The docstring frames the entry. Fermat's two-square theorem says which *primes* are sums of two squares (p = 2 or p ≡ 1 mod 4); extending that to composites rests on one structural fact — that 'is a sum of two squares' is closed under multiplication. This file formalizes exactly that building block: the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² in both branches, the resulting closure over ℤ and ℕ, and the conceptual source — the identity *is* the multiplicativity of the Gaussian-integer norm N(a+bi) = a²+b². The two branches correspond to multiplying by w versus its conjugate w̄, explaining why a product generically has two distinct representations.",
     "mathContext": "$(a^2+b^2)(c^2+d^2)=(ac-bd)^2+(ad+bc)^2$; equivalently $N(z)N(w)=N(zw)$ for $z=a+bi$, $w=c+di$ in $\\mathbb{Z}[i]$.",
@@ -53,7 +53,7 @@
       "startLine": 60,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sister form: conjugating the second factor gives the other representation",
     "content": "Replacing d by −d yields the sister identity (a²+b²)(c²+d²) = (ac+bd)² + (ad−bc)². Because the two branches use w and its conjugate w̄, they give the (generically two) distinct ways of writing the product as a sum of two squares — e.g. 65 = 1²+8² = 4²+7². Like the first, it is proved by `ring`.",
     "mathContext": "$(a^2+b^2)(c^2+d^2)=(ac+bd)^2+(ad-bc)^2$, obtained via $d\\mapsto -d$; corresponds to multiplying by $\\bar w$.",
@@ -99,7 +99,7 @@
       "startLine": 83,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The classical ℕ statement, bridged to ℤ via natAbs",
     "content": "The textbook statement is about natural numbers. IsSumSqNat n := ∃ a b : ℕ, n = a² + b², and isSumSqNat_iff shows a natural number is a sum of two natural squares iff it is a sum of two integer squares — signs are immaterial since a² = |a|² (`sq_abs` after `Int.natCast_natAbs`). IsSumSqNat.mul then follows from the integer closure by rewriting through the bridge and `push_cast`. This keeps the classical statement honest while reusing the ℤ machinery.",
     "mathContext": "$\\mathrm{IsSumSqNat}(n)\\iff\\mathrm{IsSumSq}(n:\\mathbb{Z})$ via $a^2=|a|^2$; then $\\mathbb{N}$-closure reduces to $\\mathbb{Z}$-closure.",
@@ -148,7 +148,7 @@
       "startLine": 134,
       "endLine": 143
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete verifications: 5·13 = 65 = 1²+8² = 4²+7²",
     "content": "Machine-checked instances make the two branches tangible: 5 = 1²+2² and 13 = 2²+3² multiply to 65, which the two identity branches express as 1²+8² and 4²+7². Each is closed by `decide`. These double as regression tests and illustrate the generic 'two distinct representations' phenomenon that the sister identity produces.",
     "mathContext": "$5\\cdot 13=65$; branch 1 $\\to 1^2+8^2$, branch 2 $\\to 4^2+7^2$.",

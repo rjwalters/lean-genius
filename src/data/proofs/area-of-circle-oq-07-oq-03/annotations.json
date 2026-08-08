@@ -3,7 +3,7 @@
     "id": "imports-and-framing",
     "proofId": "area-of-circle-oq-07-oq-03",
     "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: One Import Carries Both Γ(1/2) and the Gaussian",
     "content": "The single mathematical import is `Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral` — deliberately, because that one module supplies *both* halves of the bridge this entry builds: the Gamma special value `Real.Gamma_one_half_eq` and the parametrized Gaussian integrals `integral_gaussian` / `integral_gaussian_Ioi`. That they live in the same file is itself the point: Mathlib proves `Γ(1/2) = √π` precisely by reducing it, via the substitution `u = x²`, to the Gaussian. Opening `Real` lets `Gamma`, `sqrt`, `exp`, and `pi` appear unqualified; opening `MeasureTheory` brings the Bochner integral `∫` and `Set.Ioi` into scope. The docstring records the open question (oq-03) and its affirmative answer, framing the four theorems that follow as explicit bridges rather than new mathematics.",
     "mathContext": "$\\Gamma(s) = \\int_0^\\infty u^{s-1}e^{-u}\\,du$; the substitution $u = x^2$ sends $\\Gamma(1/2)$ to $2\\int_0^\\infty e^{-x^2}\\,dx = \\int_{\\mathbb{R}} e^{-x^2}\\,dx$.",

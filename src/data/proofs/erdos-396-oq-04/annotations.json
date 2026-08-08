@@ -101,7 +101,7 @@
       "startLine": 118,
       "endLine": 131
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity checks against explicit Catalan values",
     "content": "Three worked examples confirm the results on concrete inputs: C(2·1,1) = 2 = 2·(2·0+1)·catalan 0 (the closed form at n=0), C(6,3) = 20 = 2·(2·2+1)·catalan 2 = 2·5·2 (closed form at n=2, checked by decide), and the recurrence at n=2, (2+2)·catalan 3 = 2·(2·2+1)·catalan 2 i.e. 4·5 = 20. Each reuses the corresponding general theorem (centralBinom_succ_eq, catalan_recurrence) rather than re-deriving, so they double as usage demonstrations.",
     "mathContext": "These #eval-style checks anchor the abstract identities to small numbers, catching off-by-one or factor errors in the 2(2n+1)·catalan n cofactorization and confirming the two-term recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n on a nontrivial instance.",

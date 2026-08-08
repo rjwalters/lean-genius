@@ -31,7 +31,7 @@
       "startLine": 71,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Enumerating the k-th roots as {ζ⁰, …, ζ^{k-1}}",
     "content": "nthRootsFinset_eq_image is the enabling helper: in a domain with a primitive k-th root ζ, the finset of all k-th roots of unity is exactly the image of range k under i ↦ ζⁱ. The forward inclusion uses IsPrimitiveRoot.eq_pow_of_pow_eq_one (every root x with xᵏ=1 is a power of ζ); the reverse checks (ζⁱ)ᵏ = (ζᵏ)ⁱ = 1 by commuting the exponents (pow_mul, mul_comm) and hζ.pow_eq_one. The [DecidableEq R] instance is required only so Finset.image is computable, and NeZero k is supplied from 0 < k. This lemma converts an abstract root set into a concrete indexed power list, which is what lets the next lemma turn the root sum into a geometric series.",
     "mathContext": "$\\{x : x^k = 1\\} = \\{\\zeta^i : 0 \\le i < k\\}$ in a domain with primitive $k$-th root $\\zeta$.",
@@ -102,7 +102,7 @@
       "startLine": 148,
       "endLine": 155
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Field specialization and axiom audit",
     "content": "sum_primitiveRoots_eq_moebius_field is the requested statement over a general field K containing a primitive n-th root of unity — the immediate special case of the integral-domain theorem, since every field is an integral domain, so its proof term is literally sum_primitiveRoots_eq_moebius hζ with no rewriting. This is the payoff of stating the main result over an arbitrary integral domain rather than ℂ: ℂ, finite fields, cyclotomic number fields, and p-adic fields all fall out as instances. The trailing #print axioms directives verify both headline theorems depend only on the foundational trio propext / Classical.choice / Quot.sound — no sorryAx and no Lean.ofReduceBool, so the 0-axiom claim is genuine.",
     "mathContext": "Over a field $K$ with primitive $n$-th root $\\zeta$: $\\sum_{z \\in \\operatorname{primitiveRoots}(n,K)} z = (\\mu(n):K)$, obtained by specializing the integral-domain theorem.",

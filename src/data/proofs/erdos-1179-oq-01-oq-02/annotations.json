@@ -53,7 +53,7 @@
       "startLine": 68,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Analytic Core: log log x = o(log x)",
     "content": "eventually_loglog_lt is the single analytic input: for every ε' > 0, log(log x) < ε'·log x for all large x. The proof takes Mathlib's Real.isLittleO_log_id_atTop (log x = o(x)) and composes it on the right with Real.tendsto_log_atTop (log x → ∞) via IsLittleO.comp_tendsto, yielding log ∘ log = o(log). Unpacking with isLittleO_iff at tolerance ε'/2 gives ‖log(log x)‖ ≤ (ε'/2)·‖log x‖ eventually; combined with log x > 0 (eventually) the norms drop and the strict inequality log(log x) < ε'·log x follows (the ½ slack upgrades ≤ to <). This is the log-versus-identity growth gap applied twice: log t = o(t) with t = log x.",
     "mathContext": "$\\log t = o(t)$ with $t = \\log x$ gives $\\log\\log x = o(\\log x)$.",

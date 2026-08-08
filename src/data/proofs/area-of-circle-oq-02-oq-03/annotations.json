@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Geometric Provenance: Divergence Theorem and Shell Integration",
     "content": "The identity Sₙ = n·Vₙ is the integral form of the divergence theorem applied to the radial vector field x ↦ x on the unit ball: ∫_ball div(x) dV = n·Vₙ equals the outward flux ∫_sphere x·n̂ dS = Sₙ. Equivalently, integrating in spherical shells, Vₙ(r) = ∫₀ʳ Sₙ tⁿ⁻¹ dt, so Sₙ = dVₙ(r)/dr at r=1 = n·Vₙ. This file does not reprove the geometry; it shows that the two independent Gamma closed forms are already in the ratio n:1, so the geometric scaling law is baked into the special-function formulas. The header also fixes the n=0 convention (Γ(0)=0 ⇒ S₀=0) that lets the theorem hold without a hypothesis n≥1.",
     "mathContext": "$\\int_{B^n}\\operatorname{div}(x)\\,dV = n V_n = \\oint_{S^{n-1}} x\\cdot\\hat n\\,dS = S_n$; shells: $V_n=\\int_0^1 S_n\\,r^{n-1}\\,dr = S_n/n$.",
@@ -50,7 +50,7 @@
       "startLine": 66,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Half-Integer Gamma Value Γ(3/2) = √π/2",
     "content": "Every odd-dimensional special value ultimately rests on Γ(1/2) = √π. The helper gamma_three_div_two climbs one rung of the functional equation from there: Γ(3/2) = Γ(1/2 + 1) = (1/2)·Γ(1/2) = √π/2, formalized by rewriting 1/2 + 1 = 3/2 and chaining Real.Gamma_add_one (with 1/2 ≠ 0) with Real.Gamma_one_half_eq. Because Γ takes half-integer arguments at odd n, this single value is what makes V₁ and V₃ (and hence S₁, S₃) computable in closed form; even n instead lands on integer arguments where Γ is a factorial.",
     "mathContext": "$\\Gamma\\!\\left(\\tfrac32\\right) = \\Gamma\\!\\left(\\tfrac12+1\\right) = \\tfrac12\\,\\Gamma\\!\\left(\\tfrac12\\right) = \\tfrac{\\sqrt\\pi}{2}.$",
@@ -72,7 +72,7 @@
       "startLine": 74,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Positivity and the n = 0 Asymmetry",
     "content": "Both closed forms are quotients of a positive power π^(n/2) > 0 by a Gamma value, so positivity reduces to Γ > 0 on the positive reals (Gamma_pos_of_pos). The two lemmas differ exactly at n = 0: the volume denominator is Γ(n/2+1), whose argument n/2+1 ≥ 1 > 0 for every n, so unitBallVolume_pos holds unconditionally; the surface denominator is Γ(n/2), whose argument n/2 is > 0 only when n ≥ 1, so unitSphereSurface_pos carries the hypothesis 1 ≤ n. This is the same n=0 boundary that forces the main identity to treat n=0 separately — there S₀ = 2/Γ(0) = 0, neither positive nor obtained from the functional equation.",
     "mathContext": "$V_n>0$ for all $n$ (arg $\\tfrac n2+1\\ge 1$); $S_n>0$ iff $n\\ge 1$ (arg $\\tfrac n2>0$); $S_0=2/\\Gamma(0)=0$.",

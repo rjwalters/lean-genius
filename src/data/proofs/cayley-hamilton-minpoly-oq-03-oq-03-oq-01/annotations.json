@@ -31,7 +31,7 @@
       "startLine": 68,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Krylov Expansion: p(M)·v as a Linear Combination of Krylov Vectors",
     "content": "The self-contained Krylov toolkit. krylovVec M v k = M^k·v is the Krylov sequence; sum_mulVec shows mulVec distributes over finite sums of matrices; and aeval_mulVec_eq_krylov_sum is the computational bridge: p(M)·v = ∑_{i} p.coeff i • krylovVec M v i. This rewrites the algebraic action of a polynomial at M on v into an explicit linear combination of Krylov vectors with the polynomial's coefficients — the identity that lets coordinate arguments about C^k·e₀ settle both p(C)·e₀ = 0 and the degree bound.",
     "mathContext": "$p(M)v = \\sum_{i=0}^{\\deg p} p_i\\, M^i v$, expressed over $\\mathrm{range}(\\deg p + 1)$; proved by expanding $\\mathrm{aeval}\\,M\\,p$ as $\\sum_i p_i M^i$ and distributing mulVec across the sum.",
@@ -54,7 +54,7 @@
       "startLine": 105,
       "endLine": 163
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Companion Matrix and its Krylov Sequence = Standard Basis",
     "content": "companion p is defined concretely: column j is e_{j+1} (sub-diagonal 1s) for j < n-1, and the last column j = n-1 holds the negated coefficients -p.coeff i. The two theorems establish that e₀ is a cyclic vector: companion_pow_mulVec_e0 proves C^k·e₀ = e_k for k < n (the Krylov sequence IS the standard basis), by induction using the shift action; and companion_pow_natDegree_mulVec_e0 proves C^n·e₀ = -∑ p.coeff i • e_i, the last column that closes the Krylov ladder. This is the precise sense in which 'the Krylov sequence with a cyclic vector produces the companion matrix': in Krylov coordinates the operator is already C.",
     "mathContext": "$C^k e_0 = e_k$ for $k<n$ (Krylov sequence = standard basis) and $C^n e_0 = -\\sum_{i<n} p_i e_i$ (top Krylov vector), the algebraic dependence certifying the minimal polynomial.",
@@ -78,7 +78,7 @@
       "startLine": 164,
       "endLine": 216
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Krylov Recurrence: p(C) = 0",
     "content": "companion_aeval_mulVec_e0 proves p(C)·e₀ = 0: expand p(C)·e₀ as a Krylov sum, note that for i < n the terms give ∑ p.coeff i • e_i, and the top term uses the monic leading coefficient p.coeff n = 1 with C^n·e₀ = -∑ p.coeff i • e_i, so the two cancel. companion_aeval_eq_zero then upgrades this to the matrix identity p(C) = 0 by commuting p(C) past each power C^j (polynomials in C commute) so that p(C)·e_j = C^j·(p(C)·e₀) = 0 on every basis vector.",
     "mathContext": "$p(C)e_0 = \\sum_{i<n} p_i e_i + p_n(-\\sum_{i<n} p_i e_i) = 0$ since $p_n = 1$; then $p(C)e_j = p(C)C^j e_0 = C^j p(C) e_0 = 0$, so $p(C) = 0$.",
@@ -101,7 +101,7 @@
       "startLine": 217,
       "endLine": 293
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "μ_C = χ_C = p: Determinant-Free Nonderogatory Identity",
     "content": "companion_no_low_annihilator is the cyclic-vector degree bound: any q annihilating C with deg q < n forces q(C)·e₀ = ∑ q.coeff i • e_i = 0, so every coefficient of q vanishes and q = 0. Combined with p(C) = 0 (so μ_C | p) and minpoly | annihilator, this gives companion_minpoly: μ_C = p (both monic of degree n). Finally companion_charpoly derives χ_C = p WITHOUT a determinant: χ_C is monic of degree n (charpoly_monic, charpoly_natDegree_eq_dim) and μ_C = p divides χ_C by Cayley–Hamilton (minpoly_dvd_charpoly), so χ_C = p. companion_minpoly_eq_charpoly records that C is nonderogatory (μ_C = χ_C).",
     "mathContext": "Cyclic $\\Rightarrow$ no annihilator of degree $<n$ $\\Rightarrow \\deg\\mu_C \\geq n$; with $\\mu_C \\mid p$ this gives $\\mu_C = p$. Then $\\chi_C$ monic of degree $n$ and $p = \\mu_C \\mid \\chi_C$ force $\\chi_C = p$ — no cofactor expansion of $\\det(XI-C)$.",

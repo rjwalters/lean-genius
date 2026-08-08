@@ -36,7 +36,7 @@
       "startLine": 69,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Conjugation identity conj τ(χ) = τ(χ⁻¹) — proved for every modulus",
     "significance": "supporting",
     "content": "The conjugation identity conj(gaussSum χ ψ) = gaussSum χ⁻¹ ψ⁻¹ is assembled from two unitarity facts already in Mathlib: MulChar.star_apply' (conj(χ a) = χ⁻¹ a, because Dirichlet character values are roots of unity or 0) and conj_stdAddChar (conj of the standard additive character equals its inverse, because stdAddChar a = ↑(toCircle a) lies on the unit circle, via Circle.coe_inv_eq_conj and AddChar.map_neg_eq_inv). Crucially this step holds for every modulus, not just primes — it is deliberately proved in that generality so that only gaussSum_mul_conj carries the prime restriction.",
@@ -66,7 +66,7 @@
       "startLine": 122,
       "endLine": 131
     },
-    "type": "context",
+    "type": "concept",
     "title": "Nonvanishing corollary: τ(χ) ≠ 0",
     "significance": "supporting",
     "content": "gaussSum_ne_zero records the immediate but useful consequence that the Gauss sum of a nontrivial character mod a prime never vanishes. The proof is purely order-theoretic: from norm_gaussSum_eq_sqrt the norm is √p, and √p > 0 because p > 0 (Real.sqrt_pos on the primality-derived positivity Fact p.Prime → p.pos); a zero Gauss sum would force √p = ‖0‖ = 0, contradicting √p > 0. Nonvanishing of Gauss sums is what makes them invertible normalizing factors in the functional equation of Dirichlet L-functions and in the reduction of character sums, so the corollary is the natural downstream hook for the √p bound rather than a mere afterthought.",

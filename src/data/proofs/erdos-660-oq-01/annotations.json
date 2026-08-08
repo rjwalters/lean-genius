@@ -30,7 +30,7 @@
       "startLine": 31,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ordered-field generality and the drop-in `_root_` name",
     "content": "The setup fixes the assumptions at exactly the generality Mathlib uses for both notions: `variable [Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] [AddCommGroup E] [Module 𝕜 E]`. Nothing in the three-line proof uses ℝ-specific structure — only that $\\Bbbk$ is a linearly ordered field and $E$ a module over it — so the lemma holds over any such $\\Bbbk$, not just the reals, matching `AffineIndependent`/`ConvexIndependent`'s own generality. `open scoped Affine` brings the affine-span notation into scope.\n\nA deliberate naming choice makes the result a literal drop-in for the Mathlib gap: the main theorem (line 49) is declared `theorem _root_.AffineIndependent.convexIndependent`, i.e. in the *root* namespace under `AffineIndependent.` rather than inside `Erdos660`. This is what lets a caller write `hp.convexIndependent` in Mathlib's dotted-notation style — exactly the name the TODO asks for — even though the file lives outside Mathlib.",
     "mathContext": "Assumptions: $\\Bbbk$ a linearly ordered field (`Field`, `LinearOrder`, `IsStrictOrderedRing`), $E$ a $\\Bbbk$-module. The `_root_.AffineIndependent.convexIndependent` name enables `hp.convexIndependent` dot-notation.",

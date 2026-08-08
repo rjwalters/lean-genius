@@ -44,7 +44,7 @@
       "startLine": 64,
       "endLine": 87
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Even-Indexed Sum via a Subtraction-Free Engine",
     "content": "lucas_even_sum_add_one proves (∑_{k=1}^{n} L_{2k}) + 1 = L_{2n+1} by induction on n. The base case is 0 + 1 = L_1 = 1 (decide). In the step, Finset.sum_range_succ peels off the new term L_{2n+2}; the index 2*(n+1)+1 is rewritten to 2*n+3 so the opaque lucas atoms line up, and the recurrence L_{2n+3} = L_{2n+1} + L_{2n+2} lets omega combine the new term with the inductive hypothesis. The headline lucas_even_sum : ∑ L_{2k} = L_{2n+1} − 1 is then read off by omega, the ℕ truncated subtraction being exact since L_{2n+1} ≥ 1.",
     "mathContext": "$\\left(\\sum_{k=1}^n L_{2k}\\right)+1 = L_{2n+1}$, hence $\\sum_{k=1}^n L_{2k} = L_{2n+1}-1$.",
@@ -64,7 +64,7 @@
       "startLine": 91,
       "endLine": 114
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Odd-Indexed Sum via the Same Engine",
     "content": "lucas_odd_sum_add_two proves (∑_{k=1}^{n} L_{2k−1}) + 2 = L_{2n} by the same induction, base 0 + 2 = L_0 = 2. In the step the new term L_{2n+1} combines with the inductive hypothesis via L_{2n+2} = L_{2n} + L_{2n+1} (after rewriting 2*(n+1) to 2*n+2). The headline lucas_odd_sum : ∑ L_{2k−1} = L_{2n} − 2 follows by omega, exact since L_{2n} ≥ 2. The boundary constants 1 (even) and 2 (odd) are precisely the Lucas values L_1 and L_0 that the two partial sums leave behind.",
     "mathContext": "$\\left(\\sum_{k=1}^n L_{2k-1}\\right)+2 = L_{2n}$, hence $\\sum_{k=1}^n L_{2k-1} = L_{2n}-2$.",
@@ -83,7 +83,7 @@
       "startLine": 116,
       "endLine": 140
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "The Alternating Sum Closes in Lucas Terms Alone",
     "content": "lucas_alt_sum proves ∑_{k=0}^{n+1} (−1)^k L_k = (−1)^{n+1} L_n + 3 over ℤ — the subtraction-free shifted form of ∑_{k=0}^{m} (−1)^k L_k = (−1)^m L_{m−1} + 3. The signs force the integer setting. In the induction step the two new sign-weighted terms collapse via the cast recurrence L_{n+2} = L_n + L_{n+1} together with (−1)^{n+2} = (−1)^n and (−1)^{n+1} = −(−1)^n; after these rewrites ring closes the goal. The striking feature is that the closed form is Lucas-only: no Fibonacci remainder survives, because the telescoping tail L_{n+2} − L_n equals L_{n+1}.",
     "mathContext": "$\\sum_{k=0}^m (-1)^k L_k = (-1)^m L_{m-1}+3$; e.g. $2-1+3-4+7 = 7 = L_3+3$.",

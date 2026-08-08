@@ -89,7 +89,7 @@
       "startLine": 119,
       "endLine": 142
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Requested Ω((log N)²) Lower-Bound Family",
     "content": "**Three corollaries of the closed form.** `binaryGcdCost_two_pow_diag_lower`: $k^2 \\le \\mathtt{binaryGcdCost}(2^k,2^k)$ — rewrite by the closed form, then `nlinarith [sq_nonneg k]` on $k^2 \\le (k+1)(k+2)$. `binaryGcdCost_diag_log_lower`: $(\\log_2(2^k))^2 \\le \\mathtt{binaryGcdCost}(2^k,2^k)$ — rewrite $\\log_2(2^k) = k$ via `Nat.log_pow`, then the floor. `binaryGcdCost_omega_log_sq`: the explicit witnesses $a = b = 2^k$ with $\\log_2 a = \\log_2 b = k$ and cost $\\ge k^2$, the input family the open question asked for.",
     "mathContext": "On exact powers of two no size/log inequality is needed: $\\log_2(2^k) = k$ exactly, so the clean $k^2$ floor *is* the $(\\log_2 N)^2$ lower bound for $N = 2^k$.",
@@ -116,7 +116,7 @@
       "startLine": 144,
       "endLine": 167
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Two-Sided Θ((log N)²) Squeeze",
     "content": "**Both bounds at once.** `binaryGcdCost_diag_two_sided`: with $L = \\log_2 a + \\log_2 b$, on $a = b = 2^k$ the cost satisfies $(L/2)^2 \\le \\mathtt{binaryGcdCost}\\,a\\,b \\le (2L+2)(L+2)$. The lower half uses $L = 2k$ so $L/2 = k$ (`omega`) and the $k^2$ floor; the upper half is the parent `binaryGcdCost_le_quadratic` specialised to $a = b = 2^k$. Both sides are quadratic in $L$, exhibiting $\\Theta(L^2) = \\Theta((\\log N)^2)$ directly.",
     "mathContext": "The parent's $O((\\log N)^2)$ ceiling and this entry's $\\Omega((\\log N)^2)$ floor coincide in order on the diagonal family — the quadratic total-cost model is asymptotically tight, not a loose over-estimate.",
@@ -144,7 +144,7 @@
       "startLine": 168,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Part 2: A Coprime Worst Case Through the Subtraction Branch",
     "content": "**Why a second family?** Part 1's diagonal $a=b=2^k$ certifies $\\Omega((\\log N)^2)$, but every step there is an even/even *halving* and $\\gcd(a,b)=N$ itself — a critic could object that the genuinely hard, coprime case was never exhibited. This section (recovered from draft PR #32737) runs the all-ones odd number $N = 2^{k+1}-1$ against $b=1$: both operands stay odd, so **every** reduction takes the subtract-then-halve branch $(2^{m+1}-1,\\,1) \\to (2^m-1,\\,1)$ at cost $\\mathtt{size}(2^{m+1}-1) + \\mathtt{size}(1) = m+2$. Summing the arithmetic progression yields the exact division-free closed form $$2\\cdot\\mathtt{binaryGcdCost}(2^{k+1}-1,\\,1) = (k+1)(k+4),$$ proved by a two-lemma recursion (`cost_base`, `cost_step`) plus induction (`cost_family`). Since $\\log_2(2^{k+1}-1)=k$, this gives $(\\log_2 N)^2 \\le 2\\cdot\\mathtt{binaryGcdCost}(N,1)$ (`binaryGcdCost_omega_lower`) and, paired with the parent's upper bound, a two-sided $\\Theta((\\log N)^2)$ squeeze on a $\\gcd$-$1$ family (`binaryGcdCost_family_matching`). The `#print axioms` audit lines at the end confirm every headline theorem of both parts depends only on `propext`, `Classical.choice`, `Quot.sound`."
   }

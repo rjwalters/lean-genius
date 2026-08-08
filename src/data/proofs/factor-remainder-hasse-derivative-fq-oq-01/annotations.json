@@ -75,7 +75,7 @@
     "id": "ann-realizations",
     "proofId": "factor-remainder-hasse-derivative-fq-oq-01",
     "range": { "startLine": 172, "endLine": 188 },
-    "type": "example",
+    "type": "concept",
     "title": "Both regimes realized: X^p (unbounded) and X − a (exact)",
     "content": "overcount_X_pow: over a characteristic-p field every ordinary derivative of X^p vanishes at 0, while its true multiplicity there is p — the unbounded regime (m = p ≥ p). exact_X_sub_C: for a linear factor X − a, (derivative^[0] (X − a))(a) = 0 but (derivative^[1] (X − a))(a) = 1 ≠ 0, so the ordinary test certifies exactly 1 = the true multiplicity — the exact regime (m = 1 < p). Together they show both sides of the dichotomy are attained by concrete polynomials.",
     "mathContext": "$X^p$: $\\mathrm{rootMultiplicity}\\,0 = p$ yet all ordinary derivatives vanish at $0$. $X - a$: certified $= 1 = $ true multiplicity.",

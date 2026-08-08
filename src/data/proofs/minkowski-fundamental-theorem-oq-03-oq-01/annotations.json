@@ -64,7 +64,7 @@
     "id": "ann-reduction",
     "proofId": "minkowski-fundamental-theorem-oq-03-oq-01",
     "range": { "startLine": 82, "endLine": 104 },
-    "type": "key-step",
+    "type": "insight",
     "title": "Reducing the volume hypothesis to the Blichfeldt input",
     "content": "The statement of vanDerCorput and the first proof step. Using measure_half_smul, the hypothesis k • (μF · 2ⁿ) < μs is transformed into k • μF < μ(½s): multiplying the target inequality through by the finite, nonzero factor 2ⁿ and cancelling with ENNReal.mul_lt_mul_iff_left recovers exactly the volume excess consumed by the parent's Blichfeldt engine. This is where the 2ⁿ factor characteristic of Minkowski-type theorems is absorbed.",
     "mathContext": "$k\\,\\mu F\\cdot 2^n < \\mu s \\iff k\\,\\mu F < (2^n)^{-1}\\mu s = \\mu(\\tfrac12 s).$",

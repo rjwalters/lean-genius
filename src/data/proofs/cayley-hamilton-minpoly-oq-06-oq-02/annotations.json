@@ -30,7 +30,7 @@
       "startLine": 56,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nilpotent elements are integral",
     "content": "`isIntegral_of_isNilpotent` observes that a nilpotent $x$ (with $x^m = 0$) is a root of the monic polynomial $X^m$, so it is integral over the base field $K$. Integrality is exactly what makes the minimal polynomial monic — the hypothesis that later lets `eq_of_monic_of_associated` pin the divisor down to an exact power rather than merely up to a unit.",
     "mathContext": "$x^m = 0 \\implies X^m$ is a monic annihilator $\\implies$ `IsIntegral K x` $\\implies$ $\\text{minpoly}\\,K\\,x$ is monic.",
