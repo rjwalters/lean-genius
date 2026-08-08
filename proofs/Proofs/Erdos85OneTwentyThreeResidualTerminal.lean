@@ -3209,6 +3209,68 @@ theorem degree_sixteen_zeroLayer_used_component_cycleCover
       ((secondOrderDefectGraph G).connectedComponentMk z)
       u v huinj hvinj huRange hvRange huD hvD hone
 
+/-- In the four-layer branch every used defect cycle chooses one of the five
+minimum `C₃` components as its owner.  Relative to arbitrary cyclic labels,
+the corresponding incidence block is a globally oriented cyclic cover; it
+is therefore determined by the owner, an offset, and one orientation bit. -/
+theorem degree_sixteen_fourLayer_used_component_cycleCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (huinj : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let e := D.connectedComponentMk z
+    ∃ c : D.ConnectedComponent,
+      c.supp.ncard = 3 ∧
+      componentQuotientMatrix G D e c = 1 ∧
+      3 * componentQuotientMatrix G D c e = e.supp.ncard ∧
+      ∃ f : ZMod e.supp.ncard → ZMod c.supp.ncard,
+        (∀ x y, G.Adj (u c x) (u e y) ↔ x = f y) ∧
+        ((∀ y, f (y + 1) = f y + 1) ∨
+          (∀ y, f (y + 1) = f y - 1)) := by
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let e := D.connectedComponentMk z
+  have hbase : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  obtain ⟨c, hc, hone, hratio⟩ :=
+    degree_sixteen_minimumLayer_used_component_quotient_entries
+      G hfree hmin hcard c₀ hc₀min z hz
+  obtain ⟨f, hf, horient⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        (r := c.supp.ncard) (n := e.supp.ncard) (hℓ3 c) (hℓ3 e)
+        c e (u c) (u e) (huinj c) (huinj e) (huRange c) (huRange e)
+        (huD c) (huD e) hone
+  refine ⟨c, hc.trans hbase, hone, ?_, f, hf, horient⟩
+  simpa [hc, hbase] using hratio
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
