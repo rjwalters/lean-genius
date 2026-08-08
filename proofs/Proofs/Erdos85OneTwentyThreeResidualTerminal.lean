@@ -948,6 +948,59 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- Correct row-by-row used-exterior split at `d=16,s=4`: an owned point
+has one neighbor in every child-nonadjacent exterior row, including exactly
+one in its own row, and none in a child-adjacent row. -/
+theorem degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u ∩ G.neighborFinset y).card =
+      if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
+        then 0 else 1 := by
+  rw [Finset.inter_comm]
+  exact minimumLayer_externalBlock_card_of_owned
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild) u v hyv
+
+/-- In particular, every used exterior row is internally one-regular. -/
+theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ v ∩ G.neighborFinset y).card = 1 := by
+  rw [degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+    G hfree hmin hcard c₀ hregChild hcardChild v v hyv]
+  simp
+
 /-- A service point through a fixed orphan lies in a four-orphan block, so
 after deleting the fixed orphan it supplies exactly three covered partners. -/
 theorem degree_sixteen_fourLayer_service_partner_block_card_eq_three
@@ -1892,6 +1945,68 @@ theorem degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
     exact Finset.notMem_empty y hyMem
   · exact degree_sixteen_fourLayer_uncovered_orphans_defect_adj
       G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
+
+/-- Complementary form of the exact leave law: every non-defect orphan
+pair occurs together at one unique service point in one unique row. -/
+theorem degree_sixteen_fourLayer_nondefect_orphans_unique_service
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : z ≠ z')
+    (hnotD : ¬(secondOrderDefectGraph G).Adj z z') :
+    ∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∃ y : V,
+      y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u ∧
+      G.Adj z y ∧ G.Adj z' y ∧
+      ∀ v : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∀ y' : V,
+        y' ∈ minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀ v →
+        G.Adj z y' → G.Adj z' y' → v = u ∧ y' = y := by
+  classical
+  have hcollision : ¬(∀ u : minimumLayerVertex
+      (secondOrderDefectGraph G) c₀,
+      ∀ y ∈ minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u,
+        ¬(G.Adj z y ∧ G.Adj z' y)) := by
+    intro hnone
+    exact hnotD ((degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz').mpr hnone)
+  push_neg at hcollision
+  obtain ⟨u, y, hyE, hzy, hz'y⟩ := hcollision
+  refine ⟨u, y, hyE, hzy, hz'y, ?_⟩
+  intro v y' hy'E hzy' hz'y'
+  have huv := degree_sixteen_fourLayer_shared_service_row_unique
+    G hfree hmin hcard c₀ hregChild hcardChild hzz'
+      hyE hzy hz'y hy'E hzy' hz'y'
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hzz'
+  have hyMem : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hzy,
+        (G.mem_neighborFinset z' y).mpr hz'y⟩
+  have hy'Mem : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hzy',
+        (G.mem_neighborFinset z' y').mpr hz'y'⟩
+  exact ⟨huv.symm, Finset.card_le_one.mp hcommon y' hy'Mem y hyMem⟩
 
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
