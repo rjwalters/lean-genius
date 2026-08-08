@@ -1,10 +1,41 @@
 # Research State: combinations-formula-oq-03-oq-04
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (BLOCKED at elementary ceiling)
 **Path**: full
 **Since**: 2026-07-09T16:03:14-07:00
-**Iteration**: 8
+**Iteration**: 9
+
+## Status (S9, researcher-3, 2026-08-03) — BLOCKED: administrative close-out, no proof changes
+
+Triage-only session. The pool re-served this problem (status was `available`;
+a prior `release` had reset it — known claim-script behavior), but S7's wall
+stands unchanged and no materially new mechanism is on offer, so per the
+blocked-route enforcement no k=5 (or interior) proof work was attempted and
+no conditional filler lemma was added.
+
+What this session changed:
+
+- **Structured blocked-route registry** (issue #38388 shape): the tracker's
+  `currentState` was a non-standard prose string carrying the S7 analysis but
+  no machine-readable `blockers` array. Migrated to the standard object
+  (`phase/since/iteration/focus/blockers/nextAction/attemptCounts`) with three
+  structured entries: (1) the k=5 band-dominance route (reopen bar: near-center
+  increment GROWTH control, 2026-07-24), (2) the n-independent ramp for k ≥ 3
+  (2026-07-20), (3) the general interior sl₂/O'Hara route (blocked as
+  BUILD > 1000 lines — a multi-session project, not a session target).
+- **Stale nextSteps pruned**: degree/nonnegativity/extreme coefficients and the
+  full coefficient-array symmetry are already in the file
+  (`qBinom_X_natDegree`, `qBinom_X_coeff_nonneg`, `qBinom_X_extreme_coeffs`,
+  `qBinom_X_coeff_symm`); the k=3 box-binding-tail step was closed in S5.
+- **Pool status flipped to `blocked`** (terminal, not claimable) so single-session
+  researchers stop burning claims on a problem whose only live route is a
+  deliberate long-horizon formalization project. Tracker top-level `status`
+  set to `blocked` to match.
+
+Reopen path: a dedicated multi-session O'Hara (1990) formalization project —
+the most formalization-friendly route per problem.md — or sl₂/Proctor (1982)
+if Mathlib gains the machinery. Either requires operator/seeker sign-off.
 
 ## Status (S8, researcher-1, 2026-07-24) — k = 4 CLOSED: exact solution of the two-point band recursion
 
@@ -97,14 +128,12 @@ Both 0-axiom / 0-sorry, host-verified (`lake env lean` exit 0, axioms
 `[propext, Classical.choice, Quot.sound]`).
 
 ## Next Action
-The elementary per-k ladder has now closed k ∈ {0,1,2,3,4} and codim ≤ 4. A k=5
-session should FIRST check whether the band analysis extends: derive the 2/3-point
-band structure for `5×N` boxes, express the reflected increments via the k=4 band
-solution (`u = δ`, `v = 0`), and see whether the resulting linear recursion again
-has a closed solution. If the interior near-center k=4 increments (not covered by
-`u = δ`) are needed, that is the wall — record it as the blocked-route extension
-and stop. The general interior `5 ≤ k ≤ n−5` remains sl₂/O'Hara territory
-(existing blocked-route entry: "materially new mechanism required").
+NONE claimable in a single session (S9, 2026-08-03). The k=5 feasibility check
+this section previously mandated was RUN in S7 (2026-07-24): the band analysis
+does not extend, and the wall is the band dominance
+`e₄,N(j−(N+1)) ≥ d₅,N(5N−1−j)` — see the structured `currentState.blockers`
+entries in the tracker JSON for the reopen bars. Pool status is `blocked`.
+Reopening means a deliberate multi-session sl₂/O'Hara foundational build.
 
 ## --- S1 template (never filled) below ---
 

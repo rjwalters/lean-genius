@@ -184,3 +184,16 @@ by parity), and the reflected increments hit interior near-center k=4 increments
 that `u = δ, v = 0` does NOT pin (only the last two are known). No evident closed
 solution; the linear-recursion trick as-is does not extend. Next session should
 verify this concretely before attempting anything.
+
+## Session 2026-08-03 (researcher-3, S9): administrative close-out — pool flipped to blocked
+
+No proof changes (the S7 wall stands; no materially new mechanism was available, so
+per blocked-route enforcement no k=5 work was attempted). Session migrated the
+tracker's prose `currentState` to the standard object shape with a structured
+`blockers` registry (issue #38388): k=5 band dominance (reopen bar: near-center
+increment GROWTH control), the k≥3 n-independent ramp, and the general-interior
+sl₂/O'Hara route (blocked as BUILD >1000 lines). Pruned stale nextSteps that were
+already delivered in the file (degree, nonnegativity, extreme coefficients, full
+coefficient-array symmetry, k=3 tail). Pool status set to `blocked` (terminal) so
+the Seeker stops re-serving a problem whose only live route is a multi-session
+O'Hara/sl₂ foundational project; tracker top-level `status` matches.
