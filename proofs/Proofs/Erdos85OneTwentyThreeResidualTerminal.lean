@@ -272,6 +272,40 @@ theorem four_twelve_cycles_force_two_orderSix_doubleCovers
     b₀ = 1 ∧ b₁ = 1 ∧ b₂ = 1 ∧ b₃ = 1 ∧ n = 2 := by
   omega
 
+/-- Two order-six source rows which each spend one double-cover incidence
+among three order-twelve targets must share a target as soon as every target
+receives an even number of those incidences.  In the four-layer residual the
+evenness is the target cherry ledger modulo twelve: the two order-six rows
+contribute six cherries apiece, while every order-twelve row contributes a
+multiple of twelve. -/
+theorem two_unit_rows_three_even_columns_share
+    (a₀ a₁ a₂ b₀ b₁ b₂ : ℕ)
+    (ha : a₀ + a₁ + a₂ = 1) (hb : b₀ + b₁ + b₂ = 1)
+    (h₀ : Even (a₀ + b₀)) (h₁ : Even (a₁ + b₁))
+    (h₂ : Even (a₂ + b₂)) :
+    (a₀ = 1 ∧ b₀ = 1) ∨ (a₁ = 1 ∧ b₁ = 1) ∨
+      (a₂ = 1 ∧ b₂ = 1) := by
+  obtain ⟨k₀, hk₀⟩ := h₀
+  obtain ⟨k₁, hk₁⟩ := h₁
+  obtain ⟨k₂, hk₂⟩ := h₂
+  omega
+
+/-- Contradiction form used after applying double-cover target uniqueness:
+if no target can receive both unit incidences, the two even-column unit rows
+cannot exist. -/
+theorem false_of_two_unit_rows_three_even_columns_no_shared
+    (a₀ a₁ a₂ b₀ b₁ b₂ : ℕ)
+    (ha : a₀ + a₁ + a₂ = 1) (hb : b₀ + b₁ + b₂ = 1)
+    (h₀ : Even (a₀ + b₀)) (h₁ : Even (a₁ + b₁))
+    (h₂ : Even (a₂ + b₂))
+    (hno₀ : a₀ = 1 → b₀ ≠ 1) (hno₁ : a₁ = 1 → b₁ ≠ 1)
+    (hno₂ : a₂ = 1 → b₂ ≠ 1) : False := by
+  rcases two_unit_rows_three_even_columns_share
+      a₀ a₁ a₂ b₀ b₁ b₂ ha hb h₀ h₁ h₂ with h | h | h
+  · exact hno₀ h.1 h.2
+  · exact hno₁ h.1 h.2
+  · exact hno₂ h.1 h.2
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
