@@ -580,6 +580,62 @@ theorem degree_sixteen_component_card_dvd_three_of_zero_equal_or_three
     push_cast
     ring
 
+/-- The orders of the defect components selected by a component-closed
+finite vertex cell sum to the cardinality of that cell.  This is the generic
+bridge from the graph partition to the finite integer partition used below. -/
+theorem sum_component_sizes_filter_eq_card_of_component_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent]
+    (S : Finset V)
+    (hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ S ↔ componentRepresentative D c ∈ S)) :
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ S), c.supp.ncard) = S.card := by
+  classical
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ S)
+  let F := fun c : D.ConnectedComponent => c.supp.toFinite.toFinset
+  have hpair : (↑C : Set D.ConnectedComponent).PairwiseDisjoint F := by
+    intro c hc e he hce
+    change Disjoint (F c) (F e)
+    rw [Finset.disjoint_left]
+    intro z hzc hze
+    have hzc' : z ∈ c.supp := by simpa [F] using hzc
+    have hze' : z ∈ e.supp := by simpa [F] using hze
+    have hcz : D.connectedComponentMk z = c :=
+      (ConnectedComponent.mem_supp_iff c z).mp hzc'
+    have hez : D.connectedComponentMk z = e :=
+      (ConnectedComponent.mem_supp_iff e z).mp hze'
+    exact hce (hcz.symm.trans hez)
+  have hunion : C.biUnion F = S := by
+    ext z
+    constructor
+    · intro hz
+      obtain ⟨c, hcC, hzc⟩ := Finset.mem_biUnion.mp hz
+      have hrep : componentRepresentative D c ∈ S :=
+        (Finset.mem_filter.mp hcC).2
+      have hzSupp : z ∈ c.supp := by simpa [F] using hzc
+      exact (hclosed c z hzSupp).mpr hrep
+    · intro hzS
+      let c := D.connectedComponentMk z
+      have hzc : z ∈ c.supp := by simp [c]
+      have hrep : componentRepresentative D c ∈ S :=
+        (hclosed c z hzc).mp hzS
+      apply Finset.mem_biUnion.mpr
+      refine ⟨c, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrep⟩, ?_⟩
+      simpa [F] using hzc
+  calc
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+        componentRepresentative D c ∈ S), c.supp.ncard) =
+        ∑ c ∈ C, (F c).card := by
+          apply Finset.sum_congr rfl
+          intro c hc
+          simpa [C, F] using
+            (Set.ncard_eq_toFinset_card c.supp c.supp.toFinite)
+    _ = (C.biUnion F).card := (Finset.card_biUnion hpair).symm
+    _ = S.card := congrArg Finset.card hunion
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
