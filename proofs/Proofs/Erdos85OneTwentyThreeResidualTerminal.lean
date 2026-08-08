@@ -215,6 +215,48 @@ theorem twelve_thirtysix_weighted_row_signature_of_no_two
   · omega
   · exact h
 
+/-- Generic bookkeeping for a component family whose quotient row values
+lie in `{0,1,2,3,4}`.  Stratifying by the row value converts total mass,
+edge mass, and cherry mass into the five weighted ledger equations. -/
+theorem weighted_quotient_zero_four_stratification
+    {α : Type*} [DecidableEq α]
+    (C : Finset α) (w q : α → ℕ)
+    (hq : ∀ c ∈ C, q c ≤ 4)
+    (M E P : ℕ)
+    (hmass : ∑ c ∈ C, w c = M)
+    (hedges : ∑ c ∈ C, w c * q c = E)
+    (hcherries : ∑ c ∈ C, w c * (q c).choose 2 = P) :
+    let S := fun a : ℕ => ∑ c ∈ C, if q c = a then w c else 0
+    S 0 + S 1 + S 2 + S 3 + S 4 = M ∧
+      S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4 = E ∧
+      S 2 + 3 * S 3 + 6 * S 4 = P := by
+  classical
+  dsimp only
+  let S := fun a : ℕ => ∑ c ∈ C, if q c = a then w c else 0
+  have hmassParts : S 0 + S 1 + S 2 + S 3 + S 4 =
+      ∑ c ∈ C, w c := by
+    simp only [S, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c hc
+    have hcq := hq c hc
+    interval_cases hqc : q c <;> simp [hqc, Nat.mul_comm]
+  have hedgeParts : S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4 =
+      ∑ c ∈ C, w c * q c := by
+    simp only [S, Finset.mul_sum, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c hc
+    have hcq := hq c hc
+    interval_cases hqc : q c <;> simp [hqc, Nat.mul_comm]
+  have hcherryParts : S 2 + 3 * S 3 + 6 * S 4 =
+      ∑ c ∈ C, w c * (q c).choose 2 := by
+    simp only [S, Finset.mul_sum, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c hc
+    have hcq := hq c hc
+    interval_cases hqc : q c <;> norm_num [hqc, Nat.choose, Nat.mul_comm]
+  exact ⟨hmassParts.trans hmass, hedgeParts.trans hedges,
+    hcherryParts.trans hcherries⟩
+
 /-- Capacity certificate eliminating the five externally enumerated
 weighted signatures for the symmetric `(24,24)` branch.  Here `n₁`, `n₃`,
 and `n₈₂` count reduced-order-eight rows of types `1`, `3`, and `2`, while
