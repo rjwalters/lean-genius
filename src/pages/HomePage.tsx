@@ -12,7 +12,7 @@ import { groupListings } from '@/lib/oq-group'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
-import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
+import { buildHaystacks, buildSortKeys, compareTitles, normalizeSearchText, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'updated'
@@ -71,6 +71,9 @@ export function HomePage() {
       listing.title,
       searchIndex?.[listing.slug] ?? listing.description,
       ...listing.tags,
+      // The slug is the identifier users see in the URL ("erdos-85"), so it
+      // must be searchable; normalization turns it into "erdos 85".
+      listing.slug,
     ]),
     [listings, searchIndex]
   )
@@ -82,8 +85,8 @@ export function HomePage() {
   const proofs = useMemo(() => {
     let filtered: ProofListing[] = listings ?? []
 
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
+    const query = normalizeSearchText(searchQuery)
+    if (query) {
       filtered = filtered.filter((listing) => haystacks.get(listing.slug)?.includes(query))
     }
 
