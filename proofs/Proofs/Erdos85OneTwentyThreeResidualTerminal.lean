@@ -110,6 +110,44 @@ theorem false_of_centers_four_neighbors
   rw [hsum]
   exact hcount
 
+/-- Uniform restricted-cherry obstruction for a center set whose vertices
+each have exactly three neighbors in the endpoint set. -/
+theorem false_of_centers_three_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hcount : B.card.choose 2 < A.card * 3)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 3) : False := by
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G A B
+  have hsum :
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+        A.card * 3 := by
+    calc
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+          ∑ _a ∈ A, 3 := by
+            apply Finset.sum_congr rfl
+            intro a ha
+            rw [hdegree a ha]
+            norm_num [Nat.choose]
+      _ = A.card * 3 := by simp
+  rw [hsum]
+  exact hcount
+
+/-- Six vertices cannot each have three neighbors in the same six-vertex
+set in a `C₄`-free graph: the resulting eighteen restricted cherries exceed
+the fifteen endpoint pairs. -/
+theorem false_of_six_centers_three_neighbors_in_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hAcard : A.card = 6) (hBcard : B.card = 6)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 3) : False := by
+  apply false_of_centers_three_neighbors G hfree A B
+  · rw [hAcard, hBcard]
+    norm_num [Nat.choose]
+  · exact hdegree
+
 /-- The small numerical instance first exposed by the rigid `(8,40)`
 four-layer transport branch. -/
 theorem false_of_six_centers_four_neighbors_in_eight
@@ -780,6 +818,62 @@ theorem minimumLayer_orphan_used_exterior_neighbor_card
         z hzOutside hzUnused u
   simp_rw [hservice]
   simpa [D] using hcardChild
+
+/-- In the zero-layer branch every orphan has exactly three neighbors in
+the used exterior, one in each of the three owner rows. -/
+theorem degree_sixteen_zeroLayer_orphan_used_exterior_neighbor_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset z).card = 3 := by
+  simpa using minimumLayer_orphan_used_exterior_neighbor_card
+    G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild) z hzOutside hzUnused
+
+/-- In the two-layer branch every orphan has exactly five neighbors in the
+used exterior, one in each row owned by the minimum `C₅`. -/
+theorem degree_sixteen_twoLayer_orphan_used_exterior_neighbor_card_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset z).card = 5 := by
+  simpa using minimumLayer_orphan_used_exterior_neighbor_card
+    G hfree (d := 16) (s := 2) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild) z hzOutside hzUnused
 
 /-- At ambient degree sixteen, the exact one-service-per-child-row law
 leaves `16 - |U|` nonservice neighbors at every orphan, uniformly in the
@@ -1729,6 +1823,66 @@ theorem degree_sixteen_minimumLayer_used_exterior_orphan_degree
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- In the zero-layer branch every used-exterior vertex has exactly twelve
+orphan neighbors.  This is the row sum used by the component-quotient
+enumerator: the remaining four neighbors consist of its unique `U₃` owner
+and one point in each of the three used-exterior owner rows. -/
+theorem degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 12 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_orphan_degree
+    G hfree (s := 0) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
+
+/-- In the two-layer branch every used-exterior vertex again has exactly
+twelve orphan neighbors.  Its other four neighbors are its unique `U₅`
+owner and one point in each of the three child rows nonadjacent to that
+owner. -/
+theorem degree_sixteen_twoLayer_used_exterior_orphan_degree_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 12 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_orphan_degree
+    G hfree (s := 2) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
+
 /-- The first adjacency image of the orphan indicator, written on the three
 residual cells.  This packages the exact quotient column for `O`. -/
 theorem degree_sixteen_minimumLayer_adjMatrix_mulVec_orphanIndicator
@@ -1951,6 +2105,59 @@ theorem degree_sixteen_minimumLayer_used_exterior_neighbor_card
   apply Finset.sum_congr rfl
   intro u _hu
   by_cases huv : H.Adj u v <;> simp [huv]
+
+/-- In the zero-layer branch each used-exterior vertex has exactly three
+neighbors in the used exterior. -/
+theorem degree_sixteen_zeroLayer_used_exterior_neighbor_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset y).card = 3 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_neighbor_card
+    G hfree (s := 0) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
+
+/-- In the two-layer branch each used-exterior vertex also has exactly
+three neighbors in the used exterior: one in each child row nonadjacent to
+its owner on the minimum `C₅`. -/
+theorem degree_sixteen_twoLayer_used_exterior_neighbor_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset y).card = 3 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_neighbor_card
+    G hfree (s := 2) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
 
 /-- The first adjacency image of the used-exterior indicator, i.e. the
 `R`-column of the three-cell quotient. -/
