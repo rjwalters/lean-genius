@@ -9901,6 +9901,290 @@ theorem degree_sixteen_fourLayer_twentyfour_twentyfour_count_decomposition
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild
         o₁ o₂ hne ho₁ ho₂ hpair e (Finset.mem_filter.mp he).2).2.2 hq
 
+/-- At most one used order-twelve component can double-cover a fixed
+order-twenty-four orphan component. -/
+theorem degree_sixteen_fourLayer_twentyfour_order_twelve_double_cover_count_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 24) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    (C.filter fun e ↦ componentQuotientMatrix G D e o = 2 ∧
+      e.supp.ncard = 12).card ≤ 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  apply Finset.card_le_one.mpr
+  intro c₁ hc₁ c₂ hc₂
+  have hc₁Data := (Finset.mem_filter.mp hc₁).2
+  have hc₂Data := (Finset.mem_filter.mp hc₂).2
+  have hone₁ : componentQuotientMatrix G D o c₁ = 1 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ o
+    dsimp only [D] at hbal ⊢
+    rw [hc₁Data.2, hc₁Data.1, ho] at hbal
+    omega
+  have hone₂ : componentQuotientMatrix G D o c₂ = 1 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ o
+    dsimp only [D] at hbal ⊢
+    rw [hc₂Data.2, hc₂Data.1, ho] at hbal
+    omega
+  apply secondOrder_multipleCover_target_source_unique_of_orders
+    G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+      (by norm_num) c₁ c₂ o
+  · omega
+  · omega
+  · exact hone₁
+  · exact hone₂
+
+/-- Across all five minimum-component owner bins, there are at most five
+used defect components of order twenty-four.  Each 36-vertex bin contains at
+most one such component. -/
+theorem degree_sixteen_fourLayer_used_order_twentyfour_count_le_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    (C.filter fun e ↦ e.supp.ncard = 24).card ≤ 5 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion Erow
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let X := fun a : minimumLayerComponent D c₀ ↦
+    Finset.univ.filter (fun x : minimumLayerVertex D c₀ ↦ x.1 = a)
+  let B := fun a : minimumLayerComponent D c₀ ↦ (X a).biUnion Erow
+  let E := fun a : minimumLayerComponent D c₀ ↦
+    Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ B a)
+  let T := C.filter fun e ↦ e.supp.ncard = 24
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have howners : Fintype.card (minimumLayerComponent D c₀) = 5 := by
+    have hv := card_minimumLayerVertex D c₀
+    have hsub : Fintype.card (minimumLayerComponent D c₀) =
+        (Finset.univ.filter
+          (fun c : D.ConnectedComponent ↦ c.supp.ncard = c₀.supp.ncard)).card := by
+      exact Fintype.card_subtype
+        (fun c : D.ConnectedComponent ↦ c.supp.ncard = c₀.supp.ncard)
+    rw [hc₀three] at hsub
+    rw [hcardChild, hc₀three, ← hsub] at hv
+    omega
+  have hbin : ∀ a : minimumLayerComponent D c₀,
+      ((E a).filter fun e ↦ e.supp.ncard = 24).card ≤ 1 := by
+    intro a
+    apply Finset.card_le_one.mpr
+    intro e₁ he₁ e₂ he₂
+    have he₁Data := Finset.mem_filter.mp he₁
+    have he₂Data := Finset.mem_filter.mp he₂
+    by_contra hne
+    have hsum := (degree_sixteen_fourLayer_owner_bin_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild a).1
+    change (∑ e ∈ E a, e.supp.ncard) = 36 at hsum
+    have he₂Erase : e₂ ∈ (E a).erase e₁ :=
+      Finset.mem_erase.mpr ⟨Ne.symm hne, he₂Data.1⟩
+    have he₂Le : e₂.supp.ncard ≤
+        ∑ e ∈ (E a).erase e₁, e.supp.ncard := by
+      exact Finset.single_le_sum
+        (fun e he ↦ Nat.zero_le e.supp.ncard) he₂Erase
+    have he₁Mem : e₁ ∈ E a := he₁Data.1
+    have hfortyeight : 48 ≤ ∑ e ∈ E a, e.supp.ncard := by
+      calc
+        48 = e₁.supp.ncard + e₂.supp.ncard := by
+          rw [he₁Data.2, he₂Data.2]
+        _ ≤ e₁.supp.ncard + ∑ e ∈ (E a).erase e₁, e.supp.ncard :=
+          Nat.add_le_add_left he₂Le _
+        _ = ∑ e ∈ E a, e.supp.ncard := by
+          rw [Nat.add_comm, Finset.sum_erase_add _ _ he₁Mem]
+    omega
+  have hcover : T ⊆ Finset.univ.biUnion
+      (fun a : minimumLayerComponent D c₀ ↦
+        (E a).filter fun e ↦ e.supp.ncard = 24) := by
+    intro e he
+    have heData := Finset.mem_filter.mp he
+    have heR : componentRepresentative D e ∈ R :=
+      (Finset.mem_filter.mp heData.1).2
+    obtain ⟨x, _hx, hex⟩ := Finset.mem_biUnion.mp heR
+    let a : minimumLayerComponent D c₀ := x.1
+    have hrepB : componentRepresentative D e ∈ B a := by
+      apply Finset.mem_biUnion.mpr
+      refine ⟨x, ?_, hex⟩
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩
+    apply Finset.mem_biUnion.mpr
+    refine ⟨a, Finset.mem_univ _, Finset.mem_filter.mpr ⟨?_, heData.2⟩⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrepB⟩
+  calc
+    T.card ≤ (Finset.univ.biUnion
+        (fun a : minimumLayerComponent D c₀ ↦
+          (E a).filter fun e ↦ e.supp.ncard = 24)).card :=
+      Finset.card_le_card hcover
+    _ ≤ ∑ a : minimumLayerComponent D c₀,
+        ((E a).filter fun e ↦ e.supp.ncard = 24).card :=
+      Finset.card_biUnion_le
+    _ ≤ ∑ _a : minimumLayerComponent D c₀, 1 := by
+      exact Finset.sum_le_sum fun a _ ↦ hbin a
+    _ = 5 := by simp [howners]
+
+/-- The symmetric `(24,24)` named orphan pair is impossible. -/
+theorem degree_sixteen_fourLayer_false_of_twentyfour_twentyfour_orphan_pair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂) (ho₁ : o₁.supp.ncard = 24)
+    (ho₂ : o₂.supp.ncard = 24)
+    (hpair :
+      Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent ↦
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \
+            minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀)) = {o₁, o₂}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let r := fun e : D.ConnectedComponent ↦ e.supp.ncard
+  let q := fun e : D.ConnectedComponent ↦ componentQuotientMatrix G D e o₁
+  let S := fun a : ℕ ↦ ∑ e ∈ C, if q e = a then r e / 3 else 0
+  let n₁ := (C.filter fun e ↦ q e = 1).card
+  let n₃ := (C.filter fun e ↦ q e = 3).card
+  let n₄₂ := (C.filter fun e ↦ q e = 2 ∧ r e = 12).card
+  let n₈₂ := (C.filter fun e ↦ q e = 2 ∧ r e = 24).card
+  have ho₁O : componentRepresentative D o₁ ∈ O := by
+    have hoMem : o₁ ∈ ({o₁, o₂} : Finset D.ConnectedComponent) := by simp
+    rw [← hpair] at hoMem
+    exact (Finset.mem_filter.mp hoMem).2
+  obtain ⟨hmass, hedgesRaw, hcherriesRaw⟩ :=
+    degree_sixteen_fourLayer_orphan_reduced_quotient_stratification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o₁ ho₁O
+  have hmass' : S 0 + S 1 + S 2 + S 3 + S 4 = 60 := by
+    simpa [S, q, r, C, R, D] using hmass
+  have hedges : S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4 = 120 := by
+    have hedgesRaw' : 3 * (S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4) =
+        o₁.supp.ncard * 15 := by
+      simpa [S, q, r, C, R, D] using hedgesRaw
+    rw [ho₁] at hedgesRaw'
+    omega
+  have hcherries : S 2 + 3 * S 3 + 6 * S 4 = 84 := by
+    have hcherriesRaw' : 3 * (S 2 + 3 * S 3 + 6 * S 4) =
+        o₁.supp.ncard.choose 2 - o₁.supp.ncard := by
+      simpa [S, q, r, C, R, D] using hcherriesRaw
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    calc
+      3 * (S 2 + 3 * S 3 + 6 * S 4) =
+          o₁.supp.ncard.choose 2 - o₁.supp.ncard := hcherriesRaw'
+      _ = 3 * 84 := by rw [ho₁]; norm_num [Nat.choose]
+  obtain ⟨hS₁, hS₃, hS₂⟩ :=
+    degree_sixteen_fourLayer_twentyfour_twentyfour_count_decomposition
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        o₁ o₂ hne ho₁ ho₂ hpair
+  have hn₄₂ : n₄₂ ≤ 1 := by
+    exact degree_sixteen_fourLayer_twentyfour_order_twelve_double_cover_count_le_one
+      G hfree hmin hcard c₀ o₁ ho₁
+  have hall24 : (C.filter fun e ↦ r e = 24).card ≤ 5 := by
+    exact degree_sixteen_fourLayer_used_order_twentyfour_count_le_five
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  let F₁ := C.filter fun e ↦ q e = 1
+  let F₃ := C.filter fun e ↦ q e = 3
+  let F₈₂ := C.filter fun e ↦ q e = 2 ∧ r e = 24
+  have hd₁₃ : Disjoint F₁ F₃ := by
+    apply Finset.disjoint_left.mpr
+    intro e he₁ he₃
+    have hq₁ := (Finset.mem_filter.mp he₁).2
+    have hq₃ := (Finset.mem_filter.mp he₃).2
+    omega
+  have hdU : Disjoint (F₁ ∪ F₃) F₈₂ := by
+    apply Finset.disjoint_left.mpr
+    intro e heU he₂
+    have hq₂ := (Finset.mem_filter.mp he₂).2.1
+    rcases Finset.mem_union.mp heU with he₁ | he₃
+    · have hq₁ := (Finset.mem_filter.mp he₁).2
+      omega
+    · have hq₃ := (Finset.mem_filter.mp he₃).2
+      omega
+  have hselectedSub : (F₁ ∪ F₃) ∪ F₈₂ ⊆
+      C.filter (fun e ↦ r e = 24) := by
+    intro e he
+    rcases Finset.mem_union.mp he with he13 | he82
+    · rcases Finset.mem_union.mp he13 with he1 | he3
+      · have heData := Finset.mem_filter.mp he1
+        refine Finset.mem_filter.mpr ⟨heData.1, ?_⟩
+        exact (degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+            o₁ o₂ hne ho₁ ho₂ hpair e
+              (Finset.mem_filter.mp heData.1).2).1 heData.2
+      · have heData := Finset.mem_filter.mp he3
+        refine Finset.mem_filter.mpr ⟨heData.1, ?_⟩
+        exact (degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+            o₁ o₂ hne ho₁ ho₂ hpair e
+              (Finset.mem_filter.mp heData.1).2).2.2 heData.2
+    · have heData := Finset.mem_filter.mp he82
+      exact Finset.mem_filter.mpr ⟨heData.1, heData.2.2⟩
+  have hcapacity : n₁ + n₃ + n₈₂ ≤ 5 := by
+    have hcardSelected : ((F₁ ∪ F₃) ∪ F₈₂).card =
+        n₁ + n₃ + n₈₂ := by
+      rw [Finset.card_union_of_disjoint hdU,
+        Finset.card_union_of_disjoint hd₁₃]
+    have hle := Finset.card_le_card hselectedSub
+    change ((F₁ ∪ F₃) ∪ F₈₂).card ≤
+      (C.filter fun e ↦ r e = 24).card at hle
+    rw [hcardSelected] at hle
+    omega
+  have hsignature := twentyfour_twentyfour_weighted_row_signature
+    (S 0) (S 1) (S 2) (S 3) (S 4) n₁ n₃ n₄₂ n₈₂
+      hmass' hedges hcherries hS₁ hS₃ hS₂ hn₄₂
+  exact false_of_twentyfour_twentyfour_weighted_signature_capacity
+    (S 1) (S 2) (S 3) n₁ n₃ n₄₂ n₈₂
+      hS₁ hS₃ hS₂ hn₄₂ hcapacity hsignature
+
 /-- The order-twelve member of a `(12,36)` orphan pair has the unique
 remaining reduced quotient signature `(9,48,0,0,3)`. -/
 theorem degree_sixteen_fourLayer_twelve_thirtysix_reduced_signature
