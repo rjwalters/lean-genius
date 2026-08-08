@@ -3609,6 +3609,37 @@ theorem degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
       (componentQuotientMatrix G (secondOrderDefectGraph G) e o)
       heDvd hbal
 
+/-- Reduced detailed balance for two 3-divisible components in the zero-layer
+branch.  Writing the R and O orders as `3k` and `3m` removes the common factor
+and leaves the small integer transport equation used by the structured
+encoder. -/
+theorem degree_sixteen_zeroLayer_threeDivisible_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard) (hoDvd : 3 ∣ o.supp.ncard) :
+    ∃ k m : ℕ,
+      e.supp.ncard = 3 * k ∧ o.supp.ncard = 3 * m ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨m, hm⟩ := hoDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hm] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [mul_assoc] using hbal
+  exact ⟨k, m, hk, hm, hreduced⟩
+
 /-- In the zero-layer branch the minimum layer is the single order-three
 component.  Hence every used component attaches directly to `c₀`, with
 reverse quotient one and forward quotient equal to one third of its order. -/
