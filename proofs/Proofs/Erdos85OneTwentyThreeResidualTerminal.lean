@@ -689,6 +689,60 @@ theorem degree_sixteen_fourLayer_uncovered_orphans_defect_adj
   rw [if_neg hnotMem] at hformula
   omega
 
+/-- Every orphan has at most two uncovered orphan partners.  All such
+partners are defect neighbors, while the exact-boundary defect graph has
+degree two. -/
+theorem degree_sixteen_fourLayer_uncovered_orphan_card_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    ((O.erase z).filter (fun z' =>
+      ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+        ¬(G.Adj z y ∧ G.Adj z' y))).card ≤ 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  let C := (O.erase z).filter (fun z' =>
+    ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+      ¬(G.Adj z y ∧ G.Adj z' y))
+  have hsub : C ⊆ D.neighborFinset z := by
+    intro z' hz'C
+    have hz'Filter := Finset.mem_filter.mp hz'C
+    have hz'O : z' ∈ O := Finset.mem_of_mem_erase hz'Filter.1
+    have hzz' : z ≠ z' := Ne.symm (Finset.ne_of_mem_erase hz'Filter.1)
+    apply (D.mem_neighborFinset z z').mpr
+    exact degree_sixteen_fourLayer_uncovered_orphans_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz'O hzz'
+        hz'Filter.2
+  have hle := Finset.card_le_card hsub
+  have hdeg : D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (by norm_num)
+      (by norm_num) hmin hcard z
+  rw [D.card_neighborFinset_eq_degree, hdeg] at hle
+  exact hle
+
 end
 
 end Erdos85
