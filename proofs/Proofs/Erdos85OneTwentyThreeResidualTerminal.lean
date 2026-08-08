@@ -757,6 +757,103 @@ theorem seven_part_six_nine_twelve_count_classification
       _ = 48 := hsum
   omega
 
+set_option maxHeartbeats 2000000 in
+/-- Exact count classification for a six-part partition of forty-eight into
+three-divisible parts of size at least six, with even multiplicity for odd
+part sizes. -/
+theorem six_part_three_divisible_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 6) (hsum : ∑ c ∈ C, w c = 48)
+    (hlower : ∀ c ∈ C, 6 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card) :
+    let n₆ := (C.filter fun c => w c = 6).card
+    let n₉ := (C.filter fun c => w c = 9).card
+    let n₁₂ := (C.filter fun c => w c = 12).card
+    let n₁₅ := (C.filter fun c => w c = 15).card
+    let n₁₈ := (C.filter fun c => w c = 18).card
+    (n₆ = 5 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1) ∨
+      (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 2 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 4 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0) := by
+  classical
+  dsimp only
+  let n₆ := (C.filter fun c => w c = 6).card
+  let n₉ := (C.filter fun c => w c = 9).card
+  let n₁₂ := (C.filter fun c => w c = 12).card
+  let n₁₅ := (C.filter fun c => w c = 15).card
+  let n₁₈ := (C.filter fun c => w c = 18).card
+  have horders : ∀ c ∈ C,
+      w c = 6 ∨ w c = 9 ∨ w c = 12 ∨ w c = 15 ∨ w c = 18 := by
+    intro c hc
+    have hrest : 6 * (C.erase c).card ≤ ∑ d ∈ C.erase c, w d := by
+      calc
+        6 * (C.erase c).card = ∑ _d ∈ C.erase c, 6 := by simp [mul_comm]
+        _ ≤ ∑ d ∈ C.erase c, w d := by
+          apply Finset.sum_le_sum
+          intro d hd
+          exact hlower d (Finset.mem_of_mem_erase hd)
+    have hcardErase : (C.erase c).card = 5 := by
+      rw [Finset.card_erase_of_mem hc, hcard]
+    have hsplit := Finset.sum_erase_add C w hc
+    have hcLower := hlower c hc
+    obtain ⟨k, hk⟩ := hthree c hc
+    omega
+  have hcountEq : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ = 6 := by
+    calc
+      n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ =
+          ∑ c ∈ C, ((if w c = 6 then 1 else 0) +
+            (if w c = 9 then 1 else 0) +
+            (if w c = 12 then 1 else 0) +
+            (if w c = 15 then 1 else 0) +
+            (if w c = 18 then 1 else 0)) := by
+              simp [n₆, n₉, n₁₂, n₁₅, n₁₈, Finset.sum_add_distrib]
+      _ = ∑ _c ∈ C, 1 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h <;> simp [h]
+      _ = 6 := by simp [hcard]
+  have hmass (a : ℕ) :
+      a * (C.filter fun c => w c = a).card =
+        ∑ c ∈ C, if w c = a then a else 0 := by
+    calc
+      a * (C.filter fun c => w c = a).card =
+          (C.filter fun c => w c = a).card * a := Nat.mul_comm _ _
+      _ = ∑ _c ∈ C.filter (fun c => w c = a), a := by simp
+      _ = ∑ c ∈ C, if w c = a then a else 0 := by
+        rw [Finset.sum_filter]
+  have hmassEq :
+      6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ = 48 := by
+    calc
+      6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ =
+          ∑ c ∈ C, ((if w c = 6 then 6 else 0) +
+            (if w c = 9 then 9 else 0) +
+            (if w c = 12 then 12 else 0) +
+            (if w c = 15 then 15 else 0) +
+            (if w c = 18 then 18 else 0)) := by
+              rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                ← hmass 6, ← hmass 9, ← hmass 12, ← hmass 15, ← hmass 18]
+      _ = ∑ c ∈ C, w c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h <;> simp [h]
+      _ = 48 := hsum
+  change Even n₉ at heven₉
+  change Even n₁₅ at heven₁₅
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  have hexcess : n₉ + 2*n₁₂ + 3*n₁₅ + 4*n₁₈ = 4 := by omega
+  have hn₁₂ : n₁₂ ≤ 2 := by omega
+  have hn₁₅ : n₁₅ ≤ 1 := by omega
+  have hn₁₈ : n₁₈ ≤ 1 := by omega
+  have hn₁₂Cases : n₁₂ = 0 ∨ n₁₂ = 1 ∨ n₁₂ = 2 := by omega
+  have hn₁₅Cases : n₁₅ = 0 ∨ n₁₅ = 1 := by omega
+  have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 := by omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ <;>
+    rcases hn₁₅Cases with h₁₅ | h₁₅ <;>
+    rcases hn₁₈Cases with h₁₈ | h₁₈ <;> omega
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
