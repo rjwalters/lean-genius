@@ -1018,6 +1018,57 @@ theorem five_part_nine_or_twelve_unique_twelve
   change n₁₂ = 1
   omega
 
+/-- An order-six used row cannot distribute quotient degree four across one
+order-twelve and four order-nine targets.  The nine-target entries are
+multiples of three, the twelve-target entry is even, and the only numerical
+escape puts reverse quotient two into the twelve-target, contradicting
+multiple-cover divisibility `12 ∣ 6`. -/
+theorem false_of_orderSix_row_five_nine_twelve
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 9 ∨ w c = 12)
+    (hunique : (C.filter fun c => w c = 12).card = 1)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 6 * q c = w c * a c)
+    (hdvd : ∀ c ∈ C, 2 ≤ a c → w c ∣ 6) : False := by
+  obtain ⟨o, hfilter⟩ := Finset.card_eq_one.mp hunique
+  have hoFilter : o ∈ C.filter (fun c => w c = 12) := by simp [hfilter]
+  have hoC : o ∈ C := (Finset.mem_filter.mp hoFilter).1
+  have ho12 : w o = 12 := (Finset.mem_filter.mp hoFilter).2
+  have hqThree : ∀ c ∈ C.erase o, 3 ∣ q c := by
+    intro c hc
+    have hcC : c ∈ C := Finset.mem_of_mem_erase hc
+    have hcne : c ≠ o := Finset.ne_of_mem_erase hc
+    have hc9 : w c = 9 := by
+      rcases horders c hcC with h9 | h12
+      · exact h9
+      · have hcFilter : c ∈ C.filter (fun x => w x = 12) :=
+          Finset.mem_filter.mpr ⟨hcC, h12⟩
+        rw [hfilter] at hcFilter
+        exact False.elim (hcne (Finset.mem_singleton.mp hcFilter))
+    have hbc := hbal c hcC
+    rw [hc9] at hbc
+    refine ⟨2 * a c - q c, ?_⟩
+    omega
+  have hrestThree : 3 ∣ ∑ c ∈ C.erase o, q c := by
+    apply Finset.dvd_sum
+    intro c hc
+    exact hqThree c hc
+  obtain ⟨k, hk⟩ := hrestThree
+  have hsplit := Finset.sum_erase_add C q hoC
+  rw [hsum] at hsplit
+  have hbo := hbal o hoC
+  rw [ho12] at hbo
+  have hqEven : Even (q o) := by
+    refine ⟨a o, ?_⟩
+    omega
+  obtain ⟨t, ht⟩ := hqEven
+  have hqFour : q o = 4 := by omega
+  have haTwo : a o = 2 := by omega
+  have hdiv := hdvd o hoC (by omega)
+  rw [ho12] at hdiv
+  norm_num at hdiv
+
 /- Retired n=3 census automation.
 set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for three three-divisible parts of
