@@ -59,6 +59,43 @@ theorem onesMatrix_mulVec_vertexFinsetIndicator
     dotProduct, one_mul]
   simp [vertexFinsetIndicator]
 
+/-- A child vertex has exactly its child degree many ambient neighbors in
+the minimum-layer image. -/
+theorem minimumLayerImage_inter_neighborFinset_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) {s : ℕ}
+    (hregChild : ∀ x : minimumLayerVertex D c₀,
+      (minimumLayerGraph G D c₀).degree x = s)
+    (x : minimumLayerVertex D c₀) :
+    (minimumLayerImageFinset D c₀ ∩ G.neighborFinset x.2.1).card = s := by
+  classical
+  let H := minimumLayerGraph G D c₀
+  let ι : minimumLayerVertex D c₀ ↪ V :=
+    ⟨minimumLayerVertexValue,
+      minimumLayerVertexValue_injective (D := D) (c₀ := c₀)⟩
+  have hinter : minimumLayerImageFinset D c₀ ∩ G.neighborFinset x.2.1 =
+      (H.neighborFinset x).map ι := by
+    ext z
+    constructor
+    · intro hz
+      obtain ⟨hzU, hzN⟩ := Finset.mem_inter.mp hz
+      obtain ⟨q, _hq, hqz⟩ := Finset.mem_image.mp hzU
+      subst z
+      exact Finset.mem_map.mpr
+        ⟨q, (H.mem_neighborFinset x q).mpr
+          ((G.mem_neighborFinset x.2.1 q.2.1).mp hzN), rfl⟩
+    · intro hz
+      obtain ⟨q, hqN, hqz⟩ := Finset.mem_map.mp hz
+      subst z
+      exact Finset.mem_inter.mpr
+        ⟨Finset.mem_image.mpr ⟨q, Finset.mem_univ _, rfl⟩,
+          (G.mem_neighborFinset x.2.1 q.2.1).mpr
+            ((H.mem_neighborFinset x q).mp hqN)⟩
+  rw [hinter, Finset.card_map, H.card_neighborFinset_eq_degree,
+    hregChild x]
+
 /-- The three-cell `(U,R,O)` adjacency quotient forced by a residual child
 of degree `s` at ambient degree sixteen. -/
 def degreeSixteenResidualQuotient (s : ℕ) : Matrix (Fin 3) (Fin 3) ℤ :=
@@ -2416,6 +2453,69 @@ theorem degree_sixteen_smallLayer_component_card
     norm_num at hlayer
     have hw5 : c₀.supp.ncard ≤ 5 := by nlinarith
     interval_cases c₀.supp.ncard <;> norm_num at hlayer ⊢ <;> omega
+
+/-- In the two-regular residual branch the unique minimum defect component
+is the five-vertex child itself, so its component-quotient diagonal is the
+child degree two. -/
+theorem degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c₀ c₀ = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  have hbase := (degree_sixteen_smallLayer_component_card
+    G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild)).2 rfl
+  let C : Finset V := c₀.supp.toFinite.toFinset
+  have hCU : C ⊆ U := by
+    intro z hz
+    have hzc : z ∈ c₀.supp := by simpa [C] using hz
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨c, ⟨z, hzc⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hcardC : C.card = 5 := by
+    rw [show C.card = c₀.supp.ncard by
+      simpa [C] using
+        (Set.ncard_eq_toFinset_card c₀.supp c₀.supp.toFinite).symm,
+      hbase]
+  have hcardU : U.card = 5 := by
+    rw [card_minimumLayerImageFinset]
+    exact hcardChild
+  have hCUeq : C = U :=
+    Finset.eq_of_subset_of_card_le hCU (by rw [hcardU, hcardC])
+  let z := componentRepresentative D c₀
+  have hzc : z ∈ c₀.supp := componentRepresentative_mem D c₀
+  let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+  let x : minimumLayerVertex D c₀ := ⟨c, ⟨z, hzc⟩⟩
+  have hinter : componentNeighborFinset G D c₀ z =
+      U ∩ G.neighborFinset z := by
+    ext q
+    simp only [componentNeighborFinset, Finset.mem_filter,
+      Finset.mem_inter]
+    have hqU : q ∈ U ↔ q ∈ c₀.supp := by
+      rw [← hCUeq]
+      simp [C]
+    rw [hqU, ConnectedComponent.mem_supp_iff]
+    tauto
+  have hQ := componentQuotientMatrix_apply_eq G D 2
+    (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard)
+    (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard) c₀ c₀ hzc
+  rw [hQ, hinter]
+  exact minimumLayerImage_inter_neighborFinset_card G D c₀ hregChild x
 
 /-- Sharp orphan-cycle lower bounds in the two small residual branches.
 Since `c₀` is minimum and the orphan is outside the minimum layer, its full
