@@ -362,6 +362,54 @@ theorem false_of_eighteen_thirty_transport_bin
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e))
       (hreverse e he)).2
 
+/-- Graph-level owner-bin contradiction for the `(6,42)` orphan pair. -/
+theorem false_of_six_fortyTwo_transport_bin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho₁ : o₁.supp.ncard = 6) (ho₂ : o₂.supp.ncard = 42)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (horder : ∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
+      3 ∣ e.supp.ncard)
+    (hreverse : ∀ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e o₂ = 4)
+    (hforward : ∑ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e = 3) : False := by
+  apply false_of_sum_eq_three_of_gap_not_three E
+    (fun e => componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+    hforward
+  · intro e he
+    exact (six_fortyTwo_transport_entry_gap e.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+      (horder e he).1 (horder e he).2.1 (horder e he).2.2
+      (by simpa [ho₁] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e))
+      (by simpa [ho₂] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e))
+      (hreverse e he)).1
+  · intro e he
+    exact (six_fortyTwo_transport_entry_gap e.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+      (horder e he).1 (horder e he).2.1 (horder e he).2.2
+      (by simpa [ho₁] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e))
+      (by simpa [ho₂] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e))
+      (hreverse e he)).2
+
 /-- Extract the two named elements behind a two-part count vector.  This is
 the bridge from filter-card census output to component-level eliminators. -/
 theorem exists_distinct_pair_of_card_two_filter_counts
