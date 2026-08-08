@@ -158,4 +158,76 @@ theorem primitiveNormOTT_not_isSquare
   · exact primitiveNormCandidateOTT_not_isSquare_of_block
       normCertificateRangeOTT_block5 (by omega) hn
 
+/-- The rational-frequency factors at parameter `123`: `123-2 = 121`,
+and additionally `123+2 = 125` for even cycle order. -/
+def rationalCycleFrequencyFactorOTT (n : ℕ) : ℕ :=
+  121 * if n % 2 = 0 then 125 else 1
+
+/-- Product of the primitive real norm squares over conductors dividing
+`n`, with the trivial conductors one and two removed. -/
+def primitiveNormDivisorProductOTT (n : ℕ) : ℕ :=
+  ((Finset.Icc 3 n).filter fun k => k ∣ n).prod fun k =>
+    primitiveNormCandidateOTT k ^ 2
+
+/-- Single-conductor factorization certificate:
+`C_n(123)-2 = 121 · (125 if 2∣n) · ∏_{k∣n, k≥3} R_k(123)²`. -/
+def factorizationCertificateOTT (n : ℕ) : Bool :=
+  cycleChebyshevOneTwentyThree n ==
+    rationalCycleFrequencyFactorOTT n * primitiveNormDivisorProductOTT n
+
+/-- Block-range factorization runner. -/
+def factorizationRangeOTT (lo hi : ℕ) : Bool :=
+  (List.range' lo (hi + 1 - lo)).all factorizationCertificateOTT
+
+/-- Factorization blocks `3–4000`. -/
+theorem factorizationRangeOTT_block1 :
+    factorizationRangeOTT 3 4000 = true := by
+  native_decide
+
+/-- Factorization blocks `4001–8000`. -/
+theorem factorizationRangeOTT_block2 :
+    factorizationRangeOTT 4001 8000 = true := by
+  native_decide
+
+/-- Factorization blocks `8001–12000`. -/
+theorem factorizationRangeOTT_block3 :
+    factorizationRangeOTT 8001 12000 = true := by
+  native_decide
+
+/-- Factorization blocks `12001–15255`. -/
+theorem factorizationRangeOTT_block4 :
+    factorizationRangeOTT 12001 15255 = true := by
+  native_decide
+
+/-- **Certified multiplicity table for the cycle polynomial at `123`.**
+`C_n(123)-2 = 121 · (125 if 2∣n) · ∏_{k∣n, k≥3} R_k(123)²`: every
+nonrational primitive real factor occurs with the mathematically required
+multiplicity two, over the full range `3 ≤ n ≤ 15255`. -/
+theorem cycleChebyshevOTT_primitive_factorization
+    {n : ℕ} (hn3 : 3 ≤ n) (hn : n ≤ 15255) :
+    cycleChebyshevOneTwentyThree n =
+      rationalCycleFrequencyFactorOTT n *
+        primitiveNormDivisorProductOTT n := by
+  have hread : ∀ lo hi, factorizationRangeOTT lo hi = true →
+      lo ≤ n → n ≤ hi →
+      cycleChebyshevOneTwentyThree n =
+        rationalCycleFrequencyFactorOTT n *
+          primitiveNormDivisorProductOTT n := by
+    intro lo hi hblock hlo hhi
+    have hmem : n ∈ List.range' lo (hi + 1 - lo) := by
+      rw [List.mem_range'_1]
+      exact ⟨hlo, by omega⟩
+    have hcert : factorizationCertificateOTT n = true := by
+      rw [factorizationRangeOTT, List.all_eq_true] at hblock
+      exact hblock n hmem
+    rw [factorizationCertificateOTT, beq_iff_eq] at hcert
+    exact hcert
+  by_cases h1 : n ≤ 4000
+  · exact hread 3 4000 factorizationRangeOTT_block1 hn3 h1
+  by_cases h2 : n ≤ 8000
+  · exact hread 4001 8000 factorizationRangeOTT_block2 (by omega) h2
+  by_cases h3 : n ≤ 12000
+  · exact hread 8001 12000 factorizationRangeOTT_block3 (by omega) h3
+  · exact hread 12001 15255 factorizationRangeOTT_block4 (by omega) hn
+
 end Erdos85
