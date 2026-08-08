@@ -67,6 +67,27 @@ theorem zmod_mem_range_two_mul_iff_castHom_eq_zero
     push_cast
     ring
 
+/-- Forward and reverse cyclic diagonals whose offsets have the same parity
+do intersect.  Equivalently, solving the two diagonal equations amounts to
+halving `s - d`, which is possible precisely in the even-parity fiber. -/
+theorem exists_forward_reverse_diagonal_intersection_of_castHom_eq
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (d s : ZMod r)
+    (hparity : ZMod.castHom h2r (ZMod 2) d =
+      ZMod.castHom h2r (ZMod 2) s) :
+    ∃ x y : ZMod r, y - x = d ∧ y + x = s := by
+  have hzero : ZMod.castHom h2r (ZMod 2) (s - d) = 0 := by
+    rw [map_sub, ← hparity, sub_self]
+  obtain ⟨x, hx⟩ :=
+    (zmod_mem_range_two_mul_iff_castHom_eq_zero h2r (s - d)).mpr hzero
+  have hx' : 2 * x = s - d := by simpa using hx
+  refine ⟨x, x + d, ?_, ?_⟩
+  · ring
+  · change x + d + x = s
+    calc
+      x + d + x = 2 * x + d := by ring
+      _ = (s - d) + d := by rw [hx']
+      _ = s := by ring
+
 /-- For a cycle-intertwining matrix, the simultaneous-translation
 difference depends only on the coordinate sum. -/
 theorem cycleIntertwiner_translationDifference_eq_of_add_eq
