@@ -88,6 +88,20 @@ theorem exists_forward_reverse_diagonal_intersection_of_castHom_eq
       _ = (s - d) + d := by rw [hx']
       _ = s := by ring
 
+/-- Exact parity criterion for disjoint forward and reverse cyclic
+diagonals in an even modulus. -/
+theorem forward_reverse_diagonals_disjoint_iff_castHom_ne
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (d s : ZMod r) :
+    (¬ ∃ x y : ZMod r, y - x = d ∧ y + x = s) ↔
+      ZMod.castHom h2r (ZMod 2) d ≠
+        ZMod.castHom h2r (ZMod 2) s := by
+  constructor
+  · intro hdisjoint hparity
+    exact hdisjoint
+      (exists_forward_reverse_diagonal_intersection_of_castHom_eq
+        h2r d s hparity)
+  · exact forward_reverse_diagonals_disjoint_of_castHom_ne h2r d s
+
 /-- For a cycle-intertwining matrix, the simultaneous-translation
 difference depends only on the coordinate sum. -/
 theorem cycleIntertwiner_translationDifference_eq_of_add_eq
