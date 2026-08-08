@@ -1803,6 +1803,68 @@ theorem unique_exception_of_sum_fiftyFour_and_twelve_divisible_rest
   rw [hsum] at hdvd
   norm_num at hdvd
 
+/-- A row of zero-or-two entries with total four has exactly two entries
+equal to two. -/
+theorem card_eq_two_of_sum_four_and_zero_or_two
+    {α : Type*} [DecidableEq α] (S : Finset α) (q : α → ℕ)
+    (hsum : ∑ a ∈ S, q a = 4)
+    (hvals : ∀ a ∈ S, q a = 0 ∨ q a = 2) :
+    (S.filter fun a => q a = 2).card = 2 := by
+  have hrewrite : (∑ a ∈ S, q a) =
+      ∑ a ∈ S, if q a = 2 then 2 else 0 := by
+    apply Finset.sum_congr rfl
+    intro a ha
+    rcases hvals a ha with h | h <;> simp [h]
+  have hcount : (∑ a ∈ S, if q a = 2 then 2 else 0) =
+      2 * (S.filter fun a => q a = 2).card := by
+    rw [← Finset.sum_filter]
+    simp [Nat.mul_comm]
+  omega
+
+/-- Double-counting a finite Boolean relation, specialized to uniform
+column degree one and source-row degrees zero or two. -/
+theorem card_eq_two_of_four_unit_columns_and_two_rows
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (S : Finset α) (T : Finset β) (R : α → β → Prop) [DecidableRel R]
+    (source : α → Prop) [DecidablePred source]
+    (hT : T.card = 4)
+    (hcol : ∀ b ∈ T, (S.filter fun a => R a b).card = 1)
+    (hrow : ∀ a ∈ S,
+      (T.filter fun b => R a b).card = if source a then 2 else 0) :
+    (S.filter source).card = 2 := by
+  have hdouble :
+      (∑ b ∈ T, (S.filter fun a => R a b).card) =
+        ∑ a ∈ S, (T.filter fun b => R a b).card := by
+    rw [← Finset.card_sigma, ← Finset.card_sigma]
+    apply Finset.card_bij (fun p _ => ⟨p.2, p.1⟩)
+    · intro p hp
+      simp only [Finset.mem_sigma, Finset.mem_filter] at hp ⊢
+      exact ⟨hp.2.1, hp.1, hp.2.2⟩
+    · intro p hp q hq hpq
+      cases p
+      cases q
+      cases hpq
+      rfl
+    · intro p hp
+      simp only [Finset.mem_sigma, Finset.mem_filter] at hp
+      exact ⟨⟨p.2, p.1⟩, by
+        simp only [Finset.mem_sigma, Finset.mem_filter]
+        exact ⟨hp.2.1, hp.1, hp.2.2⟩, rfl⟩
+  have hleft : (∑ b ∈ T, (S.filter fun a => R a b).card) = 4 := by
+    calc
+      (∑ b ∈ T, (S.filter fun a => R a b).card) =
+          ∑ _b ∈ T, 1 := Finset.sum_congr rfl hcol
+      _ = 4 := by simp [hT]
+  have hrows : (∑ a ∈ S, (T.filter fun b => R a b).card) =
+      ∑ a ∈ S, if source a then 2 else 0 := by
+    exact Finset.sum_congr rfl hrow
+  have hright : (∑ a ∈ S, if source a then 2 else 0) =
+      2 * (S.filter source).card := by
+    rw [← Finset.sum_filter]
+    simp [Nat.mul_comm]
+  rw [hleft, hrows, hright] at hdouble
+  omega
+
 /-- Two order-six source rows which each spend one double-cover incidence
 among three order-twelve targets must share a target as soon as every target
 receives an even number of those incidences.  In the four-layer residual the
@@ -12743,6 +12805,97 @@ theorem degree_sixteen_fourLayer_orderTwelve_orphan_unique_orderSix_doubleCover
     · exact Or.inr h
   · exact degree_sixteen_fourLayer_twelve_order_six_double_cover_count_le_one
       G hfree hmin hcard c₀ o ho12
+
+/-- If the orphan cell consists of four order-twelve components, the used
+exterior contains exactly two order-six components.  Each orphan has one
+order-six double cover, while every order-six row has exactly two such
+incidences because its total orphan quotient is four. -/
+theorem degree_sixteen_fourLayer_four_orderTwelve_orphans_used_orderSix_count_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hOcard :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      O.card = 4)
+    (hOorders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      ∀ o ∈ O, o.supp.ncard = 12) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (C.filter fun e => e.supp.ncard = 6).card = 2 := by
+  classical
+  dsimp only at hOcard hOorders ⊢
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈
+      (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  apply card_eq_two_of_four_unit_columns_and_two_rows C O
+    (fun e o => e.supp.ncard = 6 ∧ componentQuotientMatrix G D e o = 2)
+    (fun e => e.supp.ncard = 6) hOcard
+  · intro o ho
+    have hoData := (Finset.mem_filter.mp ho).2
+    exact degree_sixteen_fourLayer_orderTwelve_orphan_unique_orderSix_doubleCover
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o
+        (by simpa [D, R] using hoData) (hOorders o ho)
+  · intro e he
+    by_cases heSix : e.supp.ncard = 6
+    · have heR := (Finset.mem_filter.mp he).2
+      have hsum := degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+        G hfree hmin hcard c₀ hregChild hcardChild e
+          (by simpa [D, R] using heR)
+      have hvals : ∀ o ∈ O,
+          componentQuotientMatrix G D e o = 0 ∨
+            componentQuotientMatrix G D e o = 2 := by
+        intro o ho
+        have ho12 := hOorders o ho
+        have hbal := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+        have hbalD : e.supp.ncard * componentQuotientMatrix G D e o =
+            o.supp.ncard * componentQuotientMatrix G D o e := by
+          simpa [D] using hbal
+        rw [heSix, ho12] at hbalD
+        have hqle : componentQuotientMatrix G D e o ≤ 4 := by
+          have hle := Finset.single_le_sum
+            (fun c _ => Nat.zero_le (componentQuotientMatrix G D e c)) ho
+          simpa [D, R, O] using hsum ▸ hle
+        have hareverse : componentQuotientMatrix G D o e < 2 := by
+          by_contra hnot
+          have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+            G hfree hmin hcard o e (by simpa [D] using (show
+              2 ≤ componentQuotientMatrix G D o e by omega))
+          rw [ho12, heSix] at hdvd
+          norm_num at hdvd
+        omega
+      have htwo := card_eq_two_of_sum_four_and_zero_or_two O
+        (fun o => componentQuotientMatrix G D e o)
+        (by simpa [D, R, O] using hsum) hvals
+      simpa [heSix] using htwo
+    · simp [heSix]
 
 /-- Across all five minimum-component owner bins, there are at most five
 used defect components of order twenty-four.  Each 36-vertex bin contains at
