@@ -1778,6 +1778,36 @@ theorem orderTwelve_cherry_term_eq_six_exception_or_dvd_twelve
     have haTwo : 2 ≤ a := by omega
     exact dvd_mul_of_dvd_left (hdvd haTwo) _
 
+/-- A positive quotient from a three-divisible used row into an order-twelve
+target forces the used order to be six or a multiple of twelve. -/
+theorem order_eq_six_or_twelve_dvd_of_positive_orderTwelve_entry
+    (r q a : ℕ) (hr : 6 ≤ r) (hthree : 3 ∣ r) (hqpos : 0 < q)
+    (hq : q ≤ 4) (hbal : r * q = 12 * a)
+    (hdvd : 2 ≤ a → 12 ∣ r) : r = 6 ∨ 12 ∣ r := by
+  have hcases : q = 1 ∨ q = 2 ∨ q = 3 ∨ q = 4 := by omega
+  rcases hcases with hq1 | hq2 | hq3 | hq4
+  · subst q
+    right
+    refine ⟨a, ?_⟩
+    simpa using hbal
+  · subst q
+    by_cases hr6 : r = 6
+    · exact Or.inl hr6
+    · right
+      apply hdvd
+      obtain ⟨k, hk⟩ := hthree
+      omega
+  · subst q
+    right
+    have hfour : 4 ∣ r := by
+      refine ⟨a, ?_⟩
+      omega
+    exact Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num) hthree hfour
+  · subst q
+    right
+    apply hdvd
+    omega
+
 /-- A cherry ledger of total fifty-four with at most one six-mod-twelve
 exception must contain exactly one exception. -/
 theorem unique_exception_of_sum_fiftyFour_and_twelve_divisible_rest
@@ -12896,6 +12926,81 @@ theorem degree_sixteen_fourLayer_four_orderTwelve_orphans_used_orderSix_count_eq
         (by simpa [D, R, O] using hsum) hvals
       simpa [heSix] using htwo
     · simp [heSix]
+
+/-- When every orphan component has order twelve, every used component has
+order six or order divisible by twelve. -/
+theorem degree_sixteen_fourLayer_all_orderTwelve_orphans_used_order_six_or_dvd_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hOorders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      ∀ o ∈ O, o.supp.ncard = 12) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    ∀ e ∈ C, e.supp.ncard = 6 ∨ 12 ∣ e.supp.ncard := by
+  classical
+  dsimp only at hOorders ⊢
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈
+      (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  intro e he
+  have heR := (Finset.mem_filter.mp he).2
+  have hsum := degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+    G hfree hmin hcard c₀ hregChild hcardChild e
+      (by simpa [D, R] using heR)
+  have hne : (∑ o ∈ O, componentQuotientMatrix G D e o) ≠ 0 := by
+    intro hz
+    have hs : (∑ o ∈ O, componentQuotientMatrix G D e o) = 4 := by
+      simpa [D, R, O] using hsum
+    omega
+  obtain ⟨o, ho, hqne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
+  have ho12 := hOorders o ho
+  have hlower := degree_sixteen_fourLayer_used_component_card_lower
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e
+      (by simpa [D, R] using heR)
+  have hthree := (degree_sixteen_fourLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild).2 e he
+  have hqle : componentQuotientMatrix G D e o ≤ 4 := by
+    have hle := Finset.single_le_sum
+      (fun c _ => Nat.zero_le (componentQuotientMatrix G D e c)) ho
+    simpa [D, R, O] using hsum ▸ hle
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  have hbalD : e.supp.ncard * componentQuotientMatrix G D e o =
+      12 * componentQuotientMatrix G D o e := by
+    simpa [D, ho12] using hbal
+  have hdvd : 2 ≤ componentQuotientMatrix G D o e → 12 ∣ e.supp.ncard := by
+    intro htwo
+    have h := degree_sixteen_component_order_dvd_of_two_le_quotient
+      G hfree hmin hcard o e (by simpa [D] using htwo)
+    rwa [ho12] at h
+  exact order_eq_six_or_twelve_dvd_of_positive_orderTwelve_entry
+    e.supp.ncard (componentQuotientMatrix G D e o)
+      (componentQuotientMatrix G D o e) hlower hthree (Nat.pos_of_ne_zero hqne)
+      hqle hbalD hdvd
 
 /-- Across all five minimum-component owner bins, there are at most five
 used defect components of order twenty-four.  Each 36-vertex bin contains at
