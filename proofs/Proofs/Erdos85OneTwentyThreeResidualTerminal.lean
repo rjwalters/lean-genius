@@ -757,6 +757,37 @@ theorem seven_part_six_nine_twelve_count_classification
       _ = 48 := hsum
   omega
 
+/-- Exact count-vector classification for five three-divisible parts of total
+forty-eight, each at least six, when every odd part has even multiplicity. -/
+theorem five_part_three_divisible_count_vector_classification
+    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ : ℕ)
+    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ = 5)
+    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ +
+      21*n₂₁ + 24*n₂₄ = 48)
+    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅) (heven₂₁ : Even n₂₁) :
+    (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 3 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 4 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) := by
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
+  have hexcess : n₉ + 2*n₁₂ + 3*n₁₅ + 4*n₁₈ + 5*n₂₁ + 6*n₂₄ = 6 := by
+    omega
+  have hn₁₂Cases : n₁₂ = 0 ∨ n₁₂ = 1 ∨ n₁₂ = 2 ∨ n₁₂ = 3 := by omega
+  have hn₁₅Cases : n₁₅ = 0 ∨ n₁₅ = 1 ∨ n₁₅ = 2 := by omega
+  have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 := by omega
+  have hn₂₁Cases : n₂₁ = 0 ∨ n₂₁ = 1 := by omega
+  have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 := by omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ <;>
+    rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;>
+    rcases hn₁₈Cases with h₁₈ | h₁₈ <;>
+    rcases hn₂₁Cases with h₂₁ | h₂₁ <;>
+    rcases hn₂₄Cases with h₂₄ | h₂₄ <;> omega
+
 set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
 three-divisible parts of size at least six, with even multiplicity for odd
@@ -6295,6 +6326,82 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   rcases (Nat.even_mul.mp hSeven) with hrEven | hCEven
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
+
+/-- Exact multiset classification of the six-component orphan branch. -/
+theorem degree_sixteen_fourLayer_six_orphan_component_count_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 6) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    let n₆ := (C.filter fun c => c.supp.ncard = 6).card
+    let n₉ := (C.filter fun c => c.supp.ncard = 9).card
+    let n₁₂ := (C.filter fun c => c.supp.ncard = 12).card
+    let n₁₅ := (C.filter fun c => c.supp.ncard = 15).card
+    let n₁₈ := (C.filter fun c => c.supp.ncard = 18).card
+    (n₆ = 5 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1) ∨
+      (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 2 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 4 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply six_part_three_divisible_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hdvd
+  · simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild 9 (by norm_num))
+  · simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild 15 (by norm_num))
 
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
