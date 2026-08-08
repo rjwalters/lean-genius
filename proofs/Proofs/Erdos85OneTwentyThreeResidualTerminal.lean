@@ -3957,6 +3957,37 @@ theorem degree_sixteen_fourLayer_threeDivisible_cut_reduced_balance
       _ = 3 * (o.supp.ncard * b) := by ring
   exact ⟨k, b, hk, hb, hreduced⟩
 
+/-- Reduced detailed balance when both component orders are 3-divisible in
+the four-layer branch.  Writing the R and O orders as `3k` and `3m` leaves
+`k Q(R,O) = m Q(O,R)`, so the remaining transport rows can be enumerated
+using only the two reduced component orders. -/
+theorem degree_sixteen_fourLayer_threeDivisible_orders_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard) (hoDvd : 3 ∣ o.supp.ncard) :
+    ∃ k m : ℕ,
+      e.supp.ncard = 3 * k ∧ o.supp.ncard = 3 * m ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨m, hm⟩ := hoDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hm] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [mul_assoc] using hbal
+  exact ⟨k, m, hk, hm, hreduced⟩
+
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
 length-three component belongs to the minimum layer, disjoint from `O`. -/
