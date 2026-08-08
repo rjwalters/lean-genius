@@ -3271,6 +3271,51 @@ theorem degree_sixteen_fourLayer_used_component_cycleCover
   refine ⟨c, hc.trans hbase, hone, ?_, f, hf, horient⟩
   simpa [hc, hbase] using hratio
 
+/-- In the four-layer branch, any three child external-neighborhood rows
+contain exactly thirty-six vertices.  In particular, the three rows belonging
+to one minimum `C₃` owner form an exact size-36 bin for its owned used cycles. -/
+theorem degree_sixteen_fourLayer_three_externalRows_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (X : Finset (minimumLayerVertex (secondOrderDefectGraph G) c₀))
+    (hX : X.card = 3) :
+    (X.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀)).card = 36 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+    rw [hcard]
+    norm_num
+  have hregParent : ∀ z : V, G.degree z = 16 :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by norm_num) hmin hbelow
+  have hrow : ∀ x : minimumLayerVertex D c₀, (E x).card = 12 := by
+    intro x
+    simpa [E] using card_minimumLayerExternalNeighborFinset
+      G D c₀ hregParent hregChild x
+  have hpairAll := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have hpairX : (↑X : Set (minimumLayerVertex D c₀)).PairwiseDisjoint E := by
+    intro x hx y hy hxy
+    exact hpairAll (Finset.mem_univ x) (Finset.mem_univ y) hxy
+  change (X.biUnion E).card = 36
+  rw [Finset.card_biUnion hpairX]
+  rw [Finset.sum_congr rfl (fun x _ => hrow x)]
+  simp [hX]
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
