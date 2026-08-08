@@ -547,6 +547,55 @@ theorem degree_sixteen_fourLayer_orphan_induced_oneRegular
     2 * H.edgeFinset.card = 48 := hedges.symm
     _ = 2 * 24 := by norm_num
 
+/-- Two distinct orphans can be co-serviced in at most one child row.
+More precisely, common service points belonging to two child rows force the
+rows to coincide.  This is the `λ ≤ 1` packing law behind the d=16 terminal. -/
+theorem degree_sixteen_fourLayer_shared_service_row_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V} (hzz' : z ≠ z')
+    {u v : minimumLayerVertex (secondOrderDefectGraph G) c₀}
+    {y y' : V}
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyz : G.Adj z y) (hyz' : G.Adj z' y)
+    (hy'v : y' ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v)
+    (hy'z : G.Adj z y') (hy'z' : G.Adj z' y') :
+    u = v := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hzz'
+  have hyCommon : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hyz,
+        (G.mem_neighborFinset z' y).mpr hyz'⟩
+  have hy'Common : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hy'z,
+        (G.mem_neighborFinset z' y').mpr hy'z'⟩
+  have hyy' : y = y' :=
+    Finset.card_le_one.mp hcommon y hyCommon y' hy'Common
+  by_contra huv
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  have hdisj : Disjoint (E u) (E v) :=
+    hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
+  exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
+
 end
 
 end Erdos85
