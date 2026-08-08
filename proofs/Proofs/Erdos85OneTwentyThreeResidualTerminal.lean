@@ -1486,6 +1486,58 @@ theorem comap_adjMatrix_comm_of_right_closed
   rw [hleft, hright] at hxy
   simpa only [SimpleGraph.adjMatrix_apply, SimpleGraph.comap_adj] using hxy
 
+/-- A one-regular graph commuting with another graph acts on the latter by
+graph automorphisms: matching partners of adjacent vertices are adjacent. -/
+theorem oneRegular_matching_maps_adj_of_adjMatrix_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (M D : SimpleGraph V) [DecidableRel M.Adj] [DecidableRel D.Adj]
+    (hdegree : ∀ x, M.degree x = 1)
+    (hcomm : M.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * M.adjMatrix ℤ)
+    {x x' y y' : V} (hxx' : M.Adj x x') (hyy' : M.Adj y y')
+    (hxy : D.Adj x y) :
+    D.Adj x' y' := by
+  classical
+  have neighbor_eq_singleton {a b : V} (hab : M.Adj a b) :
+      M.neighborFinset b = {a} := by
+    have haMem : a ∈ M.neighborFinset b :=
+      (M.mem_neighborFinset b a).mpr hab.symm
+    have hcard : (M.neighborFinset b).card = 1 := by
+      rw [M.card_neighborFinset_eq_degree, hdegree b]
+    obtain ⟨q, hq⟩ := Finset.card_eq_one.mp hcard
+    have haq : a = q := by simpa [hq] using haMem
+    simpa [haq] using hq
+  have hxN := neighbor_eq_singleton hxx'
+  have hyN := neighbor_eq_singleton hyy'.symm
+  have hentry := congrFun (congrFun hcomm x') y
+  rw [M.adjMatrix_mul_apply, M.mul_adjMatrix_apply, hxN, hyN] at hentry
+  simp only [Finset.sum_singleton] at hentry
+  by_contra hnot
+  simp [SimpleGraph.adjMatrix_apply, hxy, hnot] at hentry
+
+/-- Degree in the graph pulled back to a finset subtype is the number of
+ambient neighbors that remain in that finset. -/
+theorem finset_comap_degree_eq_inter_neighborFinset_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) (z : ↥S) :
+    (G.comap (fun x : ↥S => x.1)).degree z =
+      (S ∩ G.neighborFinset z.1).card := by
+  classical
+  rw [← (G.comap (fun x : ↥S => x.1)).card_neighborFinset_eq_degree]
+  apply Finset.card_bij (fun y _ => y.1)
+  · intro y hy
+    have hzy : G.Adj z.1 y.1 :=
+      ((G.comap (fun x : ↥S => x.1)).mem_neighborFinset z y).mp hy
+    exact Finset.mem_inter.mpr
+      ⟨y.2, (G.mem_neighborFinset z.1 y.1).mpr hzy⟩
+  · intro y hy y' hy' hyy'
+    exact Subtype.ext hyy'
+  · intro y hy
+    let y' : ↥S := ⟨y, (Finset.mem_inter.mp hy).1⟩
+    refine ⟨y', ?_, rfl⟩
+    exact ((G.comap (fun x : ↥S => x.1)).mem_neighborFinset z y').mpr
+      ((G.mem_neighborFinset z.1 y).mp (Finset.mem_inter.mp hy).2)
+
 /-- On the 48 orphan vertices, the perfect-matching adjacency operator
 commutes with the restricted defect two-factor. -/
 theorem degree_sixteen_fourLayer_orphan_adjMatrix_comm_defect
@@ -1516,6 +1568,52 @@ theorem degree_sixteen_fourLayer_orphan_adjMatrix_comm_defect
       G hfree hmin hcard c₀ hregChild hcardChild
   · exact adjMatrix_comm_secondOrderDefect_of_even
       G hfree (by norm_num) (by norm_num) hmin hcard
+
+/-- The orphan matching transports every defect edge to a defect edge.
+Equivalently, its fixed-point-free involution is an automorphism of the
+orphan defect 2-factor, giving the component stay-or-pair dichotomy. -/
+theorem degree_sixteen_fourLayer_orphan_matching_maps_defect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let M := G.comap (fun z : ↥O => z.1)
+    let DO := D.comap (fun z : ↥O => z.1)
+    ∀ {x x' y y' : ↥O}, M.Adj x x' → M.Adj y y' → DO.Adj x y →
+      DO.Adj x' y' := by
+  classical
+  dsimp only
+  intro x x' y y' hxx' hyy' hxy
+  apply oneRegular_matching_maps_adj_of_adjMatrix_comm
+    (G.comap (fun z : ↥((Finset.univ \
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) => z.1))
+    ((secondOrderDefectGraph G).comap (fun z : ↥((Finset.univ \
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) => z.1))
+  · intro z
+    rw [finset_comap_degree_eq_inter_neighborFinset_card]
+    exact degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild z.1 z.2
+  · exact degree_sixteen_fourLayer_orphan_adjMatrix_comm_defect
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · exact hxx'
+  · exact hyy'
+  · exact hxy
 
 /-- **Orphan matching color classification.**  If `z-z'` is the unique
 orphan matching edge at `z`, then it is a defect edge exactly when it is
