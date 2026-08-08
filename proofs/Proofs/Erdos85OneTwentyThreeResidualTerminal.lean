@@ -57,6 +57,28 @@ theorem onesMatrix_mulVec_vertexFinsetIndicator
     dotProduct, one_mul]
   simp [vertexFinsetIndicator]
 
+/-- The three-cell `(U,R,O)` adjacency quotient forced by a residual child
+of degree `s` at ambient degree sixteen. -/
+def degreeSixteenResidualQuotient (s : ℕ) : Matrix (Fin 3) (Fin 3) ℤ :=
+  let p := s * (s - 1) + 3
+  !![(s : ℤ), (16 - s : ℕ), 0;
+     1, (p - s : ℕ), (16 - (1 + (p - s)) : ℕ);
+     0, (p : ℤ), (16 - p : ℕ)]
+
+set_option maxHeartbeats 800000 in
+/-- All three surviving residual quotients have the same characteristic
+polynomial, exposing the common nonprincipal factor `X² - 13`. -/
+theorem degreeSixteenResidualQuotient_charpoly
+    {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4) :
+    (degreeSixteenResidualQuotient s).charpoly =
+      (X - C (16 : ℤ)) * (X ^ 2 - C (13 : ℤ)) := by
+  rcases hs with rfl | rfl | rfl <;>
+    rw [show (degreeSixteenResidualQuotient _).charpoly =
+      (Matrix.charmatrix (degreeSixteenResidualQuotient _)).det from rfl,
+      Matrix.det_fin_three] <;>
+    simp [degreeSixteenResidualQuotient, Matrix.charmatrix_apply_eq,
+      Matrix.charmatrix_apply_ne] <;> ring
+
 /-- **Operator-level scalar-123 terminal.**  Semisimplicity peels the
 designated eigenvalue `2`; trace `-135` forces the residual trace nonzero,
 while the arithmetic hypothesis and abstract trace escape force it zero. -/
