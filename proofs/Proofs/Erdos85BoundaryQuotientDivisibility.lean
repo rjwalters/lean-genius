@@ -64,6 +64,34 @@ theorem secondOrder_componentQuotientMatrix_le_one_of_not_dvd
       G hfree hd heven hmin hcard)
     c e hp hq hpverts hqverts hshift
 
+/-- Quotient entries at least two in both directions can occur only between
+equal-order defect components.  Periodicity forces divisibility in each
+direction, and natural-number divisibility is antisymmetric. -/
+theorem secondOrder_component_card_eq_of_two_le_both_quotients
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hce : 2 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) c e)
+    (hec : 2 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) e c) :
+    c.supp.ncard = e.supp.ncard := by
+  have hdvdCE : c.supp.ncard ∣ e.supp.ncard := by
+    by_contra h
+    have hle := secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree hd heven hmin hcard c e h
+    omega
+  have hdvdEC : e.supp.ncard ∣ c.supp.ncard := by
+    by_contra h
+    have hle := secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree hd heven hmin hcard e c h
+    omega
+  exact Nat.dvd_antisymm hdvdCE hdvdEC
+
 /-- A positive entry of the second-order component quotient can occur only
 between cycle lengths comparable under divisibility. -/
 theorem secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
