@@ -12610,6 +12610,140 @@ theorem degree_sixteen_fourLayer_twentyfour_order_twelve_double_cover_count_le_o
   · exact hone₁
   · exact hone₂
 
+/-- At most one used order-six component can double-cover a fixed
+order-twelve orphan component. -/
+theorem degree_sixteen_fourLayer_twelve_order_six_double_cover_count_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 12) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (C.filter fun e => e.supp.ncard = 6 ∧
+      componentQuotientMatrix G D e o = 2).card ≤ 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  apply Finset.card_le_one.mpr
+  intro c₁ hc₁ c₂ hc₂
+  have hc₁Data := (Finset.mem_filter.mp hc₁).2
+  have hc₂Data := (Finset.mem_filter.mp hc₂).2
+  have hone₁ : componentQuotientMatrix G D o c₁ = 1 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ o
+    dsimp only [D] at hbal ⊢
+    rw [hc₁Data.1, hc₁Data.2, ho] at hbal
+    omega
+  have hone₂ : componentQuotientMatrix G D o c₂ = 1 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ o
+    dsimp only [D] at hbal ⊢
+    rw [hc₂Data.1, hc₂Data.2, ho] at hbal
+    omega
+  apply secondOrder_multipleCover_target_source_unique_of_orders
+    G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+      (by norm_num) c₁ c₂ o
+  · omega
+  · omega
+  · exact hone₁
+  · exact hone₂
+
+/-- Every order-twelve orphan is double-covered by exactly one used
+order-six component.  The exceptional row contributes six cherries; every
+other row contributes a multiple of twelve, while the total is fifty-four. -/
+theorem degree_sixteen_fourLayer_orderTwelve_orphan_unique_orderSix_doubleCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoO : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho12 : o.supp.ncard = 12) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (C.filter fun e => e.supp.ncard = 6 ∧
+      componentQuotientMatrix G D e o = 2).card = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let exceptional := fun e : D.ConnectedComponent =>
+    e.supp.ncard = 6 ∧ componentQuotientMatrix G D e o = 2
+  apply unique_exception_of_sum_fiftyFour_and_twelve_divisible_rest
+    C (fun e => e.supp.ncard *
+      (componentQuotientMatrix G D e o).choose 2) exceptional
+  · have hcherry := degree_sixteen_fourLayer_used_to_orphan_cherry_mass
+      G hfree hmin hcard c₀ hregChild hcardChild o hoO
+    change (∑ e ∈ C, e.supp.ncard *
+      (componentQuotientMatrix G D e o).choose 2) = _ at hcherry
+    rw [ho12] at hcherry
+    norm_num [Nat.choose] at hcherry ⊢
+    exact hcherry
+  · intro e he
+    have heR : componentRepresentative D e ∈ R :=
+      (Finset.mem_filter.mp he).2
+    have hlower := degree_sixteen_fourLayer_used_component_card_lower
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e
+        (by simpa [D, R] using heR)
+    have hthree := (degree_sixteen_fourLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild).2 e he
+    have hrow := degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild e
+        (by simpa [D, R] using heR)
+    have hoMem : o ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+        componentRepresentative D c ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R) := by
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa [D, R] using hoO⟩
+    have hq : componentQuotientMatrix G D e o ≤ 4 := by
+      have hle := Finset.single_le_sum
+        (fun c _ => Nat.zero_le (componentQuotientMatrix G D e c)) hoMem
+      simpa [D, R] using hrow ▸ hle
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    have hdvd : 2 ≤ componentQuotientMatrix G D o e → 12 ∣ e.supp.ncard := by
+      intro htwo
+      have := degree_sixteen_component_order_dvd_of_two_le_quotient
+        G hfree hmin hcard o e htwo
+      rwa [ho12] at this
+    rcases orderTwelve_cherry_term_eq_six_exception_or_dvd_twelve
+        e.supp.ncard (componentQuotientMatrix G D e o)
+          (componentQuotientMatrix G D o e) hlower hthree hq
+          (by simpa [D, ho12] using hbal) hdvd with h | h
+    · exact Or.inl ⟨⟨h.1, h.2.1⟩, h.2.2⟩
+    · exact Or.inr h
+  · exact degree_sixteen_fourLayer_twelve_order_six_double_cover_count_le_one
+      G hfree hmin hcard c₀ o ho12
+
 /-- Across all five minimum-component owner bins, there are at most five
 used defect components of order twenty-four.  Each 36-vertex bin contains at
 most one such component. -/
