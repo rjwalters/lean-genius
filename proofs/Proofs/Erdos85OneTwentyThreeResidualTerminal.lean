@@ -797,6 +797,157 @@ theorem degree_sixteen_fourLayer_covered_orphan_card_ge_fortyFive
   rw [Finset.card_sdiff_of_subset hCsub, hcardP]
   omega
 
+/-- Every used exterior vertex has exactly four orphan neighbors.  Its other
+twelve neighbors are forced: its child owner, plus one vertex in each of the
+eleven exterior rows whose child vertex is not adjacent to the owner. -/
+theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 4 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  let O := (Finset.univ \ U) \ R
+  let N := G.neighborFinset y
+  have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+    rw [hcard]
+    norm_num
+  have hregParent : ∀ x : V, G.degree x = 16 :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by norm_num) hmin hbelow
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  have howner : ∀ {u : minimumLayerVertex D c₀}, y ∈ E u → u = v := by
+    intro u hyu
+    by_contra huv
+    exact (Finset.disjoint_left.mp
+      (hpair (Finset.mem_univ u) (Finset.mem_univ v) huv)) hyu hyv
+  have hUN : (U ∩ N).card = 1 := by
+    have heq : U ∩ N = {v.2.1} := by
+      ext x
+      constructor
+      · intro hx
+        obtain ⟨u, _hu, hux⟩ := Finset.mem_image.mp
+          (Finset.mem_inter.mp hx).1
+        have hxy : G.Adj y x :=
+          (G.mem_neighborFinset y x).mp (Finset.mem_inter.mp hx).2
+        have hyu : y ∈ E u := by
+          apply Finset.mem_sdiff.mpr
+          refine ⟨?_, (Finset.mem_sdiff.mp hyv).2⟩
+          change u.2.1 = x at hux
+          exact (G.mem_neighborFinset u.2.1 y).mpr (by simpa [hux] using hxy.symm)
+        have huv := howner hyu
+        subst u
+        change v.2.1 = x at hux
+        simpa [hux]
+      · intro hx
+        have hxv : x = v.2.1 := Finset.mem_singleton.mp hx
+        subst x
+        exact Finset.mem_inter.mpr
+          ⟨Finset.mem_image.mpr ⟨v, Finset.mem_univ _, rfl⟩,
+            (G.mem_neighborFinset y v.2.1).mpr
+              ((G.mem_neighborFinset v.2.1 y).mp
+                (Finset.mem_sdiff.mp hyv).1).symm⟩
+    rw [heq]
+    simp
+  have hpairBlocks :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ N) := by
+    intro u hu w hw huw
+    change Disjoint (E u ∩ N) (E w ∩ N)
+    rw [Finset.disjoint_left]
+    intro q hqu hqw
+    exact (Finset.disjoint_left.mp (hpair hu hw huw))
+      (Finset.mem_inter.mp hqu).1 (Finset.mem_inter.mp hqw).1
+  have hblock : ∀ u : minimumLayerVertex D c₀,
+      (E u ∩ N).card = if H.Adj u v then 0 else 1 := by
+    intro u
+    rw [Finset.inter_comm]
+    exact minimumLayer_externalBlock_card_of_owned
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) u v hyv
+  have hnonAdjCount :
+      (Finset.univ.filter (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card = 11 := by
+    have hadjFilter :
+        Finset.univ.filter (fun u : minimumLayerVertex D c₀ => H.Adj u v) =
+          H.neighborFinset v := by
+      ext u
+      simp [H.adj_comm]
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset (minimumLayerVertex D c₀)))
+      (fun u => H.Adj u v)
+    rw [hadjFilter, H.card_neighborFinset_eq_degree, hregChild v,
+      Finset.card_univ, hcardChild] at hsplit
+    omega
+  have hRN : (R ∩ N).card = 11 := by
+    have heq : R ∩ N = Finset.univ.biUnion (fun u => E u ∩ N) := by
+      ext q
+      simp [R]
+    rw [heq, Finset.card_biUnion hpairBlocks]
+    simp_rw [hblock]
+    have hbool :
+        (∑ u : minimumLayerVertex D c₀, if ¬H.Adj u v then 1 else 0) =
+          (Finset.univ.filter
+            (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card := by
+      simpa only [Nat.cast_id] using
+        (Finset.sum_boole (R := ℕ)
+          (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v) Finset.univ)
+    calc
+      (∑ u : minimumLayerVertex D c₀, if H.Adj u v then 0 else 1) =
+          (∑ u : minimumLayerVertex D c₀,
+            if ¬H.Adj u v then 1 else 0) := by
+              apply Finset.sum_congr rfl
+              intro u hu
+              by_cases huv : H.Adj u v <;> simp [huv]
+      _ = (Finset.univ.filter
+          (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card := hbool
+      _ = 11 := hnonAdjCount
+  have hURdisj : Disjoint U R := by
+    rw [Finset.disjoint_left]
+    intro q hqU hqR
+    have hRsub := minimumLayer_externalBiUnion_subset_complement G D c₀ hqR
+    exact (Finset.mem_sdiff.mp hRsub).2 hqU
+  have hURN : ((U ∪ R) ∩ N).card = 12 := by
+    have heq : (U ∪ R) ∩ N = (U ∩ N) ∪ (R ∩ N) := by
+      ext q
+      simp only [Finset.mem_inter, Finset.mem_union]
+      tauto
+    rw [heq, Finset.card_union_of_disjoint]
+    · rw [hUN, hRN]
+    · exact Finset.disjoint_of_subset_left (Finset.inter_subset_left)
+        (Finset.disjoint_of_subset_right (Finset.inter_subset_left) hURdisj)
+  have hONeq : O ∩ N = N \ (U ∪ R) := by
+    ext q
+    simp [O, N]
+    tauto
+  rw [hONeq, Finset.card_sdiff]
+  have hNcard : N.card = 16 := by
+    rw [G.card_neighborFinset_eq_degree, hregParent y]
+  rw [hNcard, hURN]
+
 end
 
 end Erdos85
