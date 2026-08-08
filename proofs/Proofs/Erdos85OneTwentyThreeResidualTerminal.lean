@@ -1059,6 +1059,50 @@ theorem three_part_nine_lower_named_count_classification
       hka, hkb, hkc, even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ heven₂₇ ⊢ <;>
     omega
 
+set_option maxHeartbeats 2000000 in
+/-- Compact four-part census after order-six orphans have been excluded.
+Only three multisets survive the mass, divisibility, and odd-order parity
+constraints. -/
+theorem four_part_nine_lower_named_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 4) (hsum : ∑ c ∈ C, w c = 48)
+    (hnine : ∀ c ∈ C, 9 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card)
+    (heven₂₁ : Even (C.filter fun c => w c = 21).card) :
+    ((C.filter fun c => w c = 9).card = 2 ∧
+      (C.filter fun c => w c = 12).card = 1 ∧
+      (C.filter fun c => w c = 18).card = 1) ∨
+    ((C.filter fun c => w c = 9).card = 2 ∧
+      (C.filter fun c => w c = 15).card = 2) ∨
+    ((C.filter fun c => w c = 12).card = 4) := by
+  classical
+  obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ :=
+    Finset.card_eq_four.mp hcard
+  have ha : a ∈ ({a, b, c, d} : Finset α) := by simp
+  have hb : b ∈ ({a, b, c, d} : Finset α) := by simp
+  have hc : c ∈ ({a, b, c, d} : Finset α) := by simp
+  have hd : d ∈ ({a, b, c, d} : Finset α) := by simp
+  have haLower := hnine a ha
+  have hbLower := hnine b hb
+  have hcLower := hnine c hc
+  have hdLower := hnine d hd
+  obtain ⟨ka, hka⟩ := hthree a ha
+  obtain ⟨kb, hkb⟩ := hthree b hb
+  obtain ⟨kc, hkc⟩ := hthree c hc
+  obtain ⟨kd, hkd⟩ := hthree d hd
+  simp [hab, hac, had, hbc, hbd, hcd] at hsum
+  have hkaUpper : ka ≤ 7 := by omega
+  have hkbUpper : kb ≤ 7 := by omega
+  have hkcUpper : kc ≤ 7 := by omega
+  have hkdEq : kd = 16 - ka - kb - kc := by omega
+  subst kd
+  interval_cases ka <;> interval_cases kb <;> interval_cases kc <;>
+    norm_num at hka hkb hkc hkd <;>
+    simp [Finset.filter_insert, Finset.filter_singleton, hab, hac, had,
+      hbc, hbd, hcd, hka, hkb, hkc, hkd, even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ ⊢ <;>
+    omega
+
 /-- An order-six used row cannot distribute quotient degree four across one
 order-twelve and four order-nine targets.  The nine-target entries are
 multiples of three, the twelve-target entry is even, and the only numerical
