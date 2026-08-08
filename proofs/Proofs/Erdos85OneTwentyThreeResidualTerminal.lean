@@ -921,6 +921,16 @@ theorem four_part_three_divisible_count_vector_classification
     rcases hn₂₄Cases with h₂₄ | h₂₄ <;>
     rcases hn₃₀Cases with h₃₀ | h₃₀ <;> omega
 
+/-- A singleton family of total weight forty-eight consists of one
+weight-forty-eight element. -/
+theorem one_part_weight_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 1) (hsum : ∑ c ∈ C, w c = 48) :
+    (C.filter fun c => w c = 48).card = 1 := by
+  obtain ⟨c, rfl⟩ := Finset.card_eq_one.mp hcard
+  simp only [Finset.sum_singleton, Finset.filter_singleton]
+  simp_all
+
 set_option maxHeartbeats 2000000 in
 /-- Finset form of the exact four-part, three-divisible count classification. -/
 theorem four_part_three_divisible_count_classification
@@ -6564,6 +6574,46 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   rcases (Nat.even_mul.mp hSeven) with hrEven | hCEven
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
+
+/-- Exact classification of the singleton orphan branch. -/
+theorem degree_sixteen_fourLayer_one_orphan_component_count_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 1) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    (C.filter fun c => c.supp.ncard = 48).card = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply one_part_weight_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
 
 /-- Exact multiset classification of the four-component orphan branch. -/
 theorem degree_sixteen_fourLayer_four_orphan_component_count_classification
