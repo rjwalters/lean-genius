@@ -9449,6 +9449,46 @@ theorem false_of_degree_sixteen_fourLayer_unique_orderTwelve_of_used_ne_six
   rw [hsum] at htwo
   norm_num at htwo
 
+/-- A unique order-twelve orphan together with orphan orders restricted to
+`9`, `12`, and `18` is impossible.  This packages the shared row exclusion
+and local-excess parity layers used by two census branches. -/
+theorem false_of_degree_sixteen_fourLayer_unique_twelve_nine_eighteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (horders :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      ∀ o ∈ C, o.supp.ncard = 9 ∨ o.supp.ncard = 12 ∨
+        o.supp.ncard = 18)
+    (hunique :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 12).card = 1) : False := by
+  apply false_of_degree_sixteen_fourLayer_unique_orderTwelve_of_used_ne_six
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hunique
+  intro e heR
+  exact degree_sixteen_fourLayer_unique_twelve_nine_eighteen_used_component_ne_six
+    G hfree hmin hcard c₀ hregChild hcardChild horders hunique e heR
+
 /-- In the five-orphan branch, no used-exterior defect component has order
 six.  The graph classification and exact quotient row sum instantiate the
 five-target arithmetic obstruction. -/
