@@ -2596,6 +2596,48 @@ theorem degree_sixteen_twoLayer_orientedFiveMass_eq_five_ten_or_fifteen
       u hℓ3 hbij huD
   omega
 
+/-- The order-five mass squeeze forces at least three selected
+five-divisible forward components.  Since the minimum `C₅` is one of them,
+at least two additional selected components occur outside the base layer. -/
+theorem degree_sixteen_twoLayer_three_le_forwardFive_component_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    3 ≤ (Finset.univ.filter (fun c :
+      (secondOrderDefectGraph G).ConnectedComponent =>
+        5 ∣ c.supp.ncard ∧ forwardOriented G u c)).card := by
+  have hmass :=
+    degree_sixteen_twoLayer_orientedFiveMass_eq_five_ten_or_fifteen
+      G hfree hmin hcard c₀ hregChild hcardChild u hu huRange hℓ3 hbij huD
+  have hmassLower : 5 ≤ orientedAnchorMass G u (forwardOriented G u) 5 := by
+    rcases hmass with h5 | h10 | h15 <;> omega
+  have hmassUpper :=
+    orientedAnchorMass_forwardOriented_le_two_mul_component_card
+      G hfree (d := 16) (p := 5) (by norm_num) (by norm_num) hmin hcard
+        u hu huRange
+  omega
+
 /-- Sharp orphan-cycle lower bounds in the two small residual branches.
 Since `c₀` is minimum and the orphan is outside the minimum layer, its full
 component is strictly larger than the base length `3` or `5`. -/
