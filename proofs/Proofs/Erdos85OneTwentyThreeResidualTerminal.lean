@@ -45,6 +45,22 @@ theorem degree_sixteen_secondOrder_colorOrder_mod_three
   norm_num at hcolor ⊢
   exact hcolor
 
+/-- Arithmetic kernel for the two-layer O--R quotient.  Detailed balance
+between a 5-divisible R component and a non-5-divisible O component forces
+every positive O-to-R entry (which is bounded by the total O-to-R degree
+five) to consume the entire row. -/
+theorem eq_five_of_five_dvd_left_balance_not_dvd_right
+    (r o a b : ℕ) (hr : 5 ∣ r) (ho : ¬ 5 ∣ o)
+    (hbal : r * a = o * b) (hbpos : 0 < b) (hble : b ≤ 5) :
+    b = 5 := by
+  obtain ⟨k, rfl⟩ := hr
+  have hdvdProd : 5 ∣ o * b := by
+    rw [← hbal]
+    simpa [mul_assoc] using dvd_mul_right 5 (k * a)
+  have hp : Nat.Prime 5 := by norm_num
+  have hbdvd : 5 ∣ b := (hp.dvd_mul.mp hdvdProd).resolve_left ho
+  omega
+
 /-- Integral indicator vector of a finite vertex set. -/
 def vertexFinsetIndicator {V : Type*} [DecidableEq V]
     (S : Finset V) : V → ℤ := fun x => if x ∈ S then 1 else 0
