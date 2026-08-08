@@ -1,4 +1,5 @@
 import Proofs.Erdos85CyclotomicResultantNorm
+import Proofs.Erdos85ParametricCyclotomicResultantNorm
 import Proofs.Erdos85ChebyshevConductor
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
 import Mathlib.Tactic.ComputeDegree
@@ -47,36 +48,37 @@ theorem signed_triple_product_collapse {K : Type*} [CommRing K]
 /-- **Resultant of `X^n - 1` with the boundary quadratic.**  Over the
 algebraic closure the quadratic factors through `z, z⁻¹` with
 `z + z⁻¹ = 13`, giving the Chebyshev value `C_n(13) - 2` up to sign. -/
-theorem X_pow_sub_one_resultant_thirteen {n : ℕ} (hn : 0 < n) :
+theorem X_pow_sub_one_resultant_at (a : ℤ) {n : ℕ} (hn : 0 < n) :
     (Polynomial.X ^ n - 1 : Polynomial ℤ).resultant
-        degreeFourteenCyclotomicQuadraticInt n 2 =
-      (-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval 13 - 2) := by
-  have hd2 := degreeFourteenCyclotomicQuadraticInt_natDegree
+        (cyclotomicQuadraticIntAt a) n 2 =
+      (-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval a - 2) := by
+  have hd2 := cyclotomicQuadraticIntAt_natDegree a
   haveI : NeZero ((n : ℕ) : AlgebraicClosure ℚ) := ⟨Nat.cast_ne_zero.mpr hn.ne'⟩
   obtain ⟨ζ, hζroot⟩ := IsAlgClosed.exists_root
     (Polynomial.cyclotomic n (AlgebraicClosure ℚ))
     (Polynomial.degree_cyclotomic_pos n _ hn).ne'
   have hζ : IsPrimitiveRoot ζ n := Polynomial.isRoot_cyclotomic_iff.mp hζroot
-  obtain ⟨z, hzq⟩ := exists_quadratic_split (13 : AlgebraicClosure ℚ)
+  obtain ⟨z, hzq⟩ := exists_quadratic_split (a : AlgebraicClosure ℚ)
   have hz0 : z ≠ 0 := quadratic_root_ne_zero hzq
-  have h13 : (13 : AlgebraicClosure ℚ) = z + z⁻¹ := quadratic_root_add_inv hzq
+  have ha : (a : AlgebraicClosure ℚ) = z + z⁻¹ := quadratic_root_add_inv hzq
   set Q' : Polynomial (AlgebraicClosure ℚ) :=
-    degreeFourteenCyclotomicQuadraticInt.map
+    (cyclotomicQuadraticIntAt a).map
       (Int.castRingHom (AlgebraicClosure ℚ)) with hQ'
   have hQdeg : Q'.natDegree = 2 := by
     rw [hQ', Polynomial.natDegree_map_eq_of_injective Int.cast_injective, hd2]
-  have hQeval : ∀ w : AlgebraicClosure ℚ, Q'.eval w = 13 * w - w ^ 2 - 1 := by
+  have hQeval : ∀ w : AlgebraicClosure ℚ,
+      Q'.eval w = (a : AlgebraicClosure ℚ) * w - w ^ 2 - 1 := by
     intro w
-    simp only [hQ', degreeFourteenCyclotomicQuadraticInt, Polynomial.map_sub,
+    simp only [hQ', cyclotomicQuadraticIntAt, Polynomial.map_sub,
       Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_one,
       Polynomial.map_X, Polynomial.map_C, Polynomial.eval_sub,
       Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_one,
       Polynomial.eval_X, Polynomial.eval_C]
-    norm_num
+    simp
   have hfac : ∀ w : AlgebraicClosure ℚ,
       Q'.eval w = (-1) * ((w - z) * (w - z⁻¹)) := by
     intro w
-    rw [hQeval w, h13]
+    rw [hQeval w, ha]
     have hzz : z * z⁻¹ = 1 := mul_inv_cancel₀ hz0
     linear_combination hzz
   have hprod : (Polynomial.X ^ n - 1 : Polynomial (AlgebraicClosure ℚ)) =
@@ -143,9 +145,10 @@ theorem X_pow_sub_one_resultant_thirteen {n : ℕ} (hn : 0 < n) :
       Finset.prod_mul_distrib, Finset.prod_const, hcard]
   have hzn : z ^ n * (z⁻¹) ^ n = 1 := by
     rw [← mul_pow, mul_inv_cancel₀ hz0, one_pow]
-  have hcheb : (Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval 13 =
+  have hcheb : (Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval
+      (a : AlgebraicClosure ℚ) =
       z ^ n + (z⁻¹) ^ n := by
-    rw [h13]
+    rw [ha]
     exact chebyshev_C_eval_add_inv n hz0
   have hneg : ((-1 : AlgebraicClosure ℚ)) ^ n * (-1) ^ n = 1 := by
     rw [← mul_pow]; norm_num
@@ -153,32 +156,53 @@ theorem X_pow_sub_one_resultant_thirteen {n : ℕ} (hn : 0 < n) :
       ((Polynomial.X ^ n - 1 : Polynomial ℤ).map
         (Int.castRingHom (AlgebraicClosure ℚ))) Q' n 2 =
       (-1) ^ (n + 1) *
-        ((Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval 13 - 2) := by
+        ((Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval
+          (a : AlgebraicClosure ℚ) - 2) := by
     rw [hmapped, hstep, h1, h2, hcheb, pow_succ]
     exact signed_triple_product_collapse _ _ _ hneg hzn
   -- transfer along the injective cast
-  have hevalcast : (((Chebyshev.C ℤ (n : ℤ)).eval 13 : ℤ) : AlgebraicClosure ℚ) =
-      (Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval 13 := by
+  have hevalcast : (((Chebyshev.C ℤ (n : ℤ)).eval a : ℤ) : AlgebraicClosure ℚ) =
+      (Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval
+        (a : AlgebraicClosure ℚ) := by
     rw [← Polynomial.Chebyshev.map_C (Int.castRingHom (AlgebraicClosure ℚ)) (n : ℤ),
       Polynomial.eval_map,
-      show (13 : AlgebraicClosure ℚ) = (Int.castRingHom (AlgebraicClosure ℚ)) 13 by
+      show (a : AlgebraicClosure ℚ) = (Int.castRingHom (AlgebraicClosure ℚ)) a by
         simp,
       Polynomial.eval₂_at_apply]
     simp
   apply Int.cast_injective (α := AlgebraicClosure ℚ)
   calc ((Polynomial.resultant (Polynomial.X ^ n - 1 : Polynomial ℤ)
-        degreeFourteenCyclotomicQuadraticInt n 2 : ℤ) : AlgebraicClosure ℚ)
+        (cyclotomicQuadraticIntAt a) n 2 : ℤ) : AlgebraicClosure ℚ)
       = Polynomial.resultant
           ((Polynomial.X ^ n - 1 : Polynomial ℤ).map
             (Int.castRingHom (AlgebraicClosure ℚ))) Q' n 2 :=
         (Polynomial.resultant_map_map (Polynomial.X ^ n - 1 : Polynomial ℤ)
-          degreeFourteenCyclotomicQuadraticInt n 2
+          (cyclotomicQuadraticIntAt a) n 2
           (Int.castRingHom (AlgebraicClosure ℚ))).symm
     _ = (-1) ^ (n + 1) *
-          ((Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval 13 - 2) := hK
-    _ = (((-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval 13 - 2) : ℤ) :
+          ((Chebyshev.C (AlgebraicClosure ℚ) (n : ℤ)).eval
+            (a : AlgebraicClosure ℚ) - 2) := hK
+    _ = (((-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval a - 2) : ℤ) :
           AlgebraicClosure ℚ) := by
         rw [← hevalcast]; push_cast; ring
+
+/-- Scalar-13 compatibility wrapper for the original exact-boundary engine. -/
+theorem X_pow_sub_one_resultant_thirteen {n : ℕ} (hn : 0 < n) :
+    (Polynomial.X ^ n - 1 : Polynomial ℤ).resultant
+        degreeFourteenCyclotomicQuadraticInt n 2 =
+      (-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval 13 - 2) := by
+  simpa [degreeFourteenCyclotomicQuadraticInt, cyclotomicQuadraticIntAt] using
+    X_pow_sub_one_resultant_at 13 hn
+
+/-- Parametric statement with the actual polynomial degrees. -/
+theorem X_pow_sub_one_resultant_at' (a : ℤ) {n : ℕ} (hn : 0 < n) :
+    (Polynomial.X ^ n - 1 : Polynomial ℤ).resultant
+        (cyclotomicQuadraticIntAt a)
+        (Polynomial.X ^ n - 1 : Polynomial ℤ).natDegree
+        (cyclotomicQuadraticIntAt a).natDegree =
+      (-1) ^ (n + 1) * ((Chebyshev.C ℤ (n : ℤ)).eval a - 2) := by
+  rw [natDegree_X_pow_sub_one_int, cyclotomicQuadraticIntAt_natDegree]
+  exact X_pow_sub_one_resultant_at a hn
 
 /-- The same statement with the `natDegree` arguments of the surrounding
 factorization theorem. -/
