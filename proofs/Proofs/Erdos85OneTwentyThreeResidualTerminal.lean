@@ -1294,6 +1294,119 @@ theorem false_of_orderSix_row_unique_twelve_rest_nine_or_eighteen
   rw [ho12] at hdiv
   norm_num at hdiv
 
+/-- An order-six row cannot have quotient degree four across targets of
+orders fifteen and eighteen.  Fifteen-target entries are multiples of five
+and eighteen-target entries are multiples of three. -/
+theorem false_of_orderSix_row_fifteen_or_eighteen
+    {α : Type*} (C : Finset α) (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 15 ∨ w c = 18)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 6 * q c = w c * a c) : False := by
+  have hqThree : 3 ∣ ∑ c ∈ C, q c := by
+    apply Finset.dvd_sum
+    intro c hc
+    have hbc := hbal c hc
+    rcases horders c hc with hc15 | hc18
+    · rw [hc15] at hbc
+      have hqFive : 5 ∣ q c := by
+        have hcop : Nat.Coprime 5 2 := by norm_num
+        exact hcop.dvd_of_dvd_mul_left ⟨a c, by omega⟩
+      have hqle : q c ≤ 4 := by
+        have := Finset.single_le_sum (fun x _ => Nat.zero_le (q x)) hc
+        rw [hsum] at this
+        exact this
+      obtain ⟨k, hk⟩ := hqFive
+      have hqzero : q c = 0 := by omega
+      simp [hqzero]
+    · rw [hc18] at hbc
+      refine ⟨a c, ?_⟩
+      omega
+  rw [hsum] at hqThree
+  norm_num at hqThree
+
+/-- An order-nine row cannot have quotient degree four across a unique
+order-eighteen target and remaining order-fifteen targets. -/
+theorem false_of_orderNine_row_unique_eighteen_rest_fifteen
+    {α : Type*} [DecidableEq α] (C : Finset α) (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 15 ∨ w c = 18)
+    (hunique : (C.filter fun c => w c = 18).card = 1)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 9 * q c = w c * a c)
+    (hdvd : ∀ c ∈ C, 2 ≤ a c → w c ∣ 9) : False := by
+  obtain ⟨o, hfilter⟩ := Finset.card_eq_one.mp hunique
+  have hoFilter : o ∈ C.filter (fun c => w c = 18) := by simp [hfilter]
+  have hoC : o ∈ C := (Finset.mem_filter.mp hoFilter).1
+  have ho18 : w o = 18 := (Finset.mem_filter.mp hoFilter).2
+  have hrestZero : ∀ c ∈ C.erase o, q c = 0 := by
+    intro c hc
+    have hcC := Finset.mem_of_mem_erase hc
+    have hcne := Finset.ne_of_mem_erase hc
+    have hc15 : w c = 15 := by
+      rcases horders c hcC with h | h
+      · exact h
+      · have hcFilter : c ∈ C.filter (fun x => w x = 18) :=
+          Finset.mem_filter.mpr ⟨hcC, h⟩
+        rw [hfilter] at hcFilter
+        exact False.elim (hcne (Finset.mem_singleton.mp hcFilter))
+    have hbc := hbal c hcC
+    rw [hc15] at hbc
+    have hqFive : 5 ∣ q c := by
+      have hcop : Nat.Coprime 5 3 := by norm_num
+      exact hcop.dvd_of_dvd_mul_left ⟨a c, by omega⟩
+    have hqle : q c ≤ 4 := by
+      have := Finset.single_le_sum (fun x _ => Nat.zero_le (q x)) hcC
+      rw [hsum] at this
+      exact this
+    obtain ⟨k, hk⟩ := hqFive
+    omega
+  have hsplit := Finset.sum_erase_add C q hoC
+  have hrestSum : ∑ c ∈ C.erase o, q c = 0 := by
+    apply Finset.sum_eq_zero
+    intro c hc
+    exact hrestZero c hc
+  rw [hrestSum, zero_add, hsum] at hsplit
+  have hbo := hbal o hoC
+  rw [ho18, hsplit] at hbo
+  have hao : a o = 2 := by omega
+  have hdiv := hdvd o hoC (by omega)
+  rw [ho18] at hdiv
+  norm_num at hdiv
+
+/-- A used-cell contribution to an order-eighteen orphan's local-excess
+ledger is even once used orders six and nine are excluded. -/
+theorem orderEighteen_localExcess_term_even_of_no_orderSix_orNine
+    (r a b : ℕ) (hr : 6 ≤ r) (hthree : 3 ∣ r)
+    (hneSix : r ≠ 6) (hneNine : r ≠ 9)
+    (hbal : 18 * a = r * b) (hdvd : 2 ≤ b → r ∣ 18) :
+    Even ((a : ℤ) * (b : ℤ) - (a : ℤ)) := by
+  by_cases hb : 2 ≤ b
+  · have hrDvd := hdvd hb
+    have hrle : r ≤ 18 := Nat.le_of_dvd (by norm_num) hrDvd
+    have hre : r = 18 := by
+      interval_cases r
+      · omega
+      · norm_num at hthree
+      · norm_num at hthree
+      · omega
+      · norm_num at hthree
+      · norm_num at hthree
+      · norm_num at hrDvd
+      · norm_num at hthree
+      · norm_num at hthree
+      · norm_num at hrDvd
+      · norm_num at hthree
+      · norm_num at hthree
+      · rfl
+    rw [hre] at hbal
+    have hab : a = b := Nat.eq_of_mul_eq_mul_left (by norm_num) hbal
+    rw [hab]
+    convert Int.even_mul_pred_self (b : ℤ) using 1 <;> ring
+  · have hble : b ≤ 1 := by omega
+    interval_cases b
+    · have ha : a = 0 := by omega
+      simp [ha]
+    · simp
+
 /-- A used-cell contribution to an order-twelve orphan's local-excess
 ledger is even once order-six used components are excluded.  A reverse
 multiple cover forces the used order to divide twelve; the remaining order
