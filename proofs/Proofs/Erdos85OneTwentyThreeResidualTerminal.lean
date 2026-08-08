@@ -9231,6 +9231,67 @@ theorem degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
     degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
       G hfree hmin hcard c₀ hregChild hcardChild v hrepRow
 
+/-- A graph-facing order-six exclusion shared by the `[18,18,12]` and
+`[18,12,9,9]` orphan branches. -/
+theorem degree_sixteen_fourLayer_unique_twelve_nine_eighteen_used_component_ne_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (horders :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      ∀ o ∈ C, o.supp.ncard = 9 ∨ o.supp.ncard = 12 ∨
+        o.supp.ncard = 18)
+    (hunique :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 12).card = 1)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    e.supp.ncard ≠ 6 := by
+  classical
+  intro heSix
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  apply false_of_orderSix_row_unique_twelve_rest_nine_or_eighteen C
+    (fun o : D.ConnectedComponent => o.supp.ncard)
+    (fun o => componentQuotientMatrix G D e o)
+    (fun o => componentQuotientMatrix G D o e)
+  · exact horders
+  · exact hunique
+  · exact degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild e heR
+  · intro o _ho
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    rw [heSix] at hbal
+    simpa [D] using hbal
+  · intro o _ho htwo
+    have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+      G hfree hmin hcard o e htwo
+    rwa [heSix] at hdvd
+
 /-- In the five-orphan branch, no used-exterior defect component has order
 six.  The graph classification and exact quotient row sum instantiate the
 five-target arithmetic obstruction. -/
