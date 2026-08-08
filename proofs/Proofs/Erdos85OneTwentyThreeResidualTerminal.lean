@@ -498,6 +498,35 @@ theorem degree_sixteen_component_card_dvd_three_of_localExcess_terms
   have hdvdZ : (3 : ℤ) ∣ (c.supp.ncard : ℤ) := ⟨k + 1, hcast⟩
   exact_mod_cast hdvdZ
 
+/-- Equal-sized component blocks of quotient degree at most one contribute
+zero to the local-excess sum.  Detailed balance makes the reverse quotient
+equal to the forward quotient, and the latter is zero or one.  This packages
+the orphan-matching contribution in the four-layer divisibility proof. -/
+theorem degree_sixteen_equalSize_localExcess_term_eq_zero_of_quotient_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsize : c.supp.ncard = e.supp.ncard)
+    (hle : componentQuotientMatrix G (secondOrderDefectGraph G) c e ≤ 1) :
+    (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) = 0 := by
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c e
+  rw [hsize] at hbal
+  have hpos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hsym : componentQuotientMatrix G (secondOrderDefectGraph G) c e =
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c :=
+    Nat.eq_of_mul_eq_mul_left hpos hbal
+  rw [← hsym]
+  interval_cases componentQuotientMatrix G (secondOrderDefectGraph G) c e <;>
+    norm_num
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
