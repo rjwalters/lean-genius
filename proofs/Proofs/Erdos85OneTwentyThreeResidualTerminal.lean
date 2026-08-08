@@ -1069,6 +1069,36 @@ theorem false_of_orderSix_row_five_nine_twelve
   rw [ho12] at hdiv
   norm_num at hdiv
 
+/-- A used-cell contribution to an order-twelve orphan's local-excess
+ledger is even once order-six used components are excluded.  A reverse
+multiple cover forces the used order to divide twelve; the remaining order
+constraints then force equality at twelve. -/
+theorem orderTwelve_localExcess_term_even_of_no_orderSix
+    (r a b : ℕ) (hr : 6 ≤ r) (hthree : 3 ∣ r) (hne : r ≠ 6)
+    (hbal : 12 * a = r * b) (hdvd : 2 ≤ b → r ∣ 12) :
+    Even ((a : ℤ) * (b : ℤ) - (a : ℤ)) := by
+  by_cases hb : 2 ≤ b
+  · have hrDvd := hdvd hb
+    have hrle : r ≤ 12 := Nat.le_of_dvd (by norm_num) hrDvd
+    have hre : r = 12 := by
+      interval_cases r
+      · omega
+      · norm_num at hthree
+      · norm_num at hthree
+      · norm_num at hrDvd
+      · norm_num at hthree
+      · norm_num at hthree
+      · rfl
+    rw [hre] at hbal
+    have hab : a = b := Nat.eq_of_mul_eq_mul_left (by norm_num) hbal
+    rw [hab]
+    convert Int.even_mul_pred_self (b : ℤ) using 1 <;> ring
+  · have hble : b ≤ 1 := by omega
+    interval_cases b
+    · have ha : a = 0 := by omega
+      simp [ha]
+    · simp
+
 /- Retired n=3 census automation.
 set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for three three-divisible parts of
