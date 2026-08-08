@@ -1731,6 +1731,48 @@ theorem degree_sixteen_fourLayer_orphan_matching_not_defect_adj
   · exact ((mem_antipodalNeighbors G z q).mp hzqAnti).2.1
       ((mem_triangleFreeNeighbors G z q).mp hbothTF.2).1
 
+/-- Every defect edge inside the orphan subsystem is antipodal.  Its other
+possible color would make it an orphan matching edge, which the preceding
+theorem excludes from the defect graph. -/
+theorem degree_sixteen_fourLayer_orphan_defect_adj_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z q : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzqD : (secondOrderDefectGraph G).Adj z q) :
+    (antipodalGraph G).Adj z q := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hq : q ∈ O :=
+    degree_sixteen_fourLayer_orphans_defect_closed
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+        ((D.mem_neighborFinset z q).mpr hzqD)
+  change (antipodalGraph G).Adj z q ∨
+    (triangleFreeEdgeGraph G).Adj z q at hzqD
+  rcases hzqD with hanti | htri
+  · exact hanti
+  · have hzqG : G.Adj z q :=
+      ((mem_triangleFreeNeighbors G z q).mp htri).1
+    exact (degree_sixteen_fourLayer_orphan_matching_not_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hq hzqG
+        (Or.inr htri)).elim
+
 end
 
 end Erdos85
