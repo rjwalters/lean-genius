@@ -430,6 +430,74 @@ theorem degree_sixteen_orderTwelve_two_orderSix_column_even
     even_iff_two_dvd.mp hevenZ
   exact_mod_cast hdvdZ
 
+/-- An order-six component which spends total quotient degree two into three
+order-twelve targets has reverse quotient mass one across those targets.
+This is detailed balance divided by the common size ratio two, and supplies
+the unit-row hypotheses of the four-layer collision capstone. -/
+theorem degree_sixteen_orderSix_three_orderTwelve_reverse_sum_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c e₀ e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 6) (he₀ : e₀.supp.ncard = 12)
+    (he₁ : e₁.supp.ncard = 12) (he₂ : e₂.supp.ncard = 12)
+    (hforward :
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e₀ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) c e₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) c e₂ = 2) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c = 1 := by
+  have hbal₀ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c e₀
+  have hbal₁ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c e₁
+  have hbal₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c e₂
+  rw [hc, he₀] at hbal₀
+  rw [hc, he₁] at hbal₁
+  rw [hc, he₂] at hbal₂
+  omega
+
+/-- Divisibility extraction from the local-excess identity.  If every local
+quotient interaction term of a defect component is divisible by three, then
+the component order is divisible by three as well, because their sum is
+`|c| - 3`.  This is the arithmetic core of the per-orphan divisibility
+wrapper in the four-layer branch. -/
+theorem degree_sixteen_component_card_dvd_three_of_localExcess_terms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hterms : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      (3 : ℤ) ∣
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) *
+            (componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℤ) -
+          (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ)) :
+    3 ∣ c.supp.ncard := by
+  have hsumDvd : (3 : ℤ) ∣
+      ∑ e, ((componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e : ℤ)) := by
+    apply Finset.dvd_sum
+    intro e _he
+    exact hterms e
+  rw [secondOrder_componentQuotientMatrix_local_excess
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c] at hsumDvd
+  obtain ⟨k, hk⟩ := hsumDvd
+  have hcast : (c.supp.ncard : ℤ) = 3 * (k + 1) := by omega
+  have hdvdZ : (3 : ℤ) ∣ (c.supp.ncard : ℤ) := ⟨k + 1, hcast⟩
+  exact_mod_cast hdvdZ
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
