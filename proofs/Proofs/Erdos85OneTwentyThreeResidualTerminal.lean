@@ -329,6 +329,59 @@ theorem minimumLayer_orphan_service_card_eq_one
   change (E u ∩ G.neighborFinset z).card = 1
   omega
 
+/-- The rowwise service law summed over the disjoint exterior rows: every
+orphan has exactly `s(s-1)+3` neighbors in the used exterior, one for each
+vertex of the minimum-layer child. -/
+theorem minimumLayer_orphan_used_exterior_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀)) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset z).card =
+      s * (s - 1) + 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hpairInter :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ G.neighborFinset z) := by
+    intro u hu v hv huv
+    exact Finset.disjoint_of_subset_left (Finset.inter_subset_left)
+      (Finset.disjoint_of_subset_right (Finset.inter_subset_left)
+        (hpair hu hv huv))
+  have heq : Finset.univ.biUnion E ∩ G.neighborFinset z =
+      Finset.univ.biUnion (fun u => E u ∩ G.neighborFinset z) := by
+    ext y
+    simp
+  rw [heq, Finset.card_biUnion hpairInter]
+  have hservice : ∀ u : minimumLayerVertex D c₀,
+      (E u ∩ G.neighborFinset z).card = 1 := by
+    intro u
+    exact minimumLayer_orphan_service_card_eq_one
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild
+        z hzOutside hzUnused u
+  simp_rw [hservice]
+  simpa [D] using hcardChild
+
 /-- At ambient degree sixteen, the exact one-service-per-child-row law
 leaves `16 - |U|` nonservice neighbors at every orphan, uniformly in the
 minimum-layer child degree. -/
