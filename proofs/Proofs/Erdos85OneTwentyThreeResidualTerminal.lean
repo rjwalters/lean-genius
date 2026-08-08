@@ -2097,7 +2097,8 @@ theorem degree_sixteen_fourLayer_orphan_nonshared_service_partner
           (secondOrderDefectGraph G) c₀ v ∧
       v ≠ u ∧
       ¬(minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj v u ∧
-      G.Adj z y' ∧ G.Adj y y' := by
+      G.Adj z y' ∧ G.Adj y y' ∧
+      ∀ w : V, G.Adj z w → G.Adj y w → w = y' := by
   classical
   let D := secondOrderDefectGraph G
   let U := minimumLayerImageFinset D c₀
@@ -2170,7 +2171,19 @@ theorem degree_sixteen_fourLayer_orphan_nonshared_service_partner
       Finset.mem_inter.mpr ⟨hwE, (G.mem_neighborFinset y ww.1).mpr hyw⟩
     rw [Finset.card_eq_zero.mp hblock] at hwMem
     exact Finset.notMem_empty ww.1 hwMem
-  exact ⟨v, ww.1, hwE, hvu, hnotH, hzw, hyw⟩
+  refine ⟨v, ww.1, hwE, hvu, hnotH, hzw, hyw, ?_⟩
+  intro w hzw' hyw'
+  have hzyne : z ≠ y := G.ne_of_adj hzy
+  have hcommon := common_le_one_of_not_containsC4 hfree z y hzyne
+  have hwMem : w ∈ G.neighborFinset z ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z w).mpr hzw',
+        (G.mem_neighborFinset y w).mpr hyw'⟩
+  have hpartnerMem : ww.1 ∈ G.neighborFinset z ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z ww.1).mpr hzw,
+        (G.mem_neighborFinset y ww.1).mpr hyw⟩
+  exact Finset.card_le_one.mp hcommon w hwMem ww.1 hpartnerMem
 
 end
 
