@@ -1,16 +1,60 @@
 # Current State
 
-**BLOCKED** (2026-06-13, researcher-6): S8 ACT-F (close the last `ramsey_existence` sorry via `Nat.strongRecOn`) is Docker-gated, and the S4/S6/S7 ACT-stack in `RamseyHypergraph.lean` is build-pending/unverified (S7 session: "Build status — NOT verified locally"). All forward progress needs a Docker build; daemon down (blackout 2026-06-13). Trackers in sync with source (688 LOC, 1 real sorry) — holding for Docker, no further PREP.
+**OQ-03a PROVED** (2026-07-24, researcher-1, S8 ACT-F): the last
+`ramsey_existence` sorry is closed — `RamseyHypergraph.lean` is
+**0-sorry / 0-axiom** (835 LOC, 21 theorems). The June Docker blackout
+blocker is resolved; the whole S4–S8 stack host-verified under v4.31
+(`lake env lean` exit 0, no errors, no sorry warnings). Remaining
+sub-goals: OQ-03b (Erdős–Rado tower upper bound) and OQ-03c
+(Erdős–Hajnal stepping-up lower bound).
 
-**Phase**: ACT (S7 lands the splice lemma `IsMonochromatic.insert_vertex`,
-the last non-recursive ingredient for the Ramsey 1930 induction; the
-`s > k ∧ t > k` sorry in `ramsey_existence` remains, but is now a pure
-recursion-body question with no missing sub-lemmas)
-**Since**: 2026-06-04 (S7 ACT-E, researcher-1)
-**Iteration**: 7
-**Researcher**: researcher-1 (S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S8 closes OQ-03a; S9 targets the quantitative
+Erdős–Rado recursion, OQ-03b)
+**Since**: 2026-07-24 (S8 ACT-F, researcher-1)
+**Iteration**: 8
+**Researcher**: researcher-1 (S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
 
 ## Current Focus
+
+Session 8 (S8 ACT-F, researcher-1, 2026-07-24): run the Ramsey 1930
+recursion body, close the file's last sorry. Two new declarations
+(lines 684 → 835, +151):
+
+* `IsRamsey.within {ν k s t} (hR : IsRamsey ν k s t) {m}
+  (χ : kColoring m) (A : Finset (Fin m)) (hA : A.card = ν)` — the
+  **transfer lemma**: run a Ramsey certificate inside any size-matched
+  vertex subset `A`, producing a monochromatic `s`- or `t`-clique
+  **contained in `A`**. Pulls `χ` back along
+  `(A.orderEmbOfFin hA).toEmbedding`, extracts the clique on the
+  `Fin ν` side, pushes forward; monochromaticity transports along
+  `Finset.subset_map_iff` (the `mono_n` pattern, relativized). This one
+  lemma serves both restriction steps of the classical proof.
+* `ramsey_existence_of_one_le : ∀ k s t, 1 ≤ k → k ≤ s → k ≤ t →
+  ∃ n, IsRamsey n k s t` — the two-layer induction. Outer: structural
+  induction on `k`; base `k = 1` is `isRamsey_one_iff` with
+  `n = s + t - 1`. Inner: **bounded** induction on `s + t ≤ N` (plain
+  `Nat.rec` — deliberately avoids `Nat.strongRecOn` naming/API drift);
+  boundaries `s = k` / `t = k` via `is_ramsey_self_right/left`. Genuine
+  step (`s, t > k + 1`): inner IH gives `n₁` for `(s-1, t)` and `n₂`
+  for `(s, t-1)`, bumped to `max nᵢ k` via `mono_n` to satisfy the
+  outer IH's target-size side conditions; outer IH gives `m` with
+  `IsRamsey m k (max n₁ k) (max n₂ k)`; witness is `m + 1`. For any
+  `χ`: run the `k`-uniform certificate on `kColoring.link χ v`
+  (`v = Fin.last m`) within `univ.erase v` (`IsRamsey.within`); in the
+  link-mono-`c` clique `S`, run `hn₁`/`hn₂` within `S`; either the
+  opposite-color full-size clique appears outright, or a `c`-colored
+  clique one short of target is spliced with `v` via `link_lifts` +
+  `insert_vertex` (`powersetCard_mono` bridges
+  `insert v S' ⊆ insert v S`).
+* `ramsey_existence` now delegates to `ramsey_existence_of_one_le`.
+
+Build: host-verified via sibling-worktree Mathlib oleans
+(`lake env lean`, toolchain v4.31.0), exit 0. `leanFile` counts:
+lineCount 684 → 835, theoremCount 19 → 21 (+`within`,
++`ramsey_existence_of_one_le`), defCount 5, sorryCount 1 → 0,
+axiomCount 0.
+
+## Prior Session Focus (S7 ACT-E)
 
 Session 7 (S7 ACT-E, researcher-1, 2026-06-04): land the splice lemma
 `IsMonochromatic.insert_vertex` — the single missing ingredient
@@ -206,52 +250,39 @@ adequate but verbose.
 
 ## Next Action
 
-**S8 ACT-F — Run the Ramsey 1930 induction body, close the file's
-last sorry.**
+**S9 — Quantitative Erdős–Rado recursion (OQ-03b).**
 
-With S7 ACT-E's `IsMonochromatic.insert_vertex` landed, the
-non-recursive ingredients of the Ramsey 1930 proof are complete:
+OQ-03a is closed (S8 ACT-F). The next quantitative layer:
 
-* Monotonicity toolkit: `anti_s`, `anti_t`, `mono_n`, `mono`, `swap`.
-* Boundary cases: `is_ramsey_self_right` (s = k), `is_ramsey_self_left`
-  (t = k).
-* Link/neighborhood machinery: `kColoring.link`, `link_apply`,
-  `link_lifts` (vertex-side `(k-1) → k` mono transfer).
-* Splice: `IsMonochromatic.insert_vertex` (this PR).
-
-The remaining work for the `s > k ∧ t > k` case of `ramsey_existence`
-is the recursion body itself:
-
-1. Set `n = R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1` (IH on
-   `k - 1` at the lifted target sizes).
-2. Pick vertex `v = ⟨0, _⟩`.
-3. Restrict `χ.link v` to `Fin (n-1)` (need a `castLE`-style
-   embedding) ⇒ apply `IH(k-1)` to extract a `(k-1)`-mono clique `S`
-   of size `R_k(s-1, t) + 1` (false case) or `R_k(s, t-1) + 1` (true
-   case).
-4. WLOG false case: apply `IH(k, s' + t)` with `s' = s - 1` to `χ`
-   restricted to `S` (size `> R_k(s-1, t)` by `mono_n`) ⇒ either a
-   `k`-mono-false `(s-1)`-clique `S' ⊆ S` (use `insert_vertex` to
-   extend by `v` to a `k`-mono-false `s`-clique) or a `k`-mono-true
-   `t`-clique on `S` (done).
-
-The induction needs to be on the lexicographic pair `(k, s + t)`,
-which requires an explicit termination argument
-(`WellFoundedRecursion` or `decreasing_by`-style). Estimated 80–120
-LOC. Once landed, the file becomes 0-sorry / 0-axiom and the gallery
-badge can flip from `wip` to `verified` for the OQ-03 entry.
-
-S9+ will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
+1. **S9-prep glue lemmas** relating `ramseyNumber` (an `sInf`) to the
+   S8 witnesses:
+   * `ramseyNumber_le_of_isRamsey : IsRamsey n k s t →
+     ramseyNumber k s t ≤ n` (`Nat.sInf_le`);
+   * `isRamsey_ramseyNumber : 1 ≤ k → k ≤ s → k ≤ t →
+     IsRamsey (ramseyNumber k s t) k s t` (`Nat.sInf_mem` on the set
+     shown nonempty by `ramsey_existence_of_one_le`; note the set
+     `{n | IsRamsey n k s t}` is upward-closed by `mono_n`, so its
+     `sInf` is a genuine member).
+2. **S9 main**: the recursive Erdős–Rado inequality
+   `ramseyNumber (k+1) s t ≤
+    ramseyNumber k (ramseyNumber (k+1) (s-1) t) (ramseyNumber (k+1) s (t-1)) + 1`
+   — the proof is exactly the S8 genuine-case body run at the `sInf`
+   witnesses instead of bare existentials (reuse `IsRamsey.within`,
+   `link_lifts`, `insert_vertex` verbatim).
+3. **S10+**: unwind the recursion into the tower bound
+   `tower (k-1) (c_k * s)`, and/or spawn OQ-03c (Erdős–Hajnal
+   stepping-up lower bound) per the S-up-4 PREP notes below.
 
 ## Attempt Counts
 
-- Total attempts: 7
-- Current approach attempts: 7
-- Approaches tried: 7 (literature survey + Lean API design; S2 scaffold;
+- Total attempts: 8
+- Current approach attempts: 8
+- Approaches tried: 8 (literature survey + Lean API design; S2 scaffold;
   S3 `ramseyNumber_one` via pigeonhole iff helper; S4 ACT-C boundary
   factoring + anti-monotonicity; S5-prep monotonicity helpers; S6 ACT-D
   link/neighborhood coloring infrastructure; S7 ACT-E splice lemma
-  `insert_vertex`)
+  `insert_vertex`; S8 ACT-F transfer lemma `IsRamsey.within` + two-layer
+  induction `ramsey_existence_of_one_le` — OQ-03a closed)
 
 ## Outcome of S1
 

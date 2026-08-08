@@ -21,14 +21,13 @@ diagonal hypergraph Ramsey number `R_k(s,t)` as the least `n` such that every
 monochromatic `s`-clique of one color or a monochromatic `t`-clique of the
 other.
 
-After **S4 ACT-C** (this revision) the structural foundations of
-`ramsey_existence` are in place: anti-monotonicity of the Ramsey condition
-in both target sizes, and the `s = k` / `t = k` boundary cases proved at
-`n = t` / `n = s` via a direct case-split on whether some `k`-subset is
-colored `false`. `ramsey_existence` itself is rewritten to discharge both
-boundaries; only the genuine inductive case `s > k ∧ t > k` (the Ramsey 1930
-recursive bound through uniformity `k-1`) remains `sorry`-marked, deferred to
-S5+ per `research/problems/erdos-szekeres-oq-03/state.md`.
+After **S8 ACT-F** (this revision) `ramsey_existence` is **fully proved** —
+the file is 0-sorry / 0-axiom. The Ramsey 1930 two-layer induction runs in
+`ramsey_existence_of_one_le`: outer structural induction on the uniformity
+`k` (base `k = 1` is the S3 pigeonhole), inner bounded induction on the
+target sum `s + t` (boundaries `s = k` / `t = k` are the S4
+`is_ramsey_self_*` lemmas), with the genuine step assembled from the S6/S7
+link-and-splice machinery through the new transfer lemma `IsRamsey.within`.
 
 ## Status
 
@@ -45,8 +44,13 @@ S5+ per `research/problems/erdos-szekeres-oq-03/state.md`.
   in the target sizes, by extracting a sub-clique of the desired smaller size.
 - [x] **`is_ramsey_self_right` / `is_ramsey_self_left` (S4 ACT-C)**: the
   `s = k` and `t = k` boundary cases at `n = t` and `n = s`, respectively.
-- [ ] `ramsey_existence` (OQ-03a): boundaries closed; the genuine inductive
-  case `s > k ∧ t > k` is `sorry`. Proof strategy in `state.md` (S5+).
+- [x] **`kColoring.link` / `IsMonochromatic.link_lifts` (S6 ACT-D)**: the
+  link (neighborhood) coloring and its `(k-1) → k` monochromaticity transfer.
+- [x] **`IsMonochromatic.insert_vertex` (S7 ACT-E)**: the splice composing a
+  non-vertex-side sub-clique with vertex-side link coverage.
+- [x] **`IsRamsey.within` / `ramsey_existence_of_one_le` /
+  `ramsey_existence` (S8 ACT-F)**: the transfer lemma and the full Ramsey
+  1930 double induction — OQ-03a is closed, 0 sorries, 0 axioms.
 
 ## Approach
 
@@ -648,37 +652,184 @@ lemma IsMonochromatic.insert_vertex {n k : ℕ} {χ : kColoring n} {c : Bool}
       · exact hxS'
     exact hS' T (Finset.mem_powersetCard.mpr ⟨hT_sub_S', hTcard⟩)
 
+/-! ### S8 ACT-F: the Ramsey 1930 recursion body — `ramsey_existence` closes
+
+Two final pieces complete the proof:
+
+* `IsRamsey.within` — a **transfer lemma**: an `IsRamsey ν k s t` certificate
+  can be run inside any `ν`-element vertex subset `A ⊆ Fin m`. The order
+  embedding `Fin ν ↪o Fin m` enumerating `A` (`Finset.orderEmbOfFin`) pulls
+  a coloring of `[m]^{(k)}` back to `[ν]^{(k)}`; the extracted clique maps
+  forward into `A`, with monochromaticity transported along
+  `Finset.subset_map_iff` exactly as in `IsRamsey.mono_n`.
+* `ramsey_existence_of_one_le` — the two-layer Ramsey 1930 induction:
+  **outer** structural induction on the uniformity `k` (base `k = 1` is the
+  S3 pigeonhole `isRamsey_one_iff`), **inner** bounded induction on the
+  target sum `s + t` (boundaries `s = k` / `t = k` are the S4
+  `is_ramsey_self_*` lemmas). The genuine step at uniformity `k + 1` picks
+  `n₁` with `IsRamsey n₁ (k+1) (s-1) t` and `n₂` with
+  `IsRamsey n₂ (k+1) s (t-1)` from the inner IH, then `m` with
+  `IsRamsey m k n₁ n₂` from the outer IH, and shows `m + 1` works: run the
+  `k`-uniform certificate on the link coloring at the last vertex `v`
+  (inside the `m`-element complement of `v`), then run the appropriate
+  `(k+1)`-uniform certificate inside the resulting link-monochromatic
+  clique; either it produces the *other*-colored target clique outright, or
+  a same-colored clique one short of target, which `insert_vertex` splices
+  with `v` (via `link_lifts`) to full size.
+-/
+
+/-- **Transfer lemma.** An `IsRamsey ν k s t` certificate can be run inside
+any `ν`-element vertex subset `A` of `Fin m`: every coloring of `[m]^{(k)}`
+admits a monochromatic `s`- or `t`-clique **contained in `A`**.
+
+The proof pulls `χ` back along the order embedding `Fin ν ↪o Fin m`
+enumerating `A` (`Finset.orderEmbOfFin`), extracts the clique on the `Fin ν`
+side, and maps it forward; monochromaticity transports along
+`Finset.subset_map_iff` exactly as in `IsRamsey.mono_n` (of which this is
+the relativized refinement: `mono_n` is essentially the case `A = univ`). -/
+lemma IsRamsey.within {ν k s t : ℕ} (hR : IsRamsey ν k s t)
+    {m : ℕ} (χ : kColoring m) (A : Finset (Fin m)) (hA : A.card = ν) :
+    (∃ S : Finset (Fin m), S ⊆ A ∧ S.card = s ∧ IsMonochromatic χ k S false) ∨
+    (∃ S : Finset (Fin m), S ⊆ A ∧ S.card = t ∧ IsMonochromatic χ k S true) := by
+  classical
+  let f : Fin ν ↪ Fin m := (A.orderEmbOfFin hA).toEmbedding
+  have hf_mem : ∀ i, f i ∈ A := fun i => A.orderEmbOfFin_mem hA i
+  let χ' : kColoring ν := fun S => χ (S.map f)
+  -- Monochromaticity for the pulled-back coloring pushes forward along `f`.
+  have transfer : ∀ (S : Finset (Fin ν)) (c : Bool), IsMonochromatic χ' k S c →
+      IsMonochromatic χ k (S.map f) c := by
+    intro S c hSm T hT
+    rw [Finset.mem_powersetCard] at hT
+    obtain ⟨hTsub, hTcard⟩ := hT
+    obtain ⟨T₀, hT₀sub, hT₀eq⟩ := Finset.subset_map_iff.mp hTsub
+    have hT₀card : T₀.card = k := by
+      have hcard := congrArg Finset.card hT₀eq
+      rw [Finset.card_map] at hcard
+      omega
+    have key : χ' T₀ = c := hSm T₀ (Finset.mem_powersetCard.mpr ⟨hT₀sub, hT₀card⟩)
+    rw [hT₀eq]
+    exact key
+  have hsub : ∀ S : Finset (Fin ν), S.map f ⊆ A := by
+    intro S x hx
+    rcases Finset.mem_map.mp hx with ⟨i, _, rfl⟩
+    exact hf_mem i
+  rcases hR χ' with ⟨S, hSc, hSm⟩ | ⟨S, hSc, hSm⟩
+  · exact Or.inl ⟨S.map f, hsub S, by rw [Finset.card_map]; exact hSc,
+      transfer S false hSm⟩
+  · exact Or.inr ⟨S.map f, hsub S, by rw [Finset.card_map]; exact hSc,
+      transfer S true hSm⟩
+
+/-- **Ramsey's hypergraph theorem, full parameter range `k ≥ 1`.** The
+two-layer Ramsey 1930 induction; see the section docstring above for the
+architecture. Stated with explicit `∀` binders so both induction layers can
+be run without generalization bookkeeping. -/
+theorem ramsey_existence_of_one_le :
+    ∀ k s t : ℕ, 1 ≤ k → k ≤ s → k ≤ t → ∃ n, IsRamsey n k s t := by
+  intro k
+  induction k with
+  | zero => intro s t h1 _ _; exact absurd h1 (by omega)
+  | succ k ihk =>
+    rcases Nat.eq_zero_or_pos k with rfl | hk1
+    · -- Uniformity 1: the pigeonhole bound `n = s + t - 1` (S3).
+      intro s t _ hs ht
+      exact ⟨s + t - 1, (isRamsey_one_iff (s + t - 1) s t hs ht).mpr le_rfl⟩
+    · -- Uniformity `k + 1 ≥ 2`. Outer IH is available at uniformity `k`.
+      have IH : ∀ s' t', k ≤ s' → k ≤ t' → ∃ n, IsRamsey n k s' t' :=
+        fun s' t' => ihk s' t' hk1
+      -- Inner bounded induction on the target sum `s + t`.
+      have H : ∀ N s t, s + t ≤ N → k + 1 ≤ s → k + 1 ≤ t →
+          ∃ n, IsRamsey n (k + 1) s t := by
+        intro N
+        induction N with
+        | zero => intro s t hsum hs _; exact absurd hsum (by omega)
+        | succ N ihN =>
+          intro s t hsum hs ht
+          rcases eq_or_lt_of_le hs with hs_eq | hs_lt
+          · -- `s = k + 1` boundary: `n = t` via `is_ramsey_self_right`.
+            refine ⟨t, ?_⟩
+            rw [← hs_eq]
+            exact is_ramsey_self_right (k + 1) t (by omega) ht
+          rcases eq_or_lt_of_le ht with ht_eq | ht_lt
+          · -- `t = k + 1` boundary: `n = s` via `is_ramsey_self_left`.
+            refine ⟨s, ?_⟩
+            rw [← ht_eq]
+            exact is_ramsey_self_left (k + 1) s (by omega) hs
+          -- Genuine case `s > k + 1 ∧ t > k + 1`: the Ramsey 1930 recursion.
+          -- Inner IH at the two shrunk targets (each sum drops below `N + 1`).
+          obtain ⟨n₁', hn₁'⟩ := ihN (s - 1) t (by omega) (by omega) ht
+          obtain ⟨n₂', hn₂'⟩ := ihN s (t - 1) (by omega) hs (by omega)
+          -- Enlarge both witnesses to `≥ k` so they are legal `k`-uniform targets.
+          have hn₁ : IsRamsey (max n₁' k) (k + 1) (s - 1) t :=
+            IsRamsey.mono_n (le_max_left _ _) hn₁'
+          have hn₂ : IsRamsey (max n₂' k) (k + 1) s (t - 1) :=
+            IsRamsey.mono_n (le_max_left _ _) hn₂'
+          -- Outer IH: a `k`-uniform certificate targeting those two sizes.
+          obtain ⟨m, hm⟩ := IH (max n₁' k) (max n₂' k)
+            (le_max_right _ _) (le_max_right _ _)
+          refine ⟨m + 1, ?_⟩
+          intro χ
+          -- Distinguished vertex and its `m`-element complement.
+          set v : Fin (m + 1) := Fin.last m
+          have hA_card : ((Finset.univ : Finset (Fin (m + 1))).erase v).card = m := by
+            rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+              Fintype.card_fin]
+            omega
+          -- Run the `k`-uniform certificate on the link coloring at `v`,
+          -- inside the complement of `v`.
+          rcases hm.within (kColoring.link χ v) (Finset.univ.erase v) hA_card with
+            ⟨S, hSsub, hScard, hSm⟩ | ⟨S, hSsub, hScard, hSm⟩
+          · -- Link-mono-**false** `(k)`-clique `S`, `|S| = max n₁' k ≥ n₁'`.
+            have hvS : v ∉ S := fun hv' => (Finset.mem_erase.mp (hSsub hv')).1 rfl
+            -- Run the `(k+1)`-uniform certificate `hn₁` inside `S`.
+            rcases hn₁.within χ S hScard with
+              ⟨S', hS'sub, hS'card, hS'm⟩ | ⟨S', _, hS'card, hS'm⟩
+            · -- χ-mono-false `(s-1)`-clique `S' ⊆ S`: splice `v` in.
+              have hvS' : v ∉ S' := fun hv' => hvS (hS'sub hv')
+              have hLink : ∀ T ∈ (insert v S').powersetCard (k + 1), v ∈ T →
+                  χ T = false := fun T hT hvT =>
+                IsMonochromatic.link_lifts (k := k + 1) χ v false S hvS hSm T
+                  (Finset.powersetCard_mono (Finset.insert_subset_insert v hS'sub) hT)
+                  hvT
+              refine Or.inl ⟨insert v S', ?_,
+                IsMonochromatic.insert_vertex hvS' hS'm hLink⟩
+              rw [Finset.card_insert_of_notMem hvS', hS'card]
+              omega
+            · -- χ-mono-true `t`-clique: done outright.
+              exact Or.inr ⟨S', hS'card, hS'm⟩
+          · -- Link-mono-**true** `(k)`-clique `S`, `|S| = max n₂' k ≥ n₂'`: symmetric.
+            have hvS : v ∉ S := fun hv' => (Finset.mem_erase.mp (hSsub hv')).1 rfl
+            rcases hn₂.within χ S hScard with
+              ⟨S', _, hS'card, hS'm⟩ | ⟨S', hS'sub, hS'card, hS'm⟩
+            · -- χ-mono-false `s`-clique: done outright.
+              exact Or.inl ⟨S', hS'card, hS'm⟩
+            · -- χ-mono-true `(t-1)`-clique `S' ⊆ S`: splice `v` in.
+              have hvS' : v ∉ S' := fun hv' => hvS (hS'sub hv')
+              have hLink : ∀ T ∈ (insert v S').powersetCard (k + 1), v ∈ T →
+                  χ T = true := fun T hT hvT =>
+                IsMonochromatic.link_lifts (k := k + 1) χ v true S hvS hSm T
+                  (Finset.powersetCard_mono (Finset.insert_subset_insert v hS'sub) hT)
+                  hvT
+              refine Or.inr ⟨insert v S', ?_,
+                IsMonochromatic.insert_vertex hvS' hS'm hLink⟩
+              rw [Finset.card_insert_of_notMem hvS', hS'card]
+              omega
+      intro s t _ hs ht
+      exact H (s + t) s t le_rfl hs ht
+
 /-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
 and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
 every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
 
-This is the main result of the OQ-03 entry. The proof is the classical Ramsey
-1930 two-layer induction on `k` (uniformity) and `s + t` (target sizes), with
-the two boundary cases `s = k` and `t = k` discharged by `is_ramsey_self_right`
-and `is_ramsey_self_left`, respectively. The genuine inductive case
-`s > k ∧ t > k` (which requires the neighborhood-collapse construction of
-Ramsey 1930) is deferred to S5+.
-
-Status after S4 ACT-C:
-* `s = k`: closed via `is_ramsey_self_right`, take `n = t`.
-* `t = k`: closed via `is_ramsey_self_left`, take `n = s`.
-* `s > k ∧ t > k`: `sorry` (S5 target — the recursive Ramsey bound). -/
+This is the main result of the OQ-03 entry, now fully proved (S8 ACT-F): it
+is the `k ≥ 2` restriction of `ramsey_existence_of_one_le`, the classical
+Ramsey 1930 two-layer induction on `k` (uniformity, outer layer) and `s + t`
+(target sizes, inner layer). Boundary cases `s = k` / `t = k` are
+`is_ramsey_self_right` / `is_ramsey_self_left`; the genuine inductive case
+runs the neighborhood-collapse recursion through `kColoring.link`,
+`IsRamsey.within`, `IsMonochromatic.link_lifts`, and
+`IsMonochromatic.insert_vertex`. -/
 theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
-    ∃ n, IsRamsey n k s t := by
-  rcases eq_or_lt_of_le hs with hs_eq | hs_lt
-  · -- s = k boundary: n = t suffices by `is_ramsey_self_right`.
-    refine ⟨t, ?_⟩
-    rw [← hs_eq]
-    exact is_ramsey_self_right k t (by omega) ht
-  · rcases eq_or_lt_of_le ht with ht_eq | ht_lt
-    · -- t = k boundary: n = s suffices by `is_ramsey_self_left`.
-      refine ⟨s, ?_⟩
-      rw [← ht_eq]
-      exact is_ramsey_self_left k s (by omega) hs
-    · -- s > k ∧ t > k: the genuine inductive case (Ramsey 1930 recursive
-      -- bound). Deferred to S5+: the neighborhood-collapse construction
-      -- reduces uniformity `k` to `k-1` on a `(k-1)`-uniform induced
-      -- coloring, then recurses on `s + t`.
-      sorry
+    ∃ n, IsRamsey n k s t :=
+  ramsey_existence_of_one_le k s t (by omega) hs ht
 
 end RamseyK
