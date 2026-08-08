@@ -74,6 +74,18 @@ theorem eq_three_of_three_dvd_left_balance_not_dvd_right
   have hbdvd : 3 ∣ b := (hp.dvd_mul.mp hdvdProd).resolve_left ho
   omega
 
+/-- Without the row bound, the same three-primary balance argument still
+forces the right quotient entry to be divisible by three. -/
+theorem three_dvd_right_of_three_dvd_left_balance_not_dvd_right
+    (r o a b : ℕ) (hr : 3 ∣ r) (ho : ¬ 3 ∣ o)
+    (hbal : r * a = o * b) : 3 ∣ b := by
+  obtain ⟨k, rfl⟩ := hr
+  have hdvdProd : 3 ∣ o * b := by
+    rw [← hbal]
+    simpa [mul_assoc] using dvd_mul_right 3 (k * a)
+  have hp : Nat.Prime 3 := by norm_num
+  exact (hp.dvd_mul.mp hdvdProd).resolve_left ho
+
 /-- Once an O-to-R quotient entry consumes all five R neighbors, detailed
 balance says that the R length divided by five divides the O length. -/
 theorem div_five_dvd_right_of_balance_eq_five
@@ -3798,6 +3810,48 @@ theorem degree_sixteen_fourLayer_used_component_card_dvd_three
   have hdvd := degree_sixteen_minimumLayer_used_component_base_card_dvd
     G hfree hmin hcard c₀ hc₀min z hz
   rwa [hbase] at hdvd
+
+/-- In the four-layer branch, a cut from a non-3-divisible component into
+a used R component has O-to-R quotient entry divisible by three.  For an
+orphan component, whose total R row is fifteen, this restricts its positive
+entry multiset to a partition of fifteen into positive multiples of three. -/
+theorem degree_sixteen_fourLayer_nonThree_to_used_quotient_dvd_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (zR z : V)
+    (hzR : zR ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 3 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard) :
+    3 ∣ componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z)
+      ((secondOrderDefectGraph G).connectedComponentMk zR) := by
+  let D := secondOrderDefectGraph G
+  let e := D.connectedComponentMk zR
+  let o := D.connectedComponentMk z
+  have heDvd : 3 ∣ e.supp.ncard :=
+    degree_sixteen_fourLayer_used_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild zR hzR
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  exact three_dvd_right_of_three_dvd_left_balance_not_dvd_right
+    e.supp.ncard o.supp.ncard
+      (componentQuotientMatrix G D e o)
+      (componentQuotientMatrix G D o e)
+      heDvd (by simpa [o] using hnot) hbal
 
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
