@@ -258,6 +258,39 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- Extract the two named elements behind a two-part count vector.  This is
+the bridge from filter-card census output to component-level eliminators. -/
+theorem exists_distinct_pair_of_card_two_filter_counts
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ) (r s : ℕ)
+    (hcard : C.card = 2)
+    (hr : (C.filter fun c => w c = r).card = 1)
+    (hs : (C.filter fun c => w c = s).card = 1)
+    (hrs : r ≠ s) :
+    ∃ c d, c ≠ d ∧ c ∈ C ∧ d ∈ C ∧ w c = r ∧ w d = s ∧ C = {c, d} := by
+  classical
+  obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hr
+  obtain ⟨d, hd⟩ := Finset.card_eq_one.mp hs
+  have hcMemFilter : c ∈ C.filter fun x => w x = r := by simp [hc]
+  have hdMemFilter : d ∈ C.filter fun x => w x = s := by simp [hd]
+  have hcData := Finset.mem_filter.mp hcMemFilter
+  have hdData := Finset.mem_filter.mp hdMemFilter
+  have hcd : c ≠ d := by
+    intro h
+    apply hrs
+    simpa [h] using hcData.2.trans hdData.2.symm
+  have hsubset : {c, d} ⊆ C := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hcData.1
+    · exact hdData.1
+  have hpair : C = {c, d} := by
+    apply Finset.Subset.antisymm
+    · apply Finset.eq_of_subset_of_card_le hsubset
+      simp [hcard, hcd]
+    · exact hsubset
+  exact ⟨c, d, hcd, hcData.1, hdData.1, hcData.2, hdData.2, hpair⟩
+
 /-- In the symmetric `(12,12,12,12)` orphan branch, each order-12 target
 needs `54` internal cherries.  All periodic row types contribute a multiple
 of `12` except an order-6 double-cover row, which contributes `6`; cover
