@@ -5728,6 +5728,52 @@ theorem degree_sixteen_fourLayer_orphan_component_count_le_eight
     obtain ⟨k, hk⟩ := hthree
     omega
 
+/-- Exact finite range for the four-layer orphan-component count.  The cell
+has positive mass forty-eight, so the selected component family is nonempty;
+the preceding size bound gives the upper endpoint eight. -/
+theorem degree_sixteen_fourLayer_orphan_component_count_between_one_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    1 ≤ C.card ∧ C.card ≤ 8 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  have hsum :=
+    degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ c ∈ C, c.supp.ncard) = 48 at hsum
+  have hpos : 0 < C.card := by
+    by_contra h
+    have hzero : C.card = 0 := Nat.eq_zero_of_not_pos h
+    have hempty : C = ∅ := Finset.card_eq_zero.mp hzero
+    rw [hempty] at hsum
+    simp at hsum
+  refine ⟨hpos, ?_⟩
+  exact degree_sixteen_fourLayer_orphan_component_count_le_eight
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
