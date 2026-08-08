@@ -306,6 +306,130 @@ theorem false_of_two_unit_rows_three_even_columns_no_shared
   · exact hno₁ h.1 h.2
   · exact hno₂ h.1 h.2
 
+/-- Parity extraction from a finite local-excess ledger.  If the total is
+nine, one distinguished owner term is three, and every term other than two
+named exceptions and the owner is even, then the two exceptional terms have
+even sum.  This is the abstract bookkeeping step behind the order-twelve
+target column parity in the four-layer branch. -/
+theorem even_two_exceptions_of_sum_eq_nine_owner_eq_three
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (T : C → ℤ) (u c₁ c₂ : C)
+    (huc₁ : u ≠ c₁) (huc₂ : u ≠ c₂) (hc₁c₂ : c₁ ≠ c₂)
+    (hsum : ∑ c, T c = 9) (hu : T u = 3)
+    (hrest : ∀ c, c ≠ u → c ≠ c₁ → c ≠ c₂ → Even (T c)) :
+    Even (T c₁ + T c₂) := by
+  let S₁ := (Finset.univ : Finset C).erase u
+  let S₂ := S₁.erase c₁
+  let S₃ := S₂.erase c₂
+  have hc₁S₁ : c₁ ∈ S₁ := by
+    simp [S₁, huc₁.symm]
+  have hc₂S₂ : c₂ ∈ S₂ := by
+    simp [S₂, S₁, huc₂.symm, hc₁c₂.symm]
+  have hsplitu := Finset.sum_erase_add
+    (Finset.univ : Finset C) T (Finset.mem_univ u)
+  have hsplitc₁ := Finset.sum_erase_add S₁ T hc₁S₁
+  have hsplitc₂ := Finset.sum_erase_add S₂ T hc₂S₂
+  have hS₃even : Even (∑ c ∈ S₃, T c) := by
+    rw [even_iff_two_dvd]
+    apply Finset.dvd_sum
+    intro c hc
+    rw [Finset.mem_erase] at hc
+    have hcS₂ := hc.2
+    rw [Finset.mem_erase] at hcS₂
+    have hcS₁ := hcS₂.2
+    rw [Finset.mem_erase] at hcS₁
+    exact even_iff_two_dvd.mp
+      (hrest c hcS₁.1 hcS₂.1 hc.1)
+  obtain ⟨k, hk⟩ := hS₃even
+  dsimp only [S₁, S₂, S₃] at hsplitu hsplitc₁ hsplitc₂ hk
+  obtain ⟨m, hm⟩ : Even (T c₁ + T c₂) := by
+    refine ⟨3 - k, ?_⟩
+    rw [hu] at hsplitu
+    omega
+  exact ⟨m, hm⟩
+
+/-- Graph-facing local-excess parity for an order-twelve target with two
+order-six exceptions.  Apart from the target's owner component, every other
+component is assumed either to have order twelve or to have zero quotient
+from the target.  Equal-order terms are products of consecutive integers;
+the owner contributes three; balance identifies each order-six term modulo
+two with its reverse quotient. -/
+theorem degree_sixteen_orderTwelve_two_orderSix_column_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e u c₁ c₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (huc₁ : u ≠ c₁) (huc₂ : u ≠ c₂) (hc₁c₂ : c₁ ≠ c₂)
+    (he : e.supp.ncard = 12) (hc₁ : c₁.supp.ncard = 6)
+    (hc₂ : c₂.supp.ncard = 6)
+    (heu : componentQuotientMatrix G (secondOrderDefectGraph G) e u = 1)
+    (hue : componentQuotientMatrix G (secondOrderDefectGraph G) u e = 4)
+    (hrest : ∀ f, f ≠ u → f ≠ c₁ → f ≠ c₂ →
+      f.supp.ncard = 12 ∨
+        componentQuotientMatrix G (secondOrderDefectGraph G) e f = 0) :
+    Even (componentQuotientMatrix G (secondOrderDefectGraph G) e c₁ +
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c₂) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let T : D.ConnectedComponent → ℤ := fun f =>
+    (Q e f : ℤ) * (Q f e : ℤ) - (Q e f : ℤ)
+  have hsum : ∑ f, T f = 9 := by
+    have hlocal := secondOrder_componentQuotientMatrix_local_excess
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
+    change (∑ f, T f) = _
+    rw [hlocal, he]
+    norm_num
+  have hu : T u = 3 := by
+    simp [T, Q, D, heu, hue]
+  have hrestEven : ∀ f, f ≠ u → f ≠ c₁ → f ≠ c₂ → Even (T f) := by
+    intro f hfu hfc₁ hfc₂
+    rcases hrest f hfu hfc₁ hfc₂ with hf | hzero
+    · have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e f
+      rw [he, hf] at hbal
+      have hsym : Q e f = Q f e := by
+        exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 12) hbal
+      dsimp only [T]
+      rw [hsym]
+      have hev := Int.even_mul_pred_self (Q f e : ℤ)
+      convert hev using 1 <;> ring
+    · simp [T, Q, D, hzero]
+  have hTexceptions := even_two_exceptions_of_sum_eq_nine_owner_eq_three
+    T u c₁ c₂ huc₁ huc₂ hc₁c₂ hsum hu hrestEven
+  have hbal₁ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e
+  have hbal₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e
+  have hq₁ : Q c₁ e = 2 * Q e c₁ := by
+    rw [hc₁, he] at hbal₁
+    have hq : componentQuotientMatrix G (secondOrderDefectGraph G) c₁ e =
+        2 * componentQuotientMatrix G (secondOrderDefectGraph G) e c₁ := by
+      omega
+    simpa [Q, D] using hq
+  have hq₂ : Q c₂ e = 2 * Q e c₂ := by
+    rw [hc₂, he] at hbal₂
+    have hq : componentQuotientMatrix G (secondOrderDefectGraph G) c₂ e =
+        2 * componentQuotientMatrix G (secondOrderDefectGraph G) e c₂ := by
+      omega
+    simpa [Q, D] using hq
+  obtain ⟨k, hk⟩ := hTexceptions
+  dsimp only [T] at hk
+  rw [hq₁, hq₂] at hk
+  have hevenZ : Even ((Q e c₁ : ℤ) + (Q e c₂ : ℤ)) := by
+    refine ⟨k - (Q e c₁ : ℤ) * ((Q e c₁ : ℤ) - 1) -
+        (Q e c₂ : ℤ) * ((Q e c₂ : ℤ) - 1), ?_⟩
+    push_cast at hk
+    nlinarith
+  rw [even_iff_two_dvd]
+  have hdvdZ : (2 : ℤ) ∣ (Q e c₁ : ℤ) + (Q e c₂ : ℤ) :=
+    even_iff_two_dvd.mp hevenZ
+  exact_mod_cast hdvdZ
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
