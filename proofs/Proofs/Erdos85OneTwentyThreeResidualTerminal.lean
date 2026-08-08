@@ -205,6 +205,20 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- In the symmetric `(12,12,12,12)` orphan branch, each order-12 target
+needs `54` internal cherries.  All periodic row types contribute a multiple
+of `12` except an order-6 double-cover row, which contributes `6`; cover
+uniqueness bounds the number of the latter by one.  Thus every target sees
+exactly one such row, and the four incidences come from exactly two rows. -/
+theorem four_twelve_cycles_force_two_orderSix_doubleCovers
+    (b₀ b₁ b₂ b₃ n t₀ t₁ t₂ t₃ : ℕ)
+    (hb₀ : b₀ ≤ 1) (hb₁ : b₁ ≤ 1) (hb₂ : b₂ ≤ 1) (hb₃ : b₃ ≤ 1)
+    (h₀ : 6*b₀ + 12*t₀ = 54) (h₁ : 6*b₁ + 12*t₁ = 54)
+    (h₂ : 6*b₂ + 12*t₂ = 54) (h₃ : 6*b₃ + 12*t₃ = 54)
+    (hincidence : b₀ + b₁ + b₂ + b₃ = 2*n) :
+    b₀ = 1 ∧ b₁ = 1 ∧ b₂ = 1 ∧ b₃ = 1 ∧ n = 2 := by
+  omega
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
