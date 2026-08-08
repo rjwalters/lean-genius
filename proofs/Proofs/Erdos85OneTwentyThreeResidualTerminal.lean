@@ -590,6 +590,140 @@ theorem degree_sixteen_minimumLayer_orphan_neighbor_card
   exact degree_sixteen_minimumLayer_orphan_unserviced_neighbor_card
     G hfree hmin hcard c₀ hregChild hcardChild z hzOutside hzUnused
 
+/-- Encoder-facing graph form of the degree-sixteen orphan calculation.
+The induced orphan graph has the exact order and regular degree forced by
+the child degree, and the handshake identity fixes twice its edge count. -/
+theorem degree_sixteen_minimumLayer_orphan_induced_regular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ}
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    let H := G.induce (O : Set V)
+    O.card =
+        (16 * (16 - 1) + 3 - (s * (s - 1) + 3)) -
+          (s * (s - 1) + 3) * (16 - s) ∧
+      (∀ z : (O : Set V), H.degree z = 16 - (s * (s - 1) + 3)) ∧
+      2 * H.edgeFinset.card =
+        O.card * (16 - (s * (s - 1) + 3)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  let H := G.induce (O : Set V)
+  have hcardO : O.card =
+      (16 * (16 - 1) + 3 - (s * (s - 1) + 3)) -
+        (s * (s - 1) + 3) * (16 - s) :=
+    minimumLayer_unused_exterior_card G hfree (d := 16) (s := s)
+      (by norm_num) (by norm_num) hmin hcard c₀ hregChild hcardChild
+  have hdegreeCard : ∀ z : (O : Set V), H.degree z =
+      (O ∩ G.neighborFinset z.1).card := by
+    intro z
+    rw [← H.card_neighborFinset_eq_degree]
+    apply Finset.card_bij (fun y _ => y.1)
+    · intro y hy
+      exact Finset.mem_inter.mpr
+        ⟨y.2, (G.mem_neighborFinset z.1 y.1).mpr
+          ((H.mem_neighborFinset z y).mp hy)⟩
+    · intro y _ y' _ hyy
+      exact Subtype.ext hyy
+    · intro y hy
+      let y' : (O : Set V) := ⟨y, (Finset.mem_inter.mp hy).1⟩
+      refine ⟨y', ?_, rfl⟩
+      exact (H.mem_neighborFinset z y').mpr
+        ((G.mem_neighborFinset z.1 y).mp (Finset.mem_inter.mp hy).2)
+  have hregular : ∀ z : (O : Set V),
+      H.degree z = 16 - (s * (s - 1) + 3) := by
+    intro z
+    rw [hdegreeCard]
+    exact degree_sixteen_minimumLayer_orphan_neighbor_card
+      G hfree hmin hcard c₀ hregChild hcardChild z.1 z.2
+  refine ⟨hcardO, hregular, ?_⟩
+  calc
+    2 * H.edgeFinset.card = ∑ z : (O : Set V), H.degree z :=
+      H.sum_degrees_eq_twice_card_edges.symm
+    _ = ∑ _z : (O : Set V), (16 - (s * (s - 1) + 3)) := by
+      apply Finset.sum_congr rfl
+      intro z _hz
+      exact hregular z
+    _ = O.card * (16 - (s * (s - 1) + 3)) := by simp
+
+/-- In the `s = 0` branch the orphan graph is 13-regular on 192 vertices
+and has 1248 edges. -/
+theorem degree_sixteen_zeroLayer_orphan_induced_parameters
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let H := G.induce (O : Set V)
+    O.card = 192 ∧ (∀ z : (O : Set V), H.degree z = 13) ∧
+      H.edgeFinset.card = 1248 := by
+  obtain ⟨hO, hreg, hedges⟩ :=
+    degree_sixteen_minimumLayer_orphan_induced_regular
+      G hfree (s := 0) hmin hcard c₀ hregChild (by norm_num; exact hcardChild)
+  dsimp only at hO hreg hedges ⊢
+  refine ⟨by norm_num at hO ⊢; exact hO, by simpa using hreg, ?_⟩
+  norm_num [hO] at hedges ⊢
+  omega
+
+/-- In the `s = 2` branch the orphan graph is 11-regular on 168 vertices
+and has 924 edges. -/
+theorem degree_sixteen_twoLayer_orphan_induced_parameters
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let H := G.induce (O : Set V)
+    O.card = 168 ∧ (∀ z : (O : Set V), H.degree z = 11) ∧
+      H.edgeFinset.card = 924 := by
+  obtain ⟨hO, hreg, hedges⟩ :=
+    degree_sixteen_minimumLayer_orphan_induced_regular
+      G hfree (s := 2) hmin hcard c₀ hregChild (by norm_num; exact hcardChild)
+  dsimp only at hO hreg hedges ⊢
+  refine ⟨by norm_num at hO ⊢; exact hO, by simpa using hreg, ?_⟩
+  norm_num [hO] at hedges ⊢
+  omega
+
 /-- The 48 orphan vertices in the tight d=16, s=4 branch induce a
 one-regular graph: every orphan's unique non-service neighbor is another
 orphan. -/
