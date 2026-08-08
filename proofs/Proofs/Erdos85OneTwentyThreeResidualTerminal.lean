@@ -6013,6 +6013,129 @@ theorem degree_sixteen_fourLayer_owner_bin_order_package
       (fun (x : D.ConnectedComponent) _ => Nat.zero_le x.supp.ncard) he
   exact ⟨hlower, hupper, hdvd⟩
 
+/-- The fifteen pairwise-disjoint service rows in the four-layer branch have
+twelve vertices each, so the full used-exterior cell has size 180. -/
+theorem degree_sixteen_fourLayer_used_exterior_card_eq_oneEighty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    (Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀)).card = 180 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+    rw [hcard]
+    norm_num
+  have hregParent : ∀ z : V, G.degree z = 16 :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by norm_num) hmin hbelow
+  have hrow : ∀ x : minimumLayerVertex D c₀, (E x).card = 12 := by
+    intro x
+    simpa [E] using card_minimumLayerExternalNeighborFinset
+      G D c₀ hregParent hregChild x
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  change (Finset.univ.biUnion E).card = 180
+  rw [Finset.card_biUnion hpair]
+  rw [Finset.sum_congr rfl (fun x _ => hrow x)]
+  calc
+    (∑ _x : minimumLayerVertex D c₀, 12) =
+        Fintype.card (minimumLayerVertex D c₀) * 12 := by simp
+    _ = 180 := by
+      rw [show Fintype.card (minimumLayerVertex D c₀) = 15 by
+        simpa [D] using hcardChild]
+
+/-- The used-exterior defect components partition the 180-point service
+cell, and every component order is divisible by three. -/
+theorem degree_sixteen_fourLayer_used_component_order_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ C, e.supp.ncard) = 180 ∧
+      ∀ e ∈ C, 3 ∣ e.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hclosed : ∀ y : V,
+      y ∈ R ↔ componentRepresentative D (D.connectedComponentMk y) ∈ R := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+          (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hr
+      have hsub := degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hr
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  have hsum : (∑ e ∈ C, e.supp.ncard) = R.card := by
+    simpa [C] using sum_component_sizes_filter_eq_card_of_component_closed
+      D R (fun e z hz => by
+        have hcomp : D.connectedComponentMk z = e :=
+          (ConnectedComponent.mem_supp_iff e z).mp hz
+        simpa [hcomp] using hclosed z)
+  have hRcard : R.card = 180 := by
+    exact degree_sixteen_fourLayer_used_exterior_card_eq_oneEighty
+      G hfree hmin hcard c₀ hregChild hcardChild
+  refine ⟨hsum.trans hRcard, ?_⟩
+  intro e he
+  have hrepR : componentRepresentative D e ∈ R :=
+    (Finset.mem_filter.mp he).2
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have hdvd := degree_sixteen_minimumLayer_used_component_base_card_dvd
+    G hfree hmin hcard c₀ hc₀min
+      (componentRepresentative D e) hrepR
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  rwa [hc₀three, hrep] at hdvd
+
 /-- For a named two-component orphan cell, every minimum-owner bin supplies
 the exact forward mass three and reverse mass four required by the transport
 contradictions. -/
@@ -7589,6 +7712,76 @@ theorem degree_sixteen_fourLayer_two_orphan_component_named_classification
     simpa [C, O, Finset.filter_filter] using
       (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
         G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
+
+/-- The transport gap eliminates both asymmetric extreme pairs in the named
+two-orphan census.  Thus only `(12,36)`, its reverse, or `(24,24)` remain. -/
+theorem degree_sixteen_fourLayer_two_orphan_remaining_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 2) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    ∃ c d, c ≠ d ∧ C = {c, d} ∧
+      ((c.supp.ncard = 12 ∧ d.supp.ncard = 36) ∨
+       (c.supp.ncard = 36 ∧ d.supp.ncard = 12) ∨
+       (c.supp.ncard = 24 ∧ d.supp.ncard = 24)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  obtain ⟨c, d, hcd, hC, horders⟩ :=
+    degree_sixteen_fourLayer_two_orphan_component_named_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
+  have hnonempty : Nonempty (minimumLayerVertex D c₀) :=
+    Fintype.card_pos_iff.mp (by rw [hcardChild]; norm_num)
+  let a : minimumLayerComponent D c₀ := (Classical.choice hnonempty).1
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ B)
+  have hp := degree_sixteen_fourLayer_two_orphan_owner_bin_quotient_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild c d hcd hC a
+  have hCswap : C = {d, c} := by simpa [Finset.pair_comm] using hC
+  have hpSwap := degree_sixteen_fourLayer_two_orphan_owner_bin_quotient_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild d c hcd.symm hCswap a
+  refine ⟨c, d, hcd, hC, ?_⟩
+  rcases horders with h6_42 | h42_6 | h12_36 | h36_12 | h18_30 | h30_18 | h24_24
+  · exact (false_of_six_fortyTwo_transport_bin
+      G hfree hmin hcard c d h6_42.1 h6_42.2 E hp.1 hp.2.1 hp.2.2).elim
+  · exact (false_of_six_fortyTwo_transport_bin
+      G hfree hmin hcard d c h42_6.2 h42_6.1 E hpSwap.1 hpSwap.2.1 hpSwap.2.2).elim
+  · exact Or.inl h12_36
+  · exact Or.inr (Or.inl h36_12)
+  · exact (false_of_eighteen_thirty_transport_bin
+      G hfree hmin hcard c d h18_30.1 h18_30.2 E hp.1 hp.2.1 hp.2.2).elim
+  · exact (false_of_eighteen_thirty_transport_bin
+      G hfree hmin hcard d c h30_18.2 h30_18.1 E hpSwap.1 hpSwap.2.1 hpSwap.2.2).elim
+  · exact Or.inr (Or.inr h24_24)
 
 -/
 /-- Exact classification of the singleton orphan branch. -/
