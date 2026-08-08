@@ -98,6 +98,40 @@ theorem no_minimumLayer_saturated_124_hardSector
   exact oneTwentyThree_cycleFactor_eval_nonsquare_except_two
     c.supp.ncard hc3 hcmax' f hfmonic hfirr hfcycle hfne
 
+/-- **Unconditional sharp minimum-layer descent.**  The scalar-123
+terminal removes the final `(d,s)=(124,12)` saturated residual from
+`secondOrder_minimumLayer_gap_or_degree_oneTwentyFour`. -/
+theorem secondOrder_minimumLayer_strict_gap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hd4 : d ≠ 4) (hd12 : d ≠ 12)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)]
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard) :
+    ∃ s : ℕ,
+      (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3 ∧
+      Even s ∧ s < d ∧ s * (s - 1) + 4 ≤ d := by
+  obtain ⟨s, hreg, hcardChild, hsEven, hsd, hbranch⟩ :=
+    secondOrder_minimumLayer_gap_or_degree_oneTwentyFour
+      G hfree hd heven hmin hcard hd4 hd12 c₀ hc₀min
+  refine ⟨s, hreg, hcardChild, hsEven, hsd, ?_⟩
+  rcases hbranch with hresidual | hgap
+  · obtain ⟨rfl, rfl, hc₀three, hcount⟩ := hresidual
+    exact False.elim (no_minimumLayer_saturated_124_hardSector
+      G hfree hmin hcard c₀ hreg hcardChild)
+  · exact hgap
+
 end
 
 end Erdos85
