@@ -1430,6 +1430,93 @@ theorem secondOrderDefect_adj_iff_triangleFree_of_adj
       (triangleFreeEdgeGraph G).Adj x y
     exact Or.inr htri
 
+/-- Restricting a commuting graph pair to a vertex set closed under the
+second graph preserves adjacency-matrix commutation.  Closure kills every
+summand indexed outside the restricted set on both sides. -/
+theorem comap_adjMatrix_comm_of_right_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (S : Finset V)
+    (hclosed : ∀ x ∈ S, D.neighborFinset x ⊆ S)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ) :
+    (G.comap (fun x : ↥S => x.1)).adjMatrix ℤ *
+        (D.comap (fun x : ↥S => x.1)).adjMatrix ℤ =
+      (D.comap (fun x : ↥S => x.1)).adjMatrix ℤ *
+        (G.comap (fun x : ↥S => x.1)).adjMatrix ℤ := by
+  classical
+  ext x y
+  have hxy := congrArg (fun M : Matrix V V ℤ => M x.1 y.1) hcomm
+  simp only [Matrix.mul_apply] at hxy ⊢
+  have hleft :
+      (∑ z : V, G.adjMatrix ℤ x.1 z * D.adjMatrix ℤ z y.1) =
+        ∑ z : ↥S,
+          G.adjMatrix ℤ x.1 z.1 * D.adjMatrix ℤ z.1 y.1 := by
+    calc
+      (∑ z : V, G.adjMatrix ℤ x.1 z * D.adjMatrix ℤ z y.1) =
+          ∑ z ∈ S, G.adjMatrix ℤ x.1 z * D.adjMatrix ℤ z y.1 := by
+            symm
+            apply Finset.sum_subset (Finset.subset_univ S)
+            intro z hzUniv hzNotS
+            by_cases hzy : D.Adj z y.1
+            · have hzS := hclosed y.1 y.2
+                ((D.mem_neighborFinset y.1 z).mpr hzy.symm)
+              exact (hzNotS hzS).elim
+            · simp [SimpleGraph.adjMatrix_apply, hzy]
+      _ = ∑ z : ↥S,
+          G.adjMatrix ℤ x.1 z.1 * D.adjMatrix ℤ z.1 y.1 := by
+            rw [Finset.sum_subtype S (fun _ => Iff.rfl)]
+  have hright :
+      (∑ z : V, D.adjMatrix ℤ x.1 z * G.adjMatrix ℤ z y.1) =
+        ∑ z : ↥S,
+          D.adjMatrix ℤ x.1 z.1 * G.adjMatrix ℤ z.1 y.1 := by
+    calc
+      (∑ z : V, D.adjMatrix ℤ x.1 z * G.adjMatrix ℤ z y.1) =
+          ∑ z ∈ S, D.adjMatrix ℤ x.1 z * G.adjMatrix ℤ z y.1 := by
+            symm
+            apply Finset.sum_subset (Finset.subset_univ S)
+            intro z hzUniv hzNotS
+            by_cases hxz : D.Adj x.1 z
+            · exact (hzNotS (hclosed x.1 x.2
+                ((D.mem_neighborFinset x.1 z).mpr hxz))).elim
+            · simp [SimpleGraph.adjMatrix_apply, hxz]
+      _ = ∑ z : ↥S,
+          D.adjMatrix ℤ x.1 z.1 * G.adjMatrix ℤ z.1 y.1 := by
+            rw [Finset.sum_subtype S (fun _ => Iff.rfl)]
+  rw [hleft, hright] at hxy
+  simpa only [SimpleGraph.adjMatrix_apply, SimpleGraph.comap_adj] using hxy
+
+/-- On the 48 orphan vertices, the perfect-matching adjacency operator
+commutes with the restricted defect two-factor. -/
+theorem degree_sixteen_fourLayer_orphan_adjMatrix_comm_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (G.comap (fun z : ↥O => z.1)).adjMatrix ℤ *
+        (D.comap (fun z : ↥O => z.1)).adjMatrix ℤ =
+      (D.comap (fun z : ↥O => z.1)).adjMatrix ℤ *
+        (G.comap (fun z : ↥O => z.1)).adjMatrix ℤ := by
+  classical
+  dsimp only
+  apply comap_adjMatrix_comm_of_right_closed
+  · exact degree_sixteen_fourLayer_orphans_defect_closed
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · exact adjMatrix_comm_secondOrderDefect_of_even
+      G hfree (by norm_num) (by norm_num) hmin hcard
+
 /-- **Orphan matching color classification.**  If `z-z'` is the unique
 orphan matching edge at `z`, then it is a defect edge exactly when it is
 triangle-free.  Every other defect edge at `z` is antipodal. -/
