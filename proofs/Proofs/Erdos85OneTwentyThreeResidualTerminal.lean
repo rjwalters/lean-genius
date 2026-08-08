@@ -3134,6 +3134,84 @@ theorem degree_sixteen_fourLayer_orphan_diagonalQuotient_eq_ite_matching_stays
     apply hstay
     simpa [hqz'] using hqData.2
 
+/-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
+the nonsquare component-quotient trace by the three defect-closed residual
+cells gives total diagonal mass exactly sixteen.  Representatives suffice
+because each cell is a union of complete defect components. -/
+theorem degree_sixteen_minimumLayer_component_diagonal_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    ((∑ c : D.ConnectedComponent,
+        if componentRepresentative D c ∈ U then
+          componentQuotientMatrix G D c c else 0) +
+      (∑ c : D.ConnectedComponent,
+        if componentRepresentative D c ∈ R then
+          componentQuotientMatrix G D c c else 0)) +
+      (∑ c : D.ConnectedComponent,
+        if componentRepresentative D c ∈ O then
+          componentQuotientMatrix G D c c else 0) = 16 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hRsub : R ⊆ Finset.univ \ U :=
+    minimumLayer_externalBiUnion_subset_complement G D c₀
+  let q : D.ConnectedComponent → ℕ :=
+    fun c => componentQuotientMatrix G D c c
+  have hsplit :
+      ((∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ U then
+            componentQuotientMatrix G D c c else 0) +
+        (∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ R then
+            componentQuotientMatrix G D c c else 0)) +
+        (∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ O then
+            componentQuotientMatrix G D c c else 0) =
+        ∑ c : D.ConnectedComponent, componentQuotientMatrix G D c c := by
+    change
+      ((∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ U then q c else 0) +
+        (∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ R then q c else 0)) +
+        (∑ c : D.ConnectedComponent,
+          if componentRepresentative D c ∈ O then q c else 0) =
+        ∑ c : D.ConnectedComponent, q c
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c _hc
+    by_cases hxU : componentRepresentative D c ∈ U
+    · have hxNotR : componentRepresentative D c ∉ R := by
+        intro hxR
+        exact (Finset.mem_sdiff.mp (hRsub hxR)).2 hxU
+      have hxNotO : componentRepresentative D c ∉ O := by
+        intro hxO
+        exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hxO).1).2 hxU
+      simp [hxU, hxNotR, hxNotO]
+    · by_cases hxR : componentRepresentative D c ∈ R
+      · have hxNotO : componentRepresentative D c ∉ O :=
+          fun hxO => (Finset.mem_sdiff.mp hxO).2 hxR
+        simp [hxU, hxR, hxNotO]
+      · have hxO : componentRepresentative D c ∈ O := Finset.mem_sdiff.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hxU⟩, hxR⟩
+        simp [hxU, hxR, hxO]
+  rw [hsplit]
+  exact secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard (by norm_num)
+
 /-- **Orphan matching color classification.**  If `z-z'` is the unique
 orphan matching edge at `z`, then it is a defect edge exactly when it is
 triangle-free.  Every other defect edge at `z` is antipodal. -/
