@@ -3853,6 +3853,42 @@ theorem degree_sixteen_fourLayer_nonThree_to_used_quotient_dvd_three
       (componentQuotientMatrix G D o e)
       heDvd (by simpa [o] using hnot) hbal
 
+/-- Reduced balance for a three-divisible R order and a three-divisible
+O-to-R quotient entry.  Writing `|R| = 3k` and `Q(O,R) = 3b` leaves the
+small transport equation `k Q(R,O) = |O| b`. -/
+theorem degree_sixteen_fourLayer_threeDivisible_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard)
+    (hqDvd : 3 ∣ componentQuotientMatrix G
+      (secondOrderDefectGraph G) o e) :
+    ∃ k b : ℕ,
+      e.supp.ncard = 3 * k ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3 * b ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        o.supp.ncard * b := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨b, hb⟩ := hqDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hb] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        o.supp.ncard * b := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    calc
+      3 * (k * componentQuotientMatrix G (secondOrderDefectGraph G) e o) =
+          o.supp.ncard * (3 * b) := by simpa [mul_assoc] using hbal
+      _ = 3 * (o.supp.ncard * b) := by ring
+  exact ⟨k, b, hk, hb, hreduced⟩
+
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
 length-three component belongs to the minimum layer, disjoint from `O`. -/
