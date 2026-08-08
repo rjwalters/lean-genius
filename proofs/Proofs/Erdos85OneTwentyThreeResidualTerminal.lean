@@ -6,6 +6,7 @@ import Proofs.Erdos85ExteriorCharpolyDivisibility
 import Proofs.Erdos85OneTwentyThreeSemisimplePackage
 import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
+import Proofs.Erdos85MixedDiagonalDichotomy
 
 /-!
 # Scalar-123 residual terminal
@@ -3211,6 +3212,47 @@ theorem degree_sixteen_minimumLayer_component_diagonal_ledger
   rw [hsplit]
   exact secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard (by norm_num)
+
+/-- Each of the five minimum-layer defect triangles in the four-layer
+branch contributes either zero or two to the component-diagonal ledger. -/
+theorem degree_sixteen_fourLayer_minimumComponent_diagonal_eq_zero_or_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = c₀.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 ∨
+      componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 := by
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have hcOdd : Odd c.supp.ncard := by
+    rw [hc, hc₀three]
+    norm_num
+  have heven := oddComponent_diagonalQuotient_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c hcOdd
+  have hle := secondOrder_minimumLayer_diag_le_two
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      c₀ hc₀min c hc
+  rcases heven with ⟨k, hk⟩
+  interval_cases hq : componentQuotientMatrix G
+    (secondOrderDefectGraph G) c c
+  · exact Or.inl rfl
+  · omega
+  · exact Or.inr rfl
 
 /-- **Orphan matching color classification.**  If `z-z'` is the unique
 orphan matching edge at `z`, then it is a defect edge exactly when it is
