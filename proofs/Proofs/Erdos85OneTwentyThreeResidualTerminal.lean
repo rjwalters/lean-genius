@@ -10441,6 +10441,59 @@ theorem false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_fifteen_fifteen
   exact degree_sixteen_fourLayer_fifteen_eighteen_used_component_ne_six_and_ne_nine
     G hfree hmin hcard c₀ hregChild hcardChild hcover h18 e heR
 
+/-- The named three-component census branch `[30,9,9]` is impossible. -/
+theorem false_of_degree_sixteen_fourLayer_orphan_orders_thirty_nine_nine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hCcard :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      (Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)).card = 3)
+    (h9 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 9).card = 2)
+    (h30 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 30).card = 1) : False := by
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  change C.card = 3 at hCcard
+  change (C.filter fun o => o.supp.ncard = 9).card = 2 at h9
+  change (C.filter fun o => o.supp.ncard = 30).card = 1 at h30
+  have hcover := weight_eq_one_of_two_filter_card_sum_eq_card C
+    (fun o : D.ConnectedComponent => o.supp.ncard) 9 30 (by norm_num) (by omega)
+  apply false_of_degree_sixteen_fourLayer_unique_orderThirty_of_used_ne_six_or_fifteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild h30
+  intro e heR
+  exact degree_sixteen_fourLayer_nine_thirty_used_component_ne_six_and_ne_fifteen
+    G hfree hmin hcard c₀ hregChild hcardChild hcover h30 e heR
+
 /-- In the five-orphan branch, no used-exterior defect component has order
 six.  The graph classification and exact quotient row sum instantiate the
 five-target arithmetic obstruction. -/
