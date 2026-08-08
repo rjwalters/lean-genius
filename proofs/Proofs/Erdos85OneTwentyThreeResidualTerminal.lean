@@ -481,6 +481,72 @@ theorem degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
   exact degree_sixteen_fourLayer_orphan_unserviced_neighbor_card_eq_one
     G hfree hmin hcard c₀ hregChild hcardChild z hzOutside hzUnused
 
+/-- Graph form of the orphan matching: the induced orphan graph is
+one-regular on 48 vertices and therefore has exactly 24 edges. -/
+theorem degree_sixteen_fourLayer_orphan_induced_oneRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    let H := G.induce (O : Set V)
+    (∀ z : (O : Set V), H.degree z = 1) ∧ H.edgeFinset.card = 24 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  let H := G.induce (O : Set V)
+  have hcardO : O.card = 48 := by
+    exact degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  have hdegreeCard : ∀ z : (O : Set V), H.degree z =
+      (O ∩ G.neighborFinset z.1).card := by
+    intro z
+    rw [← H.card_neighborFinset_eq_degree]
+    apply Finset.card_bij (fun y _ => y.1)
+    · intro y hy
+      have hzy : G.Adj z.1 y.1 := (H.mem_neighborFinset z y).mp hy
+      exact Finset.mem_inter.mpr
+        ⟨y.2, (G.mem_neighborFinset z.1 y.1).mpr hzy⟩
+    · intro y hy₁ y' hy₂ hyy
+      exact Subtype.ext hyy
+    · intro y hy
+      let y' : (O : Set V) := ⟨y, (Finset.mem_inter.mp hy).1⟩
+      refine ⟨y', ?_, rfl⟩
+      apply (H.mem_neighborFinset z y').mpr
+      exact (G.mem_neighborFinset z.1 y).mp (Finset.mem_inter.mp hy).2
+  have hdegreeOne : ∀ z : (O : Set V), H.degree z = 1 := by
+    intro z
+    rw [hdegreeCard]
+    exact degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild z.1 z.2
+  refine ⟨hdegreeOne, ?_⟩
+  have hsum : ∑ z : (O : Set V), H.degree z = 48 := by
+    simp_rw [hdegreeOne]
+    simp [hcardO]
+  have hedges : 48 = 2 * H.edgeFinset.card := by
+    calc
+      48 = ∑ z : (O : Set V), H.degree z := hsum.symm
+      _ = 2 * H.edgeFinset.card := H.sum_degrees_eq_twice_card_edges
+  apply Nat.mul_left_cancel (n := 2) (by norm_num)
+  calc
+    2 * H.edgeFinset.card = 48 := hedges.symm
+    _ = 2 * 24 := by norm_num
+
 end
 
 end Erdos85
