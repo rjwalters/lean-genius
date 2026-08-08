@@ -162,6 +162,92 @@ theorem secondOrder_degree_sixteen_minimumLayer_degree_zero_two_or_four
     interval_cases s <;> norm_num at hgap <;> omega
   exact ⟨s, hcases, hreg, hcardChild⟩
 
+/-- Exact cardinality of the exterior vertices missed by every disjoint
+child-to-complement incidence row. -/
+theorem minimumLayer_unused_exterior_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    ((Finset.univ \ U) \ Finset.univ.biUnion E).card =
+      (d * (d - 1) + 3 - (s * (s - 1) + 3)) -
+        (s * (s - 1) + 3) * (d - s) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (d + 1) * (d - 1) + 1 := by
+    rw [hcard]
+    obtain ⟨a, rfl⟩ : ∃ a : ℕ, d = a + 4 := ⟨d - 4, by omega⟩
+    norm_num
+    nlinarith
+  have hregParent : ∀ v : V, G.degree v = d :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by omega) hmin hbelow
+  have hcardE : ∀ x : minimumLayerVertex D c₀, (E x).card = d - s := by
+    intro x
+    exact card_minimumLayerExternalNeighborFinset G D c₀
+      hregParent hregChild x
+  have hcardChildD : Fintype.card (minimumLayerVertex D c₀) =
+      s * (s - 1) + 3 := by
+    simpa [D] using hcardChild
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hunionCard : (Finset.univ.biUnion E).card =
+      (s * (s - 1) + 3) * (d - s) := by
+    rw [Finset.card_biUnion hpair]
+    rw [Finset.sum_congr rfl (fun x _ => hcardE x)]
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    rw [hcardChildD]
+    norm_num
+  have hunionSub : Finset.univ.biUnion E ⊆ Finset.univ \ U :=
+    minimumLayer_externalBiUnion_subset_complement G D c₀
+  rw [Finset.card_sdiff_of_subset hunionSub, hunionCard,
+    Finset.card_sdiff_of_subset (Finset.subset_univ U),
+    Finset.card_univ, card_minimumLayerImageFinset, hcard, hcardChild]
+
+/-- In the tight d=16, s=4 extension, exactly 48 exterior vertices are
+orphans—missed by every child external-neighborhood row. -/
+theorem degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    ((Finset.univ \ U) \ Finset.univ.biUnion E).card = 48 := by
+  have h := minimumLayer_unused_exterior_card G hfree (d := 16) (s := 4)
+    (by norm_num) (by norm_num) hmin hcard c₀ hregChild (by
+      norm_num
+      exact hcardChild)
+  norm_num at h ⊢
+  exact h
+
 end
 
 end Erdos85
