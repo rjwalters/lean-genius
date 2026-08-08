@@ -138,6 +138,30 @@ theorem twelve_thirtysix_weighted_row_signature
       (S₀ = 9 ∧ S₁ = 48 ∧ S₂ = 0 ∧ S₃ = 0 ∧ S₄ = 3) := by
   omega
 
+/-- A positive cycle order cannot both divide `12` and support a
+two-neighbor row into an order-`36` component: detailed balance would make
+twice that order a multiple of `36`. -/
+theorem false_of_six_le_order_dvd_twelve_and_twice_eq_thirtysix_mul
+    (r q : ℕ) (hr : 6 ≤ r) (hr12 : r ∣ 12)
+    (hbalance : 2 * r = 36 * q) : False := by
+  have hrle : r ≤ 12 := Nat.le_of_dvd (by norm_num) hr12
+  interval_cases r <;> omega
+
+/-- Once rows of degree two into the order-`12` component are excluded, the
+`(12,36)` weighted ledger has only its third signature left. -/
+theorem twelve_thirtysix_weighted_row_signature_of_no_two
+    (S₀ S₁ S₂ S₃ S₄ : ℕ)
+    (hmass : S₀ + S₁ + S₂ + S₃ + S₄ = 60)
+    (hedges : S₁ + 2 * S₂ + 3 * S₃ + 4 * S₄ = 60)
+    (hcherries : S₂ + 3 * S₃ + 6 * S₄ = 18)
+    (hthree : S₃ = 0) (hfour : S₄ ≠ 1) (htwo : S₂ = 0) :
+    S₀ = 9 ∧ S₁ = 48 ∧ S₂ = 0 ∧ S₃ = 0 ∧ S₄ = 3 := by
+  rcases twelve_thirtysix_weighted_row_signature S₀ S₁ S₂ S₃ S₄
+      hmass hedges hcherries hthree hfour with h | h | h
+  · omega
+  · omega
+  · exact h
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
