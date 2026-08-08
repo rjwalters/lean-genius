@@ -6013,6 +6013,109 @@ theorem degree_sixteen_fourLayer_owner_bin_order_package
       (fun (x : D.ConnectedComponent) _ => Nat.zero_le x.supp.ncard) he
   exact ⟨hlower, hupper, hdvd⟩
 
+/-- For a named two-component orphan cell, every minimum-owner bin supplies
+the exact forward mass three and reverse mass four required by the transport
+contradictions. -/
+theorem degree_sixteen_fourLayer_two_orphan_owner_bin_quotient_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂)
+    (hpair :
+      Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \
+            minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀)) = {o₁, o₂})
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀) :
+    let D := secondOrderDefectGraph G
+    let X := Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B)
+    (∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
+      3 ∣ e.supp.ncard) ∧
+    (∀ e ∈ E, componentQuotientMatrix G D e o₁ +
+      componentQuotientMatrix G D e o₂ = 4) ∧
+    (∑ e ∈ E, componentQuotientMatrix G D o₁ e) = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ B)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have horders := (degree_sixteen_fourLayer_owner_bin_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild a).2
+  have hOclosed : ∀ y : V,
+      y ∈ O ↔ componentRepresentative D (D.connectedComponentMk y) ∈ O := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild y hy
+          (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hr
+      have hsub := degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild
+          (componentRepresentative D (D.connectedComponentMk y)) hr
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  have ho₁O : componentRepresentative D o₁ ∈ O := by
+    have : o₁ ∈ ({o₁, o₂} : Finset D.ConnectedComponent) := by simp
+    rw [← hpair] at this
+    exact (Finset.mem_filter.mp this).2
+  have hXcard : X.card = 3 := by
+    have hc₀three : c₀.supp.ncard = 3 :=
+      minimumLayer_child_common_length_eq_three
+        G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+          c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+    simpa [X, a.2.trans hc₀three] using minimumLayer_owner_fiber_card D c₀ a
+  have hforward : (∑ e ∈ E, componentQuotientMatrix G D o₁ e) = 3 := by
+    rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+      G D B (degree_sixteen_fourLayer_owner_bin_component_closed
+        G hfree hmin hcard c₀ hregChild hcardChild a) o₁]
+    exact degree_sixteen_fourLayer_three_externalRows_orphan_neighbor_card
+      G hfree hmin hcard c₀ hregChild hcardChild X hXcard
+        (componentRepresentative D o₁) ho₁O
+  refine ⟨horders, ?_, hforward⟩
+  intro e he
+  have herepB : componentRepresentative D e ∈ B :=
+    (Finset.mem_filter.mp he).2
+  obtain ⟨x, hx, hrepRow⟩ := Finset.mem_biUnion.mp herepB
+  have hsumO : (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O), componentQuotientMatrix G D e c) = 4 := by
+    rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+      G D O hOclosed e]
+    exact degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild x hrepRow
+  rw [hpair] at hsumO
+  simpa [hne] using hsumO
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
