@@ -101,6 +101,20 @@ theorem div_five_dvd_right_of_balance_eq_five
   rw [Nat.mul_div_right k (by norm_num)]
   exact ⟨a, hk.symm⟩
 
+/-- Three-primary concentrated-cut divisor rule. -/
+theorem div_three_dvd_right_of_balance_eq_three
+    (r o a : ℕ) (hr : 3 ∣ r) (hbal : r * a = o * 3) :
+    r / 3 ∣ o := by
+  obtain ⟨k, rfl⟩ := hr
+  have hk : k * a = o := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    calc
+      3 * (k * a) = (3 * k) * a := by simp [mul_assoc]
+      _ = o * 3 := hbal
+      _ = 3 * o := by omega
+  rw [Nat.mul_div_right k (by norm_num)]
+  exact ⟨a, hk.symm⟩
+
 /-- Integral indicator vector of a finite vertex set. -/
 def vertexFinsetIndicator {V : Type*} [DecidableEq V]
     (S : Finset V) : V → ℤ := fun x => if x ∈ S then 1 else 0
@@ -3571,6 +3585,29 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_eq_three
       (componentQuotientMatrix G D e o)
       (componentQuotientMatrix G D o e)
       heDvd (by simpa [o] using hnot) hbal (by simpa [D, o, e] using hpos) hle
+
+/-- Divisibility refinement of a concentrated zero-layer O--R cut: if the
+R component has order `3k`, then `k` divides the orphan-component order. -/
+theorem degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    e.supp.ncard / 3 ∣ o.supp.ncard := by
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hq] at hbal
+  exact div_three_dvd_right_of_balance_eq_three
+    e.supp.ncard o.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o)
+      heDvd hbal
 
 /-- In the zero-layer branch the minimum layer is the single order-three
 component.  Hence every used component attaches directly to `c₀`, with
