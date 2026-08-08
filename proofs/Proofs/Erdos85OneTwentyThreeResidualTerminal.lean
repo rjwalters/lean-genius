@@ -6,6 +6,7 @@ import Proofs.Erdos85ExteriorCharpolyDivisibility
 import Proofs.Erdos85OneTwentyThreeSemisimplePackage
 import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
+import Proofs.Erdos85CycleCoverGraph
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
 
@@ -3059,6 +3060,52 @@ theorem degree_sixteen_twoLayer_used_component_quotient_entries
   subst c
   refine ⟨hone, ?_⟩
   simpa [hbase] using hratio
+
+/-- Every used-component block in the two-layer branch is not merely
+balanced over the unique minimum `C₅`: after cyclically labeling both defect
+cycles, its owner map advances globally by `+1` or globally by `-1` modulo
+five.  Thus the entire block is determined by one offset and one orientation
+bit. -/
+theorem degree_sixteen_twoLayer_used_component_cycleCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    {n : ℕ} [NeZero n] (hn : 3 ≤ n)
+    (u : ZMod 5 → V) (v : ZMod n → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (huRange : Set.range u = c₀.supp)
+    (hvRange : Set.range v =
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)}) :
+    ∃ f : ZMod n → ZMod 5,
+      (∀ x y, G.Adj (u x) (v y) ↔ x = f y) ∧
+      ((∀ y, f (y + 1) = f y + 1) ∨
+        (∀ y, f (y + 1) = f y - 1)) := by
+  have hone := (degree_sixteen_twoLayer_used_component_quotient_entries
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz).1
+  exact exists_cycleCoverMap_of_componentQuotient_eq_one
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      (r := 5) (n := n) (by norm_num) hn c₀
+      ((secondOrderDefectGraph G).connectedComponentMk z)
+      u v huinj hvinj huRange hvRange huD hvD hone
 
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
