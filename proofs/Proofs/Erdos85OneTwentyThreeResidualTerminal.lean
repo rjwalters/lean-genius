@@ -181,6 +181,30 @@ theorem false_of_twentyfour_twentyfour_weighted_signature_capacity
       (S₁ = 0 ∧ S₂ = 36 ∧ S₃ = 16)) : False := by
   rcases hsignature with h | h | h | h | h <;> omega
 
+/-- Exact pair-ledger certificate for the last periodicity-feasible
+three-component orphan partition `(12,12,24)`.  The variables enumerate the
+seventeen possible reduced R-order/row types after periodicity.  The final
+bound says that at most one order-12 source can be a one-neighbor cyclic
+cover of the order-24 target. -/
+theorem false_of_twelve_twelve_twentyfour_row_ledger
+    (x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ x₁₁ x₁₂ x₁₃ x₁₄ x₁₅ x₁₆ : ℕ)
+    (hwithinTwelve :
+      6*x₁ + x₂ + 2*x₅ + 12*x₆ + 6*x₈ + 2*x₁₀ = 9)
+    (hwithinTwentyFour :
+      3*x₀ + 6*x₄ + x₅ + x₇ + x₉ + 12*x₁₃ +
+        6*x₁₄ + 6*x₁₅ + 2*x₁₆ = 21)
+    (hcrossTwelve :
+      2*x₂ + x₇ + 3*x₈ + 4*x₁₀ + 3*x₁₁ + 2*x₁₆ = 12)
+    (hcrossFirstTwentyFour :
+      x₇ + 2*x₉ + 3*x₁₅ + 2*x₁₆ = 12)
+    (hcrossSecondTwentyFour :
+      2*x₅ + x₇ + 3*x₁₄ + 2*x₁₆ = 12)
+    (hcover : x₅ + x₇ + x₉ ≤ 1) : False := by
+  have hx₅ : x₅ ≤ 1 := by omega
+  have hx₇ : x₇ ≤ 1 := by omega
+  have hx₉ : x₉ ≤ 1 := by omega
+  interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
