@@ -22,6 +22,29 @@ noncomputable section
 
 open SimpleGraph
 
+/-- Modulo two, sum and difference have the same parity. -/
+theorem castHom_two_sub_eq_add
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (x y : ZMod r) :
+    ZMod.castHom h2r (ZMod 2) (y - x) =
+      ZMod.castHom h2r (ZMod 2) (y + x) := by
+  rw [map_sub, map_add, sub_eq_add_neg, ZMod.neg_eq_self_mod_two]
+
+/-- A forward cyclic diagonal `y - x = d` and a reverse cyclic diagonal
+`y + x = s` are disjoint whenever their offsets have different parity. -/
+theorem forward_reverse_diagonals_disjoint_of_castHom_ne
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (d s : ZMod r)
+    (hparity : ZMod.castHom h2r (ZMod 2) d ≠
+      ZMod.castHom h2r (ZMod 2) s) :
+    ¬ ∃ x y : ZMod r, y - x = d ∧ y + x = s := by
+  rintro ⟨x, y, hsub, hadd⟩
+  apply hparity
+  calc
+    ZMod.castHom h2r (ZMod 2) d =
+        ZMod.castHom h2r (ZMod 2) (y - x) := by rw [hsub]
+    _ = ZMod.castHom h2r (ZMod 2) (y + x) :=
+      castHom_two_sub_eq_add h2r x y
+    _ = ZMod.castHom h2r (ZMod 2) s := by rw [hadd]
+
 /-- On an even cyclic group, the image of doubling is exactly the kernel of
 reduction modulo two. -/
 theorem zmod_mem_range_two_mul_iff_castHom_eq_zero
