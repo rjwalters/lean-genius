@@ -1,11 +1,61 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S17 ACT COMPLETE (witness_valid landed: relational deepest-attachment extraction + propriety theorem, host-verified at v4.31; next = S18 witness_prob_bd)
+**Phase**: S18a ACT COMPLETE (two statement-level defects found and repaired before the coupling build: runLog log-order flipped to execution order — the old most-recent-first emission made ExtractsFrom attach oldest-first, the reverse of MT §4 — and mtRun (uniform initialization) added because the fixed-start per-tree bound is provably false; WitnessTree.weight (the RHS of witness_prob_bd) defined with unit-interval bounds; next = S18b runTable + pushforward coupling)
 **Path**: full
-**Since**: 2026-07-24
-**Iteration**: 19
-**Last Updated**: 2026-07-24 (S17 ACT, researcher-3 — witness_valid verified)
+**Since**: 2026-08-03
+**Iteration**: 20
+**Last Updated**: 2026-08-03 (S18a, researcher-1 — order repair + statement infrastructure, host-verified at v4.31)
+
+## S18a ACT — researcher-1, 2026-08-03
+
+**Mode**: ACT (correctness repair + statement infrastructure) + PREP (coupling
+design decision). File 879 → 1007 LOC; **0 new sorries, 0 new axioms** (file
+stays 0/0). Verification: host `lake env lean` v4.31.0 elaboration against the
+pinned Mathlib oleans (pin `9a9483a9`): 0 errors, 0 warnings; `#print axioms`
+on the new/adapted theorems: foundational only.
+
+The tracker asked for an S18a design memo on the resample-table coupling.
+Doing that design surfaced **two statement-level defects**, both repaired
+here *before* the multi-session coupling is built on them (full analysis in
+`sessions/2026-08-03-s18a-runlog-order-and-statement-repair.md`):
+
+1. **Log-order convention mismatch.** `runLog` emitted the log
+   most-recent-first, but `ExtractsFrom` recurses on the tail before
+   handling the head — so a derivation attaches the list's *last* element
+   first. Composite: entries attached **oldest-first**, the reverse of the
+   MT §4 backward pass. Two-event counterexample in the memo (`X ∈ Γ(j)`,
+   `Y ∈ Γ(X) \ Γ⁺(j)`, log `X` then `Y`): MT extracts `j—X` (skipping `Y`),
+   the old composite extracts the path `j—X—Y`. Fatal downstream: the
+   table-slot argument needs "deeper = earlier". **Fix**: `runLog` now emits
+   **execution order** (`p.2.toList ++ q.2`); Part VI untouched;
+   `runLog_map_fst`/`mem_log_pickBad` mechanically adapted; docstrings
+   corrected. Bonus alignment: outermost bind layer ↔ outermost derivation
+   constructor, and "entries before time t" is now a list *prefix*.
+
+2. **Fixed-start bound is false.** The tracked S18 statement ("Pr[τ
+   extractable from runLog n v] ≤ ∏ uniformDrawProb") fails for fixed bad
+   starts: single-variable counterexample gives `2⁻ᵐ` vs claimed `2⁻⁽ᵐ⁺¹⁾`;
+   under uniform initialization the bound holds **with equality** (sharp).
+   **Fix**: new `mtRun n = (PMF.uniformOfFintype P.State).bind (P.runLog n)`
+   (Part VIII) + conservativity `mtRun_map_fst`; `witness_prob_bd` must be
+   stated over `mtRun`.
+
+Also new in Part VIII: `WitnessTree.weight` (`∏_v uniformDrawProb (labelOf
+v)` by nested structural recursion — `(ch.map weight).prod` elaborates
+directly at v4.31), `@[simp] weight_node`, `weight_mem_unit_interval` /
+`weight_nonneg` / `weight_le_one`.
+
+**Coupling decision (the S18a question)**: product-space **resample-table
+presentation** (MT §5 verbatim) over inductive-coupling-over-bind — the
+latter must smuggle the same table bookkeeping into a harder conditional
+invariant. Roadmap: **S18b** `runTable` (per-variable columns of fresh
+uniforms, column 0 = init) + pushforward coupling `(uniform table).map
+runTable = mtRun n` (mechanical, uses the S5b `resampleAt` marginal API);
+**S18c** the slot invariant (MT §5 key lemma — cell index of each vertex's
+read determined by τ alone; the mathematical heart); **S18d** disjoint-cell
+independence + `vblFaithful` per-vertex factor + prefix (`List.take`)
+bookkeeping → `witness_prob_bd`. Corrected target statement in memo §5.
 
 ## S17 ACT — researcher-3, 2026-07-24
 
