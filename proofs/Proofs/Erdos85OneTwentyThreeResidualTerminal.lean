@@ -7,6 +7,7 @@ import Proofs.Erdos85OneTwentyThreeSemisimplePackage
 import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
 import Proofs.Erdos85MixedDiagonalDichotomy
+import Proofs.Erdos85OrientedFiveMass
 
 /-!
 # Scalar-123 residual terminal
@@ -2516,6 +2517,84 @@ theorem degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
       (by norm_num) (by norm_num) hmin hcard) c₀ c₀ hzc
   rw [hQ, hinter]
   exact minimumLayerImage_inter_neighborFinset_card G D c₀ hregChild x
+
+/-- **Order-five mass squeeze in the two-layer branch.**  The unique
+minimum component has order five, is canonically forward-oriented (all odd
+cycle blocks are), and contributes diagonal mass two.  The mixed order-five
+theorem makes the total selected mass divisible by five, while the global
+nonsquare trace bounds it by sixteen.  Hence only `5`, `10`, or `15` remain. -/
+theorem degree_sixteen_twoLayer_orientedFiveMass_eq_five_ten_or_fifteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    orientedAnchorMass G u (forwardOriented G u) 5 = 5 ∨
+      orientedAnchorMass G u (forwardOriented G u) 5 = 10 ∨
+      orientedAnchorMass G u (forwardOriented G u) 5 = 15 := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hbase := (degree_sixteen_smallLayer_component_card
+    G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild)).2 rfl
+  have hcOdd : Odd c₀.supp.ncard := by rw [hbase]; norm_num
+  have hcFwd : forwardOriented G u c₀ := by
+    intro x y
+    exact graph_equalOddCycle_diagBlock_adj_shift_iff
+      (hℓ3 c₀) hcOdd G D (u c₀) (hu c₀)
+        (adjMatrix_comm_secondOrderDefect_of_even
+          G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard)
+        (huD c₀) x y
+  have hcMem : c₀ ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      5 ∣ c.supp.ncard ∧ forwardOriented G u c) := by
+    apply Finset.mem_filter.mpr
+    exact ⟨Finset.mem_univ _, by rw [hbase], hcFwd⟩
+  have hbridge := orientedAnchorMass_eq_sum_diagonalQuotient
+    G hfree (d := 16) (p := 5) (by norm_num) (by norm_num) hmin hcard
+      u hu huRange (forwardOriented G u)
+  have hcdiag := degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hmassLower : 2 ≤ orientedAnchorMass G u (forwardOriented G u) 5 := by
+    rw [hbridge]
+    rw [← hcdiag]
+    exact Finset.single_le_sum
+      (f := fun c : D.ConnectedComponent =>
+        componentQuotientMatrix G D c c)
+      (fun _ _ => Nat.zero_le _) hcMem
+  have hmassUpper : orientedAnchorMass G u (forwardOriented G u) 5 ≤ 16 := by
+    rw [hbridge]
+    calc
+      (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+          5 ∣ c.supp.ncard ∧ forwardOriented G u c),
+          componentQuotientMatrix G D c c) ≤
+          ∑ c : D.ConnectedComponent, componentQuotientMatrix G D c c := by
+            exact Finset.sum_le_sum_of_subset_of_nonneg
+              (Finset.filter_subset _ _) (fun _ _ _ => Nat.zero_le _)
+      _ = 16 := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard (by norm_num)
+  have hdvd := five_dvd_orientedAnchorMass_forwardOriented
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      u hℓ3 hbij huD
+  omega
 
 /-- Sharp orphan-cycle lower bounds in the two small residual branches.
 Since `c₀` is minimum and the orphan is outside the minimum layer, its full
