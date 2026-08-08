@@ -3102,6 +3102,114 @@ theorem eq_five_of_five_dvd_left_balance_not_dvd_right
   have hbdvd : 5 ∣ b := (hp.dvd_mul.mp hdvdProd).resolve_left ho
   omega
 
+/-- A three-vertex connected component of a two-regular graph is a
+triangle. -/
+theorem twoRegular_component_order_three_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hreg : ∀ x : V, D.degree x = 2)
+    (c : D.ConnectedComponent) (hc : c.supp.ncard = 3)
+    {x y : V} (hx : x ∈ c.supp) (hy : y ∈ c.supp) (hxy : x ≠ y) :
+    D.Adj x y := by
+  classical
+  let S := c.supp.toFinite.toFinset
+  have hxS : x ∈ S := by simpa [S] using hx
+  have hyS : y ∈ S := by simpa [S] using hy
+  have hNsub : D.neighborFinset x ⊆ S.erase x := by
+    intro z hz
+    have hxz : D.Adj x z := (D.mem_neighborFinset x z).mp hz
+    have hzComp : D.connectedComponentMk z = c := by
+      calc
+        D.connectedComponentMk z = D.connectedComponentMk x :=
+          (ConnectedComponent.connectedComponentMk_eq_of_adj hxz).symm
+        _ = c := (ConnectedComponent.mem_supp_iff c x).mp hx
+    have hzSupp : z ∈ c.supp :=
+      (ConnectedComponent.mem_supp_iff c z).mpr hzComp
+    exact Finset.mem_erase.mpr ⟨D.ne_of_adj hxz |>.symm, by simpa [S] using hzSupp⟩
+  have hNcard : (D.neighborFinset x).card = 2 := by
+    rw [D.card_neighborFinset_eq_degree, hreg x]
+  have hScard : S.card = 3 := by
+    simpa [S] using (Set.ncard_eq_toFinset_card c.supp c.supp.toFinite).symm.trans hc
+  have hEraseCard : (S.erase x).card = 2 := by
+    rw [Finset.card_erase_of_mem hxS, hScard]
+  have heq : D.neighborFinset x = S.erase x := by
+    apply Finset.eq_of_subset_of_card_le hNsub
+    rw [hNcard, hEraseCard]
+  apply (D.mem_neighborFinset x y).mp
+  rw [heq]
+  exact Finset.mem_erase.mpr ⟨hxy.symm, hyS⟩
+
+/-- Every order-three second-order defect component is antipodal-colored;
+the triangle-free-edge color would make its three defect edges an actual
+triangle, contradicting their zero-common-neighbor property. -/
+theorem degree_sixteen_orderThree_component_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 3) {x y : V}
+    (hx : x ∈ c.supp) (hy : y ∈ c.supp) (hxy : x ≠ y) :
+    (antipodalGraph G).Adj x y := by
+  let D := secondOrderDefectGraph G
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hDxy : D.Adj x y :=
+    twoRegular_component_order_three_adj D hregD c hc hx hy hxy
+  have hxyMem : y ∈ antipodalNeighbors G x ∪ triangleFreeNeighbors G x := by
+    rw [← secondOrderDefectGraph_neighborFinset G x]
+    exact (D.mem_neighborFinset x y).mpr hDxy
+  rcases Finset.mem_union.mp hxyMem with hanti | htri
+  · exact (antipodalGraph_adj G x y).mpr hanti
+  · have hNcard : (D.neighborFinset x).card = 2 := by
+      rw [D.card_neighborFinset_eq_degree, hregD x]
+    obtain ⟨z, hzD, hzy⟩ : ∃ z ∈ D.neighborFinset x, z ≠ y := by
+      by_contra hnone
+      push Not at hnone
+      have hsub : D.neighborFinset x ⊆ {y} := by
+        intro z hz
+        exact Finset.mem_singleton.mpr (hnone z hz)
+      have := Finset.card_le_card hsub
+      simp [hNcard] at this
+    have hxzD : D.Adj x z := (D.mem_neighborFinset x z).mp hzD
+    have hzSupp : z ∈ c.supp := by
+      rw [ConnectedComponent.mem_supp_iff]
+      exact (ConnectedComponent.connectedComponentMk_eq_of_adj hxzD).symm.trans
+        ((ConnectedComponent.mem_supp_iff c x).mp hx)
+    have hyzD : D.Adj y z :=
+      twoRegular_component_order_three_adj D hregD c hc hy hzSupp hzy.symm
+    rcases secondOrderDefectGraph_incident_edges_monochromatic
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        hDxy hxzD with h | h
+    · exact False.elim ((mem_antipodalNeighbors G x y).mp h.1 |>.2.1
+        ((mem_triangleFreeNeighbors G x y).mp htri).1)
+    · have hyzTri : (triangleFreeEdgeGraph G).Adj y z := by
+        rcases secondOrderDefectGraph_incident_edges_monochromatic
+          G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+            hDxy.symm hyzD with h' | h'
+        · exact False.elim ((mem_antipodalNeighbors G y x).mp h'.1 |>.2.1
+            ((mem_triangleFreeNeighbors G x y).mp htri).1.symm)
+        · exact h'.2
+      have hcommonZero :=
+        (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree
+          (D.ne_of_adj hyzD)).mp hyzD
+      have hxCommon : x ∈ G.neighborFinset y ∩ G.neighborFinset z := by
+        exact Finset.mem_inter.mpr
+          ⟨(G.mem_neighborFinset y x).mpr
+              ((triangleFreeEdgeGraph_adj G x y).mp h.1 |>
+                (mem_triangleFreeNeighbors G x y).mp |>.1).symm,
+            (G.mem_neighborFinset z x).mpr
+              ((triangleFreeEdgeGraph_adj G x z).mp h.2 |>
+                (mem_triangleFreeNeighbors G x z).mp |>.1).symm⟩
+      have hempty : G.neighborFinset y ∩ G.neighborFinset z = ∅ :=
+        Finset.card_eq_zero.mp hcommonZero
+      rw [hempty] at hxCommon
+      exact False.elim (Finset.notMem_empty x hxCommon)
+
 /-- Three-primary analogue used by the zero-layer orphan cut. -/
 theorem eq_three_of_three_dvd_left_balance_not_dvd_right
     (r o a b : ℕ) (hr : 3 ∣ r) (ho : ¬ 3 ∣ o)
