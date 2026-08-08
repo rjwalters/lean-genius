@@ -7283,6 +7283,50 @@ theorem degree_sixteen_fourLayer_owner_bin_component_closed
   · intro hr
     exact hstable hr hry.symm
 
+/-- Distinct minimum components own disjoint service bins. -/
+theorem degree_sixteen_fourLayer_owner_bins_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a b : minimumLayerComponent (secondOrderDefectGraph G) c₀)
+    (hab : a ≠ b) :
+    let D := secondOrderDefectGraph G
+    let Erow := minimumLayerExternalNeighborFinset G D c₀
+    let X := fun t : minimumLayerComponent D c₀ =>
+      Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = t)
+    Disjoint ((X a).biUnion Erow) ((X b).biUnion Erow) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let X := fun t : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = t)
+  apply Finset.disjoint_left.mpr
+  intro z hza hzb
+  obtain ⟨x, hx, hzx⟩ := Finset.mem_biUnion.mp hza
+  obtain ⟨y, hy, hzy⟩ := Finset.mem_biUnion.mp hzb
+  have hxa : x.1 = a := (Finset.mem_filter.mp hx).2
+  have hyb : y.1 = b := (Finset.mem_filter.mp hy).2
+  have hxy : x ≠ y := by
+    intro h
+    apply hab
+    rw [← hxa, ← hyb, h]
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  exact (Finset.disjoint_left.mp
+    (hpair (Finset.mem_univ x) (Finset.mem_univ y) hxy)) hzx hzy
+
 /-- The used defect components owned by one minimum `C₃` form a partition of
 its 36-vertex service bin; consequently every selected order is a
 three-divisible integer between three and thirty-six. -/
