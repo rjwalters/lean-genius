@@ -5927,6 +5927,92 @@ theorem degree_sixteen_fourLayer_owner_bin_component_closed
   · intro hr
     exact hstable hr hry.symm
 
+/-- The used defect components owned by one minimum `C₃` form a partition of
+its 36-vertex service bin; consequently every selected order is a
+three-divisible integer between three and thirty-six. -/
+theorem degree_sixteen_fourLayer_owner_bin_order_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀) :
+    let D := secondOrderDefectGraph G
+    let X := Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B)
+    (∑ e ∈ E, e.supp.ncard) = 36 ∧
+      ∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
+        3 ∣ e.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ B)
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have haThree : a.1.supp.ncard = 3 := a.2.trans hc₀three
+  have hXcard : X.card = 3 := by
+    simpa [X, haThree] using minimumLayer_owner_fiber_card D c₀ a
+  have hBcard : B.card = 36 := by
+    exact degree_sixteen_fourLayer_three_externalRows_card
+      G hfree hmin hcard c₀ hregChild hcardChild X hXcard
+  have hclose := degree_sixteen_fourLayer_owner_bin_component_closed
+    G hfree hmin hcard c₀ hregChild hcardChild a
+  have hclosed : ∀ (e : D.ConnectedComponent) (z : V), z ∈ e.supp →
+      (z ∈ B ↔ componentRepresentative D e ∈ B) := by
+    intro e z hze
+    have hmk : D.connectedComponentMk z = e :=
+      (ConnectedComponent.mem_supp_iff e z).mp hze
+    simpa [D, X, B, hmk] using hclose z
+  have hsum : (∑ e ∈ E, e.supp.ncard) = B.card := by
+    simpa [E] using
+      sum_component_sizes_filter_eq_card_of_component_closed D B hclosed
+  have hsum36 : (∑ e ∈ E, e.supp.ncard) = 36 := hsum.trans hBcard
+  refine ⟨hsum36, ?_⟩
+  intro e he
+  have herepB : componentRepresentative D e ∈ B :=
+    (Finset.mem_filter.mp he).2
+  have hBsubR : B ⊆ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀) := by
+    intro z hz
+    obtain ⟨x, hx, hzx⟩ := Finset.mem_biUnion.mp hz
+    exact Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hzx⟩
+  have hrepR := hBsubR herepB
+  have hdvd : 3 ∣ e.supp.ncard := by
+    have h := degree_sixteen_minimumLayer_used_component_base_card_dvd
+      G hfree hmin hcard c₀ hc₀min (componentRepresentative D e) hrepR
+    have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+      (ConnectedComponent.mem_supp_iff e
+        (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+    rwa [hc₀three, hrep] at h
+  have hlower : 3 ≤ e.supp.ncard := by
+    obtain ⟨r, hr, hre, _⟩ := secondOrderDefect_component_resolvent_chebyshev
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e 0
+    rwa [hre] at hr
+  have hupper : e.supp.ncard ≤ 36 := by
+    rw [← hsum36]
+    exact Finset.single_le_sum
+      (fun (x : D.ConnectedComponent) _ => Nat.zero_le x.supp.ncard) he
+  exact ⟨hlower, hupper, hdvd⟩
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
