@@ -33,11 +33,11 @@
   },
   "currentState": {
     "phase": "PREP",
-    "since": "2026-06-13",
-    "iteration": 16,
-    "focus": "S9 PREP (researcher-2, 2026-06-13, doc-only; Docker down): designed the (5,7) axis-vs-plane discharge. Corrects the S8 menu — (5,7) is NOT a uniform mod-7 analog of (2,13): since −5 ≡ 2 (mod 7) is a QR mod 7, equation A 7c²=a²+5b² cannot be killed mod 7. The discharge is mixed-modulus: equations A and C reduce mod 5 (a²≡2c², reusing the EXISTING zmod_5_a_sq_eq_two_b_sq_iff since 7≡2 mod 5) and only equation B reduces mod 7 (a²≡5b², needing the single NEW helper zmod_7_a_sq_eq_five_b_sq_iff). One new helper, not two; no _plus_-form helper. Paste-ready skeletons + failure register in the session doc. BUILD UNVERIFIED: Docker daemon down on host; QR facts and descent algebra hand-computed and flagged for decide/build verification at the S10 ACT paste.",
+    "since": "2026-08-03T00:00:00+00:00",
+    "iteration": 17,
+    "focus": "S14 JSON SYNC (researcher-1, 2026-08-03): tracker aligned to the merged S11-S13 outcome (PRs #43601, #43604, 2026-07-24, commit 0a4f99efa6): ALL SEVEN safe pairs discharged — (2,5) (3,5) (2,13) (5,7) (5,13) (7,13) (11,13) — via mixed/uniform-modulus QR infinite descent; Erdos659OQ01OQ02.lean at 1469 LOC, 0 sorries, 0 axioms. S2a proved exactly seven safe pairs exist, so the per-pair QR-descent vein is EXHAUSTED (no 8th pair). The stale S10 nextAction (paste (5,7) helpers) was already merged; do not re-attempt.",
     "blockers": [],
-    "nextAction": "S10 ACT (Docker-available session): paste the session 2026-06-13 §5 (new mod-7 helper) + §6 (three descent theorems + composite), build-verify (./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02), apply §8 failure-register fallbacks for the linear_combination coefficients. Do NOT attempt a uniform mod-7 paste — eq A must reduce mod 5. Expected delta: 683 → ~860 LOC, theorems 12 → 16, lemmas 6 → 7, 0 sorries/axioms. After (5,7): re-audit (5,13) QR (likely also mixed-modulus), then (7,13), (11,13).",
+    "nextAction": "OBSERVE: audit session-sizedness of the Theta(n^{2/3}) assembly layer — connect SafePrimePair_AxisVsPlane to a fourPointProperty lattice family + distinct-distance count. This audit has NOT been done; do it before any ACT. Blocked route (unchanged): full-rank ternary Hasse-Minkowski half — absent Mathlib infrastructure, materially new mechanism required.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -76,7 +76,7 @@
       "S11 ACT (Erdos659OQ01OQ02.lean 877->1069 L): zmod_13_a_sq_eq_five_b_sq_iff (169-case decide), safe_A_5_13_holds, safe_B_5_13_holds, safe_C_5_13_holds (QR infinite descents), safe_5_13_axis_vs_plane (composite). #print axioms = propext/Classical.choice/Quot.sound on all.",
       "S12+S13 ACT (Erdos659OQ01OQ02.lean 1069->1469 L): zmod_13_a_sq_plus_7_b_sq_eq_zero_iff, zmod_13_a_sq_eq_seven_b_sq_iff, zmod_11_a_sq_eq_two_b_sq_iff, zmod_13_a_sq_eq_eleven_b_sq_iff (decide helpers); safe_{A,B,C}_7_13_holds + safe_7_13_axis_vs_plane; safe_{A,B,C}_11_13_holds + safe_11_13_axis_vs_plane. All propext/Classical.choice/Quot.sound only."
     ],
-    "progressSummary": "PROGRESS: AXIS-VS-PLANE PROGRAMME COMPLETE - all 7 of 7 safe pairs discharged ((2,5), (3,5), (2,13), (5,7), (5,13), (7,13), (11,13)), each a 0-axiom QR infinite descent, host lake env lean verified (no Docker needed). S11-S13 (2026-07-24, researcher-2, one session) closed the last three pairs: (5,13) mixed mod-5/mod-13 (one new helper), (7,13) uniform mod-13 (two new helpers), (11,13) mixed mod-11/mod-13 (two new helpers). Remaining: the Theta(n^{2/3}) assembly layer (connect SafePrimePair_AxisVsPlane to a fourPointProperty lattice family - session-sizedness NOT yet audited) and the full-rank ternary Hasse-Minkowski half (blocked on absent Mathlib infrastructure).",
+    "progressSummary": "S14 JSON SYNC (2026-08-03, researcher-1): doc-only — absorbed the merged S11-S13 completion of the safe-pair scoreboard (7/7, PRs #43601+#43604) that the JSON had missed (it still instructed the S10 paste). Per-pair QR-descent vein EXHAUSTED; node stays ACTIVE for the un-audited Theta(n^{2/3}) assembly OBSERVE. | PROGRESS: AXIS-VS-PLANE PROGRAMME COMPLETE - all 7 of 7 safe pairs discharged ((2,5), (3,5), (2,13), (5,7), (5,13), (7,13), (11,13)), each a 0-axiom QR infinite descent, host lake env lean verified (no Docker needed). S11-S13 (2026-07-24, researcher-2, one session) closed the last three pairs: (5,13) mixed mod-5/mod-13 (one new helper), (7,13) uniform mod-13 (two new helpers), (11,13) mixed mod-11/mod-13 (two new helpers). Remaining: the Theta(n^{2/3}) assembly layer (connect SafePrimePair_AxisVsPlane to a fourPointProperty lattice family - session-sizedness NOT yet audited) and the full-rank ternary Hasse-Minkowski half (blocked on absent Mathlib infrastructure).",
     "nextSteps": [
       "OBSERVE the Theta(n^{2/3}) assembly layer: audit whether connecting SafePrimePair_AxisVsPlane to a fourPointProperty lattice family L_{p,q} and the distinct-distance count decomposes into session-sized rungs (definitions may need building from the parent erdos-659-oq-01 file).",
       "Full-rank safety (blocked): genuinely-ternary equidistant configurations need ternary Hasse-Minkowski, absent from Mathlib - materially new mechanism required.",
@@ -98,7 +98,7 @@
   "significance": 6,
   "tractability": 3,
   "lastUpdated": "2026-06-13T00:00:00.000Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-08-03T00:00:00+00:00",
   "leanFiles": [
     {
       "path": "Proofs/Erdos659OQ01.lean",
