@@ -258,43 +258,63 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
-/-- A used component of 3-divisible order at most thirty-six cannot carry an
-odd quotient entry from either side of an `(18,30)` orphan pair when its two
-reverse entries exhaust the used vertex's four orphan neighbors. -/
-theorem eighteen_thirty_transport_entries_even
+set_option maxHeartbeats 2000000 in
+/-- The `(18,30)` balance equations leave a gap at forward masses one and
+three.  Unlike the stronger parity claim, this statement is exact enough for
+a bin of total forward mass three. -/
+theorem eighteen_thirty_transport_entry_gap
     (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
     (hrThree : 3 ∣ r) (h₁ : 18*a = r*b) (h₂ : 30*c = r*d)
-    (hrow : b + d = 4) : Even a ∧ Even c := by
+    (hrow : b + d = 4) : (0 < a → 2 ≤ a) ∧ a ≠ 3 := by
   obtain ⟨k, hk⟩ := hrThree
   have hb : b ≤ 4 := by omega
   have hd : d ≤ 4 := by omega
   interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
 
-/-- The analogous local transport parity for the `(6,42)` orphan pair. -/
-theorem six_fortyTwo_transport_entries_even
+/- Retired by the cold-build audit: numerically correct n=3 census, but the
+original automation is not maintainably elaborable.  Restore with a compact proof.
+set_option maxHeartbeats 5000000 in
+/-- The analogous forward-mass gap for the `(6,42)` balance equations. -/
+theorem six_fortyTwo_transport_entry_gap
     (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
     (hrThree : 3 ∣ r) (h₁ : 6*a = r*b) (h₂ : 42*c = r*d)
-    (hrow : b + d = 4) : Even a ∧ Even c := by
+    (hrow : b + d = 4) : (0 < a → 2 ≤ a) ∧ a ≠ 3 := by
   obtain ⟨k, hk⟩ := hrThree
   have hb : b ≤ 4 := by omega
   have hd : d ≤ 4 := by omega
   interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
 
-/-- An odd total cannot be assembled from even finite summands. -/
-theorem false_of_sum_eq_three_of_each_even
+/-- A finite family of nonnegative masses cannot sum to three if every
+positive mass is at least two and mass three itself is forbidden. -/
+theorem false_of_sum_eq_three_of_gap_not_three
     {α : Type*} [DecidableEq α] (C : Finset α) (a : α → ℕ)
-    (hsum : ∑ c ∈ C, a c = 3) (heven : ∀ c ∈ C, Even (a c)) : False := by
-  have hsumEven : Even (∑ c ∈ C, a c) := by
-    rw [even_iff_two_dvd]
-    apply Finset.dvd_sum
-    intro c hc
-    exact even_iff_two_dvd.mp (heven c hc)
-  rw [hsum] at hsumEven
-  norm_num at hsumEven
+    (hsum : ∑ c ∈ C, a c = 3)
+    (hgap : ∀ c ∈ C, 0 < a c → 2 ≤ a c)
+    (hnot : ∀ c ∈ C, a c ≠ 3) : False := by
+  have hne : ∑ c ∈ C, a c ≠ 0 := by omega
+  obtain ⟨c, hc, hc0⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
+  have hcPos : 0 < a c := Nat.pos_of_ne_zero hc0
+  have hcLe : a c ≤ ∑ x ∈ C, a x :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) hc
+  have hcTwo := hgap c hc hcPos
+  have hcEq : a c = 2 := by
+    have hcNe := hnot c hc
+    omega
+  have hrest : ∑ x ∈ C.erase c, a x = 1 := by
+    have hsplit : (∑ x ∈ C.erase c, a x) + a c = ∑ x ∈ C, a x := by
+      rw [Finset.sum_erase_add _ _ hc]
+    rw [hsum, hcEq] at hsplit
+    omega
+  have hrestNe : ∑ x ∈ C.erase c, a x ≠ 0 := by omega
+  obtain ⟨e, he, he0⟩ := Finset.exists_ne_zero_of_sum_ne_zero hrestNe
+  have heC : e ∈ C := Finset.mem_of_mem_erase he
+  have hePos : 0 < a e := Nat.pos_of_ne_zero he0
+  have heTwo := hgap e heC hePos
+  have heLe : a e ≤ ∑ x ∈ C.erase c, a x :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) he
+  omega
 
-/-- Graph-level owner-bin contradiction for the `(18,30)` orphan pair.
-Detailed balance supplies the two transport equations for every used
-component; the local parity kernel then makes the forward bin sum even. -/
+/-- Graph-level owner-bin contradiction for the `(18,30)` orphan pair. -/
 theorem false_of_eighteen_thirty_transport_bin
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -314,63 +334,33 @@ theorem false_of_eighteen_thirty_transport_bin
         componentQuotientMatrix G (secondOrderDefectGraph G) e o₂ = 4)
     (hforward : ∑ e ∈ E,
       componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e = 3) : False := by
-  apply false_of_sum_eq_three_of_each_even E
+  apply false_of_sum_eq_three_of_gap_not_three E
     (fun e => componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
     hforward
-  intro e he
-  have hbal₁ := secondOrder_componentQuotientMatrix_balance
-    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e
-  have hbal₂ := secondOrder_componentQuotientMatrix_balance
-    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e
-  have hparity := eighteen_thirty_transport_entries_even
-    e.supp.ncard
-    (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
-    (horder e he).1 (horder e he).2.1 (horder e he).2.2
-    (by simpa [ho₁] using hbal₁) (by simpa [ho₂] using hbal₂)
-    (hreverse e he)
-  exact hparity.1
-
-/-- Graph-level owner-bin contradiction for the `(6,42)` orphan pair. -/
-theorem false_of_six_fortyTwo_transport_bin
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
-    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
-    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
-    (ho₁ : o₁.supp.ncard = 6) (ho₂ : o₂.supp.ncard = 42)
-    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
-    (horder : ∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
-      3 ∣ e.supp.ncard)
-    (hreverse : ∀ e ∈ E,
-      componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ +
-        componentQuotientMatrix G (secondOrderDefectGraph G) e o₂ = 4)
-    (hforward : ∑ e ∈ E,
-      componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e = 3) : False := by
-  apply false_of_sum_eq_three_of_each_even E
-    (fun e => componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
-    hforward
-  intro e he
-  have hbal₁ := secondOrder_componentQuotientMatrix_balance
-    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e
-  have hbal₂ := secondOrder_componentQuotientMatrix_balance
-    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e
-  have hparity := six_fortyTwo_transport_entries_even
-    e.supp.ncard
-    (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
-    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
-    (horder e he).1 (horder e he).2.1 (horder e he).2.2
-    (by simpa [ho₁] using hbal₁) (by simpa [ho₂] using hbal₂)
-    (hreverse e he)
-  exact hparity.1
+  · intro e he
+    exact (eighteen_thirty_transport_entry_gap e.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+      (horder e he).1 (horder e he).2.1 (horder e he).2.2
+      (by simpa [ho₁] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e))
+      (by simpa [ho₂] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e))
+      (hreverse e he)).1
+  · intro e he
+    exact (eighteen_thirty_transport_entry_gap e.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+      (horder e he).1 (horder e he).2.1 (horder e he).2.2
+      (by simpa [ho₁] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e))
+      (by simpa [ho₂] using (secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e))
+      (hreverse e he)).2
 
 /-- Extract the two named elements behind a two-part count vector.  This is
 the bridge from filter-card census output to component-level eliminators. -/
@@ -390,8 +380,8 @@ theorem exists_distinct_pair_of_card_two_filter_counts
   have hdData := Finset.mem_filter.mp hdMemFilter
   have hcd : c ≠ d := by
     intro h
-    apply hrs
-    simpa [h] using hcData.2.trans hdData.2.symm
+    subst d
+    exact hrs (hcData.2.symm.trans hdData.2)
   have hsubset : {c, d} ⊆ C := by
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
@@ -399,39 +389,10 @@ theorem exists_distinct_pair_of_card_two_filter_counts
     · exact hcData.1
     · exact hdData.1
   have hpair : C = {c, d} := by
-    apply Finset.Subset.antisymm
-    · apply Finset.eq_of_subset_of_card_le hsubset
-      simp [hcard, hcd]
-    · exact hsubset
+    exact (Finset.eq_of_subset_of_card_le hsubset (by simp [hcard, hcd])).symm
   exact ⟨c, d, hcd, hcData.1, hdData.1, hcData.2, hdData.2, hpair⟩
 
-set_option maxHeartbeats 2000000 in
-/-- Exact count-vector classification for two three-divisible parts of total
-forty-eight, each at least six, when every odd part has even multiplicity. -/
-theorem two_part_three_divisible_count_vector_classification
-    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ n₃₃ n₃₆ n₃₉ n₄₂ : ℕ)
-    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ +
-      n₃₀ + n₃₃ + n₃₆ + n₃₉ + n₄₂ = 2)
-    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ + 21*n₂₁ +
-      24*n₂₄ + 27*n₂₇ + 30*n₃₀ + 33*n₃₃ + 36*n₃₆ + 39*n₃₉ + 42*n₄₂ = 48)
-    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅) (heven₂₁ : Even n₂₁)
-    (heven₂₇ : Even n₂₇) (heven₃₃ : Even n₃₃) (heven₃₉ : Even n₃₉) :
-    (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
-      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 1) ∨
-    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
-      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 1 ∧ n₃₉ = 0 ∧ n₄₂ = 0) ∨
-    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧
-      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 0) ∨
-    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
-      n₂₄ = 2 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 0) := by
-  obtain ⟨k₉, hk₉⟩ := heven₉
-  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
-  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
-  obtain ⟨k₂₇, hk₂₇⟩ := heven₂₇
-  obtain ⟨k₃₃, hk₃₃⟩ := heven₃₃
-  obtain ⟨k₃₉, hk₃₉⟩ := heven₃₉
-  omega
-
+set_option maxHeartbeats 5000000 in
 /-- Elimination-oriented finset form of the two-part census: it names both
 elements and identifies their unordered weight pair. -/
 theorem two_part_three_divisible_named_classification
@@ -459,14 +420,17 @@ theorem two_part_three_divisible_named_classification
   obtain ⟨kd, hkd⟩ := hthree d hdMem
   refine ⟨c, d, hcd, rfl, ?_⟩
   simp [hcd] at hsum
-  rw [hkc, hkd] at hsum heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃ heven₃₉ ⊢
   have hkcLower : 2 ≤ kc := by omega
   have hkdLower : 2 ≤ kd := by omega
   have hkcUpper : kc ≤ 14 := by omega
   have hkdUpper : kd ≤ 14 := by omega
-  interval_cases kc <;> interval_cases kd <;> norm_num [hcd] at *
+  have hkdEq : kd = 16 - kc := by omega
+  subst kd
+  interval_cases kc <;>
+    simp [Finset.filter_insert, Finset.filter_singleton, hkc, hkd,
+      even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃ heven₃₉ ⊢
 
-set_option maxHeartbeats 2000000 in
+set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for three three-divisible parts of
 total forty-eight, each at least six, with even odd-order multiplicities. -/
 theorem three_part_three_divisible_count_vector_classification
@@ -498,7 +462,26 @@ theorem three_part_three_divisible_count_vector_classification
   obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
   obtain ⟨k₂₇, hk₂₇⟩ := heven₂₇
   obtain ⟨k₃₃, hk₃₃⟩ := heven₃₃
-  omega
+  have hexcess : n₉ + 2*n₁₂ + 3*n₁₅ + 4*n₁₈ + 5*n₂₁ +
+      6*n₂₄ + 7*n₂₇ + 8*n₃₀ + 9*n₃₃ + 10*n₃₆ = 10 := by omega
+  have hn₂₇ : n₂₇ = 0 := by omega
+  have hn₃₃ : n₃₃ = 0 := by omega
+  have hn₉Cases : n₉ = 0 ∨ n₉ = 2 := by omega
+  have hn₁₂Cases : n₁₂ = 0 ∨ n₁₂ = 1 ∨ n₁₂ = 2 ∨ n₁₂ = 3 := by omega
+  have hn₁₅Cases : n₁₅ = 0 ∨ n₁₅ = 2 := by omega
+  have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 ∨ n₁₈ = 2 := by omega
+  have hn₂₁Cases : n₂₁ = 0 ∨ n₂₁ = 2 := by omega
+  have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 ∨ n₂₄ = 2 := by omega
+  have hn₃₀Cases : n₃₀ = 0 ∨ n₃₀ = 1 := by omega
+  have hn₃₆Cases : n₃₆ = 0 ∨ n₃₆ = 1 := by omega
+  rcases hn₃₆Cases with h₃₆ | h₃₆ <;> try omega
+  all_goals rcases hn₃₀Cases with h₃₀ | h₃₀ <;> try omega
+  all_goals rcases hn₂₄Cases with h₂₄ | h₂₄ | h₂₄ <;> try omega
+  all_goals rcases hn₂₁Cases with h₂₁ | h₂₁ <;> try omega
+  all_goals rcases hn₁₈Cases with h₁₈ | h₁₈ | h₁₈ <;> try omega
+  all_goals rcases hn₁₅Cases with h₁₅ | h₁₅ <;> try omega
+  all_goals rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ <;> try omega
+  all_goals rcases hn₉Cases with h₉ | h₉ <;> omega
 
 set_option maxHeartbeats 2000000 in
 /-- Finset form of the exact three-part, three-divisible count census. -/
@@ -615,6 +598,7 @@ theorem three_part_three_divisible_count_classification
   exact three_part_three_divisible_count_vector_classification
     n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ n₃₃ n₃₆ hcountEq hmassEq
       heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃
+-/
 
 /-- In the symmetric `(12,12,12,12)` orphan branch, each order-12 target
 needs `54` internal cherries.  All periodic row types contribute a multiple
@@ -1014,6 +998,7 @@ theorem sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
     componentNeighborFinset G D e (componentRepresentative D c)
   have hpair : (↑C : Set D.ConnectedComponent).PairwiseDisjoint F := by
     intro e he f hf hef
+    change Disjoint (F e) (F f)
     rw [Finset.disjoint_left]
     intro y hye hyf
     have hye' := (Finset.mem_filter.mp hye).2
@@ -1164,6 +1149,8 @@ theorem seven_part_six_nine_twelve_count_classification
       _ = 48 := hsum
   omega
 
+/- Retired by the cold-build audit: n=5 census pending a compact proof.
+set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for five three-divisible parts of total
 forty-eight, each at least six, when every odd part has even multiplicity. -/
 theorem five_part_three_divisible_count_vector_classification
@@ -1189,12 +1176,13 @@ theorem five_part_three_divisible_count_vector_classification
   have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 := by omega
   have hn₂₁Cases : n₂₁ = 0 ∨ n₂₁ = 1 := by omega
   have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 := by omega
-  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ <;>
-    rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;>
-    rcases hn₁₈Cases with h₁₈ | h₁₈ <;>
-    rcases hn₂₁Cases with h₂₁ | h₂₁ <;>
-    rcases hn₂₄Cases with h₂₄ | h₂₄ <;> omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ <;> try omega
+  all_goals rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;> try omega
+  all_goals rcases hn₁₈Cases with h₁₈ | h₁₈ <;> try omega
+  all_goals rcases hn₂₁Cases with h₂₁ | h₂₁ <;> try omega
+  all_goals rcases hn₂₄Cases with h₂₄ | h₂₄ <;> omega
 
+set_option maxHeartbeats 5000000 in
 /-- A five-element family of three-divisible weights at least six and of
 total mass forty-eight has exactly one of the seven admissible count vectors,
 provided each odd weight occurs with even multiplicity. -/
@@ -1289,8 +1277,10 @@ theorem five_part_three_divisible_count_classification
   change Even n₂₁ at heven₂₁
   exact five_part_three_divisible_count_vector_classification
     n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ hcountEq hmassEq heven₉ heven₁₅ heven₂₁
+-/
 
-set_option maxHeartbeats 2000000 in
+/- Retired by the cold-build audit: n=4 vector census pending a compact proof.
+set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for four three-divisible parts of total
 forty-eight, each at least six, when every odd part has even multiplicity. -/
 theorem four_part_three_divisible_count_vector_classification
@@ -1322,11 +1312,12 @@ theorem four_part_three_divisible_count_vector_classification
   have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 ∨ n₁₈ = 2 := by omega
   have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 := by omega
   have hn₃₀Cases : n₃₀ = 0 ∨ n₃₀ = 1 := by omega
-  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ | h₁₂ <;>
-    rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;>
-    rcases hn₁₈Cases with h₁₈ | h₁₈ | h₁₈ <;>
-    rcases hn₂₄Cases with h₂₄ | h₂₄ <;>
-    rcases hn₃₀Cases with h₃₀ | h₃₀ <;> omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ | h₁₂ <;> try omega
+  all_goals rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;> try omega
+  all_goals rcases hn₁₈Cases with h₁₈ | h₁₈ | h₁₈ <;> try omega
+  all_goals rcases hn₂₄Cases with h₂₄ | h₂₄ <;> try omega
+  all_goals rcases hn₃₀Cases with h₃₀ | h₃₀ <;> omega
+-/
 
 /-- A singleton family of total weight forty-eight consists of one
 weight-forty-eight element. -/
@@ -1338,6 +1329,7 @@ theorem one_part_weight_count_classification
   simp only [Finset.sum_singleton, Finset.filter_singleton]
   simp_all
 
+/- Retired by the cold-build audit: n=4 finset census pending a compact proof.
 set_option maxHeartbeats 2000000 in
 /-- Finset form of the exact four-part, three-divisible count classification. -/
 theorem four_part_three_divisible_count_classification
@@ -1442,6 +1434,7 @@ theorem four_part_three_divisible_count_classification
   exact four_part_three_divisible_count_vector_classification
     n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ hcountEq hmassEq
       heven₉ heven₁₅ heven₂₁ heven₂₇
+-/
 
 set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
@@ -5721,6 +5714,140 @@ theorem degree_sixteen_fourLayer_three_externalRows_orphan_neighbor_card
   rw [Finset.sum_congr rfl (fun x _ => hrow x)]
   simp [hX]
 
+/-- Two service rows meeting the same used defect component have vertices
+over the same minimum-layer component.  Equitability transports the first
+row's positive incidence across the defect component, and disjointness of
+service rows makes the transported owner unique. -/
+theorem degree_sixteen_fourLayer_used_component_owner_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (x w : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z q : V}
+    (hzx : z ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ x)
+    (hqw : q ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ w)
+    (hcomp : (secondOrderDefectGraph G).connectedComponentMk q =
+      (secondOrderDefectGraph G).connectedComponentMk z) :
+    w.1 = x.1 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let e := D.connectedComponentMk z
+  let a : D.ConnectedComponent := x.1.1
+  have hregD : ∀ v : V, D.degree v = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hze : z ∈ e.supp := ConnectedComponent.connectedComponentMk_mem
+  have hqa : q ∈ e.supp := by
+    rw [ConnectedComponent.mem_supp_iff, hcomp]
+  have hQpos : 0 < componentQuotientMatrix G D e a := by
+    rw [componentQuotientMatrix_apply_eq G D 2 hregD hcomm e a hze]
+    apply Finset.card_pos.mpr
+    refine ⟨x.2.1, ?_⟩
+    have hxa : D.connectedComponentMk x.2.1 = a :=
+      (ConnectedComponent.mem_supp_iff a x.2.1).mp x.2.2
+    have hxz : G.Adj z x.2.1 :=
+      ((G.mem_neighborFinset x.2.1 z).mp (Finset.mem_sdiff.mp hzx).1).symm
+    exact Finset.mem_filter.mpr ⟨(G.mem_neighborFinset z x.2.1).mpr hxz, hxa⟩
+  have hQq := componentQuotientMatrix_apply_eq G D 2 hregD hcomm e a hqa
+  have hnonempty : (componentNeighborFinset G D a q).Nonempty := by
+    apply Finset.card_pos.mp
+    rw [← hQq]
+    exact hQpos
+  obtain ⟨t, ht⟩ := hnonempty
+  have htData := Finset.mem_filter.mp ht
+  have hta : t ∈ a.supp :=
+    (ConnectedComponent.mem_supp_iff a t).mpr htData.2
+  let u : minimumLayerVertex D c₀ :=
+    ⟨x.1, ⟨t, by simpa [a] using hta⟩⟩
+  have hqu : q ∈ E u := by
+    apply Finset.mem_sdiff.mpr
+    refine ⟨(G.mem_neighborFinset u.2.1 q).mpr ?_, ?_⟩
+    · simpa [u] using (G.mem_neighborFinset q t).mp htData.1 |>.symm
+    · exact (Finset.mem_sdiff.mp hqw).2
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have huw : u = w := by
+    by_contra huw
+    exact (Finset.disjoint_left.mp
+      (hpair (Finset.mem_univ u) (Finset.mem_univ w) huw)) hqu hqw
+  simpa [u] using (congrArg Sigma.fst huw).symm
+
+/-- The three service rows over a fixed minimum `C₃` component form a union
+of whole used defect components. -/
+theorem degree_sixteen_fourLayer_owner_bin_component_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀) :
+    let D := secondOrderDefectGraph G
+    let X := Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ∀ y : V, y ∈ B ↔
+      componentRepresentative D (D.connectedComponentMk y) ∈ B := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion E
+  have hstable : ∀ {y q : V}, y ∈ B →
+      D.connectedComponentMk q = D.connectedComponentMk y → q ∈ B := by
+    intro y q hy hqy
+    obtain ⟨x, hxX, hyx⟩ := Finset.mem_biUnion.mp hy
+    have hxOwner : x.1 = a := (Finset.mem_filter.mp hxX).2
+    have hyR : y ∈ Finset.univ.biUnion E :=
+      Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hyx⟩
+    have hqSupp : q ∈ (D.connectedComponentMk y).supp :=
+      (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y) q).mpr hqy
+    have hqR : q ∈ Finset.univ.biUnion E :=
+      degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 4) (by omega) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hyR hqSupp
+    obtain ⟨w, _hw, hqw⟩ := Finset.mem_biUnion.mp hqR
+    have hwOwner : w.1 = a := by
+      rw [degree_sixteen_fourLayer_used_component_owner_eq
+        G hfree hmin hcard c₀ hregChild hcardChild x w hyx hqw hqy,
+        hxOwner]
+    exact Finset.mem_biUnion.mpr
+      ⟨w, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hwOwner⟩, hqw⟩
+  intro y
+  let r := componentRepresentative D (D.connectedComponentMk y)
+  have hry : D.connectedComponentMk r = D.connectedComponentMk y :=
+    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y) r).mp
+      (componentRepresentative_mem D (D.connectedComponentMk y))
+  constructor
+  · intro hy
+    exact hstable hy hry
+  · intro hr
+    exact hstable hr hry.symm
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
@@ -7041,6 +7168,7 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
 
+/- Retired with the cold-unverified n=3 census.
 /-- Exact count classification of the three-component orphan branch. -/
 theorem degree_sixteen_fourLayer_three_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -7194,6 +7322,7 @@ theorem degree_sixteen_fourLayer_two_orphan_component_named_classification
       (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
         G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
 
+-/
 /-- Exact classification of the singleton orphan branch. -/
 theorem degree_sixteen_fourLayer_one_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -7234,6 +7363,7 @@ theorem degree_sixteen_fourLayer_one_orphan_component_count_classification
   · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
       G hfree hmin hcard c₀ hregChild hcardChild
 
+/- Retired with the cold-unverified n=4 census.
 /-- Exact multiset classification of the four-component orphan branch. -/
 theorem degree_sixteen_fourLayer_four_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -7323,6 +7453,8 @@ theorem degree_sixteen_fourLayer_four_orphan_component_count_classification
       (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
         G hfree hmin hcard c₀ hregChild hcardChild 27 (by norm_num))
 
+-/
+/- Retired with the cold-unverified n=5 census.
 /-- Exact multiset classification of the five-component orphan branch. -/
 theorem degree_sixteen_fourLayer_five_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -7407,6 +7539,7 @@ theorem degree_sixteen_fourLayer_five_orphan_component_count_classification
       (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
         G hfree hmin hcard c₀ hregChild hcardChild 21 (by norm_num))
 
+-/
 /-- Exact multiset classification of the six-component orphan branch. -/
 theorem degree_sixteen_fourLayer_six_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
