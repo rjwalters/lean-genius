@@ -884,6 +884,44 @@ theorem five_part_three_divisible_count_classification
     n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ hcountEq hmassEq heven₉ heven₁₅ heven₂₁
 
 set_option maxHeartbeats 2000000 in
+/-- Exact count-vector classification for four three-divisible parts of total
+forty-eight, each at least six, when every odd part has even multiplicity. -/
+theorem four_part_three_divisible_count_vector_classification
+    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ : ℕ)
+    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ + n₃₀ = 4)
+    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ +
+      21*n₂₁ + 24*n₂₄ + 27*n₂₇ + 30*n₃₀ = 48)
+    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅)
+    (heven₂₁ : Even n₂₁) (heven₂₇ : Even n₂₇) :
+    (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 2 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 2 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 4 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) := by
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
+  obtain ⟨k₂₇, hk₂₇⟩ := heven₂₇
+  have hexcess : n₉ + 2*n₁₂ + 3*n₁₅ + 4*n₁₈ + 5*n₂₁ +
+      6*n₂₄ + 7*n₂₇ + 8*n₃₀ = 8 := by omega
+  have hn₂₁ : n₂₁ = 0 := by omega
+  have hn₂₇ : n₂₇ = 0 := by omega
+  have hn₁₂Cases : n₁₂ = 0 ∨ n₁₂ = 1 ∨ n₁₂ = 2 ∨ n₁₂ = 3 ∨ n₁₂ = 4 := by omega
+  have hn₁₅Cases : n₁₅ = 0 ∨ n₁₅ = 1 ∨ n₁₅ = 2 := by omega
+  have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 ∨ n₁₈ = 2 := by omega
+  have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 := by omega
+  have hn₃₀Cases : n₃₀ = 0 ∨ n₃₀ = 1 := by omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ | h₁₂ <;>
+    rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;>
+    rcases hn₁₈Cases with h₁₈ | h₁₈ | h₁₈ <;>
+    rcases hn₂₄Cases with h₂₄ | h₂₄ <;>
+    rcases hn₃₀Cases with h₃₀ | h₃₀ <;> omega
+
+set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
 three-divisible parts of size at least six, with even multiplicity for odd
 part sizes. -/
