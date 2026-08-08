@@ -26,6 +26,103 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Restricted cherry counting: if centers in `A` create more two-element
+endpoint subsets inside `B` than `B` has pairs, two centers share an endpoint
+pair and hence form a four-cycle. -/
+theorem containsC4_of_restricted_cherry_count
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V)
+    (h : B.card.choose 2 <
+      ∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) :
+    containsC4 V G := by
+  classical
+  set C : Finset (Σ _ : V, Finset V) :=
+    A.sigma (fun a => (B ∩ G.neighborFinset a).powersetCard 2) with hC
+  set T : Finset (Finset V) := B.powersetCard 2 with hT
+  have hCcard : C.card =
+      ∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2 := by
+    rw [hC, Finset.card_sigma]
+    simp only [Finset.card_powersetCard]
+  have hTcard : T.card = B.card.choose 2 := by
+    rw [hT, Finset.card_powersetCard]
+  have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+    intro p hp
+    rw [hC, Finset.mem_sigma] at hp
+    rw [hT, Finset.mem_powersetCard]
+    have hpData := Finset.mem_powersetCard.mp hp.2
+    exact ⟨hpData.1.trans Finset.inter_subset_left, hpData.2⟩
+  have hlt : T.card < C.card := by rw [hTcard, hCcard]; exact h
+  obtain ⟨p, hp, q, hq, hpq, hfe⟩ :=
+    Finset.exists_ne_map_eq_of_card_lt_of_maps_to hlt hmaps
+  obtain ⟨v, e⟩ := p
+  obtain ⟨v', e'⟩ := q
+  simp only at hfe
+  subst hfe
+  have hvv : v ≠ v' := by
+    rintro rfl
+    exact hpq rfl
+  rw [hC, Finset.mem_sigma] at hp hq
+  obtain ⟨-, hpe⟩ := hp
+  obtain ⟨-, hqe⟩ := hq
+  obtain ⟨hsubv, hecard⟩ := Finset.mem_powersetCard.mp hpe
+  obtain ⟨hsubv', -⟩ := Finset.mem_powersetCard.mp hqe
+  obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hecard
+  have hxMem : x ∈ ({x, y} : Finset V) := Finset.mem_insert_self x {y}
+  have hyMem : y ∈ ({x, y} : Finset V) := by simp
+  have hxvData := Finset.mem_inter.mp (hsubv hxMem)
+  have hyvData := Finset.mem_inter.mp (hsubv hyMem)
+  have hxv'Data := Finset.mem_inter.mp (hsubv' hxMem)
+  have hyv'Data := Finset.mem_inter.mp (hsubv' hyMem)
+  have avx : G.Adj v x :=
+    (G.mem_neighborFinset v x).mp hxvData.2
+  have avy : G.Adj v y :=
+    (G.mem_neighborFinset v y).mp hyvData.2
+  have av'x : G.Adj v' x :=
+    (G.mem_neighborFinset v' x).mp hxv'Data.2
+  have av'y : G.Adj v' y :=
+    (G.mem_neighborFinset v' y).mp hyv'Data.2
+  exact containsC4_of_rim avx.symm avy av'y.symm av'x hxy
+    hvv
+    (G.ne_of_adj avx) (G.ne_of_adj avy)
+    (G.ne_of_adj av'x) (G.ne_of_adj av'y)
+
+/-- Uniform restricted-cherry obstruction for a center set whose vertices
+each have exactly four neighbors in the endpoint set. -/
+theorem false_of_centers_four_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hcount : B.card.choose 2 < A.card * 6)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 4) : False := by
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G A B
+  have hsum :
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+        A.card * 6 := by
+    calc
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+          ∑ _a ∈ A, 6 := by
+            apply Finset.sum_congr rfl
+            intro a ha
+            rw [hdegree a ha]
+            norm_num [Nat.choose]
+      _ = A.card * 6 := by simp
+  rw [hsum]
+  exact hcount
+
+/-- The small numerical instance first exposed by the rigid `(8,40)`
+four-layer transport branch. -/
+theorem false_of_six_centers_four_neighbors_in_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hAcard : A.card = 6) (hBcard : B.card = 8)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 4) : False := by
+  apply false_of_centers_four_neighbors G hfree A B
+  · rw [hAcard, hBcard]
+    norm_num [Nat.choose]
+  · exact hdegree
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
