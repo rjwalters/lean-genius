@@ -994,6 +994,55 @@ theorem sum_component_sizes_filter_eq_card_of_component_closed
     _ = (C.biUnion F).card := (Finset.card_biUnion hpair).symm
     _ = S.card := congrArg Finset.card hunion
 
+/-- Summing a component-quotient row over a component-closed vertex cell
+counts exactly the source representative's neighbors in that cell. -/
+theorem sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (S : Finset V)
+    (hclosed : ∀ y : V,
+      y ∈ S ↔ componentRepresentative D (D.connectedComponentMk y) ∈ S)
+    (c : D.ConnectedComponent) :
+    (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ S), componentQuotientMatrix G D c e) =
+      (S ∩ G.neighborFinset (componentRepresentative D c)).card := by
+  classical
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ S)
+  let F := fun e : D.ConnectedComponent =>
+    componentNeighborFinset G D e (componentRepresentative D c)
+  have hpair : (↑C : Set D.ConnectedComponent).PairwiseDisjoint F := by
+    intro e he f hf hef
+    rw [Finset.disjoint_left]
+    intro y hye hyf
+    have hye' := (Finset.mem_filter.mp hye).2
+    have hyf' := (Finset.mem_filter.mp hyf).2
+    exact hef (hye'.symm.trans hyf')
+  have hunion : C.biUnion F = S ∩ G.neighborFinset (componentRepresentative D c) := by
+    ext y
+    constructor
+    · intro hy
+      obtain ⟨e, heC, hye⟩ := Finset.mem_biUnion.mp hy
+      have heRep : componentRepresentative D e ∈ S := (Finset.mem_filter.mp heC).2
+      have hyeData := Finset.mem_filter.mp hye
+      have hcomp : D.connectedComponentMk y = e := hyeData.2
+      exact Finset.mem_inter.mpr
+        ⟨(hclosed y).mpr (by simpa [hcomp] using heRep), hyeData.1⟩
+    · intro hy
+      have hyData := Finset.mem_inter.mp hy
+      let e := D.connectedComponentMk y
+      apply Finset.mem_biUnion.mpr
+      refine ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, (hclosed y).mp hyData.1⟩, ?_⟩
+      exact Finset.mem_filter.mpr ⟨hyData.2, rfl⟩
+  calc
+    (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ S), componentQuotientMatrix G D c e) =
+        ∑ e ∈ C, (F e).card := by rfl
+    _ = (C.biUnion F).card := (Finset.card_biUnion hpair).symm
+    _ = (S ∩ G.neighborFinset (componentRepresentative D c)).card :=
+      congrArg Finset.card hunion
+
 /-- A partition of mass forty-eight into parts of size at least six has at
 most eight parts. -/
 theorem card_le_eight_of_sum_eq_fortyEight_of_six_le
