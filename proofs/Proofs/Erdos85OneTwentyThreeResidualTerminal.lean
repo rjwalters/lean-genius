@@ -1657,6 +1657,107 @@ theorem degree_sixteen_minimumLayer_adjMatrix_mulVec_usedIndicator
         G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
           c₀ hregChild hcardChild x hxU hxR
 
+/-- On the three surviving child degrees, the orphan indicator satisfies the
+common quotient polynomial: `A² 1_O = |O| 1 + 13 1_O`. -/
+theorem degree_sixteen_minimumLayer_adjMatrix_sq_mulVec_orphanIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (G.adjMatrix ℤ * G.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) =
+      fun x => (O.card : ℤ) + 13 * vertexFinsetIndicator O x := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let r : ℤ := 16 - (1 + (s * (s - 1) + 3 - s) : ℕ)
+  let a : ℤ := 16 - (s * (s - 1) + 3 : ℕ)
+  have hr : r = (16 - (1 + (s * (s - 1) + 3 - s)) : ℕ) := by
+    rcases hs with rfl | rfl | rfl <;> norm_num [r]
+  have ha : a = (16 - (s * (s - 1) + 3) : ℕ) := by
+    rcases hs with rfl | rfl | rfl <;> norm_num [a]
+  have hAO : (G.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) =
+      r • vertexFinsetIndicator R + a • vertexFinsetIndicator O := by
+    funext x
+    have hprof := degree_sixteen_minimumLayer_adjMatrix_mulVec_orphanIndicator
+      G hfree hmin hcard c₀ hregChild hcardChild x
+    change (G.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) x =
+      (if x ∈ U then 0 else if x ∈ R then
+        (16 - (1 + (s * (s - 1) + 3 - s)) : ℕ)
+        else (16 - (s * (s - 1) + 3) : ℕ)) at hprof
+    rw [hprof]
+    by_cases hxU : x ∈ U
+    · have hxR : x ∉ R := by
+        intro hxR
+        have hcomp := minimumLayer_externalBiUnion_subset_complement G D c₀ hxR
+        exact (Finset.mem_sdiff.mp hcomp).2 hxU
+      have hxO : x ∉ O := by simp [O, hxU]
+      simp [vertexFinsetIndicator, hxU, hxR, hxO]
+    · by_cases hxR : x ∈ R
+      · have hxO : x ∉ O := by simp [O, hxR]
+        simp [vertexFinsetIndicator, hxU, hxR, hxO, hr]
+      · have hxO : x ∈ O := by simp [O, hxU, hxR]
+        simp [vertexFinsetIndicator, hxU, hxR, hxO, ha]
+  rw [← Matrix.mulVec_mulVec, hAO, Matrix.mulVec_add,
+    Matrix.mulVec_smul, Matrix.mulVec_smul]
+  funext x
+  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+  rw [degree_sixteen_minimumLayer_adjMatrix_mulVec_usedIndicator
+      G hfree hmin hcard c₀ hregChild hcardChild x,
+    degree_sixteen_minimumLayer_adjMatrix_mulVec_orphanIndicator
+      G hfree hmin hcard c₀ hregChild hcardChild x]
+  have hcardO := minimumLayer_unused_exterior_card
+    G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  change O.card = _ at hcardO
+  rw [hcardO]
+  by_cases hxU : x ∈ U
+  · have hxR : x ∉ R := by
+      intro hxR
+      exact (Finset.mem_sdiff.mp
+        (minimumLayer_externalBiUnion_subset_complement G D c₀ hxR)).2 hxU
+    have hxO : x ∉ O := by simp [O, hxU]
+    have hxU' : x ∈ minimumLayerImageFinset (secondOrderDefectGraph G) c₀ := hxU
+    rcases hs with rfl | rfl | rfl <;>
+      norm_num [r, a, vertexFinsetIndicator, hxU, hxR, hxO, hxU']
+  · by_cases hxR : x ∈ R
+    · have hxO : x ∉ O := by simp [O, hxR]
+      have hxU' : x ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀ := hxU
+      have hxR' : ∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+          x ∈ minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀ u := by
+        obtain ⟨u, _hu, hxu⟩ := Finset.mem_biUnion.mp hxR
+        exact ⟨u, hxu⟩
+      rcases hs with rfl | rfl | rfl <;>
+        norm_num [r, a, vertexFinsetIndicator, hxU, hxR, hxO, hxU', hxR']
+    · have hxO : x ∈ O := by simp [O, hxU, hxR]
+      have hxU' : x ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀ := hxU
+      have hxR' : ¬∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+          x ∈ minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀ u := by
+        intro hex
+        obtain ⟨u, hxu⟩ := hex
+        exact hxR (Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hxu⟩)
+      rcases hs with rfl | rfl | rfl <;>
+        norm_num [r, a, vertexFinsetIndicator, hxU, hxR, hxO, hxU', hxR']
+
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
