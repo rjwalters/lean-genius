@@ -20,6 +20,32 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Integral indicator vector of a finite vertex set. -/
+def vertexFinsetIndicator {V : Type*} [DecidableEq V]
+    (S : Finset V) : V → ℤ := fun x => if x ∈ S then 1 else 0
+
+/-- Multiplying a finite-set indicator by an adjacency matrix counts the
+neighbors lying in that set.  This is the bridge from the residual cell
+degree formulas to the second-order matrix identity. -/
+theorem adjMatrix_mulVec_vertexFinsetIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset V) (x : V) :
+    (G.adjMatrix ℤ).mulVec (vertexFinsetIndicator S) x =
+      ((S ∩ G.neighborFinset x).card : ℤ) := by
+  rw [SimpleGraph.adjMatrix_mulVec_apply]
+  rw [Finset.sum_congr rfl (fun y hy => by
+    simp only [vertexFinsetIndicator]
+    rfl)]
+  classical
+  rw [← Finset.sum_filter]
+  simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
+  have heq : (G.neighborFinset x).filter (fun y => y ∈ S) =
+      S ∩ G.neighborFinset x := by
+    ext y
+    simp [and_comm]
+  rw [heq]
+
 /-- **Operator-level scalar-123 terminal.**  Semisimplicity peels the
 designated eigenvalue `2`; trace `-135` forces the residual trace nonzero,
 while the arithmetic hypothesis and abstract trace escape force it zero. -/
