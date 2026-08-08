@@ -9626,6 +9626,146 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
 
+/-- Graph-facing compact classification of the three-component orphan
+branch after the global exclusion of order-six orphans. -/
+theorem degree_sixteen_fourLayer_three_orphan_components_named_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 3) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    ((C.filter fun c => c.supp.ncard = 9).card = 2 ∧
+      (C.filter fun c => c.supp.ncard = 30).card = 1) ∨
+    ((C.filter fun c => c.supp.ncard = 12).card = 2 ∧
+      (C.filter fun c => c.supp.ncard = 24).card = 1) ∨
+    ((C.filter fun c => c.supp.ncard = 12).card = 1 ∧
+      (C.filter fun c => c.supp.ncard = 18).card = 2) ∨
+    ((C.filter fun c => c.supp.ncard = 15).card = 2 ∧
+      (C.filter fun c => c.supp.ncard = 18).card = 1) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply three_part_nine_lower_named_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_nine
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hdvd
+  all_goals
+    simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
+
+/-- Graph-facing compact classification of the four-component orphan
+branch after the global exclusion of order-six orphans. -/
+theorem degree_sixteen_fourLayer_four_orphan_components_named_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 4) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    ((C.filter fun c => c.supp.ncard = 9).card = 2 ∧
+      (C.filter fun c => c.supp.ncard = 12).card = 1 ∧
+      (C.filter fun c => c.supp.ncard = 18).card = 1) ∨
+    ((C.filter fun c => c.supp.ncard = 9).card = 2 ∧
+      (C.filter fun c => c.supp.ncard = 15).card = 2) ∨
+    ((C.filter fun c => c.supp.ncard = 12).card = 4) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply four_part_nine_lower_named_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_nine
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hdvd
+  all_goals
+    simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
+
 /- Retired with the cold-unverified n=3 census.
 /-- Exact count classification of the three-component orphan branch. -/
 theorem degree_sixteen_fourLayer_three_orphan_component_count_classification
