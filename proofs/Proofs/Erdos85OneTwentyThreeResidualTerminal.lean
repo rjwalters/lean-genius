@@ -46,6 +46,17 @@ theorem adjMatrix_mulVec_vertexFinsetIndicator
     simp [and_comm]
   rw [heq]
 
+/-- The all-ones matrix sends a finite-set indicator to its cardinality. -/
+theorem onesMatrix_mulVec_vertexFinsetIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (S : Finset V) :
+    (FriendshipTheoremOQ01.onesMatrix V).mulVec (vertexFinsetIndicator S) =
+      fun _ => (S.card : ℤ) := by
+  funext x
+  simp only [FriendshipTheoremOQ01.onesMatrix, Matrix.mulVec,
+    dotProduct, one_mul]
+  simp [vertexFinsetIndicator]
+
 /-- **Operator-level scalar-123 terminal.**  Semisimplicity peels the
 designated eigenvalue `2`; trace `-135` forces the residual trace nonzero,
 while the arithmetic hypothesis and abstract trace escape force it zero. -/
@@ -1757,6 +1768,110 @@ theorem degree_sixteen_minimumLayer_adjMatrix_sq_mulVec_orphanIndicator
         exact hxR (Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hxu⟩)
       rcases hs with rfl | rfl | rfl <;>
         norm_num [r, a, vertexFinsetIndicator, hxU, hxR, hxO, hxU', hxR']
+
+/-- The orphan indicator is a top (`2`) eigenvector of the second-order
+defect graph in every surviving degree-sixteen residual branch. -/
+theorem degree_sixteen_minimumLayer_defect_mulVec_orphanIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (D.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) =
+      (2 : ℤ) • vertexFinsetIndicator O := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hD : D.adjMatrix ℤ =
+      (15 : ℤ) • (1 : Matrix V V ℤ) +
+        FriendshipTheoremOQ01.onesMatrix V -
+          (G.adjMatrix ℤ * G.adjMatrix ℤ) := by
+    ext x y
+    have hxy := congrArg (fun M : Matrix V V ℤ => M x y) hsq
+    simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply] at hxy ⊢
+    norm_num at hxy ⊢
+    linear_combination hxy
+  have hpoly :=
+    degree_sixteen_minimumLayer_adjMatrix_sq_mulVec_orphanIndicator
+      G hfree hs hmin hcard c₀ hregChild hcardChild
+  change (G.adjMatrix ℤ * G.adjMatrix ℤ).mulVec
+      (vertexFinsetIndicator O) = _ at hpoly
+  rw [hD, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
+    Matrix.one_mulVec, onesMatrix_mulVec_vertexFinsetIndicator, hpoly]
+  funext x
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- Graph-facing closure consequence: both defect neighbors of every orphan
+remain in the orphan cell, uniformly for `s = 0,2,4`. -/
+theorem degree_sixteen_minimumLayer_orphan_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    {z q : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzq : (secondOrderDefectGraph G).Adj z q) :
+    q ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hmul := congrFun
+    (degree_sixteen_minimumLayer_defect_mulVec_orphanIndicator
+      G hfree hs hmin hcard c₀ hregChild hcardChild) z
+  change (D.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) z = _ at hmul
+  rw [adjMatrix_mulVec_vertexFinsetIndicator] at hmul
+  have hcardInter : (O ∩ D.neighborFinset z).card = 2 := by
+    simp [vertexFinsetIndicator, hz] at hmul
+    exact_mod_cast hmul
+  have hcardN : (D.neighborFinset z).card = 2 := by
+    rw [D.card_neighborFinset_eq_degree]
+    exact secondOrderDefectGraph_degree_eq_two
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard z
+  have heq : O ∩ D.neighborFinset z = D.neighborFinset z := by
+    apply Finset.eq_of_subset_of_card_le (Finset.inter_subset_right)
+    rw [hcardInter, hcardN]
+  have hqN : q ∈ D.neighborFinset z := (D.mem_neighborFinset z q).mpr hzq
+  have hqInter : q ∈ O ∩ D.neighborFinset z := by simpa [heq] using hqN
+  exact (Finset.mem_inter.mp hqInter).1
 
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
