@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { PhaseIndicator } from './PhaseIndicator'
 import { TierBadge } from './TierBadge'
@@ -10,9 +11,13 @@ interface ResearchCardProps {
 }
 
 /**
- * Card component for displaying a research problem in the gallery
+ * Card component for displaying a research problem in the gallery.
+ *
+ * Memoized: the gallery page re-renders on unrelated state (filter panel
+ * toggle, "Copied!" flash) and would otherwise rebuild every card's element
+ * tree each time.
  */
-export function ResearchCard({ problem }: ResearchCardProps) {
+export const ResearchCard = memo(function ResearchCard({ problem }: ResearchCardProps) {
   const isGraduated = problem.status === 'graduated'
   const isCompleted = problem.phase === 'COMPLETED'
   const phaseInfo = PHASE_INFO[problem.phase]
@@ -98,4 +103,4 @@ export function ResearchCard({ problem }: ResearchCardProps) {
       </div>
     </Link>
   )
-}
+})
