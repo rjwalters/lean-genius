@@ -306,6 +306,48 @@ theorem false_of_two_unit_rows_three_even_columns_no_shared
   · exact hno₁ h.1 h.2
   · exact hno₂ h.1 h.2
 
+/-- Parity extraction from a finite local-excess ledger.  If the total is
+nine, one distinguished owner term is three, and every term other than two
+named exceptions and the owner is even, then the two exceptional terms have
+even sum.  This is the abstract bookkeeping step behind the order-twelve
+target column parity in the four-layer branch. -/
+theorem even_two_exceptions_of_sum_eq_nine_owner_eq_three
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (T : C → ℤ) (u c₁ c₂ : C)
+    (huc₁ : u ≠ c₁) (huc₂ : u ≠ c₂) (hc₁c₂ : c₁ ≠ c₂)
+    (hsum : ∑ c, T c = 9) (hu : T u = 3)
+    (hrest : ∀ c, c ≠ u → c ≠ c₁ → c ≠ c₂ → Even (T c)) :
+    Even (T c₁ + T c₂) := by
+  let S₁ := (Finset.univ : Finset C).erase u
+  let S₂ := S₁.erase c₁
+  let S₃ := S₂.erase c₂
+  have hc₁S₁ : c₁ ∈ S₁ := by
+    simp [S₁, huc₁.symm]
+  have hc₂S₂ : c₂ ∈ S₂ := by
+    simp [S₂, S₁, huc₂.symm, hc₁c₂.symm]
+  have hsplitu := Finset.sum_erase_add
+    (Finset.univ : Finset C) T (Finset.mem_univ u)
+  have hsplitc₁ := Finset.sum_erase_add S₁ T hc₁S₁
+  have hsplitc₂ := Finset.sum_erase_add S₂ T hc₂S₂
+  have hS₃even : Even (∑ c ∈ S₃, T c) := by
+    rw [even_iff_two_dvd]
+    apply Finset.dvd_sum
+    intro c hc
+    rw [Finset.mem_erase] at hc
+    have hcS₂ := hc.2
+    rw [Finset.mem_erase] at hcS₂
+    have hcS₁ := hcS₂.2
+    rw [Finset.mem_erase] at hcS₁
+    exact even_iff_two_dvd.mp
+      (hrest c hcS₁.1 hcS₂.1 hc.1)
+  obtain ⟨k, hk⟩ := hS₃even
+  dsimp only [S₁, S₂, S₃] at hsplitu hsplitc₁ hsplitc₂ hk
+  obtain ⟨m, hm⟩ : Even (T c₁ + T c₂) := by
+    refine ⟨3 - k, ?_⟩
+    rw [hu] at hsplitu
+    omega
+  exact ⟨m, hm⟩
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
