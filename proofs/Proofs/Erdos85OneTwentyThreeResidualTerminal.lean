@@ -7565,6 +7565,142 @@ theorem degree_sixteen_fourLayer_cross_owner_child_neighbor_card_eq_one
     subst y
     exact hxInter
 
+/-- An order-six component outside an ordinary owner bin sends total
+quotient degree two into that bin. -/
+theorem degree_sixteen_fourLayer_orderSix_to_ordinary_owner_bin_quotient_sum_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀)
+    (hordinary :
+      let D := secondOrderDefectGraph G
+      let Erow := minimumLayerExternalNeighborFinset G D c₀
+      let X := Finset.univ.filter
+        (fun x : minimumLayerVertex D c₀ => x.1 = a)
+      let B := X.biUnion Erow
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ B)
+      (E.filter fun e => e.supp.ncard = 6).card = 0)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 6)
+    (hcR : componentRepresentative (secondOrderDefectGraph G) c ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let Erow := minimumLayerExternalNeighborFinset G D c₀
+    let X := Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := X.biUnion Erow
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B)
+    (∑ e ∈ E, componentQuotientMatrix G D c e) = 2 := by
+  classical
+  dsimp only at hordinary ⊢
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion Erow
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ B)
+  let z := componentRepresentative D c
+  let N := G.neighborFinset z
+  obtain ⟨v, _hv, hzv⟩ := Finset.mem_biUnion.mp hcR
+  have hav : a ≠ v.1 := by
+    intro havEq
+    have hzB : z ∈ B := by
+      exact Finset.mem_biUnion.mpr
+        ⟨v, Finset.mem_filter.mpr ⟨Finset.mem_univ _, havEq.symm⟩, hzv⟩
+    have hcE : c ∈ E :=
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzB⟩
+    have hcSix : c ∈ E.filter (fun e => e.supp.ncard = 6) :=
+      Finset.mem_filter.mpr ⟨hcE, hc⟩
+    rw [Finset.card_eq_zero.mp hordinary] at hcSix
+    exact Finset.notMem_empty c hcSix
+  have hXcard : X.card = 3 := by
+    have hc₀three : c₀.supp.ncard = 3 :=
+      minimumLayer_child_common_length_eq_three
+        G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+          c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+    have haThree : a.1.supp.ncard = 3 := a.2.trans hc₀three
+    simpa [X, haThree] using minimumLayer_owner_fiber_card D c₀ a
+  have hAdjCard : (X.filter fun x => H.Adj x v).card = 1 := by
+    have hcross := degree_sixteen_fourLayer_cross_owner_child_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild a v hav
+    dsimp only at hcross
+    change (X ∩ H.neighborFinset v).card = 1 at hcross
+    have heq : X ∩ H.neighborFinset v = X.filter fun x => H.Adj x v := by
+      ext x
+      simp only [Finset.mem_inter, Finset.mem_filter, H.mem_neighborFinset]
+      constructor
+      · rintro ⟨hxX, hvx⟩
+        exact ⟨hxX, hvx.symm⟩
+      · rintro ⟨hxX, hxv⟩
+        exact ⟨hxX, hxv.symm⟩
+    rw [heq] at hcross
+    exact hcross
+  have hrowSum : (∑ x ∈ X, (Erow x ∩ N).card) = 2 := by
+    have hrow : ∀ x ∈ X, (Erow x ∩ N).card =
+        if H.Adj x v then 0 else 1 := by
+      intro x hx
+      simpa [D, H, Erow, N, z] using
+        degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+          G hfree hmin hcard c₀ hregChild hcardChild x v hzv
+    rw [Finset.sum_congr rfl hrow]
+    have hpartition :
+        (∑ x ∈ X, if H.Adj x v then 0 else 1) +
+          (∑ x ∈ X, if H.Adj x v then 1 else 0) = X.card := by
+      calc
+        _ = ∑ _x ∈ X, 1 := by
+          rw [← Finset.sum_add_distrib]
+          apply Finset.sum_congr rfl
+          intro x hx
+          by_cases h : H.Adj x v <;> simp [h]
+        _ = X.card := by simp
+    have hAdjSum : (∑ x ∈ X, if H.Adj x v then 1 else 0) = 1 := by
+      calc
+        _ = (X.filter fun x => H.Adj x v).card := by
+          rw [← Finset.sum_filter]
+          simp
+        _ = 1 := hAdjCard
+    omega
+  have hpairAll := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have hpair : (↑X : Set _).PairwiseDisjoint (fun x => Erow x ∩ N) := by
+    intro x hx y hy hxy
+    exact Finset.disjoint_of_subset_left Finset.inter_subset_left
+      (Finset.disjoint_of_subset_right Finset.inter_subset_left
+        (hpairAll (Finset.mem_univ x) (Finset.mem_univ y) hxy))
+  have hBN : B ∩ N = X.biUnion (fun x => Erow x ∩ N) := by
+    ext y
+    change y ∈ (X.biUnion Erow) ∩ N ↔
+      y ∈ X.biUnion (fun x => Erow x ∩ N)
+    simp only [Finset.mem_inter, Finset.mem_biUnion]
+    constructor
+    · rintro ⟨⟨x, hx, hyE⟩, hyN⟩
+      exact ⟨x, hx, hyE, hyN⟩
+    · rintro ⟨x, hx, hyE, hyN⟩
+      exact ⟨⟨x, hx, hyE⟩, hyN⟩
+  have hBcard : (B ∩ N).card = 2 := by
+    rw [hBN, Finset.card_biUnion hpair, hrowSum]
+  have hclosed := degree_sixteen_fourLayer_owner_bin_component_closed
+    G hfree hmin hcard c₀ hregChild hcardChild a
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D B (by simpa [D, X, B] using hclosed) c]
+  simpa [N, z] using hBcard
+
 /-- The used defect components owned by one minimum `C₃` form a partition of
 its 36-vertex service bin; consequently every selected order is a
 three-divisible integer between three and thirty-six. -/
