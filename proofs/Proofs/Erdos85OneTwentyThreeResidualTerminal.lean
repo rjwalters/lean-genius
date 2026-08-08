@@ -329,6 +329,59 @@ theorem minimumLayer_orphan_service_card_eq_one
   change (E u ∩ G.neighborFinset z).card = 1
   omega
 
+/-- The rowwise service law summed over the disjoint exterior rows: every
+orphan has exactly `s(s-1)+3` neighbors in the used exterior, one for each
+vertex of the minimum-layer child. -/
+theorem minimumLayer_orphan_used_exterior_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀)) :
+    (Finset.univ.biUnion
+        (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) ∩ G.neighborFinset z).card =
+      s * (s - 1) + 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild
+  have hpairInter :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ G.neighborFinset z) := by
+    intro u hu v hv huv
+    exact Finset.disjoint_of_subset_left (Finset.inter_subset_left)
+      (Finset.disjoint_of_subset_right (Finset.inter_subset_left)
+        (hpair hu hv huv))
+  have heq : Finset.univ.biUnion E ∩ G.neighborFinset z =
+      Finset.univ.biUnion (fun u => E u ∩ G.neighborFinset z) := by
+    ext y
+    simp
+  rw [heq, Finset.card_biUnion hpairInter]
+  have hservice : ∀ u : minimumLayerVertex D c₀,
+      (E u ∩ G.neighborFinset z).card = 1 := by
+    intro u
+    exact minimumLayer_orphan_service_card_eq_one
+      G hfree hd heven hmin hcard c₀ hregChild hcardChild
+        z hzOutside hzUnused u
+  simp_rw [hservice]
+  simpa [D] using hcardChild
+
 /-- At ambient degree sixteen, the exact one-service-per-child-row law
 leaves `16 - |U|` nonservice neighbors at every orphan, uniformly in the
 minimum-layer child degree. -/
@@ -1123,23 +1176,23 @@ theorem degree_sixteen_fourLayer_covered_orphan_card_ge_fortyFive
   rw [Finset.card_sdiff_of_subset hCsub, hcardP]
   omega
 
-/-- Every used exterior vertex has exactly four orphan neighbors.  Its other
-twelve neighbors are forced: its child owner, plus one vertex in each of the
-eleven exterior rows whose child vertex is not adjacent to the owner. -/
-theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+/-- Every used exterior vertex has the residual orphan degree left after its
+child owner and its one neighbor in each child-nonadjacent exterior row. -/
+theorem degree_sixteen_minimumLayer_used_exterior_orphan_degree
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hmin : 16 ≤ G.minDegree)
     (hcard : Fintype.card V = 16 * (16 - 1) + 3)
     (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
     (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
-      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
     (hcardChild :
-      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
     (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
     (hyv : y ∈ minimumLayerExternalNeighborFinset G
       (secondOrderDefectGraph G) c₀ v) :
@@ -1147,7 +1200,8 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     let U := minimumLayerImageFinset D c₀
     let E := minimumLayerExternalNeighborFinset G D c₀
     let O := (Finset.univ \ U) \ Finset.univ.biUnion E
-    (O ∩ G.neighborFinset y).card = 4 := by
+    (O ∩ G.neighborFinset y).card =
+      16 - (1 + (s * (s - 1) + 3 - s)) := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -1164,8 +1218,8 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     regular_of_minDegree_card_lt_nextMooreLayer
       G hfree (by norm_num) hmin hbelow
   have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
-    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
-      c₀ hregChild (by norm_num; exact hcardChild)
+    G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
   have howner : ∀ {u : minimumLayerVertex D c₀}, y ∈ E u → u = v := by
     intro u hyu
     by_contra huv
@@ -1213,10 +1267,11 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     intro u
     rw [Finset.inter_comm]
     exact minimumLayer_externalBlock_card_of_owned
-      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
-        c₀ hregChild (by norm_num; exact hcardChild) u v hyv
+      G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild hcardChild u v hyv
   have hnonAdjCount :
-      (Finset.univ.filter (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card = 11 := by
+      (Finset.univ.filter (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card =
+        s * (s - 1) + 3 - s := by
     have hadjFilter :
         Finset.univ.filter (fun u : minimumLayerVertex D c₀ => H.Adj u v) =
           H.neighborFinset v := by
@@ -1228,7 +1283,7 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     rw [hadjFilter, H.card_neighborFinset_eq_degree, hregChild v,
       Finset.card_univ, hcardChild] at hsplit
     omega
-  have hRN : (R ∩ N).card = 11 := by
+  have hRN : (R ∩ N).card = s * (s - 1) + 3 - s := by
     have heq : R ∩ N = Finset.univ.biUnion (fun u => E u ∩ N) := by
       ext q
       simp [R]
@@ -1250,13 +1305,14 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
               by_cases huv : H.Adj u v <;> simp [huv]
       _ = (Finset.univ.filter
           (fun u : minimumLayerVertex D c₀ => ¬H.Adj u v)).card := hbool
-      _ = 11 := hnonAdjCount
+      _ = s * (s - 1) + 3 - s := hnonAdjCount
   have hURdisj : Disjoint U R := by
     rw [Finset.disjoint_left]
     intro q hqU hqR
     have hRsub := minimumLayer_externalBiUnion_subset_complement G D c₀ hqR
     exact (Finset.mem_sdiff.mp hRsub).2 hqU
-  have hURN : ((U ∪ R) ∩ N).card = 12 := by
+  have hURN : ((U ∪ R) ∩ N).card =
+      1 + (s * (s - 1) + 3 - s) := by
     have heq : (U ∪ R) ∩ N = (U ∩ N) ∪ (R ∩ N) := by
       ext q
       simp only [Finset.mem_inter, Finset.mem_union]
@@ -1273,6 +1329,34 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
   have hNcard : N.card = 16 := by
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
+
+/-- Compatibility form for the `s=4` branch: every used exterior vertex
+has exactly four orphan neighbors. -/
+theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 4 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_orphan_degree
+    G hfree (s := 4) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
 
 /-- Correct row-by-row used-exterior split at `d=16,s=4`: an owned point
 has one neighbor in every child-nonadjacent exterior row, including exactly
