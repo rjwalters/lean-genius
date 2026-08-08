@@ -2061,6 +2061,117 @@ theorem degree_sixteen_fourLayer_orphan_localNeighborhood_oneRegular
     exact Finset.notMem_empty y.1 (hzero ▸ hyTF)
   omega
 
+/-- A nonshared service of a matched orphan has its local-triangle partner
+at a service in a distinct child-nonadjacent row.  These seven pairings are
+the near-perfect matching of the child complement selected by each orphan. -/
+theorem degree_sixteen_fourLayer_orphan_nonshared_service_partner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z')
+    (u : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyE : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hzy : G.Adj z y) (hnotShared : ¬G.Adj z' y) :
+    ∃ v : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∃ y' : V,
+      y' ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ v ∧
+      v ≠ u ∧
+      ¬(minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj v u ∧
+      G.Adj z y' ∧ G.Adj y y' := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  let O := (Finset.univ \ U) \ R
+  let yy : {q : V // q ∈ G.neighborSet z} := ⟨y, hzy⟩
+  have hlocal :=
+    (degree_sixteen_fourLayer_orphan_localNeighborhood_oneRegular
+      G hfree hmin hcard c₀ hregChild hcardChild z hz).2 yy
+  have hcardLocal :
+      ((G.induce (G.neighborSet z)).neighborFinset yy).card = 1 := by
+    rw [(G.induce (G.neighborSet z)).card_neighborFinset_eq_degree, hlocal]
+  obtain ⟨ww, hww⟩ := Finset.card_eq_one.mp hcardLocal
+  have hwwMem : ww ∈ (G.induce (G.neighborSet z)).neighborFinset yy := by
+    simp [hww]
+  have hyw : G.Adj y ww.1 :=
+    ((G.induce (G.neighborSet z)).mem_neighborFinset yy ww).mp hwwMem
+  have hzw : G.Adj z ww.1 := ww.2
+  have hwne : ww.1 ≠ z' := by
+    intro hwz'
+    apply hnotShared
+    rw [← hwz']
+    exact hyw.symm
+  have hzOutside : z ∉ U :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2
+  have hzUnused : z ∉ R := (Finset.mem_sdiff.mp hz).2
+  have hwOutside : ww.1 ∉ U := by
+    intro hwU
+    obtain ⟨a, _ha, haw⟩ := Finset.mem_image.mp hwU
+    apply hzUnused
+    apply Finset.mem_biUnion.mpr
+    refine ⟨a, Finset.mem_univ _, Finset.mem_sdiff.mpr ⟨?_, hzOutside⟩⟩
+    change a.2.1 = ww.1 at haw
+    exact (G.mem_neighborFinset a.2.1 z).mpr (by simpa [haw] using hzw.symm)
+  have hwR : ww.1 ∈ R := by
+    by_contra hwNotR
+    have hwO : ww.1 ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwOutside⟩, hwNotR⟩
+    have hone := degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+    have hz'Mem : z' ∈ O ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr
+        ⟨hz', (G.mem_neighborFinset z z').mpr hzz'⟩
+    have hwMem : ww.1 ∈ O ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr
+        ⟨hwO, (G.mem_neighborFinset z ww.1).mpr hzw⟩
+    have hle : (O ∩ G.neighborFinset z).card ≤ 1 := by rw [hone]
+    exact hwne (Finset.card_le_one.mp hle ww.1 hwMem z' hz'Mem)
+  obtain ⟨v, _hv, hwE⟩ := Finset.mem_biUnion.mp hwR
+  have hvu : v ≠ u := by
+    intro hvu
+    subst v
+    have hone := minimumLayer_orphan_service_card_eq_one
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) z hzOutside hzUnused u
+    have hyMem : y ∈ E u ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hyE, (G.mem_neighborFinset z y).mpr hzy⟩
+    have hwMem : ww.1 ∈ E u ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr ⟨hwE, (G.mem_neighborFinset z ww.1).mpr hzw⟩
+    have hle : (E u ∩ G.neighborFinset z).card ≤ 1 := by rw [hone]
+    have hywEq := Finset.card_le_one.mp hle y hyMem ww.1 hwMem
+    exact G.loopless.irrefl y (hywEq ▸ hyw)
+  have hnotH : ¬(minimumLayerGraph G D c₀).Adj v u := by
+    intro hvuH
+    have hblock := degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+      G hfree hmin hcard c₀ hregChild hcardChild v u hyE
+    rw [if_pos hvuH] at hblock
+    have hwMem : ww.1 ∈ E v ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr ⟨hwE, (G.mem_neighborFinset y ww.1).mpr hyw⟩
+    rw [Finset.card_eq_zero.mp hblock] at hwMem
+    exact Finset.notMem_empty ww.1 hwMem
+  exact ⟨v, ww.1, hwE, hvu, hnotH, hzw, hyw⟩
+
 end
 
 end Erdos85
