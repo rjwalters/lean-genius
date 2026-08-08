@@ -1851,6 +1851,26 @@ theorem card_eq_two_of_sum_four_and_zero_or_two
     simp [Nat.mul_comm]
   omega
 
+/-- Four entries bounded by one and summing to four are all one. -/
+theorem eq_one_of_card_four_sum_four_le_one
+    {α : Type*} [DecidableEq α] (S : Finset α) (q : α → ℕ)
+    (hcard : S.card = 4) (hsum : ∑ a ∈ S, q a = 4)
+    (hle : ∀ a ∈ S, q a ≤ 1) : ∀ a ∈ S, q a = 1 := by
+  intro a ha
+  have heraseCard : (S.erase a).card = 3 := by
+    rw [Finset.card_erase_of_mem ha, hcard]
+  have heraseLe : (∑ b ∈ S.erase a, q b) ≤ 3 := by
+    calc
+      (∑ b ∈ S.erase a, q b) ≤ ∑ _b ∈ S.erase a, 1 := by
+        apply Finset.sum_le_sum
+        intro b hb
+        exact hle b (Finset.mem_of_mem_erase hb)
+      _ = 3 := by simp [heraseCard]
+  have hsplit := Finset.sum_erase_add S q ha
+  rw [hsum] at hsplit
+  have haLe := hle a ha
+  omega
+
 /-- Double-counting a finite Boolean relation, specialized to uniform
 column degree one and source-row degrees zero or two. -/
 theorem card_eq_two_of_four_unit_columns_and_two_rows
@@ -13001,6 +13021,98 @@ theorem degree_sixteen_fourLayer_all_orderTwelve_orphans_used_order_six_or_dvd_t
     e.supp.ncard (componentQuotientMatrix G D e o)
       (componentQuotientMatrix G D o e) hlower hthree (Nat.pos_of_ne_zero hqne)
       hqle hbalD hdvd
+
+/-- In the four-order-twelve orphan branch, the preceding divisibility
+alphabet sharpens to exactly orders six and twelve.  A larger twelve-multiple
+can send quotient at most one to each orphan; hence it sends one to all four,
+contradicting multiple-cover target-source uniqueness for two distinct
+order-twelve orphans. -/
+theorem degree_sixteen_fourLayer_four_orderTwelve_orphans_used_order_six_or_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hOcard :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      O.card = 4)
+    (hOorders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      ∀ o ∈ O, o.supp.ncard = 12) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    ∀ e ∈ C, e.supp.ncard = 6 ∨ e.supp.ncard = 12 := by
+  classical
+  dsimp only at hOcard hOorders ⊢
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈
+      (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hOcard' : O.card = 4 := by simpa [D, R, O] using hOcard
+  intro e he
+  have halphabet :=
+    degree_sixteen_fourLayer_all_orderTwelve_orphans_used_order_six_or_dvd_twelve
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hOorders e he
+  rcases halphabet with heSix | hdvd
+  · exact Or.inl heSix
+  · right
+    by_contra hneTwelve
+    obtain ⟨m, hm⟩ := hdvd
+    have hm2 : 2 ≤ m := by
+      have hepos : 0 < e.supp.ncard := by
+        have hlower := degree_sixteen_fourLayer_used_component_card_lower
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild e
+            (Finset.mem_filter.mp he).2
+        omega
+      omega
+    have hsum := degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild e
+        (Finset.mem_filter.mp he).2
+    have hle : ∀ o ∈ O, componentQuotientMatrix G D e o ≤ 1 := by
+      intro o ho
+      by_contra hnot
+      have hdiv := degree_sixteen_component_order_dvd_of_two_le_quotient
+        G hfree hmin hcard e o (by simpa [D] using (show
+          2 ≤ componentQuotientMatrix G D e o by omega))
+      rw [hOorders o ho] at hdiv
+      have heLe : e.supp.ncard ≤ 12 := Nat.le_of_dvd (by norm_num) hdiv
+      omega
+    have hone := eq_one_of_card_four_sum_four_le_one O
+      (fun o => componentQuotientMatrix G D e o) hOcard'
+        (by simpa [D, R, O] using hsum) hle
+    obtain ⟨o₁, ho₁, o₂, ho₂, hne⟩ :=
+      Finset.one_lt_card.mp (show 1 < O.card by omega)
+    have heq := secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := m) (by norm_num) (by norm_num) hmin hcard hm2
+        o₁ o₂ e
+        (by rw [hOorders o₁ ho₁, hOorders o₂ ho₂])
+        (by rw [hOorders o₁ ho₁]; omega)
+        (by simpa [D] using hone o₁ ho₁)
+        (by simpa [D] using hone o₂ ho₂)
+    exact hne heq
 
 /-- Across all five minimum-component owner bins, there are at most five
 used defect components of order twenty-four.  Each 36-vertex bin contains at
