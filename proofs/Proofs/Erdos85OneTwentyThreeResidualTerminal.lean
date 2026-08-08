@@ -1729,6 +1729,66 @@ theorem degree_sixteen_minimumLayer_used_exterior_orphan_degree
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- In the zero-layer branch every used-exterior vertex has exactly twelve
+orphan neighbors.  This is the row sum used by the component-quotient
+enumerator: the remaining four neighbors consist of its unique `U₃` owner
+and one point in each of the three used-exterior owner rows. -/
+theorem degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 12 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_orphan_degree
+    G hfree (s := 0) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
+
+/-- In the two-layer branch every used-exterior vertex again has exactly
+twelve orphan neighbors.  Its other four neighbors are its unique `U₅`
+owner and one point in each of the three child rows nonadjacent to that
+owner. -/
+theorem degree_sixteen_twoLayer_used_exterior_orphan_degree_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    (O ∩ G.neighborFinset y).card = 12 := by
+  simpa using degree_sixteen_minimumLayer_used_exterior_orphan_degree
+    G hfree (s := 2) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild) v hyv
+
 /-- The first adjacency image of the orphan indicator, written on the three
 residual cells.  This packages the exact quotient column for `O`. -/
 theorem degree_sixteen_minimumLayer_adjMatrix_mulVec_orphanIndicator
