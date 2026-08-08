@@ -596,6 +596,99 @@ theorem degree_sixteen_fourLayer_shared_service_row_unique
     hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
   exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
 
+/-- If two distinct orphans share no service point, then they are adjacent in
+the second-order defect graph.  The only possible common neighbors of two
+orphans are service points: a common orphan neighbor would violate the
+one-regularity of the induced orphan graph. -/
+theorem degree_sixteen_fourLayer_uncovered_orphans_defect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : z ≠ z')
+    (huncovered : ∀ u : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      ∀ y ∈ minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u,
+        ¬(G.Adj z y ∧ G.Adj z' y)) :
+    (secondOrderDefectGraph G).Adj z z' := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  have hzO : z ∈ O := hz
+  have hz'O : z' ∈ O := hz'
+  have hzUnused : z ∉ Finset.univ.biUnion E :=
+    (Finset.mem_sdiff.mp hzO).2
+  have hzNoChildAdj : ∀ v : minimumLayerVertex D c₀,
+      ¬G.Adj z v.2.1 := by
+    intro v hzv
+    apply hzUnused
+    apply Finset.mem_biUnion.mpr
+    refine ⟨v, Finset.mem_univ _, ?_⟩
+    exact Finset.mem_sdiff.mpr
+      ⟨(G.mem_neighborFinset v.2.1 z).mpr hzv.symm,
+        (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hzO).1).2⟩
+  have hcommonEmpty :
+      G.neighborFinset z ∩ G.neighborFinset z' = ∅ := by
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    rintro ⟨y, hy⟩
+    have hyz : G.Adj z y :=
+      (G.mem_neighborFinset z y).mp (Finset.mem_inter.mp hy).1
+    have hyz' : G.Adj z' y :=
+      (G.mem_neighborFinset z' y).mp (Finset.mem_inter.mp hy).2
+    have hyOutside : y ∉ U := by
+      intro hyU
+      obtain ⟨v, _hv, hvy⟩ := Finset.mem_image.mp hyU
+      apply hzNoChildAdj v
+      change v.2.1 = y at hvy
+      rwa [hvy]
+    have hyUnused : y ∉ Finset.univ.biUnion E := by
+      intro hyUsed
+      obtain ⟨u, _hu, hyE⟩ := Finset.mem_biUnion.mp hyUsed
+      exact huncovered u y hyE ⟨hyz, hyz'⟩
+    have hyO : y ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hyOutside⟩, hyUnused⟩
+    have hone := degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild y hyO
+    have hzMem : z ∈ O ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr
+        ⟨hzO, (G.mem_neighborFinset y z).mpr hyz.symm⟩
+    have hz'Mem : z' ∈ O ∩ G.neighborFinset y :=
+      Finset.mem_inter.mpr
+        ⟨hz'O, (G.mem_neighborFinset y z').mpr hyz'.symm⟩
+    have hone' : (O ∩ G.neighborFinset y).card ≤ 1 := by
+      rw [hone]
+    exact hzz' (Finset.card_le_one.mp hone' z hzMem z' hz'Mem)
+  have hcommonCard :
+      (G.neighborFinset z ∩ G.neighborFinset z').card = 0 := by
+    rw [hcommonEmpty]
+    simp
+  have hformula := card_common_eq_if_secondOrderDefect G hfree z z' hzz'
+  by_contra hnotD
+  have hnotMem : z' ∉ D.neighborFinset z := by
+    simpa [D.mem_neighborFinset] using hnotD
+  rw [if_neg hnotMem] at hformula
+  omega
+
 end
 
 end Erdos85
