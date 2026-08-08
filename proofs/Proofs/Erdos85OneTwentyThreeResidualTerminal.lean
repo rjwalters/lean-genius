@@ -5,6 +5,7 @@ import Proofs.Erdos85OneTwentyThreeArithmetic
 import Proofs.Erdos85ExteriorCharpolyDivisibility
 import Proofs.Erdos85OneTwentyThreeSemisimplePackage
 import Proofs.Erdos85OwnerFiberProjectedSquare
+import Proofs.Erdos85BoundaryQuotientDivisibility
 
 /-!
 # Scalar-123 residual terminal
@@ -2518,6 +2519,114 @@ theorem degree_sixteen_smallLayer_used_component_card_lower
     have hb : c₀.supp.ncard = 5 := hbase.2 hs2
     change 6 ≤ (D.connectedComponentMk z).supp.ncard
     omega
+
+/-- In the two small residual branches, every used-exterior defect cycle has
+order divisible by the base cycle order: by three for `s = 0`, and by five
+for `s = 2`.  The minimum layer consists of the single base component in
+these cases, while every used point has an original-graph neighbor in that
+layer.  The boundary quotient divisibility theorem then applies across the
+resulting positive component edge. -/
+theorem degree_sixteen_smallLayer_used_component_card_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (z : V)
+    (hz : z ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀)) :
+    (s = 0 → 3 ∣ ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard) ∧
+      (s = 2 → 5 ∣
+        ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let e := D.connectedComponentMk z
+  have hbase := degree_sixteen_smallLayer_component_card
+    G hfree hs hmin hcard c₀ hregChild hcardChild
+  have hbaseEq : c₀.supp.ncard = s * (s - 1) + 3 := by
+    rcases hs with hs0 | hs2
+    · subst s
+      simpa using hbase.1 rfl
+    · subst s
+      simpa using hbase.2 rfl
+  let C : Finset V := c₀.supp.toFinite.toFinset
+  have hCU : C ⊆ U := by
+    intro x hx
+    have hxc : x ∈ c₀.supp := by simpa [C] using hx
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let u : minimumLayerVertex D c₀ := ⟨c, ⟨x, hxc⟩⟩
+    exact Finset.mem_image.mpr ⟨u, Finset.mem_univ _, rfl⟩
+  have hcardC : C.card = c₀.supp.ncard := by
+    simpa [C] using (Set.ncard_eq_toFinset_card c₀.supp c₀.supp.toFinite).symm
+  have hcardU : U.card = c₀.supp.ncard := by
+    rw [card_minimumLayerImageFinset, hcardChild, ← hbaseEq]
+  have hCUeq : C = U := by
+    apply Finset.eq_of_subset_of_card_le hCU
+    rw [hcardU, hcardC]
+  obtain ⟨u, _hu, hzu⟩ := Finset.mem_biUnion.mp hz
+  have huz : G.Adj u.2.1 z :=
+    (G.mem_neighborFinset u.2.1 z).mp (Finset.mem_sdiff.mp hzu).1
+  have huU : u.2.1 ∈ U :=
+    Finset.mem_image.mpr ⟨u, Finset.mem_univ _, rfl⟩
+  have huC : u.2.1 ∈ c₀.supp := by
+    have : u.2.1 ∈ C := by simpa [hCUeq] using huU
+    simpa [C] using this
+  have huMk : D.connectedComponentMk u.2.1 = c₀ :=
+    (ConnectedComponent.mem_supp_iff c₀ u.2.1).mp huC
+  have hzE : z ∈ e.supp := ConnectedComponent.connectedComponentMk_mem
+  have hQpos : 0 < componentQuotientMatrix G D e c₀ := by
+    rw [componentQuotientMatrix_apply_eq G D 2
+      (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard)
+      (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard) e c₀ hzE]
+    apply Finset.card_pos.mpr
+    refine ⟨u.2.1, ?_⟩
+    simp [componentNeighborFinset, huz.symm, huMk]
+  have hQpos' : 0 < componentQuotientMatrix G D c₀ e := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₀ e
+    by_contra hzero
+    have hzero' : componentQuotientMatrix G D c₀ e = 0 := by omega
+    rw [hzero', mul_zero] at hbal
+    have hepos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+    have : 0 < e.supp.ncard * componentQuotientMatrix G D e c₀ :=
+      Nat.mul_pos hepos hQpos
+    exact (Nat.ne_of_gt this) hbal.symm
+  have hlower := degree_sixteen_smallLayer_used_component_card_lower
+    G hfree hs hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  have hlt : c₀.supp.ncard < e.supp.ncard := by
+    rcases hs with hs0 | hs2
+    · subst s
+      rw [hbase.1 rfl]
+      exact hlower.1 rfl
+    · subst s
+      rw [hbase.2 rfl]
+      exact hlower.2 rfl
+  have hdvd :=
+    (secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        c₀ e hlt hQpos').2.1
+  constructor
+  · intro hs0
+    rw [hbase.1 hs0] at hdvd
+    exact hdvd
+  · intro hs2
+    rw [hbase.2 hs2] at hdvd
+    exact hdvd
 
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
