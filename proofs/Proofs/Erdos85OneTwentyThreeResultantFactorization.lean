@@ -133,6 +133,75 @@ theorem oneTwentyThree_frequency_mul_prod_resultant {n : ℕ} (hn : 0 < n) :
     simp only [if_neg heven, mul_one, Nat.cast_ofNat]
     linarith [hsplit, hmain]
 
+theorem primitiveNormCandidateOTT_ne_zero {n : ℕ} (h3 : 3 ≤ n)
+    (hmax : n ≤ 15255) : primitiveNormCandidateOTT n ≠ 0 := by
+  intro hzero
+  have hnsq := (primitiveNormOTT_not_isSquare h3 hmax).2
+  apply hnsq
+  refine ⟨0, ?_⟩
+  simp [hzero]
+
+/-- Strong-induction cancellation, parameterized by the native stage-2
+divisor-product certificate.  This isolates the proof-theoretic bridge from
+the expensive executable verification. -/
+theorem cyclotomicResultantAt_oneTwentyThree_eq_sq_of_factorization
+    (hcert : ∀ n : ℕ, 3 ≤ n → n ≤ 15255 →
+      cycleChebyshevOneTwentyThree n =
+        (121 * if 2 ∣ n then 125 else 1) *
+          ∏ k ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n),
+            (primitiveNormCandidateOTT k) ^ 2) :
+    ∀ n : ℕ, 3 ≤ n → n ≤ 15255 →
+      cyclotomicResultantAt 123 n =
+        (primitiveNormCandidateOTT n : ℤ) ^ 2 := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n IH =>
+    intro h3 hmax
+    have hn0 : 0 < n := by omega
+    have hF := oneTwentyThree_frequency_mul_prod_resultant hn0
+    rw [divisors_filter_three_eq_Icc_filter hn0] at hF
+    have hcertN := hcert n h3 hmax
+    have hcertZ : (cycleChebyshevOneTwentyThree n : ℤ) =
+        ((121 * if 2 ∣ n then 125 else 1 : ℕ) : ℤ) *
+          ∏ k ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n),
+            (primitiveNormCandidateOTT k : ℤ) ^ 2 := by
+      exact_mod_cast hcertN
+    have hfreq : ((121 * if 2 ∣ n then 125 else 1 : ℕ) : ℤ) ≠ 0 := by
+      split <;> norm_num
+    have hprods :
+        ∏ k ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n),
+            cyclotomicResultantAt 123 k =
+          ∏ k ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n),
+            (primitiveNormCandidateOTT k : ℤ) ^ 2 :=
+      mul_left_cancel₀ hfreq (by rw [hF, hcertZ])
+    have hnmem : n ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n) :=
+      Finset.mem_filter.mpr
+        ⟨Finset.mem_Icc.mpr ⟨h3, le_refl n⟩, dvd_refl n⟩
+    rw [← Finset.mul_prod_erase _ _ hnmem,
+      ← Finset.mul_prod_erase _ _ hnmem] at hprods
+    have herase :
+        ∏ k ∈ ((Finset.Icc 3 n).filter (fun k => k ∣ n)).erase n,
+            cyclotomicResultantAt 123 k =
+          ∏ k ∈ ((Finset.Icc 3 n).filter (fun k => k ∣ n)).erase n,
+            (primitiveNormCandidateOTT k : ℤ) ^ 2 := by
+      refine Finset.prod_congr rfl fun k hk => ?_
+      obtain ⟨hkne, hkA⟩ := Finset.mem_erase.mp hk
+      obtain ⟨hkIcc, hkdvd⟩ := Finset.mem_filter.mp hkA
+      obtain ⟨hk3, hkn⟩ := Finset.mem_Icc.mp hkIcc
+      exact IH k (lt_of_le_of_ne hkn hkne) hk3 (le_trans hkn hmax)
+    rw [herase] at hprods
+    have hne :
+        ∏ k ∈ ((Finset.Icc 3 n).filter (fun k => k ∣ n)).erase n,
+            (primitiveNormCandidateOTT k : ℤ) ^ 2 ≠ 0 := by
+      rw [Finset.prod_ne_zero_iff]
+      intro k hk
+      obtain ⟨hkne, hkA⟩ := Finset.mem_erase.mp hk
+      obtain ⟨hkIcc, hkdvd⟩ := Finset.mem_filter.mp hkA
+      obtain ⟨hk3, hkn⟩ := Finset.mem_Icc.mp hkIcc
+      exact pow_ne_zero 2 (Int.ofNat_ne_zero.mpr
+        (primitiveNormCandidateOTT_ne_zero hk3 (le_trans hkn hmax)))
+    exact mul_right_cancel₀ hne hprods
+
 end
 
 end Erdos85
