@@ -202,6 +202,26 @@ theorem cyclotomicResultantAt_oneTwentyThree_eq_sq_of_factorization
         (primitiveNormCandidateOTT_ne_zero hk3 (le_trans hkn hmax)))
     exact mul_right_cancel₀ hne hprods
 
+/-- The native stage-2 certificate in the explicit shape consumed by the
+strong-induction cancellation theorem. -/
+theorem cycleChebyshevOTT_primitive_factorization_explicit
+    (n : ℕ) (h3 : 3 ≤ n) (hmax : n ≤ 15255) :
+    cycleChebyshevOneTwentyThree n =
+      (121 * if 2 ∣ n then 125 else 1) *
+        ∏ k ∈ (Finset.Icc 3 n).filter (fun k => k ∣ n),
+          (primitiveNormCandidateOTT k) ^ 2 := by
+  simpa [rationalCycleFrequencyFactorOTT, primitiveNormDivisorProductOTT,
+    Nat.dvd_iff_mod_eq_zero] using
+      cycleChebyshevOTT_primitive_factorization h3 hmax
+
+/-- **Certified conductor resultant identity at scalar 123.** -/
+theorem cyclotomicResultantAt_oneTwentyThree_eq_sq
+    (n : ℕ) (h3 : 3 ≤ n) (hmax : n ≤ 15255) :
+    cyclotomicResultantAt 123 n =
+      (primitiveNormCandidateOTT n : ℤ) ^ 2 :=
+  cyclotomicResultantAt_oneTwentyThree_eq_sq_of_factorization
+    cycleChebyshevOTT_primitive_factorization_explicit n h3 hmax
+
 /-- Resultant bridge for primitive traces in the algebraic closure. -/
 theorem minpoly_add_inv_eval_oneTwentyThree_mul_self {ℓ : ℕ}
     (h3 : 3 ≤ ℓ) {z : AlgebraicClosure ℚ} (hz : IsPrimitiveRoot z ℓ) :
@@ -269,6 +289,15 @@ theorem minpoly_add_inv_eval_oneTwentyThree_not_isSquare_of_resultant_eq_sq
   · rw [h]
     rintro ⟨r, hr⟩
     nlinarith [mul_self_nonneg r]
+
+/-- Certified scalar-123 primitive trace values are nonsquare throughout
+the complete conductor range. -/
+theorem minpoly_add_inv_eval_oneTwentyThree_not_isSquare {ℓ : ℕ}
+    (h3 : 3 ≤ ℓ) (hmax : ℓ ≤ 15255)
+    {z : AlgebraicClosure ℚ} (hz : IsPrimitiveRoot z ℓ) :
+    ¬ IsSquare ((minpoly ℚ (z + z⁻¹)).eval 123) :=
+  minpoly_add_inv_eval_oneTwentyThree_not_isSquare_of_resultant_eq_sq
+    h3 hmax (cyclotomicResultantAt_oneTwentyThree_eq_sq ℓ h3 hmax) hz
 
 end
 
