@@ -1731,6 +1731,120 @@ theorem degree_sixteen_fourLayer_orphan_matching_not_defect_adj
   · exact ((mem_antipodalNeighbors G z q).mp hzqAnti).2.1
       ((mem_triangleFreeNeighbors G z q).mp hbothTF.2).1
 
+/-- Every orphan matching edge occupies exactly one service-block slot:
+its endpoints have a common service point in a unique child row, and that
+point is unique as well. -/
+theorem degree_sixteen_fourLayer_orphan_matching_unique_service
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z') :
+    ∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∃ y : V,
+      y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u ∧
+      G.Adj z y ∧ G.Adj z' y ∧
+      ∀ v : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∀ y' : V,
+        y' ∈ minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀ v →
+        G.Adj z y' → G.Adj z' y' → v = u ∧ y' = y := by
+  classical
+  have hne : z ≠ z' := G.ne_of_adj hzz'
+  have hex : ∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      ∃ y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u,
+        G.Adj z y ∧ G.Adj z' y := by
+    by_contra hnot
+    push_neg at hnot
+    have huncovered : ∀ u : minimumLayerVertex
+        (secondOrderDefectGraph G) c₀,
+        ∀ y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u,
+          ¬(G.Adj z y ∧ G.Adj z' y) := by
+      intro u y hy hpair
+      exact hnot u y hy hpair.1 hpair.2
+    have hD := degree_sixteen_fourLayer_uncovered_orphans_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz' hne huncovered
+    exact degree_sixteen_fourLayer_orphan_matching_not_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz' hD
+  obtain ⟨u, y, hyE, hzy, hz'y⟩ := hex
+  refine ⟨u, y, hyE, hzy, hz'y, ?_⟩
+  intro v y' hy'E hzy' hz'y'
+  have huv := degree_sixteen_fourLayer_shared_service_row_unique
+    G hfree hmin hcard c₀ hregChild hcardChild hne
+      hyE hzy hz'y hy'E hzy' hz'y'
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hne
+  have hyMem : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hzy,
+        (G.mem_neighborFinset z' y).mpr hz'y⟩
+  have hy'Mem : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hzy',
+        (G.mem_neighborFinset z' y').mpr hz'y'⟩
+  exact ⟨huv.symm,
+    Finset.card_le_one.mp hcommon y' hy'Mem y hyMem⟩
+
+/-- Every defect edge inside the orphan subsystem is antipodal.  Its other
+possible color would make it an orphan matching edge, which the preceding
+theorem excludes from the defect graph. -/
+theorem degree_sixteen_fourLayer_orphan_defect_adj_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z q : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzqD : (secondOrderDefectGraph G).Adj z q) :
+    (antipodalGraph G).Adj z q := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hq : q ∈ O :=
+    degree_sixteen_fourLayer_orphans_defect_closed
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+        ((D.mem_neighborFinset z q).mpr hzqD)
+  change (antipodalGraph G).Adj z q ∨
+    (triangleFreeEdgeGraph G).Adj z q at hzqD
+  rcases hzqD with hanti | htri
+  · exact hanti
+  · have hzqG : G.Adj z q :=
+      ((mem_triangleFreeNeighbors G z q).mp htri).1
+    exact (degree_sixteen_fourLayer_orphan_matching_not_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hq hzqG
+        (Or.inr htri)).elim
+
 end
 
 end Erdos85
