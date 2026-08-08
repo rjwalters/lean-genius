@@ -8999,6 +8999,68 @@ theorem degree_sixteen_fourLayer_five_orphan_components_nine_twelve
         (componentRepresentative D c)).mp (componentRepresentative_mem D c)
     rwa [hrep] at hdvd
 
+/-- Every used-exterior component sends total quotient degree four into the
+complete orphan-component family.  This is the component-partition form of
+the pointwise four-orphan-neighbor theorem. -/
+theorem degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    (∑ o ∈ C, componentQuotientMatrix G D e o) = 4 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  have hclosed : ∀ y : V,
+      y ∈ O ↔ componentRepresentative D (D.connectedComponentMk y) ∈ O := by
+    intro y
+    constructor
+    · intro hy
+      have hsub := degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild y hy
+      exact hsub (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hrep
+      have hsub := degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild
+          (componentRepresentative D (D.connectedComponentMk y)) hrep
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D O hclosed e]
+  obtain ⟨v, _hv, hrepRow⟩ := Finset.mem_biUnion.mp heR
+  simpa [D, U, R, O] using
+    degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild v hrepRow
+
 /-- If the four-layer orphan cell has seven defect components, every order
 is one of six, nine, or twelve. -/
 theorem degree_sixteen_fourLayer_seven_orphan_component_orders
