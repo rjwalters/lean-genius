@@ -1579,6 +1579,84 @@ theorem degree_sixteen_minimumLayer_used_exterior_neighbor_card
   intro u _hu
   by_cases huv : H.Adj u v <;> simp [huv]
 
+/-- The first adjacency image of the used-exterior indicator, i.e. the
+`R`-column of the three-cell quotient. -/
+theorem degree_sixteen_minimumLayer_adjMatrix_mulVec_usedIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (x : V) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (G.adjMatrix ℤ).mulVec (vertexFinsetIndicator R) x =
+      if x ∈ U then 16 - s
+      else if x ∈ R then s * (s - 1) + 3 - s
+      else s * (s - 1) + 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  rw [adjMatrix_mulVec_vertexFinsetIndicator]
+  by_cases hxU : x ∈ U
+  · rw [if_pos hxU]
+    obtain ⟨u, _hu, hux⟩ := Finset.mem_image.mp hxU
+    have heq : R ∩ G.neighborFinset x = E u := by
+      ext y
+      constructor
+      · intro hy
+        have hyR := (Finset.mem_inter.mp hy).1
+        have hxy := (Finset.mem_inter.mp hy).2
+        have hyOutside := minimumLayer_externalBiUnion_subset_complement
+          G D c₀ hyR
+        apply Finset.mem_sdiff.mpr
+        change u.2.1 = x at hux
+        exact ⟨(G.mem_neighborFinset u.2.1 y).mpr
+          (by simpa [hux] using (G.mem_neighborFinset x y).mp hxy),
+          (Finset.mem_sdiff.mp hyOutside).2⟩
+      · intro hy
+        have hy' := Finset.mem_sdiff.mp hy
+        refine Finset.mem_inter.mpr ⟨?_, ?_⟩
+        · exact Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hy⟩
+        · change u.2.1 = x at hux
+          exact (G.mem_neighborFinset x y).mpr
+            (by simpa [hux] using (G.mem_neighborFinset u.2.1 y).mp hy'.1)
+    rw [heq]
+    norm_cast
+    have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+      rw [hcard]
+      norm_num
+    have hregParent : ∀ z : V, G.degree z = 16 :=
+      regular_of_minDegree_card_lt_nextMooreLayer
+        G hfree (by norm_num) hmin hbelow
+    exact card_minimumLayerExternalNeighborFinset
+      G D c₀ hregParent hregChild u
+  · rw [if_neg hxU]
+    by_cases hxR : x ∈ R
+    · rw [if_pos hxR]
+      obtain ⟨v, _hv, hxv⟩ := Finset.mem_biUnion.mp hxR
+      norm_cast
+      exact degree_sixteen_minimumLayer_used_exterior_neighbor_card
+        G hfree hmin hcard c₀ hregChild hcardChild v hxv
+    · rw [if_neg hxR]
+      norm_cast
+      exact minimumLayer_orphan_used_exterior_neighbor_card
+        G hfree (d := 16) (s := s) (by norm_num) (by norm_num) hmin hcard
+          c₀ hregChild hcardChild x hxU hxR
+
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
