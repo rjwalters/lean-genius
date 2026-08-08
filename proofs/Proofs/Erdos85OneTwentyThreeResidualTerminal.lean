@@ -5661,6 +5661,37 @@ theorem degree_sixteen_fourLayer_used_component_cycleCover
 /-- In the four-layer branch, any three child external-neighborhood rows
 contain exactly thirty-six vertices.  In particular, the three rows belonging
 to one minimum `C₃` owner form an exact size-36 bin for its owned used cycles. -/
+theorem minimumLayer_owner_fiber_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) (a : minimumLayerComponent D c₀) :
+    (Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)).card = a.1.supp.ncard := by
+  classical
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let S := a.1.supp.toFinite.toFinset
+  have hcard : X.card = S.card := by
+    apply Finset.card_bij (fun x _ => x.2.1)
+    · intro x hx
+      have hxa : x.1 = a := (Finset.mem_filter.mp hx).2
+      simpa [S, hxa] using x.2.2
+    · intro x hx y hy hxy
+      have hxa : x.1 = a := (Finset.mem_filter.mp hx).2
+      have hya : y.1 = a := (Finset.mem_filter.mp hy).2
+      cases x
+      cases y
+      subst_vars
+      congr 1
+      exact Subtype.ext hxy
+    · intro z hz
+      have hza : z ∈ a.1.supp := by simpa [S] using hz
+      let x : minimumLayerVertex D c₀ := ⟨a, ⟨z, hza⟩⟩
+      refine ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩, rfl⟩
+  rw [hcard]
+  exact (Set.ncard_eq_toFinset_card a.1.supp a.1.supp.toFinite).symm
+
 theorem degree_sixteen_fourLayer_three_externalRows_card
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
