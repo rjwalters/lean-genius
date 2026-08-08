@@ -202,6 +202,74 @@ theorem cyclotomicResultantAt_oneTwentyThree_eq_sq_of_factorization
         (primitiveNormCandidateOTT_ne_zero hk3 (le_trans hkn hmax)))
     exact mul_right_cancel₀ hne hprods
 
+/-- Resultant bridge for primitive traces in the algebraic closure. -/
+theorem minpoly_add_inv_eval_oneTwentyThree_mul_self {ℓ : ℕ}
+    (h3 : 3 ≤ ℓ) {z : AlgebraicClosure ℚ} (hz : IsPrimitiveRoot z ℓ) :
+    (minpoly ℚ (z + z⁻¹)).eval 123 *
+        (minpoly ℚ (z + z⁻¹)).eval 123 =
+      (cyclotomicResultantAt 123 ℓ : ℚ) := by
+  haveI : NeZero ℓ := ⟨by omega⟩
+  haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) :=
+    AlgebraicClosure.isAlgebraic ℚ
+  haveI : Algebra.IsIntegral ℚ (AlgebraicClosure ℚ) :=
+    Algebra.IsAlgebraic.isIntegral
+  haveI : IsCyclotomicExtension {ℓ} ℚ (IntermediateField.adjoin ℚ
+      ({z} : Set (AlgebraicClosure ℚ))) :=
+    hz.intermediateField_adjoin_isCyclotomicExtension ℚ
+  set L := IntermediateField.adjoin ℚ ({z} : Set (AlgebraicClosure ℚ)) with hL
+  haveI : CharZero L :=
+    charZero_of_injective_algebraMap (algebraMap ℚ L).injective
+  set z' : L := ⟨z, IntermediateField.mem_adjoin_simple_self ℚ z⟩ with hz'def
+  have hz' : IsPrimitiveRoot z' ℓ := by
+    rw [← IsPrimitiveRoot.coe_submonoidClass_iff (B := IntermediateField ℚ
+      (AlgebraicClosure ℚ)) (N := L)]
+    exact hz
+  have hpeer := primitiveTrace_minpoly_eval_oneTwentyThree_sq_eq_resultant
+    hz' h3
+  have hval : (L.val : L →ₐ[ℚ] AlgebraicClosure ℚ) (z' + z'⁻¹) =
+      z + z⁻¹ := by
+    rw [map_add, map_inv₀]
+    rfl
+  have hmp : minpoly ℚ (z' + z'⁻¹) = minpoly ℚ (z + z⁻¹) := by
+    rw [← hval]
+    exact (minpoly.algHom_eq L.val (fun a b h => Subtype.ext h)
+      (z' + z'⁻¹)).symm
+  rw [hmp] at hpeer
+  exact hpeer
+
+/-- A conductor-resultant identification with the certified square implies
+the scalar-123 primitive trace value is nonsquare. -/
+theorem minpoly_add_inv_eval_oneTwentyThree_not_isSquare_of_resultant_eq_sq
+    {ℓ : ℕ} (h3 : 3 ≤ ℓ) (hmax : ℓ ≤ 15255)
+    (hres : cyclotomicResultantAt 123 ℓ =
+      (primitiveNormCandidateOTT ℓ : ℤ) ^ 2)
+    {z : AlgebraicClosure ℚ} (hz : IsPrimitiveRoot z ℓ) :
+    ¬ IsSquare ((minpoly ℚ (z + z⁻¹)).eval 123) := by
+  have hsq := minpoly_add_inv_eval_oneTwentyThree_mul_self h3 hz
+  rw [hres] at hsq
+  push_cast at hsq
+  set e : ℚ := (minpoly ℚ (z + z⁻¹)).eval 123 with he
+  set c : ℚ := ((primitiveNormCandidateOTT ℓ : ℕ) : ℚ) with hc
+  have hcases : e = c ∨ e = -c := by
+    have hzero : (e - c) * (e + c) = 0 := by
+      linear_combination hsq
+    rcases mul_eq_zero.mp hzero with h | h
+    · exact Or.inl (sub_eq_zero.mp h)
+    · exact Or.inr (eq_neg_of_add_eq_zero_left h)
+  have hnotsq : ¬ IsSquare c := by
+    rw [hc, Rat.isSquare_natCast_iff]
+    exact (primitiveNormOTT_not_isSquare h3 hmax).2
+  have hcpos : 0 < c := by
+    rw [hc]
+    exact_mod_cast Nat.pos_of_ne_zero
+      (primitiveNormCandidateOTT_ne_zero h3 hmax)
+  rcases hcases with h | h
+  · rw [h]
+    exact hnotsq
+  · rw [h]
+    rintro ⟨r, hr⟩
+    nlinarith [mul_self_nonneg r]
+
 end
 
 end Erdos85
