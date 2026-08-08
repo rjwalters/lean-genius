@@ -101,6 +101,20 @@ theorem div_five_dvd_right_of_balance_eq_five
   rw [Nat.mul_div_right k (by norm_num)]
   exact ⟨a, hk.symm⟩
 
+/-- Three-primary concentrated-cut divisor rule. -/
+theorem div_three_dvd_right_of_balance_eq_three
+    (r o a : ℕ) (hr : 3 ∣ r) (hbal : r * a = o * 3) :
+    r / 3 ∣ o := by
+  obtain ⟨k, rfl⟩ := hr
+  have hk : k * a = o := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    calc
+      3 * (k * a) = (3 * k) * a := by simp [mul_assoc]
+      _ = o * 3 := hbal
+      _ = 3 * o := by omega
+  rw [Nat.mul_div_right k (by norm_num)]
+  exact ⟨a, hk.symm⟩
+
 /-- Integral indicator vector of a finite vertex set. -/
 def vertexFinsetIndicator {V : Type*} [DecidableEq V]
     (S : Finset V) : V → ℤ := fun x => if x ∈ S then 1 else 0
@@ -3572,6 +3586,60 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_eq_three
       (componentQuotientMatrix G D o e)
       heDvd (by simpa [o] using hnot) hbal (by simpa [D, o, e] using hpos) hle
 
+/-- Divisibility refinement of a concentrated zero-layer O--R cut: if the
+R component has order `3k`, then `k` divides the orphan-component order. -/
+theorem degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    e.supp.ncard / 3 ∣ o.supp.ncard := by
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hq] at hbal
+  exact div_three_dvd_right_of_balance_eq_three
+    e.supp.ncard o.supp.ncard
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e o)
+      heDvd hbal
+
+/-- Reduced detailed balance for two 3-divisible components in the zero-layer
+branch.  Writing the R and O orders as `3k` and `3m` removes the common factor
+and leaves the small integer transport equation used by the structured
+encoder. -/
+theorem degree_sixteen_zeroLayer_threeDivisible_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard) (hoDvd : 3 ∣ o.supp.ncard) :
+    ∃ k m : ℕ,
+      e.supp.ncard = 3 * k ∧ o.supp.ncard = 3 * m ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨m, hm⟩ := hoDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hm] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [mul_assoc] using hbal
+  exact ⟨k, m, hk, hm, hreduced⟩
+
 /-- In the zero-layer branch the minimum layer is the single order-three
 component.  Hence every used component attaches directly to `c₀`, with
 reverse quotient one and forward quotient equal to one third of its order. -/
@@ -3852,6 +3920,73 @@ theorem degree_sixteen_fourLayer_nonThree_to_used_quotient_dvd_three
       (componentQuotientMatrix G D e o)
       (componentQuotientMatrix G D o e)
       heDvd (by simpa [o] using hnot) hbal
+
+/-- Reduced balance for a three-divisible R order and a three-divisible
+O-to-R quotient entry.  Writing `|R| = 3k` and `Q(O,R) = 3b` leaves the
+small transport equation `k Q(R,O) = |O| b`. -/
+theorem degree_sixteen_fourLayer_threeDivisible_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard)
+    (hqDvd : 3 ∣ componentQuotientMatrix G
+      (secondOrderDefectGraph G) o e) :
+    ∃ k b : ℕ,
+      e.supp.ncard = 3 * k ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3 * b ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        o.supp.ncard * b := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨b, hb⟩ := hqDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hb] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        o.supp.ncard * b := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    calc
+      3 * (k * componentQuotientMatrix G (secondOrderDefectGraph G) e o) =
+          o.supp.ncard * (3 * b) := by simpa [mul_assoc] using hbal
+      _ = 3 * (o.supp.ncard * b) := by ring
+  exact ⟨k, b, hk, hb, hreduced⟩
+
+/-- Reduced detailed balance when both component orders are 3-divisible in
+the four-layer branch.  Writing the R and O orders as `3k` and `3m` leaves
+`k Q(R,O) = m Q(O,R)`, so the remaining transport rows can be enumerated
+using only the two reduced component orders. -/
+theorem degree_sixteen_fourLayer_threeDivisible_orders_cut_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 3 ∣ e.supp.ncard) (hoDvd : 3 ∣ o.supp.ncard) :
+    ∃ k m : ℕ,
+      e.supp.ncard = 3 * k ∧ o.supp.ncard = 3 * m ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+  obtain ⟨k, hk⟩ := heDvd
+  obtain ⟨m, hm⟩ := hoDvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hk, hm] at hbal
+  have hreduced :
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+        m * componentQuotientMatrix G (secondOrderDefectGraph G) o e := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [mul_assoc] using hbal
+  exact ⟨k, m, hk, hm, hreduced⟩
 
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
@@ -4255,6 +4390,48 @@ theorem degree_sixteen_fourLayer_orphan_diagonalQuotient_eq_ite_matching_stays
     apply hstay
     simpa [hqz'] using hqData.2
 
+/-- If an orphan matching edge stays within one defect component, that
+component has even order.  Indeed its internal quotient degree is one, so
+the handshake parity for the induced component graph is exactly parity of
+the component order. -/
+theorem degree_sixteen_fourLayer_matching_stable_orphan_component_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z')
+    (hstay : (secondOrderDefectGraph G).connectedComponentMk z' =
+      (secondOrderDefectGraph G).connectedComponentMk z) :
+    Even ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let c := D.connectedComponentMk z
+  have hdiag := degree_sixteen_fourLayer_orphan_diagonalQuotient_eq_ite_matching_stays
+    G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
+  have hdiagOne : componentQuotientMatrix G D c c = 1 := by
+    simpa [D, c, hstay] using hdiag
+  have heven := secondOrder_componentQuotientMatrix_diagonal_mul_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c
+  rw [hdiagOne, mul_one] at heven
+  exact heven
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
@@ -4603,6 +4780,43 @@ theorem degree_sixteen_fourLayer_orphan_defect_adj_antipodal
     exact (degree_sixteen_fourLayer_orphan_matching_not_defect_adj
       G hfree hmin hcard c₀ hregChild hcardChild hz hq hzqG
         (Or.inr htri)).elim
+
+/-- Every defect edge of an orphan component in the four-layer branch has
+antipodal color.  This component-level wrapper eliminates all orphan color
+choices from the structured encoding. -/
+theorem degree_sixteen_fourLayer_orphan_component_all_edges_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ∀ x ∈ ((secondOrderDefectGraph G).connectedComponentMk z).supp,
+      ∀ y, (secondOrderDefectGraph G).Adj x y →
+        (antipodalGraph G).Adj x y := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  have hsubset := degree_sixteen_fourLayer_orphan_component_subset
+    G hfree hmin hcard c₀ hregChild hcardChild z hz
+  intro x hx y hxy
+  have hxO : x ∈ O := hsubset hx
+  exact degree_sixteen_fourLayer_orphan_defect_adj_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild hxO hxy
 
 /-- **Exact collision/leave law.**  For distinct orphans, being an edge of
 the defect 2-factor is equivalent to sharing no service point in any row.
