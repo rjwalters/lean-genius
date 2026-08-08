@@ -1260,6 +1260,52 @@ theorem degree_sixteen_fourLayer_orphans_defect_closed
   rw [← hCD] at hz'D
   exact Finset.mem_of_mem_erase (Finset.mem_filter.mp hz'D).1
 
+/-- Component form of orphan defect closure: the entire defect component of
+every orphan is contained in the 48-vertex orphan set. -/
+theorem degree_sixteen_fourLayer_orphan_component_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    ∀ z ∈ O, (D.connectedComponentMk z).supp ⊆ (O : Set V) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  have hclosed : ∀ z ∈ O, D.neighborFinset z ⊆ O :=
+    degree_sixteen_fourLayer_orphans_defect_closed
+      G hfree hmin hcard c₀ hregChild hcardChild
+  have hwalk : ∀ (a b : V) (p : D.Walk a b), a ∈ O → b ∈ O := by
+    intro a b p
+    induction p with
+    | nil => exact fun ha => ha
+    | cons hadj q ih =>
+        intro ha
+        have hv : _ ∈ O := hclosed _ ha
+          ((D.mem_neighborFinset _ _).mpr hadj)
+        exact ih hv
+  intro z hz q hq
+  have heq : D.connectedComponentMk q = D.connectedComponentMk z :=
+    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk z) q).mp hq
+  have hr : D.Reachable z q := ConnectedComponent.eq.mp heq.symm
+  obtain ⟨p⟩ := hr
+  exact hwalk z q p hz
+
 end
 
 end Erdos85
