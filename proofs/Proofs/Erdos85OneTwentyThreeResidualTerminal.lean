@@ -5662,6 +5662,65 @@ theorem degree_sixteen_fourLayer_three_externalRows_card
   rw [Finset.sum_congr rfl (fun x _ => hrow x)]
   simp [hX]
 
+/-- Every orphan has exactly three neighbors in the union of any three
+service rows.  This is the forward mass-three input for an owner bin. -/
+theorem degree_sixteen_fourLayer_three_externalRows_orphan_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (X : Finset (minimumLayerVertex (secondOrderDefectGraph G) c₀))
+    (hX : X.card = 3) (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ((X.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) ∩ G.neighborFinset z).card = 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  let N := G.neighborFinset z
+  have hzOutside : z ∉ U := (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2
+  have hzUnused : z ∉ R := (Finset.mem_sdiff.mp hz).2
+  have hrow : ∀ x : minimumLayerVertex D c₀, (E x ∩ N).card = 1 := by
+    intro x
+    exact minimumLayer_orphan_service_card_eq_one
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) z hzOutside hzUnused x
+  have hpairAll := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have hpair : (↑X : Set (minimumLayerVertex D c₀)).PairwiseDisjoint
+      (fun x => E x ∩ N) := by
+    intro x hx y hy hxy
+    exact Finset.disjoint_of_subset_left Finset.inter_subset_left
+      (Finset.disjoint_of_subset_right Finset.inter_subset_left
+        (hpairAll (Finset.mem_univ x) (Finset.mem_univ y) hxy))
+  have hunion : (X.biUnion E) ∩ N = X.biUnion (fun x => E x ∩ N) := by
+    ext y
+    simp only [Finset.mem_inter, Finset.mem_biUnion]
+    constructor
+    · rintro ⟨⟨x, hx, hyE⟩, hyN⟩
+      exact ⟨x, hx, hyE, hyN⟩
+    · rintro ⟨x, hx, hyE, hyN⟩
+      exact ⟨⟨x, hx, hyE⟩, hyN⟩
+  change ((X.biUnion E) ∩ N).card = 3
+  rw [hunion, Finset.card_biUnion hpair]
+  rw [Finset.sum_congr rfl (fun x _ => hrow x)]
+  simp [hX]
+
 /-- In the four-layer branch, every used-exterior defect cycle has order a
 multiple of three. -/
 theorem degree_sixteen_fourLayer_used_component_card_dvd_three
