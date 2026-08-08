@@ -948,6 +948,59 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- Correct row-by-row used-exterior split at `d=16,s=4`: an owned point
+has one neighbor in every child-nonadjacent exterior row, including exactly
+one in its own row, and none in a child-adjacent row. -/
+theorem degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u ∩ G.neighborFinset y).card =
+      if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
+        then 0 else 1 := by
+  rw [Finset.inter_comm]
+  exact minimumLayer_externalBlock_card_of_owned
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild) u v hyv
+
+/-- In particular, every used exterior row is internally one-regular. -/
+theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ v ∩ G.neighborFinset y).card = 1 := by
+  rw [degree_sixteen_fourLayer_used_exterior_row_neighbor_card
+    G hfree hmin hcard c₀ hregChild hcardChild v v hyv]
+  simp
+
 /-- A service point through a fixed orphan lies in a four-orphan block, so
 after deleting the fixed orphan it supplies exactly three covered partners. -/
 theorem degree_sixteen_fourLayer_service_partner_block_card_eq_three
