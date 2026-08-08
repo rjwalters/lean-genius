@@ -655,7 +655,7 @@ theorem false_of_twentyfour_twentyfour_weighted_signature_capacity
       (S₁ = 24 ∧ S₂ = 12 ∧ S₃ = 24)) : False := by
   rcases hsignature with h | h | h | h | h | h <;> omega
 
-set_option maxHeartbeats 2000000 in
+set_option maxHeartbeats 1000000 in
 /-- The reduced `(24,24)` moment ledger has only six signatures once rows
 of types one and three have weight divisible by eight and rows of type two
 have weight divisible by four. -/
@@ -755,6 +755,76 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₇ : x₇ ≤ 1 := by omega
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
+
+set_option maxHeartbeats 2000000 in
+/-- Complete finite row classification behind the `(12,12,24)` ledger.
+The four quotient units of a used component can occur in exactly these
+seventeen order/row patterns.  The divisibility hypotheses are the forward
+multiple-cover restrictions for the three orphan targets. -/
+theorem twelve_twelve_twentyfour_row_type_classification
+    (r q₀ q₁ q₂ a₀ a₁ a₂ : ℕ)
+    (hrLower : 6 ≤ r) (hrUpper : r ≤ 36) (hrThree : 3 ∣ r)
+    (hrow : q₀ + q₁ + q₂ = 4)
+    (hbal₀ : r * q₀ = 12 * a₀)
+    (hbal₁ : r * q₁ = 12 * a₁)
+    (hbal₂ : r * q₂ = 24 * a₂)
+    (hdvd₀ : 2 ≤ q₀ → r ∣ 12)
+    (hdvd₁ : 2 ≤ q₁ → r ∣ 12)
+    (hdvd₂ : 2 ≤ q₂ → r ∣ 24) :
+    (r = 6 ∧
+      ((q₀ = 0 ∧ q₁ = 0 ∧ q₂ = 4) ∨
+       (q₀ = 4 ∧ q₁ = 0 ∧ q₂ = 0) ∨
+       (q₀ = 2 ∧ q₁ = 2 ∧ q₂ = 0) ∨
+       (q₀ = 0 ∧ q₁ = 4 ∧ q₂ = 0))) ∨
+    (r = 12 ∧
+      ((q₀ = 0 ∧ q₁ = 0 ∧ q₂ = 4) ∨
+       (q₀ = 0 ∧ q₁ = 2 ∧ q₂ = 2) ∨
+       (q₀ = 4 ∧ q₁ = 0 ∧ q₂ = 0) ∨
+       (q₀ = 1 ∧ q₁ = 1 ∧ q₂ = 2) ∨
+       (q₀ = 3 ∧ q₁ = 1 ∧ q₂ = 0) ∨
+       (q₀ = 2 ∧ q₁ = 0 ∧ q₂ = 2) ∨
+       (q₀ = 2 ∧ q₁ = 2 ∧ q₂ = 0) ∨
+       (q₀ = 1 ∧ q₁ = 3 ∧ q₂ = 0) ∨
+       (q₀ = 0 ∧ q₁ = 4 ∧ q₂ = 0))) ∨
+    (r = 24 ∧
+      ((q₀ = 0 ∧ q₁ = 0 ∧ q₂ = 4) ∨
+       (q₀ = 0 ∧ q₁ = 1 ∧ q₂ = 3) ∨
+       (q₀ = 1 ∧ q₁ = 0 ∧ q₂ = 3) ∨
+       (q₀ = 1 ∧ q₁ = 1 ∧ q₂ = 2))) := by
+  have hq₀ : q₀ ≤ 4 := by omega
+  have hq₁ : q₁ ≤ 4 := by omega
+  have hq₂ : q₂ ≤ 4 := by omega
+  have hrCases : r = 6 ∨ r = 12 ∨ r = 24 := by
+    have hlarge : 2 ≤ q₀ ∨ 2 ≤ q₁ ∨ 2 ≤ q₂ := by omega
+    rcases hlarge with hq₀large | hq₁large | hq₂large
+    · have hrle : r ≤ 12 := Nat.le_of_dvd (by norm_num) (hdvd₀ hq₀large)
+      interval_cases r
+      all_goals (try norm_num at hrThree)
+      all_goals omega
+    · have hrle : r ≤ 12 := Nat.le_of_dvd (by norm_num) (hdvd₁ hq₁large)
+      interval_cases r
+      all_goals (try norm_num at hrThree)
+      all_goals omega
+    · have hrle : r ≤ 24 := Nat.le_of_dvd (by norm_num) (hdvd₂ hq₂large)
+      interval_cases r
+      all_goals (try norm_num at hrThree)
+      all_goals omega
+  rcases hrCases with hr | hr | hr
+  · subst r
+    refine Or.inl ⟨rfl, ?_⟩
+    interval_cases q₀ <;> interval_cases q₁
+    all_goals (try norm_num at hbal₀ hbal₁ hbal₂ hdvd₀ hdvd₁ hdvd₂)
+    all_goals omega
+  · subst r
+    refine Or.inr (Or.inl ⟨rfl, ?_⟩)
+    interval_cases q₀ <;> interval_cases q₁
+    all_goals (try norm_num at hbal₀ hbal₁ hbal₂ hdvd₀ hdvd₁ hdvd₂)
+    all_goals omega
+  · subst r
+    refine Or.inr (Or.inr ⟨rfl, ?_⟩)
+    interval_cases q₀ <;> interval_cases q₁
+    all_goals (try norm_num at hbal₀ hbal₁ hbal₂ hdvd₀ hdvd₁ hdvd₂)
+    all_goals omega
 
 set_option maxHeartbeats 2000000 in
 /-- The `(18,30)` balance equations leave a gap at forward masses one and
