@@ -948,6 +948,50 @@ theorem degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
     rw [G.card_neighborFinset_eq_degree, hregParent y]
   rw [hNcard, hURN]
 
+/-- A service point through a fixed orphan lies in a four-orphan block, so
+after deleting the fixed orphan it supplies exactly three covered partners. -/
+theorem degree_sixteen_fourLayer_service_partner_block_card_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z y : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (u : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hzy : G.Adj z y) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    ((O ∩ G.neighborFinset y).erase z).card = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  have hfour : (O ∩ G.neighborFinset y).card = 4 :=
+    degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+      G hfree hmin hcard c₀ hregChild hcardChild u hyu
+  have hzMem : z ∈ O ∩ G.neighborFinset y :=
+    Finset.mem_inter.mpr
+      ⟨hz, (G.mem_neighborFinset y z).mpr hzy.symm⟩
+  rw [Finset.card_erase_of_mem hzMem, hfour]
+
 end
 
 end Erdos85
