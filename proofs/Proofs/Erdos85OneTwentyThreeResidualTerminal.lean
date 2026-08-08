@@ -352,6 +352,40 @@ theorem two_part_three_divisible_named_classification
   have hkdUpper : kd ≤ 14 := by omega
   interval_cases kc <;> interval_cases kd <;> norm_num [hcd] at *
 
+set_option maxHeartbeats 2000000 in
+/-- Exact count-vector classification for three three-divisible parts of
+total forty-eight, each at least six, with even odd-order multiplicities. -/
+theorem three_part_three_divisible_count_vector_classification
+    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ n₃₃ n₃₆ : ℕ)
+    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ +
+      n₃₀ + n₃₃ + n₃₆ = 3)
+    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ + 21*n₂₁ +
+      24*n₂₄ + 27*n₂₇ + 30*n₃₀ + 33*n₃₃ + 36*n₃₆ = 48)
+    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅) (heven₂₁ : Even n₂₁)
+    (heven₂₇ : Even n₂₇) (heven₃₃ : Even n₃₃) :
+    (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 1) ∨
+    (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧
+      n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 2 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 2 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0) := by
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
+  obtain ⟨k₂₇, hk₂₇⟩ := heven₂₇
+  obtain ⟨k₃₃, hk₃₃⟩ := heven₃₃
+  omega
+
 /-- In the symmetric `(12,12,12,12)` orphan branch, each order-12 target
 needs `54` internal cherries.  All periodic row types contribute a multiple
 of `12` except an order-6 double-cover row, which contributes `6`; cover
