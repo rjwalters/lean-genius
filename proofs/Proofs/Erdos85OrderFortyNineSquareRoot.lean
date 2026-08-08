@@ -1,0 +1,227 @@
+import Proofs.Erdos85NonregularDefectOperator
+import Proofs.Erdos85AlternatingParity
+import Proofs.Erdos85OrderFortyNineIncidence
+import Proofs.Erdos85OrderFortyNineStratification
+
+/-!
+# The order-49 adjacency matrix as an integral square root
+
+At order 49 and minimum degree seven, every degree is seven or eight.  Thus
+the nonregular diagonal in the universal defect identity is `6I + E_H`,
+where `E_H` is the diagonal indicator of the degree-eight sector.  This is
+the matrix interface for exact spectral certificates in the order-49 lab.
+-/
+
+open SimpleGraph
+
+namespace Erdos85
+
+/-- The diagonal indicator matrix of the degree-eight vertices. -/
+def orderFortyNineHighDiagonal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : Matrix V V ℤ :=
+  Matrix.diagonal fun x ↦ if x ∈ orderFortyNineHighVertices G then 1 else 0
+
+@[simp] theorem orderFortyNineHighDiagonal_apply_self
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    orderFortyNineHighDiagonal G x x =
+      if x ∈ orderFortyNineHighVertices G then 1 else 0 := by
+  simp [orderFortyNineHighDiagonal]
+
+theorem orderFortyNineHighDiagonal_apply_of_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {x y : V} (hxy : x ≠ y) :
+    orderFortyNineHighDiagonal G x y = 0 := by
+  simp [orderFortyNineHighDiagonal, hxy]
+
+/-- The integral matrix whose square-root feasibility is forced by an
+order-49 graph. -/
+noncomputable def orderFortyNineSquareCandidate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] : Matrix V V ℤ :=
+  (6 : ℤ) • (1 : Matrix V V ℤ) + orderFortyNineHighDiagonal G +
+    FriendshipTheoremOQ01.onesMatrix V -
+      (secondOrderDefectGraph G).adjMatrix ℤ
+
+/-- Reduction modulo two of the order-49 square candidate. -/
+noncomputable def orderFortyNineSquareCandidateModTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] : Matrix V V (ZMod 2) :=
+  (Int.castRingHom (ZMod 2)).mapMatrix (orderFortyNineSquareCandidate G)
+
+/-- In the order-49 degree band, the degree-minus-one diagonal is exactly
+`6I` plus the indicator of the high sector. -/
+theorem orderFortyNine_degreePredDiagonal_eq_six_add_highDiagonal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    degreePredDiagonal G =
+      (6 : ℤ) • (1 : Matrix V V ℤ) + orderFortyNineHighDiagonal G := by
+  ext x y
+  by_cases hxy : x = y
+  · subst y
+    simp only [degreePredDiagonal_apply_self, Matrix.add_apply,
+      Matrix.smul_apply, Matrix.one_apply,
+      orderFortyNineHighDiagonal_apply_self, smul_eq_mul]
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard x with hx7 | hx8
+    · have hxnot : x ∉ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hx7]
+      simp [hx7, hxnot]
+    · have hxmem : x ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hx8]
+      simp [hx8, hxmem]
+  · rw [degreePredDiagonal_apply_of_ne G hxy, Matrix.add_apply,
+      orderFortyNineHighDiagonal_apply_of_ne G hxy]
+    simp [Matrix.smul_apply, hxy]
+
+/-- **Order-49 square-root identity.**  The integral adjacency matrix is a
+symmetric square root of `6I + E_H + J - M`, with `M` the second-order defect
+adjacency matrix. -/
+theorem orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    G.adjMatrix ℤ * G.adjMatrix ℤ =
+      (6 : ℤ) • (1 : Matrix V V ℤ) + orderFortyNineHighDiagonal G +
+        FriendshipTheoremOQ01.onesMatrix V -
+          (secondOrderDefectGraph G).adjMatrix ℤ := by
+  rw [adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+    G hfree,
+    orderFortyNine_degreePredDiagonal_eq_six_add_highDiagonal
+      G hfree hmin hcard]
+
+/-- A hypothetical order-49 graph supplies an integral symmetric trace-zero
+square root of its candidate matrix.  This packages all three properties
+needed by exact spectral feasibility checks. -/
+theorem orderFortyNine_exists_integral_symmetric_trace_zero_squareRoot
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    ∃ A : Matrix V V ℤ,
+      A * A = orderFortyNineSquareCandidate G ∧
+      A.transpose = A ∧ Matrix.trace A = 0 := by
+  refine ⟨G.adjMatrix ℤ, ?_, SimpleGraph.transpose_adjMatrix G, ?_⟩
+  · exact orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+      G hfree hmin hcard
+  · simpa using (SimpleGraph.trace_adjMatrix (G := G) ℤ)
+
+/-- The determinant of every graph-realizable order-49 candidate matrix is
+an integer square.  A nonsquare determinant is therefore an immediate exact
+certificate of non-realizability. -/
+theorem orderFortyNine_squareCandidate_det_isSquare
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    IsSquare (orderFortyNineSquareCandidate G).det := by
+  refine ⟨(G.adjMatrix ℤ).det, ?_⟩
+  rw [← Matrix.det_mul,
+    orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+      G hfree hmin hcard]
+  rfl
+
+/-- The determinant of an integer adjacency matrix on an odd number of
+vertices is even: modulo two it is a symmetric zero-diagonal (alternating)
+matrix of odd order. -/
+theorem even_det_adjMatrix_of_odd_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hodd : Odd (Fintype.card V)) : Even (G.adjMatrix ℤ).det := by
+  let B := G.adjMatrix (ZMod 2)
+  have hBsymm : ∀ i j, B i j = B j i := by
+    intro i j
+    simp [B, SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hBdiag : ∀ i, B i i = 0 := by
+    intro i
+    simp [B, SimpleGraph.adjMatrix_apply]
+  have hBdet : B.det = 0 :=
+    det_eq_zero_of_symm_diag_zero_of_odd_card hodd B hBsymm hBdiag
+  have hmap : (Int.castRingHom (ZMod 2)).mapMatrix (G.adjMatrix ℤ) = B := by
+    ext i j
+    simp [B, Matrix.map_apply, SimpleGraph.adjMatrix_apply]
+  rw [← ZMod.intCast_eq_zero_iff_even]
+  have hdetmap := (Int.castRingHom (ZMod 2)).map_det (G.adjMatrix ℤ)
+  rw [hmap, hBdet] at hdetmap
+  exact hdetmap
+
+/-- At odd order, graph realizability forces the candidate determinant to be
+divisible by four.  This is stronger than merely being an integer square
+when used as a direct modular certificate. -/
+theorem orderFortyNine_four_dvd_squareCandidate_det
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    4 ∣ (orderFortyNineSquareCandidate G).det := by
+  have hodd : Odd (Fintype.card V) := by rw [hcard]; decide
+  rcases even_det_adjMatrix_of_odd_card G hodd with ⟨k, hk⟩
+  have hdet : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin hcard]
+    rfl
+  refine ⟨k * k, ?_⟩
+  rw [hdet, hk]
+  ring
+
+/-- The mod-two candidate matrix of every realizable order-49 graph is
+singular.  This is the rank-parity interface for extracting aggregate cuts
+from the matching/miss geometry. -/
+theorem orderFortyNine_squareCandidateModTwo_det_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    (orderFortyNineSquareCandidateModTwo G).det = 0 := by
+  rcases orderFortyNine_four_dvd_squareCandidate_det
+      G hfree hmin hcard with ⟨k, hk⟩
+  rw [orderFortyNineSquareCandidateModTwo, ← RingHom.map_det, hk]
+  rw [map_mul]
+  exact mul_eq_zero.mpr (Or.inl (by decide : (4 : ZMod 2) = 0))
+
+/-- Equivalently, realizability supplies a nonzero mod-two null vector of
+the candidate. -/
+theorem orderFortyNine_exists_nonzero_squareCandidateModTwo_kernel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) :
+    ∃ w : V → ZMod 2,
+      w ≠ 0 ∧ (orderFortyNineSquareCandidateModTwo G).mulVec w = 0 := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  exact Matrix.exists_mulVec_eq_zero_iff.mpr
+    (orderFortyNine_squareCandidateModTwo_det_eq_zero G hfree hmin hcard)
+
+end Erdos85
