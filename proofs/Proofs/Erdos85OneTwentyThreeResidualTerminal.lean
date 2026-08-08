@@ -4558,6 +4558,39 @@ theorem degree_sixteen_fourLayer_odd_orphan_component_matching_crosses
     G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz' hstay
   exact Nat.not_even_iff_odd.mpr hodd heven
 
+/-- Orphan components of different orders are anticomplete in `G`.  Any
+orphan--orphan edge is an edge of the unique orphan perfect matching, and
+the matching can only join defect components of equal order. -/
+theorem degree_sixteen_fourLayer_unequal_orphan_components_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hne : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠
+      ((secondOrderDefectGraph G).connectedComponentMk z').supp.ncard) :
+    ¬G.Adj z z' := by
+  intro hzz'
+  exact hne (degree_sixteen_fourLayer_matched_orphan_component_card_eq
+    G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz')
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
