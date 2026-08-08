@@ -1306,6 +1306,57 @@ theorem degree_sixteen_fourLayer_orphan_component_subset
   obtain ⟨p⟩ := hr
   exact hwalk z q p hz
 
+/-- Every orphan defect component has length at least four.  The inherited
+d=4 child forces the global minimum component length to be three, and every
+length-three component belongs to the minimum layer, disjoint from `O`. -/
+theorem degree_sixteen_fourLayer_orphan_component_card_ge_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    4 ≤ ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  obtain ⟨r, hr3, hre, _⟩ :=
+    secondOrderDefect_component_resolvent_chebyshev
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        (D.connectedComponentMk z) 0
+  have hthree : 3 ≤ (D.connectedComponentMk z).supp.ncard := by
+    rw [← hre]
+    exact hr3
+  have hneThree : (D.connectedComponentMk z).supp.ncard ≠ 3 := by
+    intro heq
+    have hcompEq : (D.connectedComponentMk z).supp.ncard = c₀.supp.ncard := by
+      rw [heq, hc₀three]
+    let c : minimumLayerComponent D c₀ :=
+      ⟨D.connectedComponentMk z, hcompEq⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨c, ⟨z, ConnectedComponent.connectedComponentMk_mem⟩⟩
+    have hzU : z ∈ U := by
+      exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2 hzU
+  change 4 ≤ (D.connectedComponentMk z).supp.ncard
+  omega
+
 end
 
 end Erdos85
