@@ -788,6 +788,101 @@ theorem five_part_three_divisible_count_vector_classification
     rcases hn₂₁Cases with h₂₁ | h₂₁ <;>
     rcases hn₂₄Cases with h₂₄ | h₂₄ <;> omega
 
+/-- A five-element family of three-divisible weights at least six and of
+total mass forty-eight has exactly one of the seven admissible count vectors,
+provided each odd weight occurs with even multiplicity. -/
+theorem five_part_three_divisible_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 5) (hsum : ∑ c ∈ C, w c = 48)
+    (hlower : ∀ c ∈ C, 6 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card)
+    (heven₂₁ : Even (C.filter fun c => w c = 21).card) :
+    let n₆ := (C.filter fun c => w c = 6).card
+    let n₉ := (C.filter fun c => w c = 9).card
+    let n₁₂ := (C.filter fun c => w c = 12).card
+    let n₁₅ := (C.filter fun c => w c = 15).card
+    let n₁₈ := (C.filter fun c => w c = 18).card
+    let n₂₁ := (C.filter fun c => w c = 21).card
+    let n₂₄ := (C.filter fun c => w c = 24).card
+    (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 3 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 4 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) := by
+  classical
+  dsimp only
+  let n₆ := (C.filter fun c => w c = 6).card
+  let n₉ := (C.filter fun c => w c = 9).card
+  let n₁₂ := (C.filter fun c => w c = 12).card
+  let n₁₅ := (C.filter fun c => w c = 15).card
+  let n₁₈ := (C.filter fun c => w c = 18).card
+  let n₂₁ := (C.filter fun c => w c = 21).card
+  let n₂₄ := (C.filter fun c => w c = 24).card
+  have horders : ∀ c ∈ C, w c = 6 ∨ w c = 9 ∨ w c = 12 ∨ w c = 15 ∨
+      w c = 18 ∨ w c = 21 ∨ w c = 24 := by
+    intro c hc
+    have hrest : 6 * (C.erase c).card ≤ ∑ d ∈ C.erase c, w d := by
+      calc
+        6 * (C.erase c).card = ∑ _d ∈ C.erase c, 6 := by simp [mul_comm]
+        _ ≤ ∑ d ∈ C.erase c, w d := by
+          apply Finset.sum_le_sum
+          intro d hd
+          exact hlower d (Finset.mem_of_mem_erase hd)
+    have hcardErase : (C.erase c).card = 4 := by
+      rw [Finset.card_erase_of_mem hc, hcard]
+    have hsplit := Finset.sum_erase_add C w hc
+    have hcLower := hlower c hc
+    obtain ⟨k, hk⟩ := hthree c hc
+    omega
+  have hcountEq : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ = 5 := by
+    calc
+      n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ =
+          ∑ c ∈ C, ((if w c = 6 then 1 else 0) +
+            (if w c = 9 then 1 else 0) + (if w c = 12 then 1 else 0) +
+            (if w c = 15 then 1 else 0) + (if w c = 18 then 1 else 0) +
+            (if w c = 21 then 1 else 0) + (if w c = 24 then 1 else 0)) := by
+              simp [n₆, n₉, n₁₂, n₁₅, n₁₈, n₂₁, n₂₄,
+                Finset.sum_add_distrib]
+      _ = ∑ _c ∈ C, 1 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h | h | h <;> simp [h]
+      _ = 5 := by simp [hcard]
+  have hmass (a : ℕ) :
+      a * (C.filter fun c => w c = a).card =
+        ∑ c ∈ C, if w c = a then a else 0 := by
+    calc
+      a * (C.filter fun c => w c = a).card =
+          (C.filter fun c => w c = a).card * a := Nat.mul_comm _ _
+      _ = ∑ _c ∈ C.filter (fun c => w c = a), a := by simp
+      _ = ∑ c ∈ C, if w c = a then a else 0 := by rw [Finset.sum_filter]
+  have hmassEq : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ +
+      21*n₂₁ + 24*n₂₄ = 48 := by
+    calc
+      6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ + 21*n₂₁ + 24*n₂₄ =
+          ∑ c ∈ C, ((if w c = 6 then 6 else 0) +
+            (if w c = 9 then 9 else 0) + (if w c = 12 then 12 else 0) +
+            (if w c = 15 then 15 else 0) + (if w c = 18 then 18 else 0) +
+            (if w c = 21 then 21 else 0) + (if w c = 24 then 24 else 0)) := by
+              rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                ← hmass 6, ← hmass 9, ← hmass 12, ← hmass 15,
+                ← hmass 18, ← hmass 21, ← hmass 24]
+      _ = ∑ c ∈ C, w c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h | h | h <;> simp [h]
+      _ = 48 := hsum
+  change Even n₉ at heven₉
+  change Even n₁₅ at heven₁₅
+  change Even n₂₁ at heven₂₁
+  exact five_part_three_divisible_count_vector_classification
+    n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ hcountEq hmassEq heven₉ heven₁₅ heven₂₁
+
 set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
 three-divisible parts of size at least six, with even multiplicity for odd
@@ -6326,6 +6421,90 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   rcases (Nat.even_mul.mp hSeven) with hrEven | hCEven
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
+
+/-- Exact multiset classification of the five-component orphan branch. -/
+theorem degree_sixteen_fourLayer_five_orphan_component_count_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    let n₆ := (C.filter fun c => c.supp.ncard = 6).card
+    let n₉ := (C.filter fun c => c.supp.ncard = 9).card
+    let n₁₂ := (C.filter fun c => c.supp.ncard = 12).card
+    let n₁₅ := (C.filter fun c => c.supp.ncard = 15).card
+    let n₁₈ := (C.filter fun c => c.supp.ncard = 18).card
+    let n₂₁ := (C.filter fun c => c.supp.ncard = 21).card
+    let n₂₄ := (C.filter fun c => c.supp.ncard = 24).card
+    (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 3 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 4 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply five_part_three_divisible_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hdvd
+  · simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild 9 (by norm_num))
+  · simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild 15 (by norm_num))
+  · simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild 21 (by norm_num))
 
 /-- Exact multiset classification of the six-component orphan branch. -/
 theorem degree_sixteen_fourLayer_six_orphan_component_count_classification
