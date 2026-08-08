@@ -8,6 +8,7 @@ import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
 import Proofs.Erdos85CycleCoverGraph
 import Proofs.Erdos85CycleCoverColorRigidity
+import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
 
@@ -24,6 +25,25 @@ open SimpleGraph
 namespace Erdos85
 
 noncomputable section
+
+/-- At the exact `d = 16` boundary, the total order of the
+triangle-free-colored defect components is divisible by three.  This is the
+global weighted color congruence used by the residual encoders. -/
+theorem degree_sixteen_secondOrder_colorOrder_mod_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3) :
+    ((Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card) % 3 = 0 := by
+  have hcolor := secondOrder_colorOrder_mod_three
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  rw [hcard] at hcolor
+  norm_num at hcolor ⊢
+  exact hcolor
 
 /-- Integral indicator vector of a finite vertex set. -/
 def vertexFinsetIndicator {V : Type*} [DecidableEq V]
