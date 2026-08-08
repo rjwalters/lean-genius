@@ -917,10 +917,11 @@ theorem minimumLayer_existsUnique_externalOwner_of_saturated
   have hdisj := hpair (Finset.mem_univ x) (Finset.mem_univ y) (Ne.symm hxy)
   exact (Finset.disjoint_left.mp hdisj hzx hzy).elim
 
-/-- **Saturated block law.**  If an exterior vertex `z` is owned by `v`,
+/-- **Owned exterior block law.**  If an exterior vertex `z` is owned by `v`,
 then its degree into the exterior row owned by `u` is zero over an edge
-`u-v` of the child and one over a nonedge. -/
-theorem minimumLayer_saturated_externalBlock_card
+`u-v` of the child and one over a nonedge.  Saturation is not needed: the
+ownership witness and disjointness of the child rows suffice. -/
+theorem minimumLayer_externalBlock_card_of_owned
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -936,8 +937,6 @@ theorem minimumLayer_saturated_externalBlock_card
     (hcardChild :
       Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
         s * (s - 1) + 3)
-    (hspos : 0 < s) (hsd : s < d)
-    (hsat : d = (s - 1) * (s - 1) + 3)
     (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z : V}
     (hzv : z ∈ minimumLayerExternalNeighborFinset
       G (secondOrderDefectGraph G) c₀ v) :
@@ -1038,6 +1037,37 @@ theorem minimumLayer_saturated_externalBlock_card
       subst r
       exact Finset.mem_inter.mpr
         ⟨hqz, Finset.mem_sdiff.mpr ⟨hqu, hqOutside⟩⟩
+
+/-- **Saturated block law.**  Compatibility wrapper for the original
+saturated interface; the stronger owned-vertex theorem above shows that its
+three saturation assumptions are unnecessary. -/
+theorem minimumLayer_saturated_externalBlock_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    (_hspos : 0 < s) (_hsd : s < d)
+    (_hsat : d = (s - 1) * (s - 1) + 3)
+    (u v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {z : V}
+    (hzv : z ∈ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ v) :
+    (G.neighborFinset z ∩ minimumLayerExternalNeighborFinset
+      G (secondOrderDefectGraph G) c₀ u).card =
+        if (minimumLayerGraph G (secondOrderDefectGraph G) c₀).Adj u v
+        then 0 else 1 := by
+  exact minimumLayer_externalBlock_card_of_owned
+    G hfree hd heven hmin hcard c₀ hregChild hcardChild u v hzv
 
 /-- Above a child edge there are no edges between the corresponding exterior
 rows.  This is the empty-block half of the saturated matching lift. -/
