@@ -11,7 +11,7 @@ import { Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calend
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
 import { ErdosGalleryCard } from '@/components/proof'
 import { LoadMore } from '@/components/ui/load-more'
-import { buildHaystacks, buildSortKeys, compareTitles, sortKeysFor } from '@/lib/gallery-search'
+import { buildHaystacks, buildSortKeys, compareTitles, normalizeSearchText, sortKeysFor } from '@/lib/gallery-search'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'problem-number' | 'newest' | 'updated' | 'alphabetical'
@@ -88,6 +88,8 @@ export function ErdosPage() {
       searchIndex?.[listing.slug] ?? listing.description,
       ...listing.tags,
       listing.erdosNumber,
+      // Searchable slug: "erdos-85" normalizes to "erdos 85".
+      listing.slug,
     ]),
     [erdosListings, searchIndex]
   )
@@ -99,8 +101,8 @@ export function ErdosPage() {
   const erdosProofs = useMemo(() => {
     let filtered: ProofListing[] = erdosListings
 
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
+    const query = normalizeSearchText(searchQuery)
+    if (query) {
       filtered = filtered.filter((listing) => haystacks.get(listing.slug)?.includes(query))
     }
 

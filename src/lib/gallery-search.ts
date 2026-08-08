@@ -38,19 +38,53 @@ export function compareTitles(a: string, b: string): number {
 }
 
 /**
- * Fold each entry's searchable fields into one pre-lowercased haystack string,
+ * Normalize text for search: strip diacritics, lowercase, and collapse every
+ * run of non-alphanumeric characters to a single space.
+ *
+ * Applied to BOTH the haystack fields and the query, so the two meet in the
+ * middle. Without it, three natural searches all returned nothing:
+ *
+ * - `erdos 85` — the title is `Erdős Problem #85`, so `erdos 85` never appears
+ *   as a contiguous run. Folding `ő`→`o` and turning `#` into a space makes it
+ *   one.
+ * - `erdos-85` — the slug, i.e. the identifier in the URL and the name people
+ *   actually use, normalizes to the same `erdos 85`.
+ * - `number theory` — previously only matched the literal spaced phrase, never
+ *   the `number-theory` *tag* carried by 1,641 entries.
+ *
+ * Punctuation is collapsed rather than deleted so `4-cycle` becomes `4 cycle`
+ * (two tokens) instead of `4cycle`. Matching stays a plain contiguous substring
+ * test, so a multi-word query is still a *phrase* search — `number theory` does
+ * not degenerate into "any entry containing both words somewhere".
+ *
+ * Uses the Unicode property escapes `\p{L}\p{N}` rather than `[a-z0-9]` so
+ * non-Latin scripts (Greek letters in mathematical titles, CJK) survive instead
+ * of being erased to an empty string.
+ */
+export function normalizeSearchText(value: string): string {
+  return value
+    .normalize('NFD')
+    // Strip combining marks left by NFD: ő -> o, é -> e, ü -> u.
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+}
+
+/**
+ * Fold each entry's searchable fields into one normalized haystack string,
  * keyed by slug.
  *
- * Fields are joined with a newline, which no single-line search input can
- * contain — so a query can never match across a field boundary and the result
- * set is identical to per-field substring matching.
+ * Each field is normalized independently (see {@link normalizeSearchText}) and
+ * the results are joined with a newline. Normalization can never *produce* a
+ * newline, so a query can never match across a field boundary — the result set
+ * stays equivalent to per-field matching.
  *
  * `undefined`, `null` and empty fields are dropped. Numeric fields (e.g. an
- * Erdős problem number) are stringified, matching the previous
- * `.toString().includes(query)` behaviour.
+ * Erdős problem number) are stringified.
  *
  * Note that entries coming from the prebuilt search index are *already*
- * lowercased (`scripts/annotations/build.ts`); lowercasing again here is
+ * lowercased (`scripts/annotations/build.ts`); normalizing again here is
  * idempotent and costs nothing at steady state since this runs once per data
  * change.
  */
@@ -62,8 +96,9 @@ export function buildHaystacks<T extends { slug: string }>(
   for (const item of items) {
     const text = toFields(item)
       .filter((field): field is string | number => field !== null && field !== undefined && field !== '')
+      .map((field) => normalizeSearchText(String(field)))
+      .filter(Boolean)
       .join('\n')
-      .toLowerCase()
     haystacks.set(item.slug, text)
   }
   return haystacks

@@ -10,7 +10,7 @@ import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/componen
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
 import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
 import { LoadMore } from '@/components/ui/load-more'
-import { buildHaystacks, compareTitles } from '@/lib/gallery-search'
+import { buildHaystacks, compareTitles, normalizeSearchText } from '@/lib/gallery-search'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
   FlaskConical,
@@ -77,6 +77,8 @@ export function ResearchPage() {
       problem.title,
       searchIndex?.[problem.slug] ?? problem.description,
       ...(problem.tags ?? []),
+      // Searchable slug, consistent with the proof galleries.
+      problem.slug,
     ]),
     [researchListings, searchIndex]
   )
@@ -97,8 +99,8 @@ export function ResearchPage() {
   const problems = useMemo(() => {
     let filtered: ResearchListing[] = [...(researchListings ?? [])]
 
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
+    const query = normalizeSearchText(searchQuery)
+    if (query) {
       filtered = filtered.filter((problem) => haystacks.get(problem.slug)?.includes(query))
     }
 
