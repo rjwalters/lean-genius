@@ -1154,6 +1154,61 @@ theorem false_of_orderSix_row_five_nine_twelve
   rw [ho12] at hdiv
   norm_num at hdiv
 
+/-- An order-six row cannot have total quotient degree four across a unique
+order-twelve target and any family of order-nine or order-eighteen targets.
+All non-twelve entries are multiples of three, while the twelve entry is
+even; the sole numerical escape is a four-fold forward cover of the
+twelve-target, whose reverse quotient is two and would force `12 ∣ 6`. -/
+theorem false_of_orderSix_row_unique_twelve_rest_nine_or_eighteen
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 9 ∨ w c = 12 ∨ w c = 18)
+    (hunique : (C.filter fun c => w c = 12).card = 1)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 6 * q c = w c * a c)
+    (hdvd : ∀ c ∈ C, 2 ≤ a c → w c ∣ 6) : False := by
+  obtain ⟨o, hfilter⟩ := Finset.card_eq_one.mp hunique
+  have hoFilter : o ∈ C.filter (fun c => w c = 12) := by simp [hfilter]
+  have hoC : o ∈ C := (Finset.mem_filter.mp hoFilter).1
+  have ho12 : w o = 12 := (Finset.mem_filter.mp hoFilter).2
+  have hqThree : ∀ c ∈ C.erase o, 3 ∣ q c := by
+    intro c hc
+    have hcC : c ∈ C := Finset.mem_of_mem_erase hc
+    have hcne : c ≠ o := Finset.ne_of_mem_erase hc
+    have hcNot12 : w c ≠ 12 := by
+      intro hc12
+      have hcFilter : c ∈ C.filter (fun x => w x = 12) :=
+        Finset.mem_filter.mpr ⟨hcC, hc12⟩
+      rw [hfilter] at hcFilter
+      exact hcne (Finset.mem_singleton.mp hcFilter)
+    have hbc := hbal c hcC
+    rcases horders c hcC with hc9 | hc12 | hc18
+    · rw [hc9] at hbc
+      refine ⟨2 * a c - q c, ?_⟩
+      omega
+    · exact False.elim (hcNot12 hc12)
+    · rw [hc18] at hbc
+      refine ⟨a c, ?_⟩
+      omega
+  have hrestThree : 3 ∣ ∑ c ∈ C.erase o, q c := by
+    apply Finset.dvd_sum
+    intro c hc
+    exact hqThree c hc
+  obtain ⟨k, hk⟩ := hrestThree
+  have hsplit := Finset.sum_erase_add C q hoC
+  rw [hsum] at hsplit
+  have hbo := hbal o hoC
+  rw [ho12] at hbo
+  have hqEven : Even (q o) := by
+    refine ⟨a o, ?_⟩
+    omega
+  obtain ⟨t, ht⟩ := hqEven
+  have hqFour : q o = 4 := by omega
+  have haTwo : a o = 2 := by omega
+  have hdiv := hdvd o hoC (by omega)
+  rw [ho12] at hdiv
+  norm_num at hdiv
+
 /-- A used-cell contribution to an order-twelve orphan's local-excess
 ledger is even once order-six used components are excluded.  A reverse
 multiple cover forces the used order to divide twelve; the remaining order
