@@ -1407,6 +1407,128 @@ theorem orderEighteen_localExcess_term_even_of_no_orderSix_orNine
       simp [ha]
     · simp
 
+/-- An order-six row cannot have quotient degree four across targets of
+orders nine and thirty.  Nine-target entries are multiples of three and a
+thirty-target entry is a multiple of five. -/
+theorem false_of_orderSix_row_nine_or_thirty
+    {α : Type*} (C : Finset α) (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 9 ∨ w c = 30)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 6 * q c = w c * a c) : False := by
+  have hqThree : 3 ∣ ∑ c ∈ C, q c := by
+    apply Finset.dvd_sum
+    intro c hc
+    have hbc := hbal c hc
+    rcases horders c hc with hc9 | hc30
+    · rw [hc9] at hbc
+      refine ⟨2 * a c - q c, ?_⟩
+      omega
+    · rw [hc30] at hbc
+      have hqFive : 5 ∣ q c := by
+        exact ⟨a c, by omega⟩
+      have hqle : q c ≤ 4 := by
+        have := Finset.single_le_sum (fun x _ => Nat.zero_le (q x)) hc
+        rw [hsum] at this
+        exact this
+      obtain ⟨k, hk⟩ := hqFive
+      have hqzero : q c = 0 := by omega
+      simp [hqzero]
+  rw [hsum] at hqThree
+  norm_num at hqThree
+
+/-- An order-fifteen row cannot have quotient degree four across a unique
+order-thirty target and remaining order-nine targets. -/
+theorem false_of_orderFifteen_row_unique_thirty_rest_nine
+    {α : Type*} [DecidableEq α] (C : Finset α) (w q a : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 9 ∨ w c = 30)
+    (hunique : (C.filter fun c => w c = 30).card = 1)
+    (hsum : ∑ c ∈ C, q c = 4)
+    (hbal : ∀ c ∈ C, 15 * q c = w c * a c)
+    (hdvd : ∀ c ∈ C, 2 ≤ a c → w c ∣ 15) : False := by
+  obtain ⟨o, hfilter⟩ := Finset.card_eq_one.mp hunique
+  have hoFilter : o ∈ C.filter (fun c => w c = 30) := by simp [hfilter]
+  have hoC : o ∈ C := (Finset.mem_filter.mp hoFilter).1
+  have ho30 : w o = 30 := (Finset.mem_filter.mp hoFilter).2
+  have hqThree : ∀ c ∈ C.erase o, 3 ∣ q c := by
+    intro c hc
+    have hcC := Finset.mem_of_mem_erase hc
+    have hcne := Finset.ne_of_mem_erase hc
+    have hc9 : w c = 9 := by
+      rcases horders c hcC with h | h
+      · exact h
+      · have hcFilter : c ∈ C.filter (fun x => w x = 30) :=
+          Finset.mem_filter.mpr ⟨hcC, h⟩
+        rw [hfilter] at hcFilter
+        exact False.elim (hcne (Finset.mem_singleton.mp hcFilter))
+    have hbc := hbal c hcC
+    rw [hc9] at hbc
+    have hcop : Nat.Coprime 3 5 := by norm_num
+    exact hcop.dvd_of_dvd_mul_left ⟨a c, by omega⟩
+  have hrestThree : 3 ∣ ∑ c ∈ C.erase o, q c := by
+    apply Finset.dvd_sum
+    intro c hc
+    exact hqThree c hc
+  obtain ⟨k, hk⟩ := hrestThree
+  have hsplit := Finset.sum_erase_add C q hoC
+  rw [hsum] at hsplit
+  have hbo := hbal o hoC
+  rw [ho30] at hbo
+  have hqEven : Even (q o) := by
+    refine ⟨a o, ?_⟩
+    omega
+  obtain ⟨t, ht⟩ := hqEven
+  have hqFour : q o = 4 := by omega
+  have haTwo : a o = 2 := by omega
+  have hdiv := hdvd o hoC (by omega)
+  rw [ho30] at hdiv
+  norm_num at hdiv
+
+/-- A used-cell contribution to an order-thirty orphan's local-excess
+ledger is even once used orders six and fifteen are excluded. -/
+theorem orderThirty_localExcess_term_even_of_no_orderSix_orFifteen
+    (r a b : ℕ) (hr : 6 ≤ r) (hthree : 3 ∣ r)
+    (hneSix : r ≠ 6) (hneFifteen : r ≠ 15)
+    (hbal : 30 * a = r * b) (hdvd : 2 ≤ b → r ∣ 30) :
+    Even ((a : ℤ) * (b : ℤ) - (a : ℤ)) := by
+  by_cases hb : 2 ≤ b
+  · have hrDvd := hdvd hb
+    have hrle : r ≤ 30 := Nat.le_of_dvd (by norm_num) hrDvd
+    have hre : r = 30 := by
+      obtain ⟨k, hk⟩ := hthree
+      have hkLower : 2 ≤ k := by omega
+      have hkUpper : k ≤ 10 := by omega
+      interval_cases k
+      · omega
+      · have : r = 9 := by omega
+        subst r
+        norm_num at hrDvd
+      · have : r = 12 := by omega
+        subst r
+        norm_num at hrDvd
+      · omega
+      · have : r = 18 := by omega
+        subst r
+        norm_num at hrDvd
+      · have : r = 21 := by omega
+        subst r
+        norm_num at hrDvd
+      · have : r = 24 := by omega
+        subst r
+        norm_num at hrDvd
+      · have : r = 27 := by omega
+        subst r
+        norm_num at hrDvd
+      · omega
+    rw [hre] at hbal
+    have hab : a = b := Nat.eq_of_mul_eq_mul_left (by norm_num) hbal
+    rw [hab]
+    convert Int.even_mul_pred_self (b : ℤ) using 1 <;> ring
+  · have hble : b ≤ 1 := by omega
+    interval_cases b
+    · have ha : a = 0 := by omega
+      simp [ha]
+    · simp
+
 /-- A used-cell contribution to an order-twelve orphan's local-excess
 ledger is even once order-six used components are excluded.  A reverse
 multiple cover forces the used order to divide twelve; the remaining order
@@ -10033,6 +10155,81 @@ theorem degree_sixteen_fourLayer_fifteen_eighteen_used_component_ne_six_and_ne_n
       have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
         G hfree hmin hcard o e htwo
       rwa [heNine] at hdvd
+
+/-- In the `[30,9,9]` orphan branch, every used-exterior component has
+order different from both six and fifteen. -/
+theorem degree_sixteen_fourLayer_nine_thirty_used_component_ne_six_and_ne_fifteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (horders :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      ∀ o ∈ C, o.supp.ncard = 9 ∨ o.supp.ncard = 30)
+    (hunique :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 30).card = 1)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    e.supp.ncard ≠ 6 ∧ e.supp.ncard ≠ 15 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  change (C.filter fun o => o.supp.ncard = 30).card = 1 at hunique
+  have hrow := degree_sixteen_fourLayer_used_component_orphan_quotient_sum_eq_four
+    G hfree hmin hcard c₀ hregChild hcardChild e heR
+  constructor
+  · intro heSix
+    apply false_of_orderSix_row_nine_or_thirty C
+      (fun o : D.ConnectedComponent => o.supp.ncard)
+      (fun o => componentQuotientMatrix G D e o)
+      (fun o => componentQuotientMatrix G D o e)
+    · exact horders
+    · exact hrow
+    · intro o _ho
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+      rw [heSix] at hbal
+      simpa [D] using hbal
+  · intro heFifteen
+    apply false_of_orderFifteen_row_unique_thirty_rest_nine C
+      (fun o : D.ConnectedComponent => o.supp.ncard)
+      (fun o => componentQuotientMatrix G D e o)
+      (fun o => componentQuotientMatrix G D o e)
+    · exact horders
+    · exact hunique
+    · exact hrow
+    · intro o _ho
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+      rw [heFifteen] at hbal
+      simpa [D] using hbal
+    · intro o _ho htwo
+      have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+        G hfree hmin hcard o e htwo
+      rwa [heFifteen] at hdvd
 
 /-- The named three-component census branch `[18,15,15]` is impossible. -/
 theorem false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_fifteen_fifteen
