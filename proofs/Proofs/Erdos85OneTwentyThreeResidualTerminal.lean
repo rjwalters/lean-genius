@@ -4739,6 +4739,43 @@ theorem degree_sixteen_fourLayer_orphan_defect_adj_antipodal
       G hfree hmin hcard c₀ hregChild hcardChild hz hq hzqG
         (Or.inr htri)).elim
 
+/-- Every defect edge of an orphan component in the four-layer branch has
+antipodal color.  This component-level wrapper eliminates all orphan color
+choices from the structured encoding. -/
+theorem degree_sixteen_fourLayer_orphan_component_all_edges_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ∀ x ∈ ((secondOrderDefectGraph G).connectedComponentMk z).supp,
+      ∀ y, (secondOrderDefectGraph G).Adj x y →
+        (antipodalGraph G).Adj x y := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  have hsubset := degree_sixteen_fourLayer_orphan_component_subset
+    G hfree hmin hcard c₀ hregChild hcardChild z hz
+  intro x hx y hxy
+  have hxO : x ∈ O := hsubset hx
+  exact degree_sixteen_fourLayer_orphan_defect_adj_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild hxO hxy
+
 /-- **Exact collision/leave law.**  For distinct orphans, being an edge of
 the defect 2-factor is equivalent to sharing no service point in any row.
 Thus the 15 parallel classes cover every non-defect pair exactly once and
