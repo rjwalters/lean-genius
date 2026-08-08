@@ -1098,6 +1098,115 @@ theorem degree_sixteen_fourLayer_exists_service_partner_packing
             (Finset.mem_inter.mp hqv'.2).2).symm
       exact huv hrow
 
+/-- The abstract uncovered set has exactly two elements.  The complementary
+covered set is precisely the explicit union of the fifteen disjoint
+three-partner service blocks. -/
+theorem degree_sixteen_fourLayer_uncovered_orphan_card_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    ((O.erase z).filter (fun z' =>
+      ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+        ¬(G.Adj z y ∧ G.Adj z' y))).card = 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  let P := O.erase z
+  let C := P.filter (fun z' =>
+    ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+      ¬(G.Adj z y ∧ G.Adj z' y))
+  obtain ⟨service, hservice, hpair, hcardK⟩ :=
+    degree_sixteen_fourLayer_exists_service_partner_packing
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+  let K := Finset.univ.biUnion (fun u : minimumLayerVertex D c₀ =>
+    (O ∩ G.neighborFinset (service u)).erase z)
+  have hKP : K = P \ C := by
+    ext q
+    constructor
+    · intro hqK
+      obtain ⟨u, _hu, hqBlock⟩ := Finset.mem_biUnion.mp hqK
+      have hqErase := Finset.mem_erase.mp hqBlock
+      have hqO := (Finset.mem_inter.mp hqErase.2).1
+      have hqAdj : G.Adj q (service u) :=
+        (G.mem_neighborFinset (service u) q).mp
+          (Finset.mem_inter.mp hqErase.2).2 |>.symm
+      have hqP : q ∈ P := Finset.mem_erase.mpr ⟨hqErase.1, hqO⟩
+      apply Finset.mem_sdiff.mpr
+      refine ⟨hqP, ?_⟩
+      intro hqC
+      have hpred := (Finset.mem_filter.mp hqC).2
+      exact hpred u (service u) (hservice u).1
+        ⟨(hservice u).2, hqAdj⟩
+    · intro hqPC
+      have hqP := (Finset.mem_sdiff.mp hqPC).1
+      have hqNotC := (Finset.mem_sdiff.mp hqPC).2
+      have hnotPred : ¬(∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+          ¬(G.Adj z y ∧ G.Adj q y)) := by
+        intro hp
+        exact hqNotC (Finset.mem_filter.mpr ⟨hqP, hp⟩)
+      push_neg at hnotPred
+      obtain ⟨u, y, hyE, hzy, hqy⟩ := hnotPred
+      have hone := minimumLayer_orphan_service_card_eq_one
+        G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+          c₀ hregChild (by norm_num; exact hcardChild) z
+          (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2
+          (Finset.mem_sdiff.mp hz).2 u
+      have hyMem : y ∈ E u ∩ G.neighborFinset z :=
+        Finset.mem_inter.mpr
+          ⟨hyE, (G.mem_neighborFinset z y).mpr hzy⟩
+      have hsMem : service u ∈ E u ∩ G.neighborFinset z :=
+        Finset.mem_inter.mpr
+          ⟨(hservice u).1,
+            (G.mem_neighborFinset z (service u)).mpr (hservice u).2⟩
+      have hle : (E u ∩ G.neighborFinset z).card ≤ 1 := by rw [hone]
+      have hys : y = service u :=
+        Finset.card_le_one.mp hle y hyMem (service u) hsMem
+      apply Finset.mem_biUnion.mpr
+      refine ⟨u, Finset.mem_univ _, Finset.mem_erase.mpr ⟨?_, ?_⟩⟩
+      · exact (Finset.ne_of_mem_erase hqP)
+      · exact Finset.mem_inter.mpr
+          ⟨Finset.mem_of_mem_erase hqP,
+            (G.mem_neighborFinset (service u) q).mpr (by simpa [← hys] using hqy.symm)⟩
+  have hcardO : O.card = 48 :=
+    degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  have hcardP : P.card = 47 := by
+    rw [Finset.card_erase_of_mem hz, hcardO]
+  have hCsub : C ⊆ P := Finset.filter_subset _ _
+  have hcardPC : (P \ C).card = 45 := by
+    rw [← hKP]
+    exact hcardK
+  rw [Finset.card_sdiff_of_subset hCsub, hcardP] at hcardPC
+  have hcancel := Nat.sub_add_cancel (Finset.card_le_card hCsub)
+  rw [hcardP, hcardPC] at hcancel
+  change C.card = 2
+  apply Nat.add_left_cancel (n := 45)
+  calc
+    45 + C.card = 47 := hcancel
+    _ = 45 + 2 := by norm_num
+
 end
 
 end Erdos85
