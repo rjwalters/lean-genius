@@ -329,6 +329,75 @@ theorem minimumLayer_orphan_service_card_eq_one
   change (E u ∩ G.neighborFinset z).card = 1
   omega
 
+/-- In the d=16, s=4 branch, the fifteen exact service points consume all
+but one neighbor of each orphan exterior vertex. -/
+theorem degree_sixteen_fourLayer_orphan_unserviced_neighbor_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hzOutside : z ∉ minimumLayerImageFinset (secondOrderDefectGraph G) c₀)
+    (hzUnused : z ∉ Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let S := Finset.univ.biUnion (fun u : minimumLayerVertex D c₀ =>
+      E u ∩ G.neighborFinset z)
+    (G.neighborFinset z \ S).card = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let S := Finset.univ.biUnion (fun u : minimumLayerVertex D c₀ =>
+    E u ∩ G.neighborFinset z)
+  have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+    rw [hcard]
+    norm_num
+  have hregParent : ∀ v : V, G.degree v = 16 :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by norm_num) hmin hbelow
+  have hpairE := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  have hpairS :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ G.neighborFinset z) := by
+    intro u hu v hv huv
+    change Disjoint (E u ∩ G.neighborFinset z)
+      (E v ∩ G.neighborFinset z)
+    rw [Finset.disjoint_left]
+    intro q hqu hqv
+    exact (Finset.disjoint_left.mp (hpairE hu hv huv))
+      (Finset.mem_inter.mp hqu).1 (Finset.mem_inter.mp hqv).1
+  have hservice : ∀ u : minimumLayerVertex D c₀,
+      (E u ∩ G.neighborFinset z).card = 1 := by
+    intro u
+    exact minimumLayer_orphan_service_card_eq_one
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) z hzOutside hzUnused u
+  have hcardS : S.card = 15 := by
+    change (Finset.univ.biUnion (fun u : minimumLayerVertex D c₀ =>
+      E u ∩ G.neighborFinset z)).card = 15
+    rw [Finset.card_biUnion hpairS]
+    rw [Finset.sum_congr rfl (fun u _ => hservice u)]
+    simp [hcardChild, D]
+  have hSsub : S ⊆ G.neighborFinset z := by
+    intro q hq
+    obtain ⟨u, hu, hq⟩ := Finset.mem_biUnion.mp hq
+    exact (Finset.mem_inter.mp hq).2
+  rw [Finset.card_sdiff_of_subset hSsub, hcardS,
+    G.card_neighborFinset_eq_degree, hregParent z]
+
 end
 
 end Erdos85
