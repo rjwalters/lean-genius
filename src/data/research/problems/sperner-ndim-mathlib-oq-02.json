@@ -2,7 +2,7 @@
   "slug": "sperner-ndim-mathlib-oq-02",
   "title": "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4",
   "phase": "BLOCKED",
-  "status": "blocked",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-14",
-    "iteration": 31,
-    "focus": "S30b STATE-SYNC (this PR, researcher-12, 2026-05-14): Docker-baseline of SpernerFreudenthalSimplex.lean on origin/main reveals 100+ errors (capped at 100 by maxErrors; 103 raw records; 56 distinct error lines spanning 73→1093). Parent file silently broken since ~2026-05-08; 20 merged + 3 open (build pending) PRs have accumulated on top of an unbuildable parent. STOP further PREP-on-PREP; ship error inventory for mechanic-agent consumption. No Lean ACT this session. Build log: .loom/logs/researcher-12-sperner-freud-baseline.log. Error inventory in sessions/2026-05-14-s30b-state-sync-...md (top 7 error classes by Mathlib v4.26.0 cause class).",
+    "iteration": 32,
+    "focus": "S35 (researcher-3, 2026-08-03): general-n PREP layer STARTED — new self-contained file SpernerFreudenthalNDim.lean (import Mathlib only). Frame: monotone partial-sum coordinates (N*Delta^n ~ K = {0 <= z_1 <= ... <= z_n <= N}); cells = Kuhn (base b, permutation sigma) chains w_0 = b, w_{i+1} = w_i + e_{sigma(i)} whose n+1 vertices all lie in K. Main theorem isKuhnCell_iff: validity <=> base condition (b j + 1 <= N; b j <= b k for j < k, STRICT exactly when sigma^{-1} j < sigma^{-1} k). Consistency: for n=2 this reproduces the proven Type-1/Type-2 dichotomy and the C(N+1,2)+C(N,2)=N^2 cell count exactly. All host-verified v4.31 (lake env lean exit 0; #print axioms = propext/Classical.choice/Quot.sound). Also fixed the stale top-level status=blocked (from S30b 2026-05-12; obsolete per v4.31 migration, confirmed S33/S34).",
     "blockers": [],
-    "nextAction": "n>=3 Freudenthal generalization in SpernerFreudenthalSimplex.lean; the stale S30b mechanic-repair nextAction is obsolete (parent builds GREEN since v4.31 migration, confirmed S33/S34).",
+    "nextAction": "Next rung of the n>=3 lift, in order: (1) face/adjacency pivot rules for Kuhn cells in K (interior facet shared by exactly 2 cells: permutation-swap pivots for interior drops, base-shift pivots at chain ends, reflection at the monotone-region boundary); (2) counting lemma #cells = N^n (optional sanity); (3) AbstractSimplicialData instance + pseudomanifold; (4) Sperner parity + diameter bound; (5) axiom elimination in SpernerNDimMathlibOQ02.lean. Rung (1) is the next session-sized target.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -55,7 +55,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S34 (2026-07-24, researcher-3): AXIOM-FREE LOW-DIM BROUWER — brouwer_fixed_point_simplex_zero/_one/_two added to SpernerNDimMathlibOQ02.lean (imports SpernerFreudenthalSimplex), deriving Brouwer for Δ⁰/Δ¹/Δ² from the fully proved sperner_panchromatic_zero/_one/_two instead of the general-n axiom. The sperner_panchromatic axiom now only gates n≥3. Remaining value: n≥3 Freudenthal generalization (base + permutation cells), then full axiom elimination.",
+    "progressSummary": "PROGRESS: n=0,1,2 axiom-free (sperner_panchromatic_zero/_one/_two + Brouwer corollaries); general-n sperner_panchromatic axiom gates only n>=3. S35 opened the n>=3 lift: SpernerFreudenthalNDim.lean defines the Kuhn (base, permutation) triangulation of N*Delta^n in monotone coordinates and proves the full cell-validity characterization isKuhnCell_iff (0 ax / 0 sorry, host-verified). Next: adjacency pivot rules, then pseudomanifold, then parity.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -112,7 +112,8 @@
       "N2DiagFaceCondition section (5 lemmas, 92 lines) in SpernerFreudenthalSimplex.lean: onFaceΔ2_diag, onFaceΔ2_strict_diag, cN2_total_diag_eq, cN2_diag_ne_two, cN2_total_diag_ne_two",
       "satDiag_self_drop_adj_none, satDiag_self_drop_endpoint_indices, satDiag_self_drop_isDoor_iff, lastFace_filter_extract, lastFace_card_eq, lastFace_odd in SpernerFreudenthalSimplex.lean N2LastFaceAssembly",
       "sperner_panchromatic_two fully proved (end of SpernerFreudenthalSimplex.lean, section N2Panchromatic)",
-      "S34: brouwer_fixed_point_simplex_zero/_one/_two + inSimplex_iff_freud in SpernerNDimMathlibOQ02.lean — axiom-free Brouwer for Δ⁰, Δ¹, Δ² (sperner_panchromatic axiom no longer needed for n≤2)"
+      "S34: brouwer_fixed_point_simplex_zero/_one/_two + inSimplex_iff_freud in SpernerNDimMathlibOQ02.lean — axiom-free Brouwer for Δ⁰, Δ¹, Δ² (sperner_panchromatic axiom no longer needed for n≤2)",
+      "SpernerFreudenthalNDim.lean (S35, self-contained, 0 axioms 0 sorries, host-verified v4.31): IsGridPt, kuhnVertex, kuhnVertex_zero/_last/_succ_apply/_mono/_sum/_injective, IsKuhnCell, BaseCompatible, isKuhnCell_iff (full characterization, both directions), IsKuhnCell.base_isGridPt"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -156,7 +157,10 @@
       "S33: the _hLastFace bijection maps a boundary-door pair (s,k) to the first coordinate of its DROPPED vertex — for saturating-diagonal t1 cells the dropped vertex IS the base b, so p ↦ (vertex p.1 p.2).1 lands on range N with gDiag b.1 ≠ gDiag (b.1+1) exactly at doors",
       "S33: Triangulation.vertex vs AbstractSimplicialData.vertexEnum are defeq but not syntactically equal — rw against a vertex-form goal fails; restate with show in vertexEnum form first",
       "S33: SpernerFreudenthalSimplex had redundant nested namespace re-opens double-namespacing all late declarations; fixed to a single-level namespace running to EOF (all affected lemmas were private, SimplicialAdjFnHelper.* names unchanged)",
-      "S34: The two InSimplex definitions (SpernerBrouwer in OQ02 vs SpernerFreudSimp in SpernerFreudenthalSimplex) are definitionally equal, so the proved sperner_panchromatic_zero/_one/_two plug directly into brouwer_from_panchromatic; only friction is the Nat-cast bound ((n:ℕ):ℝ)/N vs literal (0|1|2:ℝ)/N, closed by simpa"
+      "S34: The two InSimplex definitions (SpernerBrouwer in OQ02 vs SpernerFreudSimp in SpernerFreudenthalSimplex) are definitionally equal, so the proved sperner_panchromatic_zero/_one/_two plug directly into brouwer_from_panchromatic; only friction is the Nat-cast bound ((n:ℕ):ℝ)/N vs literal (0|1|2:ℝ)/N, closed by simpa",
+      "GENERAL-n FRAME (S35): in monotone partial-sum coordinates the dilated simplex N*Delta^n is the region K = {0 <= z_1 <= ... <= z_n <= N}, and the correct general-n triangulation is the restriction of the Kuhn/Freudenthal cube triangulation: cells (b, sigma) whose whole vertex chain stays in K. This subsumes the n=2 Type-1/Type-2 construction and avoids the broken constant-miss FreudCell approach entirely.",
+      "Cell validity collapses to the base (isKuhnCell_iff): (b,sigma) is a cell of K iff b j + 1 <= N for all j and, for j < k, b j <= b k with STRICT inequality exactly when sigma^{-1} j < sigma^{-1} k (increments arriving in order force a strict gap). For n=2 this yields weak bases for the inverted permutation and strict bases for id — i.e. C(N+1,2) + C(N,2) = N^2 cells, matching the proven planar count exactly.",
+      "Vertex-chain structure: w_{i+1} = w_i + e_{sigma(i)} (kuhnVertex_succ_apply), coordinate sum of w_i = sum b + i (kuhnVertex_sum, via Equiv.sum_comp reindexing), hence the n+1 vertices are pairwise distinct (kuhnVertex_injective) — the level function that the eventual pseudomanifold argument will key on."
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
@@ -184,7 +188,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-12",
+  "lastUpdate": "2026-08-03",
   "significance": 7,
   "tractability": 5
 }
