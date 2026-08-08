@@ -86,6 +86,67 @@ theorem containsC4_of_restricted_cherry_count
     (G.ne_of_adj avx) (G.ne_of_adj avy)
     (G.ne_of_adj av'x) (G.ne_of_adj av'y)
 
+/-- Exact restricted-cherry counting by endpoint pairs.  If every cherry's
+endpoint pair is `good`, and every good two-element endpoint set has a unique
+center, projection to the endpoint set is a bijection. -/
+theorem sum_choose_inter_neighbor_eq_card_good_pairs_of_unique_center
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) (good : Finset V → Prop) [DecidablePred good]
+    (hmaps : ∀ a ∈ A, ∀ e ∈ (B ∩ G.neighborFinset a).powersetCard 2,
+      good e)
+    (hunique : ∀ e ∈ B.powersetCard 2, good e →
+      ∃! a : V, a ∈ A ∧ e ⊆ G.neighborFinset a) :
+    (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+      ((B.powersetCard 2).filter good).card := by
+  classical
+  let C : Finset (Σ _ : V, Finset V) :=
+    A.sigma (fun a => (B ∩ G.neighborFinset a).powersetCard 2)
+  let T : Finset (Finset V) := (B.powersetCard 2).filter good
+  have hcard : C.card = T.card := by
+    apply Finset.card_bij (fun p _hp => p.2)
+    · intro p hp
+      simp only [C, Finset.mem_sigma] at hp
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_powersetCard.mpr
+          ⟨(Finset.mem_powersetCard.mp hp.2).1.trans Finset.inter_subset_left,
+            (Finset.mem_powersetCard.mp hp.2).2⟩,
+          hmaps p.1 hp.1 p.2 hp.2⟩
+    · intro p hp q hq hpq
+      simp only [C, Finset.mem_sigma] at hp hq
+      have hpT : p.2 ∈ B.powersetCard 2 :=
+        Finset.mem_powersetCard.mpr
+          ⟨(Finset.mem_powersetCard.mp hp.2).1.trans Finset.inter_subset_left,
+            (Finset.mem_powersetCard.mp hp.2).2⟩
+      have hpGood : good p.2 := hmaps p.1 hp.1 p.2 hp.2
+      obtain ⟨a, ha, hauniq⟩ := hunique p.2 hpT hpGood
+      have hpa : p.1 = a := hauniq p.1 ⟨hp.1, fun z hz => by
+        have hzInter := (Finset.mem_powersetCard.mp hp.2).1 hz
+        exact (Finset.mem_inter.mp hzInter).2⟩
+      have hqa : q.1 = a := hauniq q.1 ⟨hq.1, fun z hz => by
+        have hzq : z ∈ q.2 := by simpa [hpq] using hz
+        have hzInter := (Finset.mem_powersetCard.mp hq.2).1 hzq
+        exact (Finset.mem_inter.mp hzInter).2⟩
+      cases p
+      cases q
+      simp only at hpq hpa hqa
+      subst_vars
+      rfl
+    · intro e he
+      have heT := Finset.mem_filter.mp he
+      obtain ⟨a, ha, _hauniq⟩ := hunique e heT.1 heT.2
+      refine ⟨⟨a, e⟩, ?_, rfl⟩
+      simp only [C, Finset.mem_sigma]
+      refine ⟨ha.1, Finset.mem_powersetCard.mpr ⟨?_, (Finset.mem_powersetCard.mp heT.1).2⟩⟩
+      intro z hz
+      exact Finset.mem_inter.mpr
+        ⟨(Finset.mem_powersetCard.mp heT.1).1 hz, ha.2 hz⟩
+  calc
+    (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) = C.card := by
+      simp only [C, Finset.card_sigma, Finset.card_powersetCard]
+    _ = T.card := hcard
+    _ = ((B.powersetCard 2).filter good).card := rfl
+
 /-- Uniform restricted-cherry obstruction for a center set whose vertices
 each have exactly four neighbors in the endpoint set. -/
 theorem false_of_centers_four_neighbors
