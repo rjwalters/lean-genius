@@ -12,9 +12,25 @@
 
 set -euo pipefail
 
-EXPECTED_ACCOUNT_ID="251e6e8626d921603fdc3f0d75576bc6"
+# Pinned as a SHA-256 digest, not a literal: this is a public repo and an
+# account identifier does not need publishing. Reading it from the
+# environment would be weaker -- the guard exists to catch a wrong account
+# that is already logged in, so an expectation the environment can move is
+# one a wrong environment moves with it. 128 bits of hex, so not brute-forceable.
+EXPECTED_ACCOUNT_ID_SHA256="04e8eb2a99d37a555c87220b1d4cd1c018afbe5b65360bdd2224eb8e9f6b69c2"
 EXPECTED_ACCOUNT_NAME="Personal Account"
-EXPECTED_EMAIL="r.j.walters@gmail.com"
+
+# Portable sha256 (sha256sum on Linux, shasum on macOS).
+sha256_of() {
+    if command -v sha256sum >/dev/null 2>&1; then
+        printf '%s' "$1" | sha256sum | awk '{print $1}'
+    elif command -v shasum >/dev/null 2>&1; then
+        printf '%s' "$1" | shasum -a 256 | awk '{print $1}'
+    else
+        echo "ERROR: neither sha256sum nor shasum found - cannot verify account." >&2
+        exit 1
+    fi
+}
 
 usage() {
     cat <<EOF
@@ -24,9 +40,8 @@ Verify wrangler is authenticated to the Cloudflare account used for
 lean-genius deployments.
 
 Expected account:
-  Name:  $EXPECTED_ACCOUNT_NAME
-  Email: $EXPECTED_EMAIL
-  ID:    $EXPECTED_ACCOUNT_ID
+  Name:      $EXPECTED_ACCOUNT_NAME
+  ID sha256: $EXPECTED_ACCOUNT_ID_SHA256
 
 Options:
   --help, -h  Show this help message without running wrangler
@@ -61,17 +76,19 @@ fi
 CURRENT_ACCOUNT_ID=$(echo "$WHOAMI_OUTPUT" | grep -oE '[a-f0-9]{32}' | head -1)
 CURRENT_EMAIL=$(echo "$WHOAMI_OUTPUT" | grep -oE 'associated with the email [^ ]+' | sed 's/associated with the email //; s/[[:punct:]]$//')
 
-if [[ "$CURRENT_ACCOUNT_ID" != "$EXPECTED_ACCOUNT_ID" ]]; then
+CURRENT_ACCOUNT_SHA256=$(sha256_of "$CURRENT_ACCOUNT_ID")
+
+if [[ "$CURRENT_ACCOUNT_SHA256" != "$EXPECTED_ACCOUNT_ID_SHA256" ]]; then
     echo "============================================================" >&2
     echo "  DEPLOY BLOCKED: Wrong Cloudflare account!" >&2
     echo "============================================================" >&2
     echo "" >&2
-    echo "  Current:  $CURRENT_EMAIL ($CURRENT_ACCOUNT_ID)" >&2
-    echo "  Expected: $EXPECTED_EMAIL ($EXPECTED_ACCOUNT_ID)" >&2
+    echo "  Current  sha256: ${CURRENT_ACCOUNT_SHA256:0:12}..." >&2
+    echo "  Expected sha256: ${EXPECTED_ACCOUNT_ID_SHA256:0:12}..." >&2
     echo "" >&2
     echo "  Fix: wrangler login  (then select Personal Account)" >&2
     echo "============================================================" >&2
     exit 1
 fi
 
-echo "✓ Cloudflare account verified: $EXPECTED_EMAIL"
+echo "✓ Cloudflare account verified: $EXPECTED_ACCOUNT_NAME"
