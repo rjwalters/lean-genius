@@ -5608,6 +5608,59 @@ theorem degree_sixteen_fourLayer_orphan_component_card_dvd_three
       G hfree hmin hcard c₀ hregChild hcardChild hz hqO hne'
         ((G.mem_neighborFinset z q).mp hqG)
 
+/-- The orders of all four-layer orphan defect components sum to the exact
+orphan-cell cardinality, forty-eight. -/
+theorem degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O), c.supp.ncard) = 48 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ O ↔ componentRepresentative D c ∈ O) := by
+    intro c z hzc
+    constructor
+    · intro hzO
+      have hsub := degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild z hzO
+      have hcz : D.connectedComponentMk z = c :=
+        (ConnectedComponent.mem_supp_iff c z).mp hzc
+      rw [hcz] at hsub
+      exact hsub (componentRepresentative_mem D c)
+    · intro hrepO
+      have hsub := degree_sixteen_fourLayer_orphan_component_subset
+        G hfree hmin hcard c₀ hregChild hcardChild
+          (componentRepresentative D c) hrepO
+      have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+        (ConnectedComponent.mem_supp_iff c
+          (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+      rw [hrep] at hsub
+      exact hsub hzc
+  calc
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+        componentRepresentative D c ∈ O), c.supp.ncard) = O.card :=
+      sum_component_sizes_filter_eq_card_of_component_closed D O hclosed
+    _ = 48 := degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
