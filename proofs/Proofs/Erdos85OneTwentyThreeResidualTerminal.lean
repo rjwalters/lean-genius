@@ -1871,6 +1871,42 @@ theorem eq_one_of_card_four_sum_four_le_one
   have haLe := hle a ha
   omega
 
+/-- A 36-bin made only of parts six and twelve, with at most two sixes,
+is either three twelves or two sixes plus two twelves. -/
+theorem thirtySix_bin_six_twelve_count_classification
+    {α : Type*} [DecidableEq α] (S : Finset α) (w : α → ℕ)
+    (hsum : ∑ a ∈ S, w a = 36)
+    (horders : ∀ a ∈ S, w a = 6 ∨ w a = 12)
+    (hsixLe : (S.filter fun a => w a = 6).card ≤ 2) :
+    ((S.filter fun a => w a = 6).card = 0 ∧
+      (S.filter fun a => w a = 12).card = 3) ∨
+    ((S.filter fun a => w a = 6).card = 2 ∧
+      (S.filter fun a => w a = 12).card = 2) := by
+  let n₆ := (S.filter fun a => w a = 6).card
+  let n₁₂ := (S.filter fun a => w a = 12).card
+  have hmass (r : ℕ) : r * (S.filter fun a => w a = r).card =
+      ∑ a ∈ S, if w a = r then r else 0 := by
+    calc
+      r * (S.filter fun a => w a = r).card =
+          (S.filter fun a => w a = r).card * r := Nat.mul_comm _ _
+      _ = ∑ _a ∈ S.filter (fun a => w a = r), r := by simp
+      _ = ∑ a ∈ S, if w a = r then r else 0 := by
+        rw [Finset.sum_filter]
+  have hmassEq : 6 * n₆ + 12 * n₁₂ = 36 := by
+    calc
+      6 * n₆ + 12 * n₁₂ =
+          ∑ a ∈ S, ((if w a = 6 then 6 else 0) +
+            (if w a = 12 then 12 else 0)) := by
+              rw [Finset.sum_add_distrib, ← hmass 6, ← hmass 12]
+      _ = ∑ a ∈ S, w a := by
+        apply Finset.sum_congr rfl
+        intro a ha
+        rcases horders a ha with h | h <;> simp [h]
+      _ = 36 := hsum
+  change n₆ ≤ 2 at hsixLe
+  change (n₆ = 0 ∧ n₁₂ = 3) ∨ (n₆ = 2 ∧ n₁₂ = 2)
+  omega
+
 /-- Double-counting a finite Boolean relation, specialized to uniform
 column degree one and source-row degrees zero or two. -/
 theorem card_eq_two_of_four_unit_columns_and_two_rows
@@ -7247,6 +7283,50 @@ theorem degree_sixteen_fourLayer_owner_bin_component_closed
   · intro hr
     exact hstable hr hry.symm
 
+/-- Distinct minimum components own disjoint service bins. -/
+theorem degree_sixteen_fourLayer_owner_bins_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a b : minimumLayerComponent (secondOrderDefectGraph G) c₀)
+    (hab : a ≠ b) :
+    let D := secondOrderDefectGraph G
+    let Erow := minimumLayerExternalNeighborFinset G D c₀
+    let X := fun t : minimumLayerComponent D c₀ =>
+      Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = t)
+    Disjoint ((X a).biUnion Erow) ((X b).biUnion Erow) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let X := fun t : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = t)
+  apply Finset.disjoint_left.mpr
+  intro z hza hzb
+  obtain ⟨x, hx, hzx⟩ := Finset.mem_biUnion.mp hza
+  obtain ⟨y, hy, hzy⟩ := Finset.mem_biUnion.mp hzb
+  have hxa : x.1 = a := (Finset.mem_filter.mp hx).2
+  have hyb : y.1 = b := (Finset.mem_filter.mp hy).2
+  have hxy : x ≠ y := by
+    intro h
+    apply hab
+    rw [← hxa, ← hyb, h]
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  exact (Finset.disjoint_left.mp
+    (hpair (Finset.mem_univ x) (Finset.mem_univ y) hxy)) hzx hzy
+
 /-- The used defect components owned by one minimum `C₃` form a partition of
 its 36-vertex service bin; consequently every selected order is a
 three-divisible integer between three and thirty-six. -/
@@ -7332,6 +7412,84 @@ theorem degree_sixteen_fourLayer_owner_bin_order_package
     exact Finset.single_le_sum
       (fun (x : D.ConnectedComponent) _ => Nat.zero_le x.supp.ncard) he
   exact ⟨hlower, hupper, hdvd⟩
+
+/-- Once the global used-order alphabet is `{6,12}` with exactly two
+order-six components, every 36-vertex owner bin is either ordinary
+`[12,12,12]` or special `[6,6,12,12]`. -/
+theorem degree_sixteen_fourLayer_owner_bin_six_twelve_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hUsedOrders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      ∀ e ∈ C, e.supp.ncard = 6 ∨ e.supp.ncard = 12)
+    (hSixCount :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      (C.filter fun e => e.supp.ncard = 6).card = 2)
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀) :
+    let D := secondOrderDefectGraph G
+    let X := Finset.univ.filter
+      (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B)
+    ((E.filter fun e => e.supp.ncard = 6).card = 0 ∧
+      (E.filter fun e => e.supp.ncard = 12).card = 3) ∨
+    ((E.filter fun e => e.supp.ncard = 6).card = 2 ∧
+      (E.filter fun e => e.supp.ncard = 12).card = 2) := by
+  classical
+  dsimp only at hUsedOrders hSixCount ⊢
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ B)
+  have hBsubR : B ⊆ R := by
+    intro z hz
+    obtain ⟨x, hx, hzx⟩ := Finset.mem_biUnion.mp hz
+    exact Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hzx⟩
+  have hEsubC : E ⊆ C := by
+    intro e he
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+      hBsubR (Finset.mem_filter.mp he).2⟩
+  have horders : ∀ e ∈ E, e.supp.ncard = 6 ∨ e.supp.ncard = 12 := by
+    intro e he
+    exact hUsedOrders e (hEsubC he)
+  have hsixLe : (E.filter fun e => e.supp.ncard = 6).card ≤ 2 := by
+    have hsub : (E.filter fun e => e.supp.ncard = 6) ⊆
+        C.filter fun e => e.supp.ncard = 6 := by
+      intro e he
+      have hd := Finset.mem_filter.mp he
+      exact Finset.mem_filter.mpr ⟨hEsubC hd.1, hd.2⟩
+    rw [← hSixCount]
+    exact Finset.card_le_card hsub
+  exact thirtySix_bin_six_twelve_count_classification E
+    (fun e => e.supp.ncard)
+      (degree_sixteen_fourLayer_owner_bin_order_package
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild a).1
+      horders hsixLe
 
 /-- The fifteen pairwise-disjoint service rows in the four-layer branch have
 twelve vertices each, so the full used-exterior cell has size 180. -/
