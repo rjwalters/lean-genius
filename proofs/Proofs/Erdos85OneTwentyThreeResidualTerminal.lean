@@ -110,6 +110,44 @@ theorem false_of_centers_four_neighbors
   rw [hsum]
   exact hcount
 
+/-- Uniform restricted-cherry obstruction for a center set whose vertices
+each have exactly three neighbors in the endpoint set. -/
+theorem false_of_centers_three_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hcount : B.card.choose 2 < A.card * 3)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 3) : False := by
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G A B
+  have hsum :
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+        A.card * 3 := by
+    calc
+      (∑ a ∈ A, ((B ∩ G.neighborFinset a).card).choose 2) =
+          ∑ _a ∈ A, 3 := by
+            apply Finset.sum_congr rfl
+            intro a ha
+            rw [hdegree a ha]
+            norm_num [Nat.choose]
+      _ = A.card * 3 := by simp
+  rw [hsum]
+  exact hcount
+
+/-- Six vertices cannot each have three neighbors in the same six-vertex
+set in a `C₄`-free graph: the resulting eighteen restricted cherries exceed
+the fifteen endpoint pairs. -/
+theorem false_of_six_centers_three_neighbors_in_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hAcard : A.card = 6) (hBcard : B.card = 6)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 3) : False := by
+  apply false_of_centers_three_neighbors G hfree A B
+  · rw [hAcard, hBcard]
+    norm_num [Nat.choose]
+  · exact hdegree
+
 /-- The small numerical instance first exposed by the rigid `(8,40)`
 four-layer transport branch. -/
 theorem false_of_six_centers_four_neighbors_in_eight
