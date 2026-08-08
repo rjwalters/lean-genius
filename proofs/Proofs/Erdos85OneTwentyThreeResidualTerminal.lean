@@ -6178,6 +6178,89 @@ theorem degree_sixteen_fourLayer_used_component_order_package
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hc₀three, hrep] at hdvd
 
+/-- Summed detailed balance across the used-exterior component partition.
+Every orphan has exactly fifteen service neighbors, so its weighted incoming
+quotient mass from used components is `15 * |O|`. -/
+theorem degree_sixteen_fourLayer_used_to_orphan_edge_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ C, e.supp.ncard * componentQuotientMatrix G D e o) =
+      o.supp.ncard * 15 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hclosed : ∀ y : V,
+      y ∈ R ↔ componentRepresentative D (D.connectedComponentMk y) ∈ R := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+          (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hr
+      have hsub := degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hr
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  have hsumQ : (∑ e ∈ C, componentQuotientMatrix G D o e) = 15 := by
+    rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+      G D R hclosed o]
+    have hoData := Finset.mem_sdiff.mp ho
+    have hoOutside : componentRepresentative D o ∉
+        minimumLayerImageFinset D c₀ :=
+      (Finset.mem_sdiff.mp hoData.1).2
+    have hoUnused : componentRepresentative D o ∉ R := hoData.2
+    simpa [R, D] using minimumLayer_orphan_used_exterior_neighbor_card
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild)
+        (componentRepresentative D o) hoOutside hoUnused
+  calc
+    (∑ e ∈ C, e.supp.ncard * componentQuotientMatrix G D e o) =
+        ∑ e ∈ C, o.supp.ncard * componentQuotientMatrix G D o e := by
+          apply Finset.sum_congr rfl
+          intro e _he
+          exact secondOrder_componentQuotientMatrix_balance
+            G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    _ = o.supp.ncard * (∑ e ∈ C,
+        componentQuotientMatrix G D o e) := by
+          simp only [Finset.mul_sum]
+    _ = o.supp.ncard * 15 := by rw [hsumQ]
+
 /-- For a named two-component orphan cell, every minimum-owner bin supplies
 the exact forward mass three and reverse mass four required by the transport
 contradictions. -/
