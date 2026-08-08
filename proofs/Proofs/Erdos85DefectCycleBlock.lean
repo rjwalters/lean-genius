@@ -251,4 +251,49 @@ theorem card_cycleBlock_targetNeighbors_le_one
   obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hy
   exact hperiod z j
 
+/-- In a `9`-by-`12` cycle block, target-length periodicity translates the
+source coordinate by the nonzero class of `12 = 3 mod 9`.  Hence a source
+vertex cannot have four neighbors in the target cycle of a `C₄`-free graph. -/
+theorem false_of_nine_twelve_cycleBlock_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod 9 → V) (v : ZMod 12 → V)
+    (huinj : Function.Injective u)
+    (hperiod : ∀ z j,
+      G.Adj (u (z + (12 : ZMod 9))) (v j) ↔ G.Adj (u z) (v j))
+    (z : ZMod 9)
+    (hfour :
+      (((Finset.univ.image v).filter fun y => G.Adj (u z) y).card) = 4) :
+    False := by
+  have hle := card_cycleBlock_targetNeighbors_le_one G hfree u v huinj
+    (12 : ZMod 9) hperiod (by decide) z
+  omega
+
+/-- If the same nontrivial source translation preserves adjacency into two
+target blocks, a source vertex cannot have a neighbor in both blocks when
+those target vertices are distinct.  The translated source vertex would
+share both neighbors and create a four-cycle. -/
+theorem false_of_periodic_neighbors_in_two_targetBlocks
+    {V α β γ : Type*} [Fintype V] [DecidableEq V]
+    [AddCommGroup α]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : α → V) (v : β → V) (w : γ → V)
+    (huinj : Function.Injective u) (s : α) (hs : s ≠ 0)
+    (hvperiod : ∀ z j,
+      G.Adj (u (z + s)) (v j) ↔ G.Adj (u z) (v j))
+    (hwperiod : ∀ z j,
+      G.Adj (u (z + s)) (w j) ↔ G.Adj (u z) (w j))
+    (z : α) (j : β) (k : γ) (hvw : v j ≠ w k)
+    (hv : G.Adj (u z) (v j)) (hw : G.Adj (u z) (w k)) : False := by
+  have hsource : u (z + s) ≠ u z := by
+    intro h
+    have hz : z + s = z := huinj h
+    apply hs
+    exact add_left_cancel (by simpa using hz : z + s = z + 0)
+  have hv' : G.Adj (u (z + s)) (v j) := (hvperiod z j).mpr hv
+  have hw' : G.Adj (u (z + s)) (w k) := (hwperiod z k).mpr hw
+  exact hfree (containsC4_of_two_common hvw hsource hv' hw' hv hw)
+
 end Erdos85
