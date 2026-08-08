@@ -162,6 +162,25 @@ theorem twelve_thirtysix_weighted_row_signature_of_no_two
   · omega
   · exact h
 
+/-- Capacity certificate eliminating the five externally enumerated
+weighted signatures for the symmetric `(24,24)` branch.  Here `n₁`, `n₃`,
+and `n₈₂` count reduced-order-eight rows of types `1`, `3`, and `2`, while
+`n₄₂` counts reduced-order-four rows of type `2`.  Cover-target uniqueness
+gives `n₄₂ ≤ 1`, and the five owner bins give room for at most five
+reduced-order-eight rows in total. -/
+theorem false_of_twentyfour_twentyfour_weighted_signature_capacity
+    (S₁ S₂ S₃ n₁ n₃ n₄₂ n₈₂ : ℕ)
+    (hS₁ : S₁ = 8 * n₁) (hS₃ : S₃ = 8 * n₃)
+    (hS₂ : S₂ = 4 * n₄₂ + 8 * n₈₂)
+    (hn₄₂ : n₄₂ ≤ 1) (hcapacity : n₁ + n₃ + n₈₂ ≤ 5)
+    (hsignature :
+      (S₁ = 16 ∧ S₂ = 36 ∧ S₃ = 0) ∨
+      (S₁ = 16 ∧ S₂ = 24 ∧ S₃ = 16) ∨
+      (S₁ = 8 ∧ S₂ = 36 ∧ S₃ = 8) ∨
+      (S₁ = 0 ∧ S₂ = 48 ∧ S₃ = 0) ∨
+      (S₁ = 0 ∧ S₂ = 36 ∧ S₃ = 16)) : False := by
+  rcases hsignature with h | h | h | h | h <;> omega
+
 /-- At the exact `d = 16` boundary, the total order of the
 triangle-free-colored defect components is divisible by three.  This is the
 global weighted color congruence used by the residual encoders. -/
