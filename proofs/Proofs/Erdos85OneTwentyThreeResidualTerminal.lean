@@ -258,6 +258,40 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- A used component of 3-divisible order at most thirty-six cannot carry an
+odd quotient entry from either side of an `(18,30)` orphan pair when its two
+reverse entries exhaust the used vertex's four orphan neighbors. -/
+theorem eighteen_thirty_transport_entries_even
+    (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
+    (hrThree : 3 ∣ r) (h₁ : 18*a = r*b) (h₂ : 30*c = r*d)
+    (hrow : b + d = 4) : Even a ∧ Even c := by
+  obtain ⟨k, hk⟩ := hrThree
+  have hb : b ≤ 4 := by omega
+  have hd : d ≤ 4 := by omega
+  interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
+
+/-- The analogous local transport parity for the `(6,42)` orphan pair. -/
+theorem six_fortyTwo_transport_entries_even
+    (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
+    (hrThree : 3 ∣ r) (h₁ : 6*a = r*b) (h₂ : 42*c = r*d)
+    (hrow : b + d = 4) : Even a ∧ Even c := by
+  obtain ⟨k, hk⟩ := hrThree
+  have hb : b ≤ 4 := by omega
+  have hd : d ≤ 4 := by omega
+  interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
+
+/-- An odd total cannot be assembled from even finite summands. -/
+theorem false_of_sum_eq_three_of_each_even
+    {α : Type*} [DecidableEq α] (C : Finset α) (a : α → ℕ)
+    (hsum : ∑ c ∈ C, a c = 3) (heven : ∀ c ∈ C, Even (a c)) : False := by
+  have hsumEven : Even (∑ c ∈ C, a c) := by
+    rw [even_iff_two_dvd]
+    apply Finset.dvd_sum
+    intro c hc
+    exact even_iff_two_dvd.mp (heven c hc)
+  rw [hsum] at hsumEven
+  norm_num at hsumEven
+
 /-- Extract the two named elements behind a two-part count vector.  This is
 the bridge from filter-card census output to component-level eliminators. -/
 theorem exists_distinct_pair_of_card_two_filter_counts
