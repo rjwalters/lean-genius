@@ -1778,6 +1778,31 @@ theorem orderTwelve_cherry_term_eq_six_exception_or_dvd_twelve
     have haTwo : 2 ≤ a := by omega
     exact dvd_mul_of_dvd_left (hdvd haTwo) _
 
+/-- A cherry ledger of total fifty-four with at most one six-mod-twelve
+exception must contain exactly one exception. -/
+theorem unique_exception_of_sum_fiftyFour_and_twelve_divisible_rest
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (T : α → ℕ) (exceptional : α → Prop) [DecidablePred exceptional]
+    (hsum : ∑ c ∈ C, T c = 54)
+    (hrow : ∀ c ∈ C, (exceptional c ∧ T c = 6) ∨ 12 ∣ T c)
+    (hle : (C.filter exceptional).card ≤ 1) :
+    (C.filter exceptional).card = 1 := by
+  by_contra hne
+  have hzero : (C.filter exceptional).card = 0 := by omega
+  have hnone : ∀ c ∈ C, ¬exceptional c := by
+    intro c hc hexc
+    have : c ∈ C.filter exceptional := Finset.mem_filter.mpr ⟨hc, hexc⟩
+    rw [Finset.card_eq_zero.mp hzero] at this
+    exact Finset.notMem_empty c this
+  have hdvd : 12 ∣ ∑ c ∈ C, T c := by
+    apply Finset.dvd_sum
+    intro c hc
+    rcases hrow c hc with h | h
+    · exact False.elim ((hnone c hc) h.1)
+    · exact h
+  rw [hsum] at hdvd
+  norm_num at hdvd
+
 /-- Two order-six source rows which each spend one double-cover incidence
 among three order-twelve targets must share a target as soon as every target
 receives an even number of those incidences.  In the four-layer residual the
