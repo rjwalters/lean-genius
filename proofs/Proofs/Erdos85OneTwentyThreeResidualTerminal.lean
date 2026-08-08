@@ -258,6 +258,120 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- A used component of 3-divisible order at most thirty-six cannot carry an
+odd quotient entry from either side of an `(18,30)` orphan pair when its two
+reverse entries exhaust the used vertex's four orphan neighbors. -/
+theorem eighteen_thirty_transport_entries_even
+    (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
+    (hrThree : 3 ∣ r) (h₁ : 18*a = r*b) (h₂ : 30*c = r*d)
+    (hrow : b + d = 4) : Even a ∧ Even c := by
+  obtain ⟨k, hk⟩ := hrThree
+  have hb : b ≤ 4 := by omega
+  have hd : d ≤ 4 := by omega
+  interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
+
+/-- The analogous local transport parity for the `(6,42)` orphan pair. -/
+theorem six_fortyTwo_transport_entries_even
+    (r a c b d : ℕ) (hrLower : 3 ≤ r) (hrUpper : r ≤ 36)
+    (hrThree : 3 ∣ r) (h₁ : 6*a = r*b) (h₂ : 42*c = r*d)
+    (hrow : b + d = 4) : Even a ∧ Even c := by
+  obtain ⟨k, hk⟩ := hrThree
+  have hb : b ≤ 4 := by omega
+  have hd : d ≤ 4 := by omega
+  interval_cases r <;> interval_cases b <;> interval_cases d <;> omega
+
+/-- An odd total cannot be assembled from even finite summands. -/
+theorem false_of_sum_eq_three_of_each_even
+    {α : Type*} [DecidableEq α] (C : Finset α) (a : α → ℕ)
+    (hsum : ∑ c ∈ C, a c = 3) (heven : ∀ c ∈ C, Even (a c)) : False := by
+  have hsumEven : Even (∑ c ∈ C, a c) := by
+    rw [even_iff_two_dvd]
+    apply Finset.dvd_sum
+    intro c hc
+    exact even_iff_two_dvd.mp (heven c hc)
+  rw [hsum] at hsumEven
+  norm_num at hsumEven
+
+/-- Graph-level owner-bin contradiction for the `(18,30)` orphan pair.
+Detailed balance supplies the two transport equations for every used
+component; the local parity kernel then makes the forward bin sum even. -/
+theorem false_of_eighteen_thirty_transport_bin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho₁ : o₁.supp.ncard = 18) (ho₂ : o₂.supp.ncard = 30)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (horder : ∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
+      3 ∣ e.supp.ncard)
+    (hreverse : ∀ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e o₂ = 4)
+    (hforward : ∑ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e = 3) : False := by
+  apply false_of_sum_eq_three_of_each_even E
+    (fun e => componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+    hforward
+  intro e he
+  have hbal₁ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e
+  have hbal₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e
+  have hparity := eighteen_thirty_transport_entries_even
+    e.supp.ncard
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+    (horder e he).1 (horder e he).2.1 (horder e he).2.2
+    (by simpa [ho₁] using hbal₁) (by simpa [ho₂] using hbal₂)
+    (hreverse e he)
+  exact hparity.1
+
+/-- Graph-level owner-bin contradiction for the `(6,42)` orphan pair. -/
+theorem false_of_six_fortyTwo_transport_bin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho₁ : o₁.supp.ncard = 6) (ho₂ : o₂.supp.ncard = 42)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (horder : ∀ e ∈ E, 3 ≤ e.supp.ncard ∧ e.supp.ncard ≤ 36 ∧
+      3 ∣ e.supp.ncard)
+    (hreverse : ∀ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) e o₂ = 4)
+    (hforward : ∑ e ∈ E,
+      componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e = 3) : False := by
+  apply false_of_sum_eq_three_of_each_even E
+    (fun e => componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+    hforward
+  intro e he
+  have hbal₁ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ e
+  have hbal₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ e
+  have hparity := six_fortyTwo_transport_entries_even
+    e.supp.ncard
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o₁ e)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o₂ e)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁)
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₂)
+    (horder e he).1 (horder e he).2.1 (horder e he).2.2
+    (by simpa [ho₁] using hbal₁) (by simpa [ho₂] using hbal₂)
+    (hreverse e he)
+  exact hparity.1
+
 /-- Extract the two named elements behind a two-part count vector.  This is
 the bridge from filter-card census output to component-level eliminators. -/
 theorem exists_distinct_pair_of_card_two_filter_counts
@@ -879,6 +993,55 @@ theorem sum_component_sizes_filter_eq_card_of_component_closed
             (Set.ncard_eq_toFinset_card c.supp c.supp.toFinite)
     _ = (C.biUnion F).card := (Finset.card_biUnion hpair).symm
     _ = S.card := congrArg Finset.card hunion
+
+/-- Summing a component-quotient row over a component-closed vertex cell
+counts exactly the source representative's neighbors in that cell. -/
+theorem sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype D.ConnectedComponent] [DecidableEq D.ConnectedComponent]
+    (S : Finset V)
+    (hclosed : ∀ y : V,
+      y ∈ S ↔ componentRepresentative D (D.connectedComponentMk y) ∈ S)
+    (c : D.ConnectedComponent) :
+    (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ S), componentQuotientMatrix G D c e) =
+      (S ∩ G.neighborFinset (componentRepresentative D c)).card := by
+  classical
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ S)
+  let F := fun e : D.ConnectedComponent =>
+    componentNeighborFinset G D e (componentRepresentative D c)
+  have hpair : (↑C : Set D.ConnectedComponent).PairwiseDisjoint F := by
+    intro e he f hf hef
+    rw [Finset.disjoint_left]
+    intro y hye hyf
+    have hye' := (Finset.mem_filter.mp hye).2
+    have hyf' := (Finset.mem_filter.mp hyf).2
+    exact hef (hye'.symm.trans hyf')
+  have hunion : C.biUnion F = S ∩ G.neighborFinset (componentRepresentative D c) := by
+    ext y
+    constructor
+    · intro hy
+      obtain ⟨e, heC, hye⟩ := Finset.mem_biUnion.mp hy
+      have heRep : componentRepresentative D e ∈ S := (Finset.mem_filter.mp heC).2
+      have hyeData := Finset.mem_filter.mp hye
+      have hcomp : D.connectedComponentMk y = e := hyeData.2
+      exact Finset.mem_inter.mpr
+        ⟨(hclosed y).mpr (by simpa [hcomp] using heRep), hyeData.1⟩
+    · intro hy
+      have hyData := Finset.mem_inter.mp hy
+      let e := D.connectedComponentMk y
+      apply Finset.mem_biUnion.mpr
+      refine ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, (hclosed y).mp hyData.1⟩, ?_⟩
+      exact Finset.mem_filter.mpr ⟨hyData.2, rfl⟩
+  calc
+    (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ S), componentQuotientMatrix G D c e) =
+        ∑ e ∈ C, (F e).card := by rfl
+    _ = (C.biUnion F).card := (Finset.card_biUnion hpair).symm
+    _ = (S ∩ G.neighborFinset (componentRepresentative D c)).card :=
+      congrArg Finset.card hunion
 
 /-- A partition of mass forty-eight into parts of size at least six has at
 most eight parts. -/
