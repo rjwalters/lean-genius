@@ -1744,6 +1744,40 @@ theorem four_twelve_cycles_force_two_orderSix_doubleCovers
     b₀ = 1 ∧ b₁ = 1 ∧ b₂ = 1 ∧ b₃ = 1 ∧ n = 2 := by
   omega
 
+/-- A used-row cherry contribution into an order-twelve target is a
+multiple of twelve, except for the order-six double-cover row, whose
+contribution is exactly six.  Reverse multiple-cover divisibility removes
+the apparent higher-order exceptions at quotient two or four. -/
+theorem orderTwelve_cherry_term_eq_six_exception_or_dvd_twelve
+    (r q a : ℕ) (hr : 6 ≤ r) (hthree : 3 ∣ r) (hq : q ≤ 4)
+    (hbal : r * q = 12 * a) (hdvd : 2 ≤ a → 12 ∣ r) :
+    (r = 6 ∧ q = 2 ∧ r * q.choose 2 = 6) ∨
+      12 ∣ r * q.choose 2 := by
+  interval_cases q
+  · right
+    simp
+  · right
+    simp
+  · by_cases hr6 : r = 6
+    · left
+      subst r
+      norm_num [Nat.choose]
+    · right
+      have haTwo : 2 ≤ a := by
+        obtain ⟨k, hk⟩ := hthree
+        omega
+      exact dvd_mul_of_dvd_left (hdvd haTwo) _
+  · right
+    have hkFour : 4 ∣ r := by
+      refine ⟨a, ?_⟩
+      omega
+    have htwelve : 12 ∣ r := by
+      exact Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num) hthree hkFour
+    exact dvd_mul_of_dvd_left htwelve _
+  · right
+    have haTwo : 2 ≤ a := by omega
+    exact dvd_mul_of_dvd_left (hdvd haTwo) _
+
 /-- Two order-six source rows which each spend one double-cover incidence
 among three order-twelve targets must share a target as soon as every target
 receives an even number of those incidences.  In the four-layer residual the
