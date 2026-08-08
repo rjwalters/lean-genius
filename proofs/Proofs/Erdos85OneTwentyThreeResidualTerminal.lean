@@ -992,6 +992,112 @@ theorem degree_sixteen_fourLayer_service_partner_block_card_eq_three
       ⟨hz, (G.mem_neighborFinset y z).mpr hzy.symm⟩
   rw [Finset.card_erase_of_mem hzMem, hfour]
 
+/-- The fifteen service rows through a fixed orphan yield fifteen pairwise
+disjoint three-partner blocks, hence cover exactly 45 other orphans. -/
+theorem degree_sixteen_fourLayer_exists_service_partner_packing
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+    ∃ service : minimumLayerVertex D c₀ → V,
+      (∀ u, service u ∈ E u ∧ G.Adj z (service u)) ∧
+      ((↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u =>
+          (O ∩ G.neighborFinset (service u)).erase z)) ∧
+      (Finset.univ.biUnion (fun u =>
+        (O ∩ G.neighborFinset (service u)).erase z)).card = 45 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  have hzOutside : z ∉ U :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2
+  have hzUnused : z ∉ Finset.univ.biUnion E :=
+    (Finset.mem_sdiff.mp hz).2
+  have hex : ∀ u : minimumLayerVertex D c₀,
+      ∃ y, y ∈ E u ∧ G.Adj z y := by
+    intro u
+    have hone := minimumLayer_orphan_service_card_eq_one
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild)
+        z hzOutside hzUnused u
+    obtain ⟨y, hy⟩ := Finset.card_eq_one.mp hone
+    have hymem : y ∈ E u ∩ G.neighborFinset z := by
+      rw [hy]
+      exact Finset.mem_singleton_self y
+    exact ⟨y, (Finset.mem_inter.mp hymem).1,
+      (G.mem_neighborFinset z y).mp (Finset.mem_inter.mp hymem).2⟩
+  choose service hservice using hex
+  refine ⟨service, hservice, ?_, ?_⟩
+  · intro u hu v hv huv
+    change Disjoint
+      ((O ∩ G.neighborFinset (service u)).erase z)
+      ((O ∩ G.neighborFinset (service v)).erase z)
+    rw [Finset.disjoint_left]
+    intro q hqu hqv
+    have hqu' := Finset.mem_erase.mp hqu
+    have hqv' := Finset.mem_erase.mp hqv
+    have hzq : z ≠ q := Ne.symm hqu'.1
+    have hrow := degree_sixteen_fourLayer_shared_service_row_unique
+      G hfree hmin hcard c₀ hregChild hcardChild hzq
+        (hservice u).1 (hservice u).2
+        ((G.mem_neighborFinset (service u) q).mp
+          (Finset.mem_inter.mp hqu'.2).2).symm
+        (hservice v).1 (hservice v).2
+        ((G.mem_neighborFinset (service v) q).mp
+          (Finset.mem_inter.mp hqv'.2).2).symm
+    exact huv hrow
+  · rw [Finset.card_biUnion]
+    · have hthree : ∀ u : minimumLayerVertex D c₀,
+          ((O ∩ G.neighborFinset (service u)).erase z).card = 3 := by
+        intro u
+        exact degree_sixteen_fourLayer_service_partner_block_card_eq_three
+          G hfree hmin hcard c₀ hregChild hcardChild hz u
+            (hservice u).1 (hservice u).2
+      rw [Finset.sum_congr rfl (fun u _ => hthree u)]
+      simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+      change Fintype.card
+        (minimumLayerVertex (secondOrderDefectGraph G) c₀) * 3 = 45
+      rw [hcardChild]
+    · intro u hu v hv huv
+      change Disjoint
+        ((O ∩ G.neighborFinset (service u)).erase z)
+        ((O ∩ G.neighborFinset (service v)).erase z)
+      rw [Finset.disjoint_left]
+      intro q hqu hqv
+      have hqu' := Finset.mem_erase.mp hqu
+      have hqv' := Finset.mem_erase.mp hqv
+      have hzq : z ≠ q := Ne.symm hqu'.1
+      have hrow := degree_sixteen_fourLayer_shared_service_row_unique
+        G hfree hmin hcard c₀ hregChild hcardChild hzq
+          (hservice u).1 (hservice u).2
+          ((G.mem_neighborFinset (service u) q).mp
+            (Finset.mem_inter.mp hqu'.2).2).symm
+          (hservice v).1 (hservice v).2
+          ((G.mem_neighborFinset (service v) q).mp
+            (Finset.mem_inter.mp hqv'.2).2).symm
+      exact huv hrow
+
 end
 
 end Erdos85
