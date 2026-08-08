@@ -1677,6 +1677,60 @@ theorem degree_sixteen_fourLayer_orphan_matching_color
   · exact hanti
   · exact (hnG ((mem_triangleFreeNeighbors G z q).mp htri).1).elim
 
+/-- No orphan matching edge is a defect edge.  Otherwise that edge is
+triangle-free while the other defect edge at the same orphan is antipodal,
+contradicting exact-boundary monochromaticity of incident defect edges. -/
+theorem degree_sixteen_fourLayer_orphan_matching_not_defect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z') :
+    ¬(secondOrderDefectGraph G).Adj z z' := by
+  classical
+  let D := secondOrderDefectGraph G
+  intro hzz'D
+  have hz'Mem : z' ∈ D.neighborFinset z :=
+    (D.mem_neighborFinset z z').mpr hzz'D
+  have hcardD : (D.neighborFinset z).card = 2 := by
+    rw [D.card_neighborFinset_eq_degree]
+    exact secondOrderDefectGraph_degree_eq_two
+      G hfree (by norm_num) (by norm_num) hmin hcard z
+  have hcardErase : ((D.neighborFinset z).erase z').card = 1 := by
+    rw [Finset.card_erase_of_mem hz'Mem, hcardD]
+  obtain ⟨q, hqErase⟩ := Finset.card_eq_one.mp hcardErase
+  have hqMemErase : q ∈ (D.neighborFinset z).erase z' := by simp [hqErase]
+  have hqD : D.Adj z q :=
+    (D.mem_neighborFinset z q).mp (Finset.mem_of_mem_erase hqMemErase)
+  have hqne : q ≠ z' := (Finset.mem_erase.mp hqMemErase).1
+  have hcolor := degree_sixteen_fourLayer_orphan_matching_color
+    G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
+  have hzqAnti : (antipodalGraph G).Adj z q := hcolor.2 q hqD hqne
+  rcases secondOrderDefectGraph_incident_edges_monochromatic
+      G hfree (by norm_num) (by norm_num) hmin hcard hzz'D hqD with
+    hbothAnti | hbothTF
+  · exact ((mem_antipodalNeighbors G z z').mp hbothAnti.1).2.1 hzz'
+  · exact ((mem_antipodalNeighbors G z q).mp hzqAnti).2.1
+      ((mem_triangleFreeNeighbors G z q).mp hbothTF.2).1
+
 end
 
 end Erdos85
