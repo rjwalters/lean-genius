@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneTwentyThreeHardSector
+import Proofs.Erdos85UniformTraceSplitEngine
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 
 /-!
@@ -16,6 +17,7 @@ namespace Erdos85
 noncomputable section
 
 open Matrix
+open Polynomial
 
 /-- An invariant range of an idempotent contributes a characteristic
 factor of the ambient endomorphism. -/
@@ -154,6 +156,87 @@ theorem minimumLayerExterior_hardSector_charpoly_dvd_global
   have hexterior := minimumLayerExterior_defect_charpoly_dvd_global
     (K := ℚ) D c₀
   exact dvd_trans hsector hexterior
+
+/-- Every irreducible characteristic factor on an invariant exterior hard
+sector occurs in the Chebyshev factor of one global parent-defect cycle. -/
+theorem exteriorHardSector_irreducible_dvd_cycleChebyshev
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)]
+    (Q : Matrix (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)
+      (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀) ℚ)
+    (hQ : Q * Q = Q)
+    (hcomm :
+      ((secondOrderDefectGraph G).comap
+        (fun z : minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀ =>
+          z.1)).adjMatrix ℚ * Q =
+      Q * ((secondOrderDefectGraph G).comap
+        (fun z : minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀ =>
+          z.1)).adjMatrix ℚ)
+    (f : Polynomial ℚ) (hfirr : Irreducible f)
+    (hfdvd :
+      let P := ((secondOrderDefectGraph G).comap
+        (fun z : minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀ =>
+          z.1)).adjMatrix ℚ
+      let PL := P.toLin'
+      let QL := Q.toLin'
+      let hc : PL * QL = QL * PL := by
+        simpa only [Module.End.mul_eq_comp, Matrix.toLin'_mul] using
+          congrArg Matrix.toLin' hcomm
+      let hR : ∀ x ∈ LinearMap.range QL, PL x ∈ LinearMap.range QL :=
+        mapsTo_range_of_commute PL QL hc
+      f ∣ (PL.restrict hR).charpoly) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard ∧ c.supp.ncard ≤ Fintype.card V ∧
+      f ∣ ((Polynomial.Chebyshev.C ℤ (c.supp.ncard : ℤ) - 2).map
+        (algebraMap ℤ ℚ)) := by
+  classical
+  have hsectorGlobal := minimumLayerExterior_hardSector_charpoly_dvd_global
+    (secondOrderDefectGraph G) c₀ Q hQ hcomm
+  have hfglobal : f ∣ ((secondOrderDefectGraph G).adjMatrix ℚ).charpoly :=
+    dvd_trans hfdvd hsectorGlobal
+  letI : Fintype (secondOrderDefectGraph G).ConnectedComponent :=
+    (secondOrderDefectGraph G).instFintypeConnectedComponent
+  obtain ⟨hlen3, hcharfac⟩ :=
+    secondOrderDefect_adjMatrix_charpoly_eq_prod_chebyshev
+      G hfree hd heven hmin hcard
+  have hcharQ : ((secondOrderDefectGraph G).adjMatrix ℚ).charpoly =
+      ∏ c : (secondOrderDefectGraph G).ConnectedComponent,
+        ((Polynomial.Chebyshev.C ℤ (c.supp.ncard : ℤ) - 2).map
+          (algebraMap ℤ ℚ)) := by
+    calc
+      ((secondOrderDefectGraph G).adjMatrix ℚ).charpoly =
+          ((((secondOrderDefectGraph G).adjMatrix ℤ).map
+            (Int.castRingHom ℚ)).charpoly) := by
+              rw [adjMatrix_map_intCast]
+      _ = (((secondOrderDefectGraph G).adjMatrix ℤ).charpoly).map
+            (Int.castRingHom ℚ) := Matrix.charpoly_map _ _
+      _ = (∏ c : (secondOrderDefectGraph G).ConnectedComponent,
+            (Polynomial.Chebyshev.C ℤ (c.supp.ncard : ℤ) - 2)).map
+            (Int.castRingHom ℚ) := congrArg
+              (fun p : Polynomial ℤ => p.map (Int.castRingHom ℚ)) hcharfac
+      _ = ∏ c : (secondOrderDefectGraph G).ConnectedComponent,
+            ((Polynomial.Chebyshev.C ℤ (c.supp.ncard : ℤ) - 2).map
+              (algebraMap ℤ ℚ)) := by
+          rw [Polynomial.map_prod]
+          exact Finset.prod_congr rfl fun c _ => by rw [algebraMap_int_eq]
+  have hfprod : f ∣ ∏ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ((Polynomial.Chebyshev.C ℤ (c.supp.ncard : ℤ) - 2).map
+        (algebraMap ℤ ℚ)) := by rwa [← hcharQ]
+  have hfprime : Prime f :=
+    (UniqueFactorizationMonoid.irreducible_iff_prime).mp hfirr
+  obtain ⟨c, -, hfc⟩ := hfprime.exists_mem_finset_dvd hfprod
+  refine ⟨c, hlen3 c, ?_, hfc⟩
+  have hle := Set.ncard_le_ncard (Set.subset_univ c.supp) Set.finite_univ
+  rwa [Set.ncard_univ, Nat.card_eq_fintype_card] at hle
 
 end
 
