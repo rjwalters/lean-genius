@@ -977,6 +977,47 @@ theorem two_part_three_divisible_named_classification
     simp [Finset.filter_insert, Finset.filter_singleton, hkc, hkd,
       even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃ heven₃₉ ⊢
 
+/-- Five three-divisible parts of total forty-eight, each at least nine,
+are four nines and one twelve.  This compact excess argument replaces the
+retired five-part count-vector census after order-six orphans are excluded. -/
+theorem five_part_nine_or_twelve_unique_twelve
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 5) (hsum : ∑ c ∈ C, w c = 48)
+    (hnine : ∀ c ∈ C, 9 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c) :
+    (∀ c ∈ C, w c = 9 ∨ w c = 12) ∧
+      (C.filter fun c => w c = 12).card = 1 := by
+  have horders : ∀ c ∈ C, w c = 9 ∨ w c = 12 := by
+    intro c hc
+    have hrest : 9 * (C.erase c).card ≤ ∑ d ∈ C.erase c, w d := by
+      calc
+        9 * (C.erase c).card = ∑ _d ∈ C.erase c, 9 := by simp [mul_comm]
+        _ ≤ ∑ d ∈ C.erase c, w d := by
+          apply Finset.sum_le_sum
+          intro d hd
+          exact hnine d (Finset.mem_of_mem_erase hd)
+    have hcardErase : (C.erase c).card = 4 := by
+      rw [Finset.card_erase_of_mem hc, hcard]
+    have hsplit := Finset.sum_erase_add C w hc
+    obtain ⟨k, hk⟩ := hthree c hc
+    have hcLower := hnine c hc
+    omega
+  refine ⟨horders, ?_⟩
+  let n₁₂ := (C.filter fun c => w c = 12).card
+  have hindicator : (∑ c ∈ C, if w c = 12 then 3 else 0) = 3 * n₁₂ := by
+    rw [← Finset.sum_filter]
+    simp [n₁₂, mul_comm]
+  have hmass : (∑ c ∈ C, w c) = 9 * C.card + 3 * n₁₂ := by
+    calc
+      (∑ c ∈ C, w c) = ∑ c ∈ C, (9 + if w c = 12 then 3 else 0) := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h <;> simp [h]
+      _ = 9 * C.card + 3 * n₁₂ := by
+        rw [Finset.sum_add_distrib, hindicator]
+        simp [mul_comm]
+  change n₁₂ = 1
+  omega
+
 /- Retired n=3 census automation.
 set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for three three-divisible parts of
