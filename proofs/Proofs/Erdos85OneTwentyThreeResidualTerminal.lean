@@ -771,6 +771,7 @@ theorem eighteen_thirty_transport_entry_gap
 
 /- Retired by the cold-build audit: numerically correct n=3 census, but the
 original automation is not maintainably elaborable.  Restore with a compact proof.
+-/
 set_option maxHeartbeats 5000000 in
 /-- The analogous forward-mass gap for the `(6,42)` balance equations. -/
 theorem six_fortyTwo_transport_entry_gap
@@ -976,6 +977,7 @@ theorem two_part_three_divisible_named_classification
     simp [Finset.filter_insert, Finset.filter_singleton, hkc, hkd,
       even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃ heven₃₉ ⊢
 
+/- Retired n=3 census automation.
 set_option maxHeartbeats 5000000 in
 /-- Exact count-vector classification for three three-divisible parts of
 total forty-eight, each at least six, with even odd-order multiplicities. -/
@@ -8566,6 +8568,7 @@ theorem degree_sixteen_fourLayer_three_orphan_component_count_classification
     simpa [C, O, Finset.filter_filter] using
       (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
         G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
+-/
 
 /-- Exact named classification of the two-component orphan branch. -/
 theorem degree_sixteen_fourLayer_two_orphan_component_named_classification
@@ -8691,6 +8694,7 @@ theorem degree_sixteen_fourLayer_two_orphan_remaining_classification
     componentRepresentative D e ∈ B)
   have hp := degree_sixteen_fourLayer_two_orphan_owner_bin_quotient_package
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild c d hcd hC a
+  change C = {c, d} at hC
   have hCswap : C = {d, c} := by simpa [Finset.pair_comm] using hC
   have hpSwap := degree_sixteen_fourLayer_two_orphan_owner_bin_quotient_package
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild d c hcd.symm hCswap a
@@ -8708,7 +8712,6 @@ theorem degree_sixteen_fourLayer_two_orphan_remaining_classification
       G hfree hmin hcard d c h30_18.2 h30_18.1 E hpSwap.1 hpSwap.2.1 hpSwap.2.2).elim
   · exact Or.inr (Or.inr h24_24)
 
--/
 /-- Exact classification of the singleton orphan branch. -/
 theorem degree_sixteen_fourLayer_one_orphan_component_count_classification
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -10342,6 +10345,52 @@ theorem false_of_degree_sixteen_fourLayer_twelve_thirtysix_orphans
   rw [hsig.2.2.2.2] at heven
   rcases heven with ⟨k, hk⟩
   omega
+
+/-- The four-layer branch cannot have exactly two orphan defect
+components. -/
+theorem false_of_degree_sixteen_fourLayer_two_orphan_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent ↦
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 2) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent ↦
+    componentRepresentative D c ∈ O)
+  obtain ⟨c, d, hcd, hC, horders⟩ :=
+    degree_sixteen_fourLayer_two_orphan_remaining_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
+  change C = {c, d} at hC
+  rcases horders with h12_36 | h36_12 | h24_24
+  · exact false_of_degree_sixteen_fourLayer_twelve_thirtysix_orphans
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        c d hcd h12_36.1 h12_36.2 hC
+  · have hCswap : C = {d, c} := by simpa [Finset.pair_comm] using hC
+    exact false_of_degree_sixteen_fourLayer_twelve_thirtysix_orphans
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        d c hcd.symm h36_12.2 h36_12.1 hCswap
+  · exact degree_sixteen_fourLayer_false_of_twentyfour_twentyfour_orphan_pair
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        c d hcd h24_24.1 h24_24.2 hC
 
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
