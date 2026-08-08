@@ -8759,6 +8759,106 @@ theorem degree_sixteen_fourLayer_nondefect_orphans_unique_service
         (G.mem_neighborFinset z' y').mpr hz'y'⟩
   exact ⟨huv.symm, Finset.card_le_one.mp hcommon y' hy'Mem y hyMem⟩
 
+/-- Exact service-cherry count on one named orphan component: service-centered
+cherries with both endpoints in the component are in bijection with its
+two-element non-defect subsets. -/
+theorem degree_sixteen_fourLayer_orphan_component_service_cherries_eq_nondefect_pairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let B := o.supp.toFinite.toFinset
+    let good := fun e : Finset V =>
+      ∀ z ∈ e, ∀ z' ∈ e, z ≠ z' → ¬D.Adj z z'
+    (∑ y ∈ R, ((B ∩ G.neighborFinset y).card).choose 2) =
+      ((B.powersetCard 2).filter good).card := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let B := o.supp.toFinite.toFinset
+  let good := fun e : Finset V =>
+    ∀ z ∈ e, ∀ z' ∈ e, z ≠ z' → ¬D.Adj z z'
+  have hsubO : o.supp ⊆
+      (((Finset.univ \ minimumLayerImageFinset D c₀) \ R : Finset V) : Set V) := by
+    have hrepComp : D.connectedComponentMk (componentRepresentative D o) = o :=
+      (ConnectedComponent.mem_supp_iff o
+        (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+    have hsub := degree_sixteen_fourLayer_orphan_component_subset
+      G hfree hmin hcard c₀ hregChild hcardChild
+        (componentRepresentative D o) ho
+    simpa [hrepComp, D, R] using hsub
+  apply sum_choose_inter_neighbor_eq_card_good_pairs_of_unique_center
+    G R B good
+  · intro y hyR e he
+    intro z hz z' hz' hzz' hD
+    have heData := Finset.mem_powersetCard.mp he
+    have hzData := Finset.mem_inter.mp (heData.1 hz)
+    have hz'Data := Finset.mem_inter.mp (heData.1 hz')
+    have hzSupp : z ∈ o.supp := by simpa [B] using hzData.1
+    have hz'Supp : z' ∈ o.supp := by simpa [B] using hz'Data.1
+    have hzO := hsubO hzSupp
+    have hz'O := hsubO hz'Supp
+    obtain ⟨u, _hu, hyu⟩ := Finset.mem_biUnion.mp hyR
+    have hnone :=
+      (degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
+        G hfree hmin hcard c₀ hregChild hcardChild hzO hz'O hzz').mp hD
+    exact hnone u y hyu
+      ⟨((G.mem_neighborFinset y z).mp hzData.2).symm,
+        ((G.mem_neighborFinset y z').mp hz'Data.2).symm⟩
+  · intro e heB heGood
+    obtain ⟨z, z', hzz', heq⟩ :=
+      Finset.card_eq_two.mp (Finset.mem_powersetCard.mp heB).2
+    have hzB : z ∈ B := (Finset.mem_powersetCard.mp heB).1 (by simp [heq])
+    have hz'B : z' ∈ B := (Finset.mem_powersetCard.mp heB).1 (by simp [heq])
+    have hzSupp : z ∈ o.supp := by simpa [B] using hzB
+    have hz'Supp : z' ∈ o.supp := by simpa [B] using hz'B
+    have hzO := hsubO hzSupp
+    have hz'O := hsubO hz'Supp
+    have hnotD : ¬D.Adj z z' :=
+      heGood z (by simp [heq]) z' (by simp [heq]) hzz'
+    obtain ⟨u, y, hyu, hzy, hz'y, hunique⟩ :=
+      degree_sixteen_fourLayer_nondefect_orphans_unique_service
+        G hfree hmin hcard c₀ hregChild hcardChild hzO hz'O hzz' hnotD
+    refine ⟨y, ⟨Finset.mem_biUnion.mpr
+      ⟨u, Finset.mem_univ _, hyu⟩, ?_⟩, ?_⟩
+    · intro q hq
+      rw [heq] at hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with hq | hq
+      · subst q
+        exact (G.mem_neighborFinset y z).mpr hzy.symm
+      · subst q
+        exact (G.mem_neighborFinset y z').mpr hz'y.symm
+    · intro y' hy'
+      obtain ⟨v, _hv, hy'v⟩ := Finset.mem_biUnion.mp hy'.1
+      have hzMem : z ∈ e := by simp [heq]
+      have hz'Mem : z' ∈ e := by simp [heq]
+      have hzy' : G.Adj z y' :=
+        ((G.mem_neighborFinset y' z).mp (hy'.2 hzMem)).symm
+      have hz'y' : G.Adj z' y' :=
+        ((G.mem_neighborFinset y' z').mp (hy'.2 hz'Mem)).symm
+      exact (hunique v y' hy'v hzy' hz'y').2
+
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
 structure left after the all-antipodal defect closure. -/
