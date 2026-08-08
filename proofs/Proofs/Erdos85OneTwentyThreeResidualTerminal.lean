@@ -651,8 +651,30 @@ theorem false_of_twentyfour_twentyfour_weighted_signature_capacity
       (S₁ = 16 ∧ S₂ = 24 ∧ S₃ = 16) ∨
       (S₁ = 8 ∧ S₂ = 36 ∧ S₃ = 8) ∨
       (S₁ = 0 ∧ S₂ = 48 ∧ S₃ = 0) ∨
-      (S₁ = 0 ∧ S₂ = 36 ∧ S₃ = 16)) : False := by
-  rcases hsignature with h | h | h | h | h <;> omega
+      (S₁ = 0 ∧ S₂ = 36 ∧ S₃ = 16) ∨
+      (S₁ = 24 ∧ S₂ = 12 ∧ S₃ = 24)) : False := by
+  rcases hsignature with h | h | h | h | h | h <;> omega
+
+set_option maxHeartbeats 2000000 in
+/-- The reduced `(24,24)` moment ledger has only six signatures once rows
+of types one and three have weight divisible by eight and rows of type two
+have weight divisible by four. -/
+theorem twentyfour_twentyfour_weighted_row_signature
+    (S₀ S₁ S₂ S₃ S₄ n₁ n₃ n₄₂ n₈₂ : ℕ)
+    (hmass : S₀ + S₁ + S₂ + S₃ + S₄ = 60)
+    (hedges : S₁ + 2 * S₂ + 3 * S₃ + 4 * S₄ = 120)
+    (hcherries : S₂ + 3 * S₃ + 6 * S₄ = 84)
+    (hS₁ : S₁ = 8 * n₁) (hS₃ : S₃ = 8 * n₃)
+    (hS₂ : S₂ = 4 * n₄₂ + 8 * n₈₂) (hn₄₂ : n₄₂ ≤ 1) :
+    (S₁ = 16 ∧ S₂ = 36 ∧ S₃ = 0) ∨
+      (S₁ = 16 ∧ S₂ = 24 ∧ S₃ = 16) ∨
+      (S₁ = 8 ∧ S₂ = 36 ∧ S₃ = 8) ∨
+      (S₁ = 0 ∧ S₂ = 48 ∧ S₃ = 0) ∨
+      (S₁ = 0 ∧ S₂ = 36 ∧ S₃ = 16) ∨
+      (S₁ = 24 ∧ S₂ = 12 ∧ S₃ = 24) := by
+  have hn₁ : n₁ ≤ 7 := by omega
+  have hn₃ : n₃ ≤ 7 := by omega
+  interval_cases n₁ <;> interval_cases n₃ <;> interval_cases n₄₂ <;> omega
 
 /-- Exact pair-ledger certificate for the last periodicity-feasible
 three-component orphan partition `(12,12,24)`.  The variables enumerate the
@@ -6943,6 +6965,91 @@ theorem degree_sixteen_fourLayer_two_orphan_used_quotient_sum_eq_four
       G hfree hmin hcard c₀ hregChild hcardChild x hrepRow
   rw [hpair] at hsumO
   simpa [D, R, O, hne] using hsumO
+
+/-- In the symmetric `(24,24)` orphan branch, used rows of quotient type
+one or three have order twenty-four, while rows of type two have order
+twelve or twenty-four. -/
+theorem degree_sixteen_fourLayer_twentyfour_twentyfour_used_row_orders
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂) (ho₁ : o₁.supp.ncard = 24)
+    (ho₂ : o₂.supp.ncard = 24)
+    (hpair :
+      Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \
+            minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀)) = {o₁, o₂})
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ = 1 →
+      e.supp.ncard = 24) ∧
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ = 2 →
+      e.supp.ncard = 12 ∨ e.supp.ncard = 24) ∧
+    (componentQuotientMatrix G (secondOrderDefectGraph G) e o₁ = 3 →
+      e.supp.ncard = 24) := by
+  let D := secondOrderDefectGraph G
+  have hsum := degree_sixteen_fourLayer_two_orphan_used_quotient_sum_eq_four
+    G hfree hmin hcard c₀ hregChild hcardChild o₁ o₂ hne hpair e he
+  change componentQuotientMatrix G D e o₁ +
+    componentQuotientMatrix G D e o₂ = 4 at hsum
+  have hlower := degree_sixteen_fourLayer_used_component_card_lower
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e he
+  have hbal₁ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₁
+  have hbal₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₂
+  constructor
+  · intro hq
+    change componentQuotientMatrix G D e o₁ = 1 at hq
+    have hother : componentQuotientMatrix G D e o₂ = 3 := by omega
+    have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+      G hfree hmin hcard e o₂ (by
+        simpa [D] using
+          (show 2 ≤ componentQuotientMatrix G D e o₂ by omega))
+    rw [ho₂] at hdvd
+    have hupper : e.supp.ncard ≤ 24 := Nat.le_of_dvd (by norm_num) hdvd
+    rw [ho₁, hq] at hbal₁
+    omega
+  · constructor
+    · intro hq
+      change componentQuotientMatrix G D e o₁ = 2 at hq
+      have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+        G hfree hmin hcard e o₁ (by
+          simpa [D] using
+            (show 2 ≤ componentQuotientMatrix G D e o₁ by omega))
+      rw [ho₁] at hdvd
+      have hupper : e.supp.ncard ≤ 24 := Nat.le_of_dvd (by norm_num) hdvd
+      rw [ho₁, hq] at hbal₁
+      omega
+    · intro hq
+      change componentQuotientMatrix G D e o₁ = 3 at hq
+      have hother : componentQuotientMatrix G D e o₂ = 1 := by omega
+      have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
+        G hfree hmin hcard e o₁ (by
+          simpa [D] using
+            (show 2 ≤ componentQuotientMatrix G D e o₁ by omega))
+      rw [ho₁] at hdvd
+      have hupper : e.supp.ncard ≤ 24 := Nat.le_of_dvd (by norm_num) hdvd
+      rw [ho₂, hother] at hbal₂
+      omega
 
 /-- In a `(12,36)` orphan pair, no used component can have quotient entry
 two or three into the order-twelve component.  Periodicity makes its order
