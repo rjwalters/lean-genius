@@ -7491,6 +7491,131 @@ theorem degree_sixteen_fourLayer_owner_bin_six_twelve_classification
         G hfree hmin hcard c₀ hc₀min hregChild hcardChild a).1
       horders hsixLe
 
+/-- Under the global two-six configuration, at least one of the five owner
+bins is ordinary and contains exactly three order-twelve components. -/
+theorem degree_sixteen_fourLayer_exists_ordinary_owner_bin
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hUsedOrders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      ∀ e ∈ C, e.supp.ncard = 6 ∨ e.supp.ncard = 12)
+    (hSixCount :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      (C.filter fun e => e.supp.ncard = 6).card = 2) :
+    let D := secondOrderDefectGraph G
+    let Erow := minimumLayerExternalNeighborFinset G D c₀
+    let X := fun a : minimumLayerComponent D c₀ =>
+      Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = a)
+    let B := fun a : minimumLayerComponent D c₀ => (X a).biUnion Erow
+    let E := fun a : minimumLayerComponent D c₀ =>
+      Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ B a)
+    ∃ a : minimumLayerComponent D c₀,
+      ((E a).filter fun e => e.supp.ncard = 6).card = 0 ∧
+      ((E a).filter fun e => e.supp.ncard = 12).card = 3 := by
+  classical
+  dsimp only at hUsedOrders hSixCount ⊢
+  let D := secondOrderDefectGraph G
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion Erow
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let X := fun a : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := fun a : minimumLayerComponent D c₀ => (X a).biUnion Erow
+  let E := fun a : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B a)
+  let S := C.filter fun e => e.supp.ncard = 6
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have howners : Fintype.card (minimumLayerComponent D c₀) = 5 := by
+    have hv := card_minimumLayerVertex D c₀
+    have hsub : Fintype.card (minimumLayerComponent D c₀) =
+        (Finset.univ.filter
+          (fun c : D.ConnectedComponent => c.supp.ncard = c₀.supp.ncard)).card :=
+      Fintype.card_subtype _
+    rw [hc₀three] at hsub
+    rw [hcardChild, hc₀three, ← hsub] at hv
+    omega
+  by_contra hnone
+  push Not at hnone
+  obtain ⟨a, _ha, b, _hb, hab⟩ := Finset.one_lt_card.mp
+    (show 1 < (Finset.univ : Finset (minimumLayerComponent D c₀)).card by
+      simp [howners])
+  have hclass (t : minimumLayerComponent D c₀) :=
+    degree_sixteen_fourLayer_owner_bin_six_twelve_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        hUsedOrders hSixCount t
+  have haTwo : ((E a).filter fun e => e.supp.ncard = 6).card = 2 := by
+    rcases hclass a with h | h
+    · exact False.elim ((hnone a h.1) h.2)
+    · exact h.1
+  have hbTwo : ((E b).filter fun e => e.supp.ncard = 6).card = 2 := by
+    rcases hclass b with h | h
+    · exact False.elim ((hnone b h.1) h.2)
+    · exact h.1
+  have hdisj : Disjoint
+      ((E a).filter fun e => e.supp.ncard = 6)
+      ((E b).filter fun e => e.supp.ncard = 6) := by
+    apply Finset.disjoint_left.mpr
+    intro e hea heb
+    have hrepA : componentRepresentative D e ∈ B a :=
+      (Finset.mem_filter.mp (Finset.mem_filter.mp hea).1).2
+    have hrepB : componentRepresentative D e ∈ B b :=
+      (Finset.mem_filter.mp (Finset.mem_filter.mp heb).1).2
+    exact (Finset.disjoint_left.mp
+      (degree_sixteen_fourLayer_owner_bins_disjoint
+        G hfree hmin hcard c₀ hregChild hcardChild a b hab)) hrepA hrepB
+  have hsub : ((E a).filter fun e => e.supp.ncard = 6) ∪
+      ((E b).filter fun e => e.supp.ncard = 6) ⊆ S := by
+    intro e he
+    have heab := Finset.mem_union.mp he
+    rcases heab with hea | heb
+    · have hd := Finset.mem_filter.mp hea
+      have hrepB : componentRepresentative D e ∈ B a :=
+        (Finset.mem_filter.mp hd.1).2
+      have hrepR : componentRepresentative D e ∈ R := by
+        obtain ⟨x, hx, hex⟩ := Finset.mem_biUnion.mp hrepB
+        exact Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hex⟩
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrepR⟩, hd.2⟩
+    · have hd := Finset.mem_filter.mp heb
+      have hrepB : componentRepresentative D e ∈ B b :=
+        (Finset.mem_filter.mp hd.1).2
+      have hrepR : componentRepresentative D e ∈ R := by
+        obtain ⟨x, hx, hex⟩ := Finset.mem_biUnion.mp hrepB
+        exact Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hex⟩
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrepR⟩, hd.2⟩
+  have hunionCard : (((E a).filter fun e => e.supp.ncard = 6) ∪
+      ((E b).filter fun e => e.supp.ncard = 6)).card = 4 := by
+    rw [Finset.card_union_of_disjoint hdisj, haTwo, hbTwo]
+  have hle := Finset.card_le_card hsub
+  change S.card = 2 at hSixCount
+  omega
+
 /-- The fifteen pairwise-disjoint service rows in the four-layer branch have
 twelve vertices each, so the full used-exterior cell has size 180. -/
 theorem degree_sixteen_fourLayer_used_exterior_card_eq_oneEighty
