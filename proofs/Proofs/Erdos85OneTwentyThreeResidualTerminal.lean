@@ -555,6 +555,70 @@ theorem weighted_quotient_zero_four_stratification
   exact ⟨hmassParts.trans hmass, hedgeParts.trans hedges,
     hcherryParts.trans hcherries⟩
 
+/-- Divide a three-divisible component ledger by three before stratifying
+its quotient values.  The reduced total mass is `60`; edge and cherry
+equations are retained in denominator-free scaled form. -/
+theorem weighted_quotient_zero_four_stratification_div_three
+    {α : Type*} [DecidableEq α]
+    (C : Finset α) (r q : α → ℕ)
+    (hdiv : ∀ c ∈ C, 3 ∣ r c)
+    (hq : ∀ c ∈ C, q c ≤ 4)
+    (E P : ℕ)
+    (hmass : ∑ c ∈ C, r c = 180)
+    (hedges : ∑ c ∈ C, r c * q c = E)
+    (hcherries : ∑ c ∈ C, r c * (q c).choose 2 = P) :
+    let w := fun c ↦ r c / 3
+    let S := fun a : ℕ ↦ ∑ c ∈ C, if q c = a then w c else 0
+    S 0 + S 1 + S 2 + S 3 + S 4 = 60 ∧
+      3 * (S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4) = E ∧
+      3 * (S 2 + 3 * S 3 + 6 * S 4) = P := by
+  classical
+  dsimp only
+  let w := fun c ↦ r c / 3
+  let S := fun a : ℕ ↦ ∑ c ∈ C, if q c = a then w c else 0
+  have hw : ∀ c ∈ C, 3 * w c = r c := by
+    intro c hc
+    exact Nat.mul_div_cancel' (hdiv c hc)
+  have hmassW : ∑ c ∈ C, w c = 60 := by
+    have hscaled : 3 * (∑ c ∈ C, w c) = 180 := by
+      calc
+        3 * (∑ c ∈ C, w c) = ∑ c ∈ C, 3 * w c := by
+          rw [Finset.mul_sum]
+        _ = ∑ c ∈ C, r c := by
+          apply Finset.sum_congr rfl
+          intro c hc
+          exact hw c hc
+        _ = 180 := hmass
+    omega
+  have hedgeW : 3 * (∑ c ∈ C, w c * q c) = E := by
+    calc
+      3 * (∑ c ∈ C, w c * q c) =
+          ∑ c ∈ C, 3 * (w c * q c) := by rw [Finset.mul_sum]
+      _ = ∑ c ∈ C, r c * q c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rw [← hw c hc]
+        ring
+      _ = E := hedges
+  have hcherryW : 3 * (∑ c ∈ C, w c * (q c).choose 2) = P := by
+    calc
+      3 * (∑ c ∈ C, w c * (q c).choose 2) =
+          ∑ c ∈ C, 3 * (w c * (q c).choose 2) := by
+            rw [Finset.mul_sum]
+      _ = ∑ c ∈ C, r c * (q c).choose 2 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rw [← hw c hc]
+        ring
+      _ = P := hcherries
+  obtain ⟨hm, he, hp⟩ := weighted_quotient_zero_four_stratification
+    C w q hq 60 (∑ c ∈ C, w c * q c)
+      (∑ c ∈ C, w c * (q c).choose 2)
+      hmassW rfl rfl
+  change S 0 + S 1 + S 2 + S 3 + S 4 = 60 ∧ _
+  exact ⟨hm, (congrArg (fun n ↦ 3 * n) he).trans hedgeW,
+    (congrArg (fun n ↦ 3 * n) hp).trans hcherryW⟩
+
 /-- Capacity certificate eliminating the five externally enumerated
 weighted signatures for the symmetric `(24,24)` branch.  Here `n₁`, `n₃`,
 and `n₈₂` count reduced-order-eight rows of types `1`, `3`, and `2`, while
@@ -9304,6 +9368,105 @@ theorem degree_sixteen_fourLayer_used_to_orphan_cherry_mass
           simpa [D, R, B] using hservice
     _ = B.card.choose 2 - B.card := by simpa [D, B] using hnon
     _ = o.supp.ncard.choose 2 - o.supp.ncard := by rw [hcardB]
+
+/-- The complete reduced `S₀,…,S₄` ledger for a named orphan
+component.  Used component orders are divided by three, and the numerical
+mass, edge, and cherry identities are stratified by their quotient entry
+into the orphan component. -/
+theorem degree_sixteen_fourLayer_orphan_reduced_quotient_stratification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+    let q := fun e : D.ConnectedComponent ↦ componentQuotientMatrix G D e o
+    let S := fun a : ℕ ↦ ∑ e ∈ C, if q e = a then w e else 0
+    S 0 + S 1 + S 2 + S 3 + S 4 = 60 ∧
+      3 * (S 1 + 2 * S 2 + 3 * S 3 + 4 * S 4) =
+        o.supp.ncard * 15 ∧
+      3 * (S 2 + 3 * S 3 + 6 * S 4) =
+        o.supp.ncard.choose 2 - o.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+  let q := fun e : D.ConnectedComponent ↦ componentQuotientMatrix G D e o
+  let S := fun a : ℕ ↦ ∑ e ∈ C, if q e = a then w e else 0
+  obtain ⟨hmass, hdiv⟩ := degree_sixteen_fourLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  have hedge := degree_sixteen_fourLayer_used_to_orphan_edge_mass
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hcherry := degree_sixteen_fourLayer_used_to_orphan_cherry_mass
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hsubO : o.supp ⊆
+      (((Finset.univ \ minimumLayerImageFinset D c₀) \ R : Finset V) : Set V) := by
+    have hrepComp : D.connectedComponentMk (componentRepresentative D o) = o :=
+      (ConnectedComponent.mem_supp_iff o
+        (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+    have hsub := degree_sixteen_fourLayer_orphan_component_subset
+      G hfree hmin hcard c₀ hregChild hcardChild
+        (componentRepresentative D o) ho
+    simpa [hrepComp, D, R] using hsub
+  have hq : ∀ e ∈ C, q e ≤ 4 := by
+    intro e he
+    have hyR : componentRepresentative D e ∈ R :=
+      (Finset.mem_filter.mp he).2
+    obtain ⟨v, _hv, hyv⟩ := Finset.mem_biUnion.mp hyR
+    have hQ := componentQuotientMatrix_apply_eq G D 2 hregD hcomm e o
+      (componentRepresentative_mem D e)
+    change componentQuotientMatrix G D e o ≤ 4
+    rw [hQ]
+    have hsubset : componentNeighborFinset G D o (componentRepresentative D e) ⊆
+        ((Finset.univ \ minimumLayerImageFinset D c₀) \ R) ∩
+          G.neighborFinset (componentRepresentative D e) := by
+      intro z hz
+      have hzData := Finset.mem_filter.mp hz
+      have hzSupp : z ∈ o.supp :=
+        (ConnectedComponent.mem_supp_iff o z).mpr hzData.2
+      exact Finset.mem_inter.mpr ⟨hsubO hzSupp, hzData.1⟩
+    calc
+      (componentNeighborFinset G D o (componentRepresentative D e)).card ≤
+          (((Finset.univ \ minimumLayerImageFinset D c₀) \ R) ∩
+            G.neighborFinset (componentRepresentative D e)).card :=
+        Finset.card_le_card hsubset
+      _ = 4 := degree_sixteen_fourLayer_used_exterior_orphan_degree_eq_four
+        G hfree hmin hcard c₀ hregChild hcardChild v hyv
+  simpa [D, R, C, w, q, S] using
+    weighted_quotient_zero_four_stratification_div_three
+      C (fun e ↦ e.supp.ncard) q hdiv hq
+        (o.supp.ncard * 15) (o.supp.ncard.choose 2 - o.supp.ncard)
+        hmass hedge hcherry
 
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
