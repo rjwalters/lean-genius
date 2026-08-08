@@ -2276,8 +2276,57 @@ theorem degree_sixteen_fourLayer_orphans_defect_closed
   rw [← hCD] at hz'D
   exact Finset.mem_of_mem_erase (Finset.mem_filter.mp hz'D).1
 
-/-- Component form of orphan defect closure: the entire defect component of
-every orphan is contained in the 48-vertex orphan set. -/
+/-- Component form of uniform orphan defect closure: the entire defect
+component of every orphan remains in the orphan cell. -/
+theorem degree_sixteen_minimumLayer_orphan_component_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    ∀ z ∈ O, (D.connectedComponentMk z).supp ⊆ (O : Set V) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  have hclosed : ∀ z ∈ O, D.neighborFinset z ⊆ O := by
+    intro z hz q hzq
+    exact degree_sixteen_minimumLayer_orphan_defect_closed
+      G hfree hs hmin hcard c₀ hregChild hcardChild hz
+        ((D.mem_neighborFinset z q).mp hzq)
+  have hwalk : ∀ (a b : V) (p : D.Walk a b), a ∈ O → b ∈ O := by
+    intro a b p
+    induction p with
+    | nil => exact fun ha => ha
+    | cons hadj q ih =>
+        intro ha
+        have hv : _ ∈ O := hclosed _ ha
+          ((D.mem_neighborFinset _ _).mpr hadj)
+        exact ih hv
+  intro z hz q hq
+  have heq : D.connectedComponentMk q = D.connectedComponentMk z :=
+    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk z) q).mp hq
+  have hr : D.Reachable z q := ConnectedComponent.eq.mp heq.symm
+  obtain ⟨p⟩ := hr
+  exact hwalk z q p hz
+
+/-- Compatibility wrapper for the `s=4` component closure theorem. -/
 theorem degree_sixteen_fourLayer_orphan_component_subset
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2297,30 +2346,9 @@ theorem degree_sixteen_fourLayer_orphan_component_subset
     let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
       Finset.univ.biUnion E
     ∀ z ∈ O, (D.connectedComponentMk z).supp ⊆ (O : Set V) := by
-  classical
-  dsimp only
-  let D := secondOrderDefectGraph G
-  let E := minimumLayerExternalNeighborFinset G D c₀
-  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
-    Finset.univ.biUnion E
-  have hclosed : ∀ z ∈ O, D.neighborFinset z ⊆ O :=
-    degree_sixteen_fourLayer_orphans_defect_closed
-      G hfree hmin hcard c₀ hregChild hcardChild
-  have hwalk : ∀ (a b : V) (p : D.Walk a b), a ∈ O → b ∈ O := by
-    intro a b p
-    induction p with
-    | nil => exact fun ha => ha
-    | cons hadj q ih =>
-        intro ha
-        have hv : _ ∈ O := hclosed _ ha
-          ((D.mem_neighborFinset _ _).mpr hadj)
-        exact ih hv
-  intro z hz q hq
-  have heq : D.connectedComponentMk q = D.connectedComponentMk z :=
-    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk z) q).mp hq
-  have hr : D.Reachable z q := ConnectedComponent.eq.mp heq.symm
-  obtain ⟨p⟩ := hr
-  exact hwalk z q p hz
+  simpa using degree_sixteen_minimumLayer_orphan_component_subset
+    G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild)
 
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
