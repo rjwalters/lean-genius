@@ -2953,8 +2953,6 @@ theorem false_of_two_orderSix_sources_three_orderTwelve_targets
     (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
     (hcard : Fintype.card V = 16 * (16 - 1) + 3)
     (c₁ c₂ e₀ e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
-    (hc₁min : ∀ l : (secondOrderDefectGraph G).ConnectedComponent,
-      c₁.supp.ncard ≤ l.supp.ncard)
     (hc₁ : c₁.supp.ncard = 6) (hc₂ : c₂.supp.ncard = 6)
     (he₀ : e₀.supp.ncard = 12) (he₁ : e₁.supp.ncard = 12)
     (he₂ : e₂.supp.ncard = 12) (hcne : c₁ ≠ c₂)
@@ -2982,67 +2980,24 @@ theorem false_of_two_orderSix_sources_three_orderTwelve_targets
     (componentQuotientMatrix G D e₁ c₂)
     (componentQuotientMatrix G D e₂ c₂)
     hrow₁ hrow₂ hcol₀ hcol₁ hcol₂
-  have hsame : c₂.supp.ncard = c₁.supp.ncard := hc₂.trans hc₁.symm
   rcases hshared with h | h | h
-  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₀
-    have hbal₂ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₀
-    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₀ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₁ = 1 := by
-        simpa [D] using h.1
-      rw [hc₁, he₀, hrev] at hbal₁
-      dsimp only [D]
-      omega
-    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₀ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c₂ = 1 := by
-        simpa [D] using h.2
-      rw [hc₂, he₀, hrev] at hbal₂
-      dsimp only [D]
-      omega
-    have heq := secondOrder_minimum_largerTarget_source_unique
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-        c₁ c₂ e₀ hc₁min hsame (by omega) hpos₁ hpos₂
+  · have heq := secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+        (by norm_num) c₁ c₂ e₀
+        (by rw [hc₁, hc₂]) (by rw [hc₁, he₀])
+        (by simpa [D] using h.1) (by simpa [D] using h.2)
     exact hcne heq
-  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₁
-    have hbal₂ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₁
-    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₁ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₁ = 1 := by
-        simpa [D] using h.1
-      rw [hc₁, he₁, hrev] at hbal₁
-      dsimp only [D]
-      omega
-    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₁ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₁ c₂ = 1 := by
-        simpa [D] using h.2
-      rw [hc₂, he₁, hrev] at hbal₂
-      dsimp only [D]
-      omega
-    have heq := secondOrder_minimum_largerTarget_source_unique
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-        c₁ c₂ e₁ hc₁min hsame (by omega) hpos₁ hpos₂
+  · have heq := secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+        (by norm_num) c₁ c₂ e₁
+        (by rw [hc₁, hc₂]) (by rw [hc₁, he₁])
+        (by simpa [D] using h.1) (by simpa [D] using h.2)
     exact hcne heq
-  · have hbal₁ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₁ e₂
-    have hbal₂ := secondOrder_componentQuotientMatrix_balance
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₂ e₂
-    have hpos₁ : 0 < componentQuotientMatrix G D c₁ e₂ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₁ = 1 := by
-        simpa [D] using h.1
-      rw [hc₁, he₂, hrev] at hbal₁
-      dsimp only [D]
-      omega
-    have hpos₂ : 0 < componentQuotientMatrix G D c₂ e₂ := by
-      have hrev : componentQuotientMatrix G (secondOrderDefectGraph G) e₂ c₂ = 1 := by
-        simpa [D] using h.2
-      rw [hc₂, he₂, hrev] at hbal₂
-      dsimp only [D]
-      omega
-    have heq := secondOrder_minimum_largerTarget_source_unique
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-        c₁ c₂ e₂ hc₁min hsame (by omega) hpos₁ hpos₂
+  · have heq := secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+        (by norm_num) c₁ c₂ e₂
+        (by rw [hc₁, hc₂]) (by rw [hc₁, he₂])
+        (by simpa [D] using h.1) (by simpa [D] using h.2)
     exact hcne heq
 
 /-- At the exact `d = 16` boundary, the total order of the
@@ -7700,6 +7655,142 @@ theorem degree_sixteen_fourLayer_orderSix_to_ordinary_owner_bin_quotient_sum_eq_
   rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
     G D B (by simpa [D, X, B] using hclosed) c]
   simpa [N, z] using hBcard
+
+/-- An order-twelve component in a named owner bin has reverse quotient one
+to its minimum owner and forward quotient four from that owner, and has zero
+quotient to every foreign minimum component. -/
+theorem degree_sixteen_fourLayer_owner_bin_orderTwelve_quotient_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (a : minimumLayerComponent (secondOrderDefectGraph G) c₀)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 12)
+    (heBin :
+      let D := secondOrderDefectGraph G
+      let X := Finset.univ.filter
+        (fun x : minimumLayerVertex D c₀ => x.1 = a)
+      let B := X.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      componentRepresentative D e ∈ B) :
+    let D := secondOrderDefectGraph G
+    componentQuotientMatrix G D e a.1 = 1 ∧
+      componentQuotientMatrix G D a.1 e = 4 ∧
+      ∀ f : D.ConnectedComponent,
+        componentRepresentative D f ∈ minimumLayerImageFinset D c₀ →
+        f ≠ a.1 → componentQuotientMatrix G D e f = 0 := by
+  classical
+  dsimp only at heBin ⊢
+  let D := secondOrderDefectGraph G
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let X := Finset.univ.filter
+    (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := X.biUnion Erow
+  let z := componentRepresentative D e
+  obtain ⟨x, hxX, hzx⟩ := Finset.mem_biUnion.mp heBin
+  have hxOwner : x.1 = a := (Finset.mem_filter.mp hxX).2
+  have hzOutside : z ∉ minimumLayerImageFinset D c₀ :=
+    (Finset.mem_sdiff.mp hzx).2
+  have hregD : ∀ v : V, D.degree v = 2 := by
+    simpa [D] using secondOrderDefectGraph_degree_eq_two G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hze : z ∈ e.supp := componentRepresentative_mem D e
+  have hownerUnique : ∀ w : minimumLayerVertex D c₀, z ∈ Erow w → w = x := by
+    intro w hzw
+    by_contra hwx
+    have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild hcardChild
+    exact (Finset.disjoint_left.mp
+      (hpair (Finset.mem_univ w) (Finset.mem_univ x) hwx)) hzw hzx
+  have hownerNeighbors : componentNeighborFinset G D a.1 z = {x.2.1} := by
+    ext t
+    constructor
+    · intro ht
+      have htData := Finset.mem_filter.mp ht
+      have hta : t ∈ a.1.supp :=
+        (ConnectedComponent.mem_supp_iff a.1 t).mpr htData.2
+      let w : minimumLayerVertex D c₀ := ⟨a, ⟨t, hta⟩⟩
+      have hzw : z ∈ Erow w := by
+        apply Finset.mem_sdiff.mpr
+        exact ⟨(G.mem_neighborFinset t z).mpr
+          ((G.mem_neighborFinset z t).mp htData.1).symm, hzOutside⟩
+      have hwx : w = x := hownerUnique w hzw
+      simpa [w] using congrArg (fun q : minimumLayerVertex D c₀ => q.2.1) hwx
+    · intro ht
+      have htx : t = x.2.1 := Finset.mem_singleton.mp ht
+      subst t
+      have hxa : D.connectedComponentMk x.2.1 = a.1 :=
+        (ConnectedComponent.mem_supp_iff a.1 x.2.1).mp (by
+          simpa [hxOwner] using x.2.2)
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset z x.2.1).mpr
+          ((G.mem_neighborFinset x.2.1 z).mp
+            (Finset.mem_sdiff.mp hzx).1).symm, hxa⟩
+  have hone : componentQuotientMatrix G D e a.1 = 1 := by
+    rw [componentQuotientMatrix_apply_eq G D 2 hregD
+      (by simpa [D] using hcomm) e a.1 hze, hownerNeighbors]
+    simp
+  have haThree : a.1.supp.ncard = 3 := by
+    have hc₀three : c₀.supp.ncard = 3 :=
+      minimumLayer_child_common_length_eq_three
+        G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+          c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+    exact a.2.trans hc₀three
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard a.1 e
+  have hfour : componentQuotientMatrix G D a.1 e = 4 := by
+    dsimp only [D] at hone ⊢
+    rw [haThree, he, hone] at hbal
+    omega
+  refine ⟨hone, hfour, ?_⟩
+  intro f hfU hfa
+  rw [componentQuotientMatrix_apply_eq G D 2 hregD
+    (by simpa [D] using hcomm) e f hze]
+  apply Finset.card_eq_zero.mpr
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro t ht
+  have htData := Finset.mem_filter.mp ht
+  change componentRepresentative D f ∈ Finset.univ.image
+    (minimumLayerVertexValue (D := D) (c₀ := c₀)) at hfU
+  obtain ⟨y, _hy, hyrep⟩ := Finset.mem_image.mp hfU
+  have hrepF : D.connectedComponentMk (componentRepresentative D f) = f :=
+    (ConnectedComponent.mem_supp_iff f (componentRepresentative D f)).mp
+      (componentRepresentative_mem D f)
+  have hyF : y.1.1 = f := by
+    have hrepY : D.connectedComponentMk (componentRepresentative D f) = y.1.1 :=
+      (ConnectedComponent.mem_supp_iff y.1.1
+        (componentRepresentative D f)).mp (by
+          change componentRepresentative D f ∈ y.1.1.supp
+          rw [← hyrep]
+          exact y.2.2)
+    exact hrepY.symm.trans hrepF
+  have htf : t ∈ f.supp :=
+    (ConnectedComponent.mem_supp_iff f t).mpr htData.2
+  let w : minimumLayerVertex D c₀ := ⟨y.1, ⟨t, by simpa [hyF] using htf⟩⟩
+  have hzw : z ∈ Erow w := by
+    apply Finset.mem_sdiff.mpr
+    exact ⟨(G.mem_neighborFinset t z).mpr
+      ((G.mem_neighborFinset z t).mp htData.1).symm, hzOutside⟩
+  have hwx : w = x := hownerUnique w hzw
+  have hownerEq : f = a.1 := by
+    calc
+      f = y.1.1 := hyF.symm
+      _ = w.1.1 := rfl
+      _ = x.1.1 := congrArg (fun q : minimumLayerVertex D c₀ => q.1.1) hwx
+      _ = a.1 := congrArg Subtype.val hxOwner
+  exact hfa hownerEq
 
 /-- The used defect components owned by one minimum `C₃` form a partition of
 its 36-vertex service bin; consequently every selected order is a
@@ -13770,6 +13861,176 @@ theorem degree_sixteen_fourLayer_four_orderTwelve_orphans_used_order_six_or_twel
         (by simpa [D] using hone o₁ ho₁)
         (by simpa [D] using hone o₂ ho₂)
     exact hne heq
+
+/-- The symmetric four-order-twelve orphan branch is impossible.  Its used
+cell has exactly two order-six components and admits an ordinary owner bin
+of three order-twelve components.  Both six-components have reverse unit
+mass across that bin, every target column has even combined mass, and the
+multiple-cover uniqueness capstone gives the contradiction. -/
+theorem degree_sixteen_fourLayer_false_of_four_orderTwelve_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hOcard :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      O.card = 4)
+    (hOorders :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈
+          (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+      ∀ o ∈ O, o.supp.ncard = 12) : False := by
+  classical
+  dsimp only at hOcard hOorders
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let Erow := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion Erow
+  let O := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ (Finset.univ \ U) \ R)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let X := fun a : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun x : minimumLayerVertex D c₀ => x.1 = a)
+  let B := fun a : minimumLayerComponent D c₀ => (X a).biUnion Erow
+  let E := fun a : minimumLayerComponent D c₀ =>
+    Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ B a)
+  have hUsedOrders : ∀ e ∈ C, e.supp.ncard = 6 ∨ e.supp.ncard = 12 := by
+    exact degree_sixteen_fourLayer_four_orderTwelve_orphans_used_order_six_or_twelve
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hOcard hOorders
+  have hSixCount : (C.filter fun e => e.supp.ncard = 6).card = 2 := by
+    exact degree_sixteen_fourLayer_four_orderTwelve_orphans_used_orderSix_count_eq_two
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hOcard hOorders
+  obtain ⟨a, haSix, haTwelve⟩ :=
+    degree_sixteen_fourLayer_exists_ordinary_owner_bin
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hUsedOrders hSixCount
+  have haSix' : ((E a).filter fun e => e.supp.ncard = 6).card = 0 := by
+    simpa [E, B, X, Erow, D] using haSix
+  have haTwelve' : ((E a).filter fun e => e.supp.ncard = 12).card = 3 := by
+    simpa [E, B, X, Erow, D] using haTwelve
+  let S := C.filter fun e => e.supp.ncard = 6
+  have hScard : S.card = 2 := by simpa [S] using hSixCount
+  obtain ⟨c₁, c₂, hcne, hS⟩ := Finset.card_eq_two.mp hScard
+  have hc₁S : c₁ ∈ S := by rw [hS]; simp
+  have hc₂S : c₂ ∈ S := by rw [hS]; simp
+  have hc₁C : c₁ ∈ C := (Finset.mem_filter.mp hc₁S).1
+  have hc₂C : c₂ ∈ C := (Finset.mem_filter.mp hc₂S).1
+  have hc₁ : c₁.supp.ncard = 6 := (Finset.mem_filter.mp hc₁S).2
+  have hc₂ : c₂.supp.ncard = 6 := (Finset.mem_filter.mp hc₂S).2
+  let T := (E a).filter fun e => e.supp.ncard = 12
+  have hEaOrders : ∀ e ∈ E a, e.supp.ncard = 12 := by
+    intro e heE
+    have heB : componentRepresentative D e ∈ B a :=
+      (Finset.mem_filter.mp heE).2
+    obtain ⟨x, hx, hex⟩ := Finset.mem_biUnion.mp heB
+    have heR : componentRepresentative D e ∈ R :=
+      Finset.mem_biUnion.mpr ⟨x, Finset.mem_univ _, hex⟩
+    have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    rcases hUsedOrders e heC with heSix | heTwelve
+    · have : e ∈ (E a).filter fun q => q.supp.ncard = 6 :=
+        Finset.mem_filter.mpr ⟨heE, heSix⟩
+      rw [Finset.card_eq_zero.mp haSix'] at this
+      exact (Finset.notMem_empty e this).elim
+    · exact heTwelve
+  have hTE : T = E a := by
+    ext e
+    constructor
+    · intro he
+      exact (Finset.mem_filter.mp he).1
+    · intro he
+      exact Finset.mem_filter.mpr ⟨he, hEaOrders e he⟩
+  have hTcard : T.card = 3 := by simpa [T] using haTwelve'
+  obtain ⟨e₀, e₁, e₂, he₀e₁, he₀e₂, he₁e₂, hT⟩ :=
+    Finset.card_eq_three.mp hTcard
+  have he₀T : e₀ ∈ T := by rw [hT]; simp
+  have he₁T : e₁ ∈ T := by rw [hT]; simp
+  have he₂T : e₂ ∈ T := by rw [hT]; simp
+  have he₀E : e₀ ∈ E a := (Finset.mem_filter.mp he₀T).1
+  have he₁E : e₁ ∈ E a := (Finset.mem_filter.mp he₁T).1
+  have he₂E : e₂ ∈ E a := (Finset.mem_filter.mp he₂T).1
+  have he₀ : e₀.supp.ncard = 12 := (Finset.mem_filter.mp he₀T).2
+  have he₁ : e₁.supp.ncard = 12 := (Finset.mem_filter.mp he₁T).2
+  have he₂ : e₂.supp.ncard = 12 := (Finset.mem_filter.mp he₂T).2
+  have hforward (c : D.ConnectedComponent) (hcC : c ∈ C)
+      (hc : c.supp.ncard = 6) :
+      componentQuotientMatrix G D c e₀ +
+        componentQuotientMatrix G D c e₁ +
+        componentQuotientMatrix G D c e₂ = 2 := by
+    have h := degree_sixteen_fourLayer_orderSix_to_ordinary_owner_bin_quotient_sum_eq_two
+      G hfree hmin hcard c₀ hregChild hcardChild a haSix c hc
+        (Finset.mem_filter.mp hcC).2
+    dsimp only at h
+    change (∑ e ∈ E a, componentQuotientMatrix G D c e) = 2 at h
+    rw [← hTE] at h
+    rw [hT] at h
+    simpa [he₀e₁, he₀e₂, he₁e₂, Nat.add_assoc] using h
+  have hrow₁ := degree_sixteen_orderSix_three_orderTwelve_reverse_sum_eq_one
+    G hfree hmin hcard c₁ e₀ e₁ e₂ hc₁ he₀ he₁ he₂
+      (hforward c₁ hc₁C hc₁)
+  have hrow₂ := degree_sixteen_orderSix_three_orderTwelve_reverse_sum_eq_one
+    G hfree hmin hcard c₂ e₀ e₁ e₂ hc₂ he₀ he₁ he₂
+      (hforward c₂ hc₂C hc₂)
+  have hc₀three : c₀.supp.ncard = 3 :=
+    minimumLayer_child_common_length_eq_three
+      G hfree (d := 16) (s := 4) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild (by norm_num; exact hcardChild) (by norm_num) (by norm_num)
+  have haThree : a.1.supp.ncard = 3 := a.2.trans hc₀three
+  have hac₁ : a.1 ≠ c₁ := by intro h; rw [h, hc₁] at haThree; omega
+  have hac₂ : a.1 ≠ c₂ := by intro h; rw [h, hc₂] at haThree; omega
+  have hrest (e : D.ConnectedComponent) (heE : e ∈ E a)
+      (he : e.supp.ncard = 12) :
+      ∀ f, f ≠ a.1 → f ≠ c₁ → f ≠ c₂ →
+        f.supp.ncard = 12 ∨ componentQuotientMatrix G D e f = 0 := by
+    have hp := degree_sixteen_fourLayer_owner_bin_orderTwelve_quotient_package
+      G hfree hmin hcard c₀ hregChild hcardChild a e he
+        (Finset.mem_filter.mp heE).2
+    intro f hfu hfc₁ hfc₂
+    by_cases hfU : componentRepresentative D f ∈ U
+    · exact Or.inr (hp.2.2 f hfU hfu)
+    · by_cases hfR : componentRepresentative D f ∈ R
+      · have hfC : f ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hfR⟩
+        rcases hUsedOrders f hfC with hfSix | hfTwelve
+        · have hfS : f ∈ S := Finset.mem_filter.mpr ⟨hfC, hfSix⟩
+          rw [hS] at hfS
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hfS
+          exact (hfS.elim (fun h => (hfc₁ h).elim) (fun h => (hfc₂ h).elim))
+        · exact Or.inl hfTwelve
+      · have hfO : f ∈ O := Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+          Finset.mem_sdiff.mpr ⟨Finset.mem_sdiff.mpr
+            ⟨Finset.mem_univ _, hfU⟩, hfR⟩⟩
+        exact Or.inl (hOorders f (by simpa [D, U, R, O] using hfO))
+  have hcolumn (e : D.ConnectedComponent) (heE : e ∈ E a)
+      (he : e.supp.ncard = 12) :
+      Even (componentQuotientMatrix G D e c₁ +
+        componentQuotientMatrix G D e c₂) := by
+    have hp := degree_sixteen_fourLayer_owner_bin_orderTwelve_quotient_package
+      G hfree hmin hcard c₀ hregChild hcardChild a e he
+        (Finset.mem_filter.mp heE).2
+    exact degree_sixteen_orderTwelve_two_orderSix_column_even
+      G hfree hmin hcard e a.1 c₁ c₂ hac₁ hac₂ hcne he hc₁ hc₂
+        hp.1 hp.2.1 (hrest e heE he)
+  exact false_of_two_orderSix_sources_three_orderTwelve_targets
+    G hfree hmin hcard c₁ c₂ e₀ e₁ e₂ hc₁ hc₂ he₀ he₁ he₂ hcne
+      hrow₁ hrow₂ (hcolumn e₀ he₀E he₀) (hcolumn e₁ he₁E he₁)
+        (hcolumn e₂ he₂E he₂)
 
 /-- Across all five minimum-component owner bins, there are at most five
 used defect components of order twenty-four.  Each 36-vertex bin contains at
