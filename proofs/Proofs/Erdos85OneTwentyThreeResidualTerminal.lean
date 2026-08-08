@@ -7087,7 +7087,9 @@ theorem degree_sixteen_fourLayer_one_orphan_used_quotient_eq_four
   simpa [D, R, O] using hsumO
 
 /-- In the singleton order-48 orphan branch, every used defect component
-has order twelve or twenty-four. -/
+has order twelve.  Forward divisibility and balance first leave orders
+twelve and twenty-four; at order twenty-four the reverse quotient is two,
+so reverse divisibility would force `48 ∣ 24`. -/
 theorem degree_sixteen_fourLayer_one_orphan_used_component_order
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -7116,7 +7118,7 @@ theorem degree_sixteen_fourLayer_one_orphan_used_component_order
     (he : componentRepresentative (secondOrderDefectGraph G) e ∈
       Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
         (secondOrderDefectGraph G) c₀)) :
-    e.supp.ncard = 12 ∨ e.supp.ncard = 24 := by
+    e.supp.ncard = 12 := by
   have hq := degree_sixteen_fourLayer_one_orphan_used_quotient_eq_four
     G hfree hmin hcard c₀ hregChild hcardChild o hpair e he
   have hdvd := degree_sixteen_component_order_dvd_of_two_le_quotient
@@ -7142,10 +7144,21 @@ theorem degree_sixteen_fourLayer_one_orphan_used_component_order
   have hbal := secondOrder_componentQuotientMatrix_balance
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
   rw [hq, ho] at hbal
-  interval_cases horder : e.supp.ncard
-  all_goals (try norm_num [horder] at hdvd hbal)
-  all_goals (try omega)
-  all_goals simp [horder]
+  have hcases : e.supp.ncard = 12 ∨ e.supp.ncard = 24 := by
+    interval_cases horder : e.supp.ncard
+    all_goals (try norm_num [horder] at hdvd hbal)
+    all_goals (try omega)
+    all_goals simp [horder]
+  rcases hcases with h12 | h24
+  · exact h12
+  · have hreverse : componentQuotientMatrix G
+        (secondOrderDefectGraph G) o e = 2 := by
+      rw [h24] at hbal
+      omega
+    have hdvdReverse := degree_sixteen_component_order_dvd_of_two_le_quotient
+      G hfree hmin hcard o e (by rw [hreverse])
+    rw [ho, h24] at hdvdReverse
+    norm_num at hdvdReverse
 
 /-- In the singleton order-48 orphan branch, at most one used component has
 order twelve. -/
@@ -7211,6 +7224,69 @@ theorem degree_sixteen_fourLayer_one_orphan_order_twelve_count_le_one
   · omega
   · exact hone₁
   · exact hone₂
+
+/-- A singleton order-48 orphan component is impossible.  Every used
+component would have order twelve, while four-cover uniqueness permits at
+most one such component; this contradicts the exact used mass 180. -/
+theorem degree_sixteen_fourLayer_false_of_one_order_fortyeight_orphan
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 48)
+    (hpair :
+      Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent ↦
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀)) = {o}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  have hmass : (∑ e ∈ C, e.supp.ncard) = 180 :=
+    (degree_sixteen_fourLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild).1
+  have hle : (C.filter fun e ↦ e.supp.ncard = 12).card ≤ 1 :=
+    degree_sixteen_fourLayer_one_orphan_order_twelve_count_le_one
+      G hfree hmin hcard c₀ hregChild hcardChild o ho hpair
+  have hall : ∀ e ∈ C, e.supp.ncard = 12 := by
+    intro e he
+    exact degree_sixteen_fourLayer_one_orphan_used_component_order
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hpair e
+        (Finset.mem_filter.mp he).2
+  have hfilter : C.filter (fun e ↦ e.supp.ncard = 12) = C := by
+    apply Finset.filter_eq_self.mpr
+    exact hall
+  rw [hfilter] at hle
+  have hnonempty : C.Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty.mp hempty] at hmass
+    simp at hmass
+  obtain ⟨e, he⟩ := hnonempty
+  have hC : C = {e} := by
+    ext f
+    constructor
+    · intro hf
+      simpa using Finset.card_le_one.mp hle f hf e he
+    · intro hf
+      have hfe : f = e := Finset.mem_singleton.mp hf
+      simpa [hfe] using he
+  rw [hC] at hmass
+  simp [hall e he] at hmass
 
 /-- In the symmetric `(24,24)` orphan branch, used rows of quotient type
 one or three have order twenty-four, while rows of type two have order
@@ -10579,6 +10655,45 @@ theorem false_of_degree_sixteen_fourLayer_two_orphan_components
   · exact degree_sixteen_fourLayer_false_of_twentyfour_twentyfour_orphan_pair
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild
         c d hcd h24_24.1 h24_24.2 hC
+
+/-- The four-layer branch cannot have exactly one orphan defect component. -/
+theorem false_of_degree_sixteen_fourLayer_one_orphan_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent ↦
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 1) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent ↦
+    componentRepresentative D c ∈ O)
+  change C.card = 1 at hcount
+  obtain ⟨o, hC⟩ := Finset.card_eq_one.mp hcount
+  have hsum := degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ c ∈ C, c.supp.ncard) = 48 at hsum
+  rw [hC] at hsum
+  have ho : o.supp.ncard = 48 := by simpa using hsum
+  exact degree_sixteen_fourLayer_false_of_one_order_fortyeight_orphan
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hC
 
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
