@@ -1893,6 +1893,68 @@ theorem degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
   · exact degree_sixteen_fourLayer_uncovered_orphans_defect_adj
       G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
 
+/-- Complementary form of the exact leave law: every non-defect orphan
+pair occurs together at one unique service point in one unique row. -/
+theorem degree_sixteen_fourLayer_nondefect_orphans_unique_service
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : z ≠ z')
+    (hnotD : ¬(secondOrderDefectGraph G).Adj z z') :
+    ∃ u : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∃ y : V,
+      y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u ∧
+      G.Adj z y ∧ G.Adj z' y ∧
+      ∀ v : minimumLayerVertex (secondOrderDefectGraph G) c₀, ∀ y' : V,
+        y' ∈ minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀ v →
+        G.Adj z y' → G.Adj z' y' → v = u ∧ y' = y := by
+  classical
+  have hcollision : ¬(∀ u : minimumLayerVertex
+      (secondOrderDefectGraph G) c₀,
+      ∀ y ∈ minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀ u,
+        ¬(G.Adj z y ∧ G.Adj z' y)) := by
+    intro hnone
+    exact hnotD ((degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz').mpr hnone)
+  push_neg at hcollision
+  obtain ⟨u, y, hyE, hzy, hz'y⟩ := hcollision
+  refine ⟨u, y, hyE, hzy, hz'y, ?_⟩
+  intro v y' hy'E hzy' hz'y'
+  have huv := degree_sixteen_fourLayer_shared_service_row_unique
+    G hfree hmin hcard c₀ hregChild hcardChild hzz'
+      hyE hzy hz'y hy'E hzy' hz'y'
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hzz'
+  have hyMem : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hzy,
+        (G.mem_neighborFinset z' y).mpr hz'y⟩
+  have hy'Mem : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hzy',
+        (G.mem_neighborFinset z' y').mpr hz'y'⟩
+  exact ⟨huv.symm, Finset.card_le_one.mp hcommon y' hy'Mem y hyMem⟩
+
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
 structure left after the all-antipodal defect closure. -/
