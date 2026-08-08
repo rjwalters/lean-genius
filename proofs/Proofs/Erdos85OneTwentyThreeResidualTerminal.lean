@@ -1873,6 +1873,73 @@ theorem degree_sixteen_minimumLayer_orphan_defect_closed
   have hqInter : q ∈ O ∩ D.neighborFinset z := by simpa [heq] using hqN
   exact (Finset.mem_inter.mp hqInter).1
 
+/-- The minimum-layer image is closed under the defect graph simply because
+it is the union of complete minimum-order connected components. -/
+theorem minimumLayerImage_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) {z q : V}
+    (hz : z ∈ minimumLayerImageFinset D c₀) (hzq : D.Adj z q) :
+    q ∈ minimumLayerImageFinset D c₀ := by
+  classical
+  obtain ⟨u, _hu, huz⟩ := Finset.mem_image.mp hz
+  change u.2.1 = z at huz
+  subst z
+  have hcomp : D.connectedComponentMk q = u.1.1 :=
+    (ConnectedComponent.connectedComponentMk_eq_of_adj hzq.symm).trans
+      ((ConnectedComponent.mem_supp_iff u.1.1 u.2.1).mp u.2.2)
+  have hqSupp : q ∈ u.1.1.supp :=
+    (ConnectedComponent.mem_supp_iff u.1.1 q).mpr hcomp
+  exact Finset.mem_image.mpr
+    ⟨⟨u.1, ⟨q, hqSupp⟩⟩, Finset.mem_univ _, rfl⟩
+
+/-- The used exterior is the third defect-closed cell: it is the complement
+of the already closed minimum layer and orphan cells. -/
+theorem degree_sixteen_minimumLayer_used_exterior_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    {z q : V}
+    (hz : z ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    (hzq : (secondOrderDefectGraph G).Adj z q) :
+    q ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hzNotU : z ∉ U := by
+    have hzComp := minimumLayer_externalBiUnion_subset_complement G D c₀ hz
+    exact (Finset.mem_sdiff.mp hzComp).2
+  have hzNotO : z ∉ O := by
+    intro hzO
+    exact (Finset.mem_sdiff.mp hzO).2 hz
+  have hqNotU : q ∉ U := by
+    intro hqU
+    exact hzNotU (minimumLayerImage_defect_closed D c₀ hqU hzq.symm)
+  have hqNotO : q ∉ O := by
+    intro hqO
+    exact hzNotO (degree_sixteen_minimumLayer_orphan_defect_closed
+      G hfree hs hmin hcard c₀ hregChild hcardChild hqO hzq.symm)
+  by_contra hqNotR
+  exact hqNotO (Finset.mem_sdiff.mpr
+    ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hqNotU⟩, hqNotR⟩)
+
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
