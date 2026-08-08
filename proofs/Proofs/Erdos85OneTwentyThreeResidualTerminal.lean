@@ -743,6 +743,60 @@ theorem degree_sixteen_fourLayer_uncovered_orphan_card_le_two
   rw [D.card_neighborFinset_eq_degree, hdeg] at hle
   exact hle
 
+/-- Consequently, each orphan has at least 45 covered partners among the
+other 47 orphans.  `Covered` here means the complement of the row-wise
+uncovered predicate; a following lemma can unpack it into a shared service
+point. -/
+theorem degree_sixteen_fourLayer_covered_orphan_card_ge_fortyFive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    let P := O.erase z
+    let C := P.filter (fun z' =>
+      ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+        ¬(G.Adj z y ∧ G.Adj z' y))
+    45 ≤ (P \ C).card := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  let P := O.erase z
+  let C := P.filter (fun z' =>
+    ∀ u : minimumLayerVertex D c₀, ∀ y ∈ E u,
+      ¬(G.Adj z y ∧ G.Adj z' y))
+  have hcardO : O.card = 48 :=
+    degree_sixteen_fourLayer_unused_exterior_card_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  have hcardP : P.card = 47 := by
+    rw [Finset.card_erase_of_mem hz, hcardO]
+  have hcardC : C.card ≤ 2 :=
+    degree_sixteen_fourLayer_uncovered_orphan_card_le_two
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+  have hCsub : C ⊆ P := Finset.filter_subset _ _
+  rw [Finset.card_sdiff_of_subset hCsub, hcardP]
+  omega
+
 end
 
 end Erdos85
