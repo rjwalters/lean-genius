@@ -279,5 +279,60 @@
       "not_containsC4_of_forall_common_le_one",
       "petersen_common_le_one"
     ]
+  },
+  {
+    "id": "ann-e85-boza48-witness",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 329,
+      "endLine": 334
+    },
+    "type": "theorem",
+    "title": "Results I: a 7-Regular C₄-Free Graph on 48 Vertices",
+    "content": "**The witness that pins $f(48)$ from below.** The companion module `Erdos85Boza48Witness` constructs a concrete graph realizing `C4FreeMinDegreeWitness 48 7`: the **Cayley graph of the semidirect product** $\\mathbb{Z}_{24} \\rtimes \\mathbb{Z}_2$ (the $\\mathbb{Z}_2$ factor acts by $a \\mapsto 19a$; note $19^2 \\equiv 1 \\pmod{24}$) with connection set\n\n$$S = \\{(0,1),\\,(1,1),\\,(5,1),\\,(3,0),\\,(21,0),\\,(14,1),\\,(22,1)\\}.$$\n\n$S$ is closed under group inversion, so the Cayley graph is a genuine 7-regular simple graph on 48 vertices. The $C_4$-freeness has a one-line reason: **all 42 ordered quotients** $t \\cdot s^{-1}$ ($s \\ne t \\in S$) **are pairwise distinct**, so no two vertices can share two common neighbours — a nonabelian analogue of a Sidon set.\n\nTwo structural negative results guided the search and are of independent interest: **no induced 48-vertex subgraph of the Erdős–Rényi polarity graph $ER_7$ attains minimum degree 7** (the eight absolute points force the deleted 9-set outside all tangent lines, and the edge budget then exceeds $\\mathrm{ex}(9, C_4) = 13$), and **no abelian group of order 48 admits such a connection set** (exhaustive check of all six abelian groups). The witness lives just beyond both classical constructions."
+  },
+  {
+    "id": "ann-e85-f48-exact",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 336,
+      "endLine": 344
+    },
+    "type": "theorem",
+    "title": "Results II: f(48) = 8, Unconditionally",
+    "content": "**A new exact value of the threshold.** Feeding the 48-vertex witness through this threshold/witness duality, the companion module `Erdos85FiniteDropWitnesses` proves\n\n$$f(48) = 8$$\n\nas an **unconditional, machine-checked theorem** (`minDegreeForC4_fortyEight_eq_eight_checked`): the witness gives $f(48) > 7$, and a counting argument (no $C_4$-free graph on 48 vertices can have minimum degree 8) gives $f(48) \\le 8$. In Ramsey translation this settles the lower half of $R(C_4, K_{1,41}) = 49$.\n\nA companion witness on 49 vertices — $ER_7$ **minus the closed neighbourhood of an absolute point** (degrees $7^{\\times 42}6^{\\times 7}$, still $C_4$-free as an induced subgraph of a polarity graph) — realizes `C4FreeMinDegreeWitness 49 6` and hence $f(49) \\ge 7$ (`orderFortyNine_degreeSixWitness`). The finite adjacency, degree, and common-neighbour checks are discharged by `native_decide`, whose compiler trust appears in the audit as theorem-specific kernel axioms (`…_native.native_decide.ax_*`) alongside `propext`, `Classical.choice`, and `Quot.sound`; these witness theorems therefore do **not** depend only on the standard logical axioms, and that is disclosed here."
+  },
+  {
+    "id": "ann-e85-49-stratification",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 361,
+      "endLine": 368
+    },
+    "type": "concept",
+    "title": "Results III: the 49-Vertex Programme — Stratification and Certificates",
+    "content": "**Does a $C_4$-free graph on 49 vertices with minimum degree 7 exist?** This single finite question decides whether $f$ drops at 49. The programme attacks it by *stratification*: any such graph has degrees in $\\{7, 8\\}$, its degree-8 vertices are independent, pairwise share exactly one common neighbour, and their number $h$ is odd with $h \\le 9$ — all machine-checked. A further **profile law** shows each stratum is parameterized by a *linear triple system* on the $h$ degree-8 vertices, reducing the infinite-looking search to finitely many combinatorial types per stratum.\n\n**The $h = 9$ stratum is fully closed** (`false_of_orderFortyNine_nine_high`): the classification is proved in Lean (with an explicit 983-row witness-permutation table checked by `decide`-style automation), each canonical type is translated to a CNF formula by a *verified, byte-exact* clause generator (faithfulness theorems connect graph hypotheses to the exact clause list, including a formalization of the sequential-counter cardinality encoding), and each type carries an **LRAT unsatisfiability certificate** replayed inside Lean by the kernel-checked LRAT checker from `Std`. The result is a closed theorem with no appeal to an external solver's honesty: the solver only *found* the proofs; Lean *checked* them.\n\nThe remaining strata ($h \\in \\{1, 3, 5, 7\\}$) are reduced to a short, explicitly documented list of SAT instances (a survivor manifest with named hypotheses and coverage lemmas), several of which are already closed; solving continues by the same certificate pipeline."
+  },
+  {
+    "id": "ann-e85-conditional-drop",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 384,
+      "endLine": 397
+    },
+    "type": "insight",
+    "title": "Results IV (conditional): the First Drop of f — Status",
+    "content": "**Conditional, clearly marked.** The capstone module `Erdos85FiniteDropCapstone` proves: *if* no $C_4$-free graph on 49 vertices has minimum degree 7 (the conjunction of the remaining survivor hypotheses), *then*\n\n$$f(49) = 7 < 8 = f(48),$$\n\nthe **first proven drop** of the Erdős #85 threshold function, together with the Ramsey values $R(C_4, K_{1,41}) = R(C_4, K_{1,42}) = 49$. The unconditional halves — $f(48) = 8$ and $f(49) \\ge 7$ — are already in place, so the drop completes automatically the moment the last stratum certificate lands.\n\n**Scope**: a drop at one finite order does *not* resolve Erdős #85, which asks about all sufficiently large $n$; it bears on the weaker constant-difference variant and sharpens where any eventual monotonicity proof must begin. If instead one of the remaining instances turns out satisfiable, its model *is* a 49-vertex witness and the same interface yields $f(49) = 8$ and $R(C_4, K_{1,42}) = 50$ — either outcome resolves the open Ramsey table entry. This section will be updated to unconditional status when the survivor manifest is discharged."
+  },
+  {
+    "id": "ann-e85-boundary-structure",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 399,
+      "endLine": 412
+    },
+    "type": "theorem",
+    "title": "Results V: Structure of Extremal Graphs at the Exact Boundary (Unconditional)",
+    "content": "**Structure of extremal graphs at the exact boundary (unconditional).** For every even $d \\notin \\{4, 12\\}$, any $C_4$-free graph with minimum degree $d$ on exactly $d(d-1)+3$ vertices — the exact second-order boundary — satisfies two machine-checked structure theorems. First, no prime $p > d$ divides the length of any of its second-order defect cycles: all defect-cycle lengths are $d$-smooth (`secondOrder_no_largePrime_dvd_component_order`, via the large-prime sector capstone `false_of_secondOrder_largePrime_sector`). Second, the components of minimum defect-cycle length $w$, say $u$ of them, satisfy $u \\cdot w \\le 2d-1$, and their mutual quotient matrix $R$ is symmetric with $R^2 = wJ + (s-3)I$ for a common row sum $s$ obeying $s^2 - s + 3 = u \\cdot w$.\n\nThe quadratic $s^2 - s + 3 = u \\cdot w$ is the same form as the boundary count $n = d^2 - d + 3$ itself: the minimum-layer quotient of an extremal graph reproduces the projective-plane-adjacent geometry one level down. Formalized in `Erdos85LargePrimeSectorCapstone.lean`, `Erdos85MinimumLayerGramMatrix.lean`, `Erdos85MinimumLayerDesignTerminal.lean` and supporting files; the proofs use only counting (every vertex pair outside the defect relation has exactly one common neighbour) and detailed balance — no computer search, and the axiom audit is exactly `[propext, Classical.choice, Quot.sound]`."
   }
 ]
