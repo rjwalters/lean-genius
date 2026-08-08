@@ -696,6 +696,67 @@ theorem seven_part_orders_eq_six_nine_or_twelve
   obtain ⟨k, hk⟩ := hthree c hc
   omega
 
+/-- Counting the three possible orders in a seven-part partition identifies
+the two possible multisets. -/
+theorem seven_part_six_nine_twelve_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 7) (hsum : ∑ c ∈ C, w c = 48)
+    (horders : ∀ c ∈ C, w c = 6 ∨ w c = 9 ∨ w c = 12) :
+    let n₆ := (C.filter fun c => w c = 6).card
+    let n₉ := (C.filter fun c => w c = 9).card
+    let n₁₂ := (C.filter fun c => w c = 12).card
+    (n₆ = 6 ∧ n₉ = 0 ∧ n₁₂ = 1) ∨
+      (n₆ = 5 ∧ n₉ = 2 ∧ n₁₂ = 0) := by
+  classical
+  dsimp only
+  let n₆ := (C.filter fun c => w c = 6).card
+  let n₉ := (C.filter fun c => w c = 9).card
+  let n₁₂ := (C.filter fun c => w c = 12).card
+  have hcountEq : n₆ + n₉ + n₁₂ = 7 := by
+    calc
+      n₆ + n₉ + n₁₂ =
+          ∑ c ∈ C, ((if w c = 6 then 1 else 0) +
+            (if w c = 9 then 1 else 0) +
+            (if w c = 12 then 1 else 0)) := by
+              simp [n₆, n₉, n₁₂, Finset.sum_add_distrib]
+      _ = ∑ _c ∈ C, 1 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h <;> simp [h]
+      _ = 7 := by simp [hcard]
+  have hmass₆ : 6 * n₆ = ∑ c ∈ C, if w c = 6 then 6 else 0 := by
+    calc
+      6 * n₆ = n₆ * 6 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 6), 6 := by simp [n₆]
+      _ = ∑ c ∈ C, if w c = 6 then 6 else 0 := by
+        rw [Finset.sum_filter]
+  have hmass₉ : 9 * n₉ = ∑ c ∈ C, if w c = 9 then 9 else 0 := by
+    calc
+      9 * n₉ = n₉ * 9 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 9), 9 := by simp [n₉]
+      _ = ∑ c ∈ C, if w c = 9 then 9 else 0 := by
+        rw [Finset.sum_filter]
+  have hmass₁₂ : 12 * n₁₂ = ∑ c ∈ C, if w c = 12 then 12 else 0 := by
+    calc
+      12 * n₁₂ = n₁₂ * 12 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 12), 12 := by simp [n₁₂]
+      _ = ∑ c ∈ C, if w c = 12 then 12 else 0 := by
+        rw [Finset.sum_filter]
+  have hmassEq : 6 * n₆ + 9 * n₉ + 12 * n₁₂ = 48 := by
+    calc
+      6 * n₆ + 9 * n₉ + 12 * n₁₂ =
+          ∑ c ∈ C, ((if w c = 6 then 6 else 0) +
+            (if w c = 9 then 9 else 0) +
+            (if w c = 12 then 12 else 0)) := by
+              rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
+                ← hmass₆, ← hmass₉, ← hmass₁₂]
+      _ = ∑ c ∈ C, w c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h <;> simp [h]
+      _ = 48 := hsum
+  omega
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
@@ -5964,6 +6025,54 @@ theorem degree_sixteen_fourLayer_seven_orphan_component_orders
       (ConnectedComponent.mem_supp_iff c
         (componentRepresentative D c)).mp (componentRepresentative_mem D c)
     rwa [hrep] at hdvd
+
+/-- Exact multiset classification of the seven-component orphan branch. -/
+theorem degree_sixteen_fourLayer_seven_orphan_component_count_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 7) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    let n₆ := (C.filter fun c => c.supp.ncard = 6).card
+    let n₉ := (C.filter fun c => c.supp.ncard = 9).card
+    let n₁₂ := (C.filter fun c => c.supp.ncard = 12).card
+    (n₆ = 6 ∧ n₉ = 0 ∧ n₁₂ = 1) ∨
+      (n₆ = 5 ∧ n₉ = 2 ∧ n₁₂ = 0) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply seven_part_six_nine_twelve_count_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · exact degree_sixteen_fourLayer_seven_orphan_component_orders
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
 
 /-- Odd orders occur with even multiplicity in the four-layer orphan
 partition.  The union of all orphan components of a fixed order is preserved
