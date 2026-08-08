@@ -268,6 +268,65 @@ theorem secondOrder_multipleCover_target_source_unique
   exact false_of_two_disjoint_cycleCovers_same_multipleTarget
     hm2 G hfree u₁ u₂ v hv hdisjoint f₁ f₂ hadj₁ hadj₂ horient₁ horient₂
 
+/-- **Intrinsic multiple-cover target uniqueness.**  If two defect
+components of the same order both have reverse quotient entry one from a
+target whose order is a proper multiple of theirs, then the two source
+components coincide.  The cyclic labelings are constructed internally. -/
+theorem secondOrder_multipleCover_target_source_unique_of_orders
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d m : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hm2 : 2 ≤ m)
+    (c₁ c₂ e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsame : c₂.supp.ncard = c₁.supp.ncard)
+    (htarget : e.supp.ncard = m * c₁.supp.ncard)
+    (hone₁ : componentQuotientMatrix G (secondOrderDefectGraph G) e c₁ = 1)
+    (hone₂ : componentQuotientMatrix G (secondOrderDefectGraph G) e c₂ = 1) :
+    c₁ = c₂ := by
+  by_contra hcne
+  let D := secondOrderDefectGraph G
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+  letI : NeZero c₁.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree c₁; omega)⟩
+  letI : NeZero c₂.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree c₂; omega)⟩
+  letI : NeZero e.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree e; omega)⟩
+  obtain ⟨f₁, hadj₁, horient₁⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one
+      G hfree hd heven hmin hcard (hthree c₁) (hthree e)
+        c₁ e (u c₁) (u e) (hu c₁) (hu e)
+        (huRange c₁) (huRange e) (huD c₁) (huD e) hone₁
+  obtain ⟨f₂, hadj₂, horient₂⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one
+      G hfree hd heven hmin hcard (hthree c₂) (hthree e)
+        c₂ e (u c₂) (u e) (hu c₂) (hu e)
+        (huRange c₂) (huRange e) (huD c₂) (huD e) hone₂
+  have hdisjoint : ∀ x z, u c₁ x ≠ u c₂ z := by
+    intro x z hxz
+    have hx₁ : u c₁ x ∈ c₁.supp := by
+      rw [← huRange c₁]
+      exact ⟨x, rfl⟩
+    have hz₂ : u c₂ z ∈ c₂.supp := by
+      rw [← huRange c₂]
+      exact ⟨z, rfl⟩
+    have hcc₁ : D.connectedComponentMk (u c₁ x) = c₁ :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c₁ (u c₁ x)).mp hx₁
+    have hcc₂ : D.connectedComponentMk (u c₂ z) = c₂ :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c₂ (u c₂ z)).mp hz₂
+    apply hcne
+    rw [hxz] at hcc₁
+    exact hcc₁.symm.trans hcc₂
+  exact false_of_two_disjoint_cycleCovers_same_multipleTarget_of_moduli
+    hm2 hsame htarget G hfree (u c₁) (u c₂) (u e) (hu e)
+      hdisjoint f₁ f₂ hadj₁ hadj₂ horient₁ horient₂
+
 /-- **Intrinsic quotient formulation.**  A component strictly larger than
 the minimum order is quotient-adjacent to at most one minimum component.
 No cyclic labeling data is required from the caller. -/
