@@ -123,6 +123,21 @@ theorem false_of_six_centers_four_neighbors_in_eight
     norm_num [Nat.choose]
   · exact hdegree
 
+/-- An order-12 component cannot send four neighbors per vertex into an
+order-12 target: its `72` restricted cherries exceed the target's `66`
+pairs.  This removes the degree-four equal-cycle intertwiner sector in the
+last symmetric four-orphan branch. -/
+theorem false_of_twelve_centers_four_neighbors_in_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V)
+    (hAcard : A.card = 12) (hBcard : B.card = 12)
+    (hdegree : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = 4) : False := by
+  apply false_of_centers_four_neighbors G hfree A B
+  · rw [hAcard, hBcard]
+    norm_num [Nat.choose]
+  · exact hdegree
+
 /-- Arithmetic certificate for the three weighted row signatures in the
 remaining `(12,36)` two-component orphan branch.  Here `S_a` is the total
 reduced R-order carried by rows with `a` neighbors in the order-12 orphan
