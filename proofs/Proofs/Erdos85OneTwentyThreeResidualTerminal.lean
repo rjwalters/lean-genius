@@ -1845,6 +1845,107 @@ theorem degree_sixteen_fourLayer_orphan_defect_adj_antipodal
       G hfree hmin hcard c₀ hregChild hcardChild hz hq hzqG
         (Or.inr htri)).elim
 
+/-- **Exact collision/leave law.**  For distinct orphans, being an edge of
+the defect 2-factor is equivalent to sharing no service point in any row.
+Thus the 15 parallel classes cover every non-defect pair exactly once and
+leave precisely `D[O]`. -/
+theorem degree_sixteen_fourLayer_orphan_defect_adj_iff_no_shared_service
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : z ≠ z') :
+    (secondOrderDefectGraph G).Adj z z' ↔
+      ∀ u : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+        ∀ y ∈ minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀ u,
+          ¬(G.Adj z y ∧ G.Adj z' y) := by
+  classical
+  constructor
+  · intro hD u y hyE hpair
+    have hanti := degree_sixteen_fourLayer_orphan_defect_adj_antipodal
+      G hfree hmin hcard c₀ hregChild hcardChild hz hD
+    have hzero := ((mem_antipodalNeighbors G z z').mp hanti).2.2
+    have hyMem : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+      Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset z y).mpr hpair.1,
+          (G.mem_neighborFinset z' y).mpr hpair.2⟩
+    rw [Finset.card_eq_zero.mp hzero] at hyMem
+    exact Finset.notMem_empty y hyMem
+  · exact degree_sixteen_fourLayer_uncovered_orphans_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
+
+/-- Every edge incident to an orphan lies in a triangle; equivalently its
+open neighborhood is a perfect matching.  This is the child-side pairing
+structure left after the all-antipodal defect closure. -/
+theorem degree_sixteen_fourLayer_orphan_localNeighborhood_oneRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    (triangleFreeNeighbors G z).card = 0 ∧
+      ∀ y : {q : V // q ∈ G.neighborSet z},
+        (G.induce (G.neighborSet z)).degree y = 1 := by
+  classical
+  have hzero : (triangleFreeNeighbors G z).card = 0 := by
+    rw [Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro q hqTF
+    have hqData := (mem_triangleFreeNeighbors G z q).mp hqTF
+    have hzqD : (secondOrderDefectGraph G).Adj z q := Or.inr hqTF
+    have hqO := degree_sixteen_fourLayer_orphans_defect_closed
+      G hfree hmin hcard c₀ hregChild hcardChild z hz
+        (((secondOrderDefectGraph G).mem_neighborFinset z q).mpr hzqD)
+    exact degree_sixteen_fourLayer_orphan_matching_not_defect_adj
+      G hfree hmin hcard c₀ hregChild hcardChild hz hqO hqData.1 hzqD
+  refine ⟨hzero, ?_⟩
+  intro y
+  have hle : (G.induce (G.neighborSet z)).degree y ≤ 1 := by
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree z y.1 (G.ne_of_adj y.2)
+  have hne : (G.induce (G.neighborSet z)).degree y ≠ 0 := by
+    intro hdegzero
+    have hcommonzero :
+        (G.neighborFinset z ∩ G.neighborFinset y.1).card = 0 := by
+      rwa [degree_induce_neighborSet_eq_card_common] at hdegzero
+    have hyTF : y.1 ∈ triangleFreeNeighbors G z :=
+      (mem_triangleFreeNeighbors G z y.1).mpr ⟨y.2, hcommonzero⟩
+    rw [Finset.card_eq_zero] at hzero
+    exact Finset.notMem_empty y.1 (hzero ▸ hyTF)
+  omega
+
 end
 
 end Erdos85
