@@ -4390,6 +4390,48 @@ theorem degree_sixteen_fourLayer_orphan_diagonalQuotient_eq_ite_matching_stays
     apply hstay
     simpa [hqz'] using hqData.2
 
+/-- If an orphan matching edge stays within one defect component, that
+component has even order.  Indeed its internal quotient degree is one, so
+the handshake parity for the induced component graph is exactly parity of
+the component order. -/
+theorem degree_sixteen_fourLayer_matching_stable_orphan_component_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z')
+    (hstay : (secondOrderDefectGraph G).connectedComponentMk z' =
+      (secondOrderDefectGraph G).connectedComponentMk z) :
+    Even ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let c := D.connectedComponentMk z
+  have hdiag := degree_sixteen_fourLayer_orphan_diagonalQuotient_eq_ite_matching_stays
+    G hfree hmin hcard c₀ hregChild hcardChild hz hz' hzz'
+  have hdiagOne : componentQuotientMatrix G D c c = 1 := by
+    simpa [D, c, hstay] using hdiag
+  have heven := secondOrder_componentQuotientMatrix_diagonal_mul_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c
+  rw [hdiagOne, mul_one] at heven
+  exact heven
+
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
 cells gives total diagonal mass exactly sixteen.  Representatives suffice
