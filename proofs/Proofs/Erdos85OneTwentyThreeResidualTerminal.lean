@@ -2350,6 +2350,49 @@ theorem degree_sixteen_fourLayer_orphan_component_subset
     G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
       (by norm_num; exact hcardChild)
 
+/-- The two smaller residual children pin the chosen defect-component order:
+the empty child has one triangle, while the two-regular five-vertex child has
+one defect component of order five. -/
+theorem degree_sixteen_smallLayer_component_card
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    (s = 0 → c₀.supp.ncard = 3) ∧ (s = 2 → c₀.supp.ncard = 5) := by
+  classical
+  let D := secondOrderDefectGraph G
+  obtain ⟨r, hr3, hre, _⟩ :=
+    secondOrderDefect_component_resolvent_chebyshev
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard c₀ 0
+  have hw3 : 3 ≤ c₀.supp.ncard := by rw [← hre]; exact hr3
+  have hkpos : 0 < (Finset.univ.filter
+      (fun c : D.ConnectedComponent => c.supp.ncard = c₀.supp.ncard)).card := by
+    apply Finset.card_pos.mpr
+    exact ⟨c₀, Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl⟩⟩
+  have hlayer := card_minimumLayerVertex D c₀
+  rw [hcardChild] at hlayer
+  constructor
+  · intro hs0
+    subst s
+    norm_num at hlayer
+    nlinarith
+  · intro hs2
+    subst s
+    norm_num at hlayer
+    have hw5 : c₀.supp.ncard ≤ 5 := by nlinarith
+    interval_cases c₀.supp.ncard <;> norm_num at hlayer ⊢ <;> omega
+
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
 length-three component belongs to the minimum layer, disjoint from `O`. -/
