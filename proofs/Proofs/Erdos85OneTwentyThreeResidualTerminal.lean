@@ -652,6 +652,27 @@ theorem card_le_eight_of_sum_eq_fortyEight_of_six_le
   rw [hsum] at hbound
   omega
 
+/-- The extremal eight-part partition of forty-eight with every part at
+least six is uniquely the constant partition by six. -/
+theorem all_eq_six_of_card_eq_eight_sum_eq_fortyEight_of_six_le
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 8) (hsum : ∑ c ∈ C, w c = 48)
+    (hlower : ∀ c ∈ C, 6 ≤ w c) :
+    ∀ c ∈ C, w c = 6 := by
+  intro c hc
+  have hrest : 6 * (C.erase c).card ≤ ∑ d ∈ C.erase c, w d := by
+    calc
+      6 * (C.erase c).card = ∑ _d ∈ C.erase c, 6 := by simp [mul_comm]
+      _ ≤ ∑ d ∈ C.erase c, w d := by
+        apply Finset.sum_le_sum
+        intro d hd
+        exact hlower d (Finset.mem_of_mem_erase hd)
+  have hcardErase : (C.erase c).card = 7 := by
+    rw [Finset.card_erase_of_mem hc, hcard]
+  have hsplit := Finset.sum_erase_add C w hc
+  have hcLower := hlower c hc
+  omega
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
@@ -5624,6 +5645,37 @@ theorem degree_sixteen_fourLayer_orphan_component_card_dvd_three
       G hfree hmin hcard c₀ hregChild hcardChild hz hqO hne'
         ((G.mem_neighborFinset z q).mp hqG)
 
+/-- Every four-layer orphan component has order at least six: its order is
+at least four and divisible by three. -/
+theorem degree_sixteen_fourLayer_orphan_component_card_ge_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    6 ≤ ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard := by
+  have hfour := degree_sixteen_fourLayer_orphan_component_card_ge_four
+    G hfree hmin hcard c₀ hregChild hcardChild z hz
+  have hthree := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  obtain ⟨k, hk⟩ := hthree
+  omega
+
 /-- The orders of all four-layer orphan defect components sum to the exact
 orphan-cell cardinality, forty-eight. -/
 theorem degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
@@ -5773,6 +5825,184 @@ theorem degree_sixteen_fourLayer_orphan_component_count_between_one_eight
   refine ⟨hpos, ?_⟩
   exact degree_sixteen_fourLayer_orphan_component_count_le_eight
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+
+/-- If the four-layer orphan cell has eight defect components, all eight
+have order six. -/
+theorem degree_sixteen_fourLayer_eight_orphan_components_all_order_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 8) :
+    ∀ c ∈ Finset.univ.filter
+        (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) c ∈
+            (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+              Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+                (secondOrderDefectGraph G) c₀)),
+      c.supp.ncard = 6 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply all_eq_six_of_card_eq_eight_sum_eq_fortyEight_of_six_le C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+
+/-- Odd orders occur with even multiplicity in the four-layer orphan
+partition.  The union of all orphan components of a fixed order is preserved
+by the orphan perfect matching, hence has even cardinality.  Its cardinality
+is the component order times the number of selected components, and an odd
+factor cannot account for that parity. -/
+theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (r : ℕ) (hrOdd : Odd r) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    Even ((Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O ∧ c.supp.ncard = r)).card) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O ∧ c.supp.ncard = r)
+  let S := O.filter (fun z => (D.connectedComponentMk z).supp.ncard = r)
+  have hcomponentClosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ S ↔ componentRepresentative D c ∈ S) := by
+    intro c z hzc
+    have hcz : D.connectedComponentMk z = c :=
+      (ConnectedComponent.mem_supp_iff c z).mp hzc
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    have hOclosed : z ∈ O ↔ componentRepresentative D c ∈ O := by
+      constructor
+      · intro hzO
+        have hsub := degree_sixteen_fourLayer_orphan_component_subset
+          G hfree hmin hcard c₀ hregChild hcardChild z hzO
+        rw [hcz] at hsub
+        exact hsub (componentRepresentative_mem D c)
+      · intro hrepO
+        have hsub := degree_sixteen_fourLayer_orphan_component_subset
+          G hfree hmin hcard c₀ hregChild hcardChild
+            (componentRepresentative D c) hrepO
+        rw [hrep] at hsub
+        exact hsub hzc
+    simp only [S, Finset.mem_filter]
+    rw [hcz, hrep, hOclosed]
+  have hsum := sum_component_sizes_filter_eq_card_of_component_closed
+    D S hcomponentClosed
+  have hfilter : Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ S) = C := by
+    ext c
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    simp [C, S, hrep]
+  rw [hfilter] at hsum
+  have hmass : S.card = r * C.card := by
+    rw [← hsum]
+    calc
+      (∑ c ∈ C, c.supp.ncard) = ∑ _c ∈ C, r := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        exact (Finset.mem_filter.mp hc).2.2
+      _ = r * C.card := by simp [mul_comm]
+  let H := G.induce (S : Set V)
+  have hdegree : ∀ z : (S : Set V), H.degree z = 1 := by
+    intro z
+    have hzData := Finset.mem_filter.mp z.2
+    have hzO : z.1 ∈ O := hzData.1
+    have hzOrder : (D.connectedComponentMk z.1).supp.ncard = r := hzData.2
+    have hcardO : (O ∩ G.neighborFinset z.1).card = 1 :=
+      degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+        G hfree hmin hcard c₀ hregChild hcardChild z.1 hzO
+    have hsets : S ∩ G.neighborFinset z.1 = O ∩ G.neighborFinset z.1 := by
+      ext q
+      constructor
+      · intro hq
+        have hqData := Finset.mem_inter.mp hq
+        exact Finset.mem_inter.mpr ⟨(Finset.mem_filter.mp hqData.1).1, hqData.2⟩
+      · intro hq
+        have hqData := Finset.mem_inter.mp hq
+        have hqOrder := degree_sixteen_fourLayer_matched_orphan_component_card_eq
+          G hfree hmin hcard c₀ hregChild hcardChild hzO hqData.1
+            ((G.mem_neighborFinset z.1 q).mp hqData.2)
+        apply Finset.mem_inter.mpr
+        refine ⟨Finset.mem_filter.mpr ⟨hqData.1, ?_⟩, hqData.2⟩
+        simpa [D, hzOrder] using hqOrder.symm
+    have hdegreeCard : H.degree z = (S ∩ G.neighborFinset z.1).card := by
+      rw [← H.card_neighborFinset_eq_degree]
+      apply Finset.card_bij (fun y _ => y.1)
+      · intro y hy
+        have hzy : G.Adj z.1 y.1 := (H.mem_neighborFinset z y).mp hy
+        exact Finset.mem_inter.mpr
+          ⟨y.2, (G.mem_neighborFinset z.1 y.1).mpr hzy⟩
+      · intro y hy y' hy' hyy
+        exact Subtype.ext hyy
+      · intro y hy
+        let y' : (S : Set V) := ⟨y, (Finset.mem_inter.mp hy).1⟩
+        refine ⟨y', ?_, rfl⟩
+        exact (H.mem_neighborFinset z y').mpr
+          ((G.mem_neighborFinset z.1 y).mp (Finset.mem_inter.mp hy).2)
+    rw [hdegreeCard, hsets]
+    exact hcardO
+  have hsumDegrees : ∑ z : (S : Set V), H.degree z = S.card := by
+    simp_rw [hdegree]
+    simp
+  have hSeven : Even S.card := by
+    refine ⟨H.edgeFinset.card, ?_⟩
+    rw [← hsumDegrees, H.sum_degrees_eq_twice_card_edges]
+    simp [two_mul]
+  rw [hmass] at hSeven
+  rcases (Nat.even_mul.mp hSeven) with hrEven | hCEven
+  · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
+  · exact hCEven
 
 /-- **The `U/R/O` component-diagonal ledger at degree sixteen.**  Splitting
 the nonsquare component-quotient trace by the three defect-closed residual
