@@ -33,8 +33,8 @@ Lean 4 mathematical proofs with Mathlib, integrated into the LeanGenius monorepo
 
 | Component | Version |
 |-----------|---------|
-| Lean | 4.10.0 |
-| Mathlib | `05147a76b4` (July 2024) |
+| Lean | 4.31.0 (authoritative: `proofs/lean-toolchain`) |
+| Mathlib | `9a9483a929` (authoritative: `proofs/lakefile.toml`) |
 
 ## Setup
 
@@ -75,8 +75,12 @@ This will:
 
 3. Build:
    ```bash
-   lake build
+   ./proofs/scripts/docker-build.sh Proofs.MyTheorem
    ```
+
+   > **Never run `lake build` directly.** It can consume 100GB+ of memory in
+   > seconds and crash the host. Always use the Docker wrapper. See the DANGER
+   > section in the repository root `CLAUDE.md`.
 
 ## Extracting Goal States (LeanInk)
 
@@ -94,7 +98,7 @@ Output is saved as `<filename>.leanInk` JSON files.
 ```
 proofs/
 ├── lakefile.toml        # Lake configuration
-├── lean-toolchain       # Lean 4.10.0
+├── lean-toolchain       # Lean 4.31.0
 ├── Proofs.lean          # Main import file
 ├── Proofs/              # Individual proofs
 │   ├── Sqrt2Irrational.lean  # ✅ Verified
@@ -111,5 +115,5 @@ proofs/
 
 If you see `__DATA_CONST segment missing SG_READ_ONLY flag`:
 ```bash
-MACOSX_DEPLOYMENT_TARGET=15.0 lake build
+MACOSX_DEPLOYMENT_TARGET=15.0 ./proofs/scripts/docker-build.sh
 ```

@@ -92,8 +92,8 @@ as a topological group). This is the cleanest possible statement that
 
 | Proof | Relevance |
 |-------|-----------|
-| [`euler-identity`](../../src/data/proofs/euler-identity) | Root: numerical Euler's identity `e^(iπ) + 1 = 0` |
-| [`euler-identity-oq-01`](../../src/data/proofs/euler-identity-oq-01) | Parent: axiom-free `euler_formula` via Taylor series (1 axiom remaining at time of OQ-01-OQ-01) |
-| [`euler-identity-oq-01-oq-01`](../../src/data/proofs/euler-identity-oq-01-oq-01) | Direct parent: axiom-free `euler_formula`; `EulerIdentityOQ01OQ01.euler_formula` is imported and used as a one-liner in `circleMap_eq_cos_add_sin_I` |
+| [`euler-identity`](../../../src/data/proofs/euler-identity) | Root: numerical Euler's identity `e^(iπ) + 1 = 0` |
+| [`euler-identity-oq-01`](../../../src/data/proofs/euler-identity-oq-01) | Parent: axiom-free `euler_formula` via Taylor series (1 axiom remaining at time of OQ-01-OQ-01) |
+| [`euler-identity-oq-01-oq-01`](../../../src/data/proofs/euler-identity-oq-01-oq-01) | Direct parent: axiom-free `euler_formula`; `EulerIdentityOQ01OQ01.euler_formula` is imported and used as a one-liner in `circleMap_eq_cos_add_sin_I` |
 | `euler-identity-oq-01-oq-04` | Sibling OQ off `euler-identity-oq-01` |
 | `euler-identity-oq-04` | Sibling OQ off root `euler-identity` |

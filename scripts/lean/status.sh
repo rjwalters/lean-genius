@@ -365,7 +365,7 @@ EOF
             # if agents exist — they're unsupervised: no respawn on STUCK,
             # no token rotation, no scheduled work generation.
             local _live_agents
-            _live_agents=$(tmux ls 2>/dev/null | grep -cE '^(researcher-|enricher-|mechanic-|auditor-|aristotle-|seeker-|deployer|tester-|herald-|peer-reviewer-)' || echo 0)
+            _live_agents=$(tmux ls 2>/dev/null | grep -cE '^(researcher-|enricher-|mechanic-|auditor-|aristotle-|seeker-|deployer|tester-|herald-|peer-reviewer-)') || _live_agents=0
             if [[ "$_live_agents" -gt 0 ]]; then
                 echo -e "  Daemon: ${RED}NOT RUNNING${NC} — ${RED}${_live_agents} agent session(s) are unsupervised${NC}"
                 echo -e "          ${YELLOW}Stuck agents will not be respawned; tokens will not rotate.${NC}"

@@ -321,7 +321,7 @@ axiom waring_g5_upper : ∀ n : ℕ, IsSumOfFifthPowers 37 n
 axiom waring_g6_upper : ∀ n : ℕ, IsSumOfSixthPowers 73 n
 ```
 
-Each axiom MUST be paired with a citation comment naming the original paper, and the eventual `waringG k = N` theorems will be `status: "axiomatized"` per [Axiom Integrity Policy](../../../CLAUDE.md#axiom-integrity-policy). Only the lower bounds are `verified`.
+Each axiom MUST be paired with a citation comment naming the original paper, and the eventual `waringG k = N` theorems will be `status: "axiomatized"` per [Axiom Integrity Policy](../../../../CLAUDE.md#axiom-integrity-policy). Only the lower bounds are `verified`.
 
 ## Coordination notes
 
