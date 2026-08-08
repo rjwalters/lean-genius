@@ -1103,6 +1103,91 @@ theorem four_part_nine_lower_named_count_classification
       hbc, hbd, hcd, hka, hkb, hkc, hkd, even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ ⊢ <;>
     omega
 
+/-- If three pairwise distinct weight fibers have total cardinality equal to
+the ambient finset, they cover it.  This is the small bridge from compact
+count classifiers to pointwise order alternatives. -/
+theorem weight_eq_one_of_three_filter_card_sum_eq_card
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (r s t : ℕ) (hrs : r ≠ s) (hrt : r ≠ t) (hst : s ≠ t)
+    (hcount : (C.filter fun c => w c = r).card +
+      (C.filter fun c => w c = s).card +
+      (C.filter fun c => w c = t).card = C.card) :
+    ∀ c ∈ C, w c = r ∨ w c = s ∨ w c = t := by
+  let A := C.filter fun c => w c = r
+  let B := C.filter fun c => w c = s
+  let T := C.filter fun c => w c = t
+  have hAB : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxB
+    have hxAr := (Finset.mem_filter.mp hxA).2
+    have hxBs := (Finset.mem_filter.mp hxB).2
+    exact hrs (hxAr.symm.trans hxBs)
+  have hAT : Disjoint A T := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxT
+    have hxAr := (Finset.mem_filter.mp hxA).2
+    have hxTt := (Finset.mem_filter.mp hxT).2
+    exact hrt (hxAr.symm.trans hxTt)
+  have hBT : Disjoint B T := by
+    rw [Finset.disjoint_left]
+    intro x hxB hxT
+    have hxBs := (Finset.mem_filter.mp hxB).2
+    have hxTt := (Finset.mem_filter.mp hxT).2
+    exact hst (hxBs.symm.trans hxTt)
+  have hABT : Disjoint (A ∪ B) T := Finset.disjoint_union_left.mpr ⟨hAT, hBT⟩
+  have hsub : A ∪ B ∪ T ⊆ C := by
+    intro x hx
+    rcases Finset.mem_union.mp hx with hxAB | hxT
+    · rcases Finset.mem_union.mp hxAB with hxA | hxB
+      · exact (Finset.mem_filter.mp hxA).1
+      · exact (Finset.mem_filter.mp hxB).1
+    · exact (Finset.mem_filter.mp hxT).1
+  have hcardUnion : (A ∪ B ∪ T).card = C.card := by
+    rw [Finset.card_union_of_disjoint hABT,
+      Finset.card_union_of_disjoint hAB]
+    simpa [A, B, T] using hcount
+  have hcover : A ∪ B ∪ T = C :=
+    Finset.eq_of_subset_of_card_le hsub (by rw [hcardUnion])
+  intro c hc
+  have hcUnion : c ∈ A ∪ B ∪ T := by rwa [hcover]
+  rcases Finset.mem_union.mp hcUnion with hcAB | hcT
+  · rcases Finset.mem_union.mp hcAB with hcA | hcB
+    · exact Or.inl (Finset.mem_filter.mp hcA).2
+    · exact Or.inr (Or.inl (Finset.mem_filter.mp hcB).2)
+  · exact Or.inr (Or.inr (Finset.mem_filter.mp hcT).2)
+
+/-- Two distinct weight fibers whose cardinalities sum to the ambient
+cardinality cover the ambient finset. -/
+theorem weight_eq_one_of_two_filter_card_sum_eq_card
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (r s : ℕ) (hrs : r ≠ s)
+    (hcount : (C.filter fun c => w c = r).card +
+      (C.filter fun c => w c = s).card = C.card) :
+    ∀ c ∈ C, w c = r ∨ w c = s := by
+  let A := C.filter fun c => w c = r
+  let B := C.filter fun c => w c = s
+  have hAB : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxB
+    have hxAr := (Finset.mem_filter.mp hxA).2
+    have hxBs := (Finset.mem_filter.mp hxB).2
+    exact hrs (hxAr.symm.trans hxBs)
+  have hsub : A ∪ B ⊆ C := by
+    intro x hx
+    rcases Finset.mem_union.mp hx with hxA | hxB
+    · exact (Finset.mem_filter.mp hxA).1
+    · exact (Finset.mem_filter.mp hxB).1
+  have hcardUnion : (A ∪ B).card = C.card := by
+    rw [Finset.card_union_of_disjoint hAB]
+    simpa [A, B] using hcount
+  have hcover : A ∪ B = C :=
+    Finset.eq_of_subset_of_card_le hsub (by rw [hcardUnion])
+  intro c hc
+  have hcUnion : c ∈ A ∪ B := by rwa [hcover]
+  rcases Finset.mem_union.mp hcUnion with hcA | hcB
+  · exact Or.inl (Finset.mem_filter.mp hcA).2
+  · exact Or.inr (Finset.mem_filter.mp hcB).2
+
 /-- An order-six used row cannot distribute quotient degree four across one
 order-twelve and four order-nine targets.  The nine-target entries are
 multiples of three, the twelve-target entry is even, and the only numerical
@@ -9488,6 +9573,121 @@ theorem false_of_degree_sixteen_fourLayer_unique_twelve_nine_eighteen
   intro e heR
   exact degree_sixteen_fourLayer_unique_twelve_nine_eighteen_used_component_ne_six
     G hfree hmin hcard c₀ hregChild hcardChild horders hunique e heR
+
+/-- The named three-component census branch `[18,18,12]` is impossible. -/
+theorem false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_eighteen_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hCcard :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      (Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)).card = 3)
+    (h12 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 12).card = 1)
+    (h18 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 18).card = 2) : False := by
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  change C.card = 3 at hCcard
+  change (C.filter fun o => o.supp.ncard = 12).card = 1 at h12
+  change (C.filter fun o => o.supp.ncard = 18).card = 2 at h18
+  have hcover := weight_eq_one_of_two_filter_card_sum_eq_card C
+    (fun o : D.ConnectedComponent => o.supp.ncard) 12 18 (by norm_num) (by omega)
+  apply false_of_degree_sixteen_fourLayer_unique_twelve_nine_eighteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  · dsimp only
+    intro o ho
+    rcases hcover o ho with ho12 | ho18
+    · exact Or.inr (Or.inl ho12)
+    · exact Or.inr (Or.inr ho18)
+  · exact h12
+
+/-- The named four-component census branch `[18,12,9,9]` is impossible. -/
+theorem false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_twelve_nine_nine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hCcard :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      (Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)).card = 4)
+    (h9 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 9).card = 2)
+    (h12 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 12).card = 1)
+    (h18 :
+      let D := secondOrderDefectGraph G
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      (C.filter fun o => o.supp.ncard = 18).card = 1) : False := by
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  change C.card = 4 at hCcard
+  change (C.filter fun o => o.supp.ncard = 9).card = 2 at h9
+  change (C.filter fun o => o.supp.ncard = 12).card = 1 at h12
+  change (C.filter fun o => o.supp.ncard = 18).card = 1 at h18
+  have hcover := weight_eq_one_of_three_filter_card_sum_eq_card C
+    (fun o : D.ConnectedComponent => o.supp.ncard) 9 12 18
+      (by norm_num) (by norm_num) (by norm_num) (by omega)
+  apply false_of_degree_sixteen_fourLayer_unique_twelve_nine_eighteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcover h12
 
 /-- In the five-orphan branch, no used-exterior defect component has order
 six.  The graph classification and exact quotient row sum instantiate the
