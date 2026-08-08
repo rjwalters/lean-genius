@@ -258,6 +258,100 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- Extract the two named elements behind a two-part count vector.  This is
+the bridge from filter-card census output to component-level eliminators. -/
+theorem exists_distinct_pair_of_card_two_filter_counts
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ) (r s : ℕ)
+    (hcard : C.card = 2)
+    (hr : (C.filter fun c => w c = r).card = 1)
+    (hs : (C.filter fun c => w c = s).card = 1)
+    (hrs : r ≠ s) :
+    ∃ c d, c ≠ d ∧ c ∈ C ∧ d ∈ C ∧ w c = r ∧ w d = s ∧ C = {c, d} := by
+  classical
+  obtain ⟨c, hc⟩ := Finset.card_eq_one.mp hr
+  obtain ⟨d, hd⟩ := Finset.card_eq_one.mp hs
+  have hcMemFilter : c ∈ C.filter fun x => w x = r := by simp [hc]
+  have hdMemFilter : d ∈ C.filter fun x => w x = s := by simp [hd]
+  have hcData := Finset.mem_filter.mp hcMemFilter
+  have hdData := Finset.mem_filter.mp hdMemFilter
+  have hcd : c ≠ d := by
+    intro h
+    apply hrs
+    simpa [h] using hcData.2.trans hdData.2.symm
+  have hsubset : {c, d} ⊆ C := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hcData.1
+    · exact hdData.1
+  have hpair : C = {c, d} := by
+    apply Finset.Subset.antisymm
+    · apply Finset.eq_of_subset_of_card_le hsubset
+      simp [hcard, hcd]
+    · exact hsubset
+  exact ⟨c, d, hcd, hcData.1, hdData.1, hcData.2, hdData.2, hpair⟩
+
+set_option maxHeartbeats 2000000 in
+/-- Exact count-vector classification for two three-divisible parts of total
+forty-eight, each at least six, when every odd part has even multiplicity. -/
+theorem two_part_three_divisible_count_vector_classification
+    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ n₃₃ n₃₆ n₃₉ n₄₂ : ℕ)
+    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ +
+      n₃₀ + n₃₃ + n₃₆ + n₃₉ + n₄₂ = 2)
+    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ + 21*n₂₁ +
+      24*n₂₄ + 27*n₂₇ + 30*n₃₀ + 33*n₃₃ + 36*n₃₆ + 39*n₃₉ + 42*n₄₂ = 48)
+    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅) (heven₂₁ : Even n₂₁)
+    (heven₂₇ : Even n₂₇) (heven₃₃ : Even n₃₃) (heven₃₉ : Even n₃₉) :
+    (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 1) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 1 ∧ n₃₉ = 0 ∧ n₄₂ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧
+      n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 0) ∨
+    (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧
+      n₂₄ = 2 ∧ n₂₇ = 0 ∧ n₃₀ = 0 ∧ n₃₃ = 0 ∧ n₃₆ = 0 ∧ n₃₉ = 0 ∧ n₄₂ = 0) := by
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
+  obtain ⟨k₂₇, hk₂₇⟩ := heven₂₇
+  obtain ⟨k₃₃, hk₃₃⟩ := heven₃₃
+  obtain ⟨k₃₉, hk₃₉⟩ := heven₃₉
+  omega
+
+/-- Elimination-oriented finset form of the two-part census: it names both
+elements and identifies their unordered weight pair. -/
+theorem two_part_three_divisible_named_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 2) (hsum : ∑ c ∈ C, w c = 48)
+    (hlower : ∀ c ∈ C, 6 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card)
+    (heven₂₁ : Even (C.filter fun c => w c = 21).card)
+    (heven₂₇ : Even (C.filter fun c => w c = 27).card)
+    (heven₃₃ : Even (C.filter fun c => w c = 33).card)
+    (heven₃₉ : Even (C.filter fun c => w c = 39).card) :
+    ∃ c d, c ≠ d ∧ C = {c, d} ∧
+      ((w c = 6 ∧ w d = 42) ∨ (w c = 42 ∧ w d = 6) ∨
+       (w c = 12 ∧ w d = 36) ∨ (w c = 36 ∧ w d = 12) ∨
+       (w c = 18 ∧ w d = 30) ∨ (w c = 30 ∧ w d = 18) ∨
+       (w c = 24 ∧ w d = 24)) := by
+  classical
+  obtain ⟨c, d, hcd, rfl⟩ := Finset.card_eq_two.mp hcard
+  have hcMem : c ∈ ({c, d} : Finset α) := by simp
+  have hdMem : d ∈ ({c, d} : Finset α) := by simp
+  have hcLower := hlower c hcMem
+  have hdLower := hlower d hdMem
+  obtain ⟨kc, hkc⟩ := hthree c hcMem
+  obtain ⟨kd, hkd⟩ := hthree d hdMem
+  refine ⟨c, d, hcd, rfl, ?_⟩
+  simp [hcd] at hsum
+  rw [hkc, hkd] at hsum heven₉ heven₁₅ heven₂₁ heven₂₇ heven₃₃ heven₃₉ ⊢
+  have hkcLower : 2 ≤ kc := by omega
+  have hkdLower : 2 ≤ kd := by omega
+  have hkcUpper : kc ≤ 14 := by omega
+  have hkdUpper : kd ≤ 14 := by omega
+  interval_cases kc <;> interval_cases kd <;> norm_num [hcd] at *
+
 /-- In the symmetric `(12,12,12,12)` orphan branch, each order-12 target
 needs `54` internal cherries.  All periodic row types contribute a multiple
 of `12` except an order-6 double-cover row, which contributes `6`; cover
@@ -6574,6 +6668,77 @@ theorem degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
   rcases (Nat.even_mul.mp hSeven) with hrEven | hCEven
   · exact False.elim ((Nat.not_even_iff_odd.mpr hrOdd) hrEven)
   · exact hCEven
+
+/-- Exact named classification of the two-component orphan branch. -/
+theorem degree_sixteen_fourLayer_two_orphan_component_named_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) c ∈
+          (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+            Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+              (secondOrderDefectGraph G) c₀))).card = 2) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    ∃ c d, c ≠ d ∧ C = {c, d} ∧
+      ((c.supp.ncard = 6 ∧ d.supp.ncard = 42) ∨
+       (c.supp.ncard = 42 ∧ d.supp.ncard = 6) ∨
+       (c.supp.ncard = 12 ∧ d.supp.ncard = 36) ∨
+       (c.supp.ncard = 36 ∧ d.supp.ncard = 12) ∨
+       (c.supp.ncard = 18 ∧ d.supp.ncard = 30) ∨
+       (c.supp.ncard = 30 ∧ d.supp.ncard = 18) ∨
+       (c.supp.ncard = 24 ∧ d.supp.ncard = 24)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  apply two_part_three_divisible_named_classification C
+    (fun c : D.ConnectedComponent => c.supp.ncard)
+  · exact hcount
+  · exact degree_sixteen_fourLayer_orphan_component_order_sum_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hge := degree_sixteen_fourLayer_orphan_component_card_ge_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  · intro c hc
+    have hrepO : componentRepresentative D c ∈ O := (Finset.mem_filter.mp hc).2
+    have hdvd := degree_sixteen_fourLayer_orphan_component_card_dvd_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D c) hrepO
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hdvd
+  all_goals
+    simpa [C, O, Finset.filter_filter] using
+      (degree_sixteen_fourLayer_odd_orphan_order_multiplicity_even
+        G hfree hmin hcard c₀ hregChild hcardChild _ (by norm_num))
 
 /-- Exact classification of the singleton orphan branch. -/
 theorem degree_sixteen_fourLayer_one_orphan_component_count_classification
