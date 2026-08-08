@@ -46,6 +46,17 @@ theorem adjMatrix_mulVec_vertexFinsetIndicator
     simp [and_comm]
   rw [heq]
 
+/-- The all-ones matrix sends a finite-set indicator to its cardinality. -/
+theorem onesMatrix_mulVec_vertexFinsetIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (S : Finset V) :
+    (FriendshipTheoremOQ01.onesMatrix V).mulVec (vertexFinsetIndicator S) =
+      fun _ => (S.card : ℤ) := by
+  funext x
+  simp only [FriendshipTheoremOQ01.onesMatrix, Matrix.mulVec,
+    dotProduct, one_mul]
+  simp [vertexFinsetIndicator]
+
 /-- **Operator-level scalar-123 terminal.**  Semisimplicity peels the
 designated eigenvalue `2`; trace `-135` forces the residual trace nonzero,
 while the arithmetic hypothesis and abstract trace escape force it zero. -/
@@ -1758,6 +1769,177 @@ theorem degree_sixteen_minimumLayer_adjMatrix_sq_mulVec_orphanIndicator
       rcases hs with rfl | rfl | rfl <;>
         norm_num [r, a, vertexFinsetIndicator, hxU, hxR, hxO, hxU', hxR']
 
+/-- The orphan indicator is a top (`2`) eigenvector of the second-order
+defect graph in every surviving degree-sixteen residual branch. -/
+theorem degree_sixteen_minimumLayer_defect_mulVec_orphanIndicator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (D.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) =
+      (2 : ℤ) • vertexFinsetIndicator O := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hsq := adjMatrix_sq_eq_sub_secondOrderDefect_of_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hD : D.adjMatrix ℤ =
+      (15 : ℤ) • (1 : Matrix V V ℤ) +
+        FriendshipTheoremOQ01.onesMatrix V -
+          (G.adjMatrix ℤ * G.adjMatrix ℤ) := by
+    ext x y
+    have hxy := congrArg (fun M : Matrix V V ℤ => M x y) hsq
+    simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply] at hxy ⊢
+    norm_num at hxy ⊢
+    linear_combination hxy
+  have hpoly :=
+    degree_sixteen_minimumLayer_adjMatrix_sq_mulVec_orphanIndicator
+      G hfree hs hmin hcard c₀ hregChild hcardChild
+  change (G.adjMatrix ℤ * G.adjMatrix ℤ).mulVec
+      (vertexFinsetIndicator O) = _ at hpoly
+  rw [hD, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
+    Matrix.one_mulVec, onesMatrix_mulVec_vertexFinsetIndicator, hpoly]
+  funext x
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
+/-- Graph-facing closure consequence: both defect neighbors of every orphan
+remain in the orphan cell, uniformly for `s = 0,2,4`. -/
+theorem degree_sixteen_minimumLayer_orphan_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    {z q : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzq : (secondOrderDefectGraph G).Adj z q) :
+    q ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hmul := congrFun
+    (degree_sixteen_minimumLayer_defect_mulVec_orphanIndicator
+      G hfree hs hmin hcard c₀ hregChild hcardChild) z
+  change (D.adjMatrix ℤ).mulVec (vertexFinsetIndicator O) z = _ at hmul
+  rw [adjMatrix_mulVec_vertexFinsetIndicator] at hmul
+  have hcardInter : (O ∩ D.neighborFinset z).card = 2 := by
+    simp [vertexFinsetIndicator, hz] at hmul
+    exact_mod_cast hmul
+  have hcardN : (D.neighborFinset z).card = 2 := by
+    rw [D.card_neighborFinset_eq_degree]
+    exact secondOrderDefectGraph_degree_eq_two
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard z
+  have heq : O ∩ D.neighborFinset z = D.neighborFinset z := by
+    apply Finset.eq_of_subset_of_card_le (Finset.inter_subset_right)
+    rw [hcardInter, hcardN]
+  have hqN : q ∈ D.neighborFinset z := (D.mem_neighborFinset z q).mpr hzq
+  have hqInter : q ∈ O ∩ D.neighborFinset z := by simpa [heq] using hqN
+  exact (Finset.mem_inter.mp hqInter).1
+
+/-- The minimum-layer image is closed under the defect graph simply because
+it is the union of complete minimum-order connected components. -/
+theorem minimumLayerImage_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent]
+    (c₀ : D.ConnectedComponent) {z q : V}
+    (hz : z ∈ minimumLayerImageFinset D c₀) (hzq : D.Adj z q) :
+    q ∈ minimumLayerImageFinset D c₀ := by
+  classical
+  obtain ⟨u, _hu, huz⟩ := Finset.mem_image.mp hz
+  change u.2.1 = z at huz
+  subst z
+  have hcomp : D.connectedComponentMk q = u.1.1 :=
+    (ConnectedComponent.connectedComponentMk_eq_of_adj hzq.symm).trans
+      ((ConnectedComponent.mem_supp_iff u.1.1 u.2.1).mp u.2.2)
+  have hqSupp : q ∈ u.1.1.supp :=
+    (ConnectedComponent.mem_supp_iff u.1.1 q).mpr hcomp
+  exact Finset.mem_image.mpr
+    ⟨⟨u.1, ⟨q, hqSupp⟩⟩, Finset.mem_univ _, rfl⟩
+
+/-- The used exterior is the third defect-closed cell: it is the complement
+of the already closed minimum layer and orphan cells. -/
+theorem degree_sixteen_minimumLayer_used_exterior_defect_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3)
+    {z q : V}
+    (hz : z ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    (hzq : (secondOrderDefectGraph G).Adj z q) :
+    q ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hzNotU : z ∉ U := by
+    have hzComp := minimumLayer_externalBiUnion_subset_complement G D c₀ hz
+    exact (Finset.mem_sdiff.mp hzComp).2
+  have hzNotO : z ∉ O := by
+    intro hzO
+    exact (Finset.mem_sdiff.mp hzO).2 hz
+  have hqNotU : q ∉ U := by
+    intro hqU
+    exact hzNotU (minimumLayerImage_defect_closed D c₀ hqU hzq.symm)
+  have hqNotO : q ∉ O := by
+    intro hqO
+    exact hzNotO (degree_sixteen_minimumLayer_orphan_defect_closed
+      G hfree hs hmin hcard c₀ hregChild hcardChild hqO hzq.symm)
+  by_contra hqNotR
+  exact hqNotO (Finset.mem_sdiff.mpr
+    ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hqNotU⟩, hqNotR⟩)
+
 /-- In particular, every used exterior row is internally one-regular. -/
 theorem degree_sixteen_fourLayer_used_exterior_sameRow_neighbor_card_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -2094,8 +2276,57 @@ theorem degree_sixteen_fourLayer_orphans_defect_closed
   rw [← hCD] at hz'D
   exact Finset.mem_of_mem_erase (Finset.mem_filter.mp hz'D).1
 
-/-- Component form of orphan defect closure: the entire defect component of
-every orphan is contained in the 48-vertex orphan set. -/
+/-- Component form of uniform orphan defect closure: the entire defect
+component of every orphan remains in the orphan cell. -/
+theorem degree_sixteen_minimumLayer_orphan_component_subset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {s : ℕ} (hs : s = 0 ∨ s = 2 ∨ s = 4)
+    (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = s)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) =
+        s * (s - 1) + 3) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion E
+    ∀ z ∈ O, (D.connectedComponentMk z).supp ⊆ (O : Set V) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion E
+  have hclosed : ∀ z ∈ O, D.neighborFinset z ⊆ O := by
+    intro z hz q hzq
+    exact degree_sixteen_minimumLayer_orphan_defect_closed
+      G hfree hs hmin hcard c₀ hregChild hcardChild hz
+        ((D.mem_neighborFinset z q).mp hzq)
+  have hwalk : ∀ (a b : V) (p : D.Walk a b), a ∈ O → b ∈ O := by
+    intro a b p
+    induction p with
+    | nil => exact fun ha => ha
+    | cons hadj q ih =>
+        intro ha
+        have hv : _ ∈ O := hclosed _ ha
+          ((D.mem_neighborFinset _ _).mpr hadj)
+        exact ih hv
+  intro z hz q hq
+  have heq : D.connectedComponentMk q = D.connectedComponentMk z :=
+    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk z) q).mp hq
+  have hr : D.Reachable z q := ConnectedComponent.eq.mp heq.symm
+  obtain ⟨p⟩ := hr
+  exact hwalk z q p hz
+
+/-- Compatibility wrapper for the `s=4` component closure theorem. -/
 theorem degree_sixteen_fourLayer_orphan_component_subset
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2115,30 +2346,9 @@ theorem degree_sixteen_fourLayer_orphan_component_subset
     let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
       Finset.univ.biUnion E
     ∀ z ∈ O, (D.connectedComponentMk z).supp ⊆ (O : Set V) := by
-  classical
-  dsimp only
-  let D := secondOrderDefectGraph G
-  let E := minimumLayerExternalNeighborFinset G D c₀
-  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
-    Finset.univ.biUnion E
-  have hclosed : ∀ z ∈ O, D.neighborFinset z ⊆ O :=
-    degree_sixteen_fourLayer_orphans_defect_closed
-      G hfree hmin hcard c₀ hregChild hcardChild
-  have hwalk : ∀ (a b : V) (p : D.Walk a b), a ∈ O → b ∈ O := by
-    intro a b p
-    induction p with
-    | nil => exact fun ha => ha
-    | cons hadj q ih =>
-        intro ha
-        have hv : _ ∈ O := hclosed _ ha
-          ((D.mem_neighborFinset _ _).mpr hadj)
-        exact ih hv
-  intro z hz q hq
-  have heq : D.connectedComponentMk q = D.connectedComponentMk z :=
-    (ConnectedComponent.mem_supp_iff (D.connectedComponentMk z) q).mp hq
-  have hr : D.Reachable z q := ConnectedComponent.eq.mp heq.symm
-  obtain ⟨p⟩ := hr
-  exact hwalk z q p hz
+  simpa using degree_sixteen_minimumLayer_orphan_component_subset
+    G hfree (s := 4) (by norm_num) hmin hcard c₀ hregChild
+      (by norm_num; exact hcardChild)
 
 /-- Every orphan defect component has length at least four.  The inherited
 d=4 child forces the global minimum component length to be three, and every
