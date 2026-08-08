@@ -86,6 +86,243 @@ theorem containsC4_of_restricted_cherry_count
     (G.ne_of_adj avx) (G.ne_of_adj avy)
     (G.ne_of_adj av'x) (G.ne_of_adj av'y)
 
+/- Exact restricted-cherry counting by endpoint pairs.  If every cherry's
+endpoint pair is `good`, and every good two-element endpoint set has a unique
+center, projection to the endpoint set is a bijection. -/
+/-- The two-element cliques of a finite graph are exactly its edges, stated
+in the `Finset (Finset V)` representation used by the cherry counts below. -/
+theorem card_adjacent_pairs_eq_card_edgeFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] :
+    ((Finset.univ.powersetCard 2).filter (fun e : Finset V =>
+      ∀ x ∈ e, ∀ y ∈ e, x ≠ y → H.Adj x y)).card =
+      H.edgeFinset.card := by
+  classical
+  symm
+  apply Finset.card_bij (fun e _he => e.toFinset)
+  · intro e he
+    have hcard : e.toFinset.card = 2 :=
+      Sym2.card_toFinset_of_not_isDiag e (H.not_isDiag_of_mem_edgeFinset he)
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hcard⟩, ?_⟩
+    intro x hx y hy hxy
+    induction e using Sym2.inductionOn with
+    | _ a b =>
+      have hab : H.Adj a b := H.mem_edgeFinset.mp he
+      simp only [Sym2.toFinset_mk_eq, Finset.mem_insert,
+        Finset.mem_singleton] at hx hy
+      rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+      · exact (hxy rfl).elim
+      · exact hab
+      · exact hab.symm
+      · exact (hxy rfl).elim
+  · intro e he e' he' hfin
+    induction e using Sym2.inductionOn with
+    | _ a b =>
+      induction e' using Sym2.inductionOn with
+      | _ c d =>
+        simp only [Sym2.toFinset_mk_eq] at hfin
+        have hc : c = a ∨ c = b := by
+          have : c ∈ ({a, b} : Finset V) := by rw [hfin]; simp
+          simpa [eq_comm] using this
+        have hd : d = a ∨ d = b := by
+          have : d ∈ ({a, b} : Finset V) := by rw [hfin]; simp
+          simpa [eq_comm] using this
+        have hcd : c ≠ d := (H.mem_edgeFinset.mp he').ne
+        rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
+        · exact (hcd rfl).elim
+        · rfl
+        · exact Sym2.eq_swap
+        · exact (hcd rfl).elim
+  · intro e he
+    have heData := Finset.mem_filter.mp he
+    obtain ⟨a, b, hab, heq⟩ := Finset.card_eq_two.mp
+      (Finset.mem_powersetCard.mp heData.1).2
+    have hne : a ≠ b := by
+      intro h
+      subst b
+      simp at hab
+    have hadj : H.Adj a b :=
+      heData.2 a (by simp [heq]) b (by simp [heq]) hne
+    refine ⟨s(a, b), H.mem_edgeFinset.mpr hadj, ?_⟩
+    simpa [heq, Sym2.toFinset_mk_eq]
+
+/-- Restricted two-element cliques in a finite vertex cell are counted by
+the edge finset of the induced graph on that cell. -/
+theorem card_adjacent_pairs_eq_card_edgeFinset_induce
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (B : Finset V) :
+    ((B.powersetCard 2).filter (fun e : Finset V =>
+      ∀ x ∈ e, ∀ y ∈ e, x ≠ y → G.Adj x y)).card =
+      (G.induce (B : Set V)).edgeFinset.card := by
+  classical
+  let H := G.induce (B : Set V)
+  rw [← card_adjacent_pairs_eq_card_edgeFinset H]
+  symm
+  apply Finset.card_bij (fun e _he => e.image (fun x => x.1))
+  · intro e he
+    have heData := Finset.mem_filter.mp he
+    have hePow := Finset.mem_powersetCard.mp heData.1
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_powersetCard.mpr ⟨?_, ?_⟩, ?_⟩
+    · intro z hz
+      obtain ⟨z', hz'e, rfl⟩ := Finset.mem_image.mp hz
+      exact z'.2
+    · rw [Finset.card_image_of_injective _ Subtype.val_injective]
+      exact hePow.2
+    · intro x hx y hy hxy
+      obtain ⟨x', hx'e, rfl⟩ := Finset.mem_image.mp hx
+      obtain ⟨y', hy'e, hyval⟩ := Finset.mem_image.mp hy
+      subst y
+      exact heData.2 x' hx'e y' hy'e
+        (fun h => hxy (congrArg Subtype.val h))
+  · intro e he e' he' hfin
+    exact (Finset.image_injective Subtype.val_injective) hfin
+  · intro e he
+    have heData := Finset.mem_filter.mp he
+    obtain ⟨a, b, hab, heq⟩ := Finset.card_eq_two.mp
+      (Finset.mem_powersetCard.mp heData.1).2
+    have haB : a ∈ B :=
+      (Finset.mem_powersetCard.mp heData.1).1 (by simp [heq])
+    have hbB : b ∈ B :=
+      (Finset.mem_powersetCard.mp heData.1).1 (by simp [heq])
+    let a' : (B : Set V) := ⟨a, haB⟩
+    let b' : (B : Set V) := ⟨b, hbB⟩
+    let e' : Finset (B : Set V) := {a', b'}
+    have hne : a ≠ b := by
+      intro h
+      subst b
+      simp at hab
+    have hadj : G.Adj a b :=
+      heData.2 a (by simp [heq]) b (by simp [heq]) hne
+    refine ⟨e', ?_, ?_⟩
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_powersetCard.mpr
+        ⟨Finset.subset_univ _, ?_⟩, ?_⟩
+      · simp [e', a', b', hne]
+      · intro x hx y hy hxy
+        simp only [e', Finset.mem_insert, Finset.mem_singleton] at hx hy
+        rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+        · exact (hxy rfl).elim
+        · exact hadj
+        · exact hadj.symm
+        · exact (hxy rfl).elim
+    · ext z
+      simp [e', a', b', heq]
+
+/-- Among the two-element subsets of a finite cell, the nonedges are the
+complement of the induced edges. -/
+theorem card_nonadjacent_pairs_eq_choose_sub_card_edgeFinset_induce
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (B : Finset V) :
+    ((B.powersetCard 2).filter (fun e : Finset V =>
+      ∀ x ∈ e, ∀ y ∈ e, x ≠ y → ¬G.Adj x y)).card =
+      B.card.choose 2 - (G.induce (B : Set V)).edgeFinset.card := by
+  classical
+  let P := B.powersetCard 2
+  let adj := fun e : Finset V =>
+    ∀ x ∈ e, ∀ y ∈ e, x ≠ y → G.Adj x y
+  let nonadj := fun e : Finset V =>
+    ∀ x ∈ e, ∀ y ∈ e, x ≠ y → ¬G.Adj x y
+  have hcomplement : P.filter nonadj = P.filter (fun e => ¬adj e) := by
+    ext e
+    simp only [Finset.mem_filter]
+    refine and_congr_right fun heP => ?_
+    obtain ⟨a, b, hab, heq⟩ := Finset.card_eq_two.mp
+      (Finset.mem_powersetCard.mp heP).2
+    have hne : a ≠ b := by
+      intro h
+      subst b
+      simp at hab
+    simp only [nonadj, adj]
+    constructor
+    · intro hnadj hadj
+      exact hnadj a (by simp [heq]) b (by simp [heq]) hne
+        (hadj a (by simp [heq]) b (by simp [heq]) hne)
+    · intro hnotadj x hx y hy hxy hxyAdj
+      apply hnotadj
+      intro q hq q' hq' hqq'
+      rw [heq] at hx hy hq hq'
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy hq hq'
+      rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
+      · exact (hxy rfl).elim
+      · rcases hq with rfl | rfl <;> rcases hq' with rfl | rfl
+        · exact (hqq' rfl).elim
+        · exact hxyAdj
+        · exact hxyAdj.symm
+        · exact (hqq' rfl).elim
+      · rcases hq with rfl | rfl <;> rcases hq' with rfl | rfl
+        · exact (hqq' rfl).elim
+        · exact hxyAdj.symm
+        · exact hxyAdj
+        · exact (hqq' rfl).elim
+      · exact (hxy rfl).elim
+  have hpartition := Finset.card_filter_add_card_filter_not (s := P) adj
+  have hadj : (P.filter adj).card =
+      (G.induce (B : Set V)).edgeFinset.card := by
+    exact card_adjacent_pairs_eq_card_edgeFinset_induce G B
+  have htotal : P.card = B.card.choose 2 := by
+    simp [P]
+  change (P.filter nonadj).card = _
+  rw [hcomplement]
+  rw [hadj, htotal] at hpartition
+  omega
+
+/-- In a connected component of a finite two-regular graph there is one
+edge per vertex, so its nonadjacent pairs number `choose(n,2) - n`. -/
+theorem card_nonadjacent_pairs_component_twoRegular
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hdegree : ∀ z : V, D.degree z = 2)
+    (o : D.ConnectedComponent) :
+    let B := o.supp.toFinite.toFinset
+    ((B.powersetCard 2).filter (fun e : Finset V =>
+      ∀ x ∈ e, ∀ y ∈ e, x ≠ y → ¬D.Adj x y)).card =
+      B.card.choose 2 - B.card := by
+  classical
+  dsimp only
+  let B := o.supp.toFinite.toFinset
+  let H := D.induce (B : Set V)
+  have hregH : ∀ z : (B : Set V), H.degree z = 2 := by
+    intro z
+    have hsubset : D.neighborSet z.1 ⊆ (B : Set V) := by
+      intro y hzy
+      have hzSupp : z.1 ∈ o.supp := by simpa [B] using z.2
+      have hySupp : y ∈ o.supp := by
+        rw [ConnectedComponent.mem_supp_iff, ←
+          (ConnectedComponent.mem_supp_iff o z.1).mp hzSupp]
+        exact (ConnectedComponent.connectedComponentMk_eq_of_adj hzy).symm
+      simpa [B] using hySupp
+    have hcardN : (H.neighborFinset z).card =
+        (D.neighborFinset z.1).card := by
+      apply Finset.card_bij (fun y _hy => y.1)
+      · intro y hy
+        exact (D.mem_neighborFinset z.1 y.1).mpr
+          ((H.mem_neighborFinset z y).mp hy)
+      · intro y hy y' hy' hyy
+        exact Subtype.ext hyy
+      · intro y hy
+        have hzy : D.Adj z.1 y := (D.mem_neighborFinset z.1 y).mp hy
+        let y' : (B : Set V) := ⟨y, hsubset hzy⟩
+        refine ⟨y', ?_, rfl⟩
+        exact (H.mem_neighborFinset z y').mpr hzy
+    rw [← H.card_neighborFinset_eq_degree, hcardN,
+      D.card_neighborFinset_eq_degree, hdegree]
+  have hedge : H.edgeFinset.card = B.card := by
+    have hhandshake : 2 * H.edgeFinset.card = 2 * B.card := by
+      calc
+        2 * H.edgeFinset.card = ∑ z : (B : Set V), H.degree z :=
+          H.sum_degrees_eq_twice_card_edges.symm
+        _ = ∑ _z : (B : Set V), 2 := by
+          apply Finset.sum_congr rfl
+          intro z _hz
+          exact hregH z
+        _ = 2 * B.card := by simp [Nat.mul_comm]
+    omega
+  have hnon := card_nonadjacent_pairs_eq_choose_sub_card_edgeFinset_induce D B
+  rw [hedge] at hnon
+  exact hnon
+
 /-- Exact restricted-cherry counting by endpoint pairs.  If every cherry's
 endpoint pair is `good`, and every good two-element endpoint set has a unique
 center, projection to the endpoint set is a bijection. -/
@@ -9002,6 +9239,71 @@ theorem degree_sixteen_fourLayer_used_to_orphan_cherry_mass_eq_service_cherries
     simp [B, D, componentNeighborFinset, ConnectedComponent.mem_supp_iff,
       Finset.mem_inter, and_comm]
   rw [hfin]
+
+/-- Exact numerical cherry ledger for a named orphan component.  Its defect
+component is two-regular, so the non-defect endpoint pairs are all unordered
+pairs except the `|o|` defect edges. -/
+theorem degree_sixteen_fourLayer_used_to_orphan_cherry_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ C, e.supp.ncard *
+        (componentQuotientMatrix G D e o).choose 2) =
+      o.supp.ncard.choose 2 - o.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let B := o.supp.toFinite.toFinset
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hregroup :=
+    degree_sixteen_fourLayer_used_to_orphan_cherry_mass_eq_service_cherries
+      G hfree hmin hcard c₀ hregChild hcardChild o
+  have hservice :=
+    degree_sixteen_fourLayer_orphan_component_service_cherries_eq_nondefect_pairs
+      G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hnon := card_nonadjacent_pairs_component_twoRegular D hregD o
+  have hcardB : B.card = o.supp.ncard := by
+    simpa [B] using
+      (Set.ncard_eq_toFinset_card o.supp o.supp.toFinite).symm
+  change (∑ e ∈ C, e.supp.ncard *
+      (componentQuotientMatrix G D e o).choose 2) = _
+  calc
+    (∑ e ∈ C, e.supp.ncard *
+        (componentQuotientMatrix G D e o).choose 2) =
+        ∑ y ∈ R, ((B ∩ G.neighborFinset y).card).choose 2 := by
+          simpa [D, R, C, B] using hregroup
+    _ = ((B.powersetCard 2).filter (fun e : Finset V ↦
+        ∀ z ∈ e, ∀ z' ∈ e, z ≠ z' → ¬D.Adj z z')).card := by
+          simpa [D, R, B] using hservice
+    _ = B.card.choose 2 - B.card := by simpa [D, B] using hnon
+    _ = o.supp.ncard.choose 2 - o.supp.ncard := by rw [hcardB]
 
 /-- Every edge incident to an orphan lies in a triangle; equivalently its
 open neighborhood is a perfect matching.  This is the child-side pairing
