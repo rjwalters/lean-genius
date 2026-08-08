@@ -922,6 +922,111 @@ theorem four_part_three_divisible_count_vector_classification
     rcases hn₃₀Cases with h₃₀ | h₃₀ <;> omega
 
 set_option maxHeartbeats 2000000 in
+/-- Finset form of the exact four-part, three-divisible count classification. -/
+theorem four_part_three_divisible_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 4) (hsum : ∑ c ∈ C, w c = 48)
+    (hlower : ∀ c ∈ C, 6 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card)
+    (heven₂₁ : Even (C.filter fun c => w c = 21).card)
+    (heven₂₇ : Even (C.filter fun c => w c = 27).card) :
+    let n₆ := (C.filter fun c => w c = 6).card
+    let n₉ := (C.filter fun c => w c = 9).card
+    let n₁₂ := (C.filter fun c => w c = 12).card
+    let n₁₅ := (C.filter fun c => w c = 15).card
+    let n₁₈ := (C.filter fun c => w c = 18).card
+    let n₂₁ := (C.filter fun c => w c = 21).card
+    let n₂₄ := (C.filter fun c => w c = 24).card
+    let n₂₇ := (C.filter fun c => w c = 27).card
+    let n₃₀ := (C.filter fun c => w c = 30).card
+    (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 1) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 2 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 2 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 0 ∧ n₁₂ = 4 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0 ∧ n₂₇ = 0 ∧ n₃₀ = 0) := by
+  classical
+  dsimp only
+  let n₆ := (C.filter fun c => w c = 6).card
+  let n₉ := (C.filter fun c => w c = 9).card
+  let n₁₂ := (C.filter fun c => w c = 12).card
+  let n₁₅ := (C.filter fun c => w c = 15).card
+  let n₁₈ := (C.filter fun c => w c = 18).card
+  let n₂₁ := (C.filter fun c => w c = 21).card
+  let n₂₄ := (C.filter fun c => w c = 24).card
+  let n₂₇ := (C.filter fun c => w c = 27).card
+  let n₃₀ := (C.filter fun c => w c = 30).card
+  have horders : ∀ c ∈ C, w c = 6 ∨ w c = 9 ∨ w c = 12 ∨ w c = 15 ∨
+      w c = 18 ∨ w c = 21 ∨ w c = 24 ∨ w c = 27 ∨ w c = 30 := by
+    intro c hc
+    have hrest : 6 * (C.erase c).card ≤ ∑ d ∈ C.erase c, w d := by
+      calc
+        6 * (C.erase c).card = ∑ _d ∈ C.erase c, 6 := by simp [mul_comm]
+        _ ≤ ∑ d ∈ C.erase c, w d := by
+          apply Finset.sum_le_sum
+          intro d hd
+          exact hlower d (Finset.mem_of_mem_erase hd)
+    have hcardErase : (C.erase c).card = 3 := by
+      rw [Finset.card_erase_of_mem hc, hcard]
+    have hsplit := Finset.sum_erase_add C w hc
+    have hcLower := hlower c hc
+    obtain ⟨k, hk⟩ := hthree c hc
+    omega
+  have hcountEq : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ + n₃₀ = 4 := by
+    calc
+      n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ + n₂₇ + n₃₀ =
+          ∑ c ∈ C, ((if w c = 6 then 1 else 0) + (if w c = 9 then 1 else 0) +
+            (if w c = 12 then 1 else 0) + (if w c = 15 then 1 else 0) +
+            (if w c = 18 then 1 else 0) + (if w c = 21 then 1 else 0) +
+            (if w c = 24 then 1 else 0) + (if w c = 27 then 1 else 0) +
+            (if w c = 30 then 1 else 0)) := by
+              simp [n₆, n₉, n₁₂, n₁₅, n₁₈, n₂₁, n₂₄, n₂₇, n₃₀,
+                Finset.sum_add_distrib]
+      _ = ∑ _c ∈ C, 1 := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h | h | h | h | h <;> simp [h]
+      _ = 4 := by simp [hcard]
+  have hmass (a : ℕ) : a * (C.filter fun c => w c = a).card =
+      ∑ c ∈ C, if w c = a then a else 0 := by
+    calc
+      a * (C.filter fun c => w c = a).card =
+          (C.filter fun c => w c = a).card * a := Nat.mul_comm _ _
+      _ = ∑ _c ∈ C.filter (fun c => w c = a), a := by simp
+      _ = ∑ c ∈ C, if w c = a then a else 0 := by rw [Finset.sum_filter]
+  have hmassEq : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ +
+      21*n₂₁ + 24*n₂₄ + 27*n₂₇ + 30*n₃₀ = 48 := by
+    calc
+      6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ + 21*n₂₁ + 24*n₂₄ + 27*n₂₇ + 30*n₃₀ =
+          ∑ c ∈ C, ((if w c = 6 then 6 else 0) + (if w c = 9 then 9 else 0) +
+            (if w c = 12 then 12 else 0) + (if w c = 15 then 15 else 0) +
+            (if w c = 18 then 18 else 0) + (if w c = 21 then 21 else 0) +
+            (if w c = 24 then 24 else 0) + (if w c = 27 then 27 else 0) +
+            (if w c = 30 then 30 else 0)) := by
+              rw [Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                Finset.sum_add_distrib, Finset.sum_add_distrib,
+                ← hmass 6, ← hmass 9, ← hmass 12, ← hmass 15,
+                ← hmass 18, ← hmass 21, ← hmass 24, ← hmass 27, ← hmass 30]
+      _ = ∑ c ∈ C, w c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        rcases horders c hc with h | h | h | h | h | h | h | h | h <;> simp [h]
+      _ = 48 := hsum
+  change Even n₉ at heven₉
+  change Even n₁₅ at heven₁₅
+  change Even n₂₁ at heven₂₁
+  change Even n₂₇ at heven₂₇
+  exact four_part_three_divisible_count_vector_classification
+    n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ n₂₇ n₃₀ hcountEq hmassEq
+      heven₉ heven₁₅ heven₂₁ heven₂₇
+
+set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
 three-divisible parts of size at least six, with even multiplicity for odd
 part sizes. -/
