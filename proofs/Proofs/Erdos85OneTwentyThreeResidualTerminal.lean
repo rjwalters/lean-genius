@@ -757,6 +757,37 @@ theorem seven_part_six_nine_twelve_count_classification
       _ = 48 := hsum
   omega
 
+/-- Exact count-vector classification for five three-divisible parts of total
+forty-eight, each at least six, when every odd part has even multiplicity. -/
+theorem five_part_three_divisible_count_vector_classification
+    (n₆ n₉ n₁₂ n₁₅ n₁₈ n₂₁ n₂₄ : ℕ)
+    (hcount : n₆ + n₉ + n₁₂ + n₁₅ + n₁₈ + n₂₁ + n₂₄ = 5)
+    (hmass : 6*n₆ + 9*n₉ + 12*n₁₂ + 15*n₁₅ + 18*n₁₈ +
+      21*n₂₁ + 24*n₂₄ = 48)
+    (heven₉ : Even n₉) (heven₁₅ : Even n₁₅) (heven₂₁ : Even n₂₁) :
+    (n₆ = 4 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 1) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 2 ∧ n₁₂ = 0 ∧ n₁₅ = 0 ∧ n₁₈ = 1 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 3 ∧ n₉ = 0 ∧ n₁₂ = 0 ∧ n₁₅ = 2 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 2 ∧ n₉ = 0 ∧ n₁₂ = 3 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 1 ∧ n₉ = 2 ∧ n₁₂ = 2 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) ∨
+      (n₆ = 0 ∧ n₉ = 4 ∧ n₁₂ = 1 ∧ n₁₅ = 0 ∧ n₁₈ = 0 ∧ n₂₁ = 0 ∧ n₂₄ = 0) := by
+  obtain ⟨k₉, hk₉⟩ := heven₉
+  obtain ⟨k₁₅, hk₁₅⟩ := heven₁₅
+  obtain ⟨k₂₁, hk₂₁⟩ := heven₂₁
+  have hexcess : n₉ + 2*n₁₂ + 3*n₁₅ + 4*n₁₈ + 5*n₂₁ + 6*n₂₄ = 6 := by
+    omega
+  have hn₁₂Cases : n₁₂ = 0 ∨ n₁₂ = 1 ∨ n₁₂ = 2 ∨ n₁₂ = 3 := by omega
+  have hn₁₅Cases : n₁₅ = 0 ∨ n₁₅ = 1 ∨ n₁₅ = 2 := by omega
+  have hn₁₈Cases : n₁₈ = 0 ∨ n₁₈ = 1 := by omega
+  have hn₂₁Cases : n₂₁ = 0 ∨ n₂₁ = 1 := by omega
+  have hn₂₄Cases : n₂₄ = 0 ∨ n₂₄ = 1 := by omega
+  rcases hn₁₂Cases with h₁₂ | h₁₂ | h₁₂ | h₁₂ <;>
+    rcases hn₁₅Cases with h₁₅ | h₁₅ | h₁₅ <;>
+    rcases hn₁₈Cases with h₁₈ | h₁₈ <;>
+    rcases hn₂₁Cases with h₂₁ | h₂₁ <;>
+    rcases hn₂₄Cases with h₂₄ | h₂₄ <;> omega
+
 set_option maxHeartbeats 2000000 in
 /-- Exact count classification for a six-part partition of forty-eight into
 three-divisible parts of size at least six, with even multiplicity for odd
