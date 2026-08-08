@@ -1407,6 +1407,91 @@ theorem degree_sixteen_fourLayer_used_exterior_defect_closed
   by_contra hqNotR
   exact hqNotO (Finset.mem_sdiff.mpr ⟨hqExt, hqNotR⟩)
 
+/-- Along an actual edge of `G`, second-order defect adjacency is exactly
+triangle-free adjacency: the antipodal half of the defect union consists of
+nonedges. -/
+theorem secondOrderDefect_adj_iff_triangleFree_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    {x y : V} (hxy : G.Adj x y) :
+    (secondOrderDefectGraph G).Adj x y ↔
+      (triangleFreeEdgeGraph G).Adj x y := by
+  constructor
+  · intro hD
+    change (antipodalGraph G).Adj x y ∨
+      (triangleFreeEdgeGraph G).Adj x y at hD
+    rcases hD with hanti | htri
+    · exact ((mem_antipodalNeighbors G x y).mp hanti).2.1 hxy |>.elim
+    · exact htri
+  · intro htri
+    change (antipodalGraph G).Adj x y ∨
+      (triangleFreeEdgeGraph G).Adj x y
+    exact Or.inr htri
+
+/-- **Orphan matching color classification.**  If `z-z'` is the unique
+orphan matching edge at `z`, then it is a defect edge exactly when it is
+triangle-free.  Every other defect edge at `z` is antipodal. -/
+theorem degree_sixteen_fourLayer_orphan_matching_color
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : G.Adj z z') :
+    ((triangleFreeEdgeGraph G).Adj z z' ↔
+      (secondOrderDefectGraph G).Adj z z') ∧
+    (∀ q, (secondOrderDefectGraph G).Adj z q → q ≠ z' →
+      (antipodalGraph G).Adj z q) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let O := (Finset.univ \ U) \ Finset.univ.biUnion E
+  have hzO : z ∈ O := hz
+  have hz'O : z' ∈ O := hz'
+  refine ⟨(secondOrderDefect_adj_iff_triangleFree_of_adj G hzz').symm, ?_⟩
+  intro q hzqD hqz'
+  have hclosed := degree_sixteen_fourLayer_orphans_defect_closed
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hqO : q ∈ O := hclosed z hzO
+    ((D.mem_neighborFinset z q).mpr hzqD)
+  have hnG : ¬G.Adj z q := by
+    intro hzqG
+    have hone := degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild z hzO
+    have hz'Mem : z' ∈ O ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr
+        ⟨hz'O, (G.mem_neighborFinset z z').mpr hzz'⟩
+    have hqMem : q ∈ O ∩ G.neighborFinset z :=
+      Finset.mem_inter.mpr
+        ⟨hqO, (G.mem_neighborFinset z q).mpr hzqG⟩
+    have hle : (O ∩ G.neighborFinset z).card ≤ 1 := by rw [hone]
+    exact hqz' (Finset.card_le_one.mp hle q hqMem z' hz'Mem)
+  change (antipodalGraph G).Adj z q ∨
+    (triangleFreeEdgeGraph G).Adj z q at hzqD
+  rcases hzqD with hanti | htri
+  · exact hanti
+  · exact (hnG ((mem_triangleFreeNeighbors G z q).mp htri).1).elim
+
 end
 
 end Erdos85
