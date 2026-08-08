@@ -527,6 +527,59 @@ theorem degree_sixteen_equalSize_localExcess_term_eq_zero_of_quotient_le_one
   interval_cases componentQuotientMatrix G (secondOrderDefectGraph G) c e <;>
     norm_num
 
+/-- Classification-driven per-component divisibility wrapper.  If every
+target block is either absent, an equal-sized matching block of degree at
+most one, or belongs to a component whose order is divisible by three, then
+the source component itself has order divisible by three.  In the four-layer
+orphan cell these alternatives are respectively unequal orphan components,
+equal orphan components, and minimum/used components. -/
+theorem degree_sixteen_component_card_dvd_three_of_zero_equal_or_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hclass : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 0 ∨
+        (c.supp.ncard = e.supp.ncard ∧
+          componentQuotientMatrix G (secondOrderDefectGraph G) c e ≤ 1) ∨
+        3 ∣ e.supp.ncard) :
+    3 ∣ c.supp.ncard := by
+  by_contra hc
+  apply hc
+  apply degree_sixteen_component_card_dvd_three_of_localExcess_terms
+    G hfree hmin hcard c
+  intro e
+  rcases hclass e with hzero | hequal | hthree
+  · simp [hzero]
+  · have hterm :=
+      degree_sixteen_equalSize_localExcess_term_eq_zero_of_quotient_le_one
+        G hfree hmin hcard c e hequal.1 hequal.2
+    rw [hterm]
+    exact dvd_zero 3
+  · have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e c
+    obtain ⟨k, hk⟩ := hthree
+    have hdvdProd : 3 ∣ c.supp.ncard *
+        componentQuotientMatrix G (secondOrderDefectGraph G) c e := by
+      rw [← hbal, hk]
+      simpa [mul_assoc] using dvd_mul_right 3
+        (k * componentQuotientMatrix G (secondOrderDefectGraph G) e c)
+    have hp : Nat.Prime 3 := by norm_num
+    have hdvd : 3 ∣ componentQuotientMatrix G
+        (secondOrderDefectGraph G) c e :=
+      (hp.dvd_mul.mp hdvdProd).resolve_left hc
+    obtain ⟨k, hk⟩ := hdvd
+    refine ⟨(k : ℤ) *
+        ((componentQuotientMatrix G (secondOrderDefectGraph G) e c : ℤ) - 1), ?_⟩
+    rw [hk]
+    push_cast
+    ring
+
 /-- Graph-facing capstone for the four-layer owner-bin obstruction.  Two
 distinct minimum order-six components cannot each have one reverse-quotient
 incidence among the same three order-twelve targets when all three column
