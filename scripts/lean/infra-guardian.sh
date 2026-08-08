@@ -133,6 +133,19 @@ reap_worktrees() {
         esac
         grep -qxF "$wt" <<<"$locked" && continue
 
+        # Fixed, long-lived role worktrees are reused every cycle rather than
+        # created per-task, and some (the deployer) fast-forward their branch
+        # to exactly match origin/main as part of normal operation -- which
+        # makes the "merged" check below trivially true every cycle. Without
+        # this guard the guardian reaps the deployer's own worktree mid-run
+        # (observed 2026-07-24: fired between the deploy pipeline's "Sync
+        # Branch" step and the rest of the cycle, deregistering the worktree
+        # out from under an in-flight PR-merge loop and requiring manual
+        # `git worktree add` recovery).
+        case "${wt##*/}" in
+            deployer) continue ;;
+        esac
+
         if [[ "$ref" != "DETACHED" ]] && git merge-base --is-ancestor "$ref" origin/main 2>/dev/null; then
             _reap_one "$wt" "merged"
             continue
