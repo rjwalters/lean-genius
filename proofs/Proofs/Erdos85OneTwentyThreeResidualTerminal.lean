@@ -1018,6 +1018,47 @@ theorem five_part_nine_or_twelve_unique_twelve
   change n₁₂ = 1
   omega
 
+set_option maxHeartbeats 2000000 in
+/-- Compact three-part census after order-six orphans have been excluded.
+Destructing the three-element finset keeps elaboration bounded, unlike the
+retired eleven-coordinate count-vector proof. -/
+theorem three_part_nine_lower_named_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hcard : C.card = 3) (hsum : ∑ c ∈ C, w c = 48)
+    (hnine : ∀ c ∈ C, 9 ≤ w c) (hthree : ∀ c ∈ C, 3 ∣ w c)
+    (heven₉ : Even (C.filter fun c => w c = 9).card)
+    (heven₁₅ : Even (C.filter fun c => w c = 15).card)
+    (heven₂₁ : Even (C.filter fun c => w c = 21).card)
+    (heven₂₇ : Even (C.filter fun c => w c = 27).card) :
+    ((C.filter fun c => w c = 9).card = 2 ∧
+      (C.filter fun c => w c = 30).card = 1) ∨
+    ((C.filter fun c => w c = 12).card = 2 ∧
+      (C.filter fun c => w c = 24).card = 1) ∨
+    ((C.filter fun c => w c = 12).card = 1 ∧
+      (C.filter fun c => w c = 18).card = 2) ∨
+    ((C.filter fun c => w c = 15).card = 2 ∧
+      (C.filter fun c => w c = 18).card = 1) := by
+  classical
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  have ha : a ∈ ({a, b, c} : Finset α) := by simp
+  have hb : b ∈ ({a, b, c} : Finset α) := by simp
+  have hc : c ∈ ({a, b, c} : Finset α) := by simp
+  have haLower := hnine a ha
+  have hbLower := hnine b hb
+  have hcLower := hnine c hc
+  obtain ⟨ka, hka⟩ := hthree a ha
+  obtain ⟨kb, hkb⟩ := hthree b hb
+  obtain ⟨kc, hkc⟩ := hthree c hc
+  simp [hab, hac, hbc] at hsum
+  have hkaUpper : ka ≤ 10 := by omega
+  have hkbUpper : kb ≤ 10 := by omega
+  have hkcUpper : kc ≤ 10 := by omega
+  interval_cases ka <;> interval_cases kb <;> interval_cases kc <;>
+    norm_num at hka hkb hkc <;>
+    simp [Finset.filter_insert, Finset.filter_singleton, hab, hac, hbc,
+      hka, hkb, hkc, even_iff_two_dvd] at heven₉ heven₁₅ heven₂₁ heven₂₇ ⊢ <;>
+    omega
+
 /-- An order-six used row cannot distribute quotient degree four across one
 order-twelve and four order-nine targets.  The nine-target entries are
 multiples of three, the twelve-target entry is even, and the only numerical
