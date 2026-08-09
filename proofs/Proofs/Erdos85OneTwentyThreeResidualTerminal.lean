@@ -15847,6 +15847,85 @@ theorem degree_sixteen_fourLayer_false_of_twelve_twelve_twentyfour_orphans
   · simpa [Q, D, C] using hc124
   · simpa [Q, D] using hcover
 
+/-- Count-form bridge from the three-component orphan census to the named
+`(12,12,24)` contradiction. -/
+theorem degree_sixteen_fourLayer_false_of_twelve_twelve_twentyfour_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    C.card = 3 →
+    (C.filter fun c => c.supp.ncard = 12).card = 2 →
+    (C.filter fun c => c.supp.ncard = 24).card = 1 → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  intro hCcard h12 h24
+  change C.card = 3 at hCcard
+  change (C.filter fun c => c.supp.ncard = 12).card = 2 at h12
+  change (C.filter fun c => c.supp.ncard = 24).card = 1 at h24
+  obtain ⟨o₀, o₁, hne₀₁, hS12⟩ := Finset.card_eq_two.mp h12
+  obtain ⟨o₂, hS24⟩ := Finset.card_eq_one.mp h24
+  have ho₀S : o₀ ∈ C.filter (fun c => c.supp.ncard = 12) := by
+    rw [hS12]
+    simp
+  have ho₁S : o₁ ∈ C.filter (fun c => c.supp.ncard = 12) := by
+    rw [hS12]
+    simp
+  have ho₂S : o₂ ∈ C.filter (fun c => c.supp.ncard = 24) := by
+    rw [hS24]
+    simp
+  obtain ⟨ho₀C, ho₀⟩ := Finset.mem_filter.mp ho₀S
+  obtain ⟨ho₁C, ho₁⟩ := Finset.mem_filter.mp ho₁S
+  obtain ⟨ho₂C, ho₂⟩ := Finset.mem_filter.mp ho₂S
+  have hne₀₂ : o₀ ≠ o₂ := by
+    intro h
+    subst o₂
+    omega
+  have hne₁₂ : o₁ ≠ o₂ := by
+    intro h
+    subst o₂
+    omega
+  have hnamedSubset : ({o₀, o₁, o₂} : Finset D.ConnectedComponent) ⊆ C := by
+    intro o ho
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ho
+    rcases ho with ho | ho | ho
+    · simpa [ho] using ho₀C
+    · simpa [ho] using ho₁C
+    · simpa [ho] using ho₂C
+  have hnamedCard : ({o₀, o₁, o₂} : Finset D.ConnectedComponent).card = 3 := by
+    simp [hne₀₁, hne₀₂, hne₁₂]
+  have hnamed : ({o₀, o₁, o₂} : Finset D.ConnectedComponent) = C :=
+    Finset.eq_of_subset_of_card_le hnamedSubset (by omega)
+  have ho₀O : componentRepresentative D o₀ ∈ O := (Finset.mem_filter.mp ho₀C).2
+  have ho₁O : componentRepresentative D o₁ ∈ O := (Finset.mem_filter.mp ho₁C).2
+  have ho₂O : componentRepresentative D o₂ ∈ O := (Finset.mem_filter.mp ho₂C).2
+  exact degree_sixteen_fourLayer_false_of_twelve_twelve_twentyfour_orphans
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o₀ o₁ o₂
+      ho₀ ho₁ ho₂ hne₀₁ hne₀₂ hne₁₂
+      (by simpa [D, O] using ho₀O) (by simpa [D, O] using ho₁O)
+      (by simpa [D, O] using ho₂O) (by simpa [D, O, C] using hnamed.symm)
+
 end
 
 end Erdos85
