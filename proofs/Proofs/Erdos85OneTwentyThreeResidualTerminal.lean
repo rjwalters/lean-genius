@@ -21132,6 +21132,105 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_global_complement_diagonal_
   rw [hTsum, htrace] at hsplit
   omega
 
+/-- The exact trace residual collapses the oriented five-divisible mass to
+five in the order-seven/cardinality-four lane. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_orientedFiveMass_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    orientedAnchorMass G u (forwardOriented G u) 5 = 5 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  let F := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    5 ∣ e.supp.ncard ∧ forwardOriented G u e)
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 4 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 7 at huniform
+  have hres :=
+    degree_sixteen_twoLayer_orderSeven_card_four_global_complement_diagonal_sum_eq_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+  have hbridge := orientedAnchorMass_eq_sum_diagonalQuotient
+    G hfree (d := 16) (p := 5) (by norm_num) (by norm_num) hmin hcard
+      u hu huRange (forwardOriented G u)
+  have hFsub : F ⊆ insert c₀
+      ((Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N) := by
+    intro e heF
+    by_cases hec : e = c₀
+    · simp [hec]
+    · apply Finset.mem_insert.mpr
+      right
+      apply Finset.mem_sdiff.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      simp only [Finset.mem_insert]
+      push_neg
+      refine ⟨hec, ?_⟩
+      intro heN
+      have hnot := (Finset.mem_filter.mp heN).2
+      exact hnot (Finset.mem_filter.mp heF).2.1
+  have hcdiag := degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hcNotRes : c₀ ∉
+      (Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N := by simp
+  have hcontainer : (∑ e ∈ insert c₀
+      ((Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N), Q e e) = 8 := by
+    rw [Finset.sum_insert hcNotRes]
+    have hres' : (∑ e ∈ (Finset.univ : Finset D.ConnectedComponent) \
+        insert c₀ N, Q e e) = 6 := by
+      simpa [D, O, C, N, Q] using hres
+    rw [hres']
+    simpa [Q, D] using hcdiag
+  have hselected : (∑ e ∈ F, Q e e) ≤ 8 := by
+    calc
+      (∑ e ∈ F, Q e e) ≤ ∑ e ∈ insert c₀
+          ((Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N), Q e e :=
+        Finset.sum_le_sum_of_subset_of_nonneg hFsub (fun _ _ _ => Nat.zero_le _)
+      _ = 8 := hcontainer
+  have hmassUpper : orientedAnchorMass G u (forwardOriented G u) 5 ≤ 8 := by
+    rw [hbridge]
+    simpa [F, Q, D] using hselected
+  have hmassCases := degree_sixteen_twoLayer_orientedFiveMass_eq_five_ten_or_fifteen
+    G hfree hmin hcard c₀ hregChild hcardChild u hu huRange hℓ3 hbij huD
+  omega
+
 /-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
 set: its four order-seven components have four distinct order-thirty-five
 targets, leaving no further orphan component. -/
