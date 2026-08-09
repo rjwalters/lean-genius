@@ -19160,6 +19160,133 @@ theorem eleven_one_one_one_service_local_lower
     interval_cases b₃ <;> interval_cases b₄
   all_goals omega
 
+/-- Aggregate an ordinary linear service lower bound with a single possible
+order-eleven exception over positive reduced mass sixteen. -/
+theorem exceptional_eleven_service_total_lower
+    {α : Type*} [DecidableEq α] (C : Finset α) (k cost : α → ℕ)
+    (L B target : ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hpoint : ∀ x ∈ C,
+      L * k x ≤ cost x ∨ (k x = 11 ∧ B ≤ cost x))
+    (hB : B ≤ L * 11) (hordinary : target ≤ L * 16)
+    (hexceptional : target ≤ L * 5 + B) :
+    target ≤ ∑ x ∈ C, cost x := by
+  let E := C.filter fun x => k x = 11
+  have hEsub : E ⊆ C := Finset.filter_subset _ _
+  have hEcard : E.card = 0 ∨ E.card = 1 := by
+    have hEle : (∑ x ∈ E, k x) ≤ 16 := by
+      rw [← hsum]
+      exact Finset.sum_le_sum_of_subset_of_nonneg hEsub
+        (fun _ _ _ => Nat.zero_le _)
+    have hEsum : (∑ x ∈ E, k x) = 11 * E.card := by
+      calc
+        (∑ x ∈ E, k x) = ∑ _x ∈ E, 11 := by
+          apply Finset.sum_congr rfl
+          intro x hx
+          exact (Finset.mem_filter.mp hx).2
+        _ = 11 * E.card := by simp [mul_comm]
+    rw [hEsum] at hEle
+    omega
+  rcases hEcard with hzero | hone
+  · have hall : ∀ x ∈ C, L * k x ≤ cost x := by
+      intro x hxC
+      rcases hpoint x hxC with hx | hx
+      · exact hx
+      · have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hx.1⟩
+        have : 0 < E.card := Finset.card_pos.mpr ⟨x, hxE⟩
+        omega
+    have hle := Finset.sum_le_sum fun x hx => hall x hx
+    have hleft : (∑ x ∈ C, L * k x) = L * 16 := by
+      rw [← Finset.mul_sum, hsum]
+    rw [hleft] at hle
+    exact hordinary.trans hle
+  · obtain ⟨e, heE⟩ := Finset.card_pos.mp (by omega : 0 < E.card)
+    have heC := hEsub heE
+    have hke : k e = 11 := (Finset.mem_filter.mp heE).2
+    have heCost : B ≤ cost e := by
+      rcases hpoint e heC with he | he
+      · exact hB.trans (by simpa [hke, mul_comm] using he)
+      · exact he.2
+    have hrest : ∀ x ∈ C.erase e, L * k x ≤ cost x := by
+      intro x hx
+      have hxC := (Finset.mem_erase.mp hx).2
+      rcases hpoint x hxC with hlinear | hex
+      · exact hlinear
+      · have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hex.1⟩
+        have hxe : x ≠ e := (Finset.mem_erase.mp hx).1
+        have htwo : 2 ≤ E.card :=
+          Finset.one_lt_card.mpr ⟨x, hxE, e, heE, hxe⟩
+        omega
+    have hkSplit : (∑ x ∈ C.erase e, k x) + k e = ∑ x ∈ C, k x :=
+      Finset.sum_erase_add C k heC
+    rw [hke, hsum] at hkSplit
+    have hkRest : (∑ x ∈ C.erase e, k x) = 5 := by omega
+    have hrestSum := Finset.sum_le_sum fun x hx => hrest x hx
+    have hleft : (∑ x ∈ C.erase e, L * k x) = L * 5 := by
+      rw [← Finset.mul_sum, hkRest]
+    rw [hleft] at hrestSum
+    have hcostSplit : (∑ x ∈ C.erase e, cost x) + cost e =
+        ∑ x ∈ C, cost x := Finset.sum_erase_add C cost heC
+    rw [← hcostSplit]
+    omega
+
+/-- Aggregate service cost for the used-order pattern `55+10+5`. -/
+theorem eleven_two_one_service_total_ge_thirtySeven
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ a₃ b₁ b₂ b₃ : α → ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x + b₃ x = 5)
+    (hbal₁ : ∀ x ∈ C, 11 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 2 * a₂ x = k x * b₂ x)
+    (hbal₃ : ∀ x ∈ C, a₃ x = k x * b₃ x) :
+    37 ≤ ∑ x ∈ C, (a₁ x * (b₁ x - 1) +
+      a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1)) := by
+  let cost := fun x : α => a₁ x * (b₁ x - 1) +
+    a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1)
+  apply exceptional_eleven_service_total_lower C k cost 5 12 37
+    hpos hsum
+  · intro x hx
+    have hk : k x ≤ 16 := by
+      rw [← hsum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+    exact eleven_two_one_service_local_lower
+      (k x) (a₁ x) (a₂ x) (a₃ x) (b₁ x) (b₂ x) (b₃ x) hk
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx) (hbal₃ x hx)
+  · norm_num
+  · norm_num
+  · norm_num
+
+/-- Aggregate service cost for the used-order pattern `55+5+5+5`. -/
+theorem eleven_one_one_one_service_total_ge_twentyTwo
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ : α → ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x + b₃ x + b₄ x = 5)
+    (hbal₁ : ∀ x ∈ C, 11 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, a₂ x = k x * b₂ x)
+    (hbal₃ : ∀ x ∈ C, a₃ x = k x * b₃ x)
+    (hbal₄ : ∀ x ∈ C, a₄ x = k x * b₄ x) :
+    22 ≤ ∑ x ∈ C, (a₁ x * (b₁ x - 1) +
+      a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1) +
+        a₄ x * (b₄ x - 1)) := by
+  let cost := fun x : α => a₁ x * (b₁ x - 1) +
+    a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1) +
+      a₄ x * (b₄ x - 1)
+  apply exceptional_eleven_service_total_lower C k cost 4 2 22
+    hpos hsum
+  · intro x hx
+    have hk : k x ≤ 16 := by
+      rw [← hsum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+    exact eleven_one_one_one_service_local_lower
+      (k x) (a₁ x) (a₂ x) (a₃ x) (a₄ x)
+        (b₁ x) (b₂ x) (b₃ x) (b₄ x) hk
+          (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+            (hbal₃ x hx) (hbal₄ x hx)
+  · norm_num
+  · norm_num
+  · norm_num
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
