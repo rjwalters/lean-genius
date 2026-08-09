@@ -763,7 +763,7 @@ seventeen order/row patterns.  The divisibility hypotheses are the forward
 multiple-cover restrictions for the three orphan targets. -/
 theorem twelve_twelve_twentyfour_row_type_classification
     (r q₀ q₁ q₂ a₀ a₁ a₂ : ℕ)
-    (hrLower : 6 ≤ r) (hrUpper : r ≤ 36) (hrThree : 3 ∣ r)
+    (hrLower : 6 ≤ r) (hrThree : 3 ∣ r)
     (hrow : q₀ + q₁ + q₂ = 4)
     (hbal₀ : r * q₀ = 12 * a₀)
     (hbal₁ : r * q₁ = 12 * a₁)
@@ -826,6 +826,21 @@ theorem twelve_twelve_twentyfour_row_type_classification
     all_goals (try norm_num at hbal₀ hbal₁ hbal₂ hdvd₀ hdvd₁ hdvd₂)
     all_goals omega
 
+/-- Detailed balance makes the integral local-excess summand equal to its
+natural-number row-moment form.  The only truncation case is `q = 0`, when
+balance also forces the reverse quotient `a` to vanish. -/
+theorem local_excess_int_eq_nat_row_moment
+    (r n q a : ℕ) (hr : 0 < r) (hn : 0 < n)
+    (hbal : r * q = n * a) :
+    (a : ℤ) * (q : ℤ) - (a : ℤ) = ((a * (q - 1) : ℕ) : ℤ) := by
+  by_cases hq : q = 0
+  · subst q
+    have ha : a = 0 := by nlinarith
+    simp [ha]
+  · have hqpos : 1 ≤ q := Nat.one_le_iff_ne_zero.mpr hq
+    rw [Nat.cast_mul, Nat.cast_sub hqpos]
+    push_cast
+    ring
 set_option maxHeartbeats 2000000 in
 /-- Aggregate the seventeen `(12,12,24)` row types into the five moments
 used by `false_of_twelve_twelve_twentyfour_row_ledger`.  Keeping this lemma
@@ -15392,6 +15407,43 @@ theorem degree_sixteen_fourLayer_distinct_orphans_two_step_outside_used_eq_zero
     exact degree_sixteen_fourLayer_distinct_orphans_two_step_via_orphan_eq_zero
       G hfree hmin hcard c₀ hregChild hcardChild o₁ o₂ f hne ho₁O ho₂O
         (by simpa [D, U, R, O, w] using hwO)
+
+/-- At most one order-12 source can have forward quotient two into a fixed
+order-24 target.  Detailed balance turns such a row into reverse quotient
+one, and intrinsic multiple-cover target uniqueness identifies any pair. -/
+theorem degree_sixteen_orderTwelve_forward_two_to_orderTwentyFour_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 24)
+    (C : Finset (secondOrderDefectGraph G).ConnectedComponent) :
+    (C.filter fun e => e.supp.ncard = 12 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2).card ≤ 1 := by
+  classical
+  apply Finset.card_le_one.mpr
+  intro e he f hf
+  obtain ⟨_heC, he12, heq⟩ := Finset.mem_filter.mp he
+  obtain ⟨_hfC, hf12, hfq⟩ := Finset.mem_filter.mp hf
+  have hbalE := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  have hbalF := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o
+  have honeE : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1 := by
+    rw [he12, ho, heq] at hbalE
+    omega
+  have honeF : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1 := by
+    rw [hf12, ho, hfq] at hbalF
+    omega
+  exact secondOrder_multipleCover_target_source_unique_of_orders
+    G hfree (d := 16) (m := 2) (by norm_num) (by norm_num) hmin hcard
+      (by norm_num) e f o (by rw [he12, hf12]) (by rw [ho, he12])
+      honeE honeF
 
 end
 
