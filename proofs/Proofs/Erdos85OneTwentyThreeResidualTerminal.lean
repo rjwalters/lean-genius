@@ -18836,6 +18836,56 @@ theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
   rw [hSsum, hlocal, he35] at hle
   omega
 
+/-- At most two order-thirty-five components can lie in the seventy-point
+used sector of the two-layer branch. -/
+theorem degree_sixteen_twoLayer_used_orderThirtyFive_family_card_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hused : ∀ e ∈ E,
+      componentRepresentative (secondOrderDefectGraph G) e ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (horder : ∀ e ∈ E, e.supp.ncard = 35) : E.card ≤ 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hEC : E ⊆ C := by
+    intro e heE
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+      simpa [D, R] using hused e heE⟩
+  have hle := Finset.sum_le_sum_of_subset
+    (f := fun e : D.ConnectedComponent => e.supp.ncard) hEC
+  have hEsum : (∑ e ∈ E, e.supp.ncard) = E.card * 35 := by
+    calc
+      (∑ e ∈ E, e.supp.ncard) = ∑ _e ∈ E, 35 := by
+        apply Finset.sum_congr rfl
+        intro e heE
+        exact horder e heE
+      _ = E.card * 35 := by simp
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hCsum : (∑ e ∈ C, e.supp.ncard) = 70 := by
+    simpa [D, R, C] using hpack.1
+  rw [hEsum, hCsum] at hle
+  omega
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
