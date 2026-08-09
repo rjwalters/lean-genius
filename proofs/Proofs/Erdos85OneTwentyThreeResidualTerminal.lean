@@ -15739,6 +15739,114 @@ theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
     by simpa [Q, D, C, Nat.mul_comm] using hcross20,
     by simpa [Q, D, C, Nat.mul_comm] using hcross21⟩
 
+set_option maxHeartbeats 2000000 in
+/-- The orphan order partition `(12,12,24)` is impossible in the
+degree-sixteen four-layer branch. -/
+theorem degree_sixteen_fourLayer_false_of_twelve_twelve_twentyfour_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₀ o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho₀ : o₀.supp.ncard = 12) (ho₁ : o₁.supp.ncard = 12)
+    (ho₂ : o₂.supp.ncard = 24)
+    (hne₀₁ : o₀ ≠ o₁) (hne₀₂ : o₀ ≠ o₂) (hne₁₂ : o₁ ≠ o₂)
+    (ho₀O : componentRepresentative (secondOrderDefectGraph G) o₀ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₁O : componentRepresentative (secondOrderDefectGraph G) o₁ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₂O : componentRepresentative (secondOrderDefectGraph G) o₂ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hOrphans :
+      Finset.univ.filter
+        (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) c ∈
+            (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+              Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+                (secondOrderDefectGraph G) c₀)) = {o₀, o₁, o₂}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀))
+  have htype : ∀ e ∈ C,
+      (e.supp.ncard = 6 ∧ Q e o₀ = 0 ∧ Q e o₁ = 0 ∧ Q e o₂ = 4) ∨
+      (e.supp.ncard = 6 ∧ Q e o₀ = 4 ∧ Q e o₁ = 0 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 6 ∧ Q e o₀ = 2 ∧ Q e o₁ = 2 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 6 ∧ Q e o₀ = 0 ∧ Q e o₁ = 4 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 0 ∧ Q e o₁ = 0 ∧ Q e o₂ = 4) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 0 ∧ Q e o₁ = 2 ∧ Q e o₂ = 2) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 4 ∧ Q e o₁ = 0 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 1 ∧ Q e o₁ = 1 ∧ Q e o₂ = 2) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 3 ∧ Q e o₁ = 1 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 2 ∧ Q e o₁ = 0 ∧ Q e o₂ = 2) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 2 ∧ Q e o₁ = 2 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 1 ∧ Q e o₁ = 3 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 12 ∧ Q e o₀ = 0 ∧ Q e o₁ = 4 ∧ Q e o₂ = 0) ∨
+      (e.supp.ncard = 24 ∧ Q e o₀ = 0 ∧ Q e o₁ = 0 ∧ Q e o₂ = 4) ∨
+      (e.supp.ncard = 24 ∧ Q e o₀ = 0 ∧ Q e o₁ = 1 ∧ Q e o₂ = 3) ∨
+      (e.supp.ncard = 24 ∧ Q e o₀ = 1 ∧ Q e o₁ = 0 ∧ Q e o₂ = 3) ∨
+      (e.supp.ncard = 24 ∧ Q e o₀ = 1 ∧ Q e o₁ = 1 ∧ Q e o₂ = 2) := by
+    intro e he
+    have heR := (Finset.mem_filter.mp he).2
+    have hrow := degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_row_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o₀ o₁ o₂ e
+        ho₀ ho₁ ho₂ hne₀₁ hne₀₂ hne₁₂ hOrphans (by simpa [C, D] using heR)
+    dsimp [Q, D] at hrow ⊢
+    rcases hrow with ⟨hr, h⟩ | ⟨hr, h⟩ | ⟨hr, h⟩
+    · rcases h with h | h | h | h
+      all_goals rcases h with ⟨hq₀, hq₁, hq₂⟩
+      all_goals simp_all
+    · rcases h with h | h | h | h | h | h | h | h | h
+      all_goals rcases h with ⟨hq₀, hq₁, hq₂⟩
+      all_goals simp_all
+    · rcases h with h | h | h | h
+      all_goals rcases h with ⟨hq₀, hq₁, hq₂⟩
+      all_goals simp_all
+  have hmoments := degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
+    G hfree hmin hcard c₀ hregChild hcardChild o₀ o₁ o₂
+      ho₀ ho₁ ho₂ hne₀₁ hne₀₂ hne₁₂ ho₀O ho₁O ho₂O
+  rcases hmoments with ⟨hw12, hw24, hc12, hc024, hc124⟩
+  have hcover := degree_sixteen_orderTwelve_forward_two_to_orderTwentyFour_card_le_one
+    G hfree hmin hcard o₂ ho₂ C
+  apply false_of_twelve_twelve_twentyfour_row_moments C
+    (fun e => e.supp.ncard) (fun e => Q e o₀) (fun e => Q e o₁)
+    (fun e => Q e o₂) (fun e => Q o₀ e) (fun e => Q o₁ e)
+    (fun e => Q o₂ e) htype
+  · intro e _
+    simpa [Q, D, ho₀] using (secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₀)
+  · intro e _
+    simpa [Q, D, ho₁] using (secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₁)
+  · intro e _
+    simpa [Q, D, ho₂] using (secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₂)
+  · simpa [Q, D, C] using hw12
+  · simpa [Q, D, C] using hw24
+  · simpa [Q, D, C] using hc12
+  · simpa [Q, D, C] using hc024
+  · simpa [Q, D, C] using hc124
+  · simpa [Q, D] using hcover
+
 end
 
 end Erdos85
