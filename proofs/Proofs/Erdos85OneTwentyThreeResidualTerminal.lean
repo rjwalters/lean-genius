@@ -18045,6 +18045,57 @@ theorem row_moment_four_count_eq_two
   rw [hcount] at hrewrite
   omega
 
+/-- A row moment of six is either one quotient-three entry or three
+quotient-two entries. -/
+theorem row_moment_six_count_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → ℕ)
+    (hsum : (∑ x ∈ C, q x * (q x - 1)) = 6) :
+    ((C.filter fun x => q x = 3).card = 1 ∧
+      (C.filter fun x => q x = 2).card = 0) ∨
+    ((C.filter fun x => q x = 3).card = 0 ∧
+      (C.filter fun x => q x = 2).card = 3) := by
+  have hle : ∀ x ∈ C, q x ≤ 3 := by
+    intro x hx
+    have hsingle := Finset.single_le_sum
+      (f := fun y => q y * (q y - 1)) (fun _ _ => Nat.zero_le _) hx
+    rw [hsum] at hsingle
+    by_contra hnot
+    have hq : 4 ≤ q x := by omega
+    have hpred : 3 ≤ q x - 1 := by omega
+    nlinarith
+  have hpoint : ∀ x ∈ C,
+      q x * (q x - 1) =
+        (if q x = 2 then 2 else 0) + (if q x = 3 then 6 else 0) := by
+    intro x hx
+    have hxle := hle x hx
+    interval_cases hqx : q x <;> simp [hqx]
+  have hrewrite :
+      (∑ x ∈ C, q x * (q x - 1)) =
+        (∑ x ∈ C, if q x = 2 then 2 else 0) +
+          ∑ x ∈ C, if q x = 3 then 6 else 0 := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro x hx
+    exact hpoint x hx
+  have hcount2 :
+      (∑ x ∈ C, if q x = 2 then 2 else 0) =
+        2 * (C.filter fun x => q x = 2).card := by
+    calc
+      (∑ x ∈ C, if q x = 2 then 2 else 0) =
+          ∑ _x ∈ C.filter (fun x => q x = 2), 2 := by
+            rw [Finset.sum_filter]
+      _ = 2 * (C.filter fun x => q x = 2).card := by simp [mul_comm]
+  have hcount3 :
+      (∑ x ∈ C, if q x = 3 then 6 else 0) =
+        6 * (C.filter fun x => q x = 3).card := by
+    calc
+      (∑ x ∈ C, if q x = 3 then 6 else 0) =
+          ∑ _x ∈ C.filter (fun x => q x = 3), 6 := by
+            rw [Finset.sum_filter]
+      _ = 6 * (C.filter fun x => q x = 3).card := by simp [mul_comm]
+  rw [hsum, hcount2, hcount3] at hrewrite
+  omega
+
 /-- An unequal target of order at least six contributes zero local excess
 from an order-seven source. -/
 theorem degree_sixteen_order_seven_unequal_local_term_eq_zero
@@ -18083,6 +18134,52 @@ theorem degree_sixteen_order_seven_unequal_local_term_eq_zero
   · have ha : a = 0 := by
       rw [mul_zero] at hbal
       rw [ho] at hbal
+      omega
+    simp [D, a, b, ha]
+  · simp [D, a, b, hb]
+
+/-- An unequal target of order at least six contributes zero local excess
+from an order-nine source. -/
+theorem degree_sixteen_order_nine_unequal_local_term_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o f : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 9) (hf : 6 ≤ f.supp.ncard)
+    (hne : f.supp.ncard ≠ 9) :
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ) *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) f o : ℤ) -
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ) = 0 := by
+  let D := secondOrderDefectGraph G
+  let a := componentQuotientMatrix G D o f
+  let b := componentQuotientMatrix G D f o
+  have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+    intro hdvd
+    have hle : f.supp.ncard ≤ o.supp.ncard :=
+      Nat.le_of_dvd (by rw [ho]; norm_num) hdvd
+    have hcases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+        f.supp.ncard = 8 ∨ f.supp.ncard = 9 := by omega
+    rcases hcases with h6 | h7 | h8 | h9
+    · rw [ho, h6] at hdvd
+      norm_num at hdvd
+    · rw [ho, h7] at hdvd
+      norm_num at hdvd
+    · rw [ho, h8] at hdvd
+      norm_num at hdvd
+    · exact hne h9
+  have hble : b ≤ 1 := by
+    simpa [D, b] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+  change o.supp.ncard * a = f.supp.ncard * b at hbal
+  interval_cases hb : b
+  · have ha : a = 0 := by
+      rw [mul_zero, ho] at hbal
       omega
     simp [D, a, b, ha]
   · simp [D, a, b, hb]
@@ -18182,6 +18279,106 @@ theorem degree_sixteen_twoLayer_orderSeven_orphan_quotientTwo_count_eq_two
             rw [hsame f hf]
       _ = 4 := by simpa [Q, D, o, ho7] using hmoment
   simpa [C, Q, D, o] using row_moment_four_count_eq_two C (fun f => Q o f) hsum
+
+/-- Every order-nine two-layer orphan has either one quotient-three
+same-order target or exactly three quotient-two same-order targets. -/
+theorem degree_sixteen_twoLayer_orderNine_orphan_row_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho9 : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard = 9) :
+    let D := secondOrderDefectGraph G
+    let o := D.connectedComponentMk z
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      e.supp.ncard = 9)
+    (((C.filter fun e => componentQuotientMatrix G D o e = 3).card = 1 ∧
+        (C.filter fun e => componentQuotientMatrix G D o e = 2).card = 0) ∨
+      ((C.filter fun e => componentQuotientMatrix G D o e = 3).card = 0 ∧
+        (C.filter fun e => componentQuotientMatrix G D o e = 2).card = 3)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let o := D.connectedComponentMk z
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    e.supp.ncard = 9)
+  let Q := componentQuotientMatrix G D
+  have hout : ∀ f : D.ConnectedComponent, f ∉ C →
+      (Q o f : ℤ) * (Q f o : ℤ) - (Q o f : ℤ) = 0 := by
+    intro f hfC
+    let w := componentRepresentative D f
+    have hwe : D.connectedComponentMk w = f :=
+      (ConnectedComponent.mem_supp_iff f w).mp (componentRepresentative_mem D f)
+    by_cases hwU : w ∈ U
+    · have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
+        G hfree hmin hcard c₀ hz f (by simpa [D, U, w] using hwU)
+      change Q o f = 0 at hzero
+      simp [hzero]
+    by_cases hwR : w ∈ R
+    · have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      rw [hwe] at hlower hdvd
+      have hne9 : f.supp.ncard ≠ 9 := by
+        intro hf9
+        rw [hf9] at hdvd
+        norm_num at hdvd
+      simpa [Q, D] using degree_sixteen_order_nine_unequal_local_term_eq_zero
+        G hfree hmin hcard o f ho9 hlower hne9
+    · have hwO : w ∈ O := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwR⟩
+      have hlower := (degree_sixteen_smallLayer_orphan_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, U, R, O, w] using hwO)).2 rfl
+      rw [hwe] at hlower
+      have hne9 : f.supp.ncard ≠ 9 := by
+        intro hf9
+        exact hfC (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hf9⟩)
+      simpa [Q, D] using degree_sixteen_order_nine_unequal_local_term_eq_zero
+        G hfree hmin hcard o f ho9 hlower hne9
+  have hmoment := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+      (by rw [ho9]; norm_num) C (by simpa [Q, D] using hout)
+  have hsame : ∀ f ∈ C, Q o f = Q f o := by
+    intro f hf
+    have hf9 := (Finset.mem_filter.mp hf).2
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * Q o f = f.supp.ncard * Q f o at hbal
+    rw [ho9, hf9] at hbal
+    omega
+  have hsum : (∑ f ∈ C, Q o f * (Q o f - 1)) = 6 := by
+    calc
+      (∑ f ∈ C, Q o f * (Q o f - 1)) =
+          ∑ f ∈ C, Q o f * (Q f o - 1) := by
+            apply Finset.sum_congr rfl
+            intro f hf
+            rw [hsame f hf]
+      _ = 6 := by simpa [Q, D, o, ho9] using hmoment
+  simpa [C, Q, D, o] using
+    row_moment_six_count_classification C (fun f => Q o f) hsum
 
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
