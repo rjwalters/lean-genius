@@ -18076,6 +18076,41 @@ theorem row_moment_four_card_four_sum_le_six
       _ = 12 := by rw [hcard, hmoment]
   omega
 
+/-- On four entries, factorial moment four and total mass six force every
+distinguished even entry to equal two.  This is the arithmetic kernel for
+the diagonal of an exact order-seven/cardinality-four row. -/
+theorem row_moment_four_card_four_even_entry_eq_two
+    {α : Type*} [DecidableEq α] (S : Finset α) (q : α → ℕ) (x : α)
+    (hcard : S.card = 4) (hx : x ∈ S)
+    (hsum : (∑ y ∈ S, q y) = 6)
+    (hmoment : (∑ y ∈ S, q y * (q y - 1)) = 4)
+    (heven : Even (q x)) :
+    q x = 2 := by
+  rw [Finset.card_eq_four] at hcard
+  obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ := hcard
+  have hle : ∀ y ∈ ({a, b, c, d} : Finset α), q y ≤ 3 := by
+    intro y hy
+    have hsingle := Finset.single_le_sum
+      (f := fun z => q z * (q z - 1)) (fun _ _ => Nat.zero_le _) hy
+    rw [hmoment] at hsingle
+    by_contra hnot
+    have hq : 4 ≤ q y := by omega
+    have hpred : 3 ≤ q y - 1 := by omega
+    nlinarith
+  have hlea : q a ≤ 3 := hle a (by simp)
+  have hleb : q b ≤ 3 := hle b (by simp)
+  have hlec : q c ≤ 3 := hle c (by simp)
+  have hled : q d ≤ 3 := hle d (by simp)
+  simp [hab, hac, had, hbc, hbd, hcd] at hsum hmoment hx
+  rcases hx with rfl | rfl | rfl | rfl
+  interval_cases hqa : q a <;> try interval_cases hqb : q b <;>
+    try interval_cases hqc : q c <;> try interval_cases hqd : q d
+  all_goals try norm_num [hqa, hqb, hqc, hqd] at hsum
+  all_goals try norm_num [hqa, hqb, hqc, hqd] at hmoment
+  all_goals try norm_num [hqa, hqb, hqc, hqd] at heven
+  all_goals try norm_num [hqa, hqb, hqc, hqd]
+  all_goals omega
+
 /-- A row moment of six is either one quotient-three entry or three
 quotient-two entries. -/
 theorem row_moment_six_count_classification
