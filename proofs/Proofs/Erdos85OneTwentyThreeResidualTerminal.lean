@@ -7538,6 +7538,67 @@ theorem concentrated_owner_small_ratio_arithmetic
     subst k
     omega
 
+/-- For a source component of order six or eight, every local-excess term
+toward a target of order at least six is even.  A same-order target gives
+`q(q-1)`; a different target cannot divide the source order, so its reverse
+quotient is at most one and the term vanishes. -/
+theorem degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o f : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 6 ∨ o.supp.ncard = 8)
+    (hf : 6 ≤ f.supp.ncard) :
+    Even ((componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ) *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) f o : ℤ) -
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ)) := by
+  let D := secondOrderDefectGraph G
+  let a := componentQuotientMatrix G D o f
+  let b := componentQuotientMatrix G D f o
+  change Even ((a : ℤ) * (b : ℤ) - (a : ℤ))
+  by_cases hsize : o.supp.ncard = f.supp.ncard
+  · have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    rw [← hsize] at hbal
+    have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+    have hab : a = b := Nat.eq_of_mul_eq_mul_left hopos hbal
+    rw [hab]
+    have hev := Int.even_mul_pred_self (b : ℤ)
+    convert hev using 1 <;> ring
+  · have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+      intro hdvd
+      have hle : f.supp.ncard ≤ o.supp.ncard :=
+        Nat.le_of_dvd (by rcases ho with h | h <;> omega) hdvd
+      rcases ho with h6 | h8
+      · have hfeq : f.supp.ncard = 6 := by omega
+        exact hsize (h6.trans hfeq.symm)
+      · have hfcases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+            f.supp.ncard = 8 := by omega
+        rcases hfcases with hf6 | hf7 | hf8
+        · rw [h8, hf6] at hdvd
+          norm_num at hdvd
+        · rw [h8, hf7] at hdvd
+          norm_num at hdvd
+        · exact hsize (h8.trans hf8.symm)
+    have hble : b ≤ 1 := by
+      simpa [D, b] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    interval_cases hb : b
+    · have ha : a = 0 := by
+        have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+        rw [mul_zero] at hbal
+        exact Nat.eq_zero_of_mul_eq_zero_left hopos hbal
+      simp [ha]
+    · simp [hb]
+
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
 then forces the owner's reduced order `|e| / 5` to divide the orphan order.
