@@ -7538,6 +7538,71 @@ theorem concentrated_owner_small_ratio_arithmetic
     subst k
     omega
 
+/-- An orphan has no quotient into a minimum-layer component.  This early
+interface is placed before the small-residual parity terminals which use it. -/
+theorem degree_sixteen_orphan_to_minimum_quotient_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    {z : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heU : componentRepresentative (secondOrderDefectGraph G) e ∈
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀) :
+    componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) e = 0 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let o := D.connectedComponentMk z
+  have hregD : ∀ x : V, D.degree x = 2 := by
+    simpa [D] using secondOrderDefectGraph_degree_eq_two G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hcomm : G.adjMatrix ℝ * D.adjMatrix ℝ =
+      D.adjMatrix ℝ * G.adjMatrix ℝ := by
+    simpa [D] using adjMatrix_comm_secondOrderDefect_of_even_real
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hzo : z ∈ o.supp := ConnectedComponent.connectedComponentMk_mem
+  rw [componentQuotientMatrix_apply_eq G D 2 hregD hcomm o e hzo]
+  apply Finset.card_eq_zero.mpr
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro q hq
+  obtain ⟨hqG, hqe⟩ := Finset.mem_filter.mp hq
+  change componentRepresentative D e ∈ Finset.univ.image
+    (minimumLayerVertexValue (D := D) (c₀ := c₀)) at heU
+  obtain ⟨x, _hx, hxw⟩ := Finset.mem_image.mp heU
+  have hwe : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  have hwx : D.connectedComponentMk (componentRepresentative D e) = x.1.1 :=
+    (ConnectedComponent.mem_supp_iff x.1.1
+      (componentRepresentative D e)).mp (by
+        change componentRepresentative D e ∈ x.1.1.supp
+        rw [← hxw]
+        exact x.2.2)
+  have hqSupp : q ∈ x.1.1.supp := by
+    rw [ConnectedComponent.mem_supp_iff, ← hwx, hwe]
+    exact hqe
+  let y : minimumLayerVertex D c₀ := ⟨x.1, ⟨q, hqSupp⟩⟩
+  have hzU : z ∉ U := (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2
+  have hzRow : z ∈ minimumLayerExternalNeighborFinset G D c₀ y := by
+    apply Finset.mem_sdiff.mpr
+    refine ⟨(G.mem_neighborFinset q z).mpr ?_, hzU⟩
+    exact ((G.mem_neighborFinset z q).mp hqG).symm
+  have hzR : z ∈ R := Finset.mem_biUnion.mpr
+    ⟨y, Finset.mem_univ _, hzRow⟩
+  exact (Finset.mem_sdiff.mp hz).2 hzR
+
 /-- For a source component of order six or eight, every local-excess term
 toward a target of order at least six is even.  A same-order target gives
 `q(q-1)`; a different target cannot divide the source order, so its reverse
@@ -7664,6 +7729,75 @@ theorem degree_sixteen_order_twelve_local_term_even_of_target_ge_six_ne_six
       simp [ha]
     · simp [hb]
 
+/-- For an order-fourteen source, excluding an order-seven target leaves
+only the same-order divisor, hence an even local-excess term. -/
+theorem degree_sixteen_order_fourteen_local_term_even_of_target_ge_six_ne_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o f : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 14) (hf : 6 ≤ f.supp.ncard)
+    (hf7 : f.supp.ncard ≠ 7) :
+    Even ((componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ) *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) f o : ℤ) -
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ)) := by
+  let D := secondOrderDefectGraph G
+  let a := componentQuotientMatrix G D o f
+  let b := componentQuotientMatrix G D f o
+  change Even ((a : ℤ) * (b : ℤ) - (a : ℤ))
+  by_cases hsize : o.supp.ncard = f.supp.ncard
+  · have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    rw [← hsize] at hbal
+    have hab : a = b :=
+      Nat.eq_of_mul_eq_mul_left o.nonempty_supp.ncard_pos hbal
+    rw [hab]
+    have hev := Int.even_mul_pred_self (b : ℤ)
+    convert hev using 1 <;> ring
+  · have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+      intro hdvd
+      have hle : f.supp.ncard ≤ o.supp.ncard :=
+        Nat.le_of_dvd (by rw [ho]; norm_num) hdvd
+      have hcases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+          f.supp.ncard = 8 ∨ f.supp.ncard = 9 ∨
+          f.supp.ncard = 10 ∨ f.supp.ncard = 11 ∨
+          f.supp.ncard = 12 ∨ f.supp.ncard = 13 ∨
+          f.supp.ncard = 14 := by omega
+      rcases hcases with h6 | h7 | h8 | h9 | h10 | h11 | h12 | h13 | h14
+      · rw [ho, h6] at hdvd
+        norm_num at hdvd
+      · exact hf7 h7
+      · rw [ho, h8] at hdvd
+        norm_num at hdvd
+      · rw [ho, h9] at hdvd
+        norm_num at hdvd
+      · rw [ho, h10] at hdvd
+        norm_num at hdvd
+      · rw [ho, h11] at hdvd
+        norm_num at hdvd
+      · rw [ho, h12] at hdvd
+        norm_num at hdvd
+      · rw [ho, h13] at hdvd
+        norm_num at hdvd
+      · exact hsize (ho.trans h14.symm)
+    have hble : b ≤ 1 := by
+      simpa [D, b] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    interval_cases hb : b
+    · have ha : a = 0 := by
+        rw [mul_zero] at hbal
+        exact Nat.eq_zero_of_mul_eq_zero_left o.nonempty_supp.ncard_pos hbal
+      simp [ha]
+    · simp [hb]
+
 /-- In the two-layer residual branch an orphan component cannot have order
 six or eight.  Its minimum-layer contribution vanishes, while every used or
 orphan target has order at least six, so all local-excess terms are even;
@@ -7710,7 +7844,7 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
       have hwe : D.connectedComponentMk w = e :=
         (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
       by_cases hwU : w ∈ U
-      · have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+      · have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
           G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
         change componentQuotientMatrix G D o e = 0 at hzero
         simp [f, hzero]
@@ -7784,7 +7918,7 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_twelve
     have hwe : D.connectedComponentMk w = e :=
       (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
     by_cases hwU : w ∈ U
-    · have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+    · have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
         G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
       change componentQuotientMatrix G D o e = 0 at hzero
       simp [f, hzero]
@@ -10202,6 +10336,181 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
   · exact (hne12 h12.1).elim
   · exact Or.inr (Or.inr (Or.inr (Or.inl h13)))
   · exact Or.inr (Or.inr (Or.inr (Or.inr h14)))
+
+/-- Orders seven and fourteen cannot both occur among two-layer orphans:
+their rigid owners would have orders 35 and 70, exceeding the total used
+mass seventy. -/
+theorem degree_sixteen_twoLayer_orphan_orders_seven_fourteen_not_coexist
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z₇ z₁₄ : V)
+    (hz₇ : z₇ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz₁₄ : z₁₄ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (h₇ : ((secondOrderDefectGraph G).connectedComponentMk z₇).supp.ncard = 7)
+    (h₁₄ : ((secondOrderDefectGraph G).connectedComponentMk z₁₄).supp.ncard = 14) :
+    False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hn7 : ¬ 5 ∣ (D.connectedComponentMk z₇).supp.ncard := by
+    rw [h₇]
+    norm_num
+  have hn14 : ¬ 5 ∣ (D.connectedComponentMk z₁₄).supp.ncard := by
+    rw [h₁₄]
+    norm_num
+  obtain ⟨x₇, hx₇R, hp₇⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z₇ hz₇ hn7
+  obtain ⟨x₁₄, hx₁₄R, hp₁₄⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z₁₄ hz₁₄ hn14
+  let e₇ := D.connectedComponentMk x₇
+  let e₁₄ := D.connectedComponentMk x₁₄
+  have he₇ : e₇.supp.ncard = 35 := by
+    rcases hp₇ with hp₇ | hp₇ | hp₇ | hp₇ | hp₇ <;> simp_all [D, e₇]
+  have he₁₄ : e₁₄.supp.ncard = 70 := by
+    rcases hp₁₄ with hp₁₄ | hp₁₄ | hp₁₄ | hp₁₄ | hp₁₄ <;> simp_all [D, e₁₄]
+  have he₇R : componentRepresentative D e₇ ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) x₇ hx₇R
+          (componentRepresentative_mem D e₇)
+  have he₁₄R : componentRepresentative D e₁₄ ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) x₁₄ hx₁₄R
+          (componentRepresentative_mem D e₁₄)
+  have he₇C : e₇ ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, he₇R⟩
+  have he₁₄C : e₁₄ ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, he₁₄R⟩
+  have hne : e₇ ≠ e₁₄ := by
+    intro heq
+    rw [heq] at he₇
+    omega
+  have hsub : ({e₇, e₁₄} : Finset D.ConnectedComponent) ⊆ C := by
+    intro e he
+    simp only [Finset.mem_insert, Finset.mem_singleton] at he
+    rcases he with rfl | rfl
+    · exact he₇C
+    · exact he₁₄C
+  have hle := Finset.sum_le_sum_of_subset
+    (f := fun e : D.ConnectedComponent => e.supp.ncard) hsub
+  rw [Finset.sum_pair hne, he₇, he₁₄] at hle
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hsum : (∑ e ∈ C, e.supp.ncard) = 70 := by
+    simpa [C, D, R] using hpack.1
+  rw [hsum] at hle
+  omega
+
+/-- An order-fourteen orphan is impossible.  The only unequal target order
+which could contribute odd local excess is seven, but the preceding used-mass
+argument rules out coexistence of orders seven and fourteen. -/
+theorem degree_sixteen_twoLayer_orphan_order_ne_fourteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠ 14 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let o := D.connectedComponentMk z
+  intro ho
+  let f : D.ConnectedComponent → ℤ := fun e =>
+    (componentQuotientMatrix G D o e : ℤ) *
+        (componentQuotientMatrix G D e o : ℤ) -
+      (componentQuotientMatrix G D o e : ℤ)
+  have heven : ∀ e, Even (f e) := by
+    intro e
+    let w := componentRepresentative D e
+    have hwe : D.connectedComponentMk w = e :=
+      (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
+    by_cases hwU : w ∈ U
+    · have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
+        G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
+      change componentQuotientMatrix G D o e = 0 at hzero
+      simp [f, hzero]
+    by_cases hwR : w ∈ R
+    · have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      rw [hwe] at hlower hdvd
+      have hne7 : e.supp.ncard ≠ 7 := by
+        intro he7
+        rw [he7] at hdvd
+        norm_num at hdvd
+      simpa [f, D] using
+        degree_sixteen_order_fourteen_local_term_even_of_target_ge_six_ne_seven
+          G hfree hmin hcard o e ho hlower hne7
+    · have hwO : w ∈ O := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwR⟩
+      have hlower := (degree_sixteen_smallLayer_orphan_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, U, R, O, w] using hwO)).2 rfl
+      rw [hwe] at hlower
+      have hne7 : e.supp.ncard ≠ 7 := by
+        intro he7
+        have hfalse := degree_sixteen_twoLayer_orphan_orders_seven_fourteen_not_coexist
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild w z
+            (by simpa [D, U, R, O, w] using hwO) hz (by
+              rw [← hwe] at he7
+              exact he7) ho
+        exact hfalse.elim
+      simpa [f, D] using
+        degree_sixteen_order_fourteen_local_term_even_of_target_ge_six_ne_seven
+          G hfree hmin hcard o e ho hlower hne7
+  have htwo : (2 : ℤ) ∣ ∑ e, f e := by
+    apply Finset.dvd_sum
+    intro e _he
+    exact even_iff_two_dvd.mp (heven e)
+  have hlocal := secondOrder_componentQuotientMatrix_local_excess
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+  change (∑ e, f e) = (o.supp.ncard : ℤ) - 3 at hlocal
+  rw [hlocal, ho] at htwo
+  norm_num at htwo
 
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
