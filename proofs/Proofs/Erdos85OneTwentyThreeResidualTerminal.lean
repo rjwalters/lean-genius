@@ -8994,6 +8994,228 @@ theorem degree_sixteen_twoLayer_used_component_order_package
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hrep] at hdvd
 
+/-- A two-layer used component has one of the thirteen positive
+five-multiple orders compatible with the seventy-point service mass. -/
+theorem degree_sixteen_twoLayer_used_component_order_alphabet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    e.supp.ncard = 10 ∨ e.supp.ncard = 15 ∨ e.supp.ncard = 20 ∨
+      e.supp.ncard = 25 ∨ e.supp.ncard = 30 ∨ e.supp.ncard = 35 ∨
+      e.supp.ncard = 40 ∨ e.supp.ncard = 45 ∨ e.supp.ncard = 50 ∨
+      e.supp.ncard = 55 ∨ e.supp.ncard = 60 ∨ e.supp.ncard = 65 ∨
+      e.supp.ncard = 70 := by
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D e) he).2 rfl
+  have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D e) he).2 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  rw [hrep] at hlower hdvd
+  have hupper : e.supp.ncard ≤ 70 := by
+    have hpack := degree_sixteen_twoLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+    let C := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩
+    have hle := Finset.single_le_sum
+      (f := fun f : D.ConnectedComponent => f.supp.ncard)
+      (fun _ _ => Nat.zero_le _) heC
+    dsimp only at hpack
+    rw [hpack.1] at hle
+    exact hle
+  obtain ⟨k, hk⟩ := hdvd
+  omega
+
+/-- At most seven defect components meet the two-layer service cell: every
+such component has order at least ten and their total order is seventy. -/
+theorem degree_sixteen_twoLayer_used_component_count_le_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)).card ≤ 7 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hlower : ∑ _e ∈ C, 10 ≤ ∑ e ∈ C, e.supp.ncard := by
+    apply Finset.sum_le_sum
+    intro e he
+    have halphabet := degree_sixteen_twoLayer_used_component_order_alphabet
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e
+        (Finset.mem_filter.mp he).2
+    rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
+      omega
+  have hten : 10 * C.card ≤ 70 := by
+    have hsum : (∑ e ∈ C, e.supp.ncard) = 70 := by
+      simpa [C, D, R] using hpack.1
+    rw [hsum] at hlower
+    simpa [mul_comm] using hlower
+  change C.card ≤ 7
+  omega
+
+/-- Divide the two-layer used-component orders by five.  The reduced orders
+form a positive partition of fourteen with every part in `2, ..., 14`. -/
+theorem degree_sixteen_twoLayer_used_component_reduced_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 5
+    (∑ e ∈ C, w e) = 14 ∧
+      ∀ e ∈ C, 2 ≤ w e ∧ w e ≤ 14 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 5
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hw : ∀ e ∈ C, 5 * w e = e.supp.ncard := by
+    intro e he
+    apply Nat.mul_div_cancel'
+    exact hpack.2 e (by simpa [C, D, R] using he)
+  have hmass : ∑ e ∈ C, w e = 14 := by
+    have hscaled : 5 * (∑ e ∈ C, w e) = 70 := by
+      calc
+        5 * (∑ e ∈ C, w e) = ∑ e ∈ C, 5 * w e := by
+          rw [Finset.mul_sum]
+        _ = ∑ e ∈ C, e.supp.ncard := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact hw e he
+        _ = 70 := by simpa [C, D, R] using hpack.1
+    omega
+  refine ⟨hmass, ?_⟩
+  intro e he
+  have hrepR : componentRepresentative D e ∈ R :=
+    (Finset.mem_filter.mp he).2
+  have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D e) hrepR).2 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  rw [hrep] at hlower
+  have hle : w e ≤ ∑ f ∈ C, w f :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) he
+  rw [hmass] at hle
+  have hwe := hw e he
+  omega
+
+/-- Finite divisibility shadow of concentrated ownership.  If a two-layer
+orphan order is not divisible by five, then one of the possible reduced
+used orders `2, ..., 14` divides it. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_reduced_owner_divisor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard) :
+    2 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      3 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      4 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      6 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      7 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      8 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      9 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      10 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      11 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      12 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      13 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      14 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨zR, hzR, _hq, hratio⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO hnot
+  have hrepR : componentRepresentative D (D.connectedComponentMk zR) ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀) :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) zR hzR
+          (componentRepresentative_mem D (D.connectedComponentMk zR))
+  have halphabet := degree_sixteen_twoLayer_used_component_order_alphabet
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (D.connectedComponentMk zR) hrepR
+  rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
+    simp_all [D]
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
