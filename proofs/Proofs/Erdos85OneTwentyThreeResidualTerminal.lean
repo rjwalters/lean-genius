@@ -18147,6 +18147,56 @@ theorem row_moment_eight_count_classification
   rw [hsum, hcount2, hcount3] at hrewrite
   omega
 
+/-- Arithmetic core for the zero-excess remainder.  For a surviving source
+order seven, nine, or eleven, an unequal positive quotient with reverse
+quotient at most one and row bound eleven must be five or ten, provided every
+non-five target lies in the same surviving alphabet. -/
+theorem surviving_nonFive_unequal_quotient_eq_five_or_ten
+    (n m q b : ℕ)
+    (hn : n = 7 ∨ n = 9 ∨ n = 11)
+    (hm : 6 ≤ m) (hne : n ≠ m)
+    (hbal : n * q = m * b) (hb : b ≤ 1)
+    (hq : 0 < q) (hqle : q ≤ 11)
+    (halphabet : ¬ 5 ∣ m → m = 7 ∨ m = 9 ∨ m = 11) :
+    q = 5 ∨ q = 10 := by
+  have hnpos : 0 < n := by rcases hn with rfl | rfl | rfl <;> norm_num
+  have hbpos : 0 < b := by
+    by_contra hbzero
+    have hb0 : b = 0 := by omega
+    rw [hb0, mul_zero] at hbal
+    nlinarith
+  have hb1 : b = 1 := by omega
+  have hmq : m = n * q := by
+    rw [hb1, mul_one] at hbal
+    exact hbal.symm
+  have hqne1 : q ≠ 1 := by
+    intro hq1
+    rw [hq1, mul_one] at hmq
+    exact hne hmq.symm
+  have hqdvd : 5 ∣ q := by
+    by_contra hqnot
+    have hmnot : ¬ 5 ∣ m := by
+      intro hmdvd
+      rw [hmq] at hmdvd
+      have hprime : Nat.Prime 5 := by norm_num
+      rcases hprime.dvd_mul.mp hmdvd with hdn | hdq
+      · rcases hn with rfl | rfl | rfl <;> norm_num at hdn
+      · exact hqnot hdq
+    rcases halphabet hmnot with hm7 | hm9 | hm11
+    · subst m
+      rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
+    · subst m
+      rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
+    · subst m
+      rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
+  obtain ⟨k, hk⟩ := hqdvd
+  have hkpos : 0 < k := by
+    rw [hk] at hq
+    omega
+  rw [hk] at hqle ⊢
+  have hkcases : k = 1 ∨ k = 2 := by omega
+  rcases hkcases with rfl | rfl <;> norm_num
+
 /-- An unequal target of order at least six contributes zero local excess
 from an order-seven source. -/
 theorem degree_sixteen_order_seven_unequal_local_term_eq_zero
