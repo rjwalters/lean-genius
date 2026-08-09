@@ -21050,6 +21050,88 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_complement_diagonal_sum_le_
   rw [htrace] at hle
   omega
 
+/-- Exact global trace residual in the order-seven/cardinality-four lane:
+after removing the four order-seven components and the minimum order-five
+component, the remaining diagonal quotient mass is six. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_global_complement_diagonal_sum_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    (∑ e ∈ (Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N,
+      componentQuotientMatrix G D e e) = 6 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let O := (Finset.univ \ U) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 4 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 7 at huniform
+  change (∑ e ∈ (Finset.univ : Finset D.ConnectedComponent) \ insert c₀ N,
+    Q e e) = 6
+  have hdiagN := degree_sixteen_twoLayer_orderSeven_card_four_diagonal_eq_two
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (by simpa [D, U, O, C, N] using hNcard)
+      (by simpa [D, U, O, C, N] using huniform)
+  have hNsum : (∑ e ∈ N, Q e e) = 8 := by
+    calc
+      (∑ e ∈ N, Q e e) = ∑ _e ∈ N, 2 := by
+        apply Finset.sum_congr rfl
+        intro e he
+        simpa [Q, D, U, O, C, N] using hdiagN e he
+      _ = 8 := by simp [hNcard]
+  have hcdiag := degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hcU : componentRepresentative D c₀ ∈ U := by
+    apply Finset.mem_image.mpr
+    let x : minimumLayerVertex D c₀ :=
+      ⟨⟨c₀, rfl⟩,
+        ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact ⟨x, Finset.mem_univ _, rfl⟩
+  have hcC : c₀ ∉ C := by
+    intro hc
+    have hcO := (Finset.mem_filter.mp hc).2
+    have hcNotU := (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2
+    exact hcNotU hcU
+  have hcN : c₀ ∉ N := by
+    intro hc
+    exact hcC (Finset.mem_filter.mp hc).1
+  have hTsum : (∑ e ∈ insert c₀ N, Q e e) = 10 := by
+    rw [Finset.sum_insert hcN, hNsum]
+    simpa [Q, D] using hcdiag
+  have hTsub : insert c₀ N ⊆
+      (Finset.univ : Finset D.ConnectedComponent) := fun _ _ => Finset.mem_univ _
+  have hsplit := Finset.sum_sdiff hTsub (f := fun e => Q e e)
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard (by norm_num)
+  change (∑ e ∈ (Finset.univ : Finset D.ConnectedComponent), Q e e) = 16 at htrace
+  rw [hTsum, htrace] at hsplit
+  omega
+
 /-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
 set: its four order-seven components have four distinct order-thirty-five
 targets, leaving no further orphan component. -/
