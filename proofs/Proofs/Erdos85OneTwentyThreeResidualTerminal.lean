@@ -875,10 +875,7 @@ theorem false_of_twelve_twelve_twentyfour_row_moments
     (hcrossTwelve : ∑ e ∈ C, a₀ e * q₁ e = 12)
     (hcrossFirstTwentyFour : ∑ e ∈ C, q₀ e * a₂ e = 12)
     (hcrossSecondTwentyFour : ∑ e ∈ C, q₁ e * a₂ e = 12)
-    (hcover :
-      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12022).card +
-      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12112).card +
-      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12202).card ≤ 1) : False := by
+    (hcover : (C.filter fun e => r e = 12 ∧ q₂ e = 2).card ≤ 1) : False := by
   let code := fun e : α => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e
   let P₀ := fun e : α => code e = 6004
   let P₁ := fun e : α => code e = 6040
@@ -1022,7 +1019,57 @@ theorem false_of_twelve_twelve_twentyfour_row_moments
           P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
         all_goals omega)
   have hcov : x₅ + x₇ + x₉ ≤ 1 := by
-    simpa only [x₅, x₇, x₉, P₅, P₇, P₉, code] using hcover
+    let S := C.filter fun e => r e = 12 ∧ q₂ e = 2
+    have hsub (i : ℕ) (hi : i = 12022 ∨ i = 12112 ∨ i = 12202) :
+        C.filter (fun e => code e = i) ⊆ S := by
+      intro e he
+      obtain ⟨heC, hei⟩ := Finset.mem_filter.mp he
+      refine Finset.mem_filter.mpr ⟨heC, ?_⟩
+      rcases htype e heC with h | h | h | h | h | h | h | h | h | h |
+        h | h | h | h | h | h | h
+      all_goals rcases h with ⟨hr, hq₀, hq₁, hq₂⟩
+      all_goals simp [code, hr, hq₀, hq₁, hq₂] at hei
+      all_goals omega
+    have hsub₅ : C.filter P₅ ⊆ S := by
+      simpa [P₅] using hsub 12022 (Or.inl rfl)
+    have hsub₇ : C.filter P₇ ⊆ S := by
+      simpa [P₇] using hsub 12112 (Or.inr (Or.inl rfl))
+    have hsub₉ : C.filter P₉ ⊆ S := by
+      simpa [P₉] using hsub 12202 (Or.inr (Or.inr rfl))
+    have hd₅₇ : Disjoint (C.filter P₅) (C.filter P₇) :=
+      Finset.disjoint_left.mpr (by
+        intro e he₅ he₇
+        have h₅ := (Finset.mem_filter.mp he₅).2
+        have h₇ := (Finset.mem_filter.mp he₇).2
+        simp [P₅, P₇] at h₅ h₇
+        omega)
+    have hd₅₉ : Disjoint (C.filter P₅) (C.filter P₉) :=
+      Finset.disjoint_left.mpr (by
+        intro e he₅ he₉
+        have h₅ := (Finset.mem_filter.mp he₅).2
+        have h₉ := (Finset.mem_filter.mp he₉).2
+        simp [P₅, P₉] at h₅ h₉
+        omega)
+    have hd₇₉ : Disjoint (C.filter P₇) (C.filter P₉) :=
+      Finset.disjoint_left.mpr (by
+        intro e he₇ he₉
+        have h₇ := (Finset.mem_filter.mp he₇).2
+        have h₉ := (Finset.mem_filter.mp he₉).2
+        simp [P₇, P₉] at h₇ h₉
+        omega)
+    have hdUnion : Disjoint (C.filter P₅ ∪ C.filter P₇) (C.filter P₉) :=
+      Finset.disjoint_union_left.mpr ⟨hd₅₉, hd₇₉⟩
+    have hsubset : (C.filter P₅ ∪ C.filter P₇) ∪ C.filter P₉ ⊆ S := by
+      intro e he
+      simp only [Finset.mem_union] at he
+      rcases he with (he | he) | he
+      · exact hsub₅ he
+      · exact hsub₇ he
+      · exact hsub₉ he
+    have hcard := Finset.card_le_card hsubset
+    rw [Finset.card_union_of_disjoint hdUnion,
+      Finset.card_union_of_disjoint hd₅₇] at hcard
+    simpa only [x₅, x₇, x₉, S] using le_trans hcard hcover
   exact false_of_twelve_twelve_twentyfour_row_ledger
     x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ x₁₁ x₁₂ x₁₃ x₁₄ x₁₅ x₁₆
     hw12 hw24 hc12 hc024 hc124 hcov
