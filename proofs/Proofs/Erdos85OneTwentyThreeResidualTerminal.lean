@@ -8672,6 +8672,38 @@ theorem degree_sixteen_zeroLayer_used_component_each_row_split
   rw [happly] at hentry
   exact hentry
 
+/-- Two walks into the three-cycle that advance in opposite orientations
+must collide within three steps.  This is the arithmetic synchronization
+kernel for several zero-layer cycle-cover maps sharing one orphan cycle. -/
+theorem zmod_three_opposite_walks_collide
+    {n : ℕ} [NeZero n] (f g : ZMod n → ZMod 3)
+    (hf : ∀ y, f (y + 1) = f y + 1)
+    (hg : ∀ y, g (y + 1) = g y - 1) :
+    ∃ y, f y = g y := by
+  let d : ZMod 3 := f 0 - g 0
+  have hd : d = 0 ∨ d = 1 ∨ d = 2 := by
+    have hall : ∀ a : ZMod 3, a = 0 ∨ a = 1 ∨ a = 2 := by decide
+    exact hall d
+  rcases hd with hd | hd | hd
+  · refine ⟨0, sub_eq_zero.mp ?_⟩
+    simpa [d] using hd
+  · refine ⟨1, ?_⟩
+    have hf1 := hf 0
+    have hg1 := hg 0
+    change f 0 - g 0 = 1 at hd
+    simp only [zero_add] at hf1 hg1
+    have hthree : (3 : ZMod 3) = 0 := by decide
+    linear_combination hd + hf1 - hg1 + hthree
+  · refine ⟨2, ?_⟩
+    have hf1 := hf 0
+    have hf2 := hf 1
+    have hg1 := hg 0
+    have hg2 := hg 1
+    change f 0 - g 0 = 2 at hd
+    norm_num at hf1 hf2 hg1 hg2 ⊢
+    have hsix : (6 : ZMod 3) = 0 := by decide
+    linear_combination hd + hf1 + hf2 - hg1 - hg2 + hsix
+
 /-- Every used-component block in the zero-layer branch is an oriented
 cyclic cover of the unique minimum `C₃`; after coordinate normalization the
 whole U--R block is deterministic. -/
