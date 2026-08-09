@@ -20479,6 +20479,135 @@ theorem degree_sixteen_twoLayer_orderNine_card_seven_exists_orderFortyFive_targe
     omega
   exact ⟨f, hf, by simpa [D, hzo] using hq5, hf45, hrev⟩
 
+/-- The uniform order-nine/cardinality-seven census candidate is impossible:
+three sources already require three distinct order-forty-five targets, and
+their combined mass with the seven sources exceeds the orphan mass 168. -/
+theorem false_of_degree_sixteen_twoLayer_seven_orderNine_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 7 → (∀ e ∈ N, e.supp.ncard = 9) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform
+  change N.card = 7 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 9 at huniform
+  have hN0 : N.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨o₀, ho₀N⟩ := hN0
+  have hcardErase₀ : (N.erase o₀).card = 6 := by
+    rw [Finset.card_erase_of_mem ho₀N, hNcard]
+  have hN1 : (N.erase o₀).Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨o₁, ho₁E⟩ := hN1
+  have ho₁N := Finset.mem_of_mem_erase ho₁E
+  have ho₁ne₀ := (Finset.mem_erase.mp ho₁E).1
+  have hcardErase₁ : ((N.erase o₀).erase o₁).card = 5 := by
+    rw [Finset.card_erase_of_mem ho₁E, hcardErase₀]
+  have hN2 : ((N.erase o₀).erase o₁).Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨o₂, ho₂E⟩ := hN2
+  have ho₂E₀ := Finset.mem_of_mem_erase ho₂E
+  have ho₂N := Finset.mem_of_mem_erase ho₂E₀
+  have ho₂ne₁ := (Finset.mem_erase.mp ho₂E).1
+  have ho₂ne₀ := (Finset.mem_erase.mp ho₂E₀).1
+  have htargets :=
+    degree_sixteen_twoLayer_orderNine_card_seven_exists_orderFortyFive_target
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+  obtain ⟨f₀, hf₀, hq₀, hf₀45, hr₀⟩ := htargets o₀ ho₀N
+  obtain ⟨f₁, hf₁, hq₁, hf₁45, hr₁⟩ := htargets o₁ ho₁N
+  obtain ⟨f₂, hf₂, hq₂, hf₂45, hr₂⟩ := htargets o₂ ho₂N
+  have htargetDistinct (a b f : D.ConnectedComponent)
+      (ha : a.supp.ncard = 9) (hb : b.supp.ncard = 9)
+      (hf : f.supp.ncard = 45)
+      (hra : componentQuotientMatrix G D f a = 1)
+      (hrb : componentQuotientMatrix G D f b = 1) : a = b := by
+    exact secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := 5) (by norm_num) (by norm_num) hmin hcard
+        (by norm_num) a b f (by rw [ha, hb]) (by rw [hf, ha]) hra hrb
+  have hf₀ne₁ : f₀ ≠ f₁ := by
+    intro heq
+    subst f₁
+    exact ho₁ne₀ (htargetDistinct o₁ o₀ f₀ (huniform o₁ ho₁N)
+      (huniform o₀ ho₀N) hf₀45 hr₁ hr₀)
+  have hf₀ne₂ : f₀ ≠ f₂ := by
+    intro heq
+    subst f₂
+    exact ho₂ne₀ (htargetDistinct o₂ o₀ f₀ (huniform o₂ ho₂N)
+      (huniform o₀ ho₀N) hf₀45 hr₂ hr₀)
+  have hf₁ne₂ : f₁ ≠ f₂ := by
+    intro heq
+    subst f₂
+    exact ho₂ne₁ (htargetDistinct o₂ o₁ f₁ (huniform o₂ ho₂N)
+      (huniform o₁ ho₁N) hf₁45 hr₂ hr₁)
+  let T := N ∪ {f₀, f₁, f₂}
+  have hTC : T ⊆ C := by
+    intro x hx
+    rcases Finset.mem_union.mp hx with hxN | hxF
+    · exact (Finset.mem_filter.mp hxN).1
+    · simp only [Finset.mem_insert, Finset.mem_singleton] at hxF
+      rcases hxF with rfl | rfl | rfl
+      · exact (Finset.mem_sdiff.mp hf₀).1
+      · exact (Finset.mem_sdiff.mp hf₁).1
+      · exact (Finset.mem_sdiff.mp hf₂).1
+  have hmassLe : (∑ e ∈ T, e.supp.ncard) ≤ ∑ e ∈ C, e.supp.ncard :=
+    Finset.sum_le_sum_of_subset_of_nonneg (f := fun e => e.supp.ncard) hTC
+      (fun _ _ _ => Nat.zero_le _)
+  have hmass := degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hf₀notN := (Finset.mem_sdiff.mp hf₀).2
+  have hf₁notN := (Finset.mem_sdiff.mp hf₁).2
+  have hf₂notN := (Finset.mem_sdiff.mp hf₂).2
+  change f₀ ∉ N at hf₀notN
+  change f₁ ∉ N at hf₁notN
+  change f₂ ∉ N at hf₂notN
+  have hNsum : (∑ e ∈ N, e.supp.ncard) = 63 := by
+    calc
+      (∑ e ∈ N, e.supp.ncard) = ∑ _e ∈ N, 9 := by
+        apply Finset.sum_congr rfl
+        intro e he
+        exact huniform e he
+      _ = 63 := by simp [hNcard]
+  have hCsum : (∑ e ∈ C, e.supp.ncard) = 168 := by
+    simpa [D, O, C] using hmass
+  have hTeq : T = insert f₀ (insert f₁ (insert f₂ N)) := by
+    ext x
+    simp [T]
+  have hf₂Ins : f₂ ∉ N := hf₂notN
+  have hf₁Ins : f₁ ∉ insert f₂ N := by
+    simp [hf₁ne₂, hf₁notN]
+  have hf₀Ins : f₀ ∉ insert f₁ (insert f₂ N) := by
+    simp [hf₀ne₁, hf₀ne₂, hf₀notN]
+  have hTsum : (∑ e ∈ T, e.supp.ncard) = 198 := by
+    rw [hTeq, Finset.sum_insert hf₀Ins, Finset.sum_insert hf₁Ins,
+      Finset.sum_insert hf₂Ins, hf₀45, hf₁45, hf₂45, hNsum]
+    norm_num
+  have htooLarge : 198 ≤ 168 := by omega
+  omega
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
