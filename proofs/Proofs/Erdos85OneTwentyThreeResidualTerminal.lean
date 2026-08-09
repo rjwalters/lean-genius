@@ -10512,6 +10512,167 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_fourteen
   rw [hlocal, ho] at htwo
   norm_num at htwo
 
+/-- A used component cannot have order sixty-five: after removing it from
+the used mass seventy, the remaining mass would be five, below the minimum
+used component order ten. -/
+theorem degree_sixteen_twoLayer_used_component_order_ne_sixtyFive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    e.supp.ncard ≠ 65 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  intro he65
+  have heC : e ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using heR⟩
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hsum : (∑ f ∈ C, f.supp.ncard) = 70 := by
+    simpa [C, D, R] using hpack.1
+  have hsplit := Finset.sum_erase_add C (fun f => f.supp.ncard) heC
+  have herase : (∑ f ∈ C.erase e, f.supp.ncard) = 5 := by
+    rw [hsum, he65] at hsplit
+    omega
+  have hnonempty : (C.erase e).Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty.mp hempty] at herase
+    simp at herase
+  obtain ⟨f, hf⟩ := hnonempty
+  have hfC : f ∈ C := Finset.mem_of_mem_erase hf
+  have halphabet := degree_sixteen_twoLayer_used_component_order_alphabet
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild f
+      (Finset.mem_filter.mp hfC).2
+  have hf10 : 10 ≤ f.supp.ncard := by
+    rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
+      omega
+  have hle := Finset.single_le_sum
+    (f := fun g : D.ConnectedComponent => g.supp.ncard)
+    (fun _ _ => Nat.zero_le _) hf
+  rw [herase] at hle
+  omega
+
+/-- Consequently, the rigid owner classification also rules out an
+order-thirteen orphan. -/
+theorem degree_sixteen_twoLayer_orphan_order_ne_thirteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠ 13 := by
+  intro h13
+  have hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard := by
+    rw [h13]
+    norm_num
+  obtain ⟨x, hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  have hx65 : ((secondOrderDefectGraph G).connectedComponentMk x).supp.ncard = 65 := by
+    rcases hpairs with h7 | h9 | h11 | h13' | h14 <;> simp_all
+  have hrepR : componentRepresentative (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk x) ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀) :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) x hxR
+          (componentRepresentative_mem (secondOrderDefectGraph G)
+            ((secondOrderDefectGraph G).connectedComponentMk x))
+  exact (degree_sixteen_twoLayer_used_component_order_ne_sixtyFive
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      ((secondOrderDefectGraph G).connectedComponentMk x) hrepR) hx65
+
+/-- Final current census interface: every non-five-divisible orphan has
+order seven, nine, or eleven, with its matching rigid used owner. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let o := D.connectedComponentMk z
+    ∃ x ∈ R,
+      let e := D.connectedComponentMk x
+      (o.supp.ncard = 7 ∧ e.supp.ncard = 35) ∨
+        (o.supp.ncard = 9 ∧ e.supp.ncard = 45) ∨
+        (o.supp.ncard = 11 ∧ e.supp.ncard = 55) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let o := D.connectedComponentMk z
+  obtain ⟨x, hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  have hne13 := degree_sixteen_twoLayer_orphan_order_ne_thirteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  have hne14 := degree_sixteen_twoLayer_orphan_order_ne_fourteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  change o.supp.ncard ≠ 13 at hne13
+  change o.supp.ncard ≠ 14 at hne14
+  refine ⟨x, hxR, ?_⟩
+  rcases hpairs with h7 | h9 | h11 | h13 | h14
+  · exact Or.inl h7
+  · exact Or.inr (Or.inl h9)
+  · exact Or.inr (Or.inr h11)
+  · exact (hne13 h13.1).elim
+  · exact (hne14 h14.1).elim
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
