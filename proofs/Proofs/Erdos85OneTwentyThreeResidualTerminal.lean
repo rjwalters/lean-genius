@@ -19743,6 +19743,151 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
     · rw [h13] at hcap
       norm_num at hcap
 
+/-- The sharp census candidate consisting of exactly two non-five
+order-nine orphan components is impossible: its same-order row contributes
+at most four, while the unequal complement contributes at most one block of
+five, short of the exact orphan row mass eleven. -/
+theorem false_of_degree_sixteen_twoLayer_two_orderNine_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 2 →
+    (∀ e ∈ N, e.supp.ncard = 9) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform
+  change N.card = 2 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 9 at huniform
+  have hNnon : N.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨o, hoN⟩ := hNnon
+  let z := componentRepresentative D o
+  have hzo : D.connectedComponentMk z = o :=
+    (ConnectedComponent.mem_supp_iff o z).mp (componentRepresentative_mem D o)
+  have hoC := (Finset.mem_filter.mp hoN).1
+  have hoO := (Finset.mem_filter.mp hoC).2
+  have hnot := (Finset.mem_filter.mp hoN).2
+  have ho9 := huniform o hoN
+  have ho9z : (D.connectedComponentMk z).supp.ncard = 9 := by
+    rw [hzo]
+    exact ho9
+  have hz : z ∈ O := by simpa [z] using hoO
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  have hsub : N ⊆ C := Finset.filter_subset _ _
+  have hsame : (∑ e ∈ N, q e) ≤ 4 := by
+    have h := degree_sixteen_twoLayer_orderNine_card_two_same_order_sum_le_four
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O] using hz) (by simpa [D] using ho9z)
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+    rw [hzo] at h
+    change (∑ e ∈ N, q e) ≤ 4 at h
+    exact h
+  have hrow : (∑ e ∈ C, q e) = 11 := by
+    have h := degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+      G hfree hmin hcard c₀ hregChild hcardChild o
+        (by simpa [D, O] using hoO)
+    simpa [q, D, O, C] using h
+  have hfive : ∀ e ∈ C \ N, 0 < q e → q e = 5 := by
+    intro e he hepos
+    have heC := (Finset.mem_sdiff.mp he).1
+    have heN := (Finset.mem_sdiff.mp he).2
+    have heO := (Finset.mem_filter.mp heC).2
+    have hne : o.supp.ncard ≠ e.supp.ncard := by
+      intro heq
+      have he9 : e.supp.ncard = 9 := by omega
+      exact heN (Finset.mem_filter.mpr
+        ⟨heC, by rw [he9]; norm_num⟩)
+    have h := degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O] using hz) (by simpa [D, z, hzo] using hnot) e
+        (by simpa [D, O] using heO) (by simpa [D, z, hzo] using hne)
+        (by simpa [q, D, hzo] using hepos)
+    simpa [q, D, hzo] using h
+  have hshape := degree_sixteen_twoLayer_orderNine_orphan_row_classification
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+      (by simpa [D, O] using hz) (by simpa [D] using ho9z)
+  dsimp only at hshape
+  rw [hzo] at hshape
+  let S9 := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    e.supp.ncard = 9)
+  change (((S9.filter fun e => q e = 3).card = 1 ∧
+      (S9.filter fun e => q e = 2).card = 0) ∨
+    ((S9.filter fun e => q e = 3).card = 0 ∧
+      (S9.filter fun e => q e = 2).card = 3)) at hshape
+  obtain ⟨e, heOrder, heTwo⟩ : ∃ e : D.ConnectedComponent,
+      e.supp.ncard = 9 ∧ 2 ≤ q e := by
+    rcases hshape with hthree | htwo
+    · have hnon := Finset.card_pos.mp (by rw [hthree.1]; norm_num :
+          0 < (S9.filter fun e => q e = 3).card)
+      obtain ⟨e, he⟩ := hnon
+      exact ⟨e, (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2,
+        by have heq := (Finset.mem_filter.mp he).2; omega⟩
+    · have hnon := Finset.card_pos.mp (by rw [htwo.2]; norm_num :
+          0 < (S9.filter fun e => q e = 2).card)
+      obtain ⟨e, he⟩ := hnon
+      exact ⟨e, (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2,
+        by have heq := (Finset.mem_filter.mp he).2; omega⟩
+  have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+      (by simpa [D, O] using hz) e (Or.inr (Or.inl heOrder))
+      (by
+        have hpos : 0 < q e := by omega
+        simpa [q, D, hzo] using hpos)
+  have hunique : ∀ f ∈ C \ N, 0 < q f →
+      ∀ g ∈ C \ N, 0 < q g → f = g := by
+    intro f hf hfpos g hg hgpos
+    have hfC := (Finset.mem_sdiff.mp hf).1
+    have hgC := (Finset.mem_sdiff.mp hg).1
+    have hfO := (Finset.mem_filter.mp hfC).2
+    have hgO := (Finset.mem_filter.mp hgC).2
+    have hfne : o.supp.ncard ≠ f.supp.ncard := by
+      intro heq
+      have hf9 : f.supp.ncard = 9 := by omega
+      exact (Finset.mem_sdiff.mp hf).2
+        (Finset.mem_filter.mpr ⟨hfC, by rw [hf9]; norm_num⟩)
+    have hgne : o.supp.ncard ≠ g.supp.ncard := by
+      intro heq
+      have hg9 : g.supp.ncard = 9 := by omega
+      exact (Finset.mem_sdiff.mp hg).2
+        (Finset.mem_filter.mpr ⟨hgC, by rw [hg9]; norm_num⟩)
+    exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_target_unique_of_same_order_two
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O] using hz) (by simpa [D, z, hzo] using hnot)
+        e f g (by simpa [D, O] using heO)
+        (by simpa [D, O] using hfO) (by simpa [D, O] using hgO)
+        (by simpa [D, z, hzo] using heOrder.trans ho9.symm)
+        (by simpa [D, z, hzo] using hfne)
+        (by simpa [D, z, hzo] using hgne)
+        (by simpa [q, D, hzo] using heTwo)
+        (by simpa [q, D, hzo] using hfpos)
+        (by simpa [q, D, hzo] using hgpos)
+  exact row_eleven_false_of_subrow_le_four_and_unique_five
+    C N q hsub hrow hsame hfive hunique
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
