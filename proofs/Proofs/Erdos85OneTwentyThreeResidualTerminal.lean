@@ -101,6 +101,98 @@ noncomputable instance finsetCommonNeighborGraph.instDecidableAdj
     (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
     DecidableRel (finsetCommonNeighborGraph G A B).Adj := Classical.decRel _
 
+/-- In a linear finite incidence structure with constant row degree `r` and
+constant column degree `q`, the point graph has degree `q * (r - 1)`. -/
+theorem finsetCommonNeighborGraph_degree_eq_mul
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (A B : Finset V) (q r : ℕ)
+    (hrow : ∀ a ∈ A, (B ∩ G.neighborFinset a).card = r)
+    (hcol : ∀ x ∈ B, (A ∩ G.neighborFinset x).card = q)
+    (x : (B : Set V)) :
+    (finsetCommonNeighborGraph G A B).degree x = q * (r - 1) := by
+  classical
+  let C : Finset (Σ _ : V, V) :=
+    (A ∩ G.neighborFinset x.1).sigma
+      (fun a => (B ∩ G.neighborFinset a).erase x.1)
+  have hCcard : C.card = q * (r - 1) := by
+    simp only [C, Finset.card_sigma]
+    calc
+      (∑ a ∈ A ∩ G.neighborFinset x.1,
+          ((B ∩ G.neighborFinset a).erase x.1).card) =
+          ∑ _a ∈ A ∩ G.neighborFinset x.1, (r - 1) := by
+            apply Finset.sum_congr rfl
+            intro a ha
+            have hax : x.1 ∈ B ∩ G.neighborFinset a :=
+              Finset.mem_inter.mpr ⟨x.property,
+                (G.mem_neighborFinset a x.1).mpr
+                  ((G.mem_neighborFinset x.1 a).mp
+                    (Finset.mem_inter.mp ha).2).symm⟩
+            rw [Finset.card_erase_of_mem hax,
+              hrow a (Finset.mem_inter.mp ha).1]
+      _ = (A ∩ G.neighborFinset x.1).card * (r - 1) := by simp
+      _ = q * (r - 1) := by rw [hcol x.1 x.property]
+  have hdegree : (finsetCommonNeighborGraph G A B).degree x = C.card := by
+    rw [← (finsetCommonNeighborGraph G A B).card_neighborFinset_eq_degree]
+    symm
+    apply Finset.card_bij (fun p hp =>
+      ⟨p.2, (Finset.mem_inter.mp
+        (Finset.mem_erase.mp (Finset.mem_sigma.mp hp).2).2).1⟩)
+    · intro p hp
+      have hpData := Finset.mem_sigma.mp hp
+      have hpFiber := Finset.mem_erase.mp hpData.2
+      have hpa := Finset.mem_inter.mp hpData.1
+      have hpy := Finset.mem_inter.mp hpFiber.2
+      rw [(finsetCommonNeighborGraph G A B).mem_neighborFinset]
+      exact ⟨by
+        intro h
+        exact hpFiber.1 (congrArg Subtype.val h).symm,
+        ⟨⟨p.1, hpa.1⟩,
+          ((G.mem_neighborFinset x.1 p.1).mp hpa.2).symm,
+          (G.mem_neighborFinset p.1 p.2).mp hpy.2⟩⟩
+    · intro p hp p' hp' hpp'
+      have hpData := Finset.mem_sigma.mp hp
+      have hp'Data := Finset.mem_sigma.mp hp'
+      have hpFiber := Finset.mem_erase.mp hpData.2
+      have hp'Fiber := Finset.mem_erase.mp hp'Data.2
+      have hy : p.2 = p'.2 := congrArg Subtype.val hpp'
+      have hxy : x.1 ≠ p.2 := by
+        intro h
+        exact hpFiber.1 h.symm
+      have hcommon := common_le_one_of_not_containsC4 hfree x.1 p.2 hxy
+      have hp1mem : p.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset p.2 :=
+        Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hpData.1).2,
+          (G.mem_neighborFinset p.2 p.1).mpr
+            ((G.mem_neighborFinset p.1 p.2).mp
+              (Finset.mem_inter.mp hpFiber.2).2).symm⟩
+      have hp'1mem : p'.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset p.2 :=
+        Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hp'Data.1).2, by
+          rw [hy]
+          exact (G.mem_neighborFinset p'.2 p'.1).mpr
+            ((G.mem_neighborFinset p'.1 p'.2).mp
+              (Finset.mem_inter.mp hp'Fiber.2).2).symm⟩
+      have hfirst : p.1 = p'.1 :=
+        Finset.card_le_one.mp hcommon p.1 hp1mem p'.1 hp'1mem
+      cases p
+      cases p'
+      simp only at hy hfirst ⊢
+      subst_vars
+      rfl
+    · intro y hy
+      rw [(finsetCommonNeighborGraph G A B).mem_neighborFinset] at hy
+      obtain ⟨hxy, a, hax, hay⟩ := hy
+      refine ⟨⟨a.1, y.1⟩, ?_, Subtype.ext rfl⟩
+      simp only [C, Finset.mem_sigma]
+      exact ⟨Finset.mem_inter.mpr ⟨a.property,
+          (G.mem_neighborFinset x.1 a.1).mpr hax.symm⟩,
+        Finset.mem_erase.mpr ⟨by
+          intro h
+          apply hxy
+          exact Subtype.ext h.symm,
+          Finset.mem_inter.mpr ⟨y.property,
+            (G.mem_neighborFinset a.1 y.1).mpr hay⟩⟩⟩
+  exact hdegree.trans hCcard
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
@@ -5783,6 +5875,53 @@ theorem degree_sixteen_zeroLayer_pointGraph_edge_unique_orphan
       ⟨(G.mem_neighborFinset x.1 z'.1).mpr hz'.1.symm,
         (G.mem_neighborFinset y.1 z'.1).mpr hz'.2.symm⟩
   exact (Finset.card_le_one.mp hcommon z.1 hzmem z'.1 hz'mem).symm
+
+/-- The zero-layer point graph is twenty-four regular: each used point is
+incident with twelve orphan triangles, contributing two distinct edges. -/
+theorem degree_sixteen_zeroLayer_pointGraph_degree_eq_twentyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (x : ((Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) : Finset V) : Set V)) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (finsetCommonNeighborGraph G O R).degree x = 24 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hrow : ∀ z ∈ O, (R ∩ G.neighborFinset z).card = 3 := by
+    intro z hz
+    have hzOuter := Finset.mem_sdiff.mp hz
+    have hzInner := Finset.mem_sdiff.mp hzOuter.1
+    simpa [D, U, R, O] using
+      degree_sixteen_zeroLayer_orphan_used_exterior_neighbor_card_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild z hzInner.2 hzOuter.2
+  have hcol : ∀ y ∈ R, (O ∩ G.neighborFinset y).card = 12 := by
+    intro y hy
+    obtain ⟨v, _hv, hyv⟩ := Finset.mem_biUnion.mp hy
+    simpa [D, U, R, O] using
+      degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
+        G hfree hmin hcard c₀ hregChild hcardChild v hyv
+  have hdegree := finsetCommonNeighborGraph_degree_eq_mul G hfree O R
+    12 3 hrow hcol x
+  norm_num at hdegree ⊢
+  exact hdegree
 
 /-- In the two-layer branch every used-exterior vertex again has exactly
 twelve orphan neighbors.  Its other four neighbors are its unique `U₅`
