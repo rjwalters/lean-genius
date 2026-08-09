@@ -20824,6 +20824,141 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_orderThirtyFive_targ
     omega
   exact ⟨f, hf, by simpa [D, hzo] using hq5, hf35, hrev⟩
 
+/-- Every order-seven component in the cardinality-four lane has diagonal
+quotient two.  The unique complementary quotient-five target leaves exact
+same-order mass six in the orphan row. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_diagonal_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    ∀ o ∈ N, componentQuotientMatrix G D o o = 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform o hoN
+  change N.card = 4 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 7 at huniform
+  let z := componentRepresentative D o
+  have hzo : D.connectedComponentMk z = o :=
+    (ConnectedComponent.mem_supp_iff o z).mp (componentRepresentative_mem D o)
+  have hoC := (Finset.mem_filter.mp hoN).1
+  have hoO := (Finset.mem_filter.mp hoC).2
+  have hnot := (Finset.mem_filter.mp hoN).2
+  have ho7 := huniform o hoN
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  have hsub : N ⊆ C := Finset.filter_subset _ _
+  have hrow : (∑ e ∈ C, q e) = 11 := by
+    have h := degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+      G hfree hmin hcard c₀ hregChild hcardChild o
+        (by simpa [D, O] using hoO)
+    simpa [q, D, O, C] using h
+  have hfive : ∀ f ∈ C \ N, 0 < q f → q f = 5 := by
+    intro f hf hfpos
+    have hfC := (Finset.mem_sdiff.mp hf).1
+    have hfO := (Finset.mem_filter.mp hfC).2
+    have hfne : o.supp.ncard ≠ f.supp.ncard := by
+      intro heq
+      have hf7 : f.supp.ncard = 7 := by omega
+      exact (Finset.mem_sdiff.mp hf).2
+        (Finset.mem_filter.mpr ⟨hfC, by rw [hf7]; norm_num⟩)
+    have h := degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O, z] using hoO) (by rw [hzo]; exact hnot) f
+        (by simpa [D, O] using hfO) (by rw [hzo]; exact hfne) (by
+          rw [hzo]
+          exact hfpos)
+    simpa [q, D, hzo] using h
+  let S7 := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    e.supp.ncard = 7)
+  have htwoCount := degree_sixteen_twoLayer_orderSeven_orphan_quotientTwo_count_eq_two
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+      (by simpa [D, O, z] using hoO) (by rw [hzo]; exact ho7)
+  have htwoNon : (S7.filter fun e => q e = 2).Nonempty := by
+    have hc : (S7.filter fun e => q e = 2).card = 2 := by
+      simpa [S7, q, D, hzo] using htwoCount
+    exact Finset.card_pos.mp (by omega)
+  obtain ⟨e, he⟩ := htwoNon
+  have he7 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+  have heTwo : 2 ≤ q e := by
+    have := (Finset.mem_filter.mp he).2
+    omega
+  have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+      (by simpa [D, O, z] using hoO) e (Or.inl he7) (by
+        have : 0 < q e := by omega
+        simpa [q, D, hzo] using this)
+  have hunique : ∀ f ∈ C \ N, 0 < q f →
+      ∀ g ∈ C \ N, 0 < q g → f = g := by
+    intro f hf hfpos g hg hgpos
+    have hfC := (Finset.mem_sdiff.mp hf).1
+    have hgC := (Finset.mem_sdiff.mp hg).1
+    have hfO := (Finset.mem_filter.mp hfC).2
+    have hgO := (Finset.mem_filter.mp hgC).2
+    have hfne : o.supp.ncard ≠ f.supp.ncard := by
+      intro heq
+      have hf7 : f.supp.ncard = 7 := by omega
+      exact (Finset.mem_sdiff.mp hf).2
+        (Finset.mem_filter.mpr ⟨hfC, by rw [hf7]; norm_num⟩)
+    have hgne : o.supp.ncard ≠ g.supp.ncard := by
+      intro heq
+      have hg7 : g.supp.ncard = 7 := by omega
+      exact (Finset.mem_sdiff.mp hg).2
+        (Finset.mem_filter.mpr ⟨hgC, by rw [hg7]; norm_num⟩)
+    exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_target_unique_of_same_order_two
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O, z] using hoO) (by rw [hzo]; exact hnot)
+        e f g (by simpa [D, O] using heO)
+        (by simpa [D, O] using hfO) (by simpa [D, O] using hgO)
+        (by rw [hzo]; exact he7.trans ho7.symm)
+        (by rw [hzo]; exact hfne) (by rw [hzo]; exact hgne)
+        (by rw [hzo]; exact heTwo) (by rw [hzo]; exact hfpos)
+        (by rw [hzo]; exact hgpos)
+  have hexists : ∃ f ∈ C \ N, 0 < q f := by
+    obtain ⟨f, hf, hq5, _hf35, _hrev⟩ :=
+      degree_sixteen_twoLayer_orderSeven_card_four_exists_orderThirtyFive_target
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+          (by simpa [D, O, C, N] using hNcard)
+          (by simpa [D, O, C, N] using huniform) o hoN
+    exact ⟨f, by simpa [D, O, C, N] using hf, by
+      change 0 < componentQuotientMatrix G D o f
+      rw [hq5]
+      norm_num⟩
+  have hsame : (∑ e ∈ N, q e) = 6 :=
+    row_eleven_subrow_eq_six_of_complement_unique_five C N q
+      hsub hrow hfive hunique hexists
+  have hdiag :=
+    degree_sixteen_twoLayer_orderSeven_card_four_diagonal_eq_two_of_sum_eq_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O, z] using hoO) (by rw [hzo]; exact ho7)
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+        (by simpa [q, D, O, C, N, hzo] using hsame)
+  simpa [D, hzo] using hdiag
+
 /-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
 set: its four order-seven components have four distinct order-thirty-five
 targets, leaving no further orphan component. -/
