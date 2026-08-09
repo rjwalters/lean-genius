@@ -9297,6 +9297,59 @@ theorem degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
     _ = 168 := degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
       G hfree hmin hcard c₀ hregChild hcardChild
 
+/-- There are at most twenty-eight two-layer orphan components: each lies
+strictly above the minimum order five, hence has order at least six, while
+their total order is 168. -/
+theorem degree_sixteen_twoLayer_orphan_component_count_le_twentyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)).card ≤ 28 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  have hsum : (∑ c ∈ C, c.supp.ncard) = 168 := by
+    simpa [C, D, O] using
+      degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+        G hfree hmin hcard c₀ hregChild hcardChild
+  have hlower : ∑ _c ∈ C, 6 ≤ ∑ c ∈ C, c.supp.ncard := by
+    apply Finset.sum_le_sum
+    intro c hc
+    have hrepO : componentRepresentative D c ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    have hge := (degree_sixteen_smallLayer_orphan_component_card_lower
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild (componentRepresentative D c) hrepO).2 rfl
+    have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c
+        (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+    rwa [hrep] at hge
+  have hsix : 6 * C.card ≤ 168 := by
+    rw [hsum] at hlower
+    simpa [mul_comm] using hlower
+  change C.card ≤ 28
+  omega
+
 /-- In the four-layer branch, every defect component meeting the used
 exterior has order at least six.  Its order is a positive multiple of the
 minimum order three, and equality would put its representative back in the
