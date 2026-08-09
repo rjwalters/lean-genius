@@ -9221,6 +9221,67 @@ theorem degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
   simpa [D, R, O] using degree_sixteen_twoLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
 
+/-- A fixed used component can be the concentrated owner of at most twelve
+orphan components.  Every cut with `Q(o,e)=5` has positive reverse quotient,
+and all reverse orphan quotients in the used row sum to twelve. -/
+theorem degree_sixteen_twoLayer_concentrated_owner_component_count_le_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (C.filter fun o => componentQuotientMatrix G D o e = 5).card ≤ 12 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := C.filter fun o => componentQuotientMatrix G D o e = 5
+  have hrow : (∑ o ∈ C, componentQuotientMatrix G D e o) = 12 := by
+    simpa [C, D, O] using
+      degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
+        G hfree hmin hcard c₀ hregChild hcardChild e he
+  have hpositive : ∀ o ∈ S, 1 ≤ componentQuotientMatrix G D e o := by
+    intro o ho
+    have hq : componentQuotientMatrix G D o e = 5 :=
+      (Finset.mem_filter.mp ho).2
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    rw [hq] at hbal
+    have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+    by_contra hzero
+    have hzero' : componentQuotientMatrix G D e o = 0 := by omega
+    rw [hzero', mul_zero] at hbal
+    omega
+  have hcountLe : S.card ≤ ∑ o ∈ S, componentQuotientMatrix G D e o := by
+    simpa using Finset.sum_le_sum hpositive
+  have hsub : S ⊆ C := Finset.filter_subset _ _
+  have hsumLe : (∑ o ∈ S, componentQuotientMatrix G D e o) ≤
+      ∑ o ∈ C, componentQuotientMatrix G D e o := by
+    exact Finset.sum_le_sum_of_subset_of_nonneg hsub
+      (fun _ _ _ => Nat.zero_le _)
+  change S.card ≤ 12
+  omega
+
 /-- Finite divisibility shadow of concentrated ownership.  If a two-layer
 orphan order is not divisible by five, then one of the possible reduced
 used orders `2, ..., 14` divides it. -/
