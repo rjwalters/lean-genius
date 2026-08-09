@@ -20520,6 +20520,125 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_finite_census
             (by simpa [D, O, C, N] using h11.1))
     · exact Or.inr (Or.inr ⟨h11.1, h8⟩)
 
+/-- In the uniform order-seven/cardinality-four lane, every source must use
+an unequal quotient-five target; balance forces target order thirty-five and
+reverse quotient one. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_orderThirtyFive_target
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    ∀ o ∈ N, ∃ f ∈ C \ N,
+      componentQuotientMatrix G D o f = 5 ∧ f.supp.ncard = 35 ∧
+      componentQuotientMatrix G D f o = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform o hoN
+  change N.card = 4 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 7 at huniform
+  have hoC := (Finset.mem_filter.mp hoN).1
+  have hoO := (Finset.mem_filter.mp hoC).2
+  have hnot := (Finset.mem_filter.mp hoN).2
+  let z := componentRepresentative D o
+  have hzo : D.connectedComponentMk z = o :=
+    (ConnectedComponent.mem_supp_iff o z).mp (componentRepresentative_mem D o)
+  have ho7 := huniform o hoN
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  have hsame : (∑ e ∈ N, q e) ≤ 6 := by
+    have h := degree_sixteen_twoLayer_orderSeven_card_four_same_order_sum_le_six
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O, z] using hoO) (by rw [hzo]; exact ho7)
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+    rw [hzo] at h
+    change (∑ e ∈ N, q e) ≤ 6 at h
+    exact h
+  have hrow : (∑ e ∈ C, q e) = 11 := by
+    have h := degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+      G hfree hmin hcard c₀ hregChild hcardChild o
+        (by simpa [D, O] using hoO)
+    simpa [q, D, O, C] using h
+  have hsame10 : (∑ e ∈ N, q e) ≤ 10 := hsame.trans (by norm_num)
+  obtain ⟨f, hf, hfpos⟩ :=
+    exists_positive_sdiff_of_subrow_le_ten_row_eq_eleven C N q
+      (Finset.filter_subset _ _) hsame10 hrow
+  have hfC := (Finset.mem_sdiff.mp hf).1
+  have hfN := (Finset.mem_sdiff.mp hf).2
+  have hfO := (Finset.mem_filter.mp hfC).2
+  have hne : o.supp.ncard ≠ f.supp.ncard := by
+    intro heq
+    have hf7 : f.supp.ncard = 7 := by omega
+    exact hfN (Finset.mem_filter.mpr ⟨hfC, by rw [hf7]; norm_num⟩)
+  have hq5 := degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+      (by simpa [D, O, z] using hoO) (by rw [hzo]; exact hnot) f
+      (by simpa [D, O] using hfO) (by rw [hzo]; exact hne) (by
+        rw [hzo]
+        exact hfpos)
+  have hfLowerRaw := (degree_sixteen_smallLayer_orphan_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D f) (by simpa [D, O] using hfO)).2 rfl
+  have hfm : D.connectedComponentMk (componentRepresentative D f) = f :=
+    (ConnectedComponent.mem_supp_iff f (componentRepresentative D f)).mp
+      (componentRepresentative_mem D f)
+  rw [hfm] at hfLowerRaw
+  have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+    intro hdvd
+    have hle := Nat.le_of_dvd (by rw [ho7]; norm_num) hdvd
+    have hf7 : f.supp.ncard = 7 := by
+      rw [ho7] at hdvd hle
+      have hcases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 := by omega
+      rcases hcases with h6 | h7
+      · rw [h6] at hdvd
+        norm_num at hdvd
+      · exact h7
+    exact hne (ho7.trans hf7.symm)
+  have hrevle := secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+  have hrevpos : 0 < componentQuotientMatrix G D f o := by
+    change o.supp.ncard * componentQuotientMatrix G D o f =
+      f.supp.ncard * componentQuotientMatrix G D f o at hbal
+    have hopos : 0 < o.supp.ncard := by rw [ho7]; norm_num
+    have hfpos' : 0 < f.supp.ncard := f.nonempty_supp.ncard_pos
+    rw [show componentQuotientMatrix G D o f = 5 by simpa [D, hzo] using hq5] at hbal
+    nlinarith
+  have hrev : componentQuotientMatrix G D f o = 1 := by
+    have : componentQuotientMatrix G D f o ≤ 1 := by simpa [D] using hrevle
+    omega
+  have hf35 : f.supp.ncard = 35 := by
+    change o.supp.ncard * componentQuotientMatrix G D o f =
+      f.supp.ncard * componentQuotientMatrix G D f o at hbal
+    rw [ho7, show componentQuotientMatrix G D o f = 5 by simpa [D, hzo] using hq5,
+      hrev] at hbal
+    omega
+  exact ⟨f, hf, by simpa [D, hzo] using hq5, hf35, hrev⟩
+
 /-- In the uniform order-nine/cardinality-seven lane, every source must use
 an unequal quotient-five target; balance and reverse uniqueness force that
 target to have order forty-five and reverse quotient one. -/
