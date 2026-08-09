@@ -21613,6 +21613,90 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_exact_exhaustion
   change C = insert f₀ (insert f₁ (insert f₂ (insert f₃ N)))
   simpa [T] using hCTeq
 
+/-- In the exact order-seven/cardinality-four census, the parity witness is
+unconditionally located in the used-exterior cell. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_used_even_forwardFive_diagonalOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    ∃ z ∈ R,
+      5 ∣ (D.connectedComponentMk z).supp.ncard ∧
+      forwardOriented G u (D.connectedComponentMk z) ∧
+      componentQuotientMatrix G D (D.connectedComponentMk z)
+        (D.connectedComponentMk z) = 1 ∧
+      Even (D.connectedComponentMk z).supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform
+  obtain ⟨f₀, f₁, f₂, f₃, _hf₀, _hf₁, _hf₂, _hf₃,
+      hf₀35, hf₁35, hf₂35, hf₃35, _h01, _h02, _h03,
+      _h12, _h13, _h23, hCeq⟩ :=
+    degree_sixteen_twoLayer_orderSeven_card_four_exact_exhaustion
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, U, R, O, C, N] using hNcard)
+        (by simpa [D, U, R, O, C, N] using huniform)
+  change C = insert f₀ (insert f₁ (insert f₂ (insert f₃ N))) at hCeq
+  have horphanOdd : ∀ e ∈ C, Odd e.supp.ncard := by
+    intro e heC
+    rw [hCeq] at heC
+    simp only [Finset.mem_insert] at heC
+    rcases heC with rfl | rfl | rfl | rfl | heN
+    · rw [hf₀35]
+      norm_num
+    · rw [hf₁35]
+      norm_num
+    · rw [hf₂35]
+      norm_num
+    · rw [hf₃35]
+      norm_num
+    · rw [huniform e heN]
+      norm_num
+  exact
+    degree_sixteen_twoLayer_orderSeven_card_four_exists_used_even_forwardFive_diagonalOne_of_orphan_odd
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        u hu huRange hℓ3 hbij huD
+          (by simpa [D, U, R, O, C, N] using hNcard)
+          (by simpa [D, U, R, O, C, N] using huniform)
+          (by simpa [D, U, R, O, C] using horphanOdd)
+
 /-- In the uniform order-nine/cardinality-seven lane, every source must use
 an unequal quotient-five target; balance and reverse uniqueness force that
 target to have order forty-five and reverse quotient one. -/
