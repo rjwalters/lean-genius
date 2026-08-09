@@ -18794,6 +18794,48 @@ theorem card_le_sixteen_of_two_owner_fibers
     simpa [Finset.sum_const_nat, mul_comm] using hsum
   omega
 
+/-- An order-thirty-five component can own at most eight order-seven
+components through concentrated quotient pairs `(1,5)`. -/
+theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (he35 : e.supp.ncard = 35)
+    (hpairs : ∀ o ∈ S,
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 5) :
+    S.card ≤ 8 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hlocal := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
+      (by rw [he35]; norm_num) Finset.univ (by simp)
+  change (∑ o ∈ (Finset.univ : Finset D.ConnectedComponent),
+    Q e o * (Q o e - 1)) = e.supp.ncard - 3 at hlocal
+  have hSsum : (∑ o ∈ S, Q e o * (Q o e - 1)) = S.card * 4 := by
+    calc
+      (∑ o ∈ S, Q e o * (Q o e - 1)) = ∑ _o ∈ S, 4 := by
+        apply Finset.sum_congr rfl
+        intro o hoS
+        have hpair : Q e o = 1 ∧ Q o e = 5 := by
+          simpa [Q, D] using hpairs o hoS
+        rw [hpair.1, hpair.2]
+      _ = S.card * 4 := by simp
+  have hle : (∑ o ∈ S, Q e o * (Q o e - 1)) ≤
+      ∑ o ∈ (Finset.univ : Finset D.ConnectedComponent),
+        Q e o * (Q o e - 1) :=
+    Finset.sum_le_sum_of_subset (Finset.subset_univ S)
+  rw [hSsum, hlocal, he35] at hle
+  omega
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
@@ -18893,11 +18935,11 @@ theorem surviving_nonFive_unequal_quotient_eq_five_or_ten
       · rcases hn with rfl | rfl | rfl <;> norm_num at hdn
       · exact hqnot hdq
     rcases halphabet hmnot with hm7 | hm9 | hm11
-    · subst m
+    · rw [hm7] at hmq
       rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
-    · subst m
+    · rw [hm9] at hmq
       rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
-    · subst m
+    · rw [hm11] at hmq
       rcases hn with rfl | rfl | rfl <;> norm_num at hmq <;> omega
   obtain ⟨k, hk⟩ := hqdvd
   have hkpos : 0 < k := by
