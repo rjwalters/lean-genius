@@ -4968,6 +4968,37 @@ theorem degree_sixteen_zeroLayer_shared_service_row_unique
     hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
   exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
 
+/-- For two distinct zero-layer child rows, a pair of service points serves
+at most one orphan.  This is the direct injectivity form of the transversal
+packing law. -/
+theorem degree_sixteen_zeroLayer_two_row_service_pair_injective
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {u v : minimumLayerVertex (secondOrderDefectGraph G) c₀} (huv : u ≠ v)
+    {y y' z z' : V}
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyz : G.Adj z y) (hyz' : G.Adj z' y)
+    (hy'v : y' ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v)
+    (hy'z : G.Adj z y') (hy'z' : G.Adj z' y') :
+    z = z' := by
+  by_contra hzz'
+  exact huv (degree_sixteen_zeroLayer_shared_service_row_unique
+    G hfree hmin hcard c₀ hregChild hcardChild hzz'
+      hyu hyz hyz' hy'v hy'z hy'z')
+
 /-- If two distinct orphans share no service point, then they are adjacent in
 the second-order defect graph.  The only possible common neighbors of two
 orphans are service points: a common orphan neighbor would violate the
