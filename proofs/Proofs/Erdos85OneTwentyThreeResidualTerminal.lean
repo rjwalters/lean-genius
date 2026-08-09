@@ -18827,6 +18827,36 @@ theorem two_orderThirtyFive_service_local_excess_lower
   interval_cases b₁ <;> interval_cases b₂
   all_goals omega
 
+/-- Aggregate form at reduced orphan mass fourteen: two order-thirty-five
+owners must spend at least sixteen units of local excess serving the
+five-divisible orphan sector. -/
+theorem two_orderThirtyFive_service_total_local_excess_ge_sixteen
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ b₁ b₂ : α → ℕ)
+    (hksum : (∑ x ∈ C, k x) = 14)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x = 5)
+    (hbal₁ : ∀ x ∈ C, 7 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 7 * a₂ x = k x * b₂ x) :
+    16 ≤ ∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+  have hpoint : ∀ x ∈ C,
+      8 * k x ≤ 7 *
+        (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+    intro x hx
+    exact two_orderThirtyFive_service_local_excess_lower
+      (k x) (a₁ x) (a₂ x) (b₁ x) (b₂ x)
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+  have hsum := Finset.sum_le_sum fun x hx => hpoint x hx
+  have hleft : (∑ x ∈ C, 8 * k x) = 8 * 14 := by
+    rw [← Finset.mul_sum, hksum]
+  have hright : (∑ x ∈ C, 7 *
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) =
+      7 * ∑ x ∈ C,
+        (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+    rw [Finset.mul_sum]
+  rw [hleft, hright] at hsum
+  omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
