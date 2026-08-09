@@ -19059,6 +19059,147 @@ theorem degree_sixteen_twoLayer_orderSeven_nonFive_orphan_card_le_sixteen
     · simpa [hoe] using hp.2.2.1
     · simpa [hoe] using hp.2.2.2
 
+/-- Once a uniform order-seven lane has at least nine components, exactly two
+distinct used order-thirty-five owners occur, and every source has a
+concentrated `(1,5)` quotient pair with one of them. -/
+theorem degree_sixteen_twoLayer_orderSeven_exists_two_named_owners
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    (∀ o ∈ N, o.supp.ncard = 7) → 9 ≤ N.card →
+      ∃ e₁ e₂ : D.ConnectedComponent,
+        e₁ ≠ e₂ ∧ componentRepresentative D e₁ ∈ R ∧
+        componentRepresentative D e₂ ∈ R ∧
+        e₁.supp.ncard = 35 ∧ e₂.supp.ncard = 35 ∧
+        ∀ o ∈ N,
+          (componentQuotientMatrix G D e₁ o = 1 ∧
+            componentQuotientMatrix G D o e₁ = 5) ∨
+          (componentQuotientMatrix G D e₂ o = 1 ∧
+            componentQuotientMatrix G D o e₂ = 5) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let Q := componentQuotientMatrix G D
+  intro huniform hNlower
+  change ∀ o ∈ N, o.supp.ncard = 7 at huniform
+  change 9 ≤ N.card at hNlower
+  have hex : ∀ o ∈ N, ∃ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R ∧ e.supp.ncard = 35 ∧
+        Q e o = 1 ∧ Q o e = 5 := by
+    intro o hoN
+    have hoC := (Finset.mem_filter.mp hoN).1
+    have hoO := (Finset.mem_filter.mp hoC).2
+    have honot := (Finset.mem_filter.mp hoN).2
+    have ho7 := huniform o hoN
+    have hmk : D.connectedComponentMk (componentRepresentative D o) = o :=
+      (ConnectedComponent.mem_supp_iff o (componentRepresentative D o)).mp
+        (componentRepresentative_mem D o)
+    obtain ⟨z, hzR, hq, _hratio⟩ :=
+      degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+          (componentRepresentative D o) (by simpa [D, R, O] using hoO)
+          (by simpa [D, hmk] using honot)
+    let e := D.connectedComponentMk z
+    have heDvd : 5 ∣ e.supp.ncard := by
+      simpa [D, e] using (degree_sixteen_smallLayer_used_component_card_dvd
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild z (by simpa [R, D] using hzR)).2 rfl
+    have hrigid := degree_sixteen_twoLayer_nonFive_concentrated_cut_rigidity
+      G hfree hmin hcard e o heDvd honot
+        (by simpa [D, hmk, e] using hq)
+    have he35 : e.supp.ncard = 35 := by
+      obtain ⟨k, hk⟩ := heDvd
+      have hk7 : k = 7 := by
+        have := hrigid.2
+        rw [hk] at this
+        norm_num at this
+        omega
+      omega
+    have heR : componentRepresentative D e ∈ R :=
+      degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z (by simpa [R, D] using hzR)
+            (componentRepresentative_mem D e)
+    exact ⟨e, heR, he35, by simpa [Q, D] using hrigid.1,
+      by simpa [Q, D, hmk, e] using hq⟩
+  let owner : D.ConnectedComponent → D.ConnectedComponent := fun o =>
+    if ho : o ∈ N then Classical.choose (hex o ho) else c₀
+  have howner : ∀ o ∈ N,
+      componentRepresentative D (owner o) ∈ R ∧
+        (owner o).supp.ncard = 35 ∧ Q (owner o) o = 1 ∧ Q o (owner o) = 5 := by
+    intro o hoN
+    simpa [owner, hoN] using Classical.choose_spec (hex o hoN)
+  let E := N.image owner
+  have hmap : (N : Set D.ConnectedComponent).MapsTo owner E := by
+    intro o hoN
+    exact Finset.mem_image.mpr ⟨o, hoN, rfl⟩
+  have hEcardLe : E.card ≤ 2 := by
+    apply degree_sixteen_twoLayer_used_orderThirtyFive_family_card_le_two
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild E
+    · intro e heE
+      obtain ⟨o, hoN, rfl⟩ := Finset.mem_image.mp heE
+      simpa [D, R] using (howner o hoN).1
+    · intro e heE
+      obtain ⟨o, hoN, rfl⟩ := Finset.mem_image.mp heE
+      exact (howner o hoN).2.1
+  have hEcard : E.card = 2 := by
+    apply owner_card_eq_two_of_nine_le_of_two_owner_fibers
+      N E owner hmap hNlower hEcardLe
+    intro e heE
+    apply degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
+      G hfree hmin hcard e (N.filter fun o => owner o = e)
+    · obtain ⟨o, hoN, rfl⟩ := Finset.mem_image.mp heE
+      exact (howner o hoN).2.1
+    · intro o hoFiber
+      obtain ⟨hoN, hoe⟩ := Finset.mem_filter.mp hoFiber
+      have hp := howner o hoN
+      exact ⟨by simpa [hoe] using hp.2.2.1,
+        by simpa [hoe] using hp.2.2.2⟩
+  obtain ⟨e₁, e₂, hne, hE⟩ := Finset.card_eq_two.mp hEcard
+  have he₁E : e₁ ∈ E := by rw [hE]; simp
+  have he₂E : e₂ ∈ E := by rw [hE]; simp
+  obtain ⟨o₁, ho₁N, hown₁⟩ := Finset.mem_image.mp he₁E
+  obtain ⟨o₂, ho₂N, hown₂⟩ := Finset.mem_image.mp he₂E
+  refine ⟨e₁, e₂, hne, ?_, ?_, ?_, ?_, ?_⟩
+  · change componentRepresentative D e₁ ∈ R
+    simpa only [hown₁] using (howner o₁ ho₁N).1
+  · change componentRepresentative D e₂ ∈ R
+    simpa only [hown₂] using (howner o₂ ho₂N).1
+  · simpa [hown₁] using (howner o₁ ho₁N).2.1
+  · simpa [hown₂] using (howner o₂ ho₂N).2.1
+  · intro o hoN
+    have hoE : owner o ∈ E := hmap hoN
+    rw [hE] at hoE
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hoE
+    rcases hoE with ho₁ | ho₂
+    · exact Or.inl ⟨by simpa [ho₁] using (howner o hoN).2.2.1,
+        by simpa [ho₁] using (howner o hoN).2.2.2⟩
+    · exact Or.inr ⟨by simpa [ho₂] using (howner o hoN).2.2.1,
+        by simpa [ho₂] using (howner o hoN).2.2.2⟩
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
