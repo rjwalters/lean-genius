@@ -15272,6 +15272,127 @@ theorem degree_sixteen_fourLayer_distinct_orphans_two_step_via_orphan_eq_zero
     G hfree hmin hcard c₀ hregChild hcardChild f o₁ o₂ hfO ho₁O ho₂O
       hrev hpos₂)
 
+/-- Outside the used-component cell, every local-excess term of an orphan
+target vanishes: minimum-layer columns vanish directly, while the remaining
+components lie in the orphan cell and are handled by orphan matching. -/
+theorem degree_sixteen_fourLayer_orphan_local_excess_outside_used_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    {z : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hf : f ∉ Finset.univ.filter
+      (fun e : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) e ∈
+          Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀))) :
+    let D := secondOrderDefectGraph G
+    let o := D.connectedComponentMk z
+    (componentQuotientMatrix G D o f : ℤ) *
+        (componentQuotientMatrix G D f o : ℤ) -
+      (componentQuotientMatrix G D o f : ℤ) = 0 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let o := D.connectedComponentMk z
+  let w := componentRepresentative D f
+  by_cases hwU : w ∈ U
+  · have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+      G hfree hmin hcard c₀ hz f (by simpa [D, U, w] using hwU)
+    rw [hzero]
+    norm_num
+  · have hwNotR : w ∉ R := by
+      intro hwR
+      apply hf
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, by simpa [D, R, w] using hwR⟩
+    have hwO : w ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwNotR⟩
+    simpa [D, o] using
+      (degree_sixteen_fourLayer_orphan_local_excess_term_eq_zero
+        G hfree hmin hcard c₀ hregChild hcardChild hz f
+          (by simpa [D, U, R, O, w] using hwO))
+
+/-- Likewise, every two-step quotient term outside the used-component cell
+vanishes between two distinct orphan targets. -/
+theorem degree_sixteen_fourLayer_distinct_orphans_two_step_outside_used_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂)
+    (ho₁O : componentRepresentative (secondOrderDefectGraph G) o₁ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₂O : componentRepresentative (secondOrderDefectGraph G) o₂ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hf : f ∉ Finset.univ.filter
+      (fun e : (secondOrderDefectGraph G).ConnectedComponent =>
+        componentRepresentative (secondOrderDefectGraph G) e ∈
+          Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+            (secondOrderDefectGraph G) c₀))) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o₁ f *
+      componentQuotientMatrix G (secondOrderDefectGraph G) f o₂ = 0 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let w := componentRepresentative D f
+  by_cases hwU : w ∈ U
+  · let z₁ := componentRepresentative D o₁
+    have hz₁ : D.connectedComponentMk z₁ = o₁ :=
+      (ConnectedComponent.mem_supp_iff o₁ z₁).mp
+        (componentRepresentative_mem D o₁)
+    have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+      G hfree hmin hcard c₀
+        (by simpa [D, z₁] using ho₁O)
+        f (by simpa [D, U, w] using hwU)
+    change componentQuotientMatrix G D (D.connectedComponentMk z₁) f = 0 at hzero
+    rw [hz₁] at hzero
+    rw [hzero]
+    norm_num
+  · have hwNotR : w ∉ R := by
+      intro hwR
+      apply hf
+      exact Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, by simpa [D, R, w] using hwR⟩
+    have hwO : w ∈ O := Finset.mem_sdiff.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwNotR⟩
+    exact degree_sixteen_fourLayer_distinct_orphans_two_step_via_orphan_eq_zero
+      G hfree hmin hcard c₀ hregChild hcardChild o₁ o₂ f hne ho₁O ho₂O
+        (by simpa [D, U, R, O, w] using hwO)
+
 end
 
 end Erdos85
