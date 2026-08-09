@@ -9095,6 +9095,73 @@ theorem degree_sixteen_twoLayer_used_component_count_le_seven
   change C.card ≤ 7
   omega
 
+/-- Divide the two-layer used-component orders by five.  The reduced orders
+form a positive partition of fourteen with every part in `2, ..., 14`. -/
+theorem degree_sixteen_twoLayer_used_component_reduced_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 5
+    (∑ e ∈ C, w e) = 14 ∧
+      ∀ e ∈ C, 2 ≤ w e ∧ w e ≤ 14 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 5
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hw : ∀ e ∈ C, 5 * w e = e.supp.ncard := by
+    intro e he
+    apply Nat.mul_div_cancel'
+    exact hpack.2 e (by simpa [C, D, R] using he)
+  have hmass : ∑ e ∈ C, w e = 14 := by
+    have hscaled : 5 * (∑ e ∈ C, w e) = 70 := by
+      calc
+        5 * (∑ e ∈ C, w e) = ∑ e ∈ C, 5 * w e := by
+          rw [Finset.mul_sum]
+        _ = ∑ e ∈ C, e.supp.ncard := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact hw e he
+        _ = 70 := by simpa [C, D, R] using hpack.1
+    omega
+  refine ⟨hmass, ?_⟩
+  intro e he
+  have hrepR : componentRepresentative D e ∈ R :=
+    (Finset.mem_filter.mp he).2
+  have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D e) hrepR).2 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  rw [hrep] at hlower
+  have hle : w e ≤ ∑ f ∈ C, w f :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) he
+  rw [hmass] at hle
+  have hwe := hw e he
+  omega
+
 /-- Finite divisibility shadow of concentrated ownership.  If a two-layer
 orphan order is not divisible by five, then one of the possible reduced
 used orders `2, ..., 14` divides it. -/
