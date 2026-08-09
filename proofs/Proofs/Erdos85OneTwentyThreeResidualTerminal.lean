@@ -9598,6 +9598,86 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_reduced_owner_divisor
   rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
     simp_all [D]
 
+/-- Graph-facing concentrated-owner classifier for a non-five-divisible
+orphan.  Orders ten and fifteen are excluded by local excess, orders 25 and
+50 would force five-divisibility of the orphan, and order 20 rigidly serves
+an order-eight orphan. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_pruned_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let o := D.connectedComponentMk zO
+    ∃ zR ∈ R,
+      componentQuotientMatrix G D o (D.connectedComponentMk zR) = 5 ∧
+      let e := D.connectedComponentMk zR
+      (e.supp.ncard = 20 ∧ o.supp.ncard = 8) ∨
+        e.supp.ncard = 30 ∨ e.supp.ncard = 35 ∨ e.supp.ncard = 40 ∨
+        e.supp.ncard = 45 ∨ e.supp.ncard = 55 ∨ e.supp.ncard = 60 ∨
+        e.supp.ncard = 65 ∨ e.supp.ncard = 70 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let o := D.connectedComponentMk zO
+  obtain ⟨zR, hzR, hq, hratio⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO hnot
+  let e := D.connectedComponentMk zR
+  have hrepR : componentRepresentative D e ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) zR hzR
+          (componentRepresentative_mem D e)
+  have halphabet := degree_sixteen_twoLayer_used_component_order_alphabet
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e hrepR
+  have heDvdRaw := (degree_sixteen_smallLayer_used_component_card_dvd
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild zR hzR).2 rfl
+  have heDvd : 5 ∣ e.supp.ncard := by simpa [D, e] using heDvdRaw
+  have hrev := degree_sixteen_twoLayer_concentrated_cut_reverse_quotient
+    G hfree hmin hcard e o heDvd (by simpa [D, o, e] using hq)
+  have hbound := degree_sixteen_twoLayer_concentrated_cut_local_excess_bound
+    G hfree hmin hcard e o (by simpa [D, o, e] using hq)
+  have hn := (degree_sixteen_smallLayer_orphan_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild zO hzO).2 rfl
+  have hkpos : 0 < e.supp.ncard / 5 := by
+    obtain ⟨k, hk⟩ := heDvd
+    have hepos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+    rw [hk]
+    simpa using (show 0 < k by omega)
+  have hsmall := concentrated_owner_small_ratio_arithmetic
+    o.supp.ncard (componentQuotientMatrix G D e o) (e.supp.ncard / 5)
+      (by simpa [D, o] using hn) hkpos (by simpa [D, o, e] using hratio)
+      (by simpa [D, o, e] using hrev) (by simpa [D, o, e] using hbound)
+  have hknot : ¬ 5 ∣ e.supp.ncard / 5 := by
+    intro hdvd
+    exact hnot (dvd_trans hdvd (by simpa [D, o, e] using hratio))
+  refine ⟨zR, hzR, hq, ?_⟩
+  rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
+    simp_all [D, o, e]
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
