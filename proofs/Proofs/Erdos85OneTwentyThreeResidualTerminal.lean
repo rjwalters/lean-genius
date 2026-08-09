@@ -10618,6 +10618,61 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_thirteen
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild
       ((secondOrderDefectGraph G).connectedComponentMk x) hrepR) hx65
 
+/-- Final current census interface: every non-five-divisible orphan has
+order seven, nine, or eleven, with its matching rigid used owner. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let o := D.connectedComponentMk z
+    ∃ x ∈ R,
+      let e := D.connectedComponentMk x
+      (o.supp.ncard = 7 ∧ e.supp.ncard = 35) ∨
+        (o.supp.ncard = 9 ∧ e.supp.ncard = 45) ∨
+        (o.supp.ncard = 11 ∧ e.supp.ncard = 55) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let o := D.connectedComponentMk z
+  obtain ⟨x, hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  have hne13 := degree_sixteen_twoLayer_orphan_order_ne_thirteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  have hne14 := degree_sixteen_twoLayer_orphan_order_ne_fourteen
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz
+  change o.supp.ncard ≠ 13 at hne13
+  change o.supp.ncard ≠ 14 at hne14
+  refine ⟨x, hxR, ?_⟩
+  rcases hpairs with h7 | h9 | h11 | h13 | h14
+  · exact Or.inl h7
+  · exact Or.inr (Or.inl h9)
+  · exact Or.inr (Or.inr h11)
+  · exact (hne13 h13.1).elim
+  · exact (hne14 h14.1).elim
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
