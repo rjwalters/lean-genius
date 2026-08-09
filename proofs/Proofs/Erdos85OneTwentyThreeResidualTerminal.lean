@@ -18774,6 +18774,26 @@ theorem row_moment_eight_card_three_sum_le_six
       interval_cases hqc : q c
   all_goals (norm_num [hqa, hqb, hqc] at hmoment <;> omega)
 
+/-- A finite family mapped into at most two owner fibers of capacity eight
+has cardinality at most sixteen. -/
+theorem card_le_sixteen_of_two_owner_fibers
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (C : Finset α) (E : Finset β) (owner : α → β)
+    (hmap : (C : Set α).MapsTo owner E)
+    (hEcard : E.card ≤ 2)
+    (hfiber : ∀ e ∈ E, (C.filter fun x => owner x = e).card ≤ 8) :
+    C.card ≤ 16 := by
+  have hdecomp := Finset.card_eq_sum_card_fiberwise hmap
+  have hsum : (∑ e ∈ E, (C.filter fun x => owner x = e).card) ≤
+      ∑ _e ∈ E, 8 := by
+    apply Finset.sum_le_sum
+    intro e he
+    exact hfiber e he
+  rw [← hdecomp] at hsum
+  have hcap : C.card ≤ E.card * 8 := by
+    simpa [Finset.sum_const_nat, mul_comm] using hsum
+  omega
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
