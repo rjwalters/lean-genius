@@ -9095,6 +9095,60 @@ theorem degree_sixteen_twoLayer_used_component_count_le_seven
   change C.card ≤ 7
   omega
 
+/-- Finite divisibility shadow of concentrated ownership.  If a two-layer
+orphan order is not divisible by five, then one of the possible reduced
+used orders `2, ..., 14` divides it. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_reduced_owner_divisor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard) :
+    2 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      3 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      4 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      6 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      7 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      8 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      9 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      10 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      11 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      12 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      13 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard ∨
+      14 ∣ ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨zR, hzR, _hq, hratio⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO hnot
+  have hrepR : componentRepresentative D (D.connectedComponentMk zR) ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀) :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) zR hzR
+          (componentRepresentative_mem D (D.connectedComponentMk zR))
+  have halphabet := degree_sixteen_twoLayer_used_component_order_alphabet
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (D.connectedComponentMk zR) hrepR
+  rcases halphabet with h | h | h | h | h | h | h | h | h | h | h | h | h <;>
+    simp_all [D]
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
