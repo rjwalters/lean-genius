@@ -18887,6 +18887,52 @@ theorem two_orderThirtyFive_service_total_local_excess_ge_twentyFour
   rw [hleft, hright] at hsum
   omega
 
+/-- Every two-owner service cell has local excess divisible by four.  The
+balance equations force the reduced order to absorb the factor seven, and
+the six possible splits of the five reverse quotients all have excess a
+multiple of four. -/
+theorem four_dvd_two_orderThirtyFive_service_local_excess
+    (k a₁ a₂ b₁ b₂ : ℕ)
+    (hrow : b₁ + b₂ = 5)
+    (hbal₁ : 7 * a₁ = k * b₁) (hbal₂ : 7 * a₂ = k * b₂) :
+    4 ∣ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂
+  all_goals omega
+
+/-- Hence a reduced-mass-twenty-one service sector that fits inside budget
+twenty-eight has exact cost either twenty-four or twenty-eight. -/
+theorem two_orderThirtyFive_service_total_eq_twentyFour_or_twentyEight
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ b₁ b₂ : α → ℕ)
+    (hksum : (∑ x ∈ C, k x) = 21)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x = 5)
+    (hbal₁ : ∀ x ∈ C, 7 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 7 * a₂ x = k x * b₂ x)
+    (hupper : (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) ≤ 28) :
+    (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) = 24 ∨
+    (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) = 28 := by
+  let cost := fun x : α =>
+    a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)
+  have hlower : 24 ≤ ∑ x ∈ C, cost x :=
+    two_orderThirtyFive_service_total_local_excess_ge_twentyFour
+      C k a₁ a₂ b₁ b₂ hksum hrow hbal₁ hbal₂
+  have hdivPoint : ∀ x ∈ C, 4 ∣ cost x := by
+    intro x hx
+    exact four_dvd_two_orderThirtyFive_service_local_excess
+      (k x) (a₁ x) (a₂ x) (b₁ x) (b₂ x)
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+  have hdiv : 4 ∣ ∑ x ∈ C, cost x := by
+    exact Finset.dvd_sum fun x hx => hdivPoint x hx
+  have hupper' : (∑ x ∈ C, cost x) ≤ 28 := by
+    simpa [cost] using hupper
+  change (∑ x ∈ C, cost x) = 24 ∨ (∑ x ∈ C, cost x) = 28
+  omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
