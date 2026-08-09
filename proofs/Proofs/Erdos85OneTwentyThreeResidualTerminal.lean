@@ -9417,6 +9417,68 @@ theorem degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
   simpa [D, R, O] using degree_sixteen_twoLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
 
+/-- Every two-layer orphan-component quotient row has total mass five into
+the used components, matching the five service neighbors of each orphan. -/
+theorem degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ C, componentQuotientMatrix G D o e) = 5 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hclosed : ∀ y : V,
+      y ∈ R ↔ componentRepresentative D (D.connectedComponentMk y) ∈ R := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hrep
+      have hsub := degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hrep
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D R hclosed o]
+  have hoOutside : componentRepresentative D o ∉ minimumLayerImageFinset D c₀ :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp ho).1).2
+  have hoUnused : componentRepresentative D o ∉ R :=
+    (Finset.mem_sdiff.mp ho).2
+  simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
+    G hfree (d := 16) (s := 2) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild (componentRepresentative D o) hoOutside hoUnused
+
 /-- A fixed used component can be the concentrated owner of at most twelve
 orphan components.  Every cut with `Q(o,e)=5` has positive reverse quotient,
 and all reverse orphan quotients in the used row sum to twelve. -/
