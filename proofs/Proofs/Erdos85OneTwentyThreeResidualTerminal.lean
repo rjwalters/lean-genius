@@ -15135,6 +15135,143 @@ theorem degree_sixteen_fourLayer_orphan_local_excess_term_eq_zero
     rw [hzero]
     norm_num
 
+/-- A component in the orphan cell has positive quotient toward at most one
+orphan defect component.  At a representative of the source component,
+positive quotient entries produce two orphan neighbors; the orphan graph is
+one-regular, so those neighbors—and hence their defect components—coincide. -/
+theorem degree_sixteen_fourLayer_orphan_positive_quotient_targets_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (f o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hfO : componentRepresentative (secondOrderDefectGraph G) f ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₁O : componentRepresentative (secondOrderDefectGraph G) o₁ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₂O : componentRepresentative (secondOrderDefectGraph G) o₂ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hpos₁ : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) f o₁)
+    (hpos₂ : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) f o₂) :
+    o₁ = o₂ := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let w := componentRepresentative D f
+  have hwf : w ∈ f.supp := componentRepresentative_mem D f
+  have hregD : ∀ x : V, D.degree x = 2 := by
+    simpa [D] using secondOrderDefectGraph_degree_eq_two G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hcomm : G.adjMatrix ℝ * D.adjMatrix ℝ =
+      D.adjMatrix ℝ * G.adjMatrix ℝ := by
+    simpa [D] using adjMatrix_comm_secondOrderDefect_of_even_real
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hcard₁ : 0 < (componentNeighborFinset G D o₁ w).card := by
+    rw [← componentQuotientMatrix_apply_eq G D 2 hregD hcomm f o₁ hwf]
+    simpa [D] using hpos₁
+  have hcard₂ : 0 < (componentNeighborFinset G D o₂ w).card := by
+    rw [← componentQuotientMatrix_apply_eq G D 2 hregD hcomm f o₂ hwf]
+    simpa [D] using hpos₂
+  obtain ⟨x₁, hx₁⟩ := Finset.card_pos.mp hcard₁
+  obtain ⟨x₂, hx₂⟩ := Finset.card_pos.mp hcard₂
+  obtain ⟨hx₁G, hx₁o⟩ := Finset.mem_filter.mp hx₁
+  obtain ⟨hx₂G, hx₂o⟩ := Finset.mem_filter.mp hx₂
+  have ho₁sub : o₁.supp ⊆ (O : Set V) := by
+    let z₁ := componentRepresentative D o₁
+    have hz₁ : D.connectedComponentMk z₁ = o₁ :=
+      (ConnectedComponent.mem_supp_iff o₁ z₁).mp (componentRepresentative_mem D o₁)
+    rw [← hz₁]
+    exact degree_sixteen_fourLayer_orphan_component_subset
+      G hfree hmin hcard c₀ hregChild hcardChild z₁
+        (by simpa [D, U, R, O, z₁] using ho₁O)
+  have ho₂sub : o₂.supp ⊆ (O : Set V) := by
+    let z₂ := componentRepresentative D o₂
+    have hz₂ : D.connectedComponentMk z₂ = o₂ :=
+      (ConnectedComponent.mem_supp_iff o₂ z₂).mp (componentRepresentative_mem D o₂)
+    rw [← hz₂]
+    exact degree_sixteen_fourLayer_orphan_component_subset
+      G hfree hmin hcard c₀ hregChild hcardChild z₂
+        (by simpa [D, U, R, O, z₂] using ho₂O)
+  have hx₁match : x₁ ∈ O ∩ G.neighborFinset w := Finset.mem_inter.mpr
+    ⟨ho₁sub ((ConnectedComponent.mem_supp_iff o₁ x₁).mpr hx₁o), hx₁G⟩
+  have hx₂match : x₂ ∈ O ∩ G.neighborFinset w := Finset.mem_inter.mpr
+    ⟨ho₂sub ((ConnectedComponent.mem_supp_iff o₂ x₂).mpr hx₂o), hx₂G⟩
+  have hone : (O ∩ G.neighborFinset w).card = 1 :=
+    degree_sixteen_fourLayer_orphan_neighbor_card_eq_one
+      G hfree hmin hcard c₀ hregChild hcardChild w
+        (by simpa [D, U, R, O, w] using hfO)
+  have hx : x₁ = x₂ := Finset.card_le_one.mp (by omega) x₁ hx₁match x₂ hx₂match
+  have hcomp₁ : D.connectedComponentMk x₁ = o₁ := hx₁o
+  have hcomp₂ : D.connectedComponentMk x₂ = o₂ := hx₂o
+  rw [hx] at hcomp₁
+  exact hcomp₁.symm.trans hcomp₂
+
+/-- Consequently, a two-step quotient product through an orphan component
+vanishes between distinct orphan targets.  Detailed balance reverses the
+first positive entry, and orphan matching support uniqueness then forces
+the targets equal. -/
+theorem degree_sixteen_fourLayer_distinct_orphans_two_step_via_orphan_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₁ o₂ f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : o₁ ≠ o₂)
+    (ho₁O : componentRepresentative (secondOrderDefectGraph G) o₁ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₂O : componentRepresentative (secondOrderDefectGraph G) o₂ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hfO : componentRepresentative (secondOrderDefectGraph G) f ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o₁ f *
+      componentQuotientMatrix G (secondOrderDefectGraph G) f o₂ = 0 := by
+  by_contra hprod
+  have hpos₁ : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) o₁ f :=
+    Nat.pos_of_ne_zero (Nat.mul_ne_zero_iff.mp hprod).1
+  have hpos₂ : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) f o₂ :=
+    Nat.pos_of_ne_zero (Nat.mul_ne_zero_iff.mp hprod).2
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁ f
+  have ho₁pos : 0 < o₁.supp.ncard := o₁.nonempty_supp.ncard_pos
+  have hfpos : 0 < f.supp.ncard := f.nonempty_supp.ncard_pos
+  have hrev : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) f o₁ := by
+    nlinarith
+  exact hne (degree_sixteen_fourLayer_orphan_positive_quotient_targets_eq
+    G hfree hmin hcard c₀ hregChild hcardChild f o₁ o₂ hfO ho₁O ho₂O
+      hrev hpos₂)
+
 end
 
 end Erdos85
