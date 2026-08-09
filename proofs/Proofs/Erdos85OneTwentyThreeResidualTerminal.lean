@@ -9613,6 +9613,59 @@ theorem degree_sixteen_twoLayer_used_component_order_package
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hrep] at hdvd
 
+/-- The seventy-point two-layer service cell contains at most one component
+of order forty-five. -/
+theorem degree_sixteen_twoLayer_used_orderFortyFive_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hfR : componentRepresentative (secondOrderDefectGraph G) f ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he45 : e.supp.ncard = 45) (hf45 : f.supp.ncard = 45) : e = f := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent =>
+    componentRepresentative D a ∈ R)
+  by_contra hne
+  have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+    simpa [D, R] using heR⟩
+  have hfC : f ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+    simpa [D, R] using hfR⟩
+  have hsub : ({e, f} : Finset D.ConnectedComponent) ⊆ C := by
+    intro a ha
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha
+    rcases ha with rfl | rfl
+    · exact heC
+    · exact hfC
+  have hle := Finset.sum_le_sum_of_subset
+    (f := fun a : D.ConnectedComponent => a.supp.ncard) hsub
+  rw [Finset.sum_pair hne, he45, hf45] at hle
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hsum : (∑ a ∈ C, a.supp.ncard) = 70 := by
+    simpa [C, D, R] using hpack.1
+  rw [hsum] at hle
+  omega
+
 /-- A two-layer used component has one of the thirteen positive
 five-multiple orders compatible with the seventy-point service mass. -/
 theorem degree_sixteen_twoLayer_used_component_order_alphabet
