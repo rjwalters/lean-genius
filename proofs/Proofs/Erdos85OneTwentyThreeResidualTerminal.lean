@@ -18308,6 +18308,51 @@ theorem row_eleven_false_of_subrow_le_four_and_unique_five
   rw [hcomp, hPsum, hrow] at hsplit
   omega
 
+/-- If the complementary positive support of an eleven-row is nonempty,
+unique, and every positive entry there is five, then the distinguished
+subrow has exact mass six. -/
+theorem row_eleven_subrow_eq_six_of_complement_unique_five
+    {α : Type*} [DecidableEq α] (C S : Finset α) (q : α → ℕ)
+    (hsub : S ⊆ C)
+    (hrow : (∑ x ∈ C, q x) = 11)
+    (hfive : ∀ x ∈ C \ S, 0 < q x → q x = 5)
+    (hunique : ∀ x ∈ C \ S, 0 < q x →
+      ∀ y ∈ C \ S, 0 < q y → x = y)
+    (hexists : ∃ x ∈ C \ S, 0 < q x) :
+    (∑ x ∈ S, q x) = 6 := by
+  let P := (C \ S).filter fun x => 0 < q x
+  have hPcardLe : P.card ≤ 1 := by
+    apply Finset.card_le_one.mpr
+    intro x hx y hy
+    have hx' := Finset.mem_filter.mp hx
+    have hy' := Finset.mem_filter.mp hy
+    exact hunique x hx'.1 hx'.2 y hy'.1 hy'.2
+  have hPnon : P.Nonempty := by
+    obtain ⟨x, hx, hxpos⟩ := hexists
+    exact ⟨x, Finset.mem_filter.mpr ⟨hx, hxpos⟩⟩
+  have hPcard : P.card = 1 := by
+    have := Finset.card_pos.mpr hPnon
+    omega
+  have hcomp : (∑ x ∈ C \ S, q x) = ∑ x ∈ P, q x := by
+    symm
+    apply Finset.sum_subset (Finset.filter_subset _ _)
+    intro x hx hxP
+    have hxzero : ¬ 0 < q x := by
+      intro hxpos
+      exact hxP (Finset.mem_filter.mpr ⟨hx, hxpos⟩)
+    omega
+  have hPsum : (∑ x ∈ P, q x) = 5 := by
+    calc
+      (∑ x ∈ P, q x) = ∑ _x ∈ P, 5 := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        have hx' := Finset.mem_filter.mp hx
+        exact hfive x hx'.1 hx'.2
+      _ = 5 := by simp [hPcard]
+  have hsplit := Finset.sum_sdiff hsub (f := q)
+  rw [hcomp, hPsum, hrow] at hsplit
+  omega
+
 /-- A row moment of eight is either one quotient-three plus one
 quotient-two entry, or four quotient-two entries. -/
 theorem row_moment_eight_count_classification
