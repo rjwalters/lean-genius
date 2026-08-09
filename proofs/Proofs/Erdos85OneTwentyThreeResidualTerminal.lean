@@ -9894,6 +9894,121 @@ theorem degree_sixteen_zeroLayer_used_minimum_contact_total
           exact hentry e he
     _ = 16 - E.card := Nat.eq_sub_of_add_eq hsplit
 
+/-- The full local-excess budget of the zero-layer used sector is three
+times its mandatory minimum-component contact cost.  Equivalently, if
+there are `t` used components, their combined budget is `3(16-t)`. -/
+theorem degree_sixteen_zeroLayer_used_total_local_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let Q := componentQuotientMatrix G D
+    (∑ e ∈ E, ∑ f : D.ConnectedComponent,
+      Q e f * (Q f e - 1)) = 3 * (16 - E.card) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let Q := componentQuotientMatrix G D
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hcontact := degree_sixteen_zeroLayer_used_minimum_contact_total
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, Q e c₀ * (Q c₀ e - 1)) = 16 - E.card at hcontact
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card G hfree (s := 0) (Or.inl rfl)
+      hmin hcard c₀ hregChild (by norm_num; exact hcardChild)).1 rfl
+  have hrow : ∀ e ∈ E,
+      (∑ f : D.ConnectedComponent, Q e f * (Q f e - 1)) =
+        e.supp.ncard - 3 := by
+    intro e _he
+    have he3 : 3 ≤ e.supp.ncard := by rw [← hc₀card]; exact hc₀min e
+    have hraw := secondOrder_componentQuotientMatrix_local_excess_restrict
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
+        Finset.univ (by simp)
+    have hpointInt : ∀ f : D.ConnectedComponent,
+        (Q e f : ℤ) * (Q f e : ℤ) - (Q e f : ℤ) =
+          ((Q e f * (Q f e - 1) : ℕ) : ℤ) := by
+      intro f
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f e
+      exact local_excess_int_eq_nat_row_moment
+        f.supp.ncard e.supp.ncard (Q f e) (Q e f)
+          f.nonempty_supp.ncard_pos e.nonempty_supp.ncard_pos hbal
+    have hcast :
+        (((∑ f : D.ConnectedComponent, Q e f * (Q f e - 1)) : ℕ) : ℤ) =
+          (e.supp.ncard : ℤ) - 3 := by
+      calc
+        (((∑ f : D.ConnectedComponent, Q e f * (Q f e - 1)) : ℕ) : ℤ) =
+            ∑ f : D.ConnectedComponent,
+              ((Q e f * (Q f e - 1) : ℕ) : ℤ) := by norm_cast
+        _ = ∑ f : D.ConnectedComponent,
+            ((Q e f : ℤ) * (Q f e : ℤ) - (Q e f : ℤ)) := by
+              apply Finset.sum_congr rfl
+              intro f _hf
+              exact (hpointInt f).symm
+        _ = (e.supp.ncard : ℤ) - 3 := by simpa [D, Q] using hraw
+    have hrhs : ((e.supp.ncard - 3 : ℕ) : ℤ) =
+        (e.supp.ncard : ℤ) - 3 := by
+      rw [Nat.cast_sub he3]
+      norm_num
+    exact_mod_cast hcast.trans hrhs.symm
+  have hpoint : ∀ e ∈ E,
+      e.supp.ncard - 3 = 3 * (Q e c₀ * (Q c₀ e - 1)) := by
+    intro e heE
+    have heR : componentRepresentative D e ∈ R :=
+      (Finset.mem_filter.mp heE).2
+    have hq := degree_sixteen_zeroLayer_used_component_quotient_entries
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e) (by simpa [D, R] using heR)
+    have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+      (ConnectedComponent.mem_supp_iff e
+        (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+    change Q (D.connectedComponentMk (componentRepresentative D e)) c₀ = 1 ∧
+      3 * Q c₀ (D.connectedComponentMk (componentRepresentative D e)) =
+        (D.connectedComponentMk (componentRepresentative D e)).supp.ncard at hq
+    rw [hrep] at hq
+    have hqpos : 1 ≤ Q c₀ e := by
+      by_contra hzero
+      have : Q c₀ e = 0 := by omega
+      rw [this, mul_zero] at hq
+      exact e.nonempty_supp.ncard_pos.ne' hq.2.symm
+    rw [hq.1]
+    simp only [one_mul]
+    omega
+  calc
+    (∑ e ∈ E, ∑ f : D.ConnectedComponent, Q e f * (Q f e - 1)) =
+        ∑ e ∈ E, (e.supp.ncard - 3) := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact hrow e he
+    _ = ∑ e ∈ E, 3 * (Q e c₀ * (Q c₀ e - 1)) := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact hpoint e he
+    _ = 3 * (∑ e ∈ E, Q e c₀ * (Q c₀ e - 1)) := by
+          rw [Finset.mul_sum]
+    _ = 3 * (16 - E.card) := by rw [hcontact]
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
