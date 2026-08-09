@@ -9385,6 +9385,66 @@ theorem degree_sixteen_twoLayer_concentrated_owner_normalized_load_le_twelve
         (fun _ _ _ => Nat.zero_le _)
     _ = 12 := hrow
 
+/-- Every two-layer orphan-component quotient row has total mass eleven
+inside the orphan cell, matching the eleven-regular induced orphan graph. -/
+theorem degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ O)
+    (∑ f ∈ C, componentQuotientMatrix G D o f) = 11 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  have hclosed : ∀ y : V,
+      y ∈ O ↔ componentRepresentative D (D.connectedComponentMk y) ∈ O := by
+    intro y
+    constructor
+    · intro hy
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+      exact hsub (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hrep
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hrep
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D O hclosed o]
+  simpa [D, R, O] using degree_sixteen_minimumLayer_orphan_neighbor_card
+    G hfree hmin hcard c₀ hregChild (by norm_num; exact hcardChild)
+      (componentRepresentative D o) ho
+
 /-- Finite divisibility shadow of concentrated ownership.  If a two-layer
 orphan order is not divisible by five, then one of the possible reduced
 used orders `2, ..., 14` divides it. -/
