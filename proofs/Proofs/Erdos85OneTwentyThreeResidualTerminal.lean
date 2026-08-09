@@ -4918,6 +4918,56 @@ theorem degree_sixteen_fourLayer_shared_service_row_unique
     hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
   exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
 
+/-- Zero-layer specialization of the shared-service packing law: if two
+distinct orphans have common neighbors in two child exterior rows, those
+rows are equal.  Combined with one service point per row, this says that
+the orphan triples agree in at most one coordinate. -/
+theorem degree_sixteen_zeroLayer_shared_service_row_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {z z' : V} (hzz' : z ≠ z')
+    {u v : minimumLayerVertex (secondOrderDefectGraph G) c₀}
+    {y y' : V}
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyz : G.Adj z y) (hyz' : G.Adj z' y)
+    (hy'v : y' ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v)
+    (hy'z : G.Adj z y') (hy'z' : G.Adj z' y') :
+    u = v := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hzz'
+  have hyCommon : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hyz,
+        (G.mem_neighborFinset z' y).mpr hyz'⟩
+  have hy'Common : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hy'z,
+        (G.mem_neighborFinset z' y').mpr hy'z'⟩
+  have hyy' : y = y' :=
+    Finset.card_le_one.mp hcommon y hyCommon y' hy'Common
+  by_contra huv
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  have hdisj : Disjoint (E u) (E v) :=
+    hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
+  exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
+
 /-- If two distinct orphans share no service point, then they are adjacent in
 the second-order defect graph.  The only possible common neighbors of two
 orphans are service points: a common orphan neighbor would violate the
