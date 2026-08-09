@@ -6521,6 +6521,90 @@ theorem degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
   rw [hQ, hinter]
   exact minimumLayerImage_inter_neighborFinset_card G D c₀ hregChild x
 
+/-- Every used order-thirty-five component contacts the minimum `C₅`.
+Balance magnifies that contact to a reverse quotient at least seven, so its
+minimum-component column alone costs at least six units of local excess. -/
+theorem degree_sixteen_twoLayer_orderThirtyFive_minimum_contact_excess_ge_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he35 : e.supp.ncard = 35) :
+    6 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) e c₀ *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c₀ e - 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  have hc₀five : c₀.supp.ncard = 5 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).2 rfl
+  let C : Finset V := c₀.supp.toFinite.toFinset
+  have hCU : C ⊆ U := by
+    intro z hz
+    have hzc : z ∈ c₀.supp := by simpa [C] using hz
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨c, ⟨z, hzc⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hcardC : C.card = 5 := by
+    rw [show C.card = c₀.supp.ncard by
+      simpa [C] using
+        (Set.ncard_eq_toFinset_card c₀.supp c₀.supp.toFinite).symm,
+      hc₀five]
+  have hcardU : U.card = 5 := by
+    rw [card_minimumLayerImageFinset]
+    exact hcardChild
+  have hCUeq : C = U :=
+    Finset.eq_of_subset_of_card_le hCU (by rw [hcardU, hcardC])
+  obtain ⟨v, _hv, herep⟩ := Finset.mem_biUnion.mp heR
+  have hvU : v.2.1 ∈ U :=
+    Finset.mem_image.mpr ⟨v, Finset.mem_univ _, rfl⟩
+  have hvc₀ : v.2.1 ∈ c₀.supp := by
+    rw [← hCUeq] at hvU
+    simpa [C] using hvU
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hQpos : 0 < componentQuotientMatrix G D e c₀ := by
+    rw [componentQuotientMatrix_apply_eq G D 2 hregD hcomm e c₀
+      (componentRepresentative_mem D e)]
+    apply Finset.card_pos.mpr
+    refine ⟨v.2.1, ?_⟩
+    have hadj : G.Adj (componentRepresentative D e) v.2.1 :=
+      ((G.mem_neighborFinset v.2.1 (componentRepresentative D e)).mp
+        (Finset.mem_sdiff.mp herep).1).symm
+    exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset (componentRepresentative D e) v.2.1).mpr hadj,
+        (ConnectedComponent.mem_supp_iff c₀ v.2.1).mp hvc₀⟩
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e c₀
+  change e.supp.ncard * componentQuotientMatrix G D e c₀ =
+    c₀.supp.ncard * componentQuotientMatrix G D c₀ e at hbal
+  rw [he35, hc₀five] at hbal
+  change 6 ≤ componentQuotientMatrix G D e c₀ *
+    (componentQuotientMatrix G D c₀ e - 1)
+  have hreverse : 7 ≤ componentQuotientMatrix G D c₀ e := by omega
+  have hfactor : 6 ≤ componentQuotientMatrix G D c₀ e - 1 := by omega
+  calc
+    6 ≤ 1 * (componentQuotientMatrix G D c₀ e - 1) := by simpa
+    _ ≤ componentQuotientMatrix G D e c₀ *
+        (componentQuotientMatrix G D c₀ e - 1) :=
+      Nat.mul_le_mul_right _ hQpos
+
 /-- **Order-five mass squeeze in the two-layer branch.**  The unique
 minimum component has order five, is canonically forward-oriented (all odd
 cycle blocks are), and contributes diagonal mass two.  The mixed order-five
