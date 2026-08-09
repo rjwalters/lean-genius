@@ -9562,6 +9562,56 @@ theorem degree_sixteen_twoLayer_exists_nonFive_orphan_component
   rw [hsum] at hdvd
   norm_num at hdvd
 
+/-- Splitting the orphan mass into five-divisible and non-five-divisible
+components shows that the latter carry mass congruent to three modulo five. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_mass_mod_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    ∃ k, (∑ o ∈ N, o.supp.ncard) + 5 * k = 168 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let F := C.filter fun o => 5 ∣ o.supp.ncard
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  have hsum : (∑ o ∈ C, o.supp.ncard) = 168 := by
+    simpa [C, D, O] using
+      degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+        G hfree hmin hcard c₀ hregChild hcardChild
+  have hFdvd : 5 ∣ ∑ o ∈ F, o.supp.ncard := by
+    apply Finset.dvd_sum
+    intro o ho
+    exact (Finset.mem_filter.mp ho).2
+  obtain ⟨k, hk⟩ := hFdvd
+  have hsplit := Finset.sum_filter_add_sum_filter_not C
+    (fun o => 5 ∣ o.supp.ncard) (fun o => o.supp.ncard)
+  change (∑ o ∈ F, o.supp.ncard) + (∑ o ∈ N, o.supp.ncard) =
+    ∑ o ∈ C, o.supp.ncard at hsplit
+  rw [hsum, hk] at hsplit
+  refine ⟨k, ?_⟩
+  rw [add_comm]
+  exact hsplit
+
 /-- There are at most twenty-eight two-layer orphan components: each lies
 strictly above the minimum order five, hence has order at least six, while
 their total order is 168. -/
