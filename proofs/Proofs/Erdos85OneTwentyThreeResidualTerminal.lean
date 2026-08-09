@@ -18895,6 +18895,111 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_same_order_sum_le_six
   change (∑ e ∈ N, q e) ≤ 6
   exact row_moment_four_card_four_sum_le_six N q hNcard hmomentN
 
+/-- In a uniform order-seven/cardinality-four lane, exact same-order mass
+six forces the source diagonal quotient to be two. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_diagonal_eq_two_of_sum_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho7 : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard = 7) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    (∑ e ∈ N, componentQuotientMatrix G D (D.connectedComponentMk z) e) = 6 →
+    componentQuotientMatrix G D (D.connectedComponentMk z)
+      (D.connectedComponentMk z) = 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  let S := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    e.supp.ncard = 7)
+  let o := D.connectedComponentMk z
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  intro hNcard huniform hsum
+  change (∑ e ∈ N, q e) = 6 at hsum
+  have hoN : o ∈ N := by
+    have hoC : o ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+      have hrepO := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z hz
+      simpa [D, O, o] using hrepO (componentRepresentative_mem D o)⟩
+    exact Finset.mem_filter.mpr ⟨hoC, by rw [ho7]; norm_num⟩
+  have hNS : N ⊆ S := by
+    intro e heN
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, huniform e heN⟩
+  have hsupp : ∀ e ∈ S, 0 < q e → e ∈ N := by
+    intro e heS hepos
+    have he7 := (Finset.mem_filter.mp heS).2
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let w := componentRepresentative D e
+    have hwe : D.connectedComponentMk w = e :=
+      (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
+    have hwU : w ∉ U := by
+      intro hwU
+      have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
+        G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
+      change q e = 0 at hzero
+      omega
+    have hwR : w ∉ R := by
+      intro hwR
+      have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      rw [hwe, he7] at hdvd
+      norm_num at hdvd
+    have heO : componentRepresentative D e ∈ O :=
+      Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwR⟩
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa [D, O] using heO⟩,
+        by rw [he7]; norm_num⟩
+  have hmomentS := degree_sixteen_twoLayer_orderSeven_orphan_same_order_moment_eq_four
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz ho7
+  have hmomentN : (∑ e ∈ N, q e * (q e - 1)) = 4 := by
+    have heq : (∑ e ∈ N, q e * (q e - 1)) =
+        ∑ e ∈ S, q e * (q e - 1) := by
+      apply Finset.sum_subset hNS
+      intro e heS heN
+      have hqzero : q e = 0 := by
+        by_contra hne
+        exact heN (hsupp e heS (Nat.pos_of_ne_zero hne))
+      simp [hqzero]
+    rw [heq]
+    simpa [S, q, D, o] using hmomentS
+  have heven : Even (q o) := by
+    simpa [q, o, D] using oddComponent_diagonalQuotient_even
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+        (by rw [show o.supp.ncard = 7 by simpa [o] using ho7]; norm_num)
+  exact row_moment_four_card_four_even_entry_eq_two N q o hNcard hoN
+    hsum hmomentN heven
+
 /-- The same-order quotient row of an order-nine two-layer orphan has
 factorial second moment six. -/
 theorem degree_sixteen_twoLayer_orderNine_orphan_same_order_moment_eq_six
