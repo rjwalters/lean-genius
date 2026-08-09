@@ -18158,6 +18158,37 @@ theorem row_moment_six_card_two_sum_le_four
     rw [htwoThree, hcard] at this
     omega
 
+/-- Seven entries with factorial second moment six have total mass at most
+ten.  This is the summed inequality `2q ≤ 2 + q(q-1)`. -/
+theorem row_moment_six_card_seven_sum_le_ten
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → ℕ)
+    (hcard : C.card = 7)
+    (hmoment : (∑ x ∈ C, q x * (q x - 1)) = 6) :
+    (∑ x ∈ C, q x) ≤ 10 := by
+  have hpoint : ∀ x : α, 2 * q x ≤ 2 + q x * (q x - 1) := by
+    intro x
+    by_cases hzero : q x = 0
+    · simp [hzero]
+    · by_cases hone : q x = 1
+      · simp [hone]
+      · have htwo : 2 ≤ q x := by omega
+        have hpos : 1 ≤ q x := by omega
+        have hsub : q x - 1 + 1 = q x := Nat.sub_add_cancel hpos
+        have hmul := Nat.mul_le_mul_right (q x - 1) htwo
+        omega
+  have hsum : (∑ x ∈ C, 2 * q x) ≤
+      ∑ x ∈ C, (2 + q x * (q x - 1)) := by
+    exact Finset.sum_le_sum fun x _ => hpoint x
+  have hbound : 2 * (∑ x ∈ C, q x) ≤ 20 := by
+    calc
+      2 * (∑ x ∈ C, q x) = ∑ x ∈ C, 2 * q x := by simp [Finset.mul_sum]
+      _ ≤ ∑ x ∈ C, (2 + q x * (q x - 1)) := hsum
+      _ = 2 * C.card + ∑ x ∈ C, q x * (q x - 1) := by
+        rw [Finset.sum_add_distrib]
+        simp [mul_comm]
+      _ = 20 := by rw [hcard, hmoment]
+  omega
+
 /-- A row of total mass eleven cannot split into a distinguished subrow of
 mass at most four and a complementary positive support consisting of at most
 one quotient-five entry. -/
