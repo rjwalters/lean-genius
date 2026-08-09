@@ -18949,6 +18949,80 @@ theorem degree_sixteen_twoLayer_used_orderThirtyFive_family_card_le_two
   rw [hEsum, hCsum] at hle
   omega
 
+/-- Two distinct used order-thirty-five components exactly exhaust the
+seventy-point used sector. -/
+theorem degree_sixteen_twoLayer_used_components_eq_pair_of_orderThirtyFive
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁ ≠ e₂)
+    (he₁R : componentRepresentative (secondOrderDefectGraph G) e₁ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₂R : componentRepresentative (secondOrderDefectGraph G) e₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₁35 : e₁.supp.ncard = 35) (he₂35 : e₂.supp.ncard = 35) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R) = {e₁, e₂} := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have he₁C : e₁ ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+    simpa [D, R] using he₁R⟩
+  have he₂C : e₂ ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+    simpa [D, R] using he₂R⟩
+  have hpairSub : ({e₁, e₂} : Finset D.ConnectedComponent) ⊆ C := by
+    intro e he
+    simp only [Finset.mem_insert, Finset.mem_singleton] at he
+    rcases he with rfl | rfl
+    · exact he₁C
+    · exact he₂C
+  apply Finset.Subset.antisymm
+  · intro f hfC
+    by_contra hfPair
+    have hne₁ : f ≠ e₁ := by
+      intro h; subst f; exact hfPair (by simp)
+    have hne₂ : f ≠ e₂ := by
+      intro h; subst f; exact hfPair (by simp)
+    have htripleSub : ({f, e₁, e₂} : Finset D.ConnectedComponent) ⊆ C := by
+      intro e he
+      simp only [Finset.mem_insert, Finset.mem_singleton] at he
+      rcases he with rfl | rfl | rfl
+      · exact hfC
+      · exact he₁C
+      · exact he₂C
+    have hle := Finset.sum_le_sum_of_subset
+      (f := fun e : D.ConnectedComponent => e.supp.ncard) htripleSub
+    have hpack := degree_sixteen_twoLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+    dsimp only at hpack
+    have hCsum : (∑ e ∈ C, e.supp.ncard) = 70 := by
+      simpa [D, R, C] using hpack.1
+    have hfpos := f.nonempty_supp.ncard_pos
+    simp [hne₁, hne₂, hne, he₁35, he₂35] at hle
+    rw [hCsum] at hle
+    omega
+  · exact hpairSub
+
 /-- A uniform order-seven non-five orphan lane has at most sixteen
 components: every source chooses a used order-thirty-five owner, there are at
 most two owners, and each owner fiber has cardinality at most eight. -/
