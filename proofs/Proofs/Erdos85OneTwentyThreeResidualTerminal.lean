@@ -7599,6 +7599,71 @@ theorem degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
       simp [ha]
     · simp [hb]
 
+/-- For an order-twelve source, a target of order at least six other than
+six again contributes an even local-excess term.  The only divisor of twelve
+in that range which can survive is twelve itself. -/
+theorem degree_sixteen_order_twelve_local_term_even_of_target_ge_six_ne_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o f : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 12) (hf : 6 ≤ f.supp.ncard)
+    (hf6 : f.supp.ncard ≠ 6) :
+    Even ((componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ) *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) f o : ℤ) -
+      (componentQuotientMatrix G (secondOrderDefectGraph G) o f : ℤ)) := by
+  let D := secondOrderDefectGraph G
+  let a := componentQuotientMatrix G D o f
+  let b := componentQuotientMatrix G D f o
+  change Even ((a : ℤ) * (b : ℤ) - (a : ℤ))
+  by_cases hsize : o.supp.ncard = f.supp.ncard
+  · have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    rw [← hsize] at hbal
+    have hab : a = b :=
+      Nat.eq_of_mul_eq_mul_left o.nonempty_supp.ncard_pos hbal
+    rw [hab]
+    have hev := Int.even_mul_pred_self (b : ℤ)
+    convert hev using 1 <;> ring
+  · have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+      intro hdvd
+      have hle : f.supp.ncard ≤ o.supp.ncard :=
+        Nat.le_of_dvd (by rw [ho]; norm_num) hdvd
+      have hcases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+          f.supp.ncard = 8 ∨ f.supp.ncard = 9 ∨
+          f.supp.ncard = 10 ∨ f.supp.ncard = 11 ∨
+          f.supp.ncard = 12 := by omega
+      rcases hcases with h6 | h7 | h8 | h9 | h10 | h11 | h12
+      · exact hf6 h6
+      · rw [ho, h7] at hdvd
+        norm_num at hdvd
+      · rw [ho, h8] at hdvd
+        norm_num at hdvd
+      · rw [ho, h9] at hdvd
+        norm_num at hdvd
+      · rw [ho, h10] at hdvd
+        norm_num at hdvd
+      · rw [ho, h11] at hdvd
+        norm_num at hdvd
+      · exact hsize (ho.trans h12.symm)
+    have hble : b ≤ 1 := by
+      simpa [D, b] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+    change o.supp.ncard * a = f.supp.ncard * b at hbal
+    interval_cases hb : b
+    · have ha : a = 0 := by
+        rw [mul_zero] at hbal
+        exact Nat.eq_zero_of_mul_eq_zero_left o.nonempty_supp.ncard_pos hbal
+      simp [ha]
+    · simp [hb]
+
 /-- In the two-layer residual branch an orphan component cannot have order
 six or eight.  Its minimum-layer contribution vanishes, while every used or
 orphan target has order at least six, so all local-excess terms are even;
@@ -7676,6 +7741,89 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
     rw [hlocal] at htwo
     rcases ho with h6 | h8 <;> simp [h6, h8] at htwo
   exact not_or.mp hnot
+
+/-- The same local-excess parity argument, now using the order-six
+exclusion for orphan targets and five-divisibility for used targets, rules
+out an order-twelve orphan. -/
+theorem degree_sixteen_twoLayer_orphan_order_ne_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠ 12 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let o := D.connectedComponentMk z
+  intro ho
+  let f : D.ConnectedComponent → ℤ := fun e =>
+    (componentQuotientMatrix G D o e : ℤ) *
+        (componentQuotientMatrix G D e o : ℤ) -
+      (componentQuotientMatrix G D o e : ℤ)
+  have heven : ∀ e, Even (f e) := by
+    intro e
+    let w := componentRepresentative D e
+    have hwe : D.connectedComponentMk w = e :=
+      (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
+    by_cases hwU : w ∈ U
+    · have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+        G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
+      change componentQuotientMatrix G D o e = 0 at hzero
+      simp [f, hzero]
+    by_cases hwR : w ∈ R
+    · have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+      rw [hwe] at hlower hdvd
+      have hne6 : e.supp.ncard ≠ 6 := by
+        intro he6
+        rw [he6] at hdvd
+        norm_num at hdvd
+      simpa [f, D] using
+        degree_sixteen_order_twelve_local_term_even_of_target_ge_six_ne_six
+          G hfree hmin hcard o e ho hlower hne6
+    · have hwO : w ∈ O := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwR⟩
+      have hlower := (degree_sixteen_smallLayer_orphan_component_card_lower
+        G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+          hcardChild w (by simpa [D, U, R, O, w] using hwO)).2 rfl
+      have hne := degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild w
+          (by simpa [D, U, R, O, w] using hwO)
+      rw [hwe] at hlower hne
+      simpa [f, D] using
+        degree_sixteen_order_twelve_local_term_even_of_target_ge_six_ne_six
+          G hfree hmin hcard o e ho hlower hne.1
+  have htwo : (2 : ℤ) ∣ ∑ e, f e := by
+    apply Finset.dvd_sum
+    intro e _he
+    exact even_iff_two_dvd.mp (heven e)
+  have hlocal := secondOrder_componentQuotientMatrix_local_excess
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+  change (∑ e, f e) = (o.supp.ncard : ℤ) - 3 at hlocal
+  rw [hlocal, ho] at htwo
+  norm_num at htwo
 
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
@@ -9995,7 +10143,7 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_rigid_owner_pairs
   rcases howner with h20 | h30 | h35 | h40 | h45 | h55 | h60 | h65 | h70 <;>
     simp_all [D, o, e]
 
-/-- After the order-six/eight parity obstruction, only six exact
+/-- After the order-six/eight/twelve parity obstructions, only five exact
 non-five-divisible orphan/owner pairs survive. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -10028,7 +10176,6 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
       (o.supp.ncard = 7 ∧ e.supp.ncard = 35) ∨
         (o.supp.ncard = 9 ∧ e.supp.ncard = 45) ∨
         (o.supp.ncard = 11 ∧ e.supp.ncard = 55) ∨
-        (o.supp.ncard = 12 ∧ e.supp.ncard = 60) ∨
         (o.supp.ncard = 13 ∧ e.supp.ncard = 65) ∨
         (o.supp.ncard = 14 ∧ e.supp.ncard = 70) := by
   classical
@@ -10042,6 +10189,9 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
   have hne := degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO
   change o.supp.ncard ≠ 6 ∧ o.supp.ncard ≠ 8 at hne
+  have hne12 := degree_sixteen_twoLayer_orphan_order_ne_twelve
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO
+  change o.supp.ncard ≠ 12 at hne12
   refine ⟨zR, hzR, ?_⟩
   rcases hpairs with h6 | h7 | h8 | h9 | h11 | h12 | h13 | h14
   · exact (hne.1 h6.1).elim
@@ -10049,9 +10199,9 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
   · exact (hne.2 h8.1).elim
   · exact Or.inr (Or.inl h9)
   · exact Or.inr (Or.inr (Or.inl h11))
-  · exact Or.inr (Or.inr (Or.inr (Or.inl h12)))
-  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h13))))
-  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h14))))
+  · exact (hne12 h12.1).elim
+  · exact Or.inr (Or.inr (Or.inr (Or.inl h13)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr h14)))
 
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
