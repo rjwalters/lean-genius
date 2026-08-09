@@ -26031,6 +26031,42 @@ theorem degree_sixteen_remaining_zeroLayer_or_twoLayer
       G hfree hmin hcard c₀ hc₀min hreg
         (by norm_num at hcardChild ⊢; exact hcardChild))
 
+/-- After the complete two- and four-layer terminals, the exact
+degree-sixteen boundary can only have a zero-regular minimum-layer child. -/
+theorem degree_sixteen_remaining_zeroLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    [DecidableEq (minimumLayerExteriorVertex (secondOrderDefectGraph G) c₀)]
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    (∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0) ∧
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3 := by
+  rcases degree_sixteen_remaining_zeroLayer_or_twoLayer
+    G hfree hmin hcard c₀ hc₀min with hzero | htwo
+  · exact hzero
+  · exact False.elim (false_of_degree_sixteen_twoLayer
+      G hfree hmin hcard c₀ hc₀min htwo.1 htwo.2
+        u hu huRange hℓ3 hbij huD)
+
 end
 
 end Erdos85
