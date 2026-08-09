@@ -15598,6 +15598,100 @@ theorem secondOrder_componentQuotientMatrix_local_excess_restrict_nat
     norm_num
   exact_mod_cast hcast.trans hrhs.symm
 
+/-- The five `(12,12,24)` ledger moments, restricted to used-exterior
+components. -/
+theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (o₀ o₁ o₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho₀ : o₀.supp.ncard = 12) (ho₁ : o₁.supp.ncard = 12)
+    (ho₂ : o₂.supp.ncard = 24)
+    (hne₀₁ : o₀ ≠ o₁) (hne₀₂ : o₀ ≠ o₂) (hne₁₂ : o₁ ≠ o₂)
+    (ho₀O : componentRepresentative (secondOrderDefectGraph G) o₀ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₁O : componentRepresentative (secondOrderDefectGraph G) o₁ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (ho₂O : componentRepresentative (secondOrderDefectGraph G) o₂ ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀))
+    (∑ e ∈ C, Q o₁ e * (Q e o₁ - 1)) = 9 ∧
+    (∑ e ∈ C, Q o₂ e * (Q e o₂ - 1)) = 21 ∧
+    (∑ e ∈ C, Q o₀ e * Q e o₁) = 12 ∧
+    (∑ e ∈ C, Q e o₀ * Q o₂ e) = 12 ∧
+    (∑ e ∈ C, Q e o₁ * Q o₂ e) = 12 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀))
+  have houtLocal (o : D.ConnectedComponent)
+      (hoO : componentRepresentative D o ∈
+        (Finset.univ \ minimumLayerImageFinset D c₀) \
+          Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)) :
+      ∀ f : D.ConnectedComponent, f ∉ C →
+        (Q o f : ℤ) * (Q f o : ℤ) - (Q o f : ℤ) = 0 := by
+    intro f hf
+    let z := componentRepresentative D o
+    have hzcomp : D.connectedComponentMk z = o :=
+      (ConnectedComponent.mem_supp_iff o z).mp (componentRepresentative_mem D o)
+    have hzero := degree_sixteen_fourLayer_orphan_local_excess_outside_used_eq_zero
+      G hfree hmin hcard c₀ hregChild hcardChild (z := z) hoO f
+        (by simpa [C, D] using hf)
+    simpa [Q, D, z, hzcomp] using hzero
+  have hw12 := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₁
+      (by omega) C (houtLocal o₁ ho₁O)
+  have hw24 := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂
+      (by omega) C (houtLocal o₂ ho₂O)
+  have hcross01 := secondOrder_componentQuotientMatrix_sq_sum_restrict
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₀ o₁ hne₀₁ C
+      (fun f hf => degree_sixteen_fourLayer_distinct_orphans_two_step_outside_used_eq_zero
+        G hfree hmin hcard c₀ hregChild hcardChild o₀ o₁ f hne₀₁
+          ho₀O ho₁O (by simpa [C, D] using hf))
+  have hcross20 := secondOrder_componentQuotientMatrix_sq_sum_restrict
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ o₀
+      (Ne.symm hne₀₂) C
+      (fun f hf => degree_sixteen_fourLayer_distinct_orphans_two_step_outside_used_eq_zero
+        G hfree hmin hcard c₀ hregChild hcardChild o₂ o₀ f (Ne.symm hne₀₂)
+          ho₂O ho₀O (by simpa [C, D] using hf))
+  have hcross21 := secondOrder_componentQuotientMatrix_sq_sum_restrict
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o₂ o₁
+      (Ne.symm hne₁₂) C
+      (fun f hf => degree_sixteen_fourLayer_distinct_orphans_two_step_outside_used_eq_zero
+        G hfree hmin hcard c₀ hregChild hcardChild o₂ o₁ f (Ne.symm hne₁₂)
+          ho₂O ho₁O (by simpa [C, D] using hf))
+  rw [ho₁] at hw12 hcross01 hcross21
+  rw [ho₂] at hw24
+  rw [ho₀] at hcross20
+  exact ⟨by simpa [Q, D, C] using hw12, by simpa [Q, D, C] using hw24,
+    by simpa [Q, D, C] using hcross01,
+    by simpa [Q, D, C, Nat.mul_comm] using hcross20,
+    by simpa [Q, D, C, Nat.mul_comm] using hcross21⟩
+
 end
 
 end Erdos85
