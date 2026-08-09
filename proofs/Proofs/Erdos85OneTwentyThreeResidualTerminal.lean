@@ -19344,6 +19344,158 @@ theorem degree_sixteen_twoLayer_orderSeven_card_fourteen_fiveDiv_reduced_mass
   change (∑ o ∈ C \ N, o.supp.ncard / 5) = 14
   omega
 
+/-- The uniform order-seven/cardinality-fourteen census candidate is
+impossible: its fourteen owner edges consume local excess fifty-six, while
+the complementary service sector consumes at least sixteen, exceeding the
+two order-thirty-five owners' combined budget sixty-four. -/
+theorem false_of_degree_sixteen_twoLayer_fourteen_orderSeven_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 14 → (∀ o ∈ N, o.supp.ncard = 7) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let F := C \ N
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 14 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 7 at huniform
+  obtain ⟨e₁, e₂, hne, he₁R, he₂R, he₁35, he₂35, howners⟩ :=
+    degree_sixteen_twoLayer_orderSeven_exists_two_named_owners
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, R, O, C, N] using huniform)
+        (by
+          simpa [D, R, O, C, N] using (show 9 ≤ N.card by omega))
+  have husedEq := degree_sixteen_twoLayer_used_components_eq_pair_of_orderThirtyFive
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      e₁ e₂ hne he₁R he₂R he₁35 he₂35
+  change (Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)) = {e₁, e₂} at husedEq
+  have hFmass :=
+    degree_sixteen_twoLayer_orderSeven_card_fourteen_fiveDiv_reduced_mass
+      G hfree hmin hcard c₀ hregChild hcardChild
+        (by simpa [D, R, O, C, N] using hNcard)
+        (by simpa [D, R, O, C, N] using huniform)
+  change (∑ o ∈ F, o.supp.ncard / 5) = 14 at hFmass
+  have hFmem : ∀ o ∈ F, componentRepresentative D o ∈ O := by
+    intro o hoF
+    exact (Finset.mem_filter.mp (Finset.mem_sdiff.mp hoF).1).2
+  have hFdiv : ∀ o ∈ F, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  let k := fun o : D.ConnectedComponent => o.supp.ncard / 5
+  let a₁ := fun o : D.ConnectedComponent => Q e₁ o
+  let a₂ := fun o : D.ConnectedComponent => Q e₂ o
+  let b₁ := fun o : D.ConnectedComponent => Q o e₁
+  let b₂ := fun o : D.ConnectedComponent => Q o e₂
+  have hrow : ∀ o ∈ F, b₁ o + b₂ o = 5 := by
+    intro o hoF
+    have hsum := degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
+      G hfree hmin hcard c₀ hregChild hcardChild o (hFmem o hoF)
+    change (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R), Q o e) = 5 at hsum
+    rw [husedEq] at hsum
+    simpa [b₁, b₂, hne] using hsum
+  have hbal₁ : ∀ o ∈ F, 7 * a₁ o = k o * b₁ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁ o
+    change e₁.supp.ncard * Q e₁ o = o.supp.ncard * Q o e₁ at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [he₁35, hm] at hbal
+    have hsmall : 7 * Q e₁ o = m * Q o e₁ := by nlinarith
+    change 7 * a₁ o = k o * b₁ o
+    have hdivm : 5 * m / 5 = m :=
+      by simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₁, b₁]
+    rw [hm, hdivm]
+    exact hsmall
+  have hbal₂ : ∀ o ∈ F, 7 * a₂ o = k o * b₂ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂ o
+    change e₂.supp.ncard * Q e₂ o = o.supp.ncard * Q o e₂ at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [he₂35, hm] at hbal
+    have hsmall : 7 * Q e₂ o = m * Q o e₂ := by nlinarith
+    change 7 * a₂ o = k o * b₂ o
+    have hdivm : 5 * m / 5 = m :=
+      by simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₂, b₂]
+    rw [hm, hdivm]
+    exact hsmall
+  have hservice : 16 ≤ ∑ o ∈ F,
+      (a₁ o * (b₁ o - 1) + a₂ o * (b₂ o - 1)) :=
+    two_orderThirtyFive_service_total_local_excess_ge_sixteen
+      F k a₁ a₂ b₁ b₂ (by simpa [k] using hFmass)
+        hrow hbal₁ hbal₂
+  let T := fun o : D.ConnectedComponent =>
+    Q e₁ o * (Q o e₁ - 1) + Q e₂ o * (Q o e₂ - 1)
+  have hNlower : 56 ≤ ∑ o ∈ N, T o := by
+    have hpoint : ∀ o ∈ N, 4 ≤ T o := by
+      intro o hoN
+      rcases howners o hoN with h₁ | h₂
+      · dsimp only [T]
+        have hp : Q e₁ o = 1 ∧ Q o e₁ = 5 := by simpa [Q, D] using h₁
+        rw [hp.1, hp.2]
+        omega
+      · dsimp only [T]
+        have hp : Q e₂ o = 1 ∧ Q o e₂ = 5 := by simpa [Q, D] using h₂
+        rw [hp.1, hp.2]
+        omega
+    have hsum := Finset.sum_le_sum fun o hoN => hpoint o hoN
+    have hconst : (∑ _o ∈ N, 4) = 56 := by simp [hNcard]
+    rw [hconst] at hsum
+    exact hsum
+  have hFlower : 16 ≤ ∑ o ∈ F, T o := by
+    simpa [T, a₁, a₂, b₁, b₂] using hservice
+  have hCsub : C ⊆ (Finset.univ : Finset D.ConnectedComponent) := Finset.subset_univ C
+  have hfullLe : (∑ o ∈ C, T o) ≤ ∑ o, T o :=
+    Finset.sum_le_sum_of_subset hCsub
+  have hNsub : N ⊆ C := Finset.filter_subset _ _
+  have hsplit := Finset.sum_sdiff hNsub (f := T)
+  change (∑ o ∈ F, T o) + (∑ o ∈ N, T o) =
+    ∑ o ∈ C, T o at hsplit
+  have hlocal₁ := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁
+      (by rw [he₁35]; norm_num) Finset.univ (by simp)
+  have hlocal₂ := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂
+      (by rw [he₂35]; norm_num) Finset.univ (by simp)
+  have hfull : (∑ o, T o) = 64 := by
+    change (∑ o : D.ConnectedComponent, Q e₁ o * (Q o e₁ - 1) +
+      Q e₂ o * (Q o e₂ - 1)) = 64
+    rw [Finset.sum_add_distrib]
+    simpa [D, Q, he₁35, he₂35] using congrArg₂ (.+.) hlocal₁ hlocal₂
+  rw [hfull] at hfullLe
+  omega
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
