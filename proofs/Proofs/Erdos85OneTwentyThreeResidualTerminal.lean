@@ -7834,7 +7834,8 @@ theorem degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
     · have ha : a = 0 := by
         have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
         rw [mul_zero] at hbal
-        exact Nat.eq_zero_of_mul_eq_zero_left hopos hbal
+        exact (Nat.mul_eq_zero.mp hbal).resolve_left
+          o.nonempty_supp.ncard_pos.ne'
       simp [ha]
     · simp [hb]
 
@@ -7899,7 +7900,8 @@ theorem degree_sixteen_order_twelve_local_term_even_of_target_ge_six_ne_six
     interval_cases hb : b
     · have ha : a = 0 := by
         rw [mul_zero] at hbal
-        exact Nat.eq_zero_of_mul_eq_zero_left o.nonempty_supp.ncard_pos hbal
+        exact (Nat.mul_eq_zero.mp hbal).resolve_left
+          o.nonempty_supp.ncard_pos.ne'
       simp [ha]
     · simp [hb]
 
@@ -7968,7 +7970,8 @@ theorem degree_sixteen_order_fourteen_local_term_even_of_target_ge_six_ne_seven
     interval_cases hb : b
     · have ha : a = 0 := by
         rw [mul_zero] at hbal
-        exact Nat.eq_zero_of_mul_eq_zero_left o.nonempty_supp.ncard_pos hbal
+        exact (Nat.mul_eq_zero.mp hbal).resolve_left
+          o.nonempty_supp.ncard_pos.ne'
       simp [ha]
     · simp [hb]
 
@@ -9786,6 +9789,110 @@ theorem degree_sixteen_zeroLayer_used_component_order_package
     (ConnectedComponent.mem_supp_iff e
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hrep] at hdvd
+
+/-- If the zero-layer used sector has `t` defect components, its mandatory
+contacts with the minimum `C₃` consume exactly `16-t` units of local
+excess. -/
+theorem degree_sixteen_zeroLayer_used_minimum_contact_total
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ E, componentQuotientMatrix G D e c₀ *
+      (componentQuotientMatrix G D c₀ e - 1)) = 16 - E.card := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let Q := componentQuotientMatrix G D
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hentry : ∀ e ∈ E,
+      Q e c₀ * (Q c₀ e - 1) = e.supp.ncard / 3 - 1 := by
+    intro e heE
+    have heR : componentRepresentative D e ∈ R :=
+      (Finset.mem_filter.mp heE).2
+    have hq := degree_sixteen_zeroLayer_used_component_quotient_entries
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e) (by simpa [D, R] using heR)
+    have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+      (ConnectedComponent.mem_supp_iff e
+        (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+    change Q (D.connectedComponentMk (componentRepresentative D e)) c₀ = 1 ∧
+      3 * Q c₀ (D.connectedComponentMk (componentRepresentative D e)) =
+        (D.connectedComponentMk (componentRepresentative D e)).supp.ncard at hq
+    rw [hrep] at hq
+    have hdiv : Q c₀ e = e.supp.ncard / 3 := by
+      obtain ⟨k, hk⟩ := hpack.2 e heE
+      rw [hk] at hq ⊢
+      have hkdiv : 3 * k / 3 = k := by
+        simpa [mul_comm] using Nat.mul_div_left k (by norm_num : 0 < 3)
+      rw [hkdiv]
+      nlinarith
+    rw [hq.1, hdiv]
+    simp
+  have hscaled : (∑ e ∈ E, e.supp.ncard / 3) = 16 := by
+    have hscale : (∑ e ∈ E, e.supp.ncard) =
+        3 * (∑ e ∈ E, e.supp.ncard / 3) := by
+      calc
+        (∑ e ∈ E, e.supp.ncard) =
+            ∑ e ∈ E, 3 * (e.supp.ncard / 3) := by
+              apply Finset.sum_congr rfl
+              intro e he
+              exact (Nat.mul_div_cancel' (hpack.2 e he)).symm
+        _ = 3 * (∑ e ∈ E, e.supp.ncard / 3) := by
+          rw [Finset.mul_sum]
+    rw [hpack.1] at hscale
+    omega
+  have hpositive : ∀ e ∈ E, 1 ≤ e.supp.ncard / 3 := by
+    intro e he
+    obtain ⟨k, hk⟩ := hpack.2 e he
+    have hkpos : 0 < k := by
+      have := e.nonempty_supp.ncard_pos
+      rw [hk] at this
+      nlinarith
+    rw [hk]
+    have hkone : 1 ≤ k := by omega
+    have hkdiv : 3 * k / 3 = k := by
+      simpa [mul_comm] using Nat.mul_div_left k (by norm_num : 0 < 3)
+    simpa [hkdiv] using hkone
+  have hsplit :
+      (∑ e ∈ (E : Finset D.ConnectedComponent),
+        ((e.supp.ncard / 3 - 1) + (1 : Nat))) =
+      ∑ e ∈ (E : Finset D.ConnectedComponent), e.supp.ncard / 3 := by
+    apply Finset.sum_congr rfl
+    intro e he
+    have := hpositive e he
+    omega
+  rw [Finset.sum_add_distrib] at hsplit
+  simp only [Finset.sum_const, nsmul_eq_mul, mul_one] at hsplit
+  rw [hscaled] at hsplit
+  calc
+    (∑ e ∈ E, Q e c₀ * (Q c₀ e - 1)) =
+        ∑ e ∈ E, (e.supp.ncard / 3 - 1) := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact hentry e he
+    _ = 16 - E.card := Nat.eq_sub_of_add_eq hsplit
 
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
@@ -18812,8 +18919,9 @@ theorem row_moment_four_card_four_even_entry_eq_two
   have hlec : q c ≤ 3 := hle c (by simp)
   have hled : q d ≤ 3 := hle d (by simp)
   simp [hab, hac, had, hbc, hbd, hcd] at hsum hmoment hx
-  rcases hx with rfl | rfl | rfl | rfl
-  interval_cases hqa : q a <;> try interval_cases hqb : q b <;>
+  rcases hx with hx | hx | hx | hx
+  all_goals simp only [hx] at heven ⊢
+  all_goals interval_cases hqa : q a <;> try interval_cases hqb : q b <;>
     try interval_cases hqc : q c <;> try interval_cases hqd : q d
   all_goals try norm_num [hqa, hqb, hqc, hqd] at hsum
   all_goals try norm_num [hqa, hqb, hqc, hqd] at hmoment
@@ -20379,7 +20487,7 @@ theorem false_of_degree_sixteen_twoLayer_nine_orderSeven_nonFive_orphans
     exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hrepO).1).2 hc₀U
   have hc₀N : c₀ ∉ N := fun hc => hc₀C (Finset.filter_subset _ _ hc)
   have hc₀F : c₀ ∉ F := fun hc => hc₀C (Finset.mem_sdiff.mp hc).1
-  have hNF : Disjoint N F := Finset.disjoint_sdiff_right
+  have hNF : Disjoint N F := disjoint_sdiff_self_right
   have hlocal₁ := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁
       (by rw [he₁35]; norm_num) Finset.univ (by simp)
@@ -20387,8 +20495,8 @@ theorem false_of_degree_sixteen_twoLayer_nine_orderSeven_nonFive_orphans
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂
       (by rw [he₂35]; norm_num) Finset.univ (by simp)
   have hfull : (∑ o, T o) = 64 := by
-    change (∑ o : D.ConnectedComponent, Q e₁ o * (Q o e₁ - 1) +
-      Q e₂ o * (Q o e₂ - 1)) = 64
+    change (∑ o : D.ConnectedComponent, (Q e₁ o * (Q o e₁ - 1) +
+      Q e₂ o * (Q o e₂ - 1))) = 64
     rw [Finset.sum_add_distrib]
     simpa [D, Q, he₁35, he₂35] using congrArg₂ (.+.) hlocal₁ hlocal₂
   exact false_of_disjoint_sector_costs_thirtySix_twentyFour_twelve
@@ -20609,8 +20717,8 @@ theorem false_of_degree_sixteen_twoLayer_fourteen_orderSeven_nonFive_orphans
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂
       (by rw [he₂35]; norm_num) Finset.univ (by simp)
   have hfull : (∑ o, T o) = 64 := by
-    change (∑ o : D.ConnectedComponent, Q e₁ o * (Q o e₁ - 1) +
-      Q e₂ o * (Q o e₂ - 1)) = 64
+    change (∑ o : D.ConnectedComponent, (Q e₁ o * (Q o e₁ - 1) +
+      Q e₂ o * (Q o e₂ - 1))) = 64
     rw [Finset.sum_add_distrib]
     simpa [D, Q, he₁35, he₂35] using congrArg₂ (.+.) hlocal₁ hlocal₂
   rw [hfull] at hfullLe
@@ -22914,7 +23022,7 @@ theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_ten_five
     exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hrepO).1).2 hc₀U
   have hc₀N : c₀ ∉ N := fun hc => hc₀C (Finset.filter_subset _ _ hc)
   have hc₀F : c₀ ∉ F := fun hc => hc₀C (Finset.mem_sdiff.mp hc).1
-  have hNF : Disjoint N F := Finset.disjoint_sdiff_right
+  have hNF : Disjoint N F := disjoint_sdiff_self_right
   have hlocalE := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
       (by rw [he55]; norm_num) Finset.univ (by simp)
@@ -22925,9 +23033,9 @@ theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_ten_five
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard g
       (by rw [hg5]; norm_num) Finset.univ (by simp)
   have hfull : (∑ o, T o) = 61 := by
-    change (∑ o : D.ConnectedComponent,
+    change (∑ o : D.ConnectedComponent, (
       Q e o * (Q o e - 1) + Q f o * (Q o f - 1) +
-        Q g o * (Q o g - 1)) = 61
+        Q g o * (Q o g - 1))) = 61
     rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
     simpa [D, Q, he55, hf10, hg5] using
       congrArg₂ (.+.) (congrArg₂ (.+.) hlocalE hlocalF) hlocalG
@@ -23140,7 +23248,7 @@ theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_three_fives
     exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hrepO).1).2 hc₀U
   have hc₀N : c₀ ∉ N := fun hc => hc₀C (Finset.filter_subset _ _ hc)
   have hc₀F : c₀ ∉ F := fun hc => hc₀C (Finset.mem_sdiff.mp hc).1
-  have hNF : Disjoint N F := Finset.disjoint_sdiff_right
+  have hNF : Disjoint N F := disjoint_sdiff_self_right
   have hlocalE := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
       (by rw [he55]; norm_num) Finset.univ (by simp)
@@ -23154,9 +23262,9 @@ theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_three_fives
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard h
       (by rw [hh5]; norm_num) Finset.univ (by simp)
   have hfull : (∑ o, T o) = 58 := by
-    change (∑ o : D.ConnectedComponent,
+    change (∑ o : D.ConnectedComponent, (
       Q e o * (Q o e - 1) + Q f o * (Q o f - 1) +
-        Q g o * (Q o g - 1) + Q h o * (Q o h - 1)) = 58
+        Q g o * (Q o g - 1) + Q h o * (Q o h - 1))) = 58
     repeat' rw [Finset.sum_add_distrib]
     simpa [D, Q, he55, hf5, hg5, hh5] using
       congrArg₂ (.+.)
