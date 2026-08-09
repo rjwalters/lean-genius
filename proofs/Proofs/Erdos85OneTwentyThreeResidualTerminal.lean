@@ -16257,6 +16257,85 @@ theorem degree_sixteen_fourLayer_false_of_fifteen_fifteen_nine_nine_orphans
     simpa [Q, D, ho₃] using (secondOrder_componentQuotientMatrix_balance
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o₃)
 
+/-- Count-form bridge from the four-component census to the final
+`(15,15,9,9)` contradiction. -/
+theorem degree_sixteen_fourLayer_false_of_fifteen_fifteen_nine_nine_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O)
+    C.card = 4 →
+    (C.filter fun c => c.supp.ncard = 15).card = 2 →
+    (C.filter fun c => c.supp.ncard = 9).card = 2 → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  intro hCcard h15 h9
+  change C.card = 4 at hCcard
+  change (C.filter fun c => c.supp.ncard = 15).card = 2 at h15
+  change (C.filter fun c => c.supp.ncard = 9).card = 2 at h9
+  obtain ⟨o₀, o₁, hne₀₁, hS15⟩ := Finset.card_eq_two.mp h15
+  obtain ⟨o₂, o₃, hne₂₃, hS9⟩ := Finset.card_eq_two.mp h9
+  have ho₀S : o₀ ∈ C.filter (fun c => c.supp.ncard = 15) := by
+    rw [hS15]
+    simp
+  have ho₁S : o₁ ∈ C.filter (fun c => c.supp.ncard = 15) := by
+    rw [hS15]
+    simp
+  have ho₂S : o₂ ∈ C.filter (fun c => c.supp.ncard = 9) := by
+    rw [hS9]
+    simp
+  have ho₃S : o₃ ∈ C.filter (fun c => c.supp.ncard = 9) := by
+    rw [hS9]
+    simp
+  obtain ⟨ho₀C, ho₀⟩ := Finset.mem_filter.mp ho₀S
+  obtain ⟨ho₁C, ho₁⟩ := Finset.mem_filter.mp ho₁S
+  obtain ⟨ho₂C, ho₂⟩ := Finset.mem_filter.mp ho₂S
+  obtain ⟨ho₃C, ho₃⟩ := Finset.mem_filter.mp ho₃S
+  have hne₀₂ : o₀ ≠ o₂ := by intro h; subst o₂; omega
+  have hne₀₃ : o₀ ≠ o₃ := by intro h; subst o₃; omega
+  have hne₁₂ : o₁ ≠ o₂ := by intro h; subst o₂; omega
+  have hne₁₃ : o₁ ≠ o₃ := by intro h; subst o₃; omega
+  have hnamedSubset : ({o₀, o₁, o₂, o₃} : Finset D.ConnectedComponent) ⊆ C := by
+    intro o ho
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ho
+    rcases ho with ho | ho | ho | ho
+    · simpa [ho] using ho₀C
+    · simpa [ho] using ho₁C
+    · simpa [ho] using ho₂C
+    · simpa [ho] using ho₃C
+  have hnamedCard : ({o₀, o₁, o₂, o₃} : Finset D.ConnectedComponent).card = 4 := by
+    simp [hne₀₁, hne₀₂, hne₀₃, hne₁₂, hne₁₃, hne₂₃]
+  have hnamed : ({o₀, o₁, o₂, o₃} : Finset D.ConnectedComponent) = C :=
+    Finset.eq_of_subset_of_card_le hnamedSubset (by omega)
+  have ho₂O : componentRepresentative D o₂ ∈ O := (Finset.mem_filter.mp ho₂C).2
+  have ho₃O : componentRepresentative D o₃ ∈ O := (Finset.mem_filter.mp ho₃C).2
+  exact degree_sixteen_fourLayer_false_of_fifteen_fifteen_nine_nine_orphans
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o₀ o₁ o₂ o₃
+      ho₀ ho₁ ho₂ ho₃ hne₀₁ hne₀₂ hne₀₃ hne₁₂ hne₁₃ hne₂₃
+      (by simpa [D, O] using ho₂O) (by simpa [D, O] using ho₃O)
+      (by simpa [D, O, C] using hnamed.symm)
+
 end
 
 end Erdos85
