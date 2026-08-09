@@ -19384,6 +19384,129 @@ theorem degree_sixteen_twoLayer_uniform_nine_or_eleven_nonFive_count_le_twelve
   have hcardLe := Finset.card_le_card hsub
   exact hcardLe.trans (by simpa [S, C, D, O, R] using hcap)
 
+/-- Sharp graph-facing census for the uniform non-five orphan lane. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    ((∀ o ∈ N, o.supp.ncard = 7) ∧
+      (N.card = 4 ∨ N.card = 9 ∨ N.card = 14 ∨
+        N.card = 19 ∨ N.card = 24)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 9) ∧
+      (N.card = 2 ∨ N.card = 7 ∨ N.card = 12)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 11) ∧
+      (N.card = 3 ∨ N.card = 8)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  obtain ⟨o₀, ho₀C, ho₀not⟩ :=
+    degree_sixteen_twoLayer_exists_nonFive_orphan_component
+      G hfree hmin hcard c₀ hregChild hcardChild
+  have ho₀N : o₀ ∈ N := Finset.mem_filter.mpr ⟨ho₀C, ho₀not⟩
+  let n := o₀.supp.ncard
+  have huniform : ∀ o ∈ N, o.supp.ncard = n := by
+    intro o hoN
+    have hoC := (Finset.mem_filter.mp hoN).1
+    have hoO := (Finset.mem_filter.mp hoC).2
+    have honot := (Finset.mem_filter.mp hoN).2
+    have ho₀O := (Finset.mem_filter.mp ho₀C).2
+    have hm₀ : D.connectedComponentMk (componentRepresentative D o₀) = o₀ :=
+      (ConnectedComponent.mem_supp_iff o₀
+        (componentRepresentative D o₀)).mp (componentRepresentative_mem D o₀)
+    have hm : D.connectedComponentMk (componentRepresentative D o) = o :=
+      (ConnectedComponent.mem_supp_iff o
+        (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+    have heq := degree_sixteen_twoLayer_nonFive_orphan_orders_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D o) (componentRepresentative D o₀)
+        (by simpa [D, O, R] using hoO) (by simpa [D, O, R] using ho₀O)
+        (by rw [hm]; exact honot) (by rw [hm₀]; exact ho₀not)
+    rw [hm, hm₀] at heq
+    exact heq
+  have hn : n = 7 ∨ n = 9 ∨ n = 11 := by
+    have ho₀O := (Finset.mem_filter.mp ho₀C).2
+    have hm₀ : D.connectedComponentMk (componentRepresentative D o₀) = o₀ :=
+      (ConnectedComponent.mem_supp_iff o₀
+        (componentRepresentative D o₀)).mp (componentRepresentative_mem D o₀)
+    obtain ⟨_x, _hxR, hpairs⟩ :=
+      degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+          (componentRepresentative D o₀) (by simpa [D, O, R] using ho₀O)
+          (by rw [hm₀]; exact ho₀not)
+    rcases hpairs with h7 | h9 | h11
+    · exact Or.inl (by rw [hm₀] at h7; exact h7.1)
+    · exact Or.inr (Or.inl (by rw [hm₀] at h9; exact h9.1))
+    · exact Or.inr (Or.inr (by rw [hm₀] at h11; exact h11.1))
+  have hmassRaw := degree_sixteen_twoLayer_nonFive_orphan_mass_mod_five
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hmass : ∃ k, n * N.card + 5 * k = 168 := by
+    obtain ⟨k, hk⟩ := hmassRaw
+    have hkN : (∑ o ∈ N, o.supp.ncard) + 5 * k = 168 := by
+      simpa [N, C, D, O, R] using hk
+    refine ⟨k, ?_⟩
+    calc
+      n * N.card + 5 * k = (∑ _o ∈ N, n) + 5 * k := by simp [mul_comm]
+      _ = (∑ o ∈ N, o.supp.ncard) + 5 * k := by
+        congr 1
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (huniform o ho).symm
+      _ = 168 := hkN
+  obtain ⟨k, hk⟩ := hmass
+  have hcases := uniform_nonFive_orphan_count_arithmetic n N.card k hn hk
+  rcases hcases with h7 | h9 | h11
+  · exact Or.inl ⟨fun o ho => (huniform o ho).trans h7.1, h7.2⟩
+  · have hcap := degree_sixteen_twoLayer_uniform_nine_or_eleven_nonFive_count_le_twelve
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild n
+        (Or.inl h9.1) (by
+          simpa [C, N, D, O, R] using
+            (show N.Nonempty from ⟨o₀, ho₀N⟩)) huniform
+    change N.card ≤ 12 at hcap
+    refine Or.inr (Or.inl
+      ⟨fun o ho => (huniform o ho).trans h9.1, ?_⟩)
+    rcases h9.2 with h2 | h7 | h12 | h17
+    · exact Or.inl h2
+    · exact Or.inr (Or.inl h7)
+    · exact Or.inr (Or.inr h12)
+    · rw [h17] at hcap
+      norm_num at hcap
+  · have hcap := degree_sixteen_twoLayer_uniform_nine_or_eleven_nonFive_count_le_twelve
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild n
+        (Or.inr h11.1) (by
+          simpa [C, N, D, O, R] using
+            (show N.Nonempty from ⟨o₀, ho₀N⟩)) huniform
+    change N.card ≤ 12 at hcap
+    refine Or.inr (Or.inr
+      ⟨fun o ho => (huniform o ho).trans h11.1, ?_⟩)
+    rcases h11.2 with h3 | h8 | h13
+    · exact Or.inl h3
+    · exact Or.inr h8
+    · rw [h13] at hcap
+      norm_num at hcap
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
