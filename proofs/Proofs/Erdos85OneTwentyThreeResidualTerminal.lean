@@ -16336,6 +16336,141 @@ theorem degree_sixteen_fourLayer_false_of_fifteen_fifteen_nine_nine_counts
       (by simpa [D, O] using ho₂O) (by simpa [D, O] using ho₃O)
       (by simpa [D, O, C] using hnamed.symm)
 
+/-- The four-layer branch cannot have exactly three orphan components. -/
+theorem false_of_degree_sixteen_fourLayer_three_orphan_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter
+        (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) c ∈
+            (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+              Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+                (secondOrderDefectGraph G) c₀))).card = 3) : False := by
+  have hc := degree_sixteen_fourLayer_three_orphan_components_named_classification
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
+  rcases hc with h9_30 | h12_24 | h12_18 | h15_18
+  · exact false_of_degree_sixteen_fourLayer_orphan_orders_thirty_nine_nine
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount h9_30.1 h9_30.2
+  · exact degree_sixteen_fourLayer_false_of_twelve_twelve_twentyfour_counts
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount h12_24.1 h12_24.2
+  · exact false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_eighteen_twelve
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount h12_18.1 h12_18.2
+  · exact false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_fifteen_fifteen
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount h15_18.1 h15_18.2
+
+/-- The four-layer branch cannot have exactly four orphan components. -/
+theorem false_of_degree_sixteen_fourLayer_four_orphan_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15)
+    (hcount :
+      (Finset.univ.filter
+        (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) c ∈
+            (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+              Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+                (secondOrderDefectGraph G) c₀))).card = 4) : False := by
+  have hc := degree_sixteen_fourLayer_four_orphan_components_named_classification
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
+  rcases hc with h9_12_18 | h9_15 | h12
+  · exact false_of_degree_sixteen_fourLayer_orphan_orders_eighteen_twelve_nine_nine
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount
+        h9_12_18.1 h9_12_18.2.1 h9_12_18.2.2
+  · exact degree_sixteen_fourLayer_false_of_fifteen_fifteen_nine_nine_counts
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hcount h9_15.2 h9_15.1
+  · classical
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈
+        (Finset.univ \ minimumLayerImageFinset D c₀) \ R)
+    have hcount' := hcount
+    change C.card = 4 at hcount'
+    change (C.filter fun c => c.supp.ncard = 12).card = 4 at h12
+    have heq : C.filter (fun c => c.supp.ncard = 12) = C :=
+      Finset.eq_of_subset_of_card_le (Finset.filter_subset _ _) (by omega)
+    have hall : ∀ o ∈ C, o.supp.ncard = 12 := by
+      intro o ho
+      have hof : o ∈ C.filter (fun c => c.supp.ncard = 12) := by
+        rw [heq]
+        exact ho
+      exact (Finset.mem_filter.mp hof).2
+    exact degree_sixteen_fourLayer_false_of_four_orderTwelve_orphans
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, R, C] using hcount') (by simpa [D, R, C] using hall)
+
+/-- **Terminal closure of the degree-sixteen four-layer branch.**  The
+orphan-component count lies in `1,…,8`; every possible count is eliminated
+by the preceding census and ledger theorems. -/
+theorem false_of_degree_sixteen_fourLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 4)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 15) : False := by
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun c : D.ConnectedComponent =>
+    componentRepresentative D c ∈ O)
+  have hrange := degree_sixteen_fourLayer_orphan_component_count_between_one_eight
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change 1 ≤ C.card ∧ C.card ≤ 8 at hrange
+  have hlow : 1 ≤ C.card := hrange.1
+  have hupp : C.card ≤ 8 := hrange.2
+  interval_cases hC : C.card
+  · exact false_of_degree_sixteen_fourLayer_one_orphan_component
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by simpa [D, O, C] using hC)
+  · exact false_of_degree_sixteen_fourLayer_two_orphan_components
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by simpa [D, O, C] using hC)
+  · exact false_of_degree_sixteen_fourLayer_three_orphan_components
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by simpa [D, O, C] using hC)
+  · exact false_of_degree_sixteen_fourLayer_four_orphan_components
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by simpa [D, O, C] using hC)
+  · exact false_of_degree_sixteen_fourLayer_five_orphan_components
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by simpa [D, O, C] using hC)
+  all_goals
+    exact false_of_degree_sixteen_fourLayer_six_le_orphan_components
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild (by
+        change 6 ≤ C.card
+        omega)
+
 end
 
 end Erdos85
