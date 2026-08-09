@@ -18045,6 +18045,37 @@ theorem row_moment_four_count_eq_two
   rw [hcount] at hrewrite
   omega
 
+/-- Four entries with factorial second moment four have total mass at most
+six. -/
+theorem row_moment_four_card_four_sum_le_six
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → ℕ)
+    (hcard : C.card = 4)
+    (hmoment : (∑ x ∈ C, q x * (q x - 1)) = 4) :
+    (∑ x ∈ C, q x) ≤ 6 := by
+  have hpoint : ∀ x : α, 2 * q x ≤ 2 + q x * (q x - 1) := by
+    intro x
+    by_cases hzero : q x = 0
+    · simp [hzero]
+    · by_cases hone : q x = 1
+      · simp [hone]
+      · have htwo : 2 ≤ q x := by omega
+        have hpos : 1 ≤ q x := by omega
+        have hsub : q x - 1 + 1 = q x := Nat.sub_add_cancel hpos
+        have hmul := Nat.mul_le_mul_right (q x - 1) htwo
+        omega
+  have hsum : (∑ x ∈ C, 2 * q x) ≤
+      ∑ x ∈ C, (2 + q x * (q x - 1)) :=
+    Finset.sum_le_sum fun x _ => hpoint x
+  have hbound : 2 * (∑ x ∈ C, q x) ≤ 12 := by
+    calc
+      2 * (∑ x ∈ C, q x) = ∑ x ∈ C, 2 * q x := by simp [Finset.mul_sum]
+      _ ≤ ∑ x ∈ C, (2 + q x * (q x - 1)) := hsum
+      _ = 2 * C.card + ∑ x ∈ C, q x * (q x - 1) := by
+        rw [Finset.sum_add_distrib]
+        simp [mul_comm]
+      _ = 12 := by rw [hcard, hmoment]
+  omega
+
 /-- A row moment of six is either one quotient-three entry or three
 quotient-two entries. -/
 theorem row_moment_six_count_classification
