@@ -6605,6 +6605,96 @@ theorem degree_sixteen_twoLayer_orderThirtyFive_minimum_contact_excess_ge_six
         (componentQuotientMatrix G D c₀ e - 1) :=
       Nat.mul_le_mul_right _ hQpos
 
+/-- General minimum-`C₅` contact price for a used component of order `5r`.
+The positive contact and balance force the reverse quotient to be `r` times
+the forward quotient, hence local excess at least `r-1`. -/
+theorem degree_sixteen_twoLayer_used_minimum_contact_excess_ge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (r : ℕ) (heorder : e.supp.ncard = 5 * r) :
+    r - 1 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) e c₀ *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c₀ e - 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  have hc₀five : c₀.supp.ncard = 5 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).2 rfl
+  let C : Finset V := c₀.supp.toFinite.toFinset
+  have hCU : C ⊆ U := by
+    intro z hz
+    have hzc : z ∈ c₀.supp := by simpa [C] using hz
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨c, ⟨z, hzc⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hcardC : C.card = 5 := by
+    rw [show C.card = c₀.supp.ncard by
+      simpa [C] using
+        (Set.ncard_eq_toFinset_card c₀.supp c₀.supp.toFinite).symm,
+      hc₀five]
+  have hcardU : U.card = 5 := by
+    rw [card_minimumLayerImageFinset]
+    exact hcardChild
+  have hCUeq : C = U :=
+    Finset.eq_of_subset_of_card_le hCU (by rw [hcardU, hcardC])
+  obtain ⟨v, _hv, herep⟩ := Finset.mem_biUnion.mp heR
+  have hvU : v.2.1 ∈ U :=
+    Finset.mem_image.mpr ⟨v, Finset.mem_univ _, rfl⟩
+  have hvc₀ : v.2.1 ∈ c₀.supp := by
+    rw [← hCUeq] at hvU
+    simpa [C] using hvU
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hQpos : 0 < componentQuotientMatrix G D e c₀ := by
+    rw [componentQuotientMatrix_apply_eq G D 2 hregD hcomm e c₀
+      (componentRepresentative_mem D e)]
+    apply Finset.card_pos.mpr
+    refine ⟨v.2.1, ?_⟩
+    have hadj : G.Adj (componentRepresentative D e) v.2.1 :=
+      ((G.mem_neighborFinset v.2.1 (componentRepresentative D e)).mp
+        (Finset.mem_sdiff.mp herep).1).symm
+    exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset (componentRepresentative D e) v.2.1).mpr hadj,
+        (ConnectedComponent.mem_supp_iff c₀ v.2.1).mp hvc₀⟩
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e c₀
+  change e.supp.ncard * componentQuotientMatrix G D e c₀ =
+    c₀.supp.ncard * componentQuotientMatrix G D c₀ e at hbal
+  rw [heorder, hc₀five] at hbal
+  have hscaled : r * componentQuotientMatrix G D e c₀ =
+      componentQuotientMatrix G D c₀ e := by nlinarith
+  change r - 1 ≤ componentQuotientMatrix G D e c₀ *
+    (componentQuotientMatrix G D c₀ e - 1)
+  have hfactor : r - 1 ≤ componentQuotientMatrix G D c₀ e - 1 := by
+    rw [← hscaled]
+    have : r ≤ r * componentQuotientMatrix G D e c₀ := by
+      simpa [mul_comm] using Nat.mul_le_mul_left r hQpos
+    omega
+  calc
+    r - 1 ≤ 1 * (componentQuotientMatrix G D c₀ e - 1) := by
+      simpa using hfactor
+    _ ≤ componentQuotientMatrix G D e c₀ *
+        (componentQuotientMatrix G D c₀ e - 1) :=
+      Nat.mul_le_mul_right _ hQpos
+
 /-- **Order-five mass squeeze in the two-layer branch.**  The unique
 minimum component has order five, is canonically forward-oriented (all odd
 cycle blocks are), and contributes diagonal mass two.  The mixed order-five
@@ -19837,6 +19927,76 @@ theorem degree_sixteen_twoLayer_orderSeven_card_nine_fiveDiv_reduced_mass
   change (∑ o ∈ C \ N, o.supp.ncard / 5) = 21
   omega
 
+/-- In the order-eleven/cardinality-eight lane, the complementary
+five-divisible orphan components have total reduced order sixteen. -/
+theorem degree_sixteen_twoLayer_orderEleven_card_eight_fiveDiv_reduced_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 8 → (∀ o ∈ N, o.supp.ncard = 11) →
+      (∑ o ∈ C \ N, o.supp.ncard / 5) = 16 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  intro hNcard huniform
+  change N.card = 8 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 11 at huniform
+  have hCsum := degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ o ∈ C, o.supp.ncard) = 168 at hCsum
+  have hNsum : (∑ o ∈ N, o.supp.ncard) = 88 := by
+    calc
+      (∑ o ∈ N, o.supp.ncard) = ∑ _o ∈ N, 11 := by
+        apply Finset.sum_congr rfl
+        intro o hoN
+        exact huniform o hoN
+      _ = N.card * 11 := by simp
+      _ = 88 := by rw [hNcard]
+  have hNsub : N ⊆ C := Finset.filter_subset _ _
+  have hsplit := Finset.sum_sdiff hNsub (f := fun o => o.supp.ncard)
+  have hFsum : (∑ o ∈ C \ N, o.supp.ncard) = 80 := by
+    rw [hNsum, hCsum] at hsplit
+    omega
+  have hdiv : ∀ o ∈ C \ N, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  have hscale : (∑ o ∈ C \ N, o.supp.ncard) =
+      5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+    calc
+      (∑ o ∈ C \ N, o.supp.ncard) =
+          ∑ o ∈ C \ N, 5 * (o.supp.ncard / 5) := by
+            apply Finset.sum_congr rfl
+            intro o hoF
+            exact (Nat.mul_div_cancel' (hdiv o hoF)).symm
+      _ = 5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+        rw [Finset.mul_sum]
+  rw [hFsum] at hscale
+  change (∑ o ∈ C \ N, o.supp.ncard / 5) = 16
+  omega
+
 /-- The order-seven/cardinality-nine candidate is impossible.  Its two
 order-thirty-five owners spend at least thirty-six units on the nine
 order-seven sources, twenty-four on the five-divisible orphan complement,
@@ -22139,6 +22299,202 @@ theorem degree_sixteen_twoLayer_orderFiftyFive_used_complement_mass_fifteen
   change (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
     ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard
   exact ⟨by omega, fun f hf => hdvd f (Finset.mem_of_mem_erase hf)⟩
+
+/-- Complete used-sector census in the order-eleven/cardinality-eight lane:
+one common order-fifty-five owner, with complement exactly `15`, `10+5`,
+or `5+5+5`. -/
+theorem degree_sixteen_twoLayer_orderEleven_card_eight_used_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    N.card = 8 → (∀ o ∈ N, o.supp.ncard = 11) →
+      ∃ e : D.ConnectedComponent,
+        componentRepresentative D e ∈ R ∧ e.supp.ncard = 55 ∧
+        (∀ o ∈ N, componentQuotientMatrix G D o e = 5) ∧
+        ((∃ f, E.erase e = {f} ∧ f.supp.ncard = 15) ∨
+         (∃ f g, f ≠ g ∧ E.erase e = {f, g} ∧
+           ((f.supp.ncard = 10 ∧ g.supp.ncard = 5) ∨
+            (f.supp.ncard = 5 ∧ g.supp.ncard = 10))) ∨
+         (∃ f g h, f ≠ g ∧ f ≠ h ∧ g ≠ h ∧
+           E.erase e = {f, g, h} ∧ f.supp.ncard = 5 ∧
+             g.supp.ncard = 5 ∧ h.supp.ncard = 5)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  intro hNcard huniform
+  change N.card = 8 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 11 at huniform
+  have hNnon : N.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨e, heR, he55, howner⟩ :=
+    degree_sixteen_twoLayer_orderEleven_exists_named_common_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, R, O, C, N] using hNnon)
+        (by simpa [D, R, O, C, N] using huniform)
+  have hcomp :=
+    degree_sixteen_twoLayer_orderFiftyFive_used_complement_mass_fifteen
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heR he55
+  change (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
+    ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard at hcomp
+  have hpos : ∀ f ∈ E.erase e, 0 < f.supp.ncard := by
+    intro f _hf
+    exact f.nonempty_supp.ncard_pos
+  have hcases := five_divisor_partition_fifteen_classification
+    (E.erase e) (fun f : D.ConnectedComponent => f.supp.ncard)
+      hpos hcomp.2 hcomp.1
+  refine ⟨e, heR, he55, ?_, hcases⟩
+  simpa [D, R, O, C, N] using howner
+
+/-- The `55+15` used-sector alternative in the order-eleven/cardinality-eight
+lane is impossible: every five-divisible orphan reduced order is divisible
+by three or eleven, but their positive reduced orders sum to sixteen. -/
+theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_fifteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he55 : e.supp.ncard = 55) (hf15 : f.supp.ncard = 15)
+    (husedComplement :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun a : D.ConnectedComponent =>
+        componentRepresentative D a ∈ R)
+      E.erase e = {f})
+    (hFmass :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+      (∑ o ∈ C \ N, o.supp.ncard / 5) = 16) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let F := C \ N
+  let E := Finset.univ.filter (fun a : D.ConnectedComponent =>
+    componentRepresentative D a ∈ R)
+  let Q := componentQuotientMatrix G D
+  change E.erase e = {f} at husedComplement
+  change (∑ o ∈ F, o.supp.ncard / 5) = 16 at hFmass
+  have heE : e ∈ E := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using heR⟩
+  have hE : E = {e, f} := by
+    rw [← husedComplement, Finset.insert_erase heE]
+  have hFmem : ∀ o ∈ F, componentRepresentative D o ∈ O := by
+    intro o hoF
+    exact (Finset.mem_filter.mp (Finset.mem_sdiff.mp hoF).1).2
+  have hFdiv : ∀ o ∈ F, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  let k := fun o : D.ConnectedComponent => o.supp.ncard / 5
+  let a₁ := fun o : D.ConnectedComponent => Q e o
+  let a₂ := fun o : D.ConnectedComponent => Q f o
+  let b₁ := fun o : D.ConnectedComponent => Q o e
+  let b₂ := fun o : D.ConnectedComponent => Q o f
+  have hrow : ∀ o ∈ F, b₁ o + b₂ o = 5 := by
+    intro o hoF
+    have hsum := degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
+      G hfree hmin hcard c₀ hregChild hcardChild o (hFmem o hoF)
+    change (∑ a ∈ E, Q o a) = 5 at hsum
+    rw [hE] at hsum
+    have hef : e ≠ f := by
+      intro hef
+      subst f
+      omega
+    simpa [b₁, b₂, hef] using hsum
+  have hbal₁ : ∀ o ∈ F, 11 * a₁ o = k o * b₁ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [he55, hm] at hbal
+    have hsmall : 11 * Q e o = m * Q o e := by nlinarith
+    change 11 * a₁ o = k o * b₁ o
+    have hdivm : 5 * m / 5 = m := by
+      simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₁, b₁]
+    rw [hm, hdivm]
+    exact hsmall
+  have hbal₂ : ∀ o ∈ F, 3 * a₂ o = k o * b₂ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o
+    change f.supp.ncard * Q f o = o.supp.ncard * Q o f at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [hf15, hm] at hbal
+    have hsmall : 3 * Q f o = m * Q o f := by nlinarith
+    change 3 * a₂ o = k o * b₂ o
+    have hdivm : 5 * m / 5 = m := by
+      simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₂, b₂]
+    rw [hm, hdivm]
+    exact hsmall
+  have hpos : ∀ o ∈ F, 0 < k o := by
+    intro o hoF
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    have hmpos : 0 < m := by
+      have := o.nonempty_supp.ncard_pos
+      rw [hm] at this
+      nlinarith
+    have hdivm : 5 * m / 5 = m := by
+      simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k]
+    rw [hm, hdivm]
+    exact hmpos
+  have hclass : ∀ o ∈ F, 3 ∣ k o ∨ 11 ∣ k o := by
+    intro o hoF
+    exact three_dvd_or_eleven_dvd_of_eleven_three_service_split
+      (k o) (a₁ o) (a₂ o) (b₁ o) (b₂ o)
+        (hrow o hoF) (hbal₁ o hoF) (hbal₂ o hoF)
+  exact no_positive_three_or_eleven_divisor_partition_sixteen
+    F k hpos hclass hFmass
 
 /-- Sharp graph-facing census for the uniform non-five orphan lane. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
