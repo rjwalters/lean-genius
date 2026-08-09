@@ -9995,6 +9995,64 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_rigid_owner_pairs
   rcases howner with h20 | h30 | h35 | h40 | h45 | h55 | h60 | h65 | h70 <;>
     simp_all [D, o, e]
 
+/-- After the order-six/eight parity obstruction, only six exact
+non-five-divisible orphan/owner pairs survive. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let o := D.connectedComponentMk zO
+    ∃ zR ∈ R,
+      let e := D.connectedComponentMk zR
+      (o.supp.ncard = 7 ∧ e.supp.ncard = 35) ∨
+        (o.supp.ncard = 9 ∧ e.supp.ncard = 45) ∨
+        (o.supp.ncard = 11 ∧ e.supp.ncard = 55) ∨
+        (o.supp.ncard = 12 ∧ e.supp.ncard = 60) ∨
+        (o.supp.ncard = 13 ∧ e.supp.ncard = 65) ∨
+        (o.supp.ncard = 14 ∧ e.supp.ncard = 70) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let o := D.connectedComponentMk zO
+  obtain ⟨zR, hzR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_rigid_owner_pairs
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO hnot
+  have hne := degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild zO hzO
+  change o.supp.ncard ≠ 6 ∧ o.supp.ncard ≠ 8 at hne
+  refine ⟨zR, hzR, ?_⟩
+  rcases hpairs with h6 | h7 | h8 | h9 | h11 | h12 | h13 | h14
+  · exact (hne.1 h6.1).elim
+  · exact Or.inl h7
+  · exact (hne.2 h8.1).elim
+  · exact Or.inr (Or.inl h9)
+  · exact Or.inr (Or.inr (Or.inl h11))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl h12)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h13))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h14))))
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
