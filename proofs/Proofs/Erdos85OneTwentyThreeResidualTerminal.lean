@@ -5662,6 +5662,61 @@ theorem degree_sixteen_zeroLayer_incidence_gram_eq_pointGraph_apply
         apply hzz'
         exact Subtype.ext h)
 
+/-- The zero-layer point graph has no edge inside a child row.  Thus its
+forty-eight vertices are naturally partitioned into three independent
+sixteen-vertex cells. -/
+theorem degree_sixteen_zeroLayer_pointGraph_row_independent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (u : minimumLayerVertex (secondOrderDefectGraph G) c₀)
+    {x y : ((Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) : Finset V) : Set V)}
+    (hxu : x.1 ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyu : y.1 ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    ¬(finsetCommonNeighborGraph G O R).Adj x y := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  intro hxy
+  obtain ⟨hxyne, z, hzx, hzy⟩ := hxy
+  have hzOuter := Finset.mem_sdiff.mp z.property
+  have hzInner := Finset.mem_sdiff.mp hzOuter.1
+  have hone := minimumLayer_orphan_service_card_eq_one G hfree
+    (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard c₀
+      hregChild (by norm_num; exact hcardChild) z.1 hzInner.2 hzOuter.2 u
+  have hxmem : x.1 ∈ minimumLayerExternalNeighborFinset G D c₀ u ∩
+      G.neighborFinset z.1 := Finset.mem_inter.mpr
+        ⟨hxu, (G.mem_neighborFinset z.1 x.1).mpr hzx⟩
+  have hymem : y.1 ∈ minimumLayerExternalNeighborFinset G D c₀ u ∩
+      G.neighborFinset z.1 := Finset.mem_inter.mpr
+        ⟨hyu, (G.mem_neighborFinset z.1 y.1).mpr hzy⟩
+  apply hxyne
+  apply Subtype.ext
+  have hle : (minimumLayerExternalNeighborFinset G D c₀ u ∩
+      G.neighborFinset z.1).card ≤ 1 := by
+    rw [hone]
+  exact Finset.card_le_one.mp hle x.1 hxmem y.1 hymem
+
 /-- In the two-layer branch every used-exterior vertex again has exactly
 twelve orphan neighbors.  Its other four neighbors are its unique `U₅`
 owner and one point in each of the three child rows nonadjacent to that
