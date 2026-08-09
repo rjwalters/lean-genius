@@ -8915,6 +8915,87 @@ theorem degree_sixteen_twoLayer_used_component_order_package
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hrep] at hdvd
 
+/-- In the two-layer branch exactly 168 vertices lie outside both the
+five-vertex minimum layer and its seventy-point service cell. -/
+theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ((Finset.univ \ U) \ R).card = 168 := by
+  have h := minimumLayer_unused_exterior_card G hfree (d := 16) (s := 2)
+    (by norm_num) (by norm_num) hmin hcard c₀ hregChild (by
+      norm_num
+      exact hcardChild)
+  norm_num at h ⊢
+  exact h
+
+/-- The defect components contained in the two-layer orphan cell partition
+that cell, so their orders have total mass 168. -/
+theorem degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O), c.supp.ncard) = 168 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ O ↔ componentRepresentative D c ∈ O) := by
+    intro c z hzc
+    constructor
+    · intro hzO
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z hzO
+      have hcz : D.connectedComponentMk z = c :=
+        (ConnectedComponent.mem_supp_iff c z).mp hzc
+      rw [hcz] at hsub
+      exact hsub (componentRepresentative_mem D c)
+    · intro hrepO
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) (componentRepresentative D c) hrepO
+      have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+        (ConnectedComponent.mem_supp_iff c
+          (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+      rw [hrep] at hsub
+      exact hsub hzc
+  calc
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+        componentRepresentative D c ∈ O), c.supp.ncard) = O.card :=
+      sum_component_sizes_filter_eq_card_of_component_closed D O hclosed
+    _ = 168 := degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+
 /-- In the four-layer branch, every defect component meeting the used
 exterior has order at least six.  Its order is a positive multiple of the
 minimum order three, and equality would put its representative back in the
