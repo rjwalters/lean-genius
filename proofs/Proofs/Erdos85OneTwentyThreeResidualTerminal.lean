@@ -7599,6 +7599,84 @@ theorem degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
       simp [ha]
     · simp [hb]
 
+/-- In the two-layer residual branch an orphan component cannot have order
+six or eight.  Its minimum-layer contribution vanishes, while every used or
+orphan target has order at least six, so all local-excess terms are even;
+but the total local excess is respectively three or five. -/
+theorem degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let o := (secondOrderDefectGraph G).connectedComponentMk z
+    o.supp.ncard ≠ 6 ∧ o.supp.ncard ≠ 8 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let o := D.connectedComponentMk z
+  change o.supp.ncard ≠ 6 ∧ o.supp.ncard ≠ 8
+  have hnot : ¬ (o.supp.ncard = 6 ∨ o.supp.ncard = 8) := by
+    intro ho
+    let f : D.ConnectedComponent → ℤ := fun e =>
+      (componentQuotientMatrix G D o e : ℤ) *
+          (componentQuotientMatrix G D e o : ℤ) -
+        (componentQuotientMatrix G D o e : ℤ)
+    have heven : ∀ e, Even (f e) := by
+      intro e
+      let w := componentRepresentative D e
+      have hwe : D.connectedComponentMk w = e :=
+        (ConnectedComponent.mem_supp_iff e w).mp (componentRepresentative_mem D e)
+      by_cases hwU : w ∈ U
+      · have hzero := degree_sixteen_fourLayer_orphan_to_minimum_quotient_eq_zero
+          G hfree hmin hcard c₀ hz e (by simpa [D, U, w] using hwU)
+        change componentQuotientMatrix G D o e = 0 at hzero
+        simp [f, hzero]
+      by_cases hwR : w ∈ R
+      · have hlower := (degree_sixteen_smallLayer_used_component_card_lower
+          G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+            hcardChild w (by simpa [D, R, w] using hwR)).2 rfl
+        rw [hwe] at hlower
+        simpa [f, D] using
+          degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
+            G hfree hmin hcard o e ho hlower
+      · have hwO : w ∈ O := Finset.mem_sdiff.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hwU⟩, hwR⟩
+        have hlower := (degree_sixteen_smallLayer_orphan_component_card_lower
+          G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+            hcardChild w (by simpa [D, U, R, O, w] using hwO)).2 rfl
+        rw [hwe] at hlower
+        simpa [f, D] using
+          degree_sixteen_order_six_or_eight_local_term_even_of_target_ge_six
+            G hfree hmin hcard o e ho hlower
+    have htwo : (2 : ℤ) ∣ ∑ e, f e := by
+      apply Finset.dvd_sum
+      intro e _he
+      exact even_iff_two_dvd.mp (heven e)
+    have hlocal := secondOrder_componentQuotientMatrix_local_excess
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+    change (∑ e, f e) = (o.supp.ncard : ℤ) - 3 at hlocal
+    rw [hlocal] at htwo
+    rcases ho with h6 | h8 <;> simp [h6, h8] at htwo
+  exact not_or.mp hnot
+
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
 then forces the owner's reduced order `|e| / 5` to divide the orphan order.
