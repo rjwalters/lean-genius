@@ -18197,6 +18197,27 @@ theorem surviving_nonFive_unequal_quotient_eq_five_or_ten
   have hkcases : k = 1 ∨ k = 2 := by omega
   rcases hkcases with rfl | rfl <;> norm_num
 
+/-- Once all non-five orphan components have a common surviving order, the
+mass congruence leaves a short list of possible component counts. -/
+theorem uniform_nonFive_orphan_count_arithmetic
+    (n r k : ℕ) (hn : n = 7 ∨ n = 9 ∨ n = 11)
+    (hmass : n * r + 5 * k = 168) :
+    (n = 7 ∧ (r = 4 ∨ r = 9 ∨ r = 14 ∨ r = 19 ∨ r = 24)) ∨
+    (n = 9 ∧ (r = 2 ∨ r = 7 ∨ r = 12 ∨ r = 17)) ∨
+    (n = 11 ∧ (r = 3 ∨ r = 8 ∨ r = 13)) := by
+  rcases hn with rfl | rfl | rfl
+  · left
+    refine ⟨rfl, ?_⟩
+    omega
+  · right
+    left
+    refine ⟨rfl, ?_⟩
+    omega
+  · right
+    right
+    refine ⟨rfl, ?_⟩
+    omega
+
 /-- An unequal target of order at least six contributes zero local excess
 from an order-seven source. -/
 theorem degree_sixteen_order_seven_unequal_local_term_eq_zero
