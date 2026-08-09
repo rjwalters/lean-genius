@@ -19146,6 +19146,126 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_target_unique_of
     simpa [C, D, O, hfg, hfe, hge, hqf, hqg] using hle.trans_eq hrow
   omega
 
+/-- Two distinct used components have combined order at most the exact used
+mass seventy. -/
+theorem degree_sixteen_twoLayer_two_used_component_order_sum_le_seventy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hfR : componentRepresentative (secondOrderDefectGraph G) f ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hne : e ≠ f) :
+    e.supp.ncard + f.supp.ncard ≤ 70 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun g : D.ConnectedComponent =>
+    componentRepresentative D g ∈ R)
+  have heC : e ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using heR⟩
+  have hfC : f ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using hfR⟩
+  have hsub : ({e, f} : Finset D.ConnectedComponent) ⊆ C := by
+    intro g hg
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hg
+    rcases hg with rfl | rfl
+    · exact heC
+    · exact hfC
+  have hle := Finset.sum_le_sum_of_subset
+    (f := fun g : D.ConnectedComponent => g.supp.ncard) hsub
+  rw [Finset.sum_pair hne] at hle
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  dsimp only at hpack
+  have hsum : (∑ g ∈ C, g.supp.ncard) = 70 := by
+    simpa [C, D, R] using hpack.1
+  exact hle.trans_eq hsum
+
+/-- The exact used mass prevents two different surviving owner orders.
+Consequently all non-five-divisible orphan components have the same order. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_orders_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z z' : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard)
+    (hnot' : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z').supp.ncard) :
+    ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard =
+      ((secondOrderDefectGraph G).connectedComponentMk z').supp.ncard := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  obtain ⟨x, hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  obtain ⟨x', hxR', hpairs'⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z' hz' hnot'
+  let e := D.connectedComponentMk x
+  let e' := D.connectedComponentMk x'
+  have heR : componentRepresentative D e ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) x hxR (componentRepresentative_mem D e)
+  have heR' : componentRepresentative D e' ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) x' hxR'
+          (componentRepresentative_mem D e')
+  by_contra horders
+  have hene : e ≠ e' := by
+    intro heq
+    have hsizes : e.supp.ncard = e'.supp.ncard :=
+      congrArg (fun c : D.ConnectedComponent => c.supp.ncard) heq
+    rcases hpairs with h7 | h9 | h11 <;>
+      rcases hpairs' with h7' | h9' | h11' <;>
+      simp_all [D, e, e'] <;> omega
+  have hbound := degree_sixteen_twoLayer_two_used_component_order_sum_le_seventy
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e e'
+      (by simpa [D, R] using heR) (by simpa [D, R] using heR') hene
+  rcases hpairs with h7 | h9 | h11 <;>
+    rcases hpairs' with h7' | h9' | h11' <;>
+    simp_all [D, e, e']
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
