@@ -4918,6 +4918,87 @@ theorem degree_sixteen_fourLayer_shared_service_row_unique
     hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
   exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
 
+/-- Zero-layer specialization of the shared-service packing law: if two
+distinct orphans have common neighbors in two child exterior rows, those
+rows are equal.  Combined with one service point per row, this says that
+the orphan triples agree in at most one coordinate. -/
+theorem degree_sixteen_zeroLayer_shared_service_row_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {z z' : V} (hzz' : z ≠ z')
+    {u v : minimumLayerVertex (secondOrderDefectGraph G) c₀}
+    {y y' : V}
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyz : G.Adj z y) (hyz' : G.Adj z' y)
+    (hy'v : y' ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v)
+    (hy'z : G.Adj z y') (hy'z' : G.Adj z' y') :
+    u = v := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hcommon := common_le_one_of_not_containsC4 hfree z z' hzz'
+  have hyCommon : y ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y).mpr hyz,
+        (G.mem_neighborFinset z' y).mpr hyz'⟩
+  have hy'Common : y' ∈ G.neighborFinset z ∩ G.neighborFinset z' :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z y').mpr hy'z,
+        (G.mem_neighborFinset z' y').mpr hy'z'⟩
+  have hyy' : y = y' :=
+    Finset.card_le_one.mp hcommon y hyCommon y' hy'Common
+  by_contra huv
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  have hdisj : Disjoint (E u) (E v) :=
+    hpair (Finset.mem_univ u) (Finset.mem_univ v) huv
+  exact (Finset.disjoint_left.mp hdisj) hyu (hyy' ▸ hy'v)
+
+/-- For two distinct zero-layer child rows, a pair of service points serves
+at most one orphan.  This is the direct injectivity form of the transversal
+packing law. -/
+theorem degree_sixteen_zeroLayer_two_row_service_pair_injective
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {u v : minimumLayerVertex (secondOrderDefectGraph G) c₀} (huv : u ≠ v)
+    {y y' z z' : V}
+    (hyu : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ u)
+    (hyz : G.Adj z y) (hyz' : G.Adj z' y)
+    (hy'v : y' ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v)
+    (hy'z : G.Adj z y') (hy'z' : G.Adj z' y') :
+    z = z' := by
+  by_contra hzz'
+  exact huv (degree_sixteen_zeroLayer_shared_service_row_unique
+    G hfree hmin hcard c₀ hregChild hcardChild hzz'
+      hyu hyz hyz' hy'v hy'z hy'z')
+
 /-- If two distinct orphans share no service point, then they are adjacent in
 the second-order defect graph.  The only possible common neighbors of two
 orphans are service points: a common orphan neighbor would violate the
@@ -10586,6 +10667,65 @@ theorem degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
     G D O hclosed e]
   obtain ⟨v, _hv, hve⟩ := Finset.mem_biUnion.mp he
   simpa [D, R, O] using degree_sixteen_twoLayer_used_exterior_orphan_degree_eq_twelve
+    G hfree hmin hcard c₀ hregChild hcardChild v hve
+
+/-- In the zero-layer branch every used-component quotient row likewise has
+total mass twelve into the orphan components. -/
+theorem degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, componentQuotientMatrix G D e o) = 12 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  have hclosed : ∀ y : V,
+      y ∈ O ↔ componentRepresentative D (D.connectedComponentMk y) ∈ O := by
+    intro y
+    constructor
+    · intro hy
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+      exact hsub (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hrep
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hrep
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D O hclosed e]
+  obtain ⟨v, _hv, hve⟩ := Finset.mem_biUnion.mp he
+  simpa [D, R, O] using degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
 
 /-- Every two-layer orphan-component quotient row has total mass five into
