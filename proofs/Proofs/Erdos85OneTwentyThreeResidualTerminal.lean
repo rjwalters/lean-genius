@@ -20639,6 +20639,160 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_orderThirtyFive_targ
     omega
   exact ⟨f, hf, by simpa [D, hzo] using hq5, hf35, hrev⟩
 
+/-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
+set: its four order-seven components have four distinct order-thirty-five
+targets, leaving no further orphan component. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_exact_exhaustion
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    ∃ f₀ f₁ f₂ f₃ : D.ConnectedComponent,
+      f₀ ∈ C \ N ∧ f₁ ∈ C \ N ∧ f₂ ∈ C \ N ∧ f₃ ∈ C \ N ∧
+      f₀.supp.ncard = 35 ∧ f₁.supp.ncard = 35 ∧
+      f₂.supp.ncard = 35 ∧ f₃.supp.ncard = 35 ∧
+      f₀ ≠ f₁ ∧ f₀ ≠ f₂ ∧ f₀ ≠ f₃ ∧
+      f₁ ≠ f₂ ∧ f₁ ≠ f₃ ∧ f₂ ≠ f₃ ∧
+      C = insert f₀ (insert f₁ (insert f₂ (insert f₃ N))) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform
+  change N.card = 4 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 7 at huniform
+  have hNcardFour : N.card = 4 := hNcard
+  rw [Finset.card_eq_four] at hNcard
+  obtain ⟨o₀, o₁, o₂, o₃, ho₀₁, ho₀₂, ho₀₃, ho₁₂, ho₁₃, ho₂₃, hNeq⟩ := hNcard
+  have ho₀N : o₀ ∈ N := by rw [hNeq]; simp
+  have ho₁N : o₁ ∈ N := by rw [hNeq]; simp
+  have ho₂N : o₂ ∈ N := by rw [hNeq]; simp
+  have ho₃N : o₃ ∈ N := by rw [hNeq]; simp
+  have htargets :=
+    degree_sixteen_twoLayer_orderSeven_card_four_exists_orderThirtyFive_target
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, O, C, N] using hNcardFour)
+        (by simpa [D, O, C, N] using huniform)
+  obtain ⟨f₀, hf₀, _hq₀, hf₀35, hr₀⟩ := htargets o₀ ho₀N
+  obtain ⟨f₁, hf₁, _hq₁, hf₁35, hr₁⟩ := htargets o₁ ho₁N
+  obtain ⟨f₂, hf₂, _hq₂, hf₂35, hr₂⟩ := htargets o₂ ho₂N
+  obtain ⟨f₃, hf₃, _hq₃, hf₃35, hr₃⟩ := htargets o₃ ho₃N
+  have htargetUnique (a b f : D.ConnectedComponent)
+      (ha : a.supp.ncard = 7) (hb : b.supp.ncard = 7)
+      (hf : f.supp.ncard = 35)
+      (hra : componentQuotientMatrix G D f a = 1)
+      (hrb : componentQuotientMatrix G D f b = 1) : a = b := by
+    exact secondOrder_multipleCover_target_source_unique_of_orders
+      G hfree (d := 16) (m := 5) (by norm_num) (by norm_num) hmin hcard
+        (by norm_num) a b f (by rw [ha, hb]) (by rw [hf, ha]) hra hrb
+  have hf₀₁ : f₀ ≠ f₁ := by
+    intro heq
+    subst f₁
+    exact ho₀₁ (htargetUnique o₀ o₁ f₀ (huniform o₀ ho₀N)
+      (huniform o₁ ho₁N) hf₀35 hr₀ hr₁)
+  have hf₀₂ : f₀ ≠ f₂ := by
+    intro heq
+    subst f₂
+    exact ho₀₂ (htargetUnique o₀ o₂ f₀ (huniform o₀ ho₀N)
+      (huniform o₂ ho₂N) hf₀35 hr₀ hr₂)
+  have hf₀₃ : f₀ ≠ f₃ := by
+    intro heq
+    subst f₃
+    exact ho₀₃ (htargetUnique o₀ o₃ f₀ (huniform o₀ ho₀N)
+      (huniform o₃ ho₃N) hf₀35 hr₀ hr₃)
+  have hf₁₂ : f₁ ≠ f₂ := by
+    intro heq
+    subst f₂
+    exact ho₁₂ (htargetUnique o₁ o₂ f₁ (huniform o₁ ho₁N)
+      (huniform o₂ ho₂N) hf₁35 hr₁ hr₂)
+  have hf₁₃ : f₁ ≠ f₃ := by
+    intro heq
+    subst f₃
+    exact ho₁₃ (htargetUnique o₁ o₃ f₁ (huniform o₁ ho₁N)
+      (huniform o₃ ho₃N) hf₁35 hr₁ hr₃)
+  have hf₂₃ : f₂ ≠ f₃ := by
+    intro heq
+    subst f₃
+    exact ho₂₃ (htargetUnique o₂ o₃ f₂ (huniform o₂ ho₂N)
+      (huniform o₃ ho₃N) hf₂35 hr₂ hr₃)
+  let T := insert f₀ (insert f₁ (insert f₂ (insert f₃ N)))
+  have hTC : T ⊆ C := by
+    intro x hx
+    simp only [T, Finset.mem_insert] at hx
+    rcases hx with rfl | rfl | rfl | rfl | hxN
+    · exact (Finset.mem_sdiff.mp hf₀).1
+    · exact (Finset.mem_sdiff.mp hf₁).1
+    · exact (Finset.mem_sdiff.mp hf₂).1
+    · exact (Finset.mem_sdiff.mp hf₃).1
+    · exact (Finset.mem_filter.mp hxN).1
+  have hf₀notN : f₀ ∉ N := (Finset.mem_sdiff.mp hf₀).2
+  have hf₁notN : f₁ ∉ N := (Finset.mem_sdiff.mp hf₁).2
+  have hf₂notN : f₂ ∉ N := (Finset.mem_sdiff.mp hf₂).2
+  have hf₃notN : f₃ ∉ N := (Finset.mem_sdiff.mp hf₃).2
+  have hNsum : (∑ e ∈ N, e.supp.ncard) = 28 := by
+    calc
+      (∑ e ∈ N, e.supp.ncard) = ∑ _e ∈ N, 7 := by
+        apply Finset.sum_congr rfl
+        intro e he
+        exact huniform e he
+      _ = 28 := by rw [hNeq]; simp [ho₀₁, ho₀₂, ho₀₃, ho₁₂, ho₁₃, ho₂₃]
+  have hTsum : (∑ e ∈ T, e.supp.ncard) = 168 := by
+    simp only [T]
+    rw [Finset.sum_insert, Finset.sum_insert, Finset.sum_insert,
+      Finset.sum_insert, hf₀35, hf₁35, hf₂35, hf₃35, hNsum]
+    · norm_num
+    · exact hf₃notN
+    · simp [hf₂₃, hf₂notN]
+    · simp [hf₁₂, hf₁₃, hf₁notN]
+    · simp [hf₀₁, hf₀₂, hf₀₃, hf₀notN]
+  have hmass := degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hCsum : (∑ e ∈ C, e.supp.ncard) = 168 := by
+    simpa [D, O, C] using hmass
+  have hCT : C ⊆ T := by
+    intro x hxC
+    by_contra hxT
+    have hinsert : insert x T ⊆ C := by
+      intro y hy
+      rcases Finset.mem_insert.mp hy with rfl | hyT
+      · exact hxC
+      · exact hTC hyT
+    have hsumLe : (∑ e ∈ insert x T, e.supp.ncard) ≤
+        ∑ e ∈ C, e.supp.ncard :=
+      Finset.sum_le_sum_of_subset_of_nonneg (f := fun e => e.supp.ncard)
+        hinsert (fun _ _ _ => Nat.zero_le _)
+    rw [Finset.sum_insert hxT, hTsum, hCsum] at hsumLe
+    have hxpos := x.nonempty_supp.ncard_pos
+    omega
+  have hCTeq : C = T := Finset.Subset.antisymm hCT hTC
+  refine ⟨f₀, f₁, f₂, f₃, hf₀, hf₁, hf₂, hf₃,
+    hf₀35, hf₁35, hf₂35, hf₃35, hf₀₁, hf₀₂, hf₀₃,
+    hf₁₂, hf₁₃, hf₂₃, ?_⟩
+  change C = insert f₀ (insert f₁ (insert f₂ (insert f₃ N)))
+  simpa [T] using hCTeq
+
 /-- In the uniform order-nine/cardinality-seven lane, every source must use
 an unequal quotient-five target; balance and reverse uniqueness force that
 target to have order forty-five and reverse quotient one. -/
