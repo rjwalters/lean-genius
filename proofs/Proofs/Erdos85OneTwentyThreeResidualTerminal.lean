@@ -63,6 +63,73 @@ theorem finsetAdjIncidence_transpose_mul_apply
         (fun z : (A : Set V) => G.Adj z.1 x.1 ∧ G.Adj z.1 y.1)
           Finset.univ)
 
+/-- The point graph of a finite incidence cell: two column points are joined
+when they have a common neighbor in the row cell. -/
+def finsetCommonNeighborGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
+    SimpleGraph (B : Set V) where
+  Adj x y := x ≠ y ∧ ∃ z : (A : Set V), G.Adj z.1 x.1 ∧ G.Adj z.1 y.1
+  symm := ⟨by
+    intro x y hxy
+    exact ⟨hxy.1.symm, by
+      obtain ⟨z, hzx, hzy⟩ := hxy.2
+      exact ⟨z, hzy, hzx⟩⟩⟩
+  loopless := ⟨by intro x hxx; exact hxx.1 rfl⟩
+
+noncomputable instance finsetCommonNeighborGraph.instDecidableAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
+    DecidableRel (finsetCommonNeighborGraph G A B).Adj := Classical.decRel _
+
+/-- If diagonal incidence degree is `q` and distinct columns meet at most
+once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
+theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) (q : ℕ)
+    (hdiag : ∀ x : (B : Set V),
+      (Finset.univ.filter fun z : (A : Set V) => G.Adj z.1 x.1).card = q)
+    (hoff : ∀ x y : (B : Set V), x ≠ y →
+      (Finset.univ.filter fun z : (A : Set V) =>
+        G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card ≤ 1)
+    (x y : (B : Set V)) :
+    (Matrix.transpose (finsetAdjIncidenceMatrix (K := ℤ) G A B) *
+      finsetAdjIncidenceMatrix (K := ℤ) G A B) x y =
+      (q : ℤ) * (1 : Matrix (B : Set V) (B : Set V) ℤ) x y +
+        (finsetCommonNeighborGraph G A B).adjMatrix ℤ x y := by
+  classical
+  rw [finsetAdjIncidence_transpose_mul_apply]
+  by_cases hxy : x = y
+  · subst y
+    have heq : (Finset.univ.filter fun z : (A : Set V) =>
+        G.Adj z.1 x.1 ∧ G.Adj z.1 x.1) =
+        Finset.univ.filter fun z : (A : Set V) => G.Adj z.1 x.1 := by
+      ext z
+      simp
+    rw [heq, hdiag]
+    simp
+  · have hle := hoff x y hxy
+    by_cases hadj : (finsetCommonNeighborGraph G A B).Adj x y
+    · have hpos : 0 < (Finset.univ.filter fun z : (A : Set V) =>
+          G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card := by
+        apply Finset.card_pos.mpr
+        obtain ⟨z, hzx, hzy⟩ := hadj.2
+        exact ⟨z, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzx, hzy⟩⟩
+      have hone : (Finset.univ.filter fun z : (A : Set V) =>
+          G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card = 1 := by omega
+      rw [hone]
+      simp [SimpleGraph.adjMatrix_apply, hadj, hxy]
+    · have hempty : (Finset.univ.filter fun z : (A : Set V) =>
+          G.Adj z.1 x.1 ∧ G.Adj z.1 y.1) = ∅ := by
+        apply Finset.eq_empty_iff_forall_notMem.mpr
+        intro z hz
+        apply hadj
+        exact ⟨hxy, z, (Finset.mem_filter.mp hz).2.1,
+          (Finset.mem_filter.mp hz).2.2⟩
+      rw [hempty]
+      simp [SimpleGraph.adjMatrix_apply, hadj, hxy]
+
 /-- Restricted cherry counting: if centers in `A` create more two-element
 endpoint subsets inside `B` than `B` has pairs, two centers share an endpoint
 pair and hence form a four-cycle. -/
