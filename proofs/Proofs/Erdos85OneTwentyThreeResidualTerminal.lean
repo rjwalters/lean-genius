@@ -21231,6 +21231,72 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_orientedFiveMass_eq_five
     G hfree hmin hcard c₀ hregChild hcardChild u hu huRange hℓ3 hbij huD
   omega
 
+/-- Exact oriented five-mass five forces an odd number of selected
+forward antipodal components (those with diagonal quotient one). -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_forwardFive_diagonalOne_card_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    Odd (((Finset.univ.filter (fun e : D.ConnectedComponent =>
+      5 ∣ e.supp.ncard ∧ forwardOriented G u e)).filter
+        (fun e => componentQuotientMatrix G D e e = 1)).card) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  let A := (Finset.univ.filter (fun e : D.ConnectedComponent =>
+    5 ∣ e.supp.ncard ∧ forwardOriented G u e)).filter
+      (fun e => componentQuotientMatrix G D e e = 1)
+  intro hNcard huniform
+  have hmass := degree_sixteen_twoLayer_orderSeven_card_four_orientedFiveMass_eq_five
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      u hu huRange hℓ3 hbij huD
+        (by simpa [D, O, C, N] using hNcard)
+        (by simpa [D, O, C, N] using huniform)
+  have hpar := orientedAnchorMass_forwardOriented_modTwo_eq_antipodal_card
+    G hfree (d := 16) (p := 5) (by norm_num) (by norm_num) hmin hcard
+      u hu huRange
+  change orientedAnchorMass G u (forwardOriented G u) 5 ≡ A.card [MOD 2] at hpar
+  rw [hmass] at hpar
+  rw [Nat.odd_iff]
+  unfold Nat.ModEq at hpar
+  norm_num at hpar ⊢
+  exact hpar.symm
+
 /-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
 set: its four order-seven components have four distinct order-thirty-five
 targets, leaving no further orphan component. -/
