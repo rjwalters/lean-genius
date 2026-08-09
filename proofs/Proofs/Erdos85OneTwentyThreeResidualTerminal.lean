@@ -18915,6 +18915,133 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
       simpa [C, D, O] using hpair.trans_eq hrow
     omega
 
+/-- Unconditional zero-excess alphabet: every unequal positive O-to-O
+quotient from a surviving non-five orphan is exactly five. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard)
+    (f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hfO : componentRepresentative (secondOrderDefectGraph G) f ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hfne : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠
+      f.supp.ncard)
+    (hfpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) f) :
+    componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) f = 5 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let o := D.connectedComponentMk z
+  obtain ⟨_x, _hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  rcases hpairs with h7 | h9 | h11
+  · have hshape :=
+      degree_sixteen_twoLayer_orderSeven_orphan_quotientTwo_count_eq_two
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz h7.1
+    dsimp only at hshape
+    let C7 := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      e.supp.ncard = 7)
+    have hnon : (C7.filter fun e =>
+        componentQuotientMatrix G D o e = 2).Nonempty := by
+      apply Finset.card_pos.mp
+      simpa [C7, D, o] using (show 0 <
+        (Finset.univ.filter (fun e : D.ConnectedComponent => e.supp.ncard = 7)
+          |>.filter fun e => componentQuotientMatrix G D o e = 2).card by
+            rw [hshape]
+            norm_num)
+    obtain ⟨e, he⟩ := hnon
+    have he7 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+    have heQ := (Finset.mem_filter.mp he).2
+    have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz e
+        (Or.inl he7) (by rw [heQ]; norm_num)
+    exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_of_same_order_two
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
+        hfO heO hfne (by rw [he7, h7.1]) hfpos (by rw [heQ])
+  · have hshape := degree_sixteen_twoLayer_orderNine_orphan_row_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz h9.1
+    dsimp only at hshape
+    rcases hshape with hthree | htwo
+    · have hnon := Finset.card_pos.mp (by rw [hthree.1]; norm_num :
+          0 < (Finset.univ.filter
+            (fun e : D.ConnectedComponent => e.supp.ncard = 9) |>.filter
+              (fun e => componentQuotientMatrix G D o e = 3)).card)
+      obtain ⟨e, he⟩ := hnon
+      have he9 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+      have heQ := (Finset.mem_filter.mp he).2
+      have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz e
+          (Or.inr (Or.inl he9)) (by rw [heQ]; norm_num)
+      exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_of_same_order_two
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
+          hfO heO hfne (by rw [he9, h9.1]) hfpos (by rw [heQ]; norm_num)
+    · have hnon := Finset.card_pos.mp (by rw [htwo.2]; norm_num :
+          0 < (Finset.univ.filter
+            (fun e : D.ConnectedComponent => e.supp.ncard = 9) |>.filter
+              (fun e => componentQuotientMatrix G D o e = 2)).card)
+      obtain ⟨e, he⟩ := hnon
+      have he9 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+      have heQ := (Finset.mem_filter.mp he).2
+      have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz e
+          (Or.inr (Or.inl he9)) (by rw [heQ]; norm_num)
+      exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_of_same_order_two
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
+          hfO heO hfne (by rw [he9, h9.1]) hfpos (by rw [heQ])
+  · have hshape := degree_sixteen_twoLayer_orderEleven_orphan_row_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz h11.1
+    dsimp only at hshape
+    rcases hshape with hthree | htwo
+    · have hnon := Finset.card_pos.mp (by rw [hthree.1]; norm_num :
+          0 < (Finset.univ.filter
+            (fun e : D.ConnectedComponent => e.supp.ncard = 11) |>.filter
+              (fun e => componentQuotientMatrix G D o e = 3)).card)
+      obtain ⟨e, he⟩ := hnon
+      have he11 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+      have heQ := (Finset.mem_filter.mp he).2
+      have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz e
+          (Or.inr (Or.inr he11)) (by rw [heQ]; norm_num)
+      exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_of_same_order_two
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
+          hfO heO hfne (by rw [he11, h11.1]) hfpos (by rw [heQ]; norm_num)
+    · have hnon := Finset.card_pos.mp (by rw [htwo.2]; norm_num :
+          0 < (Finset.univ.filter
+            (fun e : D.ConnectedComponent => e.supp.ncard = 11) |>.filter
+              (fun e => componentQuotientMatrix G D o e = 2)).card)
+      obtain ⟨e, he⟩ := hnon
+      have he11 := (Finset.mem_filter.mp (Finset.mem_filter.mp he).1).2
+      have heQ := (Finset.mem_filter.mp he).2
+      have heO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz e
+          (Or.inr (Or.inr he11)) (by rw [heQ]; norm_num)
+      exact degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_of_same_order_two
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
+          hfO heO hfne (by rw [he11, h11.1]) hfpos (by rw [heQ])
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
