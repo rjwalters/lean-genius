@@ -10573,6 +10573,106 @@ theorem degree_sixteen_twoLayer_orderNine_shared_orderFortyFive_owner
       e f (by simpa [D, R] using heR) (by simpa [D, R] using hfR) he45 hf45
   simpa [hef, D] using hrigid.1
 
+/-- The uniform order-nine/cardinality-twelve census candidate is impossible:
+its shared order-forty-five owner receives twelve local-excess contributions
+of four, exceeding its total local-excess budget forty-two. -/
+theorem false_of_degree_sixteen_twoLayer_twelve_orderNine_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 12 → (∀ o ∈ N, o.supp.ncard = 9) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 12 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 9 at huniform
+  obtain ⟨e, _heR, he45, hreverse⟩ :=
+    degree_sixteen_twoLayer_orderNine_shared_orderFortyFive_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, R, O, C, N] using hNcard)
+        (by simpa [D, R, O, C, N] using huniform)
+  have hforward : ∀ o ∈ N, Q o e = 5 := by
+    intro o hoN
+    have hrev : Q e o = 1 := by simpa [Q, D] using hreverse o hoN
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+    change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+    rw [huniform o hoN, he45, hrev] at hbal
+    omega
+  have hNsum : (∑ o ∈ N, Q e o * (Q o e - 1)) = 48 := by
+    calc
+      (∑ o ∈ N, Q e o * (Q o e - 1)) = ∑ _o ∈ N, 4 := by
+        apply Finset.sum_congr rfl
+        intro o hoN
+        have hrev : Q e o = 1 := by simpa [Q, D] using hreverse o hoN
+        rw [hrev, hforward o hoN]
+      _ = N.card * 4 := by simp
+      _ = 48 := by rw [hNcard]
+  let T : D.ConnectedComponent → ℤ := fun o =>
+    (Q e o : ℤ) * (Q o e : ℤ) - (Q e o : ℤ)
+  have hTnonneg : ∀ o, 0 ≤ T o := by
+    intro o
+    by_cases hzero : Q e o = 0
+    · simp [T, hzero]
+    · have hpos : 0 < Q e o := Nat.pos_of_ne_zero hzero
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+      change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+      have hrevpos : 0 < Q o e := by
+        by_contra hnotpos
+        have hz : Q o e = 0 := by omega
+        rw [hz, mul_zero] at hbal
+        exact (Nat.ne_of_gt (Nat.mul_pos e.nonempty_supp.ncard_pos hpos)) hbal
+      dsimp only [T]
+      push_cast
+      nlinarith
+  have hNsumInt : (∑ o ∈ N, T o) = 48 := by
+    calc
+      (∑ o ∈ N, T o) = (∑ o ∈ N,
+          ((Q e o * (Q o e - 1) : ℕ) : ℤ)) := by
+            apply Finset.sum_congr rfl
+            intro o hoN
+            have hbal := secondOrder_componentQuotientMatrix_balance
+              G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+            exact local_excess_int_eq_nat_row_moment
+              o.supp.ncard e.supp.ncard (Q o e) (Q e o)
+                o.nonempty_supp.ncard_pos e.nonempty_supp.ncard_pos hbal
+      _ = ((∑ o ∈ N, Q e o * (Q o e - 1) : ℕ) : ℤ) := by norm_cast
+      _ = 48 := by exact_mod_cast hNsum
+  have hlocal := secondOrder_componentQuotientMatrix_local_excess
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e
+  change (∑ o, T o) = (e.supp.ncard : ℤ) - 3 at hlocal
+  have hle : (∑ o ∈ N, T o) ≤ ∑ o, T o :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ N)
+      (fun o _ _ => hTnonneg o)
+  rw [hNsumInt, hlocal, he45] at hle
+  norm_num at hle
+
 /-- Orders seven and fourteen cannot both occur among two-layer orphans:
 their rigid owners would have orders 35 and 70, exceeding the total used
 mass seventy. -/
