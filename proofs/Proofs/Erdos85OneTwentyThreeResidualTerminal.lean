@@ -7873,7 +7873,9 @@ theorem degree_sixteen_twoLayer_orphan_order_ne_six_or_eight
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
     change (∑ e, f e) = (o.supp.ncard : ℤ) - 3 at hlocal
     rw [hlocal] at htwo
-    rcases ho with h6 | h8 <;> simp [h6, h8] at htwo
+    rcases ho with h6 | h8
+    · simp [h6] at htwo
+    · simp [h8] at htwo
   exact not_or.mp hnot
 
 /-- The same local-excess parity argument, now using the order-six
@@ -9778,6 +9780,58 @@ theorem degree_sixteen_twoLayer_used_component_reduced_partition
   rw [hmass] at hle
   have hwe := hw e he
   omega
+
+/-- In a positive partition of fourteen with floor two, once one part is
+seven every even part is two or four. -/
+theorem even_part_eq_two_or_four_of_sum_eq_fourteen_of_contains_seven
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hsum : (∑ x ∈ C, w x) = 14)
+    (hlower : ∀ x ∈ C, 2 ≤ w x)
+    (a b : α) (ha : a ∈ C) (hb : b ∈ C)
+    (hwa : w a = 7) (hwbEven : Even (w b)) :
+    w b = 2 ∨ w b = 4 := by
+  obtain ⟨k, hk⟩ := hwbEven
+  have hwbLower := hlower b hb
+  have hab : a ≠ b := by
+    intro h
+    subst b
+    omega
+  have hpairSub : ({a, b} : Finset α) ⊆ C := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact ha
+    · exact hb
+  have hpairLe := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := w) hpairSub (fun _ _ _ => Nat.zero_le _)
+  have hwbLe : w b ≤ 7 := by
+    rw [show (∑ x ∈ ({a, b} : Finset α), w x) = w a + w b by
+      simp [hab]] at hpairLe
+    rw [hwa, hsum] at hpairLe
+    omega
+  have hcases : w b = 2 ∨ w b = 4 ∨ w b = 6 := by omega
+  rcases hcases with h2 | h4 | h6
+  · exact Or.inl h2
+  · exact Or.inr h4
+  · exfalso
+    let T : Finset α := {a, b}
+    have hsplit := Finset.sum_sdiff hpairSub (f := w)
+    have hTsum : (∑ x ∈ T, w x) = 13 := by simp [T, hab, hwa, h6]
+    have hcomp : (∑ x ∈ C \ T, w x) = 1 := by
+      change (∑ x ∈ C \ T, w x) + (∑ x ∈ T, w x) =
+        ∑ x ∈ C, w x at hsplit
+      rw [hTsum, hsum] at hsplit
+      omega
+    by_cases hnon : (C \ T).Nonempty
+    · obtain ⟨x, hx⟩ := hnon
+      have hxle := Finset.single_le_sum
+        (f := w) (fun _ _ => Nat.zero_le _) hx
+      have hxLower := hlower x (Finset.mem_sdiff.mp hx).1
+      rw [hcomp] at hxle
+      omega
+    · have hempty : C \ T = ∅ := Finset.not_nonempty_iff_eq_empty.mp hnon
+      rw [hempty] at hcomp
+      simp at hcomp
 
 /-- Every used-component quotient row has total mass twelve into the orphan
 components, reflecting the twelve orphan neighbors of each used vertex. -/
