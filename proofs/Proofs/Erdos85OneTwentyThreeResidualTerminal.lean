@@ -772,6 +772,88 @@ theorem false_of_fifteen_fifteen_nine_nine_row_ledger
   omega
 
 set_option maxHeartbeats 2000000 in
+/-- Complete row classification for the final `(15,15,9,9)` orphan
+partition. -/
+theorem fifteen_fifteen_nine_nine_row_type_classification
+    (r q₀ q₁ q₂ q₃ a₀ a₁ a₂ a₃ : ℕ)
+    (hrLower : 6 ≤ r) (hrThree : 3 ∣ r) (hrUpper : r ≤ 180)
+    (hrow : q₀ + q₁ + q₂ + q₃ = 4)
+    (hbal₀ : r * q₀ = 15 * a₀) (hbal₁ : r * q₁ = 15 * a₁)
+    (hbal₂ : r * q₂ = 9 * a₂) (hbal₃ : r * q₃ = 9 * a₃)
+    (hdvd₀ : 2 ≤ q₀ → r ∣ 15) (hdvd₁ : 2 ≤ q₁ → r ∣ 15)
+    (hdvd₂ : 2 ≤ q₂ → r ∣ 9) (hdvd₃ : 2 ≤ q₃ → r ∣ 9) :
+    (r = 9 ∧ q₀ = 0 ∧ q₁ = 0 ∧
+      ((q₂ = 0 ∧ q₃ = 4) ∨ (q₂ = 1 ∧ q₃ = 3) ∨
+       (q₂ = 2 ∧ q₃ = 2) ∨ (q₂ = 3 ∧ q₃ = 1) ∨
+       (q₂ = 4 ∧ q₃ = 0))) ∨
+    (r = 15 ∧ q₂ = 0 ∧ q₃ = 0 ∧
+      ((q₀ = 0 ∧ q₁ = 4) ∨ (q₀ = 1 ∧ q₁ = 3) ∨
+       (q₀ = 2 ∧ q₁ = 2) ∨ (q₀ = 3 ∧ q₁ = 1) ∨
+       (q₀ = 4 ∧ q₁ = 0))) ∨
+    ((r = 45 ∨ r = 90 ∨ r = 135 ∨ r = 180) ∧
+      q₀ = 1 ∧ q₁ = 1 ∧ q₂ = 1 ∧ q₃ = 1) := by
+  have hq₀ : q₀ ≤ 4 := by omega
+  have hq₁ : q₁ ≤ 4 := by omega
+  have hq₂ : q₂ ≤ 4 := by omega
+  have hq₃ : q₃ ≤ 4 := by omega
+  by_cases hall : q₀ ≤ 1 ∧ q₁ ≤ 1 ∧ q₂ ≤ 1 ∧ q₃ ≤ 1
+  · have hunit : q₀ = 1 ∧ q₁ = 1 ∧ q₂ = 1 ∧ q₃ = 1 := by omega
+    rcases hunit with ⟨rfl, rfl, rfl, rfl⟩
+    have h15 : 15 ∣ r := ⟨a₀, by omega⟩
+    have h9 : 9 ∣ r := ⟨a₂, by omega⟩
+    have h45 : 45 ∣ r := by omega
+    obtain ⟨k, hk⟩ := h45
+    have hkpos : 1 ≤ k := by omega
+    have hkle : k ≤ 4 := by omega
+    interval_cases k <;> omega
+  · have hlarge : 2 ≤ q₀ ∨ 2 ≤ q₁ ∨ 2 ≤ q₂ ∨ 2 ≤ q₃ := by omega
+    rcases hlarge with hlarge | hlarge | hlarge | hlarge
+    · have hrle : r ≤ 15 := Nat.le_of_dvd (by norm_num) (hdvd₀ hlarge)
+      have hd := hdvd₀ hlarge
+      have hre : r = 15 := by
+        interval_cases r <;> norm_num at hd
+        rfl
+      subst r
+      have hq₂zero : q₂ = 0 := by omega
+      have hq₃zero : q₃ = 0 := by omega
+      subst q₂
+      subst q₃
+      interval_cases q₀ <;> omega
+    · have hrle : r ≤ 15 := Nat.le_of_dvd (by norm_num) (hdvd₁ hlarge)
+      have hd := hdvd₁ hlarge
+      have hre : r = 15 := by
+        interval_cases r <;> norm_num at hd
+        rfl
+      subst r
+      have hq₂zero : q₂ = 0 := by omega
+      have hq₃zero : q₃ = 0 := by omega
+      subst q₂
+      subst q₃
+      interval_cases q₀ <;> omega
+    · have hrle : r ≤ 9 := Nat.le_of_dvd (by norm_num) (hdvd₂ hlarge)
+      have hd := hdvd₂ hlarge
+      have hre : r = 9 := by
+        interval_cases r <;> norm_num at hd
+        rfl
+      subst r
+      have hq₀zero : q₀ = 0 := by omega
+      have hq₁zero : q₁ = 0 := by omega
+      subst q₀
+      subst q₁
+      interval_cases q₂ <;> omega
+    · have hrle : r ≤ 9 := Nat.le_of_dvd (by norm_num) (hdvd₃ hlarge)
+      have hd := hdvd₃ hlarge
+      have hre : r = 9 := by
+        interval_cases r <;> norm_num at hd
+        rfl
+      subst r
+      have hq₀zero : q₀ = 0 := by omega
+      have hq₁zero : q₁ = 0 := by omega
+      subst q₀
+      subst q₁
+      interval_cases q₂ <;> omega
+
+set_option maxHeartbeats 2000000 in
 /-- Complete finite row classification behind the `(12,12,24)` ledger.
 The four quotient units of a used component can occur in exactly these
 seventeen order/row patterns.  The divisibility hypotheses are the forward
