@@ -7381,6 +7381,64 @@ theorem degree_sixteen_twoLayer_concentrated_cut_reverse_quotient
     Nat.div_eq_of_eq_mul_left hkpos (by simpa [mul_comm] using hmul.symm)
   exact hdiv.symm
 
+/-- A concentrated cut to a non-five-divisible orphan is rigid: its reverse
+quotient is one, and the orphan order equals the used owner's reduced order.
+A reverse quotient at least two would force the full five-divisible used
+order to divide the orphan order by periodicity. -/
+theorem degree_sixteen_twoLayer_nonFive_concentrated_cut_rigidity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 5 ∣ e.supp.ncard) (hnot : ¬ 5 ∣ o.supp.ncard)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 5) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1 ∧
+      o.supp.ncard = e.supp.ncard / 5 := by
+  let D := secondOrderDefectGraph G
+  let q := componentQuotientMatrix G D e o
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  have hqpos : 0 < q := by
+    change o.supp.ncard * componentQuotientMatrix G D o e =
+      e.supp.ncard * q at hbal
+    rw [show componentQuotientMatrix G D o e = 5 by simpa [D] using hq] at hbal
+    have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+    by_contra hzero
+    have hzero' : q = 0 := by omega
+    rw [hzero', mul_zero] at hbal
+    omega
+  have hendvd : ¬ e.supp.ncard ∣ o.supp.ncard := by
+    intro hdvd
+    exact hnot (dvd_trans heDvd hdvd)
+  have hqle : q ≤ 1 := by
+    simpa [D, q] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o hendvd
+  have hqone : q = 1 := by omega
+  have hratio := degree_sixteen_twoLayer_concentrated_cut_owner_ratio_dvd
+    G hfree hmin hcard e o heDvd hq
+  have hreverse := degree_sixteen_twoLayer_concentrated_cut_reverse_quotient
+    G hfree hmin hcard e o heDvd hq
+  refine ⟨by simpa [D, q] using hqone, ?_⟩
+  rw [show componentQuotientMatrix G D e o = 1 by simpa [D, q] using hqone]
+    at hreverse
+  obtain ⟨m, hm⟩ := hratio
+  have hkpos : 0 < e.supp.ncard / 5 := by
+    obtain ⟨k, hk⟩ := heDvd
+    have hepos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+    rw [hk]
+    simpa using (show 0 < k by omega)
+  have hdiv : (e.supp.ncard / 5) * m / (e.supp.ncard / 5) = m := by
+    exact Nat.mul_div_right m hkpos
+  rw [hm, hdiv] at hreverse
+  have hmone : m = 1 := hreverse.symm
+  subst m
+  simpa using hm
+
 /-- A concentrated owner term cannot exceed the source orphan's full local
 excess.  Detailed balance makes every quotient interaction term
 nonnegative, so the term `5 * (Q(e,o)-1)` is bounded by `|o|-3`. -/
