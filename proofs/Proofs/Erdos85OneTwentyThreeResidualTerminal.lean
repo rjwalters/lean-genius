@@ -9801,6 +9801,69 @@ theorem degree_sixteen_twoLayer_exists_nonFive_orphan_component
   rw [hsum] at hdvd
   norm_num at hdvd
 
+/-- Globally, the compulsory non-five orphan forces the used partition to
+contain a component from the pruned owner alphabet. -/
+theorem degree_sixteen_twoLayer_exists_pruned_owner_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    ∃ e ∈ C,
+      e.supp.ncard = 20 ∨ e.supp.ncard = 30 ∨ e.supp.ncard = 35 ∨
+        e.supp.ncard = 40 ∨ e.supp.ncard = 45 ∨ e.supp.ncard = 55 ∨
+        e.supp.ncard = 60 ∨ e.supp.ncard = 65 ∨ e.supp.ncard = 70 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let CO := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  obtain ⟨o, ho, hnot⟩ := degree_sixteen_twoLayer_exists_nonFive_orphan_component
+    G hfree hmin hcard c₀ hregChild hcardChild
+  have hrepO : componentRepresentative D o ∈ O :=
+    (Finset.mem_filter.mp ho).2
+  have hmkO : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o
+      (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+  obtain ⟨zR, hzR, _hq, howner⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_pruned_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D o) hrepO (by rw [hmkO]; exact hnot)
+  let e := D.connectedComponentMk zR
+  have hrepR : componentRepresentative D e ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) zR hzR (componentRepresentative_mem D e)
+  refine ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrepR⟩, ?_⟩
+  rcases howner with h20 | h30 | h35 | h40 | h45 | h55 | h60 | h65 | h70
+  · exact Or.inl h20.1
+  · exact Or.inr (Or.inl h30)
+  · exact Or.inr (Or.inr (Or.inl h35))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl h40)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h45))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h55)))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h60))))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h65)))))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h70)))))))
+
 /-- Splitting the orphan mass into five-divisible and non-five-divisible
 components shows that the latter carry mass congruent to three modulo five. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_mass_mod_five
