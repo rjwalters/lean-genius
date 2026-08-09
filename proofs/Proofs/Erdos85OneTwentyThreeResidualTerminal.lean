@@ -9668,6 +9668,125 @@ theorem degree_sixteen_fourLayer_used_component_order_package
       (componentRepresentative D e)).mp (componentRepresentative_mem D e)
   rwa [hc₀three, hrep] at hdvd
 
+/-- The three pairwise-disjoint service rows in the zero-layer branch have
+sixteen vertices each, so the used-exterior cell has size forty-eight. -/
+theorem degree_sixteen_zeroLayer_used_exterior_card_eq_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    (Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀)).card = 48 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  have hbelow : Fintype.card V < (16 + 1) * (16 - 1) + 1 := by
+    rw [hcard]
+    norm_num
+  have hregParent : ∀ z : V, G.degree z = 16 :=
+    regular_of_minDegree_card_lt_nextMooreLayer
+      G hfree (by norm_num) hmin hbelow
+  have hrow : ∀ x : minimumLayerVertex D c₀, (E x).card = 16 := by
+    intro x
+    simpa [E] using card_minimumLayerExternalNeighborFinset
+      G D c₀ hregParent hregChild x
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild (by norm_num; exact hcardChild)
+  change (Finset.univ.biUnion E).card = 48
+  rw [Finset.card_biUnion hpair]
+  rw [Finset.sum_congr rfl (fun x _ => hrow x)]
+  calc
+    (∑ _x : minimumLayerVertex D c₀, 16) =
+        Fintype.card (minimumLayerVertex D c₀) * 16 := by simp
+    _ = 48 := by
+      rw [show Fintype.card (minimumLayerVertex D c₀) = 3 by
+        simpa [D] using hcardChild]
+
+/-- Used defect components partition the forty-eight-point zero-layer
+service cell, and every component order is divisible by three. -/
+theorem degree_sixteen_zeroLayer_used_component_order_package
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion
+      (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    (∑ e ∈ C, e.supp.ncard) = 48 ∧
+      ∀ e ∈ C, 3 ∣ e.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion
+    (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hclosed : ∀ y : V,
+      y ∈ R ↔ componentRepresentative D (D.connectedComponentMk y) ∈ R := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+          (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hr
+      have hsub := degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hr
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  have hsum : (∑ e ∈ C, e.supp.ncard) = R.card := by
+    simpa [C] using sum_component_sizes_filter_eq_card_of_component_closed
+      D R (fun e z hz => by
+        have hcomp : D.connectedComponentMk z = e :=
+          (ConnectedComponent.mem_supp_iff e z).mp hz
+        simpa [hcomp] using hclosed z)
+  have hRcard : R.card = 48 :=
+    degree_sixteen_zeroLayer_used_exterior_card_eq_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild
+  refine ⟨hsum.trans hRcard, ?_⟩
+  intro e he
+  have hrepR : componentRepresentative D e ∈ R :=
+    (Finset.mem_filter.mp he).2
+  have hdvd := (degree_sixteen_smallLayer_used_component_card_dvd
+    G hfree (s := 0) (by norm_num) hmin hcard c₀ hc₀min hregChild
+      (by norm_num; exact hcardChild) (componentRepresentative D e) hrepR).1 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  rwa [hrep] at hdvd
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
@@ -11182,6 +11301,87 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
   · exact Or.inr (Or.inr h11)
   · exact (hne13 h13.1).elim
   · exact (hne14 h14.1).elim
+
+/-- In the zero-layer branch exactly 192 vertices lie outside both the
+three-vertex minimum layer and its forty-eight-point service cell. -/
+theorem degree_sixteen_zeroLayer_unused_exterior_card_eq_oneNinetyTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ((Finset.univ \ U) \ R).card = 192 := by
+  have h := minimumLayer_unused_exterior_card G hfree (d := 16) (s := 0)
+    (by norm_num) (by norm_num) hmin hcard c₀ hregChild (by
+      norm_num
+      exact hcardChild)
+  norm_num at h ⊢
+  exact h
+
+/-- Zero-layer orphan defect components partition the 192-point orphan
+cell, so their orders have total mass 192. -/
+theorem degree_sixteen_zeroLayer_orphan_component_order_sum_eq_oneNinetyTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+      componentRepresentative D c ∈ O), c.supp.ncard) = 192 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ O ↔ componentRepresentative D c ∈ O) := by
+    intro c z hzc
+    constructor
+    · intro hzO
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z hzO
+      have hcz : D.connectedComponentMk z = c :=
+        (ConnectedComponent.mem_supp_iff c z).mp hzc
+      rw [hcz] at hsub
+      exact hsub (componentRepresentative_mem D c)
+    · intro hrepO
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) (componentRepresentative D c) hrepO
+      have hrep : D.connectedComponentMk (componentRepresentative D c) = c :=
+        (ConnectedComponent.mem_supp_iff c
+          (componentRepresentative D c)).mp (componentRepresentative_mem D c)
+      rw [hrep] at hsub
+      exact hsub hzc
+  calc
+    (∑ c ∈ Finset.univ.filter (fun c : D.ConnectedComponent =>
+        componentRepresentative D c ∈ O), c.supp.ncard) = O.card :=
+      sum_component_sizes_filter_eq_card_of_component_closed D O hclosed
+    _ = 192 := degree_sixteen_zeroLayer_unused_exterior_card_eq_oneNinetyTwo
+      G hfree hmin hcard c₀ hregChild hcardChild
 
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
