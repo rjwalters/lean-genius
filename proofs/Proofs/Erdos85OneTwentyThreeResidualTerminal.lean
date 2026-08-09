@@ -4999,6 +4999,101 @@ theorem degree_sixteen_zeroLayer_two_row_service_pair_injective
     G hfree hmin hcard c₀ hregChild hcardChild hzz'
       hyu hyz hyz' hy'v hy'z hy'z')
 
+/-- Entrywise zero-layer design identity.  For two distinct orphans, every
+common neighbor lies either in the orphan core or in the used exterior, and
+the two counts sum to zero on a defect edge and to one otherwise. -/
+theorem degree_sixteen_zeroLayer_orphan_common_neighbor_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {z z' : V}
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hz' : z' ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hzz' : z ≠ z') :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (((O ∩ G.neighborFinset z) ∩ G.neighborFinset z').card +
+      ((R ∩ G.neighborFinset z) ∩ G.neighborFinset z').card) =
+        if D.Adj z z' then 0 else 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let N := G.neighborFinset z ∩ G.neighborFinset z'
+  have hzNoChildAdj : ∀ v : minimumLayerVertex D c₀,
+      ¬ G.Adj z v.2.1 := by
+    intro v hzv
+    have hzUnused : z ∉ R := (Finset.mem_sdiff.mp hz).2
+    apply hzUnused
+    apply Finset.mem_biUnion.mpr
+    refine ⟨v, Finset.mem_univ _, ?_⟩
+    exact Finset.mem_sdiff.mpr
+      ⟨(G.mem_neighborFinset v.2.1 z).mpr hzv.symm,
+        (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hz).1).2⟩
+  have hdecomp : N =
+      ((O ∩ G.neighborFinset z) ∩ G.neighborFinset z') ∪
+        ((R ∩ G.neighborFinset z) ∩ G.neighborFinset z') := by
+    ext y
+    constructor
+    · intro hy
+      have hyData := Finset.mem_inter.mp hy
+      have hyz : G.Adj z y := (G.mem_neighborFinset z y).mp hyData.1
+      have hyOutside : y ∉ U := by
+        intro hyU
+        obtain ⟨v, _hv, hvy⟩ := Finset.mem_image.mp hyU
+        apply hzNoChildAdj v
+        change v.2.1 = y at hvy
+        rwa [hvy]
+      by_cases hyR : y ∈ R
+      · exact Finset.mem_union.mpr (Or.inr
+          (Finset.mem_inter.mpr
+            ⟨Finset.mem_inter.mpr ⟨hyR, hyData.1⟩, hyData.2⟩))
+      · have hyO : y ∈ O := Finset.mem_sdiff.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hyOutside⟩, hyR⟩
+        exact Finset.mem_union.mpr (Or.inl
+          (Finset.mem_inter.mpr
+            ⟨Finset.mem_inter.mpr ⟨hyO, hyData.1⟩, hyData.2⟩))
+    · intro hy
+      rcases Finset.mem_union.mp hy with hyO | hyR
+      · exact Finset.mem_inter.mpr
+          ⟨(Finset.mem_inter.mp (Finset.mem_inter.mp hyO).1).2,
+            (Finset.mem_inter.mp hyO).2⟩
+      · exact Finset.mem_inter.mpr
+          ⟨(Finset.mem_inter.mp (Finset.mem_inter.mp hyR).1).2,
+            (Finset.mem_inter.mp hyR).2⟩
+  have hdisj : Disjoint
+      ((O ∩ G.neighborFinset z) ∩ G.neighborFinset z')
+      ((R ∩ G.neighborFinset z) ∩ G.neighborFinset z') := by
+    apply Finset.disjoint_left.mpr
+    intro y hyO hyR
+    exact (Finset.mem_sdiff.mp
+      (Finset.mem_inter.mp (Finset.mem_inter.mp hyO).1).1).2
+        (Finset.mem_inter.mp (Finset.mem_inter.mp hyR).1).1
+  have hformula := card_common_eq_if_secondOrderDefect G hfree z z' hzz'
+  change N.card = if z' ∈ D.neighborFinset z then 0 else 1 at hformula
+  rw [hdecomp, Finset.card_union_of_disjoint hdisj] at hformula
+  simpa [D.mem_neighborFinset] using hformula
+
 /-- If two distinct orphans share no service point, then they are adjacent in
 the second-order defect graph.  The only possible common neighbors of two
 orphans are service points: a common orphan neighbor would violate the
