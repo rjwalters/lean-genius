@@ -756,6 +756,21 @@ theorem false_of_twelve_twelve_twentyfour_row_ledger
   have hx₉ : x₉ ≤ 1 := by omega
   interval_cases x₅ <;> interval_cases x₇ <;> interval_cases x₉ <;> omega
 
+/-- Arithmetic core of the final `(15,15,9,9)` orphan partition.  The five
+split rows for each equal-order pair, together with the four all-unit rows,
+cannot simultaneously have used mass 180 and local excesses 12,12,6,6. -/
+theorem false_of_fifteen_fifteen_nine_nine_row_ledger
+    (x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ x₁₁ x₁₂ x₁₃ : ℕ)
+    (hmass :
+      9 * (x₀ + x₁ + x₂ + x₃ + x₄) +
+      15 * (x₅ + x₆ + x₇ + x₈ + x₉) +
+      45 * x₁₀ + 90 * x₁₁ + 135 * x₁₂ + 180 * x₁₃ = 180)
+    (hlocal₀ : 2*x₇ + 6*x₈ + 12*x₉ = 12)
+    (hlocal₁ : 12*x₅ + 6*x₆ + 2*x₇ = 12)
+    (hlocal₂ : 2*x₂ + 6*x₃ + 12*x₄ = 6)
+    (hlocal₃ : 12*x₀ + 6*x₁ + 2*x₂ = 6) : False := by
+  omega
+
 set_option maxHeartbeats 2000000 in
 /-- Complete finite row classification behind the `(12,12,24)` ledger.
 The four quotient units of a used component can occur in exactly these
