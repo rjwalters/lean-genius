@@ -18857,6 +18857,36 @@ theorem two_orderThirtyFive_service_total_local_excess_ge_sixteen
   rw [hleft, hright] at hsum
   omega
 
+/-- Aggregate form at reduced orphan mass twenty-one: two order-thirty-five
+owners must spend at least twenty-four units of local excess serving the
+five-divisible orphan sector. -/
+theorem two_orderThirtyFive_service_total_local_excess_ge_twentyFour
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ b₁ b₂ : α → ℕ)
+    (hksum : (∑ x ∈ C, k x) = 21)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x = 5)
+    (hbal₁ : ∀ x ∈ C, 7 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 7 * a₂ x = k x * b₂ x) :
+    24 ≤ ∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+  have hpoint : ∀ x ∈ C,
+      8 * k x ≤ 7 *
+        (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+    intro x hx
+    exact two_orderThirtyFive_service_local_excess_lower
+      (k x) (a₁ x) (a₂ x) (b₁ x) (b₂ x)
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+  have hsum := Finset.sum_le_sum fun x hx => hpoint x hx
+  have hleft : (∑ x ∈ C, 8 * k x) = 8 * 21 := by
+    rw [← Finset.mul_sum, hksum]
+  have hright : (∑ x ∈ C, 7 *
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) =
+      7 * ∑ x ∈ C,
+        (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)) := by
+    rw [Finset.mul_sum]
+  rw [hleft, hright] at hsum
+  omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
@@ -19273,6 +19303,76 @@ theorem degree_sixteen_twoLayer_orderSeven_exists_two_named_owners
         by simpa [ho₁] using (howner o hoN).2.2.2⟩
     · exact Or.inr ⟨by simpa [ho₂] using (howner o hoN).2.2.1,
         by simpa [ho₂] using (howner o hoN).2.2.2⟩
+
+/-- In the order-seven/cardinality-nine lane, the complementary
+five-divisible orphan components have total reduced order twenty-one. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_nine_fiveDiv_reduced_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 9 → (∀ o ∈ N, o.supp.ncard = 7) →
+      (∑ o ∈ C \ N, o.supp.ncard / 5) = 21 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  intro hNcard huniform
+  change N.card = 9 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 7 at huniform
+  have hCsum := degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ o ∈ C, o.supp.ncard) = 168 at hCsum
+  have hNsum : (∑ o ∈ N, o.supp.ncard) = 63 := by
+    calc
+      (∑ o ∈ N, o.supp.ncard) = ∑ _o ∈ N, 7 := by
+        apply Finset.sum_congr rfl
+        intro o hoN
+        exact huniform o hoN
+      _ = N.card * 7 := by simp
+      _ = 63 := by rw [hNcard]
+  have hNsub : N ⊆ C := Finset.filter_subset _ _
+  have hsplit := Finset.sum_sdiff hNsub (f := fun o => o.supp.ncard)
+  have hFsum : (∑ o ∈ C \ N, o.supp.ncard) = 105 := by
+    rw [hNsum, hCsum] at hsplit
+    omega
+  have hdiv : ∀ o ∈ C \ N, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  have hscale : (∑ o ∈ C \ N, o.supp.ncard) =
+      5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+    calc
+      (∑ o ∈ C \ N, o.supp.ncard) =
+          ∑ o ∈ C \ N, 5 * (o.supp.ncard / 5) := by
+            apply Finset.sum_congr rfl
+            intro o hoF
+            exact (Nat.mul_div_cancel' (hdiv o hoF)).symm
+      _ = 5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+        rw [Finset.mul_sum]
+  rw [hFsum] at hscale
+  change (∑ o ∈ C \ N, o.supp.ncard / 5) = 21
+  omega
 
 /-- In the order-seven/cardinality-fourteen lane, the complementary
 five-divisible orphan components have total reduced order fourteen. -/
