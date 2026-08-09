@@ -15543,6 +15543,61 @@ theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_row_classificatio
     simpa [Q, D, ho₂] using (degree_sixteen_component_order_dvd_of_two_le_quotient
       G hfree hmin hcard e o₂ hq)
 
+/-- Natural-number form of the restricted local-excess identity.  Detailed
+balance removes the truncated-subtraction issue in each row. -/
+theorem secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : 3 ≤ c.supp.ncard)
+    (C : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hout : ∀ f : (secondOrderDefectGraph G).ConnectedComponent, f ∉ C →
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) f c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) = 0) :
+    (∑ f ∈ C,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) f c - 1)) =
+      c.supp.ncard - 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hraw := secondOrder_componentQuotientMatrix_local_excess_restrict
+    G hfree hd heven hmin hcard c C hout
+  have hpoint : ∀ f ∈ C,
+      (Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ) =
+        ((Q c f * (Q f c - 1) : ℕ) : ℤ) := by
+    intro f _hf
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree hd heven hmin hcard f c
+    exact local_excess_int_eq_nat_row_moment
+      f.supp.ncard c.supp.ncard (Q f c) (Q c f)
+        f.nonempty_supp.ncard_pos c.nonempty_supp.ncard_pos hbal
+  have hcast :
+      ((∑ f ∈ C, Q c f * (Q f c - 1) : ℕ) : ℤ) =
+        (c.supp.ncard : ℤ) - 3 := by
+    calc
+      ((∑ f ∈ C, Q c f * (Q f c - 1) : ℕ) : ℤ) =
+          ∑ f ∈ C, ((Q c f * (Q f c - 1) : ℕ) : ℤ) := by norm_cast
+      _ = ∑ f ∈ C,
+          ((Q c f : ℤ) * (Q f c : ℤ) - (Q c f : ℤ)) := by
+            apply Finset.sum_congr rfl
+            intro f hf
+            exact (hpoint f hf).symm
+      _ = (c.supp.ncard : ℤ) - 3 := hraw
+  have hrhs : ((c.supp.ncard - 3 : ℕ) : ℤ) =
+      (c.supp.ncard : ℤ) - 3 := by
+    rw [Nat.cast_sub hc]
+    norm_num
+  exact_mod_cast hcast.trans hrhs.symm
+
 end
 
 end Erdos85
