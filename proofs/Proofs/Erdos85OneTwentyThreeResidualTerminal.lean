@@ -827,6 +827,192 @@ theorem twelve_twelve_twentyfour_row_type_classification
     all_goals omega
 
 set_option maxHeartbeats 2000000 in
+/-- Aggregate the seventeen `(12,12,24)` row types into the five moments
+used by `false_of_twelve_twelve_twentyfour_row_ledger`.  Keeping this lemma
+finite and graph-independent leaves the graph wrapper responsible only for
+the quotient identities and the single cyclic-cover uniqueness bound. -/
+theorem false_of_twelve_twelve_twentyfour_row_moments
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (r q₀ q₁ q₂ a₀ a₁ a₂ : α → ℕ)
+    (htype : ∀ e ∈ C,
+      (r e = 6 ∧ q₀ e = 0 ∧ q₁ e = 0 ∧ q₂ e = 4) ∨
+      (r e = 6 ∧ q₀ e = 4 ∧ q₁ e = 0 ∧ q₂ e = 0) ∨
+      (r e = 6 ∧ q₀ e = 2 ∧ q₁ e = 2 ∧ q₂ e = 0) ∨
+      (r e = 6 ∧ q₀ e = 0 ∧ q₁ e = 4 ∧ q₂ e = 0) ∨
+      (r e = 12 ∧ q₀ e = 0 ∧ q₁ e = 0 ∧ q₂ e = 4) ∨
+      (r e = 12 ∧ q₀ e = 0 ∧ q₁ e = 2 ∧ q₂ e = 2) ∨
+      (r e = 12 ∧ q₀ e = 4 ∧ q₁ e = 0 ∧ q₂ e = 0) ∨
+      (r e = 12 ∧ q₀ e = 1 ∧ q₁ e = 1 ∧ q₂ e = 2) ∨
+      (r e = 12 ∧ q₀ e = 3 ∧ q₁ e = 1 ∧ q₂ e = 0) ∨
+      (r e = 12 ∧ q₀ e = 2 ∧ q₁ e = 0 ∧ q₂ e = 2) ∨
+      (r e = 12 ∧ q₀ e = 2 ∧ q₁ e = 2 ∧ q₂ e = 0) ∨
+      (r e = 12 ∧ q₀ e = 1 ∧ q₁ e = 3 ∧ q₂ e = 0) ∨
+      (r e = 12 ∧ q₀ e = 0 ∧ q₁ e = 4 ∧ q₂ e = 0) ∨
+      (r e = 24 ∧ q₀ e = 0 ∧ q₁ e = 0 ∧ q₂ e = 4) ∨
+      (r e = 24 ∧ q₀ e = 0 ∧ q₁ e = 1 ∧ q₂ e = 3) ∨
+      (r e = 24 ∧ q₀ e = 1 ∧ q₁ e = 0 ∧ q₂ e = 3) ∨
+      (r e = 24 ∧ q₀ e = 1 ∧ q₁ e = 1 ∧ q₂ e = 2))
+    (hbalance₀ : ∀ e ∈ C, r e * q₀ e = 12 * a₀ e)
+    (hbalance₁ : ∀ e ∈ C, r e * q₁ e = 12 * a₁ e)
+    (hbalance₂ : ∀ e ∈ C, r e * q₂ e = 24 * a₂ e)
+    (hwithinTwelve : ∑ e ∈ C, a₁ e * (q₁ e - 1) = 9)
+    (hwithinTwentyFour : ∑ e ∈ C, a₂ e * (q₂ e - 1) = 21)
+    (hcrossTwelve : ∑ e ∈ C, a₀ e * q₁ e = 12)
+    (hcrossFirstTwentyFour : ∑ e ∈ C, q₀ e * a₂ e = 12)
+    (hcrossSecondTwentyFour : ∑ e ∈ C, q₁ e * a₂ e = 12)
+    (hcover :
+      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12022).card +
+      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12112).card +
+      (C.filter fun e => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e = 12202).card ≤ 1) : False := by
+  let code := fun e : α => 1000 * r e + 100 * q₀ e + 10 * q₁ e + q₂ e
+  let P₀ := fun e : α => code e = 6004
+  let P₁ := fun e : α => code e = 6040
+  let P₂ := fun e : α => code e = 6220
+  let P₃ := fun e : α => code e = 6400
+  let P₄ := fun e : α => code e = 12004
+  let P₅ := fun e : α => code e = 12022
+  let P₆ := fun e : α => code e = 12040
+  let P₇ := fun e : α => code e = 12112
+  let P₈ := fun e : α => code e = 12130
+  let P₉ := fun e : α => code e = 12202
+  let P₁₀ := fun e : α => code e = 12220
+  let P₁₁ := fun e : α => code e = 12310
+  let P₁₂ := fun e : α => code e = 12400
+  let P₁₃ := fun e : α => code e = 24004
+  let P₁₄ := fun e : α => code e = 24013
+  let P₁₅ := fun e : α => code e = 24103
+  let P₁₆ := fun e : α => code e = 24112
+  let x₀ := (C.filter P₀).card
+  let x₁ := (C.filter P₁).card
+  let x₂ := (C.filter P₂).card
+  let x₃ := (C.filter P₃).card
+  let x₄ := (C.filter P₄).card
+  let x₅ := (C.filter P₅).card
+  let x₆ := (C.filter P₆).card
+  let x₇ := (C.filter P₇).card
+  let x₈ := (C.filter P₈).card
+  let x₉ := (C.filter P₉).card
+  let x₁₀ := (C.filter P₁₀).card
+  let x₁₁ := (C.filter P₁₁).card
+  let x₁₂ := (C.filter P₁₂).card
+  let x₁₃ := (C.filter P₁₃).card
+  let x₁₄ := (C.filter P₁₄).card
+  let x₁₅ := (C.filter P₁₅).card
+  let x₁₆ := (C.filter P₁₆).card
+  have hmoment (F : α → ℕ) (b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈ b₉ b₁₀ b₁₁
+      b₁₂ b₁₃ b₁₄ b₁₅ b₁₆ : ℕ)
+      (hF : ∀ e ∈ C, F e =
+        (if P₀ e then b₀ else 0) + (if P₁ e then b₁ else 0) +
+        (if P₂ e then b₂ else 0) + (if P₃ e then b₃ else 0) +
+        (if P₄ e then b₄ else 0) + (if P₅ e then b₅ else 0) +
+        (if P₆ e then b₆ else 0) + (if P₇ e then b₇ else 0) +
+        (if P₈ e then b₈ else 0) + (if P₉ e then b₉ else 0) +
+        (if P₁₀ e then b₁₀ else 0) + (if P₁₁ e then b₁₁ else 0) +
+        (if P₁₂ e then b₁₂ else 0) + (if P₁₃ e then b₁₃ else 0) +
+        (if P₁₄ e then b₁₄ else 0) + (if P₁₅ e then b₁₅ else 0) +
+        (if P₁₆ e then b₁₆ else 0)) :
+      (∑ e ∈ C, F e) = b₀*x₀ + b₁*x₁ + b₂*x₂ + b₃*x₃ + b₄*x₄ +
+        b₅*x₅ + b₆*x₆ + b₇*x₇ + b₈*x₈ + b₉*x₉ + b₁₀*x₁₀ +
+        b₁₁*x₁₁ + b₁₂*x₁₂ + b₁₃*x₁₃ + b₁₄*x₁₄ + b₁₅*x₁₅ +
+        b₁₆*x₁₆ := by
+    calc
+      (∑ e ∈ C, F e) = ∑ e ∈ C,
+          ((if P₀ e then b₀ else 0) + (if P₁ e then b₁ else 0) +
+          (if P₂ e then b₂ else 0) + (if P₃ e then b₃ else 0) +
+          (if P₄ e then b₄ else 0) + (if P₅ e then b₅ else 0) +
+          (if P₆ e then b₆ else 0) + (if P₇ e then b₇ else 0) +
+          (if P₈ e then b₈ else 0) + (if P₉ e then b₉ else 0) +
+          (if P₁₀ e then b₁₀ else 0) + (if P₁₁ e then b₁₁ else 0) +
+          (if P₁₂ e then b₁₂ else 0) + (if P₁₃ e then b₁₃ else 0) +
+          (if P₁₄ e then b₁₄ else 0) + (if P₁₅ e then b₁₅ else 0) +
+          (if P₁₆ e then b₁₆ else 0)) := Finset.sum_congr rfl hF
+      _ = _ := by
+        simp [x₀, x₁, x₂, x₃, x₄, x₅, x₆, x₇, x₈, x₉, x₁₀, x₁₁,
+          x₁₂, x₁₃, x₁₄, x₁₅, x₁₆, Finset.sum_add_distrib,
+          ← Finset.sum_filter, Nat.mul_comm]
+  have hw12 : 6*x₁ + x₂ + 2*x₅ + 12*x₆ + 6*x₈ + 2*x₁₀ = 9 := by
+    rw [← hwithinTwelve]
+    symm
+    simpa only [zero_mul, one_mul, zero_add, add_zero] using hmoment
+      (fun e => a₁ e * (q₁ e - 1))
+      0 6 1 0 0 2 12 0 6 0 2 0 0 0 0 0 0
+      (by
+        intro e he
+        have hb := hbalance₁ e he
+        rcases htype e he with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+        all_goals obtain ⟨hr, hq₀, hq₁, hq₂⟩ := h
+        all_goals simp [hr, hq₀, hq₁, hq₂] at hb
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, P₅, P₆, P₇, P₈, P₉, P₁₀,
+          P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
+        all_goals omega)
+  have hw24 : 3*x₀ + 6*x₄ + x₅ + x₇ + x₉ + 12*x₁₃ + 6*x₁₄ +
+      6*x₁₅ + 2*x₁₆ = 21 := by
+    rw [← hwithinTwentyFour]
+    symm
+    simpa only [zero_mul, one_mul, zero_add, add_zero] using hmoment
+      (fun e => a₂ e * (q₂ e - 1))
+      3 0 0 0 6 1 0 1 0 1 0 0 0 12 6 6 2
+      (by
+        intro e he
+        have hb := hbalance₂ e he
+        rcases htype e he with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+        all_goals obtain ⟨hr, hq₀, hq₁, hq₂⟩ := h
+        all_goals simp [hr, hq₀, hq₁, hq₂] at hb
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, P₅, P₆, P₇, P₈, P₉, P₁₀,
+          P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
+        all_goals omega)
+  have hc12 : 2*x₂ + x₇ + 3*x₈ + 4*x₁₀ + 3*x₁₁ + 2*x₁₆ = 12 := by
+    rw [← hcrossTwelve]
+    symm
+    simpa only [zero_mul, one_mul, zero_add, add_zero] using hmoment
+      (fun e => a₀ e * q₁ e)
+      0 0 2 0 0 0 0 1 3 0 4 3 0 0 0 0 2
+      (by
+        intro e he
+        have hb := hbalance₀ e he
+        rcases htype e he with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+        all_goals obtain ⟨hr, hq₀, hq₁, hq₂⟩ := h
+        all_goals simp [hr, hq₀, hq₁, hq₂] at hb
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, P₅, P₆, P₇, P₈, P₉, P₁₀,
+          P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
+        all_goals omega)
+  have hc024 : x₇ + 2*x₉ + 3*x₁₅ + 2*x₁₆ = 12 := by
+    rw [← hcrossFirstTwentyFour]
+    symm
+    simpa only [zero_mul, one_mul, zero_add, add_zero] using hmoment
+      (fun e => q₀ e * a₂ e)
+      0 0 0 0 0 0 0 1 0 2 0 0 0 0 0 3 2
+      (by
+        intro e he
+        have hb := hbalance₂ e he
+        rcases htype e he with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+        all_goals obtain ⟨hr, hq₀, hq₁, hq₂⟩ := h
+        all_goals simp [hr, hq₀, hq₁, hq₂] at hb
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, P₅, P₆, P₇, P₈, P₉, P₁₀,
+          P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
+        all_goals omega)
+  have hc124 : 2*x₅ + x₇ + 3*x₁₄ + 2*x₁₆ = 12 := by
+    rw [← hcrossSecondTwentyFour]
+    symm
+    simpa only [zero_mul, one_mul, zero_add, add_zero] using hmoment
+      (fun e => q₁ e * a₂ e)
+      0 0 0 0 0 2 0 1 0 0 0 0 0 0 3 0 2
+      (by
+        intro e he
+        have hb := hbalance₂ e he
+        rcases htype e he with h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h | h
+        all_goals obtain ⟨hr, hq₀, hq₁, hq₂⟩ := h
+        all_goals simp [hr, hq₀, hq₁, hq₂] at hb
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, P₅, P₆, P₇, P₈, P₉, P₁₀,
+          P₁₁, P₁₂, P₁₃, P₁₄, P₁₅, P₁₆, code, hr, hq₀, hq₁, hq₂]
+        all_goals omega)
+  have hcov : x₅ + x₇ + x₉ ≤ 1 := by
+    simpa only [x₅, x₇, x₉, P₅, P₇, P₉, code] using hcover
+  exact false_of_twelve_twelve_twentyfour_row_ledger
+    x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ x₁₁ x₁₂ x₁₃ x₁₄ x₁₅ x₁₆
+    hw12 hw24 hc12 hc024 hc124 hcov
+
+set_option maxHeartbeats 2000000 in
 /-- The `(18,30)` balance equations leave a gap at forward masses one and
 three.  Unlike the stronger parity claim, this statement is exact enough for
 a bin of total forward mass three. -/
