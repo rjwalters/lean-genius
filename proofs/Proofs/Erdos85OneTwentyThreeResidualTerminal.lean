@@ -5717,6 +5717,73 @@ theorem degree_sixteen_zeroLayer_pointGraph_row_independent
     rw [hone]
   exact Finset.card_le_one.mp hle x.1 hxmem y.1 hymem
 
+/-- Any two distinct service points of one zero-layer orphan form an edge
+of the point graph.  Since every orphan has three service points, it spans
+a triangle across the three child rows. -/
+theorem degree_sixteen_zeroLayer_orphan_service_pointGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    {z : V}
+    (hz : z ∈ ((Finset.univ \
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)))
+    {x y : ((Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) : Finset V) : Set V)}
+    (hxy : x ≠ y) (hzx : G.Adj z x.1) (hzy : G.Adj z y.1) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (finsetCommonNeighborGraph G O R).Adj x y := by
+  dsimp only
+  exact ⟨hxy, ⟨z, hz⟩, hzx, hzy⟩
+
+/-- Every zero-layer point-graph edge has a unique orphan witness.  Thus the
+orphan triangles form an edge-disjoint decomposition of the point graph. -/
+theorem degree_sixteen_zeroLayer_pointGraph_edge_unique_orphan
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    {x y : ((Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀) : Finset V) : Set V)} :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    (finsetCommonNeighborGraph G O R).Adj x y →
+      ∃! z : (O : Set V), G.Adj z.1 x.1 ∧ G.Adj z.1 y.1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  intro hxy
+  obtain ⟨hxyne, z, hzx, hzy⟩ := hxy
+  refine ⟨z, ⟨hzx, hzy⟩, ?_⟩
+  intro z' hz'
+  apply Subtype.ext
+  have hcommon := common_le_one_of_not_containsC4 hfree x.1 y.1 (by
+    intro h
+    apply hxyne
+    exact Subtype.ext h)
+  have hzmem : z.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset y.1 :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset x.1 z.1).mpr hzx.symm,
+        (G.mem_neighborFinset y.1 z.1).mpr hzy.symm⟩
+  have hz'mem : z'.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset y.1 :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset x.1 z'.1).mpr hz'.1.symm,
+        (G.mem_neighborFinset y.1 z'.1).mpr hz'.2.symm⟩
+  exact (Finset.card_le_one.mp hcommon z.1 hzmem z'.1 hz'mem).symm
+
 /-- In the two-layer branch every used-exterior vertex again has exactly
 twelve orphan neighbors.  Its other four neighbors are its unique `U₅`
 owner and one point in each of the three child rows nonadjacent to that
