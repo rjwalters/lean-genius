@@ -26,6 +26,43 @@ namespace Erdos85
 
 noncomputable section
 
+/-- Adjacency incidence between two finite vertex cells.  In the zero-layer
+terminal this is the `O × R` service matrix. -/
+def finsetAdjIncidenceMatrix
+    {V K : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Zero K] [One K] (A B : Finset V) :
+    Matrix (A : Set V) (B : Set V) K :=
+  fun a b => if G.Adj a.1 b.1 then 1 else 0
+
+/-- The column Gram of finite-cell adjacency incidence counts common
+neighbors in the row cell. -/
+theorem finsetAdjIncidence_transpose_mul_apply
+    {V K : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Semiring K] (A B : Finset V) (x y : (B : Set V)) :
+    (Matrix.transpose (finsetAdjIncidenceMatrix (K := K) G A B) *
+      finsetAdjIncidenceMatrix (K := K) G A B) x y =
+      ((Finset.univ.filter fun z : (A : Set V) =>
+        G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card : K) := by
+  classical
+  simp only [Matrix.mul_apply, Matrix.transpose_apply,
+    finsetAdjIncidenceMatrix]
+  calc
+    (∑ z : (A : Set V), (if G.Adj z.1 x.1 then (1 : K) else 0) *
+      if G.Adj z.1 y.1 then 1 else 0) =
+        ∑ z : (A : Set V),
+          if G.Adj z.1 x.1 ∧ G.Adj z.1 y.1 then (1 : K) else 0 := by
+          apply Finset.sum_congr rfl
+          intro z _hz
+          by_cases hzx : G.Adj z.1 x.1 <;>
+            by_cases hzy : G.Adj z.1 y.1 <;> simp [hzx, hzy]
+    _ = ((Finset.univ.filter fun z : (A : Set V) =>
+          G.Adj z.1 x.1 ∧ G.Adj z.1 y.1).card : K) := by
+      simpa using (Finset.sum_boole (R := K)
+        (fun z : (A : Set V) => G.Adj z.1 x.1 ∧ G.Adj z.1 y.1)
+          Finset.univ)
+
 /-- Restricted cherry counting: if centers in `A` create more two-element
 endpoint subsets inside `B` than `B` has pairs, two centers share an endpoint
 pair and hence form a four-cycle. -/
