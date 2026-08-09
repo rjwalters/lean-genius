@@ -18281,6 +18281,69 @@ theorem row_moment_eight_card_three_sum_le_six
       interval_cases hqc : q c
   all_goals (norm_num [hqa, hqb, hqc] at hmoment <;> omega)
 
+/-- A symmetric fixed-point-free relation cannot give every point of a
+three-element set exactly one neighbor. -/
+theorem card_three_false_of_symmetric_unique_eq_three
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → α → ℕ)
+    (hcard : C.card = 3)
+    (hsym : ∀ x ∈ C, ∀ y ∈ C, q x y = q y x)
+    (hdiag : ∀ x ∈ C, q x x ≠ 3)
+    (hone : ∀ x ∈ C, (C.filter fun y => q x y = 3).card = 1) : False := by
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  have haC : a ∈ ({a, b, c} : Finset α) := by simp
+  have hbC : b ∈ ({a, b, c} : Finset α) := by simp
+  have hcC : c ∈ ({a, b, c} : Finset α) := by simp
+  have haNon : (({a, b, c} : Finset α).filter fun y => q a y = 3).Nonempty :=
+    Finset.card_pos.mp (by rw [hone a haC]; norm_num)
+  obtain ⟨x, hx⟩ := haNon
+  have hxC := (Finset.mem_filter.mp hx).1
+  have hax := (Finset.mem_filter.mp hx).2
+  have hxcases : x = a ∨ x = b ∨ x = c := by simpa using hxC
+  rcases hxcases with hxa | hxb | hxc
+  · exact hdiag a haC (by rwa [hxa] at hax)
+  · have hcNon : (({a, b, c} : Finset α).filter fun y => q c y = 3).Nonempty :=
+      Finset.card_pos.mp (by rw [hone c hcC]; norm_num)
+    have habq : q a b = 3 := by rwa [hxb] at hax
+    obtain ⟨y, hy⟩ := hcNon
+    have hyC := (Finset.mem_filter.mp hy).1
+    have hcy := (Finset.mem_filter.mp hy).2
+    have hycases : y = a ∨ y = b ∨ y = c := by simpa using hyC
+    rcases hycases with hya | hyb | hyc
+    · have hca : q c a = 3 := by rwa [hya] at hcy
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, habq⟩
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, by rw [hsym a haC c hcC]; exact hca⟩
+      exact hbc (Finset.card_le_one.mp (by rw [hone a haC]) b hbMem c hcMem)
+    · have hcb : q c b = 3 := by rwa [hyb] at hcy
+      have haMem : a ∈ ({a, b, c} : Finset α).filter (fun y => q b y = 3) :=
+        Finset.mem_filter.mpr ⟨haC, by rw [← hsym a haC b hbC]; exact habq⟩
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q b y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, by rw [hsym b hbC c hcC]; exact hcb⟩
+      exact hac (Finset.card_le_one.mp (by rw [hone b hbC]) a haMem c hcMem)
+    · exact hdiag c hcC (by rwa [hyc] at hcy)
+  · have hbNon : (({a, b, c} : Finset α).filter fun y => q b y = 3).Nonempty :=
+      Finset.card_pos.mp (by rw [hone b hbC]; norm_num)
+    have hacq : q a c = 3 := by rwa [hxc] at hax
+    obtain ⟨y, hy⟩ := hbNon
+    have hyC := (Finset.mem_filter.mp hy).1
+    have hby := (Finset.mem_filter.mp hy).2
+    have hycases : y = a ∨ y = b ∨ y = c := by simpa using hyC
+    rcases hycases with hya | hyb | hyc
+    · have hba : q b a = 3 := by rwa [hya] at hby
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, hacq⟩
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, by rw [hsym a haC b hbC]; exact hba⟩
+      exact hbc (Finset.card_le_one.mp (by rw [hone a haC]) b hbMem c hcMem)
+    · exact hdiag b hbC (by rwa [hyb] at hby)
+    · have hbcq : q b c = 3 := by rwa [hyc] at hby
+      have haMem : a ∈ ({a, b, c} : Finset α).filter (fun y => q c y = 3) :=
+        Finset.mem_filter.mpr ⟨haC, by rw [← hsym a haC c hcC]; exact hacq⟩
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q c y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, by rw [← hsym b hbC c hcC]; exact hbcq⟩
+      exact hab (Finset.card_le_one.mp (by rw [hone c hcC]) a haMem b hbMem)
+
 /-- Arithmetic core for the zero-excess remainder.  For a surviving source
 order seven, nine, or eleven, an unequal positive quotient with reverse
 quotient at most one and row bound eleven must be five or ten, provided every
@@ -19981,6 +20044,169 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_reduced_count_census
     · exact Or.inr (Or.inl ⟨h9.1, Or.inl h7⟩)
     · exact Or.inr (Or.inl ⟨h9.1, Or.inr h12⟩)
   · exact Or.inr (Or.inr h11)
+
+/-- The order-eleven/cardinality-three census candidate is impossible: the
+unique quotient-three target in each row would define a symmetric
+fixed-point-free one-regular relation on three components. -/
+theorem false_of_degree_sixteen_twoLayer_three_orderEleven_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 3 →
+    (∀ e ∈ N, e.supp.ncard = 11) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 3 at hNcard
+  change ∀ e ∈ N, e.supp.ncard = 11 at huniform
+  have hsym : ∀ x ∈ N, ∀ y ∈ N, Q x y = Q y x := by
+    intro x hx y hy
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard x y
+    change x.supp.ncard * Q x y = y.supp.ncard * Q y x at hbal
+    rw [huniform x hx, huniform y hy] at hbal
+    omega
+  have hdiag : ∀ x ∈ N, Q x x ≠ 3 := by
+    intro x hx
+    exact degree_sixteen_odd_component_diagonalQuotient_ne_three
+      G hfree hmin hcard x (by rw [huniform x hx]; exact ⟨5, by norm_num⟩)
+  have hone : ∀ x ∈ N, (N.filter fun y => Q x y = 3).card = 1 := by
+    intro x hx
+    have hxC := (Finset.mem_filter.mp hx).1
+    have hxO := (Finset.mem_filter.mp hxC).2
+    let z := componentRepresentative D x
+    have hzx : D.connectedComponentMk z = x :=
+      (ConnectedComponent.mem_supp_iff x z).mp (componentRepresentative_mem D x)
+    have hx11 := huniform x hx
+    have hshape := degree_sixteen_twoLayer_orderEleven_orphan_row_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+        (by simpa [D, O, z] using hxO) (by rw [hzx]; exact hx11)
+    dsimp only at hshape
+    rw [hzx] at hshape
+    let S := Finset.univ.filter (fun y : D.ConnectedComponent =>
+      y.supp.ncard = 11)
+    change (((S.filter fun y => Q x y = 3).card = 1 ∧
+        (S.filter fun y => Q x y = 2).card = 1) ∨
+      ((S.filter fun y => Q x y = 3).card = 0 ∧
+        (S.filter fun y => Q x y = 2).card = 4)) at hshape
+    have hfilter (k : ℕ) (hk : 0 < k) :
+        N.filter (fun y => Q x y = k) = S.filter (fun y => Q x y = k) := by
+      ext y
+      constructor
+      · intro hy
+        have hyN := (Finset.mem_filter.mp hy).1
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, huniform y hyN⟩,
+            (Finset.mem_filter.mp hy).2⟩
+      · intro hy
+        have hyS := (Finset.mem_filter.mp hy).1
+        have hy11 := (Finset.mem_filter.mp hyS).2
+        have hyQ := (Finset.mem_filter.mp hy).2
+        have hyO := degree_sixteen_twoLayer_positive_surviving_order_target_mem_orphan
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+            (by simpa [D, O, z] using hxO) y (Or.inr (Or.inr hy11))
+            (by
+              have hpos : 0 < Q x y := by rw [hyQ]; exact hk
+              simpa [Q, D, hzx] using hpos)
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_filter.mpr
+            ⟨Finset.mem_filter.mpr
+              ⟨Finset.mem_univ _, by simpa [D, O] using hyO⟩,
+              by rw [hy11]; norm_num⟩,
+            hyQ⟩
+    rcases hshape with hthree | htwo
+    · rw [hfilter 3 (by norm_num)]
+      exact hthree.1
+    · have hsub : N.filter (fun y => Q x y = 2) ⊆ N :=
+        Finset.filter_subset _ _
+      have hle := Finset.card_le_card hsub
+      rw [hfilter 2 (by norm_num), htwo.2, hNcard] at hle
+      omega
+  exact card_three_false_of_symmetric_unique_eq_three N Q
+    hNcard hsym hdiag hone
+
+/-- Twice-reduced census after the order-eleven/cardinality-three matching
+obstruction. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_final_finite_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    ((∀ o ∈ N, o.supp.ncard = 7) ∧
+      (N.card = 4 ∨ N.card = 9 ∨ N.card = 14 ∨
+        N.card = 19 ∨ N.card = 24)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 9) ∧
+      (N.card = 7 ∨ N.card = 12)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 11) ∧ N.card = 8) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  have hcensus := degree_sixteen_twoLayer_nonFive_orphan_reduced_count_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change ((∀ o ∈ N, o.supp.ncard = 7) ∧
+      (N.card = 4 ∨ N.card = 9 ∨ N.card = 14 ∨
+        N.card = 19 ∨ N.card = 24)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 9) ∧
+      (N.card = 7 ∨ N.card = 12)) ∨
+    ((∀ o ∈ N, o.supp.ncard = 11) ∧
+      (N.card = 3 ∨ N.card = 8)) at hcensus
+  rcases hcensus with h7 | h9 | h11
+  · exact Or.inl h7
+  · exact Or.inr (Or.inl h9)
+  · rcases h11.2 with h3 | h8
+    · exact False.elim
+        (false_of_degree_sixteen_twoLayer_three_orderEleven_nonFive_orphans
+          G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+            (by simpa [D, O, C, N] using h3)
+            (by simpa [D, O, C, N] using h11.1))
+    · exact Or.inr (Or.inr ⟨h11.1, h8⟩)
 
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
