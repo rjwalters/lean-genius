@@ -19287,6 +19287,69 @@ theorem eleven_one_one_one_service_total_ge_twentyTwo
   · norm_num
   · norm_num
 
+/-- A positive five-divisible family of total mass fifteen is exactly one
+part fifteen, two parts ten and five, or three parts five. -/
+theorem five_divisor_partition_fifteen_classification
+    {α : Type*} [DecidableEq α] (S : Finset α) (w : α → ℕ)
+    (hpos : ∀ x ∈ S, 0 < w x) (hdiv : ∀ x ∈ S, 5 ∣ w x)
+    (hsum : (∑ x ∈ S, w x) = 15) :
+    (∃ x, S = {x} ∧ w x = 15) ∨
+    (∃ x y, x ≠ y ∧ S = {x, y} ∧
+      ((w x = 10 ∧ w y = 5) ∨ (w x = 5 ∧ w y = 10))) ∨
+    (∃ x y z, x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      S = {x, y, z} ∧ w x = 5 ∧ w y = 5 ∧ w z = 5) := by
+  have hfive : ∀ x ∈ S, 5 ≤ w x := by
+    intro x hx
+    obtain ⟨k, hk⟩ := hdiv x hx
+    have hkpos : 0 < k := by
+      have := hpos x hx
+      rw [hk] at this
+      nlinarith
+    omega
+  have hlower := Finset.sum_le_sum fun x hx => hfive x hx
+  have hcardLe : S.card ≤ 3 := by
+    have hconst : (∑ _x ∈ S, 5) = S.card * 5 := by simp
+    rw [hconst, hsum] at hlower
+    omega
+  have hcardPos : 0 < S.card := by
+    by_contra hzero
+    have hScard : S.card = 0 := by omega
+    have hSempty : S = ∅ := Finset.card_eq_zero.mp hScard
+    rw [hSempty] at hsum
+    norm_num at hsum
+  interval_cases hScard : S.card
+  · obtain ⟨x, hS⟩ := Finset.card_eq_one.mp hScard
+    left
+    refine ⟨x, hS, ?_⟩
+    simpa [hS] using hsum
+  · obtain ⟨x, y, hxy, hS⟩ := Finset.card_eq_two.mp hScard
+    right; left
+    have hxS : x ∈ S := by simp [hS]
+    have hyS : y ∈ S := by simp [hS]
+    obtain ⟨kx, hkx⟩ := hdiv x hxS
+    obtain ⟨ky, hky⟩ := hdiv y hyS
+    have hxySum : w x + w y = 15 := by
+      simpa [hS, hxy] using hsum
+    refine ⟨x, y, hxy, hS, ?_⟩
+    have hxpos := hpos x hxS
+    have hypos := hpos y hyS
+    omega
+  · obtain ⟨x, y, z, hxy, hxz, hyz, hS⟩ :=
+      Finset.card_eq_three.mp hScard
+    right; right
+    have hxS : x ∈ S := by simp [hS]
+    have hyS : y ∈ S := by simp [hS]
+    have hzS : z ∈ S := by simp [hS]
+    have hxge := hfive x hxS
+    have hyge := hfive y hyS
+    have hzge := hfive z hzS
+    have hxyzSum : w x + (w y + w z) = 15 := by
+      simpa [hS, hxy, hxz, hyz] using hsum
+    refine ⟨x, y, z, hxy, hxz, hyz, hS, ?_, ?_, ?_⟩
+    · omega
+    · omega
+    · omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
