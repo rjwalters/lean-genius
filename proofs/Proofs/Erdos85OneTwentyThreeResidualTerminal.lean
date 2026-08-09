@@ -21861,6 +21861,57 @@ theorem degree_sixteen_twoLayer_orderEleven_exists_named_common_owner
     omega
   rwa [← heeq]
 
+/-- Removing a used order-fifty-five component from the exact seventy-point
+used sector leaves total component order fifteen; every remaining order is
+still a positive multiple of five. -/
+theorem degree_sixteen_twoLayer_orderFiftyFive_used_complement_mass_fifteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he55 : e.supp.ncard = 55) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
+      ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  have heE : e ∈ E := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using heR⟩
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  have hsum : (∑ f ∈ E, f.supp.ncard) = 70 := by
+    simpa [D, R, E] using hpack.1
+  have hdvd : ∀ f ∈ E, 5 ∣ f.supp.ncard := by
+    simpa [D, R, E] using hpack.2
+  have hsplit : (∑ f ∈ E.erase e, f.supp.ncard) + e.supp.ncard =
+      ∑ f ∈ E, f.supp.ncard := Finset.sum_erase_add E _ heE
+  rw [he55, hsum] at hsplit
+  change (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
+    ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard
+  exact ⟨by omega, fun f hf => hdvd f (Finset.mem_of_mem_erase hf)⟩
+
 /-- Sharp graph-facing census for the uniform non-five orphan lane. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
     {V : Type*} [Fintype V] [DecidableEq V]
