@@ -10453,6 +10453,126 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_final_owner_pairs
   · exact Or.inr (Or.inr (Or.inr (Or.inl h13)))
   · exact Or.inr (Or.inr (Or.inr (Or.inr h14)))
 
+/-- In the uniform order-nine lane, all non-five orphans share the unique
+order-forty-five used owner, and each contributes reverse quotient one. -/
+theorem degree_sixteen_twoLayer_orderNine_shared_orderFortyFive_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 12 → (∀ o ∈ N, o.supp.ncard = 9) →
+      ∃ e : D.ConnectedComponent,
+        componentRepresentative D e ∈ R ∧ e.supp.ncard = 45 ∧
+          ∀ o ∈ N, componentQuotientMatrix G D e o = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  intro hNcard huniform
+  change N.card = 12 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 9 at huniform
+  have hNnon : N.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨o₀, ho₀N⟩ := hNnon
+  have ho₀C := (Finset.mem_filter.mp ho₀N).1
+  have ho₀O := (Finset.mem_filter.mp ho₀C).2
+  have ho₀not := (Finset.mem_filter.mp ho₀N).2
+  have ho₀9 := huniform o₀ ho₀N
+  have hmk₀ : D.connectedComponentMk (componentRepresentative D o₀) = o₀ :=
+    (ConnectedComponent.mem_supp_iff o₀ (componentRepresentative D o₀)).mp
+      (componentRepresentative_mem D o₀)
+  have hmk₀' : (secondOrderDefectGraph G).connectedComponentMk
+      (componentRepresentative (secondOrderDefectGraph G) o₀) = o₀ := by
+    simpa [D] using hmk₀
+  obtain ⟨z, hzR, hq₀, _hratio₀⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D o₀) (by simpa [D, R, O] using ho₀O)
+        (by simpa [D, hmk₀] using ho₀not)
+  let e := D.connectedComponentMk z
+  have heDvd : 5 ∣ e.supp.ncard := by
+    simpa [D, e] using (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild z (by simpa [R, D] using hzR)).2 rfl
+  have hrigid₀ := degree_sixteen_twoLayer_nonFive_concentrated_cut_rigidity
+    G hfree hmin hcard e o₀ heDvd ho₀not
+      (by simpa [D, hmk₀, e] using hq₀)
+  have he45 : e.supp.ncard = 45 := by
+    obtain ⟨k, hk⟩ := heDvd
+    have hk9 : k = 9 := by
+      have := hrigid₀.2
+      rw [hk] at this
+      norm_num at this
+      omega
+    omega
+  have heR : componentRepresentative D e ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) z (by simpa [R, D] using hzR)
+          (componentRepresentative_mem D e)
+  refine ⟨e, heR, he45, ?_⟩
+  intro o hoN
+  have hoC := (Finset.mem_filter.mp hoN).1
+  have hoO := (Finset.mem_filter.mp hoC).2
+  have honot := (Finset.mem_filter.mp hoN).2
+  have ho9 := huniform o hoN
+  have hmk : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o (componentRepresentative D o)).mp
+      (componentRepresentative_mem D o)
+  have hmk' : (secondOrderDefectGraph G).connectedComponentMk
+      (componentRepresentative (secondOrderDefectGraph G) o) = o := by
+    simpa [D] using hmk
+  obtain ⟨w, hwR, hq, _hwratio⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D o) (by simpa [D, R, O] using hoO)
+        (by simpa [D, hmk] using honot)
+  let f := D.connectedComponentMk w
+  have hfDvd : 5 ∣ f.supp.ncard := by
+    simpa [D, f] using (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild w (by simpa [R, D] using hwR)).2 rfl
+  have hrigid := degree_sixteen_twoLayer_nonFive_concentrated_cut_rigidity
+    G hfree hmin hcard f o hfDvd honot
+      (by simpa [D, hmk, f] using hq)
+  have hf45 : f.supp.ncard = 45 := by
+    obtain ⟨k, hk⟩ := hfDvd
+    have hk9 : k = 9 := by
+      have := hrigid.2
+      rw [hk] at this
+      norm_num at this
+      omega
+    omega
+  have hfR : componentRepresentative D f ∈ R :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) w (by simpa [R, D] using hwR)
+          (componentRepresentative_mem D f)
+  have hef : e = f := degree_sixteen_twoLayer_used_orderFortyFive_unique
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      e f (by simpa [D, R] using heR) (by simpa [D, R] using hfR) he45 hf45
+  simpa [hef, D] using hrigid.1
+
 /-- Orders seven and fourteen cannot both occur among two-layer orphans:
 their rigid owners would have orders 35 and 70, exceeding the total used
 mass seventy. -/
