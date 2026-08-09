@@ -21884,6 +21884,107 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_used_order_ten_or_tw
   exact ⟨zB, hzBR, by simpa [b] using hbOrder,
     by simpa [b] using hzBFwd, by simpa [D, b] using hzBDiag⟩
 
+/-- The order-seven/cardinality-four census candidate is impossible.  Its
+used antipodal witness has order ten or twenty, while every orphan target
+has order seven or thirty-five; balance makes every used-to-orphan quotient
+divisible by seven, contradicting the exact row sum twelve. -/
+theorem false_of_degree_sixteen_twoLayer_four_orderSeven_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform
+  obtain ⟨z, hzR, heOrder, _heFwd, _heDiag⟩ :=
+    degree_sixteen_twoLayer_orderSeven_card_four_exists_used_order_ten_or_twenty_diagonalOne
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        u hu huRange hℓ3 hbij huD
+          (by simpa [D, U, R, O, C, N] using hNcard)
+          (by simpa [D, U, R, O, C, N] using huniform)
+  let e := D.connectedComponentMk z
+  obtain ⟨f₀, f₁, f₂, f₃, _hf₀, _hf₁, _hf₂, _hf₃,
+      hf₀35, hf₁35, hf₂35, hf₃35, _h01, _h02, _h03,
+      _h12, _h13, _h23, hCeq⟩ :=
+    degree_sixteen_twoLayer_orderSeven_card_four_exact_exhaustion
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, U, R, O, C, N] using hNcard)
+        (by simpa [D, U, R, O, C, N] using huniform)
+  change C = insert f₀ (insert f₁ (insert f₂ (insert f₃ N))) at hCeq
+  have htargetOrder : ∀ o ∈ C, o.supp.ncard = 7 ∨ o.supp.ncard = 35 := by
+    intro o hoC
+    rw [hCeq] at hoC
+    simp only [Finset.mem_insert] at hoC
+    rcases hoC with rfl | rfl | rfl | rfl | hoN
+    · exact Or.inr hf₀35
+    · exact Or.inr hf₁35
+    · exact Or.inr hf₂35
+    · exact Or.inr hf₃35
+    · exact Or.inl (huniform o hoN)
+  have hdiv : ∀ o ∈ C,
+      7 ∣ componentQuotientMatrix G D e o := by
+    intro o hoC
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+    change e.supp.ncard * componentQuotientMatrix G D e o =
+      o.supp.ncard * componentQuotientMatrix G D o e at hbal
+    exact seven_dvd_forward_quotient_of_ten_twenty_balance_seven_thirtyFive
+      e.supp.ncard o.supp.ncard (componentQuotientMatrix G D e o)
+        (componentQuotientMatrix G D o e)
+        (by simpa [e] using heOrder) (htargetOrder o hoC) hbal
+  have hsumDvd : 7 ∣ ∑ o ∈ C, componentQuotientMatrix G D e o := by
+    apply Finset.dvd_sum
+    intro o ho
+    exact hdiv o ho
+  have hrow := degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
+    G hfree hmin hcard c₀ hregChild hcardChild e
+      (by
+        have hrep := degree_sixteen_minimumLayer_used_component_subset
+          G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+            (by norm_num; exact hcardChild) z hzR
+              (componentRepresentative_mem D e)
+        simpa [D, R, e] using hrep)
+  change (∑ o ∈ C, componentQuotientMatrix G D e o) = 12 at hrow
+  rw [hrow] at hsumDvd
+  norm_num at hsumDvd
+
 /-- In the uniform order-nine/cardinality-seven lane, every source must use
 an unequal quotient-five target; balance and reverse uniqueness force that
 target to have order forty-five and reverse quotient one. -/
