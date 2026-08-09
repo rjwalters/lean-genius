@@ -9833,6 +9833,15 @@ theorem even_part_eq_two_or_four_of_sum_eq_fourteen_of_contains_seven
       rw [hempty] at hcomp
       simp at hcomp
 
+/-- Detailed balance between an order-ten-or-twenty source and an
+order-seven-or-thirty-five target forces the forward quotient to be a
+multiple of seven. -/
+theorem seven_dvd_forward_quotient_of_ten_twenty_balance_seven_thirtyFive
+    (m n q r : ℕ) (hm : m = 10 ∨ m = 20) (hn : n = 7 ∨ n = 35)
+    (hbal : m * q = n * r) :
+    7 ∣ q := by
+  rcases hm with rfl | rfl <;> rcases hn with rfl | rfl <;> omega
+
 /-- Every used-component quotient row has total mass twelve into the orphan
 components, reflecting the twelve orphan neighbors of each used vertex. -/
 theorem degree_sixteen_twoLayer_used_to_orphan_quotient_sum_eq_twelve
