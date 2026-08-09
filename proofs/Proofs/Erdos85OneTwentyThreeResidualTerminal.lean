@@ -7381,6 +7381,79 @@ theorem degree_sixteen_twoLayer_concentrated_cut_reverse_quotient
     Nat.div_eq_of_eq_mul_left hkpos (by simpa [mul_comm] using hmul.symm)
   exact hdiv.symm
 
+/-- A concentrated owner term cannot exceed the source orphan's full local
+excess.  Detailed balance makes every quotient interaction term
+nonnegative, so the term `5 * (Q(e,o)-1)` is bounded by `|o|-3`. -/
+theorem degree_sixteen_twoLayer_concentrated_cut_local_excess_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 5) :
+    5 * (componentQuotientMatrix G (secondOrderDefectGraph G) e o - 1) ≤
+      o.supp.ncard - 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let T : D.ConnectedComponent → ℤ := fun f =>
+    (Q o f : ℤ) * (Q f o : ℤ) - (Q o f : ℤ)
+  have hTnonneg : ∀ f : D.ConnectedComponent, 0 ≤ T f := by
+    intro f
+    by_cases hzero : Q o f = 0
+    · simp [T, hzero]
+    · have hpos : 0 < Q o f := Nat.pos_of_ne_zero hzero
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+      change o.supp.ncard * Q o f = f.supp.ncard * Q f o at hbal
+      have hrev : 0 < Q f o := by
+        by_contra hrevzero
+        have hrevzero' : Q f o = 0 := by omega
+        rw [hrevzero', mul_zero] at hbal
+        have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+        exact (Nat.ne_of_gt (Nat.mul_pos hopos hpos)) hbal
+      dsimp only [T]
+      push_cast
+      nlinarith
+  have hlocal := secondOrder_componentQuotientMatrix_local_excess
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o
+  change (∑ f, T f) = (o.supp.ncard : ℤ) - 3 at hlocal
+  have hle : T e ≤ ∑ f, T f :=
+    Finset.single_le_sum (fun f _ => hTnonneg f) (Finset.mem_univ e)
+  rw [hlocal] at hle
+  have ho3 : 3 ≤ o.supp.ncard := by
+    obtain ⟨r, hr3, hre, _⟩ := secondOrderDefect_component_resolvent_chebyshev
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o 0
+    rw [← hre]
+    exact hr3
+  have hcast : ((o.supp.ncard - 3 : ℕ) : ℤ) =
+      (o.supp.ncard : ℤ) - 3 := by
+    rw [Nat.cast_sub ho3]
+    norm_num
+  have howner : T e =
+      (5 * (componentQuotientMatrix G D e o - 1) : ℕ) := by
+    dsimp only [T]
+    rw [show Q o e = 5 by simpa [Q, D] using hq]
+    have hrev : 0 < Q e o := by
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+      change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+      rw [show Q o e = 5 by simpa [Q, D] using hq] at hbal
+      have hopos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+      by_contra hzero
+      have hzero' : Q e o = 0 := by omega
+      rw [hzero', mul_zero] at hbal
+      omega
+    push_cast
+    rw [Nat.cast_sub (by omega : 1 ≤ Q e o)]
+    ring
+  rw [howner, ← hcast] at hle
+  exact_mod_cast hle
+
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
 then forces the owner's reduced order `|e| / 5` to divide the orphan order.
