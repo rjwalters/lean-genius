@@ -21367,6 +21367,98 @@ theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_even_forwardFive_dia
       (u e) (hu e) (huRange e) heSel.2 heDiag
   exact ⟨e, heSel.1, heSel.2, heDiag, heEven⟩
 
+/-- The even forward antipodal witness cannot lie in the minimum layer or
+in the exact odd orphan census, so it lies in the used-exterior cell. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_four_exists_used_even_forwardFive_diagonalOne_of_orphan_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ O)
+    let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+    N.card = 4 → (∀ e ∈ N, e.supp.ncard = 7) →
+    (∀ e ∈ C, Odd e.supp.ncard) →
+    ∃ z ∈ R,
+      5 ∣ (D.connectedComponentMk z).supp.ncard ∧
+      forwardOriented G u (D.connectedComponentMk z) ∧
+      componentQuotientMatrix G D (D.connectedComponentMk z)
+        (D.connectedComponentMk z) = 1 ∧
+      Even (D.connectedComponentMk z).supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let N := C.filter fun e => ¬ 5 ∣ e.supp.ncard
+  intro hNcard huniform horphanOdd
+  obtain ⟨e, he5, heFwd, heDiag, heEven⟩ :=
+    degree_sixteen_twoLayer_orderSeven_card_four_exists_even_forwardFive_diagonalOne
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        u hu huRange hℓ3 hbij huD
+          (by simpa [D, U, R, O, C, N] using hNcard)
+          (by simpa [D, U, R, O, C, N] using huniform)
+  let z := componentRepresentative D e
+  have hze : D.connectedComponentMk z = e :=
+    (ConnectedComponent.mem_supp_iff e z).mp (componentRepresentative_mem D e)
+  have hzU : z ∉ U := by
+    intro hzU
+    obtain ⟨x, _hxuniv, hxval⟩ := Finset.mem_image.mp hzU
+    have hzx : D.connectedComponentMk z = x.1.1 := by
+      apply (ConnectedComponent.mem_supp_iff x.1.1 z).mp
+      rw [← hxval]
+      exact x.2.2
+    have hbase := degree_sixteen_smallLayer_component_card
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)
+    have he5order : e.supp.ncard = 5 := by
+      rw [← hze, hzx, x.1.2, hbase.2 rfl]
+    obtain ⟨k, hk⟩ := heEven
+    rw [he5order] at hk
+    omega
+  have hzO : z ∉ O := by
+    intro hzO
+    have heC : e ∈ C := Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, by simpa [D, O, z] using hzO⟩
+    obtain ⟨k, hk⟩ := heEven
+    obtain ⟨l, hl⟩ := horphanOdd e heC
+    omega
+  have hzR : z ∈ R := by
+    by_contra hzR
+    exact hzO (Finset.mem_sdiff.mpr
+      ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hzU⟩, hzR⟩)
+  exact ⟨z, hzR, by rw [hze]; exact he5, by rw [hze]; exact heFwd,
+    by rw [hze]; exact heDiag, by rw [hze]; exact heEven⟩
+
 /-- The uniform order-seven/cardinality-four lane exactly exhausts the orphan
 set: its four order-seven components have four distinct order-thirty-five
 targets, leaving no further orphan component. -/
