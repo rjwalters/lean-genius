@@ -854,6 +854,106 @@ theorem fifteen_fifteen_nine_nine_row_type_classification
       interval_cases q₂ <;> omega
 
 set_option maxHeartbeats 2000000 in
+/-- Compact finite aggregation for the final orphan partition.  Only the
+five order-nine split rows are counted; all remaining row mass is a multiple
+of fifteen. -/
+theorem false_of_fifteen_fifteen_nine_nine_row_moments
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (r q₂ q₃ a₂ a₃ : α → ℕ)
+    (htype : ∀ e ∈ C,
+      (r e = 9 ∧
+        ((q₂ e = 0 ∧ q₃ e = 4) ∨ (q₂ e = 1 ∧ q₃ e = 3) ∨
+         (q₂ e = 2 ∧ q₃ e = 2) ∨ (q₂ e = 3 ∧ q₃ e = 1) ∨
+         (q₂ e = 4 ∧ q₃ e = 0))) ∨
+      (r e ≠ 9 ∧ q₂ e ≤ 1 ∧ q₃ e ≤ 1 ∧ 15 ∣ r e))
+    (hmass : ∑ e ∈ C, r e = 180)
+    (hlocal₂ : ∑ e ∈ C, a₂ e * (q₂ e - 1) = 6)
+    (hlocal₃ : ∑ e ∈ C, a₃ e * (q₃ e - 1) = 6)
+    (hbalance₂ : ∀ e ∈ C, r e * q₂ e = 9 * a₂ e)
+    (hbalance₃ : ∀ e ∈ C, r e * q₃ e = 9 * a₃ e) : False := by
+  let P₀ := fun e : α => r e = 9 ∧ q₂ e = 0
+  let P₁ := fun e : α => r e = 9 ∧ q₂ e = 1
+  let P₂ := fun e : α => r e = 9 ∧ q₂ e = 2
+  let P₃ := fun e : α => r e = 9 ∧ q₂ e = 3
+  let P₄ := fun e : α => r e = 9 ∧ q₂ e = 4
+  let x₀ := (C.filter P₀).card
+  let x₁ := (C.filter P₁).card
+  let x₂ := (C.filter P₂).card
+  let x₃ := (C.filter P₃).card
+  let x₄ := (C.filter P₄).card
+  have hmoment (F : α → ℕ) (b₀ b₁ b₂ b₃ b₄ : ℕ)
+      (hF : ∀ e ∈ C, F e =
+        (if P₀ e then b₀ else 0) + (if P₁ e then b₁ else 0) +
+        (if P₂ e then b₂ else 0) + (if P₃ e then b₃ else 0) +
+        (if P₄ e then b₄ else 0)) :
+      ∑ e ∈ C, F e = b₀*x₀ + b₁*x₁ + b₂*x₂ + b₃*x₃ + b₄*x₄ := by
+    calc
+      ∑ e ∈ C, F e = ∑ e ∈ C,
+          ((if P₀ e then b₀ else 0) + (if P₁ e then b₁ else 0) +
+           (if P₂ e then b₂ else 0) + (if P₃ e then b₃ else 0) +
+           (if P₄ e then b₄ else 0)) := Finset.sum_congr rfl hF
+      _ = b₀*x₀ + b₁*x₁ + b₂*x₂ + b₃*x₃ + b₄*x₄ := by
+        simp [x₀, x₁, x₂, x₃, x₄, Finset.sum_add_distrib,
+          ← Finset.sum_filter, Nat.mul_comm]
+  have hl₂ : 2*x₂ + 6*x₃ + 12*x₄ = 6 := by
+    have hm := hmoment
+      (fun e => a₂ e * (q₂ e - 1)) 0 0 2 6 12 (by
+      intro e he
+      have hb := hbalance₂ e he
+      rcases htype e he with ⟨hr, h⟩ | ⟨hr, hq₂, hq₃, hd⟩
+      · rcases h with h | h | h | h | h
+        all_goals rcases h with ⟨hq₂, hq₃⟩
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, hr, hq₂, hq₃] at hb ⊢
+        all_goals omega
+      · simp [P₀, P₁, P₂, P₃, P₄, hr, Nat.sub_eq_zero_of_le hq₂])
+    simp only [zero_mul, zero_add] at hm
+    omega
+  have hl₃ : 12*x₀ + 6*x₁ + 2*x₂ = 6 := by
+    have hm := hmoment
+      (fun e => a₃ e * (q₃ e - 1)) 12 6 2 0 0 (by
+      intro e he
+      have hb := hbalance₃ e he
+      rcases htype e he with ⟨hr, h⟩ | ⟨hr, hq₂, hq₃, hd⟩
+      · rcases h with h | h | h | h | h
+        all_goals rcases h with ⟨hq₂, hq₃⟩
+        all_goals simp [P₀, P₁, P₂, P₃, P₄, hr, hq₂, hq₃] at hb ⊢
+        all_goals omega
+      · simp [P₀, P₁, P₂, P₃, P₄, hr, Nat.sub_eq_zero_of_le hq₃])
+    simp only [zero_mul, add_zero] at hm
+    omega
+  let S := C.filter fun e => r e = 9
+  let T := C.filter fun e => r e ≠ 9
+  have hScard : S.card = x₀ + x₁ + x₂ + x₃ + x₄ := by
+    have hmap : (S : Set α).MapsTo q₂ (Finset.range 5) := by
+      intro e he
+      obtain ⟨heC, hre⟩ := Finset.mem_filter.mp he
+      rcases htype e heC with ⟨_, h⟩ | ⟨hne, _, _, _⟩
+      · rcases h with h | h | h | h | h
+        all_goals rcases h with ⟨hq₂, hq₃⟩
+        all_goals simp [Finset.mem_range]
+        all_goals omega
+      · exact False.elim (hne hre)
+    have hfiber := Finset.card_eq_sum_card_fiberwise hmap
+    simpa [S, x₀, x₁, x₂, x₃, x₄, P₀, P₁, P₂, P₃, P₄,
+      Finset.filter_filter, Finset.sum_range_succ] using hfiber
+  have hTdvd : 15 ∣ ∑ e ∈ T, r e := by
+    apply Finset.dvd_sum
+    intro e he
+    obtain ⟨heC, hre⟩ := Finset.mem_filter.mp he
+    exact (htype e heC).resolve_left (fun h => hre h.1) |>.2.2.2
+  obtain ⟨k, hk⟩ := hTdvd
+  have hsplit := Finset.sum_filter_add_sum_filter_not C (fun e => r e = 9) r
+  have hmass' : 9 * (x₀ + x₁ + x₂ + x₃ + x₄) + 15 * k = 180 := by
+    rw [hmass] at hsplit
+    change (∑ e ∈ S, r e) + (∑ e ∈ T, r e) = 180 at hsplit
+    have hSsum : ∑ e ∈ S, r e = 9 * S.card := by
+      simpa [Nat.mul_comm] using (Finset.sum_eq_card_nsmul (s := S) (f := r)
+        (b := 9) (fun e he => (Finset.mem_filter.mp he).2))
+    rw [hSsum, hk, hScard] at hsplit
+    exact hsplit
+  omega
+
+set_option maxHeartbeats 2000000 in
 /-- Complete finite row classification behind the `(12,12,24)` ledger.
 The four quotient units of a used component can occur in exactly these
 seventeen order/row patterns.  The divisibility hypotheses are the forward
