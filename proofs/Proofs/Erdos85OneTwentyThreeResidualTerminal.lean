@@ -7342,6 +7342,85 @@ theorem degree_sixteen_twoLayer_concentrated_cut_owner_ratio_dvd
       (componentQuotientMatrix G (secondOrderDefectGraph G) e o)
       heDvd hbal
 
+/-- Every non-five-divisible two-layer orphan has a concrete used-component
+owner which absorbs all five of its service neighbors.  Detailed balance
+then forces the owner's reduced order `|e| / 5` to divide the orphan order.
+This is the unconditional census restriction available before any further
+classification of the eleven-regular orphan-to-orphan quotient. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_exists_concentrated_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk zO).supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ∃ zR ∈ R,
+      componentQuotientMatrix G D (D.connectedComponentMk zO)
+          (D.connectedComponentMk zR) = 5 ∧
+        (D.connectedComponentMk zR).supp.ncard / 5 ∣
+          (D.connectedComponentMk zO).supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hzOutside : zO ∉ minimumLayerImageFinset D c₀ :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hzO).1).2
+  have hzUnused : zO ∉ R := (Finset.mem_sdiff.mp hzO).2
+  have hRcard : (R ∩ G.neighborFinset zO).card = 5 := by
+    simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
+      G hfree (d := 16) (s := 2) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild hcardChild zO hzOutside hzUnused
+  have hnonempty : (R ∩ G.neighborFinset zO).Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty]
+    intro hempty
+    rw [hempty] at hRcard
+    norm_num at hRcard
+  obtain ⟨zR, hzR⟩ := hnonempty
+  have hzRdata := Finset.mem_inter.mp hzR
+  have hpos : 0 < componentQuotientMatrix G D
+      (D.connectedComponentMk zO) (D.connectedComponentMk zR) := by
+    have hzSupp : zO ∈ (D.connectedComponentMk zO).supp :=
+      ConnectedComponent.connectedComponentMk_mem
+    rw [componentQuotientMatrix_apply_eq G D 2
+      (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard)
+      (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
+        (by norm_num) (by norm_num) hmin hcard)
+      (D.connectedComponentMk zO) (D.connectedComponentMk zR) hzSupp]
+    apply Finset.card_pos.mpr
+    refine ⟨zR, ?_⟩
+    exact Finset.mem_filter.mpr
+      ⟨hzRdata.2, ConnectedComponent.connectedComponentMk_mem⟩
+  have hfive := degree_sixteen_twoLayer_orphan_to_used_quotient_eq_five
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild zR hzRdata.1 zO hzO
+      hnot (by simpa [D] using hpos)
+  have heDvd : 5 ∣ (D.connectedComponentMk zR).supp.ncard :=
+    (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild zR hzRdata.1).2 rfl
+  have hratio := degree_sixteen_twoLayer_concentrated_cut_owner_ratio_dvd
+    G hfree hmin hcard (D.connectedComponentMk zR) (D.connectedComponentMk zO)
+      heDvd (by simpa [D] using hfive)
+  exact ⟨zR, hzRdata.1, by simpa [D] using hfive, hratio⟩
+
 /-- Reduced detailed balance for two 5-divisible components.  Writing the
 R and O orders as `5k` and `5m` removes the common factor and leaves the
 small integer transport equation used by the two-layer encoder. -/
