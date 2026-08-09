@@ -19122,6 +19122,171 @@ theorem no_positive_three_or_eleven_divisor_partition_sixteen
     rw [hrest] at hdiv
     norm_num at hdiv
 
+/-- Pointwise service pricing for used reduced orders `11,2,1`.  Up to
+reduced source order sixteen, every ordinary cell costs at least `5k`; the
+only cheaper order is eleven, where the cost is still at least twelve. -/
+theorem eleven_two_one_service_local_lower
+    (k a₁ a₂ a₃ b₁ b₂ b₃ : ℕ) (hk : k ≤ 16)
+    (hrow : b₁ + b₂ + b₃ = 5)
+    (hbal₁ : 11 * a₁ = k * b₁) (hbal₂ : 2 * a₂ = k * b₂)
+    (hbal₃ : a₃ = k * b₃) :
+    5 * k ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) + a₃ * (b₃ - 1) ∨
+      (k = 11 ∧
+        12 ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) + a₃ * (b₃ - 1)) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  have hb₃ : b₃ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂ <;> interval_cases b₃
+  all_goals omega
+
+/-- Pointwise service pricing for used reduced orders `11,1,1,1`.
+Ordinary cells cost at least `4k`; the unique cheaper order eleven still
+costs at least two. -/
+theorem eleven_one_one_one_service_local_lower
+    (k a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ : ℕ) (hk : k ≤ 16)
+    (hrow : b₁ + b₂ + b₃ + b₄ = 5)
+    (hbal₁ : 11 * a₁ = k * b₁) (hbal₂ : a₂ = k * b₂)
+    (hbal₃ : a₃ = k * b₃) (hbal₄ : a₄ = k * b₄) :
+    4 * k ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) +
+        a₃ * (b₃ - 1) + a₄ * (b₄ - 1) ∨
+      (k = 11 ∧
+        2 ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) +
+          a₃ * (b₃ - 1) + a₄ * (b₄ - 1)) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  have hb₃ : b₃ ≤ 5 := by omega
+  have hb₄ : b₄ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂ <;>
+    interval_cases b₃ <;> interval_cases b₄
+  all_goals omega
+
+/-- Aggregate an ordinary linear service lower bound with a single possible
+order-eleven exception over positive reduced mass sixteen. -/
+theorem exceptional_eleven_service_total_lower
+    {α : Type*} [DecidableEq α] (C : Finset α) (k cost : α → ℕ)
+    (L B target : ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hpoint : ∀ x ∈ C,
+      L * k x ≤ cost x ∨ (k x = 11 ∧ B ≤ cost x))
+    (hB : B ≤ L * 11) (hordinary : target ≤ L * 16)
+    (hexceptional : target ≤ L * 5 + B) :
+    target ≤ ∑ x ∈ C, cost x := by
+  let E := C.filter fun x => k x = 11
+  have hEsub : E ⊆ C := Finset.filter_subset _ _
+  have hEcard : E.card = 0 ∨ E.card = 1 := by
+    have hEle : (∑ x ∈ E, k x) ≤ 16 := by
+      rw [← hsum]
+      exact Finset.sum_le_sum_of_subset_of_nonneg hEsub
+        (fun _ _ _ => Nat.zero_le _)
+    have hEsum : (∑ x ∈ E, k x) = 11 * E.card := by
+      calc
+        (∑ x ∈ E, k x) = ∑ _x ∈ E, 11 := by
+          apply Finset.sum_congr rfl
+          intro x hx
+          exact (Finset.mem_filter.mp hx).2
+        _ = 11 * E.card := by simp [mul_comm]
+    rw [hEsum] at hEle
+    omega
+  rcases hEcard with hzero | hone
+  · have hall : ∀ x ∈ C, L * k x ≤ cost x := by
+      intro x hxC
+      rcases hpoint x hxC with hx | hx
+      · exact hx
+      · have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hx.1⟩
+        have : 0 < E.card := Finset.card_pos.mpr ⟨x, hxE⟩
+        omega
+    have hle := Finset.sum_le_sum fun x hx => hall x hx
+    have hleft : (∑ x ∈ C, L * k x) = L * 16 := by
+      rw [← Finset.mul_sum, hsum]
+    rw [hleft] at hle
+    exact hordinary.trans hle
+  · obtain ⟨e, heE⟩ := Finset.card_pos.mp (by omega : 0 < E.card)
+    have heC := hEsub heE
+    have hke : k e = 11 := (Finset.mem_filter.mp heE).2
+    have heCost : B ≤ cost e := by
+      rcases hpoint e heC with he | he
+      · exact hB.trans (by simpa [hke, mul_comm] using he)
+      · exact he.2
+    have hrest : ∀ x ∈ C.erase e, L * k x ≤ cost x := by
+      intro x hx
+      have hxC := (Finset.mem_erase.mp hx).2
+      rcases hpoint x hxC with hlinear | hex
+      · exact hlinear
+      · have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hex.1⟩
+        have hxe : x ≠ e := (Finset.mem_erase.mp hx).1
+        have htwo : 2 ≤ E.card :=
+          Finset.one_lt_card.mpr ⟨x, hxE, e, heE, hxe⟩
+        omega
+    have hkSplit : (∑ x ∈ C.erase e, k x) + k e = ∑ x ∈ C, k x :=
+      Finset.sum_erase_add C k heC
+    rw [hke, hsum] at hkSplit
+    have hkRest : (∑ x ∈ C.erase e, k x) = 5 := by omega
+    have hrestSum := Finset.sum_le_sum fun x hx => hrest x hx
+    have hleft : (∑ x ∈ C.erase e, L * k x) = L * 5 := by
+      rw [← Finset.mul_sum, hkRest]
+    rw [hleft] at hrestSum
+    have hcostSplit : (∑ x ∈ C.erase e, cost x) + cost e =
+        ∑ x ∈ C, cost x := Finset.sum_erase_add C cost heC
+    rw [← hcostSplit]
+    omega
+
+/-- Aggregate service cost for the used-order pattern `55+10+5`. -/
+theorem eleven_two_one_service_total_ge_thirtySeven
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ a₃ b₁ b₂ b₃ : α → ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x + b₃ x = 5)
+    (hbal₁ : ∀ x ∈ C, 11 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 2 * a₂ x = k x * b₂ x)
+    (hbal₃ : ∀ x ∈ C, a₃ x = k x * b₃ x) :
+    37 ≤ ∑ x ∈ C, (a₁ x * (b₁ x - 1) +
+      a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1)) := by
+  let cost := fun x : α => a₁ x * (b₁ x - 1) +
+    a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1)
+  apply exceptional_eleven_service_total_lower C k cost 5 12 37
+    hpos hsum
+  · intro x hx
+    have hk : k x ≤ 16 := by
+      rw [← hsum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+    exact eleven_two_one_service_local_lower
+      (k x) (a₁ x) (a₂ x) (a₃ x) (b₁ x) (b₂ x) (b₃ x) hk
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx) (hbal₃ x hx)
+  · norm_num
+  · norm_num
+  · norm_num
+
+/-- Aggregate service cost for the used-order pattern `55+5+5+5`. -/
+theorem eleven_one_one_one_service_total_ge_twentyTwo
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ : α → ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x) (hsum : (∑ x ∈ C, k x) = 16)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x + b₃ x + b₄ x = 5)
+    (hbal₁ : ∀ x ∈ C, 11 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, a₂ x = k x * b₂ x)
+    (hbal₃ : ∀ x ∈ C, a₃ x = k x * b₃ x)
+    (hbal₄ : ∀ x ∈ C, a₄ x = k x * b₄ x) :
+    22 ≤ ∑ x ∈ C, (a₁ x * (b₁ x - 1) +
+      a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1) +
+        a₄ x * (b₄ x - 1)) := by
+  let cost := fun x : α => a₁ x * (b₁ x - 1) +
+    a₂ x * (b₂ x - 1) + a₃ x * (b₃ x - 1) +
+      a₄ x * (b₄ x - 1)
+  apply exceptional_eleven_service_total_lower C k cost 4 2 22
+    hpos hsum
+  · intro x hx
+    have hk : k x ≤ 16 := by
+      rw [← hsum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+    exact eleven_one_one_one_service_local_lower
+      (k x) (a₁ x) (a₂ x) (a₃ x) (a₄ x)
+        (b₁ x) (b₂ x) (b₃ x) (b₄ x) hk
+          (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+            (hbal₃ x hx) (hbal₄ x hx)
+  · norm_num
+  · norm_num
+  · norm_num
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
@@ -21776,6 +21941,141 @@ theorem degree_sixteen_twoLayer_uniform_nine_or_eleven_nonFive_count_le_twelve
       (by simpa [D, R] using he₀R)
   have hcardLe := Finset.card_le_card hsub
   exact hcardLe.trans (by simpa [S, C, D, O, R] using hcap)
+
+/-- A nonempty uniform order-eleven non-five lane has one named used
+order-fifty-five owner, and every lane component sends all five used
+quotients to it. -/
+theorem degree_sixteen_twoLayer_orderEleven_exists_named_common_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.Nonempty → (∀ o ∈ N, o.supp.ncard = 11) →
+      ∃ e : D.ConnectedComponent,
+        componentRepresentative D e ∈ R ∧ e.supp.ncard = 55 ∧
+          ∀ o ∈ N, componentQuotientMatrix G D o e = 5 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  intro hN huniform
+  have howner : ∀ o ∈ N, ∃ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R ∧
+      componentQuotientMatrix G D o e = 5 ∧ e.supp.ncard = 55 := by
+    intro o hoN
+    have hoC := (Finset.mem_filter.mp hoN).1
+    have hoO := (Finset.mem_filter.mp hoC).2
+    have honot := (Finset.mem_filter.mp hoN).2
+    let z := componentRepresentative D o
+    have hzo : D.connectedComponentMk z = o :=
+      (ConnectedComponent.mem_supp_iff o z).mp (componentRepresentative_mem D o)
+    obtain ⟨x, hxR, hq, _howner⟩ :=
+      degree_sixteen_twoLayer_nonFive_orphan_pruned_owner
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild z
+          (by simpa [D, O, R, z] using hoO) (by rw [hzo]; exact honot)
+    let e := D.connectedComponentMk x
+    have heR : componentRepresentative D e ∈ R :=
+      degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) x hxR
+            (componentRepresentative_mem D e)
+    have heDvdRaw := (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild x hxR).2 rfl
+    have heDvd : 5 ∣ e.supp.ncard := by simpa [D, e] using heDvdRaw
+    rw [hzo] at hq
+    have hrigid := degree_sixteen_twoLayer_nonFive_concentrated_cut_rigidity
+      G hfree hmin hcard e o heDvd honot (by simpa [D, e] using hq)
+    have hon := huniform o hoN
+    obtain ⟨k, hk⟩ := heDvd
+    have hdiv : e.supp.ncard / 5 = k := by rw [hk]; omega
+    rw [hdiv] at hrigid
+    refine ⟨e, heR, by simpa [D, e] using hq, ?_⟩
+    omega
+  obtain ⟨o₀, ho₀N⟩ := hN
+  obtain ⟨e₀, he₀R, hq₀, he₀order⟩ := howner o₀ ho₀N
+  refine ⟨e₀, he₀R, he₀order, ?_⟩
+  intro o hoN
+  obtain ⟨e, heR, hq, heorder⟩ := howner o hoN
+  have heeq : e = e₀ := by
+    by_contra hne
+    have hbound := degree_sixteen_twoLayer_two_used_component_order_sum_le_seventy
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e e₀
+        (by simpa [D, R] using heR) (by simpa [D, R] using he₀R) hne
+    omega
+  rwa [← heeq]
+
+/-- Removing a used order-fifty-five component from the exact seventy-point
+used sector leaves total component order fifteen; every remaining order is
+still a positive multiple of five. -/
+theorem degree_sixteen_twoLayer_orderFiftyFive_used_complement_mass_fifteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he55 : e.supp.ncard = 55) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
+      ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  have heE : e ∈ E := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, R] using heR⟩
+  have hpack := degree_sixteen_twoLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  have hsum : (∑ f ∈ E, f.supp.ncard) = 70 := by
+    simpa [D, R, E] using hpack.1
+  have hdvd : ∀ f ∈ E, 5 ∣ f.supp.ncard := by
+    simpa [D, R, E] using hpack.2
+  have hsplit : (∑ f ∈ E.erase e, f.supp.ncard) + e.supp.ncard =
+      ∑ f ∈ E, f.supp.ncard := Finset.sum_erase_add E _ heE
+  rw [he55, hsum] at hsplit
+  change (∑ f ∈ E.erase e, f.supp.ncard) = 15 ∧
+    ∀ f ∈ E.erase e, 5 ∣ f.supp.ncard
+  exact ⟨by omega, fun f hf => hdvd f (Finset.mem_of_mem_erase hf)⟩
 
 /-- Sharp graph-facing census for the uniform non-five orphan lane. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
