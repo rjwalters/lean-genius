@@ -18632,6 +18632,141 @@ theorem degree_sixteen_twoLayer_orderEleven_orphan_row_classification
   simpa [C, Q, D, o] using
     row_moment_eight_count_classification C (fun f => Q o f) hsum
 
+/-- Graph-facing zero-excess alphabet: an unequal positive quotient from a
+non-five-divisible two-layer orphan into another orphan is five or ten. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five_or_ten
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard)
+    (f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hfO : componentRepresentative (secondOrderDefectGraph G) f ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hne : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠
+      f.supp.ncard)
+    (hpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) f) :
+    componentQuotientMatrix G (secondOrderDefectGraph G)
+        ((secondOrderDefectGraph G).connectedComponentMk z) f = 5 ∨
+      componentQuotientMatrix G (secondOrderDefectGraph G)
+        ((secondOrderDefectGraph G).connectedComponentMk z) f = 10 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ O)
+  let o := D.connectedComponentMk z
+  let q := componentQuotientMatrix G D o f
+  let b := componentQuotientMatrix G D f o
+  obtain ⟨_x, _hxR, hpairs⟩ :=
+    degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot
+  have hn : o.supp.ncard = 7 ∨ o.supp.ncard = 9 ∨ o.supp.ncard = 11 := by
+    rcases hpairs with h7 | h9 | h11
+    · exact Or.inl h7.1
+    · exact Or.inr (Or.inl h9.1)
+    · exact Or.inr (Or.inr h11.1)
+  have hfLowerRaw := (degree_sixteen_smallLayer_orphan_component_card_lower
+    G hfree (s := 2) (Or.inr rfl) hmin hcard c₀ hc₀min hregChild
+      hcardChild (componentRepresentative D f)
+        (by simpa [D, O] using hfO)).2 rfl
+  have hfm : D.connectedComponentMk (componentRepresentative D f) = f :=
+    (ConnectedComponent.mem_supp_iff f
+      (componentRepresentative D f)).mp (componentRepresentative_mem D f)
+  rw [hfm] at hfLowerRaw
+  have hndvd : ¬ f.supp.ncard ∣ o.supp.ncard := by
+    intro hdvd
+    have hle : f.supp.ncard ≤ o.supp.ncard :=
+      Nat.le_of_dvd (by rcases hn with h7 | h9 | h11 <;> omega) hdvd
+    rcases hn with h7 | h9 | h11
+    · have hfCases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 := by omega
+      rcases hfCases with hf6 | hf7
+      · rw [h7, hf6] at hdvd
+        norm_num at hdvd
+      · exact hne (h7.trans hf7.symm)
+    · have hfCases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+          f.supp.ncard = 8 ∨ f.supp.ncard = 9 := by omega
+      rcases hfCases with hf6 | hf7 | hf8 | hf9
+      · rw [h9, hf6] at hdvd
+        norm_num at hdvd
+      · rw [h9, hf7] at hdvd
+        norm_num at hdvd
+      · rw [h9, hf8] at hdvd
+        norm_num at hdvd
+      · exact hne (h9.trans hf9.symm)
+    · have hfCases : f.supp.ncard = 6 ∨ f.supp.ncard = 7 ∨
+          f.supp.ncard = 8 ∨ f.supp.ncard = 9 ∨
+          f.supp.ncard = 10 ∨ f.supp.ncard = 11 := by omega
+      rcases hfCases with hf6 | hf7 | hf8 | hf9 | hf10 | hf11
+      · rw [h11, hf6] at hdvd
+        norm_num at hdvd
+      · rw [h11, hf7] at hdvd
+        norm_num at hdvd
+      · rw [h11, hf8] at hdvd
+        norm_num at hdvd
+      · rw [h11, hf9] at hdvd
+        norm_num at hdvd
+      · rw [h11, hf10] at hdvd
+        norm_num at hdvd
+      · exact hne (h11.trans hf11.symm)
+  have hble : b ≤ 1 := by
+    simpa [D, b, o] using secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard f o hndvd
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
+  change o.supp.ncard * q = f.supp.ncard * b at hbal
+  have hrepO : componentRepresentative D o ∈ O := by
+    have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) z hz
+    exact hsub (componentRepresentative_mem D o)
+  have hrow := degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+    G hfree hmin hcard c₀ hregChild hcardChild o
+      (by simpa [D, O] using hrepO)
+  have hfC : f ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, O] using hfO⟩
+  have hqle : q ≤ 11 := by
+    have hsingle := Finset.single_le_sum
+      (f := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e)
+      (fun _ _ => Nat.zero_le _) hfC
+    simpa [C, D, O, q] using hsingle.trans_eq hrow
+  have halphabet : ¬ 5 ∣ f.supp.ncard →
+      f.supp.ncard = 7 ∨ f.supp.ncard = 9 ∨ f.supp.ncard = 11 := by
+    intro hfnot
+    obtain ⟨_y, _hyR, hfpairs⟩ :=
+      degree_sixteen_twoLayer_nonFive_orphan_owner_pairs_seven_nine_eleven
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+          (componentRepresentative D f) (by simpa [D, O] using hfO)
+          (by rw [hfm]; exact hfnot)
+    rcases hfpairs with h7 | h9 | h11
+    · exact Or.inl (by rw [hfm] at h7; exact h7.1)
+    · exact Or.inr (Or.inl (by rw [hfm] at h9; exact h9.1))
+    · exact Or.inr (Or.inr (by rw [hfm] at h11; exact h11.1))
+  simpa [D, o, q, b] using surviving_nonFive_unequal_quotient_eq_five_or_ten
+    o.supp.ncard f.supp.ncard q b hn hfLowerRaw hne hbal hble
+      (by simpa [D, o, q] using hpos) hqle halphabet
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
