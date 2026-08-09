@@ -18794,6 +18794,26 @@ theorem card_le_sixteen_of_two_owner_fibers
     simpa [Finset.sum_const_nat, mul_comm] using hsum
   omega
 
+/-- If more than eight sources map into at most two fibers of capacity eight,
+then exactly two fibers occur. -/
+theorem owner_card_eq_two_of_nine_le_of_two_owner_fibers
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (C : Finset α) (E : Finset β) (owner : α → β)
+    (hmap : (C : Set α).MapsTo owner E)
+    (hCcard : 9 ≤ C.card) (hEcard : E.card ≤ 2)
+    (hfiber : ∀ e ∈ E, (C.filter fun x => owner x = e).card ≤ 8) :
+    E.card = 2 := by
+  have hdecomp := Finset.card_eq_sum_card_fiberwise hmap
+  have hsum : (∑ e ∈ E, (C.filter fun x => owner x = e).card) ≤
+      ∑ _e ∈ E, 8 := by
+    apply Finset.sum_le_sum
+    intro e he
+    exact hfiber e he
+  rw [← hdecomp] at hsum
+  have hcap : C.card ≤ E.card * 8 := by
+    simpa [Finset.sum_const_nat, mul_comm] using hsum
+  omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
