@@ -19274,6 +19274,76 @@ theorem degree_sixteen_twoLayer_orderSeven_exists_two_named_owners
     · exact Or.inr ⟨by simpa [ho₂] using (howner o hoN).2.2.1,
         by simpa [ho₂] using (howner o hoN).2.2.2⟩
 
+/-- In the order-seven/cardinality-fourteen lane, the complementary
+five-divisible orphan components have total reduced order fourteen. -/
+theorem degree_sixteen_twoLayer_orderSeven_card_fourteen_fiveDiv_reduced_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 14 → (∀ o ∈ N, o.supp.ncard = 7) →
+      (∑ o ∈ C \ N, o.supp.ncard / 5) = 14 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  intro hNcard huniform
+  change N.card = 14 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 7 at huniform
+  have hCsum := degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ o ∈ C, o.supp.ncard) = 168 at hCsum
+  have hNsum : (∑ o ∈ N, o.supp.ncard) = 98 := by
+    calc
+      (∑ o ∈ N, o.supp.ncard) = ∑ _o ∈ N, 7 := by
+        apply Finset.sum_congr rfl
+        intro o hoN
+        exact huniform o hoN
+      _ = N.card * 7 := by simp
+      _ = 98 := by rw [hNcard]
+  have hNsub : N ⊆ C := Finset.filter_subset _ _
+  have hsplit := Finset.sum_sdiff hNsub (f := fun o => o.supp.ncard)
+  have hFsum : (∑ o ∈ C \ N, o.supp.ncard) = 70 := by
+    rw [hNsum, hCsum] at hsplit
+    omega
+  have hdiv : ∀ o ∈ C \ N, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  have hscale : (∑ o ∈ C \ N, o.supp.ncard) =
+      5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+    calc
+      (∑ o ∈ C \ N, o.supp.ncard) =
+          ∑ o ∈ C \ N, 5 * (o.supp.ncard / 5) := by
+            apply Finset.sum_congr rfl
+            intro o hoF
+            exact (Nat.mul_div_cancel' (hdiv o hoF)).symm
+      _ = 5 * (∑ o ∈ C \ N, o.supp.ncard / 5) := by
+        rw [Finset.mul_sum]
+  rw [hFsum] at hscale
+  change (∑ o ∈ C \ N, o.supp.ncard / 5) = 14
+  omega
+
 /-- A symmetric fixed-point-free relation cannot give every point of a
 three-element set exactly one neighbor. -/
 theorem card_three_false_of_symmetric_unique_eq_three
