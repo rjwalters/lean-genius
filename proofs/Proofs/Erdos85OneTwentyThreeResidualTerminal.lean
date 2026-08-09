@@ -18247,6 +18247,40 @@ theorem row_moment_eight_count_classification
   rw [hsum, hcount2, hcount3] at hrewrite
   omega
 
+/-- On exactly three targets, factorial second moment eight forces total
+quotient mass at most six. -/
+theorem row_moment_eight_card_three_sum_le_six
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → ℕ)
+    (hcard : C.card = 3)
+    (hmoment : (∑ x ∈ C, q x * (q x - 1)) = 8) :
+    (∑ x ∈ C, q x) ≤ 6 := by
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  simp only [Finset.sum_insert, Finset.mem_insert, Finset.mem_singleton,
+    not_or, hab, hac, hbc, Ne.symm hab, Ne.symm hac, Ne.symm hbc,
+    false_or, not_false_eq_true, Finset.sum_singleton] at hmoment ⊢
+  have haTerm : q a * (q a - 1) ≤ 8 := by omega
+  have hbTerm : q b * (q b - 1) ≤ 8 := by omega
+  have hcTerm : q c * (q c - 1) ≤ 8 := by omega
+  have ha : q a ≤ 3 := by
+    by_contra h
+    have hq : 4 ≤ q a := by omega
+    have hp : 3 ≤ q a - 1 := by omega
+    nlinarith
+  have hb : q b ≤ 3 := by
+    by_contra h
+    have hq : 4 ≤ q b := by omega
+    have hp : 3 ≤ q b - 1 := by omega
+    nlinarith
+  have hc : q c ≤ 3 := by
+    by_contra h
+    have hq : 4 ≤ q c := by omega
+    have hp : 3 ≤ q c - 1 := by omega
+    nlinarith
+  interval_cases hqa : q a <;>
+    interval_cases hqb : q b <;>
+      interval_cases hqc : q c
+  all_goals (norm_num [hqa, hqb, hqc] at hmoment <;> omega)
+
 /-- Arithmetic core for the zero-excess remainder.  For a surviving source
 order seven, nine, or eleven, an unequal positive quotient with reverse
 quotient at most one and row bound eleven must be five or ten, provided every
