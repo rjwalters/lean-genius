@@ -18281,6 +18281,69 @@ theorem row_moment_eight_card_three_sum_le_six
       interval_cases hqc : q c
   all_goals (norm_num [hqa, hqb, hqc] at hmoment <;> omega)
 
+/-- A symmetric fixed-point-free relation cannot give every point of a
+three-element set exactly one neighbor. -/
+theorem card_three_false_of_symmetric_unique_eq_three
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → α → ℕ)
+    (hcard : C.card = 3)
+    (hsym : ∀ x ∈ C, ∀ y ∈ C, q x y = q y x)
+    (hdiag : ∀ x ∈ C, q x x ≠ 3)
+    (hone : ∀ x ∈ C, (C.filter fun y => q x y = 3).card = 1) : False := by
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  have haC : a ∈ ({a, b, c} : Finset α) := by simp
+  have hbC : b ∈ ({a, b, c} : Finset α) := by simp
+  have hcC : c ∈ ({a, b, c} : Finset α) := by simp
+  have haNon : (({a, b, c} : Finset α).filter fun y => q a y = 3).Nonempty :=
+    Finset.card_pos.mp (by rw [hone a haC]; norm_num)
+  obtain ⟨x, hx⟩ := haNon
+  have hxC := (Finset.mem_filter.mp hx).1
+  have hax := (Finset.mem_filter.mp hx).2
+  have hxcases : x = a ∨ x = b ∨ x = c := by simpa using hxC
+  rcases hxcases with hxa | hxb | hxc
+  · exact hdiag a haC (by rwa [hxa] at hax)
+  · have hcNon : (({a, b, c} : Finset α).filter fun y => q c y = 3).Nonempty :=
+      Finset.card_pos.mp (by rw [hone c hcC]; norm_num)
+    have habq : q a b = 3 := by rwa [hxb] at hax
+    obtain ⟨y, hy⟩ := hcNon
+    have hyC := (Finset.mem_filter.mp hy).1
+    have hcy := (Finset.mem_filter.mp hy).2
+    have hycases : y = a ∨ y = b ∨ y = c := by simpa using hyC
+    rcases hycases with hya | hyb | hyc
+    · have hca : q c a = 3 := by rwa [hya] at hcy
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, habq⟩
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, by rw [hsym a haC c hcC]; exact hca⟩
+      exact hbc (Finset.card_le_one.mp (by rw [hone a haC]) b hbMem c hcMem)
+    · have hcb : q c b = 3 := by rwa [hyb] at hcy
+      have haMem : a ∈ ({a, b, c} : Finset α).filter (fun y => q b y = 3) :=
+        Finset.mem_filter.mpr ⟨haC, by rw [← hsym a haC b hbC]; exact habq⟩
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q b y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, by rw [hsym b hbC c hcC]; exact hcb⟩
+      exact hac (Finset.card_le_one.mp (by rw [hone b hbC]) a haMem c hcMem)
+    · exact hdiag c hcC (by rwa [hyc] at hcy)
+  · have hbNon : (({a, b, c} : Finset α).filter fun y => q b y = 3).Nonempty :=
+      Finset.card_pos.mp (by rw [hone b hbC]; norm_num)
+    have hacq : q a c = 3 := by rwa [hxc] at hax
+    obtain ⟨y, hy⟩ := hbNon
+    have hyC := (Finset.mem_filter.mp hy).1
+    have hby := (Finset.mem_filter.mp hy).2
+    have hycases : y = a ∨ y = b ∨ y = c := by simpa using hyC
+    rcases hycases with hya | hyb | hyc
+    · have hba : q b a = 3 := by rwa [hya] at hby
+      have hcMem : c ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hcC, hacq⟩
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q a y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, by rw [hsym a haC b hbC]; exact hba⟩
+      exact hbc (Finset.card_le_one.mp (by rw [hone a haC]) b hbMem c hcMem)
+    · exact hdiag b hbC (by rwa [hyb] at hby)
+    · have hbcq : q b c = 3 := by rwa [hyc] at hby
+      have haMem : a ∈ ({a, b, c} : Finset α).filter (fun y => q c y = 3) :=
+        Finset.mem_filter.mpr ⟨haC, by rw [← hsym a haC c hcC]; exact hacq⟩
+      have hbMem : b ∈ ({a, b, c} : Finset α).filter (fun y => q c y = 3) :=
+        Finset.mem_filter.mpr ⟨hbC, by rw [← hsym b hbC c hcC]; exact hbcq⟩
+      exact hab (Finset.card_le_one.mp (by rw [hone c hcC]) a haMem b hbMem)
+
 /-- Arithmetic core for the zero-excess remainder.  For a surviving source
 order seven, nine, or eleven, an unequal positive quotient with reverse
 quotient at most one and row bound eleven must be five or ten, provided every
