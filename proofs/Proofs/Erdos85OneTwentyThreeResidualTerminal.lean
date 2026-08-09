@@ -19122,6 +19122,44 @@ theorem no_positive_three_or_eleven_divisor_partition_sixteen
     rw [hrest] at hdiv
     norm_num at hdiv
 
+/-- Pointwise service pricing for used reduced orders `11,2,1`.  Up to
+reduced source order sixteen, every ordinary cell costs at least `5k`; the
+only cheaper order is eleven, where the cost is still at least twelve. -/
+theorem eleven_two_one_service_local_lower
+    (k a₁ a₂ a₃ b₁ b₂ b₃ : ℕ) (hk : k ≤ 16)
+    (hrow : b₁ + b₂ + b₃ = 5)
+    (hbal₁ : 11 * a₁ = k * b₁) (hbal₂ : 2 * a₂ = k * b₂)
+    (hbal₃ : a₃ = k * b₃) :
+    5 * k ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) + a₃ * (b₃ - 1) ∨
+      (k = 11 ∧
+        12 ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) + a₃ * (b₃ - 1)) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  have hb₃ : b₃ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂ <;> interval_cases b₃
+  all_goals omega
+
+/-- Pointwise service pricing for used reduced orders `11,1,1,1`.
+Ordinary cells cost at least `4k`; the unique cheaper order eleven still
+costs at least two. -/
+theorem eleven_one_one_one_service_local_lower
+    (k a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ : ℕ) (hk : k ≤ 16)
+    (hrow : b₁ + b₂ + b₃ + b₄ = 5)
+    (hbal₁ : 11 * a₁ = k * b₁) (hbal₂ : a₂ = k * b₂)
+    (hbal₃ : a₃ = k * b₃) (hbal₄ : a₄ = k * b₄) :
+    4 * k ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) +
+        a₃ * (b₃ - 1) + a₄ * (b₄ - 1) ∨
+      (k = 11 ∧
+        2 ≤ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) +
+          a₃ * (b₃ - 1) + a₄ * (b₄ - 1)) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  have hb₃ : b₃ ≤ 5 := by omega
+  have hb₄ : b₄ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂ <;>
+    interval_cases b₃ <;> interval_cases b₄
+  all_goals omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
