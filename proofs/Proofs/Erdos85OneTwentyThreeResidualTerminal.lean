@@ -19042,6 +19042,110 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
         G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f e
           hfO heO hfne (by rw [he11, h11.1]) hfpos (by rw [heQ])
 
+/-- Relative to the forced same-order quotient-two mass, an orphan row has
+at most one unequal positive target. -/
+theorem degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_target_unique_of_same_order_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (z : V)
+    (hz : z ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 5 ∣
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard)
+    (e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (heO : componentRepresentative (secondOrderDefectGraph G) e ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hfO : componentRepresentative (secondOrderDefectGraph G) f ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hgO : componentRepresentative (secondOrderDefectGraph G) g ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heq : e.supp.ncard =
+      ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard)
+    (hfne : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠
+      f.supp.ncard)
+    (hgne : ((secondOrderDefectGraph G).connectedComponentMk z).supp.ncard ≠
+      g.supp.ncard)
+    (heTwo : 2 ≤ componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) e)
+    (hfpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) f)
+    (hgpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk z) g) :
+    f = g := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun x : D.ConnectedComponent =>
+    componentRepresentative D x ∈ O)
+  let o := D.connectedComponentMk z
+  have hqf := degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot f
+      hfO hfne hfpos
+  have hqg := degree_sixteen_twoLayer_nonFive_orphan_unequal_positive_quotient_eq_five
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild z hz hnot g
+      hgO hgne hgpos
+  by_contra hfg
+  have hfe : f ≠ e := by
+    intro h
+    rw [h, heq] at hfne
+    exact hfne rfl
+  have hge : g ≠ e := by
+    intro h
+    rw [h, heq] at hgne
+    exact hgne rfl
+  have heC : e ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, O] using heO⟩
+  have hfC : f ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, O] using hfO⟩
+  have hgC : g ∈ C := Finset.mem_filter.mpr
+    ⟨Finset.mem_univ _, by simpa [D, O] using hgO⟩
+  have hsub : ({f, g, e} : Finset D.ConnectedComponent) ⊆ C := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact hfC
+    · exact hgC
+    · exact heC
+  have hle := Finset.sum_le_sum_of_subset
+    (f := fun x : D.ConnectedComponent =>
+      componentQuotientMatrix G D o x) hsub
+  have hrepO : componentRepresentative D o ∈ O := by
+    have hsubO := degree_sixteen_minimumLayer_orphan_component_subset
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) z hz
+    exact hsubO (componentRepresentative_mem D o)
+  have hrow := degree_sixteen_twoLayer_orphan_to_orphan_quotient_sum_eq_eleven
+    G hfree hmin hcard c₀ hregChild hcardChild o
+      (by simpa [D, O] using hrepO)
+  change 2 ≤ componentQuotientMatrix G D o e at heTwo
+  change componentQuotientMatrix G D o f = 5 at hqf
+  change componentQuotientMatrix G D o g = 5 at hqg
+  have hbound : 5 + (5 + componentQuotientMatrix G D o e) ≤ 11 := by
+    simpa [C, D, O, hfg, hfe, hge, hqf, hqg] using hle.trans_eq hrow
+  omega
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
