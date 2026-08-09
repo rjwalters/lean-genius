@@ -7454,6 +7454,32 @@ theorem degree_sixteen_twoLayer_concentrated_cut_local_excess_bound
   rw [howner, ← hcast] at hle
   exact_mod_cast hle
 
+/-- Arithmetic endgame for a concentrated owner of reduced order `k`.
+Under the local-excess bound, ratios two and three are impossible; ratio
+four forces the minimum feasible orphan order eight. -/
+theorem concentrated_owner_small_ratio_arithmetic
+    (n q k : ℕ) (hn : 6 ≤ n) (hkpos : 0 < k)
+    (hkdvd : k ∣ n) (hq : q = n / k)
+    (hbound : 5 * (q - 1) ≤ n - 3) :
+    k ≠ 2 ∧ k ≠ 3 ∧ (k = 4 → n = 8) := by
+  obtain ⟨m, hm⟩ := hkdvd
+  have hdiv : k * m / k = m := by
+    rw [mul_comm]
+    exact Nat.mul_div_left m hkpos
+  rw [hm, hdiv] at hq
+  subst q
+  constructor
+  · intro hk
+    subst k
+    omega
+  constructor
+  · intro hk
+    subst k
+    omega
+  · intro hk
+    subst k
+    omega
+
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
 then forces the owner's reduced order `|e| / 5` to divide the orphan order.
