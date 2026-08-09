@@ -1012,6 +1012,83 @@ theorem false_of_twelve_twelve_twentyfour_row_moments
     x₀ x₁ x₂ x₃ x₄ x₅ x₆ x₇ x₈ x₉ x₁₀ x₁₁ x₁₂ x₁₃ x₁₄ x₁₅ x₁₆
     hw12 hw24 hc12 hc024 hc124 hcov
 
+/-- Restrict an off-diagonal entry of the second-order quotient-square
+identity to a chosen component cell once every complementary two-step term
+vanishes.  This is the common transport behind the three cross moments in
+the `(12,12,24)` ledger. -/
+theorem secondOrder_componentQuotientMatrix_sq_sum_restrict
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) (hce : c ≠ e)
+    (C : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hout : ∀ f : (secondOrderDefectGraph G).ConnectedComponent, f ∉ C →
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f *
+        componentQuotientMatrix G (secondOrderDefectGraph G) f e = 0) :
+    (∑ f ∈ C,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f *
+        componentQuotientMatrix G (secondOrderDefectGraph G) f e) =
+      e.supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hsq := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree hd heven hmin hcard c e
+  have hfull : (∑ f, Q c f * Q f e) = e.supp.ncard := by
+    simpa only [Matrix.mul_apply, if_neg hce, mul_zero, zero_add, Q, D] using hsq
+  calc
+    (∑ f ∈ C, componentQuotientMatrix G D c f *
+        componentQuotientMatrix G D f e) = ∑ f, Q c f * Q f e := by
+      apply Finset.sum_subset (Finset.subset_univ C)
+      intro f _hf hfC
+      simpa [Q, D] using hout f hfC
+    _ = e.supp.ncard := hfull
+
+/-- Restrict the integral local-excess identity to a chosen component cell
+once every complementary local term vanishes.  The order-12 and order-24
+instances give the raw totals nine and twenty-one used by the row ledger. -/
+theorem secondOrder_componentQuotientMatrix_local_excess_restrict
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d) (heven : Even d)
+    (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (C : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hout : ∀ f : (secondOrderDefectGraph G).ConnectedComponent, f ∉ C →
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) f c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) = 0) :
+    (∑ f ∈ C,
+      ((componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ) *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) f c : ℤ) -
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c f : ℤ))) =
+      (c.supp.ncard : ℤ) - 3 := by
+  let D := secondOrderDefectGraph G
+  let T : D.ConnectedComponent → ℤ := fun f =>
+    (componentQuotientMatrix G D c f : ℤ) *
+        (componentQuotientMatrix G D f c : ℤ) -
+      (componentQuotientMatrix G D c f : ℤ)
+  have hfull := secondOrder_componentQuotientMatrix_local_excess
+    G hfree hd heven hmin hcard c
+  calc
+    (∑ f ∈ C, ((componentQuotientMatrix G D c f : ℤ) *
+        (componentQuotientMatrix G D f c : ℤ) -
+        (componentQuotientMatrix G D c f : ℤ))) = ∑ f, T f := by
+      apply Finset.sum_subset (Finset.subset_univ C)
+      intro f _hf hfC
+      simpa [T, D] using hout f hfC
+    _ = (c.supp.ncard : ℤ) - 3 := by simpa [T, D] using hfull
+
 set_option maxHeartbeats 2000000 in
 /-- The `(18,30)` balance equations leave a gap at forward masses one and
 three.  Unlike the stronger parity claim, this statement is exact enough for
