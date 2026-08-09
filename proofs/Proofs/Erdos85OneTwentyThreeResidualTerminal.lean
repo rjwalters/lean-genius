@@ -25318,6 +25318,58 @@ theorem degree_sixteen_twoLayer_nonFive_orphan_two_candidate_census
             (by simpa [D, O, C, N] using h7.1))
   · exact Or.inr h11
 
+/-- **Complete two-layer terminal at degree sixteen.**  The final census has
+only the order-seven/cardinality-nine and order-eleven/cardinality-eight
+lanes, and both have now been eliminated. -/
+theorem false_of_degree_sixteen_twoLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (hℓ3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hbij : Function.Bijective (mixedCycleLabeling u))
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  have hcensus := degree_sixteen_twoLayer_nonFive_orphan_two_candidate_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      u hu huRange hℓ3 hbij huD
+  change ((∀ o ∈ N, o.supp.ncard = 7) ∧ N.card = 9) ∨
+    ((∀ o ∈ N, o.supp.ncard = 11) ∧ N.card = 8) at hcensus
+  rcases hcensus with h7 | h11
+  · exact false_of_degree_sixteen_twoLayer_nine_orderSeven_nonFive_orphans
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, O, C, N] using h7.2)
+        (by simpa [D, O, C, N] using h7.1)
+  · exact false_of_degree_sixteen_twoLayer_eight_orderEleven_nonFive_orphans
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, O, C, N] using h11.2)
+        (by simpa [D, O, C, N] using h11.1)
+
 /-- The five `(12,12,24)` ledger moments, restricted to used-exterior
 components. -/
 theorem degree_sixteen_fourLayer_twelve_twelve_twentyfour_used_moments
