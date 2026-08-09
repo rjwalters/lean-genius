@@ -6521,6 +6521,90 @@ theorem degree_sixteen_twoLayer_minimumComponent_diagonal_eq_two
   rw [hQ, hinter]
   exact minimumLayerImage_inter_neighborFinset_card G D c₀ hregChild x
 
+/-- Every used order-thirty-five component contacts the minimum `C₅`.
+Balance magnifies that contact to a reverse quotient at least seven, so its
+minimum-component column alone costs at least six units of local excess. -/
+theorem degree_sixteen_twoLayer_orderThirtyFive_minimum_contact_excess_ge_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he35 : e.supp.ncard = 35) :
+    6 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) e c₀ *
+      (componentQuotientMatrix G (secondOrderDefectGraph G) c₀ e - 1) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  have hc₀five : c₀.supp.ncard = 5 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 2) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).2 rfl
+  let C : Finset V := c₀.supp.toFinite.toFinset
+  have hCU : C ⊆ U := by
+    intro z hz
+    have hzc : z ∈ c₀.supp := by simpa [C] using hz
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨c, ⟨z, hzc⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hcardC : C.card = 5 := by
+    rw [show C.card = c₀.supp.ncard by
+      simpa [C] using
+        (Set.ncard_eq_toFinset_card c₀.supp c₀.supp.toFinite).symm,
+      hc₀five]
+  have hcardU : U.card = 5 := by
+    rw [card_minimumLayerImageFinset]
+    exact hcardChild
+  have hCUeq : C = U :=
+    Finset.eq_of_subset_of_card_le hCU (by rw [hcardU, hcardC])
+  obtain ⟨v, _hv, herep⟩ := Finset.mem_biUnion.mp heR
+  have hvU : v.2.1 ∈ U :=
+    Finset.mem_image.mpr ⟨v, Finset.mem_univ _, rfl⟩
+  have hvc₀ : v.2.1 ∈ c₀.supp := by
+    rw [← hCUeq] at hvU
+    simpa [C] using hvU
+  have hregD : ∀ z : V, D.degree z = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  have hQpos : 0 < componentQuotientMatrix G D e c₀ := by
+    rw [componentQuotientMatrix_apply_eq G D 2 hregD hcomm e c₀
+      (componentRepresentative_mem D e)]
+    apply Finset.card_pos.mpr
+    refine ⟨v.2.1, ?_⟩
+    have hadj : G.Adj (componentRepresentative D e) v.2.1 :=
+      ((G.mem_neighborFinset v.2.1 (componentRepresentative D e)).mp
+        (Finset.mem_sdiff.mp herep).1).symm
+    exact Finset.mem_filter.mpr
+      ⟨(G.mem_neighborFinset (componentRepresentative D e) v.2.1).mpr hadj,
+        (ConnectedComponent.mem_supp_iff c₀ v.2.1).mp hvc₀⟩
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e c₀
+  change e.supp.ncard * componentQuotientMatrix G D e c₀ =
+    c₀.supp.ncard * componentQuotientMatrix G D c₀ e at hbal
+  rw [he35, hc₀five] at hbal
+  change 6 ≤ componentQuotientMatrix G D e c₀ *
+    (componentQuotientMatrix G D c₀ e - 1)
+  have hreverse : 7 ≤ componentQuotientMatrix G D c₀ e := by omega
+  have hfactor : 6 ≤ componentQuotientMatrix G D c₀ e - 1 := by omega
+  calc
+    6 ≤ 1 * (componentQuotientMatrix G D c₀ e - 1) := by simpa
+    _ ≤ componentQuotientMatrix G D e c₀ *
+        (componentQuotientMatrix G D c₀ e - 1) :=
+      Nat.mul_le_mul_right _ hQpos
+
 /-- **Order-five mass squeeze in the two-layer branch.**  The unique
 minimum component has order five, is canonically forward-oriented (all odd
 cycle blocks are), and contributes diagonal mass two.  The mixed order-five
@@ -18887,6 +18971,76 @@ theorem two_orderThirtyFive_service_total_local_excess_ge_twentyFour
   rw [hleft, hright] at hsum
   omega
 
+/-- Every two-owner service cell has local excess divisible by four.  The
+balance equations force the reduced order to absorb the factor seven, and
+the six possible splits of the five reverse quotients all have excess a
+multiple of four. -/
+theorem four_dvd_two_orderThirtyFive_service_local_excess
+    (k a₁ a₂ b₁ b₂ : ℕ)
+    (hrow : b₁ + b₂ = 5)
+    (hbal₁ : 7 * a₁ = k * b₁) (hbal₂ : 7 * a₂ = k * b₂) :
+    4 ∣ a₁ * (b₁ - 1) + a₂ * (b₂ - 1) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂
+  all_goals omega
+
+/-- Hence a reduced-mass-twenty-one service sector that fits inside budget
+twenty-eight has exact cost either twenty-four or twenty-eight. -/
+theorem two_orderThirtyFive_service_total_eq_twentyFour_or_twentyEight
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (k a₁ a₂ b₁ b₂ : α → ℕ)
+    (hksum : (∑ x ∈ C, k x) = 21)
+    (hrow : ∀ x ∈ C, b₁ x + b₂ x = 5)
+    (hbal₁ : ∀ x ∈ C, 7 * a₁ x = k x * b₁ x)
+    (hbal₂ : ∀ x ∈ C, 7 * a₂ x = k x * b₂ x)
+    (hupper : (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) ≤ 28) :
+    (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) = 24 ∨
+    (∑ x ∈ C,
+      (a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1))) = 28 := by
+  let cost := fun x : α =>
+    a₁ x * (b₁ x - 1) + a₂ x * (b₂ x - 1)
+  have hlower : 24 ≤ ∑ x ∈ C, cost x :=
+    two_orderThirtyFive_service_total_local_excess_ge_twentyFour
+      C k a₁ a₂ b₁ b₂ hksum hrow hbal₁ hbal₂
+  have hdivPoint : ∀ x ∈ C, 4 ∣ cost x := by
+    intro x hx
+    exact four_dvd_two_orderThirtyFive_service_local_excess
+      (k x) (a₁ x) (a₂ x) (b₁ x) (b₂ x)
+        (hrow x hx) (hbal₁ x hx) (hbal₂ x hx)
+  have hdiv : 4 ∣ ∑ x ∈ C, cost x := by
+    exact Finset.dvd_sum fun x hx => hdivPoint x hx
+  have hupper' : (∑ x ∈ C, cost x) ≤ 28 := by
+    simpa [cost] using hupper
+  change (∑ x ∈ C, cost x) = 24 ∨ (∑ x ∈ C, cost x) = 28
+  omega
+
+/-- Three pairwise-disjoint nonnegative sectors with lower costs thirty-six,
+twenty-four, and twelve cannot fit in a global budget of sixty-four. -/
+theorem false_of_disjoint_sector_costs_thirtySix_twentyFour_twelve
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (N F : Finset α) (c : α) (T : α → ℕ)
+    (hNF : Disjoint N F) (hcN : c ∉ N) (hcF : c ∉ F)
+    (hN : 36 ≤ ∑ x ∈ N, T x) (hF : 24 ≤ ∑ x ∈ F, T x)
+    (hc : 12 ≤ T c) (hfull : (∑ x, T x) = 64) : False := by
+  let S := (N ∪ F) ∪ {c}
+  have hsumNF : (∑ x ∈ N ∪ F, T x) =
+      (∑ x ∈ N, T x) + ∑ x ∈ F, T x := Finset.sum_union hNF
+  have hcNot : c ∉ N ∪ F := by simp [hcN, hcF]
+  have hsumS : (∑ x ∈ S, T x) =
+      ((∑ x ∈ N, T x) + ∑ x ∈ F, T x) + T c := by
+    rw [show S = (N ∪ F) ∪ {c} by rfl,
+      Finset.sum_union (Finset.disjoint_singleton_right.mpr hcNot),
+      hsumNF]
+    simp
+  have hsub : S ⊆ (Finset.univ : Finset α) := Finset.subset_univ S
+  have hle : (∑ x ∈ S, T x) ≤ ∑ x, T x :=
+    Finset.sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => Nat.zero_le _)
+  rw [hsumS, hfull] at hle
+  omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
@@ -19373,6 +19527,176 @@ theorem degree_sixteen_twoLayer_orderSeven_card_nine_fiveDiv_reduced_mass
   rw [hFsum] at hscale
   change (∑ o ∈ C \ N, o.supp.ncard / 5) = 21
   omega
+
+/-- The order-seven/cardinality-nine candidate is impossible.  Its two
+order-thirty-five owners spend at least thirty-six units on the nine
+order-seven sources, twenty-four on the five-divisible orphan complement,
+and twelve on their mandatory contacts with the minimum `C₅`, exceeding
+their combined local-excess budget sixty-four. -/
+theorem false_of_degree_sixteen_twoLayer_nine_orderSeven_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 9 → (∀ o ∈ N, o.supp.ncard = 7) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let F := C \ N
+  let Q := componentQuotientMatrix G D
+  intro hNcard huniform
+  change N.card = 9 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 7 at huniform
+  obtain ⟨e₁, e₂, hne, he₁R, he₂R, he₁35, he₂35, howners⟩ :=
+    degree_sixteen_twoLayer_orderSeven_exists_two_named_owners
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (by simpa [D, U, R, O, C, N] using huniform)
+        (by simpa [D, U, R, O, C, N] using
+          (show 9 ≤ N.card by omega))
+  have husedEq := degree_sixteen_twoLayer_used_components_eq_pair_of_orderThirtyFive
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      e₁ e₂ hne he₁R he₂R he₁35 he₂35
+  change (Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)) = {e₁, e₂} at husedEq
+  have hFmass :=
+    degree_sixteen_twoLayer_orderSeven_card_nine_fiveDiv_reduced_mass
+      G hfree hmin hcard c₀ hregChild hcardChild
+        (by simpa [D, U, R, O, C, N] using hNcard)
+        (by simpa [D, U, R, O, C, N] using huniform)
+  change (∑ o ∈ F, o.supp.ncard / 5) = 21 at hFmass
+  have hFmem : ∀ o ∈ F, componentRepresentative D o ∈ O := by
+    intro o hoF
+    exact (Finset.mem_filter.mp (Finset.mem_sdiff.mp hoF).1).2
+  have hFdiv : ∀ o ∈ F, 5 ∣ o.supp.ncard := by
+    intro o hoF
+    obtain ⟨hoC, hoN⟩ := Finset.mem_sdiff.mp hoF
+    by_contra hnot
+    exact hoN (Finset.mem_filter.mpr ⟨hoC, hnot⟩)
+  let k := fun o : D.ConnectedComponent => o.supp.ncard / 5
+  let a₁ := fun o : D.ConnectedComponent => Q e₁ o
+  let a₂ := fun o : D.ConnectedComponent => Q e₂ o
+  let b₁ := fun o : D.ConnectedComponent => Q o e₁
+  let b₂ := fun o : D.ConnectedComponent => Q o e₂
+  have hrow : ∀ o ∈ F, b₁ o + b₂ o = 5 := by
+    intro o hoF
+    have hsum := degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
+      G hfree hmin hcard c₀ hregChild hcardChild o (hFmem o hoF)
+    change (∑ e ∈ Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R), Q o e) = 5 at hsum
+    rw [husedEq] at hsum
+    simpa [b₁, b₂, hne] using hsum
+  have hbal₁ : ∀ o ∈ F, 7 * a₁ o = k o * b₁ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁ o
+    change e₁.supp.ncard * Q e₁ o = o.supp.ncard * Q o e₁ at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [he₁35, hm] at hbal
+    have hsmall : 7 * Q e₁ o = m * Q o e₁ := by nlinarith
+    change 7 * a₁ o = k o * b₁ o
+    have hdivm : 5 * m / 5 = m := by
+      simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₁, b₁]
+    rw [hm, hdivm]
+    exact hsmall
+  have hbal₂ : ∀ o ∈ F, 7 * a₂ o = k o * b₂ o := by
+    intro o hoF
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂ o
+    change e₂.supp.ncard * Q e₂ o = o.supp.ncard * Q o e₂ at hbal
+    obtain ⟨m, hm⟩ := hFdiv o hoF
+    rw [he₂35, hm] at hbal
+    have hsmall : 7 * Q e₂ o = m * Q o e₂ := by nlinarith
+    change 7 * a₂ o = k o * b₂ o
+    have hdivm : 5 * m / 5 = m := by
+      simpa [mul_comm] using Nat.mul_div_left m (by norm_num : 0 < 5)
+    dsimp only [k, a₂, b₂]
+    rw [hm, hdivm]
+    exact hsmall
+  have hservice : 24 ≤ ∑ o ∈ F,
+      (a₁ o * (b₁ o - 1) + a₂ o * (b₂ o - 1)) :=
+    two_orderThirtyFive_service_total_local_excess_ge_twentyFour
+      F k a₁ a₂ b₁ b₂ (by simpa [k] using hFmass)
+        hrow hbal₁ hbal₂
+  let T := fun o : D.ConnectedComponent =>
+    Q e₁ o * (Q o e₁ - 1) + Q e₂ o * (Q o e₂ - 1)
+  have hNlower : 36 ≤ ∑ o ∈ N, T o := by
+    have hpoint : ∀ o ∈ N, 4 ≤ T o := by
+      intro o hoN
+      rcases howners o hoN with h₁ | h₂
+      · dsimp only [T]
+        have hp : Q e₁ o = 1 ∧ Q o e₁ = 5 := by simpa [Q, D] using h₁
+        rw [hp.1, hp.2]
+        omega
+      · dsimp only [T]
+        have hp : Q e₂ o = 1 ∧ Q o e₂ = 5 := by simpa [Q, D] using h₂
+        rw [hp.1, hp.2]
+        omega
+    have hsum := Finset.sum_le_sum fun o hoN => hpoint o hoN
+    have hconst : (∑ _o ∈ N, 4) = 36 := by simp [hNcard]
+    rw [hconst] at hsum
+    exact hsum
+  have hFlower : 24 ≤ ∑ o ∈ F, T o := by
+    simpa [T, a₁, a₂, b₁, b₂] using hservice
+  have hcontact₁ :=
+    degree_sixteen_twoLayer_orderThirtyFive_minimum_contact_excess_ge_six
+      G hfree hmin hcard c₀ e₁ hregChild hcardChild he₁R he₁35
+  have hcontact₂ :=
+    degree_sixteen_twoLayer_orderThirtyFive_minimum_contact_excess_ge_six
+      G hfree hmin hcard c₀ e₂ hregChild hcardChild he₂R he₂35
+  change 6 ≤ Q e₁ c₀ * (Q c₀ e₁ - 1) at hcontact₁
+  change 6 ≤ Q e₂ c₀ * (Q c₀ e₂ - 1) at hcontact₂
+  have hc₀lower : 12 ≤ T c₀ := by
+    dsimp only [T]
+    omega
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let c : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨c, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hc₀C : c₀ ∉ C := by
+    intro hc
+    have hrepO := (Finset.mem_filter.mp hc).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hrepO).1).2 hc₀U
+  have hc₀N : c₀ ∉ N := fun hc => hc₀C (Finset.filter_subset _ _ hc)
+  have hc₀F : c₀ ∉ F := fun hc => hc₀C (Finset.mem_sdiff.mp hc).1
+  have hNF : Disjoint N F := Finset.disjoint_sdiff_right
+  have hlocal₁ := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁
+      (by rw [he₁35]; norm_num) Finset.univ (by simp)
+  have hlocal₂ := secondOrder_componentQuotientMatrix_local_excess_restrict_nat
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂
+      (by rw [he₂35]; norm_num) Finset.univ (by simp)
+  have hfull : (∑ o, T o) = 64 := by
+    change (∑ o : D.ConnectedComponent, Q e₁ o * (Q o e₁ - 1) +
+      Q e₂ o * (Q o e₂ - 1)) = 64
+    rw [Finset.sum_add_distrib]
+    simpa [D, Q, he₁35, he₂35] using congrArg₂ (.+.) hlocal₁ hlocal₂
+  exact false_of_disjoint_sector_costs_thirtySix_twentyFour_twelve
+    N F c₀ T hNF hc₀N hc₀F hNlower hFlower hc₀lower hfull
 
 /-- In the order-seven/cardinality-fourteen lane, the complementary
 five-divisible orphan components have total reduced order fourteen. -/
