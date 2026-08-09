@@ -9520,6 +9520,48 @@ theorem degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
     _ = 168 := degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
       G hfree hmin hcard c₀ hregChild hcardChild
 
+/-- The two-layer orphan census contains a non-five-divisible component:
+otherwise its total mass would be divisible by five, contrary to 168. -/
+theorem degree_sixteen_twoLayer_exists_nonFive_orphan_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    ∃ o ∈ C, ¬ 5 ∣ o.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  have hsum : (∑ o ∈ C, o.supp.ncard) = 168 := by
+    simpa [C, D, O] using
+      degree_sixteen_twoLayer_orphan_component_order_sum_eq_oneSixtyEight
+        G hfree hmin hcard c₀ hregChild hcardChild
+  by_contra hnone
+  push_neg at hnone
+  have hdvd : 5 ∣ ∑ o ∈ C, o.supp.ncard := by
+    apply Finset.dvd_sum
+    intro o ho
+    exact hnone o ho
+  rw [hsum] at hdvd
+  norm_num at hdvd
+
 /-- There are at most twenty-eight two-layer orphan components: each lies
 strictly above the minimum order five, hence has order at least six, while
 their total order is 168. -/
