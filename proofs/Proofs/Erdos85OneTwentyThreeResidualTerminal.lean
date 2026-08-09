@@ -18096,6 +18096,68 @@ theorem row_moment_six_count_classification
   rw [hsum, hcount2, hcount3] at hrewrite
   omega
 
+/-- On exactly two targets, a row moment of six has total quotient mass at
+most four: one entry is three and the other is at most one. -/
+theorem row_moment_six_card_two_sum_le_four
+    {α : Type*} [DecidableEq α] (C : Finset α) (q : α → ℕ)
+    (hcard : C.card = 2)
+    (hmoment : (∑ x ∈ C, q x * (q x - 1)) = 6) :
+    (∑ x ∈ C, q x) ≤ 4 := by
+  have hclass := row_moment_six_count_classification C q hmoment
+  have hle : ∀ x ∈ C, q x ≤ 3 := by
+    intro x hx
+    have hsingle := Finset.single_le_sum
+      (f := fun y => q y * (q y - 1)) (fun _ _ => Nat.zero_le _) hx
+    rw [hmoment] at hsingle
+    by_contra hnot
+    have hq : 4 ≤ q x := by omega
+    have hpred : 3 ≤ q x - 1 := by omega
+    nlinarith
+  rcases hclass with hthree | htwo
+  · have hnon : (C.filter fun x => q x = 3).Nonempty :=
+      Finset.card_pos.mp (by rw [hthree.1]; norm_num)
+    obtain ⟨e, he⟩ := hnon
+    have heC := (Finset.mem_filter.mp he).1
+    have he3 := (Finset.mem_filter.mp he).2
+    have hrest : ∀ x ∈ C.erase e, q x ≤ 1 := by
+      intro x hx
+      have hxC := Finset.mem_of_mem_erase hx
+      have hxne := (Finset.mem_erase.mp hx).1
+      have hxle := hle x hxC
+      have hxne2 : q x ≠ 2 := by
+        intro hx2
+        have hxFilter : x ∈ C.filter (fun y => q y = 2) :=
+          Finset.mem_filter.mpr ⟨hxC, hx2⟩
+        rw [Finset.card_eq_zero.mp hthree.2] at hxFilter
+        exact Finset.notMem_empty x hxFilter
+      have hxne3 : q x ≠ 3 := by
+        intro hx3
+        have hxFilter : x ∈ C.filter (fun y => q y = 3) :=
+          Finset.mem_filter.mpr ⟨hxC, hx3⟩
+        have heOnly : C.filter (fun y => q y = 3) = {e} := by
+          obtain ⟨a, ha⟩ := Finset.card_eq_one.mp hthree.1
+          have hea : e = a := by simpa [ha] using he
+          simpa [hea] using ha
+        rw [heOnly] at hxFilter
+        exact hxne (Finset.mem_singleton.mp hxFilter)
+      omega
+    have hrestSum : (∑ x ∈ C.erase e, q x) ≤ 1 := by
+      calc
+        (∑ x ∈ C.erase e, q x) ≤ ∑ _x ∈ C.erase e, 1 := by
+          apply Finset.sum_le_sum
+          intro x hx
+          exact hrest x hx
+        _ = 1 := by rw [Finset.card_erase_of_mem heC, hcard]; norm_num
+    have hsplit := Finset.sum_erase_add C q heC
+    rw [he3] at hsplit
+    omega
+  · have hthreeZero := htwo.1
+    have htwoThree := htwo.2
+    have hsub : C.filter (fun x => q x = 2) ⊆ C := Finset.filter_subset _ _
+    have := Finset.card_le_card hsub
+    rw [htwoThree, hcard] at this
+    omega
+
 /-- A row moment of eight is either one quotient-three plus one
 quotient-two entry, or four quotient-two entries. -/
 theorem row_moment_eight_count_classification
