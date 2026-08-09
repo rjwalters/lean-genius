@@ -19041,6 +19041,87 @@ theorem false_of_disjoint_sector_costs_thirtySix_twentyFour_twelve
   rw [hsumS, hfull] at hle
   omega
 
+/-- A five-quotient service split between components of reduced orders
+eleven and three forces the source reduced order to be divisible by three
+or eleven. -/
+theorem three_dvd_or_eleven_dvd_of_eleven_three_service_split
+    (k a₁ a₂ b₁ b₂ : ℕ) (hrow : b₁ + b₂ = 5)
+    (hbal₁ : 11 * a₁ = k * b₁) (hbal₂ : 3 * a₂ = k * b₂) :
+    3 ∣ k ∨ 11 ∣ k := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂
+  all_goals omega
+
+/-- No finite family of positive integers, each divisible by three or
+eleven, can have total sum sixteen. -/
+theorem no_positive_three_or_eleven_divisor_partition_sixteen
+    {α : Type*} [DecidableEq α] (C : Finset α) (k : α → ℕ)
+    (hpos : ∀ x ∈ C, 0 < k x)
+    (hclass : ∀ x ∈ C, 3 ∣ k x ∨ 11 ∣ k x)
+    (hsum : (∑ x ∈ C, k x) = 16) : False := by
+  let E := C.filter fun x => ¬ 3 ∣ k x
+  have hEleven : ∀ x ∈ E, k x = 11 := by
+    intro x hxE
+    have hxC := (Finset.mem_filter.mp hxE).1
+    have hxNot := (Finset.mem_filter.mp hxE).2
+    have h11 : 11 ∣ k x := (hclass x hxC).resolve_left hxNot
+    have hkLe : k x ≤ 16 := by
+      rw [← hsum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hxC
+    obtain ⟨m, hm⟩ := h11
+    have hmpos : 0 < m := by
+      by_contra hmzero
+      have : m = 0 := by omega
+      have hxpos := hpos x hxC
+      rw [hm, this] at hxpos
+      norm_num at hxpos
+    omega
+  have hEsum : (∑ x ∈ E, k x) = 11 * E.card := by
+    calc
+      (∑ x ∈ E, k x) = ∑ _x ∈ E, 11 := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hEleven x hx
+      _ = 11 * E.card := by simp [mul_comm]
+  have hEsub : E ⊆ C := Finset.filter_subset _ _
+  have hEle : (∑ x ∈ E, k x) ≤ 16 := by
+    rw [← hsum]
+    exact Finset.sum_le_sum_of_subset_of_nonneg hEsub
+      (fun _ _ _ => Nat.zero_le _)
+  have hEcard : E.card = 0 ∨ E.card = 1 := by
+    rw [hEsum] at hEle
+    omega
+  rcases hEcard with hzero | hone
+  · have hthree : ∀ x ∈ C, 3 ∣ k x := by
+      intro x hxC
+      by_contra hxNot
+      have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hxNot⟩
+      have : 0 < E.card := Finset.card_pos.mpr ⟨x, hxE⟩
+      omega
+    have hdiv : 3 ∣ ∑ x ∈ C, k x := Finset.dvd_sum hthree
+    rw [hsum] at hdiv
+    norm_num at hdiv
+  · obtain ⟨e, heE⟩ := Finset.card_pos.mp (by omega : 0 < E.card)
+    have heC := hEsub heE
+    have hke : k e = 11 := hEleven e heE
+    have hrestThree : ∀ x ∈ C.erase e, 3 ∣ k x := by
+      intro x hx
+      have hxC := (Finset.mem_erase.mp hx).2
+      by_contra hxNot
+      have hxE : x ∈ E := Finset.mem_filter.mpr ⟨hxC, hxNot⟩
+      have hxe : x ≠ e := (Finset.mem_erase.mp hx).1
+      have htwo : 2 ≤ E.card := by
+        exact Finset.one_lt_card.mpr ⟨x, hxE, e, heE, hxe⟩
+      omega
+    have hdiv : 3 ∣ ∑ x ∈ C.erase e, k x := Finset.dvd_sum hrestThree
+    have hsplit : (∑ x ∈ C.erase e, k x) + k e = ∑ x ∈ C, k x :=
+      Finset.sum_erase_add C k heC
+    rw [hke, hsum] at hsplit
+    have hrest : (∑ x ∈ C.erase e, k x) = 5 := by omega
+    rw [hrest] at hdiv
+    norm_num at hdiv
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
