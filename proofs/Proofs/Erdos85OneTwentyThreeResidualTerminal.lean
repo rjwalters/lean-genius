@@ -22964,6 +22964,88 @@ theorem false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_three_fives
   exact false_of_disjoint_sector_costs N F c₀ T hNF hc₀N hc₀F
     32 22 10 58 hNlower hFlower hc₀lower hfull (by norm_num)
 
+/-- The last two-layer census candidate, eight uniform order-eleven
+non-five-divisible orphan components, is impossible. -/
+theorem false_of_degree_sixteen_twoLayer_eight_orderEleven_nonFive_orphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 2)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 5) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+    N.card = 8 → (∀ o ∈ N, o.supp.ncard = 11) → False := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let N := C.filter fun o => ¬ 5 ∣ o.supp.ncard
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  intro hNcard huniform
+  change N.card = 8 at hNcard
+  change ∀ o ∈ N, o.supp.ncard = 11 at huniform
+  have hFmass :=
+    degree_sixteen_twoLayer_orderEleven_card_eight_fiveDiv_reduced_mass
+      G hfree hmin hcard c₀ hregChild hcardChild
+        (by simpa [D, R, O, C, N] using hNcard)
+        (by simpa [D, R, O, C, N] using huniform)
+  have hcensus := degree_sixteen_twoLayer_orderEleven_card_eight_used_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (by simpa [D, R, O, C, N] using hNcard)
+      (by simpa [D, R, O, C, N] using huniform)
+  obtain ⟨e, heR, he55, howner, hcases⟩ := hcensus
+  rcases hcases with h15 | h105 | h555
+  · obtain ⟨f, hcomp, hf15⟩ := h15
+    exact false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_fifteen
+      G hfree hmin hcard c₀ hregChild hcardChild e f heR he55 hf15
+        (by simpa [D, R, E] using hcomp)
+        (by simpa [D, R, O, C, N] using hFmass)
+  · obtain ⟨f, g, hfg, hcomp, horders⟩ := h105
+    rcases horders with horders | horders
+    · exact false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_ten_five
+        G hfree hmin hcard c₀ hregChild hcardChild e f g heR he55
+          horders.1 horders.2 hfg
+          (by simpa [D, R, E] using hcomp)
+          (by simpa [D, R, O, C, N] using hNcard)
+          (by simpa [D, R, O, C, N] using huniform)
+          (by simpa [D, R, O, C, N] using howner)
+          (by simpa [D, R, O, C, N] using hFmass)
+    · exact false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_ten_five
+        G hfree hmin hcard c₀ hregChild hcardChild e g f heR he55
+          horders.2 horders.1 hfg.symm
+          (by simpa [D, R, E, Finset.pair_comm] using hcomp)
+          (by simpa [D, R, O, C, N] using hNcard)
+          (by simpa [D, R, O, C, N] using huniform)
+          (by simpa [D, R, O, C, N] using howner)
+          (by simpa [D, R, O, C, N] using hFmass)
+  · obtain ⟨f, g, h, hfg, hfh, hgh, hcomp, hf5, hg5, hh5⟩ := h555
+    exact false_of_degree_sixteen_twoLayer_orderEleven_used_fiftyFive_three_fives
+      G hfree hmin hcard c₀ hregChild hcardChild e f g h heR he55
+        hf5 hg5 hh5 hfg hfh hgh
+        (by simpa [D, R, E] using hcomp)
+        (by simpa [D, R, O, C, N] using hNcard)
+        (by simpa [D, R, O, C, N] using huniform)
+        (by simpa [D, R, O, C, N] using howner)
+        (by simpa [D, R, O, C, N] using hFmass)
+
 /-- Sharp graph-facing census for the uniform non-five orphan lane. -/
 theorem degree_sixteen_twoLayer_nonFive_orphan_uniform_count_census
     {V : Type*} [Fintype V] [DecidableEq V]
