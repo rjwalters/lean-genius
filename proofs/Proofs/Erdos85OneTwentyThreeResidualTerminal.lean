@@ -18814,6 +18814,19 @@ theorem owner_card_eq_two_of_nine_le_of_two_owner_fibers
     simpa [Finset.sum_const_nat, mul_comm] using hsum
   omega
 
+/-- Local-excess cost of serving a five-divisible orphan from two
+order-thirty-five owners.  If the orphan has reduced order `k`, its five
+service quotients force scaled excess at least `8k`. -/
+theorem two_orderThirtyFive_service_local_excess_lower
+    (k a₁ a₂ b₁ b₂ : ℕ)
+    (hrow : b₁ + b₂ = 5)
+    (hbal₁ : 7 * a₁ = k * b₁) (hbal₂ : 7 * a₂ = k * b₂) :
+    8 * k ≤ 7 * (a₁ * (b₁ - 1) + a₂ * (b₂ - 1)) := by
+  have hb₁ : b₁ ≤ 5 := by omega
+  have hb₂ : b₂ ≤ 5 := by omega
+  interval_cases b₁ <;> interval_cases b₂
+  all_goals omega
+
 /-- An order-thirty-five component can own at most eight order-seven
 components through concentrated quotient pairs `(1,5)`. -/
 theorem degree_sixteen_orderThirtyFive_owner_fiber_card_le_eight
