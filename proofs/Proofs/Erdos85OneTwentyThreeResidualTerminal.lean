@@ -7342,6 +7342,45 @@ theorem degree_sixteen_twoLayer_concentrated_cut_owner_ratio_dvd
       (componentQuotientMatrix G (secondOrderDefectGraph G) e o)
       heDvd hbal
 
+/-- Exact reverse load of a concentrated two-layer cut.  If the used owner
+has order `5k` and `Q(o,e)=5`, detailed balance gives
+`Q(e,o)=|o|/k`. -/
+theorem degree_sixteen_twoLayer_concentrated_cut_reverse_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heDvd : 5 ∣ e.supp.ncard)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 5) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e o =
+      o.supp.ncard / (e.supp.ncard / 5) := by
+  obtain ⟨k, hk⟩ := heDvd
+  have hkpos : 0 < k := by
+    have hepos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+    omega
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  rw [hq, hk] at hbal
+  have hscaled : 5 * (k * componentQuotientMatrix G
+      (secondOrderDefectGraph G) e o) = 5 * o.supp.ncard := by
+    simpa [mul_assoc, mul_comm, mul_left_comm] using hbal
+  have hmul : k * componentQuotientMatrix G
+      (secondOrderDefectGraph G) e o = o.supp.ncard :=
+    Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 5) hscaled
+  rw [hk]
+  have hden : 5 * k / 5 = k :=
+    Nat.mul_div_right k (by norm_num : 0 < 5)
+  rw [hden]
+  have hdiv : o.supp.ncard / k = componentQuotientMatrix G
+      (secondOrderDefectGraph G) e o :=
+    Nat.div_eq_of_eq_mul_left hkpos (by simpa [mul_comm] using hmul.symm)
+  exact hdiv.symm
+
 /-- Every non-five-divisible two-layer orphan has a concrete used-component
 owner which absorbs all five of its service neighbors.  Detailed balance
 then forces the owner's reduced order `|e| / 5` to divide the orphan order.
