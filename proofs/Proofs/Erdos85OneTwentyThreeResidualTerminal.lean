@@ -28266,6 +28266,20 @@ theorem degree_sixteen_remaining_zeroLayer
 
 /-! ## Arithmetic terminal for the zero-layer omitted-type profile -/
 
+/-- In the reduced used-order partition `[4,4,4,4]`, every zero-excess
+orphan atom meets exactly three of the four used components.  If `nᵢ` counts
+the atoms omitting component `i`, the exact load twelve in every reduced
+used row forces four atoms of each omitted type.  This is the arithmetic
+interface behind the sixteen orphan blocks in the symbolic Stage-1 model. -/
+theorem four_omitted_triple_multiplicities_eq_four
+    (n₀ n₁ n₂ n₃ : ℕ)
+    (hrow₀ : n₁ + n₂ + n₃ = 12)
+    (hrow₁ : n₀ + n₂ + n₃ = 12)
+    (hrow₂ : n₀ + n₁ + n₃ = 12)
+    (hrow₃ : n₀ + n₁ + n₂ = 12) :
+    n₀ = 4 ∧ n₁ = 4 ∧ n₂ = 4 ∧ n₃ = 4 := by
+  omega
+
 /-- Four omitted-type neighbor counts of total degree thirteen, each
 congruent to one modulo three and bounded by four, are exactly a permutation
 of `[4,4,4,1]`.  The cube-root kernel supplies the congruences; the exact
