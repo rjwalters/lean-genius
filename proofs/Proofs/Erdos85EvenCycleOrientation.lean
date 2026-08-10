@@ -22,6 +22,47 @@ noncomputable section
 
 open SimpleGraph
 
+/-- If a square block commutes with a symmetric operator, then its row Gram
+also commutes with that operator.  This is the algebraic bridge from an
+off-diagonal cycle block to the diagonal common-neighbor block. -/
+theorem Matrix.mul_transpose_gram_comm_of_comm
+    {ι R : Type*} [Fintype ι] [CommSemiring R]
+    (A B : Matrix ι ι R) (hA : Matrix.transpose A = A)
+    (hAB : A * B = B * A) :
+    A * (B * Matrix.transpose B) =
+      (B * Matrix.transpose B) * A := by
+  have hBtA : Matrix.transpose B * A =
+      A * Matrix.transpose B := by
+    have h := congrArg Matrix.transpose hAB
+    simpa only [Matrix.transpose_mul, hA] using h
+  calc
+    A * (B * Matrix.transpose B) =
+        (A * B) * Matrix.transpose B := by rw [Matrix.mul_assoc]
+    _ = (B * A) * Matrix.transpose B := by rw [hAB]
+    _ = B * (A * Matrix.transpose B) := by rw [Matrix.mul_assoc]
+    _ = B * (Matrix.transpose B * A) := by rw [hBtA]
+    _ = (B * Matrix.transpose B) * A := by rw [Matrix.mul_assoc]
+
+/-- The column Gram of a square block commuting with a symmetric operator
+commutes with the same operator as well. -/
+theorem Matrix.transpose_mul_gram_comm_of_comm
+    {ι R : Type*} [Fintype ι] [CommSemiring R]
+    (A B : Matrix ι ι R) (hA : Matrix.transpose A = A)
+    (hAB : A * B = B * A) :
+    A * (Matrix.transpose B * B) =
+      (Matrix.transpose B * B) * A := by
+  have hBtA : Matrix.transpose B * A =
+      A * Matrix.transpose B := by
+    have h := congrArg Matrix.transpose hAB
+    simpa only [Matrix.transpose_mul, hA] using h
+  calc
+    A * (Matrix.transpose B * B) =
+        (A * Matrix.transpose B) * B := by rw [Matrix.mul_assoc]
+    _ = (Matrix.transpose B * A) * B := by rw [hBtA]
+    _ = Matrix.transpose B * (A * B) := by rw [Matrix.mul_assoc]
+    _ = Matrix.transpose B * (B * A) := by rw [hAB]
+    _ = (Matrix.transpose B * B) * A := by rw [Matrix.mul_assoc]
+
 /-- Modulo two, sum and difference have the same parity. -/
 theorem castHom_two_sub_eq_add
     {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (x y : ZMod r) :
@@ -147,6 +188,404 @@ theorem binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
     rcases hbinary x y with hxy | hxy <;>
     rcases hbinary (x + 1) (y + 1) with hxy' | hxy' <;>
     omega
+
+/-- Any nonzero simultaneous-translation defect of a binary cycle
+intertwiner forces a complete reverse diagonal of ones.  This is the first
+half of the quotient-two decomposition: the diagonal is a reverse perfect
+matching which can be split from the block. -/
+theorem binary_cycleIntertwiner_exists_full_reverse_diagonal
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    {a b : ZMod r}
+    (hne : H (a + 1) (b + 1) - H a b ≠ 0) :
+    ∃ s : ZMod r, ∀ x, H x (s - x) = 1 := by
+  rcases hbinary a b with hab | hab
+  · have hab' : H (a + 1) (b + 1) = 1 := by
+      rcases hbinary (a + 1) (b + 1) with hab' | hab'
+      · exact (hne (by rw [hab, hab']; norm_num)).elim
+      · exact hab'
+    refine ⟨b + a + 2, ?_⟩
+    intro x
+    let x₀ : ZMod r := x - 1
+    let y₀ : ZMod r := (b + a + 2 - x) - 1
+    have hsum : y₀ + x₀ = b + a := by
+      dsimp only [x₀, y₀]
+      ring
+    have hbase : H x₀ y₀ = H a b :=
+      binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
+        H hinter hbinary hne hsum
+    have hdelta := cycleIntertwiner_translationDifference_eq_of_add_eq
+      H hinter hsum
+    have hx : x₀ + 1 = x := by dsimp only [x₀]; ring
+    have hy : y₀ + 1 = b + a + 2 - x := by dsimp only [y₀]; ring
+    rw [hx, hy, hbase, hab, hab'] at hdelta
+    omega
+  · refine ⟨b + a, ?_⟩
+    intro x
+    have hsum : (b + a - x) + x = b + a := by ring
+    calc
+      H x (b + a - x) = H a b :=
+        binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
+          H hinter hbinary hne hsum
+      _ = 1 := hab
+
+/-- The permutation matrix of the reverse matching `y = s - x`. -/
+def reverseMatchingMatrix {r : ℕ} [NeZero r] (s : ZMod r) :
+    Matrix (ZMod r) (ZMod r) ℤ :=
+  fun x y ↦ if y = s - x then 1 else 0
+
+/-- A reverse matching intertwines the two cycle adjacency operators. -/
+theorem reverseMatchingMatrix_entry_intertwine
+    {r : ℕ} [NeZero r] (s x y : ZMod r) :
+    reverseMatchingMatrix s (x - 1) y +
+        reverseMatchingMatrix s (x + 1) y =
+      reverseMatchingMatrix s x (y + 1) +
+        reverseMatchingMatrix s x (y - 1) := by
+  have h₁ : (y = s - (x - 1)) ↔ (y - 1 = s - x) := by
+    constructor <;> intro h
+    · rw [h]
+      ring
+    · linear_combination h
+  have h₂ : (y = s - (x + 1)) ↔ (y + 1 = s - x) := by
+    constructor <;> intro h
+    · rw [h]
+      ring
+    · linear_combination h
+  simp only [reverseMatchingMatrix, h₁, h₂]
+  ring
+
+/-- Splitting a full reverse matching from a cycle intertwiner leaves another
+cycle intertwiner. -/
+theorem sub_reverseMatchingMatrix_entry_intertwine
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (s x y : ZMod r) :
+    (H - reverseMatchingMatrix s) (x - 1) y +
+        (H - reverseMatchingMatrix s) (x + 1) y =
+      (H - reverseMatchingMatrix s) x (y + 1) +
+        (H - reverseMatchingMatrix s) x (y - 1) := by
+  simp only [Matrix.sub_apply]
+  linear_combination hinter x y -
+    reverseMatchingMatrix_entry_intertwine s x y
+
+/-- If a binary block contains a full reverse matching, subtracting that
+matching leaves another binary block. -/
+theorem sub_reverseMatchingMatrix_binary
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    (s : ZMod r) (hfull : ∀ x, H x (s - x) = 1) :
+    ∀ x y, (H - reverseMatchingMatrix s) x y = 0 ∨
+      (H - reverseMatchingMatrix s) x y = 1 := by
+  intro x y
+  by_cases hy : y = s - x
+  · left
+    simp [Matrix.sub_apply, reverseMatchingMatrix, hy, hfull x]
+  · simpa [Matrix.sub_apply, reverseMatchingMatrix, hy] using hbinary x y
+
+/-- Every row of a reverse matching matrix has sum one. -/
+theorem reverseMatchingMatrix_row_sum
+    {r : ℕ} [NeZero r] (s x : ZMod r) :
+    ∑ y, reverseMatchingMatrix s x y = 1 := by
+  classical
+  simp [reverseMatchingMatrix]
+
+/-- Every column of a reverse matching matrix has sum one. -/
+theorem reverseMatchingMatrix_column_sum
+    {r : ℕ} [NeZero r] (s y : ZMod r) :
+    ∑ x, reverseMatchingMatrix s x y = 1 := by
+  classical
+  calc
+    (∑ x, reverseMatchingMatrix s x y) =
+        ∑ x, reverseMatchingMatrix s y x := by
+      apply Finset.sum_congr rfl
+      intro x _hx
+      simp only [reverseMatchingMatrix]
+      congr 1
+      apply propext
+      constructor <;> intro h
+      · linear_combination h
+      · linear_combination h
+    _ = 1 := reverseMatchingMatrix_row_sum s y
+
+/-- Removing a reverse matching from a row-two block leaves row sum one. -/
+theorem sub_reverseMatchingMatrix_row_sum_eq_one
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hrow : ∀ x, ∑ y, H x y = 2) (s x : ZMod r) :
+    ∑ y, (H - reverseMatchingMatrix s) x y = 1 := by
+  simp_rw [Matrix.sub_apply]
+  rw [Finset.sum_sub_distrib, hrow, reverseMatchingMatrix_row_sum]
+  norm_num
+
+/-- Removing a reverse matching from a column-two block leaves column sum
+one as well. -/
+theorem sub_reverseMatchingMatrix_column_sum_eq_one
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hcol : ∀ y, ∑ x, H x y = 2) (s y : ZMod r) :
+    ∑ x, (H - reverseMatchingMatrix s) x y = 1 := by
+  simp_rw [Matrix.sub_apply]
+  rw [Finset.sum_sub_distrib, hcol, reverseMatchingMatrix_column_sum]
+  norm_num
+
+/-- A binary matrix with every row summing to one is the graph of a unique
+row selector. -/
+theorem exists_rowSelector_of_binary_row_sum_one
+    {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (P : Matrix α β ℤ)
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (hrow : ∀ x, ∑ y, P x y = 1) :
+    ∃ f : α → β, ∀ x y, P x y = 1 ↔ y = f x := by
+  classical
+  let S : α → Finset β := fun x => Finset.univ.filter fun y => P x y = 1
+  have hcard : ∀ x, (S x).card = 1 := by
+    intro x
+    have heq : (∑ y, P x y) = ((S x).card : ℤ) := by
+      calc
+        (∑ y, P x y) = ∑ y, if P x y = 1 then (1 : ℤ) else 0 := by
+          apply Finset.sum_congr rfl
+          intro y _hy
+          rcases hbinary x y with hzero | hone
+          · simp [hzero]
+          · simp [hone]
+        _ = ((S x).card : ℤ) := by
+          simpa only [S] using (Finset.sum_boole (R := ℤ)
+            (fun y : β => P x y = 1) Finset.univ)
+    have hz : ((S x).card : ℤ) = 1 := by rw [← heq, hrow]
+    exact_mod_cast hz
+  have hex : ∀ x, ∃ y, S x = {y} := fun x => Finset.card_eq_one.mp (hcard x)
+  choose f hf using hex
+  refine ⟨f, ?_⟩
+  intro x y
+  have hmem : y ∈ S x ↔ P x y = 1 := by simp [S]
+  rw [← hmem, hf]
+  simp
+
+/-- A binary row-one square cycle intertwiner is a globally oriented cyclic
+matching.  This is the matrix-level quotient-one rigidity consumed by the
+residual quotient-two decomposition. -/
+theorem binary_rowOne_cycleIntertwiner_orientation
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (P : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      P (x - 1) y + P (x + 1) y =
+        P x (y + 1) + P x (y - 1))
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (hrow : ∀ x, ∑ y, P x y = 1) :
+    ∃ f : ZMod r → ZMod r,
+      (∀ x y, P x y = 1 ↔ y = f x) ∧
+      ((∀ x, f (x + 1) = f x + 1) ∨
+        (∀ x, f (x + 1) = f x - 1)) := by
+  obtain ⟨f, hf⟩ := exists_rowSelector_of_binary_row_sum_one P hbinary hrow
+  refine ⟨f, hf, cycleMap_global_orientation hr3 f ?_⟩
+  intro x
+  ext y
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+  have happly : ∀ a b, P a b = if b = f a then 1 else 0 := by
+    intro a b
+    by_cases h : b = f a
+    · rw [if_pos h]
+      exact (hf a b).2 h
+    · rw [if_neg h]
+      rcases hbinary a b with hzero | hone
+      · exact hzero
+      · exact (h (hf a b |>.1 hone)).elim
+  have hrec := hinter x y
+  simp only [happly] at hrec
+  have hsub : y + 1 = f x ↔ y = f x - 1 := by
+    constructor <;> intro h
+    · linear_combination h
+    · rw [h]
+      ring
+  have hadd : y - 1 = f x ↔ y = f x + 1 := by
+    constructor <;> intro h
+    · linear_combination h
+    · rw [h]
+      ring
+  simp only [hsub, hadd] at hrec
+  have hpm : f x - 1 ≠ f x + 1 :=
+    zmod_sub_one_ne_add_one_of_three_le hr3 (f x)
+  by_cases h₁ : y = f (x - 1) <;>
+    by_cases h₂ : y = f (x + 1) <;>
+    by_cases h₃ : y = f x - 1 <;>
+    by_cases h₄ : y = f x + 1 <;>
+    simp_all [eq_comm]
+
+/-- The reverse matching matrix is globally reverse-circulant. -/
+theorem reverseMatchingMatrix_reverseInvariant
+    {r : ℕ} [NeZero r] (s x y : ZMod r) :
+    reverseMatchingMatrix s (x + 1) (y - 1) =
+      reverseMatchingMatrix s x y := by
+  simp only [reverseMatchingMatrix]
+  congr 1
+  apply propext
+  constructor <;> intro h
+  · linear_combination h
+  · linear_combination h
+
+/-- A binary selector matrix inherits the global reverse orientation of its
+selector. -/
+theorem binary_selectorMatrix_reverseInvariant
+    {r : ℕ} [NeZero r]
+    (P : Matrix (ZMod r) (ZMod r) ℤ)
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (f : ZMod r → ZMod r)
+    (hf : ∀ x y, P x y = 1 ↔ y = f x)
+    (hrev : ∀ x, f (x + 1) = f x - 1) :
+    ∀ x y, P (x + 1) (y - 1) = P x y := by
+  intro x y
+  have hiff : y - 1 = f (x + 1) ↔ y = f x := by
+    rw [hrev]
+    constructor <;> intro h
+    · linear_combination h
+    · linear_combination h
+  rcases hbinary (x + 1) (y - 1) with h₁ | h₁ <;>
+    rcases hbinary x y with h₂ | h₂ <;> try omega
+  · exfalso
+    have hone := (hf (x + 1) (y - 1)).2
+      (hiff.mpr ((hf x y).1 h₂))
+    omega
+  · exfalso
+    have hone := (hf x y).2
+      (hiff.mp ((hf (x + 1) (y - 1)).1 h₁))
+    omega
+
+/-- A forward cyclic matching and a reverse cyclic matching on the same
+cycle swap their two targets at a distinct source position whenever their
+targets at zero are distinct. -/
+theorem forward_reverse_matchings_swap
+    {r : ℕ} [NeZero r]
+    (f g : ZMod r → ZMod r)
+    (hf : ∀ y, f (y + 1) = f y + 1)
+    (hg : ∀ y, g (y + 1) = g y - 1)
+    (hfg : f 0 ≠ g 0) :
+    ∃ y : ZMod r, y ≠ 0 ∧ f y = g 0 ∧ g y = f 0 := by
+  have hf_formula : ∀ y : ZMod r, f y = f 0 + y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        f (n : ZMod r) = f 0 + (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hf, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  have hg_formula : ∀ y : ZMod r, g y = g 0 - y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        g (n : ZMod r) = g 0 - (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hg, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  let y : ZMod r := g 0 - f 0
+  have hy : y ≠ 0 := by
+    intro hy0
+    apply hfg
+    dsimp only [y] at hy0
+    exact sub_eq_zero.mp hy0 |>.symm
+  refine ⟨y, hy, ?_, ?_⟩
+  · rw [hf_formula]
+    dsimp only [y]
+    ring
+  · rw [hg_formula]
+    dsimp only [y]
+    ring
+
+/-- **Equal-cycle quotient-two orientation.**  A binary two-regular square
+cycle intertwiner with no `2 × 2` all-one rectangle is globally circulant or
+reverse-circulant, at every cycle length at least three.  The proof splits a
+reverse matching from any translation defect; the residual quotient-one
+matching is globally oriented, and a forward residual would form a forbidden
+rectangle with the reverse matching. -/
+theorem binary_rowTwo_cycleIntertwiner_orientation
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    (hrow : ∀ x, ∑ y, H x y = 2)
+    (hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (H x y = 1 ∧ H x y' = 1 ∧
+        H x' y = 1 ∧ H x' y' = 1)) :
+    (∀ x y, H (x + 1) (y + 1) = H x y) ∨
+      (∀ x y, H (x + 1) (y - 1) = H x y) := by
+  by_cases htrans : ∀ x y, H (x + 1) (y + 1) = H x y
+  · exact Or.inl htrans
+  · push Not at htrans
+    obtain ⟨a, b, hab⟩ := htrans
+    have hne : H (a + 1) (b + 1) - H a b ≠ 0 := by
+      intro hzero
+      exact hab (sub_eq_zero.mp hzero)
+    obtain ⟨s, hfull⟩ :=
+      binary_cycleIntertwiner_exists_full_reverse_diagonal
+        H hinter hbinary hne
+    let P := H - reverseMatchingMatrix s
+    have hinterP : ∀ x y,
+        P (x - 1) y + P (x + 1) y =
+          P x (y + 1) + P x (y - 1) :=
+      sub_reverseMatchingMatrix_entry_intertwine H hinter s
+    have hbinaryP : ∀ x y, P x y = 0 ∨ P x y = 1 :=
+      sub_reverseMatchingMatrix_binary H hbinary s hfull
+    have hrowP : ∀ x, ∑ y, P x y = 1 :=
+      sub_reverseMatchingMatrix_row_sum_eq_one H hrow s
+    obtain ⟨f, hf, hfor | hrev⟩ :=
+      binary_rowOne_cycleIntertwiner_orientation hr3 P hinterP hbinaryP hrowP
+    · let g : ZMod r → ZMod r := fun x => s - x
+      have hg : ∀ x, g (x + 1) = g x - 1 := by
+        intro x
+        dsimp only [g]
+        ring
+      have hfg : f 0 ≠ g 0 := by
+        intro heq
+        have hpone : P 0 (f 0) = 1 := (hf 0 (f 0)).2 rfl
+        have hpzero : P 0 (g 0) = 0 := by
+          have hg0 : g 0 = s := by dsimp only [g]; ring
+          have hfull0 : H 0 s = 1 := by simpa using hfull 0
+          dsimp only [P]
+          rw [hg0]
+          simp [Matrix.sub_apply, reverseMatchingMatrix, hfull0]
+        rw [heq, hpzero] at hpone
+        norm_num at hpone
+      obtain ⟨x', hx', hfx', hgx'⟩ :=
+        forward_reverse_matchings_swap f g hfor hg hfg
+      have honeP (x : ZMod r) : P x (f x) = 1 := (hf x (f x)).2 rfl
+      have honeR (x : ZMod r) : H x (g x) = 1 := by
+        simpa only [g] using hfull x
+      have honeH (x : ZMod r) : H x (f x) = 1 := by
+        have hp := honeP x
+        dsimp only [P] at hp
+        simp only [Matrix.sub_apply, reverseMatchingMatrix] at hp
+        rcases hbinary x (f x) with hz | ho <;>
+          split at hp <;> omega
+      exfalso
+      apply (hrect 0 x' hx'.symm (f 0) (g 0) hfg)
+      refine ⟨honeH 0, honeR 0, ?_, ?_⟩
+      · simpa only [hgx'] using honeR x'
+      · simpa only [hfx'] using honeH x'
+    · right
+      have hrevP := binary_selectorMatrix_reverseInvariant
+        P hbinaryP f hf hrev
+      intro x y
+      have hp := hrevP x y
+      have hr := reverseMatchingMatrix_reverseInvariant s x y
+      dsimp only [P] at hp
+      simp only [Matrix.sub_apply] at hp
+      linear_combination hp + hr
 
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
@@ -315,26 +754,27 @@ theorem binary_evenCycleIntertwiner_reverse_on_odd_checkerboard
 same-parity part of a cyclic adjacency block depends only on coordinate
 difference, while the opposite-parity part depends only on coordinate sum.
 In a `C4`-free graph, at most one of those two parts can contain an edge. -/
-theorem no_edges_in_one_checkerboard_sector
+theorem no_edges_in_one_bipartite_checkerboard_sector
     {V : Type*} [Fintype V] [DecidableEq V]
     {r : ℕ} [NeZero r] (h2r : 2 ∣ r)
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 V G)
-    (u : ZMod r → V) (hu : Function.Injective u)
+    (u v : ZMod r → V) (hu : Function.Injective u)
+    (hv : Function.Injective v)
     (hcirc : ∀ {x y x' y' : ZMod r},
       ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
       y - x = y' - x' →
-      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y')))
+      (G.Adj (u x) (v y) ↔ G.Adj (u x') (v y')))
     (hrev : ∀ {x y x' y' : ZMod r},
       ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
       y + x = y' + x' →
-      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y'))) :
+      (G.Adj (u x) (v y) ↔ G.Adj (u x') (v y'))) :
     (∀ x y : ZMod r,
         ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
-        ¬ G.Adj (u x) (u y)) ∨
+        ¬ G.Adj (u x) (v y)) ∨
       (∀ x y : ZMod r,
         ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
-        ¬ G.Adj (u x) (u y)) := by
+        ¬ G.Adj (u x) (v y)) := by
   classical
   let φ : ZMod r →+* ZMod 2 := ZMod.castHom h2r (ZMod 2)
   by_contra hnot
@@ -393,11 +833,11 @@ theorem no_edges_in_one_checkerboard_sector
     have htwo (z : ZMod 2) : z + z = 0 := by
       fin_cases z <;> decide
     linear_combination hz + htwo (φ y) - hφxy
-  have hxe : G.Adj (u x) (u e) := by
+  have hxe : G.Adj (u x) (v e) := by
     apply (hrev hab0 (by dsimp [e, s]; ring)).mp hab
-  have hyc : G.Adj (u y) (u c) := by
+  have hcy : G.Adj (u c) (v y) := by
     apply (hrev hab0 (by dsimp [c, s]; ring)).mp hab
-  have hce : G.Adj (u c) (u e) := by
+  have hce : G.Adj (u c) (v e) := by
     apply (hcirc hxy0 (by dsimp [c, e]; ring)).mp hxy
   have hxc : x ≠ c := by
     intro h
@@ -408,30 +848,55 @@ theorem no_edges_in_one_checkerboard_sector
     apply hey0
     rw [← h, sub_self, map_zero]
   have hucx : u c ≠ u x := fun h ↦ hxc (hu h).symm
-  have huyue : u y ≠ u e := fun h ↦ hye (hu h)
-  have hy_mem : u y ∈ G.neighborFinset (u x) ∩
+  have hvyve : v y ≠ v e := fun h ↦ hye (hv h)
+  have hy_mem : v y ∈ G.neighborFinset (u x) ∩
       G.neighborFinset (u c) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨hxy, hyc.symm⟩
-  have he_mem : u e ∈ G.neighborFinset (u x) ∩
+    exact ⟨hxy, hcy⟩
+  have he_mem : v e ∈ G.neighborFinset (u x) ∩
       G.neighborFinset (u c) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
     exact ⟨hxe, hce⟩
   have htwo : 2 ≤ (G.neighborFinset (u x) ∩
       G.neighborFinset (u c)).card := by
-    have hsub : ({u y, u e} : Finset V) ⊆
+    have hsub : ({v y, v e} : Finset V) ⊆
         G.neighborFinset (u x) ∩ G.neighborFinset (u c) := by
       intro z hz
       simp only [Finset.mem_insert, Finset.mem_singleton] at hz
       rcases hz with rfl | rfl
       · exact hy_mem
       · exact he_mem
-    have hcard : ({u y, u e} : Finset V).card = 2 := by
-      simp [huyue]
+    have hcard : ({v y, v e} : Finset V).card = 2 := by
+      simp [hvyve]
     rw [← hcard]
     exact Finset.card_le_card hsub
   have hone := common_le_one_of_not_containsC4 hfree (u x) (u c) hucx.symm
   omega
+
+/-- Diagonal specialization of
+`no_edges_in_one_bipartite_checkerboard_sector`. -/
+theorem no_edges_in_one_checkerboard_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r)
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (hcirc : ∀ {x y x' y' : ZMod r},
+      ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
+      y - x = y' - x' →
+      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y')))
+    (hrev : ∀ {x y x' y' : ZMod r},
+      ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
+      y + x = y' + x' →
+      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y'))) :
+    (∀ x y : ZMod r,
+        ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
+        ¬ G.Adj (u x) (u y)) ∨
+      (∀ x y : ZMod r,
+        ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
+        ¬ G.Adj (u x) (u y)) :=
+  no_edges_in_one_bipartite_checkerboard_sector h2r G hfree
+    u u hu hu hcirc hrev
 
 /-- **Even-cycle diagonal-block orientation.**  A loopless binary
 self-intertwiner coming from a `C4`-free graph is globally either circulant
