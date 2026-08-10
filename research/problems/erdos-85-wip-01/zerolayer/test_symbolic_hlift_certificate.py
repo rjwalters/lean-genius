@@ -39,6 +39,16 @@ def main():
                     cube_partition_verified=True)
         manifest.write_text(json.dumps(cube), encoding="utf-8")
         assert validate_symbolic_manifest(manifest, cnf, verifier) == cube
+        for malformed in (
+                dict(cube, cube_literal=18350),
+                dict(cube, cube_partition_verified=False),
+                dict(cube, cube_phase=1)):
+            manifest.write_text(json.dumps(malformed), encoding="utf-8")
+            try:
+                validate_symbolic_manifest(manifest, cnf, verifier)
+                raise AssertionError("malformed phase cube accepted")
+            except ValueError as exc:
+                assert "unexpected symbolic manifest scope" in str(exc)
         bad = dict(doc, sha256="0" * 64)
         manifest.write_text(json.dumps(bad), encoding="utf-8")
         try:
