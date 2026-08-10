@@ -47,4 +47,65 @@ theorem eight_sorted_nonzero_mod_three_class_counts
         hm₀ hm₁ hm₂ hm₃ hm₄ hm₅ hm₆ hm₇
   decide
 
+/-- Three pairwise-distinct residues modulo three exhaust the three residue
+classes.  This is the row-offset arithmetic used to show that the three
+missing colors in the omitting case are distinct. -/
+theorem three_pairwise_distinct_mod_three_cases (a b c : ℕ)
+    (hab : a % 3 ≠ b % 3) (hac : a % 3 ≠ c % 3)
+    (hbc : b % 3 ≠ c % 3) :
+    (a % 3 = 0 ∧ b % 3 = 1 ∧ c % 3 = 2) ∨
+    (a % 3 = 0 ∧ b % 3 = 2 ∧ c % 3 = 1) ∨
+    (a % 3 = 1 ∧ b % 3 = 0 ∧ c % 3 = 2) ∨
+    (a % 3 = 1 ∧ b % 3 = 2 ∧ c % 3 = 0) ∨
+    (a % 3 = 2 ∧ b % 3 = 0 ∧ c % 3 = 1) ∨
+    (a % 3 = 2 ∧ b % 3 = 1 ∧ c % 3 = 0) := by
+  omega
+
+/-- Equivalently, each color occurs exactly once among three pairwise-distinct
+row residues. -/
+theorem three_pairwise_distinct_mod_three_count (a b c r : ℕ)
+    (hab : a % 3 ≠ b % 3) (hac : a % 3 ≠ c % 3)
+    (hbc : b % 3 ≠ c % 3) (hr : r < 3) :
+    [a % 3, b % 3, c % 3].count r = 1 := by
+  rcases three_pairwise_distinct_mod_three_cases a b c hab hac hbc with
+    h | h | h | h | h | h
+  all_goals
+    rcases h with ⟨ha, hb, hc⟩
+    interval_cases r <;> simp [ha, hb, hc]
+
+/-- Removing a member of residue class one from a balanced four/four profile
+leaves three members of its class and all four members of the other class. -/
+theorem residue_class_counts_after_erase_of_eq_one
+    {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι → ℕ) (i : ι)
+    (hi : i ∈ s)
+    (hone : (s.filter fun j => f j % 3 = 1).card = 4)
+    (htwo : (s.filter fun j => f j % 3 = 2).card = 4)
+    (hfi : f i % 3 = 1) :
+    ((s.erase i).filter fun j => f j % 3 = 1).card = 3 ∧
+      ((s.erase i).filter fun j => f j % 3 = 2).card = 4 := by
+  constructor
+  · rw [Finset.filter_erase, Finset.card_erase_of_mem]
+    · omega
+    · simpa [hfi] using hi
+  · rw [Finset.filter_erase, Finset.erase_eq_of_notMem]
+    · exact htwo
+    · simp [hfi]
+
+/-- The symmetric removal rule for a member of residue class two. -/
+theorem residue_class_counts_after_erase_of_eq_two
+    {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι → ℕ) (i : ι)
+    (hi : i ∈ s)
+    (hone : (s.filter fun j => f j % 3 = 1).card = 4)
+    (htwo : (s.filter fun j => f j % 3 = 2).card = 4)
+    (hfi : f i % 3 = 2) :
+    ((s.erase i).filter fun j => f j % 3 = 1).card = 4 ∧
+      ((s.erase i).filter fun j => f j % 3 = 2).card = 3 := by
+  constructor
+  · rw [Finset.filter_erase, Finset.erase_eq_of_notMem]
+    · exact hone
+    · simp [hfi]
+  · rw [Finset.filter_erase, Finset.card_erase_of_mem]
+    · omega
+    · simpa [hfi] using hi
+
 end Erdos85
