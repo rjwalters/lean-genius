@@ -221,12 +221,11 @@ def xor_odd(literals):
     clauses.append((accumulator,))
 
 
-if "--local-parity" in sys.argv:
-    # Formally justified by
-    # `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`: A = D union S
-    # marks precisely the zero-common pairs, and H has odd degree thirteen.
+service_H = {}
+if "--local-parity" in sys.argv or "--global-overlap-count" in sys.argv:
+    # Retain exact conjunctions for every symbolic service edge selected by
+    # H.  Local parity and the global 264-edge overlap ledger share them.
     mark = len(clauses)
-    service_H = {}
     for pair, service in SERVICE.items():
         both = newvar()
         edge = E[pair]
@@ -234,6 +233,13 @@ if "--local-parity" in sys.argv:
         clauses.append((-both, service))
         clauses.append((both, -edge, -service))
         service_H[pair] = both
+    bump("symbolic_H_inter_service_conjunction", mark)
+
+if "--local-parity" in sys.argv:
+    # Formally justified by
+    # `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`: A = D union S
+    # marks precisely the zero-common pairs, and H has odd degree thirteen.
+    mark = len(clauses)
     for vertex in range(N):
         local = []
         for other in range(N):
@@ -359,6 +365,42 @@ def card_eq(literals, k):
     clauses.append((previous[k],))
 
 
+def card_eq_binary(literals, k):
+    """Exact cardinality via a full equivalence binary ripple counter."""
+    width = (len(literals) + 1).bit_length()
+    previous = [None] * width
+    for literal in literals:
+        carry = literal
+        current = []
+        for bit in range(width):
+            old = previous[bit]
+            if old is None:
+                current.append(carry)
+                carry = None
+            elif carry is None:
+                current.append(old)
+            else:
+                result = newvar()
+                # result <-> old XOR carry.
+                clauses.append((-old, -carry, -result))
+                clauses.append((-old, carry, result))
+                clauses.append((old, -carry, result))
+                clauses.append((old, carry, -result))
+                next_carry = newvar()
+                # next_carry <-> old AND carry.
+                clauses.append((-next_carry, old))
+                clauses.append((-next_carry, carry))
+                clauses.append((next_carry, -old, -carry))
+                current.append(result)
+                carry = next_carry
+        previous = current
+    for bit, literal in enumerate(previous):
+        if literal is None:
+            assert not ((k >> bit) & 1)
+            continue
+        clauses.append((literal,) if (k >> bit) & 1 else (-literal,))
+
+
 if "--paired-type-quotient" in sys.argv:
     # The exact [4,4,4,1] profiles define four balanced sparse fibers.  The
     # H^2=9 eigenspace has dimension three, so their contrast space equals
@@ -435,6 +477,18 @@ if "--color-balance" in sys.argv:
     bump("cube_root_kernel_exact_color_balance", mark)
 
 
+if "--global-overlap-count" in sys.argv:
+    # tr(H A)=528, or intrinsically the degree-thirteen/order-192 triangle
+    # count, says exactly 264 H-edges lie in A=D union S.  D is fixed and S
+    # is symbolic, with the latter represented by service_H conjunctions.
+    mark = len(clauses)
+    overlap = [E[pair] for pair in sorted(Dset, key=lambda p: tuple(sorted(p)))]
+    overlap.extend(service_H[pair] for pair in SERVICE)
+    assert len(overlap) == 17472
+    card_eq_binary(overlap, 264)
+    bump("global_H_inter_A_card_eq_264", mark)
+
+
 mark = len(clauses)
 for vertex in range(N):
     incident = [E[frozenset((vertex, other))]
@@ -474,6 +528,7 @@ if "--emit" in sys.argv:
             "type_profile": "--type-profile" in sys.argv,
             "paired_type_quotient": "--paired-type-quotient" in sys.argv,
             "color_balance": "--color-balance" in sys.argv,
+            "global_overlap_count": "--global-overlap-count" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)

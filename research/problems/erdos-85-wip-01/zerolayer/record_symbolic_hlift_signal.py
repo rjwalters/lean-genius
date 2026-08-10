@@ -86,6 +86,8 @@ def main():
                               str(solver_log)]
             if doc.get("options", {}).get("color_balance"):
                 option_command.append("--color-balance")
+            if doc.get("options", {}).get("global_overlap_count"):
+                option_command.append("--global-overlap-count")
             with open(option_log, "w", encoding="utf-8") as stream:
                 option_checked = subprocess.run(
                     option_command, stdout=stream, stderr=subprocess.STDOUT,
