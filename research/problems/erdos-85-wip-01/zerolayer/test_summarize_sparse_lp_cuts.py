@@ -14,6 +14,7 @@ with tempfile.TemporaryDirectory() as raw:
     log.write_text(
         "lp_direct_compiled 9.5\n"
         "lp_direct_data_keys ['A', 'b', 'dims']\n"
+        "lp_direct_layout qp_A_b_F_G equalities 3 inequalities 7\n"
         "lp_direct_iteration 0 status kOptimal time 2.5\n"
         "lp_direct_unpack_audit Y00 1.0 forced_zero_row_max 0.0 "
         "max_primal_infeasibility 1e-9\n"
@@ -38,6 +39,8 @@ with tempfile.TemporaryDirectory() as raw:
     assert report["optimal_iterations"] == 3
     assert report["compile_seconds"] == 9.5
     assert report["data_keys"] == ["A", "b", "dims"]
+    assert report["direct_layout"] == {
+        "name": "qp_A_b_F_G", "equalities": 3, "inequalities": 7}
     assert report["traceback_detected"] is False
     assert report["normal_completion_marker"] is True
     assert report["trajectory_complete"] is True
