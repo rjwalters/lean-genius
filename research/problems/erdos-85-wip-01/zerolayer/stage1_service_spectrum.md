@@ -228,3 +228,29 @@ This identity is independent of all Stage-1 phases.  In particular, the two
 sparse centers forced into one block have an explicit distance-sensitive
 A-common-neighbor count, which can now be combined with the entrywise
 `HA=AH` mixed-neighbor balance.
+
+## Mixed-count Frobenius ledger
+
+The square identity also fixes the second moment of the entrywise mixed
+counts.  Since `H` and `A` commute and are symmetric, `HA` is symmetric and
+
+```
+tr((HA)^2) = sum_{x,z} (HA)_{x,z}^2
+           = sum_{x,z} |N_H(x) intersect N_A(z)|^2.
+```
+
+Using `H^2 = 12I + J - A`, A-regularity of degree 35, and the exact
+service spectrum,
+
+```
+tr(A^2)   = 192*35 = 6720,
+tr(J A^2) = 192*35^2 = 235200,
+tr(A^3)   = 74880,
+tr(H^2 A^2) = 12*6720 + 235200 - 74880 = 240960.
+```
+
+Thus the mixed-count matrix has row sum `13*35 = 455`, total squared mass
+`240960`, and diagonal equal to the local `H intersect A` degree.  At least
+24 diagonal entries are one by the global overlap/parity ledger, supplying
+a quantitative constraint on the sparse rows containing the two forced
+same-block centers.
