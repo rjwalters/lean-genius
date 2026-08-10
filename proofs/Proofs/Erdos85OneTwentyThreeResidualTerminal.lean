@@ -13392,6 +13392,35 @@ theorem degree_sixteen_quotientTwo_reduced_order_classification
     rw [hq] at hentry
     omega
 
+/-- A quotient-one orphan leg is governed entirely by reduced detailed
+balance: if the orphan and used orders are `3m` and `3k`, then `k ∣ m` and
+the reverse quotient is the exact ratio `m / k`. -/
+theorem degree_sixteen_quotientOne_reduced_balance
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1) :
+    k ∣ m ∧
+      k * componentQuotientMatrix G (secondOrderDefectGraph G) e o = m := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 1 at hq
+  rw [hom, hek, hq, mul_one] at hbal
+  have hreduced : m = k * Q e o := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [mul_assoc] using hbal
+  exact ⟨⟨Q e o, hreduced⟩, hreduced.symm⟩
+
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
 entry three, and the owner's reduced order divides the orphan order. -/
