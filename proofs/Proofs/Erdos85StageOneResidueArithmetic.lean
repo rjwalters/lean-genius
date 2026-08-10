@@ -47,4 +47,18 @@ theorem eight_sorted_nonzero_mod_three_class_counts
         hm₀ hm₁ hm₂ hm₃ hm₄ hm₅ hm₆ hm₇
   decide
 
+/-- Three pairwise-distinct residues modulo three exhaust the three residue
+classes.  This is the row-offset arithmetic used to show that the three
+missing colors in the omitting case are distinct. -/
+theorem three_pairwise_distinct_mod_three_cases (a b c : ℕ)
+    (hab : a % 3 ≠ b % 3) (hac : a % 3 ≠ c % 3)
+    (hbc : b % 3 ≠ c % 3) :
+    (a % 3 = 0 ∧ b % 3 = 1 ∧ c % 3 = 2) ∨
+    (a % 3 = 0 ∧ b % 3 = 2 ∧ c % 3 = 1) ∨
+    (a % 3 = 1 ∧ b % 3 = 0 ∧ c % 3 = 2) ∨
+    (a % 3 = 1 ∧ b % 3 = 2 ∧ c % 3 = 0) ∨
+    (a % 3 = 2 ∧ b % 3 = 0 ∧ c % 3 = 1) ∨
+    (a % 3 = 2 ∧ b % 3 = 1 ∧ c % 3 = 0) := by
+  omega
+
 end Erdos85
