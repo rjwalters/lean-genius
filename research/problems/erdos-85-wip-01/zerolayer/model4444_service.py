@@ -30,10 +30,12 @@ def links(o):
     return [e for e in COMPS if e != o[0]]
 
 model = cp_model.CpModel()
-slope = {}
+# NOTE (Sol audit, msg 1855/1857): link slopes are ELIMINATED from this
+# model — the shared-pair criterion and row-offset constraints are
+# slope-independent, and all-slopes-+1 is WLOG by reflecting each
+# orphan's C12 labeling independently. No slope variables exist here.
 tau = {}
 for o in ORPHANS:
-    slope[o] = model.NewBoolVar(f"s{o}")
     L = links(o)
     for e in L:
         tau[o, e] = model.NewIntVar(0, 11, f"t{o}{e}")
@@ -67,5 +69,4 @@ st = solver.Solve(model)
 print("STATUS:", solver.StatusName(st))
 if st in (cp_model.OPTIMAL, cp_model.FEASIBLE):
     for o in ORPHANS:
-        print(o, "s=", solver.Value(slope[o]),
-              [(e, solver.Value(tau[o, e])) for e in links(o)])
+        print(o, [(e, solver.Value(tau[o, e])) for e in links(o)])

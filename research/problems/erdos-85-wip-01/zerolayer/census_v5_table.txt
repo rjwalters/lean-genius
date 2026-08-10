@@ -5,8 +5,13 @@
 #        B(m,e,f) = 3-div orphan 3m, b=(2,1): 2-leg on e (m=k_e or k_e=2m), 1-leg on f
 #        C(m,e)   = 3-div orphan 3m, b=3 on e (m=k_e or k_e=3m)
 #        D(u,e)   = non-3-div orphan u = k_e (structural forcing), Q(o,e)=3
-# Constraint-to-lemma metadata: see zerolayer_cpsat.py header and
-# zerolayer_census_v5 JSON meta (regenerable by running the script).
+# Constraint-to-lemma metadata: see zerolayer_cpsat.py header.
+# Verdicts/minima are deterministic and independently reproduced (Sol,
+# msg 1855, isolated venv, 9.3s); WITNESS choice may vary between runs
+# (multi-worker CP-SAT). Verdicts are exact RELATIVE TO the encoded
+# arithmetic model — not Lean-formal and not certificate-backed;
+# CP-SAT INFEASIBLE has no replayable proof object. Formal per-family
+# Lean consumers are the certification path for the 169 deaths.
 #
 SURVIVOR 16 minexc=24 budget=30 :: 12xD(u=16,e=0)
 DEAD 15,1 budget=28
