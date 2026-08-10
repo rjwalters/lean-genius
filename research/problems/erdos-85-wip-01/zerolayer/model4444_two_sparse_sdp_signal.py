@@ -9,6 +9,7 @@ it must be converted to an exact rational certificate before use.
 """
 
 import argparse
+import time
 
 import cvxpy as cp
 import numpy as np
@@ -28,6 +29,7 @@ parser.add_argument("--lp-cuts", type=int, default=0,
                     help="replace PSD by this many integer-vector cuts")
 parser.add_argument("--cut-support", type=int, default=48)
 parser.add_argument("--lp-time", type=float, default=300)
+parser.add_argument("--lp-solver", choices=("simplex", "ipm"), default="ipm")
 args = parser.parse_args()
 
 A = np.zeros((N, N), dtype=float)
@@ -179,8 +181,18 @@ integer_cuts = []
 if args.lp_cuts:
     for iteration in range(args.lp_cuts + 1):
         problem = cp.Problem(cp.Minimize(0), constraints)
+        compiled_at = time.perf_counter()
+        data, _, _ = problem.get_problem_data("HIGHS")
+        compile_seconds = time.perf_counter() - compiled_at
+        matrix = data.get("A")
+        print("lp_compiled", iteration, "seconds", compile_seconds,
+              "variables", len(data.get("c", [])),
+              "rows", None if matrix is None else matrix.shape[0],
+              "nonzeros", None if matrix is None else matrix.nnz,
+              flush=True)
         value = problem.solve(solver="HIGHS", verbose=False,
-                              highs_options={"time_limit": args.lp_time})
+                              highs_options={"time_limit": args.lp_time,
+                                             "solver": args.lp_solver})
         print("lp_iteration", iteration, "status", problem.status, flush=True)
         if problem.status not in (cp.OPTIMAL, cp.OPTIMAL_INACCURATE) or \
                 iteration == args.lp_cuts:
@@ -220,7 +232,8 @@ if integer_cuts:
          if value]
         for vector in integer_cuts
     ])
-if Y.value is not None:
+if Y.value is not None and problem.status in (cp.OPTIMAL,
+                                               cp.OPTIMAL_INACCURATE):
     eigenvalues = np.linalg.eigvalsh((Y.value + Y.value.T) / 2)
     print("min_eigenvalue", float(eigenvalues[0]))
     violations = sorted(
