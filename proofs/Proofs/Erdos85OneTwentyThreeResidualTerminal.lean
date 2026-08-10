@@ -11298,6 +11298,47 @@ theorem false_of_zeroLayer_reduced_used_orders_thirteen_three_atom_ledger
     (hbudget : 2 * nC1 + 6 * nC3 ≤ 4) : False := by
   omega
 
+/-- In `[13,2,1]`, filling the order-two row costs twelve units after
+normalization, while its available excess budget is only two. -/
+theorem false_of_zeroLayer_reduced_used_orders_thirteen_two_one_atom_ledger
+    (nB1 nB2 : ℕ)
+    (hload : 2 * nB1 + 4 * nB2 = 24)
+    (hbudget : nB1 + 2 * nB2 ≤ 2) : False := by
+  omega
+
+/-- The order-five row in `[11,5]` has fixed cost twenty-four at load
+sixty, exceeding its budget eight. -/
+theorem false_of_zeroLayer_reduced_used_orders_eleven_five_atom_ledger
+    (nC5 nD5 : ℕ)
+    (hload : 15 * nC5 + 5 * nD5 = 60)
+    (hbudget : 6 * nC5 + 2 * nD5 ≤ 8) : False := by
+  omega
+
+/-- Every atom available to the order-four row in `[11,4,1]` costs at
+least one unit per normalized load unit, so load forty-eight cannot fit
+inside budget six. -/
+theorem false_of_zeroLayer_reduced_used_orders_eleven_four_one_atom_ledger
+    (nB2 nB4 nC4 nD4 : ℕ)
+    (hload : 4 * nB2 + 8 * nB4 + 12 * nC4 + 4 * nD4 = 48)
+    (hbudget : nB2 + 2 * nB4 + 6 * nC4 + 2 * nD4 ≤ 6) : False := by
+  omega
+
+/-- The order-three row in `[11,3,2]` repeats the load-thirty-six versus
+budget-four obstruction. -/
+theorem false_of_zeroLayer_reduced_used_orders_eleven_three_two_atom_ledger
+    (nC1 nC3 : ℕ)
+    (hload : 3 * nC1 + 9 * nC3 = 36)
+    (hbudget : 2 * nC1 + 6 * nC3 ≤ 4) : False := by
+  omega
+
+/-- Even allowing both order-one rows in `[11,3,1,1]`, the cheapest
+order-three service atoms cost twelve in total, above budget four. -/
+theorem false_of_zeroLayer_reduced_used_orders_eleven_three_one_one_atom_ledger
+    (nB₁ nB₂ nC1 nC3 : ℕ)
+    (hload : 6 * nB₁ + 6 * nB₂ + 3 * nC1 + 9 * nC3 = 36)
+    (hbudget : 2 * nB₁ + 2 * nB₂ + 2 * nC1 + 6 * nC3 ≤ 4) : False := by
+  omega
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
