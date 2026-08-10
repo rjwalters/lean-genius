@@ -315,26 +315,27 @@ theorem binary_evenCycleIntertwiner_reverse_on_odd_checkerboard
 same-parity part of a cyclic adjacency block depends only on coordinate
 difference, while the opposite-parity part depends only on coordinate sum.
 In a `C4`-free graph, at most one of those two parts can contain an edge. -/
-theorem no_edges_in_one_checkerboard_sector
+theorem no_edges_in_one_bipartite_checkerboard_sector
     {V : Type*} [Fintype V] [DecidableEq V]
     {r : ℕ} [NeZero r] (h2r : 2 ∣ r)
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 V G)
-    (u : ZMod r → V) (hu : Function.Injective u)
+    (u v : ZMod r → V) (hu : Function.Injective u)
+    (hv : Function.Injective v)
     (hcirc : ∀ {x y x' y' : ZMod r},
       ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
       y - x = y' - x' →
-      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y')))
+      (G.Adj (u x) (v y) ↔ G.Adj (u x') (v y')))
     (hrev : ∀ {x y x' y' : ZMod r},
       ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
       y + x = y' + x' →
-      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y'))) :
+      (G.Adj (u x) (v y) ↔ G.Adj (u x') (v y'))) :
     (∀ x y : ZMod r,
         ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
-        ¬ G.Adj (u x) (u y)) ∨
+        ¬ G.Adj (u x) (v y)) ∨
       (∀ x y : ZMod r,
         ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
-        ¬ G.Adj (u x) (u y)) := by
+        ¬ G.Adj (u x) (v y)) := by
   classical
   let φ : ZMod r →+* ZMod 2 := ZMod.castHom h2r (ZMod 2)
   by_contra hnot
@@ -393,11 +394,11 @@ theorem no_edges_in_one_checkerboard_sector
     have htwo (z : ZMod 2) : z + z = 0 := by
       fin_cases z <;> decide
     linear_combination hz + htwo (φ y) - hφxy
-  have hxe : G.Adj (u x) (u e) := by
+  have hxe : G.Adj (u x) (v e) := by
     apply (hrev hab0 (by dsimp [e, s]; ring)).mp hab
-  have hyc : G.Adj (u y) (u c) := by
+  have hcy : G.Adj (u c) (v y) := by
     apply (hrev hab0 (by dsimp [c, s]; ring)).mp hab
-  have hce : G.Adj (u c) (u e) := by
+  have hce : G.Adj (u c) (v e) := by
     apply (hcirc hxy0 (by dsimp [c, e]; ring)).mp hxy
   have hxc : x ≠ c := by
     intro h
@@ -408,30 +409,55 @@ theorem no_edges_in_one_checkerboard_sector
     apply hey0
     rw [← h, sub_self, map_zero]
   have hucx : u c ≠ u x := fun h ↦ hxc (hu h).symm
-  have huyue : u y ≠ u e := fun h ↦ hye (hu h)
-  have hy_mem : u y ∈ G.neighborFinset (u x) ∩
+  have hvyve : v y ≠ v e := fun h ↦ hye (hv h)
+  have hy_mem : v y ∈ G.neighborFinset (u x) ∩
       G.neighborFinset (u c) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨hxy, hyc.symm⟩
-  have he_mem : u e ∈ G.neighborFinset (u x) ∩
+    exact ⟨hxy, hcy⟩
+  have he_mem : v e ∈ G.neighborFinset (u x) ∩
       G.neighborFinset (u c) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
     exact ⟨hxe, hce⟩
   have htwo : 2 ≤ (G.neighborFinset (u x) ∩
       G.neighborFinset (u c)).card := by
-    have hsub : ({u y, u e} : Finset V) ⊆
+    have hsub : ({v y, v e} : Finset V) ⊆
         G.neighborFinset (u x) ∩ G.neighborFinset (u c) := by
       intro z hz
       simp only [Finset.mem_insert, Finset.mem_singleton] at hz
       rcases hz with rfl | rfl
       · exact hy_mem
       · exact he_mem
-    have hcard : ({u y, u e} : Finset V).card = 2 := by
-      simp [huyue]
+    have hcard : ({v y, v e} : Finset V).card = 2 := by
+      simp [hvyve]
     rw [← hcard]
     exact Finset.card_le_card hsub
   have hone := common_le_one_of_not_containsC4 hfree (u x) (u c) hucx.symm
   omega
+
+/-- Diagonal specialization of
+`no_edges_in_one_bipartite_checkerboard_sector`. -/
+theorem no_edges_in_one_checkerboard_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r)
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (hcirc : ∀ {x y x' y' : ZMod r},
+      ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
+      y - x = y' - x' →
+      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y')))
+    (hrev : ∀ {x y x' y' : ZMod r},
+      ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
+      y + x = y' + x' →
+      (G.Adj (u x) (u y) ↔ G.Adj (u x') (u y'))) :
+    (∀ x y : ZMod r,
+        ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
+        ¬ G.Adj (u x) (u y)) ∨
+      (∀ x y : ZMod r,
+        ZMod.castHom h2r (ZMod 2) (y - x) ≠ 0 →
+        ¬ G.Adj (u x) (u y)) :=
+  no_edges_in_one_bipartite_checkerboard_sector h2r G hfree
+    u u hu hu hcirc hrev
 
 /-- **Even-cycle diagonal-block orientation.**  A loopless binary
 self-intertwiner coming from a `C4`-free graph is globally either circulant
