@@ -189,6 +189,50 @@ theorem binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
     rcases hbinary (x + 1) (y + 1) with hxy' | hxy' <;>
     omega
 
+/-- Any nonzero simultaneous-translation defect of a binary cycle
+intertwiner forces a complete reverse diagonal of ones.  This is the first
+half of the quotient-two decomposition: the diagonal is a reverse perfect
+matching which can be split from the block. -/
+theorem binary_cycleIntertwiner_exists_full_reverse_diagonal
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    {a b : ZMod r}
+    (hne : H (a + 1) (b + 1) - H a b ≠ 0) :
+    ∃ s : ZMod r, ∀ x, H x (s - x) = 1 := by
+  rcases hbinary a b with hab | hab
+  · have hab' : H (a + 1) (b + 1) = 1 := by
+      rcases hbinary (a + 1) (b + 1) with hab' | hab'
+      · exact (hne (by rw [hab, hab']; norm_num)).elim
+      · exact hab'
+    refine ⟨b + a + 2, ?_⟩
+    intro x
+    let x₀ : ZMod r := x - 1
+    let y₀ : ZMod r := (b + a + 2 - x) - 1
+    have hsum : y₀ + x₀ = b + a := by
+      dsimp only [x₀, y₀]
+      ring
+    have hbase : H x₀ y₀ = H a b :=
+      binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
+        H hinter hbinary hne hsum
+    have hdelta := cycleIntertwiner_translationDifference_eq_of_add_eq
+      H hinter hsum
+    have hx : x₀ + 1 = x := by dsimp only [x₀]; ring
+    have hy : y₀ + 1 = b + a + 2 - x := by dsimp only [y₀]; ring
+    rw [hx, hy, hbase, hab, hab'] at hdelta
+    omega
+  · refine ⟨b + a, ?_⟩
+    intro x
+    have hsum : (b + a - x) + x = b + a := by ring
+    calc
+      H x (b + a - x) = H a b :=
+        binary_cycleIntertwiner_antidiagonal_constant_of_difference_ne_zero
+          H hinter hbinary hne hsum
+      _ = 1 := hab
+
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
 theorem cycleIntertwiner_simultaneous_shift_preserves_eq
