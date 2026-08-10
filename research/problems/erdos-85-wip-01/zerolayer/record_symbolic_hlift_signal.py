@@ -18,7 +18,15 @@ from run_hlift_orbit_signal import parse_status, sha256_file
 
 def validate_symbolic_manifest(manifest_path, cnf_path, verifier_path):
     doc = json.load(open(manifest_path, encoding="utf-8"))
-    if doc.get("scope") != "all corrected Stage-1 (4,4,4,4) service witnesses":
+    parent_scope = "all corrected Stage-1 (4,4,4,4) service witnesses"
+    scope = doc.get("scope")
+    is_parent = scope == parent_scope
+    is_phase_cube = (scope in {
+        parent_scope + f" AND tau[(0,0),2]={phase}" for phase in range(3)
+    } and doc.get("cube_phase") in range(3)
+        and doc.get("cube_literal") == 18349 + doc["cube_phase"]
+        and doc.get("cube_partition_verified") is True)
+    if not (is_parent or is_phase_cube):
         raise ValueError("unexpected symbolic manifest scope")
     actual_cnf = sha256_file(cnf_path)
     if doc.get("sha256") != actual_cnf:

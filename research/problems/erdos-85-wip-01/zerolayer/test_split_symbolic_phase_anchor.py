@@ -28,6 +28,9 @@ with tempfile.TemporaryDirectory() as raw:
     manifest.write_text(json.dumps({
         "scope": "toy symbolic scope", "sha256": sha(cnf),
         "vars": 20000, "clauses": 5,
+        "encoder_sha256": "e" * 64,
+        "sat_verifier_sha256": "v" * 64,
+        "rule_counts": {"toy": 5},
         "options": {"phase_symmetry": True},
     }))
     output = root / "cubes"
@@ -50,6 +53,7 @@ with tempfile.TemporaryDirectory() as raw:
         doc = json.loads(cube.with_suffix(".manifest.json").read_text())
         assert doc["sha256"] == sha(cube)
         assert doc["cube_phase"] == phase
+        assert doc["rule_counts"] == {"toy": 5, "phase_anchor_cube_unit": 1}
         assert doc["exhaustive_anchor_literals"] == [18349, 18350, 18351]
         assert doc["cube_partition_verified"] is True
 
