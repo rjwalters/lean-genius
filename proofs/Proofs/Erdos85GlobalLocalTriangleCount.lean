@@ -80,6 +80,45 @@ theorem sum_localTriangleEdges_eq_three_mul_triangularCliques
     3 * (T.cliqueFinset 3).card
   omega
 
+/-- In the degree-thirteen, order-192 Stage-1 residual, 328 triangles leave
+exactly 264 edges which lie in no triangle.  These are precisely the
+`H ∩ A` edges in the zero-layer square identity. -/
+theorem degree_thirteen_order_192_triangleFreeEdgeGraph_card_eq_264
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hcard : Fintype.card V = 192)
+    (hreg : ∀ x : V, G.degree x = 13)
+    (htriangles : ((triangularEdgeGraph G).cliqueFinset 3).card = 328) :
+    (triangleFreeEdgeGraph G).edgeFinset.card = 264 := by
+  let T := triangleFreeEdgeGraph G
+  let H := triangularEdgeGraph G
+  have hTle : T ≤ G := by
+    intro x y hxy
+    exact ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).1
+  have hedgeG : G.edgeFinset.card = 1248 := by
+    have hhandshake := G.sum_degrees_eq_twice_card_edges
+    simp_rw [hreg] at hhandshake
+    simp [hcard] at hhandshake
+    omega
+  have hlocal : H.LocallyLinear :=
+    triangularEdgeGraph_locallyLinear_of_not_containsC4 G hfree
+  have hedgeH : H.edgeFinset.card = 984 := by
+    rw [hlocal.card_edgeFinset, htriangles]
+  have hpartition : G.edgeFinset.card = H.edgeFinset.card + T.edgeFinset.card := by
+    have heq : H.edgeFinset = G.edgeFinset \ T.edgeFinset := by
+      ext e
+      simp [H, T, triangularEdgeGraph]
+    rw [heq, Finset.card_sdiff_of_subset (edgeFinset_mono hTle)]
+    have hle := Finset.card_le_card (edgeFinset_mono hTle)
+    omega
+  rw [hedgeG, hedgeH] at hpartition
+  change T.edgeFinset.card = 264
+  omega
+
 end
 
 end Erdos85
