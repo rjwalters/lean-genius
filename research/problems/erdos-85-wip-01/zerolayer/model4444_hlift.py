@@ -32,12 +32,20 @@ Emitted instances (2026-08-10):
      one-pairs, each requiring one common H-neighbor, and
      156 = sum_{w in N_H(v)} #{one-paired u in N(w)} <= 12*deg(v)
      under at-most-13, forcing deg(v) = 13.
-  v2 (THIS encoder, counter repaired + 264 cut, certificate grade):
+  v2 (counter repaired + 264 cut, certificate grade):
      hlift4444_b229c6f11ab1bcad.cnf — 7,045,596 vars / 23,066,016
      clauses; full SHA-256
      b229c6f11ab1bcad... (see manifest for full digest + rule counts:
      zero_common 638400, one_common_and_exactly_one 17027712,
      degree_13_exact 1978752, A_edge_total_264 3421152; sums to total).
+  v3 (THIS encoder, v2 + local odd A-incidence cuts):
+     hlift4444_a27456953947a173.cnf — 7,052,124 vars / 23,092,320
+     clauses.  For every vertex v, `a_v = |N_H(v) intersect N_A(v)|`
+     is odd because `2 t_v = 13 - a_v`, where t_v is the number of
+     H-edges induced by N_H(v).  Each 35-literal parity is encoded by a
+     chain of 34 equivalence XOR gates and one final unit.  See the
+     manifest for the full SHA-256 and test_parity_odd.py for exhaustive
+     small-chain tests.
 """
 import sys, hashlib, json
 from itertools import combinations
@@ -177,11 +185,40 @@ for v in range(N):
 bump("degree_13_exact", len(clauses) - mark)
 mark = len(clauses)
 # ---- redundant derived cuts (Sol msg 1861; logically implied, aid
-# propagation): |E(H) ∩ (S∪D)| = 264 globally. (Per-vertex odd a_v
-# constraints omitted: XOR chains bloat CNF; global 264 is cheap.)
+# propagation): |E(H) ∩ (S∪D)| = 264 globally.
 A_lits = [E[p] for p in zero_pairs]
 card_eq(A_lits, 264)
 bump("A_edge_total_264", len(clauses) - mark)
+mark = len(clauses)
+
+def xor_odd(lits):
+    """Assert XOR(lits) = true using equivalence Tseitin gates.
+
+    Each new gate z is defined by z <-> (x XOR y), so every input
+    assignment has exactly one extension to the auxiliaries.  The final
+    positive unit selects precisely the odd-parity inputs.
+    """
+    if not lits:
+        clauses.append(())
+        return
+    acc = lits[0]
+    for lit in lits[1:]:
+        z = newvar()
+        # z <-> acc XOR lit
+        clauses.append((-acc, -lit, -z))
+        clauses.append((-acc, lit, z))
+        clauses.append((acc, -lit, z))
+        clauses.append((acc, lit, -z))
+        acc = z
+    clauses.append((acc,))
+
+for v in range(N):
+    A_neighbor_lits = [E[frozenset((v, w))]
+                       for w in range(N)
+                       if w != v and frozenset((v, w)) in zero_pairs]
+    assert len(A_neighbor_lits) == 35
+    xor_odd(A_neighbor_lits)
+bump("local_A_incidence_odd", len(clauses) - mark)
 
 print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
 
