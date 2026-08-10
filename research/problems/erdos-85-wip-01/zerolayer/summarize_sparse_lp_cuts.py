@@ -48,6 +48,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("log", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--expected-cuts", type=int)
     args = parser.parse_args()
 
     iterations = {}
@@ -55,11 +56,14 @@ def main():
     compile_seconds = None
     data_keys = None
     traceback_detected = False
+    normal_completion_marker = False
     with open(args.log, encoding="utf-8", errors="replace") as stream:
         for raw in stream:
             line = raw.strip()
             if line == "Traceback (most recent call last):":
                 traceback_detected = True
+            elif line.startswith("integer_cuts "):
+                normal_completion_marker = True
             elif line.startswith("lp_direct_compiled "):
                 compile_seconds = float(line.split()[1])
             elif line.startswith("lp_direct_data_keys "):
@@ -107,14 +111,23 @@ def main():
             coordinate_frequency[f"{family}[x={coordinate}]"] += count
     eigenvalues = [item["min_eigenvalue"] for item in ordered
                    if "min_eigenvalue" in item]
+    cuts = sum("cut_value" in item for item in ordered)
+    requested_cut_round_complete = (
+        args.expected_cuts is None or cuts == args.expected_cuts or
+        (eigenvalues and eigenvalues[-1] >= -1e-5))
+    trajectory_complete = (normal_completion_marker and not traceback_detected and
+                           requested_cut_round_complete)
     report = {
         "verdict": "SPARSE_RATIONAL_PSD_CUT_TRAJECTORY",
         "log": str(args.log.resolve()), "log_sha256": sha256_file(args.log),
         "compile_seconds": compile_seconds, "data_keys": data_keys,
         "traceback_detected": traceback_detected,
+        "normal_completion_marker": normal_completion_marker,
+        "expected_cuts": args.expected_cuts,
+        "trajectory_complete": trajectory_complete,
         "iterations": ordered,
         "optimal_iterations": sum(item["status"] == "kOptimal" for item in ordered),
-        "cuts": sum("cut_value" in item for item in ordered),
+        "cuts": cuts,
         "least_negative_min_eigenvalue": max(eigenvalues) if eigenvalues else None,
         "terminal_min_eigenvalue": eigenvalues[-1] if eigenvalues else None,
         "terminal_status": ordered[-1]["status"] if ordered else None,
