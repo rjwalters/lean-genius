@@ -52,6 +52,8 @@ which follows from the encoded square identity and regularity.  Identical
 literals are canceled before equivalence-defined unary cardinality
 comparisons.  This adds 238,210 variables and 939,540 clauses; its generic
 equality encoder is exhaustively checked by test_equal_cardinality.py.
+The matrix implication is formalized by the cold-verified Lean theorem
+`matrix_comm_of_sq_eq_smul_one_add_sub`.
 The emitted v4 candidate is `hlift4444_e21525e9a610e8c3.cnf`, full
 SHA-256 `e21525e9a610e8c383f71e5836d2359878b7b43198e3b6cfe7b9f228c5094661`.
 """
