@@ -119,6 +119,37 @@ theorem degree_thirteen_order_192_triangleFreeEdgeGraph_card_eq_264
   change T.edgeFinset.card = 264
   omega
 
+/-- A degree-thirteen vertex with one triangle-free incident edge has
+exactly twelve incident edges in the triangular-edge graph. -/
+theorem triangularEdgeGraph_degree_eq_twelve_of_degree_thirteen_sparse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (x : V) (hdegree : G.degree x = 13)
+    (hone : (triangleFreeNeighbors G x).card = 1) :
+    (triangularEdgeGraph G).degree x = 12 := by
+  have hsub : triangleFreeNeighbors G x ⊆ G.neighborFinset x := by
+    intro y hy
+    simpa [SimpleGraph.mem_neighborFinset] using
+      ((mem_triangleFreeNeighbors G x y).mp hy).1
+  have heq : (triangularEdgeGraph G).neighborFinset x =
+      G.neighborFinset x \ triangleFreeNeighbors G x := by
+    ext y
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_sdiff]
+    rw [triangularEdgeGraph_adj]
+    constructor
+    · rintro ⟨hxy, hcommon⟩
+      exact ⟨hxy, fun htf => hcommon
+        ((mem_triangleFreeNeighbors G x y).mp htf).2⟩
+    · rintro ⟨hxy, hnot⟩
+      refine ⟨hxy, ?_⟩
+      intro hzero
+      exact hnot ((mem_triangleFreeNeighbors G x y).mpr ⟨hxy, hzero⟩)
+  rw [← (triangularEdgeGraph G).card_neighborFinset_eq_degree, heq,
+    Finset.card_sdiff_of_subset hsub, G.card_neighborFinset_eq_degree,
+    hdegree, hone]
+
 /-- A mixed third trace counts, with orientation, the common `A`-neighbors
 across the edges of `H`.  This is the graph bridge for the fixed Stage-1
 identity `tr(H A²) = 15696`. -/
