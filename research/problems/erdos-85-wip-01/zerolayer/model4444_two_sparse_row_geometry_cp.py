@@ -19,6 +19,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("distance", type=int, choices=range(1, 7))
 parser.add_argument("--time", type=float, default=300)
 parser.add_argument("--workers", type=int, default=8)
+parser.add_argument("--left-overlap", type=int)
+parser.add_argument("--right-overlap", type=int)
 args = parser.parse_args()
 
 A_pairs = graphs(WIT)
@@ -60,6 +62,14 @@ def neighborhood_constraints(selected, center):
 
 neighborhood_constraints(X, left_center)
 neighborhood_constraints(Z, right_center)
+if args.left_overlap is not None:
+    if args.left_overlap not in A_neighbors[left_center]:
+        raise ValueError("--left-overlap is not an A-neighbor of left center")
+    model.Add(X[args.left_overlap] == 1)
+if args.right_overlap is not None:
+    if args.right_overlap not in A_neighbors[right_center]:
+        raise ValueError("--right-overlap is not an A-neighbor of right center")
+    model.Add(Z[args.right_overlap] == 1)
 model.Add(X[right_center] == Z[left_center])
 
 common = []
