@@ -65,6 +65,7 @@ def verify_color_action(witness):
     # contributes (1,1,2,1,1,2) service-common neighbors at cyclic distance
     # 1..6; the defect cycle contributes one more exactly at distance two.
     expected_profile = (3, 4, 6, 3, 3, 6)
+    expected_cubic_profile = (264, 180, 229, 180, 180, 228)
     for orphan in ORPHANS:
         for x in range(12):
             for distance, expected in enumerate(expected_profile, 1):
@@ -75,9 +76,17 @@ def verify_color_action(witness):
                     raise ValueError(
                         f"same-block A2 profile failure {orphan},x={x},"
                         f"d={distance}: {actual} != {expected}")
+                cubic = sum(len(neighbors[y] & neighbors[right])
+                            for y in neighbors[left])
+                expected_cubic = expected_cubic_profile[distance - 1]
+                if cubic != expected_cubic:
+                    raise ValueError(
+                        f"same-block A3 profile failure {orphan},x={x},"
+                        f"d={distance}: {cubic} != {expected_cubic}")
     return {"vertices": N, "A_edges": len(adjacency),
             "identity": "A c_r = 12 c_r - 3 L_e + 8 one",
-            "same_block_A2": list(expected_profile)}
+            "same_block_A2": list(expected_profile),
+            "same_block_A3": list(expected_cubic_profile)}
 
 
 if __name__ == "__main__":

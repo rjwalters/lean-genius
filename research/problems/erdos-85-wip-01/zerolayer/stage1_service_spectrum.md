@@ -254,3 +254,46 @@ Thus the mixed-count matrix has row sum `13*35 = 455`, total squared mass
 24 diagonal entries are one by the global overlap/parity ledger, supplying
 a quantitative constraint on the sparse rows containing the two forced
 same-block centers.
+
+## Same-block cubic and mixed-row inner products
+
+The Fourier/Gram calculation fixes one further pointwise profile.  Put
+`K=VV*` and `alpha=z+z^-1-3`, so `A_z=alpha I+K`.  At a fixed orphan row,
+
+```
+(A_z^3)_{oo} = alpha^3 + 9 alpha^2
+               + 3 alpha (K^2)_{oo} + (K^3)_{oo}.
+```
+
+The three Gram cases `C(z)=8,-4,0` give
+
+```
+((K^2)_{oo}, (K^3)_{oo}) = (84,2928), (48,768), (36,432),
+```
+
+respectively.  In the cube-root case, the three row phases sum to zero;
+in the generic case the Gram matrix is `12I`; and at `z=1` the row is three
+ones.  Exact inverse Fourier transform therefore gives diagonal value 390
+and the same-block off-diagonal profile
+
+```
+(A^3)_{x,x+d} = 264, 180, 229, 180, 180, 228   (d=1,...,6).
+```
+
+This is phase-independent, not a sampled-witness observation.  Now set
+`B=HA=AH`.  From `H^2=12I+J-A` and `JA^2=35^2 J`,
+
+```
+B^2 = H^2 A^2 = 12 A^2 + 35^2 J - A^3.
+```
+
+Consequently the inner products of the two mixed-count rows belonging to
+same-block vertices at cyclic distance `d=1,...,6` are exactly
+
+```
+(B^2)_{x,x+d} = 997, 1093, 1068, 1081, 1081, 1069.
+```
+
+Together with row sum 455, row squared norms `(B^2)_{xx}`, and diagonal
+mixed count one at both forced sparse centers, this turns their unspecified
+same-block separation into six explicit integer row-ledger cases.
