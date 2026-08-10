@@ -23,6 +23,17 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def expected_cube_sha256(parent, variables, clauses, literal):
+    digest = hashlib.sha256()
+    digest.update(f"p cnf {variables} {clauses + 1}\n".encode())
+    with open(parent, "rb") as stream:
+        stream.readline()
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    digest.update(f"{literal} 0\n".encode())
+    return digest.hexdigest()
+
+
 def parse_header(line):
     fields = line.decode().strip().split()
     if len(fields) != 4 or fields[:2] != ["p", "cnf"]:
@@ -61,6 +72,8 @@ def main():
                         metavar=("OMIT", "COPY", "COMPONENT"),
                         default=(0, 0, 2))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--reuse-existing-cnfs", action="store_true",
+                        help="verify exact existing child CNFs and rewrite only manifests")
     args = parser.parse_args()
 
     doc = json.loads(args.manifest.read_text())
@@ -123,12 +136,20 @@ def main():
     for phase, literal in enumerate(literals):
         stem = f"{args.cnf.stem}.anchor_{anchor_tag}_p{phase}"
         output = args.output_dir / f"{stem}.cnf"
-        with open(args.cnf, "rb") as source, open(output, "wb") as target:
-            source.readline()
-            target.write(f"p cnf {variables} {clauses + 1}\n".encode())
-            for line in source:
-                target.write(line)
-            target.write(f"{literal} 0\n".encode())
+        expected_sha = expected_cube_sha256(
+            args.cnf, variables, clauses, literal)
+        if args.reuse_existing_cnfs:
+            if not output.is_file() or sha256_file(output) != expected_sha:
+                raise ValueError(f"existing child CNF mismatch: {output}")
+        else:
+            with open(args.cnf, "rb") as source, open(output, "wb") as target:
+                source.readline()
+                target.write(f"p cnf {variables} {clauses + 1}\n".encode())
+                for line in source:
+                    target.write(line)
+                target.write(f"{literal} 0\n".encode())
+            if sha256_file(output) != expected_sha:
+                raise RuntimeError("written child CNF hash mismatch")
         ancestry = [*parent_ancestry, {
             "anchor": anchor_name, "orphan": [omit, copy],
             "component": component, "phase": phase, "literal": literal,
@@ -144,7 +165,7 @@ def main():
             "parent_manifest_sha256": sha256_file(args.manifest),
             "parent_cnf": str(args.cnf), "parent_cnf_sha256": actual_sha,
             "vars": variables, "clauses": clauses + 1,
-            "sha256": sha256_file(output), "cube_literal": literal,
+            "sha256": expected_sha, "cube_literal": literal,
             "encoder_sha256": doc["encoder_sha256"],
             "sat_verifier_sha256": doc["sat_verifier_sha256"],
             "options": doc.get("options", {}),

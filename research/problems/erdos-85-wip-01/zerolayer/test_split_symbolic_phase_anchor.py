@@ -114,4 +114,15 @@ with tempfile.TemporaryDirectory() as raw:
         assert child["cube_ancestry"][-1]["phase"] == phase
         assert child["rule_counts"]["phase_anchor_cube_unit_2"] == 1
 
+    # Reusing exact children upgrades manifests without touching large CNFs.
+    before = {path: path.stat().st_mtime_ns for path in
+              nested_output.glob("*.cnf")}
+    subprocess.run([
+        sys.executable, str(splitter), str(nested_manifest), str(nested_cnf),
+        str(nested_output), "--anchor", "1", "0", "2",
+        "--reuse-existing-cnfs",
+    ], check=True, capture_output=True, text=True)
+    assert before == {path: path.stat().st_mtime_ns for path in
+                      nested_output.glob("*.cnf")}
+
 print("SYMBOLIC PHASE CUBE SPLITTER ALL OK")
