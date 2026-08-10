@@ -50,8 +50,10 @@ with tempfile.TemporaryDirectory() as raw:
     first = [mapping[((0, 0), 2, p)] for p in range(3)]
     second = [mapping[((1, 0), 2, p)] for p in range(3)]
     residue_domain = [mapping[((0, 1), 2, p)] for p in range(12)]
+    next_residue_domain = [mapping[((0, 2), 2, p)] for p in range(12)]
     clauses = (anchor_clauses(first) + anchor_clauses(second) +
-               anchor_clauses(residue_domain))
+               anchor_clauses(residue_domain) +
+               anchor_clauses(next_residue_domain))
     cnf = root / "root.cnf"
     cnf.write_text(f"p cnf 20000 {len(clauses)}\n" + "\n".join(clauses) + "\n")
     manifest = root / "root.manifest.json"
@@ -168,5 +170,43 @@ with tempfile.TemporaryDirectory() as raw:
     ], capture_output=True, text=True)
     assert rejected.returncode != 0
     assert "uncertified leaf" in rejected.stderr
+
+    # The production refinement order now needs a second residue partition
+    # after an exact-value partition.  Replace the direct value certificates
+    # with residue children and exercise the ordered split CLI, which can
+    # represent phase -> residue -> value -> residue interleaving.
+    missing.with_suffix(".absent").rename(missing)
+    next_residue_splitter = Path(__file__).with_name(
+        "split_symbolic_phase_residue.py")
+    for value_manifest in sorted(value_dir.glob("*.manifest.json")):
+        value = json.loads(value_manifest.read_text())["cube_value"]
+        direct = root / f"cert-p1-q1-r1-v{value}" / "certificate.json"
+        direct.rename(direct.with_suffix(".direct"))
+        next_dir = root / f"p1-q1-r1-v{value}-residues"
+        subprocess.run([
+            sys.executable, str(next_residue_splitter), str(value_manifest),
+            str(value_manifest.with_suffix("").with_suffix(".cnf")),
+            str(next_dir), "--anchor", "0", "2", "2",
+        ], check=True, capture_output=True, text=True)
+        for next_residue, next_manifest in enumerate(sorted(
+                next_dir.glob("*.manifest.json"))):
+            fake_certificate(
+                next_manifest,
+                root / f"cert-p1-q1-r1-v{value}-s{next_residue}")
+
+    ordered_output = root / "ordered-tree-report.json"
+    subprocess.run([
+        sys.executable, str(verifier), str(manifest), str(root),
+        "--split", "phase:0,0,2", "--split", "phase:1,0,2",
+        "--split", "residue:0,1,2", "--split", "value:0,1,2",
+        "--split", "residue:0,2,2", "--output", str(ordered_output),
+    ], check=True)
+    ordered_report = json.loads(ordered_output.read_text())
+    assert [entry["kind"] for entry in ordered_report["ordered_splits"]] == [
+        "phase", "phase", "residue", "value", "residue"]
+    ordered_value = ordered_report["evidence"]["children"][1]["evidence"][
+        "children"][1]["evidence"]["children"][1]["evidence"][
+        "children"][0]["evidence"]
+    assert ordered_value["kind"] == "exhaustive_phase_residue_partition"
 
 print("SYMBOLIC PHASE TREE SUMMARY ALL OK")
