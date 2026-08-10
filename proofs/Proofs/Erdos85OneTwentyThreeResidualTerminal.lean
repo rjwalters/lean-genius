@@ -11377,6 +11377,26 @@ theorem reverseOriented_evenComponent_no_sameParity_edge
     (adj_iff_of_adjMatrix_int_eq G heq).mp hadj
   exact G.loopless.irrefl _ hadjzz
 
+/-- A reverse-oriented block whose zero row has three neighbors is exactly a
+union of three cyclic reverse matchings, indexed by their coordinate sums. -/
+theorem reverseOriented_threeRow_exists_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {r : ℕ} [NeZero r] (u : ZMod r → V)
+    (hrev : ∀ x y, G.adjMatrix ℤ (u (x + 1)) (u (y - 1)) =
+      G.adjMatrix ℤ (u x) (u y))
+    (hrow : (Finset.univ.filter fun y : ZMod r ↦
+      G.Adj (u 0) (u y)).card = 3) :
+    ∃ S : Finset (ZMod r), S.card = 3 ∧
+      ∀ x y, G.Adj (u x) (u y) ↔ x + y ∈ S := by
+  let S := Finset.univ.filter fun y : ZMod r ↦ G.Adj (u 0) (u y)
+  refine ⟨S, hrow, ?_⟩
+  intro x y
+  have heq := reverse_block_apply_eq_zero_row
+    (fun a b ↦ G.adjMatrix ℤ (u a) (u b)) hrev x y
+  simpa only [S, Finset.mem_filter, Finset.mem_univ, true_and] using
+    (adj_iff_of_adjMatrix_int_eq G heq)
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
