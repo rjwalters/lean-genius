@@ -212,24 +212,30 @@ if args.lp_cuts and args.lp_direct:
     print("lp_direct_compiled", time.perf_counter() - compiled_at, flush=True)
     matrix = data[cvx_settings.A].tocsc()
     dims = data[cvx_settings.DIMS]
+    print("lp_direct_data_keys", sorted(map(str, data)), flush=True)
     equality_rows = dims.zero
     infinity = highspy.Highs().inf
     model = highspy.HighsModel()
     lp = model.lp_
     lp.num_col_ = matrix.shape[1]
     lp.num_row_ = matrix.shape[0]
-    lp.col_cost_ = data[cvx_settings.C]
+    # CVXPY versions differ on whether a constant-zero feasibility objective
+    # gets an explicit `c` entry.  Its mathematical objective vector is zero
+    # in either representation.
+    objective = data.get(cvx_settings.C)
+    lp.col_cost_ = (np.zeros(matrix.shape[1]) if objective is None
+                    else objective)
     lp.row_lower_ = np.concatenate([
         data[cvx_settings.B][:equality_rows],
         -infinity * np.ones(matrix.shape[0] - equality_rows),
     ])
     lp.row_upper_ = data[cvx_settings.B]
+    lower_bounds = data.get(cvx_settings.LOWER_BOUNDS)
+    upper_bounds = data.get(cvx_settings.UPPER_BOUNDS)
     lp.col_lower_ = (np.full(lp.num_col_, -infinity)
-                     if data[cvx_settings.LOWER_BOUNDS] is None else
-                     data[cvx_settings.LOWER_BOUNDS].copy())
+                     if lower_bounds is None else lower_bounds.copy())
     lp.col_upper_ = (np.full(lp.num_col_, infinity)
-                     if data[cvx_settings.UPPER_BOUNDS] is None else
-                     data[cvx_settings.UPPER_BOUNDS].copy())
+                     if upper_bounds is None else upper_bounds.copy())
     lp.a_matrix_.format_ = highspy.MatrixFormat.kColwise
     lp.a_matrix_.start_ = matrix.indptr
     lp.a_matrix_.index_ = matrix.indices
