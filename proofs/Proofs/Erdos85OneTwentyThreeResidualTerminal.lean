@@ -289,6 +289,72 @@ theorem reduced_length_eq_lcm_of_oriented_pair_injective
     Nat.le_of_dvd (NeZero.pos m) hlcmDvd
   exact Nat.le_antisymm hmle hlcmLe
 
+/-- Graph-facing LCM obstruction for two unit quotient blocks.  A source
+defect cycle cannot cover two distinct target defect cycles with quotient
+one when their joint period is shorter than the source cycle. -/
+theorem false_of_two_unit_componentQuotients_lcm_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r s n : ℕ}
+    [NeZero r] [NeZero s] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr : 3 ≤ r) (hs : 3 ≤ s) (hn : 3 ≤ n)
+    (e f o : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (u : ZMod r → V) (v : ZMod s → V) (w : ZMod n → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hwinj : Function.Injective w)
+    (huRange : Set.range u = e.supp) (hvRange : Set.range v = f.supp)
+    (hwRange : Set.range w = o.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hwD : ∀ x, (secondOrderDefectGraph G).neighborFinset (w x) =
+      {w (x - 1), w (x + 1)})
+    (hoe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hof : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1)
+    (hlt : Nat.lcm r s < n) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  obtain ⟨p, hpAdj, hpOrient⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one G hfree hd heven
+      hmin hcard hr hn e o u w huinj hwinj huRange hwRange huD hwD hoe
+  obtain ⟨q, hqAdj, hqOrient⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one G hfree hd heven
+      hmin hcard hs hn f o v w hvinj hwinj hvRange hwRange hvD hwD hof
+  obtain ⟨x, x', hxx', hpx, hqx⟩ :=
+    oriented_pair_repeat_of_lcm_lt p q hpOrient hqOrient hlt
+  have hwne : w x ≠ w x' := fun h => hxx' (hwinj h)
+  have hcommon := common_le_one_of_not_containsC4 hfree (w x) (w x') hwne
+  have huCommon : u (p x) ∈
+      G.neighborFinset (w x) ∩ G.neighborFinset (w x') := by
+    rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+    exact ⟨(hpAdj (p x) x).2 rfl |>.symm,
+      (hpAdj (p x) x').2 hpx |>.symm⟩
+  have hvCommon : v (q x) ∈
+      G.neighborFinset (w x) ∩ G.neighborFinset (w x') := by
+    rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+    exact ⟨(hqAdj (q x) x).2 rfl |>.symm,
+      (hqAdj (q x) x').2 hqx |>.symm⟩
+  have huv : u (p x) = v (q x) :=
+    Finset.card_le_one.mp hcommon _ huCommon _ hvCommon
+  have hueMem : u (p x) ∈ e.supp := by
+    rw [← huRange]
+    exact ⟨p x, rfl⟩
+  have hvfMem : v (q x) ∈ f.supp := by
+    rw [← hvRange]
+    exact ⟨q x, rfl⟩
+  have hue : D.connectedComponentMk (u (p x)) = e :=
+    (ConnectedComponent.mem_supp_iff e (u (p x))).mp hueMem
+  have hvf : D.connectedComponentMk (v (q x)) = f :=
+    (ConnectedComponent.mem_supp_iff f (v (q x))).mp hvfMem
+  apply hef
+  exact hue.symm.trans ((congrArg D.connectedComponentMk huv).trans hvf)
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
