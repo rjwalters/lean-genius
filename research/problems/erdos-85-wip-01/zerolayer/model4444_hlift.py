@@ -64,9 +64,16 @@ vector in each orbit of the explicitly checked global Z/12 translation
 automorphism of A.  It adds 201,611 variables and 1,209,611 clauses and
 does not assume that H itself is translation-invariant.  The lex encoder
 is exhaustively checked by test_lex_leq.py.
+
+For an orbit sweep, replace the embedded pilot witness with a canonical
+representative using `--wit-json PATH --wit-sha256 HEX --orbit-index I`.
+The external artifact is hash-pinned, the selected representative is
+revalidated against the complete pure-Python stage-1 constraint system,
+and its artifact hash/index/count are recorded in the CNF manifest.
 """
 import sys, hashlib, json
 from itertools import combinations
+from hlift_witness import load_orbit_witness
 
 # stage-1 witness (taus), slopes all +1, gauge eta=1,c=0
 WIT = {
@@ -79,6 +86,18 @@ WIT = {
  (3,0): {0:0, 1:1, 2:8}, (3,1): {0:0, 1:2, 2:1},
  (3,2): {0:0, 1:4, 2:5}, (3,3): {0:0, 1:8, 2:10},
 }
+WIT_PROVENANCE = {"source": "embedded_baseline"}
+if "--wit-json" in sys.argv:
+    def option_value(name):
+        try:
+            return sys.argv[sys.argv.index(name) + 1]
+        except (ValueError, IndexError):
+            raise SystemExit(f"{name} requires a value")
+    if "--wit-sha256" not in sys.argv or "--orbit-index" not in sys.argv:
+        raise SystemExit("--wit-json requires --wit-sha256 and --orbit-index")
+    WIT, WIT_PROVENANCE = load_orbit_witness(
+        option_value("--wit-json"), option_value("--wit-sha256"),
+        int(option_value("--orbit-index")))
 ORPHANS = sorted(WIT)
 oidx = {o: i for i, o in enumerate(ORPHANS)}
 N = 192
@@ -357,6 +376,7 @@ if "--emit" in sys.argv:
     fn = f"hlift4444_{h}.cnf"
     open(fn, "wb").write(data)
     json.dump({"witness": {str(k): v for k, v in WIT.items()},
+               "witness_provenance": WIT_PROVENANCE,
                "options": {
                    "comm_anchor": "--comm-anchor" in sys.argv,
                    "translation_lex": "--translation-lex" in sys.argv,
