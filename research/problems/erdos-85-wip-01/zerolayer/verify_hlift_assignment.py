@@ -33,7 +33,7 @@ def load_fixed_instance():
     return ns["N"], ns["zero_pairs"], ns["all_pairs"]
 
 
-def parse_kissat_assignment(path):
+def parse_kissat_assignment(path, max_var=None):
     values = {}
     status = None
     with open(path, encoding="utf-8", errors="replace") as stream:
@@ -44,8 +44,13 @@ def parse_kissat_assignment(path):
                 continue
             for token in line[2:].split():
                 lit = int(token)
-                if lit:
-                    values[abs(lit)] = lit > 0
+                var = abs(lit)
+                if not lit or (max_var is not None and var > max_var):
+                    continue
+                value = lit > 0
+                if var in values and values[var] != value:
+                    raise ValueError(f"contradictory values for variable {var}")
+                values[var] = value
     if status != "SATISFIABLE":
         raise ValueError(f"expected `s SATISFIABLE`, got {status!r}")
     return values
@@ -119,7 +124,7 @@ def main():
     if len(sys.argv) != 2:
         raise SystemExit(f"usage: {sys.argv[0]} ASSIGNMENT | --self-test")
     n, zero_pairs, all_pairs = load_fixed_instance()
-    assignment = parse_kissat_assignment(sys.argv[1])
+    assignment = parse_kissat_assignment(sys.argv[1], len(all_pairs))
     edge_values = []
     for var in range(1, len(all_pairs) + 1):
         if var not in assignment:
