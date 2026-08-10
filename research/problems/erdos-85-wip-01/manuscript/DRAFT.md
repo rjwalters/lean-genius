@@ -7,11 +7,15 @@ the remaining certificate drop is complete and cold-audited. Nothing in
 this document is for external distribution before operator read-through
 (mandate 1318).
 
-Authors/roles: two AI collaborators ("Fable", "Sol") working as adversarial
-peers in a shared persistent chat room, with a human operator supplying
-compute policy, priorities, and final review. All mathematics is
-machine-checked in Lean 4 (v4.31.0, pinned mathlib) or certified by
-DRAT-verified SAT certificates stored on a durable volume.
+Authors/roles: two AI collaborators — **Fable** (runtime identity
+`claude`; Anthropic Claude) and **Sol** (runtime identity `codex`;
+OpenAI Codex) — working as adversarial peers in a shared persistent chat
+room, with a human operator supplying compute policy, priorities, and
+final review. Fable/Sol are the established public names from the
+published transcript and cross-reference to the runtime identities in
+the room log and git history. All mathematics is machine-checked in
+Lean 4 (v4.31.0, pinned mathlib) or certified by DRAT-verified SAT
+certificates stored on a durable volume.
 
 ---
 
@@ -19,8 +23,8 @@ DRAT-verified SAT certificates stored on a durable volume.
 
 The campaign's engine is the asymmetry between *proposing* mathematics and
 *verifying* it. Both collaborators propose freely — conjectures, census
-kills, structural identities — and both are wrong at a substantial rate
-(documented misfires include the |o| ≡ 3 (mod 5) congruence, an inverted
+kills, structural identities — and both produced documented wrong
+conjectures (misfires include the |o| ≡ 3 (mod 5) congruence, an inverted
 quota direction, a C7-block nonexistence claim refuted by an explicit
 {i,i+1} circulant, and a "(4,4,4,4) DEAD" claim corrected within the hour
 by its own author; room msgs 1808/1818). The system tolerates this error
@@ -33,9 +37,10 @@ never correctness.
 The featured case study is the rg-mask incident (msgs 1767–1773): after
 the two-layer branch was declared closed, the independent verbatim
 `#print axioms` audit FAILED — the pushed file did not elaborate under the
-repo-pinned toolchain at all. Ten error sites (nonexistent mathlib
-constants, name drift, parser-scope bugs) sat inside the critical
-terminal wrappers. Root cause: the author's check pipeline filtered
+repo-pinned toolchain at all. At least ten source failures across four
+classes (nonexistent mathlib constants, wrong disjointness names,
+parser-scope bugs in large sums, a case-substitution error) sat inside
+the critical terminal wrappers. Root cause: the author's check pipeline filtered
 elaboration output through `rg`, and empty filtered output had been
 misread as success. The mathematics was sound; the *verification claim*
 was not. The repair took under an hour, the re-audit passed
@@ -107,11 +112,14 @@ Every claim in this document is scoped to what its verifier actually
 checked. The two-layer closure depends on foundational axioms only
 ([propext, Classical.choice, Quot.sound], audited twice independently).
 The combined boundary reduction `degree_sixteen_remaining_zeroLayer`
-additionally inherits exactly nine named `native_decide` certificate
-axioms (factorizationRangeOTT_block1–4, normCertificateRangeOTT_block1–5)
-from the s=4 terminal — disclosed here and in the gallery metadata per
-the project's axiom-integrity policy, which treats `Lean.ofReduceBool`
-as a countable assumption, not a technicality. SAT verdicts are scoped
+additionally inherits exactly nine per-block axioms of the form
+`<name>._native.native_decide.ax_1_1` (factorizationRangeOTT_block1–4,
+normCertificateRangeOTT_block1–5), as listed verbatim by
+`#print axioms` — the compiler-trust axioms that `native_decide`
+generates for the s=4 terminal's computational certificates. They are
+disclosed here and in the gallery metadata per the project's
+axiom-integrity policy, which counts native-code trust as an assumption,
+not a technicality. SAT verdicts are scoped
 to their encodings: the byte-exact equivalence proof between the
 generalized A-profile encoder and the audited BBBB encoder (clause-set
 SHA1 identity on the overlap family) is what licenses treating fleet
@@ -124,8 +132,10 @@ The operator's interventions are few and load-bearing: compute policy
 (volume sizes, fleet topology, spot budgets), priority calls (the
 mandate ordering derivation → A/B → cube-and-conquer → SAT lanes; the
 manuscript start), and the external gate (nothing publishes before human
-read-through). No mathematical step in the campaign originated from the
-operator; every mathematical step passed through machine verification.
+read-through). The operator's recorded role in this campaign was
+primarily operational — compute policy, prioritization, and external
+review; every mathematical step in the record passed through machine
+verification.
 The interesting datum for the working-model argument is not that the
 human role is small — it is that the campaign's correctness never
 depended on it being large.
@@ -162,8 +172,10 @@ the propose/verify/persist loop described above.
 
 ## Completed unconditional results (as of this draft)
 
-1. **f(48) = 8 descent rung and the strict gap** s(s−1)+4 ≤ d
-   (unconditional; wrapper pending at time of writing).
+1. **f(48) = 8 descent rung and the strict gap** s(s−1)+4 ≤ d — core
+   theorems and certificates verified; the top-level Lean wrapper
+   assembling them is pending at time of writing, so this is labeled
+   certificate-verified, not fully formalized.
 2. **d=16, s=4 branch closed**: `false_of_degree_sixteen_fourLayer` —
    census 36/36 partitions, eliminations 36/36, single dispatcher.
 3. **d=16, s=2 branch closed**: `false_of_degree_sixteen_twoLayer` —
