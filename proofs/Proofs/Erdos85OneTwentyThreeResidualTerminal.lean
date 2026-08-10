@@ -6116,6 +6116,74 @@ theorem degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree (s := 0) hmin hcard c₀ hregChild
       (by norm_num; exact hcardChild) v hyv
 
+/-- In the zero-layer branch every used-exterior vertex has exactly three
+neighbors in the used-exterior cell, one in each owner row. -/
+theorem degree_sixteen_zeroLayer_used_exterior_used_degree_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (v : minimumLayerVertex (secondOrderDefectGraph G) c₀) {y : V}
+    (hyv : y ∈ minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀ v) :
+    let D := secondOrderDefectGraph G
+    let E := minimumLayerExternalNeighborFinset G D c₀
+    let R := Finset.univ.biUnion E
+    (R ∩ G.neighborFinset y).card = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let H := minimumLayerGraph G D c₀
+  let E := minimumLayerExternalNeighborFinset G D c₀
+  let R := Finset.univ.biUnion E
+  let N := G.neighborFinset y
+  have hpair := minimumLayer_externalNeighbor_pairwiseDisjoint
+    G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+      c₀ hregChild hcardChild
+  have hpairRows :
+      (↑(Finset.univ : Finset (minimumLayerVertex D c₀)) : Set _).PairwiseDisjoint
+        (fun u => E u ∩ N) := by
+    intro u hu w hw huw
+    exact Finset.disjoint_of_subset_left Finset.inter_subset_left
+      (Finset.disjoint_of_subset_right Finset.inter_subset_left
+        (hpair hu hw huw))
+  have hrow : ∀ u : minimumLayerVertex D c₀, (E u ∩ N).card = 1 := by
+    intro u
+    have huv : ¬ H.Adj u v := by
+      intro hadj
+      have hempty : H.neighborFinset u = ∅ := Finset.card_eq_zero.mp (by
+        rw [H.card_neighborFinset_eq_degree, hregChild u])
+      have hvMem : v ∈ H.neighborFinset u := (H.mem_neighborFinset u v).mpr hadj
+      rw [hempty] at hvMem
+      simp at hvMem
+    have hblock := minimumLayer_externalBlock_card_of_owned
+      G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild hcardChild u v hyv
+    change (N ∩ E u).card = if H.Adj u v then 0 else 1 at hblock
+    rw [if_neg huv] at hblock
+    simpa [Finset.inter_comm] using hblock
+  have hdecomp : R ∩ N = Finset.univ.biUnion (fun u => E u ∩ N) := by
+    ext z
+    simp [R]
+  rw [hdecomp, Finset.card_biUnion hpairRows]
+  calc
+    (∑ u : minimumLayerVertex D c₀, (E u ∩ N).card) =
+        ∑ _u : minimumLayerVertex D c₀, 1 := by
+          apply Finset.sum_congr rfl
+          intro u _hu
+          exact hrow u
+    _ = Fintype.card (minimumLayerVertex D c₀) := by simp
+    _ = 3 := by simpa [D] using hcardChild
+
 /-- The zero-layer orphan-to-used incidence Gram is twelve times the
 identity plus the simple point graph on the forty-eight used points. -/
 theorem degree_sixteen_zeroLayer_incidence_gram_eq_pointGraph_apply
@@ -12977,6 +13045,62 @@ theorem degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
   obtain ⟨v, _hv, hve⟩ := Finset.mem_biUnion.mp he
   simpa [D, R, O] using degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
+
+/-- Component form of the exact three-neighbor used-cell budget. -/
+theorem degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    (∑ f ∈ E, componentQuotientMatrix G D e f) = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hclosed : ∀ y : V,
+      y ∈ R ↔ componentRepresentative D (D.connectedComponentMk y) ∈ R := by
+    intro y
+    constructor
+    · intro hy
+      exact degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) y hy
+          (componentRepresentative_mem D (D.connectedComponentMk y))
+    · intro hr
+      have hsub := degree_sixteen_minimumLayer_used_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)
+          (componentRepresentative D (D.connectedComponentMk y)) hr
+      have hrepComp : D.connectedComponentMk
+          (componentRepresentative D (D.connectedComponentMk y)) =
+          D.connectedComponentMk y :=
+        (ConnectedComponent.mem_supp_iff (D.connectedComponentMk y)
+          (componentRepresentative D (D.connectedComponentMk y))).mp
+            (componentRepresentative_mem D (D.connectedComponentMk y))
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepComp]
+  rw [sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
+    G D R hclosed e]
+  obtain ⟨v, _hv, hev⟩ := Finset.mem_biUnion.mp he
+  simpa [D, R] using degree_sixteen_zeroLayer_used_exterior_used_degree_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild v hev
 
 /-- Load contributed by an orphan `o` to a used component `e`, measured in
 reduced used-order units. -/
