@@ -359,6 +359,31 @@ def card_eq(literals, k):
     clauses.append((previous[k],))
 
 
+if "--paired-type-quotient" in sys.argv:
+    # The exact [4,4,4,1] profiles define four balanced sparse fibers.  The
+    # H^2=9 eigenspace has dimension three, so their contrast space equals
+    # the omitted-type contrast space; hence the sparse fibers are the four
+    # omitted-type classes up to a permutation.  Symmetry makes that
+    # permutation an involution, and the fixed (+3)^2,(-3)^1 sign split
+    # forces two disjoint transpositions.  Type relabeling normalizes the
+    # pairing to (0 1)(2 3).  Thus every vertex has one neighbor in its
+    # paired omitted class and four in each other omitted class.
+    mark = len(clauses)
+    paired = {0: 1, 1: 0, 2: 3, 3: 2}
+    for vertex in range(N):
+        source_omit = ORPHANS[vertex // 12][0]
+        for target_omit in COMPS:
+            candidates = [
+                E[frozenset((vertex, other))]
+                for other in range(N)
+                if other != vertex and
+                ORPHANS[other // 12][0] == target_omit
+            ]
+            expected = 1 if target_omit == paired[source_omit] else 4
+            card_eq(candidates, expected)
+    bump("paired_omitted_type_equitable_quotient", mark)
+
+
 mark = len(clauses)
 for vertex in range(N):
     incident = [E[frozenset((vertex, other))]
@@ -396,6 +421,7 @@ if "--emit" in sys.argv:
             "phase_symmetry": "--phase-symmetry" in sys.argv,
             "type_balance": "--type-balance" in sys.argv,
             "type_profile": "--type-profile" in sys.argv,
+            "paired_type_quotient": "--paired-type-quotient" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
