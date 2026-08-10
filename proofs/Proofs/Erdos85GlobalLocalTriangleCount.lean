@@ -211,6 +211,27 @@ theorem exists_six_le_type_fiber_of_twenty_four_le_card
   simp at hle
   omega
 
+/-- Six marked vertices distributed among the four orphan blocks of one
+omitted type put two marked vertices in a common block. -/
+theorem exists_two_le_block_fiber_of_six_le_card
+    {V : Type*} [DecidableEq V]
+    (S : Finset V) (block : V → Fin 4) (hS : 6 ≤ S.card) :
+    ∃ o : Fin 4, 2 ≤ ({x ∈ S | block x = o}).card := by
+  have hfibers : S.card = ∑ o : Fin 4, ({x ∈ S | block x = o}).card := by
+    simpa using (Finset.card_eq_sum_card_fiberwise
+      (s := S) (t := (Finset.univ : Finset (Fin 4))) (f := block) (by simp))
+  by_contra h
+  have hle : (∑ o : Fin 4, ({x ∈ S | block x = o}).card) ≤
+      ∑ _o : Fin 4, 1 := by
+    apply Finset.sum_le_sum
+    intro o _
+    have hnle : ¬2 ≤ ({x ∈ S | block x = o}).card := by
+      intro ho
+      exact h ⟨o, ho⟩
+    omega
+  simp at hle
+  omega
+
 end
 
 end Erdos85
