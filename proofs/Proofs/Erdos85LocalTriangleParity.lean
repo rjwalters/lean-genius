@@ -134,6 +134,19 @@ theorem localTriangleEdges_le_three_of_degree_seven
     omega
   · exact hnonempty
 
+/-- At a degree-thirteen vertex with exactly one triangle-free incident
+edge, the other twelve incident edges form six local triangle pairs. -/
+theorem localTriangleEdges_eq_six_of_degree_thirteen_of_triangleFree_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (hdegree : G.degree x = 13)
+    (hone : (triangleFreeNeighbors G x).card = 1) :
+    (G.induce (G.neighborSet x)).edgeFinset.card = 6 := by
+  have hid := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  rw [hdegree, hone] at hid
+  omega
+
 end
 
 end Erdos85
