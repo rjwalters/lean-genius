@@ -11397,6 +11397,16 @@ theorem reverseOriented_threeRow_exists_phaseSet
   simpa only [S, Finset.mem_filter, Finset.mem_univ, true_and] using
     (adj_iff_of_adjMatrix_int_eq G heq)
 
+/-- Three reverse phases cannot form a `C₄`-free Sidon support on an even
+half of `ZMod 12`: their six distinct ordered differences would have to fit
+among only five nonzero even residues. -/
+theorem no_three_orderedSidon_oddSupport_zmod_twelve :
+    ¬ ∃ S : Finset (ZMod 12), S.card = 3 ∧
+      (∀ p ∈ orderedDistinctPairs S, ∀ q ∈ orderedDistinctPairs S,
+        p.1 - p.2 = q.1 - q.2 → p = q) ∧
+      ∀ s ∈ S, ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) s ≠ 0 := by
+  native_decide
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
