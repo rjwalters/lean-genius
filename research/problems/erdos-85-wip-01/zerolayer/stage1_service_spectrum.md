@@ -334,6 +334,25 @@ for all entries, and each row has between 13 and 22 zeros.  Both the
 H-edge vanishing lemma and the budget-to-nine arithmetic cap are
 Lean-formalized.
 
+For two same-block centers, the opposite row has an exact mass on each
+forced-zero support.  Indeed,
+
+```
+sum_{u in N_H(x)} B_{zu} = (B H)_{zx}
+  = (H^2 A)_{zx} = 12 A_{zx} + 35 - (A^2)_{zx}.
+```
+
+At distances `1,...,6` these masses are
+
+```
+44, 31, 29, 32, 32, 29.
+```
+
+The same numbers count A-edges between `N_H(x)` and `N_H(z)`.  Each
+individual H-neighborhood is A-independent, since any two of its vertices
+already have their common H-neighbor `x`.  The six support-mass values are
+included in the exact audit and their residue arithmetic is Lean-formalized.
+
 Together with diagonal mixed count one at both centers, this turns their
 unspecified same-block separation into six explicit integer row-ledger cases.
 

@@ -143,4 +143,21 @@ theorem stageOne_sameBlock_A2_profile_arithmetic
   rw [stageOne_oriented_residue_difference_count r d hr hdpos hdle]
   split_ifs <;> omega
 
+/-- Arithmetic form of the opposite-row mass on a forced H-zero support.
+For same-block centers at distance `d`, the identity
+`B H = H² A = 12A + 35J - A²` gives mass
+`12 A(x,z) + 35 - A²(x,z)`, namely `(44,31,29,32,32,29)`. -/
+theorem stageOne_sameBlock_forcedSupportMass_arithmetic
+    (r d : ℕ) (hr : r ∈ stageOneNonthreeResidues)
+    (hdpos : 1 ≤ d) (hdle : d ≤ 6) :
+    12 * (if d = 1 then 1 else 0) + 35 -
+      (3 * (∑ s ∈ stageOneNonthreeResidues,
+        ((if (r + 12 - s) % 12 = d then 1 else 0) +
+         (if (s + 12 - r) % 12 = d then 1 else 0))) +
+       (if d = 2 then 1 else 0)) =
+      if d = 1 then 44 else if d = 2 then 31 else
+        if d = 3 ∨ d = 6 then 29 else 32 := by
+  rw [stageOne_sameBlock_A2_profile_arithmetic r d hr hdpos hdle]
+  interval_cases d <;> norm_num
+
 end Erdos85
