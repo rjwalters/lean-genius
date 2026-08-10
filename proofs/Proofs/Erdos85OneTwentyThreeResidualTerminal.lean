@@ -3441,6 +3441,74 @@ theorem sum_component_sizes_mul_filter_eq_sum_of_component_closed
       (Finset.sum_biUnion hpair).symm
     _ = ∑ z ∈ S, f (D.connectedComponentMk z) := by rw [hunion]
 
+/-- Aggregate restricted-cherry capacity into one target component.  The
+endpoint-pair budget is shared by every source component in a component-
+closed cell, so their weighted quotient cherry costs add before comparison
+with `choose(|e|,2)`. -/
+theorem sum_componentQuotient_cherry_le_of_component_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (S : Finset V)
+    (hclosed : ∀ (c : (secondOrderDefectGraph G).ConnectedComponent)
+      (z : V), z ∈ c.supp →
+        (z ∈ S ↔ componentRepresentative (secondOrderDefectGraph G) c ∈ S))
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :
+    (∑ c ∈ Finset.univ.filter
+        (fun c : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) c ∈ S),
+      c.supp.ncard *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e).choose 2) ≤
+      e.supp.ncard.choose 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let B : Finset V := e.supp.toFinite.toFinset
+  have hreg : ∀ x : V, D.degree x = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree hd heven hmin hcard
+  have hdegree : ∀ x ∈ S,
+      (B ∩ G.neighborFinset x).card =
+        componentQuotientMatrix G D (D.connectedComponentMk x) e := by
+    intro x _hx
+    have hxs : x ∈ (D.connectedComponentMk x).supp := by simp
+    have hq := componentQuotientMatrix_apply_eq G D 2 hreg hcomm
+      (D.connectedComponentMk x) e hxs
+    have heq : B ∩ G.neighborFinset x = componentNeighborFinset G D e x := by
+      ext y
+      simp [D, B, componentNeighborFinset,
+        SimpleGraph.ConnectedComponent.mem_supp_iff, and_comm]
+    rw [heq]
+    exact hq.symm
+  have hBcard : B.card = e.supp.ncard := by
+    simpa [B] using (Set.ncard_eq_toFinset_card e.supp e.supp.toFinite).symm
+  have hweighted := sum_component_sizes_mul_filter_eq_sum_of_component_closed
+    D S hclosed
+      (fun c => (componentQuotientMatrix G D c e).choose 2)
+  by_contra hle
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G S B
+  rw [hBcard]
+  push_neg at hle
+  calc
+    e.supp.ncard.choose 2 <
+        ∑ c ∈ Finset.univ.filter
+          (fun c : D.ConnectedComponent => componentRepresentative D c ∈ S),
+          c.supp.ncard * (componentQuotientMatrix G D c e).choose 2 := hle
+    _ = ∑ x ∈ S,
+        (componentQuotientMatrix G D (D.connectedComponentMk x) e).choose 2 :=
+      hweighted
+    _ = ∑ x ∈ S, ((B ∩ G.neighborFinset x).card).choose 2 := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      rw [hdegree x hx]
+
 /-- Summing a component-quotient row over a component-closed vertex cell
 counts exactly the source representative's neighbors in that cell. -/
 theorem sum_componentQuotient_filter_eq_inter_neighbor_card_of_component_closed
@@ -11608,6 +11676,64 @@ theorem degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
   obtain ⟨v, _hv, hve⟩ := Finset.mem_biUnion.mp he
   simpa [D, R, O] using degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
+
+/-- All zero-layer orphan components share one restricted-cherry capacity
+inside any fixed target defect component.  This is the aggregate quotient
+cut consumed by the zero-layer census for quotient-two/three atoms. -/
+theorem degree_sixteen_zeroLayer_orphan_quotient_cherry_capacity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, o.supp.ncard *
+      (componentQuotientMatrix G D o e).choose 2) ≤ e.supp.ncard.choose 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ O ↔ componentRepresentative D c ∈ O) := by
+    intro c z hzc
+    have hmk : D.connectedComponentMk z = c :=
+      (ConnectedComponent.mem_supp_iff c z).mp hzc
+    have hrepMk : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c (componentRepresentative D c)).mp
+        (componentRepresentative_mem D c)
+    constructor
+    · intro hz
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z hz
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepMk, hmk]
+    · intro hrep
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) (componentRepresentative D c) hrep
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepMk]
+      exact hmk
+  simpa [D, U, R, O] using
+    sum_componentQuotient_cherry_le_of_component_closed G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard O hclosed e
 
 /-- Every two-layer orphan-component quotient row has total mass five into
 the used components, matching the five service neighbors of each orphan. -/
