@@ -53,12 +53,21 @@ def neighborhood_constraints(selected, center):
         if 1 not in WIT[orphan] or \
                 (vertex % 12 + WIT[orphan][1]) % 3 != center_color:
             model.Add(selected[vertex] == 0)
-    for color in range(3):
+    source_type = ORPHANS[center // 12][0]
+    source_paired = {0: 1, 1: 0, 2: 3, 3: 2}[source_type]
+    for target_type in range(4):
         model.Add(sum(
             selected[vertex] for vertex in range(N)
-            if 1 in WIT[ORPHANS[vertex // 12]] and
-            (vertex % 12 + WIT[ORPHANS[vertex // 12]][1]) % 3 == color
-        ) == 4)
+            if ORPHANS[vertex // 12][0] == target_type
+        ) == (1 if target_type == source_paired else 4))
+    for component in range(4):
+        for color in range(3):
+            model.Add(sum(
+                selected[vertex] for vertex in range(N)
+                if component in WIT[ORPHANS[vertex // 12]] and
+                (vertex % 12 + WIT[ORPHANS[vertex // 12]][component]) % 3
+                == color
+            ) == (4 if component == source_paired else 3))
 
 
 neighborhood_constraints(X, left_center)
