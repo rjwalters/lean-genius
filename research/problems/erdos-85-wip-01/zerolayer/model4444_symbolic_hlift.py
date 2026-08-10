@@ -77,6 +77,26 @@ for orphan in ORPHANS:
                     clauses.append((-P[orphan, e, a], -P[orphan, f, b]))
 bump("stage1_phase_onehot_gauge_row_residues", mark)
 
+if "--phase-symmetry" in sys.argv:
+    mark = len(clauses)
+    # The four orphan components of each omitted type are unlabeled.  Sort
+    # them by the phase on their second linked used component.
+    for omit in COMPS:
+        second = links((omit, 0))[1]
+        for copy in range(3):
+            for left in range(12):
+                for right in range(left):
+                    clauses.append((-P[(omit, copy), second, left],
+                                    -P[(omit, copy + 1), second, right]))
+    # Residual rotations of each used C12 by multiples of three act on link
+    # phases, followed by the already-imposed per-orphan first-link regauge.
+    # Modulo a common rotation, the three relative rotations uniquely bring
+    # these anchors into their canonical residue representatives 0,1,2.
+    for orphan, component in [((0, 0), 2), ((0, 0), 3), ((1, 0), 2)]:
+        clauses.append(tuple(P[orphan, component, phase]
+                             for phase in range(3)))
+    bump("stage1_copy_and_used_rotation_symmetry", mark)
+
 # DELTA[o1,o2,e,r] means tau[o1,e] - tau[o2,e] = r mod 12.
 mark = len(clauses)
 DELTA = {}
@@ -293,7 +313,10 @@ if "--emit" in sys.argv:
         "edge_variables": len(E), "phase_variables": len(P),
         "delta_variables": len(DELTA), "service_variables": len(SERVICE),
         "common_and_variables": and_aux, "rule_counts": rule_counts,
-        "options": {"local_parity": "--local-parity" in sys.argv},
+        "options": {
+            "local_parity": "--local-parity" in sys.argv,
+            "phase_symmetry": "--phase-symmetry" in sys.argv,
+        },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
     print("wrote", stem)
