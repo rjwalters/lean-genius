@@ -13,6 +13,8 @@ from collections import Counter
 import json
 from pathlib import Path
 
+from run_hlift_orbit_signal import sha256_file
+
 
 def clauses(path):
     expected = None
@@ -48,6 +50,9 @@ def main():
     args = parser.parse_args()
 
     manifest = json.loads(args.manifest.read_text())
+    cnf_sha = sha256_file(args.cnf)
+    if manifest.get("sha256") != cnf_sha:
+        raise ValueError("CNF hash does not match manifest")
     families = list(manifest["rule_counts"].items())
     endpoints = []
     total = 0
@@ -89,8 +94,11 @@ def main():
     report = {
         "verdict": "ORIGINAL_CLAUSE_CORE_MAPPED_TO_RULE_FAMILIES",
         "manifest": str(args.manifest.resolve()),
+        "manifest_sha256": sha256_file(args.manifest),
         "cnf": str(args.cnf.resolve()),
+        "cnf_sha256": cnf_sha,
         "core": str(args.core.resolve()),
+        "core_sha256": sha256_file(args.core),
         "cnf_clauses": manifest["clauses"],
         "core_clauses": core_clauses,
         "matched_core_clauses": matched,
