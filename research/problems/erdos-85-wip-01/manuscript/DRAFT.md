@@ -105,7 +105,15 @@ value, assumed two-valued from an odd-order theorem that did not apply
 to the even-order components at hand, admits a third value that
 exactly balances the identity, so the case class whose solver fleet
 had been stopped turned out to be alive after all and the fleet's
-target question reverted to open. Nothing was
+target question reverted to open. A fifth revision closed the reopened hole
+with a genuinely new finite obstruction — and a sixth reopened the
+question once more from a different flank, when the aggregation work
+revealed that every version of the strengthened census, and the
+class-closure wrapper built on it, had silently assumed that
+excess between the labeled components themselves vanishes, an
+assumption the per-vertex degree budget flatly permits violating.
+The formal theorems all survive — what fell, each time, was the claim
+that their hypotheses describe every real configuration. Nothing was
 retracted publicly because nothing overstated had been published:
 each version's scope was stated conditionally, operational action was
 gated on the audits, and the solver artifacts — certificates, exact
@@ -115,7 +123,7 @@ notice is that the errors were found by the collaborators attacking
 their own results within minutes of stating them — the census re-runs
 cost seconds, the Lean re-checks minutes — so the cost of being wrong
 in-channel stayed negligible while the cost of being wrong in public
-would have been paid four times.
+would have been paid six times.
 
 ## 3. The structure–compute exchange rate
 
