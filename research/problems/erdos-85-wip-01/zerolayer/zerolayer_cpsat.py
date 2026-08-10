@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Zero-layer census v8: exact CP-SAT encoding (replaces DFS).
+"""Zero-layer census v9: exact CP-SAT encoding (replaces DFS).
 
 Requires: pip install ortools
 
@@ -23,9 +23,9 @@ Atoms (structurally constrained):
   C (b=3): m = k or k = 3m. excess 6m/k.
   D (non-3-div): u = k, k >= 3, 3 nmid k. excess 2.
 Counts are integers >= 0.  Per-comp: sum load = 12k.  The exact
-after-contact row excess is 2(k-1).  The diagonal quotient is zero or two,
-so its contribution is zero or two; a Boolean diagonal-sector variable makes
-the orphan-atom excess exactly 2(k-1) or 2(k-2).  Objective:
+after-contact row excess is 2(k-1).  If q is the (unrestricted natural)
+diagonal quotient, its contribution is q(q-1); an allowed-assignment table
+makes the orphan-atom excess exactly 2(k-1)-q(q-1).  Objective:
 minimize total excess.  Verdicts: OPTIMAL -> SURVIVOR(min), INFEASIBLE
 -> DEAD.
 """
@@ -85,14 +85,19 @@ def solve(K):
     for i, (ld, exv, lab) in enumerate(atoms):
         ub = min(12 * K[j] // v for j, v in ld.items())
         counts.append(model.NewIntVar(0, max(ub, 0), f"n{i}"))
-    diag2 = []
+    diag = []
     for e in range(t):
-        d2 = model.NewBoolVar(f"diag2_{e}")
-        diag2.append(d2)
+        rhs = 2 * (K[e] - 1)
+        allowed = [(q, q * (q - 1)) for q in range(rhs + 2)
+                   if q * (q - 1) <= rhs]
+        q = model.NewIntVar(0, allowed[-1][0], f"diag_{e}")
+        qex = model.NewIntVar(0, rhs, f"diag_excess_{e}")
+        model.AddAllowedAssignments([q, qex], allowed)
+        diag.append(q)
         model.Add(sum(c * ld[e] for c, (ld, exv, lab) in zip(counts, atoms)
                       if e in ld) == 12 * K[e])
         model.Add(sum(c * exv[e] for c, (ld, exv, lab) in zip(counts, atoms)
-                      if e in exv) + 2 * d2 == 2 * (K[e] - 1))
+                      if e in exv) + qex == rhs)
     tot = sum(c * sum(exv.values()) for c, (ld, exv, lab) in zip(counts, atoms)
               if exv)
     z = model.NewIntVar(0, 1000, "z")
@@ -106,7 +111,7 @@ def solve(K):
         val = int(solver.ObjectiveValue())
         wit = [(atoms[i][2], solver.Value(c))
                for i, c in enumerate(counts) if solver.Value(c) > 0]
-        return "SURVIVOR", val, wit, [solver.Value(d) for d in diag2]
+        return "SURVIVOR", val, wit, [solver.Value(q) for q in diag]
     if st == cp_model.INFEASIBLE:
         return "DEAD", None, None, None
     return "CAP", None, None, None
@@ -119,7 +124,7 @@ if __name__ == "__main__":
         if status == "SURVIVOR":
             surv.append((tag, val))
             print(f"[SURVIVOR] {tag} minexc={val} budget={2*(16-len(K))} " +
-                  f"diag2={diag} :: " +
+                  f"diag={diag} :: " +
                   "; ".join(f"{c}x{lab}" for lab, c in wit), flush=True)
         elif status == "DEAD":
             dead.append(tag)
