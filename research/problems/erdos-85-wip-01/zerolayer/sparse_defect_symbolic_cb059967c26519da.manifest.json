@@ -1,0 +1,37 @@
+{
+ "scope": "all corrected Stage-1 (4,4,4,4) phases with a sparse center whose unique overlap has the wrong paired color",
+ "encoder_sha256": "cac7cfc7f0f9ff2517bd04c0cc75ad8deba157a84e31376ee6608b56782e96f6",
+ "sat_verifier_sha256": "42cff404c5d98af6feadb026afda65dccf13fc585c99c0588c4c97c1e4ff10f2",
+ "sat_verifier_args": [
+  "--wrong-color-overlap"
+ ],
+ "vars": 35097,
+ "clauses": 188651,
+ "sha256": "cb059967c26519da275ed71c5718c29ab5b58c4941645e29ca6a5671ff0e8f80",
+ "phase_variables": 576,
+ "delta_variables": 3168,
+ "service_variables": 17280,
+ "selection_variables": 192,
+ "rule_counts": {
+  "stage1_phase_onehot_gauge_row_residues": 5536,
+  "stage1_delta_definition_and_pair_injectivity": 57720,
+  "symbolic_service_adjacency": 55296,
+  "candidate_size_and_defect_overlap_pin": 10509,
+  "candidate_A_independent": 17472,
+  "unique_center_overlap_has_wrong_paired_color": 2518,
+  "paired_component_exact_color_balance": 39600
+ },
+ "normalization": {
+  "source_omit": 0,
+  "paired_component": 1,
+  "source_copy": 0,
+  "center_coordinate": 0,
+  "defect_neighbor_coordinate": null,
+  "copy_ordering": false,
+  "phase_symmetry": false
+ },
+ "options": {
+  "sequential_color": true,
+  "wrong_color_overlap": true
+ }
+}

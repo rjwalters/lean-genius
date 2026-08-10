@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently verify a SAT assignment for the local sparse-defect CNF."""
+"""Independently verify a SAT assignment for either local sparse-center CNF."""
 
 import re
 import sys
@@ -52,15 +52,26 @@ def main():
 
     A = graphs(phases)
     center, forward = vid((0, 0), 0), vid((0, 0), 1)
-    if len(selected) != 13 or center in selected or forward not in selected:
+    wrong_color = "--wrong-color-overlap" in sys.argv
+    if len(selected) != 13 or center in selected or (
+            not wrong_color and forward not in selected):
         raise ValueError("bad candidate size or pin")
     for pair in A:
         if pair <= selected:
             raise ValueError(f"candidate is not A-independent: {pair}")
     center_neighbors = {next(iter(pair - {center})) for pair in A
                         if center in pair}
-    if selected & center_neighbors != {forward}:
+    overlap = selected & center_neighbors
+    if not wrong_color and overlap != {forward}:
         raise ValueError("forward defect neighbor is not unique overlap")
+    if wrong_color:
+        if len(overlap) != 1:
+            raise ValueError("candidate does not have a unique overlap")
+        unique = next(iter(overlap))
+        orphan = ORPHANS[unique // 12]
+        if 1 in phases[orphan] and (
+                unique % 12 + phases[orphan][1]) % 3 == 0:
+            raise ValueError("unique overlap has the center's paired color")
     counts = [0, 0, 0]
     for vertex in selected:
         orphan = ORPHANS[vertex // 12]

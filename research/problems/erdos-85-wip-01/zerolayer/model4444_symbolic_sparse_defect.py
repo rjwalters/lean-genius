@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact symbolic CNF for a sparse center using a defect neighbor.
+"""Exact symbolic CNF for the local neighborhood of a sparse center.
 
 The phase variables quantify over every corrected Stage-1 (4,4,4,4)
 service witness.  The selected 13-set X is a candidate H-neighborhood of
@@ -7,6 +7,9 @@ vertex ((0,0),0), with its forward defect neighbor selected as the unique
 A-neighbor of the center.  X is A-independent and has exact 4/4/4 color
 balance for paired component 1.  UNSAT excludes this local branch for the
 entire normalized class; SAT must pass the independent semantic verifier.
+With ``--wrong-color-overlap``, the unique A-neighbor is existential instead
+and is required either to omit the paired component or to have a different
+paired color from the center.  UNSAT then proves paired-color preservation.
 
 Normalization is lossless: omitted types relabel the paired involution to
 (01)(23); the four copies of one omitted type are unlabeled, putting the
@@ -93,6 +96,39 @@ def card_eq_binary(literals, k):
             clauses.append((literal,) if (k >> bit) & 1 else (-literal,))
 
 
+def card_eq_sequential(literals, k):
+    """Exact cardinality with equivalence-defined threshold bits."""
+    previous = [None] * (k + 2)
+    for index, literal in enumerate(literals, 1):
+        current = [None] * (k + 2)
+        for threshold in range(1, min(index, k + 1) + 1):
+            current[threshold] = newvar()
+            if previous[threshold] is not None:
+                clauses.append((-previous[threshold], current[threshold]))
+            if threshold == 1:
+                clauses.append((-literal, current[1]))
+            elif previous[threshold - 1] is not None:
+                clauses.append((-literal, -previous[threshold - 1],
+                                current[threshold]))
+            same = previous[threshold]
+            lower = previous[threshold - 1] if threshold >= 2 else None
+            if threshold == 1:
+                clauses.append((-current[1], literal) if same is None else
+                               (-current[1], same, literal))
+            elif same is None and lower is None:
+                clauses.append((-current[threshold],))
+            elif same is None:
+                clauses.extend([(-current[threshold], literal),
+                                (-current[threshold], lower)])
+            else:
+                clauses.extend([(-current[threshold], same, literal),
+                                (-current[threshold], same, lower)])
+        if previous[k] is not None:
+            clauses.append((-literal, -previous[k]))
+        previous = current
+    clauses.append((previous[k],))
+
+
 # Gauge-fixed link phases.  No copy-ordering or used-component symmetry is
 # imposed: fixing the candidate in copy zero must not silently retain a
 # conflicting copy symmetry break.
@@ -150,13 +186,17 @@ for o1, o2 in combinations(ORPHANS, 2):
             clauses.append((-service, *witnesses))
 bump("symbolic_service_adjacency", mark)
 
-# Candidate H-neighborhood.
+# Candidate H-neighborhood.  The generalized wrong-color mode leaves the
+# unique overlap existential; the original mode pins the forward defect edge.
 mark = len(clauses)
 X = [newvar() for _ in range(N)]
 center = vid((0, 0), 0)
 forward = vid((0, 0), 1)
 backward = vid((0, 0), -1)
-clauses.extend([(-X[center],), (X[forward],), (-X[backward],)])
+wrong_color = "--wrong-color-overlap" in sys.argv
+clauses.append((-X[center],))
+if not wrong_color:
+    clauses.extend([(X[forward],), (-X[backward],)])
 card_eq_binary(X, 13)
 bump("candidate_size_and_defect_overlap_pin", mark)
 
@@ -171,13 +211,34 @@ for pair, service in SERVICE.items():
     clauses.append((-X[left], -X[right], -service))
 bump("candidate_A_independent", mark)
 
-# The selected forward defect neighbor is the unique A-neighbor of center.
+# The selected forward defect neighbor is the unique A-neighbor of center,
+# or, in generalized mode, exactly one overlap exists and is not in the
+# center's paired-component color zero.
 mark = len(clauses)
-for vertex in range(N):
-    if vertex // 12 == center // 12:
-        continue
-    clauses.append((-X[vertex], -SERVICE[frozenset((center, vertex))]))
-bump("defect_neighbor_is_unique_center_overlap", mark)
+if wrong_color:
+    overlaps = [X[forward], X[backward]]
+    for vertex in range(N):
+        if vertex // 12 == center // 12:
+            continue
+        service = SERVICE[frozenset((center, vertex))]
+        overlap = newvar()
+        clauses.extend([(-overlap, X[vertex]), (-overlap, service),
+                        (overlap, -X[vertex], -service)])
+        overlaps.append(overlap)
+        orphan = ORPHANS[vertex // 12]
+        if 1 in links(orphan):
+            coordinate = vertex % 12
+            for phase in range(12):
+                if (coordinate + phase) % 3 == 0:
+                    clauses.append((-overlap, -P[orphan, 1, phase]))
+    card_eq_sequential(overlaps, 1)
+    bump("unique_center_overlap_has_wrong_paired_color", mark)
+else:
+    for vertex in range(N):
+        if vertex // 12 == center // 12:
+            continue
+        clauses.append((-X[vertex], -SERVICE[frozenset((center, vertex))]))
+    bump("defect_neighbor_is_unique_center_overlap", mark)
 
 # Exact 4/4/4 H-color balance for paired component e=1.  A vertex in a
 # block linked to e has color coordinate+tau[o,e] mod 3.  Twelve selected
@@ -198,7 +259,10 @@ for orphan in ORPHANS:
             ])
             selected_color[(x + phase) % 3].append(both)
 for color in range(3):
-    card_eq_binary(selected_color[color], 4)
+    if "--sequential-color" in sys.argv:
+        card_eq_sequential(selected_color[color], 4)
+    else:
+        card_eq_binary(selected_color[color], 4)
 bump("paired_component_exact_color_balance", mark)
 
 print(f"vars {nv} clauses {len(clauses)} phases {len(P)} "
@@ -215,19 +279,30 @@ if "--emit" in sys.argv:
     Path(stem + ".cnf").write_bytes(data)
     verifier = Path(__file__).with_name(
         "verify_symbolic_sparse_defect_assignment.py")
+    scope = ("all corrected Stage-1 (4,4,4,4) phases with a sparse "
+             "center whose unique overlap has the wrong paired color"
+             if wrong_color else
+             "all corrected Stage-1 (4,4,4,4) phases with a sparse "
+             "center using its forward defect neighbor")
     manifest = {
-        "scope": "all corrected Stage-1 (4,4,4,4) phases with a sparse "
-                 "center using its forward defect neighbor",
+        "scope": scope,
         "encoder_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "sat_verifier_sha256": hashlib.sha256(verifier.read_bytes()).hexdigest(),
+        "sat_verifier_args": (["--wrong-color-overlap"]
+                              if wrong_color else []),
         "vars": nv, "clauses": len(clauses), "sha256": digest,
         "phase_variables": len(P), "delta_variables": len(DELTA),
         "service_variables": len(SERVICE), "selection_variables": len(X),
         "rule_counts": rule_counts,
         "normalization": {"source_omit": 0, "paired_component": 1,
                           "source_copy": 0, "center_coordinate": 0,
-                          "defect_neighbor_coordinate": 1,
+                          "defect_neighbor_coordinate": (
+                              None if wrong_color else 1),
                           "copy_ordering": False, "phase_symmetry": False},
+        "options": {
+            "sequential_color": "--sequential-color" in sys.argv,
+            "wrong_color_overlap": wrong_color,
+        },
     }
     Path(stem + ".manifest.json").write_text(json.dumps(manifest, indent=1) + "\n")
     print("wrote", stem)
