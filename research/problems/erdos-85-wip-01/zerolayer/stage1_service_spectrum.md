@@ -66,3 +66,66 @@ are forced by `tr(H)=0` and `tr(H^3)=6*328=1968` to `a=-4`, `b=1`.
 This is consistent, so the first and third moments alone are not the final
 contradiction, but all further analytic work may start from this fixed
 factorization rather than quantify over the service phases.
+
+## Cube-root kernel and the omitted-type quotient
+
+At either nontrivial cube root `z`, the four Fourier columns `f_e` satisfy
+`sum_e f_e = 0` and span the three-dimensional `A`-eigenspace at 12.
+Since `H` is symmetric and `H^2` vanishes there, `H f_e = 0`.  For every
+vertex and used component `e`, its H-neighbors in blocks linked to `e`
+therefore split equally among the three colors `x+tau[o,e] mod 3`.
+
+Let `r_e(v)` count H-neighbors of `v` in the 48 vertices whose blocks omit
+`e`.  Since H has degree 13, the kernel balance says
+
+```
+r_e(v) = 1 mod 3,        sum_e r_e(v) = 13.
+```
+
+The possible unordered profiles are initially
+`[10,1,1,1]`, `[7,4,1,1]`, and `[4,4,4,1]`.  They are separated by an
+exact cherry count.  Inside one omitted-type class there are 48 defect
+edges and `6*3*12 = 216` service edges.  Thus exactly
+
+```
+binom(48,2) - 264 = 864
+```
+
+pairs have one H-common-neighbor, and
+`sum_v binom(r_e(v),2) = 864`.  Summing over the four types gives 3456.
+The three profiles contribute respectively 45, 27, and 18 to the local
+four-type cherry sum; because `3456 = 192*18`, equality forces
+`[4,4,4,1]` at every vertex.  For each `e`, exactly 48 vertices have
+`r_e(v)=1`; call that sparse fiber `X_e`.
+
+Write `O_e` for the omitted-type classes and identify a class with its
+indicator vector.  The profile law is
+
+```
+H O_e = 4*1 - 3*X_e.
+```
+
+The service construction also gives `A O_e = 8*1 + 3*O_e`.  Applying
+`H^2 = 12I+J-A` to `O_e` then gives the dual identity
+
+```
+H X_e = 4*1 - 3*O_e.
+```
+
+Both balanced four-partitions therefore have the same three-dimensional
+contrast space, namely the entire `H^2=9` eigenspace.  Equality of the
+indicator spaces implies `X_e = O_{pi(e)}` for a permutation `pi`.
+Symmetry of H makes `pi` an involution.  The fixed H-sign split at squared
+eigenvalue 9 is `(+3)^2,(-3)^1`, so on contrasts `-3 P_pi` has precisely
+those signs.  Hence `pi` is a product of two disjoint transpositions.
+
+After relabeling the four types, `pi=(0 1)(2 3)` and H has the exact
+equitable quotient
+
+```
+Q = 4 J_4 - 3 P_pi.
+```
+
+In particular, every vertex has one neighbor in its paired omitted class
+and four neighbors in each of the other three classes.  The edges between
+each paired pair of 48-vertex classes form a perfect matching.
