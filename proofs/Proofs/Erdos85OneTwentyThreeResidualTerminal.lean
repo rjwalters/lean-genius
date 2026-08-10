@@ -289,6 +289,54 @@ theorem reduced_length_eq_lcm_of_oriented_pair_injective
     Nat.le_of_dvd (NeZero.pos m) hlcmDvd
   exact Nat.le_antisymm hmle hlcmLe
 
+/-- A forward cyclic matching and a reverse cyclic matching on the same
+cycle necessarily swap their two targets at a distinct source position,
+provided their targets at zero are distinct.  Their union therefore contains
+the combinatorial rectangle that becomes a four-cycle in a bipartite
+incidence block. -/
+theorem forward_reverse_matchings_swap
+    {r : ℕ} [NeZero r]
+    (f g : ZMod r → ZMod r)
+    (hf : ∀ y, f (y + 1) = f y + 1)
+    (hg : ∀ y, g (y + 1) = g y - 1)
+    (hfg : f 0 ≠ g 0) :
+    ∃ y : ZMod r, y ≠ 0 ∧ f y = g 0 ∧ g y = f 0 := by
+  have hf_formula : ∀ y : ZMod r, f y = f 0 + y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        f (n : ZMod r) = f 0 + (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hf, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  have hg_formula : ∀ y : ZMod r, g y = g 0 - y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        g (n : ZMod r) = g 0 - (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hg, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  let y : ZMod r := g 0 - f 0
+  have hy : y ≠ 0 := by
+    intro hy0
+    apply hfg
+    dsimp only [y] at hy0
+    exact sub_eq_zero.mp hy0 |>.symm
+  refine ⟨y, hy, ?_, ?_⟩
+  · rw [hf_formula]
+    dsimp only [y]
+    ring
+  · rw [hg_formula]
+    dsimp only [y]
+    ring
+
 /-- Graph-facing LCM obstruction for two unit quotient blocks.  A source
 defect cycle cannot cover two distinct target defect cycles with quotient
 one when their joint period is shorter than the source cycle. -/
