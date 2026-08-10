@@ -11260,6 +11260,44 @@ theorem degree_sixteen_zeroLayer_used_after_contact_excess
     ∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent), T e f) = 2 * k
   omega
 
+/-! ### Zero-layer reduced used-order census certificates
+
+These small arithmetic terminals consume the structurally classified atom
+counts for the first large-part deaths in the exact 231-partition census.
+They deliberately expose only the final load/budget equations, so later
+graph-facing wrappers can instantiate them without replaying CP-SAT. -/
+
+/-- The reduced used-order partition `[15,1]` is impossible: its only atom
+touching the order-one row contributes load fifteen, while that row requires
+load twelve. -/
+theorem false_of_zeroLayer_reduced_used_orders_fifteen_one_atom_ledger
+    (nB : ℕ) (hsmall : 15 * nB = 12) : False := by
+  omega
+
+/-- The reduced used-order partition `[14,2]` is impossible: every atom
+touching the order-two row contributes load fourteen, but its required load
+is twenty-four. -/
+theorem false_of_zeroLayer_reduced_used_orders_fourteen_two_atom_ledger
+    (nB : ℕ) (hsmall : 14 * nB = 24) : False := by
+  omega
+
+/-- The reduced partition `[14,1,1]` is impossible already in either
+order-one row: the possible loads are fourteen and seven, so they cannot
+sum to twelve. -/
+theorem false_of_zeroLayer_reduced_used_orders_fourteen_one_one_atom_ledger
+    (nB14 nB7 : ℕ) (hsmall : 14 * nB14 + 7 * nB7 = 12) : False := by
+  omega
+
+/-- The reduced partition `[13,3]` is impossible in the order-three row.
+Its `C(m=1)` and `C(m=3)` atoms contribute loads three and nine and costs
+two and six respectively; load thirty-six therefore costs twenty-four,
+exceeding the row budget four. -/
+theorem false_of_zeroLayer_reduced_used_orders_thirteen_three_atom_ledger
+    (nC1 nC3 : ℕ)
+    (hload : 3 * nC1 + 9 * nC3 = 36)
+    (hbudget : 2 * nC1 + 6 * nC3 ≤ 4) : False := by
+  omega
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
