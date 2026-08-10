@@ -190,6 +190,27 @@ theorem twenty_four_le_card_zero_halfExcess_of_sum_eq_168
   rw [hsum] at hnonzero_le
   omega
 
+/-- Any 24 marked vertices distributed among four omitted types put at
+least six marked vertices in one type. -/
+theorem exists_six_le_type_fiber_of_twenty_four_le_card
+    {V : Type*} [DecidableEq V]
+    (S : Finset V) (type : V → Fin 4) (hS : 24 ≤ S.card) :
+    ∃ e : Fin 4, 6 ≤ ({x ∈ S | type x = e}).card := by
+  have hfibers : S.card = ∑ e : Fin 4, ({x ∈ S | type x = e}).card := by
+    simpa using (Finset.card_eq_sum_card_fiberwise
+      (s := S) (t := (Finset.univ : Finset (Fin 4))) (f := type) (by simp))
+  by_contra h
+  have hle : (∑ e : Fin 4, ({x ∈ S | type x = e}).card) ≤
+      ∑ _e : Fin 4, 5 := by
+    apply Finset.sum_le_sum
+    intro e _
+    have hnle : ¬6 ≤ ({x ∈ S | type x = e}).card := by
+      intro he
+      exact h ⟨e, he⟩
+    omega
+  simp at hle
+  omega
+
 end
 
 end Erdos85
