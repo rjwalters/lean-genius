@@ -114,6 +114,32 @@ These are structural dead-value leaves only; the five remaining exact values
 under `p1q1r2` and all unresolved leaves under the other three parents still
 require independent verdicts and certificates.
 
+The same exact-value refinement has now been completed for the other three
+parents.  Pair injectivity kills the value equal to the copy-zero anchor;
+the strict sorted four-copy chain kills terminal values 10 and 11.  Thus the
+dead sets are `{(1,1),(1,10),(2,11)}` for each `p1` parent and
+`{(1,1),(1,10),(2,2),(2,11)}` for each `p2` parent, where each pair is
+`(residue,value)`.  All fourteen dead leaves are self-contained, DRAT-verified
+certificates on the durable volume.  The additional eleven hash prefixes are:
+
+| leaf | CNF | certificate | proof |
+|---|---|---|---|
+| `p1q2r2s1v1` | `f16ca6f3e852` | `71f3fefb2e29` | `2348fbf174b7` |
+| `p1q2r2s1v10` | `b0ca0ec1d528` | `85edcdbe9163` | `e1476fc66f8f` |
+| `p1q2r2s2v11` | `cf190edc2d88` | `e5452e3ff308` | `6f42e014ddac` |
+| `p2q1r1s1v1` | `b4fa2e2ad0e6` | `193a9fb58ea8` | `77e76cc9aea5` |
+| `p2q1r1s1v10` | `0adc38b37639` | `f2bab74089c4` | `7dd2436fbec6` |
+| `p2q1r1s2v2` | `b6dbb14ad028` | `15a1e40c2a9a` | `898185824f92` |
+| `p2q1r1s2v11` | `f5be1c9bcc4a` | `9a13a0d7b472` | `9706800714ed` |
+| `p2q2r1s1v1` | `de766e9faa5d` | `effd85411d3c` | `65e143cb7f1f` |
+| `p2q2r1s1v10` | `6043f44db00b` | `8ef465ef026d` | `d10d7d7c23af` |
+| `p2q2r1s2v2` | `eaa3539dddb5` | `338803fecc9e` | `9b8cbca9130c` |
+| `p2q2r1s2v11` | `67f858a5e41b` | `0a5e6abc37ba` | `dc6a25d2f48c` |
+
+The relocation-aware validator passes independently on all fourteen.  After
+removing their byte-identical duplicate live-node copies, exactly eighteen
+hash-pinned substantive exact-value nodes remain.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
