@@ -56,6 +56,12 @@ def main():
     assert trace_HA2 == 15696
     assert trace_HA // 2 == 264
     assert trace_HA2 // 2 == 7848
+    mixed_moments = [13 * 35 ** k + (4 * a) * (-4) ** k +
+                     (3 * b) * 3 ** k for k in range(9)]
+    assert mixed_moments == [
+        0, 528, 15696, 558480, 19504272, 682801488,
+        23897389776, 836411128080, 29274379049232,
+    ]
     print("STAGE1 SERVICE SPECTRUM EXACT AUDIT OK")
 
 
