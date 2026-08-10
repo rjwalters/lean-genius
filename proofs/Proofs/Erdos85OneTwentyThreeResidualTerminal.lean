@@ -11424,6 +11424,79 @@ theorem false_of_zeroLayer_reduced_used_orders_ten_three_one_one_one_atom_ledger
     (hbudget : 2 * nC1 + 2 * nB3 + 6 * nC3 ≤ 4) : False := by
   omega
 
+/-- In `[9,7]`, the order-nine row has load one hundred eight and every
+available atom has the fixed cost/load ratio forcing cost twenty-four,
+above budget sixteen. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_seven_atom_ledger
+    (nC3 nC9 : ℕ)
+    (hload : 9 * nC3 + 27 * nC9 = 108)
+    (hbudget : 2 * nC3 + 6 * nC9 ≤ 16) : False := by
+  omega
+
+/-- The order-six row in `[9,6,1]` has load seventy-two, while even its
+cheapest classified atoms force cost twelve, above budget ten. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_six_one_atom_ledger
+    (nB3 nC2 nB6 nC6 : ℕ)
+    (hload : 6 * nB3 + 6 * nC2 + 12 * nB6 + 18 * nC6 = 72)
+    (hbudget : nB3 + 2 * nC2 + 2 * nB6 + 6 * nC6 ≤ 10) : False := by
+  omega
+
+/-- In `[9,5,2]`, the order-five row has fixed cost twenty-four at load
+sixty, exceeding budget eight. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_five_two_atom_ledger
+    (nD5 nC5 : ℕ)
+    (hload : 5 * nD5 + 15 * nC5 = 60)
+    (hbudget : 2 * nD5 + 6 * nC5 ≤ 8) : False := by
+  omega
+
+/-- Aggregating the two order-one targets does not save the order-five row
+of `[9,5,1,1]`: load sixty still costs at least twelve, above budget eight. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_five_one_one_atom_ledger
+    (nD5 nB5 nC5 : ℕ)
+    (hload : 5 * nD5 + 10 * nB5 + 15 * nC5 = 60)
+    (hbudget : 2 * nD5 + 2 * nB5 + 6 * nC5 ≤ 8) : False := by
+  omega
+
+/-- The order-four row in `[9,4,3]` has fixed cost twenty-four at load
+forty-eight, exceeding budget six. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_four_three_atom_ledger
+    (nD4 nC4 : ℕ)
+    (hload : 4 * nD4 + 12 * nC4 = 48)
+    (hbudget : 2 * nD4 + 6 * nC4 ≤ 6) : False := by
+  omega
+
+/-- The cheapest atoms serving the order-four row in `[9,4,2,1]` force
+cost twelve at load forty-eight, twice its budget. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_four_two_one_atom_ledger
+    (nB2 nD4 nB4 nC4 : ℕ)
+    (hload : 4 * nB2 + 4 * nD4 + 8 * nB4 + 12 * nC4 = 48)
+    (hbudget : nB2 + 2 * nD4 + 2 * nB4 + 6 * nC4 ≤ 6) : False := by
+  omega
+
+/-- Aggregating the three order-one targets gives the same order-four row
+obstruction for `[9,4,1,1,1]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_four_one_one_one_atom_ledger
+    (nB2 nD4 nB4 nC4 : ℕ)
+    (hload : 4 * nB2 + 4 * nD4 + 8 * nB4 + 12 * nC4 = 48)
+    (hbudget : nB2 + 2 * nD4 + 2 * nB4 + 6 * nC4 ≤ 6) : False := by
+  omega
+
+/-- The order-two row in `[9,3,2,1,1]` has load twenty-four but budget
+two, whereas every service atom costs one unit per two load units. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_three_two_one_one_atom_ledger
+    (nB1 nB2 : ℕ)
+    (hload : 2 * nB1 + 4 * nB2 = 24)
+    (hbudget : nB1 + 2 * nB2 ≤ 2) : False := by
+  omega
+
+/-- Aggregating the five order-one targets leaves the identical order-two
+row obstruction for `[9,2,1,1,1,1,1]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_two_one_one_one_one_one_atom_ledger
+    (nB1 nB2 : ℕ)
+    (hload : 2 * nB1 + 4 * nB2 = 24)
+    (hbudget : nB1 + 2 * nB2 ≤ 2) : False := by
+  omega
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
