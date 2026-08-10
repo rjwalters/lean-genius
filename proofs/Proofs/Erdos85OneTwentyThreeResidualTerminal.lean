@@ -13098,6 +13098,59 @@ theorem degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
     G hfree (d := 16) (s := 2) (by norm_num) (by norm_num) hmin hcard
       c₀ hregChild hcardChild (componentRepresentative D o) hoOutside hoUnused
 
+/-- A positive finite partition of three is one part three, two parts two
+and one, or three unit parts. -/
+theorem positive_partition_three_classification
+    {α : Type*} [DecidableEq α] (S : Finset α) (w : α → ℕ)
+    (hpos : ∀ x ∈ S, 0 < w x) (hsum : (∑ x ∈ S, w x) = 3) :
+    (∃ x, S = {x} ∧ w x = 3) ∨
+    (∃ x y, x ≠ y ∧ S = {x, y} ∧
+      ((w x = 2 ∧ w y = 1) ∨ (w x = 1 ∧ w y = 2))) ∨
+    (∃ x y z, x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      S = {x, y, z} ∧ w x = 1 ∧ w y = 1 ∧ w z = 1) := by
+  have hcardLe : S.card ≤ 3 := by
+    have hlower : (∑ _x ∈ S, 1) ≤ ∑ x ∈ S, w x :=
+      Finset.sum_le_sum fun x hx => hpos x hx
+    have hones : (∑ _x ∈ S, 1) = S.card := by simp
+    rw [hones, hsum] at hlower
+    exact hlower
+  have hcardPos : 0 < S.card := by
+    by_contra hzero
+    have hScard : S.card = 0 := by omega
+    have hSempty : S = ∅ := Finset.card_eq_zero.mp hScard
+    rw [hSempty] at hsum
+    norm_num at hsum
+  interval_cases hScard : S.card
+  · obtain ⟨x, hS⟩ := Finset.card_eq_one.mp hScard
+    left
+    refine ⟨x, hS, ?_⟩
+    simpa [hS] using hsum
+  · obtain ⟨x, y, hxy, hS⟩ := Finset.card_eq_two.mp hScard
+    right; left
+    have hxS : x ∈ S := by simp [hS]
+    have hyS : y ∈ S := by simp [hS]
+    have hxySum : w x + w y = 3 := by
+      simpa [hS, hxy] using hsum
+    refine ⟨x, y, hxy, hS, ?_⟩
+    have hxpos := hpos x hxS
+    have hypos := hpos y hyS
+    omega
+  · obtain ⟨x, y, z, hxy, hxz, hyz, hS⟩ :=
+      Finset.card_eq_three.mp hScard
+    right; right
+    have hxS : x ∈ S := by simp [hS]
+    have hyS : y ∈ S := by simp [hS]
+    have hzS : z ∈ S := by simp [hS]
+    have hxpos := hpos x hxS
+    have hypos := hpos y hyS
+    have hzpos := hpos z hzS
+    have hxyzSum : w x + (w y + w z) = 3 := by
+      simpa [hS, hxy, hxz, hyz] using hsum
+    refine ⟨x, y, z, hxy, hxz, hyz, hS, ?_, ?_, ?_⟩
+    · omega
+    · omega
+    · omega
+
 /-- Every zero-layer orphan-component quotient row has total mass three into
 the used components, matching the three service neighbors of each orphan. -/
 theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
@@ -13159,6 +13212,72 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
   simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
     G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
       c₀ hregChild hcardChild (componentRepresentative D o) hoOutside hoUnused
+
+/-- The positive support of a zero-layer orphan's used quotient row has one
+of the three atom shapes: `3`, `2+1`, or `1+1+1`. -/
+theorem degree_sixteen_zeroLayer_orphan_used_quotient_support_trichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let S := C.filter (fun e => componentQuotientMatrix G D o e ≠ 0)
+    (∃ e, S = {e} ∧ componentQuotientMatrix G D o e = 3) ∨
+    (∃ e f, e ≠ f ∧ S = {e, f} ∧
+      ((componentQuotientMatrix G D o e = 2 ∧
+          componentQuotientMatrix G D o f = 1) ∨
+        (componentQuotientMatrix G D o e = 1 ∧
+          componentQuotientMatrix G D o f = 2))) ∨
+    (∃ e f g, e ≠ f ∧ e ≠ g ∧ f ≠ g ∧ S = {e, f, g} ∧
+      componentQuotientMatrix G D o e = 1 ∧
+      componentQuotientMatrix G D o f = 1 ∧
+      componentQuotientMatrix G D o g = 1) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  let S := C.filter (fun e => q e ≠ 0)
+  have hsumC : (∑ e ∈ C, q e) = 3 := by
+    simpa [D, R, C, q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hsumS : (∑ e ∈ S, q e) = 3 := by
+    rw [show (∑ e ∈ S, q e) = ∑ e ∈ C, q e by
+      simp only [S, Finset.sum_filter]
+      apply Finset.sum_congr rfl
+      intro e _he
+      by_cases hq : q e = 0 <;> simp [hq]]
+    exact hsumC
+  have hpos : ∀ e ∈ S, 0 < q e := by
+    intro e he
+    exact Nat.pos_of_ne_zero (Finset.mem_filter.mp he).2
+  change
+    (∃ e, S = {e} ∧ q e = 3) ∨
+    (∃ e f, e ≠ f ∧ S = {e, f} ∧
+      ((q e = 2 ∧ q f = 1) ∨ (q e = 1 ∧ q f = 2))) ∨
+    (∃ e f g, e ≠ f ∧ e ≠ g ∧ f ≠ g ∧ S = {e, f, g} ∧
+      q e = 1 ∧ q f = 1 ∧ q g = 1)
+  exact positive_partition_three_classification S q hpos hsumS
 
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
