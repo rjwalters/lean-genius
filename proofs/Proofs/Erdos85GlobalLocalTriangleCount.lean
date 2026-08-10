@@ -143,6 +143,20 @@ theorem trace_adjMatrix_mul_adjMatrix_sq_eq_sum_common_over_neighbors
   · intro y hy
     simp [Finset.inter_comm]
 
+/-- If the 192 local overlap degrees are odd and have total 528 (twice the
+264 overlap edges), their total half-excess above one is exactly 168. -/
+theorem sum_half_excess_eq_168_of_odd_overlap_degrees
+    {V : Type*} [Fintype V]
+    (overlapDegree halfExcess : V → ℕ)
+    (hcard : Fintype.card V = 192)
+    (hodd : ∀ x, overlapDegree x = 2 * halfExcess x + 1)
+    (hsum : (∑ x : V, overlapDegree x) = 528) :
+    (∑ x : V, halfExcess x) = 168 := by
+  simp_rw [hodd] at hsum
+  rw [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum
+  simp [hcard] at hsum
+  omega
+
 end
 
 end Erdos85
