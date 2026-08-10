@@ -89,7 +89,11 @@ def main():
         by_phase = {}
         for child_path in candidates:
             child = load(child_path)
-            if child.get("cube_anchor") != anchor_name:
+            child_anchor = child.get("cube_anchor")
+            legacy_root_child = (
+                depth == 0 and child_anchor is None and
+                child.get("cube_ancestry") is None)
+            if child_anchor != anchor_name and not legacy_root_child:
                 continue
             phase = child.get("cube_phase")
             if phase not in range(3) or phase in by_phase:
