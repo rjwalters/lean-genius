@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from run_hlift_orbit_signal import sha256_file
+from split_symbolic_phase_residue import expected_clause_sha256
 from summarize_symbolic_phase_cubes import (
     VERIFIED, expected_cube_hashes, load, require_exact_command, require_hash,
     require_relocatable_artifact, verified_log,
@@ -46,6 +47,8 @@ def main():
     parser.add_argument("artifact_dir", type=Path)
     parser.add_argument("--anchor", action="append", nargs=3, type=int,
                         metavar=("OMIT", "COPY", "COMPONENT"), required=True)
+    parser.add_argument("--residue-anchor", action="append", nargs=3, type=int,
+                        metavar=("OMIT", "COPY", "COMPONENT"), default=[])
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -59,6 +62,9 @@ def main():
             children_by_parent.setdefault(parent_sha, []).append(path.resolve())
     certificates = list(artifact_dir.glob("**/certificate.json"))
     mapping, _ = phase_variable_map()
+    split_specs = ([('phase', tuple(anchor)) for anchor in args.anchor] +
+                   [('residue', tuple(anchor))
+                    for anchor in args.residue_anchor])
 
     def visit(manifest_path, depth):
         manifest_path = manifest_path.resolve()
@@ -74,10 +80,71 @@ def main():
                 raise ValueError(f"duplicate direct certificates for {manifest_path}")
             return {"kind": "verified_drat_leaf", "manifest": str(manifest_path),
                     **validate_certificate(direct[0], manifest_path, manifest, cnf)}
-        if depth == len(args.anchor):
+        if depth == len(split_specs):
             raise ValueError(f"uncertified leaf: {manifest_path}")
 
-        omit, copy, component = args.anchor[depth]
+        split_kind, (omit, copy, component) = split_specs[depth]
+        if split_kind == "residue":
+            try:
+                exact_literals = [mapping[((omit, copy), component, phase)]
+                                  for phase in range(12)]
+            except KeyError as exc:
+                raise ValueError(
+                    f"invalid residue anchor: {(omit, copy, component)}") from exc
+            anchor_name = f"tau[({omit},{copy}),{component}]"
+            residue_literals = [
+                [exact_literals[phase] for phase in range(residue, 12, 3)]
+                for residue in range(3)
+            ]
+            expected_hashes = [
+                expected_clause_sha256(cnf, manifest["vars"],
+                                       manifest["clauses"], branch)
+                for branch in residue_literals
+            ]
+            candidates = children_by_parent.get(manifest_sha, [])
+            by_residue = {}
+            for child_path in candidates:
+                child = load(child_path)
+                if child.get("cube_anchor") != anchor_name:
+                    continue
+                residue = child.get("cube_residue")
+                if residue not in range(3) or residue in by_residue:
+                    raise ValueError(
+                        f"bad or duplicate child residue at {manifest_path}")
+                if child.get("scope") != (
+                        manifest["scope"] + f" AND {anchor_name}%3={residue}"):
+                    raise ValueError(f"child scope mismatch: {child_path}")
+                if (child.get("parent_cnf_sha256") != manifest["sha256"] or
+                        child.get("cube_residue_modulus") != 3 or
+                        child.get("cube_clause_literals") !=
+                        residue_literals[residue] or
+                        child.get("exact_phase_literals") != exact_literals or
+                        not child.get("exact_one_hot_verified") or
+                        not child.get("exact_pairwise_exclusions_verified") or
+                        not child.get("cube_partition_verified") or
+                        child.get("sha256") != expected_hashes[residue]):
+                    raise ValueError(
+                        f"invalid residue child transformation: {child_path}")
+                require_hash(child_path.with_suffix("").with_suffix(".cnf"),
+                             child["sha256"], "residue child CNF")
+                by_residue[residue] = child_path
+            if set(by_residue) != set(range(3)):
+                raise ValueError(
+                    f"missing child residues at {manifest_path}: "
+                    f"{sorted(by_residue)}")
+            return {
+                "kind": "exhaustive_phase_residue_partition",
+                "manifest": str(manifest_path),
+                "anchor": anchor_name,
+                "exact_phase_literals": exact_literals,
+                "residue_literals": residue_literals,
+                "children": [
+                    {"residue": residue,
+                     "evidence": visit(by_residue[residue], depth + 1)}
+                    for residue in range(3)
+                ],
+            }
+
         try:
             literals = [mapping[((omit, copy), component, phase)]
                         for phase in range(3)]
@@ -124,6 +191,8 @@ def main():
         "root_manifest_sha256": sha256_file(root_manifest),
         "root_cnf_sha256": load(root_manifest)["sha256"],
         "anchors": [f"tau[({o},{c}),{e}]" for o, c, e in args.anchor],
+        "residue_anchors": [f"tau[({o},{c}),{e}]%3"
+                            for o, c, e in args.residue_anchor],
         "evidence": evidence,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
