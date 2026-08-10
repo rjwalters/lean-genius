@@ -97,11 +97,8 @@ with tempfile.TemporaryDirectory() as raw:
         "encoder_sha256": "e" * 64, "sat_verifier_sha256": "v" * 64,
         "rule_counts": {"toy": 3, "phase_anchor_cube_unit": 1},
         "options": {"phase_symmetry": True},
-        "cube_ancestry": [{
-            "anchor": "tau[(0,0),2]", "orphan": [0, 0],
-            "component": 2, "phase": 1, "literal": 18350,
-            "exhaustive_anchor_literals": [18349, 18350, 18351],
-        }],
+        "cube_phase": 1, "cube_literal": 18350,
+        "exhaustive_anchor_literals": [18349, 18350, 18351],
     }))
     nested_output = nested / "children"
     subprocess.run([
@@ -116,5 +113,16 @@ with tempfile.TemporaryDirectory() as raw:
         assert len(child["cube_ancestry"]) == 2
         assert child["cube_ancestry"][-1]["phase"] == phase
         assert child["rule_counts"]["phase_anchor_cube_unit_2"] == 1
+
+    # Reusing exact children upgrades manifests without touching large CNFs.
+    before = {path: path.stat().st_mtime_ns for path in
+              nested_output.glob("*.cnf")}
+    subprocess.run([
+        sys.executable, str(splitter), str(nested_manifest), str(nested_cnf),
+        str(nested_output), "--anchor", "1", "0", "2",
+        "--reuse-existing-cnfs",
+    ], check=True, capture_output=True, text=True)
+    assert before == {path: path.stat().st_mtime_ns for path in
+                      nested_output.glob("*.cnf")}
 
 print("SYMBOLIC PHASE CUBE SPLITTER ALL OK")
