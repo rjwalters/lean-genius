@@ -59,6 +59,20 @@ and
 These leaves again certify only the gauge contradiction; the four
 phase-one/phase-two grandchildren are the substantive cases.
 
+Splitting those grandchildren once more at `tau[(0,0),3]` does not create
+two new orientations per leaf.  The same row already has first-link phase
+zero and `tau[(0,0),2]=p`, so pairwise distinct residues force the only
+substantive third phase to be `3-p`: phase zero and phase `p` are gauge-row
+contradictions.  All eight such degenerate depth-three leaves are DRAT
+certified.  For the four nonzero repeated-phase leaves `p1q1r1`, `p1q2r1`,
+`p2q1r2`, and `p2q2r2`, the certificate SHA-256 values are respectively
+`f2f0b17355f334b4e8cf7adc8bb15e55151598670167bbd648831349474caf72`,
+`ff9080e07e6fdd8c461a0836ebfb9a17744fe40400d01b52f5517b7308b36590`,
+`0031d1592211191cdf182f467895cf6a62088c202673e990eb91439a937f2bf7`,
+and `2175f0a0e0b971c5684d8a7e3eb6947188175f94a05817ee9ca2c8753361fc03`.
+Consequently only four depth-three leaves remain mathematically
+substantive: `p1q1r2`, `p1q2r2`, `p2q1r1`, and `p2q2r1`.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
