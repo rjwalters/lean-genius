@@ -427,3 +427,25 @@ At cyclic distances `1,...,6` these signed service energies are exactly
 Equivalently, the sums of `delta_u delta_v` over unordered A-edges are
 `-591,-65,-99,-230,-231,-87`.  Unlike the aggregate row moments, this
 forces a substantial sign interaction along the explicit service graph.
+
+## Certified sparse defect-edge exclusion
+
+The possibility that a degree-one overlap center uses one of its two
+same-block defect neighbors is excluded uniformly over the corrected
+Stage-1 phase class.  After lossless normalization of paired types, candidate
+block, coordinate, and defect direction, the local symbolic CNF quantifies
+over all link phases and one candidate 13-vertex H-neighborhood.  It enforces
+the corrected phase laws, A-independence, paired-component 4/4/4 color
+balance, and the pinned defect neighbor as the center's unique A-overlap.
+
+The sequential-counter instance has 34,554 variables and 186,315 clauses,
+with SHA-256
+`32d286cb91d4a712ddc11aceb108a5853bcf3ebaab83878e6a0616515f3657ad`.
+CaDiCaL returned UNSAT and its 79 MB DRAT proof was accepted by `drat-trim`
+with `s VERIFIED`.  The proof SHA-256 is
+`f75a9c07cb15bf24e0d48d727b190bf5683efd5ffb2cf4c68b8b3e6d41b36ba1`.
+The manifest, compact certificate report, independent SAT verifier, and
+durable proof provenance are preserved with the encoder.
+
+Consequently every overlap-degree-one center has its unique triangle-free
+H-neighbor outside the two defect-cycle neighbors in its orphan block.
