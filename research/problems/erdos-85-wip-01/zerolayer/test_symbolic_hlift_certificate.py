@@ -102,6 +102,38 @@ def main():
         )
         manifest.write_text(json.dumps(value_cube), encoding="utf-8")
         assert validate_symbolic_manifest(manifest, cnf, verifier) == value_cube
+        next_exact_literals = [mapping[((0, 2), 2, phase)]
+                               for phase in range(12)]
+        next_residue_entry = {
+            "anchor": "tau[(0,2),2]", "orphan": [0, 2],
+            "component": 2, "residue_modulus": 3, "residue": 2,
+            "clause_literals": next_exact_literals[2::3],
+            "exact_phase_literals": next_exact_literals,
+        }
+        nested_residue_cube = dict(
+            value_cube,
+            scope=value_cube["scope"] + " AND tau[(0,2),2]%3=2",
+            cube_anchor="tau[(0,2),2]",
+            cube_ancestry=[*value_cube["cube_ancestry"],
+                           next_residue_entry],
+            cube_residue_modulus=3, cube_residue=2,
+            cube_clause_literals=next_exact_literals[2::3],
+            exact_phase_literals=next_exact_literals,
+            exact_one_hot_verified=True,
+            exact_pairwise_exclusions_verified=True,
+        )
+        manifest.write_text(json.dumps(nested_residue_cube), encoding="utf-8")
+        assert validate_symbolic_manifest(
+            manifest, cnf, verifier) == nested_residue_cube
+        malformed_nested = dict(
+            nested_residue_cube,
+            cube_clause_literals=next_exact_literals[1::3])
+        manifest.write_text(json.dumps(malformed_nested), encoding="utf-8")
+        try:
+            validate_symbolic_manifest(manifest, cnf, verifier)
+            raise AssertionError("malformed nested residue cube accepted")
+        except ValueError as exc:
+            assert "unexpected symbolic manifest scope" in str(exc)
         malformed_value = dict(value_cube, cube_literal=exact_literals[7])
         manifest.write_text(json.dumps(malformed_value), encoding="utf-8")
         try:
