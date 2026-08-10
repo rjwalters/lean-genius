@@ -11478,6 +11478,35 @@ theorem false_of_orderTwelve_reverse_diagonal_three_labeled
   intro p hp q hq heq
   exact hsidon hp hq heq
 
+/-- Diagonal quotient three is impossible on any labeled order-twelve defect
+cycle: it would force the reverse orientation, which the odd-phase Sidon
+packing obstruction excludes. -/
+theorem degree_sixteen_orderTwelve_diagonalQuotient_ne_three_labeled
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod 12 → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)}) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≠ 3 := by
+  intro hdiag
+  have hrevZ := degree_sixteen_evenComponent_diagonal_three_forces_reverse
+    G hfree hmin hcard (r := 12) (by norm_num) (by norm_num) c u hu
+      huRange huD hdiag
+  have hrev : ∀ x y : ZMod 12,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y) := by
+    intro x y
+    exact adj_iff_of_adjMatrix_int_eq G (hrevZ x y)
+  exact false_of_orderTwelve_reverse_diagonal_three_labeled
+    G hfree hmin hcard c u hu huRange hrev hdiag
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
