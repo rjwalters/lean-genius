@@ -34,6 +34,18 @@ linked phases to be pairwise distinct modulo three.  Adding
 contradiction.  The two substantive orientation cubes are phases one and
 two.
 
+A second split at `tau[(1,0),2]` has the same degenerate phase-zero child
+and two substantive children.  All four substantive grandchildren must be
+solved and certified.  Simultaneous reflection or swapping components two
+and three conjugates both anchor residues, but the required copy re-sorting
+changes which physical orphan is copy zero in an assignment-dependent way;
+it does not give an intra-parent `q1`/`q2` CNF isomorphism.  Swapping omitted
+and used types zero and one gives a semantic bijection between the crossed
+grandchildren `p1q2` and `p2q1` after regauging and canonical re-sorting, but
+that map is likewise not a fixed literal permutation.  Their verdicts are
+therefore a useful independent cross-check, not a replacement for either
+DRAT certificate or leaf in the exhaustive phase tree.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
