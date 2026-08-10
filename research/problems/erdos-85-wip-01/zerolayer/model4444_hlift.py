@@ -46,6 +46,12 @@ Emitted instances (2026-08-10):
      chain of 34 equivalence XOR gates and one final unit.  See the
      manifest for the full SHA-256 and test_parity_odd.py for exhaustive
      small-chain tests.
+
+Optional `--comm-anchor` adds the 191 row-zero equations from `HA = AH`,
+which follows from the encoded square identity and regularity.  Identical
+literals are canceled before equivalence-defined unary cardinality
+comparisons.  This adds 238,210 variables and 939,540 clauses; its generic
+equality encoder is exhaustively checked by test_equal_cardinality.py.
 """
 import sys, hashlib, json
 from itertools import combinations
@@ -219,6 +225,70 @@ for v in range(N):
     assert len(A_neighbor_lits) == 35
     xor_odd(A_neighbor_lits)
 bump("local_A_incidence_odd", len(clauses) - mark)
+
+def threshold_bits(lits):
+    """Return equivalence-defined bits `count(lits) >= j`, j=1..n."""
+    prev = [None] * (len(lits) + 1)
+    for i, lit in enumerate(lits, 1):
+        cur = [None] * (len(lits) + 1)
+        for j in range(1, i + 1):
+            cur[j] = newvar()
+            p = prev[j]
+            q = prev[j - 1] if j > 1 else True
+            if p is None:
+                if q is True:
+                    # cur <-> lit
+                    clauses.append((-lit, cur[j]))
+                    clauses.append((lit, -cur[j]))
+                else:
+                    # cur <-> lit & q
+                    clauses.append((-lit, -q, cur[j]))
+                    clauses.append((-cur[j], lit))
+                    clauses.append((-cur[j], q))
+            elif q is True:
+                # cur <-> p | lit
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, cur[j]))
+                clauses.append((-cur[j], p, lit))
+            else:
+                # cur <-> p | (lit & q)
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, -q, cur[j]))
+                clauses.append((-cur[j], p, lit))
+                clauses.append((-cur[j], p, q))
+        prev = cur
+    return prev[1:len(lits) + 1]
+
+def equal_cardinality(left, right):
+    """Assert equal cardinality through equivalent unary thresholds."""
+    if len(left) != len(right):
+        raise ValueError("equal-cardinality domains must have equal size")
+    left_bits = threshold_bits(left)
+    right_bits = threshold_bits(right)
+    for a, b in zip(left_bits, right_bits):
+        clauses.append((-a, b))
+        clauses.append((a, -b))
+
+if "--comm-anchor" in sys.argv:
+    # H^2 = 12I + J - A and 13-regularity imply HA = AH.  Add the
+    # row-zero entries only: every equation is redundant (hence sound),
+    # while this small anchor family exposes the linear commutant structure
+    # without assuming that H itself is translation-invariant.
+    mark = len(clauses)
+    A_neighbors = [
+        {w for w in range(N) if w != v and
+         frozenset((v, w)) in zero_pairs}
+        for v in range(N)
+    ]
+    for v in range(1, N):
+        left = {E[frozenset((0, w))] for w in A_neighbors[v] if w != 0}
+        right = {E[frozenset((w, v))] for w in A_neighbors[0] if w != v}
+        common = left & right
+        left_only = sorted(left - common)
+        right_only = sorted(right - common)
+        assert len(left_only) == len(right_only)
+        equal_cardinality(left_only, right_only)
+    bump("commutation_anchor_row_zero", len(clauses) - mark)
 
 print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
 
