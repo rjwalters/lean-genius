@@ -11267,6 +11267,28 @@ counts for the first large-part deaths in the exact 231-partition census.
 They deliberately expose only the final load/budget equations, so later
 graph-facing wrappers can instantiate them without replaying CP-SAT. -/
 
+/-- Reusable load-versus-cost certificate for zero-layer atom ledgers.  If
+every classified atom satisfies `p * load ≤ q * cost`, then a row of exact
+load `target` cannot fit inside cost `budget` when
+`q * budget < p * target`. -/
+theorem false_of_zeroLayer_weighted_load_cost_budget
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (load cost : α → ℕ) (p q target budget : ℕ)
+    (hpoint : ∀ x ∈ C, p * load x ≤ q * cost x)
+    (hload : (∑ x ∈ C, load x) = target)
+    (hbudget : (∑ x ∈ C, cost x) ≤ budget)
+    (hover : q * budget < p * target) : False := by
+  have hsum : (∑ x ∈ C, p * load x) ≤ ∑ x ∈ C, q * cost x :=
+    Finset.sum_le_sum fun x hx => hpoint x hx
+  have hleft : (∑ x ∈ C, p * load x) = p * target := by
+    rw [← Finset.mul_sum, hload]
+  have hright : (∑ x ∈ C, q * cost x) = q * ∑ x ∈ C, cost x := by
+    rw [← Finset.mul_sum]
+  rw [hleft, hright] at hsum
+  have hcap : q * (∑ x ∈ C, cost x) ≤ q * budget :=
+    Nat.mul_le_mul_left q hbudget
+  omega
+
 /-- The reduced used-order partition `[15,1]` is impossible: its only atom
 touching the order-one row contributes load fifteen, while that row requires
 load twelve. -/
