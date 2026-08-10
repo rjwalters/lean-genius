@@ -13102,6 +13102,70 @@ theorem degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
   simpa [D, R] using degree_sixteen_zeroLayer_used_exterior_used_degree_eq_three
     G hfree hmin hcard c₀ hregChild hcardChild v hev
 
+/-- The complete used-cell quotient matrix in the reduced partition
+`[12,4]`.  Exact used-row sums and detailed balance force the cross entries
+`1,3`; the order-twelve diagonal-three exclusion then fixes both diagonals. -/
+theorem degree_sixteen_zeroLayer_used_matrix_twelve_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₄ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁₂ ≠ e₄) (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₄ : e₄.supp.ncard = 12)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₄ : componentRepresentative (secondOrderDefectGraph G) e₄ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₄}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    Q e₁₂ e₁₂ = 2 ∧ Q e₁₂ e₄ = 1 ∧
+      Q e₄ e₁₂ = 3 ∧ Q e₄ e₄ = 0 := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  change Q e₁₂ e₁₂ = 2 ∧ Q e₁₂ e₄ = 1 ∧
+    Q e₄ e₁₂ = 3 ∧ Q e₄ e₄ = 0
+  have hrow₁₂ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₂ hused₁₂
+  have hrow₄ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₄ hused₄
+  change (∑ f ∈ E, Q e₁₂ f) = 3 at hrow₁₂
+  change (∑ f ∈ E, Q e₄ f) = 3 at hrow₄
+  have hE' : E = {e₁₂, e₄} := by simpa [D, R, E] using hE
+  rw [hE'] at hrow₁₂ hrow₄
+  simp [hne] at hrow₁₂ hrow₄
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁₂ e₄
+  change e₁₂.supp.ncard * Q e₁₂ e₄ =
+    e₄.supp.ncard * Q e₄ e₁₂ at hbal
+  rw [he₁₂, he₄] at hbal
+  have hdiagNe : Q e₄ e₄ ≠ 3 := by
+    simpa [D, Q] using degree_sixteen_orderTwelve_diagonalQuotient_ne_three
+      G hfree hmin hcard e₄ he₄
+  have hcrossLe : Q e₁₂ e₄ ≤ 3 := by omega
+  interval_cases hcross : Q e₁₂ e₄ <;> omega
+
 /-- Load contributed by an orphan `o` to a used component `e`, measured in
 reduced used-order units. -/
 def zeroLayerAtomLoad
