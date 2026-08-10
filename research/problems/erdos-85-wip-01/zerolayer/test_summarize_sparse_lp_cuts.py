@@ -12,6 +12,8 @@ with tempfile.TemporaryDirectory() as raw:
     root = Path(raw)
     log = root / "cuts.log"
     log.write_text(
+        "lp_direct_compiled 9.5\n"
+        "lp_direct_data_keys ['A', 'b', 'dims']\n"
         "lp_direct_iteration 0 status kOptimal time 2.5\n"
         "lp_direct_min_eigenvalue -10.0\n"
         "lp_direct_cut 0 value -4.5 [(1, 3), (4, -2)]\n"
@@ -26,6 +28,10 @@ with tempfile.TemporaryDirectory() as raw:
                    check=True, capture_output=True, text=True)
     report = json.loads(output.read_text())
     assert report["optimal_iterations"] == 3
+    assert report["compile_seconds"] == 9.5
+    assert report["data_keys"] == ["A", "b", "dims"]
+    assert report["traceback_detected"] is False
+    assert report["terminal_status"] == "kOptimal"
     assert report["cuts"] == 2
     assert report["least_negative_min_eigenvalue"] == -3.0
     assert report["terminal_min_eigenvalue"] == -5.0

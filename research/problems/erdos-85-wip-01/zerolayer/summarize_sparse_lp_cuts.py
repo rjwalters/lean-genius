@@ -18,10 +18,19 @@ def main():
 
     iterations = {}
     pending = None
+    compile_seconds = None
+    data_keys = None
+    traceback_detected = False
     with open(args.log, encoding="utf-8", errors="replace") as stream:
         for raw in stream:
             line = raw.strip()
-            if line.startswith("lp_direct_iteration "):
+            if line == "Traceback (most recent call last):":
+                traceback_detected = True
+            elif line.startswith("lp_direct_compiled "):
+                compile_seconds = float(line.split()[1])
+            elif line.startswith("lp_direct_data_keys "):
+                data_keys = ast.literal_eval(line.split(" ", 1)[1])
+            elif line.startswith("lp_direct_iteration "):
                 fields = line.split()
                 pending = int(fields[1])
                 iterations[pending] = {
@@ -53,11 +62,14 @@ def main():
     report = {
         "verdict": "SPARSE_RATIONAL_PSD_CUT_TRAJECTORY",
         "log": str(args.log.resolve()), "log_sha256": sha256_file(args.log),
+        "compile_seconds": compile_seconds, "data_keys": data_keys,
+        "traceback_detected": traceback_detected,
         "iterations": ordered,
         "optimal_iterations": sum(item["status"] == "kOptimal" for item in ordered),
         "cuts": sum("cut_value" in item for item in ordered),
         "least_negative_min_eigenvalue": max(eigenvalues) if eigenvalues else None,
         "terminal_min_eigenvalue": eigenvalues[-1] if eigenvalues else None,
+        "terminal_status": ordered[-1]["status"] if ordered else None,
         "support_frequency": [
             {"index": index, "cuts": count}
             for index, count in sorted(support_frequency.items(),
