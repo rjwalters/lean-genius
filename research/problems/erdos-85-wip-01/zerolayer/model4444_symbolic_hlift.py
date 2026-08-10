@@ -249,6 +249,48 @@ if "--local-parity" in sys.argv:
     bump("symbolic_local_A_incidence_odd", mark)
 
 
+def mod3_eq_one(literals):
+    """Assert that the number of true literals is one modulo three."""
+    # One-hot states record the exact prefix residue.  The two implication
+    # directions for each input value, together with one-hotness, make every
+    # transition deterministic (and give every valid input a unique state
+    # extension).
+    previous = [newvar() for _ in range(3)]
+    exactly_one_pairwise(previous)
+    clauses.append((previous[0],))
+    clauses.append((-previous[1],))
+    clauses.append((-previous[2],))
+    for literal in literals:
+        current = [newvar() for _ in range(3)]
+        exactly_one_pairwise(current)
+        for residue in range(3):
+            clauses.append((-previous[residue], literal, current[residue]))
+            clauses.append((-previous[residue], -literal,
+                            current[(residue + 1) % 3]))
+        previous = current
+    clauses.append((previous[1],))
+
+
+if "--type-balance" in sys.argv:
+    # The cube-root Fourier kernel of A=D union S is annihilated by H.  If
+    # q_e(v) counts H-neighbors in blocks linked to used component e, this
+    # gives 3 | q_e(v).  Its complement among the thirteen H-neighbors is the
+    # count in blocks omitting e, hence that count is 1 mod 3.  Consequently
+    # every vertex has omitted-type profile [10,1,1,1], [7,4,1,1], or
+    # [4,4,4,1].
+    mark = len(clauses)
+    for vertex in range(N):
+        for omit in COMPS:
+            candidates = [
+                E[frozenset((vertex, other))]
+                for other in range(N)
+                if other != vertex and ORPHANS[other // 12][0] == omit
+            ]
+            assert len(candidates) in (47, 48)
+            mod3_eq_one(candidates)
+    bump("cube_root_kernel_omitted_type_balance", mark)
+
+
 def card_eq(literals, k):
     """Exact cardinality via equivalence sequential threshold bits."""
     previous = [None] * (k + 2)
@@ -316,6 +358,7 @@ if "--emit" in sys.argv:
         "options": {
             "local_parity": "--local-parity" in sys.argv,
             "phase_symmetry": "--phase-symmetry" in sys.argv,
+            "type_balance": "--type-balance" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
