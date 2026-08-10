@@ -11634,6 +11634,48 @@ theorem false_of_zeroLayer_reduced_used_orders_ten_two_two_two_exact_atom_ledger
     (hexcess2₃ : 2 * nB₃₁ + 2 * nB₃₂ = 0) : False := by
   omega
 
+/-- Exact orphan budgets rule out `[5,5,2,2,2]`.  The three order-two
+rows force all directed `B(2)` atoms to vanish.  On the two order-five rows,
+load then requires more mutual `B(5)` atoms than their exact excess permits. -/
+theorem false_of_zeroLayer_reduced_used_orders_five_five_two_two_two_exact_atom_ledger
+    (nA nB₀₁ nB₁₀ nB₂₃ nB₂₄ nB₃₂ nB₃₄ nB₄₂ nB₄₃
+      nC₀ nC₁ nD₀ nD₁ : ℕ)
+    (hload5₀ : 10 * nB₀₁ + 5 * nB₁₀ + 15 * nC₀ + 5 * nD₀ = 60)
+    (hexcess5₀ : 2 * nB₀₁ + 6 * nC₀ + 2 * nD₀ = 6)
+    (hload5₁ : 5 * nB₀₁ + 10 * nB₁₀ + 15 * nC₁ + 5 * nD₁ = 60)
+    (hexcess5₁ : 2 * nB₁₀ + 6 * nC₁ + 2 * nD₁ = 6)
+    (hload2₂ : 2 * nA + 4 * nB₂₃ + 4 * nB₂₄ +
+      2 * nB₃₂ + 2 * nB₄₂ = 24)
+    (hexcess2₂ : 2 * nB₂₃ + 2 * nB₂₄ = 0)
+    (hload2₃ : 2 * nA + 2 * nB₂₃ + 4 * nB₃₂ + 4 * nB₃₄ +
+      2 * nB₄₃ = 24)
+    (hexcess2₃ : 2 * nB₃₂ + 2 * nB₃₄ = 0)
+    (hload2₄ : 2 * nA + 2 * nB₂₄ + 2 * nB₃₄ + 4 * nB₄₂ +
+      4 * nB₄₃ = 24)
+    (hexcess2₄ : 2 * nB₄₂ + 2 * nB₄₃ = 0) : False := by
+  omega
+
+/-- Exact orphan budgets rule out `[8,4,2,2]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_eight_four_two_two_exact_atom_ledger
+    (nB8₀₁ nB4₀₁ nB8₀₂ nB4₀₂ nB8₀₃ nB4₀₃
+      nB2₁₂ nB4₁₂ nB2₁₃ nB4₁₃ nB2₂₃ nB2₃₂
+      nC8 nC4 nD8 nD4 : ℕ)
+    (hload8 : 16 * nB8₀₁ + 8 * nB4₀₁ + 16 * nB8₀₂ + 8 * nB4₀₂ +
+      16 * nB8₀₃ + 8 * nB4₀₃ + 24 * nC8 + 8 * nD8 = 96)
+    (hexcess8 : 2 * nB8₀₁ + nB4₀₁ + 2 * nB8₀₂ + nB4₀₂ +
+      2 * nB8₀₃ + nB4₀₃ + 6 * nC8 + 2 * nD8 = 12)
+    (hload4 : 8 * nB8₀₁ + 4 * nB4₀₁ + 4 * nB2₁₂ + 8 * nB4₁₂ +
+      4 * nB2₁₃ + 8 * nB4₁₃ + 12 * nC4 + 4 * nD4 = 48)
+    (hexcess4 : nB2₁₂ + 2 * nB4₁₂ + nB2₁₃ + 2 * nB4₁₃ +
+      6 * nC4 + 2 * nD4 = 4)
+    (hload2₂ : 8 * nB8₀₂ + 4 * nB4₀₂ + 2 * nB2₁₂ + 4 * nB4₁₂ +
+      4 * nB2₂₃ + 2 * nB2₃₂ = 24)
+    (hexcess2₂ : 2 * nB2₂₃ = 0)
+    (hload2₃ : 8 * nB8₀₃ + 4 * nB4₀₃ + 2 * nB2₁₃ + 4 * nB4₁₃ +
+      2 * nB2₂₃ + 4 * nB2₃₂ = 24)
+    (hexcess2₃ : 2 * nB2₃₂ = 0) : False := by
+  omega
+
 /-- The reduced used-order partition `[15,1]` is impossible: its only atom
 touching the order-one row contributes load fifteen, while that row requires
 load twelve. -/
