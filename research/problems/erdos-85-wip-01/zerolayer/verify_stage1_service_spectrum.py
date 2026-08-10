@@ -45,6 +45,17 @@ def main():
                     13 ** 3 + 4 ** 3 * a + 3 ** 3 * b == 1968:
                 solutions.append((a, b))
     assert solutions == [(-4, 1)]
+    # On the all-ones line (H,A)=(13,35).  On the rational ±4 and
+    # ±3 sectors, A=12-H² is respectively -4 and 3.  Every remaining
+    # H-sign pair is balanced, so it cancels from traces odd in H.
+    a, b = solutions[0]
+    trace_HA = 13 * 35 + (4 * a) * (-4) + (3 * b) * 3
+    trace_HA2 = 13 * 35 ** 2 + (4 * a) * (-4) ** 2 + \
+        (3 * b) * 3 ** 2
+    assert trace_HA == 528
+    assert trace_HA2 == 15696
+    assert trace_HA // 2 == 264
+    assert trace_HA2 // 2 == 7848
     print("STAGE1 SERVICE SPECTRUM EXACT AUDIT OK")
 
 

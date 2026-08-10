@@ -384,6 +384,57 @@ if "--paired-type-quotient" in sys.argv:
     bump("paired_omitted_type_equitable_quotient", mark)
 
 
+if "--color-balance" in sys.argv:
+    if "--paired-type-quotient" not in sys.argv:
+        raise ValueError("--color-balance requires --paired-type-quotient")
+    # The full cube-root kernel is stronger than its omitted-type degree
+    # consequence.  For each used component e, H annihilates the two rational
+    # contrasts between the three colors x + tau[o,e] (mod 3).  Hence every
+    # vertex has equally many H-neighbors in all three linked-e colors.  The
+    # paired quotient says that the total linked-e degree is twelve when e is
+    # paired with the vertex's omitted type, and nine otherwise, so every
+    # color count is respectively four or three.
+    mark = len(clauses)
+    color = {}
+    for orphan in ORPHANS:
+        for component in links(orphan):
+            for residue in range(3):
+                literal = newvar()
+                color[orphan, component, residue] = literal
+                phases = [P[orphan, component, phase]
+                          for phase in range(12) if phase % 3 == residue]
+                for phase_literal in phases:
+                    clauses.append((-phase_literal, literal))
+                clauses.append((-literal, *phases))
+    paired = {0: 1, 1: 0, 2: 3, 3: 2}
+    for vertex in range(N):
+        source_omit = ORPHANS[vertex // 12][0]
+        for component in COMPS:
+            expected = 4 if component == paired[source_omit] else 3
+            for residue in range(3):
+                candidates = []
+                for other in range(N):
+                    if other == vertex:
+                        continue
+                    orphan = ORPHANS[other // 12]
+                    if component not in links(orphan):
+                        continue
+                    # The color of (orphan,x) is x+tau[o,e], so translate the
+                    # requested vertex color back to the phase residue.
+                    x = other % 12
+                    phase_residue = (residue - x) % 3
+                    edge = E[frozenset((vertex, other))]
+                    colored = color[orphan, component, phase_residue]
+                    both = newvar()
+                    clauses.append((-both, edge))
+                    clauses.append((-both, colored))
+                    clauses.append((both, -edge, -colored))
+                    candidates.append(both)
+                assert len(candidates) in (143, 144)
+                card_eq(candidates, expected)
+    bump("cube_root_kernel_exact_color_balance", mark)
+
+
 mark = len(clauses)
 for vertex in range(N):
     incident = [E[frozenset((vertex, other))]
@@ -422,6 +473,7 @@ if "--emit" in sys.argv:
             "type_balance": "--type-balance" in sys.argv,
             "type_profile": "--type-profile" in sys.argv,
             "paired_type_quotient": "--paired-type-quotient" in sys.argv,
+            "color_balance": "--color-balance" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)

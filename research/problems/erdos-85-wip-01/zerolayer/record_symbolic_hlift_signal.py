@@ -84,6 +84,8 @@ def main():
             option_log = output.with_suffix(output.suffix + ".options.log")
             option_command = [sys.executable, str(option_verifier),
                               str(solver_log)]
+            if doc.get("options", {}).get("color_balance"):
+                option_command.append("--color-balance")
             with open(option_log, "w", encoding="utf-8") as stream:
                 option_checked = subprocess.run(
                     option_command, stdout=stream, stderr=subprocess.STDOUT,
