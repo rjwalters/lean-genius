@@ -8,6 +8,9 @@ import subprocess
 import sys
 import tempfile
 
+from summarize_symbolic_phase_cubes import expected_cube_hashes
+from verify_symbolic_hlift_assignment import phase_variable_map
+
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -19,6 +22,24 @@ def write(path, doc):
 
 with tempfile.TemporaryDirectory() as raw:
     root = Path(raw)
+    mapping, _ = phase_variable_map()
+    alternate_literals = [mapping[((1, 0), 2, phase)] for phase in range(3)]
+    alternate_parent = root / "alternate.cnf"
+    alternate_parent.write_text(
+        f"p cnf 20000 4\n{' '.join(map(str, alternate_literals))} 0\n" +
+        "".join(f"-{left} -{right} 0\n" for left, right in
+                ((alternate_literals[0], alternate_literals[1]),
+                 (alternate_literals[0], alternate_literals[2]),
+                 (alternate_literals[1], alternate_literals[2])))
+    )
+    expected_alternate = expected_cube_hashes(alternate_parent,
+                                               alternate_literals)
+    for phase, literal in enumerate(alternate_literals):
+        child = root / f"alternate-{phase}.cnf"
+        child.write_text(alternate_parent.read_text().replace(
+            "p cnf 20000 4\n", "p cnf 20000 5\n") + f"{literal} 0\n")
+        assert sha(child) == expected_alternate[phase]
+
     parent_cnf = root / "parent.cnf"
     parent_cnf.write_text(
         "p cnf 20000 4\n18349 18350 18351 0\n"
@@ -34,6 +55,7 @@ with tempfile.TemporaryDirectory() as raw:
             + f"{18349 + phase} 0\n")
         manifest = Path(str(stem) + ".manifest.json")
         write(manifest, {
+            "scope": f"toy parent AND tau[(0,0),2]={phase}",
             "parent_manifest_sha256": parent_manifest_sha,
             "parent_cnf_sha256": sha(parent_cnf),
             "sha256": sha(cnf), "cube_phase": phase,

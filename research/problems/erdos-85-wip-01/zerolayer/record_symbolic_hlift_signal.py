@@ -14,6 +14,40 @@ import subprocess
 import sys
 
 from run_hlift_orbit_signal import parse_status, sha256_file
+from verify_symbolic_hlift_assignment import phase_variable_map
+
+
+def valid_cube_scope(doc, parent_scope):
+    """Validate either a legacy top cube or a recursive anchor ancestry."""
+    scope = doc.get("scope")
+    legacy_phase = doc.get("cube_phase")
+    legacy = (scope in {
+        parent_scope + f" AND tau[(0,0),2]={phase}" for phase in range(3)
+    } and isinstance(legacy_phase, int) and legacy_phase in range(3)
+        and doc.get("cube_literal") == 18349 + legacy_phase
+        and doc.get("cube_partition_verified") is True)
+    ancestry = doc.get("cube_ancestry")
+    if not ancestry:
+        return legacy
+    mapping, _ = phase_variable_map()
+    expected_scope = parent_scope
+    for entry in ancestry:
+        try:
+            omit, copy = entry["orphan"]
+            component, phase = entry["component"], entry["phase"]
+            literals = [mapping[((omit, copy), component, p)] for p in range(3)]
+        except (KeyError, TypeError, ValueError):
+            return False
+        if (phase not in range(3) or entry.get("anchor") !=
+                f"tau[({omit},{copy}),{component}]" or
+                entry.get("literal") != literals[phase] or
+                entry.get("exhaustive_anchor_literals") != literals):
+            return False
+        expected_scope += f" AND {entry['anchor']}={phase}"
+    last = ancestry[-1]
+    return (scope == expected_scope and doc.get("cube_phase") == last["phase"]
+            and doc.get("cube_literal") == last["literal"]
+            and doc.get("cube_partition_verified") is True)
 
 
 def validate_symbolic_manifest(manifest_path, cnf_path, verifier_path):
@@ -21,11 +55,7 @@ def validate_symbolic_manifest(manifest_path, cnf_path, verifier_path):
     parent_scope = "all corrected Stage-1 (4,4,4,4) service witnesses"
     scope = doc.get("scope")
     is_parent = scope == parent_scope
-    is_phase_cube = (scope in {
-        parent_scope + f" AND tau[(0,0),2]={phase}" for phase in range(3)
-    } and doc.get("cube_phase") in range(3)
-        and doc.get("cube_literal") == 18349 + doc["cube_phase"]
-        and doc.get("cube_partition_verified") is True)
+    is_phase_cube = valid_cube_scope(doc, parent_scope)
     if not (is_parent or is_phase_cube):
         raise ValueError("unexpected symbolic manifest scope")
     actual_cnf = sha256_file(cnf_path)

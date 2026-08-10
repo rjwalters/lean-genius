@@ -35,6 +35,9 @@ def main():
     parser.add_argument("manifest", type=Path)
     parser.add_argument("cnf", type=Path)
     parser.add_argument("output_dir", type=Path)
+    parser.add_argument("--anchor", nargs=3, type=int,
+                        metavar=("OMIT", "COPY", "COMPONENT"),
+                        default=(0, 0, 2))
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -51,7 +54,11 @@ def main():
         raise ValueError("parent CNF header/manifest mismatch")
 
     mapping, _last_phase = phase_variable_map()
-    anchor = ((0, 0), 2)
+    omit, copy, component = args.anchor
+    anchor = ((omit, copy), component)
+    if (omit not in range(4) or copy not in range(4) or
+            component not in range(4) or component == omit):
+        raise ValueError(f"invalid phase anchor: {args.anchor}")
     literals = [mapping[anchor[0], anchor[1], phase] for phase in range(3)]
     exhaustive_clause = (" ".join(map(str, literals)) + " 0").encode()
     exclusion_clauses = {
@@ -77,8 +84,10 @@ def main():
             + ", ".join(sorted(clause.decode() for clause in missing_exclusions))
         )
 
+    anchor_name = f"tau[({omit},{copy}),{component}]"
+    anchor_tag = f"o{omit}c{copy}_e{component}"
     summary = {"parent_sha256": actual_sha, "parent_header": [variables, clauses],
-               "anchor": "tau[(0,0),2]", "literals": literals,
+               "anchor": anchor_name, "literals": literals,
                "exhaustive_clause_verified": True,
                "mutual_exclusion_clauses_verified": True,
                "cube_partition_verified": True}
@@ -89,7 +98,7 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     cube_docs = []
     for phase, literal in enumerate(literals):
-        stem = f"{args.cnf.stem}.anchor_o0c0_e2_p{phase}"
+        stem = f"{args.cnf.stem}.anchor_{anchor_tag}_p{phase}"
         output = args.output_dir / f"{stem}.cnf"
         with open(args.cnf, "rb") as source, open(output, "wb") as target:
             source.readline()
@@ -97,8 +106,17 @@ def main():
             for line in source:
                 target.write(line)
             target.write(f"{literal} 0\n".encode())
+        ancestry = [*doc.get("cube_ancestry", []), {
+            "anchor": anchor_name, "orphan": [omit, copy],
+            "component": component, "phase": phase, "literal": literal,
+            "exhaustive_anchor_literals": literals,
+        }]
+        unit_count = sum(name.startswith("phase_anchor_cube_unit")
+                         for name in doc["rule_counts"])
+        unit_name = ("phase_anchor_cube_unit" if unit_count == 0 else
+                     f"phase_anchor_cube_unit_{unit_count + 1}")
         cube = {
-            "scope": doc["scope"] + f" AND tau[(0,0),2]={phase}",
+            "scope": doc["scope"] + f" AND {anchor_name}={phase}",
             "parent_manifest": str(args.manifest),
             "parent_manifest_sha256": sha256_file(args.manifest),
             "parent_cnf": str(args.cnf), "parent_cnf_sha256": actual_sha,
@@ -108,8 +126,9 @@ def main():
             "sat_verifier_sha256": doc["sat_verifier_sha256"],
             "options": doc.get("options", {}),
             "rule_counts": {
-                **doc["rule_counts"], "phase_anchor_cube_unit": 1,
+                **doc["rule_counts"], unit_name: 1,
             },
+            "cube_anchor": anchor_name, "cube_ancestry": ancestry,
             "cube_phase": phase, "exhaustive_anchor_literals": literals,
             "exhaustive_clause_verified": True,
             "mutual_exclusion_clauses_verified": True,

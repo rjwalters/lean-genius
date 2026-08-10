@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 
+from verify_symbolic_hlift_assignment import phase_variable_map
+
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -76,5 +78,43 @@ with tempfile.TemporaryDirectory() as raw:
     )
     assert rejected.returncode != 0
     assert "pairwise anchor exclusion" in rejected.stderr
+
+    nested = root / "nested"
+    nested.mkdir()
+    mapping, _ = phase_variable_map()
+    literals = [mapping[((1, 0), 2, phase)] for phase in range(3)]
+    nested_cnf = nested / "p1.cnf"
+    nested_cnf.write_text(
+        f"p cnf 20000 4\n{' '.join(map(str, literals))} 0\n" +
+        "".join(f"-{left} -{right} 0\n" for left, right in
+                ((literals[0], literals[1]), (literals[0], literals[2]),
+                 (literals[1], literals[2])))
+    )
+    nested_manifest = nested / "p1.manifest.json"
+    nested_manifest.write_text(json.dumps({
+        "scope": "toy parent AND tau[(0,0),2]=1",
+        "sha256": sha(nested_cnf), "vars": 20000, "clauses": 4,
+        "encoder_sha256": "e" * 64, "sat_verifier_sha256": "v" * 64,
+        "rule_counts": {"toy": 3, "phase_anchor_cube_unit": 1},
+        "options": {"phase_symmetry": True},
+        "cube_ancestry": [{
+            "anchor": "tau[(0,0),2]", "orphan": [0, 0],
+            "component": 2, "phase": 1, "literal": 18350,
+            "exhaustive_anchor_literals": [18349, 18350, 18351],
+        }],
+    }))
+    nested_output = nested / "children"
+    subprocess.run([
+        sys.executable, str(splitter), str(nested_manifest), str(nested_cnf),
+        str(nested_output), "--anchor", "1", "0", "2",
+    ], check=True, capture_output=True, text=True)
+    children = sorted(nested_output.glob("*.manifest.json"))
+    assert len(children) == 3
+    for phase, child_path in enumerate(children):
+        child = json.loads(child_path.read_text())
+        assert child["cube_anchor"] == "tau[(1,0),2]"
+        assert len(child["cube_ancestry"]) == 2
+        assert child["cube_ancestry"][-1]["phase"] == phase
+        assert child["rule_counts"]["phase_anchor_cube_unit_2"] == 1
 
 print("SYMBOLIC PHASE CUBE SPLITTER ALL OK")
