@@ -17,7 +17,12 @@ is one of them.  Consequently a verified UNSAT result for the symbolic
 model excludes the corrected zero-layer `(4,4,4,4)` service class only.  It
 does not by itself exclude the other zero-layer partitions, either the
 `s = 2` or `s = 4` degree-sixteen branches, or the ambient Erdős 85
-problem.
+problem.  The `s = 2` and `s = 4` branches are instead eliminated by the
+separate Lean theorems `false_of_degree_sixteen_twoLayer` and
+`false_of_degree_sixteen_fourLayer`, with
+`degree_sixteen_remaining_zeroLayer` reducing the surviving degree-sixteen
+analysis to `s = 0`.  Thus a future verified `(4,4,4,4)` UNSAT certificate
+would leave 61 arithmetic-survivor zero-layer partitions to resolve.
 
 For every corrected `(4,4,4,4)` Stage-1 witness, the graph
 `A = D ∪ S` on the 16 orphan `C12` blocks has the same spectrum.  This is
