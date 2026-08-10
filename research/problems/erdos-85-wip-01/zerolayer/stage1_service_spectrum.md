@@ -24,6 +24,28 @@ separate Lean theorems `false_of_degree_sixteen_twoLayer` and
 analysis to `s = 0`.  Thus a future verified `(4,4,4,4)` UNSAT certificate
 would leave 61 arithmetic-survivor zero-layer partitions to resolve.
 
+### Phase-zero cube is a gauge contradiction
+
+The three-way anchor split at `tau[(0,0),2]` is exhaustive, but its phase-zero
+cube contains no substantive H-lift case.  The per-row gauge already fixes
+`tau[(0,0),1] = 0`, while the Stage-1 row-residue law requires the three
+linked phases to be pairwise distinct modulo three.  Adding
+`tau[(0,0),2] = 0` therefore gives an immediate unit-propagation
+contradiction.  The two substantive orientation cubes are phases one and
+two.
+
+This degenerate cube nevertheless has a canonical certificate for exhaustive
+parent aggregation.  Its CNF SHA-256 is
+`dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
+Kissat returned UNSAT and `drat-trim` returned `s VERIFIED`.  The canonical
+certificate JSON SHA-256 is
+`5c4b8f69ed121947210ebe228b928a06f71200912e73e0377ba9a07ee39df86e`.
+An independently extracted original-clause core has exactly three clauses:
+two from `stage1_phase_onehot_gauge_row_residues` and the cube unit, with no
+clauses from any graph-theoretic encoder family.  Thus this certificate must
+not be interpreted as evidence for a mathematical obstruction beyond the
+gauge normalization.
+
 For every corrected `(4,4,4,4)` Stage-1 witness, the graph
 `A = D ∪ S` on the 16 orphan `C12` blocks has the same spectrum.  This is
 not an experimental invariance: it follows from a four-column Gram matrix in
