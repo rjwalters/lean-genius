@@ -61,4 +61,39 @@ theorem three_pairwise_distinct_mod_three_cases (a b c : ℕ)
     (a % 3 = 2 ∧ b % 3 = 1 ∧ c % 3 = 0) := by
   omega
 
+/-- Removing a member of residue class one from a balanced four/four profile
+leaves three members of its class and all four members of the other class. -/
+theorem residue_class_counts_after_erase_of_eq_one
+    {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι → ℕ) (i : ι)
+    (hi : i ∈ s)
+    (hone : (s.filter fun j => f j % 3 = 1).card = 4)
+    (htwo : (s.filter fun j => f j % 3 = 2).card = 4)
+    (hfi : f i % 3 = 1) :
+    ((s.erase i).filter fun j => f j % 3 = 1).card = 3 ∧
+      ((s.erase i).filter fun j => f j % 3 = 2).card = 4 := by
+  constructor
+  · rw [Finset.filter_erase, Finset.card_erase_of_mem]
+    · omega
+    · simpa [hfi] using hi
+  · rw [Finset.filter_erase, Finset.erase_eq_of_notMem]
+    · exact htwo
+    · simp [hfi]
+
+/-- The symmetric removal rule for a member of residue class two. -/
+theorem residue_class_counts_after_erase_of_eq_two
+    {ι : Type*} [DecidableEq ι] (s : Finset ι) (f : ι → ℕ) (i : ι)
+    (hi : i ∈ s)
+    (hone : (s.filter fun j => f j % 3 = 1).card = 4)
+    (htwo : (s.filter fun j => f j % 3 = 2).card = 4)
+    (hfi : f i % 3 = 2) :
+    ((s.erase i).filter fun j => f j % 3 = 1).card = 4 ∧
+      ((s.erase i).filter fun j => f j % 3 = 2).card = 3 := by
+  constructor
+  · rw [Finset.filter_erase, Finset.erase_eq_of_notMem]
+    · exact hone
+    · simp [hfi]
+  · rw [Finset.filter_erase, Finset.card_erase_of_mem]
+    · omega
+    · simpa [hfi] using hi
+
 end Erdos85
