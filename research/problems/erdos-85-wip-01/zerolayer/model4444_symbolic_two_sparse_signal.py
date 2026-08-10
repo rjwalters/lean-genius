@@ -22,6 +22,12 @@ namespace = {"__file__": str(source_path), "__name__": "two_sparse_prefix"}
 exec(compile(prefix, str(source_path), "exec"), namespace)
 globals().update(namespace)
 
+if "--fix-baseline" in sys.argv:
+    from test_symbolic_hlift_service import WIT
+    for orphan in ORPHANS:
+        for component in links(orphan):
+            clauses.append((P[orphan, component, WIT[orphan][component]],))
+
 
 def candidate_neighborhood(center):
     selected = [newvar() for _ in range(N)]
@@ -84,6 +90,59 @@ def candidate_neighborhood(center):
     return selected
 
 
+def threshold_bits(literals, maximum):
+    """Equivalence-defined bits saying at least k literals are true."""
+    previous = [None] * (maximum + 1)
+    for index, literal in enumerate(literals, 1):
+        current = [None] * (maximum + 1)
+        for threshold in range(1, min(index, maximum) + 1):
+            bit = newvar()
+            current[threshold] = bit
+            same = previous[threshold]
+            lower = previous[threshold - 1] if threshold >= 2 else None
+            if same is not None:
+                clauses.append((-same, bit))
+            if threshold == 1:
+                clauses.append((-literal, bit))
+                clauses.append((-bit, literal) if same is None else
+                               (-bit, same, literal))
+            elif lower is not None:
+                clauses.append((-literal, -lower, bit))
+                if same is None:
+                    clauses.extend([(-bit, literal), (-bit, lower)])
+                else:
+                    clauses.extend([(-bit, same, literal),
+                                    (-bit, same, lower)])
+            elif same is None:
+                clauses.append((-bit,))
+            else:
+                clauses.append((-bit, same))
+        previous = current
+    return previous
+
+
+def mixed_row_thresholds(selected):
+    """Threshold representation of |N_H(center) intersect N_A(target)|."""
+    rows = []
+    for target in range(N):
+        block_base = 12 * (target // 12)
+        coordinate = target % 12
+        neighbors = [selected[block_base + (coordinate - 1) % 12],
+                     selected[block_base + (coordinate + 1) % 12]]
+        for source in range(N):
+            if source // 12 == target // 12:
+                continue
+            both = newvar()
+            service = SERVICE[frozenset((source, target))]
+            clauses.extend([(-both, selected[source]), (-both, service),
+                            (both, -selected[source], -service)])
+            neighbors.append(both)
+        thresholds = threshold_bits(neighbors, 10)
+        clauses.append((-thresholds[10],))  # certified B-entry cap
+        rows.append(thresholds)
+    return rows
+
+
 left_center = vid((0, 0), 0)
 right_center = vid((0, 0), distance)
 X = candidate_neighborhood(left_center)
@@ -129,10 +188,42 @@ if "--cross-mass" in sys.argv:
             cross_edges.append(both)
     card_eq_binary(cross_edges, [44, 31, 29, 32, 32, 29][distance - 1])
 
+if "--row-geometry" in sys.argv:
+    left_row = mixed_row_thresholds(X)
+    right_row = mixed_row_thresholds(Z)
+    for row in (left_row, right_row):
+        weighted = []
+        for thresholds in row:
+            for level in range(1, 10):
+                weighted.extend([thresholds[level]] * (2 * level - 1))
+        card_eq_binary(weighted, 1255)
+        for target_type in range(4):
+            type_mass = [
+                thresholds[level]
+                for target, thresholds in enumerate(row)
+                if ORPHANS[target // 12][0] == target_type
+                for level in range(1, 10)
+            ]
+            card_eq_binary(type_mass, 107 if target_type == 1 else 116)
+
+    dot_terms = []
+    for target in range(N):
+        for left_level in range(1, 10):
+            for right_level in range(1, 10):
+                both = newvar()
+                left_bit = left_row[target][left_level]
+                right_bit = right_row[target][right_level]
+                clauses.extend([(-both, left_bit), (-both, right_bit),
+                                (both, -left_bit, -right_bit)])
+                dot_terms.append(both)
+    card_eq_binary(dot_terms,
+                   [997, 1093, 1068, 1081, 1081, 1069][distance - 1])
+
 final_nv = namespace["nv"]
 print(f"distance {distance} vars {final_nv} clauses {len(clauses)}")
 if "--emit" in sys.argv:
-    output = Path(f"/tmp/two_sparse_d{distance}.cnf")
+    suffix = "_fixed_types" if "--fix-baseline" in sys.argv else ""
+    output = Path(f"/tmp/two_sparse_d{distance}{suffix}.cnf")
     with output.open("w") as handle:
         handle.write(f"p cnf {final_nv} {len(clauses)}\n")
         for clause in clauses:
