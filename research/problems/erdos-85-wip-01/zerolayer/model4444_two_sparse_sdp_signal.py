@@ -13,6 +13,7 @@ import time
 
 import cvxpy as cp
 import numpy as np
+from scipy import sparse as sp
 
 from test_symbolic_hlift_service import WIT
 from verify_stage1_color_action import graphs, ORPHANS, N, vid
@@ -210,11 +211,45 @@ if args.lp_cuts and args.lp_direct:
     compiled_at = time.perf_counter()
     data, _, _ = problem.get_problem_data("HIGHS")
     print("lp_direct_compiled", time.perf_counter() - compiled_at, flush=True)
-    matrix = data[cvx_settings.A].tocsc()
-    dims = data[cvx_settings.DIMS]
     print("lp_direct_data_keys", sorted(map(str, data)), flush=True)
-    equality_rows = dims.zero
     infinity = highspy.Highs().inf
+    # CVXPY's HiGHS reduction normally uses QP stuffing even for this
+    # constant-objective LP: A x = b contains only equalities, while
+    # F x <= G contains every inequality.  Older/conic layouts instead put
+    # the two cones into one A/b block.  Preserve both layouts explicitly;
+    # omitting F/G silently drops the RLT relaxation.
+    if cvx_settings.F in data:
+        equality = data[cvx_settings.A]
+        inequality = data[cvx_settings.F]
+        matrix = sp.vstack([equality, inequality]).tocsc()
+        row_lower = np.concatenate([
+            data[cvx_settings.B],
+            -infinity * np.ones(data[cvx_settings.G].shape),
+        ])
+        row_upper = np.concatenate([
+            data[cvx_settings.B], data[cvx_settings.G],
+        ])
+        objective = data[cvx_settings.Q]
+        quadratic = data[cvx_settings.P]
+        if quadratic.count_nonzero():
+            raise ValueError("direct LP path received a quadratic objective")
+        layout = "qp_A_b_F_G"
+    else:
+        matrix = data[cvx_settings.A].tocsc()
+        dims = data[cvx_settings.DIMS]
+        equality_rows = dims.zero
+        row_lower = np.concatenate([
+            data[cvx_settings.B][:equality_rows],
+            -infinity * np.ones(matrix.shape[0] - equality_rows),
+        ])
+        row_upper = data[cvx_settings.B]
+        objective = data.get(cvx_settings.C)
+        if objective is None:
+            objective = np.zeros(matrix.shape[1])
+        layout = "conic_A_b"
+    print("lp_direct_layout", layout, "equalities",
+          len(data[cvx_settings.B]), "inequalities",
+          matrix.shape[0] - len(data[cvx_settings.B]), flush=True)
     model = highspy.HighsModel()
     lp = model.lp_
     lp.num_col_ = matrix.shape[1]
@@ -222,14 +257,9 @@ if args.lp_cuts and args.lp_direct:
     # CVXPY versions differ on whether a constant-zero feasibility objective
     # gets an explicit `c` entry.  Its mathematical objective vector is zero
     # in either representation.
-    objective = data.get(cvx_settings.C)
-    lp.col_cost_ = (np.zeros(matrix.shape[1]) if objective is None
-                    else objective)
-    lp.row_lower_ = np.concatenate([
-        data[cvx_settings.B][:equality_rows],
-        -infinity * np.ones(matrix.shape[0] - equality_rows),
-    ])
-    lp.row_upper_ = data[cvx_settings.B]
+    lp.col_cost_ = objective
+    lp.row_lower_ = row_lower
+    lp.row_upper_ = row_upper
     lower_bounds = data.get(cvx_settings.LOWER_BOUNDS)
     upper_bounds = data.get(cvx_settings.UPPER_BOUNDS)
     lp.col_lower_ = (np.full(lp.num_col_, -infinity)
