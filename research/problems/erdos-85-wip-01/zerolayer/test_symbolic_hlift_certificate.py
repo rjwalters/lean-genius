@@ -67,6 +67,34 @@ def main():
             ])
         manifest.write_text(json.dumps(recursive), encoding="utf-8")
         assert validate_symbolic_manifest(manifest, cnf, verifier) == recursive
+        exact_literals = [mapping[((0, 1), 2, phase)]
+                          for phase in range(12)]
+        residue_entry = {
+            "anchor": "tau[(0,1),2]", "orphan": [0, 1],
+            "component": 2, "residue_modulus": 3, "residue": 1,
+            "clause_literals": exact_literals[1::3],
+            "exact_phase_literals": exact_literals,
+        }
+        residue_cube = dict(
+            recursive,
+            scope=recursive["scope"] + " AND tau[(0,1),2]%3=1",
+            cube_ancestry=[*recursive["cube_ancestry"], residue_entry],
+            cube_residue_modulus=3, cube_residue=1,
+            cube_clause_literals=exact_literals[1::3],
+            exact_phase_literals=exact_literals,
+            exact_one_hot_verified=True,
+            exact_pairwise_exclusions_verified=True,
+        )
+        manifest.write_text(json.dumps(residue_cube), encoding="utf-8")
+        assert validate_symbolic_manifest(manifest, cnf, verifier) == residue_cube
+        malformed_residue = dict(residue_cube, cube_clause_literals=
+                                 exact_literals[2::3])
+        manifest.write_text(json.dumps(malformed_residue), encoding="utf-8")
+        try:
+            validate_symbolic_manifest(manifest, cnf, verifier)
+            raise AssertionError("malformed residue cube accepted")
+        except ValueError as exc:
+            assert "unexpected symbolic manifest scope" in str(exc)
         bad = dict(doc, sha256="0" * 64)
         manifest.write_text(json.dumps(bad), encoding="utf-8")
         try:
