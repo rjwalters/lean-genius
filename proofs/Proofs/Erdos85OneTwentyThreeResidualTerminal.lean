@@ -11407,6 +11407,77 @@ theorem no_three_orderedSidon_oddSupport_zmod_twelve :
       ∀ s ∈ S, ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) s ≠ 0 := by
   native_decide
 
+/-- A labeled order-twelve defect component cannot be reverse-oriented with
+diagonal quotient three.  Reflection makes its three odd anti-diagonal
+phases into a circulant Sidon support, contradicting the finite `ZMod 12`
+packing obstruction. -/
+theorem false_of_orderTwelve_reverse_diagonal_three_labeled
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod 12 → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (hrev : ∀ x y : ZMod 12,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y))
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 3) :
+    False := by
+  classical
+  let S := graphCycleBlockZeroSupport G u u
+  have hScard : S.card = 3 := by
+    have hbridge := card_graphCycleBlockZeroSupport_eq_componentQuotient
+      G hfree (d := 16) (r := 12) (by norm_num) (by norm_num) hmin hcard
+        c c u u hu huRange huRange
+    exact hbridge.trans hdiag
+  have hodd : ∀ s ∈ S,
+      ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) s ≠ 0 := by
+    intro s hs hseven
+    have hmem : s ∈ Set.range (fun z : ZMod 12 ↦ 2 * z) :=
+      (zmod_mem_range_two_mul_iff_castHom_eq_zero
+        (by norm_num : 2 ∣ 12) s).mpr hseven
+    obtain ⟨z, hz⟩ := hmem
+    have hnot := add_self_not_mem_graphCycleBlockZeroSupport_of_reverse
+      G u hrev z
+    apply hnot
+    change z + z ∈ S
+    rw [← hz] at hs
+    simpa only [two_mul] using hs
+  have hzero : ∀ x y : ZMod 12,
+      G.Adj (u x) (u y) ↔ G.Adj (u 0) (u (x + y)) := by
+    intro x y
+    have hrevZ : ∀ a b : ZMod 12,
+        G.adjMatrix ℤ (u (a + 1)) (u (b - 1)) =
+          G.adjMatrix ℤ (u a) (u b) := by
+      intro a b
+      simp only [SimpleGraph.adjMatrix_apply, hrev a b]
+    exact adj_iff_of_adjMatrix_int_eq G
+      (reverse_block_apply_eq_zero_row
+        (fun a b ↦ G.adjMatrix ℤ (u a) (u b)) hrevZ x y)
+  have huNeg : Function.Injective (fun z : ZMod 12 ↦ u (-z)) :=
+    hu.comp neg_injective
+  have hblock : ∀ x z : ZMod 12,
+      G.Adj (u x) (u (-z)) ↔ z - x ∈ negFinset S := by
+    intro x z
+    rw [mem_negFinset_iff, show -(z - x) = x + -z by ring]
+    change G.Adj (u x) (u (-z)) ↔ x + -z ∈ S
+    rw [show x + -z ∈ S ↔ G.Adj (u 0) (u (x + -z)) by
+      exact mem_graphCycleBlockZeroSupport_iff_adj G u u (x + -z)]
+    exact hzero x (-z)
+  have hsidonNeg : IsOrderedSidon (negFinset S) :=
+    isOrderedSidon_of_c4Free_circulantBlock G hfree u
+      (fun z : ZMod 12 ↦ u (-z)) hu huNeg (negFinset S) hblock
+  have hsidon : IsOrderedSidon S :=
+    (isOrderedSidon_negFinset_iff S).mp hsidonNeg
+  apply no_three_orderedSidon_oddSupport_zmod_twelve
+  refine ⟨S, hScard, ?_, hodd⟩
+  intro p hp q hq heq
+  exact hsidon hp hq heq
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
