@@ -1,6 +1,7 @@
 import Proofs.Erdos85RationalPrimaryTraceSplit
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
 import Mathlib.LinearAlgebra.Eigenspace.Matrix
+import Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
 # Symmetric sector factorization for the uniform trace-split kill
@@ -78,6 +79,42 @@ theorem matrix_eq_zero_of_isSymm_of_mul_self_eq_zero
   have hterm := (Finset.sum_eq_zero_iff_of_nonneg
     (fun l _ => mul_self_nonneg (M i l))).mp hdiag j (Finset.mem_univ j)
   simpa using mul_self_eq_zero.mp hterm
+
+/-- A symmetric rational matrix has no generalized zero vector of height
+two: if `M² v = 0`, then already `M v = 0`.  This is the vector form used by
+the zero-layer cube-root kernel: the square identity first puts an explicit
+Fourier column in `ker M²`, and symmetry lowers it to `ker M`. -/
+theorem matrix_mulVec_eq_zero_of_isSymm_of_sq_mulVec_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {M : Matrix V V ℚ} (hM : M.IsSymm) {v : V → ℚ}
+    (hzero : (M * M).mulVec v = 0) :
+    M.mulVec v = 0 := by
+  have hzero' : (Mᵀ * M).mulVec v = 0 := by
+    rw [hM]
+    exact hzero
+  have hv : v ∈ LinearMap.ker (Mᵀ * M).mulVecLin := by
+    exact LinearMap.mem_ker.mpr hzero'
+  rw [Matrix.ker_mulVecLin_transpose_mul_self M] at hv
+  simpa [LinearMap.mem_ker] using hv
+
+/-- Rational three-color form of the symmetric square-kernel bridge.  If the
+square of a symmetric matrix kills the two color contrasts `c₀-c₂` and
+`c₁-c₂`, then the matrix has equal images on all three color indicators.
+For a graph adjacency matrix, evaluating the common image at a vertex says
+that its neighbor counts in the three colors are equal. -/
+theorem matrix_three_color_mulVec_eq_of_sq_contrasts_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {M : Matrix V V ℚ} (hM : M.IsSymm)
+    (c₀ c₁ c₂ : V → ℚ)
+    (hzero₀ : (M * M).mulVec (c₀ - c₂) = 0)
+    (hzero₁ : (M * M).mulVec (c₁ - c₂) = 0) :
+    M.mulVec c₀ = M.mulVec c₁ ∧ M.mulVec c₁ = M.mulVec c₂ := by
+  have hker₀ := matrix_mulVec_eq_zero_of_isSymm_of_sq_mulVec_eq_zero
+    hM hzero₀
+  have hker₁ := matrix_mulVec_eq_zero_of_isSymm_of_sq_mulVec_eq_zero
+    hM hzero₁
+  rw [Matrix.mulVec_sub, sub_eq_zero] at hker₀ hker₁
+  exact ⟨hker₀.trans hker₁.symm, hker₁⟩
 
 /-- **Linear squarefreeness of the symmetric minimal polynomial.**  No
 square of a linear factor divides the minimal polynomial of a symmetric
