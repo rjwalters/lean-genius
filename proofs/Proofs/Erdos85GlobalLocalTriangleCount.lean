@@ -243,6 +243,27 @@ theorem card_mixed_neighbor_inter_eq_of_sq_identity
   exact matrix_comm_of_sq_eq_smul_one_add_sub
     (H.adjMatrix ℤ) (A.adjMatrix ℤ) J c hsq hHJ
 
+/-- If every `A`-edge joins a pair with disjoint `H`-neighborhoods, then
+the mixed-count matrix `HA` vanishes on every `H`-edge. -/
+theorem card_mixed_neighbor_inter_eq_zero_of_H_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H A : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel A.Adj]
+    (hzero : ∀ {u v : V}, A.Adj u v →
+      Disjoint (H.neighborFinset u) (H.neighborFinset v))
+    {x z : V} (hxz : H.Adj x z) :
+    (H.neighborFinset x ∩ A.neighborFinset z).card = 0 := by
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro y hy
+  have hy' := Finset.mem_inter.mp hy
+  have hAyZ : A.Adj y z := (A.adj_comm z y).mp <|
+    (A.mem_neighborFinset z y).mp hy'.2
+  have hdisjoint := hzero hAyZ
+  exact (Finset.disjoint_left.mp hdisjoint)
+    ((H.mem_neighborFinset y x).mpr ((H.adj_comm x y).mp
+      ((H.mem_neighborFinset x y).mp hy'.1)))
+    ((H.mem_neighborFinset z x).mpr ((H.adj_comm x z).mp hxz))
+
 /-- A mixed third trace counts, with orientation, the common `A`-neighbors
 across the edges of `H`.  This is the graph bridge for the fixed Stage-1
 identity `tr(H A²) = 15696`. -/
@@ -487,6 +508,67 @@ theorem one_hundred_twenty_six_le_card_mixedCount_eq_two_or_three
     simp [bad]
   rw [hnot, Finset.card_univ, hcard] at hpartition
   omega
+
+/-- Thirteen forced zeros use 78 units of the shifted budget.  A further
+entry at least ten would use at least 56, exceeding the total budget 132.
+Thus every nonnegative mixed count is at most nine. -/
+theorem mixedCount_le_nine_of_thirteen_zeros
+    {V : Type*} [Fintype V] [DecidableEq V] (mixedCount : V → ℤ)
+    (hbudget : (∑ z : V,
+      (mixedCount z - 2) * (mixedCount z - 3)) = 132)
+    (Z : Finset V) (hZcard : 13 ≤ Z.card)
+    (hzero : ∀ z ∈ Z, mixedCount z = 0) (z : V) :
+    mixedCount z ≤ 9 := by
+  by_contra hnot
+  have hten : 10 ≤ mixedCount z := by omega
+  have hznot : z ∉ Z := by
+    intro hz
+    have := hzero z hz
+    omega
+  let cost := fun u : V => (mixedCount u - 2) * (mixedCount u - 3)
+  have hcost_nonneg : ∀ u, 0 ≤ cost u := by
+    intro u
+    have hcases : mixedCount u ≤ 2 ∨ 3 ≤ mixedCount u := by omega
+    rcases hcases with hle | hge <;> dsimp [cost] <;> nlinarith
+  have hpoint : ∀ u : V,
+      (if u ∈ Z then (6 : ℤ) else if u = z then 56 else 0) ≤ cost u := by
+    intro u
+    by_cases huZ : u ∈ Z
+    · simp [huZ, cost, hzero u huZ]
+    · by_cases huz : u = z
+      · subst u
+        simp only [huZ, ↓reduceIte]
+        dsimp [cost]
+        nlinarith
+      · simp [huZ, huz, hcost_nonneg u]
+  have hlower : (∑ u : V,
+      if u ∈ Z then (6 : ℤ) else if u = z then 56 else 0) ≤ 132 := by
+    calc
+      _ ≤ ∑ u : V, cost u := by
+        apply Finset.sum_le_sum
+        intro u _
+        exact hpoint u
+      _ = 132 := hbudget
+  have heval : (∑ u : V,
+      if u ∈ Z then (6 : ℤ) else if u = z then 56 else 0) =
+      6 * Z.card + 56 := by
+    calc
+      _ = ∑ u : V, ((if u ∈ Z then (6 : ℤ) else 0) +
+          (if u = z then 56 else 0)) := by
+        apply Finset.sum_congr rfl
+        intro u _
+        by_cases huZ : u ∈ Z
+        · have huz : u ≠ z := by
+            intro huz
+            subst u
+            exact hznot huZ
+          simp [huZ, huz]
+        · simp [huZ]
+      _ = (∑ u : V, if u ∈ Z then (6 : ℤ) else 0) +
+          ∑ u : V, if u = z then 56 else 0 := Finset.sum_add_distrib
+      _ = 6 * Z.card + 56 := by simp [mul_comm]
+  rw [heval] at hlower
+  exact (by omega)
 
 end
 

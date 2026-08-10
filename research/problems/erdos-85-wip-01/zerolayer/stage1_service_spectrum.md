@@ -318,6 +318,41 @@ Every integer outside `{2,3}` contributes at least two to this nonnegative
 sum.  Therefore at least `192-66=126` entries of every mixed-count row are
 exactly two or three; this concentration bound is also Lean-formalized.
 
+There is also a forced zero set.  If `H_{xz}=1`, then `B_{xz}=0`: otherwise
+a summand `H_{xy}A_{yz}=1` would make `x` a common H-neighbor of the
+zero-common-neighbor A-pair `(y,z)`.  Every row therefore has at least its
+thirteen H-neighbor positions equal to zero.  Those zeros consume at least
+`13*6=78` units of the shifted budget.  Any additional nonzero entry at
+least ten would consume at least `(10-2)(10-3)=56`, contradicting
+`78+56>132`.  Hence
+
+```
+0 <= B_{xz} <= 9
+```
+
+for all entries, and each row has between 13 and 22 zeros.  Both the
+H-edge vanishing lemma and the budget-to-nine arithmetic cap are
+Lean-formalized.
+
+For two same-block centers, the opposite row has an exact mass on each
+forced-zero support.  Indeed,
+
+```
+sum_{u in N_H(x)} B_{zu} = (B H)_{zx}
+  = (H^2 A)_{zx} = 12 A_{zx} + 35 - (A^2)_{zx}.
+```
+
+At distances `1,...,6` these masses are
+
+```
+44, 31, 29, 32, 32, 29.
+```
+
+The same numbers count A-edges between `N_H(x)` and `N_H(z)`.  Each
+individual H-neighborhood is A-independent, since any two of its vertices
+already have their common H-neighbor `x`.  The six support-mass values are
+included in the exact audit and their residue arithmetic is Lean-formalized.
+
 Together with diagonal mixed count one at both centers, this turns their
 unspecified same-block separation into six explicit integer row-ledger cases.
 

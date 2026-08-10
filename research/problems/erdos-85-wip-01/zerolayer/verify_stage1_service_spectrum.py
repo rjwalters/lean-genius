@@ -158,6 +158,11 @@ def main():
         for d in range(1, 7)
     ]
     assert difference_A_energy == [-1182, -130, -198, -460, -462, -174]
+    same_block_A = [1, 0, 0, 0, 0, 0]
+    forced_support_mass = [12 * adjacent + 35 - a2
+                           for adjacent, a2 in zip(same_block_A,
+                                                   same_block_A2)]
+    assert forced_support_mass == [44, 31, 29, 32, 32, 29]
 
     # Exact quotient action.  Rows are source omitted types and columns are
     # target types.  The sparse-type involution is (01)(23).
