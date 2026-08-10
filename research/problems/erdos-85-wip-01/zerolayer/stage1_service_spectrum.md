@@ -254,3 +254,141 @@ Thus the mixed-count matrix has row sum `13*35 = 455`, total squared mass
 24 diagonal entries are one by the global overlap/parity ledger, supplying
 a quantitative constraint on the sparse rows containing the two forced
 same-block centers.
+
+## Same-block cubic and mixed-row inner products
+
+The Fourier/Gram calculation fixes one further pointwise profile.  Put
+`K=VV*` and `alpha=z+z^-1-3`, so `A_z=alpha I+K`.  At a fixed orphan row,
+
+```
+(A_z^3)_{oo} = alpha^3 + 9 alpha^2
+               + 3 alpha (K^2)_{oo} + (K^3)_{oo}.
+```
+
+The three Gram cases `C(z)=8,-4,0` give
+
+```
+((K^2)_{oo}, (K^3)_{oo}) = (84,2928), (48,768), (36,432),
+```
+
+respectively.  In the cube-root case, the three row phases sum to zero;
+in the generic case the Gram matrix is `12I`; and at `z=1` the row is three
+ones.  Exact inverse Fourier transform therefore gives diagonal value 390
+and the same-block off-diagonal profile
+
+```
+(A^3)_{x,x+d} = 264, 180, 229, 180, 180, 228   (d=1,...,6).
+```
+
+This is phase-independent, not a sampled-witness observation.  Now set
+`B=HA=AH`.  From `H^2=12I+J-A` and `JA^2=35^2 J`,
+
+```
+B^2 = H^2 A^2 = 12 A^2 + 35^2 J - A^3.
+```
+
+Consequently the inner products of the two mixed-count rows belonging to
+same-block vertices at cyclic distance `d=1,...,6` are exactly
+
+```
+(B^2)_{x,x+d} = 997, 1093, 1068, 1081, 1081, 1069.
+```
+
+The diagonal cubic value is 390, while `(A^2)_{xx}=35`, so this also upgrades
+the global Frobenius ledger to a pointwise identity:
+
+```
+sum_z B_{xz}^2 = (B^2)_{xx} = 12*35 + 35^2 - 390 = 1255
+```
+
+for every row.  Thus the two forced sparse rows both have sum 455 and squared
+norm 1255.  Their squared Euclidean row-distance, at `d=1,...,6`, is
+
+```
+516, 324, 374, 348, 348, 372.
+```
+
+Equivalently, each integral row `b` has the exact shifted deviation budget
+
+```
+sum_z (b_z - 2)(b_z - 3) = 1255 - 5*455 + 6*192 = 132.
+```
+
+Every integer outside `{2,3}` contributes at least two to this nonnegative
+sum.  Therefore at least `192-66=126` entries of every mixed-count row are
+exactly two or three; this concentration bound is also Lean-formalized.
+
+Together with diagonal mixed count one at both centers, this turns their
+unspecified same-block separation into six explicit integer row-ledger cases.
+
+## Type and color masses of every mixed row
+
+The quotient and cube-root actions also determine how each row's mass 455 is
+distributed.  Let `O_e` be an omitted-type indicator, `pi=(01)(23)`, and
+`B=HA`.  From
+
+```
+A O_e = 8*1 + 3*O_e,       H O_e = 4*1 - 3*O_{pi(e)},
+```
+
+one obtains
+
+```
+B O_e = H A O_e = 116*1 - 9*O_{pi(e)}.
+```
+
+Thus every mixed row has type-class masses `(107,116,116,116)`, with 107
+in its uniquely paired target class.  These sum to 455.
+
+There is a finer, overlapping family of twelve constraints.  For the color
+indicator `c_{e,r}` and linked-type indicator `L_e=1-O_e`, exact color balance
+gives
+
+```
+H c_{e,r} = 3*1 + O_{pi(e)},       H L_e = 9*1 + 3*O_{pi(e)}.
+```
+
+Applying `H` to `A c_{e,r}=12c_{e,r}-3L_e+8*1` yields
+
+```
+B c_{e,r} = 113*1 + 3*O_{pi(e)}.
+```
+
+In particular, two centers in the same omitted type have row difference
+whose sum is zero separately on all four type classes and on all twelve
+component-color fibers.  These structural constraints survive the aggregate
+two-row moment relaxation that otherwise admits all six distance cases.
+
+## Fourth moment and signed service energy
+
+The same diagonal-block calculation one power higher uses
+
+```
+(A_z^4)_{oo} = alpha^4 + 4 alpha^3 K_oo
+  + 6 alpha^2 (K^2)_oo + 4 alpha (K^3)_oo + (K^4)_oo.
+```
+
+The additional `(K^4)_{oo}` values in the `C(z)=8,-4,0` cases are
+`105024,12288,5184`.  Exact inverse Fourier transform gives
+
+```
+(A^4)_{x,x+d}, d=0,...,6:
+10023, 7920, 7438, 7992, 7273, 7272, 7992.
+```
+
+Let `q=e_x-e_z` for the forced same-block pair and let `delta=q^T B` be its
+mixed-row difference.  Since `B A B=H^2 A^3=12A^3+35^3J-A^4` and `q^T J=0`,
+
+```
+delta A delta^T = q^T (12A^3-A^4) q.
+```
+
+At cyclic distances `1,...,6` these signed service energies are exactly
+
+```
+-1182, -130, -198, -460, -462, -174.
+```
+
+Equivalently, the sums of `delta_u delta_v` over unordered A-edges are
+`-591,-65,-99,-230,-231,-87`.  Unlike the aggregate row moments, this
+forces a substantial sign interaction along the explicit service graph.
