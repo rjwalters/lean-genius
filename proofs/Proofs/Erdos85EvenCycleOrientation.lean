@@ -1,6 +1,7 @@
 import Proofs.Erdos85BinaryCycleIntertwiner
 import Proofs.Erdos85EvenCycleSelfIntertwiner
 import Proofs.Erdos85FrequencyPairGraphBlocks
+import Proofs.Erdos85MixedAnchorSupport
 import Proofs.Erdos85SecondOrderEvenDefect
 
 /-!
@@ -586,6 +587,98 @@ theorem binary_rowTwo_cycleIntertwiner_orientation
       dsimp only [P] at hp
       simp only [Matrix.sub_apply] at hp
       linear_combination hp + hr
+
+/-- Graph-facing equal-cycle quotient-two orientation.  If every vertex of
+the first labeled defect cycle has exactly two neighbors on the second, then
+C4-freeness and block commutation force the whole block to have one global
+cyclic orientation, with no parity restriction on the cycle length. -/
+theorem graph_equalCycleBlock_quotientTwo_orientation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u v : ZMod r → V) (huinj : Function.Injective u)
+    (hvinj : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)})
+    (htwo : ∀ x, (mixedAnchorSupport G (u x) v).card = 2) :
+    (∀ x y, G.Adj (u (x + 1)) (v (y + 1)) ↔ G.Adj (u x) (v y)) ∨
+      (∀ x y, G.Adj (u (x + 1)) (v (y - 1)) ↔ G.Adj (u x) (v y)) := by
+  classical
+  let B : Matrix (ZMod r) (ZMod r) ℤ :=
+    fun x y => G.adjMatrix ℤ (u x) (v y)
+  have hupair : ∀ x, u (x - 1) ≠ u (x + 1) := fun x =>
+    huinj.ne (zmod_sub_one_ne_add_one_of_three_le hr3 x)
+  have hvpair : ∀ y, v (y - 1) ≠ v (y + 1) := fun y =>
+    hvinj.ne (zmod_sub_one_ne_add_one_of_three_le hr3 y)
+  have hinter : ∀ x y,
+      B (x - 1) y + B (x + 1) y =
+        B x (y + 1) + B x (y - 1) := by
+    simpa only [B] using entry_cycleIntertwine_of_adjMatrix_comm
+      G D u v (1 : ZMod r) (1 : ZMod r) hcomm huD hvD hupair hvpair
+  have hbinary : ∀ x y, B x y = 0 ∨ B x y = 1 := by
+    intro x y
+    simp only [B, SimpleGraph.adjMatrix_apply]
+    split <;> simp
+  have hrow : ∀ x, ∑ y, B x y = 2 := by
+    intro x
+    calc
+      (∑ y, B x y) = ∑ y, if G.Adj (u x) (v y) then (1 : ℤ) else 0 := by
+        rfl
+      _ = ((mixedAnchorSupport G (u x) v).card : ℤ) := by
+        simpa only [mixedAnchorSupport] using (Finset.sum_boole (R := ℤ)
+          (fun y : ZMod r => G.Adj (u x) (v y)) Finset.univ)
+      _ = 2 := by rw [htwo]; norm_num
+  have hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (B x y = 1 ∧ B x y' = 1 ∧
+        B x' y = 1 ∧ B x' y' = 1) := by
+    intro x x' hxx' y y' hyy' hones
+    have hux : u x ≠ u x' := huinj.ne hxx'
+    have hvy : v y ≠ v y' := hvinj.ne hyy'
+    have hone_iff (a b : ZMod r) : B a b = 1 ↔ G.Adj (u a) (v b) := by
+      simp only [B, SimpleGraph.adjMatrix_apply]
+      by_cases h : G.Adj (u a) (v b) <;> simp [h]
+    have hy : v y ∈ G.neighborFinset (u x) ∩
+        G.neighborFinset (u x') := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨(hone_iff x y).mp hones.1,
+        (hone_iff x' y).mp hones.2.2.1⟩
+    have hy' : v y' ∈ G.neighborFinset (u x) ∩
+        G.neighborFinset (u x') := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨(hone_iff x y').mp hones.2.1,
+        (hone_iff x' y').mp hones.2.2.2⟩
+    have htwoCommon : 2 ≤ (G.neighborFinset (u x) ∩
+        G.neighborFinset (u x')).card := by
+      have hsub : ({v y, v y'} : Finset V) ⊆
+          G.neighborFinset (u x) ∩ G.neighborFinset (u x') := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact hy
+        · exact hy'
+      have hc : ({v y, v y'} : Finset V).card = 2 := by simp [hvy]
+      rw [← hc]
+      exact Finset.card_le_card hsub
+    have honeCommon := common_le_one_of_not_containsC4 hfree
+      (u x) (u x') hux
+    omega
+  rcases binary_rowTwo_cycleIntertwiner_orientation hr3 B hinter hbinary
+    hrow hrect with hforward | hreverse
+  · left
+    intro x y
+    have h := hforward x y
+    simp only [B, SimpleGraph.adjMatrix_apply] at h
+    by_cases h₁ : G.Adj (u (x + 1)) (v (y + 1)) <;>
+      by_cases h₂ : G.Adj (u x) (v y) <;> simp_all
+  · right
+    intro x y
+    have h := hreverse x y
+    simp only [B, SimpleGraph.adjMatrix_apply] at h
+    by_cases h₁ : G.Adj (u (x + 1)) (v (y - 1)) <;>
+      by_cases h₂ : G.Adj (u x) (v y) <;> simp_all
 
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
