@@ -250,6 +250,45 @@ theorem oriented_pair_repeat_of_lcm_lt
     omega
   exact ⟨0, δ, hδne.symm, hfδ.symm, hgδ.symm⟩
 
+/-- Injectivity of a pair of globally oriented covers forces the source
+length not to exceed the joint target period. -/
+theorem source_le_lcm_of_oriented_pair_injective
+    {n ℓ₁ ℓ₂ : ℕ} [NeZero n] [NeZero ℓ₁] [NeZero ℓ₂]
+    (f : ZMod n → ZMod ℓ₁) (g : ZMod n → ZMod ℓ₂)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hinj : Function.Injective (fun y => (f y, g y))) :
+    n ≤ Nat.lcm ℓ₁ ℓ₂ := by
+  by_contra hle
+  have hlt : Nat.lcm ℓ₁ ℓ₂ < n := by omega
+  obtain ⟨x, x', hxx', hfx, hgx⟩ :=
+    oriented_pair_repeat_of_lcm_lt f g hf hg hlt
+  exact hxx' (hinj (Prod.ext hfx hgx))
+
+/-- Equal-LCM law for a zero-excess threefold-scaled orphan block.  If two
+linked component lengths divide its reduced length and their oriented cover
+pair is injective, that reduced orphan length is exactly their LCM. -/
+theorem reduced_length_eq_lcm_of_oriented_pair_injective
+    {m k₁ k₂ : ℕ} [NeZero m] [NeZero k₁] [NeZero k₂]
+    (f : ZMod (3 * m) → ZMod (3 * k₁))
+    (g : ZMod (3 * m) → ZMod (3 * k₂))
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hk₁ : k₁ ∣ m) (hk₂ : k₂ ∣ m)
+    (hinj : Function.Injective (fun y => (f y, g y))) :
+    m = Nat.lcm k₁ k₂ := by
+  have hscaled := source_le_lcm_of_oriented_pair_injective f g hf hg hinj
+  rw [Nat.lcm_mul_left] at hscaled
+  have hmle : m ≤ Nat.lcm k₁ k₂ := by omega
+  have hlcmDvd : Nat.lcm k₁ k₂ ∣ m := Nat.lcm_dvd hk₁ hk₂
+  have hlcmLe : Nat.lcm k₁ k₂ ≤ m :=
+    Nat.le_of_dvd (NeZero.pos m) hlcmDvd
+  exact Nat.le_antisymm hmle hlcmLe
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
