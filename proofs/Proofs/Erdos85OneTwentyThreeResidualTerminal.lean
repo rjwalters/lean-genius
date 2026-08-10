@@ -28264,6 +28264,25 @@ theorem degree_sixteen_remaining_zeroLayer
       G hfree hmin hcard c₀ hc₀min htwo.1 htwo.2
         u hu huRange hℓ3 hbij huD)
 
+/-! ## Arithmetic terminal for the zero-layer omitted-type profile -/
+
+/-- Four omitted-type neighbor counts of total degree thirteen, each
+congruent to one modulo three and bounded by four, are exactly a permutation
+of `[4,4,4,1]`.  The cube-root kernel supplies the congruences; the exact
+within-type cherry count supplies the upper bounds. -/
+theorem four_class_degree_profile_eq_four_four_four_one
+    (r₀ r₁ r₂ r₃ : ℕ)
+    (hsum : r₀ + r₁ + r₂ + r₃ = 13)
+    (hmod₀ : r₀ % 3 = 1) (hmod₁ : r₁ % 3 = 1)
+    (hmod₂ : r₂ % 3 = 1) (hmod₃ : r₃ % 3 = 1)
+    (hle₀ : r₀ ≤ 4) (hle₁ : r₁ ≤ 4)
+    (hle₂ : r₂ ≤ 4) (hle₃ : r₃ ≤ 4) :
+    (r₀ = 1 ∧ r₁ = 4 ∧ r₂ = 4 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 1 ∧ r₂ = 4 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 4 ∧ r₂ = 1 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 4 ∧ r₂ = 4 ∧ r₃ = 1) := by
+  omega
+
 end
 
 end Erdos85
