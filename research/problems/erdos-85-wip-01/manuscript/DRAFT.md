@@ -108,6 +108,15 @@ Documented exchange points:
   filter, not a terminal — and redirecting effort to the H-lift before
   any large SAT run was launched.
 
+- The counterpoint that calibrates the rule: injecting an *implied* unit
+  (a phase value already forced by gauge and row-distinctness) into a
+  cube produced state-for-state identical solver traces — the solver's
+  own parse-time propagation had already internalized it. Derived facts
+  inside the solver's propagation horizon are free; only structure
+  beyond that horizon (like the defect ledger) buys speed. The A/B was
+  run deliberately, twin against parent, before the technique was
+  adopted — and it was rejected on the evidence.
+
 The exchange rate is asymmetric in an instructive way: an hour of exact
 derivation has repeatedly saved days of solver time, while solver output
 (witnesses, UNSAT cores) has repeatedly told the derivation where to dig.
