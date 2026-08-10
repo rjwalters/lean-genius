@@ -1,0 +1,47 @@
+Zero-layer exact census v10 (order-twelve diagonal-three exclusion)
+==================================================================
+
+Version 10 retains v9's unrestricted natural diagonal quotient q_e and exact
+row equation
+
+  orphan atom excess + q_e * (q_e - 1) = 2 * (k_e - 1),
+
+and adds the graph theorem that q_e != 3 when k_e = 4 (component order 12):
+
+  degree_sixteen_orderTwelve_diagonalQuotient_ne_three
+
+All integer partitions of 16: 231
+  survivors: 60
+  dead:      171
+  cap:         0
+
+After applying the graph-theoretic floor k_e >= 2, exactly one of the fifteen
+reduced candidates is dead at this atom-ledger abstraction:
+
+  DEAD
+    12,4
+
+The remaining fourteen candidates are:
+
+  16
+  12,2,2
+  10,2,2,2
+  8,8
+  8,4,4
+  8,4,2,2
+  8,2,2,2,2
+  6,6,2,2
+  6,3,3,2,2
+  5,5,2,2,2
+  4,4,4,4
+  4,4,4,2,2
+  4,4,2,2,2,2
+  2,2,2,2,2,2,2,2
+
+The 4,4,4,4 partition still has non-all-A arithmetic witnesses (minimum
+orphan excess 16 with diagonal two on every row).  Its pure all-A witness,
+however, would require diagonal three on every row and is excluded by
+degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row_unconditional.
+
+A SURVIVOR verdict only supplies an integer atom witness and diagonal values;
+it does not assert graph realizability.

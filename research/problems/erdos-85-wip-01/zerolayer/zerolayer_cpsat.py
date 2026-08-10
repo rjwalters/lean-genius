@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Zero-layer census v9: exact CP-SAT encoding (replaces DFS).
+"""Zero-layer census v10: exact CP-SAT encoding (replaces DFS).
 
 Requires: pip install ortools
 
@@ -15,6 +15,7 @@ Constraint-to-lemma map (all cold-verified on feature/erdos85-assembly):
   self budget ......... secondOrder_componentQuotientMatrix_local_excess_restrict_nat
   used mass 48, 3|k ... degree_sixteen_zeroLayer_used_component_order_package
   t <= 16 ............. degree_sixteen_zeroLayer_used_component_card_le_sixteen (d8ca492c72)
+  k=4 diagonal != 3 ... degree_sixteen_orderTwelve_diagonalQuotient_ne_three
 
 Atoms (structurally constrained):
   A (b=1,1,1): triple with equal pairwise lcms, m = that lcm, excess 0.
@@ -93,6 +94,8 @@ def solve(K):
         q = model.NewIntVar(0, allowed[-1][0], f"diag_{e}")
         qex = model.NewIntVar(0, rhs, f"diag_excess_{e}")
         model.AddAllowedAssignments([q, qex], allowed)
+        if K[e] == 4:
+            model.Add(q != 3)
         diag.append(q)
         model.Add(sum(c * ld[e] for c, (ld, exv, lab) in zip(counts, atoms)
                       if e in ld) == 12 * K[e])
