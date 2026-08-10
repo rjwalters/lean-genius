@@ -11310,6 +11310,39 @@ theorem degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row_diag_zero
   rw [hsum, hdiag, hecard] at hrow
   norm_num at hrow
 
+/-- On an even defect cycle, diagonal quotient three forces the reverse
+orientation.  The forward/circulant alternative has diagonal quotient at
+most two by the parity-free inverse-pair Sidon bound. -/
+theorem degree_sixteen_evenComponent_diagonal_three_forces_reverse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r) (hrEven : Even r)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 3) :
+    ∀ x y, G.adjMatrix ℤ (u (x + 1)) (u (y - 1)) =
+      G.adjMatrix ℤ (u x) (u y) := by
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  rcases graph_equalEvenCycle_diagBlock_orientation hr3 hrEven G
+      (secondOrderDefectGraph G) hfree u hu hcomm huD with hfwd | hrev
+  · have hfwdAdj : ∀ x y : ZMod r,
+        G.Adj (u (x + 1)) (u (y + 1)) ↔ G.Adj (u x) (u y) :=
+      fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+    have hle := forwardComponent_diagonalQuotient_le_two G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard c u hu huRange hfwdAdj
+    omega
+  · exact hrev
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
