@@ -128,4 +128,19 @@ theorem stageOne_oriented_residue_difference_count
   rcases hr with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   all_goals interval_cases d <;> norm_num [stageOneNonthreeResidues]
 
+/-- Three linked-component pairs contribute the oriented exact-cover count,
+and the defect cycle contributes one additional common neighbor exactly at
+distance two.  This is the arithmetic assembly of the same-block
+`A²` profile `(3,4,6,3,3,6)`. -/
+theorem stageOne_sameBlock_A2_profile_arithmetic
+    (r d : ℕ) (hr : r ∈ stageOneNonthreeResidues)
+    (hdpos : 1 ≤ d) (hdle : d ≤ 6) :
+    3 * (∑ s ∈ stageOneNonthreeResidues,
+      ((if (r + 12 - s) % 12 = d then 1 else 0) +
+       (if (s + 12 - r) % 12 = d then 1 else 0))) +
+      (if d = 2 then 1 else 0) =
+      if d = 2 then 4 else if d = 3 ∨ d = 6 then 6 else 3 := by
+  rw [stageOne_oriented_residue_difference_count r d hr hdpos hdle]
+  split_ifs <;> omega
+
 end Erdos85

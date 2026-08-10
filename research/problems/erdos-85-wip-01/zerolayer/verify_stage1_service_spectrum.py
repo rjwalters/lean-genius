@@ -62,6 +62,16 @@ def main():
         0, 528, 15696, 558480, 19504272, 682801488,
         23897389776, 836411128080, 29274379049232,
     ]
+    trace_A3_rational = sum(
+        (value[0] ** 3 + 9 * value[0] * value[1] ** 2) * multiplicity
+        for value, multiplicity in spectrum.items())
+    trace_A3_radical = sum(
+        (3 * value[0] ** 2 * value[1] + 3 * value[1] ** 3) * multiplicity
+        for value, multiplicity in spectrum.items())
+    assert trace_A3_rational == 74880
+    assert trace_A3_radical == 0
+    trace_H2A2 = 12 * (192 * 35) + 192 * 35 ** 2 - trace_A3_rational
+    assert trace_H2A2 == 240960
     print("STAGE1 SERVICE SPECTRUM EXACT AUDIT OK")
 
 
