@@ -13506,6 +13506,95 @@ theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_unique_owner
   rw [Finset.sum_pair hef, hq, hf.2.1, hsum] at hle
   omega
 
+/-- Full `D`-atom rigidity.  A non-three-divisible zero-layer orphan has a
+unique quotient-three used owner, its order equals the owner's reduced
+order, and the reverse quotient is one. -/
+theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_D_atom
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 3 ∣ o.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ∃! e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R ∧
+      componentQuotientMatrix G D o e = 3 ∧
+      o.supp.ncard = e.supp.ncard / 3 ∧
+      componentQuotientMatrix G D e o = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  obtain ⟨e, he, hunique⟩ :=
+    degree_sixteen_zeroLayer_nonThreeDivisible_orphan_unique_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hnot
+  have heR := he.1
+  have hq := he.2.1
+  have heMk : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e (componentRepresentative D e)).mp
+      (componentRepresentative_mem D e)
+  have heDvd : 3 ∣ e.supp.ncard := by
+    have h := (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild (componentRepresentative D e)
+          (by simpa [D, R] using heR)).1 rfl
+    simpa [D, heMk] using h
+  have hqPos : 0 < componentQuotientMatrix G D o e := by
+    rw [hq]
+    norm_num
+  have hcomp := secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+      (by simpa [D] using hqPos)
+  rcases hcomp with hoeDvd | heoDvd
+  · have hne : o.supp.ncard ≠ e.supp.ncard := by
+      intro heq
+      apply hnot
+      rw [heq]
+      exact heDvd
+    have hlt : o.supp.ncard < e.supp.ncard := by
+      have hle := Nat.le_of_dvd e.nonempty_supp.ncard_pos hoeDvd
+      omega
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D] using hqPos)
+    have hrev : componentQuotientMatrix G D e o = 1 := by
+      simpa [D] using hentry.1
+    have hratio : o.supp.ncard * 3 = e.supp.ncard := by
+      simpa [D, hq] using hentry.2.2
+    obtain ⟨k, hk⟩ := heDvd
+    have hoEq : o.supp.ncard = k := by
+      rw [hk] at hratio
+      omega
+    have hkdiv : e.supp.ncard / 3 = k := by
+      rw [hk]
+      simpa [mul_comm] using
+        Nat.mul_div_left k (by norm_num : 0 < 3)
+    have horder : o.supp.ncard = e.supp.ncard / 3 := hoEq.trans hkdiv.symm
+    refine ⟨e, ⟨heR, hq, horder, hrev⟩, ?_⟩
+    intro f hf
+    apply hunique f
+    refine ⟨hf.1, hf.2.1, ?_⟩
+    rw [← hf.2.2.1]
+  · exfalso
+    exact hnot (heDvd.trans heoDvd)
+
 /-- A fixed used component can be the concentrated owner of at most twelve
 orphan components.  Every cut with `Q(o,e)=5` has positive reverse quotient,
 and all reverse orphan quotients in the used row sum to twelve. -/
