@@ -22,6 +22,8 @@ parser.add_argument("distance", type=int, choices=range(1, 7))
 parser.add_argument("--max-iters", type=int, default=50_000)
 parser.add_argument("--eps", type=float, default=1e-5)
 parser.add_argument("--solver", choices=("SCS", "CLARABEL"), default="SCS")
+parser.add_argument("--rlt", action="store_true")
+parser.add_argument("--moment-depth", type=int, choices=range(7), default=6)
 args = parser.parse_args()
 
 A = np.zeros((N, N), dtype=float)
@@ -48,6 +50,32 @@ constraints = [Y >> 0, Y[0, 0] == 1,
                cp.diag(XX) == x, cp.diag(ZZ) == z,
                x >= 0, x <= 1, z >= 0, z <= 1,
                cp.sum(x) == 13, cp.sum(z) == 13]
+
+if args.rlt:
+    # First-level reformulation-linearization constraints for Boolean
+    # products.  These are exact for rank-one 0/1 lifts and materially
+    # stronger than PSD plus Boolean diagonals alone.
+    constraints += [
+        XX >= 0, XX <= cp.reshape(x, (N, 1), order="C"),
+        XX <= cp.reshape(x, (1, N), order="C"),
+        XX >= cp.reshape(x, (N, 1), order="C") +
+        cp.reshape(x, (1, N), order="C") - 1,
+        ZZ >= 0, ZZ <= cp.reshape(z, (N, 1), order="C"),
+        ZZ <= cp.reshape(z, (1, N), order="C"),
+        ZZ >= cp.reshape(z, (N, 1), order="C") +
+        cp.reshape(z, (1, N), order="C") - 1,
+        XZ >= 0, XZ <= cp.reshape(x, (N, 1), order="C"),
+        XZ <= cp.reshape(z, (1, N), order="C"),
+        XZ >= cp.reshape(x, (N, 1), order="C") +
+        cp.reshape(z, (1, N), order="C") - 1,
+        cp.sum(XX, axis=1) == 13 * x,
+        cp.sum(ZZ, axis=1) == 13 * z,
+        cp.sum(XZ, axis=1) == 13 * x,
+        cp.sum(XZ, axis=0) == 13 * z,
+    ]
+    for pair in A_pairs:
+        left, right = tuple(pair)
+        constraints += [XX[left, right] == 0, ZZ[left, right] == 0]
 
 left_center = vid((0, 0), 0)
 right_center = vid((0, 0), args.distance)
@@ -130,7 +158,7 @@ moment_rows = [
     [372, -174, 13104, 53910, 804276, 6240618, 67005144],
 ]
 power = A2.copy()
-for moment in moment_rows[args.distance - 1]:
+for moment in moment_rows[args.distance - 1][:args.moment_depth + 1]:
     # Scaling improves SCS conditioning while preserving the equality.
     scale = max(1.0, abs(float(moment)))
     constraints.append(cp.sum(cp.multiply(power / scale, W)) ==
