@@ -190,23 +190,43 @@ with tempfile.TemporaryDirectory() as raw:
         ], check=True, capture_output=True, text=True)
         for next_residue, next_manifest in enumerate(sorted(
                 next_dir.glob("*.manifest.json"))):
-            fake_certificate(
-                next_manifest,
-                root / f"cert-p1-q1-r1-v{value}-s{next_residue}")
+            if next_residue == 1:
+                next_value_dir = root / (
+                    f"p1-q1-r1-v{value}-s1-values")
+                subprocess.run([
+                    sys.executable, str(value_splitter), str(next_manifest),
+                    str(next_manifest.with_suffix("").with_suffix(".cnf")),
+                    str(next_value_dir), "--anchor", "0", "2", "2",
+                ], check=True, capture_output=True, text=True)
+                for final_manifest in sorted(
+                        next_value_dir.glob("*.manifest.json")):
+                    final_value = json.loads(
+                        final_manifest.read_text())["cube_value"]
+                    fake_certificate(
+                        final_manifest,
+                        root / (f"cert-p1-q1-r1-v{value}-s1-"
+                                f"w{final_value}"))
+            else:
+                fake_certificate(
+                    next_manifest,
+                    root / f"cert-p1-q1-r1-v{value}-s{next_residue}")
 
     ordered_output = root / "ordered-tree-report.json"
     subprocess.run([
         sys.executable, str(verifier), str(manifest), str(root),
         "--split", "phase:0,0,2", "--split", "phase:1,0,2",
         "--split", "residue:0,1,2", "--split", "value:0,1,2",
-        "--split", "residue:0,2,2", "--output", str(ordered_output),
+        "--split", "residue:0,2,2", "--split", "value:0,2,2",
+        "--output", str(ordered_output),
     ], check=True)
     ordered_report = json.loads(ordered_output.read_text())
     assert [entry["kind"] for entry in ordered_report["ordered_splits"]] == [
-        "phase", "phase", "residue", "value", "residue"]
+        "phase", "phase", "residue", "value", "residue", "value"]
     ordered_value = ordered_report["evidence"]["children"][1]["evidence"][
         "children"][1]["evidence"]["children"][1]["evidence"][
         "children"][0]["evidence"]
     assert ordered_value["kind"] == "exhaustive_phase_residue_partition"
+    assert ordered_value["children"][1]["evidence"]["kind"] == (
+        "exhaustive_phase_value_partition")
 
 print("SYMBOLIC PHASE TREE SUMMARY ALL OK")

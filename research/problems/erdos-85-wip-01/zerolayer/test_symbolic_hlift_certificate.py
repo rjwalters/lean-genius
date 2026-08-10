@@ -125,6 +125,32 @@ def main():
         manifest.write_text(json.dumps(nested_residue_cube), encoding="utf-8")
         assert validate_symbolic_manifest(
             manifest, cnf, verifier) == nested_residue_cube
+        next_value_entry = {
+            "anchor": "tau[(0,2),2]", "orphan": [0, 2],
+            "component": 2, "value": 8,
+            "literal": next_exact_literals[8],
+            "exhaustive_value_literals": next_exact_literals[2::3],
+        }
+        nested_value_cube = dict(
+            nested_residue_cube,
+            scope=nested_residue_cube["scope"] + " AND tau[(0,2),2]=8",
+            cube_ancestry=[*nested_residue_cube["cube_ancestry"],
+                           next_value_entry],
+            cube_value=8, cube_literal=next_exact_literals[8],
+            exhaustive_value_literals=next_exact_literals[2::3],
+        )
+        manifest.write_text(json.dumps(nested_value_cube), encoding="utf-8")
+        assert validate_symbolic_manifest(
+            manifest, cnf, verifier) == nested_value_cube
+        malformed_nested_value = dict(
+            nested_value_cube, cube_literal=next_exact_literals[11])
+        manifest.write_text(
+            json.dumps(malformed_nested_value), encoding="utf-8")
+        try:
+            validate_symbolic_manifest(manifest, cnf, verifier)
+            raise AssertionError("malformed nested exact-value cube accepted")
+        except ValueError as exc:
+            assert "unexpected symbolic manifest scope" in str(exc)
         malformed_nested = dict(
             nested_residue_cube,
             cube_clause_literals=next_exact_literals[1::3])
