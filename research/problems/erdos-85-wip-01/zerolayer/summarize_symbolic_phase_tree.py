@@ -8,7 +8,7 @@ from pathlib import Path
 from run_hlift_orbit_signal import sha256_file
 from summarize_symbolic_phase_cubes import (
     VERIFIED, expected_cube_hashes, load, require_exact_command, require_hash,
-    verified_log,
+    require_relocatable_artifact, verified_log,
 )
 from verify_symbolic_hlift_assignment import phase_variable_map
 
@@ -21,11 +21,16 @@ def validate_certificate(cert_path, manifest_path, manifest, cnf):
         raise ValueError(f"certificate CNF hash mismatch: {cert_path}")
     if cert.get("manifest_sha256") != sha256_file(manifest_path):
         raise ValueError(f"certificate manifest mismatch: {cert_path}")
-    if Path(cert.get("cnf", "")).resolve() != cnf:
+    recorded_cnf = Path(cert.get("cnf", "")).resolve()
+    if recorded_cnf.name != cnf.name:
         raise ValueError(f"certificate CNF path mismatch: {cert_path}")
-    proof = require_hash(cert["proof"], cert["proof_sha256"], "proof")
-    require_exact_command(cert.get("solver_command"), cnf, proof, "solver")
-    require_exact_command(cert.get("drat_trim_command"), cnf, proof,
+    recorded_proof = Path(cert["proof"]).resolve()
+    require_relocatable_artifact(
+        cert["proof"], cert_path.parent, cert["proof_sha256"], "proof")
+    require_exact_command(cert.get("solver_command"), recorded_cnf,
+                          recorded_proof, "solver")
+    require_exact_command(cert.get("drat_trim_command"), recorded_cnf,
+                          recorded_proof,
                           "drat-trim")
     log_path = cert_path.parent / "drat-trim.log"
     require_hash(log_path, cert["drat_trim_log_sha256"], "drat-trim log")
