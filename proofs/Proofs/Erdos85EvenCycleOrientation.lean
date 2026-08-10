@@ -22,6 +22,47 @@ noncomputable section
 
 open SimpleGraph
 
+/-- If a square block commutes with a symmetric operator, then its row Gram
+also commutes with that operator.  This is the algebraic bridge from an
+off-diagonal cycle block to the diagonal common-neighbor block. -/
+theorem Matrix.mul_transpose_gram_comm_of_comm
+    {ι R : Type*} [Fintype ι] [CommSemiring R]
+    (A B : Matrix ι ι R) (hA : Matrix.transpose A = A)
+    (hAB : A * B = B * A) :
+    A * (B * Matrix.transpose B) =
+      (B * Matrix.transpose B) * A := by
+  have hBtA : Matrix.transpose B * A =
+      A * Matrix.transpose B := by
+    have h := congrArg Matrix.transpose hAB
+    simpa only [Matrix.transpose_mul, hA] using h
+  calc
+    A * (B * Matrix.transpose B) =
+        (A * B) * Matrix.transpose B := by rw [Matrix.mul_assoc]
+    _ = (B * A) * Matrix.transpose B := by rw [hAB]
+    _ = B * (A * Matrix.transpose B) := by rw [Matrix.mul_assoc]
+    _ = B * (Matrix.transpose B * A) := by rw [hBtA]
+    _ = (B * Matrix.transpose B) * A := by rw [Matrix.mul_assoc]
+
+/-- The column Gram of a square block commuting with a symmetric operator
+commutes with the same operator as well. -/
+theorem Matrix.transpose_mul_gram_comm_of_comm
+    {ι R : Type*} [Fintype ι] [CommSemiring R]
+    (A B : Matrix ι ι R) (hA : Matrix.transpose A = A)
+    (hAB : A * B = B * A) :
+    A * (Matrix.transpose B * B) =
+      (Matrix.transpose B * B) * A := by
+  have hBtA : Matrix.transpose B * A =
+      A * Matrix.transpose B := by
+    have h := congrArg Matrix.transpose hAB
+    simpa only [Matrix.transpose_mul, hA] using h
+  calc
+    A * (Matrix.transpose B * B) =
+        (A * Matrix.transpose B) * B := by rw [Matrix.mul_assoc]
+    _ = (Matrix.transpose B * A) * B := by rw [hBtA]
+    _ = Matrix.transpose B * (A * B) := by rw [Matrix.mul_assoc]
+    _ = Matrix.transpose B * (B * A) := by rw [hAB]
+    _ = (Matrix.transpose B * B) * A := by rw [Matrix.mul_assoc]
+
 /-- Modulo two, sum and difference have the same parity. -/
 theorem castHom_two_sub_eq_add
     {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (x y : ZMod r) :
