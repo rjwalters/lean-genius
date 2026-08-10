@@ -80,6 +80,38 @@ def verify_color_balance(witness, edge_values):
     return {"cube_root_color_counts": "exact", "counts": "3-or-4"}
 
 
+def stage1_A_pairs(witness):
+    """Reconstruct D union S directly from the retained phase witness."""
+    def vid(orphan, x):
+        return 12 * ORPHANS.index(orphan) + x % 12
+
+    pairs = set()
+    for orphan in ORPHANS:
+        for x in range(12):
+            pairs.add(frozenset((vid(orphan, x), vid(orphan, x + 1))))
+    for left, right in combinations(ORPHANS, 2):
+        shared = set(witness[left]) & set(witness[right])
+        for component in shared:
+            delta = (witness[left][component] -
+                     witness[right][component]) % 12
+            for x in range(12):
+                pair = frozenset((vid(left, x), vid(right, x + delta)))
+                if pair in pairs:
+                    raise ValueError(f"duplicate Stage-1 A pair {pair}")
+                pairs.add(pair)
+    return pairs
+
+
+def verify_global_overlap(witness, edge_values):
+    all_pairs = [frozenset(pair) for pair in combinations(range(N), 2)]
+    stage1 = stage1_A_pairs(witness)
+    overlap = sum(present and pair in stage1
+                  for pair, present in zip(all_pairs, edge_values))
+    if overlap != 264:
+        raise ValueError(f"global H-inter-A overlap failure: {overlap} != 264")
+    return {"H_inter_A_edges": overlap}
+
+
 def self_test():
     # A synthetic quotient-only graph: four 48-cycles with offsets ±1,±2;
     # perfect matchings on paired classes; four-shift bipartite graphs on the
@@ -106,6 +138,20 @@ def self_test():
         raise AssertionError("tampered quotient accepted")
     except ValueError as exc:
         assert "paired quotient failure" in str(exc)
+    # Independently exercise the exact global-overlap consumer on the
+    # validated baseline phase witness.
+    from test_symbolic_hlift_service import WIT
+    stage1 = stage1_A_pairs(WIT)
+    selected = set(sorted(stage1, key=lambda p: tuple(sorted(p)))[:264])
+    overlap_values = [pair in selected for pair in all_pairs]
+    assert verify_global_overlap(WIT, overlap_values)["H_inter_A_edges"] == 264
+    first = next(index for index, value in enumerate(overlap_values) if value)
+    overlap_values[first] = False
+    try:
+        verify_global_overlap(WIT, overlap_values)
+        raise AssertionError("tampered global overlap accepted")
+    except ValueError as exc:
+        assert "global H-inter-A overlap failure" in str(exc)
     print("PAIRED OPTION VERIFIER SELF-TEST OK")
 
 
@@ -113,10 +159,13 @@ def main():
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
         self_test()
         return
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and
-                                      sys.argv[2] != "--color-balance"):
+    flags = set(sys.argv[2:])
+    allowed = {"--color-balance", "--global-overlap-count"}
+    if len(sys.argv) < 2 or not flags <= allowed or \
+            len(flags) != len(sys.argv[2:]):
         raise SystemExit(
-            f"usage: {sys.argv[0]} KISSAT_LOG [--color-balance] | --self-test")
+            f"usage: {sys.argv[0]} KISSAT_LOG [--color-balance] "
+            "[--global-overlap-count] | --self-test")
     _mapping, last_phase = phase_variable_map()
     assignment = parse_kissat_assignment(sys.argv[1], last_phase)
     witness = extract_witness(assignment)
@@ -127,8 +176,10 @@ def main():
             raise ValueError(f"missing edge variable {variable}")
         edge_values.append(assignment[variable])
     result = verify_paired_quotient(edge_values)
-    if len(sys.argv) == 3:
+    if "--color-balance" in flags:
         result.update(verify_color_balance(witness, edge_values))
+    if "--global-overlap-count" in flags:
+        result.update(verify_global_overlap(witness, edge_values))
     print("VERIFIED SYMBOLIC OPTIONS", result)
 
 

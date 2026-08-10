@@ -147,6 +147,51 @@ theorem localTriangleEdges_eq_six_of_degree_thirteen_of_triangleFree_card_eq_one
   rw [hdegree, hone] at hid
   omega
 
+/-- Endpoint form of the same local structure: exactly twelve neighbors
+have degree one inside the induced neighborhood (six disjoint pairs). -/
+theorem card_localDegree_eq_one_eq_twelve_of_degree_thirteen_sparse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V)
+    (hdegree : G.degree x = 13)
+    (hone : (triangleFreeNeighbors G x).card = 1) :
+    ({y ∈ (Finset.univ : Finset {z : V // z ∈ G.neighborSet x}) |
+      (G.induce (G.neighborSet x)).degree y = 1}).card = 12 := by
+  have hsum : (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y) = 12 := by
+    have hid := card_triangleFreeNeighbors_add_localDegreeSum G hfree x
+    rw [hdegree, hone] at hid
+    omega
+  have hle : ∀ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y ≤ 1 := by
+    intro y
+    change (G.induce (G.neighborSet x)).degree y ≤ 1
+    rw [degree_induce_neighborSet_eq_card_common]
+    exact common_le_one_of_not_containsC4 hfree x y.1 (G.ne_of_adj y.2)
+  have hcount : (∑ y : {z : V // z ∈ G.neighborSet x},
+      (G.induce (G.neighborSet x)).degree y) =
+      ({y ∈ (Finset.univ : Finset {z : V // z ∈ G.neighborSet x}) |
+        (G.induce (G.neighborSet x)).degree y = 1}).card := by
+    calc
+      (∑ y : {z : V // z ∈ G.neighborSet x},
+          (G.induce (G.neighborSet x)).degree y) =
+          ∑ y : {z : V // z ∈ G.neighborSet x},
+            if (G.induce (G.neighborSet x)).degree y = 1 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro y _
+        have hy := hle y
+        split_ifs with h
+        · omega
+        · omega
+      _ = _ := by
+        simpa using (Finset.sum_boole (R := ℕ)
+          (fun y : {z : V // z ∈ G.neighborSet x} =>
+            (G.induce (G.neighborSet x)).degree y = 1)
+          Finset.univ)
+  change ({y ∈ (Finset.univ : Finset {z : V // z ∈ G.neighborSet x}) |
+    (G.induce (G.neighborSet x)).degree y = 1}).card = 12
+  omega
+
 end
 
 end Erdos85
