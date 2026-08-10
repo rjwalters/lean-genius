@@ -13160,6 +13160,91 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
     G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
       c₀ hregChild hcardChild (componentRepresentative D o) hoOutside hoUnused
 
+/-- A zero-layer orphan component whose order is not divisible by three has
+a unique used owner.  Its entire quotient row is concentrated there with
+entry three, and the owner's reduced order divides the orphan order. -/
+theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_unique_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 3 ∣ o.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    ∃! e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R ∧
+      componentQuotientMatrix G D o e = 3 ∧
+      e.supp.ncard / 3 ∣ o.supp.ncard := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  have hsum : (∑ e ∈ C, componentQuotientMatrix G D o e) = 3 := by
+    simpa [D, R, C] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hsumNe : (∑ e ∈ C, componentQuotientMatrix G D o e) ≠ 0 := by
+    omega
+  obtain ⟨e, heC, heNe⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumNe
+  have heR : componentRepresentative D e ∈ R := (Finset.mem_filter.mp heC).2
+  have heMk : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e (componentRepresentative D e)).mp
+      (componentRepresentative_mem D e)
+  have hoMk : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o (componentRepresentative D o)).mp
+      (componentRepresentative_mem D o)
+  have hq : componentQuotientMatrix G D o e = 3 := by
+    have h := degree_sixteen_zeroLayer_orphan_to_used_quotient_eq_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e) (by simpa [D, R] using heR)
+        (componentRepresentative D o) (by simpa [D] using ho)
+        (by simpa [D, hoMk] using hnot)
+        (by simpa [D, heMk, hoMk] using Nat.pos_of_ne_zero heNe)
+    simpa [D, heMk, hoMk] using h
+  have heDvd : 3 ∣ e.supp.ncard := by
+    have h := (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild (componentRepresentative D e)
+          (by simpa [D, R] using heR)).1 rfl
+    simpa [D, heMk] using h
+  have hratio : e.supp.ncard / 3 ∣ o.supp.ncard := by
+    exact degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
+      G hfree hmin hcard e o heDvd (by simpa [D] using hq)
+  refine ⟨e, ⟨heR, hq, hratio⟩, ?_⟩
+  intro f hf
+  have hfC : f ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hf.1⟩
+  by_contra hfe
+  have hef : e ≠ f := Ne.symm hfe
+  have hpairSub : ({e, f} : Finset D.ConnectedComponent) ⊆ C := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact heC
+    · exact hfC
+  have hle := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun x ↦ componentQuotientMatrix G D o x) hpairSub
+      (fun _ _ _ => Nat.zero_le _)
+  rw [Finset.sum_pair hef, hq, hf.2.1, hsum] at hle
+  omega
+
 /-- A fixed used component can be the concentrated owner of at most twelve
 orphan components.  Every cut with `Q(o,e)=5` has positive reverse quotient,
 and all reverse orphan quotients in the used row sum to twelve. -/
