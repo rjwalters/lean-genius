@@ -11343,6 +11343,40 @@ theorem degree_sixteen_evenComponent_diagonal_three_forces_reverse
     omega
   · exact hrev
 
+/-- A reverse-oriented self-block on an even cycle has no edges within one
+coordinate-parity class.  A same-parity coordinate sum lies in the image of
+doubling, so reverse invariance transports the putative edge to a loop. -/
+theorem reverseOriented_evenComponent_no_sameParity_edge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r)
+    (u : ZMod r → V)
+    (hrev : ∀ x y, G.adjMatrix ℤ (u (x + 1)) (u (y - 1)) =
+      G.adjMatrix ℤ (u x) (u y)) :
+    ∀ x y, ZMod.castHom h2r (ZMod 2) (y - x) = 0 →
+      ¬ G.Adj (u x) (u y) := by
+  intro x y hpar hadj
+  let φ : ZMod r →+* ZMod 2 := ZMod.castHom h2r (ZMod 2)
+  have hsumpar : φ (y + x) = 0 := by
+    have hdiff := hpar
+    change φ (y - x) = 0 at hdiff
+    simp only [map_sub] at hdiff
+    simp only [map_add]
+    have htwo (z : ZMod 2) : z + z = 0 := by
+      fin_cases z <;> decide
+    linear_combination hdiff + htwo (φ x)
+  have hmem : y + x ∈ Set.range (fun z : ZMod r ↦ 2 * z) :=
+    (zmod_mem_range_two_mul_iff_castHom_eq_zero h2r (y + x)).mpr hsumpar
+  obtain ⟨z, hz⟩ := hmem
+  have hadd : y + x = z + z := by
+    rw [← two_mul]
+    exact hz.symm
+  have heq := reverseTranslationInvariant_eq_of_add_eq
+    (fun a b ↦ G.adjMatrix ℤ (u a) (u b)) hrev hadd
+  have hadjzz : G.Adj (u z) (u z) :=
+    (adj_iff_of_adjMatrix_int_eq G heq).mp hadj
+  exact G.loopless.irrefl _ hadjzz
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
