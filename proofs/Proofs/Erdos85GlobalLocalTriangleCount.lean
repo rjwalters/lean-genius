@@ -150,6 +150,56 @@ theorem triangularEdgeGraph_degree_eq_twelve_of_degree_thirteen_sparse
     Finset.card_sdiff_of_subset hsub, G.card_neighborFinset_eq_degree,
     hdegree, hone]
 
+/-- Distinct centers in a C4-free graph have at most one common triangular
+neighbor, since triangular edges are original graph edges. -/
+theorem triangularNeighborFinset_inter_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {x z : V} (hne : x ≠ z) :
+    ((triangularEdgeGraph G).neighborFinset x ∩
+      (triangularEdgeGraph G).neighborFinset z).card ≤ 1 := by
+  have hsub : (triangularEdgeGraph G).neighborFinset x ∩
+      (triangularEdgeGraph G).neighborFinset z ⊆
+      G.neighborFinset x ∩ G.neighborFinset z := by
+    intro y hy
+    have hy' := Finset.mem_inter.mp hy
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact (G.mem_neighborFinset x y).mpr <|
+        ((triangularEdgeGraph_adj G x y).mp
+          (((triangularEdgeGraph G).mem_neighborFinset x y).mp hy'.1)).1
+    · exact (G.mem_neighborFinset z y).mpr <|
+        ((triangularEdgeGraph_adj G z y).mp
+          (((triangularEdgeGraph G).mem_neighborFinset z y).mp hy'.2)).1
+  exact (Finset.card_le_card hsub).trans
+    (common_le_one_of_not_containsC4 hfree x z hne)
+
+/-- Therefore two distinct sparse degree-thirteen centers have at least 23
+distinct triangular neighbors between them. -/
+theorem twenty_three_le_card_union_triangularNeighbors_of_two_sparse
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {x z : V} (hne : x ≠ z)
+    (hxdegree : G.degree x = 13) (hzdegree : G.degree z = 13)
+    (hxone : (triangleFreeNeighbors G x).card = 1)
+    (hzone : (triangleFreeNeighbors G z).card = 1) :
+    23 ≤ ((triangularEdgeGraph G).neighborFinset x ∪
+      (triangularEdgeGraph G).neighborFinset z).card := by
+  have hx := triangularEdgeGraph_degree_eq_twelve_of_degree_thirteen_sparse
+    G x hxdegree hxone
+  have hz := triangularEdgeGraph_degree_eq_twelve_of_degree_thirteen_sparse
+    G z hzdegree hzone
+  rw [← (triangularEdgeGraph G).card_neighborFinset_eq_degree] at hx hz
+  have hinter := triangularNeighborFinset_inter_card_le_one G hfree hne
+  have hcard := Finset.card_union_add_card_inter
+    ((triangularEdgeGraph G).neighborFinset x)
+    ((triangularEdgeGraph G).neighborFinset z)
+  omega
+
 /-- A mixed third trace counts, with orientation, the common `A`-neighbors
 across the edges of `H`.  This is the graph bridge for the fixed Stage-1
 identity `tr(H A²) = 15696`. -/
