@@ -3,6 +3,8 @@
 
 Usage:
     python3 verify_hlift_assignment.py kissat-output.txt
+    python3 verify_hlift_assignment.py kissat-output.txt \
+      --wit-json stage1_orbits.json --wit-sha256 HEX --orbit-index I
 
 The verifier deliberately ignores every encoding auxiliary.  It rebuilds
 the fixed service/defect graph A from the committed witness, extracts the
@@ -121,10 +123,27 @@ def main():
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
         self_test()
         return
-    if len(sys.argv) != 2:
-        raise SystemExit(f"usage: {sys.argv[0]} ASSIGNMENT | --self-test")
+    value_flags = ("--wit-json", "--wit-sha256", "--orbit-index")
+    present = [flag in sys.argv for flag in value_flags]
+    if any(present) and not all(present):
+        raise SystemExit("external witness requires --wit-json, "
+                         "--wit-sha256, and --orbit-index")
+    consumed = set()
+    for flag in value_flags:
+        if flag not in sys.argv:
+            continue
+        pos = sys.argv.index(flag)
+        if pos + 1 >= len(sys.argv):
+            raise SystemExit(f"{flag} requires a value")
+        consumed.update((pos, pos + 1))
+    positional = [arg for pos, arg in enumerate(sys.argv[1:], 1)
+                  if pos not in consumed]
+    if len(positional) != 1:
+        raise SystemExit(f"usage: {sys.argv[0]} ASSIGNMENT "
+                         "[--wit-json PATH --wit-sha256 HEX "
+                         "--orbit-index I] | --self-test")
     n, zero_pairs, all_pairs = load_fixed_instance()
-    assignment = parse_kissat_assignment(sys.argv[1], len(all_pairs))
+    assignment = parse_kissat_assignment(positional[0], len(all_pairs))
     edge_values = []
     for var in range(1, len(all_pairs) + 1):
         if var not in assignment:
