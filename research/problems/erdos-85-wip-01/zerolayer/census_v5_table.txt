@@ -1,0 +1,241 @@
+# Zero-layer used-sector census v5 (CP-SAT exact) — 2026-08-10
+# All 231 partitions of 16 decided: 169 DEAD, 62 SURVIVOR, 0 undecided.
+# Format: VERDICT partition [minexc=<optimal excess> budget=2(16-t)] :: witness atoms
+# Atoms: A(m,tri) = 3-div orphan 3m, b=(1,1,1) on comp triple (equal-lcm law: m = pairwise lcm)
+#        B(m,e,f) = 3-div orphan 3m, b=(2,1): 2-leg on e (m=k_e or k_e=2m), 1-leg on f
+#        C(m,e)   = 3-div orphan 3m, b=3 on e (m=k_e or k_e=3m)
+#        D(u,e)   = non-3-div orphan u = k_e (structural forcing), Q(o,e)=3
+# Constraint-to-lemma metadata: see zerolayer_cpsat.py header and
+# zerolayer_census_v5 JSON meta (regenerable by running the script).
+#
+SURVIVOR 16 minexc=24 budget=30 :: 12xD(u=16,e=0)
+DEAD 15,1 budget=28
+DEAD 14,2 budget=28
+DEAD 14,1,1 budget=26
+DEAD 13,3 budget=28
+DEAD 13,2,1 budget=26
+SURVIVOR 13,1,1,1 minexc=24 budget=24 :: 12xA(m=1,(1, 2, 3)); 12xD(u=13,e=0)
+SURVIVOR 12,4 minexc=16 budget=28 :: 4xB(m=12,e=0,f=1); 4xC(m=4,e=0)
+SURVIVOR 12,3,1 minexc=16 budget=26 :: 6xB(m=6,e=0,f=1); 2xB(m=6,e=0,f=2); 4xC(m=4,e=0)
+SURVIVOR 12,2,2 minexc=16 budget=26 :: 4xB(m=6,e=0,f=1); 4xB(m=6,e=0,f=2); 4xC(m=4,e=0)
+SURVIVOR 12,2,1,1 minexc=16 budget=24 :: 4xB(m=6,e=0,f=1); 2xB(m=6,e=0,f=2); 2xB(m=6,e=0,f=3); 4xC(m=4,e=0)
+SURVIVOR 12,1,1,1,1 minexc=16 budget=22 :: 2xB(m=6,e=0,f=1); 2xB(m=6,e=0,f=2); 2xB(m=6,e=0,f=3); 2xB(m=6,e=0,f=4); 4xC(m=4,e=0)
+DEAD 11,5 budget=28
+DEAD 11,4,1 budget=26
+DEAD 11,3,2 budget=26
+DEAD 11,3,1,1 budget=24
+DEAD 11,2,2,1 budget=24
+DEAD 11,2,1,1,1 budget=22
+DEAD 11,1,1,1,1,1 budget=20
+DEAD 10,6 budget=28
+DEAD 10,5,1 budget=26
+DEAD 10,4,2 budget=26
+DEAD 10,4,1,1 budget=24
+DEAD 10,3,3 budget=26
+DEAD 10,3,2,1 budget=24
+DEAD 10,3,1,1,1 budget=22
+SURVIVOR 10,2,2,2 minexc=12 budget=24 :: 2xA(m=2,(1, 2, 3)); 2xB(m=10,e=0,f=1); 2xB(m=10,e=0,f=2); 2xB(m=10,e=0,f=3)
+SURVIVOR 10,2,2,1,1 minexc=12 budget=22 :: 1xA(m=2,(1, 2, 3)); 1xA(m=2,(1, 2, 4)); 2xB(m=10,e=0,f=1); 2xB(m=10,e=0,f=2); 2xB(m=5,e=0,f=3); 1xB(m=10,e=0,f=4)
+SURVIVOR 10,2,1,1,1,1 minexc=14 budget=20 :: 2xA(m=1,(3, 4, 5)); 2xB(m=10,e=0,f=1); 2xB(m=5,e=0,f=2); 2xB(m=5,e=0,f=3); 2xB(m=5,e=0,f=4); 2xB(m=5,e=0,f=5); 2xB(m=1,e=1,f=2)
+SURVIVOR 10,1,1,1,1,1,1 minexc=12 budget=18 :: 2xA(m=1,(1, 5, 6)); 2xA(m=1,(2, 3, 4)); 2xB(m=5,e=0,f=1); 1xB(m=10,e=0,f=2); 1xB(m=10,e=0,f=3); 1xB(m=10,e=0,f=4); 1xB(m=10,e=0,f=5); 1xB(m=10,e=0,f=6)
+DEAD 9,7 budget=28
+DEAD 9,6,1 budget=26
+DEAD 9,5,2 budget=26
+DEAD 9,5,1,1 budget=24
+DEAD 9,4,3 budget=26
+DEAD 9,4,2,1 budget=24
+DEAD 9,4,1,1,1 budget=22
+SURVIVOR 9,3,3,1 minexc=18 budget=24 :: 3xA(m=3,(1, 2, 3)); 2xB(m=9,e=0,f=1); 3xB(m=9,e=0,f=2); 1xB(m=3,e=1,f=3); 2xC(m=3,e=0); 1xC(m=1,e=1)
+DEAD 9,3,2,2 budget=24
+DEAD 9,3,2,1,1 budget=22
+SURVIVOR 9,3,1,1,1,1 minexc=14 budget=20 :: 1xA(m=1,(2, 3, 4)); 10xA(m=1,(2, 3, 5)); 1xA(m=1,(2, 4, 5)); 1xA(m=1,(3, 4, 5)); 4xB(m=9,e=0,f=1); 1xB(m=9,e=0,f=4); 2xC(m=3,e=0)
+DEAD 9,2,2,2,1 budget=22
+DEAD 9,2,2,1,1,1 budget=20
+DEAD 9,2,1,1,1,1,1 budget=18
+SURVIVOR 9,1,1,1,1,1,1,1 minexc=14 budget=16 :: 3xA(m=1,(1, 6, 7)); 1xA(m=1,(2, 3, 4)); 2xA(m=1,(2, 6, 7)); 2xA(m=1,(3, 6, 7)); 2xA(m=1,(4, 6, 7)); 3xA(m=1,(5, 6, 7)); 1xB(m=9,e=0,f=1); 1xB(m=9,e=0,f=2); 1xB(m=9,e=0,f=3); 1xB(m=9,e=0,f=4); 1xB(m=9,e=0,f=5); 2xC(m=3,e=0)
+SURVIVOR 8,8 minexc=16 budget=28 :: 4xB(m=8,e=0,f=1); 4xB(m=8,e=1,f=0)
+DEAD 8,7,1 budget=26
+DEAD 8,6,2 budget=26
+DEAD 8,6,1,1 budget=24
+DEAD 8,5,3 budget=26
+DEAD 8,5,2,1 budget=24
+DEAD 8,5,1,1,1 budget=22
+SURVIVOR 8,4,4 minexc=20 budget=26 :: 7xB(m=4,e=0,f=1); 2xB(m=8,e=0,f=2); 1xB(m=4,e=0,f=2); 1xB(m=4,e=1,f=2); 3xB(m=4,e=2,f=1)
+DEAD 8,4,3,1 budget=24
+SURVIVOR 8,4,2,2 minexc=22 budget=24 :: 6xB(m=4,e=0,f=1); 2xB(m=4,e=0,f=2); 4xB(m=4,e=0,f=3); 5xB(m=2,e=1,f=2); 1xB(m=2,e=1,f=3); 1xB(m=2,e=2,f=3); 1xB(m=2,e=3,f=2)
+DEAD 8,4,2,1,1 budget=22
+SURVIVOR 8,4,1,1,1,1 minexc=12 budget=20 :: 4xA(m=1,(2, 3, 4)); 4xA(m=1,(2, 3, 5)); 4xA(m=1,(2, 4, 5)); 4xA(m=1,(3, 4, 5)); 12xB(m=4,e=0,f=1)
+DEAD 8,3,3,2 budget=24
+DEAD 8,3,3,1,1 budget=22
+DEAD 8,3,2,2,1 budget=22
+DEAD 8,3,2,1,1,1 budget=20
+DEAD 8,3,1,1,1,1,1 budget=18
+SURVIVOR 8,2,2,2,2 minexc=12 budget=22 :: 8xA(m=2,(2, 3, 4)); 6xB(m=4,e=0,f=1); 1xB(m=8,e=0,f=2); 1xB(m=8,e=0,f=3); 2xB(m=4,e=0,f=4)
+SURVIVOR 8,2,2,2,1,1 minexc=12 budget=20 :: 2xA(m=2,(1, 3, 4)); 6xA(m=2,(1, 3, 5)); 2xB(m=4,e=0,f=1); 6xB(m=4,e=0,f=2); 1xB(m=8,e=0,f=3); 2xB(m=4,e=0,f=4)
+SURVIVOR 8,2,2,1,1,1,1 minexc=12 budget=18 :: 2xA(m=2,(1, 2, 4)); 12xA(m=1,(3, 5, 6)); 5xB(m=4,e=0,f=1); 5xB(m=4,e=0,f=2); 2xB(m=4,e=0,f=4)
+SURVIVOR 8,2,1,1,1,1,1,1 minexc=12 budget=16 :: 4xA(m=1,(4, 5, 6)); 4xA(m=1,(4, 5, 7)); 4xA(m=1,(4, 6, 7)); 4xA(m=1,(5, 6, 7)); 6xB(m=4,e=0,f=1); 3xB(m=4,e=0,f=2); 3xB(m=4,e=0,f=3)
+SURVIVOR 8,1,1,1,1,1,1,1,1 minexc=12 budget=14 :: 4xA(m=1,(5, 6, 7)); 4xA(m=1,(5, 6, 8)); 4xA(m=1,(5, 7, 8)); 4xA(m=1,(6, 7, 8)); 3xB(m=4,e=0,f=1); 3xB(m=4,e=0,f=2); 3xB(m=4,e=0,f=3); 3xB(m=4,e=0,f=4)
+DEAD 7,7,2 budget=26
+DEAD 7,7,1,1 budget=24
+DEAD 7,6,3 budget=26
+DEAD 7,6,2,1 budget=24
+DEAD 7,6,1,1,1 budget=22
+DEAD 7,5,4 budget=26
+DEAD 7,5,3,1 budget=24
+DEAD 7,5,2,2 budget=24
+DEAD 7,5,2,1,1 budget=22
+DEAD 7,5,1,1,1,1 budget=20
+DEAD 7,4,4,1 budget=24
+DEAD 7,4,3,2 budget=24
+DEAD 7,4,3,1,1 budget=22
+DEAD 7,4,2,2,1 budget=22
+DEAD 7,4,2,1,1,1 budget=20
+DEAD 7,4,1,1,1,1,1 budget=18
+DEAD 7,3,3,3 budget=24
+DEAD 7,3,3,2,1 budget=22
+DEAD 7,3,3,1,1,1 budget=20
+DEAD 7,3,2,2,2 budget=22
+DEAD 7,3,2,2,1,1 budget=20
+DEAD 7,3,2,1,1,1,1 budget=18
+DEAD 7,3,1,1,1,1,1,1 budget=16
+DEAD 7,2,2,2,2,1 budget=20
+DEAD 7,2,2,2,1,1,1 budget=18
+DEAD 7,2,2,1,1,1,1,1 budget=16
+DEAD 7,2,1,1,1,1,1,1,1 budget=14
+SURVIVOR 7,1,1,1,1,1,1,1,1,1 minexc=12 budget=12 :: 12xA(m=1,(1, 8, 9)); 5xA(m=1,(2, 6, 7)); 5xA(m=1,(3, 4, 5)); 1xB(m=7,e=0,f=2); 1xB(m=7,e=0,f=3); 1xB(m=7,e=0,f=4); 1xB(m=7,e=0,f=5); 1xB(m=7,e=0,f=6); 1xB(m=7,e=0,f=7)
+DEAD 6,6,4 budget=26
+SURVIVOR 6,6,3,1 minexc=8 budget=24 :: 6xA(m=6,(0, 1, 2)); 2xA(m=6,(0, 1, 3)); 2xB(m=6,e=0,f=1); 2xC(m=2,e=1)
+SURVIVOR 6,6,2,2 minexc=8 budget=24 :: 4xA(m=6,(0, 1, 2)); 4xA(m=6,(0, 1, 3)); 2xB(m=6,e=1,f=0); 2xC(m=2,e=0)
+SURVIVOR 6,6,2,1,1 minexc=8 budget=22 :: 4xA(m=6,(0, 1, 2)); 2xA(m=6,(0, 1, 3)); 2xA(m=6,(0, 1, 4)); 1xB(m=6,e=0,f=1); 1xB(m=6,e=1,f=0); 1xC(m=2,e=0); 1xC(m=2,e=1)
+SURVIVOR 6,6,1,1,1,1 minexc=8 budget=20 :: 2xA(m=6,(0, 1, 2)); 2xA(m=6,(0, 1, 3)); 2xA(m=6,(0, 1, 4)); 2xA(m=6,(0, 1, 5)); 1xB(m=6,e=0,f=1); 1xB(m=6,e=1,f=0); 1xC(m=2,e=0); 1xC(m=2,e=1)
+DEAD 6,5,5 budget=26
+DEAD 6,5,4,1 budget=24
+DEAD 6,5,3,2 budget=24
+DEAD 6,5,3,1,1 budget=22
+DEAD 6,5,2,2,1 budget=22
+DEAD 6,5,2,1,1,1 budget=20
+DEAD 6,5,1,1,1,1,1 budget=18
+DEAD 6,4,4,2 budget=24
+DEAD 6,4,4,1,1 budget=22
+DEAD 6,4,3,3 budget=24
+DEAD 6,4,3,2,1 budget=22
+DEAD 6,4,3,1,1,1 budget=20
+DEAD 6,4,2,2,2 budget=22
+DEAD 6,4,2,2,1,1 budget=20
+DEAD 6,4,2,1,1,1,1 budget=18
+DEAD 6,4,1,1,1,1,1,1 budget=16
+DEAD 6,3,3,3,1 budget=22
+SURVIVOR 6,3,3,2,2 minexc=8 budget=22 :: 3xA(m=6,(0, 1, 4)); 4xA(m=6,(0, 2, 3)); 1xA(m=6,(0, 2, 4)); 2xB(m=6,e=0,f=1); 1xB(m=3,e=2,f=1); 1xC(m=1,e=1)
+SURVIVOR 6,3,3,2,1,1 minexc=10 budget=20 :: 3xA(m=6,(0, 1, 3)); 1xA(m=6,(0, 2, 3)); 1xA(m=3,(1, 2, 4)); 4xA(m=3,(1, 2, 5)); 1xB(m=3,e=0,f=1); 4xB(m=3,e=0,f=2); 1xB(m=3,e=0,f=4); 1xB(m=6,e=0,f=4); 1xC(m=1,e=2)
+DEAD 6,3,3,1,1,1,1 budget=18
+SURVIVOR 6,3,2,2,2,1 minexc=8 budget=20 :: 2xA(m=6,(0, 1, 2)); 3xA(m=6,(0, 1, 3)); 1xA(m=6,(0, 1, 4)); 2xA(m=2,(2, 3, 4)); 1xA(m=2,(2, 3, 5)); 1xA(m=2,(2, 4, 5)); 2xB(m=6,e=0,f=4); 2xB(m=3,e=0,f=5); 2xB(m=1,e=2,f=5)
+SURVIVOR 6,3,2,2,1,1,1 minexc=6 budget=18 :: 3xA(m=6,(0, 1, 2)); 3xA(m=6,(0, 1, 3)); 1xA(m=2,(2, 3, 4)); 1xA(m=2,(2, 3, 5)); 1xA(m=2,(2, 3, 6)); 4xA(m=1,(4, 5, 6)); 2xB(m=3,e=0,f=4); 2xB(m=3,e=0,f=5); 2xB(m=3,e=0,f=6)
+SURVIVOR 6,3,2,1,1,1,1,1 minexc=8 budget=16 :: 4xA(m=6,(0, 1, 2)); 4xA(m=1,(3, 5, 6)); 4xA(m=1,(3, 5, 7)); 4xA(m=1,(3, 6, 7)); 4xA(m=1,(5, 6, 7)); 2xB(m=6,e=0,f=1); 2xB(m=6,e=0,f=4)
+DEAD 6,3,1,1,1,1,1,1,1 budget=14
+DEAD 6,2,2,2,2,2 budget=20
+DEAD 6,2,2,2,2,1,1 budget=18
+DEAD 6,2,2,2,1,1,1,1 budget=16
+DEAD 6,2,2,1,1,1,1,1,1 budget=14
+DEAD 6,2,1,1,1,1,1,1,1,1 budget=12
+DEAD 6,1,1,1,1,1,1,1,1,1,1 budget=10
+DEAD 5,5,5,1 budget=24
+DEAD 5,5,4,2 budget=24
+DEAD 5,5,4,1,1 budget=22
+DEAD 5,5,3,3 budget=24
+DEAD 5,5,3,2,1 budget=22
+DEAD 5,5,3,1,1,1 budget=20
+SURVIVOR 5,5,2,2,2 minexc=16 budget=22 :: 12xA(m=2,(2, 3, 4)); 4xB(m=5,e=0,f=1); 4xB(m=5,e=1,f=0)
+SURVIVOR 5,5,2,2,1,1 minexc=16 budget=20 :: 6xA(m=2,(2, 3, 4)); 6xA(m=2,(2, 3, 5)); 4xB(m=5,e=0,f=1); 4xB(m=5,e=1,f=0)
+DEAD 5,5,2,1,1,1,1 budget=18
+SURVIVOR 5,5,1,1,1,1,1,1 minexc=0 budget=16 :: 2xA(m=5,(0, 1, 2)); 2xA(m=5,(0, 1, 3)); 2xA(m=5,(0, 1, 4)); 2xA(m=5,(0, 1, 5)); 2xA(m=5,(0, 1, 6)); 2xA(m=5,(0, 1, 7)); 2xA(m=1,(2, 6, 7)); 2xA(m=1,(3, 4, 5))
+DEAD 5,4,4,3 budget=24
+DEAD 5,4,4,2,1 budget=22
+DEAD 5,4,4,1,1,1 budget=20
+DEAD 5,4,3,3,1 budget=22
+DEAD 5,4,3,2,2 budget=22
+DEAD 5,4,3,2,1,1 budget=20
+DEAD 5,4,3,1,1,1,1 budget=18
+DEAD 5,4,2,2,2,1 budget=20
+DEAD 5,4,2,2,1,1,1 budget=18
+DEAD 5,4,2,1,1,1,1,1 budget=16
+DEAD 5,4,1,1,1,1,1,1,1 budget=14
+DEAD 5,3,3,3,2 budget=22
+DEAD 5,3,3,3,1,1 budget=20
+DEAD 5,3,3,2,2,1 budget=20
+DEAD 5,3,3,2,1,1,1 budget=18
+DEAD 5,3,3,1,1,1,1,1 budget=16
+DEAD 5,3,2,2,2,2 budget=20
+DEAD 5,3,2,2,2,1,1 budget=18
+DEAD 5,3,2,2,1,1,1,1 budget=16
+DEAD 5,3,2,1,1,1,1,1,1 budget=14
+DEAD 5,3,1,1,1,1,1,1,1,1 budget=12
+DEAD 5,2,2,2,2,2,1 budget=18
+DEAD 5,2,2,2,2,1,1,1 budget=16
+DEAD 5,2,2,2,1,1,1,1,1 budget=14
+DEAD 5,2,2,1,1,1,1,1,1,1 budget=12
+DEAD 5,2,1,1,1,1,1,1,1,1,1 budget=10
+DEAD 5,1,1,1,1,1,1,1,1,1,1,1 budget=8
+SURVIVOR 4,4,4,4 minexc=0 budget=24 :: 4xA(m=4,(0, 1, 2)); 4xA(m=4,(0, 1, 3)); 4xA(m=4,(0, 2, 3)); 4xA(m=4,(1, 2, 3))
+DEAD 4,4,4,3,1 budget=22
+SURVIVOR 4,4,4,2,2 minexc=0 budget=22 :: 4xA(m=4,(0, 1, 2)); 4xA(m=4,(0, 1, 4)); 4xA(m=4,(0, 2, 3)); 2xA(m=4,(1, 2, 3)); 2xA(m=4,(1, 2, 4))
+SURVIVOR 4,4,4,2,1,1 minexc=0 budget=20 :: 4xA(m=4,(0, 1, 2)); 2xA(m=4,(0, 1, 3)); 1xA(m=4,(0, 1, 4)); 1xA(m=4,(0, 1, 5)); 2xA(m=4,(0, 2, 3)); 2xA(m=4,(0, 2, 5)); 2xA(m=4,(1, 2, 3)); 2xA(m=4,(1, 2, 4))
+SURVIVOR 4,4,4,1,1,1,1 minexc=0 budget=18 :: 10xA(m=4,(0, 1, 2)); 1xA(m=4,(0, 1, 6)); 1xA(m=4,(0, 2, 6)); 1xA(m=4,(1, 2, 6)); 12xA(m=1,(3, 4, 5))
+DEAD 4,4,3,3,2 budget=22
+DEAD 4,4,3,3,1,1 budget=20
+DEAD 4,4,3,2,2,1 budget=20
+DEAD 4,4,3,2,1,1,1 budget=18
+DEAD 4,4,3,1,1,1,1,1 budget=16
+SURVIVOR 4,4,2,2,2,2 minexc=0 budget=20 :: 2xA(m=4,(0, 1, 2)); 6xA(m=4,(0, 1, 3)); 2xA(m=4,(0, 1, 4)); 2xA(m=4,(0, 1, 5)); 8xA(m=2,(2, 4, 5))
+SURVIVOR 4,4,2,2,2,1,1 minexc=0 budget=18 :: 2xA(m=4,(0, 1, 2)); 3xA(m=4,(0, 1, 3)); 3xA(m=4,(0, 1, 4)); 3xA(m=4,(0, 1, 5)); 1xA(m=4,(0, 1, 6)); 4xA(m=2,(2, 3, 4)); 2xA(m=2,(2, 3, 6)); 2xA(m=2,(2, 4, 6))
+SURVIVOR 4,4,2,2,1,1,1,1 minexc=0 budget=16 :: 6xA(m=4,(0, 1, 2)); 6xA(m=4,(0, 1, 3)); 4xA(m=1,(4, 5, 6)); 4xA(m=1,(4, 5, 7)); 4xA(m=1,(4, 6, 7)); 4xA(m=1,(5, 6, 7))
+SURVIVOR 4,4,2,1,1,1,1,1,1 minexc=0 budget=14 :: 6xA(m=4,(0, 1, 2)); 1xA(m=4,(0, 1, 5)); 3xA(m=4,(0, 1, 7)); 2xA(m=4,(0, 1, 8)); 8xA(m=1,(3, 4, 6)); 4xA(m=1,(3, 5, 8)); 4xA(m=1,(4, 5, 6))
+SURVIVOR 4,4,1,1,1,1,1,1,1,1 minexc=0 budget=12 :: 3xA(m=4,(0, 1, 6)); 3xA(m=4,(0, 1, 7)); 3xA(m=4,(0, 1, 8)); 3xA(m=4,(0, 1, 9)); 4xA(m=1,(2, 3, 4)); 4xA(m=1,(2, 3, 5)); 4xA(m=1,(2, 4, 5)); 4xA(m=1,(3, 4, 5))
+DEAD 4,3,3,3,3 budget=22
+DEAD 4,3,3,3,2,1 budget=20
+DEAD 4,3,3,3,1,1,1 budget=18
+DEAD 4,3,3,2,2,2 budget=20
+DEAD 4,3,3,2,2,1,1 budget=18
+DEAD 4,3,3,2,1,1,1,1 budget=16
+DEAD 4,3,3,1,1,1,1,1,1 budget=14
+DEAD 4,3,2,2,2,2,1 budget=18
+DEAD 4,3,2,2,2,1,1,1 budget=16
+DEAD 4,3,2,2,1,1,1,1,1 budget=14
+DEAD 4,3,2,1,1,1,1,1,1,1 budget=12
+DEAD 4,3,1,1,1,1,1,1,1,1,1 budget=10
+DEAD 4,2,2,2,2,2,2 budget=18
+DEAD 4,2,2,2,2,2,1,1 budget=16
+DEAD 4,2,2,2,2,1,1,1,1 budget=14
+DEAD 4,2,2,2,1,1,1,1,1,1 budget=12
+DEAD 4,2,2,1,1,1,1,1,1,1,1 budget=10
+DEAD 4,2,1,1,1,1,1,1,1,1,1,1 budget=8
+DEAD 4,1,1,1,1,1,1,1,1,1,1,1,1 budget=6
+SURVIVOR 3,3,3,3,3,1 minexc=2 budget=20 :: 5xA(m=3,(0, 1, 4)); 7xA(m=3,(0, 2, 3)); 4xA(m=3,(1, 2, 4)); 1xA(m=3,(1, 3, 4)); 2xA(m=3,(1, 3, 5)); 1xA(m=3,(2, 3, 5)); 1xA(m=3,(3, 4, 5)); 1xC(m=1,e=4)
+DEAD 3,3,3,3,2,2 budget=20
+DEAD 3,3,3,3,2,1,1 budget=18
+SURVIVOR 3,3,3,3,1,1,1,1 minexc=0 budget=16 :: 5xA(m=3,(0, 1, 2)); 4xA(m=3,(0, 1, 3)); 3xA(m=3,(0, 3, 7)); 1xA(m=3,(1, 2, 3)); 1xA(m=3,(1, 2, 4)); 1xA(m=3,(1, 2, 5)); 1xA(m=3,(2, 3, 4)); 1xA(m=3,(2, 3, 5)); 2xA(m=3,(2, 3, 6)); 4xA(m=1,(4, 5, 6)); 1xA(m=1,(4, 5, 7)); 1xA(m=1,(4, 6, 7)); 1xA(m=1,(5, 6, 7))
+SURVIVOR 3,3,3,2,2,2,1 minexc=0 budget=18 :: 12xA(m=3,(0, 1, 2)); 8xA(m=2,(3, 4, 5)); 2xA(m=2,(3, 4, 6)); 2xA(m=2,(3, 5, 6)); 2xA(m=2,(4, 5, 6))
+SURVIVOR 3,3,3,2,2,1,1,1 minexc=0 budget=16 :: 10xA(m=3,(0, 1, 2)); 1xA(m=3,(0, 1, 5)); 1xA(m=3,(0, 2, 7)); 1xA(m=3,(1, 2, 6)); 4xA(m=2,(3, 4, 5)); 4xA(m=2,(3, 4, 6)); 4xA(m=2,(3, 4, 7)); 1xA(m=1,(5, 6, 7))
+DEAD 3,3,3,2,1,1,1,1,1 budget=14
+SURVIVOR 3,3,3,1,1,1,1,1,1,1 minexc=0 budget=12 :: 12xA(m=3,(0, 1, 2)); 4xA(m=1,(3, 4, 9)); 4xA(m=1,(3, 5, 8)); 4xA(m=1,(3, 6, 7)); 8xA(m=1,(4, 5, 7)); 8xA(m=1,(6, 8, 9))
+DEAD 3,3,2,2,2,2,2 budget=18
+SURVIVOR 3,3,2,2,2,2,1,1 minexc=8 budget=16 :: 4xA(m=3,(0, 1, 6)); 4xA(m=3,(0, 1, 7)); 4xA(m=2,(2, 3, 4)); 4xA(m=2,(2, 3, 5)); 4xA(m=2,(2, 4, 5)); 4xA(m=2,(3, 4, 5)); 1xB(m=3,e=0,f=1); 1xB(m=3,e=1,f=0); 1xC(m=1,e=0); 1xC(m=1,e=1)
+SURVIVOR 3,3,2,2,2,1,1,1,1 minexc=0 budget=14 :: 4xA(m=3,(0, 1, 5)); 4xA(m=3,(0, 1, 7)); 4xA(m=3,(0, 1, 8)); 8xA(m=2,(2, 3, 4)); 2xA(m=2,(2, 3, 6)); 2xA(m=2,(2, 4, 6)); 2xA(m=2,(3, 4, 6))
+SURVIVOR 3,3,2,2,1,1,1,1,1,1 minexc=0 budget=12 :: 4xA(m=3,(0, 1, 7)); 4xA(m=3,(0, 1, 8)); 4xA(m=3,(0, 1, 9)); 4xA(m=2,(2, 3, 4)); 4xA(m=2,(2, 3, 5)); 4xA(m=2,(2, 3, 6)); 4xA(m=1,(4, 5, 6))
+DEAD 3,3,2,1,1,1,1,1,1,1,1 budget=10
+SURVIVOR 3,3,1,1,1,1,1,1,1,1,1,1 minexc=0 budget=8 :: 4xA(m=3,(0, 1, 9)); 4xA(m=3,(0, 1, 10)); 4xA(m=3,(0, 1, 11)); 12xA(m=1,(2, 7, 8)); 4xA(m=1,(3, 4, 5)); 4xA(m=1,(3, 4, 6)); 4xA(m=1,(3, 5, 6)); 4xA(m=1,(4, 5, 6))
+DEAD 3,2,2,2,2,2,2,1 budget=16
+DEAD 3,2,2,2,2,2,1,1,1 budget=14
+DEAD 3,2,2,2,2,1,1,1,1,1 budget=12
+DEAD 3,2,2,2,1,1,1,1,1,1,1 budget=10
+DEAD 3,2,2,1,1,1,1,1,1,1,1,1 budget=8
+DEAD 3,2,1,1,1,1,1,1,1,1,1,1,1 budget=6
+DEAD 3,1,1,1,1,1,1,1,1,1,1,1,1,1 budget=4
+SURVIVOR 2,2,2,2,2,2,2,2 minexc=0 budget=16 :: 12xA(m=2,(0, 6, 7)); 4xA(m=2,(1, 2, 5)); 4xA(m=2,(1, 3, 5)); 4xA(m=2,(1, 4, 5)); 8xA(m=2,(2, 3, 4))
+SURVIVOR 2,2,2,2,2,2,2,1,1 minexc=0 budget=14 :: 6xA(m=2,(0, 6, 7)); 6xA(m=2,(0, 6, 8)); 4xA(m=2,(1, 2, 5)); 4xA(m=2,(1, 3, 5)); 4xA(m=2,(1, 4, 5)); 8xA(m=2,(2, 3, 4))
+SURVIVOR 2,2,2,2,2,2,1,1,1,1 minexc=0 budget=12 :: 4xA(m=2,(0, 1, 3)); 4xA(m=2,(0, 1, 5)); 4xA(m=2,(0, 2, 5)); 4xA(m=2,(1, 2, 5)); 2xA(m=2,(2, 4, 7)); 2xA(m=2,(2, 4, 8)); 2xA(m=2,(3, 4, 6)); 6xA(m=2,(3, 4, 9)); 8xA(m=1,(6, 7, 8))
+SURVIVOR 2,2,2,2,2,1,1,1,1,1,1 minexc=0 budget=10 :: 6xA(m=2,(0, 4, 9)); 6xA(m=2,(0, 4, 10)); 6xA(m=2,(1, 2, 8)); 3xA(m=2,(1, 3, 5)); 3xA(m=2,(1, 3, 7)); 1xA(m=2,(2, 3, 5)); 4xA(m=2,(2, 3, 6)); 1xA(m=2,(2, 3, 7)); 4xA(m=1,(5, 6, 7))
+SURVIVOR 2,2,2,2,1,1,1,1,1,1,1,1 minexc=0 budget=8 :: 6xA(m=2,(0, 3, 10)); 6xA(m=2,(0, 3, 11)); 6xA(m=2,(1, 2, 8)); 6xA(m=2,(1, 2, 9)); 4xA(m=1,(4, 5, 6)); 4xA(m=1,(4, 5, 7)); 4xA(m=1,(4, 6, 7)); 4xA(m=1,(5, 6, 7))
+SURVIVOR 2,2,2,1,1,1,1,1,1,1,1,1,1 minexc=0 budget=6 :: 8xA(m=2,(0, 1, 2)); 2xA(m=2,(0, 1, 3)); 2xA(m=2,(0, 2, 3)); 2xA(m=2,(1, 2, 3)); 2xA(m=1,(4, 5, 11)); 3xA(m=1,(4, 6, 8)); 1xA(m=1,(4, 7, 10)); 6xA(m=1,(4, 11, 12)); 2xA(m=1,(5, 6, 7)); 3xA(m=1,(5, 6, 9)); 5xA(m=1,(5, 10, 12)); 1xA(m=1,(6, 8, 10)); 3xA(m=1,(6, 10, 11)); 8xA(m=1,(7, 8, 9)); 1xA(m=1,(7, 9, 10)); 1xA(m=1,(10, 11, 12))
+SURVIVOR 2,2,1,1,1,1,1,1,1,1,1,1,1,1 minexc=0 budget=4 :: 6xA(m=2,(0, 1, 12)); 6xA(m=2,(0, 1, 13)); 12xA(m=1,(2, 10, 11)); 12xA(m=1,(3, 8, 9)); 4xA(m=1,(4, 5, 6)); 4xA(m=1,(4, 5, 7)); 4xA(m=1,(4, 6, 7)); 4xA(m=1,(5, 6, 7))
+DEAD 2,1,1,1,1,1,1,1,1,1,1,1,1,1,1 budget=2
+SURVIVOR 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 minexc=0 budget=0 :: 12xA(m=1,(0, 14, 15)); 12xA(m=1,(1, 12, 13)); 12xA(m=1,(2, 10, 11)); 12xA(m=1,(3, 8, 9)); 4xA(m=1,(4, 5, 6)); 4xA(m=1,(4, 5, 7)); 4xA(m=1,(4, 6, 7)); 4xA(m=1,(5, 6, 7))
