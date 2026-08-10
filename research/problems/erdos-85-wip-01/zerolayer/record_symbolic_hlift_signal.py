@@ -34,20 +34,44 @@ def valid_cube_scope(doc, parent_scope):
     for entry in ancestry:
         try:
             omit, copy = entry["orphan"]
-            component, phase = entry["component"], entry["phase"]
-            literals = [mapping[((omit, copy), component, p)] for p in range(3)]
+            component = entry["component"]
         except (KeyError, TypeError, ValueError):
             return False
-        if (phase not in range(3) or entry.get("anchor") !=
-                f"tau[({omit},{copy}),{component}]" or
-                entry.get("literal") != literals[phase] or
-                entry.get("exhaustive_anchor_literals") != literals):
+        anchor = f"tau[({omit},{copy}),{component}]"
+        if entry.get("anchor") != anchor:
             return False
-        expected_scope += f" AND {entry['anchor']}={phase}"
+        if "phase" in entry:
+            phase = entry["phase"]
+            literals = [mapping[((omit, copy), component, p)]
+                        for p in range(3)]
+            if (phase not in range(3) or
+                    entry.get("literal") != literals[phase] or
+                    entry.get("exhaustive_anchor_literals") != literals):
+                return False
+            expected_scope += f" AND {anchor}={phase}"
+        else:
+            residue = entry.get("residue")
+            exact_literals = [mapping[((omit, copy), component, p)]
+                              for p in range(12)]
+            if (entry.get("residue_modulus") != 3 or
+                    residue not in range(3) or
+                    entry.get("exact_phase_literals") != exact_literals or
+                    entry.get("clause_literals") !=
+                    exact_literals[residue::3]):
+                return False
+            expected_scope += f" AND {anchor}%3={residue}"
     last = ancestry[-1]
-    return (scope == expected_scope and doc.get("cube_phase") == last["phase"]
-            and doc.get("cube_literal") == last["literal"]
-            and doc.get("cube_partition_verified") is True)
+    if scope != expected_scope or doc.get("cube_partition_verified") is not True:
+        return False
+    if "phase" in last:
+        return (doc.get("cube_phase") == last["phase"] and
+                doc.get("cube_literal") == last["literal"])
+    return (doc.get("cube_residue_modulus") == 3 and
+            doc.get("cube_residue") == last["residue"] and
+            doc.get("cube_clause_literals") == last["clause_literals"] and
+            doc.get("exact_phase_literals") == last["exact_phase_literals"] and
+            doc.get("exact_one_hot_verified") is True and
+            doc.get("exact_pairwise_exclusions_verified") is True)
 
 
 def validate_symbolic_manifest(manifest_path, cnf_path, verifier_path):
