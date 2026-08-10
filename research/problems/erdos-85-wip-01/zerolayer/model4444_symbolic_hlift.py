@@ -271,7 +271,7 @@ def mod3_eq_one(literals):
     clauses.append((previous[1],))
 
 
-if "--type-balance" in sys.argv:
+if "--type-balance" in sys.argv or "--type-profile" in sys.argv:
     # The cube-root Fourier kernel of A=D union S is annihilated by H.  If
     # q_e(v) counts H-neighbors in blocks linked to used component e, this
     # gives 3 | q_e(v).  Its complement among the thirteen H-neighbors is the
@@ -289,6 +289,42 @@ if "--type-balance" in sys.argv:
             assert len(candidates) in (47, 48)
             mod3_eq_one(candidates)
     bump("cube_root_kernel_omitted_type_balance", mark)
+
+
+def card_at_most(literals, k):
+    """Sequential threshold encoding of cardinality at most k."""
+    previous = [None] * (k + 1)
+    for index, literal in enumerate(literals, 1):
+        current = [None] * (k + 1)
+        for threshold in range(1, min(index, k) + 1):
+            current[threshold] = newvar()
+            if threshold == 1:
+                clauses.append((-literal, current[1]))
+            if previous[threshold] is not None:
+                clauses.append((-previous[threshold], current[threshold]))
+            if threshold >= 2 and previous[threshold - 1] is not None:
+                clauses.append((-literal, -previous[threshold - 1],
+                                current[threshold]))
+        if previous[k] is not None:
+            clauses.append((-literal, -previous[k]))
+        previous = current
+
+
+if "--type-profile" in sys.argv:
+    # Summing within-type common-neighbor cherries forces equality in the
+    # minimum profile bound: every omitted-type count is at most four.  With
+    # the preceding 1 mod 3 cuts and total degree thirteen, the four counts
+    # are therefore exactly a permutation of [4,4,4,1].
+    mark = len(clauses)
+    for vertex in range(N):
+        for omit in COMPS:
+            candidates = [
+                E[frozenset((vertex, other))]
+                for other in range(N)
+                if other != vertex and ORPHANS[other // 12][0] == omit
+            ]
+            card_at_most(candidates, 4)
+    bump("within_type_cherry_profile_cap", mark)
 
 
 def card_eq(literals, k):
@@ -321,6 +357,31 @@ def card_eq(literals, k):
             clauses.append((-literal, -previous[k]))
         previous = current
     clauses.append((previous[k],))
+
+
+if "--paired-type-quotient" in sys.argv:
+    # The exact [4,4,4,1] profiles define four balanced sparse fibers.  The
+    # H^2=9 eigenspace has dimension three, so their contrast space equals
+    # the omitted-type contrast space; hence the sparse fibers are the four
+    # omitted-type classes up to a permutation.  Symmetry makes that
+    # permutation an involution, and the fixed (+3)^2,(-3)^1 sign split
+    # forces two disjoint transpositions.  Type relabeling normalizes the
+    # pairing to (0 1)(2 3).  Thus every vertex has one neighbor in its
+    # paired omitted class and four in each other omitted class.
+    mark = len(clauses)
+    paired = {0: 1, 1: 0, 2: 3, 3: 2}
+    for vertex in range(N):
+        source_omit = ORPHANS[vertex // 12][0]
+        for target_omit in COMPS:
+            candidates = [
+                E[frozenset((vertex, other))]
+                for other in range(N)
+                if other != vertex and
+                ORPHANS[other // 12][0] == target_omit
+            ]
+            expected = 1 if target_omit == paired[source_omit] else 4
+            card_eq(candidates, expected)
+    bump("paired_omitted_type_equitable_quotient", mark)
 
 
 mark = len(clauses)
@@ -359,6 +420,8 @@ if "--emit" in sys.argv:
             "local_parity": "--local-parity" in sys.argv,
             "phase_symmetry": "--phase-symmetry" in sys.argv,
             "type_balance": "--type-balance" in sys.argv,
+            "type_profile": "--type-profile" in sys.argv,
+            "paired_type_quotient": "--paired-type-quotient" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
