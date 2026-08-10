@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Zero-layer census v5: exact CP-SAT encoding (replaces DFS).
+"""Zero-layer census v6: exact CP-SAT encoding (replaces DFS).
 
 Requires: pip install ortools
 
 Constraint-to-lemma map (all cold-verified on feature/erdos85-assembly):
   load 12 per comp .... degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve (6e7a50aafc)
-  contact + budget .... degree_sixteen_zeroLayer_used_minimum_contact_total (c2ab08d5a7),
-                        degree_sixteen_zeroLayer_used_total_local_excess (118861d303),
-                        degree_sixteen_zeroLayer_used_after_contact_excess (4fba30ebd5)
+  per-row budget ....... degree_sixteen_zeroLayer_used_component_row_after_contact_excess
   A-atom equal-lcm .... reduced_length_eq_lcm_of_oriented_pair_injective (33bce2ba77),
                         false_of_two_unit_componentQuotients_lcm_ncard_lt (02725f694e)
   unequal entries ..... exists_oriented_reverseCover_of_component_size_lt (6e1bfa4e6a),
@@ -24,8 +22,8 @@ Atoms (structurally constrained):
      k_f | m with m > k_f.  excess 2m/k_e on e.  self-budget check.
   C (b=3): m = k or k = 3m. excess 6m/k.
   D (non-3-div): u = k, k >= 3, 3 nmid k. excess 2.
-Counts are integers >= 0.  Per-comp: sum load = 12k; sum excess <=
-2(k-1)  [totals then match 2(16-t) automatically].  Objective:
+Counts are integers >= 0.  Per-comp: sum load = 12k; sum excess =
+2(k-1).  Objective:
 minimize total excess.  Verdicts: OPTIMAL -> SURVIVOR(min), INFEASIBLE
 -> DEAD.
 """
@@ -89,7 +87,7 @@ def solve(K):
         model.Add(sum(c * ld[e] for c, (ld, exv, lab) in zip(counts, atoms)
                       if e in ld) == 12 * K[e])
         model.Add(sum(c * exv[e] for c, (ld, exv, lab) in zip(counts, atoms)
-                      if e in exv) <= 2 * (K[e] - 1))
+                      if e in exv) == 2 * (K[e] - 1))
     tot = sum(c * sum(exv.values()) for c, (ld, exv, lab) in zip(counts, atoms)
               if exv)
     z = model.NewIntVar(0, 1000, "z")
