@@ -61,6 +61,18 @@ theorem three_pairwise_distinct_mod_three_cases (a b c : ℕ)
     (a % 3 = 2 ∧ b % 3 = 1 ∧ c % 3 = 0) := by
   omega
 
+/-- Equivalently, each color occurs exactly once among three pairwise-distinct
+row residues. -/
+theorem three_pairwise_distinct_mod_three_count (a b c r : ℕ)
+    (hab : a % 3 ≠ b % 3) (hac : a % 3 ≠ c % 3)
+    (hbc : b % 3 ≠ c % 3) (hr : r < 3) :
+    [a % 3, b % 3, c % 3].count r = 1 := by
+  rcases three_pairwise_distinct_mod_three_cases a b c hab hac hbc with
+    h | h | h | h | h | h
+  all_goals
+    rcases h with ⟨ha, hb, hc⟩
+    interval_cases r <;> simp [ha, hb, hc]
+
 /-- Removing a member of residue class one from a balanced four/four profile
 leaves three members of its class and all four members of the other class. -/
 theorem residue_class_counts_after_erase_of_eq_one
