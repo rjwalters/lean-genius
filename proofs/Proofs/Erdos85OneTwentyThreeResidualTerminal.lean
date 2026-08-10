@@ -11491,11 +11491,13 @@ theorem degree_sixteen_orderTwelve_diagonalQuotient_ne_three_labeled
     (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
     (hcard : Fintype.card V = 16 * (16 - 1) + 3)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
-    (u : ZMod 12 → V) (hu : Function.Injective u)
+    {r : ℕ} [NeZero r] (hr : r = 12)
+    (u : ZMod r → V) (hu : Function.Injective u)
     (huRange : Set.range u = c.supp)
     (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
       {u (x - 1), u (x + 1)}) :
     componentQuotientMatrix G (secondOrderDefectGraph G) c c ≠ 3 := by
+  subst r
   intro hdiag
   have hrevZ := degree_sixteen_evenComponent_diagonal_three_forces_reverse
     G hfree hmin hcard (r := 12) (by norm_num) (by norm_num) c u hu
@@ -11506,6 +11508,85 @@ theorem degree_sixteen_orderTwelve_diagonalQuotient_ne_three_labeled
     exact adj_iff_of_adjMatrix_int_eq G (hrevZ x y)
   exact false_of_orderTwelve_reverse_diagonal_three_labeled
     G hfree hmin hcard c u hu huRange hrev hdiag
+
+/-- Labeling-free order-twelve diagonal-three exclusion. -/
+theorem degree_sixteen_orderTwelve_diagonalQuotient_ne_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = 12) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≠ 3 := by
+  classical
+  obtain ⟨u, huinj, huRange, huD, _hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  letI : NeZero c.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := _hthree c; omega)⟩
+  exact degree_sixteen_orderTwelve_diagonalQuotient_ne_three_labeled
+    G hfree hmin hcard c hc (u c) (huinj c) (huRange c) (huD c)
+
+/-- The all-`A` row on an order-twelve zero-layer used component is
+impossible in every diagonal sector.  Zero orphan excess makes the exact row
+identity force `Q(e,e)(Q(e,e)-1)=6`, hence `Q(e,e)=3`, contradicting the
+order-twelve diagonal-three exclusion. -/
+theorem degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row_unconditional
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hecard : e.supp.ncard = 12) (he_ne : e ≠ c₀)
+    (hoff : ∀ f ∈ (Finset.univ.erase c₀ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent), f ≠ e →
+      componentQuotientMatrix G (secondOrderDefectGraph G) e f *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) f e - 1) = 0) :
+    False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heR
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e f * (Q f e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  have he_mem : e ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    simpa [D, he_ne]
+  have hsum : (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+      Q e f * (Q f e - 1)) = Q e e * (Q e e - 1) := by
+    apply Finset.sum_eq_single e
+    · intro f hf hfe
+      exact hoff f hf hfe
+    · intro he_not
+      exact (he_not he_mem).elim
+  rw [hsum, hecard] at hrow
+  norm_num at hrow
+  generalize hqdef : Q e e = q at hrow
+  have hqdvd : q ∣ 6 := ⟨q - 1, hrow.symm⟩
+  have hqle : q ≤ 6 := Nat.le_of_dvd (by norm_num) hqdvd
+  have hqthree : q = 3 := by
+    interval_cases q <;> norm_num at hrow <;> simp_all
+  have hne := degree_sixteen_orderTwelve_diagonalQuotient_ne_three
+    G hfree hmin hcard e hecard
+  exact hne (hqdef.trans hqthree)
 
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
