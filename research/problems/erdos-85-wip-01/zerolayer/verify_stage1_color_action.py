@@ -60,8 +60,24 @@ def verify_color_action(witness):
                     raise ValueError(
                         f"A-color action failure e={component}, r={residue}, "
                         f"v={vertex}: {actual} != {expected}")
+    # Within one orphan C12 block, the exact-cover residues force a fixed
+    # A² off-diagonal profile.  Each of the three linked component pairs
+    # contributes (1,1,2,1,1,2) service-common neighbors at cyclic distance
+    # 1..6; the defect cycle contributes one more exactly at distance two.
+    expected_profile = (3, 4, 6, 3, 3, 6)
+    for orphan in ORPHANS:
+        for x in range(12):
+            for distance, expected in enumerate(expected_profile, 1):
+                left = vid(orphan, x)
+                right = vid(orphan, x + distance)
+                actual = len(neighbors[left] & neighbors[right])
+                if actual != expected:
+                    raise ValueError(
+                        f"same-block A2 profile failure {orphan},x={x},"
+                        f"d={distance}: {actual} != {expected}")
     return {"vertices": N, "A_edges": len(adjacency),
-            "identity": "A c_r = 12 c_r - 3 L_e + 8 one"}
+            "identity": "A c_r = 12 c_r - 3 L_e + 8 one",
+            "same_block_A2": list(expected_profile)}
 
 
 if __name__ == "__main__":

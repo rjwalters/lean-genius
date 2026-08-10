@@ -226,6 +226,23 @@ theorem card_mixed_neighbor_inter_eq_of_adjMatrix_commute
   rw [hleft, hright] at hentry
   exact_mod_cast hentry
 
+/-- Direct square-identity consumer: once `H² = cI + J - A` and `H`
+commutes with `J`, the mixed-neighbor balance follows without separately
+supplying `HA=AH`. -/
+theorem card_mixed_neighbor_inter_eq_of_sq_identity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H A : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel A.Adj]
+    (J : Matrix V V ℤ) (c : ℤ)
+    (hsq : H.adjMatrix ℤ * H.adjMatrix ℤ =
+      c • (1 : Matrix V V ℤ) + J - A.adjMatrix ℤ)
+    (hHJ : H.adjMatrix ℤ * J = J * H.adjMatrix ℤ)
+    (x z : V) :
+    (H.neighborFinset x ∩ A.neighborFinset z).card =
+      (A.neighborFinset x ∩ H.neighborFinset z).card := by
+  apply card_mixed_neighbor_inter_eq_of_adjMatrix_commute H A
+  exact matrix_comm_of_sq_eq_smul_one_add_sub
+    (H.adjMatrix ℤ) (A.adjMatrix ℤ) J c hsq hHJ
+
 /-- A mixed third trace counts, with orientation, the common `A`-neighbors
 across the edges of `H`.  This is the graph bridge for the fixed Stage-1
 identity `tr(H A²) = 15696`. -/

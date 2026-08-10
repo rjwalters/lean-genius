@@ -11,6 +11,9 @@ arithmetic input to the rational three-color action of the service graph.
 
 namespace Erdos85
 
+/-- The eight non-three-divisible residues modulo twelve. -/
+def stageOneNonthreeResidues : Finset ℕ := {1, 2, 4, 5, 7, 8, 10, 11}
+
 /-- Eight increasing residues below twelve, all nonzero modulo three, are
 the full set of non-three-divisible residues. -/
 theorem eight_sorted_nonzero_mod_three_residues
@@ -107,5 +110,22 @@ theorem residue_class_counts_after_erase_of_eq_two
   · rw [Finset.filter_erase, Finset.card_erase_of_mem]
     · omega
     · simpa [hfi] using hi
+
+set_option maxHeartbeats 800000 in
+/-- Relative to any selected exact-cover residue, the number of oriented
+profile differences at cyclic distances one through six is
+`(1,1,2,1,1,2)`.  At distance six the same opposite residue contributes in
+both orientations. -/
+theorem stageOne_oriented_residue_difference_count
+    (r d : ℕ) (hr : r ∈ stageOneNonthreeResidues)
+    (hdpos : 1 ≤ d) (hdle : d ≤ 6) :
+    (∑ s ∈ stageOneNonthreeResidues,
+      ((if (r + 12 - s) % 12 = d then 1 else 0) +
+       (if (s + 12 - r) % 12 = d then 1 else 0))) =
+      if d = 3 ∨ d = 6 then 2 else 1 := by
+  simp only [stageOneNonthreeResidues, Finset.mem_insert,
+    Finset.mem_singleton] at hr
+  rcases hr with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  all_goals interval_cases d <;> norm_num [stageOneNonthreeResidues]
 
 end Erdos85
