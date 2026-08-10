@@ -600,6 +600,31 @@ theorem uniqueOverlap_ne_two_defectNeighbors_of_pairedColor
   · intro h
     exact hbackward x (h ▸ hpreserve x)
 
+/-- If a unique overlap edge joins two sparse centers, the certified
+paired-component localization at both ends and uniqueness of the service
+component force the centers to have the same omitted type.  In the Stage-1
+application `edgeComponent` is the unique shared service point component and
+`paired` is the fixed-point-free involution `(01)(23)`. -/
+theorem vertexType_eq_of_mutual_uniqueOverlap_pairedComponent
+    {V T C : Type*} (vertexType : V → T) (paired : T → C)
+    (hpaired : Function.Injective paired)
+    (edgeComponent : V → V → C) (hedgeSymm : ∀ x y,
+      edgeComponent x y = edgeComponent y x)
+    (uniqueOverlap : V → V) (Sparse : V → Prop)
+    (hcomponent : ∀ x, Sparse x →
+      edgeComponent x (uniqueOverlap x) = paired (vertexType x))
+    {x y : V} (hx : Sparse x) (hy : Sparse y)
+    (hxy : uniqueOverlap x = y) (hyx : uniqueOverlap y = x) :
+    vertexType x = vertexType y := by
+  apply hpaired
+  calc
+    paired (vertexType x) = edgeComponent x (uniqueOverlap x) :=
+      (hcomponent x hx).symm
+    _ = edgeComponent x y := by rw [hxy]
+    _ = edgeComponent y x := hedgeSymm x y
+    _ = edgeComponent y (uniqueOverlap y) := by rw [hyx]
+    _ = paired (vertexType y) := hcomponent y hy
+
 end
 
 end Erdos85
