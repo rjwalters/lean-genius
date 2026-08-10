@@ -21,6 +21,7 @@ parser.add_argument("--time", type=float, default=300)
 parser.add_argument("--workers", type=int, default=8)
 parser.add_argument("--left-overlap", type=int)
 parser.add_argument("--right-overlap", type=int)
+parser.add_argument("--odd-moments", action="store_true")
 args = parser.parse_args()
 
 A_pairs = graphs(WIT)
@@ -179,10 +180,34 @@ def next_even_spectral_moment(previous, bound, norm_values, label):
 aa_difference = next_even_spectral_moment(
     a_difference, 707,
     [578818, 681420, 851346, 676776, 676450, 804276], "AA_difference")
-next_even_spectral_moment(
+aaa_difference = next_even_spectral_moment(
     aa_difference, 4500,
     [33790878, 58358040, 70899854, 59501760, 58858110, 67005144],
     "AAA_difference")
+
+
+def add_odd_spectral_moment(vector, bound, values, label):
+    terms = []
+    for pair in A_pairs:
+        left, right = tuple(pair)
+        product = model.NewIntVar(-bound * bound, bound * bound,
+                                  f"{label}_{left}_{right}")
+        model.AddMultiplicationEquality(
+            product, [vector[left], vector[right]])
+        terms.append(product)
+    # The displayed moments use the symmetric adjacency matrix, hence count
+    # every unordered edge twice.
+    model.Add(sum(terms) == values[args.distance - 1] // 2)
+
+
+if args.odd_moments:
+    add_odd_spectral_moment(
+        a_difference, 134,
+        [7610, 52430, 53786, 37832, 36986, 53910], "A3_energy")
+    add_odd_spectral_moment(
+        aa_difference, 707,
+        [2530930, 5734298, 6463858, 5291984, 5185138, 6240618],
+        "A5_energy")
 
 solver = cp_model.CpSolver()
 solver.parameters.max_time_in_seconds = args.time
