@@ -680,6 +680,40 @@ theorem graph_equalCycleBlock_quotientTwo_orientation
     by_cases h₁ : G.Adj (u (x + 1)) (v (y - 1)) <;>
       by_cases h₂ : G.Adj (u x) (v y) <;> simp_all
 
+/-- Boundary-component wrapper for the parity-independent quotient-two
+orientation theorem. -/
+theorem graph_equalComponent_quotientTwo_orientation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr3 : 3 ≤ r)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u v : ZMod r → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (htwo : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 2) :
+    (∀ x y, G.Adj (u (x + 1)) (v (y + 1)) ↔ G.Adj (u x) (v y)) ∨
+      (∀ x y, G.Adj (u (x + 1)) (v (y - 1)) ↔ G.Adj (u x) (v y)) := by
+  apply graph_equalCycleBlock_quotientTwo_orientation hr3 G
+    (secondOrderDefectGraph G) hfree u v huinj hvinj
+    (adjMatrix_comm_secondOrderDefect_of_even
+      G hfree hd heven hmin hcard) huD hvD
+  intro x
+  have hx : u x ∈ c.supp := by
+    rw [← huRange]
+    exact ⟨x, rfl⟩
+  rw [card_mixedAnchorSupport_eq_componentQuotient
+    G hfree hd heven hmin hcard c e hx hvinj hvRange, htwo]
+
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
 theorem cycleIntertwiner_simultaneous_shift_preserves_eq
