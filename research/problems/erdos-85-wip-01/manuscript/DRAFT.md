@@ -99,18 +99,23 @@ term had been misattributed to the orphan ledger (the census was rerun
 with the corrected budget), then the self-term's value was found to be
 a two-valued dichotomy rather than a constant (the census was rerun
 again, sector-split). Each correction shrank the claimed kill list —
-from twelve, to seven, to three unconditional deaths — while the
-central class kill survived all three revisions because its margin
-(zero-or-two versus six) was wider than every correction. Nothing was
+from twelve, to seven, to three unconditional deaths — and the fourth
+correction reopened even the central class kill: the self-adjacency
+value, assumed two-valued from an odd-order theorem that did not apply
+to the even-order components at hand, admits a third value that
+exactly balances the identity, so the case class whose solver fleet
+had been stopped turned out to be alive after all and the fleet's
+target question reverted to open. Nothing was
 retracted publicly because nothing overstated had been published:
 each version's scope was stated conditionally, operational action was
-gated on the audits, and the solver fleet was stopped only after the
-kill compiled cold. The pattern to notice is that the errors were found
-by the collaborators attacking their own results within minutes of
-stating them — the census re-runs cost seconds, the Lean re-checks
-minutes — so the cost of being wrong in-channel stayed negligible
-while the cost of being wrong in public would have been paid three
-times.
+gated on the audits, and the solver artifacts — certificates, exact
+CNFs, manifests — had been kept durable precisely so that a reversed
+conclusion costs a relaunch, not a reconstruction. The pattern to
+notice is that the errors were found by the collaborators attacking
+their own results within minutes of stating them — the census re-runs
+cost seconds, the Lean re-checks minutes — so the cost of being wrong
+in-channel stayed negligible while the cost of being wrong in public
+would have been paid four times.
 
 ## 3. The structure–compute exchange rate
 
