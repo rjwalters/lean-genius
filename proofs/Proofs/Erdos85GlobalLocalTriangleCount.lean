@@ -356,6 +356,66 @@ theorem exists_two_le_block_fiber_of_six_le_card
   simp at hle
   omega
 
+/-- Combined Stage-1 pigeonhole interface: among any 24 marked vertices,
+there are two distinct marked vertices in the same omitted type and the same
+one of its four orphan blocks.  This extracts the actual centers needed by
+the same-block `A²` profile, rather than stopping at a fiber cardinality. -/
+theorem exists_distinct_same_type_and_block_of_twenty_four_le_card
+    {V : Type*} [DecidableEq V]
+    (S : Finset V) (type block : V → Fin 4) (hS : 24 ≤ S.card) :
+    ∃ e o : Fin 4, ∃ x ∈ S, ∃ z ∈ S,
+      x ≠ z ∧ type x = e ∧ type z = e ∧ block x = o ∧ block z = o := by
+  obtain ⟨e, he⟩ := exists_six_le_type_fiber_of_twenty_four_le_card
+    S type hS
+  let T := {x ∈ S | type x = e}
+  obtain ⟨o, ho⟩ := exists_two_le_block_fiber_of_six_le_card T block he
+  let U := {x ∈ T | block x = o}
+  have hU : 1 < U.card := by
+    change 1 < ({x ∈ T | block x = o}).card
+    omega
+  have hUne : U.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨x, hxU⟩ := hUne
+  obtain ⟨z, hzU, hzx⟩ :=
+    (Finset.one_lt_card_iff_nontrivial.mp hU).exists_ne x
+  have hx : x ∈ S ∧ type x = e ∧ block x = o := by
+    have hx' : (x ∈ S ∧ type x = e) ∧ block x = o := by
+      simpa [U, T] using hxU
+    exact ⟨hx'.1.1, hx'.1.2, hx'.2⟩
+  have hz : z ∈ S ∧ type z = e ∧ block z = o := by
+    have hz' : (z ∈ S ∧ type z = e) ∧ block z = o := by
+      simpa [U, T] using hzU
+    exact ⟨hz'.1.1, hz'.1.2, hz'.2⟩
+  exact ⟨e, o, x, hx.1, z, hz.1, hzx.symm, hx.2.1, hz.2.1,
+    hx.2.2, hz.2.2⟩
+
+/-- End-to-end sparse-center consumer for the Stage-1 overlap ledger.  Odd
+local overlap degrees with total 528 on 192 vertices force two distinct
+degree-one centers in one orphan block of one omitted type. -/
+theorem exists_same_block_overlap_degree_one_pair
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (overlapDegree halfExcess : V → ℕ) (type block : V → Fin 4)
+    (hcard : Fintype.card V = 192)
+    (hodd : ∀ x, overlapDegree x = 2 * halfExcess x + 1)
+    (hsum : (∑ x : V, overlapDegree x) = 528) :
+    ∃ e o : Fin 4, ∃ x z : V,
+      x ≠ z ∧ type x = e ∧ type z = e ∧ block x = o ∧ block z = o ∧
+        overlapDegree x = 1 ∧ overlapDegree z = 1 := by
+  have hhalf := sum_half_excess_eq_168_of_odd_overlap_degrees
+    overlapDegree halfExcess hcard hodd hsum
+  let S := {x ∈ (Finset.univ : Finset V) | halfExcess x = 0}
+  have hS : 24 ≤ S.card := by
+    apply twenty_four_le_card_zero_halfExcess_of_sum_eq_168
+      halfExcess hcard hhalf
+  obtain ⟨e, o, x, hxS, z, hzS, hxz, hxtype, hztype, hxblock,
+      hzblock⟩ :=
+    exists_distinct_same_type_and_block_of_twenty_four_le_card
+      S type block hS
+  have hxzero : halfExcess x = 0 := by simpa [S] using hxS
+  have hzzero : halfExcess z = 0 := by simpa [S] using hzS
+  refine ⟨e, o, x, z, hxz, hxtype, hztype, hxblock, hzblock, ?_, ?_⟩
+  · rw [hodd x, hxzero]
+  · rw [hodd z, hzzero]
+
 end
 
 end Erdos85
