@@ -2,6 +2,7 @@
 """Exact multiplicity audit for the Stage-1 Fourier/Gram spectrum proof."""
 
 from collections import Counter
+from math import comb
 
 
 def main():
@@ -158,6 +159,76 @@ def main():
         for d in range(1, 7)
     ]
     assert difference_A_energy == [-1182, -130, -198, -460, -462, -174]
+
+    # The same Gram cases determine every higher same-block power, not only
+    # A^3 and A^4.  If A_z = alpha I + K, the equal diagonal of K^j is its
+    # trace divided by 16.  The three K spectra are respectively
+    # {36,4,4,4,0^12}, {16,16,16,0^13}, and {12,12,12,12,0^12}.
+    def pair_pow(value, exponent):
+        result = (1, 0)
+        for _ in range(exponent):
+            result = mul(result, value)
+        return result
+
+    def k_diagonal(case, exponent):
+        if exponent == 0:
+            return 1
+        if case == 8:
+            return (36 ** exponent + 3 * 4 ** exponent) // 16
+        if case == -4:
+            return 3 * 16 ** exponent // 16
+        return 4 * 12 ** exponent // 16
+
+    power_profiles = {}
+    for exponent in range(2, 10):
+        fourier = []
+        for k, (real, radical) in enumerate(two_cos):
+            alpha = (real - 3, radical)
+            case = 8 if k == 0 else (-4 if k in (4, 8) else 0)
+            total = (0, 0)
+            for j in range(exponent + 1):
+                term = pair_pow(alpha, exponent - j)
+                coefficient = comb(exponent, j) * k_diagonal(case, j)
+                total = (total[0] + coefficient * term[0],
+                         total[1] + coefficient * term[1])
+            fourier.append(total)
+        power_profiles[exponent] = inverse_diagonal_block(fourier)
+
+    assert power_profiles[2] == [35, 3, 4, 6, 3, 3, 6]
+    assert power_profiles[3] == diagonal_A3
+    assert power_profiles[4] == diagonal_A4
+    assert power_profiles[5] == \
+        [294420, 276325, 268620, 276875, 267000, 267001, 276600]
+    assert power_profiles[6] == \
+        [9806723, 9593388, 9523338, 9623076, 9496599, 9496188, 9619838]
+    assert power_profiles[7] == \
+        [337567230, 335296619, 334507320, 335789139,
+         334184130, 334179035, 335726748]
+    assert power_profiles[8] == \
+        [11755757515, 11729775648, 11721905744, 11737652352,
+         11717806307, 11717691744, 11736792040]
+    assert power_profiles[9] == \
+        [410798752824, 410503865859, 410421710592, 410616940795,
+         410373089208, 410371392627, 410604669696]
+
+    difference_moments = []
+    for distance in range(1, 7):
+        row = []
+        for k in range(7):
+            profile_left = power_profiles[k + 2]
+            profile_right = power_profiles[k + 3]
+            row.append(2 * (
+                (12 * profile_left[0] - profile_right[0]) -
+                (12 * profile_left[distance] - profile_right[distance])))
+        difference_moments.append(row)
+    assert difference_moments == [
+        [516, -1182, 14282, 7610, 578818, 2530930, 33790878],
+        [324, -130, 10440, 52430, 681420, 5734298, 58358040],
+        [374, -198, 13654, 53786, 851346, 6463858, 70899854],
+        [348, -460, 11160, 37832, 676776, 5291984, 59501760],
+        [348, -462, 11186, 36986, 676450, 5185138, 58858110],
+        [372, -174, 13104, 53910, 804276, 6240618, 67005144],
+    ]
     same_block_A = [1, 0, 0, 0, 0, 0]
     forced_support_mass = [12 * adjacent + 35 - a2
                            for adjacent, a2 in zip(same_block_A,

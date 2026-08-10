@@ -143,6 +143,47 @@ for pair in A_pairs:
 model.Add(sum(energy_terms) ==
           [-591, -65, -99, -230, -231, -87][args.distance - 1])
 
+# One further exact spectral moment: δ^T A^2 δ = ||Aδ||^2.  Computing Aδ
+# first needs only 192 additional square constraints, rather than dense
+# pairwise products weighted by A^2.
+a_difference = []
+a_difference_squares = []
+for target in range(N):
+    # Cauchy from ||δ||² ≤ 516 and 35 summands gives |(Aδ)_t| ≤ 134.
+    value = model.NewIntVar(-134, 134, f"A_difference_{target}")
+    model.Add(value == sum(difference[source]
+                           for source in A_neighbors[target]))
+    square = model.NewIntVar(0, 17956, f"A_difference_sq_{target}")
+    model.AddMultiplicationEquality(square, [value, value])
+    a_difference.append(value)
+    a_difference_squares.append(square)
+model.Add(sum(a_difference_squares) ==
+          [14282, 10440, 13654, 11160, 11186, 13104][args.distance - 1])
+
+
+def next_even_spectral_moment(previous, bound, norm_values, label):
+    transformed, squares = [], []
+    for target in range(N):
+        value = model.NewIntVar(-bound, bound, f"{label}_{target}")
+        model.Add(value == sum(previous[source]
+                               for source in A_neighbors[target]))
+        square = model.NewIntVar(0, bound * bound,
+                                 f"{label}_sq_{target}")
+        model.AddMultiplicationEquality(square, [value, value])
+        transformed.append(value)
+        squares.append(square)
+    model.Add(sum(squares) == norm_values[args.distance - 1])
+    return transformed
+
+
+aa_difference = next_even_spectral_moment(
+    a_difference, 707,
+    [578818, 681420, 851346, 676776, 676450, 804276], "AA_difference")
+next_even_spectral_moment(
+    aa_difference, 4500,
+    [33790878, 58358040, 70899854, 59501760, 58858110, 67005144],
+    "AAA_difference")
+
 solver = cp_model.CpSolver()
 solver.parameters.max_time_in_seconds = args.time
 solver.parameters.num_search_workers = args.workers

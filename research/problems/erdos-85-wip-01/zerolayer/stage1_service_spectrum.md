@@ -428,6 +428,30 @@ Equivalently, the sums of `delta_u delta_v` over unordered A-edges are
 `-591,-65,-99,-230,-231,-87`.  Unlike the aggregate row moments, this
 forces a substantial sign interaction along the explicit service graph.
 
+The same Fourier/Gram calculation continues without new phase data.  Since
+
+```
+delta A^k delta^T = q^T (12 A^(k+2) - A^(k+3)) q,
+```
+
+the complete moment rows for `k=0,...,6` at same-block distances `1,...,6`
+are
+
+```
+d1: 516, -1182, 14282,  7610, 578818, 2530930, 33790878
+d2: 324,  -130, 10440, 52430, 681420, 5734298, 58358040
+d3: 374,  -198, 13654, 53786, 851346, 6463858, 70899854
+d4: 348,  -460, 11160, 37832, 676776, 5291984, 59501760
+d5: 348,  -462, 11186, 36986, 676450, 5185138, 58858110
+d6: 372,  -174, 13104, 53910, 804276, 6240618, 67005144
+```
+
+In particular the even moments are exact squared norms
+`||A delta||^2`, `||A^2 delta||^2`, and `||A^3 delta||^2`.  The audit derives
+the required same-block profiles of every power `A^2,...,A^9` from the three
+character Gram spectra, so these identities hold throughout the corrected
+Stage-1 phase class rather than only for the baseline witness.
+
 ## Certified sparse defect-edge exclusion
 
 The possibility that a degree-one overlap center uses one of its two
