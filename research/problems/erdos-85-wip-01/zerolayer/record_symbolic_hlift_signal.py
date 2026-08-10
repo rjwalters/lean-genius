@@ -78,8 +78,24 @@ def main():
         result["verifier_exit"] = checked.returncode
         result["verifier_log"] = str(verify_log)
         result["verifier_log_sha256"] = sha256_file(verify_log)
-        result["verdict"] = ("RELAXATION_SAT_VERIFIED"
-                             if checked.returncode == 0
+        option_checked = None
+        if doc.get("options", {}).get("paired_type_quotient"):
+            option_verifier = here / "verify_symbolic_paired_assignment.py"
+            option_log = output.with_suffix(output.suffix + ".options.log")
+            option_command = [sys.executable, str(option_verifier),
+                              str(solver_log)]
+            with open(option_log, "w", encoding="utf-8") as stream:
+                option_checked = subprocess.run(
+                    option_command, stdout=stream, stderr=subprocess.STDOUT,
+                    check=False)
+            result["option_verifier_sha256"] = sha256_file(option_verifier)
+            result["option_verifier_command"] = option_command
+            result["option_verifier_exit"] = option_checked.returncode
+            result["option_verifier_log"] = str(option_log)
+            result["option_verifier_log_sha256"] = sha256_file(option_log)
+        verified = checked.returncode == 0 and (
+            option_checked is None or option_checked.returncode == 0)
+        result["verdict"] = ("RELAXATION_SAT_VERIFIED" if verified
                              else "SAT_VERIFICATION_FAILED")
     elif status == "UNSATISFIABLE":
         result["verdict"] = "SIGNAL_UNSAT_REQUIRES_PROOF_RERUN"
