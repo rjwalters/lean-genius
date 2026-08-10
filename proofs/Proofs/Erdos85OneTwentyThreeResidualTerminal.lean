@@ -11613,6 +11613,27 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_two_two_exact_atom_ledger
     (hexcess2₂ : 2 * nB₂₂₁ = 0) : False := by
   omega
 
+/-- Exact orphan budgets rule out `[10,2,2,2]`.  The order-two rows have
+zero orphan excess, so every directed `B(2)` count vanishes; their remaining
+load equations are then incompatible with the order-ten load and excess. -/
+theorem false_of_zeroLayer_reduced_used_orders_ten_two_two_two_exact_atom_ledger
+    (nA nB10₁ nB10₂ nB10₃ nB₁₂ nB₁₃ nB₂₁ nB₂₃ nB₃₁ nB₃₂
+      nC10 nD10 : ℕ)
+    (hload10 : 20 * nB10₁ + 20 * nB10₂ + 20 * nB10₃ +
+      30 * nC10 + 10 * nD10 = 120)
+    (hexcess10 : 2 * nB10₁ + 2 * nB10₂ + 2 * nB10₃ +
+      6 * nC10 + 2 * nD10 = 16)
+    (hload2₁ : 2 * nA + 10 * nB10₁ + 4 * nB₁₂ + 4 * nB₁₃ +
+      2 * nB₂₁ + 2 * nB₃₁ = 24)
+    (hexcess2₁ : 2 * nB₁₂ + 2 * nB₁₃ = 0)
+    (hload2₂ : 2 * nA + 10 * nB10₂ + 2 * nB₁₂ + 4 * nB₂₁ +
+      4 * nB₂₃ + 2 * nB₃₂ = 24)
+    (hexcess2₂ : 2 * nB₂₁ + 2 * nB₂₃ = 0)
+    (hload2₃ : 2 * nA + 10 * nB10₃ + 2 * nB₁₃ + 2 * nB₂₃ +
+      4 * nB₃₁ + 4 * nB₃₂ = 24)
+    (hexcess2₃ : 2 * nB₃₁ + 2 * nB₃₂ = 0) : False := by
+  omega
+
 /-- The reduced used-order partition `[15,1]` is impossible: its only atom
 touching the order-one row contributes load fifteen, while that row requires
 load twelve. -/
