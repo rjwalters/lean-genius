@@ -93,6 +93,39 @@ def card_eq_binary(literals, k):
             clauses.append((literal,) if (k >> bit) & 1 else (-literal,))
 
 
+def card_eq_sequential(literals, k):
+    """Exact cardinality with equivalence-defined threshold bits."""
+    previous = [None] * (k + 2)
+    for index, literal in enumerate(literals, 1):
+        current = [None] * (k + 2)
+        for threshold in range(1, min(index, k + 1) + 1):
+            current[threshold] = newvar()
+            if previous[threshold] is not None:
+                clauses.append((-previous[threshold], current[threshold]))
+            if threshold == 1:
+                clauses.append((-literal, current[1]))
+            elif previous[threshold - 1] is not None:
+                clauses.append((-literal, -previous[threshold - 1],
+                                current[threshold]))
+            same = previous[threshold]
+            lower = previous[threshold - 1] if threshold >= 2 else None
+            if threshold == 1:
+                clauses.append((-current[1], literal) if same is None else
+                               (-current[1], same, literal))
+            elif same is None and lower is None:
+                clauses.append((-current[threshold],))
+            elif same is None:
+                clauses.extend([(-current[threshold], literal),
+                                (-current[threshold], lower)])
+            else:
+                clauses.extend([(-current[threshold], same, literal),
+                                (-current[threshold], same, lower)])
+        if previous[k] is not None:
+            clauses.append((-literal, -previous[k]))
+        previous = current
+    clauses.append((previous[k],))
+
+
 # Gauge-fixed link phases.  No copy-ordering or used-component symmetry is
 # imposed: fixing the candidate in copy zero must not silently retain a
 # conflicting copy symmetry break.
@@ -198,7 +231,10 @@ for orphan in ORPHANS:
             ])
             selected_color[(x + phase) % 3].append(both)
 for color in range(3):
-    card_eq_binary(selected_color[color], 4)
+    if "--sequential-color" in sys.argv:
+        card_eq_sequential(selected_color[color], 4)
+    else:
+        card_eq_binary(selected_color[color], 4)
 bump("paired_component_exact_color_balance", mark)
 
 print(f"vars {nv} clauses {len(clauses)} phases {len(P)} "
@@ -228,6 +264,7 @@ if "--emit" in sys.argv:
                           "source_copy": 0, "center_coordinate": 0,
                           "defect_neighbor_coordinate": 1,
                           "copy_ordering": False, "phase_symmetry": False},
+        "options": {"sequential_color": "--sequential-color" in sys.argv},
     }
     Path(stem + ".manifest.json").write_text(json.dumps(manifest, indent=1) + "\n")
     print("wrote", stem)
