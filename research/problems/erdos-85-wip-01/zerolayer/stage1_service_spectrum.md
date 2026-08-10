@@ -180,3 +180,23 @@ sum_{uv in E(H)} |N_A(u) intersect N_A(v)| = 7848.
 These totals are service-independent and can be decomposed across the four
 paired quotient classes, in particular separating the 96 paired matching
 edges from the four internal and four unpaired bipartite pieces.
+
+More generally, every mixed moment with one odd `H` factor is fixed:
+
+```
+tr(H A^k) = 13*35^k - 16*(-4)^k + 3*3^k       (k >= 0).
+```
+
+Indeed, the irrational H-sign pairs still cancel, while the principal,
+`±4`, and `±3` sectors have the same three H-sums `13`, `-16`, and `3`.
+For `k=0,...,8` the exact values are
+
+```
+0, 528, 15696, 558480, 19504272, 682801488,
+23897389776, 836411128080, 29274379049232.
+```
+
+For each `k >= 1`, half of this trace is the sum over unordered H-edges of
+the number of A-walks of length `k` joining their endpoints.  Thus the
+overlap and common-A-neighbor ledgers are merely the first two members of a
+full service-independent walk-moment sequence.
