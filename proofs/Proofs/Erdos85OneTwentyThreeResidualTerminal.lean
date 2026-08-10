@@ -13421,6 +13421,45 @@ theorem degree_sixteen_quotientOne_reduced_balance
     simpa [mul_assoc] using hbal
   exact ⟨⟨Q e o, hreduced⟩, hreduced.symm⟩
 
+/-- Any two distinct quotient-one legs of a threefold-scaled orphan have
+joint reduced period exactly the orphan's reduced order.  This is the
+pairwise LCM rigidity used by the `1+1+1` atom. -/
+theorem degree_sixteen_two_quotientOne_legs_reduced_lcm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k l : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k) (hfl : f.supp.ncard = 3 * l)
+    (hef : e ≠ f)
+    (hqe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hqf : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1) :
+    m = Nat.lcm k l := by
+  have hkDvd := (degree_sixteen_quotientOne_reduced_balance
+    G hfree hmin hcard o e m k hom hek hqe).1
+  have hlDvd := (degree_sixteen_quotientOne_reduced_balance
+    G hfree hmin hcard o f m l hom hfl hqf).1
+  have hmPos : 0 < m := by
+    have := o.nonempty_supp.ncard_pos
+    omega
+  have hlcmLe : Nat.lcm k l ≤ m :=
+    Nat.le_of_dvd hmPos (Nat.lcm_dvd hkDvd hlDvd)
+  have hmLe : m ≤ Nat.lcm k l := by
+    by_contra hle
+    have hltReduced : Nat.lcm k l < m := by omega
+    have hlt : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard := by
+      rw [hek, hfl, hom, Nat.lcm_mul_left]
+      omega
+    exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e f o hef hqe hqf hlt
+  exact Nat.le_antisymm hmLe hlcmLe
+
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
 entry three, and the owner's reduced order divides the orphan order. -/
