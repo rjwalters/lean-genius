@@ -45,7 +45,9 @@ Emitted instances (2026-08-10):
      H-edges induced by N_H(v).  Each 35-literal parity is encoded by a
      chain of 34 equivalence XOR gates and one final unit.  See the
      manifest for the full SHA-256 and test_parity_odd.py for exhaustive
-     small-chain tests.
+     small-chain tests.  Formally, these are the triangle-free incident
+     H-edges, and their parity is certified by the cold-verified theorem
+     `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`.
 
 Optional `--comm-anchor` adds the 191 row-zero equations from `HA = AH`,
 which follows from the encoded square identity and regularity.  Identical
