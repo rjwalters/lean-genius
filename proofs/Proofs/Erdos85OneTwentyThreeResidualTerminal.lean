@@ -12072,6 +12072,39 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_four_diagonal_ledger
   interval_cases q12 <;> interval_cases q4 <;>
     norm_num at hexcess12 hexcess4 <;> omega
 
+/-- V11 certificate for `[8,2,2,2,2]`.  Balance and the used-row sum force
+the reduced-order-eight component to have diagonal quotient three, leaving
+only eight units of orphan excess.  Every atom serving that row costs at
+least one excess unit per eight units of load, while its required load is
+ninety-six. -/
+theorem false_of_zeroLayer_reduced_used_orders_eight_two_two_two_two_v11_ledger
+    (nB8 nB4 nC8 nD8 : ℕ)
+    (hload : 16 * nB8 + 8 * nB4 + 24 * nC8 + 8 * nD8 = 96)
+    (hexcess : 2 * nB8 + nB4 + 6 * nC8 + 2 * nD8 = 8) : False := by
+  omega
+
+/-- V11 certificate for `[5,5,2,2,2]`.  The two reduced-order-five rows
+can interact only with each other.  Their common cross quotient `q` and
+common diagonal quotient `d` satisfy `d+q=3`; retaining both used-cell
+excess terms still leaves no nonnegative atom ledger meeting both loads. -/
+theorem false_of_zeroLayer_reduced_used_orders_five_five_two_two_two_v11_ledger
+    (nB₁₂ nB₂₁ nC₁ nC₂ nD₁ nD₂ d q : ℕ)
+    (hused : d + q = 3)
+    (hload₁ : 10 * nB₁₂ + 5 * nB₂₁ + 15 * nC₁ + 5 * nD₁ = 60)
+    (hload₂ : 5 * nB₁₂ + 10 * nB₂₁ + 15 * nC₂ + 5 * nD₂ = 60)
+    (hexcess₁ : 2 * nB₁₂ + 6 * nC₁ + 2 * nD₁ +
+      d * (d - 1) + q * (q - 1) = 8)
+    (hexcess₂ : 2 * nB₂₁ + 6 * nC₂ + 2 * nD₂ +
+      d * (d - 1) + q * (q - 1) = 8) : False := by
+  have hcases :
+      (d = 0 ∧ q = 3) ∨ (d = 1 ∧ q = 2) ∨
+        (d = 2 ∧ q = 1) ∨ (d = 3 ∧ q = 0) := by
+    omega
+  rcases hcases with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+    ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  all_goals norm_num at hexcess₁ hexcess₂
+  all_goals omega
+
 /-- The exact row budgets also rule out `[12,2,2]`. -/
 theorem false_of_zeroLayer_reduced_used_orders_twelve_two_two_exact_atom_ledger
     (nB12₁ nB6₁ nB12₂ nB6₂ nB₂₁₂ nB₂₂₁ nC12 nC4 : ℕ)
