@@ -12978,6 +12978,116 @@ theorem degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
   simpa [D, R, O] using degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
 
+/-- Load contributed by an orphan `o` to a used component `e`, measured in
+reduced used-order units. -/
+def zeroLayerAtomLoad
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (e o : (secondOrderDefectGraph G).ConnectedComponent) : ℕ :=
+  (e.supp.ncard / 3) *
+    componentQuotientMatrix G (secondOrderDefectGraph G) e o
+
+/-- Local-excess cost contributed by an orphan `o` to a used component
+`e`.  In an atom with forward orphan quotient `q`, this is the reverse
+quotient times `q - 1`. -/
+def zeroLayerAtomExcess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (e o : (secondOrderDefectGraph G).ConnectedComponent) : ℕ :=
+  componentQuotientMatrix G (secondOrderDefectGraph G) e o *
+    (componentQuotientMatrix G (secondOrderDefectGraph G) o e - 1)
+
+/-- Universal zero-layer load ledger: every used component of reduced order
+`k` receives total orphan load `12k`. -/
+theorem degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, zeroLayerAtomLoad G e o) = 12 * (e.supp.ncard / 3) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  have hsum := degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
+    G hfree hmin hcard c₀ hregChild hcardChild e he
+  change (∑ o ∈ C, componentQuotientMatrix G D e o) = 12 at hsum
+  have hscaled := congrArg (fun n => (e.supp.ncard / 3) * n) hsum
+  simpa [zeroLayerAtomLoad, D, R, O, C, Finset.mul_sum, Nat.mul_comm] using hscaled
+
+/-- Restricting an orphan row to the components actually serviced by `e`
+does not change its reverse quotient sum: zero entries are discarded. -/
+theorem degree_sixteen_zeroLayer_used_serviced_quotient_sum_eq_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let S := C.filter (fun o => 0 < Q e o)
+    (∑ o ∈ S, Q e o) = 12 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := C.filter (fun o => 0 < Q e o)
+  have hsum := degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
+    G hfree hmin hcard c₀ hregChild hcardChild e he
+  change (∑ o ∈ C, Q e o) = 12 at hsum
+  have hrestrict : (∑ o ∈ S, Q e o) = ∑ o ∈ C, Q e o := by
+    simp only [S, Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro o _ho
+    by_cases hpos : 0 < Q e o
+    · simp [hpos]
+    · have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hpos
+      simp [hpos, hzero]
+  exact hrestrict.trans hsum
+
 /-- All zero-layer orphan components share one restricted-cherry capacity
 inside any fixed target defect component.  This is the aggregate quotient
 cut consumed by the zero-layer census for quotient-two/three atoms. -/
