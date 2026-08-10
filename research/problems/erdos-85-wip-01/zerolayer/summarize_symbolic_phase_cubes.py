@@ -34,6 +34,14 @@ def require_hash(path, expected, label):
     return path
 
 
+def require_exact_command(command, cnf, proof, label):
+    """Check that recorded proof commands consumed the audited artifacts."""
+    if not isinstance(command, list) or len(command) != 3:
+        raise ValueError(f"bad {label} command")
+    if Path(command[1]).resolve() != cnf or Path(command[2]).resolve() != proof:
+        raise ValueError(f"{label} command artifact mismatch")
+
+
 def expected_cube_hashes(parent_cnf, literals):
     """Hash the exact parent-plus-unit transformations in one parent scan."""
     with open(parent_cnf, "rb") as stream:
@@ -100,8 +108,8 @@ def main():
             raise ValueError(f"anchor literal mismatch at phase {phase}")
         if cube.get("sha256") != expected_hashes[phase]:
             raise ValueError(f"cube is not the exact parent-plus-unit transform at phase {phase}")
-        cnf = manifest_path.with_suffix("").with_suffix(".cnf")
-        require_hash(cnf, cube["sha256"], f"phase {phase} CNF")
+        cnf = require_hash(manifest_path.with_suffix("").with_suffix(".cnf"),
+                           cube["sha256"], f"phase {phase} CNF")
         cubes[phase] = (manifest_path, cube, cnf)
 
     certificates = {}
@@ -115,15 +123,19 @@ def main():
         phase = matches[0]
         if phase in certificates:
             raise ValueError(f"duplicate certificate for phase {phase}")
-        manifest_path, _cube, _cnf = cubes[phase]
+        manifest_path, _cube, cnf = cubes[phase]
         if cert.get("verdict") != VERIFIED:
             raise ValueError(f"certificate is not DRAT-verified at phase {phase}")
         if cert.get("manifest_sha256") != sha256_file(manifest_path):
             raise ValueError(f"cube manifest provenance mismatch at phase {phase}")
-        require_hash(cert["proof"], cert["proof_sha256"], f"phase {phase} proof")
-        verify_log = require_hash(cert["drat_trim_command"][2],
-                                  cert["proof_sha256"], f"phase {phase} proof command")
-        del verify_log
+        if Path(cert.get("cnf", "")).resolve() != cnf:
+            raise ValueError(f"certificate CNF path mismatch at phase {phase}")
+        proof = require_hash(cert["proof"], cert["proof_sha256"],
+                             f"phase {phase} proof")
+        require_exact_command(cert.get("solver_command"), cnf, proof,
+                              f"phase {phase} solver")
+        require_exact_command(cert.get("drat_trim_command"), cnf, proof,
+                              f"phase {phase} drat-trim")
         log_path = cert_path.parent / "drat-trim.log"
         require_hash(log_path, cert["drat_trim_log_sha256"],
                      f"phase {phase} drat-trim log")

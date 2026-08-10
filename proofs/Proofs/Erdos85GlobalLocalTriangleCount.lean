@@ -313,6 +313,24 @@ theorem overlap_degree_135_count_ledger
     degreeOne = degreeFive + 24 ∧ degreeThree + 2 * degreeFive = 168 := by
   omega
 
+/-- Arithmetic consumer for the point-clique matching bound: an odd overlap
+degree that is at most five must be exactly one, three, or five. -/
+theorem overlapDegree_eq_one_or_three_or_five_of_odd_le_five
+    (overlapDegree halfExcess : ℕ)
+    (hodd : overlapDegree = 2 * halfExcess + 1)
+    (hle : overlapDegree ≤ 5) :
+    overlapDegree = 1 ∨ overlapDegree = 3 ∨ overlapDegree = 5 := by
+  omega
+
+/-- Three service-point clique matchings and two defect-cycle neighbors give
+the pointwise overlap-degree cap five. -/
+theorem overlapDegree_le_five_of_service_defect_caps
+    (overlapDegree serviceDegree defectDegree : ℕ)
+    (hsplit : overlapDegree = serviceDegree + defectDegree)
+    (hservice : serviceDegree ≤ 3) (hdefect : defectDegree ≤ 2) :
+    overlapDegree ≤ 5 := by
+  omega
+
 /-- A nonnegative half-excess budget of 168 spread over 192 vertices leaves
 at least 24 zero-excess vertices, hence at least 24 local overlap degrees
 equal to one. -/

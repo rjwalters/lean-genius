@@ -52,8 +52,10 @@ with tempfile.TemporaryDirectory() as raw:
         cert = cert_dir / "certificate.json"
         write(cert, {
             "verdict": "SYMBOLIC_CLASS_UNSAT_DRAT_VERIFIED",
-            "cnf_sha256": sha(cnf), "manifest_sha256": sha(manifest),
+            "cnf": str(cnf), "cnf_sha256": sha(cnf),
+            "manifest_sha256": sha(manifest),
             "proof": str(proof), "proof_sha256": sha(proof),
+            "solver_command": ["kissat", str(cnf), str(proof)],
             "drat_trim_command": ["drat-trim", str(cnf), str(proof)],
             "drat_trim_exit": 0, "drat_trim_log_sha256": sha(log),
         })
@@ -66,6 +68,20 @@ with tempfile.TemporaryDirectory() as raw:
     assert report["verdict"] == (
         "SYMBOLIC_PARENT_UNSAT_BY_EXHAUSTIVE_DRAT_VERIFIED_CUBES")
     assert [item["phase"] for item in report["cube_certificates"]] == [0, 1, 2]
+
+    cert0 = root / "cert-0" / "certificate.json"
+    cert0_doc = json.loads(cert0.read_text())
+    valid_solver_command = cert0_doc["solver_command"]
+    cert0_doc["solver_command"] = ["kissat", str(parent_cnf), cert0_doc["proof"]]
+    write(cert0, cert0_doc)
+    failed = subprocess.run(
+        [sys.executable, str(script), str(parent_manifest), str(root),
+         "--output", str(root / "wrong-command.json")],
+        capture_output=True, text=True)
+    assert failed.returncode != 0
+    assert "solver command artifact mismatch" in failed.stderr
+    cert0_doc["solver_command"] = valid_solver_command
+    write(cert0, cert0_doc)
 
     missing = root / "cert-2" / "certificate.json"
     missing.rename(missing.with_suffix(".absent"))

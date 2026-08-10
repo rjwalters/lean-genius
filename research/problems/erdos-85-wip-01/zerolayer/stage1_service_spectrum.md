@@ -1,5 +1,29 @@
 # Stage-1 service spectrum
 
+## Mathematical scope
+
+This directory's `(4,4,4,4)` model belongs to the exact `d = 16`,
+minimum-layer `s = 0` branch.  The four entries are the reduced orders of
+the four used second-order-defect components, hence their actual orders are
+four copies of `12`.  The upstream graph facts used by the encoder are the
+`degree_sixteen_zeroLayer_*` lemmas, including the used-component order
+package, the cycle-cover interface, the row split, and the common-neighbor
+partition.
+
+The scope is deliberately narrower than the whole zero-layer branch.  The
+exact arithmetic census in `census_v5_table.txt` leaves 62 of the 231
+reduced-order partitions as survivors of that relaxation, and `(4,4,4,4)`
+is one of them.  Consequently a verified UNSAT result for the symbolic
+model excludes the corrected zero-layer `(4,4,4,4)` service class only.  It
+does not by itself exclude the other zero-layer partitions, either the
+`s = 2` or `s = 4` degree-sixteen branches, or the ambient Erdős 85
+problem.  The `s = 2` and `s = 4` branches are instead eliminated by the
+separate Lean theorems `false_of_degree_sixteen_twoLayer` and
+`false_of_degree_sixteen_fourLayer`, with
+`degree_sixteen_remaining_zeroLayer` reducing the surviving degree-sixteen
+analysis to `s = 0`.  Thus a future verified `(4,4,4,4)` UNSAT certificate
+would leave 61 arithmetic-survivor zero-layer partitions to resolve.
+
 For every corrected `(4,4,4,4)` Stage-1 witness, the graph
 `A = D ∪ S` on the 16 orphan `C12` blocks has the same spectrum.  This is
 not an experimental invariance: it follows from a four-column Gram matrix in

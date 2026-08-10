@@ -104,6 +104,12 @@ def main():
             "parent_cnf": str(args.cnf), "parent_cnf_sha256": actual_sha,
             "vars": variables, "clauses": clauses + 1,
             "sha256": sha256_file(output), "cube_literal": literal,
+            "encoder_sha256": doc["encoder_sha256"],
+            "sat_verifier_sha256": doc["sat_verifier_sha256"],
+            "options": doc.get("options", {}),
+            "rule_counts": {
+                **doc["rule_counts"], "phase_anchor_cube_unit": 1,
+            },
             "cube_phase": phase, "exhaustive_anchor_literals": literals,
             "exhaustive_clause_verified": True,
             "mutual_exclusion_clauses_verified": True,

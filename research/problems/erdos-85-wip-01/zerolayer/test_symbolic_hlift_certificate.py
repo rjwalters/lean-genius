@@ -33,6 +33,12 @@ def main():
         }
         manifest.write_text(json.dumps(doc), encoding="utf-8")
         assert validate_symbolic_manifest(manifest, cnf, verifier) == doc
+        cube = dict(doc,
+                    scope=doc["scope"] + " AND tau[(0,0),2]=0",
+                    cube_phase=0, cube_literal=18349,
+                    cube_partition_verified=True)
+        manifest.write_text(json.dumps(cube), encoding="utf-8")
+        assert validate_symbolic_manifest(manifest, cnf, verifier) == cube
         bad = dict(doc, sha256="0" * 64)
         manifest.write_text(json.dumps(bad), encoding="utf-8")
         try:
