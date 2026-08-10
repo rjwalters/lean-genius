@@ -255,6 +255,9 @@ if args.lp_cuts and args.lp_direct:
         solver.addRow(0, infinity, len(indices),
                       indices.astype(np.int32), coefficients)
         integer_cuts.append(integer)
+        print("lp_direct_cut", iteration,
+              [(int(index), int(entry))
+               for index, entry in enumerate(integer) if entry], flush=True)
     print("integer_cuts", [
         [(int(index), int(entry)) for index, entry in enumerate(vector)
          if entry] for vector in integer_cuts
