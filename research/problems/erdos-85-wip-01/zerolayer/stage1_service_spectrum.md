@@ -129,3 +129,26 @@ Q = 4 J_4 - 3 P_pi.
 In particular, every vertex has one neighbor in its paired omitted class
 and four neighbors in each of the other three classes.  The edges between
 each paired pair of 48-vertex classes form a perfect matching.
+
+## Immediate paired-class geometry
+
+Let the paired classes be `(O_0,O_1)` and `(O_2,O_3)`.  The quotient gives
+the following exact regular pieces of H:
+
+* each induced graph `H[O_a]` is 4-regular on 48 vertices;
+* `H[O_0,O_1]` and `H[O_2,O_3]` are perfect matchings;
+* each of the other four bipartite class-pair graphs is 4-regular on both
+  sides.
+
+All these graphs inherit C4-freeness from H.  Identify two paired classes
+through their perfect matching `m`.  Their two internal 4-regular edge sets
+are disjoint under this identification: if both `uv` and `m(u)m(v)` were
+edges, those edges together with the two matching edges would form a C4.
+
+Moreover, a triangle containing a paired matching edge cannot have its
+third vertex in either endpoint class.  A vertex in one endpoint class has
+only its matched neighbor in the other.  Thus every non-triangle-free
+matching edge has its unique common neighbor in one of the two classes of
+the other paired pair.  Equivalently, matching edges outside the service
+graph are in bijection with triangles whose type pattern uses one vertex
+from a paired pair and one vertex from the other pair.
