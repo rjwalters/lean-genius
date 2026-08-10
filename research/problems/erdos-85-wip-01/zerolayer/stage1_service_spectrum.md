@@ -46,6 +46,19 @@ that map is likewise not a fixed literal permutation.  Their verdicts are
 therefore a useful independent cross-check, not a replacement for either
 DRAT certificate or leaf in the exhaustive phase tree.
 
+The two recursive phase-zero children are now certified as well.  Their
+exact CNF hashes are `05fd617a3bdb93059bb718c703d822ea3403ef1be5a8d0e7cfd35bfcda72ce26`
+under `p1` and `d526d71b94f1c590d1cc481f1647064cf5732030e342ee165e3c60a3cbcbce98`
+under `p2`.  Kissat returned UNSAT for both and `drat-trim` returned
+`s VERIFIED`.  The certificate/proof SHA-256 pairs are respectively
+`e29c11dcb32814ba1f4fbdbdd3f43b1fa86bdc2ae9a04a50b8d2863343c5d0de` /
+`a0f3c9e95d229b187a2d40a6935900904a906a049f0511f828bd9cc99de2379e`
+and
+`7bd4e743923b8f06bc992694dabc5f243291c0b74d0c27dd2d87b570022332d8` /
+`2e76bdc5d60825ac7964e825c8a4a9b0f5b3d693b3539b1293c7b5f591219a6c`.
+These leaves again certify only the gauge contradiction; the four
+phase-one/phase-two grandchildren are the substantive cases.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
