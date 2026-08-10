@@ -55,6 +55,7 @@ def main():
     pending = None
     compile_seconds = None
     data_keys = None
+    direct_layout = None
     traceback_detected = False
     normal_completion_marker = False
     with open(args.log, encoding="utf-8", errors="replace") as stream:
@@ -68,6 +69,12 @@ def main():
                 compile_seconds = float(line.split()[1])
             elif line.startswith("lp_direct_data_keys "):
                 data_keys = ast.literal_eval(line.split(" ", 1)[1])
+            elif line.startswith("lp_direct_layout "):
+                fields = line.split()
+                direct_layout = {
+                    "name": fields[1], "equalities": int(fields[3]),
+                    "inequalities": int(fields[5]),
+                }
             elif line.startswith("lp_direct_iteration "):
                 fields = line.split()
                 pending = int(fields[1])
@@ -136,6 +143,7 @@ def main():
         "verdict": "SPARSE_RATIONAL_PSD_CUT_TRAJECTORY",
         "log": str(args.log.resolve()), "log_sha256": sha256_file(args.log),
         "compile_seconds": compile_seconds, "data_keys": data_keys,
+        "direct_layout": direct_layout,
         "traceback_detected": traceback_detected,
         "normal_completion_marker": normal_completion_marker,
         "expected_cuts": args.expected_cuts,
