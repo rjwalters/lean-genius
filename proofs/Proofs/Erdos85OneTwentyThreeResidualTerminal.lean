@@ -28283,6 +28283,50 @@ theorem four_class_degree_profile_eq_four_four_four_one
     (r₀ = 4 ∧ r₁ = 4 ∧ r₂ = 4 ∧ r₃ = 1) := by
   omega
 
+/-- Before the cherry equality is used, the four congruence classes already
+force a local lower bound of eighteen within-type cherries. -/
+theorem eighteen_le_four_class_cherry_sum
+    (r₀ r₁ r₂ r₃ : ℕ)
+    (hsum : r₀ + r₁ + r₂ + r₃ = 13)
+    (hmod₀ : r₀ % 3 = 1) (hmod₁ : r₁ % 3 = 1)
+    (hmod₂ : r₂ % 3 = 1) (hmod₃ : r₃ % 3 = 1) :
+    18 ≤ r₀.choose 2 + r₁.choose 2 + r₂.choose 2 + r₃.choose 2 := by
+  have hcase₀ : r₀ = 1 ∨ r₀ = 4 ∨ r₀ = 7 ∨ r₀ = 10 := by omega
+  have hcase₁ : r₁ = 1 ∨ r₁ = 4 ∨ r₁ = 7 ∨ r₁ = 10 := by omega
+  have hcase₂ : r₂ = 1 ∨ r₂ = 4 ∨ r₂ = 7 ∨ r₂ = 10 := by omega
+  have hcase₃ : r₃ = 1 ∨ r₃ = 4 ∨ r₃ = 7 ∨ r₃ = 10 := by omega
+  rcases hcase₀ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₁ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₂ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₃ with rfl | rfl | rfl | rfl
+  all_goals norm_num at hsum
+  all_goals norm_num [Nat.choose]
+
+/-- Equality in the local cherry lower bound is attained only by the exact
+`[4,4,4,1]` profile.  This packages the equality case needed after the
+global `4 * 864 = 192 * 18` double count. -/
+theorem four_class_cherry_equality_profile
+    (r₀ r₁ r₂ r₃ : ℕ)
+    (hsum : r₀ + r₁ + r₂ + r₃ = 13)
+    (hmod₀ : r₀ % 3 = 1) (hmod₁ : r₁ % 3 = 1)
+    (hmod₂ : r₂ % 3 = 1) (hmod₃ : r₃ % 3 = 1)
+    (hcherry : r₀.choose 2 + r₁.choose 2 + r₂.choose 2 + r₃.choose 2 = 18) :
+    (r₀ = 1 ∧ r₁ = 4 ∧ r₂ = 4 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 1 ∧ r₂ = 4 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 4 ∧ r₂ = 1 ∧ r₃ = 4) ∨
+    (r₀ = 4 ∧ r₁ = 4 ∧ r₂ = 4 ∧ r₃ = 1) := by
+  have hcase₀ : r₀ = 1 ∨ r₀ = 4 ∨ r₀ = 7 ∨ r₀ = 10 := by omega
+  have hcase₁ : r₁ = 1 ∨ r₁ = 4 ∨ r₁ = 7 ∨ r₁ = 10 := by omega
+  have hcase₂ : r₂ = 1 ∨ r₂ = 4 ∨ r₂ = 7 ∨ r₂ = 10 := by omega
+  have hcase₃ : r₃ = 1 ∨ r₃ = 4 ∨ r₃ = 7 ∨ r₃ = 10 := by omega
+  rcases hcase₀ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₁ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₂ with rfl | rfl | rfl | rfl <;>
+    rcases hcase₃ with rfl | rfl | rfl | rfl
+  all_goals norm_num at hsum
+  all_goals norm_num [Nat.choose] at hcherry
+  all_goals norm_num
+
 end
 
 end Erdos85
