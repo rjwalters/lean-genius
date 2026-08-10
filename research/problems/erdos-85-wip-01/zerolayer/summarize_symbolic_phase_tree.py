@@ -46,11 +46,16 @@ def main():
     parser.add_argument("root_manifest", type=Path)
     parser.add_argument("artifact_dir", type=Path)
     parser.add_argument("--anchor", action="append", nargs=3, type=int,
-                        metavar=("OMIT", "COPY", "COMPONENT"), required=True)
+                        metavar=("OMIT", "COPY", "COMPONENT"), default=[])
     parser.add_argument("--residue-anchor", action="append", nargs=3, type=int,
                         metavar=("OMIT", "COPY", "COMPONENT"), default=[])
     parser.add_argument("--value-anchor", action="append", nargs=3, type=int,
                         metavar=("OMIT", "COPY", "COMPONENT"), default=[])
+    parser.add_argument(
+        "--split", action="append", default=[], metavar="KIND:OMIT,COPY,COMPONENT",
+        help=("ordered split specification; KIND is phase, residue, or value. "
+              "Use this instead of the legacy grouped anchor options when "
+              "split kinds must be interleaved."))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -64,11 +69,27 @@ def main():
             children_by_parent.setdefault(parent_sha, []).append(path.resolve())
     certificates = list(artifact_dir.glob("**/certificate.json"))
     mapping, _ = phase_variable_map()
-    split_specs = ([('phase', tuple(anchor)) for anchor in args.anchor] +
-                   [('residue', tuple(anchor))
-                    for anchor in args.residue_anchor] +
-                   [('value', tuple(anchor))
-                    for anchor in args.value_anchor])
+    legacy_specs = ([('phase', tuple(anchor)) for anchor in args.anchor] +
+                    [('residue', tuple(anchor))
+                     for anchor in args.residue_anchor] +
+                    [('value', tuple(anchor))
+                     for anchor in args.value_anchor])
+    if args.split and legacy_specs:
+        parser.error("--split cannot be combined with legacy anchor options")
+    split_specs = []
+    for raw in args.split:
+        try:
+            kind, coordinates = raw.split(":", 1)
+            anchor = tuple(int(value) for value in coordinates.split(","))
+        except ValueError:
+            parser.error(f"invalid ordered split specification: {raw!r}")
+        if kind not in {"phase", "residue", "value"} or len(anchor) != 3:
+            parser.error(f"invalid ordered split specification: {raw!r}")
+        split_specs.append((kind, anchor))
+    if not split_specs:
+        split_specs = legacy_specs
+    if not split_specs:
+        parser.error("at least one split specification is required")
 
     def visit(manifest_path, depth):
         manifest_path = manifest_path.resolve()
@@ -258,11 +279,18 @@ def main():
         "root_manifest": str(root_manifest),
         "root_manifest_sha256": sha256_file(root_manifest),
         "root_cnf_sha256": load(root_manifest)["sha256"],
-        "anchors": [f"tau[({o},{c}),{e}]" for o, c, e in args.anchor],
+        "anchors": [f"tau[({o},{c}),{e}]" for kind, (o, c, e) in split_specs
+                    if kind == "phase"],
         "residue_anchors": [f"tau[({o},{c}),{e}]%3"
-                            for o, c, e in args.residue_anchor],
+                            for kind, (o, c, e) in split_specs
+                            if kind == "residue"],
         "value_anchors": [f"tau[({o},{c}),{e}]"
-                          for o, c, e in args.value_anchor],
+                          for kind, (o, c, e) in split_specs
+                          if kind == "value"],
+        "ordered_splits": [
+            {"kind": kind, "anchor": f"tau[({o},{c}),{e}]"}
+            for kind, (o, c, e) in split_specs
+        ],
         "evidence": evidence,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
