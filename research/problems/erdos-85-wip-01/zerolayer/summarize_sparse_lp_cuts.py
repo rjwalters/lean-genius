@@ -128,10 +128,14 @@ def main():
     eigenvalues = [item["min_eigenvalue"] for item in ordered
                    if "min_eigenvalue" in item]
     cuts = sum("cut_value" in item for item in ordered)
-    terminal_nonoptimal = bool(ordered and ordered[-1]["status"] != "kOptimal")
+    # A time/iteration limit is a normal process exit but not a completed
+    # feasibility verdict.  For this zero-objective LP, only infeasibility is
+    # a conclusive early stop before the requested cut horizon.
+    terminal_infeasible = bool(
+        ordered and ordered[-1]["status"] == "kInfeasible")
     requested_cut_round_complete = (
         args.expected_cuts is None or cuts == args.expected_cuts or
-        (eigenvalues and eigenvalues[-1] >= -1e-5) or terminal_nonoptimal)
+        (eigenvalues and eigenvalues[-1] >= -1e-5) or terminal_infeasible)
     trajectory_complete = (normal_completion_marker and not traceback_detected and
                            requested_cut_round_complete)
     optimal_items = [item for item in ordered if item["status"] == "kOptimal"]
