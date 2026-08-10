@@ -87,6 +87,28 @@ def main():
         )
         manifest.write_text(json.dumps(residue_cube), encoding="utf-8")
         assert validate_symbolic_manifest(manifest, cnf, verifier) == residue_cube
+        value_entry = {
+            "anchor": "tau[(0,1),2]", "orphan": [0, 1],
+            "component": 2, "value": 4,
+            "literal": exact_literals[4],
+            "exhaustive_value_literals": exact_literals[1::3],
+        }
+        value_cube = dict(
+            residue_cube,
+            scope=residue_cube["scope"] + " AND tau[(0,1),2]=4",
+            cube_ancestry=[*residue_cube["cube_ancestry"], value_entry],
+            cube_value=4, cube_literal=exact_literals[4],
+            exhaustive_value_literals=exact_literals[1::3],
+        )
+        manifest.write_text(json.dumps(value_cube), encoding="utf-8")
+        assert validate_symbolic_manifest(manifest, cnf, verifier) == value_cube
+        malformed_value = dict(value_cube, cube_literal=exact_literals[7])
+        manifest.write_text(json.dumps(malformed_value), encoding="utf-8")
+        try:
+            validate_symbolic_manifest(manifest, cnf, verifier)
+            raise AssertionError("malformed exact-value cube accepted")
+        except ValueError as exc:
+            assert "unexpected symbolic manifest scope" in str(exc)
         malformed_residue = dict(residue_cube, cube_clause_literals=
                                  exact_literals[2::3])
         manifest.write_text(json.dumps(malformed_residue), encoding="utf-8")

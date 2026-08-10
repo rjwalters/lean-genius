@@ -94,6 +94,26 @@ and `3e0297d367564e1a9abaf8fae95044099be7188aaa63617ee50326e0532f22e9`;
 all four proof reruns were independently accepted by `drat-trim`.  The eight
 residue-one/residue-two children remain the substantive search frontier.
 
+The residue children can in turn be split exhaustively into their four exact
+phase values.  For `p1q1r2`, the sorted-copy and pair-injectivity constraints
+make exact values 1, 10, and 11 impossible.  Fresh proof-logged reruns for
+those three leaves are DRAT verified and stored self-contained on the durable
+volume.  Their exact CNF hashes for `(residue,value) = (1,1), (1,10), (2,11)`
+are respectively
+`57c96ab68325e073c6a01c5f1ca576b2461cc03417deec052c09e9da449a3907`,
+`c07389f92e8319efbb7d418ec6d9cafc312f4a184fb6dc2fa48802b542f55790`,
+and `1439c4f4fc4e5ac18b63dd49f461b01de65ab4a7600772bcb9ca0b505fcf4c87`.
+The certificate/proof SHA-256 pairs are
+`453ce25d613c65bafe9794397cfefcdb5cca046dbf4aa572152b936efc9d0952` /
+`f9a30dd0f2ed1f310e2eee8f2b313c535fb1a5f73b3bf51c702e3a080df10800`,
+`39d297d9524e065a286eb8e3d3054d8adc014fa186a9b06a73bc409eebbb6c8e` /
+`d8e95180e580e3a2519eaca5062b89ad76d021af42202eb613a6c26c9178b7ed`,
+and `2d554cfe7092a42f4d59c5c7f2c727a3e3b837023af2b54150baa5b68371631c` /
+`1037fd71287a77161c550e07d794e691e37ed96855bc9ff249abcfbc5cef4ae8`.
+These are structural dead-value leaves only; the five remaining exact values
+under `p1q1r2` and all unresolved leaves under the other three parents still
+require independent verdicts and certificates.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;

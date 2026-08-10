@@ -49,6 +49,17 @@ def valid_cube_scope(doc, parent_scope):
                     entry.get("exhaustive_anchor_literals") != literals):
                 return False
             expected_scope += f" AND {anchor}={phase}"
+        elif "value" in entry:
+            value = entry["value"]
+            literal = mapping.get(((omit, copy), component, value))
+            exhaustive = entry.get("exhaustive_value_literals")
+            if (value not in range(12) or entry.get("literal") != literal or
+                    not isinstance(exhaustive, list) or len(exhaustive) != 4 or
+                    literal not in exhaustive or
+                    exhaustive != [mapping[((omit, copy), component, p)]
+                                   for p in range(value % 3, 12, 3)]):
+                return False
+            expected_scope += f" AND {anchor}={value}"
         else:
             residue = entry.get("residue")
             exact_literals = [mapping[((omit, copy), component, p)]
@@ -66,6 +77,11 @@ def valid_cube_scope(doc, parent_scope):
     if "phase" in last:
         return (doc.get("cube_phase") == last["phase"] and
                 doc.get("cube_literal") == last["literal"])
+    if "value" in last:
+        return (doc.get("cube_value") == last["value"] and
+                doc.get("cube_literal") == last["literal"] and
+                doc.get("exhaustive_value_literals") ==
+                last["exhaustive_value_literals"])
     return (doc.get("cube_residue_modulus") == 3 and
             doc.get("cube_residue") == last["residue"] and
             doc.get("cube_clause_literals") == last["clause_literals"] and

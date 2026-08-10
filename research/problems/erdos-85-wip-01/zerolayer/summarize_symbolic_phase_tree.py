@@ -49,6 +49,8 @@ def main():
                         metavar=("OMIT", "COPY", "COMPONENT"), required=True)
     parser.add_argument("--residue-anchor", action="append", nargs=3, type=int,
                         metavar=("OMIT", "COPY", "COMPONENT"), default=[])
+    parser.add_argument("--value-anchor", action="append", nargs=3, type=int,
+                        metavar=("OMIT", "COPY", "COMPONENT"), default=[])
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -64,7 +66,9 @@ def main():
     mapping, _ = phase_variable_map()
     split_specs = ([('phase', tuple(anchor)) for anchor in args.anchor] +
                    [('residue', tuple(anchor))
-                    for anchor in args.residue_anchor])
+                    for anchor in args.residue_anchor] +
+                   [('value', tuple(anchor))
+                    for anchor in args.value_anchor])
 
     def visit(manifest_path, depth):
         manifest_path = manifest_path.resolve()
@@ -84,6 +88,70 @@ def main():
             raise ValueError(f"uncertified leaf: {manifest_path}")
 
         split_kind, (omit, copy, component) = split_specs[depth]
+        if split_kind == "value":
+            try:
+                exact_literals = [mapping[((omit, copy), component, phase)]
+                                  for phase in range(12)]
+            except KeyError as exc:
+                raise ValueError(
+                    f"invalid value anchor: {(omit, copy, component)}") from exc
+            anchor_name = f"tau[({omit},{copy}),{component}]"
+            residue = manifest.get("cube_residue")
+            if (manifest.get("cube_anchor") != anchor_name or
+                    manifest.get("cube_residue_modulus") != 3 or
+                    residue not in range(3) or
+                    manifest.get("exact_phase_literals") != exact_literals or
+                    manifest.get("cube_clause_literals") !=
+                    exact_literals[residue::3]):
+                raise ValueError(
+                    f"value split parent is not a residue cube: {manifest_path}")
+            value_literals = exact_literals[residue::3]
+            expected_hashes = expected_cube_hashes(cnf, value_literals)
+            candidates = children_by_parent.get(manifest_sha, [])
+            by_value = {}
+            for child_path in candidates:
+                child = load(child_path)
+                if child.get("cube_anchor") != anchor_name:
+                    continue
+                value = child.get("cube_value")
+                if (value not in range(12) or value % 3 != residue or
+                        value in by_value):
+                    raise ValueError(
+                        f"bad or duplicate exact child value at {manifest_path}")
+                index = value_literals.index(exact_literals[value])
+                if child.get("scope") != (
+                        manifest["scope"] + f" AND {anchor_name}={value}"):
+                    raise ValueError(f"child scope mismatch: {child_path}")
+                if (child.get("parent_cnf_sha256") != manifest["sha256"] or
+                        child.get("cube_literal") != exact_literals[value] or
+                        child.get("exhaustive_value_literals") !=
+                        value_literals or
+                        not child.get("cube_partition_verified") or
+                        child.get("sha256") != expected_hashes[index]):
+                    raise ValueError(
+                        f"invalid exact-value child transformation: {child_path}")
+                require_hash(child_path.with_suffix("").with_suffix(".cnf"),
+                             child["sha256"], "exact-value child CNF")
+                by_value[value] = child_path
+            expected_values = {exact_literals.index(literal)
+                               for literal in value_literals}
+            if set(by_value) != expected_values:
+                raise ValueError(
+                    f"missing exact child values at {manifest_path}: "
+                    f"{sorted(by_value)}")
+            return {
+                "kind": "exhaustive_phase_value_partition",
+                "manifest": str(manifest_path),
+                "anchor": anchor_name,
+                "residue": residue,
+                "value_literals": value_literals,
+                "children": [
+                    {"value": value,
+                     "evidence": visit(by_value[value], depth + 1)}
+                    for value in sorted(expected_values)
+                ],
+            }
+
         if split_kind == "residue":
             try:
                 exact_literals = [mapping[((omit, copy), component, phase)]
@@ -193,6 +261,8 @@ def main():
         "anchors": [f"tau[({o},{c}),{e}]" for o, c, e in args.anchor],
         "residue_anchors": [f"tau[({o},{c}),{e}]%3"
                             for o, c, e in args.residue_anchor],
+        "value_anchors": [f"tau[({o},{c}),{e}]"
+                          for o, c, e in args.value_anchor],
         "evidence": evidence,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
