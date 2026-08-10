@@ -570,6 +570,36 @@ theorem mixedCount_le_nine_of_thirteen_zeros
   rw [heval] at hlower
   exact (by omega)
 
+/-- Lean-facing interface for the certified paired-color law.  If a sparse
+center's unique overlap preserves its paired color, while every designated
+defect neighbor changes that color, then the overlap cannot be a defect
+neighbor.  The certificate supplies `hpreserve` in the Stage-1 application;
+this theorem isolates the exact combinatorial consequence used downstream. -/
+theorem uniqueOverlap_not_mem_defectNeighbors_of_pairedColor
+    {V C : Type*} [DecidableEq V]
+    (pairedColor : V → C) (uniqueOverlap : V → V)
+    (defectNeighbors : V → Finset V)
+    (hpreserve : ∀ x, pairedColor (uniqueOverlap x) = pairedColor x)
+    (hdefect : ∀ x y, y ∈ defectNeighbors x →
+      pairedColor y ≠ pairedColor x) (x : V) :
+    uniqueOverlap x ∉ defectNeighbors x := by
+  intro hoverlap
+  exact hdefect x (uniqueOverlap x) hoverlap (hpreserve x)
+
+/-- Two-neighbor form used for the forward and backward neighbors of an
+orphan defect cycle. -/
+theorem uniqueOverlap_ne_two_defectNeighbors_of_pairedColor
+    {V C : Type*} (pairedColor : V → C) (uniqueOverlap forward backward : V → V)
+    (hpreserve : ∀ x, pairedColor (uniqueOverlap x) = pairedColor x)
+    (hforward : ∀ x, pairedColor (forward x) ≠ pairedColor x)
+    (hbackward : ∀ x, pairedColor (backward x) ≠ pairedColor x) (x : V) :
+    uniqueOverlap x ≠ forward x ∧ uniqueOverlap x ≠ backward x := by
+  constructor
+  · intro h
+    exact hforward x (h ▸ hpreserve x)
+  · intro h
+    exact hbackward x (h ▸ hpreserve x)
+
 end
 
 end Erdos85
