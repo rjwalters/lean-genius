@@ -233,6 +233,109 @@ theorem binary_cycleIntertwiner_exists_full_reverse_diagonal
           H hinter hbinary hne hsum
       _ = 1 := hab
 
+/-- The permutation matrix of the reverse matching `y = s - x`. -/
+def reverseMatchingMatrix {r : ℕ} [NeZero r] (s : ZMod r) :
+    Matrix (ZMod r) (ZMod r) ℤ :=
+  fun x y ↦ if y = s - x then 1 else 0
+
+/-- A reverse matching intertwines the two cycle adjacency operators. -/
+theorem reverseMatchingMatrix_entry_intertwine
+    {r : ℕ} [NeZero r] (s x y : ZMod r) :
+    reverseMatchingMatrix s (x - 1) y +
+        reverseMatchingMatrix s (x + 1) y =
+      reverseMatchingMatrix s x (y + 1) +
+        reverseMatchingMatrix s x (y - 1) := by
+  have h₁ : (y = s - (x - 1)) ↔ (y - 1 = s - x) := by
+    constructor <;> intro h
+    · rw [h]
+      ring
+    · linear_combination h
+  have h₂ : (y = s - (x + 1)) ↔ (y + 1 = s - x) := by
+    constructor <;> intro h
+    · rw [h]
+      ring
+    · linear_combination h
+  simp only [reverseMatchingMatrix, h₁, h₂]
+  ring
+
+/-- Splitting a full reverse matching from a cycle intertwiner leaves another
+cycle intertwiner. -/
+theorem sub_reverseMatchingMatrix_entry_intertwine
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (s x y : ZMod r) :
+    (H - reverseMatchingMatrix s) (x - 1) y +
+        (H - reverseMatchingMatrix s) (x + 1) y =
+      (H - reverseMatchingMatrix s) x (y + 1) +
+        (H - reverseMatchingMatrix s) x (y - 1) := by
+  simp only [Matrix.sub_apply]
+  linear_combination hinter x y -
+    reverseMatchingMatrix_entry_intertwine s x y
+
+/-- If a binary block contains a full reverse matching, subtracting that
+matching leaves another binary block. -/
+theorem sub_reverseMatchingMatrix_binary
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    (s : ZMod r) (hfull : ∀ x, H x (s - x) = 1) :
+    ∀ x y, (H - reverseMatchingMatrix s) x y = 0 ∨
+      (H - reverseMatchingMatrix s) x y = 1 := by
+  intro x y
+  by_cases hy : y = s - x
+  · left
+    simp [Matrix.sub_apply, reverseMatchingMatrix, hy, hfull x]
+  · simpa [Matrix.sub_apply, reverseMatchingMatrix, hy] using hbinary x y
+
+/-- Every row of a reverse matching matrix has sum one. -/
+theorem reverseMatchingMatrix_row_sum
+    {r : ℕ} [NeZero r] (s x : ZMod r) :
+    ∑ y, reverseMatchingMatrix s x y = 1 := by
+  classical
+  simp [reverseMatchingMatrix]
+
+/-- Every column of a reverse matching matrix has sum one. -/
+theorem reverseMatchingMatrix_column_sum
+    {r : ℕ} [NeZero r] (s y : ZMod r) :
+    ∑ x, reverseMatchingMatrix s x y = 1 := by
+  classical
+  calc
+    (∑ x, reverseMatchingMatrix s x y) =
+        ∑ x, reverseMatchingMatrix s y x := by
+      apply Finset.sum_congr rfl
+      intro x _hx
+      simp only [reverseMatchingMatrix]
+      congr 1
+      apply propext
+      constructor <;> intro h
+      · linear_combination h
+      · linear_combination h
+    _ = 1 := reverseMatchingMatrix_row_sum s y
+
+/-- Removing a reverse matching from a row-two block leaves row sum one. -/
+theorem sub_reverseMatchingMatrix_row_sum_eq_one
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hrow : ∀ x, ∑ y, H x y = 2) (s x : ZMod r) :
+    ∑ y, (H - reverseMatchingMatrix s) x y = 1 := by
+  simp_rw [Matrix.sub_apply]
+  rw [Finset.sum_sub_distrib, hrow, reverseMatchingMatrix_row_sum]
+  norm_num
+
+/-- Removing a reverse matching from a column-two block leaves column sum
+one as well. -/
+theorem sub_reverseMatchingMatrix_column_sum_eq_one
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hcol : ∀ y, ∑ x, H x y = 2) (s y : ZMod r) :
+    ∑ x, (H - reverseMatchingMatrix s) x y = 1 := by
+  simp_rw [Matrix.sub_apply]
+  rw [Finset.sum_sub_distrib, hcol, reverseMatchingMatrix_column_sum]
+  norm_num
+
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
 theorem cycleIntertwiner_simultaneous_shift_preserves_eq
