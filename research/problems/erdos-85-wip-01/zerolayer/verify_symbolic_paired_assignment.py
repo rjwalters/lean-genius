@@ -52,6 +52,34 @@ def verify_paired_quotient(edge_values):
             "quotient": "4J-3P"}
 
 
+def verify_color_balance(witness, edge_values):
+    """Check the cube-root color counts from retained H and phase variables."""
+    all_pairs = [frozenset(pair) for pair in combinations(range(N), 2)]
+    neighbors = [set() for _ in range(N)]
+    for pair, present in zip(all_pairs, edge_values):
+        if present:
+            u, v = sorted(pair)
+            neighbors[u].add(v)
+            neighbors[v].add(u)
+    paired = {0: 1, 1: 0, 2: 3, 3: 2}
+    for vertex in range(N):
+        source = ORPHANS[vertex // 12][0]
+        for component in range(4):
+            counts = [0, 0, 0]
+            for other in neighbors[vertex]:
+                orphan = ORPHANS[other // 12]
+                if component not in witness[orphan]:
+                    continue
+                color = ((other % 12) + witness[orphan][component]) % 3
+                counts[color] += 1
+            expected = 4 if component == paired[source] else 3
+            if counts != [expected] * 3:
+                raise ValueError(
+                    f"color balance failure at vertex {vertex}, component "
+                    f"{component}: {counts} != {[expected] * 3}")
+    return {"cube_root_color_counts": "exact", "counts": "3-or-4"}
+
+
 def self_test():
     # A synthetic quotient-only graph: four 48-cycles with offsets ±1,±2;
     # perfect matchings on paired classes; four-shift bipartite graphs on the
@@ -85,8 +113,10 @@ def main():
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
         self_test()
         return
-    if len(sys.argv) != 2:
-        raise SystemExit(f"usage: {sys.argv[0]} KISSAT_LOG | --self-test")
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and
+                                      sys.argv[2] != "--color-balance"):
+        raise SystemExit(
+            f"usage: {sys.argv[0]} KISSAT_LOG [--color-balance] | --self-test")
     _mapping, last_phase = phase_variable_map()
     assignment = parse_kissat_assignment(sys.argv[1], last_phase)
     witness = extract_witness(assignment)
@@ -97,6 +127,8 @@ def main():
             raise ValueError(f"missing edge variable {variable}")
         edge_values.append(assignment[variable])
     result = verify_paired_quotient(edge_values)
+    if len(sys.argv) == 3:
+        result.update(verify_color_balance(witness, edge_values))
     print("VERIFIED SYMBOLIC OPTIONS", result)
 
 
