@@ -157,6 +157,39 @@ theorem sum_half_excess_eq_168_of_odd_overlap_degrees
   simp [hcard] at hsum
   omega
 
+/-- A nonnegative half-excess budget of 168 spread over 192 vertices leaves
+at least 24 zero-excess vertices, hence at least 24 local overlap degrees
+equal to one. -/
+theorem twenty_four_le_card_zero_halfExcess_of_sum_eq_168
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (halfExcess : V → ℕ)
+    (hcard : Fintype.card V = 192)
+    (hsum : (∑ x : V, halfExcess x) = 168) :
+    24 ≤ ({x ∈ (Finset.univ : Finset V) | halfExcess x = 0}).card := by
+  let nonzero := {x ∈ (Finset.univ : Finset V) | halfExcess x ≠ 0}
+  have hnonzero_le : nonzero.card ≤ ∑ x : V, halfExcess x := by
+    have hpoint : (∑ x : V, if halfExcess x ≠ 0 then 1 else 0) ≤
+        ∑ x : V, halfExcess x := by
+      apply Finset.sum_le_sum
+      intro x _
+      split_ifs <;> omega
+    have hcount : (∑ x : V, if halfExcess x ≠ 0 then 1 else 0) =
+        nonzero.card := by
+      simpa [nonzero] using
+        (Finset.sum_boole (R := ℕ) (fun x : V => halfExcess x ≠ 0)
+          Finset.univ)
+    omega
+  have hpartition := Finset.card_filter_add_card_filter_not
+    (fun x : V => halfExcess x = 0) (s := Finset.univ)
+  have hnot : ({x ∈ (Finset.univ : Finset V) | ¬halfExcess x = 0}) =
+      nonzero := by
+    ext x
+    simp [nonzero]
+  rw [hnot] at hpartition
+  simp only [Finset.card_univ, hcard] at hpartition
+  rw [hsum] at hnonzero_le
+  omega
+
 end
 
 end Erdos85
