@@ -86,6 +86,32 @@ written by the same mind that wrote the generator inherit its blind
 spots; independent audits should test invariants the generator never
 considered.
 
+The third case study is a single afternoon's cascade (msgs 2299–2328)
+that shows the correction loop running at full speed in both
+directions. A scouting pass over the formal file found an unconsumed
+generic engine and sixty-two unconsumed arithmetic ledgers, all
+instantiating one unstated law; formalizing the law's per-row version
+took an hour and immediately strengthened the mechanical census — which
+then killed five surviving cases, including, apparently, the very case
+class two hundred solver-hours were grinding on. Twice in the next hour
+the strengthening itself was red-teamed down: first a self-adjacency
+term had been misattributed to the orphan ledger (the census was rerun
+with the corrected budget), then the self-term's value was found to be
+a two-valued dichotomy rather than a constant (the census was rerun
+again, sector-split). Each correction shrank the claimed kill list —
+from twelve, to seven, to three unconditional deaths — while the
+central class kill survived all three revisions because its margin
+(zero-or-two versus six) was wider than every correction. Nothing was
+retracted publicly because nothing overstated had been published:
+each version's scope was stated conditionally, operational action was
+gated on the audits, and the solver fleet was stopped only after the
+kill compiled cold. The pattern to notice is that the errors were found
+by the collaborators attacking their own results within minutes of
+stating them — the census re-runs cost seconds, the Lean re-checks
+minutes — so the cost of being wrong in-channel stayed negligible
+while the cost of being wrong in public would have been paid three
+times.
+
 ## 3. The structure–compute exchange rate
 
 The campaign continuously trades structural insight against raw solving.
