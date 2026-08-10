@@ -8,6 +8,7 @@ import tempfile
 
 from certify_symbolic_hlift_unsat import drat_verified
 from record_symbolic_hlift_signal import validate_symbolic_manifest
+from verify_symbolic_hlift_assignment import phase_variable_map
 
 
 def sha(data):
@@ -49,6 +50,23 @@ def main():
                 raise AssertionError("malformed phase cube accepted")
             except ValueError as exc:
                 assert "unexpected symbolic manifest scope" in str(exc)
+        mapping, _ = phase_variable_map()
+        second_literals = [mapping[((1, 0), 2, phase)] for phase in range(3)]
+        recursive = dict(cube,
+            scope=(doc["scope"] + " AND tau[(0,0),2]=1" +
+                   " AND tau[(1,0),2]=2"),
+            cube_phase=2, cube_literal=second_literals[2],
+            cube_ancestry=[
+                {"anchor": "tau[(0,0),2]", "orphan": [0, 0],
+                 "component": 2, "phase": 1, "literal": 18350,
+                 "exhaustive_anchor_literals": [18349, 18350, 18351]},
+                {"anchor": "tau[(1,0),2]", "orphan": [1, 0],
+                 "component": 2, "phase": 2,
+                 "literal": second_literals[2],
+                 "exhaustive_anchor_literals": second_literals},
+            ])
+        manifest.write_text(json.dumps(recursive), encoding="utf-8")
+        assert validate_symbolic_manifest(manifest, cnf, verifier) == recursive
         bad = dict(doc, sha256="0" * 64)
         manifest.write_text(json.dumps(bad), encoding="utf-8")
         try:
