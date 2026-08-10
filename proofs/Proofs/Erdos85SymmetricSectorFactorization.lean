@@ -116,6 +116,32 @@ theorem matrix_three_color_mulVec_eq_of_sq_contrasts_eq_zero
   rw [Matrix.mulVec_sub, sub_eq_zero] at hker₀ hker₁
   exact ⟨hker₀.trans hker₁.symm, hker₁⟩
 
+/-- Full rational three-color interface.  A common affine action
+`A cᵣ = 12 cᵣ + q`, together with the Moore square identity and vanishing of
+`J` on the two color contrasts, makes the square of `H` kill those
+contrasts.  Symmetry then forces equal `H`-images of all three colors. -/
+theorem matrix_three_color_mulVec_eq_of_common_affine_action
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {H A J : Matrix V V ℚ} (hH : H.IsSymm)
+    (hsq : H * H = (12 : ℚ) • (1 : Matrix V V ℚ) + J - A)
+    (c₀ c₁ c₂ q : V → ℚ)
+    (hJ₀ : J.mulVec (c₀ - c₂) = 0)
+    (hJ₁ : J.mulVec (c₁ - c₂) = 0)
+    (hA₀ : A.mulVec c₀ = (12 : ℚ) • c₀ + q)
+    (hA₁ : A.mulVec c₁ = (12 : ℚ) • c₁ + q)
+    (hA₂ : A.mulVec c₂ = (12 : ℚ) • c₂ + q) :
+    H.mulVec c₀ = H.mulVec c₁ ∧ H.mulVec c₁ = H.mulVec c₂ := by
+  have hzero₀ : (H * H).mulVec (c₀ - c₂) = 0 := by
+    rw [hsq, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
+      Matrix.one_mulVec, hJ₀, Matrix.mulVec_sub, hA₀, hA₂]
+    module
+  have hzero₁ : (H * H).mulVec (c₁ - c₂) = 0 := by
+    rw [hsq, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
+      Matrix.one_mulVec, hJ₁, Matrix.mulVec_sub, hA₁, hA₂]
+    module
+  exact matrix_three_color_mulVec_eq_of_sq_contrasts_eq_zero
+    hH c₀ c₁ c₂ hzero₀ hzero₁
+
 /-- **Linear squarefreeness of the symmetric minimal polynomial.**  No
 square of a linear factor divides the minimal polynomial of a symmetric
 rational matrix. -/
