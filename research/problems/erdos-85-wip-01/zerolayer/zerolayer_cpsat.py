@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Zero-layer census v6: exact CP-SAT encoding (replaces DFS).
+"""Zero-layer census v7: exact CP-SAT encoding (replaces DFS).
 
 Requires: pip install ortools
 
@@ -22,8 +22,10 @@ Atoms (structurally constrained):
      k_f | m with m > k_f.  excess 2m/k_e on e.  self-budget check.
   C (b=3): m = k or k = 3m. excess 6m/k.
   D (non-3-div): u = k, k >= 3, 3 nmid k. excess 2.
-Counts are integers >= 0.  Per-comp: sum load = 12k; sum excess =
-2(k-1).  Objective:
+Counts are integers >= 0.  Per-comp: sum load = 12k.  The exact
+after-contact row excess is 2(k-1), of which the used component's diagonal
+entry Q(e,e)=2 contributes two; hence the orphan-atom excess is exactly
+2(k-2).  Objective:
 minimize total excess.  Verdicts: OPTIMAL -> SURVIVOR(min), INFEASIBLE
 -> DEAD.
 """
@@ -87,7 +89,7 @@ def solve(K):
         model.Add(sum(c * ld[e] for c, (ld, exv, lab) in zip(counts, atoms)
                       if e in ld) == 12 * K[e])
         model.Add(sum(c * exv[e] for c, (ld, exv, lab) in zip(counts, atoms)
-                      if e in exv) == 2 * (K[e] - 1))
+                      if e in exv) == 2 * (K[e] - 2))
     tot = sum(c * sum(exv.values()) for c, (ld, exv, lab) in zip(counts, atoms)
               if exv)
     z = model.NewIntVar(0, 1000, "z")
