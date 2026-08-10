@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check the constructive normalization behind symbolic phase symmetry."""
 
-from itertools import product
+from itertools import permutations, product
 
 from hlift_witness import validate_witness
 
@@ -26,6 +26,21 @@ def rotate_and_regauge(wit, rotations):
         out[omit, copy] = {
             e: (value + rotations[e] - rotations[first]) % 12
             for e, value in row.items()}
+    return out
+
+
+def relabel_and_regauge(wit, permutation):
+    """Relabel all used/omitted component types, then restore row gauge."""
+    rename = dict(enumerate(permutation))
+    raw = {}
+    for (omit, copy), row in wit.items():
+        new_orphan = (rename[omit], copy)
+        raw[new_orphan] = {rename[e]: value for e, value in row.items()}
+    out = {}
+    for (omit, copy), row in raw.items():
+        gauge = row[links(omit)[0]]
+        out[omit, copy] = {e: (value - gauge) % 12
+                           for e, value in row.items()}
     return out
 
 
@@ -66,4 +81,17 @@ canonical = normalize(BASE)
 for rotations in product((0, 3, 6, 9), repeat=4):
     transformed = rotate_and_regauge(BASE, dict(enumerate(rotations)))
     assert normalize(transformed) == canonical
-print("ALL OK")
+
+# The paired-type quotient uses the still-free S4 relabeling to normalize its
+# perfect matching before these phase breaks are imposed.  Exhaust the full
+# composition order: arbitrary S4 relabel first, then every residual used-C12
+# rotation, and finally copy-sort/re-anchor.  Phase normalization never changes
+# type labels, so a normalized pairing remains normalized.
+for permutation in permutations(COMPS):
+    relabeled = relabel_and_regauge(BASE, permutation)
+    relabeled_canonical = normalize(relabeled)
+    for rotations in product((0, 3, 6, 9), repeat=4):
+        transformed = rotate_and_regauge(relabeled,
+                                         dict(enumerate(rotations)))
+        assert normalize(transformed) == relabeled_canonical
+print("S4 X ROTATION NORMALIZER ALL OK")
