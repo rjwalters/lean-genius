@@ -216,6 +216,40 @@ theorem zmod_fortyEight_oriented_pair_not_injective
   have hne : (12 : ZMod 48) ≠ 0 := by decide
   exact hne (hinj (Prod.ext hf12 hg12))
 
+/-- General two-cover periodicity kernel.  Two globally oriented cyclic
+covers repeat jointly after the least common multiple of their target
+lengths, provided that period is shorter than the source cycle. -/
+theorem oriented_pair_repeat_of_lcm_lt
+    {n ℓ₁ ℓ₂ : ℕ} [NeZero n] [NeZero ℓ₁] [NeZero ℓ₂]
+    (f : ZMod n → ZMod ℓ₁) (g : ZMod n → ZMod ℓ₂)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hlt : Nat.lcm ℓ₁ ℓ₂ < n) :
+    ∃ x x' : ZMod n, x ≠ x' ∧ f x = f x' ∧ g x = g x' := by
+  let L := Nat.lcm ℓ₁ ℓ₂
+  let δ : ZMod n := (L : ℕ)
+  have hval : δ.val = L := by
+    exact ZMod.val_natCast_of_lt hlt
+  have hfδ : f δ = f 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd f hf δ).2 (by
+      rw [hval]
+      exact Nat.dvd_lcm_left ℓ₁ ℓ₂)
+  have hgδ : g δ = g 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd g hg δ).2 (by
+      rw [hval]
+      exact Nat.dvd_lcm_right ℓ₁ ℓ₂)
+  have hLpos : 0 < L := Nat.lcm_pos (NeZero.pos ℓ₁) (NeZero.pos ℓ₂)
+  have hδne : δ ≠ 0 := by
+    intro hzero
+    have hdvd : n ∣ L := by
+      apply (ZMod.natCast_eq_zero_iff L n).mp
+      exact hzero
+    have hnle : n ≤ L := Nat.le_of_dvd hLpos hdvd
+    omega
+  exact ⟨0, δ, hδne.symm, hfδ.symm, hgδ.symm⟩
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
