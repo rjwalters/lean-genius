@@ -200,3 +200,31 @@ For each `k >= 1`, half of this trace is the sum over unordered H-edges of
 the number of A-walks of length `k` joining their endpoints.  Thus the
 overlap and common-A-neighbor ledgers are merely the first two members of a
 full service-independent walk-moment sequence.
+
+## Same-block common-neighbor profile
+
+The exact-cover residue law also fixes `A^2` pointwise inside every orphan
+`C12` block.  For two vertices at cyclic distance `d=1,...,6`,
+
+```
+(A^2)_{x,x+d} = 3, 4, 6, 3, 3, 6.
+```
+
+For each of the three unordered pairs among the block's linked components,
+the other seven co-linked blocks contain the exact-cover profile differences.
+At distances `1,...,6` this contributes respectively
+
+```
+1, 1, 2, 1, 1, 2
+```
+
+service-common neighbors per component pair.  At distance six the two
+component orientations land in the same target block but at two distinct
+vertices, so both count.  Summing the three component pairs gives
+`(3,3,6,3,3,6)`.  The two defect-cycle neighborhoods have one common
+vertex exactly at cyclic distance two, producing `(3,4,6,3,3,6)`.
+
+This identity is independent of all Stage-1 phases.  In particular, the two
+sparse centers forced into one block have an explicit distance-sensitive
+A-common-neighbor count, which can now be combined with the entrywise
+`HA=AH` mixed-neighbor balance.
