@@ -271,7 +271,7 @@ def mod3_eq_one(literals):
     clauses.append((previous[1],))
 
 
-if "--type-balance" in sys.argv:
+if "--type-balance" in sys.argv or "--type-profile" in sys.argv:
     # The cube-root Fourier kernel of A=D union S is annihilated by H.  If
     # q_e(v) counts H-neighbors in blocks linked to used component e, this
     # gives 3 | q_e(v).  Its complement among the thirteen H-neighbors is the
@@ -289,6 +289,42 @@ if "--type-balance" in sys.argv:
             assert len(candidates) in (47, 48)
             mod3_eq_one(candidates)
     bump("cube_root_kernel_omitted_type_balance", mark)
+
+
+def card_at_most(literals, k):
+    """Sequential threshold encoding of cardinality at most k."""
+    previous = [None] * (k + 1)
+    for index, literal in enumerate(literals, 1):
+        current = [None] * (k + 1)
+        for threshold in range(1, min(index, k) + 1):
+            current[threshold] = newvar()
+            if threshold == 1:
+                clauses.append((-literal, current[1]))
+            if previous[threshold] is not None:
+                clauses.append((-previous[threshold], current[threshold]))
+            if threshold >= 2 and previous[threshold - 1] is not None:
+                clauses.append((-literal, -previous[threshold - 1],
+                                current[threshold]))
+        if previous[k] is not None:
+            clauses.append((-literal, -previous[k]))
+        previous = current
+
+
+if "--type-profile" in sys.argv:
+    # Summing within-type common-neighbor cherries forces equality in the
+    # minimum profile bound: every omitted-type count is at most four.  With
+    # the preceding 1 mod 3 cuts and total degree thirteen, the four counts
+    # are therefore exactly a permutation of [4,4,4,1].
+    mark = len(clauses)
+    for vertex in range(N):
+        for omit in COMPS:
+            candidates = [
+                E[frozenset((vertex, other))]
+                for other in range(N)
+                if other != vertex and ORPHANS[other // 12][0] == omit
+            ]
+            card_at_most(candidates, 4)
+    bump("within_type_cherry_profile_cap", mark)
 
 
 def card_eq(literals, k):
@@ -359,6 +395,7 @@ if "--emit" in sys.argv:
             "local_parity": "--local-parity" in sys.argv,
             "phase_symmetry": "--phase-symmetry" in sys.argv,
             "type_balance": "--type-balance" in sys.argv,
+            "type_profile": "--type-profile" in sys.argv,
         },
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
