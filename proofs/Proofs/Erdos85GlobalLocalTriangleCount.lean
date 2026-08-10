@@ -200,6 +200,32 @@ theorem twenty_three_le_card_union_triangularNeighbors_of_two_sparse
     ((triangularEdgeGraph G).neighborFinset z)
   omega
 
+/-- Entrywise graph form of adjacency-matrix commutation.  It is the exact
+mixed-neighbor balance used to compare the two sparse centers in one Stage-1
+block when `H A = A H`. -/
+theorem card_mixed_neighbor_inter_eq_of_adjMatrix_commute
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H A : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel A.Adj]
+    (hcomm : H.adjMatrix ℤ * A.adjMatrix ℤ =
+      A.adjMatrix ℤ * H.adjMatrix ℤ)
+    (x z : V) :
+    (H.neighborFinset x ∩ A.neighborFinset z).card =
+      (A.neighborFinset x ∩ H.neighborFinset z).card := by
+  have hentry := congrFun (congrFun hcomm x) z
+  rw [H.adjMatrix_mul_apply, A.adjMatrix_mul_apply] at hentry
+  simp only [SimpleGraph.adjMatrix_apply] at hentry
+  rw [Finset.sum_boole, Finset.sum_boole] at hentry
+  have hleft : (H.neighborFinset x).filter (fun y => A.Adj y z) =
+      H.neighborFinset x ∩ A.neighborFinset z := by
+    ext y
+    simp [SimpleGraph.mem_neighborFinset, A.adj_comm]
+  have hright : (A.neighborFinset x).filter (fun y => H.Adj y z) =
+      A.neighborFinset x ∩ H.neighborFinset z := by
+    ext y
+    simp [SimpleGraph.mem_neighborFinset, H.adj_comm]
+  rw [hleft, hright] at hentry
+  exact_mod_cast hentry
+
 /-- A mixed third trace counts, with orientation, the common `A`-neighbors
 across the edges of `H`.  This is the graph bridge for the fixed Stage-1
 identity `tr(H A²) = 15696`. -/
