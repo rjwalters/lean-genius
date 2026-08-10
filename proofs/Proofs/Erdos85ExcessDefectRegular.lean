@@ -184,6 +184,22 @@ theorem adjMatrix_sq_eq_sub_secondOrderDefect_of_regular
           (((secondOrderDefectGraph G).mem_neighborFinset x y).mpr hadj)
       simp [SimpleGraph.adjMatrix_apply, hxy, hadj, hcommon]
 
+/-- A square identity forces commutation with its defect term.  This is the
+pure matrix principle behind both the regular-graph defect commutator and
+the redundant `HA = AH` cuts in the zero-layer H-lift search. -/
+theorem matrix_comm_of_sq_eq_smul_one_add_sub
+    {K V : Type*} [CommRing K] [Fintype V] [DecidableEq V]
+    (H A J : Matrix V V K) (c : K)
+    (hsq : H * H = c • (1 : Matrix V V K) + J - A)
+    (hHJ : H * J = J * H) : H * A = A * H := by
+  have hA : A = c • (1 : Matrix V V K) + J - H * H := by
+    rw [hsq]
+    noncomm_ring
+  rw [hA, mul_sub, sub_mul, mul_add, add_mul, hHJ]
+  simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+    Matrix.one_mul]
+  noncomm_ring
+
 /-- The adjacency matrix commutes with the combined defect matrix at every
 excess, not only when the latter is a two-factor. -/
 theorem adjMatrix_comm_secondOrderDefect_of_regular

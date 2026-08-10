@@ -32,12 +32,38 @@ Emitted instances (2026-08-10):
      one-pairs, each requiring one common H-neighbor, and
      156 = sum_{w in N_H(v)} #{one-paired u in N(w)} <= 12*deg(v)
      under at-most-13, forcing deg(v) = 13.
-  v2 (THIS encoder, counter repaired + 264 cut, certificate grade):
+  v2 (counter repaired + 264 cut, certificate grade):
      hlift4444_b229c6f11ab1bcad.cnf — 7,045,596 vars / 23,066,016
      clauses; full SHA-256
      b229c6f11ab1bcad... (see manifest for full digest + rule counts:
      zero_common 638400, one_common_and_exactly_one 17027712,
      degree_13_exact 1978752, A_edge_total_264 3421152; sums to total).
+  v3 (THIS encoder, v2 + local odd A-incidence cuts):
+     hlift4444_a27456953947a173.cnf — 7,052,124 vars / 23,092,320
+     clauses.  For every vertex v, `a_v = |N_H(v) intersect N_A(v)|`
+     is odd because `2 t_v = 13 - a_v`, where t_v is the number of
+     H-edges induced by N_H(v).  Each 35-literal parity is encoded by a
+     chain of 34 equivalence XOR gates and one final unit.  See the
+     manifest for the full SHA-256 and test_parity_odd.py for exhaustive
+     small-chain tests.  Formally, these are the triangle-free incident
+     H-edges, and their parity is certified by the cold-verified theorem
+     `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`.
+
+Optional `--comm-anchor` adds the 191 row-zero equations from `HA = AH`,
+which follows from the encoded square identity and regularity.  Identical
+literals are canceled before equivalence-defined unary cardinality
+comparisons.  This adds 238,210 variables and 939,540 clauses; its generic
+equality encoder is exhaustively checked by test_equal_cardinality.py.
+The matrix implication is formalized by the cold-verified Lean theorem
+`matrix_comm_of_sq_eq_smul_one_add_sub`.
+The emitted v4 candidate is `hlift4444_e21525e9a610e8c3.cnf`, full
+SHA-256 `e21525e9a610e8c383f71e5836d2359878b7b43198e3b6cfe7b9f228c5094661`.
+
+Optional `--translation-lex` selects the lexicographically minimum H-edge
+vector in each orbit of the explicitly checked global Z/12 translation
+automorphism of A.  It adds 201,611 variables and 1,209,611 clauses and
+does not assume that H itself is translation-invariant.  The lex encoder
+is exhaustively checked by test_lex_leq.py.
 """
 import sys, hashlib, json
 from itertools import combinations
@@ -177,35 +203,146 @@ for v in range(N):
 bump("degree_13_exact", len(clauses) - mark)
 mark = len(clauses)
 # ---- redundant derived cuts (Sol msg 1861; logically implied, aid
-# propagation): |E(H) ∩ (S∪D)| = 264 globally. (Per-vertex odd a_v
-# constraints omitted: XOR chains bloat CNF; global 264 is cheap.)
+# propagation): |E(H) ∩ (S∪D)| = 264 globally.
 A_lits = [E[p] for p in zero_pairs]
 card_eq(A_lits, 264)
 bump("A_edge_total_264", len(clauses) - mark)
 mark = len(clauses)
-# ---- v3: local odd-a_v parity cuts (Sol msg 1875). For each vertex v,
-# a_v = |N_H(v) ∩ N_A(v)| is odd (2 t_v = 13 - a_v, msg 1861). Tseitin
-# XOR chain over the 35 A-edge literals at v, final parity asserted 1.
-# Unit-tested in test_card_eq.py (parity-chain model counts).
-adjA = {}
-for p in zero_pairs:
-    u, v = sorted(p)
-    adjA.setdefault(u, []).append(E[p])
-    adjA.setdefault(v, []).append(E[p])
-for v in range(N):
-    lits = adjA[v]
-    assert len(lits) == 35
-    p = lits[0]
+
+def xor_odd(lits):
+    """Assert XOR(lits) = true using equivalence Tseitin gates.
+
+    Each new gate z is defined by z <-> (x XOR y), so every input
+    assignment has exactly one extension to the auxiliaries.  The final
+    positive unit selects precisely the odd-parity inputs.
+    """
+    if not lits:
+        clauses.append(())
+        return
+    acc = lits[0]
     for lit in lits[1:]:
-        q = newvar()
-        # q <-> p XOR lit
-        clauses.append((-q, p, lit))
-        clauses.append((-q, -p, -lit))
-        clauses.append((q, -p, lit))
-        clauses.append((q, p, -lit))
-        p = q
-    clauses.append((p,))   # a_v odd
-bump("odd_a_v_parity", len(clauses) - mark)
+        z = newvar()
+        # z <-> acc XOR lit
+        clauses.append((-acc, -lit, -z))
+        clauses.append((-acc, lit, z))
+        clauses.append((acc, -lit, z))
+        clauses.append((acc, lit, -z))
+        acc = z
+    clauses.append((acc,))
+
+for v in range(N):
+    A_neighbor_lits = [E[frozenset((v, w))]
+                       for w in range(N)
+                       if w != v and frozenset((v, w)) in zero_pairs]
+    assert len(A_neighbor_lits) == 35
+    xor_odd(A_neighbor_lits)
+bump("local_A_incidence_odd", len(clauses) - mark)
+
+def threshold_bits(lits):
+    """Return equivalence-defined bits `count(lits) >= j`, j=1..n."""
+    prev = [None] * (len(lits) + 1)
+    for i, lit in enumerate(lits, 1):
+        cur = [None] * (len(lits) + 1)
+        for j in range(1, i + 1):
+            cur[j] = newvar()
+            p = prev[j]
+            q = prev[j - 1] if j > 1 else True
+            if p is None:
+                if q is True:
+                    # cur <-> lit
+                    clauses.append((-lit, cur[j]))
+                    clauses.append((lit, -cur[j]))
+                else:
+                    # cur <-> lit & q
+                    clauses.append((-lit, -q, cur[j]))
+                    clauses.append((-cur[j], lit))
+                    clauses.append((-cur[j], q))
+            elif q is True:
+                # cur <-> p | lit
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, cur[j]))
+                clauses.append((-cur[j], p, lit))
+            else:
+                # cur <-> p | (lit & q)
+                clauses.append((-p, cur[j]))
+                clauses.append((-lit, -q, cur[j]))
+                clauses.append((-cur[j], p, lit))
+                clauses.append((-cur[j], p, q))
+        prev = cur
+    return prev[1:len(lits) + 1]
+
+def equal_cardinality(left, right):
+    """Assert equal cardinality through equivalent unary thresholds."""
+    if len(left) != len(right):
+        raise ValueError("equal-cardinality domains must have equal size")
+    left_bits = threshold_bits(left)
+    right_bits = threshold_bits(right)
+    for a, b in zip(left_bits, right_bits):
+        clauses.append((-a, b))
+        clauses.append((a, -b))
+
+def lex_leq(left, right):
+    """Assert the Boolean vector `left <=lex right` (False < True)."""
+    if len(left) != len(right):
+        raise ValueError("lexicographic domains must have equal size")
+    prefix = newvar()
+    clauses.append((prefix,))
+    for x, y in zip(left, right):
+        if x == y:
+            continue
+        # A strict 1/0 difference is forbidden while the prefix agrees.
+        clauses.append((-prefix, -x, y))
+        nxt = newvar()
+        # nxt <-> prefix & (x <-> y)
+        clauses.append((-nxt, prefix))
+        clauses.append((-nxt, -x, y))
+        clauses.append((-nxt, x, -y))
+        clauses.append((-prefix, x, y, nxt))
+        clauses.append((-prefix, -x, -y, nxt))
+        prefix = nxt
+
+if "--comm-anchor" in sys.argv:
+    # H^2 = 12I + J - A and 13-regularity imply HA = AH.  Add the
+    # row-zero entries only: every equation is redundant (hence sound),
+    # while this small anchor family exposes the linear commutant structure
+    # without assuming that H itself is translation-invariant.
+    mark = len(clauses)
+    A_neighbors = [
+        {w for w in range(N) if w != v and
+         frozenset((v, w)) in zero_pairs}
+        for v in range(N)
+    ]
+    for v in range(1, N):
+        left = {E[frozenset((0, w))] for w in A_neighbors[v] if w != 0}
+        right = {E[frozenset((w, v))] for w in A_neighbors[0] if w != v}
+        common = left & right
+        left_only = sorted(left - common)
+        right_only = sorted(right - common)
+        assert len(left_only) == len(right_only)
+        equal_cardinality(left_only, right_only)
+    bump("commutation_anchor_row_zero", len(clauses) - mark)
+
+if "--translation-lex" in sys.argv:
+    # The fixed A is invariant under simultaneously translating the Z/12
+    # coordinate in every orphan block.  Every solution orbit therefore has
+    # a lexicographically minimum edge vector; requiring that representative
+    # against all eleven nonidentity translations preserves satisfiability.
+    mark = len(clauses)
+    edge_vector = [E[pair] for pair in all_pairs]
+    def translate_vertex(v, shift):
+        block, x = divmod(v, 12)
+        return 12 * block + (x + shift) % 12
+    for shift in range(1, 12):
+        translated_A = {
+            frozenset(translate_vertex(v, shift) for v in pair)
+            for pair in zero_pairs
+        }
+        assert translated_A == zero_pairs
+        shifted = [E[frozenset((translate_vertex(u, shift),
+                                translate_vertex(v, shift)))]
+                   for u, v in map(sorted, all_pairs)]
+        lex_leq(edge_vector, shifted)
+    bump("global_translation_lex_leader", len(clauses) - mark)
 
 print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
 
@@ -220,6 +357,10 @@ if "--emit" in sys.argv:
     fn = f"hlift4444_{h}.cnf"
     open(fn, "wb").write(data)
     json.dump({"witness": {str(k): v for k, v in WIT.items()},
+               "options": {
+                   "comm_anchor": "--comm-anchor" in sys.argv,
+                   "translation_lex": "--translation-lex" in sys.argv,
+               },
                "zero_pairs": len(zero_pairs), "one_pairs": len(one_pairs),
                "vars": nv, "clauses": len(clauses),
                "sha256": hashlib.sha256(data).hexdigest(),
