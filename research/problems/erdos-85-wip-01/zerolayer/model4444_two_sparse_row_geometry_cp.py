@@ -94,6 +94,14 @@ def mixed_row(selected, label):
         model.Add(sum(row[target] for target in range(N)
                       if ORPHANS[target // 12][0] == target_type)
                   == (107 if target_type == 1 else 116))
+    for component in range(4):
+        for color in range(3):
+            model.Add(sum(
+                row[target] for target in range(N)
+                if component in WIT[ORPHANS[target // 12]] and
+                (target % 12 + WIT[ORPHANS[target // 12]][component]) % 3
+                == color
+            ) == (116 if component == 1 else 113))
     return row
 
 
@@ -107,6 +115,23 @@ for target in range(N):
     products.append(product)
 model.Add(sum(products) ==
           [997, 1093, 1068, 1081, 1081, 1069][args.distance - 1])
+
+# The exact signed A-energy of the mixed-row difference, counted once per
+# unordered A-edge.
+difference = []
+for target in range(N):
+    value = model.NewIntVar(-9, 9, f"difference_{target}")
+    model.Add(value == left_row[target] - right_row[target])
+    difference.append(value)
+energy_terms = []
+for pair in A_pairs:
+    left, right = tuple(pair)
+    product = model.NewIntVar(-81, 81, f"energy_{left}_{right}")
+    model.AddMultiplicationEquality(
+        product, [difference[left], difference[right]])
+    energy_terms.append(product)
+model.Add(sum(energy_terms) ==
+          [-591, -65, -99, -230, -231, -87][args.distance - 1])
 
 solver = cp_model.CpSolver()
 solver.parameters.max_time_in_seconds = args.time
