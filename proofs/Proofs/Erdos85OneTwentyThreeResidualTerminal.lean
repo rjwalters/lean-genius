@@ -11926,6 +11926,19 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_four_exact_atom_ledger
     (hexcess4 : 6 * nC4 + 2 * nD4 = 4) : False := by
   omega
 
+/-- V10 form of the `[12,4]` ledger.  The diagonal contributions are kept
+explicit; the order-twelve component theorem supplies `q4 ≠ 3`. -/
+theorem false_of_zeroLayer_reduced_used_orders_twelve_four_diagonal_ledger
+    (nB12 nC12 nC4to12 nC4 nD4 q12 q4 : ℕ)
+    (hload12 : 24 * nB12 + 36 * nC12 + 12 * nC4to12 = 144)
+    (hexcess12 : 2 * nB12 + 6 * nC12 + 2 * nC4to12 +
+      q12 * (q12 - 1) = 22)
+    (hload4 : 12 * nB12 + 12 * nC4 + 4 * nD4 = 48)
+    (hexcess4 : 6 * nC4 + 2 * nD4 + q4 * (q4 - 1) = 6)
+    (hq12le : q12 ≤ 5) (hq4le : q4 ≤ 3) (hq4ne : q4 ≠ 3) : False := by
+  interval_cases q12 <;> interval_cases q4 <;>
+    norm_num at hexcess12 hexcess4 <;> omega
+
 /-- The exact row budgets also rule out `[12,2,2]`. -/
 theorem false_of_zeroLayer_reduced_used_orders_twelve_two_two_exact_atom_ledger
     (nB12₁ nB6₁ nB12₂ nB6₂ nB₂₁₂ nB₂₂₁ nC12 nC4 : ℕ)
