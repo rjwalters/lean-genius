@@ -9,6 +9,23 @@ from pathlib import Path
 
 from run_hlift_orbit_signal import sha256_file
 
+N = 192
+
+
+def moment_index_label(index):
+    """Decode an index in the fixed lifted vector (1, X, Z)."""
+    if index == 0:
+        return "constant"
+    if 1 <= index <= N:
+        family, vertex = "X", index - 1
+    elif N + 1 <= index <= 2 * N:
+        family, vertex = "Z", index - N - 1
+    else:
+        raise ValueError(f"moment index outside [0,{2 * N}]: {index}")
+    orphan_index, coordinate = divmod(vertex, 12)
+    omit, copy = divmod(orphan_index, 4)
+    return f"{family}[omit={omit},copy={copy},x={coordinate}]"
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -50,6 +67,11 @@ def main():
                 support = ast.literal_eval("[" + support_text)
                 iterations[iteration]["cut_value"] = float(fields[3])
                 iterations[iteration]["support"] = support
+                iterations[iteration]["support_decoded"] = [
+                    {"index": index, "label": moment_index_label(index),
+                     "coefficient": coefficient}
+                    for index, coefficient in support
+                ]
                 iterations[iteration]["support_size"] = len(support)
 
     ordered = [iterations[index] for index in sorted(iterations)]
@@ -71,7 +93,7 @@ def main():
         "terminal_min_eigenvalue": eigenvalues[-1] if eigenvalues else None,
         "terminal_status": ordered[-1]["status"] if ordered else None,
         "support_frequency": [
-            {"index": index, "cuts": count}
+            {"index": index, "label": moment_index_label(index), "cuts": count}
             for index, count in sorted(support_frequency.items(),
                                        key=lambda pair: (-pair[1], pair[0]))
         ],

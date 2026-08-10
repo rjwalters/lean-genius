@@ -35,6 +35,9 @@ with tempfile.TemporaryDirectory() as raw:
     assert report["cuts"] == 2
     assert report["least_negative_min_eigenvalue"] == -3.0
     assert report["terminal_min_eigenvalue"] == -5.0
-    assert report["support_frequency"][0] == {"index": 1, "cuts": 2}
+    assert report["support_frequency"][0] == {
+        "index": 1, "label": "X[omit=0,copy=0,x=0]", "cuts": 2}
+    assert report["iterations"][0]["support_decoded"][1] == {
+        "index": 4, "label": "X[omit=0,copy=0,x=3]", "coefficient": -2}
 
 print("SPARSE LP CUT SUMMARY ALL OK")
