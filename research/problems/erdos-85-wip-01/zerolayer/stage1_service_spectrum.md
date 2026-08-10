@@ -138,7 +138,9 @@ certificates on the durable volume.  The additional eleven hash prefixes are:
 
 The relocation-aware validator passes independently on all fourteen.  After
 removing their byte-identical duplicate live-node copies, exactly eighteen
-hash-pinned substantive exact-value nodes remain.
+hash-pinned substantive exact-value nodes remain.  Their full CNF hashes and
+paths relative to the durable `symbolic-hlift` artifact root are recorded in
+`stage1_value_frontier.sha256`; `shasum -a 256 -c` passes on all eighteen.
 
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
