@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """(4,4,4,4) H-lift model, STAGE 1: service layer feasibility.
 
-VERDICT (2026-08-10): FEASIBLE.  See squad msg 1851.  Key structure:
+VERDICT (2026-08-10): FEASIBLE, with at least 100,000 gauge-fixed
+solutions before the corrected enumeration hit its callback cap.  The old
+1294-solution artifact is RETIRED: it accidentally restricted an integer
+lift of a modular difference to [-11,11] instead of its true range
+[-22,22], breaking relabeling invariance.  See squad msgs 1925--1928.
+Key structure:
 for each comp pair {e,f}, the 8 co-linked orphans carry pairwise
 distinct difference profiles delta = tau_e - tau_f mod 12, and row
 distinctness forces delta not in {0,3,6,9}; so the 8 orphans occupy
@@ -56,10 +61,14 @@ for i in COMPS:                            # copy-ordering symmetry break
 for o1, o2 in combinations(ORPHANS, 2):
     shared = [e for e in links(o1) if e in links(o2)]
     for e, f in combinations(shared, 2):
-        d = model.NewIntVar(-11, 11, f"d{o1}{o2}{e}{f}")
+        # Each parenthesized phase difference lies in [-11,11], so their
+        # integer difference has the full range [-22,22].  Restricting this
+        # lift to [-11,11] was the retired enumeration bug: e.g. lift 13 is
+        # a valid nonzero residue mod 12 but was silently excluded.
+        d = model.NewIntVar(-22, 22, f"d{o1}{o2}{e}{f}")
         model.Add(d == (tau[o2, e] - tau[o1, e]) - (tau[o2, f] - tau[o1, f]))
         dm = model.NewIntVar(0, 11, f"dm{o1}{o2}{e}{f}")
-        model.AddModuloEquality(dm, d + 12, 12)
+        model.AddModuloEquality(dm, d + 24, 12)
         model.Add(dm != 0)
 
 solver = cp_model.CpSolver()
