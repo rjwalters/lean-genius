@@ -119,6 +119,30 @@ theorem degree_thirteen_order_192_triangleFreeEdgeGraph_card_eq_264
   change T.edgeFinset.card = 264
   omega
 
+/-- A mixed third trace counts, with orientation, the common `A`-neighbors
+across the edges of `H`.  This is the graph bridge for the fixed Stage-1
+identity `tr(H A²) = 15696`. -/
+theorem trace_adjMatrix_mul_adjMatrix_sq_eq_sum_common_over_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H A : SimpleGraph V) [DecidableRel H.Adj] [DecidableRel A.Adj] :
+    Matrix.trace (H.adjMatrix ℤ * (A.adjMatrix ℤ * A.adjMatrix ℤ)) =
+      ∑ x : V, ∑ y ∈ H.neighborFinset x,
+        ((A.neighborFinset x ∩ A.neighborFinset y).card : ℤ) := by
+  rw [Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [Matrix.diag_apply, Matrix.mul_apply]
+  simp only [adjMatrix_sq_apply_eq_card_common,
+    SimpleGraph.adjMatrix_apply]
+  classical
+  simp only [ite_mul, one_mul, zero_mul]
+  rw [← Finset.sum_filter]
+  apply Finset.sum_congr
+  · ext y
+    simp [SimpleGraph.mem_neighborFinset]
+  · intro y hy
+    simp [Finset.inter_comm]
+
 end
 
 end Erdos85
