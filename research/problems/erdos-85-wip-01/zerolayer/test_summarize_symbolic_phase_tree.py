@@ -65,6 +65,14 @@ with tempfile.TemporaryDirectory() as raw:
     subprocess.run([sys.executable, str(splitter), str(manifest), str(cnf),
                     str(top)], check=True, capture_output=True, text=True)
     top_manifests = sorted(top.glob("*.manifest.json"))
+    # The production root split predates explicit cube_anchor/cube_ancestry
+    # metadata.  Its other partition fields remain exact and sufficient for a
+    # narrowly scoped legacy-root upgrade in the verifier.
+    for top_manifest in top_manifests:
+        top_doc = json.loads(top_manifest.read_text())
+        top_doc.pop("cube_anchor")
+        top_doc.pop("cube_ancestry")
+        write(top_manifest, top_doc)
     fake_certificate(top_manifests[0], root / "cert-p0")
     for phase in (1, 2):
         child_dir = root / f"p{phase}-children"
