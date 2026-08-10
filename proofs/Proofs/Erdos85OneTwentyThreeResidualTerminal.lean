@@ -386,6 +386,64 @@ theorem false_of_two_unit_componentQuotients_lcm_ncard_lt
       (huRange e) (huRange f) (huRange o) (huD e) (huD f) (huD o)
       hoe hof hlt
 
+/-- Adjacency-valued form of the equal odd-cycle block orientation theorem.
+It applies to arbitrary quotient row size, not only unit covers. -/
+theorem graph_equalOddCycleBlock_adj_orientation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r) (hr : Odd r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (u v : ZMod r → V) (huinj : Function.Injective u)
+    (hvinj : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (hu : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hv : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)}) :
+    (∀ x y, G.Adj (u (x + 1)) (v (y + 1)) ↔ G.Adj (u x) (v y)) ∨
+      (∀ x y, G.Adj (u (x + 1)) (v (y - 1)) ↔ G.Adj (u x) (v y)) := by
+  rcases graph_equalOddCycleBlock_orientation hr3 hr G D u v huinj hvinj
+    hcomm hu hv with hforward | hreverse
+  · left
+    intro x y
+    have heq := hforward x y
+    simp only [SimpleGraph.adjMatrix_apply] at heq
+    by_cases h₁ : G.Adj (u (x + 1)) (v (y + 1)) <;>
+      by_cases h₂ : G.Adj (u x) (v y) <;> simp_all
+  · right
+    intro x y
+    have heq := hreverse x y
+    simp only [SimpleGraph.adjMatrix_apply] at heq
+    by_cases h₁ : G.Adj (u (x + 1)) (v (y - 1)) <;>
+      by_cases h₂ : G.Adj (u x) (v y) <;> simp_all
+
+/-- Every row support of an equal odd-cycle block is a translate or reflected
+translate of the support at zero.  This is the quotient-two/three structural
+interface used by the residual census. -/
+theorem equalOddCycleBlock_support_translate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r) (hr : Odd r)
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (u v : ZMod r → V) (huinj : Function.Injective u)
+    (hvinj : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (hu : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hv : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)}) :
+    ∃ ε : ZMod r, (ε = 1 ∨ ε = -1) ∧
+      ∀ t s, s ∈ mixedAnchorSupport G (u t) v ↔
+        s - ε * t ∈ mixedAnchorSupport G (u 0) v := by
+  rcases graph_equalOddCycleBlock_adj_orientation hr3 hr G D u v huinj
+    hvinj hcomm hu hv with hforward | hreverse
+  · refine ⟨1, Or.inl rfl, ?_⟩
+    exact mem_mixedAnchorSupport_rect_translate G hforward
+  · refine ⟨-1, Or.inr rfl, ?_⟩
+    have hshift : ∀ x s : ZMod r,
+        G.Adj (u (x + 1)) (v (s + (-1 : ZMod r))) ↔
+          G.Adj (u x) (v s) := by
+      intro x s
+      rw [show s + (-1 : ZMod r) = s - 1 by ring]
+      exact hreverse x s
+    exact mem_mixedAnchorSupport_rect_translate G hshift
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
