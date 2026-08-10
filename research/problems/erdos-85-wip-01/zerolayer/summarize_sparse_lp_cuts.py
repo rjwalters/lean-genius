@@ -27,6 +27,23 @@ def moment_index_label(index):
     return f"{family}[omit={omit},copy={copy},x={coordinate}]"
 
 
+def moment_index_parts(index):
+    if index == 0:
+        return "constant", None, None, None
+    shifted = index - 1
+    family = "X" if shifted < N else "Z"
+    vertex = shifted % N
+    orphan_index, coordinate = divmod(vertex, 12)
+    omit, copy = divmod(orphan_index, 4)
+    return family, omit, copy, coordinate
+
+
+def ranked_counts(counter, key_name):
+    return [{key_name: key, "cuts": count}
+            for key, count in sorted(counter.items(),
+                                     key=lambda pair: (-pair[1], pair[0]))]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("log", type=Path)
@@ -79,6 +96,15 @@ def main():
         raise ValueError("iteration sequence is not contiguous from zero")
     support_frequency = Counter(
         index for item in ordered for index, _coefficient in item.get("support", []))
+    family_frequency = Counter()
+    orphan_frequency = Counter()
+    coordinate_frequency = Counter()
+    for index, count in support_frequency.items():
+        family, omit, copy, coordinate = moment_index_parts(index)
+        family_frequency[family] += count
+        if omit is not None:
+            orphan_frequency[f"{family}[omit={omit},copy={copy}]"] += count
+            coordinate_frequency[f"{family}[x={coordinate}]"] += count
     eigenvalues = [item["min_eigenvalue"] for item in ordered
                    if "min_eigenvalue" in item]
     report = {
@@ -97,6 +123,10 @@ def main():
             for index, count in sorted(support_frequency.items(),
                                        key=lambda pair: (-pair[1], pair[0]))
         ],
+        "support_frequency_by_family": ranked_counts(family_frequency, "family"),
+        "support_frequency_by_orphan": ranked_counts(orphan_frequency, "orphan"),
+        "support_frequency_by_coordinate": ranked_counts(
+            coordinate_frequency, "coordinate"),
     }
     rendered = json.dumps(report, indent=1) + "\n"
     if args.output:

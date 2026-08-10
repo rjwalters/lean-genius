@@ -39,5 +39,9 @@ with tempfile.TemporaryDirectory() as raw:
         "index": 1, "label": "X[omit=0,copy=0,x=0]", "cuts": 2}
     assert report["iterations"][0]["support_decoded"][1] == {
         "index": 4, "label": "X[omit=0,copy=0,x=3]", "coefficient": -2}
+    assert report["support_frequency_by_family"] == [
+        {"family": "X", "cuts": 4}]
+    assert report["support_frequency_by_orphan"] == [
+        {"orphan": "X[omit=0,copy=0]", "cuts": 4}]
 
 print("SPARSE LP CUT SUMMARY ALL OK")
