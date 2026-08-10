@@ -122,6 +122,11 @@ def main():
     same_block_B2 = [12 * a2 + 35 ** 2 - a3
                      for a2, a3 in zip(same_block_A2, diagonal_A3[1:])]
     assert same_block_B2 == [997, 1093, 1068, 1081, 1081, 1069]
+    mixed_row_norm_sq = 12 * 35 + 35 ** 2 - diagonal_A3[0]
+    assert mixed_row_norm_sq == 1255
+    mixed_row_distance_sq = [2 * mixed_row_norm_sq - 2 * inner
+                             for inner in same_block_B2]
+    assert mixed_row_distance_sq == [516, 324, 374, 348, 348, 372]
     print("STAGE1 SERVICE SPECTRUM EXACT AUDIT OK")
 
 

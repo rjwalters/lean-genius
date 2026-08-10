@@ -294,6 +294,19 @@ same-block vertices at cyclic distance `d=1,...,6` are exactly
 (B^2)_{x,x+d} = 997, 1093, 1068, 1081, 1081, 1069.
 ```
 
-Together with row sum 455, row squared norms `(B^2)_{xx}`, and diagonal
-mixed count one at both forced sparse centers, this turns their unspecified
-same-block separation into six explicit integer row-ledger cases.
+The diagonal cubic value is 390, while `(A^2)_{xx}=35`, so this also upgrades
+the global Frobenius ledger to a pointwise identity:
+
+```
+sum_z B_{xz}^2 = (B^2)_{xx} = 12*35 + 35^2 - 390 = 1255
+```
+
+for every row.  Thus the two forced sparse rows both have sum 455 and squared
+norm 1255.  Their squared Euclidean row-distance, at `d=1,...,6`, is
+
+```
+516, 324, 374, 348, 348, 372.
+```
+
+Together with diagonal mixed count one at both centers, this turns their
+unspecified same-block separation into six explicit integer row-ledger cases.
