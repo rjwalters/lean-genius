@@ -182,6 +182,30 @@ mark = len(clauses)
 A_lits = [E[p] for p in zero_pairs]
 card_eq(A_lits, 264)
 bump("A_edge_total_264", len(clauses) - mark)
+mark = len(clauses)
+# ---- v3: local odd-a_v parity cuts (Sol msg 1875). For each vertex v,
+# a_v = |N_H(v) ∩ N_A(v)| is odd (2 t_v = 13 - a_v, msg 1861). Tseitin
+# XOR chain over the 35 A-edge literals at v, final parity asserted 1.
+# Unit-tested in test_card_eq.py (parity-chain model counts).
+adjA = {}
+for p in zero_pairs:
+    u, v = sorted(p)
+    adjA.setdefault(u, []).append(E[p])
+    adjA.setdefault(v, []).append(E[p])
+for v in range(N):
+    lits = adjA[v]
+    assert len(lits) == 35
+    p = lits[0]
+    for lit in lits[1:]:
+        q = newvar()
+        # q <-> p XOR lit
+        clauses.append((-q, p, lit))
+        clauses.append((-q, -p, -lit))
+        clauses.append((q, -p, lit))
+        clauses.append((q, p, -lit))
+        p = q
+    clauses.append((p,))   # a_v odd
+bump("odd_a_v_parity", len(clauses) - mark)
 
 print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
 
