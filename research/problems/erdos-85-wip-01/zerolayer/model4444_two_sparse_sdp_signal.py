@@ -179,6 +179,29 @@ for moment in moment_rows[args.distance - 1][:args.moment_depth + 1]:
 problem = None
 value = None
 integer_cuts = []
+
+
+def rounded_violated_cut(symmetric, eigenvector):
+    """Round an eigenvector, expanding support until its exact cut separates."""
+    dimension = len(eigenvector)
+    support_size = min(args.cut_support, dimension)
+    order = np.argsort(np.abs(eigenvector))
+    while True:
+        support = order[-support_size:]
+        integer = np.zeros(dimension, dtype=np.int64)
+        scale = 100 / np.max(np.abs(eigenvector[support]))
+        integer[support] = np.rint(
+            scale * eigenvector[support]).astype(np.int64)
+        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
+        integer //= max(1, divisor)
+        cut_value = float(integer @ symmetric @ integer)
+        if cut_value < -args.eps:
+            return integer, cut_value
+        if support_size == dimension:
+            raise RuntimeError("rounded eigenvector does not yield a violated cut")
+        support_size = min(dimension, 2 * support_size)
+
+
 if args.lp_cuts and args.lp_direct:
     import highspy
     from cvxpy import settings as cvx_settings
@@ -239,13 +262,8 @@ if args.lp_cuts and args.lp_direct:
         print("lp_direct_min_eigenvalue", float(eigenvalues[0]), flush=True)
         if eigenvalues[0] >= -args.eps or iteration == args.lp_cuts:
             break
-        vector = eigenvectors[:, 0]
-        support = np.argsort(np.abs(vector))[-args.cut_support:]
-        integer = np.zeros(2 * N + 1, dtype=np.int64)
-        scale = 100 / np.max(np.abs(vector[support]))
-        integer[support] = np.rint(scale * vector[support]).astype(np.int64)
-        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
-        integer //= max(1, divisor)
+        integer, cut_value = rounded_violated_cut(
+            symmetric, eigenvectors[:, 0])
         nz_rows, nz_cols = np.nonzero(np.triu(np.outer(integer, integer)))
         indices = (nz_rows * (2 * N + 1) -
                    nz_rows * (nz_rows - 1) // 2 + nz_cols - nz_rows)
@@ -255,7 +273,7 @@ if args.lp_cuts and args.lp_direct:
         solver.addRow(0, infinity, len(indices),
                       indices.astype(np.int32), coefficients)
         integer_cuts.append(integer)
-        print("lp_direct_cut", iteration,
+        print("lp_direct_cut", iteration, "value", cut_value,
               [(int(index), int(entry))
                for index, entry in enumerate(integer) if entry], flush=True)
     print("integer_cuts", [
@@ -287,17 +305,12 @@ elif args.lp_cuts:
         print("lp_min_eigenvalue", float(eigenvalues[0]), flush=True)
         if eigenvalues[0] >= -args.eps:
             break
-        vector = eigenvectors[:, 0]
-        support = np.argsort(np.abs(vector))[-args.cut_support:]
-        integer = np.zeros(2 * N + 1, dtype=np.int64)
-        scale = 100 / np.max(np.abs(vector[support]))
-        integer[support] = np.rint(scale * vector[support]).astype(np.int64)
-        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
-        integer //= max(1, divisor)
-        assert np.any(integer)
+        integer, cut_value = rounded_violated_cut(
+            symmetric, eigenvectors[:, 0])
         cut_matrix = np.outer(integer, integer).astype(float)
         constraints.append(cp.sum(cp.multiply(cut_matrix, Y)) >= 0)
         integer_cuts.append(integer)
+        print("lp_cut_value", cut_value, flush=True)
 else:
     problem = cp.Problem(cp.Minimize(0), constraints)
     if args.solver == "SCS":
