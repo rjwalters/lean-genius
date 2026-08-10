@@ -97,11 +97,8 @@ with tempfile.TemporaryDirectory() as raw:
         "encoder_sha256": "e" * 64, "sat_verifier_sha256": "v" * 64,
         "rule_counts": {"toy": 3, "phase_anchor_cube_unit": 1},
         "options": {"phase_symmetry": True},
-        "cube_ancestry": [{
-            "anchor": "tau[(0,0),2]", "orphan": [0, 0],
-            "component": 2, "phase": 1, "literal": 18350,
-            "exhaustive_anchor_literals": [18349, 18350, 18351],
-        }],
+        "cube_phase": 1, "cube_literal": 18350,
+        "exhaustive_anchor_literals": [18349, 18350, 18351],
     }))
     nested_output = nested / "children"
     subprocess.run([

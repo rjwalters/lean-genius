@@ -30,6 +30,28 @@ def parse_header(line):
     return int(fields[2]), int(fields[3])
 
 
+def inherited_ancestry(doc, mapping):
+    """Upgrade the original top-cube manifests to explicit ancestry."""
+    ancestry = doc.get("cube_ancestry")
+    if ancestry:
+        return ancestry
+    if "cube_phase" not in doc:
+        return []
+    phase = doc["cube_phase"]
+    anchor = ((0, 0), 2)
+    literals = [mapping[anchor[0], anchor[1], value] for value in range(3)]
+    suffix = f" AND tau[(0,0),2]={phase}"
+    if (phase not in range(3) or doc.get("cube_literal") != literals[phase] or
+            doc.get("exhaustive_anchor_literals") != literals or
+            not doc.get("scope", "").endswith(suffix)):
+        raise ValueError("legacy cube fields cannot be upgraded to ancestry")
+    return [{
+        "anchor": "tau[(0,0),2]", "orphan": [0, 0],
+        "component": 2, "phase": phase, "literal": literals[phase],
+        "exhaustive_anchor_literals": literals,
+    }]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("manifest", type=Path)
@@ -54,6 +76,7 @@ def main():
         raise ValueError("parent CNF header/manifest mismatch")
 
     mapping, _last_phase = phase_variable_map()
+    parent_ancestry = inherited_ancestry(doc, mapping)
     omit, copy, component = args.anchor
     anchor = ((omit, copy), component)
     if (omit not in range(4) or copy not in range(4) or
@@ -106,7 +129,7 @@ def main():
             for line in source:
                 target.write(line)
             target.write(f"{literal} 0\n".encode())
-        ancestry = [*doc.get("cube_ancestry", []), {
+        ancestry = [*parent_ancestry, {
             "anchor": anchor_name, "orphan": [omit, copy],
             "component": component, "phase": phase, "literal": literal,
             "exhaustive_anchor_literals": literals,
