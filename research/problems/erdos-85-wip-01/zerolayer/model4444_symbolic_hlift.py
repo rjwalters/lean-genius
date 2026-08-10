@@ -13,6 +13,7 @@ import hashlib
 from itertools import combinations
 import io
 import json
+from pathlib import Path
 import sys
 
 COMPS = range(4)
@@ -243,6 +244,10 @@ if "--emit" in sys.argv:
     open(stem + ".cnf", "wb").write(data)
     manifest = {
         "scope": "all corrected Stage-1 (4,4,4,4) service witnesses",
+        "encoder_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "sat_verifier_sha256": hashlib.sha256(
+            Path(__file__).with_name("verify_symbolic_hlift_assignment.py")
+            .read_bytes()).hexdigest(),
         "vars": nv, "clauses": len(clauses), "sha256": digest,
         "edge_variables": len(E), "phase_variables": len(P),
         "delta_variables": len(DELTA), "service_variables": len(SERVICE),
