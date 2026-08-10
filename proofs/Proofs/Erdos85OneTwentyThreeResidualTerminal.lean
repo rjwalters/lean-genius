@@ -11211,8 +11211,8 @@ theorem degree_sixteen_zeroLayer_used_component_row_after_contact_excess
 /-- A reduced-order-four used component cannot have only quotient-one
 off-diagonal links after the minimum-component contact.  Its diagonal
 contributes two units of excess, while the exact row identity requires six.
-This is the graph-facing arithmetic core excluding the all-`A` service class
-inside the zero-layer `(4,4,4,4)` partition. -/
+This is the graph-facing arithmetic core excluding the diagonal-two sector of
+the all-`A` service class inside the zero-layer `(4,4,4,4)` partition. -/
 theorem degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
