@@ -302,6 +302,17 @@ theorem sum_half_excess_eq_168_of_odd_overlap_degrees
   simp [hcard] at hsum
   omega
 
+/-- Once the clique-matching geometry bounds every odd overlap degree to
+`1`, `3`, or `5`, the 192-vertex/528-degree ledger is exact: the number of
+degree-one vertices exceeds the number of degree-five vertices by 24, and
+the remaining weighted count is 168. -/
+theorem overlap_degree_135_count_ledger
+    (degreeOne degreeThree degreeFive : ℕ)
+    (hvertices : degreeOne + degreeThree + degreeFive = 192)
+    (hdegreeSum : degreeOne + 3 * degreeThree + 5 * degreeFive = 528) :
+    degreeOne = degreeFive + 24 ∧ degreeThree + 2 * degreeFive = 168 := by
+  omega
+
 /-- A nonnegative half-excess budget of 168 spread over 192 vertices leaves
 at least 24 zero-excess vertices, hence at least 24 local overlap degrees
 equal to one. -/
