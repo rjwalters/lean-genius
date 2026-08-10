@@ -188,6 +188,47 @@ for pair in all_pairs:
 bump("conditional_common_neighbor_partition", mark)
 
 
+def xor_odd(literals):
+    """Assert odd parity with equivalence-defined XOR Tseitin gates."""
+    accumulator = literals[0]
+    for literal in literals[1:]:
+        result = newvar()
+        clauses.append((-accumulator, -literal, -result))
+        clauses.append((-accumulator, literal, result))
+        clauses.append((accumulator, -literal, result))
+        clauses.append((accumulator, literal, -result))
+        accumulator = result
+    clauses.append((accumulator,))
+
+
+if "--local-parity" in sys.argv:
+    # Formally justified by
+    # `triangleFreeNeighbors_card_mod_two_eq_vertexDegree`: A = D union S
+    # marks precisely the zero-common pairs, and H has odd degree thirteen.
+    mark = len(clauses)
+    service_H = {}
+    for pair, service in SERVICE.items():
+        both = newvar()
+        edge = E[pair]
+        clauses.append((-both, edge))
+        clauses.append((-both, service))
+        clauses.append((both, -edge, -service))
+        service_H[pair] = both
+    for vertex in range(N):
+        local = []
+        for other in range(N):
+            if other == vertex:
+                continue
+            pair = frozenset((vertex, other))
+            if pair in Dset:
+                local.append(E[pair])
+            elif pair in service_H:
+                local.append(service_H[pair])
+        assert len(local) == 182  # two D candidates plus 180 cross-block
+        xor_odd(local)
+    bump("symbolic_local_A_incidence_odd", mark)
+
+
 def card_eq(literals, k):
     """Exact cardinality via equivalence sequential threshold bits."""
     previous = [None] * (k + 2)
@@ -252,6 +293,7 @@ if "--emit" in sys.argv:
         "edge_variables": len(E), "phase_variables": len(P),
         "delta_variables": len(DELTA), "service_variables": len(SERVICE),
         "common_and_variables": and_aux, "rule_counts": rule_counts,
+        "options": {"local_parity": "--local-parity" in sys.argv},
     }
     json.dump(manifest, open(stem + ".manifest.json", "w"), indent=1)
     print("wrote", stem)
