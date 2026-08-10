@@ -494,6 +494,65 @@ theorem containsC4_of_restricted_cherry_count
     (G.ne_of_adj avx) (G.ne_of_adj avy)
     (G.ne_of_adj av'x) (G.ne_of_adj av'y)
 
+/-- Restricted-cherry bound for one equitable component-quotient block.
+Every source vertex contributes `choose(Q(c,e),2)` endpoint pairs in the
+target component, and C4-freeness makes all these pairs distinct. -/
+theorem componentQuotient_cherry_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) :
+    c.supp.ncard *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e).choose 2 ≤
+      e.supp.ncard.choose 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let A : Finset V := c.supp.toFinite.toFinset
+  let B : Finset V := e.supp.toFinite.toFinset
+  have hreg : ∀ x : V, D.degree x = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree hd heven hmin hcard
+  have hdegree : ∀ x ∈ A,
+      (B ∩ G.neighborFinset x).card = componentQuotientMatrix G D c e := by
+    intro x hx
+    have hxc : x ∈ c.supp := by simpa [A] using hx
+    have hq := componentQuotientMatrix_apply_eq G D 2 hreg hcomm c e hxc
+    have heq : B ∩ G.neighborFinset x = componentNeighborFinset G D e x := by
+      ext y
+      simp [D, B, componentNeighborFinset,
+        SimpleGraph.ConnectedComponent.mem_supp_iff, and_comm]
+    rw [heq]
+    exact hq.symm
+  have hAcard : A.card = c.supp.ncard := by
+    simpa [A] using (Set.ncard_eq_toFinset_card c.supp c.supp.toFinite).symm
+  have hBcard : B.card = e.supp.ncard := by
+    simpa [B] using (Set.ncard_eq_toFinset_card e.supp e.supp.toFinite).symm
+  by_contra hle
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G A B
+  rw [hBcard]
+  push_neg at hle
+  calc
+    e.supp.ncard.choose 2 <
+        c.supp.ncard *
+          (componentQuotientMatrix G D c e).choose 2 := hle
+    _ = ∑ x ∈ A, ((B ∩ G.neighborFinset x).card).choose 2 := by
+      calc
+        c.supp.ncard * (componentQuotientMatrix G D c e).choose 2 =
+            A.card * (componentQuotientMatrix G D c e).choose 2 := by
+              rw [hAcard]
+        _ = ∑ x ∈ A, (componentQuotientMatrix G D c e).choose 2 := by simp
+        _ = _ := by
+          apply Finset.sum_congr rfl
+          intro x hx
+          rw [hdegree x hx]
+
 /- Exact restricted-cherry counting by endpoint pairs.  If every cherry's
 endpoint pair is `good`, and every good two-element endpoint set has a unique
 center, projection to the endpoint set is a bijection. -/
