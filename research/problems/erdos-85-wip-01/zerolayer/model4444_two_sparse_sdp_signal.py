@@ -264,6 +264,21 @@ if args.lp_cuts and args.lp_direct:
         symmetric[tri_rows, tri_cols] = lowered
         symmetric += symmetric.T
         symmetric[np.diag_indices_from(symmetric)] /= 2
+        # These two rows are forced to zero before PSD is imposed: each
+        # center is excluded from its own neighborhood, Boolean diagonals
+        # identify Y_ii with Y_0i, and the RLT upper bounds then kill the
+        # whole row.  This is also a hard guard against silently unpacking
+        # the HiGHS column vector in the wrong symmetric-variable order.
+        forced_zero_rows = (1 + left_center, 1 + N + right_center)
+        forced_zero_max = max(
+            float(np.max(np.abs(symmetric[index, :])))
+            for index in forced_zero_rows)
+        print("lp_direct_unpack_audit", "Y00", float(symmetric[0, 0]),
+              "forced_zero_row_max", forced_zero_max,
+              "max_primal_infeasibility",
+              float(solver.getInfo().max_primal_infeasibility), flush=True)
+        if abs(symmetric[0, 0] - 1) > 1e-5 or forced_zero_max > 1e-5:
+            raise RuntimeError("direct HiGHS symmetric unpack audit failed")
         eigenvalues, eigenvectors = np.linalg.eigh(symmetric)
         print("lp_direct_min_eigenvalue", float(eigenvalues[0]), flush=True)
         if eigenvalues[0] >= -args.eps or iteration == args.lp_cuts:
