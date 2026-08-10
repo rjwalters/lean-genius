@@ -1,0 +1,48 @@
+# Zero-layer used-sector census v7 — 2026-08-10
+
+The graph theorem
+`degree_sixteen_zeroLayer_used_component_row_after_contact_excess`
+proves that a used component of reduced order `k = |e|/3` has total
+after-contact row excess `2(k-1)`.  This sum includes its diagonal term.
+For the cycle components classified by the census, `Q(e,e)=2`, so the
+diagonal contributes `2`; the orphan atoms must therefore contribute
+exactly
+
+    2(k-2).
+
+This corrects the superseded v6 experiment, which accidentally assigned the
+full `2(k-1)` total to the orphan atoms and was offset by two per row.
+
+Two complete runs of `zerolayer_cpsat.py` in an isolated Python 3.14
+environment with OR-Tools returned 223 DEAD, 8 SURVIVOR, and 0 CAP among all
+231 partitions.  The eight survivors are already compatible with the proved
+reduced-part floor `k >= 2`:
+
+    8,8
+    8,4,4
+    8,2,2,2,2
+    6,6,2,2
+    4,4,4,4
+    4,4,4,2,2
+    4,4,2,2,2,2
+    2,2,2,2,2,2,2,2
+
+Relative to the 15-candidate post-v5 frontier, exact orphan excess kills:
+
+    16
+    12,4
+    12,2,2
+    10,2,2,2
+    8,4,2,2
+    6,3,3,2,2
+    5,5,2,2,2
+
+The pure all-`A` realization of `4,4,4,4` is also impossible: its orphan
+excess is zero in every row, while `k=4` requires orphan excess four.  The
+partition remains an arithmetic survivor because mixed `A`/`B` patterns can
+supply that excess; the symbolic H-lift portfolio covers only the all-`A`
+service class.
+
+CP-SAT infeasibility is exact relative to the encoded arithmetic model but
+is not a replayable proof certificate.  Lean atom-ledger terminals and their
+graph-facing classification consumers remain the formal certification path.

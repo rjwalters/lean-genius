@@ -11208,6 +11208,58 @@ theorem degree_sixteen_zeroLayer_used_component_row_after_contact_excess
     omega
   omega
 
+/-- A reduced-order-four used component cannot have only quotient-one
+off-diagonal links after the minimum-component contact.  Its diagonal
+contributes two units of excess, while the exact row identity requires six.
+This is the graph-facing arithmetic core excluding the all-`A` service class
+inside the zero-layer `(4,4,4,4)` partition. -/
+theorem degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hecard : e.supp.ncard = 12) (he_ne : e ≠ c₀)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 2)
+    (hoff : ∀ f ∈ (Finset.univ.erase c₀ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent), f ≠ e →
+      componentQuotientMatrix G (secondOrderDefectGraph G) e f *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) f e - 1) = 0) :
+    False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heR
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e f * (Q f e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  have he_mem : e ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    simpa [D, he_ne]
+  have hsum : (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+      Q e f * (Q f e - 1)) = Q e e * (Q e e - 1) := by
+    apply Finset.sum_eq_single e
+    · intro f hf hfe
+      exact hoff f hf hfe
+    · intro he_not
+      exact (he_not he_mem).elim
+  change Q e e = 2 at hdiag
+  rw [hsum, hdiag, hecard] at hrow
+  norm_num at hrow
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
@@ -11526,6 +11578,39 @@ theorem false_of_zeroLayer_weighted_load_cost_budget
   rw [hleft, hright] at hsum
   have hcap : q * (∑ x ∈ C, cost x) ≤ q * budget :=
     Nat.mul_le_mul_left q hbudget
+  omega
+
+/-- With one reduced used component of order sixteen, the classified `C`
+and `D` atoms cannot simultaneously meet its exact load and exact per-row
+after-contact excess. -/
+theorem false_of_zeroLayer_reduced_used_orders_sixteen_exact_atom_ledger
+    (nC16 nD16 : ℕ)
+    (hload : 48 * nC16 + 16 * nD16 = 192)
+    (hexcess : 6 * nC16 + 2 * nD16 = 28) : False := by
+  omega
+
+/-- The exact row budgets rule out the reduced partition `[12,4]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_twelve_four_exact_atom_ledger
+    (nB12 nC12 nC4to12 nC4 nD4 : ℕ)
+    (hload12 : 24 * nB12 + 36 * nC12 + 12 * nC4to12 = 144)
+    (hexcess12 : 2 * nB12 + 6 * nC12 + 2 * nC4to12 = 20)
+    (hload4 : 12 * nB12 + 12 * nC4 + 4 * nD4 = 48)
+    (hexcess4 : 6 * nC4 + 2 * nD4 = 4) : False := by
+  omega
+
+/-- The exact row budgets also rule out `[12,2,2]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_twelve_two_two_exact_atom_ledger
+    (nB12₁ nB6₁ nB12₂ nB6₂ nB₂₁₂ nB₂₂₁ nC12 nC4 : ℕ)
+    (hload12 : 24 * nB12₁ + 12 * nB6₁ + 24 * nB12₂ + 12 * nB6₂ +
+      36 * nC12 + 12 * nC4 = 144)
+    (hexcess12 : 2 * nB12₁ + nB6₁ + 2 * nB12₂ + nB6₂ +
+      6 * nC12 + 2 * nC4 = 20)
+    (hload2₁ : 12 * nB12₁ + 6 * nB6₁ + 4 * nB₂₁₂ +
+      2 * nB₂₂₁ = 24)
+    (hexcess2₁ : 2 * nB₂₁₂ = 0)
+    (hload2₂ : 12 * nB12₂ + 6 * nB6₂ + 2 * nB₂₁₂ +
+      4 * nB₂₂₁ = 24)
+    (hexcess2₂ : 2 * nB₂₂₁ = 0) : False := by
   omega
 
 /-- The reduced used-order partition `[15,1]` is impossible: its only atom
