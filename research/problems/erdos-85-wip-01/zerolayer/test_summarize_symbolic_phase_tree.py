@@ -49,7 +49,9 @@ with tempfile.TemporaryDirectory() as raw:
     mapping, _ = phase_variable_map()
     first = [mapping[((0, 0), 2, p)] for p in range(3)]
     second = [mapping[((1, 0), 2, p)] for p in range(3)]
-    clauses = anchor_clauses(first) + anchor_clauses(second)
+    residue_domain = [mapping[((0, 1), 2, p)] for p in range(12)]
+    clauses = (anchor_clauses(first) + anchor_clauses(second) +
+               anchor_clauses(residue_domain))
     cnf = root / "root.cnf"
     cnf.write_text(f"p cnf 20000 {len(clauses)}\n" + "\n".join(clauses) + "\n")
     manifest = root / "root.manifest.json"
@@ -83,7 +85,22 @@ with tempfile.TemporaryDirectory() as raw:
             str(child_dir), "--anchor", "1", "0", "2",
         ], check=True, capture_output=True, text=True)
         for q, child_manifest in enumerate(sorted(child_dir.glob("*.manifest.json"))):
-            fake_certificate(child_manifest, root / f"cert-p{phase}-q{q}")
+            if (phase, q) == (1, 1):
+                residue_dir = root / "p1-q1-residues"
+                residue_splitter = Path(__file__).with_name(
+                    "split_symbolic_phase_residue.py")
+                child_cnf = child_manifest.with_suffix("").with_suffix(".cnf")
+                subprocess.run([
+                    sys.executable, str(residue_splitter), str(child_manifest),
+                    str(child_cnf), str(residue_dir),
+                    "--anchor", "0", "1", "2",
+                ], check=True, capture_output=True, text=True)
+                for residue, residue_manifest in enumerate(sorted(
+                        residue_dir.glob("*.manifest.json"))):
+                    fake_certificate(residue_manifest,
+                                     root / f"cert-p1-q1-r{residue}")
+            else:
+                fake_certificate(child_manifest, root / f"cert-p{phase}-q{q}")
 
     # Certificates remain verifiable after archival relocation: their exact
     # original commands are retained, while adjacent hash-identical artifacts
@@ -105,6 +122,7 @@ with tempfile.TemporaryDirectory() as raw:
     subprocess.run([
         sys.executable, str(verifier), str(manifest), str(root),
         "--anchor", "0", "0", "2", "--anchor", "1", "0", "2",
+        "--residue-anchor", "0", "1", "2",
         "--output", str(output),
     ], check=True)
     report = json.loads(output.read_text())
@@ -114,11 +132,14 @@ with tempfile.TemporaryDirectory() as raw:
         "verified_drat_leaf")
     assert report["evidence"]["children"][1]["evidence"]["kind"] == (
         "exhaustive_phase_partition")
-    missing = root / "cert-p2-q2" / "certificate.json"
+    assert report["evidence"]["children"][1]["evidence"]["children"][1][
+        "evidence"]["kind"] == "exhaustive_phase_residue_partition"
+    missing = root / "cert-p1-q1-r2" / "certificate.json"
     missing.rename(missing.with_suffix(".absent"))
     rejected = subprocess.run([
         sys.executable, str(verifier), str(manifest), str(root),
         "--anchor", "0", "0", "2", "--anchor", "1", "0", "2",
+        "--residue-anchor", "0", "1", "2",
         "--output", str(root / "incomplete.json"),
     ], capture_output=True, text=True)
     assert rejected.returncode != 0
