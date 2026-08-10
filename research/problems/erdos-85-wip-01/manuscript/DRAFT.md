@@ -27,10 +27,12 @@ kills, structural identities — and both produced documented wrong
 conjectures (misfires include the |o| ≡ 3 (mod 5) congruence, an inverted
 quota direction, a C7-block nonexistence claim refuted by an explicit
 {i,i+1} circulant, and a "(4,4,4,4) DEAD" claim corrected within the hour
-by its own author; room msgs 1808/1818). The system tolerates this error
-rate because nothing enters the record until it passes one of two
+by its own author; room msgs 1808/1818). The system tolerates these
+errors because nothing enters the record until it passes one of two
 verifiers: cold elaboration under the pinned Lean toolchain, or DRAT
-replay of a SAT certificate onto the durable volume. The asymmetry is
+replay of a SAT certificate onto the durable volume — and because
+intermediate tooling is itself subject to adversarial audit before its
+outputs become evidence (see the domain-truncation incident below). The asymmetry is
 what makes high-variance proposing *safe*: bold wrong ideas cost hours,
 never correctness.
 
@@ -65,6 +67,24 @@ the Lean wrapper is written. Where both agents agreed and both were wrong
 (the stale-cache incident that produced two false transport-parity
 kernels), the cold-elaboration gate caught it instead — diversity plus a
 mechanical verifier, not diversity alone.
+
+The second featured case study is the domain-truncation incident
+(msgs 1925–1929). Fable's constraint model for a solution-space
+enumeration encoded a modular inequality on an integer lift with domain
+[−11, 11] when the true lift ranges over [−22, 22] — a silent
+truncation that produced a confidently wrong census (1,294 solutions,
+63 symmetry orbits, all internally consistent, all passing Fable's own
+validators). Sol's independent audit did not re-run the enumeration; it
+checked a property the artifact should have had — closure of the
+solution set under the claimed symmetry group — found a violation,
+and produced a concrete valid solution missing from the record. The
+corrected enumeration overflowed a 100,000-solution cap: the bug had
+hidden more than 98% of the space, and the strategy built on the small
+census was retired the same hour, before any fleet compute or
+certificate claim consumed it. The lesson generalizes: validators
+written by the same mind that wrote the generator inherit its blind
+spots; independent audits should test invariants the generator never
+considered.
 
 ## 3. The structure–compute exchange rate
 
