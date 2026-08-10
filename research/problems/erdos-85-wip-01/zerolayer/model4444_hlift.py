@@ -52,6 +52,8 @@ which follows from the encoded square identity and regularity.  Identical
 literals are canceled before equivalence-defined unary cardinality
 comparisons.  This adds 238,210 variables and 939,540 clauses; its generic
 equality encoder is exhaustively checked by test_equal_cardinality.py.
+The emitted v4 candidate is `hlift4444_e21525e9a610e8c3.cnf`, full
+SHA-256 `e21525e9a610e8c383f71e5836d2359878b7b43198e3b6cfe7b9f228c5094661`.
 """
 import sys, hashlib, json
 from itertools import combinations
@@ -303,6 +305,7 @@ if "--emit" in sys.argv:
     fn = f"hlift4444_{h}.cnf"
     open(fn, "wb").write(data)
     json.dump({"witness": {str(k): v for k, v in WIT.items()},
+               "options": {"comm_anchor": "--comm-anchor" in sys.argv},
                "zero_pairs": len(zero_pairs), "one_pairs": len(one_pairs),
                "vars": nv, "clauses": len(clauses),
                "sha256": hashlib.sha256(data).hexdigest(),
