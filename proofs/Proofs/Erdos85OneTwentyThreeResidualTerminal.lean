@@ -28327,6 +28327,23 @@ theorem four_class_cherry_equality_profile
   all_goals norm_num [Nat.choose] at hcherry
   all_goals norm_num
 
+/-- If 192 local cherry costs are each at least eighteen and their global
+sum is the exact minimum `3456 = 192 * 18`, every local cost attains
+equality.  This is the finite-sum bridge from the global omitted-type cherry
+double count to `four_class_cherry_equality_profile`. -/
+theorem all_cherry_cost_eq_eighteen_of_sum
+    {ι : Type*} [Fintype ι] (cost : ι → ℕ)
+    (hcard : Fintype.card ι = 192)
+    (hmin : ∀ i, 18 ≤ cost i)
+    (hsum : (∑ i, cost i) = 3456) :
+    ∀ i, cost i = 18 := by
+  have heq : (∑ _i : ι, (18 : ℕ)) = ∑ i, cost i := by
+    rw [Finset.sum_const, Finset.card_univ, Nat.nsmul_eq_mul, hcard, hsum]
+  have hpoint := (Finset.sum_eq_sum_iff_of_le
+    (fun i _ => hmin i)).mp heq
+  intro i
+  exact (hpoint i (Finset.mem_univ i)).symm
+
 end
 
 end Erdos85
