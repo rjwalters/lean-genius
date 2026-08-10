@@ -8,6 +8,7 @@ import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
 import Proofs.Erdos85CycleCoverGraph
 import Proofs.Erdos85CycleCoverColorRigidity
+import Proofs.Erdos85CycleCoverPairMass
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
@@ -192,6 +193,28 @@ theorem finsetCommonNeighborGraph_degree_eq_mul
           Finset.mem_inter.mpr ⟨y.property,
             (G.mem_neighborFinset a.1 y.1).mpr hay⟩⟩⟩
   exact hdegree.trans hCcard
+
+/-- Two globally oriented covers from a forty-eight-cycle to twelve-cycles
+cannot jointly distinguish all source positions: both repeat after twelve
+steps. -/
+theorem zmod_fortyEight_oriented_pair_not_injective
+    (f g : ZMod 48 → ZMod 12)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1)) :
+    ¬Function.Injective (fun y => (f y, g y)) := by
+  intro hinj
+  have hf12 : f (12 : ZMod 48) = f 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd f hf (12 : ZMod 48)).2 (by
+      have hval : (12 : ZMod 48).val = 12 := by decide
+      rw [hval])
+  have hg12 : g (12 : ZMod 48) = g 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd g hg (12 : ZMod 48)).2 (by
+      have hval : (12 : ZMod 48).val = 12 := by decide
+      rw [hval])
+  have hne : (12 : ZMod 48) ≠ 0 := by decide
+  exact hne (hinj (Prod.ext hf12 hg12))
 
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
