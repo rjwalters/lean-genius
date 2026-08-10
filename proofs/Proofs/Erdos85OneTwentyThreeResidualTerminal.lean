@@ -11497,6 +11497,44 @@ theorem false_of_zeroLayer_reduced_used_orders_nine_two_one_one_one_one_one_atom
     (hbudget : nB1 + 2 * nB2 ≤ 2) : False := by
   omega
 
+/-- The two order-two rows in `[9,3,2,2]` cannot simultaneously be
+filled.  If `a` and `b` count the two orientations of their mutual
+`B(m=2)` atom, their exact loads force `a = b = 4`, while each row's
+excess budget permits at most one outgoing atom. -/
+theorem false_of_zeroLayer_reduced_used_orders_nine_three_two_two_atom_ledger
+    (nB₂₃ nB₃₂ : ℕ)
+    (hload₂ : 4 * nB₂₃ + 2 * nB₃₂ = 24)
+    (hload₃ : 2 * nB₂₃ + 4 * nB₃₂ = 24)
+    (hbudget₂ : 2 * nB₂₃ ≤ 2)
+    (hbudget₃ : 2 * nB₃₂ ≤ 2) : False := by
+  omega
+
+/-- In `[8,7,1]`, the order-one load equation excludes every atom from
+the order-seven row.  Its remaining single-row atoms then have fixed
+cost twenty-four at load eighty-four, above budget twelve. -/
+theorem false_of_zeroLayer_reduced_used_orders_eight_seven_one_atom_ledger
+    (nB8 nB4 nB7 nC7 nD7 : ℕ)
+    (hload₁ : 8 * nB8 + 4 * nB4 + 7 * nB7 = 12)
+    (hload₇ : 14 * nB7 + 21 * nC7 + 7 * nD7 = 84)
+    (hbudget₇ : 2 * nB7 + 6 * nC7 + 2 * nD7 ≤ 12) : False := by
+  omega
+
+/-- The order-six row in `[8,6,2]` has load seventy-two, but its cheapest
+classified atoms already force cost twelve, above budget ten. -/
+theorem false_of_zeroLayer_reduced_used_orders_eight_six_two_atom_ledger
+    (nB6 nC2 nC6 : ℕ)
+    (hload : 12 * nB6 + 6 * nC2 + 18 * nC6 = 72)
+    (hbudget : 2 * nB6 + 2 * nC2 + 6 * nC6 ≤ 10) : False := by
+  omega
+
+/-- Aggregating the two order-one targets gives the same order-six
+load-versus-budget obstruction for `[8,6,1,1]`. -/
+theorem false_of_zeroLayer_reduced_used_orders_eight_six_one_one_atom_ledger
+    (nB3 nB6 nC2 nC6 : ℕ)
+    (hload : 6 * nB3 + 12 * nB6 + 6 * nC2 + 18 * nC6 = 72)
+    (hbudget : nB3 + 2 * nB6 + 2 * nC2 + 6 * nC6 ≤ 10) : False := by
+  omega
+
 /-- The five pairwise-disjoint service rows in the two-layer branch have
 fourteen vertices each, so the full used-exterior cell has size seventy. -/
 theorem degree_sixteen_twoLayer_used_exterior_card_eq_seventy
