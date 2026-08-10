@@ -337,6 +337,16 @@ theorem sub_reverseMatchingMatrix_column_sum_eq_one
   rw [Finset.sum_sub_distrib, hcol, reverseMatchingMatrix_column_sum]
   norm_num
 
+/-- Removing a reverse matching from a row-three block leaves row sum two. -/
+theorem sub_reverseMatchingMatrix_row_sum_eq_two
+    {r : ℕ} [NeZero r]
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hrow : ∀ x, ∑ y, H x y = 3) (s x : ZMod r) :
+    ∑ y, (H - reverseMatchingMatrix s) x y = 2 := by
+  simp_rw [Matrix.sub_apply]
+  rw [Finset.sum_sub_distrib, hrow, reverseMatchingMatrix_row_sum]
+  norm_num
+
 /-- A binary matrix with every row summing to one is the graph of a unique
 row selector. -/
 theorem exists_rowSelector_of_binary_row_sum_one
@@ -581,6 +591,123 @@ theorem binary_rowTwo_cycleIntertwiner_orientation
     · right
       have hrevP := binary_selectorMatrix_reverseInvariant
         P hbinaryP f hf hrev
+      intro x y
+      have hp := hrevP x y
+      have hr := reverseMatchingMatrix_reverseInvariant s x y
+      dsimp only [P] at hp
+      simp only [Matrix.sub_apply] at hp
+      linear_combination hp + hr
+
+/-- **Equal-cycle quotient-three orientation.**  The reverse-matching split
+reduces a non-circulant row-three block to the row-two theorem above.  A
+forward residual contains a forward perfect matching, which forms a
+forbidden rectangle with the split reverse matching; a reverse residual
+makes the original block globally reverse-circulant. -/
+theorem binary_rowThree_cycleIntertwiner_orientation
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    (hrow : ∀ x, ∑ y, H x y = 3)
+    (hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (H x y = 1 ∧ H x y' = 1 ∧
+        H x' y = 1 ∧ H x' y' = 1)) :
+    (∀ x y, H (x + 1) (y + 1) = H x y) ∨
+      (∀ x y, H (x + 1) (y - 1) = H x y) := by
+  by_cases htrans : ∀ x y, H (x + 1) (y + 1) = H x y
+  · exact Or.inl htrans
+  · push Not at htrans
+    obtain ⟨a, b, hab⟩ := htrans
+    have hne : H (a + 1) (b + 1) - H a b ≠ 0 := by
+      intro hzero
+      exact hab (sub_eq_zero.mp hzero)
+    obtain ⟨s, hfull⟩ :=
+      binary_cycleIntertwiner_exists_full_reverse_diagonal
+        H hinter hbinary hne
+    let P := H - reverseMatchingMatrix s
+    have hinterP : ∀ x y,
+        P (x - 1) y + P (x + 1) y =
+          P x (y + 1) + P x (y - 1) :=
+      sub_reverseMatchingMatrix_entry_intertwine H hinter s
+    have hbinaryP : ∀ x y, P x y = 0 ∨ P x y = 1 :=
+      sub_reverseMatchingMatrix_binary H hbinary s hfull
+    have hrowP : ∀ x, ∑ y, P x y = 2 :=
+      sub_reverseMatchingMatrix_row_sum_eq_two H hrow s
+    have hrectP : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+        ¬ (P x y = 1 ∧ P x y' = 1 ∧
+          P x' y = 1 ∧ P x' y' = 1) := by
+      intro x x' hxx' y y' hyy' hp
+      apply hrect x x' hxx' y y' hyy'
+      have honeH (z w : ZMod r) (hone : P z w = 1) : H z w = 1 := by
+        dsimp only [P] at hone
+        simp only [Matrix.sub_apply, reverseMatchingMatrix] at hone
+        rcases hbinary z w with hz | ho <;> split at hone <;> omega
+      exact ⟨honeH x y hp.1, honeH x y' hp.2.1,
+        honeH x' y hp.2.2.1, honeH x' y' hp.2.2.2⟩
+    rcases binary_rowTwo_cycleIntertwiner_orientation hr3 P hinterP
+      hbinaryP hrowP hrectP with hforP | hrevP
+    · have hex : ∃ y, P 0 y = 1 := by
+        by_contra hnot
+        push Not at hnot
+        have hzero : ∀ y, P 0 y = 0 := by
+          intro y
+          rcases hbinaryP 0 y with hz | ho
+          · exact hz
+          · exact (hnot y ho).elim
+        have hsum : (∑ y, P 0 y) = 0 := by simp [hzero]
+        rw [hrowP] at hsum
+        norm_num at hsum
+      obtain ⟨f0, hf0⟩ := hex
+      let f : ZMod r → ZMod r := fun x => f0 + x
+      have hf : ∀ x, P x (f x) = 1 := by
+        intro x
+        have hind : ∀ n : ℕ, P (n : ZMod r) (f (n : ZMod r)) = 1 := by
+          intro n
+          induction n with
+          | zero => simpa [f] using hf0
+          | succ n ih =>
+              rw [Nat.cast_succ]
+              have hs := hforP (n : ZMod r) (f (n : ZMod r))
+              have hfn : f ((n : ZMod r) + 1) = f (n : ZMod r) + 1 := by
+                dsimp only [f]
+                ring
+              rw [hfn, hs]
+              exact ih
+        simpa only [ZMod.natCast_zmod_val] using hind x.val
+      have hfor : ∀ x, f (x + 1) = f x + 1 := by
+        intro x
+        dsimp only [f]
+        ring
+      let g : ZMod r → ZMod r := fun x => s - x
+      have hg : ∀ x, g (x + 1) = g x - 1 := by
+        intro x
+        dsimp only [g]
+        ring
+      have hfg : f 0 ≠ g 0 := by
+        intro heq
+        have hpone := hf 0
+        have hg0 : g 0 = s := by dsimp only [g]; ring
+        have hfull0 : H 0 s = 1 := by simpa using hfull 0
+        dsimp only [P] at hpone
+        rw [heq, hg0] at hpone
+        simp [Matrix.sub_apply, reverseMatchingMatrix, hfull0] at hpone
+      obtain ⟨x', hx', hfx', hgx'⟩ :=
+        forward_reverse_matchings_swap f g hfor hg hfg
+      have honeR (x : ZMod r) : H x (g x) = 1 := by
+        simpa only [g] using hfull x
+      have honeH (x : ZMod r) : H x (f x) = 1 := by
+        have hp := hf x
+        dsimp only [P] at hp
+        simp only [Matrix.sub_apply, reverseMatchingMatrix] at hp
+        rcases hbinary x (f x) with hz | ho <;> split at hp <;> omega
+      exfalso
+      apply hrect 0 x' hx'.symm (f 0) (g 0) hfg
+      refine ⟨honeH 0, honeR 0, ?_, ?_⟩
+      · simpa only [hgx'] using honeR x'
+      · simpa only [hfx'] using honeH x'
+    · right
       intro x y
       have hp := hrevP x y
       have hr := reverseMatchingMatrix_reverseInvariant s x y
