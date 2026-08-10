@@ -9289,6 +9289,66 @@ theorem degree_sixteen_twoLayer_fiveDivisible_cut_reduced_balance
     simpa [mul_assoc] using hbal
   exact ⟨k, m, hk, hm, hreduced⟩
 
+/-- Every zero-layer orphan sends at most its three used-exterior neighbors
+into any one used component.  This is the graph-facing row bound used before
+the divisibility argument concentrates a positive non-3-divisible cut. -/
+theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (zR : V)
+    (hzR : zR ∈ Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+      (secondOrderDefectGraph G) c₀))
+    (zO : V)
+    (hzO : zO ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀)) :
+    componentQuotientMatrix G (secondOrderDefectGraph G)
+      ((secondOrderDefectGraph G).connectedComponentMk zO)
+      ((secondOrderDefectGraph G).connectedComponentMk zR) ≤ 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let e := D.connectedComponentMk zR
+  let o := D.connectedComponentMk zO
+  have heSubset : e.supp ⊆ (R : Set V) :=
+    degree_sixteen_minimumLayer_used_component_subset
+      G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild) zR hzR
+  have hcomponentSubset : componentNeighborFinset G D e zO ⊆
+      R ∩ G.neighborFinset zO := by
+    intro y hy
+    have hy' := Finset.mem_filter.mp hy
+    have hye : y ∈ e.supp :=
+      (ConnectedComponent.mem_supp_iff e y).mpr hy'.2
+    exact Finset.mem_inter.mpr ⟨heSubset hye, hy'.1⟩
+  have hzOutside : zO ∉ minimumLayerImageFinset D c₀ :=
+    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hzO).1).2
+  have hzUnused : zO ∉ R := (Finset.mem_sdiff.mp hzO).2
+  have hRcard : (R ∩ G.neighborFinset zO).card = 3 := by
+    simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
+      G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
+        c₀ hregChild hcardChild zO hzOutside hzUnused
+  have hoMem : zO ∈ o.supp := ConnectedComponent.connectedComponentMk_mem
+  rw [componentQuotientMatrix_apply_eq G D 2
+    (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard)
+    (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
+      (by norm_num) (by norm_num) hmin hcard) o e hoMem]
+  rw [← hRcard]
+  exact Finset.card_le_card hcomponentSubset
+
 /-- Zero-layer analogue of orphan concentration.  A non-3-divisible orphan
 component with a positive cut to a used R component sends all three of its
 R neighbors into that one component. -/
@@ -9333,33 +9393,10 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_eq_three
     (degree_sixteen_smallLayer_used_component_card_dvd
       G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hc₀min hregChild
         hcardChild zR hzR).1 rfl
-  have heSubset : e.supp ⊆ (R : Set V) :=
-    degree_sixteen_minimumLayer_used_component_subset
-      G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
-        (by norm_num; exact hcardChild) zR hzR
-  have hcomponentSubset : componentNeighborFinset G D e zO ⊆
-      R ∩ G.neighborFinset zO := by
-    intro y hy
-    have hy' := Finset.mem_filter.mp hy
-    have hye : y ∈ e.supp :=
-      (ConnectedComponent.mem_supp_iff e y).mpr hy'.2
-    exact Finset.mem_inter.mpr ⟨heSubset hye, hy'.1⟩
-  have hzOutside : zO ∉ minimumLayerImageFinset D c₀ :=
-    (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hzO).1).2
-  have hzUnused : zO ∉ R := (Finset.mem_sdiff.mp hzO).2
-  have hRcard : (R ∩ G.neighborFinset zO).card = 3 := by
-    simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
-      G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
-        c₀ hregChild hcardChild zO hzOutside hzUnused
-  have hoMem : zO ∈ o.supp := ConnectedComponent.connectedComponentMk_mem
   have hle : componentQuotientMatrix G D o e ≤ 3 := by
-    rw [componentQuotientMatrix_apply_eq G D 2
-      (secondOrderDefectGraph_degree_eq_two G hfree (d := 16)
-        (by norm_num) (by norm_num) hmin hcard)
-      (adjMatrix_comm_secondOrderDefect_of_even_real G hfree (d := 16)
-        (by norm_num) (by norm_num) hmin hcard) o e hoMem]
-    rw [← hRcard]
-    exact Finset.card_le_card hcomponentSubset
+    simpa [D, o, e] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_le_three
+        G hfree hmin hcard c₀ hregChild hcardChild zR hzR zO hzO
   have hbal := secondOrder_componentQuotientMatrix_balance
     G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
   exact eq_three_of_three_dvd_left_balance_not_dvd_right
@@ -11405,7 +11442,35 @@ theorem no_three_orderedSidon_oddSupport_zmod_twelve :
       (∀ p ∈ orderedDistinctPairs S, ∀ q ∈ orderedDistinctPairs S,
         p.1 - p.2 = q.1 - q.2 → p = q) ∧
       ∀ s ∈ S, ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) s ≠ 0 := by
-  native_decide
+  classical
+  rintro ⟨S, hcard, hsidon, hodd⟩
+  let evenNonzero : Finset (ZMod 12) := {2, 4, 6, 8, 10}
+  have hevenCard : evenNonzero.card = 5 := by
+    decide
+  have hparity : ∀ a b : ZMod 12,
+      ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) a ≠ 0 →
+      ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) b ≠ 0 →
+      ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) (a - b) = 0 := by
+    decide
+  have hevenMem : ∀ z : ZMod 12,
+      ZMod.castHom (by norm_num : 2 ∣ 12) (ZMod 2) z = 0 → z ≠ 0 →
+      z ∈ evenNonzero := by
+    decide
+  have hSidon' : IsOrderedSidon S := by
+    intro p hp q hq hpq
+    exact hsidon p hp q hq hpq
+  have hdiffCard : (orderedDifferenceSet S).card = 6 := by
+    rw [card_orderedDifferenceSet_of_sidon hSidon', hcard]
+  have hsubset : orderedDifferenceSet S ⊆ evenNonzero := by
+    intro z hz
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hz
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    exact hevenMem _
+      (hparity p.1 p.2 (hodd p.1 hpdata.1) (hodd p.2 hpdata.2.1))
+      (sub_ne_zero.mpr hpdata.2.2)
+  have hle := Finset.card_le_card hsubset
+  rw [hdiffCard, hevenCard] at hle
+  omega
 
 /-- A labeled order-twelve defect component cannot be reverse-oriented with
 diagonal quotient three.  Reflection makes its three odd anti-diagonal
