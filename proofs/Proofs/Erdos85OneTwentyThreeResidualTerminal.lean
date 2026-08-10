@@ -13336,6 +13336,62 @@ theorem degree_sixteen_quotientThree_reduced_order_classification
     rw [hq] at hentry
     omega
 
+/-- Exact reduced-order table for the quotient-two leg of a `2+1` orphan
+row.  Equal orders give reverse quotient two; otherwise the used component
+is twice as long and the reverse quotient is one. -/
+theorem degree_sixteen_quotientTwo_reduced_order_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    (m = k ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2) ∨
+    (k = 2 * m ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 2 at hq
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hpos : 0 < Q o e := by omega
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using hpos)
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    right
+    refine ⟨?_, hentry.1⟩
+    rw [hom, hek, hq] at hentry
+    omega
+  · left
+    refine ⟨?_, ?_⟩
+    · rw [hom, hek] at heq
+      omega
+    · rw [heq, hq] at hbal
+      exact Nat.eq_of_mul_eq_mul_left e.nonempty_supp.ncard_pos hbal.symm
+  · have hrevPos : 0 < Q e o := by
+      by_contra hzero
+      have hzero' : Q e o = 0 := by omega
+      rw [hq, hzero', mul_zero] at hbal
+      have hopos := o.nonempty_supp.ncard_pos
+      omega
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt hrevPos
+    change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+      e.supp.ncard * Q e o = o.supp.ncard at hentry
+    rw [hq] at hentry
+    omega
+
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
 entry three, and the owner's reduced order divides the orphan order. -/
