@@ -30,6 +30,7 @@ parser.add_argument("--lp-cuts", type=int, default=0,
 parser.add_argument("--cut-support", type=int, default=48)
 parser.add_argument("--lp-time", type=float, default=300)
 parser.add_argument("--lp-solver", choices=("simplex", "ipm"), default="ipm")
+parser.add_argument("--lp-direct", action="store_true")
 args = parser.parse_args()
 
 A = np.zeros((N, N), dtype=float)
@@ -178,7 +179,88 @@ for moment in moment_rows[args.distance - 1][:args.moment_depth + 1]:
 problem = None
 value = None
 integer_cuts = []
-if args.lp_cuts:
+if args.lp_cuts and args.lp_direct:
+    import highspy
+    from cvxpy import settings as cvx_settings
+
+    problem = cp.Problem(cp.Minimize(0), constraints)
+    compiled_at = time.perf_counter()
+    data, _, _ = problem.get_problem_data("HIGHS")
+    print("lp_direct_compiled", time.perf_counter() - compiled_at, flush=True)
+    matrix = data[cvx_settings.A].tocsc()
+    dims = data[cvx_settings.DIMS]
+    equality_rows = dims.zero
+    infinity = highspy.Highs().inf
+    model = highspy.HighsModel()
+    lp = model.lp_
+    lp.num_col_ = matrix.shape[1]
+    lp.num_row_ = matrix.shape[0]
+    lp.col_cost_ = data[cvx_settings.C]
+    lp.row_lower_ = np.concatenate([
+        data[cvx_settings.B][:equality_rows],
+        -infinity * np.ones(matrix.shape[0] - equality_rows),
+    ])
+    lp.row_upper_ = data[cvx_settings.B]
+    lp.col_lower_ = (np.full(lp.num_col_, -infinity)
+                     if data[cvx_settings.LOWER_BOUNDS] is None else
+                     data[cvx_settings.LOWER_BOUNDS].copy())
+    lp.col_upper_ = (np.full(lp.num_col_, infinity)
+                     if data[cvx_settings.UPPER_BOUNDS] is None else
+                     data[cvx_settings.UPPER_BOUNDS].copy())
+    lp.a_matrix_.format_ = highspy.MatrixFormat.kColwise
+    lp.a_matrix_.start_ = matrix.indptr
+    lp.a_matrix_.index_ = matrix.indices
+    lp.a_matrix_.value_ = matrix.data
+    solver = highspy.Highs()
+    solver.setOptionValue("log_to_console", False)
+    solver.setOptionValue("solver", args.lp_solver)
+    solver.setOptionValue("time_limit", args.lp_time)
+    solver.passModel(model)
+
+    triangle = (2 * N + 1) * (2 * N + 2) // 2
+    assert lp.num_col_ == triangle
+    tri_rows, tri_cols = np.triu_indices(2 * N + 1)
+    for iteration in range(args.lp_cuts + 1):
+        # HiGHS accounts time cumulatively across repeated `run` calls on one
+        # live solver, so increase the absolute limit by one per cut round.
+        solver.setOptionValue("time_limit", (iteration + 1) * args.lp_time)
+        solver.run()
+        status = solver.getModelStatus().name
+        print("lp_direct_iteration", iteration, "status", status,
+              "time", solver.getRunTime(), flush=True)
+        if status != "kOptimal":
+            break
+        lowered = np.asarray(solver.getSolution().col_value[:triangle])
+        symmetric = np.zeros((2 * N + 1, 2 * N + 1))
+        symmetric[tri_rows, tri_cols] = lowered
+        symmetric += symmetric.T
+        symmetric[np.diag_indices_from(symmetric)] /= 2
+        eigenvalues, eigenvectors = np.linalg.eigh(symmetric)
+        print("lp_direct_min_eigenvalue", float(eigenvalues[0]), flush=True)
+        if eigenvalues[0] >= -args.eps or iteration == args.lp_cuts:
+            break
+        vector = eigenvectors[:, 0]
+        support = np.argsort(np.abs(vector))[-args.cut_support:]
+        integer = np.zeros(2 * N + 1, dtype=np.int64)
+        scale = 100 / np.max(np.abs(vector[support]))
+        integer[support] = np.rint(scale * vector[support]).astype(np.int64)
+        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
+        integer //= max(1, divisor)
+        nz_rows, nz_cols = np.nonzero(np.triu(np.outer(integer, integer)))
+        indices = (nz_rows * (2 * N + 1) -
+                   nz_rows * (nz_rows - 1) // 2 + nz_cols - nz_rows)
+        coefficients = integer[nz_rows] * integer[nz_cols]
+        coefficients = coefficients.astype(float)
+        coefficients[nz_rows != nz_cols] *= 2
+        solver.addRow(0, infinity, len(indices),
+                      indices.astype(np.int32), coefficients)
+        integer_cuts.append(integer)
+    print("integer_cuts", [
+        [(int(index), int(entry)) for index, entry in enumerate(vector)
+         if entry] for vector in integer_cuts
+    ])
+    raise SystemExit(0)
+elif args.lp_cuts:
     for iteration in range(args.lp_cuts + 1):
         problem = cp.Problem(cp.Minimize(0), constraints)
         compiled_at = time.perf_counter()
