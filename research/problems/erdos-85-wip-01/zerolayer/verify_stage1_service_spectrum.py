@@ -127,6 +127,31 @@ def main():
     mixed_row_distance_sq = [2 * mixed_row_norm_sq - 2 * inner
                              for inner in same_block_B2]
     assert mixed_row_distance_sq == [516, 324, 374, 348, 348, 372]
+
+    # Exact quotient action.  Rows are source omitted types and columns are
+    # target types.  The sparse-type involution is (01)(23).
+    paired = [1, 0, 3, 2]
+    quotient_H = [[1 if target == paired[source] else 4
+                   for target in range(4)] for source in range(4)]
+    quotient_A = [[11 if source == target else 8
+                   for target in range(4)] for source in range(4)]
+    quotient_B = [[sum(quotient_H[source][middle] *
+                       quotient_A[middle][target] for middle in range(4))
+                   for target in range(4)] for source in range(4)]
+    assert quotient_B == [[107 if source == paired[target] else 116
+                           for target in range(4)] for source in range(4)]
+    assert all(sum(row) == 455 for row in quotient_B)
+
+    # For every component e and color r, H c_(e,r)=3*1+O_(pi(e)) and
+    # H L_e=9*1+3*O_(pi(e)).  Apply H to
+    # A c_(e,r)=12c_(e,r)-3L_e+8*1.
+    for source in range(4):
+        for component in range(4):
+            paired_indicator = int(source == paired[component])
+            h_color = 3 + paired_indicator
+            h_linked = 9 + 3 * paired_indicator
+            b_color = 12 * h_color - 3 * h_linked + 8 * 13
+            assert b_color == 113 + 3 * paired_indicator
     print("STAGE1 SERVICE SPECTRUM EXACT AUDIT OK")
 
 

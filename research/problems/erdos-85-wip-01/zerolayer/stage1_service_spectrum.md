@@ -320,3 +320,41 @@ exactly two or three; this concentration bound is also Lean-formalized.
 
 Together with diagonal mixed count one at both centers, this turns their
 unspecified same-block separation into six explicit integer row-ledger cases.
+
+## Type and color masses of every mixed row
+
+The quotient and cube-root actions also determine how each row's mass 455 is
+distributed.  Let `O_e` be an omitted-type indicator, `pi=(01)(23)`, and
+`B=HA`.  From
+
+```
+A O_e = 8*1 + 3*O_e,       H O_e = 4*1 - 3*O_{pi(e)},
+```
+
+one obtains
+
+```
+B O_e = H A O_e = 116*1 - 9*O_{pi(e)}.
+```
+
+Thus every mixed row has type-class masses `(107,116,116,116)`, with 107
+in its uniquely paired target class.  These sum to 455.
+
+There is a finer, overlapping family of twelve constraints.  For the color
+indicator `c_{e,r}` and linked-type indicator `L_e=1-O_e`, exact color balance
+gives
+
+```
+H c_{e,r} = 3*1 + O_{pi(e)},       H L_e = 9*1 + 3*O_{pi(e)}.
+```
+
+Applying `H` to `A c_{e,r}=12c_{e,r}-3L_e+8*1` yields
+
+```
+B c_{e,r} = 113*1 + 3*O_{pi(e)}.
+```
+
+In particular, two centers in the same omitted type have row difference
+whose sum is zero separately on all four type classes and on all twelve
+component-color fibers.  These structural constraints survive the aggregate
+two-row moment relaxation that otherwise admits all six distance cases.
