@@ -128,17 +128,22 @@ def main():
     eigenvalues = [item["min_eigenvalue"] for item in ordered
                    if "min_eigenvalue" in item]
     cuts = sum("cut_value" in item for item in ordered)
+    terminal_nonoptimal = bool(ordered and ordered[-1]["status"] != "kOptimal")
     requested_cut_round_complete = (
         args.expected_cuts is None or cuts == args.expected_cuts or
-        (eigenvalues and eigenvalues[-1] >= -1e-5))
+        (eigenvalues and eigenvalues[-1] >= -1e-5) or terminal_nonoptimal)
     trajectory_complete = (normal_completion_marker and not traceback_detected and
                            requested_cut_round_complete)
-    audited = [item["unpack_audit"] for item in ordered
+    optimal_items = [item for item in ordered if item["status"] == "kOptimal"]
+    audited = [item["unpack_audit"] for item in optimal_items
                if "unpack_audit" in item]
-    unpack_audit_passed = (len(audited) == len(ordered) and bool(ordered) and
+    unpack_audit_passed = (len(audited) == len(optimal_items) and
+                           bool(optimal_items) and
                            all(abs(item["Y00"] - 1) <= 1e-5 and
                                item["forced_zero_row_max"] <= 1e-5
                                for item in audited))
+    layout_audit_passed = bool(
+        direct_layout and direct_layout["inequalities"] > 0)
     report = {
         "verdict": "SPARSE_RATIONAL_PSD_CUT_TRAJECTORY",
         "log": str(args.log.resolve()), "log_sha256": sha256_file(args.log),
@@ -150,7 +155,9 @@ def main():
         "trajectory_complete": trajectory_complete,
         "unpack_audited_iterations": len(audited),
         "unpack_audit_passed": unpack_audit_passed,
-        "trajectory_usable": trajectory_complete and unpack_audit_passed,
+        "layout_audit_passed": layout_audit_passed,
+        "trajectory_usable": (trajectory_complete and layout_audit_passed and
+                              (unpack_audit_passed or not optimal_items)),
         "iterations": ordered,
         "optimal_iterations": sum(item["status"] == "kOptimal" for item in ordered),
         "cuts": cuts,

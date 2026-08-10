@@ -46,6 +46,7 @@ with tempfile.TemporaryDirectory() as raw:
     assert report["trajectory_complete"] is True
     assert report["unpack_audited_iterations"] == 3
     assert report["unpack_audit_passed"] is True
+    assert report["layout_audit_passed"] is True
     assert report["trajectory_usable"] is True
     assert report["expected_cuts"] == 2
     assert report["terminal_status"] == "kOptimal"
