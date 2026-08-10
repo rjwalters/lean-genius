@@ -8,6 +8,7 @@ The default anchor tau[(0,0),2] is constrained by the encoder to phases
 
 import argparse
 import hashlib
+import itertools
 import json
 from pathlib import Path
 
@@ -53,19 +54,34 @@ def main():
     anchor = ((0, 0), 2)
     literals = [mapping[anchor[0], anchor[1], phase] for phase in range(3)]
     exhaustive_clause = (" ".join(map(str, literals)) + " 0").encode()
-    found_exhaustive = False
+    exclusion_clauses = {
+        (f"-{left} -{right} 0").encode()
+        for left, right in itertools.combinations(literals, 2)
+    }
+    required_clauses = {exhaustive_clause, *exclusion_clauses}
+    found_clauses = set()
     with open(args.cnf, "rb") as stream:
         stream.readline()
         for line in stream:
-            if line.strip() == exhaustive_clause:
-                found_exhaustive = True
-                break
-    if not found_exhaustive:
+            clause = line.strip()
+            if clause in required_clauses:
+                found_clauses.add(clause)
+                if found_clauses == required_clauses:
+                    break
+    if exhaustive_clause not in found_clauses:
         raise ValueError("parent lacks the exact three-phase anchor clause")
+    missing_exclusions = exclusion_clauses - found_clauses
+    if missing_exclusions:
+        raise ValueError(
+            "parent lacks exact pairwise anchor exclusion clause(s): "
+            + ", ".join(sorted(clause.decode() for clause in missing_exclusions))
+        )
 
     summary = {"parent_sha256": actual_sha, "parent_header": [variables, clauses],
                "anchor": "tau[(0,0),2]", "literals": literals,
-               "exhaustive_clause_verified": True}
+               "exhaustive_clause_verified": True,
+               "mutual_exclusion_clauses_verified": True,
+               "cube_partition_verified": True}
     if args.dry_run:
         print(json.dumps(summary, indent=1))
         return
@@ -90,6 +106,8 @@ def main():
             "sha256": sha256_file(output), "cube_literal": literal,
             "cube_phase": phase, "exhaustive_anchor_literals": literals,
             "exhaustive_clause_verified": True,
+            "mutual_exclusion_clauses_verified": True,
+            "cube_partition_verified": True,
         }
         cube_manifest = args.output_dir / f"{stem}.manifest.json"
         cube_manifest.write_text(json.dumps(cube, indent=1) + "\n")
