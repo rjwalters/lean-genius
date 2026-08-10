@@ -1,0 +1,47 @@
+# Zero-layer used-sector census v6 — 2026-08-10
+
+The v6 model strengthens the v5 per-used-component after-contact excess
+constraint from
+
+    excess(e) <= 2 * (k_e - 1)
+
+to the exact identity
+
+    excess(e) = 2 * (k_e - 1).
+
+This equality is proved graph-theoretically by
+`degree_sixteen_zeroLayer_used_component_row_after_contact_excess`
+(commit `77513d8b8b`).  The reduced orders form a partition of sixteen with
+every part at least two by
+`degree_sixteen_zeroLayer_used_component_reduced_partition`
+(commit `aa1ee79fad`).
+
+An isolated Python 3.14 virtual environment with OR-Tools was used to run
+`zerolayer_cpsat.py` over all 231 partitions.  The exact-equality model
+returned 184 DEAD, 47 SURVIVOR, and 0 CAP.  Intersecting the 47 arithmetic
+survivors with the proved reduced-part floor leaves exactly these ten
+graph-compatible candidates:
+
+    10,2,2,2
+    8,8
+    8,4,4
+    6,6,2,2
+    6,3,3,2,2
+    5,5,2,2,2
+    4,4,4,4
+    4,4,4,2,2
+    4,4,2,2,2,2
+    2,2,2,2,2,2,2,2
+
+Relative to the 15-candidate post-v5 frontier, exact per-row excess kills:
+
+    16
+    12,4
+    12,2,2
+    8,4,2,2
+    8,2,2,2,2
+
+As with v5, CP-SAT infeasibility is exact relative to the encoded arithmetic
+model but is not itself a replayable proof certificate.  The Lean theorem
+above supplies the new graph-facing equality; family consumers remain the
+formal certification path for the five newly dead partitions.
