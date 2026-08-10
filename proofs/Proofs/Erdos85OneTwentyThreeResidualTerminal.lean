@@ -355,6 +355,37 @@ theorem false_of_two_unit_componentQuotients_lcm_lt
   apply hef
   exact hue.symm.trans ((congrArg D.connectedComponentMk huv).trans hvf)
 
+/-- Intrinsic component-order form of the two-unit-cover LCM obstruction;
+all cyclic labelings are constructed internally. -/
+theorem false_of_two_unit_componentQuotients_lcm_ncard_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (e f o : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (hoe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hof : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1)
+    (hlt : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard) : False := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨u, huinj, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+  letI : NeZero e.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree e; omega)⟩
+  letI : NeZero f.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree f; omega)⟩
+  letI : NeZero o.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree o; omega)⟩
+  exact false_of_two_unit_componentQuotients_lcm_lt G hfree hd heven hmin
+    hcard (hthree e) (hthree f) (hthree o) e f o hef
+      (u e) (u f) (u o) (huinj e) (huinj f) (huinj o)
+      (huRange e) (huRange f) (huRange o) (huD e) (huD f) (huD o)
+      hoe hof hlt
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
