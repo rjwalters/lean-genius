@@ -73,6 +73,27 @@ and `2175f0a0e0b971c5684d8a7e3eb6947188175f94a05817ee9ca2c8753361fc03`.
 Consequently only four depth-three leaves remain mathematically
 substantive: `p1q1r2`, `p1q2r2`, `p2q1r1`, and `p2q2r1`.
 
+Each of those four leaves is further partitioned by the residue modulo three
+of the exact twelve-phase variable `tau[(0,1),2]`.  This is not an invocation
+of the three-literal anchor splitter: variables 18385 through 18396 form the
+exact twelve-value one-hot domain, and the three child clauses are
+`{0,3,6,9}`, `{1,4,7,10}`, and `{2,5,8,11}` in phase-value notation.  The
+residue splitter verifies the twelve-literal one-hot clause and all 66 exact
+pair exclusions before emitting these three exhaustive children.
+
+The residue-zero child is a row-residue contradiction in all four spaces and
+is now DRAT certified.  In the leaf order above, the exact CNF hashes are
+`68c2fbf1a223cca2d2c5a4b2d2d7d594da7d52a5db55d050f354d7115b01c906`,
+`f3bef2c43ebbbf1e55c1379185c0273a31e2e91e334250784d5cd0d1937260ba`,
+`7dd3913ee6d6c74601a8f4bf60a3f5c0f764bef1a967b6e2ba2026fe834df7d0`,
+and `70549ac36b5bfadaab4a0ef3bcfd26a9a0c8e4bed9532f40f0bb084369bb7554`.
+Their certificate SHA-256 values are respectively `6663731cedcf885ac336e04057d6aa716e5efa172d7c9eeb51e4bdae8c0aab39`,
+`361c4b510a2b532757bdfa5bfbe2fb6940da728de4a579c23249e8f141560619`,
+`44835b53e0f085e64067de213e44b846fea0ef397c17d6ea32ba3b4cff8fd182`,
+and `3e0297d367564e1a9abaf8fae95044099be7188aaa63617ee50326e0532f22e9`;
+all four proof reruns were independently accepted by `drat-trim`.  The eight
+residue-one/residue-two children remain the substantive search frontier.
+
 This degenerate cube nevertheless has a canonical certificate for exhaustive
 parent aggregation.  Its CNF SHA-256 is
 `dcf242a538b09b6ac2da4b70c043d1c58a2a1bcca5b8ea78a4dd1359a1238f40`;
