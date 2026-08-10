@@ -44,6 +44,14 @@ def require_exact_command(command, cnf, proof, label):
         raise ValueError(f"{label} command artifact mismatch")
 
 
+def require_relocatable_artifact(recorded, adjacent_dir, expected, label):
+    """Resolve a hash-identical archived artifact after directory relocation."""
+    recorded_path = Path(recorded)
+    candidate = (recorded_path if recorded_path.is_file()
+                 else Path(adjacent_dir) / recorded_path.name)
+    return require_hash(candidate, expected, label)
+
+
 def expected_cube_hashes(parent_cnf, literals):
     """Hash the exact parent-plus-unit transformations in one parent scan."""
     with open(parent_cnf, "rb") as stream:
@@ -144,13 +152,18 @@ def main():
             raise ValueError(f"certificate is not DRAT-verified at phase {phase}")
         if cert.get("manifest_sha256") != sha256_file(manifest_path):
             raise ValueError(f"cube manifest provenance mismatch at phase {phase}")
-        if Path(cert.get("cnf", "")).resolve() != cnf:
+        recorded_cnf = Path(cert.get("cnf", "")).resolve()
+        if recorded_cnf.name != cnf.name:
             raise ValueError(f"certificate CNF path mismatch at phase {phase}")
-        proof = require_hash(cert["proof"], cert["proof_sha256"],
-                             f"phase {phase} proof")
-        require_exact_command(cert.get("solver_command"), cnf, proof,
+        recorded_proof = Path(cert["proof"]).resolve()
+        require_relocatable_artifact(
+            cert["proof"], cert_path.parent, cert["proof_sha256"],
+            f"phase {phase} proof")
+        require_exact_command(cert.get("solver_command"), recorded_cnf,
+                              recorded_proof,
                               f"phase {phase} solver")
-        require_exact_command(cert.get("drat_trim_command"), cnf, proof,
+        require_exact_command(cert.get("drat_trim_command"), recorded_cnf,
+                              recorded_proof,
                               f"phase {phase} drat-trim")
         log_path = cert_path.parent / "drat-trim.log"
         require_hash(log_path, cert["drat_trim_log_sha256"],

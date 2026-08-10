@@ -77,6 +77,21 @@ with tempfile.TemporaryDirectory() as raw:
         for q, child_manifest in enumerate(sorted(child_dir.glob("*.manifest.json"))):
             fake_certificate(child_manifest, root / f"cert-p{phase}-q{q}")
 
+    # Certificates remain verifiable after archival relocation: their exact
+    # original commands are retained, while adjacent hash-identical artifacts
+    # satisfy the current tree.
+    relocated = root / "cert-p1-q0" / "certificate.json"
+    relocated_doc = json.loads(relocated.read_text())
+    remote_cnf = Path("/remote/original") / Path(relocated_doc["cnf"]).name
+    remote_proof = Path("/remote/original/proof.drat")
+    relocated_doc["cnf"] = str(remote_cnf)
+    relocated_doc["proof"] = str(remote_proof)
+    relocated_doc["solver_command"] = ["kissat", str(remote_cnf),
+                                         str(remote_proof)]
+    relocated_doc["drat_trim_command"] = ["drat-trim", str(remote_cnf),
+                                            str(remote_proof)]
+    write(relocated, relocated_doc)
+
     verifier = Path(__file__).with_name("summarize_symbolic_phase_tree.py")
     output = root / "tree-report.json"
     subprocess.run([
