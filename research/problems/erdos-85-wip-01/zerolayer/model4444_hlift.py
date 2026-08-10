@@ -58,6 +58,12 @@ The matrix implication is formalized by the cold-verified Lean theorem
 `matrix_comm_of_sq_eq_smul_one_add_sub`.
 The emitted v4 candidate is `hlift4444_e21525e9a610e8c3.cnf`, full
 SHA-256 `e21525e9a610e8c383f71e5836d2359878b7b43198e3b6cfe7b9f228c5094661`.
+
+Optional `--translation-lex` selects the lexicographically minimum H-edge
+vector in each orbit of the explicitly checked global Z/12 translation
+automorphism of A.  It adds 201,611 variables and 1,209,611 clauses and
+does not assume that H itself is translation-invariant.  The lex encoder
+is exhaustively checked by test_lex_leq.py.
 """
 import sys, hashlib, json
 from itertools import combinations
@@ -275,6 +281,26 @@ def equal_cardinality(left, right):
         clauses.append((-a, b))
         clauses.append((a, -b))
 
+def lex_leq(left, right):
+    """Assert the Boolean vector `left <=lex right` (False < True)."""
+    if len(left) != len(right):
+        raise ValueError("lexicographic domains must have equal size")
+    prefix = newvar()
+    clauses.append((prefix,))
+    for x, y in zip(left, right):
+        if x == y:
+            continue
+        # A strict 1/0 difference is forbidden while the prefix agrees.
+        clauses.append((-prefix, -x, y))
+        nxt = newvar()
+        # nxt <-> prefix & (x <-> y)
+        clauses.append((-nxt, prefix))
+        clauses.append((-nxt, -x, y))
+        clauses.append((-nxt, x, -y))
+        clauses.append((-prefix, x, y, nxt))
+        clauses.append((-prefix, -x, -y, nxt))
+        prefix = nxt
+
 if "--comm-anchor" in sys.argv:
     # H^2 = 12I + J - A and 13-regularity imply HA = AH.  Add the
     # row-zero entries only: every equation is redundant (hence sound),
@@ -296,6 +322,28 @@ if "--comm-anchor" in sys.argv:
         equal_cardinality(left_only, right_only)
     bump("commutation_anchor_row_zero", len(clauses) - mark)
 
+if "--translation-lex" in sys.argv:
+    # The fixed A is invariant under simultaneously translating the Z/12
+    # coordinate in every orphan block.  Every solution orbit therefore has
+    # a lexicographically minimum edge vector; requiring that representative
+    # against all eleven nonidentity translations preserves satisfiability.
+    mark = len(clauses)
+    edge_vector = [E[pair] for pair in all_pairs]
+    def translate_vertex(v, shift):
+        block, x = divmod(v, 12)
+        return 12 * block + (x + shift) % 12
+    for shift in range(1, 12):
+        translated_A = {
+            frozenset(translate_vertex(v, shift) for v in pair)
+            for pair in zero_pairs
+        }
+        assert translated_A == zero_pairs
+        shifted = [E[frozenset((translate_vertex(u, shift),
+                                translate_vertex(v, shift)))]
+                   for u, v in map(sorted, all_pairs)]
+        lex_leq(edge_vector, shifted)
+    bump("global_translation_lex_leader", len(clauses) - mark)
+
 print(f"vars {nv}  clauses {len(clauses)}  (edge {len(all_pairs)}, and-aux {aux_and}, cnt-aux {aux_cnt})")
 
 if "--emit" in sys.argv:
@@ -309,7 +357,10 @@ if "--emit" in sys.argv:
     fn = f"hlift4444_{h}.cnf"
     open(fn, "wb").write(data)
     json.dump({"witness": {str(k): v for k, v in WIT.items()},
-               "options": {"comm_anchor": "--comm-anchor" in sys.argv},
+               "options": {
+                   "comm_anchor": "--comm-anchor" in sys.argv,
+                   "translation_lex": "--translation-lex" in sys.argv,
+               },
                "zero_pairs": len(zero_pairs), "one_pairs": len(one_pairs),
                "vars": nv, "clauses": len(clauses),
                "sha256": hashlib.sha256(data).hexdigest(),
