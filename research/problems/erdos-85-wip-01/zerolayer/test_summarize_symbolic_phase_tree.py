@@ -97,8 +97,27 @@ with tempfile.TemporaryDirectory() as raw:
                 ], check=True, capture_output=True, text=True)
                 for residue, residue_manifest in enumerate(sorted(
                         residue_dir.glob("*.manifest.json"))):
-                    fake_certificate(residue_manifest,
-                                     root / f"cert-p1-q1-r{residue}")
+                    if residue == 1:
+                        value_dir = root / "p1-q1-r1-values"
+                        value_splitter = Path(__file__).with_name(
+                            "split_symbolic_phase_value.py")
+                        residue_cnf = residue_manifest.with_suffix(
+                            "").with_suffix(".cnf")
+                        subprocess.run([
+                            sys.executable, str(value_splitter),
+                            str(residue_manifest), str(residue_cnf),
+                            str(value_dir), "--anchor", "0", "1", "2",
+                        ], check=True, capture_output=True, text=True)
+                        for value_manifest in sorted(
+                                value_dir.glob("*.manifest.json")):
+                            value = json.loads(
+                                value_manifest.read_text())["cube_value"]
+                            fake_certificate(
+                                value_manifest,
+                                root / f"cert-p1-q1-r1-v{value}")
+                    else:
+                        fake_certificate(residue_manifest,
+                                         root / f"cert-p1-q1-r{residue}")
             else:
                 fake_certificate(child_manifest, root / f"cert-p{phase}-q{q}")
 
@@ -123,6 +142,7 @@ with tempfile.TemporaryDirectory() as raw:
         sys.executable, str(verifier), str(manifest), str(root),
         "--anchor", "0", "0", "2", "--anchor", "1", "0", "2",
         "--residue-anchor", "0", "1", "2",
+        "--value-anchor", "0", "1", "2",
         "--output", str(output),
     ], check=True)
     report = json.loads(output.read_text())
@@ -134,12 +154,16 @@ with tempfile.TemporaryDirectory() as raw:
         "exhaustive_phase_partition")
     assert report["evidence"]["children"][1]["evidence"]["children"][1][
         "evidence"]["kind"] == "exhaustive_phase_residue_partition"
-    missing = root / "cert-p1-q1-r2" / "certificate.json"
+    assert report["evidence"]["children"][1]["evidence"]["children"][1][
+        "evidence"]["children"][1]["evidence"]["kind"] == (
+            "exhaustive_phase_value_partition")
+    missing = root / "cert-p1-q1-r1-v10" / "certificate.json"
     missing.rename(missing.with_suffix(".absent"))
     rejected = subprocess.run([
         sys.executable, str(verifier), str(manifest), str(root),
         "--anchor", "0", "0", "2", "--anchor", "1", "0", "2",
         "--residue-anchor", "0", "1", "2",
+        "--value-anchor", "0", "1", "2",
         "--output", str(root / "incomplete.json"),
     ], capture_output=True, text=True)
     assert rejected.returncode != 0
