@@ -449,3 +449,24 @@ durable proof provenance are preserved with the encoder.
 
 Consequently every overlap-degree-one center has its unique triangle-free
 H-neighbor outside the two defect-cycle neighbors in its orphan block.
+
+## Certified paired-color preservation for sparse overlaps
+
+The preceding exclusion admits a stronger uniform form.  Leave the unique
+service overlap existential, and ask for the bad branch in which it either
+omits the center's paired component or has a different paired-component
+color from the center.  All other local conditions are unchanged: the
+candidate H-neighborhood has size 13, is A-independent, and has exact 4/4/4
+balance in the paired component.  No defect-neighbor pin is used.
+
+The sequential-counter instance has 35,097 variables and 188,651 clauses,
+with SHA-256
+`cb059967c26519da275ed71c5718c29ab5b58c4941645e29ca6a5671ff0e8f80`.
+CaDiCaL returned UNSAT, and `drat-trim` independently accepted the proof with
+`s VERIFIED` after 26,673,807 resolution steps.  The proof SHA-256 is
+`b6c372b4a9cbd6b934dab7b3e6f7251ff74cfee396fe7a41b83efe2b6d9bfb13`.
+
+Thus the unique overlap of every overlap-degree-one center includes the
+paired component and has the same paired color as the center.  Since either
+same-block defect step changes that color modulo three, the earlier
+defect-edge exclusion follows immediately.
