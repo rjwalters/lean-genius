@@ -416,6 +416,78 @@ theorem exists_same_block_overlap_degree_one_pair
   · rw [hodd x, hxzero]
   · rw [hodd z, hzzero]
 
+/-- The pointwise mixed-row sum 455 and squared norm 1255 are equivalently
+a shifted-product deviation budget of 132 around the two central values
+two and three. -/
+theorem sum_shifted_mixedCount_product_eq_132
+    {V : Type*} [Fintype V] (mixedCount : V → ℤ)
+    (hcard : Fintype.card V = 192)
+    (hsum : (∑ z : V, mixedCount z) = 455)
+    (hsq : (∑ z : V, mixedCount z * mixedCount z) = 1255) :
+    (∑ z : V, (mixedCount z - 2) * (mixedCount z - 3)) = 132 := by
+  calc
+    (∑ z : V, (mixedCount z - 2) * (mixedCount z - 3)) =
+        ∑ z : V, (mixedCount z * mixedCount z - 5 * mixedCount z + 6) := by
+      apply Finset.sum_congr rfl
+      intro z _
+      ring
+    _ = (∑ z : V, mixedCount z * mixedCount z) -
+        5 * (∑ z : V, mixedCount z) + 6 * Fintype.card V := by
+      simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+        Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+      ring
+    _ = 132 := by rw [hsq, hsum, hcard]; norm_num
+
+/-- Hence at least 126 entries of every integral mixed-count
+row are exactly two or three. -/
+theorem one_hundred_twenty_six_le_card_mixedCount_eq_two_or_three
+    {V : Type*} [Fintype V] [DecidableEq V] (mixedCount : V → ℤ)
+    (hcard : Fintype.card V = 192)
+    (hbudget : (∑ z : V,
+      (mixedCount z - 2) * (mixedCount z - 3)) = 132) :
+    126 ≤ ({z ∈ (Finset.univ : Finset V) |
+      mixedCount z = 2 ∨ mixedCount z = 3}).card := by
+  let bad := {z ∈ (Finset.univ : Finset V) |
+    mixedCount z ≠ 2 ∧ mixedCount z ≠ 3}
+  have hpoint : (∑ z : V, if z ∈ bad then 2 else 0) ≤
+      ∑ z : V, (mixedCount z - 2) * (mixedCount z - 3) := by
+    apply Finset.sum_le_sum
+    intro z _
+    by_cases hz : z ∈ bad
+    · simp only [hz, if_true]
+      have hz' : mixedCount z ≠ 2 ∧ mixedCount z ≠ 3 := by
+        simpa [bad] using hz
+      have hcases : mixedCount z ≤ 1 ∨ 4 ≤ mixedCount z := by omega
+      rcases hcases with hle | hge <;> nlinarith
+    · simp only [hz, if_false]
+      have hz' : mixedCount z = 2 ∨ mixedCount z = 3 := by
+        by_cases htwo : mixedCount z = 2
+        · exact Or.inl htwo
+        · right
+          by_contra hthree
+          exact hz (by simp [bad, htwo, hthree])
+      rcases hz' with hz' | hz' <;> simp [hz']
+  have hbadZ : 2 * (bad.card : ℤ) ≤ 132 := by
+    have hcount : (∑ z : V, if z ∈ bad then (2 : ℤ) else 0) =
+        2 * (bad.card : ℤ) := by
+      rw [← Finset.sum_filter]
+      simp [bad, mul_comm]
+    calc
+      2 * (bad.card : ℤ) =
+          ∑ z : V, if z ∈ bad then (2 : ℤ) else 0 := hcount.symm
+      _ ≤ ∑ z : V, (mixedCount z - 2) * (mixedCount z - 3) := hpoint
+      _ = 132 := hbudget
+  have hbad : 2 * bad.card ≤ 132 := by exact_mod_cast hbadZ
+  have hpartition := Finset.card_filter_add_card_filter_not
+    (s := (Finset.univ : Finset V))
+    (p := fun z => mixedCount z = 2 ∨ mixedCount z = 3)
+  have hnot : ({z ∈ (Finset.univ : Finset V) |
+      ¬(mixedCount z = 2 ∨ mixedCount z = 3)}) = bad := by
+    ext z
+    simp [bad]
+  rw [hnot, Finset.card_univ, hcard] at hpartition
+  omega
+
 end
 
 end Erdos85

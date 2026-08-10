@@ -308,5 +308,15 @@ norm 1255.  Their squared Euclidean row-distance, at `d=1,...,6`, is
 516, 324, 374, 348, 348, 372.
 ```
 
+Equivalently, each integral row `b` has the exact shifted deviation budget
+
+```
+sum_z (b_z - 2)(b_z - 3) = 1255 - 5*455 + 6*192 = 132.
+```
+
+Every integer outside `{2,3}` contributes at least two to this nonnegative
+sum.  Therefore at least `192-66=126` entries of every mixed-count row are
+exactly two or three; this concentration bound is also Lean-formalized.
+
 Together with diagonal mixed count one at both centers, this turns their
 unspecified same-block separation into six explicit integer row-ledger cases.
