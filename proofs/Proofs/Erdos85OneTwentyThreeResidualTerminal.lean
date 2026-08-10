@@ -8,6 +8,7 @@ import Proofs.Erdos85OwnerFiberProjectedSquare
 import Proofs.Erdos85BoundaryQuotientDivisibility
 import Proofs.Erdos85CycleCoverGraph
 import Proofs.Erdos85CycleCoverColorRigidity
+import Proofs.Erdos85CycleCoverPairMass
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
@@ -193,6 +194,198 @@ theorem finsetCommonNeighborGraph_degree_eq_mul
             (G.mem_neighborFinset a.1 y.1).mpr hay⟩⟩⟩
   exact hdegree.trans hCcard
 
+/-- Two globally oriented covers from a forty-eight-cycle to twelve-cycles
+cannot jointly distinguish all source positions: both repeat after twelve
+steps. -/
+theorem zmod_fortyEight_oriented_pair_not_injective
+    (f g : ZMod 48 → ZMod 12)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1)) :
+    ¬Function.Injective (fun y => (f y, g y)) := by
+  intro hinj
+  have hf12 : f (12 : ZMod 48) = f 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd f hf (12 : ZMod 48)).2 (by
+      have hval : (12 : ZMod 48).val = 12 := by decide
+      rw [hval])
+  have hg12 : g (12 : ZMod 48) = g 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd g hg (12 : ZMod 48)).2 (by
+      have hval : (12 : ZMod 48).val = 12 := by decide
+      rw [hval])
+  have hne : (12 : ZMod 48) ≠ 0 := by decide
+  exact hne (hinj (Prod.ext hf12 hg12))
+
+/-- General two-cover periodicity kernel.  Two globally oriented cyclic
+covers repeat jointly after the least common multiple of their target
+lengths, provided that period is shorter than the source cycle. -/
+theorem oriented_pair_repeat_of_lcm_lt
+    {n ℓ₁ ℓ₂ : ℕ} [NeZero n] [NeZero ℓ₁] [NeZero ℓ₂]
+    (f : ZMod n → ZMod ℓ₁) (g : ZMod n → ZMod ℓ₂)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hlt : Nat.lcm ℓ₁ ℓ₂ < n) :
+    ∃ x x' : ZMod n, x ≠ x' ∧ f x = f x' ∧ g x = g x' := by
+  let L := Nat.lcm ℓ₁ ℓ₂
+  let δ : ZMod n := (L : ℕ)
+  have hval : δ.val = L := by
+    exact ZMod.val_natCast_of_lt hlt
+  have hfδ : f δ = f 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd f hf δ).2 (by
+      rw [hval]
+      exact Nat.dvd_lcm_left ℓ₁ ℓ₂)
+  have hgδ : g δ = g 0 :=
+    (cycleCoverMap_apply_eq_zero_iff_dvd g hg δ).2 (by
+      rw [hval]
+      exact Nat.dvd_lcm_right ℓ₁ ℓ₂)
+  have hLpos : 0 < L := Nat.lcm_pos (NeZero.pos ℓ₁) (NeZero.pos ℓ₂)
+  have hδne : δ ≠ 0 := by
+    intro hzero
+    have hdvd : n ∣ L := by
+      apply (ZMod.natCast_eq_zero_iff L n).mp
+      exact hzero
+    have hnle : n ≤ L := Nat.le_of_dvd hLpos hdvd
+    omega
+  exact ⟨0, δ, hδne.symm, hfδ.symm, hgδ.symm⟩
+
+/-- Injectivity of a pair of globally oriented covers forces the source
+length not to exceed the joint target period. -/
+theorem source_le_lcm_of_oriented_pair_injective
+    {n ℓ₁ ℓ₂ : ℕ} [NeZero n] [NeZero ℓ₁] [NeZero ℓ₂]
+    (f : ZMod n → ZMod ℓ₁) (g : ZMod n → ZMod ℓ₂)
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hinj : Function.Injective (fun y => (f y, g y))) :
+    n ≤ Nat.lcm ℓ₁ ℓ₂ := by
+  by_contra hle
+  have hlt : Nat.lcm ℓ₁ ℓ₂ < n := by omega
+  obtain ⟨x, x', hxx', hfx, hgx⟩ :=
+    oriented_pair_repeat_of_lcm_lt f g hf hg hlt
+  exact hxx' (hinj (Prod.ext hfx hgx))
+
+/-- Equal-LCM law for a zero-excess threefold-scaled orphan block.  If two
+linked component lengths divide its reduced length and their oriented cover
+pair is injective, that reduced orphan length is exactly their LCM. -/
+theorem reduced_length_eq_lcm_of_oriented_pair_injective
+    {m k₁ k₂ : ℕ} [NeZero m] [NeZero k₁] [NeZero k₂]
+    (f : ZMod (3 * m) → ZMod (3 * k₁))
+    (g : ZMod (3 * m) → ZMod (3 * k₂))
+    (hf : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1))
+    (hg : (∀ y, g (y + 1) = g y + 1) ∨
+      (∀ y, g (y + 1) = g y - 1))
+    (hk₁ : k₁ ∣ m) (hk₂ : k₂ ∣ m)
+    (hinj : Function.Injective (fun y => (f y, g y))) :
+    m = Nat.lcm k₁ k₂ := by
+  have hscaled := source_le_lcm_of_oriented_pair_injective f g hf hg hinj
+  rw [Nat.lcm_mul_left] at hscaled
+  have hmle : m ≤ Nat.lcm k₁ k₂ := by omega
+  have hlcmDvd : Nat.lcm k₁ k₂ ∣ m := Nat.lcm_dvd hk₁ hk₂
+  have hlcmLe : Nat.lcm k₁ k₂ ≤ m :=
+    Nat.le_of_dvd (NeZero.pos m) hlcmDvd
+  exact Nat.le_antisymm hmle hlcmLe
+
+/-- Graph-facing LCM obstruction for two unit quotient blocks.  A source
+defect cycle cannot cover two distinct target defect cycles with quotient
+one when their joint period is shorter than the source cycle. -/
+theorem false_of_two_unit_componentQuotients_lcm_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r s n : ℕ}
+    [NeZero r] [NeZero s] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr : 3 ≤ r) (hs : 3 ≤ s) (hn : 3 ≤ n)
+    (e f o : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (u : ZMod r → V) (v : ZMod s → V) (w : ZMod n → V)
+    (huinj : Function.Injective u) (hvinj : Function.Injective v)
+    (hwinj : Function.Injective w)
+    (huRange : Set.range u = e.supp) (hvRange : Set.range v = f.supp)
+    (hwRange : Set.range w = o.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hwD : ∀ x, (secondOrderDefectGraph G).neighborFinset (w x) =
+      {w (x - 1), w (x + 1)})
+    (hoe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hof : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1)
+    (hlt : Nat.lcm r s < n) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  obtain ⟨p, hpAdj, hpOrient⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one G hfree hd heven
+      hmin hcard hr hn e o u w huinj hwinj huRange hwRange huD hwD hoe
+  obtain ⟨q, hqAdj, hqOrient⟩ :=
+    exists_cycleCoverMap_of_componentQuotient_eq_one G hfree hd heven
+      hmin hcard hs hn f o v w hvinj hwinj hvRange hwRange hvD hwD hof
+  obtain ⟨x, x', hxx', hpx, hqx⟩ :=
+    oriented_pair_repeat_of_lcm_lt p q hpOrient hqOrient hlt
+  have hwne : w x ≠ w x' := fun h => hxx' (hwinj h)
+  have hcommon := common_le_one_of_not_containsC4 hfree (w x) (w x') hwne
+  have huCommon : u (p x) ∈
+      G.neighborFinset (w x) ∩ G.neighborFinset (w x') := by
+    rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+    exact ⟨(hpAdj (p x) x).2 rfl |>.symm,
+      (hpAdj (p x) x').2 hpx |>.symm⟩
+  have hvCommon : v (q x) ∈
+      G.neighborFinset (w x) ∩ G.neighborFinset (w x') := by
+    rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+    exact ⟨(hqAdj (q x) x).2 rfl |>.symm,
+      (hqAdj (q x) x').2 hqx |>.symm⟩
+  have huv : u (p x) = v (q x) :=
+    Finset.card_le_one.mp hcommon _ huCommon _ hvCommon
+  have hueMem : u (p x) ∈ e.supp := by
+    rw [← huRange]
+    exact ⟨p x, rfl⟩
+  have hvfMem : v (q x) ∈ f.supp := by
+    rw [← hvRange]
+    exact ⟨q x, rfl⟩
+  have hue : D.connectedComponentMk (u (p x)) = e :=
+    (ConnectedComponent.mem_supp_iff e (u (p x))).mp hueMem
+  have hvf : D.connectedComponentMk (v (q x)) = f :=
+    (ConnectedComponent.mem_supp_iff f (v (q x))).mp hvfMem
+  apply hef
+  exact hue.symm.trans ((congrArg D.connectedComponentMk huv).trans hvf)
+
+/-- Intrinsic component-order form of the two-unit-cover LCM obstruction;
+all cyclic labelings are constructed internally. -/
+theorem false_of_two_unit_componentQuotients_lcm_ncard_lt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (e f o : (secondOrderDefectGraph G).ConnectedComponent) (hef : e ≠ f)
+    (hoe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hof : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1)
+    (hlt : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard) : False := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨u, huinj, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+  letI : NeZero e.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree e; omega)⟩
+  letI : NeZero f.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree f; omega)⟩
+  letI : NeZero o.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree o; omega)⟩
+  exact false_of_two_unit_componentQuotients_lcm_lt G hfree hd heven hmin
+    hcard (hthree e) (hthree f) (hthree o) e f o hef
+      (u e) (u f) (u o) (huinj e) (huinj f) (huinj o)
+      (huRange e) (huRange f) (huRange o) (huD e) (huD f) (huD o)
+      hoe hof hlt
+
 /-- If diagonal incidence degree is `q` and distinct columns meet at most
 once, the incidence Gram is `qI` plus the point-graph adjacency matrix. -/
 theorem finsetAdjIncidence_gram_eq_diagonal_add_commonNeighborGraph_apply
@@ -300,6 +493,65 @@ theorem containsC4_of_restricted_cherry_count
     hvv
     (G.ne_of_adj avx) (G.ne_of_adj avy)
     (G.ne_of_adj av'x) (G.ne_of_adj av'y)
+
+/-- Restricted-cherry bound for one equitable component-quotient block.
+Every source vertex contributes `choose(Q(c,e),2)` endpoint pairs in the
+target component, and C4-freeness makes all these pairs distinct. -/
+theorem componentQuotient_cherry_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent) :
+    c.supp.ncard *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c e).choose 2 ≤
+      e.supp.ncard.choose 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let A : Finset V := c.supp.toFinite.toFinset
+  let B : Finset V := e.supp.toFinite.toFinset
+  have hreg : ∀ x : V, D.degree x = 2 :=
+    secondOrderDefectGraph_degree_eq_two G hfree hd heven hmin hcard
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even_real
+    G hfree hd heven hmin hcard
+  have hdegree : ∀ x ∈ A,
+      (B ∩ G.neighborFinset x).card = componentQuotientMatrix G D c e := by
+    intro x hx
+    have hxc : x ∈ c.supp := by simpa [A] using hx
+    have hq := componentQuotientMatrix_apply_eq G D 2 hreg hcomm c e hxc
+    have heq : B ∩ G.neighborFinset x = componentNeighborFinset G D e x := by
+      ext y
+      simp [D, B, componentNeighborFinset,
+        SimpleGraph.ConnectedComponent.mem_supp_iff, and_comm]
+    rw [heq]
+    exact hq.symm
+  have hAcard : A.card = c.supp.ncard := by
+    simpa [A] using (Set.ncard_eq_toFinset_card c.supp c.supp.toFinite).symm
+  have hBcard : B.card = e.supp.ncard := by
+    simpa [B] using (Set.ncard_eq_toFinset_card e.supp e.supp.toFinite).symm
+  by_contra hle
+  apply hfree
+  apply containsC4_of_restricted_cherry_count G A B
+  rw [hBcard]
+  push_neg at hle
+  calc
+    e.supp.ncard.choose 2 <
+        c.supp.ncard *
+          (componentQuotientMatrix G D c e).choose 2 := hle
+    _ = ∑ x ∈ A, ((B ∩ G.neighborFinset x).card).choose 2 := by
+      calc
+        c.supp.ncard * (componentQuotientMatrix G D c e).choose 2 =
+            A.card * (componentQuotientMatrix G D c e).choose 2 := by
+              rw [hAcard]
+        _ = ∑ x ∈ A, (componentQuotientMatrix G D c e).choose 2 := by simp
+        _ = _ := by
+          apply Finset.sum_congr rfl
+          intro x hx
+          rw [hdegree x hx]
 
 /- Exact restricted-cherry counting by endpoint pairs.  If every cherry's
 endpoint pair is `good`, and every good two-element endpoint set has a unique
