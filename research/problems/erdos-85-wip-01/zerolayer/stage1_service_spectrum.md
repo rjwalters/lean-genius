@@ -152,3 +152,31 @@ matching edge has its unique common neighbor in one of the two classes of
 the other paired pair.  Equivalently, matching edges outside the service
 graph are in bijection with triangles whose type pattern uses one vertex
 from a paired pair and one vertex from the other pair.
+
+## Fixed mixed overlap moments
+
+Because `A = 12I + J - H^2`, the two matrices commute and their mixed
+moments are fixed by the same sign split.  On the all-ones line their
+eigenvalues are `(13,35)`.  On the rational `H=±4` sector, `A=-4` and the
+sum of the H-eigenvalues is `4*(-4)=-16`; on the `H=±3` sector, `A=3` and
+the H-eigenvalue sum is `3*1=3`.  All irrational sign-paired sectors cancel
+from expressions odd in H.  Therefore
+
+```
+tr(H A)   = 13*35   + (-16)*(-4) + 3*3    = 528,
+tr(H A^2) = 13*35^2 + (-16)*16   + 3*3^2  = 15696.
+```
+
+The first identity says that exactly `528/2 = 264` H-edges are also
+zero-common-neighbor A-edges.  Equivalently, the other `1248-264=984`
+H-edges lie in their unique triangles, giving `984/3=328` triangles as
+required by `tr(H^3)=1968`.  The second identity is the common-A-neighbor
+ledger
+
+```
+sum_{uv in E(H)} |N_A(u) intersect N_A(v)| = 7848.
+```
+
+These totals are service-independent and can be decomposed across the four
+paired quotient classes, in particular separating the 96 paired matching
+edges from the four internal and four unpaired bipartite pieces.
