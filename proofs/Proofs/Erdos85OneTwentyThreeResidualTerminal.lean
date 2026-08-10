@@ -11677,6 +11677,64 @@ theorem degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
   simpa [D, R, O] using degree_sixteen_zeroLayer_used_exterior_orphan_degree_eq_twelve
     G hfree hmin hcard c₀ hregChild hcardChild v hve
 
+/-- All zero-layer orphan components share one restricted-cherry capacity
+inside any fixed target defect component.  This is the aggregate quotient
+cut consumed by the zero-layer census for quotient-two/three atoms. -/
+theorem degree_sixteen_zeroLayer_orphan_quotient_cherry_capacity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, o.supp.ncard *
+      (componentQuotientMatrix G D o e).choose 2) ≤ e.supp.ncard.choose 2 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  have hclosed : ∀ (c : D.ConnectedComponent) (z : V), z ∈ c.supp →
+      (z ∈ O ↔ componentRepresentative D c ∈ O) := by
+    intro c z hzc
+    have hmk : D.connectedComponentMk z = c :=
+      (ConnectedComponent.mem_supp_iff c z).mp hzc
+    have hrepMk : D.connectedComponentMk (componentRepresentative D c) = c :=
+      (ConnectedComponent.mem_supp_iff c (componentRepresentative D c)).mp
+        (componentRepresentative_mem D c)
+    constructor
+    · intro hz
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) z hz
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepMk, hmk]
+    · intro hrep
+      have hsub := degree_sixteen_minimumLayer_orphan_component_subset
+        G hfree (s := 0) (by norm_num) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild) (componentRepresentative D c) hrep
+      apply hsub
+      rw [ConnectedComponent.mem_supp_iff, hrepMk]
+      exact hmk
+  simpa [D, U, R, O] using
+    sum_componentQuotient_cherry_le_of_component_closed G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard O hclosed e
+
 /-- Every two-layer orphan-component quotient row has total mass five into
 the used components, matching the five service neighbors of each orphan. -/
 theorem degree_sixteen_twoLayer_orphan_to_used_quotient_sum_eq_five
