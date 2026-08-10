@@ -358,3 +358,37 @@ In particular, two centers in the same omitted type have row difference
 whose sum is zero separately on all four type classes and on all twelve
 component-color fibers.  These structural constraints survive the aggregate
 two-row moment relaxation that otherwise admits all six distance cases.
+
+## Fourth moment and signed service energy
+
+The same diagonal-block calculation one power higher uses
+
+```
+(A_z^4)_{oo} = alpha^4 + 4 alpha^3 K_oo
+  + 6 alpha^2 (K^2)_oo + 4 alpha (K^3)_oo + (K^4)_oo.
+```
+
+The additional `(K^4)_{oo}` values in the `C(z)=8,-4,0` cases are
+`105024,12288,5184`.  Exact inverse Fourier transform gives
+
+```
+(A^4)_{x,x+d}, d=0,...,6:
+10023, 7920, 7438, 7992, 7273, 7272, 7992.
+```
+
+Let `q=e_x-e_z` for the forced same-block pair and let `delta=q^T B` be its
+mixed-row difference.  Since `B A B=H^2 A^3=12A^3+35^3J-A^4` and `q^T J=0`,
+
+```
+delta A delta^T = q^T (12A^3-A^4) q.
+```
+
+At cyclic distances `1,...,6` these signed service energies are exactly
+
+```
+-1182, -130, -198, -460, -462, -174.
+```
+
+Equivalently, the sums of `delta_u delta_v` over unordered A-edges are
+`-591,-65,-99,-230,-231,-87`.  Unlike the aggregate row moments, this
+forces a substantial sign interaction along the explicit service graph.

@@ -106,17 +106,21 @@ def main():
         ))
     assert fourier_A3 == expected_fourier_A3
 
-    diagonal_A3 = []
-    for distance in range(7):
-        # Pair characters k and 12-k, using the exact 2*cos table.
-        rational = fourier_A3[0][0] + (-1) ** distance * fourier_A3[6][0]
-        radical = 0
-        for k in range(1, 6):
-            term = mul(fourier_A3[k], two_cos[(k * distance) % 12])
-            rational += term[0]
-            radical += term[1]
-        assert radical == 0 and rational % 12 == 0
-        diagonal_A3.append(rational // 12)
+    def inverse_diagonal_block(fourier):
+        result = []
+        for distance in range(7):
+            # Pair characters k and 12-k, using the exact 2*cos table.
+            rational = fourier[0][0] + (-1) ** distance * fourier[6][0]
+            radical = 0
+            for k in range(1, 6):
+                term = mul(fourier[k], two_cos[(k * distance) % 12])
+                rational += term[0]
+                radical += term[1]
+            assert radical == 0 and rational % 12 == 0
+            result.append(rational // 12)
+        return result
+
+    diagonal_A3 = inverse_diagonal_block(fourier_A3)
     assert diagonal_A3 == [390, 264, 180, 229, 180, 180, 228]
     same_block_A2 = [3, 4, 6, 3, 3, 6]
     same_block_B2 = [12 * a2 + 35 ** 2 - a3
@@ -127,6 +131,33 @@ def main():
     mixed_row_distance_sq = [2 * mixed_row_norm_sq - 2 * inner
                              for inner in same_block_B2]
     assert mixed_row_distance_sq == [516, 324, 374, 348, 348, 372]
+
+    fourier_A4 = []
+    for k, (real, radical) in enumerate(two_cos):
+        alpha = (real - 3, radical)
+        alpha2 = mul(alpha, alpha)
+        alpha3 = mul(alpha2, alpha)
+        alpha4 = mul(alpha3, alpha)
+        if k == 0:
+            k2, k3, k4 = 84, 2928, 105024
+        elif k in (4, 8):
+            k2, k3, k4 = 48, 768, 12288
+        else:
+            k2, k3, k4 = 36, 432, 5184
+        fourier_A4.append((
+            alpha4[0] + 4 * 3 * alpha3[0] + 6 * k2 * alpha2[0] +
+            4 * k3 * alpha[0] + k4,
+            alpha4[1] + 4 * 3 * alpha3[1] + 6 * k2 * alpha2[1] +
+            4 * k3 * alpha[1],
+        ))
+    diagonal_A4 = inverse_diagonal_block(fourier_A4)
+    assert diagonal_A4 == [10023, 7920, 7438, 7992, 7273, 7272, 7992]
+    difference_A_energy = [
+        2 * ((12 * diagonal_A3[0] - diagonal_A4[0]) -
+             (12 * diagonal_A3[d] - diagonal_A4[d]))
+        for d in range(1, 7)
+    ]
+    assert difference_A_energy == [-1182, -130, -198, -460, -462, -174]
 
     # Exact quotient action.  Rows are source omitted types and columns are
     # target types.  The sparse-type involution is (01)(23).
