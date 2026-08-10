@@ -79,6 +79,15 @@ def main():
                 if pending is None:
                     raise ValueError("minimum eigenvalue precedes iteration")
                 iterations[pending]["min_eigenvalue"] = float(line.split()[1])
+            elif line.startswith("lp_direct_unpack_audit "):
+                if pending is None:
+                    raise ValueError("unpack audit precedes iteration")
+                fields = line.split()
+                iterations[pending]["unpack_audit"] = {
+                    "Y00": float(fields[2]),
+                    "forced_zero_row_max": float(fields[4]),
+                    "max_primal_infeasibility": float(fields[6]),
+                }
             elif line.startswith("lp_direct_cut "):
                 prefix, support_text = line.split(" [", 1)
                 fields = prefix.split()
@@ -117,6 +126,12 @@ def main():
         (eigenvalues and eigenvalues[-1] >= -1e-5))
     trajectory_complete = (normal_completion_marker and not traceback_detected and
                            requested_cut_round_complete)
+    audited = [item["unpack_audit"] for item in ordered
+               if "unpack_audit" in item]
+    unpack_audit_passed = (len(audited) == len(ordered) and bool(ordered) and
+                           all(abs(item["Y00"] - 1) <= 1e-5 and
+                               item["forced_zero_row_max"] <= 1e-5
+                               for item in audited))
     report = {
         "verdict": "SPARSE_RATIONAL_PSD_CUT_TRAJECTORY",
         "log": str(args.log.resolve()), "log_sha256": sha256_file(args.log),
@@ -125,6 +140,9 @@ def main():
         "normal_completion_marker": normal_completion_marker,
         "expected_cuts": args.expected_cuts,
         "trajectory_complete": trajectory_complete,
+        "unpack_audited_iterations": len(audited),
+        "unpack_audit_passed": unpack_audit_passed,
+        "trajectory_usable": trajectory_complete and unpack_audit_passed,
         "iterations": ordered,
         "optimal_iterations": sum(item["status"] == "kOptimal" for item in ordered),
         "cuts": cuts,
