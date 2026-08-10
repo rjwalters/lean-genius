@@ -336,6 +336,257 @@ theorem sub_reverseMatchingMatrix_column_sum_eq_one
   rw [Finset.sum_sub_distrib, hcol, reverseMatchingMatrix_column_sum]
   norm_num
 
+/-- A binary matrix with every row summing to one is the graph of a unique
+row selector. -/
+theorem exists_rowSelector_of_binary_row_sum_one
+    {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (P : Matrix α β ℤ)
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (hrow : ∀ x, ∑ y, P x y = 1) :
+    ∃ f : α → β, ∀ x y, P x y = 1 ↔ y = f x := by
+  classical
+  let S : α → Finset β := fun x => Finset.univ.filter fun y => P x y = 1
+  have hcard : ∀ x, (S x).card = 1 := by
+    intro x
+    have heq : (∑ y, P x y) = ((S x).card : ℤ) := by
+      calc
+        (∑ y, P x y) = ∑ y, if P x y = 1 then (1 : ℤ) else 0 := by
+          apply Finset.sum_congr rfl
+          intro y _hy
+          rcases hbinary x y with hzero | hone
+          · simp [hzero]
+          · simp [hone]
+        _ = ((S x).card : ℤ) := by
+          simpa only [S] using (Finset.sum_boole (R := ℤ)
+            (fun y : β => P x y = 1) Finset.univ)
+    have hz : ((S x).card : ℤ) = 1 := by rw [← heq, hrow]
+    exact_mod_cast hz
+  have hex : ∀ x, ∃ y, S x = {y} := fun x => Finset.card_eq_one.mp (hcard x)
+  choose f hf using hex
+  refine ⟨f, ?_⟩
+  intro x y
+  have hmem : y ∈ S x ↔ P x y = 1 := by simp [S]
+  rw [← hmem, hf]
+  simp
+
+/-- A binary row-one square cycle intertwiner is a globally oriented cyclic
+matching.  This is the matrix-level quotient-one rigidity consumed by the
+residual quotient-two decomposition. -/
+theorem binary_rowOne_cycleIntertwiner_orientation
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (P : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      P (x - 1) y + P (x + 1) y =
+        P x (y + 1) + P x (y - 1))
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (hrow : ∀ x, ∑ y, P x y = 1) :
+    ∃ f : ZMod r → ZMod r,
+      (∀ x y, P x y = 1 ↔ y = f x) ∧
+      ((∀ x, f (x + 1) = f x + 1) ∨
+        (∀ x, f (x + 1) = f x - 1)) := by
+  obtain ⟨f, hf⟩ := exists_rowSelector_of_binary_row_sum_one P hbinary hrow
+  refine ⟨f, hf, cycleMap_global_orientation hr3 f ?_⟩
+  intro x
+  ext y
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+  have happly : ∀ a b, P a b = if b = f a then 1 else 0 := by
+    intro a b
+    by_cases h : b = f a
+    · rw [if_pos h]
+      exact (hf a b).2 h
+    · rw [if_neg h]
+      rcases hbinary a b with hzero | hone
+      · exact hzero
+      · exact (h (hf a b |>.1 hone)).elim
+  have hrec := hinter x y
+  simp only [happly] at hrec
+  have hsub : y + 1 = f x ↔ y = f x - 1 := by
+    constructor <;> intro h
+    · linear_combination h
+    · rw [h]
+      ring
+  have hadd : y - 1 = f x ↔ y = f x + 1 := by
+    constructor <;> intro h
+    · linear_combination h
+    · rw [h]
+      ring
+  simp only [hsub, hadd] at hrec
+  have hpm : f x - 1 ≠ f x + 1 :=
+    zmod_sub_one_ne_add_one_of_three_le hr3 (f x)
+  by_cases h₁ : y = f (x - 1) <;>
+    by_cases h₂ : y = f (x + 1) <;>
+    by_cases h₃ : y = f x - 1 <;>
+    by_cases h₄ : y = f x + 1 <;>
+    simp_all [eq_comm]
+
+/-- The reverse matching matrix is globally reverse-circulant. -/
+theorem reverseMatchingMatrix_reverseInvariant
+    {r : ℕ} [NeZero r] (s x y : ZMod r) :
+    reverseMatchingMatrix s (x + 1) (y - 1) =
+      reverseMatchingMatrix s x y := by
+  simp only [reverseMatchingMatrix]
+  congr 1
+  apply propext
+  constructor <;> intro h
+  · linear_combination h
+  · linear_combination h
+
+/-- A binary selector matrix inherits the global reverse orientation of its
+selector. -/
+theorem binary_selectorMatrix_reverseInvariant
+    {r : ℕ} [NeZero r]
+    (P : Matrix (ZMod r) (ZMod r) ℤ)
+    (hbinary : ∀ x y, P x y = 0 ∨ P x y = 1)
+    (f : ZMod r → ZMod r)
+    (hf : ∀ x y, P x y = 1 ↔ y = f x)
+    (hrev : ∀ x, f (x + 1) = f x - 1) :
+    ∀ x y, P (x + 1) (y - 1) = P x y := by
+  intro x y
+  have hiff : y - 1 = f (x + 1) ↔ y = f x := by
+    rw [hrev]
+    constructor <;> intro h
+    · linear_combination h
+    · linear_combination h
+  rcases hbinary (x + 1) (y - 1) with h₁ | h₁ <;>
+    rcases hbinary x y with h₂ | h₂ <;> try omega
+  · exfalso
+    have hone := (hf (x + 1) (y - 1)).2
+      (hiff.mpr ((hf x y).1 h₂))
+    omega
+  · exfalso
+    have hone := (hf x y).2
+      (hiff.mp ((hf (x + 1) (y - 1)).1 h₁))
+    omega
+
+/-- A forward cyclic matching and a reverse cyclic matching on the same
+cycle swap their two targets at a distinct source position whenever their
+targets at zero are distinct. -/
+theorem forward_reverse_matchings_swap
+    {r : ℕ} [NeZero r]
+    (f g : ZMod r → ZMod r)
+    (hf : ∀ y, f (y + 1) = f y + 1)
+    (hg : ∀ y, g (y + 1) = g y - 1)
+    (hfg : f 0 ≠ g 0) :
+    ∃ y : ZMod r, y ≠ 0 ∧ f y = g 0 ∧ g y = f 0 := by
+  have hf_formula : ∀ y : ZMod r, f y = f 0 + y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        f (n : ZMod r) = f 0 + (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hf, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  have hg_formula : ∀ y : ZMod r, g y = g 0 - y := by
+    intro y
+    have hind : ∀ n : ℕ,
+        g (n : ZMod r) = g 0 - (n : ZMod r) := by
+      intro n
+      induction n with
+      | zero => simp
+      | succ n ih =>
+          rw [Nat.cast_succ, hg, ih]
+          ring
+    simpa only [ZMod.natCast_zmod_val] using hind y.val
+  let y : ZMod r := g 0 - f 0
+  have hy : y ≠ 0 := by
+    intro hy0
+    apply hfg
+    dsimp only [y] at hy0
+    exact sub_eq_zero.mp hy0 |>.symm
+  refine ⟨y, hy, ?_, ?_⟩
+  · rw [hf_formula]
+    dsimp only [y]
+    ring
+  · rw [hg_formula]
+    dsimp only [y]
+    ring
+
+/-- **Equal-cycle quotient-two orientation.**  A binary two-regular square
+cycle intertwiner with no `2 × 2` all-one rectangle is globally circulant or
+reverse-circulant, at every cycle length at least three.  The proof splits a
+reverse matching from any translation defect; the residual quotient-one
+matching is globally oriented, and a forward residual would form a forbidden
+rectangle with the reverse matching. -/
+theorem binary_rowTwo_cycleIntertwiner_orientation
+    {r : ℕ} [NeZero r] (hr3 : 3 ≤ r)
+    (H : Matrix (ZMod r) (ZMod r) ℤ)
+    (hinter : ∀ x y,
+      H (x - 1) y + H (x + 1) y =
+        H x (y + 1) + H x (y - 1))
+    (hbinary : ∀ x y, H x y = 0 ∨ H x y = 1)
+    (hrow : ∀ x, ∑ y, H x y = 2)
+    (hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (H x y = 1 ∧ H x y' = 1 ∧
+        H x' y = 1 ∧ H x' y' = 1)) :
+    (∀ x y, H (x + 1) (y + 1) = H x y) ∨
+      (∀ x y, H (x + 1) (y - 1) = H x y) := by
+  by_cases htrans : ∀ x y, H (x + 1) (y + 1) = H x y
+  · exact Or.inl htrans
+  · push Not at htrans
+    obtain ⟨a, b, hab⟩ := htrans
+    have hne : H (a + 1) (b + 1) - H a b ≠ 0 := by
+      intro hzero
+      exact hab (sub_eq_zero.mp hzero)
+    obtain ⟨s, hfull⟩ :=
+      binary_cycleIntertwiner_exists_full_reverse_diagonal
+        H hinter hbinary hne
+    let P := H - reverseMatchingMatrix s
+    have hinterP : ∀ x y,
+        P (x - 1) y + P (x + 1) y =
+          P x (y + 1) + P x (y - 1) :=
+      sub_reverseMatchingMatrix_entry_intertwine H hinter s
+    have hbinaryP : ∀ x y, P x y = 0 ∨ P x y = 1 :=
+      sub_reverseMatchingMatrix_binary H hbinary s hfull
+    have hrowP : ∀ x, ∑ y, P x y = 1 :=
+      sub_reverseMatchingMatrix_row_sum_eq_one H hrow s
+    obtain ⟨f, hf, hfor | hrev⟩ :=
+      binary_rowOne_cycleIntertwiner_orientation hr3 P hinterP hbinaryP hrowP
+    · let g : ZMod r → ZMod r := fun x => s - x
+      have hg : ∀ x, g (x + 1) = g x - 1 := by
+        intro x
+        dsimp only [g]
+        ring
+      have hfg : f 0 ≠ g 0 := by
+        intro heq
+        have hpone : P 0 (f 0) = 1 := (hf 0 (f 0)).2 rfl
+        have hpzero : P 0 (g 0) = 0 := by
+          have hg0 : g 0 = s := by dsimp only [g]; ring
+          have hfull0 : H 0 s = 1 := by simpa using hfull 0
+          dsimp only [P]
+          rw [hg0]
+          simp [Matrix.sub_apply, reverseMatchingMatrix, hfull0]
+        rw [heq, hpzero] at hpone
+        norm_num at hpone
+      obtain ⟨x', hx', hfx', hgx'⟩ :=
+        forward_reverse_matchings_swap f g hfor hg hfg
+      have honeP (x : ZMod r) : P x (f x) = 1 := (hf x (f x)).2 rfl
+      have honeR (x : ZMod r) : H x (g x) = 1 := by
+        simpa only [g] using hfull x
+      have honeH (x : ZMod r) : H x (f x) = 1 := by
+        have hp := honeP x
+        dsimp only [P] at hp
+        simp only [Matrix.sub_apply, reverseMatchingMatrix] at hp
+        rcases hbinary x (f x) with hz | ho <;>
+          split at hp <;> omega
+      exfalso
+      apply (hrect 0 x' hx'.symm (f 0) (g 0) hfg)
+      refine ⟨honeH 0, honeR 0, ?_, ?_⟩
+      · simpa only [hgx'] using honeR x'
+      · simpa only [hfx'] using honeH x'
+    · right
+      have hrevP := binary_selectorMatrix_reverseInvariant
+        P hbinaryP f hf hrev
+      intro x y
+      have hp := hrevP x y
+      have hr := reverseMatchingMatrix_reverseInvariant s x y
+      dsimp only [P] at hp
+      simp only [Matrix.sub_apply] at hp
+      linear_combination hp + hr
+
 /-- Equality of two entries on one anti-diagonal is preserved by a common
 simultaneous shift. -/
 theorem cycleIntertwiner_simultaneous_shift_preserves_eq
