@@ -24,6 +24,10 @@ parser.add_argument("--eps", type=float, default=1e-5)
 parser.add_argument("--solver", choices=("SCS", "CLARABEL"), default="SCS")
 parser.add_argument("--rlt", action="store_true")
 parser.add_argument("--moment-depth", type=int, choices=range(7), default=6)
+parser.add_argument("--lp-cuts", type=int, default=0,
+                    help="replace PSD by this many integer-vector cuts")
+parser.add_argument("--cut-support", type=int, default=48)
+parser.add_argument("--lp-time", type=float, default=300)
 args = parser.parse_args()
 
 A = np.zeros((N, N), dtype=float)
@@ -46,10 +50,14 @@ ZX = Y[np.ix_(zi, xi)]
 ZZ = Y[np.ix_(zi, zi)]
 W = XX - XZ - ZX + ZZ
 
-constraints = [Y >> 0, Y[0, 0] == 1,
+constraints = [Y[0, 0] == 1,
                cp.diag(XX) == x, cp.diag(ZZ) == z,
                x >= 0, x <= 1, z >= 0, z <= 1,
                cp.sum(x) == 13, cp.sum(z) == 13]
+if args.lp_cuts == 0:
+    constraints.insert(0, Y >> 0)
+elif not args.rlt:
+    raise ValueError("--lp-cuts requires --rlt to bound the lifted entries")
 
 if args.rlt:
     # First-level reformulation-linearization constraints for Boolean
@@ -165,18 +173,53 @@ for moment in moment_rows[args.distance - 1][:args.moment_depth + 1]:
                        moment / scale)
     power = power @ A
 
-problem = cp.Problem(cp.Minimize(0), constraints)
-if args.solver == "SCS":
-    value = problem.solve(solver="SCS", eps=args.eps,
-                          max_iters=args.max_iters, verbose=False)
+problem = None
+value = None
+integer_cuts = []
+if args.lp_cuts:
+    for iteration in range(args.lp_cuts + 1):
+        problem = cp.Problem(cp.Minimize(0), constraints)
+        value = problem.solve(solver="HIGHS", verbose=False,
+                              highs_options={"time_limit": args.lp_time})
+        print("lp_iteration", iteration, "status", problem.status, flush=True)
+        if problem.status not in (cp.OPTIMAL, cp.OPTIMAL_INACCURATE) or \
+                iteration == args.lp_cuts:
+            break
+        symmetric = (Y.value + Y.value.T) / 2
+        eigenvalues, eigenvectors = np.linalg.eigh(symmetric)
+        print("lp_min_eigenvalue", float(eigenvalues[0]), flush=True)
+        if eigenvalues[0] >= -args.eps:
+            break
+        vector = eigenvectors[:, 0]
+        support = np.argsort(np.abs(vector))[-args.cut_support:]
+        integer = np.zeros(2 * N + 1, dtype=np.int64)
+        scale = 100 / np.max(np.abs(vector[support]))
+        integer[support] = np.rint(scale * vector[support]).astype(np.int64)
+        divisor = np.gcd.reduce(np.abs(integer[integer != 0]))
+        integer //= max(1, divisor)
+        assert np.any(integer)
+        cut_matrix = np.outer(integer, integer).astype(float)
+        constraints.append(cp.sum(cp.multiply(cut_matrix, Y)) >= 0)
+        integer_cuts.append(integer)
 else:
-    value = problem.solve(solver="CLARABEL", max_iter=args.max_iters,
-                          tol_gap_abs=args.eps, tol_feas=args.eps,
-                          tol_gap_rel=args.eps, verbose=False)
+    problem = cp.Problem(cp.Minimize(0), constraints)
+    if args.solver == "SCS":
+        value = problem.solve(solver="SCS", eps=args.eps,
+                              max_iters=args.max_iters, verbose=False)
+    else:
+        value = problem.solve(solver="CLARABEL", max_iter=args.max_iters,
+                              tol_gap_abs=args.eps, tol_feas=args.eps,
+                              tol_gap_rel=args.eps, verbose=False)
 print("status", problem.status, "value", value)
 print("solver", problem.solver_stats.solver_name,
       "iters", problem.solver_stats.num_iters,
       "time", problem.solver_stats.solve_time)
+if integer_cuts:
+    print("integer_cuts", [
+        [(int(index), int(value)) for index, value in enumerate(vector)
+         if value]
+        for vector in integer_cuts
+    ])
 if Y.value is not None:
     eigenvalues = np.linalg.eigvalsh((Y.value + Y.value.T) / 2)
     print("min_eigenvalue", float(eigenvalues[0]))
