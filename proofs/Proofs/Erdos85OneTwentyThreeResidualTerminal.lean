@@ -14544,6 +14544,87 @@ theorem degree_sixteen_two_quotientOne_legs_reduced_lcm
         e f o hef hqe hqf hlt
   exact Nat.le_antisymm hmLe hlcmLe
 
+/-- In the paired reduced-order-five configuration, a unit leg into one
+large row must be paired with a quotient-two leg into the other large row.
+An order-two `B` partner is excluded by reduced balance, while every `A`
+shape gives two incompatible pairwise reduced LCM values. -/
+theorem reduced_order_five_unit_leg_forces_other_large_B_partner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (o e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (m : ℕ) (hom : o.supp.ncard = 3 * m)
+    (he₁ : e₁.supp.ncard = 15) (he₂ : e₂.supp.ncard = 15)
+    (he₁E : e₁ ∈ E) (he₂E : e₂ ∈ E) (he₁₂ : e₁ ≠ e₂)
+    (hothers : ∀ f ∈ E, f ≠ e₁ → f ≠ e₂ → f.supp.ncard = 6)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ = 1)
+    (hshape :
+      (∃ f ∈ E,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2) ∨
+      (∃ f ∈ E, ∃ g ∈ E,
+        f ≠ e₁ ∧ g ≠ e₁ ∧ f ≠ g ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o g = 1)) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ = 2 := by
+  have he₁5 : e₁.supp.ncard = 3 * 5 := by omega
+  have he₂5 : e₂.supp.ncard = 3 * 5 := by omega
+  rcases hshape with hB | hA
+  · obtain ⟨f, hfE, hqf⟩ := hB
+    have hfe₁ : f ≠ e₁ := by
+      intro hEq
+      subst f
+      omega
+    by_cases hfe₂ : f = e₂
+    · simpa [hfe₂] using hqf
+    · have hf : f.supp.ncard = 6 := hothers f hfE hfe₁ hfe₂
+      exact False.elim (false_of_reduced_order_five_unit_with_order_two_B_partner
+        G hfree hmin hcard o e₁ f m hom he₁ hf hunit hqf)
+  · obtain ⟨f, hfE, g, hgE, hfe₁, hge₁, hfg, hqf, hqg⟩ := hA
+    by_cases hfe₂ : f = e₂
+    · subst f
+      have hge₂ : g ≠ e₂ := Ne.symm hfg
+      have hg2 : g.supp.ncard = 3 * 2 := by
+        have := hothers g hgE hge₁ hge₂
+        omega
+      have hFive := degree_sixteen_two_quotientOne_legs_reduced_lcm
+        G hfree hmin hcard o e₁ e₂ m 5 5 hom he₁5 he₂5 he₁₂ hunit hqf
+      have hTen := degree_sixteen_two_quotientOne_legs_reduced_lcm
+        G hfree hmin hcard o e₁ g m 5 2 hom he₁5 hg2
+          (Ne.symm hge₁) hunit hqg
+      norm_num at hFive hTen
+      omega
+    · by_cases hge₂ : g = e₂
+      · subst g
+        have hf2 : f.supp.ncard = 3 * 2 := by
+          have := hothers f hfE hfe₁ hfe₂
+          omega
+        have hFive := degree_sixteen_two_quotientOne_legs_reduced_lcm
+          G hfree hmin hcard o e₁ e₂ m 5 5 hom he₁5 he₂5 he₁₂ hunit hqg
+        have hTen := degree_sixteen_two_quotientOne_legs_reduced_lcm
+          G hfree hmin hcard o e₁ f m 5 2 hom he₁5 hf2
+            (Ne.symm hfe₁) hunit hqf
+        norm_num at hFive hTen
+        omega
+      · have hf2 : f.supp.ncard = 3 * 2 := by
+          have := hothers f hfE hfe₁ hfe₂
+          omega
+        have hg2 : g.supp.ncard = 3 * 2 := by
+          have := hothers g hgE hge₁ hge₂
+          omega
+        have hTen := degree_sixteen_two_quotientOne_legs_reduced_lcm
+          G hfree hmin hcard o e₁ f m 5 2 hom he₁5 hf2
+            (Ne.symm hfe₁) hunit hqf
+        have hTwo := degree_sixteen_two_quotientOne_legs_reduced_lcm
+          G hfree hmin hcard o f g m 2 2 hom hf2 hg2 hfg hqf hqg
+        norm_num at hTen hTwo
+        omega
+
 /-- A reduced-order-eight used component cannot be a unit leg of an atom
 whose remaining used targets all have reduced order two.  The `B` shape
 conflicts with divisibility, while the all-unit `A` shape gives incompatible
