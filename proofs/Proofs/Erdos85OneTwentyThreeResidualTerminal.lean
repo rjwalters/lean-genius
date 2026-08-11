@@ -13885,6 +13885,65 @@ theorem unit_entry_sum_three_dichotomy
     rw [hsum] at hsplit
     omega
 
+/-- Expanded form of `unit_entry_sum_three_dichotomy`: in the all-unit
+branch there are two further, distinct unit entries besides the designated
+one. -/
+theorem unit_entry_sum_three_shape
+    {α : Type*} [DecidableEq α] (S : Finset α) (q : α → ℕ)
+    (e : α) (he : e ∈ S) (hqe : q e = 1)
+    (hsum : (∑ x ∈ S, q x) = 3) :
+    (∃ f ∈ S, q f = 2) ∨
+      ∃ f ∈ S, ∃ g ∈ S,
+        f ≠ e ∧ g ≠ e ∧ f ≠ g ∧ q f = 1 ∧ q g = 1 := by
+  rcases unit_entry_sum_three_dichotomy S q e he hqe hsum with hB | hA
+  · exact Or.inl hB
+  · right
+    let T := S.filter (fun x => q x ≠ 0)
+    have hsumT : (∑ x ∈ T, q x) = 3 := by
+      rw [show (∑ x ∈ T, q x) = ∑ x ∈ S, q x by
+        simp only [T, Finset.sum_filter]
+        apply Finset.sum_congr rfl
+        intro x _hx
+        by_cases hx : q x = 0 <;> simp [hx]]
+      exact hsum
+    have hpos : ∀ x ∈ T, 0 < q x := by
+      intro x hx
+      exact Nat.pos_of_ne_zero (Finset.mem_filter.mp hx).2
+    have heT : e ∈ T := by simp [T, he, hqe]
+    rcases positive_partition_three_classification T q hpos hsumT with
+      hthree | hpair | htriple
+    · obtain ⟨x, hT, hx⟩ := hthree
+      have hex : e = x := by simpa [hT] using heT
+      subst x
+      omega
+    · obtain ⟨x, y, hxy, hT, hxyq⟩ := hpair
+      rcases hxyq with hxyq | hxyq
+      · exact False.elim (by
+          have hxT : x ∈ T := by rw [hT]; simp
+          have hxS : x ∈ S := (Finset.mem_filter.mp hxT).1
+          have := hA x hxS
+          omega)
+      · exact False.elim (by
+          have hyT : y ∈ T := by rw [hT]; simp
+          have hyS : y ∈ S := (Finset.mem_filter.mp hyT).1
+          have := hA y hyS
+          omega)
+    · obtain ⟨x, y, z, hxy, hxz, hyz, hT, hx, hy, hz⟩ := htriple
+      have heCases : e = x ∨ e = y ∨ e = z := by simpa [hT] using heT
+      have hxT : x ∈ T := by rw [hT]; simp
+      have hyT : y ∈ T := by rw [hT]; simp
+      have hzT : z ∈ T := by rw [hT]; simp
+      have hxS : x ∈ S := (Finset.mem_filter.mp hxT).1
+      have hyS : y ∈ S := (Finset.mem_filter.mp hyT).1
+      have hzS : z ∈ S := (Finset.mem_filter.mp hzT).1
+      rcases heCases with hex | hey | hez
+      · subst e
+        exact ⟨y, hyS, z, hzS, Ne.symm hxy, Ne.symm hxz, hyz, hy, hz⟩
+      · subst e
+        exact ⟨x, hxS, z, hzS, hxy, Ne.symm hyz, hxz, hx, hz⟩
+      · subst e
+        exact ⟨x, hxS, y, hyS, hxz, hyz, hxy, hx, hy⟩
+
 /-- Every zero-layer orphan-component quotient row has total mass three into
 the used components, matching the three service neighbors of each orphan. -/
 theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
@@ -14462,6 +14521,62 @@ theorem false_of_reduced_order_eight_unit_atom_shape
       G hfree hmin hcard o f g m 2 2 hom hf2 hg2 hfg hqf hqg
     norm_num at hEight hTwo
     omega
+
+/-- Graph-facing exclusion of quotient-one atoms on a reduced-order-eight
+used row when every other used component has reduced order two. -/
+theorem degree_sixteen_zeroLayer_reduced_order_eight_quotient_ne_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 24)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e → f.supp.ncard = 6)
+    (hdiv : 3 ∣ o.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e ≠ 1 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  intro hunit
+  obtain ⟨m, hom⟩ := hdiv
+  have heE : e ∈ E := by simpa [D, R, E] using heUsed
+  have hsum : (∑ f ∈ E, Q o f) = 3 := by
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hshape := unit_entry_sum_three_shape E (fun f => Q o f) e heE
+    (by simpa [Q] using hunit) hsum
+  apply false_of_reduced_order_eight_unit_atom_shape
+    G hfree hmin hcard E o e m hom he heE
+  · intro f hfE hfe
+    apply hothers f
+    · exact (Finset.mem_filter.mp hfE).2
+    · exact hfe
+  · simpa [Q] using hunit
+  · simpa [Q] using hshape
 
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
