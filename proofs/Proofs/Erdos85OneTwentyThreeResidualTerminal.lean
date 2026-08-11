@@ -613,7 +613,7 @@ theorem component_antipodal_commonSource_forces_order_dvd
 /-- Every labeled even defect component has an antipodal common-neighbor
 component whose order divides its half-order.  This combines the global
 exact-one-common-neighbor law with the rectangular intertwiner filter. -/
-theorem evenComponent_exists_commonSource_component_order_dvd_half
+theorem evenComponent_exists_commonSource_component_order_dvd_half_with_witness
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -639,7 +639,9 @@ theorem evenComponent_exists_commonSource_component_order_dvd_half
     (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
       3 ≤ f.supp.ncard) :
     ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
-      c.supp.ncard ∣ n := by
+      ∃ x : ZMod c.supp.ncard,
+        c.supp.ncard ∣ n ∧ G.Adj (u c x) (v 0) ∧
+          G.Adj (u c x) (v (0 + n)) := by
   subst s
   letI : NeZero (2 * n) := ⟨mul_ne_zero (by norm_num) (NeZero.ne n)⟩
   let D := secondOrderDefectGraph G
@@ -704,14 +706,108 @@ theorem evenComponent_exists_commonSource_component_order_dvd_half
     simpa [D] using
       (adjMatrix_comm_secondOrderDefect_of_even
         G hfree hd heven hmin hcard)
-  refine ⟨c, ?_⟩
-  apply cycleBlock_antipodal_commonSource_forces_dvd_of_orders
-    G D hfree (hthree c) hn2 rfl (u c) v (hu c) hv
-      hcomm (huD c) hvD x 0
-  rw [hx]
-  constructor
-  · exact ((G.mem_neighborFinset _ _).mp hzData.1).symm
-  · simpa using ((G.mem_neighborFinset _ _).mp hzData.2).symm
+  have hadj0 : G.Adj (u c x) (v 0) := by
+    rw [hx]
+    exact ((G.mem_neighborFinset _ _).mp hzData.1).symm
+  have hadjn : G.Adj (u c x) (v (0 + n)) := by
+    rw [hx]
+    simpa using ((G.mem_neighborFinset _ _).mp hzData.2).symm
+  have hdvd : c.supp.ncard ∣ n := by
+    apply cycleBlock_antipodal_commonSource_forces_dvd_of_orders
+      G D hfree (hthree c) hn2 rfl (u c) v (hu c) hv
+        hcomm (huD c) hvD x 0
+    exact ⟨hadj0, hadjn⟩
+  exact ⟨c, x, hdvd, hadj0, hadjn⟩
+
+/-- Component-only projection of
+`evenComponent_exists_commonSource_component_order_dvd_half_with_witness`. -/
+theorem evenComponent_exists_commonSource_component_order_dvd_half
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s n : ℕ}
+    [NeZero s] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hn2 : 2 ≤ n) (hs : s = 2 * n)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (v : ZMod s → V) (hv : Function.Injective v)
+    (hvRange : Set.range v = o.supp)
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ∣ n := by
+  obtain ⟨c, _x, hc, _h⟩ :=
+    evenComponent_exists_commonSource_component_order_dvd_half_with_witness
+      G hfree hd heven hmin hcard hn2 hs o v hv hvRange hvD
+        u hu huRange huD hthree
+  exact ⟨c, hc⟩
+
+/-- Quotient-facing form of the antipodal witness filter.  The witnessing
+component has positive quotient from the even target component, and its
+order divides the target half-order. -/
+theorem evenComponent_exists_positiveQuotient_source_order_dvd_half
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s n : ℕ}
+    [NeZero s] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hn2 : 2 ≤ n) (hs : s = 2 * n)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (v : ZMod s → V) (hv : Function.Injective v)
+    (hvRange : Set.range v = o.supp)
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ∣ n ∧
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) o c := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨c, x, hdvd, hadj, _hadjn⟩ :=
+    evenComponent_exists_commonSource_component_order_dvd_half_with_witness
+      G hfree hd heven hmin hcard hn2 hs o v hv hvRange hvD
+        u hu huRange huD hthree
+  have hsource : D.connectedComponentMk (u c x) = c :=
+    (ConnectedComponent.mem_supp_iff c (u c x)).mp (by
+      rw [← huRange c]
+      exact ⟨x, rfl⟩)
+  have htarget : D.connectedComponentMk (v 0) = o :=
+    (ConnectedComponent.mem_supp_iff o (v 0)).mp (by
+      rw [← hvRange]
+      exact ⟨0, rfl⟩)
+  have hpos := componentQuotientMatrix_pos_of_adj G D 2
+    (by
+      simpa [D] using secondOrderDefectGraph_degree_eq_two
+        G hfree hd heven hmin hcard)
+    (by
+      simpa [D] using adjMatrix_comm_secondOrderDefect_of_even_real
+        G hfree hd heven hmin hcard)
+    hadj.symm
+  refine ⟨c, hdvd, ?_⟩
+  simpa [htarget, hsource] using hpos
 
 /-- No row of a block between two equally long even defect cycles can meet
 an antipodal target pair.  Antipodal covariance would give a second,
@@ -15506,6 +15602,89 @@ theorem degree_sixteen_zeroLayer_component_partition
         (minimumLayer_externalBiUnion_subset_complement G D c₀ hfR)).2 hc₀U
     · exact fun hfc₀ => (Finset.mem_sdiff.mp
         (Finset.mem_sdiff.mp hfO).1).2 ((hrepU_iff f).2 hfc₀)
+
+/-- Every labeled even zero-layer orphan component has a positive quotient
+to a used or orphan component whose order divides its half-order.  This is
+the graph-to-economy form of the antipodal witness filter: the minimum
+component is excluded, and the zero-layer component partition accounts for
+all remaining sources. -/
+theorem degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    {s n : ℕ} [NeZero s] [NeZero n] (hn2 : 2 ≤ n) (hs : s = 2 * n)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (v : ZMod s → V) (hv : Function.Injective v)
+    (hvRange : Set.range v = o.supp)
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+      componentRepresentative D a ∈ O)
+    ∃ c ∈ E ∪ C, c.supp.ncard ∣ n ∧
+      0 < componentQuotientMatrix G D o c := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+    componentRepresentative D a ∈ O)
+  obtain ⟨c, hdvd, hpos⟩ :=
+    evenComponent_exists_positiveQuotient_source_order_dvd_half
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        hn2 hs o v hv hvRange hvD u hu huRange huD hthree
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hcne : c ≠ c₀ := by
+    intro hcc₀
+    subst c
+    have hzero := degree_sixteen_orphan_to_minimum_quotient_eq_zero
+      G hfree hmin hcard c₀ ho c₀ hc₀U
+    have horep : D.connectedComponentMk (componentRepresentative D o) = o :=
+      (ConnectedComponent.mem_supp_iff o
+        (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+    rw [horep] at hzero
+    exact (Nat.not_lt_of_ge (by simpa [D] using hzero)) hpos
+  have hpart := degree_sixteen_zeroLayer_component_partition
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (Finset.univ.erase c₀ : Finset D.ConnectedComponent) = E ∪ C at hpart
+  have hcMem : c ∈ E ∪ C := by
+    rw [← hpart]
+    simp [hcne]
+  exact ⟨c, hcMem, hdvd, hpos⟩
 
 /-- Universal zero-layer load ledger: every used component of reduced order
 `k` receives total orphan load `12k`. -/
