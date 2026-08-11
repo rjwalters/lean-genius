@@ -12734,6 +12734,20 @@ theorem offsetSectors_disjoint_of_c4Free_disjoint_witness_cells
   have hone := common_le_one_of_not_containsC4 hfree x (z s) (hxz s)
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
 
+/-- Three pairwise-disjoint two-element sectors exhaust a six-element
+finite type.  This is the cardinality closure for the per-small `ZMod 6`
+offset partition. -/
+theorem three_disjoint_pairs_union_eq_univ
+    {α : Type*} [Fintype α] [DecidableEq α]
+    (A B M : Finset α) (hcardα : Fintype.card α = 6)
+    (hA : A.card = 2) (hB : B.card = 2) (hM : M.card = 2)
+    (hAB : Disjoint A B) (hAM : Disjoint A M) (hBM : Disjoint B M) :
+    A ∪ B ∪ M = Finset.univ := by
+  have hABM : Disjoint (A ∪ B) M :=
+    Finset.disjoint_union_left.mpr ⟨hAM, hBM⟩
+  apply Finset.eq_univ_of_card
+  rw [Finset.card_union hABM, Finset.card_union hAB, hA, hB, hM, hcardα]
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
