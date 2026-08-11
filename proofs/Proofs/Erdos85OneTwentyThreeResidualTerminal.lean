@@ -12458,6 +12458,29 @@ theorem symmetric_three_by_three_row_sum_three_excess_ne_two
     interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
     norm_num at *
 
+/-- Quantitative strengthening: the aggregate excess of a symmetric
+three-by-three nonnegative matrix with row sums three is either zero or at
+least four. -/
+theorem symmetric_three_by_three_row_sum_three_excess_zero_or_four_le
+    (daa dab dac dbb dbc dcc : ℕ)
+    (hrowa : daa + dab + dac = 3)
+    (hrowb : dbb + dab + dbc = 3)
+    (hrowc : dcc + dac + dbc = 3) :
+    let E := daa * (daa - 1) + dab * (dab - 1) + dac * (dac - 1) +
+      dbb * (dbb - 1) + dab * (dab - 1) + dbc * (dbc - 1) +
+      dcc * (dcc - 1) + dac * (dac - 1) + dbc * (dbc - 1)
+    E = 0 ∨ 4 ≤ E := by
+  dsimp only
+  have hdaa : daa ≤ 3 := by omega
+  have hdab : dab ≤ 3 := by omega
+  have hdac : dac ≤ 3 := by omega
+  have hdbb : dbb ≤ 3 := by omega
+  have hdbc : dbc ≤ 3 := by omega
+  have hdcc : dcc ≤ 3 := by omega
+  interval_cases daa <;> interval_cases dab <;> interval_cases dac <;>
+    interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
+    norm_num at *
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
