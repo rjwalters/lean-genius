@@ -17398,7 +17398,10 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
       componentRepresentative D o ∈ O)
     let S := zeroLayerServicedOrphans G C e₁₀
     let T := C \ S
-    T.card = 2 ∧ ∀ o ∈ T,
+    T.card = 2 ∧
+      (∑ o ∈ T, Q o e₂a) = 2 ∧
+      (∑ o ∈ T, Q o e₂b) = 2 ∧
+      (∑ o ∈ T, Q o e₂c) = 2 ∧ ∀ o ∈ T,
       o.supp.ncard = 6 ∧
       Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
       Q e₂a o = Q o e₂a ∧ Q e₂b o = Q o e₂b ∧
@@ -17414,7 +17417,10 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     componentRepresentative D o ∈ O)
   let S := zeroLayerServicedOrphans G C e₁₀
   let T := C \ S
-  change T.card = 2 ∧ ∀ o ∈ T,
+  change T.card = 2 ∧
+    (∑ o ∈ T, Q o e₂a) = 2 ∧
+    (∑ o ∈ T, Q o e₂b) = 2 ∧
+    (∑ o ∈ T, Q o e₂c) = 2 ∧ ∀ o ∈ T,
     o.supp.ncard = 6 ∧ Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
       Q e₂a o = Q o e₂a ∧ Q e₂b o = Q o e₂b ∧
       Q e₂c o = Q o e₂c
@@ -17570,8 +17576,30 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     (fun o => o.supp.ncard) (fun o => Q o e₂a) (fun o => Q o e₂b)
       (fun o => Q o e₂c) (fun o => Q e₂a o) (fun o => Q e₂b o)
       (fun o => Q e₂c o) hTmass hnpos hforward hbala hbalb hbalc hnotTwelve
-  exact ⟨hbase.1, fun o ho => ⟨(hbase.2 o ho).1, hforward o ho,
-    (hbase.2 o ho).2.1, (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩⟩
+  have hTforwardA : (∑ o ∈ T, Q o e₂a) = 2 := by
+    calc
+      (∑ o ∈ T, Q o e₂a) = ∑ o ∈ T, Q e₂a o := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (hbase.2 o ho).2.1.symm
+      _ = 2 := hTrevA
+  have hTforwardB : (∑ o ∈ T, Q o e₂b) = 2 := by
+    calc
+      (∑ o ∈ T, Q o e₂b) = ∑ o ∈ T, Q e₂b o := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (hbase.2 o ho).2.2.1.symm
+      _ = 2 := hTrevB
+  have hTforwardC : (∑ o ∈ T, Q o e₂c) = 2 := by
+    calc
+      (∑ o ∈ T, Q o e₂c) = ∑ o ∈ T, Q e₂c o := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (hbase.2 o ho).2.2.2.symm
+      _ = 2 := hTrevC
+  exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC, fun o ho =>
+    ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
+      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩⟩
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
