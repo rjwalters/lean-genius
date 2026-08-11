@@ -68,6 +68,40 @@ theorem even_of_three_six_target_balances
     (hc : n * qc = 6 * rc) : Even n := by
   interval_cases n <;> norm_num at hsum ha hb hc ⊢ <;> omega
 
+/-- The selected small residual therefore has order four or six. -/
+theorem eq_four_or_six_of_three_six_target_balances
+    (n qa qb qc ra rb rc : ℕ)
+    (hn3 : 3 ≤ n) (hn6 : n ≤ 6)
+    (hsum : qa + qb + qc = 3)
+    (ha : n * qa = 6 * ra)
+    (hb : n * qb = 6 * rb)
+    (hc : n * qc = 6 * rc) : n = 4 ∨ n = 6 := by
+  have heven := even_of_three_six_target_balances
+    n qa qb qc ra rb rc hn3 hn6 hsum ha hb hc
+  obtain ⟨k, hk⟩ := heven
+  omega
+
+/-- Formal countermodel to the old residual-order kernel without a
+zero-excess or geometric parity hypothesis. -/
+theorem residual_three_target_balance_kernel_counterexample :
+    let T : Finset (Fin 2) := Finset.univ
+    let n : Fin 2 → ℕ := fun i => if i = 0 then 4 else 8
+    let qa : Fin 2 → ℕ := fun i => if i = 0 then 3 else 0
+    let qb : Fin 2 → ℕ := fun i => if i = 0 then 0 else 3
+    let qc : Fin 2 → ℕ := fun _ => 0
+    let ra : Fin 2 → ℕ := fun i => if i = 0 then 2 else 0
+    let rb : Fin 2 → ℕ := fun i => if i = 0 then 0 else 4
+    let rc : Fin 2 → ℕ := fun _ => 0
+    (∑ x ∈ T, n x) = 12 ∧
+    (∀ x ∈ T, 3 ≤ n x) ∧
+    (∀ x ∈ T, qa x + qb x + qc x = 3) ∧
+    (∀ x ∈ T, n x * qa x = 6 * ra x) ∧
+    (∀ x ∈ T, n x * qb x = 6 * rb x) ∧
+    (∀ x ∈ T, n x * qc x = 6 * rc x) ∧
+    (∀ x ∈ T, n x ≠ 12) ∧
+    ¬(∀ x ∈ T, n x = 6) := by
+  native_decide
+
 /-- With zero quotient excess, the same three-target balance system permits
 only source orders six and twelve.  This is the corrected pointwise input
 for the residual `A` census. -/
