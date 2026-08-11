@@ -12534,6 +12534,21 @@ theorem exact_difference_partition_B_even_four_odd_eight
   rw [hBcard, hEvenB] at hsplit
   exact ⟨hEvenB, by omega⟩
 
+/-- Concrete finite count certificate for the parity subtraction in
+`ZMod 30`.  After deleting zero and the two second-order-forbidden
+differences `±1`, 27 residues remain and 14 are even.  The nonzero
+multiples-of-three sector has cardinality nine, four of them even. -/
+theorem zmod_thirty_admissible_and_multiple_three_parity_counts :
+    let even : ZMod 30 → Prop := fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0
+    let R : Finset (ZMod 30) :=
+      (((Finset.univ.erase 0).erase 1).erase (-1))
+    let M : Finset (ZMod 30) := Finset.univ.filter fun z =>
+      z ≠ 0 ∧ ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) z = 0
+    R.card = 27 ∧ (R.filter even).card = 14 ∧
+      M.card = 9 ∧ (M.filter even).card = 4 := by
+  native_decide
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
