@@ -12695,6 +12695,17 @@ theorem zmod_thirty_to_six_affine_phase_difference_parity
   revert τsq
   native_decide
 
+/-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
+two classes, exactly one even and one odd. -/
+theorem zmod_six_to_three_fiber_card_two_even_card_one :
+    ∀ c : ZMod 3,
+      let M : Finset (ZMod 6) := Finset.univ.filter fun z =>
+        ZMod.castHom (by norm_num : 3 ∣ 6) (ZMod 3) z = c
+      let even : ZMod 6 → Prop := fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0
+      M.card = 2 ∧ (M.filter even).card = 1 := by
+  native_decide
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
