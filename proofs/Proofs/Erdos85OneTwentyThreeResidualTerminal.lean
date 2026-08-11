@@ -12302,12 +12302,56 @@ theorem six_unique_targets_two_each
   change na = 2 ∧ nb = 2 ∧ nc = 2
   omega
 
-/-- Residual `A(2)` census kernel.  A family of total order twelve whose
-members have three units of forward mass into three order-six targets,
-balanced reverse masses, and zero local excess consists of exactly two
-order-six atoms, each incident once with every target.  The only other
-pointwise possibility is the order-twelve triple unit cover, exposed as an
-explicit exclusion hypothesis for the graph-facing LCM argument. -/
+/-- Residual order kernel.  After excluding the order-twelve triple unit
+cover, total order twelve and balance against three order-six targets force
+exactly two order-six residual components. -/
+theorem residual_three_order_six_targets_two_order_six
+    {α : Type*} [DecidableEq α] (T : Finset α)
+    (n qa qb qc ra rb rc : α → ℕ)
+    (hmass : (∑ x ∈ T, n x) = 12)
+    (hnpos : ∀ x ∈ T, 3 ≤ n x)
+    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
+    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
+    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
+    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
+    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
+    T.card = 2 ∧ ∀ x ∈ T,
+      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
+  have hpoint : ∀ x ∈ T,
+      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
+    intro x hx
+    have hnle : n x ≤ 12 := by
+      have hsingle : n x ≤ ∑ y ∈ T, n y :=
+        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+      omega
+    have hqa : qa x ≤ 3 := by have := hqsum x hx; omega
+    have hqb : qb x ≤ 3 := by have := hqsum x hx; omega
+    have hqc : qc x ≤ 3 := by have := hqsum x hx; omega
+    have hn12 := hnotTwelve x hx
+    have hs := hqsum x hx
+    have ha := hbala x hx
+    have hb := hbalb x hx
+    have hc := hbalc x hx
+    interval_cases hn : n x <;>
+      interval_cases hqa' : qa x <;>
+      interval_cases hqb' : qb x <;>
+      interval_cases hqc' : qc x <;>
+      norm_num [hn, hqa', hqb', hqc'] at hs ha hb hc hn12 ⊢ <;>
+      omega
+  have hsum : (∑ _x ∈ T, 6) = 12 := by
+    calc
+      (∑ _x ∈ T, 6) = ∑ x ∈ T, n x := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact (hpoint x hx).1.symm
+      _ = 12 := hmass
+  have hcard : T.card = 2 := by
+    simpa using hsum
+  exact ⟨hcard, hpoint⟩
+
+/-- Residual `A(2)` census kernel.  Adding zero local excess to the residual
+order kernel forces both order-six components to be unit-connected to all
+three targets. -/
 theorem residual_three_order_six_targets_two_A_census
     {α : Type*} [DecidableEq α] (T : Finset α)
     (n qa qb qc ra rb rc : α → ℕ)
@@ -12324,39 +12368,19 @@ theorem residual_three_order_six_targets_two_A_census
     T.card = 2 ∧ ∀ x ∈ T,
       n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
         ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
-  have hpoint : ∀ x ∈ T,
-      n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
-        ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
-    intro x hx
-    have hnle : n x ≤ 12 := by
-      have hsingle : n x ≤ ∑ y ∈ T, n y :=
-        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
-      omega
-    have hqa : qa x ≤ 3 := by have := hqsum x hx; omega
-    have hqb : qb x ≤ 3 := by have := hqsum x hx; omega
-    have hqc : qc x ≤ 3 := by have := hqsum x hx; omega
-    have hn12 := hnotTwelve x hx
-    have hs := hqsum x hx
-    have ha := hbala x hx
-    have hb := hbalb x hx
-    have hc := hbalc x hx
-    have he := hexcess x hx
-    interval_cases hn : n x <;>
-      interval_cases hqa' : qa x <;>
-      interval_cases hqb' : qb x <;>
-      interval_cases hqc' : qc x <;>
-      norm_num [hn, hqa', hqb', hqc'] at hs ha hb hc he hn12 ⊢ <;>
-      omega
-  have hsum : (∑ _x ∈ T, 6) = 12 := by
-    calc
-      (∑ _x ∈ T, 6) = ∑ x ∈ T, n x := by
-        apply Finset.sum_congr rfl
-        intro x hx
-        exact (hpoint x hx).1.symm
-      _ = 12 := hmass
-  have hcard : T.card = 2 := by
-    simpa using hsum
-  exact ⟨hcard, hpoint⟩
+  have hbase := residual_three_order_six_targets_two_order_six
+    T n qa qb qc ra rb rc hmass hnpos hqsum hbala hbalb hbalc hnotTwelve
+  refine ⟨hbase.1, ?_⟩
+  intro x hx
+  have hp := hbase.2 x hx
+  have hs := hqsum x hx
+  have he := hexcess x hx
+  rw [hp.2.1, hp.2.2.1, hp.2.2.2] at he
+  have hqa : qa x ≤ 3 := by omega
+  have hqb : qb x ≤ 3 := by omega
+  have hqc : qc x ≤ 3 := by omega
+  interval_cases qa x <;> interval_cases qb x <;> interval_cases qc x <;>
+    norm_num at hs he ⊢
 
 /-- Two three-unit rows whose three column sums are all two have total
 `q(q-1)` excess either zero or four.  In the zero case both rows are the
