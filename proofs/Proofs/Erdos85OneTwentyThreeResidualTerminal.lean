@@ -16795,7 +16795,10 @@ theorem degree_sixteen_zeroLayer_order_ten_serviced_census
     let S := zeroLayerServicedOrphans G C e
     (S.filter fun o => zeroLayerAtomLoad G e o = 20).card = 6 ∧
       (S.filter fun o => zeroLayerAtomLoad G e o = 30).card = 0 ∧
-      (S.filter fun o => zeroLayerAtomLoad G e o = 10).card = 0 := by
+      (S.filter fun o => zeroLayerAtomLoad G e o = 10).card = 0 ∧
+      ∀ o ∈ S, o.supp.ncard = 30 ∧
+        componentQuotientMatrix G D o e = 2 ∧
+        componentQuotientMatrix G D e o = 2 := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -16891,7 +16894,40 @@ theorem degree_sixteen_zeroLayer_order_ten_serviced_census
     rw [hdiag, hrow, he] at hbudgetLe
     norm_num at hbudgetLe
     omega
-  exact zeroLayer_order_ten_three_value_census S load cost hpoint hload hbudget
+  have hcounts := zeroLayer_order_ten_three_value_census
+    S load cost hpoint hload hbudget
+  refine ⟨hcounts.1, hcounts.2.1, hcounts.2.2, ?_⟩
+  intro o hoS
+  have hoC : o ∈ C := hSsubC hoS
+  have hoO : componentRepresentative D o ∈ O :=
+    (Finset.mem_filter.mp hoC).2
+  have hservice : 0 < Q e o := by
+    simpa [S, zeroLayerServicedOrphans, Q] using
+      (Finset.mem_filter.mp hoS).2
+  have htable := degree_sixteen_zeroLayer_order_ten_atom_values
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
+      (by simpa [D, R, U, O] using hoO) (by simpa [D, R] using heUsed)
+      he hothers (by simpa [D, Q] using hservice)
+  change
+    (Q o e = 2 ∧ o.supp.ncard = 30 ∧ Q e o = 2 ∧
+      load o = 20 ∧ cost o = 2) ∨
+    (Q o e = 3 ∧ o.supp.ncard = 30 ∧ Q e o = 3 ∧
+      load o = 30 ∧ cost o = 6) ∨
+    (¬ 3 ∣ o.supp.ncard ∧ load o = 10 ∧ cost o = 2) at htable
+  rcases htable with hB | hC | hD
+  · exact ⟨hB.2.1, hB.1, hB.2.2.1⟩
+  · have hmem : o ∈ S.filter (fun x => load x = 30) :=
+      Finset.mem_filter.mpr ⟨hoS, hC.2.2.2.1⟩
+    have hempty : S.filter (fun x => load x = 30) = ∅ :=
+      Finset.card_eq_zero.mp hcounts.2.1
+    rw [hempty] at hmem
+    simp at hmem
+  · have hmem : o ∈ S.filter (fun x => load x = 10) :=
+      Finset.mem_filter.mpr ⟨hoS, hD.2.1⟩
+    have hempty : S.filter (fun x => load x = 10) = ∅ :=
+      Finset.card_eq_zero.mp hcounts.2.2
+    rw [hempty] at hmem
+    simp at hmem
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
