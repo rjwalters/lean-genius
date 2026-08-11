@@ -12748,6 +12748,50 @@ theorem three_disjoint_pairs_union_eq_univ
   apply Finset.eq_univ_of_card
   rw [Finset.card_union hABM, Finset.card_union hAB, hA, hB, hM, hcardα]
 
+/-- Graph-facing abstract assembly of the per-target parity argument.  Two
+`B` witness cells and the minimum-cover witness cell each produce two
+offsets.  Component separation and `C₄`-freeness make the sectors disjoint;
+cardinality makes them exhaust the six offsets; the minimum sector's
+one-even/one-odd split then forces the two `B` sectors to have the same
+parity type. -/
+theorem c4Free_three_offset_cells_two_B_same_parity_type
+    {V α : Type*} [Fintype V] [DecidableEq V]
+    [Fintype α] [DecidableEq α]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V) (z : α → V)
+    (cell : Fin 3 → Set V) (A : Fin 3 → Finset α)
+    (even : α → Prop) [DecidablePred even]
+    (hxz : ∀ s, x ≠ z s)
+    (hwitness : ∀ i s, s ∈ A i →
+      ∃ y ∈ cell i, G.Adj x y ∧ G.Adj (z s) y)
+    (hsep : ∀ i j : Fin 3, i ≠ j →
+      ∀ y ∈ cell i, ∀ y' ∈ cell j, y ≠ y')
+    (hcardα : Fintype.card α = 6)
+    (hcardA : ∀ i, (A i).card = 2)
+    (hEvenUniv : ((Finset.univ : Finset α).filter even).card = 3)
+    (hMinimumEven : ((A 2).filter even).card = 1) :
+    (((A 0).filter even).card = 1 ∧ ((A 1).filter even).card = 1) ∨
+      ((((A 0).filter even).card = 0 ∨ ((A 0).filter even).card = 2) ∧
+       (((A 1).filter even).card = 0 ∨ ((A 1).filter even).card = 2)) := by
+  have h₀₁ : (0 : Fin 3) ≠ 1 := by decide
+  have h₀₂ : (0 : Fin 3) ≠ 2 := by decide
+  have h₁₂ : (1 : Fin 3) ≠ 2 := by decide
+  have hd₀₁ : Disjoint (A 0) (A 1) :=
+    offsetSectors_disjoint_of_c4Free_disjoint_witness_cells
+      G hfree x z cell A hxz hwitness 0 1 h₀₁ (hsep 0 1 h₀₁)
+  have hd₀₂ : Disjoint (A 0) (A 2) :=
+    offsetSectors_disjoint_of_c4Free_disjoint_witness_cells
+      G hfree x z cell A hxz hwitness 0 2 h₀₂ (hsep 0 2 h₀₂)
+  have hd₁₂ : Disjoint (A 1) (A 2) :=
+    offsetSectors_disjoint_of_c4Free_disjoint_witness_cells
+      G hfree x z cell A hxz hwitness 1 2 h₁₂ (hsep 1 2 h₁₂)
+  have hpart := three_disjoint_pairs_union_eq_univ
+    (A 0) (A 1) (A 2) hcardα (hcardA 0) (hcardA 1) (hcardA 2)
+      hd₀₁ hd₀₂ hd₁₂
+  exact six_offset_partition_two_B_sectors_same_parity_type even
+    Finset.univ (A 0) (A 1) (A 2) hpart.symm hd₀₁ hd₀₂ hd₁₂
+      hEvenUniv (hcardA 0) (hcardA 1) hMinimumEven
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
