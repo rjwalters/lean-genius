@@ -13448,6 +13448,91 @@ theorem degree_sixteen_zeroLayer_used_matrix_twelve_four
   have hcrossLe : Q e₁₂ e₄ ≤ 3 := by omega
   interval_cases hcross : Q e₁₂ e₄ <;> omega
 
+/-- Used-matrix package for the reduced partition `[12,2,2]`.  The large
+row is isolated with diagonal three.  The two small rows have symmetric
+mutual quotient, equal diagonals, and diagonal plus mutual quotient three. -/
+theorem degree_sixteen_zeroLayer_used_matrix_twelve_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₂a e₂b : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₂a : e₁₂ ≠ e₂a) (h₁₂b : e₁₂ ≠ e₂b) (hab : e₂a ≠ e₂b)
+    (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₂a, e₂b}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    Q e₁₂ e₁₂ = 3 ∧ Q e₁₂ e₂a = 0 ∧ Q e₂a e₁₂ = 0 ∧
+      Q e₁₂ e₂b = 0 ∧ Q e₂b e₁₂ = 0 ∧
+      Q e₂a e₂b = Q e₂b e₂a ∧ Q e₂a e₂a = Q e₂b e₂b ∧
+      Q e₂a e₂a + Q e₂a e₂b = 3 := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  change Q e₁₂ e₁₂ = 3 ∧ Q e₁₂ e₂a = 0 ∧ Q e₂a e₁₂ = 0 ∧
+    Q e₁₂ e₂b = 0 ∧ Q e₂b e₁₂ = 0 ∧
+    Q e₂a e₂b = Q e₂b e₂a ∧ Q e₂a e₂a = Q e₂b e₂b ∧
+    Q e₂a e₂a + Q e₂a e₂b = 3
+  have hrow₁₂ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₂ hused₁₂
+  have hrow₂a := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂a hused₂a
+  have hrow₂b := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂b hused₂b
+  change (∑ f ∈ E, Q e₁₂ f) = 3 at hrow₁₂
+  change (∑ f ∈ E, Q e₂a f) = 3 at hrow₂a
+  change (∑ f ∈ E, Q e₂b f) = 3 at hrow₂b
+  have hE' : E = {e₁₂, e₂a, e₂b} := by simpa [D, R, E] using hE
+  rw [hE'] at hrow₁₂ hrow₂a hrow₂b
+  simp [h₁₂a, h₁₂b, hab, Ne.symm h₁₂a, Ne.symm h₁₂b,
+    Ne.symm hab] at hrow₁₂ hrow₂a hrow₂b
+  have hbal₁₂a := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁₂ e₂a
+  have hbal₁₂b := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁₂ e₂b
+  have hbalab := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂a e₂b
+  change e₁₂.supp.ncard * Q e₁₂ e₂a =
+    e₂a.supp.ncard * Q e₂a e₁₂ at hbal₁₂a
+  change e₁₂.supp.ncard * Q e₁₂ e₂b =
+    e₂b.supp.ncard * Q e₂b e₁₂ at hbal₁₂b
+  change e₂a.supp.ncard * Q e₂a e₂b =
+    e₂b.supp.ncard * Q e₂b e₂a at hbalab
+  rw [he₁₂, he₂a] at hbal₁₂a
+  rw [he₁₂, he₂b] at hbal₁₂b
+  rw [he₂a, he₂b] at hbalab
+  have haLe : Q e₁₂ e₂a ≤ 3 := by omega
+  have hbLe : Q e₁₂ e₂b ≤ 3 := by omega
+  interval_cases ha : Q e₁₂ e₂a <;>
+    interval_cases hb : Q e₁₂ e₂b <;> omega
+
 /-- Load contributed by an orphan `o` to a used component `e`, measured in
 reduced used-order units. -/
 def zeroLayerAtomLoad
