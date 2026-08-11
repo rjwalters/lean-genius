@@ -12302,6 +12302,62 @@ theorem six_unique_targets_two_each
   change na = 2 ∧ nb = 2 ∧ nc = 2
   omega
 
+/-- Residual `A(2)` census kernel.  A family of total order twelve whose
+members have three units of forward mass into three order-six targets,
+balanced reverse masses, and zero local excess consists of exactly two
+order-six atoms, each incident once with every target.  The only other
+pointwise possibility is the order-twelve triple unit cover, exposed as an
+explicit exclusion hypothesis for the graph-facing LCM argument. -/
+theorem residual_three_order_six_targets_two_A_census
+    {α : Type*} [DecidableEq α] (T : Finset α)
+    (n qa qb qc ra rb rc : α → ℕ)
+    (hmass : (∑ x ∈ T, n x) = 12)
+    (hnpos : ∀ x ∈ T, 3 ≤ n x)
+    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
+    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
+    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
+    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
+    (hexcess : ∀ x ∈ T,
+      ra x * (qa x - 1) + rb x * (qb x - 1) +
+        rc x * (qc x - 1) = 0)
+    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
+    T.card = 2 ∧ ∀ x ∈ T,
+      n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
+        ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
+  have hpoint : ∀ x ∈ T,
+      n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
+        ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
+    intro x hx
+    have hnle : n x ≤ 12 := by
+      have hsingle : n x ≤ ∑ y ∈ T, n y :=
+        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
+      omega
+    have hqa : qa x ≤ 3 := by have := hqsum x hx; omega
+    have hqb : qb x ≤ 3 := by have := hqsum x hx; omega
+    have hqc : qc x ≤ 3 := by have := hqsum x hx; omega
+    have hn12 := hnotTwelve x hx
+    have hs := hqsum x hx
+    have ha := hbala x hx
+    have hb := hbalb x hx
+    have hc := hbalc x hx
+    have he := hexcess x hx
+    interval_cases hn : n x <;>
+      interval_cases hqa' : qa x <;>
+      interval_cases hqb' : qb x <;>
+      interval_cases hqc' : qc x <;>
+      norm_num [hn, hqa', hqb', hqc'] at hs ha hb hc he hn12 ⊢ <;>
+      omega
+  have hsum : (∑ _x ∈ T, 6) = 12 := by
+    calc
+      (∑ _x ∈ T, 6) = ∑ x ∈ T, n x := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact (hpoint x hx).1.symm
+      _ = 12 := hmass
+  have hcard : T.card = 2 := by
+    simpa using hsum
+  exact ⟨hcard, hpoint⟩
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
