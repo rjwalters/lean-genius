@@ -45,6 +45,29 @@ theorem even_of_three_six_target_balances
     (hc : n * qc = 6 * rc) : Even n := by
   interval_cases n <;> norm_num at hsum ha hb hc ⊢ <;> omega
 
+/-- With zero quotient excess, the same three-target balance system permits
+only source orders six and twelve.  This is the corrected pointwise input
+for the residual `A` census. -/
+theorem eq_six_or_twelve_of_three_six_target_balances_of_zero_excess
+    (n qa qb qc ra rb rc : ℕ)
+    (hn3 : 3 ≤ n) (hn12 : n ≤ 12)
+    (hsum : qa + qb + qc = 3)
+    (ha : n * qa = 6 * ra)
+    (hb : n * qb = 6 * rb)
+    (hc : n * qc = 6 * rc)
+    (hexcess : ra * (qa - 1) + rb * (qb - 1) + rc * (qc - 1) = 0) :
+    n = 6 ∨ n = 12 := by
+  have hqa : qa ≤ 3 := by omega
+  have hqb : qb ≤ 3 := by omega
+  have hqc : qc ≤ 3 := by omega
+  interval_cases n <;>
+    interval_cases qa <;>
+    interval_cases qb <;>
+    interval_cases qc
+  all_goals
+    try norm_num at hsum ha hb hc hexcess ⊢
+  all_goals omega
+
 /-- Above a minimum even source order, balance makes every quotient
 local-excess term even.  A reverse multiple cover forces equal orders;
 reverse quotient zero or one contributes zero. -/
@@ -63,9 +86,10 @@ theorem even_localExcess_term_of_even_minimum_source
   · have hble : b ≤ 1 := by omega
     interval_cases b
     · have ha : a = 0 := by
-        have := hbal
-        simp only [mul_zero] at this
-        exact Nat.eq_zero_of_mul_eq_zero_left hnpos this
+        simp only [mul_zero] at hbal
+        rcases eq_zero_or_eq_zero_of_mul_eq_zero hbal with hn | ha
+        · exact False.elim ((Nat.ne_of_gt hnpos) hn)
+        · exact ha
       simp [ha]
     · simp
 
