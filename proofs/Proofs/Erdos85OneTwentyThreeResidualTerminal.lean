@@ -15257,6 +15257,130 @@ theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e 8 ho heUsed he8
       hnot hservice
 
+/-- Every orphan serviced by at least one of the paired reduced-order-five
+rows satisfies the combined factor-eight load/excess certificate. -/
+theorem degree_sixteen_zeroLayer_reduced_order_five_pair_atom_load_le_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (he₁Used : componentRepresentative (secondOrderDefectGraph G) e₁ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₂Used : componentRepresentative (secondOrderDefectGraph G) e₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₁ : e₁.supp.ncard = 15) (he₂ : e₂.supp.ncard = 15)
+    (he₁₂ : e₁ ≠ e₂)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e₁ → f ≠ e₂ → f.supp.ncard = 6)
+    (hservice : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) e₁ o ∨
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) e₂ o) :
+    zeroLayerAtomLoad G e₁ o + zeroLayerAtomLoad G e₂ o ≤
+      8 * (zeroLayerAtomExcess G e₁ o + zeroLayerAtomExcess G e₂ o) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  have he₁E : e₁ ∈ E := by simpa [D, R, E] using he₁Used
+  have he₂E : e₂ ∈ E := by simpa [D, R, E] using he₂Used
+  have hsum : (∑ f ∈ E, Q o f) = 3 := by
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hpairSub : ({e₁, e₂} : Finset D.ConnectedComponent) ⊆ E := by
+    intro f hf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hf
+    rcases hf with rfl | rfl
+    · exact he₁E
+    · exact he₂E
+  have hpairsum := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun f : D.ConnectedComponent => Q o f) hpairSub
+      (fun _ _ _ => Nat.zero_le _)
+  rw [Finset.sum_pair he₁₂, hsum] at hpairsum
+  have hle₁ : Q o e₁ ≤ 3 := by omega
+  have hle₂ : Q o e₂ ≤ 3 := by omega
+  by_cases hdiv : 3 ∣ o.supp.ncard
+  · have hunit₁ : Q o e₁ = 1 → Q o e₂ = 2 := by
+      intro hunit
+      exact degree_sixteen_zeroLayer_reduced_order_five_unit_forces_pair_two
+        G hfree hmin hcard c₀ hregChild hcardChild o e₁ e₂ ho he₁Used
+          he₂Used he₁ he₂ he₁₂ hothers hdiv (by simpa [Q] using hunit)
+    have hunit₂ : Q o e₂ = 1 → Q o e₁ = 2 := by
+      intro hunit
+      apply degree_sixteen_zeroLayer_reduced_order_five_unit_forces_pair_two
+        G hfree hmin hcard c₀ hregChild hcardChild o e₂ e₁ ho he₂Used
+          he₁Used he₂ he₁ (Ne.symm he₁₂)
+      · intro f hf hfe₂ hfe₁
+        exact hothers f hf hfe₁ hfe₂
+      · exact hdiv
+      · simpa [Q] using hunit
+    exact degree_sixteen_reduced_order_five_pair_divisible_atom_load_le_excess
+      G hfree hmin hcard o e₁ e₂ hdiv he₁ he₂
+        (by simpa [Q] using hle₁) (by simpa [Q] using hle₂)
+        (by simpa [Q] using hpairsum) (by simpa [Q] using hunit₁)
+        (by simpa [Q] using hunit₂)
+  · rcases hservice with hservice₁ | hservice₂
+    · have hD := degree_sixteen_zeroLayer_D_atom_values
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e₁ 5 ho
+          he₁Used (by omega) hdiv (by simpa [Q] using hservice₁)
+      have hq₁ : Q o e₁ = 3 := by
+        rcases hD with ⟨hload, hexcess⟩
+        change (e₁.supp.ncard / 3) * Q e₁ o = 5 at hload
+        change Q e₁ o * (Q o e₁ - 1) = 2 at hexcess
+        have hrev : Q e₁ o = 1 := by
+          rw [he₁] at hload
+          norm_num at hload
+          omega
+        rw [hrev] at hexcess
+        omega
+      have hq₂ : Q o e₂ = 0 := by omega
+      have hz₂ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₂ (by simpa [Q] using hq₂)
+      rcases hD with ⟨hDLoad, hDExcess⟩
+      rcases hz₂ with ⟨hz₂Load, hz₂Excess⟩
+      omega
+    · have hD := degree_sixteen_zeroLayer_D_atom_values
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e₂ 5 ho
+          he₂Used (by omega) hdiv (by simpa [Q] using hservice₂)
+      have hq₂ : Q o e₂ = 3 := by
+        rcases hD with ⟨hload, hexcess⟩
+        change (e₂.supp.ncard / 3) * Q e₂ o = 5 at hload
+        change Q e₂ o * (Q o e₂ - 1) = 2 at hexcess
+        have hrev : Q e₂ o = 1 := by
+          rw [he₂] at hload
+          norm_num at hload
+          omega
+        rw [hrev] at hexcess
+        omega
+      have hq₁ : Q o e₁ = 0 := by omega
+      have hz₁ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₁ (by simpa [Q] using hq₁)
+      rcases hD with ⟨hDLoad, hDExcess⟩
+      rcases hz₁ with ⟨hz₁Load, hz₁Excess⟩
+      omega
+
 /-- Fully graph-facing v11 death of the reduced used-order partition
 `[8,2,2,2,2]`.  The order-eight row has load 96, while its forced diagonal
 leaves orphan excess at most eight; every serviced atom has load at most
