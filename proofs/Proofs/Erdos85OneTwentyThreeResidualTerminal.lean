@@ -12213,6 +12213,58 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_rigid_atom_ledger
       nC10 = 0 ∧ nD10 = 0 := by
   omega
 
+/-- Finite-set form of the reduced-order-ten rigidity ledger.  A family
+whose pointwise `(load, excess)` values are exactly `(20,2)`, `(30,6)`, or
+`(10,2)`, with total load 120 and excess 12, consists of six load-twenty
+atoms and no atoms of the other two kinds. -/
+theorem zeroLayer_order_ten_three_value_census
+    {α : Type*} [DecidableEq α] (S : Finset α) (load excess : α → ℕ)
+    (hpoint : ∀ x ∈ S,
+      (load x = 20 ∧ excess x = 2) ∨
+      (load x = 30 ∧ excess x = 6) ∨
+      (load x = 10 ∧ excess x = 2))
+    (hload : (∑ x ∈ S, load x) = 120)
+    (hexcess : (∑ x ∈ S, excess x) = 12) :
+    (S.filter fun x => load x = 20).card = 6 ∧
+      (S.filter fun x => load x = 30).card = 0 ∧
+      (S.filter fun x => load x = 10).card = 0 := by
+  let nB := (S.filter fun x => load x = 20).card
+  let nC := (S.filter fun x => load x = 30).card
+  let nD := (S.filter fun x => load x = 10).card
+  have hloadDecomp : (∑ x ∈ S, load x) = 20 * nB + 30 * nC + 10 * nD := by
+    calc
+      (∑ x ∈ S, load x) = ∑ x ∈ S,
+          ((if load x = 20 then 20 else 0) +
+           (if load x = 30 then 30 else 0) +
+           (if load x = 10 then 10 else 0)) := by
+            apply Finset.sum_congr rfl
+            intro x hx
+            rcases hpoint x hx with hB | hC | hD
+            · simp [hB.1]
+            · simp [hC.1]
+            · simp [hD.1]
+      _ = 20 * nB + 30 * nC + 10 * nD := by
+        simp [nB, nC, nD, Finset.sum_add_distrib,
+          ← Finset.sum_filter, Nat.mul_comm]
+  have hexcessDecomp :
+      (∑ x ∈ S, excess x) = 2 * nB + 6 * nC + 2 * nD := by
+    calc
+      (∑ x ∈ S, excess x) = ∑ x ∈ S,
+          ((if load x = 20 then 2 else 0) +
+           (if load x = 30 then 6 else 0) +
+           (if load x = 10 then 2 else 0)) := by
+            apply Finset.sum_congr rfl
+            intro x hx
+            rcases hpoint x hx with hB | hC | hD
+            · simp [hB.1, hB.2]
+            · simp [hC.1, hC.2]
+            · simp [hD.1, hD.2]
+      _ = 2 * nB + 6 * nC + 2 * nD := by
+        simp [nB, nC, nD, Finset.sum_add_distrib,
+          ← Finset.sum_filter, Nat.mul_comm]
+  change nB = 6 ∧ nC = 0 ∧ nD = 0
+  omega
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
