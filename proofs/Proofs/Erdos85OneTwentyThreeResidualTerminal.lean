@@ -12534,6 +12534,69 @@ theorem orderedDifferenceSet_two_phase_even_card
   rcases ha with ha | ha <;> rcases hb with hb | hb <;>
     simp [map_sub, ha, hb, hab, hdne]
 
+/-- Six pairwise-disjoint two-phase Sidon sectors containing four even
+ordered differences have exactly two parity-homogeneous phase pairs. -/
+theorem six_two_phase_difference_sectors_homogeneous_count
+    (A : Fin 6 → Finset (ZMod 30))
+    (hcard : ∀ i, (A i).card = 2)
+    (hsidon : ∀ i, IsOrderedSidon (A i))
+    (hdisj : ∀ i j : Fin 6, i ≠ j →
+      Disjoint (orderedDifferenceSet (A i))
+        (orderedDifferenceSet (A j)))
+    (hEven : (((Finset.univ : Finset (Fin 6)).biUnion fun i =>
+      orderedDifferenceSet (A i)).filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 4) :
+    ((Finset.univ : Finset (Fin 6)).filter fun i =>
+      ((A i).filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1).card = 2 := by
+  let even : ZMod 30 → Prop := fun z =>
+    ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0
+  let mixed : Fin 6 → Prop := fun i => ((A i).filter even).card = 1
+  have hfilter :
+      (((Finset.univ : Finset (Fin 6)).biUnion fun i =>
+        orderedDifferenceSet (A i)).filter even) =
+      (Finset.univ : Finset (Fin 6)).biUnion fun i =>
+        (orderedDifferenceSet (A i)).filter even := by
+    ext z
+    simp
+  have hfilteredDisj : ∀ i ∈ (Finset.univ : Finset (Fin 6)),
+      ∀ j ∈ (Finset.univ : Finset (Fin 6)), i ≠ j →
+      Disjoint ((orderedDifferenceSet (A i)).filter even)
+        ((orderedDifferenceSet (A j)).filter even) := by
+    intro i _hi j _hj hij
+    exact Finset.disjoint_filter_filter.mpr (fun z hzi _hzEven hzj =>
+      Finset.disjoint_left.mp (hdisj i j hij) hzi hzj)
+  have hsum : (∑ i : Fin 6,
+      ((orderedDifferenceSet (A i)).filter even).card) = 4 := by
+    have hbi := Finset.card_biUnion hfilteredDisj
+    rw [← hfilter] at hbi
+    change (((Finset.univ : Finset (Fin 6)).biUnion fun i =>
+      orderedDifferenceSet (A i)).filter even).card = _ at hbi
+    rw [show (((Finset.univ : Finset (Fin 6)).biUnion fun i =>
+      orderedDifferenceSet (A i)).filter even).card = 4 by
+        simpa [even] using hEven] at hbi
+    simpa using hbi.symm
+  have hterm : ∀ i : Fin 6,
+      ((orderedDifferenceSet (A i)).filter even).card =
+        if mixed i then 0 else 2 := by
+    intro i
+    simpa [even, mixed] using
+      orderedDifferenceSet_two_phase_even_card (A i) (hcard i) (hsidon i)
+  have hcountSum : (∑ i : Fin 6, if mixed i then 0 else 2) = 4 := by
+    simpa only [hterm] using hsum
+  have hfilterSum :
+      (∑ i : Fin 6, if mixed i then 0 else 2) =
+        2 * ((Finset.univ : Finset (Fin 6)).filter fun i => ¬ mixed i).card := by
+    rw [Finset.mul_card]
+    symm
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro i _hi
+    by_cases hi : mixed i <;> simp [hi]
+  rw [hfilterSum] at hcountSum
+  change ((Finset.univ : Finset (Fin 6)).filter fun i => ¬ mixed i).card = 2
+  omega
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
