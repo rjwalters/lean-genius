@@ -14825,6 +14825,58 @@ theorem degree_sixteen_quotientThree_reduced_order_classification
     rw [hq] at hentry
     omega
 
+/-- A quotient-three leg into an order-thirty-six component has only two
+possible target sizes.  A shorter target is an order-twelve reverse cover;
+an equal target has reverse quotient three.  A longer target is impossible,
+since the unequal-block theorem would force the given quotient to be one. -/
+theorem degree_sixteen_quotientThree_into_orderThirtySix_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 36)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    (o.supp.ncard = 12 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) ∨
+    (o.supp.ncard = 36 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 3) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 3 at hq
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using (show 0 < Q o e by omega))
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    left
+    refine ⟨?_, hentry.1⟩
+    rw [hq, he] at hentry
+    omega
+  · right
+    refine ⟨heq.trans he, ?_⟩
+    rw [heq, hq] at hbal
+    exact Nat.eq_of_mul_eq_mul_left e.nonempty_supp.ncard_pos hbal.symm
+  · have hrevPos : 0 < Q e o := by
+      by_contra hzero
+      have hzero' : Q e o = 0 := Nat.eq_zero_of_not_pos hzero
+      rw [hq, hzero', mul_zero] at hbal
+      exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt hrevPos
+    exact False.elim (by
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega)
+
 /-- Exact reduced-order table for the quotient-two leg of a `2+1` orphan
 row.  Equal orders give reverse quotient two; otherwise the used component
 is twice as long and the reverse quotient is one. -/
