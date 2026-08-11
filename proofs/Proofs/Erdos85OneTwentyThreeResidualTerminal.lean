@@ -31805,6 +31805,37 @@ theorem all_cherry_cost_eq_eighteen_of_sum
   intro i
   exact (hpoint i (Finset.mem_univ i)).symm
 
+/-! ## Arithmetic terminal for the `[12,2,2]` saturation profile -/
+
+/-- A reduced-order-two row has total after-contact excess two.  If its used
+matrix is a two-cell row summing to three, that used matrix already consumes
+the whole budget: the entries are `1,2` in some order and no orphan excess
+remains. -/
+theorem order_two_pair_row_saturation
+    (d q orphanExcess : ℕ)
+    (hsum : d + q = 3)
+    (hbudget : d * (d - 1) + q * (q - 1) + orphanExcess ≤ 2) :
+    orphanExcess = 0 ∧
+      ((d = 1 ∧ q = 2) ∨ (d = 2 ∧ q = 1)) := by
+  have hd : d ≤ 3 := by omega
+  have hq : q ≤ 3 := by omega
+  interval_cases d <;> interval_cases q
+  all_goals norm_num at hsum
+  all_goals norm_num at hbudget
+  all_goals omega
+
+/-- In the `[12,2,2]` equality case, let `a` count equal-order quotient-two
+atoms on the large row, `b` count doubled-owner quotient-two atoms, and `r`
+be the remaining reverse mass on that row.  Saturation of the two small rows
+forces quotient-two reverse mass eight and leaves exactly four units of
+remaining large-row reverse mass; the large orphan excess is exactly sixteen. -/
+theorem twelve_two_two_saturation_census
+    (a b r : ℕ)
+    (hsmall : 6 * a + 3 * b = 24)
+    (hlarge : 2 * a + b + r = 12) :
+    2 * a + b = 8 ∧ r = 4 ∧ (2 * a + b) + 2 * r = 16 := by
+  omega
+
 end
 
 end Erdos85
