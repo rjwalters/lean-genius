@@ -13654,6 +13654,141 @@ def zeroLayerServicedOrphans
   orphans.filter (fun o =>
     0 < componentQuotientMatrix G (secondOrderDefectGraph G) e o)
 
+/-- If a reduced-order-two used row belongs to a symmetric two-cell used
+matrix whose entries sum to three, its entire after-contact budget is already
+spent on those used cells.  Hence its serviced orphan excess sum is zero and
+every serviced orphan has forward quotient one into the row. -/
+theorem degree_sixteen_zeroLayer_order_two_pair_serviced_unit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ g : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ g.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hef : e ≠ f) (hecard : e.supp.ncard = 6) (hfcard : f.supp.ncard = 6)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hfUsed : componentRepresentative (secondOrderDefectGraph G) f ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hsym : componentQuotientMatrix G (secondOrderDefectGraph G) e f =
+      componentQuotientMatrix G (secondOrderDefectGraph G) f e)
+    (hsum : componentQuotientMatrix G (secondOrderDefectGraph G) e e +
+      componentQuotientMatrix G (secondOrderDefectGraph G) e f = 3) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let S := zeroLayerServicedOrphans G C e
+    (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 ∧
+      ∀ o ∈ S, Q o e = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := zeroLayerServicedOrphans G C e
+  change (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 ∧
+    ∀ o ∈ S, Q o e = 1
+  have heCnot : e ∉ C := by
+    intro heC
+    have heO : componentRepresentative D e ∈ O :=
+      (Finset.mem_filter.mp heC).2
+    exact (Finset.mem_sdiff.mp heO).2 (by simpa [D, R] using heUsed)
+  have hfCnot : f ∉ C := by
+    intro hfC
+    have hfO : componentRepresentative D f ∈ O :=
+      (Finset.mem_filter.mp hfC).2
+    exact (Finset.mem_sdiff.mp hfO).2 (by simpa [D, R] using hfUsed)
+  have hSsubC : S ⊆ C := fun _ ho => (Finset.mem_filter.mp ho).1
+  have heSnot : e ∉ S := fun h => heCnot (hSsubC h)
+  have hfSnot : f ∉ S := fun h => hfCnot (hSsubC h)
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hec₀ : e ≠ c₀ := by intro h; rw [h, hc₀card] at hecard; omega
+  have hfc₀ : f ≠ c₀ := by intro h; rw [h, hc₀card] at hfcard; omega
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hc₀Cnot : c₀ ∉ C := by
+    intro hc
+    have hcO : componentRepresentative D c₀ ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2 hc₀U
+  have hsub : insert e (insert f S) ⊆
+      (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro g hg
+    simp only [Finset.mem_insert] at hg
+    rcases hg with rfl | rfl | hgS
+    · exact Finset.mem_erase.mpr ⟨hec₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨hfc₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨fun hgc => hc₀Cnot (hgc ▸ hSsubC hgS),
+        Finset.mem_univ _⟩
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heUsed
+  change (∑ g ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e g * (Q g e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  have hused : 2 ≤ Q e e * (Q e e - 1) + Q e f * (Q f e - 1) := by
+    change Q e f = Q f e at hsym
+    change Q e e + Q e f = 3 at hsum
+    rw [← hsym]
+    have hd : Q e e ≤ 3 := by omega
+    have hq : Q e f ≤ 3 := by omega
+    interval_cases hde : Q e e <;> interval_cases hqe : Q e f <;>
+      norm_num [hde, hqe] at * <;> omega
+  have hle := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun g : D.ConnectedComponent => Q e g * (Q g e - 1)) hsub
+      (fun _ _ _ => Nat.zero_le _)
+  rw [Finset.sum_insert (by simp [hef, heSnot]),
+    Finset.sum_insert hfSnot] at hle
+  change Q e e * (Q e e - 1) +
+    (Q e f * (Q f e - 1) + ∑ o ∈ S, zeroLayerAtomExcess G e o) ≤
+    ∑ g ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+      Q e g * (Q g e - 1) at hle
+  rw [hrow, hecard] at hle
+  norm_num at hle
+  have hsumZero : (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 := by omega
+  refine ⟨hsumZero, ?_⟩
+  intro o hoS
+  have hservice : 0 < Q e o := by
+    simpa [S, zeroLayerServicedOrphans, Q] using
+      (Finset.mem_filter.mp hoS).2
+  have htermLe : zeroLayerAtomExcess G e o ≤
+      ∑ x ∈ S, zeroLayerAtomExcess G e x :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) hoS
+  have hex : zeroLayerAtomExcess G e o = 0 := by omega
+  change Q e o * (Q o e - 1) = 0 at hex
+  have hfactor : Q o e - 1 = 0 :=
+    (Nat.mul_eq_zero.mp hex).resolve_left (Nat.ne_of_gt hservice)
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+  have hePos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hoPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+  have hforward : 0 < Q o e := by nlinarith
+  omega
+
 /-- The non-three-divisible (`D`) atoms serviced by a used row. -/
 def zeroLayerDAtoms
     {V : Type*} [Fintype V] [DecidableEq V]
