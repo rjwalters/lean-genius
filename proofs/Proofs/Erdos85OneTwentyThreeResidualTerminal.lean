@@ -12195,6 +12195,24 @@ theorem false_of_zeroLayer_reduced_used_orders_ten_two_two_two_exact_atom_ledger
     (hexcess2₃ : 2 * nB₃₁ + 2 * nB₃₂ = 0) : False := by
   omega
 
+/-- V12 rigidity ledger for `[10,2,2,2]`.  After the isolated order-ten
+diagonal consumes six units, its orphan budget is twelve.  Consequently all
+large-row atoms are the six `B(10)` atoms, two assigned to each order-two
+row; the remaining small-row loads are supplied by exactly two common
+`A(2)` atoms. -/
+theorem degree_sixteen_zeroLayer_ten_two_two_two_rigid_atom_ledger
+    (nA nB10₁ nB10₂ nB10₃ nC10 nD10 : ℕ)
+    (hload10 : 20 * nB10₁ + 20 * nB10₂ + 20 * nB10₃ +
+      30 * nC10 + 10 * nD10 = 120)
+    (hexcess10 : 2 * nB10₁ + 2 * nB10₂ + 2 * nB10₃ +
+      6 * nC10 + 2 * nD10 = 12)
+    (hload2₁ : 2 * nA + 10 * nB10₁ = 24)
+    (hload2₂ : 2 * nA + 10 * nB10₂ = 24)
+    (hload2₃ : 2 * nA + 10 * nB10₃ = 24) :
+    nA = 2 ∧ nB10₁ = 2 ∧ nB10₂ = 2 ∧ nB10₃ = 2 ∧
+      nC10 = 0 ∧ nD10 = 0 := by
+  omega
+
 /-- Exact orphan budgets rule out `[5,5,2,2,2]`.  The three order-two
 rows force all directed `B(2)` atoms to vanish.  On the two order-five rows,
 load then requires more mutual `B(5)` atoms than their exact excess permits. -/
