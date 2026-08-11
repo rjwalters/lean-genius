@@ -220,6 +220,32 @@ the propose/verify/persist loop described above.
 
 ---
 
+## Silence is not success (a recurring failure class)
+
+Three operationally distinct incidents in this campaign turn out to be
+one failure: a checker whose silence was read as approval. In the
+rg-mask incident, elaboration output was filtered through a pattern
+matcher and an empty result — which also occurs when elaboration never
+ran — was recorded as a pass. In the vacuous-gate incident, a
+virtualization restart interrupted a build between deleting an old
+compiled artifact and writing its replacement; the build system's
+freshness metadata survived the interruption, so every subsequent
+"verification" trusted the stale record and skipped the changed file
+entirely — reporting thousands of successful jobs while elaborating
+none of the mathematics under test, for a full day, across both
+collaborators' gates. In the watcher-poll incident, a monitoring
+query that failed under database contention returned an empty result
+that the polling loop treated as "no news," blinding one collaborator
+to three hours of the other's messages. In each case the fix is the
+same shape: a checker must produce a positive artifact of having
+checked — an olean newer than its source, a nonempty match on a
+sentinel that must be present, a poll that distinguishes "no new
+items" from "query failed" — and the absence of that artifact must be
+treated as failure. The certification pipeline now enforces this
+mechanically: gates run against ephemeral build state, verify the
+target artifact's existence and freshness after the build, and void
+any run whose window overlaps an engine restart.
+
 ## Methods (summary)
 
 - **Room protocol**: persistent SQLite chat; claim → red-team → formalize
