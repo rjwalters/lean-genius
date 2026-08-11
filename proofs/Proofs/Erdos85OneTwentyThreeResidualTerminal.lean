@@ -12265,6 +12265,43 @@ theorem zeroLayer_order_ten_three_value_census
   change nB = 6 ∧ nC = 0 ∧ nD = 0
   omega
 
+/-- Six objects, each assigned to exactly one of three targets, distribute
+two per target when five units of capacity per object must fit under a
+twelve-unit cap at every target. -/
+theorem six_unique_targets_two_each
+    {α : Type*} [DecidableEq α] (S : Finset α)
+    (qa qb qc : α → ℕ) (hcard : S.card = 6)
+    (hpattern : ∀ x ∈ S,
+      (qa x = 1 ∧ qb x = 0 ∧ qc x = 0) ∨
+      (qa x = 0 ∧ qb x = 1 ∧ qc x = 0) ∨
+      (qa x = 0 ∧ qb x = 0 ∧ qc x = 1))
+    (hcapa : 5 * (S.filter fun x => qa x = 1).card ≤ 12)
+    (hcapb : 5 * (S.filter fun x => qb x = 1).card ≤ 12)
+    (hcapc : 5 * (S.filter fun x => qc x = 1).card ≤ 12) :
+    (S.filter fun x => qa x = 1).card = 2 ∧
+      (S.filter fun x => qb x = 1).card = 2 ∧
+      (S.filter fun x => qc x = 1).card = 2 := by
+  let na := (S.filter fun x => qa x = 1).card
+  let nb := (S.filter fun x => qb x = 1).card
+  let nc := (S.filter fun x => qc x = 1).card
+  have hdecomp : S.card = na + nb + nc := by
+    calc
+      S.card = ∑ _x ∈ S, 1 := by simp
+      _ = ∑ x ∈ S,
+          ((if qa x = 1 then 1 else 0) +
+           (if qb x = 1 then 1 else 0) +
+           (if qc x = 1 then 1 else 0)) := by
+            apply Finset.sum_congr rfl
+            intro x hx
+            rcases hpattern x hx with ha | hb | hc
+            · simp [ha.1, ha.2.1, ha.2.2]
+            · simp [hb.1, hb.2.1, hb.2.2]
+            · simp [hc.1, hc.2.1, hc.2.2]
+      _ = na + nb + nc := by
+        simp [na, nb, nc, Finset.sum_add_distrib, ← Finset.sum_filter]
+  change na = 2 ∧ nb = 2 ∧ nc = 2
+  omega
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
@@ -16793,7 +16830,8 @@ theorem degree_sixteen_zeroLayer_order_ten_serviced_census
     let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
       componentRepresentative D o ∈ O)
     let S := zeroLayerServicedOrphans G C e
-    (S.filter fun o => zeroLayerAtomLoad G e o = 20).card = 6 ∧
+    S.card = 6 ∧
+      (S.filter fun o => zeroLayerAtomLoad G e o = 20).card = 6 ∧
       (S.filter fun o => zeroLayerAtomLoad G e o = 30).card = 0 ∧
       (S.filter fun o => zeroLayerAtomLoad G e o = 10).card = 0 ∧
       ∀ o ∈ S, o.supp.ncard = 30 ∧
@@ -16896,38 +16934,49 @@ theorem degree_sixteen_zeroLayer_order_ten_serviced_census
     omega
   have hcounts := zeroLayer_order_ten_three_value_census
     S load cost hpoint hload hbudget
-  refine ⟨hcounts.1, hcounts.2.1, hcounts.2.2, ?_⟩
-  intro o hoS
-  have hoC : o ∈ C := hSsubC hoS
-  have hoO : componentRepresentative D o ∈ O :=
-    (Finset.mem_filter.mp hoC).2
-  have hservice : 0 < Q e o := by
-    simpa [S, zeroLayerServicedOrphans, Q] using
-      (Finset.mem_filter.mp hoS).2
-  have htable := degree_sixteen_zeroLayer_order_ten_atom_values
-    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
-      (by simpa [D, R, U, O] using hoO) (by simpa [D, R] using heUsed)
-      he hothers (by simpa [D, Q] using hservice)
-  change
-    (Q o e = 2 ∧ o.supp.ncard = 30 ∧ Q e o = 2 ∧
-      load o = 20 ∧ cost o = 2) ∨
-    (Q o e = 3 ∧ o.supp.ncard = 30 ∧ Q e o = 3 ∧
-      load o = 30 ∧ cost o = 6) ∨
-    (¬ 3 ∣ o.supp.ncard ∧ load o = 10 ∧ cost o = 2) at htable
-  rcases htable with hB | hC | hD
-  · exact ⟨hB.2.1, hB.1, hB.2.2.1⟩
-  · have hmem : o ∈ S.filter (fun x => load x = 30) :=
-      Finset.mem_filter.mpr ⟨hoS, hC.2.2.2.1⟩
-    have hempty : S.filter (fun x => load x = 30) = ∅ :=
-      Finset.card_eq_zero.mp hcounts.2.1
-    rw [hempty] at hmem
-    simp at hmem
-  · have hmem : o ∈ S.filter (fun x => load x = 10) :=
-      Finset.mem_filter.mpr ⟨hoS, hD.2.1⟩
-    have hempty : S.filter (fun x => load x = 10) = ∅ :=
-      Finset.card_eq_zero.mp hcounts.2.2
-    rw [hempty] at hmem
-    simp at hmem
+  have hstruct : ∀ o ∈ S,
+      o.supp.ncard = 30 ∧ Q o e = 2 ∧ Q e o = 2 := by
+    intro o hoS
+    have hoC : o ∈ C := hSsubC hoS
+    have hoO : componentRepresentative D o ∈ O :=
+      (Finset.mem_filter.mp hoC).2
+    have hservice : 0 < Q e o := by
+      simpa [S, zeroLayerServicedOrphans, Q] using
+        (Finset.mem_filter.mp hoS).2
+    have htable := degree_sixteen_zeroLayer_order_ten_atom_values
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
+        (by simpa [D, R, U, O] using hoO) (by simpa [D, R] using heUsed)
+        he hothers (by simpa [D, Q] using hservice)
+    change
+      (Q o e = 2 ∧ o.supp.ncard = 30 ∧ Q e o = 2 ∧
+        load o = 20 ∧ cost o = 2) ∨
+      (Q o e = 3 ∧ o.supp.ncard = 30 ∧ Q e o = 3 ∧
+        load o = 30 ∧ cost o = 6) ∨
+      (¬ 3 ∣ o.supp.ncard ∧ load o = 10 ∧ cost o = 2) at htable
+    rcases htable with hB | hC | hD
+    · exact ⟨hB.2.1, hB.1, hB.2.2.1⟩
+    · have hmem : o ∈ S.filter (fun x => load x = 30) :=
+        Finset.mem_filter.mpr ⟨hoS, hC.2.2.2.1⟩
+      have hempty : S.filter (fun x => load x = 30) = ∅ :=
+        Finset.card_eq_zero.mp hcounts.2.1
+      rw [hempty] at hmem
+      simp at hmem
+    · have hmem : o ∈ S.filter (fun x => load x = 10) :=
+        Finset.mem_filter.mpr ⟨hoS, hD.2.1⟩
+      have hempty : S.filter (fun x => load x = 10) = ∅ :=
+        Finset.card_eq_zero.mp hcounts.2.2
+      rw [hempty] at hmem
+      simp at hmem
+  have hfilter : S.filter (fun o => load o = 20) = S := by
+    apply Finset.filter_eq_self.mpr
+    intro o hoS
+    have hs := hstruct o hoS
+    change (e.supp.ncard / 3) * Q e o = 20
+    rw [he, hs.2.2]
+  have hScard : S.card = 6 := by
+    rw [← hfilter]
+    exact hcounts.1
+  exact ⟨hScard, hcounts.1, hcounts.2.1, hcounts.2.2, hstruct⟩
 
 /-- Each mutual quotient-two large block in `[10,2,2,2]` has exactly one
 unit leg among the three order-two used rows. -/
