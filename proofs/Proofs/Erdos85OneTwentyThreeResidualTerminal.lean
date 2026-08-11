@@ -39226,7 +39226,7 @@ inductive ZeroLayerAtom (ι : Type*) where
   | D (e : ι)
   | B (e f : ι)
   | A (a b c : ι)
-  deriving DecidableEq
+  deriving DecidableEq, Fintype
 
 namespace ZeroLayerAtom
 
@@ -39286,6 +39286,39 @@ def ValuesMatchOn {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
     (E : Finset ι) (graphLoad graphExcess : ι → ℕ)
     (t : ZeroLayerAtom ι) : Prop :=
   ∀ i ∈ E, graphLoad i = load K i t ∧ graphExcess i = excess i t
+
+/-- Number of objects assigned a given atom descriptor. -/
+def fiberCount {O ι : Type*} [Fintype O] [DecidableEq O]
+    [DecidableEq ι] (atom : O → ZeroLayerAtom ι)
+    (t : ZeroLayerAtom ι) : ℕ :=
+  (Finset.univ.filter fun o => atom o = t).card
+
+/-- Regroup a finite sum by atom-descriptor fibers. -/
+theorem sum_eq_sum_fiberCount_mul
+    {O ι : Type*} [Fintype O] [DecidableEq O]
+    [Fintype ι] [DecidableEq ι]
+    (atom : O → ZeroLayerAtom ι) (w : ZeroLayerAtom ι → ℕ) :
+    (∑ o, w (atom o)) =
+      ∑ t, fiberCount atom t * w t := by
+  classical
+  calc
+    (∑ o, w (atom o)) =
+        ∑ t : ZeroLayerAtom ι,
+          ∑ o ∈ Finset.univ with atom o = t, w (atom o) := by
+            simpa using (Finset.sum_fiberwise Finset.univ atom
+              (fun o => w (atom o))).symm
+    _ = ∑ t, fiberCount atom t * w t := by
+      apply Finset.sum_congr rfl
+      intro t _ht
+      change (∑ o ∈ Finset.univ.filter (fun o => atom o = t), w (atom o)) =
+        (Finset.univ.filter fun o => atom o = t).card * w t
+      calc
+        (∑ o ∈ Finset.univ.filter (fun o => atom o = t), w (atom o)) =
+            ∑ _o ∈ Finset.univ.filter (fun o => atom o = t), w t := by
+              apply Finset.sum_congr rfl
+              intro o ho
+              rw [(Finset.mem_filter.mp ho).2]
+        _ = (Finset.univ.filter fun o => atom o = t).card * w t := by simp
 
 end ZeroLayerAtom
 
