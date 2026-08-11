@@ -12215,8 +12215,8 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_rigid_atom_ledger
 
 /-- Finite-set form of the reduced-order-ten rigidity ledger.  A family
 whose pointwise `(load, excess)` values are exactly `(20,2)`, `(30,6)`, or
-`(10,2)`, with total load 120 and excess 12, consists of six load-twenty
-atoms and no atoms of the other two kinds. -/
+`(10,2)`, with total load 120 and excess at most 12, consists of six
+load-twenty atoms and no atoms of the other two kinds. -/
 theorem zeroLayer_order_ten_three_value_census
     {α : Type*} [DecidableEq α] (S : Finset α) (load excess : α → ℕ)
     (hpoint : ∀ x ∈ S,
@@ -12224,7 +12224,7 @@ theorem zeroLayer_order_ten_three_value_census
       (load x = 30 ∧ excess x = 6) ∨
       (load x = 10 ∧ excess x = 2))
     (hload : (∑ x ∈ S, load x) = 120)
-    (hexcess : (∑ x ∈ S, excess x) = 12) :
+    (hexcess : (∑ x ∈ S, excess x) ≤ 12) :
     (S.filter fun x => load x = 20).card = 6 ∧
       (S.filter fun x => load x = 30).card = 0 ∧
       (S.filter fun x => load x = 10).card = 0 := by
@@ -16756,6 +16756,142 @@ theorem degree_sixteen_zeroLayer_order_ten_atom_values
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e 10 ho heUsed
         he10 hdiv (by simpa [D, Q] using hservice)
     exact ⟨hdiv, hD.1, hD.2⟩
+
+/-- Graph-facing large-row census for `[10,2,2,2]`.  Once the used
+order-thirty row has diagonal quotient three, its serviced orphan family
+contains exactly six load-twenty atoms and no load-thirty or load-ten atoms. -/
+theorem degree_sixteen_zeroLayer_order_ten_serviced_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 30)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e → f.supp.ncard = 6)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 3) :
+    let D := secondOrderDefectGraph G
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let S := zeroLayerServicedOrphans G C e
+    (S.filter fun o => zeroLayerAtomLoad G e o = 20).card = 6 ∧
+      (S.filter fun o => zeroLayerAtomLoad G e o = 30).card = 0 ∧
+      (S.filter fun o => zeroLayerAtomLoad G e o = 10).card = 0 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := zeroLayerServicedOrphans G C e
+  let load := zeroLayerAtomLoad G e
+  let cost := zeroLayerAtomExcess G e
+  have hSsubC : S ⊆ C := fun _ ho => (Finset.mem_filter.mp ho).1
+  have heCnot : e ∉ C := by
+    intro heC
+    have heO : componentRepresentative D e ∈ O :=
+      (Finset.mem_filter.mp heC).2
+    exact (Finset.mem_sdiff.mp heO).2 (by simpa [D, R] using heUsed)
+  have heSnot : e ∉ S := fun heS => heCnot (hSsubC heS)
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hc₀Cnot : c₀ ∉ C := by
+    intro hc
+    have hcO : componentRepresentative D c₀ ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2 hc₀U
+  have hpoint : ∀ o ∈ S,
+      (load o = 20 ∧ cost o = 2) ∨
+      (load o = 30 ∧ cost o = 6) ∨
+      (load o = 10 ∧ cost o = 2) := by
+    intro o hoS
+    have hoC : o ∈ C := hSsubC hoS
+    have hoO : componentRepresentative D o ∈ O :=
+      (Finset.mem_filter.mp hoC).2
+    have hservice : 0 < Q e o := by
+      simpa [S, zeroLayerServicedOrphans, Q] using
+        (Finset.mem_filter.mp hoS).2
+    have htable := degree_sixteen_zeroLayer_order_ten_atom_values
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
+        (by simpa [D, R, U, O] using hoO) (by simpa [D, R] using heUsed)
+        he hothers (by simpa [D, Q] using hservice)
+    change
+      (Q o e = 2 ∧ o.supp.ncard = 30 ∧ Q e o = 2 ∧
+        load o = 20 ∧ cost o = 2) ∨
+      (Q o e = 3 ∧ o.supp.ncard = 30 ∧ Q e o = 3 ∧
+        load o = 30 ∧ cost o = 6) ∨
+      (¬ 3 ∣ o.supp.ncard ∧ load o = 10 ∧ cost o = 2) at htable
+    rcases htable with hB | hC | hD
+    · exact Or.inl ⟨hB.2.2.2.1, hB.2.2.2.2⟩
+    · exact Or.inr (Or.inl ⟨hC.2.2.2.1, hC.2.2.2.2⟩)
+    · exact Or.inr (Or.inr ⟨hD.2.1, hD.2.2⟩)
+  have hqsum := degree_sixteen_zeroLayer_used_serviced_quotient_sum_eq_twelve
+    G hfree hmin hcard c₀ hregChild hcardChild e heUsed
+  change (∑ o ∈ S, Q e o) = 12 at hqsum
+  have hload : (∑ o ∈ S, load o) = 120 := by
+    calc
+      (∑ o ∈ S, load o) = ∑ o ∈ S, 10 * Q e o := by
+        apply Finset.sum_congr rfl
+        intro o _ho
+        change (e.supp.ncard / 3) * Q e o = 10 * Q e o
+        rw [he]
+      _ = 10 * (∑ o ∈ S, Q e o) := by rw [Finset.mul_sum]
+      _ = 120 := by rw [hqsum]
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heUsed
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e f * (Q f e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hec₀ : e ≠ c₀ := by intro heq; rw [heq, hc₀card] at he; omega
+  have hsub : insert e S ⊆
+      (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro f hf
+    rw [Finset.mem_insert] at hf
+    rcases hf with rfl | hfS
+    · exact Finset.mem_erase.mpr ⟨hec₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨fun hfc => hc₀Cnot (hfc ▸ hSsubC hfS),
+        Finset.mem_univ _⟩
+  have hbudgetLe := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun f : D.ConnectedComponent => Q e f * (Q f e - 1)) hsub
+      (fun _ _ _ => Nat.zero_le _)
+  have hbudget : (∑ o ∈ S, cost o) ≤ 12 := by
+    rw [Finset.sum_insert heSnot] at hbudgetLe
+    change Q e e * (Q e e - 1) + (∑ o ∈ S, cost o) ≤
+      ∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+        Q e f * (Q f e - 1) at hbudgetLe
+    change Q e e = 3 at hdiag
+    rw [hdiag, hrow, he] at hbudgetLe
+    norm_num at hbudgetLe
+    omega
+  exact zeroLayer_order_ten_three_value_census S load cost hpoint hload hbudget
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
