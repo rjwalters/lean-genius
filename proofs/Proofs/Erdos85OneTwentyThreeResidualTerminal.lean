@@ -12158,6 +12158,102 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_four_exact_atom_ledger
     (hexcess4 : 6 * nC4 + 2 * nD4 = 4) : False := by
   omega
 
+/-- Pointwise form of the `[12,4]` atom ledger.  The detailed-balance
+classification gives each orphan a common bonus term: its order-twelve load
+is six times its order-twelve excess plus that bonus, while its order-four
+load is twice its order-four excess plus the same bonus.  The exact row
+totals force the bonus sum to be both twenty-four and thirty-six. -/
+theorem false_of_zeroLayer_reduced_used_orders_twelve_four_pointwise_atom_ledger
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (load12 excess12 load4 excess4 bonus : α → ℕ)
+    (hload12 : (∑ x ∈ C, load12 x) = 144)
+    (hexcess12 : (∑ x ∈ C, excess12 x) = 20)
+    (hload4 : (∑ x ∈ C, load4 x) = 48)
+    (hexcess4 : (∑ x ∈ C, excess4 x) = 6)
+    (hpoint12 : ∀ x ∈ C, load12 x = 6 * excess12 x + bonus x)
+    (hpoint4 : ∀ x ∈ C, load4 x = 2 * excess4 x + bonus x) : False := by
+  have hsum12 : (∑ x ∈ C, load12 x) =
+      6 * (∑ x ∈ C, excess12 x) + ∑ x ∈ C, bonus x := by
+    calc
+      (∑ x ∈ C, load12 x) =
+          ∑ x ∈ C, (6 * excess12 x + bonus x) := by
+            apply Finset.sum_congr rfl
+            exact hpoint12
+      _ = 6 * (∑ x ∈ C, excess12 x) + ∑ x ∈ C, bonus x := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+  have hsum4 : (∑ x ∈ C, load4 x) =
+      2 * (∑ x ∈ C, excess4 x) + ∑ x ∈ C, bonus x := by
+    calc
+      (∑ x ∈ C, load4 x) =
+          ∑ x ∈ C, (2 * excess4 x + bonus x) := by
+            apply Finset.sum_congr rfl
+            exact hpoint4
+      _ = 2 * (∑ x ∈ C, excess4 x) + ∑ x ∈ C, bonus x := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+  rw [hload12, hexcess12] at hsum12
+  rw [hload4, hexcess4] at hsum4
+  omega
+
+/-- Local arithmetic behind the common bonus in the `[12,4]` pointwise
+ledger.  Here `q12,q4` are the orphan-to-used quotients and `r12,r4` the
+reverse quotients.  Detailed balance is written using component orders
+thirty-six and twelve.  The quotient-two order classification supplies the
+two final hypotheses: a quotient-two leg into the large row has reverse
+quotient two, while a quotient-two leg into the small row is impossible. -/
+theorem twelve_four_atom_exists_common_bonus
+    (n q12 q4 r12 r4 : ℕ)
+    (hrow : q12 + q4 = 3)
+    (hbal12 : n * q12 = 36 * r12)
+    (hbal4 : n * q4 = 12 * r4)
+    (hq12two : q12 = 2 → r12 = 2)
+    (hq4ne : q4 ≠ 2) :
+    ∃ bonus : ℕ,
+      12 * r12 = 6 * (r12 * (q12 - 1)) + bonus ∧
+      4 * r4 = 2 * (r4 * (q4 - 1)) + bonus := by
+  have hcases :
+      (q12 = 0 ∧ q4 = 3) ∨ (q12 = 1 ∧ q4 = 2) ∨
+        (q12 = 2 ∧ q4 = 1) ∨ (q12 = 3 ∧ q4 = 0) := by
+    omega
+  rcases hcases with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+      ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · refine ⟨0, ?_, ?_⟩ <;> norm_num at hbal12 ⊢ <;> omega
+  · exact (hq4ne rfl).elim
+  · have hr12 : r12 = 2 := hq12two rfl
+    refine ⟨12, ?_, ?_⟩ <;> norm_num at hbal12 hbal4 ⊢ <;> omega
+  · refine ⟨0, ?_, ?_⟩ <;> norm_num at hbal4 ⊢ <;> omega
+
+/-- The local common-bonus identity after exposing the two alternatives in
+the quotient-two reduced-order classification.  This is the form consumed by
+the graph-facing `[12,4]` wrapper: the two balance equations eliminate the
+short alternative on the large row and both alternatives on the small row. -/
+theorem twelve_four_atom_exists_common_bonus_of_quotientTwo_classes
+    (n q12 q4 r12 r4 : ℕ)
+    (hrow : q12 + q4 = 3)
+    (hbal12 : n * q12 = 36 * r12)
+    (hbal4 : n * q4 = 12 * r4)
+    (hclass12 : q12 = 2 →
+      (n = 36 ∧ r12 = 2) ∨ (n = 18 ∧ r12 = 1))
+    (hclass4 : q4 = 2 →
+      (n = 12 ∧ r4 = 2) ∨ (n = 6 ∧ r4 = 1)) :
+    ∃ bonus : ℕ,
+      12 * r12 = 6 * (r12 * (q12 - 1)) + bonus ∧
+      4 * r4 = 2 * (r4 * (q4 - 1)) + bonus := by
+  apply twelve_four_atom_exists_common_bonus n q12 q4 r12 r4
+    hrow hbal12 hbal4
+  · intro hq12
+    have hq4 : q4 = 1 := by omega
+    rcases hclass12 hq12 with ⟨hn, hr⟩ | ⟨hn, hr⟩
+    · exact hr
+    · rw [hn, hq4] at hbal4
+      omega
+  · intro hq4
+    have hq12 : q12 = 1 := by omega
+    rcases hclass4 hq4 with ⟨hn, _hr⟩ | ⟨hn, _hr⟩
+    · rw [hn, hq12] at hbal12
+      omega
+    · rw [hn, hq12] at hbal12
+      omega
+
 /-- V10 form of the `[12,4]` ledger.  The diagonal contributions are kept
 explicit; the order-twelve component theorem supplies `q4 ≠ 3`. -/
 theorem false_of_zeroLayer_reduced_used_orders_twelve_four_diagonal_ledger
