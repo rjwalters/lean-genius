@@ -12671,6 +12671,100 @@ theorem orderThirty_minimum_cover_multiple_three_difference_witnesses
     rw [htcast]
     simp
 
+/-- An order-thirty diagonal quotient-three block supplies a six-element
+all-even ordered-difference sector, with every difference witnessed by a
+common neighbor inside the large component itself. -/
+theorem orderThirty_diagonal_three_exists_even_difference_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (L : (secondOrderDefectGraph G).ConnectedComponent)
+    (uL : ZMod 30 → V) (huL : Function.Injective uL)
+    (huLRange : Set.range uL = L.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) L L = 3) :
+    ∃ S : Finset (ZMod 30), S.card = 3 ∧ IsOrderedSidon S ∧
+      (∀ s ∈ S,
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) s ≠ 0) ∧
+      (orderedDifferenceSet S).card = 6 ∧
+      (∀ t ∈ orderedDifferenceSet S,
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) t = 0) ∧
+      ∀ t ∈ orderedDifferenceSet S, ∃ y ∈ L.supp,
+        G.Adj (uL 0) y ∧ G.Adj (uL t) y := by
+  have hrevZ := degree_sixteen_evenComponent_diagonal_three_forces_reverse
+    G hfree hmin hcard (r := 30) (by norm_num) (by norm_num)
+      L uL huL huLRange huLD hdiag
+  have hrev : ∀ x y : ZMod 30,
+      G.Adj (uL (x + 1)) (uL (y - 1)) ↔ G.Adj (uL x) (uL y) := by
+    intro x y
+    exact adj_iff_of_adjMatrix_int_eq G (hrevZ x y)
+  let S := graphCycleBlockZeroSupport G uL uL
+  have hScard : S.card = 3 := by
+    have hbridge := card_graphCycleBlockZeroSupport_eq_componentQuotient
+      G hfree (d := 16) (r := 30) (by norm_num) (by norm_num) hmin hcard
+        L L uL uL huL huLRange huLRange
+    exact hbridge.trans hdiag
+  have hphase : ∀ x y : ZMod 30,
+      G.Adj (uL x) (uL y) ↔ x + y ∈ S := by
+    intro x y
+    have hzero : G.Adj (uL x) (uL y) ↔ G.Adj (uL 0) (uL (x + y)) := by
+      have heq := reverse_block_apply_eq_zero_row
+        (fun a b ↦ G.adjMatrix ℤ (uL a) (uL b)) hrevZ x y
+      exact adj_iff_of_adjMatrix_int_eq G heq
+    rw [hzero]
+    exact (mem_graphCycleBlockZeroSupport_iff_adj G uL uL (x + y)).symm
+  have hodd : ∀ s ∈ S,
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) s ≠ 0 := by
+    intro s hs hseven
+    have hadj : G.Adj (uL 0) (uL s) := by
+      exact (mem_graphCycleBlockZeroSupport_iff_adj G uL uL s).mp hs
+    exact reverseOriented_evenComponent_no_sameParity_edge
+      G (by norm_num : 2 ∣ 30) uL hrevZ 0 s (by simpa using hseven) hadj
+  have huNeg : Function.Injective (fun z : ZMod 30 ↦ uL (-z)) :=
+    huL.comp neg_injective
+  have hblock : ∀ x z : ZMod 30,
+      G.Adj (uL x) (uL (-z)) ↔ z - x ∈ negFinset S := by
+    intro x z
+    rw [mem_negFinset_iff, show -(z - x) = x + -z by ring]
+    exact hphase x (-z)
+  have hsidonNeg : IsOrderedSidon (negFinset S) :=
+    isOrderedSidon_of_c4Free_circulantBlock G hfree uL
+      (fun z : ZMod 30 ↦ uL (-z)) huL huNeg (negFinset S) hblock
+  have hsidon : IsOrderedSidon S :=
+    (isOrderedSidon_negFinset_iff S).mp hsidonNeg
+  have hDcard : (orderedDifferenceSet S).card = 6 := by
+    rw [card_orderedDifferenceSet_of_sidon hsidon, hScard]
+  have hDeven : ∀ t ∈ orderedDifferenceSet S,
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) t = 0 := by
+    intro t ht
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp ht
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    simp only [map_sub]
+    have hpodd := hodd p.1 hpdata.1
+    have hqodd := hodd p.2 hpdata.2.1
+    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) p.1 <;>
+      fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) p.2 <;>
+      simp_all
+  refine ⟨S, hScard, hsidon, hodd, hDcard, hDeven, ?_⟩
+  intro t ht
+  obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp ht
+  have hpdata := mem_orderedDistinctPairs_iff.mp hp
+  refine ⟨uL p.2, ?_, ?_, ?_⟩
+  · rw [← huLRange]
+    exact ⟨p.2, rfl⟩
+  · apply (hphase 0 p.2).mpr
+    simpa using hpdata.2.1
+  · apply (hphase t p.2).mpr
+    have : t + p.2 = p.1 := by linear_combination hpt.symm
+    rw [this]
+    exact hpdata.1
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
