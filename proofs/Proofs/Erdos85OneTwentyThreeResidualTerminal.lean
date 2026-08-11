@@ -13235,6 +13235,87 @@ theorem false_of_zeroLayer_weighted_load_cost_budget
     Nat.mul_le_mul_left q hbudget
   omega
 
+/-- A positive used-row load cannot be assembled when the antipodal filter
+excludes every orphan atom on that row.  This is the common endpoint for the
+five survivor patterns with no divisor-compatible atom. -/
+theorem false_of_zeroLayer_positive_load_of_all_atoms_excluded
+    {α : Type*} [DecidableEq α] (C : Finset α) (load : α → ℕ)
+    (target : ℕ) (htarget : 0 < target)
+    (hexcluded : ∀ x ∈ C, load x = 0)
+    (hload : (∑ x ∈ C, load x) = target) : False := by
+  have hzero : (∑ x ∈ C, load x) = 0 := by
+    apply Finset.sum_eq_zero
+    exact hexcluded
+  omega
+
+/-- Antipodal-filtered load endpoint for `[8,4,4]`.  The two permitted
+`B`-atom families would each have multiplicity six from the small-row loads,
+while the large row permits only six atoms in total. -/
+theorem false_of_zeroLayer_antipodal_load_eight_four_four
+    (n₁ n₂ : ℕ)
+    (hsmall₁ : 8 * n₁ = 48) (hsmall₂ : 8 * n₂ = 48)
+    (hlarge : 16 * (n₁ + n₂) = 96) : False := by
+  omega
+
+/-- Farkas load endpoint for `[4,4,4,2,2]`.  Every divisor-compatible atom
+has equal weighted load on the three order-four and two order-two sides,
+but the exact row targets have weighted imbalance `192`. -/
+theorem false_of_zeroLayer_antipodal_load_four_four_four_two_two
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (l₀ l₁ l₂ l₃ l₄ : α → ℕ)
+    (h₀ : (∑ x ∈ C, l₀ x) = 48)
+    (h₁ : (∑ x ∈ C, l₁ x) = 48)
+    (h₂ : (∑ x ∈ C, l₂ x) = 48)
+    (h₃ : (∑ x ∈ C, l₃ x) = 24)
+    (h₄ : (∑ x ∈ C, l₄ x) = 24)
+    (hpoint : ∀ x ∈ C,
+      4 * (l₀ x + l₁ x + l₂ x) = 8 * (l₃ x + l₄ x)) : False := by
+  have hsum : 4 * ((∑ x ∈ C, l₀ x) + (∑ x ∈ C, l₁ x) +
+      (∑ x ∈ C, l₂ x)) =
+      8 * ((∑ x ∈ C, l₃ x) + (∑ x ∈ C, l₄ x)) := by
+    calc
+      4 * ((∑ x ∈ C, l₀ x) + (∑ x ∈ C, l₁ x) +
+          (∑ x ∈ C, l₂ x)) =
+          ∑ x ∈ C, 4 * (l₀ x + l₁ x + l₂ x) := by
+            simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+      _ = ∑ x ∈ C, 8 * (l₃ x + l₄ x) := by
+        apply Finset.sum_congr rfl
+        exact hpoint
+      _ = 8 * ((∑ x ∈ C, l₃ x) + (∑ x ∈ C, l₄ x)) := by
+        simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+  rw [h₀, h₁, h₂, h₃, h₄] at hsum
+  norm_num at hsum
+
+/-- Farkas load endpoint for `[4,4,2,2,2,2]`.  Every compatible atom has
+nonpositive weight for `(-8,-3,6,6,6,6)`, whereas the exact row loads have
+strictly positive total weight. -/
+theorem false_of_zeroLayer_antipodal_load_four_four_two_two_two_two
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (l₀ l₁ l₂ l₃ l₄ l₅ : α → ℕ)
+    (h₀ : (∑ x ∈ C, l₀ x) = 48)
+    (h₁ : (∑ x ∈ C, l₁ x) = 48)
+    (h₂ : (∑ x ∈ C, l₂ x) = 24)
+    (h₃ : (∑ x ∈ C, l₃ x) = 24)
+    (h₄ : (∑ x ∈ C, l₄ x) = 24)
+    (h₅ : (∑ x ∈ C, l₅ x) = 24)
+    (hpoint : ∀ x ∈ C,
+      6 * (l₂ x + l₃ x + l₄ x + l₅ x) ≤
+        8 * l₀ x + 3 * l₁ x) : False := by
+  have hsum : 6 * ((∑ x ∈ C, l₂ x) + (∑ x ∈ C, l₃ x) +
+      (∑ x ∈ C, l₄ x) + (∑ x ∈ C, l₅ x)) ≤
+      8 * (∑ x ∈ C, l₀ x) + 3 * (∑ x ∈ C, l₁ x) := by
+    calc
+      6 * ((∑ x ∈ C, l₂ x) + (∑ x ∈ C, l₃ x) +
+          (∑ x ∈ C, l₄ x) + (∑ x ∈ C, l₅ x)) =
+          ∑ x ∈ C, 6 * (l₂ x + l₃ x + l₄ x + l₅ x) := by
+            simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+      _ ≤ ∑ x ∈ C, (8 * l₀ x + 3 * l₁ x) :=
+        Finset.sum_le_sum hpoint
+      _ = 8 * (∑ x ∈ C, l₀ x) + 3 * (∑ x ∈ C, l₁ x) := by
+        simp only [Finset.sum_add_distrib, Finset.mul_sum]
+  rw [h₀, h₁, h₂, h₃, h₄, h₅] at hsum
+  norm_num at hsum
+
 /-- With one reduced used component of order sixteen, the classified `C`
 and `D` atoms cannot simultaneously meet its exact load and exact per-row
 after-contact excess. -/
@@ -15686,6 +15767,65 @@ theorem degree_sixteen_zeroLayer_even_orphan_exists_economy_source
     simp [hcne]
   exact ⟨c, hcMem, hdvd, hpos⟩
 
+/-- Economy-wide antipodal coverage.  If every orphan component has even
+order, then every orphan has a positive used-or-orphan source whose order
+divides its half-order. -/
+theorem degree_sixteen_zeroLayer_even_orphan_economy_covered
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+      componentRepresentative D a ∈ O)
+    (∀ o ∈ C, Even o.supp.ncard) →
+      ∀ o ∈ C, ∃ c ∈ E ∪ C,
+        c.supp.ncard ∣ o.supp.ncard / 2 ∧
+          0 < componentQuotientMatrix G D o c := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+    componentRepresentative D a ∈ O)
+  intro heven o ho
+  obtain ⟨n, hn⟩ := heven o ho
+  have horder : o.supp.ncard = 2 * n := by omega
+  have hn2 : 2 ≤ n := by
+    have := hthree o
+    omega
+  letI : NeZero o.supp.ncard := ⟨Nat.ne_of_gt (by have := hthree o; omega)⟩
+  letI : NeZero n := ⟨Nat.ne_of_gt (by omega)⟩
+  have hcover := degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+    G hfree hmin hcard c₀ hregChild hcardChild hn2 horder o
+      (by simpa [D, R, O, C] using (Finset.mem_filter.mp ho).2)
+      (u o) (hu o) (huRange o) (huD o) u hu huRange huD hthree
+  simpa [D, R, O, E, C, horder] using hcover
+
 /-- Universal zero-layer load ledger: every used component of reduced order
 `k` receives total orphan load `12k`. -/
 theorem degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
@@ -17038,6 +17178,172 @@ theorem degree_sixteen_zeroLayer_orphan_used_quotient_support_trichotomy
     (∃ e f g, e ≠ f ∧ e ≠ g ∧ f ≠ g ∧ S = {e, f, g} ∧
       q e = 1 ∧ q f = 1 ∧ q g = 1)
   exact positive_partition_three_classification S q hpos hsumS
+
+/-- In the `[16]` used-component pattern, every orphan component has order
+sixteen or forty-eight.  Its entire used quotient row is the single entry
+three; unequal-block rigidity then leaves only the reverse-unit order-sixteen
+case or the equal-order case. -/
+theorem degree_sixteen_zeroLayer_single_used_orphan_order_sixteen_or_fortyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 48)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hE : (Finset.univ.filter (fun f :
+        (secondOrderDefectGraph G).ConnectedComponent ↦
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))) = {e}) :
+    o.supp.ncard = 16 ∨ o.supp.ncard = 48 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent ↦
+    componentRepresentative D f ∈ R)
+  have hsum := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  change (∑ f ∈ E, Q o f) = 3 at hsum
+  have hEsingle : E = {e} := by simpa [D, R, E] using hE
+  rw [hEsingle] at hsum
+  simp only [Finset.sum_singleton] at hsum
+  have hpos : 0 < Q o e := by omega
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using hpos)
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    left
+    rw [hsum, he] at hentry
+    omega
+  · right
+    exact heq.trans he
+  · have hrevPos : 0 < Q e o := by
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+      change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+      rw [hsum, he] at hbal
+      omega
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt (by simpa [D, Q] using hrevPos)
+    change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+      e.supp.ncard * Q e o = o.supp.ncard at hentry
+    omega
+
+/-- The reduced used-order pattern `[16]` is impossible.  Every orphan has
+order sixteen or forty-eight, while its antipodal common-neighbor source
+must be another used-or-orphan component whose order divides respectively
+eight or twenty-four; neither available order does. -/
+theorem false_of_degree_sixteen_zeroLayer_single_used_component_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 48)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hE : (Finset.univ.filter (fun f :
+        (secondOrderDefectGraph G).ConnectedComponent ↦
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))) = {e})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent ↦
+    componentRepresentative D f ∈ R)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+    componentRepresentative D a ∈ O)
+  have horder :=
+    degree_sixteen_zeroLayer_single_used_orphan_order_sixteen_or_fortyEight
+      G hfree hmin hcard c₀ hregChild hcardChild e o he ho hE
+  letI : NeZero o.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthree o; omega)⟩
+  rcases horder with ho16 | ho48
+  · letI : NeZero 8 := ⟨by norm_num⟩
+    obtain ⟨c, hc, hdvd, _hpos⟩ :=
+      degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+        G hfree hmin hcard c₀ hregChild hcardChild (n := 8)
+          (by norm_num) (by omega) o ho (u o) (hu o) (huRange o) (huD o)
+            u hu huRange huD hthree
+    have hcOrder : c.supp.ncard = 16 ∨ c.supp.ncard = 48 := by
+      rcases Finset.mem_union.mp hc with hcE | hcC
+      · have hce : c = e := by
+          rw [hE] at hcE
+          simpa using hcE
+        right
+        simpa [hce] using he
+      · apply degree_sixteen_zeroLayer_single_used_orphan_order_sixteen_or_fortyEight
+          G hfree hmin hcard c₀ hregChild hcardChild e c he
+        · exact (Finset.mem_filter.mp hcC).2
+        · exact hE
+    rcases hcOrder with hc16 | hc48
+    · rw [hc16] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+    · rw [hc48] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+  · letI : NeZero 24 := ⟨by norm_num⟩
+    obtain ⟨c, hc, hdvd, _hpos⟩ :=
+      degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+        G hfree hmin hcard c₀ hregChild hcardChild (n := 24)
+          (by norm_num) (by omega) o ho (u o) (hu o) (huRange o) (huD o)
+            u hu huRange huD hthree
+    have hcOrder : c.supp.ncard = 16 ∨ c.supp.ncard = 48 := by
+      rcases Finset.mem_union.mp hc with hcE | hcC
+      · have hce : c = e := by
+          rw [hE] at hcE
+          simpa using hcE
+        right
+        simpa [hce] using he
+      · apply degree_sixteen_zeroLayer_single_used_orphan_order_sixteen_or_fortyEight
+          G hfree hmin hcard c₀ hregChild hcardChild e c he
+        · exact (Finset.mem_filter.mp hcC).2
+        · exact hE
+    rcases hcOrder with hc16 | hc48
+    · rw [hc16] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+    · rw [hc48] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
 
 /-- Exact reduced-order table for a quotient-three orphan leg.  If the
 orphan and used component have orders `3m` and `3k`, respectively, then
