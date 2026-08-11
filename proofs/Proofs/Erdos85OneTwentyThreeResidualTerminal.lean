@@ -11643,6 +11643,29 @@ theorem no_three_residualDifferenceSet_zmod_twelve :
       orderedDifferenceSet S = {2, 4, 5, 7, 8, 10} := by
   decide
 
+/-- Finite two-case endpoint for the corrected `[12,4]` small-row census.
+Either three order-four cover sectors must be pairwise disjoint even though
+all contain the same `±4` difference, or one order-twelve quotient-three
+sector must realize the impossible residual difference set. -/
+theorem false_of_twelve_four_residual_phase_interface
+    {α : Type*} [DecidableEq α]
+    (D4 : Finset α) (diff : α → Finset (ZMod 12))
+    (hcases :
+      (D4.card = 3 ∧
+        (∀ i ∈ D4, diff i = {4, 8}) ∧
+        (↑D4 : Set α).PairwiseDisjoint diff) ∨
+      (∃ S : Finset (ZMod 12), S.card = 3 ∧
+        orderedDifferenceSet S = {2, 4, 5, 7, 8, 10})) : False := by
+  rcases hcases with ⟨hcard, hdiff, hpair⟩ | hresidual
+  · have htwo : 2 ≤ D4.card := by omega
+    obtain ⟨i, hi, j, hj, hij⟩ :=
+      Finset.one_lt_card.mp (by omega : 1 < D4.card)
+    have hdisj := hpair hi hj hij
+    have h4i : (4 : ZMod 12) ∈ diff i := by simp [hdiff i hi]
+    have h4j : (4 : ZMod 12) ∈ diff j := by simp [hdiff j hj]
+    exact (Finset.disjoint_left.mp hdisj) h4i h4j
+  · exact no_three_residualDifferenceSet_zmod_twelve hresidual
+
 /-- A labeled order-twelve defect component cannot be reverse-oriented with
 diagonal quotient three.  Reflection makes its three odd anti-diagonal
 phases into a circulant Sidon support, contradicting the finite `ZMod 12`
