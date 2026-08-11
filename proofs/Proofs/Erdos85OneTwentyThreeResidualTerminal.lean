@@ -316,6 +316,53 @@ theorem equalComponent_quotientTwo_exists_phaseSet
     have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
     simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
 
+/-- Explicit three-matching normal form for an equal-order quotient-three
+component block.  The three phases share one global orientation; this is the
+extra structure needed beyond an arbitrary exact three-uniform edge cover. -/
+theorem equalComponent_quotientThree_exists_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hr3 : 3 ≤ r)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u v : ZMod r → V) (hu : Function.Injective u)
+    (hv : Function.Injective v) (huRange : Set.range u = c.supp)
+    (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hthree : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 3) :
+    ∃ ε : ZMod r, (ε = 1 ∨ ε = -1) ∧
+      ∃ A : Finset (ZMod r), A.card = 3 ∧
+        ∀ y x, G.Adj (u y) (v x) ↔ x - ε * y ∈ A := by
+  let A := mixedAnchorSupport G (u 0) v
+  have hAcard : A.card = 3 := by
+    have hu0 : u 0 ∈ c.supp := by rw [← huRange]; exact ⟨0, rfl⟩
+    simpa [A] using (card_mixedAnchorSupport_eq_componentQuotient
+      G hfree hd heven hmin hcard c e hu0 hv hvRange).trans hthree
+  rcases graph_equalComponent_quotientThree_orientation
+    G hfree hd heven hmin hcard hr3 c e u v hu hv huRange hvRange huD hvD
+      hthree with hforward | hreverse
+  · refine ⟨1, Or.inl rfl, A, hAcard, ?_⟩
+    intro y x
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hforward y x
+    simpa only [A, mem_mixedAnchorSupport_iff, one_mul] using htranslate
+  · refine ⟨-1, Or.inr rfl, A, hAcard, ?_⟩
+    intro y x
+    have hshift : ∀ a b : ZMod r,
+        G.Adj (u (a + 1)) (v (b + (-1 : ZMod r))) ↔
+          G.Adj (u a) (v b) := by
+      intro a b
+      rw [show b + (-1 : ZMod r) = b - 1 by ring]
+      exact hreverse a b
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
+    simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
+
 /-- Equal-LCM law for a zero-excess threefold-scaled orphan block.  If two
 linked component lengths divide its reduced length and their oriented cover
 pair is injective, that reduced orphan length is exactly their LCM. -/
