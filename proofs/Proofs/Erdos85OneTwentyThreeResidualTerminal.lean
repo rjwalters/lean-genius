@@ -19784,6 +19784,81 @@ theorem degree_sixteen_quotientTwo_reduced_order_classification
     rw [hq] at hentry
     omega
 
+/-- In the zero-layer sector, the shorter branch of the reduced
+quotient-two classification is impossible for a used component: its
+reverse unit quotient would be a second unit cover alongside the mandatory
+minimum-`C₃` contact.  Thus a three-divisible `2`-leg is always an
+equal-order block with reverse quotient two. -/
+theorem degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    m = k ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2 := by
+  rcases degree_sixteen_quotientTwo_reduced_order_classification
+    G hfree hmin hcard o e m k hom hek hq with hequal | hshort
+  · exact hequal
+  · exfalso
+    exact degree_sixteen_zeroLayer_no_small_unit_cover
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e o heUsed hoc₀
+        (by exact ⟨m, hom⟩) (by rw [hom, hek]; omega) hshort.2
+
+/-- The analogous zero-layer strengthening for a quotient-three leg:
+the shorter one-third-order reverse-cover branch is excluded by the
+mandatory minimum-`C₃` unit contact, leaving only the equal-order
+concentrated atom. -/
+theorem degree_sixteen_zeroLayer_quotientThree_reduced_order_forces_equal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    m = k ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 3 := by
+  rcases degree_sixteen_quotientThree_reduced_order_classification
+    G hfree hmin hcard o e m k hom hek hq with hequal | hshort
+  · exact hequal
+  · exfalso
+    exact degree_sixteen_zeroLayer_no_small_unit_cover
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e o heUsed hoc₀
+        (by exact ⟨m, hom⟩) (by rw [hom, hek]; omega) hshort.2
+
 /-- A quotient-two leg into an order-thirty-six component is either an
 order-eighteen reverse cover or an equal-order quotient-two block. -/
 theorem degree_sixteen_quotientTwo_into_orderThirtySix_classification
