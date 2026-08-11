@@ -39268,6 +39268,578 @@ def excess {ι : Type*} [DecidableEq ι] (i : ι) : ZeroLayerAtom ι → ℕ
   | B e _ => if i = e then 2 else 0
   | A _ _ _ => 0
 
+/-- Forward orphan-to-used quotient row encoded by an atom descriptor. -/
+def forwardQuotient {ι : Type*} [DecidableEq ι]
+    (i : ι) : ZeroLayerAtom ι → ℕ
+  | C e => if i = e then 3 else 0
+  | D e => if i = e then 3 else 0
+  | B e f => if i = e then 2 else if i = f then 1 else 0
+  | A a b c => if i = a ∨ i = b ∨ i = c then 1 else 0
+
+/-- A descriptor represents the complete forward quotient row on `E`. -/
+def MatchesOn {ι : Type*} [DecidableEq ι] (E : Finset ι)
+    (q : ι → ℕ) (t : ZeroLayerAtom ι) : Prop :=
+  ∀ i ∈ E, q i = forwardQuotient i t
+
+/-- A descriptor represents the graph load and local-excess tables on `E`. -/
+def ValuesMatchOn {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
+    (E : Finset ι) (graphLoad graphExcess : ι → ℕ)
+    (t : ZeroLayerAtom ι) : Prop :=
+  ∀ i ∈ E, graphLoad i = load K i t ∧ graphExcess i = excess i t
+
 end ZeroLayerAtom
+
+/-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
+`A` descriptor.  This is the graph-facing soundness bridge from the exact
+quotient-row trichotomy to the partition-parametric atom interface. -/
+theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (m : ℕ) (hom : o.supp.ncard = 3 * m) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+    let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+    ∃ t : ZeroLayerAtom D.ConnectedComponent,
+      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.reducedOrder K t = m ∧
+        ZeroLayerAtom.MatchesOn E q t ∧
+        ((∃ e, t = .C e) ∨ (∃ e f, t = .B e f) ∨
+          (∃ a b c, t = .A a b c)) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  let S := E.filter (fun e => q e ≠ 0)
+  have hscale : ∀ e ∈ E, e.supp.ncard = 3 * K e := by
+    intro e heE
+    have heDvd := (degree_sixteen_smallLayer_used_component_card_dvd
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hc₀min hregChild
+        hcardChild (componentRepresentative D e)
+          (by simpa [D, R, E] using (Finset.mem_filter.mp heE).2)).1 rfl
+    have heMk : D.connectedComponentMk (componentRepresentative D e) = e :=
+      (ConnectedComponent.mem_supp_iff e (componentRepresentative D e)).mp
+        (componentRepresentative_mem D e)
+    have hthree : 3 ∣ e.supp.ncard := by simpa [D, heMk] using heDvd
+    exact (Nat.mul_div_cancel' hthree).symm
+  have hshape := degree_sixteen_zeroLayer_orphan_used_quotient_support_trichotomy
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  change
+    (∃ e, S = {e} ∧ q e = 3) ∨
+    (∃ e f, e ≠ f ∧ S = {e, f} ∧
+      ((q e = 2 ∧ q f = 1) ∨ (q e = 1 ∧ q f = 2))) ∨
+    (∃ e f g, e ≠ f ∧ e ≠ g ∧ f ≠ g ∧ S = {e, f, g} ∧
+      q e = 1 ∧ q f = 1 ∧ q g = 1) at hshape
+  have hzero (i : D.ConnectedComponent) (hiE : i ∈ E) (hiS : i ∉ S) :
+      q i = 0 := by
+    by_contra hne
+    exact hiS (Finset.mem_filter.mpr ⟨hiE, hne⟩)
+  rcases hshape with hC | hB | hA
+  · obtain ⟨e, hS, hqe⟩ := hC
+    have heS : e ∈ S := by rw [hS]; simp
+    have heE : e ∈ E := (Finset.mem_filter.mp heS).1
+    have hvals := degree_sixteen_zeroLayer_quotientThree_atom_values_equal
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
+        (by simpa [D, R, E] using (Finset.mem_filter.mp heE).2) hoc₀
+        m (K e) hom (hscale e heE) (by simpa [D, q] using hqe)
+    refine ⟨.C e, by simp [ZeroLayerAtom.Valid], ?_, ?_, Or.inl ⟨e, rfl⟩⟩
+    · simpa [ZeroLayerAtom.reducedOrder] using hvals.1.symm
+    · intro i hiE
+      change q i = ZeroLayerAtom.forwardQuotient i (.C e)
+      by_cases hie : i = e
+      · subst i; simp [ZeroLayerAtom.forwardQuotient, hqe]
+      · have hiS : i ∉ S := by simpa [hS, hie]
+        simp [ZeroLayerAtom.forwardQuotient, hie, hzero i hiE hiS]
+  · obtain ⟨e, f, hef, hS, hq⟩ := hB
+    rcases hq with ⟨hqe, hqf⟩ | ⟨hqe, hqf⟩
+    · have heS : e ∈ S := by rw [hS]; simp
+      have hfS : f ∈ S := by rw [hS]; simp [hef]
+      have heE : e ∈ E := (Finset.mem_filter.mp heS).1
+      have hfE : f ∈ E := (Finset.mem_filter.mp hfS).1
+      have hequal := degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
+          (by simpa [D, R, E] using (Finset.mem_filter.mp heE).2) hoc₀
+          m (K e) hom (hscale e heE) (by simpa [D, q] using hqe)
+      have hfdiv := (degree_sixteen_quotientOne_reduced_balance
+        G hfree hmin hcard o f m (K f) hom (hscale f hfE)
+          (by simpa [D, q] using hqf)).1
+      refine ⟨.B e f, ⟨hef, ?_⟩, ?_, ?_, Or.inr (Or.inl ⟨e, f, rfl⟩)⟩
+      · simpa [hequal.1] using hfdiv
+      · simpa [ZeroLayerAtom.reducedOrder] using hequal.1.symm
+      · intro i hiE
+        change q i = ZeroLayerAtom.forwardQuotient i (.B e f)
+        by_cases hie : i = e
+        · subst i; simp [ZeroLayerAtom.forwardQuotient, hqe, hef]
+        · by_cases hif : i = f
+          · subst i; simp [ZeroLayerAtom.forwardQuotient, hqf, Ne.symm hef]
+          · have hiS : i ∉ S := by simpa [hS, hie, hif]
+            simp [ZeroLayerAtom.forwardQuotient, hie, hif, hzero i hiE hiS]
+    · have hfS : f ∈ S := by rw [hS]; simp [hef]
+      have heS : e ∈ S := by rw [hS]; simp
+      have hfE : f ∈ E := (Finset.mem_filter.mp hfS).1
+      have heE : e ∈ E := (Finset.mem_filter.mp heS).1
+      have hequal := degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o f
+          (by simpa [D, R, E] using (Finset.mem_filter.mp hfE).2) hoc₀
+          m (K f) hom (hscale f hfE) (by simpa [D, q] using hqf)
+      have hediv := (degree_sixteen_quotientOne_reduced_balance
+        G hfree hmin hcard o e m (K e) hom (hscale e heE)
+          (by simpa [D, q] using hqe)).1
+      refine ⟨.B f e, ⟨Ne.symm hef, ?_⟩, ?_, ?_, Or.inr (Or.inl ⟨f, e, rfl⟩)⟩
+      · simpa [hequal.1] using hediv
+      · simpa [ZeroLayerAtom.reducedOrder] using hequal.1.symm
+      · intro i hiE
+        change q i = ZeroLayerAtom.forwardQuotient i (.B f e)
+        by_cases hif : i = f
+        · subst i; simp [ZeroLayerAtom.forwardQuotient, hqf, Ne.symm hef]
+        · by_cases hie : i = e
+          · subst i; simp [ZeroLayerAtom.forwardQuotient, hqe, hef]
+          · have hiS : i ∉ S := by simpa [hS, hie, hif]
+            simp [ZeroLayerAtom.forwardQuotient, hie, hif, hzero i hiE hiS]
+  · obtain ⟨a, b, c, hab, hac, hbc, hS, hqa, hqb, hqc⟩ := hA
+    have haS : a ∈ S := by rw [hS]; simp
+    have hbS : b ∈ S := by rw [hS]; simp [hab]
+    have hcS : c ∈ S := by rw [hS]; simp [hac, hbc]
+    have haE : a ∈ E := (Finset.mem_filter.mp haS).1
+    have hbE : b ∈ E := (Finset.mem_filter.mp hbS).1
+    have hcE : c ∈ E := (Finset.mem_filter.mp hcS).1
+    have hmab := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o a b m (K a) (K b) hom
+        (hscale a haE) (hscale b hbE) hab
+        (by simpa [D, q] using hqa) (by simpa [D, q] using hqb)
+    have hmac := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o a c m (K a) (K c) hom
+        (hscale a haE) (hscale c hcE) hac
+        (by simpa [D, q] using hqa) (by simpa [D, q] using hqc)
+    have hmbc := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o b c m (K b) (K c) hom
+        (hscale b hbE) (hscale c hcE) hbc
+        (by simpa [D, q] using hqb) (by simpa [D, q] using hqc)
+    refine ⟨.A a b c, ⟨hab, hac, hbc, ?_, ?_⟩, ?_, ?_,
+      Or.inr (Or.inr ⟨a, b, c, rfl⟩)⟩
+    · exact hmab.symm.trans hmac
+    · exact hmab.symm.trans hmbc
+    · simpa [ZeroLayerAtom.reducedOrder] using hmab.symm
+    · intro i hiE
+      change q i = ZeroLayerAtom.forwardQuotient i (.A a b c)
+      by_cases hia : i = a
+      · subst i; simp [ZeroLayerAtom.forwardQuotient, hqa]
+      · by_cases hib : i = b
+        · subst i; simp [ZeroLayerAtom.forwardQuotient, hqb]
+        · by_cases hic : i = c
+          · subst i; simp [ZeroLayerAtom.forwardQuotient, hqc]
+          · have hiS : i ∉ S := by simpa [hS, hia, hib, hic]
+            simp [ZeroLayerAtom.forwardQuotient, hia, hib, hic,
+              hzero i hiE hiS]
+
+/-- Every non-three-divisible zero-layer orphan row has a valid `D`
+descriptor, with exact reduced order and complete forward quotient row. -/
+theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_atom
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 3 ∣ o.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+    let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+    ∃ e : D.ConnectedComponent,
+      ZeroLayerAtom.Valid K (.D e) ∧
+        ZeroLayerAtom.reducedOrder K (.D e) = o.supp.ncard ∧
+        ZeroLayerAtom.MatchesOn E q (.D e) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+  obtain ⟨e, he, _hunique⟩ :=
+    degree_sixteen_zeroLayer_nonThreeDivisible_orphan_D_atom
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hnot
+  have heE : e ∈ E := by
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa [D, R] using he.1⟩
+  have hsum : (∑ i ∈ E, q i) = 3 := by
+    simpa [D, R, E, q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hqe : q e = 3 := by simpa [D, q] using he.2.1
+  have horder : o.supp.ncard = K e := by simpa [K] using he.2.2.1
+  refine ⟨e, ?_, ?_, ?_⟩
+  · change 3 ≤ K e ∧ ¬ 3 ∣ K e
+    constructor
+    · rw [← horder]
+      exact hthree o
+    · rw [← horder]
+      exact hnot
+  · simpa [ZeroLayerAtom.reducedOrder] using horder.symm
+  · intro i hiE
+    change q i = ZeroLayerAtom.forwardQuotient i (.D e)
+    by_cases hie : i = e
+    · subst i
+      simp [ZeroLayerAtom.forwardQuotient, hqe]
+    · have hpair : ({e, i} : Finset D.ConnectedComponent) ⊆ E := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact heE
+        · exact hiE
+      have hle := Finset.sum_le_sum_of_subset_of_nonneg
+        (f := q) hpair (fun _ _ _ => Nat.zero_le _)
+      rw [Finset.sum_pair (Ne.symm hie), hqe, hsum] at hle
+      have hqi : q i = 0 := by omega
+      simp [ZeroLayerAtom.forwardQuotient, hie, hqi]
+
+/-- Exhaustive graph-to-atom soundness for a zero-layer orphan component.
+The descriptor is valid, represents its entire forward quotient row, and
+uses the correct reduced order in the three-divisible and `D` branches. -/
+theorem degree_sixteen_zeroLayer_orphan_atom_exists
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+    let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
+    ∃ t : ZeroLayerAtom D.ConnectedComponent,
+      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.MatchesOn E q t ∧
+        ((3 ∣ o.supp.ncard ∧
+            ZeroLayerAtom.reducedOrder K t = o.supp.ncard / 3 ∧
+            ((∃ e, t = .C e) ∨ (∃ e f, t = .B e f) ∨
+              (∃ a b c, t = .A a b c))) ∨
+          (¬ 3 ∣ o.supp.ncard ∧
+            ZeroLayerAtom.reducedOrder K t = o.supp.ncard ∧
+            ∃ e, t = .D e)) := by
+  classical
+  dsimp only
+  by_cases hdiv : 3 ∣ o.supp.ncard
+  · obtain ⟨m, hom⟩ := hdiv
+    obtain ⟨t, htValid, htOrder, htMatches, htShape⟩ :=
+      degree_sixteen_zeroLayer_threeDivisible_orphan_atom
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hoc₀
+          m hom
+    have hquot : o.supp.ncard / 3 = m := by
+      rw [hom]
+      simpa [mul_comm] using
+        Nat.mul_div_left m (by norm_num : 0 < 3)
+    exact ⟨t, htValid, htMatches,
+      Or.inl ⟨⟨m, hom⟩, by simpa [hquot] using htOrder, htShape⟩⟩
+  · obtain ⟨e, heValid, heOrder, heMatches⟩ :=
+      degree_sixteen_zeroLayer_nonThreeDivisible_orphan_atom
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree o ho hdiv
+    exact ⟨.D e, heValid, heMatches,
+      Or.inr ⟨hdiv, heOrder, ⟨e, rfl⟩⟩⟩
+
+/-- A three-unit orphan row realizes the `A` descriptor's load and excess
+tables exactly on its three legs. -/
+theorem degree_sixteen_zeroLayer_orphan_A_atom_typing
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o a b c : (secondOrderDefectGraph G).ConnectedComponent)
+    (m ka kb kc : ℕ)
+    (hom : o.supp.ncard = 3 * m)
+    (hka : a.supp.ncard = 3 * ka)
+    (hkb : b.supp.ncard = 3 * kb)
+    (hkc : c.supp.ncard = 3 * kc)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hqa : componentQuotientMatrix G (secondOrderDefectGraph G) o a = 1)
+    (hqb : componentQuotientMatrix G (secondOrderDefectGraph G) o b = 1)
+    (hqc : componentQuotientMatrix G (secondOrderDefectGraph G) o c = 1) :
+    (Nat.lcm ka kb = Nat.lcm ka kc ∧ Nat.lcm ka kb = Nat.lcm kb kc) ∧
+    m = Nat.lcm ka kb ∧
+    (zeroLayerAtomLoad G a o = Nat.lcm ka kb ∧
+      zeroLayerAtomLoad G b o = Nat.lcm ka kb ∧
+      zeroLayerAtomLoad G c o = Nat.lcm ka kb) ∧
+    (zeroLayerAtomExcess G a o = 0 ∧
+      zeroLayerAtomExcess G b o = 0 ∧
+      zeroLayerAtomExcess G c o = 0) := by
+  have hmab := degree_sixteen_two_quotientOne_legs_reduced_lcm
+    G hfree hmin hcard o a b m ka kb hom hka hkb hab hqa hqb
+  have hmac := degree_sixteen_two_quotientOne_legs_reduced_lcm
+    G hfree hmin hcard o a c m ka kc hom hka hkc hac hqa hqc
+  have hmbc := degree_sixteen_two_quotientOne_legs_reduced_lcm
+    G hfree hmin hcard o b c m kb kc hom hkb hkc hbc hqb hqc
+  have hloadA := degree_sixteen_quotientOne_atom_values
+    G hfree hmin hcard o a m ka hom hka hqa
+  have hloadB := degree_sixteen_quotientOne_atom_values
+    G hfree hmin hcard o b m kb hom hkb hqb
+  have hloadC := degree_sixteen_quotientOne_atom_values
+    G hfree hmin hcard o c m kc hom hkc hqc
+  refine ⟨⟨hmab.symm.trans hmac, hmab.symm.trans hmbc⟩, hmab,
+    ⟨?_, ?_, ?_⟩, hloadA.2, hloadB.2, hloadC.2⟩
+  · exact hloadA.1.trans hmab
+  · exact hloadB.1.trans hmab
+  · exact hloadC.1.trans hmab
+
+/-- The exact A-table extends from its three named legs to every used row:
+off-leg forward quotient zero forces reverse quotient, load, and excess zero. -/
+theorem degree_sixteen_zeroLayer_orphan_A_atom_values_match_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (K : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (o a b c : (secondOrderDefectGraph G).ConnectedComponent) (m : ℕ)
+    (hom : o.supp.ncard = 3 * m)
+    (hscale : ∀ i ∈ E, i.supp.ncard = 3 * K i)
+    (haE : a ∈ E) (hbE : b ∈ E) (hcE : c ∈ E)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hqa : componentQuotientMatrix G (secondOrderDefectGraph G) o a = 1)
+    (hqb : componentQuotientMatrix G (secondOrderDefectGraph G) o b = 1)
+    (hqc : componentQuotientMatrix G (secondOrderDefectGraph G) o c = 1)
+    (hzero : ∀ i ∈ E, i ≠ a → i ≠ b → i ≠ c →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o i = 0) :
+    ZeroLayerAtom.ValuesMatchOn K E
+      (fun i => zeroLayerAtomLoad G i o)
+      (fun i => zeroLayerAtomExcess G i o) (.A a b c) := by
+  have ht := degree_sixteen_zeroLayer_orphan_A_atom_typing
+    G hfree hmin hcard o a b c m (K a) (K b) (K c) hom
+      (hscale a haE) (hscale b hbE) (hscale c hcE)
+      hab hac hbc hqa hqb hqc
+  rcases ht with ⟨_hlcm, _hm, hloads, hexcess⟩
+  intro i hiE
+  by_cases hia : i = a
+  · subst i
+    constructor
+    · simpa [ZeroLayerAtom.load, hab, hac] using hloads.1
+    · simpa [ZeroLayerAtom.excess] using hexcess.1
+  · by_cases hib : i = b
+    · subst i
+      constructor
+      · simpa [ZeroLayerAtom.load, Ne.symm hab, hbc] using hloads.2.1
+      · simpa [ZeroLayerAtom.excess] using hexcess.2.1
+    · by_cases hic : i = c
+      · subst i
+        constructor
+        · simpa [ZeroLayerAtom.load, Ne.symm hac, Ne.symm hbc] using hloads.2.2
+        · simpa [ZeroLayerAtom.excess] using hexcess.2.2
+      · have hz := degree_sixteen_quotientZero_atom_values
+          G hfree hmin hcard o i (hzero i hiE hia hib hic)
+        simpa [ZeroLayerAtom.load, ZeroLayerAtom.excess, hia, hib, hic] using hz
+
+/-- Complete value-table agreement for a concentrated `C` atom. -/
+theorem degree_sixteen_zeroLayer_orphan_C_atom_values_match_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (K : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent) (m : ℕ)
+    (hom : o.supp.ncard = 3 * m) (heE : e ∈ E)
+    (hscale : ∀ i ∈ E, i.supp.ncard = 3 * K i)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀)
+    (hqe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3)
+    (hzero : ∀ i ∈ E, i ≠ e →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o i = 0) :
+    ZeroLayerAtom.ValuesMatchOn K E
+      (fun i => zeroLayerAtomLoad G i o)
+      (fun i => zeroLayerAtomExcess G i o) (.C e) := by
+  have hvals := degree_sixteen_zeroLayer_quotientThree_atom_values_equal
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e heUsed hoc₀
+      m (K e) hom (hscale e heE) hqe
+  intro i hiE
+  by_cases hie : i = e
+  · subst i
+    constructor
+    · simpa [ZeroLayerAtom.load] using hvals.2.1
+    · simpa [ZeroLayerAtom.excess] using hvals.2.2
+  · have hz := degree_sixteen_quotientZero_atom_values
+      G hfree hmin hcard o i (hzero i hiE hie)
+    simpa [ZeroLayerAtom.load, ZeroLayerAtom.excess, hie] using hz
+
+/-- Complete value-table agreement for a `2+1` `B` atom. -/
+theorem degree_sixteen_zeroLayer_orphan_B_atom_values_match_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (K : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (o e f : (secondOrderDefectGraph G).ConnectedComponent) (m : ℕ)
+    (hom : o.supp.ncard = 3 * m) (heE : e ∈ E) (hfE : f ∈ E)
+    (hscale : ∀ i ∈ E, i.supp.ncard = 3 * K i)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (hef : e ≠ f)
+    (hqe : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2)
+    (hqf : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1)
+    (hzero : ∀ i ∈ E, i ≠ e → i ≠ f →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o i = 0) :
+    ZeroLayerAtom.ValuesMatchOn K E
+      (fun i => zeroLayerAtomLoad G i o)
+      (fun i => zeroLayerAtomExcess G i o) (.B e f) := by
+  have hevals := degree_sixteen_zeroLayer_quotientTwo_atom_values_equal
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e heUsed hoc₀
+      m (K e) hom (hscale e heE) hqe
+  have hfvals := degree_sixteen_quotientOne_atom_values
+    G hfree hmin hcard o f m (K f) hom (hscale f hfE) hqf
+  intro i hiE
+  by_cases hie : i = e
+  · subst i
+    constructor
+    · simpa [ZeroLayerAtom.load, hef] using hevals.2.1
+    · simpa [ZeroLayerAtom.excess] using hevals.2.2
+  · by_cases hif : i = f
+    · subst i
+      constructor
+      · simpa [ZeroLayerAtom.load, Ne.symm hef, hevals.1] using hfvals.1
+      · simpa [ZeroLayerAtom.excess, Ne.symm hef] using hfvals.2
+    · have hz := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o i (hzero i hiE hie hif)
+      simpa [ZeroLayerAtom.load, ZeroLayerAtom.excess, hie, hif] using hz
+
+/-- Complete value-table agreement for a non-three-divisible `D` atom. -/
+theorem degree_sixteen_zeroLayer_orphan_D_atom_values_match_on
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (K : (secondOrderDefectGraph G).ConnectedComponent → ℕ)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heE : e ∈ E) (hscale : e.supp.ncard = 3 * K e)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hnot : ¬ 3 ∣ o.supp.ncard)
+    (hservice : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) e o)
+    (hzero : ∀ i ∈ E, i ≠ e →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o i = 0) :
+    ZeroLayerAtom.ValuesMatchOn K E
+      (fun i => zeroLayerAtomLoad G i o)
+      (fun i => zeroLayerAtomExcess G i o) (.D e) := by
+  have hevals := degree_sixteen_zeroLayer_D_atom_values
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e (K e)
+      ho heUsed hscale hnot hservice
+  intro i hiE
+  by_cases hie : i = e
+  · subst i
+    constructor
+    · simpa [ZeroLayerAtom.load] using hevals.1
+    · simpa [ZeroLayerAtom.excess] using hevals.2
+  · have hz := degree_sixteen_quotientZero_atom_values
+      G hfree hmin hcard o i (hzero i hiE hie)
+    simpa [ZeroLayerAtom.load, ZeroLayerAtom.excess, hie] using hz
 
 end Erdos85
