@@ -12946,6 +12946,71 @@ theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
   · apply (hsmall z y).mpr
     exact hzsmall
 
+/-- The two-offset minimum-cover sector between `uL 0` and an order-six
+small component.  Its witnesses lie in the minimum `C₃`, and its two
+offsets split one even/one odd. -/
+theorem orderThirty_orderSix_common_minimum_exists_two_offset_witness_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (uL : ZMod 30 → V) (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huL : Function.Injective uL) (huS : Function.Injective uS)
+    (huC : Function.Injective uC)
+    (huLRange : Set.range uL = L.supp) (huSRange : Set.range uS = S.supp)
+    (huCRange : Set.range uC = C.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
+    (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1) :
+    ∃ M : Finset (ZMod 6), M.card = 2 ∧
+      (M.filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ∧
+      ∀ z ∈ M, ∃ y : ZMod 3,
+        G.Adj (uL 0) (uC y) ∧ G.Adj (uS z) (uC y) := by
+  obtain ⟨h₃₃₀, ρ, hρ, aL, hlarge⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 3)
+      (by norm_num : 3 ≤ 30) C L uC uL huC huL huCRange huLRange
+      huCD huLD hLC
+  obtain ⟨h₃₆, σ, hσ, aS, hsmall⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 3)
+      (by norm_num : 3 ≤ 6) C S uC uS huC huS huCRange huSRange
+      huCD huSD hSC
+  have h₃₃₀eq : h₃₃₀ = (by norm_num : 3 ∣ 30) := Subsingleton.elim _ _
+  have h₃₆eq : h₃₆ = (by norm_num : 3 ∣ 6) := Subsingleton.elim _ _
+  subst h₃₃₀eq
+  subst h₃₆eq
+  have hσsq : σ * σ = 1 := by rcases hσ with rfl | rfl <;> ring
+  let c : ZMod 3 := σ * (aL - aS)
+  let M : Finset (ZMod 6) := Finset.univ.filter fun z =>
+    ZMod.castHom (by norm_num : 3 ∣ 6) (ZMod 3) z = c
+  have hMcounts := zmod_six_to_three_fiber_card_two_even_card_one c
+  change M.card = 2 ∧
+    (M.filter fun z => ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1
+      at hMcounts
+  refine ⟨M, hMcounts.1, hMcounts.2, ?_⟩
+  intro z hz
+  have hzcast : ZMod.castHom (by norm_num : 3 ∣ 6) (ZMod 3) z = c :=
+    (Finset.mem_filter.mp hz).2
+  refine ⟨aL, ?_, ?_⟩
+  · rw [G.adj_comm]
+    apply (hlarge aL 0).mpr
+    simp
+  · rw [G.adj_comm]
+    apply (hsmall aL z).mpr
+    dsimp only [c] at hzcast
+    rw [hzcast, ← mul_assoc, hσsq, one_mul]
+    ring
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
