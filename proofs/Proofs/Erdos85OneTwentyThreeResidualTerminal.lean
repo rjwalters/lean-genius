@@ -12406,6 +12406,33 @@ theorem two_three_target_rows_excess_zero_or_four
     interval_cases a₂ <;> interval_cases b₂ <;> interval_cases c₂ <;>
     norm_num at *
 
+/-- In the non-all-unit branch of two complementary three-target rows,
+exactly one target column is `(1,1)`; the other two columns are the directed
+pair `(0,2)` and `(2,0)` in some order. -/
+theorem two_three_target_rows_unique_unit_column
+    (a₁ b₁ c₁ a₂ b₂ c₂ : ℕ)
+    (hrow₁ : a₁ + b₁ + c₁ = 3)
+    (hrow₂ : a₂ + b₂ + c₂ = 3)
+    (hcola : a₁ + a₂ = 2) (hcolb : b₁ + b₂ = 2)
+    (hcolc : c₁ + c₂ = 2)
+    (hnotA : ¬ (a₁ = 1 ∧ b₁ = 1 ∧ c₁ = 1 ∧
+      a₂ = 1 ∧ b₂ = 1 ∧ c₂ = 1)) :
+    (a₁ = 1 ∧ a₂ = 1 ∧
+      ¬ (b₁ = 1 ∧ b₂ = 1) ∧ ¬ (c₁ = 1 ∧ c₂ = 1)) ∨
+    (b₁ = 1 ∧ b₂ = 1 ∧
+      ¬ (a₁ = 1 ∧ a₂ = 1) ∧ ¬ (c₁ = 1 ∧ c₂ = 1)) ∨
+    (c₁ = 1 ∧ c₂ = 1 ∧
+      ¬ (a₁ = 1 ∧ a₂ = 1) ∧ ¬ (b₁ = 1 ∧ b₂ = 1)) := by
+  have ha₁ : a₁ ≤ 2 := by omega
+  have hb₁ : b₁ ≤ 2 := by omega
+  have hc₁ : c₁ ≤ 2 := by omega
+  have ha₂ : a₂ ≤ 2 := by omega
+  have hb₂ : b₂ ≤ 2 := by omega
+  have hc₂ : c₂ ≤ 2 := by omega
+  interval_cases a₁ <;> interval_cases b₁ <;> interval_cases c₁ <;>
+    interval_cases a₂ <;> interval_cases b₂ <;> interval_cases c₂ <;>
+    norm_num at *
+
 /-- Finite-family form of the two-row residual dichotomy.  Two residual
 components with row mass three and target-column mass two are either both
 the all-unit `A` pattern or have aggregate excess four. -/
