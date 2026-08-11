@@ -13210,6 +13210,42 @@ theorem degree_sixteen_zeroLayer_used_orderTwentyFour_orderSix_cross_eq_zero
   rw [hecard, hfcard] at hbal
   omega
 
+/-- Used components of actual orders thirty and six cannot interact:
+detailed balance would require the order-six-side quotient to be five times
+the order-thirty-side quotient, beyond the exact used-row bound three. -/
+theorem degree_sixteen_zeroLayer_used_orderThirty_orderSix_cross_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hf : componentRepresentative (secondOrderDefectGraph G) f ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hecard : e.supp.ncard = 30) (hfcard : f.supp.ncard = 6) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e f = 0 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) f e = 0 := by
+  have hefLe := degree_sixteen_zeroLayer_used_to_used_quotient_le_three
+    G hfree hmin hcard c₀ hregChild hcardChild e f he hf
+  have hfeLe := degree_sixteen_zeroLayer_used_to_used_quotient_le_three
+    G hfree hmin hcard c₀ hregChild hcardChild f e hf he
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e f
+  rw [hecard, hfcard] at hbal
+  omega
+
 /-- If a used component has actual order twenty-four and every other used
 component has actual order six, its used-cell row is concentrated on its
 diagonal, which is therefore exactly three. -/
