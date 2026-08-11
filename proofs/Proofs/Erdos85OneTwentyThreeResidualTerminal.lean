@@ -12713,6 +12713,52 @@ theorem componentQuotientOne_exists_affineCover
     rw [hfAdj, hreverse]
     ring_nf
 
+/-- Explicit two-matching normal form for an equal-order quotient-two
+component block. -/
+theorem equalComponent_quotientTwo_exists_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hr3 : 3 ≤ r)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u v : ZMod r → V) (hu : Function.Injective u)
+    (hv : Function.Injective v) (huRange : Set.range u = c.supp)
+    (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (htwo : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 2) :
+    ∃ ε : ZMod r, (ε = 1 ∨ ε = -1) ∧
+      ∃ A : Finset (ZMod r), A.card = 2 ∧
+        ∀ y x, G.Adj (u y) (v x) ↔ x - ε * y ∈ A := by
+  let A := mixedAnchorSupport G (u 0) v
+  have hAcard : A.card = 2 := by
+    have hu0 : u 0 ∈ c.supp := by rw [← huRange]; exact ⟨0, rfl⟩
+    simpa [A] using (card_mixedAnchorSupport_eq_componentQuotient
+      G hfree hd heven hmin hcard c e hu0 hv hvRange).trans htwo
+  rcases graph_equalComponent_quotientTwo_orientation
+    G hfree hd heven hmin hcard hr3 c e u v hu hv huRange hvRange huD hvD
+      htwo with hforward | hreverse
+  · refine ⟨1, Or.inl rfl, A, hAcard, ?_⟩
+    intro y x
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hforward y x
+    simpa only [A, mem_mixedAnchorSupport_iff, one_mul] using htranslate
+  · refine ⟨-1, Or.inr rfl, A, hAcard, ?_⟩
+    intro y x
+    have hshift : ∀ a b : ZMod r,
+        G.Adj (u (a + 1)) (v (b + (-1 : ZMod r))) ↔
+          G.Adj (u a) (v b) := by
+      intro a b
+      rw [show b + (-1 : ZMod r) = b - 1 by ring]
+      exact hreverse a b
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
+    simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
+
 /-- The unit cover from an order-thirty component to the minimum `C₃`
 realizes every nonzero multiple of three as a common-neighbor difference in
 the minimum component. -/
@@ -12832,9 +12878,10 @@ theorem orderThirty_diagonal_three_exists_even_difference_sector
     simp only [map_sub]
     have hpodd := hodd p.1 hpdata.1
     have hqodd := hodd p.2 hpdata.2.1
-    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) p.1 <;>
-      fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) p.2 <;>
-      simp_all
+    have hnonzero_eq_one : ∀ x : ZMod 2, x ≠ 0 → x = 1 := by
+      native_decide
+    rw [hnonzero_eq_one _ hpodd, hnonzero_eq_one _ hqodd]
+    simp
   refine ⟨S, hScard, hsidon, hodd, hDcard, hDeven, ?_⟩
   intro t ht
   obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp ht
@@ -12882,8 +12929,7 @@ theorem orderThirty_mutual_quotientTwo_exists_difference_sector
   let w : ZMod 30 → V := fun z => uB (ε * z)
   have hw : Function.Injective w := by
     intro x y hxy
-    apply_fun uB at hxy
-    have hmul := huB hxy
+    have hmul : ε * x = ε * y := huB (by simpa [w] using hxy)
     have := congrArg (fun z : ZMod 30 => ε * z) hmul
     simpa only [← mul_assoc, hεsq, one_mul] using this
   have hblock : ∀ x z : ZMod 30,
@@ -12916,15 +12962,18 @@ theorem orderThirty_mutual_quotientTwo_exists_difference_sector
   · rw [G.adj_comm, hphase]
     have : (0 : ZMod 30) - ε * ycoord = p.2 := by
       dsimp only [ycoord]
-      rw [mul_neg, ← mul_assoc, hεsq, one_mul]
-      ring
+      calc
+        0 - ε * (-ε * p.2) = (ε * ε) * p.2 := by ring
+        _ = p.2 := by rw [hεsq, one_mul]
     rw [this]
     exact hpdata.2.1
   · rw [G.adj_comm, hphase]
     have : t - ε * ycoord = p.1 := by
       dsimp only [ycoord]
-      rw [mul_neg, ← mul_assoc, hεsq, one_mul]
-      linear_combination hpt.symm
+      calc
+        t - ε * (-ε * p.2) = t + (ε * ε) * p.2 := by ring
+        _ = t + p.2 := by rw [hεsq, one_mul]
+        _ = p.1 := by linear_combination hpt.symm
     rw [this]
     exact hpdata.1
 
@@ -13724,53 +13773,6 @@ theorem zmod_thirty_six_matching_cover_path_offset_iff
       rw [← hoff]
       rw [he₆]
       ring
-
-/-- Explicit two-matching normal form for an equal-order quotient-two
-component block.  The phase set has cardinality two and the whole block is
-obtained from it with one global sign. -/
-theorem equalComponent_quotientTwo_exists_phaseSet
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
-    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
-    (hcard : Fintype.card V = d * (d - 1) + 3) (hr3 : 3 ≤ r)
-    (c e : (secondOrderDefectGraph G).ConnectedComponent)
-    (u v : ZMod r → V) (hu : Function.Injective u)
-    (hv : Function.Injective v) (huRange : Set.range u = c.supp)
-    (hvRange : Set.range v = e.supp)
-    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
-      {u (x - 1), u (x + 1)})
-    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
-      {v (x - 1), v (x + 1)})
-    (htwo : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 2) :
-    ∃ ε : ZMod r, (ε = 1 ∨ ε = -1) ∧
-      ∃ A : Finset (ZMod r), A.card = 2 ∧
-        ∀ y x, G.Adj (u y) (v x) ↔ x - ε * y ∈ A := by
-  let A := mixedAnchorSupport G (u 0) v
-  have hAcard : A.card = 2 := by
-    have hu0 : u 0 ∈ c.supp := by rw [← huRange]; exact ⟨0, rfl⟩
-    simpa [A] using (card_mixedAnchorSupport_eq_componentQuotient
-      G hfree hd heven hmin hcard c e hu0 hv hvRange).trans htwo
-  rcases graph_equalComponent_quotientTwo_orientation
-    G hfree hd heven hmin hcard hr3 c e u v hu hv huRange hvRange huD hvD
-      htwo with hforward | hreverse
-  · refine ⟨1, Or.inl rfl, A, hAcard, ?_⟩
-    intro y x
-    have htranslate := mem_mixedAnchorSupport_rect_translate G hforward y x
-    simpa only [A, mem_mixedAnchorSupport_iff, one_mul] using htranslate
-  · refine ⟨-1, Or.inr rfl, A, hAcard, ?_⟩
-    intro y x
-    have hshift : ∀ a b : ZMod r,
-        G.Adj (u (a + 1)) (v (b + (-1 : ZMod r))) ↔
-          G.Adj (u a) (v b) := by
-      intro a b
-      rw [show b + (-1 : ZMod r) = b - 1 by ring]
-      exact hreverse a b
-    have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
-    simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
 
 /-- Projection of an admissible order-thirty phase pair to `ZMod 6` does
 not collapse the pair: a difference nonzero modulo three remains nonzero
