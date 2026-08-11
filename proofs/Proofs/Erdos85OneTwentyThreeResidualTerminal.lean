@@ -12674,6 +12674,27 @@ theorem zmod_thirty_six_matching_cover_path_offset_iff
       rw [he₆]
       ring
 
+/-- Projection of an admissible order-thirty phase pair to `ZMod 6` does
+not collapse the pair: a difference nonzero modulo three remains nonzero
+modulo six. -/
+theorem zmod_thirty_to_six_phase_projection_ne_of_mod_three_ne :
+    ∀ a b : ZMod 30,
+      ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) (a - b) ≠ 0 →
+      ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a ≠
+        ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) b := by
+  native_decide
+
+/-- The affine path-offset transformation from a `ZMod 30` matching phase
+to its `ZMod 6` target preserves the parity of phase differences. -/
+theorem zmod_thirty_to_six_affine_phase_difference_parity
+    (a b : ZMod 30) (c τ : ZMod 6) (τsq : τ * τ = 1) :
+    ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2)
+      ((c - τ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a) -
+       (c - τ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) b)) =
+    ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) (a - b) := by
+  revert τsq
+  native_decide
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
