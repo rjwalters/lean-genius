@@ -14877,6 +14877,35 @@ theorem degree_sixteen_quotientThree_into_orderThirtySix_classification
         e.supp.ncard * Q e o = o.supp.ncard at hentry
       omega)
 
+/-- An order-thirty-six component cannot have unit quotient into two
+distinct order-twelve components.  The two globally oriented covers both
+repeat after twelve source steps, so the intrinsic two-cover LCM obstruction
+produces a forbidden four-cycle. -/
+theorem degree_sixteen_orderThirtySix_orderTwelve_unit_targets_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 36)
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hS : ∀ o ∈ S, o.supp.ncard = 12 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) :
+    S.card ≤ 1 := by
+  classical
+  apply Finset.card_le_one.mpr
+  intro o₁ ho₁ o₂ ho₂
+  by_contra hne
+  exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      o₁ o₂ e hne (hS o₁ ho₁).2 (hS o₂ ho₂).2 (by
+        rw [(hS o₁ ho₁).1, (hS o₂ ho₂).1, he]
+        norm_num)
+
 /-- Exact reduced-order table for the quotient-two leg of a `2+1` orphan
 row.  Equal orders give reverse quotient two; otherwise the used component
 is twice as long and the reverse quotient is one. -/
@@ -17494,7 +17523,9 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
     let T := C \ (Sₐ ∪ Sᵦ)
     (∑ o ∈ T, o.supp.ncard) = 48 ∧
       (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
-      (∑ o ∈ T, Q e₁₂ o) = 4 := by
+      (∑ o ∈ T, Q e₁₂ o) = 4 ∧
+      (T.filter fun o => o.supp.ncard = 12).card = 1 ∧
+      (T.filter fun o => o.supp.ncard = 36).card = 1 := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -17510,7 +17541,9 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
   let T := C \ N
   change (∑ o ∈ T, o.supp.ncard) = 48 ∧
     (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
-    (∑ o ∈ T, Q e₁₂ o) = 4
+    (∑ o ∈ T, Q e₁₂ o) = 4 ∧
+    (T.filter fun o => o.supp.ncard = 12).card = 1 ∧
+    (T.filter fun o => o.supp.ncard = 36).card = 1
   have hcensus := degree_sixteen_zeroLayer_twelve_two_two_small_incidence_census
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₂a e₂b
       h₁₂a h₁₂b hab he₁₂ he₂a he₂b hused₁₂ hused₂a hused₂b hE
@@ -17594,7 +17627,65 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
   have hreverse : (∑ o ∈ T, Q e₁₂ o) = 4 := by
     rw [hTmass] at hbalanceSum
     omega
-  exact ⟨hTmass, hpattern, hreverse⟩
+  let T₁₂ := T.filter fun o => o.supp.ncard = 12
+  let T₃₆ := T.filter fun o => o.supp.ncard = 36
+  have hclass : ∀ o ∈ T,
+      (o.supp.ncard = 12 ∧ Q e₁₂ o = 1) ∨
+        (o.supp.ncard = 36 ∧ Q e₁₂ o = 3) := by
+    intro o ho
+    simpa only [D, Q] using
+      degree_sixteen_quotientThree_into_orderThirtySix_classification
+        G hfree hmin hcard o e₁₂ he₁₂ (hpattern o ho).1
+  have hTsplit : T = T₁₂ ∪ T₃₆ := by
+    ext o
+    constructor
+    · intro ho
+      rcases hclass o ho with h₁₂ | h₃₆
+      · exact Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨ho, h₁₂.1⟩)
+      · exact Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨ho, h₃₆.1⟩)
+    · intro ho
+      rcases Finset.mem_union.mp ho with ho₁₂ | ho₃₆
+      · exact (Finset.mem_filter.mp ho₁₂).1
+      · exact (Finset.mem_filter.mp ho₃₆).1
+  have hTdisj : Disjoint T₁₂ T₃₆ := Finset.disjoint_left.mpr (by
+    intro o ho₁₂ ho₃₆
+    have h₁₂ := (Finset.mem_filter.mp ho₁₂).2
+    have h₃₆ := (Finset.mem_filter.mp ho₃₆).2
+    omega)
+  have hsum₁₂ : (∑ o ∈ T₁₂, o.supp.ncard) = T₁₂.card * 12 := by
+    calc
+      (∑ o ∈ T₁₂, o.supp.ncard) = ∑ _o ∈ T₁₂, 12 := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (Finset.mem_filter.mp ho).2
+      _ = T₁₂.card * 12 := by simp
+  have hsum₃₆ : (∑ o ∈ T₃₆, o.supp.ncard) = T₃₆.card * 36 := by
+    calc
+      (∑ o ∈ T₃₆, o.supp.ncard) = ∑ _o ∈ T₃₆, 36 := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (Finset.mem_filter.mp ho).2
+      _ = T₃₆.card * 36 := by simp
+  have hmassCounts : T₁₂.card * 12 + T₃₆.card * 36 = 48 := by
+    have hmass := hTmass
+    rw [hTsplit, Finset.sum_union hTdisj, hsum₁₂, hsum₃₆] at hmass
+    exact hmass
+  have hT₁₂le : T₁₂.card ≤ 1 := by
+    apply degree_sixteen_orderThirtySix_orderTwelve_unit_targets_card_le_one
+      G hfree hmin hcard e₁₂ he₁₂ T₁₂
+    intro o ho
+    have hoT := (Finset.mem_filter.mp ho).1
+    have hoCard := (Finset.mem_filter.mp ho).2
+    rcases hclass o hoT with h₁₂ | h₃₆
+    · exact ⟨hoCard, h₁₂.2⟩
+    · omega
+  have hcounts : T₁₂.card = 1 ∧ T₃₆.card = 1 := by omega
+  simpa only [T₁₂, T₃₆] using
+    (show (∑ o ∈ T, o.supp.ncard) = 48 ∧
+        (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
+        (∑ o ∈ T, Q e₁₂ o) = 4 ∧
+        T₁₂.card = 1 ∧ T₃₆.card = 1 from
+      ⟨hTmass, hpattern, hreverse, hcounts⟩)
 
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
