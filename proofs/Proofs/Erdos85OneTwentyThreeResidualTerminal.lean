@@ -12544,6 +12544,37 @@ theorem symmetric_three_by_three_row_sum_three_excess_zero_or_four_le
     interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
     norm_num at *
 
+/-- If every row of a symmetric three-by-three row-sum-three matrix
+contains an entry at least two and total ordered excess is at most six, then
+the diagonal entries are exactly a permutation of `0,1,2`. -/
+theorem symmetric_three_by_three_forced_double_diagonal_permutation
+    (daa dab dac dbb dbc dcc : ℕ)
+    (hrowa : daa + dab + dac = 3)
+    (hrowb : dbb + dab + dbc = 3)
+    (hrowc : dcc + dac + dbc = 3)
+    (hdoubleA : 2 ≤ daa ∨ 2 ≤ dab ∨ 2 ≤ dac)
+    (hdoubleB : 2 ≤ dbb ∨ 2 ≤ dab ∨ 2 ≤ dbc)
+    (hdoubleC : 2 ≤ dcc ∨ 2 ≤ dac ∨ 2 ≤ dbc)
+    (hexcess :
+      daa * (daa - 1) + dab * (dab - 1) + dac * (dac - 1) +
+      dbb * (dbb - 1) + dab * (dab - 1) + dbc * (dbc - 1) +
+      dcc * (dcc - 1) + dac * (dac - 1) + dbc * (dbc - 1) ≤ 6) :
+    (daa = 0 ∧ dbb = 1 ∧ dcc = 2) ∨
+    (daa = 0 ∧ dbb = 2 ∧ dcc = 1) ∨
+    (daa = 1 ∧ dbb = 0 ∧ dcc = 2) ∨
+    (daa = 1 ∧ dbb = 2 ∧ dcc = 0) ∨
+    (daa = 2 ∧ dbb = 0 ∧ dcc = 1) ∨
+    (daa = 2 ∧ dbb = 1 ∧ dcc = 0) := by
+  have haa : daa ≤ 3 := by omega
+  have hab : dab ≤ 3 := by omega
+  have hac : dac ≤ 3 := by omega
+  have hbb : dbb ≤ 3 := by omega
+  have hbc : dbc ≤ 3 := by omega
+  have hcc : dcc ≤ 3 := by omega
+  interval_cases daa <;> interval_cases dab <;> interval_cases dac <;>
+    interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
+    norm_num at *
+
 /-- Parity-allocation endpoint for the six `B` blocks.  If the two blocks
 assigned to each of three targets have a common parity, and exactly two of
 the six blocks are even, then exactly one target owns the even pair. -/
