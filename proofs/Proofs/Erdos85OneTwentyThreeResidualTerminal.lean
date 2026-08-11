@@ -269,6 +269,90 @@ theorem source_le_lcm_of_oriented_pair_injective
     oriented_pair_repeat_of_lcm_lt f g hf hg hlt
   exact hxx' (hinj (Prod.ext hfx hgx))
 
+/-- Affine normal form of a globally oriented cyclic cover after projecting
+the source cycle to the target modulus. -/
+theorem oriented_cycleCoverMap_affine_formula
+    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
+      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
+  have hcast (y : ZMod n) :
+      ZMod.castHom hrn (ZMod r) y = (y.val : ZMod r) := by
+    rw [ZMod.castHom_apply]
+    cases n with
+    | zero => exact (NeZero.ne 0 rfl).elim
+    | succ n => rfl
+  rcases horient with hforward | hreverse
+  · left
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by rw [hcast]
+  · right
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by rw [hcast]
+
+/-- Affine normal form of a graph-facing quotient-one component cover. -/
+theorem componentQuotientOne_exists_affineCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
+    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
+      ∃ a : ZMod r, ∀ x y,
+        G.Adj (u x) (v y) ↔
+          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
+  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
+    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
+      huD hvD hone
+  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
+  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
+  rcases haffine with hforward | hreverse
+  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hforward]
+    simp
+  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hreverse]
+    ring_nf
+
 /-- Explicit two-matching normal form for an equal-order quotient-two
 component block.  This generic interface is used by residual sectors whose
 two cyclic matchings must be compared after a further quotient-one cover. -/
@@ -11689,6 +11773,190 @@ theorem no_three_residualDifferenceSet_zmod_twelve :
     ¬ ∃ S : Finset (ZMod 12), S.card = 3 ∧
       orderedDifferenceSet S = {2, 4, 5, 7, 8, 10} := by
   decide
+
+/-- A three-phase Sidon block cannot have all of its ordered differences in
+the six residual classes.  Sidonicity supplies six distinct differences, so
+containment already forces the exact finite configuration ruled out above. -/
+theorem false_of_three_sidon_orderedDifferenceSet_subset_residual_zmod_twelve
+    (S : Finset (ZMod 12)) (hcard : S.card = 3)
+    (hsidon : IsOrderedSidon S)
+    (hsubset : orderedDifferenceSet S ⊆ {2, 4, 5, 7, 8, 10}) : False := by
+  have hdiffCard : (orderedDifferenceSet S).card = 6 := by
+    rw [card_orderedDifferenceSet_of_sidon hsidon, hcard]
+  have hresCard : ({2, 4, 5, 7, 8, 10} : Finset (ZMod 12)).card = 6 := by
+    decide
+  have heq : orderedDifferenceSet S = {2, 4, 5, 7, 8, 10} := by
+    apply Finset.eq_of_subset_of_card_le hsubset
+    rw [hdiffCard, hresCard]
+  exact no_three_residualDifferenceSet_zmod_twelve ⟨S, hcard, heq⟩
+
+/-- Graph-facing residual obstruction for the `[12,4]` small row.  A
+circulant quotient-three orphan block gives a three-point Sidon phase set.
+Defect-cycle adjacency excludes differences `±1`; the quotient-one minimum
+cover excludes `±3,6` by supplying a second, component-disjoint common
+neighbor.  Hence all six Sidon differences lie in the impossible residual
+six-set. -/
+theorem false_of_twelve_four_residual_circulant_interface
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (s o : ZMod 12 → V) (m : ZMod 3 → V)
+    (hs : Function.Injective s) (ho : Function.Injective o)
+    (hsD : ∀ x, (secondOrderDefectGraph G).neighborFinset (s x) =
+      {s (x - 1), s (x + 1)})
+    (A : Finset (ZMod 12)) (hAcard : A.card = 3)
+    (hphase : ∀ y x, G.Adj (o y) (s x) ↔ x - y ∈ A)
+    (σ a : ZMod 3)
+    (hminimum : ∀ x y, G.Adj (m x) (s y) ↔
+      x = a + σ * ZMod.castHom (by norm_num : 3 ∣ 12) (ZMod 3) y)
+    (hsep : ∀ x y, m x ≠ o y) : False := by
+  have hsidon : IsOrderedSidon A :=
+    isOrderedSidon_of_c4Free_circulantBlock G hfree o s ho hs A hphase
+  have hwitness (p : ZMod 12 × ZMod 12)
+      (hp : p ∈ orderedDistinctPairs A) :
+      o 0 ∈ G.neighborFinset (s p.1) ∩ G.neighborFinset (s p.2) := by
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    constructor
+    · exact ((hphase 0 p.1).2 (by simpa using hpdata.1)).symm
+    · exact ((hphase 0 p.2).2 (by simpa using hpdata.2.1)).symm
+  have hnotDefect : ∀ δ : ZMod 12, (δ = 1 ∨ δ = -1) →
+      δ ∉ orderedDifferenceSet A := by
+    intro δ hδ hmem
+    obtain ⟨p, hp, hpδ⟩ := Finset.mem_image.mp hmem
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    have hne : s p.1 ≠ s p.2 := hs.ne hpdata.2.2
+    have hDmem : s p.2 ∈
+        (secondOrderDefectGraph G).neighborFinset (s p.1) := by
+      rw [hsD]
+      rcases hδ with rfl | rfl
+      · have : p.2 = p.1 - 1 := by
+          rw [sub_eq_iff_eq_add] at hpδ
+          rw [hpδ]
+          ring
+        simp [this]
+      · have : p.2 = p.1 + 1 := by
+          rw [sub_eq_iff_eq_add] at hpδ
+          rw [hpδ]
+          ring
+        simp [this]
+    have hD : (secondOrderDefectGraph G).Adj (s p.1) (s p.2) :=
+      ((secondOrderDefectGraph G).mem_neighborFinset _ _).mp hDmem
+    have hzero := (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+      G hfree hne).mp hD
+    have hpos : 0 <
+        (G.neighborFinset (s p.1) ∩ G.neighborFinset (s p.2)).card :=
+      Finset.card_pos.mpr ⟨o 0, hwitness p hp⟩
+    omega
+  have hnotMinimum : ∀ δ : ZMod 12,
+      δ ∈ ({3, 6, 9} : Finset (ZMod 12)) →
+      δ ∉ orderedDifferenceSet A := by
+    intro δ hδ hmem
+    obtain ⟨p, hp, hpδ⟩ := Finset.mem_image.mp hmem
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    have hne : s p.1 ≠ s p.2 := hs.ne hpdata.2.2
+    let φ : ZMod 12 →+* ZMod 3 :=
+      ZMod.castHom (by norm_num : 3 ∣ 12) (ZMod 3)
+    have hφδ : φ δ = 0 := by
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hδ
+      rcases hδ with rfl | rfl | rfl <;> decide
+    have hφ : φ p.1 = φ p.2 := by
+      apply sub_eq_zero.mp
+      rw [← map_sub, hpδ, hφδ]
+    let x : ZMod 3 := a + σ * φ p.1
+    have hm1 : m x ∈
+        G.neighborFinset (s p.1) ∩ G.neighborFinset (s p.2) := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      constructor
+      · exact ((hminimum x p.1).2 rfl).symm
+      · exact ((hminimum x p.2).2 (by simp only [x]; rw [hφ])).symm
+    have ho1 := hwitness p hp
+    have hone := common_le_one_of_not_containsC4 hfree (s p.1) (s p.2) hne
+    exact hsep x 0 (Finset.card_le_one.mp hone _ hm1 _ ho1)
+  apply false_of_three_sidon_orderedDifferenceSet_subset_residual_zmod_twelve
+    A hAcard hsidon
+  intro z hz
+  have hz0 : z ≠ 0 := fun hzero ↦
+    zero_not_mem_orderedDifferenceSet A (hzero ▸ hz)
+  have hclass : ∀ t : ZMod 12, t ≠ 0 →
+      (t = 1 ∨ t = -1) ∨
+      t ∈ ({3, 6, 9} : Finset (ZMod 12)) ∨
+      t ∈ ({2, 4, 5, 7, 8, 10} : Finset (ZMod 12)) := by
+    decide
+  rcases hclass z hz0 with hdefect | hminimum | hresidual
+  · exact (hnotDefect z hdefect hz).elim
+  · exact (hnotMinimum z hminimum hz).elim
+  · exact hresidual
+
+/-- Component-level closure of the single order-twelve orphan branch in the
+corrected `[12,4]` census.  The minimum component gives the affine
+`ZMod 12 → ZMod 3` cover, while the equal-order quotient-three block gives a
+single globally oriented phase set. -/
+theorem false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c e oComp : (secondOrderDefectGraph G).ConnectedComponent)
+    (hco : c ≠ oComp)
+    (m : ZMod 3 → V) (s o : ZMod 12 → V)
+    (hm : Function.Injective m) (hs : Function.Injective s)
+    (ho : Function.Injective o)
+    (hmRange : Set.range m = c.supp) (hsRange : Set.range s = e.supp)
+    (hoRange : Set.range o = oComp.supp)
+    (hmD : ∀ x, (secondOrderDefectGraph G).neighborFinset (m x) =
+      {m (x - 1), m (x + 1)})
+    (hsD : ∀ x, (secondOrderDefectGraph G).neighborFinset (s x) =
+      {s (x - 1), s (x + 1)})
+    (hoD : ∀ x, (secondOrderDefectGraph G).neighborFinset (o x) =
+      {o (x - 1), o (x + 1)})
+    (hminimum : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1)
+    (hthree : componentQuotientMatrix G (secondOrderDefectGraph G) oComp e = 3) :
+    False := by
+  obtain ⟨_hdiv, σ, _hσ, a, hcover⟩ :=
+    componentQuotientOne_exists_affineCover G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard
+      (r := 3) (n := 12) (by norm_num) (by norm_num)
+      c e m s hm hs hmRange hsRange hmD hsD hminimum
+  obtain ⟨ε, hε, A, hAcard, hphase⟩ :=
+    equalComponent_quotientThree_exists_phaseSet G hfree
+      (d := 16) (by norm_num) (by norm_num) hmin hcard (by norm_num)
+      oComp e o s ho hs hoRange hsRange hoD hsD hthree
+  have hsep : ∀ x y, m x ≠ o y := by
+    intro x y hxy
+    have hmx : m x ∈ c.supp := by
+      rw [← hmRange]
+      exact ⟨x, rfl⟩
+    have hoy : o y ∈ oComp.supp := by
+      rw [← hoRange]
+      exact ⟨y, rfl⟩
+    have hmc : (secondOrderDefectGraph G).connectedComponentMk (m x) = c :=
+      (ConnectedComponent.mem_supp_iff c (m x)).mp hmx
+    have hoo : (secondOrderDefectGraph G).connectedComponentMk (o y) = oComp :=
+      (ConnectedComponent.mem_supp_iff oComp (o y)).mp hoy
+    exact hco (hmc.symm.trans
+      ((congrArg (secondOrderDefectGraph G).connectedComponentMk hxy).trans hoo))
+  rcases hε with rfl | rfl
+  · apply false_of_twelve_four_residual_circulant_interface
+      G hfree s o m hs ho hsD A hAcard
+      (fun y x ↦ by simpa using hphase y x) σ a hcover hsep
+  · let o' : ZMod 12 → V := fun y ↦ o (-y)
+    have ho' : Function.Injective o' := by
+      intro x y hxy
+      apply neg_injective
+      exact ho hxy
+    have hphase' : ∀ y x, G.Adj (o' y) (s x) ↔ x - y ∈ A := by
+      intro y x
+      have h := hphase (-y) x
+      simpa only [o', neg_neg, neg_mul, one_mul, sub_neg_eq_add] using h
+    have hsep' : ∀ x y, m x ≠ o' y := fun x y ↦ hsep x (-y)
+    exact false_of_twelve_four_residual_circulant_interface
+      G hfree s o' m hs ho' hsD A hAcard hphase' σ a hcover hsep'
 
 /-- Finite two-case endpoint for the corrected `[12,4]` small-row census.
 Either three order-four cover sectors must be pairwise disjoint even though
