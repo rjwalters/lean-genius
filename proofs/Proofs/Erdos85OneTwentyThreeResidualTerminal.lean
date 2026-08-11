@@ -12347,125 +12347,6 @@ theorem six_unique_targets_two_each
   change na = 2 ∧ nb = 2 ∧ nc = 2
   omega
 
-/-- Two three-unit rows whose three column sums are all two have total
-`q(q-1)` excess either zero or four.  In the zero case both rows are the
-all-unit `A` pattern. -/
-theorem two_three_target_rows_excess_zero_or_four
-    (a₁ b₁ c₁ a₂ b₂ c₂ : ℕ)
-    (hrow₁ : a₁ + b₁ + c₁ = 3)
-    (hrow₂ : a₂ + b₂ + c₂ = 3)
-    (hcola : a₁ + a₂ = 2) (hcolb : b₁ + b₂ = 2)
-    (hcolc : c₁ + c₂ = 2) :
-    let E := a₁ * (a₁ - 1) + b₁ * (b₁ - 1) + c₁ * (c₁ - 1) +
-      a₂ * (a₂ - 1) + b₂ * (b₂ - 1) + c₂ * (c₂ - 1)
-    (E = 0 ∧ a₁ = 1 ∧ b₁ = 1 ∧ c₁ = 1 ∧
-      a₂ = 1 ∧ b₂ = 1 ∧ c₂ = 1) ∨ E = 4 := by
-  dsimp only
-  have ha₁ : a₁ ≤ 2 := by omega
-  have hb₁ : b₁ ≤ 2 := by omega
-  have hc₁ : c₁ ≤ 2 := by omega
-  have ha₂ : a₂ ≤ 2 := by omega
-  have hb₂ : b₂ ≤ 2 := by omega
-  have hc₂ : c₂ ≤ 2 := by omega
-  interval_cases a₁ <;> interval_cases b₁ <;> interval_cases c₁ <;>
-    interval_cases a₂ <;> interval_cases b₂ <;> interval_cases c₂ <;>
-    norm_num at *
-
-/-- In the non-all-unit branch of two complementary three-target rows,
-exactly one target column is `(1,1)`; the other two columns are the directed
-pair `(0,2)` and `(2,0)` in some order. -/
-theorem two_three_target_rows_unique_unit_column
-    (a₁ b₁ c₁ a₂ b₂ c₂ : ℕ)
-    (hrow₁ : a₁ + b₁ + c₁ = 3)
-    (hrow₂ : a₂ + b₂ + c₂ = 3)
-    (hcola : a₁ + a₂ = 2) (hcolb : b₁ + b₂ = 2)
-    (hcolc : c₁ + c₂ = 2)
-    (hnotA : ¬ (a₁ = 1 ∧ b₁ = 1 ∧ c₁ = 1 ∧
-      a₂ = 1 ∧ b₂ = 1 ∧ c₂ = 1)) :
-    (a₁ = 1 ∧ a₂ = 1 ∧
-      ¬ (b₁ = 1 ∧ b₂ = 1) ∧ ¬ (c₁ = 1 ∧ c₂ = 1)) ∨
-    (b₁ = 1 ∧ b₂ = 1 ∧
-      ¬ (a₁ = 1 ∧ a₂ = 1) ∧ ¬ (c₁ = 1 ∧ c₂ = 1)) ∨
-    (c₁ = 1 ∧ c₂ = 1 ∧
-      ¬ (a₁ = 1 ∧ a₂ = 1) ∧ ¬ (b₁ = 1 ∧ b₂ = 1)) := by
-  have ha₁ : a₁ ≤ 2 := by omega
-  have hb₁ : b₁ ≤ 2 := by omega
-  have hc₁ : c₁ ≤ 2 := by omega
-  have ha₂ : a₂ ≤ 2 := by omega
-  have hb₂ : b₂ ≤ 2 := by omega
-  have hc₂ : c₂ ≤ 2 := by omega
-  interval_cases a₁ <;> interval_cases b₁ <;> interval_cases c₁ <;>
-    interval_cases a₂ <;> interval_cases b₂ <;> interval_cases c₂ <;>
-    norm_num at *
-
-/-- Finite-family form of the two-row residual dichotomy.  Two residual
-components with row mass three and target-column mass two are either both
-the all-unit `A` pattern or have aggregate excess four. -/
-theorem two_component_three_target_census
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (qa qb qc : α → ℕ) (hcard : T.card = 2)
-    (hrow : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hcola : (∑ x ∈ T, qa x) = 2)
-    (hcolb : (∑ x ∈ T, qb x) = 2)
-    (hcolc : (∑ x ∈ T, qc x) = 2) :
-    (∀ x ∈ T, qa x = 1 ∧ qb x = 1 ∧ qc x = 1) ∨
-      (∑ x ∈ T, qa x * (qa x - 1) + qb x * (qb x - 1) +
-        qc x * (qc x - 1)) = 4 := by
-  obtain ⟨x, y, hxy, hT⟩ := Finset.card_eq_two.mp hcard
-  have hx : x ∈ T := by simp [hT]
-  have hy : y ∈ T := by simp [hT]
-  have hrows := two_three_target_rows_excess_zero_or_four
-    (qa x) (qb x) (qc x) (qa y) (qb y) (qc y)
-      (hrow x hx) (hrow y hy)
-      (by simpa [hT, hxy] using hcola)
-      (by simpa [hT, hxy] using hcolb)
-      (by simpa [hT, hxy] using hcolc)
-  rcases hrows with hA | hfour
-  · left
-    intro z hz
-    simp only [hT, Finset.mem_insert, Finset.mem_singleton] at hz
-    rcases hz with rfl | rfl
-    · exact ⟨hA.2.1, hA.2.2.1, hA.2.2.2.1⟩
-    · exact ⟨hA.2.2.2.2.1, hA.2.2.2.2.2.1, hA.2.2.2.2.2.2⟩
-  · right
-    simpa [hT, hxy] using hfour
-
-/-- Named-component form of the residual unique-unit-column statement. -/
-theorem two_component_three_target_unique_unit_column
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (qa qb qc : α → ℕ) (hcard : T.card = 2)
-    (hrow : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hcola : (∑ x ∈ T, qa x) = 2)
-    (hcolb : (∑ x ∈ T, qb x) = 2)
-    (hcolc : (∑ x ∈ T, qc x) = 2)
-    (hnotA : ¬ ∀ x ∈ T, qa x = 1 ∧ qb x = 1 ∧ qc x = 1) :
-    ∃ x y : α, x ≠ y ∧ T = {x, y} ∧
-      ((qa x = 1 ∧ qa y = 1 ∧
-          ¬ (qb x = 1 ∧ qb y = 1) ∧ ¬ (qc x = 1 ∧ qc y = 1)) ∨
-       (qb x = 1 ∧ qb y = 1 ∧
-          ¬ (qa x = 1 ∧ qa y = 1) ∧ ¬ (qc x = 1 ∧ qc y = 1)) ∨
-       (qc x = 1 ∧ qc y = 1 ∧
-          ¬ (qa x = 1 ∧ qa y = 1) ∧ ¬ (qb x = 1 ∧ qb y = 1))) := by
-  obtain ⟨x, y, hxy, hT⟩ := Finset.card_eq_two.mp hcard
-  have hx : x ∈ T := by simp [hT]
-  have hy : y ∈ T := by simp [hT]
-  have hnotRows : ¬ (qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
-      qa y = 1 ∧ qb y = 1 ∧ qc y = 1) := by
-    intro h
-    apply hnotA
-    intro z hz
-    simp only [hT, Finset.mem_insert, Finset.mem_singleton] at hz
-    rcases hz with rfl | rfl
-    · exact ⟨h.1, h.2.1, h.2.2.1⟩
-    · exact ⟨h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2⟩
-  have hunique := two_three_target_rows_unique_unit_column
-    (qa x) (qb x) (qc x) (qa y) (qb y) (qc y)
-      (hrow x hx) (hrow y hy)
-      (by simpa [hT, hxy] using hcola)
-      (by simpa [hT, hxy] using hcolb)
-      (by simpa [hT, hxy] using hcolc) hnotRows
-  exact ⟨x, y, hxy, hT, hunique⟩
-
 /-- A symmetric three-by-three nonnegative matrix with every row sum three
 cannot have aggregate `q(q-1)` excess two. -/
 theorem symmetric_three_by_three_row_sum_three_excess_ne_two
@@ -12549,84 +12430,6 @@ theorem zmod_six_neg_invariant_two_phase_not_mixed :
         ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card ≠ 1 := by
   native_decide
 
-/-- A diagonal quotient-two block on an order-six component has a canonical
-parity-homogeneous two-phase support, in either global orientation. -/
-theorem orderSix_diagonal_two_exists_homogeneous_phaseSet
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
-    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
-    (S : (secondOrderDefectGraph G).ConnectedComponent)
-    (uS : ZMod 6 → V) (huS : Function.Injective uS)
-    (huSRange : Set.range uS = S.supp)
-    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
-      {uS (x - 1), uS (x + 1)})
-    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) S S = 2) :
-    ∃ A : Finset (ZMod 6), A = graphCycleBlockZeroSupport G uS uS ∧
-      A.card = 2 ∧
-      (A.filter fun a =>
-        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card ≠ 1 := by
-  let A := graphCycleBlockZeroSupport G uS uS
-  have hAcard : A.card = 2 := by
-    have hbridge := card_graphCycleBlockZeroSupport_eq_componentQuotient
-      G hfree (d := 16) (r := 6) (by norm_num) (by norm_num)
-        hmin hcard S S uS uS huS huSRange huSRange
-    exact hbridge.trans hdiag
-  have hzero : (0 : ZMod 6) ∉ A := by
-    intro h0
-    have hadj := (mem_graphCycleBlockZeroSupport_iff_adj G uS uS 0).mp h0
-    exact G.loopless.irrefl _ hadj
-  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
-    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-  rcases graph_equalEvenCycle_diagBlock_orientation (by norm_num : 3 ≤ 6)
-      (by norm_num : Even 6) G (secondOrderDefectGraph G) hfree
-      uS huS hcomm huSD with hforward | hreverse
-  · have hfwdAdj : ∀ x y : ZMod 6,
-        G.Adj (uS (x + 1)) (uS (y + 1)) ↔ G.Adj (uS x) (uS y) :=
-      fun x y => adj_iff_of_adjMatrix_int_eq G (hforward x y)
-    have hneg : negFinset A = A := by
-      ext z
-      rw [mem_negFinset_iff]
-      change -z ∈ A ↔ z ∈ A
-      rw [show -z ∈ A ↔ G.Adj (uS 0) (uS (-z)) by
-        exact mem_graphCycleBlockZeroSupport_iff_adj G uS uS (-z)]
-      rw [G.adj_comm]
-      have htranslate := mem_mixedAnchorSupport_rect_translate
-        G hfwdAdj (-z) 0
-      change G.Adj (uS (-z)) (uS 0) ↔ z ∈ A
-      simpa [A, graphCycleBlockZeroSupport] using htranslate
-    have hpow : A ∈ (Finset.univ : Finset (ZMod 6)).powersetCard 2 :=
-      Finset.mem_powersetCard.mpr ⟨fun _ _ => Finset.mem_univ _, hAcard⟩
-    exact ⟨A, rfl, hAcard,
-      zmod_six_neg_invariant_two_phase_not_mixed A hpow hneg hzero⟩
-  · have hhom : (A.filter fun a =>
-        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card = 0 := by
-      apply Finset.card_eq_zero.mpr
-      rw [Finset.eq_empty_iff_forall_notMem]
-      intro a ha
-      have haA := (Finset.mem_filter.mp ha).1
-      have haEven := (Finset.mem_filter.mp ha).2
-      have hadj := (mem_graphCycleBlockZeroSupport_iff_adj G uS uS a).mp haA
-      exact reverseOriented_evenComponent_no_sameParity_edge
-        G (by norm_num : 2 ∣ 6) uS hreverse 0 a
-          (by simpa using haEven) hadj
-    exact ⟨A, rfl, hAcard, by rw [hhom]; norm_num⟩
-
-/-- Parity-allocation endpoint for the six `B` blocks.  If the two blocks
-assigned to each of three targets have a common parity, and exactly two of
-the six blocks are even, then exactly one target owns the even pair. -/
-theorem three_two_block_groups_unique_even_pair
-    (ea eb ec : ℕ) (hea : ea = 0 ∨ ea = 2)
-    (heb : eb = 0 ∨ eb = 2) (hec : ec = 0 ∨ ec = 2)
-    (htotal : ea + eb + ec = 2) :
-    (ea = 2 ∧ eb = 0 ∧ ec = 0) ∨
-      (ea = 0 ∧ eb = 2 ∧ ec = 0) ∨
-      (ea = 0 ∧ eb = 0 ∧ ec = 2) := by
-  rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
-    rcases hec with rfl | rfl <;> norm_num at htotal ⊢
-
 /-- If six objects are partitioned into three two-element target fibers,
 and a property is constant on each fiber but holds for exactly two objects,
 then exactly one whole target fiber has that property. -/
@@ -12651,17 +12454,19 @@ theorem six_two_element_fibers_unique_property_target
     have hjP : P j := (huniform j i hjtarget).mpr hiP
     exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hjP⟩
   have hEq : H = (Finset.univ : Finset (Fin 6)).filter fun j => target j = k := by
-    apply Finset.Subset.antisymm
-    · apply Finset.eq_of_subset_of_card_le hsub
-      rw [hPcard]
-      exact hfiber k
-    · exact hsub
+    symm
+    apply Finset.eq_of_subset_of_card_le hsub
+    rw [hPcard]
+    simpa [hfiber k]
   refine ⟨k, hEq, ?_⟩
   intro l hl
   have hlNonempty : ((Finset.univ : Finset (Fin 6)).filter fun j =>
       target j = l).Nonempty := Finset.card_pos.mp (by rw [hfiber l]; norm_num)
   obtain ⟨j, hjl⟩ := hlNonempty
-  have hjH : j ∈ H := by rw [hl]; exact hjl
+  have hjH : j ∈ H := by
+    change j ∈ (Finset.univ : Finset (Fin 6)).filter P
+    rw [hl]
+    exact hjl
   have hjk : target j = k := by
     rw [hEq] at hjH
     exact (Finset.mem_filter.mp hjH).2
@@ -12693,20 +12498,37 @@ theorem orderedDifferenceSet_two_phase_even_card
   have hdne : a - b ≠ b - a := by
     intro heq
     have hp : (a, b) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
-      simp [hab]
+      apply mem_orderedDistinctPairs_iff.mpr
+      exact ⟨by simp, by simp, hab⟩
     have hq : (b, a) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
-      simp [hab]
+      apply mem_orderedDistinctPairs_iff.mpr
+      exact ⟨by simp, by simp, hab.symm⟩
     have := hsidon hp hq heq
     exact hab (congrArg Prod.fst this)
   rw [orderedDifferenceSet_pair a b hab]
+  have hzero_or_one (x : ZMod 2) : x = 0 ∨ x = 1 := by
+    have hx : x.val < 2 := x.val_lt
+    interval_cases hval : x.val
+    · left
+      apply ZMod.val_injective
+      rw [hval]
+      decide
+    · right
+      apply ZMod.val_injective
+      rw [hval]
+      decide
   have ha : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0 ∨
       ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 1 := by
-    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a <;> simp
+    exact hzero_or_one _
   have hb : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 0 ∨
       ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 1 := by
-    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b <;> simp
-  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
-    simp [map_sub, ha, hb, hab, hdne]
+    exact hzero_or_one _
+  simp only [ZMod.castHom_apply] at ha hb
+  rcases ha with ha | ha <;> rcases hb with hb | hb
+  all_goals
+    rw [Finset.filter_insert, Finset.filter_singleton,
+      Finset.filter_insert, Finset.filter_singleton]
+    simp [ZMod.cast_sub (R := ZMod 2) (by norm_num : 2 ∣ 30), ha, hb, hab, hdne]
 
 /-- Six pairwise-disjoint two-phase Sidon sectors containing four even
 ordered differences have exactly two parity-homogeneous phase pairs. -/
@@ -12738,8 +12560,10 @@ theorem six_two_phase_difference_sectors_homogeneous_count
       Disjoint ((orderedDifferenceSet (A i)).filter even)
         ((orderedDifferenceSet (A j)).filter even) := by
     intro i _hi j _hj hij
-    exact Finset.disjoint_filter_filter.mpr (fun z hzi _hzEven hzj =>
-      Finset.disjoint_left.mp (hdisj i j hij) hzi hzj)
+    apply Finset.disjoint_left.mpr
+    intro z hzi hzj
+    exact Finset.disjoint_left.mp (hdisj i j hij)
+      (Finset.mem_filter.mp hzi).1 (Finset.mem_filter.mp hzj).1
   have hsum : (∑ i : Fin 6,
       ((orderedDifferenceSet (A i)).filter even).card) = 4 := by
     have hbi := Finset.card_biUnion hfilteredDisj
@@ -12761,7 +12585,7 @@ theorem six_two_phase_difference_sectors_homogeneous_count
   have hfilterSum :
       (∑ i : Fin 6, if mixed i then 0 else 2) =
         2 * ((Finset.univ : Finset (Fin 6)).filter fun i => ¬ mixed i).card := by
-    rw [Finset.mul_card]
+    rw [Finset.card_eq_sum_ones, Finset.mul_sum]
     symm
     rw [Finset.sum_filter]
     apply Finset.sum_congr rfl
@@ -12796,12 +12620,98 @@ theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
   have hyne : y ≠ y' := hsep y hyi y' hyj
   have hyMem : y ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨h0y, hty.symm⟩
+    exact ⟨h0y, hty⟩
   have hy'Mem : y' ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨h0y', hty'.symm⟩
+    exact ⟨h0y', hty'⟩
   have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
+
+/-- Affine normal form of a globally oriented cyclic cover after projecting
+the source cycle to the target modulus. -/
+theorem oriented_cycleCoverMap_affine_formula
+    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
+      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
+  have hcast (y : ZMod n) :
+      ZMod.castHom hrn (ZMod r) y = (y.val : ZMod r) := by
+    rw [ZMod.castHom_apply]
+    cases n with
+    | zero => exact (NeZero.ne 0 rfl).elim
+    | succ n => rfl
+  rcases horient with hforward | hreverse
+  · left
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by
+        rw [hcast]
+  · right
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
+        rw [hcast]
+
+/-- Affine normal form of a graph-facing quotient-one component cover. -/
+theorem componentQuotientOne_exists_affineCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
+    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
+      ∃ a : ZMod r, ∀ x y,
+        G.Adj (u x) (v y) ↔
+          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
+  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
+    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
+      huD hvD hone
+  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
+  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
+  rcases haffine with hforward | hreverse
+  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hforward]
+    simp
+  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hreverse]
+    ring_nf
 
 /-- The unit cover from an order-thirty component to the minimum `C₃`
 realizes every nonzero multiple of three as a common-neighbor difference in
@@ -13773,49 +13683,6 @@ theorem six_offset_partition_two_B_sectors_same_parity_type
     exact Finset.card_le_card (Finset.filter_subset _ _)
   omega
 
-/-- Affine normal form of a globally oriented cyclic cover after projecting
-the source cycle to the target modulus.  This is the coordinate interface
-for composing the order-thirty `B` matchings with their order-six unit
-targets. -/
-theorem oriented_cycleCoverMap_affine_formula
-    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
-    (f : ZMod n → ZMod r)
-    (horient : (∀ y, f (y + 1) = f y + 1) ∨
-      (∀ y, f (y + 1) = f y - 1)) :
-    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
-      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
-  rcases horient with hforward | hreverse
-  · left
-    have hind : ∀ k : ℕ,
-        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
-      intro k
-      induction k with
-      | zero => simp
-      | succ k ih =>
-          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
-          ring
-    intro y
-    calc
-      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
-      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
-      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by
-        rw [← ZMod.natCast_zmod_val y, map_natCast]
-  · right
-    have hind : ∀ k : ℕ,
-        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
-      intro k
-      induction k with
-      | zero => simp
-      | succ k ih =>
-          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
-          ring
-    intro y
-    calc
-      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
-      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
-      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
-        rw [← ZMod.natCast_zmod_val y, map_natCast]
-
 /-- Composition of one oriented order-thirty matching with an oriented
 order-six cover produces one affine path-offset class.  Taking the image of
 a two-phase matching support therefore gives the two-offset sector used in
@@ -13904,45 +13771,6 @@ theorem equalComponent_quotientTwo_exists_phaseSet
       exact hreverse a b
     have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
     simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
-
-/-- Affine normal form of a graph-facing quotient-one component cover. -/
-theorem componentQuotientOne_exists_affineCover
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
-    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
-    (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
-    (c e : (secondOrderDefectGraph G).ConnectedComponent)
-    (u : ZMod r → V) (v : ZMod n → V)
-    (hu : Function.Injective u) (hv : Function.Injective v)
-    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
-    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
-      {u (x - 1), u (x + 1)})
-    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
-      {v (x - 1), v (x + 1)})
-    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
-    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
-      ∃ a : ZMod r, ∀ x y,
-        G.Adj (u x) (v y) ↔
-          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
-  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
-    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
-      huD hvD hone
-  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
-  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
-  rcases haffine with hforward | hreverse
-  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
-    intro x y
-    rw [hfAdj, hforward]
-    simp
-  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
-    intro x y
-    rw [hfAdj, hreverse]
-    ring_nf
 
 /-- Projection of an admissible order-thirty phase pair to `ZMod 6` does
 not collapse the pair: a difference nonzero modulo three remains nonzero
@@ -19887,390 +19715,6 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
       (by simpa [D, U, R, O] using hOrphan)
       (by simpa [D, U] using hpartition)
   exact hfalse.elim
-
-/-- The complementary residual branch in `[10,2,2,2]` is impossible.
-Its unique `(1,1)` residual column, together with the forced all-unit small
-used matrix, would make every nonminimum quotient into that order-six
-target at most one, contradicting the offset-two witness theorem. -/
-theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_excess_four_false
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
-    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
-    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
-    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
-      c₀.supp.ncard ≤ x.supp.ncard)
-    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
-      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
-    (hcardChild :
-      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
-    (e₁₀ e₂a e₂b e₂c : (secondOrderDefectGraph G).ConnectedComponent)
-    (h₁₀a : e₁₀ ≠ e₂a) (h₁₀b : e₁₀ ≠ e₂b) (h₁₀c : e₁₀ ≠ e₂c)
-    (hab : e₂a ≠ e₂b) (hac : e₂a ≠ e₂c) (hbc : e₂b ≠ e₂c)
-    (he₁₀ : e₁₀.supp.ncard = 30)
-    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
-    (he₂c : e₂c.supp.ncard = 6)
-    (hused₁₀ : componentRepresentative (secondOrderDefectGraph G) e₁₀ ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂c : componentRepresentative (secondOrderDefectGraph G) e₂c ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hE :
-      let D := secondOrderDefectGraph G
-      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-      Finset.univ.filter (fun f : D.ConnectedComponent =>
-        componentRepresentative D f ∈ R) = {e₁₀, e₂a, e₂b, e₂c})
-    (hexcess :
-      let D := secondOrderDefectGraph G
-      let Q := componentQuotientMatrix G D
-      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
-        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
-        componentRepresentative D o ∈ O)
-      let S := zeroLayerServicedOrphans G C e₁₀
-      let T := C \ S
-      (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
-        Q o e₂b * (Q o e₂b - 1) +
-        Q o e₂c * (Q o e₂c - 1)) = 4) : False := by
-  classical
-  dsimp only at hE hexcess
-  let D := secondOrderDefectGraph G
-  let Q := componentQuotientMatrix G D
-  let U := minimumLayerImageFinset D c₀
-  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-  let O := (Finset.univ \ U) \ R
-  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
-    componentRepresentative D o ∈ O)
-  let S := zeroLayerServicedOrphans G C e₁₀
-  let T := C \ S
-  change (Finset.univ.filter (fun f : D.ConnectedComponent =>
-    componentRepresentative D f ∈ R)) = {e₁₀, e₂a, e₂b, e₂c} at hE
-  change (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
-    Q o e₂b * (Q o e₂b - 1) + Q o e₂c * (Q o e₂c - 1)) = 4 at hexcess
-  have hsix := degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
-    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
-      e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
-      he₁₀ he₂a he₂b he₂c hused₁₀ hused₂a hused₂b hused₂c
-      (by simpa [D, R] using hE)
-  change S.card = 6 ∧
-    (∀ o ∈ S, o.supp.ncard = 30 ∧ Q o e₁₀ = 2 ∧ Q e₁₀ o = 2) ∧
-    (∀ o ∈ S,
-      (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
-      (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
-      (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1)) ∧ _ at hsix
-  have hres := degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
-    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
-      e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
-      he₁₀ he₂a he₂b he₂c hused₁₀ hused₂a hused₂b hused₂c
-      (by simpa [D, R] using hE)
-  change T.card = 2 ∧ (∑ o ∈ T, Q o e₂a) = 2 ∧
-    (∑ o ∈ T, Q o e₂b) = 2 ∧ (∑ o ∈ T, Q o e₂c) = 2 ∧
-    (∀ o ∈ T, o.supp.ncard = 6 ∧
-      Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧ _) ∧ _ ∧ _ at hres
-  have hnotA : ¬ ∀ o ∈ T,
-      Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1 := by
-    intro hA
-    have hz : (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
-      Q o e₂b * (Q o e₂b - 1) + Q o e₂c * (Q o e₂c - 1)) = 0 := by
-      apply Finset.sum_eq_zero
-      intro o ho
-      rw [(hA o ho).1, (hA o ho).2.1, (hA o ho).2.2]
-      norm_num
-    omega
-  obtain ⟨r₁, r₂, hrne, hT, hunitA | hunitB | hunitC⟩ :=
-    two_component_three_target_unique_unit_column T
-      (fun o => Q o e₂a) (fun o => Q o e₂b) (fun o => Q o e₂c)
-      hres.1 (fun o ho => (hres.2.2.2.2.1 o ho).2.1)
-      hres.2.1 hres.2.2.1 hres.2.2.2.1 hnotA
-  have hsmall := hres.2.2.2.2.2.2 hexcess
-  have hmat := degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
-    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a e₂b e₂c
-      h₁₀a h₁₀b h₁₀c hab hac hbc he₁₀ he₂a he₂b he₂c
-      hused₁₀ hused₂a hused₂b hused₂c (by simpa [D, R] using hE)
-  change Q e₁₀ e₁₀ = 3 ∧ Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
-    Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧ Q e₁₀ e₂c = 0 ∧
-    Q e₂c e₁₀ = 0 ∧ _ at hmat
-  have hc₀card : c₀.supp.ncard = 3 :=
-    (degree_sixteen_smallLayer_component_card G hfree (s := 0) (Or.inl rfl)
-      hmin hcard c₀ hregChild (by norm_num; exact hcardChild)).1 rfl
-  have hkill (X : D.ConnectedComponent) (hXcard : X.supp.ncard = 6)
-      (hXUsed : componentRepresentative D X ∈ R)
-      (hUsedLe : Q e₁₀ X ≤ 1 ∧ Q e₂a X ≤ 1 ∧
-        Q e₂b X ≤ 1 ∧ Q e₂c X ≤ 1)
-      (hSLe : ∀ o ∈ S, Q o X ≤ 1)
-      (hTLe : ∀ o ∈ T, Q o X ≤ 1) : False := by
-    obtain ⟨u, huinj, huRange, huD, _hthree⟩ :=
-      exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
-        (by norm_num) hmin hcard
-    have uX := u X
-    have uC₀ := u c₀
-    have huX := huinj X
-    have huC₀ := huinj c₀
-    have huXRange := huRange X
-    have huC₀Range := huRange c₀
-    have huXD := huD X
-    have huC₀D := huD c₀
-    rw [hXcard] at uX huX huXRange huXD
-    rw [hc₀card] at uC₀ huC₀ huC₀Range huC₀D
-    have hrepX : D.connectedComponentMk (componentRepresentative D X) = X :=
-      (ConnectedComponent.mem_supp_iff X
-        (componentRepresentative D X)).mp (componentRepresentative_mem D X)
-    have hminimumRaw := degree_sixteen_zeroLayer_used_component_quotient_entries
-      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
-        (componentRepresentative D X) hXUsed
-    have hXC₀ : Q X c₀ = 1 := by
-      dsimp only at hminimumRaw
-      change Q (D.connectedComponentMk (componentRepresentative D X)) c₀ = 1 at hminimumRaw.1
-      rwa [hrepX] at hminimumRaw
-    apply false_of_orderSix_all_nonminimum_quotients_le_one
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-        X c₀ uX uC₀ huX huC₀ huXRange huC₀Range huXD huC₀D hXC₀
-    intro e hec₀
-    by_cases heU : componentRepresentative D e ∈ U
-    · exact (hec₀ (degree_sixteen_zeroLayer_component_eq_minimum_of_representative_mem_image
-        G hfree hmin hcard c₀ hregChild hcardChild e heU)).elim
-    by_cases heR : componentRepresentative D e ∈ R
-    · have heMem : e ∈ ({e₁₀, e₂a, e₂b, e₂c} : Finset D.ConnectedComponent) := by
-        rw [← hE]
-        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
-      simp only [Finset.mem_insert, Finset.mem_singleton] at heMem
-      rcases heMem with rfl | rfl | rfl | rfl
-      · exact hUsedLe.1
-      · exact hUsedLe.2.1
-      · exact hUsedLe.2.2.1
-      · exact hUsedLe.2.2.2
-    · have heO : componentRepresentative D e ∈ O := by
-        exact Finset.mem_sdiff.mpr ⟨Finset.mem_sdiff.mpr
-          ⟨Finset.mem_univ _, heU⟩, heR⟩
-      have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heO⟩
-      by_cases heS : e ∈ S
-      · exact hSLe e heS
-      · exact hTLe e (Finset.mem_sdiff.mpr ⟨heC, heS⟩)
-  rcases hsmall with ⟨haa, hab', hac', hbb, hbc', hcc⟩
-  rcases hmat with ⟨_, hLa, _, hLb, _, hLc, _, _⟩
-  · apply hkill e₂a he₂a (by simpa [D, R] using hused₂a)
-      ⟨by omega, by omega, by omega, by omega⟩
-    · intro o ho; rcases hsix.2.2.1 o ho with h | h | h <;> omega
-    · intro o ho
-      simp only [hT, Finset.mem_insert, Finset.mem_singleton] at ho
-      rcases ho with rfl | rfl <;> omega
-  · apply hkill e₂b he₂b (by simpa [D, R] using hused₂b)
-      ⟨by omega, by omega, by omega, by omega⟩
-    · intro o ho; rcases hsix.2.2.1 o ho with h | h | h <;> omega
-    · intro o ho
-      simp only [hT, Finset.mem_insert, Finset.mem_singleton] at ho
-      rcases ho with rfl | rfl <;> omega
-  · apply hkill e₂c he₂c (by simpa [D, R] using hused₂c)
-      ⟨by omega, by omega, by omega, by omega⟩
-    · intro o ho; rcases hsix.2.2.1 o ho with h | h | h <;> omega
-    · intro o ho
-      simp only [hT, Finset.mem_insert, Finset.mem_singleton] at ho
-      rcases ho with rfl | rfl <;> omega
-
-/-- In the surviving all-`A` residual branch, the three small diagonal
-quotients are exactly a permutation of `0,1,2`. -/
-theorem degree_sixteen_zeroLayer_ten_two_two_two_allA_diagonal_permutation
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
-    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
-    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
-    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
-      c₀.supp.ncard ≤ x.supp.ncard)
-    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
-      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
-    (hcardChild : Fintype.card
-      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
-    (e₁₀ e₂a e₂b e₂c : (secondOrderDefectGraph G).ConnectedComponent)
-    (h₁₀a : e₁₀ ≠ e₂a) (h₁₀b : e₁₀ ≠ e₂b) (h₁₀c : e₁₀ ≠ e₂c)
-    (hab : e₂a ≠ e₂b) (hac : e₂a ≠ e₂c) (hbc : e₂b ≠ e₂c)
-    (he₁₀ : e₁₀.supp.ncard = 30)
-    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
-    (he₂c : e₂c.supp.ncard = 6)
-    (hused₁₀ : componentRepresentative (secondOrderDefectGraph G) e₁₀ ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hused₂c : componentRepresentative (secondOrderDefectGraph G) e₂c ∈
-      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
-        (secondOrderDefectGraph G) c₀))
-    (hE :
-      let D := secondOrderDefectGraph G
-      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-      Finset.univ.filter (fun f : D.ConnectedComponent =>
-        componentRepresentative D f ∈ R) = {e₁₀, e₂a, e₂b, e₂c})
-    (hAllA :
-      let D := secondOrderDefectGraph G
-      let Q := componentQuotientMatrix G D
-      let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
-        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
-        componentRepresentative D o ∈ O)
-      let S := zeroLayerServicedOrphans G C e₁₀
-      let T := C \ S
-      ∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1) :
-    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
-    (Q e₂a e₂a = 0 ∧ Q e₂b e₂b = 1 ∧ Q e₂c e₂c = 2) ∨
-    (Q e₂a e₂a = 0 ∧ Q e₂b e₂b = 2 ∧ Q e₂c e₂c = 1) ∨
-    (Q e₂a e₂a = 1 ∧ Q e₂b e₂b = 0 ∧ Q e₂c e₂c = 2) ∨
-    (Q e₂a e₂a = 1 ∧ Q e₂b e₂b = 2 ∧ Q e₂c e₂c = 0) ∨
-    (Q e₂a e₂a = 2 ∧ Q e₂b e₂b = 0 ∧ Q e₂c e₂c = 1) ∨
-    (Q e₂a e₂a = 2 ∧ Q e₂b e₂b = 1 ∧ Q e₂c e₂c = 0) := by
-  classical
-  dsimp only at hE hAllA ⊢
-  let D := secondOrderDefectGraph G
-  let Q := componentQuotientMatrix G D
-  let U := minimumLayerImageFinset D c₀
-  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
-  let O := (Finset.univ \ U) \ R
-  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
-    componentRepresentative D o ∈ O)
-  let S := zeroLayerServicedOrphans G C e₁₀
-  let T := C \ S
-  change (Finset.univ.filter (fun f : D.ConnectedComponent =>
-    componentRepresentative D f ∈ R)) = {e₁₀, e₂a, e₂b, e₂c} at hE
-  change ∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1 at hAllA
-  have hsix := degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
-    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
-      e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
-      he₁₀ he₂a he₂b he₂c hused₁₀ hused₂a hused₂b hused₂c
-      (by simpa [D, R] using hE)
-  change S.card = 6 ∧
-    (∀ o ∈ S, o.supp.ncard = 30 ∧ Q o e₁₀ = 2 ∧ Q e₁₀ o = 2) ∧
-    (∀ o ∈ S,
-      (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
-      (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
-      (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1)) ∧ _ at hsix
-  have hmat := degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
-    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a e₂b e₂c
-      h₁₀a h₁₀b h₁₀c hab hac hbc he₁₀ he₂a he₂b he₂c
-      hused₁₀ hused₂a hused₂b hused₂c (by simpa [D, R] using hE)
-  change Q e₁₀ e₁₀ = 3 ∧ Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
-    Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧ Q e₁₀ e₂c = 0 ∧
-    Q e₂c e₁₀ = 0 ∧ Q e₂a e₂b = Q e₂b e₂a ∧
-    Q e₂a e₂c = Q e₂c e₂a ∧ Q e₂b e₂c = Q e₂c e₂b ∧
-    Q e₂a e₂a + Q e₂a e₂b + Q e₂a e₂c = 3 ∧
-    Q e₂b e₂b + Q e₂b e₂a + Q e₂b e₂c = 3 ∧
-    Q e₂c e₂c + Q e₂c e₂a + Q e₂c e₂b = 3 at hmat
-  rcases hmat with ⟨_, hLa, _, hLb, _, hLc, _, habSym, hacSym, hbcSym,
-    hrowA, hrowB, hrowC⟩
-  have hc₀card : c₀.supp.ncard = 3 :=
-    (degree_sixteen_smallLayer_component_card G hfree (s := 0) (Or.inl rfl)
-      hmin hcard c₀ hregChild (by norm_num; exact hcardChild)).1 rfl
-  have hdouble (X : D.ConnectedComponent) (hXcard : X.supp.ncard = 6)
-      (hXUsed : componentRepresentative D X ∈ R)
-      (hXnamed : X = e₂a ∨ X = e₂b ∨ X = e₂c) :
-      2 ≤ Q e₂a X ∨ 2 ≤ Q e₂b X ∨ 2 ≤ Q e₂c X := by
-    obtain ⟨u, huinj, huRange, huD, _hthree⟩ :=
-      exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
-        (by norm_num) hmin hcard
-    have uX := u X
-    have uC₀ := u c₀
-    have huX := huinj X
-    have huC₀ := huinj c₀
-    have huXRange := huRange X
-    have huC₀Range := huRange c₀
-    have huXD := huD X
-    have huC₀D := huD c₀
-    rw [hXcard] at uX huX huXRange huXD
-    rw [hc₀card] at uC₀ huC₀ huC₀Range huC₀D
-    have hrepX : D.connectedComponentMk (componentRepresentative D X) = X :=
-      (ConnectedComponent.mem_supp_iff X
-        (componentRepresentative D X)).mp (componentRepresentative_mem D X)
-    have hminimumRaw := degree_sixteen_zeroLayer_used_component_quotient_entries
-      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
-        (componentRepresentative D X) hXUsed
-    have hXC₀ : Q X c₀ = 1 := by
-      dsimp only at hminimumRaw
-      change Q (D.connectedComponentMk (componentRepresentative D X)) c₀ = 1 at hminimumRaw.1
-      rwa [hrepX] at hminimumRaw
-    obtain ⟨e, hec₀, heTwo⟩ := orderSix_exists_nonminimum_quotient_two
-      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-        X c₀ uX uC₀ huX huC₀ huXRange huC₀Range huXD huC₀D hXC₀
-    by_cases heU : componentRepresentative D e ∈ U
-    · exact (hec₀ (degree_sixteen_zeroLayer_component_eq_minimum_of_representative_mem_image
-        G hfree hmin hcard c₀ hregChild hcardChild e heU)).elim
-    by_cases heR : componentRepresentative D e ∈ R
-    · have heMem : e ∈ ({e₁₀, e₂a, e₂b, e₂c} : Finset D.ConnectedComponent) := by
-        rw [← hE]
-        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
-      simp only [Finset.mem_insert, Finset.mem_singleton] at heMem
-      rcases heMem with rfl | rfl | rfl | rfl
-      · have : Q e₁₀ X = 0 := by
-          rcases hXnamed with rfl | rfl | rfl <;> assumption
-        omega
-      · exact Or.inl heTwo
-      · exact Or.inr (Or.inl heTwo)
-      · exact Or.inr (Or.inr heTwo)
-    · have heO : componentRepresentative D e ∈ O :=
-        Finset.mem_sdiff.mpr ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, heU⟩, heR⟩
-      have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heO⟩
-      by_cases heS : e ∈ S
-      · rcases hsix.2.2.1 e heS with h | h | h <;> omega
-      · have heT : e ∈ T := Finset.mem_sdiff.mpr ⟨heC, heS⟩
-        rcases hAllA e heT with ⟨ha, hb, hc⟩
-        rcases hXnamed with rfl | rfl | rfl <;> omega
-  have hdoubleA := hdouble e₂a he₂a (by simpa [D, R] using hused₂a)
-    (Or.inl rfl)
-  have hdoubleB := hdouble e₂b he₂b (by simpa [D, R] using hused₂b)
-    (Or.inr (Or.inl rfl))
-  have hdoubleC := hdouble e₂c he₂c (by simpa [D, R] using hused₂c)
-    (Or.inr (Or.inr rfl))
-  have hPsub : ({e₂a, e₂b, e₂c} : Finset D.ConnectedComponent) ⊆
-      (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
-    intro x hx
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl | rfl <;> apply Finset.mem_erase.mpr
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂a; omega, Finset.mem_univ _⟩
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂b; omega, Finset.mem_univ _⟩
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂c; omega, Finset.mem_univ _⟩
-  have hrowLe (X : D.ConnectedComponent) (hXcard : X.supp.ncard = 6)
-      (hXUsed : componentRepresentative D X ∈ R) :
-      (∑ y ∈ ({e₂a, e₂b, e₂c} : Finset D.ConnectedComponent),
-        Q X y * (Q y X - 1)) ≤ 2 := by
-    have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
-      G hfree hmin hcard c₀ hc₀min hregChild hcardChild X
-        (by simpa [D, R] using hXUsed)
-    change (∑ y ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
-      Q X y * (Q y X - 1)) = 2 * (X.supp.ncard / 3 - 1) at hrow
-    have hle := Finset.sum_le_sum_of_subset_of_nonneg
-      (f := fun y : D.ConnectedComponent => Q X y * (Q y X - 1)) hPsub
-        (fun _ _ _ => Nat.zero_le _)
-    rw [hrow, hXcard] at hle
-    norm_num at hle
-    exact hle
-  have hleA := hrowLe e₂a he₂a (by simpa [D, R] using hused₂a)
-  have hleB := hrowLe e₂b he₂b (by simpa [D, R] using hused₂b)
-  have hleC := hrowLe e₂c he₂c (by simpa [D, R] using hused₂c)
-  simp only [Finset.sum_insert, Finset.sum_singleton, hab, hac, hbc,
-    Ne.symm hab, Ne.symm hac, Ne.symm hbc] at hleA hleB hleC
-  apply symmetric_three_by_three_forced_double_diagonal_permutation
-    (Q e₂a e₂a) (Q e₂a e₂b) (Q e₂a e₂c)
-      (Q e₂b e₂b) (Q e₂b e₂c) (Q e₂c e₂c)
-      hrowA (by rw [habSym]; exact hrowB) (by rw [hacSym, hbcSym]; exact hrowC)
-      hdoubleA (by simpa [habSym] using hdoubleB)
-      (by simpa [hacSym, hbcSym] using hdoubleC)
-  omega
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
