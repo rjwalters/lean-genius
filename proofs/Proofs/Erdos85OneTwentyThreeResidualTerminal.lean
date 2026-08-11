@@ -14285,6 +14285,86 @@ theorem degree_sixteen_quotientOne_reduced_balance
     simpa [mul_assoc] using hbal
   exact ⟨⟨Q e o, hreduced⟩, hreduced.symm⟩
 
+/-- Load/excess values of a quotient-one atom.  Its load is the orphan's
+reduced order and its local excess is zero. -/
+theorem degree_sixteen_quotientOne_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1) :
+    zeroLayerAtomLoad G e o = m ∧ zeroLayerAtomExcess G e o = 0 := by
+  have hbal := degree_sixteen_quotientOne_reduced_balance
+    G hfree hmin hcard o e m k hom hek hq
+  constructor
+  · simp only [zeroLayerAtomLoad]
+    rw [hek]
+    norm_num
+    exact hbal.2
+  · simp [zeroLayerAtomExcess, hq]
+
+/-- Complete load/excess table for a quotient-two atom. -/
+theorem degree_sixteen_quotientTwo_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    (m = k ∧ zeroLayerAtomLoad G e o = 2 * k ∧
+      zeroLayerAtomExcess G e o = 2) ∨
+    (k = 2 * m ∧ zeroLayerAtomLoad G e o = k ∧
+      zeroLayerAtomExcess G e o = 1) := by
+  rcases degree_sixteen_quotientTwo_reduced_order_classification
+      G hfree hmin hcard o e m k hom hek hq with hEq | hDouble
+  · left
+    refine ⟨hEq.1, ?_, ?_⟩
+    · simp [zeroLayerAtomLoad, hek, hEq.2, Nat.mul_comm]
+    · simp [zeroLayerAtomExcess, hq, hEq.2]
+  · right
+    refine ⟨hDouble.1, ?_, ?_⟩
+    · simp [zeroLayerAtomLoad, hek, hDouble.2]
+    · simp [zeroLayerAtomExcess, hq, hDouble.2]
+
+/-- Complete load/excess table for a quotient-three atom. -/
+theorem degree_sixteen_quotientThree_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    (m = k ∧ zeroLayerAtomLoad G e o = 3 * k ∧
+      zeroLayerAtomExcess G e o = 6) ∨
+    (k = 3 * m ∧ zeroLayerAtomLoad G e o = k ∧
+      zeroLayerAtomExcess G e o = 2) := by
+  rcases degree_sixteen_quotientThree_reduced_order_classification
+      G hfree hmin hcard o e m k hom hek hq with hEq | hTriple
+  · left
+    refine ⟨hEq.1, ?_, ?_⟩
+    · simp [zeroLayerAtomLoad, hek, hEq.2, Nat.mul_comm]
+    · simp [zeroLayerAtomExcess, hq, hEq.2]
+  · right
+    refine ⟨hTriple.1, ?_, ?_⟩
+    · simp [zeroLayerAtomLoad, hek, hTriple.2]
+    · simp [zeroLayerAtomExcess, hq, hTriple.2]
+
 /-- Any two distinct quotient-one legs of a threefold-scaled orphan have
 joint reduced period exactly the orphan's reduced order.  This is the
 pairwise LCM rigidity used by the `1+1+1` atom. -/
