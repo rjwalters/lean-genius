@@ -12549,6 +12549,46 @@ theorem zmod_thirty_admissible_and_multiple_three_parity_counts :
       M.card = 9 ∧ (M.filter even).card = 4 := by
   native_decide
 
+/-- Per-small-target parity kernel.  If two two-offset `B` sectors and the
+two-offset minimum-cover sector partition six offsets, and the minimum
+sector has one even and one odd offset, then the two `B` sectors are either
+both mixed-parity or both parity-homogeneous.  Equivalently, their internal
+phase differences have the same parity. -/
+theorem six_offset_partition_two_B_sectors_same_parity_type
+    {α : Type*} [DecidableEq α] (even : α → Prop) [DecidablePred even]
+    (U A B M : Finset α)
+    (hpart : U = A ∪ B ∪ M)
+    (hAB : Disjoint A B) (hAM : Disjoint A M) (hBM : Disjoint B M)
+    (hUeven : (U.filter even).card = 3)
+    (hAcard : A.card = 2) (hBcard : B.card = 2)
+    (hMeven : (M.filter even).card = 1) :
+    ((A.filter even).card = 1 ∧ (B.filter even).card = 1) ∨
+      (((A.filter even).card = 0 ∨ (A.filter even).card = 2) ∧
+       ((B.filter even).card = 0 ∨ (B.filter even).card = 2)) := by
+  have hABf : Disjoint (A.filter even) (B.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxA _ hxB =>
+      Finset.disjoint_left.mp hAB hxA hxB)
+  have hAMf : Disjoint (A.filter even) (M.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxA _ hxM =>
+      Finset.disjoint_left.mp hAM hxA hxM)
+  have hBMf : Disjoint (B.filter even) (M.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxB _ hxM =>
+      Finset.disjoint_left.mp hBM hxB hxM)
+  have hfilterPart : U.filter even =
+      (A.filter even ∪ B.filter even) ∪ M.filter even := by
+    rw [hpart, Finset.filter_union, Finset.filter_union]
+  have hABM : Disjoint (A.filter even ∪ B.filter even) (M.filter even) :=
+    Finset.disjoint_union_left.mpr ⟨hAMf, hBMf⟩
+  have hcount := congrArg Finset.card hfilterPart
+  rw [Finset.card_union hABM, Finset.card_union hABf, hUeven, hMeven] at hcount
+  have hAle : (A.filter even).card ≤ 2 := by
+    rw [← hAcard]
+    exact Finset.card_le_card (Finset.filter_subset _ _)
+  have hBle : (B.filter even).card ≤ 2 := by
+    rw [← hBcard]
+    exact Finset.card_le_card (Finset.filter_subset _ _)
+  omega
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
