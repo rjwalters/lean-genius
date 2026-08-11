@@ -13994,6 +13994,89 @@ theorem degree_sixteen_zeroLayer_orphan_unit_leg_dichotomy
   exact unit_entry_sum_three_dichotomy C (fun f => Q o f) e heC
     (by simpa [Q] using hunit) hsum
 
+/-- Every orphan serviced by a zero-layer used component belongs to one of
+the five graph-facing atom classes.  Forward positivity is recovered from
+detailed balance, the forward quotient is at most three, and the unit case
+uses `degree_sixteen_zeroLayer_orphan_unit_leg_dichotomy`. -/
+theorem degree_sixteen_zeroLayer_serviced_mem_five_atom_classes
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (o : (secondOrderDefectGraph G).ConnectedComponent) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    let C := Finset.univ.filter (fun a : D.ConnectedComponent =>
+      componentRepresentative D a ∈ O)
+    o ∈ zeroLayerServicedOrphans G C e →
+      o ∈ zeroLayerDAtoms G C e ∨
+      o ∈ zeroLayerCAtoms G C e ∨
+      o ∈ zeroLayerB2Atoms G C e ∨
+      o ∈ zeroLayerB1Atoms G E C e ∨
+      o ∈ zeroLayerAAtoms G E C e := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent =>
+    componentRepresentative D a ∈ O)
+  intro hoServiced
+  have hoC : o ∈ C := (Finset.mem_filter.mp hoServiced).1
+  have hoO : componentRepresentative D o ∈ O :=
+    (Finset.mem_filter.mp hoC).2
+  have hreverse : 0 < Q e o := by
+    simpa [zeroLayerServicedOrphans, Q] using
+      (Finset.mem_filter.mp hoServiced).2
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+  have heCardPos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hoCardPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+  have hforward : 0 < Q o e := by nlinarith
+  have heMk : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  have hoMk : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o
+      (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+  have hle0 := degree_sixteen_zeroLayer_orphan_to_used_quotient_le_three
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (componentRepresentative D e) (by simpa [D, R] using he)
+      (componentRepresentative D o) (by simpa [D, R, O, C] using hoO)
+  have hle : Q o e ≤ 3 := by
+    simpa [D, Q, heMk, hoMk] using hle0
+  have hunit : Q o e = 1 →
+      (∃ f ∈ E, Q o f = 2) ∨ ∀ f ∈ E, Q o f ≤ 1 := by
+    intro hq
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_unit_leg_dichotomy
+        G hfree hmin hcard c₀ hregChild hcardChild o e
+          (by simpa [D, R, O, C] using hoO) (by simpa [D, R] using he)
+          (by simpa [Q] using hq)
+  exact (zeroLayerServicedOrphans_mem_five_classes G E C e o
+    (by simpa [Q] using hforward) (by simpa [Q] using hle)
+    (by simpa [Q] using hunit)).mp hoServiced
+
 /-- The positive support of a zero-layer orphan's used quotient row has one
 of the three atom shapes: `3`, `2+1`, or `1+1+1`. -/
 theorem degree_sixteen_zeroLayer_orphan_used_quotient_support_trichotomy
