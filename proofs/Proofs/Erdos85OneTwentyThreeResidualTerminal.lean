@@ -16929,6 +16929,61 @@ theorem degree_sixteen_zeroLayer_order_ten_serviced_census
     rw [hempty] at hmem
     simp at hmem
 
+/-- Each mutual quotient-two large block in `[10,2,2,2]` has exactly one
+unit leg among the three order-two used rows. -/
+theorem degree_sixteen_zeroLayer_ten_two_two_two_B_unique_small_target
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e₁₀ e₂a e₂b e₂c :
+      (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₀a : e₁₀ ≠ e₂a) (h₁₀b : e₁₀ ≠ e₂b) (h₁₀c : e₁₀ ≠ e₂c)
+    (hab : e₂a ≠ e₂b) (hac : e₂a ≠ e₂c) (hbc : e₂b ≠ e₂c)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₀, e₂a, e₂b, e₂c})
+    (hq₁₀ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁₀ = 2) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
+    (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
+    (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1) := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  change
+    (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
+    (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
+    (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1)
+  have hsum := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  change (∑ f ∈ E, Q o f) = 3 at hsum
+  have hE' : E = {e₁₀, e₂a, e₂b, e₂c} := by
+    simpa [D, R, E] using hE
+  rw [hE'] at hsum
+  simp [h₁₀a, h₁₀b, h₁₀c, hab, hac, hbc] at hsum
+  change Q o e₁₀ = 2 at hq₁₀
+  omega
+
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     {V : Type*} [Fintype V] [DecidableEq V]
