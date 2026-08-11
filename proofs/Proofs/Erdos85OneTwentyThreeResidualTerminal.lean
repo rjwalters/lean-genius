@@ -12849,6 +12849,103 @@ theorem c4Free_phase_difference_mod_three_ne_of_minimum_cover
   have hone := common_le_one_of_not_containsC4 hfree (uL a) (uL b) hLne
   exact (hsep 0 (f a)) (Finset.card_le_one.mp hone _ hBmem _ hCmem)
 
+/-- Concrete offset sector supplied by one `[10,2,2,2]` `B` block.  The
+mutual quotient-two block gives two order-thirty phases, the unit small leg
+projects them to `ZMod 6`, and the mandatory minimum cover prevents phase
+collapse.  Every resulting offset is witnessed by a vertex of the `B`
+component common to `uL 0` and the corresponding small vertex. -/
+theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L B S C : (secondOrderDefectGraph G).ConnectedComponent) (hBC : B ≠ C)
+    (uL uB : ZMod 30 → V) (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huL : Function.Injective uL) (huB : Function.Injective uB)
+    (huS : Function.Injective uS) (huC : Function.Injective uC)
+    (huLRange : Set.range uL = L.supp) (huBRange : Set.range uB = B.supp)
+    (huSRange : Set.range uS = S.supp) (huCRange : Set.range uC = C.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huBD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uB x) =
+      {uB (x - 1), uB (x + 1)})
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hBL : componentQuotientMatrix G (secondOrderDefectGraph G) B L = 2)
+    (hBS : componentQuotientMatrix G (secondOrderDefectGraph G) B S = 1)
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1) :
+    ∃ E : Finset (ZMod 6), E.card = 2 ∧
+      ∀ z ∈ E, ∃ y : ZMod 30,
+        G.Adj (uL 0) (uB y) ∧ G.Adj (uS z) (uB y) := by
+  obtain ⟨ε, hε, A, hAcard, hphase⟩ := equalComponent_quotientTwo_exists_phaseSet
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 30)
+      B L uB uL huB huL huBRange huLRange huBD huLD hBL
+  obtain ⟨h₆₃₀, σ, hσ, aS, hsmall⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 6)
+      (by norm_num : 3 ≤ 30) S B uS uB huS huB huSRange huBRange
+      huSD huBD hBS
+  obtain ⟨h₃₃₀, ρ, hρ, aC, hminimum⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 3)
+      (by norm_num : 3 ≤ 30) C L uC uL huC huL huCRange huLRange
+      huCD huLD hLC
+  have h₆₃₀eq : h₆₃₀ = (by norm_num : 6 ∣ 30) := Subsingleton.elim _ _
+  have h₃₃₀eq : h₃₃₀ = (by norm_num : 3 ∣ 30) := Subsingleton.elim _ _
+  subst h₆₃₀eq
+  subst h₃₃₀eq
+  let e₆ : ZMod 6 := ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) ε
+  let τ : ZMod 6 := σ * e₆
+  have hεsq : ε * ε = 1 := by rcases hε with rfl | rfl <;> ring
+  have he₆sq : e₆ * e₆ = 1 := by
+    dsimp only [e₆]
+    rw [← map_mul, hεsq, map_one]
+  have hσsq : σ * σ = 1 := by rcases hσ with rfl | rfl <;> ring
+  have hτsq : τ * τ = 1 := by
+    dsimp only [τ]
+    rw [mul_mul_mul_comm, hσsq, he₆sq, one_mul]
+  let fC : ZMod 30 → ZMod 3 := fun x => aC + ρ *
+    ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) x
+  have hsep : ∀ y z, uB y ≠ uC z := by
+    intro y z heq
+    apply hBC
+    have hyB : uB y ∈ B.supp := by rw [← huBRange]; exact ⟨y, rfl⟩
+    have hzC : uC z ∈ C.supp := by rw [← huCRange]; exact ⟨z, rfl⟩
+    have hyMk := (ConnectedComponent.mem_supp_iff B (uB y)).mp hyB
+    have hzMk := (ConnectedComponent.mem_supp_iff C (uC z)).mp hzC
+    exact hyMk.symm.trans ((congrArg (secondOrderDefectGraph G).connectedComponentMk heq).trans hzMk)
+  have hnonzero := c4Free_phase_difference_mod_three_ne_of_minimum_cover
+    G hfree uL uB uC huL A ε hphase fC aC ρ (by intro x; rfl)
+      (by
+        intro x
+        apply (hminimum (fC x) x).mpr
+        rfl)
+      hsep
+  let E : Finset (ZMod 6) := A.image fun a => aS - τ *
+    ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a
+  have hEcard : E.card = 2 := by
+    exact zmod_thirty_two_phase_affine_image_card_two A hAcard hnonzero
+      aS τ hτsq
+  refine ⟨E, hEcard, ?_⟩
+  intro z hz
+  have hoff : z - τ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) 0 ∈ E := by
+    simpa using hz
+  have hcompose := (zmod_thirty_six_matching_cover_path_offset_iff
+    ε e₆ σ aS A hεsq he₆sq (by rfl) 0 z).mpr
+      (by simpa [E, τ] using hoff)
+  obtain ⟨y, a, ha, hzero, hzsmall⟩ := hcompose
+  refine ⟨y, ?_, ?_⟩
+  · rw [G.adj_comm, hphase]
+    have : (0 : ZMod 30) - ε * y = a := by linear_combination hzero
+    rw [this]
+    exact ha
+  · apply (hsmall z y).mpr
+    exact hzsmall
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
