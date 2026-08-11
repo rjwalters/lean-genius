@@ -12358,6 +12358,50 @@ theorem residual_three_order_six_targets_two_A_census
     simpa using hsum
   exact ⟨hcard, hpoint⟩
 
+/-- Two three-unit rows whose three column sums are all two have total
+`q(q-1)` excess either zero or four.  In the zero case both rows are the
+all-unit `A` pattern. -/
+theorem two_three_target_rows_excess_zero_or_four
+    (a₁ b₁ c₁ a₂ b₂ c₂ : ℕ)
+    (hrow₁ : a₁ + b₁ + c₁ = 3)
+    (hrow₂ : a₂ + b₂ + c₂ = 3)
+    (hcola : a₁ + a₂ = 2) (hcolb : b₁ + b₂ = 2)
+    (hcolc : c₁ + c₂ = 2) :
+    let E := a₁ * (a₁ - 1) + b₁ * (b₁ - 1) + c₁ * (c₁ - 1) +
+      a₂ * (a₂ - 1) + b₂ * (b₂ - 1) + c₂ * (c₂ - 1)
+    (E = 0 ∧ a₁ = 1 ∧ b₁ = 1 ∧ c₁ = 1 ∧
+      a₂ = 1 ∧ b₂ = 1 ∧ c₂ = 1) ∨ E = 4 := by
+  dsimp only
+  have ha₁ : a₁ ≤ 2 := by omega
+  have hb₁ : b₁ ≤ 2 := by omega
+  have hc₁ : c₁ ≤ 2 := by omega
+  have ha₂ : a₂ ≤ 2 := by omega
+  have hb₂ : b₂ ≤ 2 := by omega
+  have hc₂ : c₂ ≤ 2 := by omega
+  interval_cases a₁ <;> interval_cases b₁ <;> interval_cases c₁ <;>
+    interval_cases a₂ <;> interval_cases b₂ <;> interval_cases c₂ <;>
+    norm_num at *
+
+/-- A symmetric three-by-three nonnegative matrix with every row sum three
+cannot have aggregate `q(q-1)` excess two. -/
+theorem symmetric_three_by_three_row_sum_three_excess_ne_two
+    (daa dab dac dbb dbc dcc : ℕ)
+    (hrowa : daa + dab + dac = 3)
+    (hrowb : dbb + dab + dbc = 3)
+    (hrowc : dcc + dac + dbc = 3) :
+    daa * (daa - 1) + dab * (dab - 1) + dac * (dac - 1) +
+      dbb * (dbb - 1) + dab * (dab - 1) + dbc * (dbc - 1) +
+      dcc * (dcc - 1) + dac * (dac - 1) + dbc * (dbc - 1) ≠ 2 := by
+  have hdaa : daa ≤ 3 := by omega
+  have hdab : dab ≤ 3 := by omega
+  have hdac : dac ≤ 3 := by omega
+  have hdbb : dbb ≤ 3 := by omega
+  have hdbc : dbc ≤ 3 := by omega
+  have hdcc : dcc ≤ 3 := by omega
+  interval_cases daa <;> interval_cases dab <;> interval_cases dac <;>
+    interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
+    norm_num at *
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
