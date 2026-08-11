@@ -12481,6 +12481,19 @@ theorem symmetric_three_by_three_row_sum_three_excess_zero_or_four_le
     interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
     norm_num at *
 
+/-- Parity-allocation endpoint for the six `B` blocks.  If the two blocks
+assigned to each of three targets have a common parity, and exactly two of
+the six blocks are even, then exactly one target owns the even pair. -/
+theorem three_two_block_groups_unique_even_pair
+    (ea eb ec : ℕ) (hea : ea = 0 ∨ ea = 2)
+    (heb : eb = 0 ∨ eb = 2) (hec : ec = 0 ∨ ec = 2)
+    (htotal : ea + eb + ec = 2) :
+    (ea = 2 ∧ eb = 0 ∧ ec = 0) ∨
+      (ea = 0 ∧ eb = 2 ∧ ec = 0) ∨
+      (ea = 0 ∧ eb = 0 ∧ ec = 2) := by
+  rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
+    rcases hec with rfl | rfl <;> norm_num at htotal ⊢
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
