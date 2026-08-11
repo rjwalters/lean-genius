@@ -12,6 +12,7 @@ import Proofs.Erdos85CycleCoverPairMass
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
+import Proofs.Erdos85MinimumEvenOrphanParity
 
 /-!
 # Scalar-123 residual terminal
@@ -12302,86 +12303,6 @@ theorem six_unique_targets_two_each
   change na = 2 ∧ nb = 2 ∧ nc = 2
   omega
 
-/-- Residual order kernel.  After excluding the order-twelve triple unit
-cover, total order twelve and balance against three order-six targets force
-exactly two order-six residual components. -/
-theorem residual_three_order_six_targets_two_order_six
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (n qa qb qc ra rb rc : α → ℕ)
-    (hmass : (∑ x ∈ T, n x) = 12)
-    (hnpos : ∀ x ∈ T, 3 ≤ n x)
-    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
-    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
-    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
-    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
-    T.card = 2 ∧ ∀ x ∈ T,
-      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
-  have hpoint : ∀ x ∈ T,
-      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
-    intro x hx
-    have hnle : n x ≤ 12 := by
-      have hsingle : n x ≤ ∑ y ∈ T, n y :=
-        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
-      omega
-    have hqa : qa x ≤ 3 := by have := hqsum x hx; omega
-    have hqb : qb x ≤ 3 := by have := hqsum x hx; omega
-    have hqc : qc x ≤ 3 := by have := hqsum x hx; omega
-    have hn12 := hnotTwelve x hx
-    have hs := hqsum x hx
-    have ha := hbala x hx
-    have hb := hbalb x hx
-    have hc := hbalc x hx
-    interval_cases hn : n x <;>
-      interval_cases hqa' : qa x <;>
-      interval_cases hqb' : qb x <;>
-      interval_cases hqc' : qc x <;>
-      norm_num [hn, hqa', hqb', hqc'] at hs ha hb hc hn12 ⊢ <;>
-      omega
-  have hsum : (∑ _x ∈ T, 6) = 12 := by
-    calc
-      (∑ _x ∈ T, 6) = ∑ x ∈ T, n x := by
-        apply Finset.sum_congr rfl
-        intro x hx
-        exact (hpoint x hx).1.symm
-      _ = 12 := hmass
-  have hcard : T.card = 2 := by
-    simpa using hsum
-  exact ⟨hcard, hpoint⟩
-
-/-- Residual `A(2)` census kernel.  Adding zero local excess to the residual
-order kernel forces both order-six components to be unit-connected to all
-three targets. -/
-theorem residual_three_order_six_targets_two_A_census
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (n qa qb qc ra rb rc : α → ℕ)
-    (hmass : (∑ x ∈ T, n x) = 12)
-    (hnpos : ∀ x ∈ T, 3 ≤ n x)
-    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
-    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
-    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
-    (hexcess : ∀ x ∈ T,
-      ra x * (qa x - 1) + rb x * (qb x - 1) +
-        rc x * (qc x - 1) = 0)
-    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
-    T.card = 2 ∧ ∀ x ∈ T,
-      n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
-        ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
-  have hbase := residual_three_order_six_targets_two_order_six
-    T n qa qb qc ra rb rc hmass hnpos hqsum hbala hbalb hbalc hnotTwelve
-  refine ⟨hbase.1, ?_⟩
-  intro x hx
-  have hp := hbase.2 x hx
-  have hs := hqsum x hx
-  have he := hexcess x hx
-  rw [hp.2.1, hp.2.2.1, hp.2.2.2] at he
-  have hqa : qa x ≤ 3 := by omega
-  have hqb : qb x ≤ 3 := by omega
-  have hqc : qc x ≤ 3 := by omega
-  interval_cases qa x <;> interval_cases qb x <;> interval_cases qc x <;>
-    norm_num at hs he ⊢
-
 /-- Two three-unit rows whose three column sums are all two have total
 `q(q-1)` excess either zero or four.  In the zero case both rows are the
 all-unit `A` pattern. -/
@@ -19893,10 +19814,40 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     exact false_of_two_unit_componentQuotients_lcm_ncard_lt
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
         e₂a e₂b o hab hqa hqb (by rw [he₂a, he₂b, h12]; norm_num)
-  have hbase := residual_three_order_six_targets_two_order_six T
-    (fun o => o.supp.ncard) (fun o => Q o e₂a) (fun o => Q o e₂b)
-      (fun o => Q o e₂c) (fun o => Q e₂a o) (fun o => Q e₂b o)
-      (fun o => Q e₂c o) hTmass hnpos hforward hbala hbalb hbalc hnotTwelve
+  have hOrphan : ∀ o ∈ T, componentRepresentative D o ∈ O := by
+    intro o ho
+    exact (Finset.mem_filter.mp (Finset.mem_sdiff.mp ho).1).2
+  have hpartition : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∉ U →
+      e = e₁₀ ∨ e = e₂a ∨ e = e₂b ∨ e = e₂c ∨ e ∈ S ∨ e ∈ T := by
+    intro e heU
+    by_cases heR : componentRepresentative D e ∈ R
+    · have heUsed : e ∈ Finset.univ.filter (fun f : D.ConnectedComponent =>
+          componentRepresentative D f ∈ R) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+      rw [hE] at heUsed
+      simpa [h₁₀a, h₁₀b, h₁₀c, hab, hac, hbc] using heUsed
+    · have heO : componentRepresentative D e ∈ O := by
+        exact Finset.mem_sdiff.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, heU⟩, heR⟩
+      have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heO⟩
+      by_cases heS : e ∈ S
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl heS))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          (Finset.mem_sdiff.mpr ⟨heC, heS⟩)))))
+  have hfalse := false_of_degree_sixteen_ten_two_two_two_residual_interface
+    G hfree hmin hcard c₀ e₁₀ e₂a e₂b e₂c
+      he₁₀ he₂a he₂b he₂c S T
+      (fun s hs => (hsix.2.1 s hs).1) hTmass hnpos hnotTwelve
+      hforward hbala hbalb hbalc
+      (by simpa [D, U, R, O] using hOrphan)
+      (by simpa [D, U] using hpartition)
+  exact hfalse.elim
+  /-
+  have hbase : T.card = 2 ∧ ∀ o ∈ T,
+      o.supp.ncard = 6 ∧ Q e₂a o = Q o e₂a ∧
+        Q e₂b o = Q o e₂b ∧ Q e₂c o = Q o e₂c :=
+    hfalse.elim
   have hTforwardA : (∑ o ∈ T, Q o e₂a) = 2 := by
     calc
       (∑ o ∈ T, Q o e₂a) = ∑ o ∈ T, Q e₂a o := by
@@ -20056,6 +20007,7 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
   exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC,
     fun o ho => ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
       (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩, hdichotomy, hexceptional⟩
+  -/
 
 /-- The complementary residual branch in `[10,2,2,2]` is impossible.
 Its unique `(1,1)` residual column, together with the forced all-unit small
