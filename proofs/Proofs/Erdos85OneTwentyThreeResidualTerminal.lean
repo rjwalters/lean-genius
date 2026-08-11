@@ -12597,6 +12597,38 @@ theorem six_two_phase_difference_sectors_homogeneous_count
   change ((Finset.univ : Finset (Fin 6)).filter fun i => ¬ mixed i).card = 2
   omega
 
+/-- Difference sectors witnessed by disjoint intermediate cells are
+disjoint in a `C₄`-free graph.  The common endpoints are the phase-zero
+large vertex and the vertex at the proposed nonzero difference. -/
+theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
+    {V ι : Type*} [Fintype V] [DecidableEq V]
+    [DecidableEq ι]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (u : ZMod 30 → V)
+    (hu : Function.Injective u) (cell : ι → Set V)
+    (A : ι → Finset (ZMod 30))
+    (hzero : ∀ i, (0 : ZMod 30) ∉ A i)
+    (hwitness : ∀ i t, t ∈ A i →
+      ∃ y ∈ cell i, G.Adj (u 0) y ∧ G.Adj (u t) y)
+    (i j : ι) (hij : i ≠ j)
+    (hsep : ∀ y ∈ cell i, ∀ y' ∈ cell j, y ≠ y') :
+    Disjoint (A i) (A j) := by
+  apply Finset.disjoint_left.mpr
+  intro t hti htj
+  obtain ⟨y, hyi, h0y, hty⟩ := hwitness i t hti
+  obtain ⟨y', hyj, h0y', hty'⟩ := hwitness j t htj
+  have ht0 : t ≠ 0 := fun ht => hzero i (ht ▸ hti)
+  have hends : u 0 ≠ u t := hu.ne (Ne.symm ht0)
+  have hyne : y ≠ y' := hsep y hyi y' hyj
+  have hyMem : y ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨h0y, hty.symm⟩
+  have hy'Mem : y' ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨h0y', hty'.symm⟩
+  have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
+  exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
