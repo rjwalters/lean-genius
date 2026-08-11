@@ -12994,6 +12994,65 @@ theorem difference_sector_subset_orderThirty_admissible_of_witnesses
     simp at hyMem
   simp [ht0, ht1, htm1]
 
+/-- Vertices at offset two on a labeled order-six defect cycle must have a
+common neighbor in the original graph: offset two is not one of the two
+defect-cycle edges. -/
+theorem orderSix_offset_two_exists_common_neighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (u : ZMod 6 → V)
+    (hu : Function.Injective u)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)}) :
+    ∃ y, G.Adj (u 0) y ∧ G.Adj (u 2) y := by
+  have h02 : u 0 ≠ u 2 := hu.ne (by decide)
+  have hnotD : ¬ (secondOrderDefectGraph G).Adj (u 0) (u 2) := by
+    rw [(secondOrderDefectGraph G).mem_neighborFinset, huD]
+    native_decide
+  have hcommonNe :
+      (G.neighborFinset (u 0) ∩ G.neighborFinset (u 2)).card ≠ 0 := by
+    exact fun hzero => hnotD
+      ((secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree h02).mpr hzero)
+  have hnonempty : (G.neighborFinset (u 0) ∩
+      G.neighborFinset (u 2)).Nonempty := Finset.card_pos.mp (Nat.pos_of_ne_zero hcommonNe)
+  obtain ⟨y, hy⟩ := hnonempty
+  simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hy
+  exact ⟨y, hy.1, hy.2.symm⟩
+
+/-- A component with quotient at most one into a labeled target component
+cannot contain a common neighbor of two distinct target vertices. -/
+theorem no_two_neighbors_in_component_of_quotient_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (e S : (secondOrderDefectGraph G).ConnectedComponent)
+    (uS : ZMod r → V) (huS : Function.Injective uS)
+    (huSRange : Set.range uS = S.supp)
+    (y : V) (hy : y ∈ e.supp)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) e S ≤ 1)
+    (a b : ZMod r) (hab : a ≠ b) :
+    ¬ (G.Adj (uS a) y ∧ G.Adj (uS b) y) := by
+  intro hadj
+  let A := mixedAnchorSupport G y uS
+  have hAcard := card_mixedAnchorSupport_eq_componentQuotient
+    G hfree hd heven hmin hcard e S hy uS huSRange
+  change A.card = componentQuotientMatrix G (secondOrderDefectGraph G) e S at hAcard
+  have ha : a ∈ A := by
+    exact (mem_mixedAnchorSupport_iff G y uS a).mpr hadj.1.symm
+  have hb : b ∈ A := by
+    exact (mem_mixedAnchorSupport_iff G y uS b).mpr hadj.2.symm
+  have htwo : 2 ≤ A.card := by
+    exact Finset.one_lt_card.mpr ⟨a, ha, b, hb, hab⟩
+  omega
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
