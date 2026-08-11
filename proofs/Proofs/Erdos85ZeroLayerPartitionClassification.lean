@@ -10,6 +10,41 @@ parts are at least two is one of exactly fifty-five patterns.
 
 namespace Erdos85
 
+/-- Lift an equality of mapped multisets to an ordering of the source
+multiset.  This is the generic naming device used after the numerical
+census: equal target values still produce distinct source entries when the
+source multiset is noduplicated. -/
+theorem exists_nodup_list_of_multiset_map_eq_coe
+    {α β : Type*} [DecidableEq α] (s : Multiset α) (w : α → β)
+    (ks : List β) (hs : s.Nodup) (hmap : s.map w = ↑ks) :
+    ∃ xs : List α, xs.Nodup ∧ (↑xs : Multiset α) = s ∧ xs.map w = ks := by
+  induction ks generalizing s with
+  | nil =>
+      have hs0 : s = 0 := by
+        apply Multiset.card_eq_zero.mp
+        have hc := congrArg Multiset.card hmap
+        simpa using hc
+      exact ⟨[], by simp, by simpa [hs0], by simp⟩
+  | cons k ks ih =>
+      obtain ⟨a, ha, hwa, hrest⟩ :=
+        (Multiset.map_eq_cons w s (↑ks) k).mpr hmap
+      obtain ⟨xs, hxsNodup, hxs, hxsw⟩ :=
+        ih (s.erase a) (Multiset.Nodup.erase a hs) hrest
+      refine ⟨a :: xs, ?_, ?_, ?_⟩
+      · simp only [List.nodup_cons]
+        refine ⟨?_, hxsNodup⟩
+        intro hax
+        have haErase : a ∈ s.erase a := by
+          rw [← hxs]
+          exact hax
+        have hsCons : (a ::ₘ s.erase a).Nodup := by
+          rw [Multiset.cons_erase ha]
+          exact hs
+        exact (Multiset.nodup_cons.mp hsCons).1 haErase
+      · change a ::ₘ (↑xs : Multiset α) = s
+        rw [hxs, Multiset.cons_erase ha]
+      · simp [hwa, hxsw]
+
 /-- The fifty-five positive partitions of sixteen with every part at least
 two, represented in nonincreasing order and padded by zeroes to eight
 slots. -/
