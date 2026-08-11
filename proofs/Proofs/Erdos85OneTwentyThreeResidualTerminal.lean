@@ -17450,6 +17450,159 @@ theorem false_of_degree_sixteen_zeroLayer_two_orderTwentyFour_used_antipodal
       obtain ⟨k, hk⟩ := hdvd
       omega
 
+/-- If every used component has order twelve or twenty-four, every orphan
+component has order four, eight, twelve, or twenty-four. -/
+theorem degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hused : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) e ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+        e.supp.ncard = 12 ∨ e.supp.ncard = 24) :
+    o.supp.ncard = 4 ∨ o.supp.ncard = 8 ∨
+      o.supp.ncard = 12 ∨ o.supp.ncard = 24 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let S := E.filter (fun e ↦ Q o e ≠ 0)
+  have hshape := degree_sixteen_zeroLayer_orphan_used_quotient_support_trichotomy
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  change
+    (∃ e, S = {e} ∧ Q o e = 3) ∨
+    (∃ e f, e ≠ f ∧ S = {e, f} ∧
+      ((Q o e = 2 ∧ Q o f = 1) ∨ (Q o e = 1 ∧ Q o f = 2))) ∨
+    (∃ e f g, e ≠ f ∧ e ≠ g ∧ f ≠ g ∧ S = {e, f, g} ∧
+      Q o e = 1 ∧ Q o f = 1 ∧ Q o g = 1) at hshape
+  have hmemOrder : ∀ e ∈ S, e.supp.ncard = 12 ∨ e.supp.ncard = 24 := by
+    intro e heS
+    exact hused e (Finset.mem_filter.mp (Finset.mem_filter.mp heS).1).2
+  have hqthree (e : D.ConnectedComponent)
+      (he : e.supp.ncard = 12 ∨ e.supp.ncard = 24) (hq : Q o e = 3) :
+      o.supp.ncard = 4 ∨ o.supp.ncard = 8 ∨
+        o.supp.ncard = 12 ∨ o.supp.ncard = 24 := by
+    have hpos : 0 < Q o e := by omega
+    rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+    · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          o e hlt (by simpa [D, Q] using hpos)
+      change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+        o.supp.ncard * Q o e = e.supp.ncard at hentry
+      rcases he with he12 | he24
+      · left; rw [hq, he12] at hentry; omega
+      · right; left; rw [hq, he24] at hentry; omega
+    · rcases he with he12 | he24
+      · exact Or.inr (Or.inr (Or.inl (heq.trans he12)))
+      · exact Or.inr (Or.inr (Or.inr (heq.trans he24)))
+    · have hrevPos : 0 < Q e o := by
+        have hbal := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+        change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+        have := o.nonempty_supp.ncard_pos
+        omega
+      have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e o hgt (by simpa [D, Q] using hrevPos)
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega
+  have hunitLower (f : D.ConnectedComponent) (hunit : Q o f = 1) :
+      f.supp.ncard ≤ o.supp.ncard := by
+    by_contra hnot
+    have hlt : o.supp.ncard < f.supp.ncard := by omega
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o f hlt (by simpa [D, Q, hunit])
+    change Q f o = 1 ∧ o.supp.ncard ∣ f.supp.ncard ∧
+      o.supp.ncard * Q o f = f.supp.ncard at hentry
+    omega
+  have htwoOne (e f : D.ConnectedComponent)
+      (he : e.supp.ncard = 12 ∨ e.supp.ncard = 24)
+      (hf : f.supp.ncard = 12 ∨ f.supp.ncard = 24)
+      (htwo : Q o e = 2) (hunit : Q o f = 1) :
+      o.supp.ncard = 12 ∨ o.supp.ncard = 24 := by
+    have hfloor := hunitLower f hunit
+    rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+    · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          o e hlt (by simpa [D, Q, htwo])
+      change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+        o.supp.ncard * Q o e = e.supp.ncard at hentry
+      rcases he with he12 | he24 <;> rcases hf with hf12 | hf24
+      all_goals rw [htwo] at hentry <;> omega
+    · rcases he with he12 | he24
+      · exact Or.inl (heq.trans he12)
+      · exact Or.inr (heq.trans he24)
+    · have hrevPos : 0 < Q e o := by
+        have hbal := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+        change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+        have := o.nonempty_supp.ncard_pos
+        omega
+      have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e o hgt (by simpa [D, Q] using hrevPos)
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega
+  rcases hshape with hsingle | hpair | htriple
+  · obtain ⟨e, hS, hq⟩ := hsingle
+    apply hqthree e (hmemOrder e (by rw [hS]; simp)) hq
+  · obtain ⟨e, f, hef, hS, hq⟩ := hpair
+    have heS : e ∈ S := by rw [hS]; simp
+    have hfS : f ∈ S := by rw [hS]; simp [hef]
+    rcases hq with hq | hq
+    · rcases htwoOne e f (hmemOrder e heS) (hmemOrder f hfS) hq.1 hq.2 with h | h
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr h))
+    · rcases htwoOne f e (hmemOrder f hfS) (hmemOrder e heS) hq.2 hq.1 with h | h
+      · exact Or.inr (Or.inr (Or.inl h))
+      · exact Or.inr (Or.inr (Or.inr h))
+  · obtain ⟨e, f, g, hef, heg, hfg, hS, hqe, hqf, _hqg⟩ := htriple
+    have heS : e ∈ S := by rw [hS]; simp
+    have hfS : f ∈ S := by rw [hS]; simp [hef]
+    have he := hmemOrder e heS
+    have hf := hmemOrder f hfS
+    have hupper : o.supp.ncard ≤ 24 := by
+      by_contra hnot
+      have hlcm : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard := by
+        rcases he with he12 | he24 <;> rcases hf with hf12 | hf24 <;>
+          rw [he12, hf12, Nat.lcm_self] <;> norm_num <;> omega
+      exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e f o hef hqe hqf hlcm
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+    change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+    rcases he with he12 | he24
+    · right; right
+      rw [hqe, he12] at hbal
+      have := o.nonempty_supp.ncard_pos
+      omega
+    · right; right; right
+      rw [hqe, he24] at hbal
+      have := o.nonempty_supp.ncard_pos
+      omega
+
 /-- If every used component has order six, every orphan component has order
 two or six.  This follows uniformly from the `3`, `2+1`, and `1+1+1`
 positive-support shapes of its used quotient row. -/
