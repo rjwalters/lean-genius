@@ -12575,6 +12575,80 @@ theorem symmetric_three_by_three_forced_double_diagonal_permutation
     interval_cases dbb <;> interval_cases dbc <;> interval_cases dcc <;>
     norm_num at *
 
+/-- A loopless, negation-invariant two-phase support in `ZMod 6` is parity
+homogeneous.  This finite certificate is the forward-diagonal case. -/
+theorem zmod_six_neg_invariant_two_phase_not_mixed :
+    ∀ A ∈ (Finset.univ : Finset (ZMod 6)).powersetCard 2,
+      negFinset A = A → (0 : ZMod 6) ∉ A →
+      (A.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card ≠ 1 := by
+  native_decide
+
+/-- A diagonal quotient-two block on an order-six component has a canonical
+parity-homogeneous two-phase support, in either global orientation. -/
+theorem orderSix_diagonal_two_exists_homogeneous_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (S : (secondOrderDefectGraph G).ConnectedComponent)
+    (uS : ZMod 6 → V) (huS : Function.Injective uS)
+    (huSRange : Set.range uS = S.supp)
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) S S = 2) :
+    ∃ A : Finset (ZMod 6), A = graphCycleBlockZeroSupport G uS uS ∧
+      A.card = 2 ∧
+      (A.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card ≠ 1 := by
+  let A := graphCycleBlockZeroSupport G uS uS
+  have hAcard : A.card = 2 := by
+    have hbridge := card_graphCycleBlockZeroSupport_eq_componentQuotient
+      G hfree (d := 16) (r := 6) (by norm_num) (by norm_num)
+        hmin hcard S S uS uS huS huSRange huSRange
+    exact hbridge.trans hdiag
+  have hzero : (0 : ZMod 6) ∉ A := by
+    intro h0
+    have hadj := (mem_graphCycleBlockZeroSupport_iff_adj G uS uS 0).mp h0
+    exact G.loopless.irrefl _ hadj
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+  rcases graph_equalEvenCycle_diagBlock_orientation (by norm_num : 3 ≤ 6)
+      (by norm_num : Even 6) G (secondOrderDefectGraph G) hfree
+      uS huS hcomm huSD with hforward | hreverse
+  · have hfwdAdj : ∀ x y : ZMod 6,
+        G.Adj (uS (x + 1)) (uS (y + 1)) ↔ G.Adj (uS x) (uS y) :=
+      fun x y => adj_iff_of_adjMatrix_int_eq G (hforward x y)
+    have hneg : negFinset A = A := by
+      ext z
+      rw [mem_negFinset_iff]
+      change -z ∈ A ↔ z ∈ A
+      rw [show -z ∈ A ↔ G.Adj (uS 0) (uS (-z)) by
+        exact mem_graphCycleBlockZeroSupport_iff_adj G uS uS (-z)]
+      rw [G.adj_comm]
+      have htranslate := mem_mixedAnchorSupport_rect_translate
+        G hfwdAdj (-z) 0
+      change G.Adj (uS (-z)) (uS 0) ↔ z ∈ A
+      simpa [A, graphCycleBlockZeroSupport] using htranslate
+    have hpow : A ∈ (Finset.univ : Finset (ZMod 6)).powersetCard 2 :=
+      Finset.mem_powersetCard.mpr ⟨fun _ _ => Finset.mem_univ _, hAcard⟩
+    exact ⟨A, rfl, hAcard,
+      zmod_six_neg_invariant_two_phase_not_mixed A hpow hneg hzero⟩
+  · have hhom : (A.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card = 0 := by
+      apply Finset.card_eq_zero.mpr
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro a ha
+      have haA := (Finset.mem_filter.mp ha).1
+      have haEven := (Finset.mem_filter.mp ha).2
+      have hadj := (mem_graphCycleBlockZeroSupport_iff_adj G uS uS a).mp haA
+      exact reverseOriented_evenComponent_no_sameParity_edge
+        G (by norm_num : 2 ∣ 6) uS hreverse 0 a
+          (by simpa using haEven) hadj
+    exact ⟨A, rfl, hAcard, by rw [hhom]; norm_num⟩
+
 /-- Parity-allocation endpoint for the six `B` blocks.  If the two blocks
 assigned to each of three targets have a common parity, and exactly two of
 the six blocks are even, then exactly one target owns the even pair. -/
