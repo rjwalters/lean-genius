@@ -13160,6 +13160,58 @@ theorem false_of_orderSix_all_nonminimum_quotients_le_one
       huSRange huCRange huSD huCD hSC
   exact (Nat.not_le_of_gt heTwo) (hall e heC)
 
+/-- In the zero-layer branch the three-vertex minimum layer consists only
+of `c₀`; any component represented in the minimum image is `c₀` itself. -/
+theorem degree_sixteen_zeroLayer_component_eq_minimum_of_representative_mem_image
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      minimumLayerImageFinset (secondOrderDefectGraph G) c₀) :
+    e = c₀ := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hcount : (Finset.univ.filter (fun a : D.ConnectedComponent =>
+      a.supp.ncard = c₀.supp.ncard)).card = 1 := by
+    have hlayer := card_minimumLayerVertex D c₀
+    rw [hcardChild, hc₀card] at hlayer
+    have hcountThree : (Finset.univ.filter (fun a : D.ConnectedComponent =>
+        a.supp.ncard = 3)).card = 1 := by omega
+    simpa [hc₀card] using hcountThree
+  obtain ⟨x, _hx, hxrep⟩ := Finset.mem_image.mp he
+  have herep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  have hxcomp : D.connectedComponentMk x.2.1 = x.1.1 :=
+    (ConnectedComponent.mem_supp_iff x.1.1 x.2.1).mp x.2.2
+  have hex : e = x.1.1 := by
+    rw [← herep, hxrep, hxcomp]
+  have hecard : e.supp.ncard = c₀.supp.ncard := by
+    rw [hex]
+    exact x.1.2
+  have heMem : e ∈ Finset.univ.filter (fun a : D.ConnectedComponent =>
+      a.supp.ncard = c₀.supp.ncard) := Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, hecard⟩
+  have hcMem : c₀ ∈ Finset.univ.filter (fun a : D.ConnectedComponent =>
+      a.supp.ncard = c₀.supp.ncard) := Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, rfl⟩
+  exact Finset.card_le_one.mp (by omega) e heMem c₀ hcMem
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
