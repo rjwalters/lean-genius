@@ -13210,6 +13210,57 @@ theorem degree_sixteen_zeroLayer_used_orderTwentyFour_orderSix_cross_eq_zero
   rw [hecard, hfcard] at hbal
   omega
 
+/-- If a used component has actual order twenty-four and every other used
+component has actual order six, its used-cell row is concentrated on its
+diagonal, which is therefore exactly three. -/
+theorem degree_sixteen_zeroLayer_used_orderTwentyFour_diagonal_eq_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hecard : e.supp.ncard = 24)
+    (hother : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e → f.supp.ncard = 6) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e e = 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let Q := componentQuotientMatrix G D
+  have hsum := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e he
+  change (∑ f ∈ E, Q e f) = 3 at hsum
+  have heE : e ∈ E := by simpa [D, R, E] using he
+  have hcollapse : (∑ f ∈ E, Q e f) = Q e e := by
+    apply Finset.sum_eq_single e
+    · intro f hfE hfe
+      have hf : componentRepresentative D f ∈ R := (Finset.mem_filter.mp hfE).2
+      exact (degree_sixteen_zeroLayer_used_orderTwentyFour_orderSix_cross_eq_zero
+        G hfree hmin hcard c₀ hregChild hcardChild e f
+          (by simpa [D, R] using he) hf hecard
+          (hother f (by simpa [D, R] using hf) hfe)).1
+    · intro heNot
+      exact (heNot heE).elim
+  rw [hcollapse] at hsum
+  simpa [D, Q] using hsum
+
 /-- The analogous coprime-ratio obstruction for actual orders fifteen and
 six, used by the `[5,5,2,2,2]` v11 matrix. -/
 theorem degree_sixteen_zeroLayer_used_orderFifteen_orderSix_cross_eq_zero
