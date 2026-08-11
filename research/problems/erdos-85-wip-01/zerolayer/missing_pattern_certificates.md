@@ -22,7 +22,7 @@ omega/linarith.  No decide, no enumeration.
 
 | pattern | y (load weights) | z (excess weights) | slack-worst objective |
 |---|---|---|---|
-| (7,7,2) | [-4, 3, 12] | [8, -11, -12] | 27 |
+| (7,7,2) | [-7, 4, 20] | [-1, -14, -20] | ≥1 (one-sided) |
 | (7,4,3,2) | [2, 6, 7, -12] | [-11, -12, -11, -12] | 10 |
 | (7,3,3,3) | [3, 3, -1, -2] | [-11, -8, -2, 0] | 17 |
 | (7,3,2,2,2) | [3, 8, -12, 9, -6] | [-11, -12, 0, -12, 0] | 15 |
@@ -47,6 +47,15 @@ omega/linarith.  No decide, no enumeration.
 
 Index convention: position i in y/z corresponds to the i-th part of the
 pattern as written (descending).
+
+ONE-SIDED FORM (matches da1da24776): since balance forces every used-cell
+term `a_ej(a_je−1) ≥ 0` (nonzero entries are mutually nonzero), the slack
+satisfies `s_e ≥ 0`, so the one-sided law `Σ atom-excess ≤ 2(K e −1)`
+(codex's `degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le`)
+suffices for any certificate with ALL z ≤ 0.  All 22 rows above now have
+z ≤ 0 — (7,7,2) was re-solved into one-sided form — so NO lower-bound
+companion theorem is needed anywhere; each endpoint consumes exactly the
+existing load equality + the da1da excess inequality.
 
 ## The two integral holdouts (no linear certificate exists)
 
