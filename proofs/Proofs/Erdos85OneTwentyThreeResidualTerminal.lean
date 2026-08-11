@@ -12788,6 +12788,7 @@ theorem orderThirty_mutual_quotientTwo_exists_difference_sector
     (hBL : componentQuotientMatrix G (secondOrderDefectGraph G) B L = 2) :
     ∃ A : Finset (ZMod 30), A.card = 2 ∧ IsOrderedSidon A ∧
       (orderedDifferenceSet A).card = 2 ∧
+      A = mixedAnchorSupport G (uB 0) uL ∧
       ∀ t ∈ orderedDifferenceSet A, ∃ y ∈ B.supp,
         G.Adj (uL 0) y ∧ G.Adj (uL t) y := by
   obtain ⟨ε, hε, A, hAcard, hphase⟩ := equalComponent_quotientTwo_exists_phaseSet
@@ -12816,7 +12817,11 @@ theorem orderThirty_mutual_quotientTwo_exists_difference_sector
     (isOrderedSidon_negFinset_iff A).mp hsidonNeg
   have hDcard : (orderedDifferenceSet A).card = 2 := by
     rw [card_orderedDifferenceSet_of_sidon hsidon, hAcard]
-  refine ⟨A, hAcard, hsidon, hDcard, ?_⟩
+  have hcanonical : A = mixedAnchorSupport G (uB 0) uL := by
+    ext x
+    rw [mem_mixedAnchorSupport_iff]
+    simpa using (hphase 0 x).symm
+  refine ⟨A, hAcard, hsidon, hDcard, hcanonical, ?_⟩
   intro t ht
   obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp ht
   have hpdata := mem_orderedDistinctPairs_iff.mp hp
@@ -13045,6 +13050,7 @@ theorem orderThirty_six_B_exact_packing_homogeneous_count_two
       (secondOrderDefectGraph G) (b i) L = 2) :
     ∃ A : Fin 6 → Finset (ZMod 30),
       (∀ i, (A i).card = 2) ∧ (∀ i, IsOrderedSidon (A i)) ∧
+      (∀ i, A i = mixedAnchorSupport G (uB i 0) uL) ∧
       ((Finset.univ : Finset (Fin 6)).filter fun i =>
         ((A i).filter fun a =>
           ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1).card = 2 := by
@@ -13069,6 +13075,7 @@ theorem orderThirty_six_B_exact_packing_homogeneous_count_two
   have hBdata : ∀ i : Fin 6, ∃ A : Finset (ZMod 30),
       A.card = 2 ∧ IsOrderedSidon A ∧
       (orderedDifferenceSet A).card = 2 ∧
+      A = mixedAnchorSupport G (uB i 0) uL ∧
       ∀ t ∈ orderedDifferenceSet A, ∃ y ∈ (b i).supp,
         G.Adj (uL 0) y ∧ G.Adj (uL t) y := by
     intro i
@@ -13080,9 +13087,11 @@ theorem orderThirty_six_B_exact_packing_homogeneous_count_two
   have hAcard : ∀ i, (A i).card = 2 := fun i => (hBdata i).choose_spec.1
   have hAsidon : ∀ i, IsOrderedSidon (A i) :=
     fun i => (hBdata i).choose_spec.2.1
+  have hAcanonical : ∀ i, A i = mixedAnchorSupport G (uB i 0) uL :=
+    fun i => (hBdata i).choose_spec.2.2.2.1
   have hAw : ∀ i t, t ∈ orderedDifferenceSet (A i) →
       ∃ y ∈ (b i).supp, G.Adj (uL 0) y ∧ G.Adj (uL t) y :=
-    fun i => (hBdata i).choose_spec.2.2.2
+    fun i => (hBdata i).choose_spec.2.2.2.2
   have hsuppSep (c e : (secondOrderDefectGraph G).ConnectedComponent)
       (hne : c ≠ e) : ∀ y ∈ c.supp, ∀ y' ∈ e.supp, y ≠ y' := by
     intro y hy y' hy' heq
@@ -13177,7 +13186,7 @@ theorem orderThirty_six_B_exact_packing_homogeneous_count_two
   have hpack := six_phase_sectors_exact_packing_homogeneous_count_two
     A M D hAcard hAsidon hApair hMcard hDcard hMsub hDsub hAsub
       hMD hMA hDA hMeven hDeven
-  exact ⟨A, hAcard, hAsidon, hpack.2.2⟩
+  exact ⟨A, hAcard, hAsidon, hAcanonical, hpack.2.2⟩
 
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
@@ -13588,6 +13597,7 @@ theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
           ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
         (A.filter fun a =>
           ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∧
+      A = mixedAnchorSupport G (uB 0) uL ∧
       ∀ z ∈ E, ∃ y : ZMod 30,
         G.Adj (uL 0) (uB y) ∧ G.Adj (uS z) (uB y) := by
   obtain ⟨ε, hε, A, hAcard, hphase⟩ := equalComponent_quotientTwo_exists_phaseSet
@@ -13643,7 +13653,11 @@ theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
       ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
     (A.filter fun a =>
       ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) at hparity
-  refine ⟨A, E, hAcard, hEcard, hparity, ?_⟩
+  have hcanonical : A = mixedAnchorSupport G (uB 0) uL := by
+    ext x
+    rw [mem_mixedAnchorSupport_iff]
+    simpa using (hphase 0 x).symm
+  refine ⟨A, E, hAcard, hEcard, hparity, hcanonical, ?_⟩
   intro z hz
   have hoff : z - τ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) 0 ∈ E := by
     simpa using hz
@@ -13920,12 +13934,12 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
             ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
           (A₂.filter fun a =>
             ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
-  obtain ⟨A₁, E₁, hA₁card, hE₁card, hparity₁, hW₁⟩ :=
+  obtain ⟨A₁, E₁, hA₁card, hE₁card, hparity₁, _hcanonical₁, hW₁⟩ :=
     orderThirty_B_unitSmall_exists_two_offset_witness_sector
       G hfree hd heven hmin hcard L B₁ S C hB₁C uL uB₁ uS uC
       huL huB₁ huS huC huLRange huB₁Range huSRange huCRange
       huLD huB₁D huSD huCD hB₁L hB₁S hLC
-  obtain ⟨A₂, E₂, hA₂card, hE₂card, hparity₂, hW₂⟩ :=
+  obtain ⟨A₂, E₂, hA₂card, hE₂card, hparity₂, _hcanonical₂, hW₂⟩ :=
     orderThirty_B_unitSmall_exists_two_offset_witness_sector
       G hfree hd heven hmin hcard L B₂ S C hB₂C uL uB₂ uS uC
       huL huB₂ huS huC huLRange huB₂Range huSRange huCRange
