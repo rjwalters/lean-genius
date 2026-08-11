@@ -12800,6 +12800,55 @@ theorem zmod_thirty_two_phase_affine_image_card_two
     have hmul := congrArg (fun z : ZMod 6 => τ * (c - z)) hab
     simpa only [mul_sub, ← mul_assoc, hτ, one_mul] using hmul
 
+/-- A quotient-two phase pair on an order-thirty component cannot collapse
+modulo three when that component has its mandatory unit cover to a disjoint
+minimum `C₃`.  A collapsing pair would make the two corresponding large
+vertices share both the phase-zero `B` vertex and one minimum-cover vertex. -/
+theorem c4Free_phase_difference_mod_three_ne_of_minimum_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (uL uB : ZMod 30 → V) (uC : ZMod 3 → V)
+    (huL : Function.Injective uL)
+    (A : Finset (ZMod 30)) (ε : ZMod 30)
+    (hphase : ∀ y x, G.Adj (uB y) (uL x) ↔ x - ε * y ∈ A)
+    (f : ZMod 30 → ZMod 3) (c σ : ZMod 3)
+    (hf : ∀ x, f x = c + σ *
+      ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) x)
+    (hcover : ∀ x, G.Adj (uC (f x)) (uL x))
+    (hsep : ∀ y z, uB y ≠ uC z) :
+    ∀ a ∈ A, ∀ b ∈ A, a ≠ b →
+      ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) (a - b) ≠ 0 := by
+  intro a ha b hb hab hcollapse
+  let φ : ZMod 30 →+* ZMod 3 :=
+    ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3)
+  have hφab : φ a = φ b := by
+    change φ (a - b) = 0 at hcollapse
+    simp only [map_sub] at hcollapse
+    linear_combination hcollapse
+  have hfab : f a = f b := by rw [hf a, hf b, hφab]
+  have hLne : uL a ≠ uL b := huL.ne hab
+  have hBLa : G.Adj (uL a) (uB 0) := by
+    rw [G.adj_comm, hphase]
+    simpa using ha
+  have hBLb : G.Adj (uL b) (uB 0) := by
+    rw [G.adj_comm, hphase]
+    simpa using hb
+  have hCLa : G.Adj (uL a) (uC (f a)) := (hcover a).symm
+  have hCLb : G.Adj (uL b) (uC (f a)) := by
+    rw [hfab]
+    exact (hcover b).symm
+  have hBmem : uB 0 ∈ G.neighborFinset (uL a) ∩
+      G.neighborFinset (uL b) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hBLa, hBLb⟩
+  have hCmem : uC (f a) ∈ G.neighborFinset (uL a) ∩
+      G.neighborFinset (uL b) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hCLa, hCLb⟩
+  have hone := common_le_one_of_not_containsC4 hfree (uL a) (uL b) hLne
+  exact (hsep 0 (f a)) (Finset.card_le_one.mp hone _ hBmem _ hCmem)
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
