@@ -11721,6 +11721,60 @@ theorem degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row_unconditional
     G hfree hmin hcard e hecard
   exact hne (hqdef.trans hqthree)
 
+/-- A used zero-layer component cannot have a second unit quotient into a
+distinct smaller component whose order is divisible by three. -/
+theorem degree_sixteen_zeroLayer_no_small_unit_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (hthree : 3 ∣ o.supp.ncard)
+    (hlt : o.supp.ncard < e.supp.ncard)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let Q := componentQuotientMatrix G D
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  have hminimumRaw := degree_sixteen_zeroLayer_used_component_quotient_entries
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (componentRepresentative D e) (by simpa [D, R] using heUsed)
+  have hminimum : Q e c₀ = 1 := by
+    dsimp only at hminimumRaw
+    have hminimumFirst := hminimumRaw.1
+    change componentQuotientMatrix G D
+      (D.connectedComponentMk (componentRepresentative D e)) c₀ = 1 at hminimumFirst
+    rw [hrep] at hminimumFirst
+    exact hminimumFirst
+  have hlcm : Nat.lcm c₀.supp.ncard o.supp.ncard < e.supp.ncard := by
+    rw [hc₀card, Nat.lcm_eq_right hthree]
+    exact hlt
+  exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      c₀ o e hoc₀.symm (by simpa only [D, Q] using hminimum)
+        (by simpa only [D, Q] using hunit) hlcm
+
 /-- If the zero-layer used sector has `t` defect components, its mandatory
 contacts with the minimum `C₃` consume exactly `16-t` units of local
 excess. -/
