@@ -12765,6 +12765,80 @@ theorem orderThirty_diagonal_three_exists_even_difference_sector
     rw [this]
     exact hpdata.1
 
+/-- One order-thirty mutual quotient-two `B` block supplies a two-element
+Sidon ordered-difference sector, with every difference witnessed by a
+common neighbor inside that `B` component. -/
+theorem orderThirty_mutual_quotientTwo_exists_difference_sector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L B : (secondOrderDefectGraph G).ConnectedComponent)
+    (uL uB : ZMod 30 → V)
+    (huL : Function.Injective uL) (huB : Function.Injective uB)
+    (huLRange : Set.range uL = L.supp) (huBRange : Set.range uB = B.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huBD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uB x) =
+      {uB (x - 1), uB (x + 1)})
+    (hBL : componentQuotientMatrix G (secondOrderDefectGraph G) B L = 2) :
+    ∃ A : Finset (ZMod 30), A.card = 2 ∧ IsOrderedSidon A ∧
+      (orderedDifferenceSet A).card = 2 ∧
+      ∀ t ∈ orderedDifferenceSet A, ∃ y ∈ B.supp,
+        G.Adj (uL 0) y ∧ G.Adj (uL t) y := by
+  obtain ⟨ε, hε, A, hAcard, hphase⟩ := equalComponent_quotientTwo_exists_phaseSet
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 30)
+      B L uB uL huB huL huBRange huLRange huBD huLD hBL
+  have hεsq : ε * ε = 1 := by rcases hε with rfl | rfl <;> ring
+  let w : ZMod 30 → V := fun z => uB (ε * z)
+  have hw : Function.Injective w := by
+    intro x y hxy
+    apply_fun uB at hxy
+    have hmul := huB hxy
+    have := congrArg (fun z : ZMod 30 => ε * z) hmul
+    simpa only [← mul_assoc, hεsq, one_mul] using this
+  have hblock : ∀ x z : ZMod 30,
+      G.Adj (uL x) (w z) ↔ z - x ∈ negFinset A := by
+    intro x z
+    rw [mem_negFinset_iff]
+    change G.Adj (uL x) (uB (ε * z)) ↔ -(z - x) ∈ A
+    rw [G.adj_comm, hphase]
+    rw [← mul_assoc, hεsq, one_mul]
+    ring_nf
+  have hsidonNeg : IsOrderedSidon (negFinset A) :=
+    isOrderedSidon_of_c4Free_circulantBlock
+      G hfree uL w huL hw (negFinset A) hblock
+  have hsidon : IsOrderedSidon A :=
+    (isOrderedSidon_negFinset_iff A).mp hsidonNeg
+  have hDcard : (orderedDifferenceSet A).card = 2 := by
+    rw [card_orderedDifferenceSet_of_sidon hsidon, hAcard]
+  refine ⟨A, hAcard, hsidon, hDcard, ?_⟩
+  intro t ht
+  obtain ⟨p, hp, hpt⟩ := Finset.mem_image.mp ht
+  have hpdata := mem_orderedDistinctPairs_iff.mp hp
+  let ycoord : ZMod 30 := -ε * p.2
+  refine ⟨uB ycoord, ?_, ?_, ?_⟩
+  · rw [← huBRange]
+    exact ⟨ycoord, rfl⟩
+  · rw [G.adj_comm, hphase]
+    have : (0 : ZMod 30) - ε * ycoord = p.2 := by
+      dsimp only [ycoord]
+      rw [mul_neg, ← mul_assoc, hεsq, one_mul]
+      ring
+    rw [this]
+    exact hpdata.2.1
+  · rw [G.adj_comm, hphase]
+    have : t - ε * ycoord = p.1 := by
+      dsimp only [ycoord]
+      rw [mul_neg, ← mul_assoc, hεsq, one_mul]
+      linear_combination hpt.symm
+    rw [this]
+    exact hpdata.1
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
