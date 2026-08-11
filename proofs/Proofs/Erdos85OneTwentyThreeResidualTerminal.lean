@@ -12454,17 +12454,19 @@ theorem six_two_element_fibers_unique_property_target
     have hjP : P j := (huniform j i hjtarget).mpr hiP
     exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hjP⟩
   have hEq : H = (Finset.univ : Finset (Fin 6)).filter fun j => target j = k := by
-    apply Finset.Subset.antisymm
-    · apply Finset.eq_of_subset_of_card_le hsub
-      rw [hPcard]
-      exact hfiber k
-    · exact hsub
+    symm
+    apply Finset.eq_of_subset_of_card_le hsub
+    rw [hPcard]
+    simpa [hfiber k]
   refine ⟨k, hEq, ?_⟩
   intro l hl
   have hlNonempty : ((Finset.univ : Finset (Fin 6)).filter fun j =>
       target j = l).Nonempty := Finset.card_pos.mp (by rw [hfiber l]; norm_num)
   obtain ⟨j, hjl⟩ := hlNonempty
-  have hjH : j ∈ H := by rw [hl]; exact hjl
+  have hjH : j ∈ H := by
+    change j ∈ (Finset.univ : Finset (Fin 6)).filter P
+    rw [hl]
+    exact hjl
   have hjk : target j = k := by
     rw [hEq] at hjH
     exact (Finset.mem_filter.mp hjH).2
