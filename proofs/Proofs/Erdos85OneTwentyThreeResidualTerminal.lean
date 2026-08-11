@@ -11958,6 +11958,71 @@ theorem false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three
     exact false_of_twelve_four_residual_circulant_interface
       G hfree s o' m hs ho' hsD A hAcard hphase' σ a hcover hsep'
 
+/-- Order-parametric wrapper around the labeled residual theorem. -/
+theorem false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three_of_orders
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    {r s t : ℕ} [NeZero r] [NeZero s] [NeZero t]
+    (hr : r = 3) (hsz : s = 12) (ht : t = 12)
+    (c e oComp : (secondOrderDefectGraph G).ConnectedComponent)
+    (hco : c ≠ oComp)
+    (m : ZMod r → V) (u : ZMod s → V) (v : ZMod t → V)
+    (hm : Function.Injective m) (hu : Function.Injective u)
+    (hv : Function.Injective v)
+    (hmRange : Set.range m = c.supp) (huRange : Set.range u = e.supp)
+    (hvRange : Set.range v = oComp.supp)
+    (hmD : ∀ x, (secondOrderDefectGraph G).neighborFinset (m x) =
+      {m (x - 1), m (x + 1)})
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hminimum : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1)
+    (hthree : componentQuotientMatrix G (secondOrderDefectGraph G) oComp e = 3) :
+    False := by
+  subst r
+  subst s
+  subst t
+  exact false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three
+    G hfree hmin hcard c e oComp hco m u v hm hu hv hmRange huRange
+      hvRange hmD huD hvD hminimum hthree
+
+/-- Labeling-free form of the single order-twelve orphan obstruction. -/
+theorem false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three_ncard
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c e oComp : (secondOrderDefectGraph G).ConnectedComponent)
+    (hco : c ≠ oComp) (hc : c.supp.ncard = 3)
+    (he : e.supp.ncard = 12) (hoCard : oComp.supp.ncard = 12)
+    (hminimum : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1)
+    (hthree : componentQuotientMatrix G (secondOrderDefectGraph G) oComp e = 3) :
+    False := by
+  obtain ⟨u, huinj, huRange, huD, hthreeCard⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  letI : NeZero c.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthreeCard c; omega)⟩
+  letI : NeZero e.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthreeCard e; omega)⟩
+  letI : NeZero oComp.supp.ncard :=
+    ⟨Nat.ne_of_gt (by have := hthreeCard oComp; omega)⟩
+  exact false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three_of_orders
+    G hfree hmin hcard hc he hoCard c e oComp hco
+      (u c) (u e) (u oComp) (huinj c) (huinj e) (huinj oComp)
+      (huRange c) (huRange e) (huRange oComp) (huD c) (huD e) (huD oComp)
+      hminimum hthree
+
 /-- Finite two-case endpoint for the corrected `[12,4]` small-row census.
 Either three order-four cover sectors must be pairwise disjoint even though
 all contain the same `±4` difference, or one order-twelve quotient-three
@@ -12613,6 +12678,67 @@ theorem zeroLayer_reduced_used_orders_twelve_four_corrected_atom_mass
     (hD : nD4 + 3 * nD12 = 3) :
     12 * nA12 + 36 * nA36 + 36 * nB36 +
       4 * nD4 + 12 * nD12 = 192 := by
+  omega
+
+/-- Focused small-row form of the corrected `[12,4]` census.  Quotient two
+is absent, while every quotient-three orphan is either an order-four
+reverse-unit target or an equal order-twelve reverse-three block.  The exact
+small-row excess six therefore leaves precisely the alternatives `(3,0)`
+and `(0,1)`. -/
+theorem twelve_four_small_row_census_dichotomy
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (size q reverse : α → ℕ)
+    (hexcess : (∑ o ∈ C, reverse o * (q o - 1)) = 6)
+    (hqle : ∀ o ∈ C, q o ≤ 3)
+    (hqtwo : ∀ o ∈ C, q o ≠ 2)
+    (hqthree : ∀ o ∈ C, q o = 3 →
+      (size o = 4 ∧ reverse o = 1) ∨
+      (size o = 12 ∧ reverse o = 3)) :
+    let D4 := C.filter (fun o => q o = 3 ∧ size o = 4)
+    let D12 := C.filter (fun o => q o = 3 ∧ size o = 12)
+    (D4.card = 3 ∧ D12.card = 0) ∨
+      (D4.card = 0 ∧ D12.card = 1) := by
+  classical
+  dsimp only
+  let D4 := C.filter (fun o => q o = 3 ∧ size o = 4)
+  let D12 := C.filter (fun o => q o = 3 ∧ size o = 12)
+  have hpoint : ∀ o ∈ C,
+      reverse o * (q o - 1) =
+        (if o ∈ D4 then 2 else 0) + (if o ∈ D12 then 6 else 0) := by
+    intro o ho
+    have hle := hqle o ho
+    interval_cases hq : q o
+    · simp [D4, D12, hq]
+    · simp [D4, D12, hq]
+    · exact (hqtwo o ho hq).elim
+    · rcases hqthree o ho hq with h4 | h12
+      · simp [D4, D12, ho, hq, h4.1, h4.2]
+      · simp [D4, D12, ho, hq, h12.1, h12.2]
+  have hfilterD4 : C.filter (fun o => o ∈ D4) = D4 := by
+    ext o
+    simp [D4, and_assoc]
+  have hfilterD12 : C.filter (fun o => o ∈ D12) = D12 := by
+    ext o
+    simp [D12, and_assoc]
+  have hsumD4 : (∑ o ∈ C, if o ∈ D4 then 2 else 0) = 2 * D4.card := by
+    rw [← Finset.sum_filter, hfilterD4]
+    simp [Nat.mul_comm]
+  have hsumD12 : (∑ o ∈ C, if o ∈ D12 then 6 else 0) = 6 * D12.card := by
+    rw [← Finset.sum_filter, hfilterD12]
+    simp [Nat.mul_comm]
+  have hsum : 2 * D4.card + 6 * D12.card = 6 := by
+    calc
+      2 * D4.card + 6 * D12.card =
+          ∑ o ∈ C, ((if o ∈ D4 then 2 else 0) +
+            (if o ∈ D12 then 6 else 0)) := by
+            rw [Finset.sum_add_distrib, hsumD4, hsumD12]
+      _ = ∑ o ∈ C, reverse o * (q o - 1) := by
+        apply Finset.sum_congr rfl
+        intro o ho
+        exact (hpoint o ho).symm
+      _ = 6 := hexcess
+  change (D4.card = 3 ∧ D12.card = 0) ∨
+    (D4.card = 0 ∧ D12.card = 1)
   omega
 
 /-- Local arithmetic behind the common bonus in the `[12,4]` pointwise
@@ -14361,10 +14487,10 @@ theorem degree_sixteen_zeroLayer_used_matrix_twelve_four
   have hcrossLe : Q e₁₂ e₄ ≤ 3 := by omega
   interval_cases hcross : Q e₁₂ e₄ <;> omega
 
-/-- For the `[12,4]` used matrix, the two orphan rows have combined
-after-contact excess twenty-four.  The component partition makes this exact:
-the diagonal and cross entries consume four units from the order-thirty-six
-row and none from the order-twelve row. -/
+/-- For the `[12,4]` used matrix, the orphan row excesses are exactly
+eighteen and six, hence twenty-four combined.  The component partition makes
+this exact: the diagonal and cross entries consume four units from the
+order-thirty-six row and none from the order-twelve row. -/
 theorem degree_sixteen_zeroLayer_twelve_four_orphan_combined_atomExcess_sum
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -14402,9 +14528,13 @@ theorem degree_sixteen_zeroLayer_twelve_four_orphan_combined_atomExcess_sum
     let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
       componentRepresentative D o ∈ O)
     (∑ o ∈ C, componentQuotientMatrix G D e₁₂ o *
+      (componentQuotientMatrix G D o e₁₂ - 1)) = 18 ∧
+    (∑ o ∈ C, componentQuotientMatrix G D e₄ o *
+      (componentQuotientMatrix G D o e₄ - 1)) = 6 ∧
+    ((∑ o ∈ C, componentQuotientMatrix G D e₁₂ o *
       (componentQuotientMatrix G D o e₁₂ - 1)) +
       (∑ o ∈ C, componentQuotientMatrix G D e₄ o *
-        (componentQuotientMatrix G D o e₄ - 1)) = 24 := by
+        (componentQuotientMatrix G D o e₄ - 1)) = 24) := by
   classical
   dsimp only at hE ⊢
   let D := secondOrderDefectGraph G
@@ -14510,8 +14640,10 @@ theorem degree_sixteen_zeroLayer_twelve_four_orphan_combined_atomExcess_sum
     hmatrix.1, hmatrix.2.1, hmatrix.2.2.1, hmatrix.2.2.2] at hrow₁₂ hrow₄
   change 4 + (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) = 22 at hrow₁₂
   change (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 6 at hrow₄
-  change (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) +
-    (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 24
+  change (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) = 18 ∧
+    (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 6 ∧
+    (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) +
+      (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 24
   omega
 
 /-- Used-matrix package for the reduced partition `[12,2,2]`.  The large
@@ -16298,6 +16430,295 @@ theorem degree_sixteen_quotientThree_into_orderThirtySix_classification
       change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
         e.supp.ncard * Q e o = o.supp.ncard at hentry
       omega)
+
+/-- A quotient-three leg into an order-twelve component is either an
+order-four reverse cover or an equal-order quotient-three block. -/
+theorem degree_sixteen_quotientThree_into_orderTwelve_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 12)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    (o.supp.ncard = 4 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) ∨
+    (o.supp.ncard = 12 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 3) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 3 at hq
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using (show 0 < Q o e by omega))
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    left
+    refine ⟨?_, hentry.1⟩
+    rw [hq, he] at hentry
+    omega
+  · right
+    refine ⟨heq.trans he, ?_⟩
+    rw [heq, hq] at hbal
+    exact Nat.eq_of_mul_eq_mul_left e.nonempty_supp.ncard_pos hbal.symm
+  · have hrevPos : 0 < Q e o := by
+      by_contra hzero
+      have hzero' : Q e o = 0 := Nat.eq_zero_of_not_pos hzero
+      rw [hq, hzero', mul_zero] at hbal
+      exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt hrevPos
+    exact False.elim (by
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega)
+
+/-- In the `[12,4]` used pair, the small-row orphan quotient cannot be two:
+the resulting orphan has order six or twelve, while its forced unit leg into
+the order-thirty-six component violates detailed balance. -/
+theorem degree_sixteen_twelve_four_orphan_small_quotient_ne_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e₁₂ e₄ : (secondOrderDefectGraph G).ConnectedComponent)
+    (he₁₂ : e₁₂.supp.ncard = 36) (he₄ : e₄.supp.ncard = 12)
+    (hrow : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁₂ +
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₄ = 3) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e₄ ≠ 2 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  intro htwo
+  change Q o e₄ = 2 at htwo
+  change Q o e₁₂ + Q o e₄ = 3 at hrow
+  have hone : Q o e₁₂ = 1 := by
+    omega
+  have hbal₄ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₄
+  have hbal₁₂ := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₁₂
+  change o.supp.ncard * Q o e₄ = e₄.supp.ncard * Q e₄ o at hbal₄
+  change o.supp.ncard * Q o e₁₂ = e₁₂.supp.ncard * Q e₁₂ o at hbal₁₂
+  have hord : o.supp.ncard = 6 ∨ o.supp.ncard = 12 := by
+    rcases lt_trichotomy o.supp.ncard e₄.supp.ncard with hlt | heq | hgt
+    · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          o e₄ hlt (by simpa [D, Q] using (show 0 < Q o e₄ by omega))
+      change Q e₄ o = 1 ∧ o.supp.ncard ∣ e₄.supp.ncard ∧
+        o.supp.ncard * Q o e₄ = e₄.supp.ncard at hentry
+      left
+      rw [htwo, he₄] at hentry
+      omega
+    · exact Or.inr (heq.trans he₄)
+    · have hrevPos : 0 < Q e₄ o := by
+        by_contra hzero
+        have hzero' : Q e₄ o = 0 := Nat.eq_zero_of_not_pos hzero
+        rw [htwo, hzero', mul_zero] at hbal₄
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
+      have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e₄ o hgt hrevPos
+      exact False.elim (by
+        change Q o e₄ = 1 ∧ e₄.supp.ncard ∣ o.supp.ncard ∧
+          e₄.supp.ncard * Q e₄ o = o.supp.ncard at hentry
+        omega)
+  change Q o e₁₂ = 1 at hone
+  rw [hone, he₁₂] at hbal₁₂
+  rcases hord with hord | hord <;> rw [hord] at hbal₁₂ <;> omega
+
+/-- Graph-facing corrected small-row census for the reduced used partition
+`[12,4]`.  The orphan components with quotient three into the order-twelve
+used component consist either of three order-four targets or one
+order-twelve target. -/
+theorem degree_sixteen_zeroLayer_twelve_four_small_row_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₄ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁₂ ≠ e₄) (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₄ : e₄.supp.ncard = 12)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₄ : componentRepresentative (secondOrderDefectGraph G) e₄ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₄}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let D4 := C.filter (fun o => Q o e₄ = 3 ∧ o.supp.ncard = 4)
+    let D12 := C.filter (fun o => Q o e₄ = 3 ∧ o.supp.ncard = 12)
+    (D4.card = 3 ∧ D12.card = 0) ∨
+      (D4.card = 0 ∧ D12.card = 1) := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  have hE' : E = {e₁₂, e₄} := by simpa [D, R, E] using hE
+  have hexcess := degree_sixteen_zeroLayer_twelve_four_orphan_combined_atomExcess_sum
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₄ hne
+      he₁₂ he₄ hused₁₂ hused₄ hE
+  change (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) = 18 ∧
+    (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 6 ∧ _ at hexcess
+  have hrow (o : D.ConnectedComponent) (ho : o ∈ C) :
+      Q o e₁₂ + Q o e₄ = 3 := by
+    have hsum := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+      G hfree hmin hcard c₀ hregChild hcardChild o
+        (by simpa [D, R, U, O, C] using (Finset.mem_filter.mp ho).2)
+    change (∑ e ∈ E, Q o e) = 3 at hsum
+    rw [hE'] at hsum
+    simpa [hne] using hsum
+  apply twelve_four_small_row_census_dichotomy C
+    (fun o => o.supp.ncard) (fun o => Q o e₄) (fun o => Q e₄ o)
+    hexcess.2.1
+  · intro o ho
+    have := hrow o ho
+    omega
+  · intro o ho
+    exact degree_sixteen_twelve_four_orphan_small_quotient_ne_two
+      G hfree hmin hcard o e₁₂ e₄ he₁₂ he₄ (hrow o ho)
+  · intro o _ho hq
+    exact degree_sixteen_quotientThree_into_orderTwelve_classification
+      G hfree hmin hcard o e₄ he₄ hq
+
+/-- The reduced zero-layer used partition `[12,4]` is impossible.  Its exact
+small-row census gives either three order-four reverse covers, killed by the
+two-cover LCM obstruction, or one equal order-twelve quotient-three block,
+killed by the residual phase obstruction. -/
+theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₄ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁₂ ≠ e₄) (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₄ : e₄.supp.ncard = 12)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₄ : componentRepresentative (secondOrderDefectGraph G) e₄ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₄}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let D4 := C.filter (fun o => Q o e₄ = 3 ∧ o.supp.ncard = 4)
+  let D12 := C.filter (fun o => Q o e₄ = 3 ∧ o.supp.ncard = 12)
+  have hcases := degree_sixteen_zeroLayer_twelve_four_small_row_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₄ hne
+      he₁₂ he₄ hused₁₂ hused₄ hE
+  change (D4.card = 3 ∧ D12.card = 0) ∨
+    (D4.card = 0 ∧ D12.card = 1) at hcases
+  rcases hcases with hthree4 | hone12
+  · have hT (o : D.ConnectedComponent) (ho : o ∈ D4) :
+        o.supp.ncard = 4 ∧ Q e₄ o = 1 := by
+      have hoData := Finset.mem_filter.mp ho
+      have hclass := degree_sixteen_quotientThree_into_orderTwelve_classification
+        G hfree hmin hcard o e₄ he₄ hoData.2.1
+      rcases hclass with h4 | h12
+      · exact ⟨hoData.2.2, h4.2⟩
+      · omega
+    have htwo : 1 < D4.card := by omega
+    obtain ⟨o₁, ho₁, o₂, ho₂, ho₁₂⟩ := Finset.one_lt_card.mp htwo
+    exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o₁ o₂ e₄ ho₁₂ (hT o₁ ho₁).2 (hT o₂ ho₂).2 (by
+          rw [(hT o₁ ho₁).1, (hT o₂ ho₂).1, he₄]
+          norm_num)
+  · obtain ⟨o, hD12⟩ := Finset.card_eq_one.mp hone12.2
+    have hoD12 : o ∈ D12 := by rw [hD12]; simp
+    have hoData := Finset.mem_filter.mp hoD12
+    have hoC : o ∈ C := hoData.1
+    have hc₀card : c₀.supp.ncard = 3 :=
+      (degree_sixteen_smallLayer_component_card
+        G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)).1 rfl
+    have hminimumEntries := degree_sixteen_zeroLayer_used_component_quotient_entries
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e₄) (by simpa [D, R] using hused₄)
+    have hrepE : D.connectedComponentMk (componentRepresentative D e₄) = e₄ :=
+      (ConnectedComponent.mem_supp_iff e₄
+        (componentRepresentative D e₄)).mp (componentRepresentative_mem D e₄)
+    have hminimum : Q e₄ c₀ = 1 := by
+      have hfirst := hminimumEntries.1
+      change componentQuotientMatrix G D
+        (D.connectedComponentMk (componentRepresentative D e₄)) c₀ = 1 at hfirst
+      rw [hrepE] at hfirst
+      exact hfirst
+    have hc₀repU : componentRepresentative D c₀ ∈ U := by
+      let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+      let x : minimumLayerVertex D c₀ :=
+        ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+      exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+    have hco : c₀ ≠ o := by
+      intro hco
+      subst o
+      have hoO : componentRepresentative D c₀ ∈ O :=
+        (Finset.mem_filter.mp hoC).2
+      exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hoO).1).2 hc₀repU
+    exact false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three_ncard
+      G hfree hmin hcard c₀ e₄ o hco hc₀card he₄ hoData.2.2
+        hminimum hoData.2.1
 
 /-- A quotient-three leg into an order-thirty component is either an
 order-ten reverse cover or an equal-order quotient-three block. -/
