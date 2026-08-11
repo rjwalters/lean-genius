@@ -14781,6 +14781,97 @@ theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_D_atom
   · exfalso
     exact hnot (heDvd.trans heoDvd)
 
+/-- The serviced order-eight `D` atom has exact load eight and excess two. -/
+theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 24) (hnot : ¬ 3 ∣ o.supp.ncard)
+    (hservice : 0 <
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o) :
+    zeroLayerAtomLoad G e o = 8 ∧ zeroLayerAtomExcess G e o = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+  have heCardPos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hoCardPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+  have hforward : 0 < Q o e := by
+    have : 0 < Q e o := by simpa [Q] using hservice
+    nlinarith
+  have heMk : D.connectedComponentMk (componentRepresentative D e) = e :=
+    (ConnectedComponent.mem_supp_iff e
+      (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+  have hoMk : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o
+      (componentRepresentative D o)).mp (componentRepresentative_mem D o)
+  have hnotRep : ¬ 3 ∣
+      (D.connectedComponentMk (componentRepresentative D o)).supp.ncard := by
+    rw [hoMk]
+    exact hnot
+  have hforwardRep : 0 < Q
+      (D.connectedComponentMk (componentRepresentative D o))
+      (D.connectedComponentMk (componentRepresentative D e)) := by
+    rw [hoMk, heMk]
+    exact hforward
+  have hq3 : Q o e = 3 := by
+    have hq3Rep := degree_sixteen_zeroLayer_orphan_to_used_quotient_eq_three
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e) (by simpa [D, R] using heUsed)
+        (componentRepresentative D o) (by simpa [D, R] using ho)
+        (by simpa [D] using hnotRep) (by simpa [D, Q] using hforwardRep)
+    change Q (D.connectedComponentMk (componentRepresentative D o))
+      (D.connectedComponentMk (componentRepresentative D e)) = 3 at hq3Rep
+    rw [hoMk, heMk] at hq3Rep
+    exact hq3Rep
+  have heDvd : 3 ∣ e.supp.ncard := by rw [he]; norm_num
+  have heRatio : e.supp.ncard / 3 ∣ o.supp.ncard := by
+    simpa [D, Q] using
+      degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
+        G hfree hmin hcard e o heDvd (by simpa [Q] using hq3)
+  obtain ⟨u, hu, hunique⟩ :=
+    degree_sixteen_zeroLayer_nonThreeDivisible_orphan_unique_owner
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hnot
+  have heu : e = u := hunique e ⟨heUsed, by simpa [Q] using hq3, heRatio⟩
+  obtain ⟨x, hx, _huniqueFull⟩ :=
+    degree_sixteen_zeroLayer_nonThreeDivisible_orphan_D_atom
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hnot
+  have hxRatio : x.supp.ncard / 3 ∣ o.supp.ncard := by
+    rw [← hx.2.2.1]
+  have hxu : x = u := hunique x ⟨hx.1, hx.2.1, hxRatio⟩
+  have hex : e = x := heu.trans hxu.symm
+  have hrev : Q e o = 1 := by
+    rw [hex]
+    exact hx.2.2.2
+  constructor
+  · change (e.supp.ncard / 3) * Q e o = 8
+    rw [he, hrev]
+  · change Q e o * (Q o e - 1) = 2
+    rw [hrev, hq3]
+
 /-- A fixed used component can be the concentrated owner of at most twelve
 orphan components.  Every cut with `Q(o,e)=5` has positive reverse quotient,
 and all reverse orphan quotients in the used row sum to twelve. -/
