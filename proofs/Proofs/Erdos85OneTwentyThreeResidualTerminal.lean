@@ -12465,6 +12465,42 @@ theorem two_component_three_target_census
   · right
     simpa [hT, hxy] using hfour
 
+/-- Named-component form of the residual unique-unit-column statement. -/
+theorem two_component_three_target_unique_unit_column
+    {α : Type*} [DecidableEq α] (T : Finset α)
+    (qa qb qc : α → ℕ) (hcard : T.card = 2)
+    (hrow : ∀ x ∈ T, qa x + qb x + qc x = 3)
+    (hcola : (∑ x ∈ T, qa x) = 2)
+    (hcolb : (∑ x ∈ T, qb x) = 2)
+    (hcolc : (∑ x ∈ T, qc x) = 2)
+    (hnotA : ¬ ∀ x ∈ T, qa x = 1 ∧ qb x = 1 ∧ qc x = 1) :
+    ∃ x y : α, x ≠ y ∧ T = {x, y} ∧
+      ((qa x = 1 ∧ qa y = 1 ∧
+          ¬ (qb x = 1 ∧ qb y = 1) ∧ ¬ (qc x = 1 ∧ qc y = 1)) ∨
+       (qb x = 1 ∧ qb y = 1 ∧
+          ¬ (qa x = 1 ∧ qa y = 1) ∧ ¬ (qc x = 1 ∧ qc y = 1)) ∨
+       (qc x = 1 ∧ qc y = 1 ∧
+          ¬ (qa x = 1 ∧ qa y = 1) ∧ ¬ (qb x = 1 ∧ qb y = 1))) := by
+  obtain ⟨x, y, hxy, hT⟩ := Finset.card_eq_two.mp hcard
+  have hx : x ∈ T := by simp [hT]
+  have hy : y ∈ T := by simp [hT]
+  have hnotRows : ¬ (qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
+      qa y = 1 ∧ qb y = 1 ∧ qc y = 1) := by
+    intro h
+    apply hnotA
+    intro z hz
+    simp only [hT, Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with rfl | rfl
+    · exact ⟨h.1, h.2.1, h.2.2.1⟩
+    · exact ⟨h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2⟩
+  have hunique := two_three_target_rows_unique_unit_column
+    (qa x) (qb x) (qc x) (qa y) (qb y) (qc y)
+      (hrow x hx) (hrow y hy)
+      (by simpa [hT, hxy] using hcola)
+      (by simpa [hT, hxy] using hcolb)
+      (by simpa [hT, hxy] using hcolc) hnotRows
+  exact ⟨x, y, hxy, hT, hunique⟩
+
 /-- A symmetric three-by-three nonnegative matrix with every row sum three
 cannot have aggregate `q(q-1)` excess two. -/
 theorem symmetric_three_by_three_row_sum_three_excess_ne_two
