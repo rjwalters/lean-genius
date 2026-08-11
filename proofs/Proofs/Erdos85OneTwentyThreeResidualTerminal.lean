@@ -12430,19 +12430,6 @@ theorem zmod_six_neg_invariant_two_phase_not_mixed :
         ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) a = 0).card ≠ 1 := by
   native_decide
 
-/-- Parity-allocation endpoint for the six `B` blocks.  If the two blocks
-assigned to each of three targets have a common parity, and exactly two of
-the six blocks are even, then exactly one target owns the even pair. -/
-theorem three_two_block_groups_unique_even_pair
-    (ea eb ec : ℕ) (hea : ea = 0 ∨ ea = 2)
-    (heb : eb = 0 ∨ eb = 2) (hec : ec = 0 ∨ ec = 2)
-    (htotal : ea + eb + ec = 2) :
-    (ea = 2 ∧ eb = 0 ∧ ec = 0) ∨
-      (ea = 0 ∧ eb = 2 ∧ ec = 0) ∨
-      (ea = 0 ∧ eb = 0 ∧ ec = 2) := by
-  rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
-    rcases hec with rfl | rfl <;> norm_num at htotal ⊢
-
 /-- If six objects are partitioned into three two-element target fibers,
 and a property is constant on each fiber but holds for exactly two objects,
 then exactly one whole target fiber has that property. -/
