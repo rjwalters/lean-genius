@@ -14044,6 +14044,145 @@ theorem degree_sixteen_zeroLayer_order_two_pair_serviced_unit
   have hforward : 0 < Q o e := by nlinarith
   omega
 
+/-- Three-cell analogue of `degree_sixteen_zeroLayer_order_two_pair_serviced_unit`.
+If the diagonal and two used companions consume the exact two-unit
+after-contact excess of an actual-order-six row, every serviced orphan term
+has zero excess and hence every forward orphan quotient is one. -/
+theorem degree_sixteen_zeroLayer_order_two_triple_serviced_unit
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e f g : (secondOrderDefectGraph G).ConnectedComponent)
+    (hef : e ≠ f) (heg : e ≠ g) (hfg : f ≠ g)
+    (hecard : e.supp.ncard = 6) (hfcard : f.supp.ncard = 6)
+    (hgcard : g.supp.ncard = 6)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hfUsed : componentRepresentative (secondOrderDefectGraph G) f ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hgUsed : componentRepresentative (secondOrderDefectGraph G) g ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (husedExcess :
+      let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+      Q e e * (Q e e - 1) + Q e f * (Q f e - 1) +
+        Q e g * (Q g e - 1) = 2) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let S := zeroLayerServicedOrphans G C e
+    (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 ∧
+      ∀ o ∈ S, Q o e = 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := zeroLayerServicedOrphans G C e
+  change (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 ∧
+    ∀ o ∈ S, Q o e = 1
+  have hSsubC : S ⊆ C := fun _ ho => (Finset.mem_filter.mp ho).1
+  have husedCnot : ∀ x : D.ConnectedComponent,
+      componentRepresentative D x ∈ R → x ∉ C := by
+    intro x hx hC
+    have hxO : componentRepresentative D x ∈ O :=
+      (Finset.mem_filter.mp hC).2
+    exact (Finset.mem_sdiff.mp hxO).2 hx
+  have heCnot : e ∉ C := husedCnot e (by simpa [D, R] using heUsed)
+  have hfCnot : f ∉ C := husedCnot f (by simpa [D, R] using hfUsed)
+  have hgCnot : g ∉ C := husedCnot g (by simpa [D, R] using hgUsed)
+  have heSnot : e ∉ S := fun h => heCnot (hSsubC h)
+  have hfSnot : f ∉ S := fun h => hfCnot (hSsubC h)
+  have hgSnot : g ∉ S := fun h => hgCnot (hSsubC h)
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hec₀ : e ≠ c₀ := by intro h; rw [h, hc₀card] at hecard; omega
+  have hfc₀ : f ≠ c₀ := by intro h; rw [h, hc₀card] at hfcard; omega
+  have hgc₀ : g ≠ c₀ := by intro h; rw [h, hc₀card] at hgcard; omega
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hc₀Cnot : c₀ ∉ C := by
+    intro hc
+    have hcO : componentRepresentative D c₀ ∈ O :=
+      (Finset.mem_filter.mp hc).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2 hc₀U
+  have hsub : insert e (insert f (insert g S)) ⊆
+      (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro x hx
+    simp only [Finset.mem_insert] at hx
+    rcases hx with rfl | rfl | rfl | hxS
+    · exact Finset.mem_erase.mpr ⟨hec₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨hfc₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨hgc₀, Finset.mem_univ _⟩
+    · exact Finset.mem_erase.mpr ⟨fun hxc => hc₀Cnot (hxc ▸ hSsubC hxS),
+        Finset.mem_univ _⟩
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heUsed
+  change (∑ x ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e x * (Q x e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  have hle := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun x : D.ConnectedComponent => Q e x * (Q x e - 1)) hsub
+      (fun _ _ _ => Nat.zero_le _)
+  rw [Finset.sum_insert (by simp [hef, heg, heSnot]),
+    Finset.sum_insert (by simp [hfg, hfSnot]),
+    Finset.sum_insert hgSnot] at hle
+  change Q e e * (Q e e - 1) +
+    (Q e f * (Q f e - 1) +
+      (Q e g * (Q g e - 1) +
+        ∑ o ∈ S, zeroLayerAtomExcess G e o)) ≤
+    ∑ x ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+      Q e x * (Q x e - 1) at hle
+  change Q e e * (Q e e - 1) + Q e f * (Q f e - 1) +
+    Q e g * (Q g e - 1) = 2 at husedExcess
+  rw [hrow, hecard] at hle
+  norm_num at hle
+  have hsumZero : (∑ o ∈ S, zeroLayerAtomExcess G e o) = 0 := by omega
+  refine ⟨hsumZero, ?_⟩
+  intro o hoS
+  have hservice : 0 < Q e o := by
+    simpa [S, zeroLayerServicedOrphans, Q] using
+      (Finset.mem_filter.mp hoS).2
+  have htermLe : zeroLayerAtomExcess G e o ≤
+      ∑ x ∈ S, zeroLayerAtomExcess G e x :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) hoS
+  have hex : zeroLayerAtomExcess G e o = 0 := by omega
+  change Q e o * (Q o e - 1) = 0 at hex
+  have hfactor : Q o e - 1 = 0 :=
+    (Nat.mul_eq_zero.mp hex).resolve_left (Nat.ne_of_gt hservice)
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+  have hePos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hoPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+  have hforward : 0 < Q o e := by nlinarith
+  omega
+
 /-- In the `[12,2,2]` profile, once both small rows admit only unit orphan
 contacts, a unit contact into one small row forces quotient two into the
 large row and quotient zero into the other small row.  A positive contact
