@@ -40113,4 +40113,67 @@ theorem degree_sixteen_zeroLayer_orphan_atom_assignment_exists
   choose atom hatom using hex
   exact ⟨atom, hatom⟩
 
+/-- The orphan part of a used row's local excess is bounded by the exact
+post-contact budget `2(K(e)-1)`. -/
+theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heR : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀)) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, zeroLayerAtomExcess G e o) ≤
+      2 * (e.supp.ncard / 3 - 1) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let Q := componentQuotientMatrix G D
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hsubset : C ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro o hoC
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    intro hoc
+    have hoO := (Finset.mem_filter.mp hoC).2
+    have hoOutside : componentRepresentative D o ∉ U :=
+      (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hoO).1).2
+    apply hoOutside
+    simpa [hoc] using hc₀U
+  have hle := Finset.sum_le_sum_of_subset_of_nonneg
+    (f := fun o : D.ConnectedComponent => Q e o * (Q o e - 1))
+    hsubset (fun _ _ _ => Nat.zero_le _)
+  have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e heR
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e f * (Q f e - 1)) = 2 * (e.supp.ncard / 3 - 1) at hrow
+  change (∑ o ∈ C, Q e o * (Q o e - 1)) ≤
+    2 * (e.supp.ncard / 3 - 1)
+  exact hle.trans_eq hrow
+
 end Erdos85
