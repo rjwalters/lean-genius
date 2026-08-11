@@ -12494,6 +12494,46 @@ theorem three_two_block_groups_unique_even_pair
   rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
     rcases hec with rfl | rfl <;> norm_num at htotal ⊢
 
+/-- Exact parity subtraction behind the order-thirty difference packing.
+If a 14-element even sector is partitioned into four minimum-cover
+differences, six reverse-diagonal differences, and the `B` sector, then the
+`B` sector contains four even residues (two inverse pairs) and eight odd
+residues (four inverse pairs). -/
+theorem exact_difference_partition_B_even_four_odd_eight
+    {α : Type*} [DecidableEq α] (even : α → Prop) [DecidablePred even]
+    (R M D B : Finset α)
+    (hpart : R = M ∪ D ∪ B)
+    (hMD : Disjoint M D) (hMB : Disjoint M B) (hDB : Disjoint D B)
+    (hReven : (R.filter even).card = 14)
+    (hMeven : (M.filter even).card = 4)
+    (hDcard : D.card = 6) (hDeven : ∀ x ∈ D, even x)
+    (hBcard : B.card = 12) :
+    (B.filter even).card = 4 ∧ (B.filter fun x => ¬ even x).card = 8 := by
+  have hDfilter : D.filter even = D := Finset.filter_eq_self.mpr hDeven
+  have hMDf : Disjoint (M.filter even) (D.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxM _hxEven hxD =>
+      Finset.disjoint_left.mp hMD hxM hxD)
+  have hMBf : Disjoint (M.filter even) (B.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxM _hxEven hxB =>
+      Finset.disjoint_left.mp hMB hxM hxB)
+  have hDBf : Disjoint (D.filter even) (B.filter even) :=
+    Finset.disjoint_filter_filter.mpr (fun x hxD _hxEven hxB =>
+      Finset.disjoint_left.mp hDB hxD hxB)
+  have hfilterPart : R.filter even =
+      (M.filter even ∪ D.filter even) ∪ B.filter even := by
+    rw [hpart, Finset.filter_union, Finset.filter_union]
+  have hfirstDisj : Disjoint (M.filter even ∪ D.filter even)
+      (B.filter even) := Finset.disjoint_union_left.mpr ⟨hMBf, hDBf⟩
+  have hEvenB : (B.filter even).card = 4 := by
+    have hcardEq := congrArg Finset.card hfilterPart
+    rw [Finset.card_union hfirstDisj, Finset.card_union hMDf,
+      hReven, hMeven, hDfilter, hDcard] at hcardEq
+    omega
+  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card
+    (s := B) even
+  rw [hBcard, hEvenB] at hsplit
+  exact ⟨hEvenB, by omega⟩
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
