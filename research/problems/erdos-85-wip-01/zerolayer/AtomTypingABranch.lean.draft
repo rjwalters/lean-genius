@@ -1,0 +1,113 @@
+-- A-branch of the pointwise atom-typing bridge (squad 2701, my assignment).
+-- Written against bdc3a48ed0's ZeroLayerAtom interface + existing laws:
+--   degree_sixteen_two_quotientOne_legs_reduced_lcm   (line ~20442)
+--   degree_sixteen_quotientOne_reduced_balance        (line ~20099)
+--   zeroLayerAtomLoad / zeroLayerAtomExcess           (lines ~15569/15580)
+-- DRAFT: paste/adapt into the monolith; not built here.  Instance block
+-- copied from two_quotientOne_legs_reduced_lcm.
+
+namespace Erdos85
+
+/-- A-branch typing: an orphan row with three unit legs on distinct used
+components realizes the `ZeroLayerAtom.A` arithmetic descriptor exactly:
+the three pairwise reduced lcms agree (`Valid`), the common value is the
+orphan's reduced order, each leg's graph load is that lcm, and each
+leg's graph excess vanishes. -/
+theorem degree_sixteen_zeroLayer_orphan_A_atom_typing
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o a b c : (secondOrderDefectGraph G).ConnectedComponent)
+    (m ka kb kc : ℕ)
+    (hom : o.supp.ncard = 3 * m)
+    (hka : a.supp.ncard = 3 * ka)
+    (hkb : b.supp.ncard = 3 * kb)
+    (hkc : c.supp.ncard = 3 * kc)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hqa : componentQuotientMatrix G (secondOrderDefectGraph G) o a = 1)
+    (hqb : componentQuotientMatrix G (secondOrderDefectGraph G) o b = 1)
+    (hqc : componentQuotientMatrix G (secondOrderDefectGraph G) o c = 1) :
+    (Nat.lcm ka kb = Nat.lcm ka kc ∧ Nat.lcm ka kb = Nat.lcm kb kc) ∧
+    m = Nat.lcm ka kb ∧
+    (zeroLayerAtomLoad G a o = Nat.lcm ka kb ∧
+     zeroLayerAtomLoad G b o = Nat.lcm ka kb ∧
+     zeroLayerAtomLoad G c o = Nat.lcm ka kb) ∧
+    (zeroLayerAtomExcess G a o = 0 ∧
+     zeroLayerAtomExcess G b o = 0 ∧
+     zeroLayerAtomExcess G c o = 0) := by
+  classical
+  -- the three pairwise lcm identifications
+  have hmab : m = Nat.lcm ka kb :=
+    degree_sixteen_two_quotientOne_legs_reduced_lcm G hfree hmin hcard
+      o a b m ka kb hom hka hkb hab hqa hqb
+  have hmac : m = Nat.lcm ka kc :=
+    degree_sixteen_two_quotientOne_legs_reduced_lcm G hfree hmin hcard
+      o a c m ka kc hom hka hkc hac hqa hqc
+  have hmbc : m = Nat.lcm kb kc :=
+    degree_sixteen_two_quotientOne_legs_reduced_lcm G hfree hmin hcard
+      o b c m kb kc hom hkb hkc hbc hqb hqc
+  -- per-leg reduced balance: k * Q(e,o) = m
+  have hbala := (degree_sixteen_quotientOne_reduced_balance G hfree hmin hcard
+    o a m ka hom hka hqa).2
+  have hbalb := (degree_sixteen_quotientOne_reduced_balance G hfree hmin hcard
+    o b m kb hom hkb hqb).2
+  have hbalc := (degree_sixteen_quotientOne_reduced_balance G hfree hmin hcard
+    o c m kc hom hkc hqc).2
+  refine ⟨⟨hmab ▸ hmac, hmab ▸ hmbc⟩, hmab, ⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩
+  · -- load at a: (|a|/3) * Q a o = ka * Q a o = m = lcm ka kb
+    show (a.supp.ncard / 3) *
+        componentQuotientMatrix G (secondOrderDefectGraph G) a o
+      = Nat.lcm ka kb
+    rw [hka]
+    simpa [Nat.mul_div_cancel_left, hmab] using hbala
+    -- (3 * ka) / 3 = ka; then ka * Q a o = m = lcm ka kb
+  · show (b.supp.ncard / 3) *
+        componentQuotientMatrix G (secondOrderDefectGraph G) b o
+      = Nat.lcm ka kb
+    rw [hkb]
+    simpa [Nat.mul_div_cancel_left, hmab] using hbalb
+  · show (c.supp.ncard / 3) *
+        componentQuotientMatrix G (secondOrderDefectGraph G) c o
+      = Nat.lcm ka kb
+    rw [hkc]
+    simpa [Nat.mul_div_cancel_left, hmab] using hbalc
+  -- excesses: Q e o * (Q o e - 1) with Q o e = 1
+  · show componentQuotientMatrix G (secondOrderDefectGraph G) a o *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) o a - 1) = 0
+    rw [hqa]; simp
+  · show componentQuotientMatrix G (secondOrderDefectGraph G) b o *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) o b - 1) = 0
+    rw [hqb]; simp
+  · show componentQuotientMatrix G (secondOrderDefectGraph G) c o *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) o c - 1) = 0
+    rw [hqc]; simp
+
+/- NOTES for the aggregation side (codex):
+   1. Off-leg components i ∉ {a,b,c} with Q o i = 0: the reverse also
+      vanishes -- from componentQuotientMatrix balance
+      |o| * Q o i = |i| * Q i o with |i| > 0, so both zeroLayerAtomLoad
+      and zeroLayerAtomExcess are 0 there, matching load/excess of
+      `.A a b c` at i (all three if-guards false).  Your existing
+      cross-zero pattern (cf. usage around line 15560) covers this.
+   2. `Valid K (.A a b c)` needs the distinctness (hypotheses here) plus
+      the two lcm equations -- the first conjunct above, transported
+      along K a = ka etc.
+   3. `reducedOrder K (.A a b c) = Nat.lcm (K a) (K b) = m` is the
+      second conjunct.
+   4. The `show` lines assume zeroLayerAtomLoad/Excess unfold
+      definitionally via `show`; if the elaborator balks, replace with
+      `unfold zeroLayerAtomLoad` / `simp only [zeroLayerAtomLoad]`.
+   5. If `simpa [Nat.mul_div_cancel_left, hmab]` misfires on the load
+      goals: the intended chain is
+        (3 * ka) / 3 = ka   (Nat.mul_div_cancel_left ka (by norm_num))
+        ka * Q a o = m      (hbala)
+        m = Nat.lcm ka kb   (hmab)
+      i.e. `rw [Nat.mul_div_cancel_left ka three_pos, hbala? ...]`;
+      an `omega`-free `calc` is safest. -/
+
+end Erdos85
