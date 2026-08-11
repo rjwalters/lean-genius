@@ -318,46 +318,46 @@ theorem oriented_cycleCoverMap_affine_formula
 `k`-step identity.  This entrywise form is useful at the antipodal half-turn
 of an even cycle. -/
 theorem cycleIntertwiner_iterate
-    {r : ℕ} [NeZero r]
-    (B : Matrix (ZMod r) (ZMod r) ℤ)
+    {r s : ℕ} [NeZero r] [NeZero s]
+    (B : Matrix (ZMod r) (ZMod s) ℤ)
     (hinter : ∀ x y,
       B (x - 1) y + B (x + 1) y =
         B x (y + 1) + B x (y - 1))
-    (k : ℕ) (x y : ZMod r) :
+    (k : ℕ) (x : ZMod r) (y : ZMod s) :
     B (x - k) y + B (x + k) y =
       B x (y - k) + B x (y + k) := by
   classical
-  let e : ZMod r → ℤ := Pi.single y 1
+  let e : ZMod s → ℤ := Pi.single y 1
   have hfun := Matrix.mulVec_cycleCosineOp_eq_of_entry_intertwine
-    B (1 : ZMod r) (1 : ZMod r) hinter
+    B (1 : ZMod r) (1 : ZMod s) hinter
   have hiter := LinearMap.map_cycleCosineIter
-    B.mulVecLin (1 : ZMod r) (1 : ZMod r) hfun k e
+    B.mulVecLin (1 : ZMod r) (1 : ZMod s) hfun k e
   have hx := congrFun hiter x
   simp only [cycleCosineIter_apply, Matrix.mulVecLin_apply, Matrix.mulVec,
     dotProduct, mul_add, Finset.sum_add_distrib] at hx
   simp only [nsmul_eq_mul, mul_one] at hx
-  have hminus : (∑ j, B x j * e (j - (k : ZMod r))) =
-      B x (y + (k : ZMod r)) := by
+  have hminus : (∑ j, B x j * e (j - (k : ZMod s))) =
+      B x (y + (k : ZMod s)) := by
     calc
-      _ = B x (y + (k : ZMod r)) *
-          e ((y + (k : ZMod r)) - (k : ZMod r)) := by
-        apply Fintype.sum_eq_single (y + (k : ZMod r))
+      _ = B x (y + (k : ZMod s)) *
+          e ((y + (k : ZMod s)) - (k : ZMod s)) := by
+        apply Fintype.sum_eq_single (y + (k : ZMod s))
         intro j hj
         simp [e, sub_eq_iff_eq_add, hj]
-      _ = B x (y + (k : ZMod r)) := by simp [e]
-  have hplus : (∑ j, B x j * e (j + (k : ZMod r))) =
-      B x (y - (k : ZMod r)) := by
+      _ = B x (y + (k : ZMod s)) := by simp [e]
+  have hplus : (∑ j, B x j * e (j + (k : ZMod s))) =
+      B x (y - (k : ZMod s)) := by
     calc
-      _ = B x (y - (k : ZMod r)) *
-          e ((y - (k : ZMod r)) + (k : ZMod r)) := by
-        apply Fintype.sum_eq_single (y - (k : ZMod r))
+      _ = B x (y - (k : ZMod s)) *
+          e ((y - (k : ZMod s)) + (k : ZMod s)) := by
+        apply Fintype.sum_eq_single (y - (k : ZMod s))
         intro j hj
-        have hne : j + (k : ZMod r) ≠ y := by
+        have hne : j + (k : ZMod s) ≠ y := by
           intro heq
           apply hj
           linear_combination heq
         simp [e, hne]
-      _ = B x (y - (k : ZMod r)) := by simp [e]
+      _ = B x (y - (k : ZMod s)) := by simp [e]
   have hsingle (z : ZMod r) : (∑ j, B z j * e j) = B z y := by
     calc
       _ = B z y * e y := by
@@ -393,6 +393,168 @@ theorem cycleIntertwiner_antipodal_covariance
   have hiter := cycleIntertwiner_iterate B hinter n x y
   rw [sub_eq_add_neg, sub_eq_add_neg, hnneg] at hiter
   omega
+
+/-- A binary rectangular cycle intertwiner with no all-one rectangle cannot
+have one source row meet an antipodal pair in an even target cycle unless
+the target half-turn vanishes in the source coordinate group. -/
+theorem binary_cycleIntertwiner_no_antipodal_pair_of_half_ne_zero
+    {r n : ℕ} [NeZero r] [NeZero n]
+    (B : Matrix (ZMod r) (ZMod (2 * n)) ℤ)
+    (hinter : ∀ x y,
+      B (x - 1) y + B (x + 1) y =
+        B x (y + 1) + B x (y - 1))
+    (hbinary : ∀ x y, B x y = 0 ∨ B x y = 1)
+    (hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (B x y = 1 ∧ B x y' = 1 ∧
+        B x' y = 1 ∧ B x' y' = 1))
+    (hhalf : (n : ZMod r) ≠ 0) :
+    ∀ x y, ¬ (B x y = 1 ∧ B x (y + n) = 1) := by
+  letI : NeZero (2 * n) := ⟨mul_ne_zero (by norm_num) (NeZero.ne n)⟩
+  have hnadd : (n : ZMod (2 * n)) + n = 0 := by
+    rw [← Nat.cast_add]
+    calc
+      ((n + n : ℕ) : ZMod (2 * n)) =
+          ((2 * n : ℕ) : ZMod (2 * n)) := by congr 1 <;> omega
+      _ = 0 := ZMod.natCast_self (2 * n)
+  have hnneg : -(n : ZMod (2 * n)) = n :=
+    neg_eq_of_add_eq_zero_left hnadd
+  have htarget : (n : ZMod (2 * n)) ≠ 0 := by
+    intro hz
+    have hdvd : 2 * n ∣ n := (ZMod.natCast_eq_zero_iff n (2 * n)).mp hz
+    have hle := Nat.le_of_dvd (NeZero.pos n) hdvd
+    have hnpos := NeZero.pos n
+    nlinarith
+  intro x y hpair
+  have hxne : x ≠ x + n := by
+    intro hx
+    apply hhalf
+    calc
+      (n : ZMod r) = (x + n) - x := by ring
+      _ = x - x := by rw [← hx]
+      _ = 0 := sub_self x
+  have hyne : y ≠ y + n := by
+    intro hy
+    apply htarget
+    calc
+      (n : ZMod (2 * n)) = (y + n) - y := by ring
+      _ = y - y := by rw [← hy]
+      _ = 0 := sub_self y
+  have hiter0 := cycleIntertwiner_iterate B hinter n x y
+  have hyminus0 : y - n = y + n := by rw [sub_eq_add_neg, hnneg]
+  rw [hyminus0, hpair.2] at hiter0
+  have hxplus0 : B (x + n) y = 1 := by
+    rcases hbinary (x - n) y with hm | hm <;>
+      rcases hbinary (x + n) y with hp | hp <;> omega
+  have hiter1 := cycleIntertwiner_iterate B hinter n x (y + n)
+  have hy2 : y + n + n = y := by rw [add_assoc, hnadd, add_zero]
+  have hyminus : y + n - n = y := by simp
+  rw [hyminus, hy2, hpair.1] at hiter1
+  have hxplus1 : B (x + n) (y + n) = 1 := by
+    rcases hbinary (x - n) (y + n) with hm | hm <;>
+      rcases hbinary (x + n) (y + n) with hp | hp <;> omega
+  exact hrect x (x + n) hxne y (y + n) hyne
+    ⟨hpair.1, hpair.2, hxplus0, hxplus1⟩
+
+/-- Graph-facing unequal-order form of the antipodal obstruction.  A block
+from an `r`-cycle to a `2n`-cycle can supply a common source for target
+antipodes only when `r ∣ n`. -/
+theorem no_cycleBlock_antipodal_commonSource_of_half_ne_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G) {r n : ℕ} [NeZero r] [NeZero n]
+    (hr3 : 3 ≤ r) (hn2 : 2 ≤ n)
+    (u : ZMod r → V) (v : ZMod (2 * n) → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)})
+    (hhalf : (n : ZMod r) ≠ 0) :
+    ∀ x y, ¬ (G.Adj (u x) (v y) ∧ G.Adj (u x) (v (y + n))) := by
+  letI : NeZero (2 * n) := ⟨mul_ne_zero (by norm_num) (NeZero.ne n)⟩
+  let B : Matrix (ZMod r) (ZMod (2 * n)) ℤ :=
+    fun x y => G.adjMatrix ℤ (u x) (v y)
+  have hpU : ∀ x, u (x - 1) ≠ u (x + 1) := fun x =>
+    hu.ne (zmod_sub_one_ne_add_one_of_three_le hr3 x)
+  have hpV : ∀ y, v (y - 1) ≠ v (y + 1) := fun y =>
+    hv.ne (zmod_sub_one_ne_add_one_of_three_le (by omega) y)
+  have hinter : ∀ x y,
+      B (x - 1) y + B (x + 1) y =
+        B x (y + 1) + B x (y - 1) := by
+    simpa only [B] using entry_cycleIntertwine_of_adjMatrix_comm
+      G D u v (1 : ZMod r) (1 : ZMod (2 * n))
+        hcomm huD hvD hpU hpV
+  have hbinary : ∀ x y, B x y = 0 ∨ B x y = 1 := by
+    intro x y
+    simp only [B, SimpleGraph.adjMatrix_apply]
+    split <;> simp
+  have hrect : ∀ x x', x ≠ x' → ∀ y y', y ≠ y' →
+      ¬ (B x y = 1 ∧ B x y' = 1 ∧
+        B x' y = 1 ∧ B x' y' = 1) := by
+    intro x x' hxx' y y' hyy' hones
+    have hux : u x ≠ u x' := hu.ne hxx'
+    have hvy : v y ≠ v y' := hv.ne hyy'
+    have hone_iff (a : ZMod r) (b : ZMod (2 * n)) :
+        B a b = 1 ↔ G.Adj (u a) (v b) := by
+      simp only [B, SimpleGraph.adjMatrix_apply]
+      by_cases h : G.Adj (u a) (v b) <;> simp [h]
+    have hy : v y ∈ G.neighborFinset (u x) ∩
+        G.neighborFinset (u x') := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨(hone_iff x y).mp hones.1,
+        (hone_iff x' y).mp hones.2.2.1⟩
+    have hy' : v y' ∈ G.neighborFinset (u x) ∩
+        G.neighborFinset (u x') := by
+      simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+      exact ⟨(hone_iff x y').mp hones.2.1,
+        (hone_iff x' y').mp hones.2.2.2⟩
+    have htwo : 2 ≤ (G.neighborFinset (u x) ∩
+        G.neighborFinset (u x')).card := by
+      have hsub : ({v y, v y'} : Finset V) ⊆
+          G.neighborFinset (u x) ∩ G.neighborFinset (u x') := by
+        intro z hz
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+        rcases hz with rfl | rfl
+        · exact hy
+        · exact hy'
+      have hc : ({v y, v y'} : Finset V).card = 2 := by simp [hvy]
+      calc
+        2 = ({v y, v y'} : Finset V).card := hc.symm
+        _ ≤ (G.neighborFinset (u x) ∩
+            G.neighborFinset (u x')).card := Finset.card_le_card hsub
+    have honeCommon := common_le_one_of_not_containsC4 hfree
+      (u x) (u x') hux
+    omega
+  have hno := binary_cycleIntertwiner_no_antipodal_pair_of_half_ne_zero
+    B hinter hbinary hrect hhalf
+  intro x y hadj
+  apply hno x y
+  constructor <;>
+    simp only [B, SimpleGraph.adjMatrix_apply] <;> simp_all
+
+/-- Divisibility form of the unequal-order antipodal obstruction.  If one
+source-cycle vertex is a common neighbor of target antipodes, the source
+cycle length divides the target half-length. -/
+theorem cycleBlock_antipodal_commonSource_forces_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G) {r n : ℕ} [NeZero r] [NeZero n]
+    (hr3 : 3 ≤ r) (hn2 : 2 ≤ n)
+    (u : ZMod r → V) (v : ZMod (2 * n) → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)})
+    (x : ZMod r) (y : ZMod (2 * n))
+    (hadj : G.Adj (u x) (v y) ∧ G.Adj (u x) (v (y + n))) :
+    r ∣ n := by
+  by_contra hndvd
+  have hhalf : (n : ZMod r) ≠ 0 := by
+    intro hz
+    exact hndvd ((ZMod.natCast_eq_zero_iff n r).mp hz)
+  exact no_cycleBlock_antipodal_commonSource_of_half_ne_zero
+    G D hfree hr3 hn2 u v hu hv hcomm huD hvD hhalf x y hadj
 
 /-- No row of a block between two equally long even defect cycles can meet
 an antipodal target pair.  Antipodal covariance would give a second,
@@ -12746,6 +12908,50 @@ theorem degree_sixteen_zeroLayer_used_after_contact_excess
   change (∑ e ∈ E,
     ∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent), T e f) = 2 * k
   omega
+
+/-- The displacement multiset with four prescribed shifts, each used twice. -/
+def eightEightTwiceFourShifts (a b c d : ZMod 8) : Multiset (ZMod 8) :=
+  {a, a, b, b, c, c, d, d}
+
+/-- Finite offset obstruction for the reduced zero-layer partition `[8,8]`.
+Eight disjoint cross-ledger pairs would define a permutation of the eight
+positions in each non-excluded residue class.  A permutation has total
+displacement zero, while each of the four Sidon-complement displacement
+multisets has total displacement two modulo eight. -/
+theorem no_eightEight_displacement_permutation :
+    ∀ σ : Equiv.Perm (ZMod 8),
+      let M := (Finset.univ : Finset (ZMod 8)).val.map (fun i => σ i - i)
+      M ≠ eightEightTwiceFourShifts 1 3 4 5 ∧
+      M ≠ eightEightTwiceFourShifts 1 2 4 6 ∧
+      M ≠ eightEightTwiceFourShifts 3 5 6 7 ∧
+      M ≠ eightEightTwiceFourShifts 1 2 3 7 := by
+  intro σ
+  dsimp only
+  have hperm : (∑ i : ZMod 8, σ i) = ∑ i : ZMod 8, i := by
+    simpa using Equiv.sum_comp σ (fun i : ZMod 8 => i)
+  have hsum : ((Finset.univ : Finset (ZMod 8)).val.map
+      (fun i => σ i - i)).sum = 0 := by
+    change (∑ i : ZMod 8, (σ i - i)) = 0
+    rw [Finset.sum_sub_distrib, hperm, sub_self]
+  constructor
+  · intro hM
+    rw [hM] at hsum
+    norm_num [eightEightTwiceFourShifts] at hsum
+    exact (by decide : (26 : ZMod 8) ≠ 0) hsum
+  constructor
+  · intro hM
+    rw [hM] at hsum
+    norm_num [eightEightTwiceFourShifts] at hsum
+    exact (by decide : (26 : ZMod 8) ≠ 0) hsum
+  constructor
+  · intro hM
+    rw [hM] at hsum
+    norm_num [eightEightTwiceFourShifts] at hsum
+    exact (by decide : (42 : ZMod 8) ≠ 0) hsum
+  · intro hM
+    rw [hM] at hsum
+    norm_num [eightEightTwiceFourShifts] at hsum
+    exact (by decide : (26 : ZMod 8) ≠ 0) hsum
 
 /-! ### Zero-layer reduced used-order census certificates
 
