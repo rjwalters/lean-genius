@@ -12781,6 +12781,25 @@ theorem zmod_thirty_to_six_affine_phase_difference_parity
   revert τsq
   native_decide
 
+/-- A two-phase order-thirty support with no distinct pair collapsing
+modulo three has a two-element affine image in `ZMod 6`. -/
+theorem zmod_thirty_two_phase_affine_image_card_two
+    (A : Finset (ZMod 30)) (hAcard : A.card = 2)
+    (hnonzero : ∀ a ∈ A, ∀ b ∈ A, a ≠ b →
+      ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) (a - b) ≠ 0)
+    (c τ : ZMod 6) (hτ : τ * τ = 1) :
+    (A.image fun a => c - τ *
+      ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a).card = 2 := by
+  rw [Finset.card_image_iff.mpr]
+  · exact hAcard
+  · intro a ha b hb hab
+    by_contra habne
+    have hprojNe := zmod_thirty_to_six_phase_projection_ne_of_mod_three_ne
+      a b (hnonzero a ha b hb habne)
+    apply hprojNe
+    have hmul := congrArg (fun z : ZMod 6 => τ * (c - z)) hab
+    simpa only [mul_sub, ← mul_assoc, hτ, one_mul] using hmul
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
