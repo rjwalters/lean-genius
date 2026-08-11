@@ -13789,6 +13789,99 @@ theorem degree_sixteen_zeroLayer_order_two_pair_serviced_unit
   have hforward : 0 < Q o e := by nlinarith
   omega
 
+/-- In the `[12,2,2]` profile, once both small rows admit only unit orphan
+contacts, a unit contact into one small row forces quotient two into the
+large row and quotient zero into the other small row.  A positive contact
+into the other small row would also be unit; then pairwise LCM rigidity would
+force the orphan's reduced order to be both `2` and `12`. -/
+theorem degree_sixteen_order_two_unit_forces_order_twelve_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e₁₂ e₂a e₂b : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₂a : e₁₂ ≠ e₂a) (hab : e₂a ≠ e₂b)
+    (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e₂a = 1)
+    (hotherUnit : 0 <
+      componentQuotientMatrix G (secondOrderDefectGraph G) e₂b o →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₂b = 1)
+    (hsum :
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₁₂ +
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₂a +
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₂b = 3) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e₁₂ = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₂b = 0 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  change Q o e₂a = 1 at hunit
+  change Q o e₁₂ + Q o e₂a + Q o e₂b = 3 at hsum
+  change Q o e₁₂ = 2 ∧ Q o e₂b = 0
+  by_cases hzero : Q o e₂b = 0
+  · constructor <;> omega
+  · have hq₂bPos : 0 < Q o e₂b := Nat.pos_of_ne_zero hzero
+    have hbalb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂b o
+    change e₂b.supp.ncard * Q e₂b o = o.supp.ncard * Q o e₂b at hbalb
+    have hoPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+    have hrevPos : 0 < Q e₂b o := by
+      rw [he₂b] at hbalb
+      nlinarith
+    have hq₂b : Q o e₂b = 1 := by
+      simpa [D, Q] using hotherUnit (by simpa [D, Q] using hrevPos)
+    have hq₁₂ : Q o e₁₂ = 1 := by omega
+    have hbala := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₂a
+    change o.supp.ncard * Q o e₂a = e₂a.supp.ncard * Q e₂a o at hbala
+    rw [hunit, he₂a, mul_one] at hbala
+    let m := 2 * Q e₂a o
+    have hom : o.supp.ncard = 3 * m := by
+      dsimp [m]
+      omega
+    have hmPos : 0 < m := by
+      have := o.nonempty_supp.ncard_pos
+      omega
+    have hTwoDvd : 2 ∣ m := by
+      dsimp [m]
+      exact ⟨Q e₂a o, rfl⟩
+    have hTwo : m = 2 := by
+      by_contra hne
+      have hmGt : 2 < m := by
+        have hmGe := Nat.le_of_dvd hmPos hTwoDvd
+        omega
+      have hlt : Nat.lcm e₂a.supp.ncard e₂b.supp.ncard < o.supp.ncard := by
+        rw [he₂a, he₂b, hom]
+        norm_num
+        omega
+      exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e₂a e₂b o hab hunit hq₂b hlt
+    have hbal₁₂ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₁₂
+    change o.supp.ncard * Q o e₁₂ = e₁₂.supp.ncard * Q e₁₂ o at hbal₁₂
+    rw [hom, hq₁₂, he₁₂, mul_one] at hbal₁₂
+    have hTwelveDvd : 12 ∣ m := by
+      refine ⟨Q e₁₂ o, ?_⟩
+      omega
+    have hTwelve : m = 12 := by
+      by_contra hne
+      have hmGt : 12 < m := by
+        have hmGe := Nat.le_of_dvd hmPos hTwelveDvd
+        omega
+      have hlt : Nat.lcm e₂a.supp.ncard e₁₂.supp.ncard < o.supp.ncard := by
+        rw [he₂a, he₁₂, hom]
+        norm_num
+        omega
+      exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          e₂a e₁₂ o (Ne.symm h₁₂a) hunit hq₁₂ hlt
+    omega
+
 /-- The non-three-divisible (`D`) atoms serviced by a used row. -/
 def zeroLayerDAtoms
     {V : Type*} [Fintype V] [DecidableEq V]
