@@ -12589,6 +12589,49 @@ theorem six_offset_partition_two_B_sectors_same_parity_type
     exact Finset.card_le_card (Finset.filter_subset _ _)
   omega
 
+/-- Affine normal form of a globally oriented cyclic cover after projecting
+the source cycle to the target modulus.  This is the coordinate interface
+for composing the order-thirty `B` matchings with their order-six unit
+targets. -/
+theorem oriented_cycleCoverMap_affine_formula
+    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
+      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
+  rcases horient with hforward | hreverse
+  · left
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by
+        rw [← ZMod.natCast_zmod_val y, map_natCast]
+  · right
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
+        rw [← ZMod.natCast_zmod_val y, map_natCast]
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
