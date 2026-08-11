@@ -12937,6 +12937,80 @@ theorem exact_difference_packing_B_even_four_odd_eight_of_cards
   · exact hDeven
   · exact hBcard
 
+/-- Complete abstract consumer for the order-thirty row packing.  Six
+two-phase Sidon sectors, disjoint from one another and from the fixed
+minimum/diagonal sectors, occupy twelve residues.  Exact packing then gives
+four even `B` differences and therefore exactly two homogeneous phase
+pairs. -/
+theorem six_phase_sectors_exact_packing_homogeneous_count_two
+    (A : Fin 6 → Finset (ZMod 30))
+    (M D : Finset (ZMod 30))
+    (hAcard : ∀ i, (A i).card = 2)
+    (hAsidon : ∀ i, IsOrderedSidon (A i))
+    (hApair : ∀ i j : Fin 6, i ≠ j →
+      Disjoint (orderedDifferenceSet (A i))
+        (orderedDifferenceSet (A j)))
+    (hMcard : M.card = 9) (hDcard : D.card = 6)
+    (hMsub : M ⊆ (((Finset.univ.erase 0).erase 1).erase (-1)))
+    (hDsub : D ⊆ (((Finset.univ.erase 0).erase 1).erase (-1)))
+    (hAsub : ∀ i, orderedDifferenceSet (A i) ⊆
+      (((Finset.univ.erase 0).erase 1).erase (-1)))
+    (hMD : Disjoint M D)
+    (hMA : ∀ i, Disjoint M (orderedDifferenceSet (A i)))
+    (hDA : ∀ i, Disjoint D (orderedDifferenceSet (A i)))
+    (hMeven : (M.filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 4)
+    (hDeven : ∀ z ∈ D,
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0) :
+    let B := (Finset.univ : Finset (Fin 6)).biUnion fun i =>
+      orderedDifferenceSet (A i)
+    (B.filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 4 ∧
+    (B.filter fun z => ¬
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 8 ∧
+    ((Finset.univ : Finset (Fin 6)).filter fun i =>
+      ((A i).filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1).card = 2 := by
+  dsimp only
+  let R : Finset (ZMod 30) := (((Finset.univ.erase 0).erase 1).erase (-1))
+  let B : Finset (ZMod 30) := (Finset.univ : Finset (Fin 6)).biUnion fun i =>
+    orderedDifferenceSet (A i)
+  have hDcardA : ∀ i, (orderedDifferenceSet (A i)).card = 2 := by
+    intro i
+    rw [card_orderedDifferenceSet_of_sidon (hAsidon i), hAcard i]
+  have hBcard : B.card = 12 := by
+    rw [B, Finset.card_biUnion]
+    · simp [hDcardA]
+    · intro i _hi j _hj hij
+      exact hApair i j hij
+  have hBsub : B ⊆ R := by
+    intro z hz
+    obtain ⟨i, _hi, hzi⟩ := Finset.mem_biUnion.mp hz
+    exact hAsub i hzi
+  have hMB : Disjoint M B := by
+    apply Finset.disjoint_left.mpr
+    intro z hzM hzB
+    obtain ⟨i, _hi, hzi⟩ := Finset.mem_biUnion.mp hzB
+    exact Finset.disjoint_left.mp (hMA i) hzM hzi
+  have hDB : Disjoint D B := by
+    apply Finset.disjoint_left.mpr
+    intro z hzD hzB
+    obtain ⟨i, _hi, hzi⟩ := Finset.mem_biUnion.mp hzB
+    exact Finset.disjoint_left.mp (hDA i) hzD hzi
+  have hcounts := zmod_thirty_admissible_and_multiple_three_parity_counts
+  have hRcard : R.card = 27 := by simpa [R] using hcounts.1
+  have hReven : (R.filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 14 := by
+    simpa [R] using hcounts.2.1
+  have hBparity := exact_difference_packing_B_even_four_odd_eight_of_cards
+    (fun z : ZMod 30 =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0)
+      R M D B hRcard hMcard hDcard hBcard hMsub hDsub hBsub
+        hMD hMB hDB hReven hMeven hDeven
+  have hhomogeneous := six_two_phase_difference_sectors_homogeneous_count
+    A hAcard hAsidon hApair (by simpa [B] using hBparity.1)
+  exact ⟨hBparity.1, hBparity.2, hhomogeneous⟩
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
