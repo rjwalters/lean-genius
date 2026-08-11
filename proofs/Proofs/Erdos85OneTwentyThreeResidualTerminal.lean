@@ -13134,6 +13134,32 @@ theorem orderSix_exists_nonminimum_quotient_two
     G hfree hd heven hmin hcard e S uS huS huSRange y hy hq 0 2
       (by decide) ⟨h0y, h2y⟩
 
+/-- Contradiction form of `orderSix_exists_nonminimum_quotient_two`. -/
+theorem false_of_orderSix_all_nonminimum_quotients_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huS : Function.Injective uS) (huC : Function.Injective uC)
+    (huSRange : Set.range uS = S.supp) (huCRange : Set.range uC = C.supp)
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1)
+    (hall : ∀ e : (secondOrderDefectGraph G).ConnectedComponent, e ≠ C →
+      componentQuotientMatrix G (secondOrderDefectGraph G) e S ≤ 1) : False := by
+  obtain ⟨e, heC, heTwo⟩ := orderSix_exists_nonminimum_quotient_two
+    G hfree hd heven hmin hcard S C uS uC huS huC
+      huSRange huCRange huSD huCD hSC
+  exact (Nat.not_le_of_gt heTwo) (hall e heC)
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
