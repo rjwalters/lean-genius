@@ -14453,6 +14453,58 @@ theorem degree_sixteen_reduced_order_eight_divisible_nonunit_atom_load_le_excess
     · omega
     · omega
 
+/-- A `2+1` atom joining the two reduced-order-five rows has combined load
+fifteen and combined local excess two. -/
+theorem degree_sixteen_reduced_order_five_B_atom_pair_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e₂ e₁ : (secondOrderDefectGraph G).ConnectedComponent)
+    (m : ℕ) (hom : o.supp.ncard = 3 * m)
+    (he₂ : e₂.supp.ncard = 15) (he₁ : e₁.supp.ncard = 15)
+    (hq₂ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ = 2)
+    (hq₁ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ = 1) :
+    zeroLayerAtomLoad G e₂ o + zeroLayerAtomLoad G e₁ o = 15 ∧
+      zeroLayerAtomExcess G e₂ o + zeroLayerAtomExcess G e₁ o = 2 := by
+  have he₂5 : e₂.supp.ncard = 3 * 5 := by omega
+  have he₁5 : e₁.supp.ncard = 3 * 5 := by omega
+  have htwo := degree_sixteen_quotientTwo_atom_values
+    G hfree hmin hcard o e₂ m 5 hom he₂5 hq₂
+  have hone := degree_sixteen_quotientOne_atom_values
+    G hfree hmin hcard o e₁ m 5 hom he₁5 hq₁
+  rcases htwo with hEq | hDouble
+  · omega
+  · omega
+
+/-- The quotient-two partner of a unit leg on a reduced-order-five row
+cannot lie on a reduced-order-two row. -/
+theorem false_of_reduced_order_five_unit_with_order_two_B_partner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (m : ℕ) (hom : o.supp.ncard = 3 * m)
+    (he : e.supp.ncard = 15) (hf : f.supp.ncard = 6)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (htwo : componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2) :
+    False := by
+  have he5 : e.supp.ncard = 3 * 5 := by omega
+  have hf2 : f.supp.ncard = 3 * 2 := by omega
+  have hFiveDvd := (degree_sixteen_quotientOne_reduced_balance
+    G hfree hmin hcard o e m 5 hom he5 hunit).1
+  have hclass := degree_sixteen_quotientTwo_reduced_order_classification
+    G hfree hmin hcard o f m 2 hom hf2 htwo
+  rcases hFiveDvd with ⟨a, ha⟩
+  rcases hclass with hEq | hDouble <;> omega
+
 /-- Any two distinct quotient-one legs of a threefold-scaled orphan have
 joint reduced period exactly the orphan's reduced order.  This is the
 pairwise LCM rigidity used by the `1+1+1` atom. -/
