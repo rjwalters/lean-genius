@@ -12632,6 +12632,48 @@ theorem oriented_cycleCoverMap_affine_formula
       _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
         rw [← ZMod.natCast_zmod_val y, map_natCast]
 
+/-- Composition of one oriented order-thirty matching with an oriented
+order-six cover produces one affine path-offset class.  Taking the image of
+a two-phase matching support therefore gives the two-offset sector used in
+the per-small parity partition. -/
+theorem zmod_thirty_six_matching_cover_path_offset_iff
+    (e₃₀ : ZMod 30) (e₆ σ c : ZMod 6) (A : Finset (ZMod 30))
+    (he₃₀ : e₃₀ * e₃₀ = 1) (he₆ : e₆ * e₆ = 1)
+    (hecast : ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) e₃₀ = e₆)
+    (x : ZMod 30) (z : ZMod 6) :
+    (∃ y : ZMod 30, ∃ a ∈ A,
+      x = e₃₀ * y + a ∧
+      z = c + σ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) y) ↔
+    z - (σ * e₆) * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) x ∈
+      A.image (fun a => c - (σ * e₆) *
+        ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a) := by
+  let φ : ZMod 30 →+* ZMod 6 :=
+    ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6)
+  constructor
+  · rintro ⟨y, a, ha, rfl, rfl⟩
+    apply Finset.mem_image.mpr
+    refine ⟨a, ha, ?_⟩
+    change c - (σ * e₆) * φ (e₃₀ * y + a) =
+      c - (σ * e₆) * φ a
+    simp only [map_add, map_mul, hecast]
+    rw [he₆]
+    ring
+  · intro hoff
+    obtain ⟨a, ha, hoff⟩ := Finset.mem_image.mp hoff
+    let y : ZMod 30 := e₃₀ * (x - a)
+    refine ⟨y, a, ha, ?_, ?_⟩
+    · dsimp only [y]
+      rw [← mul_assoc, he₃₀, one_mul]
+      ring
+    · change z = c + σ * φ y
+      have hφy : φ y = e₆ * (φ x - φ a) := by
+        dsimp only [y]
+        simp only [map_mul, map_sub, hecast]
+      rw [hφy]
+      rw [← hoff]
+      rw [he₆]
+      ring
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
