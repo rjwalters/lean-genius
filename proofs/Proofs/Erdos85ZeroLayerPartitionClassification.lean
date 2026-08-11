@@ -116,4 +116,42 @@ theorem zeroLayer_reduced_partition_classification
   all_goals interval_cases h <;>
     simp [ZeroLayerReducedPartitionPattern] at *
 
+/-- List-facing adapter for the zero-layer census.  A nonincreasing list of
+at most eight reduced orders, all at least two and of total mass sixteen,
+can be padded by zeroes to one of the explicit eight-slot patterns. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_list
+    (l : List ℕ) (hlen : l.length ≤ 8) (hsum : l.sum = 16)
+    (hparts : ∀ k ∈ l, 2 ≤ k) (hsorted : l.Pairwise (· ≥ ·)) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        l = ([a, b, c, d, e, f, g, h].take l.length) := by
+  rcases l with _ | ⟨a, l⟩
+  · simp at hsum
+  rcases l with _ | ⟨b, l⟩
+  · refine ⟨a, 0, 0, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨c, l⟩
+  · refine ⟨a, b, 0, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨d, l⟩
+  · refine ⟨a, b, c, 0, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨e, l⟩
+  · refine ⟨a, b, c, d, 0, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨f, l⟩
+  · refine ⟨a, b, c, d, e, 0, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨g, l⟩
+  · refine ⟨a, b, c, d, e, f, 0, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨h, l⟩
+  · refine ⟨a, b, c, d, e, f, g, 0, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  rcases l with _ | ⟨i, l⟩
+  · refine ⟨a, b, c, d, e, f, g, h, ?_, by simp⟩
+    apply zeroLayer_reduced_partition_classification <;> simp_all <;> omega
+  simp at hlen
+  omega
+
 end Erdos85
