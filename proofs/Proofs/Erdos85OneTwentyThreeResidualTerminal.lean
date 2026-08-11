@@ -12629,6 +12629,58 @@ theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
   have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
 
+/-- Cardinality closure for the order-thirty row packing.  Three disjoint
+admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
+allowed residues. -/
+theorem three_difference_sectors_partition_admissible_of_cards
+    {Z : Type*} [DecidableEq Z]
+    (R M D B : Finset Z)
+    (hRcard : R.card = 27) (hMcard : M.card = 9)
+    (hDcard : D.card = 6) (hBcard : B.card = 12)
+    (hMsub : M ⊆ R) (hDsub : D ⊆ R) (hBsub : B ⊆ R)
+    (hMD : Disjoint M D) (hMB : Disjoint M B) (hDB : Disjoint D B) :
+    R = M ∪ D ∪ B := by
+  have hUnionSub : M ∪ D ∪ B ⊆ R := by
+    intro z hz
+    simp only [Finset.mem_union] at hz
+    rcases hz with hz | hz | hz
+    · exact hMsub hz
+    · exact hDsub hz
+    · exact hBsub hz
+  have hMDB : Disjoint (M ∪ D) B :=
+    Finset.disjoint_union_left.mpr ⟨hMB, hDB⟩
+  apply Finset.Subset.antisymm
+  · apply Finset.eq_of_subset_of_card_le hUnionSub
+    rw [Finset.card_union hMDB, Finset.card_union hMD,
+      hRcard, hMcard, hDcard, hBcard]
+  · exact hUnionSub
+
+/-- Ready-to-use exact packing subtraction: the same cardinal and
+disjointness hypotheses force the twelve-residue `B` sector to contain four
+even and eight odd residues. -/
+theorem exact_difference_packing_B_even_four_odd_eight_of_cards
+    {Z : Type*} [DecidableEq Z] (even : Z → Prop) [DecidablePred even]
+    (R M D B : Finset Z)
+    (hRcard : R.card = 27) (hMcard : M.card = 9)
+    (hDcard : D.card = 6) (hBcard : B.card = 12)
+    (hMsub : M ⊆ R) (hDsub : D ⊆ R) (hBsub : B ⊆ R)
+    (hMD : Disjoint M D) (hMB : Disjoint M B) (hDB : Disjoint D B)
+    (hReven : (R.filter even).card = 14)
+    (hMeven : (M.filter even).card = 4)
+    (hDeven : ∀ x ∈ D, even x) :
+    (B.filter even).card = 4 ∧ (B.filter fun x => ¬ even x).card = 8 := by
+  apply exact_difference_partition_B_even_four_odd_eight even R M D B
+  · exact three_difference_sectors_partition_admissible_of_cards
+      R M D B hRcard hMcard hDcard hBcard hMsub hDsub hBsub hMD hMB hDB
+  · exact hMD
+  · exact hMB
+  · exact hDB
+  · exact hReven
+  · exact hMeven
+  · exact hDcard
+  · exact hDeven
+  · exact hBcard
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
