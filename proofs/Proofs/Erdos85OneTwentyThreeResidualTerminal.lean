@@ -17392,6 +17392,158 @@ theorem degree_sixteen_zeroLayer_orphan_component_order_sum_eq_oneNinetyTwo
     _ = 192 := degree_sixteen_zeroLayer_unused_exterior_card_eq_oneNinetyTwo
       G hfree hmin hcard c₀ hregChild hcardChild
 
+/-- The residual sector in the graph-facing `[12,2,2]` census is exact.
+After removing the two disjoint small-serviced families, forty-eight orphan
+vertices remain.  Every residual component sends quotient three to the
+large used component and zero to both small components, while the large row
+sends total reverse quotient four into this sector. -/
+theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ g : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ g.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₂a e₂b : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₂a : e₁₂ ≠ e₂a) (h₁₂b : e₁₂ ≠ e₂b) (hab : e₂a ≠ e₂b)
+    (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₂a, e₂b}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let Sₐ := zeroLayerServicedOrphans G C e₂a
+    let Sᵦ := zeroLayerServicedOrphans G C e₂b
+    let T := C \ (Sₐ ∪ Sᵦ)
+    (∑ o ∈ T, o.supp.ncard) = 48 ∧
+      (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
+      (∑ o ∈ T, Q e₁₂ o) = 4 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let Sₐ := zeroLayerServicedOrphans G C e₂a
+  let Sᵦ := zeroLayerServicedOrphans G C e₂b
+  let N := Sₐ ∪ Sᵦ
+  let T := C \ N
+  change (∑ o ∈ T, o.supp.ncard) = 48 ∧
+    (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
+    (∑ o ∈ T, Q e₁₂ o) = 4
+  have hcensus := degree_sixteen_zeroLayer_twelve_two_two_small_incidence_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₂a e₂b
+      h₁₂a h₁₂b hab he₁₂ he₂a he₂b hused₁₂ hused₂a hused₂b hE
+  change Disjoint Sₐ Sᵦ ∧
+    (∑ o ∈ Sₐ, o.supp.ncard) = 72 ∧
+    (∑ o ∈ Sᵦ, o.supp.ncard) = 72 ∧
+    (∀ o ∈ Sₐ, Q o e₁₂ = 2 ∧ Q o e₂a = 1 ∧ Q o e₂b = 0) ∧
+    (∀ o ∈ Sᵦ, Q o e₁₂ = 2 ∧ Q o e₂b = 1 ∧ Q o e₂a = 0) at hcensus
+  rcases hcensus with ⟨hdisj, hmassₐ, hmassᵦ, _hpatternₐ, _hpatternᵦ⟩
+  have hSₐsub : Sₐ ⊆ C := Finset.filter_subset _ _
+  have hSᵦsub : Sᵦ ⊆ C := Finset.filter_subset _ _
+  have hNsub : N ⊆ C := Finset.union_subset hSₐsub hSᵦsub
+  have hNmass : (∑ o ∈ N, o.supp.ncard) = 144 := by
+    change (∑ o ∈ Sₐ ∪ Sᵦ, o.supp.ncard) = 144
+    rw [Finset.sum_union hdisj, hmassₐ, hmassᵦ]
+  have hCmass := degree_sixteen_zeroLayer_orphan_component_order_sum_eq_oneNinetyTwo
+    G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ o ∈ C, o.supp.ncard) = 192 at hCmass
+  have hsplit := Finset.sum_sdiff hNsub (f := fun o => o.supp.ncard)
+  have hTmass : (∑ o ∈ T, o.supp.ncard) = 48 := by
+    change (∑ o ∈ C \ N, o.supp.ncard) + (∑ o ∈ N, o.supp.ncard) =
+      ∑ o ∈ C, o.supp.ncard at hsplit
+    change (∑ o ∈ C \ N, o.supp.ncard) = 48
+    rw [hNmass, hCmass] at hsplit
+    omega
+  have hpattern : ∀ o ∈ T,
+      Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0 := by
+    intro o hoT
+    have hoData := Finset.mem_sdiff.mp hoT
+    have hoC : o ∈ C := hoData.1
+    have hoNotₐ : o ∉ Sₐ := fun hoₐ => hoData.2 (Finset.mem_union_left _ hoₐ)
+    have hoNotᵦ : o ∉ Sᵦ := fun hoᵦ => hoData.2 (Finset.mem_union_right _ hoᵦ)
+    have hrevₐ : Q e₂a o = 0 := by
+      apply Nat.eq_zero_of_not_pos
+      intro hpos
+      exact hoNotₐ (Finset.mem_filter.mpr ⟨hoC, by
+        simpa [Sₐ, zeroLayerServicedOrphans, Q] using hpos⟩)
+    have hrevᵦ : Q e₂b o = 0 := by
+      apply Nat.eq_zero_of_not_pos
+      intro hpos
+      exact hoNotᵦ (Finset.mem_filter.mpr ⟨hoC, by
+        simpa [Sᵦ, zeroLayerServicedOrphans, Q] using hpos⟩)
+    have hbalₐ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂a o
+    have hbalᵦ := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂b o
+    change e₂a.supp.ncard * Q e₂a o = o.supp.ncard * Q o e₂a at hbalₐ
+    change e₂b.supp.ncard * Q e₂b o = o.supp.ncard * Q o e₂b at hbalᵦ
+    rw [hrevₐ] at hbalₐ
+    rw [hrevᵦ] at hbalᵦ
+    have hoPos : 0 < o.supp.ncard := o.nonempty_supp.ncard_pos
+    have hforwardₐ : Q o e₂a = 0 := by nlinarith
+    have hforwardᵦ : Q o e₂b = 0 := by nlinarith
+    have hrow := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+      G hfree hmin hcard c₀ hregChild hcardChild o
+        (by exact (Finset.mem_filter.mp hoC).2)
+    let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    change (∑ f ∈ E, Q o f) = 3 at hrow
+    have hE' : E = {e₁₂, e₂a, e₂b} := by simpa [D, R, E] using hE
+    rw [hE'] at hrow
+    simp [h₁₂a, h₁₂b, hab, hforwardₐ, hforwardᵦ] at hrow
+    exact ⟨hrow, hforwardₐ, hforwardᵦ⟩
+  have hbalanceSum :
+      3 * (∑ o ∈ T, o.supp.ncard) = 36 * ∑ o ∈ T, Q e₁₂ o := by
+    calc
+      3 * (∑ o ∈ T, o.supp.ncard) =
+          ∑ o ∈ T, o.supp.ncard * Q o e₁₂ := by
+            rw [Finset.mul_sum]
+            apply Finset.sum_congr rfl
+            intro o ho
+            rw [(hpattern o ho).1]
+            omega
+      _ = ∑ o ∈ T, e₁₂.supp.ncard * Q e₁₂ o := by
+            apply Finset.sum_congr rfl
+            intro o _ho
+            exact secondOrder_componentQuotientMatrix_balance
+              G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₁₂
+      _ = 36 * ∑ o ∈ T, Q e₁₂ o := by
+            rw [he₁₂, Finset.mul_sum]
+  have hreverse : (∑ o ∈ T, Q e₁₂ o) = 4 := by
+    rw [hTmass] at hbalanceSum
+    omega
+  exact ⟨hTmass, hpattern, hreverse⟩
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
