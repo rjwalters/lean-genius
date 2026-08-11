@@ -13940,6 +13940,159 @@ theorem degree_sixteen_zeroLayer_used_matrix_twelve_four
   have hcrossLe : Q e₁₂ e₄ ≤ 3 := by omega
   interval_cases hcross : Q e₁₂ e₄ <;> omega
 
+/-- For the `[12,4]` used matrix, the two orphan rows have combined
+after-contact excess twenty-four.  The component partition makes this exact:
+the diagonal and cross entries consume four units from the order-thirty-six
+row and none from the order-twelve row. -/
+theorem degree_sixteen_zeroLayer_twelve_four_orphan_combined_atomExcess_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₄ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁₂ ≠ e₄) (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₄ : e₄.supp.ncard = 12)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₄ : componentRepresentative (secondOrderDefectGraph G) e₄ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₄}) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (∑ o ∈ C, componentQuotientMatrix G D e₁₂ o *
+      (componentQuotientMatrix G D o e₁₂ - 1)) +
+      (∑ o ∈ C, componentQuotientMatrix G D e₄ o *
+        (componentQuotientMatrix G D o e₄ - 1)) = 24 := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hc₀subU : c₀.supp ⊆ U := by
+    intro z hz
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨a, ⟨z, hz⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hUcard : U.card = c₀.supp.ncard := by
+    rw [card_minimumLayerImageFinset]
+    simpa [hc₀card] using hcardChild
+  have hUeq : (↑U : Set V) = c₀.supp := by
+    apply Set.Subset.antisymm
+    · intro z hzU
+      by_contra hznot
+      have hssub : c₀.supp ⊂ (↑U : Set V) := by
+        refine ⟨hc₀subU, ?_⟩
+        intro hreverse
+        exact hznot (hreverse hzU)
+      have hlt := Set.ncard_lt_ncard hssub
+      rw [Set.ncard_coe_finset, hUcard, hc₀card] at hlt
+      omega
+    · exact hc₀subU
+  have hrepComponent (f : D.ConnectedComponent) :
+      D.connectedComponentMk (componentRepresentative D f) = f :=
+    (ConnectedComponent.mem_supp_iff f
+      (componentRepresentative D f)).mp (componentRepresentative_mem D f)
+  have hrepU_iff (f : D.ConnectedComponent) :
+      componentRepresentative D f ∈ U ↔ f = c₀ := by
+    change componentRepresentative D f ∈ (↑U : Set V) ↔ _
+    rw [hUeq]
+    constructor
+    · intro h
+      have hm := (ConnectedComponent.mem_supp_iff c₀
+        (componentRepresentative D f)).mp h
+      rw [hrepComponent f] at hm
+      exact hm
+    · intro hf
+      simpa [hf] using componentRepresentative_mem D f
+  have hpart : (Finset.univ.erase c₀ : Finset D.ConnectedComponent) = E ∪ C := by
+    ext f
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true,
+      Finset.mem_union, Finset.mem_filter, true_and]
+    constructor
+    · intro hfc₀
+      have hfU : componentRepresentative D f ∉ U := by
+        simpa [hrepU_iff f] using hfc₀
+      by_cases hfR : componentRepresentative D f ∈ R
+      · exact Or.inl (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hfR⟩)
+      · exact Or.inr (Finset.mem_filter.mpr
+          ⟨Finset.mem_univ _, by simp [O, hfU, hfR]⟩)
+    · intro hf
+      rcases hf with hfR | hfO
+      · have hfR' : componentRepresentative D f ∈ R :=
+          (Finset.mem_filter.mp hfR).2
+        intro hfc₀
+        subst f
+        have hc₀U : componentRepresentative D c₀ ∈ U :=
+          (hrepU_iff c₀).2 rfl
+        exact (Finset.mem_sdiff.mp
+          (minimumLayer_externalBiUnion_subset_complement G D c₀ hfR')).2 hc₀U
+      · have hfO' : componentRepresentative D f ∈ O :=
+          (Finset.mem_filter.mp hfO).2
+        exact fun hfc₀ => (Finset.mem_sdiff.mp
+          (Finset.mem_sdiff.mp hfO').1).2 ((hrepU_iff f).2 hfc₀)
+  have hdisj : Disjoint E C := by
+    apply Finset.disjoint_left.mpr
+    intro f hfE hfC
+    have hfR : componentRepresentative D f ∈ R :=
+      (Finset.mem_filter.mp hfE).2
+    have hfO : componentRepresentative D f ∈ O :=
+      (Finset.mem_filter.mp hfC).2
+    exact (Finset.mem_sdiff.mp hfO).2 hfR
+  have hE' : E = {e₁₂, e₄} := by
+    simpa [D, R, E] using hE
+  have hmatrix := degree_sixteen_zeroLayer_used_matrix_twelve_four
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₂ e₄ hne he₁₂ he₄
+      hused₁₂ hused₄ hE
+  change Q e₁₂ e₁₂ = 2 ∧ Q e₁₂ e₄ = 1 ∧
+    Q e₄ e₁₂ = 3 ∧ Q e₄ e₄ = 0 at hmatrix
+  have hrow₁₂ := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ hused₁₂
+  have hrow₄ := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₄ hused₄
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e₁₂ f * (Q f e₁₂ - 1)) = 2 * (e₁₂.supp.ncard / 3 - 1) at hrow₁₂
+  change (∑ f ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+    Q e₄ f * (Q f e₄ - 1)) = 2 * (e₄.supp.ncard / 3 - 1) at hrow₄
+  rw [hpart, Finset.sum_union hdisj, hE'] at hrow₁₂ hrow₄
+  simp [D, Q, hne, Ne.symm hne, he₁₂, he₄,
+    hmatrix.1, hmatrix.2.1, hmatrix.2.2.1, hmatrix.2.2.2] at hrow₁₂ hrow₄
+  change 4 + (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) = 22 at hrow₁₂
+  change (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 6 at hrow₄
+  change (∑ o ∈ C, Q e₁₂ o * (Q o e₁₂ - 1)) +
+    (∑ o ∈ C, Q e₄ o * (Q o e₄ - 1)) = 24
+  omega
+
 /-- Used-matrix package for the reduced partition `[12,2,2]`.  The large
 row is isolated with diagonal three.  The two small rows have symmetric
 mutual quotient, equal diagonals, and diagonal plus mutual quotient three. -/
@@ -14163,6 +14316,105 @@ def zeroLayerAtomExcess
     (e o : (secondOrderDefectGraph G).ConnectedComponent) : ℕ :=
   componentQuotientMatrix G (secondOrderDefectGraph G) e o *
     (componentQuotientMatrix G (secondOrderDefectGraph G) o e - 1)
+
+/-- In the zero-layer branch the minimum-layer image is exactly the support
+of `c₀`.  Consequently every other defect component is classified uniquely
+by whether its representative lies in the used exterior or in the orphan
+cell. -/
+theorem degree_sixteen_zeroLayer_component_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let U := minimumLayerImageFinset D c₀
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ U) \ R
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    (Finset.univ.erase c₀ : Finset D.ConnectedComponent) = E ∪ C := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hc₀subU : c₀.supp ⊆ U := by
+    intro z hz
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ := ⟨a, ⟨z, hz⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hUcard : U.card = c₀.supp.ncard := by
+    rw [card_minimumLayerImageFinset]
+    simpa [hc₀card] using hcardChild
+  have hUeq : (↑U : Set V) = c₀.supp := by
+    apply Set.Subset.antisymm
+    · intro z hzU
+      by_contra hznot
+      have hssub : c₀.supp ⊂ (↑U : Set V) := by
+        refine ⟨hc₀subU, ?_⟩
+        intro hreverse
+        exact hznot (hreverse hzU)
+      have hlt := Set.ncard_lt_ncard hssub
+      rw [Set.ncard_coe_finset, hUcard, hc₀card] at hlt
+      omega
+    · exact hc₀subU
+  have hrepComponent (f : D.ConnectedComponent) :
+      D.connectedComponentMk (componentRepresentative D f) = f :=
+    (ConnectedComponent.mem_supp_iff f
+      (componentRepresentative D f)).mp (componentRepresentative_mem D f)
+  have hrepU_iff (f : D.ConnectedComponent) :
+      componentRepresentative D f ∈ U ↔ f = c₀ := by
+    change componentRepresentative D f ∈ (↑U : Set V) ↔ _
+    rw [hUeq]
+    constructor
+    · intro h
+      have hm := (ConnectedComponent.mem_supp_iff c₀
+        (componentRepresentative D f)).mp h
+      rw [hrepComponent f] at hm
+      exact hm
+    · intro hf
+      simpa [hf] using componentRepresentative_mem D f
+  ext f
+  simp only [Finset.mem_erase, Finset.mem_univ, and_true,
+    Finset.mem_union, Finset.mem_filter, true_and]
+  constructor
+  · intro hfc₀
+    have hfU : componentRepresentative D f ∉ U := by
+      simpa [hrepU_iff f] using hfc₀
+    by_cases hfR : componentRepresentative D f ∈ R
+    · exact Or.inl hfR
+    · exact Or.inr (Finset.mem_sdiff.mpr
+        ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, hfU⟩, hfR⟩)
+  · intro hf
+    rcases hf with hfR | hfO
+    · intro hfc₀
+      subst f
+      have hc₀U : componentRepresentative D c₀ ∈ U :=
+        (hrepU_iff c₀).2 rfl
+      exact (Finset.mem_sdiff.mp
+        (minimumLayer_externalBiUnion_subset_complement G D c₀ hfR)).2 hc₀U
+    · exact fun hfc₀ => (Finset.mem_sdiff.mp
+        (Finset.mem_sdiff.mp hfO).1).2 ((hrepU_iff f).2 hfc₀)
 
 /-- Universal zero-layer load ledger: every used component of reduced order
 `k` receives total orphan load `12k`. -/
