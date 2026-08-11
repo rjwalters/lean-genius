@@ -11,6 +11,8 @@
 #   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
 #   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
 #   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
+#   LEAN_CERTIFY       - Use an ephemeral build cache for a certification gate
+#                        (default: false)
 #
 # Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
 #   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
@@ -39,6 +41,7 @@ fi
 MEMORY_LIMIT="${LEAN_MEMORY_LIMIT:-32768}"  # 32GB default
 TIMEOUT="${LEAN_BUILD_TIMEOUT:-60m}"
 SKIP_CACHE="${LEAN_SKIP_CACHE:-false}"
+CERTIFY="${LEAN_CERTIFY:-false}"
 TARGET="${1:-}"
 IMAGE="lean4-arm64:v4.31.0"
 CACHE_VOLUME="lean-mathlib-cache"
@@ -78,6 +81,7 @@ echo "Memory limit: ${MEMORY_LIMIT}MB (hard enforced via cgroups)"
 echo "Timeout: ${TIMEOUT}"
 echo "CPU limit: ${CPU_LIMIT}"
 echo "Target: ${TARGET:-all}"
+echo "Certification cache: $([[ "$CERTIFY" == "true" ]] && echo ephemeral || echo shared)"
 echo ""
 
 # Check Docker
@@ -100,8 +104,14 @@ if ! docker image inspect "$IMAGE" &>/dev/null; then
     echo ""
 fi
 
+# Docker's kernel boot id changes whenever the engine VM restarts. Capture it
+# on both sides of the gate so a seemingly successful build cannot be certified
+# across an overlapping Docker Desktop restart.
+DOCKER_BOOT_ID_BEFORE="$(docker run --rm --entrypoint /bin/cat "$IMAGE" \
+    /proc/sys/kernel/random/boot_id)"
+
 # Create persistent volume for Mathlib cache if it doesn't exist
-if ! docker volume inspect "$CACHE_VOLUME" &>/dev/null 2>&1; then
+if [[ "$CERTIFY" != "true" ]] && ! docker volume inspect "$CACHE_VOLUME" &>/dev/null 2>&1; then
     echo "Creating persistent Mathlib cache volume..."
     docker volume create "$CACHE_VOLUME"
 fi
@@ -117,6 +127,25 @@ if [ "$SKIP_CACHE" = "true" ]; then
     BUILD_CMD="lake build ${TARGET}"
 else
     BUILD_CMD="lake exe cache get && lake build ${TARGET}"
+fi
+
+# A successful `lake build` is not sufficient evidence by itself: a missing
+# leaf olean can be masked by a surviving trace. For an explicit module target,
+# require the expected output to exist and to be newer than its source before
+# the container is allowed to report success.
+if [[ -n "$TARGET" ]]; then
+    if [[ ! "$TARGET" =~ ^[A-Za-z0-9_.]+$ ]]; then
+        echo "ERROR: Cannot verify output path for target: $TARGET"
+        exit 2
+    fi
+    TARGET_PATH="${TARGET//./\/}"
+    SOURCE_PATH="${TARGET_PATH}.lean"
+    OLEAN_PATH=".lake/build/lib/lean/${TARGET_PATH}.olean"
+    BUILD_CMD+=" && { if ! test -f '${OLEAN_PATH}' || ! test '${OLEAN_PATH}' -nt '${SOURCE_PATH}'; then"
+    BUILD_CMD+=" echo 'ERROR: target olean missing or not newer than source: ${OLEAN_PATH}' >&2; exit 86; fi; }"
+elif [[ "$CERTIFY" == "true" ]]; then
+    echo "ERROR: LEAN_CERTIFY=true requires an explicit module target"
+    exit 2
 fi
 
 echo "Starting Docker build..."
@@ -152,12 +181,18 @@ trap 'cleanup 143' TERM
 trap 'cleanup 129' HUP
 trap 'cleanup $?' EXIT
 
+if [[ "$CERTIFY" == "true" ]]; then
+    BUILD_CACHE_MOUNT=(--mount "type=volume,destination=/workspace/proofs/.lake/build")
+else
+    BUILD_CACHE_MOUNT=(-v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated")
+fi
+
 docker run --rm \
     --memory="${MEMORY_LIMIT}m" \
     --memory-swap="${MEMORY_LIMIT}m" \
     --cpus="$CPU_LIMIT" \
     -v "${REPO_ROOT}:/workspace:delegated" \
-    -v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated" \
+    "${BUILD_CACHE_MOUNT[@]}" \
     -v "${PACKAGES_VOLUME}:/workspace/proofs/.lake/packages:delegated" \
     -w /workspace/proofs \
     --name "$CONTAINER_NAME" \
@@ -175,7 +210,7 @@ while kill -0 $BUILD_PID 2>/dev/null; do
     if [ $((ELAPSED % 30)) -eq 0 ]; then
         echo "[${ELAPSED}s] Building..."
     fi
-    if [ $ELAPSED -gt $TIMEOUT_SECS ]; then
+    if [ $ELAPSED -gt "$TIMEOUT_SECS" ]; then
         echo "Timeout exceeded, stopping container..."
         docker stop "$CONTAINER_NAME" 2>/dev/null || true
         exit 124
@@ -188,6 +223,13 @@ EXIT_CODE=$?
 set -e
 
 if [ $EXIT_CODE -eq 0 ]; then
+    DOCKER_BOOT_ID_AFTER="$(docker run --rm --entrypoint /bin/cat "$IMAGE" \
+        /proc/sys/kernel/random/boot_id)"
+    if [[ "$DOCKER_BOOT_ID_BEFORE" != "$DOCKER_BOOT_ID_AFTER" ]]; then
+        echo ""
+        echo "=== Build invalid: Docker engine restarted during the gate ==="
+        exit 87
+    fi
     echo ""
     echo "=== Build succeeded ==="
 elif [ $EXIT_CODE -eq 124 ]; then
