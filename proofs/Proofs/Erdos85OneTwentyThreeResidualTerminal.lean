@@ -13182,6 +13182,80 @@ theorem two_B_witness_sectors_phase_pairs_same_parity_type
       fun h => hn₂ (hparity₂.mpr h)
     omega
 
+/-- Fully concrete same-target parity theorem.  Two order-thirty mutual
+quotient-two blocks which both have a unit leg into the same order-six used
+component have phase pairs of the same parity type. -/
+theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L B₁ B₂ S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (hLS : L ≠ S) (hB₁B₂ : B₁ ≠ B₂)
+    (hB₁C : B₁ ≠ C) (hB₂C : B₂ ≠ C)
+    (uL uB₁ uB₂ : ZMod 30 → V)
+    (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huL : Function.Injective uL) (huB₁ : Function.Injective uB₁)
+    (huB₂ : Function.Injective uB₂) (huS : Function.Injective uS)
+    (huC : Function.Injective uC)
+    (huLRange : Set.range uL = L.supp)
+    (huB₁Range : Set.range uB₁ = B₁.supp)
+    (huB₂Range : Set.range uB₂ = B₂.supp)
+    (huSRange : Set.range uS = S.supp) (huCRange : Set.range uC = C.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huB₁D : ∀ x, (secondOrderDefectGraph G).neighborFinset (uB₁ x) =
+      {uB₁ (x - 1), uB₁ (x + 1)})
+    (huB₂D : ∀ x, (secondOrderDefectGraph G).neighborFinset (uB₂ x) =
+      {uB₂ (x - 1), uB₂ (x + 1)})
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hB₁L : componentQuotientMatrix G (secondOrderDefectGraph G) B₁ L = 2)
+    (hB₂L : componentQuotientMatrix G (secondOrderDefectGraph G) B₂ L = 2)
+    (hB₁S : componentQuotientMatrix G (secondOrderDefectGraph G) B₁ S = 1)
+    (hB₂S : componentQuotientMatrix G (secondOrderDefectGraph G) B₂ S = 1)
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
+    (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1) :
+    ∃ A₁ A₂ : Finset (ZMod 30), A₁.card = 2 ∧ A₂.card = 2 ∧
+      (((A₁.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 ∧
+        (A₂.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∨
+       ((((A₁.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+          (A₁.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2) ∧
+         (((A₂.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+          (A₂.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
+  obtain ⟨A₁, E₁, hA₁card, hE₁card, hparity₁, hW₁⟩ :=
+    orderThirty_B_unitSmall_exists_two_offset_witness_sector
+      G hfree hd heven hmin hcard L B₁ S C hB₁C uL uB₁ uS uC
+      huL huB₁ huS huC huLRange huB₁Range huSRange huCRange
+      huLD huB₁D huSD huCD hB₁L hB₁S hLC
+  obtain ⟨A₂, E₂, hA₂card, hE₂card, hparity₂, hW₂⟩ :=
+    orderThirty_B_unitSmall_exists_two_offset_witness_sector
+      G hfree hd heven hmin hcard L B₂ S C hB₂C uL uB₂ uS uC
+      huL huB₂ huS huC huLRange huB₂Range huSRange huCRange
+      huLD huB₂D huSD huCD hB₂L hB₂S hLC
+  obtain ⟨M, hMcard, hMeven, hWM⟩ :=
+    orderThirty_orderSix_common_minimum_exists_two_offset_witness_sector
+      G hfree hd heven hmin hcard L S C uL uS uC huL huS huC
+      huLRange huSRange huCRange huLD huSD huCD hLC hSC
+  refine ⟨A₁, A₂, hA₁card, hA₂card, ?_⟩
+  exact two_B_witness_sectors_phase_pairs_same_parity_type
+    G hfree L B₁ B₂ S C hLS hB₁B₂ hB₁C hB₂C
+      uL uB₁ uB₂ uS uC huLRange huB₁Range huB₂Range huSRange huCRange
+      A₁ A₂ E₁ E₂ M hA₁card hA₂card hE₁card hE₂card hMcard
+      hparity₁ hparity₂ hMeven hW₁ hW₂ hWM
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
