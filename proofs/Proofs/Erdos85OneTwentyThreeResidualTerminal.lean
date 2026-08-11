@@ -16063,6 +16063,33 @@ theorem degree_sixteen_orderThirtySix_orderTwelve_unit_targets_card_le_one
         rw [(hS o₁ ho₁).1, (hS o₂ ho₂).1, he]
         norm_num)
 
+/-- An order-twelve component cannot have three distinct order-four unit
+targets.  In fact any two such cyclic covers repeat jointly after four
+source steps, strictly before the source cycle closes. -/
+theorem false_of_degree_sixteen_orderTwelve_three_orderFour_unit_targets
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 12)
+    (T : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hTcard : T.card = 3)
+    (hT : ∀ o ∈ T, o.supp.ncard = 4 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) :
+    False := by
+  have htwo : 1 < T.card := by omega
+  obtain ⟨o₁, ho₁, o₂, ho₂, hne⟩ := Finset.one_lt_card.mp htwo
+  exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      o₁ o₂ e hne (hT o₁ ho₁).2 (hT o₂ ho₂).2 (by
+        rw [(hT o₁ ho₁).1, (hT o₂ ho₂).1, he]
+        norm_num)
+
 /-- Exact reduced-order table for the quotient-two leg of a `2+1` orphan
 row.  Equal orders give reverse quotient two; otherwise the used component
 is twice as long and the reverse quotient is one. -/
