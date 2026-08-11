@@ -17602,7 +17602,11 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
       (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
       (∑ o ∈ T, Q e₁₂ o) = 4 ∧
       (T.filter fun o => o.supp.ncard = 12).card = 1 ∧
-      (T.filter fun o => o.supp.ncard = 36).card = 1 := by
+      (T.filter fun o => o.supp.ncard = 36).card = 1 ∧
+      (Sₐ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+      (Sₐ.filter fun o => o.supp.ncard = 36).card = 2 ∧
+      (Sᵦ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+      (Sᵦ.filter fun o => o.supp.ncard = 36).card = 2 := by
   classical
   dsimp only
   let D := secondOrderDefectGraph G
@@ -17620,7 +17624,11 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
     (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
     (∑ o ∈ T, Q e₁₂ o) = 4 ∧
     (T.filter fun o => o.supp.ncard = 12).card = 1 ∧
-    (T.filter fun o => o.supp.ncard = 36).card = 1
+    (T.filter fun o => o.supp.ncard = 36).card = 1 ∧
+    (Sₐ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+    (Sₐ.filter fun o => o.supp.ncard = 36).card = 2 ∧
+    (Sᵦ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+    (Sᵦ.filter fun o => o.supp.ncard = 36).card = 2
   have hcensus := degree_sixteen_zeroLayer_twelve_two_two_small_incidence_census
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₂a e₂b
       h₁₂a h₁₂b hab he₁₂ he₂a he₂b hused₁₂ hused₂a hused₂b hE
@@ -17629,7 +17637,7 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
     (∑ o ∈ Sᵦ, o.supp.ncard) = 72 ∧
     (∀ o ∈ Sₐ, Q o e₁₂ = 2 ∧ Q o e₂a = 1 ∧ Q o e₂b = 0) ∧
     (∀ o ∈ Sᵦ, Q o e₁₂ = 2 ∧ Q o e₂b = 1 ∧ Q o e₂a = 0) at hcensus
-  rcases hcensus with ⟨hdisj, hmassₐ, hmassᵦ, _hpatternₐ, _hpatternᵦ⟩
+  rcases hcensus with ⟨hdisj, hmassₐ, hmassᵦ, hpatternₐ, hpatternᵦ⟩
   have hSₐsub : Sₐ ⊆ C := Finset.filter_subset _ _
   have hSᵦsub : Sᵦ ⊆ C := Finset.filter_subset _ _
   have hNsub : N ⊆ C := Finset.union_subset hSₐsub hSᵦsub
@@ -17757,12 +17765,80 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
     · exact ⟨hoCard, h₁₂.2⟩
     · omega
   have hcounts : T₁₂.card = 1 ∧ T₃₆.card = 1 := by omega
+  have hsmallCounts (S : Finset D.ConnectedComponent)
+      (hmass : (∑ o ∈ S, o.supp.ncard) = 72)
+      (hpat : ∀ o ∈ S, Q o e₁₂ = 2) :
+      (S.filter fun o => o.supp.ncard = 18).card = 0 ∧
+        (S.filter fun o => o.supp.ncard = 36).card = 2 := by
+    let S₁₈ := S.filter fun o => o.supp.ncard = 18
+    let S₃₆ := S.filter fun o => o.supp.ncard = 36
+    have hsclass : ∀ o ∈ S,
+        (o.supp.ncard = 18 ∧ Q e₁₂ o = 1) ∨
+          (o.supp.ncard = 36 ∧ Q e₁₂ o = 2) := by
+      intro o ho
+      simpa only [D, Q] using
+        degree_sixteen_quotientTwo_into_orderThirtySix_classification
+          G hfree hmin hcard o e₁₂ he₁₂ (hpat o ho)
+    have hSsplit : S = S₁₈ ∪ S₃₆ := by
+      ext o
+      constructor
+      · intro ho
+        rcases hsclass o ho with h₁₈ | h₃₆
+        · exact Finset.mem_union_left _
+            (Finset.mem_filter.mpr ⟨ho, h₁₈.1⟩)
+        · exact Finset.mem_union_right _
+            (Finset.mem_filter.mpr ⟨ho, h₃₆.1⟩)
+      · intro ho
+        rcases Finset.mem_union.mp ho with ho₁₈ | ho₃₆
+        · exact (Finset.mem_filter.mp ho₁₈).1
+        · exact (Finset.mem_filter.mp ho₃₆).1
+    have hSdisj : Disjoint S₁₈ S₃₆ := Finset.disjoint_left.mpr (by
+      intro o ho₁₈ ho₃₆
+      have h₁₈ := (Finset.mem_filter.mp ho₁₈).2
+      have h₃₆ := (Finset.mem_filter.mp ho₃₆).2
+      omega)
+    have hsum₁₈ : (∑ o ∈ S₁₈, o.supp.ncard) = S₁₈.card * 18 := by
+      calc
+        (∑ o ∈ S₁₈, o.supp.ncard) = ∑ _o ∈ S₁₈, 18 := by
+          apply Finset.sum_congr rfl
+          intro o ho
+          exact (Finset.mem_filter.mp ho).2
+        _ = S₁₈.card * 18 := by simp
+    have hsum₃₆' : (∑ o ∈ S₃₆, o.supp.ncard) = S₃₆.card * 36 := by
+      calc
+        (∑ o ∈ S₃₆, o.supp.ncard) = ∑ _o ∈ S₃₆, 36 := by
+          apply Finset.sum_congr rfl
+          intro o ho
+          exact (Finset.mem_filter.mp ho).2
+        _ = S₃₆.card * 36 := by simp
+    have hmassCounts' : S₁₈.card * 18 + S₃₆.card * 36 = 72 := by
+      have hs := hmass
+      rw [hSsplit, Finset.sum_union hSdisj, hsum₁₈, hsum₃₆'] at hs
+      exact hs
+    have hS₁₈le : S₁₈.card ≤ 1 := by
+      apply degree_sixteen_orderThirtySix_orderEighteen_unit_targets_card_le_one
+        G hfree hmin hcard e₁₂ he₁₂ S₁₈
+      intro o ho
+      have hoS := (Finset.mem_filter.mp ho).1
+      have hoCard := (Finset.mem_filter.mp ho).2
+      rcases hsclass o hoS with h₁₈ | h₃₆
+      · exact ⟨hoCard, h₁₈.2⟩
+      · omega
+    change S₁₈.card = 0 ∧ S₃₆.card = 2
+    omega
+  have hcountsₐ := hsmallCounts Sₐ hmassₐ (fun o ho => (hpatternₐ o ho).1)
+  have hcountsᵦ := hsmallCounts Sᵦ hmassᵦ (fun o ho => (hpatternᵦ o ho).1)
   simpa only [T₁₂, T₃₆] using
     (show (∑ o ∈ T, o.supp.ncard) = 48 ∧
         (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
         (∑ o ∈ T, Q e₁₂ o) = 4 ∧
-        T₁₂.card = 1 ∧ T₃₆.card = 1 from
-      ⟨hTmass, hpattern, hreverse, hcounts⟩)
+        T₁₂.card = 1 ∧ T₃₆.card = 1 ∧
+        (Sₐ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+        (Sₐ.filter fun o => o.supp.ncard = 36).card = 2 ∧
+        (Sᵦ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+        (Sᵦ.filter fun o => o.supp.ncard = 36).card = 2 from
+      ⟨hTmass, hpattern, hreverse, hcounts.1, hcounts.2,
+        hcountsₐ.1, hcountsₐ.2, hcountsᵦ.1, hcountsᵦ.2⟩)
 
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
