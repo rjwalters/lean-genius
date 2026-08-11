@@ -39320,6 +39320,33 @@ theorem sum_eq_sum_fiberCount_mul
               rw [(Finset.mem_filter.mp ho).2]
         _ = (Finset.univ.filter fun o => atom o = t).card * w t := by simp
 
+/-- Pointwise descriptor agreement turns graph load and excess totals into
+fiber-count-weighted atom ledgers. -/
+theorem sum_values_eq_sum_fiberCount_mul
+    {O ι : Type*} [Fintype O] [DecidableEq O]
+    [Fintype ι] [DecidableEq ι]
+    (K : ι → ℕ) (E : Finset ι) (atom : O → ZeroLayerAtom ι)
+    (graphLoad graphExcess : O → ι → ℕ)
+    (hvalues : ∀ o, ValuesMatchOn K E (graphLoad o) (graphExcess o) (atom o))
+    (i : ι) (hiE : i ∈ E) :
+    (∑ o, graphLoad o i) = ∑ t, fiberCount atom t * load K i t ∧
+    (∑ o, graphExcess o i) = ∑ t, fiberCount atom t * excess i t := by
+  constructor
+  · calc
+      (∑ o, graphLoad o i) = ∑ o, load K i (atom o) := by
+        apply Finset.sum_congr rfl
+        intro o _ho
+        exact (hvalues o i hiE).1
+      _ = ∑ t, fiberCount atom t * load K i t :=
+        sum_eq_sum_fiberCount_mul atom (load K i)
+  · calc
+      (∑ o, graphExcess o i) = ∑ o, excess i (atom o) := by
+        apply Finset.sum_congr rfl
+        intro o _ho
+        exact (hvalues o i hiE).2
+      _ = ∑ t, fiberCount atom t * excess i t :=
+        sum_eq_sum_fiberCount_mul atom (excess i)
+
 end ZeroLayerAtom
 
 /-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
