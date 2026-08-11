@@ -144,6 +144,86 @@ theorem false_of_degree_sixteen_minimum_even_orphan
         convert Int.even_mul_pred_self
           (componentQuotientMatrix G D e o : ℤ) using 1 <;> ring
 
+/-- Abstract assembly for the corrected `[10,2,2,2]` residual endpoint.
+The residual cell has mass twelve and balances against three order-six
+targets.  Six serviced components have order thirty, while the four used
+components have orders `30,6,6,6`.  Selecting a minimum residual gives an
+even order at most six; the displayed component partition then makes it a
+minimum nonminimum component globally, contradicting
+`false_of_degree_sixteen_minimum_even_orphan`. -/
+theorem false_of_degree_sixteen_ten_two_two_two_residual_interface
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ L A B C : (secondOrderDefectGraph G).ConnectedComponent)
+    (hL : L.supp.ncard = 30)
+    (hA : A.supp.ncard = 6) (hB : B.supp.ncard = 6)
+    (hC : C.supp.ncard = 6)
+    (S T : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hSmass : ∀ s ∈ S, s.supp.ncard = 30)
+    (hTmass : (∑ o ∈ T, o.supp.ncard) = 12)
+    (hTpos : ∀ o ∈ T, 3 ≤ o.supp.ncard)
+    (hTne12 : ∀ o ∈ T, o.supp.ncard ≠ 12)
+    (hrow : ∀ o ∈ T,
+      componentQuotientMatrix G (secondOrderDefectGraph G) o A +
+        componentQuotientMatrix G (secondOrderDefectGraph G) o B +
+        componentQuotientMatrix G (secondOrderDefectGraph G) o C = 3)
+    (hbalA : ∀ o ∈ T, o.supp.ncard *
+      componentQuotientMatrix G (secondOrderDefectGraph G) o A =
+        6 * componentQuotientMatrix G (secondOrderDefectGraph G) A o)
+    (hbalB : ∀ o ∈ T, o.supp.ncard *
+      componentQuotientMatrix G (secondOrderDefectGraph G) o B =
+        6 * componentQuotientMatrix G (secondOrderDefectGraph G) B o)
+    (hbalC : ∀ o ∈ T, o.supp.ncard *
+      componentQuotientMatrix G (secondOrderDefectGraph G) o C =
+        6 * componentQuotientMatrix G (secondOrderDefectGraph G) C o)
+    (hOrphan : ∀ o ∈ T, componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (hpartition : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) e ∉
+        minimumLayerImageFinset (secondOrderDefectGraph G) c₀ →
+      e = L ∨ e = A ∨ e = B ∨ e = C ∨ e ∈ S ∨ e ∈ T) : False := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨o, hoT, hole, homin⟩ :=
+    exists_minimum_le_six_of_sum_twelve_of_three_le_of_ne_twelve
+      T (fun e => e.supp.ncard) hTmass hTpos hTne12
+  have hoeven := even_of_three_six_target_balances
+    o.supp.ncard
+    (componentQuotientMatrix G D o A)
+    (componentQuotientMatrix G D o B)
+    (componentQuotientMatrix G D o C)
+    (componentQuotientMatrix G D A o)
+    (componentQuotientMatrix G D B o)
+    (componentQuotientMatrix G D C o)
+    (hTpos o hoT) hole (hrow o hoT)
+    (by simpa [D] using hbalA o hoT)
+    (by simpa [D] using hbalB o hoT)
+    (by simpa [D] using hbalC o hoT)
+  have hrep : D.connectedComponentMk (componentRepresentative D o) = o :=
+    (ConnectedComponent.mem_supp_iff o (componentRepresentative D o)).mp
+      (componentRepresentative_mem D o)
+  apply false_of_degree_sixteen_minimum_even_orphan
+    G hfree hmin hcard c₀ (z := componentRepresentative D o)
+  · simpa [D] using hOrphan o hoT
+  · rwa [hrep]
+  · intro e heU
+    have heCases := hpartition e (by simpa [D] using heU)
+    rw [hrep]
+    rcases heCases with rfl | rfl | rfl | rfl | heS | heT
+    · rw [hL]; omega
+    · rw [hA]; omega
+    · rw [hB]; omega
+    · rw [hC]; omega
+    · rw [hSmass e heS]; omega
+    · exact homin e heT
+
 end
 
 end Erdos85
