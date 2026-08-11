@@ -13229,6 +13229,104 @@ theorem orderThirty_six_B_exact_packing_homogeneous_count_two
       hMD hMA hDA hMeven hDeven
   exact ⟨A, hAcard, hAsidon, hAcanonical, hpack.2.2⟩
 
+/-- Combined exact-packing and target-fiber theorem.  Six labeled `B`
+blocks split two per order-six target; exactly one target fiber consists of
+the two parity-homogeneous phase pairs, while the other four pairs are
+mixed. -/
+theorem orderThirty_six_B_three_targets_unique_homogeneous_target
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (L C : (secondOrderDefectGraph G).ConnectedComponent)
+    (b : Fin 6 → (secondOrderDefectGraph G).ConnectedComponent)
+    (s : Fin 3 → (secondOrderDefectGraph G).ConnectedComponent)
+    (target : Fin 6 → Fin 3)
+    (hbInj : Function.Injective b) (hLCne : L ≠ C)
+    (hbL : ∀ i, b i ≠ L) (hbC : ∀ i, b i ≠ C)
+    (hLs : ∀ k, L ≠ s k)
+    (uL : ZMod 30 → V) (uC : ZMod 3 → V)
+    (uB : Fin 6 → ZMod 30 → V)
+    (uS : Fin 3 → ZMod 6 → V)
+    (huL : Function.Injective uL) (huC : Function.Injective uC)
+    (huB : ∀ i, Function.Injective (uB i))
+    (huS : ∀ k, Function.Injective (uS k))
+    (huLRange : Set.range uL = L.supp) (huCRange : Set.range uC = C.supp)
+    (huBRange : ∀ i, Set.range (uB i) = (b i).supp)
+    (huSRange : ∀ k, Set.range (uS k) = (s k).supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (huBD : ∀ i x, (secondOrderDefectGraph G).neighborFinset (uB i x) =
+      {uB i (x - 1), uB i (x + 1)})
+    (huSD : ∀ k x, (secondOrderDefectGraph G).neighborFinset (uS k x) =
+      {uS k (x - 1), uS k (x + 1)})
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) L L = 3)
+    (hBL : ∀ i, componentQuotientMatrix G
+      (secondOrderDefectGraph G) (b i) L = 2)
+    (hBtarget : ∀ i, componentQuotientMatrix G
+      (secondOrderDefectGraph G) (b i) (s (target i)) = 1)
+    (hSC : ∀ k, componentQuotientMatrix G
+      (secondOrderDefectGraph G) (s k) C = 1)
+    (hfiber : ∀ k : Fin 3,
+      ((Finset.univ : Finset (Fin 6)).filter fun i => target i = k).card = 2) :
+    ∃ A : Fin 6 → Finset (ZMod 30),
+      (∀ i, (A i).card = 2) ∧
+      (∀ i, A i = mixedAnchorSupport G (uB i 0) uL) ∧
+      ∃! k : Fin 3,
+        (Finset.univ : Finset (Fin 6)).filter (fun i =>
+          ((A i).filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1) =
+        (Finset.univ : Finset (Fin 6)).filter fun i => target i = k := by
+  obtain ⟨A, hAcard, _hAsidon, hAcanonical, hhomCard⟩ :=
+    orderThirty_six_B_exact_packing_homogeneous_count_two
+      G hfree hmin hcard L C b hbInj hLCne hbL hbC uL uC uB
+        huL huC huB huLRange huCRange huBRange huLD huCD huBD
+        hLC hdiag hBL
+  let P : Fin 6 → Prop := fun i => ((A i).filter fun a =>
+    ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1
+  have huniform : ∀ i j : Fin 6, target i = target j → (P i ↔ P j) := by
+    intro i j ht
+    by_cases hij : i = j
+    · subst j
+      rfl
+    · have hbij : b i ≠ b j := hbInj.ne hij
+      obtain ⟨A₁, A₂, hA₁card, hA₂card, hA₁canonical, hA₂canonical,
+          hparity⟩ := two_orderThirty_B_blocks_same_orderSix_target_phase_parity
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+          L (b i) (b j) (s (target i)) C (hLs (target i)) hbij
+          (hbC i) (hbC j) uL (uB i) (uB j) (uS (target i)) uC
+          huL (huB i) (huB j) (huS (target i)) huC huLRange
+          (huBRange i) (huBRange j) (huSRange (target i)) huCRange
+          huLD (huBD i) (huBD j) (huSD (target i)) huCD
+          (hBL i) (hBL j) (hBtarget i) (by simpa [ht] using hBtarget j)
+          hLC (hSC (target i))
+      have hA₁eq : A₁ = A i := hA₁canonical.trans (hAcanonical i).symm
+      have hA₂eq : A₂ = A j := hA₂canonical.trans (hAcanonical j).symm
+      rw [hA₁eq, hA₂eq] at hparity hA₁card hA₂card
+      change P i ↔ P j
+      rcases hparity with hmixed | hhom
+      · simp [P, hmixed.1, hmixed.2]
+      · have hiLe : ((A i).filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≤ 2 := by
+          rw [← hA₁card]
+          exact Finset.card_le_card (Finset.filter_subset _ _)
+        have hjLe : ((A j).filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≤ 2 := by
+          rw [← hA₂card]
+          exact Finset.card_le_card (Finset.filter_subset _ _)
+        simp only [P]
+        omega
+  have hunique := six_two_element_fibers_unique_property_target
+    (P := P) target hfiber huniform (by simpa [P] using hhomCard)
+  exact ⟨A, hAcard, hAcanonical, by simpa [P] using hunique⟩
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
@@ -13963,6 +14061,8 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
     (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
     (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1) :
     ∃ A₁ A₂ : Finset (ZMod 30), A₁.card = 2 ∧ A₂.card = 2 ∧
+      A₁ = mixedAnchorSupport G (uB₁ 0) uL ∧
+      A₂ = mixedAnchorSupport G (uB₂ 0) uL ∧
       (((A₁.filter fun a =>
           ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 ∧
         (A₂.filter fun a =>
@@ -13975,12 +14075,12 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
             ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
           (A₂.filter fun a =>
             ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
-  obtain ⟨A₁, E₁, hA₁card, hE₁card, hparity₁, _hcanonical₁, hW₁⟩ :=
+  obtain ⟨A₁, E₁, hA₁card, hE₁card, hparity₁, hcanonical₁, hW₁⟩ :=
     orderThirty_B_unitSmall_exists_two_offset_witness_sector
       G hfree hd heven hmin hcard L B₁ S C hB₁C uL uB₁ uS uC
       huL huB₁ huS huC huLRange huB₁Range huSRange huCRange
       huLD huB₁D huSD huCD hB₁L hB₁S hLC
-  obtain ⟨A₂, E₂, hA₂card, hE₂card, hparity₂, _hcanonical₂, hW₂⟩ :=
+  obtain ⟨A₂, E₂, hA₂card, hE₂card, hparity₂, hcanonical₂, hW₂⟩ :=
     orderThirty_B_unitSmall_exists_two_offset_witness_sector
       G hfree hd heven hmin hcard L B₂ S C hB₂C uL uB₂ uS uC
       huL huB₂ huS huC huLRange huB₂Range huSRange huCRange
@@ -13989,7 +14089,7 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
     orderThirty_orderSix_common_minimum_exists_two_offset_witness_sector
       G hfree hd heven hmin hcard L S C uL uS uC huL huS huC
       huLRange huSRange huCRange huLD huSD huCD hLC hSC
-  refine ⟨A₁, A₂, hA₁card, hA₂card, ?_⟩
+  refine ⟨A₁, A₂, hA₁card, hA₂card, hcanonical₁, hcanonical₂, ?_⟩
   exact two_B_witness_sectors_phase_pairs_same_parity_type
     G hfree L B₁ B₂ S C hLS hB₁B₂ hB₁C hB₂C
       uL uB₁ uB₂ uS uC huLRange huB₁Range huB₂Range huSRange huCRange
@@ -14063,11 +14163,13 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity_unconditional
   rw [hB₂card] at uB₂ huB₂ huB₂Range huB₂D
   rw [hScard] at uS huS huSRange huSD
   rw [hCcard] at uC huC huCRange huCD
-  exact two_orderThirty_B_blocks_same_orderSix_target_phase_parity
+  obtain ⟨A₁, A₂, hA₁card, hA₂card, _hcanonical₁, _hcanonical₂, hparity⟩ :=
+    two_orderThirty_B_blocks_same_orderSix_target_phase_parity
     G hfree hd heven hmin hcard L B₁ B₂ S C hLS hB₁B₂ hB₁C hB₂C
       uL uB₁ uB₂ uS uC huL huB₁ huB₂ huS huC huLRange
       huB₁Range huB₂Range huSRange huCRange huLD huB₁D huB₂D huSD huCD
       hB₁L hB₂L hB₁S hB₂S hLC hSC
+  exact ⟨A₁, A₂, hA₁card, hA₂card, hparity⟩
 
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
