@@ -13039,6 +13039,149 @@ theorem orderThirty_orderSix_common_minimum_exists_two_offset_witness_sector
     rw [hzcast, ← mul_assoc, hσsq, one_mul]
     ring
 
+/-- Concrete assembly for two `B` blocks assigned to one small component.
+Given their two witness sectors and the common minimum-cover sector, the
+original order-thirty phase pairs have the same parity type. -/
+theorem two_B_witness_sectors_phase_pairs_same_parity_type
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    (L B₁ B₂ S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (hLS : L ≠ S) (hB₁B₂ : B₁ ≠ B₂) (hB₁C : B₁ ≠ C) (hB₂C : B₂ ≠ C)
+    (uL : ZMod 30 → V) (uB₁ uB₂ : ZMod 30 → V)
+    (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huLRange : Set.range uL = L.supp)
+    (huB₁Range : Set.range uB₁ = B₁.supp)
+    (huB₂Range : Set.range uB₂ = B₂.supp)
+    (huSRange : Set.range uS = S.supp) (huCRange : Set.range uC = C.supp)
+    (A₁ A₂ : Finset (ZMod 30)) (E₁ E₂ M : Finset (ZMod 6))
+    (hA₁card : A₁.card = 2) (hA₂card : A₂.card = 2)
+    (hE₁card : E₁.card = 2) (hE₂card : E₂.card = 2) (hMcard : M.card = 2)
+    (hparity₁ :
+      (E₁.filter fun z => ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
+      (A₁.filter fun a => ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1)
+    (hparity₂ :
+      (E₂.filter fun z => ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
+      (A₂.filter fun a => ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1)
+    (hMeven :
+      (M.filter fun z => ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1)
+    (hW₁ : ∀ z ∈ E₁, ∃ y : ZMod 30,
+      G.Adj (uL 0) (uB₁ y) ∧ G.Adj (uS z) (uB₁ y))
+    (hW₂ : ∀ z ∈ E₂, ∃ y : ZMod 30,
+      G.Adj (uL 0) (uB₂ y) ∧ G.Adj (uS z) (uB₂ y))
+    (hWM : ∀ z ∈ M, ∃ y : ZMod 3,
+      G.Adj (uL 0) (uC y) ∧ G.Adj (uS z) (uC y)) :
+    (((A₁.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 ∧
+      (A₂.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∨
+      ((((A₁.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+        (A₁.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2) ∧
+       (((A₂.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+        (A₂.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
+  let cell : Fin 3 → Set V := fun i => if i = 0 then B₁.supp else
+    if i = 1 then B₂.supp else C.supp
+  let sector : Fin 3 → Finset (ZMod 6) := fun i => if i = 0 then E₁ else
+    if i = 1 then E₂ else M
+  have hxz : ∀ z, uL 0 ≠ uS z := by
+    intro z heq
+    apply hLS
+    have hLmem : uL 0 ∈ L.supp := by rw [← huLRange]; exact ⟨0, rfl⟩
+    have hSmem : uS z ∈ S.supp := by rw [← huSRange]; exact ⟨z, rfl⟩
+    have hLMk := (ConnectedComponent.mem_supp_iff L (uL 0)).mp hLmem
+    have hSMk := (ConnectedComponent.mem_supp_iff S (uS z)).mp hSmem
+    exact hLMk.symm.trans
+      ((congrArg (secondOrderDefectGraph G).connectedComponentMk heq).trans hSMk)
+  have hwitness : ∀ i z, z ∈ sector i →
+      ∃ y ∈ cell i, G.Adj (uL 0) y ∧ G.Adj (uS z) y := by
+    intro i z hz
+    fin_cases i
+    · simp only [sector, if_pos rfl] at hz
+      obtain ⟨y, hLy, hSy⟩ := hW₁ z hz
+      refine ⟨uB₁ y, ?_, hLy, hSy⟩
+      simp only [cell, if_pos rfl]
+      rw [← huB₁Range]
+      exact ⟨y, rfl⟩
+    · simp only [sector, if_false (by decide), if_pos rfl] at hz
+      obtain ⟨y, hLy, hSy⟩ := hW₂ z hz
+      refine ⟨uB₂ y, ?_, hLy, hSy⟩
+      simp only [cell, if_false (by decide), if_pos rfl]
+      rw [← huB₂Range]
+      exact ⟨y, rfl⟩
+    · simp only [sector, if_false (by decide)] at hz
+      obtain ⟨y, hLy, hSy⟩ := hWM z hz
+      refine ⟨uC y, ?_, hLy, hSy⟩
+      simp only [cell, if_false (by decide)]
+      rw [← huCRange]
+      exact ⟨y, rfl⟩
+  have hsuppSep {X Y : (secondOrderDefectGraph G).ConnectedComponent}
+      (hXY : X ≠ Y) : ∀ x ∈ X.supp, ∀ y ∈ Y.supp, x ≠ y := by
+    intro x hx y hy heq
+    apply hXY
+    have hxMk := (ConnectedComponent.mem_supp_iff X x).mp hx
+    have hyMk := (ConnectedComponent.mem_supp_iff Y y).mp hy
+    exact hxMk.symm.trans
+      ((congrArg (secondOrderDefectGraph G).connectedComponentMk heq).trans hyMk)
+  have hsep : ∀ i j : Fin 3, i ≠ j →
+      ∀ y ∈ cell i, ∀ y' ∈ cell j, y ≠ y' := by
+    intro i j hij
+    fin_cases i <;> fin_cases j
+    all_goals simp only [cell, if_pos, if_false]
+    all_goals try exact (hij rfl).elim
+    · exact hsuppSep hB₁B₂
+    · exact hsuppSep hB₁C
+    · exact hsuppSep hB₁B₂.symm
+    · exact hsuppSep hB₂C
+    · exact hsuppSep hB₁C.symm
+    · exact hsuppSep hB₂C.symm
+  have hsectorCard : ∀ i, (sector i).card = 2 := by
+    intro i
+    fin_cases i
+    · simpa [sector] using hE₁card
+    · simpa [sector] using hE₂card
+    · simpa [sector] using hMcard
+  have hEvenUniv : ((Finset.univ : Finset (ZMod 6)).filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 3 := by
+    native_decide
+  have hassembled := c4Free_three_offset_cells_two_B_same_parity_type
+    G hfree (uL 0) uS cell sector
+      (fun z : ZMod 6 => ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0)
+      hxz hwitness hsep (by norm_num) hsectorCard hEvenUniv
+      (by simpa [sector] using hMeven)
+  have hA₁le : (A₁.filter fun a =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≤ 2 := by
+    rw [← hA₁card]
+    exact Finset.card_le_card (Finset.filter_subset _ _)
+  have hA₂le : (A₂.filter fun a =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≤ 2 := by
+    rw [← hA₂card]
+    exact Finset.card_le_card (Finset.filter_subset _ _)
+  rcases hassembled with hmixed | hhom
+  · left
+    exact ⟨hparity₁.mp (by simpa [sector] using hmixed.1),
+      hparity₂.mp (by simpa [sector] using hmixed.2)⟩
+  · right
+    have hn₁ : ¬ (E₁.filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 := by
+      simpa [sector] using (show ¬ ((sector 0).filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 by omega)
+    have hn₂ : ¬ (E₂.filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 := by
+      simpa [sector] using (show ¬ ((sector 1).filter fun z =>
+        ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 by omega)
+    have hAn₁ : ¬ (A₁.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 :=
+      fun h => hn₁ (hparity₁.mpr h)
+    have hAn₂ : ¬ (A₂.filter fun a =>
+        ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 :=
+      fun h => hn₂ (hparity₂.mpr h)
+    omega
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
