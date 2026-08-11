@@ -17033,6 +17033,164 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_B_unique_small_target
   change Q o e₁₀ = 2 at hq₁₀
   omega
 
+/-- Fully graph-facing six-block incidence census for `[10,2,2,2]`.
+There are exactly six order-thirty mutual quotient-two blocks, each has a
+unique unit target among the three order-six rows, and exactly two blocks
+choose each target. -/
+theorem degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₀ e₂a e₂b e₂c : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₀a : e₁₀ ≠ e₂a) (h₁₀b : e₁₀ ≠ e₂b) (h₁₀c : e₁₀ ≠ e₂c)
+    (hab : e₂a ≠ e₂b) (hac : e₂a ≠ e₂c) (hbc : e₂b ≠ e₂c)
+    (he₁₀ : e₁₀.supp.ncard = 30)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (he₂c : e₂c.supp.ncard = 6)
+    (hused₁₀ : componentRepresentative (secondOrderDefectGraph G) e₁₀ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂c : componentRepresentative (secondOrderDefectGraph G) e₂c ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₀, e₂a, e₂b, e₂c}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+      componentRepresentative D o ∈ O)
+    let S := zeroLayerServicedOrphans G C e₁₀
+    S.card = 6 ∧
+      (∀ o ∈ S, o.supp.ncard = 30 ∧ Q o e₁₀ = 2 ∧ Q e₁₀ o = 2) ∧
+      (∀ o ∈ S,
+        (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
+        (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
+        (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1)) ∧
+      (S.filter fun o => Q o e₂a = 1).card = 2 ∧
+      (S.filter fun o => Q o e₂b = 1).card = 2 ∧
+      (S.filter fun o => Q o e₂c = 1).card = 2 := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let S := zeroLayerServicedOrphans G C e₁₀
+  change S.card = 6 ∧
+    (∀ o ∈ S, o.supp.ncard = 30 ∧ Q o e₁₀ = 2 ∧ Q e₁₀ o = 2) ∧
+    (∀ o ∈ S,
+      (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
+      (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
+      (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1)) ∧
+    (S.filter fun o => Q o e₂a = 1).card = 2 ∧
+    (S.filter fun o => Q o e₂b = 1).card = 2 ∧
+    (S.filter fun o => Q o e₂c = 1).card = 2
+  have hothers : ∀ f : D.ConnectedComponent,
+      componentRepresentative D f ∈ R → f ≠ e₁₀ → f.supp.ncard = 6 := by
+    intro f hfUsed hfne
+    have hfE : f ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hfUsed⟩
+    have hmem : f ∈ ({e₁₀, e₂a, e₂b, e₂c} : Finset D.ConnectedComponent) := by
+      rw [← hE]
+      exact hfE
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with hEq | hEq | hEq | hEq
+    · exact (hfne hEq).elim
+    · simpa [hEq] using he₂a
+    · simpa [hEq] using he₂b
+    · simpa [hEq] using he₂c
+  have hmat := degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a e₂b e₂c
+      h₁₀a h₁₀b h₁₀c hab hac hbc he₁₀ he₂a he₂b he₂c
+      hused₁₀ hused₂a hused₂b hused₂c hE
+  change Q e₁₀ e₁₀ = 3 ∧ _ at hmat
+  have hcensus := degree_sixteen_zeroLayer_order_ten_serviced_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₀ hused₁₀ he₁₀
+      (by simpa [D, R] using hothers) (by simpa [D, Q] using hmat.1)
+  change S.card = 6 ∧ _ ∧ _ ∧ _ ∧
+    ∀ o ∈ S, o.supp.ncard = 30 ∧ Q o e₁₀ = 2 ∧ Q e₁₀ o = 2 at hcensus
+  have hstruct := hcensus.2.2.2.2
+  have hpattern : ∀ o ∈ S,
+      (Q o e₂a = 1 ∧ Q o e₂b = 0 ∧ Q o e₂c = 0) ∨
+      (Q o e₂a = 0 ∧ Q o e₂b = 1 ∧ Q o e₂c = 0) ∨
+      (Q o e₂a = 0 ∧ Q o e₂b = 0 ∧ Q o e₂c = 1) := by
+    intro o hoS
+    exact degree_sixteen_zeroLayer_ten_two_two_two_B_unique_small_target
+      G hfree hmin hcard c₀ hregChild hcardChild o e₁₀ e₂a e₂b e₂c
+        h₁₀a h₁₀b h₁₀c hab hac hbc
+        (by
+          have hoC : o ∈ C := (Finset.mem_filter.mp hoS).1
+          exact (Finset.mem_filter.mp hoC).2)
+        hE (by simpa [D, Q] using (hstruct o hoS).2.1)
+  have hSsubC : S ⊆ C := fun _ ho => (Finset.mem_filter.mp ho).1
+  have hcapacity : ∀ x : D.ConnectedComponent, x.supp.ncard = 6 →
+      componentRepresentative D x ∈ R →
+      5 * (S.filter fun o => Q o x = 1).card ≤ 12 := by
+    intro x hxcard hxUsed
+    let T := S.filter fun o => Q o x = 1
+    have hTsubC : T ⊆ C := by
+      intro o hoT
+      exact hSsubC (Finset.mem_filter.mp hoT).1
+    have hrev : ∀ o ∈ T, Q x o = 5 := by
+      intro o hoT
+      have hoS := (Finset.mem_filter.mp hoT).1
+      have hqo : Q o x = 1 := (Finset.mem_filter.mp hoT).2
+      have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o x
+      change o.supp.ncard * Q o x = x.supp.ncard * Q x o at hbal
+      rw [(hstruct o hoS).1, hqo, hxcard, mul_one] at hbal
+      omega
+    have hsumT : (∑ o ∈ T, Q x o) = 5 * T.card := by
+      calc
+        (∑ o ∈ T, Q x o) = ∑ _o ∈ T, 5 := by
+          apply Finset.sum_congr rfl
+          intro o hoT
+          exact hrev o hoT
+        _ = 5 * T.card := by simp [Nat.mul_comm]
+    have hsumC := degree_sixteen_zeroLayer_used_to_orphan_quotient_sum_eq_twelve
+      G hfree hmin hcard c₀ hregChild hcardChild x
+        (by simpa [D, R] using hxUsed)
+    change (∑ o ∈ C, Q x o) = 12 at hsumC
+    have hle := Finset.sum_le_sum_of_subset_of_nonneg
+      (f := fun o : D.ConnectedComponent => Q x o) hTsubC
+        (fun _ _ _ => Nat.zero_le _)
+    rw [hsumT, hsumC] at hle
+    simpa [T] using hle
+  have hdist := six_unique_targets_two_each S
+    (fun o => Q o e₂a) (fun o => Q o e₂b) (fun o => Q o e₂c)
+      hcensus.1 hpattern
+      (hcapacity e₂a he₂a (by simpa [D, R] using hused₂a))
+      (hcapacity e₂b he₂b (by simpa [D, R] using hused₂b))
+      (hcapacity e₂c he₂c (by simpa [D, R] using hused₂c))
+  exact ⟨hcensus.1, hstruct, hpattern, hdist.1, hdist.2.1, hdist.2.2⟩
+
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     {V : Type*} [Fintype V] [DecidableEq V]
