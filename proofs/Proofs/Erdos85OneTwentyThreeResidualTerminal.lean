@@ -556,6 +556,60 @@ theorem cycleBlock_antipodal_commonSource_forces_dvd
   exact no_cycleBlock_antipodal_commonSource_of_half_ne_zero
     G D hfree hr3 hn2 u v hu hv hcomm huD hvD hhalf x y hadj
 
+/-- Order-parametric wrapper for component labelings whose target modulus is
+known propositionally to be twice the desired half-length. -/
+theorem cycleBlock_antipodal_commonSource_forces_dvd_of_orders
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel D.Adj]
+    (hfree : ¬ containsC4 V G) {r s n : ℕ}
+    [NeZero r] [NeZero s] [NeZero n]
+    (hr3 : 3 ≤ r) (hn2 : 2 ≤ n) (hs : s = 2 * n)
+    (u : ZMod r → V) (v : ZMod s → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (hcomm : G.adjMatrix ℤ * D.adjMatrix ℤ =
+      D.adjMatrix ℤ * G.adjMatrix ℤ)
+    (huD : ∀ x, D.neighborFinset (u x) = {u (x - 1), u (x + 1)})
+    (hvD : ∀ y, D.neighborFinset (v y) = {v (y - 1), v (y + 1)})
+    (x : ZMod r) (y : ZMod s)
+    (hadj : G.Adj (u x) (v y) ∧ G.Adj (u x) (v (y + n))) :
+    r ∣ n := by
+  subst s
+  exact cycleBlock_antipodal_commonSource_forces_dvd
+    G D hfree hr3 hn2 u v hu hv hcomm huD hvD x y hadj
+
+/-- Component-level boundary wrapper consumed by antipodal-cover censuses.
+For any chosen global cycle labeling, a component containing a common
+neighbor of target antipodes has order dividing the target half-order. -/
+theorem component_antipodal_commonSource_forces_order_dvd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d n : ℕ} [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hn2 : 2 ≤ n)
+    (c o : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : o.supp.ncard = 2 * n)
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard)
+    (x : ZMod c.supp.ncard) (y : ZMod o.supp.ncard)
+    (hadj : G.Adj (u c x) (u o y) ∧
+      G.Adj (u c x) (u o (y + n))) :
+    c.supp.ncard ∣ n := by
+  letI : NeZero c.supp.ncard := ⟨by have := hthree c; omega⟩
+  letI : NeZero o.supp.ncard := ⟨by have := hthree o; omega⟩
+  exact cycleBlock_antipodal_commonSource_forces_dvd_of_orders
+    G (secondOrderDefectGraph G) hfree (hthree c) hn2 ho
+      (u c) (u o) (hu c) (hu o)
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree hd heven hmin hcard)
+      (huD c) (huD o) x y hadj
+
 /-- No row of a block between two equally long even defect cycles can meet
 an antipodal target pair.  Antipodal covariance would give a second,
 distinct source row meeting the same pair, hence a four-cycle. -/
