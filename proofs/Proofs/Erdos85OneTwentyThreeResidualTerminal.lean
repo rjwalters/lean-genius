@@ -14368,6 +14368,33 @@ theorem degree_sixteen_quotientOne_atom_values
     exact hbal.2
   · simp [zeroLayerAtomExcess, hq]
 
+/-- A zero forward quotient has zero reverse quotient, hence contributes no
+load and no local excess. -/
+theorem degree_sixteen_quotientZero_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 0) :
+    zeroLayerAtomLoad G e o = 0 ∧ zeroLayerAtomExcess G e o = 0 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 0 at hq
+  have hePos : 0 < e.supp.ncard := e.nonempty_supp.ncard_pos
+  have hrev : Q e o = 0 := by
+    rw [hq, mul_zero] at hbal
+    nlinarith
+  constructor
+  · simp [zeroLayerAtomLoad, D, Q, hrev]
+  · simp [zeroLayerAtomExcess, D, Q, hq, hrev]
+
 /-- Complete load/excess table for a quotient-two atom. -/
 theorem degree_sixteen_quotientTwo_atom_values
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -14453,6 +14480,36 @@ theorem degree_sixteen_reduced_order_eight_divisible_nonunit_atom_load_le_excess
     · omega
     · omega
 
+/-- On a reduced-order-five row, every divisible non-unit atom has load at
+most eight times its local excess.  The factor eight is chosen to match the
+two-row certificate used by the paired-order-five terminal. -/
+theorem degree_sixteen_reduced_order_five_divisible_nonunit_atom_load_le_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hdiv : 3 ∣ o.supp.ncard) (he : e.supp.ncard = 15)
+    (hpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) o e)
+    (hle : componentQuotientMatrix G (secondOrderDefectGraph G) o e ≤ 3)
+    (hne : componentQuotientMatrix G (secondOrderDefectGraph G) o e ≠ 1) :
+    zeroLayerAtomLoad G e o ≤ 8 * zeroLayerAtomExcess G e o := by
+  obtain ⟨m, hom⟩ := hdiv
+  have he5 : e.supp.ncard = 3 * 5 := by omega
+  interval_cases hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e
+  · exact False.elim (hne rfl)
+  · rcases degree_sixteen_quotientTwo_atom_values
+        G hfree hmin hcard o e m 5 hom he5 hq with hEq | hDouble
+    · omega
+    · omega
+  · rcases degree_sixteen_quotientThree_atom_values
+        G hfree hmin hcard o e m 5 hom he5 hq with hEq | hTriple
+    · omega
+    · omega
+
 /-- A `2+1` atom joining the two reduced-order-five rows has combined load
 fifteen and combined local excess two. -/
 theorem degree_sixteen_reduced_order_five_B_atom_pair_values
@@ -14479,6 +14536,102 @@ theorem degree_sixteen_reduced_order_five_B_atom_pair_values
   rcases htwo with hEq | hDouble
   · omega
   · omega
+
+/-- Divisible atoms across the two reduced-order-five rows satisfy the
+combined factor-eight load/excess certificate, provided unit legs are known
+to pair with quotient two on the opposite row. -/
+theorem degree_sixteen_reduced_order_five_pair_divisible_atom_load_le_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hdiv : 3 ∣ o.supp.ncard) (he₁ : e₁.supp.ncard = 15)
+    (he₂ : e₂.supp.ncard = 15)
+    (hle₁ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ ≤ 3)
+    (hle₂ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ ≤ 3)
+    (hpairsum :
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ +
+        componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ ≤ 3)
+    (hunit₁ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ = 1 →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ = 2)
+    (hunit₂ : componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ = 1 →
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ = 2) :
+    zeroLayerAtomLoad G e₁ o + zeroLayerAtomLoad G e₂ o ≤
+      8 * (zeroLayerAtomExcess G e₁ o + zeroLayerAtomExcess G e₂ o) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hle₁' : Q o e₁ ≤ 3 := by simpa [Q] using hle₁
+  have hle₂' : Q o e₂ ≤ 3 := by simpa [Q] using hle₂
+  have hpairsum' : Q o e₁ + Q o e₂ ≤ 3 := by simpa [Q] using hpairsum
+  obtain ⟨m, hom⟩ := hdiv
+  interval_cases hq₁ : Q o e₁
+  · interval_cases hq₂ : Q o e₂
+    · have hz₁ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₁ (by simpa [Q] using hq₁)
+      have hz₂ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₂ (by simpa [Q] using hq₂)
+      rcases hz₁ with ⟨hz₁Load, hz₁Excess⟩
+      rcases hz₂ with ⟨hz₂Load, hz₂Excess⟩
+      omega
+    · exact False.elim (by
+        have h := hunit₂ (by simpa [Q] using hq₂)
+        simpa [Q, hq₁] using h)
+    · have hz₁ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₁ (by simpa [Q] using hq₁)
+      have h₂ := degree_sixteen_reduced_order_five_divisible_nonunit_atom_load_le_excess
+        G hfree hmin hcard o e₂ ⟨m, hom⟩ he₂ (by simp [Q, hq₂])
+          (by simpa [Q] using hle₂) (by simp [Q, hq₂])
+      rcases hz₁ with ⟨hz₁Load, hz₁Excess⟩
+      omega
+    · have hz₁ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₁ (by simpa [Q] using hq₁)
+      have h₂ := degree_sixteen_reduced_order_five_divisible_nonunit_atom_load_le_excess
+        G hfree hmin hcard o e₂ ⟨m, hom⟩ he₂ (by simp [Q, hq₂])
+          (by simpa [Q] using hle₂) (by simp [Q, hq₂])
+      rcases hz₁ with ⟨hz₁Load, hz₁Excess⟩
+      omega
+  · interval_cases hq₂ : Q o e₂
+    · have h := hunit₁ (by simpa [Q] using hq₁)
+      have h' : Q o e₂ = 2 := by simpa [Q] using h
+      omega
+    · have h := hunit₁ (by simpa [Q] using hq₁)
+      have h' : Q o e₂ = 2 := by simpa [Q] using h
+      omega
+    · have hB := degree_sixteen_reduced_order_five_B_atom_pair_values
+        G hfree hmin hcard o e₂ e₁ m hom he₂ he₁
+          (by simpa [Q] using hq₂) (by simpa [Q] using hq₁)
+      rcases hB with ⟨hBLoad, hBExcess⟩
+      omega
+    · omega
+  · interval_cases hq₂ : Q o e₂
+    · have h₁ := degree_sixteen_reduced_order_five_divisible_nonunit_atom_load_le_excess
+        G hfree hmin hcard o e₁ ⟨m, hom⟩ he₁ (by simp [Q, hq₁])
+          (by simpa [Q] using hle₁) (by simp [Q, hq₁])
+      have hz₂ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₂ (by simpa [Q] using hq₂)
+      rcases hz₂ with ⟨hz₂Load, hz₂Excess⟩
+      omega
+    · have hB := degree_sixteen_reduced_order_five_B_atom_pair_values
+        G hfree hmin hcard o e₁ e₂ m hom he₁ he₂
+          (by simpa [Q] using hq₁) (by simpa [Q] using hq₂)
+      rcases hB with ⟨hBLoad, hBExcess⟩
+      omega
+    · omega
+    · omega
+  · interval_cases hq₂ : Q o e₂
+    · have h₁ := degree_sixteen_reduced_order_five_divisible_nonunit_atom_load_le_excess
+        G hfree hmin hcard o e₁ ⟨m, hom⟩ he₁ (by simp [Q, hq₁])
+          (by simpa [Q] using hle₁) (by simp [Q, hq₁])
+      have hz₂ := degree_sixteen_quotientZero_atom_values
+        G hfree hmin hcard o e₂ (by simpa [Q] using hq₂)
+      rcases hz₂ with ⟨hz₂Load, hz₂Excess⟩
+      omega
+    · omega
+    · omega
+    · omega
 
 /-- The quotient-two partner of a unit leg on a reduced-order-five row
 cannot lie on a reduced-order-two row. -/
