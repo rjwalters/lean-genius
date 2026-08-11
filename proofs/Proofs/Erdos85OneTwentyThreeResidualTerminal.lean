@@ -17432,7 +17432,12 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
       ((∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1) ∨
         (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
           Q o e₂b * (Q o e₂b - 1) +
-          Q o e₂c * (Q o e₂c - 1)) = 4) := by
+          Q o e₂c * (Q o e₂c - 1)) = 4) ∧
+      ((∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
+          Q o e₂b * (Q o e₂b - 1) +
+          Q o e₂c * (Q o e₂c - 1)) = 4 →
+        Q e₂a e₂a = 1 ∧ Q e₂a e₂b = 1 ∧ Q e₂a e₂c = 1 ∧
+        Q e₂b e₂b = 1 ∧ Q e₂b e₂c = 1 ∧ Q e₂c e₂c = 1) := by
   classical
   dsimp only at hE ⊢
   let D := secondOrderDefectGraph G
@@ -17455,7 +17460,12 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     ((∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1) ∨
       (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
         Q o e₂b * (Q o e₂b - 1) +
-        Q o e₂c * (Q o e₂c - 1)) = 4)
+        Q o e₂c * (Q o e₂c - 1)) = 4) ∧
+    ((∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
+        Q o e₂b * (Q o e₂b - 1) +
+        Q o e₂c * (Q o e₂c - 1)) = 4 →
+      Q e₂a e₂a = 1 ∧ Q e₂a e₂b = 1 ∧ Q e₂a e₂c = 1 ∧
+      Q e₂b e₂b = 1 ∧ Q e₂b e₂c = 1 ∧ Q e₂c e₂c = 1)
   have hsix := degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild
       e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
@@ -17632,9 +17642,141 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
   have hdichotomy := two_component_three_target_census T
     (fun o => Q o e₂a) (fun o => Q o e₂b) (fun o => Q o e₂c)
       hbase.1 hforward hTforwardA hTforwardB hTforwardC
+  have hmat := degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a e₂b e₂c
+      h₁₀a h₁₀b h₁₀c hab hac hbc he₁₀ he₂a he₂b he₂c
+      hused₁₀ hused₂a hused₂b hused₂c hE
+  change Q e₁₀ e₁₀ = 3 ∧ Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
+    Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧
+    Q e₁₀ e₂c = 0 ∧ Q e₂c e₁₀ = 0 ∧
+    Q e₂a e₂b = Q e₂b e₂a ∧ Q e₂a e₂c = Q e₂c e₂a ∧
+    Q e₂b e₂c = Q e₂c e₂b ∧
+    Q e₂a e₂a + Q e₂a e₂b + Q e₂a e₂c = 3 ∧
+    Q e₂b e₂b + Q e₂b e₂a + Q e₂b e₂c = 3 ∧
+    Q e₂c e₂c + Q e₂c e₂a + Q e₂c e₂b = 3 at hmat
+  rcases hmat with ⟨_, _, _, _, _, _, _, habSym, hacSym, hbcSym,
+    hrowA, hrowB, hrowC⟩
+  let P : Finset D.ConnectedComponent := {e₂a, e₂b, e₂c}
+  have husedNotT (x : D.ConnectedComponent) (hxUsed : componentRepresentative D x ∈ R) :
+      x ∉ T := by
+    intro hxT
+    have hxC := (Finset.mem_sdiff.mp hxT).1
+    have hxO := (Finset.mem_filter.mp hxC).2
+    exact (Finset.mem_sdiff.mp hxO).2 hxUsed
+  have hPdisjT : Disjoint P T := Finset.disjoint_left.mpr (by
+    intro x hxP hxT
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hxP
+    rcases hxP with rfl | rfl | rfl
+    · exact husedNotT e₂a (by simpa [D, R] using hused₂a) hxT
+    · exact husedNotT e₂b (by simpa [D, R] using hused₂b) hxT
+    · exact husedNotT e₂c (by simpa [D, R] using hused₂c) hxT)
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card G hfree (s := 0) (Or.inl rfl)
+      hmin hcard c₀ hregChild (by norm_num; exact hcardChild)).1 rfl
+  have hPsub : P ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro x hx
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    all_goals apply Finset.mem_erase.mpr
+    · exact ⟨by intro h; rw [h, hc₀card] at he₂a; omega, Finset.mem_univ _⟩
+    · exact ⟨by intro h; rw [h, hc₀card] at he₂b; omega, Finset.mem_univ _⟩
+    · exact ⟨by intro h; rw [h, hc₀card] at he₂c; omega, Finset.mem_univ _⟩
+  have hc₀U : componentRepresentative D c₀ ∈ U := by
+    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
+    let x : minimumLayerVertex D c₀ :=
+      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
+    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
+  have hc₀Cnot : c₀ ∉ C := by
+    intro hc
+    have hcO := (Finset.mem_filter.mp hc).2
+    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2 hc₀U
+  have hTsub : T ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+    intro o ho
+    exact Finset.mem_erase.mpr
+      ⟨fun h => hc₀Cnot (h ▸ (Finset.mem_sdiff.mp ho).1), Finset.mem_univ _⟩
+  have hPTsub : P ∪ T ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) :=
+    Finset.union_subset hPsub hTsub
+  have hrowBound (x : D.ConnectedComponent) (hxcard : x.supp.ncard = 6)
+      (hxUsed : componentRepresentative D x ∈ R) :
+      (∑ y ∈ P, Q x y * (Q y x - 1)) +
+        (∑ o ∈ T, Q x o * (Q o x - 1)) ≤ 2 := by
+    have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild x
+        (by simpa [D, R] using hxUsed)
+    change (∑ y ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
+      Q x y * (Q y x - 1)) = 2 * (x.supp.ncard / 3 - 1) at hrow
+    have hle := Finset.sum_le_sum_of_subset_of_nonneg
+      (f := fun y : D.ConnectedComponent => Q x y * (Q y x - 1)) hPTsub
+        (fun _ _ _ => Nat.zero_le _)
+    rw [Finset.sum_union hPdisjT, hrow, hxcard] at hle
+    norm_num at hle
+    exact hle
+  have hboundA := hrowBound e₂a he₂a (by simpa [D, R] using hused₂a)
+  have hboundB := hrowBound e₂b he₂b (by simpa [D, R] using hused₂b)
+  have hboundC := hrowBound e₂c he₂c (by simpa [D, R] using hused₂c)
+  simp only [P, Finset.sum_insert, Finset.sum_singleton, hab, hac, hbc,
+    Ne.symm hab, Ne.symm hac, Ne.symm hbc] at hboundA hboundB hboundC
+  have hexceptional :
+      (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
+        Q o e₂b * (Q o e₂b - 1) + Q o e₂c * (Q o e₂c - 1)) = 4 →
+      Q e₂a e₂a = 1 ∧ Q e₂a e₂b = 1 ∧ Q e₂a e₂c = 1 ∧
+      Q e₂b e₂b = 1 ∧ Q e₂b e₂c = 1 ∧ Q e₂c e₂c = 1 := by
+    intro hres
+    have hresSplit :
+        (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1)) +
+        (∑ o ∈ T, Q o e₂b * (Q o e₂b - 1)) +
+        (∑ o ∈ T, Q o e₂c * (Q o e₂c - 1)) = 4 := by
+      rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+      exact hres
+    have hrewriteA : (∑ o ∈ T, Q e₂a o * (Q o e₂a - 1)) =
+        ∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) := by
+      apply Finset.sum_congr rfl
+      intro o ho
+      rw [(hbase.2 o ho).2.1]
+    have hrewriteB : (∑ o ∈ T, Q e₂b o * (Q o e₂b - 1)) =
+        ∑ o ∈ T, Q o e₂b * (Q o e₂b - 1) := by
+      apply Finset.sum_congr rfl
+      intro o ho
+      rw [(hbase.2 o ho).2.2.1]
+    have hrewriteC : (∑ o ∈ T, Q e₂c o * (Q o e₂c - 1)) =
+        ∑ o ∈ T, Q o e₂c * (Q o e₂c - 1) := by
+      apply Finset.sum_congr rfl
+      intro o ho
+      rw [(hbase.2 o ho).2.2.2]
+    rw [hrewriteA] at hboundA
+    rw [hrewriteB] at hboundB
+    rw [hrewriteC] at hboundC
+    let EU := Q e₂a e₂a * (Q e₂a e₂a - 1) +
+      Q e₂a e₂b * (Q e₂b e₂a - 1) +
+      Q e₂a e₂c * (Q e₂c e₂a - 1) +
+      Q e₂b e₂b * (Q e₂b e₂b - 1) +
+      Q e₂b e₂a * (Q e₂a e₂b - 1) +
+      Q e₂b e₂c * (Q e₂c e₂b - 1) +
+      Q e₂c e₂c * (Q e₂c e₂c - 1) +
+      Q e₂c e₂a * (Q e₂a e₂c - 1) +
+      Q e₂c e₂b * (Q e₂b e₂c - 1)
+    have hEUle : EU ≤ 2 := by
+      dsimp only [EU]
+      omega
+    have hgap := symmetric_three_by_three_row_sum_three_excess_zero_or_four_le
+      (Q e₂a e₂a) (Q e₂a e₂b) (Q e₂a e₂c)
+      (Q e₂b e₂b) (Q e₂b e₂c) (Q e₂c e₂c)
+      hrowA (by rw [habSym]; exact hrowB) (by rw [hacSym, hbcSym]; exact hrowC)
+    change EU = 0 ∨ 4 ≤ EU at hgap
+    have hEUzero : EU = 0 := by omega
+    have hleOne (q : ℕ) (hq : q * (q - 1) ≤ EU) : q ≤ 1 := by
+      have hz : q * (q - 1) = 0 := by omega
+      rcases Nat.mul_eq_zero.mp hz with hz | hz <;> omega
+    have haa := hleOne (Q e₂a e₂a) (by dsimp [EU]; omega)
+    have hab' := hleOne (Q e₂a e₂b) (by dsimp [EU]; rw [habSym]; omega)
+    have hac' := hleOne (Q e₂a e₂c) (by dsimp [EU]; rw [hacSym]; omega)
+    have hbb := hleOne (Q e₂b e₂b) (by dsimp [EU]; omega)
+    have hbc' := hleOne (Q e₂b e₂c) (by dsimp [EU]; rw [hbcSym]; omega)
+    have hcc := hleOne (Q e₂c e₂c) (by dsimp [EU]; omega)
+    omega
   exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC,
     fun o ho => ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
-      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩, hdichotomy⟩
+      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩, hdichotomy, hexceptional⟩
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
