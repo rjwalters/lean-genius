@@ -12494,6 +12494,47 @@ theorem three_two_block_groups_unique_even_pair
   rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
     rcases hec with rfl | rfl <;> norm_num at htotal ⊢
 
+/-- If six objects are partitioned into three two-element target fibers,
+and a property is constant on each fiber but holds for exactly two objects,
+then exactly one whole target fiber has that property. -/
+theorem six_two_element_fibers_unique_property_target
+    {P : Fin 6 → Prop} [DecidablePred P]
+    (target : Fin 6 → Fin 3)
+    (hfiber : ∀ k : Fin 3,
+      ((Finset.univ : Finset (Fin 6)).filter fun i => target i = k).card = 2)
+    (huniform : ∀ i j : Fin 6, target i = target j → (P i ↔ P j))
+    (hPcard : ((Finset.univ : Finset (Fin 6)).filter P).card = 2) :
+    ∃! k : Fin 3, (Finset.univ : Finset (Fin 6)).filter P =
+      (Finset.univ : Finset (Fin 6)).filter fun i => target i = k := by
+  let H := (Finset.univ : Finset (Fin 6)).filter P
+  have hHnonempty : H.Nonempty := Finset.card_pos.mp (by simp [H, hPcard])
+  obtain ⟨i, hiH⟩ := hHnonempty
+  let k := target i
+  have hiP : P i := (Finset.mem_filter.mp hiH).2
+  have hsub : ((Finset.univ : Finset (Fin 6)).filter fun j => target j = k) ⊆ H := by
+    intro j hj
+    have hjtarget : target j = target i := by
+      simpa [k] using (Finset.mem_filter.mp hj).2
+    have hjP : P j := (huniform j i hjtarget).mpr hiP
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hjP⟩
+  have hEq : H = (Finset.univ : Finset (Fin 6)).filter fun j => target j = k := by
+    apply Finset.Subset.antisymm
+    · apply Finset.eq_of_subset_of_card_le hsub
+      rw [hPcard]
+      exact hfiber k
+    · exact hsub
+  refine ⟨k, hEq, ?_⟩
+  intro l hl
+  have hlNonempty : ((Finset.univ : Finset (Fin 6)).filter fun j =>
+      target j = l).Nonempty := Finset.card_pos.mp (by rw [hfiber l]; norm_num)
+  obtain ⟨j, hjl⟩ := hlNonempty
+  have hjH : j ∈ H := by rw [hl]; exact hjl
+  have hjk : target j = k := by
+    rw [hEq] at hjH
+    exact (Finset.mem_filter.mp hjH).2
+  have hjl' : target j = l := (Finset.mem_filter.mp hjl).2
+  exact hjl'.symm.trans hjk
+
 /-- The ordered differences of a two-element finset are its two directed
 differences. -/
 theorem orderedDifferenceSet_pair
