@@ -17517,8 +17517,10 @@ theorem degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [hq, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -17534,6 +17536,7 @@ theorem degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
         o f hlt (by simpa [D, Q, hunit])
     change Q f o = 1 ∧ o.supp.ncard ∣ f.supp.ncard ∧
       o.supp.ncard * Q o f = f.supp.ncard at hentry
+    rw [hunit, mul_one] at hentry
     omega
   have htwoOne (e f : D.ConnectedComponent)
       (he : e.supp.ncard = 12 ∨ e.supp.ncard = 24)
@@ -17556,8 +17559,10 @@ theorem degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [htwo, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -17585,8 +17590,13 @@ theorem degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
     have hupper : o.supp.ncard ≤ 24 := by
       by_contra hnot
       have hlcm : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard := by
-        rcases he with he12 | he24 <;> rcases hf with hf12 | hf24 <;>
-          rw [he12, hf12, Nat.lcm_self] <;> norm_num <;> omega
+        rcases he with he12 | he24
+        · rcases hf with hf12 | hf24
+          · rw [he12, hf12, Nat.lcm_self]; omega
+          · rw [he12, hf24]; norm_num; omega
+        · rcases hf with hf12 | hf24
+          · rw [he24, hf12]; norm_num; omega
+          · rw [he24, hf24, Nat.lcm_self]; omega
       exact false_of_two_unit_componentQuotients_lcm_ncard_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e f o hef hqe hqf hlcm
@@ -17701,7 +17711,10 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
             (u x) (hu x) (huRange x) (huD x) u hu huRange huD hthree
     rcases hsourceOrder c (by simpa [D, R, O, E, C] using hc) with
       hc4 | hc8 | hc12 | hc24
-    all_goals rw [hc4] at hdvd <;> obtain ⟨k, hk⟩ := hdvd <;> omega
+    · rw [hc4] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc8] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc12] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc24] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
   have hnoTwelve : ∀ x : D.ConnectedComponent,
       componentRepresentative D x ∈ O → x.supp.ncard = 12 → False := by
     intro x hx hx12
@@ -17715,7 +17728,10 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
             (u x) (hu x) (huRange x) (huD x) u hu huRange huD hthree
     rcases hsourceOrder c (by simpa [D, R, O, E, C] using hc) with
       hc4 | hc8 | hc12 | hc24
-    all_goals rw [hc4] at hdvd <;> obtain ⟨k, hk⟩ := hdvd <;> omega
+    · rw [hc4] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc8] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc12] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+    · rw [hc24] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
   have hnoEight : ∀ x : D.ConnectedComponent,
       componentRepresentative D x ∈ O → x.supp.ncard = 8 → False := by
     intro x hx hx8
@@ -17729,8 +17745,9 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
             (u x) (hu x) (huRange x) (huD x) u hu huRange huD hthree
     have hcOrder := hsourceOrder c (by simpa [D, R, O, E, C] using hc)
     rcases Finset.mem_union.mp hc with hcE | hcC
-    · rcases hcOrder with hc4 | hc8 | hc12 | hc24
-      all_goals rw [hc4] at hdvd <;> obtain ⟨k, hk⟩ := hdvd <;> omega
+    · rcases husedOrder c (Finset.mem_filter.mp hcE).2 with hc12 | hc24
+      · rw [hc12] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
+      · rw [hc24] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
     · rcases hcOrder with hc4 | hc8 | hc12 | hc24
       · exact hnoFour c (Finset.mem_filter.mp hcC).2 hc4
       · rw [hc8] at hdvd; obtain ⟨k, hk⟩ := hdvd; omega
@@ -17771,16 +17788,25 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
       omega
     · exact Or.inl hc4a
     · exact Or.inr hc4b
+  have hrow := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild o ho
+  change (∑ e ∈ E, Q o e) = 3 at hrow
+  rw [hE'] at hrow
+  simp [h₈a, h₈b, hab, Ne.symm h₈a, Ne.symm h₈b, Ne.symm hab] at hrow
   have hpattern (a b : D.ConnectedComponent) (ha : a.supp.ncard = 12)
-      (hb : b.supp.ncard = 12) (hab' : a ≠ b) (hcEq : c = a) :
+      (hb : b.supp.ncard = 12) (hab' : a ≠ b) (hcEq : c = a)
+      (hrowab : Q o e₈ + (Q o a + Q o b) = 3) :
       Q o e₈ = 2 ∧ Q e₈ o = 2 ∧ Q o a = 1 ∧ Q a o = 2 ∧
         Q o b = 0 ∧ Q b o = 0 := by
     subst c
+    have hqoaPos : 0 < Q o a := by simpa [D, Q] using hqocPos
     have hqaoPos : 0 < Q a o := by
       have hbal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o a
       change o.supp.ncard * Q o a = a.supp.ncard * Q a o at hbal
-      have := o.nonempty_supp.ncard_pos
+      by_contra hnot
+      have hzero : Q a o = 0 := Nat.eq_zero_of_not_pos hnot
+      rw [ho24, ha, hzero] at hbal
       omega
     have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
@@ -17794,7 +17820,9 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o b
         change o.supp.ncard * Q o b = b.supp.ncard * Q b o at hbal
-        have := o.nonempty_supp.ncard_pos
+        by_contra hnot
+        have hzero : Q b o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [ho24, hb, hzero] at hbal
         omega
       have hbentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
@@ -17804,30 +17832,34 @@ theorem degree_sixteen_zeroLayer_eight_four_four_orphan_atom
       exact false_of_two_unit_componentQuotients_lcm_ncard_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           a b o hab' hentry.1 hbentry.1 (by rw [ha, hb, ho24]; norm_num)
-    have hrow := degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
-      G hfree hmin hcard c₀ hregChild hcardChild o ho
-    change (∑ e ∈ E, Q o e) = 3 at hrow
-    rw [hE'] at hrow
-    simp [h₈a, h₈b, hab, Ne.symm h₈a, Ne.symm h₈b, Ne.symm hab] at hrow
+    have hqoa : Q o a = 1 := by simpa [D, Q] using hentry.1
+    have hqao : Q a o = 2 := by
+      have h := hentry.2.2
+      rw [ha, ho24] at h
+      change 12 * Q a o = 24 at h
+      omega
+    have hqoe₈ : Q o e₈ = 2 := by
+      rw [hqoa, hqob] at hrowab
+      omega
     have hq8o : Q e₈ o = 2 := by
       have hbal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e₈
       change o.supp.ncard * Q o e₈ = e₈.supp.ncard * Q e₈ o at hbal
-      rw [ho24, he₈] at hbal
+      rw [ho24, he₈, hqoe₈] at hbal
       omega
     have hqbo : Q b o = 0 := by
       have hbal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o b
       change o.supp.ncard * Q o b = b.supp.ncard * Q b o at hbal
-      rw [hqob] at hbal
+      change Q o b = 0 at hqob
+      rw [ho24, hb, hqob] at hbal
       have := b.nonempty_supp.ncard_pos
       omega
-    rw [ha, ho24] at hentry
-    omega
+    exact ⟨hqoe₈, hq8o, hqoa, hqao, hqob, hqbo⟩
   refine ⟨ho24, ?_⟩
   rcases hcNames with hca | hcb
-  · exact Or.inl (hpattern e₄a e₄b he₄a he₄b hab hca)
-  · exact Or.inr (hpattern e₄b e₄a he₄b he₄a (Ne.symm hab) hcb)
+  · exact Or.inl (hpattern e₄a e₄b he₄a he₄b hab hca hrow)
+  · exact Or.inr (hpattern e₄b e₄a he₄b he₄a (Ne.symm hab) hcb (by omega))
 
 /-- Graph-facing closure of the `[8,4,4]` reduced used partition.  Summing
 the unique surviving atom identity makes the large-row orphan load twice the
@@ -17892,16 +17924,22 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_antipodal
         (by simpa [D, R, O, C] using (Finset.mem_filter.mp hoC).2)
           hE u hu huRange huD hthree
     rcases hatom.2 with ha | hb
-    · change (e₈.supp.ncard / 3) * Q e₈ o =
+    · rcases ha with ⟨_hoe₈, he₈o, _hoa, he₄ao, _hob, he₄bo⟩
+      have he₈o' : Q e₈ o = 2 := by simpa [D, Q] using he₈o
+      have he₄ao' : Q e₄a o = 2 := by simpa [D, Q] using he₄ao
+      have he₄bo' : Q e₄b o = 0 := by simpa [D, Q] using he₄bo
+      change (e₈.supp.ncard / 3) * Q e₈ o =
         2 * ((e₄a.supp.ncard / 3) * Q e₄a o +
           (e₄b.supp.ncard / 3) * Q e₄b o)
-      rw [he₈, he₄a, he₄b, ha.2.1, ha.2.2.2.1, ha.2.2.2.2.2]
-      norm_num
-    · change (e₈.supp.ncard / 3) * Q e₈ o =
+      rw [he₈, he₄a, he₄b, he₈o', he₄ao', he₄bo']
+    · rcases hb with ⟨_hoe₈, he₈o, _hob, he₄bo, _hoa, he₄ao⟩
+      have he₈o' : Q e₈ o = 2 := by simpa [D, Q] using he₈o
+      have he₄ao' : Q e₄a o = 0 := by simpa [D, Q] using he₄ao
+      have he₄bo' : Q e₄b o = 2 := by simpa [D, Q] using he₄bo
+      change (e₈.supp.ncard / 3) * Q e₈ o =
         2 * ((e₄a.supp.ncard / 3) * Q e₄a o +
           (e₄b.supp.ncard / 3) * Q e₄b o)
-      rw [he₈, he₄a, he₄b, hb.2.1, hb.2.2.2.2.2, hb.2.2.2.1]
-      norm_num
+      rw [he₈, he₄a, he₄b, he₈o', he₄ao', he₄bo']
   have hsum : (∑ o ∈ C, L e₈ o) =
       2 * ((∑ o ∈ C, L e₄a o) + (∑ o ∈ C, L e₄b o)) := by
     calc
@@ -17909,7 +17947,7 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_antipodal
         apply Finset.sum_congr rfl
         exact hpoint
       _ = 2 * ((∑ o ∈ C, L e₄a o) + (∑ o ∈ C, L e₄b o)) := by
-        simp only [Finset.mul_sum, Finset.sum_add_distrib]
+        rw [← Finset.mul_sum, Finset.sum_add_distrib]
   have hload₈ := degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
     G hfree hmin hcard c₀ hregChild hcardChild e₈
       (by simpa [D, R] using he₈R)
@@ -17990,8 +18028,10 @@ theorem degree_sixteen_zeroLayer_orderSix_orEighteen_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [hq, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -18006,14 +18046,21 @@ theorem degree_sixteen_zeroLayer_orderSix_orEighteen_used_orphan_orders
     have hbalUnit := secondOrder_componentQuotientMatrix_balance
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
     change o.supp.ncard * Q o f = f.supp.ncard * Q f o at hbalUnit
+    change Q o e = 2 at htwo
+    change Q o f = 1 at hunit
     rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
     · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           o e hlt (by simpa [D, Q, htwo])
       change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
         o.supp.ncard * Q o e = e.supp.ncard at hentry
-      rcases he with he6 | he18 <;> rcases hf with hf6 | hf18
-      all_goals rw [htwo] at hentry <;> rw [hunit] at hbalUnit <;> omega
+      rcases he with he6 | he18
+      · rcases hf with hf6 | hf18
+        · rw [htwo, he6] at hentry; rw [hunit, hf6] at hbalUnit; omega
+        · rw [htwo, he6] at hentry; rw [hunit, hf18] at hbalUnit; omega
+      · rcases hf with hf6 | hf18
+        · rw [htwo, he18] at hentry; rw [hunit, hf6] at hbalUnit; omega
+        · rw [htwo, he18] at hentry; rw [hunit, hf18] at hbalUnit; omega
     · rcases he with he6 | he18
       · exact Or.inl (heq.trans he6)
       · exact Or.inr (heq.trans he18)
@@ -18021,8 +18068,10 @@ theorem degree_sixteen_zeroLayer_orderSix_orEighteen_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [htwo, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -18058,10 +18107,31 @@ theorem degree_sixteen_zeroLayer_orderSix_orEighteen_used_orphan_orders
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o f
     change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbale
     change o.supp.ncard * Q o f = f.supp.ncard * Q f o at hbalf
-    rcases he with he6 | he18 <;> rcases hf with hf6 | hf18
-    all_goals rw [hqe] at hbale <;> rw [hqf] at hbalf <;>
-      rw [he6, hf6] at hupper <;> norm_num at hupper <;>
-      have := o.nonempty_supp.ncard_pos <;> omega
+    rcases he with he6 | he18
+    · rcases hf with hf6 | hf18
+      · rw [hqe] at hbale; rw [hqf] at hbalf
+        rw [he6, hf6, Nat.lcm_self] at hupper
+        rw [he6] at hbale; rw [hf6] at hbalf
+        have := o.nonempty_supp.ncard_pos
+        omega
+      · rw [hqe] at hbale; rw [hqf] at hbalf
+        rw [he6, hf18] at hupper
+        norm_num at hupper
+        rw [he6] at hbale; rw [hf18] at hbalf
+        have := o.nonempty_supp.ncard_pos
+        omega
+    · rcases hf with hf6 | hf18
+      · rw [hqe] at hbale; rw [hqf] at hbalf
+        rw [he18, hf6] at hupper
+        norm_num at hupper
+        rw [he18] at hbale; rw [hf6] at hbalf
+        have := o.nonempty_supp.ncard_pos
+        omega
+      · rw [hqe] at hbale; rw [hqf] at hbalf
+        rw [he18, hf18, Nat.lcm_self] at hupper
+        rw [he18] at hbale; rw [hf18] at hbalf
+        have := o.nonempty_supp.ncard_pos
+        omega
 
 /-- Named-orphan antipodal obstruction when all used component orders are six
 or eighteen.  After the cycle lower bound removes order two, the possible
@@ -18129,8 +18199,13 @@ theorem false_of_degree_sixteen_zeroLayer_orderSix_orEighteen_used_antipodal
           omega
         · exact Or.inl hc6
         · exact Or.inr hc18
-    rcases hcOrder with hc6 | hc18 <;> rw [hc6] at hdvd <;>
-      obtain ⟨k, hk⟩ := hdvd <;> omega
+    rcases hcOrder with hc6 | hc18
+    · rw [hc6] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+    · rw [hc18] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
   · letI : NeZero 9 := ⟨by norm_num⟩
     obtain ⟨c, hc, hdvd, _hpos⟩ :=
       degree_sixteen_zeroLayer_even_orphan_exists_economy_source
@@ -18148,8 +18223,13 @@ theorem false_of_degree_sixteen_zeroLayer_orderSix_orEighteen_used_antipodal
           omega
         · exact Or.inl hc6
         · exact Or.inr hc18
-    rcases hcOrder with hc6 | hc18 <;> rw [hc6] at hdvd <;>
-      obtain ⟨k, hk⟩ := hdvd <;> omega
+    rcases hcOrder with hc6 | hc18
+    · rw [hc6] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
+    · rw [hc18] at hdvd
+      obtain ⟨k, hk⟩ := hdvd
+      omega
 
 /-- If every used component has order six or twelve, every orphan component
 has order two, four, six, or twelve. -/
@@ -18218,8 +18298,10 @@ theorem degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [hq, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -18235,6 +18317,7 @@ theorem degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
         o f hlt (by simpa [D, Q, hunit])
     change Q f o = 1 ∧ o.supp.ncard ∣ f.supp.ncard ∧
       o.supp.ncard * Q o f = f.supp.ncard at hentry
+    rw [hunit, mul_one] at hentry
     omega
   have htwoOne (e f : D.ConnectedComponent)
       (he : e.supp.ncard = 6 ∨ e.supp.ncard = 12)
@@ -18257,8 +18340,10 @@ theorem degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
         have hbal := secondOrder_componentQuotientMatrix_balance
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-        have := o.nonempty_supp.ncard_pos
-        omega
+        by_contra hnot
+        have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+        rw [htwo, hzero] at hbal
+        exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
       have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e o hgt (by simpa [D, Q] using hrevPos)
@@ -18286,8 +18371,13 @@ theorem degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
     have hupper : o.supp.ncard ≤ 12 := by
       by_contra hnot
       have hlcm : Nat.lcm e.supp.ncard f.supp.ncard < o.supp.ncard := by
-        rcases he with he6 | he12 <;> rcases hf with hf6 | hf12 <;>
-          rw [he6, hf6, Nat.lcm_self] <;> norm_num <;> omega
+        rcases he with he6 | he12
+        · rcases hf with hf6 | hf12
+          · rw [he6, hf6, Nat.lcm_self]; omega
+          · rw [he6, hf12]; norm_num; omega
+        · rcases hf with hf6 | hf12
+          · rw [he12, hf6]; norm_num; omega
+          · rw [he12, hf12, Nat.lcm_self]; omega
       exact false_of_two_unit_componentQuotients_lcm_ncard_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
           e f o hef hqe hqf hlcm
@@ -18296,11 +18386,11 @@ theorem degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
     change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
     rcases he with he6 | he12
     · right; right
-      rw [hqe, he12] at hbal
+      rw [hqe, he6] at hbal
       have := o.nonempty_supp.ncard_pos
       omega
     · right; right; right
-      rw [hqe, he6] at hbal
+      rw [hqe, he12] at hbal
       have := o.nonempty_supp.ncard_pos
       omega
 
@@ -18444,8 +18534,10 @@ theorem degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
       have hbal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
       change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
-      have := o.nonempty_supp.ncard_pos
-      omega
+      by_contra hnot
+      have hzero : Q e o = 0 := Nat.eq_zero_of_not_pos hnot
+      rw [ho12, hzero] at hbal
+      exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
     have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
         e o (by rw [he6, ho12]; omega) (by simpa [D, Q] using hrevPos)
@@ -18453,7 +18545,8 @@ theorem degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
       e.supp.ncard * Q e o = o.supp.ncard at hentry
     rw [he6, ho12] at hentry
     exact ⟨hentry.1, by omega⟩
-  have hcUnit := hsmallUnit c hcE₆ hqocPos
+  have hqocPos' : 0 < Q o c := by simpa [D, Q] using hqocPos
+  have hcUnit := hsmallUnit c hcE₆ hqocPos'
   have hsmallQ : (∑ e ∈ E₆, Q o e) = 1 := by
     rw [Finset.sum_eq_single c]
     · exact hcUnit.1
@@ -18463,20 +18556,20 @@ theorem degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
       have he6 := (Finset.mem_filter.mp heE₆).2
       exact false_of_two_unit_componentQuotients_lcm_ncard_lt
         G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
-          c e o hne hcUnit.1 heUnit.1
+          c e o hne.symm hcUnit.1 heUnit.1
             (by rw [hcData.2, he6, ho12]; norm_num)
     · intro hcnot
       exact (hcnot hcE₆).elim
   have hpart : E = E₆ ∪ E₁₂ := by
     ext e
-    simp only [Finset.mem_union, Finset.mem_filter]
+    simp only [E₆, E₁₂, Finset.mem_union, Finset.mem_filter]
     constructor
     · intro heE
       rcases hused e (Finset.mem_filter.mp heE).2 with he6 | he12
       · exact Or.inl ⟨heE, he6⟩
       · exact Or.inr ⟨heE, he12⟩
     · intro he
-      exact he.elim And.left And.left
+      exact he.elim (fun h => h.1) (fun h => h.1)
   have hdis : Disjoint E₆ E₁₂ := by
     apply Finset.disjoint_left.mpr
     intro e he6 he12
@@ -18498,7 +18591,9 @@ theorem degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
         change (e.supp.ncard / 3) * Q e o = 4 * Q o e
-        rw [he6, ho12] at hbal ⊢
+        rw [he6, ho12] at hbal
+        rw [he6]
+        norm_num
         omega
       _ = 4 * (∑ e ∈ E₆, Q o e) := by rw [Finset.mul_sum]
       _ = 4 := by rw [hsmallQ]
@@ -18512,7 +18607,9 @@ theorem degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
           G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
         change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
         change (e.supp.ncard / 3) * Q e o = 4 * Q o e
-        rw [he12, ho12] at hbal ⊢
+        rw [he12, ho12] at hbal
+        rw [he12]
+        norm_num
         omega
       _ = 4 * (∑ e ∈ E₁₂, Q o e) := by rw [Finset.mul_sum]
       _ = 8 := by rw [hlargeQ]
@@ -18662,15 +18759,9 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_ant
       {u f (x - 1), u f (x + 1)})
     (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
       3 ≤ f.supp.ncard) : False := by
-  apply false_of_degree_sixteen_zeroLayer_six_twelve_used_count_ne
+  exact false_of_degree_sixteen_zeroLayer_six_twelve_used_count_ne
     G hfree hmin hcard c₀ hregChild hcardChild hused
-  · dsimp only at hcounts ⊢
-    omega
-  · exact u
-  · exact hu
-  · exact huRange
-  · exact huD
-  · exact hthree
+      (by dsimp only at hcounts ⊢; omega) u hu huRange huD hthree
 
 /-- The reduced used partition `[4,4,2,2,2,2]` is impossible. -/
 theorem false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_antipodal
@@ -18706,15 +18797,9 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_
       {u f (x - 1), u f (x + 1)})
     (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
       3 ≤ f.supp.ncard) : False := by
-  apply false_of_degree_sixteen_zeroLayer_six_twelve_used_count_ne
+  exact false_of_degree_sixteen_zeroLayer_six_twelve_used_count_ne
     G hfree hmin hcard c₀ hregChild hcardChild hused
-  · dsimp only at hcounts ⊢
-    omega
-  · exact u
-  · exact hu
-  · exact huRange
-  · exact huD
-  · exact hthree
+      (by dsimp only at hcounts ⊢; omega) u hu huRange huD hthree
 
 /-- If every used component has order six, every orphan component has order
 two or six.  This follows uniformly from the `3`, `2+1`, and `1+1+1`
