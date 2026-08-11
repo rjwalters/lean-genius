@@ -1,0 +1,58 @@
+-- Endpoint (A) for [12,4] Branch2 (single D12 q3 block), squad msgs 2605/2607.
+-- DRAFT for codex to adapt into the monolith -- NOT wired into the build.
+--
+-- Claim: no triple of affine phases exactly tiles Cay(ZMod 12, {2,4,5,7,8,10}).
+-- Python cross-check: twelvefour_s_block_affine.py (0 of 110,592 raw tuples).
+--
+-- Normalization: c1 = 0 wlog.  Justification: translating the orphan
+-- coordinate v = w + t maps phase constants c_i to c_i + u_i * t; choosing
+-- t = -u1^{-1} * c1 zeroes c1 while preserving affineness and the tiling.
+-- (Unit rescaling of S is NOT wlog -- it permutes the residue classes.)
+-- Remaining space: u1,u2,u3 in {1,5,7,11}, c2,c3 in ZMod 12 -> 9216 tuples.
+--
+-- Exactness check: Cay(Z12, {2,4,5,7,8,10}) has exactly 36 edges and the
+-- block contributes exactly 36 vertex-pairs (3 per o-vertex), so
+--   (i)  each A_v = {u1*v, u2*v+c2, u3*v+c3} has 3 distinct elements,
+--   (ii) all 36 pairs are pairwise distinct as unordered pairs,
+--   (iii) every pair difference lies in {2,4,5,7,8,10}
+-- together are equivalent to exact tiling.
+
+namespace Erdos85TwelveFour
+
+def units12 : List (ZMod 12) := [1, 5, 7, 11]
+def residSet : List (ZMod 12) := [2, 4, 5, 7, 8, 10]
+
+def pairOK (a b : ZMod 12) : Bool :=
+  decide (a ≠ b) && residSet.contains (a - b)
+-- residSet is ±-closed, so the (b - a) check is redundant.
+
+def blockPairs (u₁ u₂ u₃ c₂ c₃ : ZMod 12) : List (ZMod 12 × ZMod 12) :=
+  (List.range 12).flatMap (fun n =>
+    let v : ZMod 12 := (n : ZMod 12)
+    let a := u₁ * v
+    let b := u₂ * v + c₂
+    let c := u₃ * v + c₃
+    [(a, b), (a, c), (b, c)])
+
+def unorderedEq (p q : ZMod 12 × ZMod 12) : Bool :=
+  (decide (p.1 = q.1) && decide (p.2 = q.2)) ||
+  (decide (p.1 = q.2) && decide (p.2 = q.1))
+
+def tiles (u₁ u₂ u₃ c₂ c₃ : ZMod 12) : Bool :=
+  let es := blockPairs u₁ u₂ u₃ c₂ c₃
+  es.all (fun p => pairOK p.1 p.2) &&
+  (es.zipIdx.all (fun pi =>
+    (es.drop (pi.2 + 1)).all (fun q => !unorderedEq pi.1 q)))
+
+-- 4^3 * 12^2 = 9216 tuples; kernel decide with a maxRecDepth bump should
+-- manage (cf. the kernel-decide-over-native_decide idiom used for the 4^4
+-- capstone).  If kernel decide stalls, restrict u₁ ≤ u₂ ≤ u₃ (phase
+-- reordering symmetry) to cut to 20 * 144 = 2880 tuples.
+set_option maxRecDepth 100000 in
+theorem no_affine_phase_triple_tiles :
+    ∀ u₁ ∈ units12, ∀ u₂ ∈ units12, ∀ u₃ ∈ units12,
+    ∀ c₂ : ZMod 12, ∀ c₃ : ZMod 12,
+      tiles u₁ u₂ u₃ c₂ c₃ = false := by
+  decide
+
+end Erdos85TwelveFour
