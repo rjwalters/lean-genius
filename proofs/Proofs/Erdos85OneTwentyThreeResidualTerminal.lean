@@ -12721,6 +12721,45 @@ theorem equalComponent_quotientTwo_exists_phaseSet
     have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
     simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
 
+/-- Affine normal form of a graph-facing quotient-one component cover. -/
+theorem componentQuotientOne_exists_affineCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
+    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
+      ∃ a : ZMod r, ∀ x y,
+        G.Adj (u x) (v y) ↔
+          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
+  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
+    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
+      huD hvD hone
+  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
+  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
+  rcases haffine with hforward | hreverse
+  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hforward]
+    simp
+  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hreverse]
+    ring_nf
+
 /-- Projection of an admissible order-thirty phase pair to `ZMod 6` does
 not collapse the pair: a difference nonzero modulo three remains nonzero
 modulo six. -/
