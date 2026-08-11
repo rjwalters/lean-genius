@@ -13558,6 +13558,129 @@ theorem degree_sixteen_zeroLayer_used_serviced_quotient_sum_eq_twelve
       simp [hpos, hzero]
   exact hrestrict.trans hsum
 
+/-- Orphan components on which the used row `e` has positive quotient. -/
+def zeroLayerServicedOrphans
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :
+    Finset (secondOrderDefectGraph G).ConnectedComponent :=
+  orphans.filter (fun o =>
+    0 < componentQuotientMatrix G (secondOrderDefectGraph G) e o)
+
+/-- The non-three-divisible (`D`) atoms serviced by a used row. -/
+def zeroLayerDAtoms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :=
+  (zeroLayerServicedOrphans G orphans e).filter (fun o =>
+    ¬ 3 ∣ o.supp.ncard)
+
+/-- The quotient-three (`C`) atoms serviced by a used row. -/
+def zeroLayerCAtoms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :=
+  (zeroLayerServicedOrphans G orphans e).filter (fun o =>
+    3 ∣ o.supp.ncard ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3)
+
+/-- The quotient-two (`B2`) legs serviced by a used row. -/
+def zeroLayerB2Atoms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :=
+  (zeroLayerServicedOrphans G orphans e).filter (fun o =>
+    3 ∣ o.supp.ncard ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2)
+
+/-- The unit (`B1`) legs belonging to an orphan which also has a
+quotient-two leg in the used-component set `used`. -/
+def zeroLayerB1Atoms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (used orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :=
+  (zeroLayerServicedOrphans G orphans e).filter (fun o =>
+    3 ∣ o.supp.ncard ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1 ∧
+      ∃ f ∈ used,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2)
+
+/-- The all-unit (`A`) legs: every quotient from the orphan into the
+used-component set is at most one. -/
+def zeroLayerAAtoms
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (used orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e : (secondOrderDefectGraph G).ConnectedComponent) :=
+  (zeroLayerServicedOrphans G orphans e).filter (fun o =>
+    3 ∣ o.supp.ncard ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1 ∧
+      ∀ f ∈ used,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f ≤ 1)
+
+/-- Pure filter-algebra endpoint for the five zero-layer atom classes.
+The graph-specific input is precisely the unit-leg dichotomy: a serviced
+unit leg either shares its orphan with a quotient-two leg, or every used
+leg of that orphan is a unit leg. -/
+theorem zeroLayerServicedOrphans_mem_five_classes
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (used orphans : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (e o : (secondOrderDefectGraph G).ConnectedComponent)
+    (hforward : 0 <
+      componentQuotientMatrix G (secondOrderDefectGraph G) o e)
+    (hle : componentQuotientMatrix G (secondOrderDefectGraph G) o e ≤ 3)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1 →
+      (∃ f ∈ used,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2) ∨
+      ∀ f ∈ used,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f ≤ 1) :
+    o ∈ zeroLayerServicedOrphans G orphans e ↔
+      o ∈ zeroLayerDAtoms G orphans e ∨
+      o ∈ zeroLayerCAtoms G orphans e ∨
+      o ∈ zeroLayerB2Atoms G orphans e ∨
+      o ∈ zeroLayerB1Atoms G used orphans e ∨
+      o ∈ zeroLayerAAtoms G used orphans e := by
+  classical
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  constructor
+  · intro ho
+    by_cases hdiv : 3 ∣ o.supp.ncard
+    · have hforwardQ : 0 < Q o e := by simpa [Q] using hforward
+      have hleQ : Q o e ≤ 3 := by simpa [Q] using hle
+      interval_cases hq : Q o e
+      · rcases hunit (by simpa [Q] using hq) with hB | hA
+        · exact Or.inr (Or.inr (Or.inr (Or.inl (by
+            simp [zeroLayerB1Atoms, ho, hdiv, Q, hq, hB]))))
+        · exact Or.inr (Or.inr (Or.inr (Or.inr (by
+            apply Finset.mem_filter.mpr
+            refine ⟨ho, hdiv, ?_, ?_⟩
+            · simpa [Q] using hq
+            · exact hA))))
+      · exact Or.inr (Or.inr (Or.inl (by
+          simp [zeroLayerB2Atoms, ho, hdiv, Q, hq])))
+      · exact Or.inr (Or.inl (by
+          simp [zeroLayerCAtoms, ho, hdiv, Q, hq]))
+    · exact Or.inl (by simp [zeroLayerDAtoms, ho, hdiv])
+  · rintro (hD | hC | hB2 | hB1 | hA)
+    · exact (Finset.mem_filter.mp hD).1
+    · exact (Finset.mem_filter.mp hC).1
+    · exact (Finset.mem_filter.mp hB2).1
+    · exact (Finset.mem_filter.mp hB1).1
+    · exact (Finset.mem_filter.mp hA).1
+
 /-- All zero-layer orphan components share one restricted-cherry capacity
 inside any fixed target defect component.  This is the aggregate quotient
 cut consumed by the zero-layer census for quotient-two/three atoms. -/
