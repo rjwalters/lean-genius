@@ -18315,6 +18315,112 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
       (hcapacity e₂c he₂c (by simpa [D, R] using hused₂c))
   exact ⟨hcensus.1, hstruct, hpattern, hdist.1, hdist.2.1, hdist.2.2⟩
 
+/-- Select the two large blocks assigned to one order-six target and attach
+their common parity certificate.  This is the direct interface between the
+six-block census and the cyclic offset argument. -/
+theorem degree_sixteen_zeroLayer_two_B_same_target_phase_parity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (L x : (secondOrderDefectGraph G).ConnectedComponent)
+    (hLcard : L.supp.ncard = 30) (hxcard : x.supp.ncard = 6)
+    (hLUsed : componentRepresentative (secondOrderDefectGraph G) L ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hxUsed : componentRepresentative (secondOrderDefectGraph G) x ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hstruct : ∀ o ∈ S, o.supp.ncard = 30 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) o L = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) L o = 2)
+    (hcount : (S.filter fun o =>
+      componentQuotientMatrix G (secondOrderDefectGraph G) o x = 1).card = 2) :
+    ∃ B₁ B₂ : (secondOrderDefectGraph G).ConnectedComponent,
+      B₁ ≠ B₂ ∧ B₁ ∈ S ∧ B₂ ∈ S ∧
+      S.filter (fun o =>
+        componentQuotientMatrix G (secondOrderDefectGraph G) o x = 1) =
+          {B₁, B₂} ∧
+      ∃ A₁ A₂ : Finset (ZMod 30), A₁.card = 2 ∧ A₂.card = 2 ∧
+        (((A₁.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 ∧
+          (A₂.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∨
+         ((((A₁.filter fun a =>
+              ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+            (A₁.filter fun a =>
+              ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2) ∧
+           (((A₂.filter fun a =>
+              ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+            (A₂.filter fun a =>
+              ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let T := S.filter fun o => Q o x = 1
+  have hTcard : T.card = 2 := by simpa [D, Q, T] using hcount
+  obtain ⟨B₁, B₂, hBne, hT⟩ := Finset.card_eq_two.mp hTcard
+  have hB₁T : B₁ ∈ T := by rw [hT]; simp
+  have hB₂T : B₂ ∈ T := by rw [hT]; simp
+  have hB₁S : B₁ ∈ S := (Finset.mem_filter.mp hB₁T).1
+  have hB₂S : B₂ ∈ S := (Finset.mem_filter.mp hB₂T).1
+  have hB₁x : Q B₁ x = 1 := (Finset.mem_filter.mp hB₁T).2
+  have hB₂x : Q B₂ x = 1 := (Finset.mem_filter.mp hB₂T).2
+  have hB₁ := hstruct B₁ hB₁S
+  have hB₂ := hstruct B₂ hB₂S
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hLx : L ≠ x := by
+    intro hEq
+    rw [hEq, hxcard] at hLcard
+    omega
+  have hB₁c₀ : B₁ ≠ c₀ := by
+    intro hEq
+    rw [hEq, hc₀card] at hB₁
+    omega
+  have hB₂c₀ : B₂ ≠ c₀ := by
+    intro hEq
+    rw [hEq, hc₀card] at hB₂
+    omega
+  have husedMinimum (e : D.ConnectedComponent)
+      (heUsed : componentRepresentative D e ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)) :
+      Q e c₀ = 1 := by
+    have hrep : D.connectedComponentMk (componentRepresentative D e) = e :=
+      (ConnectedComponent.mem_supp_iff e
+        (componentRepresentative D e)).mp (componentRepresentative_mem D e)
+    have hq := degree_sixteen_zeroLayer_used_component_quotient_entries
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+        (componentRepresentative D e) heUsed
+    dsimp only at hq
+    change Q (D.connectedComponentMk (componentRepresentative D e)) c₀ = 1 at hq.1
+    rw [hrep] at hq
+    exact hq.1
+  have hLc₀ : Q L c₀ = 1 := husedMinimum L (by simpa [D] using hLUsed)
+  have hxc₀ : Q x c₀ = 1 := husedMinimum x (by simpa [D] using hxUsed)
+  refine ⟨B₁, B₂, hBne, hB₁S, hB₂S, ?_, ?_⟩
+  · simpa [D, Q, T] using hT
+  · exact two_orderThirty_B_blocks_same_orderSix_target_phase_parity_unconditional
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        L B₁ B₂ x c₀ hLcard hB₁.1 hB₂.1 hxcard hc₀card
+        hLx hBne hB₁c₀ hB₂c₀ hB₁.2.1 hB₂.2.1
+        (by simpa [D, Q] using hB₁x) (by simpa [D, Q] using hB₂x)
+        (by simpa [D, Q] using hLc₀) (by simpa [D, Q] using hxc₀)
+
 /-- The complement of the six large-serviced `B` blocks in `[10,2,2,2]`
 consists of exactly two order-six components.  Their quotient rows are
 supported on the three small used components, have total three, and are
