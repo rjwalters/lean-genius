@@ -12213,6 +12213,35 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_rigid_atom_ledger
       nC10 = 0 ∧ nD10 = 0 := by
   omega
 
+/-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
+is rowwise saturated once its aggregate excess is six.  Equivalently, every
+row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
+theorem degree_sixteen_order_two_triple_matrix_row_excess
+    (daa dab dac dbb dbc dcc : ℕ)
+    (hrowa : daa + dab + dac = 3)
+    (hrowb : dbb + dab + dbc = 3)
+    (hrowc : dcc + dac + dbc = 3)
+    (hexcess :
+      daa * (daa - 1) + dab * (dab - 1) + dac * (dac - 1) +
+      dbb * (dbb - 1) + dab * (dab - 1) + dbc * (dbc - 1) +
+      dcc * (dcc - 1) + dac * (dac - 1) + dbc * (dbc - 1) = 6) :
+    daa * (daa - 1) + dab * (dab - 1) + dac * (dac - 1) = 2 ∧
+      dbb * (dbb - 1) + dab * (dab - 1) + dbc * (dbc - 1) = 2 ∧
+      dcc * (dcc - 1) + dac * (dac - 1) + dbc * (dbc - 1) = 2 := by
+  have haa : daa ≤ 3 := by omega
+  have hab : dab ≤ 3 := by omega
+  have hac : dac ≤ 3 := by omega
+  have hbb : dbb ≤ 3 := by omega
+  have hbc : dbc ≤ 3 := by omega
+  have hcc : dcc ≤ 3 := by omega
+  interval_cases daa
+  all_goals interval_cases dab
+  all_goals interval_cases dac
+  all_goals interval_cases dbb
+  all_goals interval_cases dbc
+  all_goals interval_cases dcc
+  all_goals norm_num at *
+
 /-- Exact orphan budgets rule out `[5,5,2,2,2]`.  The three order-two
 rows force all directed `B(2)` atoms to vanish.  On the two order-five rows,
 load then requires more mutual `B(5)` atoms than their exact excess permits. -/
