@@ -269,6 +269,53 @@ theorem source_le_lcm_of_oriented_pair_injective
     oriented_pair_repeat_of_lcm_lt f g hf hg hlt
   exact hxx' (hinj (Prod.ext hfx hgx))
 
+/-- Explicit two-matching normal form for an equal-order quotient-two
+component block.  This generic interface is used by residual sectors whose
+two cyclic matchings must be compared after a further quotient-one cover. -/
+theorem equalComponent_quotientTwo_exists_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r : ℕ} [NeZero r]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3) (hr3 : 3 ≤ r)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u v : ZMod r → V) (hu : Function.Injective u)
+    (hv : Function.Injective v) (huRange : Set.range u = c.supp)
+    (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (htwo : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 2) :
+    ∃ ε : ZMod r, (ε = 1 ∨ ε = -1) ∧
+      ∃ A : Finset (ZMod r), A.card = 2 ∧
+        ∀ y x, G.Adj (u y) (v x) ↔ x - ε * y ∈ A := by
+  let A := mixedAnchorSupport G (u 0) v
+  have hAcard : A.card = 2 := by
+    have hu0 : u 0 ∈ c.supp := by rw [← huRange]; exact ⟨0, rfl⟩
+    simpa [A] using (card_mixedAnchorSupport_eq_componentQuotient
+      G hfree hd heven hmin hcard c e hu0 hv hvRange).trans htwo
+  rcases graph_equalComponent_quotientTwo_orientation
+    G hfree hd heven hmin hcard hr3 c e u v hu hv huRange hvRange huD hvD
+      htwo with hforward | hreverse
+  · refine ⟨1, Or.inl rfl, A, hAcard, ?_⟩
+    intro y x
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hforward y x
+    simpa only [A, mem_mixedAnchorSupport_iff, one_mul] using htranslate
+  · refine ⟨-1, Or.inr rfl, A, hAcard, ?_⟩
+    intro y x
+    have hshift : ∀ a b : ZMod r,
+        G.Adj (u (a + 1)) (v (b + (-1 : ZMod r))) ↔
+          G.Adj (u a) (v b) := by
+      intro a b
+      rw [show b + (-1 : ZMod r) = b - 1 by ring]
+      exact hreverse a b
+    have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
+    simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
+
 /-- Equal-LCM law for a zero-excess threefold-scaled orphan block.  If two
 linked component lengths divide its reduced length and their oriented cover
 pair is injective, that reduced orphan length is exactly their LCM. -/
