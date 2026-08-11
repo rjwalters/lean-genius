@@ -13011,6 +13011,174 @@ theorem six_phase_sectors_exact_packing_homogeneous_count_two
     A hAcard hAsidon hApair (by simpa [B] using hBparity.1)
   exact ⟨hBparity.1, hBparity.2, hhomogeneous⟩
 
+/-- Fully graph-facing exact packing for one labeled order-thirty row and
+six distinct mutual quotient-two `B` components.  The six resulting phase
+pairs contain exactly two parity-homogeneous pairs. -/
+theorem orderThirty_six_B_exact_packing_homogeneous_count_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (L C : (secondOrderDefectGraph G).ConnectedComponent)
+    (b : Fin 6 → (secondOrderDefectGraph G).ConnectedComponent)
+    (hbInj : Function.Injective b) (hLCne : L ≠ C)
+    (hbL : ∀ i, b i ≠ L) (hbC : ∀ i, b i ≠ C)
+    (uL : ZMod 30 → V) (uC : ZMod 3 → V)
+    (uB : Fin 6 → ZMod 30 → V)
+    (huL : Function.Injective uL) (huC : Function.Injective uC)
+    (huB : ∀ i, Function.Injective (uB i))
+    (huLRange : Set.range uL = L.supp) (huCRange : Set.range uC = C.supp)
+    (huBRange : ∀ i, Set.range (uB i) = (b i).supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (huBD : ∀ i x, (secondOrderDefectGraph G).neighborFinset (uB i x) =
+      {uB i (x - 1), uB i (x + 1)})
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) L L = 3)
+    (hBL : ∀ i, componentQuotientMatrix G
+      (secondOrderDefectGraph G) (b i) L = 2) :
+    ∃ A : Fin 6 → Finset (ZMod 30),
+      (∀ i, (A i).card = 2) ∧ (∀ i, IsOrderedSidon (A i)) ∧
+      ((Finset.univ : Finset (Fin 6)).filter fun i =>
+        ((A i).filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card ≠ 1).card = 2 := by
+  classical
+  let M : Finset (ZMod 30) := Finset.univ.filter fun z =>
+    z ≠ 0 ∧ ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) z = 0
+  have hMw := orderThirty_minimum_cover_multiple_three_difference_witnesses
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      L C uL uC huL huC huLRange huCRange huLD huCD hLC
+  change ∀ t ∈ M, ∃ y : ZMod 3,
+    G.Adj (uL 0) (uC y) ∧ G.Adj (uL t) (uC y) at hMw
+  obtain ⟨Sdiag, hSdiagCard, hSdiagSidon, _hSdiagOdd,
+      hDcard, hDeven, hDw⟩ :=
+    orderThirty_diagonal_three_exists_even_difference_sector
+      G hfree hmin hcard L uL huL huLRange huLD hdiag
+  let D : Finset (ZMod 30) := orderedDifferenceSet Sdiag
+  change D.card = 6 at hDcard
+  change ∀ z ∈ D,
+    ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0 at hDeven
+  change ∀ t ∈ D, ∃ y ∈ L.supp,
+    G.Adj (uL 0) y ∧ G.Adj (uL t) y at hDw
+  have hBdata : ∀ i : Fin 6, ∃ A : Finset (ZMod 30),
+      A.card = 2 ∧ IsOrderedSidon A ∧
+      (orderedDifferenceSet A).card = 2 ∧
+      ∀ t ∈ orderedDifferenceSet A, ∃ y ∈ (b i).supp,
+        G.Adj (uL 0) y ∧ G.Adj (uL t) y := by
+    intro i
+    exact orderThirty_mutual_quotientTwo_exists_difference_sector
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        L (b i) uL (uB i) huL (huB i) huLRange (huBRange i)
+        huLD (huBD i) (hBL i)
+  let A : Fin 6 → Finset (ZMod 30) := fun i => (hBdata i).choose
+  have hAcard : ∀ i, (A i).card = 2 := fun i => (hBdata i).choose_spec.1
+  have hAsidon : ∀ i, IsOrderedSidon (A i) :=
+    fun i => (hBdata i).choose_spec.2.1
+  have hAw : ∀ i t, t ∈ orderedDifferenceSet (A i) →
+      ∃ y ∈ (b i).supp, G.Adj (uL 0) y ∧ G.Adj (uL t) y :=
+    fun i => (hBdata i).choose_spec.2.2.2
+  have hsuppSep (c e : (secondOrderDefectGraph G).ConnectedComponent)
+      (hne : c ≠ e) : ∀ y ∈ c.supp, ∀ y' ∈ e.supp, y ≠ y' := by
+    intro y hy y' hy' heq
+    apply hne
+    have hyMk := (ConnectedComponent.mem_supp_iff c y).mp hy
+    have hy'Mk := (ConnectedComponent.mem_supp_iff e y').mp hy'
+    exact hyMk.symm.trans
+      ((congrArg (secondOrderDefectGraph G).connectedComponentMk heq).trans hy'Mk)
+  have hMzero : (0 : ZMod 30) ∉ M := by simp [M]
+  have hDzero : (0 : ZMod 30) ∉ D := by
+    exact zero_not_mem_orderedDifferenceSet Sdiag
+  have hAzero : ∀ i, (0 : ZMod 30) ∉ orderedDifferenceSet (A i) :=
+    fun i => zero_not_mem_orderedDifferenceSet (A i)
+  have hApair : ∀ i j : Fin 6, i ≠ j →
+      Disjoint (orderedDifferenceSet (A i))
+        (orderedDifferenceSet (A j)) := by
+    intro i j hij
+    apply c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
+      G hfree uL huL (fun k : Fin 6 => (b k).supp)
+        (fun k => orderedDifferenceSet (A k)) hAzero
+        (fun k t ht => hAw k t ht) i j hij
+    exact hsuppSep (b i) (b j) (hbInj.ne hij)
+  have hMD : Disjoint M D := by
+    apply c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
+      G hfree uL huL (fun k : Fin 2 => if k = 0 then C.supp else L.supp)
+        (fun k => if k = 0 then M else D)
+    · intro k
+      fin_cases k <;> simp [hMzero, hDzero]
+    · intro k t ht
+      fin_cases k
+      · simp only [Fin.isValue, Fin.zero_eta, if_pos] at ht ⊢
+        obtain ⟨y, h0y, hty⟩ := hMw t ht
+        exact ⟨uC y, by rw [← huCRange]; exact ⟨y, rfl⟩, h0y, hty⟩
+      · simp only [Fin.isValue, Fin.mk_one, OfNat.ofNat, if_false] at ht ⊢
+        exact hDw t ht
+    · exact 0
+    · exact 1
+    · decide
+    · simpa using hsuppSep C L hLCne.symm
+  have hMA : ∀ i, Disjoint M (orderedDifferenceSet (A i)) := by
+    intro i
+    apply c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
+      G hfree uL huL (fun k : Fin 2 => if k = 0 then C.supp else (b i).supp)
+        (fun k => if k = 0 then M else orderedDifferenceSet (A i))
+    · intro k
+      fin_cases k <;> simp [hMzero, hAzero i]
+    · intro k t ht
+      fin_cases k
+      · simp only [Fin.isValue, Fin.zero_eta, if_pos] at ht ⊢
+        obtain ⟨y, h0y, hty⟩ := hMw t ht
+        exact ⟨uC y, by rw [← huCRange]; exact ⟨y, rfl⟩, h0y, hty⟩
+      · simp only [Fin.isValue, Fin.mk_one, OfNat.ofNat, if_false] at ht ⊢
+        exact hAw i t ht
+    · exact 0
+    · exact 1
+    · decide
+    · exact hsuppSep C (b i) (Ne.symm (hbC i))
+  have hDA : ∀ i, Disjoint D (orderedDifferenceSet (A i)) := by
+    intro i
+    apply c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
+      G hfree uL huL (fun k : Fin 2 => if k = 0 then L.supp else (b i).supp)
+        (fun k => if k = 0 then D else orderedDifferenceSet (A i))
+    · intro k
+      fin_cases k <;> simp [hDzero, hAzero i]
+    · intro k t ht
+      fin_cases k
+      · simp only [Fin.isValue, Fin.zero_eta, if_pos] at ht ⊢
+        exact hDw t ht
+      · simp only [Fin.isValue, Fin.mk_one, OfNat.ofNat, if_false] at ht ⊢
+        exact hAw i t ht
+    · exact 0
+    · exact 1
+    · decide
+    · exact hsuppSep L (b i) (Ne.symm (hbL i))
+  have hMsub := difference_sector_subset_orderThirty_admissible_of_witnesses
+    G hfree uL huL huLD M hMzero
+      (fun t ht => by obtain ⟨y, h0y, hty⟩ := hMw t ht; exact ⟨uC y, h0y, hty⟩)
+  have hDsub := difference_sector_subset_orderThirty_admissible_of_witnesses
+    G hfree uL huL huLD D hDzero
+      (fun t ht => by obtain ⟨y, _hy, h0y, hty⟩ := hDw t ht; exact ⟨y, h0y, hty⟩)
+  have hAsub : ∀ i, orderedDifferenceSet (A i) ⊆
+      (((Finset.univ.erase 0).erase 1).erase (-1)) := by
+    intro i
+    exact difference_sector_subset_orderThirty_admissible_of_witnesses
+      G hfree uL huL huLD (orderedDifferenceSet (A i)) (hAzero i)
+        (fun t ht => by obtain ⟨y, _hy, h0y, hty⟩ := hAw i t ht; exact ⟨y, h0y, hty⟩)
+  have hcounts := zmod_thirty_admissible_and_multiple_three_parity_counts
+  have hMcard : M.card = 9 := by simpa [M] using hcounts.2.2.1
+  have hMeven : (M.filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0).card = 4 := by
+    simpa [M] using hcounts.2.2.2
+  have hpack := six_phase_sectors_exact_packing_homogeneous_count_two
+    A M D hAcard hAsidon hApair hMcard hDcard hMsub hDsub hAsub
+      hMD hMA hDA hMeven hDeven
+  exact ⟨A, hAcard, hAsidon, hpack.2.2⟩
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
