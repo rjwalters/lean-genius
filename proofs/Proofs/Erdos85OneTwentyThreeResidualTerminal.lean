@@ -610,6 +610,109 @@ theorem component_antipodal_commonSource_forces_order_dvd
         G hfree hd heven hmin hcard)
       (huD c) (huD o) x y hadj
 
+/-- Every labeled even defect component has an antipodal common-neighbor
+component whose order divides its half-order.  This combines the global
+exact-one-common-neighbor law with the rectangular intertwiner filter. -/
+theorem evenComponent_exists_commonSource_component_order_dvd_half
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d s n : ℕ}
+    [NeZero s] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hn2 : 2 ≤ n) (hs : s = 2 * n)
+    (o : (secondOrderDefectGraph G).ConnectedComponent)
+    (v : ZMod s → V) (hv : Function.Injective v)
+    (hvRange : Set.range v = o.supp)
+    (hvD : ∀ y, (secondOrderDefectGraph G).neighborFinset (v y) =
+      {v (y - 1), v (y + 1)})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ∣ n := by
+  subst s
+  letI : NeZero (2 * n) := ⟨mul_ne_zero (by norm_num) (NeZero.ne n)⟩
+  let D := secondOrderDefectGraph G
+  have hnOne : (n : ZMod (2 * n)) ≠ 1 := by
+    intro heq
+    have hz : ((n - 1 : ℕ) : ZMod (2 * n)) = 0 := by
+      rw [Nat.cast_sub (by omega), heq]
+      simp
+    have hdvd : 2 * n ∣ n - 1 :=
+      (ZMod.natCast_eq_zero_iff (n - 1) (2 * n)).mp hz
+    have hle := Nat.le_of_dvd (by omega : 0 < n - 1) hdvd
+    omega
+  have hnNegOne : (n : ZMod (2 * n)) ≠ -1 := by
+    intro heq
+    have hz : ((n + 1 : ℕ) : ZMod (2 * n)) = 0 := by
+      push_cast
+      rw [heq]
+      ring
+    have hdvd : 2 * n ∣ n + 1 :=
+      (ZMod.natCast_eq_zero_iff (n + 1) (2 * n)).mp hz
+    have hle := Nat.le_of_dvd (by omega : 0 < n + 1) hdvd
+    omega
+  have hnZero : (n : ZMod (2 * n)) ≠ 0 := by
+    intro hz
+    have hdvd : 2 * n ∣ n :=
+      (ZMod.natCast_eq_zero_iff n (2 * n)).mp hz
+    have hle := Nat.le_of_dvd (by omega : 0 < n) hdvd
+    omega
+  have hvne : v 0 ≠ v n := by
+    apply hv.ne
+    intro hz
+    apply hnZero
+    simpa using hz.symm
+  have hnotD : ¬ D.Adj (v 0) (v n) := by
+    intro hD
+    have hmem : v n ∈ D.neighborFinset (v 0) :=
+      (D.mem_neighborFinset _ _).mpr hD
+    rw [hvD 0] at hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with hm | hp
+    · have hcoord := hv hm
+      apply hnNegOne
+      simpa using hcoord
+    · have hcoord := hv hp
+      apply hnOne
+      simpa using hcoord
+  have hone := card_common_eq_if_secondOrderDefect G hfree (v 0) (v n) hvne
+  rw [if_neg (by
+    intro hmem
+    exact hnotD ((D.mem_neighborFinset _ _).mp hmem))] at hone
+  obtain ⟨z, hz⟩ := Finset.card_pos.mp (by rw [hone]; norm_num)
+  have hzData := Finset.mem_inter.mp hz
+  let c := D.connectedComponentMk z
+  have hzSupp : z ∈ c.supp := ConnectedComponent.connectedComponentMk_mem
+  have hzRange : z ∈ Set.range (u c) := by
+    rw [huRange c]
+    exact hzSupp
+  obtain ⟨x, hx⟩ := hzRange
+  letI : NeZero c.supp.ncard := ⟨by have := hthree c; omega⟩
+  have hcomm : adjMatrix ℤ G * adjMatrix ℤ D =
+      adjMatrix ℤ D * adjMatrix ℤ G := by
+    simpa [D] using
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree hd heven hmin hcard)
+  refine ⟨c, ?_⟩
+  apply cycleBlock_antipodal_commonSource_forces_dvd_of_orders
+    G D hfree (hthree c) hn2 rfl (u c) v (hu c) hv
+      hcomm (huD c) hvD x 0
+  rw [hx]
+  constructor
+  · exact ((G.mem_neighborFinset _ _).mp hzData.1).symm
+  · simpa using ((G.mem_neighborFinset _ _).mp hzData.2).symm
+
 /-- No row of a block between two equally long even defect cycles can meet
 an antipodal target pair.  Antipodal covariance would give a second,
 distinct source row meeting the same pair, hence a four-cycle. -/
