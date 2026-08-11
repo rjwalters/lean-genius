@@ -12494,6 +12494,46 @@ theorem three_two_block_groups_unique_even_pair
   rcases hea with rfl | rfl <;> rcases heb with rfl | rfl <;>
     rcases hec with rfl | rfl <;> norm_num at htotal ⊢
 
+/-- The ordered differences of a two-element finset are its two directed
+differences. -/
+theorem orderedDifferenceSet_pair
+    {Z : Type*} [AddCommGroup Z] [DecidableEq Z]
+    (a b : Z) (hab : a ≠ b) :
+    orderedDifferenceSet ({a, b} : Finset Z) = {a - b, b - a} := by
+  ext z
+  simp [orderedDifferenceSet, orderedDistinctPairs, hab]
+  aesop
+
+/-- For a Sidon phase pair in `ZMod 30`, both directed differences are odd
+exactly when the pair contains one even and one odd phase.  Otherwise both
+directed differences are even. -/
+theorem orderedDifferenceSet_two_phase_even_card
+    (A : Finset (ZMod 30)) (hAcard : A.card = 2)
+    (hsidon : IsOrderedSidon A) :
+    let even : ZMod 30 → Prop := fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) z = 0
+    ((orderedDifferenceSet A).filter even).card =
+      if (A.filter even).card = 1 then 0 else 2 := by
+  dsimp only
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hAcard
+  have hdne : a - b ≠ b - a := by
+    intro heq
+    have hp : (a, b) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
+      simp [hab]
+    have hq : (b, a) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
+      simp [hab]
+    have := hsidon hp hq heq
+    exact hab (congrArg Prod.fst this)
+  rw [orderedDifferenceSet_pair a b hab]
+  have ha : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0 ∨
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 1 := by
+    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a <;> simp
+  have hb : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 0 ∨
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 1 := by
+    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b <;> simp
+  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+    simp [map_sub, ha, hb, hab, hdne]
+
 /-- Exact parity subtraction behind the order-thirty difference packing.
 If a 14-element even sector is partitioned into four minimum-cover
 differences, six reverse-diagonal differences, and the `B` sector, then the
