@@ -12498,20 +12498,37 @@ theorem orderedDifferenceSet_two_phase_even_card
   have hdne : a - b ≠ b - a := by
     intro heq
     have hp : (a, b) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
-      simp [hab]
+      apply mem_orderedDistinctPairs_iff.mpr
+      exact ⟨by simp, by simp, hab⟩
     have hq : (b, a) ∈ orderedDistinctPairs ({a, b} : Finset (ZMod 30)) := by
-      simp [hab]
+      apply mem_orderedDistinctPairs_iff.mpr
+      exact ⟨by simp, by simp, hab.symm⟩
     have := hsidon hp hq heq
     exact hab (congrArg Prod.fst this)
   rw [orderedDifferenceSet_pair a b hab]
+  have hzero_or_one (x : ZMod 2) : x = 0 ∨ x = 1 := by
+    have hx : x.val < 2 := x.val_lt
+    interval_cases hval : x.val
+    · left
+      apply ZMod.val_injective
+      rw [hval]
+      decide
+    · right
+      apply ZMod.val_injective
+      rw [hval]
+      decide
   have ha : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0 ∨
       ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 1 := by
-    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a <;> simp
+    exact hzero_or_one _
   have hb : ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 0 ∨
       ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b = 1 := by
-    fin_cases ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) b <;> simp
-  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
-    simp [map_sub, ha, hb, hab, hdne]
+    exact hzero_or_one _
+  simp only [ZMod.castHom_apply] at ha hb
+  rcases ha with ha | ha <;> rcases hb with hb | hb
+  all_goals
+    rw [Finset.filter_insert, Finset.filter_singleton,
+      Finset.filter_insert, Finset.filter_singleton]
+    simp [ZMod.cast_sub (R := ZMod 2) (by norm_num : 2 ∣ 30), ha, hb, hab, hdne]
 
 /-- Six pairwise-disjoint two-phase Sidon sectors containing four even
 ordered differences have exactly two parity-homogeneous phase pairs. -/
@@ -12543,8 +12560,10 @@ theorem six_two_phase_difference_sectors_homogeneous_count
       Disjoint ((orderedDifferenceSet (A i)).filter even)
         ((orderedDifferenceSet (A j)).filter even) := by
     intro i _hi j _hj hij
-    exact Finset.disjoint_filter_filter.mpr (fun z hzi _hzEven hzj =>
-      Finset.disjoint_left.mp (hdisj i j hij) hzi hzj)
+    apply Finset.disjoint_left.mpr
+    intro z hzi hzj
+    exact Finset.disjoint_left.mp (hdisj i j hij)
+      (Finset.mem_filter.mp hzi).1 (Finset.mem_filter.mp hzj).1
   have hsum : (∑ i : Fin 6,
       ((orderedDifferenceSet (A i)).filter even).card) = 4 := by
     have hbi := Finset.card_biUnion hfilteredDisj
@@ -12566,7 +12585,7 @@ theorem six_two_phase_difference_sectors_homogeneous_count
   have hfilterSum :
       (∑ i : Fin 6, if mixed i then 0 else 2) =
         2 * ((Finset.univ : Finset (Fin 6)).filter fun i => ¬ mixed i).card := by
-    rw [Finset.mul_card]
+    rw [Finset.card_eq_sum_ones, Finset.mul_sum]
     symm
     rw [Finset.sum_filter]
     apply Finset.sum_congr rfl
