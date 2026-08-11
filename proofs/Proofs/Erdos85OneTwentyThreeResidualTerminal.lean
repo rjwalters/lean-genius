@@ -11632,6 +11632,17 @@ theorem no_three_orderedSidon_oddSupport_zmod_twelve :
   rw [hdiffCard, hevenCard] at hle
   omega
 
+set_option maxHeartbeats 1000000 in
+set_option maxRecDepth 100000 in
+/-- No three-point Sidon support in `ZMod 12` has precisely the six residual
+differences left after the defect-cycle classes `±1` and the minimum-cover
+classes `±3,6` have been removed.  This is the finite phase obstruction in
+the corrected `[12,4]` census. -/
+theorem no_three_residualDifferenceSet_zmod_twelve :
+    ¬ ∃ S : Finset (ZMod 12), S.card = 3 ∧
+      orderedDifferenceSet S = {2, 4, 5, 7, 8, 10} := by
+  decide
+
 /-- A labeled order-twelve defect component cannot be reverse-oriented with
 diagonal quotient three.  Reflection makes its three odd anti-diagonal
 phases into a circulant Sidon support, contradicting the finite `ZMod 12`
