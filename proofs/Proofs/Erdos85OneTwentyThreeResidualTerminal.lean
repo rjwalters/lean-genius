@@ -12194,6 +12194,31 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_four_pointwise_atom_ledger
   rw [hload4, hexcess4] at hsum4
   omega
 
+/-- Corrected feasible census for the `[12,4]` orphan atoms.  Quotient
+classification leaves large-only atoms of orders twelve and thirty-six,
+shared atoms of order thirty-six, and small-only atoms of orders four and
+twelve.  The exact `(18,6)` orphan excess budgets force three shared atoms
+and reduce the remaining multiplicities to two short linear equations. -/
+theorem zeroLayer_reduced_used_orders_twelve_four_corrected_atom_census
+    (nA12 nA36 nB36 nD4 nD12 : ℕ)
+    (hload12 : 12 * nA12 + 36 * nA36 + 24 * nB36 = 144)
+    (hexcess12 : 2 * nA12 + 6 * nA36 + 2 * nB36 = 18)
+    (hload4 : 12 * nB36 + 4 * nD4 + 12 * nD12 = 48)
+    (hexcess4 : 2 * nD4 + 6 * nD12 = 6) :
+    nB36 = 3 ∧ nA12 + 3 * nA36 = 6 ∧ nD4 + 3 * nD12 = 3 := by
+  omega
+
+/-- The corrected `[12,4]` atom census accounts for the entire
+one-hundred-ninety-two-point orphan cell, independently of which of the six
+remaining multiplicity pairs occurs. -/
+theorem zeroLayer_reduced_used_orders_twelve_four_corrected_atom_mass
+    (nA12 nA36 nB36 nD4 nD12 : ℕ)
+    (hB : nB36 = 3) (hA : nA12 + 3 * nA36 = 6)
+    (hD : nD4 + 3 * nD12 = 3) :
+    12 * nA12 + 36 * nA36 + 36 * nB36 +
+      4 * nD4 + 12 * nD12 = 192 := by
+  omega
+
 /-- Local arithmetic behind the common bonus in the `[12,4]` pointwise
 ledger.  Here `q12,q4` are the orphan-to-used quotients and `r12,r4` the
 reverse quotients.  Detailed balance is written using component orders
