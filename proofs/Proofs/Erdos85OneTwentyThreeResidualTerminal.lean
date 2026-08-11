@@ -13296,6 +13296,94 @@ theorem degree_sixteen_zeroLayer_used_orderFifteen_orderSix_cross_eq_zero
   rw [hecard, hfcard] at hbal
   omega
 
+/-- Used-matrix package for the two reduced-order-five rows in
+`[5,5,2,2,2]`.  Both are disconnected from the order-six components; their
+mutual quotient is symmetric, their diagonals agree, and diagonal plus
+mutual quotient is three. -/
+theorem degree_sixteen_zeroLayer_used_orderFifteen_pair_matrix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hne : e₁ ≠ e₂)
+    (he₁ : componentRepresentative (secondOrderDefectGraph G) e₁ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₂ : componentRepresentative (secondOrderDefectGraph G) e₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hcard₁ : e₁.supp.ncard = 15) (hcard₂ : e₂.supp.ncard = 15)
+    (hother : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e₁ → f ≠ e₂ → f.supp.ncard = 6) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    Q e₁ e₂ = Q e₂ e₁ ∧ Q e₁ e₁ = Q e₂ e₂ ∧
+      Q e₁ e₁ + Q e₁ e₂ = 3 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let Q := componentQuotientMatrix G D
+  change Q e₁ e₂ = Q e₂ e₁ ∧ Q e₁ e₁ = Q e₂ e₂ ∧
+    Q e₁ e₁ + Q e₁ e₂ = 3
+  have he₁E : e₁ ∈ E := by simpa [D, R, E] using he₁
+  have he₂E : e₂ ∈ E := by simpa [D, R, E] using he₂
+  have hzero₁ : ∀ f ∈ E, f ≠ e₁ → f ≠ e₂ → Q e₁ f = 0 := by
+    intro f hfE hf₁ hf₂
+    have hf : componentRepresentative D f ∈ R := (Finset.mem_filter.mp hfE).2
+    exact (degree_sixteen_zeroLayer_used_orderFifteen_orderSix_cross_eq_zero
+      G hfree hmin hcard c₀ hregChild hcardChild e₁ f
+        (by simpa [D, R] using he₁) hf hcard₁
+        (hother f (by simpa [D, R] using hf) hf₁ hf₂)).1
+  have hzero₂ : ∀ f ∈ E, f ≠ e₁ → f ≠ e₂ → Q e₂ f = 0 := by
+    intro f hfE hf₁ hf₂
+    have hf : componentRepresentative D f ∈ R := (Finset.mem_filter.mp hfE).2
+    exact (degree_sixteen_zeroLayer_used_orderFifteen_orderSix_cross_eq_zero
+      G hfree hmin hcard c₀ hregChild hcardChild e₂ f
+        (by simpa [D, R] using he₂) hf hcard₂
+        (hother f (by simpa [D, R] using hf) hf₁ hf₂)).1
+  have hpairSum (e : D.ConnectedComponent)
+      (hzero : ∀ f ∈ E, f ≠ e₁ → f ≠ e₂ → Q e f = 0) :
+      (∑ f ∈ E, Q e f) = Q e e₁ + Q e e₂ := by
+    have htail : (∑ f ∈ E.erase e₁, Q e f) = Q e e₂ := by
+      apply Finset.sum_eq_single e₂
+      · intro f hf hfe₂
+        have hf' := Finset.mem_erase.mp hf
+        exact hzero f hf'.2 hf'.1 hfe₂
+      · intro he₂not
+        exact (he₂not (Finset.mem_erase.mpr ⟨hne.symm, he₂E⟩)).elim
+    have hsplit := Finset.sum_erase_add E (fun f => Q e f) he₁E
+    rw [htail] at hsplit
+    omega
+  have hsum₁ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₁ he₁
+  have hsum₂ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂ he₂
+  change (∑ f ∈ E, Q e₁ f) = 3 at hsum₁
+  change (∑ f ∈ E, Q e₂ f) = 3 at hsum₂
+  rw [hpairSum e₁ hzero₁] at hsum₁
+  rw [hpairSum e₂ hzero₂] at hsum₂
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₁ e₂
+  change e₁.supp.ncard * Q e₁ e₂ = e₂.supp.ncard * Q e₂ e₁ at hbal
+  rw [hcard₁, hcard₂] at hbal
+  omega
+
 /-- The complete used-cell quotient matrix in the reduced partition
 `[12,4]`.  Exact used-row sums and detailed balance force the cross entries
 `1,3`; the order-twelve diagonal-three exclusion then fixes both diagonals. -/
