@@ -284,6 +284,49 @@ any run whose window overlaps an engine restart.
    oriented-cover kernels, equal-LCM law, A-atom elimination, cherry
    bounds; census: 57 partitions dead by arithmetic (formal engines
    named), survivor map under active reduction.
+6. **Graph-facing partition deaths** (each a certified theorem, all
+   foundational-pure): {8,2⁴}, {5,5,2³}, {12,2,2}, {10,2,2,2} (via the
+   minimum-even-orphan parity interface after the residual census was
+   *refuted* by formal countermodel — see §4), and {12,4} — the last
+   closed by a new pipeline: equal-order quotient-3 phase rigidity
+   (ambient commutator ⇒ circulant), Sidon-from-C4, class exclusions
+   (defect ±1, child-cover mod 3), and a kernel-`decide` finite endpoint
+   (no 3-set in Z₁₂ has ordered difference set {2,4,5,7,8,10}).
+
+### The antipodal law and the collapse of s=0 (in progress)
+
+The campaign's endgame arrived not as a bigger census but as a single
+structural invariant. Every component of the second-order defect
+structure is a labeled cycle; for a cycle of even order n, the
+*antipodal* pairs (v, v + n/2) are never defect-adjacent, so the
+exactly-one-common law applies to them with no escape — adjacency does
+not exempt a pair from needing a third-vertex witness (an early
+"antipodal matching" escape proposed in-room was refuted within the
+hour by the global form of the law: a reminder that the red-team
+discipline cuts both ways).
+
+The invariant: a Chebyshev-style intertwiner identity forces
+*antipodal covariance* on any block between labeled cycles — a witness
+row for both antipodes at position x forces a second witness row at
+x + n/2 — so a witness component of order r can see an antipodal pair
+of a component of order 2h only if r divides h (formally:
+`component_antipodal_commonSource_forces_order_dvd`, proved with no
+affine or phase assumptions, uniformly over equal, larger, smaller,
+and intra-component witnesses, any quotient). The only structures that
+pass the filter are even-fiber covers — and the child component c₀ is
+the unique mod-3 cover in the zero-layer economy, which orphans by
+definition never touch.
+
+Consequence: every orphan atom needs a leg with 2k | m, and the eight
+remaining zero-layer partitions all fail the resulting economy filter —
+five have no admissible atoms at all, three die by a single linear
+combination of load equations (integer Farkas certificates, verified
+independently of the solver that found them). The dual-track texture is
+worth recording: {8,8} was killed twice in one afternoon, once by an
+offset-tiling obstruction that reduced to a displacement-sum invariant
+Σ 2sᵢ ≡ 2 mod 8 (a one-line `Equiv.sum_comp` argument replacing a
+12-case finite enumeration), and once by the antipodal filter — two
+independent proofs, both foundational-pure, neither trusting a solver.
 
 ## 8. Headline theorem — STUB
 
