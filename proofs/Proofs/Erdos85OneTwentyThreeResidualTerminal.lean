@@ -16598,6 +16598,113 @@ theorem degree_sixteen_zeroLayer_D_atom_values
   · change Q e o * (Q o e - 1) = 2
     rw [hrev, hq3]
 
+/-- Exact pointwise atom table for the reduced-order-ten row in
+`[10,2,2,2]`.  Every serviced orphan is either an equal-order mutual `B`
+block, an equal-order quotient-three `C` block, or a non-three-divisible
+`D` atom, with the displayed load and excess values. -/
+theorem degree_sixteen_zeroLayer_order_ten_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 30)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e → f.supp.ncard = 6)
+    (hservice : 0 <
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    (Q o e = 2 ∧ o.supp.ncard = 30 ∧ Q e o = 2 ∧
+      zeroLayerAtomLoad G e o = 20 ∧ zeroLayerAtomExcess G e o = 2) ∨
+    (Q o e = 3 ∧ o.supp.ncard = 30 ∧ Q e o = 3 ∧
+      zeroLayerAtomLoad G e o = 30 ∧ zeroLayerAtomExcess G e o = 6) ∨
+    (¬ 3 ∣ o.supp.ncard ∧
+      zeroLayerAtomLoad G e o = 10 ∧ zeroLayerAtomExcess G e o = 2) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  have heE : e ∈ E := by simpa [D, R, E] using heUsed
+  have hsum : (∑ f ∈ E, Q o f) = 3 := by
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hqle : Q o e ≤ 3 := by
+    have hle : Q o e ≤ ∑ f ∈ E, Q o f :=
+      Finset.single_le_sum (fun _ _ => Nat.zero_le _) heE
+    omega
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e o
+  change e.supp.ncard * Q e o = o.supp.ncard * Q o e at hbal
+  have hqpos : 0 < Q o e := by
+    have hepos := e.nonempty_supp.ncard_pos
+    have hopos := o.nonempty_supp.ncard_pos
+    change 0 < Q e o at hservice
+    nlinarith
+  by_cases hdiv : 3 ∣ o.supp.ncard
+  · have hqne : Q o e ≠ 1 :=
+      degree_sixteen_zeroLayer_reduced_order_ten_quotient_ne_one
+        G hfree hmin hcard c₀ hregChild hcardChild o e ho heUsed he
+          hothers hdiv
+    have hqcases : Q o e = 2 ∨ Q o e = 3 := by omega
+    rcases hqcases with hq2 | hq3
+    · have heq := degree_sixteen_zeroLayer_quotientTwo_into_orderThirty_forces_equal
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e heUsed he
+          (by simpa [D, Q] using hq2)
+      change o.supp.ncard = 30 ∧ Q e o = 2 at heq
+      left
+      refine ⟨hq2, heq.1, heq.2, ?_, ?_⟩
+      · change (e.supp.ncard / 3) * Q e o = 20
+        rw [he, heq.2]
+      · change Q e o * (Q o e - 1) = 2
+        rw [heq.2, hq2]
+    · rcases degree_sixteen_quotientThree_into_orderThirty_classification
+        G hfree hmin hcard o e he (by simpa [D, Q] using hq3) with
+        hshort | heq
+      · exfalso
+        rw [hshort.1] at hdiv
+        norm_num at hdiv
+      · right
+        left
+        change o.supp.ncard = 30 ∧ Q e o = 3 at heq
+        refine ⟨hq3, heq.1, heq.2, ?_, ?_⟩
+        · change (e.supp.ncard / 3) * Q e o = 30
+          rw [he, heq.2]
+        · change Q e o * (Q o e - 1) = 6
+          rw [heq.2, hq3]
+  · right
+    right
+    have he10 : e.supp.ncard = 3 * 10 := by omega
+    have hD := degree_sixteen_zeroLayer_D_atom_values
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e 10 ho heUsed
+        he10 hdiv (by simpa [D, Q] using hservice)
+    exact ⟨hdiv, hD.1, hD.2⟩
+
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     {V : Type*} [Fintype V] [DecidableEq V]
