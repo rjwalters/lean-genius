@@ -15406,6 +15406,100 @@ theorem degree_sixteen_quotientTwo_into_orderThirtySix_classification
         e.supp.ncard * Q e o = o.supp.ncard at hentry
       omega)
 
+/-- A quotient-two leg into an order-thirty component is either an
+order-fifteen reverse cover or an equal-order quotient-two block. -/
+theorem degree_sixteen_quotientTwo_into_orderThirty_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 30)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    (o.supp.ncard = 15 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) ∨
+    (o.supp.ncard = 30 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 2 at hq
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using (show 0 < Q o e by omega))
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    left
+    refine ⟨?_, hentry.1⟩
+    rw [hq, he] at hentry
+    omega
+  · right
+    refine ⟨heq.trans he, ?_⟩
+    rw [heq, hq] at hbal
+    exact Nat.eq_of_mul_eq_mul_left e.nonempty_supp.ncard_pos hbal.symm
+  · have hrevPos : 0 < Q e o := by
+      by_contra hzero
+      have hzero' : Q e o = 0 := Nat.eq_zero_of_not_pos hzero
+      rw [hq, hzero', mul_zero] at hbal
+      exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt hrevPos
+    exact False.elim (by
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega)
+
+/-- In the zero-layer sector, the order-fifteen reverse-cover alternative
+for a quotient-two leg into a used order-thirty component is killed by the
+mandatory minimum-`C₃` cover.  Hence the block is equal-order and mutual
+quotient two. -/
+theorem degree_sixteen_zeroLayer_quotientTwo_into_orderThirty_forces_equal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 30)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    o.supp.ncard = 30 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2 := by
+  rcases degree_sixteen_quotientTwo_into_orderThirty_classification
+    G hfree hmin hcard o e he hq with hshort | hequal
+  · have hc₀card : c₀.supp.ncard = 3 :=
+      (degree_sixteen_smallLayer_component_card
+        G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+          (by norm_num; exact hcardChild)).1 rfl
+    have hoc₀ : o ≠ c₀ := by
+      intro hoe
+      rw [hoe, hc₀card] at hshort
+      omega
+    exact False.elim (degree_sixteen_zeroLayer_no_small_unit_cover
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e o heUsed
+        hoc₀ (by rw [hshort.1]; norm_num) (by rw [hshort.1, he]; norm_num)
+        hshort.2)
+  · exact hequal
+
 /-- An order-thirty-six component has at most one order-eighteen unit
 target: two such covers repeat jointly after eighteen source steps. -/
 theorem degree_sixteen_orderThirtySix_orderEighteen_unit_targets_card_le_one
