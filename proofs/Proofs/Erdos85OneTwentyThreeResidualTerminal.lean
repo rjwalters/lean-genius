@@ -14404,6 +14404,65 @@ theorem degree_sixteen_two_quotientOne_legs_reduced_lcm
         e f o hef hqe hqf hlt
   exact Nat.le_antisymm hmLe hlcmLe
 
+/-- A reduced-order-eight used component cannot be a unit leg of an atom
+whose remaining used targets all have reduced order two.  The `B` shape
+conflicts with divisibility, while the all-unit `A` shape gives incompatible
+pairwise LCM values. -/
+theorem false_of_reduced_order_eight_unit_atom_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m : ℕ) (hom : o.supp.ncard = 3 * m)
+    (he : e.supp.ncard = 24) (heE : e ∈ E)
+    (hothers : ∀ f ∈ E, f ≠ e → f.supp.ncard = 6)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hshape :
+      (∃ f ∈ E,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2) ∨
+      (∃ f ∈ E, ∃ g ∈ E,
+        f ≠ e ∧ g ≠ e ∧ f ≠ g ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o g = 1)) :
+    False := by
+  have he8 : e.supp.ncard = 3 * 8 := by omega
+  have hEightDvd : 8 ∣ m :=
+    (degree_sixteen_quotientOne_reduced_balance
+      G hfree hmin hcard o e m 8 hom he8 hunit).1
+  rcases hshape with hB | hA
+  · obtain ⟨f, hfE, hqf⟩ := hB
+    have hfe : f ≠ e := by
+      intro hEq
+      subst f
+      omega
+    have hf2 : f.supp.ncard = 3 * 2 := by
+      have := hothers f hfE hfe
+      omega
+    have hclass := degree_sixteen_quotientTwo_reduced_order_classification
+      G hfree hmin hcard o f m 2 hom hf2 hqf
+    rcases hEightDvd with ⟨a, ha⟩
+    rcases hclass with hEq | hDouble <;> omega
+  · obtain ⟨f, hfE, g, hgE, hfe, hge, hfg, hqf, hqg⟩ := hA
+    have hf2 : f.supp.ncard = 3 * 2 := by
+      have := hothers f hfE hfe
+      omega
+    have hg2 : g.supp.ncard = 3 * 2 := by
+      have := hothers g hgE hge
+      omega
+    have hEight := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o e f m 8 2 hom he8 hf2
+        (Ne.symm hfe) hunit hqf
+    have hTwo := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o f g m 2 2 hom hf2 hg2 hfg hqf hqg
+    norm_num at hEight hTwo
+    omega
+
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
 entry three, and the owner's reduced order divides the orphan order. -/
