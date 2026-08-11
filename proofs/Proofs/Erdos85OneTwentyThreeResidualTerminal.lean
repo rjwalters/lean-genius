@@ -14962,6 +14962,83 @@ theorem degree_sixteen_quotientTwo_reduced_order_classification
     rw [hq] at hentry
     omega
 
+/-- A quotient-two leg into an order-thirty-six component is either an
+order-eighteen reverse cover or an equal-order quotient-two block. -/
+theorem degree_sixteen_quotientTwo_into_orderThirtySix_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 36)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    (o.supp.ncard = 18 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) ∨
+    (o.supp.ncard = 36 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 2) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard o e
+  change o.supp.ncard * Q o e = e.supp.ncard * Q e o at hbal
+  change Q o e = 2 at hq
+  rcases lt_trichotomy o.supp.ncard e.supp.ncard with hlt | heq | hgt
+  · have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        o e hlt (by simpa [D, Q] using (show 0 < Q o e by omega))
+    change Q e o = 1 ∧ o.supp.ncard ∣ e.supp.ncard ∧
+      o.supp.ncard * Q o e = e.supp.ncard at hentry
+    left
+    refine ⟨?_, hentry.1⟩
+    rw [hq, he] at hentry
+    omega
+  · right
+    refine ⟨heq.trans he, ?_⟩
+    rw [heq, hq] at hbal
+    exact Nat.eq_of_mul_eq_mul_left e.nonempty_supp.ncard_pos hbal.symm
+  · have hrevPos : 0 < Q e o := by
+      by_contra hzero
+      have hzero' : Q e o = 0 := Nat.eq_zero_of_not_pos hzero
+      rw [hq, hzero', mul_zero] at hbal
+      exact (Nat.ne_of_gt o.nonempty_supp.ncard_pos) (by omega)
+    have hentry := secondOrder_componentQuotientMatrix_entries_of_size_lt
+      G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+        e o hgt hrevPos
+    exact False.elim (by
+      change Q o e = 1 ∧ e.supp.ncard ∣ o.supp.ncard ∧
+        e.supp.ncard * Q e o = o.supp.ncard at hentry
+      omega)
+
+/-- An order-thirty-six component has at most one order-eighteen unit
+target: two such covers repeat jointly after eighteen source steps. -/
+theorem degree_sixteen_orderThirtySix_orderEighteen_unit_targets_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 36)
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hS : ∀ o ∈ S, o.supp.ncard = 18 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o = 1) :
+    S.card ≤ 1 := by
+  classical
+  apply Finset.card_le_one.mpr
+  intro o₁ ho₁ o₂ ho₂
+  by_contra hne
+  exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      o₁ o₂ e hne (hS o₁ ho₁).2 (hS o₂ ho₂).2 (by
+        rw [(hS o₁ ho₁).1, (hS o₂ ho₂).1, he]
+        norm_num)
+
 /-- A quotient-one orphan leg is governed entirely by reduced detailed
 balance: if the orphan and used orders are `3m` and `3k`, then `k ∣ m` and
 the reverse quotient is the exact ratio `m / k`. -/
