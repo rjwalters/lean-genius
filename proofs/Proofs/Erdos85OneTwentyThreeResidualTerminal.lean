@@ -12158,6 +12158,42 @@ theorem false_of_zeroLayer_reduced_used_orders_twelve_four_exact_atom_ledger
     (hexcess4 : 6 * nC4 + 2 * nD4 = 4) : False := by
   omega
 
+/-- Pointwise form of the `[12,4]` atom ledger.  The detailed-balance
+classification gives each orphan a common bonus term: its order-twelve load
+is six times its order-twelve excess plus that bonus, while its order-four
+load is twice its order-four excess plus the same bonus.  The exact row
+totals force the bonus sum to be both twenty-four and thirty-six. -/
+theorem false_of_zeroLayer_reduced_used_orders_twelve_four_pointwise_atom_ledger
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (load12 excess12 load4 excess4 bonus : α → ℕ)
+    (hload12 : (∑ x ∈ C, load12 x) = 144)
+    (hexcess12 : (∑ x ∈ C, excess12 x) = 20)
+    (hload4 : (∑ x ∈ C, load4 x) = 48)
+    (hexcess4 : (∑ x ∈ C, excess4 x) = 6)
+    (hpoint12 : ∀ x ∈ C, load12 x = 6 * excess12 x + bonus x)
+    (hpoint4 : ∀ x ∈ C, load4 x = 2 * excess4 x + bonus x) : False := by
+  have hsum12 : (∑ x ∈ C, load12 x) =
+      6 * (∑ x ∈ C, excess12 x) + ∑ x ∈ C, bonus x := by
+    calc
+      (∑ x ∈ C, load12 x) =
+          ∑ x ∈ C, (6 * excess12 x + bonus x) := by
+            apply Finset.sum_congr rfl
+            exact hpoint12
+      _ = 6 * (∑ x ∈ C, excess12 x) + ∑ x ∈ C, bonus x := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+  have hsum4 : (∑ x ∈ C, load4 x) =
+      2 * (∑ x ∈ C, excess4 x) + ∑ x ∈ C, bonus x := by
+    calc
+      (∑ x ∈ C, load4 x) =
+          ∑ x ∈ C, (2 * excess4 x + bonus x) := by
+            apply Finset.sum_congr rfl
+            exact hpoint4
+      _ = 2 * (∑ x ∈ C, excess4 x) + ∑ x ∈ C, bonus x := by
+        rw [Finset.sum_add_distrib, Finset.mul_sum]
+  rw [hload12, hexcess12] at hsum12
+  rw [hload4, hexcess4] at hsum4
+  omega
+
 /-- V10 form of the `[12,4]` ledger.  The diagonal contributions are kept
 explicit; the order-twelve component theorem supplies `q4 ≠ 3`. -/
 theorem false_of_zeroLayer_reduced_used_orders_twelve_four_diagonal_ledger
