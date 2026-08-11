@@ -12,6 +12,8 @@ import Proofs.Erdos85CycleCoverPairMass
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
+import Proofs.Erdos85MinimumEvenOrphanParity
+import Proofs.Erdos85ZeroLayerPartitionClassification
 
 /-!
 # Scalar-123 residual terminal
@@ -11194,6 +11196,49 @@ theorem degree_sixteen_zeroLayer_used_component_reduced_partition
   have hwe := hw e he
   omega
 
+/-- Graph-facing exhaustive census for the zero-layer used components.
+Their reduced orders, counted with multiplicity, form one of the fifty-five
+sorted patterns classified in `ZeroLayerReducedPartitionPattern`. -/
+theorem degree_sixteen_zeroLayer_used_component_partition_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        E.val.map w = ↑([a, b, c, d, e, f, g, h].take E.card) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+  have hcount := degree_sixteen_zeroLayer_used_component_card_le_eight
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change E.card ≤ 8 at hcount
+  have hpartition := degree_sixteen_zeroLayer_used_component_reduced_partition
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, w e) = 16 ∧ ∀ e ∈ E, 2 ≤ w e ∧ w e ≤ 16 at hpartition
+  exact exists_zeroLayer_reduced_partition_pattern_of_finset
+    E w hcount hpartition.1 (fun e he => (hpartition.2 e he).1)
+
 /-- After its mandatory contact with the minimum `C₃` is removed, a single
 zero-layer used component of reduced order `k = |e| / 3` has exactly
 `2(k - 1)` units of local excess left. -/
@@ -12301,86 +12346,6 @@ theorem six_unique_targets_two_each
         simp [na, nb, nc, Finset.sum_add_distrib, ← Finset.sum_filter]
   change na = 2 ∧ nb = 2 ∧ nc = 2
   omega
-
-/-- Residual order kernel.  After excluding the order-twelve triple unit
-cover, total order twelve and balance against three order-six targets force
-exactly two order-six residual components. -/
-theorem residual_three_order_six_targets_two_order_six
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (n qa qb qc ra rb rc : α → ℕ)
-    (hmass : (∑ x ∈ T, n x) = 12)
-    (hnpos : ∀ x ∈ T, 3 ≤ n x)
-    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
-    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
-    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
-    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
-    T.card = 2 ∧ ∀ x ∈ T,
-      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
-  have hpoint : ∀ x ∈ T,
-      n x = 6 ∧ ra x = qa x ∧ rb x = qb x ∧ rc x = qc x := by
-    intro x hx
-    have hnle : n x ≤ 12 := by
-      have hsingle : n x ≤ ∑ y ∈ T, n y :=
-        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx
-      omega
-    have hqa : qa x ≤ 3 := by have := hqsum x hx; omega
-    have hqb : qb x ≤ 3 := by have := hqsum x hx; omega
-    have hqc : qc x ≤ 3 := by have := hqsum x hx; omega
-    have hn12 := hnotTwelve x hx
-    have hs := hqsum x hx
-    have ha := hbala x hx
-    have hb := hbalb x hx
-    have hc := hbalc x hx
-    interval_cases hn : n x <;>
-      interval_cases hqa' : qa x <;>
-      interval_cases hqb' : qb x <;>
-      interval_cases hqc' : qc x <;>
-      norm_num [hn, hqa', hqb', hqc'] at hs ha hb hc hn12 ⊢ <;>
-      omega
-  have hsum : (∑ _x ∈ T, 6) = 12 := by
-    calc
-      (∑ _x ∈ T, 6) = ∑ x ∈ T, n x := by
-        apply Finset.sum_congr rfl
-        intro x hx
-        exact (hpoint x hx).1.symm
-      _ = 12 := hmass
-  have hcard : T.card = 2 := by
-    simpa using hsum
-  exact ⟨hcard, hpoint⟩
-
-/-- Residual `A(2)` census kernel.  Adding zero local excess to the residual
-order kernel forces both order-six components to be unit-connected to all
-three targets. -/
-theorem residual_three_order_six_targets_two_A_census
-    {α : Type*} [DecidableEq α] (T : Finset α)
-    (n qa qb qc ra rb rc : α → ℕ)
-    (hmass : (∑ x ∈ T, n x) = 12)
-    (hnpos : ∀ x ∈ T, 3 ≤ n x)
-    (hqsum : ∀ x ∈ T, qa x + qb x + qc x = 3)
-    (hbala : ∀ x ∈ T, n x * qa x = 6 * ra x)
-    (hbalb : ∀ x ∈ T, n x * qb x = 6 * rb x)
-    (hbalc : ∀ x ∈ T, n x * qc x = 6 * rc x)
-    (hexcess : ∀ x ∈ T,
-      ra x * (qa x - 1) + rb x * (qb x - 1) +
-        rc x * (qc x - 1) = 0)
-    (hnotTwelve : ∀ x ∈ T, n x ≠ 12) :
-    T.card = 2 ∧ ∀ x ∈ T,
-      n x = 6 ∧ qa x = 1 ∧ qb x = 1 ∧ qc x = 1 ∧
-        ra x = 1 ∧ rb x = 1 ∧ rc x = 1 := by
-  have hbase := residual_three_order_six_targets_two_order_six
-    T n qa qb qc ra rb rc hmass hnpos hqsum hbala hbalb hbalc hnotTwelve
-  refine ⟨hbase.1, ?_⟩
-  intro x hx
-  have hp := hbase.2 x hx
-  have hs := hqsum x hx
-  have he := hexcess x hx
-  rw [hp.2.1, hp.2.2.1, hp.2.2.2] at he
-  have hqa : qa x ≤ 3 := by omega
-  have hqb : qb x ≤ 3 := by omega
-  have hqc : qc x ≤ 3 := by omega
-  interval_cases qa x <;> interval_cases qb x <;> interval_cases qc x <;>
-    norm_num at hs he ⊢
 
 /-- Two three-unit rows whose three column sums are all two have total
 `q(q-1)` excess either zero or four.  In the zero case both rows are the
@@ -19893,169 +19858,35 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     exact false_of_two_unit_componentQuotients_lcm_ncard_lt
       G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
         e₂a e₂b o hab hqa hqb (by rw [he₂a, he₂b, h12]; norm_num)
-  have hbase := residual_three_order_six_targets_two_order_six T
-    (fun o => o.supp.ncard) (fun o => Q o e₂a) (fun o => Q o e₂b)
-      (fun o => Q o e₂c) (fun o => Q e₂a o) (fun o => Q e₂b o)
-      (fun o => Q e₂c o) hTmass hnpos hforward hbala hbalb hbalc hnotTwelve
-  have hTforwardA : (∑ o ∈ T, Q o e₂a) = 2 := by
-    calc
-      (∑ o ∈ T, Q o e₂a) = ∑ o ∈ T, Q e₂a o := by
-        apply Finset.sum_congr rfl
-        intro o ho
-        exact (hbase.2 o ho).2.1.symm
-      _ = 2 := hTrevA
-  have hTforwardB : (∑ o ∈ T, Q o e₂b) = 2 := by
-    calc
-      (∑ o ∈ T, Q o e₂b) = ∑ o ∈ T, Q e₂b o := by
-        apply Finset.sum_congr rfl
-        intro o ho
-        exact (hbase.2 o ho).2.2.1.symm
-      _ = 2 := hTrevB
-  have hTforwardC : (∑ o ∈ T, Q o e₂c) = 2 := by
-    calc
-      (∑ o ∈ T, Q o e₂c) = ∑ o ∈ T, Q e₂c o := by
-        apply Finset.sum_congr rfl
-        intro o ho
-        exact (hbase.2 o ho).2.2.2.symm
-      _ = 2 := hTrevC
-  have hdichotomy := two_component_three_target_census T
-    (fun o => Q o e₂a) (fun o => Q o e₂b) (fun o => Q o e₂c)
-      hbase.1 hforward hTforwardA hTforwardB hTforwardC
-  have hmat := degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
-    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a e₂b e₂c
-      h₁₀a h₁₀b h₁₀c hab hac hbc he₁₀ he₂a he₂b he₂c
-      hused₁₀ hused₂a hused₂b hused₂c hE
-  change Q e₁₀ e₁₀ = 3 ∧ Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
-    Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧
-    Q e₁₀ e₂c = 0 ∧ Q e₂c e₁₀ = 0 ∧
-    Q e₂a e₂b = Q e₂b e₂a ∧ Q e₂a e₂c = Q e₂c e₂a ∧
-    Q e₂b e₂c = Q e₂c e₂b ∧
-    Q e₂a e₂a + Q e₂a e₂b + Q e₂a e₂c = 3 ∧
-    Q e₂b e₂b + Q e₂b e₂a + Q e₂b e₂c = 3 ∧
-    Q e₂c e₂c + Q e₂c e₂a + Q e₂c e₂b = 3 at hmat
-  rcases hmat with ⟨_, _, _, _, _, _, _, habSym, hacSym, hbcSym,
-    hrowA, hrowB, hrowC⟩
-  let P : Finset D.ConnectedComponent := {e₂a, e₂b, e₂c}
-  have husedNotT (x : D.ConnectedComponent) (hxUsed : componentRepresentative D x ∈ R) :
-      x ∉ T := by
-    intro hxT
-    have hxC := (Finset.mem_sdiff.mp hxT).1
-    have hxO := (Finset.mem_filter.mp hxC).2
-    exact (Finset.mem_sdiff.mp hxO).2 hxUsed
-  have hPdisjT : Disjoint P T := Finset.disjoint_left.mpr (by
-    intro x hxP hxT
-    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hxP
-    rcases hxP with rfl | rfl | rfl
-    · exact husedNotT e₂a (by simpa [D, R] using hused₂a) hxT
-    · exact husedNotT e₂b (by simpa [D, R] using hused₂b) hxT
-    · exact husedNotT e₂c (by simpa [D, R] using hused₂c) hxT)
-  have hc₀card : c₀.supp.ncard = 3 :=
-    (degree_sixteen_smallLayer_component_card G hfree (s := 0) (Or.inl rfl)
-      hmin hcard c₀ hregChild (by norm_num; exact hcardChild)).1 rfl
-  have hPsub : P ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
-    intro x hx
-    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl | rfl
-    all_goals apply Finset.mem_erase.mpr
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂a; omega, Finset.mem_univ _⟩
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂b; omega, Finset.mem_univ _⟩
-    · exact ⟨by intro h; rw [h, hc₀card] at he₂c; omega, Finset.mem_univ _⟩
-  have hc₀U : componentRepresentative D c₀ ∈ U := by
-    let a : minimumLayerComponent D c₀ := ⟨c₀, rfl⟩
-    let x : minimumLayerVertex D c₀ :=
-      ⟨a, ⟨componentRepresentative D c₀, componentRepresentative_mem D c₀⟩⟩
-    exact Finset.mem_image.mpr ⟨x, Finset.mem_univ _, rfl⟩
-  have hc₀Cnot : c₀ ∉ C := by
-    intro hc
-    have hcO := (Finset.mem_filter.mp hc).2
-    exact (Finset.mem_sdiff.mp (Finset.mem_sdiff.mp hcO).1).2 hc₀U
-  have hTsub : T ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) := by
+  have hOrphan : ∀ o ∈ T, componentRepresentative D o ∈ O := by
     intro o ho
-    exact Finset.mem_erase.mpr
-      ⟨fun h => hc₀Cnot (h ▸ (Finset.mem_sdiff.mp ho).1), Finset.mem_univ _⟩
-  have hPTsub : P ∪ T ⊆ (Finset.univ.erase c₀ : Finset D.ConnectedComponent) :=
-    Finset.union_subset hPsub hTsub
-  have hrowBound (x : D.ConnectedComponent) (hxcard : x.supp.ncard = 6)
-      (hxUsed : componentRepresentative D x ∈ R) :
-      (∑ y ∈ P, Q x y * (Q y x - 1)) +
-        (∑ o ∈ T, Q x o * (Q o x - 1)) ≤ 2 := by
-    have hrow := degree_sixteen_zeroLayer_used_component_row_after_contact_excess
-      G hfree hmin hcard c₀ hc₀min hregChild hcardChild x
-        (by simpa [D, R] using hxUsed)
-    change (∑ y ∈ (Finset.univ.erase c₀ : Finset D.ConnectedComponent),
-      Q x y * (Q y x - 1)) = 2 * (x.supp.ncard / 3 - 1) at hrow
-    have hle := Finset.sum_le_sum_of_subset_of_nonneg
-      (f := fun y : D.ConnectedComponent => Q x y * (Q y x - 1)) hPTsub
-        (fun _ _ _ => Nat.zero_le _)
-    rw [Finset.sum_union hPdisjT, hrow, hxcard] at hle
-    norm_num at hle
-    exact hle
-  have hboundA := hrowBound e₂a he₂a (by simpa [D, R] using hused₂a)
-  have hboundB := hrowBound e₂b he₂b (by simpa [D, R] using hused₂b)
-  have hboundC := hrowBound e₂c he₂c (by simpa [D, R] using hused₂c)
-  simp only [P, Finset.sum_insert, Finset.sum_singleton, hab, hac, hbc,
-    Ne.symm hab, Ne.symm hac, Ne.symm hbc] at hboundA hboundB hboundC
-  have hexceptional :
-      (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
-        Q o e₂b * (Q o e₂b - 1) + Q o e₂c * (Q o e₂c - 1)) = 4 →
-      Q e₂a e₂a = 1 ∧ Q e₂a e₂b = 1 ∧ Q e₂a e₂c = 1 ∧
-      Q e₂b e₂b = 1 ∧ Q e₂b e₂c = 1 ∧ Q e₂c e₂c = 1 := by
-    intro hres
-    have hresSplit :
-        (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1)) +
-        (∑ o ∈ T, Q o e₂b * (Q o e₂b - 1)) +
-        (∑ o ∈ T, Q o e₂c * (Q o e₂c - 1)) = 4 := by
-      rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
-      exact hres
-    have hrewriteA : (∑ o ∈ T, Q e₂a o * (Q o e₂a - 1)) =
-        ∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) := by
-      apply Finset.sum_congr rfl
-      intro o ho
-      rw [(hbase.2 o ho).2.1]
-    have hrewriteB : (∑ o ∈ T, Q e₂b o * (Q o e₂b - 1)) =
-        ∑ o ∈ T, Q o e₂b * (Q o e₂b - 1) := by
-      apply Finset.sum_congr rfl
-      intro o ho
-      rw [(hbase.2 o ho).2.2.1]
-    have hrewriteC : (∑ o ∈ T, Q e₂c o * (Q o e₂c - 1)) =
-        ∑ o ∈ T, Q o e₂c * (Q o e₂c - 1) := by
-      apply Finset.sum_congr rfl
-      intro o ho
-      rw [(hbase.2 o ho).2.2.2]
-    rw [hrewriteA] at hboundA
-    rw [hrewriteB] at hboundB
-    rw [hrewriteC] at hboundC
-    let EU := Q e₂a e₂a * (Q e₂a e₂a - 1) +
-      Q e₂a e₂b * (Q e₂b e₂a - 1) +
-      Q e₂a e₂c * (Q e₂c e₂a - 1) +
-      Q e₂b e₂b * (Q e₂b e₂b - 1) +
-      Q e₂b e₂a * (Q e₂a e₂b - 1) +
-      Q e₂b e₂c * (Q e₂c e₂b - 1) +
-      Q e₂c e₂c * (Q e₂c e₂c - 1) +
-      Q e₂c e₂a * (Q e₂a e₂c - 1) +
-      Q e₂c e₂b * (Q e₂b e₂c - 1)
-    have hEUle : EU ≤ 2 := by
-      dsimp only [EU]
-      omega
-    have hgap := symmetric_three_by_three_row_sum_three_excess_zero_or_four_le
-      (Q e₂a e₂a) (Q e₂a e₂b) (Q e₂a e₂c)
-      (Q e₂b e₂b) (Q e₂b e₂c) (Q e₂c e₂c)
-      hrowA (by rw [habSym]; exact hrowB) (by rw [hacSym, hbcSym]; exact hrowC)
-    change EU = 0 ∨ 4 ≤ EU at hgap
-    have hEUzero : EU = 0 := by omega
-    have hleOne (q : ℕ) (hq : q * (q - 1) ≤ EU) : q ≤ 1 := by
-      have hz : q * (q - 1) = 0 := by omega
-      rcases Nat.mul_eq_zero.mp hz with hz | hz <;> omega
-    have haa := hleOne (Q e₂a e₂a) (by dsimp [EU]; omega)
-    have hab' := hleOne (Q e₂a e₂b) (by dsimp [EU]; rw [habSym]; omega)
-    have hac' := hleOne (Q e₂a e₂c) (by dsimp [EU]; rw [hacSym]; omega)
-    have hbb := hleOne (Q e₂b e₂b) (by dsimp [EU]; omega)
-    have hbc' := hleOne (Q e₂b e₂c) (by dsimp [EU]; rw [hbcSym]; omega)
-    have hcc := hleOne (Q e₂c e₂c) (by dsimp [EU]; omega)
-    omega
-  exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC,
-    fun o ho => ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
-      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩, hdichotomy, hexceptional⟩
+    exact (Finset.mem_filter.mp (Finset.mem_sdiff.mp ho).1).2
+  have hpartition : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∉ U →
+      e = e₁₀ ∨ e = e₂a ∨ e = e₂b ∨ e = e₂c ∨ e ∈ S ∨ e ∈ T := by
+    intro e heU
+    by_cases heR : componentRepresentative D e ∈ R
+    · have heUsed : e ∈ Finset.univ.filter (fun f : D.ConnectedComponent =>
+          componentRepresentative D f ∈ R) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+      rw [hE] at heUsed
+      simpa [h₁₀a, h₁₀b, h₁₀c, hab, hac, hbc] using heUsed
+    · have heO : componentRepresentative D e ∈ O := by
+        exact Finset.mem_sdiff.mpr
+          ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, heU⟩, heR⟩
+      have heC : e ∈ C := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heO⟩
+      by_cases heS : e ∈ S
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl heS))))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr
+          (Finset.mem_sdiff.mpr ⟨heC, heS⟩)))))
+  have hfalse := false_of_degree_sixteen_ten_two_two_two_residual_interface
+    G hfree hmin hcard c₀ e₁₀ e₂a e₂b e₂c
+      he₁₀ he₂a he₂b he₂c S T
+      (fun s hs => (hsix.2.1 s hs).1) hTmass hnpos hnotTwelve
+      hforward hbala hbalb hbalc
+      (by simpa [D, U, R, O] using hOrphan)
+      (by simpa [D, U] using hpartition)
+  exact hfalse.elim
 
 /-- The complementary residual branch in `[10,2,2,2]` is impossible.
 Its unique `(1,1)` residual column, together with the forced all-unit small
