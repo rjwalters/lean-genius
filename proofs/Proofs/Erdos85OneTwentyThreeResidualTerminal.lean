@@ -12800,6 +12800,23 @@ theorem zmod_thirty_two_phase_affine_image_card_two
     have hmul := congrArg (fun z : ZMod 6 => τ * (c - z)) hab
     simpa only [mul_sub, ← mul_assoc, hτ, one_mul] using hmul
 
+/-- An affine projected two-phase sector is mixed-parity exactly when the
+original order-thirty phase pair is mixed-parity. -/
+theorem zmod_thirty_two_phase_affine_image_mixed_parity_iff
+    (A : Finset (ZMod 30)) (hAcard : A.card = 2)
+    (c τ : ZMod 6) (hτ : τ * τ = 1) :
+    let E := A.image fun a => c - τ *
+      ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) a
+    let even₃₀ : ZMod 30 → Prop := fun a =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0
+    let even₆ : ZMod 6 → Prop := fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0
+    (E.filter even₆).card = 1 ↔ (A.filter even₃₀).card = 1 := by
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hAcard
+  dsimp only
+  revert hτ
+  native_decide
+
 /-- A quotient-two phase pair on an order-thirty component cannot collapse
 modulo three when that component has its mandatory unit cover to a disjoint
 minimum `C₃`.  A collapsing pair would make the two corresponding large
@@ -12880,7 +12897,12 @@ theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
     (hBL : componentQuotientMatrix G (secondOrderDefectGraph G) B L = 2)
     (hBS : componentQuotientMatrix G (secondOrderDefectGraph G) B S = 1)
     (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1) :
-    ∃ E : Finset (ZMod 6), E.card = 2 ∧
+    ∃ A : Finset (ZMod 30), ∃ E : Finset (ZMod 6),
+      A.card = 2 ∧ E.card = 2 ∧
+      ((E.filter fun z =>
+          ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
+        (A.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∧
       ∀ z ∈ E, ∃ y : ZMod 30,
         G.Adj (uL 0) (uB y) ∧ G.Adj (uS z) (uB y) := by
   obtain ⟨ε, hε, A, hAcard, hphase⟩ := equalComponent_quotientTwo_exists_phaseSet
@@ -12930,7 +12952,13 @@ theorem orderThirty_B_unitSmall_exists_two_offset_witness_sector
   have hEcard : E.card = 2 := by
     exact zmod_thirty_two_phase_affine_image_card_two A hAcard hnonzero
       aS τ hτsq
-  refine ⟨E, hEcard, ?_⟩
+  have hparity := zmod_thirty_two_phase_affine_image_mixed_parity_iff
+    A hAcard aS τ hτsq
+  change ((E.filter fun z =>
+      ZMod.castHom (by norm_num : 2 ∣ 6) (ZMod 2) z = 0).card = 1 ↔
+    (A.filter fun a =>
+      ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) at hparity
+  refine ⟨A, E, hAcard, hEcard, hparity, ?_⟩
   intro z hz
   have hoff : z - τ * ZMod.castHom (by norm_num : 6 ∣ 30) (ZMod 6) 0 ∈ E := by
     simpa using hz
