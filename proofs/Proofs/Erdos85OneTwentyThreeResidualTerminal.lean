@@ -16105,6 +16105,119 @@ theorem degree_sixteen_zeroLayer_reduced_order_eight_quotient_ne_one
   · simpa [Q] using hunit
   · simpa [Q] using hshape
 
+/-- A reduced-order-ten used component cannot be a unit leg of an atom
+whose remaining used targets all have reduced order two. -/
+theorem false_of_reduced_order_ten_unit_atom_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (E : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (m : ℕ) (hom : o.supp.ncard = 3 * m)
+    (he : e.supp.ncard = 30) (heE : e ∈ E)
+    (hothers : ∀ f ∈ E, f ≠ e → f.supp.ncard = 6)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1)
+    (hshape :
+      (∃ f ∈ E,
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 2) ∨
+      (∃ f ∈ E, ∃ g ∈ E,
+        f ≠ e ∧ g ≠ e ∧ f ≠ g ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o f = 1 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) o g = 1)) :
+    False := by
+  have he10 : e.supp.ncard = 3 * 10 := by omega
+  have hTenDvd : 10 ∣ m :=
+    (degree_sixteen_quotientOne_reduced_balance
+      G hfree hmin hcard o e m 10 hom he10 hunit).1
+  rcases hshape with hB | hA
+  · obtain ⟨f, hfE, hqf⟩ := hB
+    have hfe : f ≠ e := by
+      intro hEq
+      subst f
+      omega
+    have hf2 : f.supp.ncard = 3 * 2 := by
+      have := hothers f hfE hfe
+      omega
+    have hclass := degree_sixteen_quotientTwo_reduced_order_classification
+      G hfree hmin hcard o f m 2 hom hf2 hqf
+    rcases hTenDvd with ⟨a, ha⟩
+    rcases hclass with hEq | hDouble <;> omega
+  · obtain ⟨f, hfE, g, hgE, hfe, hge, hfg, hqf, hqg⟩ := hA
+    have hf2 : f.supp.ncard = 3 * 2 := by
+      have := hothers f hfE hfe
+      omega
+    have hg2 : g.supp.ncard = 3 * 2 := by
+      have := hothers g hgE hge
+      omega
+    have hTen := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o e f m 10 2 hom he10 hf2
+        (Ne.symm hfe) hunit hqf
+    have hTwo := degree_sixteen_two_quotientOne_legs_reduced_lcm
+      G hfree hmin hcard o f g m 2 2 hom hf2 hg2 hfg hqf hqg
+    norm_num at hTen hTwo
+    omega
+
+/-- Graph-facing exclusion of quotient-one atoms on the reduced-order-ten
+row in `[10,2,2,2]`. -/
+theorem degree_sixteen_zeroLayer_reduced_order_ten_quotient_ne_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 30)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e → f.supp.ncard = 6)
+    (hdiv : 3 ∣ o.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e ≠ 1 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  intro hunit
+  obtain ⟨m, hom⟩ := hdiv
+  have heE : e ∈ E := by simpa [D, R, E] using heUsed
+  have hsum : (∑ f ∈ E, Q o f) = 3 := by
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hshape := unit_entry_sum_three_shape E (fun f => Q o f) e heE
+    (by simpa [Q] using hunit) hsum
+  apply false_of_reduced_order_ten_unit_atom_shape
+    G hfree hmin hcard E o e m hom he heE
+  · intro f hfE hfe
+    apply hothers f
+    · exact (Finset.mem_filter.mp hfE).2
+    · exact hfe
+  · simpa [Q] using hunit
+  · simpa [Q] using hshape
+
 /-- Graph-facing paired-order-five connector: a divisible orphan with a unit
 leg into one of the two large used rows has quotient two into the other. -/
 theorem degree_sixteen_zeroLayer_reduced_order_five_unit_forces_pair_two
