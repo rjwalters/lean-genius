@@ -12629,6 +12629,48 @@ theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
   have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
 
+/-- The unit cover from an order-thirty component to the minimum `C₃`
+realizes every nonzero multiple of three as a common-neighbor difference in
+the minimum component. -/
+theorem orderThirty_minimum_cover_multiple_three_difference_witnesses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L C : (secondOrderDefectGraph G).ConnectedComponent)
+    (uL : ZMod 30 → V) (uC : ZMod 3 → V)
+    (huL : Function.Injective uL) (huC : Function.Injective uC)
+    (huLRange : Set.range uL = L.supp) (huCRange : Set.range uC = C.supp)
+    (huLD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uL x) =
+      {uL (x - 1), uL (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1) :
+    ∀ t ∈ (Finset.univ.filter fun z : ZMod 30 =>
+      z ≠ 0 ∧ ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) z = 0),
+      ∃ y : ZMod 3, G.Adj (uL 0) (uC y) ∧ G.Adj (uL t) (uC y) := by
+  obtain ⟨h₃₃₀, σ, _hσ, a, hcover⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 3)
+      (by norm_num : 3 ≤ 30) C L uC uL huC huL huCRange huLRange
+      huCD huLD hLC
+  have h₃₃₀eq : h₃₃₀ = (by norm_num : 3 ∣ 30) := Subsingleton.elim _ _
+  subst h₃₃₀eq
+  intro t ht
+  have htcast : ZMod.castHom (by norm_num : 3 ∣ 30) (ZMod 3) t = 0 :=
+    (Finset.mem_filter.mp ht).2.2
+  refine ⟨a, ?_, ?_⟩
+  · rw [G.adj_comm]
+    apply (hcover a 0).mpr
+    simp
+  · rw [G.adj_comm]
+    apply (hcover a t).mpr
+    rw [htcast]
+    simp
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
