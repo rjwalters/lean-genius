@@ -13053,6 +13053,46 @@ theorem no_two_neighbors_in_component_of_quotient_le_one
     exact Finset.one_lt_card.mpr ⟨a, ha, b, hb, hab⟩
   omega
 
+/-- The minimum `C₃` component in a unit cover of an order-six target
+cannot witness target offset two; its fibers are precisely congruence
+classes modulo three. -/
+theorem orderSix_minimum_cover_no_offset_two_common_neighbor
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (uS : ZMod 6 → V) (uC : ZMod 3 → V)
+    (huS : Function.Injective uS) (huC : Function.Injective uC)
+    (huSRange : Set.range uS = S.supp) (huCRange : Set.range uC = C.supp)
+    (huSD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uS x) =
+      {uS (x - 1), uS (x + 1)})
+    (huCD : ∀ x, (secondOrderDefectGraph G).neighborFinset (uC x) =
+      {uC (x - 1), uC (x + 1)})
+    (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1) :
+    ∀ y ∈ C.supp, ¬ (G.Adj (uS 0) y ∧ G.Adj (uS 2) y) := by
+  obtain ⟨h₃₆, σ, hσ, a, hcover⟩ := componentQuotientOne_exists_affineCover
+    G hfree hd heven hmin hcard (by norm_num : 3 ≤ 3)
+      (by norm_num : 3 ≤ 6) C S uC uS huC huS huCRange huSRange
+      huCD huSD hSC
+  have h₃₆eq : h₃₆ = (by norm_num : 3 ∣ 6) := Subsingleton.elim _ _
+  subst h₃₆eq
+  intro y hy hadj
+  rw [← huCRange] at hy
+  obtain ⟨z, rfl⟩ := hy
+  have hzero := (hcover z 0).mp hadj.1.symm
+  have htwo := (hcover z 2).mp hadj.2.symm
+  have hσne : σ ≠ 0 := by rcases hσ with rfl | rfl <;> norm_num
+  apply hσne
+  have hcastTwo : ZMod.castHom (by norm_num : 3 ∣ 6) (ZMod 3) (2 : ZMod 6) = 2 := by
+    native_decide
+  rw [hcastTwo] at htwo
+  linear_combination htwo - hzero
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
