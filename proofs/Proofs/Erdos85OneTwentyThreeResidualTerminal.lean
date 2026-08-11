@@ -17840,6 +17840,113 @@ theorem degree_sixteen_zeroLayer_twelve_two_two_residual_census
       ⟨hTmass, hpattern, hreverse, hcounts.1, hcounts.2,
         hcountsₐ.1, hcountsₐ.2, hcountsᵦ.1, hcountsᵦ.2⟩)
 
+/-- Full graph-facing death of the zero-layer `[12,2,2]` used partition.
+The rigid census supplies an order-twelve residual component with unit
+reverse quotient from the order-thirty-six large component.  But that large
+component already has unit quotient into the minimum order-three component.
+The two oriented covers repeat jointly after twelve steps, strictly before
+the source cycle closes, contradicting `C₄`-freeness. -/
+theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ g : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ g.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₂ e₂a e₂b : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₂a : e₁₂ ≠ e₂a) (h₁₂b : e₁₂ ≠ e₂b) (hab : e₂a ≠ e₂b)
+    (he₁₂ : e₁₂.supp.ncard = 36)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (hused₁₂ : componentRepresentative (secondOrderDefectGraph G) e₁₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₂, e₂a, e₂b}) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let Sₐ := zeroLayerServicedOrphans G C e₂a
+  let Sᵦ := zeroLayerServicedOrphans G C e₂b
+  let T := C \ (Sₐ ∪ Sᵦ)
+  have hcensus := degree_sixteen_zeroLayer_twelve_two_two_residual_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₂a e₂b
+      h₁₂a h₁₂b hab he₁₂ he₂a he₂b hused₁₂ hused₂a hused₂b hE
+  change (∑ o ∈ T, o.supp.ncard) = 48 ∧
+    (∀ o ∈ T, Q o e₁₂ = 3 ∧ Q o e₂a = 0 ∧ Q o e₂b = 0) ∧
+    (∑ o ∈ T, Q e₁₂ o) = 4 ∧
+    (T.filter fun o => o.supp.ncard = 12).card = 1 ∧
+    (T.filter fun o => o.supp.ncard = 36).card = 1 ∧
+    (Sₐ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+    (Sₐ.filter fun o => o.supp.ncard = 36).card = 2 ∧
+    (Sᵦ.filter fun o => o.supp.ncard = 18).card = 0 ∧
+    (Sᵦ.filter fun o => o.supp.ncard = 36).card = 2 at hcensus
+  have hTwelveCount : (T.filter fun o => o.supp.ncard = 12).card = 1 :=
+    hcensus.2.2.2.1
+  have hTwelvePos : 0 < (T.filter fun o => o.supp.ncard = 12).card := by
+    rw [hTwelveCount]
+    norm_num
+  obtain ⟨o₁₂, ho₁₂⟩ := Finset.card_pos.mp hTwelvePos
+  have ho₁₂Data := Finset.mem_filter.mp ho₁₂
+  have ho₁₂T : o₁₂ ∈ T := ho₁₂Data.1
+  have ho₁₂card : o₁₂.supp.ncard = 12 := ho₁₂Data.2
+  have hforward : Q o₁₂ e₁₂ = 3 := (hcensus.2.1 o₁₂ ho₁₂T).1
+  have hreverse : Q e₁₂ o₁₂ = 1 := by
+    rcases degree_sixteen_quotientThree_into_orderThirtySix_classification
+      G hfree hmin hcard o₁₂ e₁₂ he₁₂
+        (by simpa only [D, Q] using hforward) with hshort | hequal
+    · simpa only [D, Q] using hshort.2
+    · omega
+  have hc₀card : c₀.supp.ncard = 3 :=
+    (degree_sixteen_smallLayer_component_card
+      G hfree (s := 0) (Or.inl rfl) hmin hcard c₀ hregChild
+        (by norm_num; exact hcardChild)).1 rfl
+  have hrep : D.connectedComponentMk (componentRepresentative D e₁₂) = e₁₂ :=
+    (ConnectedComponent.mem_supp_iff e₁₂
+      (componentRepresentative D e₁₂)).mp (componentRepresentative_mem D e₁₂)
+  have hminimumRaw := degree_sixteen_zeroLayer_used_component_quotient_entries
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      (componentRepresentative D e₁₂) (by simpa [D, R] using hused₁₂)
+  have hminimum : Q e₁₂ c₀ = 1 := by
+    dsimp only at hminimumRaw
+    have hminimumFirst := hminimumRaw.1
+    change componentQuotientMatrix G D
+      (D.connectedComponentMk (componentRepresentative D e₁₂)) c₀ = 1 at hminimumFirst
+    rw [hrep] at hminimumFirst
+    exact hminimumFirst
+  have hc₀ne : c₀ ≠ o₁₂ := by
+    intro heq
+    rw [heq, ho₁₂card] at hc₀card
+    omega
+  exact false_of_two_unit_componentQuotients_lcm_ncard_lt
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard
+      c₀ o₁₂ e₁₂ hc₀ne (by simpa only [D, Q] using hminimum)
+        (by simpa only [D, Q] using hreverse) (by
+          rw [hc₀card, ho₁₂card, he₁₂]
+          norm_num)
+
 /-- In the two-layer branch exactly 168 vertices lie outside both the
 five-vertex minimum layer and its seventy-point service cell. -/
 theorem degree_sixteen_twoLayer_unused_exterior_card_eq_oneSixtyEight
