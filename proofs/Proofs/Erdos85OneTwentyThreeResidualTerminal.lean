@@ -13235,6 +13235,87 @@ theorem false_of_zeroLayer_weighted_load_cost_budget
     Nat.mul_le_mul_left q hbudget
   omega
 
+/-- A positive used-row load cannot be assembled when the antipodal filter
+excludes every orphan atom on that row.  This is the common endpoint for the
+five survivor patterns with no divisor-compatible atom. -/
+theorem false_of_zeroLayer_positive_load_of_all_atoms_excluded
+    {α : Type*} [DecidableEq α] (C : Finset α) (load : α → ℕ)
+    (target : ℕ) (htarget : 0 < target)
+    (hexcluded : ∀ x ∈ C, load x = 0)
+    (hload : (∑ x ∈ C, load x) = target) : False := by
+  have hzero : (∑ x ∈ C, load x) = 0 := by
+    apply Finset.sum_eq_zero
+    exact hexcluded
+  omega
+
+/-- Antipodal-filtered load endpoint for `[8,4,4]`.  The two permitted
+`B`-atom families would each have multiplicity six from the small-row loads,
+while the large row permits only six atoms in total. -/
+theorem false_of_zeroLayer_antipodal_load_eight_four_four
+    (n₁ n₂ : ℕ)
+    (hsmall₁ : 8 * n₁ = 48) (hsmall₂ : 8 * n₂ = 48)
+    (hlarge : 16 * (n₁ + n₂) = 96) : False := by
+  omega
+
+/-- Farkas load endpoint for `[4,4,4,2,2]`.  Every divisor-compatible atom
+has equal weighted load on the three order-four and two order-two sides,
+but the exact row targets have weighted imbalance `192`. -/
+theorem false_of_zeroLayer_antipodal_load_four_four_four_two_two
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (l₀ l₁ l₂ l₃ l₄ : α → ℕ)
+    (h₀ : (∑ x ∈ C, l₀ x) = 48)
+    (h₁ : (∑ x ∈ C, l₁ x) = 48)
+    (h₂ : (∑ x ∈ C, l₂ x) = 48)
+    (h₃ : (∑ x ∈ C, l₃ x) = 24)
+    (h₄ : (∑ x ∈ C, l₄ x) = 24)
+    (hpoint : ∀ x ∈ C,
+      4 * (l₀ x + l₁ x + l₂ x) = 8 * (l₃ x + l₄ x)) : False := by
+  have hsum : 4 * ((∑ x ∈ C, l₀ x) + (∑ x ∈ C, l₁ x) +
+      (∑ x ∈ C, l₂ x)) =
+      8 * ((∑ x ∈ C, l₃ x) + (∑ x ∈ C, l₄ x)) := by
+    calc
+      4 * ((∑ x ∈ C, l₀ x) + (∑ x ∈ C, l₁ x) +
+          (∑ x ∈ C, l₂ x)) =
+          ∑ x ∈ C, 4 * (l₀ x + l₁ x + l₂ x) := by
+            simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+      _ = ∑ x ∈ C, 8 * (l₃ x + l₄ x) := by
+        apply Finset.sum_congr rfl
+        exact hpoint
+      _ = 8 * ((∑ x ∈ C, l₃ x) + (∑ x ∈ C, l₄ x)) := by
+        simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+  rw [h₀, h₁, h₂, h₃, h₄] at hsum
+  norm_num at hsum
+
+/-- Farkas load endpoint for `[4,4,2,2,2,2]`.  Every compatible atom has
+nonpositive weight for `(-8,-3,6,6,6,6)`, whereas the exact row loads have
+strictly positive total weight. -/
+theorem false_of_zeroLayer_antipodal_load_four_four_two_two_two_two
+    {α : Type*} [DecidableEq α] (C : Finset α)
+    (l₀ l₁ l₂ l₃ l₄ l₅ : α → ℕ)
+    (h₀ : (∑ x ∈ C, l₀ x) = 48)
+    (h₁ : (∑ x ∈ C, l₁ x) = 48)
+    (h₂ : (∑ x ∈ C, l₂ x) = 24)
+    (h₃ : (∑ x ∈ C, l₃ x) = 24)
+    (h₄ : (∑ x ∈ C, l₄ x) = 24)
+    (h₅ : (∑ x ∈ C, l₅ x) = 24)
+    (hpoint : ∀ x ∈ C,
+      6 * (l₂ x + l₃ x + l₄ x + l₅ x) ≤
+        8 * l₀ x + 3 * l₁ x) : False := by
+  have hsum : 6 * ((∑ x ∈ C, l₂ x) + (∑ x ∈ C, l₃ x) +
+      (∑ x ∈ C, l₄ x) + (∑ x ∈ C, l₅ x)) ≤
+      8 * (∑ x ∈ C, l₀ x) + 3 * (∑ x ∈ C, l₁ x) := by
+    calc
+      6 * ((∑ x ∈ C, l₂ x) + (∑ x ∈ C, l₃ x) +
+          (∑ x ∈ C, l₄ x) + (∑ x ∈ C, l₅ x)) =
+          ∑ x ∈ C, 6 * (l₂ x + l₃ x + l₄ x + l₅ x) := by
+            simp only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]
+      _ ≤ ∑ x ∈ C, (8 * l₀ x + 3 * l₁ x) :=
+        Finset.sum_le_sum hpoint
+      _ = 8 * (∑ x ∈ C, l₀ x) + 3 * (∑ x ∈ C, l₁ x) := by
+        simp only [Finset.sum_add_distrib, Finset.mul_sum]
+  rw [h₀, h₁, h₂, h₃, h₄, h₅] at hsum
+  norm_num at hsum
+
 /-- With one reduced used component of order sixteen, the classified `C`
 and `D` atoms cannot simultaneously meet its exact load and exact per-row
 after-contact excess. -/
