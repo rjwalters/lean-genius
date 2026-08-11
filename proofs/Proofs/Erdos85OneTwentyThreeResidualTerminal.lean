@@ -15585,6 +15585,69 @@ def zeroLayerAtomExcess
   componentQuotientMatrix G (secondOrderDefectGraph G) e o *
     (componentQuotientMatrix G (secondOrderDefectGraph G) o e - 1)
 
+/-- Finite arithmetic descriptor for a zero-layer orphan row over an
+indexed family of used components.  The constructors record only the row
+shape and its used legs; the reduced used-order function determines all
+loads and excesses. -/
+inductive ZeroLayerAtom (ι : Type*) where
+  /-- A concentrated quotient-three row on one equal-order used block. -/
+  | C (e : ι)
+  /-- A non-three-divisible concentrated row on one used block. -/
+  | D (e : ι)
+  /-- A quotient-two leg on `e` and a quotient-one leg on `f`. -/
+  | B (e f : ι)
+  /-- Three quotient-one legs. -/
+  | A (a b c : ι)
+  deriving DecidableEq
+
+namespace ZeroLayerAtom
+
+/-- Arithmetic side conditions for an atom descriptor.  The zero-layer
+child-cover lemmas force the `B` and `C` owner to have the same reduced
+order as the orphan; hence a `B` unit leg only requires divisibility by
+the owner order.  For an `A` atom the common orphan reduced order is the
+common pairwise lcm. -/
+def Valid {ι : Type*} [DecidableEq ι] (K : ι → ℕ) : ZeroLayerAtom ι → Prop
+  | C _ => True
+  | D e => 3 ≤ K e ∧ ¬ 3 ∣ K e
+  | B e f => e ≠ f ∧ K f ∣ K e
+  | A a b c =>
+      a ≠ b ∧ a ≠ c ∧ b ≠ c ∧
+        Nat.lcm (K a) (K b) = Nat.lcm (K a) (K c) ∧
+        Nat.lcm (K a) (K b) = Nat.lcm (K b) (K c)
+
+/-- Reduced orphan order represented by a valid atom.  For `D`, the
+actual orphan order is `K e`, rather than three times this value; this
+field is used only for the three-divisible `A/B/C` balance table. -/
+def reducedOrder {ι : Type*} (K : ι → ℕ) : ZeroLayerAtom ι → ℕ
+  | C e => K e
+  | D e => K e
+  | B e _ => K e
+  | A a b _ => Nat.lcm (K a) (K b)
+
+/-- Load contributed by one atom to the used row indexed by `i`. -/
+def load {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
+    (i : ι) : ZeroLayerAtom ι → ℕ
+  | C e => if i = e then 3 * K e else 0
+  | D e => if i = e then K e else 0
+  | B e f =>
+      (if i = e then 2 * K e else 0) +
+        (if i = f then K e else 0)
+  | A a b c =>
+      let m := Nat.lcm (K a) (K b)
+      (if i = a then m else 0) + (if i = b then m else 0) +
+        (if i = c then m else 0)
+
+/-- Local-excess contribution of one atom to the used row indexed by
+`i`.  Unit legs and `A` atoms have zero excess. -/
+def excess {ι : Type*} [DecidableEq ι] (i : ι) : ZeroLayerAtom ι → ℕ
+  | C e => if i = e then 6 else 0
+  | D e => if i = e then 2 else 0
+  | B e _ => if i = e then 2 else 0
+  | A _ _ _ => 0
+
+end ZeroLayerAtom
+
 /-- In the zero-layer branch the minimum-layer image is exactly the support
 of `c₀`.  Consequently every other defect component is classified uniquely
 by whether its representative lies in the used exterior or in the orphan
