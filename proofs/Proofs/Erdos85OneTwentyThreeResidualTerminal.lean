@@ -13623,6 +13623,124 @@ theorem degree_sixteen_zeroLayer_used_matrix_twelve_two_two
   interval_cases ha : Q e₁₂ e₂a <;>
     interval_cases hb : Q e₁₂ e₂b <;> omega
 
+/-- Used-matrix package for the reduced partition `[10,2,2,2]`.  The
+order-thirty row is isolated with diagonal three; the three order-six rows
+form a symmetric matrix and each has total used quotient three. -/
+theorem degree_sixteen_zeroLayer_used_matrix_ten_two_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e₁₀ e₂a e₂b e₂c : (secondOrderDefectGraph G).ConnectedComponent)
+    (h₁₀a : e₁₀ ≠ e₂a) (h₁₀b : e₁₀ ≠ e₂b) (h₁₀c : e₁₀ ≠ e₂c)
+    (hab : e₂a ≠ e₂b) (hac : e₂a ≠ e₂c) (hbc : e₂b ≠ e₂c)
+    (he₁₀ : e₁₀.supp.ncard = 30)
+    (he₂a : e₂a.supp.ncard = 6) (he₂b : e₂b.supp.ncard = 6)
+    (he₂c : e₂c.supp.ncard = 6)
+    (hused₁₀ : componentRepresentative (secondOrderDefectGraph G) e₁₀ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂a : componentRepresentative (secondOrderDefectGraph G) e₂a ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂b : componentRepresentative (secondOrderDefectGraph G) e₂b ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hused₂c : componentRepresentative (secondOrderDefectGraph G) e₂c ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hE :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      Finset.univ.filter (fun f : D.ConnectedComponent =>
+        componentRepresentative D f ∈ R) = {e₁₀, e₂a, e₂b, e₂c}) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    Q e₁₀ e₁₀ = 3 ∧
+      Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
+      Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧
+      Q e₁₀ e₂c = 0 ∧ Q e₂c e₁₀ = 0 ∧
+      Q e₂a e₂b = Q e₂b e₂a ∧
+      Q e₂a e₂c = Q e₂c e₂a ∧
+      Q e₂b e₂c = Q e₂c e₂b ∧
+      Q e₂a e₂a + Q e₂a e₂b + Q e₂a e₂c = 3 ∧
+      Q e₂b e₂b + Q e₂b e₂a + Q e₂b e₂c = 3 ∧
+      Q e₂c e₂c + Q e₂c e₂a + Q e₂c e₂b = 3 := by
+  classical
+  dsimp only at hE ⊢
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  change Q e₁₀ e₁₀ = 3 ∧
+    Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 ∧
+    Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 ∧
+    Q e₁₀ e₂c = 0 ∧ Q e₂c e₁₀ = 0 ∧
+    Q e₂a e₂b = Q e₂b e₂a ∧
+    Q e₂a e₂c = Q e₂c e₂a ∧
+    Q e₂b e₂c = Q e₂c e₂b ∧
+    Q e₂a e₂a + Q e₂a e₂b + Q e₂a e₂c = 3 ∧
+    Q e₂b e₂b + Q e₂b e₂a + Q e₂b e₂c = 3 ∧
+    Q e₂c e₂c + Q e₂c e₂a + Q e₂c e₂b = 3
+  have hcrossa := degree_sixteen_zeroLayer_used_orderThirty_orderSix_cross_eq_zero
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂a
+      hused₁₀ hused₂a he₁₀ he₂a
+  have hcrossb := degree_sixteen_zeroLayer_used_orderThirty_orderSix_cross_eq_zero
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂b
+      hused₁₀ hused₂b he₁₀ he₂b
+  have hcrossc := degree_sixteen_zeroLayer_used_orderThirty_orderSix_cross_eq_zero
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ e₂c
+      hused₁₀ hused₂c he₁₀ he₂c
+  have hrow₁₀ := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₁₀ hused₁₀
+  have hrowa := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂a hused₂a
+  have hrowb := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂b hused₂b
+  have hrowc := degree_sixteen_zeroLayer_used_to_used_quotient_sum_eq_three
+    G hfree hmin hcard c₀ hregChild hcardChild e₂c hused₂c
+  change (∑ f ∈ E, Q e₁₀ f) = 3 at hrow₁₀
+  change (∑ f ∈ E, Q e₂a f) = 3 at hrowa
+  change (∑ f ∈ E, Q e₂b f) = 3 at hrowb
+  change (∑ f ∈ E, Q e₂c f) = 3 at hrowc
+  have hE' : E = {e₁₀, e₂a, e₂b, e₂c} := by simpa [D, R, E] using hE
+  rw [hE'] at hrow₁₀ hrowa hrowb hrowc
+  simp [h₁₀a, h₁₀b, h₁₀c, hab, hac, hbc,
+    Ne.symm h₁₀a, Ne.symm h₁₀b, Ne.symm h₁₀c,
+    Ne.symm hab, Ne.symm hac, Ne.symm hbc] at hrow₁₀ hrowa hrowb hrowc
+  have hbalab := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂a e₂b
+  have hbalac := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂a e₂c
+  have hbalbc := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 16) (by norm_num) (by norm_num) hmin hcard e₂b e₂c
+  change e₂a.supp.ncard * Q e₂a e₂b =
+    e₂b.supp.ncard * Q e₂b e₂a at hbalab
+  change e₂a.supp.ncard * Q e₂a e₂c =
+    e₂c.supp.ncard * Q e₂c e₂a at hbalac
+  change e₂b.supp.ncard * Q e₂b e₂c =
+    e₂c.supp.ncard * Q e₂c e₂b at hbalbc
+  rw [he₂a, he₂b] at hbalab
+  rw [he₂a, he₂c] at hbalac
+  rw [he₂b, he₂c] at hbalbc
+  change Q e₁₀ e₂a = 0 ∧ Q e₂a e₁₀ = 0 at hcrossa
+  change Q e₁₀ e₂b = 0 ∧ Q e₂b e₁₀ = 0 at hcrossb
+  change Q e₁₀ e₂c = 0 ∧ Q e₂c e₁₀ = 0 at hcrossc
+  rcases hcrossa with ⟨h₁₀aZero, ha₁₀Zero⟩
+  rcases hcrossb with ⟨h₁₀bZero, hb₁₀Zero⟩
+  rcases hcrossc with ⟨h₁₀cZero, hc₁₀Zero⟩
+  omega
+
 /-- Load contributed by an orphan `o` to a used component `e`, measured in
 reduced used-order units. -/
 def zeroLayerAtomLoad
