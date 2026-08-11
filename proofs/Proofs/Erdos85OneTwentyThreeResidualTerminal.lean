@@ -12627,6 +12627,92 @@ theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
   have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
 
+/-- Affine normal form of a globally oriented cyclic cover after projecting
+the source cycle to the target modulus. -/
+theorem oriented_cycleCoverMap_affine_formula
+    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
+    (f : ZMod n → ZMod r)
+    (horient : (∀ y, f (y + 1) = f y + 1) ∨
+      (∀ y, f (y + 1) = f y - 1)) :
+    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
+      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
+  have hcast (y : ZMod n) :
+      ZMod.castHom hrn (ZMod r) y = (y.val : ZMod r) := by
+    rw [ZMod.castHom_apply]
+    cases n with
+    | zero => exact (NeZero.ne 0 rfl).elim
+    | succ n => rfl
+  rcases horient with hforward | hreverse
+  · left
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by
+        rw [hcast]
+  · right
+    have hind : ∀ k : ℕ,
+        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k ih =>
+          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
+          ring
+    intro y
+    calc
+      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
+      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
+      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
+        rw [hcast]
+
+/-- Affine normal form of a graph-facing quotient-one component cover. -/
+theorem componentQuotientOne_exists_affineCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod r → V) (v : ZMod n → V)
+    (hu : Function.Injective u) (hv : Function.Injective v)
+    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
+      {v (x - 1), v (x + 1)})
+    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
+    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
+      ∃ a : ZMod r, ∀ x y,
+        G.Adj (u x) (v y) ↔
+          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
+  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
+    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
+      huD hvD hone
+  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
+  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
+  rcases haffine with hforward | hreverse
+  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hforward]
+    simp
+  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
+    intro x y
+    rw [hfAdj, hreverse]
+    ring_nf
+
 /-- The unit cover from an order-thirty component to the minimum `C₃`
 realizes every nonzero multiple of three as a common-neighbor difference in
 the minimum component. -/
@@ -13597,49 +13683,6 @@ theorem six_offset_partition_two_B_sectors_same_parity_type
     exact Finset.card_le_card (Finset.filter_subset _ _)
   omega
 
-/-- Affine normal form of a globally oriented cyclic cover after projecting
-the source cycle to the target modulus.  This is the coordinate interface
-for composing the order-thirty `B` matchings with their order-six unit
-targets. -/
-theorem oriented_cycleCoverMap_affine_formula
-    {r n : ℕ} [NeZero r] [NeZero n] (hrn : r ∣ n)
-    (f : ZMod n → ZMod r)
-    (horient : (∀ y, f (y + 1) = f y + 1) ∨
-      (∀ y, f (y + 1) = f y - 1)) :
-    (∀ y, f y = f 0 + ZMod.castHom hrn (ZMod r) y) ∨
-      (∀ y, f y = f 0 - ZMod.castHom hrn (ZMod r) y) := by
-  rcases horient with hforward | hreverse
-  · left
-    have hind : ∀ k : ℕ,
-        f ((k : ℕ) : ZMod n) = f 0 + ((k : ℕ) : ZMod r) := by
-      intro k
-      induction k with
-      | zero => simp
-      | succ k ih =>
-          rw [Nat.cast_succ, hforward, ih, Nat.cast_succ]
-          ring
-    intro y
-    calc
-      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
-      _ = f 0 + ((y.val : ℕ) : ZMod r) := hind y.val
-      _ = f 0 + ZMod.castHom hrn (ZMod r) y := by
-        rw [← ZMod.natCast_zmod_val y, map_natCast]
-  · right
-    have hind : ∀ k : ℕ,
-        f ((k : ℕ) : ZMod n) = f 0 - ((k : ℕ) : ZMod r) := by
-      intro k
-      induction k with
-      | zero => simp
-      | succ k ih =>
-          rw [Nat.cast_succ, hreverse, ih, Nat.cast_succ]
-          ring
-    intro y
-    calc
-      f y = f ((y.val : ℕ) : ZMod n) := by rw [ZMod.natCast_zmod_val]
-      _ = f 0 - ((y.val : ℕ) : ZMod r) := hind y.val
-      _ = f 0 - ZMod.castHom hrn (ZMod r) y := by
-        rw [← ZMod.natCast_zmod_val y, map_natCast]
-
 /-- Composition of one oriented order-thirty matching with an oriented
 order-six cover produces one affine path-offset class.  Taking the image of
 a two-phase matching support therefore gives the two-offset sector used in
@@ -13728,45 +13771,6 @@ theorem equalComponent_quotientTwo_exists_phaseSet
       exact hreverse a b
     have htranslate := mem_mixedAnchorSupport_rect_translate G hshift y x
     simpa only [A, mem_mixedAnchorSupport_iff] using htranslate
-
-/-- Affine normal form of a graph-facing quotient-one component cover. -/
-theorem componentQuotientOne_exists_affineCover
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
-    (hfree : ¬ containsC4 V G) {d r n : ℕ} [NeZero r] [NeZero n]
-    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
-    (hcard : Fintype.card V = d * (d - 1) + 3)
-    (hr3 : 3 ≤ r) (hn3 : 3 ≤ n)
-    (c e : (secondOrderDefectGraph G).ConnectedComponent)
-    (u : ZMod r → V) (v : ZMod n → V)
-    (hu : Function.Injective u) (hv : Function.Injective v)
-    (huRange : Set.range u = c.supp) (hvRange : Set.range v = e.supp)
-    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
-      {u (x - 1), u (x + 1)})
-    (hvD : ∀ x, (secondOrderDefectGraph G).neighborFinset (v x) =
-      {v (x - 1), v (x + 1)})
-    (hone : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 1) :
-    ∃ hrn : r ∣ n, ∃ σ : ZMod r, (σ = 1 ∨ σ = -1) ∧
-      ∃ a : ZMod r, ∀ x y,
-        G.Adj (u x) (v y) ↔
-          x = a + σ * ZMod.castHom hrn (ZMod r) y := by
-  obtain ⟨f, hfAdj, hfOrient⟩ := exists_cycleCoverMap_of_componentQuotient_eq_one
-    G hfree hd heven hmin hcard hr3 hn3 c e u v hu hv huRange hvRange
-      huD hvD hone
-  have hrn := sourceLength_dvd_targetLength_of_cycleCoverMap f hfOrient
-  have haffine := oriented_cycleCoverMap_affine_formula hrn f hfOrient
-  rcases haffine with hforward | hreverse
-  · refine ⟨hrn, 1, Or.inl rfl, f 0, ?_⟩
-    intro x y
-    rw [hfAdj, hforward]
-    simp
-  · refine ⟨hrn, -1, Or.inr rfl, f 0, ?_⟩
-    intro x y
-    rw [hfAdj, hreverse]
-    ring_nf
 
 /-- Projection of an admissible order-thirty phase pair to `ZMod 6` does
 not collapse the pair: a difference nonzero modulo three remains nonzero
