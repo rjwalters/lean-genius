@@ -12839,6 +12839,52 @@ theorem orderThirty_mutual_quotientTwo_exists_difference_sector
     rw [this]
     exact hpdata.1
 
+/-- Any nonzero common-neighbor difference sector along a labeled
+second-order cycle lies in the admissible residue set: offsets `±1` are
+defect edges and hence have no common neighbor in the original graph. -/
+theorem difference_sector_subset_orderThirty_admissible_of_witnesses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (u : ZMod 30 → V)
+    (hu : Function.Injective u)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (A : Finset (ZMod 30)) (hzero : (0 : ZMod 30) ∉ A)
+    (hwitness : ∀ t ∈ A, ∃ y, G.Adj (u 0) y ∧ G.Adj (u t) y) :
+    A ⊆ (((Finset.univ.erase 0).erase 1).erase (-1)) := by
+  intro t ht
+  have ht0 : t ≠ 0 := fun h => hzero (h ▸ ht)
+  have hut : u 0 ≠ u t := hu.ne (Ne.symm ht0)
+  obtain ⟨y, h0y, hty⟩ := hwitness t ht
+  have hyMem : y ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨h0y, hty.symm⟩
+  have ht1 : t ≠ 1 := by
+    intro h
+    have hD : (secondOrderDefectGraph G).Adj (u 0) (u t) := by
+      rw [h, (secondOrderDefectGraph G).mem_neighborFinset, huD]
+      simp
+    have hcommon :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree hut).mp hD
+    have : G.neighborFinset (u 0) ∩ G.neighborFinset (u t) = ∅ :=
+      Finset.card_eq_zero.mp hcommon
+    rw [this] at hyMem
+    simp at hyMem
+  have htm1 : t ≠ -1 := by
+    intro h
+    have hD : (secondOrderDefectGraph G).Adj (u 0) (u t) := by
+      rw [h, (secondOrderDefectGraph G).mem_neighborFinset, huD]
+      simp
+    have hcommon :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree hut).mp hD
+    have : G.neighborFinset (u 0) ∩ G.neighborFinset (u t) = ∅ :=
+      Finset.card_eq_zero.mp hcommon
+    rw [this] at hyMem
+    simp at hyMem
+  simp [ht0, ht1, htm1]
+
 /-- Cardinality closure for the order-thirty row packing.  Three disjoint
 admissible sectors of sizes nine, six, and twelve exhaust the twenty-seven
 allowed residues. -/
