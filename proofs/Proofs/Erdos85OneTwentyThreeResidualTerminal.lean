@@ -21205,6 +21205,57 @@ theorem degree_sixteen_zeroLayer_orphan_component_order_sum_eq_oneNinetyTwo
     _ = 192 := degree_sixteen_zeroLayer_unused_exterior_card_eq_oneNinetyTwo
       G hfree hmin hcard c₀ hregChild hcardChild
 
+/-- Graph-facing closure of the `[16]` used partition.  The 192-point
+orphan mass supplies a named orphan, to which the antipodal singleton-used
+component obstruction applies. -/
+theorem false_of_degree_sixteen_zeroLayer_used_orders_sixteen_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he : e.supp.ncard = 48)
+    (hE : (Finset.univ.filter (fun f :
+        (secondOrderDefectGraph G).ConnectedComponent ↦
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))) = {e})
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \
+    Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent ↦
+    componentRepresentative D o ∈ O)
+  have hmass :=
+    degree_sixteen_zeroLayer_orphan_component_order_sum_eq_oneNinetyTwo
+      G hfree hmin hcard c₀ hregChild hcardChild
+  change (∑ o ∈ C, o.supp.ncard) = 192 at hmass
+  have hCnonempty : C.Nonempty := by
+    by_contra hempty
+    rw [Finset.not_nonempty_iff_eq_empty.mp hempty] at hmass
+    simp at hmass
+  obtain ⟨o, hoC⟩ := hCnonempty
+  exact false_of_degree_sixteen_zeroLayer_single_used_component_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild e o he
+      (Finset.mem_filter.mp hoC).2 hE u hu huRange huD hthree
+
 /-- The reduced zero-layer used partition `[10,2,2,2]` is impossible.  The
 six large-serviced blocks leave residual mass twelve; the residual rows and
 component partition instantiate the corrected minimum-even-orphan
