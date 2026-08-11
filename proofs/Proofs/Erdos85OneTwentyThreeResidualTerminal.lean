@@ -14740,6 +14740,68 @@ theorem degree_sixteen_zeroLayer_reduced_order_eight_quotient_ne_one
   · simpa [Q] using hunit
   · simpa [Q] using hshape
 
+/-- Graph-facing paired-order-five connector: a divisible orphan with a unit
+leg into one of the two large used rows has quotient two into the other. -/
+theorem degree_sixteen_zeroLayer_reduced_order_five_unit_forces_pair_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e₁ e₂ : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (he₁Used : componentRepresentative (secondOrderDefectGraph G) e₁ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₂Used : componentRepresentative (secondOrderDefectGraph G) e₂ ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he₁ : e₁.supp.ncard = 15) (he₂ : e₂.supp.ncard = 15)
+    (he₁₂ : e₁ ≠ e₂)
+    (hothers : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) f ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      f ≠ e₁ → f ≠ e₂ → f.supp.ncard = 6)
+    (hdiv : 3 ∣ o.supp.ncard)
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e₁ = 1) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) o e₂ = 2 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  obtain ⟨m, hom⟩ := hdiv
+  have he₁E : e₁ ∈ E := by simpa [D, R, E] using he₁Used
+  have he₂E : e₂ ∈ E := by simpa [D, R, E] using he₂Used
+  have hsum : (∑ f ∈ E, Q o f) = 3 := by
+    simpa [D, R, E, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  have hshape := unit_entry_sum_three_shape E (fun f => Q o f) e₁ he₁E
+    (by simpa [Q] using hunit) hsum
+  apply reduced_order_five_unit_leg_forces_other_large_B_partner
+    G hfree hmin hcard E o e₁ e₂ m hom he₁ he₂ he₁E he₂E he₁₂
+  · intro f hfE hfe₁ hfe₂
+    apply hothers f
+    · exact (Finset.mem_filter.mp hfE).2
+    · exact hfe₁
+    · exact hfe₂
+  · simpa [Q] using hunit
+  · simpa [Q] using hshape
+
 /-- A zero-layer orphan component whose order is not divisible by three has
 a unique used owner.  Its entire quotient row is concentrated there with
 entry three, and the owner's reduced order divides the orphan order. -/
@@ -14914,8 +14976,8 @@ theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_D_atom
   · exfalso
     exact hnot (heDvd.trans heoDvd)
 
-/-- The serviced order-eight `D` atom has exact load eight and excess two. -/
-theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
+/-- A serviced reduced-order-`k` `D` atom has exact load `k` and excess two. -/
+theorem degree_sixteen_zeroLayer_D_atom_values
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -14931,7 +14993,7 @@ theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
       (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
     (hcardChild :
       Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
-    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent) (k : ℕ)
     (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
       (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
         Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
@@ -14939,10 +15001,10 @@ theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
       Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
         (secondOrderDefectGraph G) c₀))
-    (he : e.supp.ncard = 24) (hnot : ¬ 3 ∣ o.supp.ncard)
+    (he : e.supp.ncard = 3 * k) (hnot : ¬ 3 ∣ o.supp.ncard)
     (hservice : 0 <
       componentQuotientMatrix G (secondOrderDefectGraph G) e o) :
-    zeroLayerAtomLoad G e o = 8 ∧ zeroLayerAtomExcess G e o = 2 := by
+    zeroLayerAtomLoad G e o = k ∧ zeroLayerAtomExcess G e o = 2 := by
   classical
   let D := secondOrderDefectGraph G
   let Q := componentQuotientMatrix G D
@@ -14980,7 +15042,9 @@ theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
       (D.connectedComponentMk (componentRepresentative D e)) = 3 at hq3Rep
     rw [hoMk, heMk] at hq3Rep
     exact hq3Rep
-  have heDvd : 3 ∣ e.supp.ncard := by rw [he]; norm_num
+  have heDvd : 3 ∣ e.supp.ncard := by
+    refine ⟨k, ?_⟩
+    omega
   have heRatio : e.supp.ncard / 3 ∣ o.supp.ncard := by
     simpa [D, Q] using
       degree_sixteen_zeroLayer_concentrated_cut_owner_ratio_dvd
@@ -15000,10 +15064,45 @@ theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
     rw [hex]
     exact hx.2.2.2
   constructor
-  · change (e.supp.ncard / 3) * Q e o = 8
+  · change (e.supp.ncard / 3) * Q e o = k
     rw [he, hrev]
+    omega
   · change Q e o * (Q o e - 1) = 2
     rw [hrev, hq3]
+
+/-- The serviced order-eight `D` atom has exact load eight and excess two. -/
+theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ f.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (he : e.supp.ncard = 24) (hnot : ¬ 3 ∣ o.supp.ncard)
+    (hservice : 0 <
+      componentQuotientMatrix G (secondOrderDefectGraph G) e o) :
+    zeroLayerAtomLoad G e o = 8 ∧ zeroLayerAtomExcess G e o = 2 := by
+  have he8 : e.supp.ncard = 3 * 8 := by omega
+  exact degree_sixteen_zeroLayer_D_atom_values
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e 8 ho heUsed he8
+      hnot hservice
 
 /-- Fully graph-facing v11 death of the reduced used-order partition
 `[8,2,2,2,2]`.  The order-eight row has load 96, while its forced diagonal
