@@ -12706,6 +12706,34 @@ theorem zmod_six_to_three_fiber_card_two_even_card_one :
       M.card = 2 ∧ (M.filter even).card = 1 := by
   native_decide
 
+/-- Offset sectors realized through disjoint intermediate cells are
+disjoint in a `C₄`-free graph: an offset in both sectors would give its
+two endpoints two distinct common neighbors. -/
+theorem offsetSectors_disjoint_of_c4Free_disjoint_witness_cells
+    {V α ι : Type*} [Fintype V] [DecidableEq V] [DecidableEq α]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (x : V) (z : α → V)
+    (cell : ι → Set V) (A : ι → Finset α)
+    (hxz : ∀ s, x ≠ z s)
+    (hwitness : ∀ i s, s ∈ A i →
+      ∃ y ∈ cell i, G.Adj x y ∧ G.Adj (z s) y)
+    (i j : ι) (hij : i ≠ j)
+    (hsep : ∀ y ∈ cell i, ∀ y' ∈ cell j, y ≠ y') :
+    Disjoint (A i) (A j) := by
+  apply Finset.disjoint_left.mpr
+  intro s hsi hsj
+  obtain ⟨y, hyi, hxy, hzy⟩ := hwitness i s hsi
+  obtain ⟨y', hyj, hxy', hzy'⟩ := hwitness j s hsj
+  have hyne : y ≠ y' := hsep y hyi y' hyj
+  have hyMem : y ∈ G.neighborFinset x ∩ G.neighborFinset (z s) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hxy, hzy.symm⟩
+  have hy'Mem : y' ∈ G.neighborFinset x ∩ G.neighborFinset (z s) := by
+    simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+    exact ⟨hxy', hzy'.symm⟩
+  have hone := common_le_one_of_not_containsC4 hfree x (z s) (hxz s)
+  exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
+
 /-- The symmetric three-by-three order-two used matrix in `[10,2,2,2]`
 is rowwise saturated once its aggregate excess is six.  Equivalently, every
 row is a permutation of `(0,1,2)` and therefore costs exactly two units. -/
