@@ -14424,6 +14424,35 @@ theorem degree_sixteen_quotientThree_atom_values
     · simp [zeroLayerAtomLoad, hek, hTriple.2]
     · simp [zeroLayerAtomExcess, hq, hTriple.2]
 
+/-- On a reduced-order-eight row, every divisible non-unit atom has load at
+most eight times its local excess. -/
+theorem degree_sixteen_reduced_order_eight_divisible_nonunit_atom_load_le_excess
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hdiv : 3 ∣ o.supp.ncard) (he : e.supp.ncard = 24)
+    (hpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) o e)
+    (hle : componentQuotientMatrix G (secondOrderDefectGraph G) o e ≤ 3)
+    (hne : componentQuotientMatrix G (secondOrderDefectGraph G) o e ≠ 1) :
+    zeroLayerAtomLoad G e o ≤ 8 * zeroLayerAtomExcess G e o := by
+  obtain ⟨m, hom⟩ := hdiv
+  have he8 : e.supp.ncard = 3 * 8 := by omega
+  interval_cases hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e
+  · exact False.elim (hne rfl)
+  · rcases degree_sixteen_quotientTwo_atom_values
+        G hfree hmin hcard o e m 8 hom he8 hq with hEq | hDouble
+    · omega
+    · omega
+  · rcases degree_sixteen_quotientThree_atom_values
+        G hfree hmin hcard o e m 8 hom he8 hq with hEq | hTriple
+    · omega
+    · omega
+
 /-- Any two distinct quotient-one legs of a threefold-scaled orphan have
 joint reduced period exactly the orphan's reduced order.  This is the
 pairwise LCM rigidity used by the `1+1+1` atom. -/
