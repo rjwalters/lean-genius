@@ -17401,11 +17401,15 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
     T.card = 2 ∧
       (∑ o ∈ T, Q o e₂a) = 2 ∧
       (∑ o ∈ T, Q o e₂b) = 2 ∧
-      (∑ o ∈ T, Q o e₂c) = 2 ∧ ∀ o ∈ T,
-      o.supp.ncard = 6 ∧
-      Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
-      Q e₂a o = Q o e₂a ∧ Q e₂b o = Q o e₂b ∧
-      Q e₂c o = Q o e₂c := by
+      (∑ o ∈ T, Q o e₂c) = 2 ∧
+      (∀ o ∈ T, o.supp.ncard = 6 ∧
+        Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
+        Q e₂a o = Q o e₂a ∧ Q e₂b o = Q o e₂b ∧
+        Q e₂c o = Q o e₂c) ∧
+      ((∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1) ∨
+        (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
+          Q o e₂b * (Q o e₂b - 1) +
+          Q o e₂c * (Q o e₂c - 1)) = 4) := by
   classical
   dsimp only at hE ⊢
   let D := secondOrderDefectGraph G
@@ -17420,10 +17424,15 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
   change T.card = 2 ∧
     (∑ o ∈ T, Q o e₂a) = 2 ∧
     (∑ o ∈ T, Q o e₂b) = 2 ∧
-    (∑ o ∈ T, Q o e₂c) = 2 ∧ ∀ o ∈ T,
-    o.supp.ncard = 6 ∧ Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
+    (∑ o ∈ T, Q o e₂c) = 2 ∧
+    (∀ o ∈ T, o.supp.ncard = 6 ∧
+      Q o e₂a + Q o e₂b + Q o e₂c = 3 ∧
       Q e₂a o = Q o e₂a ∧ Q e₂b o = Q o e₂b ∧
-      Q e₂c o = Q o e₂c
+      Q e₂c o = Q o e₂c) ∧
+    ((∀ o ∈ T, Q o e₂a = 1 ∧ Q o e₂b = 1 ∧ Q o e₂c = 1) ∨
+      (∑ o ∈ T, Q o e₂a * (Q o e₂a - 1) +
+        Q o e₂b * (Q o e₂b - 1) +
+        Q o e₂c * (Q o e₂c - 1)) = 4)
   have hsix := degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild
       e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
@@ -17597,9 +17606,12 @@ theorem degree_sixteen_zeroLayer_ten_two_two_two_residual_two_order_six
         intro o ho
         exact (hbase.2 o ho).2.2.2.symm
       _ = 2 := hTrevC
-  exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC, fun o ho =>
-    ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
-      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩⟩
+  have hdichotomy := two_component_three_target_census T
+    (fun o => Q o e₂a) (fun o => Q o e₂b) (fun o => Q o e₂c)
+      hbase.1 hforward hTforwardA hTforwardB hTforwardC
+  exact ⟨hbase.1, hTforwardA, hTforwardB, hTforwardC,
+    fun o ho => ⟨(hbase.2 o ho).1, hforward o ho, (hbase.2 o ho).2.1,
+      (hbase.2 o ho).2.2.1, (hbase.2 o ho).2.2.2⟩, hdichotomy⟩
 
 /-- The serviced order-eight `D` atom has exact load eight and excess two. -/
 theorem degree_sixteen_zeroLayer_order_eight_D_atom_values
