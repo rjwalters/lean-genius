@@ -13854,6 +13854,37 @@ theorem positive_partition_three_classification
     · omega
     · omega
 
+/-- If a finite natural-valued row of total mass three contains a unit
+entry, then it either contains a two-entry or all of its entries are at
+most one.  This is the arithmetic core of the zero-layer `B1`/`A` split. -/
+theorem unit_entry_sum_three_dichotomy
+    {α : Type*} [DecidableEq α] (S : Finset α) (q : α → ℕ)
+    (e : α) (he : e ∈ S) (hqe : q e = 1)
+    (hsum : (∑ x ∈ S, q x) = 3) :
+    (∃ f ∈ S, q f = 2) ∨ ∀ f ∈ S, q f ≤ 1 := by
+  by_cases htwo : ∃ f ∈ S, q f = 2
+  · exact Or.inl htwo
+  · right
+    intro f hf
+    by_contra hnotLe
+    have hneTwo : q f ≠ 2 := by
+      intro hfTwo
+      exact htwo ⟨f, hf, hfTwo⟩
+    have hqf : 3 ≤ q f := by omega
+    have hfe : f ≠ e := by
+      intro hEq
+      subst f
+      omega
+    have heErase : e ∈ S.erase f :=
+      Finset.mem_erase.mpr ⟨Ne.symm hfe, he⟩
+    have heLe : q e ≤ ∑ x ∈ S.erase f, q x :=
+      Finset.single_le_sum (fun _ _ => Nat.zero_le _) heErase
+    have hsplit : (∑ x ∈ S.erase f, q x) + q f = ∑ x ∈ S, q x := by
+      rw [Finset.sum_erase_add _ _ hf]
+    rw [hqe] at heLe
+    rw [hsum] at hsplit
+    omega
+
 /-- Every zero-layer orphan-component quotient row has total mass three into
 the used components, matching the three service neighbors of each orphan. -/
 theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
@@ -13915,6 +13946,53 @@ theorem degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
   simpa [D, R] using minimumLayer_orphan_used_exterior_neighbor_card
     G hfree (d := 16) (s := 0) (by norm_num) (by norm_num) hmin hcard
       c₀ hregChild hcardChild (componentRepresentative D o) hoOutside hoUnused
+
+/-- Graph-facing `B1`/`A` dichotomy for a unit orphan leg.  The used-row
+mass is exactly three, so a unit leg either coexists with a quotient-two
+leg or every quotient into a used component is at most one. -/
+theorem degree_sixteen_zeroLayer_orphan_unit_leg_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ho : componentRepresentative (secondOrderDefectGraph G) o ∈
+      (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀))
+    (he : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hunit : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 1) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let C := Finset.univ.filter (fun f : D.ConnectedComponent =>
+      componentRepresentative D f ∈ R)
+    (∃ f ∈ C, componentQuotientMatrix G D o f = 2) ∨
+      ∀ f ∈ C, componentQuotientMatrix G D o f ≤ 1 := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let C := Finset.univ.filter (fun f : D.ConnectedComponent =>
+    componentRepresentative D f ∈ R)
+  let Q := componentQuotientMatrix G D
+  have heC : e ∈ C := by simpa [C, R, D] using he
+  have hsum : (∑ f ∈ C, Q o f) = 3 := by
+    simpa [D, R, C, Q] using
+      degree_sixteen_zeroLayer_orphan_to_used_quotient_sum_eq_three
+        G hfree hmin hcard c₀ hregChild hcardChild o ho
+  exact unit_entry_sum_three_dichotomy C (fun f => Q o f) e heC
+    (by simpa [Q] using hunit) hsum
 
 /-- The positive support of a zero-layer orphan's used quotient row has one
 of the three atom shapes: `3`, `2+1`, or `1+1+1`. -/
