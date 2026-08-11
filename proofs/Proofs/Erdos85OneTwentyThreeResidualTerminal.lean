@@ -13256,6 +13256,79 @@ theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity
       A₁ A₂ E₁ E₂ M hA₁card hA₂card hE₁card hE₂card hMcard
       hparity₁ hparity₂ hMeven hW₁ hW₂ hWM
 
+/-- Labeling-free form of the same-target parity theorem.  At the exact
+second-order boundary the canonical cyclic labelings supplied by the defect
+cycle decomposition provide all coordinate hypotheses automatically. -/
+theorem two_orderThirty_B_blocks_same_orderSix_target_phase_parity_unconditional
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hd : 4 ≤ d) (heven : Even d) (hmin : d ≤ G.minDegree)
+    (hcard : Fintype.card V = d * (d - 1) + 3)
+    (L B₁ B₂ S C : (secondOrderDefectGraph G).ConnectedComponent)
+    (hLcard : L.supp.ncard = 30)
+    (hB₁card : B₁.supp.ncard = 30)
+    (hB₂card : B₂.supp.ncard = 30)
+    (hScard : S.supp.ncard = 6) (hCcard : C.supp.ncard = 3)
+    (hLS : L ≠ S) (hB₁B₂ : B₁ ≠ B₂)
+    (hB₁C : B₁ ≠ C) (hB₂C : B₂ ≠ C)
+    (hB₁L : componentQuotientMatrix G (secondOrderDefectGraph G) B₁ L = 2)
+    (hB₂L : componentQuotientMatrix G (secondOrderDefectGraph G) B₂ L = 2)
+    (hB₁S : componentQuotientMatrix G (secondOrderDefectGraph G) B₁ S = 1)
+    (hB₂S : componentQuotientMatrix G (secondOrderDefectGraph G) B₂ S = 1)
+    (hLC : componentQuotientMatrix G (secondOrderDefectGraph G) L C = 1)
+    (hSC : componentQuotientMatrix G (secondOrderDefectGraph G) S C = 1) :
+    ∃ A₁ A₂ : Finset (ZMod 30), A₁.card = 2 ∧ A₂.card = 2 ∧
+      (((A₁.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1 ∧
+        (A₂.filter fun a =>
+          ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 1) ∨
+       ((((A₁.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+          (A₁.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2) ∧
+         (((A₂.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 0) ∨
+          (A₂.filter fun a =>
+            ZMod.castHom (by norm_num : 2 ∣ 30) (ZMod 2) a = 0).card = 2))) := by
+  classical
+  obtain ⟨u, huinj, huRange, huD, _hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree hd heven hmin hcard
+  have uL := u L
+  have uB₁ := u B₁
+  have uB₂ := u B₂
+  have uS := u S
+  have uC := u C
+  have huL := huinj L
+  have huB₁ := huinj B₁
+  have huB₂ := huinj B₂
+  have huS := huinj S
+  have huC := huinj C
+  have huLRange := huRange L
+  have huB₁Range := huRange B₁
+  have huB₂Range := huRange B₂
+  have huSRange := huRange S
+  have huCRange := huRange C
+  have huLD := huD L
+  have huB₁D := huD B₁
+  have huB₂D := huD B₂
+  have huSD := huD S
+  have huCD := huD C
+  rw [hLcard] at uL huL huLRange huLD
+  rw [hB₁card] at uB₁ huB₁ huB₁Range huB₁D
+  rw [hB₂card] at uB₂ huB₂ huB₂Range huB₂D
+  rw [hScard] at uS huS huSRange huSD
+  rw [hCcard] at uC huC huCRange huCD
+  exact two_orderThirty_B_blocks_same_orderSix_target_phase_parity
+    G hfree hd heven hmin hcard L B₁ B₂ S C hLS hB₁B₂ hB₁C hB₂C
+      uL uB₁ uB₂ uS uC huL huB₁ huB₂ huS huC huLRange
+      huB₁Range huB₂Range huSRange huCRange huLD huB₁D huB₂D huSD huCD
+      hB₁L hB₂L hB₁S hB₂S hLC hSC
+
 /-- Every minimum-cover offset fiber from `ZMod 6` to `ZMod 3` consists of
 two classes, exactly one even and one odd. -/
 theorem zmod_six_to_three_fiber_card_two_even_card_one :
