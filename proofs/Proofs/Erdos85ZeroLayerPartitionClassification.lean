@@ -154,4 +154,51 @@ theorem exists_zeroLayer_reduced_partition_pattern_of_list
   simp at hlen
   omega
 
+/-- Multiset-facing adapter.  Sorting retains every occurrence, so the
+result records the original weighted family with multiplicity rather than
+only its set of distinct reduced orders. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_multiset
+    (s : Multiset ℕ) (hcard : s.card ≤ 8) (hsum : s.sum = 16)
+    (hparts : ∀ k ∈ s, 2 ≤ k) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        s = ↑([a, b, c, d, e, f, g, h].take s.card) := by
+  let l := s.sort (· ≥ ·)
+  have hsort : (↑l : Multiset ℕ) = s := by
+    exact Multiset.sort_eq s (· ≥ ·)
+  have hlen : l.length ≤ 8 := by
+    simpa [l] using hcard
+  have hsuml : l.sum = 16 := by
+    change (↑l : Multiset ℕ).sum = 16
+    rw [hsort]
+    exact hsum
+  have hpartsl : ∀ k ∈ l, 2 ≤ k := by
+    intro k hk
+    apply hparts k
+    rw [← hsort]
+    exact hk
+  obtain ⟨a, b, c, d, e, f, g, h, hp, hl⟩ :=
+    exists_zeroLayer_reduced_partition_pattern_of_list
+      l hlen hsuml hpartsl (Multiset.pairwise_sort s (· ≥ ·))
+  refine ⟨a, b, c, d, e, f, g, h, hp, ?_⟩
+  rw [← hsort, hl]
+  simp [l, Nat.min_eq_left hcard]
+
+/-- Finset-facing adapter used by the graph census.  The image is a
+multiset, so distinct components of equal reduced order remain distinct
+occurrences. -/
+theorem exists_zeroLayer_reduced_partition_pattern_of_finset
+    {α : Type*} [DecidableEq α] (E : Finset α) (w : α → ℕ)
+    (hcard : E.card ≤ 8) (hsum : (∑ e ∈ E, w e) = 16)
+    (hparts : ∀ e ∈ E, 2 ≤ w e) :
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        E.val.map w = ↑([a, b, c, d, e, f, g, h].take E.card) := by
+  have hm := exists_zeroLayer_reduced_partition_pattern_of_multiset
+    (E.val.map w) (by simpa using hcard) (by simpa using hsum) (by
+      intro k hk
+      obtain ⟨x, hxE, rfl⟩ := Multiset.mem_map.mp hk
+      exact hparts x hxE)
+  simpa using hm
+
 end Erdos85
