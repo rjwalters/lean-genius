@@ -13,6 +13,7 @@ import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85MixedDiagonalDichotomy
 import Proofs.Erdos85OrientedFiveMass
 import Proofs.Erdos85MinimumEvenOrphanParity
+import Proofs.Erdos85ZeroLayerPartitionClassification
 
 /-!
 # Scalar-123 residual terminal
@@ -11194,6 +11195,49 @@ theorem degree_sixteen_zeroLayer_used_component_reduced_partition
   rw [hmass] at hle
   have hwe := hw e he
   omega
+
+/-- Graph-facing exhaustive census for the zero-layer used components.
+Their reduced orders, counted with multiplicity, form one of the fifty-five
+sorted patterns classified in `ZeroLayerReducedPartitionPattern`. -/
+theorem degree_sixteen_zeroLayer_used_component_partition_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+      componentRepresentative D e ∈ R)
+    let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+    ∃ a b c d e f g h,
+      ZeroLayerReducedPartitionPattern a b c d e f g h ∧
+        E.val.map w = ↑([a, b, c, d, e, f, g, h].take E.card) := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let w := fun e : D.ConnectedComponent ↦ e.supp.ncard / 3
+  have hcount := degree_sixteen_zeroLayer_used_component_card_le_eight
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change E.card ≤ 8 at hcount
+  have hpartition := degree_sixteen_zeroLayer_used_component_reduced_partition
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, w e) = 16 ∧ ∀ e ∈ E, 2 ≤ w e ∧ w e ≤ 16 at hpartition
+  exact exists_zeroLayer_reduced_partition_pattern_of_finset
+    E w hcount hpartition.1 (fun e he => (hpartition.2 e he).1)
 
 /-- After its mandatory contact with the minimum `C₃` is removed, a single
 zero-layer used component of reduced order `k = |e| / 3` has exactly
