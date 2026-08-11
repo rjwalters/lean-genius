@@ -12620,10 +12620,10 @@ theorem c4Free_difference_sectors_disjoint_of_disjoint_witness_cells
   have hyne : y ≠ y' := hsep y hyi y' hyj
   have hyMem : y ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨h0y, hty.symm⟩
+    exact ⟨h0y, hty⟩
   have hy'Mem : y' ∈ G.neighborFinset (u 0) ∩ G.neighborFinset (u t) := by
     simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset]
-    exact ⟨h0y', hty'.symm⟩
+    exact ⟨h0y', hty'⟩
   have hone := common_le_one_of_not_containsC4 hfree (u 0) (u t) hends
   exact hyne (Finset.card_le_one.mp hone y hyMem y' hy'Mem)
 
