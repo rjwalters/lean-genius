@@ -34,6 +34,29 @@ theorem exists_le_six_of_sum_twelve_of_three_le_of_ne_twelve
   simp at hmass
   exact hne x hx hmass
 
+/-- Strengthened selection form: the residual family has a globally minimum
+part, and that part has size at most six. -/
+theorem exists_minimum_le_six_of_sum_twelve_of_three_le_of_ne_twelve
+    {α : Type*} [DecidableEq α] (T : Finset α) (n : α → ℕ)
+    (hmass : (∑ x ∈ T, n x) = 12)
+    (hnpos : ∀ x ∈ T, 3 ≤ n x)
+    (hne : ∀ x ∈ T, n x ≠ 12) :
+    ∃ x ∈ T, n x ≤ 6 ∧ ∀ y ∈ T, n x ≤ n y := by
+  obtain ⟨x₀, hx₀, hx₀le⟩ :=
+    exists_le_six_of_sum_twelve_of_three_le_of_ne_twelve
+      T n hmass hnpos hne
+  have himage : (T.image n).Nonempty := ⟨n x₀, Finset.mem_image.mpr ⟨x₀, hx₀, rfl⟩⟩
+  let m := (T.image n).min' himage
+  have hmMem : m ∈ T.image n := Finset.min'_mem _ _
+  obtain ⟨x, hx, hnx⟩ := Finset.mem_image.mp hmMem
+  refine ⟨x, hx, ?_, ?_⟩
+  · rw [hnx]
+    exact le_trans (Finset.min'_le _ (n x₀)
+      (Finset.mem_image.mpr ⟨x₀, hx₀, rfl⟩)) hx₀le
+  · intro y hy
+    rw [hnx]
+    exact Finset.min'_le _ (n y) (Finset.mem_image.mpr ⟨y, hy, rfl⟩)
+
 /-- For an order between three and six, three quotient entries summing to
 three and balanced against order-six targets force the source order even. -/
 theorem even_of_three_six_target_balances
