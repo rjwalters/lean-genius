@@ -15585,69 +15585,6 @@ def zeroLayerAtomExcess
   componentQuotientMatrix G (secondOrderDefectGraph G) e o *
     (componentQuotientMatrix G (secondOrderDefectGraph G) o e - 1)
 
-/-- Finite arithmetic descriptor for a zero-layer orphan row over an
-indexed family of used components.  The constructors record only the row
-shape and its used legs; the reduced used-order function determines all
-loads and excesses. -/
-inductive ZeroLayerAtom (ι : Type*) where
-  /-- A concentrated quotient-three row on one equal-order used block. -/
-  | C (e : ι)
-  /-- A non-three-divisible concentrated row on one used block. -/
-  | D (e : ι)
-  /-- A quotient-two leg on `e` and a quotient-one leg on `f`. -/
-  | B (e f : ι)
-  /-- Three quotient-one legs. -/
-  | A (a b c : ι)
-  deriving DecidableEq
-
-namespace ZeroLayerAtom
-
-/-- Arithmetic side conditions for an atom descriptor.  The zero-layer
-child-cover lemmas force the `B` and `C` owner to have the same reduced
-order as the orphan; hence a `B` unit leg only requires divisibility by
-the owner order.  For an `A` atom the common orphan reduced order is the
-common pairwise lcm. -/
-def Valid {ι : Type*} [DecidableEq ι] (K : ι → ℕ) : ZeroLayerAtom ι → Prop
-  | C _ => True
-  | D e => 3 ≤ K e ∧ ¬ 3 ∣ K e
-  | B e f => e ≠ f ∧ K f ∣ K e
-  | A a b c =>
-      a ≠ b ∧ a ≠ c ∧ b ≠ c ∧
-        Nat.lcm (K a) (K b) = Nat.lcm (K a) (K c) ∧
-        Nat.lcm (K a) (K b) = Nat.lcm (K b) (K c)
-
-/-- Reduced orphan order represented by a valid atom.  For `D`, the
-actual orphan order is `K e`, rather than three times this value; this
-field is used only for the three-divisible `A/B/C` balance table. -/
-def reducedOrder {ι : Type*} (K : ι → ℕ) : ZeroLayerAtom ι → ℕ
-  | C e => K e
-  | D e => K e
-  | B e _ => K e
-  | A a b _ => Nat.lcm (K a) (K b)
-
-/-- Load contributed by one atom to the used row indexed by `i`. -/
-def load {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
-    (i : ι) : ZeroLayerAtom ι → ℕ
-  | C e => if i = e then 3 * K e else 0
-  | D e => if i = e then K e else 0
-  | B e f =>
-      (if i = e then 2 * K e else 0) +
-        (if i = f then K e else 0)
-  | A a b c =>
-      let m := Nat.lcm (K a) (K b)
-      (if i = a then m else 0) + (if i = b then m else 0) +
-        (if i = c then m else 0)
-
-/-- Local-excess contribution of one atom to the used row indexed by
-`i`.  Unit legs and `A` atoms have zero excess. -/
-def excess {ι : Type*} [DecidableEq ι] (i : ι) : ZeroLayerAtom ι → ℕ
-  | C e => if i = e then 6 else 0
-  | D e => if i = e then 2 else 0
-  | B e _ => if i = e then 2 else 0
-  | A _ _ _ => 0
-
-end ZeroLayerAtom
-
 /-- In the zero-layer branch the minimum-layer image is exactly the support
 of `c₀`.  Consequently every other defect component is classified uniquely
 by whether its representative lies in the used exterior or in the orphan
@@ -19881,6 +19818,10 @@ theorem degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
     G hfree hmin hcard o e m k hom hek hq with hequal | hshort
   · exact hequal
   · exfalso
+    have hmpos : 0 < m := by
+      have hopos := o.nonempty_supp.ncard_pos
+      rw [hom] at hopos
+      omega
     exact degree_sixteen_zeroLayer_no_small_unit_cover
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild e o heUsed hoc₀
         (by exact ⟨m, hom⟩) (by rw [hom, hek]; omega) hshort.2
@@ -19918,9 +19859,79 @@ theorem degree_sixteen_zeroLayer_quotientThree_reduced_order_forces_equal
     G hfree hmin hcard o e m k hom hek hq with hequal | hshort
   · exact hequal
   · exfalso
+    have hmpos : 0 < m := by
+      have hopos := o.nonempty_supp.ncard_pos
+      rw [hom] at hopos
+      omega
     exact degree_sixteen_zeroLayer_no_small_unit_cover
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild e o heUsed hoc₀
         (by exact ⟨m, hom⟩) (by rw [hom, hek]; omega) hshort.2
+
+/-- Load/excess table for the equal-order zero-layer quotient-two atom. -/
+theorem degree_sixteen_zeroLayer_quotientTwo_atom_values_equal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 2) :
+    m = k ∧ zeroLayerAtomLoad G e o = 2 * k ∧
+      zeroLayerAtomExcess G e o = 2 := by
+  have hequal := degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e heUsed hoc₀
+      m k hom hek hq
+  refine ⟨hequal.1, ?_, ?_⟩
+  · simp [zeroLayerAtomLoad, hek, hequal.2, Nat.mul_comm]
+  · simp [zeroLayerAtomExcess, hq, hequal.2]
+
+/-- Load/excess table for the equal-order zero-layer quotient-three atom. -/
+theorem degree_sixteen_zeroLayer_quotientThree_atom_values_equal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (o e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heUsed : componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀))
+    (hoc₀ : o ≠ c₀) (m k : ℕ) (hom : o.supp.ncard = 3 * m)
+    (hek : e.supp.ncard = 3 * k)
+    (hq : componentQuotientMatrix G (secondOrderDefectGraph G) o e = 3) :
+    m = k ∧ zeroLayerAtomLoad G e o = 3 * k ∧
+      zeroLayerAtomExcess G e o = 6 := by
+  have hequal := degree_sixteen_zeroLayer_quotientThree_reduced_order_forces_equal
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e heUsed hoc₀
+      m k hom hek hq
+  refine ⟨hequal.1, ?_, ?_⟩
+  · simp [zeroLayerAtomLoad, hek, hequal.2, Nat.mul_comm]
+  · simp [zeroLayerAtomExcess, hq, hequal.2]
 
 /-- A quotient-two leg into an order-thirty-six component is either an
 order-eighteen reverse cover or an equal-order quotient-two block. -/
@@ -39118,5 +39129,60 @@ theorem twelve_two_two_saturation_census
   omega
 
 end
+
+/-! ## Partition-parametric zero-layer atom interface -/
+
+/-- Finite arithmetic descriptor for a zero-layer orphan row over an
+indexed family of used components.  The constructors record only the row
+shape and its used legs; the reduced used-order function determines all
+loads and excesses. -/
+inductive ZeroLayerAtom (ι : Type*) where
+  | C (e : ι)
+  | D (e : ι)
+  | B (e f : ι)
+  | A (a b c : ι)
+  deriving DecidableEq
+
+namespace ZeroLayerAtom
+
+/-- Arithmetic side conditions for an atom descriptor. -/
+def Valid {ι : Type*} [DecidableEq ι] (K : ι → ℕ) : ZeroLayerAtom ι → Prop
+  | C _ => True
+  | D e => 3 ≤ K e ∧ ¬ 3 ∣ K e
+  | B e f => e ≠ f ∧ K f ∣ K e
+  | A a b c =>
+      a ≠ b ∧ a ≠ c ∧ b ≠ c ∧
+        Nat.lcm (K a) (K b) = Nat.lcm (K a) (K c) ∧
+        Nat.lcm (K a) (K b) = Nat.lcm (K b) (K c)
+
+/-- Reduced orphan order represented by an atom descriptor. -/
+def reducedOrder {ι : Type*} (K : ι → ℕ) : ZeroLayerAtom ι → ℕ
+  | C e => K e
+  | D e => K e
+  | B e _ => K e
+  | A a b _ => Nat.lcm (K a) (K b)
+
+/-- Load contributed by one atom to the used row indexed by `i`. -/
+def load {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
+    (i : ι) : ZeroLayerAtom ι → ℕ
+  | C e => if i = e then 3 * K e else 0
+  | D e => if i = e then K e else 0
+  | B e f =>
+      (if i = e then 2 * K e else 0) +
+        (if i = f then K e else 0)
+  | A a b c =>
+      let m := Nat.lcm (K a) (K b)
+      (if i = a then m else 0) + (if i = b then m else 0) +
+        (if i = c then m else 0)
+
+/-- Local-excess contribution of one atom to the used row indexed by
+`i`.  Unit legs and `A` atoms have zero excess. -/
+def excess {ι : Type*} [DecidableEq ι] (i : ι) : ZeroLayerAtom ι → ℕ
+  | C e => if i = e then 6 else 0
+  | D e => if i = e then 2 else 0
+  | B e _ => if i = e then 2 else 0
+  | A _ _ _ => 0
+
+end ZeroLayerAtom
 
 end Erdos85
