@@ -15686,6 +15686,65 @@ theorem degree_sixteen_zeroLayer_even_orphan_exists_economy_source
     simp [hcne]
   exact ⟨c, hcMem, hdvd, hpos⟩
 
+/-- Economy-wide antipodal coverage.  If every orphan component has even
+order, then every orphan has a positive used-or-orphan source whose order
+divides its half-order. -/
+theorem degree_sixteen_zeroLayer_even_orphan_economy_covered
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild :
+      Fintype.card (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (u : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod f.supp.ncard → V)
+    (hu : ∀ f, Function.Injective (u f))
+    (huRange : ∀ f, Set.range (u f) = f.supp)
+    (huD : ∀ f x, (secondOrderDefectGraph G).neighborFinset (u f x) =
+      {u f (x - 1), u f (x + 1)})
+    (hthree : ∀ f : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ f.supp.ncard) :
+    let D := secondOrderDefectGraph G
+    let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+    let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+    let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+      componentRepresentative D e ∈ R)
+    let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+      componentRepresentative D a ∈ O)
+    (∀ o ∈ C, Even o.supp.ncard) →
+      ∀ o ∈ C, ∃ c ∈ E ∪ C,
+        c.supp.ncard ∣ o.supp.ncard / 2 ∧
+          0 < componentQuotientMatrix G D o c := by
+  classical
+  dsimp only
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ minimumLayerImageFinset D c₀) \ R
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent ↦
+    componentRepresentative D e ∈ R)
+  let C := Finset.univ.filter (fun a : D.ConnectedComponent ↦
+    componentRepresentative D a ∈ O)
+  intro heven o ho
+  obtain ⟨n, hn⟩ := heven o ho
+  have horder : o.supp.ncard = 2 * n := by omega
+  have hn2 : 2 ≤ n := by
+    have := hthree o
+    omega
+  letI : NeZero o.supp.ncard := ⟨Nat.ne_of_gt (by have := hthree o; omega)⟩
+  letI : NeZero n := ⟨Nat.ne_of_gt (by omega)⟩
+  have hcover := degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+    G hfree hmin hcard c₀ hregChild hcardChild hn2 horder o
+      (by simpa [D, R, O, C] using (Finset.mem_filter.mp ho).2)
+      (u o) (hu o) (huRange o) (huD o) u hu huRange huD hthree
+  simpa [D, R, O, E, C, horder] using hcover
+
 /-- Universal zero-layer load ledger: every used component of reduced order
 `k` receives total orphan load `12k`. -/
 theorem degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
