@@ -1398,6 +1398,15 @@ theorem degreeSix_orderTwelve_contact_aggregate_equations
     simp only [Finset.sum_add_distrib]
     repeat' rw [hsumConst]
     omega
+  · constructor
+    · rw [Finset.sum_congr rfl hppoint]
+      simp only [Finset.sum_add_distrib]
+      repeat' rw [hsumConst]
+      omega
+    · rw [Finset.sum_congr rfl hspoint]
+      simp only [Finset.sum_add_distrib]
+      repeat' rw [hsumConst]
+      omega
 
 /-- The three units of a residual contact row have only the partitions
 `1+1+1`, `1+2`, and `3`. -/
@@ -1439,20 +1448,14 @@ theorem contact_filter_counts_of_sum_three
       (S.filter fun t ↦ q t = 1).card +
       2 * (S.filter fun t ↦ q t = 2).card +
       3 * (S.filter fun t ↦ q t = 3).card = 3 := by
-    rw [← hsum]
-    rw [Finset.sum_congr rfl hpoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
+    have h1 := hsumConst (fun t ↦ q t = 1) 1
+    have h2 := hsumConst (fun t ↦ q t = 2) 2
+    have h3 := hsumConst (fun t ↦ q t = 3) 3
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [h1, h2, h3] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
-  constructor
-  · rw [Finset.sum_congr rfl hppoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
-    omega
-  · rw [Finset.sum_congr rfl hspoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
-    omega
 
 /-- If every component in `S` has order at least three and total order 21,
 the order used by positive contacts is either all 21 or at most 18. -/
