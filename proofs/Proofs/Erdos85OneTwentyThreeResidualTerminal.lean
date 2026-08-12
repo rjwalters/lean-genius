@@ -39276,6 +39276,14 @@ def reindex {ι κ : Type*} (e : ι ≃ κ) :
   | .B i j => .B (e i) (e j)
   | .A i j k => .A (e i) (e j) (e k)
 
+/-- Constructor-wise transport along an arbitrary index map. -/
+def mapIndices {ι κ : Type*} (f : ι → κ) :
+    ZeroLayerAtom ι → ZeroLayerAtom κ
+  | .C i => .C (f i)
+  | .D i => .D (f i)
+  | .B i j => .B (f i) (f j)
+  | .A i j k => .A (f i) (f j) (f k)
+
 theorem valid_reindex_iff
     {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
     (e : ι ≃ κ) (K : κ → ℕ) (t : ZeroLayerAtom ι) :
@@ -39299,6 +39307,33 @@ theorem excess_reindex
     (e : ι ≃ κ) (i : ι) (t : ZeroLayerAtom ι) :
     excess (e i) (reindex e t) = excess i t := by
   cases t <;> simp [reindex, excess, e.injective.eq_iff]
+
+theorem valid_mapIndices_iff
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (f : ι → κ) (hf : Function.Injective f)
+    (K : κ → ℕ) (t : ZeroLayerAtom ι) :
+    Valid K (mapIndices f t) ↔ Valid (K ∘ f) t := by
+  cases t <;> simp [mapIndices, Valid, hf.eq_iff]
+
+theorem reducedOrder_mapIndices
+    {ι κ : Type*} (f : ι → κ) (K : κ → ℕ)
+    (t : ZeroLayerAtom ι) :
+    reducedOrder K (mapIndices f t) = reducedOrder (K ∘ f) t := by
+  cases t <;> rfl
+
+theorem load_mapIndices
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (f : ι → κ) (hf : Function.Injective f)
+    (K : κ → ℕ) (i : ι) (t : ZeroLayerAtom ι) :
+    load K (f i) (mapIndices f t) = load (K ∘ f) i t := by
+  cases t <;> simp [mapIndices, load, hf.eq_iff]
+
+theorem excess_mapIndices
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (f : ι → κ) (hf : Function.Injective f)
+    (i : ι) (t : ZeroLayerAtom ι) :
+    excess (f i) (mapIndices f t) = excess i t := by
+  cases t <;> simp [mapIndices, excess, hf.eq_iff]
 
 /-- Forward orphan-to-used quotient row encoded by an atom descriptor. -/
 def forwardQuotient {ι : Type*} [DecidableEq ι]
@@ -39988,6 +40023,14 @@ theorem false_of_six_three_three_two_two_thirteen_count_ledger
     (hE0 : 2 * (b₁ + b₂ + b₃ + b₄) + 6 * c₀ ≤ 10)
     (hE1 : 2 * p + 6 * c₁ ≤ 4)
     (hE2 : 2 * q + 6 * c₂ ≤ 4) : False := by
+  omega
+
+/-- A positive partition of sixteen using reduced orders `6`, `3`, and `2`
+has forced multiplicities `1`, `2`, and `2`. -/
+theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
+    (n₆ n₃ n₂ : ℕ) (h₆ : 0 < n₆) (h₃ : 0 < n₃) (h₂ : 0 < n₂)
+    (hsum : 6 * n₆ + 3 * n₃ + 2 * n₂ = 16) :
+    n₆ = 1 ∧ n₃ = 2 ∧ n₂ = 2 := by
   omega
 
 set_option maxHeartbeats 200000
