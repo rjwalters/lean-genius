@@ -39347,6 +39347,58 @@ theorem sum_values_eq_sum_fiberCount_mul
       _ = ∑ t, fiberCount atom t * excess i t :=
         sum_eq_sum_fiberCount_mul atom (excess i)
 
+/-- Generic signed Farkas contradiction for atom ledgers.  The signed
+load weights are `y`; `p = -z` records the nonnegative negations of the
+certificate's excess weights. -/
+theorem false_of_weighted_load_excess_certificate
+    {O ι : Type*} [Fintype O] [Fintype ι]
+    (K : ι → ℕ) (y : ι → ℤ) (p : ι → ℕ)
+    (graphLoad graphExcess : O → ι → ℕ)
+    (hload : ∀ i, (∑ o, graphLoad o i) = 12 * K i)
+    (hexcess : ∀ i, (∑ o, graphExcess o i) ≤ 2 * (K i - 1))
+    (hpoint : ∀ o,
+      (∑ i, y i * (graphLoad o i : ℤ)) ≤
+        ∑ i, (p i : ℤ) * (graphExcess o i : ℤ))
+    (hgap :
+      (∑ i, (p i : ℤ) * (2 * (K i - 1) : ℕ)) <
+        ∑ i, y i * (12 * K i : ℕ)) : False := by
+  have hpointSum :
+      (∑ o, ∑ i, y i * (graphLoad o i : ℤ)) ≤
+        ∑ o, ∑ i, (p i : ℤ) * (graphExcess o i : ℤ) := by
+    exact Finset.sum_le_sum (fun o _ho => hpoint o)
+  have hloadEq :
+      (∑ i, y i * (12 * K i : ℕ)) =
+        ∑ o, ∑ i, y i * (graphLoad o i : ℤ) := by
+    calc
+      (∑ i, y i * (12 * K i : ℕ)) =
+          ∑ i, y i * (∑ o, graphLoad o i : ℕ) := by
+            apply Finset.sum_congr rfl
+            intro i _hi
+            rw [hload i]
+      _ = ∑ i, ∑ o, y i * (graphLoad o i : ℤ) := by
+        apply Finset.sum_congr rfl
+        intro i _hi
+        rw [← Finset.mul_sum]
+        norm_cast
+      _ = ∑ o, ∑ i, y i * (graphLoad o i : ℤ) :=
+        Finset.sum_comm
+  have hbudget :
+      (∑ o, ∑ i, (p i : ℤ) * (graphExcess o i : ℤ)) ≤
+        ∑ i, (p i : ℤ) * (2 * (K i - 1) : ℕ) := by
+    rw [Finset.sum_comm]
+    apply Finset.sum_le_sum
+    intro i _hi
+    rw [← Finset.mul_sum]
+    apply mul_le_mul_of_nonneg_left
+    · exact_mod_cast hexcess i
+    · exact Int.ofNat_nonneg (p i)
+  have hle :
+      (∑ i, y i * (12 * K i : ℕ)) ≤
+        ∑ i, (p i : ℤ) * (2 * (K i - 1) : ℕ) := by
+    rw [hloadEq]
+    exact hpointSum.trans hbudget
+  exact (not_lt_of_ge hle) hgap
+
 end ZeroLayerAtom
 
 /-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
