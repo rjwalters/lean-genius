@@ -515,7 +515,6 @@ theorem degreeSix_orderNine_two_orderThree_targets_le_one
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
@@ -914,6 +913,53 @@ theorem two_distinct_terms_le_sum
   have hsplite := Finset.sum_erase_add (Finset.univ.erase c : Finset C) f heMem
   omega
 
+/-- Expand a finite sum when five explicitly distinct points exhaust the
+index type. -/
+theorem sum_eq_five_of_exhaust
+    {C : Type*} [Fintype C] [DecidableEq C] (g : C → ℕ)
+    (c e a b f : C)
+    (hec : e ≠ c) (hac : a ≠ c) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbe : b ≠ e) (hba : b ≠ a)
+    (hfc : f ≠ c) (hfe : f ≠ e) (hfa : f ≠ a) (hfb : f ≠ b)
+    (hexhaust : ∀ x, x = c ∨ x = e ∨ x = a ∨ x = b ∨ x = f) :
+    (∑ x, g x) = g c + g e + g a + g b + g f := by
+  let S1 : Finset C := Finset.univ.erase c
+  let S2 : Finset C := S1.erase e
+  let S3 : Finset C := S2.erase a
+  let S4 : Finset C := S3.erase b
+  let S5 : Finset C := S4.erase f
+  have hc : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have he : e ∈ S1 := Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have ha : a ∈ S2 := Finset.mem_erase.mpr ⟨hae,
+    Finset.mem_erase.mpr ⟨hac, Finset.mem_univ a⟩⟩
+  have hb : b ∈ S3 := Finset.mem_erase.mpr ⟨hba,
+    Finset.mem_erase.mpr ⟨hbe,
+      Finset.mem_erase.mpr ⟨hbc, Finset.mem_univ b⟩⟩⟩
+  have hf : f ∈ S4 := Finset.mem_erase.mpr ⟨hfb,
+    Finset.mem_erase.mpr ⟨hfa,
+      Finset.mem_erase.mpr ⟨hfe,
+        Finset.mem_erase.mpr ⟨hfc, Finset.mem_univ f⟩⟩⟩⟩
+  have hzero : (∑ x ∈ S5, g x) = 0 := by
+    apply Finset.sum_eq_zero
+    intro x hx
+    have hnf : x ≠ f := (Finset.mem_erase.mp hx).1
+    have hx4 := (Finset.mem_erase.mp hx).2
+    have hnb : x ≠ b := (Finset.mem_erase.mp hx4).1
+    have hx3 := (Finset.mem_erase.mp hx4).2
+    have hna : x ≠ a := (Finset.mem_erase.mp hx3).1
+    have hx2 := (Finset.mem_erase.mp hx3).2
+    have hne : x ≠ e := (Finset.mem_erase.mp hx2).1
+    have hx1 := (Finset.mem_erase.mp hx2).2
+    have hnc : x ≠ c := (Finset.mem_erase.mp hx1).1
+    rcases hexhaust x with h | h | h | h | h <;> contradiction
+  have hs1 := Finset.sum_erase_add (Finset.univ : Finset C) g hc
+  have hs2 := Finset.sum_erase_add S1 g he
+  have hs3 := Finset.sum_erase_add S2 g ha
+  have hs4 := Finset.sum_erase_add S3 g hb
+  have hs5 := Finset.sum_erase_add S4 g hf
+  dsimp [S1, S2, S3, S4, S5] at *
+  omega
+
 /-- If a balanced nonnegative quotient row has the same ordinary and
 two-step sums, every positive outgoing entry has reverse multiplicity one. -/
 theorem reverse_eq_one_of_balanced_row_product_eq_row
@@ -960,6 +1006,7 @@ row sum six and reverse multiplicity one on its positive support. -/
 theorem degreeSix_orderThree_zeroDiagonal_profile
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
@@ -1725,6 +1772,152 @@ theorem degreeSix_orderNine_singleton_orderThree_contact_profile
   change e.supp.ncard * Q e t = t.supp.ncard * Q t e at hbt
   rw [he3, hte, mul_one] at hbt
   exact hbt.symm
+
+/-- The order-nine singleton branch is impossible. -/
+theorem false_of_degreeSix_orderNine_singleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc9 : c.supp.ncard = 9) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨e, hec, he3, hce, hecQ, hee, herem, heprofile⟩ :=
+    degreeSix_orderNine_singleton_orderThree_contact_profile
+      G hfree hmin hcard u hu huRange huD hr c hsector hc9
+  by_cases hother : ∃ f, f ≠ c ∧ f ≠ e ∧ f.supp.ncard = 3 ∧ Q c f ≠ 0
+  · obtain ⟨f, hfc, hfe, hf3, hqf⟩ := hother
+    have hbound := degreeSix_orderNine_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD c e f hc9 he3 hf3
+        hfe.symm
+    change Q c e + Q c f ≤ 1 at hbound
+    change Q c e = 1 at hce
+    omega
+  have hnoOther : ∀ f, f ≠ c → f ≠ e → f.supp.ncard = 3 → Q c f = 0 := by
+    intro f hfc hfe hf3
+    by_contra hq
+    exact hother ⟨f, hfc, hfe, hf3, hq⟩
+  obtain ⟨_, hcc, hrow, hprod, hbal⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  have hperiod : ∀ t, ¬ 9 ∣ t.supp.ncard → Q c t ≤ 1 := by
+    intro t hndvd
+    exact secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c t (by simpa [hc9] using hndvd)
+  obtain ⟨a, b, f, hac, hae, hbc, hbe, hba, hfc, hfe, hfa, hfb,
+      ha9, hb9, hf3, hca, hacQ, hcb, hbcQ, hcf, hexhaust⟩ :=
+    degreeSix_orderNine_single_contact_shape Q (fun t ↦ t.supp.ncard) c e
+      hec hc9 he3
+      (by simpa [hcard] using
+        (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G)))
+      hr hrow (by simpa [hc9] using hprod) hbal hperiod hce hecQ hnoOther
+  have hsumE := sum_eq_five_of_exhaust (Q e) c e a b f
+    hec hac hae hbc hbe hba hfc hfe hfa hfb hexhaust
+  have hrowE : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have herow : Q e a + Q e b + Q e f = 3 := by
+    change Q e c = 3 at hecQ
+    change Q e e = 0 at hee
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c e
+  have hsqSum : (∑ t, Q c t * Q t e) = 3 := by
+    have hceNe : c ≠ e := fun h ↦ hec h.symm
+    simpa [Q, Matrix.mul_apply, hceNe, he3] using hsqGraph
+  have hsqExpand := sum_eq_five_of_exhaust (fun t ↦ Q c t * Q t e)
+    c e a b f hec hac hae hbc hbe hba hfc hfe hfa hfb hexhaust
+  have hsqce : Q c c * Q c e + Q c e * Q e e +
+      Q c a * Q a e + Q c b * Q b e + Q c f * Q f e = 3 := by omega
+  have hea : Q e a = 0 := by
+    by_contra hne
+    have haeQ := (heprofile a (Nat.pos_of_ne_zero hne)).1
+    change Q a e = 1 at haeQ
+    change Q c c = 2 at hcc
+    change Q c e = 1 at hce
+    change Q e e = 0 at hee
+    change Q c a = 2 at hca
+    change Q c b = 1 at hcb
+    change Q c f = 0 at hcf
+    rw [hcc, hce, hee, hca, hcb, hcf, haeQ] at hsqce
+    omega
+  have heb : Q e b = 3 := by
+    by_cases hzero : Q e b = 0
+    · have hefQ : Q e f = 3 := by omega
+      have hpos : 0 < Q e f := by rw [hefQ]; norm_num
+      have hpos' : 0 < componentQuotientMatrix G
+          (secondOrderDefectGraph G) e f := by exact hpos
+      have hsize := (heprofile f hpos').2
+      change f.supp.ncard = 3 * Q e f at hsize
+      rw [hf3, hefQ] at hsize
+      norm_num at hsize
+    · have hsize := (heprofile b (Nat.pos_of_ne_zero hzero)).2
+      change b.supp.ncard = 3 * Q e b at hsize
+      rw [hb9] at hsize
+      omega
+  have hef : Q e f = 0 := by omega
+  have hfeQ : Q f e = 0 := by
+    have hbale := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e f
+    change e.supp.ncard * Q e f = f.supp.ncard * Q f e at hbale
+    rw [he3, hf3, hef] at hbale
+    omega
+  have hsumF := sum_eq_five_of_exhaust (Q f) c e a b f
+    hec hac hae hbc hbe hba hfc hfe hfa hfb hexhaust
+  have hrowF : (∑ t, Q f t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) f
+  have hfrowFull : Q f c + Q f e + Q f a + Q f b + Q f f = 6 := by omega
+  have hdiagCases := oddComponent_diagonalQuotient_eq_zero_or_two
+    G hfree (d := 6) (r := f.supp.ncard)
+      (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (hr f)
+      (by rw [hf3]; norm_num) f (u f) (hu f) (huRange f) (huD f)
+  have hbalF : ∀ t, f.supp.ncard * Q f t = t.supp.ncard * Q t f := by
+    intro t
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) f t
+  have hfcQ : Q f c = 0 := by
+    have hb := hbalF c
+    change Q c f = 0 at hcf
+    rw [hf3, hc9, hcf] at hb
+    omega
+  have hff : Q f f = 0 :=
+    degreeSix_orderNine_shape_unused_orderThree_diagonal_zero
+      Q (fun t ↦ t.supp.ncard) c e a b f he3 ha9 hb9 hf3 hfcQ hfeQ
+        hfrowFull hbalF hdiagCases
+  obtain ⟨_, hfprofile⟩ := degreeSix_orderThree_zeroDiagonal_profile
+    G hfree hmin hcard f hf3 hff
+  have hfrow : Q f e + Q f a + Q f b = 6 := by
+    rw [hfcQ, hfeQ, hff] at hfrowFull
+    omega
+  have hgroup := degreeSix_orderNine_two_orderThree_targets_le_one
+    G hfree hmin hcard u hu huRange huD b e f hb9 he3 hf3
+      hfe.symm
+  exact false_of_degreeSix_orderNine_single_contact_shape
+    Q (fun t ↦ t.supp.ncard) c e a b f hec hac hae hbc hbe hba
+      hfc hfe hfa hfb hc9 he3 ha9 hb9 hf3 hcc hce hca hcb hcf
+      hecQ hee herow heprofile hfcQ hff hfrow hfprofile hsqce hgroup
 
 /-- Graph instantiation of the forced order-three contact in the
 order-fifteen singleton branch. -/
