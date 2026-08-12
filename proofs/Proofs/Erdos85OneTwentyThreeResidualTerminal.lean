@@ -42552,6 +42552,20 @@ theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
 
 open ZeroLayerAtom
 
+theorem used_reducedOrder_mem_of_map_eq
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ))
+    {x : α} (hx : x ∈ E) : K x ∈ L := by
+  rw [← hmap]
+  exact Multiset.mem_map_of_mem K hx
+
+theorem used_reducedOrder_count_of_map_eq
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ)) (k : ℕ) :
+    (E.filter (fun x => K x = k)).card = L.count k := by
+  have hc := congrArg (Multiset.count k) hmap
+  simpa [Multiset.count_map] using hc
+
 theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
