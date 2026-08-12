@@ -42552,7 +42552,69 @@ theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
 
 open ZeroLayerAtom
 
-namespace Erdos85
+theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[12, 4] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[12, 4] : Multiset ℕ) at hmap
+  obtain ⟨xs, hxsNodup, hxsE, hxsK⟩ :=
+    exists_nodup_list_of_multiset_map_eq_coe E.val K [12, 4] E.nodup hmap
+  rcases xs with _ | ⟨e₁₂, xs⟩
+  · simp at hxsK
+  rcases xs with _ | ⟨e₄, xs⟩
+  · simp at hxsK
+  rcases xs with _ | ⟨eextra, xs⟩
+  · simp only [List.map_cons, List.map_nil, List.cons.injEq, true_and] at hxsK
+    rcases hxsK with ⟨he₁₂K, he₄K⟩
+    have hne : e₁₂ ≠ e₄ := by simpa using hxsNodup
+    have hE : E = {e₁₂, e₄} := by
+      ext z
+      have hz := congrArg (fun m : Multiset D.ConnectedComponent => z ∈ m) hxsE
+      simpa [or_comm] using hz.symm
+    have he₁₂E : e₁₂ ∈ E := by simp [hE]
+    have he₄E : e₄ ∈ E := by simp [hE]
+    have hpack := degree_sixteen_zeroLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+    change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+      ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+    have he₁₂ : e₁₂.supp.ncard = 36 := by
+      have := hpack.2 e₁₂ he₁₂E
+      dsimp [K] at he₁₂K
+      omega
+    have he₄ : e₄.supp.ncard = 12 := by
+      have := hpack.2 e₄ he₄E
+      dsimp [K] at he₄K
+      omega
+    exact false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁₂ e₄ hne
+        he₁₂ he₄ (Finset.mem_filter.mp he₁₂E).2
+          (Finset.mem_filter.mp he₄E).2 (by simpa [D, R, E] using hE)
+  · simp at hxsK
 
 theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
     {V : Type*} [Fintype V] [DecidableEq V]
