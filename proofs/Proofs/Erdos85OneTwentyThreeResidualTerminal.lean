@@ -41284,6 +41284,125 @@ theorem degree_sixteen_zeroLayer_orphan_atom_assignment_exists
   choose atom hatom using hex
   exact ⟨atom, hatom⟩
 
+/-- Graph-facing closure of the exceptional reduced used-order partition
+`(6,3,3,2,2)`. -/
+theorem false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (horders : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentRepresentative (secondOrderDefectGraph G) e ∈
+        Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+          (secondOrderDefectGraph G) c₀) →
+      e.supp.ncard / 3 = 6 ∨ e.supp.ncard / 3 = 3 ∨
+        e.supp.ncard / 3 = 2)
+    (hhas₆ : ∃ e, componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀) ∧ e.supp.ncard / 3 = 6)
+    (hhas₃ : ∃ e, componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀) ∧ e.supp.ncard / 3 = 3)
+    (hhas₂ : ∃ e, componentRepresentative (secondOrderDefectGraph G) e ∈
+      Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+        (secondOrderDefectGraph G) c₀) ∧ e.supp.ncard / 3 = 2) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  have hpart := degree_sixteen_zeroLayer_used_component_reduced_partition
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, K e) = 16 ∧ ∀ e ∈ E, 2 ≤ K e ∧ K e ≤ 16 at hpart
+  have hmult := ZeroLayerAtom.six_three_two_finset_multiplicity_classification E K hpart.1
+    (by intro e he; exact horders e (Finset.mem_filter.mp he).2)
+    (by obtain ⟨e, he, hK⟩ := hhas₆; exact ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩, hK⟩)
+    (by obtain ⟨e, he, hK⟩ := hhas₃; exact ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩, hK⟩)
+    (by obtain ⟨e, he, hK⟩ := hhas₂; exact ⟨e, Finset.mem_filter.mpr ⟨Finset.mem_univ _, he⟩, hK⟩)
+  obtain ⟨slot, hslot, hslotMem, hKslot, hcoverEq⟩ :=
+    ZeroLayerAtom.exists_injective_five_slots_of_six_three_two_filter_counts
+      E K (by intro e he; exact horders e (Finset.mem_filter.mp he).2)
+        hmult.1 hmult.2.1 hmult.2.2
+  obtain ⟨atom, hatom⟩ := degree_sixteen_zeroLayer_orphan_atom_assignment_exists
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
+  apply ZeroLayerAtom.false_of_six_three_three_two_two_supported_atom_assignment
+    E C K (fun c => c.supp.ncard) slot hslot hslotMem
+      (by
+        intro e he
+        rw [hcoverEq] at he
+        simp only [Finset.mem_insert, Finset.mem_singleton] at he
+        rcases he with rfl | rfl | rfl | rfl | rfl
+        all_goals first | exact ⟨0, rfl⟩ | exact ⟨1, rfl⟩ |
+          exact ⟨2, rfl⟩ | exact ⟨3, rfl⟩ | exact ⟨4, rfl⟩)
+      hKslot (fun o : {o // o ∈ C} => o.1) (fun o => o.2) atom
+      (fun o => (hatom o).1) (fun o => (hatom o).2.1)
+  · intro o
+    rcases (hatom o).2.2.2.2 with h | h
+    · exact Or.inl ⟨h.1, h.2.1⟩
+    · exact Or.inr ⟨h.1, h.2.1⟩
+  · exact hthree
+  · intro e heE
+    have hdiv := (degree_sixteen_zeroLayer_used_component_order_package
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild).2 e heE
+    have hKcases := horders e (Finset.mem_filter.mp heE).2
+    rcases hKcases with h6 | h3 | h2
+    · left; exact (Nat.eq_mul_of_div_eq_right hdiv h6).trans (by norm_num)
+    · right; left; exact (Nat.eq_mul_of_div_eq_right hdiv h3).trans (by norm_num)
+    · right; right; exact (Nat.eq_mul_of_div_eq_right hdiv h2).trans (by norm_num)
+  · intro o ho6
+    obtain ⟨c, hc, hdvd, _hpos⟩ :=
+      degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+        G hfree hmin hcard c₀ hregChild hcardChild (n := 3)
+          (by norm_num) (by omega) o.1
+          (by simpa [D, U, R, O, C] using (Finset.mem_filter.mp o.2).2)
+          (u o.1) (hu o.1) (huRange o.1) (huD o.1)
+          u hu huRange huD hthree
+    exact ⟨c, by simpa [D, U, R, O, E, C] using hc, hdvd⟩
+  · intro i
+    have hload := degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
+      G hfree hmin hcard c₀ hregChild hcardChild (slot i)
+        (Finset.mem_filter.mp (hslotMem i)).2
+    change (∑ o ∈ C, zeroLayerAtomLoad G (slot i) o) = 12 * K (slot i) at hload
+    calc
+      (∑ o : {o // o ∈ C}, ZeroLayerAtom.load K (slot i) (atom o)) =
+          ∑ o : {o // o ∈ C}, zeroLayerAtomLoad G (slot i) o.1 := by
+            apply Finset.sum_congr rfl
+            intro o _ho
+            exact ((hatom o).2.2.2.1 (slot i) (hslotMem i)).1.symm
+      _ = ∑ o ∈ C, zeroLayerAtomLoad G (slot i) o := by
+            symm
+            rw [Finset.sum_subtype C (fun _ => Iff.rfl)]
+      _ = 12 * K (slot i) := hload
+      _ = 12 * ![6, 3, 3, 2, 2] i := by rw [hKslot]
+  · intro c hc
+    exact ⟨⟨c, hc⟩, rfl⟩
+
 /-- The orphan part of a used row's local excess is bounded by the exact
 post-contact budget `2(K(e)-1)`. -/
 theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
