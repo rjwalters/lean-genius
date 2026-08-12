@@ -161,6 +161,18 @@ theorem degreeSix_orderSix_singleton_contact
   have hse : size e = 3 := by omega
   exact ⟨e, (Finset.mem_erase.mp heS).1, hse, hq, hr⟩
 
+/-- Two distinct nonnegative summands are bounded by the full finite sum. -/
+theorem two_distinct_terms_le_sum
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (f : C → ℕ) {c e : C} (hce : c ≠ e) :
+    f c + f e ≤ ∑ x, f x := by
+  have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have heMem : e ∈ (Finset.univ.erase c : Finset C) :=
+    Finset.mem_erase.mpr ⟨fun h ↦ hce h.symm, Finset.mem_univ e⟩
+  have hsplitc := Finset.sum_erase_add (Finset.univ : Finset C) f hcMem
+  have hsplite := Finset.sum_erase_add (Finset.univ.erase c : Finset C) f heMem
+  omega
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
@@ -652,15 +664,36 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
     ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
       e ≠ c ∧ e.supp.ncard = 3 ∧
       componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
-      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 := by
-  obtain ⟨_, _, hrow, hprod, hbal⟩ :=
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0 := by
+  obtain ⟨_, hdiag, hrow, hprod, hbal⟩ :=
     degreeSix_singleton_component_quotient_row
       G hfree hmin hcard u hu huRange huD hr c hsector
-  apply degreeSix_orderSix_singleton_contact
+  obtain ⟨e, hne, he3, hce, hec⟩ := degreeSix_orderSix_singleton_contact
     (componentQuotientMatrix G (secondOrderDefectGraph G))
       (fun e ↦ e.supp.ncard) c hc6 hrow
-  · simpa [hc6] using hprod
-  · exact hbal
+      (by simpa [hc6] using hprod) hbal
+  refine ⟨e, hne, he3, hce, hec, ?_⟩
+  rcases oddComponent_diagonalQuotient_eq_zero_or_two
+    G hfree (d := 6) (r := e.supp.ncard)
+      (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (hr e)
+      (by rw [he3]; norm_num) e (u e) (hu e) (huRange e) (huD e) with
+    hzero | htwo
+  · exact hzero
+  · have hcen : c ≠ e := fun h ↦ hne h.symm
+    have hsq := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+    have hsum : (∑ t,
+        componentQuotientMatrix G (secondOrderDefectGraph G) c t *
+          componentQuotientMatrix G (secondOrderDefectGraph G) t e) = 3 := by
+      simpa [Matrix.mul_apply, hcen, he3] using hsq
+    have hlower := two_distinct_terms_le_sum
+      (fun t ↦ componentQuotientMatrix G (secondOrderDefectGraph G) c t *
+        componentQuotientMatrix G (secondOrderDefectGraph G) t e) hcen
+    rw [hdiag, hce, htwo, hsum] at hlower
+    omega
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
