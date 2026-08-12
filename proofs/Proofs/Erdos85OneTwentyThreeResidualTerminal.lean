@@ -40245,7 +40245,8 @@ theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
     let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
     let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
     ∃ t : ZeroLayerAtom D.ConnectedComponent,
-      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.reducedOrder K t = m ∧
+      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.SupportOn E t ∧
+        ZeroLayerAtom.reducedOrder K t = m ∧
         ZeroLayerAtom.MatchesOn E q t ∧
         ZeroLayerAtom.ValuesMatchOn K E
           (fun i => zeroLayerAtomLoad G i o)
@@ -40292,7 +40293,7 @@ theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild o e
         (by simpa [D, R, E] using (Finset.mem_filter.mp heE).2) hoc₀
         m (K e) hom (hscale e heE) (by simpa [D, q] using hqe)
-    refine ⟨.C e, by simp [ZeroLayerAtom.Valid], ?_, ?_, ?_, Or.inl ⟨e, rfl⟩⟩
+    refine ⟨.C e, by simp [ZeroLayerAtom.Valid], heE, ?_, ?_, ?_, Or.inl ⟨e, rfl⟩⟩
     · simpa [ZeroLayerAtom.reducedOrder] using hvals.1.symm
     · intro i hiE
       change q i = ZeroLayerAtom.forwardQuotient i (.C e)
@@ -40323,7 +40324,7 @@ theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
       have hfdiv := (degree_sixteen_quotientOne_reduced_balance
         G hfree hmin hcard o f m (K f) hom (hscale f hfE)
           (by simpa [D, q] using hqf)).1
-      refine ⟨.B e f, ⟨hef, ?_⟩, ?_, ?_, ?_,
+      refine ⟨.B e f, ⟨hef, ?_⟩, ⟨heE, hfE⟩, ?_, ?_, ?_,
         Or.inr (Or.inl ⟨e, f, rfl⟩)⟩
       · simpa [hequal.1] using hfdiv
       · simpa [ZeroLayerAtom.reducedOrder] using hequal.1.symm
@@ -40366,7 +40367,7 @@ theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
       have hediv := (degree_sixteen_quotientOne_reduced_balance
         G hfree hmin hcard o e m (K e) hom (hscale e heE)
           (by simpa [D, q] using hqe)).1
-      refine ⟨.B f e, ⟨Ne.symm hef, ?_⟩, ?_, ?_, ?_,
+      refine ⟨.B f e, ⟨Ne.symm hef, ?_⟩, ⟨hfE, heE⟩, ?_, ?_, ?_,
         Or.inr (Or.inl ⟨f, e, rfl⟩)⟩
       · simpa [hequal.1] using hediv
       · simpa [ZeroLayerAtom.reducedOrder] using hequal.1.symm
@@ -40417,7 +40418,8 @@ theorem degree_sixteen_zeroLayer_threeDivisible_orphan_atom
       G hfree hmin hcard o b c m (K b) (K c) hom
         (hscale b hbE) (hscale c hcE) hbc
         (by simpa [D, q] using hqb) (by simpa [D, q] using hqc)
-    refine ⟨.A a b c, ⟨hab, hac, hbc, ?_, ?_⟩, ?_, ?_, ?_,
+    refine ⟨.A a b c, ⟨hab, hac, hbc, ?_, ?_⟩,
+      ⟨haE, hbE, hcE⟩, ?_, ?_, ?_,
       Or.inr (Or.inr ⟨a, b, c, rfl⟩)⟩
     · exact hmab.symm.trans hmac
     · exact hmab.symm.trans hmbc
@@ -40495,6 +40497,7 @@ theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_atom
     let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
     ∃ e : D.ConnectedComponent,
       ZeroLayerAtom.Valid K (.D e) ∧
+        ZeroLayerAtom.SupportOn E (.D e) ∧
         ZeroLayerAtom.reducedOrder K (.D e) = o.supp.ncard ∧
         ZeroLayerAtom.MatchesOn E q (.D e) ∧
         ZeroLayerAtom.ValuesMatchOn K E
@@ -40529,7 +40532,7 @@ theorem degree_sixteen_zeroLayer_nonThreeDivisible_orphan_atom
         (componentRepresentative_mem D e)
     have hdiv : 3 ∣ e.supp.ncard := by simpa [D, heMk] using heDvd
     exact (Nat.mul_div_cancel' hdiv).symm
-  refine ⟨e, ?_, ?_, ?_, ?_⟩
+  refine ⟨e, ?_, heE, ?_, ?_, ?_⟩
   · change 3 ≤ K e ∧ ¬ 3 ∣ K e
     constructor
     · rw [← horder]
@@ -40610,7 +40613,8 @@ theorem degree_sixteen_zeroLayer_orphan_atom_exists
     let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
     let q := fun e : D.ConnectedComponent => componentQuotientMatrix G D o e
     ∃ t : ZeroLayerAtom D.ConnectedComponent,
-      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.MatchesOn E q t ∧
+      ZeroLayerAtom.Valid K t ∧ ZeroLayerAtom.SupportOn E t ∧
+        ZeroLayerAtom.MatchesOn E q t ∧
         ZeroLayerAtom.ValuesMatchOn K E
           (fun i => zeroLayerAtomLoad G i o)
           (fun i => zeroLayerAtomExcess G i o) t ∧
@@ -40625,7 +40629,7 @@ theorem degree_sixteen_zeroLayer_orphan_atom_exists
   dsimp only
   by_cases hdiv : 3 ∣ o.supp.ncard
   · obtain ⟨m, hom⟩ := hdiv
-    obtain ⟨t, htValid, htOrder, htMatches, htValues, htShape⟩ :=
+    obtain ⟨t, htValid, htSupport, htOrder, htMatches, htValues, htShape⟩ :=
       degree_sixteen_zeroLayer_threeDivisible_orphan_atom
         G hfree hmin hcard c₀ hc₀min hregChild hcardChild o ho hoc₀
           m hom
@@ -40633,12 +40637,12 @@ theorem degree_sixteen_zeroLayer_orphan_atom_exists
       rw [hom]
       simpa [mul_comm] using
         Nat.mul_div_left m (by norm_num : 0 < 3)
-    exact ⟨t, htValid, htMatches, htValues,
+    exact ⟨t, htValid, htSupport, htMatches, htValues,
       Or.inl ⟨⟨m, hom⟩, by simpa [hquot] using htOrder, htShape⟩⟩
-  · obtain ⟨e, heValid, heOrder, heMatches, heValues⟩ :=
+  · obtain ⟨e, heValid, heSupport, heOrder, heMatches, heValues⟩ :=
       degree_sixteen_zeroLayer_nonThreeDivisible_orphan_atom
         G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree o ho hdiv
-    exact ⟨.D e, heValid, heMatches, heValues,
+    exact ⟨.D e, heValid, heSupport, heMatches, heValues,
       Or.inr ⟨hdiv, heOrder, ⟨e, rfl⟩⟩⟩
 
 /-- A three-unit orphan row realizes the `A` descriptor's load and excess
@@ -40918,6 +40922,7 @@ theorem degree_sixteen_zeroLayer_orphan_atom_assignment_exists
     ∃ atom : {o // o ∈ C} → ZeroLayerAtom D.ConnectedComponent,
       ∀ o,
         ZeroLayerAtom.Valid K (atom o) ∧
+        ZeroLayerAtom.SupportOn E (atom o) ∧
         ZeroLayerAtom.MatchesOn E
           (fun e => componentQuotientMatrix G D o.1 e) (atom o) ∧
         ZeroLayerAtom.ValuesMatchOn K E
@@ -40949,6 +40954,7 @@ theorem degree_sixteen_zeroLayer_orphan_atom_assignment_exists
   have hex : ∀ o : {o // o ∈ C},
       ∃ t : ZeroLayerAtom D.ConnectedComponent,
         ZeroLayerAtom.Valid K t ∧
+        ZeroLayerAtom.SupportOn E t ∧
         ZeroLayerAtom.MatchesOn E
           (fun e => componentQuotientMatrix G D o.1 e) t ∧
         ZeroLayerAtom.ValuesMatchOn K E
