@@ -1475,6 +1475,43 @@ theorem reverse_eq_one_of_balanced_row_product_eq_row
   rw [hsum] at hstrict
   exact (lt_irrefl _ hstrict)
 
+/-- Finset-restricted form of `reverse_eq_one_of_balanced_row_product_eq_row`. -/
+theorem reverse_eq_one_on_finset_of_balanced_product_eq_row
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcpos : 0 < size c)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hsum : (∑ e ∈ S, Q c e * Q e c) = ∑ e ∈ S, Q c e) :
+    ∀ e ∈ S, 0 < Q c e → Q e c = 1 := by
+  have hle : ∀ e : C, Q c e ≤ Q c e * Q e c := by
+    intro e
+    by_cases hq : Q c e = 0
+    · simp [hq]
+    · have hqpos : 0 < Q c e := Nat.pos_of_ne_zero hq
+      have hrpos : 0 < Q e c := by
+        by_contra hr
+        have hr0 : Q e c = 0 := by omega
+        have hb := hbal e
+        rw [hr0, mul_zero] at hb
+        exact (Nat.mul_pos hcpos hqpos).ne' hb
+      exact (show Q c e * 1 ≤ Q c e * Q e c by
+        exact Nat.mul_le_mul_left _ hrpos) |> (by simpa)
+  intro e he hq
+  have hrpos : 0 < Q e c := by
+    have := hle e
+    by_contra hr
+    have hr0 : Q e c = 0 := by omega
+    rw [hr0, mul_zero] at this
+    omega
+  by_contra hrne
+  have hrlt : Q c e < Q c e * Q e c := by
+    have hr2 : 1 < Q e c := by omega
+    simpa using (Nat.mul_lt_mul_left hq).mpr hr2
+  have hstrict := Finset.sum_lt_sum
+    (fun t _ ↦ hle t) ⟨e, he, hrlt⟩
+  rw [hsum] at hstrict
+  exact (lt_irrefl _ hstrict)
+
 /-- Every zero-diagonal order-three component at the degree-six boundary has
 row sum six and reverse multiplicity one on its positive support. -/
 theorem degreeSix_orderThree_zeroDiagonal_profile
@@ -3078,6 +3115,78 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
       (by norm_num at hcard ⊢; exact hcard) e t
   rw [he3, hte, mul_one] at hbt
   exact hbt.symm
+
+/-- After removing the forced order-three contact, the remaining order-six
+singleton row has ordinary and two-step mass three.  Hence every positive
+remaining contact has reverse multiplicity one and target order `6q`. -/
+theorem degreeSix_orderSix_singleton_remaining_contact_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) :
+    ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ e.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0 ∧
+      (∑ t ∈ (Finset.univ.erase c).erase e,
+        componentQuotientMatrix G (secondOrderDefectGraph G) c t) = 3 ∧
+      (∀ t ∈ (Finset.univ.erase c).erase e,
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t →
+          componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1 ∧
+          t.supp.ncard = 6 *
+            componentQuotientMatrix G (secondOrderDefectGraph G) c t) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨e, hec, he3, hce, hecQ, hee, _, _⟩ :=
+    degreeSix_orderSix_singleton_exists_orderThree_contact
+      G hfree hmin hcard u hu huRange huD hr c hsector hc6
+  obtain ⟨_, _, hrow, hprod, hbal⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase c).erase e
+  have heIn : e ∈ (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) :=
+    Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hsplitRow := Finset.sum_erase_add
+    (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) (Q c) heIn
+  have hsplitProd := Finset.sum_erase_add
+    (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t c) heIn
+  have hrowS : (∑ t ∈ S, Q c t) = 3 := by
+    dsimp [S]
+    omega
+  have hprodS : (∑ t ∈ S, Q c t * Q t c) = 3 := by
+    have hp : (∑ t ∈ Finset.univ.erase c, Q c t * Q t c) = 5 := by
+      simpa [hc6] using hprod
+    dsimp [S]
+    omega
+  have hreverse := reverse_eq_one_on_finset_of_balanced_product_eq_row
+    S Q (fun t ↦ t.supp.ncard) c (by rw [hc6]; norm_num) hbal
+      (by rw [hprodS, hrowS])
+  refine ⟨e, hec, he3, hce, hecQ, hee, hrowS, ?_⟩
+  intro t ht hpos
+  have htcQ := hreverse t ht hpos
+  refine ⟨htcQ, ?_⟩
+  have hb := hbal t
+  rw [hc6, htcQ, mul_one] at hb
+  exact hb.symm
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
