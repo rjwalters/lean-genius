@@ -2545,8 +2545,8 @@ theorem false_of_degreeSix_orderTwelve_three_orderFour_contacts
   rw [heData.2, hfData.2] at hbound
   omega
 
+set_option maxHeartbeats 2000000 in
 /-- The order-twelve singleton branch is impossible. -/
-set_option maxHeartbeats 800000 in
 theorem false_of_degreeSix_orderTwelve_singleton
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2601,24 +2601,32 @@ theorem false_of_degreeSix_orderTwelve_singleton
       rcases hclass with h3 | h4 | h6 | h121 | h122 | h123
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 3 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h3.1, h3.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn3 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 3 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn3
+        omega
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 4 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h4.1, h4.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn4 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 4 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn4
+        omega
       · have hm : t ∈ D := Finset.mem_filter.mpr ⟨htS, h6.1, h6.2.1⟩
         rw [hdSet] at hm
         simp at hm
         exact htd hm
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h121.1, h121.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn121 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 12 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn121
+        omega
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 2) :=
           Finset.mem_filter.mpr ⟨htS, h122.1, h122.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn122 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 12 ∧ Q c x = 2).card = 0 := by
+          simpa [S, Q] using hn122
+        omega
       · have hm : t ∈ A := Finset.mem_filter.mpr ⟨htS, h123.1, h123.2.1⟩
         rw [haSet] at hm
         simp at hm
@@ -2640,12 +2648,12 @@ theorem false_of_degreeSix_orderTwelve_singleton
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c a
     have hsqA : (∑ t, Q c t * Q t a) = 12 := by
-      simpa [Q, Matrix.mul_apply, hac, ha12] using hsqAgraph
+      simpa [Q, Matrix.mul_apply, hac.symm, ha12] using hsqAgraph
     have hsqDgraph := secondOrder_componentQuotientMatrix_sq_apply
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c d
     have hsqD : (∑ t, Q c t * Q t d) = 6 := by
-      simpa [Q, Matrix.mul_apply, hdc, hd6] using hsqDgraph
+      simpa [Q, Matrix.mul_apply, hdc.symm, hd6] using hsqDgraph
     have hzeroA : (∑ t ∈ R, Q c t * Q t a) = 0 := by
       apply Finset.sum_eq_zero
       intro t ht
