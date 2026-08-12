@@ -515,6 +515,7 @@ theorem degreeSix_orderNine_two_orderThree_targets_le_one
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (antipodalGraph G).Adj]
     [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
@@ -931,6 +932,50 @@ theorem reverse_eq_one_of_balanced_row_product_eq_row
     (fun t _ ↦ hle t) ⟨e, Finset.mem_univ e, hrlt⟩
   rw [hsum] at hstrict
   exact (lt_irrefl _ hstrict)
+
+/-- Every zero-diagonal order-three component at the degree-six boundary has
+row sum six and reverse multiplicity one on its positive support. -/
+theorem degreeSix_orderThree_zeroDiagonal_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0) :
+    (∑ t, componentQuotientMatrix G (secondOrderDefectGraph G) e t) = 6 ∧
+      ∀ t, 0 < componentQuotientMatrix G (secondOrderDefectGraph G) e t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t e = 1 ∧
+          t.supp.ncard = 3 *
+            componentQuotientMatrix G (secondOrderDefectGraph G) e t := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hrow : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have hsq := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hprod : (∑ t, Q e t * Q t e) = 6 := by
+    simpa [Q, Matrix.mul_apply, he3] using hsq
+  have hreverse := reverse_eq_one_of_balanced_row_product_eq_row
+    Q (fun t ↦ t.supp.ncard) e (by rw [he3]; norm_num)
+      (fun t ↦ secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e t)
+      (by rw [hprod, hrow])
+  refine ⟨hrow, ?_⟩
+  intro t hpos
+  have hte := hreverse t hpos
+  change componentQuotientMatrix G (secondOrderDefectGraph G) t e = 1 at hte
+  refine ⟨hte, ?_⟩
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e t
+  rw [he3, hte, mul_one] at hbal
+  exact hbal.symm
 
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
