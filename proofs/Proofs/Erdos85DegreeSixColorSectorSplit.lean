@@ -707,6 +707,8 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
       componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
       componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 ∧
       componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0 ∧
+      (∑ t ∈ (Finset.univ.erase e).erase c,
+        componentQuotientMatrix G (secondOrderDefectGraph G) e t) = 4 ∧
       ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
         0 < componentQuotientMatrix G (secondOrderDefectGraph G) e t →
         componentQuotientMatrix G (secondOrderDefectGraph G) t e = 1 ∧
@@ -741,10 +743,25 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
           componentQuotientMatrix G (secondOrderDefectGraph G) t e) hcen
       rw [hdiag, hce, htwo, hsum] at hlower
       omega
-  refine ⟨e, hne, he3, hce, hec, hediag, ?_⟩
   have hrowe := sum_secondOrder_componentQuotientMatrix_row_eq_degree
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) e
+  refine ⟨e, hne, he3, hce, hec, hediag, ?_, ?_⟩
+  · have heMem : e ∈ (Finset.univ :
+        Finset (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_univ e
+    have hcMem : c ∈ (Finset.univ.erase e :
+        Finset (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hne.symm, Finset.mem_univ c⟩
+    have hsplitE := Finset.sum_erase_add
+      (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ componentQuotientMatrix G (secondOrderDefectGraph G) e t) heMem
+    have hsplitC := Finset.sum_erase_add
+      (Finset.univ.erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ componentQuotientMatrix G (secondOrderDefectGraph G) e t) hcMem
+    omega
   have hsqe := secondOrder_componentQuotientMatrix_sq_apply
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) e e
