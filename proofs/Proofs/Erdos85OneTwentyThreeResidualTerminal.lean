@@ -42556,6 +42556,7 @@ theorem used_reducedOrder_mem_of_map_eq
     {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
     (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ))
     {x : α} (hx : x ∈ E) : K x ∈ L := by
+  change K x ∈ (L : Multiset ℕ)
   rw [← hmap]
   exact Multiset.mem_map_of_mem K hx
 
@@ -42563,8 +42564,12 @@ theorem used_reducedOrder_count_of_map_eq
     {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
     (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ)) (k : ℕ) :
     (E.filter (fun x => K x = k)).card = L.count k := by
-  have hc := congrArg (Multiset.count k) hmap
-  simpa [Multiset.count_map] using hc
+  change (E.val.filter (fun x => K x = k)).card =
+    (L : Multiset ℕ).count k
+  rw [← hmap, Multiset.count_map]
+  congr 1
+  ext x
+  simp [eq_comm]
 
 theorem false_of_degree_sixteen_zeroLayer_all_used_order_six_of_map_eq
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -42863,6 +42868,95 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
         he₁₂ he₄ (Finset.mem_filter.mp he₁₂E).2
           (Finset.mem_filter.mp he₄E).2 (by simpa [D, R, E] using hE)
   · simp at hxsK
+
+theorem false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[8, 4, 4] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[8, 4, 4] : Multiset ℕ) at hmap
+  obtain ⟨slot, hslotInj, hslotMem, hslotK, hslotCover⟩ :=
+    ZeroLayerAtom.exists_slots_of_finset_map_eq_list E K [8, 4, 4] hmap
+  let e₈ := slot 0
+  let e₄a := slot 1
+  let e₄b := slot 2
+  have h₈a : e₈ ≠ e₄a := by
+    intro heq
+    have := congrArg Fin.val (hslotInj heq)
+    norm_num at this
+  have h₈b : e₈ ≠ e₄b := by
+    intro heq
+    have := congrArg Fin.val (hslotInj heq)
+    norm_num at this
+  have hab : e₄a ≠ e₄b := by
+    intro heq
+    have := congrArg Fin.val (hslotInj heq)
+    norm_num at this
+  have he₈E : e₈ ∈ E := hslotMem 0
+  have he₄aE : e₄a ∈ E := hslotMem 1
+  have he₄bE : e₄b ∈ E := hslotMem 2
+  have he₈K : K e₈ = 8 := by simpa [e₈] using hslotK 0
+  have he₄aK : K e₄a = 4 := by simpa [e₄a] using hslotK 1
+  have he₄bK : K e₄b = 4 := by simpa [e₄b] using hslotK 2
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have he₈ : e₈.supp.ncard = 24 := by
+    have := hpack.2 e₈ he₈E
+    dsimp [K] at he₈K
+    omega
+  have he₄a : e₄a.supp.ncard = 12 := by
+    have := hpack.2 e₄a he₄aE
+    dsimp [K] at he₄aK
+    omega
+  have he₄b : e₄b.supp.ncard = 12 := by
+    have := hpack.2 e₄b he₄bE
+    dsimp [K] at he₄bK
+    omega
+  have hE : E = {e₈, e₄a, e₄b} := by
+    ext x
+    constructor
+    · intro hx
+      obtain ⟨i, hi⟩ := hslotCover x hx
+      fin_cases i <;> simp_all [e₈, e₄a, e₄b]
+    · intro hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl
+      · exact he₈E
+      · exact he₄aE
+      · exact he₄bE
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild e₈ e₄a e₄b
+      h₈a h₈b hab he₈ he₄a he₄b (by simpa [D, R, E] using hE)
+        u hu huRange huD hthree
 
 theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_two_two_of_map_eq
     {V : Type*} [Fintype V] [DecidableEq V]
