@@ -39833,6 +39833,48 @@ theorem false_of_zeroLayer_reduced_used_orders_seven_five_two_two_standard_atom_
       seven_five_two_two_weighted_atom_column_standard
       (by norm_num [Fin.sum_univ_succ]) atom hv hl he
 
+/-- Integral closure of `(14,2)`.  The order-two excess budget excludes its
+`C(2)` atom; every remaining valid contribution to that row is divisible
+by fourteen, contradicting its required load twenty-four. -/
+theorem false_of_zeroLayer_reduced_used_orders_fourteen_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 2))
+    (hv : ∀ o, Valid ![14, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![14, 2] i (atom o)) = 12 * ![14, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![14, 2] i - 1)) : False := by
+  have hexcess : (∑ o, excess 1 (atom o)) ≤ 2 := by simpa using he 1
+  have hpoint : ∀ o, 14 ∣ load ![14, 2] 1 (atom o) := by
+    intro o
+    have hone : excess 1 (atom o) ≤ ∑ q, excess 1 (atom q) :=
+      Finset.single_le_sum (s := Finset.univ)
+        (fun q _ => Nat.zero_le (excess 1 (atom q))) (Finset.mem_univ o)
+    have hoe : excess 1 (atom o) ≤ 2 := hone.trans hexcess
+    have hvo := hv o
+    cases ht : atom o with
+    | C e =>
+        simp only [ht] at hoe hvo
+        fin_cases e
+        all_goals norm_num [excess] at hoe
+        all_goals norm_num [load]
+    | D e =>
+        simp only [ht] at hoe hvo
+        fin_cases e
+        all_goals norm_num [Valid] at hvo
+        all_goals norm_num [load]
+    | B e f =>
+        simp only [ht] at hoe hvo
+        fin_cases e <;> fin_cases f
+        all_goals norm_num [Valid] at hvo
+        all_goals norm_num [load]
+    | A a b c =>
+        simp only [ht] at hoe hvo
+        fin_cases a <;> fin_cases b <;> fin_cases c
+        all_goals norm_num [Valid] at hvo
+  have hdiv : 14 ∣ ∑ o, load ![14, 2] 1 (atom o) :=
+    Finset.dvd_sum fun o _ => hpoint o
+  rw [hl 1] at hdiv
+  norm_num at hdiv
+
 /-- Computed column certificate for the reduced pattern `(7,7,2)`. -/
 theorem seven_seven_two_weighted_atom_column :
     ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 7, 2] t →
