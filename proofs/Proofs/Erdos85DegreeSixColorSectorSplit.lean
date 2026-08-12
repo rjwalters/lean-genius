@@ -1947,6 +1947,58 @@ theorem degreeSix_exists_odd_to_even_cover
     omega
   exact ⟨a, b, haOdd, hbEven, habCases, hentries.1, hentries.2.2.symm⟩
 
+/-- On 33 vertices the odd-to-even cover has one of eight exact order
+shapes. -/
+theorem degreeSix_odd_to_even_cover_order_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1 ∧
+      ((a.supp.ncard = 3 ∧ b.supp.ncard = 6) ∨
+       (a.supp.ncard = 5 ∧ b.supp.ncard = 10) ∨
+       (a.supp.ncard = 7 ∧ b.supp.ncard = 14) ∨
+       (a.supp.ncard = 9 ∧ b.supp.ncard = 18) ∨
+       (a.supp.ncard = 11 ∧ b.supp.ncard = 22) ∨
+       (a.supp.ncard = 3 ∧ b.supp.ncard = 12) ∨
+       (a.supp.ncard = 5 ∧ b.supp.ncard = 20) ∨
+       (a.supp.ncard = 3 ∧ b.supp.ncard = 18)) := by
+  obtain ⟨a, b, haOdd, hbEven, habQ, hba, hsize⟩ :=
+    degreeSix_exists_odd_to_even_cover
+      G hfree hmin hcard o c hoOdd hcEven
+  have hab : a ≠ b := by
+    intro h
+    subst b
+    exact (Nat.not_even_iff_odd.mpr haOdd) hbEven
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have habSum := two_distinct_terms_le_sum
+    (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard) hab
+  rw [htotal] at habSum
+  have ha3 := hr a
+  refine ⟨a, b, hba, ?_⟩
+  rcases haOdd with ⟨k, hk⟩
+  rcases habQ with h2 | h4 | h6
+  · rw [h2] at hsize
+    have : a.supp.ncard ≤ 11 := by omega
+    interval_cases a.supp.ncard <;> omega
+  · rw [h4] at hsize
+    have : a.supp.ncard ≤ 6 := by omega
+    interval_cases a.supp.ncard <;> omega
+  · rw [h6] at hsize
+    have : a.supp.ncard ≤ 4 := by omega
+    interval_cases a.supp.ncard <;> omega
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
