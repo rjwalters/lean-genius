@@ -40093,6 +40093,30 @@ theorem false_of_zeroLayer_reduced_used_orders_six_three_three_two_two_filtered_
   rw [htotal] at hdiv
   norm_num at hdiv
 
+/-- Every valid atom over `(6,3,3,2,2)` has reduced order `6`, `3`, or `2`. -/
+theorem six_three_three_two_two_valid_atom_reducedOrder_cases
+    (t : ZeroLayerAtom (Fin 5))
+    (hvalid : Valid ![6, 3, 3, 2, 2] t) :
+    reducedOrder ![6, 3, 3, 2, 2] t = 6 ∨
+      reducedOrder ![6, 3, 3, 2, 2] t = 3 ∨
+      reducedOrder ![6, 3, 3, 2, 2] t = 2 := by
+  cases t with
+  | C e =>
+      fin_cases e
+      all_goals norm_num [reducedOrder]
+  | D e =>
+      fin_cases e
+      all_goals try norm_num [Valid] at hvalid
+      all_goals norm_num [reducedOrder]
+  | B e f =>
+      fin_cases e <;> fin_cases f
+      all_goals try norm_num [Valid] at hvalid
+      all_goals norm_num [reducedOrder]
+  | A a b c =>
+      fin_cases a <;> fin_cases b <;> fin_cases c
+      all_goals try norm_num [Valid] at hvalid
+      all_goals norm_num [reducedOrder]
+
 /-- A positive partition of sixteen using reduced orders `6`, `3`, and `2`
 has forced multiplicities `1`, `2`, and `2`. -/
 theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
