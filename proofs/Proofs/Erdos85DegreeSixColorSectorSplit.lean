@@ -1512,6 +1512,33 @@ theorem false_of_degreeSix_orderSix_three_contact
   rw [he3, ha18, hea] at hbalEA
   rw [hcc, hce, hca, hee, hbalEA] at hsqe
   omega
+
+/-- In the `1+1+1` contact pattern with one unused order-six component, the
+three internal contact-row equations sum to an even correction of ten, while
+the trace forces their diagonal sum to three. -/
+theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six
+    {C : Type*} (Q : C → C → ℕ) (d x y : C)
+    (hd : Q d d + Q x d + Q y d = 2)
+    (hx : Q d x + Q x x + Q y x = 4)
+    (hy : Q d y + Q x y + Q y y = 4)
+    (hdx : Q d x = Q x d) (hdy : Q d y = Q y d)
+    (hxy : Q x y = Q y x)
+    (htrace : Q d d + Q x x + Q y y = 3) : False := by
+  omega
+
+/-- In the `1+1+1` contact pattern with two unused order-three components,
+the first unused row has diagonal zero and mutual quotient one; its square
+with the forced order-three component then forces a second order-three target
+in the shared order-six row, contradicting grouped periodicity. -/
+theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
+    {C : Type*} (Q : C → C → ℕ) (d e f g : C)
+    (hde : Q d e = 1)
+    (hff : Q f f = 0 ∨ Q f f = 2)
+    (hfgsymm : Q f g = Q g f)
+    (hfrow : Q f f + Q f g = 1)
+    (hsqef : 2 * Q d f + Q f f + Q g f = 3)
+    (hgroup : Q d e + Q d f ≤ 1) : False := by
+  rcases hff with hzero | htwo <;> omega
   constructor
   · rw [Finset.sum_congr rfl hppoint]
     simp only [Finset.sum_add_distrib]
@@ -3361,6 +3388,107 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
   have hb := hbal t
   rw [hc6, htcQ, mul_one] at hb
   exact hb.symm
+
+/-- The residual single quotient-three contact branch is impossible. -/
+theorem false_of_degreeSix_orderSix_three_contact_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) (hec : e ≠ c) (he3 : e.supp.ncard = 3)
+    (hce : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1)
+    (hecQ : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (hrowS : (∑ t ∈ (Finset.univ.erase c).erase e,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t) = 3)
+    (hcprofile : ∀ t ∈ (Finset.univ.erase c).erase e,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1 ∧
+        t.supp.ncard = 6 *
+          componentQuotientMatrix G (secondOrderDefectGraph G) c t)
+    (hq3card : (((Finset.univ.erase c).erase e).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 3).card = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase c).erase e
+  let A := S.filter fun t ↦ Q c t = 3
+  have hAcard : A.card = 1 := by simpa [A, S, Q] using hq3card
+  obtain ⟨a, haSet⟩ := Finset.card_eq_one.mp hAcard
+  have haMem : a ∈ A := by rw [haSet]; simp
+  have haFilter := Finset.mem_filter.mp haMem
+  have haS : a ∈ S := haFilter.1
+  have hca : Q c a = 3 := haFilter.2
+  have hac : a ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp haS).2).1
+  have hae : a ≠ e := (Finset.mem_erase.mp haS).1
+  have haData := hcprofile a haS (by rw [hca]; norm_num)
+  have ha18 : a.supp.ncard = 18 := by rw [haData.2, hca]; norm_num
+  have hrowE : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have hea : Q e a = 0 := by
+    by_contra hq
+    have hqpos : 0 < Q e a := Nat.pos_of_ne_zero hq
+    obtain ⟨_, heprof⟩ := degreeSix_orderThree_zeroDiagonal_profile
+      G hfree hmin hcard e he3 hee
+    have hsize := (heprof a hqpos).2
+    change a.supp.ncard = 3 * Q e a at hsize
+    have hlower := two_distinct_terms_le_sum (Q e) (show c ≠ a from hac.symm)
+    change Q e c = 2 at hecQ
+    rw [hrowE, hecQ, ha18] at hlower
+    nlinarith
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent := S.erase a
+  have haIn : a ∈ S := haS
+  have hsplit := Finset.sum_erase_add S (Q c) haIn
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by dsimp [R]; omega
+  have hzero : ∀ t ∈ R, Q c t = 0 := by
+    intro t ht
+    have hle : Q c t ≤ ∑ x ∈ R, Q c x :=
+      Finset.single_le_sum (f := Q c) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hcIn : c ∈ (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+  have heIn : e ∈ (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) :=
+    Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c e
+  have hsq : (∑ t, Q c t * Q t e) = 3 := by
+    simpa [Q, Matrix.mul_apply, hec.symm, he3] using hsqGraph
+  have hsC := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ Q c t * Q t e) hcIn
+  have hsE := Finset.sum_erase_add (Finset.univ.erase c)
+    (fun t ↦ Q c t * Q t e) heIn
+  have hsA := Finset.sum_erase_add S (fun t ↦ Q c t * Q t e) haIn
+  have hrest : (∑ t ∈ R, Q c t * Q t e) = 0 := by
+    apply Finset.sum_eq_zero
+    intro t ht
+    simp [hzero t ht]
+  obtain ⟨_, hcc, _, _, hbal⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  have hbalEA := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e a
+  have hsqe : Q c c * Q c e + Q c e * Q e e + Q c a * Q a e = 3 := by
+    dsimp [R, S] at hrest
+    omega
+  exact false_of_degreeSix_orderSix_three_contact Q (fun t ↦ t.supp.ncard)
+    c e a hc6 he3 ha18 hcc hce hca hee hea hbalEA hsqe
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
