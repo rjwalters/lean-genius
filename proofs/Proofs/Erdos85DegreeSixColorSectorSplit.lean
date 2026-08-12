@@ -2686,9 +2686,9 @@ theorem degreeSix_orderTwelve_singleton_positive_contact_class
           (by norm_num at hcard ⊢; exact hcard) c t
           (by simpa [hc12] using hndvd))
 
+set_option maxHeartbeats 2000000 in
 /-- The order-twelve singleton row has exactly one of its two feasible
 contact-count patterns. -/
-set_option maxHeartbeats 800000 in
 theorem degreeSix_orderTwelve_singleton_contact_counts
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2832,8 +2832,8 @@ theorem false_of_degreeSix_orderTwelve_three_orderFour_contacts
   rw [heData.2, hfData.2] at hbound
   omega
 
+set_option maxHeartbeats 2000000 in
 /-- The order-twelve singleton branch is impossible. -/
-set_option maxHeartbeats 800000 in
 theorem false_of_degreeSix_orderTwelve_singleton
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
