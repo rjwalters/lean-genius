@@ -40369,6 +40369,72 @@ theorem exists_equiv_fin_five_of_injective_five_slots
   intro i
   rfl
 
+/-- Generic supported-atom transport along an identification of the support
+subtype with a finite canonical index type. -/
+theorem supported_atom_reindex
+    {α κ : Type*} [DecidableEq α] [DecidableEq κ]
+    (C : Finset α) (slot : κ → α) (hmem : ∀ i, slot i ∈ C)
+    (e : {c // c ∈ C} ≃ κ)
+    (heslot : ∀ i, e.symm i = ⟨slot i, hmem i⟩)
+    (K : α → ℕ) (Kκ : κ → ℕ)
+    (hKslot : ∀ i, K (slot i) = Kκ i)
+    (t : ZeroLayerAtom α) (htSupport : SupportOn C t)
+    (htValid : Valid K t) :
+    let tκ := reindex e (restrictTo t htSupport)
+    Valid Kκ tκ ∧ reducedOrder Kκ tκ = reducedOrder K t ∧
+      (∀ i, load Kκ i tκ = load K (slot i) t) ∧
+      ∀ i, excess i tκ = excess (slot i) t := by
+  classical
+  dsimp only
+  let inc : {c // c ∈ C} → α := fun c => c.1
+  let tC := restrictTo t htSupport
+  have hmap : mapIndices inc tC = t := by
+    simpa [inc, tC] using mapIndices_subtype_restrictTo t htSupport
+  have heval : ∀ c : {c // c ∈ C}, slot (e c) = c.1 := by
+    intro c
+    have h := congrArg Subtype.val (heslot (e c))
+    simpa using h.symm
+  have hK : (Kκ ∘ e) = K ∘ inc := by
+    funext c
+    rw [Function.comp_apply, Function.comp_apply, ← hKslot (e c), heval]
+  have htCValid : Valid (K ∘ inc) tC := by
+    rw [← valid_mapIndices_iff inc Subtype.val_injective K tC, hmap]
+    exact htValid
+  constructor
+  · rw [valid_reindex_iff, hK]
+    exact htCValid
+  constructor
+  · calc
+      reducedOrder Kκ (reindex e tC) = reducedOrder (Kκ ∘ e) tC :=
+        reducedOrder_reindex e Kκ tC
+      _ = reducedOrder (K ∘ inc) tC := by rw [hK]
+      _ = reducedOrder K (mapIndices inc tC) := by
+        symm
+        exact reducedOrder_mapIndices inc K tC
+      _ = reducedOrder K t := by rw [hmap]
+  constructor
+  · intro i
+    let c : {c // c ∈ C} := e.symm i
+    have hcslot : c.1 = slot i := congrArg Subtype.val (heslot i)
+    calc
+      load Kκ i (reindex e tC) = load (Kκ ∘ e) c tC := by
+        simpa [c] using load_reindex e Kκ c tC
+      _ = load (K ∘ inc) c tC := by rw [hK]
+      _ = load K c.1 (mapIndices inc tC) := by
+        symm
+        exact load_mapIndices inc Subtype.val_injective K c tC
+      _ = load K (slot i) t := by rw [hmap, hcslot]
+  · intro i
+    let c : {c // c ∈ C} := e.symm i
+    have hcslot : c.1 = slot i := congrArg Subtype.val (heslot i)
+    calc
+      excess i (reindex e tC) = excess c tC := by
+        simpa [c] using excess_reindex e c tC
+      _ = excess c.1 (mapIndices inc tC) := by
+        symm
+        exact excess_mapIndices inc Subtype.val_injective c tC
+      _ = excess (slot i) t := by rw [hmap, hcslot]
+
 /-- Transport a supported atom through a five-slot identification, preserving
 validity and its load/excess columns at every named slot. -/
 theorem supported_atom_reindex_fin_five
