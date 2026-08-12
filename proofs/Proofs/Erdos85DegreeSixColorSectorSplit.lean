@@ -1,6 +1,7 @@
 import Proofs.Erdos85ColorSectorPSD
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85ResidueSignedCount
+import Proofs.Erdos85DegreeSixTriangleClosure
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -427,6 +428,43 @@ theorem degreeSix_triangleFreeCycleSector_empty_or_singleton
     dsimp [size] at hineq
     have hle : c.supp.ncard ≤ 15 := by nlinarith
     omega
+
+/-- In the empty color-sector branch, the all-triangle defect decomposition
+is impossible; hence an antipodal-colored defect cycle of order at least four
+exists. -/
+theorem degreeSix_exists_large_antipodal_component_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      4 ≤ c.supp.ncard ∧ c ∉ triangleFreeCycleSector G u := by
+  by_contra hnone
+  push Not at hnone
+  have hthree : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 := by
+    intro c
+    have hcnot : c ∉ triangleFreeCycleSector G u := by rw [hempty]; simp
+    have hlt : ¬ 4 ≤ c.supp.ncard := fun hfour => hcnot (hnone c hfour)
+    have hlower := hr c
+    omega
+  exact no_degreeSix_boundary_of_secondOrder_all_triangles
+    G hfree hmin hcard hthree
 
 end
 
