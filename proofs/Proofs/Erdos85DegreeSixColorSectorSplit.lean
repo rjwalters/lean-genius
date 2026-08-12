@@ -161,6 +161,98 @@ theorem degreeSix_orderSix_singleton_contact
   have hse : size e = 3 := by omega
   exact ⟨e, (Finset.mem_erase.mp heS).1, hse, hq, hr⟩
 
+/-- An order-fifteen singleton row necessarily contacts an order-three
+component.  Periodicity bounds every entry toward a target whose order is
+not divisible by fifteen by one; without an order-three target, balance
+would make every reverse entry at most three, contradicting the pinned
+two-step row sum `14 > 3 * 4`. -/
+theorem degreeSix_orderFifteen_singleton_contact
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hsize : size c = 15)
+    (htotal : (∑ e : C, size e) = 33)
+    (hlower : ∀ e, 3 ≤ size e)
+    (hrow : (∑ e ∈ (Finset.univ.erase c), Q c e) = 4)
+    (hprod : (∑ e ∈ (Finset.univ.erase c), Q c e * Q e c) = 14)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hperiod : ∀ e, ¬ 15 ∣ size e → Q c e ≤ 1) :
+    ∃ e : C, e ≠ c ∧ size e = 3 ∧ Q c e = 1 ∧ Q e c = 5 := by
+  let S : Finset C := Finset.univ.erase c
+  by_contra hnone
+  push Not at hnone
+  have hterm : ∀ e ∈ S, Q c e * Q e c ≤ 3 * Q c e := by
+    intro e heS
+    have hec : e ≠ c := (Finset.mem_erase.mp heS).1
+    have hqle : Q c e ≤ 4 := by
+      have hsingle : Q c e ≤ ∑ x ∈ S, Q c x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) heS
+      simpa [S, hrow] using hsingle
+    have hple : Q c e * Q e c ≤ 14 := by
+      have hsingle : Q c e * Q e c ≤
+        ∑ x ∈ S, Q c x * Q x c :=
+        Finset.single_le_sum
+          (fun x (_ : x ∈ S) ↦ Nat.zero_le (Q c x * Q x c)) heS
+      simpa [S, hprod] using hsingle
+    by_cases hqzero : Q c e = 0
+    · simp [hqzero]
+    · have hqpos : 0 < Q c e := Nat.pos_of_ne_zero hqzero
+      have hsizele : size e ≤ 18 := by
+        have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+        have heMem : e ∈ (Finset.univ.erase c : Finset C) := heS
+        have hsplitc := Finset.sum_erase_add
+          (Finset.univ : Finset C) size hcMem
+        have hsplite := Finset.sum_erase_add
+          (Finset.univ.erase c : Finset C) size heMem
+        have hrest : 0 ≤ ∑ x ∈ (Finset.univ.erase c).erase e, size x :=
+          Nat.zero_le _
+        have htwo : size c + size e ≤ ∑ x : C, size x := by omega
+        rw [htotal, hsize] at htwo
+        omega
+      by_cases hdvd : 15 ∣ size e
+      · have hsizee : size e = 15 := by
+          obtain ⟨k, hk⟩ := hdvd
+          have hkpos : 0 < k := by
+            by_contra hk0
+            push Not at hk0
+            have : k = 0 := by omega
+            subst k
+            simp at hk
+            have := hlower e
+            omega
+          rw [hk]
+          have := hlower e
+          omega
+        have hb := hbal e
+        rw [hsize, hsizee] at hb
+        have hrq : Q e c = Q c e := by omega
+        rw [hrq] at hple
+        have hq3 : Q c e ≤ 3 := by
+          by_contra hnot
+          have hq4 : Q c e = 4 := by omega
+          norm_num [hq4] at hple
+        rw [hrq]
+        simpa [Nat.mul_comm] using Nat.mul_le_mul_right (Q c e) hq3
+      · have hqone : Q c e = 1 := by
+          have := hperiod e hdvd
+          omega
+        have hb := hbal e
+        rw [hsize, hqone, mul_one] at hb
+        have hsizeNe : size e ≠ 3 := by
+          intro hthree
+          have hreverse : Q e c = 5 := by rw [hthree] at hb; omega
+          exact hnone e hec hthree hqone hreverse
+        have hsize4 : 4 ≤ size e := by
+          have := hlower e
+          omega
+        have hrle : Q e c ≤ 3 := by nlinarith
+        rw [hqone]
+        simpa using hrle
+  have hsumle : (∑ e ∈ S, Q c e * Q e c) ≤
+      ∑ e ∈ S, 3 * Q c e :=
+    Finset.sum_le_sum fun e he ↦ hterm e he
+  rw [← Finset.mul_sum] at hsumle
+  simpa [S, hrow, hprod] using hsumle
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
@@ -675,6 +767,52 @@ theorem degreeSix_singleton_component_quotient_row
     exact secondOrder_componentQuotientMatrix_balance
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c e
+
+/-- Graph instantiation of the forced order-three contact in the
+order-fifteen singleton branch. -/
+theorem degreeSix_orderFifteen_singleton_exists_orderThree_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc15 : c.supp.ncard = 15) :
+    ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ e.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 5 := by
+  obtain ⟨_, _, hrow, hprod, hbal⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  apply degreeSix_orderFifteen_singleton_contact
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun e ↦ e.supp.ncard) c hc15
+  · simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  · exact hr
+  · exact hrow
+  · simpa [hc15] using hprod
+  · exact hbal
+  · intro e hndvd
+    exact secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e (by simpa [hc15] using hndvd)
 
 /-- Graph instantiation of the forced contact in the order-six singleton
 branch.  The contact target is a distinct order-three component with quotient
