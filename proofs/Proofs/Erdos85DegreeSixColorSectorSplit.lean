@@ -817,6 +817,68 @@ theorem degreeSix_orderNine_single_contact_shape
   have hxR : x ∈ R := Finset.mem_erase.mpr ⟨hxb, hxU⟩
   exact Or.inr (Or.inr (Or.inr (Or.inr (hRsingle x hxR))))
 
+/-- Arithmetic terminal for the surviving order-nine singleton shape. -/
+theorem false_of_degreeSix_orderNine_single_contact_shape
+    {C : Type*} [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c e a b f : C)
+    (hec : e ≠ c) (hac : a ≠ c) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbe : b ≠ e) (hba : b ≠ a)
+    (hfc : f ≠ c) (hfe : f ≠ e) (hfa : f ≠ a) (hfb : f ≠ b)
+    (hc9 : size c = 9) (he3 : size e = 3)
+    (ha9 : size a = 9) (hb9 : size b = 9) (hf3 : size f = 3)
+    (hcc : Q c c = 2) (hce : Q c e = 1)
+    (hca : Q c a = 2) (hcb : Q c b = 1) (hcf : Q c f = 0)
+    (hecQ : Q e c = 3) (hee : Q e e = 0)
+    (herow : Q e a + Q e b + Q e f = 3)
+    (heprofile : ∀ t, 0 < Q e t → Q t e = 1 ∧ size t = 3 * Q e t)
+    (hfcQ : Q f c = 0) (hff : Q f f = 0)
+    (hfrow : Q f e + Q f a + Q f b = 6)
+    (hfprofile : ∀ t, 0 < Q f t → Q t f = 1 ∧ size t = 3 * Q f t)
+    (hsqce : Q c c * Q c e + Q c e * Q e e +
+        Q c a * Q a e + Q c b * Q b e + Q c f * Q f e = 3)
+    (hgroup : Q b e + Q b f ≤ 1) : False := by
+  have hea : Q e a = 0 := by
+    by_contra hne
+    have hpos : 0 < Q e a := Nat.pos_of_ne_zero hne
+    have haeQ := (heprofile a hpos).1
+    simp [hcc, hce, hca, hcb, hcf, hee, haeQ] at hsqce
+    omega
+  have heb : Q e b = 3 := by
+    by_cases hzero : Q e b = 0
+    · have hefQ : Q e f = 3 := by omega
+      have hsize := (heprofile f (by omega)).2
+      omega
+    · have hpos : 0 < Q e b := Nat.pos_of_ne_zero hzero
+      have hsize := (heprofile b hpos).2
+      omega
+  have hbeQ : Q b e = 1 := (heprofile b (by omega)).1
+  have hefQ : Q e f = 0 := by omega
+  have hfeCases : Q f e = 0 ∨ Q f e = 1 := by
+    by_cases hzero : Q f e = 0
+    · exact Or.inl hzero
+    · have hsize := (hfprofile e (Nat.pos_of_ne_zero hzero)).2
+      exact Or.inr (by omega)
+  have hfaCases : Q f a = 0 ∨ Q f a = 3 := by
+    by_cases hzero : Q f a = 0
+    · exact Or.inl hzero
+    · have hsize := (hfprofile a (Nat.pos_of_ne_zero hzero)).2
+      exact Or.inr (by omega)
+  have hfbCases : Q f b = 0 ∨ Q f b = 3 := by
+    by_cases hzero : Q f b = 0
+    · exact Or.inl hzero
+    · have hsize := (hfprofile b (Nat.pos_of_ne_zero hzero)).2
+      exact Or.inr (by omega)
+  have hfaQ : Q f a = 3 := by
+    rcases hfeCases with hfe | hfe <;>
+      rcases hfaCases with hfa | hfa <;>
+      rcases hfbCases with hfb | hfb <;> omega
+  have hfbQ : Q f b = 3 := by
+    rcases hfeCases with hfe | hfe <;>
+      rcases hfaCases with hfa | hfa <;>
+      rcases hfbCases with hfb | hfb <;> omega
+  have hbfQ : Q b f = 1 := (hfprofile b (by omega)).1
+  omega
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
