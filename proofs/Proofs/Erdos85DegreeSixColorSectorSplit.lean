@@ -1166,6 +1166,98 @@ theorem degreeSix_orderTwelve_positive_contact_class
     · exact Or.inr (Or.inl ⟨by nlinarith [hbal], hq, hr⟩)
     · exact Or.inl ⟨by nlinarith [hbal], hq, hr⟩
 
+/-- Aggregate the six pointwise order-twelve contact classes into the row,
+two-step, and used-order accounting equations consumed by
+`degreeSix_orderTwelve_contact_count_classifier`. -/
+theorem degreeSix_orderTwelve_contact_aggregate_equations
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (q r size : C → ℕ)
+    (hclass : ∀ t ∈ S, q t = 0 ∨
+      (size t = 3 ∧ q t = 1 ∧ r t = 4) ∨
+      (size t = 4 ∧ q t = 1 ∧ r t = 3) ∨
+      (size t = 6 ∧ q t = 1 ∧ r t = 2) ∨
+      (size t = 12 ∧ q t = 1 ∧ r t = 1) ∨
+      (size t = 12 ∧ q t = 2 ∧ r t = 2) ∨
+      (size t = 12 ∧ q t = 3 ∧ r t = 3)) :
+    let n3 := (S.filter fun t ↦ size t = 3 ∧ q t = 1).card
+    let n4 := (S.filter fun t ↦ size t = 4 ∧ q t = 1).card
+    let n6 := (S.filter fun t ↦ size t = 6 ∧ q t = 1).card
+    let n121 := (S.filter fun t ↦ size t = 12 ∧ q t = 1).card
+    let n122 := (S.filter fun t ↦ size t = 12 ∧ q t = 2).card
+    let n123 := (S.filter fun t ↦ size t = 12 ∧ q t = 3).card
+    (∑ t ∈ S, q t) = n3 + n4 + n6 + n121 + 2 * n122 + 3 * n123 ∧
+    (∑ t ∈ S, q t * r t) =
+      4 * n3 + 3 * n4 + 2 * n6 + n121 + 4 * n122 + 9 * n123 ∧
+    (∑ t ∈ S, if q t = 0 then 0 else size t) =
+      3 * n3 + 4 * n4 + 6 * n6 + 12 * (n121 + n122 + n123) := by
+  dsimp
+  have hqpoint : ∀ t ∈ S, q t =
+      (if size t = 3 ∧ q t = 1 then 1 else 0) +
+      (if size t = 4 ∧ q t = 1 then 1 else 0) +
+      (if size t = 6 ∧ q t = 1 then 1 else 0) +
+      (if size t = 12 ∧ q t = 1 then 1 else 0) +
+      (if size t = 12 ∧ q t = 2 then 2 else 0) +
+      (if size t = 12 ∧ q t = 3 then 3 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h3 | h4 | h6 | h121 | h122 | h123
+    · simp [h0]
+    · rcases h3 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h4 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h6 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h121 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h122 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h123 with ⟨hs, hq, hr⟩; simp [hs, hq]
+  have hppoint : ∀ t ∈ S, q t * r t =
+      (if size t = 3 ∧ q t = 1 then 4 else 0) +
+      (if size t = 4 ∧ q t = 1 then 3 else 0) +
+      (if size t = 6 ∧ q t = 1 then 2 else 0) +
+      (if size t = 12 ∧ q t = 1 then 1 else 0) +
+      (if size t = 12 ∧ q t = 2 then 4 else 0) +
+      (if size t = 12 ∧ q t = 3 then 9 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h3 | h4 | h6 | h121 | h122 | h123
+    · simp [h0]
+    · rcases h3 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+    · rcases h4 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+    · rcases h6 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+    · rcases h121 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+    · rcases h122 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+    · rcases h123 with ⟨hs, hq, hr⟩; simp [hs, hq, hr]
+  have hspoint : ∀ t ∈ S, (if q t = 0 then 0 else size t) =
+      (if size t = 3 ∧ q t = 1 then 3 else 0) +
+      (if size t = 4 ∧ q t = 1 then 4 else 0) +
+      (if size t = 6 ∧ q t = 1 then 6 else 0) +
+      (if size t = 12 ∧ q t = 1 then 12 else 0) +
+      (if size t = 12 ∧ q t = 2 then 12 else 0) +
+      (if size t = 12 ∧ q t = 3 then 12 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h3 | h4 | h6 | h121 | h122 | h123
+    · simp [h0]
+    · rcases h3 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h4 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h6 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h121 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h122 with ⟨hs, hq, hr⟩; simp [hs, hq]
+    · rcases h123 with ⟨hs, hq, hr⟩; simp [hs, hq]
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  constructor
+  · rw [Finset.sum_congr rfl hqpoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+    omega
+  constructor
+  · rw [Finset.sum_congr rfl hppoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+    omega
+  · rw [Finset.sum_congr rfl hspoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+    omega
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
