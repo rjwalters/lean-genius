@@ -44051,5 +44051,57 @@ theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
           exact congrArg (fun I : Fintype _ => @Finset.univ _ I)
             (Subsingleton.elim _ _)
 
+theorem false_of_degree_sixteen_zeroLayer_partition_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard) : False := by
+  apply false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
+  intro L hpattern hmap
+  rcases hpattern with rfl | rfl | rfl | rfl | rfl | rfl | rfl |
+    rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_sixteen_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_twelve_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_ten_two_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_eight_eight_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_six_six_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_all_used_order_twelve_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+  · exact false_of_degree_sixteen_zeroLayer_all_used_order_six_of_map_eq
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
+
 
 end Erdos85
