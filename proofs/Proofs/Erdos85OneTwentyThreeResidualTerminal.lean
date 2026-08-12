@@ -39354,6 +39354,28 @@ def ValuesMatchOn {ι : Type*} [DecidableEq ι] (K : ι → ℕ)
     (t : ZeroLayerAtom ι) : Prop :=
   ∀ i ∈ E, graphLoad i = load K i t ∧ graphExcess i = excess i t
 
+/-- Every constructor index of an atom lies in the designated sector. -/
+def SupportOn {ι : Type*} (E : Finset ι) : ZeroLayerAtom ι → Prop
+  | .C e => e ∈ E
+  | .D e => e ∈ E
+  | .B e f => e ∈ E ∧ f ∈ E
+  | .A a b c => a ∈ E ∧ b ∈ E ∧ c ∈ E
+
+/-- Restrict a supported atom to the subtype carried by its sector. -/
+def restrictTo {ι : Type*} {E : Finset ι} (t : ZeroLayerAtom ι)
+    (ht : SupportOn E t) : ZeroLayerAtom {i // i ∈ E} :=
+  match t, ht with
+  | .C e, he => .C ⟨e, he⟩
+  | .D e, he => .D ⟨e, he⟩
+  | .B e f, hef => .B ⟨e, hef.1⟩ ⟨f, hef.2⟩
+  | .A a b c, habc => .A ⟨a, habc.1⟩ ⟨b, habc.2.1⟩ ⟨c, habc.2.2⟩
+
+theorem mapIndices_subtype_restrictTo
+    {ι : Type*} {E : Finset ι} (t : ZeroLayerAtom ι)
+    (ht : SupportOn E t) :
+    mapIndices (fun i : {i // i ∈ E} => i.1) (restrictTo t ht) = t := by
+  cases t <;> rfl
+
 /-- Number of objects assigned a given atom descriptor. -/
 def fiberCount {O ι : Type*} [Fintype O] [DecidableEq O]
     [DecidableEq ι] (atom : O → ZeroLayerAtom ι)
