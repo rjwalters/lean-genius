@@ -39399,6 +39399,51 @@ theorem false_of_weighted_load_excess_certificate
     exact hpointSum.trans hbudget
   exact (not_lt_of_ge hle) hgap
 
+/-- Computed column certificate for the reduced pattern `(7,7,2)`. -/
+theorem seven_seven_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 7, 2] t →
+      (∑ i : Fin 3, ![(-7 : ℤ), 4, 20] i *
+          (load ![7, 7, 2] i t : ℤ)) ≤
+        ∑ i : Fin 3, (![1, 14, 20] i : ℤ) * (excess i t : ℤ) := by
+  intro t hvalid
+  cases t with
+  | C e =>
+      fin_cases e
+      all_goals norm_num [Valid, load, excess, Fin.sum_univ_succ]
+  | D e =>
+      fin_cases e
+      all_goals norm_num [Valid] at hvalid
+      all_goals norm_num [load, excess, Fin.sum_univ_succ]
+  | B e f =>
+      fin_cases e
+      all_goals fin_cases f
+      all_goals norm_num [Valid] at hvalid
+      all_goals norm_num [load, excess, Fin.sum_univ_succ]
+      all_goals simp_all [load, excess, Fin.sum_univ_succ]
+  | A a b c =>
+      fin_cases a
+      all_goals fin_cases b
+      all_goals fin_cases c
+      all_goals norm_num [Valid] at hvalid
+      all_goals norm_num [load, excess, Fin.sum_univ_succ]
+
+/-- Farkas endpoint for the previously missing reduced pattern `(7,7,2)`. -/
+theorem false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hvalid : ∀ o, Valid ![7, 7, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![7, 7, 2] i (atom o)) =
+      12 * ![7, 7, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤
+      2 * (![7, 7, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![7, 7, 2] ![(-7 : ℤ), 4, 20] ![1, 14, 20]
+      (fun o i => load ![7, 7, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact seven_seven_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
 end ZeroLayerAtom
 
 /-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
