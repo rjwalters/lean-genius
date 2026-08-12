@@ -39268,6 +39268,38 @@ def excess {ι : Type*} [DecidableEq ι] (i : ι) : ZeroLayerAtom ι → ℕ
   | B e _ => if i = e then 2 else 0
   | A _ _ _ => 0
 
+/-- Transport an atom descriptor along an equivalence of its index type. -/
+def reindex {ι κ : Type*} (e : ι ≃ κ) :
+    ZeroLayerAtom ι → ZeroLayerAtom κ
+  | .C i => .C (e i)
+  | .D i => .D (e i)
+  | .B i j => .B (e i) (e j)
+  | .A i j k => .A (e i) (e j) (e k)
+
+theorem valid_reindex_iff
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (e : ι ≃ κ) (K : κ → ℕ) (t : ZeroLayerAtom ι) :
+    Valid K (reindex e t) ↔ Valid (K ∘ e) t := by
+  cases t <;> simp [reindex, Valid, e.injective.eq_iff]
+
+theorem reducedOrder_reindex
+    {ι κ : Type*} (e : ι ≃ κ) (K : κ → ℕ)
+    (t : ZeroLayerAtom ι) :
+    reducedOrder K (reindex e t) = reducedOrder (K ∘ e) t := by
+  cases t <;> rfl
+
+theorem load_reindex
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (e : ι ≃ κ) (K : κ → ℕ) (i : ι) (t : ZeroLayerAtom ι) :
+    load K (e i) (reindex e t) = load (K ∘ e) i t := by
+  cases t <;> simp [reindex, load, e.injective.eq_iff]
+
+theorem excess_reindex
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (e : ι ≃ κ) (i : ι) (t : ZeroLayerAtom ι) :
+    excess (e i) (reindex e t) = excess i t := by
+  cases t <;> simp [reindex, excess, e.injective.eq_iff]
+
 /-- Forward orphan-to-used quotient row encoded by an atom descriptor. -/
 def forwardQuotient {ι : Type*} [DecidableEq ι]
     (i : ι) : ZeroLayerAtom ι → ℕ
