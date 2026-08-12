@@ -40646,6 +40646,83 @@ theorem exists_support_equiv_of_slots
   apply Subtype.ext
   rfl
 
+/-- Realize an exact multiset of weights by a duplicate-free list enumerating
+the underlying finset in the prescribed order. -/
+theorem exists_nodup_list_of_finset_map_eq_list
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (K : α → β) : ∀ (L : List β) (E : Finset α),
+    E.val.map K = (L : Multiset β) →
+    ∃ xs : List α, xs.Nodup ∧ xs.toFinset = E ∧ xs.map K = L := by
+  intro L
+  induction L with
+  | nil =>
+      intro E h
+      have hE : E = ∅ := by
+        apply Finset.val_injective
+        have : E.val.map K = 0 := by simpa using h
+        exact Multiset.map_eq_zero.mp this
+      exact ⟨[], by simp, by simp [hE], by simp⟩
+  | cons a L ih =>
+      intro E h
+      have ha : a ∈ E.val.map K := by
+        rw [h]
+        simp
+      obtain ⟨x, hxE, hxK⟩ := Multiset.mem_map.mp ha
+      have hxFin : x ∈ E := hxE
+      have htail : (E.erase x).val.map K = (L : Multiset β) := by
+        rw [Finset.erase_val, Multiset.map_erase_of_mem K E.val hxE, h, hxK]
+        simp
+      obtain ⟨xs, hxsNodup, hxsE, hxsMap⟩ := ih (E.erase x) htail
+      refine ⟨x :: xs, ?_, ?_, ?_⟩
+      · rw [List.nodup_cons]
+        refine ⟨?_, hxsNodup⟩
+        intro hx
+        have : x ∈ E.erase x := by
+          rw [← hxsE]
+          exact List.mem_toFinset.mpr hx
+        simpa using this
+      · rw [List.toFinset_cons, hxsE]
+        exact Finset.insert_erase hxFin
+      · simp [hxK, hxsMap]
+
+/-- Convert the partition classifier's multiset equality directly into the
+canonical slot package consumed by every atom-ledger branch. -/
+theorem exists_slots_of_finset_map_eq_list
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (E : Finset α) (K : α → β) (L : List β)
+    (h : E.val.map K = (L : Multiset β)) :
+    ∃ slot : Fin L.length → α,
+      Function.Injective slot ∧ (∀ i, slot i ∈ E) ∧
+      (∀ i, K (slot i) = L.get i) ∧
+      ∀ x ∈ E, ∃ i, slot i = x := by
+  classical
+  obtain ⟨xs, hnodup, hxsE, hxsMap⟩ :=
+    exists_nodup_list_of_finset_map_eq_list K L E h
+  subst L
+  let slot : Fin (xs.map K).length → α := fun i =>
+    xs.get ⟨i.val, by simpa using i.isLt⟩
+  refine ⟨slot, ?_, ?_, ?_, ?_⟩
+  · intro i j hij
+    have hidx :
+        (⟨i.val, by simpa using i.isLt⟩ : Fin xs.length) =
+          ⟨j.val, by simpa using j.isLt⟩ := by
+      apply hnodup.injective_get
+      exact hij
+    have hv : i.val = j.val :=
+      congrArg (fun z : Fin xs.length => z.val) hidx
+    exact Fin.ext hv
+  · intro i
+    rw [← hxsE]
+    exact List.mem_toFinset.mpr (List.get_mem xs _)
+  · intro i
+    simp [slot]
+  · intro x hx
+    have hxList : x ∈ xs := by
+      exact List.mem_toFinset.mp (hxsE.symm ▸ hx)
+    obtain ⟨n, hnlt, hnx⟩ := List.getElem_of_mem hxList
+    let i : Fin (xs.map K).length := ⟨n, by simpa using hnlt⟩
+    exact ⟨i, by simpa [slot, i] using hnx⟩
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
