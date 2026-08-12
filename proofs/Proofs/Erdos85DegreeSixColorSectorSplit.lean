@@ -429,6 +429,93 @@ theorem degreeSix_triangleFreeCycleSector_empty_or_singleton
     have hle : c.supp.ncard ≤ 15 := by nlinarith
     omega
 
+/-- In the singleton color-sector branch, its unique component has one of
+the five surviving orders and its complete off-diagonal quotient row is
+pinned by the degree-six row and square identities. -/
+theorem degreeSix_singleton_component_quotient_row
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c}) :
+    (c.supp.ncard = 3 ∨ c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
+      c.supp.ncard = 12 ∨ c.supp.ncard = 15) ∧
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 ∧
+    (∑ e ∈ (Finset.univ.erase c),
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e) = 4 ∧
+    (∑ e ∈ (Finset.univ.erase c),
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e *
+        componentQuotientMatrix G (secondOrderDefectGraph G) e c) =
+      c.supp.ncard - 1 ∧
+    ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard * componentQuotientMatrix G (secondOrderDefectGraph G) c e =
+        e.supp.ncard * componentQuotientMatrix G
+          (secondOrderDefectGraph G) e c := by
+  have hc : c ∈ triangleFreeCycleSector G u := by rw [hsector]; simp
+  have hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 :=
+    triangleFreeCycleSector_diagonalQuotient_eq_two G hfree
+      (d := 6) (by norm_num) (by norm_num) hmin (by norm_num at hcard ⊢; exact hcard)
+      u hu huRange huD hr hc
+  have hrow : (∑ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c
+  have hsq : (∑ e : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e *
+        componentQuotientMatrix G (secondOrderDefectGraph G) e c) =
+      c.supp.ncard + 3 := by
+    have h := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c c
+    simpa [Matrix.mul_apply, Nat.add_comm] using h
+  have hord := degreeSix_triangleFreeCycleSector_empty_or_singleton
+    G hfree hmin (by norm_num at hcard ⊢; exact hcard)
+      u hu huRange huD hr
+  have hordc : c.supp.ncard = 3 ∨ c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
+      c.supp.ncard = 12 ∨ c.supp.ncard = 15 := by
+    rcases hord with hempty | ⟨e, he, heord⟩
+    · rw [hsector] at hempty
+      simpa using hempty
+    · have hec : e = c := by
+        have : c = e := by simpa [hsector] using he
+        exact this.symm
+      simpa [hec] using heord
+  have hcuniv : c ∈ (Finset.univ :
+      Finset (secondOrderDefectGraph G).ConnectedComponent) :=
+    Finset.mem_univ c
+  have hrowErase := Finset.sum_erase_add
+    (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+      (fun e ↦ componentQuotientMatrix G (secondOrderDefectGraph G) c e) hcuniv
+  have hsqErase := Finset.sum_erase_add
+    (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+      (fun e ↦ componentQuotientMatrix G (secondOrderDefectGraph G) c e *
+        componentQuotientMatrix G (secondOrderDefectGraph G) e c) hcuniv
+  refine ⟨hordc, hdiag, ?_, ?_, ?_⟩
+  · omega
+  · rw [hdiag] at hsqErase
+    omega
+  · intro e
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
