@@ -42549,4 +42549,71 @@ theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
     2 * (e.supp.ncard / 3 - 1)
   exact hle.trans_eq hrow
 
+
+open ZeroLayerAtom
+
+namespace Erdos85
+
+theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hgraph :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      ∀ L : List ℕ, GraphExceptionalPattern L →
+        E.val.map K = (L : Multiset ℕ) → False) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  obtain ⟨a, b, c, d, e, f, g, h, hp, hmap⟩ :=
+    degree_sixteen_zeroLayer_used_component_partition_classification
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change E.val.map K =
+    (↑([a, b, c, d, e, f, g, h].take E.card) : Multiset ℕ) at hmap
+  have hcount : E.card ≤ 8 := by
+    simpa [D, R, E] using degree_sixteen_zeroLayer_used_component_card_le_eight
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  have hpart := degree_sixteen_zeroLayer_used_component_reduced_partition
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ x ∈ E, K x) = 16 ∧ ∀ x ∈ E, 2 ≤ K x ∧ K x ≤ 16 at hpart
+  have hnorm := finset_map_eq_nonzero_list_of_reduced_partition_pattern
+    E K hcount hpart.1 (fun x hx => (hpart.2 x hx).1)
+      a b c d e f g h hp hmap
+  let L := [a, b, c, d, e, f, g, h].filter (fun k => k ≠ 0)
+  have hroute := atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
+    a b c d e f g h hp
+  change GraphExceptionalPattern L ∨ AtomLedgerContradiction L at hroute
+  change E.val.map K = (L : Multiset ℕ) at hnorm
+  rcases hroute with hexceptional | hkill
+  · exact hgraph L hexceptional hnorm
+  · apply false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
+      G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree L hnorm
+    · intro x hx
+      exact degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild x
+          (Finset.mem_filter.mp hx).2
+    · exact hkill
+
+
 end Erdos85
