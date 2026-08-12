@@ -41369,6 +41369,124 @@ theorem false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_
   have hex0 : (∑ o, excess 0 (atom o)) ≤ 14 := by simpa using he 0
   omega
 
+
+def GraphExceptionalPattern (L : List ℕ) : Prop :=
+  L = [16] ∨ L = [12, 4] ∨ L = [12, 2, 2] ∨ L = [10, 2, 2, 2] ∨
+  L = [8, 8] ∨ L = [8, 4, 4] ∨ L = [8, 2, 2, 2, 2] ∨
+  L = [6, 6, 2, 2] ∨ L = [6, 3, 3, 2, 2] ∨
+  L = [5, 5, 2, 2, 2] ∨ L = [4, 4, 4, 4] ∨
+  L = [4, 4, 4, 2, 2] ∨ L = [4, 4, 2, 2, 2, 2] ∨
+  L = [2, 2, 2, 2, 2, 2, 2, 2]
+
+def AtomLedgerContradiction (L : List ℕ) : Prop :=
+  ∀ {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin L.length)),
+    (∀ o, Valid L.get (atom o)) →
+    (∀ i, (∑ o, load L.get i (atom o)) = 12 * L.get i) →
+    (∀ i, (∑ o, excess i (atom o)) ≤ 2 * (L.get i - 1)) → False
+
+set_option maxHeartbeats 2000000 in
+theorem atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
+    (a b c d e f g h : ℕ)
+    (hp : ZeroLayerReducedPartitionPattern a b c d e f g h) :
+    let L := [a, b, c, d, e, f, g, h].filter (fun k => k ≠ 0)
+    GraphExceptionalPattern L ∨ AtomLedgerContradiction L := by
+  dsimp only
+  have ha : a ≤ 16 := by
+    by_contra hnot
+    have h17 : 17 ≤ a := by omega
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h17
+    have hadd : 17 + k = k + 17 := by omega
+    rw [hadd] at hp
+    simp [ZeroLayerReducedPartitionPattern] at hp
+  interval_cases a <;> simp [ZeroLayerReducedPartitionPattern] at hp
+  all_goals repeat' first | rcases hp with hp | hp
+  all_goals simp_all [GraphExceptionalPattern]
+  all_goals first
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_fourteen_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_thirteen_three_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eleven_five_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eleven_three_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_ten_six_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_ten_four_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_ten_three_three_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_nine_seven_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_nine_five_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_nine_four_three_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_nine_three_two_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eight_six_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eight_five_three_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_eight_three_three_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_six_three_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_five_four_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_five_two_two_standard_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_four_three_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_three_three_three_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_seven_three_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_six_four_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_five_five_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_five_three_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_four_four_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_four_three_three_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_four_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_six_two_two_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_five_four_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_five_three_three_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_four_four_three_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_four_three_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_three_three_three_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_five_three_two_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_four_four_three_three_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_four_three_three_three_three_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger)
+    | simpa [AtomLedgerContradiction] using
+        (@false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger)
+
+
 end ZeroLayerAtom
 
 /-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
