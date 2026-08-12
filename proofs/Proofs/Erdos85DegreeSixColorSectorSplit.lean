@@ -2,6 +2,9 @@ import Proofs.Erdos85ColorSectorPSD
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85ResidueSignedCount
 import Proofs.Erdos85DegreeSixTriangleClosure
+import Proofs.Erdos85OrientedMassBounds
+import Proofs.Erdos85EvenCycleOrientation
+import Proofs.Erdos85ZModProjectionFiber
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -655,6 +658,96 @@ theorem degreeSix_orderTwelve_two_orderFour_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- An order-six defect component has diagonal quotient at most three.  In
+the forward orientation the Sidon bound gives two; in the reverse orientation
+looplessness restricts the zero row to the three opposite-parity phases. -/
+theorem degreeSix_orderSix_component_diagonal_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (d : (secondOrderDefectGraph G).ConnectedComponent)
+    (u : ZMod d.supp.ncard → V) (hu : Function.Injective u)
+    (huRange : Set.range u = d.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hd6 : d.supp.ncard = 6) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) d d ≤ 3 := by
+  letI : NeZero d.supp.ncard := ⟨by rw [hd6]; norm_num⟩
+  let D := secondOrderDefectGraph G
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard)
+  rcases graph_equalEvenCycle_diagBlock_orientation
+      (r := d.supp.ncard) (by rw [hd6]; norm_num) (by rw [hd6]; norm_num)
+      G D hfree u hu hcomm huD with hfwd | hrev
+  · have hfwdAdj : ∀ x y : ZMod d.supp.ncard,
+        G.Adj (u (x + 1)) (u (y + 1)) ↔ G.Adj (u x) (u y) :=
+      fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+    have hle := forwardComponent_diagonalQuotient_le_two
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) d u hu huRange hfwdAdj
+    omega
+  · have hu0d : u 0 ∈ d.supp := by
+      have hmem : u 0 ∈ Set.range u := ⟨0, rfl⟩
+      rw [huRange] at hmem
+      exact hmem
+    have hQ := componentQuotientMatrix_apply_eq G D 2
+      (secondOrderDefectGraph_degree_eq_two G hfree
+        (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+      (adjMatrix_comm_secondOrderDefect_of_even_real
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard)) d d hu0d
+    rw [hQ]
+    have hdiv : 2 ∣ d.supp.ncard := by rw [hd6]; norm_num
+    let φ : ZMod d.supp.ncard →+* ZMod 2 := ZMod.castHom hdiv (ZMod 2)
+    let O : Finset (ZMod d.supp.ncard) := projectionFiber φ 1
+    have hsubset : componentNeighborFinset G D d (u 0) ⊆ O.image u := by
+      intro y hy
+      have hydata : G.Adj (u 0) y ∧ y ∈ d.supp := by
+        simpa [componentNeighborFinset, SimpleGraph.mem_neighborFinset,
+          and_comm] using hy
+      have hyrange : y ∈ Set.range u := by
+        rw [huRange]
+        exact hydata.2
+      obtain ⟨j, rfl⟩ := hyrange
+      have hpar : φ j ≠ 0 := by
+        intro hz
+        have hjrange : j ∈ Set.range (fun k : ZMod d.supp.ncard ↦ 2 * k) :=
+          (zmod_mem_range_two_mul_iff_castHom_eq_zero hdiv j).mpr hz
+        obtain ⟨k, hk⟩ := hjrange
+        have hadd : j + 0 = k + k := by
+          rw [← hk]
+          ring
+        have heq := reverseTranslationInvariant_eq_of_add_eq
+          (fun a b ↦ G.adjMatrix ℤ (u a) (u b)) hrev hadd
+        have hadjkk : G.Adj (u k) (u k) :=
+          (adj_iff_of_adjMatrix_int_eq G heq).mp hydata.1
+        exact G.loopless.irrefl _ hadjkk
+      have hjone : φ j = 1 := by
+        have hvlt : (φ j).val < 2 := ZMod.val_lt _
+        have hv : (φ j).val = 0 ∨ (φ j).val = 1 := by omega
+        rcases hv with hv | hv
+        · exact (hpar ((ZMod.val_eq_zero (φ j)).mp hv)).elim
+        · apply ZMod.val_injective 2
+          rw [ZMod.val_one'' (by norm_num : (2 : ℕ) ≠ 1)]
+          exact hv
+      refine Finset.mem_image.mpr ⟨j, ?_, rfl⟩
+      simp [O, projectionFiber, hjone]
+    calc
+      (componentNeighborFinset G D d (u 0)).card ≤ (O.image u).card :=
+        Finset.card_le_card hsubset
+      _ ≤ O.card := Finset.card_image_le
+      _ = 3 := by
+        rw [show O.card = d.supp.ncard / 2 by
+          simpa [O, φ] using card_projectionFiber_zmod_castHom hdiv (1 : ZMod 2)]
+        omega
+
 /-- Once one order-three contact is fixed and a second such contact is
 excluded, the order-nine row has a unique arithmetic shape: one order-nine
 double contact, one order-nine single contact, and exactly one unused
@@ -1100,6 +1193,7 @@ theorem degreeSix_orderThree_zeroDiagonal_profile
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
