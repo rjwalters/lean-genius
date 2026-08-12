@@ -253,6 +253,108 @@ theorem degreeSix_orderFifteen_singleton_contact
   rw [← Finset.mul_sum] at hsumle
   simpa [S, hrow, hprod] using hsumle
 
+/-- Two distinct order-three contacts cannot coexist in an order-fifteen
+singleton row.  After deleting the three known components only twelve
+vertices remain; weighted Cauchy contradicts the residual row/product pair,
+which is `(3,9)` or `(2,4)` according as the second contact is absent or
+present in the order-fifteen row. -/
+theorem degreeSix_orderFifteen_two_orderThree_contacts_false
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c e f : C)
+    (hce : c ≠ e) (hcf : c ≠ f) (hef : e ≠ f)
+    (hc15 : size c = 15) (he3 : size e = 3) (hf3 : size f = 3)
+    (htotal : (∑ t : C, size t) = 33)
+    (hrowc : (∑ t ∈ (Finset.univ.erase c), Q c t) = 4)
+    (hprodc : (∑ t ∈ (Finset.univ.erase c), Q c t * Q t c) = 14)
+    (hrowAll : ∀ x, (∑ t, Q x t) = 6)
+    (hbal : ∀ x y, size x * Q x y = size y * Q y x)
+    (hQce : Q c e = 1) (hQec : Q e c = 5) : False := by
+  let S : Finset C := ((Finset.univ.erase c).erase e).erase f
+  have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have heMem : e ∈ (Finset.univ.erase c : Finset C) :=
+    Finset.mem_erase.mpr ⟨hce.symm, Finset.mem_univ e⟩
+  have hfMem : f ∈ ((Finset.univ.erase c).erase e : Finset C) :=
+    Finset.mem_erase.mpr ⟨hef.symm,
+      Finset.mem_erase.mpr ⟨hcf.symm, Finset.mem_univ f⟩⟩
+  have hsizeC := Finset.sum_erase_add (Finset.univ : Finset C) size hcMem
+  have hsizeE := Finset.sum_erase_add
+    (Finset.univ.erase c : Finset C) size heMem
+  have hsizeF := Finset.sum_erase_add
+    ((Finset.univ.erase c).erase e : Finset C) size hfMem
+  have hsizeS : (∑ t ∈ S, size t) = 12 := by
+    dsimp [S]
+    omega
+  have hQfcle : Q f c ≤ 6 := by
+    have hcU : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+    have hsingle : Q f c ≤ ∑ t : C, Q f t :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hcU
+    rw [hrowAll f] at hsingle
+    exact hsingle
+  have hbalF := hbal c f
+  rw [hc15, hf3] at hbalF
+  have hQcfle : Q c f ≤ 1 := by nlinarith
+  have hQcfprodle : Q c f * Q f c ≤ 6 := by
+    calc
+      Q c f * Q f c ≤ 1 * 6 := Nat.mul_le_mul hQcfle hQfcle
+      _ = 6 := by norm_num
+  have hrowC := Finset.sum_erase_add
+    (Finset.univ.erase c : Finset C) (Q c) heMem
+  have hrowF := Finset.sum_erase_add
+    ((Finset.univ.erase c).erase e : Finset C) (Q c) hfMem
+  have hprodC := Finset.sum_erase_add
+    (Finset.univ.erase c : Finset C) (fun t ↦ Q c t * Q t c) heMem
+  have hprodF := Finset.sum_erase_add
+    ((Finset.univ.erase c).erase e : Finset C)
+      (fun t ↦ Q c t * Q t c) hfMem
+  rw [hQce] at hrowC
+  rw [hQce, hQec] at hprodC
+  have hrowS : (∑ t ∈ S, Q c t) = 3 - Q c f := by
+    dsimp [S]
+    omega
+  have hprodS : (∑ t ∈ S, Q c t * Q t c) =
+      9 - Q c f * Q f c := by
+    dsimp [S]
+    omega
+  have hcR : (15 : ℝ) ≠ 0 := by norm_num
+  have hcs := Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul
+    (R := ℝ) S
+    (r := fun t => (Q c t : ℝ))
+    (f := fun t => (size t : ℝ))
+    (g := fun t => ((Q c t * Q t c : ℕ) : ℝ) / 15)
+    (fun _ _ => by positivity) (fun _ _ => by positivity) (by
+      intro t ht
+      have hb := hbal c t
+      rw [hc15] at hb
+      have hbR : (15 : ℝ) * (Q c t : ℝ) =
+          (size t : ℝ) * (Q t c : ℝ) := by exact_mod_cast hb
+      apply le_of_eq
+      rw [← mul_div_assoc]
+      apply (eq_div_iff hcR).2
+      push_cast
+      calc
+        (Q c t : ℝ) ^ 2 * 15 =
+            (Q c t : ℝ) * ((15 : ℝ) * Q c t) := by ring
+        _ = (Q c t : ℝ) * ((size t : ℝ) * Q t c) := by rw [hbR]
+        _ = (size t : ℝ) * ((Q c t : ℝ) * Q t c) := by ring)
+  have hsizeR : (∑ t ∈ S, (size t : ℝ)) = 12 := by
+    exact_mod_cast hsizeS
+  have hrowR : (∑ t ∈ S, (Q c t : ℝ)) = (3 - Q c f : ℕ) := by
+    exact_mod_cast hrowS
+  have hprodR :
+      (∑ t ∈ S, (((Q c t * Q t c : ℕ) : ℝ) / 15)) =
+        ((9 - Q c f * Q f c : ℕ) : ℝ) / 15 := by
+    rw [← Finset.sum_div]
+    congr 1
+    exact_mod_cast hprodS
+  rw [hsizeR, hrowR, hprodR] at hcs
+  rcases Nat.eq_zero_or_pos (Q c f) with hzero | hpos
+  · rw [hzero] at hcs
+    norm_num at hcs
+  · have hone : Q c f = 1 := by omega
+    have hfive : Q f c = 5 := by omega
+    rw [hone, hfive] at hcs
+    norm_num at hcs
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
@@ -813,6 +915,163 @@ theorem degreeSix_orderFifteen_singleton_exists_orderThree_contact
     exact secondOrder_componentQuotientMatrix_le_one_of_not_dvd
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c e (by simpa [hc15] using hndvd)
+
+/-- The order-three target forced by an order-fifteen singleton spends five
+of its six row units back toward the singleton.  Its diagonal is therefore
+zero and its final row unit forces a second, distinct order-three target. -/
+theorem degreeSix_orderFifteen_singleton_exists_two_orderThree_contacts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc15 : c.supp.ncard = 15) :
+    ∃ e f : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ f ≠ c ∧ f ≠ e ∧ e.supp.ncard = 3 ∧ f.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 5 := by
+  obtain ⟨e, hec, he3, hce, hecQ⟩ :=
+    degreeSix_orderFifteen_singleton_exists_orderThree_contact
+      G hfree hmin hcard u hu huRange huD hr c hsector hc15
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hrowe : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have hediag : Q e e = 0 := by
+    rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (r := e.supp.ncard)
+        (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (hr e)
+        (by rw [he3]; norm_num) e (u e) (hu e) (huRange e) (huD e) with
+      hzero | htwo
+    · exact hzero
+    · have heMem : e ∈ (Finset.univ : Finset
+          (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ e
+      have hcMem : c ∈ (Finset.univ.erase e : Finset
+          (secondOrderDefectGraph G).ConnectedComponent) :=
+        Finset.mem_erase.mpr ⟨hec.symm, Finset.mem_univ c⟩
+      have hsplitE := Finset.sum_erase_add
+        (Finset.univ : Finset
+          (secondOrderDefectGraph G).ConnectedComponent) (Q e) heMem
+      have hsplitC := Finset.sum_erase_add
+        (Finset.univ.erase e : Finset
+          (secondOrderDefectGraph G).ConnectedComponent) (Q e) hcMem
+      have hrowe' : (∑ t ∈ (Finset.univ : Finset
+          (secondOrderDefectGraph G).ConnectedComponent), Q e t) = 6 := by
+        simpa using hrowe
+      change Q e e = 2 at htwo
+      change Q e c = 5 at hecQ
+      omega
+  have hremaining : (∑ t ∈ (Finset.univ.erase e).erase c, Q e t) = 1 := by
+    have heMem : e ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ e
+    have hcMem : c ∈ (Finset.univ.erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hec.symm, Finset.mem_univ c⟩
+    have hsplitE := Finset.sum_erase_add
+      (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) (Q e) heMem
+    have hsplitC := Finset.sum_erase_add
+      (Finset.univ.erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) (Q e) hcMem
+    have hrowe' : (∑ t ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent), Q e t) = 6 := by
+      simpa using hrowe
+    change Q e c = 5 at hecQ
+    omega
+  have hsqe := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hprode : (∑ t, Q e t * Q t e) = 6 := by
+    simpa [Q, Matrix.mul_apply, he3] using hsqe
+  have hreverse := reverse_eq_one_of_balanced_row_product_eq_row
+    Q (fun t ↦ t.supp.ncard) e (by rw [he3]; norm_num)
+      (fun t ↦ secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e t)
+      (by rw [hprode, hrowe])
+  have hnezero : (∑ t ∈ (Finset.univ.erase e).erase c, Q e t) ≠ 0 := by
+    omega
+  obtain ⟨f, hfmem, hqfne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hnezero
+  have hqfle : Q e f ≤ ∑ t ∈ (Finset.univ.erase e).erase c, Q e t :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hfmem
+  have hqef : Q e f = 1 := by omega
+  have hfe : f ≠ e := (Finset.mem_erase.mp
+    (Finset.mem_erase.mp hfmem).2).1
+  have hfc : f ≠ c := (Finset.mem_erase.mp hfmem).1
+  have hfeQ : Q f e = 1 := hreverse f (by omega)
+  have hbalF := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e f
+  change e.supp.ncard * Q e f = f.supp.ncard * Q f e at hbalF
+  rw [he3, hqef, hfeQ] at hbalF
+  refine ⟨e, f, hec, hfc, hfe, he3, by omega, hce, hecQ⟩
+
+/-- The order-fifteen singleton branch is impossible. -/
+theorem false_of_degreeSix_orderFifteen_singleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc15 : c.supp.ncard = 15) : False := by
+  obtain ⟨e, f, hec, hfc, hfe, he3, hf3, hce, hecQ⟩ :=
+    degreeSix_orderFifteen_singleton_exists_two_orderThree_contacts
+      G hfree hmin hcard u hu huRange huD hr c hsector hc15
+  obtain ⟨_, _, hrow, hprod, hbal⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  apply degreeSix_orderFifteen_two_orderThree_contacts_false
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun t ↦ t.supp.ncard) c e f hec.symm hfc.symm hfe.symm
+      hc15 he3 hf3
+  · simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  · exact hrow
+  · simpa [hc15] using hprod
+  · intro x
+    exact sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x
+  · intro x y
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  · exact hce
+  · exact hecQ
 
 /-- Graph instantiation of the forced contact in the order-six singleton
 branch.  The contact target is a distinct order-three component with quotient
