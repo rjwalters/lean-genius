@@ -4258,6 +4258,40 @@ theorem false_of_degreeSix_orderSix_singleton
       G hfree hmin hcard u hu huRange huD hr c e hsector hc6 hec he3
         hce hecQ hee hrowS hcprofile h3.2.2
 
+set_option maxHeartbeats 2000000 in
+/-- The triangle-free color sector cannot be a singleton at the degree-six
+boundary. -/
+theorem false_of_degreeSix_triangleFreeCycleSector_singleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c}) : False := by
+  obtain ⟨h6 | h9 | h12 | h15, _, _, _, _⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  · exact false_of_degreeSix_orderSix_singleton
+      G hfree hmin hcard u hu huRange huD hr c hsector h6
+  · exact false_of_degreeSix_orderNine_singleton
+      G hfree hmin hcard u hu huRange huD hr c hsector h9
+  · exact false_of_degreeSix_orderTwelve_singleton
+      G hfree hmin hcard u hu huRange huD hr c hsector h12
+  · exact false_of_degreeSix_orderFifteen_singleton
+      G hfree hmin hcard u hu huRange huD hr c hsector h15
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
