@@ -43899,6 +43899,89 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two_of
         (by simpa [D, R, K] using hhas₆) (by simpa [D, R, K] using hhas₃)
           (by simpa [D, R, K] using hhas₂)
 
+theorem false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[4, 4, 2, 2, 2, 2] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[4, 4, 2, 2, 2, 2] : Multiset ℕ) at hmap
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hused : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R →
+        e.supp.ncard = 6 ∨ e.supp.ncard = 12 := by
+    intro e heR
+    have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    have hm := used_reducedOrder_mem_of_map_eq E K
+      [4, 4, 2, 2, 2, 2] hmap heE
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    have hd := hpack.2 e heE
+    dsimp [K] at hm
+    omega
+  have hfilter12 : E.filter (fun e => e.supp.ncard = 12) =
+      E.filter (fun e => K e = 4) := by
+    ext e
+    simp only [Finset.mem_filter]
+    constructor
+    · rintro ⟨heE, he⟩
+      exact ⟨heE, by simp [K, he]⟩
+    · rintro ⟨heE, he⟩
+      have hd := hpack.2 e heE
+      dsimp [K] at he
+      exact ⟨heE, by omega⟩
+  have hfilter6 : E.filter (fun e => e.supp.ncard = 6) =
+      E.filter (fun e => K e = 2) := by
+    ext e
+    simp only [Finset.mem_filter]
+    constructor
+    · rintro ⟨heE, he⟩
+      exact ⟨heE, by simp [K, he]⟩
+    · rintro ⟨heE, he⟩
+      have hd := hpack.2 e heE
+      dsimp [K] at he
+      exact ⟨heE, by omega⟩
+  have hcount12 := used_reducedOrder_count_of_map_eq E K
+    [4, 4, 2, 2, 2, 2] hmap 4
+  have hcount6 := used_reducedOrder_count_of_map_eq E K
+    [4, 4, 2, 2, 2, 2] hmap 2
+  have hcounts : (E.filter (fun e => e.supp.ncard = 12)).card = 2 ∧
+      (E.filter (fun e => e.supp.ncard = 6)).card = 4 := by
+    rw [hfilter12, hfilter6]
+    simpa using And.intro hcount12 hcount6
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (by simpa [D, R] using hused) (by simpa [D, R, E] using hcounts)
+        u hu huRange huD hthree
+
 theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
