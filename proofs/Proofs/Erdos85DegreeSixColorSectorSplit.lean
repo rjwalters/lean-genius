@@ -429,8 +429,55 @@ theorem degreeSix_triangleFreeCycleSector_empty_or_singleton
     have hle : c.supp.ncard ≤ 15 := by nlinarith
     omega
 
+/-- A triangle-free-colored defect component cannot have order three: its
+three rim edges would form a triangle in the triangle-free edge graph. -/
+theorem triangleFreeCycleSector_component_order_ne_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c ∈ triangleFreeCycleSector G u) :
+    c.supp.ncard ≠ 3 := by
+  intro hthree
+  have hG := (mem_triangleFreeCycleSector_iff G u c).mp hc
+  have hTF : ∀ x : ZMod c.supp.ncard,
+      (triangleFreeEdgeGraph G).Adj (u c x) (u c (x + 1)) := by
+    intro x
+    have hD : (secondOrderDefectGraph G).Adj (u c x) (u c (x + 1)) := by
+      rw [← SimpleGraph.mem_neighborFinset, huD]
+      simp
+    rcases hD with hA | hT
+    · have hnG := (mem_antipodalNeighbors G (u c x) (u c (x + 1))).mp hA
+      exact (hnG.2.1 (hG x)).elim
+    · exact hT
+  have h01 := hTF (0 : ZMod c.supp.ncard)
+  have h1m := hTF (1 : ZMod c.supp.ncard)
+  have hm0 := hTF (-1 : ZMod c.supp.ncard)
+  have h01' : (triangleFreeEdgeGraph G).Adj (u c 0) (u c 1) := by
+    simpa using h01
+  have h1m' : (triangleFreeEdgeGraph G).Adj (u c 1) (u c (-1)) := by
+    have hind : (1 + 1 : ZMod c.supp.ncard) = -1 := by
+      have h3zero : ((3 : ℕ) : ZMod c.supp.ncard) = 0 := by
+        rw [ZMod.natCast_eq_zero_iff]
+        exact hthree.symm ▸ dvd_refl 3
+      linear_combination h3zero
+    rw [hind] at h1m
+    exact h1m
+  have hm0' : (triangleFreeEdgeGraph G).Adj (u c (-1)) (u c 0) := by
+    simpa using hm0
+  exact triangleFreeEdgeGraph_not_triangle G h01' h1m' hm0'
+
 /-- In the singleton color-sector branch, its unique component has one of
-the five surviving orders and its complete off-diagonal quotient row is
+the four surviving orders and its complete off-diagonal quotient row is
 pinned by the degree-six row and square identities. -/
 theorem degreeSix_singleton_component_quotient_row
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -454,8 +501,8 @@ theorem degreeSix_singleton_component_quotient_row
       3 ≤ c.supp.ncard)
     (c : (secondOrderDefectGraph G).ConnectedComponent)
     (hsector : triangleFreeCycleSector G u = {c}) :
-    (c.supp.ncard = 3 ∨ c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
-      c.supp.ncard = 12 ∨ c.supp.ncard = 15) ∧
+    (c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨ c.supp.ncard = 12 ∨
+      c.supp.ncard = 15) ∧
     componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 ∧
     (∑ e ∈ (Finset.univ.erase c),
       componentQuotientMatrix G (secondOrderDefectGraph G) c e) = 4 ∧
@@ -488,7 +535,7 @@ theorem degreeSix_singleton_component_quotient_row
   have hord := degreeSix_triangleFreeCycleSector_empty_or_singleton
     G hfree hmin (by norm_num at hcard ⊢; exact hcard)
       u hu huRange huD hr
-  have hordc : c.supp.ncard = 3 ∨ c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
+  have hord0 : c.supp.ncard = 3 ∨ c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
       c.supp.ncard = 12 ∨ c.supp.ncard = 15 := by
     rcases hord with hempty | ⟨e, he, heord⟩
     · rw [hsector] at hempty
@@ -497,6 +544,11 @@ theorem degreeSix_singleton_component_quotient_row
         have : c = e := by simpa [hsector] using he
         exact this.symm
       simpa [hec] using heord
+  have hne3 := triangleFreeCycleSector_component_order_ne_three
+    G u huD c hc
+  have hordc : c.supp.ncard = 6 ∨ c.supp.ncard = 9 ∨
+      c.supp.ncard = 12 ∨ c.supp.ncard = 15 := by
+    omega
   have hcuniv : c ∈ (Finset.univ :
       Finset (secondOrderDefectGraph G).ConnectedComponent) :=
     Finset.mem_univ c
