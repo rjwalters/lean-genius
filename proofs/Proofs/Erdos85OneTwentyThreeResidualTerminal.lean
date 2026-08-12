@@ -40153,6 +40153,35 @@ theorem six_three_three_two_two_actual_order_eq_six_of_reducedOrder_eq_two
     omega
   · omega
 
+/-- Economy filter in a form independent of the ambient graph: an order-six
+orphan cannot have a source whose order both divides three and belongs to the
+`18/9/6` used-or-orphan economy. -/
+theorem six_three_three_two_two_economy_excludes_reducedOrder_two
+    {α : Type*} [DecidableEq α] (E C : Finset α) (ord : α → ℕ)
+    (atom : {o // o ∈ C} → ZeroLayerAtom (Fin 5))
+    (hthree : ∀ x, 3 ≤ ord x)
+    (hvalid : ∀ o, Valid ![6, 3, 3, 2, 2] (atom o))
+    (hshape : ∀ o,
+      (3 ∣ ord o.1 ∧
+        reducedOrder ![6, 3, 3, 2, 2] (atom o) = ord o.1 / 3) ∨
+      (¬ 3 ∣ ord o.1 ∧
+        reducedOrder ![6, 3, 3, 2, 2] (atom o) = ord o.1))
+    (hused : ∀ e ∈ E, ord e = 18 ∨ ord e = 9 ∨ ord e = 6)
+    (heconomy : ∀ o : {o // o ∈ C}, ord o.1 = 6 →
+      ∃ c ∈ E ∪ C, ord c ∣ 3) :
+    ∀ o, reducedOrder ![6, 3, 3, 2, 2] (atom o) ≠ 2 := by
+  intro o hred
+  have ho6 := six_three_three_two_two_actual_order_eq_six_of_reducedOrder_eq_two
+    (ord o.1) (hthree o.1) (atom o) hred (hshape o)
+  obtain ⟨c, hc, hdvd⟩ := heconomy o ho6
+  have hcCases : ord c = 18 ∨ ord c = 9 ∨ ord c = 6 := by
+    rcases Finset.mem_union.mp hc with hcE | hcC
+    · exact hused c hcE
+    · exact six_three_three_two_two_actual_order_cases_of_atom
+        (ord c) (hthree c) (atom ⟨c, hcC⟩) (hvalid ⟨c, hcC⟩)
+          (hshape ⟨c, hcC⟩)
+  rcases hcCases with hc | hc | hc <;> rw [hc] at hdvd <;> norm_num at hdvd
+
 /-- A positive partition of sixteen using reduced orders `6`, `3`, and `2`
 has forced multiplicities `1`, `2`, and `2`. -/
 theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
