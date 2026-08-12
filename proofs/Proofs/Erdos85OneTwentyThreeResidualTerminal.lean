@@ -39320,6 +39320,31 @@ theorem sum_eq_sum_fiberCount_mul
               rw [(Finset.mem_filter.mp ho).2]
         _ = (Finset.univ.filter fun o => atom o = t).card * w t := by simp
 
+/-- Regroup by fibers while discarding descriptors excluded by a pointwise
+support predicate. -/
+theorem sum_eq_sum_fiberCount_mul_filter
+    {O ι : Type*} [Fintype O] [DecidableEq O]
+    [Fintype ι] [DecidableEq ι]
+    (atom : O → ZeroLayerAtom ι) (w : ZeroLayerAtom ι → ℕ)
+    (P : ZeroLayerAtom ι → Prop) [DecidablePred P]
+    (hall : ∀ o, P (atom o)) :
+    (∑ o, w (atom o)) =
+      ∑ t ∈ Finset.univ.filter P, fiberCount atom t * w t := by
+  rw [sum_eq_sum_fiberCount_mul]
+  symm
+  apply Finset.sum_subset (Finset.filter_subset _ _)
+  intro t _ht ht
+  have hnot : ¬ P t := by simpa using ht
+  have hfiber : fiberCount atom t = 0 := by
+    rw [fiberCount, Finset.card_eq_zero]
+    ext o
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro hot
+      exact (hnot (hot ▸ hall o)).elim
+    · simp
+  simp [hfiber]
+
 /-- Pointwise descriptor agreement turns graph load and excess totals into
 fiber-count-weighted atom ledgers. -/
 theorem sum_values_eq_sum_fiberCount_mul
@@ -39891,6 +39916,47 @@ theorem false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_a
   · intro o
     exact three_three_two_two_two_two_two_weighted_atom_column (atom o) (hvalid o)
   · norm_num [Fin.sum_univ_succ]
+
+/-- The order-six row in `(6,2,2,2,2,2)` already exceeds its excess budget. -/
+theorem six_two_two_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 6), Valid ![6, 2, 2, 2, 2, 2] t →
+      (∑ i : Fin 6, ![(1 : ℤ), 0, 0, 0, 0, 0] i *
+          (load ![6, 2, 2, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 6, (![6, 0, 0, 0, 0, 0] i : ℤ) *
+          (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_two_two_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 6))
+    (hvalid : ∀ o, Valid ![6, 2, 2, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 2, 2, 2, 2, 2] i (atom o)) =
+      12 * ![6, 2, 2, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤
+      2 * (![6, 2, 2, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 2, 2, 2, 2, 2] ![(1 : ℤ), 0, 0, 0, 0, 0]
+      ![6, 0, 0, 0, 0, 0]
+      (fun o i => load ![6, 2, 2, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_two_two_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- The integral thirteen-count core of the filtered `(6,3,3,2,2)`
+ledger.  This is deliberately independent of atom enumeration. -/
+theorem false_of_six_three_three_two_two_thirteen_count_ledger
+    (a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ p q c₀ c₁ c₂ : ℕ)
+    (hL0 : 6 * (a₁ + a₂ + a₃ + a₄) +
+      12 * (b₁ + b₂ + b₃ + b₄) + 18 * c₀ = 72)
+    (hL1 : 6 * a₁ + 6 * a₂ + 6 * b₁ + 6 * p + 3 * q + 9 * c₁ = 36)
+    (hL2 : 6 * a₃ + 6 * a₄ + 6 * b₂ + 6 * q + 3 * p + 9 * c₂ = 36)
+    (hL3 : 6 * a₁ + 6 * a₃ + 6 * b₃ = 24)
+    (hL4 : 6 * a₂ + 6 * a₄ + 6 * b₄ = 24)
+    (hE0 : 2 * (b₁ + b₂ + b₃ + b₄) + 6 * c₀ ≤ 10)
+    (hE1 : 2 * p + 6 * c₁ ≤ 4)
+    (hE2 : 2 * q + 6 * c₂ ≤ 4) : False := by
+  omega
 
 set_option maxHeartbeats 200000
 
