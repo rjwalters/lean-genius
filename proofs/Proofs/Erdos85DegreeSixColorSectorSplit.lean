@@ -2421,6 +2421,43 @@ theorem degreeSix_orderTwelve_singleton_contact_counts
   · exact Or.inr ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1,
       h.2.2.2.2.1, h.2.2.2.2.2.1⟩
 
+/-- Three order-four contacts in an order-twelve row contradict grouped
+periodicity. -/
+theorem false_of_degreeSix_orderTwelve_three_orderFour_contacts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc12 : c.supp.ncard = 12)
+    (hthree : ((Finset.univ.erase c).filter fun t ↦
+      t.supp.ncard = 4 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1).card = 3) : False := by
+  let A := (Finset.univ.erase c).filter fun t ↦
+    t.supp.ncard = 4 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1
+  have hcardA : A.card = 3 := hthree
+  have hlt : 1 < A.card := by omega
+  obtain ⟨e, heA, f, hfA, hef⟩ := Finset.one_lt_card.mp hlt
+  have heData := (Finset.mem_filter.mp heA).2
+  have hfData := (Finset.mem_filter.mp hfA).2
+  have hbound := degreeSix_orderTwelve_two_orderFour_targets_le_one
+    G hfree hmin hcard u hu huRange huD c e f hc12
+      heData.1 hfData.1 hef
+  rw [heData.2, hfData.2] at hbound
+  omega
+
 /-- Graph instantiation of the forced order-three contact in the
 order-fifteen singleton branch. -/
 theorem degreeSix_orderFifteen_singleton_exists_orderThree_contact
