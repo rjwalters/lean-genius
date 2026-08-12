@@ -3489,6 +3489,181 @@ theorem degreeSix_orderSix_three_single_contact_shape
     hd6, hx6, hy6, hcd, hcx, hcy, hdProfile.1, hxProfile.1,
     hyProfile.1, by simpa [U] using hUclass⟩
 
+set_option maxHeartbeats 2000000 in
+/-- The `1+1+1` branch with one unused order-six component contradicts the
+three contact-square equations and the global trace. -/
+theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c e d x y f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc6 : c.supp.ncard = 6) (he3 : e.supp.ncard = 3)
+    (hd6 : d.supp.ncard = 6) (hx6 : x.supp.ncard = 6)
+    (hy6 : y.supp.ncard = 6) (hf6 : f.supp.ncard = 6)
+    (hec : e ≠ c) (hdc : d ≠ c) (hde : d ≠ e)
+    (hxc : x ≠ c) (hxe : x ≠ e) (hyc : y ≠ c) (hye : y ≠ e)
+    (hdx : d ≠ x) (hdy : d ≠ y) (hxy : x ≠ y)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2)
+    (hce : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1)
+    (hecQ : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (hcd : componentQuotientMatrix G (secondOrderDefectGraph G) c d = 1)
+    (hcx : componentQuotientMatrix G (secondOrderDefectGraph G) c x = 1)
+    (hcy : componentQuotientMatrix G (secondOrderDefectGraph G) c y = 1)
+    (hU : (((((Finset.univ.erase c).erase e).erase d).erase x).erase y :
+      Finset (secondOrderDefectGraph G).ConnectedComponent) = {f}) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
+  have hfU : f ∈ U := by rw [hU]; simp
+  have hfy : f ≠ y := (Finset.mem_erase.mp hfU).1
+  have hfx : f ≠ x := (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).1
+  have hfd : f ≠ d := (Finset.mem_erase.mp
+    (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).2).1
+  have hfe : f ≠ e := (Finset.mem_erase.mp
+    (Finset.mem_erase.mp (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).2).2).1
+  have hfc : f ≠ c := (Finset.mem_erase.mp
+    (Finset.mem_erase.mp (Finset.mem_erase.mp
+      (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).2).2).2).1
+  have hcIn : c ∈ (Finset.univ : Finset _) := Finset.mem_univ c
+  have heIn : e ∈ (Finset.univ.erase c : Finset _) :=
+    Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hdIn : d ∈ (Finset.univ.erase c).erase e :=
+    Finset.mem_erase.mpr ⟨hde, Finset.mem_erase.mpr ⟨hdc, Finset.mem_univ d⟩⟩
+  have hxIn : x ∈ ((Finset.univ.erase c).erase e).erase d :=
+    Finset.mem_erase.mpr ⟨hdx.symm,
+      Finset.mem_erase.mpr ⟨hxe, Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩⟩⟩
+  have hyIn : y ∈ (((Finset.univ.erase c).erase e).erase d).erase x :=
+    Finset.mem_erase.mpr ⟨hxy.symm, Finset.mem_erase.mpr ⟨hdy.symm,
+      Finset.mem_erase.mpr ⟨hye, Finset.mem_erase.mpr ⟨hyc, Finset.mem_univ y⟩⟩⟩⟩
+  have expand (F : (secondOrderDefectGraph G).ConnectedComponent → ℕ) :
+      (∑ t, F t) = F c + F e + F d + F x + F y + F f := by
+    have hC := Finset.sum_erase_add (Finset.univ : Finset _) F hcIn
+    have hE := Finset.sum_erase_add (Finset.univ.erase c) F heIn
+    have hD := Finset.sum_erase_add ((Finset.univ.erase c).erase e) F hdIn
+    have hX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d) F hxIn
+    have hY := Finset.sum_erase_add
+      ((((Finset.univ.erase c).erase e).erase d).erase x) F hyIn
+    have hlast : (∑ t ∈ U, F t) = F f := by simp [hU]
+    dsimp [U] at hlast
+    omega
+  have hrow (z : _) : (∑ t, Q z t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) z
+  have hbal (a b : _) : a.supp.ncard * Q a b = b.supp.ncard * Q b a :=
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+  have hsq (a b : _) (hab : a ≠ b) : (∑ t, Q a t * Q t b) = b.supp.ncard := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+    simpa [Q, Matrix.mul_apply, hab] using hs
+  have hcf : Q c f = 0 := by
+    have hcRow := hrow c
+    rw [expand (Q c), hcc, hce, hcd, hcx, hcy] at hcRow
+    omega
+  have hfcQ : Q f c = 0 := by
+    have hb := hbal c f
+    rw [hc6, hf6, hcf] at hb
+    omega
+  have hsumZE : Q d e + Q x e + Q y e = 1 := by
+    have hs := hsq c e hec.symm
+    rw [expand (fun t ↦ Q c t * Q t e), hcc, hce, hcd, hcx, hcy, hcf,
+      hee, he3] at hs
+    omega
+  have hed : Q e d = 2 * Q d e := by
+    have hb := hbal e d
+    rw [he3, hd6] at hb
+    omega
+  have hex : Q e x = 2 * Q x e := by
+    have hb := hbal e x
+    rw [he3, hx6] at hb
+    omega
+  have hey : Q e y = 2 * Q y e := by
+    have hb := hbal e y
+    rw [he3, hy6] at hb
+    omega
+  have hef : Q e f = 2 := by
+    have heRow := hrow e
+    rw [expand (Q e), hecQ, hee, hed, hex, hey] at heRow
+    omega
+  have hfeQ : Q f e = 1 := by
+    have hb := hbal e f
+    rw [he3, hf6, hef] at hb
+    omega
+  have hdf : Q d f = Q f d := by
+    have hb := hbal d f
+    rw [hd6, hf6] at hb
+    omega
+  have hxf : Q x f = Q f x := by
+    have hb := hbal x f
+    rw [hx6, hf6] at hb
+    omega
+  have hyf : Q y f = Q f y := by
+    have hb := hbal y f
+    rw [hy6, hf6] at hb
+    omega
+  have hcontactF : Q d f + Q x f + Q y f = 4 := by
+    have hs := hsq c f hfc.symm
+    rw [expand (fun t ↦ Q c t * Q t f), hcc, hce, hcd, hcx, hcy, hcf,
+      hfcQ, hef, hf6] at hs
+    omega
+  have hff : Q f f = 1 := by
+    have hfRow := hrow f
+    rw [expand (Q f), hfcQ, hfeQ, ← hdf, ← hxf, ← hyf] at hfRow
+    omega
+  have hdxSymm : Q d x = Q x d := by
+    have hb := hbal d x
+    rw [hd6, hx6] at hb
+    omega
+  have hdySymm : Q d y = Q y d := by
+    have hb := hbal d y
+    rw [hd6, hy6] at hb
+    omega
+  have hxySymm : Q x y = Q y x := by
+    have hb := hbal x y
+    rw [hx6, hy6] at hb
+    omega
+  have contactSquare (z : _) (hzc : z ≠ c) (hz6 : z.supp.ncard = 6) :
+      Q d z + Q x z + Q y z = 4 - Q e z := by
+    have hs := hsq c z hzc
+    rw [expand (fun t ↦ Q c t * Q t z), hcc, hce, hcd, hcx, hcy, hcf,
+      hz6] at hs
+    omega
+  have hsd := contactSquare d hdc hd6
+  have hsx := contactSquare x hxc hx6
+  have hsy := contactSquare y hyc hy6
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hdiag : Q d d + Q x x + Q y y = 3 := by
+    change (∑ t, Q t t) = 6 at htrace
+    rw [expand (fun t ↦ Q t t), hcc, hee, hff] at htrace
+    omega
+  rcases (show (Q d e = 1 ∧ Q x e = 0 ∧ Q y e = 0) ∨
+      (Q d e = 0 ∧ Q x e = 1 ∧ Q y e = 0) ∨
+      (Q d e = 0 ∧ Q x e = 0 ∧ Q y e = 1) by omega) with hd | hx | hy
+  · apply false_of_degreeSix_orderSix_three_single_contacts_unused_six Q d x y
+      (by rw [hed, hd.1] at hsd; omega)
+      (by rw [hex, hd.2.1] at hsx; omega)
+      (by rw [hey, hd.2.2] at hsy; omega)
+      hdxSymm hdySymm hxySymm hdiag
+  · apply false_of_degreeSix_orderSix_three_single_contacts_unused_six Q x d y
+      (by rw [hex, hx.2.1] at hsx; omega)
+      (by rw [hed, hx.1] at hsd; omega)
+      (by rw [hey, hx.2.2] at hsy; omega)
+      hdxSymm.symm hxySymm hdySymm hdiag
+  · apply false_of_degreeSix_orderSix_three_single_contacts_unused_six Q y d x
+      (by rw [hey, hy.2.2] at hsy; omega)
+      (by rw [hed, hy.1] at hsd; omega)
+      (by rw [hex, hy.2.1] at hsx; omega)
+      hdySymm.symm hxySymm.symm hdxSymm hdiag
+
 /-- The residual single quotient-three contact branch is impossible. -/
 theorem false_of_degreeSix_orderSix_three_contact_branch
     {V : Type*} [Fintype V] [DecidableEq V]
