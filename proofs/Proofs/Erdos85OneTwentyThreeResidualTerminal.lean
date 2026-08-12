@@ -40382,6 +40382,7 @@ theorem supported_atom_reindex_fin_five
     (htValid : Valid K t) :
     let t₅ := reindex e (restrictTo t htSupport)
     Valid ![6, 3, 3, 2, 2] t₅ ∧
+      reducedOrder ![6, 3, 3, 2, 2] t₅ = reducedOrder K t ∧
       (∀ i, load ![6, 3, 3, 2, 2] i t₅ = load K (slot i) t) ∧
       ∀ i, excess i t₅ = excess (slot i) t := by
   classical
@@ -40403,6 +40404,16 @@ theorem supported_atom_reindex_fin_five
   constructor
   · rw [valid_reindex_iff, hK]
     exact htCValid
+  constructor
+  · calc
+      reducedOrder ![6, 3, 3, 2, 2] (reindex e tC) =
+          reducedOrder (![6, 3, 3, 2, 2] ∘ e) tC :=
+            reducedOrder_reindex e ![6, 3, 3, 2, 2] tC
+      _ = reducedOrder (K ∘ inc) tC := by rw [hK]
+      _ = reducedOrder K (mapIndices inc tC) := by
+        symm
+        exact reducedOrder_mapIndices inc K tC
+      _ = reducedOrder K t := by rw [hmap]
   constructor
   · intro i
     let c : {c // c ∈ C} := e.symm i
@@ -40428,6 +40439,76 @@ theorem supported_atom_reindex_fin_five
         symm
         exact excess_mapIndices inc Subtype.val_injective c tC
       _ = excess (slot i) t := by rw [hmap, hcslot]
+
+/-- Assemble slot naming, supported-atom transport, the antipodal economy
+filter, and the modulo-nine endpoint for `(6,3,3,2,2)`. -/
+theorem false_of_six_three_three_two_two_supported_atom_assignment
+    {α O : Type*} [DecidableEq α] [Fintype O] [DecidableEq O]
+    (E C : Finset α) (K ord : α → ℕ)
+    (slot : Fin 5 → α) (hslot : Function.Injective slot)
+    (hmem : ∀ i, slot i ∈ E)
+    (hcover : ∀ e ∈ E, ∃ i, slot i = e)
+    (hKslot : ∀ i, K (slot i) = ![6, 3, 3, 2, 2] i)
+    (orphan : O → α) (horphan : ∀ o, orphan o ∈ C)
+    (atom : O → ZeroLayerAtom α)
+    (hvalid : ∀ o, Valid K (atom o))
+    (hsupport : ∀ o, SupportOn E (atom o))
+    (hshape : ∀ o,
+      (3 ∣ ord (orphan o) ∧ reducedOrder K (atom o) = ord (orphan o) / 3) ∨
+      (¬ 3 ∣ ord (orphan o) ∧ reducedOrder K (atom o) = ord (orphan o)))
+    (hthree : ∀ x, 3 ≤ ord x)
+    (hused : ∀ e ∈ E, ord e = 18 ∨ ord e = 9 ∨ ord e = 6)
+    (heconomy : ∀ o : O, ord (orphan o) = 6 →
+      ∃ c ∈ E ∪ C, ord c ∣ 3)
+    (hload : ∀ i, (∑ o, load K (slot i) (atom o)) =
+      12 * ![6, 3, 3, 2, 2] i)
+    (horphanSurj : ∀ c ∈ C, ∃ o, orphan o = c) : False := by
+  classical
+  obtain ⟨e, heslot⟩ := exists_equiv_fin_five_of_injective_five_slots
+    E slot hslot hmem hcover
+  let atom₅ : O → ZeroLayerAtom (Fin 5) := fun o =>
+    reindex e (restrictTo (atom o) (hsupport o))
+  have htransport : ∀ o,
+      Valid ![6, 3, 3, 2, 2] (atom₅ o) ∧
+      reducedOrder ![6, 3, 3, 2, 2] (atom₅ o) = reducedOrder K (atom o) ∧
+      (∀ i, load ![6, 3, 3, 2, 2] i (atom₅ o) = load K (slot i) (atom o)) := by
+    intro o
+    have h := supported_atom_reindex_fin_five E slot hmem e heslot K hKslot
+      (atom o) (hsupport o) (hvalid o)
+    exact ⟨h.1, h.2.1, h.2.2.1⟩
+  have hshape₅ : ∀ o,
+      (3 ∣ ord (orphan o) ∧
+        reducedOrder ![6, 3, 3, 2, 2] (atom₅ o) = ord (orphan o) / 3) ∨
+      (¬ 3 ∣ ord (orphan o) ∧
+        reducedOrder ![6, 3, 3, 2, 2] (atom₅ o) = ord (orphan o)) := by
+    intro o
+    rcases hshape o with h | h
+    · exact Or.inl ⟨h.1, (htransport o).2.1.trans h.2⟩
+    · exact Or.inr ⟨h.1, (htransport o).2.1.trans h.2⟩
+  have hnotTwo : ∀ o,
+      reducedOrder ![6, 3, 3, 2, 2] (atom₅ o) ≠ 2 := by
+    intro o hred
+    have ho6 := six_three_three_two_two_actual_order_eq_six_of_reducedOrder_eq_two
+      (ord (orphan o)) (hthree (orphan o)) (atom₅ o) hred (hshape₅ o)
+    obtain ⟨c, hc, hdvd⟩ := heconomy o ho6
+    have hcCases : ord c = 18 ∨ ord c = 9 ∨ ord c = 6 := by
+      rcases Finset.mem_union.mp hc with hcE | hcC
+      · exact hused c hcE
+      · obtain ⟨o', rfl⟩ := horphanSurj c hcC
+        exact six_three_three_two_two_actual_order_cases_of_atom
+          (ord (orphan o')) (hthree (orphan o')) (atom₅ o')
+            (htransport o').1 (hshape₅ o')
+    rcases hcCases with hc | hc | hc <;> rw [hc] at hdvd <;> norm_num at hdvd
+  apply false_of_zeroLayer_reduced_used_orders_six_three_three_two_two_filtered_atom_ledger
+    atom₅ (fun o => (htransport o).1) hnotTwo
+  intro i
+  calc
+    (∑ o, load ![6, 3, 3, 2, 2] i (atom₅ o)) =
+        ∑ o, load K (slot i) (atom o) := by
+          apply Finset.sum_congr rfl
+          intro o _ho
+          exact (htransport o).2.2 i
+    _ = 12 * ![6, 3, 3, 2, 2] i := hload i
 
 set_option maxHeartbeats 200000
 
