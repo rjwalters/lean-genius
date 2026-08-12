@@ -880,6 +880,28 @@ theorem false_of_degreeSix_orderNine_single_contact_shape
   have hbfQ : Q b f = 1 := (hfprofile b (by omega)).1
   omega
 
+/-- In the exhausted order-nine shape, the unused order-three component
+cannot have diagonal two: its remaining row mass four would be a sum of
+multiples of three by balance with the two order-nine components. -/
+theorem degreeSix_orderNine_shape_unused_orderThree_diagonal_zero
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ)
+    (c e a b f : C)
+    (he3 : size e = 3) (ha9 : size a = 9) (hb9 : size b = 9) (hf3 : size f = 3)
+    (hfc : Q f c = 0) (hfe : Q f e = 0)
+    (hfrow : Q f c + Q f e + Q f a + Q f b + Q f f = 6)
+    (hbal : ∀ t, size f * Q f t = size t * Q t f)
+    (hdiag : Q f f = 0 ∨ Q f f = 2) : Q f f = 0 := by
+  rcases hdiag with hzero | htwo
+  · exact hzero
+  · have hbe := hbal e
+    have hba := hbal a
+    have hbb := hbal b
+    rw [hfc, hfe, htwo] at hfrow
+    rw [hf3, he3] at hbe
+    rw [hf3, ha9] at hba
+    rw [hf3, hb9] at hbb
+    omega
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
