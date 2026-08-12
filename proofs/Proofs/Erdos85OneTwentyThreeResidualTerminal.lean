@@ -40033,6 +40033,60 @@ theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
     n₆ = 1 ∧ n₃ = 2 ∧ n₂ = 2 := by
   omega
 
+/-- Finset form of the forced `(6,3,3,2,2)` multiplicity census. -/
+theorem six_three_two_finset_multiplicity_classification
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (hsum : ∑ c ∈ C, w c = 16)
+    (horders : ∀ c ∈ C, w c = 6 ∨ w c = 3 ∨ w c = 2)
+    (hhas₆ : ∃ c ∈ C, w c = 6)
+    (hhas₃ : ∃ c ∈ C, w c = 3)
+    (hhas₂ : ∃ c ∈ C, w c = 2) :
+    (C.filter fun c => w c = 6).card = 1 ∧
+      (C.filter fun c => w c = 3).card = 2 ∧
+      (C.filter fun c => w c = 2).card = 2 := by
+  classical
+  let n₆ := (C.filter fun c => w c = 6).card
+  let n₃ := (C.filter fun c => w c = 3).card
+  let n₂ := (C.filter fun c => w c = 2).card
+  have hmass₆ : 6 * n₆ =
+      ∑ c ∈ C, if w c = 6 then 6 else 0 := by
+    calc
+      6 * n₆ = n₆ * 6 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 6), 6 := by simp [n₆]
+      _ = ∑ c ∈ C, if w c = 6 then 6 else 0 := by
+        rw [Finset.sum_filter]
+  have hmass₃ : 3 * n₃ =
+      ∑ c ∈ C, if w c = 3 then 3 else 0 := by
+    calc
+      3 * n₃ = n₃ * 3 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 3), 3 := by simp [n₃]
+      _ = ∑ c ∈ C, if w c = 3 then 3 else 0 := by
+        rw [Finset.sum_filter]
+  have hmass₂ : 2 * n₂ =
+      ∑ c ∈ C, if w c = 2 then 2 else 0 := by
+    calc
+      2 * n₂ = n₂ * 2 := by omega
+      _ = ∑ _c ∈ C.filter (fun c => w c = 2), 2 := by simp [n₂]
+      _ = ∑ c ∈ C, if w c = 2 then 2 else 0 := by
+        rw [Finset.sum_filter]
+  have hmass : 6 * n₆ + 3 * n₃ + 2 * n₂ = 16 := by
+    rw [hmass₆, hmass₃, hmass₂, ← hsum]
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c hc
+    rcases horders c hc with h | h | h <;> simp [h]
+  have hn₆ : 0 < n₆ := by
+    obtain ⟨c, hc, hw⟩ := hhas₆
+    exact Finset.card_pos.mpr ⟨c, Finset.mem_filter.mpr ⟨hc, hw⟩⟩
+  have hn₃ : 0 < n₃ := by
+    obtain ⟨c, hc, hw⟩ := hhas₃
+    exact Finset.card_pos.mpr ⟨c, Finset.mem_filter.mpr ⟨hc, hw⟩⟩
+  have hn₂ : 0 < n₂ := by
+    obtain ⟨c, hc, hw⟩ := hhas₂
+    exact Finset.card_pos.mpr ⟨c, Finset.mem_filter.mpr ⟨hc, hw⟩⟩
+  exact six_three_two_positive_multiplicities_of_weighted_sum_sixteen
+    n₆ n₃ n₂ hn₆ hn₃ hn₂ hmass
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
