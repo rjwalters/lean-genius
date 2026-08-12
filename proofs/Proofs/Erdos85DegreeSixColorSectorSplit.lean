@@ -1813,6 +1813,76 @@ theorem degreeSix_oddComponent_profile
   exact (Nat.even_mul.mp hprodEven).resolve_left
     (Nat.not_even_iff_odd.mpr heOdd)
 
+/-- Any positive-entry walk from an odd-sized index to an even-sized index
+crosses the odd/even cut in one positive step. -/
+theorem exists_odd_to_even_step_of_positive_walk
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ) (o c : C)
+    (hoOdd : Odd (size o)) (hcEven : Even (size c))
+    (hwalk : Relation.ReflTransGen (fun a b ↦ 0 < Q a b) o c) :
+    ∃ a b, Odd (size a) ∧ Even (size b) ∧ 0 < Q a b := by
+  have hprop : ∀ {b : C},
+      Relation.ReflTransGen (fun x y ↦ 0 < Q x y) o b →
+      Even (size b) →
+      ∃ a z, Odd (size a) ∧ Even (size z) ∧ 0 < Q a z := by
+    intro b hab hbEven
+    induction hab with
+    | refl => exact absurd hbEven (Nat.not_even_iff_odd.mpr hoOdd)
+    | @tail a b _ hab hpos ih =>
+        by_cases haEven : Even (size a)
+        · exact ih haEven
+        · exact ⟨a, b, Nat.not_even_iff_odd.mp haEven, hbEven, hpos⟩
+  exact hprop hwalk hcEven
+
+/-- If the degree-six quotient contains both an odd-order and an even-order
+component, irreducibility supplies a positive quotient edge crossing from an
+odd component to an even component. -/
+theorem degreeSix_exists_odd_to_even_positive_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  letI : Nonempty V := Fintype.card_pos_iff.mp (by rw [hcard]; norm_num)
+  have hwalk := secondOrder_componentQuotientMatrix_irreducible_clean
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) o c
+  exact exists_odd_to_even_step_of_positive_walk
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun t ↦ t.supp.ncard) o c hoOdd hcEven hwalk
+
+/-- The odd-to-even cut edge has quotient multiplicity at least two: its
+entry is both positive by irreducibility and even by detailed balance. -/
+theorem degreeSix_exists_odd_to_even_quotient_ge_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+        2 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  obtain ⟨a, b, haOdd, hbEven, habPos⟩ :=
+    degreeSix_exists_odd_to_even_positive_quotient
+      G hfree hmin hcard o c hoOdd hcEven
+  have habEven := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).2.2 b hbEven
+  exact ⟨a, b, haOdd, hbEven, by
+    rcases habEven with ⟨k, hk⟩
+    omega⟩
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
