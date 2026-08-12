@@ -39399,33 +39399,40 @@ theorem false_of_weighted_load_excess_certificate
     exact hpointSum.trans hbudget
   exact (not_lt_of_ge hle) hgap
 
+set_option maxHeartbeats 1000000
+
+macro "prove_zeroLayer_weighted_atom_column" : tactic =>
+  `(tactic|
+    intro t hvalid <;>
+    cases t with
+    | C e =>
+        fin_cases e
+        all_goals norm_num [Valid, load, excess, Fin.sum_univ_succ]
+    | D e =>
+        fin_cases e
+        all_goals norm_num [Valid] at hvalid
+        all_goals norm_num [load, excess, Fin.sum_univ_succ]
+    | B e f =>
+        fin_cases e
+        all_goals fin_cases f
+        all_goals norm_num [Valid] at hvalid
+        all_goals norm_num [load, excess, Fin.sum_univ_succ]
+        all_goals simp_all [load, excess, Fin.sum_univ_succ]
+    | A a b c =>
+        fin_cases a
+        all_goals fin_cases b
+        all_goals fin_cases c
+        all_goals norm_num [Valid] at hvalid
+        all_goals norm_num [load, excess, Fin.sum_univ_succ]
+        all_goals simp_all [load, excess, Fin.sum_univ_succ])
+
 /-- Computed column certificate for the reduced pattern `(7,7,2)`. -/
 theorem seven_seven_two_weighted_atom_column :
     ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 7, 2] t →
       (∑ i : Fin 3, ![(-7 : ℤ), 4, 20] i *
           (load ![7, 7, 2] i t : ℤ)) ≤
         ∑ i : Fin 3, (![1, 14, 20] i : ℤ) * (excess i t : ℤ) := by
-  intro t hvalid
-  cases t with
-  | C e =>
-      fin_cases e
-      all_goals norm_num [Valid, load, excess, Fin.sum_univ_succ]
-  | D e =>
-      fin_cases e
-      all_goals norm_num [Valid] at hvalid
-      all_goals norm_num [load, excess, Fin.sum_univ_succ]
-  | B e f =>
-      fin_cases e
-      all_goals fin_cases f
-      all_goals norm_num [Valid] at hvalid
-      all_goals norm_num [load, excess, Fin.sum_univ_succ]
-      all_goals simp_all [load, excess, Fin.sum_univ_succ]
-  | A a b c =>
-      fin_cases a
-      all_goals fin_cases b
-      all_goals fin_cases c
-      all_goals norm_num [Valid] at hvalid
-      all_goals norm_num [load, excess, Fin.sum_univ_succ]
+  prove_zeroLayer_weighted_atom_column
 
 /-- Farkas endpoint for the previously missing reduced pattern `(7,7,2)`. -/
 theorem false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger
@@ -39443,6 +39450,449 @@ theorem false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger
   · intro o
     exact seven_seven_two_weighted_atom_column (atom o) (hvalid o)
   · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (7,4,3,2). -/
+theorem seven_four_three_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![7, 4, 3, 2] t →
+      (∑ i : Fin 4, ![(2 : ℤ), 6, 7, -12] i * (load ![7, 4, 3, 2] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![11, 12, 11, 12] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_four_three_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![7, 4, 3, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![7, 4, 3, 2] i (atom o)) = 12 * ![7, 4, 3, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 4, 3, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![7, 4, 3, 2] ![(2 : ℤ), 6, 7, -12] ![11, 12, 11, 12]
+      (fun o i => load ![7, 4, 3, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact seven_four_three_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (7,3,3,3). -/
+theorem seven_three_three_three_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![7, 3, 3, 3] t →
+      (∑ i : Fin 4, ![(3 : ℤ), 3, -1, -2] i * (load ![7, 3, 3, 3] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![11, 8, 2, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_three_three_three_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![7, 3, 3, 3] (atom o))
+    (hload : ∀ i, (∑ o, load ![7, 3, 3, 3] i (atom o)) = 12 * ![7, 3, 3, 3] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 3, 3, 3] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![7, 3, 3, 3] ![(3 : ℤ), 3, -1, -2] ![11, 8, 2, 0]
+      (fun o i => load ![7, 3, 3, 3] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact seven_three_three_three_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (7,3,2,2,2). -/
+theorem seven_three_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![7, 3, 2, 2, 2] t →
+      (∑ i : Fin 5, ![(3 : ℤ), 8, -12, 9, -6] i * (load ![7, 3, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![11, 12, 0, 12, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_three_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![7, 3, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![7, 3, 2, 2, 2] i (atom o)) = 12 * ![7, 3, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 3, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![7, 3, 2, 2, 2] ![(3 : ℤ), 8, -12, 9, -6] ![11, 12, 0, 12, 0]
+      (fun o i => load ![7, 3, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact seven_three_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,6,4). -/
+theorem six_six_four_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![6, 6, 4] t →
+      (∑ i : Fin 3, ![(1 : ℤ), 1, 4] i * (load ![6, 6, 4] i t : ℤ)) ≤
+        ∑ i : Fin 3, (![11, 9, 8] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_six_four_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hvalid : ∀ o, Valid ![6, 6, 4] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 6, 4] i (atom o)) = 12 * ![6, 6, 4] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 6, 4] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 6, 4] ![(1 : ℤ), 1, 4] ![11, 9, 8]
+      (fun o i => load ![6, 6, 4] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_six_four_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,5,5). -/
+theorem six_five_five_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![6, 5, 5] t →
+      (∑ i : Fin 3, ![(3 : ℤ), 2, 0] i * (load ![6, 5, 5] i t : ℤ)) ≤
+        ∑ i : Fin 3, (![11, 10, 7] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_five_five_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hvalid : ∀ o, Valid ![6, 5, 5] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 5, 5] i (atom o)) = 12 * ![6, 5, 5] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 5, 5] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 5, 5] ![(3 : ℤ), 2, 0] ![11, 10, 7]
+      (fun o i => load ![6, 5, 5] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_five_five_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,5,3,2). -/
+theorem six_five_three_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![6, 5, 3, 2] t →
+      (∑ i : Fin 4, ![(4 : ℤ), 4, -4, -4] i * (load ![6, 5, 3, 2] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![12, 10, 0, 4] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_five_three_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![6, 5, 3, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 5, 3, 2] i (atom o)) = 12 * ![6, 5, 3, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 5, 3, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 5, 3, 2] ![(4 : ℤ), 4, -4, -4] ![12, 10, 0, 4]
+      (fun o i => load ![6, 5, 3, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_five_three_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,4,4,2). -/
+theorem six_four_four_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![6, 4, 4, 2] t →
+      (∑ i : Fin 4, ![(4 : ℤ), -2, 4, -4] i * (load ![6, 4, 4, 2] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![12, 0, 12, 4] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_four_four_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![6, 4, 4, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 4, 4, 2] i (atom o)) = 12 * ![6, 4, 4, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 4, 4, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 4, 4, 2] ![(4 : ℤ), -2, 4, -4] ![12, 0, 12, 4]
+      (fun o i => load ![6, 4, 4, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_four_four_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,4,3,3). -/
+theorem six_four_three_three_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![6, 4, 3, 3] t →
+      (∑ i : Fin 4, ![(-2 : ℤ), 6, -3, 4] i * (load ![6, 4, 3, 3] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![1, 12, 0, 8] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_four_three_three_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![6, 4, 3, 3] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 4, 3, 3] i (atom o)) = 12 * ![6, 4, 3, 3] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 4, 3, 3] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 4, 3, 3] ![(-2 : ℤ), 6, -3, 4] ![1, 12, 0, 8]
+      (fun o i => load ![6, 4, 3, 3] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_four_three_three_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (6,4,2,2,2). -/
+theorem six_four_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![6, 4, 2, 2, 2] t →
+      (∑ i : Fin 5, ![(2 : ℤ), 3, 0, 0, 0] i * (load ![6, 4, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![12, 12, 0, 0, 4] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_six_four_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![6, 4, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![6, 4, 2, 2, 2] i (atom o)) = 12 * ![6, 4, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![6, 4, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![6, 4, 2, 2, 2] ![(2 : ℤ), 3, 0, 0, 0] ![12, 12, 0, 0, 4]
+      (fun o i => load ![6, 4, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact six_four_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,5,4,2). -/
+theorem five_five_four_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![5, 5, 4, 2] t →
+      (∑ i : Fin 4, ![(-1 : ℤ), 1, 6, -6] i * (load ![5, 5, 4, 2] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![0, 3, 12, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_five_four_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![5, 5, 4, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 5, 4, 2] i (atom o)) = 12 * ![5, 5, 4, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 5, 4, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 5, 4, 2] ![(-1 : ℤ), 1, 6, -6] ![0, 3, 12, 0]
+      (fun o i => load ![5, 5, 4, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_five_four_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,5,3,3). -/
+theorem five_five_three_three_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![5, 5, 3, 3] t →
+      (∑ i : Fin 4, ![(0 : ℤ), 0, 3, 2] i * (load ![5, 5, 3, 3] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![0, 1, 12, 12] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_five_three_three_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![5, 5, 3, 3] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 5, 3, 3] i (atom o)) = 12 * ![5, 5, 3, 3] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 5, 3, 3] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 5, 3, 3] ![(0 : ℤ), 0, 3, 2] ![0, 1, 12, 12]
+      (fun o i => load ![5, 5, 3, 3] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_five_three_three_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,4,4,3). -/
+theorem five_four_four_three_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![5, 4, 4, 3] t →
+      (∑ i : Fin 4, ![(4 : ℤ), 2, 2, -2] i * (load ![5, 4, 4, 3] i t : ℤ)) ≤
+        ∑ i : Fin 4, (![10, 12, 12, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_four_four_three_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hvalid : ∀ o, Valid ![5, 4, 4, 3] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 4, 4, 3] i (atom o)) = 12 * ![5, 4, 4, 3] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 4, 4, 3] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 4, 4, 3] ![(4 : ℤ), 2, 2, -2] ![10, 12, 12, 0]
+      (fun o i => load ![5, 4, 4, 3] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_four_four_three_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,4,3,2,2). -/
+theorem five_four_three_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![5, 4, 3, 2, 2] t →
+      (∑ i : Fin 5, ![(3 : ℤ), 2, -2, 2, 2] i * (load ![5, 4, 3, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![9, 12, 0, 12, 6] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_four_three_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![5, 4, 3, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 4, 3, 2, 2] i (atom o)) = 12 * ![5, 4, 3, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 4, 3, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 4, 3, 2, 2] ![(3 : ℤ), 2, -2, 2, 2] ![9, 12, 0, 12, 6]
+      (fun o i => load ![5, 4, 3, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_four_three_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,3,3,3,2). -/
+theorem five_three_three_three_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![5, 3, 3, 3, 2] t →
+      (∑ i : Fin 5, ![(3 : ℤ), -3, 5, -3, 2] i * (load ![5, 3, 3, 3, 2] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![8, 0, 12, 0, 2] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_three_three_three_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![5, 3, 3, 3, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 3, 3, 3, 2] i (atom o)) = 12 * ![5, 3, 3, 3, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 3, 3, 3, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 3, 3, 3, 2] ![(3 : ℤ), -3, 5, -3, 2] ![8, 0, 12, 0, 2]
+      (fun o i => load ![5, 3, 3, 3, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_three_three_three_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (5,3,2,2,2,2). -/
+theorem five_three_two_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 6), Valid ![5, 3, 2, 2, 2, 2] t →
+      (∑ i : Fin 6, ![(3 : ℤ), 8, 0, 0, -12, 0] i * (load ![5, 3, 2, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 6, (![8, 12, 0, 0, 0, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_five_three_two_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 6))
+    (hvalid : ∀ o, Valid ![5, 3, 2, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![5, 3, 2, 2, 2, 2] i (atom o)) = 12 * ![5, 3, 2, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![5, 3, 2, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![5, 3, 2, 2, 2, 2] ![(3 : ℤ), 8, 0, 0, -12, 0] ![8, 12, 0, 0, 0, 0]
+      (fun o i => load ![5, 3, 2, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact five_three_two_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (4,4,3,3,2). -/
+theorem four_four_three_three_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![4, 4, 3, 3, 2] t →
+      (∑ i : Fin 5, ![(0 : ℤ), 0, 0, 1, 0] i * (load ![4, 4, 3, 3, 2] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![0, 0, 2, 3, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_four_four_three_three_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![4, 4, 3, 3, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![4, 4, 3, 3, 2] i (atom o)) = 12 * ![4, 4, 3, 3, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![4, 4, 3, 3, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![4, 4, 3, 3, 2] ![(0 : ℤ), 0, 0, 1, 0] ![0, 0, 2, 3, 0]
+      (fun o i => load ![4, 4, 3, 3, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact four_four_three_three_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (4,3,3,3,3). -/
+theorem four_three_three_three_three_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 5), Valid ![4, 3, 3, 3, 3] t →
+      (∑ i : Fin 5, ![(6 : ℤ), 0, 0, 0, 0] i * (load ![4, 3, 3, 3, 3] i t : ℤ)) ≤
+        ∑ i : Fin 5, (![12, 0, 0, 12, 12] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_four_three_three_three_three_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![4, 3, 3, 3, 3] (atom o))
+    (hload : ∀ i, (∑ o, load ![4, 3, 3, 3, 3] i (atom o)) = 12 * ![4, 3, 3, 3, 3] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![4, 3, 3, 3, 3] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![4, 3, 3, 3, 3] ![(6 : ℤ), 0, 0, 0, 0] ![12, 0, 0, 12, 12]
+      (fun o i => load ![4, 3, 3, 3, 3] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact four_three_three_three_three_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (4,3,3,2,2,2). -/
+theorem four_three_three_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 6), Valid ![4, 3, 3, 2, 2, 2] t →
+      (∑ i : Fin 6, ![(0 : ℤ), 3, 2, 0, 0, 0] i * (load ![4, 3, 3, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 6, (![0, 12, 12, 2, 0, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 6))
+    (hvalid : ∀ o, Valid ![4, 3, 3, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![4, 3, 3, 2, 2, 2] i (atom o)) = 12 * ![4, 3, 3, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![4, 3, 3, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![4, 3, 3, 2, 2, 2] ![(0 : ℤ), 3, 2, 0, 0, 0] ![0, 12, 12, 2, 0, 0]
+      (fun o i => load ![4, 3, 3, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact four_three_three_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (4,2,2,2,2,2,2). -/
+theorem four_two_two_two_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 7), Valid ![4, 2, 2, 2, 2, 2, 2] t →
+      (∑ i : Fin 7, ![(1 : ℤ), 0, 0, 0, 0, 0, 0] i * (load ![4, 2, 2, 2, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 7, (![4, 0, 0, 0, 0, 0, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 7))
+    (hvalid : ∀ o, Valid ![4, 2, 2, 2, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![4, 2, 2, 2, 2, 2, 2] i (atom o)) = 12 * ![4, 2, 2, 2, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![4, 2, 2, 2, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![4, 2, 2, 2, 2, 2, 2] ![(1 : ℤ), 0, 0, 0, 0, 0, 0] ![4, 0, 0, 0, 0, 0, 0]
+      (fun o i => load ![4, 2, 2, 2, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact four_two_two_two_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (3,3,3,3,2,2). -/
+theorem three_three_three_three_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 6), Valid ![3, 3, 3, 3, 2, 2] t →
+      (∑ i : Fin 6, ![(0 : ℤ), 0, 0, 0, 4, 4] i * (load ![3, 3, 3, 3, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 6, (![10, 0, 0, 0, 12, 12] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 6))
+    (hvalid : ∀ o, Valid ![3, 3, 3, 3, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![3, 3, 3, 3, 2, 2] i (atom o)) = 12 * ![3, 3, 3, 3, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![3, 3, 3, 3, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![3, 3, 3, 3, 2, 2] ![(0 : ℤ), 0, 0, 0, 4, 4] ![10, 0, 0, 0, 12, 12]
+      (fun o i => load ![3, 3, 3, 3, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact three_three_three_three_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+/-- Computed column certificate for the reduced pattern (3,3,2,2,2,2,2). -/
+theorem three_three_two_two_two_two_two_weighted_atom_column :
+    ∀ t : ZeroLayerAtom (Fin 7), Valid ![3, 3, 2, 2, 2, 2, 2] t →
+      (∑ i : Fin 7, ![(3 : ℤ), 2, 0, 0, 0, 0, 0] i * (load ![3, 3, 2, 2, 2, 2, 2] i t : ℤ)) ≤
+        ∑ i : Fin 7, (![12, 12, 0, 0, 0, 0, 2] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 7))
+    (hvalid : ∀ o, Valid ![3, 3, 2, 2, 2, 2, 2] (atom o))
+    (hload : ∀ i, (∑ o, load ![3, 3, 2, 2, 2, 2, 2] i (atom o)) = 12 * ![3, 3, 2, 2, 2, 2, 2] i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![3, 3, 2, 2, 2, 2, 2] i - 1)) : False := by
+  apply false_of_weighted_load_excess_certificate
+    (O := O) ![3, 3, 2, 2, 2, 2, 2] ![(3 : ℤ), 2, 0, 0, 0, 0, 0] ![12, 12, 0, 0, 0, 0, 2]
+      (fun o i => load ![3, 3, 2, 2, 2, 2, 2] i (atom o))
+      (fun o i => excess i (atom o)) hload hexcess
+  · intro o
+    exact three_three_two_two_two_two_two_weighted_atom_column (atom o) (hvalid o)
+  · norm_num [Fin.sum_univ_succ]
+
+set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
 
