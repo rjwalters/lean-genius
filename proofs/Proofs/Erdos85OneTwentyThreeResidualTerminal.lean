@@ -44165,5 +44165,22 @@ theorem false_of_degree_sixteen_exact_boundary
   exact false_of_degree_sixteen_zeroLayer_partition_census
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
 
+/-- Every graph on the exact excess-three boundary `243 = 16·15 + 3`
+with minimum degree at least sixteen contains a four-cycle. -/
+theorem containsC4_of_degree_sixteen_exact_boundary
+    (G : SimpleGraph (Fin 243)) [DecidableRel G.Adj]
+    (hmin : 16 ≤ G.minDegree) : containsC4 (Fin 243) G := by
+  classical
+  by_contra hfree
+  exact false_of_degree_sixteen_exact_boundary G hfree hmin (by norm_num)
+
+/-- The concrete extremal consequence of the degree-sixteen terminal:
+`f(243) ≤ 16`. -/
+theorem minDegreeForC4_twoFortyThree_le_sixteen :
+    minDegreeForC4 243 ≤ 16 := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_degree_sixteen_exact_boundary G hmin
+
 
 end Erdos85
