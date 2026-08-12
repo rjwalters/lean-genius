@@ -41385,118 +41385,557 @@ def AtomLedgerContradiction (L : List ℕ) : Prop :=
     (∀ i, (∑ o, load L.get i (atom o)) = 12 * L.get i) →
     (∀ i, (∑ o, excess i (atom o)) ≤ 2 * (L.get i - 1)) → False
 
+-- ── Named ledger wrappers: List.get → Matrix-cons bridge, one per
+-- arithmetic pattern (generated; uniform standard interface). ──
+
+theorem atomLedgerContradiction_fourteen_two :
+    AtomLedgerContradiction [14, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([14, 2] : List ℕ).get = ![14, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_fourteen_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_thirteen_three :
+    AtomLedgerContradiction [13, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([13, 3] : List ℕ).get = ![13, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_thirteen_three_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eleven_five :
+    AtomLedgerContradiction [11, 5] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([11, 5] : List ℕ).get = ![11, 5] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eleven_five_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eleven_three_two :
+    AtomLedgerContradiction [11, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([11, 3, 2] : List ℕ).get = ![11, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eleven_three_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_ten_six :
+    AtomLedgerContradiction [10, 6] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([10, 6] : List ℕ).get = ![10, 6] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_ten_six_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_ten_four_two :
+    AtomLedgerContradiction [10, 4, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([10, 4, 2] : List ℕ).get = ![10, 4, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_ten_four_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_ten_three_three :
+    AtomLedgerContradiction [10, 3, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([10, 3, 3] : List ℕ).get = ![10, 3, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_ten_three_three_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_nine_seven :
+    AtomLedgerContradiction [9, 7] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([9, 7] : List ℕ).get = ![9, 7] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_nine_seven_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_nine_five_two :
+    AtomLedgerContradiction [9, 5, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([9, 5, 2] : List ℕ).get = ![9, 5, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_nine_five_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_nine_four_three :
+    AtomLedgerContradiction [9, 4, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([9, 4, 3] : List ℕ).get = ![9, 4, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_nine_four_three_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_nine_three_two_two :
+    AtomLedgerContradiction [9, 3, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([9, 3, 2, 2] : List ℕ).get = ![9, 3, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_nine_three_two_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eight_six_two :
+    AtomLedgerContradiction [8, 6, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([8, 6, 2] : List ℕ).get = ![8, 6, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eight_six_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eight_five_three :
+    AtomLedgerContradiction [8, 5, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([8, 5, 3] : List ℕ).get = ![8, 5, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eight_five_three_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eight_four_two_two :
+    AtomLedgerContradiction [8, 4, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([8, 4, 2, 2] : List ℕ).get = ![8, 4, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_eight_three_three_two :
+    AtomLedgerContradiction [8, 3, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([8, 3, 3, 2] : List ℕ).get = ![8, 3, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_eight_three_three_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_seven_two :
+    AtomLedgerContradiction [7, 7, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 7, 2] : List ℕ).get = ![7, 7, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_six_three :
+    AtomLedgerContradiction [7, 6, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 6, 3] : List ℕ).get = ![7, 6, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_six_three_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_five_four :
+    AtomLedgerContradiction [7, 5, 4] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 5, 4] : List ℕ).get = ![7, 5, 4] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_five_four_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_five_two_two :
+    AtomLedgerContradiction [7, 5, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 5, 2, 2] : List ℕ).get = ![7, 5, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_five_two_two_standard_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_four_three_two :
+    AtomLedgerContradiction [7, 4, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 4, 3, 2] : List ℕ).get = ![7, 4, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_four_three_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_three_three_three :
+    AtomLedgerContradiction [7, 3, 3, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 3, 3, 3] : List ℕ).get = ![7, 3, 3, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_three_three_three_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_seven_three_two_two_two :
+    AtomLedgerContradiction [7, 3, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([7, 3, 2, 2, 2] : List ℕ).get = ![7, 3, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_seven_three_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_six_four :
+    AtomLedgerContradiction [6, 6, 4] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 6, 4] : List ℕ).get = ![6, 6, 4] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_six_four_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_five_five :
+    AtomLedgerContradiction [6, 5, 5] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 5, 5] : List ℕ).get = ![6, 5, 5] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_five_five_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_five_three_two :
+    AtomLedgerContradiction [6, 5, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 5, 3, 2] : List ℕ).get = ![6, 5, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_five_three_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_four_four_two :
+    AtomLedgerContradiction [6, 4, 4, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 4, 4, 2] : List ℕ).get = ![6, 4, 4, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_four_four_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_four_three_three :
+    AtomLedgerContradiction [6, 4, 3, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 4, 3, 3] : List ℕ).get = ![6, 4, 3, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_four_three_three_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_four_two_two_two :
+    AtomLedgerContradiction [6, 4, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 4, 2, 2, 2] : List ℕ).get = ![6, 4, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_four_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_six_two_two_two_two_two :
+    AtomLedgerContradiction [6, 2, 2, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([6, 2, 2, 2, 2, 2] : List ℕ).get = ![6, 2, 2, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_six_two_two_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_five_four_two :
+    AtomLedgerContradiction [5, 5, 4, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 5, 4, 2] : List ℕ).get = ![5, 5, 4, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_five_four_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_five_three_three :
+    AtomLedgerContradiction [5, 5, 3, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 5, 3, 3] : List ℕ).get = ![5, 5, 3, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_five_three_three_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_four_four_three :
+    AtomLedgerContradiction [5, 4, 4, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 4, 4, 3] : List ℕ).get = ![5, 4, 4, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_four_four_three_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_four_three_two_two :
+    AtomLedgerContradiction [5, 4, 3, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 4, 3, 2, 2] : List ℕ).get = ![5, 4, 3, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_four_three_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_three_three_three_two :
+    AtomLedgerContradiction [5, 3, 3, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 3, 3, 3, 2] : List ℕ).get = ![5, 3, 3, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_three_three_three_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_five_three_two_two_two_two :
+    AtomLedgerContradiction [5, 3, 2, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([5, 3, 2, 2, 2, 2] : List ℕ).get = ![5, 3, 2, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_five_three_two_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_four_four_three_three_two :
+    AtomLedgerContradiction [4, 4, 3, 3, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([4, 4, 3, 3, 2] : List ℕ).get = ![4, 4, 3, 3, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_four_four_three_three_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_four_three_three_three_three :
+    AtomLedgerContradiction [4, 3, 3, 3, 3] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([4, 3, 3, 3, 3] : List ℕ).get = ![4, 3, 3, 3, 3] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_four_three_three_three_three_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_four_three_three_two_two_two :
+    AtomLedgerContradiction [4, 3, 3, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([4, 3, 3, 2, 2, 2] : List ℕ).get = ![4, 3, 3, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_four_two_two_two_two_two_two :
+    AtomLedgerContradiction [4, 2, 2, 2, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  have hget : ([4, 2, 2, 2, 2, 2, 2] : List ℕ).get = ![4, 2, 2, 2, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
+
 theorem atomLedgerContradiction_three_three_three_three_two_two :
     AtomLedgerContradiction [3, 3, 3, 3, 2, 2] := by
   intro O _ _ atom hvalid hload hexcess
-  simpa using
-    false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
-      (O := O) atom hvalid hload hexcess
+  have hget : ([3, 3, 3, 3, 2, 2] : List ℕ).get = ![3, 3, 3, 3, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
 
 theorem atomLedgerContradiction_three_three_two_two_two_two_two :
     AtomLedgerContradiction [3, 3, 2, 2, 2, 2, 2] := by
   intro O _ _ atom hvalid hload hexcess
-  simpa using
-    false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
-      (O := O) atom hvalid hload hexcess
+  have hget : ([3, 3, 2, 2, 2, 2, 2] : List ℕ).get = ![3, 3, 2, 2, 2, 2, 2] := by
+    funext i; fin_cases i <;> rfl
+  rw [hget] at hvalid hload hexcess
+  exact false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
+    (O := O) atom hvalid hload hexcess
 
-set_option maxHeartbeats 2000000 in
+/-- Exhaustive dispatch of the fifty-five reduced zero-layer partition
+patterns: each is either one of the fourteen graph-exceptional lists or
+is killed by its named arithmetic ledger wrapper.  Term-mode match with
+one arm per pattern; no search, no alternation. -/
 theorem atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
     (a b c d e f g h : ℕ)
     (hp : ZeroLayerReducedPartitionPattern a b c d e f g h) :
     let L := [a, b, c, d, e, f, g, h].filter (fun k => k ≠ 0)
-    GraphExceptionalPattern L ∨ AtomLedgerContradiction L := by
-  dsimp only
-  have ha : a ≤ 16 := by
-    by_contra hnot
-    have h17 : 17 ≤ a := by omega
-    obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h17
-    have hadd : 17 + k = k + 17 := by omega
-    rw [hadd] at hp
-    simp [ZeroLayerReducedPartitionPattern] at hp
-  interval_cases a <;> simp [ZeroLayerReducedPartitionPattern] at hp
-  all_goals repeat' first | rcases hp with hp | hp
-  all_goals simp_all [GraphExceptionalPattern]
-  all_goals first
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_fourteen_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_thirteen_three_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eleven_five_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eleven_three_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_ten_six_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_ten_four_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_ten_three_three_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_nine_seven_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_nine_five_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_nine_four_three_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_nine_three_two_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eight_six_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eight_five_three_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_eight_three_three_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_six_three_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_five_four_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_five_two_two_standard_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_four_three_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_three_three_three_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_seven_three_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_six_four_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_five_five_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_five_three_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_four_four_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_four_three_three_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_four_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_six_two_two_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_five_four_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_five_three_three_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_four_four_three_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_four_three_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_three_three_three_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_five_three_two_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_four_four_three_three_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_four_three_three_three_three_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger)
-    | exact atomLedgerContradiction_three_three_three_three_two_two
-    | exact atomLedgerContradiction_three_three_two_two_two_two_two
+    GraphExceptionalPattern L ∨ AtomLedgerContradiction L :=
+  match a, b, c, d, e, f, g, h, hp with
+  | 16, _, _, _, _, _, _, _, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [16] : graph exception #1
+      Or.inl (Or.inl rfl)
+  | 14, _, _, _, _, _, _, _, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [14, 2] : arithmetic
+      Or.inr atomLedgerContradiction_fourteen_two
+  | 13, _, _, _, _, _, _, _, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [13, 3] : arithmetic
+      Or.inr atomLedgerContradiction_thirteen_three
+  | 12, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [12, 4] : graph exception #2
+      Or.inl (Or.inr (Or.inl rfl))
+  | 12, _, _, _, _, _, _, _, Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [12, 2, 2] : graph exception #3
+      Or.inl (Or.inr (Or.inr (Or.inl rfl)))
+  | 11, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [11, 5] : arithmetic
+      Or.inr atomLedgerContradiction_eleven_five
+  | 11, _, _, _, _, _, _, _, Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [11, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_eleven_three_two
+  | 10, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [10, 6] : arithmetic
+      Or.inr atomLedgerContradiction_ten_six
+  | 10, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [10, 4, 2] : arithmetic
+      Or.inr atomLedgerContradiction_ten_four_two
+  | 10, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [10, 3, 3] : arithmetic
+      Or.inr atomLedgerContradiction_ten_three_three
+  | 10, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [10, 2, 2, 2] : graph exception #4
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
+  | 9, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [9, 7] : arithmetic
+      Or.inr atomLedgerContradiction_nine_seven
+  | 9, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [9, 5, 2] : arithmetic
+      Or.inr atomLedgerContradiction_nine_five_two
+  | 9, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [9, 4, 3] : arithmetic
+      Or.inr atomLedgerContradiction_nine_four_three
+  | 9, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [9, 3, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_nine_three_two_two
+  | 8, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [8, 8] : graph exception #5
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [8, 6, 2] : arithmetic
+      Or.inr atomLedgerContradiction_eight_six_two
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [8, 5, 3] : arithmetic
+      Or.inr atomLedgerContradiction_eight_five_three
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [8, 4, 4] : graph exception #6
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))) =>
+      -- [8, 4, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_eight_four_two_two
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))) =>
+      -- [8, 3, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_eight_three_three_two
+  | 8, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))) =>
+      -- [8, 2, 2, 2, 2] : graph exception #7
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))
+  | 7, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [7, 7, 2] : arithmetic
+      Or.inr atomLedgerContradiction_seven_seven_two
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [7, 6, 3] : arithmetic
+      Or.inr atomLedgerContradiction_seven_six_three
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [7, 5, 4] : arithmetic
+      Or.inr atomLedgerContradiction_seven_five_four
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [7, 5, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_seven_five_two_two
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))) =>
+      -- [7, 4, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_seven_four_three_two
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))) =>
+      -- [7, 3, 3, 3] : arithmetic
+      Or.inr atomLedgerContradiction_seven_three_three_three
+  | 7, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))) =>
+      -- [7, 3, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_seven_three_two_two_two
+  | 6, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [6, 6, 4] : arithmetic
+      Or.inr atomLedgerContradiction_six_six_four
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [6, 6, 2, 2] : graph exception #8
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))))
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [6, 5, 5] : arithmetic
+      Or.inr atomLedgerContradiction_six_five_five
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [6, 5, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_six_five_three_two
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))) =>
+      -- [6, 4, 4, 2] : arithmetic
+      Or.inr atomLedgerContradiction_six_four_four_two
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))) =>
+      -- [6, 4, 3, 3] : arithmetic
+      Or.inr atomLedgerContradiction_six_four_three_three
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))) =>
+      -- [6, 4, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_six_four_two_two_two
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))))) =>
+      -- [6, 3, 3, 2, 2] : graph exception #9
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))))
+  | 6, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))))) =>
+      -- [6, 2, 2, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_six_two_two_two_two_two
+  | 5, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [5, 5, 4, 2] : arithmetic
+      Or.inr atomLedgerContradiction_five_five_four_two
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [5, 5, 3, 3] : arithmetic
+      Or.inr atomLedgerContradiction_five_five_three_three
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [5, 5, 2, 2, 2] : graph exception #10
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))))))
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [5, 4, 4, 3] : arithmetic
+      Or.inr atomLedgerContradiction_five_four_four_three
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))) =>
+      -- [5, 4, 3, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_five_four_three_two_two
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))) =>
+      -- [5, 3, 3, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_five_three_three_three_two
+  | 5, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))) =>
+      -- [5, 3, 2, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_five_three_two_two_two_two
+  | 4, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [4, 4, 4, 4] : graph exception #11
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))))))
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [4, 4, 4, 2, 2] : graph exception #12
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))))))))
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)) =>
+      -- [4, 4, 3, 3, 2] : arithmetic
+      Or.inr atomLedgerContradiction_four_four_three_three_two
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))) =>
+      -- [4, 4, 2, 2, 2, 2] : graph exception #13
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))))))))
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))) =>
+      -- [4, 3, 3, 3, 3] : arithmetic
+      Or.inr atomLedgerContradiction_four_three_three_three_three
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩))))) =>
+      -- [4, 3, 3, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_four_three_three_two_two_two
+  | 4, _, _, _, _, _, _, _, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩)))))) =>
+      -- [4, 2, 2, 2, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_four_two_two_two_two_two_two
+  | 3, _, _, _, _, _, _, _, Or.inl ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [3, 3, 3, 3, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_three_three_three_three_two_two
+  | 3, _, _, _, _, _, _, _, Or.inr (⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩) =>
+      -- [3, 3, 2, 2, 2, 2, 2] : arithmetic
+      Or.inr atomLedgerContradiction_three_three_two_two_two_two_two
+  | 2, _, _, _, _, _, _, _, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩ =>
+      -- [2, 2, 2, 2, 2, 2, 2, 2] : graph exception #14
+      Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (rfl))))))))))))))
+  | 0, _, _, _, _, _, _, _, hp => hp.elim
+  | 1, _, _, _, _, _, _, _, hp => hp.elim
+  | 15, _, _, _, _, _, _, _, hp => hp.elim
+  | (_ + 17), _, _, _, _, _, _, _, hp => hp.elim
 
 
 end ZeroLayerAtom
