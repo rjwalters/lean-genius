@@ -41481,10 +41481,18 @@ theorem atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
         (@false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger)
     | simpa [AtomLedgerContradiction] using
         (@false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger)
-    | simpa [AtomLedgerContradiction] using
-        (@false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger)
+    | change AtomLedgerContradiction [3, 3, 3, 3, 2, 2]
+      dsimp [AtomLedgerContradiction]
+      intro O _ _ atom hvalid hload hexcess
+      simpa using
+        false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
+          atom hvalid hload hexcess
+    | change AtomLedgerContradiction [3, 3, 2, 2, 2, 2, 2]
+      dsimp [AtomLedgerContradiction]
+      intro O _ _ atom hvalid hload hexcess
+      simpa using
+        false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
+          atom hvalid hload hexcess
 
 
 end ZeroLayerAtom
@@ -42564,9 +42572,8 @@ theorem used_reducedOrder_count_of_map_eq
     {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
     (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ)) (k : ℕ) :
     (E.filter (fun x => K x = k)).card = L.count k := by
-  change (E.val.filter (fun x => K x = k)).card =
-    (L : Multiset ℕ).count k
-  rw [← hmap, Multiset.count_map]
+  rw [← Multiset.coe_count]
+  rw [Finset.card, Finset.filter_val, ← hmap, Multiset.count_map]
   congr 1
   ext x
   simp [eq_comm]
