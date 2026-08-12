@@ -2312,9 +2312,9 @@ theorem false_of_degreeSix_orderNine_singleton
       hfc hfe hfa hfb hc9 he3 ha9 hb9 hf3 hcc hce hca hcb hcf
       hecQ hee herow heprofile hfcQ hff hfrow hfprofile hsqce hgroup
 
+set_option maxHeartbeats 2000000 in
 /-- The order-twelve singleton row has exactly one of its two feasible
 contact-count patterns. -/
-set_option maxHeartbeats 800000 in
 theorem degreeSix_orderTwelve_singleton_contact_counts
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2409,11 +2409,11 @@ theorem degreeSix_orderTwelve_singleton_contact_counts
     ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 2).card)
     ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 3).card)
     (∑ t ∈ S, if Q c t = 0 then 0 else t.supp.ncard)
-    (by simpa [Q, S] using hagg.1.trans hrow)
+    (by simpa [Q, S] using hagg.1.symm.trans hrow)
     (by
       have hp : (∑ t ∈ S, Q c t * Q t c) = 11 := by
         simpa [S, hc12] using hprod
-      exact hagg.2.1.trans hp |>.symm)
+      exact hagg.2.1.symm.trans hp)
     hagg.2.2 hgap
   rcases hcounts with h | h
   · exact Or.inl ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1,
