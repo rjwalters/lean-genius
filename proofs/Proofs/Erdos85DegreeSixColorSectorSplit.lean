@@ -1457,6 +1457,75 @@ theorem contact_filter_counts_of_sum_three
     simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
+/-- Components of order at least three and total order six form either one
+order-six component or two order-three components. -/
+theorem component_orders_sum_six_classification
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (size : C → ℕ)
+    (hlower : ∀ t ∈ S, 3 ≤ size t)
+    (hsum : (∑ t ∈ S, size t) = 6) :
+    (∃ f, S = {f} ∧ size f = 6) ∨
+    (∃ f g, f ≠ g ∧ S = {f, g} ∧ size f = 3 ∧ size g = 3) := by
+  have hcardPos : 0 < S.card := by
+    by_contra hzero
+    have : S = ∅ := Finset.card_eq_zero.mp (by omega)
+    subst S
+    simp at hsum
+  have hlowerSum : (∑ t ∈ S, 3) ≤ ∑ t ∈ S, size t := by
+    exact Finset.sum_le_sum fun t ht ↦ hlower t ht
+  have hcardLe : S.card ≤ 2 := by
+    simp at hlowerSum
+    omega
+  rcases (show S.card = 1 ∨ S.card = 2 by omega) with hcard | hcard
+  · obtain ⟨f, hS⟩ := Finset.card_eq_one.mp hcard
+    exact Or.inl ⟨f, hS, by simpa [hS] using hsum⟩
+  · obtain ⟨f, g, hfg, hS⟩ := Finset.card_eq_two.mp hcard
+    have hf := hlower f (by simp [hS])
+    have hg := hlower g (by simp [hS])
+    have hfgsum : size f + size g = 6 := by simpa [hS, hfg] using hsum
+    exact Or.inr ⟨f, g, hfg, hS, by omega, by omega⟩
+
+/-- Arithmetic terminal for the order-six residual partition `1+2`.  The
+two square equations and the global diagonal budget force the order-twelve
+target to contact both distinct order-six components, contradicting grouped
+periodicity. -/
+theorem false_of_degreeSix_orderSix_one_two_contact
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ)
+    (c e d a : C)
+    (hc6 : size c = 6) (he3 : size e = 3)
+    (hd6 : size d = 6) (ha12 : size a = 12)
+    (hcc : Q c c = 2) (hce : Q c e = 1)
+    (hcd : Q c d = 1) (hca : Q c a = 2)
+    (hed : Q e d = 2) (hea : Q e a = 0)
+    (hbalCA : size c * Q c a = size a * Q a c)
+    (hbalDA : size d * Q d a = size a * Q a d)
+    (hsqd : Q c c * Q c d + Q c e * Q e d +
+      Q c d * Q d d + Q c a * Q a d = 6)
+    (hsqa : Q c c * Q c a + Q c e * Q e a +
+      Q c d * Q d a + Q c a * Q a a = 12)
+    (hdiagBudget : Q d d + Q a a ≤ 4)
+    (hgroup : Q a c + Q a d ≤ 1) : False := by
+  rw [hc6, ha12, hca] at hbalCA
+  rw [hd6, ha12] at hbalDA
+  rw [hcc, hce, hcd, hca, hed] at hsqd
+  rw [hcc, hce, hcd, hca, hea] at hsqa
+  omega
+
+/-- Arithmetic terminal for the residual partition `3`: an order-three row
+cannot positively contact the order-eighteen target, so the off-diagonal
+square `(c,e)` is one short. -/
+theorem false_of_degreeSix_orderSix_three_contact
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ)
+    (c e a : C)
+    (hc6 : size c = 6) (he3 : size e = 3) (ha18 : size a = 18)
+    (hcc : Q c c = 2) (hce : Q c e = 1) (hca : Q c a = 3)
+    (hee : Q e e = 0) (hea : Q e a = 0)
+    (hbalEA : size e * Q e a = size a * Q a e)
+    (hsqe : Q c c * Q c e + Q c e * Q e e + Q c a * Q a e = 3) : False := by
+  rw [he3, ha18, hea] at hbalEA
+  rw [hcc, hce, hca, hee, hbalEA] at hsqe
+  omega
+
 /-- If every component in `S` has order at least three and total order 21,
 the order used by positive contacts is either all 21 or at most 18. -/
 theorem contact_used_order_eq_total_or_le_eighteen
