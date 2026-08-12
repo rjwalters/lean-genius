@@ -1770,6 +1770,49 @@ theorem degreeSix_orderThree_zeroDiagonal_profile
   rw [he3, hte, mul_one] at hbal
   exact hbal.symm
 
+/-- An odd-order component has row mass six and diagonal two-step mass
+`|e|+3`. Detailed balance additionally forces every quotient entry from it
+to an even-order target to be even. This is the correct arbitrary-order
+replacement for the stronger order-three zero-diagonal profile. -/
+theorem degreeSix_oddComponent_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heOdd : Odd e.supp.ncard) :
+    (∑ t, componentQuotientMatrix G (secondOrderDefectGraph G) e t) = 6 ∧
+    (∑ t, componentQuotientMatrix G (secondOrderDefectGraph G) e t *
+      componentQuotientMatrix G (secondOrderDefectGraph G) t e) =
+        e.supp.ncard + 3 ∧
+    ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      Even t.supp.ncard →
+        Even (componentQuotientMatrix G (secondOrderDefectGraph G) e t) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hrow : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have hsquare := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hproduct : (∑ t, Q e t * Q t e) = e.supp.ncard + 3 := by
+    simpa [Q, Matrix.mul_apply, Nat.add_comm] using hsquare
+  refine ⟨hrow, hproduct, ?_⟩
+  intro t htEven
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e t
+  have hprodEven : Even (e.supp.ncard * Q e t) := by
+    rw [hbal]
+    exact htEven.mul_right _
+  exact (Nat.even_mul.mp hprodEven).resolve_left
+    (Nat.not_even_iff_odd.mpr heOdd)
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
