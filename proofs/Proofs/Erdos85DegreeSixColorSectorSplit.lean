@@ -974,6 +974,26 @@ theorem degreeSix_orderNine_shape_unused_orderThree_diagonal_zero
     rw [hf3, hb9] at hbb
     omega
 
+/-- The `(12,12,6,3)` order-twelve row shape is incompatible with its two
+off-diagonal square equations as soon as the order-six diagonal is at most
+three.  The equations otherwise force that diagonal to equal four. -/
+theorem false_of_degreeSix_orderTwelve_three_six_twelve_shape
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ)
+    (c a d e : C)
+    (hc12 : size c = 12) (ha12 : size a = 12)
+    (hd6 : size d = 6) (he3 : size e = 3)
+    (hcc : Q c c = 2) (hca : Q c a = 3)
+    (hcd : Q c d = 1) (hce : Q c e = 0)
+    (hbalDA : size d * Q d a = size a * Q a d)
+    (hsqa : Q c c * Q c a + Q c a * Q a a +
+        Q c d * Q d a + Q c e * Q e a = 12)
+    (hsqd : Q c c * Q c d + Q c a * Q a d +
+        Q c d * Q d d + Q c e * Q e d = 6)
+    (hdd : Q d d ≤ 3) : False := by
+  rw [hd6, ha12] at hbalDA
+  rw [hcc, hca, hcd, hce] at hsqa hsqd
+  omega
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
