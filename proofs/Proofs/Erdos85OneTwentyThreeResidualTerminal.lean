@@ -44103,5 +44103,67 @@ theorem false_of_degree_sixteen_zeroLayer_partition_census
   · exact false_of_degree_sixteen_zeroLayer_all_used_order_six_of_map_eq
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild hmap
 
+/-- The exact degree-sixteen, excess-three boundary is impossible.  Strict
+descent leaves child degree zero, two, or four; the preceding terminal
+theorems close all three cases. -/
+theorem false_of_degree_sixteen_exact_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3) : False := by
+  classical
+  have hVpos : 0 < Fintype.card V := by
+    rw [hcard]
+    norm_num
+  obtain ⟨v₀⟩ := Fintype.card_pos_iff.mp hVpos
+  obtain ⟨c₀, -, hc₀min'⟩ := Finset.exists_min_image
+    (Finset.univ :
+      Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (fun c => c.supp.ncard)
+    ⟨(secondOrderDefectGraph G).connectedComponentMk v₀,
+      Finset.mem_univ _⟩
+  have hc₀min : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ e.supp.ncard :=
+    fun e => hc₀min' e (Finset.mem_univ e)
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  letI : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard := fun c => ⟨Nat.ne_of_gt (by
+        have hc := hthree c
+        omega)⟩
+  have hsep : ∀ {c e : (secondOrderDefectGraph G).ConnectedComponent},
+      c ≠ e → ∀ x y, u c x ≠ u e y := by
+    intro c e hce x y hxy
+    have hxc : u c x ∈ c.supp := by
+      rw [← huRange c]
+      exact ⟨x, rfl⟩
+    have hye : u e y ∈ e.supp := by
+      rw [← huRange e]
+      exact ⟨y, rfl⟩
+    have hc := (SimpleGraph.ConnectedComponent.mem_supp_iff c (u c x)).mp hxc
+    have he := (SimpleGraph.ConnectedComponent.mem_supp_iff e (u e y)).mp hye
+    apply hce
+    rw [hxy] at hc
+    exact hc.symm.trans he
+  have hcover : ∀ v : V, ∃ c x, u c x = v := by
+    intro v
+    let c := (secondOrderDefectGraph G).connectedComponentMk v
+    have hv : v ∈ c.supp :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c v).mpr rfl
+    rw [← huRange c] at hv
+    obtain ⟨x, hx⟩ := hv
+    exact ⟨c, x, hx⟩
+  have hbij : Function.Bijective (mixedCycleLabeling u) :=
+    mixedCycleLabeling_bijective hu hsep hcover
+  obtain ⟨hregChild, hcardChild⟩ := degree_sixteen_remaining_zeroLayer
+    G hfree hmin hcard c₀ hc₀min u hu huRange hthree hbij huD
+  exact false_of_degree_sixteen_zeroLayer_partition_census
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
+
 
 end Erdos85
