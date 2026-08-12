@@ -43544,9 +43544,10 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_sixteen_of_map_eq
     · intro hx
       obtain ⟨i, hi⟩ := hslotCover x hx
       fin_cases i
-      simpa [e] using hi
+      simpa [e] using hi.symm
     · intro hx
-      simpa using heE
+      have hxe : x = e := Finset.mem_singleton.mp hx
+      simpa [hxe] using heE
   obtain ⟨u, hu, huRange, huD, hthree⟩ :=
     exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
       (by norm_num) hmin hcard
@@ -43675,7 +43676,10 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two_of_m
     have hfE : f ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hfR⟩
     obtain ⟨i, hi⟩ := hslotCover f hfE
     have hd := hpack.2 f hfE
-    fin_cases i <;> simp_all [e₈, K] <;> omega
+    obtain ⟨q, hq⟩ := hd
+    have hfK := hslotK i
+    rw [hi] at hfK
+    fin_cases i <;> norm_num at hfK <;> simp_all [e₈, K] <;> omega
   exact false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₈
       (Finset.mem_filter.mp he₈E).2 he₈ (by simpa [D, R] using hothers)
@@ -43741,7 +43745,10 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two_of_m
     have hfE : f ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hfR⟩
     obtain ⟨i, hi⟩ := hslotCover f hfE
     have hd := hpack.2 f hfE
-    fin_cases i <;> simp_all [e₁, e₂, K] <;> omega
+    obtain ⟨q, hq⟩ := hd
+    have hfK := hslotK i
+    rw [hi] at hfK
+    fin_cases i <;> norm_num at hfK <;> simp_all [e₁, e₂, K] <;> omega
   exact false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two
     G hfree hmin hcard c₀ hc₀min hregChild hcardChild e₁ e₂
       (Finset.mem_filter.mp he₁E).2 (Finset.mem_filter.mp he₂E).2
@@ -43878,7 +43885,8 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two_of
     intro e heR
     have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
     have hm := used_reducedOrder_mem_of_map_eq E K [6, 3, 3, 2, 2] hmap heE
-    simpa only [List.mem_cons, List.not_mem_nil, or_false] using hm
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    tauto
   have hhas₆ : ∃ e, componentRepresentative D e ∈ R ∧ K e = 6 := by
     exact ⟨slot 0, (Finset.mem_filter.mp (hslotMem 0)).2,
       by simpa using hslotK 0⟩
@@ -44069,9 +44077,9 @@ theorem false_of_degree_sixteen_zeroLayer_partition_census
       (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
     (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
       3 ≤ x.supp.ncard) : False := by
-  apply false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
-    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
-  intro L hpattern hmap
+  refine false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree (hgraph := ?_)
+  intro D' R' E' K' L hpattern hmap
   rcases hpattern with rfl | rfl | rfl | rfl | rfl | rfl | rfl |
     rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · exact false_of_degree_sixteen_zeroLayer_used_orders_sixteen_of_map_eq
