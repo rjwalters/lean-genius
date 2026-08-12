@@ -3453,8 +3453,11 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
   have hca : Q c a = 3 := haFilter.2
   have hac : a ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp haS).2).1
   have hae : a ≠ e := (Finset.mem_erase.mp haS).1
-  have haData := hcprofile a haS (by rw [hca]; norm_num)
-  have ha18 : a.supp.ncard = 18 := by rw [haData.2, hca]; norm_num
+  have hcaPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c a := by
+    simpa [Q] using (show 0 < Q c a by omega)
+  have haData := hcprofile a haS hcaPos
+  have ha18 : a.supp.ncard = 18 := by
+    simpa [Q, hca] using haData.2
   have hrowE : (∑ t, Q e t) = 6 :=
     sum_secondOrder_componentQuotientMatrix_row_eq_degree
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -3468,12 +3471,16 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
     change a.supp.ncard = 3 * Q e a at hsize
     have hlower := two_distinct_terms_le_sum (Q e) (show c ≠ a from hac.symm)
     change Q e c = 2 at hecQ
-    rw [hrowE, hecQ, ha18] at hlower
+    change (∑ t, Q e t) = 6 at hrowE
+    rw [hrowE, hecQ] at hlower
     nlinarith
   let R : Finset (secondOrderDefectGraph G).ConnectedComponent := S.erase a
   have haIn : a ∈ S := haS
   have hsplit := Finset.sum_erase_add S (Q c) haIn
-  have hrowR : (∑ t ∈ R, Q c t) = 0 := by dsimp [R]; omega
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by
+    change (∑ t ∈ S, Q c t) = 3 at hrowS
+    dsimp [R]
+    omega
   have hzero : ∀ t ∈ R, Q c t = 0 := by
     intro t ht
     have hle : Q c t ≤ ∑ x ∈ R, Q c x :=
@@ -3504,7 +3511,10 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) e a
   have hsqe : Q c c * Q c e + Q c e * Q e e + Q c a * Q a e = 3 := by
-    dsimp [R, S] at hrest
+    change (∑ t, Q c t * Q t e) = 3 at hsq
+    change Q c e = 1 at hce
+    change Q e e = 0 at hee
+    dsimp [R, S] at hrest hsA
     omega
   exact false_of_degreeSix_orderSix_three_contact Q (fun t ↦ t.supp.ncard)
     c e a hc6 he3 ha18 hcc hce hca hee hea hbalEA hsqe
