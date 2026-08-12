@@ -585,6 +585,74 @@ theorem degreeSix_orderNine_two_orderThree_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Two order-three targets occupy the same nonzero residue in an order-six
+source row. -/
+theorem degreeSix_orderSix_two_orderThree_targets_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc6 : c.supp.ncard = 6) (he3 : e.supp.ncard = 3)
+    (hf3 : f.supp.ncard = 3) (hef : e ≠ f) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c e +
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f ≤ 1 := by
+  let D := secondOrderDefectGraph G
+  let es : Finset D.ConnectedComponent := {e, f}
+  have hs : (3 : ZMod c.supp.ncard) ≠ 0 := by
+    intro hz
+    have hdvd : c.supp.ncard ∣ 3 :=
+      (ZMod.natCast_eq_zero_iff 3 c.supp.ncard).mp hz
+    rw [hc6] at hdvd
+    norm_num at hdvd
+  have hbound := sum_componentQuotientMatrix_le_one_of_periodic
+    G D hfree c (u c) (hu c) (huRange c) (3 : ZMod c.supp.ncard) hs es
+  have hperiod : ∀ t ∈ es, ∀ z y, D.connectedComponentMk y = t →
+      (G.Adj (u c (z + 3)) y ↔ G.Adj (u c z) y) := by
+    intro t ht z y hy
+    have hyrange : y ∈ Set.range (u t) := by
+      rw [huRange t]
+      exact (SimpleGraph.ConnectedComponent.mem_supp_iff t y).mpr hy
+    obtain ⟨j, rfl⟩ := hyrange
+    have hc3 : 3 ≤ c.supp.ncard := by rw [hc6]; norm_num
+    have ht3 : t.supp.ncard = 3 := by
+      simp only [es, Finset.mem_insert, Finset.mem_singleton] at ht
+      rcases ht with rfl | rfl
+      · exact he3
+      · exact hf3
+    have htc3 : 3 ≤ t.supp.ncard := by rw [ht3]
+    have hupair : ∀ a : ZMod c.supp.ncard, u c (a - 1) ≠ u c (a + 1) := by
+      intro a
+      exact (hu c).ne (zmod_sub_one_ne_add_one_of_three_le hc3 a)
+    have hvpair : ∀ b : ZMod t.supp.ncard, u t (b - 1) ≠ u t (b + 1) := by
+      intro b
+      exact (hu t).ne (zmod_sub_one_ne_add_one_of_three_le htc3 b)
+    have hinter := entry_cycleIntertwine_of_adjMatrix_comm G D
+      (u c) (u t) (1 : ZMod c.supp.ncard) (1 : ZMod t.supp.ncard)
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+      (huD c) (huD t) hupair hvpair
+    have hp := adj_iff_add_targetOrder_of_entry_cycleIntertwine
+      G (u c) (u t) (1 : ZMod c.supp.ncard)
+        (1 : ZMod t.supp.ncard) hinter z j
+    simp only [ZMod.addOrderOf_one, ht3, nsmul_eq_mul, mul_one] at hp
+    have hcast : ((3 : ℕ) : ZMod c.supp.ncard) = 3 := by norm_num
+    rw [hcast] at hp
+    exact hp
+  have := hbound hperiod
+  simpa [D, es, hef] using this
+
 /-- Two order-four targets occupy the same nonzero target-length residue in
 an order-twelve source row, so their combined quotient multiplicity is at
 most one. -/
@@ -1330,6 +1398,52 @@ theorem degreeSix_orderTwelve_contact_aggregate_equations
     simp only [Finset.sum_add_distrib]
     repeat' rw [hsumConst]
     omega
+
+/-- The three units of a residual contact row have only the partitions
+`1+1+1`, `1+2`, and `3`. -/
+theorem contact_count_partition_of_weight_three
+    (n1 n2 n3 : ℕ) (h : n1 + 2 * n2 + 3 * n3 = 3) :
+    (n1 = 3 ∧ n2 = 0 ∧ n3 = 0) ∨
+    (n1 = 1 ∧ n2 = 1 ∧ n3 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 1) := by
+  omega
+
+/-- Finset realization of `contact_count_partition_of_weight_three`. -/
+theorem contact_filter_counts_of_sum_three
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (q : C → ℕ) (hsum : (∑ t ∈ S, q t) = 3) :
+    let n1 := (S.filter fun t ↦ q t = 1).card
+    let n2 := (S.filter fun t ↦ q t = 2).card
+    let n3 := (S.filter fun t ↦ q t = 3).card
+    (n1 = 3 ∧ n2 = 0 ∧ n3 = 0) ∨
+    (n1 = 1 ∧ n2 = 1 ∧ n3 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 1) := by
+  dsimp
+  have hqle : ∀ t ∈ S, q t ≤ 3 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ x ∈ S, q x :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hpoint : ∀ t ∈ S, q t =
+      (if q t = 1 then 1 else 0) +
+      (if q t = 2 then 2 else 0) +
+      (if q t = 3 then 3 else 0) := by
+    intro t ht
+    have := hqle t ht
+    interval_cases q t <;> simp_all
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hweighted :
+      (S.filter fun t ↦ q t = 1).card +
+      2 * (S.filter fun t ↦ q t = 2).card +
+      3 * (S.filter fun t ↦ q t = 3).card = 3 := by
+    rw [← hsum]
+    rw [Finset.sum_congr rfl hpoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+  exact contact_count_partition_of_weight_three _ _ _ hweighted
   constructor
   · rw [Finset.sum_congr rfl hppoint]
     simp only [Finset.sum_add_distrib]
