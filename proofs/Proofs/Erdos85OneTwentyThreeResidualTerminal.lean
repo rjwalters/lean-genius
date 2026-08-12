@@ -40167,6 +40167,26 @@ theorem exists_injective_five_slots_of_six_three_two_filter_counts
       · exact he₂amem.1
       · exact he₂bmem.1
 
+/-- An injective five-slot enumeration exhausting a finset has a canonical
+inverse on that finset. -/
+theorem exists_leftInverse_on_finset_of_injective_five_slots
+    {α : Type*} [DecidableEq α] (C : Finset α) (slot : Fin 5 → α)
+    (hslot : Function.Injective slot)
+    (hmem : ∀ i, slot i ∈ C)
+    (hcover : ∀ c ∈ C, ∃ i, slot i = c) :
+    ∃ index : {c // c ∈ C} → Fin 5,
+      (∀ c, slot (index c) = c.1) ∧
+      ∀ i, index ⟨slot i, hmem i⟩ = i := by
+  classical
+  have hex : ∀ c : {c // c ∈ C}, ∃ i, slot i = c.1 := by
+    intro c
+    exact hcover c.1 c.2
+  choose index hindex using hex
+  refine ⟨index, hindex, ?_⟩
+  intro i
+  apply hslot
+  exact hindex ⟨slot i, hmem i⟩
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
