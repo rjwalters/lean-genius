@@ -42552,6 +42552,254 @@ theorem degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
 
 open ZeroLayerAtom
 
+theorem used_reducedOrder_mem_of_map_eq
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ))
+    {x : α} (hx : x ∈ E) : K x ∈ L := by
+  rw [← hmap]
+  exact Multiset.mem_map_of_mem K hx
+
+theorem used_reducedOrder_count_of_map_eq
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (L : List ℕ) (hmap : E.val.map K = (L : Multiset ℕ)) (k : ℕ) :
+    (E.filter (fun x => K x = k)).card = L.count k := by
+  have hc := congrArg (Multiset.count k) hmap
+  simpa [Multiset.count_map] using hc
+
+theorem false_of_degree_sixteen_zeroLayer_all_used_order_six_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[2, 2, 2, 2, 2, 2, 2, 2] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[2, 2, 2, 2, 2, 2, 2, 2] : Multiset ℕ) at hmap
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hused : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R → e.supp.ncard = 6 := by
+    intro e heR
+    have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    have hm := used_reducedOrder_mem_of_map_eq E K
+      [2, 2, 2, 2, 2, 2, 2, 2] hmap heE
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    have hd := hpack.2 e heE
+    dsimp [K] at hm
+    omega
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_all_used_order_six_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (by simpa [D, R] using hused) u hu huRange huD hthree
+
+theorem false_of_degree_sixteen_zeroLayer_all_used_order_twelve_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[4, 4, 4, 4] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[4, 4, 4, 4] : Multiset ℕ) at hmap
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hused : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R → e.supp.ncard = 12 := by
+    intro e heR
+    have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    have hm := used_reducedOrder_mem_of_map_eq E K [4, 4, 4, 4] hmap heE
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    have hd := hpack.2 e heE
+    dsimp [K] at hm
+    omega
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_all_used_order_twelve_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (by simpa [D, R] using hused) u hu huRange huD hthree
+
+theorem false_of_degree_sixteen_zeroLayer_used_orders_six_six_two_two_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[6, 6, 2, 2] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[6, 6, 2, 2] : Multiset ℕ) at hmap
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hused : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R →
+        e.supp.ncard = 6 ∨ e.supp.ncard = 18 := by
+    intro e heR
+    have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    have hm := used_reducedOrder_mem_of_map_eq E K [6, 6, 2, 2] hmap heE
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    have hd := hpack.2 e heE
+    dsimp [K] at hm
+    omega
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_used_orders_six_six_two_two_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (by simpa [D, R] using hused) u hu huRange huD hthree
+
+theorem false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[4, 4, 4, 2, 2] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[4, 4, 4, 2, 2] : Multiset ℕ) at hmap
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ e ∈ E, e.supp.ncard) = 48 ∧
+    ∀ e ∈ E, 3 ∣ e.supp.ncard at hpack
+  have hused : ∀ e : D.ConnectedComponent,
+      componentRepresentative D e ∈ R →
+        e.supp.ncard = 6 ∨ e.supp.ncard = 12 := by
+    intro e heR
+    have heE : e ∈ E := Finset.mem_filter.mpr ⟨Finset.mem_univ _, heR⟩
+    have hm := used_reducedOrder_mem_of_map_eq E K [4, 4, 4, 2, 2] hmap heE
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    have hd := hpack.2 e heE
+    dsimp [K] at hm
+    omega
+  have hfilter12 : E.filter (fun e => e.supp.ncard = 12) =
+      E.filter (fun e => K e = 4) := by
+    ext e
+    simp only [Finset.mem_filter]
+    constructor
+    · rintro ⟨heE, he⟩
+      exact ⟨heE, by simp [K, he]⟩
+    · rintro ⟨heE, he⟩
+      have hd := hpack.2 e heE
+      dsimp [K] at he
+      exact ⟨heE, by omega⟩
+  have hfilter6 : E.filter (fun e => e.supp.ncard = 6) =
+      E.filter (fun e => K e = 2) := by
+    ext e
+    simp only [Finset.mem_filter]
+    constructor
+    · rintro ⟨heE, he⟩
+      exact ⟨heE, by simp [K, he]⟩
+    · rintro ⟨heE, he⟩
+      have hd := hpack.2 e heE
+      dsimp [K] at he
+      exact ⟨heE, by omega⟩
+  have hcount12 := used_reducedOrder_count_of_map_eq E K
+    [4, 4, 4, 2, 2] hmap 4
+  have hcount6 := used_reducedOrder_count_of_map_eq E K
+    [4, 4, 4, 2, 2] hmap 2
+  have hcounts : (E.filter (fun e => e.supp.ncard = 12)).card = 3 ∧
+      (E.filter (fun e => e.supp.ncard = 6)).card = 2 := by
+    rw [hfilter12, hfilter6]
+    simpa using And.intro hcount12 hcount6
+  obtain ⟨u, hu, huRange, huD, hthree⟩ :=
+    exists_mixed_cycle_labeling G hfree (d := 16) (by norm_num)
+      (by norm_num) hmin hcard
+  exact false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_antipodal
+    G hfree hmin hcard c₀ hregChild hcardChild
+      (by simpa [D, R] using hused) (by simpa [D, R, E] using hcounts)
+        u hu huRange huD hthree
+
 theorem false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
