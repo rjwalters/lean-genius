@@ -43747,6 +43747,99 @@ theorem false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two_of_m
       (Finset.mem_filter.mp he₁E).2 (Finset.mem_filter.mp he₂E).2
         he₁ he₂ he₁₂ (by simpa [D, R] using hothers)
 
+theorem false_of_degree_sixteen_zeroLayer_used_orders_ten_two_two_two_of_map_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hmap :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (↑[10, 2, 2, 2] : Multiset ℕ)) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (↑[10, 2, 2, 2] : Multiset ℕ) at hmap
+  obtain ⟨slot, hslotInj, hslotMem, hslotK, hslotCover⟩ :=
+    ZeroLayerAtom.exists_slots_of_finset_map_eq_list E K [10, 2, 2, 2] hmap
+  let e₁₀ := slot 0
+  let e₂a := slot 1
+  let e₂b := slot 2
+  let e₂c := slot 3
+  have hne (i j : Fin 4) (hij : i ≠ j) : slot i ≠ slot j := by
+    intro heq
+    exact hij (hslotInj heq)
+  have h₁₀a : e₁₀ ≠ e₂a := hne 0 1 (by decide)
+  have h₁₀b : e₁₀ ≠ e₂b := hne 0 2 (by decide)
+  have h₁₀c : e₁₀ ≠ e₂c := hne 0 3 (by decide)
+  have hab : e₂a ≠ e₂b := hne 1 2 (by decide)
+  have hac : e₂a ≠ e₂c := hne 1 3 (by decide)
+  have hbc : e₂b ≠ e₂c := hne 2 3 (by decide)
+  have he₁₀E : e₁₀ ∈ E := hslotMem 0
+  have he₂aE : e₂a ∈ E := hslotMem 1
+  have he₂bE : e₂b ∈ E := hslotMem 2
+  have he₂cE : e₂c ∈ E := hslotMem 3
+  have he₁₀K : K e₁₀ = 10 := by simpa [e₁₀] using hslotK 0
+  have he₂aK : K e₂a = 2 := by simpa [e₂a] using hslotK 1
+  have he₂bK : K e₂b = 2 := by simpa [e₂b] using hslotK 2
+  have he₂cK : K e₂c = 2 := by simpa [e₂c] using hslotK 3
+  have hpack := degree_sixteen_zeroLayer_used_component_order_package
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+  change (∑ f ∈ E, f.supp.ncard) = 48 ∧
+    ∀ f ∈ E, 3 ∣ f.supp.ncard at hpack
+  have he₁₀ : e₁₀.supp.ncard = 30 := by
+    have := hpack.2 e₁₀ he₁₀E
+    dsimp [K] at he₁₀K
+    omega
+  have he₂a : e₂a.supp.ncard = 6 := by
+    have := hpack.2 e₂a he₂aE
+    dsimp [K] at he₂aK
+    omega
+  have he₂b : e₂b.supp.ncard = 6 := by
+    have := hpack.2 e₂b he₂bE
+    dsimp [K] at he₂bK
+    omega
+  have he₂c : e₂c.supp.ncard = 6 := by
+    have := hpack.2 e₂c he₂cE
+    dsimp [K] at he₂cK
+    omega
+  have hE : E = {e₁₀, e₂a, e₂b, e₂c} := by
+    ext x
+    constructor
+    · intro hx
+      obtain ⟨i, hi⟩ := hslotCover x hx
+      fin_cases i <;> simp_all [e₁₀, e₂a, e₂b, e₂c]
+    · intro hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl
+      · exact he₁₀E
+      · exact he₂aE
+      · exact he₂bE
+      · exact he₂cE
+  exact false_of_degree_sixteen_zeroLayer_used_orders_ten_two_two_two
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild
+      e₁₀ e₂a e₂b e₂c h₁₀a h₁₀b h₁₀c hab hac hbc
+        he₁₀ he₂a he₂b he₂c (Finset.mem_filter.mp he₁₀E).2
+          (Finset.mem_filter.mp he₂aE).2 (Finset.mem_filter.mp he₂bE).2
+            (Finset.mem_filter.mp he₂cE).2 (by simpa [D, R, E] using hE)
+
 theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
