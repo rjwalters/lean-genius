@@ -582,6 +582,79 @@ theorem degreeSix_orderNine_two_orderThree_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Two order-four targets occupy the same nonzero target-length residue in
+an order-twelve source row, so their combined quotient multiplicity is at
+most one. -/
+theorem degreeSix_orderTwelve_two_orderFour_targets_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc12 : c.supp.ncard = 12) (he4 : e.supp.ncard = 4)
+    (hf4 : f.supp.ncard = 4) (hef : e ≠ f) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c e +
+      componentQuotientMatrix G (secondOrderDefectGraph G) c f ≤ 1 := by
+  let D := secondOrderDefectGraph G
+  let es : Finset D.ConnectedComponent := {e, f}
+  have hs : (4 : ZMod c.supp.ncard) ≠ 0 := by
+    intro hz
+    have hdvd : c.supp.ncard ∣ 4 :=
+      (ZMod.natCast_eq_zero_iff 4 c.supp.ncard).mp hz
+    rw [hc12] at hdvd
+    norm_num at hdvd
+  have hbound := sum_componentQuotientMatrix_le_one_of_periodic
+    G D hfree c (u c) (hu c) (huRange c) (4 : ZMod c.supp.ncard) hs es
+  have hperiod : ∀ t ∈ es, ∀ z y,
+      D.connectedComponentMk y = t →
+        (G.Adj (u c (z + 4)) y ↔ G.Adj (u c z) y) := by
+    intro t ht z y hy
+    have hyrange : y ∈ Set.range (u t) := by
+      rw [huRange t]
+      exact (SimpleGraph.ConnectedComponent.mem_supp_iff t y).mpr hy
+    obtain ⟨j, rfl⟩ := hyrange
+    have hc3 : 3 ≤ c.supp.ncard := by rw [hc12]; norm_num
+    have ht4 : t.supp.ncard = 4 := by
+      simp only [es, Finset.mem_insert, Finset.mem_singleton] at ht
+      rcases ht with rfl | rfl
+      · exact he4
+      · exact hf4
+    have htc3 : 3 ≤ t.supp.ncard := by rw [ht4]; norm_num
+    have hupair : ∀ a : ZMod c.supp.ncard,
+        u c (a - 1) ≠ u c (a + 1) := by
+      intro a
+      exact (hu c).ne (zmod_sub_one_ne_add_one_of_three_le hc3 a)
+    have hvpair : ∀ b : ZMod t.supp.ncard,
+        u t (b - 1) ≠ u t (b + 1) := by
+      intro b
+      exact (hu t).ne (zmod_sub_one_ne_add_one_of_three_le htc3 b)
+    have hinter := entry_cycleIntertwine_of_adjMatrix_comm G D
+      (u c) (u t) (1 : ZMod c.supp.ncard) (1 : ZMod t.supp.ncard)
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+      (huD c) (huD t) hupair hvpair
+    have hp := adj_iff_add_targetOrder_of_entry_cycleIntertwine
+      G (u c) (u t) (1 : ZMod c.supp.ncard)
+        (1 : ZMod t.supp.ncard) hinter z j
+    simp only [ZMod.addOrderOf_one, ht4, nsmul_eq_mul, mul_one] at hp
+    have hcast : ((4 : ℕ) : ZMod c.supp.ncard) = 4 := by norm_num
+    rw [hcast] at hp
+    exact hp
+  have := hbound hperiod
+  simpa [D, es, hef] using this
+
 /-- Once one order-three contact is fixed and a second such contact is
 excluded, the order-nine row has a unique arithmetic shape: one order-nine
 double contact, one order-nine single contact, and exactly one unused
