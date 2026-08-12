@@ -1258,6 +1258,41 @@ theorem degreeSix_orderTwelve_contact_aggregate_equations
     repeat' rw [hsumConst]
     omega
 
+/-- If every component in `S` has order at least three and total order 21,
+the order used by positive contacts is either all 21 or at most 18. -/
+theorem contact_used_order_eq_total_or_le_eighteen
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (q size : C → ℕ)
+    (htotal : (∑ t ∈ S, size t) = 21)
+    (hlower : ∀ t ∈ S, 3 ≤ size t) :
+    (∑ t ∈ S, if q t = 0 then 0 else size t) = 21 ∨
+      (∑ t ∈ S, if q t = 0 then 0 else size t) ≤ 18 := by
+  let used := ∑ t ∈ S, if q t = 0 then 0 else size t
+  let unused := ∑ t ∈ S, if q t = 0 then size t else 0
+  have hsplit : used + unused = 21 := by
+    rw [← htotal]
+    dsimp [used, unused]
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : q t = 0 <;> simp [hq]
+  by_cases hu : unused = 0
+  · exact Or.inl (by omega)
+  · have husum : (∑ t ∈ S, if q t = 0 then size t else 0) ≠ 0 := by
+      simpa [unused] using hu
+    obtain ⟨t, ht, htne⟩ := Finset.exists_ne_zero_of_sum_ne_zero husum
+    have hq0 : q t = 0 := by
+      by_contra hq
+      simp [hq] at htne
+    have hterm : 3 ≤ (if q t = 0 then size t else 0) := by
+      simpa [hq0] using hlower t ht
+    have hle : (if q t = 0 then size t else 0) ≤ unused := by
+      dsimp [unused]
+      exact Finset.single_le_sum
+        (f := fun x ↦ if q x = 0 then size x else 0)
+        (fun _ _ ↦ Nat.zero_le _) ht
+    exact Or.inr (by omega)
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
@@ -2276,6 +2311,115 @@ theorem false_of_degreeSix_orderNine_singleton
     Q (fun t ↦ t.supp.ncard) c e a b f hec hac hae hbc hbe hba
       hfc hfe hfa hfb hc9 he3 ha9 hb9 hf3 hcc hce hca hcb hcf
       hecQ hee herow heprofile hfcQ hff hfrow hfprofile hsqce hgroup
+
+/-- The order-twelve singleton row has exactly one of its two feasible
+contact-count patterns. -/
+set_option maxHeartbeats 800000 in
+theorem degreeSix_orderTwelve_singleton_contact_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc12 : c.supp.ncard = 12) :
+    let S := Finset.univ.erase c
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let n3 := (S.filter fun t ↦ t.supp.ncard = 3 ∧ Q c t = 1).card
+    let n4 := (S.filter fun t ↦ t.supp.ncard = 4 ∧ Q c t = 1).card
+    let n6 := (S.filter fun t ↦ t.supp.ncard = 6 ∧ Q c t = 1).card
+    let n121 := (S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 1).card
+    let n122 := (S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 2).card
+    let n123 := (S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 3).card
+    (n3 = 0 ∧ n4 = 0 ∧ n6 = 1 ∧ n121 = 0 ∧ n122 = 0 ∧ n123 = 1) ∨
+    (n3 = 0 ∧ n4 = 3 ∧ n6 = 1 ∧ n121 = 0 ∧ n122 = 0 ∧ n123 = 0) := by
+  dsimp
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent := Finset.univ.erase c
+  obtain ⟨_, _, hrow, hprod, hbal⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  have htotalAll : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using sum_connectedComponent_supp_ncard (secondOrderDefectGraph G)
+  have hcMem : c ∈ (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+  have hsplitSize := Finset.sum_erase_add
+    (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ t.supp.ncard) hcMem
+  have htotalS : (∑ t ∈ S, t.supp.ncard) = 21 := by
+    dsimp [S]
+    omega
+  have hclass : ∀ t ∈ S, Q c t = 0 ∨
+      (t.supp.ncard = 3 ∧ Q c t = 1 ∧ Q t c = 4) ∨
+      (t.supp.ncard = 4 ∧ Q c t = 1 ∧ Q t c = 3) ∨
+      (t.supp.ncard = 6 ∧ Q c t = 1 ∧ Q t c = 2) ∨
+      (t.supp.ncard = 12 ∧ Q c t = 1 ∧ Q t c = 1) ∨
+      (t.supp.ncard = 12 ∧ Q c t = 2 ∧ Q t c = 2) ∨
+      (t.supp.ncard = 12 ∧ Q c t = 3 ∧ Q t c = 3) := by
+    intro t ht
+    by_cases hq : Q c t = 0
+    · exact Or.inl hq
+    · have htc : t ≠ c := (Finset.mem_erase.mp ht).1
+      have hqpos : 0 < Q c t := Nat.pos_of_ne_zero hq
+      have hqle : Q c t ≤ 4 := by
+        have hsingle : Q c t ≤ ∑ x ∈ S, Q c x :=
+          Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) ht
+        simpa [S] using hsingle.trans_eq hrow
+      have hprodle : Q c t * Q t c ≤ 11 := by
+        have hsingle : Q c t * Q t c ≤ ∑ x ∈ S, Q c x * Q x c :=
+          Finset.single_le_sum (f := fun x ↦ Q c x * Q x c)
+            (fun _ _ ↦ Nat.zero_le _) ht
+        have hp : (∑ x ∈ S, Q c x * Q x c) = 11 := by
+          simpa [S, hc12] using hprod
+        omega
+      have hsizele : t.supp.ncard ≤ 21 := by
+        have hsingle : t.supp.ncard ≤ ∑ x ∈ S, x.supp.ncard :=
+          Finset.single_le_sum (f := fun x ↦ x.supp.ncard)
+            (fun _ _ ↦ Nat.zero_le _) ht
+        omega
+      exact Or.inr (degreeSix_orderTwelve_positive_contact_class
+        Q (fun x ↦ x.supp.ncard) c t hc12 htc (hr t) hsizele hqpos hqle
+          hprodle (hbal t) (fun hndvd ↦
+            secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+              G hfree (d := 6) (by norm_num) (by norm_num) hmin
+                (by norm_num at hcard ⊢; exact hcard) c t
+                (by simpa [hc12] using hndvd)))
+  have hagg := degreeSix_orderTwelve_contact_aggregate_equations
+    S (Q c) (fun t ↦ Q t c) (fun t ↦ t.supp.ncard) hclass
+  have hgap := contact_used_order_eq_total_or_le_eighteen
+    S (Q c) (fun t ↦ t.supp.ncard) htotalS (fun t _ ↦ hr t)
+  have hcounts := degreeSix_orderTwelve_contact_count_classifier
+    ((S.filter fun t ↦ t.supp.ncard = 3 ∧ Q c t = 1).card)
+    ((S.filter fun t ↦ t.supp.ncard = 4 ∧ Q c t = 1).card)
+    ((S.filter fun t ↦ t.supp.ncard = 6 ∧ Q c t = 1).card)
+    ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 1).card)
+    ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 2).card)
+    ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 3).card)
+    (∑ t ∈ S, if Q c t = 0 then 0 else t.supp.ncard)
+    (by simpa [Q, S] using hagg.1.trans hrow)
+    (by
+      have hp : (∑ t ∈ S, Q c t * Q t c) = 11 := by
+        simpa [S, hc12] using hprod
+      exact hagg.2.1.trans hp |>.symm)
+    hagg.2.2 hgap
+  rcases hcounts with h | h
+  · exact Or.inl ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1,
+      h.2.2.2.2.1, h.2.2.2.2.2.1⟩
+  · exact Or.inr ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1,
+      h.2.2.2.2.1, h.2.2.2.2.2.1⟩
 
 /-- Graph instantiation of the forced order-three contact in the
 order-fifteen singleton branch. -/
