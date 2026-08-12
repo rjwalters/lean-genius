@@ -173,6 +173,47 @@ theorem two_distinct_terms_le_sum
   have hsplite := Finset.sum_erase_add (Finset.univ.erase c : Finset C) f heMem
   omega
 
+/-- If a balanced nonnegative quotient row has the same ordinary and
+two-step sums, every positive outgoing entry has reverse multiplicity one. -/
+theorem reverse_eq_one_of_balanced_row_product_eq_row
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcpos : 0 < size c)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hsum : (∑ e, Q c e * Q e c) = ∑ e, Q c e) :
+    ∀ e, 0 < Q c e → Q e c = 1 := by
+  have hle : ∀ e : C, Q c e ≤ Q c e * Q e c := by
+    intro e
+    by_cases hq : Q c e = 0
+    · simp [hq]
+    · have hqpos : 0 < Q c e := Nat.pos_of_ne_zero hq
+      have hrpos : 0 < Q e c := by
+        by_contra hr
+        push Not at hr
+        have hr0 : Q e c = 0 := by omega
+        have hb := hbal e
+        rw [hr0, mul_zero] at hb
+        exact (Nat.mul_pos hcpos hqpos).ne' hb
+      calc
+        Q c e = Q c e * 1 := by simp
+        _ ≤ Q c e * Q e c := Nat.mul_le_mul_left _ hrpos
+  intro e hq
+  have hrpos : 0 < Q e c := by
+    have := hle e
+    by_contra hr
+    push Not at hr
+    have hr0 : Q e c = 0 := by omega
+    rw [hr0, mul_zero] at this
+    omega
+  by_contra hrne
+  have hrlt : Q c e < Q c e * Q e c := by
+    have hr2 : 1 < Q e c := by omega
+    simpa using (Nat.mul_lt_mul_left hq).mpr hr2
+  have hstrict := Finset.sum_lt_sum
+    (fun t _ ↦ hle t) ⟨e, Finset.mem_univ e, hrlt⟩
+  rw [hsum] at hstrict
+  exact (lt_irrefl _ hstrict)
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
@@ -665,7 +706,12 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
       e ≠ c ∧ e.supp.ncard = 3 ∧
       componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
       componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 ∧
-      componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0 := by
+      componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0 ∧
+      ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) e t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t e = 1 ∧
+          t.supp.ncard = 3 *
+            componentQuotientMatrix G (secondOrderDefectGraph G) e t := by
   obtain ⟨_, hdiag, hrow, hprod, hbal⟩ :=
     degreeSix_singleton_component_quotient_row
       G hfree hmin hcard u hu huRange huD hr c hsector
@@ -673,27 +719,54 @@ theorem degreeSix_orderSix_singleton_exists_orderThree_contact
     (componentQuotientMatrix G (secondOrderDefectGraph G))
       (fun e ↦ e.supp.ncard) c hc6 hrow
       (by simpa [hc6] using hprod) hbal
-  refine ⟨e, hne, he3, hce, hec, ?_⟩
-  rcases oddComponent_diagonalQuotient_eq_zero_or_two
-    G hfree (d := 6) (r := e.supp.ncard)
-      (by norm_num) (by norm_num) hmin
-      (by norm_num at hcard ⊢; exact hcard) (hr e)
-      (by rw [he3]; norm_num) e (u e) (hu e) (huRange e) (huD e) with
-    hzero | htwo
-  · exact hzero
-  · have hcen : c ≠ e := fun h ↦ hne h.symm
-    have hsq := secondOrder_componentQuotientMatrix_sq_apply
-      G hfree (d := 6) (by norm_num) (by norm_num) hmin
-        (by norm_num at hcard ⊢; exact hcard) c e
-    have hsum : (∑ t,
-        componentQuotientMatrix G (secondOrderDefectGraph G) c t *
-          componentQuotientMatrix G (secondOrderDefectGraph G) t e) = 3 := by
-      simpa [Matrix.mul_apply, hcen, he3] using hsq
-    have hlower := two_distinct_terms_le_sum
-      (fun t ↦ componentQuotientMatrix G (secondOrderDefectGraph G) c t *
-        componentQuotientMatrix G (secondOrderDefectGraph G) t e) hcen
-    rw [hdiag, hce, htwo, hsum] at hlower
-    omega
+  have hediag : componentQuotientMatrix G
+      (secondOrderDefectGraph G) e e = 0 := by
+    rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (r := e.supp.ncard)
+        (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (hr e)
+        (by rw [he3]; norm_num) e (u e) (hu e) (huRange e) (huD e) with
+      hzero | htwo
+    · exact hzero
+    · have hcen : c ≠ e := fun h ↦ hne h.symm
+      have hsq := secondOrder_componentQuotientMatrix_sq_apply
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c e
+      have hsum : (∑ t,
+          componentQuotientMatrix G (secondOrderDefectGraph G) c t *
+            componentQuotientMatrix G (secondOrderDefectGraph G) t e) = 3 := by
+        simpa [Matrix.mul_apply, hcen, he3] using hsq
+      have hlower := two_distinct_terms_le_sum
+        (fun t ↦ componentQuotientMatrix G (secondOrderDefectGraph G) c t *
+          componentQuotientMatrix G (secondOrderDefectGraph G) t e) hcen
+      rw [hdiag, hce, htwo, hsum] at hlower
+      omega
+  refine ⟨e, hne, he3, hce, hec, hediag, ?_⟩
+  have hrowe := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e
+  have hsqe := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hprode : (∑ t,
+      componentQuotientMatrix G (secondOrderDefectGraph G) e t *
+        componentQuotientMatrix G (secondOrderDefectGraph G) t e) = 6 := by
+    simpa [Matrix.mul_apply, he3] using hsqe
+  have hreverse := reverse_eq_one_of_balanced_row_product_eq_row
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun t ↦ t.supp.ncard) e (by rw [he3]; norm_num)
+      (fun t ↦ secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e t)
+      (by rw [hprode, hrowe])
+  intro t hpos
+  have hte := hreverse t hpos
+  refine ⟨hte, ?_⟩
+  have hbt := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e t
+  rw [he3, hte, mul_one] at hbt
+  exact hbt.symm
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
