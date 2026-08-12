@@ -40057,22 +40057,28 @@ theorem nine_dvd_six_three_three_two_two_filtered_atom_total_load
   cases t with
   | C e =>
       fin_cases e
-      all_goals try norm_num [Valid, reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals try norm_num [Valid] at hvalid
+      all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | D e =>
       fin_cases e
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | B e f =>
       fin_cases e <;> fin_cases f
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | A a b c =>
       fin_cases a <;> fin_cases b <;> fin_cases c
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
 
 /-- The filtered `(6,3,3,2,2)` atom ledger is impossible modulo nine. -/
 theorem false_of_zeroLayer_reduced_used_orders_six_three_three_two_two_filtered_atom_ledger
