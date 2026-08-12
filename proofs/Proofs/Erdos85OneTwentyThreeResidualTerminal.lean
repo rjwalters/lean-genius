@@ -40047,6 +40047,52 @@ theorem false_of_six_three_three_two_two_thirteen_count_ledger
     (hE2 : 2 * q + 6 * c₂ ≤ 4) : False := by
   omega
 
+/-- After excluding reduced-order two, every valid `(6,3,3,2,2)` atom
+contributes total load divisible by nine. -/
+theorem nine_dvd_six_three_three_two_two_filtered_atom_total_load
+    (t : ZeroLayerAtom (Fin 5))
+    (hvalid : Valid ![6, 3, 3, 2, 2] t)
+    (hnotTwo : reducedOrder ![6, 3, 3, 2, 2] t ≠ 2) :
+    9 ∣ ∑ i, load ![6, 3, 3, 2, 2] i t := by
+  cases t with
+  | C e =>
+      fin_cases e
+      all_goals try norm_num [Valid, reducedOrder] at hnotTwo
+      all_goals native_decide
+  | D e =>
+      fin_cases e
+      all_goals try norm_num [Valid] at hvalid
+      all_goals try norm_num [reducedOrder] at hnotTwo
+  | B e f =>
+      fin_cases e <;> fin_cases f
+      all_goals try norm_num [Valid] at hvalid
+      all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals native_decide
+  | A a b c =>
+      fin_cases a <;> fin_cases b <;> fin_cases c
+      all_goals try norm_num [Valid] at hvalid
+      all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals native_decide
+
+/-- The filtered `(6,3,3,2,2)` atom ledger is impossible modulo nine. -/
+theorem false_of_zeroLayer_reduced_used_orders_six_three_three_two_two_filtered_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 5))
+    (hvalid : ∀ o, Valid ![6, 3, 3, 2, 2] (atom o))
+    (hnotTwo : ∀ o, reducedOrder ![6, 3, 3, 2, 2] (atom o) ≠ 2)
+    (hload : ∀ i, (∑ o, load ![6, 3, 3, 2, 2] i (atom o)) =
+      12 * ![6, 3, 3, 2, 2] i) : False := by
+  have hdiv : 9 ∣ ∑ o, ∑ i, load ![6, 3, 3, 2, 2] i (atom o) :=
+    Finset.dvd_sum fun o _ho =>
+      nine_dvd_six_three_three_two_two_filtered_atom_total_load
+        (atom o) (hvalid o) (hnotTwo o)
+  have htotal : (∑ o, ∑ i, load ![6, 3, 3, 2, 2] i (atom o)) = 192 := by
+    rw [Finset.sum_comm]
+    simp_rw [hload]
+    norm_num [Fin.sum_univ_succ]
+  rw [htotal] at hdiv
+  norm_num at hdiv
+
 /-- A positive partition of sixteen using reduced orders `6`, `3`, and `2`
 has forced multiplicities `1`, `2`, and `2`. -/
 theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
