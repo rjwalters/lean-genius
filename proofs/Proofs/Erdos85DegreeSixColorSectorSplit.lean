@@ -3923,6 +3923,54 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
       Q y e f g hy.2.2 hff hgfSymm.symm hfrow (by omega) hgroup
 
+set_option maxHeartbeats 2000000 in
+/-- The residual `1+1+1` contact branch is impossible. -/
+theorem false_of_degreeSix_orderSix_three_single_contact_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) (hec : e ≠ c) (he3 : e.supp.ncard = 3)
+    (hce : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1)
+    (hecQ : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (hcprofile : ∀ t ∈ (Finset.univ.erase c).erase e,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1 ∧
+        t.supp.ncard = 6 *
+          componentQuotientMatrix G (secondOrderDefectGraph G) c t)
+    (hq1card : (((Finset.univ.erase c).erase e).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1).card = 3) : False := by
+  obtain ⟨d, x, y, hdx, hdy, hxy, hdc, hde, hxc, hxe, hyc, hye,
+      hd6, hx6, hy6, hcd, hcx, hcy, _, _, _, hclass⟩ :=
+    degreeSix_orderSix_three_single_contact_shape
+      G hcard hr c e hc6 hec he3 hcprofile hq1card
+  obtain ⟨_, hcc, _, _, _⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  rcases hclass with ⟨f, hU, hf6⟩ | ⟨f, g, hfg, hU, hf3, hg3⟩
+  · exact false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
+      G hfree hmin hcard c e d x y f hc6 he3 hd6 hx6 hy6 hf6
+        hec hdc hde hxc hxe hyc hye hdx hdy hxy hcc hce hecQ hee
+        hcd hcx hcy hU
+  · exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branch
+      G hfree hmin hcard u hu huRange huD hr c e d x y f g
+        hc6 he3 hd6 hx6 hy6 hf3 hg3 hfg hec hdc hde hxc hxe hyc hye
+        hdx hdy hxy hcc hce hecQ hee hcd hcx hcy hU
+
 /-- The residual single quotient-three contact branch is impossible. -/
 theorem false_of_degreeSix_orderSix_three_contact_branch
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -4255,6 +4303,46 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
   exact false_of_degreeSix_orderSix_one_two_contact Q (fun t ↦ t.supp.ncard)
     c e d a hc6 he3 hd6 ha12 hcc hce hcd hca hed hea hbalCA hbalDA
       hsqd hsqa hdiagBudget hgroup
+
+set_option maxHeartbeats 2000000 in
+/-- The order-six singleton branch is impossible. -/
+theorem false_of_degreeSix_orderSix_singleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨e, hec, he3, hce, hecQ, hee, hrowS, hcprofile⟩ :=
+    degreeSix_orderSix_singleton_remaining_contact_profile
+      G hfree hmin hcard u hu huRange huD hr c hsector hc6
+  have hcounts := contact_filter_counts_of_sum_three
+    ((Finset.univ.erase c).erase e) (Q c) (by simpa [Q] using hrowS)
+  dsimp at hcounts
+  rcases hcounts with h111 | h12 | h3
+  · exact false_of_degreeSix_orderSix_three_single_contact_branch
+      G hfree hmin hcard u hu huRange huD hr c e hsector hc6 hec he3
+        hce hecQ hee hcprofile h111.1
+  · exact false_of_degreeSix_orderSix_one_two_contact_branch
+      G hfree hmin hcard u hu huRange huD hr c e hsector hc6 hec he3
+        hce hecQ hee hrowS hcprofile h12.1 h12.2.1
+  · exact false_of_degreeSix_orderSix_three_contact_branch
+      G hfree hmin hcard u hu huRange huD hr c e hsector hc6 hec he3
+        hce hecQ hee hrowS hcprofile h3.2.2
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
