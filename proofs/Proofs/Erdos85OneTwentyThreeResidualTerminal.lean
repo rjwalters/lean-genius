@@ -40087,6 +40087,86 @@ theorem six_three_two_finset_multiplicity_classification
   exact six_three_two_positive_multiplicities_of_weighted_sum_sixteen
     n₆ n₃ n₂ hn₆ hn₃ hn₂ hmass
 
+/-- Name the five slots behind the `(6,3,3,2,2)` filter census. -/
+theorem exists_injective_five_slots_of_six_three_two_filter_counts
+    {α : Type*} [DecidableEq α] (C : Finset α) (w : α → ℕ)
+    (horders : ∀ c ∈ C, w c = 6 ∨ w c = 3 ∨ w c = 2)
+    (h₆ : (C.filter fun c => w c = 6).card = 1)
+    (h₃ : (C.filter fun c => w c = 3).card = 2)
+    (h₂ : (C.filter fun c => w c = 2).card = 2) :
+    ∃ slot : Fin 5 → α,
+      Function.Injective slot ∧
+      (∀ i, slot i ∈ C) ∧
+      (∀ i, w (slot i) = ![6, 3, 3, 2, 2] i) ∧
+      C = {slot 0, slot 1, slot 2, slot 3, slot 4} := by
+  classical
+  obtain ⟨e₆, he₆⟩ := Finset.card_eq_one.mp h₆
+  obtain ⟨e₃a, e₃b, he₃ne, he₃⟩ := Finset.card_eq_two.mp h₃
+  obtain ⟨e₂a, e₂b, he₂ne, he₂⟩ := Finset.card_eq_two.mp h₂
+  have he₆mem : e₆ ∈ C ∧ w e₆ = 6 := by
+    apply Finset.mem_filter.mp
+    rw [he₆]
+    simp
+  have he₃amem : e₃a ∈ C ∧ w e₃a = 3 := by
+    apply Finset.mem_filter.mp
+    rw [he₃]
+    simp
+  have he₃bmem : e₃b ∈ C ∧ w e₃b = 3 := by
+    apply Finset.mem_filter.mp
+    rw [he₃]
+    simp
+  have he₂amem : e₂a ∈ C ∧ w e₂a = 2 := by
+    apply Finset.mem_filter.mp
+    rw [he₂]
+    simp
+  have he₂bmem : e₂b ∈ C ∧ w e₂b = 2 := by
+    apply Finset.mem_filter.mp
+    rw [he₂]
+    simp
+  let slot : Fin 5 → α := ![e₆, e₃a, e₃b, e₂a, e₂b]
+  refine ⟨slot, ?_, ?_, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;>
+      simp_all [slot]
+  · intro i
+    fin_cases i <;> simp [slot, he₆mem, he₃amem, he₃bmem, he₂amem, he₂bmem]
+  · intro i
+    fin_cases i <;> simp [slot, he₆mem, he₃amem, he₃bmem, he₂amem, he₂bmem]
+  · ext c
+    constructor
+    · intro hc
+      rcases horders c hc with hw | hw | hw
+      · have : c = e₆ := by
+          have hcfilter : c ∈ C.filter fun x => w x = 6 :=
+            Finset.mem_filter.mpr ⟨hc, hw⟩
+          simpa [he₆] using hcfilter
+        subst c
+        simp [slot]
+      · have hcfilter : c ∈ C.filter fun x => w x = 3 :=
+          Finset.mem_filter.mpr ⟨hc, hw⟩
+        rw [he₃] at hcfilter
+        rcases (Finset.mem_insert.mp hcfilter) with rfl | hcfilter
+        · simp [slot]
+        · have : c = e₃b := Finset.mem_singleton.mp hcfilter
+          subst c
+          simp [slot]
+      · have hcfilter : c ∈ C.filter fun x => w x = 2 :=
+          Finset.mem_filter.mpr ⟨hc, hw⟩
+        rw [he₂] at hcfilter
+        rcases (Finset.mem_insert.mp hcfilter) with rfl | hcfilter
+        · simp [slot]
+        · have : c = e₂b := Finset.mem_singleton.mp hcfilter
+          subst c
+          simp [slot]
+    · intro hc
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hc
+      rcases hc with rfl | rfl | rfl | rfl | rfl
+      · exact he₆mem.1
+      · exact he₃amem.1
+      · exact he₃bmem.1
+      · exact he₂amem.1
+      · exact he₂bmem.1
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
