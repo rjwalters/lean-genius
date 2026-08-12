@@ -3389,6 +3389,106 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
   rw [hc6, htcQ, mul_one] at hb
   exact hb.symm
 
+/-- In the residual `1+1+1` branch, the three contacts are distinct
+order-six components.  After removing them together with the singleton and
+its forced order-three contact, the remaining components have total order
+six, hence are either one order-six component or two order-three components. -/
+theorem degreeSix_orderSix_three_single_contact_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V)
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc6 : c.supp.ncard = 6) (hec : e ≠ c) (he3 : e.supp.ncard = 3)
+    (hcprofile : ∀ t ∈ (Finset.univ.erase c).erase e,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1 ∧
+        t.supp.ncard = 6 *
+          componentQuotientMatrix G (secondOrderDefectGraph G) c t)
+    (hq1card : (((Finset.univ.erase c).erase e).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1).card = 3) :
+    ∃ d x y : (secondOrderDefectGraph G).ConnectedComponent,
+      d ≠ x ∧ d ≠ y ∧ x ≠ y ∧
+      d ≠ c ∧ d ≠ e ∧ x ≠ c ∧ x ≠ e ∧ y ≠ c ∧ y ≠ e ∧
+      d.supp.ncard = 6 ∧ x.supp.ncard = 6 ∧ y.supp.ncard = 6 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c d = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c x = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c y = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) d c = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) x c = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) y c = 1 ∧
+      (let U := ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
+       (∃ f, U = {f} ∧ f.supp.ncard = 6) ∨
+       (∃ f g, f ≠ g ∧ U = {f, g} ∧
+         f.supp.ncard = 3 ∧ g.supp.ncard = 3)) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase c).erase e
+  let A := S.filter fun t ↦ Q c t = 1
+  have hAcard : A.card = 3 := by simpa [A, S, Q] using hq1card
+  obtain ⟨d, x, y, hdx, hdy, hxy, hA⟩ := Finset.card_eq_three.mp hAcard
+  have hdA : d ∈ A := by rw [hA]; simp
+  have hxA : x ∈ A := by rw [hA]; simp [hdx]
+  have hyA : y ∈ A := by rw [hA]; simp [hdy, hxy]
+  have hdData := Finset.mem_filter.mp hdA
+  have hxData := Finset.mem_filter.mp hxA
+  have hyData := Finset.mem_filter.mp hyA
+  have hdS : d ∈ S := hdData.1
+  have hxS : x ∈ S := hxData.1
+  have hyS : y ∈ S := hyData.1
+  have hcd : Q c d = 1 := hdData.2
+  have hcx : Q c x = 1 := hxData.2
+  have hcy : Q c y = 1 := hyData.2
+  have hdc : d ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hdS).2).1
+  have hde : d ≠ e := (Finset.mem_erase.mp hdS).1
+  have hxc : x ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hxS).2).1
+  have hxe : x ≠ e := (Finset.mem_erase.mp hxS).1
+  have hyc : y ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hyS).2).1
+  have hye : y ≠ e := (Finset.mem_erase.mp hyS).1
+  have hdProfile := hcprofile d hdS (by rw [hcd]; norm_num)
+  have hxProfile := hcprofile x hxS (by rw [hcx]; norm_num)
+  have hyProfile := hcprofile y hyS (by rw [hcy]; norm_num)
+  have hd6 : d.supp.ncard = 6 := by rw [hdProfile.2, hcd]; norm_num
+  have hx6 : x.supp.ncard = 6 := by rw [hxProfile.2, hcx]; norm_num
+  have hy6 : y.supp.ncard = 6 := by rw [hyProfile.2, hcy]; norm_num
+  let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
+  have hcIn : c ∈ (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+  have heIn : e ∈ (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) :=
+    Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hdIn : d ∈ (Finset.univ.erase c).erase e := hdS
+  have hxIn : x ∈ ((Finset.univ.erase c).erase e).erase d :=
+    Finset.mem_erase.mpr ⟨hdx.symm, hxS⟩
+  have hyIn : y ∈ (((Finset.univ.erase c).erase e).erase d).erase x :=
+    Finset.mem_erase.mpr ⟨hxy.symm, Finset.mem_erase.mpr ⟨hdy.symm, hyS⟩⟩
+  have htC := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ t.supp.ncard) hcIn
+  have htE := Finset.sum_erase_add (Finset.univ.erase c)
+    (fun t ↦ t.supp.ncard) heIn
+  have htD := Finset.sum_erase_add ((Finset.univ.erase c).erase e)
+    (fun t ↦ t.supp.ncard) hdIn
+  have htX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d)
+    (fun t ↦ t.supp.ncard) hxIn
+  have htY := Finset.sum_erase_add
+    ((((Finset.univ.erase c).erase e).erase d).erase x)
+    (fun t ↦ t.supp.ncard) hyIn
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hUsum : (∑ t ∈ U, t.supp.ncard) = 6 := by
+    dsimp [U]
+    omega
+  have hUclass := component_orders_sum_six_classification U
+    (fun t ↦ t.supp.ncard) (fun t ht ↦ hr t) hUsum
+  exact ⟨d, x, y, hdx, hdy, hxy, hdc, hde, hxc, hxe, hyc, hye,
+    hd6, hx6, hy6, hcd, hcx, hcy, hdProfile.1, hxProfile.1,
+    hyProfile.1, by simpa [U] using hUclass⟩
+
 /-- The residual single quotient-three contact branch is impossible. -/
 theorem false_of_degreeSix_orderSix_three_contact_branch
     {V : Type*} [Fintype V] [DecidableEq V]
