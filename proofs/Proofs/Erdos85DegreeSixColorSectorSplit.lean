@@ -4378,6 +4378,29 @@ theorem false_of_degreeSix_triangleFreeCycleSector_singleton
   · exact false_of_degreeSix_orderFifteen_singleton
       G hfree hmin hcard u hu huRange huD hr c hsector h15
 
+/-- The global nonsquare trace forces at least one second-order component
+with a positive diagonal quotient entry. -/
+theorem degreeSix_exists_positive_diagonal_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hne : (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c c) ≠ 0 := by
+    rw [htrace]
+    norm_num
+  obtain ⟨c, _, hc⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
+  exact ⟨c, Nat.pos_of_ne_zero hc⟩
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
