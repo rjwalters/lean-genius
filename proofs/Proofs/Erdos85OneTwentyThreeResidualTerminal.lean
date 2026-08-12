@@ -40117,6 +40117,42 @@ theorem six_three_three_two_two_valid_atom_reducedOrder_cases
       all_goals try norm_num [Valid] at hvalid
       all_goals norm_num [reducedOrder]
 
+/-- Translate the atom assignment's divisible/nondivisible order convention
+into actual orphan orders for the `(6,3,3,2,2)` alphabet. -/
+theorem six_three_three_two_two_actual_order_cases_of_atom
+    (n : ℕ) (hn : 3 ≤ n) (t : ZeroLayerAtom (Fin 5))
+    (hvalid : Valid ![6, 3, 3, 2, 2] t)
+    (hshape :
+      (3 ∣ n ∧ reducedOrder ![6, 3, 3, 2, 2] t = n / 3) ∨
+      (¬ 3 ∣ n ∧ reducedOrder ![6, 3, 3, 2, 2] t = n)) :
+    n = 18 ∨ n = 9 ∨ n = 6 := by
+  rcases six_three_three_two_two_valid_atom_reducedOrder_cases t hvalid with
+    h6 | h3 | h2
+  · rcases hshape with ⟨hdiv, hred⟩ | ⟨hnot, hred⟩
+    · obtain ⟨k, hk⟩ := hdiv
+      omega
+    · omega
+  · rcases hshape with ⟨hdiv, hred⟩ | ⟨hnot, hred⟩
+    · obtain ⟨k, hk⟩ := hdiv
+      omega
+    · omega
+  · rcases hshape with ⟨hdiv, hred⟩ | ⟨hnot, hred⟩
+    · obtain ⟨k, hk⟩ := hdiv
+      omega
+    · omega
+
+theorem six_three_three_two_two_actual_order_eq_six_of_reducedOrder_eq_two
+    (n : ℕ) (hn : 3 ≤ n) (t : ZeroLayerAtom (Fin 5))
+    (hred : reducedOrder ![6, 3, 3, 2, 2] t = 2)
+    (hshape :
+      (3 ∣ n ∧ reducedOrder ![6, 3, 3, 2, 2] t = n / 3) ∨
+      (¬ 3 ∣ n ∧ reducedOrder ![6, 3, 3, 2, 2] t = n)) :
+    n = 6 := by
+  rcases hshape with ⟨hdiv, horder⟩ | ⟨hnot, horder⟩
+  · obtain ⟨k, hk⟩ := hdiv
+    omega
+  · omega
+
 /-- A positive partition of sixteen using reduced orders `6`, `3`, and `2`
 has forced multiplicities `1`, `2`, and `2`. -/
 theorem six_three_two_positive_multiplicities_of_weighted_sum_sixteen
