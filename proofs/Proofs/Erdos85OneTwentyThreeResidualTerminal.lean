@@ -40209,6 +40209,91 @@ theorem exists_leftInverse_on_finset_of_injective_five_slots
   apply hslot
   exact hindex ⟨slot i, hmem i⟩
 
+/-- An injective five-slot enumeration exhausting a finset identifies the
+supported subtype with the canonical five-element index type. -/
+theorem exists_equiv_fin_five_of_injective_five_slots
+    {α : Type*} [DecidableEq α] (C : Finset α) (slot : Fin 5 → α)
+    (hslot : Function.Injective slot)
+    (hmem : ∀ i, slot i ∈ C)
+    (hcover : ∀ c ∈ C, ∃ i, slot i = c) :
+    ∃ e : {c // c ∈ C} ≃ Fin 5,
+      ∀ i, e.symm i = ⟨slot i, hmem i⟩ := by
+  classical
+  obtain ⟨index, hleft, hright⟩ :=
+    exists_leftInverse_on_finset_of_injective_five_slots
+      C slot hslot hmem hcover
+  let e : {c // c ∈ C} ≃ Fin 5 :=
+    { toFun := index
+      invFun := fun i => ⟨slot i, hmem i⟩
+      left_inv := by
+        intro c
+        apply Subtype.ext
+        exact hleft c
+      right_inv := hright }
+  refine ⟨e, ?_⟩
+  intro i
+  rfl
+
+/-- Transport a supported atom through a five-slot identification, preserving
+validity and its load/excess columns at every named slot. -/
+theorem supported_atom_reindex_fin_five
+    {α : Type*} [DecidableEq α] (C : Finset α) (slot : Fin 5 → α)
+    (hmem : ∀ i, slot i ∈ C)
+    (e : {c // c ∈ C} ≃ Fin 5)
+    (heslot : ∀ i, e.symm i = ⟨slot i, hmem i⟩)
+    (K : α → ℕ)
+    (hKslot : ∀ i, K (slot i) = ![6, 3, 3, 2, 2] i)
+    (t : ZeroLayerAtom α) (htSupport : SupportOn C t)
+    (htValid : Valid K t) :
+    let t₅ := reindex e (restrictTo t htSupport)
+    Valid ![6, 3, 3, 2, 2] t₅ ∧
+      (∀ i, load ![6, 3, 3, 2, 2] i t₅ = load K (slot i) t) ∧
+      ∀ i, excess i t₅ = excess (slot i) t := by
+  classical
+  dsimp only
+  let inc : {c // c ∈ C} → α := fun c => c.1
+  let tC := restrictTo t htSupport
+  have hmap : mapIndices inc tC = t := by
+    simpa [inc, tC] using mapIndices_subtype_restrictTo t htSupport
+  have heval : ∀ c : {c // c ∈ C}, slot (e c) = c.1 := by
+    intro c
+    have h := congrArg Subtype.val (heslot (e c))
+    simpa using h.symm
+  have hK : (![6, 3, 3, 2, 2] ∘ e) = K ∘ inc := by
+    funext c
+    rw [Function.comp_apply, Function.comp_apply, ← hKslot (e c), heval]
+  have htCValid : Valid (K ∘ inc) tC := by
+    rw [← valid_mapIndices_iff inc Subtype.val_injective K tC, hmap]
+    exact htValid
+  constructor
+  · rw [valid_reindex_iff, hK]
+    exact htCValid
+  constructor
+  · intro i
+    let c : {c // c ∈ C} := e.symm i
+    have hcslot : c.1 = slot i := by
+      exact congrArg Subtype.val (heslot i)
+    calc
+      load ![6, 3, 3, 2, 2] i (reindex e tC) =
+          load (![6, 3, 3, 2, 2] ∘ e) c tC := by
+            simpa [c] using load_reindex e ![6, 3, 3, 2, 2] c tC
+      _ = load (K ∘ inc) c tC := by rw [hK]
+      _ = load K c.1 (mapIndices inc tC) := by
+            symm
+            exact load_mapIndices inc Subtype.val_injective K c tC
+      _ = load K (slot i) t := by rw [hmap, hcslot]
+  · intro i
+    let c : {c // c ∈ C} := e.symm i
+    have hcslot : c.1 = slot i := by
+      exact congrArg Subtype.val (heslot i)
+    calc
+      excess i (reindex e tC) = excess c tC := by
+        simpa [c] using excess_reindex e c tC
+      _ = excess c.1 (mapIndices inc tC) := by
+        symm
+        exact excess_mapIndices inc Subtype.val_injective c tC
+      _ = excess (slot i) t := by rw [hmap, hcslot]
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
