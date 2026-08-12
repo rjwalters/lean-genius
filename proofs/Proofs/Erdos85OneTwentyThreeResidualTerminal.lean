@@ -41066,6 +41066,309 @@ theorem exists_slots_of_finset_map_eq_list
 
 set_option maxHeartbeats 200000
 
+set_option maxHeartbeats 2000000 in
+theorem false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hv : ∀ o, Valid ![8, 4, 2, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![8, 4, 2, 2] i (atom o)) =
+      12 * ![8, 4, 2, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤
+      2 * (![8, 4, 2, 2] i - 1)) : False := by
+  classical
+  let δ := fun (t : ZeroLayerAtom (Fin 4)) (o : O) => if atom o = t then 1 else 0
+  let B01 := ∑ o, δ (.B 0 1) o
+  let B02 := ∑ o, δ (.B 0 2) o
+  let B03 := ∑ o, δ (.B 0 3) o
+  let B12 := ∑ o, δ (.B 1 2) o
+  let B13 := ∑ o, δ (.B 1 3) o
+  let B23 := ∑ o, δ (.B 2 3) o
+  let B32 := ∑ o, δ (.B 3 2) o
+  have hB23exPoint : ∀ o, 2 * δ (.B 2 3) o ≤ excess 2 (atom o) := by
+    intro o
+    cases ht : atom o with
+    | C e => fin_cases e <;> simp [δ, ht, excess]
+    | D e => fin_cases e <;> simp [δ, ht, excess]
+    | B e f => fin_cases e <;> fin_cases f <;> simp [δ, ht, excess]
+    | A a b c => fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [δ, ht, excess]
+  have hB23le : 2 * B23 ≤ 2 := by
+    calc
+      2 * B23 = ∑ o, 2 * δ (.B 2 3) o := by simp [B23, Finset.mul_sum]
+      _ ≤ ∑ o, excess 2 (atom o) := Finset.sum_le_sum fun o _ => hB23exPoint o
+      _ ≤ 2 := by simpa using he 2
+  have hmod3Point : ∀ o, ∃ q, load ![8, 4, 2, 2] 3 (atom o) =
+      4 * q + 2 * δ (.B 2 3) o := by
+    intro o
+    have hone : excess 3 (atom o) ≤ ∑ q, excess 3 (atom q) :=
+      Finset.single_le_sum (s := Finset.univ)
+        (fun q _ => Nat.zero_le (excess 3 (atom q))) (Finset.mem_univ o)
+    have hoe : excess 3 (atom o) ≤ 2 := hone.trans (by simpa using he 3)
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        excess 3 t ≤ 2 → load ![8, 4, 2, 2] 3 t =
+          4 * (load ![8, 4, 2, 2] 3 t / 4) +
+            2 * (if t = .B 2 3 then 1 else 0) := by
+      intro t hvo hte
+      cases t with
+      | C e =>
+          fin_cases e
+          all_goals try norm_num [excess] at hte
+          all_goals try { exfalso; revert hte; decide }
+          all_goals decide
+      | D e =>
+          fin_cases e
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | B e f =>
+          fin_cases e <;> fin_cases f
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | A a b c =>
+          fin_cases a <;> fin_cases b <;> fin_cases c
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+    exact ⟨load ![8, 4, 2, 2] 3 (atom o) / 4,
+      by simpa [δ] using hlocal (atom o) (hv o) hoe⟩
+  choose q3 hq3 using hmod3Point
+  have hmod3 : 24 = 4 * (∑ o, q3 o) + 2 * B23 := by
+    have hload3 := hl 3
+    norm_num at hload3
+    calc
+      24 = (∑ o, load ![8, 4, 2, 2] 3 (atom o)) := hload3.symm
+      _ =
+          ∑ o, (4 * q3 o + 2 * δ (.B 2 3) o) :=
+        Finset.sum_congr rfl fun o _ => hq3 o
+      _ = 4 * (∑ o, q3 o) + 2 * B23 := by
+        simp [B23, Finset.sum_add_distrib, Finset.mul_sum]
+  have hB23 : B23 = 0 := by omega
+
+  have hB32exPoint : ∀ o, 2 * δ (.B 3 2) o ≤ excess 3 (atom o) := by
+    intro o
+    cases ht : atom o with
+    | C e => fin_cases e <;> simp [δ, ht, excess]
+    | D e => fin_cases e <;> simp [δ, ht, excess]
+    | B e f => fin_cases e <;> fin_cases f <;> simp [δ, ht, excess]
+    | A a b c => fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [δ, ht, excess]
+  have hB32le : 2 * B32 ≤ 2 := by
+    calc
+      2 * B32 = ∑ o, 2 * δ (.B 3 2) o := by simp [B32, Finset.mul_sum]
+      _ ≤ ∑ o, excess 3 (atom o) := Finset.sum_le_sum fun o _ => hB32exPoint o
+      _ ≤ 2 := by simpa using he 3
+  have hmod2Point : ∀ o, ∃ q, load ![8, 4, 2, 2] 2 (atom o) =
+      4 * q + 2 * δ (.B 3 2) o := by
+    intro o
+    have hone : excess 2 (atom o) ≤ ∑ q, excess 2 (atom q) :=
+      Finset.single_le_sum (s := Finset.univ)
+        (fun q _ => Nat.zero_le (excess 2 (atom q))) (Finset.mem_univ o)
+    have hoe : excess 2 (atom o) ≤ 2 := hone.trans (by simpa using he 2)
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        excess 2 t ≤ 2 → load ![8, 4, 2, 2] 2 t =
+          4 * (load ![8, 4, 2, 2] 2 t / 4) +
+            2 * (if t = .B 3 2 then 1 else 0) := by
+      intro t hvo hte
+      cases t with
+      | C e =>
+          fin_cases e
+          all_goals try norm_num [excess] at hte
+          all_goals try { exfalso; revert hte; decide }
+          all_goals decide
+      | D e =>
+          fin_cases e
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | B e f =>
+          fin_cases e <;> fin_cases f
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | A a b c =>
+          fin_cases a <;> fin_cases b <;> fin_cases c
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+    exact ⟨load ![8, 4, 2, 2] 2 (atom o) / 4,
+      by simpa [δ] using hlocal (atom o) (hv o) hoe⟩
+  choose q2 hq2 using hmod2Point
+  have hmod2 : 24 = 4 * (∑ o, q2 o) + 2 * B32 := by
+    have hload2 := hl 2
+    norm_num at hload2
+    calc
+      24 = (∑ o, load ![8, 4, 2, 2] 2 (atom o)) := hload2.symm
+      _ =
+          ∑ o, (4 * q2 o + 2 * δ (.B 3 2) o) :=
+        Finset.sum_congr rfl fun o _ => hq2 o
+      _ = 4 * (∑ o, q2 o) + 2 * B32 := by
+        simp [B32, Finset.sum_add_distrib, Finset.mul_sum]
+  have hB32 : B32 = 0 := by omega
+
+  have hrow2Point : ∀ o, load ![8, 4, 2, 2] 2 (atom o) =
+      8 * δ (.B 0 2) o + 4 * δ (.B 1 2) o +
+        4 * δ (.B 2 3) o + 2 * δ (.B 3 2) o := by
+    intro o
+    have hone : excess 2 (atom o) ≤ ∑ q, excess 2 (atom q) :=
+      Finset.single_le_sum (s := Finset.univ)
+        (fun q _ => Nat.zero_le (excess 2 (atom q))) (Finset.mem_univ o)
+    have hoe : excess 2 (atom o) ≤ 2 := hone.trans (by simpa using he 2)
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        excess 2 t ≤ 2 → load ![8, 4, 2, 2] 2 t =
+          8 * (if t = .B 0 2 then 1 else 0) +
+          4 * (if t = .B 1 2 then 1 else 0) +
+          4 * (if t = .B 2 3 then 1 else 0) +
+          2 * (if t = .B 3 2 then 1 else 0) := by
+      intro t hvo hte
+      cases t with
+      | C e =>
+          fin_cases e
+          all_goals try { exfalso; revert hte; decide }
+          all_goals decide
+      | D e =>
+          fin_cases e
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | B e f =>
+          fin_cases e <;> fin_cases f
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | A a b c =>
+          fin_cases a <;> fin_cases b <;> fin_cases c
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+    simpa [δ] using hlocal (atom o) (hv o) hoe
+  have hrow2 : 24 = 8 * B02 + 4 * B12 + 4 * B23 + 2 * B32 := by
+    have hload2 := hl 2
+    calc
+      24 = (∑ o, load ![8, 4, 2, 2] 2 (atom o)) := by
+        norm_num at hload2
+        exact hload2.symm
+      _ =
+          ∑ o, (8 * δ (.B 0 2) o + 4 * δ (.B 1 2) o +
+            4 * δ (.B 2 3) o + 2 * δ (.B 3 2) o) :=
+        Finset.sum_congr rfl fun o _ => hrow2Point o
+      _ = 8 * B02 + 4 * B12 + 4 * B23 + 2 * B32 := by
+        simp [B02, B12, B23, B32, Finset.sum_add_distrib, Finset.mul_sum]
+
+  have hrow3Point : ∀ o, load ![8, 4, 2, 2] 3 (atom o) =
+      8 * δ (.B 0 3) o + 4 * δ (.B 1 3) o +
+        2 * δ (.B 2 3) o + 4 * δ (.B 3 2) o := by
+    intro o
+    have hone : excess 3 (atom o) ≤ ∑ q, excess 3 (atom q) :=
+      Finset.single_le_sum (s := Finset.univ)
+        (fun q _ => Nat.zero_le (excess 3 (atom q))) (Finset.mem_univ o)
+    have hoe : excess 3 (atom o) ≤ 2 := hone.trans (by simpa using he 3)
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        excess 3 t ≤ 2 → load ![8, 4, 2, 2] 3 t =
+          8 * (if t = .B 0 3 then 1 else 0) +
+          4 * (if t = .B 1 3 then 1 else 0) +
+          2 * (if t = .B 2 3 then 1 else 0) +
+          4 * (if t = .B 3 2 then 1 else 0) := by
+      intro t hvo hte
+      cases t with
+      | C e =>
+          fin_cases e
+          all_goals try { exfalso; revert hte; decide }
+          all_goals decide
+      | D e =>
+          fin_cases e
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | B e f =>
+          fin_cases e <;> fin_cases f
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | A a b c =>
+          fin_cases a <;> fin_cases b <;> fin_cases c
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+    simpa [δ] using hlocal (atom o) (hv o) hoe
+  have hrow3 : 24 = 8 * B03 + 4 * B13 + 2 * B23 + 4 * B32 := by
+    have hload3 := hl 3
+    calc
+      24 = (∑ o, load ![8, 4, 2, 2] 3 (atom o)) := by
+        norm_num at hload3
+        exact hload3.symm
+      _ =
+          ∑ o, (8 * δ (.B 0 3) o + 4 * δ (.B 1 3) o +
+            2 * δ (.B 2 3) o + 4 * δ (.B 3 2) o) :=
+        Finset.sum_congr rfl fun o _ => hrow3Point o
+      _ = 8 * B03 + 4 * B13 + 2 * B23 + 4 * B32 := by
+        simp [B03, B13, B23, B32, Finset.sum_add_distrib, Finset.mul_sum]
+
+  have hrow1Point : ∀ o, load ![8, 4, 2, 2] 1 (atom o) =
+      2 * excess 1 (atom o) + 8 * δ (.B 0 1) o +
+        4 * δ (.B 1 2) o + 4 * δ (.B 1 3) o := by
+    intro o
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        load ![8, 4, 2, 2] 1 t = 2 * excess 1 t +
+          8 * (if t = .B 0 1 then 1 else 0) +
+          4 * (if t = .B 1 2 then 1 else 0) +
+          4 * (if t = .B 1 3 then 1 else 0) := by
+      intro t hvo
+      cases t with
+      | C e => fin_cases e <;> decide
+      | D e =>
+          fin_cases e
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | B e f =>
+          fin_cases e <;> fin_cases f
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+      | A a b c =>
+          fin_cases a <;> fin_cases b <;> fin_cases c
+          all_goals try norm_num [Valid] at hvo
+          all_goals decide
+    simpa [δ] using hlocal (atom o) (hv o)
+  have hrow1 : 48 = 2 * (∑ o, excess 1 (atom o)) +
+      8 * B01 + 4 * B12 + 4 * B13 := by
+    have hload1 := hl 1
+    calc
+      48 = (∑ o, load ![8, 4, 2, 2] 1 (atom o)) := by
+        norm_num at hload1
+        exact hload1.symm
+      _ =
+          ∑ o, (2 * excess 1 (atom o) + 8 * δ (.B 0 1) o +
+            4 * δ (.B 1 2) o + 4 * δ (.B 1 3) o) :=
+        Finset.sum_congr rfl fun o _ => hrow1Point o
+      _ = 2 * (∑ o, excess 1 (atom o)) +
+          8 * B01 + 4 * B12 + 4 * B13 := by
+        simp [B01, B12, B13, Finset.sum_add_distrib, Finset.mul_sum]
+  have hex1 : (∑ o, excess 1 (atom o)) ≤ 6 := by simpa using he 1
+  have hrow1exPoint : ∀ o, 2 * (δ (.B 1 2) o + δ (.B 1 3) o) ≤
+      excess 1 (atom o) := by
+    intro o
+    cases ht : atom o with
+    | C e => fin_cases e <;> simp [δ, ht, excess]
+    | D e => fin_cases e <;> simp [δ, ht, excess]
+    | B e f => fin_cases e <;> fin_cases f <;> simp [δ, ht, excess]
+    | A a b c => fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [δ, ht, excess]
+  have hrow1ex : 2 * (B12 + B13) ≤ ∑ o, excess 1 (atom o) := by
+    calc
+      2 * (B12 + B13) = ∑ o, 2 * (δ (.B 1 2) o + δ (.B 1 3) o) := by
+        rw [← Finset.mul_sum]
+        simp [B12, B13, Finset.sum_add_distrib]
+      _ ≤ ∑ o, excess 1 (atom o) := Finset.sum_le_sum fun o _ => hrow1exPoint o
+
+  have hrow0Point : ∀ o, 2 * (δ (.B 0 1) o + δ (.B 0 2) o +
+      δ (.B 0 3) o) ≤ excess 0 (atom o) := by
+    intro o
+    have hlocal : ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 4, 2, 2] t →
+        2 * ((if t = .B 0 1 then 1 else 0) +
+          (if t = .B 0 2 then 1 else 0) +
+          (if t = .B 0 3 then 1 else 0)) ≤ excess 0 t := by
+      intro t hvo
+      cases t with
+      | C e => fin_cases e <;> decide
+      | D e => fin_cases e <;> decide
+      | B e f => fin_cases e <;> fin_cases f <;> decide
+      | A a b c => fin_cases a <;> fin_cases b <;> fin_cases c <;> decide
+    simpa [δ] using hlocal (atom o) (hv o)
+  have hrow0 : 2 * (B01 + B02 + B03) ≤ ∑ o, excess 0 (atom o) := by
+    calc
+      2 * (B01 + B02 + B03) =
+          ∑ o, 2 * (δ (.B 0 1) o + δ (.B 0 2) o + δ (.B 0 3) o) := by
+        rw [← Finset.mul_sum]
+        simp [B01, B02, B03, Finset.sum_add_distrib]
+      _ ≤ ∑ o, excess 0 (atom o) := Finset.sum_le_sum fun o _ => hrow0Point o
+  have hex0 : (∑ o, excess 0 (atom o)) ≤ 14 := by simpa using he 0
+  omega
+
 end ZeroLayerAtom
 
 /-- Every three-divisible zero-layer orphan row has a valid `C`, `B`, or
