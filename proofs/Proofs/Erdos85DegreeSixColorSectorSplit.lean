@@ -106,6 +106,61 @@ theorem degreeSix_singleton_incidence_cauchy
   exact_mod_cast (show ((size c : ℝ) * size c + 33 ≤ 18 * size c) by
     nlinarith [hcs''])
 
+/-- The order-six singleton row has a forced asymmetric contact: one unit
+leaves the order-six component and two units return from an order-three
+component. -/
+theorem degreeSix_orderSix_singleton_contact
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hsize : size c = 6)
+    (hrow : (∑ e ∈ (Finset.univ.erase c), Q c e) = 4)
+    (hprod : (∑ e ∈ (Finset.univ.erase c), Q c e * Q e c) = 5)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c) :
+    ∃ e : C, e ≠ c ∧ size e = 3 ∧ Q c e = 1 ∧ Q e c = 2 := by
+  let S : Finset C := Finset.univ.erase c
+  let f : C → ℕ := fun e ↦ Q c e * (Q e c - 1)
+  have hdecomp : ∀ e ∈ S, Q c e * Q e c = Q c e + f e := by
+    intro e he
+    by_cases hq : Q c e = 0
+    · simp [f, hq]
+    · have hr : 0 < Q e c := by
+        by_contra hr0
+        push Not at hr0
+        have hrz : Q e c = 0 := by omega
+        have hb := hbal e
+        rw [hsize, hrz, mul_zero] at hb
+        have : Q c e = 0 := by omega
+        exact hq this
+      calc
+        Q c e * Q e c = Q c e * ((Q e c - 1) + 1) := by
+          rw [Nat.sub_add_cancel hr]
+        _ = Q c e + f e := by simp [f, Nat.mul_add, Nat.add_comm]
+  have hfsum : (∑ e ∈ S, f e) = 1 := by
+    have hrowS : (∑ e ∈ S, Q c e) = 4 := by simpa [S] using hrow
+    have hsum : 5 = 4 + ∑ e ∈ S, f e := by
+      calc
+        5 = ∑ e ∈ S, Q c e * Q e c := hprod.symm
+        _ = ∑ e ∈ S, (Q c e + f e) := Finset.sum_congr rfl hdecomp
+        _ = (∑ e ∈ S, Q c e) + ∑ e ∈ S, f e := by
+          rw [Finset.sum_add_distrib]
+        _ = 4 + ∑ e ∈ S, f e := by rw [hrowS]
+    omega
+  have hfne : (∑ e ∈ S, f e) ≠ 0 := by omega
+  obtain ⟨e, heS, hene⟩ := Finset.exists_ne_zero_of_sum_ne_zero hfne
+  have hfle : f e ≤ ∑ x ∈ S, f x :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) heS
+  have hfe : f e = 1 := by omega
+  have hmul : Q c e * (Q e c - 1) = 1 := by simpa [f] using hfe
+  have hq : Q c e = 1 :=
+    Nat.dvd_one.mp ⟨Q e c - 1, hmul.symm⟩
+  have hrsub : Q e c - 1 = 1 :=
+    Nat.dvd_one.mp ⟨Q c e, by simpa [Nat.mul_comm] using hmul.symm⟩
+  have hr : Q e c = 2 := by omega
+  have hb := hbal e
+  rw [hsize, hq, hr] at hb
+  have hse : size e = 3 := by omega
+  exact ⟨e, (Finset.mem_erase.mp heS).1, hse, hq, hr⟩
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
@@ -567,6 +622,45 @@ theorem degreeSix_singleton_component_quotient_row
     exact secondOrder_componentQuotientMatrix_balance
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c e
+
+/-- Graph instantiation of the forced contact in the order-six singleton
+branch.  The contact target is a distinct order-three component with quotient
+entries `1` forward and `2` backward. -/
+theorem degreeSix_orderSix_singleton_exists_orderThree_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) :
+    ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ e.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2 := by
+  obtain ⟨_, _, hrow, hprod, hbal⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  apply degreeSix_orderSix_singleton_contact
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun e ↦ e.supp.ncard) c hc6 hrow
+  · simpa [hc6] using hprod
+  · exact hbal
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
