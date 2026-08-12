@@ -355,6 +355,159 @@ theorem degreeSix_orderFifteen_two_orderThree_contacts_false
     rw [hone, hfive] at hcs
     norm_num at hcs
 
+/-- The pinned order-nine row has only three possible sources of its excess:
+an order-three contact, a single order-eighteen target consuming all four row
+units, or two distinct order-nine double contacts. -/
+theorem degreeSix_orderNine_singleton_contact_trichotomy
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hsize : size c = 9)
+    (htotal : (∑ e : C, size e) = 33)
+    (hlower : ∀ e, 3 ≤ size e)
+    (hrow : (∑ e ∈ (Finset.univ.erase c), Q c e) = 4)
+    (hprod : (∑ e ∈ (Finset.univ.erase c), Q c e * Q e c) = 8)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hperiod : ∀ e, ¬ 9 ∣ size e → Q c e ≤ 1) :
+    (∃ e, e ≠ c ∧ size e = 3 ∧ Q c e = 1 ∧ Q e c = 3) ∨
+    (∃ e, e ≠ c ∧ size e = 18 ∧ Q c e = 4 ∧ Q e c = 2) ∨
+    (∃ e f, e ≠ c ∧ f ≠ c ∧ e ≠ f ∧
+      size e = 9 ∧ size f = 9 ∧
+      Q c e = 2 ∧ Q e c = 2 ∧ Q c f = 2 ∧ Q f c = 2) := by
+  let S : Finset C := Finset.univ.erase c
+  by_contra hnone
+  push Not at hnone
+  have hclass : ∀ e ∈ S, 0 < Q c e →
+      (size e = 9 ∧ Q c e = 1 ∧ Q e c = 1) ∨
+      (size e = 9 ∧ Q c e = 2 ∧ Q e c = 2) ∨
+      (size e = 18 ∧ Q c e = 2 ∧ Q e c = 1) := by
+    intro e heS hqpos
+    have hec : e ≠ c := (Finset.mem_erase.mp heS).1
+    have hqle : Q c e ≤ 4 := by
+      have hsingle : Q c e ≤ ∑ x ∈ S, Q c x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) heS
+      simpa [S, hrow] using hsingle
+    have hple : Q c e * Q e c ≤ 8 := by
+      have hsingle : Q c e * Q e c ≤ ∑ x ∈ S, Q c x * Q x c :=
+        Finset.single_le_sum
+          (fun x (_ : x ∈ S) ↦ Nat.zero_le (Q c x * Q x c)) heS
+      simpa [S, hprod] using hsingle
+    have hsizele : size e ≤ 24 := by
+      have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+      have hsplit := Finset.sum_erase_add (Finset.univ : Finset C) size hcMem
+      have heSingle : size e ≤ ∑ x ∈ Finset.univ.erase c, size x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) heS
+      rw [htotal, hsize] at hsplit
+      omega
+    have hb := hbal e
+    rw [hsize] at hb
+    by_cases hdvd : 9 ∣ size e
+    · obtain ⟨k, hk⟩ := hdvd
+      have hkpos : 0 < k := by
+        by_contra hk0
+        push Not at hk0
+        have hkz : k = 0 := by omega
+        subst k
+        simp at hk
+        have := hlower e
+        omega
+      have hke : k = 1 ∨ k = 2 := by
+        rw [hk] at hsizele
+        omega
+      rcases hke with rfl | rfl
+      · have hse : size e = 9 := by omega
+        rw [hse] at hb
+        have hrq : Q e c = Q c e := by omega
+        rw [hrq] at hple
+        have hq2 : Q c e ≤ 2 := by
+          by_contra hnot
+          have hqge : 3 ≤ Q c e := by omega
+          nlinarith
+        have hqcases : Q c e = 1 ∨ Q c e = 2 := by omega
+        rcases hqcases with hq | hq
+        · exact Or.inl ⟨hse, hq, by omega⟩
+        · exact Or.inr (Or.inl ⟨hse, hq, by omega⟩)
+      · have hse : size e = 18 := by omega
+        rw [hse] at hb
+        have hqeven : Q c e = 2 * Q e c := by omega
+        have hqcases : Q c e = 2 ∨ Q c e = 4 := by
+          have hrpos : 0 < Q e c := by nlinarith
+          omega
+        rcases hqcases with hq | hq
+        · exact Or.inr (Or.inr ⟨hse, hq, by omega⟩)
+        · exfalso
+          exact hnone.2.1 e hec hse hq (by omega)
+    · have hqone : Q c e = 1 := by
+        have := hperiod e hdvd
+        omega
+      rw [hqone, mul_one] at hb
+      have hrpos : 0 < Q e c := by nlinarith
+      have hsizeNe : size e ≠ 3 := by
+        intro hthree
+        have hr : Q e c = 3 := by rw [hthree] at hb; omega
+        exact hnone.1 e hec hthree hqone hr
+      have hsize4 : 4 ≤ size e := by
+        have := hlower e
+        omega
+      have hrle : Q e c ≤ 2 := by nlinarith
+      have hrcases : Q e c = 1 ∨ Q e c = 2 := by omega
+      rcases hrcases with hr | hr
+      · rw [hr] at hb
+        have hse : size e = 9 := by omega
+        exact (hdvd (by rw [hse])).elim
+      · rw [hr] at hb
+        omega
+  let excess : C → ℕ := fun e ↦ Q c e * (Q e c - 1)
+  have hdecomp : ∀ e ∈ S, Q c e * Q e c = Q c e + excess e := by
+    intro e heS
+    by_cases hq : Q c e = 0
+    · simp [excess, hq]
+    · have hcl := hclass e heS (Nat.pos_of_ne_zero hq)
+      rcases hcl with hcl | hcl | hcl <;> rcases hcl with ⟨_, hqv, hrv⟩ <;>
+        simp [excess, hqv, hrv]
+  have hexcessSum : (∑ e ∈ S, excess e) = 4 := by
+    have hsum : 8 = 4 + ∑ e ∈ S, excess e := by
+      calc
+        8 = ∑ e ∈ S, Q c e * Q e c := by simpa [S] using hprod.symm
+        _ = ∑ e ∈ S, (Q c e + excess e) := Finset.sum_congr rfl hdecomp
+        _ = (∑ e ∈ S, Q c e) + ∑ e ∈ S, excess e := by
+          rw [Finset.sum_add_distrib]
+        _ = 4 + ∑ e ∈ S, excess e := by simpa [S] using hrow
+    omega
+  have hexcessNe : (∑ e ∈ S, excess e) ≠ 0 := by omega
+  obtain ⟨e, heS, heNe⟩ := Finset.exists_ne_zero_of_sum_ne_zero hexcessNe
+  have heclass := hclass e heS (by
+    by_contra hq0
+    push Not at hq0
+    have : Q c e = 0 := by omega
+    simp [excess, this] at heNe)
+  have heDouble : size e = 9 ∧ Q c e = 2 ∧ Q e c = 2 := by
+    rcases heclass with h | h | h
+    · rcases h with ⟨_, hq, hr⟩
+      simp [excess, hq, hr] at heNe
+    · exact h
+    · rcases h with ⟨_, hq, hr⟩
+      simp [excess, hq, hr] at heNe
+  have hec : e ≠ c := (Finset.mem_erase.mp heS).1
+  have hother : ∀ f ∈ S, f ≠ e → excess f = 0 := by
+    intro f hfS hfe
+    by_cases hq : Q c f = 0
+    · simp [excess, hq]
+    · have hfclass := hclass f hfS (Nat.pos_of_ne_zero hq)
+      rcases hfclass with h | h | h
+      · rcases h with ⟨_, hqv, hrv⟩
+        simp [excess, hqv, hrv]
+      · rcases h with ⟨hsf, hqf, hrf⟩
+        have hfc : f ≠ c := (Finset.mem_erase.mp hfS).1
+        exact (hnone.2.2 e f hec hfc hfe.symm heDouble.1 hsf
+          heDouble.2.1 heDouble.2.2 hqf hrf).elim
+      · rcases h with ⟨_, hqv, hrv⟩
+        simp [excess, hqv, hrv]
+  have hsumSingle : (∑ f ∈ S, excess f) = excess e := by
+    exact Finset.sum_eq_single e (fun f hfS hfe ↦ hother f hfS hfe)
+      (fun heNot ↦ (heNot heS).elim)
+  rw [hexcessSum] at hsumSingle
+  simp [excess, heDouble.2.1, heDouble.2.2] at hsumSingle
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
@@ -869,6 +1022,163 @@ theorem degreeSix_singleton_component_quotient_row
     exact secondOrder_componentQuotientMatrix_balance
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c e
+
+/-- In the order-nine singleton branch the two high-multiplicity alternatives
+from the abstract row trichotomy violate an off-diagonal square equation.
+Hence an order-three contact is forced. -/
+theorem degreeSix_orderNine_singleton_exists_orderThree_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc9 : c.supp.ncard = 9) :
+    ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ e.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 3 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨_, hdiag, hrow, hprod, hbal⟩ :=
+    degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+  change Q c c = 2 at hdiag
+  change (∑ t ∈ (Finset.univ.erase c), Q c t) = 4 at hrow
+  have htri := degreeSix_orderNine_singleton_contact_trichotomy
+    Q (fun t ↦ t.supp.ncard) c hc9
+      (by simpa [hcard] using
+        (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G)))
+      hr hrow (by simpa [hc9] using hprod) hbal
+      (fun e hndvd ↦ secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c e
+          (by simpa [hc9] using hndvd))
+  rcases htri with hcontact | hlarge | hdouble
+  · exact hcontact
+  · obtain ⟨e, hec, he18, hce, hecQ⟩ := hlarge
+    exfalso
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase c).erase e
+    have heMem : e ∈ (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+    have hrowSplit := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) (Q c) heMem
+    have hrowS : (∑ t ∈ S, Q c t) = 0 := by
+      dsimp [S]
+      change Q c e = 4 at hce
+      omega
+    have hzero : ∀ t ∈ S, Q c t = 0 := by
+      intro t ht
+      have hle : Q c t ≤ ∑ x ∈ S, Q c x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) ht
+      omega
+    have hcMem : c ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+    have hsq := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+    have hsqSum : (∑ t, Q c t * Q t e) = 18 := by
+      simpa [Q, Matrix.mul_apply, hec.symm, he18] using hsq
+    have hsqSum' : (∑ t ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent), Q c t * Q t e) = 18 := by
+      simpa using hsqSum
+    have hsqC := Finset.sum_erase_add
+      (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t e) hcMem
+    have hsqE := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t e) heMem
+    have hrestZero : (∑ t ∈ S, Q c t * Q t e) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      simp [hzero t ht]
+    rw [hsqSum'] at hsqC
+    rw [hrestZero] at hsqE
+    change Q c e = 4 at hce
+    rw [hdiag, hce] at hsqC
+    rw [hce] at hsqE
+    omega
+  · obtain ⟨e, f, hec, hfc, hef, he9, hf9,
+      hce, hecQ, hcfQ, hfcQ⟩ := hdouble
+    exfalso
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      ((Finset.univ.erase c).erase e).erase f
+    have heMem : e ∈ (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+    have hfMem : f ∈ ((Finset.univ.erase c).erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hef.symm,
+        Finset.mem_erase.mpr ⟨hfc, Finset.mem_univ f⟩⟩
+    have hrowE := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) (Q c) heMem
+    have hrowF := Finset.sum_erase_add
+      ((Finset.univ.erase c).erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) (Q c) hfMem
+    have hrowS : (∑ t ∈ S, Q c t) = 0 := by
+      dsimp [S]
+      change Q c e = 2 at hce
+      change Q c f = 2 at hcfQ
+      omega
+    have hzero : ∀ t ∈ S, Q c t = 0 := by
+      intro t ht
+      have hle : Q c t ≤ ∑ x ∈ S, Q c x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) ht
+      omega
+    have hcMem : c ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+    have hsq := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+    have hsqSum : (∑ t, Q c t * Q t e) = 9 := by
+      simpa [Q, Matrix.mul_apply, hec.symm, he9] using hsq
+    have hsqSum' : (∑ t ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent), Q c t * Q t e) = 9 := by
+      simpa using hsqSum
+    have hsqC := Finset.sum_erase_add
+      (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t e) hcMem
+    have hsqE := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t e) heMem
+    have hsqF := Finset.sum_erase_add
+      ((Finset.univ.erase c).erase e : Finset
+        (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ Q c t * Q t e) hfMem
+    have hrestZero : (∑ t ∈ S, Q c t * Q t e) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      simp [hzero t ht]
+    rw [hsqSum'] at hsqC
+    rw [hrestZero] at hsqF
+    change Q c e = 2 at hce
+    change Q c f = 2 at hcfQ
+    rw [hdiag, hce] at hsqC
+    rw [hce] at hsqE
+    rw [hcfQ] at hsqF
+    omega
 
 /-- Graph instantiation of the forced order-three contact in the
 order-fifteen singleton branch. -/
