@@ -1494,8 +1494,7 @@ theorem reverse_eq_one_on_finset_of_balanced_product_eq_row
         have hb := hbal e
         rw [hr0, mul_zero] at hb
         exact (Nat.mul_pos hcpos hqpos).ne' hb
-      exact (show Q c e * 1 ≤ Q c e * Q e c by
-        exact Nat.mul_le_mul_left _ hrpos) |> (by simpa)
+      simpa using Nat.mul_le_mul_left (Q c e) hrpos
   intro e he hq
   have hrpos : 0 < Q e c := by
     have := hle e
@@ -3170,11 +3169,18 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
       (secondOrderDefectGraph G).ConnectedComponent)
       (fun t ↦ Q c t * Q t c) heIn
   have hrowS : (∑ t ∈ S, Q c t) = 3 := by
+    change Q c e = 1 at hce
+    change (∑ t ∈ Finset.univ.erase c, Q c t) = 4 at hrow
     dsimp [S]
     omega
   have hprodS : (∑ t ∈ S, Q c t * Q t c) = 3 := by
     have hp : (∑ t ∈ Finset.univ.erase c, Q c t * Q t c) = 5 := by
       simpa [hc6] using hprod
+    change Q c e = 1 at hce
+    change Q e c = 2 at hecQ
+    change (∑ x ∈ (Finset.univ.erase c).erase e, Q c x * Q x c) +
+      Q c e * Q e c = ∑ x ∈ Finset.univ.erase c, Q c x * Q x c at hsplitProd
+    rw [hce, hecQ] at hsplitProd
     dsimp [S]
     omega
   have hreverse := reverse_eq_one_on_finset_of_balanced_product_eq_row
@@ -3185,6 +3191,7 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
   have htcQ := hreverse t ht hpos
   refine ⟨htcQ, ?_⟩
   have hb := hbal t
+  change c.supp.ncard * Q c t = t.supp.ncard * Q t c at hb
   rw [hc6, htcQ, mul_one] at hb
   exact hb.symm
 
