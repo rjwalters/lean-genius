@@ -1087,6 +1087,85 @@ theorem false_of_degreeSix_orderTwelve_three_six_twelve_shape
   rw [hcc, hca, hcd, hce] at hsqa hsqd
   omega
 
+/-- Presburger kernel for the order-twelve contact classifier.  The six
+variables count positive contacts of types `(3,1,4)`, `(4,1,3)`, `(6,1,2)`,
+and `(12,q,q)` for `q=1,2,3`.  Used support order is either all 21 outside
+vertices or at most 18, since every unused component has order at least
+three. -/
+theorem degreeSix_orderTwelve_contact_count_classifier
+    (n3 n4 n6 n121 n122 n123 used : ℕ)
+    (hrow : n3 + n4 + n6 + n121 + 2 * n122 + 3 * n123 = 4)
+    (hprod : 4 * n3 + 3 * n4 + 2 * n6 + n121 + 4 * n122 +
+      9 * n123 = 11)
+    (hused : used = 3 * n3 + 4 * n4 + 6 * n6 +
+      12 * (n121 + n122 + n123))
+    (hgap : used = 21 ∨ used ≤ 18) :
+    (n3 = 0 ∧ n4 = 0 ∧ n6 = 1 ∧ n121 = 0 ∧ n122 = 0 ∧
+      n123 = 1 ∧ used = 18) ∨
+    (n3 = 0 ∧ n4 = 3 ∧ n6 = 1 ∧ n121 = 0 ∧ n122 = 0 ∧
+      n123 = 0 ∧ used = 18) := by
+  have hn122 : n122 ≤ 2 := by omega
+  have hn123 : n123 ≤ 1 := by omega
+  interval_cases n123 <;> interval_cases n122 <;> omega
+
+/-- Pointwise classification of a positive off-diagonal entry in an
+order-twelve singleton row. -/
+theorem degreeSix_orderTwelve_positive_contact_class
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c t : C)
+    (hc12 : size c = 12) (htc : t ≠ c)
+    (hlower : 3 ≤ size t)
+    (hsizele : size t ≤ 21)
+    (hqpos : 0 < Q c t) (hqle : Q c t ≤ 4)
+    (hprodle : Q c t * Q t c ≤ 11)
+    (hbal : size c * Q c t = size t * Q t c)
+    (hperiod : ¬ 12 ∣ size t → Q c t ≤ 1) :
+    (size t = 3 ∧ Q c t = 1 ∧ Q t c = 4) ∨
+    (size t = 4 ∧ Q c t = 1 ∧ Q t c = 3) ∨
+    (size t = 6 ∧ Q c t = 1 ∧ Q t c = 2) ∨
+    (size t = 12 ∧ Q c t = 1 ∧ Q t c = 1) ∨
+    (size t = 12 ∧ Q c t = 2 ∧ Q t c = 2) ∨
+    (size t = 12 ∧ Q c t = 3 ∧ Q t c = 3) := by
+  rw [hc12] at hbal
+  by_cases hdvd : 12 ∣ size t
+  · obtain ⟨k, hk⟩ := hdvd
+    have hkpos : 0 < k := by
+      by_contra hk0
+      have : k = 0 := by omega
+      subst k
+      simp at hk
+      omega
+    have hkone : k = 1 := by rw [hk] at hsizele; nlinarith
+    subst k
+    have hsize : size t = 12 := by omega
+    rw [hsize] at hbal
+    have heq : Q t c = Q c t := by omega
+    rw [heq] at hprodle
+    have hq3 : Q c t ≤ 3 := by nlinarith
+    rcases (show Q c t = 1 ∨ Q c t = 2 ∨ Q c t = 3 by omega) with hq | hq | hq
+    · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hsize, hq, by omega⟩)))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨hsize, hq, by omega⟩))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨hsize, hq, by omega⟩))))
+  · have hq : Q c t = 1 := by
+      have := hperiod hdvd
+      omega
+    rw [hq, mul_one] at hbal
+    have hrpos : 0 < Q t c := by nlinarith
+    have hrle : Q t c ≤ 4 := by
+      by_contra hnot
+      have : 5 ≤ Q t c := by omega
+      nlinarith
+    rcases (show Q t c = 1 ∨ Q t c = 2 ∨ Q t c = 3 ∨ Q t c = 4 by omega) with
+      hr | hr | hr | hr
+    · rw [hr] at hbal
+      exfalso
+      apply hdvd
+      use 1
+      omega
+    · exact Or.inr (Or.inr (Or.inl ⟨by nlinarith [hbal], hq, hr⟩))
+    · exact Or.inr (Or.inl ⟨by nlinarith [hbal], hq, hr⟩)
+    · exact Or.inl ⟨by nlinarith [hbal], hq, hr⟩
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
