@@ -40621,6 +40621,31 @@ theorem false_of_supported_atom_assignment_of_ledger
       _ ≤ 2 * (K (slot i) - 1) := hexcess i
       _ = 2 * (Kκ i - 1) := by rw [hKslot]
 
+/-- Obtain the support equivalence needed by a ledger directly from a
+canonical injective enumeration that exhausts the support finset. -/
+theorem exists_support_equiv_of_slots
+    {α κ : Type*} [DecidableEq α] [Fintype κ] [DecidableEq κ]
+    (E : Finset α) (slot : κ → α) (hslot : Function.Injective slot)
+    (hmem : ∀ i, slot i ∈ E) (hcover : ∀ x ∈ E, ∃ i, slot i = x) :
+    ∃ e : {x // x ∈ E} ≃ κ, ∀ i, e.symm i = ⟨slot i, hmem i⟩ := by
+  classical
+  let f : κ → {x // x ∈ E} := fun i => ⟨slot i, hmem i⟩
+  have hfInjective : Function.Injective f := by
+    intro i j hij
+    apply hslot
+    exact congrArg Subtype.val hij
+  have hfSurjective : Function.Surjective f := by
+    intro x
+    obtain ⟨i, hi⟩ := hcover x.1 x.2
+    refine ⟨i, ?_⟩
+    apply Subtype.ext
+    exact hi
+  let g : {x // x ∈ E} ≃ κ := (Equiv.ofBijective f ⟨hfInjective, hfSurjective⟩).symm
+  refine ⟨g, ?_⟩
+  intro i
+  apply Subtype.ext
+  rfl
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
