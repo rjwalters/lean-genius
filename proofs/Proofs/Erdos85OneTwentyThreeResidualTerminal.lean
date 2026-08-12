@@ -40576,6 +40576,51 @@ theorem false_of_six_three_three_two_two_supported_atom_assignment
           exact (htransport o).2.2 i
     _ = 12 * ![6, 3, 3, 2, 2] i := hload i
 
+/-- Uniform consumer for graph-supported atom assignments.  Once the used
+support is identified with a canonical finite index type, every standard
+atom-ledger endpoint receives its three hypotheses automatically. -/
+theorem false_of_supported_atom_assignment_of_ledger
+    {α O κ : Type*} [DecidableEq α] [Fintype O] [DecidableEq O]
+    [DecidableEq κ]
+    (E : Finset α) (K : α → ℕ) (Kκ : κ → ℕ)
+    (slot : κ → α) (hmem : ∀ i, slot i ∈ E)
+    (e : {c // c ∈ E} ≃ κ)
+    (heslot : ∀ i, e.symm i = ⟨slot i, hmem i⟩)
+    (hKslot : ∀ i, K (slot i) = Kκ i)
+    (atom : O → ZeroLayerAtom α)
+    (hvalid : ∀ o, Valid K (atom o))
+    (hsupport : ∀ o, SupportOn E (atom o))
+    (hload : ∀ i, (∑ o, load K (slot i) (atom o)) = 12 * K (slot i))
+    (hexcess : ∀ i, (∑ o, excess (slot i) (atom o)) ≤
+      2 * (K (slot i) - 1))
+    (hkill : ∀ atomκ : O → ZeroLayerAtom κ,
+      (∀ o, Valid Kκ (atomκ o)) →
+      (∀ i, (∑ o, load Kκ i (atomκ o)) = 12 * Kκ i) →
+      (∀ i, (∑ o, excess i (atomκ o)) ≤ 2 * (Kκ i - 1)) → False) :
+    False := by
+  classical
+  let atomκ : O → ZeroLayerAtom κ := fun o =>
+    reindex e (restrictTo (atom o) (hsupport o))
+  have htransport := fun o => supported_atom_reindex E slot hmem e heslot
+    K Kκ hKslot (atom o) (hsupport o) (hvalid o)
+  apply hkill atomκ (fun o => (htransport o).1)
+  · intro i
+    calc
+      (∑ o, load Kκ i (atomκ o)) = ∑ o, load K (slot i) (atom o) := by
+        apply Finset.sum_congr rfl
+        intro o _ho
+        exact (htransport o).2.2.1 i
+      _ = 12 * K (slot i) := hload i
+      _ = 12 * Kκ i := by rw [hKslot]
+  · intro i
+    calc
+      (∑ o, excess i (atomκ o)) = ∑ o, excess (slot i) (atom o) := by
+        apply Finset.sum_congr rfl
+        intro o _ho
+        exact (htransport o).2.2.2 i
+      _ ≤ 2 * (K (slot i) - 1) := hexcess i
+      _ = 2 * (Kκ i - 1) := by rw [hKslot]
+
 set_option maxHeartbeats 200000
 
 end ZeroLayerAtom
