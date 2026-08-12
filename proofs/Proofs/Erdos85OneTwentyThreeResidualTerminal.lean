@@ -43551,12 +43551,18 @@ theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
   · refine false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree L hnorm
         (hexcessGraph := ?_) (hkill := ?_)
-    · intro x hx
+    · intro D' U' R' O' C' E' K' e he
       exact degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
-        G hfree hmin hcard c₀ hc₀min hregChild hcardChild x
-          (Finset.mem_filter.mp hx).2
+        G hfree hmin hcard c₀ hc₀min hregChild hcardChild e
+          (Finset.mem_filter.mp he).2
     · intro atom hvalid hload hexcess
-      exact hkill atom hvalid hload hexcess
+      refine hkill atom hvalid (fun i => ?_) (fun i => ?_)
+      · convert hload i using 2 <;>
+          exact congrArg (fun I : Fintype _ => @Finset.univ _ I)
+            (Subsingleton.elim _ _)
+      · convert hexcess i using 2 <;>
+          exact congrArg (fun I : Fintype _ => @Finset.univ _ I)
+            (Subsingleton.elim _ _)
 
 
 end Erdos85
