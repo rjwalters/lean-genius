@@ -40057,22 +40057,28 @@ theorem nine_dvd_six_three_three_two_two_filtered_atom_total_load
   cases t with
   | C e =>
       fin_cases e
-      all_goals try norm_num [Valid, reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals try norm_num [Valid] at hvalid
+      all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | D e =>
       fin_cases e
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | B e f =>
       fin_cases e <;> fin_cases f
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
   | A a b c =>
       fin_cases a <;> fin_cases b <;> fin_cases c
       all_goals try norm_num [Valid] at hvalid
       all_goals try norm_num [reducedOrder] at hnotTwo
-      all_goals native_decide
+      all_goals norm_num [load, Fin.sum_univ_succ]
+      all_goals decide
 
 /-- The filtered `(6,3,3,2,2)` atom ledger is impossible modulo nine. -/
 theorem false_of_zeroLayer_reduced_used_orders_six_three_three_two_two_filtered_atom_ledger
@@ -41496,6 +41502,114 @@ theorem degree_sixteen_zeroLayer_orphan_atom_assignment_exists
     simpa [D, R, E, K] using h
   choose atom hatom using hex
   exact ⟨atom, hatom⟩
+
+/-- Parametric graph-facing adapter for every zero-layer partition killed by
+a standard atom-ledger endpoint.  The classifier's multiset equality names
+the used slots; all graph load/excess hypotheses are then discharged here. -/
+theorem false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 16 ≤ G.minDegree)
+    (hcard : Fintype.card V = 16 * (16 - 1) + 3)
+    (c₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc₀min : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c₀.supp.ncard ≤ x.supp.ncard)
+    (hregChild : ∀ x : minimumLayerVertex (secondOrderDefectGraph G) c₀,
+      (minimumLayerGraph G (secondOrderDefectGraph G) c₀).degree x = 0)
+    (hcardChild : Fintype.card
+      (minimumLayerVertex (secondOrderDefectGraph G) c₀) = 3)
+    (hthree : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (L : List ℕ)
+    (hpattern :
+      let D := secondOrderDefectGraph G
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      E.val.map K = (L : Multiset ℕ))
+    (hexcessGraph :
+      let D := secondOrderDefectGraph G
+      let U := minimumLayerImageFinset D c₀
+      let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+      let O := (Finset.univ \ U) \ R
+      let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+        componentRepresentative D o ∈ O)
+      let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+        componentRepresentative D e ∈ R)
+      let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+      ∀ e ∈ E, (∑ o ∈ C, zeroLayerAtomExcess G e o) ≤ 2 * (K e - 1))
+    (hkill : ∀ atom : {o // o ∈
+        (Finset.univ.filter (fun o : (secondOrderDefectGraph G).ConnectedComponent =>
+          componentRepresentative (secondOrderDefectGraph G) o ∈
+            (Finset.univ \ minimumLayerImageFinset (secondOrderDefectGraph G) c₀) \
+              Finset.univ.biUnion (minimumLayerExternalNeighborFinset G
+                (secondOrderDefectGraph G) c₀)))} →
+        ZeroLayerAtom (Fin L.length),
+      (∀ o, ZeroLayerAtom.Valid L.get (atom o)) →
+      (∀ i, (∑ o, ZeroLayerAtom.load L.get i (atom o)) = 12 * L.get i) →
+      (∀ i, (∑ o, ZeroLayerAtom.excess i (atom o)) ≤
+        2 * (L.get i - 1)) → False) : False := by
+  classical
+  let D := secondOrderDefectGraph G
+  let U := minimumLayerImageFinset D c₀
+  let R := Finset.univ.biUnion (minimumLayerExternalNeighborFinset G D c₀)
+  let O := (Finset.univ \ U) \ R
+  let C := Finset.univ.filter (fun o : D.ConnectedComponent =>
+    componentRepresentative D o ∈ O)
+  let E := Finset.univ.filter (fun e : D.ConnectedComponent =>
+    componentRepresentative D e ∈ R)
+  let K := fun e : D.ConnectedComponent => e.supp.ncard / 3
+  change E.val.map K = (L : Multiset ℕ) at hpattern
+  change ∀ e ∈ E, (∑ o ∈ C, zeroLayerAtomExcess G e o) ≤
+    2 * (K e - 1) at hexcessGraph
+  obtain ⟨slot, hslot, hmem, hKslot, hcover⟩ :=
+    ZeroLayerAtom.exists_slots_of_finset_map_eq_list E K L hpattern
+  obtain ⟨e, heslot⟩ := ZeroLayerAtom.exists_support_equiv_of_slots
+    E slot hslot hmem hcover
+  obtain ⟨atom, hatom⟩ := degree_sixteen_zeroLayer_orphan_atom_assignment_exists
+    G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree
+  letI : Fintype {o // o ∈ C} := Subtype.fintype _
+  apply ZeroLayerAtom.false_of_supported_atom_assignment_of_ledger
+    E K L.get slot hmem e heslot hKslot atom
+      (fun o => (hatom o).1) (fun o => (hatom o).2.1)
+  · intro i
+    have hload := degree_sixteen_zeroLayer_used_orphan_atomLoad_sum
+      G hfree hmin hcard c₀ hregChild hcardChild (slot i)
+        (Finset.mem_filter.mp (hmem i)).2
+    change (∑ o ∈ C, zeroLayerAtomLoad G (slot i) o) = 12 * K (slot i) at hload
+    calc
+      (∑ o : {o // o ∈ C}, ZeroLayerAtom.load K (slot i) (atom o)) =
+          ∑ o : {o // o ∈ C}, zeroLayerAtomLoad G (slot i) o.1 := by
+            apply Finset.sum_congr rfl
+            intro o _ho
+            exact ((hatom o).2.2.2.1 (slot i) (hmem i)).1.symm
+      _ = ∑ o ∈ C, zeroLayerAtomLoad G (slot i) o := by
+            symm
+            rw [Finset.sum_subtype C (fun _ => Iff.rfl)]
+      _ = 12 * K (slot i) := hload
+  · intro i
+    have hexcess := hexcessGraph (slot i) (hmem i)
+    calc
+      (∑ o : {o // o ∈ C}, ZeroLayerAtom.excess (slot i) (atom o)) =
+          ∑ o : {o // o ∈ C}, zeroLayerAtomExcess G (slot i) o.1 := by
+            apply Finset.sum_congr rfl
+            intro o _ho
+            exact ((hatom o).2.2.2.1 (slot i) (hmem i)).2.symm
+      _ = ∑ o ∈ C, zeroLayerAtomExcess G (slot i) o := by
+            symm
+            rw [Finset.sum_subtype C (fun _ => Iff.rfl)]
+      _ ≤ 2 * (K (slot i) - 1) := hexcess
+  · intro atomκ hv hl hexc
+    apply hkill atomκ hv
+    · intro i
+      simpa using hl i
+    · intro i
+      simpa using hexc i
 
 /-- Graph-facing closure of the exceptional reduced used-order partition
 `(6,3,3,2,2)`. -/
