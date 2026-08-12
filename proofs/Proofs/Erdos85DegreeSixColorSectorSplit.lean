@@ -1880,6 +1880,67 @@ theorem degreeSix_exists_odd_to_even_quotient_ge_two
     rcases habEven with ⟨k, hk⟩
     omega⟩
 
+/-- The first odd-to-even cut edge is an exact integral cover. Its forward
+multiplicity is one of `2,4,6`, the reverse multiplicity is one, and the
+target order is the source order times that forward multiplicity. -/
+theorem degreeSix_exists_odd_to_even_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+      (componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2 ∨
+       componentQuotientMatrix G (secondOrderDefectGraph G) a b = 4 ∨
+       componentQuotientMatrix G (secondOrderDefectGraph G) a b = 6) ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1 ∧
+      b.supp.ncard = a.supp.ncard *
+        componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨a, b, haOdd, hbEven, hab2⟩ :=
+    degreeSix_exists_odd_to_even_quotient_ge_two
+      G hfree hmin hcard o c hoOdd hcEven
+  have habPos : 0 < Q a b := by omega
+  have hdiv := secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b habPos
+  have habDvd : a.supp.ncard ∣ b.supp.ncard := by
+    rcases hdiv with hab | hba
+    · exact hab
+    · exfalso
+      rcases hba with ⟨k, hk⟩
+      have haEven : Even a.supp.ncard := by
+        rw [hk]
+        exact hbEven.mul_right k
+      exact (Nat.not_even_iff_odd.mpr haOdd) haEven
+  have habNe : a.supp.ncard ≠ b.supp.ncard := by
+    intro h
+    have haEven : Even a.supp.ncard := h ▸ hbEven
+    exact (Nat.not_even_iff_odd.mpr haOdd) haEven
+  have habLt : a.supp.ncard < b.supp.ncard :=
+    lt_of_le_of_ne (Nat.le_of_dvd b.nonempty_supp.ncard_pos habDvd) habNe
+  have hentries := secondOrder_componentQuotientMatrix_entries_of_size_lt
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b habLt habPos
+  have hrow := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).1
+  have habLe : Q a b ≤ 6 := by
+    have hsingle : Q a b ≤ ∑ t, Q a t :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ b)
+    omega
+  have habEven := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).2.2 b hbEven
+  have habCases : Q a b = 2 ∨ Q a b = 4 ∨ Q a b = 6 := by
+    rcases habEven with ⟨k, hk⟩
+    omega
+  exact ⟨a, b, haOdd, hbEven, habCases, hentries.1, hentries.2.2.symm⟩
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
