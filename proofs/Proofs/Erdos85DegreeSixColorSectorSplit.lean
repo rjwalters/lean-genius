@@ -1087,6 +1087,20 @@ theorem false_of_degreeSix_orderTwelve_three_six_twelve_shape
   rw [hcc, hca, hcd, hce] at hsqa hsqd
   omega
 
+/-- Three-term form of the sparse order-twelve square terminal. -/
+theorem false_of_degreeSix_orderTwelve_sparse_square
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ)
+    (c a d : C)
+    (hc12 : size c = 12) (ha12 : size a = 12) (hd6 : size d = 6)
+    (hcc : Q c c = 2) (hca : Q c a = 3) (hcd : Q c d = 1)
+    (hbalDA : size d * Q d a = size a * Q a d)
+    (hsqa : Q c c * Q c a + Q c a * Q a a + Q c d * Q d a = 12)
+    (hsqd : Q c c * Q c d + Q c a * Q a d + Q c d * Q d d = 6)
+    (hdd : Q d d ≤ 3) : False := by
+  rw [hd6, ha12] at hbalDA
+  rw [hcc, hca, hcd] at hsqa hsqd
+  omega
+
 /-- Presburger kernel for the order-twelve contact classifier.  The six
 variables count positive contacts of types `(3,1,4)`, `(4,1,3)`, `(6,1,2)`,
 and `(12,q,q)` for `q=1,2,3`.  Used support order is either all 21 outside
@@ -2312,6 +2326,79 @@ theorem false_of_degreeSix_orderNine_singleton
       hfc hfe hfa hfb hc9 he3 ha9 hb9 hf3 hcc hce hca hcb hcf
       hecQ hee herow heprofile hfcQ hff hfrow hfprofile hsqce hgroup
 
+/-- Graph wrapper for the pointwise order-twelve positive-contact class. -/
+theorem degreeSix_orderTwelve_singleton_positive_contact_class
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c t : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc12 : c.supp.ncard = 12) (htc : t ≠ c)
+    (hqpos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t) :
+    (t.supp.ncard = 3 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 4) ∨
+    (t.supp.ncard = 4 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 3) ∨
+    (t.supp.ncard = 6 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 2) ∨
+    (t.supp.ncard = 12 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1) ∨
+    (t.supp.ncard = 12 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 2) ∨
+    (t.supp.ncard = 12 ∧ componentQuotientMatrix G (secondOrderDefectGraph G) c t = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t c = 3) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent := Finset.univ.erase c
+  have htS : t ∈ S := Finset.mem_erase.mpr ⟨htc, Finset.mem_univ t⟩
+  obtain ⟨_, _, hrow, hprod, hbal⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  have hqle : Q c t ≤ 4 := by
+    have hsingle : Q c t ≤ ∑ x ∈ S, Q c x :=
+      Finset.single_le_sum (f := Q c) (fun _ _ ↦ Nat.zero_le _) htS
+    simpa [S] using hsingle.trans_eq hrow
+  have hprodle : Q c t * Q t c ≤ 11 := by
+    have hsingle : Q c t * Q t c ≤ ∑ x ∈ S, Q c x * Q x c :=
+      Finset.single_le_sum (f := fun x ↦ Q c x * Q x c)
+        (fun _ _ ↦ Nat.zero_le _) htS
+    have hp : (∑ x ∈ S, Q c x * Q x c) = 11 := by
+      simpa [S, hc12] using hprod
+    omega
+  have htotalS : (∑ x ∈ S, x.supp.ncard) = 21 := by
+    have htotal : (∑ x : (secondOrderDefectGraph G).ConnectedComponent,
+        x.supp.ncard) = 33 := by
+      simpa [hcard] using sum_connectedComponent_supp_ncard (secondOrderDefectGraph G)
+    have hcMem : c ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+        (fun x ↦ x.supp.ncard) hcMem
+    dsimp [S]
+    omega
+  have hsizele : t.supp.ncard ≤ 21 := by
+    have hsingle : t.supp.ncard ≤ ∑ x ∈ S, x.supp.ncard :=
+      Finset.single_le_sum (f := fun x ↦ x.supp.ncard)
+        (fun _ _ ↦ Nat.zero_le _) htS
+    omega
+  exact degreeSix_orderTwelve_positive_contact_class Q (fun x ↦ x.supp.ncard)
+    c t hc12 htc (hr t) hsizele hqpos hqle hprodle (hbal t)
+      (fun hndvd ↦ secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c t
+          (by simpa [hc12] using hndvd))
+
 /-- The order-twelve singleton row has exactly one of its two feasible
 contact-count patterns. -/
 set_option maxHeartbeats 800000 in
@@ -2457,6 +2544,152 @@ theorem false_of_degreeSix_orderTwelve_three_orderFour_contacts
       heData.1 hfData.1 hef
   rw [heData.2, hfData.2] at hbound
   omega
+
+/-- The order-twelve singleton branch is impossible. -/
+set_option maxHeartbeats 800000 in
+theorem false_of_degreeSix_orderTwelve_singleton
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc12 : c.supp.ncard = 12) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent := Finset.univ.erase c
+  have hcounts := degreeSix_orderTwelve_singleton_contact_counts
+    G hfree hmin hcard u hu huRange huD hr c hsector hc12
+  dsimp at hcounts
+  rcases hcounts with hsparse | hdense
+  · rcases hsparse with ⟨hn3, hn4, hn6, hn121, hn122, hn123⟩
+    let A := S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 3
+    let D := S.filter fun t ↦ t.supp.ncard = 6 ∧ Q c t = 1
+    have hAcard : A.card = 1 := by simpa [A, S, Q] using hn123
+    have hDcard : D.card = 1 := by simpa [D, S, Q] using hn6
+    obtain ⟨a, haSet⟩ := Finset.card_eq_one.mp hAcard
+    obtain ⟨d, hdSet⟩ := Finset.card_eq_one.mp hDcard
+    have haMem : a ∈ A := by rw [haSet]; simp
+    have hdMem : d ∈ D := by rw [hdSet]; simp
+    have haFilter := Finset.mem_filter.mp haMem
+    have hdFilter := Finset.mem_filter.mp hdMem
+    have hac : a ≠ c := (Finset.mem_erase.mp haFilter.1).1
+    have hdc : d ≠ c := (Finset.mem_erase.mp hdFilter.1).1
+    have ha12 : a.supp.ncard = 12 := haFilter.2.1
+    have hca : Q c a = 3 := haFilter.2.2
+    have hd6 : d.supp.ncard = 6 := hdFilter.2.1
+    have hcd : Q c d = 1 := hdFilter.2.2
+    have had : a ≠ d := by intro h; subst d; omega
+    have hsupport : ∀ t, t ≠ c → t ≠ a → t ≠ d → Q c t = 0 := by
+      intro t htc hta htd
+      by_contra hq
+      have hclass := degreeSix_orderTwelve_singleton_positive_contact_class
+        G hfree hmin hcard u hu huRange huD hr c t hsector hc12 htc
+          (Nat.pos_of_ne_zero hq)
+      have htS : t ∈ S := Finset.mem_erase.mpr ⟨htc, Finset.mem_univ t⟩
+      rcases hclass with h3 | h4 | h6 | h121 | h122 | h123
+      · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 3 ∧ Q c x = 1) :=
+          Finset.mem_filter.mpr ⟨htS, h3.1, h3.2.1⟩
+        have hp := Finset.card_pos.mpr hm
+        simpa [S, Q] using hn3 at hp
+      · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 4 ∧ Q c x = 1) :=
+          Finset.mem_filter.mpr ⟨htS, h4.1, h4.2.1⟩
+        have hp := Finset.card_pos.mpr hm
+        simpa [S, Q] using hn4 at hp
+      · have hm : t ∈ D := Finset.mem_filter.mpr ⟨htS, h6.1, h6.2.1⟩
+        rw [hdSet] at hm
+        simp at hm
+        exact htd hm
+      · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 1) :=
+          Finset.mem_filter.mpr ⟨htS, h121.1, h121.2.1⟩
+        have hp := Finset.card_pos.mpr hm
+        simpa [S, Q] using hn121 at hp
+      · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 2) :=
+          Finset.mem_filter.mpr ⟨htS, h122.1, h122.2.1⟩
+        have hp := Finset.card_pos.mpr hm
+        simpa [S, Q] using hn122 at hp
+      · have hm : t ∈ A := Finset.mem_filter.mpr ⟨htS, h123.1, h123.2.1⟩
+        rw [haSet] at hm
+        simp at hm
+        exact hta hm
+    obtain ⟨_, hcc, _, _, _⟩ := degreeSix_singleton_component_quotient_row
+      G hfree hmin hcard u hu huRange huD hr c hsector
+    let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      ((Finset.univ.erase c).erase a).erase d
+    have haIn : a ∈ (Finset.univ.erase c : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨hac, Finset.mem_univ a⟩
+    have hdIn : d ∈ ((Finset.univ.erase c).erase a : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) :=
+      Finset.mem_erase.mpr ⟨had.symm,
+        Finset.mem_erase.mpr ⟨hdc, Finset.mem_univ d⟩⟩
+    have hcIn : c ∈ (Finset.univ : Finset
+        (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+    have hsqAgraph := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c a
+    have hsqA : (∑ t, Q c t * Q t a) = 12 := by
+      simpa [Q, Matrix.mul_apply, hac, ha12] using hsqAgraph
+    have hsqDgraph := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c d
+    have hsqD : (∑ t, Q c t * Q t d) = 6 := by
+      simpa [Q, Matrix.mul_apply, hdc, hd6] using hsqDgraph
+    have hzeroA : (∑ t ∈ R, Q c t * Q t a) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      have htd' := (Finset.mem_erase.mp ht).1
+      have ht2 := (Finset.mem_erase.mp ht).2
+      have hta' := (Finset.mem_erase.mp ht2).1
+      have htc' := (Finset.mem_erase.mp (Finset.mem_erase.mp ht2).2).1
+      simp [hsupport t htc' hta' htd']
+    have hzeroD : (∑ t ∈ R, Q c t * Q t d) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      have htd' := (Finset.mem_erase.mp ht).1
+      have ht2 := (Finset.mem_erase.mp ht).2
+      have hta' := (Finset.mem_erase.mp ht2).1
+      have htc' := (Finset.mem_erase.mp (Finset.mem_erase.mp ht2).2).1
+      simp [hsupport t htc' hta' htd']
+    have hsAc := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun t ↦ Q c t * Q t a) hcIn
+    have hsAa := Finset.sum_erase_add (Finset.univ.erase c)
+      (fun t ↦ Q c t * Q t a) haIn
+    have hsAd := Finset.sum_erase_add ((Finset.univ.erase c).erase a)
+      (fun t ↦ Q c t * Q t a) hdIn
+    have hsDc := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun t ↦ Q c t * Q t d) hcIn
+    have hsDa := Finset.sum_erase_add (Finset.univ.erase c)
+      (fun t ↦ Q c t * Q t d) haIn
+    have hsDd := Finset.sum_erase_add ((Finset.univ.erase c).erase a)
+      (fun t ↦ Q c t * Q t d) hdIn
+    have hsqa : Q c c * Q c a + Q c a * Q a a + Q c d * Q d a = 12 := by
+      dsimp [R] at hzeroA
+      omega
+    have hsqd : Q c c * Q c d + Q c a * Q a d + Q c d * Q d d = 6 := by
+      dsimp [R] at hzeroD
+      omega
+    have hbalDA := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) d a
+    have hdd := degreeSix_orderSix_component_diagonal_le_three
+      G hfree hmin hcard d (u d) (hu d) (huRange d) (huD d) hd6
+    exact false_of_degreeSix_orderTwelve_sparse_square Q
+      (fun t ↦ t.supp.ncard) c a d hc12 ha12 hd6 hcc hca hcd
+        hbalDA hsqa hsqd hdd
+  · exact false_of_degreeSix_orderTwelve_three_orderFour_contacts
+      G hfree hmin hcard u hu huRange huD c hc12 hdense.2.1
 
 /-- Graph instantiation of the forced order-three contact in the
 order-fifteen singleton branch. -/
