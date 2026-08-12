@@ -39540,6 +39540,299 @@ macro "prove_zeroLayer_weighted_atom_column" : tactic =>
         all_goals norm_num [load, excess, Fin.sum_univ_succ]
         all_goals simp_all [load, excess, Fin.sum_univ_succ])
 
+/-- Package a pointwise weighted atom certificate as the standard ledger
+endpoint consumed by the graph-facing partition adapter. -/
+theorem false_of_valid_atom_ledger_of_weighted_certificate
+    {O ι : Type*} [Fintype O] [DecidableEq O]
+    [Fintype ι] [DecidableEq ι]
+    (K : ι → ℕ) (y : ι → ℤ) (p : ι → ℕ)
+    (hcolumn : ∀ t : ZeroLayerAtom ι, Valid K t →
+      (∑ i, y i * (load K i t : ℤ)) ≤
+        ∑ i, (p i : ℤ) * (excess i t : ℤ))
+    (hgap : (∑ i, (p i : ℤ) * (2 * (K i - 1) : ℕ)) <
+      ∑ i, y i * (12 * K i : ℕ))
+    (atom : O → ZeroLayerAtom ι)
+    (hvalid : ∀ o, Valid K (atom o))
+    (hload : ∀ i, (∑ o, load K i (atom o)) = 12 * K i)
+    (hexcess : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (K i - 1)) : False := by
+  exact false_of_weighted_load_excess_certificate K y p
+    (fun o i => load K i (atom o)) (fun o i => excess i (atom o))
+    hload hexcess (fun o => hcolumn (atom o) (hvalid o)) hgap
+
+theorem thirteen_three_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 2), Valid ![13, 3] t →
+      (∑ i, ![(0 : ℤ), 1] i * (load ![13, 3] i t : ℤ)) ≤
+        ∑ i, (![0, 2] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_thirteen_three_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 2))
+    (hv : ∀ o, Valid ![13, 3] (atom o))
+    (hl : ∀ i, (∑ o, load ![13, 3] i (atom o)) = 12 * ![13, 3] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![13, 3] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![13, 3] ![(0 : ℤ), 1] ![0, 2] thirteen_three_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem eleven_five_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 2), Valid ![11, 5] t →
+      (∑ i, ![(0 : ℤ), 1] i * (load ![11, 5] i t : ℤ)) ≤
+        ∑ i, (![0, 3] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_eleven_five_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 2))
+    (hv : ∀ o, Valid ![11, 5] (atom o))
+    (hl : ∀ i, (∑ o, load ![11, 5] i (atom o)) = 12 * ![11, 5] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![11, 5] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![11, 5] ![(0 : ℤ), 1] ![0, 3] eleven_five_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem eleven_three_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![11, 3, 2] t →
+      (∑ i, ![(0 : ℤ), 0, 20] i * (load ![11, 3, 2] i t : ℤ)) ≤
+        ∑ i, (![17, 20, 20] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_eleven_three_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![11, 3, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![11, 3, 2] i (atom o)) = 12 * ![11, 3, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![11, 3, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![11, 3, 2] ![(0 : ℤ), 0, 20] ![17, 20, 20]
+      eleven_three_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem ten_six_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 2), Valid ![10, 6] t →
+      (∑ i, ![(0 : ℤ), 1] i * (load ![10, 6] i t : ℤ)) ≤
+        ∑ i, (![2, 3] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_ten_six_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 2))
+    (hv : ∀ o, Valid ![10, 6] (atom o))
+    (hl : ∀ i, (∑ o, load ![10, 6] i (atom o)) = 12 * ![10, 6] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![10, 6] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![10, 6] ![(0 : ℤ), 1] ![2, 3] ten_six_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem ten_four_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![10, 4, 2] t →
+      (∑ i, ![(4 : ℤ), 0, -4] i * (load ![10, 4, 2] i t : ℤ)) ≤
+        ∑ i, (![20, 0, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_ten_four_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![10, 4, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![10, 4, 2] i (atom o)) = 12 * ![10, 4, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![10, 4, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![10, 4, 2] ![(4 : ℤ), 0, -4] ![20, 0, 0]
+      ten_four_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem ten_three_three_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![10, 3, 3] t →
+      (∑ i, ![(0 : ℤ), 9, -5] i * (load ![10, 3, 3] i t : ℤ)) ≤
+        ∑ i, (![0, 20, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_ten_three_three_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![10, 3, 3] (atom o))
+    (hl : ∀ i, (∑ o, load ![10, 3, 3] i (atom o)) = 12 * ![10, 3, 3] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![10, 3, 3] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![10, 3, 3] ![(0 : ℤ), 9, -5] ![0, 20, 0]
+      ten_three_three_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem nine_seven_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 2), Valid ![9, 7] t →
+      (∑ i, ![(0 : ℤ), 1] i * (load ![9, 7] i t : ℤ)) ≤
+        ∑ i, (![2, 4] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_nine_seven_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 2))
+    (hv : ∀ o, Valid ![9, 7] (atom o))
+    (hl : ∀ i, (∑ o, load ![9, 7] i (atom o)) = 12 * ![9, 7] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![9, 7] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![9, 7] ![(0 : ℤ), 1] ![2, 4] nine_seven_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem nine_five_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![9, 5, 2] t →
+      (∑ i, ![(1 : ℤ), 0, 20] i * (load ![9, 5, 2] i t : ℤ)) ≤
+        ∑ i, (![17, 18, 20] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_nine_five_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![9, 5, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![9, 5, 2] i (atom o)) = 12 * ![9, 5, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![9, 5, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![9, 5, 2] ![(1 : ℤ), 0, 20] ![17, 18, 20]
+      nine_five_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem nine_four_three_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![9, 4, 3] t →
+      (∑ i, ![(4 : ℤ), 1, -4] i * (load ![9, 4, 3] i t : ℤ)) ≤
+        ∑ i, (![18, 2, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_nine_four_three_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![9, 4, 3] (atom o))
+    (hl : ∀ i, (∑ o, load ![9, 4, 3] i (atom o)) = 12 * ![9, 4, 3] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![9, 4, 3] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![9, 4, 3] ![(4 : ℤ), 1, -4] ![18, 2, 0]
+      nine_four_three_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem nine_three_two_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![9, 3, 2, 2] t →
+      (∑ i, ![(4 : ℤ), -4, 18, -16] i *
+          (load ![9, 3, 2, 2] i t : ℤ)) ≤
+        ∑ i, (![18, 0, 20, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_nine_three_two_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hv : ∀ o, Valid ![9, 3, 2, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![9, 3, 2, 2] i (atom o)) =
+      12 * ![9, 3, 2, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![9, 3, 2, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![9, 3, 2, 2] ![(4 : ℤ), -4, 18, -16] ![18, 0, 20, 0]
+      nine_three_two_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem eight_six_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![8, 6, 2] t →
+      (∑ i, ![(0 : ℤ), 1, -1] i * (load ![8, 6, 2] i t : ℤ)) ≤
+        ∑ i, (![0, 3, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_eight_six_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![8, 6, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![8, 6, 2] i (atom o)) = 12 * ![8, 6, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![8, 6, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![8, 6, 2] ![(0 : ℤ), 1, -1] ![0, 3, 0]
+      eight_six_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem eight_five_three_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![8, 5, 3] t →
+      (∑ i, ![(0 : ℤ), 0, 1] i * (load ![8, 5, 3] i t : ℤ)) ≤
+        ∑ i, (![0, 0, 2] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_eight_five_three_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![8, 5, 3] (atom o))
+    (hl : ∀ i, (∑ o, load ![8, 5, 3] i (atom o)) = 12 * ![8, 5, 3] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![8, 5, 3] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![8, 5, 3] ![(0 : ℤ), 0, 1] ![0, 0, 2]
+      eight_five_three_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem eight_three_three_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![8, 3, 3, 2] t →
+      (∑ i, ![(5 : ℤ), 9, -5, -10] i *
+          (load ![8, 3, 3, 2] i t : ℤ)) ≤
+        ∑ i, (![20, 20, 0, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_eight_three_three_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hv : ∀ o, Valid ![8, 3, 3, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![8, 3, 3, 2] i (atom o)) =
+      12 * ![8, 3, 3, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![8, 3, 3, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![8, 3, 3, 2] ![(5 : ℤ), 9, -5, -10] ![20, 20, 0, 0]
+      eight_three_three_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem seven_six_three_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 6, 3] t →
+      (∑ i, ![(0 : ℤ), 6, -6] i * (load ![7, 6, 3] i t : ℤ)) ≤
+        ∑ i, (![0, 18, 0] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_six_three_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![7, 6, 3] (atom o))
+    (hl : ∀ i, (∑ o, load ![7, 6, 3] i (atom o)) = 12 * ![7, 6, 3] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 6, 3] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![7, 6, 3] ![(0 : ℤ), 6, -6] ![0, 18, 0]
+      seven_six_three_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem seven_five_four_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 5, 4] t →
+      (∑ i, ![(0 : ℤ), 0, 1] i * (load ![7, 5, 4] i t : ℤ)) ≤
+        ∑ i, (![0, 0, 2] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_five_four_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 3))
+    (hv : ∀ o, Valid ![7, 5, 4] (atom o))
+    (hl : ∀ i, (∑ o, load ![7, 5, 4] i (atom o)) = 12 * ![7, 5, 4] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 5, 4] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![7, 5, 4] ![(0 : ℤ), 0, 1] ![0, 0, 2]
+      seven_five_four_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
+theorem seven_five_two_two_weighted_atom_column_standard :
+    ∀ t : ZeroLayerAtom (Fin 4), Valid ![7, 5, 2, 2] t →
+      (∑ i, ![(0 : ℤ), 1, -18, 19] i *
+          (load ![7, 5, 2, 2] i t : ℤ)) ≤
+        ∑ i, (![1, 3, 0, 20] i : ℤ) * (excess i t : ℤ) := by
+  prove_zeroLayer_weighted_atom_column
+
+theorem false_of_zeroLayer_reduced_used_orders_seven_five_two_two_standard_atom_ledger
+    {O : Type*} [Fintype O] [DecidableEq O]
+    (atom : O → ZeroLayerAtom (Fin 4))
+    (hv : ∀ o, Valid ![7, 5, 2, 2] (atom o))
+    (hl : ∀ i, (∑ o, load ![7, 5, 2, 2] i (atom o)) =
+      12 * ![7, 5, 2, 2] i)
+    (he : ∀ i, (∑ o, excess i (atom o)) ≤ 2 * (![7, 5, 2, 2] i - 1)) : False := by
+  exact false_of_valid_atom_ledger_of_weighted_certificate
+    ![7, 5, 2, 2] ![(0 : ℤ), 1, -18, 19] ![1, 3, 0, 20]
+      seven_five_two_two_weighted_atom_column_standard
+      (by norm_num [Fin.sum_univ_succ]) atom hv hl he
+
 /-- Computed column certificate for the reduced pattern `(7,7,2)`. -/
 theorem seven_seven_two_weighted_atom_column :
     ∀ t : ZeroLayerAtom (Fin 3), Valid ![7, 7, 2] t →
