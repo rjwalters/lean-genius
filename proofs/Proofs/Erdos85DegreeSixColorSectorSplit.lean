@@ -3519,6 +3519,211 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
   exact false_of_degreeSix_orderSix_three_contact Q (fun t ↦ t.supp.ncard)
     c e a hc6 he3 ha18 hcc hce hca hee hea hbalEA hsqe
 
+set_option maxHeartbeats 2000000 in
+/-- The residual `1+2` contact branch is impossible. -/
+theorem false_of_degreeSix_orderSix_one_two_contact_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (c e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hsector : triangleFreeCycleSector G u = {c})
+    (hc6 : c.supp.ncard = 6) (hec : e ≠ c) (he3 : e.supp.ncard = 3)
+    (hce : componentQuotientMatrix G (secondOrderDefectGraph G) c e = 1)
+    (hecQ : componentQuotientMatrix G (secondOrderDefectGraph G) e c = 2)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (hrowS : (∑ t ∈ (Finset.univ.erase c).erase e,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t) = 3)
+    (hcprofile : ∀ t ∈ (Finset.univ.erase c).erase e,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c t →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t c = 1 ∧
+        t.supp.ncard = 6 * componentQuotientMatrix G (secondOrderDefectGraph G) c t)
+    (hq1card : (((Finset.univ.erase c).erase e).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 1).card = 1)
+    (hq2card : (((Finset.univ.erase c).erase e).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) c t = 2).card = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase c).erase e
+  let D := S.filter fun t ↦ Q c t = 1
+  let A := S.filter fun t ↦ Q c t = 2
+  have hDcard : D.card = 1 := by simpa [D, S, Q] using hq1card
+  have hAcard : A.card = 1 := by simpa [A, S, Q] using hq2card
+  obtain ⟨d, hdSet⟩ := Finset.card_eq_one.mp hDcard
+  obtain ⟨a, haSet⟩ := Finset.card_eq_one.mp hAcard
+  have hdMem : d ∈ D := by rw [hdSet]; simp
+  have haMem : a ∈ A := by rw [haSet]; simp
+  have hdFilter := Finset.mem_filter.mp hdMem
+  have haFilter := Finset.mem_filter.mp haMem
+  have hdS : d ∈ S := hdFilter.1
+  have haS : a ∈ S := haFilter.1
+  have hcd : Q c d = 1 := hdFilter.2
+  have hca : Q c a = 2 := haFilter.2
+  have hdc : d ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hdS).2).1
+  have hde : d ≠ e := (Finset.mem_erase.mp hdS).1
+  have hac : a ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp haS).2).1
+  have hae : a ≠ e := (Finset.mem_erase.mp haS).1
+  have hda : d ≠ a := by intro h; subst a; omega
+  have hdData := hcprofile d hdS (by rw [hcd]; norm_num)
+  have haData := hcprofile a haS (by rw [hca]; norm_num)
+  have hd6 : d.supp.ncard = 6 := by rw [hdData.2, hcd]; norm_num
+  have ha12 : a.supp.ncard = 12 := by rw [haData.2, hca]; norm_num
+  obtain ⟨hrowE, heprofile⟩ := degreeSix_orderThree_zeroDiagonal_profile
+    G hfree hmin hcard e he3 hee
+  have hdeCases : Q d e = 0 ∨ Q d e = 1 := by
+    by_cases hz : Q d e = 0
+    · exact Or.inl hz
+    · have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e d
+      have hpos : 0 < Q e d := by
+        change e.supp.ncard * Q e d = d.supp.ncard * Q d e at hbal
+        rw [he3, hd6] at hbal
+        nlinarith
+      exact Or.inr (heprofile d hpos).1
+  have haeCases : Q a e = 0 ∨ Q a e = 1 := by
+    by_cases hz : Q a e = 0
+    · exact Or.inl hz
+    · have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e a
+      have hpos : 0 < Q e a := by
+        change e.supp.ncard * Q e a = a.supp.ncard * Q a e at hbal
+        rw [he3, ha12] at hbal
+        nlinarith
+      exact Or.inr (heprofile a hpos).1
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent := (S.erase d).erase a
+  have hdIn : d ∈ S := hdS
+  have haIn : a ∈ S.erase d := Finset.mem_erase.mpr ⟯un h ↦ hda h.symm, haS⟩
+  have hsD := Finset.sum_erase_add S (Q c) hdIn
+  have hsA := Finset.sum_erase_add (S.erase d) (Q c) haIn
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by dsimp [R]; omega
+  have hzero : ∀ t ∈ R, Q c t = 0 := by
+    intro t ht
+    have hle : Q c t ≤ ∑ x ∈ R, Q c x :=
+      Finset.single_le_sum (f := Q c) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hcIn : c ∈ (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+  have heIn : e ∈ (Finset.univ.erase c : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) :=
+    Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hsqEgraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c e
+  have hsqE : (∑ t, Q c t * Q t e) = 3 := by
+    simpa [Q, Matrix.mul_apply, hec.symm, he3] using hsqEgraph
+  have hsEc := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ Q c t * Q t e) hcIn
+  have hsEe := Finset.sum_erase_add (Finset.univ.erase c)
+    (fun t ↦ Q c t * Q t e) heIn
+  have hsEd := Finset.sum_erase_add S (fun t ↦ Q c t * Q t e) hdIn
+  have hsEa := Finset.sum_erase_add (S.erase d)
+    (fun t ↦ Q c t * Q t e) haIn
+  have hrestE : (∑ t ∈ R, Q c t * Q t e) = 0 := by
+    apply Finset.sum_eq_zero
+    intro t ht
+    simp [hzero t ht]
+  obtain ⟨_, hcc, _, _, _⟩ := degreeSix_singleton_component_quotient_row
+    G hfree hmin hcard u hu huRange huD hr c hsector
+  have hdeQ : Q d e = 1 := by
+    rcases hdeCases with hz | ho <;> rcases haeCases with ha0 | ha1
+    all_goals try exact ho
+    all_goals dsimp [R, S] at hrestE
+    all_goals change Q c e = 1 at hce
+    all_goals change Q e e = 0 at hee
+    all_goals omega
+  have haeQ : Q a e = 0 := by
+    rcases haeCases with hz | ho
+    · exact hz
+    · dsimp [R, S] at hrestE
+      change Q c e = 1 at hce
+      change Q e e = 0 at hee
+      omega
+  have hed : Q e d = 2 := by
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e d
+    change e.supp.ncard * Q e d = d.supp.ncard * Q d e at hb
+    rw [he3, hd6, hdeQ] at hb
+    omega
+  have hea : Q e a = 0 := by
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e a
+    change e.supp.ncard * Q e a = a.supp.ncard * Q a e at hb
+    rw [he3, ha12, haeQ] at hb
+    omega
+  have squareThree (z : _) (hzc : z ≠ c) (hzsize : z.supp.ncard = 6 ∨ z.supp.ncard = 12) :
+      (∑ t, Q c t * Q t z) = z.supp.ncard := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c z
+    simpa [Q, Matrix.mul_apply, hzc] using hs
+  have hsqD := squareThree d hdc (Or.inl hd6)
+  have hsqA := squareThree a hac (Or.inr ha12)
+  have expandSquare (z : _) :
+      (∑ t, Q c t * Q t z) = Q c c * Q c z + Q c e * Q e z +
+        Q c d * Q d z + Q c a * Q a z := by
+    have hsC := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun t ↦ Q c t * Q t z) hcIn
+    have hsE := Finset.sum_erase_add (Finset.univ.erase c)
+      (fun t ↦ Q c t * Q t z) heIn
+    have hsD := Finset.sum_erase_add S (fun t ↦ Q c t * Q t z) hdIn
+    have hsA := Finset.sum_erase_add (S.erase d)
+      (fun t ↦ Q c t * Q t z) haIn
+    have hrest : (∑ t ∈ R, Q c t * Q t z) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      simp [hzero t ht]
+    dsimp [R, S] at hrest
+    omega
+  have hsqd : Q c c * Q c d + Q c e * Q e d +
+      Q c d * Q d d + Q c a * Q a d = 6 := by
+    rw [expandSquare d] at hsqD
+    simpa [hd6] using hsqD
+  have hsqa : Q c c * Q c a + Q c e * Q e a +
+      Q c d * Q d a + Q c a * Q a a = 12 := by
+    rw [expandSquare a] at hsqA
+    simpa [ha12] using hsqA
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hdDiagIn : d ∈ (Finset.univ.erase c : Finset _) :=
+    Finset.mem_erase.mpr ⟨hdc, Finset.mem_univ d⟩
+  have haDiagIn : a ∈ (Finset.univ.erase c).erase d :=
+    Finset.mem_erase.mpr ⟨hda.symm, hdDiagIn |> (Finset.mem_erase.mp ·).2⟩
+  have htC := Finset.sum_erase_add (Finset.univ : Finset _) (fun t ↦ Q t t) hcIn
+  have htD := Finset.sum_erase_add (Finset.univ.erase c) (fun t ↦ Q t t) hdDiagIn
+  have htA := Finset.sum_erase_add ((Finset.univ.erase c).erase d)
+    (fun t ↦ Q t t) haDiagIn
+  have hdiagBudget : Q d d + Q a a ≤ 4 := by
+    change (∑ t, Q t t) = 6 at htrace
+    omega
+  have hbalCA := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c a
+  have hbalDA := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) d a
+  have hgroup := degreeSix_orderTwelve_two_orderSix_targets_le_one
+    G hfree hmin hcard u hu huRange huD a c d ha12 hc6 hd6 hdc
+  exact false_of_degreeSix_orderSix_one_two_contact Q (fun t ↦ t.supp.ncard)
+    c e d a hc6 he3 hd6 ha12 hcc hce hcd hca hed hea hbalCA hbalDA
+      hsqd hsqa hdiagBudget hgroup
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
