@@ -41385,6 +41385,20 @@ def AtomLedgerContradiction (L : List ℕ) : Prop :=
     (∀ i, (∑ o, load L.get i (atom o)) = 12 * L.get i) →
     (∀ i, (∑ o, excess i (atom o)) ≤ 2 * (L.get i - 1)) → False
 
+theorem atomLedgerContradiction_three_three_three_three_two_two :
+    AtomLedgerContradiction [3, 3, 3, 3, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  simpa using
+    false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
+      (O := O) atom hvalid hload hexcess
+
+theorem atomLedgerContradiction_three_three_two_two_two_two_two :
+    AtomLedgerContradiction [3, 3, 2, 2, 2, 2, 2] := by
+  intro O _ _ atom hvalid hload hexcess
+  simpa using
+    false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
+      (O := O) atom hvalid hload hexcess
+
 set_option maxHeartbeats 2000000 in
 theorem atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
     (a b c d e f g h : ℕ)
@@ -41481,18 +41495,8 @@ theorem atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
         (@false_of_zeroLayer_reduced_used_orders_four_three_three_two_two_two_atom_ledger)
     | simpa [AtomLedgerContradiction] using
         (@false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger)
-    | change AtomLedgerContradiction [3, 3, 3, 3, 2, 2]
-      dsimp [AtomLedgerContradiction]
-      intro O _ _ atom hvalid hload hexcess
-      simpa using
-        false_of_zeroLayer_reduced_used_orders_three_three_three_three_two_two_atom_ledger
-          atom hvalid hload hexcess
-    | change AtomLedgerContradiction [3, 3, 2, 2, 2, 2, 2]
-      dsimp [AtomLedgerContradiction]
-      intro O _ _ atom hvalid hload hexcess
-      simpa using
-        false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
-          atom hvalid hload hexcess
+    | exact atomLedgerContradiction_three_three_three_three_two_two
+    | exact atomLedgerContradiction_three_three_two_two_two_two_two
 
 
 end ZeroLayerAtom
@@ -43105,13 +43109,15 @@ theorem false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
   change E.val.map K = (L : Multiset ℕ) at hnorm
   rcases hroute with hexceptional | hkill
   · exact hgraph L hexceptional hnorm
-  · apply false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
+  · refine false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
       G hfree hmin hcard c₀ hc₀min hregChild hcardChild hthree L hnorm
+        (hexcessGraph := ?_) (hkill := ?_)
     · intro x hx
       exact degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
         G hfree hmin hcard c₀ hc₀min hregChild hcardChild x
           (Finset.mem_filter.mp hx).2
-    · exact hkill
+    · intro atom hvalid hload hexcess
+      exact hkill atom hvalid hload hexcess
 
 
 end Erdos85
