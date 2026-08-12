@@ -582,6 +582,241 @@ theorem degreeSix_orderNine_two_orderThree_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Once one order-three contact is fixed and a second such contact is
+excluded, the order-nine row has a unique arithmetic shape: one order-nine
+double contact, one order-nine single contact, and exactly one unused
+order-three component. -/
+theorem degreeSix_orderNine_single_contact_shape
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c e : C)
+    (hec : e ≠ c) (hc9 : size c = 9) (he3 : size e = 3)
+    (htotal : (∑ t : C, size t) = 33) (hlower : ∀ t, 3 ≤ size t)
+    (hrow : (∑ t ∈ Finset.univ.erase c, Q c t) = 4)
+    (hprod : (∑ t ∈ Finset.univ.erase c, Q c t * Q t c) = 8)
+    (hbal : ∀ t, size c * Q c t = size t * Q t c)
+    (hperiod : ∀ t, ¬ 9 ∣ size t → Q c t ≤ 1)
+    (hce : Q c e = 1) (hecQ : Q e c = 3)
+    (hnoOtherThree : ∀ f, f ≠ c → f ≠ e → size f = 3 → Q c f = 0) :
+    ∃ a b f : C,
+      a ≠ c ∧ a ≠ e ∧ b ≠ c ∧ b ≠ e ∧ b ≠ a ∧
+      f ≠ c ∧ f ≠ e ∧ f ≠ a ∧ f ≠ b ∧
+      size a = 9 ∧ size b = 9 ∧ size f = 3 ∧
+      Q c a = 2 ∧ Q a c = 2 ∧ Q c b = 1 ∧ Q b c = 1 ∧
+      Q c f = 0 ∧ ∀ x, x = c ∨ x = e ∨ x = a ∨ x = b ∨ x = f := by
+  let S : Finset C := Finset.univ.erase c
+  have heS : e ∈ S := Finset.mem_erase.mpr ⟨hec, Finset.mem_univ e⟩
+  have hclass : ∀ t ∈ S, 0 < Q c t →
+      (size t = 3 ∧ Q c t = 1 ∧ Q t c = 3) ∨
+      (size t = 9 ∧ Q c t = 1 ∧ Q t c = 1) ∨
+      (size t = 9 ∧ Q c t = 2 ∧ Q t c = 2) ∨
+      (size t = 18 ∧ Q c t = 2 ∧ Q t c = 1) := by
+    intro t htS hqpos
+    have htc : t ≠ c := (Finset.mem_erase.mp htS).1
+    have hqle : Q c t ≤ 4 := by
+      have hsingle : Q c t ≤ ∑ x ∈ S, Q c x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htS
+      simpa [S, hrow] using hsingle
+    have hple : Q c t * Q t c ≤ 8 := by
+      have hsingle : Q c t * Q t c ≤ ∑ x ∈ S, Q c x * Q x c :=
+        Finset.single_le_sum
+          (fun x (_ : x ∈ S) ↦ Nat.zero_le (Q c x * Q x c)) htS
+      simpa [S, hprod] using hsingle
+    have hsizele : size t ≤ 24 := by
+      have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+      have hsplit := Finset.sum_erase_add (Finset.univ : Finset C) size hcMem
+      have hsingle : size t ≤ ∑ x ∈ Finset.univ.erase c, size x :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htS
+      rw [htotal, hc9] at hsplit
+      omega
+    have hb := hbal t
+    rw [hc9] at hb
+    by_cases hdvd : 9 ∣ size t
+    · obtain ⟨k, hk⟩ := hdvd
+      have hkpos : 0 < k := by
+        by_contra hk0
+        push Not at hk0
+        have hkz : k = 0 := by omega
+        subst k
+        simp at hk
+        have := hlower t
+        omega
+      have hk12 : k = 1 ∨ k = 2 := by rw [hk] at hsizele; omega
+      rcases hk12 with rfl | rfl
+      · have hst : size t = 9 := by omega
+        rw [hst] at hb
+        have hrq : Q t c = Q c t := by omega
+        rw [hrq] at hple
+        have hq2 : Q c t ≤ 2 := by
+          by_contra hnot
+          have : 3 ≤ Q c t := by omega
+          nlinarith
+        rcases (show Q c t = 1 ∨ Q c t = 2 by omega) with hq | hq
+        · exact Or.inr (Or.inl ⟨hst, hq, by omega⟩)
+        · exact Or.inr (Or.inr (Or.inl ⟨hst, hq, by omega⟩))
+      · have hst : size t = 18 := by omega
+        rw [hst] at hb
+        have hqeven : Q c t = 2 * Q t c := by omega
+        rcases (show Q c t = 2 ∨ Q c t = 4 by
+          have : 0 < Q t c := by nlinarith
+          omega) with hq | hq
+        · exact Or.inr (Or.inr (Or.inr ⟨hst, hq, by omega⟩))
+        · have het : e ≠ t := by
+            intro h
+            subst t
+            omega
+          have htErase : t ∈ S.erase e :=
+            Finset.mem_erase.mpr ⟨het.symm, htS⟩
+          have hsE := Finset.sum_erase_add S (Q c) heS
+          have hsT := Finset.sum_erase_add (S.erase e) (Q c) htErase
+          have hrowS : (∑ x ∈ S, Q c x) = 4 := by simpa [S] using hrow
+          omega
+    · have hqone : Q c t = 1 := by
+        have := hperiod t hdvd
+        omega
+      rw [hqone, mul_one] at hb
+      have hrtpos : 0 < Q t c := by nlinarith
+      have hrtle : Q t c ≤ 3 := by
+        have := hlower t
+        nlinarith
+      rcases (show Q t c = 1 ∨ Q t c = 2 ∨ Q t c = 3 by omega) with hr | hr | hr
+      · rw [hr] at hb
+        have hst : size t = 9 := by omega
+        exact (hdvd (by rw [hst])).elim
+      · rw [hr] at hb
+        omega
+      · rw [hr] at hb
+        exact Or.inl ⟨by omega, hqone, hr⟩
+  let excess : C → ℕ := fun t ↦ Q c t * (Q t c - 1)
+  have hdecomp : ∀ t ∈ S, Q c t * Q t c = Q c t + excess t := by
+    intro t htS
+    by_cases hq : Q c t = 0
+    · simp [excess, hq]
+    · have ht := hclass t htS (Nat.pos_of_ne_zero hq)
+      rcases ht with h | h | h | h <;> rcases h with ⟨_, hqv, hrv⟩ <;>
+        simp [excess, hqv, hrv]
+  have hexcessSum : (∑ t ∈ S, excess t) = 4 := by
+    have hsum : 8 = 4 + ∑ t ∈ S, excess t := by
+      calc
+        8 = ∑ t ∈ S, Q c t * Q t c := by simpa [S] using hprod.symm
+        _ = ∑ t ∈ S, (Q c t + excess t) := Finset.sum_congr rfl hdecomp
+        _ = (∑ t ∈ S, Q c t) + ∑ t ∈ S, excess t := by
+          rw [Finset.sum_add_distrib]
+        _ = 4 + ∑ t ∈ S, excess t := by simpa [S] using hrow
+    omega
+  have heExcess : excess e = 2 := by simp [excess, hce, hecQ]
+  let T : Finset C := S.erase e
+  have hexcessT : (∑ t ∈ T, excess t) = 2 := by
+    have hsplit := Finset.sum_erase_add S excess heS
+    dsimp [T]
+    omega
+  have hTne : (∑ t ∈ T, excess t) ≠ 0 := by omega
+  obtain ⟨a, haT, haNe⟩ := Finset.exists_ne_zero_of_sum_ne_zero hTne
+  have haS : a ∈ S := (Finset.mem_erase.mp haT).2
+  have hae : a ≠ e := (Finset.mem_erase.mp haT).1
+  have hac : a ≠ c := (Finset.mem_erase.mp haS).1
+  have haPos : 0 < Q c a := by
+    by_contra hq0
+    push Not at hq0
+    have hqz : Q c a = 0 := by omega
+    simp [excess, hqz] at haNe
+  have haClass := hclass a haS haPos
+  have haData : size a = 9 ∧ Q c a = 2 ∧ Q a c = 2 := by
+    rcases haClass with h | h | h | h
+    · rcases h with ⟨ha3, _, _⟩
+      rw [hnoOtherThree a hac hae ha3] at haPos
+      omega
+    · rcases h with ⟨_, hq, hrq⟩
+      simp [excess, hq, hrq] at haNe
+    · exact h
+    · rcases h with ⟨_, hq, hrq⟩
+      simp [excess, hq, hrq] at haNe
+  have haExcess : excess a = 2 := by
+    simp [excess, haData.2.1, haData.2.2]
+  have hrowT : (∑ t ∈ T, Q c t) = 3 := by
+    have hsplit := Finset.sum_erase_add S (Q c) heS
+    have hrowS : (∑ t ∈ S, Q c t) = 4 := by simpa [S] using hrow
+    dsimp [T]
+    omega
+  let U : Finset C := T.erase a
+  have hrowU : (∑ t ∈ U, Q c t) = 1 := by
+    have hsplit := Finset.sum_erase_add T (Q c) haT
+    dsimp [U]
+    omega
+  have hUne : (∑ t ∈ U, Q c t) ≠ 0 := by omega
+  obtain ⟨b, hbU, hbNe⟩ := Finset.exists_ne_zero_of_sum_ne_zero hUne
+  have hbT : b ∈ T := (Finset.mem_erase.mp hbU).2
+  have hba : b ≠ a := (Finset.mem_erase.mp hbU).1
+  have hbS : b ∈ S := (Finset.mem_erase.mp hbT).2
+  have hbe : b ≠ e := (Finset.mem_erase.mp hbT).1
+  have hbc : b ≠ c := (Finset.mem_erase.mp hbS).1
+  have hbLe : Q c b ≤ ∑ t ∈ U, Q c t :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hbU
+  have hqcb : Q c b = 1 := by omega
+  have hbClass := hclass b hbS (by omega)
+  have hbData : size b = 9 ∧ Q b c = 1 := by
+    rcases hbClass with h | h | h | h
+    · rcases h with ⟨hb3, _, _⟩
+      rw [hnoOtherThree b hbc hbe hb3] at hqcb
+      contradiction
+    · exact ⟨h.1, h.2.2⟩
+    · omega
+    · omega
+  let R : Finset C := U.erase b
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by
+    have hsplit := Finset.sum_erase_add U (Q c) hbU
+    dsimp [R]
+    omega
+  have hsizeKnown : size c + size e + size a + size b = 30 := by
+    omega
+  have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have hsizeC := Finset.sum_erase_add (Finset.univ : Finset C) size hcMem
+  have hsizeE := Finset.sum_erase_add S size heS
+  have hsizeA := Finset.sum_erase_add T size haT
+  have hsizeB := Finset.sum_erase_add U size hbU
+  have hsizeR : (∑ t ∈ R, size t) = 3 := by
+    dsimp [S, T, U, R] at *
+    omega
+  have hRne : (∑ t ∈ R, size t) ≠ 0 := by omega
+  obtain ⟨f, hfR, hfNe⟩ := Finset.exists_ne_zero_of_sum_ne_zero hRne
+  have hfU : f ∈ U := (Finset.mem_erase.mp hfR).2
+  have hfb : f ≠ b := (Finset.mem_erase.mp hfR).1
+  have hfT : f ∈ T := (Finset.mem_erase.mp hfU).2
+  have hfa : f ≠ a := (Finset.mem_erase.mp hfU).1
+  have hfS : f ∈ S := (Finset.mem_erase.mp hfT).2
+  have hfe : f ≠ e := (Finset.mem_erase.mp hfT).1
+  have hfc : f ≠ c := (Finset.mem_erase.mp hfS).1
+  have hfLe : size f ≤ ∑ t ∈ R, size t :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hfR
+  have hf3 : size f = 3 := by have := hlower f; omega
+  have hqcf : Q c f = 0 := hnoOtherThree f hfc hfe hf3
+  have hRsingle : ∀ x ∈ R, x = f := by
+    intro x hx
+    by_contra hxf
+    have hfErase : f ∈ R.erase x :=
+      Finset.mem_erase.mpr ⟨fun hfx ↦ hxf hfx.symm, hfR⟩
+    have hsX := Finset.sum_erase_add R size hx
+    have hsF := Finset.sum_erase_add (R.erase x) size hfErase
+    have hxLower := hlower x
+    have hfLower := hlower f
+    omega
+  refine ⟨a, b, f, hac, hae, hbc, hbe, hba, hfc, hfe, hfa,
+    hfb, haData.1, hbData.1, hf3, haData.2.1, haData.2.2,
+    hqcb, hbData.2, hqcf, ?_⟩
+  intro x
+  by_cases hxc : x = c
+  · exact Or.inl hxc
+  have hxS : x ∈ S := Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩
+  by_cases hxe : x = e
+  · exact Or.inr (Or.inl hxe)
+  have hxT : x ∈ T := Finset.mem_erase.mpr ⟨hxe, hxS⟩
+  by_cases hxa : x = a
+  · exact Or.inr (Or.inr (Or.inl hxa))
+  have hxU : x ∈ U := Finset.mem_erase.mpr ⟨hxa, hxT⟩
+  by_cases hxb : x = b
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hxb)))
+  have hxR : x ∈ R := Finset.mem_erase.mpr ⟨hxb, hxU⟩
+  exact Or.inr (Or.inr (Or.inr (Or.inr (hRsingle x hxR))))
+
 /-- Two distinct nonnegative summands are bounded by the full finite sum. -/
 theorem two_distinct_terms_le_sum
     {C : Type*} [Fintype C] [DecidableEq C]
