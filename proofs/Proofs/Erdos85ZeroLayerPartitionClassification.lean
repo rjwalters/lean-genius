@@ -236,4 +236,36 @@ theorem exists_zeroLayer_reduced_partition_pattern_of_finset
       exact hparts x hxE)
   simpa using hm
 
+set_option maxHeartbeats 2000000 in
+/-- Remove the zero padding from a classified eight-slot pattern.  The
+mapped family has total mass sixteen and positive entries, so its cardinal
+is exactly the number of nonzero slots in the classifier witness. -/
+theorem finset_map_eq_nonzero_list_of_reduced_partition_pattern
+    {α : Type*} [DecidableEq α] (E : Finset α) (K : α → ℕ)
+    (hcard : E.card ≤ 8) (hsum : (∑ e ∈ E, K e) = 16)
+    (hparts : ∀ e ∈ E, 2 ≤ K e)
+    (a b c d e f g h : ℕ)
+    (hp : ZeroLayerReducedPartitionPattern a b c d e f g h)
+    (hmap : E.val.map K =
+      (↑([a, b, c, d, e, f, g, h].take E.card) : Multiset ℕ)) :
+    E.val.map K =
+      (↑([a, b, c, d, e, f, g, h].filter (fun k => k ≠ 0)) :
+        Multiset ℕ) := by
+  have hsumMap : (E.val.map K).sum = 16 := by simpa using hsum
+  have hzero : 0 ∉ E.val.map K := by
+    intro hz
+    obtain ⟨x, hx, hK⟩ := Multiset.mem_map.mp hz
+    have := hparts x hx
+    omega
+  have ha : a ≤ 16 := by
+    by_contra hnot
+    have h17 : 17 ≤ a := by omega
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h17
+    have hadd : 17 + k = k + 17 := by omega
+    rw [hadd] at hp
+    simp [ZeroLayerReducedPartitionPattern] at hp
+  interval_cases a <;> simp [ZeroLayerReducedPartitionPattern] at hp
+  all_goals repeat' first | rcases hp with hp | hp
+  all_goals interval_cases hc : E.card <;> simp_all
+
 end Erdos85
