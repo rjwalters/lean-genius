@@ -4442,6 +4442,58 @@ theorem false_of_degreeSix_threeTwelve_one_orderSix_branch
     G hfree hmin hcard u hu huRange huD a b t ha3 hb12 ht6 habNe hatNe
       hbtNe hba hab harith.1 (fun z hz ↦ harith.2 z hz)
 
+/-- The `(3,12)` odd-to-even cover is impossible once order-three diagonal
+entries vanish. -/
+theorem false_of_degreeSix_oddEven_cover_three_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hzero3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have haa : Q a a = 0 := hzero3 a ha3
+  have hshape := degreeSix_orderThree_twelve_residual_component_shape
+    G hfree hmin hcard hr a b ha3 hb12 haa hba
+  change
+    (∃ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 6 ∧ Q a t = 2 ∧ Q t a = 1 ∧
+      (∑ z ∈ (((Finset.univ.erase a).erase b).erase t), z.supp.ncard) = 12) ∨
+    (∃ t v : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ v ∧ t.supp.ncard = 3 ∧ v.supp.ncard = 3 ∧
+      Q a t = 1 ∧ Q t a = 1 ∧ Q a v = 1 ∧ Q v a = 1 ∧
+      (∑ z ∈ ((((Finset.univ.erase a).erase b).erase t).erase v),
+        z.supp.ncard) = 12) at hshape
+  rcases hshape with ⟨t, ht6, hat, hta, hrem⟩ |
+      ⟨t, v, htv, ht3, hv3, hat, hta, hav, hva, hrem⟩
+  · exact false_of_degreeSix_threeTwelve_one_orderSix_branch
+      G hfree hmin hcard u hu huRange huD hr a b t ha3 hb12 ht6 hat hta hba hrem
+  · have htaNe : t ≠ a := by intro h; subst t; omega
+    have htbNe : t ≠ b := by intro h; subst t; omega
+    have habNe : a ≠ b := by intro h; subst b; omega
+    exact false_of_degreeSix_threeTwelve_two_orderThree_branch
+      G hfree hmin hcard u hu huRange huD hr t a b ht3 ha3 hb12 htaNe
+        htbNe habNe (hzero3 t ht3) hta hat hba
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
