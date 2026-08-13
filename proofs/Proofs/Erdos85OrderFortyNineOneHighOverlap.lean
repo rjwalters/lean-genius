@@ -1494,6 +1494,58 @@ theorem orderFortyNineLeafComponentBranchCensus_le_one_of_order_six
     G hfree s x.1 y.1 (Finset.mem_filter.mp hx).2
       (Finset.mem_filter.mp hy).2 hAdj
 
+/-- Sharper component bound: a nonempty independent branch class forces all
+five neighbors of any one of its vertices into the complement.  The empty
+case uses the universal component lower bound six. -/
+theorem orderFortyNineLeafComponentBranchCensus_add_five_le_componentOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchCensus G v c s + 5 ≤
+      Fintype.card c.supp := by
+  let L := orderFortyNineLeafDefectGraph G v
+  let H := L.induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ \ S
+  change S.card + 5 ≤ Fintype.card c.supp
+  by_cases hS : S = ∅
+  · rw [hS, Finset.card_empty, zero_add]
+    exact (orderFortyNine_leafDefect_component_order_even_and_six_le
+      G hfree hmin hcard hHigh hv c).1.trans' (by omega)
+  · have hSnonempty : S.Nonempty := Finset.nonempty_iff_ne_empty.mpr hS
+    obtain ⟨x, hx⟩ := hSnonempty
+    have hHreg : H.degree x = 5 := by
+      rw [show H.degree x = L.degree x.1 by
+        exact degree_induce_connectedComponent_supp L c x]
+      exact orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+        G hfree hmin hcard hHigh hv x.1
+    have hsub : H.neighborFinset x ⊆ T := by
+      intro y hy
+      apply Finset.mem_sdiff.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      intro hyS
+      exact orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+        G hfree s x.1 y.1 (Finset.mem_filter.mp hx).2
+          (Finset.mem_filter.mp hyS).2 ((H.mem_neighborFinset x y).1 hy)
+    have hfive : 5 ≤ T.card := by
+      rw [← hHreg, ← H.card_neighborFinset_eq_degree]
+      exact Finset.card_le_card hsub
+    have hTcard : T.card = Fintype.card c.supp - S.card := by
+      dsimp only [T]
+      rw [Finset.card_sdiff,
+        Finset.inter_eq_left.mpr (Finset.subset_univ S), Finset.card_univ]
+    rw [hTcard] at hfive
+    omega
+
 end
 
 end Erdos85
