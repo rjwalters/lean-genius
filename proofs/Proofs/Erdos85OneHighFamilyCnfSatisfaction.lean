@@ -1470,6 +1470,19 @@ theorem oneHighFamilyAtMostOneBlockClausesVal_state
 def oneHighFamilyLiteralRow (val : DimacsValuation) (vars : Array Int) :
     Fin vars.size → Bool := fun i => dimacsLitValue val (vars.getD i.val 0)
 
+theorem seqPrefixTrue_oneHighFamilyLiteralRow
+    (val : DimacsValuation) (vars : Array Int) :
+    seqPrefixTrue (oneHighFamilyLiteralRow val vars) vars.size =
+      ((Finset.range vars.size).filter fun i =>
+        dimacsLitValue val (vars.getD i 0)).card := by
+  unfold seqPrefixTrue oneHighFamilyLiteralRow
+  congr 1
+  ext i
+  simp only [Finset.mem_filter, Finset.mem_range]
+  by_cases hi : i < vars.size
+  · simp [hi]
+  · simp [hi]
+
 structure OneHighFamilyInputAccumSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (input : Array Int × OneHighFamilyValState) : Prop where
