@@ -2384,6 +2384,45 @@ theorem orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
   rw [hdet, hk]
   ring
 
+/-- In the one-high stratum there is a canonical mate involution for which
+every non-mate pair obeys the cross-miss capacity bound used by the finite
+miss-table census. -/
+theorem orderFortyNine_exists_mate_crossMissCapacity_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s u, u ∈ ((Finset.univ.erase s).erase (mate s)) →
+        highBranchMissCount G v s (mate u) +
+          highBranchMissCount G v u (mate s) ≤ 5 := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  obtain ⟨mate, hmateInv, hmateAdj, hexact⟩ :=
+    orderFortyNine_exists_mate_exact_outerDefectBlocks
+      G hfree hmin hcard hv hunique
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s u hu
+  have h := (hexact s).2 u hu
+  omega
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
