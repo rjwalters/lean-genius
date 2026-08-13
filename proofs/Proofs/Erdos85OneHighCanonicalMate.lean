@@ -1833,6 +1833,15 @@ theorem card_oneHighEncodedFarNeighbors_eq_familyFarDegree
         (Fin.divNat (m := 8) (n := 5) i)
         (Fin.modNat (m := 8) (n := 5) i) := by rw [hb, hr]
 
+/-- Transport through a dependent family of finset equivalences. -/
+theorem finsetEquiv_apply_transport
+    {P α β : Type*} [DecidableEq α]
+    (B : P → Finset α) (e : ∀ p, {x : α // x ∈ B p} ≃ β)
+    {s t : P} (h : s = t) (y : {x : α // x ∈ B t}) :
+    e s ⟨y.1, by simpa [h] using y.2⟩ = e t y := by
+  subst t
+  rfl
+
 /-- Internal adjacency in literal Fin40 coordinates is exactly the unit-edge
 pattern emitted by `family_gen.py` for the selected family word. -/
 theorem oneHighRelabeledLeafGraph_adj_eq_familyInternal
@@ -1887,8 +1896,14 @@ theorem oneHighRelabeledLeafGraph_adj_eq_familyInternal
   rw [hc, hw, ← hbi, ← hri]
   have hrj' : Fin.modNat (m := 8) (n := 5) j =
       leafLabel sx ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩ := by
-    rw [← hsxy] at hrj
-    simpa using hrj
+    have htransport := finsetEquiv_apply_transport
+      (fun s => secondLayerBranch G v s) leafLabel hsxy
+      ⟨y.1, oneHighBranchOwner_mem G v y⟩
+    calc
+      _ = leafLabel sy ⟨y.1, oneHighBranchOwner_mem G v y⟩ := by
+        simpa [sy] using hrj
+      _ = leafLabel sx ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩ := by
+        simpa using htransport.symm
   rw [← hrj']
 
 /-- Complete semantic content of the PURE family CNF before Tseitin and
