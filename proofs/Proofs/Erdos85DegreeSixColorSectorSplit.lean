@@ -1827,7 +1827,7 @@ theorem exists_odd_to_even_step_of_positive_walk
     intro b hab hbEven
     induction hab with
     | refl => exact absurd hbEven (Nat.not_even_iff_odd.mpr hoOdd)
-    | @tail a b _ hab hpos ih =>
+    | @tail a b hab hpos ih =>
         by_cases haEven : Even (size a)
         · exact ih haEven
         · exact ⟨a, b, Nat.not_even_iff_odd.mp haEven, hbEven, hpos⟩
