@@ -4749,6 +4749,79 @@ theorem degreeSix_threeSix_residual_partition_counts
   change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
   simpa [Q, S] using contact_filter_counts_of_sum_four S (Q a) hp.1
 
+/-- Named extraction of the `[2,2]` partition of a mass-four contact row. -/
+theorem contact_sum_four_two_two_named
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (hsum : (∑ t ∈ S, q t) = 4)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 2) :
+    ∃ c d, c ≠ d ∧ S.filter (fun t ↦ q t ≠ 0) = {c, d} ∧
+      q c = 2 ∧ q d = 2 := by
+  obtain ⟨c, d, hcd, hF⟩ := Finset.card_eq_two.mp h2
+  have hcF : c ∈ S.filter (fun t ↦ q t = 2) := by rw [hF]; simp
+  have hdF : d ∈ S.filter (fun t ↦ q t = 2) := by rw [hF]; simp
+  have hcS := (Finset.mem_filter.mp hcF).1
+  have hdS := (Finset.mem_filter.mp hdF).1
+  have hqc := (Finset.mem_filter.mp hcF).2
+  have hqd := (Finset.mem_filter.mp hdF).2
+  refine ⟨c, d, hcd, ?_, hqc, hqd⟩
+  ext t
+  simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨htS, hqt⟩
+    by_contra hnot
+    push Not at hnot
+    have htriple : q c + q d + q t ≤ ∑ z ∈ S, q z := by
+      have htErase : t ∈ (S.erase c).erase d := by simp [htS, hnot.1, hnot.2]
+      have hsC := Finset.sum_erase_add S q hcS
+      have hdErase : d ∈ S.erase c := by simp [hdS, hcd.symm]
+      have hsD := Finset.sum_erase_add (S.erase c) q hdErase
+      have hsingle : q t ≤ ∑ z ∈ (S.erase c).erase d, q z :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htErase
+      omega
+    omega
+  · rintro (rfl | rfl) <;> simp [hcS, hdS, hqc, hqd]
+
+/-- Named extraction of the `[1,1,2]` partition of a mass-four contact row. -/
+theorem contact_sum_four_two_one_one_named
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (hsum : (∑ t ∈ S, q t) = 4)
+    (h1 : (S.filter fun t ↦ q t = 1).card = 2)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 1) :
+    ∃ c e f, c ≠ e ∧ c ≠ f ∧ e ≠ f ∧
+      S.filter (fun t ↦ q t ≠ 0) = {c, e, f} ∧
+      q c = 2 ∧ q e = 1 ∧ q f = 1 := by
+  obtain ⟨c, hFc⟩ := Finset.card_eq_one.mp h2
+  obtain ⟨e, f, hef, hFef⟩ := Finset.card_eq_two.mp h1
+  have hcF : c ∈ S.filter (fun t ↦ q t = 2) := by rw [hFc]; simp
+  have heF : e ∈ S.filter (fun t ↦ q t = 1) := by rw [hFef]; simp
+  have hfF : f ∈ S.filter (fun t ↦ q t = 1) := by rw [hFef]; simp
+  have hcS := (Finset.mem_filter.mp hcF).1
+  have heS := (Finset.mem_filter.mp heF).1
+  have hfS := (Finset.mem_filter.mp hfF).1
+  have hqc := (Finset.mem_filter.mp hcF).2
+  have hqe := (Finset.mem_filter.mp heF).2
+  have hqf := (Finset.mem_filter.mp hfF).2
+  have hce : c ≠ e := by intro h; subst e; omega
+  have hcf : c ≠ f := by intro h; subst f; omega
+  refine ⟨c, e, f, hce, hcf, hef, ?_, hqc, hqe, hqf⟩
+  ext t
+  simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨htS, hqt⟩
+    by_contra hnot
+    push Not at hnot
+    have htRest : t ∈ ((S.erase c).erase e).erase f := by
+      simp [htS, hnot.1, hnot.2.1, hnot.2.2]
+    have hsC := Finset.sum_erase_add S q hcS
+    have heErase : e ∈ S.erase c := by simp [heS, hce.symm]
+    have hsE := Finset.sum_erase_add (S.erase c) q heErase
+    have hfErase : f ∈ (S.erase c).erase e := by simp [hfS, hcf.symm, hef.symm]
+    have hsF := Finset.sum_erase_add ((S.erase c).erase e) q hfErase
+    have hsingle : q t ≤ ∑ z ∈ ((S.erase c).erase e).erase f, q z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htRest
+    omega
+  · rintro (rfl | rfl | rfl) <;> simp [hcS, heS, hfS, hqc, hqe, hqf]
+
 /-- Named form of the `[4]` contacted partition in a `(3,6)` cover: a
 unique order-twelve component receives quotient four, and every other
 residual component is unused by the source triangle. -/
