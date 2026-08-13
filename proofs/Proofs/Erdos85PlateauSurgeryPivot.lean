@@ -1,6 +1,7 @@
 import Proofs.Erdos85ComponentCompactNormalForm
 import Proofs.Erdos85ManufacturedCliquePivot
 import Proofs.Erdos85ManufacturedDefectClique
+import Proofs.Erdos85ManufacturedSelectorCompatibility
 
 /-!
 # A manufactured-clique surgery bound for minimal plateau cores
@@ -54,5 +55,41 @@ theorem OrderMinimalC4PlateauCore.exists_connected_surgeryPivot
     G D F A hDcard hWcard hDtight hcompat hnew
   exact selectorFamily_deleted_support_of_subset_survivingNeighborSelector
     G D pivot hpivot A hA
+
+/-- **Split-pivot repair contradiction.** These are the exact remaining
+construction obligations after the automatic old--old budget has been
+discharged.  Any such delete-`k`/add-`k+1` split-pivot repair contradicts
+one-step nonextension. -/
+theorem false_of_splitPivotRepair_of_no_witness_succ
+    {m d k : ℕ}
+    (G : SimpleGraph (Fin m)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin m) G)
+    (hnext : ¬ C4FreeMinDegreeWitness (m + 1) d)
+    (D : Finset (Fin m)) (hDcard : D.card = k)
+    {W : Type} [Fintype W] [DecidableEq W]
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (hWcard : Fintype.card W = k + 1)
+    (pivot : W → Fin m) (hpivot : ∀ w, pivot w ∈ D)
+    (A : W → Finset {v : Fin m // v ∉ D})
+    (hsub : ∀ w, A w ⊆ survivingNeighborSelector G D (pivot w))
+    (hfiber : ∀ u w, u ≠ w → pivot u = pivot w →
+      (A u ∩ A w).card ≤ 1)
+    (hnewNew : ∀ u w : W, u ≠ w →
+      (A u ∩ A w).card +
+        (F.neighborFinset u ∩ F.neighborFinset w).card ≤ 1)
+    (hmixed : ∀ x : {v : Fin m // v ∉ D}, ∀ w : W,
+      ((deleteVertexSetGraph G D).neighborFinset x ∩ A w).card +
+        (F.neighborFinset w |>.filter fun u => x ∈ A u).card ≤ 1)
+    (hcomp : ∀ v : {v : Fin m // v ∉ D},
+      d + (G.neighborFinset v.1 ∩ D).card ≤ G.degree v.1 +
+        (Finset.univ.filter fun w => v ∈ A w).card)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w) : False := by
+  have hcompat :
+      GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A :=
+    (pivotSubselectors_compatible_iff
+      G D hfree F pivot hpivot A hsub hfiber).2 ⟨hnewNew, hmixed⟩
+  apply hnext
+  exact c4FreeMinDegreeWitness_succ_of_delete_set_add_gadget
+    G D F A (by simp) hDcard hWcard hcompat hcomp hnew
 
 end Erdos85
