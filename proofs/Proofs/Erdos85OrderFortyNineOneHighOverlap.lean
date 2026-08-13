@@ -1733,6 +1733,110 @@ theorem orderFortyNine_crossBranch_outerDefect_adj_iff_leafDefect_adj
   exact (orderFortyNine_crossBranch_globalCommon_zero_iff_outerCommon_zero
     G hfree hmin hcard hv s t hst hx hy).symm
 
+/-- Ordered global-defect edges between two original high-root branches. -/
+def orderFortyNineLeafDefectBranchBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) : Finset (V × V) :=
+  (secondLayerBranch G v s ×ˢ secondLayerBranch G v t).filter fun xy =>
+    (secondOrderDefectGraph G).Adj xy.1 xy.2
+
+/-- On distinct branches, outer-defect block cardinality is exactly the
+cross-branch leaf-defect edge count. -/
+theorem card_orderFortyNineOuterDefectBlock_eq_leafDefectBranchBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) (hst : s ≠ t) :
+    (orderFortyNineOuterDefectBlock G v s t).card =
+      (orderFortyNineLeafDefectBranchBlock G v s t).card := by
+  apply Finset.card_bij (fun xy _ => (xy.1.1, xy.2.1))
+  · intro xy hxy
+    have hmem := Finset.mem_filter.mp hxy
+    have hprod := Finset.mem_product.mp hmem.1
+    have hx := (Finset.mem_filter.mp hprod.1).2
+    have hy := (Finset.mem_filter.mp hprod.2).2
+    have hAdj :=
+      (orderFortyNine_crossBranch_outerDefect_adj_iff_leafDefect_adj
+        G hfree hmin hcard hv s t hst hx hy).1 hmem.2
+    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hx, hy⟩, hAdj⟩
+  · intro a ha b hb hab
+    rcases a with ⟨a₁, a₂⟩
+    rcases b with ⟨b₁, b₂⟩
+    apply Prod.ext
+    · exact Subtype.ext (congrArg Prod.fst hab)
+    · exact Subtype.ext (congrArg Prod.snd hab)
+  · intro xy hxy
+    have hmem := Finset.mem_filter.mp hxy
+    have hprod := Finset.mem_product.mp hmem.1
+    have hxSecond : xy.1 ∈ secondLayer G v := by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨s, Finset.mem_univ _, hprod.1⟩
+    have hySecond : xy.2 ∈ secondLayer G v := by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨t, Finset.mem_univ _, hprod.2⟩
+    let x' : {z : V // z ∈ secondLayer G v} := ⟨xy.1, hxSecond⟩
+    let y' : {z : V // z ∈ secondLayer G v} := ⟨xy.2, hySecond⟩
+    have hOuterAdj :=
+      (orderFortyNine_crossBranch_outerDefect_adj_iff_leafDefect_adj
+        G hfree hmin hcard hv s t hst hprod.1 hprod.2).2 hmem.2
+    refine ⟨(x', y'), ?_, rfl⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr
+      ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hprod.1⟩,
+       Finset.mem_filter.mpr ⟨Finset.mem_univ _, hprod.2⟩⟩,
+      hOuterAdj⟩
+
+/-- Exact mate rigidity expressed entirely with cross-branch edge counts of
+the 5-regular leaf defect graph and overlap entries. -/
+theorem exists_orderFortyNine_mate_exact_leafDefect_overlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        ((orderFortyNineLeafDefectBranchBlock G v s (mate s)).card +
+          orderFortyNineOneHighOverlap G v s s +
+          orderFortyNineOneHighOverlap G v (mate s) (mate s) = 5) ∧
+        ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (orderFortyNineLeafDefectBranchBlock G v s u).card +
+            orderFortyNineOneHighOverlap G v s (mate u) +
+            orderFortyNineOneHighOverlap G v u (mate s) = 5 := by
+  obtain ⟨mate, hmateInv, hmateAdj, hrigid⟩ :=
+    exists_orderFortyNine_mate_exact_outerDefect_overlap
+      G hfree hmin hcard hHigh hv
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  have hmateNe : s ≠ mate s := by
+    intro h
+    exact G.loopless.irrefl s.1
+      (congrArg Subtype.val h ▸ hmateAdj s)
+  constructor
+  · rw [← card_orderFortyNineOuterDefectBlock_eq_leafDefectBranchBlock
+      G hfree hmin hcard hv s (mate s) hmateNe]
+    exact (hrigid s).1
+  · intro u hu
+    have hsu : s ≠ u := by
+      intro h
+      subst u
+      exact (Finset.mem_erase.mp (Finset.mem_erase.mp hu).2).1 rfl
+    rw [← card_orderFortyNineOuterDefectBlock_eq_leafDefectBranchBlock
+      G hfree hmin hcard hv s u hsu]
+    exact (hrigid s).2 u hu
+
 end
 
 end Erdos85
