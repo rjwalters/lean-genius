@@ -4129,4 +4129,170 @@ theorem oneHighFamilyCollectCommonsVal_count
       rw [oneHighStandardMate_even_pair pair hpair]
       rfl
 
+theorem oneHighFamilyCollectedCommons_inputSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {pairs : List (Nat × Nat)}
+    {input : Array Int × OneHighFamilyValState}
+    (hm : OneHighFamilyCollectedCommonsMatch pairs input)
+    (hs : OneHighFamilySemanticSound R input.2) :
+    OneHighFamilyInputAccumSound R input where
+  semantic := hs
+  nonzero := by
+    intro lit hlit
+    have hlitList : lit ∈ input.1.toList := by simpa using hlit
+    rw [hm.vars_eq] at hlitList
+    rcases List.mem_map.mp hlitList with ⟨id, hid, rfl⟩
+    rcases listForall₂_exists_left_of_mem hm.aligned hid with
+      ⟨p, _, hatom⟩
+    have hpos := (hs.ids.id_bounds _ hatom).1
+    exact_mod_cast (Nat.ne_of_gt hpos)
+  bounded := by
+    intro lit hlit
+    have hlitList : lit ∈ input.1.toList := by simpa using hlit
+    rw [hm.vars_eq] at hlitList
+    rcases List.mem_map.mp hlitList with ⟨id, hid, rfl⟩
+    rcases listForall₂_exists_left_of_mem hm.aligned hid with
+      ⟨p, _, hatom⟩
+    simpa using (hs.ids.id_bounds _ hatom).2
+
+noncomputable def oneHighFamilyPairedProductBlockStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a pair : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let bi := 2 * pair
+  let bj := bi + 1
+  let input := oneHighFamilyCollectCommonsVal R bi bj acc
+  let bound := 30 - 2 * oneHighFamilyInternalEdgesNat a bi -
+    2 * oneHighFamilyInternalEdgesNat a bj
+  oneHighFamilyEqualsBlockVal input.1 (oneHighFamilyInputAccumRow input)
+    bound input.2
+
+theorem oneHighFamilyPairedProductBlockStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {pair : Nat} (hpair : pair < 4)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyPairedProductBlockStepVal R a pair acc) := by
+  let input := oneHighFamilyCollectCommonsVal R
+    (2 * pair) (2 * pair + 1) acc
+  have hs := oneHighFamilyCollectCommonsVal_semanticSound
+    a R hc pair hpair acc hacc
+  let hm := oneHighFamilyCollectCommonsVal_match R
+    (2 * pair) (2 * pair + 1) acc
+  unfold oneHighFamilyPairedProductBlockStepVal
+  apply oneHighFamilyEqualsBlockVal_semanticSound R hs
+  · exact oneHighFamilyInputAccum_reifies R
+      (oneHighFamilyCollectedCommons_inputSound R hm hs)
+  · exact oneHighFamilyCollectCommonsVal_count a R hc pair hpair acc hacc
+
+theorem oneHighFamilyPairedProductBlockStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a pair : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyPairedProductBlockStepVal R a pair acc).1 =
+      oneHighFamilyPairedProductBlockStep a pair acc.1 := by
+  have hp := oneHighFamilyCollectCommonsVal_projection R
+    (2 * pair) (2 * pair + 1) acc
+  simp only [oneHighFamilyPairedProductBlockStepVal,
+    oneHighFamilyPairedProductBlockStep]
+  generalize hv : oneHighFamilyCollectCommonsVal R
+    (2 * pair) (2 * pair + 1) acc = input
+  rcases input with ⟨vars, st, val⟩
+  rw [hv] at hp
+  generalize hg : (oneHighFamilyBlockVertices (2 * pair)).foldl
+    (fun input x => (oneHighFamilyBlockVertices (2 * pair + 1)).foldl
+      (fun input z => oneHighFamilyCommonTseitinStep
+        (2 * pair) (2 * pair + 1) x z input) input) (#[], acc.1) = raw
+  rcases raw with ⟨rawVars, rawSt⟩
+  rw [hg] at hp
+  rcases hp with ⟨rfl, rfl⟩
+  simp
+
+noncomputable def oneHighFamilyPureClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 4)
+    (oneHighFamilyPairedProductBlockStepVal R a)
+    (oneHighFamilyLexClausesVal R a val)
+
+theorem oneHighFamilyPureClausesVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R (oneHighFamilyPureClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyLexClausesVal_semanticSound a R hc val)
+  intro pair hpair acc hacc
+  exact oneHighFamilyPairedProductBlockStepVal_semanticSound a R hc
+    (List.mem_range.mp hpair) hacc
+
+theorem oneHighFamilyPureClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyPureClausesVal R a val).1 = oneHighFamilyPureClauses a := by
+  unfold oneHighFamilyPureClausesVal oneHighFamilyPureClauses
+  calc
+    _ = oneHighFamilyRunList (List.range 4)
+        (oneHighFamilyPairedProductBlockStep a)
+        (oneHighFamilyLexClausesVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun pair acc => oneHighFamilyPairedProductBlockStepVal_state R a pair acc)
+    _ = _ := by rw [oneHighFamilyLexClausesVal_state]
+
+/-- The complete graph-to-DIMACS composition theorem for a PURE one-high
+family.  Counter auxiliaries are existentially supplied by the certified
+semantic runner. -/
+theorem oneHighFamilyPureClauses_dimacsSatisfiable
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R) :
+    ∃ val : DimacsValuation,
+      dimacsFormulaSatisfied val (oneHighFamilyPureClauses a).clauses := by
+  let initial : DimacsValuation := fun _ => false
+  let out := oneHighFamilyPureClausesVal R a initial
+  have hs := oneHighFamilyPureClausesVal_semanticSound a R hc initial
+  have hstate := oneHighFamilyPureClausesVal_state R a initial
+  refine ⟨out.2, ?_⟩
+  rw [← hstate]
+  exact hs.satisfied
+
+def OneHighPureFamilyDimacsUnsat (a : Nat) : Prop :=
+  ∀ val : DimacsValuation,
+    ¬dimacsFormulaSatisfied val (oneHighFamilyPureClauses a).clauses
+
+theorem oneHighPureFamily_constraints_false_of_dimacsUnsat
+    {a : Nat} (hunsat : OneHighPureFamilyDimacsUnsat a) :
+    ∀ (R : SimpleGraph (Fin 40)) (_ : DecidableRel R.Adj),
+      OneHighPureFamilyCnfConstraints a R → False := by
+  intro R _ hc
+  rcases oneHighFamilyPureClauses_dimacsSatisfiable a R hc with ⟨val, hval⟩
+  exact hunsat val hval
+
+def oneHighFamilyPureSatCnf (a : Nat) : Std.Sat.CNF Nat where
+  clauses := dimacsFormulaToSatClauses (oneHighFamilyPureClauses a).clauses
+
+theorem satCnf_of_dimacsFormulaSatisfied
+    {formula : Array DimacsClause} {val : DimacsValuation}
+    (hsat : dimacsFormulaSatisfied val formula)
+    (hnz : ∀ clause ∈ formula, DimacsClauseNonzero clause) :
+    ({ clauses := dimacsFormulaToSatClauses formula } : Std.Sat.CNF Nat).Sat
+      (satAssignmentOfDimacs val) := by
+  rw [Std.Sat.CNF.sat_def, Std.Sat.CNF.eval, Array.all_eq_true]
+  intro i hi
+  have hi' : i < formula.size := by
+    simpa [dimacsFormulaToSatClauses] using hi
+  simp only [dimacsFormulaToSatClauses, Array.getElem_map]
+  exact satClause_of_dimacsClauseSatisfied
+    (hnz _ (Array.getElem_mem hi')) (hsat _ (Array.getElem_mem hi'))
+
+theorem oneHighFamilyPureSatCnf_sat_of_constraints
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (hnz : ∀ clause ∈ (oneHighFamilyPureClauses a).clauses,
+      DimacsClauseNonzero clause) :
+    ∃ assignment : Nat → Bool,
+      (oneHighFamilyPureSatCnf a).Sat assignment := by
+  rcases oneHighFamilyPureClauses_dimacsSatisfiable a R hc with ⟨val, hval⟩
+  exact ⟨satAssignmentOfDimacs val,
+    satCnf_of_dimacsFormulaSatisfied hval hnz⟩
+
 end Erdos85
