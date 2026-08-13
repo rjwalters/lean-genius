@@ -656,6 +656,134 @@ theorem oneHighFamilyInternalUnitsVal_state
   exact oneHighFamilyRunListVal_state _ _ _ _
     (fun b acc => oneHighFamilyInternalBlockStepVal_state R a b acc)
 
+noncomputable def oneHighFamilyMatePairStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (b i j : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyEdgeUnitVal R (5 * b + i) (5 * (b + 1) + j) false acc
+
+theorem oneHighFamilyMatePairStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (b i j : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyMatePairStepVal R b i j acc).1 =
+      oneHighFamilyMatePairStep b i j acc.1 := by
+  rw [oneHighFamilyMatePairStepVal, oneHighFamilyEdgeUnitVal_state]
+  rfl
+
+theorem oneHighFamilyMatePair_edgeValue
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {b i j : Nat} (hb : b + 1 < 8) (hi : i < 5) (hj : j < 5)
+    (hmate : oneHighStandardMate (⟨b, by omega⟩ : Fin 8) =
+      (⟨b + 1, hb⟩ : Fin 8)) :
+    oneHighFamilyAtomValue R
+      (.edge (min (5 * b + i) (5 * (b + 1) + j))
+        (max (5 * b + i) (5 * (b + 1) + j))) = false := by
+  have hui : 5 * b + i < 40 := by omega
+  have huj : 5 * (b + 1) + j < 40 := by omega
+  let u : Fin 40 := ⟨5 * b + i, hui⟩
+  let v : Fin 40 := ⟨5 * (b + 1) + j, huj⟩
+  have hmateBlocks : Fin.divNat (m := 8) (n := 5) v =
+      oneHighStandardMate (Fin.divNat (m := 8) (n := 5) u) := by
+    rw [show Fin.divNat (m := 8) (n := 5) u =
+      (⟨b, by omega⟩ : Fin 8) by
+        apply Fin.ext
+        simp [u, Fin.divNat, Nat.mul_add_div, Nat.div_eq_of_lt hi]]
+    rw [hmate]
+    apply Fin.ext
+    simp [v, Fin.divNat, Nat.mul_add_div, Nat.div_eq_of_lt hj]
+  have hnotAdj := hc.relation.2.1 u v hmateBlocks
+  have hmin : min (5 * b + i) (5 * (b + 1) + j) = 5 * b + i :=
+    min_eq_left (by omega)
+  have hmax : max (5 * b + i) (5 * (b + 1) + j) =
+      5 * (b + 1) + j := max_eq_right (by omega)
+  simp [oneHighFamilyAtomValue, hmin, hmax, hui, huj, u, v,
+    hnotAdj]
+
+theorem oneHighFamilyMatePairStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {b i j : Nat} (hb : b + 1 < 8) (hi : i < 5) (hj : j < 5)
+    (hmate : oneHighStandardMate (⟨b, by omega⟩ : Fin 8) =
+      (⟨b + 1, hb⟩ : Fin 8)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyMatePairStepVal R b i j acc) := by
+  exact oneHighFamilyEdgeUnitVal_semanticSound R h _ _ false
+    (oneHighFamilyMatePair_edgeValue a R hc hb hi hj hmate)
+
+noncomputable def oneHighFamilyMateBlockStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (b : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 5) (fun i acc =>
+    oneHighFamilyRunListVal (List.range 5)
+      (fun j acc => oneHighFamilyMatePairStepVal R b i j acc) acc) acc
+
+theorem oneHighFamilyMateBlockStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {b : Nat} (hb : b + 1 < 8)
+    (hmate : oneHighStandardMate (⟨b, by omega⟩ : Fin 8) =
+      (⟨b + 1, hb⟩ : Fin 8)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyMateBlockStepVal R b acc) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ h
+  intro i hi acc hiSound
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ hiSound
+  intro j hj acc hjSound
+  exact oneHighFamilyMatePairStepVal_semanticSound a R hc hjSound hb
+    (List.mem_range.mp hi) (List.mem_range.mp hj) hmate
+
+theorem oneHighFamilyMateBlockStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (b : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyMateBlockStepVal R b acc).1 =
+      oneHighFamilyMateBlockStep b acc.1 := by
+  unfold oneHighFamilyMateBlockStepVal oneHighFamilyMateBlockStep
+  apply oneHighFamilyRunListVal_state
+  intro i acc
+  exact oneHighFamilyRunListVal_state _ _ _ _
+    (fun j acc => oneHighFamilyMatePairStepVal_state R b i j acc)
+
+noncomputable def oneHighFamilyBaseUnitsVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal [0, 2, 4, 6]
+    (oneHighFamilyMateBlockStepVal R) (oneHighFamilyInternalUnitsVal R a val)
+
+theorem oneHighFamilyBaseUnitsVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R (oneHighFamilyBaseUnitsVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyInternalUnitsVal_semanticSound a R hc val)
+  intro b hb acc hacc
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
+  rcases hb with rfl | rfl | rfl | rfl
+  · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
+      (b := 0) (by omega) (by native_decide)
+  · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
+      (b := 2) (by omega) (by native_decide)
+  · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
+      (b := 4) (by omega) (by native_decide)
+  · exact oneHighFamilyMateBlockStepVal_semanticSound a R hc hacc
+      (b := 6) (by omega) (by native_decide)
+
+theorem oneHighFamilyBaseUnitsVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyBaseUnitsVal R a val).1 = oneHighFamilyBaseUnits a := by
+  unfold oneHighFamilyBaseUnitsVal oneHighFamilyBaseUnits
+  calc
+    _ = oneHighFamilyRunList [0, 2, 4, 6] oneHighFamilyMateBlockStep
+        (oneHighFamilyInternalUnitsVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun b acc => oneHighFamilyMateBlockStepVal_state R b acc)
+    _ = _ := by rw [oneHighFamilyInternalUnitsVal_state]
+
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
