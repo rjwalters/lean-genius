@@ -3520,6 +3520,8 @@ three contact-square equations and the global trace. -/
 theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
@@ -3541,9 +3543,19 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     (hU : (((((Finset.univ.erase c).erase e).erase d).erase x).erase y :
       Finset (secondOrderDefectGraph G).ConnectedComponent) = {f}) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q c c = 2 at hcc
+  change Q c e = 1 at hce
+  change Q e c = 2 at hecQ
+  change Q e e = 0 at hee
+  change Q c d = 1 at hcd
+  change Q c x = 1 at hcx
+  change Q c y = 1 at hcy
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
-  have hfU : f ∈ U := by rw [hU]; simp
+  have hfU : f ∈ U := by
+    change f ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
   have hfy : f ≠ y := (Finset.mem_erase.mp hfU).1
   have hfx : f ≠ x := (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).1
   have hfd : f ≠ d := (Finset.mem_erase.mp
@@ -3572,7 +3584,10 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     have hX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d) F hxIn
     have hY := Finset.sum_erase_add
       ((((Finset.univ.erase c).erase e).erase d).erase x) F hyIn
-    have hlast : (∑ t ∈ U, F t) = F f := by simp [hU]
+    have hlast : (∑ t ∈ U, F t) = F f := by
+      change (∑ t ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y), F t) = F f
+      rw [hU]
+      simp
     dsimp [U] at hlast
     omega
   have hrow (z : _) : (∑ t, Q z t) = 6 :=
@@ -3636,7 +3651,7 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
   have hcontactF : Q d f + Q x f + Q y f = 4 := by
     have hs := hsq c f hfc.symm
     rw [expand (fun t ↦ Q c t * Q t f), hcc, hce, hcd, hcx, hcy, hcf,
-      hfcQ, hef, hf6] at hs
+      hef, hf6] at hs
     omega
   have hff : Q f f = 1 := by
     have hfRow := hrow f
@@ -3654,15 +3669,16 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     have hb := hbal x y
     rw [hx6, hy6] at hb
     omega
-  have contactSquare (z : _) (hzc : z ≠ c) (hz6 : z.supp.ncard = 6) :
+  have contactSquare (z : _) (hzc : z ≠ c) (hz6 : z.supp.ncard = 6)
+      (hcz : Q c z = 1) :
       Q d z + Q x z + Q y z = 4 - Q e z := by
-    have hs := hsq c z hzc
+    have hs := hsq c z hzc.symm
     rw [expand (fun t ↦ Q c t * Q t z), hcc, hce, hcd, hcx, hcy, hcf,
-      hz6] at hs
+      hz6, hcz] at hs
     omega
-  have hsd := contactSquare d hdc hd6
-  have hsx := contactSquare x hxc hx6
-  have hsy := contactSquare y hyc hy6
+  have hsd := contactSquare d hdc hd6 hcd
+  have hsx := contactSquare x hxc hx6 hcx
+  have hsy := contactSquare y hyc hy6 hcy
   have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) (by norm_num)
@@ -3682,12 +3698,12 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
       (by rw [hex, hx.2.1] at hsx; omega)
       (by rw [hed, hx.1] at hsd; omega)
       (by rw [hey, hx.2.2] at hsy; omega)
-      hdxSymm.symm hxySymm hdySymm hdiag
+      hdxSymm.symm hxySymm hdySymm (by omega)
   · apply false_of_degreeSix_orderSix_three_single_contacts_unused_six Q y d x
       (by rw [hey, hy.2.2] at hsy; omega)
       (by rw [hed, hy.1] at hsd; omega)
       (by rw [hex, hy.2.1] at hsx; omega)
-      hdySymm.symm hxySymm.symm hdxSymm hdiag
+      hdySymm.symm hxySymm.symm hdxSymm (by omega)
 
 /-- The residual single quotient-three contact branch is impossible. -/
 theorem false_of_degreeSix_orderSix_three_contact_branch
