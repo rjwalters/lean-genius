@@ -1573,6 +1573,78 @@ theorem contact_filter_counts_of_sum_three
     simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
+/-- The seven partitions of five, encoded by multiplicities of parts
+`1,...,5`. -/
+theorem contact_count_partition_of_weight_five
+    (n1 n2 n3 n4 n5 : ℕ)
+    (h : n1 + 2 * n2 + 3 * n3 + 4 * n4 + 5 * n5 = 5) :
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  have hn2 : n2 ≤ 2 := by omega
+  have hn3 : n3 ≤ 1 := by omega
+  have hn4 : n4 ≤ 1 := by omega
+  have hn5 : n5 ≤ 1 := by omega
+  interval_cases n5 <;> interval_cases n4 <;> interval_cases n3 <;>
+    interval_cases n2 <;> omega
+
+/-- Filter-count form of the seven partitions of a nonnegative finite row
+whose total mass is five. -/
+theorem contact_filter_counts_of_sum_five
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q : C → ℕ) (hsum : (∑ t ∈ S, q t) = 5) :
+    let n1 := (S.filter fun t ↦ q t = 1).card
+    let n2 := (S.filter fun t ↦ q t = 2).card
+    let n3 := (S.filter fun t ↦ q t = 3).card
+    let n4 := (S.filter fun t ↦ q t = 4).card
+    let n5 := (S.filter fun t ↦ q t = 5).card
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  dsimp
+  have hqle : ∀ t ∈ S, q t ≤ 5 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ x ∈ S, q x :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hpoint : ∀ t ∈ S, q t =
+      (if q t = 1 then 1 else 0) +
+      (if q t = 2 then 2 else 0) +
+      (if q t = 3 then 3 else 0) +
+      (if q t = 4 then 4 else 0) +
+      (if q t = 5 then 5 else 0) := by
+    intro t ht
+    have := hqle t ht
+    interval_cases q t <;> simp_all
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hweighted :
+      (S.filter fun t ↦ q t = 1).card +
+      2 * (S.filter fun t ↦ q t = 2).card +
+      3 * (S.filter fun t ↦ q t = 3).card +
+      4 * (S.filter fun t ↦ q t = 4).card +
+      5 * (S.filter fun t ↦ q t = 5).card = 5 := by
+    have h1 := hsumConst (fun t ↦ q t = 1) 1
+    have h2 := hsumConst (fun t ↦ q t = 2) 2
+    have h3 := hsumConst (fun t ↦ q t = 3) 3
+    have h4 := hsumConst (fun t ↦ q t = 4) 4
+    have h5 := hsumConst (fun t ↦ q t = 5) 5
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [h1, h2, h3, h4, h5] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
+  exact contact_count_partition_of_weight_five _ _ _ _ _ hweighted
+
 /-- Components of order at least three and total order six form either one
 order-six component or two order-three components. -/
 theorem component_orders_sum_six_classification
@@ -1689,6 +1761,50 @@ theorem degreeSix_orderThree_twelve_residual_contact_type_arithmetic
     (s = 3 ∧ q = 1 ∧ r = 1) ∨
     (s = 6 ∧ q = 2 ∧ r = 1) := by
   interval_cases s <;> interval_cases q <;> omega
+
+/-- Balance table for an order-twelve row contacting a heavy component in
+the `(3,12)` triangle branch, after imposing the residual square budget
+eleven. -/
+theorem degreeSix_orderTwelve_heavy_contact_type_arithmetic
+    (s q r : ℕ)
+    (hsize : s = 6 ∨ s = 9 ∨ s = 12 ∨ s = 15)
+    (hqpos : 0 < q) (hq5 : q ≤ 5) (hrpos : 0 < r)
+    (hprod : q * r ≤ 11) (hbal : 12 * q = s * r) :
+    (s = 6 ∧ q = 1 ∧ r = 2) ∨
+    (s = 6 ∧ q = 2 ∧ r = 4) ∨
+    (s = 12 ∧ q = 1 ∧ r = 1) ∨
+    (s = 12 ∧ q = 2 ∧ r = 2) ∨
+    (s = 12 ∧ q = 3 ∧ r = 3) := by
+  rcases hsize with rfl | rfl | rfl | rfl <;>
+    interval_cases q <;> omega
+
+/-- An empty heavy sector cannot satisfy the order-twelve residual row and
+square budgets. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_empty
+    (z : ℕ) (hrow : z = 5) (hprod : z * z = 11) : False := by
+  nlinarith
+
+/-- A single order-six heavy target cannot satisfy the order-twelve budgets
+when its balanced quotient pair is one of `(1,2)` or `(2,4)`. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_single_six
+    (z q r : ℕ)
+    (htype : (q = 1 ∧ r = 2) ∨ (q = 2 ∧ r = 4))
+    (hrow : q + z = 5) (hprod : q * r + z * z = 11) : False := by
+  rcases htype with h | h <;> rcases h with ⟨rfl, rfl⟩ <;> nlinarith
+
+/-- A single order-twelve heavy target cannot satisfy the residual budgets:
+eleven is not a sum of the two squares prescribed by the row. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+    (z q : ℕ) (hq : q = 1 ∨ q = 2 ∨ q = 3)
+    (hrow : q + z = 5) (hprod : q * q + z * z = 11) : False := by
+  rcases hq with rfl | rfl | rfl <;> nlinarith
+
+/-- One order-nine or order-fifteen heavy contact already exceeds the
+residual square budget eleven. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_large_contact
+    (q r : ℕ) (hprod : q * r ≤ 11)
+    (hlarge : q * r = 12 ∨ q * r = 20) : False := by
+  omega
 
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
@@ -3336,6 +3452,50 @@ theorem degreeSix_orderThree_after_twelve_cover_profile
     (hcontactSize t ht (hallPos t ht)).1,
     (hcontactSize t ht (hallPos t ht)).2⟩⟩
 
+/-- The preceding profile has exactly one of the seven partitions of five,
+expressed as contact-filter multiplicities. -/
+theorem degreeSix_orderThree_after_twelve_cover_partition_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (e a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3) (ha3 : a.supp.ncard = 3)
+    (hb12 : b.supp.ncard = 12) (hea : e ≠ a) (heb : e ≠ b)
+    (hab : a ≠ b)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (heaQ : componentQuotientMatrix G (secondOrderDefectGraph G) e a = 1)
+    (haeQ : componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1)
+    (hebQ : componentQuotientMatrix G (secondOrderDefectGraph G) e b = 0)
+    (hbeQ : componentQuotientMatrix G (secondOrderDefectGraph G) b e = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      ((Finset.univ.erase e).erase a).erase b
+    let n1 := (S.filter fun t ↦ Q e t = 1).card
+    let n2 := (S.filter fun t ↦ Q e t = 2).card
+    let n3 := (S.filter fun t ↦ Q e t = 3).card
+    let n4 := (S.filter fun t ↦ Q e t = 4).card
+    let n5 := (S.filter fun t ↦ Q e t = 5).card
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((Finset.univ.erase e).erase a).erase b
+  have hp := degreeSix_orderThree_after_twelve_cover_profile
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb hab hee heaQ haeQ hebQ hbeQ
+  change (∑ t ∈ S, Q e t) = 5 ∧ _ at hp
+  simpa [Q, S] using contact_filter_counts_of_sum_five S (Q e) hp.1
+
 /-- In the one-order-six branch of `(3,12)`, the forced contact back to the
 source triangle already contributes two to the order-six square budget, so
 the order-six diagonal is at most two. -/
@@ -3377,6 +3537,89 @@ theorem degreeSix_orderSix_after_three_twelve_cover_diagonal_le_two
   rw [ht6] at hsq
   rw [hta, hat] at hpair
   nlinarith
+
+/-- Row and square budgets for the order-twelve component in the two-triangle
+branch of `(3,12)`, restricted to the remaining non-triangle components. -/
+theorem degreeSix_orderTwelve_heavy_budget_after_three_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (b a : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb12 : b.supp.ncard = 12) (ha3 : a.supp.ncard = 3)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 4)
+    (hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ a → t.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) t b = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let H := (Finset.univ.erase b).erase a |>.filter
+      (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard ≠ 3)
+    (∑ t ∈ H, Q b t) + Q b b = 5 ∧
+    (∑ t ∈ H, Q b t * Q t b) + Q b b * Q b b = 11 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase b).erase a
+  let H := R.filter fun t ↦ t.supp.ncard ≠ 3
+  have hbaNe : b ≠ a := by intro h; subst b; omega
+  have hbIn : b ∈ (Finset.univ : Finset _) := Finset.mem_univ b
+  have haIn : a ∈ (Finset.univ.erase b : Finset _) :=
+    Finset.mem_erase.mpr ⟨hbaNe.symm, Finset.mem_univ a⟩
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrow
+  have hrB := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) hbIn
+  have hrA := Finset.sum_erase_add (Finset.univ.erase b) (Q b) haIn
+  have hRrow : (∑ t ∈ R, Q b t) + Q b b = 5 := by
+    dsimp [R]
+    change Q b a = 1 at hba
+    omega
+  have hzeroR : ∀ t ∈ R, t.supp.ncard = 3 → Q b t = 0 := by
+    intro t ht ht3
+    have hta : t ≠ a := (Finset.mem_erase.mp ht).1
+    exact (hzero3 t hta ht3).1
+  have hRtoH : (∑ t ∈ R, Q b t) = ∑ t ∈ H, Q b t := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · simp [ht3, hzeroR t ht ht3]
+    · simp [ht3]
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 15 := by
+    simpa [Q, Matrix.mul_apply, hb12] using hsqGraph
+  have hpB := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q b z * Q z b) hbIn
+  have hpA := Finset.sum_erase_add (Finset.univ.erase b)
+    (fun z ↦ Q b z * Q z b) haIn
+  have hRprod : (∑ t ∈ R, Q b t * Q t b) + Q b b * Q b b = 11 := by
+    dsimp [R]
+    change Q b a = 1 at hba
+    change Q a b = 4 at hab
+    rw [hba, hab] at hpA
+    rw [hsq] at hpB
+    omega
+  have hRprodToH : (∑ t ∈ R, Q b t * Q t b) =
+      ∑ t ∈ H, Q b t * Q t b := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · have hz := hzeroR t ht ht3
+      simp [ht3, hz]
+    · simp [ht3]
+  exact ⟨by rw [← hRtoH]; exact hRrow,
+    by rw [← hRprodToH]; exact hRprod⟩
 
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
