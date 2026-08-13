@@ -2,7 +2,7 @@ import Proofs.Erdos85OrderFortyNineNineHighContradiction
 import Proofs.Erdos85OrderFortyNineOneThreeHighProfile
 import Proofs.Erdos85OrderFortyNineFiveHighTripleBound
 import Proofs.Erdos85OrderFortyNineSevenHighProfile
-import Proofs.Erdos85OneHighCanonicalMate
+import Proofs.Erdos85OneHighFamilyCnfSemantics
 
 /-!
 # Order-49 stratum capstone
@@ -44,7 +44,7 @@ PURE CNF certificate supplies this proposition once its satisfaction adapter
 has been proved. -/
 def OneHighPureFamilyExcluded (a : Nat) : Prop :=
   ∀ (R : SimpleGraph (Fin 40)) (_ : DecidableRel R.Adj),
-    OneHighPureFamilyRelationConstraints a R → False
+    OneHighPureFamilyCnfConstraints a R → False
 
 /-- Excluding the five ordered profile words closes the one-high stratum. -/
 theorem orderFortyNineStratumExcluded_one_of_pureFamilies
@@ -61,7 +61,7 @@ theorem orderFortyNineStratumExcluded_one_of_pureFamilies
   have hv : G.degree v = 8 := by
     simpa [orderFortyNineHighVertices] using hvMem
   obtain ⟨a, R, hRdec, ha, hR⟩ :=
-    orderFortyNine_exists_pureFamilyRelation_of_one_high
+    orderFortyNine_exists_pureFamilyCnfConstraints_of_one_high
       G hfree hmin (Fintype.card_fin 49) hHigh hv
   letI : DecidableRel R.Adj := hRdec
   interval_cases a
