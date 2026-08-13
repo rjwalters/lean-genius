@@ -189,6 +189,20 @@ theorem oneHighFamilyRunListVal_state {α : Type} (xs : List α)
   rcases out with ⟨id, st'⟩
   simp [oneHighFamilyAtomIdVal, h]
 
+theorem oneHighFamilyAtomIdVal_result
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    let out := oneHighFamilyAtomIdVal R atom (st, val)
+    (atom, out.1) ∈ out.2.1.ids ∧
+      out.2.2 out.1 = oneHighFamilyAtomValue R atom := by
+  generalize h : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  constructor
+  · simpa [oneHighFamilyAtomIdVal, h] using
+      oneHighFamilyAtomId_mem atom st
+  · simp [oneHighFamilyAtomIdVal, h]
+
 theorem oneHighFamilyAtomIdVal_reifies
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
@@ -851,6 +865,90 @@ theorem oneHighFamilyBaseUnitsVal_state
       oneHighFamilyRunListVal_state _ _ _ _
         (fun b acc => oneHighFamilyMateBlockStepVal_state R b acc)
     _ = _ := by rw [oneHighFamilyInternalUnitsVal_state]
+
+noncomputable def oneHighFamilyC4SameMidpointStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j w : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let (eiw, acc) := oneHighFamilyEdgeIdVal R i w acc
+  let (ejw, acc) := oneHighFamilyEdgeIdVal R j w acc
+  (oneHighFamilyEmitVal [-(eiw : Int), -(ejw : Int)] acc).2
+
+theorem oneHighFamilyC4SameMidpointStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j w : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4SameMidpointStepVal R i j w acc).1 =
+      oneHighFamilyC4SameMidpointStep i j w acc.1 := by
+  generalize h₁ : oneHighFamilyAtomId
+    (.edge (min i w) (max i w)) acc.1 = out₁
+  rcases out₁ with ⟨eiw, st₁⟩
+  generalize h₂ : oneHighFamilyAtomId
+    (.edge (min j w) (max j w)) st₁ = out₂
+  rcases out₂ with ⟨ejw, st₂⟩
+  simp [oneHighFamilyC4SameMidpointStepVal, oneHighFamilyEdgeIdVal,
+    oneHighFamilyAtomIdVal, oneHighFamilyEmitVal,
+    oneHighFamilyC4SameMidpointStep, oneHighFamilyEdgeId, h₁, h₂]
+
+theorem oneHighFamilyC4SameMidpointStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i j w : Nat} (hi : i < 40) (hj : j < 40) (hw : w < 40)
+    (hij : i ≠ j)
+    (hblock : Fin.divNat (m := 8) (n := 5) (⟨i, hi⟩ : Fin 40) =
+      Fin.divNat (m := 8) (n := 5) (⟨j, hj⟩ : Fin 40)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4SameMidpointStepVal R i j w acc) := by
+  simp only [oneHighFamilyC4SameMidpointStepVal, oneHighFamilyEdgeIdVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R
+    (.edge (min i w) (max i w)) acc = out₁
+  rcases out₁ with ⟨eiw, acc₁⟩
+  have hs₁ := oneHighFamilyAtomIdVal_semanticSound R h
+    (.edge (min i w) (max i w))
+  rw [h₁] at hs₁
+  have hr₁ := oneHighFamilyAtomIdVal_result R
+    (.edge (min i w) (max i w)) acc.1 acc.2
+  rw [h₁] at hr₁
+  generalize h₂ : oneHighFamilyAtomIdVal R
+    (.edge (min j w) (max j w)) acc₁ = out₂
+  rcases out₂ with ⟨ejw, acc₂⟩
+  have hs₂ := oneHighFamilyAtomIdVal_semanticSound R hs₁
+    (.edge (min j w) (max j w))
+  rw [h₂] at hs₂
+  have hr₂ := oneHighFamilyAtomIdVal_result R
+    (.edge (min j w) (max j w)) acc₁.1 acc₁.2
+  rw [h₂] at hr₂
+  dsimp at hr₁ hr₂
+  have hstate₂ := oneHighFamilyAtomIdVal_state R
+    (.edge (min j w) (max j w)) acc₁.1 acc₁.2
+  rw [h₂] at hstate₂
+  have hm₁ : ((.edge (min i w) (max i w)), eiw) ∈ acc₂.1.ids := by
+    rw [hstate₂]
+    exact oneHighFamilyAtomId_ids_subset _ acc₁.1 _ hr₁.1
+  have hei : acc₂.2 eiw = decide
+      (R.Adj (⟨i, hi⟩ : Fin 40) ⟨w, hw⟩) := by
+    exact (hs₂.named _ eiw hm₁).trans (oneHighFamilyAtomValue_edge R hi hw)
+  have hej : acc₂.2 ejw = decide
+      (R.Adj (⟨j, hj⟩ : Fin 40) ⟨w, hw⟩) :=
+    hr₂.2.trans (oneHighFamilyAtomValue_edge R hj hw)
+  have hnot : ¬(acc₂.2 eiw = true ∧ acc₂.2 ejw = true) := by
+    rw [hei, hej]
+    simp only [decide_eq_true_eq]
+    intro hadj
+    have hzero := hc.relation.2.2.2.1
+      (⟨i, hi⟩ : Fin 40) ⟨j, hj⟩ (by exact Fin.ne_of_val_ne hij)
+      hblock
+    have hwmem : (⟨w, hw⟩ : Fin 40) ∈
+        R.neighborFinset ⟨i, hi⟩ ∩ R.neighborFinset ⟨j, hj⟩ := by
+      simp [SimpleGraph.mem_neighborFinset, hadj.1, hadj.2]
+    have hpos := Finset.card_pos.mpr ⟨_, hwmem⟩
+    omega
+  simp only [h₂]
+  apply oneHighFamilyEmitVal_semanticSound R hs₂
+  · exact dimacsClauseSatisfied_negative_pair hnot
+  · exact dimacsClauseBounded_negative_pair
+      (hs₂.ids.id_bounds _ hm₁).2
+      (hs₂.ids.id_bounds _ hr₂.1).2
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
