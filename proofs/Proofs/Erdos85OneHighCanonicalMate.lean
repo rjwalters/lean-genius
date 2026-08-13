@@ -1,4 +1,5 @@
 import Proofs.Erdos85PairedBlockRigidity
+import Proofs.Erdos85OrderFortyNineOneHighOverlap
 
 /-!
 # Canonical labeling of the one-high mate involution
@@ -1530,6 +1531,7 @@ theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
         secondLayerBranch G v s ≃ Fin 5),
       Function.Involutive mate ∧
       (∀ s, G.Adj s.1 (mate s).1) ∧
+      OneHighAugmentedFamilyLaws G v mate ∧
       (∀ s, branchLabel (mate s) =
         oneHighStandardMate (branchLabel s)) ∧
       (∀ i,
@@ -1609,8 +1611,11 @@ theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
         mate hmateInv hmateAdj branchLabel s
   let twoEdges := fun s => (hlabels s).choose
   let leafLabel := fun s => (hlabels s).choose_spec.choose
+  have haug : OneHighAugmentedFamilyLaws G v mate :=
+    oneHighAugmentedFamilyLaws_of_mate
+      G hfree hmin hcard hHigh hv mate hmateInv hmateAdj
   refine ⟨mate, branchLabel, twoEdges, leafLabel,
-    hmateInv, hmateAdj, hbranchMate, hfamily, ?_⟩
+    hmateInv, hmateAdj, haug, hbranchMate, hfamily, ?_⟩
   intro s
   exact (hlabels s).choose_spec.choose_spec
 
