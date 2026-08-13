@@ -2,6 +2,7 @@ import Proofs.Erdos85OrderFortyNineNineHighContradiction
 import Proofs.Erdos85OrderFortyNineOneThreeHighProfile
 import Proofs.Erdos85OrderFortyNineFiveHighTripleBound
 import Proofs.Erdos85OrderFortyNineSevenHighProfile
+import Proofs.Erdos85OneHighCanonicalMate
 
 /-!
 # Order-49 stratum capstone
@@ -37,6 +38,38 @@ def OrderFortyNineTripleCellExcluded (h t : ℕ) : Prop :=
     (∀ x : Fin 49, 7 ≤ G.degree x) →
     (orderFortyNineHighVertices G).card = h →
     orderFortyNineHighIncidenceCount G 3 = t → False
+
+/-- Semantic exclusion of one ordered one-high family profile.  A checked
+PURE CNF certificate supplies this proposition once its satisfaction adapter
+has been proved. -/
+def OneHighPureFamilyExcluded (a : Nat) : Prop :=
+  ∀ (R : SimpleGraph (Fin 40)) (_ : DecidableRel R.Adj),
+    OneHighPureFamilyRelationConstraints a R → False
+
+/-- Excluding the five ordered profile words closes the one-high stratum. -/
+theorem orderFortyNineStratumExcluded_one_of_pureFamilies
+    (hBBBB : OneHighPureFamilyExcluded 0)
+    (hABBB : OneHighPureFamilyExcluded 1)
+    (hAABB : OneHighPureFamilyExcluded 2)
+    (hAAAB : OneHighPureFamilyExcluded 3)
+    (hAAAA : OneHighPureFamilyExcluded 4) :
+    OrderFortyNineStratumExcluded 1 := by
+  intro G _ _ _ hfree hmin hHigh
+  have hnonempty : (orderFortyNineHighVertices G).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨v, hvMem⟩ := hnonempty
+  have hv : G.degree v = 8 := by
+    simpa [orderFortyNineHighVertices] using hvMem
+  obtain ⟨a, R, hRdec, ha, hR⟩ :=
+    orderFortyNine_exists_pureFamilyRelation_of_one_high
+      G hfree hmin (Fintype.card_fin 49) hHigh hv
+  letI : DecidableRel R.Adj := hRdec
+  interval_cases a
+  · exact hBBBB R inferInstance hR
+  · exact hABBB R inferInstance hR
+  · exact hAABB R inferInstance hR
+  · exact hAAAB R inferInstance hR
+  · exact hAAAA R inferInstance hR
 
 /-- The two triple-system cells `t=0,1` exhaust the three-high stratum. -/
 theorem orderFortyNineStratumExcluded_three_of_tripleCells
