@@ -395,6 +395,79 @@ theorem orderFortyNine_card_defectNeighbors_sdiff_centers_eq_five
   rw [Finset.card_sdiff, Finset.inter_comm, hinter, Finset.card_singleton,
     D.card_neighborFinset_eq_degree, hDdegree]
 
+/-- The defect graph induced on vertices outside the closed neighborhood of
+`v`.  In the one-high stratum this is the forty-vertex leaf layer. -/
+def orderFortyNineLeafDefectGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    SimpleGraph {y : V // y ≠ v ∧ ¬ G.Adj v y} :=
+  (secondOrderDefectGraph G).induce (fun y => y ≠ v ∧ ¬ G.Adj v y)
+
+noncomputable instance orderFortyNineLeafDefectGraphDecidableRel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    DecidableRel (orderFortyNineLeafDefectGraph G v).Adj :=
+  Classical.decRel _
+
+/-- The leaf defect graph is 5-regular in the one-high stratum. -/
+theorem orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∀ y, (orderFortyNineLeafDefectGraph G v).degree y = 5 := by
+  classical
+  let D := secondOrderDefectGraph G
+  intro y
+  have hydeg : G.degree y.1 = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard y.1 with hy7 | hy8
+    · exact hy7
+    · have hyHigh : y.1 ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hy8]
+      obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+      have hvHigh : v ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hv]
+      have hvw : v = w := by simpa [hw] using hvHigh
+      have hyw : y.1 = w := by simpa [hw] using hyHigh
+      exact (y.2.1 (hyw.trans hvw.symm)).elim
+  have hfive := orderFortyNine_card_defectNeighbors_sdiff_centers_eq_five
+    G hfree hmin hcard hHigh hv hydeg y.2.2
+  have hvDzero :=
+    (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+      G hfree hmin hcard hv).1
+  have hvDempty : D.neighborFinset v = ∅ := by
+    rw [← Finset.card_eq_zero, D.card_neighborFinset_eq_degree, hvDzero]
+  have hinter : D.neighborFinset y.1 ∩
+      {z : V | z ≠ v ∧ ¬ G.Adj v z}.toFinset =
+        D.neighborFinset y.1 \ G.neighborFinset v := by
+    ext z
+    simp only [Finset.mem_inter, Set.mem_toFinset, Set.mem_setOf_eq,
+      Finset.mem_sdiff, SimpleGraph.mem_neighborFinset]
+    constructor
+    · rintro ⟨hD, _hzv, hG⟩
+      exact ⟨hD, hG⟩
+    · rintro ⟨hD, hG⟩
+      refine ⟨hD, ?_, hG⟩
+      intro hzv
+      subst z
+      have : y.1 ∈ D.neighborFinset v := by
+        rw [SimpleGraph.mem_neighborFinset]
+        exact hD.symm
+      rw [hvDempty] at this
+      exact Finset.notMem_empty _ this
+  have himage := D.map_neighborFinset_induce
+    (s := {z : V | z ≠ v ∧ ¬ G.Adj v z}) y
+  have hcardImage := congrArg Finset.card himage
+  rw [Finset.card_map, hinter] at hcardImage
+  rw [← (orderFortyNineLeafDefectGraph G v).card_neighborFinset_eq_degree]
+  exact hcardImage.trans hfive
+
 end
 
 end Erdos85
