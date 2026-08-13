@@ -1867,6 +1867,44 @@ theorem false_of_degreeSix_threeTwelve_all_single_partition
   simp at hrowB hprodB
   exact false_of_degreeSix_orderTwelve_heavy_budget_empty z hrowB hprodB
 
+/-- A mass-five profile with one non-single entry has a singleton heavy
+filter, and the heavy component order is three times that entry. -/
+theorem heavy_filter_eq_single_of_unique_non_single
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size : C → ℕ) (u : C) (k : ℕ)
+    (hk : 2 ≤ k)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (htype : ∀ t ∈ S, q t = 1 ∨ q t = k)
+    (hfilter : S.filter (fun t ↦ q t = k) = {u}) :
+    S.filter (fun t ↦ size t ≠ 3) = {u} ∧
+      size u = 3 * k ∧ q u = k := by
+  have huFilter : u ∈ S.filter (fun t ↦ q t = k) := by
+    rw [hfilter]
+    simp
+  have huS : u ∈ S := (Finset.mem_filter.mp huFilter).1
+  have hqu : q u = k := (Finset.mem_filter.mp huFilter).2
+  have hsu : size u = 3 * k := by rw [hsize u huS, hqu]
+  have huHeavy : u ∈ S.filter (fun t ↦ size t ≠ 3) := by
+    refine Finset.mem_filter.mpr ⟨huS, ?_⟩
+    rw [hsu]
+    omega
+  have hsubset : S.filter (fun t ↦ size t ≠ 3) ⊆ {u} := by
+    intro t ht
+    have htS := (Finset.mem_filter.mp ht).1
+    have htNe := (Finset.mem_filter.mp ht).2
+    rcases htype t htS with hq1 | hqk
+    · exact (htNe (by rw [hsize t htS, hq1])).elim
+    · have htFilter : t ∈ S.filter (fun z ↦ q z = k) :=
+        Finset.mem_filter.mpr ⟨htS, hqk⟩
+      rw [hfilter] at htFilter
+      simpa using htFilter
+  refine ⟨Finset.Subset.antisymm hsubset ?_, hsu, hqu⟩
+  intro t ht
+  have htu : t = u := by simpa using ht
+  subst t
+  exact huHeavy
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
