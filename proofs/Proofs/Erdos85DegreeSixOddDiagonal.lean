@@ -409,6 +409,97 @@ theorem false_of_nine_pattern_four
     interval_cases (Q a f) <;> interval_cases (Q b f) <;>
       interval_cases (Q e f) <;> omega
 
+/-- Terminal for the first order-nine pattern with a two-triangle residual.
+Both triangles have zero contact with `w`.  Their row/square profiles force
+four reverse contacts through the two positive order-nine partners, whereas
+periodicity bounds those partners' combined contribution by two. -/
+theorem false_of_nine_pattern_one_two_triangles
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w a b e f : C)
+    (huniv : (Finset.univ : Finset C) = {w, a, b, e, f})
+    (hdist : w ≠ a ∧ w ≠ b ∧ w ≠ e ∧ w ≠ f ∧
+      a ≠ b ∧ a ≠ e ∧ a ≠ f ∧ b ≠ e ∧ b ≠ f ∧ e ≠ f)
+    (hw9 : size w = 9) (ha9 : size a = 9) (hb9 : size b = 9)
+    (he3 : size e = 3) (hf3 : size f = 3)
+    (hQwe : Q w e = 0) (hQwf : Q w f = 0)
+    (hQee : Q e e = 0) (hQff : Q f f = 0)
+    (hrow : ∀ c, (∑ t, Q c t) = 6)
+    (hsq : ∀ c, (∑ t, Q c t * Q t c) = size c + 3)
+    (hbal : ∀ c t, size c * Q c t = size t * Q t c)
+    (hgroupA : Q a e + Q a f ≤ 1)
+    (hgroupB : Q b e + Q b f ≤ 1) : False := by
+  have hrowe := hrow e
+  have hrowf := hrow f
+  have hsqe := hsq e
+  have hsqf := hsq f
+  rw [huniv] at hrowe hrowf hsqe hsqf
+  simp [hdist.1, hdist.2.1, hdist.2.2.1, hdist.2.2.2.1,
+    hdist.2.2.2.2.1, hdist.2.2.2.2.2.1,
+    hdist.2.2.2.2.2.2.1, hdist.2.2.2.2.2.2.2.1,
+    hdist.2.2.2.2.2.2.2.2.1, hdist.2.2.2.2.2.2.2.2.2,
+    hQee, hQff] at hrowe hrowf hsqe hsqf
+  have hew := hbal e w
+  have hea := hbal e a
+  have heb := hbal e b
+  have hfw := hbal f w
+  have hfa := hbal f a
+  have hfb := hbal f b
+  have hefbal := hbal e f
+  simp [he3, hf3, hw9, ha9, hb9, hQwe, hQwf] at hew hea heb hfw hfa hfb hefbal
+  rw [he3] at hsqe
+  rw [hf3] at hsqf
+  have heaLe : Q a e ≤ 1 := by omega
+  have hebLe : Q b e ≤ 1 := by omega
+  have hfaLe : Q a f ≤ 1 := by omega
+  have hfbLe : Q b f ≤ 1 := by omega
+  have hefLe : Q e f ≤ 6 := by omega
+  interval_cases (Q a e) <;> interval_cases (Q b e) <;>
+    interval_cases (Q a f) <;> interval_cases (Q b f) <;>
+      interval_cases (Q e f) <;> omega
+
+/-- Terminal for the second order-nine pattern with a two-triangle residual.
+Each triangle is forced to send all six row units to the order-eighteen
+partner, hence the reverse quotients are both one.  The order-eighteen
+partner's own row and square equations then demand incompatible diagonal
+values. -/
+theorem false_of_nine_pattern_two_two_triangles
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w t e f : C)
+    (huniv : (Finset.univ : Finset C) = {w, t, e, f})
+    (hdist : w ≠ t ∧ w ≠ e ∧ w ≠ f ∧ t ≠ e ∧ t ≠ f ∧ e ≠ f)
+    (hw9 : size w = 9) (ht18 : size t = 18)
+    (he3 : size e = 3) (hf3 : size f = 3)
+    (hQwt : Q w t = 4) (hQtw : Q t w = 2)
+    (hQwe : Q w e = 0) (hQwf : Q w f = 0)
+    (hQee : Q e e = 0) (hQff : Q f f = 0)
+    (hrow : ∀ c, (∑ z, Q c z) = 6)
+    (hsq : ∀ c, (∑ z, Q c z * Q z c) = size c + 3)
+    (hbal : ∀ c z, size c * Q c z = size z * Q z c) : False := by
+  have hrowe := hrow e
+  have hrowf := hrow f
+  have hrowt := hrow t
+  have hsqe := hsq e
+  have hsqf := hsq f
+  have hsqt := hsq t
+  rw [huniv] at hrowe hrowf hrowt hsqe hsqf hsqt
+  simp [hdist.1, hdist.2.1, hdist.2.2.1, hdist.2.2.2.1,
+    hdist.2.2.2.2.1, hdist.2.2.2.2.2, hQee, hQff] at hrowe hrowf hrowt hsqe hsqf hsqt
+  have hew := hbal e w
+  have het := hbal e t
+  have hfw := hbal f w
+  have hft := hbal f t
+  have hefbal := hbal e f
+  simp [he3, hf3, hw9, ht18, hQwe, hQwf] at hew het hfw hft hefbal
+  rw [he3] at hsqe
+  rw [hf3] at hsqf
+  simp [ht18, hQtw, hQwt] at hrowt hsqt
+  have hteLe : Q t e ≤ 1 := by omega
+  have htfLe : Q t f ≤ 1 := by omega
+  have hefLe : Q e f ≤ 6 := by omega
+  have httLe : Q t t ≤ 6 := by omega
+  interval_cases (Q t e) <;> interval_cases (Q t f) <;>
+    interval_cases (Q e f) <;> interval_cases (Q t t) <;> omega
+
 end OddDiagonal
 
 end Erdos85
