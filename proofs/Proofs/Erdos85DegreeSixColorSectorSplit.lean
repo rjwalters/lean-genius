@@ -6202,6 +6202,167 @@ theorem degreeSix_threeSix_unused_half_shape
       rcases htv with h0 | h61 | h62 | h122 <;> simp_all
     exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
 
+/-- If an unused half has total order twelve and its positive quotient
+support has one of the mass-two shapes above, then the entire half is one of
+`{12}`, `{6,6}`, or `{6,3,3}`. -/
+theorem degreeSix_threeSix_unused_half_full_shape
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q : C → ℕ)
+    (hsize : (∑ t ∈ S, size t) = 12)
+    (hmin : ∀ t ∈ S, 3 ≤ size t)
+    (hshape :
+      (∃ u, S.filter (fun t ↦ q t ≠ 0) = {u} ∧
+        ((size u = 6 ∧ q u = 2) ∨ (size u = 12 ∧ q u = 2))) ∨
+      (∃ u v, u ≠ v ∧ S.filter (fun t ↦ q t ≠ 0) = {u, v} ∧
+        size u = 6 ∧ q u = 1 ∧ size v = 6 ∧ q v = 1)) :
+    (∃ u, S = {u} ∧ size u = 12 ∧ q u = 2) ∨
+    (∃ u v, u ≠ v ∧ S = {u, v} ∧ size u = 6 ∧ size v = 6 ∧
+      ((q u = 2 ∧ q v = 0) ∨ (q u = 1 ∧ q v = 1))) ∨
+    (∃ u g h, u ≠ g ∧ u ≠ h ∧ g ≠ h ∧ S = {u, g, h} ∧
+      size u = 6 ∧ size g = 3 ∧ size h = 3 ∧
+      q u = 2 ∧ q g = 0 ∧ q h = 0) := by
+  rcases hshape with ⟨u, hP, hu6 | hu12⟩ | ⟨u, v, huv, hP, hu6, hqu, hv6, hqv⟩
+  · have huS : u ∈ S := (Finset.mem_filter.mp (by rw [hP]; simp)).1
+    have hqu : q u = 2 := hu6.2
+    let R := S.erase u
+    have hsumR : (∑ t ∈ R, size t) = 6 := by
+      have hs := Finset.sum_erase_add S size huS
+      dsimp [R]
+      rw [hu6.1] at hs
+      omega
+    have hcardRle : R.card ≤ 2 := by
+      have hthree : R.card * 3 ≤ ∑ t ∈ R, size t := by
+        calc
+          R.card * 3 = ∑ _t ∈ R, 3 := by simp
+          _ ≤ ∑ t ∈ R, size t := Finset.sum_le_sum fun t ht ↦
+            hmin t (Finset.mem_of_mem_erase ht)
+      omega
+    have hcardRpos : 0 < R.card := by
+      by_contra hn
+      have : R = ∅ := Finset.card_eq_zero.mp (by omega)
+      rw [this] at hsumR
+      simp at hsumR
+    have hcardR : R.card = 1 ∨ R.card = 2 := by omega
+    change (∑ t ∈ S.erase u, size t) = 6 at hsumR
+    rcases hcardR with hR1 | hR2
+    · obtain ⟨v, hRv⟩ := Finset.card_eq_one.mp hR1
+      change S.erase u = {v} at hRv
+      have hvR : v ∈ R := by change v ∈ S.erase u; rw [hRv]; simp
+      have hvS := Finset.mem_of_mem_erase hvR
+      have huv : u ≠ v := by
+        exact fun huv ↦ (Finset.mem_erase.mp hvR).1 huv.symm
+      have hv6 : size v = 6 := by rw [hRv] at hsumR; simpa using hsumR
+      have hqv : q v = 0 := by
+        by_contra hq
+        have hvP : v ∈ S.filter (fun t ↦ q t ≠ 0) := Finset.mem_filter.mpr ⟨hvS, hq⟩
+        rw [hP] at hvP
+        simpa [huv.symm] using hvP
+      refine Or.inr (Or.inl ⟨u, v, huv, ?_, hu6.1, hv6, Or.inl ⟨hqu, hqv⟩⟩)
+      ext t
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro htS
+        by_cases htu : t = u
+        · exact Or.inl htu
+        · have htR : t ∈ S.erase u := Finset.mem_erase.mpr ⟨htu, htS⟩
+          rw [hRv] at htR
+          exact Or.inr (Finset.mem_singleton.mp htR)
+      · rintro (rfl | rfl) <;> assumption
+    · obtain ⟨g, h, hgh, hRgh⟩ := Finset.card_eq_two.mp hR2
+      change S.erase u = {g, h} at hRgh
+      have hgR : g ∈ R := by change g ∈ S.erase u; rw [hRgh]; simp
+      have hhR : h ∈ R := by change h ∈ S.erase u; rw [hRgh]; simp
+      have hgS := Finset.mem_of_mem_erase hgR
+      have hhS := Finset.mem_of_mem_erase hhR
+      have hug : u ≠ g := fun hug ↦ (Finset.mem_erase.mp hgR).1 hug.symm
+      have huh : u ≠ h := fun huh ↦ (Finset.mem_erase.mp hhR).1 huh.symm
+      have hg3 : size g = 3 := by
+        have hgMin := hmin g hgS
+        have hhMin := hmin h hhS
+        rw [hRgh] at hsumR
+        simp [hgh] at hsumR
+        omega
+      have hh3 : size h = 3 := by
+        have hgMin := hmin g hgS
+        have hhMin := hmin h hhS
+        rw [hRgh] at hsumR
+        simp [hgh] at hsumR
+        omega
+      have hqzero (t : C) (htS : t ∈ S) (htu : t ≠ u) : q t = 0 := by
+        by_contra hq
+        have htP : t ∈ S.filter (fun z ↦ q z ≠ 0) := Finset.mem_filter.mpr ⟨htS, hq⟩
+        rw [hP] at htP
+        simpa [htu] using htP
+      have hqg := hqzero g hgS hug.symm
+      have hqh := hqzero h hhS huh.symm
+      refine Or.inr (Or.inr ⟨u, g, h, hug, huh, hgh, ?_, hu6.1, hg3, hh3,
+        hqu, hqg, hqh⟩)
+      ext t
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro htS
+        by_cases htu : t = u
+        · exact Or.inl htu
+        · have htR : t ∈ S.erase u := Finset.mem_erase.mpr ⟨htu, htS⟩
+          rw [hRgh] at htR
+          simpa using Or.inr htR
+      · rintro (rfl | rfl | rfl) <;> assumption
+  · have huS : u ∈ S := (Finset.mem_filter.mp (by rw [hP]; simp)).1
+    have hrest : S.erase u = ∅ := by
+      ext t
+      constructor
+      · intro ht
+        have htu := (Finset.mem_erase.mp ht).1
+        have htS := (Finset.mem_erase.mp ht).2
+        have hs := Finset.sum_erase_add S size huS
+        have htMin := hmin t htS
+        rw [hu12.1] at hs
+        have hsingle : size t ≤ ∑ z ∈ S.erase u, size z :=
+          Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) ht
+        omega
+      · simp
+    refine Or.inl ⟨u, ?_, hu12⟩
+    ext t
+    simp only [Finset.mem_singleton]
+    constructor
+    · intro htS
+      by_contra htu
+      have : t ∈ S.erase u := Finset.mem_erase.mpr ⟨htu, htS⟩
+      rw [hrest] at this
+      simp at this
+    · rintro rfl
+      exact huS
+  · have huS : u ∈ S := (Finset.mem_filter.mp (by rw [hP]; simp [huv])).1
+    have hvS : v ∈ S := (Finset.mem_filter.mp (by rw [hP]; simp [huv])).1
+    have hrest : (S.erase u).erase v = ∅ := by
+      ext t
+      constructor
+      · intro ht
+        have htS := Finset.mem_of_mem_erase (Finset.mem_of_mem_erase ht)
+        have hsU := Finset.sum_erase_add S size huS
+        have hvErase : v ∈ S.erase u := Finset.mem_erase.mpr ⟨huv.symm, hvS⟩
+        have hsV := Finset.sum_erase_add (S.erase u) size hvErase
+        have htMin := hmin t htS
+        rw [hu6] at hsU
+        rw [hv6] at hsV
+        have hsingle : size t ≤ ∑ z ∈ (S.erase u).erase v, size z :=
+          Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) ht
+        omega
+      · simp
+    refine Or.inr (Or.inl ⟨u, v, huv, ?_, hu6, hv6, Or.inr ⟨hqu, hqv⟩⟩)
+    ext t
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro htS
+      by_cases htu : t = u
+      · exact Or.inl htu
+      by_cases htv : t = v
+      · exact Or.inr htv
+      have : t ∈ (S.erase u).erase v := by simp [htS, htu, htv]
+      rw [hrest] at this
+      simp at this
+    · rintro (rfl | rfl) <;> assumption
+
 /-- Before using the full order-six budget to remove order four, balance
 and unused mass two give a slightly broader support classification. -/
 theorem degreeSix_threeSix_unused_half_shape_with_four
