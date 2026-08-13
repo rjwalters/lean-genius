@@ -5097,6 +5097,86 @@ theorem degreeSix_threeSix_unused_half_shape
       rcases htv with h0 | h61 | h62 | h122 <;> simp_all
     exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
 
+/-- If every residual component contacted by the source triangle is itself
+an order-three component, grouped periodicity forces the order-six diagonal
+to be three, contradicting its square bound. -/
+theorem false_of_degreeSix_threeSix_all_contacted_triangles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hall3 : ∀ t ∈ (Finset.univ.erase a).erase b,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) a t →
+        t.supp.ncard = 3) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := S.filter fun t ↦ Q a t ≠ 0
+  let U := S.filter fun t ↦ Q a t = 0
+  change Q b a = 1 at hba
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have hzeroA : ∀ t ∈ A, Q b t = 0 := by
+    intro t ht
+    have htS := (Finset.mem_filter.mp ht).1
+    have hqat := (Finset.mem_filter.mp ht).2
+    have ht3 := hall3 t htS (Nat.pos_of_ne_zero hqat)
+    have hta : t ≠ a := (Finset.mem_erase.mp (Finset.mem_erase.mp htS).2).1
+    have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD b a t hb6 ha3 ht3 hta.symm
+    change Q b a + Q b t ≤ 1 at hgroup
+    omega
+  have hmassU := degreeSix_threeSix_unused_half_orderSix_contact_mass
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ U, Q b t) = 2 at hmassU
+  have hsumA : (∑ t ∈ A, Q b t) = 0 :=
+    Finset.sum_eq_zero (fun t ht ↦ hzeroA t ht)
+  have hsplit : (∑ t ∈ S, Q b t) =
+      (∑ t ∈ A, Q b t) + ∑ t ∈ U, Q b t := by
+    dsimp [A, U]
+    rw [Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q b) hbIn
+  have hdiag : Q b b = 3 := by
+    dsimp [S] at hsplit
+    omega
+  have hdiagLe := degreeSix_orderSix_after_three_cover_diagonal_le_two
+    G hfree hmin hcard b a hb6 hba hab
+  change Q b b ≤ 2 at hdiagLe
+  omega
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
