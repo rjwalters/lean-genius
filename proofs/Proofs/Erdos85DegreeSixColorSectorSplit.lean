@@ -1631,6 +1631,57 @@ theorem contact_filter_counts_of_sum_three
     simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
+/-- Filter-count form of the five partitions of a nonnegative finite row
+whose total mass is four. -/
+theorem contact_filter_counts_of_sum_four
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q : C → ℕ) (hsum : (∑ t ∈ S, q t) = 4) :
+    let n1 := (S.filter fun t ↦ q t = 1).card
+    let n2 := (S.filter fun t ↦ q t = 2).card
+    let n3 := (S.filter fun t ↦ q t = 3).card
+    let n4 := (S.filter fun t ↦ q t = 4).card
+    (n1 = 4 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 2 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1) := by
+  dsimp
+  have hqle : ∀ t ∈ S, q t ≤ 4 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ x ∈ S, q x :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hpoint : ∀ t ∈ S, q t =
+      (if q t = 1 then 1 else 0) +
+      (if q t = 2 then 2 else 0) +
+      (if q t = 3 then 3 else 0) +
+      (if q t = 4 then 4 else 0) := by
+    intro t ht
+    have := hqle t ht
+    interval_cases q t <;> simp_all
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hweighted :
+      (S.filter fun t ↦ q t = 1).card +
+      2 * (S.filter fun t ↦ q t = 2).card +
+      3 * (S.filter fun t ↦ q t = 3).card +
+      4 * (S.filter fun t ↦ q t = 4).card = 4 := by
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1) 1,
+      hsumConst (fun t ↦ q t = 2) 2,
+      hsumConst (fun t ↦ q t = 3) 3,
+      hsumConst (fun t ↦ q t = 4) 4] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
+  have hn2 : (S.filter fun t ↦ q t = 2).card ≤ 2 := by omega
+  have hn3 : (S.filter fun t ↦ q t = 3).card ≤ 1 := by omega
+  have hn4 : (S.filter fun t ↦ q t = 4).card ≤ 1 := by omega
+  interval_cases (S.filter fun t ↦ q t = 4).card <;>
+    interval_cases (S.filter fun t ↦ q t = 3).card <;>
+    interval_cases (S.filter fun t ↦ q t = 2).card <;> omega
+
 /-- The seven partitions of five, encoded by multiplicities of parts
 `1,...,5`. -/
 theorem contact_count_partition_of_weight_five
@@ -4659,6 +4710,44 @@ theorem degreeSix_threeSix_residual_profile
     rw [hsizeS, hused] at hsplit
     omega
   exact hunused
+
+/-- The contacted order-twelve half of the `(3,6)` residual decomposition
+has one of the five partitions of four, equivalently one of the order
+multisets `3+3+3+3`, `3+3+6`, `6+6`, `3+9`, or `12`. -/
+theorem degreeSix_threeSix_residual_partition_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    let n1 := (S.filter fun t ↦ Q a t = 1).card
+    let n2 := (S.filter fun t ↦ Q a t = 2).card
+    let n3 := (S.filter fun t ↦ Q a t = 3).card
+    let n4 := (S.filter fun t ↦ Q a t = 4).card
+    (n1 = 4 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 2 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  simpa [Q, S] using contact_filter_counts_of_sum_four S (Q a) hp.1
 
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
