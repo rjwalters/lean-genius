@@ -359,6 +359,56 @@ theorem false_of_nine_eighteen_two_triangles
   have ha : a ≤ 2 := by omega
   interval_cases a <;> omega
 
+/-- Common terminal for the fourth order-nine pattern.  The contacted
+triangle has reverse quotient three from `w`, while the residual triangle
+has zero contact with `w`.  Their two degree-six rows therefore require
+three contacts in total from the two remaining order-nine components, but
+cycle periodicity bounds each order-nine source's combined contact with the
+two triangles by one. -/
+theorem false_of_nine_pattern_four
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w a b e f : C)
+    (huniv : (Finset.univ : Finset C) = {w, a, b, e, f})
+    (hdist : w ≠ a ∧ w ≠ b ∧ w ≠ e ∧ w ≠ f ∧
+      a ≠ b ∧ a ≠ e ∧ a ≠ f ∧ b ≠ e ∧ b ≠ f ∧ e ≠ f)
+    (hw9 : size w = 9) (ha9 : size a = 9) (hb9 : size b = 9)
+    (he3 : size e = 3) (hf3 : size f = 3)
+    (hQwe : Q w e = 1) (hQwf : Q w f = 0)
+    (hQee : Q e e = 0) (hQff : Q f f = 0)
+    (hrow : ∀ c, (∑ t, Q c t) = 6)
+    (hsq : ∀ c, (∑ t, Q c t * Q t c) = size c + 3)
+    (hbal : ∀ c t, size c * Q c t = size t * Q t c)
+    (hgroupA : Q a e + Q a f ≤ 1)
+    (hgroupB : Q b e + Q b f ≤ 1) : False := by
+  have hrowe := hrow e
+  have hrowf := hrow f
+  have hsqe := hsq e
+  have hsqf := hsq f
+  rw [huniv] at hrowe hrowf hsqe hsqf
+  simp [hdist.1, hdist.2.1, hdist.2.2.1, hdist.2.2.2.1,
+    hdist.2.2.2.2.1, hdist.2.2.2.2.2.1,
+    hdist.2.2.2.2.2.2.1, hdist.2.2.2.2.2.2.2.1,
+    hdist.2.2.2.2.2.2.2.2.1, hdist.2.2.2.2.2.2.2.2.2,
+    hQee, hQff] at hrowe hrowf hsqe hsqf
+  have hew := hbal e w
+  have hea := hbal e a
+  have heb := hbal e b
+  have hfw := hbal f w
+  have hfa := hbal f a
+  have hfb := hbal f b
+  have hefbal := hbal e f
+  simp [he3, hf3, hw9, ha9, hb9, hQwe, hQwf] at hew hea heb hfw hfa hfb hefbal
+  rw [he3] at hsqe
+  rw [hf3] at hsqf
+  have heaLe : Q a e ≤ 1 := by omega
+  have hebLe : Q b e ≤ 1 := by omega
+  have hfaLe : Q a f ≤ 1 := by omega
+  have hfbLe : Q b f ≤ 1 := by omega
+  have hefLe : Q e f ≤ 6 := by omega
+  interval_cases (Q a e) <;> interval_cases (Q b e) <;>
+    interval_cases (Q a f) <;> interval_cases (Q b f) <;>
+      interval_cases (Q e f) <;> omega
+
 end OddDiagonal
 
 end Erdos85
