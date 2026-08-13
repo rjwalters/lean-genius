@@ -1849,6 +1849,71 @@ def orderFortyNineLeafDefectBranchIncidence
         (fun y => y.1 ∈ secondLayerBranch G v t) |>.card
     else 0
 
+/-- Edges of a graph running between the open neighborhoods of two marked
+vertices. -/
+def neighborToNeighborEdgeBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (a b : V) : Finset (V × V) :=
+  (H.neighborFinset a ×ˢ H.neighborFinset b).filter fun xy =>
+    H.Adj xy.1 xy.2
+
+/-- A length-three adjacency-matrix entry counts the edges between the two
+endpoint neighborhoods. -/
+theorem card_neighborToNeighborEdgeBlock_eq_adjMatrix_cube_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (a b : V) :
+    (neighborToNeighborEdgeBlock H a b).card =
+      (H.adjMatrix ℕ * H.adjMatrix ℕ * H.adjMatrix ℕ) a b := by
+  rw [neighborToNeighborEdgeBlock, Finset.card_filter,
+    Finset.sum_product, Matrix.mul_apply]
+  simp only [SimpleGraph.adjMatrix_apply]
+  rw [Finset.sum_comm]
+  calc
+    (∑ y ∈ H.neighborFinset b,
+        ∑ x ∈ H.neighborFinset a, if H.Adj x y then 1 else 0) =
+        ∑ y, if H.Adj y b then
+          (∑ x ∈ H.neighborFinset a, if H.Adj x y then 1 else 0)
+        else 0 := by
+      rw [← Finset.sum_filter]
+      congr 1
+      ext y
+      simp [SimpleGraph.mem_neighborFinset, H.adj_comm]
+    _ = ∑ y, (H.adjMatrix ℕ * H.adjMatrix ℕ) a y *
+          if H.Adj y b then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro y _
+      by_cases hyb : H.Adj y b
+      · simp only [if_pos hyb, Nat.mul_one]
+        rw [Matrix.mul_apply]
+        simp only [SimpleGraph.adjMatrix_apply]
+        rw [neighborFinset_eq_filter, Finset.sum_filter]
+        apply Finset.sum_congr rfl
+        intro x _
+        by_cases hax : H.Adj a x <;> by_cases hxy : H.Adj x y <;>
+          simp [hax, hxy]
+      · simp [hyb]
+
+/-- Defect edges running between the two owner fibers centered at neighbors
+`s,t` of the unique high root. -/
+def orderFortyNineDefectOwnerEdgeBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) : Finset (V × V) :=
+  neighborToNeighborEdgeBlock (secondOrderDefectGraph G) s.1 t.1
+
+/-- The owner-fiber edge quotient is exactly the center block of the cube of
+the full defect adjacency matrix. -/
+theorem card_orderFortyNineDefectOwnerEdgeBlock_eq_defectCube_apply
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineDefectOwnerEdgeBlock G v s t).card =
+      ((secondOrderDefectGraph G).adjMatrix ℕ *
+          (secondOrderDefectGraph G).adjMatrix ℕ *
+          (secondOrderDefectGraph G).adjMatrix ℕ) s.1 t.1 := by
+  exact card_neighborToNeighborEdgeBlock_eq_adjMatrix_cube_apply
+    (secondOrderDefectGraph G) s.1 t.1
+
 /-- The same directed incidence count restricted to one leaf-defect
 component. -/
 def orderFortyNineLeafComponentBranchIncidence
