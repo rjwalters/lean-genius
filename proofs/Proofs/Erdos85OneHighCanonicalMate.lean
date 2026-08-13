@@ -1506,6 +1506,24 @@ def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
 def oneHighFamilyInternalEdges (a : Nat) (i : Fin 8) : Nat :=
   if i.val % 2 = 0 ∧ i.val / 2 < a then 1 else 2
 
+/-- Literal far-degree target for block `b` and within-block coordinate `r`.
+This is `family_gen.py`'s `degfar`: positions 0,1 are always matched;
+positions 2,3 are matched exactly when `IN[b]=2`; position 4 is unmatched. -/
+def oneHighFamilyFarDegree (a : Nat) (b : Fin 8) (r : Fin 5) : Nat :=
+  if r.val < 2 ∨
+      (oneHighFamilyInternalEdges a b = 2 ∧ r.val < 4) then 5 else 6
+
+/-- The canonical-branch and literal `IN` descriptions of far degree agree. -/
+theorem oneHighCanonicalFarDegree_familyTwoEdges
+    (a : Nat) (b : Fin 8) (r : Fin 5) :
+    oneHighCanonicalFarDegree (oneHighFamilyTwoEdges a b) r =
+      oneHighFamilyFarDegree a b r := by
+  unfold oneHighCanonicalFarDegree oneHighCanonicalBranchMatched
+    oneHighFamilyTwoEdges oneHighFamilyFarDegree oneHighFamilyInternalEdges
+  by_cases hp : b.val % 2 = 0 ∧ b.val / 2 < a
+  · simp [hp]
+  · simp [hp]
+
 /-! ## Encoder-facing paired-product ledger -/
 
 /-- Ordered pairs in two encoded five-point blocks having one common leaf
@@ -1752,6 +1770,68 @@ theorem oneHighFamilyTwoEdges_eq_of_matchedCount
     rcases hs with hs | hs
     · exact (hm hs.2).elim
     · simp [oneHighFamilyTwoEdges, hp, hs.1]
+
+/-- Exact Fin40 far-degree counter target in the generator's literal block
+and within-block coordinates. -/
+theorem card_oneHighEncodedFarNeighbors_eq_familyFarDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hexternal : externalRepairCandidates G v = ∅)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ s x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj (twoEdges s)
+        (leafLabel s x) (leafLabel s y))
+    (a : Nat)
+    (hword : ∀ i, twoEdges (branchLabel.symm i) =
+      oneHighFamilyTwoEdges a i)
+    (i : Fin 40)
+    (hiDegree : G.degree
+      ((oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel).symm i).1 = 7) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedFarNeighbors R i).card =
+      oneHighFamilyFarDegree a
+        (Fin.divNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) i) := by
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let s := oneHighBranchOwner G v x
+  let xLocal : secondLayerBranch G v s :=
+    ⟨x.1, oneHighBranchOwner_mem G v x⟩
+  have hfar := card_oneHighEncodedFarNeighbors_eq_canonicalFarDegree
+    G hfree hexternal mate hmateAdj branchLabel hbranchMate
+      twoEdges leafLabel hcanonical i hiDegree
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card =
+        oneHighCanonicalFarDegree (twoEdges s) (leafLabel s xLocal) at hfar
+  have hb := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  have hr := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel x
+  rw [E.apply_symm_apply] at hb hr
+  have hw := hword (branchLabel s)
+  rw [branchLabel.symm_apply_apply] at hw
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card = _
+  calc
+    _ = oneHighCanonicalFarDegree (twoEdges s) (leafLabel s xLocal) := hfar
+    _ = oneHighCanonicalFarDegree
+        (oneHighFamilyTwoEdges a (branchLabel s)) (leafLabel s xLocal) := by
+          rw [hw]
+    _ = oneHighFamilyFarDegree a (branchLabel s) (leafLabel s xLocal) :=
+      oneHighCanonicalFarDegree_familyTwoEdges a (branchLabel s) _
+    _ = oneHighFamilyFarDegree a
+        (Fin.divNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) i) := by rw [hb, hr]
 
 /-- A raw one-high graph admits all coordinate choices used by the family
 generator simultaneously: one mate involution, a family-ordered standard
