@@ -145,6 +145,16 @@ def oneHighFamilyEqualsBlockVal (vars : Array Int)
   rcases out with ⟨id, st'⟩
   simp [oneHighFamilyAtomIdVal, h]
 
+@[simp] theorem oneHighFamilyAtomIdVal_id
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    (oneHighFamilyAtomIdVal R atom (st, val)).1 =
+      (oneHighFamilyAtomId atom st).1 := by
+  generalize h : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  simp [oneHighFamilyAtomIdVal, h]
+
 @[simp] theorem oneHighFamilyAtomIdVal_value
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
@@ -308,6 +318,60 @@ theorem oneHighFamilyAtomIdVal_semanticSound
     · exact hsat
     · exact dimacsFormulaBounded_mono (Nat.le_succ st.top) h.bounded
 
+theorem oneHighFamilyAtomId_positive
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (atom : OneHighFamilyAtom) :
+    0 < (oneHighFamilyAtomId atom st).1 := by
+  let out := oneHighFamilyAtomId atom st
+  have hs := oneHighFamilyIdsSound_atomId h atom
+  have hm := oneHighFamilyAtomId_mem atom st
+  exact (hs.id_bounds (atom, out.1) (by simpa [out] using hm)).1
+
+theorem oneHighFamilyAtomId_bounded
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (atom : OneHighFamilyAtom) :
+    (oneHighFamilyAtomId atom st).1 ≤ (oneHighFamilyAtomId atom st).2.top := by
+  let out := oneHighFamilyAtomId atom st
+  have hs := oneHighFamilyIdsSound_atomId h atom
+  have hm := oneHighFamilyAtomId_mem atom st
+  exact (hs.id_bounds (atom, out.1) (by simpa [out] using hm)).2
+
+theorem dimacsClauseSatisfied_singleton_positive
+    {val : DimacsValuation} {id : Nat} (hid : 0 < id)
+    (hvalue : val id = true) :
+    dimacsClauseSatisfied val [(id : Int)] := by
+  refine ⟨(id : Int), by simp, ?_⟩
+  simp [dimacsLitValue, hid, hvalue]
+
+theorem dimacsClauseSatisfied_singleton_negative
+    {val : DimacsValuation} {id : Nat}
+    (hvalue : val id = false) :
+    dimacsClauseSatisfied val [-(id : Int)] := by
+  refine ⟨-(id : Int), by simp, ?_⟩
+  simp [dimacsLitValue, hvalue]
+
+theorem dimacsClauseBounded_singleton_positive
+    {top id : Nat} (hid : id ≤ top) :
+    dimacsClauseBounded top [(id : Int)] := by
+  intro lit hlit
+  simp at hlit
+  simpa [hlit] using hid
+
+theorem dimacsClauseBounded_singleton_negative
+    {top id : Nat} (hid : id ≤ top) :
+    dimacsClauseBounded top [-(id : Int)] := by
+  intro lit hlit
+  simp at hlit
+  simpa [hlit] using hid
+
+noncomputable def oneHighFamilyEdgeUnitVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (present : Bool)
+    (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let (id, acc) := oneHighFamilyEdgeIdVal R i j acc
+  (oneHighFamilyEmitVal
+    [if present then (id : Int) else -(id : Int)] acc).2
+
 theorem oneHighFamilyEmitVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
@@ -332,6 +396,50 @@ theorem oneHighFamilyEmitVal_semanticSound
     rcases hc with hc | rfl
     · exact h.bounded candidate hc
     · exact hclauseBound
+
+theorem oneHighFamilyEdgeUnitVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (h : OneHighFamilySemanticSound R (st, val))
+    (i j : Nat) (present : Bool)
+    (hvalue : oneHighFamilyAtomValue R
+      (.edge (min i j) (max i j)) = present) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyEdgeUnitVal R i j present (st, val)) := by
+  simp only [oneHighFamilyEdgeUnitVal, oneHighFamilyEdgeIdVal]
+  generalize hout : oneHighFamilyAtomIdVal R
+    (.edge (min i j) (max i j)) (st, val) = out
+  rcases out with ⟨id, acc⟩
+  have hatom := oneHighFamilyAtomIdVal_semanticSound R h
+    (.edge (min i j) (max i j))
+  rw [hout] at hatom
+  have houtId : id = (oneHighFamilyAtomId
+      (.edge (min i j) (max i j)) st).1 := by
+    have heq := oneHighFamilyAtomIdVal_id R
+      (.edge (min i j) (max i j)) st val
+    rw [hout] at heq
+    exact heq
+  have houtState : acc.1 = (oneHighFamilyAtomId
+      (.edge (min i j) (max i j)) st).2 := by
+    have heq := oneHighFamilyAtomIdVal_state R
+      (.edge (min i j) (max i j)) st val
+    rw [hout] at heq
+    exact heq
+  have hm : ((.edge (min i j) (max i j)), id) ∈ acc.1.ids := by
+    rw [houtId, houtState]
+    exact oneHighFamilyAtomId_mem _ st
+  have hb := hatom.ids.id_bounds _ hm
+  have hval : acc.2 id = present :=
+    (hatom.named _ id hm).trans hvalue
+  apply oneHighFamilyEmitVal_semanticSound R hatom
+  · cases present
+    · simp only [Bool.false_eq_true, ↓reduceIte]
+      exact dimacsClauseSatisfied_singleton_negative hval
+    · simp only [↓reduceIte]
+      exact dimacsClauseSatisfied_singleton_positive hb.1 hval
+  · cases present <;> simp only [Bool.false_eq_true, ↓reduceIte]
+    · exact dimacsClauseBounded_singleton_negative hb.2
+    · exact dimacsClauseBounded_singleton_positive hb.2
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
