@@ -1837,6 +1837,117 @@ theorem exists_orderFortyNine_mate_exact_leafDefect_overlap
       G hfree hmin hcard hv s u hsu]
     exact (hrigid s).2 u hu
 
+/-- Directed leaf-defect incidences from original branch `s` to branch
+`t`. -/
+def orderFortyNineLeafDefectBranchIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  ∑ x : {z : V // z ≠ v ∧ ¬ G.Adj v z},
+    if x.1 ∈ secondLayerBranch G v s then
+      ((orderFortyNineLeafDefectGraph G v).neighborFinset x).filter
+        (fun y => y.1 ∈ secondLayerBranch G v t) |>.card
+    else 0
+
+/-- The same directed incidence count restricted to one leaf-defect
+component. -/
+def orderFortyNineLeafComponentBranchIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  ∑ x : c.supp,
+    if x.1.1 ∈ secondLayerBranch G v s then
+      ((orderFortyNineLeafDefectGraph G v).neighborFinset x.1).filter
+        (fun y => y.1 ∈ secondLayerBranch G v t) |>.card
+    else 0
+
+/-- Directed cross-branch incidences decompose exactly over connected
+components. -/
+theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_global
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+      orderFortyNineLeafComponentBranchIncidence G v c s t) =
+        orderFortyNineLeafDefectBranchIncidence G v s t := by
+  let f := fun x : {z : V // z ≠ v ∧ ¬ G.Adj v z} =>
+    if x.1 ∈ secondLayerBranch G v s then
+      ((orderFortyNineLeafDefectGraph G v).neighborFinset x).filter
+        (fun y => y.1 ∈ secondLayerBranch G v t) |>.card
+    else 0
+  change (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+    ∑ x : c.supp, f x.1) = ∑ x, f x
+  exact (sum_vertex_eq_sum_connectedComponent_supp
+    (orderFortyNineLeafDefectGraph G v) f).symm
+
+/-- The finset block and degree-sum presentations of directed cross-branch
+leaf-defect edges agree. -/
+theorem card_orderFortyNineLeafDefectBranchBlock_eq_incidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineLeafDefectBranchBlock G v s t).card =
+      orderFortyNineLeafDefectBranchIncidence G v s t := by
+  let W := {z : V // z ≠ v ∧ ¬ G.Adj v z}
+  let A : Finset W := Finset.univ.filter fun x =>
+    x.1 ∈ secondLayerBranch G v s
+  let B : W → Finset W := fun x =>
+    ((orderFortyNineLeafDefectGraph G v).neighborFinset x).filter fun y =>
+      y.1 ∈ secondLayerBranch G v t
+  have hIncidence : orderFortyNineLeafDefectBranchIncidence G v s t =
+      (A.sigma B).card := by
+    rw [orderFortyNineLeafDefectBranchIncidence, Finset.card_sigma]
+    rw [Finset.sum_filter]
+  rw [hIncidence]
+  apply Finset.card_bij
+    (s := orderFortyNineLeafDefectBranchBlock G v s t) (t := A.sigma B)
+    (fun xy hxy =>
+    let hx := (Finset.mem_product.mp (Finset.mem_filter.mp hxy).1).1
+    let hy := (Finset.mem_product.mp (Finset.mem_filter.mp hxy).1).2
+    let x' : W := ⟨xy.1, by
+      have hout := (Finset.mem_sdiff.mp hx).2
+      exact ⟨fun h => hout (by simp [h]), fun hvx => hout (by
+        simp [SimpleGraph.mem_neighborFinset, hvx])⟩⟩
+    let y' : W := ⟨xy.2, by
+      have hout := (Finset.mem_sdiff.mp hy).2
+      exact ⟨fun h => hout (by simp [h]), fun hvy => hout (by
+        simp [SimpleGraph.mem_neighborFinset, hvy])⟩⟩
+    ⟨x', y'⟩)
+  · intro xy hxy
+    have hmem := Finset.mem_filter.mp hxy
+    have hprod := Finset.mem_product.mp hmem.1
+    rw [Finset.mem_sigma]
+    constructor
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hprod.1⟩
+    · exact Finset.mem_filter.mpr ⟨
+        ((orderFortyNineLeafDefectGraph G v).mem_neighborFinset _ _).2 hmem.2,
+        hprod.2⟩
+  · intro a ha b hb hab
+    exact Prod.ext (congrArg (fun z => z.1.1) hab)
+      (congrArg (fun z => z.2.1) hab)
+  · intro xy hxy
+    have hxA := (Finset.mem_sigma.mp hxy).1
+    have hyB := (Finset.mem_sigma.mp hxy).2
+    have hx := (Finset.mem_filter.mp hxA).2
+    have hy := (Finset.mem_filter.mp hyB).2
+    refine ⟨(xy.1.1, xy.2.1), ?_, rfl⟩
+    exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hx, hy⟩,
+      ((orderFortyNineLeafDefectGraph G v).mem_neighborFinset xy.1 xy.2).1
+        (Finset.mem_filter.mp hyB).1⟩
+
+/-- Cross-branch leaf-defect edge blocks are the sum of their componentwise
+incidence counts. -/
+theorem card_orderFortyNineLeafDefectBranchBlock_eq_sum_components
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineLeafDefectBranchBlock G v s t).card =
+      ∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+        orderFortyNineLeafComponentBranchIncidence G v c s t := by
+  rw [card_orderFortyNineLeafDefectBranchBlock_eq_incidence,
+    sum_orderFortyNineLeafComponentBranchIncidence_eq_global]
+
 end
 
 end Erdos85
