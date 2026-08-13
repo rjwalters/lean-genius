@@ -189,6 +189,104 @@ theorem sum_orderFortyNineOneHighOverlap_row_eq_five
         G hfree hmin hcard hv s)]
   rfl
 
+/-- Each defect-owner fiber is partitioned by the eight original branches. -/
+theorem orderFortyNine_biUnion_branch_inter_ownerFiber_column
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion
+        (fun s => secondLayerBranch G v s ∩
+          orderFortyNineDefectOwnerFiber G v t) =
+      orderFortyNineDefectOwnerFiber G v t := by
+  ext y
+  constructor
+  · intro hy
+    rw [Finset.mem_biUnion] at hy
+    obtain ⟨s, _, hys⟩ := hy
+    exact (Finset.mem_inter.mp hys).2
+  · intro hy
+    have htmem : t.1 ∈ (G.neighborFinset v : Set V) := by
+      exact (G.mem_neighborFinset v t.1).2 t.2
+    have hyv : y ≠ v := by
+      intro h
+      subst y
+      have hvDzero :=
+        (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+          G hfree hmin hcard hv).1
+      have hvDempty : (secondOrderDefectGraph G).neighborFinset v = ∅ := by
+        rw [← Finset.card_eq_zero,
+          (secondOrderDefectGraph G).card_neighborFinset_eq_degree, hvDzero]
+      change v ∈ (secondOrderDefectGraph G).neighborFinset t.1 at hy
+      have : t.1 ∈ (secondOrderDefectGraph G).neighborFinset v := by
+        rw [SimpleGraph.mem_neighborFinset]
+        exact (((secondOrderDefectGraph G).mem_neighborFinset t.1 v).1 hy).symm
+      rw [hvDempty] at this
+      exact Finset.notMem_empty _ this
+    have hvy : ¬ G.Adj v y := by
+      intro hvy
+      let u : {z : V // z ∈ G.neighborSet v} := ⟨y, hvy⟩
+      by_cases htu : t = u
+      · have hty : t.1 = y := congrArg Subtype.val htu
+        exact (secondOrderDefectGraph G).loopless.irrefl y
+          (hty ▸ ((secondOrderDefectGraph G).mem_neighborFinset t.1 y).1 hy)
+      · have hpair :=
+          orderFortyNine_closedDefectNeighborhood_pairwiseDisjoint_at_high
+            G hfree hmin hcard hv
+        have humem : u.1 ∈ (G.neighborFinset v : Set V) := by
+          exact (G.mem_neighborFinset v u.1).2 u.2
+        have hdisj := hpair htmem humem (fun h => htu (Subtype.ext h))
+        exact Finset.disjoint_left.mp hdisj
+          (Finset.mem_insert.mpr (Or.inr hy))
+          (Finset.mem_insert.mpr (Or.inl rfl))
+    have hySecond : y ∈ secondLayer G v := by
+      rw [orderFortyNine_secondLayer_degreeEight_eq_compl_closedNeighborhood
+        G hfree hmin hcard hv]
+      exact Finset.mem_sdiff.mpr
+        ⟨Finset.mem_univ y, by
+          simp [SimpleGraph.mem_neighborFinset, hyv, hvy]⟩
+    rw [secondLayer, Finset.mem_biUnion] at hySecond
+    obtain ⟨s, _, hys⟩ := hySecond
+    rw [Finset.mem_biUnion]
+    exact ⟨s, Finset.mem_univ s, Finset.mem_inter.mpr ⟨hys, hy⟩⟩
+
+/-- Every column of the one-high overlap matrix sums to five. -/
+theorem sum_orderFortyNineOneHighOverlap_column_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    (∑ s, orderFortyNineOneHighOverlap G v s t) = 5 := by
+  have hpair := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hpairInter :
+      ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) :
+        Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint
+        (fun s => secondLayerBranch G v s ∩
+          orderFortyNineDefectOwnerFiber G v t) := by
+    intro s _ u _ hsu
+    apply Finset.disjoint_left.mpr
+    intro y hys hyu
+    exact Finset.disjoint_left.mp
+      (hpair (Finset.mem_univ s) (Finset.mem_univ u) hsu)
+      (Finset.mem_inter.mp hys).1 (Finset.mem_inter.mp hyu).1
+  rw [← orderFortyNine_card_defectOwnerFiber_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv t,
+    ← orderFortyNine_biUnion_branch_inter_ownerFiber_column
+      G hfree hmin hcard hv t,
+    Finset.card_biUnion hpairInter]
+  rfl
+
 end
 
 end Erdos85
