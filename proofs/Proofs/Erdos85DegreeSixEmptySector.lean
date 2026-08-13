@@ -2299,6 +2299,17 @@ theorem not_C4PlateauCore_thirtyThree_six :
   letI : DecidableRel G.Adj := hdec
   exact false_of_degreeSix_exact_boundary G hfree (by omega) (by simp)
 
+/-- Numerical threshold consequence of the degree-six boundary exclusion. -/
+theorem minDegreeForC4_thirtyThree_le_six :
+    minDegreeForC4 33 ≤ 6 := by
+  by_contra hnot
+  have hlt : 6 < minDegreeForC4 33 := by omega
+  obtain ⟨G, hdec, hmin, hfree⟩ :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).2 hlt
+  classical
+  letI : DecidableRel G.Adj := hdec
+  exact false_of_degreeSix_exact_boundary G hfree hmin (by simp)
+
 end
 
 end Erdos85
