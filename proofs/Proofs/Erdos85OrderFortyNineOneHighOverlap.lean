@@ -1123,6 +1123,154 @@ theorem orderFortyNine_card_leafDefect_components_le_six
   rw [hconst, hsumOrder] at hlower
   omega
 
+/-- Component-local count for an original branch. -/
+def orderFortyNineLeafComponentBranchCensus
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  ((Finset.univ : Finset c.supp).filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v s).card
+
+/-- Joint component/branch/owner census refining the global overlap
+matrix. -/
+def orderFortyNineLeafComponentOverlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  ((Finset.univ : Finset c.supp).filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v s ∧
+      y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t).card
+
+/-- Summing the joint census over owners gives the component-local original
+branch count. -/
+theorem sum_orderFortyNineLeafComponentOverlap_owner_eq_branchCensus
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (∑ t, orderFortyNineLeafComponentOverlap G v c s t) =
+      orderFortyNineLeafComponentBranchCensus G v c s := by
+  let F := fun t : {z : V // z ∈ G.neighborSet v} =>
+    (Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v s ∧
+        y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t
+  have hpair : ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) :
+      Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint F := by
+    intro t _ u _ htu
+    apply Finset.disjoint_left.mpr
+    intro y hyt hyu
+    have ht := (Finset.mem_filter.mp hyt).2.2
+    have hu := (Finset.mem_filter.mp hyu).2.2
+    have hbase := orderFortyNine_component_ownerColors_pairwiseDisjoint
+      G hfree hmin hcard hv c
+    exact Finset.disjoint_left.mp (hbase (Finset.mem_univ t)
+      (Finset.mem_univ u) htu)
+      (Finset.mem_filter.mpr ⟨Finset.mem_univ _, ht⟩)
+      (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hu⟩)
+  have hunion :
+      (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion F =
+        (Finset.univ : Finset c.supp).filter fun y =>
+          y.1.1 ∈ secondLayerBranch G v s := by
+    ext y
+    constructor
+    · intro hy
+      rw [Finset.mem_biUnion] at hy
+      obtain ⟨t, _, hyt⟩ := hy
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        (Finset.mem_filter.mp hyt).2.1⟩
+    · intro hy
+      have howners := orderFortyNine_biUnion_component_ownerColors_eq_univ
+        G hfree hmin hcard hHigh hv c
+      have hyAll : y ∈
+          (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion
+            (fun t => (Finset.univ : Finset c.supp).filter fun z =>
+              z.1.1 ∈ orderFortyNineDefectOwnerFiber G v t) := by
+        rw [howners]
+        exact Finset.mem_univ _
+      rw [Finset.mem_biUnion] at hyAll ⊢
+      obtain ⟨t, _, hyt⟩ := hyAll
+      exact ⟨t, Finset.mem_univ _, Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, (Finset.mem_filter.mp hy).2,
+          (Finset.mem_filter.mp hyt).2⟩⟩
+  change (∑ t, (F t).card) =
+    ((Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v s).card
+  rw [← Finset.card_biUnion hpair, hunion]
+
+/-- Summing the joint census over leaf-defect components recovers the global
+branch/owner overlap entry. -/
+theorem sum_orderFortyNineLeafComponentOverlap_component_eq_overlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+      orderFortyNineLeafComponentOverlap G v c s t) =
+        orderFortyNineOneHighOverlap G v s t := by
+  let S : Finset {y : V // y ≠ v ∧ ¬ G.Adj v y} :=
+    Finset.univ.filter fun y =>
+      y.1 ∈ secondLayerBranch G v s ∧
+        y.1 ∈ orderFortyNineDefectOwnerFiber G v t
+  have hScard : S.card = orderFortyNineOneHighOverlap G v s t := by
+    rw [orderFortyNineOneHighOverlap]
+    apply Finset.card_bij (fun y _ => y.1)
+    · intro y hy
+      exact Finset.mem_inter.mpr (Finset.mem_filter.mp hy).2
+    · intro a ha b hb hab
+      exact Subtype.ext hab
+    · intro q hq
+      have hqParts := Finset.mem_inter.mp hq
+      have hqOutside := (Finset.mem_sdiff.mp hqParts.1).2
+      let y : {y : V // y ≠ v ∧ ¬ G.Adj v y} := ⟨q, by
+        constructor
+        · intro h
+          subst q
+          exact hqOutside (by simp)
+        · intro hvq
+          exact hqOutside (by simp [SimpleGraph.mem_neighborFinset, hvq])⟩
+      refine ⟨y, ?_, rfl⟩
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hqParts⟩
+  have hreindex := sum_vertex_eq_sum_connectedComponent_supp
+    (orderFortyNineLeafDefectGraph G v)
+    (fun y => if y.1 ∈ secondLayerBranch G v s ∧
+      y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0)
+  have hglobal :
+      (∑ y : {y : V // y ≠ v ∧ ¬ G.Adj v y},
+        if y.1 ∈ secondLayerBranch G v s ∧
+          y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0) =
+        orderFortyNineOneHighOverlap G v s t := by
+    rw [← hScard]
+    dsimp only [S]
+    rw [Finset.card_filter]
+  calc
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+        orderFortyNineLeafComponentOverlap G v c s t) =
+        ∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+          ∑ y : c.supp, if y.1.1 ∈ secondLayerBranch G v s ∧
+            y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro c _
+      rw [orderFortyNineLeafComponentOverlap, Finset.card_filter]
+    _ = ∑ y : {y : V // y ≠ v ∧ ¬ G.Adj v y},
+          if y.1 ∈ secondLayerBranch G v s ∧
+            y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0 :=
+      hreindex.symm
+    _ = orderFortyNineOneHighOverlap G v s t := hglobal
+
 end
 
 end Erdos85
