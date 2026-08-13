@@ -1,6 +1,7 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
+import Proofs.Erdos85FrequencyPairMixedTransport
 
 /-!
 # Degree-six empty-sector assembly
@@ -2265,6 +2266,29 @@ theorem false_of_degreeSix_boundary
       intro _ c hc
       exact degreeSix_odd_component_diagonal_zero
         G hfree hmin hcard u hu huRange huD hr c hc)
+
+/-- Fully graph-level degree-six exact-boundary exclusion.  Mixed cycle
+coordinates and the component lower bound are extracted automatically from
+the two-regular second-order defect graph. -/
+theorem false_of_degreeSix_exact_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) : False := by
+  obtain ⟨u, hu, huRange, huD, hr⟩ := exists_mixed_cycle_labeling
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard)
+  letI : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard := fun c ↦ ⟨Nat.ne_of_gt (by
+        have hc := hr c
+        omega)⟩
+  exact false_of_degreeSix_boundary
+    G hfree hmin hcard u hu huRange huD hr
 
 end
 
