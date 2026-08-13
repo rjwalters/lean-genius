@@ -203,6 +203,18 @@ theorem oneHighFamilyAtomIdVal_result
       oneHighFamilyAtomId_mem atom st
   · simp [oneHighFamilyAtomIdVal, h]
 
+theorem oneHighFamilyAtomIdVal_old_mem
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) {entry : OneHighFamilyAtom × Nat}
+    (hmem : entry ∈ st.ids) :
+    let out := oneHighFamilyAtomIdVal R atom (st, val)
+    entry ∈ out.2.1.ids := by
+  generalize h : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  simpa [oneHighFamilyAtomIdVal, h] using
+    oneHighFamilyAtomId_ids_subset atom st entry hmem
+
 theorem oneHighFamilyAtomIdVal_reifies
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
@@ -401,6 +413,31 @@ theorem dimacsClauseBounded_singleton_negative
   simp at hlit
   simpa [hlit] using hid
 
+theorem oneHighFamilyEmitVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (h : OneHighFamilySemanticSound R (st, val))
+    (clause : DimacsClause)
+    (hclauseSat : dimacsClauseSatisfied val clause)
+    (hclauseBound : dimacsClauseBounded st.top clause) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyEmitVal clause (st, val)).2 := by
+  constructor
+  · exact oneHighFamilyIdsSound_emit h.ids clause
+  · exact oneHighFamilyEmitVal_reifies R h.named clause
+  · intro candidate hc
+    change candidate ∈ st.clauses.push clause at hc
+    simp only [Array.mem_push] at hc
+    rcases hc with hc | rfl
+    · exact h.satisfied candidate hc
+    · exact hclauseSat
+  · intro candidate hc
+    change candidate ∈ st.clauses.push clause at hc
+    simp only [Array.mem_push] at hc
+    rcases hc with hc | rfl
+    · exact h.bounded candidate hc
+    · exact hclauseBound
+
 theorem dimacsClauseSatisfied_negative_pair
     {val : DimacsValuation} {a b : Nat}
     (hnot : ¬(val a = true ∧ val b = true)) :
@@ -455,6 +492,114 @@ theorem dimacsClauseBounded_negative_four
   · simpa using hc
   · simpa using hd
 
+noncomputable def oneHighFamilyFourNegativeAtomsVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom₁ atom₂ atom₃ atom₄ : OneHighFamilyAtom)
+    (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let (id₁, acc) := oneHighFamilyAtomIdVal R atom₁ acc
+  let (id₂, acc) := oneHighFamilyAtomIdVal R atom₂ acc
+  let (id₃, acc) := oneHighFamilyAtomIdVal R atom₃ acc
+  let (id₄, acc) := oneHighFamilyAtomIdVal R atom₄ acc
+  (oneHighFamilyEmitVal
+    [-(id₁ : Int), -(id₂ : Int), -(id₃ : Int), -(id₄ : Int)] acc).2
+
+theorem oneHighFamilyFourNegativeAtomsVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom₁ atom₂ atom₃ atom₄ : OneHighFamilyAtom)
+    (acc : OneHighFamilyValState) :
+    (oneHighFamilyFourNegativeAtomsVal R atom₁ atom₂ atom₃ atom₄ acc).1 =
+      let (id₁, st) := oneHighFamilyAtomId atom₁ acc.1
+      let (id₂, st) := oneHighFamilyAtomId atom₂ st
+      let (id₃, st) := oneHighFamilyAtomId atom₃ st
+      let (id₄, st) := oneHighFamilyAtomId atom₄ st
+      (oneHighFamilyEmit
+        [-(id₁ : Int), -(id₂ : Int), -(id₃ : Int), -(id₄ : Int)] st).2 := by
+  generalize h₁ : oneHighFamilyAtomId atom₁ acc.1 = out₁
+  rcases out₁ with ⟨id₁, st₁⟩
+  generalize h₂ : oneHighFamilyAtomId atom₂ st₁ = out₂
+  rcases out₂ with ⟨id₂, st₂⟩
+  generalize h₃ : oneHighFamilyAtomId atom₃ st₂ = out₃
+  rcases out₃ with ⟨id₃, st₃⟩
+  generalize h₄ : oneHighFamilyAtomId atom₄ st₃ = out₄
+  rcases out₄ with ⟨id₄, st₄⟩
+  simp [oneHighFamilyFourNegativeAtomsVal, oneHighFamilyAtomIdVal,
+    oneHighFamilyEmitVal, h₁, h₂, h₃, h₄]
+
+theorem oneHighFamilyFourNegativeAtomsVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    (atom₁ atom₂ atom₃ atom₄ : OneHighFamilyAtom)
+    (hnot : ¬(oneHighFamilyAtomValue R atom₁ = true ∧
+      oneHighFamilyAtomValue R atom₂ = true ∧
+      oneHighFamilyAtomValue R atom₃ = true ∧
+      oneHighFamilyAtomValue R atom₄ = true)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyFourNegativeAtomsVal R atom₁ atom₂ atom₃ atom₄ acc) := by
+  simp only [oneHighFamilyFourNegativeAtomsVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R atom₁ acc = out₁
+  rcases out₁ with ⟨id₁, acc₁⟩
+  have hs₁ := oneHighFamilyAtomIdVal_semanticSound R h atom₁
+  rw [h₁] at hs₁
+  have hr₁ := oneHighFamilyAtomIdVal_result R atom₁ acc.1 acc.2
+  rw [h₁] at hr₁
+  dsimp at hr₁
+  generalize h₂ : oneHighFamilyAtomIdVal R atom₂ acc₁ = out₂
+  rcases out₂ with ⟨id₂, acc₂⟩
+  have hs₂ := oneHighFamilyAtomIdVal_semanticSound R hs₁ atom₂
+  rw [h₂] at hs₂
+  have hr₂ := oneHighFamilyAtomIdVal_result R atom₂ acc₁.1 acc₁.2
+  rw [h₂] at hr₂
+  dsimp at hr₂
+  generalize h₃ : oneHighFamilyAtomIdVal R atom₃ acc₂ = out₃
+  rcases out₃ with ⟨id₃, acc₃⟩
+  have hs₃ := oneHighFamilyAtomIdVal_semanticSound R hs₂ atom₃
+  rw [h₃] at hs₃
+  have hr₃ := oneHighFamilyAtomIdVal_result R atom₃ acc₂.1 acc₂.2
+  rw [h₃] at hr₃
+  dsimp at hr₃
+  generalize h₄ : oneHighFamilyAtomIdVal R atom₄ acc₃ = out₄
+  rcases out₄ with ⟨id₄, acc₄⟩
+  have hs₄ := oneHighFamilyAtomIdVal_semanticSound R hs₃ atom₄
+  rw [h₄] at hs₄
+  have hr₄ := oneHighFamilyAtomIdVal_result R atom₄ acc₃.1 acc₃.2
+  rw [h₄] at hr₄
+  dsimp at hr₄
+  have lift₂ {entry : OneHighFamilyAtom × Nat}
+      (hm : entry ∈ acc₁.1.ids) : entry ∈ acc₂.1.ids := by
+    have hx := oneHighFamilyAtomIdVal_old_mem R atom₂
+      acc₁.1 acc₁.2 hm
+    rw [h₂] at hx
+    exact hx
+  have lift₃ {entry : OneHighFamilyAtom × Nat}
+      (hm : entry ∈ acc₂.1.ids) : entry ∈ acc₃.1.ids := by
+    have hx := oneHighFamilyAtomIdVal_old_mem R atom₃
+      acc₂.1 acc₂.2 hm
+    rw [h₃] at hx
+    exact hx
+  have lift₄ {entry : OneHighFamilyAtom × Nat}
+      (hm : entry ∈ acc₃.1.ids) : entry ∈ acc₄.1.ids := by
+    have hx := oneHighFamilyAtomIdVal_old_mem R atom₄
+      acc₃.1 acc₃.2 hm
+    rw [h₄] at hx
+    exact hx
+  have hm₁ := lift₄ (lift₃ (lift₂ hr₁.1))
+  have hm₂ := lift₄ (lift₃ hr₂.1)
+  have hm₃ := lift₄ hr₃.1
+  have hvalues : ¬(acc₄.2 id₁ = true ∧ acc₄.2 id₂ = true ∧
+      acc₄.2 id₃ = true ∧ acc₄.2 id₄ = true) := by
+    rw [hs₄.named atom₁ id₁ hm₁, hs₄.named atom₂ id₂ hm₂,
+      hs₄.named atom₃ id₃ hm₃, hr₄.2]
+    exact hnot
+  simp only [h₂, h₃, h₄]
+  apply oneHighFamilyEmitVal_semanticSound R hs₄
+  · exact dimacsClauseSatisfied_negative_four hvalues
+  · exact dimacsClauseBounded_negative_four
+      (hs₄.ids.id_bounds _ hm₁).2
+      (hs₄.ids.id_bounds _ hm₂).2
+      (hs₄.ids.id_bounds _ hm₃).2
+      (hs₄.ids.id_bounds _ hr₄.1).2
+
 noncomputable def oneHighFamilyEdgeUnitVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (i j : Nat) (present : Bool)
@@ -501,31 +646,6 @@ theorem oneHighFamilyInternalPairStepVal_state
     omega
   simp [oneHighFamilyInternalPairStep, hparity]
   rfl
-
-theorem oneHighFamilyEmitVal_semanticSound
-    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
-    {st : OneHighFamilyGenState} {val : DimacsValuation}
-    (h : OneHighFamilySemanticSound R (st, val))
-    (clause : DimacsClause)
-    (hclauseSat : dimacsClauseSatisfied val clause)
-    (hclauseBound : dimacsClauseBounded st.top clause) :
-    OneHighFamilySemanticSound R
-      (oneHighFamilyEmitVal clause (st, val)).2 := by
-  constructor
-  · exact oneHighFamilyIdsSound_emit h.ids clause
-  · exact oneHighFamilyEmitVal_reifies R h.named clause
-  · intro candidate hc
-    change candidate ∈ st.clauses.push clause at hc
-    simp only [Array.mem_push] at hc
-    rcases hc with hc | rfl
-    · exact h.satisfied candidate hc
-    · exact hclauseSat
-  · intro candidate hc
-    change candidate ∈ st.clauses.push clause at hc
-    simp only [Array.mem_push] at hc
-    rcases hc with hc | rfl
-    · exact h.bounded candidate hc
-    · exact hclauseBound
 
 theorem oneHighFamilyEdgeUnitVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
@@ -986,6 +1106,213 @@ theorem oneHighFamilyC4SamePairVal_state
         (fun w st => oneHighFamilyC4SameMidpointStep i j w st) acc.1 := by
   exact oneHighFamilyRunListVal_state _ _ _ _
     (fun w acc => oneHighFamilyC4SameMidpointStepVal_state R i j w acc)
+
+noncomputable def oneHighFamilyC4CrossMidpointsStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j w w' : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyFourNegativeAtomsVal R
+    (.edge (min i w) (max i w)) (.edge (min j w) (max j w))
+    (.edge (min i w') (max i w')) (.edge (min j w') (max j w')) acc
+
+theorem oneHighFamilyC4CrossMidpointsStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j w w' : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4CrossMidpointsStepVal R i j w w' acc).1 =
+      oneHighFamilyC4CrossMidpointsStep i j w w' acc.1 := by
+  rw [oneHighFamilyC4CrossMidpointsStepVal]
+  rw [oneHighFamilyFourNegativeAtomsVal_state]
+  rfl
+
+theorem oneHighFamilyC4CrossMidpointsStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i j w w' : Nat} (hi : i < 40) (hj : j < 40)
+    (hw : w < 40) (hw' : w' < 40) (hij : i ≠ j) (hww' : w ≠ w') :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4CrossMidpointsStepVal R i j w w' acc) := by
+  apply oneHighFamilyFourNegativeAtomsVal_semanticSound R h
+  intro hall
+  rw [oneHighFamilyAtomValue_edge R hi hw,
+    oneHighFamilyAtomValue_edge R hj hw,
+    oneHighFamilyAtomValue_edge R hi hw',
+    oneHighFamilyAtomValue_edge R hj hw'] at hall
+  simp only [decide_eq_true_eq] at hall
+  let I := R.neighborFinset (⟨i, hi⟩ : Fin 40) ∩
+    R.neighborFinset (⟨j, hj⟩ : Fin 40)
+  have hwmem : (⟨w, hw⟩ : Fin 40) ∈ I := by
+    simp [I, SimpleGraph.mem_neighborFinset, hall.1, hall.2.1]
+  have hw'mem : (⟨w', hw'⟩ : Fin 40) ∈ I := by
+    simp [I, SimpleGraph.mem_neighborFinset, hall.2.2.1, hall.2.2.2]
+  have hfinNe : (⟨w, hw⟩ : Fin 40) ≠ ⟨w', hw'⟩ :=
+    Fin.ne_of_val_ne hww'
+  have hsubset : ({(⟨w, hw⟩ : Fin 40), ⟨w', hw'⟩} : Finset (Fin 40)) ⊆ I := by
+    intro q hq
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+    rcases hq with rfl | rfl
+    · exact hwmem
+    · exact hw'mem
+  have htwo : 2 ≤ I.card := by
+    have hle := Finset.card_le_card hsubset
+    simpa [Finset.card_pair hfinNe] using hle
+  have hone := hc.relation.2.2.1
+    (⟨i, hi⟩ : Fin 40) ⟨j, hj⟩ (Fin.ne_of_val_ne hij)
+  change I.card ≤ 1 at hone
+  omega
+
+noncomputable def oneHighFamilyC4CrossPairVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let others := oneHighFamilyOtherVertices i j
+  oneHighFamilyRunListVal others (fun w acc =>
+    oneHighFamilyRunListVal others (fun w' acc =>
+      if w < w' then
+        oneHighFamilyC4CrossMidpointsStepVal R i j w w' acc
+      else acc) acc) acc
+
+theorem oneHighFamilyC4CrossPairVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i j : Nat} (hi : i < 40) (hj : j < 40) (hij : i ≠ j) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4CrossPairVal R i j acc) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ h
+  intro w hwmem acc hwSound
+  have hw : w < 40 := by
+    simp only [oneHighFamilyOtherVertices, List.mem_filter,
+      List.mem_range] at hwmem
+    exact hwmem.1
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ hwSound
+  intro w' hw'mem acc hw'Sound
+  have hw' : w' < 40 := by
+    simp only [oneHighFamilyOtherVertices, List.mem_filter,
+      List.mem_range] at hw'mem
+    exact hw'mem.1
+  split
+  next hww' =>
+    exact oneHighFamilyC4CrossMidpointsStepVal_semanticSound
+      a R hc hw'Sound hi hj hw hw' hij (by omega)
+  next => exact hw'Sound
+
+theorem oneHighFamilyC4CrossPairVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4CrossPairVal R i j acc).1 =
+      let others := oneHighFamilyOtherVertices i j
+      oneHighFamilyRunList others (fun w st =>
+        oneHighFamilyRunList others (fun w' st =>
+          if w < w' then
+            oneHighFamilyC4CrossMidpointsStep i j w w' st
+          else st) st) acc.1 := by
+  unfold oneHighFamilyC4CrossPairVal
+  apply oneHighFamilyRunListVal_state
+  intro w acc
+  apply oneHighFamilyRunListVal_state
+  intro w' acc
+  split
+  · exact oneHighFamilyC4CrossMidpointsStepVal_state R i j w w' acc
+  · rfl
+
+noncomputable def oneHighFamilyC4PairStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  if i / 5 = j / 5 then oneHighFamilyC4SamePairVal R i j acc
+  else oneHighFamilyC4CrossPairVal R i j acc
+
+theorem oneHighFamilyC4PairStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i j : Nat} (hi : i < 40) (hj : j < 40) (hij : i ≠ j) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4PairStepVal R i j acc) := by
+  unfold oneHighFamilyC4PairStepVal
+  split
+  next hblock =>
+    exact oneHighFamilyC4SamePairVal_semanticSound
+      a R hc h hi hj hij hblock
+  next =>
+    exact oneHighFamilyC4CrossPairVal_semanticSound
+      a R hc h hi hj hij
+
+theorem oneHighFamilyC4PairStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4PairStepVal R i j acc).1 =
+      oneHighFamilyC4PairStep i j acc.1 := by
+  unfold oneHighFamilyC4PairStepVal oneHighFamilyC4PairStep
+  split
+  · exact oneHighFamilyC4SamePairVal_state R i j acc
+  · exact oneHighFamilyC4CrossPairVal_state R i j acc
+
+noncomputable def oneHighFamilyC4OuterStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 40) (fun j acc =>
+    if i < j then oneHighFamilyC4PairStepVal R i j acc else acc) acc
+
+theorem oneHighFamilyC4OuterStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i : Nat} (hi : i < 40) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4OuterStepVal R i acc) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ h
+  intro j hj acc hjSound
+  have hj' := List.mem_range.mp hj
+  split
+  next hij =>
+    exact oneHighFamilyC4PairStepVal_semanticSound
+      a R hc hjSound hi hj' (by omega)
+  next =>
+    exact hjSound
+
+theorem oneHighFamilyC4OuterStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4OuterStepVal R i acc).1 =
+      oneHighFamilyC4OuterStep i acc.1 := by
+  unfold oneHighFamilyC4OuterStepVal oneHighFamilyC4OuterStep
+  apply oneHighFamilyRunListVal_state
+  intro j acc
+  split
+  · exact oneHighFamilyC4PairStepVal_state R i j acc
+  · rfl
+
+noncomputable def oneHighFamilyC4ClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 40) (oneHighFamilyC4OuterStepVal R)
+    (oneHighFamilyBaseUnitsVal R a val)
+
+theorem oneHighFamilyC4ClausesVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R (oneHighFamilyC4ClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyBaseUnitsVal_semanticSound a R hc val)
+  intro i hi acc hacc
+  exact oneHighFamilyC4OuterStepVal_semanticSound
+    a R hc hacc (List.mem_range.mp hi)
+
+theorem oneHighFamilyC4ClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyC4ClausesVal R a val).1 = oneHighFamilyC4Clauses a := by
+  unfold oneHighFamilyC4ClausesVal oneHighFamilyC4Clauses
+  calc
+    _ = oneHighFamilyRunList (List.range 40) oneHighFamilyC4OuterStep
+        (oneHighFamilyBaseUnitsVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun i acc => oneHighFamilyC4OuterStepVal_state R i acc)
+    _ = _ := by rw [oneHighFamilyBaseUnitsVal_state]
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
