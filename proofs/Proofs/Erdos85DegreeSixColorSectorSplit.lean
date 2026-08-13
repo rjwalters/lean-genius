@@ -2992,6 +2992,208 @@ theorem degreeSix_orderFive_ten_residual_component_shape
     exact Or.inr ⟨t, u, v, e, ht5, hu5, hv5, he3, huv, htat, htta,
       hqau, hqua, hqav, hqva, by simpa [U] using hU⟩
 
+/-- An order-five component cannot contact an order-three component at the
+degree-six boundary: balance would force a `3×5` contribution, exceeding
+the order-five two-step diagonal budget `8`. -/
+theorem degreeSix_no_contact_orderFive_orderThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (t e : (secondOrderDefectGraph G).ConnectedComponent)
+    (ht5 : t.supp.ncard = 5) (he3 : e.supp.ncard = 3) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) t e = 0 ∧
+    componentQuotientMatrix G (secondOrderDefectGraph G) e t = 0 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t e
+  change t.supp.ncard * Q t e = e.supp.ncard * Q e t at hbal
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t
+  change (∑ z, Q t z) = 6 at hrow
+  have hqle : Q t e ≤ 6 := by
+    have hsingle : Q t e ≤ ∑ z, Q t z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ e)
+    omega
+  have hprod := (degreeSix_oddComponent_profile
+    G hfree hmin hcard t (by rw [ht5]; norm_num)).2.1
+  change (∑ z, Q t z * Q z t) = t.supp.ncard + 3 at hprod
+  have hterm : Q t e * Q e t ≤ 8 := by
+    have hsingle : Q t e * Q e t ≤ ∑ z, Q t z * Q z t :=
+      Finset.single_le_sum (f := fun z ↦ Q t z * Q z t)
+        (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ e)
+    rw [ht5] at hprod
+    omega
+  rw [ht5, he3] at hbal
+  have hte : Q t e = 0 := by
+    by_contra hne
+    have : 0 < Q t e := Nat.pos_of_ne_zero hne
+    interval_cases Q t e <;> omega
+  refine ⟨hte, ?_⟩
+  change Q e t = 0
+  rw [hte] at hbal
+  norm_num at hbal
+  omega
+
+/-- An order-three row cannot contact an order-ten component: detailed
+balance would require its forward entry to be at least ten. -/
+theorem degreeSix_no_contact_orderThree_orderTen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (e u : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3) (hu10 : u.supp.ncard = 10) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e u = 0 ∧
+    componentQuotientMatrix G (secondOrderDefectGraph G) u e = 0 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e u
+  change e.supp.ncard * Q e u = u.supp.ncard * Q u e at hbal
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e
+  change (∑ z, Q e z) = 6 at hrow
+  have hqle : Q e u ≤ 6 := by
+    have hsingle : Q e u ≤ ∑ z, Q e z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ u)
+    omega
+  rw [he3, hu10] at hbal
+  have heu : Q e u = 0 := by
+    by_contra hne
+    have : 0 < Q e u := Nat.pos_of_ne_zero hne
+    interval_cases Q e u <;> omega
+  refine ⟨heu, ?_⟩
+  change Q u e = 0
+  rw [heu] at hbal
+  norm_num at hbal
+  omega
+
+/-- The `(5,10)` cover always leaves a unique order-three component.  Its
+contacts to every named order-five component violate the latter's square
+budget, while contacts to order-ten components violate balance and row six;
+its zero diagonal therefore makes its whole quotient row vanish. -/
+theorem false_of_degreeSix_oddEven_cover_five_ten
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (hzero : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd t.supp.ncard →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha5 : a.supp.ncard = 5) (hb10 : b.supp.ncard = 10)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0 :=
+    hzero a (by rw [ha5]; norm_num)
+  have hshape := degreeSix_orderFive_ten_residual_component_shape
+    G hfree hmin hcard hr a b ha5 hb10 haa hba
+  change
+    (∃ t u e : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 ∧ u.supp.ncard = 10 ∧ e.supp.ncard = 3 ∧
+      Q a t = 2 ∧ Q t a = 2 ∧ Q a u = 2 ∧ Q u a = 1 ∧
+      (((((Finset.univ.erase a).erase b).erase t).erase u : Finset _) = {e})) ∨
+    (∃ t u v e : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 ∧ u.supp.ncard = 5 ∧ v.supp.ncard = 5 ∧
+      e.supp.ncard = 3 ∧ u ≠ v ∧
+      Q a t = 2 ∧ Q t a = 2 ∧ Q a u = 1 ∧ Q u a = 1 ∧
+      Q a v = 1 ∧ Q v a = 1 ∧
+      ((((((Finset.univ.erase a).erase b).erase t).erase u).erase v :
+        Finset _) = {e})) at hshape
+  rcases hshape with ⟨t, u, e, ht5, hu10, he3, _, _, _, _, hU⟩ |
+      ⟨t, u, v, e, ht5, hu5, hv5, he3, _, _, _, _, _, _, _, hU⟩
+  · have hea := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard a e ha5 he3).2
+    have het := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard t e ht5 he3).2
+    have heb := (degreeSix_no_contact_orderThree_orderTen
+      G hfree hmin hcard e b he3 hb10).1
+    have heu := (degreeSix_no_contact_orderThree_orderTen
+      G hfree hmin hcard e u he3 hu10).1
+    have hee : Q e e = 0 := by
+      simpa [Q] using hzero e (by rw [he3]; norm_num)
+    have hallzero : ∀ z : (secondOrderDefectGraph G).ConnectedComponent,
+        Q e z = 0 := by
+      intro z
+      by_cases hza : z = a
+      · subst z; simpa [Q] using hea
+      by_cases hzb : z = b
+      · subst z; simpa [Q] using heb
+      by_cases hzt : z = t
+      · subst z; simpa [Q] using het
+      by_cases hzu : z = u
+      · subst z; simpa [Q] using heu
+      have hzU : z ∈ ((((Finset.univ.erase a).erase b).erase t).erase u :
+          Finset (secondOrderDefectGraph G).ConnectedComponent) := by
+        simp [hza, hzb, hzt, hzu]
+      rw [hU] at hzU
+      have hze : z = e := by simpa using hzU
+      subst z
+      exact hee
+    have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+    change (∑ z, Q e z) = 6 at hrow
+    have hzeroRow : (∑ z, Q e z) = 0 :=
+      Finset.sum_eq_zero fun z _ ↦ hallzero z
+    omega
+  · have hea := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard a e ha5 he3).2
+    have het := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard t e ht5 he3).2
+    have heu := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard u e hu5 he3).2
+    have hev := (degreeSix_no_contact_orderFive_orderThree
+      G hfree hmin hcard v e hv5 he3).2
+    have heb := (degreeSix_no_contact_orderThree_orderTen
+      G hfree hmin hcard e b he3 hb10).1
+    have hee : Q e e = 0 := by
+      simpa [Q] using hzero e (by rw [he3]; norm_num)
+    have hallzero : ∀ z : (secondOrderDefectGraph G).ConnectedComponent,
+        Q e z = 0 := by
+      intro z
+      by_cases hza : z = a
+      · subst z; simpa [Q] using hea
+      by_cases hzb : z = b
+      · subst z; simpa [Q] using heb
+      by_cases hzt : z = t
+      · subst z; simpa [Q] using het
+      by_cases hzu : z = u
+      · subst z; simpa [Q] using heu
+      by_cases hzv : z = v
+      · subst z; simpa [Q] using hev
+      have hzU : z ∈ (((((Finset.univ.erase a).erase b).erase t).erase u).erase v :
+          Finset (secondOrderDefectGraph G).ConnectedComponent) := by
+        simp [hza, hzb, hzt, hzu, hzv]
+      rw [hU] at hzU
+      have hze : z = e := by simpa using hzU
+      subst z
+      exact hee
+    have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+    change (∑ z, Q e z) = 6 at hrow
+    have hzeroRow : (∑ z, Q e z) = 0 :=
+      Finset.sum_eq_zero fun z _ ↦ hallzero z
+    omega
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
