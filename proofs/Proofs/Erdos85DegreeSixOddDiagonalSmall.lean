@@ -143,6 +143,29 @@ theorem fifteen_pattern_counts {n1 n2 n3 n4 n5 n6 n7 n8 : ℕ}
   have hn7 : n7 = 0 := by omega
   omega
 
+/-- Order-eleven positive partner classification at the degree-six
+boundary. -/
+theorem eleven_partner_type {s q r : ℕ}
+    (hbal : 11 * q = s * r) (hq1 : 1 ≤ q) (hq4 : q ≤ 4)
+    (hr1 : 1 ≤ r) (hr6 : r ≤ 6) (hqr : q * r ≤ 10)
+    (hs : s ≤ 22) :
+    (s = 11 ∧ q = 1 ∧ r = 1) ∨
+    (s = 22 ∧ q = 2 ∧ r = 1) ∨
+    (s = 11 ∧ q = 2 ∧ r = 2) ∨
+    (s = 11 ∧ q = 3 ∧ r = 3) ∨
+    (s = 22 ∧ q = 4 ∧ r = 2) := by
+  interval_cases r <;> omega
+
+/-- The order-eleven row `4`, square `10`, and external size budget `22`
+force one symmetric order-eleven quotient-one partner and one symmetric
+order-eleven quotient-three partner. -/
+theorem eleven_pattern_counts {n1 n2 n3 n4 n5 : ℕ}
+    (hrow : n1 + 2 * n2 + 2 * n3 + 3 * n4 + 4 * n5 = 4)
+    (hsq : n1 + 2 * n2 + 4 * n3 + 9 * n4 + 8 * n5 = 10)
+    (hsize : 11 * n1 + 22 * n2 + 11 * n3 + 11 * n4 + 22 * n5 ≤ 22) :
+    n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0 := by
+  omega
+
 end OddDiagonalSmall
 
 end Erdos85
