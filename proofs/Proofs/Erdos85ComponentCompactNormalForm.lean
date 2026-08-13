@@ -2,6 +2,7 @@ import Proofs.Erdos85ComponentLocalObstruction
 import Proofs.Erdos85NonextendableCompactness
 import Proofs.Erdos85ConflictDegreeAccounting
 import Proofs.Erdos85PlateauComponentDescent
+import Proofs.Erdos85DegreeExcessStratification
 
 /-!
 # Compact normal form for proper plateau components
@@ -82,7 +83,9 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
           (∀ c : (deletedNeighborhoodInducedGraph G x).ConnectedComponent,
             c.supp.ncard = 2) ∧
           (∀ a b, G.Adj a x → G.Adj b x → G.Adj a b →
-            G.degree a = d ∨ G.degree b = d)) := by
+            G.degree a = d ∨ G.degree b = d)) ∧
+      (∃ q, m = d * (d - 1) + 1 + q ∧
+        ∀ x, (G.degree x - d) * (d - 1) ≤ q) := by
   obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected⟩ :=
     hminimal.exists_connected_representative hm hd
   letI : DecidableRel G.Adj := hdec
@@ -90,11 +93,23 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
   obtain ⟨horder, hupper, hoddUpper, hind⟩ :=
     nonextendable_witness_compactness G hcard (by omega) hmin.ge hfree hnext
   refine ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected,
-    horder, hupper, hoddUpper, hind, ?_, ?_⟩
+    horder, hupper, hoddUpper, hind, ?_, ?_, ?_⟩
   · intro x hx
     exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
       G hfree (d := d) (fun {_u _v} huv ↦ hcover huv) x hx
   · exact nonextendable_witness_threshold_rigidity
       G hcard (by omega) hmin.ge hfree hnext
+  · have hlower : d * (d - 1) + 1 ≤ m := by
+      have hsecond := hminimal.1.second_strict_moore_lower (by omega)
+      omega
+    let q := m - (d * (d - 1) + 1)
+    have hmdecomp : m = d * (d - 1) + 1 + q := by
+      dsimp [q]
+      omega
+    refine ⟨q, hmdecomp, ?_⟩
+    intro x
+    exact degree_sub_mul_pred_le_order_excess G hfree
+      (fun y ↦ hmin.ge.trans (G.minDegree_le_degree y))
+      (fun {_u _v} huv ↦ hcover huv) (by simpa using hmdecomp) x
 
 end Erdos85
