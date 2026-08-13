@@ -1280,6 +1280,91 @@ theorem false_of_degreeSix_orderNine_pattern_four_filters
     hsw haData.2.1 hbData.2.1 heData.2.1 hsf heData.2.2.1 hfData.2
     hediag hfdiag hrow hsqAll hbal hgroupA hgroupB
 
+/-- Abstract carrier extraction and dispatch for order-nine pattern two. -/
+theorem false_of_orderNine_pattern_two_carrier
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w : C)
+    (S : Finset C) (hS : S = Finset.univ.erase w)
+    (hsw : size w = 9) (htotal : ∑ c, size c = 33)
+    (hmin : ∀ c, 3 ≤ size c)
+    (hExtSize : ∑ c ∈ S, size c = 24)
+    (hused : (∑ c ∈ S, if Q w c = 0 then 0 else size c) = 18)
+    (hP6 : (S.filter fun t ↦ size t = 18 ∧ Q w t = 4 ∧ Q t w = 2).card = 1)
+    (hrow : ∀ c, (∑ t, Q c t) = 6)
+    (hsq : ∀ c, (∑ t, Q c t * Q t c) = size c + 3)
+    (hbal : ∀ c t, size c * Q c t = size t * Q t c)
+    (hdiag3 : ∀ c, size c = 3 → Q c c = 0) : False := by
+  obtain ⟨t, ht⟩ := Finset.card_eq_one.mp hP6
+  have htMem : t ∈ S.filter fun z ↦ size z = 18 ∧ Q w z = 4 ∧ Q z w = 2 := by
+    rw [ht]
+    simp
+  have htData := Finset.mem_filter.mp htMem
+  let Z := S.filter fun c ↦ Q w c = 0
+  have hzero : (∑ c ∈ Z, size c) = 6 :=
+    OddDiagonalSmall.zero_contact_sum_eq_sub S size (fun c ↦ Q w c)
+      24 18 hExtSize hused (by omega)
+  rcases OddDiagonalSmall.residual_six_partition Z size
+      (by intro z hz; exact hmin z) hzero with h6 | h33
+  · obtain ⟨e, he, hse⟩ := h6
+    have heMem : e ∈ Z := by rw [he]; simp
+    have heData := Finset.mem_filter.mp heMem
+    have hwt : w ≠ t := Ne.symm (by simpa [hS] using htData.1)
+    have hwe : w ≠ e := Ne.symm (by simpa [hS] using heData.1)
+    have hte : t ≠ e := by intro h; subst e; omega
+    have huniv : (Finset.univ : Finset C) = {w, t, e} := by
+      apply OddDiagonalSmall.univ_eq_of_positive_sum_eq size
+      · intro c
+        have hc := hmin c
+        omega
+      · rw [htotal]
+        simp [hwt, hwe, hte, hsw, htData.2.1, hse]
+    have hew : e ≠ w := hwe.symm
+    have het : e ≠ t := hte.symm
+    have hrowe : Q e w + Q e t + Q e e = 6 := by
+      calc
+        _ = ∑ x ∈ ({w, t, e} : Finset C), Q e x := by
+          simp [hwt, hwe, hte, Nat.add_assoc]
+        _ = ∑ x, Q e x := by rw [← huniv]
+        _ = 6 := hrow e
+    have hsqe : Q e w * Q w e + Q e t * Q t e + Q e e * Q e e =
+        size e + 3 := by
+      calc
+        _ = ∑ x ∈ ({w, t, e} : Finset C), Q e x * Q x e := by
+          simp [hwt, hwe, hte, Nat.add_assoc]
+        _ = ∑ x, Q e x * Q x e := by rw [← huniv]
+        _ = size e + 3 := hsq e
+    have hQew : Q e w = 0 := by
+      have hb := hbal e w
+      rw [hse, hsw, heData.2] at hb
+      omega
+    have hbt := hbal e t
+    rw [hse, htData.2.1] at hbt
+    have hdiv : Q e t = 3 * Q t e := by omega
+    rw [hQew, hdiv] at hrowe hsqe
+    exact OddDiagonal.false_of_nine_six_residual (Q e e) (Q t e)
+      (by omega) (by omega)
+  · obtain ⟨e, f, hef, heq, hse, hsf⟩ := h33
+    have heMem : e ∈ Z := by rw [heq]; simp
+    have hfMem : f ∈ Z := by rw [heq]; simp
+    have heData := Finset.mem_filter.mp heMem
+    have hfData := Finset.mem_filter.mp hfMem
+    have hwt : w ≠ t := Ne.symm (by simpa [hS] using htData.1)
+    have hwe : w ≠ e := Ne.symm (by simpa [hS] using heData.1)
+    have hwf : w ≠ f := Ne.symm (by simpa [hS] using hfData.1)
+    have hte : t ≠ e := by intro h; subst e; omega
+    have htf : t ≠ f := by intro h; subst f; omega
+    have huniv : (Finset.univ : Finset C) = {w, t, e, f} := by
+      apply OddDiagonalSmall.univ_eq_of_positive_sum_eq size
+      · intro c
+        have hc := hmin c
+        omega
+      · rw [htotal]
+        simp [hwt, hwe, hwf, hte, htf, hef, hsw, htData.2.1, hse, hsf]
+    exact OddDiagonal.false_of_nine_pattern_two_two_triangles Q size w t e f
+      huniv ⟨hwt, hwe, hwf, hte, htf, hef⟩ hsw htData.2.1 hse hsf
+      htData.2.2.1 htData.2.2.2 heData.2 hfData.2
+      (hdiag3 e hse) (hdiag3 f hsf) hrow hsq hbal
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two
