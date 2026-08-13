@@ -4908,6 +4908,116 @@ theorem degreeSix_threeSix_orderSix_budget_contact_counts
     interval_cases n62 <;> interval_cases n9 <;> interval_cases n12 <;>
     interval_cases n18 <;> interval_cases n24 <;> omega
 
+/-- In a `(3,6)` cover, the off-diagonal square identity forces exactly two
+units of the order-six row into the order-twelve half unused by the source
+triangle. -/
+theorem degreeSix_threeSix_unused_half_orderSix_contact_mass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    ∑ t ∈ S.filter (fun t ↦ Q a t = 0), Q b t = 2 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := S.filter fun t ↦ Q a t ≠ 0
+  let U := S.filter fun t ↦ Q a t = 0
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q b) hbIn
+  have hrowS : (∑ t ∈ S, Q b t) + Q b b = 5 := by
+    dsimp [S]
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  have hsq : (∑ z, Q a z * Q z b) = 6 := by
+    simpa [Q, Matrix.mul_apply, habNe, hb6] using hsqGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z b) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z b) hbIn
+  have hcrossS : (∑ t ∈ S, Q a t * Q t b) + 2 * Q b b = 6 := by
+    dsimp [S]
+    rw [haa] at hpA
+    rw [hab] at hpB
+    omega
+  have hbal : ∀ t, 3 * Q a t = t.supp.ncard * Q t a := by
+    intro t
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a t
+    simpa [Q, ha3] using hb
+  have hbalB : ∀ t, 6 * Q b t = t.supp.ncard * Q t b := by
+    intro t
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b t
+    simpa [Q, hb6] using hb
+  have hterm : ∀ t ∈ A, Q a t * Q t b = 2 * Q b t := by
+    intro t ht
+    have htS := (Finset.mem_filter.mp ht).1
+    have hqat := (Finset.mem_filter.mp ht).2
+    have hta : Q t a = 1 := by
+      have hprofile := degreeSix_threeSix_residual_profile
+        G hfree hmin hcard hr a b ha3 hb6 haa hba
+      exact (hprofile.2.1 t htS (Nat.pos_of_ne_zero hqat)).1
+    have hsize : t.supp.ncard = 3 * Q a t := by
+      have hb := hbal t
+      rw [hta, mul_one] at hb
+      exact hb.symm
+    have hb := hbalB t
+    rw [hsize] at hb
+    nlinarith
+  have hcrossA : (∑ t ∈ A, Q a t * Q t b) = 2 * ∑ t ∈ A, Q b t := by
+    calc
+      _ = ∑ t ∈ A, 2 * Q b t := Finset.sum_congr rfl hterm
+      _ = 2 * ∑ t ∈ A, Q b t := by rw [Finset.mul_sum]
+  have hcrossSA : (∑ t ∈ S, Q a t * Q t b) =
+      ∑ t ∈ A, Q a t * Q t b := by
+    dsimp [A]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  have hsplit : (∑ t ∈ S, Q b t) =
+      (∑ t ∈ A, Q b t) + ∑ t ∈ U, Q b t := by
+    dsimp [A, U]
+    rw [Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  rw [hcrossSA, hcrossA] at hcrossS
+  have hU : (∑ t ∈ U, Q b t) = 2 := by omega
+  simpa [U] using hU
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
