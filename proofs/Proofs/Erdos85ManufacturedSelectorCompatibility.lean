@@ -117,6 +117,123 @@ theorem canonicalSurvivingSelectors_old_budget
     exact (Finset.card_le_card hunion).trans hcommon
   simpa [S, P, I] using hcard
 
+/-- The old--old compatibility budget remains automatic when pivots may be
+repeated, provided selectors over the same pivot never share two vertices.
+This is the form needed when one deleted pivot is split into two new gadget
+vertices. -/
+theorem subselectors_old_budget_of_fiber_inter_le_one
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : Finset V) (hfree : ¬ containsC4 V G)
+    (pivot : W → V) (hpivot : ∀ w, pivot w ∈ D)
+    (A : W → Finset {v : V // v ∉ D})
+    (hsub : ∀ w, A w ⊆ survivingNeighborSelector G D (pivot w))
+    (hfiber : ∀ u w, u ≠ w → pivot u = pivot w →
+      (A u ∩ A w).card ≤ 1) :
+    ∀ a b : {v : V // v ∉ D}, a ≠ b →
+      ((deleteVertexSetGraph G D).neighborFinset a ∩
+          (deleteVertexSetGraph G D).neighborFinset b).card +
+        (Finset.univ.filter fun w => a ∈ A w ∧ b ∈ A w).card ≤ 1 := by
+  classical
+  intro a b hab
+  let valEmb : {v : V // v ∉ D} ↪ V :=
+    ⟨Subtype.val, Subtype.val_injective⟩
+  let S : Finset V :=
+    ((deleteVertexSetGraph G D).neighborFinset a ∩
+      (deleteVertexSetGraph G D).neighborFinset b).map valEmb
+  let I : Finset W := Finset.univ.filter fun w => a ∈ A w ∧ b ∈ A w
+  let P : Finset V := I.image pivot
+  have hIinj : Set.InjOn pivot I := by
+    intro u hu w hw huw
+    by_contra hne
+    have hu' : a ∈ A u ∧ b ∈ A u := by simpa [I] using hu
+    have hw' : a ∈ A w ∧ b ∈ A w := by simpa [I] using hw
+    have hpair : ({a, b} : Finset {v : V // v ∉ D}) ⊆ A u ∩ A w := by
+      intro z hz
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+      rcases hz with rfl | rfl
+      · exact Finset.mem_inter.mpr ⟨hu'.1, hw'.1⟩
+      · exact Finset.mem_inter.mpr ⟨hu'.2, hw'.2⟩
+    have htwo : 2 ≤ (A u ∩ A w).card := by
+      rw [← Finset.card_pair hab]
+      exact Finset.card_le_card hpair
+    exact (not_lt_of_ge htwo) (lt_of_le_of_lt (hfiber u w hne huw) (by omega))
+  have hPcard : P.card = I.card := by
+    dsimp [P]
+    exact Finset.card_image_iff.mpr hIinj
+  have hSsub : S ⊆ G.neighborFinset a.1 ∩ G.neighborFinset b.1 := by
+    intro z hz
+    change z ∈ ((deleteVertexSetGraph G D).neighborFinset a ∩
+      (deleteVertexSetGraph G D).neighborFinset b).map valEmb at hz
+    rw [Finset.mem_map] at hz
+    obtain ⟨v, hv, rfl⟩ := hz
+    rw [Finset.mem_inter] at hv ⊢
+    rw [mem_neighborFinset, mem_neighborFinset]
+    dsimp [valEmb]
+    rw [mem_neighborFinset, mem_neighborFinset] at hv
+    simpa only [deleteVertexSetGraph, SimpleGraph.induce_adj,
+      Function.Embedding.coe_subtype] using hv
+  have hPsub : P ⊆ G.neighborFinset a.1 ∩ G.neighborFinset b.1 := by
+    intro z hz
+    change z ∈ I.image pivot at hz
+    obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hz
+    have hw' : a ∈ A w ∧ b ∈ A w := by simpa [I] using hw
+    have ha := hsub w hw'.1
+    have hb := hsub w hw'.2
+    simp only [mem_survivingNeighborSelector] at ha hb
+    rw [Finset.mem_inter, mem_neighborFinset, mem_neighborFinset]
+    exact ⟨ha.symm, hb.symm⟩
+  have hdisj : Disjoint S P := by
+    rw [Finset.disjoint_left]
+    intro z hzS hzP
+    change z ∈ I.image pivot at hzP
+    obtain ⟨w, _hw, rfl⟩ := Finset.mem_image.mp hzP
+    change pivot w ∈
+      ((deleteVertexSetGraph G D).neighborFinset a ∩
+        (deleteVertexSetGraph G D).neighborFinset b).map valEmb at hzS
+    rw [Finset.mem_map] at hzS
+    obtain ⟨v, _hv, hv⟩ := hzS
+    dsimp [valEmb] at hv
+    exact v.2 (hv.symm ▸ hpivot w)
+  have hcommon := (not_containsC4_iff_forall_common_le_one G).mp hfree
+    a.1 b.1 (fun h ↦ hab (Subtype.ext h))
+  have hcard : S.card + P.card ≤ 1 := by
+    rw [← Finset.card_union_of_disjoint hdisj]
+    exact (Finset.card_le_card (Finset.union_subset hSsub hPsub)).trans hcommon
+  rw [hPcard] at hcard
+  simpa [S, I] using hcard
+
+/-- **Split-pivot compatibility characterization.** For subselectors of
+surviving pivot neighborhoods, allowing repeated pivots costs only the
+same-pivot intersection condition.  Under that condition the old--old
+budget is automatic, so compatibility is exactly the new--new and mixed
+budgets. -/
+theorem pivotSubselectors_compatible_iff
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (D : Finset V) (hfree : ¬ containsC4 V G)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (pivot : W → V) (hpivot : ∀ w, pivot w ∈ D)
+    (A : W → Finset {v : V // v ∉ D})
+    (hsub : ∀ w, A w ⊆ survivingNeighborSelector G D (pivot w))
+    (hfiber : ∀ u w, u ≠ w → pivot u = pivot w →
+      (A u ∩ A w).card ≤ 1) :
+    GadgetAttachmentCompatible (deleteVertexSetGraph G D) F A ↔
+      (∀ u w : W, u ≠ w →
+        (A u ∩ A w).card +
+          (F.neighborFinset u ∩ F.neighborFinset w).card ≤ 1) ∧
+      (∀ x : {v : V // v ∉ D}, ∀ w : W,
+        ((deleteVertexSetGraph G D).neighborFinset x ∩ A w).card +
+          (F.neighborFinset w |>.filter fun u => x ∈ A u).card ≤ 1) := by
+  constructor
+  · intro hcompat
+    exact ⟨hcompat.2.1, hcompat.2.2⟩
+  · rintro ⟨hnew, hmixed⟩
+    exact ⟨subselectors_old_budget_of_fiber_inter_le_one
+      G D hfree pivot hpivot A hsub hfiber, hnew, hmixed⟩
+
 /-- The mixed budget for canonical pivot selectors, rewritten entirely in
 ambient-graph language. -/
 theorem canonicalSurvivingSelectors_mixed_budget_iff
