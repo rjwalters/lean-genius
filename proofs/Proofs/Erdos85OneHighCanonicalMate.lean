@@ -1887,8 +1887,40 @@ theorem oneHighRelabeledLeafGraph_adj_eq_familyInternal
   rw [hc, hw, ← hbi, ← hri]
   have hrj' : Fin.modNat (m := 8) (n := 5) j =
       leafLabel sx ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩ := by
-    simpa [sx, sy, hsxy] using hrj
+    rw [← hsxy] at hrj
+    simpa using hrj
   rw [← hrj']
+
+/-- Complete semantic content of the PURE family CNF before Tseitin and
+sequential-counter expansion. -/
+def OneHighPureFamilyRelationConstraints
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] : Prop :=
+  (∀ i j, Fin.divNat (m := 8) (n := 5) i =
+      Fin.divNat (m := 8) (n := 5) j →
+    decide (R.Adj i j) =
+      oneHighCanonicalBranchAdj
+        (oneHighFamilyTwoEdges a (Fin.divNat (m := 8) (n := 5) i))
+        (Fin.modNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) j)) ∧
+  (∀ i j, Fin.divNat (m := 8) (n := 5) j =
+      oneHighStandardMate (Fin.divNat (m := 8) (n := 5) i) →
+    ¬ R.Adj i j) ∧
+  (∀ i j, i ≠ j →
+    (R.neighborFinset i ∩ R.neighborFinset j).card ≤ 1) ∧
+  (∀ i j, i ≠ j → Fin.divNat (m := 8) (n := 5) i =
+      Fin.divNat (m := 8) (n := 5) j →
+    (R.neighborFinset i ∩ R.neighborFinset j).card = 0) ∧
+  (∀ i k l, k ≠ l → Fin.divNat (m := 8) (n := 5) k =
+      Fin.divNat (m := 8) (n := 5) l →
+    ¬(R.Adj i k ∧ R.Adj i l)) ∧
+  (∀ i, (oneHighEncodedFarNeighbors R i).card =
+    oneHighFamilyFarDegree a
+      (Fin.divNat (m := 8) (n := 5) i)
+      (Fin.modNat (m := 8) (n := 5) i)) ∧
+  ∀ b : Fin 8,
+    (oneHighEncodedCommonPairBlock R b (oneHighStandardMate b)).card +
+      2 * oneHighFamilyInternalEdges a b +
+      2 * oneHighFamilyInternalEdges a (oneHighStandardMate b) = 30
 
 /-- A raw one-high graph admits all coordinate choices used by the family
 generator simultaneously: one mate involution, a family-ordered standard
@@ -2011,6 +2043,94 @@ theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
     hmateInv, hmateAdj, haug, hbranchMate, hfamily, hword, ?_⟩
   intro s
   exact (hlabels s).choose_spec.choose_spec
+
+/-- Every raw one-high graph produces a Fin40 relation satisfying the whole
+PURE family terminal for one of the five ordered profile words. -/
+theorem orderFortyNine_exists_pureFamilyRelation_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ (a : Nat) (R : SimpleGraph (Fin 40)) (_ : DecidableRel R.Adj),
+      a ≤ 4 ∧ OneHighPureFamilyRelationConstraints a R := by
+  classical
+  obtain ⟨mate, branchLabel, twoEdges, leafLabel,
+      hmateInv, hmateAdj, _haug, hbranchMate, hfamily, hword, hlabels⟩ :=
+    orderFortyNine_exists_simultaneous_familyGeneratorLabels
+      G hfree hmin hcard hHigh hv
+  let a := ((Finset.univ :
+    Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
+      highBranchMatchedCount G v s = 2).card
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let R := oneHighRelabeledLeafGraph G v E
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7 := by
+    intro x hx
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard x with hx7 | hx8
+    · exact hx7
+    · have hxv := hunique hx8
+      rw [secondLayer] at hx
+      rcases Finset.mem_biUnion.mp hx with ⟨s, _, hxs⟩
+      exact ((Finset.mem_sdiff.mp hxs).2 (by simp [hxv])).elim
+  have ha : a ≤ 4 := by
+    simpa [a, oneHighAEndpointSet] using card_oneHighAEndpointSet_le_four
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj
+  have hstates : ∀ i,
+      highBranchMatchedCount G v (branchLabel.symm i) = 2 ∨
+      highBranchMatchedCount G v (branchLabel.symm i) = 4 := by
+    intro i
+    rcases (hlabels (branchLabel.symm i)).1 with hs | hs
+    · exact Or.inl hs.2
+    · exact Or.inr hs.2
+  have hIN : ∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges a i :=
+    highBranchMatchedCount_eq_two_mul_familyInternalEdges
+      G branchLabel a hfamily hstates
+  refine ⟨a, R, inferInstance, ha, ?_⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro i j hij
+    exact oneHighRelabeledLeafGraph_adj_eq_familyInternal
+      G hfree branchLabel twoEdges leafLabel (fun s => (hlabels s).2.1)
+        a hword i j hij
+  · intro i j hij
+    exact oneHighRelabeledLeafGraph_not_adj_of_standardMate_blocks
+      G hfree mate hmateAdj branchLabel hbranchMate leafLabel i j hij
+  · intro i j hij
+    exact oneHighRelabeledLeafGraph_common_le_one G hfree E i j hij
+  · intro i j hij hblock
+    exact oneHighRelabeledLeafGraph_sameBlock_common_eq_zero
+      G hfree branchLabel leafLabel i j hij hblock
+  · intro i k l hkl hblock
+    exact oneHighRelabeledLeafGraph_not_adj_two_in_sameBlock
+      G hfree branchLabel leafLabel i k l hkl hblock
+  · intro i
+    exact card_oneHighEncodedFarNeighbors_eq_familyFarDegree
+      G hfree hexternal mate hmateAdj branchLabel hbranchMate twoEdges
+        leafLabel (fun s => (hlabels s).2.1) a hword i (houterDegree (E.symm i).2)
+  · intro b
+    have hledger := card_oneHighEncodedCommonPairBlock_add_familyIN_eq_thirty
+      G hfree hmin hcard hv hunique hexternal houterDegree mate hmateInv
+        hmateAdj branchLabel hbranchMate leafLabel a hIN (branchLabel.symm b)
+    simpa [R, E] using hledger
 
 end
 
