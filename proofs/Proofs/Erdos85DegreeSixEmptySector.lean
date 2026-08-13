@@ -819,6 +819,31 @@ theorem false_of_degreeSix_orderFive_diagonal_two
         exact h5all t
       exact OddDiagonal.false_of_five_three_residual _ (hrow f) h5sum
 
+/-! ## Order-nine discharge -/
+
+/-- Any order-nine row pattern containing the `(6,2,3)` partner type is
+impossible: from the order-six source the reverse quotient is three, whereas
+`6 ∤ 9` forces it to be at most one. -/
+theorem false_of_degreeSix_orderNine_orderSix_partner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (w s : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw9 : w.supp.ncard = 9) (hs6 : s.supp.ncard = 6)
+    (hsw : componentQuotientMatrix G (secondOrderDefectGraph G) s w = 3) :
+    False := by
+  have hle := secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) s w (by
+        rw [hs6, hw9]
+        norm_num)
+  omega
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two

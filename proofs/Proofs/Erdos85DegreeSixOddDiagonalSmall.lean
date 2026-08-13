@@ -109,6 +109,40 @@ theorem nine_pattern_counts {n1 n2 n3 n4 n5 n6 n7 : ℕ}
   interval_cases n6 <;> interval_cases n5 <;> interval_cases n4 <;>
     interval_cases n2 <;> omega
 
+/-- A zero-contact residual of total order six, when every component has
+order at least three, is either one order-six component or two order-three
+components. -/
+theorem residual_six_partition
+    {C : Type*} [DecidableEq C]
+    (Z : Finset C) (size : C → ℕ)
+    (hmin : ∀ z ∈ Z, 3 ≤ size z) (hsum : ∑ z ∈ Z, size z = 6) :
+    (∃ e, Z = {e} ∧ size e = 6) ∨
+      (∃ e f, e ≠ f ∧ Z = {e, f} ∧ size e = 3 ∧ size f = 3) := by
+  have hcardLe : 3 * Z.card ≤ 6 := by
+    have h := Z.card_nsmul_le_sum size 3 hmin
+    rw [hsum] at h
+    simpa [nsmul_eq_mul, mul_comm] using h
+  have hcardPos : 0 < Z.card := by
+    by_contra hn
+    have hz : Z = ∅ := Finset.card_eq_zero.mp (by omega)
+    rw [hz] at hsum
+    simp at hsum
+  have hcases : Z.card = 1 ∨ Z.card = 2 := by omega
+  rcases hcases with h1 | h2
+  · left
+    obtain ⟨e, he⟩ := Finset.card_eq_one.mp h1
+    refine ⟨e, he, ?_⟩
+    rw [he] at hsum
+    simpa using hsum
+  · right
+    obtain ⟨e, f, hef, heq⟩ := Finset.card_eq_two.mp h2
+    have hsumef : size e + size f = 6 := by
+      rw [heq] at hsum
+      simpa [hef] using hsum
+    have he3 : 3 ≤ size e := hmin e (by rw [heq]; simp)
+    have hf3 : 3 ≤ size f := hmin f (by rw [heq]; simp)
+    exact ⟨e, f, hef, heq, by omega, by omega⟩
+
 /-- Order-fifteen type classification.  This is kept in the same
 pure-arithmetic layer because its count equations have a unique feasible
 shape at total external size eighteen. -/
