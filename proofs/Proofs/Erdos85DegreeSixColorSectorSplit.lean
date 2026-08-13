@@ -6408,6 +6408,19 @@ theorem degreeSix_threeSix_orderSix_no_orderFour_contact
     H (Q b) (fun z ↦ Q z b) (Q b b) t htH hbt2 htb hdom
       hbudget.1 hbudget.2
 
+/-- The residual row and square equations of an isolated unused triangle
+cannot be supported by one sibling triangle and one order-six component
+whose combined triangle contact is at most one. -/
+theorem false_of_isolated_unused_triangle_arithmetic
+    (x y q : ℕ) (hq : q ≤ 1)
+    (hrow : x + y + 2 * q = 6)
+    (hsq : x * x + y * y + 2 * q * q = 6) : False := by
+  have hx : x ≤ 6 := by omega
+  have hy : y ≤ 6 := by omega
+  interval_cases q <;> interval_cases x <;> interval_cases y <;>
+    try norm_num at hsq ⊢
+  all_goals omega
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
