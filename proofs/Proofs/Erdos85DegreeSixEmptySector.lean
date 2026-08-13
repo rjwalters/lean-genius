@@ -1,6 +1,8 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
+import Proofs.Erdos85FrequencyPairMixedTransport
+import Proofs.Erdos85RamseyPlateau
 
 /-!
 # Degree-six empty-sector assembly
@@ -2047,6 +2049,81 @@ theorem false_of_degreeSix_orderThirtyThree_diagonal_two
   simp at hwrow
   omega
 
+/-- Every odd defect component has zero diagonal quotient at the degree-six
+boundary.  The odd zero-or-two dichotomy is dispatched over the complete
+order range `3 ≤ |c| ≤ 33`. -/
+theorem degreeSix_odd_component_diagonal_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hodd : Odd c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 := by
+  let D := secondOrderDefectGraph G
+  have htotal : (∑ t : D.ConnectedComponent, t.supp.ncard) = 33 := by
+    simpa [D, hcard] using sum_connectedComponent_supp_ncard D
+  have hcLe : c.supp.ncard ≤ 33 := by
+    have hterm := Finset.single_le_sum (f := fun t : D.ConnectedComponent ↦
+      t.supp.ncard) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ c)
+    rw [htotal] at hterm
+    exact hterm
+  rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (r := c.supp.ncard) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (hr c) hodd c
+        (coord c) (hcoord c) (hcoordRange c) (hcoordD c) with hzero | htwo
+  · exact hzero
+  have hc3 := hr c
+  obtain ⟨k, hk⟩ := hodd
+  interval_cases hc : c.supp.ncard
+  all_goals try omega
+  · exact degreeSix_orderThree_diagonal_zero G hfree hmin hcard
+      coord hcoord hcoordRange hcoordD c hc
+  · exact (false_of_degreeSix_orderFive_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderSeven_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderNine_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderEleven_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderThirteen_diagonal_two
+      G hfree hmin hcard c hc htwo).elim
+  · exact (false_of_degreeSix_orderFifteen_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderTwentyOne_diagonal_two
+      G hfree hmin hcard c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderTwentyFive_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+  · exact (false_of_degreeSix_orderTwentySeven_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderThirtyThree_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+
 /-- Once the empty-sector analysis supplies zero diagonal on every odd
 component, the eight odd-to-even cover terminals give the boundary
 contradiction immediately. -/
@@ -2164,6 +2241,74 @@ theorem false_of_degreeSix_boundary_of_empty_odd_zero
       G hfree hmin hcard u hu huRange huD hr (hemptyOdd0 hempty)
   · exact false_of_degreeSix_triangleFreeCycleSector_singleton
       G hfree hmin hcard u hu huRange huD hr c hsingleton
+
+/-- Unconditional exclusion of the degree-six exact boundary on 33 vertices. -/
+theorem false_of_degreeSix_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard) : False := by
+  exact false_of_degreeSix_boundary_of_empty_odd_zero
+    G hfree hmin hcard u hu huRange huD hr (by
+      intro _ c hc
+      exact degreeSix_odd_component_diagonal_zero
+        G hfree hmin hcard u hu huRange huD hr c hc)
+
+/-- Fully graph-level degree-six exact-boundary exclusion.  Mixed cycle
+coordinates and the component lower bound are extracted automatically from
+the two-regular second-order defect graph. -/
+theorem false_of_degreeSix_exact_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) : False := by
+  obtain ⟨u, hu, huRange, huD, hr⟩ := exists_mixed_cycle_labeling
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard)
+  letI : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard := fun c ↦ ⟨Nat.ne_of_gt (by
+        have hc := hr c
+        omega)⟩
+  exact false_of_degreeSix_boundary
+    G hfree hmin hcard u hu huRange huD hr
+
+/-- The degree-six exact-boundary graph exclusion in plateau-core language. -/
+theorem not_C4PlateauCore_thirtyThree_six :
+    ¬ C4PlateauCore 33 6 := by
+  classical
+  rintro ⟨G, hdec, hminEq, hfree, _, _⟩
+  letI : DecidableRel G.Adj := hdec
+  exact false_of_degreeSix_exact_boundary G hfree (by omega) (by simp)
+
+/-- Numerical threshold consequence of the degree-six boundary exclusion. -/
+theorem minDegreeForC4_thirtyThree_le_six :
+    minDegreeForC4 33 ≤ 6 := by
+  by_contra hnot
+  have hlt : 6 < minDegreeForC4 33 := by omega
+  obtain ⟨G, hdec, hmin, hfree⟩ :=
+    (c4FreeMinDegreeWitness_iff_lt_minDegreeForC4 (by norm_num)).2 hlt
+  classical
+  letI : DecidableRel G.Adj := hdec
+  exact false_of_degreeSix_exact_boundary G hfree hmin (by simp)
 
 end
 

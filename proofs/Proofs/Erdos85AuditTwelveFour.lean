@@ -237,6 +237,14 @@ import Proofs.Erdos85DegreeSixOddDiagonalSmall
 #print axioms Erdos85.OddDiagonalSmall.nine_partner_type
 #print axioms Erdos85.OddDiagonalSmall.nine_pattern_counts
 
+-- ★ DEGREE-6 CLOSURE: hodd0, master, exact boundary, consumers
+#print axioms Erdos85.false_of_degreeSix_orderNine_diagonal_two
+#print axioms Erdos85.degreeSix_odd_component_diagonal_zero
+#print axioms Erdos85.false_of_degreeSix_boundary
+#print axioms Erdos85.false_of_degreeSix_exact_boundary
+#print axioms Erdos85.not_C4PlateauCore_thirtyThree_six
+#print axioms Erdos85.minDegreeForC4_thirtyThree_le_six
+
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two
