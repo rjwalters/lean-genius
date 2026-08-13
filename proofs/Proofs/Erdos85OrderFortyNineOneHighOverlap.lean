@@ -1449,6 +1449,51 @@ theorem two_mul_orderFortyNineLeafComponentBranchCensus_le_componentOrder
   rw [hTcard] at hST
   omega
 
+/-- In a component of order six, 5-regularity makes the component graph
+complete, so every original-branch class has size at most one. -/
+theorem orderFortyNineLeafComponentBranchCensus_le_one_of_order_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (hc : Fintype.card c.supp = 6)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchCensus G v c s ≤ 1 := by
+  let L := orderFortyNineLeafDefectGraph G v
+  let H := L.induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v s
+  change S.card ≤ 1
+  rw [Finset.card_le_one_iff]
+  intro x y hx hy
+  by_contra hxy
+  have hHreg : ∀ z : c.supp, H.degree z = 5 := by
+    intro z
+    rw [show H.degree z = L.degree z.1 by
+      exact degree_induce_connectedComponent_supp L c z]
+    exact orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv z.1
+  have hneighbors : H.neighborFinset x = Finset.univ.erase x := by
+    apply Finset.eq_of_subset_of_card_le
+    · intro z hz
+      exact Finset.mem_erase.mpr ⟨
+        (H.ne_of_adj ((H.mem_neighborFinset x z).1 hz)).symm,
+        Finset.mem_univ _⟩
+    · rw [Finset.card_erase_of_mem (Finset.mem_univ x),
+        Finset.card_univ, hc, H.card_neighborFinset_eq_degree, hHreg]
+  have hAdj : H.Adj x y := by
+    rw [← H.mem_neighborFinset, hneighbors]
+    exact Finset.mem_erase.mpr ⟨fun h => hxy h.symm, Finset.mem_univ _⟩
+  exact orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+    G hfree s x.1 y.1 (Finset.mem_filter.mp hx).2
+      (Finset.mem_filter.mp hy).2 hAdj
+
 end
 
 end Erdos85
