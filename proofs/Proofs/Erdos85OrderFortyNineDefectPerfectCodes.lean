@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineDefectEigenvectors
+import Proofs.Erdos85ComponentLocalObstruction
 
 /-!
 # Perfect codes in the order-49 low defect graph
@@ -485,6 +486,50 @@ theorem orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
   rw [Finset.card_map, hinter] at hcardImage
   rw [← (orderFortyNineLeafDefectGraph G v).card_neighborFinset_eq_degree]
   exact hcardImage.trans hfive
+
+/-- Every connected component of the one-high leaf defect graph has even
+order and at least six vertices. -/
+theorem orderFortyNine_leafDefect_component_order_even_and_six_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∀ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+      6 ≤ Fintype.card c.supp ∧ Even (Fintype.card c.supp) := by
+  classical
+  let L := orderFortyNineLeafDefectGraph G v
+  have hLreg : ∀ y, L.degree y = 5 :=
+    orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv
+  intro c
+  let H := L.induce c.supp
+  letI : Nonempty c.supp := Set.nonempty_coe_sort.mpr c.nonempty_supp
+  have hHreg : ∀ y : c.supp, H.degree y = 5 := by
+    intro y
+    rw [show H.degree y = L.degree y.1 by
+      exact degree_induce_connectedComponent_supp L c y]
+    exact hLreg y.1
+  have hsix : 6 ≤ Fintype.card c.supp := by
+    let y : c.supp := Classical.choice inferInstance
+    have hy := H.degree_lt_card_verts y
+    rw [hHreg y] at hy
+    omega
+  have heven : Even (Fintype.card c.supp) := by
+    have hall : (Finset.univ.filter fun y : c.supp => Odd (H.degree y)) =
+        Finset.univ := by
+      apply Finset.filter_true_of_mem
+      intro y _hy
+      rw [hHreg y]
+      decide
+    have hhand := H.even_card_odd_degree_vertices
+    rw [hall, Finset.card_univ] at hhand
+    exact hhand
+  exact ⟨hsix, heven⟩
 
 end
 
