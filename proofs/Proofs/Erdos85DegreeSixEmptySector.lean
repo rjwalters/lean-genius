@@ -268,6 +268,76 @@ theorem false_of_degreeSix_orderTwentySeven_diagonal_two
   rw [hsum, hdiagQ] at hwrow
   omega
 
+/-- For an order-twenty-five diagonal-two component, detailed balance
+forces every external reverse quotient to be at most five.  The external
+row mass four then contributes at most twenty to the square, short of the
+required twenty-four. -/
+theorem false_of_degreeSix_orderTwentyFive_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw25 : w.supp.ncard = 25)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  obtain ⟨htotal, hrow, hbal, hsq, hle⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  change (∑ t, Q w t * Q t w) = size w + 3 at hsq
+  change ∀ c t, Q c t ≤ 6 at hle
+  have hsw : size w = 25 := hw25
+  have hdiagQ : Q w w = 2 := hdiag
+  have hrev5 : ∀ t, t ≠ w → Q t w ≤ 5 := by
+    intro t htw
+    have hpair := two_distinct_terms_le_sum size htw
+    rw [htotal, hsw] at hpair
+    have hst3 : 3 ≤ size t := hr t
+    have hst8 : size t ≤ 8 := by omega
+    have hb := hbal w t
+    rw [hsw] at hb
+    have hqt := hle w t
+    have hrt := hle t w
+    interval_cases (size t) <;> omega
+  have hextRow : (∑ t ∈ Finset.univ.erase w, Q w t) = 4 := by
+    have hadd := Finset.add_sum_erase Finset.univ (fun t ↦ Q w t)
+      (Finset.mem_univ w)
+    have hwrow := hrow w
+    change Q w w + (∑ t ∈ Finset.univ.erase w, Q w t) =
+      ∑ t, Q w t at hadd
+    rw [hdiagQ] at hadd
+    omega
+  have hextSqLe : (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) ≤ 20 := by
+    calc
+      (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) ≤
+          ∑ t ∈ Finset.univ.erase w, Q w t * 5 := by
+            apply Finset.sum_le_sum
+            intro t ht
+            exact Nat.mul_le_mul_left _ (hrev5 t (Finset.ne_of_mem_erase ht))
+      _ = 5 * 4 := by rw [← Finset.sum_mul, hextRow]; omega
+      _ = 20 := by omega
+  have hextSq : (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) = 24 := by
+    have hadd := Finset.add_sum_erase Finset.univ
+      (fun t ↦ Q w t * Q t w) (Finset.mem_univ w)
+    change Q w w * Q w w +
+      (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) =
+        ∑ t, Q w t * Q t w at hadd
+    rw [hdiagQ] at hadd
+    rw [hsw] at hsq
+    omega
+  omega
+
 /-- An order-thirty-three component exhausts the carrier, so diagonal two
 cannot supply the degree-six row. -/
 theorem false_of_degreeSix_orderThirtyThree_diagonal_two
