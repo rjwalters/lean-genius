@@ -1948,6 +1948,44 @@ theorem card_orderFortyNineLeafDefectBranchBlock_eq_sum_components
   rw [card_orderFortyNineLeafDefectBranchBlock_eq_incidence,
     sum_orderFortyNineLeafComponentBranchIncidence_eq_global]
 
+/-- Exact mate rigidity with every cross-branch leaf-defect edge count
+decomposed into its connected-component contributions. -/
+theorem exists_orderFortyNine_mate_exact_componentLeafDefect_overlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        ((∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+            orderFortyNineLeafComponentBranchIncidence G v c s (mate s)) +
+          orderFortyNineOneHighOverlap G v s s +
+          orderFortyNineOneHighOverlap G v (mate s) (mate s) = 5) ∧
+        ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+              orderFortyNineLeafComponentBranchIncidence G v c s u) +
+            orderFortyNineOneHighOverlap G v s (mate u) +
+            orderFortyNineOneHighOverlap G v u (mate s) = 5 := by
+  obtain ⟨mate, hmateInv, hmateAdj, hrigid⟩ :=
+    exists_orderFortyNine_mate_exact_leafDefect_overlap
+      G hfree hmin hcard hHigh hv
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  constructor
+  · rw [← card_orderFortyNineLeafDefectBranchBlock_eq_sum_components]
+    exact (hrigid s).1
+  · intro u hu
+    rw [← card_orderFortyNineLeafDefectBranchBlock_eq_sum_components]
+    exact (hrigid s).2 u hu
+
 end
 
 end Erdos85
