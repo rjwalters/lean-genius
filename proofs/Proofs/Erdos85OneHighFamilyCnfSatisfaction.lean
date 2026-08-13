@@ -3837,4 +3837,108 @@ theorem oneHighFamilyCollectCommonsVal_projection
     valOut.1 = rawOut.1 ∧ valOut.2.1 = rawOut.2 := by
   exact oneHighFamilyCollectCommonsOuter_projection R bi bj _ (#[], acc)
 
+theorem foldl_append_pairs_eq_append_map (x : Nat) (zs : List Nat)
+    (pairs : List (Nat × Nat)) :
+    zs.foldl (fun pairs z => pairs ++ [(x, z)]) pairs =
+      pairs ++ zs.map (fun z => (x, z)) := by
+  induction zs generalizing pairs with
+  | nil => simp
+  | cons z zs ih =>
+      simp only [List.foldl_cons, List.map_cons]
+      rw [ih]
+      simp [List.append_assoc]
+
+theorem oneHighFamilyCommonPairs_eq_product (bi bj : Nat) :
+    oneHighFamilyCommonPairs bi bj =
+      (oneHighFamilyBlockVertices bi).product
+        (oneHighFamilyBlockVertices bj) := by
+  unfold oneHighFamilyCommonPairs List.product
+  have go : ∀ (xs zs : List Nat) (pairs : List (Nat × Nat)),
+      xs.foldl (fun pairs x =>
+        zs.foldl (fun pairs z => pairs ++ [(x, z)]) pairs) pairs =
+        pairs ++ xs.flatMap (fun x => zs.map (Prod.mk x)) := by
+    intro xs
+    induction xs with
+    | nil => simp
+    | cons x xs ih =>
+        intro zs pairs
+        simp only [List.foldl_cons, List.flatMap_cons]
+        rw [foldl_append_pairs_eq_append_map, ih]
+        simp [List.append_assoc]
+  simpa using go (oneHighFamilyBlockVertices bi)
+    (oneHighFamilyBlockVertices bj) []
+
+theorem oneHighFamilyBlockVertices_nodup (b : Nat) :
+    (oneHighFamilyBlockVertices b).Nodup := by
+  unfold oneHighFamilyBlockVertices
+  apply List.Nodup.map
+  · intro a c heq
+    exact Nat.add_left_cancel heq
+  · exact List.nodup_range
+
+theorem oneHighFamilyCommonPairs_nodup (bi bj : Nat) :
+    (oneHighFamilyCommonPairs bi bj).Nodup := by
+  rw [oneHighFamilyCommonPairs_eq_product]
+  exact (oneHighFamilyBlockVertices_nodup bi).product
+    (oneHighFamilyBlockVertices_nodup bj)
+
+theorem mem_oneHighFamilyCommonPairs_iff {bi bj x z : Nat} :
+    (x, z) ∈ oneHighFamilyCommonPairs bi bj ↔
+      x ∈ oneHighFamilyBlockVertices bi ∧
+        z ∈ oneHighFamilyBlockVertices bj := by
+  rw [oneHighFamilyCommonPairs_eq_product]
+  exact List.pair_mem_product
+
+theorem oneHighFamilyCollectedCommonsMatch_length
+    {pairs : List (Nat × Nat)}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedCommonsMatch pairs input) :
+    input.1.size = pairs.length := by
+  have hvars := congrArg List.length h.vars_eq
+  have halign := h.aligned.length_eq
+  simpa using hvars.trans (by simpa using halign.symm)
+
+theorem oneHighFamilyCollectedCommonsMatch_value
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {pairs : List (Nat × Nat)}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedCommonsMatch pairs input)
+    (hs : OneHighFamilySemanticSound R input.2)
+    (i : Nat) (hi : i < input.1.size) :
+    let p := pairs.get
+      ⟨i, by rw [← oneHighFamilyCollectedCommonsMatch_length h]; exact hi⟩
+    dimacsLitValue input.2.2 (input.1.getD i 0) =
+      oneHighFamilyAtomValue R (.common (min p.1 p.2) (max p.1 p.2)) := by
+  have hidsLen : h.ids.length = pairs.length := h.aligned.length_eq.symm
+  have hiIds : i < h.ids.length := by
+    rw [hidsLen, ← oneHighFamilyCollectedCommonsMatch_length h]
+    exact hi
+  have hiPairs : i < pairs.length := by
+    rw [← oneHighFamilyCollectedCommonsMatch_length h]
+    exact hi
+  let p := pairs.get ⟨i, hiPairs⟩
+  have halign := h.aligned.get hiPairs hiIds
+  have hiList : i < input.1.toList.length := by simpa using hi
+  have hlistGet : input.1.toList[i] =
+      (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    have hg := List.get_of_eq h.vars_eq ⟨i, hiList⟩
+    rw [List.get_eq_getElem] at hg
+    calc
+      input.1.toList[i] =
+          (List.map (fun id : Nat => Int.ofNat id) h.ids)[i]'(by
+            simpa using hiIds) := hg
+      _ = (h.ids[i]'hiIds : Int) := List.getElem_map _
+      _ = (h.ids.get ⟨i, hiIds⟩ : Int) := by rw [List.get_eq_getElem]
+  have harrayGet : input.1.getD i 0 =
+      (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    rw [show input.1.getD i 0 = input.1[i] by simp [Array.getD, hi]]
+    rw [← Array.getElem_toList hi]
+    exact hlistGet
+  rw [harrayGet]
+  have hidPos := (hs.ids.id_bounds _ halign).1
+  have hidPosInt : 0 < (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    exact_mod_cast hidPos
+  rw [dimacsLitValue, if_pos hidPosInt]
+  exact hs.named _ _ halign
+
 end Erdos85
