@@ -1539,6 +1539,57 @@ noncomputable def oneHighFamilyCollectEdgeVal
   let (id, acc) := oneHighFamilyEdgeIdVal R y x acc
   (vars.push (id : Int), acc)
 
+structure OneHighFamilyCollectedEdgesMatch
+    (y : Nat) (xs : List Nat)
+    (input : Array Int × OneHighFamilyValState) where
+  ids : List Nat
+  vars_eq : input.1.toList = ids.map (fun id => (id : Int))
+  aligned : List.Forall₂ (fun x id =>
+    ((.edge (min y x) (max y x)), id) ∈ input.2.1.ids) xs ids
+
+def oneHighFamilyCollectedEdgesMatch_empty
+    (y : Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedEdgesMatch y [] (#[], acc) where
+  ids := []
+  vars_eq := rfl
+  aligned := .nil
+
+theorem listForall₂_append_singleton {α β : Type*}
+    {r : α → β → Prop} {xs : List α} {ys : List β}
+    (h : List.Forall₂ r xs ys) {x : α} {y : β} (hxy : r x y) :
+    List.Forall₂ r (xs ++ [x]) (ys ++ [y]) := by
+  induction h with
+  | nil => exact .cons hxy .nil
+  | cons hab hrest ih => exact .cons hab ih
+
+noncomputable def oneHighFamilyCollectedEdgesMatch_push
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {y x : Nat} {xs : List Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedEdgesMatch y xs input) :
+    OneHighFamilyCollectedEdgesMatch y (xs ++ [x])
+      (oneHighFamilyCollectEdgeVal R y x input) := by
+  rcases input with ⟨vars, acc⟩
+  simp only [oneHighFamilyCollectEdgeVal, oneHighFamilyEdgeIdVal]
+  generalize hout : oneHighFamilyAtomIdVal R
+    (.edge (min y x) (max y x)) acc = out
+  rcases out with ⟨id, acc'⟩
+  refine ⟨h.ids ++ [id], ?_, ?_⟩
+  · rw [Array.toList_push, h.vars_eq]
+    simp
+  · have hold : List.Forall₂ (fun z oldId =>
+        ((.edge (min y z) (max y z)), oldId) ∈ acc'.1.ids) xs h.ids := by
+      apply h.aligned.imp
+      intro z oldId hm
+      have hx := oneHighFamilyAtomIdVal_old_mem R
+        (.edge (min y x) (max y x)) acc.1 acc.2 hm
+      rw [hout] at hx
+      exact hx
+    have hnew := (oneHighFamilyAtomIdVal_result R
+      (.edge (min y x) (max y x)) acc.1 acc.2).1
+    rw [hout] at hnew
+    exact listForall₂_append_singleton hold hnew
+
 theorem oneHighFamilyCollectEdgeVal_sound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {input : Array Int × OneHighFamilyValState}
@@ -1628,6 +1679,25 @@ theorem oneHighFamilyCollectEdgesListVal_sound
       simp only [List.foldl_cons]
       exact ih (oneHighFamilyCollectEdgeVal_sound R h y x)
 
+noncomputable def oneHighFamilyCollectEdgesListVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y : Nat) (xs : List Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedEdgesMatch y xs
+      (xs.foldl (fun input x => oneHighFamilyCollectEdgeVal R y x input)
+        (#[], acc)) := by
+  suffices ∀ pre : List Nat,
+      OneHighFamilyCollectedEdgesMatch y pre
+        (pre.foldl (fun input x => oneHighFamilyCollectEdgeVal R y x input)
+          (#[], acc)) by
+    exact this xs
+  intro pre
+  induction pre using List.reverseRecOn with
+  | nil => exact oneHighFamilyCollectedEdgesMatch_empty y acc
+  | append_singleton pre x ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil]
+      exact oneHighFamilyCollectedEdgesMatch_push R ih
+
 theorem oneHighFamilyCollectFarInputsVal_sound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {acc : OneHighFamilyValState}
@@ -1637,6 +1707,13 @@ theorem oneHighFamilyCollectFarInputsVal_sound
   unfold oneHighFamilyCollectFarInputsVal
   exact oneHighFamilyCollectEdgesListVal_sound R y _
     (oneHighFamilyInputAccumSound_empty R h)
+
+noncomputable def oneHighFamilyCollectFarInputsVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y : Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedEdgesMatch y (oneHighFamilyFarVertices y)
+      (oneHighFamilyCollectFarInputsVal R y acc) := by
+  exact oneHighFamilyCollectEdgesListVal_match R y _ acc
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
