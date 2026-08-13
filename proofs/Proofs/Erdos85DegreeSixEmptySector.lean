@@ -2240,6 +2240,32 @@ theorem false_of_degreeSix_boundary_of_empty_odd_zero
   · exact false_of_degreeSix_triangleFreeCycleSector_singleton
       G hfree hmin hcard u hu huRange huD hr c hsingleton
 
+/-- Unconditional exclusion of the degree-six exact boundary on 33 vertices. -/
+theorem false_of_degreeSix_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard) : False := by
+  exact false_of_degreeSix_boundary_of_empty_odd_zero
+    G hfree hmin hcard u hu huRange huD hr (by
+      intro _ c hc
+      exact degreeSix_odd_component_diagonal_zero
+        G hfree hmin hcard u hu huRange huD hr c hc)
+
 end
 
 end Erdos85
