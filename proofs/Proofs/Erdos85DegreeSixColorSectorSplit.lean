@@ -659,6 +659,48 @@ theorem degreeSix_orderTwelve_two_orderThree_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Once an order-twelve row already has quotient one to an order-three
+component, grouped periodicity forbids contact with every other distinct
+order-three component; balance kills the reverse contact as well. -/
+theorem degreeSix_orderTwelve_no_other_orderThree_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (b a e : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb12 : b.supp.ncard = 12) (ha3 : a.supp.ncard = 3)
+    (he3 : e.supp.ncard = 3) (hae : a ≠ e)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) b e = 0 ∧
+    componentQuotientMatrix G (secondOrderDefectGraph G) e b = 0 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hgroup := degreeSix_orderTwelve_two_orderThree_targets_le_one
+    G hfree hmin hcard u hu huRange huD b a e hb12 ha3 he3 hae
+  change Q b a + Q b e ≤ 1 at hgroup
+  change Q b a = 1 at hba
+  have hbe : Q b e = 0 := by omega
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e b
+  change e.supp.ncard * Q e b = b.supp.ncard * Q b e at hbal
+  rw [he3, hb12, hbe] at hbal
+  have heb : Q e b = 0 := by
+    norm_num at hbal
+    omega
+  exact ⟨hbe, heb⟩
+
 /-- Two order-three targets occupy the same nonzero residue in an order-six
 source row. -/
 theorem degreeSix_orderSix_two_orderThree_targets_le_one
