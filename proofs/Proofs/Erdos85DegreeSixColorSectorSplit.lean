@@ -4548,6 +4548,118 @@ theorem false_of_degreeSix_oddEven_cover_three_eighteen
     change Q b c + Q b d ≤ 1 at hgroup
     omega
 
+/-- In the `(3,6)` cover, the source triangle has residual row mass four
+and residual two-step mass four.  Every positive residual contact therefore
+has reverse quotient one and target order three times its forward quotient;
+the contacted and unused residual orders are both twelve. -/
+theorem degreeSix_threeSix_residual_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    (∑ t ∈ S, Q a t) = 4 ∧
+    (∀ t ∈ S, 0 < Q a t →
+      Q t a = 1 ∧ t.supp.ncard = 3 * Q a t) ∧
+    (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) = 12 ∧
+    (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) = 12 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hrow : (∑ t ∈ S, Q a t) = 4 := by
+    dsimp [S]
+    omega
+  have hodd := degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha3]; norm_num)
+  have hprodGraph := hodd.2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at hprodGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z a) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z a) hbIn
+  have hprod : (∑ t ∈ S, Q a t * Q t a) = 4 := by
+    dsimp [S]
+    rw [ha3] at hprodGraph
+    rw [haa] at hpA
+    rw [hab, hba] at hpB
+    omega
+  have hbal : ∀ t, a.supp.ncard * Q a t = t.supp.ncard * Q t a := by
+    intro t
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a t
+  have hreverse := reverse_eq_one_on_finset_of_balanced_product_eq_row
+    S Q (fun t ↦ t.supp.ncard) a (by rw [ha3]; norm_num) hbal
+      (by rw [hprod, hrow])
+  have hcontact : ∀ t ∈ S, 0 < Q a t →
+      Q t a = 1 ∧ t.supp.ncard = 3 * Q a t := by
+    intro t ht hpos
+    have hrev := hreverse t ht hpos
+    have hb := hbal t
+    rw [ha3, hrev, mul_one] at hb
+    exact ⟨hrev, hb.symm⟩
+  have hused : (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) = 12 := by
+    calc
+      _ = ∑ t ∈ S, 3 * Q a t := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        by_cases hq : Q a t = 0
+        · simp [hq]
+        · simp [hq, (hcontact t ht (Nat.pos_of_ne_zero hq)).2]
+      _ = 12 := by rw [← Finset.mul_sum, hrow]; norm_num
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ z.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ z.supp.ncard) hbIn
+  have hsizeS : (∑ t ∈ S, t.supp.ncard) = 24 := by
+    dsimp [S]
+    omega
+  have hsplit : (∑ t ∈ S, t.supp.ncard) =
+      (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) +
+      (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  refine ⟨hrow, hcontact, hused, ?_⟩
+  have hunused : (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) = 12 := by
+    rw [hsizeS, hused] at hsplit
+    omega
+  exact hunused
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
