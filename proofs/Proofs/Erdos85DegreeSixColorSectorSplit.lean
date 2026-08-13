@@ -4820,6 +4820,294 @@ theorem degreeSix_threeSix_four_contact_shape
   · dsimp [S] at hsC ⊢
     omega
 
+set_option maxHeartbeats 10000000 in
+/-- An order-twelve component cannot distribute residual row mass four and
+residual square mass nine across components of total order twelve. -/
+theorem false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ) (x : ℕ)
+    (hsize : (∑ t ∈ S, size t) = 12)
+    (hmin : ∀ t ∈ S, 3 ≤ size t)
+    (hbal : ∀ t ∈ S, 12 * q t = size t * r t)
+    (hrow : x + (∑ t ∈ S, q t) = 4)
+    (hprod : x * x + (∑ t ∈ S, q t * r t) = 9) : False := by
+  have hcauchy : (∑ t ∈ S, 12 * q t) ^ 2 ≤
+      (∑ t ∈ S, size t) * (∑ t ∈ S, 12 * (q t * r t)) := by
+    apply Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul S
+      (fun _ _ ↦ Nat.zero_le _) (fun _ _ ↦ Nat.zero_le _)
+    intro t ht
+    have hb := hbal t ht
+    nlinarith
+  have hqsum : (∑ t ∈ S, q t) = 4 - x := by omega
+  have hpsum : (∑ t ∈ S, q t * r t) = 9 - x * x := by omega
+  have hx : x = 2 := by
+    have hx4 : x ≤ 4 := by omega
+    simp_rw [← Finset.mul_sum] at hcauchy
+    rw [hsize] at hcauchy
+    have hx0 : x ≠ 0 := by
+      intro hx
+      subst x
+      norm_num at hqsum hpsum
+      norm_num [hqsum, hpsum] at hcauchy
+    have hx1 : x ≠ 1 := by
+      intro hx
+      subst x
+      norm_num at hqsum hpsum
+      norm_num [hqsum, hpsum] at hcauchy
+    have hx3 : x ≠ 3 := by
+      intro hx
+      subst x
+      norm_num at hqsum hpsum
+      have hzero : ∀ t ∈ S, q t = 0 := by
+        intro t ht
+        have hqr : q t * r t = 0 := by
+          have hle : q t * r t ≤ ∑ z ∈ S, q z * r z :=
+            Finset.single_le_sum (f := fun z ↦ q z * r z)
+              (fun _ _ ↦ Nat.zero_le _) ht
+          omega
+        have hb := hbal t ht
+        rcases Nat.mul_eq_zero.mp hqr with hq | hr
+        · exact hq
+        · rw [hr] at hb
+          omega
+      have : (∑ t ∈ S, q t) = 0 := Finset.sum_eq_zero fun t ht ↦ hzero t ht
+      omega
+    have hx4ne : x ≠ 4 := by
+      intro hx
+      subst x
+      norm_num at hprod
+      omega
+    omega
+  subst x
+  have hqsum2 : (∑ t ∈ S, q t) = 2 := by omega
+  have hpsum5 : (∑ t ∈ S, q t * r t) = 5 := by omega
+  let P := S.filter fun t ↦ q t ≠ 0
+  have hPS : P ⊆ S := Finset.filter_subset _ _
+  have hqP : (∑ t ∈ P, q t) = 2 := by
+    rw [← hqsum2]
+    apply Finset.sum_subset hPS
+    intro t htS htP
+    simp only [P, Finset.mem_filter, htS, true_and, not_not] at htP
+    exact htP
+  have hpP : (∑ t ∈ P, q t * r t) = 5 := by
+    rw [← hpsum5]
+    apply Finset.sum_subset hPS
+    intro t htS htP
+    simp only [P, Finset.mem_filter, htS, true_and, not_not] at htP
+    simp [htP]
+  have hcardPpos : 0 < P.card := by
+    by_contra hn
+    have : P = ∅ := Finset.card_eq_zero.mp (by omega)
+    simp [this] at hqP
+  have hcardPle : P.card ≤ 2 := by
+    have hone : P.card ≤ ∑ t ∈ P, q t := by
+      calc
+        P.card = ∑ _t ∈ P, 1 := by simp
+        _ ≤ ∑ t ∈ P, q t := Finset.sum_le_sum fun t ht ↦ by
+          have : q t ≠ 0 := (Finset.mem_filter.mp ht).2
+          omega
+    omega
+  have hcardP : P.card = 1 ∨ P.card = 2 := by omega
+  rcases hcardP with hcardP | hcardP
+  · obtain ⟨a, hPa⟩ := Finset.card_eq_one.mp hcardP
+    rw [hPa] at hqP hpP
+    simp only [Finset.sum_singleton] at hqP hpP
+    rw [hqP] at hpP
+    norm_num at hpP
+    omega
+  · obtain ⟨a, b, hab, hPab⟩ := Finset.card_eq_two.mp hcardP
+    rw [hPab] at hqP hpP
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      not_false_eq_true, hab] at hqP hpP
+    have haP : a ∈ P := by rw [hPab]; simp
+    have hbP : b ∈ P := by rw [hPab]; simp
+    have haS := hPS haP
+    have hbS := hPS hbP
+    have hqa : q a ≠ 0 := (Finset.mem_filter.mp haP).2
+    have hqb : q b ≠ 0 := (Finset.mem_filter.mp hbP).2
+    have hqa1 : q a = 1 := by omega
+    have hqb1 : q b = 1 := by omega
+    have hra : r a ≤ 4 := by
+      have := hmin a haS
+      have := hbal a haS
+      rw [hqa1] at this
+      norm_num at this
+      nlinarith
+    have hrb : r b ≤ 4 := by
+      have := hmin b hbS
+      have := hbal b hbS
+      rw [hqb1] at this
+      norm_num at this
+      nlinarith
+    have hsizes : size a + size b = 12 ∨ size a + size b ≤ 9 := by
+      by_cases hPS_eq : P = S
+      · left
+        have hs := hsize
+        rw [← hPS_eq] at hs
+        rw [hPab] at hs
+        simpa [hab] using hs
+      · right
+        have hproper : P ⊂ S := Finset.ssubset_iff_subset_ne.mpr ⟨hPS, hPS_eq⟩
+        obtain ⟨z, hzS, hzP⟩ := Finset.exists_of_ssubset hproper
+        have hzDiff : z ∈ S \ P := Finset.mem_sdiff.mpr ⟨hzS, hzP⟩
+        have hzle : size z ≤ ∑ t ∈ S \ P, size t :=
+          Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) hzDiff
+        have hsplit := Finset.sum_sdiff hPS (f := size)
+        have hz3 := hmin z hzS
+        have hsP : (∑ t ∈ P, size t) = size a + size b := by
+          rw [hPab]
+          simp [hab]
+        rw [hsize] at hsplit
+        omega
+    rw [hqa1, hqb1] at hpP
+    have hba := hbal a haS
+    have hbb := hbal b hbS
+    rw [hqa1] at hba
+    rw [hqb1] at hbb
+    interval_cases r a <;> interval_cases r b <;> omega
+  /-
+  have hcardLe : S.card ≤ 4 := by
+    have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
+      calc
+        S.card * 3 = ∑ _t ∈ S, 3 := by simp
+        _ ≤ ∑ t ∈ S, size t := Finset.sum_le_sum fun t ht ↦ hmin t ht
+    omega
+  have hcardPos : 0 < S.card := by
+    by_contra hn
+    have hzero : S.card = 0 := by omega
+    rw [Finset.card_eq_zero.mp hzero] at hsize
+    simp at hsize
+  have hqle : ∀ t ∈ S, q t ≤ 4 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hprodle : ∀ t ∈ S, q t * r t ≤ 9 := by
+    intro t ht
+    have hsingle : q t * r t ≤ ∑ z ∈ S, q z * r z :=
+      Finset.single_le_sum (f := fun z ↦ q z * r z)
+        (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hrle : ∀ t ∈ S, r t ≤ 9 := by
+    intro t ht
+    by_cases hq0 : q t = 0
+    · have hb := hbal t ht
+      have hs3 := hmin t ht
+      rw [hq0] at hb
+      have hz : size t = 0 ∨ r t = 0 := Nat.mul_eq_zero.mp (by omega)
+      omega
+    · have hp := hprodle t ht
+      have hqpos : 1 ≤ q t := Nat.one_le_iff_ne_zero.mpr hq0
+      have : r t ≤ q t * r t := by
+        simpa [one_mul] using Nat.mul_le_mul_right (r t) hqpos
+      omega
+  have hclass : ∀ t ∈ S,
+      (q t = 0 ∧ r t = 0) ∨
+      (size t = 3 ∧ q t = 1 ∧ r t = 4) ∨
+      (size t = 4 ∧ q t = 1 ∧ r t = 3) ∨
+      (size t = 6 ∧ q t = 1 ∧ r t = 2) ∨
+      (size t = 6 ∧ q t = 2 ∧ r t = 4) ∨
+      (size t = 8 ∧ q t = 2 ∧ r t = 3) ∨
+      (size t = 12 ∧ q t = 1 ∧ r t = 1) ∨
+      (size t = 12 ∧ q t = 2 ∧ r t = 2) ∨
+      (size t = 12 ∧ q t = 3 ∧ r t = 3) := by
+    intro t ht
+    have hsle : size t ≤ 12 := by
+      have hsingle : size t ≤ ∑ z ∈ S, size z :=
+        Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) ht
+      omega
+    have hs3 := hmin t ht
+    have hq4 := hqle t ht
+    have hr9 := hrle t ht
+    have hb := hbal t ht
+    have hp := hprodle t ht
+    interval_cases size t <;> interval_cases q t <;> interval_cases r t <;> omega
+  have hcards : S.card = 1 ∨ S.card = 2 ∨ S.card = 3 ∨ S.card = 4 := by omega
+  have hx4 : x ≤ 4 := by omega
+  rcases hcards with hcard | hcard | hcard | hcard
+  · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hcard
+    simp only [Finset.sum_singleton] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha | ha | ha <;>
+      interval_cases x <;> simp_all <;> omega
+  · obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      not_false_eq_true, hab] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb | hb | hb | hb | hb <;>
+      interval_cases x <;> simp_all <;> omega
+  · obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, hbc] at hsize hrow hprod
+    have hsa6 : size a ≤ 6 := by
+      have := hmin b (by simp); have := hmin c (by simp); omega
+    have hsb6 : size b ≤ 6 := by
+      have := hmin a (by simp); have := hmin c (by simp); omega
+    have hsc6 : size c ≤ 6 := by
+      have := hmin a (by simp); have := hmin b (by simp); omega
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    have hc := hclass c (by simp)
+    have ha' : (q a = 0 ∧ r a = 0) ∨
+        (size a = 3 ∧ q a = 1 ∧ r a = 4) ∨
+        (size a = 4 ∧ q a = 1 ∧ r a = 3) ∨
+        (size a = 6 ∧ q a = 1 ∧ r a = 2) ∨
+        (size a = 6 ∧ q a = 2 ∧ r a = 4) := by
+      rcases ha with ha | ha | ha | ha | ha | ha | ha | ha | ha <;> omega
+    have hb' : (q b = 0 ∧ r b = 0) ∨
+        (size b = 3 ∧ q b = 1 ∧ r b = 4) ∨
+        (size b = 4 ∧ q b = 1 ∧ r b = 3) ∨
+        (size b = 6 ∧ q b = 1 ∧ r b = 2) ∨
+        (size b = 6 ∧ q b = 2 ∧ r b = 4) := by
+      rcases hb with hb | hb | hb | hb | hb | hb | hb | hb | hb <;> omega
+    have hc' : (q c = 0 ∧ r c = 0) ∨
+        (size c = 3 ∧ q c = 1 ∧ r c = 4) ∨
+        (size c = 4 ∧ q c = 1 ∧ r c = 3) ∨
+        (size c = 6 ∧ q c = 1 ∧ r c = 2) ∨
+        (size c = 6 ∧ q c = 2 ∧ r c = 4) := by
+      rcases hc with hc | hc | hc | hc | hc | hc | hc | hc | hc <;> omega
+    rcases ha' with ha | ha | ha | ha | ha <;>
+      rcases hb' with hb | hb | hb | hb | hb <;>
+      rcases hc' with hc | hc | hc | hc | hc <;>
+      interval_cases x <;> simp_all <;> omega
+  · obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ :=
+      Finset.card_eq_four.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, had, hbc, hbd, hcd]
+      at hsize hrow hprod
+    have hsa : size a = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsb : size b = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsc : size c = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsd : size d = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    have hc := hclass c (by simp)
+    have hd := hclass d (by simp)
+    have ha' : (q a = 0 ∧ r a = 0) ∨ (q a = 1 ∧ r a = 4) := by
+      rcases ha with ha | ha | ha | ha | ha | ha | ha | ha | ha <;> omega
+    have hb' : (q b = 0 ∧ r b = 0) ∨ (q b = 1 ∧ r b = 4) := by
+      rcases hb with hb | hb | hb | hb | hb | hb | hb | hb | hb <;> omega
+    have hc' : (q c = 0 ∧ r c = 0) ∨ (q c = 1 ∧ r c = 4) := by
+      rcases hc with hc | hc | hc | hc | hc | hc | hc | hc | hc <;> omega
+    have hd' : (q d = 0 ∧ r d = 0) ∨ (q d = 1 ∧ r d = 4) := by
+      rcases hd with hd | hd | hd | hd | hd | hd | hd | hd | hd <;> omega
+    rcases ha' with ha | ha <;>
+      rcases hb' with hb | hb <;>
+      rcases hc' with hc | hc <;>
+      rcases hd' with hd | hd <;>
+      interval_cases x <;> simp_all <;> omega
+-/
+
 /-- Row and square budgets for the order-six member of a `(3,6)` cover,
 after grouped periodicity removes every other order-three target. -/
 theorem degreeSix_orderSix_budget_after_three_cover
