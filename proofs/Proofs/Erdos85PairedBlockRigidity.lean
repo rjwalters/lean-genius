@@ -1561,6 +1561,114 @@ theorem unmatched_vertex_meets_every_far_branch
     G hfree v q u hqu
   omega
 
+/-- **Mate-block witness law.**  An endpoint which is unmatched inside its
+own five-point branch has a neighbor in one of the six far branches which is
+internally matched there and misses the endpoint's mate branch.  Otherwise
+all six far neighbors would continue into the five-point mate branch, giving
+the forbidden full fan.  This is the graph theorem behind the `k_x ≥ 1`
+clauses in the order-49 augmented family CNFs. -/
+theorem unmatched_vertex_exists_matched_neighbor_missing_mate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (x : V) (hx : x ∈ secondLayerBranch G v s)
+    (hxUnmatched :
+      (G.neighborFinset x ∩ secondLayerBranch G v s).card = 0) :
+    ∃ u : {z : V // z ∈ G.neighborSet v},
+      u ∈ ((Finset.univ.erase s).erase (mate s)) ∧
+      ∃ q ∈ G.neighborFinset x ∩ secondLayerBranch G v u,
+        (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 ∧
+        (G.neighborFinset q ∩ secondLayerBranch G v (mate s)).card = 0 := by
+  classical
+  by_contra hnone
+  push_neg at hnone
+  have hmateNe : s ≠ mate s := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hmateAdj s)
+  have hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  have hneigh : ∀ y, G.Adj v y → G.degree y = 7 := by
+    intro y hyv
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard y with hy7 | hy8
+    · exact hy7
+    · have hyv' : y = v := hunique hy8
+      subst y
+      exact (G.loopless.irrefl v hyv).elim
+  apply false_of_squareOrder_pairedBranch_fullFan
+    G hfree (d := 7) (by norm_num) hv hneigh hlocal
+      s (mate s) (hmateAdj s) x hx
+  · intro u
+    have huMem : u.1 ∈
+        ((Finset.univ.erase s).erase (mate s)) := u.2
+    exact unmatched_vertex_meets_every_far_branch
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s u.1 huMem x hx hxUnmatched
+  · intro u q hq
+    have huMem : u.1 ∈
+        ((Finset.univ.erase s).erase (mate s)) := u.2
+    have huRaw : u.1 ≠ mate s ∧ u.1 ≠ s := by
+      simpa only [Finset.mem_erase, Finset.mem_univ, true_and, and_true]
+        using huMem
+    have hqu :
+        (G.neighborFinset q ∩ secondLayerBranch G v u.1).card ≤ 1 := by
+      have hqne : q ≠ u.1.1 := by
+        intro h
+        have hqBranch := (Finset.mem_inter.mp hq).2
+        exact (Finset.mem_sdiff.mp hqBranch).2 (by
+          simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+          exact Or.inr (h ▸ u.1.2))
+      exact card_neighborFinset_inter_secondLayerBranch_le_one
+        G hfree v q u.1 hqne
+    by_cases hqMatched :
+        (G.neighborFinset q ∩ secondLayerBranch G v u.1).card = 1
+    · have hnotMiss :
+          (G.neighborFinset q ∩
+            secondLayerBranch G v (mate s)).card ≠ 0 := by
+        intro hmiss
+        exact hnone u.1 huMem q hq hqMatched hmiss
+      have hqMateNe : q ≠ (mate s).1 := by
+        intro h
+        have hqBranch := (Finset.mem_inter.mp hq).2
+        exact (Finset.mem_sdiff.mp hqBranch).2 (by
+          simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+          exact Or.inr (h ▸ (mate s).2))
+      have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+        G hfree v q (mate s) hqMateNe
+      omega
+    · have hqUnmatched :
+          (G.neighborFinset q ∩ secondLayerBranch G v u.1).card = 0 := by
+        omega
+      have hmateFar :
+          mate s ∈ ((Finset.univ.erase u.1).erase (mate u.1)) := by
+        have huS : u.1 ≠ s := huRaw.2
+        have huMateS : u.1 ≠ mate s := huRaw.1
+        have hmateS_ne_mateU : mate s ≠ mate u.1 := by
+          intro h
+          have := congrArg mate h
+          rw [hmateInv s, hmateInv u.1] at this
+          exact huS this.symm
+        simp [huMateS.symm, hmateS_ne_mateU]
+      exact unmatched_vertex_meets_every_far_branch
+        G hfree hmin hcard hv hunique hexternal houterDegree
+          mate hmateInv hmateAdj u.1 (mate s) hmateFar
+            q (Finset.mem_inter.mp hq).2 hqUnmatched
+
 /-- The exact paired-block identity collapses the internal matching state of
 each five-point branch to `2` or `4` matched vertices, and a mate pair cannot
 have state `(2,2)`.  Equivalently, every branch has one or three internally
