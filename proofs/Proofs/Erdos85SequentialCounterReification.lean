@@ -2143,4 +2143,67 @@ theorem seqCounterEqualsVal_formulaSatisfied
     negRow, lowerVal, upperVal] using
     dimacsFormulaSatisfied_append hlowerSatUpper hupperSat
 
+theorem seqCounterEquals_formulaBounded
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x) (t : Nat) :
+    dimacsFormulaBounded (seqCounterEquals top vars t).top
+      (seqCounterEquals top vars t).clauses := by
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeast top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMost lower.top vars t
+  have hlowerTop : top ≤ lower.top := by
+    simpa [lower] using seqCounterAtLeast_top_bound top vars t
+  have hlowerBound : dimacsFormulaBounded lower.top lower.clauses := by
+    simpa [lower] using seqCounterAtLeast_formulaBounded
+      inputVal top vars x hinput t
+  have hinputUpper : SeqCounterInputReifies lowerVal lower.top vars x :=
+    hinput.liftBlock negRow lower.ids hlowerTop
+  have hupperBound : dimacsFormulaBounded upper.top upper.clauses := by
+    simpa [upper] using seqCounterAtMost_formulaBounded
+      lowerVal lower.top vars x hinputUpper t
+  have hlowerFinal : dimacsFormulaBounded upper.top lower.clauses := by
+    apply dimacsFormulaBounded_mono _ hlowerBound
+    exact seqCounterAtMost_top_bound lower.top vars t
+  simpa [seqCounterEquals, lower, upper] using
+    dimacsFormulaBounded_append hlowerFinal hupperBound
+
+/-- Add one exact-cardinality block to an already-satisfied bounded prefix.
+The canonical counter valuation satisfies the appended formula and agrees
+with the incoming valuation on every pre-existing identifier. -/
+theorem seqCounterEqualsVal_formulaSatisfied_append
+    (inputVal : DimacsValuation) (top : Nat) (prior : Array DimacsClause)
+    (vars : Array Int) (x : Fin vars.size → Bool)
+    (hprefixSat : dimacsFormulaSatisfied inputVal prior)
+    (hprefixBound : dimacsFormulaBounded top prior)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hcount : seqPrefixTrue x vars.size = t) :
+    let nextVal := seqCounterEqualsVal inputVal top vars x t
+    dimacsFormulaSatisfied nextVal
+      (prior ++ (seqCounterEquals top vars t).clauses) ∧
+    dimacsFormulaBounded (seqCounterEquals top vars t).top
+      (prior ++ (seqCounterEquals top vars t).clauses) ∧
+    ∀ id, id ≤ top → nextVal id = inputVal id := by
+  let nextVal := seqCounterEqualsVal inputVal top vars x t
+  have hprefixNext : dimacsFormulaSatisfied nextVal prior := by
+    apply dimacsFormulaSatisfied_of_bounded_agree hprefixSat hprefixBound
+    intro id hid
+    exact (seqCounterEqualsVal_input inputVal top vars x t id hid).symm
+  have hblock : dimacsFormulaSatisfied nextVal
+      (seqCounterEquals top vars t).clauses := by
+    simpa [nextVal] using seqCounterEqualsVal_formulaSatisfied
+      inputVal top vars x hinput t hcount
+  have hpriorBoundNext : dimacsFormulaBounded
+      (seqCounterEquals top vars t).top prior := by
+    exact dimacsFormulaBounded_mono
+      (seqCounterEquals_top_bound top vars t) hprefixBound
+  have hblockBound : dimacsFormulaBounded
+      (seqCounterEquals top vars t).top
+      (seqCounterEquals top vars t).clauses :=
+    seqCounterEquals_formulaBounded inputVal top vars x hinput t
+  exact ⟨dimacsFormulaSatisfied_append hprefixNext hblock,
+    dimacsFormulaBounded_append hpriorBoundNext hblockBound,
+    fun id hid => seqCounterEqualsVal_input inputVal top vars x t id hid⟩
+
 end Erdos85
