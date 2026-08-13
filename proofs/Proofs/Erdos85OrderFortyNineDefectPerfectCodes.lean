@@ -154,6 +154,65 @@ theorem orderFortyNine_closedDefectNeighborhood_pairwiseDisjoint_at_high
   have hzeq : z = owner := hunique z ⟨hz, hyz⟩
   exact hxz (hxeq.trans hzeq.symm)
 
+/-- The closed defect cells centered at the neighbors of a high vertex cover
+the entire low sector.  Together with pairwise disjointness, this is the
+global perfect-code partition identity. -/
+theorem orderFortyNine_biUnion_closedDefectNeighborhood_eq_lowVertices
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8) :
+    (G.neighborFinset v).biUnion (fun x =>
+      insert x ((secondOrderDefectGraph G).neighborFinset x)) =
+        Finset.univ \ orderFortyNineHighVertices G := by
+  ext y
+  constructor
+  · intro hy
+    rw [Finset.mem_biUnion] at hy
+    obtain ⟨x, hx, hyx⟩ := hy
+    have hvx : G.Adj v x := by
+      simpa [SimpleGraph.mem_neighborFinset] using hx
+    have hxdeg : G.degree x = 7 :=
+      orderFortyNine_neighbor_degree_seven_of_degreeEight
+        G hfree hmin hcard hv hvx
+    have hydeg : G.degree y = 7 := by
+      rcases Finset.mem_insert.mp hyx with rfl | hD
+      · exact hxdeg
+      · rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard y with hy7 | hy8
+        · exact hy7
+        · have hyDzero :=
+            (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+              G hfree hmin hcard hy8).1
+          have hDAdj : (secondOrderDefectGraph G).Adj y x := by
+            simpa [SimpleGraph.mem_neighborFinset,
+              (secondOrderDefectGraph G).adj_comm] using hD
+          have hpos : 0 < (secondOrderDefectGraph G).degree y := by
+            rw [← (secondOrderDefectGraph G).card_neighborFinset_eq_degree]
+            exact Finset.card_pos.mpr
+              ⟨x, ((secondOrderDefectGraph G).mem_neighborFinset y x).mpr hDAdj⟩
+          omega
+    rw [Finset.mem_sdiff]
+    exact ⟨Finset.mem_univ y, by
+      simp [orderFortyNineHighVertices, hydeg]⟩
+  · intro hy
+    have hynot : y ∉ orderFortyNineHighVertices G :=
+      (Finset.mem_sdiff.mp hy).2
+    have hydeg : G.degree y = 7 := by
+      rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard y with hy7 | hy8
+      · exact hy7
+      · exact (hynot (by simp [orderFortyNineHighVertices, hy8])).elim
+    obtain ⟨x, hx, _⟩ :=
+      orderFortyNine_existsUnique_highNeighbor_closedDefectOwner
+        G hfree hmin hcard hv hydeg
+    rw [Finset.mem_biUnion]
+    exact ⟨x, hx.1, hx.2⟩
+
 /-- In the one-high stratum every cell of the defect perfect code has six
 vertices: its low center and its five defect neighbors. -/
 theorem orderFortyNine_card_closedDefectNeighborhood_eq_six_of_one_high
