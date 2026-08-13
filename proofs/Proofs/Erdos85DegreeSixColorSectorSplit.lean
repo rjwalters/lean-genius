@@ -3414,7 +3414,7 @@ its forced order-three contact, the remaining components have total order
 six, hence are either one order-six component or two order-three components. -/
 theorem degreeSix_orderSix_three_single_contact_shape
     {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V)
+    (G : SimpleGraph V) [DecidableRel G.Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hcard : Fintype.card V = 33)
@@ -3466,12 +3466,18 @@ theorem degreeSix_orderSix_three_single_contact_shape
   have hxe : x ≠ e := (Finset.mem_erase.mp hxS).1
   have hyc : y ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hyS).2).1
   have hye : y ≠ e := (Finset.mem_erase.mp hyS).1
-  have hdProfile := hcprofile d hdS (by rw [hcd]; norm_num)
-  have hxProfile := hcprofile x hxS (by rw [hcx]; norm_num)
-  have hyProfile := hcprofile y hyS (by rw [hcy]; norm_num)
-  have hd6 : d.supp.ncard = 6 := by rw [hdProfile.2, hcd]; norm_num
-  have hx6 : x.supp.ncard = 6 := by rw [hxProfile.2, hcx]; norm_num
-  have hy6 : y.supp.ncard = 6 := by rw [hyProfile.2, hcy]; norm_num
+  have hdPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c d := by
+    simpa [Q] using (show 0 < Q c d by omega)
+  have hxPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c x := by
+    simpa [Q] using (show 0 < Q c x by omega)
+  have hyPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c y := by
+    simpa [Q] using (show 0 < Q c y by omega)
+  have hdProfile := hcprofile d hdS hdPos
+  have hxProfile := hcprofile x hxS hxPos
+  have hyProfile := hcprofile y hyS hyPos
+  have hd6 : d.supp.ncard = 6 := by simpa [Q, hcd] using hdProfile.2
+  have hx6 : x.supp.ncard = 6 := by simpa [Q, hcx] using hxProfile.2
+  have hy6 : y.supp.ncard = 6 := by simpa [Q, hcy] using hyProfile.2
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
   have hcIn : c ∈ (Finset.univ : Finset
