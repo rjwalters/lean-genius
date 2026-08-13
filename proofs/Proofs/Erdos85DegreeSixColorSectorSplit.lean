@@ -3378,6 +3378,89 @@ theorem degreeSix_orderSix_after_three_twelve_cover_diagonal_le_two
   rw [hta, hat] at hpair
   nlinarith
 
+/-- Row and square budgets for the order-twelve component in the two-triangle
+branch of `(3,12)`, restricted to the remaining non-triangle components. -/
+theorem degreeSix_orderTwelve_heavy_budget_after_three_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (b a : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb12 : b.supp.ncard = 12) (ha3 : a.supp.ncard = 3)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 4)
+    (hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ a → t.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) t b = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let H := (Finset.univ.erase b).erase a |>.filter
+      (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard ≠ 3)
+    (∑ t ∈ H, Q b t) + Q b b = 5 ∧
+    (∑ t ∈ H, Q b t * Q t b) + Q b b * Q b b = 11 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase b).erase a
+  let H := R.filter fun t ↦ t.supp.ncard ≠ 3
+  have hbaNe : b ≠ a := by intro h; subst b; omega
+  have hbIn : b ∈ (Finset.univ : Finset _) := Finset.mem_univ b
+  have haIn : a ∈ (Finset.univ.erase b : Finset _) :=
+    Finset.mem_erase.mpr ⟨hbaNe.symm, Finset.mem_univ a⟩
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrow
+  have hrB := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) hbIn
+  have hrA := Finset.sum_erase_add (Finset.univ.erase b) (Q b) haIn
+  have hRrow : (∑ t ∈ R, Q b t) + Q b b = 5 := by
+    dsimp [R]
+    change Q b a = 1 at hba
+    omega
+  have hzeroR : ∀ t ∈ R, t.supp.ncard = 3 → Q b t = 0 := by
+    intro t ht ht3
+    have hta : t ≠ a := (Finset.mem_erase.mp ht).1
+    exact (hzero3 t hta ht3).1
+  have hRtoH : (∑ t ∈ R, Q b t) = ∑ t ∈ H, Q b t := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · simp [ht3, hzeroR t ht ht3]
+    · simp [ht3]
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 15 := by
+    simpa [Q, Matrix.mul_apply, hb12] using hsqGraph
+  have hpB := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q b z * Q z b) hbIn
+  have hpA := Finset.sum_erase_add (Finset.univ.erase b)
+    (fun z ↦ Q b z * Q z b) haIn
+  have hRprod : (∑ t ∈ R, Q b t * Q t b) + Q b b * Q b b = 11 := by
+    dsimp [R]
+    change Q b a = 1 at hba
+    change Q a b = 4 at hab
+    rw [hba, hab] at hpA
+    rw [hsq] at hpB
+    omega
+  have hRprodToH : (∑ t ∈ R, Q b t * Q t b) =
+      ∑ t ∈ H, Q b t * Q t b := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · have hz := hzeroR t ht ht3
+      simp [ht3, hz]
+    · simp [ht3]
+  exact ⟨by rw [← hRtoH]; exact hRrow,
+    by rw [← hRprodToH]; exact hRprod⟩
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
