@@ -183,6 +183,59 @@ theorem card_succ_mul_degree_pred_sub_card_le_replacementLoss_of_mooreOrder
   simp only [Nat.add_sub_cancel] at hbound
   omega
 
+/-- **Order-excess replacement loss bound.** At order
+`d(d-1)+1+q`, the universal delete-`k`/add-`k+1` gadget count requires
+attachment-weighted replacement loss at least
+`(k+1)(d-1-q-k)`.  In particular, the generic bound becomes vacuous once
+`q ≥ d-1`; compression beyond the regular band must use additional graph
+geometry rather than only the global gadget budgets. -/
+theorem card_succ_mul_degree_pred_sub_excess_sub_card_le_replacementLoss
+    {V W : Type*} [Fintype V] [Fintype W]
+    [DecidableEq V] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (D : Finset V)
+    (K : SimpleGraph {v : V // v ∉ D}) [DecidableRel K.Adj]
+    (hKle : K ≤ deleteVertexSetGraph G D)
+    (F : SimpleGraph W) [DecidableRel F.Adj]
+    (A : W → Finset {v : V // v ∉ D}) {d q k : ℕ}
+    (hd : 1 ≤ d) (hk : k ≤ d - 1)
+    (hcard : Fintype.card V = d * (d - 1) + 1 + q)
+    (hDcard : D.card = k) (hWcard : Fintype.card W = k + 1)
+    (hmin : d ≤ G.minDegree)
+    (hnew : ∀ w : W, d ≤ (A w).card + F.degree w)
+    (hcompat : GadgetAttachmentCompatible K F A) :
+    (k + 1) * (d - 1 - q - k) ≤
+      ∑ w : W, ∑ a ∈ A w, replacementDegreeLoss G D K a := by
+  by_cases hqk : q + k ≤ d - 1
+  · have hsize : Fintype.card W - 1 ≤ d := by omega
+    have hbound :=
+      card_gadget_mul_degree_sq_le_survivor_mul_gadget_add_two_gadget_pred_add_replacementLoss
+        G D K hKle F A hsize hmin hnew hcompat
+    have hUcard : Fintype.card {v : V // v ∉ D} =
+        (d * (d - 1) + 1 + q) - k := by
+      rw [Fintype.card_subtype_compl (fun v : V => v ∈ D)]
+      simp [hcard, hDcard]
+    rw [hUcard, hWcard] at hbound
+    have hkbase : k ≤ d * (d - 1) + 1 + q := by nlinarith
+    have hbasesub : d * (d - 1) + 1 + q - k + k =
+        d * (d - 1) + 1 + q := Nat.sub_add_cancel hkbase
+    have hqksub : d - 1 - q - k + (q + k) = d - 1 := by omega
+    have hdpred : d - 1 + 1 = d := Nat.sub_add_cancel hd
+    have hinner : d * d =
+        (d * (d - 1) + 1 + q - k) + 2 * k +
+          (d - 1 - q - k) := by
+      nlinarith
+    have heq : (k + 1) * (d * d) =
+        (d * (d - 1) + 1 + q - k) * (k + 1) +
+          2 * ((k + 1) * k) +
+            (k + 1) * (d - 1 - q - k) := by
+      rw [hinner, Nat.mul_add, Nat.mul_add]
+      ring
+    rw [heq] at hbound
+    simp only [Nat.add_sub_cancel] at hbound
+    omega
+  · have hz : d - 1 - q - k = 0 := by omega
+    simp [hz]
+
 /-- At an original degree-`d` tight survivor, total replacement loss must be
 repaid by selector multiplicity. -/
 theorem replacementDegreeLoss_le_attachmentMultiplicity_of_tight
