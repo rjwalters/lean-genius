@@ -15,6 +15,52 @@ noncomputable section
 
 open SimpleGraph
 
+/-- Common quotient data used by every odd diagonal-two exclusion at the
+degree-six boundary. -/
+theorem degreeSix_diagonal_two_quotient_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (w : (secondOrderDefectGraph G).ConnectedComponent) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+    (∑ c, size c) = 33 ∧
+    (∀ c, (∑ t, Q c t) = 6) ∧
+    (∀ c t, size c * Q c t = size t * Q t c) ∧
+    (∑ t, Q w t * Q t w) = size w + 3 ∧
+    ∀ c t, Q c t ≤ 6 := by
+  dsimp
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  have htotal : (∑ c : D.ConnectedComponent, size c) = 33 := by
+    simpa [size, D, hcard] using sum_connectedComponent_supp_ncard D
+  have hrow : ∀ c : D.ConnectedComponent, (∑ t, Q c t) = 6 := by
+    intro c
+    exact sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c
+  have hbal : ∀ c t, size c * Q c t = size t * Q t c := by
+    intro c t
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c t
+  have hsq : (∑ t, Q w t * Q t w) = size w + 3 := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) w w
+    simpa [Q, size, D, Matrix.mul_apply, Nat.add_comm] using hs
+  refine ⟨htotal, hrow, hbal, hsq, ?_⟩
+  intro c t
+  exact (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _)
+    (Finset.mem_univ t)).trans_eq (hrow c)
+
 /-- The degree-six boundary order `33` is odd, so some defect component
 has odd order. -/
 theorem degreeSix_exists_odd_order_component
