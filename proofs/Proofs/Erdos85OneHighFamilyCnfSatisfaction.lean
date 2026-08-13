@@ -89,4 +89,78 @@ theorem oneHighFamilyPureNamedId_bounded
     1 ≤ id ∧ id ≤ (oneHighFamilyPureClauses a).top :=
   (oneHighFamilyIdsSound_pureClauses a).id_bounds (atom, id) hmem
 
+abbrev OneHighFamilyValState := OneHighFamilyGenState × DimacsValuation
+
+/-- Semantic counterpart of `IDPool.id`: run the exact named allocation and
+install the graph meaning at the returned identifier.  Reinstalling an
+already-known atom is harmless and makes this usable uniformly in folds. -/
+noncomputable def oneHighFamilyAtomIdVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) :
+    StateM OneHighFamilyValState Nat := fun acc =>
+  let (st, val) := acc
+  let (id, st') := oneHighFamilyAtomId atom st
+  (id, (st', Function.update val id (oneHighFamilyAtomValue R atom)))
+
+noncomputable def oneHighFamilyEdgeIdVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) : StateM OneHighFamilyValState Nat :=
+  oneHighFamilyAtomIdVal R (.edge (min i j) (max i j))
+
+def oneHighFamilyEmitVal (clause : DimacsClause) :
+    StateM OneHighFamilyValState Unit := fun acc =>
+  let (st, val) := acc
+  ((), ((oneHighFamilyEmit clause st).2, val))
+
+/-- Semantic counterpart of a PySAT equality block.  Its state projection is
+the byte-exact generator block, while its valuation projection installs the
+canonical sequential-counter witnesses. -/
+def oneHighFamilyEqualsBlockVal (vars : Array Int)
+    (x : Fin vars.size → Bool) (bound : Nat)
+    (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let (st, val) := acc
+  (oneHighFamilyEqualsBlock vars bound st,
+    seqCounterEqualsVal val st.top vars x bound)
+
+@[simp] theorem oneHighFamilyAtomIdVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    (oneHighFamilyAtomIdVal R atom (st, val)).2.1 =
+      (oneHighFamilyAtomId atom st).2 := by
+  generalize h : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  simp [oneHighFamilyAtomIdVal, h]
+
+@[simp] theorem oneHighFamilyAtomIdVal_value
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    (oneHighFamilyAtomIdVal R atom (st, val)).2.2
+        (oneHighFamilyAtomId atom st).1 =
+      oneHighFamilyAtomValue R atom := by
+  generalize h : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  simp [oneHighFamilyAtomIdVal, h]
+
+@[simp] theorem oneHighFamilyEmitVal_state
+    (clause : DimacsClause) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    (oneHighFamilyEmitVal clause (st, val)).2.1 =
+      (oneHighFamilyEmit clause st).2 := by
+  simp [oneHighFamilyEmitVal]
+
+@[simp] theorem oneHighFamilyEmitVal_value
+    (clause : DimacsClause) (st : OneHighFamilyGenState)
+    (val : DimacsValuation) :
+    (oneHighFamilyEmitVal clause (st, val)).2.2 = val := by
+  simp [oneHighFamilyEmitVal]
+
+@[simp] theorem oneHighFamilyEqualsBlockVal_state
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat)
+    (st : OneHighFamilyGenState) (val : DimacsValuation) :
+    (oneHighFamilyEqualsBlockVal vars x bound (st, val)).1 =
+      oneHighFamilyEqualsBlock vars bound st := by
+  simp [oneHighFamilyEqualsBlockVal]
+
 end Erdos85
