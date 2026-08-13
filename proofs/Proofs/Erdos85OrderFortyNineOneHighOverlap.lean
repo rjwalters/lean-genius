@@ -3,6 +3,7 @@ import Proofs.Erdos85ExteriorDefectDecomposition
 import Proofs.Erdos85LocalTriangleParity
 import Proofs.Erdos85OrderFortyNineDistOnePinning
 import Proofs.Erdos85BranchDeficitSymmetry
+import Proofs.Erdos85PairedBlockRigidity
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -618,6 +619,61 @@ theorem exists_orderFortyNineOneHighOverlap_diag_lt_five
     exact hpData.2 q hqCommon
   exact false_of_squareOrder_uniqueHigh_clean
     G hfree (d := 7) (by omega) hmin hcover (by omega) (by omega) hunique hclean
+
+/-- In fact every branch is dirty in the one-high stratum, so every odd
+diagonal overlap entry is at most three. -/
+theorem orderFortyNineOneHighOverlap_diag_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineOneHighOverlap G v s s ≤ 3 := by
+  have hstructure := squareOrder_degree_succ_highRoot_structure
+    G hfree (d := 7) (by omega) hmin (by omega) (by omega)
+  have hneigh := hstructure.2.1
+  have hlocal := hstructure.2.2
+  have hexternal := externalRepairCandidates_eq_empty_of_squareOrder_highRoot
+    G hfree (d := 7) (by omega) (by omega) (by omega) hneigh hlocal
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v →
+      G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav := hunique ha8
+      subst a
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨u, _, hvBranch⟩
+      exact ((Finset.mem_sdiff.mp hvBranch).2 (by simp)).elim
+  obtain ⟨tval, hst, hvt⟩ :=
+    (orderFortyNine_existsUnique_local_partner_of_high
+      G hfree hmin hcard hv s.2.symm).exists
+  let t : {z : V // z ∈ G.neighborSet v} := ⟨tval, hvt⟩
+  have hmatched : 2 ≤ highBranchMatchedCount G v s :=
+    (two_le_highBranchMatchedCount_of_paired_odd
+      G hfree (d := 7) (by omega) (by norm_num [Odd])
+      (by omega) hneigh hlocal hexternal houterDegree s t hst).1
+  have hpartition := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv s
+  rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    G hfree s s (G.loopless.irrefl s.1)] at hpartition
+  omega
 
 end
 
