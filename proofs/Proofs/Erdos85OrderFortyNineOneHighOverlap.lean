@@ -1582,6 +1582,157 @@ theorem sum_orderFortyNineLeafComponentBranchCensus_eq_five
     _ = 5 := sum_orderFortyNineOneHighOverlap_row_eq_five
       G hfree hmin hcard hHigh hv s
 
+/-- For vertices in distinct original branches, vanishing of the global
+common-neighbor set is equivalent to vanishing inside the outer graph. -/
+theorem orderFortyNine_crossBranch_globalCommon_zero_iff_outerCommon_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) (hst : s ≠ t)
+    {x y : V} (hx : x ∈ secondLayerBranch G v s)
+    (hy : y ∈ secondLayerBranch G v t) :
+    let x' : {z : V // z ∈ secondLayer G v} := ⟨x, by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨s, Finset.mem_univ _, hx⟩⟩
+    let y' : {z : V // z ∈ secondLayer G v} := ⟨y, by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨t, Finset.mem_univ _, hy⟩⟩
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 0 ↔
+      ((squareOrderOuterGraph G v).neighborFinset x' ∩
+        (squareOrderOuterGraph G v).neighborFinset y').card = 0 := by
+  dsimp only
+  rw [Finset.card_eq_zero, Finset.card_eq_zero]
+  constructor
+  · intro hglobal
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro q hq
+    have hqx : G.Adj q.1 x := by
+      exact (((squareOrderOuterGraph G v).mem_neighborFinset
+        ⟨x, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨s, by simp, hx⟩⟩ q).1
+          (Finset.mem_inter.mp hq).1).symm
+    have hqy : G.Adj q.1 y := by
+      exact (((squareOrderOuterGraph G v).mem_neighborFinset
+        ⟨y, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨t, by simp, hy⟩⟩ q).1
+          (Finset.mem_inter.mp hq).2).symm
+    have hqGlobal : q.1 ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hqx.symm, hqy.symm⟩
+    rw [hglobal] at hqGlobal
+    exact Finset.notMem_empty _ hqGlobal
+  · intro houter
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro q hq
+    have hqx : G.Adj q x := by
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+        (Finset.mem_inter.mp hq).1
+    have hqy : G.Adj q y := by
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+        (Finset.mem_inter.mp hq).2
+    have hxOutside := (Finset.mem_sdiff.mp hx).2
+    have hyOutside := (Finset.mem_sdiff.mp hy).2
+    have hqv : q ≠ v := by
+      intro hqv
+      subst q
+      exact hxOutside (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset v x).2 hqx)))
+    have hqNotNv : q ∉ G.neighborFinset v := by
+      intro hqNv
+      let r : {z : V // z ∈ G.neighborSet v} :=
+        ⟨q, (G.mem_neighborFinset v q).1 hqNv⟩
+      have hxr : x ∈ secondLayerBranch G v r :=
+        Finset.mem_sdiff.mpr ⟨(G.mem_neighborFinset q x).2 hqx, hxOutside⟩
+      have hyr : y ∈ secondLayerBranch G v r :=
+        Finset.mem_sdiff.mpr ⟨(G.mem_neighborFinset q y).2 hqy, hyOutside⟩
+      have hrs : r = s := by
+        by_contra hrs
+        exact Finset.disjoint_left.mp
+          (secondLayerBranch_pairwiseDisjoint G hfree v
+            (Finset.mem_univ r) (Finset.mem_univ s) hrs) hxr hx
+      have hrt : r = t := by
+        by_contra hrt
+        exact Finset.disjoint_left.mp
+          (secondLayerBranch_pairwiseDisjoint G hfree v
+            (Finset.mem_univ r) (Finset.mem_univ t) hrt) hyr hy
+      exact hst (hrs.symm.trans hrt)
+    have hqSecond : q ∈ secondLayer G v := by
+      rw [orderFortyNine_secondLayer_degreeEight_eq_compl_closedNeighborhood
+        G hfree hmin hcard hv]
+      exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, by
+        simp [SimpleGraph.mem_neighborFinset, hqv, hqNotNv]⟩
+    let q' : {z : V // z ∈ secondLayer G v} := ⟨q, hqSecond⟩
+    have hqOuter : q' ∈
+        (squareOrderOuterGraph G v).neighborFinset
+            ⟨x, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨s, by simp, hx⟩⟩ ∩
+          (squareOrderOuterGraph G v).neighborFinset
+            ⟨y, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨t, by simp, hy⟩⟩ := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨hqx.symm, hqy.symm⟩
+    rw [houter] at hqOuter
+    exact Finset.notMem_empty _ hqOuter
+
+/-- Across distinct original branches, the outer second-order defect graph
+and the induced leaf defect graph have exactly the same adjacency relation. -/
+theorem orderFortyNine_crossBranch_outerDefect_adj_iff_leafDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) (hst : s ≠ t)
+    {x y : V} (hx : x ∈ secondLayerBranch G v s)
+    (hy : y ∈ secondLayerBranch G v t) :
+    let xOuter : {z : V // z ∈ secondLayer G v} := ⟨x, by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨s, Finset.mem_univ _, hx⟩⟩
+    let yOuter : {z : V // z ∈ secondLayer G v} := ⟨y, by
+      rw [secondLayer, Finset.mem_biUnion]
+      exact ⟨t, Finset.mem_univ _, hy⟩⟩
+    let xLeaf : {z : V // z ≠ v ∧ ¬ G.Adj v z} := ⟨x, by
+      have hout := (Finset.mem_sdiff.mp hx).2
+      constructor
+      · intro h; subst x; exact hout (by simp)
+      · intro hvx; exact hout (by
+          simp [SimpleGraph.mem_neighborFinset, hvx])⟩
+    let yLeaf : {z : V // z ≠ v ∧ ¬ G.Adj v z} := ⟨y, by
+      have hout := (Finset.mem_sdiff.mp hy).2
+      constructor
+      · intro h; subst y; exact hout (by simp)
+      · intro hvy; exact hout (by
+          simp [SimpleGraph.mem_neighborFinset, hvy])⟩
+    (secondOrderDefectGraph (squareOrderOuterGraph G v)).Adj xOuter yOuter ↔
+      (orderFortyNineLeafDefectGraph G v).Adj xLeaf yLeaf := by
+  dsimp only
+  let R := squareOrderOuterGraph G v
+  letI : DecidableRel (antipodalGraph R).Adj := Classical.decRel _
+  letI : DecidableRel (triangleFreeEdgeGraph R).Adj := Classical.decRel _
+  have hxy : x ≠ y := by
+    intro hxy
+    subst y
+    exact Finset.disjoint_left.mp
+      (secondLayerBranch_pairwiseDisjoint G hfree v
+        (Finset.mem_univ s) (Finset.mem_univ t) hst) hx hy
+  have hOuterNe :
+      (⟨x, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨s, by simp, hx⟩⟩ :
+        {z : V // z ∈ secondLayer G v}) ≠
+      ⟨y, by rw [secondLayer, Finset.mem_biUnion]; exact ⟨t, by simp, hy⟩⟩ :=
+    fun h => hxy (congrArg Subtype.val h)
+  rw [secondOrderDefectGraph_adj_iff_card_common_eq_zero
+      R (squareOrderOuterGraph_not_containsC4 G hfree) hOuterNe]
+  change _ ↔ (secondOrderDefectGraph G).Adj x y
+  rw [secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree hxy]
+  exact (orderFortyNine_crossBranch_globalCommon_zero_iff_outerCommon_zero
+    G hfree hmin hcard hv s t hst hx hy).symm
+
 end
 
 end Erdos85
