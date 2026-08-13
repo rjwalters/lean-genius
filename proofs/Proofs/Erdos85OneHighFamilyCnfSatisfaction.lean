@@ -1483,6 +1483,30 @@ theorem seqPrefixTrue_oneHighFamilyLiteralRow
   · simp [hi]
   · simp [hi]
 
+theorem oneHighStandardMate_val_eq_xor (b : Fin 8) :
+    (oneHighStandardMate b).val = b.val ^^^ 1 := by
+  native_decide +revert
+
+theorem oneHighFamilyFarDegreeBound_eq
+    (a y : Nat) (hy : y < 40) :
+    oneHighFamilyFarDegreeBound a y =
+      oneHighFamilyFarDegree a
+        (Fin.divNat (m := 8) (n := 5) (⟨y, hy⟩ : Fin 40))
+        (Fin.modNat (m := 8) (n := 5) (⟨y, hy⟩ : Fin 40)) := by
+  simp [oneHighFamilyFarDegreeBound, oneHighFamilyFarDegree,
+    oneHighFamilyInternalEdges, Fin.divNat, Fin.modNat]
+
+theorem oneHighFamilyFarVertices_mem_iff
+    {y x : Nat} (hy : y < 40) :
+    x ∈ oneHighFamilyFarVertices y ↔
+      x < 40 ∧ x ≠ y ∧ x / 5 ≠ y / 5 ∧
+        x / 5 ≠ (oneHighStandardMate
+          (Fin.divNat (m := 8) (n := 5) (⟨y, hy⟩ : Fin 40))).val := by
+  rw [oneHighFamilyFarVertices]
+  simp only [List.mem_filter, List.mem_range]
+  rw [oneHighStandardMate_val_eq_xor]
+  simp [Fin.divNat]
+
 structure OneHighFamilyInputAccumSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (input : Array Int × OneHighFamilyValState) : Prop where
