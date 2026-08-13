@@ -2985,6 +2985,115 @@ theorem degreeSix_orderThree_twelve_residual_filter_counts
   simpa [Q, R] using degreeSix_orderThree_twelve_filter_counts
     R (Q a) (fun t ↦ Q t a) htype hrowR hprodR
 
+/-- Named-component form of the `(3,12)` contact dichotomy.  In both
+branches the components unused by the source row have total order twelve. -/
+theorem degreeSix_orderThree_twelve_residual_component_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    (∃ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 6 ∧ Q a t = 2 ∧ Q t a = 1 ∧
+      (∑ z ∈ (((Finset.univ.erase a).erase b).erase t), z.supp.ncard) = 12) ∨
+    (∃ t u : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ u ∧ t.supp.ncard = 3 ∧ u.supp.ncard = 3 ∧
+      Q a t = 1 ∧ Q t a = 1 ∧ Q a u = 1 ∧ Q u a = 1 ∧
+      (∑ z ∈ ((((Finset.univ.erase a).erase b).erase t).erase u),
+        z.supp.ncard) = 12) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1
+  let B := R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1
+  have hcounts := degreeSix_orderThree_twelve_residual_filter_counts
+    G hfree hmin hcard hr a b ha3 hb12 haa hba
+  change (A.card = 0 ∧ B.card = 1) ∨ (A.card = 2 ∧ B.card = 0) at hcounts
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have habNe : a ≠ b := by intro h; subst b; omega
+  rcases hcounts with hB | hA
+  · obtain ⟨t, hBset⟩ := Finset.card_eq_one.mp hB.2
+    have htB : t ∈ B := by rw [hBset]; simp
+    have htData := Finset.mem_filter.mp htB
+    have htR : t ∈ R := htData.1
+    have hqat : Q a t = 2 := htData.2.1
+    have hqta : Q t a = 1 := htData.2.2
+    have htErase := Finset.mem_erase.mp htR
+    have htErase' := Finset.mem_erase.mp htErase.2
+    have htClass := degreeSix_orderThree_twelve_residual_contact_type
+      G hfree hmin hcard a b t ha3 hb12 haa hba htErase'.1 htErase.1
+        (hr t) (by change 0 < Q a t; omega)
+    have ht6 : t.supp.ncard = 6 := by
+      change componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2 at hqat
+      rcases htClass with h | h <;> omega
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b := htR
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ z.supp.ncard) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ z.supp.ncard) hbIn
+    have hsT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+      (fun z ↦ z.supp.ncard) htIn
+    refine Or.inl ⟨t, ht6, hqat, hqta, ?_⟩
+    omega
+  · obtain ⟨t, u, htu, hAset⟩ := Finset.card_eq_two.mp hA.1
+    have htA : t ∈ A := by rw [hAset]; simp
+    have huA : u ∈ A := by rw [hAset]; simp
+    have htData := Finset.mem_filter.mp htA
+    have huData := Finset.mem_filter.mp huA
+    have htR : t ∈ R := htData.1
+    have huR : u ∈ R := huData.1
+    have hqat : Q a t = 1 := htData.2.1
+    have hqta : Q t a = 1 := htData.2.2
+    have hqau : Q a u = 1 := huData.2.1
+    have hqua : Q u a = 1 := huData.2.2
+    have htErase := Finset.mem_erase.mp htR
+    have htErase' := Finset.mem_erase.mp htErase.2
+    have huErase := Finset.mem_erase.mp huR
+    have huErase' := Finset.mem_erase.mp huErase.2
+    have htClass := degreeSix_orderThree_twelve_residual_contact_type
+      G hfree hmin hcard a b t ha3 hb12 haa hba htErase'.1 htErase.1
+        (hr t) (by change 0 < Q a t; omega)
+    have huClass := degreeSix_orderThree_twelve_residual_contact_type
+      G hfree hmin hcard a b u ha3 hb12 haa hba huErase'.1 huErase.1
+        (hr u) (by change 0 < Q a u; omega)
+    have ht3 : t.supp.ncard = 3 := by
+      change componentQuotientMatrix G (secondOrderDefectGraph G) a t = 1 at hqat
+      rcases htClass with h | h <;> omega
+    have hu3 : u.supp.ncard = 3 := by
+      change componentQuotientMatrix G (secondOrderDefectGraph G) a u = 1 at hqau
+      rcases huClass with h | h <;> omega
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b := htR
+    have huIn : u ∈ ((Finset.univ.erase a).erase b).erase t :=
+      Finset.mem_erase.mpr ⟨htu.symm, huR⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ z.supp.ncard) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ z.supp.ncard) hbIn
+    have hsT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+      (fun z ↦ z.supp.ncard) htIn
+    have hsU := Finset.sum_erase_add (((Finset.univ.erase a).erase b).erase t)
+      (fun z ↦ z.supp.ncard) huIn
+    refine Or.inr ⟨t, u, htu, ht3, hu3, hqat, hqta, hqau, hqua, ?_⟩
+    omega
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
