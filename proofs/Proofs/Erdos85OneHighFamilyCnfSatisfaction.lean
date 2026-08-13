@@ -91,6 +91,19 @@ theorem oneHighFamilyPureNamedId_bounded
 
 abbrev OneHighFamilyValState := OneHighFamilyGenState × DimacsValuation
 
+def OneHighFamilyNamedValReifies
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (st : OneHighFamilyGenState) (val : DimacsValuation) : Prop :=
+  ∀ atom id, (atom, id) ∈ st.ids →
+    val id = oneHighFamilyAtomValue R atom
+
+theorem oneHighFamilyNamedValReifies_initial
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (val : DimacsValuation) :
+    OneHighFamilyNamedValReifies R {} val := by
+  intro atom id hmem
+  simp at hmem
+
 /-- Semantic counterpart of `IDPool.id`: run the exact named allocation and
 install the graph meaning at the returned identifier.  Reinstalling an
 already-known atom is harmless and makes this usable uniformly in folds. -/
@@ -143,6 +156,47 @@ def oneHighFamilyEqualsBlockVal (vars : Array Int)
   rcases out with ⟨id, st'⟩
   simp [oneHighFamilyAtomIdVal, h]
 
+theorem oneHighFamilyAtomIdVal_reifies
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (hsound : OneHighFamilyIdsSound st)
+    (hreifies : OneHighFamilyNamedValReifies R st val)
+    (atom : OneHighFamilyAtom) :
+    let out := oneHighFamilyAtomIdVal R atom (st, val)
+    OneHighFamilyNamedValReifies R out.2.1 out.2.2 := by
+  simp only [oneHighFamilyAtomIdVal]
+  generalize hout : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  unfold oneHighFamilyAtomId at hout
+  split at hout
+  next _ hlookup =>
+    cases hout
+    intro atom' id' hmem
+    have hatomMem : (atom, id) ∈ st.ids :=
+      oneHighFamilyLookup_eq_some_mem hlookup
+    by_cases hid : id' = id
+    · subst id'
+      have hlookupAtom := oneHighFamilyLookupId_of_mem
+        hsound.ids_nodup hatomMem
+      have hlookupAtom' := oneHighFamilyLookupId_of_mem
+        hsound.ids_nodup hmem
+      have hatom : atom' = atom := by
+        rw [hlookupAtom] at hlookupAtom'
+        exact Option.some.inj hlookupAtom'.symm
+      subst atom'
+      simp
+    · simp [Function.update, hid, hreifies atom' id' hmem]
+  next hlookup =>
+    cases hout
+    intro atom' id' hmem
+    simp only [List.mem_cons] at hmem
+    rcases hmem with hnew | hold
+    · cases hnew
+      simp
+    · have hbound := hsound.id_bounds (atom', id') hold
+      have hne : id' ≠ st.top + 1 := by omega
+      simp [Function.update, hne, hreifies atom' id' hold]
+
 @[simp] theorem oneHighFamilyEmitVal_state
     (clause : DimacsClause) (st : OneHighFamilyGenState)
     (val : DimacsValuation) :
@@ -156,11 +210,38 @@ def oneHighFamilyEqualsBlockVal (vars : Array Int)
     (oneHighFamilyEmitVal clause (st, val)).2.2 = val := by
   simp [oneHighFamilyEmitVal]
 
+theorem oneHighFamilyEmitVal_reifies
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (hreifies : OneHighFamilyNamedValReifies R st val)
+    (clause : DimacsClause) :
+    let out := oneHighFamilyEmitVal clause (st, val)
+    OneHighFamilyNamedValReifies R out.2.1 out.2.2 := by
+  dsimp [oneHighFamilyEmitVal, OneHighFamilyNamedValReifies]
+  intro atom id hmem
+  exact hreifies atom id hmem
+
 @[simp] theorem oneHighFamilyEqualsBlockVal_state
     (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat)
     (st : OneHighFamilyGenState) (val : DimacsValuation) :
     (oneHighFamilyEqualsBlockVal vars x bound (st, val)).1 =
       oneHighFamilyEqualsBlock vars bound st := by
   simp [oneHighFamilyEqualsBlockVal]
+
+theorem oneHighFamilyEqualsBlockVal_reifies
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (hsound : OneHighFamilyIdsSound st)
+    (hreifies : OneHighFamilyNamedValReifies R st val)
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat) :
+    let out := oneHighFamilyEqualsBlockVal vars x bound (st, val)
+    OneHighFamilyNamedValReifies R out.1 out.2 := by
+  dsimp [oneHighFamilyEqualsBlockVal]
+  intro atom id hmem
+  have hmem' : (atom, id) ∈ st.ids := by
+    exact hmem
+  have hid := (hsound.id_bounds (atom, id) hmem').2
+  exact (seqCounterEqualsVal_input val st.top vars x bound id hid).trans
+    (hreifies atom id hmem')
 
 end Erdos85
