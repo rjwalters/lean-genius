@@ -351,6 +351,55 @@ theorem oneHighSquareCandidate_reindex_eq_fromBlocks
       simp [hij, hijv]
       ring
 
+/-- In the one-high stratum, the determinant of the reduced defect matrix
+`6I - D'` is a rational square.  This is the graph-facing form of the
+square-candidate obstruction. -/
+theorem orderFortyNine_reducedDefectMatrix_det_isSquare_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    IsSquare (oneHighReducedDefectMatrix G v).det := by
+  classical
+  let H := oneHighReducedDefectMatrix G v
+  by_cases hHdet : H.det = 0
+  · refine ⟨0, ?_⟩
+    change H.det = 0 * 0
+    simp [hHdet]
+  obtain ⟨k, hk⟩ :=
+    orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
+      G hfree hmin hcard hHigh hv
+  have hblock := det_oneHighBlock_eq_2304_mul_det H
+    (oneHighResolventWeight G v)
+    (oneHighReducedDefectMatrix_mulVec_resolventWeight
+      G hfree hmin hcard hHigh hv)
+    (sum_oneHighResolventWeight_eq_328 G hcard hv) hHdet
+  have hreindex := congrArg Matrix.det
+    (oneHighSquareCandidate_reindex_eq_fromBlocks
+      G hfree hmin hcard hHigh hv)
+  have hcandidate :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det = 2304 * H.det := by
+    simpa [H] using hreindex.trans hblock
+  have hcast :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det =
+        2304 * (k : ℚ) ^ 2 := by
+    rw [← (Int.castRingHom ℚ).map_det]
+    calc
+      ((orderFortyNineSquareCandidate G).det : ℚ) =
+          ((2304 * k ^ 2 : ℤ) : ℚ) := congrArg (fun z : ℤ => (z : ℚ)) hk
+      _ = 2304 * (k : ℚ) ^ 2 := by norm_num
+  refine ⟨(k : ℚ), ?_⟩
+  change H.det = (k : ℚ) * (k : ℚ)
+  rw [pow_two] at hcast
+  linarith
+
 end
 
 
