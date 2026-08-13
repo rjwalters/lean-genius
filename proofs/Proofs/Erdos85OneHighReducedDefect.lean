@@ -493,6 +493,40 @@ theorem orderFortyNine_reducedDefectMatrixInt_det_isSquare_of_one_high
   rw [pow_two] at hHsq
   exact_mod_cast hdetcast.trans hHsq
 
+/-- Every modular image of the reduced integer determinant is a square.
+This is the direct interface for a finite-field determinant checker. -/
+theorem orderFortyNine_reducedDefectMatrixInt_det_isSquare_mod_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) (m : ℕ) :
+    IsSquare ((oneHighReducedDefectMatrixInt G v).det : ZMod m) :=
+  (orderFortyNine_reducedDefectMatrixInt_det_isSquare_of_one_high
+    G hfree hmin hcard hHigh hv).map (Int.castRingHom (ZMod m))
+
+/-- A single certified nonsquare residue of the reduced determinant excludes
+the one-high graph. -/
+theorem false_of_orderFortyNine_oneHigh_reducedDet_notSquare_mod
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) (m : ℕ)
+    (hnotSquare :
+      ¬ IsSquare ((oneHighReducedDefectMatrixInt G v).det : ZMod m)) : False :=
+  hnotSquare
+    (orderFortyNine_reducedDefectMatrixInt_det_isSquare_mod_of_one_high
+      G hfree hmin hcard hHigh hv m)
+
 end
 
 
