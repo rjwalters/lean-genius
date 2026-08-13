@@ -154,6 +154,65 @@ theorem orderFortyNine_closedDefectNeighborhood_pairwiseDisjoint_at_high
   have hzeq : z = owner := hunique z ⟨hz, hyz⟩
   exact hxz (hxeq.trans hzeq.symm)
 
+/-- In the one-high stratum every cell of the defect perfect code has six
+vertices: its low center and its five defect neighbors. -/
+theorem orderFortyNine_card_closedDefectNeighborhood_eq_six_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v x : V} (hv : G.degree v = 8) (hx : x ∈ G.neighborFinset v) :
+    (insert x ((secondOrderDefectGraph G).neighborFinset x)).card = 6 := by
+  have hvx : G.Adj v x := by
+    simpa [SimpleGraph.mem_neighborFinset] using hx
+  have hxdeg : G.degree x = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv hvx
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  have hvMem : v ∈ G.neighborFinset x ∩ orderFortyNineHighVertices G := by
+    simp [SimpleGraph.mem_neighborFinset, hvx.symm, hvHigh]
+  have hkpos : 1 ≤
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card :=
+    Finset.one_le_card.mpr ⟨v, hvMem⟩
+  have hkle :
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card ≤ 1 := by
+    rw [← hHigh]
+    exact Finset.card_le_card Finset.inter_subset_right
+  have hk :
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card = 1 := by
+    omega
+  have hexcess : neighborDegreeExcess G 7 x =
+      (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+    rw [neighborDegreeExcess_eq_sum_neighborFinset]
+    calc
+      (∑ y ∈ G.neighborFinset x, (G.degree y - 7)) =
+          ∑ y ∈ G.neighborFinset x,
+            if G.degree y = 8 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro y _hy
+        rcases orderFortyNine_degree_eq_seven_or_eight
+            G hfree hmin hcard y with hy7 | hy8
+        · simp [hy7]
+        · simp [hy8]
+      _ = ((G.neighborFinset x).filter fun y => G.degree y = 8).card := by
+        rw [Finset.card_filter]
+      _ = (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+        congr 1
+        ext y
+        simp [orderFortyNineHighVertices, and_comm]
+  have hbudget := orderFortyNine_degreeSeven_local_budget
+    G hfree hmin hcard hxdeg
+  rw [hexcess, hk] at hbudget
+  rw [Finset.card_insert_of_notMem]
+  · rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree]
+    omega
+  · simp
+
 end
 
 end Erdos85
