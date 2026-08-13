@@ -166,6 +166,83 @@ theorem eleven_pattern_counts {n1 n2 n3 n4 n5 : ℕ}
     n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0 := by
   omega
 
+/-- Aggregate a pointwise order-eleven partner classification into the
+five filter counts consumed by `eleven_pattern_counts`. -/
+theorem eleven_contact_aggregate
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ)
+    (hclass : ∀ t ∈ S, q t = 0 ∨
+      (size t = 11 ∧ q t = 1 ∧ r t = 1) ∨
+      (size t = 22 ∧ q t = 2 ∧ r t = 1) ∨
+      (size t = 11 ∧ q t = 2 ∧ r t = 2) ∨
+      (size t = 11 ∧ q t = 3 ∧ r t = 3) ∨
+      (size t = 22 ∧ q t = 4 ∧ r t = 2)) :
+    let p1 := fun t ↦ size t = 11 ∧ q t = 1 ∧ r t = 1
+    let p2 := fun t ↦ size t = 22 ∧ q t = 2 ∧ r t = 1
+    let p3 := fun t ↦ size t = 11 ∧ q t = 2 ∧ r t = 2
+    let p4 := fun t ↦ size t = 11 ∧ q t = 3 ∧ r t = 3
+    let p5 := fun t ↦ size t = 22 ∧ q t = 4 ∧ r t = 2
+    (∑ t ∈ S, q t) = (S.filter p1).card + 2 * (S.filter p2).card +
+      2 * (S.filter p3).card + 3 * (S.filter p4).card +
+      4 * (S.filter p5).card ∧
+    (∑ t ∈ S, q t * r t) = (S.filter p1).card +
+      2 * (S.filter p2).card + 4 * (S.filter p3).card +
+      9 * (S.filter p4).card + 8 * (S.filter p5).card ∧
+    (∑ t ∈ S, if q t = 0 then 0 else size t) =
+      11 * (S.filter p1).card + 22 * (S.filter p2).card +
+      11 * (S.filter p3).card + 11 * (S.filter p4).card +
+      22 * (S.filter p5).card := by
+  dsimp
+  let p1 := fun t ↦ size t = 11 ∧ q t = 1 ∧ r t = 1
+  let p2 := fun t ↦ size t = 22 ∧ q t = 2 ∧ r t = 1
+  let p3 := fun t ↦ size t = 11 ∧ q t = 2 ∧ r t = 2
+  let p4 := fun t ↦ size t = 11 ∧ q t = 3 ∧ r t = 3
+  let p5 := fun t ↦ size t = 22 ∧ q t = 4 ∧ r t = 2
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hqpoint : ∀ t ∈ S, q t =
+      (if p1 t then 1 else 0) + (if p2 t then 2 else 0) +
+      (if p3 t then 2 else 0) + (if p4 t then 3 else 0) +
+      (if p5 t then 4 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h1 | h2 | h3 | h4 | h5
+    · simp [p1, p2, p3, p4, p5, h0]
+    all_goals rcases ‹_ ∧ _ ∧ _› with ⟨hs, hq, hr⟩
+    all_goals simp [p1, p2, p3, p4, p5, hs, hq, hr]
+  have hsquarePoint : ∀ t ∈ S, q t * r t =
+      (if p1 t then 1 else 0) + (if p2 t then 2 else 0) +
+      (if p3 t then 4 else 0) + (if p4 t then 9 else 0) +
+      (if p5 t then 8 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h1 | h2 | h3 | h4 | h5
+    · simp [p1, p2, p3, p4, p5, h0]
+    all_goals rcases ‹_ ∧ _ ∧ _› with ⟨hs, hq, hr⟩
+    all_goals simp [p1, p2, p3, p4, p5, hs, hq, hr]
+  have hsizePoint : ∀ t ∈ S, (if q t = 0 then 0 else size t) =
+      (if p1 t then 11 else 0) + (if p2 t then 22 else 0) +
+      (if p3 t then 11 else 0) + (if p4 t then 11 else 0) +
+      (if p5 t then 22 else 0) := by
+    intro t ht
+    rcases hclass t ht with h0 | h1 | h2 | h3 | h4 | h5
+    · simp [p1, p2, p3, p4, p5, h0]
+    all_goals rcases ‹_ ∧ _ ∧ _› with ⟨hs, hq, hr⟩
+    all_goals simp [p1, p2, p3, p4, p5, hs, hq, hr]
+  constructor
+  · rw [Finset.sum_congr rfl hqpoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+    simp [p1, p2, p3, p4, p5]
+  constructor
+  · rw [Finset.sum_congr rfl hsquarePoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+    simp [p1, p2, p3, p4, p5]
+  · rw [Finset.sum_congr rfl hsizePoint]
+    simp only [Finset.sum_add_distrib]
+    repeat' rw [hsumConst]
+
 end OddDiagonalSmall
 
 end Erdos85
