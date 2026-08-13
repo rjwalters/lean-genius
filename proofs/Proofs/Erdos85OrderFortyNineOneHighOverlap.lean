@@ -1862,6 +1862,92 @@ def orderFortyNineLeafComponentBranchIncidence
         (fun y => y.1 ∈ secondLayerBranch G v t) |>.card
     else 0
 
+/-- Component incidence written intrinsically in the induced component graph.
+This presentation makes undirected symmetry available directly. -/
+def orderFortyNineLeafComponentBranchIncidenceInduced
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  let H := (orderFortyNineLeafDefectGraph G v).induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v t
+  ∑ x ∈ S, (H.neighborFinset x ∩ T).card
+
+/-- Intrinsic component branch incidences are symmetric. -/
+theorem orderFortyNineLeafComponentBranchIncidenceInduced_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchIncidenceInduced G v c s t =
+      orderFortyNineLeafComponentBranchIncidenceInduced G v c t s := by
+  exact sum_card_neighbor_inter_comm
+    ((orderFortyNineLeafDefectGraph G v).induce c.supp)
+    ((Finset.univ : Finset c.supp).filter fun x =>
+      x.1.1 ∈ secondLayerBranch G v s)
+    ((Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v t)
+
+/-- The ambient-neighbor and induced-component presentations of a component
+incidence count agree. -/
+theorem orderFortyNineLeafComponentBranchIncidence_eq_induced
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchIncidence G v c s t =
+      orderFortyNineLeafComponentBranchIncidenceInduced G v c s t := by
+  let L := orderFortyNineLeafDefectGraph G v
+  let H := L.induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v t
+  rw [orderFortyNineLeafComponentBranchIncidence,
+    orderFortyNineLeafComponentBranchIncidenceInduced]
+  rw [Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro x _
+  split_ifs with hx
+  · apply Finset.card_bij
+      (s := (L.neighborFinset x.1).filter fun y =>
+        y.1 ∈ secondLayerBranch G v t)
+      (t := H.neighborFinset x ∩ T)
+      (fun y hy => ⟨y, neighborSet_subset_connectedComponent_supp L c x
+        ((L.mem_neighborFinset x.1 y).1 (Finset.mem_filter.mp hy).1)⟩)
+    · intro y hy
+      have hadj := (L.mem_neighborFinset x.1 y).1
+        (Finset.mem_filter.mp hy).1
+      exact Finset.mem_inter.mpr ⟨
+        (H.mem_neighborFinset x _).2 hadj,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+          (Finset.mem_filter.mp hy).2⟩⟩
+    · intro a _ b _ hab
+      exact congrArg (fun z => z.1) hab
+    · intro y hy
+      refine ⟨y.1, ?_, rfl⟩
+      exact Finset.mem_filter.mpr ⟨
+        (L.mem_neighborFinset x.1 y.1).2
+          ((H.mem_neighborFinset x y).1 (Finset.mem_inter.mp hy).1),
+        (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).2⟩
+  · simp [S, hx]
+
+/-- Component branch incidences are symmetric because the leaf-defect graph
+is undirected. -/
+theorem orderFortyNineLeafComponentBranchIncidence_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchIncidence G v c s t =
+      orderFortyNineLeafComponentBranchIncidence G v c t s := by
+  rw [orderFortyNineLeafComponentBranchIncidence_eq_induced,
+    orderFortyNineLeafComponentBranchIncidence_eq_induced]
+  exact orderFortyNineLeafComponentBranchIncidenceInduced_comm G v c s t
+
 /-- Directed cross-branch incidences decompose exactly over connected
 components. -/
 theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_global
