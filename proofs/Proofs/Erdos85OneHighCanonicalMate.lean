@@ -1517,6 +1517,45 @@ five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
 def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
   decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
 
+/-- Numeric form of the generator's `IN` array. -/
+def oneHighFamilyInternalEdges (a : Nat) (i : Fin 8) : Nat :=
+  if i.val % 2 = 0 ∧ i.val / 2 < a then 1 else 2
+
+/-- Family ordering determines the exact matched-vertex count `2 * IN[i]`
+used by the far-degree, paired-product, and augmented k-sum bounds. -/
+theorem highBranchMatchedCount_eq_two_mul_familyInternalEdges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (a : Nat)
+    (hfamily : ∀ i,
+      decide (highBranchMatchedCount G v (branchLabel.symm i) = 2) =
+        decide (i.val % 2 = 0 ∧ i.val / 2 < a))
+    (hstates : ∀ i,
+      highBranchMatchedCount G v (branchLabel.symm i) = 2 ∨
+      highBranchMatchedCount G v (branchLabel.symm i) = 4) :
+    ∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges a i := by
+  intro i
+  have hf := hfamily i
+  rcases hstates i with hs | hs
+  · have hp : i.val % 2 = 0 ∧ i.val / 2 < a := by
+      have hl : decide
+          (highBranchMatchedCount G v (branchLabel.symm i) = 2) = true := by
+        simp [hs]
+      rw [hl] at hf
+      exact of_decide_eq_true hf.symm
+    simp [oneHighFamilyInternalEdges, hp, hs]
+  · have hp : ¬(i.val % 2 = 0 ∧ i.val / 2 < a) := by
+      have hne : highBranchMatchedCount G v (branchLabel.symm i) ≠ 2 := by
+        omega
+      have hl : decide
+          (highBranchMatchedCount G v (branchLabel.symm i) = 2) = false := by
+        simp [hne]
+      rw [hl] at hf
+      exact of_decide_eq_false hf.symm
+    simp [oneHighFamilyInternalEdges, hp, hs]
+
 /-- The matched-count characterization of a family-ordered labeling fixes
 the generator's one-edge/two-edge Boolean word pointwise. -/
 theorem oneHighFamilyTwoEdges_eq_of_matchedCount
