@@ -4013,6 +4013,94 @@ theorem degreeSix_orderTwelve_heavy_budget_after_three_cover
   exact ⟨by rw [← hRtoH]; exact hRrow,
     by rw [← hRprodToH]; exact hRprod⟩
 
+/-- The two-order-three branch of the `(3,12)` cover is impossible.  The
+order-three profile gives one of the seven partitions of five, while grouped
+periodicity removes all triangle contacts from the order-twelve row; its row
+and square budgets then contradict the corresponding abstract terminal. -/
+theorem false_of_degreeSix_threeTwelve_two_orderThree_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ t.supp.ncard)
+    (e a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3) (ha3 : a.supp.ncard = 3)
+    (hb12 : b.supp.ncard = 12) (hea : e ≠ a) (heb : e ≠ b)
+    (habNe : a ≠ b)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (heaQ : componentQuotientMatrix G (secondOrderDefectGraph G) e a = 1)
+    (haeQ : componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((Finset.univ.erase e).erase a).erase b
+  have hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ a → t.supp.ncard = 3 → Q b t = 0 ∧ Q t b = 0 := by
+    intro t hta ht3
+    exact degreeSix_orderTwelve_no_other_orderThree_contact
+      G hfree hmin hcard u hu huRange huD b a t hb12 ha3 ht3 hta.symm hba
+  have hebZero := hzero3 e hea he3
+  have hprofile := degreeSix_orderThree_after_twelve_cover_profile
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb habNe hee heaQ haeQ
+      hebZero.2 hebZero.1
+  change (∑ t ∈ S, Q e t) = 5 ∧ _ at hprofile
+  have hparts := degreeSix_orderThree_after_twelve_cover_partition_counts
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb habNe hee heaQ haeQ
+      hebZero.2 hebZero.1
+  change (let n1 := (S.filter fun t ↦ Q e t = 1).card
+    let n2 := (S.filter fun t ↦ Q e t = 2).card
+    let n3 := (S.filter fun t ↦ Q e t = 3).card
+    let n4 := (S.filter fun t ↦ Q e t = 4).card
+    let n5 := (S.filter fun t ↦ Q e t = 5).card
+    _) at hparts
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  change Q b a = 1 at hba
+  have hab : Q a b = 4 := by rw [ha3, hb12, hba] at habBal; omega
+  have hbudget := degreeSix_orderTwelve_heavy_budget_after_three_cover
+    G hfree hmin hcard b a hb12 ha3 hba hab hzero3
+  let H := ((Finset.univ.erase b).erase a).filter
+    (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard ≠ 3)
+  change (∑ t ∈ H, Q b t) + Q b b = 5 ∧
+    (∑ t ∈ H, Q b t * Q t b) + Q b b * Q b b = 11 at hbudget
+  have hHS : H = S.filter (fun t ↦ t.supp.ncard ≠ 3) := by
+    ext t
+    simp only [H, S, Finset.mem_filter, Finset.mem_erase, Finset.mem_univ,
+      and_true]
+    constructor
+    · rintro ⟨⟨hta, htb⟩, ht3⟩
+      exact ⟨⟨htb, hta, fun hte => ht3 (hte ▸ he3)⟩, ht3⟩
+    · rintro ⟨⟨htb, hta, hte⟩, ht3⟩
+      exact ⟨⟨hta, htb⟩, ht3⟩
+  rw [hHS] at hbudget
+  exact false_of_degreeSix_threeTwelve_partition_dispatch
+    S (Q e) (fun t ↦ t.supp.ncard) (Q b) (fun t ↦ Q t b) (Q b b)
+      (fun t ht ↦ (hprofile.2 t ht).1)
+      (fun t ht ↦ (hprofile.2 t ht).2.2)
+      hprofile.1
+      (fun t _ ↦ by
+        have hbal := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) b t
+        simpa [Q, hb12] using hbal)
+      hbudget.1 hbudget.2 hparts
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
