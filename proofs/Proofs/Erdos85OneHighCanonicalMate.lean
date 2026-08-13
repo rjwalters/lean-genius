@@ -1510,6 +1510,49 @@ theorem card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
 
 /-! ## Simultaneous generator labeling terminal -/
 
+/-- The exact branch word used by `family_gen.py`: the low (even) endpoint
+of each of the first `a` mate pairs has one internal edge; every other
+five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
+`AAAA, AAAB, AABB, ABBB, BBBB`. -/
+def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
+  decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
+
+/-- The matched-count characterization of a family-ordered labeling fixes
+the generator's one-edge/two-edge Boolean word pointwise. -/
+theorem oneHighFamilyTwoEdges_eq_of_matchedCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (a : Nat)
+    (hfamily : ∀ i,
+      decide (highBranchMatchedCount G v (branchLabel.symm i) = 2) =
+        decide (i.val % 2 = 0 ∧ i.val / 2 < a))
+    (hstates : ∀ s,
+      (twoEdges s = false ∧ highBranchMatchedCount G v s = 2) ∨
+      (twoEdges s = true ∧ highBranchMatchedCount G v s = 4)) :
+    ∀ i, twoEdges (branchLabel.symm i) = oneHighFamilyTwoEdges a i := by
+  intro i
+  have hf := hfamily i
+  have hs := hstates (branchLabel.symm i)
+  by_cases hp : i.val % 2 = 0 ∧ i.val / 2 < a
+  · have hm : highBranchMatchedCount G v (branchLabel.symm i) = 2 := by
+      have hr : decide (i.val % 2 = 0 ∧ i.val / 2 < a) = true := by
+        simp [hp]
+      rw [hr] at hf
+      exact of_decide_eq_true hf
+    rcases hs with hs | hs
+    · simp [oneHighFamilyTwoEdges, hp, hs.1]
+    · omega
+  · have hm : highBranchMatchedCount G v (branchLabel.symm i) ≠ 2 := by
+      have hr : decide (i.val % 2 = 0 ∧ i.val / 2 < a) = false := by
+        simp [hp]
+      rw [hr] at hf
+      exact of_decide_eq_false hf
+    rcases hs with hs | hs
+    · exact (hm hs.2).elim
+    · simp [oneHighFamilyTwoEdges, hp, hs.1]
+
 /-- A raw one-high graph admits all coordinate choices used by the family
 generator simultaneously: one mate involution, a family-ordered standard
 Fin8 labeling, and lex-sorted canonical Fin5 labels in every branch. -/
@@ -1540,6 +1583,11 @@ theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
             i.val / 2 < ((Finset.univ :
               Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
                 highBranchMatchedCount G v s = 2).card)) ∧
+      (∀ i, twoEdges (branchLabel.symm i) =
+        oneHighFamilyTwoEdges
+          ((Finset.univ :
+            Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
+              highBranchMatchedCount G v s = 2).card i) ∧
       ∀ s,
         ((twoEdges s = false ∧ highBranchMatchedCount G v s = 2) ∨
           (twoEdges s = true ∧ highBranchMatchedCount G v s = 4)) ∧
@@ -1614,8 +1662,16 @@ theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
   have haug : OneHighAugmentedFamilyLaws G v mate :=
     oneHighAugmentedFamilyLaws_of_mate
       G hfree hmin hcard hHigh hv mate hmateInv hmateAdj
+  have hword : ∀ i, twoEdges (branchLabel.symm i) =
+      oneHighFamilyTwoEdges
+        ((Finset.univ :
+          Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
+            highBranchMatchedCount G v s = 2).card i :=
+    oneHighFamilyTwoEdges_eq_of_matchedCount
+      G branchLabel twoEdges _ hfamily (fun s =>
+        (hlabels s).choose_spec.choose_spec.1)
   refine ⟨mate, branchLabel, twoEdges, leafLabel,
-    hmateInv, hmateAdj, haug, hbranchMate, hfamily, ?_⟩
+    hmateInv, hmateAdj, haug, hbranchMate, hfamily, hword, ?_⟩
   intro s
   exact (hlabels s).choose_spec.choose_spec
 
