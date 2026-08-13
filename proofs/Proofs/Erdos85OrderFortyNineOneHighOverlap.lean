@@ -2,6 +2,7 @@ import Proofs.Erdos85OrderFortyNineHighBranchGeometry
 import Proofs.Erdos85ExteriorDefectDecomposition
 import Proofs.Erdos85LocalTriangleParity
 import Proofs.Erdos85OrderFortyNineDistOnePinning
+import Proofs.Erdos85BranchDeficitSymmetry
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -397,6 +398,147 @@ theorem orderFortyNineOneHighOverlap_diag_mod_two_eq_one
     triangleFreeNeighbors_card_mod_two_eq_vertexDegree G hfree]
   rw [orderFortyNine_neighbor_degree_seven_of_degreeEight
     G hfree hmin hcard hv s.2]
+
+/-- Away from a locally matched pair of centers, common neighbors of a
+center `t` and a leaf in branch `s` are exactly that leaf's neighbors in
+branch `t`. -/
+theorem orderFortyNine_common_center_leaf_eq_branch_neighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : ¬ G.Adj s.1 t.1) {y : V}
+    (hy : y ∈ secondLayerBranch G v s) :
+    G.neighborFinset t.1 ∩ G.neighborFinset y =
+      G.neighborFinset y ∩ secondLayerBranch G v t := by
+  ext z
+  constructor
+  · intro hz
+    have hzParts := Finset.mem_inter.mp hz
+    have htz : G.Adj t.1 z := (G.mem_neighborFinset t.1 z).1 hzParts.1
+    have hyz : G.Adj y z := (G.mem_neighborFinset y z).1 hzParts.2
+    have hyOutside : y ∉ insert v (G.neighborFinset v) :=
+      (Finset.mem_sdiff.mp hy).2
+    have hzv : z ≠ v := by
+      intro hzv
+      subst z
+      exact hyOutside (Finset.mem_insert.mpr (Or.inr
+        ((G.mem_neighborFinset v y).2 hyz.symm)))
+    have hzNotNv : z ∉ G.neighborFinset v := by
+      intro hzNv
+      have hvz : G.Adj v z := (G.mem_neighborFinset v z).1 hzNv
+      have hsy : G.Adj s.1 y :=
+        (G.mem_neighborFinset s.1 y).1 (Finset.mem_sdiff.mp hy).1
+      by_cases hzs : z = s.1
+      · subst z
+        exact hst htz.symm
+      · have hvy : v ≠ y := by
+          intro hvy
+          subst y
+          exact hyOutside (by simp)
+        exact hfree (containsC4_of_two_common hzs hvy
+          hvz s.2 hyz hsy.symm)
+    exact Finset.mem_inter.mpr ⟨hzParts.2,
+      Finset.mem_sdiff.mpr ⟨hzParts.1, by
+        simp [hzv, hzNotNv]⟩⟩
+  · intro hz
+    have hzParts := Finset.mem_inter.mp hz
+    exact Finset.mem_inter.mpr ⟨
+      (Finset.mem_sdiff.mp hzParts.2).1, hzParts.1⟩
+
+/-- For nonadjacent centers, an overlap entry is the corresponding directed
+branch-miss count. -/
+theorem orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : ¬ G.Adj s.1 t.1) :
+    orderFortyNineOneHighOverlap G v s t = highBranchMissCount G v s t := by
+  rw [orderFortyNineOneHighOverlap, highBranchMissCount]
+  congr 1
+  ext y
+  constructor
+  · intro hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hDty : (secondOrderDefectGraph G).Adj t.1 y :=
+      ((secondOrderDefectGraph G).mem_neighborFinset t.1 y).1 hyParts.2
+    have hzero :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree
+        ((secondOrderDefectGraph G).ne_of_adj hDty)).1 hDty
+    have heq := orderFortyNine_common_center_leaf_eq_branch_neighbors
+      G hfree s t hst hyParts.1
+    rw [heq] at hzero
+    exact Finset.mem_filter.mpr ⟨hyParts.1, hzero⟩
+  · intro hy
+    have hyParts := Finset.mem_filter.mp hy
+    have heq := orderFortyNine_common_center_leaf_eq_branch_neighbors
+      G hfree s t hst hyParts.1
+    have hzero :
+        (G.neighborFinset t.1 ∩ G.neighborFinset y).card = 0 := by
+      rw [heq]
+      exact hyParts.2
+    have hty : t.1 ≠ y := by
+      intro hty
+      subst y
+      exact (Finset.mem_sdiff.mp hyParts.1).2
+        (Finset.mem_insert.mpr (Or.inr
+          ((G.mem_neighborFinset v t.1).2 t.2)))
+    have hDty : (secondOrderDefectGraph G).Adj t.1 y :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree hty).2 hzero
+    exact Finset.mem_inter.mpr ⟨hyParts.1,
+      ((secondOrderDefectGraph G).mem_neighborFinset t.1 y).2 hDty⟩
+
+/-- The one-high overlap matrix is symmetric away from locally matched
+center pairs. -/
+theorem orderFortyNineOneHighOverlap_comm_of_not_centerAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : ¬ G.Adj s.1 t.1) :
+    orderFortyNineOneHighOverlap G v s t =
+      orderFortyNineOneHighOverlap G v t s := by
+  rw [orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+      G hfree s t hst,
+    orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+      G hfree t s (by simpa [G.adj_comm] using hst)]
+  exact highBranchMissCount_comm_of_equal_card G hfree s t
+    ((orderFortyNine_card_originalBranch_eq_five
+      G hfree hmin hcard hv s).trans
+      (orderFortyNine_card_originalBranch_eq_five
+        G hfree hmin hcard hv t).symm)
+
+/-- The entire one-high overlap matrix is symmetric.  On matched center
+pairs both directed entries vanish; all other entries are symmetric branch
+miss counts. -/
+theorem orderFortyNineOneHighOverlap_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineOneHighOverlap G v s t =
+      orderFortyNineOneHighOverlap G v t s := by
+  by_cases hst : G.Adj s.1 t.1
+  · rw [orderFortyNineOneHighOverlap_eq_zero_of_centerAdj
+      G hfree s t hst,
+    orderFortyNineOneHighOverlap_eq_zero_of_centerAdj
+      G hfree t s hst.symm]
+  · exact orderFortyNineOneHighOverlap_comm_of_not_centerAdj
+      G hfree hmin hcard hv s t hst
 
 end
 
