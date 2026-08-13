@@ -5408,6 +5408,180 @@ theorem false_of_twoTriangle_twoGroupedSix_arithmetic
     interval_cases x <;> interval_cases y <;> interval_cases k <;>
     try norm_num at hsqE hsqF ⊢
   all_goals omega
+
+/-- The final `{6,3,3}|{6,6}` residual shape is impossible.  Grouped
+periodicity removes the two new triangles from the two contacted order-six
+rows and bounds their combined contact from each unused order-six row; the
+two triangle row/square identities then invoke the preceding terminal. -/
+theorem false_of_degreeSix_threeSix_sixTwoThree_twoSix_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (a b c e f u v : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (hc6 : c.supp.ncard = 6) (he3 : e.supp.ncard = 3)
+    (hf3 : f.supp.ncard = 3) (hu6 : u.supp.ncard = 6)
+    (hv6 : v.supp.ncard = 6)
+    (haeNe : a ≠ e) (hafNe : a ≠ f) (hefNe : e ≠ f)
+    (hbcNe : b ≠ c) (hbuNe : b ≠ u) (hbvNe : b ≠ v)
+    (hcuNe : c ≠ u) (hcvNe : c ≠ v) (huvNe : u ≠ v)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2)
+    (hac : componentQuotientMatrix G (secondOrderDefectGraph G) a c = 2)
+    (hae : componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1)
+    (haf : componentQuotientMatrix G (secondOrderDefectGraph G) a f = 1)
+    (hau : componentQuotientMatrix G (secondOrderDefectGraph G) a u = 0)
+    (hav : componentQuotientMatrix G (secondOrderDefectGraph G) a v = 0)
+    (hcover : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {a, b, c, e, f, u, v}) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a b = 2 at hab
+  change Q a c = 2 at hac
+  change Q a e = 1 at hae
+  change Q a f = 1 at haf
+  change Q a u = 0 at hau
+  change Q a v = 0 at hav
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hacNe : a ≠ c := by intro h; subst c; omega
+  have hauNe : a ≠ u := by intro h; subst u; omega
+  have havNe : a ≠ v := by intro h; subst v; omega
+  have hbeNe : b ≠ e := by intro h; subst e; omega
+  have hbfNe : b ≠ f := by intro h; subst f; omega
+  have hceNe : c ≠ e := by intro h; subst e; omega
+  have hcfNe : c ≠ f := by intro h; subst f; omega
+  have heuNe : e ≠ u := by intro h; subst u; omega
+  have hevNe : e ≠ v := by intro h; subst v; omega
+  have hfuNe : f ≠ u := by intro h; subst u; omega
+  have hfvNe : f ≠ v := by intro h; subst v; omega
+  have hbal (x y : _) : x.supp.ncard * Q x y = y.supp.ncard * Q y x :=
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hba : Q b a = 1 := by
+    have h := hbal a b
+    rw [ha3, hb6, hab] at h
+    omega
+  have hca : Q c a = 1 := by
+    have h := hbal a c
+    rw [ha3, hc6, hac] at h
+    omega
+  have hea : Q e a = 1 := by
+    have h := hbal a e
+    rw [ha3, he3, hae] at h
+    omega
+  have hfa : Q f a = 1 := by
+    have h := hbal a f
+    rw [ha3, hf3, haf] at h
+    omega
+  have hzero (s t : _) (hs6 : s.supp.ncard = 6) (ht3 : t.supp.ncard = 3)
+      (hsa : Q s a = 1) (hat : a ≠ t) : Q s t = 0 := by
+    have hg := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        s a t hs6 ha3 ht3 hat
+    change Q s a + Q s t ≤ 1 at hg
+    rw [hsa] at hg
+    omega
+  have hbe : Q b e = 0 := hzero b e hb6 he3 hba haeNe
+  have hbf : Q b f = 0 := hzero b f hb6 hf3 hba hafNe
+  have hce : Q c e = 0 := hzero c e hc6 he3 hca haeNe
+  have hcf : Q c f = 0 := hzero c f hc6 hf3 hca hafNe
+  have hueGroup := degreeSix_orderSix_two_orderThree_targets_le_one
+    G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+      u e f hu6 he3 hf3 hefNe
+  have hveGroup := degreeSix_orderSix_two_orderThree_targets_le_one
+    G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+      v e f hv6 he3 hf3 hefNe
+  change Q u e + Q u f ≤ 1 at hueGroup
+  change Q v e + Q v f ≤ 1 at hveGroup
+  have heb : Q e b = 0 := by
+    have h := hbal b e
+    rw [hb6, he3, hbe] at h
+    omega
+  have hfb : Q f b = 0 := by
+    have h := hbal b f
+    rw [hb6, hf3, hbf] at h
+    omega
+  have hec : Q e c = 0 := by
+    have h := hbal c e
+    rw [hc6, he3, hce] at h
+    omega
+  have hfc : Q f c = 0 := by
+    have h := hbal c f
+    rw [hc6, hf3, hcf] at h
+    omega
+  have heu : Q e u = 2 * Q u e := by
+    have h := hbal u e
+    rw [hu6, he3] at h
+    omega
+  have heV : Q e v = 2 * Q v e := by
+    have h := hbal v e
+    rw [hv6, he3] at h
+    omega
+  have hfu : Q f u = 2 * Q u f := by
+    have h := hbal u f
+    rw [hu6, hf3] at h
+    omega
+  have hfV : Q f v = 2 * Q v f := by
+    have h := hbal v f
+    rw [hv6, hf3] at h
+    omega
+  have hefSymm : Q e f = Q f e := by
+    have h := hbal e f
+    rw [he3, hf3] at h
+    omega
+  have hrowEGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e
+  have hrowFGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) f
+  change (∑ z, Q e z) = 6 at hrowEGraph
+  change (∑ z, Q f z) = 6 at hrowFGraph
+  rw [hcover] at hrowEGraph hrowFGraph
+  simp [habNe, hacNe, haeNe, hafNe, hauNe, havNe, hbcNe, hbeNe, hbfNe,
+    hbuNe, hbvNe, hceNe, hcfNe, hcuNe, hcvNe, hefNe, heuNe, hevNe,
+    hfuNe, hfvNe, huvNe, hea, hfa, heb, hfb, hec, hfc, heu, heV,
+    hfu, hfV, hefSymm] at hrowEGraph hrowFGraph
+  have hsqEGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hsqFGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) f f
+  have hsqE : (∑ z, Q e z * Q z e) = 6 := by
+    simpa [Q, Matrix.mul_apply, he3] using hsqEGraph
+  have hsqF : (∑ z, Q f z * Q z f) = 6 := by
+    simpa [Q, Matrix.mul_apply, hf3] using hsqFGraph
+  rw [hcover] at hsqE hsqF
+  simp [habNe, hacNe, haeNe, hafNe, hauNe, havNe, hbcNe, hbeNe, hbfNe,
+    hbuNe, hbvNe, hceNe, hcfNe, hcuNe, hcvNe, hefNe, heuNe, hevNe,
+    hfuNe, hfvNe, huvNe, hea, hfa, heb, hfb, hec, hfc, heu, heV,
+    hfu, hfV, hefSymm] at hsqE hsqF
+  apply false_of_twoTriangle_twoGroupedSix_arithmetic
+    (Q e e) (Q f f) (Q e f) (Q u e) (Q u f) (Q v e) (Q v f)
+    hueGroup hveGroup
+  · omega
+  · omega
+  · rw [hae] at hsqE
+    rw [hefSymm]
+    ring_nf at hsqE ⊢
+    omega
+  · rw [haf] at hsqF
+    rw [← hefSymm] at hsqF
+    ring_nf at hsqF ⊢
+    omega
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
