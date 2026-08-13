@@ -984,18 +984,19 @@ theorem degreeSix_orderNine_reduced_filter_patterns
     let p5 := fun t ↦ size t = 18 ∧ q t = 2 ∧ r t = 1
     let p6 := fun t ↦ size t = 18 ∧ q t = 4 ∧ r t = 2
     let p7 := fun t ↦ size t = 27 ∧ q t = 3 ∧ r t = 1
+    let used := ∑ t ∈ S, if q t = 0 then 0 else size t
     ((S.filter p1).card = 0 ∧ (S.filter p2).card = 2 ∧
       (S.filter p3).card = 0 ∧ (S.filter p4).card = 0 ∧
       (S.filter p5).card = 0 ∧ (S.filter p6).card = 0 ∧
-      (S.filter p7).card = 0) ∨
+      (S.filter p7).card = 0 ∧ used = 18) ∨
     ((S.filter p1).card = 0 ∧ (S.filter p2).card = 0 ∧
       (S.filter p3).card = 0 ∧ (S.filter p4).card = 0 ∧
       (S.filter p5).card = 0 ∧ (S.filter p6).card = 1 ∧
-      (S.filter p7).card = 0) ∨
+      (S.filter p7).card = 0 ∧ used = 18) ∨
     ((S.filter p1).card = 1 ∧ (S.filter p2).card = 1 ∧
       (S.filter p3).card = 1 ∧ (S.filter p4).card = 0 ∧
       (S.filter p5).card = 0 ∧ (S.filter p6).card = 0 ∧
-      (S.filter p7).card = 0) := by
+      (S.filter p7).card = 0 ∧ used = 21) := by
   dsimp
   let D := secondOrderDefectGraph G
   let Q := componentQuotientMatrix G D
@@ -1094,7 +1095,23 @@ theorem degreeSix_orderNine_reduced_filter_patterns
     intro hn
     exact false_of_degreeSix_orderNine_orderSix_filter
       G hfree hmin hcard w hw9 S hn
-  exact OddDiagonalSmall.nine_pattern_counts_reduced hc hn3 hn4
+  have hred := OddDiagonalSmall.nine_pattern_counts_reduced hc hn3 hn4
+  rcases hred with h | h | h
+  · left
+    refine ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1,
+      h.2.2.2.2.2.1, h.2.2.2.2.2.2, ?_⟩
+    rw [hagg.2.2]
+    omega
+  · right; left
+    refine ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1,
+      h.2.2.2.2.2.1, h.2.2.2.2.2.2, ?_⟩
+    rw [hagg.2.2]
+    omega
+  · right; right
+    refine ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1,
+      h.2.2.2.2.2.1, h.2.2.2.2.2.2, ?_⟩
+    rw [hagg.2.2]
+    omega
 
 /-- Graph-level contradiction for the fourth order-nine count pattern. -/
 theorem false_of_degreeSix_orderNine_pattern_four_filters
@@ -1469,6 +1486,82 @@ theorem false_of_orderNine_pattern_one_carrier
       (hdiag3 e hse) (hdiag3 f hsf) hrow hsq hbal
       (hgroup9 a e f haData.2.1 hse hsf hef)
       (hgroup9 b e f hbData.2.1 hse hsf hef)
+
+/-- An order-nine component cannot have diagonal quotient two at the
+degree-six boundary. -/
+theorem false_of_degreeSix_orderNine_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw9 : w.supp.ncard = 9)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  let S : Finset D.ConnectedComponent := Finset.univ.erase w
+  obtain ⟨htotal, hrow, hbal, _, _⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  have hsw : size w = 9 := hw9
+  have hextSize : (∑ t ∈ S, size t) = 24 := by
+    have hadd := Finset.add_sum_erase Finset.univ size (Finset.mem_univ w)
+    change size w + (∑ t ∈ Finset.univ.erase w, size t) = ∑ t, size t at hadd
+    change (∑ t ∈ Finset.univ.erase w, size t) = 24
+    rw [hsw, htotal] at hadd
+    omega
+  have hsqAll : ∀ c, (∑ t, Q c t * Q t c) = size c + 3 := by
+    intro c
+    exact (degreeSix_diagonal_two_quotient_profile
+      G hfree hmin hcard c).2.2.2.1
+  have hdiag3 : ∀ c, size c = 3 → Q c c = 0 := by
+    intro c hc
+    exact degreeSix_orderThree_diagonal_zero G hfree hmin hcard
+      coord hcoord hcoordRange hcoordD c hc
+  have hleNondiv : ∀ c t, ¬ size c ∣ size t → Q c t ≤ 1 := by
+    intro c t hndvd
+    exact secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c t hndvd
+  have hgroup9 : ∀ c e f, size c = 9 → size e = 3 → size f = 3 →
+      e ≠ f → Q c e + Q c f ≤ 1 := by
+    intro c e f hc he hf hef
+    exact degreeSix_orderNine_two_orderThree_targets_le_one
+      G hfree hmin hcard coord hcoord hcoordRange hcoordD
+        c e f hc he hf hef
+  have hred := degreeSix_orderNine_reduced_filter_patterns
+    G hfree hmin hcard coord hcoord hcoordRange hcoordD w hw9 hdiag
+  dsimp only at hred
+  rcases hred with h1 | h2 | h4
+  · rcases h1 with ⟨hc1, hc2, hc3, hc4, hc5, hc6, hc7, hused⟩
+    exact false_of_orderNine_pattern_one_carrier Q size w S rfl hsw htotal
+      (by intro c; exact hr c) hextSize hused hc2 hrow hsqAll hbal
+      hleNondiv hdiag3 hgroup9
+  · rcases h2 with ⟨hc1, hc2, hc3, hc4, hc5, hc6, hc7, hused⟩
+    exact false_of_orderNine_pattern_two_carrier Q size w S rfl hsw htotal
+      (by intro c; exact hr c) hextSize hused hc6 hrow hsqAll hbal hdiag3
+  · rcases h4 with ⟨hc1, hc2, hc3, hc4, hc5, hc6, hc7, hused⟩
+    exact false_of_degreeSix_orderNine_pattern_four_filters
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD
+        w hw9 hdiag ⟨hc1, hc2, hc3, hc4, hc5, hc6, hc7⟩
 
 /-! ## Order-seven discharge -/
 
