@@ -6421,6 +6421,19 @@ theorem false_of_isolated_unused_triangle_arithmetic
     try norm_num at hsq ⊢
   all_goals omega
 
+/-- An order-six component already sending two units to another order-six
+component cannot distribute its remaining row and square budgets between one
+further order-six component, its diagonal, and at most one triangle contact. -/
+theorem false_of_orderSix_twoSix_oneSix_triangleBudget_arithmetic
+    (x y t : ℕ) (ht : t ≤ 1)
+    (hrow : x + y + t = 4)
+    (hsq : x * x + y * y + 2 * t = 5) : False := by
+  have hx : x ≤ 4 := by omega
+  have hy : y ≤ 4 := by omega
+  interval_cases t <;> interval_cases x <;> interval_cases y <;>
+    try norm_num at hsq ⊢
+  all_goals omega
+
 /-- In the contacted `{6,6}` family, an unused half `{6,3,3}` is
 impossible by the isolated-triangle terminal. -/
 theorem false_of_degreeSix_threeSix_twoSix_sixTwoThree_branch
@@ -6542,6 +6555,116 @@ theorem false_of_degreeSix_threeSix_twoSix_sixTwoThree_branch
   · ring_nf at hsqE ⊢
     rw [← hefSymm] at hsqE
     exact hsqE
+
+/-- In the contacted `{6,3,3}` family, an unused half `{6,3,3}` is
+impossible from the row and square budgets of the unused order-six component
+which receives both remaining units from the distinguished order-six source. -/
+theorem false_of_degreeSix_threeSix_sixTwoThree_sixTwoThree_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (a b c e f u g h : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (hc6 : c.supp.ncard = 6) (he3 : e.supp.ncard = 3)
+    (hf3 : f.supp.ncard = 3) (hu6 : u.supp.ncard = 6)
+    (hg3 : g.supp.ncard = 3) (hh3 : h.supp.ncard = 3)
+    (hne : [a, b, c, e, f, u, g, h].Pairwise (· ≠ ·))
+    (hau : componentQuotientMatrix G (secondOrderDefectGraph G) a u = 0)
+    (hbu : componentQuotientMatrix G (secondOrderDefectGraph G) b u = 2)
+    (hcover : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {a, b, c, e, f, u, g, h}) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a u = 0 at hau
+  change Q b u = 2 at hbu
+  simp only [List.pairwise_cons, List.mem_cons, List.not_mem_nil,
+    forall_eq_or_imp, forall_eq] at hne
+  have hbal (x y : _) : x.supp.ncard * Q x y = y.supp.ncard * Q y x :=
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hua : Q u a = 0 := by
+    have hx := hbal a u
+    rw [ha3, hu6, hau] at hx
+    omega
+  have hub : Q u b = 2 := by
+    have hx := hbal b u
+    rw [hb6, hu6, hbu] at hx
+    omega
+  have huc : Q u c = Q c u := by
+    have hx := hbal u c
+    rw [hu6, hc6] at hx
+    omega
+  have htri (x y : _) (hx3 : x.supp.ncard = 3)
+      (hy3 : y.supp.ncard = 3) (hxy : x ≠ y) : Q u x + Q u y ≤ 1 := by
+    exact degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        u x y hu6 hx3 hy3 hxy
+  have hef := htri e f he3 hf3 hne.2.2.2.1.1
+  have heg := htri e g he3 hg3 hne.2.2.2.1.2.2.1
+  have heh := htri e h he3 hh3 hne.2.2.2.1.2.2.2.1
+  have hfg := htri f g hf3 hg3 hne.2.2.2.2.1.2.1
+  have hfh := htri f h hf3 hh3 hne.2.2.2.2.1.2.2.1
+  have hgh := htri g h hg3 hh3 hne.2.2.2.2.2.2.1.1
+  have hmass : Q u e + Q u f + Q u g + Q u h ≤ 1 := by omega
+  have heu : Q e u = 2 * Q u e := by
+    have hx := hbal u e
+    rw [hu6, he3] at hx
+    omega
+  have hfu : Q f u = 2 * Q u f := by
+    have hx := hbal u f
+    rw [hu6, hf3] at hx
+    omega
+  have hgu : Q g u = 2 * Q u g := by
+    have hx := hbal u g
+    rw [hu6, hg3] at hx
+    omega
+  have hhu : Q h u = 2 * Q u h := by
+    have hx := hbal u h
+    rw [hu6, hh3] at hx
+    omega
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) u
+  change (∑ z, Q u z) = 6 at hrow
+  rw [hcover] at hrow
+  simp [hne, hua, hub] at hrow
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) u u
+  have hsq : (∑ z, Q u z * Q z u) = 9 := by
+    simpa [Q, Matrix.mul_apply, hu6] using hsqGraph
+  rw [hcover] at hsq
+  simp [hne, hua, hub, heu, hfu, hgu, hhu, huc] at hsq
+  apply false_of_orderSix_twoSix_oneSix_triangleBudget_arithmetic
+    (Q u u) (Q u c) (Q u e + Q u f + Q u g + Q u h) hmass
+  · omega
+  · ring_nf at hsq
+    have heLe : Q u e ≤ 1 := by omega
+    have hfLe : Q u f ≤ 1 := by omega
+    have hgLe : Q u g ≤ 1 := by omega
+    have hhLe : Q u h ≤ 1 := by omega
+    have heSq : Q u e ^ 2 = Q u e := by interval_cases Q u e <;> norm_num
+    have hfSq : Q u f ^ 2 = Q u f := by interval_cases Q u f <;> norm_num
+    have hgSq : Q u g ^ 2 = Q u g := by interval_cases Q u g <;> norm_num
+    have hhSq : Q u h ^ 2 = Q u h := by interval_cases Q u h <;> norm_num
+    rw [heSq, hfSq, hgSq, hhSq] at hsq
+    rw [← huc] at hsq
+    rw [hbu] at hsq
+    ring_nf at hsq ⊢
+    omega
 
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
