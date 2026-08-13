@@ -1583,6 +1583,55 @@ theorem degreeSix_orderThree_twelve_contact_counts
     (n31 = 0 ∧ n62 = 1) ∨ (n31 = 2 ∧ n62 = 0) := by
   omega
 
+/-- Filter-count form of the `(3,12)` residual contact dichotomy. -/
+theorem degreeSix_orderThree_twelve_filter_counts
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q r : C → ℕ)
+    (htype : ∀ t ∈ S, q t = 0 ∨
+      (q t = 1 ∧ r t = 1) ∨ (q t = 2 ∧ r t = 1))
+    (hrow : (∑ t ∈ S, q t) = 2)
+    (hprod : (∑ t ∈ S, q t * r t) = 2) :
+    (((S.filter fun t ↦ q t = 1 ∧ r t = 1).card = 0 ∧
+      (S.filter fun t ↦ q t = 2 ∧ r t = 1).card = 1) ∨
+     ((S.filter fun t ↦ q t = 1 ∧ r t = 1).card = 2 ∧
+      (S.filter fun t ↦ q t = 2 ∧ r t = 1).card = 0)) := by
+  let A := S.filter fun t ↦ q t = 1 ∧ r t = 1
+  let B := S.filter fun t ↦ q t = 2 ∧ r t = 1
+  have hqpoint : ∀ t ∈ S, q t =
+      (if q t = 1 ∧ r t = 1 then 1 else 0) +
+      (if q t = 2 ∧ r t = 1 then 2 else 0) := by
+    intro t ht
+    rcases htype t ht with h0 | h11 | h21
+    · simp [h0]
+    · rcases h11 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h21 with ⟨hq, hr⟩; simp [hq, hr]
+  have hppoint : ∀ t ∈ S, q t * r t =
+      (if q t = 1 ∧ r t = 1 then 1 else 0) +
+      (if q t = 2 ∧ r t = 1 then 2 else 0) := by
+    intro t ht
+    rcases htype t ht with h0 | h11 | h21
+    · simp [h0]
+    · rcases h11 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h21 with ⟨hq, hr⟩; simp [hq, hr]
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hrowCounts : A.card + 2 * B.card = 2 := by
+    have hdecomp := Finset.sum_congr rfl hqpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1 ∧ r t = 1) 1,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 1) 2] at hdecomp
+    simpa [A, B, one_mul] using hdecomp.symm.trans hrow
+  have hprodCounts : A.card + 2 * B.card = 2 := by
+    have hdecomp := Finset.sum_congr rfl hppoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1 ∧ r t = 1) 1,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 1) 2] at hdecomp
+    simpa [A, B, one_mul] using hdecomp.symm.trans hprod
+  simpa [A, B] using degreeSix_orderThree_twelve_contact_counts
+    A.card B.card hrowCounts hprodCounts
+
 /-- Filter-count form of the order-five residual classification. -/
 theorem degreeSix_orderFive_cover_filter_counts
     {C : Type*} [DecidableEq C]
@@ -2858,6 +2907,83 @@ theorem degreeSix_orderThree_twelve_residual_contact_type
     t.supp.ncard (Q a t) (Q t a) ht3 ht18 hatPos hatLe2 htaPos
       hatProdLe2 (by simpa [ha3] using hatBal)
   simpa [Q] using htype
+
+/-- Exact multiplicities of the two `(3,12)` residual contact types. -/
+theorem degreeSix_orderThree_twelve_residual_filter_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    ((R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1).card = 0 ∧
+      (R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1).card = 1) ∨
+    ((R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1).card = 2 ∧
+      (R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1).card = 0) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 4 := by rw [ha3, hb12, hba] at habBal; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrow
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hrowR : (∑ t ∈ R, Q a t) = 2 := by
+    dsimp [R]
+    rw [haa] at hsA
+    rw [hab] at hsB
+    omega
+  have haProd := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha3]; norm_num)).2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at haProd
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z a) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z a) hbIn
+  have hprodR : (∑ t ∈ R, Q a t * Q t a) = 2 := by
+    dsimp [R]
+    rw [ha3] at haProd
+    rw [haa] at hpA
+    rw [hab, hba] at hpB
+    omega
+  have htype : ∀ t ∈ R, Q a t = 0 ∨
+      (Q a t = 1 ∧ Q t a = 1) ∨
+      (Q a t = 2 ∧ Q t a = 1) := by
+    intro t htR
+    by_cases hq : Q a t = 0
+    · exact Or.inl hq
+    · have htData := Finset.mem_erase.mp htR
+      have htData' := Finset.mem_erase.mp htData.2
+      have hclass := degreeSix_orderThree_twelve_residual_contact_type
+        G hfree hmin hcard a b t ha3 hb12 haa hba htData'.1 htData.1
+          (hr t) (Nat.pos_of_ne_zero hq)
+      rcases hclass with h | h
+      · exact Or.inr (Or.inl h.2)
+      · exact Or.inr (Or.inr h.2)
+  simpa [Q, R] using degreeSix_orderThree_twelve_filter_counts
+    R (Q a) (fun t ↦ Q t a) htype hrowR hprodR
 
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
