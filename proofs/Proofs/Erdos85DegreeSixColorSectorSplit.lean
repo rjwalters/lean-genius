@@ -910,6 +910,64 @@ theorem degreeSix_orderTwelve_two_orderSix_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Components of a common order `n` have the same cycle-block period in a
+source component.  If that period is nonzero in the source cycle, their
+combined quotient multiplicity is at most one. -/
+theorem degreeSix_sameOrder_targets_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (es : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (n : ℕ) (hc3 : 3 ≤ c.supp.ncard) (hn3 : 3 ≤ n)
+    (hn : ∀ t ∈ es, t.supp.ncard = n)
+    (hn0 : (n : ZMod c.supp.ncard) ≠ 0) :
+    ∑ t ∈ es, componentQuotientMatrix G (secondOrderDefectGraph G) c t ≤ 1 := by
+  let D := secondOrderDefectGraph G
+  have hbound := sum_componentQuotientMatrix_le_one_of_periodic
+    G D hfree c (u c) (hu c) (huRange c) (n : ZMod c.supp.ncard) hn0 es
+  have hperiod : ∀ t ∈ es, ∀ z y, D.connectedComponentMk y = t →
+      (G.Adj (u c (z + n)) y ↔ G.Adj (u c z) y) := by
+    intro t ht z y hy
+    have hyrange : y ∈ Set.range (u t) := by
+      rw [huRange t]
+      exact (SimpleGraph.ConnectedComponent.mem_supp_iff t y).mpr hy
+    obtain ⟨j, rfl⟩ := hyrange
+    have htN := hn t ht
+    have ht3 : 3 ≤ t.supp.ncard := by omega
+    have hupair : ∀ a : ZMod c.supp.ncard,
+        u c (a - 1) ≠ u c (a + 1) := by
+      intro a
+      exact (hu c).ne (zmod_sub_one_ne_add_one_of_three_le hc3 a)
+    have hvpair : ∀ b : ZMod t.supp.ncard,
+        u t (b - 1) ≠ u t (b + 1) := by
+      intro b
+      exact (hu t).ne (zmod_sub_one_ne_add_one_of_three_le ht3 b)
+    have hinter := entry_cycleIntertwine_of_adjMatrix_comm G D
+      (u c) (u t) (1 : ZMod c.supp.ncard) (1 : ZMod t.supp.ncard)
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+      (huD c) (huD t) hupair hvpair
+    have hp := adj_iff_add_targetOrder_of_entry_cycleIntertwine
+      G (u c) (u t) (1 : ZMod c.supp.ncard)
+        (1 : ZMod t.supp.ncard) hinter z j
+    simp only [ZMod.addOrderOf_one, htN, nsmul_eq_mul, mul_one] at hp
+    exact hp
+  exact hbound hperiod
+
 /-- An order-six defect component has diagonal quotient at most three.  In
 the forward orientation the Sidon bound gives two; in the reverse orientation
 looplessness restricts the zero row to the three opposite-parity phases. -/
