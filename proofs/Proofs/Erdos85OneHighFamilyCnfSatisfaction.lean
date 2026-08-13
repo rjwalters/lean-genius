@@ -1467,6 +1467,140 @@ theorem oneHighFamilyAtMostOneBlockClausesVal_state
         (fun b acc => oneHighFamilyAtMostOneBlockStepVal_state R b acc)
     _ = _ := by rw [oneHighFamilyC4ClausesVal_state]
 
+def oneHighFamilyLiteralRow (val : DimacsValuation) (vars : Array Int) :
+    Fin vars.size → Bool := fun i => dimacsLitValue val (vars.getD i.val 0)
+
+structure OneHighFamilyInputAccumSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (input : Array Int × OneHighFamilyValState) : Prop where
+  semantic : OneHighFamilySemanticSound R input.2
+  nonzero : ∀ lit ∈ input.1, lit ≠ 0
+  bounded : ∀ lit ∈ input.1, lit.natAbs ≤ input.2.1.top
+
+theorem oneHighFamilyInputAccumSound_empty
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc) :
+    OneHighFamilyInputAccumSound R (#[], acc) where
+  semantic := h
+  nonzero := by simp
+  bounded := by simp
+
+theorem oneHighFamilyAtomId_top_le
+    (atom : OneHighFamilyAtom) (st : OneHighFamilyGenState) :
+    st.top ≤ (oneHighFamilyAtomId atom st).2.top := by
+  unfold oneHighFamilyAtomId
+  split
+  · exact Nat.le_refl _
+  · exact Nat.le_succ _
+
+noncomputable def oneHighFamilyCollectEdgeVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y x : Nat) (input : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let (vars, acc) := input
+  let (id, acc) := oneHighFamilyEdgeIdVal R y x acc
+  (vars.push (id : Int), acc)
+
+theorem oneHighFamilyCollectEdgeVal_sound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyInputAccumSound R input)
+    (y x : Nat) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyCollectEdgeVal R y x input) := by
+  rcases input with ⟨vars, acc⟩
+  rcases acc with ⟨st, val⟩
+  simp only [oneHighFamilyCollectEdgeVal, oneHighFamilyEdgeIdVal]
+  generalize hout : oneHighFamilyAtomIdVal R
+    (.edge (min y x) (max y x)) (st, val) = out
+  rcases out with ⟨id, acc'⟩
+  have hs := oneHighFamilyAtomIdVal_semanticSound R h.semantic
+    (.edge (min y x) (max y x))
+  rw [hout] at hs
+  have hr := oneHighFamilyAtomIdVal_result R
+    (.edge (min y x) (max y x)) st val
+  rw [hout] at hr
+  dsimp at hr
+  have hstate := oneHighFamilyAtomIdVal_state R
+    (.edge (min y x) (max y x)) st val
+  rw [hout] at hstate
+  have htop : st.top ≤ acc'.1.top := by
+    rw [hstate]
+    exact oneHighFamilyAtomId_top_le _ st
+  constructor
+  · exact hs
+  · intro lit hlit
+    simp only [Array.mem_push] at hlit
+    rcases hlit with hold | rfl
+    · exact h.nonzero lit hold
+    · have hidPos := (hs.ids.id_bounds _ hr.1).1
+      exact_mod_cast (Nat.ne_of_gt hidPos)
+  · intro lit hlit
+    simp only [Array.mem_push] at hlit
+    rcases hlit with hold | rfl
+    · exact (h.bounded lit hold).trans htop
+    · simpa using (hs.ids.id_bounds _ hr.1).2
+
+def oneHighFamilyInputAccumRow
+    (input : Array Int × OneHighFamilyValState) :
+    Fin input.1.size → Bool :=
+  oneHighFamilyLiteralRow input.2.2 input.1
+
+theorem oneHighFamilyInputAccum_reifies
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyInputAccumSound R input) :
+    SeqCounterInputReifies input.2.2 input.2.1.top input.1
+      (oneHighFamilyInputAccumRow input) where
+  size_eq := rfl
+  nonzero := by
+    intro i hi
+    apply h.nonzero
+    rw [show input.1.getD i 0 = input.1[i] by
+      simp [Array.getD, hi]]
+    exact Array.getElem_mem hi
+  bounded := by
+    intro i hi
+    apply h.bounded
+    rw [show input.1.getD i 0 = input.1[i] by
+      simp [Array.getD, hi]]
+    exact Array.getElem_mem hi
+  value := by
+    intro i hi
+    rfl
+
+noncomputable def oneHighFamilyCollectFarInputsVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y : Nat) (acc : OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  (oneHighFamilyFarVertices y).foldl
+    (fun input x => oneHighFamilyCollectEdgeVal R y x input) (#[], acc)
+
+theorem oneHighFamilyCollectEdgesListVal_sound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y : Nat) (xs : List Nat)
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyInputAccumSound R input) :
+    OneHighFamilyInputAccumSound R
+      (xs.foldl (fun input x => oneHighFamilyCollectEdgeVal R y x input)
+        input) := by
+  induction xs generalizing input with
+  | nil => exact h
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      exact ih (oneHighFamilyCollectEdgeVal_sound R h y x)
+
+theorem oneHighFamilyCollectFarInputsVal_sound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc) (y : Nat) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyCollectFarInputsVal R y acc) := by
+  unfold oneHighFamilyCollectFarInputsVal
+  exact oneHighFamilyCollectEdgesListVal_sound R y _
+    (oneHighFamilyInputAccumSound_empty R h)
+
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
