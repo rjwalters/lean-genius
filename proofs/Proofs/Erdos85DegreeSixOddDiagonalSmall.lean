@@ -109,6 +109,31 @@ theorem nine_pattern_counts {n1 n2 n3 n4 n5 n6 n7 : ℕ}
   interval_cases n6 <;> interval_cases n5 <;> interval_cases n4 <;>
     interval_cases n2 <;> omega
 
+/-- After the direct two-positive-triangle and order-six-partner terminals
+exclude `n3 = 2` and `n4 = 1`, the seven order-nine patterns reduce to the
+three residual shapes requiring carrier extraction. -/
+theorem nine_pattern_counts_reduced {n1 n2 n3 n4 n5 n6 n7 : ℕ}
+    (hpatterns :
+      (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0) ∨
+      (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 1 ∧ n7 = 0) ∨
+      (n1 = 0 ∧ n2 = 0 ∧ n3 = 2 ∧ n4 = 0 ∧ n5 = 1 ∧ n6 = 0 ∧ n7 = 0) ∨
+      (n1 = 1 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0) ∨
+      (n1 = 2 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0) ∨
+      (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 1 ∧ n6 = 0 ∧ n7 = 0) ∨
+      (n1 = 2 ∧ n2 = 0 ∧ n3 = 2 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0))
+    (hn3 : n3 ≠ 2) (hn4 : n4 ≠ 1) :
+    (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 1 ∧ n7 = 0) ∨
+    (n1 = 1 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧ n7 = 0) := by
+  rcases hpatterns with h | h | h | h | h | h | h
+  · exact Or.inl h
+  · exact Or.inr (Or.inl h)
+  · exact absurd h.2.2.1 hn3
+  · exact Or.inr (Or.inr h)
+  · exact absurd h.2.2.2.1 hn4
+  · exact absurd h.2.2.2.1 hn4
+  · exact absurd h.2.2.1 hn3
+
 /-- A zero-contact residual of total order six, when every component has
 order at least three, is either one order-six component or two order-three
 components. -/
