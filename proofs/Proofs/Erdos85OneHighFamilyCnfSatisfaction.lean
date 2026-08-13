@@ -492,6 +492,31 @@ theorem dimacsClauseBounded_negative_four
   · simpa using hc
   · simpa using hd
 
+theorem dimacsClauseSatisfied_positive_ids
+    {val : DimacsValuation} {a : Nat} {ids : List Nat}
+    (haPos : 0 < a) (hidsPos : ∀ id ∈ ids, 0 < id)
+    (h : val a = true ∨ ∃ id ∈ ids, val id = true) :
+    dimacsClauseSatisfied val
+      ((a : Int) :: List.map (fun id : Nat => (id : Int)) ids) := by
+  rcases h with ha | ⟨id, hid, hval⟩
+  · refine ⟨(a : Int), by simp, ?_⟩
+    simp [dimacsLitValue, ha, haPos]
+  · refine ⟨(id : Int), by simp [hid], ?_⟩
+    simp [dimacsLitValue, hval, hidsPos id hid]
+
+theorem dimacsClauseBounded_positive_ids
+    {top a : Nat} {ids : List Nat}
+    (ha : a ≤ top) (hids : ∀ id ∈ ids, id ≤ top) :
+    dimacsClauseBounded top
+      ((a : Int) :: List.map (fun id : Nat => (id : Int)) ids) := by
+  intro lit hlit
+  simp only [List.mem_cons] at hlit
+  rcases hlit with rfl | hlit
+  · simpa using ha
+  · obtain ⟨id, hid, heq⟩ := List.mem_map.mp hlit
+    rw [← heq]
+    simpa using hids id hid
+
 noncomputable def oneHighFamilyFourNegativeAtomsVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (atom₁ atom₂ atom₃ atom₄ : OneHighFamilyAtom)
@@ -1363,6 +1388,39 @@ theorem oneHighFamilyBlockVertices_mem
   constructor
   · omega
   · simp [Nat.mul_add_div, Nat.div_eq_of_lt hr']
+
+theorem oneHighFamilyVertex_val (b : Fin 8) (r : Fin 5) :
+    (oneHighFamilyVertex b r).val = 5 * b.val + r.val := by
+  simp [oneHighFamilyVertex, finProdFinEquiv]
+  omega
+
+theorem oneHighFamilyVertex_mem_blockVertices (b : Fin 8) (r : Fin 5) :
+    (oneHighFamilyVertex b r).val ∈ oneHighFamilyBlockVertices b.val := by
+  rw [oneHighFamilyVertex_val]
+  simp [oneHighFamilyBlockVertices]
+
+theorem oneHighFamilyMissesBlock_iff_blockVertices
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {w b : Nat} (hw : w < 40) (hb : b < 8) :
+    oneHighFamilyMissesBlock R (⟨w, hw⟩ : Fin 40) ⟨b, hb⟩ ↔
+      ∀ (z : Nat) (hz : z ∈ oneHighFamilyBlockVertices b),
+        ¬ R.Adj (⟨w, hw⟩ : Fin 40)
+          ⟨z, (oneHighFamilyBlockVertices_mem hb hz).1⟩ := by
+  constructor
+  · intro hmiss z hz
+    simp only [oneHighFamilyBlockVertices, List.mem_map] at hz
+    obtain ⟨r, hr, rfl⟩ := hz
+    have hr5 := List.mem_range.mp hr
+    have hv : oneHighFamilyVertex (⟨b, hb⟩ : Fin 8) (⟨r, hr5⟩ : Fin 5) =
+        (⟨5 * b + r, by omega⟩ : Fin 40) := by
+      apply Fin.ext
+      exact oneHighFamilyVertex_val _ _
+    rw [← hv]
+    exact hmiss (⟨r, hr5⟩ : Fin 5)
+  · intro h r
+    have hz := oneHighFamilyVertex_mem_blockVertices (⟨b, hb⟩ : Fin 8) r
+    have hn := h (oneHighFamilyVertex (⟨b, hb⟩ : Fin 8) r).val hz
+    simpa using hn
 
 theorem oneHighFamilyAtMostOneVertexStepVal_semanticSound
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
