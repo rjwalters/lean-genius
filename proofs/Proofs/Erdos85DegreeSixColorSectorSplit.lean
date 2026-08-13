@@ -3336,6 +3336,48 @@ theorem degreeSix_orderThree_after_twelve_cover_profile
     (hcontactSize t ht (hallPos t ht)).1,
     (hcontactSize t ht (hallPos t ht)).2⟩⟩
 
+/-- In the one-order-six branch of `(3,12)`, the forced contact back to the
+source triangle already contributes two to the order-six square budget, so
+the order-six diagonal is at most two. -/
+theorem degreeSix_orderSix_after_three_twelve_cover_diagonal_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (t a : (secondOrderDefectGraph G).ConnectedComponent)
+    (ht6 : t.supp.ncard = 6)
+    (hta : componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1)
+    (hat : componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) t t ≤ 2 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q t t ≤ 2
+  change Q t a = 1 at hta
+  change Q a t = 2 at hat
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t t
+  have hsq : (∑ z, Q t z * Q z t) = t.supp.ncard + 3 := by
+    simpa [Q, Matrix.mul_apply, Nat.add_comm] using hsqGraph
+  have htaTerm : Q t a * Q a t ≤ ∑ z, Q t z * Q z t :=
+    Finset.single_le_sum (f := fun z ↦ Q t z * Q z t)
+      (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ a)
+  have httTerm : Q t t * Q t t ≤ ∑ z, Q t z * Q z t :=
+    Finset.single_le_sum (f := fun z ↦ Q t z * Q z t)
+      (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ t)
+  by_contra hnot
+  have htt3 : 3 ≤ Q t t := by omega
+  have hatNe : a ≠ t := by intro h; subst a; omega
+  have hpair : Q t a * Q a t + Q t t * Q t t ≤
+      ∑ z, Q t z * Q z t := by
+    exact two_distinct_terms_le_sum (fun z ↦ Q t z * Q z t) hatNe
+  rw [ht6] at hsq
+  rw [hta, hat] at hpair
+  nlinarith
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
