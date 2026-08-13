@@ -3941,4 +3941,192 @@ theorem oneHighFamilyCollectedCommonsMatch_value
   rw [dimacsLitValue, if_pos hidPosInt]
   exact hs.named _ _ halign
 
+theorem seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP
+    (val : DimacsValuation) (vars : Array Int) :
+    seqPrefixTrue (oneHighFamilyLiteralRow val vars) vars.size =
+      (List.ofFn (oneHighFamilyLiteralRow val vars)).count true := by
+  rw [seqPrefixTrue_full_eq_filter_card]
+  let v : List.Vector Bool vars.size :=
+    ⟨List.ofFn (oneHighFamilyLiteralRow val vars), by simp⟩
+  have h := Fin.card_filter_univ_eq_vector_get_eq_count true v
+  convert h using 1 <;> simp [v, List.Vector.get]
+
+theorem oneHighFamilyCollectedCommons_values
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {pairs : List (Nat × Nat)}
+    {input : Array Int × OneHighFamilyValState}
+    (hm : OneHighFamilyCollectedCommonsMatch pairs input)
+    (hs : OneHighFamilySemanticSound R input.2) :
+    List.ofFn (oneHighFamilyInputAccumRow input) =
+      pairs.map (fun p => oneHighFamilyAtomValue R
+        (.common (min p.1 p.2) (max p.1 p.2))) := by
+  apply List.ext_getElem
+  · simp [oneHighFamilyCollectedCommonsMatch_length hm]
+  · intro i hiLeft hiRight
+    have hi : i < input.1.size := by simpa using hiLeft
+    have hv := oneHighFamilyCollectedCommonsMatch_value R hm hs i hi
+    simpa [List.getElem_ofFn, oneHighFamilyInputAccumRow,
+      oneHighFamilyLiteralRow] using hv
+
+theorem List.count_map_true_eq_filter_toFinset_card
+    {α : Type*} [DecidableEq α] (l : List α) (h : l.Nodup)
+    (f : α → Bool) :
+    (l.map f).count true = (l.toFinset.filter fun x => f x = true).card := by
+  induction l with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.nodup_cons] at h
+      rw [List.map_cons, List.count_cons, ih h.2]
+      by_cases hf : f x = true
+      · have hxnot : x ∉ (xs.toFinset.filter fun y => f y = true) := by
+          simp [h.1]
+        rw [List.toFinset_cons, Finset.filter_insert]
+        simp [hf, hxnot, Nat.add_comm]
+      · have hf' : f x = false := Bool.eq_false_of_not_eq_true hf
+        rw [List.toFinset_cons, Finset.filter_insert]
+        simp [hf, hf']
+
+theorem oneHighFamilyCommonPair_atomValue
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (hpair : pair < 4) {x z : Nat}
+    (hxmem : x ∈ oneHighFamilyBlockVertices (2 * pair))
+    (hzmem : z ∈ oneHighFamilyBlockVertices (2 * pair + 1)) :
+    oneHighFamilyAtomValue R (.common (min x z) (max x z)) =
+      @decide (oneHighFamilyCAtom R (⟨2 * pair, by omega⟩ : Fin 8)
+        (⟨x, (oneHighFamilyBlockVertices_mem (by omega) hxmem).1⟩ : Fin 40)
+        (⟨z, (oneHighFamilyBlockVertices_mem (by omega) hzmem).1⟩ : Fin 40))
+        (Classical.propDecidable _) := by
+  have hx := oneHighFamilyBlockVertices_mem (by omega) hxmem
+  have hz := oneHighFamilyBlockVertices_mem (by omega) hzmem
+  have hxz : x < z := by omega
+  have hmin : (⟨min x z, by omega⟩ : Fin 40) = ⟨x, hx.1⟩ := by
+    apply Fin.ext
+    exact min_eq_left (Nat.le_of_lt hxz)
+  have hmax : (⟨max x z, by omega⟩ : Fin 40) = ⟨z, hz.1⟩ := by
+    apply Fin.ext
+    exact max_eq_right (Nat.le_of_lt hxz)
+  simp only [oneHighFamilyAtomValue, dif_pos (by omega : min x z < 40),
+    dif_pos (by omega : max x z < 40)]
+  rw [hmin, hmax]
+  simp only [oneHighFamilyCAtom,
+    oneHighEncodedCommonPairBlock, Finset.mem_filter, Finset.mem_product,
+    Finset.mem_univ, true_and]
+  have hxBlock : Fin.divNat (m := 8) (n := 5) (⟨x, hx.1⟩ : Fin 40) =
+      (⟨2 * pair, by omega⟩ : Fin 8) := by
+    apply Fin.ext
+    simpa [Fin.divNat] using hx.2
+  have hzBlock : Fin.divNat (m := 8) (n := 5) (⟨z, hz.1⟩ : Fin 40) =
+      oneHighStandardMate (⟨2 * pair, by omega⟩ : Fin 8) := by
+    rw [oneHighStandardMate_even_pair pair hpair]
+    apply Fin.ext
+    simpa [Fin.divNat] using hz.2
+  simp [hxBlock, hzBlock]
+
+theorem oneHighFamilyBlockVertices_mem_iff
+    {b x : Nat} (hb : b < 8) :
+    x ∈ oneHighFamilyBlockVertices b ↔ x < 40 ∧ x / 5 = b := by
+  constructor
+  · exact oneHighFamilyBlockVertices_mem hb
+  · rintro ⟨hx, hdiv⟩
+    simp only [oneHighFamilyBlockVertices, List.mem_map]
+    refine ⟨x % 5, List.mem_range.mpr (Nat.mod_lt _ (by omega)), ?_⟩
+    omega
+
+set_option maxHeartbeats 400000 in
+theorem oneHighFamilyCommonPairs_filter_card
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (hpair : pair < 4) :
+    let pairs := oneHighFamilyCommonPairs (2 * pair) (2 * pair + 1)
+    (pairs.toFinset.filter fun p => oneHighFamilyAtomValue R
+      (.common (min p.1 p.2) (max p.1 p.2)) = true).card =
+      (oneHighFamilyCAtoms R (⟨2 * pair, by omega⟩ : Fin 8)).card := by
+  classical
+  let pairs := oneHighFamilyCommonPairs (2 * pair) (2 * pair + 1)
+  apply Finset.card_bij (fun p hp =>
+    let hpmem : p ∈ pairs := List.mem_toFinset.mp
+      (Finset.mem_filter.mp hp).1
+    let hb := mem_oneHighFamilyCommonPairs_iff.mp hpmem
+    ((⟨p.1, (oneHighFamilyBlockVertices_mem (by omega) hb.1).1⟩ : Fin 40),
+      (⟨p.2, (oneHighFamilyBlockVertices_mem (by omega) hb.2).1⟩ : Fin 40)))
+  · intro p hp
+    have hpmem : p ∈ pairs := List.mem_toFinset.mp
+      (Finset.mem_filter.mp hp).1
+    have hb := mem_oneHighFamilyCommonPairs_iff.mp hpmem
+    have hv := (Finset.mem_filter.mp hp).2
+    rw [oneHighFamilyCommonPair_atomValue R pair hpair hb.1 hb.2] at hv
+    have hcAtom : oneHighFamilyCAtom R
+        (⟨2 * pair, by omega⟩ : Fin 8)
+        (⟨p.1, (oneHighFamilyBlockVertices_mem (by omega) hb.1).1⟩ : Fin 40)
+        (⟨p.2, (oneHighFamilyBlockVertices_mem (by omega) hb.2).1⟩ : Fin 40) :=
+      @of_decide_eq_true _ (Classical.propDecidable _) hv
+    exact hcAtom
+  · intro p hp q hq heq
+    apply Prod.ext
+    · exact congrArg (fun r : Fin 40 × Fin 40 => r.1.val) heq
+    · exact congrArg (fun r : Fin 40 × Fin 40 => r.2.val) heq
+  · intro q hq
+    have hq' := hq
+    simp only [oneHighFamilyCAtoms, oneHighEncodedCommonPairBlock,
+      Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and] at hq'
+    rcases hq' with ⟨⟨hxBlock, hzBlock⟩, hcommon⟩
+    have hxmem : q.1.val ∈ oneHighFamilyBlockVertices (2 * pair) := by
+      apply (oneHighFamilyBlockVertices_mem_iff (by omega)).mpr
+      refine ⟨q.1.isLt, ?_⟩
+      simpa [Fin.divNat] using congrArg Fin.val hxBlock
+    have hzmem : q.2.val ∈ oneHighFamilyBlockVertices (2 * pair + 1) := by
+      apply (oneHighFamilyBlockVertices_mem_iff (by omega)).mpr
+      refine ⟨q.2.isLt, ?_⟩
+      rw [oneHighStandardMate_even_pair pair hpair] at hzBlock
+      simpa [Fin.divNat] using congrArg Fin.val hzBlock
+    refine ⟨(q.1.val, q.2.val), ?_, ?_⟩
+    · apply Finset.mem_filter.mpr
+      refine ⟨List.mem_toFinset.mpr
+        (mem_oneHighFamilyCommonPairs_iff.mpr ⟨hxmem, hzmem⟩), ?_⟩
+      rw [oneHighFamilyCommonPair_atomValue R pair hpair hxmem hzmem]
+      exact @decide_eq_true _ (Classical.propDecidable _) hq
+    · apply Prod.ext <;> apply Fin.ext <;> rfl
+
+theorem oneHighFamilyCollectCommonsVal_count
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (pair : Nat) (hpair : pair < 4)
+    (acc : OneHighFamilyValState)
+    (hacc : OneHighFamilySemanticSound R acc) :
+    let input := oneHighFamilyCollectCommonsVal R
+      (2 * pair) (2 * pair + 1) acc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+      30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+        2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1) := by
+  let input := oneHighFamilyCollectCommonsVal R
+    (2 * pair) (2 * pair + 1) acc
+  let pairs := oneHighFamilyCommonPairs (2 * pair) (2 * pair + 1)
+  let hm := oneHighFamilyCollectCommonsVal_match R
+    (2 * pair) (2 * pair + 1) acc
+  have hs := oneHighFamilyCollectCommonsVal_semanticSound
+    a R hc pair hpair acc hacc
+  have hvalues := oneHighFamilyCollectedCommons_values R hm hs
+  calc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        (List.ofFn (oneHighFamilyInputAccumRow input)).count true :=
+      seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP input.2.2 input.1
+    _ = (pairs.map (fun p => oneHighFamilyAtomValue R
+          (.common (min p.1 p.2) (max p.1 p.2)))).count true :=
+      congrArg (List.count true) hvalues
+    _ = (pairs.toFinset.filter fun p => oneHighFamilyAtomValue R
+          (.common (min p.1 p.2) (max p.1 p.2)) = true).card :=
+      List.count_map_true_eq_filter_toFinset_card pairs
+        (oneHighFamilyCommonPairs_nodup _ _) _
+    _ = (oneHighFamilyCAtoms R
+          (⟨2 * pair, by omega⟩ : Fin 8)).card :=
+      oneHighFamilyCommonPairs_filter_card R pair hpair
+    _ = 30 - 2 * oneHighFamilyInternalEdges a
+          (⟨2 * pair, by omega⟩ : Fin 8) -
+          2 * oneHighFamilyInternalEdges a
+            (oneHighStandardMate (⟨2 * pair, by omega⟩ : Fin 8)) :=
+      oneHighFamily_cAtoms_card_eq_generatorBound hc.relation _
+    _ = 30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+          2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1) := by
+      rw [oneHighStandardMate_even_pair pair hpair]
+      rfl
+
 end Erdos85
