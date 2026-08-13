@@ -1669,6 +1669,242 @@ theorem unmatched_vertex_exists_matched_neighbor_missing_mate
           mate hmateInv hmateAdj u.1 (mate s) hmateFar
             q (Finset.mem_inter.mp hq).2 hqUnmatched
 
+/-- Far vertices which miss the mate of `s`.  Pointwise dirty conservation
+will show that every member is internally matched and has exactly one
+neighbor back in branch `s`. -/
+def highBranchMateMissingFarVertices
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (s : {z : V // z ∈ G.neighborSet v}) : Finset V :=
+  ((Finset.univ.erase s).erase (mate s)).biUnion fun u =>
+    (secondLayerBranch G v u).filter fun q =>
+      (G.neighborFinset q ∩ secondLayerBranch G v (mate s)).card = 0
+
+/-- The far vertices missing `mate s` are counted exactly by the internally
+matched vertices of `mate s`.  This is the cardinal half of the augmented
+family encoder's `k`-sum identity. -/
+theorem card_highBranchMateMissingFarVertices_eq_matchedCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (highBranchMateMissingFarVertices G v mate s).card =
+      highBranchMatchedCount G v (mate s) := by
+  classical
+  let U : Finset {z : V // z ∈ G.neighborSet v} :=
+    (Finset.univ.erase s).erase (mate s)
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hdisj : (↑U : Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint
+      (fun u => (secondLayerBranch G v u).filter fun q =>
+        (G.neighborFinset q ∩
+          secondLayerBranch G v (mate s)).card = 0) := by
+    intro u _ w _ huw
+    change Disjoint
+      ((secondLayerBranch G v u).filter fun q =>
+        (G.neighborFinset q ∩
+          secondLayerBranch G v (mate s)).card = 0)
+      ((secondLayerBranch G v w).filter fun q =>
+        (G.neighborFinset q ∩
+          secondLayerBranch G v (mate s)).card = 0)
+    rw [Finset.disjoint_left]
+    intro q hqu hqw
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) huw))
+        (Finset.mem_filter.mp hqu).1 (Finset.mem_filter.mp hqw).1
+  rw [highBranchMateMissingFarVertices]
+  change (U.biUnion fun u =>
+    (secondLayerBranch G v u).filter fun q =>
+      (G.neighborFinset q ∩
+        secondLayerBranch G v (mate s)).card = 0).card = _
+  rw [Finset.card_biUnion hdisj]
+  calc
+    (∑ u ∈ U, ((secondLayerBranch G v u).filter fun q =>
+        (G.neighborFinset q ∩
+          secondLayerBranch G v (mate s)).card = 0).card) =
+        ∑ u ∈ U, highBranchMissCount G v u (mate s) := by rfl
+    _ = ∑ u ∈ U, highBranchMissCount G v (mate s) u := by
+      apply Finset.sum_congr rfl
+      intro u _
+      exact highBranchMissCount_comm_of_equal_card G hfree u (mate s) (by
+        rw [orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+              G hfree hmin hcard hv u,
+          orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+              G hfree hmin hcard hv (mate s)])
+    _ = highBranchMatchedCount G v (mate s) := by
+      have hrow := sum_far_highBranchMissCount_eq_matchedCount
+        G hfree hv hexternal (mate s) s (hmateAdj s).symm (by
+          intro a ha
+          apply houterDegree
+          rw [secondLayer]
+          exact Finset.mem_biUnion.mpr ⟨mate s, by simp, ha⟩)
+      have hcomm : ((Finset.univ.erase (mate s)).erase s) = U := by
+        ext u
+        simp [U, and_comm]
+      rw [hcomm] at hrow
+      exact hrow
+
+/-- Every far vertex missing `mate s` is internally matched in its unique
+branch and has exactly one neighbor in branch `s`. -/
+theorem mem_highBranchMateMissingFarVertices_properties
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) (q : V)
+    (hq : q ∈ highBranchMateMissingFarVertices G v mate s) :
+    (G.neighborFinset q ∩ secondLayerBranch G v s).card = 1 ∧
+      ∃ u ∈ ((Finset.univ.erase s).erase (mate s)),
+        q ∈ secondLayerBranch G v u ∧
+        (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 := by
+  classical
+  rw [highBranchMateMissingFarVertices] at hq
+  rcases Finset.mem_biUnion.mp hq with ⟨u, hu, hqu⟩
+  have hqBranch : q ∈ secondLayerBranch G v u :=
+    (Finset.mem_filter.mp hqu).1
+  have hqMissMate :
+      (G.neighborFinset q ∩
+        secondLayerBranch G v (mate s)).card = 0 :=
+    (Finset.mem_filter.mp hqu).2
+  have huRaw : u ≠ mate s ∧ u ≠ s := by
+    simpa only [Finset.mem_erase, Finset.mem_univ, true_and, and_true]
+      using hu
+  have hqSecond : q ∈ secondLayer G v := by
+    rw [secondLayer]
+    exact Finset.mem_biUnion.mpr ⟨u, by simp, hqBranch⟩
+  have hmateS_far :
+      mate s ∈ ((Finset.univ.erase u).erase (mate u)) := by
+    have hmateS_ne_mateU : mate s ≠ mate u := by
+      intro h
+      have hh := congrArg mate h
+      rw [hmateInv s, hmateInv u] at hh
+      exact huRaw.2 hh.symm
+    simp [huRaw.1.symm, hmateS_ne_mateU]
+  have hconserve := card_farBranch_misses_eq_internalDegree
+    G hfree (d := 7) hv hexternal u (mate u) (hmateAdj u)
+      q hqBranch (houterDegree hqSecond)
+  let M : Finset {z : V // z ∈ G.neighborSet v} :=
+    ((Finset.univ.erase u).erase (mate u)).filter fun w =>
+      (G.neighborFinset q ∩ secondLayerBranch G v w).card = 0
+  have hmateS_mem : mate s ∈ M := by
+    exact Finset.mem_filter.mpr ⟨hmateS_far, hqMissMate⟩
+  have hMpos : 1 ≤ M.card := Finset.one_le_card.mpr ⟨mate s, hmateS_mem⟩
+  have hinternalLe :
+      (G.neighborFinset q ∩ secondLayerBranch G v u).card ≤ 1 := by
+    have hqune : q ≠ u.1 := by
+      intro h
+      exact (Finset.mem_sdiff.mp hqBranch).2 (by
+        simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+        exact Or.inr (h ▸ u.2))
+    exact card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v q u hqune
+  have hconserve' : M.card =
+      (G.neighborFinset q ∩ secondLayerBranch G v u).card := by
+    simpa [M] using hconserve
+  have hinternal :
+      (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 := by
+    omega
+  have hs_far : s ∈ (Finset.univ.erase u).erase (mate u) := by
+    have hsu : s ≠ u := huRaw.2.symm
+    have hs_ne_mateU : s ≠ mate u := by
+      intro h
+      have hh := congrArg mate h
+      rw [hmateInv u] at hh
+      exact huRaw.1 hh.symm
+    simp [hsu, hs_ne_mateU]
+  have hsCrossLe :
+      (G.neighborFinset q ∩ secondLayerBranch G v s).card ≤ 1 := by
+    have hqs : q ≠ s.1 := by
+      intro h
+      exact (Finset.mem_sdiff.mp hqBranch).2 (by
+        simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+        exact Or.inr (h ▸ s.2))
+    exact card_neighborFinset_inter_secondLayerBranch_le_one
+      G hfree v q s hqs
+  have hsCross :
+      (G.neighborFinset q ∩ secondLayerBranch G v s).card = 1 := by
+    by_contra hne
+    have hzero :
+        (G.neighborFinset q ∩ secondLayerBranch G v s).card = 0 := by
+      omega
+    have hsMem : s ∈ M := Finset.mem_filter.mpr ⟨hs_far, hzero⟩
+    have hmateNe : s ≠ mate s := by
+      intro h
+      exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hmateAdj s)
+    have hpair : ({s, mate s} : Finset _ ) ⊆ M := by
+      intro w hw
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with rfl | rfl
+      · exact hsMem
+      · exact hmateS_mem
+    have htwo : ({s, mate s} : Finset _).card = 2 := by
+      simp [hmateNe]
+    have := Finset.card_le_card hpair
+    rw [htwo, hconserve', hinternal] at this
+    omega
+  exact ⟨hsCross, u, hu, hqBranch, hinternal⟩
+
+/-- Exact incidence form of the augmented `k`-sum law: summing, over the
+five vertices of branch `s`, their neighbors among the far vertices missing
+`mate s` gives the matched-vertex count of `mate s` (twice its internal-edge
+count). -/
+theorem sum_neighbor_inter_mateMissing_eq_matchedCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (∑ x ∈ secondLayerBranch G v s,
+      (G.neighborFinset x ∩
+        highBranchMateMissingFarVertices G v mate s).card) =
+      highBranchMatchedCount G v (mate s) := by
+  have hdouble := sum_card_neighbor_inter_comm G
+    (secondLayerBranch G v s)
+    (highBranchMateMissingFarVertices G v mate s)
+  rw [hdouble]
+  calc
+    (∑ q ∈ highBranchMateMissingFarVertices G v mate s,
+        (G.neighborFinset q ∩ secondLayerBranch G v s).card) =
+        (highBranchMateMissingFarVertices G v mate s).card := by
+      calc
+        (∑ q ∈ highBranchMateMissingFarVertices G v mate s,
+            (G.neighborFinset q ∩ secondLayerBranch G v s).card) =
+            ∑ _q ∈ highBranchMateMissingFarVertices G v mate s, 1 := by
+          apply Finset.sum_congr rfl
+          intro q hq
+          exact (mem_highBranchMateMissingFarVertices_properties
+            G hfree hv hexternal houterDegree
+              mate hmateInv hmateAdj s q hq).1
+        _ = (highBranchMateMissingFarVertices G v mate s).card := by simp
+    _ = highBranchMatchedCount G v (mate s) :=
+      card_highBranchMateMissingFarVertices_eq_matchedCount
+        G hfree hmin hcard hv hexternal houterDegree
+          mate hmateInv hmateAdj s
+
 /-- The exact paired-block identity collapses the internal matching state of
 each five-point branch to `2` or `4` matched vertices, and a mate pair cannot
 have state `(2,2)`.  Equivalently, every branch has one or three internally
