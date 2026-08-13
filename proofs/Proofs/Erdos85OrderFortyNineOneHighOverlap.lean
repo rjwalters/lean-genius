@@ -1328,6 +1328,127 @@ theorem sum_orderFortyNineLeafComponentOverlap_branch_eq_ownerCensus
       y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t).card
   rw [← Finset.card_biUnion hpair, hunion]
 
+/-- Leaves in the same original high-root branch are nonadjacent in the
+leaf defect graph: their branch center is already a common neighbor in the
+original graph. -/
+theorem orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {v : V} (s : {z : V // z ∈ G.neighborSet v})
+    (x y : {z : V // z ≠ v ∧ ¬ G.Adj v z})
+    (hx : x.1 ∈ secondLayerBranch G v s)
+    (hy : y.1 ∈ secondLayerBranch G v s) :
+    ¬ (orderFortyNineLeafDefectGraph G v).Adj x y := by
+  intro hxy
+  have hDxy : (secondOrderDefectGraph G).Adj x.1 y.1 := hxy
+  have hzero :=
+    (secondOrderDefectGraph_adj_iff_card_common_eq_zero G hfree
+      ((secondOrderDefectGraph G).ne_of_adj hDxy)).1 hDxy
+  have hsCommon : s.1 ∈ G.neighborFinset x.1 ∩ G.neighborFinset y.1 := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨
+      ((G.mem_neighborFinset s.1 x.1).1
+        (Finset.mem_sdiff.mp hx).1).symm,
+      ((G.mem_neighborFinset s.1 y.1).1
+        (Finset.mem_sdiff.mp hy).1).symm⟩
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hzero
+  exact hzero s.1 hsCommon
+
+/-- Consequently each component-local original-branch class is an
+independent set in the induced component graph. -/
+theorem orderFortyNine_componentBranchCensus_isIndepSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {v : V}
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (orderFortyNineLeafDefectGraph G v).induce c.supp |>.IsIndepSet
+      ((Finset.univ : Finset c.supp).filter fun y =>
+        y.1.1 ∈ secondLayerBranch G v s : Set c.supp) := by
+  intro x hx y hy hxy
+  intro hadj
+  exact orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+    G hfree s x.1 y.1 (Finset.mem_filter.mp hx).2
+      (Finset.mem_filter.mp hy).2 hadj
+
+/-- An independent original-branch class occupies at most half of any
+5-regular leaf-defect component. -/
+theorem two_mul_orderFortyNineLeafComponentBranchCensus_le_componentOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    2 * orderFortyNineLeafComponentBranchCensus G v c s ≤
+      Fintype.card c.supp := by
+  let L := orderFortyNineLeafDefectGraph G v
+  let H := L.induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ \ S
+  have hHreg : ∀ x : c.supp, H.degree x = 5 := by
+    intro x
+    rw [show H.degree x = L.degree x.1 by
+      exact degree_induce_connectedComponent_supp L c x]
+    exact orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv x.1
+  have hcrossS : ∀ x ∈ S, (H.neighborFinset x ∩ T).card = 5 := by
+    intro x hx
+    have heq : H.neighborFinset x ∩ T = H.neighborFinset x := by
+      ext y
+      constructor
+      · exact fun hy => (Finset.mem_inter.mp hy).1
+      · intro hy
+        apply Finset.mem_inter.mpr
+        refine ⟨hy, Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+        intro hyS
+        have hxBranch := (Finset.mem_filter.mp hx).2
+        have hyBranch := (Finset.mem_filter.mp hyS).2
+        exact orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+          G hfree s x.1 y.1 hxBranch hyBranch
+            ((H.mem_neighborFinset x y).1 hy)
+    rw [heq, H.card_neighborFinset_eq_degree, hHreg]
+  have hcrossT : ∀ y ∈ T, (H.neighborFinset y ∩ S).card ≤ 5 := by
+    intro y _
+    exact (Finset.card_le_card Finset.inter_subset_left).trans_eq
+      (by rw [H.card_neighborFinset_eq_degree, hHreg])
+  have hcomm := sum_card_neighbor_inter_comm H S T
+  have hleft : (∑ x ∈ S, (H.neighborFinset x ∩ T).card) = 5 * S.card := by
+    calc
+      (∑ x ∈ S, (H.neighborFinset x ∩ T).card) =
+          ∑ _x ∈ S, 5 := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hcrossS x hx
+      _ = 5 * S.card := by simp [Nat.mul_comm]
+  have hright : (∑ y ∈ T, (H.neighborFinset y ∩ S).card) ≤
+      5 * T.card := by
+    calc
+      (∑ y ∈ T, (H.neighborFinset y ∩ S).card) ≤
+          ∑ _y ∈ T, 5 := Finset.sum_le_sum hcrossT
+      _ = 5 * T.card := by simp [Nat.mul_comm]
+  have hST : 5 * S.card ≤ 5 * T.card := by omega
+  have hTcard : T.card = Fintype.card c.supp - S.card := by
+    dsimp only [T]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr (Finset.subset_univ S),
+      Finset.card_univ]
+  change 2 * S.card ≤ Fintype.card c.supp
+  rw [hTcard] at hST
+  omega
+
 end
 
 end Erdos85
