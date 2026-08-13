@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineHighBranchGeometry
+import Proofs.Erdos85ExteriorDefectDecomposition
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -286,6 +287,38 @@ theorem sum_orderFortyNineOneHighOverlap_column_eq_five
       G hfree hmin hcard hv t,
     Finset.card_biUnion hpairInter]
   rfl
+
+/-- A local-matching partner cannot own any leaf in the other partner's
+original branch.  The first center would be a common neighbor, whereas a
+defect edge has zero common neighbors. -/
+theorem orderFortyNineOneHighOverlap_eq_zero_of_centerAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {v : V} (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    orderFortyNineOneHighOverlap G v s t = 0 := by
+  rw [orderFortyNineOneHighOverlap, Finset.card_eq_zero,
+    Finset.eq_empty_iff_forall_notMem]
+  intro y hy
+  have hyParts := Finset.mem_inter.mp hy
+  have hsy : G.Adj s.1 y := by
+    exact (G.mem_neighborFinset s.1 y).1
+      (Finset.mem_sdiff.mp hyParts.1).1
+  have hDty : (secondOrderDefectGraph G).Adj t.1 y := by
+    exact ((secondOrderDefectGraph G).mem_neighborFinset t.1 y).1 hyParts.2
+  have hty : t.1 ≠ y := (secondOrderDefectGraph G).ne_of_adj hDty
+  have hzero :=
+    (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+      G hfree hty).1 hDty
+  have hsCommon : s.1 ∈ G.neighborFinset t.1 ∩ G.neighborFinset y := by
+    rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+      SimpleGraph.mem_neighborFinset]
+    exact ⟨hst.symm, hsy.symm⟩
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hzero
+  exact hzero s.1 hsCommon
 
 end
 
