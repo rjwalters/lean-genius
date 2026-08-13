@@ -1507,6 +1507,113 @@ theorem card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
     G hfree hmin hcard hv hunique hexternal houterDegree
       mate hmateInv hmateAdj s).1
 
+/-! ## Simultaneous generator labeling terminal -/
+
+/-- A raw one-high graph admits all coordinate choices used by the family
+generator simultaneously: one mate involution, a family-ordered standard
+Fin8 labeling, and lex-sorted canonical Fin5 labels in every branch. -/
+theorem orderFortyNine_exists_simultaneous_familyGeneratorLabels
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ (mate : {z : V // z ∈ G.neighborSet v} →
+          {z : V // z ∈ G.neighborSet v})
+      (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+      (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+      (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+        secondLayerBranch G v s ≃ Fin 5),
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      (∀ s, branchLabel (mate s) =
+        oneHighStandardMate (branchLabel s)) ∧
+      (∀ i,
+        decide (highBranchMatchedCount G v (branchLabel.symm i) = 2) =
+          decide (i.val % 2 = 0 ∧
+            i.val / 2 < ((Finset.univ :
+              Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
+                highBranchMatchedCount G v s = 2).card)) ∧
+      ∀ s,
+        ((twoEdges s = false ∧ highBranchMatchedCount G v s = 2) ∨
+          (twoEdges s = true ∧ highBranchMatchedCount G v s = 4)) ∧
+        (∀ x y, decide (G.Adj x.1 y.1) =
+          oneHighCanonicalBranchAdj (twoEdges s)
+            (leafLabel s x) (leafLabel s y)) ∧
+        branchLabel (oneHighMissingBranch G v mate s
+            ((leafLabel s).symm 0).1) ≤
+          branchLabel (oneHighMissingBranch G v mate s
+            ((leafLabel s).symm 1).1) ∧
+        (twoEdges s = true →
+          branchLabel (oneHighMissingBranch G v mate s
+              ((leafLabel s).symm 2).1) ≤
+            branchLabel (oneHighMissingBranch G v mate s
+              ((leafLabel s).symm 3).1) ∧
+          branchLabel (oneHighMissingBranch G v mate s
+              ((leafLabel s).symm 0).1) ≤
+            branchLabel (oneHighMissingBranch G v mate s
+              ((leafLabel s).symm 2).1)) := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  obtain ⟨mate, hmateInv, hmateAdj⟩ :=
+    exists_localMate_involution G v hlocal
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  obtain ⟨branchLabel, hbranchMate, hfamily⟩ :=
+    exists_oneHigh_branchLabeling_familyOrdered
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj
+  have hlabels : ∀ s : {z : V // z ∈ G.neighborSet v},
+      ∃ (b : Bool) (e : secondLayerBranch G v s ≃ Fin 5),
+        ((b = false ∧ highBranchMatchedCount G v s = 2) ∨
+          (b = true ∧ highBranchMatchedCount G v s = 4)) ∧
+        (∀ x y, decide (G.Adj x.1 y.1) =
+          oneHighCanonicalBranchAdj b (e x) (e y)) ∧
+        branchLabel (oneHighMissingBranch G v mate s (e.symm 0).1) ≤
+          branchLabel (oneHighMissingBranch G v mate s (e.symm 1).1) ∧
+        (b = true →
+          branchLabel (oneHighMissingBranch G v mate s (e.symm 2).1) ≤
+            branchLabel (oneHighMissingBranch G v mate s (e.symm 3).1) ∧
+          branchLabel (oneHighMissingBranch G v mate s (e.symm 0).1) ≤
+            branchLabel (oneHighMissingBranch G v mate s (e.symm 2).1)) := by
+    intro s
+    exact exists_oneHigh_branchVertexLabeling_generatorLex
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel s
+  let twoEdges := fun s => (hlabels s).choose
+  let leafLabel := fun s => (hlabels s).choose_spec.choose
+  refine ⟨mate, branchLabel, twoEdges, leafLabel,
+    hmateInv, hmateAdj, hbranchMate, hfamily, ?_⟩
+  intro s
+  exact (hlabels s).choose_spec.choose_spec
+
 end
 
 end Erdos85
