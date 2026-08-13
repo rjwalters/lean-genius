@@ -1,0 +1,28 @@
+# One-high family CNF manifest
+
+The tracked [`family_gen.py`](family_gen.py) is the generator used by the
+one-high family lanes.  Generation was replayed on 2026-08-13 with Python
+3.10.12 and `python-sat` 1.9.dev13.  Every replay was byte-identical to the
+corresponding live deep-six input.
+
+| Profile | Variant | SHA-256 |
+|---|---|---|
+| AAAA | pure | `a87c0d4d6b384932d47cc53d7efd2979d780c82a7e16b70865b87a79fbd6213e` |
+| AAAA | aug | `0ac7aa5dffec3f2441774fbba5d9f5fcbc80378a52a25bfbecdf42b325f8b42d` |
+| AAAB | pure | `fceb2865c342ab623950589feb234cb6fd7b382ec2cb7e822ddc9a1bfb675148` |
+| AAAB | aug | `31907100f2697d3f7f5d38d4f33b85e828ac314e78186410d702973efab6a971` |
+| AABB | pure | `3383e02d9f929d3c98ea35704c460debca9bd8613790ea10675102ed8fe34601` |
+| AABB | aug | `af7ab7a52d8c33d434e1fe629ac5605de2a355c283a68fb55d52d6a5f0f45f7f` |
+| ABBB | pure | `7489c4ff3d60274c8cfdb4aa1b714a186487620446b7d53167e6122130bf5bf2` |
+| ABBB | aug | `1dd95cfb0852c26b6b328292d1180df7605d11666d9c0c4fa3aac354bfd54bf0` |
+
+The current Kissat 4.0.4 runs are discovery lanes only: they were launched
+without proof output.  An `UNSAT` line from those lanes is therefore a signal
+to rerun the exact hashed CNF with proof production; it is not itself a
+certificate.
+
+Graph-side soundness is certified in Lean by
+`Erdos85OneHighCanonicalMate.lean` and its imports: canonical Fin8/Fin5/Fin40
+labels, internal and mate-block edges, C4/common-neighbor clauses, foreign
+block at-most-one clauses, exact far degrees, paired-product cardinalities,
+matched-pair lex WLOG, and the augmented witness/k-sum/A/B-cap laws.
