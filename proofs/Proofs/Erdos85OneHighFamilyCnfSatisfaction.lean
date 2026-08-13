@@ -950,6 +950,43 @@ theorem oneHighFamilyC4SameMidpointStepVal_semanticSound
       (hs₂.ids.id_bounds _ hm₁).2
       (hs₂.ids.id_bounds _ hr₂.1).2
 
+noncomputable def oneHighFamilyC4SamePairVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (oneHighFamilyOtherVertices i j)
+    (fun w acc => oneHighFamilyC4SameMidpointStepVal R i j w acc) acc
+
+theorem oneHighFamilyC4SamePairVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    {i j : Nat} (hi : i < 40) (hj : j < 40) (hij : i ≠ j)
+    (hblockNat : i / 5 = j / 5) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyC4SamePairVal R i j acc) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _ h
+  intro w hwmem acc hwSound
+  have hw : w < 40 := by
+    simp only [oneHighFamilyOtherVertices, List.mem_filter,
+      List.mem_range] at hwmem
+    exact hwmem.1
+  have hblock : Fin.divNat (m := 8) (n := 5) (⟨i, hi⟩ : Fin 40) =
+      Fin.divNat (m := 8) (n := 5) (⟨j, hj⟩ : Fin 40) := by
+    apply Fin.ext
+    exact hblockNat
+  exact oneHighFamilyC4SameMidpointStepVal_semanticSound
+    a R hc hwSound hi hj hw hij hblock
+
+theorem oneHighFamilyC4SamePairVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyC4SamePairVal R i j acc).1 =
+      oneHighFamilyRunList (oneHighFamilyOtherVertices i j)
+        (fun w st => oneHighFamilyC4SameMidpointStep i j w st) acc.1 := by
+  exact oneHighFamilyRunListVal_state _ _ _ _
+    (fun w acc => oneHighFamilyC4SameMidpointStepVal_state R i j w acc)
+
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
