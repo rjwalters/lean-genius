@@ -5190,6 +5190,109 @@ theorem false_of_degreeSix_threeSix_twoSix_twoSix_branch
     rw [heraseEq, Finset.sum_insert hbNotS, hba, hextS]
   exact false_of_degreeSix_five_orderSix_parity
     G hfree hmin hcard a haa hfive hall6 hext
+
+set_option maxHeartbeats 2000000 in
+/-- An order-twelve row supported on three order-six components has a
+unique row/square profile: diagonal three and quotient one to each target. -/
+theorem orderTwelve_three_orderSix_row_square_arithmetic
+    (x p q r : ℕ)
+    (hrow : x + p + q + r = 6)
+    (hsq : x * x + 2 * (p * p + q * q + r * r) = 15) :
+    x = 3 ∧ p = 1 ∧ q = 1 ∧ r = 1 := by
+  have hx : x ≤ 6 := by omega
+  have hp : p ≤ 6 := by omega
+  have hq : q ≤ 6 := by omega
+  have hr : r ≤ 6 := by omega
+  interval_cases x <;> interval_cases p <;> interval_cases q <;>
+    interval_cases r <;> try norm_num at hsq ⊢
+  all_goals omega
+
+/-- The `{6,6}|{12}` residual shape is impossible: the order-twelve
+component must contact each of the three order-six components with quotient
+one, while grouped periodicity permits total quotient at most one to any
+two of them. -/
+theorem false_of_degreeSix_threeSix_twoSix_oneTwelve_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (a b c d w : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3)
+    (hb6 : b.supp.ncard = 6) (hc6 : c.supp.ncard = 6)
+    (hd6 : d.supp.ncard = 6) (hw12 : w.supp.ncard = 12)
+    (hbcNe : b ≠ c) (hbdNe : b ≠ d) (hcdNe : c ≠ d)
+    (haw : componentQuotientMatrix G (secondOrderDefectGraph G) a w = 0)
+    (hcover : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {a, b, c, d, w}) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a w = 0 at haw
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hacNe : a ≠ c := by intro h; subst c; omega
+  have hadNe : a ≠ d := by intro h; subst d; omega
+  have hawNe : a ≠ w := by intro h; subst w; omega
+  have hbwNe : b ≠ w := by intro h; subst w; rw [hb6] at hw12; omega
+  have hcwNe : c ≠ w := by intro h; subst w; rw [hc6] at hw12; omega
+  have hdwNe : d ≠ w := by intro h; subst w; rw [hd6] at hw12; omega
+  have hwaBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a w
+  change a.supp.ncard * Q a w = w.supp.ncard * Q w a at hwaBal
+  have hwa : Q w a = 0 := by
+    rw [ha3, hw12, haw] at hwaBal
+    omega
+  have hwbBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w b
+  have hwcBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w c
+  have hwdBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w d
+  change w.supp.ncard * Q w b = b.supp.ncard * Q b w at hwbBal
+  change w.supp.ncard * Q w c = c.supp.ncard * Q c w at hwcBal
+  change w.supp.ncard * Q w d = d.supp.ncard * Q d w at hwdBal
+  have hbw : Q b w = 2 * Q w b := by rw [hw12, hb6] at hwbBal; omega
+  have hcw : Q c w = 2 * Q w c := by rw [hw12, hc6] at hwcBal; omega
+  have hdw : Q d w = 2 * Q w d := by rw [hw12, hd6] at hwdBal; omega
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w
+  change (∑ z, Q w z) = 6 at hrowGraph
+  rw [hcover] at hrowGraph
+  simp [habNe, hacNe, hadNe, hawNe, hbcNe, hbdNe, hbwNe,
+    hcdNe, hcwNe, hdwNe, hwa] at hrowGraph
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w w
+  have hsq : (∑ z, Q w z * Q z w) = 15 := by
+    simpa [Q, Matrix.mul_apply, hw12] using hsqGraph
+  rw [hcover] at hsq
+  simp [habNe, hacNe, hadNe, hawNe, hbcNe, hbdNe, hbwNe,
+    hcdNe, hcwNe, hdwNe, hwa, hbw, hcw, hdw] at hsq
+  have hrow' : Q w w + Q w b + Q w c + Q w d = 6 := by omega
+  have hsq' : Q w w * Q w w +
+      2 * (Q w b * Q w b + Q w c * Q w c + Q w d * Q w d) = 15 := by
+    nlinarith [hsq]
+  have hprofile := orderTwelve_three_orderSix_row_square_arithmetic
+    (Q w w) (Q w b) (Q w c) (Q w d) hrow' hsq'
+  have hgroup := degreeSix_orderTwelve_two_orderSix_targets_le_one
+    G hfree hmin hcard cycle hcycle hcycleRange hcycleD w b c
+      hw12 hb6 hc6 hbcNe
+  change Q w b + Q w c ≤ 1 at hgroup
+  omega
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
