@@ -5,6 +5,8 @@ import Proofs.Erdos85OrderFortyNineDistOnePinning
 import Proofs.Erdos85BranchDeficitSymmetry
 import Proofs.Erdos85PairedBlockRigidity
 import Proofs.Erdos85MinimumSectorAssemblyInterface
+import Proofs.Erdos85SquareOrderHighRootKernel
+import Proofs.Erdos85OrderFortyNineSquareRoot
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -2215,6 +2217,105 @@ theorem orderFortyNine_sameOwnerLeafDefectDegree_eq_fourthWalk_sub_thirtyEight
       orderFortyNineDefectOwnerFiber, Finset.inter_comm]
   rw [hleft] at hformula
   simpa using hformula
+
+/-- In the one-high stratum the adjacency determinant is divisible by three.
+The square-order high-root weight is sent to `-48 e_v`, so its reduction
+modulo three is a nonzero kernel vector. -/
+theorem orderFortyNine_three_dvd_adjMatrix_det_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    (3 : ℤ) ∣ (G.adjMatrix ℤ).det := by
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hHigh
+  have hvu : v = u := by simpa [hu] using hvHigh
+  have hdegree : ∀ {x : V}, x ≠ v → G.degree x = 7 := by
+    intro x hx
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard x with hx7 | hx8
+    · exact hx7
+    · have hxHigh : x ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hx8]
+      have hxu : x = u := by simpa [hu] using hxHigh
+      exact (hx (hxu.trans hvu.symm)).elim
+  let w : V → ZMod 3 := fun x =>
+    (squareOrderHighRootWeight G 7 v x : ZMod 3)
+  have hwne : w ≠ 0 := by
+    intro hw
+    have hvw := congrFun hw v
+    simp [w, squareOrderHighRootWeight] at hvw
+  have hker : (G.adjMatrix (ZMod 3)).mulVec w = 0 := by
+    funext x
+    rw [SimpleGraph.adjMatrix_mulVec_apply]
+    change (∑ y ∈ G.neighborFinset x,
+      (squareOrderHighRootWeight G 7 v y : ZMod 3)) = 0
+    have hsum := sum_squareOrderHighRootWeight_over_neighbors
+      G hfree (by omega) hmin (by simpa using hcard) hv hdegree x
+    by_cases hxv : x = v
+    · subst x
+      simp only [if_pos] at hsum
+      norm_num at hsum
+      have hcast := congrArg (fun z : ℤ => (z : ZMod 3)) hsum
+      norm_num [Int.cast_sum] at hcast
+      exact hcast
+    · rw [if_neg hxv] at hsum
+      have hcast := congrArg (fun z : ℤ => (z : ZMod 3)) hsum
+      simp only [Int.cast_zero] at hcast
+      simpa using hcast
+  have hdet3 : (G.adjMatrix (ZMod 3)).det = 0 := by
+    rw [← Matrix.exists_mulVec_eq_zero_iff]
+    exact ⟨w, hwne, hker⟩
+  have hmap :
+      (Int.castRingHom (ZMod 3)).mapMatrix (G.adjMatrix ℤ) =
+        G.adjMatrix (ZMod 3) := by
+    ext x y
+    simp [Matrix.map_apply, SimpleGraph.adjMatrix_apply]
+  have hdetmap := (Int.castRingHom (ZMod 3)).map_det (G.adjMatrix ℤ)
+  rw [hmap, hdet3] at hdetmap
+  exact (ZMod.intCast_zmod_eq_zero_iff_dvd (G.adjMatrix ℤ).det 3).mp hdetmap
+
+/-- In the one-high stratum the square-candidate determinant is divisible by
+thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
+`3 ∣ det A`; the candidate is `A²`. -/
+theorem orderFortyNine_thirtySix_dvd_squareCandidate_det_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    (36 : ℤ) ∣ (orderFortyNineSquareCandidate G).det := by
+  have hodd : Odd (Fintype.card V) := by rw [hcard]; decide
+  have htwo : (2 : ℤ) ∣ (G.adjMatrix ℤ).det :=
+    (even_det_adjMatrix_of_odd_card G hodd).two_dvd
+  have hthree : (3 : ℤ) ∣ (G.adjMatrix ℤ).det :=
+    orderFortyNine_three_dvd_adjMatrix_det_of_one_high
+      G hfree hmin hcard hHigh hv
+  have hsix : (6 : ℤ) ∣ (G.adjMatrix ℤ).det := by
+    have hprod : (2 : ℤ) * 3 ∣ (G.adjMatrix ℤ).det :=
+      IsCoprime.mul_dvd (by norm_num) htwo hthree
+    norm_num at hprod
+    exact hprod
+  rcases hsix with ⟨k, hk⟩
+  have hdet : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin hcard]
+    rfl
+  refine ⟨k * k, ?_⟩
+  rw [hdet, hk]
+  ring
 
 /-- The center block of `D²` is `5I`: every defect-owner fiber has size five,
 and distinct fibers are disjoint. -/
