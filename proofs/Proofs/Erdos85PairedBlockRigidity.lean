@@ -2051,6 +2051,121 @@ theorem highBranch_mateMissingNeighbor_bounds_of_matchedCounts_add_eq_six
     exact hxBounds.1 (by omega)
   · exact hxBounds.2
 
+/-- Graph-facing B-pair caps used by the augmented family encoder.  When
+both mate branches have four internally matched vertices, the exact k-sum
+is four.  Hence every vertex has k-value at most four; an internally matched
+vertex contributes at least one of the other four positive summands, so its
+k-value is at most three. -/
+theorem highBranch_mateMissingNeighbor_bounds_of_matchedCounts_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (hs4 : highBranchMatchedCount G v s = 4)
+    (hm4 : highBranchMatchedCount G v (mate s) = 4) :
+    ∀ x ∈ secondLayerBranch G v s,
+      ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).card ≤ 4) ∧
+      ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 1 →
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).card ≤ 3) := by
+  classical
+  let B := secondLayerBranch G v s
+  let k : V → ℕ := fun x =>
+    (G.neighborFinset x ∩
+      highBranchMateMissingFarVertices G v mate s).card
+  have hsum := sum_neighbor_inter_mateMissing_eq_matchedCount
+    G hfree hmin hcard hv hexternal houterDegree
+      mate hmateInv hmateAdj s
+  have hsum4 : ∑ x ∈ B, k x = 4 := by
+    dsimp [B, k]
+    omega
+  intro x hx
+  have hxLe : k x ≤ 4 := by
+    have hxMem : x ∈ B := hx
+    have := Finset.single_le_sum
+      (f := k) (fun _ _ => Nat.zero_le _) hxMem
+    omega
+  constructor
+  · intro _
+    exact hxLe
+  · intro hxMatched
+    let U := B.filter fun y =>
+      (G.neighborFinset y ∩ secondLayerBranch G v s).card = 0
+    have hBcard : B.card = 5 :=
+      orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+        G hfree hmin hcard hv s
+    have hpartition : U.card = 1 := by
+      have hdegree : ∀ y ∈ B,
+          (G.neighborFinset y ∩ secondLayerBranch G v s).card ≤ 1 := by
+        intro y hy
+        have hys : y ≠ s.1 := by
+          intro h
+          exact (Finset.mem_sdiff.mp hy).2 (by
+            simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+            exact Or.inr (h ▸ s.2))
+        exact card_neighborFinset_inter_secondLayerBranch_le_one
+          G hfree v y s hys
+      have hcover : U.card + highBranchMatchedCount G v s = B.card := by
+        dsimp [U, B]
+        rw [highBranchMatchedCount]
+        have := Finset.card_filter_add_card_filter_not
+          (s := secondLayerBranch G v s)
+          (fun y => (G.neighborFinset y ∩
+            secondLayerBranch G v s).card = 0)
+        have heq :
+            (secondLayerBranch G v s).filter
+                (fun y => ¬ (G.neighborFinset y ∩
+                  secondLayerBranch G v s).card = 0) =
+              (secondLayerBranch G v s).filter
+                (fun y => (G.neighborFinset y ∩
+                  secondLayerBranch G v s).card = 1) := by
+          ext y
+          simp only [Finset.mem_filter]
+          refine and_congr_right fun hy => ?_
+          have := hdegree y hy
+          omega
+        rw [heq] at this
+        exact this
+      omega
+    obtain ⟨y, hyU⟩ := Finset.card_pos.mp (by omega : 0 < U.card)
+    have hyBranch := (Finset.mem_filter.mp hyU).1
+    have hyUnmatched := (Finset.mem_filter.mp hyU).2
+    have hkyPos : 1 ≤ k y := by
+      obtain ⟨u, hu, q, hq, _hqMatched, hqMiss⟩ :=
+        unmatched_vertex_exists_matched_neighbor_missing_mate
+          G hfree hmin hcard hv hunique hexternal houterDegree
+            mate hmateInv hmateAdj s y hyBranch hyUnmatched
+      have hqMissing : q ∈ highBranchMateMissingFarVertices G v mate s := by
+        rw [highBranchMateMissingFarVertices]
+        exact Finset.mem_biUnion.mpr ⟨u, hu,
+          Finset.mem_filter.mpr ⟨(Finset.mem_inter.mp hq).2, hqMiss⟩⟩
+      exact Finset.card_pos.mpr ⟨q,
+        Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hq).1, hqMissing⟩⟩
+    have hxy : y ≠ x := by
+      intro h
+      subst y
+      omega
+    have hxErase : x ∈ B.erase y := Finset.mem_erase.mpr ⟨hxy.symm, hx⟩
+    have hsplit := Finset.sum_erase_add B k hyBranch
+    have hxRest := Finset.single_le_sum
+      (f := k) (fun _ _ => Nat.zero_le _) hxErase
+    change k x ≤ 3
+    omega
+
 /-- The exact paired-block identity collapses the internal matching state of
 each five-point branch to `2` or `4` matched vertices, and a mate pair cannot
 have state `(2,2)`.  Equivalently, every branch has one or three internally
