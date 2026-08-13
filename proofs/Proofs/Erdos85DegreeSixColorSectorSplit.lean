@@ -6569,6 +6569,123 @@ theorem degreeSix_threeSix_orderSix_no_orderFour_contact
     H (Q b) (fun z ↦ Q z b) (Q b b) t htH hbt2 htb hdom
       hbudget.1 hbudget.2
 
+/-- Graph-level exhaustive classification of the half unused by the source
+triangle in a `(3,6)` cover. -/
+theorem degreeSix_threeSix_unused_half_full_shape_graph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let U := ((Finset.univ.erase a).erase b).filter (fun t ↦ Q a t = 0)
+    (∃ u, U = {u} ∧ u.supp.ncard = 12 ∧ Q b u = 2) ∨
+    (∃ u v, u ≠ v ∧ U = {u, v} ∧ u.supp.ncard = 6 ∧
+      v.supp.ncard = 6 ∧
+      ((Q b u = 2 ∧ Q b v = 0) ∨ (Q b u = 1 ∧ Q b v = 1))) ∨
+    (∃ u g h, u ≠ g ∧ u ≠ h ∧ g ≠ h ∧ U = {u, g, h} ∧
+      u.supp.ncard = 6 ∧ g.supp.ncard = 3 ∧ h.supp.ncard = 3 ∧
+      Q b u = 2 ∧ Q b g = 0 ∧ Q b h = 0) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let U := S.filter fun t ↦ Q a t = 0
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  have hsizeU : (∑ t ∈ U, t.supp.ncard) = 12 := by
+    have hpUnused := hp.2.2.2
+    change (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) = 12 at hpUnused
+    dsimp [U]
+    rw [Finset.sum_filter]
+    simpa [ite_and, and_comm] using hpUnused
+  have hminU : ∀ t ∈ U, 3 ≤ t.supp.ncard := by
+    intro t ht
+    exact hr t
+  have hbalU : ∀ t ∈ U, 6 * Q b t = t.supp.ncard * Q t b := by
+    intro t ht
+    have hx := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b t
+    simpa [hb6] using hx
+  have hsumU : (∑ t ∈ U, Q b t) = 2 := by
+    simpa [U, S, Q] using degreeSix_threeSix_unused_half_orderSix_contact_mass
+      G hfree hmin hcard hr a b ha3 hb6 haa hba
+  have hzero3 : ∀ t ∈ U, t.supp.ncard = 3 → Q b t = 0 := by
+    intro t ht ht3
+    have htS := (Finset.mem_filter.mp ht).1
+    have hat : a ≠ t := by
+      intro hat
+      subst t
+      simp [S] at htS
+    have hg := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        b a t hb6 ha3 ht3 hat
+    change Q b a + Q b t ≤ 1 at hg
+    rw [hba] at hg
+    omega
+  have hwide := degreeSix_threeSix_unused_half_shape_with_four
+    U (fun t ↦ t.supp.ncard) (Q b) (fun t ↦ Q t b)
+      hsizeU hminU hbalU hsumU hzero3
+  have hzero3Global : ∀ z, z ≠ a → z.supp.ncard = 3 →
+      Q b z = 0 ∧ Q z b = 0 := by
+    intro z hza hz3
+    have hg := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        b a z hb6 ha3 hz3 hza.symm
+    change Q b a + Q b z ≤ 1 at hg
+    have hbz : Q b z = 0 := by rw [hba] at hg; omega
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b z
+    change b.supp.ncard * Q b z = z.supp.ncard * Q z b at hbal
+    rw [hb6, hz3, hbz] at hbal
+    exact ⟨hbz, by omega⟩
+  have hshape :
+      (∃ u, U.filter (fun t ↦ Q b t ≠ 0) = {u} ∧
+        ((u.supp.ncard = 6 ∧ Q b u = 2) ∨
+         (u.supp.ncard = 12 ∧ Q b u = 2))) ∨
+      (∃ u v, u ≠ v ∧ U.filter (fun t ↦ Q b t ≠ 0) = {u, v} ∧
+        u.supp.ncard = 6 ∧ Q b u = 1 ∧
+        v.supp.ncard = 6 ∧ Q b v = 1) := by
+    rcases hwide with ⟨u, huP, hqu, hu4 | hu6 | hu12⟩ |
+      ⟨u, v, huv, huvP, hu6, hqu, hv6, hqv⟩
+    · have huU : u ∈ U := (Finset.mem_filter.mp (by rw [huP]; simp)).1
+      have hno4 := degreeSix_threeSix_orderSix_no_orderFour_contact
+        G hfree hmin hcard hr b a u hb6 ha3 hu4 hba hab hzero3Global
+      change Q b u = 0 at hno4
+      exfalso
+      omega
+    · exact Or.inl ⟨u, huP, Or.inl ⟨hu6, hqu⟩⟩
+    · exact Or.inl ⟨u, huP, Or.inr ⟨hu12, hqu⟩⟩
+    · exact Or.inr ⟨u, v, huv, huvP, hu6, hqu, hv6, hqv⟩
+  exact degreeSix_threeSix_unused_half_full_shape
+    U (fun t ↦ t.supp.ncard) (Q b) hsizeU hminU hshape
+
 /-- The residual row and square equations of an isolated unused triangle
 cannot be supported by one sibling triangle and one order-six component
 whose combined triangle contact is at most one. -/
