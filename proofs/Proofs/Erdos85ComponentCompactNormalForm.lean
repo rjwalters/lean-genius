@@ -85,7 +85,10 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
           (∀ a b, G.Adj a x → G.Adj b x → G.Adj a b →
             G.degree a = d ∨ G.degree b = d)) ∧
       (∃ q, m = d * (d - 1) + 1 + q ∧
-        ∀ x, (G.degree x - d) * (d - 1) ≤ q) := by
+        ∀ x, (G.degree x - d) * (d - 1) ≤ q) ∧
+      (∀ k, 2 * k < m →
+        ∃ D : Finset (Fin m), D.card = k ∧
+          ∀ x ∈ D, G.degree x = d) := by
   obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected⟩ :=
     hminimal.exists_connected_representative hm hd
   letI : DecidableRel G.Adj := hdec
@@ -93,7 +96,7 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
   obtain ⟨horder, hupper, hoddUpper, hind⟩ :=
     nonextendable_witness_compactness G hcard (by omega) hmin.ge hfree hnext
   refine ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected,
-    horder, hupper, hoddUpper, hind, ?_, ?_, ?_⟩
+    horder, hupper, hoddUpper, hind, ?_, ?_, ?_, ?_⟩
   · intro x hx
     exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
       G hfree (d := d) (fun {_u _v} huv ↦ hcover huv) x hx
@@ -111,5 +114,9 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
     exact degree_sub_mul_pred_le_order_excess G hfree
       (fun y ↦ hmin.ge.trans (G.minDegree_le_degree y))
       (fun {_u _v} huv ↦ hcover huv) (by simpa using hmdecomp) x
+  · intro k hk
+    letI : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
+    exact exists_tight_deletion_set_of_two_mul_lt_card
+      G hmin (fun {_u _v} huv ↦ hcover huv) (by simpa using hk)
 
 end Erdos85
