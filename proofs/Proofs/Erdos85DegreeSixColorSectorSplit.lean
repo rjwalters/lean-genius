@@ -1398,6 +1398,15 @@ theorem degreeSix_orderTwelve_contact_aggregate_equations
     simp only [Finset.sum_add_distrib]
     repeat' rw [hsumConst]
     omega
+  · constructor
+    · rw [Finset.sum_congr rfl hppoint]
+      simp only [Finset.sum_add_distrib]
+      repeat' rw [hsumConst]
+      omega
+    · rw [Finset.sum_congr rfl hspoint]
+      simp only [Finset.sum_add_distrib]
+      repeat' rw [hsumConst]
+      omega
 
 /-- The three units of a residual contact row have only the partitions
 `1+1+1`, `1+2`, and `3`. -/
@@ -1439,10 +1448,13 @@ theorem contact_filter_counts_of_sum_three
       (S.filter fun t ↦ q t = 1).card +
       2 * (S.filter fun t ↦ q t = 2).card +
       3 * (S.filter fun t ↦ q t = 3).card = 3 := by
-    rw [← hsum]
-    rw [Finset.sum_congr rfl hpoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
+    have h1 := hsumConst (fun t ↦ q t = 1) 1
+    have h2 := hsumConst (fun t ↦ q t = 2) 2
+    have h3 := hsumConst (fun t ↦ q t = 3) 3
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [h1, h2, h3] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
 /-- Components of order at least three and total order six form either one
@@ -1495,7 +1507,8 @@ theorem false_of_degreeSix_orderSix_one_two_contact
     (hgroup : Q a c + Q a d ≤ 1) : False := by
   rw [hc6, ha12, hca] at hbalCA
   rw [hd6, ha12] at hbalDA
-  rw [hcc, hce, hcd, hca, hed, hea] at hsqd hsqa
+  rw [hcc, hce, hcd, hca, hed] at hsqd
+  rw [hcc, hce, hcd, hca, hea] at hsqa
   omega
 
 /-- Arithmetic terminal for the residual partition `3`: an order-three row
@@ -1539,15 +1552,6 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
     (hsqef : 2 * Q d f + Q f f + Q g f = 3)
     (hgroup : Q d e + Q d f ≤ 1) : False := by
   rcases hff with hzero | htwo <;> omega
-  constructor
-  · rw [Finset.sum_congr rfl hppoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
-    omega
-  · rw [Finset.sum_congr rfl hspoint]
-    simp only [Finset.sum_add_distrib]
-    repeat' rw [hsumConst]
-    omega
 
 /-- If every component in `S` has order at least three and total order 21,
 the order used by positive contacts is either all 21 or at most 18. -/
@@ -1703,8 +1707,7 @@ theorem reverse_eq_one_on_finset_of_balanced_product_eq_row
         have hb := hbal e
         rw [hr0, mul_zero] at hb
         exact (Nat.mul_pos hcpos hqpos).ne' hb
-      exact (show Q c e * 1 ≤ Q c e * Q e c by
-        exact Nat.mul_le_mul_left _ hrpos) |> (by simpa)
+      simpa using Nat.mul_le_mul_left (Q c e) hrpos
   intro e he hq
   have hrpos : 0 < Q e c := by
     have := hle e
@@ -2810,11 +2813,11 @@ theorem degreeSix_orderTwelve_singleton_contact_counts
     ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 2).card)
     ((S.filter fun t ↦ t.supp.ncard = 12 ∧ Q c t = 3).card)
     (∑ t ∈ S, if Q c t = 0 then 0 else t.supp.ncard)
-    (by simpa [Q, S] using hagg.1.trans hrow)
+    (by simpa [Q, S] using hagg.1.symm.trans hrow)
     (by
       have hp : (∑ t ∈ S, Q c t * Q t c) = 11 := by
         simpa [S, hc12] using hprod
-      exact hagg.2.1.trans hp |>.symm)
+      exact hagg.2.1.symm.trans hp)
     hagg.2.2 hgap
   rcases hcounts with h | h
   · exact Or.inl ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1,
@@ -2915,24 +2918,32 @@ theorem false_of_degreeSix_orderTwelve_singleton
       rcases hclass with h3 | h4 | h6 | h121 | h122 | h123
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 3 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h3.1, h3.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn3 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 3 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn3
+        omega
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 4 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h4.1, h4.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn4 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 4 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn4
+        omega
       · have hm : t ∈ D := Finset.mem_filter.mpr ⟨htS, h6.1, h6.2.1⟩
         rw [hdSet] at hm
         simp at hm
         exact htd hm
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 1) :=
           Finset.mem_filter.mpr ⟨htS, h121.1, h121.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn121 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 12 ∧ Q c x = 1).card = 0 := by
+          simpa [S, Q] using hn121
+        omega
       · have hm : t ∈ S.filter (fun x ↦ x.supp.ncard = 12 ∧ Q c x = 2) :=
           Finset.mem_filter.mpr ⟨htS, h122.1, h122.2.1⟩
-        have hp := Finset.card_pos.mpr hm
-        simpa [S, Q] using hn122 at hp
+        have hp := Finset.card_pos.mpr ⟨t, hm⟩
+        have hz : (S.filter fun x ↦ x.supp.ncard = 12 ∧ Q c x = 2).card = 0 := by
+          simpa [S, Q] using hn122
+        omega
       · have hm : t ∈ A := Finset.mem_filter.mpr ⟨htS, h123.1, h123.2.1⟩
         rw [haSet] at hm
         simp at hm
@@ -2954,12 +2965,12 @@ theorem false_of_degreeSix_orderTwelve_singleton
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c a
     have hsqA : (∑ t, Q c t * Q t a) = 12 := by
-      simpa [Q, Matrix.mul_apply, hac, ha12] using hsqAgraph
+      simpa [Q, Matrix.mul_apply, hac.symm, ha12] using hsqAgraph
     have hsqDgraph := secondOrder_componentQuotientMatrix_sq_apply
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c d
     have hsqD : (∑ t, Q c t * Q t d) = 6 := by
-      simpa [Q, Matrix.mul_apply, hdc, hd6] using hsqDgraph
+      simpa [Q, Matrix.mul_apply, hdc.symm, hd6] using hsqDgraph
     have hzeroA : (∑ t ∈ R, Q c t * Q t a) = 0 := by
       apply Finset.sum_eq_zero
       intro t ht
@@ -3371,11 +3382,18 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
       (secondOrderDefectGraph G).ConnectedComponent)
       (fun t ↦ Q c t * Q t c) heIn
   have hrowS : (∑ t ∈ S, Q c t) = 3 := by
+    change Q c e = 1 at hce
+    change (∑ t ∈ Finset.univ.erase c, Q c t) = 4 at hrow
     dsimp [S]
     omega
   have hprodS : (∑ t ∈ S, Q c t * Q t c) = 3 := by
     have hp : (∑ t ∈ Finset.univ.erase c, Q c t * Q t c) = 5 := by
       simpa [hc6] using hprod
+    change Q c e = 1 at hce
+    change Q e c = 2 at hecQ
+    change (∑ x ∈ (Finset.univ.erase c).erase e, Q c x * Q x c) +
+      Q c e * Q e c = ∑ x ∈ Finset.univ.erase c, Q c x * Q x c at hsplitProd
+    rw [hce, hecQ] at hsplitProd
     dsimp [S]
     omega
   have hreverse := reverse_eq_one_on_finset_of_balanced_product_eq_row
@@ -3386,6 +3404,7 @@ theorem degreeSix_orderSix_singleton_remaining_contact_profile
   have htcQ := hreverse t ht hpos
   refine ⟨htcQ, ?_⟩
   have hb := hbal t
+  change c.supp.ncard * Q c t = t.supp.ncard * Q t c at hb
   rw [hc6, htcQ, mul_one] at hb
   exact hb.symm
 
@@ -3395,7 +3414,7 @@ its forced order-three contact, the remaining components have total order
 six, hence are either one order-six component or two order-three components. -/
 theorem degreeSix_orderSix_three_single_contact_shape
     {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V)
+    (G : SimpleGraph V) [DecidableRel G.Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hcard : Fintype.card V = 33)
@@ -3447,12 +3466,18 @@ theorem degreeSix_orderSix_three_single_contact_shape
   have hxe : x ≠ e := (Finset.mem_erase.mp hxS).1
   have hyc : y ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp hyS).2).1
   have hye : y ≠ e := (Finset.mem_erase.mp hyS).1
-  have hdProfile := hcprofile d hdS (by rw [hcd]; norm_num)
-  have hxProfile := hcprofile x hxS (by rw [hcx]; norm_num)
-  have hyProfile := hcprofile y hyS (by rw [hcy]; norm_num)
-  have hd6 : d.supp.ncard = 6 := by rw [hdProfile.2, hcd]; norm_num
-  have hx6 : x.supp.ncard = 6 := by rw [hxProfile.2, hcx]; norm_num
-  have hy6 : y.supp.ncard = 6 := by rw [hyProfile.2, hcy]; norm_num
+  have hdPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c d := by
+    simpa [Q] using (show 0 < Q c d by omega)
+  have hxPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c x := by
+    simpa [Q] using (show 0 < Q c x by omega)
+  have hyPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c y := by
+    simpa [Q] using (show 0 < Q c y by omega)
+  have hdProfile := hcprofile d hdS hdPos
+  have hxProfile := hcprofile x hxS hxPos
+  have hyProfile := hcprofile y hyS hyPos
+  have hd6 : d.supp.ncard = 6 := by simpa [Q, hcd] using hdProfile.2
+  have hx6 : x.supp.ncard = 6 := by simpa [Q, hcx] using hxProfile.2
+  have hy6 : y.supp.ncard = 6 := by simpa [Q, hcy] using hyProfile.2
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
   have hcIn : c ∈ (Finset.univ : Finset
@@ -3495,6 +3520,8 @@ three contact-square equations and the global trace. -/
 theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
     [Fintype (secondOrderDefectGraph G).ConnectedComponent]
     [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
@@ -3516,9 +3543,19 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     (hU : (((((Finset.univ.erase c).erase e).erase d).erase x).erase y :
       Finset (secondOrderDefectGraph G).ConnectedComponent) = {f}) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q c c = 2 at hcc
+  change Q c e = 1 at hce
+  change Q e c = 2 at hecQ
+  change Q e e = 0 at hee
+  change Q c d = 1 at hcd
+  change Q c x = 1 at hcx
+  change Q c y = 1 at hcy
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
-  have hfU : f ∈ U := by rw [hU]; simp
+  have hfU : f ∈ U := by
+    change f ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
   have hfy : f ≠ y := (Finset.mem_erase.mp hfU).1
   have hfx : f ≠ x := (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).1
   have hfd : f ≠ d := (Finset.mem_erase.mp
@@ -3547,7 +3584,10 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     have hX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d) F hxIn
     have hY := Finset.sum_erase_add
       ((((Finset.univ.erase c).erase e).erase d).erase x) F hyIn
-    have hlast : (∑ t ∈ U, F t) = F f := by simp [hU]
+    have hlast : (∑ t ∈ U, F t) = F f := by
+      change (∑ t ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y), F t) = F f
+      rw [hU]
+      simp
     dsimp [U] at hlast
     omega
   have hrow (z : _) : (∑ t, Q z t) = 6 :=
@@ -3611,7 +3651,7 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
   have hcontactF : Q d f + Q x f + Q y f = 4 := by
     have hs := hsq c f hfc.symm
     rw [expand (fun t ↦ Q c t * Q t f), hcc, hce, hcd, hcx, hcy, hcf,
-      hfcQ, hef, hf6] at hs
+      hef, hf6] at hs
     omega
   have hff : Q f f = 1 := by
     have hfRow := hrow f
@@ -3629,15 +3669,16 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
     have hb := hbal x y
     rw [hx6, hy6] at hb
     omega
-  have contactSquare (z : _) (hzc : z ≠ c) (hz6 : z.supp.ncard = 6) :
+  have contactSquare (z : _) (hzc : z ≠ c) (hz6 : z.supp.ncard = 6)
+      (hcz : Q c z = 1) :
       Q d z + Q x z + Q y z = 4 - Q e z := by
-    have hs := hsq c z hzc
+    have hs := hsq c z hzc.symm
     rw [expand (fun t ↦ Q c t * Q t z), hcc, hce, hcd, hcx, hcy, hcf,
-      hz6] at hs
+      hz6, hcz] at hs
     omega
-  have hsd := contactSquare d hdc hd6
-  have hsx := contactSquare x hxc hx6
-  have hsy := contactSquare y hyc hy6
+  have hsd := contactSquare d hdc hd6 hcd
+  have hsx := contactSquare x hxc hx6 hcx
+  have hsy := contactSquare y hyc hy6 hcy
   have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) (by norm_num)
@@ -3657,12 +3698,12 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_unused_six_branch
       (by rw [hex, hx.2.1] at hsx; omega)
       (by rw [hed, hx.1] at hsd; omega)
       (by rw [hey, hx.2.2] at hsy; omega)
-      hdxSymm.symm hxySymm hdySymm hdiag
+      hdxSymm.symm hxySymm hdySymm (by omega)
   · apply false_of_degreeSix_orderSix_three_single_contacts_unused_six Q y d x
       (by rw [hey, hy.2.2] at hsy; omega)
       (by rw [hed, hy.1] at hsd; omega)
       (by rw [hex, hy.2.1] at hsx; omega)
-      hdySymm.symm hxySymm.symm hdxSymm hdiag
+      hdySymm.symm hxySymm.symm hdxSymm (by omega)
 
 set_option maxHeartbeats 2000000 in
 /-- The `1+1+1` branch with two unused order-three components contradicts
@@ -3702,10 +3743,23 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     (hU : (((((Finset.univ.erase c).erase e).erase d).erase x).erase y :
       Finset (secondOrderDefectGraph G).ConnectedComponent) = {f, g}) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q c c = 2 at hcc
+  change Q c e = 1 at hce
+  change Q e c = 2 at hecQ
+  change Q e e = 0 at hee
+  change Q c d = 1 at hcd
+  change Q c x = 1 at hcx
+  change Q c y = 1 at hcy
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
-  have hfU : f ∈ U := by rw [hU]; simp
-  have hgU : g ∈ U := by rw [hU]; simp
+  have hfU : f ∈ U := by
+    change f ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
+  have hgU : g ∈ U := by
+    change g ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
   have hfe : f ≠ e := (Finset.mem_erase.mp
     (Finset.mem_erase.mp (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).2).2).1
   have hfc : f ≠ c := (Finset.mem_erase.mp
@@ -3735,7 +3789,10 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     have hX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d) F hxIn
     have hY := Finset.sum_erase_add
       ((((Finset.univ.erase c).erase e).erase d).erase x) F hyIn
-    have hlast : (∑ t ∈ U, F t) = F f + F g := by simp [hU, hfg]
+    have hlast : (∑ t ∈ U, F t) = F f + F g := by
+      change (∑ t ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y), F t) = F f + F g
+      rw [hU]
+      simp [hfg]
     dsimp [U] at hlast
     omega
   have hrow (z : _) : (∑ t, Q z t) = 6 :=
@@ -3788,12 +3845,14 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     by_cases hz : Q e f = 0
     · omega
     · have hs := (heprofile f (Nat.pos_of_ne_zero hz)).2
+      change f.supp.ncard = 3 * Q e f at hs
       rw [hf3] at hs
       omega
   have hegLe : Q e g ≤ 1 := by
     by_cases hz : Q e g = 0
     · omega
     · have hs := (heprofile g (Nat.pos_of_ne_zero hz)).2
+      change g.supp.ncard = 3 * Q e g at hs
       rw [hg3] at hs
       omega
   have hef : Q e f = 1 := by
@@ -3827,7 +3886,7 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
   have hcontactF : Q d f + Q x f + Q y f = 2 := by
     have hs := hsq c f hfc.symm
     rw [expand (fun t ↦ Q c t * Q t f), hcc, hce, hcd, hcx, hcy,
-      hcf, hcg, hfcQ, hef, hf3] at hs
+      hcf, hcg, hef, hf3] at hs
     omega
   have hfrow : Q f f + Q f g = 1 := by
     have hfRow := hrow f
@@ -3848,21 +3907,21 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD d e f hd6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q d e f g hd.1 hff hgfSymm hfrow (by omega) hgroup
+      Q d e f g hd.1 hff hgfSymm.symm hfrow (by omega) hgroup
   · have hsqEF := hsq e f hfe.symm
     rw [expand (fun t ↦ Q e t * Q t f), hecQ, hee, hed, hex, hey,
       hef, heg, hcf, hx.1, hx.2.1, hx.2.2, hf3] at hsqEF
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD x e f hx6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q x e f g hx.2.1 hff hgfSymm hfrow (by omega) hgroup
+      Q x e f g hx.2.1 hff hgfSymm.symm hfrow (by omega) hgroup
   · have hsqEF := hsq e f hfe.symm
     rw [expand (fun t ↦ Q e t * Q t f), hecQ, hee, hed, hex, hey,
       hef, heg, hcf, hy.1, hy.2.1, hy.2.2, hf3] at hsqEF
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD y e f hy6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q y e f g hy.2.2 hff hgfSymm hfrow (by omega) hgroup
+      Q y e f g hy.2.2 hff hgfSymm.symm hfrow (by omega) hgroup
 
 set_option maxHeartbeats 2000000 in
 /-- The residual `1+1+1` contact branch is impossible. -/
@@ -3957,8 +4016,11 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
   have hca : Q c a = 3 := haFilter.2
   have hac : a ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp haS).2).1
   have hae : a ≠ e := (Finset.mem_erase.mp haS).1
-  have haData := hcprofile a haS (by rw [hca]; norm_num)
-  have ha18 : a.supp.ncard = 18 := by rw [haData.2, hca]; norm_num
+  have hcaPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c a := by
+    simpa [Q] using (show 0 < Q c a by omega)
+  have haData := hcprofile a haS hcaPos
+  have ha18 : a.supp.ncard = 18 := by
+    simpa [Q, hca] using haData.2
   have hrowE : (∑ t, Q e t) = 6 :=
     sum_secondOrder_componentQuotientMatrix_row_eq_degree
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -3972,12 +4034,16 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
     change a.supp.ncard = 3 * Q e a at hsize
     have hlower := two_distinct_terms_le_sum (Q e) (show c ≠ a from hac.symm)
     change Q e c = 2 at hecQ
-    rw [hrowE, hecQ, ha18] at hlower
+    change (∑ t, Q e t) = 6 at hrowE
+    rw [hrowE, hecQ] at hlower
     nlinarith
   let R : Finset (secondOrderDefectGraph G).ConnectedComponent := S.erase a
   have haIn : a ∈ S := haS
   have hsplit := Finset.sum_erase_add S (Q c) haIn
-  have hrowR : (∑ t ∈ R, Q c t) = 0 := by dsimp [R]; omega
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by
+    change (∑ t ∈ S, Q c t) = 3 at hrowS
+    dsimp [R]
+    omega
   have hzero : ∀ t ∈ R, Q c t = 0 := by
     intro t ht
     have hle : Q c t ≤ ∑ x ∈ R, Q c x :=
@@ -4008,7 +4074,10 @@ theorem false_of_degreeSix_orderSix_three_contact_branch
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) e a
   have hsqe : Q c c * Q c e + Q c e * Q e e + Q c a * Q a e = 3 := by
-    dsimp [R, S] at hrest
+    change (∑ t, Q c t * Q t e) = 3 at hsq
+    change Q c e = 1 at hce
+    change Q e e = 0 at hee
+    dsimp [R, S] at hrest hsA
     omega
   exact false_of_degreeSix_orderSix_three_contact Q (fun t ↦ t.supp.ncard)
     c e a hc6 he3 ha18 hcc hce hca hee hea hbalEA hsqe
@@ -4070,10 +4139,14 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
   have hac : a ≠ c := (Finset.mem_erase.mp (Finset.mem_erase.mp haS).2).1
   have hae : a ≠ e := (Finset.mem_erase.mp haS).1
   have hda : d ≠ a := by intro h; subst a; omega
-  have hdData := hcprofile d hdS (by rw [hcd]; norm_num)
-  have haData := hcprofile a haS (by rw [hca]; norm_num)
-  have hd6 : d.supp.ncard = 6 := by rw [hdData.2, hcd]; norm_num
-  have ha12 : a.supp.ncard = 12 := by rw [haData.2, hca]; norm_num
+  have hcdPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c d := by
+    simpa [Q] using (show 0 < Q c d by omega)
+  have hcaPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) c a := by
+    simpa [Q] using (show 0 < Q c a by omega)
+  have hdData := hcprofile d hdS hcdPos
+  have haData := hcprofile a haS hcaPos
+  have hd6 : d.supp.ncard = 6 := by simpa [Q, hcd] using hdData.2
+  have ha12 : a.supp.ncard = 12 := by simpa [Q, hca] using haData.2
   obtain ⟨hrowE, heprofile⟩ := degreeSix_orderThree_zeroDiagonal_profile
     G hfree hmin hcard e he3 hee
   have hdeCases : Q d e = 0 ∨ Q d e = 1 := by
@@ -4085,6 +4158,7 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
       have hpos : 0 < Q e d := by
         change e.supp.ncard * Q e d = d.supp.ncard * Q d e at hbal
         rw [he3, hd6] at hbal
+        have hzpos : 0 < Q d e := Nat.pos_of_ne_zero hz
         nlinarith
       exact Or.inr (heprofile d hpos).1
   have haeCases : Q a e = 0 ∨ Q a e = 1 := by
@@ -4096,14 +4170,18 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
       have hpos : 0 < Q e a := by
         change e.supp.ncard * Q e a = a.supp.ncard * Q a e at hbal
         rw [he3, ha12] at hbal
+        have hzpos : 0 < Q a e := Nat.pos_of_ne_zero hz
         nlinarith
       exact Or.inr (heprofile a hpos).1
   let R : Finset (secondOrderDefectGraph G).ConnectedComponent := (S.erase d).erase a
   have hdIn : d ∈ S := hdS
-  have haIn : a ∈ S.erase d := Finset.mem_erase.mpr ⟯un h ↦ hda h.symm, haS⟩
+  have haIn : a ∈ S.erase d := Finset.mem_erase.mpr ⟨hda.symm, haS⟩
   have hsD := Finset.sum_erase_add S (Q c) hdIn
   have hsA := Finset.sum_erase_add (S.erase d) (Q c) haIn
-  have hrowR : (∑ t ∈ R, Q c t) = 0 := by dsimp [R]; omega
+  have hrowR : (∑ t ∈ R, Q c t) = 0 := by
+    change (∑ t ∈ S, Q c t) = 3 at hrowS
+    dsimp [R]
+    omega
   have hzero : ∀ t ∈ R, Q c t = 0 := by
     intro t ht
     have hle : Q c t ≤ ∑ x ∈ R, Q c x :=
@@ -4132,20 +4210,26 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
     simp [hzero t ht]
   obtain ⟨_, hcc, _, _, _⟩ := degreeSix_singleton_component_quotient_row
     G hfree hmin hcard u hu huRange huD hr c hsector
+  change Q c c = 2 at hcc
+  change Q c e = 1 at hce
+  change Q e e = 0 at hee
+  have hsqEexpand : Q c c * Q c e + Q c e * Q e e +
+      Q c d * Q d e + Q c a * Q a e = 3 := by
+    change (∑ t, Q c t * Q t e) = 3 at hsqE
+    dsimp [R, S] at hrestE hsEc hsEe hsEd hsEa
+    omega
+  have hcontactE : Q d e + 2 * Q a e = 1 := by
+    have hh : 2 + Q d e + 2 * Q a e = 3 := by
+      simpa [hcc, hce, hee, hcd, hca] using hsqEexpand
+    omega
   have hdeQ : Q d e = 1 := by
     rcases hdeCases with hz | ho <;> rcases haeCases with ha0 | ha1
     all_goals try exact ho
-    all_goals dsimp [R, S] at hrestE
-    all_goals change Q c e = 1 at hce
-    all_goals change Q e e = 0 at hee
     all_goals omega
   have haeQ : Q a e = 0 := by
     rcases haeCases with hz | ho
     · exact hz
-    · dsimp [R, S] at hrestE
-      change Q c e = 1 at hce
-      change Q e e = 0 at hee
-      omega
+    · omega
   have hed : Q e d = 2 := by
     have hb := secondOrder_componentQuotientMatrix_balance
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -4165,7 +4249,7 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
     have hs := secondOrder_componentQuotientMatrix_sq_apply
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) c z
-    simpa [Q, Matrix.mul_apply, hzc] using hs
+    simpa [Q, Matrix.mul_apply, hzc.symm] using hs
   have hsqD := squareThree d hdc (Or.inl hd6)
   have hsqA := squareThree a hac (Or.inr ha12)
   have expandSquare (z : _) :
@@ -4182,7 +4266,7 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
       apply Finset.sum_eq_zero
       intro t ht
       simp [hzero t ht]
-    dsimp [R, S] at hrest
+    dsimp [R, S] at hrest hsC hsE hsD hsA
     omega
   have hsqd : Q c c * Q c d + Q c e * Q e d +
       Q c d * Q d d + Q c a * Q a d = 6 := by
@@ -4198,13 +4282,15 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
   have hdDiagIn : d ∈ (Finset.univ.erase c : Finset _) :=
     Finset.mem_erase.mpr ⟨hdc, Finset.mem_univ d⟩
   have haDiagIn : a ∈ (Finset.univ.erase c).erase d :=
-    Finset.mem_erase.mpr ⟨hda.symm, hdDiagIn |> (Finset.mem_erase.mp ·).2⟩
+    Finset.mem_erase.mpr ⟨hda.symm,
+      Finset.mem_erase.mpr ⟨hac, Finset.mem_univ a⟩⟩
   have htC := Finset.sum_erase_add (Finset.univ : Finset _) (fun t ↦ Q t t) hcIn
   have htD := Finset.sum_erase_add (Finset.univ.erase c) (fun t ↦ Q t t) hdDiagIn
   have htA := Finset.sum_erase_add ((Finset.univ.erase c).erase d)
     (fun t ↦ Q t t) haDiagIn
   have hdiagBudget : Q d d + Q a a ≤ 4 := by
     change (∑ t, Q t t) = 6 at htrace
+    change Q c c = 2 at hcc
     omega
   have hbalCA := secondOrder_componentQuotientMatrix_balance
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -4213,7 +4299,7 @@ theorem false_of_degreeSix_orderSix_one_two_contact_branch
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
       (by norm_num at hcard ⊢; exact hcard) d a
   have hgroup := degreeSix_orderTwelve_two_orderSix_targets_le_one
-    G hfree hmin hcard u hu huRange huD a c d ha12 hc6 hd6 hdc
+    G hfree hmin hcard u hu huRange huD a c d ha12 hc6 hd6 hdc.symm
   exact false_of_degreeSix_orderSix_one_two_contact Q (fun t ↦ t.supp.ncard)
     c e d a hc6 he3 hd6 ha12 hcc hce hcd hca hed hea hbalCA hbalDA
       hsqd hsqa hdiagBudget hgroup

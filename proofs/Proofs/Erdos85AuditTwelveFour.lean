@@ -1,0 +1,196 @@
+-- Verbatim axiom audit for the [12,4] zero-layer closure (squad 2627),
+-- run inside the LEAN_CERTIFY ephemeral gate at d3af6b40a7 merged tip.
+-- Untracked audit module; not part of the library proper.
+import Proofs.Erdos85OneTwentyThreeResidualTerminal
+import Proofs.Erdos85MinimumEvenOrphanParity
+import Proofs.Erdos85ZeroLayerPartitionClassification
+import Proofs.Erdos85DegreeSixColorSectorSplit
+
+-- [12,4] chain (new)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
+#print axioms Erdos85.degree_sixteen_zeroLayer_twelve_four_small_row_census
+#print axioms Erdos85.degree_sixteen_twelve_four_orphan_small_quotient_ne_two
+#print axioms Erdos85.degree_sixteen_zeroLayer_used_matrix_twelve_four
+#print axioms Erdos85.zeroLayer_reduced_used_orders_twelve_four_corrected_atom_census
+#print axioms Erdos85.false_of_degree_sixteen_orderTwelve_three_orderFour_unit_targets
+#print axioms Erdos85.false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three
+#print axioms Erdos85.false_of_degree_sixteen_orderTwelve_minimumThree_orderTwelve_three_ncard
+#print axioms Erdos85.false_of_twelve_four_residual_circulant_interface
+#print axioms Erdos85.false_of_twelve_four_residual_phase_interface
+#print axioms Erdos85.equalComponent_quotientThree_exists_phaseSet
+#print axioms Erdos85.adjMatrix_comm_secondOrderDefect_of_even_real
+#print axioms Erdos85.isOrderedSidon_of_c4Free_circulantBlock
+#print axioms Erdos85.no_three_residualDifferenceSet_zmod_twelve
+#print axioms Erdos85.false_of_two_unit_componentQuotients_lcm_ncard_lt
+
+-- [10,2,2,2] lawful graph integration (7d8ab1fd40)
+#print axioms Erdos85.degree_sixteen_zeroLayer_ten_two_two_two_six_block_census
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_ten_two_two_two
+
+-- antipodal law layer (da0a11ff55, 84c3341721, be8ac0d9ef, 5331475d8d)
+#print axioms Erdos85.cycleIntertwiner_antipodal_covariance
+#print axioms Erdos85.no_equalEvenCycleBlock_antipodal_commonSource
+#print axioms Erdos85.no_cycleBlock_antipodal_commonSource_of_half_ne_zero
+#print axioms Erdos85.cycleBlock_antipodal_commonSource_forces_dvd
+#print axioms Erdos85.component_antipodal_commonSource_forces_order_dvd
+#print axioms Erdos85.evenComponent_exists_commonSource_component_order_dvd_half
+#print axioms Erdos85.evenComponent_exists_commonSource_component_order_dvd_half_with_witness
+#print axioms Erdos85.evenComponent_exists_positiveQuotient_source_order_dvd_half
+#print axioms Erdos85.degree_sixteen_zeroLayer_even_orphan_exists_economy_source
+#print axioms Erdos85.degree_sixteen_zeroLayer_even_orphan_economy_covered
+
+-- gamma arithmetic endpoints (7f5769a84e)
+#print axioms Erdos85.false_of_zeroLayer_positive_load_of_all_atoms_excluded
+#print axioms Erdos85.false_of_zeroLayer_antipodal_load_eight_four_four
+#print axioms Erdos85.false_of_zeroLayer_antipodal_load_four_four_four_two_two
+#print axioms Erdos85.false_of_zeroLayer_antipodal_load_four_four_two_two_two_two
+
+-- first survivor graph kill: [16] (9dd13ac3f4, wrapper 7428a04577)
+#print axioms Erdos85.degree_sixteen_zeroLayer_single_used_orphan_order_sixteen_or_fortyEight
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_single_used_component_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_sixteen_antipodal
+
+-- {2^8} kill (121a4758b4), 4^4 kill (ed36ba7d6e), {8,4,4} classifier (929d926828)
+#print axioms Erdos85.degree_sixteen_zeroLayer_all_orderSix_used_orphan_order_two_or_six
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_orderSix_used_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_used_order_six_antipodal
+#print axioms Erdos85.degree_sixteen_zeroLayer_all_orderTwelve_used_orphan_order_four_or_twelve
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_orderTwelve_used_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_used_order_twelve_antipodal
+#print axioms Erdos85.degree_sixteen_zeroLayer_orderTwelve_orTwentyFour_used_orphan_orders
+
+-- {6,6,2,2} (3d9f52f631), {8,4,4} (71dc39349f), final two (a9ee90cb54, bc250890c2)
+#print axioms Erdos85.degree_sixteen_zeroLayer_orderSix_orEighteen_used_orphan_orders
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_orderSix_orEighteen_used_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_six_six_two_two_antipodal
+#print axioms Erdos85.degree_sixteen_zeroLayer_eight_four_four_orphan_atom
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_antipodal
+#print axioms Erdos85.degree_sixteen_zeroLayer_orderSix_orTwelve_used_orphan_orders
+#print axioms Erdos85.degree_sixteen_zeroLayer_six_twelve_orphan_filtered_loads
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_six_twelve_used_count_ne
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_antipodal
+
+-- generic B/C equal-order upgrades (e056b55b65, repaired in 5f4c787afa)
+#print axioms Erdos85.degree_sixteen_zeroLayer_quotientTwo_reduced_order_forces_equal
+#print axioms Erdos85.degree_sixteen_zeroLayer_quotientThree_reduced_order_forces_equal
+
+-- second survivor graph kill: [8,8] (abf3181ec8)
+#print axioms Erdos85.degree_sixteen_zeroLayer_two_orderTwentyFour_used_orphan_order_eight_or_twentyFour
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_two_orderTwentyFour_used_antipodal
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_eight_antipodal
+
+-- dispatch-gap arithmetic endpoints (e522f176af, 991003f1e6, 7aba74b1c4)
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_seven_seven_two_atom_ledger
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_seven_four_three_two_atom_ledger
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_six_six_four_atom_ledger
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_five_five_three_three_atom_ledger
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_four_two_two_two_two_two_two_atom_ledger
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_three_three_two_two_two_two_two_atom_ledger
+
+-- atom-model bridge core (9f2a..78cd, d1a968ada2, 77eef259cd)
+#print axioms Erdos85.ZeroLayerAtom.false_of_weighted_load_excess_certificate
+#print axioms Erdos85.degree_sixteen_zeroLayer_orphan_atom_assignment_exists
+#print axioms Erdos85.ZeroLayerAtom.sum_values_eq_sum_fiberCount_mul
+#print axioms Erdos85.degree_sixteen_zeroLayer_used_orphan_atomExcess_sum_le
+
+-- (6,3,3,2,2) special chain (09f33172c2, 54e38bfa2e, c76d1b40dc, 1829b92f5d, f520b42297)
+#print axioms Erdos85.ZeroLayerAtom.false_of_six_three_three_two_two_thirteen_count_ledger
+#print axioms Erdos85.ZeroLayerAtom.nine_dvd_six_three_three_two_two_filtered_atom_total_load
+#print axioms Erdos85.ZeroLayerAtom.six_three_three_two_two_economy_excludes_reducedOrder_two
+#print axioms Erdos85.ZeroLayerAtom.false_of_six_three_three_two_two_supported_atom_assignment
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two
+
+-- legacy re-derivations + holdouts on standard interface (fb1ab78e06, 0542848fc0, 13fc432682)
+#print axioms Erdos85.ZeroLayerAtom.false_of_valid_atom_ledger_of_weighted_certificate
+#print axioms Erdos85.ZeroLayerAtom.false_of_zeroLayer_reduced_used_orders_eight_four_two_two_standard_atom_ledger
+
+-- uniform dispatch adapter (29d90f1a35, d3e65b61d2, 3ebc4215f2)
+#print axioms Erdos85.ZeroLayerAtom.false_of_supported_atom_assignment_of_ledger
+#print axioms Erdos85.ZeroLayerAtom.exists_slots_of_finset_map_eq_list
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_pattern_of_atom_ledger
+
+-- classifier normalization + 55-way router (900a7ed82d, 46b75f1c90)
+#print axioms Erdos85.finset_map_eq_nonzero_list_of_reduced_partition_pattern
+#print axioms Erdos85.ZeroLayerAtom.GraphExceptionalPattern
+#print axioms Erdos85.ZeroLayerAtom.AtomLedgerContradiction
+#print axioms Erdos85.ZeroLayerAtom.atomLedgerContradiction_or_graphExceptional_of_reduced_partition_pattern
+
+-- census bridge + exact-map adapters (6c3473b34e, 90c797020d, 67f96f5abc, 1f43cbfb87)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_partition_census_of_graph_exceptions
+#print axioms Erdos85.used_reducedOrder_mem_of_map_eq
+#print axioms Erdos85.used_reducedOrder_count_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_used_order_six_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_all_used_order_twelve_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_six_six_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_four_four_four_two_two_of_map_eq
+
+-- [12,2,2] + [8,4,4] exact-map adapters + repaired map helpers (598dbafe9, 1f4154ad2a)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_four_four_of_map_eq
+
+-- remaining seven exceptional map adapters (post-1226c720ae batch)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_sixteen_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_eight_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_ten_two_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_six_three_three_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two_of_map_eq
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_four_four_two_two_two_two_of_map_eq
+
+-- closed census + exact-boundary closure + public consequences
+-- (cfee8c32de, dc5949f2ca, 9ddb808bfc-tip relay)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_partition_census
+#print axioms Erdos85.false_of_degree_sixteen_exact_boundary
+#print axioms Erdos85.containsC4_of_degree_sixteen_exact_boundary
+#print axioms Erdos85.minDegreeForC4_twoFortyThree_le_sixteen
+
+-- d=6 color-sector split (bc1ee52b61..7f9d646970, goal #12 lane)
+#print axioms Erdos85.degreeSix_singleton_incidence_cauchy
+#print axioms Erdos85.triangleFree_degree_two_of_secondOrder_reachable
+#print axioms Erdos85.mem_triangleFreeCycleSector_iff_degree_two
+#print axioms Erdos85.mem_triangleFreeCycleSector_iff_degree_two_of_mem_supp
+#print axioms Erdos85.card_triangleFree_degree_two_eq_sum_sector_orders
+#print axioms Erdos85.degreeSix_triangleFreeCycleSector_empty_or_singleton
+#print axioms Erdos85.degreeSix_singleton_component_quotient_row
+#print axioms Erdos85.degreeSix_exists_large_antipodal_component_of_sector_empty
+
+-- d=6 singleton lane batch 2 (396ae8c658..6d8e87c560)
+#print axioms Erdos85.triangleFreeCycleSector_component_order_ne_three
+#print axioms Erdos85.degreeSix_orderSix_singleton_exists_orderThree_contact
+
+-- d=6 singleton lane batch 3: ℓ=15 CLOSED + ℓ=9 reduction (ce3bdf..cfc9d4)
+#print axioms Erdos85.degreeSix_orderFifteen_singleton_exists_orderThree_contact
+#print axioms Erdos85.degreeSix_orderFifteen_singleton_exists_two_orderThree_contacts
+#print axioms Erdos85.false_of_degreeSix_orderFifteen_singleton
+#print axioms Erdos85.degreeSix_orderNine_singleton_exists_orderThree_contact
+#print axioms Erdos85.degreeSix_orderNine_singleton_orderThree_contact_profile
+#print axioms Erdos85.degreeSix_orderNine_two_orderThree_targets_le_one
+
+-- d=6 singleton lane batch 4: ℓ=9 CLOSED + ℓ=12 wrapper (07f6..012ee3635e)
+#print axioms Erdos85.degreeSix_orderNine_single_contact_shape
+#print axioms Erdos85.false_of_degreeSix_orderNine_single_contact_shape
+#print axioms Erdos85.degreeSix_orderThree_zeroDiagonal_profile
+#print axioms Erdos85.false_of_degreeSix_orderNine_singleton
+#print axioms Erdos85.degreeSix_orderTwelve_two_orderFour_targets_le_one
+
+-- d=6 singleton lane FINAL: ℓ=12 + ℓ=6 closures + full singleton assembly
+-- (9d9ca696e5..262e6ef24f)
+#print axioms Erdos85.false_of_degreeSix_orderTwelve_singleton
+#print axioms Erdos85.false_of_degreeSix_orderSix_singleton
+#print axioms Erdos85.false_of_degreeSix_triangleFreeCycleSector_singleton
+
+-- standing closure chain (regression re-audit)
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two
+#print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_two_two
+#print axioms Erdos85.false_of_degree_sixteen_minimum_even_orphan
+#print axioms Erdos85.false_of_degree_sixteen_ten_two_two_two_residual_interface
+#print axioms Erdos85.degree_sixteen_orderTwelve_diagonalQuotient_ne_three
+#print axioms Erdos85.degree_sixteen_zeroLayer_false_of_orderTwelve_allA_row_unconditional
+#print axioms Erdos85.zeroLayer_reduced_partition_classification
+#print axioms Erdos85.degree_sixteen_zeroLayer_used_component_partition_classification
+#print axioms Erdos85.degree_sixteen_remaining_zeroLayer
+#print axioms Erdos85.false_of_degree_sixteen_twoLayer
+#print axioms Erdos85.false_of_degree_sixteen_fourLayer
