@@ -2927,6 +2927,56 @@ theorem oneHighFamilyMidpointTseitinStepVal_state
     oneHighFamilyMidpointAtomId, ta, hv₁, hv₂, hv₃,
     hout₁, hout₂, hout₃, oneHighFamilyEmitVal]
 
+theorem oneHighFamilyMidpointTseitinStepVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z w : Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyMidpointTseitinStepVal R x z w input
+    let raw := oneHighFamilyMidpointTseitinStep x z w (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  constructor
+  · rcases input with ⟨ts, st, val⟩
+    let ta : OneHighFamilyAtom := .midpoint (min x z) w (max x z)
+    generalize hv : oneHighFamilyAtomIdVal R ta (st, val) = outVal
+    rcases outVal with ⟨t, acc₁⟩
+    generalize hg : oneHighFamilyAtomId ta st = out
+    rcases out with ⟨tg, st₁⟩
+    have hid := oneHighFamilyAtomIdVal_id R ta st val
+    rw [hv, hg] at hid
+    dsimp at hid
+    subst tg
+    generalize hv₂ : oneHighFamilyAtomIdVal R
+      (.edge (min x w) (max x w)) acc₁ = outv₂
+    rcases outv₂ with ⟨exw, acc₂⟩
+    generalize hv₃ : oneHighFamilyAtomIdVal R
+      (.edge (min w z) (max w z)) acc₂ = outv₃
+    rcases outv₃ with ⟨ewz, acc₃⟩
+    generalize hg₂ : oneHighFamilyEdgeId x w st₁ = outg₂
+    rcases outg₂ with ⟨exwg, st₂⟩
+    generalize hg₃ : oneHighFamilyEdgeId w z st₂ = outg₃
+    rcases outg₃ with ⟨ewzg, st₃⟩
+    simp [oneHighFamilyMidpointTseitinStepVal,
+      oneHighFamilyMidpointTseitinStep, oneHighFamilyMidpointAtomId,
+      oneHighFamilyEdgeIdVal, ta, hv, hg, hv₂, hv₃, hg₂, hg₃]
+  · exact oneHighFamilyMidpointTseitinStepVal_state R x z w input
+
+theorem oneHighFamilyCollectMidpointsVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (ws : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := ws.foldl (fun input w =>
+      oneHighFamilyMidpointTseitinStepVal R x z w input) input
+    let raw := ws.foldl (fun input w =>
+      oneHighFamilyMidpointTseitinStep x z w input) (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction ws generalizing input with
+  | nil => simp
+  | cons w ws ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyMidpointTseitinStepVal_projection R x z w input
+      have hi := ih (oneHighFamilyMidpointTseitinStepVal R x z w input)
+      rcases hp with ⟨hvars, hst⟩
+      simpa [hvars, hst] using hi
+
 theorem oneHighFamilyMidpointTseitinStepVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {x z w : Nat} (hx : x < 40) (hz : z < 40) (hw : w < 40)
@@ -3395,5 +3445,66 @@ theorem oneHighFamilyCommonTseitinStepVal_semanticSound
       exact oneHighFamilyEmitVal_value _ _ _
     rw [hvEq] at ht ⊢
     exact hiff.mpr ⟨id, hid, ht⟩
+
+theorem oneHighFamilyCommonTseitinStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj x z : Nat) (input : Array Int × OneHighFamilyValState) :
+    (oneHighFamilyCommonTseitinStepVal R bi bj x z input).2.1 =
+      (oneHighFamilyCommonTseitinStep bi bj x z (input.1, input.2.1)).2 := by
+  rcases input with ⟨cs, acc⟩
+  let mids := oneHighFamilyPairedMidpoints bi bj
+  let tsInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  let raw := mids.foldl (fun input w =>
+    oneHighFamilyMidpointTseitinStep x z w input) (#[], acc.1)
+  have hp := oneHighFamilyCollectMidpointsVal_projection R x z mids (#[], acc)
+  change tsInput.1 = raw.1 ∧ tsInput.2.1 = raw.2 at hp
+  generalize hraw : raw = rawOut
+  rcases rawOut with ⟨rawTs, rawSt⟩
+  rw [hraw] at hp
+  rcases hp with ⟨hTs, hSt⟩
+  let ca : OneHighFamilyAtom := .common (min x z) (max x z)
+  generalize hv : oneHighFamilyAtomIdVal R ca tsInput.2 = outVal
+  rcases outVal with ⟨c, accC⟩
+  generalize hg : oneHighFamilyCommonAtomId x z rawSt = out
+  rcases out with ⟨cg, stC⟩
+  have hid := oneHighFamilyAtomIdVal_id R ca tsInput.2.1 tsInput.2.2
+  have hstate := oneHighFamilyAtomIdVal_state R ca tsInput.2.1 tsInput.2.2
+  rw [hv] at hid hstate
+  have hg' : oneHighFamilyAtomId ca rawSt = (cg, stC) := by
+    simpa [oneHighFamilyCommonAtomId, ca] using hg
+  rw [hSt, hg'] at hid hstate
+  dsimp at hid hstate
+  subst cg
+  let hm := oneHighFamilyCollectMidpointsVal_match R x z mids acc
+  have hvars : rawTs.toList =
+      List.map (fun id : Nat => (id : Int)) hm.ids := by
+    exact (congrArg Array.toList hTs).symm.trans hm.vars_eq
+  simp only [oneHighFamilyCommonTseitinStepVal,
+    oneHighFamilyCollectMidpointsVal, mids]
+  dsimp [ca, tsInput, mids, oneHighFamilyCollectMidpointsVal] at hv
+  rw [hv]
+  rw [oneHighFamilyEmitCommonPairsVal_state]
+  rw [oneHighFamilyEmitVal_state]
+  rw [hstate]
+  change _ = (let (ts, st) := raw
+    let (c, st) := oneHighFamilyCommonAtomId x z st
+    let st := (oneHighFamilyEmit (-(c : Int) :: ts.toList) st).2
+    let st := ts.foldl
+      (fun st t => (oneHighFamilyEmit [-t, (c : Int)] st).2) st
+    (cs.push (c : Int), st)).2
+  rw [hraw]
+  dsimp only
+  rw [hg]
+  dsimp only
+  change List.foldl (fun st (id : Nat) =>
+      (oneHighFamilyEmit [-(id : Int), (c : Int)] st).2)
+      (oneHighFamilyEmit (-(c : Int) ::
+        List.map (fun id : Nat => (id : Int)) hm.ids) stC).2 hm.ids =
+    rawTs.foldl (fun st t =>
+      (oneHighFamilyEmit [-t, (c : Int)] st).2)
+      (oneHighFamilyEmit (-(c : Int) :: rawTs.toList) stC).2
+  rw [← Array.foldl_toList]
+  rw [hvars]
+  rw [List.foldl_map]
 
 end Erdos85
