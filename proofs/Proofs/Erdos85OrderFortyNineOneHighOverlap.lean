@@ -1088,6 +1088,41 @@ theorem sum_orderFortyNineLeafComponentOwnerCensus_eq_five
       hreindex.symm
     _ = 5 := hglobal
 
+/-- There are at most six leaf-defect connected components. -/
+theorem orderFortyNine_card_leafDefect_components_le_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    Fintype.card (orderFortyNineLeafDefectGraph G v).ConnectedComponent ≤ 6 := by
+  have hsum := sum_vertex_eq_sum_connectedComponent_supp
+    (orderFortyNineLeafDefectGraph G v) (fun _ => (1 : ℕ))
+  have hleaf := orderFortyNine_card_leafLayer_eq_forty G hcard hv
+  have hsumOrder :
+      (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+        Fintype.card c.supp) = 40 := by
+    simpa [hleaf] using hsum.symm
+  have hlower :
+      (∑ _c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent, 6) ≤
+        ∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+          Fintype.card c.supp := by
+    apply Finset.sum_le_sum
+    intro c _
+    exact (orderFortyNine_leafDefect_component_order_even_and_six_le
+      G hfree hmin hcard hHigh hv c).1
+  have hconst :
+      (∑ _c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent, 6) =
+        6 * Fintype.card
+          (orderFortyNineLeafDefectGraph G v).ConnectedComponent := by
+    simp [Nat.mul_comm]
+  rw [hconst, hsumOrder] at hlower
+  omega
+
 end
 
 end Erdos85
