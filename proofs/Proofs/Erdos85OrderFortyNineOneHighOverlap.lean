@@ -2089,6 +2089,98 @@ theorem orderFortyNineLeafComponentBranchIncidence_self_eq_zero
     G hfree s x.1 y.1 hxBranch hyBranch
       ((H.mem_neighborFinset x y).1 (Finset.mem_inter.mp hy).1)
 
+/-- A component cross-branch incidence count is bounded by the product of
+the two component branch populations. -/
+theorem orderFortyNineLeafComponentBranchIncidence_le_census_mul_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchIncidence G v c s t ≤
+      orderFortyNineLeafComponentBranchCensus G v c s *
+        orderFortyNineLeafComponentBranchCensus G v c t := by
+  rw [orderFortyNineLeafComponentBranchIncidence_eq_induced]
+  let H := (orderFortyNineLeafDefectGraph G v).induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v t
+  change (∑ x ∈ S, (H.neighborFinset x ∩ T).card) ≤ _
+  calc
+    (∑ x ∈ S, (H.neighborFinset x ∩ T).card) ≤
+        ∑ _x ∈ S, T.card := by
+      apply Finset.sum_le_sum
+      intro x _
+      exact Finset.card_le_card Finset.inter_subset_right
+    _ = orderFortyNineLeafComponentBranchCensus G v c s *
+          orderFortyNineLeafComponentBranchCensus G v c t := by
+      simp [S, T, orderFortyNineLeafComponentBranchCensus]
+
+/-- In an order-six component the induced leaf-defect graph is `K₆`, so every
+two distinct branch classes span all possible edges. -/
+theorem orderFortyNineLeafComponentBranchIncidence_eq_census_mul_census_of_order_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (hc : Fintype.card c.supp = 6)
+    (s t : {z : V // z ∈ G.neighborSet v}) (hst : s ≠ t) :
+    orderFortyNineLeafComponentBranchIncidence G v c s t =
+      orderFortyNineLeafComponentBranchCensus G v c s *
+        orderFortyNineLeafComponentBranchCensus G v c t := by
+  rw [orderFortyNineLeafComponentBranchIncidence_eq_induced]
+  let L := orderFortyNineLeafDefectGraph G v
+  let H := L.induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  let T : Finset c.supp := Finset.univ.filter fun y =>
+    y.1.1 ∈ secondLayerBranch G v t
+  have hHreg : ∀ x : c.supp, H.degree x = 5 := by
+    intro x
+    rw [show H.degree x = L.degree x.1 by
+      exact degree_induce_connectedComponent_supp L c x]
+    exact orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv x.1
+  have hneighbors : ∀ x : c.supp,
+      H.neighborFinset x = Finset.univ.erase x := by
+    intro x
+    apply Finset.eq_of_subset_of_card_le
+    · intro y hy
+      exact Finset.mem_erase.mpr ⟨
+        (H.ne_of_adj ((H.mem_neighborFinset x y).1 hy)).symm,
+        Finset.mem_univ _⟩
+    · rw [Finset.card_erase_of_mem (Finset.mem_univ x),
+        Finset.card_univ, hc, H.card_neighborFinset_eq_degree, hHreg]
+  change (∑ x ∈ S, (H.neighborFinset x ∩ T).card) = _
+  have hinter : ∀ x ∈ S, H.neighborFinset x ∩ T = T := by
+    intro x hx
+    rw [hneighbors]
+    apply Finset.inter_eq_right.mpr
+    intro y hy
+    apply Finset.mem_erase.mpr
+    refine ⟨?_, Finset.mem_univ _⟩
+    intro hyx
+    subst y
+    exact Finset.disjoint_left.mp
+      (secondLayerBranch_pairwiseDisjoint G hfree v
+        (Finset.mem_univ s) (Finset.mem_univ t) hst)
+      (Finset.mem_filter.mp hx).2 (Finset.mem_filter.mp hy).2
+  calc
+    (∑ x ∈ S, (H.neighborFinset x ∩ T).card) =
+        ∑ _x ∈ S, T.card := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      rw [hinter x hx]
+    _ = orderFortyNineLeafComponentBranchCensus G v c s *
+          orderFortyNineLeafComponentBranchCensus G v c t := by
+      simp [S, T, orderFortyNineLeafComponentBranchCensus]
+
 /-- Directed cross-branch incidences decompose exactly over connected
 components. -/
 theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_global
