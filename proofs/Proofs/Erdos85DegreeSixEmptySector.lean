@@ -502,6 +502,323 @@ theorem false_of_degreeSix_orderFifteen_diagonal_two
   exact OddDiagonal.false_of_fifteen_pattern_common Q size w e hwe
     heData.2.1 heData.2.2.2 hediag herow (hbal e) hcover
 
+/-! ## Order-five discharge -/
+
+theorem false_of_degreeSix_orderFive_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw5 : w.supp.ncard = 5)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  let S : Finset D.ConnectedComponent := Finset.univ.erase w
+  let q : D.ConnectedComponent → ℕ := fun t ↦ Q w t
+  let r : D.ConnectedComponent → ℕ := fun t ↦ Q t w
+  obtain ⟨htotal, hrow, hbal, hsq, hle⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  change (∑ t, Q w t * Q t w) = size w + 3 at hsq
+  change ∀ c t, Q c t ≤ 6 at hle
+  have hsw : size w = 5 := hw5
+  have hdiagQ : Q w w = 2 := hdiag
+  have hextRow : (∑ t ∈ S, q t) = 4 := by
+    have hadd := Finset.add_sum_erase Finset.univ (fun t ↦ Q w t) (Finset.mem_univ w)
+    have hwrow := hrow w
+    change Q w w + (∑ t ∈ Finset.univ.erase w, Q w t) = ∑ t, Q w t at hadd
+    change (∑ t ∈ Finset.univ.erase w, Q w t) = 4
+    rw [hdiagQ] at hadd
+    omega
+  have hextSq : (∑ t ∈ S, q t * r t) = 4 := by
+    have hadd := Finset.add_sum_erase Finset.univ
+      (fun t ↦ Q w t * Q t w) (Finset.mem_univ w)
+    change Q w w * Q w w + (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) =
+      ∑ t, Q w t * Q t w at hadd
+    change (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) = 4
+    rw [hdiagQ] at hadd
+    rw [hsw] at hsq
+    omega
+  have hextSize : (∑ t ∈ S, size t) = 28 := by
+    have hadd := Finset.add_sum_erase Finset.univ size (Finset.mem_univ w)
+    change size w + (∑ t ∈ Finset.univ.erase w, size t) = ∑ t, size t at hadd
+    change (∑ t ∈ Finset.univ.erase w, size t) = 28
+    rw [hsw, htotal] at hadd
+    omega
+  have hclass : ∀ t ∈ S, q t = 0 ∨
+      (size t = 5 ∧ q t = 1 ∧ r t = 1) ∨
+      (size t = 5 ∧ q t = 2 ∧ r t = 2) ∨
+      (size t = 10 ∧ q t = 2 ∧ r t = 1) ∨
+      (size t = 15 ∧ q t = 3 ∧ r t = 1) ∨
+      (size t = 20 ∧ q t = 4 ∧ r t = 1) := by
+    intro t ht
+    rcases Nat.eq_zero_or_pos (q t) with hq0 | hqpos
+    · exact Or.inl hq0
+    right
+    have htw : t ≠ w := by simpa [S] using ht
+    have hpair := two_distinct_terms_le_sum size htw
+    rw [htotal, hsw] at hpair
+    have hst : size t ≤ 28 := by omega
+    have hqle : q t ≤ 4 := by
+      have hterm := Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+      rw [hextRow] at hterm
+      exact hterm
+    have hb := hbal w t
+    rw [hsw] at hb
+    change 5 * q t = size t * r t at hb
+    have hrpos : 1 ≤ r t := by
+      by_contra hn
+      have hr0 : r t = 0 := by omega
+      rw [hr0, mul_zero] at hb
+      omega
+    have hrle : r t ≤ 6 := hle t w
+    have hprod : q t * r t ≤ 4 := by
+      have hterm := Finset.single_le_sum (f := fun z ↦ q z * r z)
+        (fun _ _ ↦ Nat.zero_le _) ht
+      rw [hextSq] at hterm
+      exact hterm
+    exact OddDiagonalSmall.five_partner_type hb hqpos hqle hrpos hrle hprod hst
+  have hagg := OddDiagonalSmall.five_contact_aggregate S size q r hclass
+  rw [hextRow] at hagg
+  rw [hextSq] at hagg
+  have hc := OddDiagonalSmall.five_pattern_counts hagg.1.symm hagg.2.1.symm
+  have husedEq : (∑ z ∈ S, if q z = 0 then 0 else size z) = 20 := by
+    rw [hagg.2.2]
+    rcases hc with h | h | h | h | h <;> omega
+  let Z := S.filter fun t ↦ q t = 0
+  have hzeroSize : (∑ z ∈ Z, size z) = 8 := by
+    have hpart : (∑ z ∈ S, size z) =
+        (∑ z ∈ S, if q z = 0 then size z else 0) +
+          ∑ z ∈ S, if q z = 0 then 0 else size z := by
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_congr rfl
+      intro z _
+      by_cases hz : q z = 0 <;> simp [hz]
+    have hfilter : (∑ z ∈ S, if q z = 0 then size z else 0) =
+        ∑ z ∈ Z, size z := by simp [Z, Finset.sum_filter]
+    rw [hextSize, husedEq, hfilter] at hpart
+    omega
+  have hZle : 3 * Z.card ≤ 8 := by
+    have hz := Z.card_nsmul_le_sum size 3 (by intro z _; exact hr z)
+    rw [hzeroSize] at hz
+    simpa [nsmul_eq_mul, mul_comm] using hz
+  have hZpos : 0 < Z.card := by
+    by_contra hn
+    have hz0 : Z.card = 0 := by omega
+    rw [Finset.card_eq_zero.mp hz0] at hzeroSize
+    simp at hzeroSize
+  have hZcases : Z.card = 1 ∨ Z.card = 2 := by omega
+  have houtside : ∀ t, t ∉ Z →
+      size t = 5 ∨ size t = 10 ∨ size t = 15 ∨ size t = 20 := by
+    intro t htZ
+    by_cases htw : t = w
+    · left; simpa [htw] using hsw
+    have htS : t ∈ S := by simp [S, htw]
+    have hqne : q t ≠ 0 := by
+      intro hq0
+      exact htZ (Finset.mem_filter.mpr ⟨htS, hq0⟩)
+    rcases hclass t htS with h0 | h1 | h2 | h3 | h4 | h5
+    · exact absurd h0 hqne
+    · exact Or.inl h1.1
+    · exact Or.inl h2.1
+    · exact Or.inr (Or.inl h3.1)
+    · exact Or.inr (Or.inr (Or.inl h4.1))
+    · exact Or.inr (Or.inr (Or.inr h5.1))
+  rcases hZcases with hZ1 | hZ2
+  · obtain ⟨e, he⟩ := Finset.card_eq_one.mp hZ1
+    have heMem : e ∈ Z := by rw [he]; simp
+    have hse : size e = 8 := by rw [he] at hzeroSize; simpa using hzeroSize
+    let R := Finset.univ.erase e
+    have hrowe := hrow e
+    obtain ⟨_, _, _, hsqe, _⟩ :=
+      degreeSix_diagonal_two_quotient_profile G hfree hmin hcard e
+    change (∑ t, Q e t * Q t e) = size e + 3 at hsqe
+    have haddRow := Finset.add_sum_erase Finset.univ (fun t ↦ Q e t)
+      (Finset.mem_univ e)
+    have haddSq := Finset.add_sum_erase Finset.univ (fun t ↦ Q e t * Q t e)
+      (Finset.mem_univ e)
+    change Q e e + (∑ t ∈ R, Q e t) = ∑ t, Q e t at haddRow
+    change Q e e * Q e e + (∑ t ∈ R, Q e t * Q t e) =
+      ∑ t, Q e t * Q t e at haddSq
+    have hrowEq : Q e e + (∑ t ∈ R, Q e t) = 6 := by omega
+    have hsqEq : Q e e * Q e e + (∑ t ∈ R, Q e t * Q t e) = 11 := by
+      rw [hse] at hsqe
+      omega
+    have hq5 : ∀ t ∈ R, 5 ∣ Q e t := by
+      intro t ht
+      have hte : t ≠ e := by simpa [R] using ht
+      have htNotZ : t ∉ Z := by rw [he]; simp [hte]
+      have h5size : 5 ∣ size t := by
+        rcases houtside t htNotZ with hs | hs | hs | hs <;> rw [hs] <;> norm_num
+      have hb := hbal e t
+      rw [hse] at hb
+      have hd : 5 ∣ 8 * Q e t := by
+        rw [hb]
+        exact dvd_mul_of_dvd_left h5size _
+      exact (by norm_num : Nat.Coprime 5 8).dvd_of_dvd_mul_left hd
+    have hr1 : ∀ t ∈ R, Q t e ≤ 1 := by
+      intro t ht
+      have hte : t ≠ e := by simpa [R] using ht
+      have htNotZ : t ∉ Z := by rw [he]; simp [hte]
+      rcases houtside t htNotZ with hs | hs | hs | hs
+      all_goals
+        exact secondOrder_componentQuotientMatrix_le_one_of_not_dvd
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) t e (by
+              change ¬ size t ∣ size e
+              rw [hs, hse]
+              norm_num)
+    have h5row : 5 ∣ ∑ t ∈ R, Q e t := by
+      apply Finset.dvd_sum
+      intro t ht
+      exact hq5 t ht
+    have h5sq : 5 ∣ ∑ t ∈ R, Q e t * Q t e := by
+      apply Finset.dvd_sum
+      intro t ht
+      exact dvd_mul_of_dvd_left (hq5 t ht) _
+    have hsqRow : (∑ t ∈ R, Q e t * Q t e) ≤ ∑ t ∈ R, Q e t := by
+      apply Finset.sum_le_sum
+      intro t ht
+      nlinarith [hr1 t ht]
+    exact OddDiagonal.false_of_five_eight_residual _ _ _ hrowEq hsqEq
+      h5row h5sq hsqRow
+  · obtain ⟨e, f, hef, hefSet⟩ := Finset.card_eq_two.mp hZ2
+    have heMem : e ∈ Z := by rw [hefSet]; simp
+    have hfMem : f ∈ Z := by rw [hefSet]; simp
+    have hsumEF : size e + size f = 8 := by
+      rw [hefSet] at hzeroSize
+      simp [hef] at hzeroSize
+      omega
+    have he3 : 3 ≤ size e := hr e
+    have hf3 : 3 ≤ size f := hr f
+    have hsizes : (size e = 3 ∧ size f = 5) ∨
+        (size e = 4 ∧ size f = 4) ∨ (size e = 5 ∧ size f = 3) := by omega
+    rcases hsizes with h35 | h44 | h53
+    · have hediag := degreeSix_orderThree_diagonal_zero G hfree hmin hcard
+        coord hcoord hcoordRange hcoordD e (by exact h35.1)
+      change Q e e = 0 at hediag
+      have h5all : ∀ t, 5 ∣ Q e t := by
+        intro t
+        by_cases hte : t = e
+        · simp [hte, hediag]
+        have h5size : 5 ∣ size t := by
+          by_cases htf : t = f
+          · rw [htf, h35.2]
+          have htNotZ : t ∉ Z := by rw [hefSet]; simp [hte, htf]
+          rcases houtside t htNotZ with hs | hs | hs | hs <;> rw [hs] <;> norm_num
+        have hb := hbal e t
+        rw [h35.1] at hb
+        have hd : 5 ∣ 3 * Q e t := by rw [hb]; exact dvd_mul_of_dvd_left h5size _
+        exact (by norm_num : Nat.Coprime 5 3).dvd_of_dvd_mul_left hd
+      have h5sum : 5 ∣ ∑ t, Q e t := by
+        apply Finset.dvd_sum
+        intro t _
+        exact h5all t
+      exact OddDiagonal.false_of_five_three_residual _ (hrow e) h5sum
+    · let R := (Finset.univ.erase e).erase f
+      have hsym : Q e f = Q f e := by
+        have hb := hbal e f
+        rw [h44.1, h44.2] at hb
+        omega
+      have haddRowE := Finset.add_sum_erase Finset.univ (fun t ↦ Q e t)
+        (Finset.mem_univ e)
+      have hfErase : f ∈ Finset.univ.erase e := by simp [hef.symm]
+      have haddRowF := Finset.add_sum_erase (Finset.univ.erase e) (fun t ↦ Q e t) hfErase
+      have hrowEq : Q e e + Q e f + (∑ t ∈ R, Q e t) = 6 := by
+        have hre := hrow e
+        change Q e e + (∑ t ∈ Finset.univ.erase e, Q e t) = ∑ t, Q e t at haddRowE
+        change Q e f + (∑ t ∈ R, Q e t) = ∑ t ∈ Finset.univ.erase e, Q e t at haddRowF
+        omega
+      obtain ⟨_, _, _, hsqe, _⟩ :=
+        degreeSix_diagonal_two_quotient_profile G hfree hmin hcard e
+      change (∑ t, Q e t * Q t e) = size e + 3 at hsqe
+      have haddSqE := Finset.add_sum_erase Finset.univ
+        (fun t ↦ Q e t * Q t e) (Finset.mem_univ e)
+      have haddSqF := Finset.add_sum_erase (Finset.univ.erase e)
+        (fun t ↦ Q e t * Q t e) hfErase
+      have hsqEq : Q e e * Q e e + Q e f * Q e f +
+          (∑ t ∈ R, Q e t * Q t e) = 7 := by
+        rw [h44.1] at hsqe
+        change Q e e * Q e e +
+          (∑ t ∈ Finset.univ.erase e, Q e t * Q t e) =
+            ∑ t, Q e t * Q t e at haddSqE
+        change Q e f * Q f e + (∑ t ∈ R, Q e t * Q t e) =
+          ∑ t ∈ Finset.univ.erase e, Q e t * Q t e at haddSqF
+        rw [← hsym] at haddSqF
+        omega
+      have hq5 : ∀ t ∈ R, 5 ∣ Q e t := by
+        intro t ht
+        have hte : t ≠ e := (Finset.mem_erase.mp (Finset.mem_erase.mp ht).2).1
+        have htf : t ≠ f := (Finset.mem_erase.mp ht).1
+        have htNotZ : t ∉ Z := by rw [hefSet]; simp [hte, htf]
+        have h5size : 5 ∣ size t := by
+          rcases houtside t htNotZ with hs | hs | hs | hs <;> rw [hs] <;> norm_num
+        have hb := hbal e t
+        rw [h44.1] at hb
+        have hd : 5 ∣ 4 * Q e t := by rw [hb]; exact dvd_mul_of_dvd_left h5size _
+        exact (by norm_num : Nat.Coprime 5 4).dvd_of_dvd_mul_left hd
+      have h5row : 5 ∣ ∑ t ∈ R, Q e t := by
+        apply Finset.dvd_sum
+        intro t ht
+        exact hq5 t ht
+      have h5sq : 5 ∣ ∑ t ∈ R, Q e t * Q t e := by
+        apply Finset.dvd_sum
+        intro t ht
+        exact dvd_mul_of_dvd_left (hq5 t ht) _
+      have hrowSq : (∑ t ∈ R, Q e t) ≤ ∑ t ∈ R, Q e t * Q t e := by
+        apply Finset.sum_le_sum
+        intro t ht
+        rcases Nat.eq_zero_or_pos (Q e t) with h0 | hp
+        · simp [h0]
+        have hb := hbal e t
+        rw [h44.1] at hb
+        have ht3 : 3 ≤ size t := hr t
+        have hrpos : 1 ≤ Q t e := by
+          by_contra hn
+          have hz : Q t e = 0 := by omega
+          rw [hz, mul_zero] at hb
+          omega
+        nlinarith
+      exact OddDiagonal.false_of_five_four_four_residual _ _ _ _
+        hrowEq hsqEq h5row h5sq hrowSq
+    · have hfdiag := degreeSix_orderThree_diagonal_zero G hfree hmin hcard
+        coord hcoord hcoordRange hcoordD f (by exact h53.2)
+      change Q f f = 0 at hfdiag
+      have h5all : ∀ t, 5 ∣ Q f t := by
+        intro t
+        by_cases htf : t = f
+        · simp [htf, hfdiag]
+        have h5size : 5 ∣ size t := by
+          by_cases hte : t = e
+          · rw [hte, h53.1]
+          have htNotZ : t ∉ Z := by rw [hefSet]; simp [hte, htf]
+          rcases houtside t htNotZ with hs | hs | hs | hs <;> rw [hs] <;> norm_num
+        have hb := hbal f t
+        rw [h53.2] at hb
+        have hd : 5 ∣ 3 * Q f t := by rw [hb]; exact dvd_mul_of_dvd_left h5size _
+        exact (by norm_num : Nat.Coprime 5 3).dvd_of_dvd_mul_left hd
+      have h5sum : 5 ∣ ∑ t, Q f t := by
+        apply Finset.dvd_sum
+        intro t _
+        exact h5all t
+      exact OddDiagonal.false_of_five_three_residual _ (hrow f) h5sum
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two
