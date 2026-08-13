@@ -675,6 +675,63 @@ theorem orderFortyNineOneHighOverlap_diag_le_three
     G hfree s s (G.loopless.irrefl s.1)] at hpartition
   omega
 
+/-- Diagonal mass on a locally matched center pair is at most four.  Thus
+the two endpoints of a local matching edge cannot both have diagonal three. -/
+theorem orderFortyNineOneHighOverlap_paired_diag_sum_le_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    orderFortyNineOneHighOverlap G v s s +
+      orderFortyNineOneHighOverlap G v t t ≤ 4 := by
+  have hstructure := squareOrder_degree_succ_highRoot_structure
+    G hfree (d := 7) (by omega) hmin (by omega) (by omega)
+  have hneigh := hstructure.2.1
+  have hlocal := hstructure.2.2
+  have hexternal := externalRepairCandidates_eq_empty_of_squareOrder_highRoot
+    G hfree (d := 7) (by omega) (by omega) (by omega) hneigh hlocal
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v →
+      G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav := hunique ha8
+      subst a
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨u, _, hvBranch⟩
+      exact ((Finset.mem_sdiff.mp hvBranch).2 (by simp)).elim
+  have hmatched :=
+    squareOrder_sub_one_le_add_matchedCounts_of_paired_of_odd
+      G hfree (d := 7) (by omega) (by norm_num [Odd]) (by omega)
+      hneigh hlocal hexternal houterDegree s t hst
+  have hsPartition := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv s
+  have htPartition := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv t
+  rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    G hfree s s (G.loopless.irrefl s.1)] at hsPartition
+  rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    G hfree t t (G.loopless.irrefl t.1)] at htPartition
+  omega
+
 end
 
 end Erdos85
