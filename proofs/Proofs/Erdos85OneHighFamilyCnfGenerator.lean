@@ -135,6 +135,23 @@ theorem oneHighFamilyIdsSound_runList {α : Type} (xs : List α)
       simp only [oneHighFamilyRunList, List.foldl_cons]
       exact ih (hstep x st h)
 
+theorem oneHighFamilyIdsSound_foldlAccum {α β : Type} (xs : List α)
+    (step : α → (β × OneHighFamilyGenState) →
+      β × OneHighFamilyGenState)
+    (acc : β) {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (hstep : ∀ x acc st, OneHighFamilyIdsSound st →
+      OneHighFamilyIdsSound (step x (acc, st)).2) :
+    OneHighFamilyIdsSound (xs.foldl (fun accst x => step x accst) (acc, st)).2 := by
+  induction xs generalizing acc st with
+  | nil => exact h
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      generalize heq : step x (acc, st) = out
+      rcases out with ⟨acc', st'⟩
+      have hx := hstep x acc st h
+      rw [heq] at hx
+      exact ih acc' hx
+
 theorem oneHighFamilyIdsSound_edgeId
     {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
     (i j : Nat) :
@@ -165,9 +182,26 @@ def oneHighFamilyInternalBlockStep (a b : Nat)
     oneHighFamilyRunList (List.range 5) (fun j st =>
       if i < j then oneHighFamilyInternalPairStep a b i j st else st) st) st
 
+theorem oneHighFamilyIdsSound_internalBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a b : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyInternalBlockStep a b st) := by
+  apply oneHighFamilyIdsSound_runList _ _ h
+  intro i st hi
+  apply oneHighFamilyIdsSound_runList _ _ hi
+  intro j st hj
+  split
+  · exact oneHighFamilyIdsSound_internalPairStep hj a b i j
+  · exact hj
+
 /-- First generator segment: the 80 within-block matching unit clauses. -/
 def oneHighFamilyInternalUnits (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 8) (oneHighFamilyInternalBlockStep a) {}
+
+theorem oneHighFamilyIdsSound_internalUnits (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyInternalUnits a) := by
+  exact oneHighFamilyIdsSound_runList _ _ oneHighFamilyIdsSound_initial
+    (fun b st h => oneHighFamilyIdsSound_internalBlockStep h a b)
 
 def oneHighFamilyMatePairStep (b i j : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -191,11 +225,26 @@ def oneHighFamilyMateBlockStep (b : Nat)
     oneHighFamilyRunList (List.range 5)
       (fun j st => oneHighFamilyMatePairStep b i j st) st) st
 
+theorem oneHighFamilyIdsSound_mateBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (b : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMateBlockStep b st) := by
+  apply oneHighFamilyIdsSound_runList _ _ h
+  intro i st hi
+  exact oneHighFamilyIdsSound_runList _ _ hi
+    (fun j st hj => oneHighFamilyIdsSound_matePairStep hj b i j)
+
 /-- Second generator segment: the 100 zero units between standard-mate
 blocks, starting from the completed internal-unit state. -/
 def oneHighFamilyBaseUnits (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList [0, 2, 4, 6] oneHighFamilyMateBlockStep
     (oneHighFamilyInternalUnits a)
+
+theorem oneHighFamilyIdsSound_baseUnits (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyBaseUnits a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_internalUnits a)
+    (fun b st h => oneHighFamilyIdsSound_mateBlockStep h b)
 
 def oneHighFamilyC4SameMidpointStep (i j w : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -228,6 +277,30 @@ def oneHighFamilyC4CrossMidpointsStep (i j w w' : Nat)
   (oneHighFamilyEmit
     [-(eiw : Int), -(ejw : Int), -(eiw' : Int), -(ejw' : Int)] st).2
 
+theorem oneHighFamilyIdsSound_c4CrossMidpointsStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j w w' : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4CrossMidpointsStep i j w w' st) := by
+  simp only [oneHighFamilyC4CrossMidpointsStep]
+  generalize h₁ : oneHighFamilyEdgeId i w st = out₁
+  rcases out₁ with ⟨eiw, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_edgeId h i w
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId j w st₁ = out₂
+  rcases out₂ with ⟨ejw, st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ j w
+  rw [h₂] at hs₂
+  generalize h₃ : oneHighFamilyEdgeId i w' st₂ = out₃
+  rcases out₃ with ⟨eiw', st₃⟩
+  have hs₃ := oneHighFamilyIdsSound_edgeId hs₂ i w'
+  rw [h₃] at hs₃
+  generalize h₄ : oneHighFamilyEdgeId j w' st₃ = out₄
+  rcases out₄ with ⟨ejw', st₄⟩
+  have hs₄ := oneHighFamilyIdsSound_edgeId hs₃ j w'
+  rw [h₄] at hs₄
+  simp only [h₂, h₃, h₄]
+  exact oneHighFamilyIdsSound_emit hs₄ _
+
 def oneHighFamilyOtherVertices (i j : Nat) : List Nat :=
   (List.range 40).filter fun w => w ≠ i ∧ w ≠ j
 
@@ -243,10 +316,36 @@ def oneHighFamilyC4PairStep (i j : Nat)
         if w < w' then oneHighFamilyC4CrossMidpointsStep i j w w' st else st)
         st) st
 
+theorem oneHighFamilyIdsSound_c4PairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4PairStep i j st) := by
+  simp only [oneHighFamilyC4PairStep]
+  split
+  · exact oneHighFamilyIdsSound_runList _ _ h
+      (fun w st hw => oneHighFamilyIdsSound_c4SameMidpointStep hw i j w)
+  · apply oneHighFamilyIdsSound_runList _ _ h
+    intro w st hw
+    apply oneHighFamilyIdsSound_runList _ _ hw
+    intro w' st hw'
+    split
+    · exact oneHighFamilyIdsSound_c4CrossMidpointsStep hw' i j w w'
+    · exact hw'
+
 def oneHighFamilyC4OuterStep (i : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40) (fun j st =>
     if i < j then oneHighFamilyC4PairStep i j st else st) st
+
+theorem oneHighFamilyIdsSound_c4OuterStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4OuterStep i st) := by
+  apply oneHighFamilyIdsSound_runList _ _ h
+  intro j st hj
+  split
+  · exact oneHighFamilyIdsSound_c4PairStep hj i j
+  · exact hj
 
 /-- Third generator segment: same-block zero-common-neighbor clauses and
 general cross-block at-most-one-common-neighbor clauses, in the exact nested
@@ -254,6 +353,12 @@ general cross-block at-most-one-common-neighbor clauses, in the exact nested
 def oneHighFamilyC4Clauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40) oneHighFamilyC4OuterStep
     (oneHighFamilyBaseUnits a)
+
+theorem oneHighFamilyIdsSound_c4Clauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4Clauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_baseUnits a)
+    (fun i st h => oneHighFamilyIdsSound_c4OuterStep h i)
 
 def oneHighFamilyBlockVertices (b : Nat) : List Nat :=
   (List.range 5).map fun r => 5 * b + r
@@ -288,16 +393,44 @@ def oneHighFamilyAtMostOneVertexStep (b y : Nat)
       oneHighFamilyRunList xs (fun x' st =>
         if x < x' then oneHighFamilyAtMostOnePairStep y x x' st else st) st) st
 
+theorem oneHighFamilyIdsSound_atMostOneVertexStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (b y : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyAtMostOneVertexStep b y st) := by
+  simp only [oneHighFamilyAtMostOneVertexStep]
+  split
+  · exact h
+  · apply oneHighFamilyIdsSound_runList _ _ h
+    intro x st hx
+    apply oneHighFamilyIdsSound_runList _ _ hx
+    intro x' st hx'
+    split
+    · exact oneHighFamilyIdsSound_atMostOnePairStep hx' y x x'
+    · exact hx'
+
 def oneHighFamilyAtMostOneBlockStep (b : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40)
     (oneHighFamilyAtMostOneVertexStep b) st
+
+theorem oneHighFamilyIdsSound_atMostOneBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (b : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyAtMostOneBlockStep b st) := by
+  exact oneHighFamilyIdsSound_runList _ _ h
+    (fun y st hy => oneHighFamilyIdsSound_atMostOneVertexStep hy b y)
 
 /-- Fourth generator segment: every vertex has at most one neighbor in a
 non-mate block. -/
 def oneHighFamilyAtMostOneBlockClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 8) oneHighFamilyAtMostOneBlockStep
     (oneHighFamilyC4Clauses a)
+
+theorem oneHighFamilyIdsSound_atMostOneBlockClauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyAtMostOneBlockClauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_c4Clauses a)
+    (fun b st h => oneHighFamilyIdsSound_atMostOneBlockStep h b)
 
 def oneHighFamilyFarVertices (y : Nat) : List Nat :=
   (List.range 40).filter fun x =>
@@ -336,10 +469,36 @@ def oneHighFamilyFarDegreeStep (a y : Nat)
     (acc.push (id : Int), st)) (#[], st)
   oneHighFamilyEqualsBlock vars (oneHighFamilyFarDegreeBound a y) st
 
+theorem oneHighFamilyIdsSound_farDegreeStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a y : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyFarDegreeStep a y st) := by
+  simp only [oneHighFamilyFarDegreeStep]
+  generalize heq : (oneHighFamilyFarVertices y).foldl (fun (acc, st) x =>
+    let (id, st) := oneHighFamilyEdgeId y x st
+    (acc.push (id : Int), st)) (#[], st) = out
+  rcases out with ⟨vars, st'⟩
+  apply oneHighFamilyIdsSound_equalsBlock _ vars _
+  have hs := oneHighFamilyIdsSound_foldlAccum (oneHighFamilyFarVertices y)
+    (fun x (accst : Array Int × OneHighFamilyGenState) =>
+      let (acc, st) := accst
+      let (id, st) := oneHighFamilyEdgeId y x st
+      (acc.push (id : Int), st)) #[] h (by
+        intro x acc st hx
+        exact oneHighFamilyIdsSound_edgeId hx y x)
+  rw [heq] at hs
+  exact hs
+
 /-- Fifth generator segment: forty exact far-degree equality counters. -/
 def oneHighFamilyFarDegreeClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40) (oneHighFamilyFarDegreeStep a)
     (oneHighFamilyAtMostOneBlockClauses a)
+
+theorem oneHighFamilyIdsSound_farDegreeClauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyFarDegreeClauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_atMostOneBlockClauses a)
+    (fun y st h => oneHighFamilyIdsSound_farDegreeStep h a y)
 
 def oneHighFamilyVertexMatched (a w : Nat) : Bool :=
   let b := w / 5
