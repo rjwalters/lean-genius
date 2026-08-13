@@ -2,6 +2,7 @@ import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
 import Proofs.Erdos85FrequencyPairMixedTransport
+import Proofs.Erdos85RamseyPlateau
 
 /-!
 # Degree-six empty-sector assembly
@@ -2289,6 +2290,14 @@ theorem false_of_degreeSix_exact_boundary
         omega)⟩
   exact false_of_degreeSix_boundary
     G hfree hmin hcard u hu huRange huD hr
+
+/-- The degree-six exact-boundary graph exclusion in plateau-core language. -/
+theorem not_C4PlateauCore_thirtyThree_six :
+    ¬ C4PlateauCore 33 6 := by
+  classical
+  rintro ⟨G, hdec, hminEq, hfree, _, _⟩
+  letI : DecidableRel G.Adj := hdec
+  exact false_of_degreeSix_exact_boundary G hfree (by omega) (by simp)
 
 end
 
