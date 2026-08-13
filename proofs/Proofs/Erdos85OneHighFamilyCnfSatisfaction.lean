@@ -74,4 +74,19 @@ theorem oneHighFamilyNamedVal_of_mem
     oneHighFamilyNamedVal R ids id = oneHighFamilyAtomValue R atom := by
   rw [oneHighFamilyNamedVal, oneHighFamilyLookupId_of_mem hnodup hmem]
 
+theorem oneHighFamilyPureNamedVal_of_mem
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) {atom : OneHighFamilyAtom} {id : Nat}
+    (hmem : (atom, id) ∈ (oneHighFamilyPureClauses a).ids) :
+    oneHighFamilyNamedVal R (oneHighFamilyPureClauses a).ids id =
+      oneHighFamilyAtomValue R atom := by
+  exact oneHighFamilyNamedVal_of_mem R
+    (oneHighFamilyIdsSound_pureClauses a).ids_nodup hmem
+
+theorem oneHighFamilyPureNamedId_bounded
+    (a : Nat) {atom : OneHighFamilyAtom} {id : Nat}
+    (hmem : (atom, id) ∈ (oneHighFamilyPureClauses a).ids) :
+    1 ≤ id ∧ id ≤ (oneHighFamilyPureClauses a).top :=
+  (oneHighFamilyIdsSound_pureClauses a).id_bounds (atom, id) hmem
+
 end Erdos85

@@ -61,6 +61,23 @@ theorem oneHighFamilyLookup_eq_none_iff
         · intro h ha
           exact h (Or.inr ha)
 
+theorem oneHighFamilyLookup_eq_some_mem
+    {atom : OneHighFamilyAtom} {id : Nat}
+    {ids : List (OneHighFamilyAtom × Nat)}
+    (h : oneHighFamilyLookup atom ids = some id) :
+    (atom, id) ∈ ids := by
+  induction ids with
+  | nil => simp [oneHighFamilyLookup] at h
+  | cons entry rest ih =>
+      rw [List.mem_cons]
+      rw [oneHighFamilyLookup] at h
+      split at h
+      next heq =>
+        simp only [Option.some.injEq] at h
+        subst id
+        exact Or.inl (Prod.ext heq.symm rfl)
+      next => exact Or.inr (ih h)
+
 /-- PySAT `IDPool.id`: named atoms are memoized, while the next fresh ID is
 strictly above the current global top (including prior counter auxiliaries). -/
 def oneHighFamilyAtomId (atom : OneHighFamilyAtom) :
@@ -100,6 +117,25 @@ theorem oneHighFamilyIdsSound_atomId
       · simp
       · have hb := h.id_bounds entry hentry
         exact ⟨hb.1, hb.2.trans (Nat.le_succ _)⟩
+
+theorem oneHighFamilyAtomId_mem (atom : OneHighFamilyAtom)
+    (st : OneHighFamilyGenState) :
+    (atom, (oneHighFamilyAtomId atom st).1) ∈
+      (oneHighFamilyAtomId atom st).2.ids := by
+  unfold oneHighFamilyAtomId
+  split
+  next id hlookup =>
+    exact oneHighFamilyLookup_eq_some_mem hlookup
+  next hlookup => simp
+
+theorem oneHighFamilyAtomId_ids_subset (atom : OneHighFamilyAtom)
+    (st : OneHighFamilyGenState) :
+    ∀ entry ∈ st.ids, entry ∈ (oneHighFamilyAtomId atom st).2.ids := by
+  unfold oneHighFamilyAtomId
+  split
+  · exact fun entry hentry => hentry
+  · intro entry hentry
+    exact List.mem_cons_of_mem _ hentry
 
 def oneHighFamilyEdgeId (i j : Nat) : StateM OneHighFamilyGenState Nat :=
   oneHighFamilyAtomId (.edge (min i j) (max i j))
