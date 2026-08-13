@@ -2161,6 +2161,61 @@ theorem orderFortyNine_defectSquare_center_leaf_eq_fourthWalk
   rw [hBB, hBJ, hJB, hBM, hMB, hJJ, hJM, hMJ]
   ring
 
+/-- Number of leaf-defect neighbors of `y` having the same defect owner
+`s`. -/
+def orderFortyNineSameOwnerLeafDefectDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (y : {z : V // z ≠ v ∧ ¬ G.Adj v z}) : ℕ :=
+  ((secondOrderDefectGraph G).neighborFinset y.1 ∩
+    orderFortyNineDefectOwnerFiber G v s).card
+
+/-- For an owner--leaf pair, the fourth-walk formula loses its `A²` term:
+the same-owner leaf-defect degree is exactly `A⁴(s,y) - 38`. -/
+theorem orderFortyNine_sameOwnerLeafDefectDegree_eq_fourthWalk_sub_thirtyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (y : {z : V // z ≠ v ∧ ¬ G.Adj v z})
+    (hy : G.degree y.1 = 7)
+    (howner : y.1 ∈ orderFortyNineDefectOwnerFiber G v s) :
+    (orderFortyNineSameOwnerLeafDefectDegree G v s y : ℤ) =
+      ((G.adjMatrix ℤ * G.adjMatrix ℤ) *
+        (G.adjMatrix ℤ * G.adjMatrix ℤ)) s.1 y.1 - 38 := by
+  have hvs : G.Adj v s.1 := s.2
+  have hDsy : (secondOrderDefectGraph G).Adj s.1 y.1 := by
+    exact ((secondOrderDefectGraph G).mem_neighborFinset s.1 y.1).1 howner
+  have hsy : s.1 ≠ y.1 := (secondOrderDefectGraph G).ne_of_adj hDsy
+  have hA2zero :
+      (G.adjMatrix ℤ * G.adjMatrix ℤ) s.1 y.1 = 0 := by
+    rw [adjMatrix_sq_apply_eq_card_common]
+    have hzero :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree hsy).1 hDsy
+    rw [hzero]
+    simp
+  have hformula := orderFortyNine_defectSquare_center_leaf_eq_fourthWalk
+    G hfree hmin hcard hHigh hv hvs hy y.2.2
+  rw [hA2zero] at hformula
+  have hleft :
+      (((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) s.1 y.1) =
+        (orderFortyNineSameOwnerLeafDefectDegree G v s y : ℤ) := by
+    rw [adjMatrix_sq_apply_eq_card_common]
+    congr 1
+    rw [orderFortyNineSameOwnerLeafDefectDegree,
+      orderFortyNineDefectOwnerFiber, Finset.inter_comm]
+  rw [hleft] at hformula
+  simpa using hformula
+
 /-- The center block of `D²` is `5I`: every defect-owner fiber has size five,
 and distinct fibers are disjoint. -/
 theorem orderFortyNine_defectSquare_centerBlock
