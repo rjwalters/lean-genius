@@ -219,6 +219,97 @@ theorem false_of_degreeSix_largePrime_diagonal_two
   exact OddDiagonal.false_of_large_prime_diag_two
     Q size w hwo hop ho17 hsize hrev hbal hdiag (hrow w)
 
+/-- Order twenty-seven has no admissible external quotient partner within
+the remaining six vertices. -/
+theorem false_of_degreeSix_orderTwentySeven_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw27 : w.supp.ncard = 27)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  obtain ⟨htotal, hrow, hbal, _, hle⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  change ∀ c t, Q c t ≤ 6 at hle
+  have hsw : size w = 27 := hw27
+  have hdiagQ : Q w w = 2 := hdiag
+  have hzero : ∀ t, t ≠ w → Q w t = 0 := by
+    intro t htw
+    have hpair := two_distinct_terms_le_sum size htw
+    rw [htotal] at hpair
+    have hst : size t ≤ 6 := by dsimp [size] at hpair ⊢; omega
+    have hst3 : 3 ≤ size t := hr t
+    have hb := hbal w t
+    rw [hsw] at hb
+    by_contra hq
+    have hqpos : 0 < Q w t := Nat.pos_of_ne_zero hq
+    have hrt := hle t w
+    interval_cases (size t) <;> omega
+  have hsum : (∑ t, Q w t) = Q w w := by
+    rw [← Finset.sum_subset (Finset.subset_univ {w})]
+    · simp
+    · intro t _ ht
+      exact hzero t (by simpa using ht)
+  have hwrow := hrow w
+  rw [hsum, hdiagQ] at hwrow
+  omega
+
+/-- An order-thirty-three component exhausts the carrier, so diagonal two
+cannot supply the degree-six row. -/
+theorem false_of_degreeSix_orderThirtyThree_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw33 : w.supp.ncard = 33)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  obtain ⟨htotal, hrow, _, _, _⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  have hsw : size w = 33 := hw33
+  have hdiagQ : Q w w = 2 := hdiag
+  have hall : ∀ t : D.ConnectedComponent, t = w := by
+    intro t
+    by_contra htw
+    have hpair := two_distinct_terms_le_sum size htw
+    rw [htotal] at hpair
+    have hst3 : 3 ≤ size t := hr t
+    rw [hsw] at hpair
+    omega
+  have huniv : (Finset.univ : Finset D.ConnectedComponent) = {w} := by
+    ext t
+    simp [hall t]
+  have hwrow := hrow w
+  rw [huniv] at hwrow
+  simp at hwrow
+  omega
+
 /-- Once the empty-sector analysis supplies zero diagonal on every odd
 component, the eight odd-to-even cover terminals give the boundary
 contradiction immediately. -/
