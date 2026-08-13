@@ -1806,6 +1806,46 @@ theorem false_of_degreeSix_orderTwelve_heavy_budget_large_contact
     (hlarge : q * r = 12 ∨ q * r = 20) : False := by
   omega
 
+/-- If every positive entry of a mass-five row has value one, and component
+orders are three times row entries, then the non-order-three heavy filter is
+empty. -/
+theorem heavy_filter_empty_of_mass_five_all_single
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size : C → ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrow : (∑ t ∈ S, q t) = 5)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 0)
+    (h3 : (S.filter fun t ↦ q t = 3).card = 0)
+    (h4 : (S.filter fun t ↦ q t = 4).card = 0)
+    (h5 : (S.filter fun t ↦ q t = 5).card = 0) :
+    S.filter (fun t ↦ size t ≠ 3) = ∅ := by
+  apply Finset.not_nonempty_iff_eq_empty.mp
+  intro hne
+  obtain ⟨t, htH⟩ := hne
+  have ht := (Finset.mem_filter.mp htH).1
+  have htNe := (Finset.mem_filter.mp htH).2
+  have hqle : q t ≤ 5 := by
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hqnot (k : ℕ) (hk : (S.filter fun z ↦ q z = k).card = 0) :
+      q t ≠ k := by
+    intro hq
+    have : t ∈ S.filter fun z ↦ q z = k :=
+      Finset.mem_filter.mpr ⟨ht, hq⟩
+    have hempty := Finset.card_eq_zero.mp hk
+    rw [hempty] at this
+    simp at this
+  have hqt : q t = 1 := by
+    have := hpos t ht
+    have hn2 := hqnot 2 h2
+    have hn3 := hqnot 3 h3
+    have hn4 := hqnot 4 h4
+    have hn5 := hqnot 5 h5
+    omega
+  exact htNe (by rw [hsize t ht, hqt])
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
