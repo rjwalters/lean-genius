@@ -4822,6 +4822,19 @@ theorem contact_sum_four_two_one_one_named
     omega
   · rintro (rfl | rfl | rfl) <;> simp [hcS, heS, hfS, hqc, hqe, hqf]
 
+/-- The two complementary filters of the residual finset, together with the
+two erased components, cover the full component type. -/
+theorem univ_eq_insert_insert_residual_filters
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (a b : C) (p : C → Prop) [DecidablePred p] :
+    (Finset.univ : Finset C) =
+      insert a (insert b
+        ((((Finset.univ.erase a).erase b).filter p) ∪
+         (((Finset.univ.erase a).erase b).filter fun t ↦ ¬ p t))) := by
+  ext t
+  by_cases hta : t = a <;> by_cases htb : t = b <;> by_cases hp : p t <;>
+    simp [hta, htb, hp]
+
 /-- Graph-level named contacted `{6,6}` half. -/
 theorem degreeSix_threeSix_contacted_twoSix_shape
     {V : Type*} [Fintype V] [DecidableEq V]
