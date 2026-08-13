@@ -2384,6 +2384,165 @@ theorem orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
   rw [hdet, hk]
   ring
 
+/-- In the one-high stratum there is a canonical mate involution for which
+every non-mate pair obeys the cross-miss capacity bound used by the finite
+miss-table census. -/
+theorem orderFortyNine_exists_mate_crossMissCapacity_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s u, u ∈ ((Finset.univ.erase s).erase (mate s)) →
+        highBranchMissCount G v s (mate u) +
+          highBranchMissCount G v u (mate s) ≤ 5 := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  obtain ⟨mate, hmateInv, hmateAdj, hexact⟩ :=
+    orderFortyNine_exists_mate_exact_outerDefectBlocks
+      G hfree hmin hcard hv hunique
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s u hu
+  have h := (hexact s).2 u hu
+  omega
+
+/-- Top-level one-high form of the mate-block witness law.  The returned mate
+involution is the same local-neighborhood matching used by the finite family
+encoding.  Every internally unmatched leaf has an adjacent internally
+matched leaf in a far block which misses the source leaf's mate block. -/
+theorem orderFortyNine_exists_mate_unmatchedWitness_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ (s : {z : V // z ∈ G.neighborSet v}) (x : V),
+        x ∈ secondLayerBranch G v s →
+        (G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+        ∃ u : {z : V // z ∈ G.neighborSet v},
+          u ∈ ((Finset.univ.erase s).erase (mate s)) ∧
+          ∃ q ∈ G.neighborFinset x ∩ secondLayerBranch G v u,
+            (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 ∧
+            (G.neighborFinset q ∩
+              secondLayerBranch G v (mate s)).card = 0 := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  obtain ⟨mate, hmateInv, hmateAdj⟩ :=
+    exists_localMate_involution G v hlocal
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s x hx hxUnmatched
+  exact unmatched_vertex_exists_matched_neighbor_missing_mate
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s x hx hxUnmatched
+
+/-- Top-level one-high form of the exact augmented-family `k`-sum law.  For
+each branch, the total number of incidences from its vertices to internally
+matched far vertices missing the mate block equals the mate block's matched
+vertex count, i.e. twice its internal matching size. -/
+theorem orderFortyNine_exists_mate_kSumExact_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s : {z : V // z ∈ G.neighborSet v},
+        (∑ x ∈ secondLayerBranch G v s,
+          (G.neighborFinset x ∩
+            highBranchMateMissingFarVertices G v mate s).card) =
+          highBranchMatchedCount G v (mate s) := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  obtain ⟨mate, hmateInv, hmateAdj⟩ :=
+    exists_localMate_involution G v hlocal
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  exact sum_neighbor_inter_mateMissing_eq_matchedCount
+    G hfree hmin hcard hv hexternal houterDegree
+      mate hmateInv hmateAdj s
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
