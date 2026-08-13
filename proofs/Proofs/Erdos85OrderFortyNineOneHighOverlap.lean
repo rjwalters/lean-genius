@@ -1914,6 +1914,47 @@ theorem card_orderFortyNineDefectOwnerEdgeBlock_eq_defectCube_apply
   exact card_neighborToNeighborEdgeBlock_eq_adjMatrix_cube_apply
     (secondOrderDefectGraph G) s.1 t.1
 
+/-- The center block of `D²` is `5I`: every defect-owner fiber has size five,
+and distinct fibers are disjoint. -/
+theorem orderFortyNine_defectSquare_centerBlock
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (s t : {z : V // z ∈ G.neighborSet v}) :
+    ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) s.1 t.1 =
+        if s = t then 5 else 0 := by
+  let D := secondOrderDefectGraph G
+  by_cases hst : s = t
+  · subst t
+    rw [if_pos rfl, D.adjMatrix_mul_self_apply_self,
+      ← D.card_neighborFinset_eq_degree]
+    exact_mod_cast orderFortyNine_card_defectOwnerFiber_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv s
+  · rw [if_neg hst, adjMatrix_sq_apply_eq_card_common]
+    have hsAdj : G.Adj v s.1 := s.2
+    have htAdj : G.Adj v t.1 := t.2
+    have hdisjClosed :=
+      orderFortyNine_closedDefectNeighborhood_pairwiseDisjoint_at_high
+        G hfree hmin hcard hv
+          ((G.mem_neighborFinset v s.1).2 hsAdj)
+          ((G.mem_neighborFinset v t.1).2 htAdj)
+          (fun h => hst (Subtype.ext h))
+    have hinter : D.neighborFinset s.1 ∩ D.neighborFinset t.1 = ∅ := by
+      apply Finset.eq_empty_iff_forall_notMem.mpr
+      intro y hy
+      exact Finset.disjoint_left.mp hdisjClosed
+        (Finset.mem_insert.mpr (Or.inr (Finset.mem_inter.mp hy).1))
+        (Finset.mem_insert.mpr (Or.inr (Finset.mem_inter.mp hy).2))
+    rw [hinter]
+    simp
+
 /-- The same directed incidence count restricted to one leaf-defect
 component. -/
 def orderFortyNineLeafComponentBranchIncidence
