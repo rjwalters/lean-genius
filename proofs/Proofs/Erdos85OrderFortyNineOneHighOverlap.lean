@@ -2281,6 +2281,83 @@ theorem orderFortyNine_three_dvd_adjMatrix_det_of_one_high
   rw [hmap, hdet3] at hdetmap
   exact (ZMod.intCast_zmod_eq_zero_iff_dvd (G.adjMatrix ℤ).det 3).mp hdetmap
 
+/-- In fact the integral high-root identity gives the much stronger divisor
+`48 ∣ det A`.  Multiplying `A w = -48 e_v` by `adjugate A` and reading the
+`v` coordinate gives `det(A) = -48 adjugate(A)_{v,v}`, because `w(v)=1`. -/
+theorem orderFortyNine_fortyEight_dvd_adjMatrix_det_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    (48 : ℤ) ∣ (G.adjMatrix ℤ).det := by
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hHigh
+  have hvu : v = u := by simpa [hu] using hvHigh
+  have hdegree : ∀ {x : V}, x ≠ v → G.degree x = 7 := by
+    intro x hx
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard x with hx7 | hx8
+    · exact hx7
+    · have hxHigh : x ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hx8]
+      have hxu : x = u := by simpa [hu] using hxHigh
+      exact (hx (hxu.trans hvu.symm)).elim
+  let A := G.adjMatrix ℤ
+  let w := squareOrderHighRootWeight G 7 v
+  have hAw : A.mulVec w = fun x => if x = v then (-48 : ℤ) else 0 := by
+    simpa [A, w] using
+      (adjMatrix_mulVec_squareOrderHighRootWeight
+        G hfree (by omega) hmin (by simpa using hcard) hv hdegree)
+  have hwv : w v = 1 := by
+    simp [w, squareOrderHighRootWeight]
+  have hadj := congrArg
+    (fun z : V → ℤ => (A.adjugate.mulVec z) v) hAw
+  have hleft : (A.adjugate.mulVec (A.mulVec w)) v = A.det := by
+    calc
+      _ = ((A.adjugate * A).mulVec w) v := by
+        rw [Matrix.mulVec_mulVec]
+      _ = A.det := by rw [Matrix.adjugate_mul]; simp [hwv]
+  have hright :
+      (A.adjugate.mulVec (fun x => if x = v then (-48 : ℤ) else 0)) v =
+        A.adjugate v v * (-48) := by
+    simp [Matrix.mulVec, dotProduct]
+  rw [hleft, hright] at hadj
+  refine ⟨-A.adjugate v v, ?_⟩
+  change A.det = 48 * (-A.adjugate v v)
+  rw [hadj]
+  ring
+
+/-- The one-high square candidate has determinant divisible by `48² = 2304`.
+This retains the full integral content of the high-root kernel identity. -/
+theorem orderFortyNine_twoThousandThreeHundredFour_dvd_squareCandidate_det_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    (2304 : ℤ) ∣ (orderFortyNineSquareCandidate G).det := by
+  rcases orderFortyNine_fortyEight_dvd_adjMatrix_det_of_one_high
+      G hfree hmin hcard hHigh hv with ⟨k, hk⟩
+  have hdet : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin hcard]
+    rfl
+  refine ⟨k * k, ?_⟩
+  rw [hdet, hk]
+  ring
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
