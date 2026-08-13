@@ -540,6 +540,85 @@ theorem orderFortyNineOneHighOverlap_comm
   · exact orderFortyNineOneHighOverlap_comm_of_not_centerAdj
       G hfree hmin hcard hv s t hst
 
+/-- The diagonal cannot be identically five.  Otherwise every branch is
+independent, contradicting the clean unique-high obstruction. -/
+theorem exists_orderFortyNineOneHighOverlap_diag_lt_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ s : {z : V // z ∈ G.neighborSet v},
+      orderFortyNineOneHighOverlap G v s s < 5 := by
+  by_contra hnone
+  have hdiag : ∀ s : {z : V // z ∈ G.neighborSet v},
+      orderFortyNineOneHighOverlap G v s s = 5 := by
+    intro s
+    have hle := orderFortyNineOneHighOverlap_le_five
+      G hfree hmin hcard hv s s
+    have hge : 5 ≤ orderFortyNineOneHighOverlap G v s s :=
+      Nat.le_of_not_gt (fun hs => hnone ⟨s, hs⟩)
+    omega
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hcover : ∀ {x y : V}, G.Adj x y →
+      G.degree x = 7 ∨ G.degree y = 7 := by
+    intro x y hxy
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard x with hx7 | hx8
+    · exact Or.inl hx7
+    · rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard y with hy7 | hy8
+      · exact Or.inr hy7
+      · exact (orderFortyNine_not_adj_degreeEight_degreeEight
+          G hfree hmin hcard hx8 hy8 hxy).elim
+  have hclean : ∀ u : {z : V // z ∈ G.neighborSet v},
+      ∀ {p q : V}, p ∈ secondLayerBranch G v u →
+        q ∈ secondLayerBranch G v u → ¬ G.Adj p q := by
+    intro u p q hp hq hpq
+    have hinterCard :
+        (secondLayerBranch G v u ∩
+          orderFortyNineDefectOwnerFiber G v u).card = 5 := by
+      simpa [orderFortyNineOneHighOverlap] using hdiag u
+    have hbranchCard := orderFortyNine_card_originalBranch_eq_five
+      G hfree hmin hcard hv u
+    have hinterEq :
+        secondLayerBranch G v u ∩
+            orderFortyNineDefectOwnerFiber G v u =
+          secondLayerBranch G v u := by
+      apply Finset.eq_of_subset_of_card_le Finset.inter_subset_left
+      omega
+    have hbranchTF : secondLayerBranch G v u =
+        triangleFreeNeighbors G u.1 := by
+      rw [← orderFortyNine_branch_inter_ownFiber_eq_triangleFreeNeighbors
+        G hfree hmin hcard hv u, hinterEq]
+    have hpTF : p ∈ triangleFreeNeighbors G u.1 := by
+      rw [← hbranchTF]
+      exact hp
+    have hpData := (mem_triangleFreeNeighbors G u.1 p).1 hpTF
+    have hqCommon : q ∈ G.neighborFinset u.1 ∩ G.neighborFinset p := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨
+        (G.mem_neighborFinset u.1 q).1 (Finset.mem_sdiff.mp hq).1,
+        hpq⟩
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hpData
+    exact hpData.2 q hqCommon
+  exact false_of_squareOrder_uniqueHigh_clean
+    G hfree (d := 7) (by omega) hmin hcover (by omega) (by omega) hunique hclean
+
 end
 
 end Erdos85
