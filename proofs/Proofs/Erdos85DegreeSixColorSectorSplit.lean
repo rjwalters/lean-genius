@@ -4186,6 +4186,262 @@ theorem false_of_degreeSix_threeTwelve_one_orderSix_threeSix_remainder
   rw [hsq, hbb] at hdiagLe
   norm_num at hdiagLe
 
+/-- Small arithmetic classifier for a target in the unused order-twelve
+mass of the one-order-six `(3,12)` branch. -/
+theorem degreeSix_threeTwelve_orderSix_target_type_arithmetic
+    (s q r : ℕ) (hs3 : 3 ≤ s) (hs12 : s ≤ 12)
+    (hq5 : q ≤ 5) (hr7 : r ≤ 7) (hbal : 6 * q = s * r)
+    (hprod : q * r ≤ 7) :
+    (q = 0 ∧ r = 0) ∨
+    (s = 3 ∧ q = 1 ∧ r = 2) ∨
+    (s = 4 ∧ q = 2 ∧ r = 3) ∨
+    (s = 6 ∧ q = 1 ∧ r = 1) ∨
+    (s = 6 ∧ q = 2 ∧ r = 2) ∨
+    (s = 9 ∧ q = 3 ∧ r = 2) ∨
+    (s = 12 ∧ q = 2 ∧ r = 1) := by
+  interval_cases s <;> interval_cases q <;> interval_cases r <;> omega
+
+set_option maxHeartbeats 2000000 in
+/-- The row, square, balance, and unused-mass equations in the one-order-six
+branch force quotient two toward the order-twelve component and force every
+unused component to have order three or six. -/
+theorem degreeSix_threeTwelve_orderSix_remainder_arithmetic
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ) (x y z : ℕ)
+    (hsize : (∑ c ∈ S, size c) = 12)
+    (hmin : ∀ c ∈ S, 3 ≤ size c)
+    (hbal : ∀ c ∈ S, 6 * q c = size c * r c)
+    (hx : x ≤ 2) (hyz : 6 * y = 12 * z)
+    (hrow : x + y + (∑ c ∈ S, q c) = 5)
+    (hprod : x * x + y * z + (∑ c ∈ S, q c * r c) = 7) :
+    y = 2 ∧ ∀ c ∈ S, size c = 3 ∨ size c = 6 := by
+  have hcardLe : S.card ≤ 4 := by
+    have hthree : S.card * 3 ≤ ∑ c ∈ S, size c := by
+      calc
+        S.card * 3 = ∑ _c ∈ S, 3 := by simp [mul_comm]
+        _ ≤ ∑ c ∈ S, size c := Finset.sum_le_sum fun c hc ↦ hmin c hc
+    omega
+  have hcardPos : 0 < S.card := by
+    by_contra hnot
+    have : S.card = 0 := by omega
+    have hSEmpty := Finset.card_eq_zero.mp this
+    rw [hSEmpty] at hsize
+    simp at hsize
+  have hqle : ∀ c ∈ S, q c ≤ 5 := by
+    intro c hc
+    have hsingle : q c ≤ ∑ d ∈ S, q d :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hprodle : ∀ c ∈ S, q c * r c ≤ 7 := by
+    intro c hc
+    have hsingle : q c * r c ≤ ∑ d ∈ S, q d * r d :=
+      Finset.single_le_sum (f := fun d ↦ q d * r d)
+        (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hrle : ∀ c ∈ S, r c ≤ 7 := by
+    intro c hc
+    by_cases hq0 : q c = 0
+    · have hb := hbal c hc
+      have hs3 := hmin c hc
+      rw [hq0] at hb
+      have hz : size c = 0 ∨ r c = 0 := Nat.mul_eq_zero.mp (by omega)
+      omega
+    · have hp := hprodle c hc
+      have hqpos : 1 ≤ q c := Nat.one_le_iff_ne_zero.mpr hq0
+      have hrprod : r c ≤ q c * r c := by
+        simpa [one_mul] using Nat.mul_le_mul_right (r c) hqpos
+      omega
+  have hclass : ∀ c ∈ S,
+      (q c = 0 ∧ r c = 0) ∨
+      (size c = 3 ∧ q c = 1 ∧ r c = 2) ∨
+      (size c = 4 ∧ q c = 2 ∧ r c = 3) ∨
+      (size c = 6 ∧ q c = 1 ∧ r c = 1) ∨
+      (size c = 6 ∧ q c = 2 ∧ r c = 2) ∨
+      (size c = 9 ∧ q c = 3 ∧ r c = 2) ∨
+      (size c = 12 ∧ q c = 2 ∧ r c = 1) := by
+    intro c hc
+    apply degreeSix_threeTwelve_orderSix_target_type_arithmetic
+    · exact hmin c hc
+    · have hsingle : size c ≤ ∑ d ∈ S, size d :=
+        Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) hc
+      omega
+    · exact hqle c hc
+    · exact hrle c hc
+    · exact hbal c hc
+    · exact hprodle c hc
+  have hcards : S.card = 1 ∨ S.card = 2 ∨ S.card = 3 ∨ S.card = 4 := by omega
+  have hy5 : y ≤ 5 := by omega
+  have hz3 : z ≤ 3 := by omega
+  rcases hcards with hcard | hcard | hcard | hcard
+  · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hcard
+    simp only [Finset.sum_singleton] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;> simp_all <;>
+      interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      not_false_eq_true, hab] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb | hb | hb <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, hbc] at hsize hrow hprod
+    have hsa6 : size a ≤ 6 := by
+      have := hmin b (by simp); have := hmin c (by simp); omega
+    have hsb6 : size b ≤ 6 := by
+      have := hmin a (by simp); have := hmin c (by simp); omega
+    have hsc6 : size c ≤ 6 := by
+      have := hmin a (by simp); have := hmin b (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨
+        (size a = 3 ∧ q a = 1 ∧ r a = 2) ∨
+        (size a = 4 ∧ q a = 2 ∧ r a = 3) ∨
+        (size a = 6 ∧ q a = 1 ∧ r a = 1) ∨
+        (size a = 6 ∧ q a = 2 ∧ r a = 2) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨
+        (size b = 3 ∧ q b = 1 ∧ r b = 2) ∨
+        (size b = 4 ∧ q b = 2 ∧ r b = 3) ∨
+        (size b = 6 ∧ q b = 1 ∧ r b = 1) ∨
+        (size b = 6 ∧ q b = 2 ∧ r b = 2) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨
+        (size c = 3 ∧ q c = 1 ∧ r c = 2) ∨
+        (size c = 4 ∧ q c = 2 ∧ r c = 3) ∨
+        (size c = 6 ∧ q c = 1 ∧ r c = 1) ∨
+        (size c = 6 ∧ q c = 2 ∧ r c = 2) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb <;>
+      rcases hc with hc | hc | hc | hc | hc <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ :=
+      Finset.card_eq_four.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, had, hbc, hbd, hcd]
+      at hsize hrow hprod
+    have hsa : size a = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsb : size b = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsc : size c = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsd : size d = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨ (q a = 1 ∧ r a = 2) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨ (q b = 1 ∧ r b = 2) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨ (q c = 1 ∧ r c = 2) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hd : (q d = 0 ∧ r d = 0) ∨ (q d = 1 ∧ r d = 2) := by
+      rcases hclass d (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+      rcases hc with hc | hc <;> rcases hd with hd | hd <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+
+/-- The one-order-six branch of the `(3,12)` residual contact dichotomy is
+impossible. -/
+theorem false_of_degreeSix_threeTwelve_one_orderSix_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b t : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (ht6 : t.supp.ncard = 6)
+    (hat : componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2)
+    (hta : componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hremSize : (∑ z ∈ (((Finset.univ.erase a).erase b).erase t),
+      z.supp.ncard) = 12) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (((Finset.univ.erase a).erase b).erase t)
+  change Q a t = 2 at hat
+  change Q t a = 1 at hta
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hatNe : a ≠ t := by intro h; subst t; omega
+  have hbtNe : b ≠ t := by intro h; subst t; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have htIn : t ∈ (Finset.univ.erase a).erase b :=
+    Finset.mem_erase.mpr ⟨hbtNe.symm,
+      Finset.mem_erase.mpr ⟨hatNe.symm, Finset.mem_univ t⟩⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t
+  change (∑ z, Q t z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q t) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q t) hbIn
+  have hrT := Finset.sum_erase_add ((Finset.univ.erase a).erase b) (Q t) htIn
+  have hrow : Q t t + Q t b + (∑ z ∈ S, Q t z) = 5 := by
+    dsimp [S]
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t t
+  have hsq : (∑ z, Q t z * Q z t) = 9 := by
+    simpa [Q, Matrix.mul_apply, ht6] using hsqGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q t z * Q z t) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q t z * Q z t) hbIn
+  have hpT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+    (fun z ↦ Q t z * Q z t) htIn
+  have hprod : Q t t * Q t t + Q t b * Q b t +
+      (∑ z ∈ S, Q t z * Q z t) = 7 := by
+    dsimp [S]
+    rw [hta, hat] at hpA
+    omega
+  have hdiag := degreeSix_orderSix_after_three_twelve_cover_diagonal_le_two
+    G hfree hmin hcard t a ht6 hta hat
+  have hbalBT := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t b
+  change t.supp.ncard * Q t b = b.supp.ncard * Q b t at hbalBT
+  have hbalS : ∀ z ∈ S, 6 * Q t z = z.supp.ncard * Q z t := by
+    intro z hz
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) t z
+    simpa [Q, ht6] using hbal
+  have harith := degreeSix_threeTwelve_orderSix_remainder_arithmetic
+    S (fun z ↦ z.supp.ncard) (Q t) (fun z ↦ Q z t)
+      (Q t t) (Q t b) (Q b t) (by simpa [S] using hremSize)
+      (fun z hz ↦ hr z) hbalS hdiag (by simpa [ht6, hb12] using hbalBT)
+      hrow hprod
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 4 := by rw [ha3, hb12, hba] at habBal; omega
+  exact false_of_degreeSix_threeTwelve_one_orderSix_threeSix_remainder
+    G hfree hmin hcard u hu huRange huD a b t ha3 hb12 ht6 habNe hatNe
+      hbtNe hba hab harith.1 (fun z hz ↦ harith.2 z hz)
+
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/
 theorem degreeSix_orderFive_ten_residual_filter_counts
