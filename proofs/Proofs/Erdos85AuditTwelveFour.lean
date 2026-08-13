@@ -219,6 +219,9 @@ import Proofs.Erdos85DegreeSixEmptySector
 #print axioms Erdos85.degreeSix_threeSix_unused_half_shape
 #print axioms Erdos85.degreeSix_threeSix_unused_half_orderSix_contact_mass
 
+-- (3,6) COVER CLOSED: dispatchers + top-level (667904ca34..3992949773)
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_six
+
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two
