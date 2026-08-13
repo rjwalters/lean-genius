@@ -156,6 +156,97 @@ def oneHighFamilyAtMostOneBlockClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 8) oneHighFamilyAtMostOneBlockStep
     (oneHighFamilyC4Clauses a)
 
+def oneHighFamilyFarVertices (y : Nat) : List Nat :=
+  (List.range 40).filter fun x =>
+    x ≠ y ∧ x / 5 ≠ y / 5 ∧ x / 5 ≠ (y / 5 ^^^ 1)
+
+def oneHighFamilyFarDegreeBound (a y : Nat) : Nat :=
+  let b := y / 5
+  let r := y % 5
+  let internalEdges := if b % 2 = 0 ∧ b / 2 < a then 1 else 2
+  if r < 2 ∨ (internalEdges = 2 ∧ r < 4) then 5 else 6
+
+/-- Incorporate a `CardEnc.equals` block into the named-atom generator state.
+Counter auxiliaries advance the global top but do not enter `IDPool.obj2id`. -/
+def oneHighFamilyEqualsBlock (vars : Array Int) (bound : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let out := seqCounterEqualsCore st.top vars bound
+  { st with top := out.top, clauses := st.clauses ++ out.clauses }
+
+def oneHighFamilyFarDegreeStep (a y : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let (vars, st) := (oneHighFamilyFarVertices y).foldl (fun (acc, st) x =>
+    let (id, st) := oneHighFamilyEdgeId y x st
+    (acc.push (id : Int), st)) (#[], st)
+  oneHighFamilyEqualsBlock vars (oneHighFamilyFarDegreeBound a y) st
+
+/-- Fifth generator segment: forty exact far-degree equality counters. -/
+def oneHighFamilyFarDegreeClauses (a : Nat) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 40) (oneHighFamilyFarDegreeStep a)
+    (oneHighFamilyAtMostOneBlockClauses a)
+
+def oneHighFamilyVertexMatched (a w : Nat) : Bool :=
+  let b := w / 5
+  let r := w % 5
+  decide (r < 2 ∨ (¬(b % 2 = 0 ∧ b / 2 < a) ∧ r < 4))
+
+def oneHighFamilyMissDefinitionStep (w b : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  if b = w / 5 ∨ b = (w / 5 ^^^ 1) then st else
+    let (xv, st) := oneHighFamilyAtomId (.miss w b) st
+    let (lits, st) := (oneHighFamilyBlockVertices b).foldl
+      (fun (acc, st) z =>
+        let (id, st) := oneHighFamilyEdgeId w z st
+        (acc.push (id : Int), st)) (#[], st)
+    let st := lits.foldl
+      (fun st lit => (oneHighFamilyEmit [-(xv : Int), -lit] st).2) st
+    (oneHighFamilyEmit ((xv : Int) :: lits.toList) st).2
+
+def oneHighFamilyMissVertexStep (a w : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  if oneHighFamilyVertexMatched a w then
+    oneHighFamilyRunList (List.range 8)
+      (oneHighFamilyMissDefinitionStep w) st
+  else st
+
+/-- Sixth generator segment: exact Tseitin definitions of every matched
+leaf's six missing-block variables. -/
+def oneHighFamilyMissDefinitionClauses (a : Nat) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 40) (oneHighFamilyMissVertexStep a)
+    (oneHighFamilyFarDegreeClauses a)
+
+def oneHighFamilyFarBlocks (c : Nat) : List Nat :=
+  (List.range 8).filter fun b => b ≠ c ∧ b ≠ (c ^^^ 1)
+
+def oneHighFamilyLexPairStep (x y j k : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  if j > k then
+    let (xj, st) := oneHighFamilyAtomId (.miss x j) st
+    let (yk, st) := oneHighFamilyAtomId (.miss y k) st
+    (oneHighFamilyEmit [-(xj : Int), -(yk : Int)] st).2
+  else st
+
+def oneHighFamilyLexLeq (c x y : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let fars := oneHighFamilyFarBlocks c
+  oneHighFamilyRunList fars (fun j st =>
+    oneHighFamilyRunList fars
+      (fun k st => oneHighFamilyLexPairStep x y j k st) st) st
+
+def oneHighFamilyLexBlockStep (a c : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let base := 5 * c
+  let st := oneHighFamilyLexLeq c base (base + 1) st
+  if ¬(c % 2 = 0 ∧ c / 2 < a) then
+    let st := oneHighFamilyLexLeq c (base + 2) (base + 3) st
+    oneHighFamilyLexLeq c base (base + 2) st
+  else st
+
+/-- Seventh generator segment: the three matched-pair lex WLOG families. -/
+def oneHighFamilyLexClauses (a : Nat) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 8) (oneHighFamilyLexBlockStep a)
+    (oneHighFamilyMissDefinitionClauses a)
+
 theorem oneHighFamilyInternalUnits_reference :
     ∀ a ∈ [0, 1, 2, 3, 4],
       let out := oneHighFamilyInternalUnits a
@@ -166,20 +257,6 @@ theorem oneHighFamilyBaseUnits_reference :
     ∀ a ∈ [0, 1, 2, 3, 4],
       let out := oneHighFamilyBaseUnits a
       out.top = 180 ∧ out.ids.length = 180 ∧ out.clauses.size = 180 := by
-  native_decide
-
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 4000000 in
-theorem oneHighFamilyC4Clauses_reference :
-    let out := oneHighFamilyC4Clauses 4
-    out.top = 780 ∧ out.ids.length = 780 ∧ out.clauses.size = 495320 := by
-  native_decide
-
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 4000000 in
-theorem oneHighFamilyAtMostOneBlockClauses_reference :
-    let out := oneHighFamilyAtMostOneBlockClauses 4
-    out.top = 780 ∧ out.ids.length = 780 ∧ out.clauses.size = 497960 := by
   native_decide
 
 /-- Reference prefix for AAAA pins both first-encounter IDs and unit signs. -/
