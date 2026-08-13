@@ -1483,6 +1483,27 @@ theorem seqPrefixTrue_oneHighFamilyLiteralRow
   · simp [hi]
   · simp [hi]
 
+def finsetRangeFilterEquivFinSubtype (n : Nat) (p : Fin n → Prop)
+    [DecidablePred p] :
+    {i // i ∈ (Finset.range n).filter fun k =>
+      if hk : k < n then p ⟨k, hk⟩ else false} ≃
+      {i : Fin n // p i} where
+  toFun i := ⟨⟨i.1, Finset.mem_range.mp (Finset.mem_filter.mp i.2).1⟩, by
+    simpa [Finset.mem_range.mp (Finset.mem_filter.mp i.2).1] using
+      (Finset.mem_filter.mp i.2).2⟩
+  invFun i := ⟨i.1, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr i.1.2, by
+    simp [i.1.2, i.2]⟩⟩
+  left_inv i := by ext; rfl
+  right_inv i := by ext; rfl
+
+theorem finsetRangeFilter_card_eq_finSubtype_card
+    (n : Nat) (p : Fin n → Prop) [DecidablePred p] :
+    ((Finset.range n).filter fun k =>
+      if hk : k < n then p ⟨k, hk⟩ else false).card =
+      Fintype.card {i : Fin n // p i} := by
+  rw [← Fintype.card_coe]
+  exact Fintype.card_congr (finsetRangeFilterEquivFinSubtype n p)
+
 theorem oneHighStandardMate_val_eq_xor (b : Fin 8) :
     (oneHighStandardMate b).val = b.val ^^^ 1 := by
   native_decide +revert
@@ -1769,6 +1790,50 @@ theorem oneHighFamilyCollectedEdgesMatch_value
   rw [dimacsLitValue, if_pos hidPosInt]
   simpa using (hs.named _ _ halign).trans
     (oneHighFamilyAtomValue_edge R hy hx)
+
+theorem oneHighFamilyFarVertices_nodup (y : Nat) :
+    (oneHighFamilyFarVertices y).Nodup := by
+  exact (List.nodup_range : (List.range 40).Nodup).filter _
+
+theorem oneHighFamilyCollectedFar_trueCard
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {y : Nat} (hy : y < 40) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    let input := oneHighFamilyCollectFarInputsVal R y acc
+    Fintype.card {i : Fin input.1.size //
+      oneHighFamilyInputAccumRow input i = true} =
+    Fintype.card {z : {x // x ∈ oneHighFamilyFarVertices y} //
+      R.Adj (⟨y, hy⟩ : Fin 40) ⟨z.1, by
+        exact (oneHighFamilyFarVertices_mem_iff hy).mp z.2 |>.1⟩} := by
+  let input := oneHighFamilyCollectFarInputsVal R y acc
+  let xs := oneHighFamilyFarVertices y
+  let hm := oneHighFamilyCollectFarInputsVal_match R y acc
+  let hs := oneHighFamilyCollectFarInputsVal_sound R hacc y
+  have hlen : input.1.size = xs.length :=
+    oneHighFamilyCollectedEdgesMatch_length hm
+  let e : Fin input.1.size ≃ {x // x ∈ xs} :=
+    (finCongr hlen).trans ((oneHighFamilyFarVertices_nodup y).getEquiv xs)
+  let ep : {i : Fin input.1.size //
+      oneHighFamilyInputAccumRow input i = true} ≃
+      {z : {x // x ∈ xs} //
+        R.Adj (⟨y, hy⟩ : Fin 40) ⟨z.1, by
+          exact (oneHighFamilyFarVertices_mem_iff hy).mp z.2 |>.1⟩} :=
+    Equiv.subtypeEquiv e (by
+      intro i
+      have hgetMem : xs.get (finCongr hlen i) ∈ xs :=
+        List.get_mem xs (finCongr hlen i)
+      have hx : xs.get (finCongr hlen i) < 40 :=
+        (oneHighFamilyFarVertices_mem_iff hy).mp hgetMem |>.1
+      have hv := oneHighFamilyCollectedEdgesMatch_value R hy hm hs.semantic
+        i.val i.isLt hx
+      have hv' : oneHighFamilyInputAccumRow input i =
+          decide (R.Adj (⟨y, hy⟩ : Fin 40)
+            ⟨xs.get (finCongr hlen i), hx⟩) := by
+        unfold oneHighFamilyInputAccumRow oneHighFamilyLiteralRow
+        convert hv using 1 <;> simp [input, xs, finCongr]
+      rw [hv']
+      simp [e, xs])
+  exact Fintype.card_congr ep
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
