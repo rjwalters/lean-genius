@@ -1905,6 +1905,45 @@ theorem heavy_filter_eq_single_of_unique_non_single
   subst t
   exact huHeavy
 
+/-- Uniform singleton-heavy terminal.  The heavy order is `3k` for
+`2 ≤ k ≤ 5`; detailed balance with the order-twelve component and the
+two residual budgets are inconsistent in every case. -/
+theorem false_of_degreeSix_threeTwelve_single_heavy_partition
+    (k z q r : ℕ) (hk2 : 2 ≤ k) (hk5 : k ≤ 5)
+    (hbal : 12 * q = (3 * k) * r)
+    (hrow : q + z = 5) (hprod : q * r + z * z = 11) : False := by
+  by_cases hq0 : q = 0
+  · rw [hq0] at hrow hprod
+    norm_num at hrow hprod
+    exact false_of_degreeSix_orderTwelve_heavy_budget_empty z hrow hprod
+  · have hqpos : 0 < q := Nat.pos_of_ne_zero hq0
+    have hq5 : q ≤ 5 := by omega
+    have hrpos : 0 < r := by
+      by_contra hr0
+      push Not at hr0
+      have hrz : r = 0 := by omega
+      rw [hrz] at hbal
+      omega
+    have hprodLe : q * r ≤ 11 := by omega
+    have hsize : 3 * k = 6 ∨ 3 * k = 9 ∨ 3 * k = 12 ∨ 3 * k = 15 := by
+      interval_cases k <;> omega
+    have htype := degreeSix_orderTwelve_heavy_contact_type_arithmetic
+      (3 * k) q r hsize hqpos hq5 hrpos hprodLe hbal
+    rcases htype with h6a | h6b | h12a | h12b | h12c
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_six
+        z q r (Or.inl h6a.2) hrow hprod
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_six
+        z q r (Or.inr h6b.2) hrow hprod
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inl h12a.2.1) hrow
+          (by simpa [h12a.2.1, h12a.2.2] using hprod)
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inr (Or.inl h12b.2.1)) hrow
+          (by simpa [h12b.2.1, h12b.2.2] using hprod)
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inr (Or.inr h12c.2.1)) hrow
+          (by simpa [h12c.2.1, h12c.2.2] using hprod)
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
