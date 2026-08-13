@@ -21,6 +21,17 @@ without proof output.  An `UNSAT` line from those lanes is therefore a signal
 to rerun the exact hashed CNF with proof production; it is not itself a
 certificate.
 
+Proof-grade reruns use [`run_family_proof.sh`](run_family_proof.sh).  The
+runner hash-gates its CNF, requests a DRAT proof from Glucose, requires an
+independent `drat-trim` `s VERIFIED` verdict, records the uncompressed proof
+hash and timings, and only then compresses the proof.  The staged binaries are:
+
+- Glucose: `921283eadd485ad178b78ca072fd0615d61d7b18fde46113fa2906a8b2f3a466`
+- drat-trim: `b535cc5334e97fba5b5db6013625c5a0b16ce348a98d59ff91b45a83fa56b39e`
+
+An end-to-end contradictory-unit smoke instance produced a DRAT proof and
+independently verified before the family rerun was launched.
+
 Graph-side soundness is certified in Lean by
 `Erdos85OneHighCanonicalMate.lean` and its imports: canonical Fin8/Fin5/Fin40
 labels, internal and mate-block edges, C4/common-neighbor clauses, foreign
