@@ -32,6 +32,49 @@ noncomputable def oneHighReducedDefectMatrix
   (6 : ℚ) • 1 - ((secondOrderDefectGraph G).adjMatrix ℚ).submatrix
     Subtype.val Subtype.val
 
+noncomputable def oneHighReducedDefectMatrixInt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (v : V) : Matrix (oneHighReducedVertex v) (oneHighReducedVertex v) ℤ :=
+  fun i j => if i = j then 6
+    else -((secondOrderDefectGraph G).adjMatrix ℤ) i.1 j.1
+
+theorem map_oneHighReducedDefectMatrixInt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (v : V) :
+    (Int.castRingHom ℚ).mapMatrix (oneHighReducedDefectMatrixInt G v) =
+      oneHighReducedDefectMatrix G v := by
+  ext i j
+  by_cases hij : i = j
+  · subst j
+    simp [oneHighReducedDefectMatrixInt, oneHighReducedDefectMatrix,
+      SimpleGraph.adjMatrix_apply, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Pi.smul_apply, smul_eq_mul]
+  · simp [oneHighReducedDefectMatrixInt, oneHighReducedDefectMatrix,
+      SimpleGraph.adjMatrix_apply, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Pi.smul_apply, smul_eq_mul, hij]
+
+def oneHighSplitEquiv {V : Type*} [DecidableEq V] (v : V) :
+    V ≃ Unit ⊕ oneHighReducedVertex v where
+  toFun x := if h : x = v then Sum.inl () else Sum.inr ⟨x, h⟩
+  invFun
+    | Sum.inl _ => v
+    | Sum.inr x => x.1
+  left_inv x := by
+    by_cases h : x = v
+    · simp [h]
+    · simp [h]
+  right_inv x := by
+    rcases x with u | x
+    · rcases u with ⟨⟩
+      simp
+    · simp [x.2]
+
 theorem sum_oneHighResolventWeight_eq_328
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -211,6 +254,11 @@ theorem oneHighReducedDefectMatrix_mulVec_resolventWeight
       G hfree hmin hcard hv).1
   have hvDempty : D.neighborFinset v = ∅ := by
     rw [← Finset.card_eq_zero, D.card_neighborFinset_eq_degree, hvDzero]
+  have hvDnot : ∀ x : V, ¬ D.Adj v x := by
+    intro x hvx
+    have hxmem : x ∈ D.neighborFinset v := (D.mem_neighborFinset v x).mpr hvx
+    rw [hvDempty] at hxmem
+    exact Finset.notMem_empty x hxmem
   have hsub :
       ((D.adjMatrix ℚ).submatrix Subtype.val Subtype.val).mulVec
       (oneHighResolventWeight G v) z =
@@ -254,6 +302,230 @@ theorem oneHighReducedDefectMatrix_mulVec_resolventWeight
   rw [hsum]
   by_cases hvz : G.Adj v z.1 <;>
     simp [oneHighResolventWeight, hvz] <;> norm_num
+
+theorem oneHighSquareCandidate_reindex_eq_fromBlocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ((Int.castRingHom ℚ).mapMatrix (orderFortyNineSquareCandidate G)).submatrix
+      (oneHighSplitEquiv v).symm (oneHighSplitEquiv v).symm =
+      Matrix.fromBlocks
+        (fun _ : Unit => fun _ : Unit => (8 : ℚ))
+        (fun _ : Unit => fun _ : oneHighReducedVertex v => (1 : ℚ))
+        (fun _ : oneHighReducedVertex v => fun _ : Unit => (1 : ℚ))
+        (oneHighReducedDefectMatrix G v +
+          Matrix.vecMulVec (fun _ : oneHighReducedVertex v => (1 : ℚ))
+            (fun _ : oneHighReducedVertex v => (1 : ℚ))) := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hvDzero : D.degree v = 0 :=
+    (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+      G hfree hmin hcard hv).1
+  have hvDempty : D.neighborFinset v = ∅ := by
+    rw [← Finset.card_eq_zero, D.card_neighborFinset_eq_degree, hvDzero]
+  have hvDnot_block : ∀ x : V, ¬ D.Adj v x := by
+    intro x hvx
+    have hxmem : x ∈ D.neighborFinset v := (D.mem_neighborFinset v x).mpr hvx
+    rw [hvDempty] at hxmem
+    exact Finset.notMem_empty x hxmem
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hHigh
+  have hvu : v = u := by simpa [hu] using hvHigh
+  have hnotHigh : ∀ z : oneHighReducedVertex v,
+      z.1 ∉ orderFortyNineHighVertices G := by
+    intro z hz
+    have hzu : z.1 = u := by simpa [hu] using hz
+    exact z.2 (hzu.trans hvu.symm)
+  ext i j
+  rcases i with i | i <;> rcases j with j | j
+  · rcases i with ⟨⟩
+    rcases j with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, hvHigh]
+  · rcases i with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, j.2, Ne.symm j.2, hvDnot_block]
+  · rcases j with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, i.2, hvDnot_block,
+      (D.adj_comm i.1 v)]
+  · simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      oneHighReducedDefectMatrix, orderFortyNineHighDiagonal,
+      FriendshipTheoremOQ01.onesMatrix, SimpleGraph.adjMatrix_apply,
+      D, Matrix.map_apply, Matrix.vecMulVec, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, hnotHigh]
+    by_cases hij : i = j
+    · subst j
+      simp [hnotHigh]
+    · have hijv : i.1 ≠ j.1 := fun h => hij (Subtype.ext h)
+      simp [hij, hijv]
+      ring
+
+/-- In the one-high stratum, the determinant of the reduced defect matrix
+`6I - D'` is a rational square.  This is the graph-facing form of the
+square-candidate obstruction. -/
+theorem orderFortyNine_reducedDefectMatrix_det_isSquare_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    IsSquare (oneHighReducedDefectMatrix G v).det := by
+  classical
+  let H := oneHighReducedDefectMatrix G v
+  by_cases hHdet : H.det = 0
+  · refine ⟨0, ?_⟩
+    change H.det = 0 * 0
+    simp [hHdet]
+  obtain ⟨k, hk⟩ :=
+    orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
+      G hfree hmin hcard hHigh hv
+  have hblock := det_oneHighBlock_eq_2304_mul_det H
+    (oneHighResolventWeight G v)
+    (oneHighReducedDefectMatrix_mulVec_resolventWeight
+      G hfree hmin hcard hHigh hv)
+    (sum_oneHighResolventWeight_eq_328 G hcard hv) hHdet
+  have hreindex := congrArg Matrix.det
+    (oneHighSquareCandidate_reindex_eq_fromBlocks
+      G hfree hmin hcard hHigh hv)
+  have hcandidate :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det = 2304 * H.det := by
+    simpa [H] using hreindex.trans hblock
+  have hcast :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det =
+        2304 * (k : ℚ) ^ 2 := by
+    rw [← (Int.castRingHom ℚ).map_det]
+    calc
+      ((orderFortyNineSquareCandidate G).det : ℚ) =
+          ((2304 * k ^ 2 : ℤ) : ℚ) := congrArg (fun z : ℤ => (z : ℚ)) hk
+      _ = 2304 * (k : ℚ) ^ 2 := by norm_num
+  refine ⟨(k : ℚ), ?_⟩
+  change H.det = (k : ℚ) * (k : ℚ)
+  rw [pow_two] at hcast
+  linarith
+
+/-- Integer form of the reduced determinant obstruction.  Unlike the
+rational formulation, this theorem can be reduced modulo a finite prime
+without any denominator side condition. -/
+theorem orderFortyNine_reducedDefectMatrixInt_det_isSquare_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    IsSquare (oneHighReducedDefectMatrixInt G v).det := by
+  classical
+  let H := oneHighReducedDefectMatrix G v
+  let HZ := oneHighReducedDefectMatrixInt G v
+  obtain ⟨k, hk⟩ :=
+    orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
+      G hfree hmin hcard hHigh hv
+  have hmap : (Int.castRingHom ℚ).mapMatrix HZ = H := by
+    simpa [H, HZ] using map_oneHighReducedDefectMatrixInt G v
+  by_cases hHdet : H.det = 0
+  · refine ⟨0, ?_⟩
+    have hdetcast : ((HZ.det : ℤ) : ℚ) = H.det := by
+      calc
+        ((HZ.det : ℤ) : ℚ) =
+            ((Int.castRingHom ℚ).mapMatrix HZ).det :=
+          (Int.castRingHom ℚ).map_det HZ
+        _ = H.det := congrArg Matrix.det hmap
+    have : HZ.det = 0 := by exact_mod_cast hdetcast.trans hHdet
+    change HZ.det = 0 * 0
+    simp [this]
+  have hblock := det_oneHighBlock_eq_2304_mul_det H
+    (oneHighResolventWeight G v)
+    (oneHighReducedDefectMatrix_mulVec_resolventWeight
+      G hfree hmin hcard hHigh hv)
+    (sum_oneHighResolventWeight_eq_328 G hcard hv) hHdet
+  have hreindex := congrArg Matrix.det
+    (oneHighSquareCandidate_reindex_eq_fromBlocks
+      G hfree hmin hcard hHigh hv)
+  have hcandidate :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det = 2304 * H.det := by
+    simpa [H] using hreindex.trans hblock
+  have hcast :
+      ((Int.castRingHom ℚ).mapMatrix
+        (orderFortyNineSquareCandidate G)).det =
+        2304 * (k : ℚ) ^ 2 := by
+    rw [← (Int.castRingHom ℚ).map_det]
+    calc
+      ((orderFortyNineSquareCandidate G).det : ℚ) =
+          ((2304 * k ^ 2 : ℤ) : ℚ) := congrArg (fun z : ℤ => (z : ℚ)) hk
+      _ = 2304 * (k : ℚ) ^ 2 := by norm_num
+  have hHsq : H.det = (k : ℚ) ^ 2 := by linarith
+  refine ⟨k, ?_⟩
+  have hdetcast : ((HZ.det : ℤ) : ℚ) = H.det := by
+    calc
+      ((HZ.det : ℤ) : ℚ) =
+          ((Int.castRingHom ℚ).mapMatrix HZ).det :=
+        (Int.castRingHom ℚ).map_det HZ
+      _ = H.det := congrArg Matrix.det hmap
+  change HZ.det = k * k
+  rw [pow_two] at hHsq
+  exact_mod_cast hdetcast.trans hHsq
+
+/-- Every modular image of the reduced integer determinant is a square.
+This is the direct interface for a finite-field determinant checker. -/
+theorem orderFortyNine_reducedDefectMatrixInt_det_isSquare_mod_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) (m : ℕ) :
+    IsSquare ((oneHighReducedDefectMatrixInt G v).det : ZMod m) :=
+  (orderFortyNine_reducedDefectMatrixInt_det_isSquare_of_one_high
+    G hfree hmin hcard hHigh hv).map (Int.castRingHom (ZMod m))
+
+/-- A single certified nonsquare residue of the reduced determinant excludes
+the one-high graph. -/
+theorem false_of_orderFortyNine_oneHigh_reducedDet_notSquare_mod
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) (m : ℕ)
+    (hnotSquare :
+      ¬ IsSquare ((oneHighReducedDefectMatrixInt G v).det : ZMod m)) : False :=
+  hnotSquare
+    (orderFortyNine_reducedDefectMatrixInt_det_isSquare_mod_of_one_high
+      G hfree hmin hcard hHigh hv m)
 
 end
 
