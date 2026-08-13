@@ -74,9 +74,4 @@ theorem oneHighFamilyNamedVal_of_mem
     oneHighFamilyNamedVal R ids id = oneHighFamilyAtomValue R atom := by
   rw [oneHighFamilyNamedVal, oneHighFamilyLookupId_of_mem hnodup hmem]
 
-def OneHighFamilyIdsSound (st : OneHighFamilyGenState) : Prop :=
-  (st.ids.map Prod.fst).Nodup ∧
-  (st.ids.map Prod.snd).Nodup ∧
-  ∀ entry ∈ st.ids, 0 < entry.2 ∧ entry.2 ≤ st.top
-
 end Erdos85

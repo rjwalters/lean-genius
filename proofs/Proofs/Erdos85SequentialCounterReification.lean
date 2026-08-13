@@ -2043,6 +2043,13 @@ theorem seqCounterAtLeast_top_bound (top : Nat) (vars : Array Int) (t : Nat) :
   unfold seqCounterAtLeast
   exact seqCounterAtMost_top_bound top _ _
 
+theorem seqCounterEquals_top_bound (top : Nat) (vars : Array Int) (t : Nat) :
+    top ≤ (seqCounterEquals top vars t).top := by
+  let lower := seqCounterAtLeast top vars t
+  exact (seqCounterAtLeast_top_bound top vars t).trans
+    (by simpa [seqCounterEquals, lower] using
+      seqCounterAtMost_top_bound lower.top vars t)
+
 theorem seqCounterAtLeast_formulaSatisfied
     (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
     (x : Fin vars.size → Bool)
