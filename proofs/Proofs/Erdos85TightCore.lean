@@ -36,4 +36,39 @@ theorem exists_top_starDeleted_almostIntrinsic {n : ℕ} (hn : 4 ≤ n) :
   refine ⟨G, hdec, x, ?_, hcorefree, hsafe, hcenter, hdegrees, htight⟩
   simpa [SimpleGraph.card_neighborFinset_eq_degree] using hx
 
+/-- Reattaching the canonical star-deletion selector does not repair its
+exceptional center: the center is not in its own old neighbourhood, so it
+remains isolated.  This records the precise gap between the canonical
+almost-intrinsic core and a genuine `OneDefectCore`. -/
+theorem starDeleted_attach_neighborFinset_degree_center_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) :
+    (attachVertex (G.deleteIncidenceSet x) (G.neighborFinset x)).degree
+        (some x) = 0 := by
+  rw [attachVertex_degree_some_eq]
+  have hcenter : (G.deleteIncidenceSet x).degree x = 0 := by
+    rw [degree]
+    have hfin : (G.deleteIncidenceSet x).neighborFinset x = ∅ := by
+      ext y
+      simp [SimpleGraph.deleteIncidenceSet_adj]
+    rw [hfin]
+    simp
+  rw [hcenter]
+  simp
+
+/-- Consequently, at every positive target degree the canonical star-deleted
+graph and its old-neighbourhood selector fail the old-vertex degree clause of
+`OneDefectCore`, specifically at the deleted center. -/
+theorem starDeleted_neighborFinset_not_oldDegreeCover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x : V) {d : ℕ}
+    (hd : 1 ≤ d) :
+    ¬ ∀ v, d ≤
+      (attachVertex (G.deleteIncidenceSet x) (G.neighborFinset x)).degree
+        (some v) := by
+  intro hcover
+  have hx := hcover x
+  rw [starDeleted_attach_neighborFinset_degree_center_eq_zero G x] at hx
+  omega
+
 end Erdos85
