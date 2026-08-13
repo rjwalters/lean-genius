@@ -95,20 +95,30 @@ theorem C4PlateauCore.firstOrder_or_positiveExcessData
     · exact adjMatrix_sq_eq_sub_secondOrderDefect_of_regular G hfree hreg
     · exact adjMatrix_comm_secondOrderDefect_of_regular G hfree hreg
 
-/-- Odd degree removes the first-order alternative by the clean modular
-trace theorem, so every odd-degree core below `d²` lies in the genuine
-second-order excess band. -/
-theorem C4PlateauCore.exists_positiveExcessData_of_odd
-    {m d : ℕ} (hm : 4 ≤ m) (hd : 4 ≤ d) (hodd : Odd d)
+/-- **Parity-free plateau localization.** Every degree-`d` plateau core below
+the next Moore layer lies in the genuine second-order excess band.  The
+former first-order alternative is impossible by the parity-free strict
+Moore theorem. -/
+theorem C4PlateauCore.exists_positiveExcessData
+    {m d : ℕ} (hm : 4 ≤ m) (hd : 4 ≤ d)
     (hcore : C4PlateauCore m d) (hsize : m < d * d) :
     ∃ e, PositiveExcessPlateauData m d e := by
   rcases hcore.firstOrder_or_positiveExcessData hm hd hsize with
     hfirst | hexcess
   · rcases hcore with ⟨G, hdec, hmin, hfree, _hcover, _hnext⟩
     letI : DecidableRel G.Adj := hdec
-    exact (hfree (containsC4_of_odd_firstOrder
-      G (by omega) hodd hmin.ge (by simpa using hfirst))).elim
+    exact (hfree (containsC4_of_firstOrder
+      G (by omega) hmin.ge (by simpa using hfirst))).elim
   · exact hexcess
+
+/-- Odd degree removes the first-order alternative by the clean modular
+trace theorem, so every odd-degree core below `d²` lies in the genuine
+second-order excess band. -/
+theorem C4PlateauCore.exists_positiveExcessData_of_odd
+    {m d : ℕ} (hm : 4 ≤ m) (hd : 4 ≤ d) (_hodd : Odd d)
+    (hcore : C4PlateauCore m d) (hsize : m < d * d) :
+    ∃ e, PositiveExcessPlateauData m d e := by
+  exact hcore.exists_positiveExcessData hm hd hsize
 
 end
 
