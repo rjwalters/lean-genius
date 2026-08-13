@@ -1169,6 +1169,35 @@ theorem graph_exact_outerDefectBlocks_of_mate_involution
     G hfree hmin hcard hv hexternal houterDegree
       mate hmateInv hmateAdj s htotal
 
+/-- **Cross-miss capacity law.**  For two non-mate branches `s,u`, the
+misses from `s` into the mate of `u` and from `u` into the mate of `s`
+have total at most five.  This is the graph-facing form of the `v2`
+capacity filter used in the one-high table census. -/
+theorem highBranch_crossMate_missCount_add_le_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s u : {z : V // z ∈ G.neighborSet v})
+    (hu : u ∈ ((Finset.univ.erase s).erase (mate s))) :
+    highBranchMissCount G v s (mate u) +
+        highBranchMissCount G v u (mate s) ≤ 5 := by
+  have hrigid := (graph_exact_outerDefectBlocks_of_mate_involution
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s).2 u hu
+  omega
+
 /-- Complementary form of exact block rigidity: the paired and far
 nondefect blocks attain their path-count lower bounds. -/
 theorem graph_exact_outerNondefectBlocks_of_mate_involution
