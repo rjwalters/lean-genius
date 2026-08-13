@@ -259,6 +259,40 @@ theorem false_of_fifteen_pattern_common
   rw [hsum, hQew, hQee] at hrowe
   omega
 
+/-- Common terminal for both order-seven patterns.  The unused order-five
+component can contact only components whose orders are divisible by seven;
+balance makes all such quotients divisible by seven and the row bound makes
+them zero. -/
+theorem false_of_seven_pattern_common
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (e : C)
+    (hse : size e = 5) (hdiag : Q e e ≤ 2)
+    (hrow : (∑ t, Q e t) = 6)
+    (hbal : ∀ t, size e * Q e t = size t * Q t e)
+    (hcover : ∀ t, t = e ∨ 7 ∣ size t) :
+    False := by
+  have hzero : ∀ t, t ≠ e → Q e t = 0 := by
+    intro t hte
+    have h7size : 7 ∣ size t := (hcover t).resolve_left hte
+    have hb := hbal t
+    rw [hse] at hb
+    have hd : 7 ∣ 5 * Q e t := by
+      rw [hb]
+      exact dvd_mul_of_dvd_left h7size _
+    have h7q : 7 ∣ Q e t :=
+      (by norm_num : Nat.Coprime 7 5).dvd_of_dvd_mul_left hd
+    have hqle : Q e t ≤ 6 :=
+      (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _)
+        (Finset.mem_univ t)).trans_eq hrow
+    omega
+  have hsum : (∑ t, Q e t) = Q e e := by
+    rw [← Finset.sum_subset (Finset.subset_univ {e})]
+    · simp
+    · intro t _ ht
+      exact hzero t (by simpa using ht)
+  rw [hsum] at hrow
+  omega
+
 end OddDiagonal
 
 end Erdos85
