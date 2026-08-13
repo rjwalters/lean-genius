@@ -6294,6 +6294,26 @@ theorem degreeSix_threeSix_unused_half_shape_with_four
       rcases htv with h0 | h4 | h61 | h62 | h12 <;> simp_all
     exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
 
+/-- A `(q,r)=(2,3)` term cannot occur in the order-six residual budget
+`row+diag=5`, `product+diag²=7` when every other product dominates its row. -/
+theorem false_of_degreeSix_orderSix_budget_orderFour_term
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q r : C → ℕ) (x : ℕ) (t : C)
+    (ht : t ∈ S) (hqt : q t = 2) (hrt : r t = 3)
+    (hdom : ∀ z ∈ S, q z ≤ q z * r z)
+    (hrow : (∑ z ∈ S, q z) + x = 5)
+    (hprod : (∑ z ∈ S, q z * r z) + x * x = 7) : False := by
+  have hr := Finset.sum_erase_add S q ht
+  have hp := Finset.sum_erase_add S (fun z ↦ q z * r z) ht
+  have hsumDom : (∑ z ∈ S.erase t, q z) ≤
+      ∑ z ∈ S.erase t, q z * r z := by
+    apply Finset.sum_le_sum
+    intro z hz
+    exact hdom z (Finset.mem_of_mem_erase hz)
+  rw [hqt] at hr
+  rw [hqt, hrt] at hp
+  nlinarith
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
