@@ -7,6 +7,7 @@ import Proofs.Erdos85ZeroLayerPartitionClassification
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixEmptySector
 import Proofs.Erdos85DegreeSixOddDiagonal
+import Proofs.Erdos85DegreeSixOddDiagonalSmall
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -227,6 +228,14 @@ import Proofs.Erdos85DegreeSixOddDiagonal
 #print axioms Erdos85.OddDiagonal.false_of_large_prime_diag_two
 #print axioms Erdos85.OddDiagonal.false_of_thirteen_diag_two
 #print axioms Erdos85.OddDiagonal.false_of_eleven_diag_two
+
+-- beta-2' small-order classifier layer (claude, OddDiagonalSmall)
+#print axioms Erdos85.OddDiagonalSmall.five_partner_type
+#print axioms Erdos85.OddDiagonalSmall.five_pattern_counts
+#print axioms Erdos85.OddDiagonalSmall.seven_partner_type
+#print axioms Erdos85.OddDiagonalSmall.seven_pattern_counts
+#print axioms Erdos85.OddDiagonalSmall.nine_partner_type
+#print axioms Erdos85.OddDiagonalSmall.nine_pattern_counts
 
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
