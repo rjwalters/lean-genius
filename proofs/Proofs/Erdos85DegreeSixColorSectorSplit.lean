@@ -4829,6 +4829,54 @@ theorem degreeSix_orderSix_budget_after_three_cover
   exact ⟨by rw [← hrowRH]; exact hrowR,
     by rw [← hprodRH]; exact hprodR⟩
 
+set_option maxHeartbeats 1000000 in
+/-- Under the `(3,6)` order-six square budget, balance leaves only six
+possible positive nontriangle target types. -/
+theorem degreeSix_threeSix_orderSix_heavy_contact_type_arithmetic
+    (s q r : ℕ) (hs4 : 4 ≤ s) (hs24 : s ≤ 24)
+    (hq5 : q ≤ 5) (hr7 : r ≤ 7)
+    (hbal : 6 * q = s * r) (hprod : q * r ≤ 7) :
+    (q = 0 ∧ r = 0) ∨
+    (s = 4 ∧ q = 2 ∧ r = 3) ∨
+    (s = 6 ∧ q = 1 ∧ r = 1) ∨
+    (s = 6 ∧ q = 2 ∧ r = 2) ∨
+    (s = 9 ∧ q = 3 ∧ r = 2) ∨
+    (s = 12 ∧ q = 2 ∧ r = 1) ∨
+    (s = 18 ∧ q = 3 ∧ r = 1) ∨
+    (s = 24 ∧ q = 4 ∧ r = 1) := by
+  interval_cases s <;> interval_cases q <;> interval_cases r <;> omega
+
+/-- The order-six diagonal in a `(3,6)` cover is at most two. -/
+theorem degreeSix_orderSix_after_three_cover_diagonal_le_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (b a : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb6 : b.supp.ncard = 6)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) b b ≤ 2 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q b b ≤ 2
+  change Q b a = 1 at hba
+  change Q a b = 2 at hab
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 9 := by
+    simpa [Q, Matrix.mul_apply, hb6] using hsqGraph
+  have hbaNe : b ≠ a := by intro h; subst a; omega
+  have hpair : Q b b * Q b b + Q b a * Q a b ≤
+      ∑ z, Q b z * Q z b :=
+    two_distinct_terms_le_sum (fun z ↦ Q b z * Q z b) hbaNe
+  rw [hba, hab, hsq] at hpair
+  nlinarith
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
