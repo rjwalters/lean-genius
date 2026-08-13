@@ -4749,6 +4749,75 @@ theorem degreeSix_threeSix_residual_partition_counts
   change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
   simpa [Q, S] using contact_filter_counts_of_sum_four S (Q a) hp.1
 
+/-- Four unit entries exhausting a natural-valued row of sum four force
+every positive entry to be one. -/
+theorem positive_eq_one_of_sum_four_card_four
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (hsum : (∑ t ∈ S, q t) = 4)
+    (hcard : (S.filter fun t ↦ q t = 1).card = 4) :
+    ∀ t ∈ S, 0 < q t → q t = 1 := by
+  intro t htS hqt
+  let P := S.filter fun z ↦ q z = 1
+  have hsumP : (∑ z ∈ P, q z) = 4 := by
+    calc
+      _ = ∑ _z ∈ P, 1 := by
+        apply Finset.sum_congr rfl
+        intro z hz
+        exact (Finset.mem_filter.mp hz).2
+      _ = P.card := by simp
+      _ = 4 := hcard
+  by_contra hne
+  have htDiff : t ∈ S \ P := by simp [P, htS, hne]
+  have hsubset : P ⊆ S := Finset.filter_subset _ _
+  have hsplit := Finset.sum_sdiff hsubset (f := q)
+  have hsingle : q t ≤ ∑ z ∈ S \ P, q z :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htDiff
+  omega
+
+/-- One unit entry and one triple entry exhausting a row of sum four force
+every positive entry to be one or three. -/
+theorem positive_eq_one_or_three_of_sum_four_counts
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (hsum : (∑ t ∈ S, q t) = 4)
+    (h1 : (S.filter fun t ↦ q t = 1).card = 1)
+    (h3 : (S.filter fun t ↦ q t = 3).card = 1) :
+    ∀ t ∈ S, 0 < q t → q t = 1 ∨ q t = 3 := by
+  intro t htS hqt
+  let P := (S.filter fun z ↦ q z = 1) ∪ (S.filter fun z ↦ q z = 3)
+  have hdis : Disjoint (S.filter fun z ↦ q z = 1)
+      (S.filter fun z ↦ q z = 3) := by
+    refine Finset.disjoint_left.mpr ?_
+    intro z hz1 hz3
+    simp at hz1 hz3
+    omega
+  have hsumP : (∑ z ∈ P, q z) = 4 := by
+    rw [Finset.sum_union hdis]
+    have hs1 : (∑ z ∈ S.filter (fun z ↦ q z = 1), q z) = 1 := by
+      calc _ = ∑ _z ∈ S.filter (fun z ↦ q z = 1), 1 := by
+              apply Finset.sum_congr rfl
+              intro z hz
+              exact (Finset.mem_filter.mp hz).2
+           _ = (S.filter fun z ↦ q z = 1).card := by simp
+           _ = 1 := h1
+    have hs3 : (∑ z ∈ S.filter (fun z ↦ q z = 3), q z) = 3 := by
+      calc _ = ∑ _z ∈ S.filter (fun z ↦ q z = 3), 3 := by
+              apply Finset.sum_congr rfl
+              intro z hz
+              exact (Finset.mem_filter.mp hz).2
+           _ = 3 * (S.filter fun z ↦ q z = 3).card := by
+             simp [Nat.mul_comm]
+           _ = 3 := by rw [h3]
+    omega
+  by_contra hne
+  push Not at hne
+  have htDiff : t ∈ S \ P := by simp [P, htS, hne.1, hne.2]
+  have hsubset : P ⊆ S := Finset.union_subset
+    (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have hsplit := Finset.sum_sdiff hsubset (f := q)
+  have hsingle : q t ≤ ∑ z ∈ S \ P, q z :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htDiff
+  omega
+
 /-- Named extraction of the `[2,2]` partition of a mass-four contact row. -/
 theorem contact_sum_four_two_two_named
     {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
@@ -7393,6 +7462,79 @@ theorem false_of_degreeSix_threeSix_contacted_sixTwoThree_dispatch
       G hfree hmin hcard cycle hcycle hcycleRange hcycleD
         a b c e f u g h ha3 hb6 hc6 he3 hf3 hu6 hg3 hh3 hne hau hbu hcover
 
+/- The unified theorem is stated below the two terminal branch lemmas. -/
+/-
+/-- The `(3,6)` odd-to-even cover is impossible once order-three diagonal
+entries vanish. -/
+theorem false_of_degreeSix_oddEven_cover_three_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (hzero3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haa : Q a a = 0 := hzero3 a ha3
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  have hparts := degreeSix_threeSix_residual_partition_counts
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change
+    (_ = 4 ∧ _ = 0 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 2 ∧ _ = 1 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 0 ∧ _ = 2 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 1 ∧ _ = 0 ∧ _ = 1 ∧ _ = 0) ∨
+    (_ = 0 ∧ _ = 0 ∧ _ = 0 ∧ _ = 1) at hparts
+  rcases hparts with h1111 | h112 | h22 | h13 | h4
+  · apply false_of_degreeSix_threeSix_all_contacted_triangles
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        hr a b ha3 hb6 haa hba
+    intro t ht hpos
+    have hq1 := positive_eq_one_of_sum_four_card_four S (Q a) hp.1 h1111.1 t ht hpos
+    have hs := (hp.2.1 t ht hpos).2
+    change t.supp.ncard = 3 * Q a t at hs
+    rw [hq1] at hs
+    simpa using hs
+  · exact false_of_degreeSix_threeSix_contacted_sixTwoThree_dispatch
+      G hfree hmin hcard hr cycle hcycle hcycleRange hcycleD
+        a b ha3 hb6 haa hba h112.1 h112.2.1
+  · exact false_of_degreeSix_threeSix_contacted_twoSix_dispatch
+      G hfree hmin hcard hr cycle hcycle hcycleRange hcycleD
+        a b ha3 hb6 haa hba h22.2.1
+  · apply false_of_degreeSix_threeSix_contacted_three_or_nine
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        hr a b ha3 hb6 haa hba
+    intro t ht hpos
+    have hq := positive_eq_one_or_three_of_sum_four_counts
+      S (Q a) hp.1 h13.1 h13.2.2.1 t ht hpos
+    have hs := (hp.2.1 t ht hpos).2
+    change t.supp.ncard = 3 * Q a t at hs
+    rcases hq with hq1 | hq3
+    · left; rw [hs, hq1]
+    · right; rw [hs, hq3]
+  · exact false_of_degreeSix_threeSix_four_contact_branch
+      G hfree hmin hcard hr a b ha3 hb6 haa hba h4.2.2.2
+-/
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
@@ -7717,6 +7859,76 @@ theorem false_of_degreeSix_threeSix_contacted_three_or_nine
     exact Nat.eq_zero_of_le_zero hle
   · exact degreeSix_threeSix_orderSix_no_orderNine_contact
       G hfree hmin hcard b a t hb6 ha3 ht9 hba hab
+
+/-- The `(3,6)` odd-to-even cover is impossible once order-three diagonal
+entries vanish. -/
+theorem false_of_degreeSix_oddEven_cover_three_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (hzero3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haa : Q a a = 0 := hzero3 a ha3
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  have hparts := degreeSix_threeSix_residual_partition_counts
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change
+    (_ = 4 ∧ _ = 0 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 2 ∧ _ = 1 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 0 ∧ _ = 2 ∧ _ = 0 ∧ _ = 0) ∨
+    (_ = 1 ∧ _ = 0 ∧ _ = 1 ∧ _ = 0) ∨
+    (_ = 0 ∧ _ = 0 ∧ _ = 0 ∧ _ = 1) at hparts
+  rcases hparts with h1111 | h112 | h22 | h13 | h4
+  · apply false_of_degreeSix_threeSix_all_contacted_triangles
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        hr a b ha3 hb6 haa hba
+    intro t ht hpos
+    have hq1 := positive_eq_one_of_sum_four_card_four S (Q a) hp.1 h1111.1 t ht hpos
+    have hs := (hp.2.1 t ht hpos).2
+    change t.supp.ncard = 3 * Q a t at hs
+    rw [hq1] at hs
+    simpa using hs
+  · exact false_of_degreeSix_threeSix_contacted_sixTwoThree_dispatch
+      G hfree hmin hcard hr cycle hcycle hcycleRange hcycleD
+        a b ha3 hb6 haa hba h112.1 h112.2.1
+  · exact false_of_degreeSix_threeSix_contacted_twoSix_dispatch
+      G hfree hmin hcard hr cycle hcycle hcycleRange hcycleD
+        a b ha3 hb6 haa hba h22.2.1
+  · apply false_of_degreeSix_threeSix_contacted_three_or_nine
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        hr a b ha3 hb6 haa hba
+    intro t ht hpos
+    have hq := positive_eq_one_or_three_of_sum_four_counts
+      S (Q a) hp.1 h13.1 h13.2.2.1 t ht hpos
+    have hs := (hp.2.1 t ht hpos).2
+    change t.supp.ncard = 3 * Q a t at hs
+    rcases hq with hq1 | hq3
+    · left; rw [hs, hq1]
+    · right; rw [hs, hq3]
+  · exact false_of_degreeSix_threeSix_four_contact_branch
+      G hfree hmin hcard hr a b ha3 hb6 haa hba h4.2.2.2
 
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
