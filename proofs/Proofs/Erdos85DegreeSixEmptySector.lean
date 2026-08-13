@@ -173,6 +173,89 @@ theorem false_of_degreeSix_largePrime_diagonal_two
   exact OddDiagonal.false_of_large_prime_diag_two
     Q size w hwo hop ho17 hsize hrev hbal hdiag (hrow w)
 
+/-- Once the empty-sector analysis supplies zero diagonal on every odd
+component, the eight odd-to-even cover terminals give the boundary
+contradiction immediately. -/
+theorem false_of_degreeSix_of_odd_zero_diagonal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hodd0 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd c.supp.ncard →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    False := by
+  obtain ⟨o, hoOdd⟩ := degreeSix_exists_odd_order_component G hcard
+  obtain ⟨e, heEven, _⟩ :=
+    degreeSix_exists_even_carrier_of_odd_zero_diagonal
+      G hfree hmin hcard hodd0
+  have hzero3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 := by
+    intro c hc
+    exact hodd0 c (by rw [hc]; norm_num)
+  have hzero5 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 5 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 := by
+    intro c hc
+    exact hodd0 c (by rw [hc]; norm_num)
+  obtain ⟨a, b, hba, h36 | h510 | h714 | h918 | h1122 | h312 | h520 | h318⟩ :=
+    degreeSix_odd_to_even_cover_order_cases
+      G hfree hmin hcard hr o e hoOdd heEven
+  · exact false_of_degreeSix_oddEven_cover_three_six
+      G hfree hmin hcard u hu huRange huD hr hzero3
+        a b h36.1 h36.2 hba
+  · exact false_of_degreeSix_oddEven_cover_five_ten
+      G hfree hmin hcard hr hzero3 hzero5 a b h510.1 h510.2 hba
+  · have haa := hodd0 a (by rw [h714.1]; norm_num)
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+    have hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2 := by
+      rw [h714.1, h714.2, hba, mul_one] at hbal
+      omega
+    exact false_of_degreeSix_oddEven_cover_seven_fourteen
+      G hfree hmin hcard hr a b h714.1 h714.2 haa hab
+  · have haa := hodd0 a (by rw [h918.1]; norm_num)
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+    have hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2 := by
+      rw [h918.1, h918.2, hba, mul_one] at hbal
+      omega
+    exact false_of_degreeSix_oddEven_cover_nine_eighteen
+      G hfree hmin hcard hr a b h918.1 h918.2 haa hab
+  · have haa := hodd0 a (by rw [h1122.1]; norm_num)
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+    have hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2 := by
+      rw [h1122.1, h1122.2, hba, mul_one] at hbal
+      omega
+    exact false_of_degreeSix_oddEven_cover_eleven_twentyTwo
+      G hfree hmin hcard hr a b h1122.1 h1122.2 haa hab
+  · exact false_of_degreeSix_oddEven_cover_three_twelve
+      G hfree hmin hcard u hu huRange huD hr hzero3
+        a b h312.1 h312.2 hba
+  · exact false_of_degreeSix_oddEven_cover_five_twenty
+      G hfree hmin hcard hr hzero3 hzero5 a b h520.1 h520.2 hba
+  · exact false_of_degreeSix_oddEven_cover_three_eighteen
+      G hfree hmin hcard u hu huRange huD hr
+        a b h318.1 h318.2 (hzero3 a h318.1) hba
+
 end
 
 end Erdos85
