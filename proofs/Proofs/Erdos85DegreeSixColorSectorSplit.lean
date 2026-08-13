@@ -1762,6 +1762,22 @@ theorem degreeSix_orderThree_twelve_residual_contact_type_arithmetic
     (s = 6 ∧ q = 2 ∧ r = 1) := by
   interval_cases s <;> interval_cases q <;> omega
 
+/-- Balance table for an order-twelve row contacting a heavy component in
+the `(3,12)` triangle branch, after imposing the residual square budget
+eleven. -/
+theorem degreeSix_orderTwelve_heavy_contact_type_arithmetic
+    (s q r : ℕ)
+    (hsize : s = 6 ∨ s = 9 ∨ s = 12 ∨ s = 15)
+    (hqpos : 0 < q) (hq5 : q ≤ 5) (hrpos : 0 < r)
+    (hprod : q * r ≤ 11) (hbal : 12 * q = s * r) :
+    (s = 6 ∧ q = 1 ∧ r = 2) ∨
+    (s = 6 ∧ q = 2 ∧ r = 4) ∨
+    (s = 12 ∧ q = 1 ∧ r = 1) ∨
+    (s = 12 ∧ q = 2 ∧ r = 2) ∨
+    (s = 12 ∧ q = 3 ∧ r = 3) := by
+  rcases hsize with rfl | rfl | rfl | rfl <;>
+    interval_cases q <;> omega
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
