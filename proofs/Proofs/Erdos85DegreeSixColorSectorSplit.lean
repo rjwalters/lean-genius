@@ -1778,6 +1778,34 @@ theorem degreeSix_orderTwelve_heavy_contact_type_arithmetic
   rcases hsize with rfl | rfl | rfl | rfl <;>
     interval_cases q <;> omega
 
+/-- An empty heavy sector cannot satisfy the order-twelve residual row and
+square budgets. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_empty
+    (z : ℕ) (hrow : z = 5) (hprod : z * z = 11) : False := by
+  nlinarith
+
+/-- A single order-six heavy target cannot satisfy the order-twelve budgets
+when its balanced quotient pair is one of `(1,2)` or `(2,4)`. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_single_six
+    (z q r : ℕ)
+    (htype : (q = 1 ∧ r = 2) ∨ (q = 2 ∧ r = 4))
+    (hrow : q + z = 5) (hprod : q * r + z * z = 11) : False := by
+  rcases htype with h | h <;> rcases h with ⟨rfl, rfl⟩ <;> nlinarith
+
+/-- A single order-twelve heavy target cannot satisfy the residual budgets:
+eleven is not a sum of the two squares prescribed by the row. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+    (z q : ℕ) (hq : q = 1 ∨ q = 2 ∨ q = 3)
+    (hrow : q + z = 5) (hprod : q * q + z * z = 11) : False := by
+  rcases hq with rfl | rfl | rfl <;> nlinarith
+
+/-- One order-nine or order-fifteen heavy contact already exceeds the
+residual square budget eleven. -/
+theorem false_of_degreeSix_orderTwelve_heavy_budget_large_contact
+    (q r : ℕ) (hprod : q * r ≤ 11)
+    (hlarge : q * r = 12 ∨ q * r = 20) : False := by
+  omega
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
