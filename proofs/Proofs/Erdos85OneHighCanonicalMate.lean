@@ -458,6 +458,124 @@ theorem oneHighLeafFinFortyEquiv_modNat
         leafLabel (oneHighBranchOwner G v x)
           ⟨x.1, oneHighBranchOwner_mem G v x⟩))
 
+/-! ## The relabeled forty-leaf graph -/
+
+def oneHighRelabeledLeafGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (E : {z : V // z ∈ secondLayer G v} ≃ Fin 40) :
+    SimpleGraph (Fin 40) :=
+  SimpleGraph.comap E.symm (squareOrderOuterGraph G v)
+
+instance oneHighRelabeledLeafGraph_decidableAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (E : {z : V // z ∈ secondLayer G v} ≃ Fin 40) :
+    DecidableRel (oneHighRelabeledLeafGraph G v E).Adj :=
+  fun i j => inferInstanceAs
+    (Decidable ((squareOrderOuterGraph G v).Adj (E.symm i) (E.symm j)))
+
+theorem oneHighRelabeledLeafGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (E : {z : V // z ∈ secondLayer G v} ≃ Fin 40)
+    (i j : Fin 40) :
+    (oneHighRelabeledLeafGraph G v E).Adj i j ↔
+      G.Adj (E.symm i).1 (E.symm j).1 := by
+  rfl
+
+theorem oneHighRelabeledLeafGraph_not_containsC4
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (hfree : ¬ containsC4 V G)
+    (E : {z : V // z ∈ secondLayer G v} ≃ Fin 40) :
+    ¬ containsC4 (Fin 40) (oneHighRelabeledLeafGraph G v E) := by
+  exact fun h => (squareOrderOuterGraph_not_containsC4 G hfree)
+    ((containsC4_iff_of_iso
+      (SimpleGraph.Iso.comap E.symm (squareOrderOuterGraph G v))).mp h)
+
+/-- Every canonical forty-leaf relabeling is six-regular, matching the
+degree equations emitted by `family_gen.py`. -/
+theorem oneHighRelabeledLeafGraph_degree_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (E : {z : V // z ∈ secondLayer G v} ≃ Fin 40)
+    (i : Fin 40) :
+    (oneHighRelabeledLeafGraph G v E).degree i = 6 := by
+  have hneigh : ∀ y, G.Adj v y → G.degree y = 7 := by
+    intro y hyv
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard y with hy7 | hy8
+    · exact hy7
+    · have hyv' : y = v := hunique hy8
+      subst y
+      exact (G.loopless.irrefl v hyv).elim
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      change a ∈ Finset.univ.biUnion (secondLayerBranch G v) at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  rw [show (oneHighRelabeledLeafGraph G v E).degree i =
+      (squareOrderOuterGraph G v).degree (E.symm i) by
+    exact (SimpleGraph.Iso.comap E.symm
+      (squareOrderOuterGraph G v)).degree_eq i |>.symm]
+  exact squareOrderOuterGraph_regular
+    G hfree (d := 7) (by norm_num) hcard hv hneigh hlocal houterDegree
+      (E.symm i)
+
+/-- Under the assembled coordinates, paired blocks have no cross edges. -/
+theorem oneHighRelabeledLeafGraph_not_adj_of_standardMate_blocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (i j : Fin 40)
+    (hij : Fin.divNat (m := 8) (n := 5) j =
+      oneHighStandardMate (Fin.divNat (m := 8) (n := 5) i)) :
+    ¬(oneHighRelabeledLeafGraph G v
+      (oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel)).Adj i j := by
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let y := E.symm j
+  have hxCoord := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  have hyCoord := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel y
+  rw [E.apply_symm_apply] at hxCoord hyCoord
+  have howner : oneHighBranchOwner G v y = mate (oneHighBranchOwner G v x) := by
+    apply branchLabel.injective
+    rw [hbranchMate, ← hxCoord, ← hyCoord]
+    exact hij
+  intro hadj
+  apply not_adj_between_secondLayerBranches_of_adj_roots
+    G hfree v (oneHighBranchOwner G v x) (oneHighBranchOwner G v y)
+      (howner ▸ hmateAdj (oneHighBranchOwner G v x))
+      ⟨x.1, oneHighBranchOwner_mem G v x⟩
+      ⟨y.1, oneHighBranchOwner_mem G v y⟩
+  exact (oneHighRelabeledLeafGraph_adj G v E i j).mp hadj
+
 end
 
 end Erdos85
