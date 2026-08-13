@@ -7239,6 +7239,160 @@ theorem false_of_degreeSix_threeSix_contacted_twoSix_dispatch
         (by intro h; subst e; omega) (by intro h; subst f; omega) hef
         hbc hbd hbu hcd hcu hdu hca hda hae haf hbe hbf hcover
 
+set_option maxHeartbeats 2000000 in
+/-- Exhaustive unused-half dispatch for the contacted `{6,3,3}` family. -/
+theorem false_of_degreeSix_threeSix_contacted_sixTwoThree_dispatch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (cycle : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcycle : ∀ c, Function.Injective (cycle c))
+    (hcycleRange : ∀ c, Set.range (cycle c) = c.supp)
+    (hcycleD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (cycle c x) =
+      {cycle c (x - 1), cycle c (x + 1)})
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (h1 : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 1).card = 2)
+    (h2 : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2).card = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := S.filter fun t ↦ Q a t ≠ 0
+  let U := S.filter fun t ↦ Q a t = 0
+  obtain ⟨c, e, f, hce, hcf, hef, hA, hc6, he3, hf3,
+      hac, hca, hae, hea, haf, hfa⟩ :=
+    degreeSix_threeSix_contacted_sixTwoThree_shape
+      G hfree hmin hcard hr a b ha3 hb6 haa hba h1 h2
+  change Q a c = 2 at hac
+  change Q a e = 1 at hae
+  change Q a f = 1 at haf
+  change A = {c, e, f} at hA
+  have hcA : c ∈ A := by rw [hA]; simp
+  have heA : e ∈ A := by rw [hA]; simp [hce]
+  have hfA : f ∈ A := by rw [hA]; simp [hcf, hef]
+  have hcS := (Finset.mem_filter.mp hcA).1
+  have heS := (Finset.mem_filter.mp heA).1
+  have hfS := (Finset.mem_filter.mp hfA).1
+  have hUshape := degreeSix_threeSix_unused_half_full_shape_graph
+    G hfree hmin hcard hr cycle hcycle hcycleRange hcycleD
+      a b ha3 hb6 haa hba
+  change (∃ u, U = {u} ∧ u.supp.ncard = 12 ∧ Q b u = 2) ∨
+    (∃ u v, u ≠ v ∧ U = {u, v} ∧ u.supp.ncard = 6 ∧
+      v.supp.ncard = 6 ∧ _) ∨
+    (∃ u g h, u ≠ g ∧ u ≠ h ∧ g ≠ h ∧ U = {u, g, h} ∧
+      u.supp.ncard = 6 ∧ g.supp.ncard = 3 ∧ h.supp.ncard = 3 ∧ _) at hUshape
+  have hbase : (Finset.univ : Finset _) = insert a (insert b (A ∪ U)) := by
+    simpa [A, U, S] using
+      univ_eq_insert_insert_residual_filters a b (fun t ↦ Q a t ≠ 0)
+  have hab : Q a b = 2 := by
+    have hx := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a b
+    change a.supp.ncard * Q a b = b.supp.ncard * Q b a at hx
+    change Q b a = 1 at hba
+    rw [ha3, hb6, hba] at hx
+    omega
+  rcases hUshape with ⟨w, hU, hw12, hbw⟩ |
+      ⟨u, v, huv, hU, hu6, hv6, hq⟩ |
+      ⟨u, g, h, hug, huh, hgh, hU, hu6, hg3, hh3, hbu, hbg, hbh⟩
+  · have hcover : (Finset.univ : Finset _) = {a, b, c, e, f, w} := by
+      rw [hA, hU] at hbase
+      have hmerge : ({c, e, f} : Finset _) ∪ {w} = {c, e, f, w} := by
+        ext t; simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]; tauto
+      rw [hmerge] at hbase
+      exact hbase
+    have haw : Q a w = 0 := by
+      have hwU : w ∈ U := by rw [hU]; simp
+      exact (Finset.mem_filter.mp hwU).2
+    exact false_of_degreeSix_threeSix_sixTwoThree_oneTwelve_branch
+      G hfree hmin hcard a b c e f w ha3 hb6 hc6 he3 hf3 hw12
+        (by intro h; subst e; omega) (by intro h; subst f; omega)
+        (by intro h; subst c; simp [S] at hcS) hef haw hcover
+  · have hcover : (Finset.univ : Finset _) = {a, b, c, e, f, u, v} := by
+      rw [hA, hU] at hbase
+      have hmerge : ({c, e, f} : Finset _) ∪ {u, v} = {c, e, f, u, v} := by
+        ext t; simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]; tauto
+      rw [hmerge] at hbase
+      exact hbase
+    have huU : u ∈ U := by rw [hU]; simp
+    have hvU : v ∈ U := by rw [hU]; simp [huv]
+    have hau : Q a u = 0 := (Finset.mem_filter.mp huU).2
+    have hav : Q a v = 0 := (Finset.mem_filter.mp hvU).2
+    have hbc : b ≠ c := by intro h; subst c; simp [S] at hcS
+    have huS := (Finset.mem_filter.mp huU).1
+    have hvS := (Finset.mem_filter.mp hvU).1
+    have hbu : b ≠ u := (Finset.mem_erase.mp huS).1.symm
+    have hbv : b ≠ v := (Finset.mem_erase.mp hvS).1.symm
+    have hcu : c ≠ u := by
+      intro h; subst u
+      exact ((Finset.mem_filter.mp hcA).2) ((Finset.mem_filter.mp huU).2)
+    have hcv : c ≠ v := by
+      intro h; subst v
+      exact ((Finset.mem_filter.mp hcA).2) ((Finset.mem_filter.mp hvU).2)
+    exact false_of_degreeSix_threeSix_sixTwoThree_twoSix_branch
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        a b c e f u v ha3 hb6 hc6 he3 hf3 hu6 hv6
+        (by intro h; subst e; omega) (by intro h; subst f; omega) hef
+        hbc hbu hbv hcu hcv
+        huv hab hac hae haf hau hav hcover
+  · have hcover : (Finset.univ : Finset _) = {a, b, c, e, f, u, g, h} := by
+      rw [hA, hU] at hbase
+      have hmerge : ({c, e, f} : Finset _) ∪ {u, g, h} = {c, e, f, u, g, h} := by
+        ext t; simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]; tauto
+      rw [hmerge] at hbase
+      exact hbase
+    have huU : u ∈ U := by rw [hU]; simp
+    have hgU : g ∈ U := by rw [hU]; simp [hug]
+    have hhU : h ∈ U := by rw [hU]; simp [huh, hgh]
+    have huS := (Finset.mem_filter.mp huU).1
+    have hgS := (Finset.mem_filter.mp hgU).1
+    have hhS := (Finset.mem_filter.mp hhU).1
+    have hau : Q a u = 0 := (Finset.mem_filter.mp huU).2
+    have hag : Q a g = 0 := (Finset.mem_filter.mp hgU).2
+    have hah : Q a h = 0 := (Finset.mem_filter.mp hhU).2
+    have haNe (x : _) (hxS : x ∈ S) : a ≠ x := by
+      intro hx; subst x
+      exact (Finset.mem_erase.mp (Finset.mem_erase.mp hxS).2).1 rfl
+    have hbNe (x : _) (hxS : x ∈ S) : b ≠ x := (Finset.mem_erase.mp hxS).1.symm
+    have hcross (x y : _) (hax : 0 < Q a x) (hay : Q a y = 0) : x ≠ y := by
+      intro h; subst y; omega
+    have hcu := hcross c u (by change 0 < Q a c; omega) hau
+    have hcg := hcross c g (by change 0 < Q a c; omega) hag
+    have hch := hcross c h (by change 0 < Q a c; omega) hah
+    have heu := hcross e u (by change 0 < Q a e; omega) hau
+    have heg := hcross e g (by change 0 < Q a e; omega) hag
+    have heh := hcross e h (by change 0 < Q a e; omega) hah
+    have hfu := hcross f u (by change 0 < Q a f; omega) hau
+    have hfg := hcross f g (by change 0 < Q a f; omega) hag
+    have hfh := hcross f h (by change 0 < Q a f; omega) hah
+    have hne : [a, b, c, e, f, u, g, h].Pairwise (· ≠ ·) := by
+      simp only [List.pairwise_cons, List.mem_cons, List.not_mem_nil,
+        forall_eq_or_imp]
+      exact ⟨⟨by intro h; subst b; omega, haNe c hcS, haNe e heS,
+          haNe f hfS, haNe u huS, haNe g hgS, haNe h hhS, by simp⟩,
+        ⟨⟨hbNe c hcS, hbNe e heS, hbNe f hfS, hbNe u huS,
+          hbNe g hgS, hbNe h hhS, by simp⟩,
+          ⟨⟨hce, hcf, hcu, hcg, hch, by simp⟩,
+            ⟨⟨hef, heu, heg, heh, by simp⟩,
+              ⟨⟨hfu, hfg, hfh, by simp⟩,
+                ⟨⟨hug, huh, by simp⟩,
+                  ⟨⟨hgh, by simp⟩, ⟨by simp, by simp⟩⟩⟩⟩⟩⟩⟩⟩
+    exact false_of_degreeSix_threeSix_sixTwoThree_sixTwoThree_branch
+      G hfree hmin hcard cycle hcycle hcycleRange hcycleD
+        a b c e f u g h ha3 hb6 hc6 he3 hf3 hu6 hg3 hh3 hne hau hbu hcover
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
