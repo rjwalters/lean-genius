@@ -2047,6 +2047,81 @@ theorem false_of_degreeSix_orderThirtyThree_diagonal_two
   simp at hwrow
   omega
 
+/-- Every odd defect component has zero diagonal quotient at the degree-six
+boundary.  The odd zero-or-two dichotomy is dispatched over the complete
+order range `3 ≤ |c| ≤ 33`. -/
+theorem degreeSix_odd_component_diagonal_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hodd : Odd c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 := by
+  let D := secondOrderDefectGraph G
+  have htotal : (∑ t : D.ConnectedComponent, t.supp.ncard) = 33 := by
+    simpa [D, hcard] using sum_connectedComponent_supp_ncard D
+  have hcLe : c.supp.ncard ≤ 33 := by
+    have hterm := Finset.single_le_sum (f := fun t : D.ConnectedComponent ↦
+      t.supp.ncard) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ c)
+    rw [htotal] at hterm
+    exact hterm
+  rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (r := c.supp.ncard) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (hr c) hodd c
+        (coord c) (hcoord c) (hcoordRange c) (hcoordD c) with hzero | htwo
+  · exact hzero
+  have hc3 := hr c
+  obtain ⟨k, hk⟩ := hodd
+  interval_cases hc : c.supp.ncard
+  all_goals try omega
+  · exact degreeSix_orderThree_diagonal_zero G hfree hmin hcard
+      coord hcoord hcoordRange hcoordD c hc
+  · exact (false_of_degreeSix_orderFive_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderSeven_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderNine_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderEleven_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_orderThirteen_diagonal_two
+      G hfree hmin hcard c hc htwo).elim
+  · exact (false_of_degreeSix_orderFifteen_diagonal_two
+      G hfree hmin hcard hr coord hcoord hcoordRange hcoordD c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderTwentyOne_diagonal_two
+      G hfree hmin hcard c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderTwentyFive_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+  · exact (false_of_degreeSix_orderTwentySeven_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_largePrime_diagonal_two
+      G hfree hmin hcard c hc (by norm_num) (by norm_num) htwo).elim
+  · exact (false_of_degreeSix_orderThirtyThree_diagonal_two
+      G hfree hmin hcard hr c hc htwo).elim
+
 /-- Once the empty-sector analysis supplies zero diagonal on every odd
 component, the eight odd-to-even cover terminals give the boundary
 contradiction immediately. -/
