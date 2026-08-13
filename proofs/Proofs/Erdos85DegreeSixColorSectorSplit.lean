@@ -5031,6 +5031,60 @@ theorem false_of_five_symmetric_degreeSix_rows
   simp [hab, hac, had, hae, hbc, hbd, hbe, hcd, hce, hde]
     at ha hb hc hd he hext hdiag
   omega
+
+/-- Graph-level parity terminal for a component system consisting of one
+distinguished component and five order-six components. -/
+theorem false_of_degreeSix_five_orderSix_parity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (a : (secondOrderDefectGraph G).ConnectedComponent)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hfive : (Finset.univ.erase a).card = 5)
+    (hall6 : ∀ t ∈ Finset.univ.erase a, t.supp.ncard = 6)
+    (hext : (∑ t ∈ Finset.univ.erase a,
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a) = 3) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent := Finset.univ.erase a
+  change Q a a = 0 at haa
+  change S.card = 5 at hfive
+  change (∑ t ∈ S, Q t a) = 3 at hext
+  have hsymm : ∀ i ∈ S, ∀ j ∈ S, Q i j = Q j i := by
+    intro i hi j hj
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) i j
+    change i.supp.ncard * Q i j = j.supp.ncard * Q j i at hb
+    rw [hall6 i hi, hall6 j hj] at hb
+    omega
+  have hrow : ∀ i ∈ S, Q i a + (∑ j ∈ S, Q i j) = 6 := by
+    intro i hi
+    have hg := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) i
+    change (∑ z, Q i z) = 6 at hg
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hs := Finset.sum_erase_add (Finset.univ : Finset _) (Q i) haIn
+    dsimp [S]
+    omega
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hdiag : (∑ i ∈ S, Q i i) = 6 := by
+    change (∑ t, Q t t) = 6 at htrace
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hs := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun t ↦ Q t t) haIn
+    dsimp [S]
+    rw [haa] at hs
+    omega
+  exact false_of_five_symmetric_degreeSix_rows S Q (fun i ↦ Q i a)
+    hfive hsymm hrow hext hdiag
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
