@@ -190,6 +190,50 @@ theorem univ_eq_of_positive_sum_eq
   have hxpos := hpos x
   omega
 
+/-- Splitting a finite carrier by whether its contact quotient is zero
+subtracts the positive-contact size mass from the total size mass. -/
+theorem zero_contact_sum_eq_sub
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q : C → ℕ) (total used : ℕ)
+    (htotal : ∑ c ∈ S, size c = total)
+    (hused : (∑ c ∈ S, if q c = 0 then 0 else size c) = used)
+    (husedLe : used ≤ total) :
+    (∑ c ∈ S.filter (fun c ↦ q c = 0), size c) = total - used := by
+  have hpart : (∑ c ∈ S, size c) =
+      (∑ c ∈ S, if q c = 0 then size c else 0) +
+        ∑ c ∈ S, if q c = 0 then 0 else size c := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro c _
+    by_cases hc : q c = 0 <;> simp [hc]
+  have hfilter : (∑ c ∈ S, if q c = 0 then size c else 0) =
+      ∑ c ∈ S.filter (fun c ↦ q c = 0), size c := by
+    simp [Finset.sum_filter]
+  rw [htotal, hused, hfilter] at hpart
+  omega
+
+/-- A positive-size residual of total mass three whose component sizes are
+at least three is a unique order-three component. -/
+theorem residual_three_singleton
+    {C : Type*} [DecidableEq C]
+    (Z : Finset C) (size : C → ℕ)
+    (hmin : ∀ z ∈ Z, 3 ≤ size z) (hsum : ∑ z ∈ Z, size z = 3) :
+    ∃ e, Z = {e} ∧ size e = 3 := by
+  have hcardLe : 3 * Z.card ≤ 3 := by
+    have h := Z.card_nsmul_le_sum size 3 hmin
+    rw [hsum] at h
+    simpa [nsmul_eq_mul, mul_comm] using h
+  have hcardPos : 0 < Z.card := by
+    by_contra hn
+    have hz : Z = ∅ := Finset.card_eq_zero.mp (by omega)
+    rw [hz] at hsum
+    simp at hsum
+  have hcard : Z.card = 1 := by omega
+  obtain ⟨e, he⟩ := Finset.card_eq_one.mp hcard
+  refine ⟨e, he, ?_⟩
+  rw [he] at hsum
+  simpa using hsum
+
 /-- Order-fifteen type classification.  This is kept in the same
 pure-arithmetic layer because its count equations have a unique feasible
 shape at total external size eighteen. -/
