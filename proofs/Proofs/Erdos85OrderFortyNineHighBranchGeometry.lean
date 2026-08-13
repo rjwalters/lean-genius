@@ -151,6 +151,32 @@ theorem orderFortyNine_card_secondLayer_degreeEight_eq_forty
       rw [heq, G.card_neighborFinset_eq_degree, hv]
       norm_num
 
+/-- The forty-vertex second layer is exactly the complement of the closed
+neighborhood of a degree-eight root. -/
+theorem orderFortyNine_secondLayer_degreeEight_eq_compl_closedNeighborhood
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8) :
+    secondLayer G v = Finset.univ \ insert v (G.neighborFinset v) := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro y hy
+    rw [secondLayer, Finset.mem_biUnion] at hy
+    obtain ⟨s, _, hys⟩ := hy
+    exact Finset.mem_sdiff.mpr
+      ⟨Finset.mem_univ y, (Finset.mem_sdiff.mp hys).2⟩
+  · rw [orderFortyNine_card_secondLayer_degreeEight_eq_forty
+      G hfree hmin hcard hv]
+    rw [Finset.card_sdiff]
+    have hinter : insert v (G.neighborFinset v) ∩ Finset.univ =
+        insert v (G.neighborFinset v) := by simp
+    rw [hinter, Finset.card_univ, hcard,
+      Finset.card_insert_of_notMem (by simp),
+      G.card_neighborFinset_eq_degree, hv]
+
 /-- No vertex lies beyond distance two from a high vertex. -/
 theorem orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
     {V : Type*} [Fintype V] [DecidableEq V]
