@@ -3424,6 +3424,50 @@ theorem degreeSix_orderThree_after_twelve_cover_profile
     (hcontactSize t ht (hallPos t ht)).1,
     (hcontactSize t ht (hallPos t ht)).2⟩⟩
 
+/-- The preceding profile has exactly one of the seven partitions of five,
+expressed as contact-filter multiplicities. -/
+theorem degreeSix_orderThree_after_twelve_cover_partition_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (e a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3) (ha3 : a.supp.ncard = 3)
+    (hb12 : b.supp.ncard = 12) (hea : e ≠ a) (heb : e ≠ b)
+    (hab : a ≠ b)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (heaQ : componentQuotientMatrix G (secondOrderDefectGraph G) e a = 1)
+    (haeQ : componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1)
+    (hebQ : componentQuotientMatrix G (secondOrderDefectGraph G) e b = 0)
+    (hbeQ : componentQuotientMatrix G (secondOrderDefectGraph G) b e = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      ((Finset.univ.erase e).erase a).erase b
+    let n1 := (S.filter fun t ↦ Q e t = 1).card
+    let n2 := (S.filter fun t ↦ Q e t = 2).card
+    let n3 := (S.filter fun t ↦ Q e t = 3).card
+    let n4 := (S.filter fun t ↦ Q e t = 4).card
+    let n5 := (S.filter fun t ↦ Q e t = 5).card
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((Finset.univ.erase e).erase a).erase b
+  have hp := degreeSix_orderThree_after_twelve_cover_profile
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb hab hee heaQ haeQ hebQ hbeQ
+  change (∑ t ∈ S, Q e t) = 5 ∧ _ at hp
+  simpa [Q, S] using contact_filter_counts_of_sum_five S (Q e) hp.1
+
 /-- In the one-order-six branch of `(3,12)`, the forced contact back to the
 source triangle already contributes two to the order-six square budget, so
 the order-six diagonal is at most two. -/
