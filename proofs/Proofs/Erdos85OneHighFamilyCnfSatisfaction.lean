@@ -1543,7 +1543,7 @@ structure OneHighFamilyCollectedEdgesMatch
     (y : Nat) (xs : List Nat)
     (input : Array Int × OneHighFamilyValState) where
   ids : List Nat
-  vars_eq : input.1.toList = ids.map (fun id => (id : Int))
+  vars_eq : input.1.toList = List.map (fun id : Nat => Int.ofNat id) ids
   aligned : List.Forall₂ (fun x id =>
     ((.edge (min y x) (max y x)), id) ∈ input.2.1.ids) xs ids
 
@@ -1714,6 +1714,61 @@ noncomputable def oneHighFamilyCollectFarInputsVal_match
     OneHighFamilyCollectedEdgesMatch y (oneHighFamilyFarVertices y)
       (oneHighFamilyCollectFarInputsVal R y acc) := by
   exact oneHighFamilyCollectEdgesListVal_match R y _ acc
+
+theorem oneHighFamilyCollectedEdgesMatch_length
+    {y : Nat} {xs : List Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedEdgesMatch y xs input) :
+    input.1.size = xs.length := by
+  have hvars := congrArg List.length h.vars_eq
+  have halign := h.aligned.length_eq
+  simpa using hvars.trans (by simpa using halign.symm)
+
+theorem oneHighFamilyCollectedEdgesMatch_value
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {y : Nat} (hy : y < 40) {xs : List Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedEdgesMatch y xs input)
+    (hs : OneHighFamilySemanticSound R input.2)
+    (i : Nat) (hi : i < input.1.size)
+    (hx : xs.get ⟨i, by
+      rw [← oneHighFamilyCollectedEdgesMatch_length h]; exact hi⟩ < 40) :
+    dimacsLitValue input.2.2 (input.1.getD i 0) =
+      decide (R.Adj (⟨y, hy⟩ : Fin 40)
+        ⟨xs.get ⟨i, by
+          rw [← oneHighFamilyCollectedEdgesMatch_length h]; exact hi⟩, hx⟩) := by
+  have hidsLen : h.ids.length = xs.length := h.aligned.length_eq.symm
+  have hiIds : i < h.ids.length := by
+    rw [hidsLen]
+    rw [← oneHighFamilyCollectedEdgesMatch_length h]
+    exact hi
+  have hiXs : i < xs.length := by
+    rw [← oneHighFamilyCollectedEdgesMatch_length h]
+    exact hi
+  have halign := h.aligned.get hiXs hiIds
+  have hiList : i < input.1.toList.length := by simpa using hi
+  have hlistGet : input.1.toList[i] = (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    have hx := List.get_of_eq h.vars_eq ⟨i, hiList⟩
+    rw [List.get_eq_getElem] at hx
+    have hiMap : i < (List.map (fun id : Nat => Int.ofNat id) h.ids).length := by
+      simpa using hiIds
+    calc
+      input.1.toList[i] =
+          (List.map (fun id : Nat => Int.ofNat id) h.ids)[i]'hiMap := hx
+      _ = (h.ids[i]'hiIds : Int) := List.getElem_map _
+      _ = (h.ids.get ⟨i, hiIds⟩ : Int) := by
+        rw [List.get_eq_getElem]
+  have harrayGet : input.1.getD i 0 = (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    rw [show input.1.getD i 0 = input.1[i] by simp [Array.getD, hi]]
+    rw [← Array.getElem_toList hi]
+    exact hlistGet
+  rw [harrayGet]
+  have hidPos := (hs.ids.id_bounds _ halign).1
+  have hidPosInt : 0 < (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    exact_mod_cast hidPos
+  rw [dimacsLitValue, if_pos hidPosInt]
+  simpa using (hs.named _ _ halign).trans
+    (oneHighFamilyAtomValue_edge R hy hx)
 
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
