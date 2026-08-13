@@ -5085,6 +5085,111 @@ theorem false_of_degreeSix_five_orderSix_parity
     omega
   exact false_of_five_symmetric_degreeSix_rows S Q (fun i ↦ Q i a)
     hfive hsymm hrow hext hdiag
+
+/-- If both halves of the `(3,6)` residual decomposition consist of two
+order-six components, the five nontriangle components all have order six,
+and the parity terminal applies. -/
+theorem false_of_degreeSix_threeSix_twoSix_twoSix_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hcontactCard : ((((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t ≠ 0).card = 2))
+    (hcontact6 : ∀ t ∈ (Finset.univ.erase a).erase b,
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t ≠ 0 →
+        t.supp.ncard = 6)
+    (hunusedCard : ((((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 0).card = 2))
+    (hunused6 : ∀ t ∈ (Finset.univ.erase a).erase b,
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 0 →
+        t.supp.ncard = 6) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := S.filter fun t ↦ Q a t ≠ 0
+  let U := S.filter fun t ↦ Q a t = 0
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  change A.card = 2 at hcontactCard
+  change U.card = 2 at hunusedCard
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hbNotS : b ∉ S := by simp [S]
+  have hsplit : A ∪ U = S := by
+    ext t
+    simp only [A, U, Finset.mem_union, Finset.mem_filter]
+    by_cases ht : t ∈ S
+    · by_cases hq : Q a t = 0 <;> simp [ht, hq]
+    · simp [ht]
+  have hdisjoint : Disjoint A U := by
+    refine Finset.disjoint_left.mpr ?_
+    intro t htA htU
+    exact (Finset.mem_filter.mp htA).2 (Finset.mem_filter.mp htU).2
+  have hcardS : S.card = 4 := by
+    have hc := Finset.card_union_of_disjoint hdisjoint
+    rw [hsplit, hcontactCard, hunusedCard] at hc
+    omega
+  have heraseEq : Finset.univ.erase a = insert b S := by
+    dsimp [S]
+    exact (Finset.insert_erase (Finset.mem_erase.mpr
+      ⟨habNe.symm, Finset.mem_univ b⟩)).symm
+  have hfive : (Finset.univ.erase a).card = 5 := by
+    rw [heraseEq, Finset.card_insert_of_notMem hbNotS, hcardS]
+  have hall6 : ∀ t ∈ Finset.univ.erase a, t.supp.ncard = 6 := by
+    intro t ht
+    rw [heraseEq] at ht
+    rcases Finset.mem_insert.mp ht with rfl | htS
+    · exact hb6
+    · by_cases hq : Q a t = 0
+      · exact hunused6 t htS hq
+      · exact hcontact6 t htS hq
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧
+    (∀ t ∈ S, 0 < Q a t → Q t a = 1 ∧ _) ∧ _ at hp
+  have hextS : (∑ t ∈ S, Q t a) = 2 := by
+    have hsumA : (∑ t ∈ A, Q t a) = A.card := by
+      calc
+        _ = ∑ _t ∈ A, 1 := by
+          apply Finset.sum_congr rfl
+          intro t ht
+          have htS := (Finset.mem_filter.mp ht).1
+          have hq := (Finset.mem_filter.mp ht).2
+          exact (hp.2.1 t htS (Nat.pos_of_ne_zero hq)).1
+        _ = A.card := by simp
+    have hsumU : (∑ t ∈ U, Q t a) = 0 := by
+      apply Finset.sum_eq_zero
+      intro t ht
+      have htS := (Finset.mem_filter.mp ht).1
+      have hq := (Finset.mem_filter.mp ht).2
+      have hb := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a t
+      change a.supp.ncard * Q a t = t.supp.ncard * Q t a at hb
+      rw [ha3, hq] at hb
+      have htPos := t.nonempty_supp.ncard_pos
+      have hz : t.supp.ncard = 0 ∨ Q t a = 0 :=
+        Nat.mul_eq_zero.mp (by omega)
+      rcases hz with hz | hz
+      · omega
+      · exact hz
+    have hs := Finset.sum_union hdisjoint (f := fun t ↦ Q t a)
+    rw [hsplit, hsumA, hsumU, hcontactCard] at hs
+    omega
+  have hext : (∑ t ∈ Finset.univ.erase a, Q t a) = 3 := by
+    rw [heraseEq, Finset.sum_insert hbNotS, hba, hextS]
+  exact false_of_degreeSix_five_orderSix_parity
+    G hfree hmin hcard a haa hfive hall6 hext
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
