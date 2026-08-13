@@ -1485,6 +1485,27 @@ theorem component_orders_sum_six_classification
     have hfgsum : size f + size g = 6 := by simpa [hS, hfg] using hsum
     exact Or.inr ⟨f, g, hfg, hS, by omega, by omega⟩
 
+/-- Components of order at least three and total order three form a
+singleton order-three component. -/
+theorem component_orders_sum_three_classification
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size : C → ℕ)
+    (hlower : ∀ t ∈ S, 3 ≤ size t)
+    (hsum : (∑ t ∈ S, size t) = 3) :
+    ∃ e, S = {e} ∧ size e = 3 := by
+  have hcardPos : 0 < S.card := by
+    by_contra hzero
+    have : S = ∅ := Finset.card_eq_zero.mp (by omega)
+    subst S
+    simp at hsum
+  have hlowerSum : (∑ t ∈ S, 3) ≤ ∑ t ∈ S, size t :=
+    Finset.sum_le_sum fun t ht ↦ hlower t ht
+  have hcard : S.card = 1 := by
+    simp at hlowerSum
+    omega
+  obtain ⟨e, hS⟩ := Finset.card_eq_one.mp hcard
+  exact ⟨e, hS, by simpa [hS] using hsum⟩
+
 /-- Components of order at least three and total order eight form either one
 order-eight component, or two components of orders five and three, or two
 components both of order four. -/
@@ -2724,6 +2745,252 @@ theorem degreeSix_orderFive_ten_residual_contact_type
     t.supp.ncard (Q a t) (Q t a) ht3 ht18 hatPos hatLe4 htaPos
       hatProdLe6 (by simpa [ha5] using hatBal)
   simpa [Q] using htype
+
+/-- The residual `(5,10)` contact filters have the unique multiplicities
+forced by row mass four and two-step mass six. -/
+theorem degreeSix_orderFive_ten_residual_filter_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha5 : a.supp.ncard = 5) (hb10 : b.supp.ncard = 10)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    (R.filter fun t ↦ Q a t = 2 ∧ Q t a = 2).card = 1 ∧
+    (R.filter fun t ↦ Q a t = 3 ∧ Q t a = 1).card = 0 ∧
+      (((R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1).card = 0 ∧
+        (R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1).card = 1) ∨
+       ((R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1).card = 2 ∧
+        (R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1).card = 0)) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha5, hb10, hba] at habBal; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrow
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hrowR : (∑ t ∈ R, Q a t) = 4 := by
+    dsimp [R]
+    rw [haa] at hsA
+    rw [hab] at hsB
+    omega
+  have haProd := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha5]; norm_num)).2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at haProd
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z a) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z a) hbIn
+  have hprodR : (∑ t ∈ R, Q a t * Q t a) = 6 := by
+    dsimp [R]
+    rw [ha5] at haProd
+    rw [haa] at hpA
+    rw [hab, hba] at hpB
+    omega
+  have htype : ∀ t ∈ R, Q a t = 0 ∨
+      (Q a t = 1 ∧ Q t a = 1) ∨
+      (Q a t = 2 ∧ Q t a = 2) ∨
+      (Q a t = 2 ∧ Q t a = 1) ∨
+      (Q a t = 3 ∧ Q t a = 1) := by
+    intro t htR
+    by_cases hq : Q a t = 0
+    · exact Or.inl hq
+    · have htData := Finset.mem_erase.mp htR
+      have htData' := Finset.mem_erase.mp htData.2
+      have hclass := degreeSix_orderFive_ten_residual_contact_type
+        G hfree hmin hcard a b t ha5 hb10 haa hba htData'.1 htData.1
+          (hr t) (Nat.pos_of_ne_zero hq)
+      rcases hclass with h | h | h | h
+      · exact Or.inr (Or.inl h.2)
+      · exact Or.inr (Or.inr (Or.inl h.2))
+      · exact Or.inr (Or.inr (Or.inr (Or.inl h.2)))
+      · exact Or.inr (Or.inr (Or.inr (Or.inr h.2)))
+  simpa [Q, R] using degreeSix_orderFive_cover_filter_counts
+    R (Q a) (fun t ↦ Q t a) htype hrowR hprodR
+
+/-- The `(5,10)` residual quotient has one of two named component shapes;
+in either shape the unused component is a unique order-three component. -/
+theorem degreeSix_orderFive_ten_residual_component_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha5 : a.supp.ncard = 5) (hb10 : b.supp.ncard = 10)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    (∃ t u e : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 ∧ u.supp.ncard = 10 ∧ e.supp.ncard = 3 ∧
+      Q a t = 2 ∧ Q t a = 2 ∧ Q a u = 2 ∧ Q u a = 1 ∧
+      (((((Finset.univ.erase a).erase b).erase t).erase u :
+        Finset (secondOrderDefectGraph G).ConnectedComponent) = {e})) ∨
+    (∃ t u v e : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 ∧ u.supp.ncard = 5 ∧ v.supp.ncard = 5 ∧
+      e.supp.ncard = 3 ∧ u ≠ v ∧
+      Q a t = 2 ∧ Q t a = 2 ∧
+      Q a u = 1 ∧ Q u a = 1 ∧ Q a v = 1 ∧ Q v a = 1 ∧
+      ((((((Finset.univ.erase a).erase b).erase t).erase u).erase v :
+        Finset (secondOrderDefectGraph G).ConnectedComponent) = {e})) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let B := R.filter fun t ↦ Q a t = 2 ∧ Q t a = 2
+  let A := R.filter fun t ↦ Q a t = 1 ∧ Q t a = 1
+  let C := R.filter fun t ↦ Q a t = 2 ∧ Q t a = 1
+  have hcounts := degreeSix_orderFive_ten_residual_filter_counts
+    G hfree hmin hcard hr a b ha5 hb10 haa hba
+  change B.card = 1 ∧
+    (R.filter fun t ↦ Q a t = 3 ∧ Q t a = 1).card = 0 ∧
+      ((A.card = 0 ∧ C.card = 1) ∨ (A.card = 2 ∧ C.card = 0)) at hcounts
+  obtain ⟨t, hB⟩ := Finset.card_eq_one.mp hcounts.1
+  have htB : t ∈ B := by rw [hB]; simp
+  have htData := Finset.mem_filter.mp htB
+  have htR : t ∈ R := htData.1
+  have htat : Q a t = 2 := htData.2.1
+  have htta : Q t a = 2 := htData.2.2
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2 at htat
+  change componentQuotientMatrix G (secondOrderDefectGraph G) t a = 2 at htta
+  have htErase := Finset.mem_erase.mp htR
+  have htErase' := Finset.mem_erase.mp htErase.2
+  have htClass := degreeSix_orderFive_ten_residual_contact_type
+    G hfree hmin hcard a b t ha5 hb10 haa hba htErase'.1 htErase.1
+      (hr t) (by omega)
+  have ht5 : t.supp.ncard = 5 := by
+    rcases htClass with h | h | h | h <;> omega
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have habNe : a ≠ b := by intro h; subst b; omega
+  rcases hcounts.2.2 with hC | hA
+  · obtain ⟨u, hCset⟩ := Finset.card_eq_one.mp hC.2
+    have huC : u ∈ C := by rw [hCset]; simp
+    have huData := Finset.mem_filter.mp huC
+    have huR : u ∈ R := huData.1
+    have hqau : Q a u = 2 := huData.2.1
+    have hqua : Q u a = 1 := huData.2.2
+    change componentQuotientMatrix G (secondOrderDefectGraph G) a u = 2 at hqau
+    change componentQuotientMatrix G (secondOrderDefectGraph G) u a = 1 at hqua
+    have hut : u ≠ t := by
+      intro h
+      subst u
+      omega
+    have huErase := Finset.mem_erase.mp huR
+    have huErase' := Finset.mem_erase.mp huErase.2
+    have huClass := degreeSix_orderFive_ten_residual_contact_type
+      G hfree hmin hcard a b u ha5 hb10 haa hba huErase'.1 huErase.1
+        (hr u) (by omega)
+    have hu10 : u.supp.ncard = 10 := by
+      rcases huClass with h | h | h | h <;> omega
+    let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (((Finset.univ.erase a).erase b).erase t).erase u
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b := htR
+    have huIn : u ∈ ((Finset.univ.erase a).erase b).erase t :=
+      Finset.mem_erase.mpr ⟨hut, huR⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ z.supp.ncard) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ z.supp.ncard) hbIn
+    have hsT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+      (fun z ↦ z.supp.ncard) htIn
+    have hsU := Finset.sum_erase_add (((Finset.univ.erase a).erase b).erase t)
+      (fun z ↦ z.supp.ncard) huIn
+    have hUsum : (∑ z ∈ U, z.supp.ncard) = 3 := by
+      dsimp [U]
+      omega
+    obtain ⟨e, hU, he3⟩ := component_orders_sum_three_classification U
+      (fun z ↦ z.supp.ncard) (fun z _ ↦ hr z) hUsum
+    exact Or.inl ⟨t, u, e, ht5, hu10, he3, htat, htta, hqau, hqua,
+      by simpa [U] using hU⟩
+  · obtain ⟨u, v, huv, hAset⟩ := Finset.card_eq_two.mp hA.1
+    have huA : u ∈ A := by rw [hAset]; simp
+    have hvA : v ∈ A := by rw [hAset]; simp [huv]
+    have huData := Finset.mem_filter.mp huA
+    have hvData := Finset.mem_filter.mp hvA
+    have huR : u ∈ R := huData.1
+    have hvR : v ∈ R := hvData.1
+    have hqau : Q a u = 1 := huData.2.1
+    have hqua : Q u a = 1 := huData.2.2
+    have hqav : Q a v = 1 := hvData.2.1
+    have hqva : Q v a = 1 := hvData.2.2
+    change componentQuotientMatrix G (secondOrderDefectGraph G) a u = 1 at hqau
+    change componentQuotientMatrix G (secondOrderDefectGraph G) u a = 1 at hqua
+    change componentQuotientMatrix G (secondOrderDefectGraph G) a v = 1 at hqav
+    change componentQuotientMatrix G (secondOrderDefectGraph G) v a = 1 at hqva
+    have hut : u ≠ t := by intro h; subst u; omega
+    have hvt : v ≠ t := by intro h; subst v; omega
+    have huErase := Finset.mem_erase.mp huR
+    have huErase' := Finset.mem_erase.mp huErase.2
+    have hvErase := Finset.mem_erase.mp hvR
+    have hvErase' := Finset.mem_erase.mp hvErase.2
+    have huClass := degreeSix_orderFive_ten_residual_contact_type
+      G hfree hmin hcard a b u ha5 hb10 haa hba huErase'.1 huErase.1
+        (hr u) (by omega)
+    have hvClass := degreeSix_orderFive_ten_residual_contact_type
+      G hfree hmin hcard a b v ha5 hb10 haa hba hvErase'.1 hvErase.1
+        (hr v) (by omega)
+    have hu5 : u.supp.ncard = 5 := by rcases huClass with h | h | h | h <;> omega
+    have hv5 : v.supp.ncard = 5 := by rcases hvClass with h | h | h | h <;> omega
+    let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      ((((Finset.univ.erase a).erase b).erase t).erase u).erase v
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b := htR
+    have huIn : u ∈ ((Finset.univ.erase a).erase b).erase t :=
+      Finset.mem_erase.mpr ⟨hut, huR⟩
+    have hvIn : v ∈ (((Finset.univ.erase a).erase b).erase t).erase u :=
+      Finset.mem_erase.mpr ⟨huv.symm,
+        Finset.mem_erase.mpr ⟨hvt, hvR⟩⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ z.supp.ncard) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ z.supp.ncard) hbIn
+    have hsT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+      (fun z ↦ z.supp.ncard) htIn
+    have hsU := Finset.sum_erase_add (((Finset.univ.erase a).erase b).erase t)
+      (fun z ↦ z.supp.ncard) huIn
+    have hsV := Finset.sum_erase_add
+      ((((Finset.univ.erase a).erase b).erase t).erase u)
+      (fun z ↦ z.supp.ncard) hvIn
+    have hUsum : (∑ z ∈ U, z.supp.ncard) = 3 := by
+      dsimp [U]
+      omega
+    obtain ⟨e, hU, he3⟩ := component_orders_sum_three_classification U
+      (fun z ↦ z.supp.ncard) (fun z _ ↦ hr z) hUsum
+    exact Or.inr ⟨t, u, v, e, ht5, hu5, hv5, he3, huv, htat, htta,
+      hqau, hqua, hqav, hqva, by simpa [U] using hU⟩
 
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
