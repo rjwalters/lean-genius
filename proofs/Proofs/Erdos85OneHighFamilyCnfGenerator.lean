@@ -128,6 +128,34 @@ def oneHighFamilyC4Clauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40) oneHighFamilyC4OuterStep
     (oneHighFamilyBaseUnits a)
 
+def oneHighFamilyBlockVertices (b : Nat) : List Nat :=
+  (List.range 5).map fun r => 5 * b + r
+
+def oneHighFamilyAtMostOnePairStep (y x x' : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let (eyx, st) := oneHighFamilyEdgeId y x st
+  let (eyx', st) := oneHighFamilyEdgeId y x' st
+  (oneHighFamilyEmit [-(eyx : Int), -(eyx' : Int)] st).2
+
+def oneHighFamilyAtMostOneVertexStep (b y : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  if y / 5 = b ^^^ 1 then st else
+    let xs := (oneHighFamilyBlockVertices b).filter fun x => x ≠ y
+    oneHighFamilyRunList xs (fun x st =>
+      oneHighFamilyRunList xs (fun x' st =>
+        if x < x' then oneHighFamilyAtMostOnePairStep y x x' st else st) st) st
+
+def oneHighFamilyAtMostOneBlockStep (b : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 40)
+    (oneHighFamilyAtMostOneVertexStep b) st
+
+/-- Fourth generator segment: every vertex has at most one neighbor in a
+non-mate block. -/
+def oneHighFamilyAtMostOneBlockClauses (a : Nat) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 8) oneHighFamilyAtMostOneBlockStep
+    (oneHighFamilyC4Clauses a)
+
 theorem oneHighFamilyInternalUnits_reference :
     ∀ a ∈ [0, 1, 2, 3, 4],
       let out := oneHighFamilyInternalUnits a
@@ -145,6 +173,13 @@ set_option maxHeartbeats 4000000 in
 theorem oneHighFamilyC4Clauses_reference :
     let out := oneHighFamilyC4Clauses 4
     out.top = 780 ∧ out.ids.length = 780 ∧ out.clauses.size = 495320 := by
+  native_decide
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
+theorem oneHighFamilyAtMostOneBlockClauses_reference :
+    let out := oneHighFamilyAtMostOneBlockClauses 4
+    out.top = 780 ∧ out.ids.length = 780 ∧ out.clauses.size = 497960 := by
   native_decide
 
 /-- Reference prefix for AAAA pins both first-encounter IDs and unit signs. -/
