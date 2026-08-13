@@ -2425,15 +2425,18 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
     (hcard : Fintype.card V = 33)
     (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
-    (hzero : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
-      Odd t.supp.ncard →
+    (hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
+    (hzero5 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 →
         componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
     (a b : (secondOrderDefectGraph G).ConnectedComponent)
     (ha5 : a.supp.ncard = 5) (hb20 : b.supp.ncard = 20)
     (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
   change Q b a = 1 at hba
-  have haa : Q a a = 0 := hzero a (by rw [ha5]; norm_num)
+  have haa : Q a a = 0 := hzero5 a ha5
   have habNe : a ≠ b := by intro h; subst b; omega
   have habBal := secondOrder_componentQuotientMatrix_balance
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -2492,7 +2495,7 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
       have hae : Q a e = 0 := by rw [ha5, he3] at haeBal; omega
       have haf : Q a f = 2 := by omega
       have hfa : Q f a = 2 := by rw [ha5, hf5, haf] at hafBal; omega
-      have hff : Q f f = 0 := hzero f (by rw [hf5]; norm_num)
+      have hff : Q f f = 0 := hzero5 f hf5
       have hrowF := sum_secondOrder_componentQuotientMatrix_row_eq_degree
         G hfree (d := 6) (by norm_num) (by norm_num) hmin
           (by norm_num at hcard ⊢; exact hcard) f
@@ -2520,7 +2523,7 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
         rw [hfb] at hfB
         rw [hff] at hfR
         omega
-      have hee : Q e e = 0 := hzero e (by rw [he3]; norm_num)
+      have hee : Q e e = 0 := hzero3 e he3
       have hebBal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 6) (by norm_num) (by norm_num) hmin
           (by norm_num at hcard ⊢; exact hcard) e b
@@ -2569,7 +2572,7 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
         change a.supp.ncard * Q a e = e.supp.ncard * Q e a at h
         rw [ha5, he5, hae] at h
         omega
-      have hee : Q e e = 0 := hzero e (by rw [he5]; norm_num)
+      have hee : Q e e = 0 := hzero5 e he5
       have hefBal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 6) (by norm_num) (by norm_num) hmin
           (by norm_num at hcard ⊢; exact hcard) e f
@@ -2598,7 +2601,7 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
         rw [heb] at heB
         rw [hee] at heR
         omega
-      have hff : Q f f = 0 := hzero f (by rw [hf3]; norm_num)
+      have hff : Q f f = 0 := hzero3 f hf3
       have hfbBal := secondOrder_componentQuotientMatrix_balance
         G hfree (d := 6) (by norm_num) (by norm_num) hmin
           (by norm_num at hcard ⊢; exact hcard) f b
@@ -3094,15 +3097,18 @@ theorem false_of_degreeSix_oddEven_cover_five_ten
     (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
     (hcard : Fintype.card V = 33)
     (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
-    (hzero : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
-      Odd t.supp.ncard →
+    (hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
+    (hzero5 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 5 →
         componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
     (a b : (secondOrderDefectGraph G).ConnectedComponent)
     (ha5 : a.supp.ncard = 5) (hb10 : b.supp.ncard = 10)
     (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
   have haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0 :=
-    hzero a (by rw [ha5]; norm_num)
+    hzero5 a ha5
   have hshape := degreeSix_orderFive_ten_residual_component_shape
     G hfree hmin hcard hr a b ha5 hb10 haa hba
   change
@@ -3128,7 +3134,7 @@ theorem false_of_degreeSix_oddEven_cover_five_ten
     have heu := (degreeSix_no_contact_orderThree_orderTen
       G hfree hmin hcard e u he3 hu10).1
     have hee : Q e e = 0 := by
-      simpa [Q] using hzero e (by rw [he3]; norm_num)
+      simpa [Q] using hzero3 e he3
     have hallzero : ∀ z : (secondOrderDefectGraph G).ConnectedComponent,
         Q e z = 0 := by
       intro z
@@ -3165,7 +3171,7 @@ theorem false_of_degreeSix_oddEven_cover_five_ten
     have heb := (degreeSix_no_contact_orderThree_orderTen
       G hfree hmin hcard e b he3 hb10).1
     have hee : Q e e = 0 := by
-      simpa [Q] using hzero e (by rw [he3]; norm_num)
+      simpa [Q] using hzero3 e he3
     have hallzero : ∀ z : (secondOrderDefectGraph G).ConnectedComponent,
         Q e z = 0 := by
       intro z
