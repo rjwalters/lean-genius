@@ -333,10 +333,10 @@ theorem orderFortyNine_not_adj_degreeEight_degreeEight
     G hfree hmin hcard hx hxy
   omega
 
-/-- Every pair of distinct degree-eight vertices has exactly one common
-degree-seven neighbor.  This is the pairwise-balanced-design core of the
-order-49 laboratory. -/
-theorem orderFortyNine_card_common_degreeEight_eq_one
+/-- A degree-eight vertex has exactly one common neighbor with every other
+vertex.  Its common-neighbor conflict neighborhood is the full punctured
+vertex set. -/
+theorem orderFortyNine_card_common_with_degreeEight_eq_one
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -344,7 +344,7 @@ theorem orderFortyNine_card_common_degreeEight_eq_one
     (hfree : ¬ containsC4 V G)
     (hmin : ∀ x : V, 7 ≤ G.degree x)
     (hcard : Fintype.card V = 49) {x y : V}
-    (hx : G.degree x = 8) (_hy : G.degree y = 8) (hxy : x ≠ y) :
+    (hx : G.degree x = 8) (hxy : x ≠ y) :
     (G.neighborFinset x ∩ G.neighborFinset y).card = 1 := by
   have hconflictSet := orderFortyNine_conflictNeighborFinset_degreeEight
     G hfree hmin hcard hx
@@ -358,6 +358,22 @@ theorem orderFortyNine_card_common_degreeEight_eq_one
     Finset.card_pos.mpr hnonempty
   have hle := common_le_one_of_not_containsC4 hfree x y hxy
   omega
+
+/-- Every pair of distinct degree-eight vertices has exactly one common
+degree-seven neighbor.  This is the pairwise-balanced-design core of the
+order-49 laboratory. -/
+theorem orderFortyNine_card_common_degreeEight_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {x y : V}
+    (hx : G.degree x = 8) (_hy : G.degree y = 8) (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card = 1 :=
+  orderFortyNine_card_common_with_degreeEight_eq_one
+    G hfree hmin hcard hx hxy
 
 end
 
