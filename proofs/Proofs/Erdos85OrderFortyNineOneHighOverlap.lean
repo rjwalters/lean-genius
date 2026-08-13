@@ -2062,6 +2062,33 @@ theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_five_mul_census
     _ = orderFortyNineLeafComponentBranchCensus G v c s * 5 := by
       simp [S, orderFortyNineLeafComponentBranchCensus]
 
+/-- Original branch classes are independent in the leaf-defect graph, hence
+every diagonal component incidence vanishes. -/
+theorem orderFortyNineLeafComponentBranchIncidence_self_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentBranchIncidence G v c s s = 0 := by
+  rw [orderFortyNineLeafComponentBranchIncidence_eq_induced]
+  let H := (orderFortyNineLeafDefectGraph G v).induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  change (∑ x ∈ S, (H.neighborFinset x ∩ S).card) = 0
+  apply Finset.sum_eq_zero
+  intro x hx
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro y hy
+  have hxBranch := (Finset.mem_filter.mp hx).2
+  have hyBranch := (Finset.mem_filter.mp (Finset.mem_inter.mp hy).2).2
+  exact orderFortyNineLeafDefect_not_adj_of_same_originalBranch
+    G hfree s x.1 y.1 hxBranch hyBranch
+      ((H.mem_neighborFinset x y).1 (Finset.mem_inter.mp hy).1)
+
 /-- Directed cross-branch incidences decompose exactly over connected
 components. -/
 theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_global
