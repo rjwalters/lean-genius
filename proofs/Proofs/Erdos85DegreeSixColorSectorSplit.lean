@@ -1518,6 +1518,31 @@ theorem component_orders_sum_eight_classification
     refine Or.inr ⟨f, g, hfg, hS, ?_⟩
     omega
 
+/-- Arithmetic core of the order-five cover classification.  The four
+variables count residual contacts of types `(5,1,1)`, `(5,2,2)`,
+`(10,2,1)`, and `(15,3,1)` respectively.  Simultaneously prescribing row
+mass four and two-step mass six forces one double order-five contact and
+either one order-ten contact or two single order-five contacts. -/
+theorem degreeSix_orderFive_cover_contact_count
+    (n51 n52 n10 n15 : ℕ)
+    (hrow : n51 + 2 * n52 + 2 * n10 + 3 * n15 = 4)
+    (hprod : n51 + 4 * n52 + 2 * n10 + 3 * n15 = 6) :
+    n52 = 1 ∧ n15 = 0 ∧
+      ((n51 = 0 ∧ n10 = 1) ∨ (n51 = 2 ∧ n10 = 0)) := by
+  omega
+
+/-- A positive residual contact from an order-five quotient row, under the
+degree-six row and square budgets, has one of four integral balance types. -/
+theorem degreeSix_orderFive_residual_contact_type
+    (s q r : ℕ) (hs3 : 3 ≤ s) (hs18 : s ≤ 18)
+    (hqpos : 0 < q) (hq4 : q ≤ 4) (hrpos : 0 < r)
+    (hprod : q * r ≤ 6) (hbal : 5 * q = s * r) :
+    (s = 5 ∧ q = 1 ∧ r = 1) ∨
+    (s = 5 ∧ q = 2 ∧ r = 2) ∨
+    (s = 10 ∧ q = 2 ∧ r = 1) ∨
+    (s = 15 ∧ q = 3 ∧ r = 1) := by
+  interval_cases s <;> interval_cases q <;> omega
+
 /-- Arithmetic terminal for the order-six residual partition `1+2`.  The
 two square equations and the global diagonal budget force the order-twelve
 target to contact both distinct order-six components, contradicting grouped
@@ -2523,6 +2548,113 @@ theorem false_of_degreeSix_oddEven_cover_five_twenty
       rw [ha5, hf4] at hafBal
       rw [ha5, he4] at haeBal
       omega
+
+/-- Every positive contact remaining after an order-five to order-ten cover
+has one of the four arithmetic types used by the finite `(5,10)` terminal. -/
+theorem degreeSix_orderFive_ten_residual_contact_type
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (a b t : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha5 : a.supp.ncard = 5) (hb10 : b.supp.ncard = 10)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hta : t ≠ a) (htb : t ≠ b)
+    (ht3 : 3 ≤ t.supp.ncard)
+    (hatPos : 0 < componentQuotientMatrix G (secondOrderDefectGraph G) a t) :
+    (t.supp.ncard = 5 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1) ∨
+    (t.supp.ncard = 5 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a = 2) ∨
+    (t.supp.ncard = 10 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1) ∨
+    (t.supp.ncard = 15 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  change 0 < Q a t at hatPos
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha5, hb10, hba] at habBal; omega
+  have hatBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a t
+  change a.supp.ncard * Q a t = t.supp.ncard * Q t a at hatBal
+  have htaPos : 0 < Q t a := by
+    rw [ha5] at hatBal
+    nlinarith
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrow
+  have hatLe4 : Q a t ≤ 4 := by
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b :=
+      Finset.mem_erase.mpr ⟨htb, Finset.mem_erase.mpr ⟨hta, Finset.mem_univ t⟩⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+    have hsingle : Q a t ≤ ∑ z ∈ (Finset.univ.erase a).erase b, Q a z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) htIn
+    omega
+  have haProd := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha5]; norm_num)).2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at haProd
+  have hatProdLe6 : Q a t * Q t a ≤ 6 := by
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b :=
+      Finset.mem_erase.mpr ⟨htb, Finset.mem_erase.mpr ⟨hta, Finset.mem_univ t⟩⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ Q a z * Q z a) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ Q a z * Q z a) hbIn
+    have hsingle : Q a t * Q t a ≤
+        ∑ z ∈ (Finset.univ.erase a).erase b, Q a z * Q z a :=
+      Finset.single_le_sum (f := fun z ↦ Q a z * Q z a)
+        (fun _ _ ↦ Nat.zero_le _) htIn
+    rw [ha5] at haProd
+    rw [haa] at hsA
+    rw [hab, hba] at hsB
+    omega
+  have ht18 : t.supp.ncard ≤ 18 := by
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+      Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+    have htIn : t ∈ (Finset.univ.erase a).erase b :=
+      Finset.mem_erase.mpr ⟨htb, Finset.mem_erase.mpr ⟨hta, Finset.mem_univ t⟩⟩
+    have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun z ↦ z.supp.ncard) haIn
+    have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+      (fun z ↦ z.supp.ncard) hbIn
+    have hsingle : t.supp.ncard ≤
+        ∑ z ∈ (Finset.univ.erase a).erase b, z.supp.ncard :=
+      Finset.single_le_sum (f := fun z ↦ z.supp.ncard)
+        (fun _ _ ↦ Nat.zero_le _) htIn
+    have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+        z.supp.ncard) = 33 := by
+      simpa [hcard] using
+        (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+    omega
+  have htype := degreeSix_orderFive_residual_contact_type
+    t.supp.ncard (Q a t) (Q t a) ht3 ht18 hatPos hatLe4 htaPos
+      hatProdLe6 (by simpa [ha5] using hatBal)
+  simpa [Q] using htype
 
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
