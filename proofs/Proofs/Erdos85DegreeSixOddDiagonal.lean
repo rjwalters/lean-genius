@@ -293,6 +293,51 @@ theorem false_of_seven_pattern_common
   rw [hsum] at hrow
   omega
 
+/-- Arithmetic terminal for an order-five source whose zero-contact
+residual is two order-four components. -/
+theorem false_of_five_four_four_residual
+    (a x erow esq : ℕ)
+    (hrow : a + x + erow = 6)
+    (hsq : a * a + x * x + esq = 7)
+    (h5row : 5 ∣ erow) (h5sq : 5 ∣ esq)
+    (hrowSq : erow ≤ esq) : False := by
+  have ha : a ≤ 6 := by omega
+  have hx : x ≤ 6 := by omega
+  have herow : erow = 0 ∨ erow = 5 := by
+    obtain ⟨k, hk⟩ := h5row
+    omega
+  have hesq : esq = 0 ∨ esq = 5 := by
+    obtain ⟨k, hk⟩ := h5sq
+    omega
+  rcases herow with h | h <;> rcases hesq with g | g <;>
+    rw [h] at hrow <;> rw [g] at hsq <;>
+      interval_cases a <;> interval_cases x <;> omega
+
+/-- Arithmetic terminal for the singleton order-eight residual.  Reverse
+quotients are at most one, so its external square mass is bounded by its
+external row mass. -/
+theorem false_of_five_eight_residual
+    (a erow esq : ℕ)
+    (hrow : a + erow = 6)
+    (hsq : a * a + esq = 11)
+    (h5row : 5 ∣ erow) (h5sq : 5 ∣ esq)
+    (hsqRow : esq ≤ erow) : False := by
+  have ha : a ≤ 6 := by omega
+  have herow : erow = 0 ∨ erow = 5 := by
+    obtain ⟨k, hk⟩ := h5row
+    omega
+  have hesq : esq = 0 ∨ esq = 5 := by
+    obtain ⟨k, hk⟩ := h5sq
+    omega
+  rcases herow with h | h <;> rcases hesq with g | g <;>
+    rw [h] at hrow <;> rw [g] at hsq <;> interval_cases a <;> omega
+
+/-- An order-three residual has zero diagonal and every off-diagonal row
+entry divisible by five, incompatible with row sum six. -/
+theorem false_of_five_three_residual
+    (row : ℕ) (hrow : row = 6) (h5row : 5 ∣ row) : False := by
+  omega
+
 end OddDiagonal
 
 end Erdos85
