@@ -62,6 +62,50 @@ theorem connectedComponent_regular_excess_data
   · dsimp [e]
     omega
 
+/-- **Parity-free component localization.** Any component below `d²` is a
+regular second-order excess obstruction: its order is
+`d(d-1)+3+e` with `e ≤ d-4`. -/
+theorem connectedComponent_regular_positiveExcess_data
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (hd : 4 ≤ d)
+    (hmin : d ≤ G.minDegree) (c : G.ConnectedComponent)
+    (hsmall : c.supp.ncard < d * d) :
+    ∃ e : ℕ, e ≤ d - 4 ∧
+      c.supp.ncard = d * (d - 1) + 3 + e ∧
+      ∀ x : c.supp, (G.induce c.supp).degree x = d := by
+  classical
+  obtain ⟨_e, _he, _hsize, hreg⟩ :=
+    connectedComponent_regular_excess_data
+      G hfree (by omega) hmin c hsmall
+  let H := G.induce c.supp
+  letI : Nonempty c.supp := Set.nonempty_coe_sort.mpr c.nonempty_supp
+  have hfreeH : ¬ containsC4 c.supp H :=
+    not_containsC4_induce_connectedComponent G hfree c
+  have hminH : d ≤ H.minDegree := by
+    apply H.le_minDegree_of_forall_le_degree
+    intro x
+    rw [degree_induce_connectedComponent_supp G c x]
+    exact hmin.trans (G.minDegree_le_degree x.1)
+  have hcardH : Fintype.card c.supp = c.supp.ncard := by
+    simpa [Nat.card_eq_fintype_card] using Nat.card_coe_set_eq c.supp
+  have hlowerCard : d * (d - 1) + 3 ≤ Fintype.card c.supp :=
+    second_strict_moore_bound H hfreeH (by omega) hminH
+  have hlower : d * (d - 1) + 3 ≤ c.supp.ncard := by
+    rwa [hcardH] at hlowerCard
+  let e := c.supp.ncard - (d * (d - 1) + 3)
+  refine ⟨e, ?_, ?_, hreg⟩
+  · dsimp [e]
+    have hgap : d * d = d * (d - 1) + 3 + (d - 3) := by
+      obtain ⟨a, rfl⟩ : ∃ a, d = a + 4 := ⟨d - 4, by omega⟩
+      have h1 : a + 4 - 1 = a + 3 := by omega
+      have h3 : a + 4 - 3 = a + 1 := by omega
+      rw [h1, h3]
+      ring
+    omega
+  · dsimp [e]
+    omega
+
 /-- In odd degree the clean symbolic boundary theorem removes the first two
 orders as well: a small component starts at `d(d-1)+4`. -/
 theorem connectedComponent_regular_excess_data_odd
@@ -117,7 +161,7 @@ theorem connectedComponent_regular_excess_data_odd
 small component is regular, lies in the bounded excess band, and is itself
 one-step nonextendable. -/
 theorem C4PlateauCore.exists_small_component_boundary_data
-    {m d : ℕ} (hm : 4 ≤ m) (hd : 3 ≤ d)
+    {m d : ℕ} (_hm : 4 ≤ m) (hd : 3 ≤ d)
     (hcore : C4PlateauCore m d) :
     ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
       G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
@@ -133,6 +177,36 @@ theorem C4PlateauCore.exists_small_component_boundary_data
   intro c hc
   obtain ⟨e, he, hsize, hreg⟩ :=
     connectedComponent_regular_excess_data G hfree hd hmin.ge c hc
+  refine ⟨e, he, hsize, hreg, ?_⟩
+  intro hproper hext
+  have hglobal := c4FreeMinDegreeWitness_succ_of_component_extension
+    G hfree hmin.ge c (by simpa using hproper) hext
+  have hglobal' : C4FreeMinDegreeWitness (m + 1) d := by
+    simpa using hglobal
+  rcases hglobal' with ⟨H, hHdec, hHmin, hHfree⟩
+  exact hHfree (hnext H hHdec hHmin)
+
+/-- Plateau-core form of the parity-free positive-excess component bridge.
+Every component below `d²` is regular of order `d(d-1)+3+e`, with bounded
+excess, and a proper such component is itself one-step nonextendable. -/
+theorem C4PlateauCore.exists_small_component_positiveExcess_data
+    {m d : ℕ} (_hm : 4 ≤ m) (hd : 4 ≤ d)
+    (hcore : C4PlateauCore m d) :
+    ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
+      G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
+      ∀ c : G.ConnectedComponent, c.supp.ncard < d * d →
+        ∃ e : ℕ, e ≤ d - 4 ∧
+          c.supp.ncard = d * (d - 1) + 3 + e ∧
+          (∀ x : c.supp, (G.induce c.supp).degree x = d) ∧
+          (c.supp.ncard < m →
+            ¬ C4FreeMinDegreeWitness (c.supp.ncard + 1) d) := by
+  rcases hcore with ⟨G, hdec, hmin, hfree, hcover, hnext⟩
+  letI : DecidableRel G.Adj := hdec
+  refine ⟨G, hdec, hmin, hfree, ?_⟩
+  intro c hc
+  obtain ⟨e, he, hsize, hreg⟩ :=
+    connectedComponent_regular_positiveExcess_data
+      G hfree hd hmin.ge c hc
   refine ⟨e, he, hsize, hreg, ?_⟩
   intro hproper hext
   have hglobal := c4FreeMinDegreeWitness_succ_of_component_extension
