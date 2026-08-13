@@ -1378,6 +1378,19 @@ theorem card_oneHighEncodedFarNeighbors_add_internal_eq_six
   exact card_neighbor_inter_oneHighFarBranchVertices_add_internal_eq_six
     G hfree hexternal mate hmateAdj s x.1 hx hiDegree
 
+/-! ## Exact family profile coordinates -/
+
+/-- The exact branch word used by `family_gen.py`: the low (even) endpoint
+of each of the first `a` mate pairs has one internal edge; every other
+five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
+`AAAA, AAAB, AABB, ABBB, BBBB`. -/
+def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
+  decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
+
+/-- Numeric form of the generator's `IN` array. -/
+def oneHighFamilyInternalEdges (a : Nat) (i : Fin 8) : Nat :=
+  if i.val % 2 = 0 ∧ i.val / 2 < a then 1 else 2
+
 /-! ## Encoder-facing paired-product ledger -/
 
 /-- Ordered pairs in two encoded five-point blocks having one common leaf
@@ -1508,18 +1521,51 @@ theorem card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
     G hfree hmin hcard hv hunique hexternal houterDegree
       mate hmateInv hmateAdj s).1
 
+/-- The paired-product ledger in the generator's literal `IN` coordinates.
+This is the subtraction-free form of its cardinality bound
+`30 - 2*IN[bi] - 2*IN[bj]`. -/
+theorem card_oneHighEncodedCommonPairBlock_add_familyIN_eq_thirty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (a : Nat)
+    (hIN : ∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges a i)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedCommonPairBlock R (branchLabel s)
+        (oneHighStandardMate (branchLabel s))).card +
+      2 * oneHighFamilyInternalEdges a (branchLabel s) +
+      2 * oneHighFamilyInternalEdges a
+        (oneHighStandardMate (branchLabel s)) = 30 := by
+  have hledger := card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
+    G hfree hmin hcard hv hunique hexternal houterDegree mate
+      hmateInv hmateAdj branchLabel hbranchMate leafLabel s
+  have hs := hIN (branchLabel s)
+  rw [branchLabel.symm_apply_apply] at hs
+  have hm := hIN (oneHighStandardMate (branchLabel s))
+  rw [← hbranchMate s, branchLabel.symm_apply_apply] at hm
+  simpa [hs, hm] using hledger
+
 /-! ## Simultaneous generator labeling terminal -/
-
-/-- The exact branch word used by `family_gen.py`: the low (even) endpoint
-of each of the first `a` mate pairs has one internal edge; every other
-five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
-`AAAA, AAAB, AABB, ABBB, BBBB`. -/
-def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
-  decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
-
-/-- Numeric form of the generator's `IN` array. -/
-def oneHighFamilyInternalEdges (a : Nat) (i : Fin 8) : Nat :=
-  if i.val % 2 = 0 ∧ i.val / 2 < a then 1 else 2
 
 /-- Family ordering determines the exact matched-vertex count `2 * IN[i]`
 used by the far-degree, paired-product, and augmented k-sum bounds. -/
