@@ -1271,6 +1271,63 @@ theorem sum_orderFortyNineLeafComponentOverlap_component_eq_overlap
       hreindex.symm
     _ = orderFortyNineOneHighOverlap G v s t := hglobal
 
+/-- Summing the joint census over original branches gives the
+component-local owner-color count. -/
+theorem sum_orderFortyNineLeafComponentOverlap_branch_eq_ownerCensus
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    (∑ s, orderFortyNineLeafComponentOverlap G v c s t) =
+      orderFortyNineLeafComponentOwnerCensus G v c t := by
+  let F := fun s : {z : V // z ∈ G.neighborSet v} =>
+    (Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v s ∧
+        y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t
+  have hpair : ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) :
+      Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint F := by
+    intro s _ u _ hsu
+    apply Finset.disjoint_left.mpr
+    intro y hys hyu
+    have hsBranch := (Finset.mem_filter.mp hys).2.1
+    have huBranch := (Finset.mem_filter.mp hyu).2.1
+    exact Finset.disjoint_left.mp
+      (secondLayerBranch_pairwiseDisjoint G hfree v
+        (Finset.mem_univ s) (Finset.mem_univ u) hsu)
+      hsBranch huBranch
+  have hunion :
+      (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion F =
+        (Finset.univ : Finset c.supp).filter fun y =>
+          y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t := by
+    ext y
+    constructor
+    · intro hy
+      rw [Finset.mem_biUnion] at hy
+      obtain ⟨s, _, hys⟩ := hy
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        (Finset.mem_filter.mp hys).2.2⟩
+    · intro hy
+      have hySecond : y.1.1 ∈ secondLayer G v := by
+        rw [orderFortyNine_secondLayer_degreeEight_eq_compl_closedNeighborhood
+          G hfree hmin hcard hv]
+        exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, by
+          simp [SimpleGraph.mem_neighborFinset, y.1.2.1, y.1.2.2]⟩
+      rw [secondLayer, Finset.mem_biUnion] at hySecond
+      obtain ⟨s, _, hys⟩ := hySecond
+      rw [Finset.mem_biUnion]
+      exact ⟨s, Finset.mem_univ _, Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, hys, (Finset.mem_filter.mp hy).2⟩⟩
+  change (∑ s, (F s).card) =
+    ((Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t).card
+  rw [← Finset.card_biUnion hpair, hunion]
+
 end
 
 end Erdos85
