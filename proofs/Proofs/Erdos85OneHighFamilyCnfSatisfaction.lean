@@ -557,6 +557,31 @@ theorem dimacsClauseBounded_positive_negative_pair
   · simpa using hb
   · simpa using hc
 
+theorem dimacsClauseSatisfied_negative_positive_ids
+    {val : DimacsValuation} {c : Nat} {ids : List Nat}
+    (hcPos : 0 < c) (hidsPos : ∀ id ∈ ids, 0 < id)
+    (himp : val c = true → ∃ id ∈ ids, val id = true) :
+    dimacsClauseSatisfied val
+      (-(c : Int) :: List.map (fun id : Nat => (id : Int)) ids) := by
+  cases hc : val c
+  · refine ⟨-(c : Int), by simp, ?_⟩
+    simp [dimacsLitValue, hc, hcPos]
+  · rcases himp hc with ⟨id, hid, hval⟩
+    refine ⟨(id : Int), by simp [hid], ?_⟩
+    simp [dimacsLitValue, hval, hidsPos id hid]
+
+theorem dimacsClauseBounded_negative_positive_ids
+    {top c : Nat} {ids : List Nat}
+    (hc : c ≤ top) (hids : ∀ id ∈ ids, id ≤ top) :
+    dimacsClauseBounded top
+      (-(c : Int) :: List.map (fun id : Nat => (id : Int)) ids) := by
+  intro lit hlit
+  simp only [List.mem_cons] at hlit
+  rcases hlit with rfl | hlit
+  · simpa using hc
+  · rcases List.mem_map.mp hlit with ⟨id, hid, rfl⟩
+    simpa using hids id hid
+
 noncomputable def oneHighFamilyFourNegativeAtomsVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (atom₁ atom₂ atom₃ atom₄ : OneHighFamilyAtom)
@@ -3151,5 +3176,224 @@ theorem oneHighFamilyPairedMidpoints_mem
   have hf := List.mem_filter.mp hw
   refine ⟨List.mem_range.mp hf.1, ?_⟩
   exact of_decide_eq_true hf.2
+
+theorem oneHighFamilyPairedMidpoints_mem_iff
+    (b : Fin 8) {w : Nat} :
+    w ∈ oneHighFamilyPairedMidpoints b.val (oneHighStandardMate b).val ↔
+      ∃ hw : w < 40, (⟨w, hw⟩ : Fin 40) ∈ oneHighFamilyMidpoints b := by
+  constructor
+  · intro hw
+    have hp := oneHighFamilyPairedMidpoints_mem hw
+    refine ⟨hp.1, ?_⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_, ?_⟩
+    · intro heq
+      exact hp.2.1 (congrArg Fin.val heq)
+    · intro heq
+      exact hp.2.2 (congrArg Fin.val heq)
+  · rintro ⟨hw40, hw⟩
+    have hp := Finset.mem_filter.mp hw
+    apply List.mem_filter.mpr
+    refine ⟨List.mem_range.mpr hw40, ?_⟩
+    apply decide_eq_true
+    constructor
+    · intro heq
+      exact hp.2.1 (Fin.ext heq)
+    · intro heq
+      exact hp.2.2 (Fin.ext heq)
+
+def oneHighFamilyEmitCommonPairsVal (c : Nat) (ids : List Nat)
+    (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  List.foldl (fun (acc : OneHighFamilyValState) (id : Nat) =>
+    (oneHighFamilyEmitVal [-(id : Int), (c : Int)] acc).2) acc ids
+
+@[simp] theorem oneHighFamilyEmitCommonPairsVal_ids
+    (c : Nat) (ids : List Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyEmitCommonPairsVal c ids acc).1.ids = acc.1.ids := by
+  induction ids generalizing acc with
+  | nil => rfl
+  | cons id ids ih =>
+      change (oneHighFamilyEmitCommonPairsVal c ids
+        (oneHighFamilyEmitVal [-(id : Int), (c : Int)] acc).2).1.ids = _
+      rw [ih]
+      rfl
+
+@[simp] theorem oneHighFamilyEmitCommonPairsVal_value
+    (c : Nat) (ids : List Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyEmitCommonPairsVal c ids acc).2 = acc.2 := by
+  induction ids generalizing acc with
+  | nil => rfl
+  | cons id ids ih =>
+      change (oneHighFamilyEmitCommonPairsVal c ids
+        (oneHighFamilyEmitVal [-(id : Int), (c : Int)] acc).2).2 = _
+      rw [ih]
+      rfl
+
+theorem oneHighFamilyEmitCommonPairsVal_state
+    (c : Nat) (ids : List Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyEmitCommonPairsVal c ids acc).1 =
+      List.foldl (fun (st : OneHighFamilyGenState) (id : Nat) =>
+        (oneHighFamilyEmit [-(id : Int), (c : Int)] st).2) acc.1 ids := by
+  induction ids generalizing acc with
+  | nil => rfl
+  | cons id ids ih =>
+      change (oneHighFamilyEmitCommonPairsVal c ids
+        (oneHighFamilyEmitVal [-(id : Int), (c : Int)] acc).2).1 = _
+      rw [ih]
+      rfl
+
+theorem oneHighFamilyEmitCommonPairsVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {c : Nat} {ids : List Nat} {acc : OneHighFamilyValState}
+    (h : OneHighFamilySemanticSound R acc)
+    (hc : ∃ atom, (atom, c) ∈ acc.1.ids)
+    (hids : ∀ id ∈ ids, ∃ atom, (atom, id) ∈ acc.1.ids)
+    (himp : ∀ id ∈ ids, acc.2 id = true → acc.2 c = true) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyEmitCommonPairsVal c ids acc) := by
+  induction ids generalizing acc with
+  | nil => exact h
+  | cons id ids ih =>
+      simp only [oneHighFamilyEmitCommonPairsVal, List.foldl_cons]
+      let next := (oneHighFamilyEmitVal [-(id : Int), (c : Int)] acc).2
+      have hid := hids id (by simp)
+      have hs : OneHighFamilySemanticSound R next := by
+        apply oneHighFamilyEmitVal_semanticSound R h
+        · exact dimacsClauseSatisfied_negative_positive
+            (h.ids.id_bounds _ hc.choose_spec).1 (himp id (by simp))
+        · exact dimacsClauseBounded_negative_positive
+            (h.ids.id_bounds _ hid.choose_spec).2
+            (h.ids.id_bounds _ hc.choose_spec).2
+      apply ih hs
+      · rcases hc with ⟨atom, hm⟩
+        exact ⟨atom, by exact hm⟩
+      · intro id' hid'
+        exact hids id' (by simp [hid'])
+      · intro id' hid'
+        simpa [next, oneHighFamilyEmitVal] using himp id' (by simp [hid'])
+
+noncomputable def oneHighFamilyCommonTseitinStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj x z : Nat) (input : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let (cs, acc) := input
+  let mids := oneHighFamilyPairedMidpoints bi bj
+  let tsInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  let hm := oneHighFamilyCollectMidpointsVal_match R x z mids acc
+  let (c, acc) := oneHighFamilyAtomIdVal R
+    (.common (min x z) (max x z)) tsInput.2
+  let acc := (oneHighFamilyEmitVal
+    (-(c : Int) :: List.map (fun id : Nat => (id : Int)) hm.ids) acc).2
+  let acc := oneHighFamilyEmitCommonPairsVal c hm.ids acc
+  (cs.push (c : Int), acc)
+
+theorem oneHighFamilyCommonTseitinStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (b : Fin 8) {x z : Nat} (hx : x < 40) (hz : z < 40) (hxz : x < z)
+    (hxBlock : Fin.divNat (m := 8) (n := 5) (⟨x, hx⟩ : Fin 40) = b)
+    (hzBlock : Fin.divNat (m := 8) (n := 5) (⟨z, hz⟩ : Fin 40) =
+      oneHighStandardMate b)
+    {cs : Array Int} {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyCommonTseitinStepVal R b.val
+        (oneHighStandardMate b).val x z (cs, acc)).2 := by
+  classical
+  let mids := oneHighFamilyPairedMidpoints b.val
+    (oneHighStandardMate b).val
+  have hmidsBound : ∀ w ∈ mids, w < 40 := by
+    intro w hw
+    exact (oneHighFamilyPairedMidpoints_mem hw).1
+  let tsInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  let hm := oneHighFamilyCollectMidpointsVal_match R x z mids acc
+  have hsInput : OneHighFamilySemanticSound R tsInput.2 := by
+    exact oneHighFamilyCollectMidpointsVal_semanticSound R hx hz hxz mids
+      hmidsBound (ts := #[]) hacc
+  let ca : OneHighFamilyAtom := .common (min x z) (max x z)
+  generalize hca : oneHighFamilyAtomIdVal R ca tsInput.2 = out
+  rcases out with ⟨c, accC⟩
+  have hsC := oneHighFamilyAtomIdVal_semanticSound R hsInput ca
+  rw [hca] at hsC
+  have hrC := oneHighFamilyAtomIdVal_result R ca tsInput.2.1 tsInput.2.2
+  rw [hca] at hrC
+  dsimp at hrC
+  let hmC : OneHighFamilyCollectedMidpointsMatch x z mids
+      (tsInput.1, accC) := {
+    ids := hm.ids
+    vars_eq := hm.vars_eq
+    aligned := hm.aligned.imp (by
+      intro w id hmem
+      have hold := oneHighFamilyAtomIdVal_old_mem R ca
+        tsInput.2.1 tsInput.2.2 hmem
+      rw [hca] at hold
+      exact hold) }
+  have hmin : (⟨min x z, by omega⟩ : Fin 40) = ⟨x, hx⟩ := by
+    apply Fin.ext
+    exact min_eq_left (Nat.le_of_lt hxz)
+  have hmax : (⟨max x z, by omega⟩ : Fin 40) = ⟨z, hz⟩ := by
+    apply Fin.ext
+    exact max_eq_right (Nat.le_of_lt hxz)
+  have hcVal : accC.2 c = decide
+      (oneHighFamilyCAtom R b (⟨x, hx⟩ : Fin 40) ⟨z, hz⟩) := by
+    rw [hrC.2]
+    simp only [ca, oneHighFamilyAtomValue, dif_pos (by omega : min x z < 40),
+      dif_pos (by omega : max x z < 40), oneHighFamilyCAtom,
+      oneHighEncodedCommonPairBlock, Finset.mem_filter, Finset.mem_product,
+      Finset.mem_univ, true_and]
+    rw [hmin, hmax]
+    simp [hxBlock, hzBlock]
+  have hiff : accC.2 c = true ↔ ∃ id ∈ hm.ids, accC.2 id = true := by
+    rw [hcVal]
+    simp only [decide_eq_true_eq]
+    rw [oneHighFamily_cAtom_iff_exists_tAtom hc.relation b
+      (⟨x, hx⟩ : Fin 40) ⟨z, hz⟩ hxBlock hzBlock]
+    rw [oneHighFamilyCollectedMidpoints_exists_true_iff R hmC hsC]
+    constructor
+    · rintro ⟨w, hwFin, ht⟩
+      have hwList := (oneHighFamilyPairedMidpoints_mem_iff b).mpr
+        ⟨w.2, by simpa using hwFin⟩
+      refine ⟨w.val, hwList, ?_⟩
+      rw [oneHighFamilyAtomValue_midpoint R hx hz w.2 hxz]
+      exact decide_eq_true ht
+    · rintro ⟨w, hwList, ht⟩
+      rcases (oneHighFamilyPairedMidpoints_mem_iff b).mp hwList with
+        ⟨hw40, hwFin⟩
+      refine ⟨(⟨w, hw40⟩ : Fin 40), hwFin, ?_⟩
+      rw [oneHighFamilyAtomValue_midpoint R hx hz hw40 hxz] at ht
+      exact of_decide_eq_true ht
+  have hids : ∀ id ∈ hm.ids,
+      ∃ atom, (atom, id) ∈ accC.1.ids := by
+    intro id hid
+    rcases listForall₂_exists_left_of_mem hmC.aligned hid with
+      ⟨w, _, hatom⟩
+    exact ⟨.midpoint (min x z) w (max x z), hatom⟩
+  let accOr := (oneHighFamilyEmitVal
+    (-(c : Int) :: List.map (fun id : Nat => (id : Int)) hm.ids) accC).2
+  have hsOr : OneHighFamilySemanticSound R accOr := by
+    apply oneHighFamilyEmitVal_semanticSound R hsC
+    · apply dimacsClauseSatisfied_negative_positive_ids
+      · exact (hsC.ids.id_bounds _ hrC.1).1
+      · intro id hid
+        exact (hsC.ids.id_bounds _ (hids id hid).choose_spec).1
+      · exact hiff.mp
+    · apply dimacsClauseBounded_negative_positive_ids
+      · exact (hsC.ids.id_bounds _ hrC.1).2
+      · intro id hid
+        exact (hsC.ids.id_bounds _ (hids id hid).choose_spec).2
+  simp only [oneHighFamilyCommonTseitinStepVal,
+    oneHighFamilyCollectMidpointsVal]
+  dsimp [ca, tsInput, mids, oneHighFamilyCollectMidpointsVal] at hca
+  rw [hca]
+  change OneHighFamilySemanticSound R
+    (oneHighFamilyEmitCommonPairsVal c hm.ids accOr)
+  apply oneHighFamilyEmitCommonPairsVal_semanticSound R hsOr
+  · exact ⟨ca, by exact hrC.1⟩
+  · exact hids
+  · intro id hid ht
+    have hvEq : accOr.2 = accC.2 := by
+      exact oneHighFamilyEmitVal_value _ _ _
+    rw [hvEq] at ht ⊢
+    exact hiff.mpr ⟨id, hid, ht⟩
 
 end Erdos85
