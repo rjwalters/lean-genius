@@ -6,6 +6,7 @@ import Proofs.Erdos85MinimumEvenOrphanParity
 import Proofs.Erdos85ZeroLayerPartitionClassification
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixEmptySector
+import Proofs.Erdos85DegreeSixOddDiagonal
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -221,6 +222,11 @@ import Proofs.Erdos85DegreeSixEmptySector
 
 -- (3,6) COVER CLOSED: dispatchers + top-level (667904ca34..3992949773)
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_six
+
+-- beta-1 escapee-order kernels (claude, Erdos85DegreeSixOddDiagonal.lean)
+#print axioms Erdos85.OddDiagonal.false_of_large_prime_diag_two
+#print axioms Erdos85.OddDiagonal.false_of_thirteen_diag_two
+#print axioms Erdos85.OddDiagonal.false_of_eleven_diag_two
 
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
