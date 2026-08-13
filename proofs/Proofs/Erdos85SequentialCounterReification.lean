@@ -1338,6 +1338,85 @@ theorem seqCounterAtMostCore_formulaSatisfied
     · exact dimacsFormulaSatisfied_empty _
   next _ => exact dimacsFormulaSatisfied_empty _
 
+theorem seqCounterAtMost_zero_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (htotal : seqPrefixTrue x vars.size ≤ 0) :
+    dimacsFormulaSatisfied (seqCounterBlockVal inputVal top x [])
+      (vars.map fun v => [-v]) := by
+  intro clause hclause
+  simp only [Array.mem_map] at hclause
+  obtain ⟨lit, hlit, rfl⟩ := hclause
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hlit
+  have hx : x ⟨i, hi⟩ = false := by
+    cases hxv : x ⟨i, hi⟩
+    · rfl
+    · have hp := seqPrefixTrue_pos_of_true x ⟨i, hi⟩ hxv
+      omega
+  refine ⟨-(vars[i] : Int), by simp, ?_⟩
+  have hn := hinput.nonzero i hi
+  have hv := hinput.value i hi
+  have hb := hinput.bounded i hi
+  simp [Array.getD, hi] at hn hv hb
+  rw [dimacsLitValue_block_of_natAbs_le inputVal top x [] (by
+    simpa [Int.natAbs_neg] using hb)]
+  rw [dimacsLitValue_neg inputVal hn, hv, hx]
+  rfl
+
+theorem seqCounterAtMost_pred_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hpred : t + 1 = vars.size)
+    (htotal : seqPrefixTrue x vars.size ≤ t) :
+    dimacsFormulaSatisfied (seqCounterBlockVal inputVal top x [])
+      #[vars.toList.map fun v => -v] := by
+  intro clause hclause
+  simp only [Array.mem_singleton] at hclause
+  subst clause
+  have hlt : seqPrefixTrue x vars.size < vars.size := by omega
+  obtain ⟨i, hi⟩ := exists_false_of_seqPrefixTrue_lt x hlt
+  let k : Nat := i.val
+  have hk : k < vars.size := i.isLt
+  refine ⟨-(vars[k] : Int), ?_, ?_⟩
+  · simp only [List.mem_map]
+    exact ⟨vars[k], by simpa using Array.getElem_mem hk, rfl⟩
+  · have hn := hinput.nonzero k hk
+    have hv := hinput.value k hk
+    have hb := hinput.bounded k hk
+    simp [Array.getD, hk] at hn hv hb
+    rw [dimacsLitValue_block_of_natAbs_le inputVal top x [] (by
+      simpa [Int.natAbs_neg] using hb)]
+    rw [dimacsLitValue_neg inputVal hn, hv]
+    simpa [k] using hi
+
+/-- Soundness of the full PySAT at-most wrapper, including both boundary
+encodings outside the nontrivial Knuth loop. -/
+theorem seqCounterAtMost_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (htotal : seqPrefixTrue x vars.size ≤ t) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal top x
+        (seqCounterAtMost top vars t).ids)
+      (seqCounterAtMost top vars t).clauses := by
+  unfold seqCounterAtMost
+  split
+  next hz =>
+    subst t
+    simpa using seqCounterAtMost_zero_formulaSatisfied
+      inputVal top vars x hinput htotal
+  next hnz =>
+    split
+    next hp =>
+      simpa using seqCounterAtMost_pred_formulaSatisfied
+        inputVal top vars x hinput t hp htotal
+    next _ =>
+      exact seqCounterAtMostCore_formulaSatisfied
+        inputVal top vars x hinput t htotal
+
 /-! ## Complement and at-least blocks -/
 
 /-- Boolean complement transported to the index type of the mapped negative
