@@ -1,6 +1,7 @@
 import Proofs.Erdos85ComponentLocalObstruction
 import Proofs.Erdos85NonextendableCompactness
 import Proofs.Erdos85ConflictDegreeAccounting
+import Proofs.Erdos85PlateauComponentDescent
 
 /-!
 # Compact normal form for proper plateau components
@@ -38,7 +39,7 @@ theorem C4PlateauCore.exists_component_compact_normalForm
           (commonNeighborConflict H).degree x =
             H.degree x * (d - 1)) := by
   have hd : 2 ≤ d := hcore.two_le_degree hm
-  obtain ⟨G, hdec, hmin, hfree, hcomponents⟩ :=
+  obtain ⟨G, hdec, hmin, hfree, _hcover, _hnext, hcomponents⟩ :=
     hcore.exists_component_local_obstructions hm
   letI : DecidableRel G.Adj := hdec
   refine ⟨G, hdec, hmin, hfree, ?_⟩
@@ -56,5 +57,35 @@ theorem C4PlateauCore.exists_component_compact_normalForm
   exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
     (G.induce c.supp) hfreeC (d := d)
       (fun {_u _v} huv ↦ hcoverC huv) x hx
+
+/-- **Connected compact minimal-core normal form.** An order-minimal plateau
+core has a single representative carrying all graph-facing data needed by
+the compactness, conflict, and surgery programs. -/
+theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
+    {m d : ℕ} (hm : 4 ≤ m) (hd : 4 ≤ d)
+    (hminimal : OrderMinimalC4PlateauCore m d) :
+    ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
+      G.minDegree = d ∧
+      ¬ containsC4 (Fin m) G ∧
+      (∀ ⦃u v⦄, G.Adj u v → G.degree u = d ∨ G.degree v = d) ∧
+      ¬ C4FreeMinDegreeWitness (m + 1) d ∧
+      Fintype.card G.ConnectedComponent = 1 ∧
+      m + 1 < 36 * d * d ∧
+      (∀ x, G.degree x ≤ 2 * d - 2) ∧
+      (Odd d → ∀ x, G.degree x ≤ 2 * d - 3) ∧
+      (commonNeighborConflict G).indepNum < d ∧
+      (∀ x, G.degree x ≠ d →
+        (commonNeighborConflict G).degree x = G.degree x * (d - 1)) := by
+  obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected⟩ :=
+    hminimal.exists_connected_representative hm hd
+  letI : DecidableRel G.Adj := hdec
+  have hcard : Fintype.card (Fin m) = m := Fintype.card_fin m
+  obtain ⟨horder, hupper, hoddUpper, hind⟩ :=
+    nonextendable_witness_compactness G hcard (by omega) hmin.ge hfree hnext
+  refine ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected,
+    horder, hupper, hoddUpper, hind, ?_⟩
+  intro x hx
+  exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
+    G hfree (d := d) (fun {_u _v} huv ↦ hcover huv) x hx
 
 end Erdos85

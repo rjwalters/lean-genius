@@ -54,12 +54,14 @@ theorem C4PlateauCore.exists_component_plateauCore
     {m d : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m d) :
     ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
       G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
+      (∀ ⦃u v⦄, G.Adj u v → G.degree u = d ∨ G.degree v = d) ∧
+      ¬ C4FreeMinDegreeWitness (m + 1) d ∧
       ∀ c : G.ConnectedComponent, c.supp.ncard < m →
         C4PlateauCore c.supp.ncard d := by
-  obtain ⟨G, hdec, hmin, hfree, hcomponents⟩ :=
+  obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hcomponents⟩ :=
     hcore.exists_component_local_obstructions hm
   letI : DecidableRel G.Adj := hdec
-  refine ⟨G, hdec, hmin, hfree, ?_⟩
+  refine ⟨G, hdec, hmin, hfree, hcover, hnext, ?_⟩
   intro c hc
   dsimp at hcomponents
   obtain ⟨hminC, hfreeC, hcoverC, hnoC⟩ := hcomponents c
@@ -99,7 +101,7 @@ theorem C4PlateauCore.exists_strictly_smaller_component_plateauCore
       G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
       ∀ c e : G.ConnectedComponent, c ≠ e →
         c.supp.ncard < m ∧ C4PlateauCore c.supp.ncard d := by
-  obtain ⟨G, hdec, hmin, hfree, hdescend⟩ :=
+  obtain ⟨G, hdec, hmin, hfree, _hcover, _hnext, hdescend⟩ :=
     hcore.exists_component_plateauCore hm
   letI : DecidableRel G.Adj := hdec
   refine ⟨G, hdec, hmin, hfree, ?_⟩
@@ -121,11 +123,13 @@ theorem OrderMinimalC4PlateauCore.exists_connected_representative
     (hminimal : OrderMinimalC4PlateauCore m d) :
     ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
       G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
+      (∀ ⦃u v⦄, G.Adj u v → G.degree u = d ∨ G.degree v = d) ∧
+      ¬ C4FreeMinDegreeWitness (m + 1) d ∧
       Fintype.card G.ConnectedComponent = 1 := by
-  obtain ⟨G, hdec, hmin, hfree, hdescend⟩ :=
+  obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hdescend⟩ :=
     hminimal.1.exists_component_plateauCore hm
   letI : DecidableRel G.Adj := hdec
-  refine ⟨G, hdec, hmin, hfree, ?_⟩
+  refine ⟨G, hdec, hmin, hfree, hcover, hnext, ?_⟩
   by_contra hcard
   have hnonempty : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
   letI : Nonempty (Fin m) := hnonempty
@@ -167,6 +171,8 @@ theorem C4PlateauCore.exists_le_connected_orderMinimal
     ∃ n ≤ m, OrderMinimalC4PlateauCore n d ∧
       ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
         G.minDegree = d ∧ ¬ containsC4 (Fin n) G ∧
+        (∀ ⦃u v⦄, G.Adj u v → G.degree u = d ∨ G.degree v = d) ∧
+        ¬ C4FreeMinDegreeWitness (n + 1) d ∧
         Fintype.card G.ConnectedComponent = 1 := by
   obtain ⟨n, hn4, hnm, hnminimal⟩ := hcore.exists_orderMinimal_le hm
   exact ⟨n, hnm, hnminimal,

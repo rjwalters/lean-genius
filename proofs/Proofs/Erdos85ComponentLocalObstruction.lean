@@ -95,6 +95,8 @@ theorem C4PlateauCore.exists_component_local_obstructions
     {m d : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m d) :
     ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
       G.minDegree = d ∧ ¬ containsC4 (Fin m) G ∧
+      (∀ ⦃u v⦄, G.Adj u v → G.degree u = d ∨ G.degree v = d) ∧
+      ¬ C4FreeMinDegreeWitness (m + 1) d ∧
       ∀ c : G.ConnectedComponent,
         let H := G.induce c.supp
         H.minDegree = d ∧
@@ -108,7 +110,10 @@ theorem C4PlateauCore.exists_component_local_obstructions
     omega
   rcases hcore with ⟨G, hdec, hmin, hfree, hcover, hnext⟩
   letI : DecidableRel G.Adj := hdec
-  refine ⟨G, hdec, hmin, hfree, ?_⟩
+  refine ⟨G, hdec, hmin, hfree,
+    (fun {_u _v} huv ↦ hcover huv), ?_, ?_⟩
+  · rintro ⟨H, hHdec, hHmin, hHfree⟩
+    exact hHfree (hnext H hHdec hHmin)
   intro c
   dsimp
   refine ⟨minDegree_induce_connectedComponent_eq_of_edge_cover
