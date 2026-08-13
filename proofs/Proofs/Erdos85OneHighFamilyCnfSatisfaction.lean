@@ -244,4 +244,110 @@ theorem oneHighFamilyEqualsBlockVal_reifies
   exact (seqCounterEqualsVal_input val st.top vars x bound id hid).trans
     (hreifies atom id hmem')
 
+/-- Induction package carried by the semantic replay of the family generator:
+named IDs are well formed and reified, while every clause emitted so far is
+satisfied and bounded by the current global top. -/
+structure OneHighFamilySemanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (acc : OneHighFamilyValState) : Prop where
+  ids : OneHighFamilyIdsSound acc.1
+  named : OneHighFamilyNamedValReifies R acc.1 acc.2
+  satisfied : dimacsFormulaSatisfied acc.2 acc.1.clauses
+  bounded : dimacsFormulaBounded acc.1.top acc.1.clauses
+
+theorem oneHighFamilySemanticSound_initial
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R (({} : OneHighFamilyGenState), val) where
+  ids := oneHighFamilyIdsSound_initial
+  named := oneHighFamilyNamedValReifies_initial R val
+  satisfied := dimacsFormulaSatisfied_empty val
+  bounded := dimacsFormulaBounded_empty 0
+
+theorem oneHighFamilyAtomIdVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (h : OneHighFamilySemanticSound R (st, val))
+    (atom : OneHighFamilyAtom) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyAtomIdVal R atom (st, val)).2 := by
+  simp only [oneHighFamilyAtomIdVal]
+  generalize hout : oneHighFamilyAtomId atom st = out
+  rcases out with ⟨id, st'⟩
+  unfold oneHighFamilyAtomId at hout
+  split at hout
+  next _ hlookup =>
+    cases hout
+    have hmem : (atom, id) ∈ st.ids :=
+      oneHighFamilyLookup_eq_some_mem hlookup
+    have hvalue : val id = oneHighFamilyAtomValue R atom :=
+      h.named atom id hmem
+    have hvalEq : Function.update val id
+        (oneHighFamilyAtomValue R atom) = val := by
+      funext k
+      by_cases hk : k = id
+      · subst k
+        simp [hvalue]
+      · simp [Function.update, hk]
+    simpa [hvalEq] using h
+  next hlookup =>
+    cases hout
+    let nextVal := Function.update val (st.top + 1)
+      (oneHighFamilyAtomValue R atom)
+    have hagree : ∀ id, id ≤ st.top → val id = nextVal id := by
+      intro id hid
+      have hne : id ≠ st.top + 1 := by omega
+      simp [nextVal, hne]
+    have hsat : dimacsFormulaSatisfied nextVal st.clauses :=
+      dimacsFormulaSatisfied_of_bounded_agree h.satisfied h.bounded hagree
+    constructor
+    · simpa [oneHighFamilyAtomId, hlookup] using
+        oneHighFamilyIdsSound_atomId h.ids atom
+    · simpa [oneHighFamilyAtomIdVal, oneHighFamilyAtomId, hlookup] using
+        oneHighFamilyAtomIdVal_reifies R h.ids h.named atom
+    · exact hsat
+    · exact dimacsFormulaBounded_mono (Nat.le_succ st.top) h.bounded
+
+theorem oneHighFamilyEmitVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (h : OneHighFamilySemanticSound R (st, val))
+    (clause : DimacsClause)
+    (hclauseSat : dimacsClauseSatisfied val clause)
+    (hclauseBound : dimacsClauseBounded st.top clause) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyEmitVal clause (st, val)).2 := by
+  constructor
+  · exact oneHighFamilyIdsSound_emit h.ids clause
+  · exact oneHighFamilyEmitVal_reifies R h.named clause
+  · intro candidate hc
+    change candidate ∈ st.clauses.push clause at hc
+    simp only [Array.mem_push] at hc
+    rcases hc with hc | rfl
+    · exact h.satisfied candidate hc
+    · exact hclauseSat
+  · intro candidate hc
+    change candidate ∈ st.clauses.push clause at hc
+    simp only [Array.mem_push] at hc
+    rcases hc with hc | rfl
+    · exact h.bounded candidate hc
+    · exact hclauseBound
+
+theorem oneHighFamilyEqualsBlockVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {st : OneHighFamilyGenState} {val : DimacsValuation}
+    (h : OneHighFamilySemanticSound R (st, val))
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat)
+    (hinput : SeqCounterInputReifies val st.top vars x)
+    (hcount : seqPrefixTrue x vars.size = bound) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyEqualsBlockVal vars x bound (st, val)) := by
+  let hblock := seqCounterEqualsVal_formulaSatisfied_append
+    val st.top st.clauses vars x h.satisfied h.bounded hinput bound hcount
+  constructor
+  · exact oneHighFamilyIdsSound_equalsBlock h.ids vars bound
+  · exact oneHighFamilyEqualsBlockVal_reifies R h.ids h.named vars x bound
+  · simpa [oneHighFamilyEqualsBlockVal, oneHighFamilyEqualsBlock] using hblock.1
+  · simpa [oneHighFamilyEqualsBlockVal, oneHighFamilyEqualsBlock] using hblock.2.1
+
 end Erdos85
