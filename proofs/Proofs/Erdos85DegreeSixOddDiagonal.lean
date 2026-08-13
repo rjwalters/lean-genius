@@ -338,6 +338,27 @@ theorem false_of_five_three_residual
     (row : ℕ) (hrow : row = 6) (h5row : 5 ∣ row) : False := by
   omega
 
+/-- Local row/square terminal for an order-six zero-contact residual in
+either of the two order-nine patterns that leave external mass six.  Its
+only possible nonzero off-diagonal contact is with an order-eighteen
+component, and balance writes that quotient as `3 * x`. -/
+theorem false_of_nine_six_residual
+    (a x : ℕ) (hrow : a + 3 * x = 6)
+    (hsq : a * a + 3 * x * x = 9) : False := by
+  have ha : a ≤ 6 := by omega
+  have hx : x ≤ 2 := by omega
+  interval_cases a <;> interval_cases x <;> omega
+
+/-- Local terminal for the order-eighteen partner when an order-nine
+source leaves two order-three residual components.  Balance forces reverse
+quotients `2,1,1`; its row and square equations demand incompatible values
+of the diagonal entry. -/
+theorem false_of_nine_eighteen_two_triangles
+    (a : ℕ) (hrow : a + 2 + 1 + 1 = 6)
+    (hsq : a * a + 2 * 4 + 1 * 6 + 1 * 6 = 21) : False := by
+  have ha : a ≤ 2 := by omega
+  interval_cases a <;> omega
+
 end OddDiagonal
 
 end Erdos85
