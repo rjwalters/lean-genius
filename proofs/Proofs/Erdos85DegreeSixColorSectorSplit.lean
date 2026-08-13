@@ -2673,6 +2673,123 @@ theorem reverse_eq_one_on_finset_of_balanced_product_eq_row
   rw [hsum] at hstrict
   exact (lt_irrefl _ hstrict)
 
+/-- Every order-three component at the degree-six boundary is zero-diagonal.
+If its diagonal quotient were two, equitability would make each of its three
+vertices adjacent in `G` to the other two.  The defect rim would then be a
+triangle in the triangle-free edge graph. -/
+theorem degreeSix_orderThree_diagonal_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (r := c.supp.ncard)
+        (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by omega)
+        (by rw [hc3]; norm_num) c (u c) (hu c) (huRange c) (huD c) with
+    hzero | htwo
+  · exact hzero
+  · exfalso
+    change Q c c = 2 at htwo
+    have hcomplete : ∀ x y : ZMod c.supp.ncard, x ≠ y → G.Adj (u c x) (u c y) := by
+      intro x y hxy
+      let N := componentNeighborFinset G D c (u c x)
+      have huxc : u c x ∈ c.supp := by
+        rw [← huRange c]
+        exact ⟨x, rfl⟩
+      have hNcardEq := componentQuotientMatrix_apply_eq G D 2
+        (secondOrderDefectGraph_degree_eq_two G hfree (d := 6)
+          (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+        (adjMatrix_comm_secondOrderDefect_of_even_real G hfree
+          (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard)) c c huxc
+      change Q c c = N.card at hNcardEq
+      have hNcard : N.card = 2 := by omega
+      have hsub : N ⊆ c.supp.toFinset.erase (u c x) := by
+        intro z hz
+        have hz' := hz
+        simp only [N, componentNeighborFinset, Finset.mem_filter,
+          SimpleGraph.mem_neighborFinset] at hz'
+        have hzc : z ∈ c.supp :=
+          (ConnectedComponent.mem_supp_iff c z).mpr hz'.2
+        exact Finset.mem_erase.mpr ⟨by
+          intro hzx
+          subst z
+          exact G.loopless.irrefl _ hz'.1, Set.mem_toFinset.mpr hzc⟩
+      have huxFin : u c x ∈ c.supp.toFinset := Set.mem_toFinset.mpr huxc
+      have htargetCard : (c.supp.toFinset.erase (u c x)).card = 2 := by
+        rw [Finset.card_erase_of_mem huxFin]
+        have hcFin : c.supp.toFinset.card = 3 := by
+          simpa [Set.ncard_eq_toFinset_card'] using hc3
+        omega
+      have hEq : N = c.supp.toFinset.erase (u c x) := by
+        apply Finset.eq_of_subset_of_card_le hsub
+        omega
+      have huyc : u c y ∈ c.supp := by
+        rw [← huRange c]
+        exact ⟨y, rfl⟩
+      have huyMem : u c y ∈ N := by
+        rw [hEq]
+        exact Finset.mem_erase.mpr ⟨fun h ↦ hxy (hu c h).symm,
+          Set.mem_toFinset.mpr huyc⟩
+      have huyPair : G.Adj (u c x) (u c y) ∧ D.connectedComponentMk (u c y) = c := by
+        simpa [N, componentNeighborFinset] using huyMem
+      exact huyPair.1
+    have hTF : ∀ x : ZMod c.supp.ncard,
+        (triangleFreeEdgeGraph G).Adj (u c x) (u c (x + 1)) := by
+      intro x
+      have hne : x ≠ x + 1 := by
+        intro h
+        have h01 : (0 : ZMod c.supp.ncard) = 1 := by
+          calc
+            0 = x - x := by ring
+            _ = (x + 1) - x := congrArg (fun z ↦ z - x) h
+            _ = 1 := by ring
+        have hv := congrArg (fun z : ZMod c.supp.ncard ↦ z.val) h01
+        rw [ZMod.val_one'' (by omega)] at hv
+        norm_num at hv
+      have hG := hcomplete x (x + 1) hne
+      have hD : D.Adj (u c x) (u c (x + 1)) := by
+        rw [← SimpleGraph.mem_neighborFinset, huD]
+        simp
+      rcases hD with hA | hT
+      · have hnG := (mem_antipodalNeighbors G (u c x) (u c (x + 1))).mp hA
+        exact (hnG.2.1 hG).elim
+      · exact hT
+    have h01 := hTF (0 : ZMod c.supp.ncard)
+    have h1m := hTF (1 : ZMod c.supp.ncard)
+    have hm0 := hTF (-1 : ZMod c.supp.ncard)
+    have h01' : (triangleFreeEdgeGraph G).Adj (u c 0) (u c 1) := by
+      simpa using h01
+    have h1m' : (triangleFreeEdgeGraph G).Adj (u c 1) (u c (-1)) := by
+      have hind : (1 + 1 : ZMod c.supp.ncard) = -1 := by
+        have h3zero : ((3 : ℕ) : ZMod c.supp.ncard) = 0 := by
+          rw [ZMod.natCast_eq_zero_iff]
+          exact hc3.symm ▸ dvd_refl 3
+        linear_combination h3zero
+      rw [hind] at h1m
+      exact h1m
+    have hm0' : (triangleFreeEdgeGraph G).Adj (u c (-1)) (u c 0) := by
+      simpa using hm0
+    exact triangleFreeEdgeGraph_not_triangle G h01' h1m' hm0'
+
 /-- Every zero-diagonal order-three component at the degree-six boundary has
 row sum six and reverse multiplicity one on its positive support. -/
 theorem degreeSix_orderThree_zeroDiagonal_profile
