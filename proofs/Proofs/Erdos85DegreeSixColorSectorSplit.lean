@@ -4965,6 +4965,126 @@ theorem false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
     rw [hqa1] at hba
     rw [hqb1] at hbb
     interval_cases r a <;> interval_cases r b <;> omega
+
+/-- Five equal-order components cannot have row sum six, total external
+mass three, and total diagonal six.  Symmetry makes every off-diagonal
+contribution occur twice, so the first two conditions force the diagonal
+sum odd, while the last condition makes it even. -/
+theorem false_of_five_symmetric_degreeSix_rows
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (Q : C → C → ℕ) (ext : C → ℕ)
+    (hcard : S.card = 5)
+    (hsymm : ∀ i ∈ S, ∀ j ∈ S, Q i j = Q j i)
+    (hrow : ∀ i ∈ S, ext i + (∑ j ∈ S, Q i j) = 6)
+    (hext : (∑ i ∈ S, ext i) = 3)
+    (hdiag : (∑ i ∈ S, Q i i) = 6) : False := by
+  have hcard' : S.card = 4 + 1 := by omega
+  obtain ⟨a, T, haT, hTa, hTcard⟩ := Finset.card_eq_succ.mp hcard'
+  have hTcard' : T.card = 3 + 1 := by omega
+  obtain ⟨b, U, hbU, hUb, hUcard⟩ := Finset.card_eq_succ.mp hTcard'
+  have hUcard' : U.card = 2 + 1 := by omega
+  obtain ⟨c, W, hcW, hWc, hWcard⟩ := Finset.card_eq_succ.mp hUcard'
+  have hWcard' : W.card = 1 + 1 := by omega
+  obtain ⟨d, X, hdX, hXd, hXcard⟩ := Finset.card_eq_succ.mp hWcard'
+  have hXcard' : X.card = 0 + 1 := by omega
+  obtain ⟨e, Y, heY, hYe, hYcard⟩ := Finset.card_eq_succ.mp hXcard'
+  have hY : Y = ∅ := Finset.card_eq_zero.mp (by omega)
+  have hS : S = {a, b, c, d, e} := by
+    rw [← hTa, ← hUb, ← hWc, ← hXd, ← hYe, hY]
+    simp
+  have hab : a ≠ b := by
+    intro h; subst b; apply haT; rw [← hUb]; simp
+  have hac : a ≠ c := by
+    intro h; subst c; apply haT; rw [← hUb, ← hWc]; simp
+  have had : a ≠ d := by
+    intro h; subst d; apply haT; rw [← hUb, ← hWc, ← hXd]; simp
+  have hae : a ≠ e := by
+    intro h; subst e; apply haT; rw [← hUb, ← hWc, ← hXd, ← hYe]; simp
+  have hbc : b ≠ c := by
+    intro h; subst c; apply hbU; rw [← hWc]; simp
+  have hbd : b ≠ d := by
+    intro h; subst d; apply hbU; rw [← hWc, ← hXd]; simp
+  have hbe : b ≠ e := by
+    intro h; subst e; apply hbU; rw [← hWc, ← hXd, ← hYe]; simp
+  have hcd : c ≠ d := by
+    intro h; subst d; apply hcW; rw [← hXd]; simp
+  have hce : c ≠ e := by
+    intro h; subst e; apply hcW; rw [← hXd, ← hYe]; simp
+  have hde : d ≠ e := by
+    intro h; subst e; apply hdX; rw [← hYe]; simp
+  have ha := hrow a (by rw [hS]; simp)
+  have hb := hrow b (by rw [hS]; simp)
+  have hc := hrow c (by rw [hS]; simp)
+  have hd := hrow d (by rw [hS]; simp)
+  have he := hrow e (by rw [hS]; simp)
+  have habQ := hsymm a (by rw [hS]; simp) b (by rw [hS]; simp)
+  have hacQ := hsymm a (by rw [hS]; simp) c (by rw [hS]; simp)
+  have hadQ := hsymm a (by rw [hS]; simp) d (by rw [hS]; simp)
+  have haeQ := hsymm a (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hbcQ := hsymm b (by rw [hS]; simp) c (by rw [hS]; simp)
+  have hbdQ := hsymm b (by rw [hS]; simp) d (by rw [hS]; simp)
+  have hbeQ := hsymm b (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hcdQ := hsymm c (by rw [hS]; simp) d (by rw [hS]; simp)
+  have hceQ := hsymm c (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hdeQ := hsymm d (by rw [hS]; simp) e (by rw [hS]; simp)
+  rw [hS] at ha hb hc hd he hext hdiag
+  simp [hab, hac, had, hae, hbc, hbd, hbe, hcd, hce, hde]
+    at ha hb hc hd he hext hdiag
+  omega
+
+/-- Graph-level parity terminal for a component system consisting of one
+distinguished component and five order-six components. -/
+theorem false_of_degreeSix_five_orderSix_parity
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (a : (secondOrderDefectGraph G).ConnectedComponent)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hfive : (Finset.univ.erase a).card = 5)
+    (hall6 : ∀ t ∈ Finset.univ.erase a, t.supp.ncard = 6)
+    (hext : (∑ t ∈ Finset.univ.erase a,
+      componentQuotientMatrix G (secondOrderDefectGraph G) t a) = 3) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent := Finset.univ.erase a
+  change Q a a = 0 at haa
+  change S.card = 5 at hfive
+  change (∑ t ∈ S, Q t a) = 3 at hext
+  have hsymm : ∀ i ∈ S, ∀ j ∈ S, Q i j = Q j i := by
+    intro i hi j hj
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) i j
+    change i.supp.ncard * Q i j = j.supp.ncard * Q j i at hb
+    rw [hall6 i hi, hall6 j hj] at hb
+    omega
+  have hrow : ∀ i ∈ S, Q i a + (∑ j ∈ S, Q i j) = 6 := by
+    intro i hi
+    have hg := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) i
+    change (∑ z, Q i z) = 6 at hg
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hs := Finset.sum_erase_add (Finset.univ : Finset _) (Q i) haIn
+    dsimp [S]
+    omega
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hdiag : (∑ i ∈ S, Q i i) = 6 := by
+    change (∑ t, Q t t) = 6 at htrace
+    have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+    have hs := Finset.sum_erase_add (Finset.univ : Finset _)
+      (fun t ↦ Q t t) haIn
+    dsimp [S]
+    rw [haa] at hs
+    omega
+  exact false_of_five_symmetric_degreeSix_rows S Q (fun i ↦ Q i a)
+    hfive hsymm hrow hext hdiag
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
@@ -5107,6 +5227,135 @@ theorem false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
       rcases hd' with hd | hd <;>
       interval_cases x <;> simp_all <;> omega
 -/
+
+/-- The `[4]` contacted branch of a `(3,6)` cover is impossible.  Its
+unique order-twelve contact has residual row/square budgets `4` and `9`,
+contradicting the preceding arithmetic lemma. -/
+theorem false_of_degreeSix_threeSix_four_contact_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hfour : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 4).card = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨c, hc12, hac, hca, hzero, hsizeR⟩ :=
+    degreeSix_threeSix_four_contact_shape
+      G hfree hmin hcard hr a b ha3 hb6 haa hba hfour
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (((Finset.univ.erase a).erase b).erase c)
+  change c.supp.ncard = 12 at hc12
+  change Q a c = 4 at hac
+  change Q c a = 1 at hca
+  change ∀ t ∈ R, Q a t = 0 at hzero
+  change (∑ t ∈ R, t.supp.ncard) = 12 at hsizeR
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hacNe : a ≠ c := by intro h; subst c; omega
+  have hbcNe : b ≠ c := by intro h; subst c; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have hbSqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hbSq : (∑ z, Q b z * Q z b) = 9 := by
+    simpa [Q, Matrix.mul_apply, hb6] using hbSqGraph
+  have hdiagPair : Q b b * Q b b + Q b a * Q a b ≤
+      ∑ z, Q b z * Q z b :=
+    two_distinct_terms_le_sum (fun z ↦ Q b z * Q z b) habNe.symm
+  have hdiagLe : Q b b ≤ 2 := by
+    rw [hba, hab, hbSq] at hdiagPair
+    nlinarith
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hcIn : c ∈ (Finset.univ.erase a).erase b :=
+    Finset.mem_erase.mpr ⟨hbcNe.symm,
+      Finset.mem_erase.mpr ⟨hacNe.symm, Finset.mem_univ c⟩⟩
+  have hcrossGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  have hcross : (∑ z, Q a z * Q z b) = 6 := by
+    simpa [Q, Matrix.mul_apply, habNe, hb6] using hcrossGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z b) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z b) hbIn
+  have hpC := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+    (fun z ↦ Q a z * Q z b) hcIn
+  have hzeroProd : (∑ t ∈ R, Q a t * Q t b) = 0 := by
+    apply Finset.sum_eq_zero
+    intro t ht
+    rw [hzero t ht]
+    simp
+  have hcrossEq : 2 * Q b b + 4 * Q c b = 6 := by
+    dsimp [R] at hzeroProd
+    rw [hcross] at hpA
+    rw [haa] at hpA
+    rw [hab] at hpB
+    rw [hac] at hpC
+    omega
+  have hbcBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b c
+  change b.supp.ncard * Q b c = c.supp.ncard * Q c b at hbcBal
+  have hcb : Q c b = 1 := by rw [hb6, hc12] at hbcBal; omega
+  have hbc : Q b c = 2 := by rw [hb6, hc12, hcb] at hbcBal; omega
+  have hcc : Q b b = 1 := by rw [hcb] at hcrossEq; omega
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c
+  change (∑ z, Q c z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q c) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q c) hbIn
+  have hrC := Finset.sum_erase_add ((Finset.univ.erase a).erase b) (Q c) hcIn
+  have hrowR : Q c c + (∑ t ∈ R, Q c t) = 4 := by
+    dsimp [R]
+    rw [hrowGraph] at hrA
+    rw [hca] at hrA
+    rw [hcb] at hrB
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c c
+  have hsq : (∑ z, Q c z * Q z c) = 15 := by
+    simpa [Q, Matrix.mul_apply, hc12] using hsqGraph
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q c z * Q z c) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q c z * Q z c) hbIn
+  have hsC := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+    (fun z ↦ Q c z * Q z c) hcIn
+  have hprodR : Q c c * Q c c + (∑ t ∈ R, Q c t * Q t c) = 9 := by
+    dsimp [R]
+    rw [hsq] at hsA
+    rw [hca, hac] at hsA
+    rw [hcb, hbc] at hsB
+    omega
+  have hbalR : ∀ t ∈ R, 12 * Q c t = t.supp.ncard * Q t c := by
+    intro t ht
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c t
+    simpa [Q, hc12] using hb
+  exact false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
+    R (fun t ↦ t.supp.ncard) (Q c) (fun t ↦ Q t c) (Q c c)
+      hsizeR (fun t ht ↦ hr t) hbalR hrowR hprodR
 
 /-- Row and square budgets for the order-six member of a `(3,6)` cover,
 after grouped periodicity removes every other order-three target. -/
