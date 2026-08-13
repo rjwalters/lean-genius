@@ -333,6 +333,131 @@ theorem exists_oneHigh_branchVertexLabeling
   · intro x y
     simpa [H] using hedge x y
 
+/-! ## Assembly into the encoder's forty leaf coordinates -/
+
+/-- Every second-layer leaf has a chosen branch owner. -/
+noncomputable def oneHighBranchOwner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (x : {z : V // z ∈ secondLayer G v}) :
+    {z : V // z ∈ G.neighborSet v} := by
+  classical
+  have hx := x.2
+  change x.1 ∈ Finset.univ.biUnion (secondLayerBranch G v) at hx
+  exact (Finset.mem_biUnion.mp hx).choose
+
+theorem oneHighBranchOwner_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (x : {z : V // z ∈ secondLayer G v}) :
+    x.1 ∈ secondLayerBranch G v (oneHighBranchOwner G v x) := by
+  classical
+  have hx := x.2
+  change x.1 ∈ Finset.univ.biUnion (secondLayerBranch G v) at hx
+  exact (Finset.mem_biUnion.mp hx).choose_spec.2
+
+theorem oneHighBranchOwner_eq_of_mem
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (x : {z : V // z ∈ secondLayer G v})
+    (s : {z : V // z ∈ G.neighborSet v})
+    (hx : x.1 ∈ secondLayerBranch G v s) :
+    oneHighBranchOwner G v x = s := by
+  classical
+  by_contra hne
+  have hdisj := secondLayerBranch_pairwiseDisjoint G hfree v
+    (Finset.mem_univ _) (Finset.mem_univ _) hne
+  exact (Finset.disjoint_left.mp hdisj)
+    (oneHighBranchOwner_mem G v x) hx
+
+/-- The second layer is canonically a sigma-type of its eight branches. -/
+noncomputable def oneHighLeafSigmaEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V) :
+    {z : V // z ∈ secondLayer G v} ≃
+      Σ s : {z : V // z ∈ G.neighborSet v}, secondLayerBranch G v s :=
+  Equiv.ofBijective
+    (fun x => ⟨oneHighBranchOwner G v x,
+      ⟨x.1, oneHighBranchOwner_mem G v x⟩⟩)
+    ⟨by
+      intro x y hxy
+      apply Subtype.ext
+      exact congrArg (fun z => z.2.1) hxy,
+    by
+      intro p
+      have hpSecond : p.2.1 ∈ secondLayer G v := by
+        change p.2.1 ∈ Finset.univ.biUnion (secondLayerBranch G v)
+        exact Finset.mem_biUnion.mpr ⟨p.1, Finset.mem_univ _, p.2.2⟩
+      let x : {z : V // z ∈ secondLayer G v} := ⟨p.2.1, hpSecond⟩
+      refine ⟨x, ?_⟩
+      have howner := oneHighBranchOwner_eq_of_mem G hfree v x p.1 p.2.2
+      apply Sigma.ext howner
+      apply (Subtype.heq_iff_coe_eq (by
+        intro z
+        change z ∈ secondLayerBranch G v (oneHighBranchOwner G v x) ↔
+          z ∈ secondLayerBranch G v p.1
+        rw [howner])).2
+      rfl⟩
+
+/-- Assemble a branch label and one five-point label per branch into the
+row-major `Fin 40` numbering used by the family CNFs. -/
+noncomputable def oneHighLeafFinFortyEquiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5) :
+    {z : V // z ∈ secondLayer G v} ≃ Fin 40 :=
+  (oneHighLeafSigmaEquiv G hfree v).trans <|
+    (Equiv.sigmaCongrRight leafLabel).trans <|
+      (Equiv.sigmaEquivProd _ _).trans <|
+        (Equiv.prodCongr branchLabel (Equiv.refl _)).trans <|
+          finProdFinEquiv
+
+theorem oneHighLeafFinFortyEquiv_divNat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (x : {z : V // z ∈ secondLayer G v}) :
+    Fin.divNat (m := 8) (n := 5)
+      (oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel x) =
+      branchLabel (oneHighBranchOwner G v x) := by
+  simp only [oneHighLeafFinFortyEquiv, oneHighLeafSigmaEquiv,
+    Equiv.trans_apply, Equiv.ofBijective_apply, Equiv.sigmaCongrRight_apply,
+    Equiv.sigmaEquivProd_apply, Equiv.prodCongr_apply]
+  exact congrArg Prod.fst
+    ((finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).symm_apply_apply
+      (branchLabel (oneHighBranchOwner G v x),
+        leafLabel (oneHighBranchOwner G v x)
+          ⟨x.1, oneHighBranchOwner_mem G v x⟩))
+
+theorem oneHighLeafFinFortyEquiv_modNat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (x : {z : V // z ∈ secondLayer G v}) :
+    Fin.modNat (m := 8) (n := 5)
+      (oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel x) =
+      leafLabel (oneHighBranchOwner G v x)
+        ⟨x.1, oneHighBranchOwner_mem G v x⟩ := by
+  simp only [oneHighLeafFinFortyEquiv, oneHighLeafSigmaEquiv,
+    Equiv.trans_apply, Equiv.ofBijective_apply, Equiv.sigmaCongrRight_apply,
+    Equiv.sigmaEquivProd_apply, Equiv.prodCongr_apply]
+  exact congrArg Prod.snd
+    ((finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).symm_apply_apply
+      (branchLabel (oneHighBranchOwner G v x),
+        leafLabel (oneHighBranchOwner G v x)
+          ⟨x.1, oneHighBranchOwner_mem G v x⟩))
+
 end
 
 end Erdos85
