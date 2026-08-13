@@ -135,12 +135,29 @@ theorem oneHighFamilyIdsSound_runList {α : Type} (xs : List α)
       simp only [oneHighFamilyRunList, List.foldl_cons]
       exact ih (hstep x st h)
 
+theorem oneHighFamilyIdsSound_edgeId
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyEdgeId i j st).2 := by
+  exact oneHighFamilyIdsSound_atomId h _
+
 def oneHighFamilyInternalPairStep (a b i j : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   let (id, st) := oneHighFamilyEdgeId (5 * b + i) (5 * b + j) st
   let twoEdges := ¬(b % 2 = 0 ∧ b / 2 < a)
   let present := (i = 0 ∧ j = 1) ∨ (twoEdges ∧ i = 2 ∧ j = 3)
   (oneHighFamilyEmit [if present then (id : Int) else -(id : Int)] st).2
+
+theorem oneHighFamilyIdsSound_internalPairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a b i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyInternalPairStep a b i j st) := by
+  simp only [oneHighFamilyInternalPairStep]
+  generalize heq : oneHighFamilyEdgeId (5 * b + i) (5 * b + j) st = out
+  rcases out with ⟨id, st'⟩
+  have hs := oneHighFamilyIdsSound_edgeId h (5 * b + i) (5 * b + j)
+  rw [heq] at hs
+  exact oneHighFamilyIdsSound_emit hs _
 
 def oneHighFamilyInternalBlockStep (a b : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -156,6 +173,17 @@ def oneHighFamilyMatePairStep (b i j : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   let (id, st) := oneHighFamilyEdgeId (5 * b + i) (5 * (b + 1) + j) st
   (oneHighFamilyEmit [-(id : Int)] st).2
+
+theorem oneHighFamilyIdsSound_matePairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (b i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMatePairStep b i j st) := by
+  simp only [oneHighFamilyMatePairStep]
+  generalize heq : oneHighFamilyEdgeId (5 * b + i) (5 * (b + 1) + j) st = out
+  rcases out with ⟨id, st'⟩
+  have hs := oneHighFamilyIdsSound_edgeId h (5 * b + i) (5 * (b + 1) + j)
+  rw [heq] at hs
+  exact oneHighFamilyIdsSound_emit hs _
 
 def oneHighFamilyMateBlockStep (b : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -174,6 +202,22 @@ def oneHighFamilyC4SameMidpointStep (i j w : Nat)
   let (eiw, st) := oneHighFamilyEdgeId i w st
   let (ejw, st) := oneHighFamilyEdgeId j w st
   (oneHighFamilyEmit [-(eiw : Int), -(ejw : Int)] st).2
+
+theorem oneHighFamilyIdsSound_c4SameMidpointStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j w : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4SameMidpointStep i j w st) := by
+  simp only [oneHighFamilyC4SameMidpointStep]
+  generalize h₁ : oneHighFamilyEdgeId i w st = out₁
+  rcases out₁ with ⟨eiw, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_edgeId h i w
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId j w st₁ = out₂
+  rcases out₂ with ⟨ejw, st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ j w
+  rw [h₂] at hs₂
+  simp only [h₂]
+  exact oneHighFamilyIdsSound_emit hs₂ _
 
 def oneHighFamilyC4CrossMidpointsStep (i j w w' : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -219,6 +263,22 @@ def oneHighFamilyAtMostOnePairStep (y x x' : Nat)
   let (eyx, st) := oneHighFamilyEdgeId y x st
   let (eyx', st) := oneHighFamilyEdgeId y x' st
   (oneHighFamilyEmit [-(eyx : Int), -(eyx' : Int)] st).2
+
+theorem oneHighFamilyIdsSound_atMostOnePairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (y x x' : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyAtMostOnePairStep y x x' st) := by
+  simp only [oneHighFamilyAtMostOnePairStep]
+  generalize h₁ : oneHighFamilyEdgeId y x st = out₁
+  rcases out₁ with ⟨eyx, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_edgeId h y x
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId y x' st₁ = out₂
+  rcases out₂ with ⟨eyx', st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ y x'
+  rw [h₂] at hs₂
+  simp only [h₂]
+  exact oneHighFamilyIdsSound_emit hs₂ _
 
 def oneHighFamilyAtMostOneVertexStep (b y : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
