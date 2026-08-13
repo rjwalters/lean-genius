@@ -4749,6 +4749,77 @@ theorem degreeSix_threeSix_residual_partition_counts
   change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
   simpa [Q, S] using contact_filter_counts_of_sum_four S (Q a) hp.1
 
+/-- Named form of the `[4]` contacted partition in a `(3,6)` cover: a
+unique order-twelve component receives quotient four, and every other
+residual component is unused by the source triangle. -/
+theorem degreeSix_threeSix_four_contact_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hfour : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 4).card = 1) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 12 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) a c = 4 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c a = 1 ∧
+      (∀ t ∈ (((Finset.univ.erase a).erase b).erase c),
+        componentQuotientMatrix G (secondOrderDefectGraph G) a t = 0) ∧
+      (∑ t ∈ (((Finset.univ.erase a).erase b).erase c), t.supp.ncard) = 12 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let F := S.filter fun t ↦ Q a t = 4
+  change F.card = 1 at hfour
+  obtain ⟨c, hcF⟩ := Finset.card_eq_one.mp hfour
+  have hcMem : c ∈ F := by rw [hcF]; simp
+  have hcS := (Finset.mem_filter.mp hcMem).1
+  have hac := (Finset.mem_filter.mp hcMem).2
+  change Q a c = 4 at hac
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  have hcdata := hp.2.1 c hcS (by simpa [Q, hac])
+  have hca : Q c a = 1 := by simpa [Q] using hcdata.1
+  have hc12 : c.supp.ncard = 12 := by
+    simpa [Q, hac] using hcdata.2
+  have hzero : ∀ t ∈ S.erase c, Q a t = 0 := by
+    intro t ht
+    have htS := (Finset.mem_erase.mp ht).2
+    have htc := (Finset.mem_erase.mp ht).1
+    have hsplit := Finset.sum_erase_add S (Q a) hcS
+    rw [hp.1, hac] at hsplit
+    have hsumRest : (∑ z ∈ S.erase c, Q a z) = 0 := by omega
+    exact Finset.sum_eq_zero_iff_of_nonneg (fun z hz ↦ Nat.zero_le (Q a z)) |>.mp
+      hsumRest t ht
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ z.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ z.supp.ncard) hbIn
+  have hsC := Finset.sum_erase_add S (fun z ↦ z.supp.ncard) hcS
+  refine ⟨c, hc12, hac, hca, ?_, ?_⟩
+  · simpa [S] using hzero
+  · dsimp [S] at hsC ⊢
+    omega
+
 /-- Row and square budgets for the order-six member of a `(3,6)` cover,
 after grouped periodicity removes every other order-three target. -/
 theorem degreeSix_orderSix_budget_after_three_cover
