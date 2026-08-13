@@ -143,6 +143,28 @@ theorem residual_six_partition
     have hf3 : 3 ≤ size f := hmin f (by rw [heq]; simp)
     exact ⟨e, f, hef, heq, by omega, by omega⟩
 
+/-- If a listed collection of positive-size components already carries the
+full component-size sum, it is the whole finite component type. -/
+theorem univ_eq_of_positive_sum_eq
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (size : C → ℕ) (A : Finset C) (hpos : ∀ c, 0 < size c)
+    (hsum : (∑ c, size c) = ∑ c ∈ A, size c) :
+    (Finset.univ : Finset C) = A := by
+  symm
+  apply Finset.eq_univ_iff_forall.mpr
+  intro x
+  by_contra hxA
+  have hx : x ∈ (Finset.univ : Finset C) := Finset.mem_univ x
+  have hsub : A ⊆ Finset.univ.erase x := by
+    intro y hy
+    exact Finset.mem_erase.mpr ⟨by intro hyx; subst y; exact hxA hy, Finset.mem_univ y⟩
+  have hle : (∑ c ∈ A, size c) ≤ ∑ c ∈ Finset.univ.erase x, size c :=
+    Finset.sum_le_sum_of_subset_of_nonneg hsub (by intro _ _ _; omega)
+  have hadd := Finset.add_sum_erase Finset.univ size hx
+  rw [hsum] at hadd
+  have hxpos := hpos x
+  omega
+
 /-- Order-fifteen type classification.  This is kept in the same
 pure-arithmetic layer because its count equations have a unique feasible
 shape at total external size eighteen. -/
