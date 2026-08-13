@@ -75,7 +75,14 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
       (Odd d → ∀ x, G.degree x ≤ 2 * d - 3) ∧
       (commonNeighborConflict G).indepNum < d ∧
       (∀ x, G.degree x ≠ d →
-        (commonNeighborConflict G).degree x = G.degree x * (d - 1)) := by
+        (commonNeighborConflict G).degree x = G.degree x * (d - 1)) ∧
+      (∀ x, 2 * d - 2 ≤ G.degree x →
+        G.degree x = 2 * d - 2 ∧
+          Even d ∧
+          (∀ c : (deletedNeighborhoodInducedGraph G x).ConnectedComponent,
+            c.supp.ncard = 2) ∧
+          (∀ a b, G.Adj a x → G.Adj b x → G.Adj a b →
+            G.degree a = d ∨ G.degree b = d)) := by
   obtain ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected⟩ :=
     hminimal.exists_connected_representative hm hd
   letI : DecidableRel G.Adj := hdec
@@ -83,9 +90,11 @@ theorem OrderMinimalC4PlateauCore.exists_connected_compact_normalForm
   obtain ⟨horder, hupper, hoddUpper, hind⟩ :=
     nonextendable_witness_compactness G hcard (by omega) hmin.ge hfree hnext
   refine ⟨G, hdec, hmin, hfree, hcover, hnext, hconnected,
-    horder, hupper, hoddUpper, hind, ?_⟩
-  intro x hx
-  exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
-    G hfree (d := d) (fun {_u _v} huv ↦ hcover huv) x hx
+    horder, hupper, hoddUpper, hind, ?_, ?_⟩
+  · intro x hx
+    exact degree_commonNeighborConflict_eq_degree_mul_pred_of_nontight
+      G hfree (d := d) (fun {_u _v} huv ↦ hcover huv) x hx
+  · exact nonextendable_witness_threshold_rigidity
+      G hcard (by omega) hmin.ge hfree hnext
 
 end Erdos85
