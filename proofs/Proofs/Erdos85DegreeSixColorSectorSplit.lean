@@ -4822,6 +4822,113 @@ theorem contact_sum_four_two_one_one_named
     omega
   · rintro (rfl | rfl | rfl) <;> simp [hcS, heS, hfS, hqc, hqe, hqf]
 
+/-- The two complementary filters of the residual finset, together with the
+two erased components, cover the full component type. -/
+theorem univ_eq_insert_insert_residual_filters
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (a b : C) (p : C → Prop) [DecidablePred p] :
+    (Finset.univ : Finset C) =
+      insert a (insert b
+        ((((Finset.univ.erase a).erase b).filter p) ∪
+         (((Finset.univ.erase a).erase b).filter fun t ↦ ¬ p t))) := by
+  ext t
+  by_cases hta : t = a <;> by_cases htb : t = b <;> by_cases hp : p t <;>
+    simp [hta, htb, hp]
+
+/-- Graph-level named contacted `{6,6}` half. -/
+theorem degreeSix_threeSix_contacted_twoSix_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (h2 : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2).card = 2) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S := (Finset.univ.erase a).erase b
+    ∃ c d, c ≠ d ∧ S.filter (fun t ↦ Q a t ≠ 0) = {c, d} ∧
+      c.supp.ncard = 6 ∧ d.supp.ncard = 6 ∧
+      Q a c = 2 ∧ Q c a = 1 ∧ Q a d = 2 ∧ Q d a = 1 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  change (S.filter fun t ↦ Q a t = 2).card = 2 at h2
+  obtain ⟨c, d, hcd, hA, hac, had⟩ :=
+    contact_sum_four_two_two_named S (Q a) hp.1 h2
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a c = 2 at hac
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a d = 2 at had
+  have hcS : c ∈ S := (Finset.mem_filter.mp (by rw [hA]; simp)).1
+  have hdS : d ∈ S := (Finset.mem_filter.mp (by rw [hA]; simp)).1
+  have hc := hp.2.1 c hcS (by rw [hac]; norm_num)
+  have hd := hp.2.1 d hdS (by rw [had]; norm_num)
+  have hc6 : c.supp.ncard = 6 := by rw [hc.2, hac]
+  have hd6 : d.supp.ncard = 6 := by rw [hd.2, had]
+  exact ⟨c, d, hcd, hA, hc6, hd6, hac, hc.1, had, hd.1⟩
+
+/-- Graph-level named contacted `{6,3,3}` half. -/
+theorem degreeSix_threeSix_contacted_sixTwoThree_shape
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (h1 : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 1).card = 2)
+    (h2 : (((Finset.univ.erase a).erase b).filter fun t ↦
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2).card = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S := (Finset.univ.erase a).erase b
+    ∃ c e f, c ≠ e ∧ c ≠ f ∧ e ≠ f ∧
+      S.filter (fun t ↦ Q a t ≠ 0) = {c, e, f} ∧
+      c.supp.ncard = 6 ∧ e.supp.ncard = 3 ∧ f.supp.ncard = 3 ∧
+      Q a c = 2 ∧ Q c a = 1 ∧
+      Q a e = 1 ∧ Q e a = 1 ∧ Q a f = 1 ∧ Q f a = 1 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  change (S.filter fun t ↦ Q a t = 1).card = 2 at h1
+  change (S.filter fun t ↦ Q a t = 2).card = 1 at h2
+  obtain ⟨c, e, f, hce, hcf, hef, hA, hac, hae, haf⟩ :=
+    contact_sum_four_two_one_one_named S (Q a) hp.1 h1 h2
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a c = 2 at hac
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1 at hae
+  change componentQuotientMatrix G (secondOrderDefectGraph G) a f = 1 at haf
+  have hcS : c ∈ S := (Finset.mem_filter.mp (by rw [hA]; simp)).1
+  have heS : e ∈ S := (Finset.mem_filter.mp (by rw [hA]; simp)).1
+  have hfS : f ∈ S := (Finset.mem_filter.mp (by rw [hA]; simp)).1
+  have hc := hp.2.1 c hcS (by rw [hac]; norm_num)
+  have he := hp.2.1 e heS (by rw [hae]; norm_num)
+  have hf := hp.2.1 f hfS (by rw [haf]; norm_num)
+  have hc6 : c.supp.ncard = 6 := by rw [hc.2, hac]
+  have he3 : e.supp.ncard = 3 := by rw [he.2, hae]
+  have hf3 : f.supp.ncard = 3 := by rw [hf.2, haf]
+  exact ⟨c, e, f, hce, hcf, hef, hA, hc6, he3, hf3,
+    hac, hc.1, hae, he.1, haf, hf.1⟩
+
 /-- Named form of the `[4]` contacted partition in a `(3,6)` cover: a
 unique order-twelve component receives quotient four, and every other
 residual component is unused by the source triangle. -/
