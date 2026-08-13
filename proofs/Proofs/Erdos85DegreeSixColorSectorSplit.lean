@@ -5097,6 +5097,15 @@ theorem degreeSix_threeSix_unused_half_shape
       rcases htv with h0 | h61 | h62 | h122 <;> simp_all
     exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
 
+/-- If the unused half receives two units, the contacted half receives zero,
+and the full residual row plus diagonal has mass five, then the diagonal is
+three.  This is incompatible with the order-six diagonal bound two. -/
+theorem false_of_degreeSix_threeSix_zero_contacted_budget
+    (contacted unused diag : ℕ)
+    (hcontacted : contacted = 0) (hunused : unused = 2)
+    (hrow : contacted + unused + diag = 5) (hdiag : diag ≤ 2) : False := by
+  omega
+
 /-- If every residual component contacted by the source triangle is itself
 an order-three component, grouped periodicity forces the order-six diagonal
 to be three, contradicting its square bound. -/
@@ -5145,8 +5154,13 @@ theorem false_of_degreeSix_threeSix_all_contacted_triangles
     have hta : t ≠ a := (Finset.mem_erase.mp (Finset.mem_erase.mp htS).2).1
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD b a t hb6 ha3 ht3 hta.symm
-    change Q b a + Q b t ≤ 1 at hgroup
-    omega
+    have hgroupQ : Q b a + Q b t ≤ 1 := by simpa [Q] using hgroup
+    rw [hba] at hgroupQ
+    change Q b t = 0
+    have hle : Q b t ≤ 0 := by
+      apply Nat.le_of_add_le_add_left (a := 1)
+      simpa using hgroupQ
+    exact Nat.eq_zero_of_le_zero hle
   have hmassU := degreeSix_threeSix_unused_half_orderSix_contact_mass
     G hfree hmin hcard hr a b ha3 hb6 haa hba
   change (∑ t ∈ U, Q b t) = 2 at hmassU
@@ -5175,7 +5189,11 @@ theorem false_of_degreeSix_threeSix_all_contacted_triangles
   have hdiagLe := degreeSix_orderSix_after_three_cover_diagonal_le_two
     G hfree hmin hcard b a hb6 hba hab
   change Q b b ≤ 2 at hdiagLe
-  omega
+  exact false_of_degreeSix_threeSix_zero_contacted_budget
+    (∑ t ∈ A, Q b t) (∑ t ∈ U, Q b t) (Q b b)
+      hsumA hmassU (by
+        dsimp [S] at hsplit
+        omega) hdiagLe
 
 /-- The order-six component in a `(3,6)` cover cannot contact an order-nine
 component.  Such a contact contributes `(q,r)=(3,2)`; the remaining row
@@ -5286,6 +5304,123 @@ theorem degreeSix_threeSix_orderSix_no_orderNine_contact
         exact hq0 (by omega)
       exact Nat.le_mul_of_pos_right (Q b z) hrPos
   nlinarith
+
+/-- Common graph-level terminal when the order-six component avoids every
+component in the half contacted by the source triangle. -/
+theorem false_of_degreeSix_threeSix_zero_contacted_half
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hzero : ∀ t ∈ (Finset.univ.erase a).erase b,
+      componentQuotientMatrix G (secondOrderDefectGraph G) a t ≠ 0 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  let A := S.filter fun t ↦ Q a t ≠ 0
+  let U := S.filter fun t ↦ Q a t = 0
+  change Q b a = 1 at hba
+  have hsumA : (∑ t ∈ A, Q b t) = 0 := by
+    apply Finset.sum_eq_zero
+    intro t ht
+    exact hzero t (Finset.mem_filter.mp ht).1 (Finset.mem_filter.mp ht).2
+  have hmassU := degreeSix_threeSix_unused_half_orderSix_contact_mass
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ U, Q b t) = 2 at hmassU
+  have hsplit : (∑ t ∈ S, Q b t) =
+      (∑ t ∈ A, Q b t) + ∑ t ∈ U, Q b t := by
+    dsimp [A, U]
+    rw [Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q b) hbIn
+  have hbaBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at hbaBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at hbaBal; omega
+  have hdiagLe := degreeSix_orderSix_after_three_cover_diagonal_le_two
+    G hfree hmin hcard b a hb6 hba hab
+  change Q b b ≤ 2 at hdiagLe
+  exact false_of_degreeSix_threeSix_zero_contacted_budget
+    (∑ t ∈ A, Q b t) (∑ t ∈ U, Q b t) (Q b b)
+      hsumA hmassU (by
+        dsimp [S] at hsplit
+        omega) hdiagLe
+
+/-- If every residual contact of the source triangle has order three or
+nine, the `(3,6)` cover is impossible: grouped periodicity removes the
+triangles and the order-nine budget lemma removes the order-nine targets. -/
+theorem false_of_degreeSix_threeSix_contacted_three_or_nine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (htype : ∀ t ∈ (Finset.univ.erase a).erase b,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) a t →
+        t.supp.ncard = 3 ∨ t.supp.ncard = 9) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  change Q b a = 1 at hba
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  apply false_of_degreeSix_threeSix_zero_contacted_half
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  intro t ht hqat
+  rcases htype t ht (Nat.pos_of_ne_zero hqat) with ht3 | ht9
+  · have hta : t ≠ a := (Finset.mem_erase.mp (Finset.mem_erase.mp ht).2).1
+    have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD b a t hb6 ha3 ht3 hta.symm
+    have hgroupQ : Q b a + Q b t ≤ 1 := by simpa [Q] using hgroup
+    rw [hba] at hgroupQ
+    change Q b t = 0
+    have hle : Q b t ≤ 0 := by
+      apply Nat.le_of_add_le_add_left (a := 1)
+      simpa using hgroupQ
+    exact Nat.eq_zero_of_le_zero hle
+  · exact degreeSix_threeSix_orderSix_no_orderNine_contact
+      G hfree hmin hcard b a t hb6 ha3 ht9 hba hab
 
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
