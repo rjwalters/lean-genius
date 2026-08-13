@@ -3664,4 +3664,177 @@ noncomputable def oneHighFamilyCollectCommonsVal_match
   exact oneHighFamilyCollectCommonsOuter_match R bi bj _
     (oneHighFamilyCollectedCommonsMatch_empty acc)
 
+theorem oneHighStandardMate_even_pair (pair : Nat) (hpair : pair < 4) :
+    oneHighStandardMate (⟨2 * pair, by omega⟩ : Fin 8) =
+      (⟨2 * pair + 1, by omega⟩ : Fin 8) := by
+  interval_cases pair <;> native_decide +revert
+
+theorem oneHighFamilyCollectCommonsInner_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (pair : Nat) (hpair : pair < 4)
+    {x : Nat} (hxmem : x ∈ oneHighFamilyBlockVertices (2 * pair))
+    (zs : List Nat)
+    (hzs : ∀ z ∈ zs,
+      z ∈ oneHighFamilyBlockVertices (2 * pair + 1))
+    (input : Array Int × OneHighFamilyValState)
+    (hinput : OneHighFamilySemanticSound R input.2) :
+    OneHighFamilySemanticSound R
+      (zs.foldl (fun input z =>
+        oneHighFamilyCommonTseitinStepVal R (2 * pair)
+          (2 * pair + 1) x z input) input).2 := by
+  have hx := oneHighFamilyBlockVertices_mem (by omega) hxmem
+  let b : Fin 8 := ⟨2 * pair, by omega⟩
+  have hmate : oneHighStandardMate b =
+      (⟨2 * pair + 1, by omega⟩ : Fin 8) :=
+    oneHighStandardMate_even_pair pair hpair
+  induction zs generalizing input with
+  | nil => exact hinput
+  | cons z zs ih =>
+      simp only [List.foldl_cons]
+      have hzmem := hzs z (by simp)
+      have hz := oneHighFamilyBlockVertices_mem (by omega) hzmem
+      have hxz : x < z := by omega
+      have hxBlock : Fin.divNat (m := 8) (n := 5)
+          (⟨x, hx.1⟩ : Fin 40) = b := by
+        apply Fin.ext
+        simpa [Fin.divNat] using hx.2
+      have hzBlock : Fin.divNat (m := 8) (n := 5)
+          (⟨z, hz.1⟩ : Fin 40) = oneHighStandardMate b := by
+        rw [hmate]
+        apply Fin.ext
+        simpa [Fin.divNat] using hz.2
+      apply ih
+      · intro z' hz'
+        exact hzs z' (by simp [hz'])
+      · simpa [b, hmate] using
+          (oneHighFamilyCommonTseitinStepVal_semanticSound a R hc b
+            (cs := input.1) (acc := input.2)
+            hx.1 hz.1 hxz hxBlock hzBlock hinput)
+
+theorem oneHighFamilyCollectCommonsVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (pair : Nat) (hpair : pair < 4)
+    (acc : OneHighFamilyValState)
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyCollectCommonsVal R (2 * pair) (2 * pair + 1) acc).2 := by
+  unfold oneHighFamilyCollectCommonsVal
+  have outer : ∀ (xs : List Nat)
+      (input : Array Int × OneHighFamilyValState),
+      (∀ x ∈ xs, x ∈ oneHighFamilyBlockVertices (2 * pair)) →
+      OneHighFamilySemanticSound R input.2 →
+      OneHighFamilySemanticSound R
+        (xs.foldl (fun input x =>
+          (oneHighFamilyBlockVertices (2 * pair + 1)).foldl
+            (fun input z => oneHighFamilyCommonTseitinStepVal R
+              (2 * pair) (2 * pair + 1) x z input) input) input).2 := by
+    intro xs
+    induction xs with
+    | nil => intro input _ hinput; exact hinput
+    | cons x xs ih =>
+        intro input hmem hinput
+        simp only [List.foldl_cons]
+        apply ih
+        · intro x' hx'
+          exact hmem x' (by simp [hx'])
+        · exact oneHighFamilyCollectCommonsInner_semanticSound a R hc pair
+            hpair (hmem x (by simp)) _ (fun z hz => hz) input hinput
+  exact outer _ (#[], acc) (fun x hx => hx) hacc
+
+theorem oneHighFamilyCommonTseitinStepVal_vars
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj x z : Nat) (input : Array Int × OneHighFamilyValState) :
+    (oneHighFamilyCommonTseitinStepVal R bi bj x z input).1 =
+      (oneHighFamilyCommonTseitinStep bi bj x z
+        (input.1, input.2.1)).1 := by
+  rcases input with ⟨cs, acc⟩
+  let mids := oneHighFamilyPairedMidpoints bi bj
+  let tsInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  let raw := mids.foldl (fun input w =>
+    oneHighFamilyMidpointTseitinStep x z w input) (#[], acc.1)
+  have hp := oneHighFamilyCollectMidpointsVal_projection R x z mids (#[], acc)
+  change tsInput.1 = raw.1 ∧ tsInput.2.1 = raw.2 at hp
+  let ca : OneHighFamilyAtom := .common (min x z) (max x z)
+  generalize hv : oneHighFamilyAtomIdVal R ca tsInput.2 = outVal
+  rcases outVal with ⟨c, accC⟩
+  generalize hg : oneHighFamilyCommonAtomId x z raw.2 = out
+  rcases out with ⟨cg, stC⟩
+  have hid := oneHighFamilyAtomIdVal_id R ca tsInput.2.1 tsInput.2.2
+  rw [hv] at hid
+  have hg' : oneHighFamilyAtomId ca raw.2 = (cg, stC) := by
+    simpa [oneHighFamilyCommonAtomId, ca] using hg
+  rw [hp.2, hg'] at hid
+  dsimp at hid
+  subst cg
+  simp only [oneHighFamilyCommonTseitinStepVal,
+    oneHighFamilyCollectMidpointsVal]
+  dsimp [ca, tsInput, mids, oneHighFamilyCollectMidpointsVal] at hv
+  rw [hv]
+  change cs.push (c : Int) =
+    (let (ts, st) := raw
+     let (c, st) := oneHighFamilyCommonAtomId x z st
+     let st := (oneHighFamilyEmit (-(c : Int) :: ts.toList) st).2
+     let st := ts.foldl
+       (fun st t => (oneHighFamilyEmit [-t, (c : Int)] st).2) st
+     (cs.push (c : Int), st)).1
+  generalize hraw : raw = rawOut
+  rcases rawOut with ⟨rawTs, rawSt⟩
+  rw [hraw] at hg
+  simp only [hraw]
+  rw [hg]
+
+theorem oneHighFamilyCollectCommonsInner_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj x : Nat) (zs : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let valOut := zs.foldl (fun input z =>
+      oneHighFamilyCommonTseitinStepVal R bi bj x z input) input
+    let rawOut := zs.foldl (fun input z =>
+      oneHighFamilyCommonTseitinStep bi bj x z input)
+      (input.1, input.2.1)
+    valOut.1 = rawOut.1 ∧ valOut.2.1 = rawOut.2 := by
+  induction zs generalizing input with
+  | nil => exact ⟨rfl, rfl⟩
+  | cons z zs ih =>
+      simp only [List.foldl_cons]
+      have hv := oneHighFamilyCommonTseitinStepVal_vars R bi bj x z input
+      have hs := oneHighFamilyCommonTseitinStepVal_state R bi bj x z input
+      have tail := ih (oneHighFamilyCommonTseitinStepVal R bi bj x z input)
+      simpa [hv, hs] using tail
+
+theorem oneHighFamilyCollectCommonsOuter_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj : Nat) (xs : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let valOut := xs.foldl (fun input x =>
+      (oneHighFamilyBlockVertices bj).foldl (fun input z =>
+        oneHighFamilyCommonTseitinStepVal R bi bj x z input) input) input
+    let rawOut := xs.foldl (fun input x =>
+      (oneHighFamilyBlockVertices bj).foldl (fun input z =>
+        oneHighFamilyCommonTseitinStep bi bj x z input) input)
+      (input.1, input.2.1)
+    valOut.1 = rawOut.1 ∧ valOut.2.1 = rawOut.2 := by
+  induction xs generalizing input with
+  | nil => exact ⟨rfl, rfl⟩
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      have inner := oneHighFamilyCollectCommonsInner_projection R bi bj x
+        (oneHighFamilyBlockVertices bj) input
+      have tail := ih ((oneHighFamilyBlockVertices bj).foldl
+        (fun input z => oneHighFamilyCommonTseitinStepVal R bi bj x z input)
+        input)
+      simpa [inner.1, inner.2] using tail
+
+theorem oneHighFamilyCollectCommonsVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (bi bj : Nat) (acc : OneHighFamilyValState) :
+    let valOut := oneHighFamilyCollectCommonsVal R bi bj acc
+    let rawOut := (oneHighFamilyBlockVertices bi).foldl (fun input x =>
+      (oneHighFamilyBlockVertices bj).foldl (fun input z =>
+        oneHighFamilyCommonTseitinStep bi bj x z input) input) (#[], acc.1)
+    valOut.1 = rawOut.1 ∧ valOut.2.1 = rawOut.2 := by
+  exact oneHighFamilyCollectCommonsOuter_projection R bi bj _ (#[], acc)
+
 end Erdos85
