@@ -2543,11 +2543,9 @@ theorem orderFortyNine_exists_mate_kSumExact_of_one_high
     G hfree hmin hcard hv hexternal houterDegree
       mate hmateInv hmateAdj s
 
-/-- All three graph-side laws used by the augmented one-high family CNFs,
+/-- All graph-side laws used by the augmented one-high family CNFs,
 packaged for one common mate involution: unmatched-vertex witness supply,
-exact `k`-sum, and the A-pair pointwise `k` bounds.  The final bounds are
-conditional on the mate pair having matched-count profile `(2,4)` in either
-order, equivalently total matched count six. -/
+exact `k`-sum, and the A- and B-pair pointwise `k` bounds. -/
 theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -2576,7 +2574,7 @@ theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
           (G.neighborFinset x ∩
             highBranchMateMissingFarVertices G v mate s).card) =
           highBranchMatchedCount G v (mate s)) ∧
-      ∀ s : {z : V // z ∈ G.neighborSet v},
+      (∀ s : {z : V // z ∈ G.neighborSet v},
         highBranchMatchedCount G v s +
             highBranchMatchedCount G v (mate s) = 6 →
         ∀ x ∈ secondLayerBranch G v s,
@@ -2585,7 +2583,17 @@ theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
               highBranchMateMissingFarVertices G v mate s).card ≤ 2) ∧
           ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 1 →
             (G.neighborFinset x ∩
-              highBranchMateMissingFarVertices G v mate s).card ≤ 1) := by
+              highBranchMateMissingFarVertices G v mate s).card ≤ 1)) ∧
+      ∀ s : {z : V // z ∈ G.neighborSet v},
+        highBranchMatchedCount G v s = 4 →
+        highBranchMatchedCount G v (mate s) = 4 →
+        ∀ x ∈ secondLayerBranch G v s,
+          ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+            (G.neighborFinset x ∩
+              highBranchMateMissingFarVertices G v mate s).card ≤ 4) ∧
+          ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 1 →
+            (G.neighborFinset x ∩
+              highBranchMateMissingFarVertices G v mate s).card ≤ 3) := by
   classical
   have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
     intro w hw
@@ -2615,7 +2623,7 @@ theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
       rw [secondLayer] at ha
       rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
       exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
-  refine ⟨mate, hmateInv, hmateAdj, ?_, ?_, ?_⟩
+  refine ⟨mate, hmateInv, hmateAdj, ?_, ?_, ?_, ?_⟩
   · intro s x hx hxUnmatched
     exact unmatched_vertex_exists_matched_neighbor_missing_mate
       G hfree hmin hcard hv hunique hexternal houterDegree
@@ -2628,6 +2636,10 @@ theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
     exact highBranch_mateMissingNeighbor_bounds_of_matchedCounts_add_eq_six
       G hfree hmin hcard hv hunique hexternal houterDegree
         mate hmateInv hmateAdj s hpair
+  · intro s hs4 hm4
+    exact highBranch_mateMissingNeighbor_bounds_of_matchedCounts_eq_four
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s hs4 hm4
 
 /-- Top-level encoder-alphabet coverage: every mate pair in the one-high
 stratum has profile A in one orientation `(2,4)/(4,2)`, or profile B
@@ -2654,7 +2666,7 @@ theorem orderFortyNine_exists_mate_familyPairProfiles_of_one_high
           (highBranchMatchedCount G v s = 4 ∧
             highBranchMatchedCount G v (mate s) = 4) := by
   classical
-  obtain ⟨mate, hmateInv, hmateAdj, _hwitness, _hksum, _hbound⟩ :=
+  obtain ⟨mate, hmateInv, hmateAdj, _hwitness, _hksum, _hboundA, _hboundB⟩ :=
     orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
       G hfree hmin hcard hHigh hv
   have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
