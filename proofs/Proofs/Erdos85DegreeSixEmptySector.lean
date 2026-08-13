@@ -1,5 +1,6 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixOddDiagonal
+import Proofs.Erdos85DegreeSixOddDiagonalSmall
 
 /-!
 # Degree-six empty-sector assembly
@@ -121,6 +122,216 @@ theorem degreeSix_exists_even_carrier_of_odd_zero_diagonal
     Finset.sum_eq_zero fun c _ => hzero c
   rw [hsum] at htrace
   exact absurd htrace.symm (by norm_num)
+
+/-! ## Order-eleven discharge -/
+
+theorem false_of_degreeSix_orderEleven_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ c.supp.ncard)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw11 : w.supp.ncard = 11)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  let S : Finset D.ConnectedComponent := Finset.univ.erase w
+  let q : D.ConnectedComponent → ℕ := fun t ↦ Q w t
+  let r : D.ConnectedComponent → ℕ := fun t ↦ Q t w
+  obtain ⟨htotal, hrow, hbal, hsq, hle⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  change (∑ t, Q w t * Q t w) = size w + 3 at hsq
+  change ∀ c t, Q c t ≤ 6 at hle
+  have hsw : size w = 11 := hw11
+  have hdiagQ : Q w w = 2 := hdiag
+  have hextRow : (∑ t ∈ S, q t) = 4 := by
+    have hadd := Finset.add_sum_erase Finset.univ (fun t ↦ Q w t) (Finset.mem_univ w)
+    have hwrow := hrow w
+    change Q w w + (∑ t ∈ Finset.univ.erase w, Q w t) = ∑ t, Q w t at hadd
+    change (∑ t ∈ Finset.univ.erase w, Q w t) = 4
+    rw [hdiagQ] at hadd
+    omega
+  have hextSq : (∑ t ∈ S, q t * r t) = 10 := by
+    have hadd := Finset.add_sum_erase Finset.univ
+      (fun t ↦ Q w t * Q t w) (Finset.mem_univ w)
+    change Q w w * Q w w + (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) =
+      ∑ t, Q w t * Q t w at hadd
+    change (∑ t ∈ Finset.univ.erase w, Q w t * Q t w) = 10
+    rw [hdiagQ] at hadd
+    rw [hsw] at hsq
+    omega
+  have hextSize : (∑ t ∈ S, size t) = 22 := by
+    have hadd := Finset.add_sum_erase Finset.univ size (Finset.mem_univ w)
+    change size w + (∑ t ∈ Finset.univ.erase w, size t) = ∑ t, size t at hadd
+    change (∑ t ∈ Finset.univ.erase w, size t) = 22
+    rw [hsw, htotal] at hadd
+    omega
+  have hclass : ∀ t ∈ S, q t = 0 ∨
+      (size t = 11 ∧ q t = 1 ∧ r t = 1) ∨
+      (size t = 22 ∧ q t = 2 ∧ r t = 1) ∨
+      (size t = 11 ∧ q t = 2 ∧ r t = 2) ∨
+      (size t = 11 ∧ q t = 3 ∧ r t = 3) ∨
+      (size t = 22 ∧ q t = 4 ∧ r t = 2) := by
+    intro t ht
+    rcases Nat.eq_zero_or_pos (q t) with hq0 | hqpos
+    · exact Or.inl hq0
+    right
+    have htw : t ≠ w := by simpa [S] using ht
+    have hpair := two_distinct_terms_le_sum size htw
+    rw [htotal, hsw] at hpair
+    have hst : size t ≤ 22 := by omega
+    have hqle : q t ≤ 4 := by
+      have hterm := Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+      rw [hextRow] at hterm
+      exact hterm
+    have hb := hbal w t
+    rw [hsw] at hb
+    change 11 * q t = size t * r t at hb
+    have hst3 : 3 ≤ size t := hr t
+    change 3 ≤ size t at hst3
+    have hrpos : 1 ≤ r t := by
+      by_contra hn
+      have hr0 : r t = 0 := by omega
+      rw [hr0, mul_zero] at hb
+      omega
+    have hrle : r t ≤ 6 := hle t w
+    have hprod : q t * r t ≤ 10 := by
+      have hterm := Finset.single_le_sum (f := fun z ↦ q z * r z)
+        (fun _ _ ↦ Nat.zero_le _) ht
+      rw [hextSq] at hterm
+      exact hterm
+    exact OddDiagonalSmall.eleven_partner_type hb hqpos hqle hrpos hrle hprod hst
+  have hagg := OddDiagonalSmall.eleven_contact_aggregate S size q r hclass
+  have husedLe : (∑ t ∈ S, if q t = 0 then 0 else size t) ≤ 22 := by
+    calc
+      _ ≤ ∑ t ∈ S, size t := by
+        apply Finset.sum_le_sum
+        intro t _
+        by_cases hqt : q t = 0 <;> simp [hqt]
+      _ = 22 := hextSize
+  rw [hextRow] at hagg
+  rw [hextSq] at hagg
+  rw [hagg.2.2] at husedLe
+  have hc := OddDiagonalSmall.eleven_pattern_counts hagg.1.symm hagg.2.1.symm husedLe
+  let P1 := S.filter fun t ↦ size t = 11 ∧ q t = 1 ∧ r t = 1
+  let P4 := S.filter fun t ↦ size t = 11 ∧ q t = 3 ∧ r t = 3
+  have hP1 : P1.card = 1 := hc.1
+  have hP4 : P4.card = 1 := hc.2.2.2.1
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hP1
+  obtain ⟨t, ht⟩ := Finset.card_eq_one.mp hP4
+  have huData := Finset.mem_filter.mp (show u ∈ P1 by rw [hu]; simp)
+  have htData := Finset.mem_filter.mp (show t ∈ P4 by rw [ht]; simp)
+  have hwu : w ≠ u := Ne.symm (by simpa [S] using huData.1)
+  have hwt : w ≠ t := Ne.symm (by simpa [S] using htData.1)
+  have htu : t ≠ u := by intro h; subst t; omega
+  have husedEq : (∑ z ∈ S, if q z = 0 then 0 else size z) = 22 := by
+    rw [hagg.2.2]
+    omega
+  have hqposAll : ∀ v ∈ S, 0 < q v := by
+    intro v hv
+    by_contra hn
+    have hq0 : q v = 0 := by omega
+    have haddUsed := Finset.add_sum_erase S
+      (fun z ↦ if q z = 0 then 0 else size z) hv
+    have haddSize := Finset.add_sum_erase S size hv
+    have hleErase :
+        (∑ z ∈ S.erase v, if q z = 0 then 0 else size z) ≤
+          ∑ z ∈ S.erase v, size z := by
+      apply Finset.sum_le_sum
+      intro z _
+      by_cases hz : q z = 0 <;> simp [hz]
+    have huErase : (∑ x ∈ S.erase v, if q x = 0 then 0 else size x) = 22 := by
+      rw [husedEq, hq0] at haddUsed
+      simpa using haddUsed
+    rw [hextSize] at haddSize
+    have hv3 : 3 ≤ size v := hr v
+    change 3 ≤ size v at hv3
+    omega
+  have huniv : (Finset.univ : Finset D.ConnectedComponent) = {w, t, u} := by
+    ext v
+    simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]
+    by_cases hvw : v = w
+    · exact Or.inl hvw
+    right
+    have hvS : v ∈ S := by simp [S, hvw]
+    have hvpos := hqposAll v hvS
+    rcases hclass v hvS with h0 | h1 | h2 | h3 | h4 | h5
+    · omega
+    · right
+      have hvP : v ∈ P1 := Finset.mem_filter.mpr ⟨hvS, h1⟩
+      rw [hu] at hvP
+      simpa using hvP
+    · have hvP : v ∈ S.filter (fun z ↦ size z = 22 ∧ q z = 2 ∧ r z = 1) :=
+        Finset.mem_filter.mpr ⟨hvS, h2⟩
+      have hz := Finset.card_eq_zero.mp hc.2.1
+      exact absurd hvP (by simpa [hz])
+    · have hvP : v ∈ S.filter (fun z ↦ size z = 11 ∧ q z = 2 ∧ r z = 2) :=
+        Finset.mem_filter.mpr ⟨hvS, h3⟩
+      have hz := Finset.card_eq_zero.mp hc.2.2.1
+      exact absurd hvP (by simpa [hz])
+    · left
+      have hvP : v ∈ P4 := Finset.mem_filter.mpr ⟨hvS, h4⟩
+      rw [ht] at hvP
+      simpa using hvP
+    · have hvP : v ∈ S.filter (fun z ↦ size z = 22 ∧ q z = 4 ∧ r z = 2) :=
+        Finset.mem_filter.mpr ⟨hvS, h5⟩
+      have hz := Finset.card_eq_zero.mp hc.2.2.2.2
+      exact absurd hvP (by simpa [hz])
+  have hrowt := hrow t
+  have hrowu := hrow u
+  obtain ⟨_, _, _, hsqt, _⟩ := degreeSix_diagonal_two_quotient_profile G hfree hmin hcard t
+  obtain ⟨_, _, _, hsqu, _⟩ := degreeSix_diagonal_two_quotient_profile G hfree hmin hcard u
+  change (∑ z, Q t z * Q z t) = size t + 3 at hsqt
+  change (∑ z, Q u z * Q z u) = size u + 3 at hsqu
+  rw [huniv] at hrowt hrowu hsqt hsqu
+  simp [hwt, hwu, htu] at hrowt hrowu hsqt hsqu
+  have hQtu : Q t u = Q u t := by
+    have hb := hbal t u
+    rw [htData.2.1, huData.2.1] at hb
+    omega
+  letI : NeZero t.supp.ncard := ⟨by
+    change t.supp.ncard ≠ 0
+    change size t ≠ 0
+    rw [htData.2.1]
+    norm_num⟩
+  letI : NeZero u.supp.ncard := ⟨by
+    change u.supp.ncard ≠ 0
+    change size u ≠ 0
+    rw [huData.2.1]
+    norm_num⟩
+  have hdicht := oddComponent_diagonalQuotient_eq_zero_or_two
+    G hfree (d := 6) (r := t.supp.ncard) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by
+        change 3 ≤ size t; omega)
+      (by change Odd (size t); rw [htData.2.1]; norm_num) t
+        (coord t) (hcoord t)
+        (hcoordRange t) (hcoordD t)
+  have hdichu := oddComponent_diagonalQuotient_eq_zero_or_two
+    G hfree (d := 6) (r := u.supp.ncard) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by
+        change 3 ≤ size u; omega)
+      (by change Odd (size u); rw [huData.2.1]; norm_num) u
+        (coord u) (hcoord u)
+        (hcoordRange u) (hcoordD u)
+  exact OddDiagonal.false_of_eleven_diag_two Q size w t u hwt hwu htu
+    hsw htData.2.1 huData.2.1 htData.2.2.1 huData.2.2.1
+    htData.2.2.2 huData.2.2.2 hQtu hdiagQ hdicht hdichu
+    (by omega) (by omega) (by omega) (by omega)
 
 /-- An order-thirteen component cannot have diagonal quotient two at the
 degree-six boundary. -/
