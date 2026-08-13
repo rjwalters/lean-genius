@@ -5386,6 +5386,28 @@ theorem false_of_degreeSix_threeSix_sixTwoThree_oneTwelve_branch
   · omega
   · ring_nf at hsq ⊢
     exact hsq
+
+/-- The residual triangle equations in the `{6,3,3}|{6,6}` shape are
+incompatible with the grouped bounds at the two unused order-six sources. -/
+theorem false_of_twoTriangle_twoGroupedSix_arithmetic
+    (x y k ue uf ve vf : ℕ)
+    (hu : ue + uf ≤ 1) (hv : ve + vf ≤ 1)
+    (hrowE : x + k + 2 * (ue + ve) = 5)
+    (hrowF : y + k + 2 * (uf + vf) = 5)
+    (hsqE : x * x + k * k + 2 * (ue * ue + ve * ve) = 5)
+    (hsqF : y * y + k * k + 2 * (uf * uf + vf * vf) = 5) : False := by
+  have hue : ue = 0 ∨ ue = 1 := by omega
+  have huf : uf = 0 ∨ uf = 1 := by omega
+  have hve : ve = 0 ∨ ve = 1 := by omega
+  have hvf : vf = 0 ∨ vf = 1 := by omega
+  have hx : x ≤ 5 := by omega
+  have hy : y ≤ 5 := by omega
+  have hk : k ≤ 5 := by omega
+  rcases hue with rfl | rfl <;> rcases huf with rfl | rfl <;>
+    rcases hve with rfl | rfl <;> rcases hvf with rfl | rfl <;>
+    interval_cases x <;> interval_cases y <;> interval_cases k <;>
+    try norm_num at hsqE hsqF ⊢
+  all_goals omega
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
