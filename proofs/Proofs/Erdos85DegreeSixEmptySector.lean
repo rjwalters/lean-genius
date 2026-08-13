@@ -1365,6 +1365,111 @@ theorem false_of_orderNine_pattern_two_carrier
       htData.2.2.1 htData.2.2.2 heData.2 hfData.2
       (hdiag3 e hse) (hdiag3 f hsf) hrow hsq hbal
 
+/-- Abstract carrier extraction and dispatch for order-nine pattern one. -/
+theorem false_of_orderNine_pattern_one_carrier
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w : C)
+    (S : Finset C) (hS : S = Finset.univ.erase w)
+    (hsw : size w = 9) (htotal : ∑ c, size c = 33)
+    (hmin : ∀ c, 3 ≤ size c)
+    (hExtSize : ∑ c ∈ S, size c = 24)
+    (hused : (∑ c ∈ S, if Q w c = 0 then 0 else size c) = 18)
+    (hP2 : (S.filter fun t ↦ size t = 9 ∧ Q w t = 2 ∧ Q t w = 2).card = 2)
+    (hrow : ∀ c, (∑ t, Q c t) = 6)
+    (hsq : ∀ c, (∑ t, Q c t * Q t c) = size c + 3)
+    (hbal : ∀ c t, size c * Q c t = size t * Q t c)
+    (hleNondiv : ∀ c t, ¬ size c ∣ size t → Q c t ≤ 1)
+    (hdiag3 : ∀ c, size c = 3 → Q c c = 0)
+    (hgroup9 : ∀ c e f, size c = 9 → size e = 3 → size f = 3 →
+      e ≠ f → Q c e + Q c f ≤ 1) : False := by
+  obtain ⟨a, b, hab, hp⟩ := Finset.card_eq_two.mp hP2
+  have haMem : a ∈ S.filter fun z ↦ size z = 9 ∧ Q w z = 2 ∧ Q z w = 2 := by
+    rw [hp]
+    simp
+  have hbMem : b ∈ S.filter fun z ↦ size z = 9 ∧ Q w z = 2 ∧ Q z w = 2 := by
+    rw [hp]
+    simp
+  have haData := Finset.mem_filter.mp haMem
+  have hbData := Finset.mem_filter.mp hbMem
+  let Z := S.filter fun c ↦ Q w c = 0
+  have hzero : (∑ c ∈ Z, size c) = 6 :=
+    OddDiagonalSmall.zero_contact_sum_eq_sub S size (fun c ↦ Q w c)
+      24 18 hExtSize hused (by omega)
+  rcases OddDiagonalSmall.residual_six_partition Z size
+      (by intro z hz; exact hmin z) hzero with h6 | h33
+  · obtain ⟨e, he, hse⟩ := h6
+    have heMem : e ∈ Z := by rw [he]; simp
+    have heData := Finset.mem_filter.mp heMem
+    have hwa : w ≠ a := Ne.symm (by simpa [hS] using haData.1)
+    have hwb : w ≠ b := Ne.symm (by simpa [hS] using hbData.1)
+    have hwe : w ≠ e := Ne.symm (by simpa [hS] using heData.1)
+    have hae : a ≠ e := by intro h; subst e; omega
+    have hbe : b ≠ e := by intro h; subst e; omega
+    have huniv : (Finset.univ : Finset C) = {w, a, b, e} := by
+      apply OddDiagonalSmall.univ_eq_of_positive_sum_eq size
+      · intro c
+        have hc := hmin c
+        omega
+      · rw [htotal]
+        simp [hwa, hwb, hwe, hab, hae, hbe, hsw,
+          haData.2.1, hbData.2.1, hse]
+    have hQew : Q e w = 0 := by
+      have hb := hbal e w
+      rw [hse, hsw, heData.2] at hb
+      omega
+    have hQeaLe := hleNondiv e a (by rw [hse, haData.2.1]; norm_num)
+    have hQebLe := hleNondiv e b (by rw [hse, hbData.2.1]; norm_num)
+    have hbea := hbal e a
+    have hbeb := hbal e b
+    rw [hse, haData.2.1] at hbea
+    rw [hse, hbData.2.1] at hbeb
+    have hQea : Q e a = 0 := by omega
+    have hQeb : Q e b = 0 := by omega
+    have hrowe : Q e w + Q e a + Q e b + Q e e = 6 := by
+      calc
+        _ = ∑ x ∈ ({w, a, b, e} : Finset C), Q e x := by
+          simp [hwa, hwb, hwe, hab, hae, hbe, Nat.add_assoc]
+        _ = ∑ x, Q e x := by rw [← huniv]
+        _ = 6 := hrow e
+    have hsqe : Q e w * Q w e + Q e a * Q a e +
+        Q e b * Q b e + Q e e * Q e e = size e + 3 := by
+      calc
+        _ = ∑ x ∈ ({w, a, b, e} : Finset C), Q e x * Q x e := by
+          simp [hwa, hwb, hwe, hab, hae, hbe, Nat.add_assoc]
+        _ = ∑ x, Q e x * Q x e := by rw [← huniv]
+        _ = size e + 3 := hsq e
+    rw [hQew, hQea, hQeb] at hrowe hsqe
+    rw [hse] at hsqe
+    have hdiagLe : Q e e ≤ 6 := by omega
+    interval_cases (Q e e) <;> omega
+  · obtain ⟨e, f, hef, heq, hse, hsf⟩ := h33
+    have heMem : e ∈ Z := by rw [heq]; simp
+    have hfMem : f ∈ Z := by rw [heq]; simp
+    have heData := Finset.mem_filter.mp heMem
+    have hfData := Finset.mem_filter.mp hfMem
+    have hwa : w ≠ a := Ne.symm (by simpa [hS] using haData.1)
+    have hwb : w ≠ b := Ne.symm (by simpa [hS] using hbData.1)
+    have hwe : w ≠ e := Ne.symm (by simpa [hS] using heData.1)
+    have hwf : w ≠ f := Ne.symm (by simpa [hS] using hfData.1)
+    have hae : a ≠ e := by intro h; subst e; omega
+    have haf : a ≠ f := by intro h; subst f; omega
+    have hbe : b ≠ e := by intro h; subst e; omega
+    have hbf : b ≠ f := by intro h; subst f; omega
+    have huniv : (Finset.univ : Finset C) = {w, a, b, e, f} := by
+      apply OddDiagonalSmall.univ_eq_of_positive_sum_eq size
+      · intro c
+        have hc := hmin c
+        omega
+      · rw [htotal]
+        simp [hwa, hwb, hwe, hwf, hab, hae, haf, hbe, hbf, hef,
+          hsw, haData.2.1, hbData.2.1, hse, hsf]
+    exact OddDiagonal.false_of_nine_pattern_one_two_triangles Q size w a b e f
+      huniv ⟨hwa, hwb, hwe, hwf, hab, hae, haf, hbe, hbf, hef⟩
+      hsw haData.2.1 hbData.2.1 hse hsf heData.2 hfData.2
+      (hdiag3 e hse) (hdiag3 f hsf) hrow hsq hbal
+      (hgroup9 a e f haData.2.1 hse hsf hef)
+      (hgroup9 b e f hbData.2.1 hse hsf hef)
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two
