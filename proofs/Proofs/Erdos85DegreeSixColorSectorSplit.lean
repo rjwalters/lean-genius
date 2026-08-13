@@ -1573,6 +1573,78 @@ theorem contact_filter_counts_of_sum_three
     simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
+/-- The seven partitions of five, encoded by multiplicities of parts
+`1,...,5`. -/
+theorem contact_count_partition_of_weight_five
+    (n1 n2 n3 n4 n5 : ℕ)
+    (h : n1 + 2 * n2 + 3 * n3 + 4 * n4 + 5 * n5 = 5) :
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  have hn2 : n2 ≤ 2 := by omega
+  have hn3 : n3 ≤ 1 := by omega
+  have hn4 : n4 ≤ 1 := by omega
+  have hn5 : n5 ≤ 1 := by omega
+  interval_cases n5 <;> interval_cases n4 <;> interval_cases n3 <;>
+    interval_cases n2 <;> omega
+
+/-- Filter-count form of the seven partitions of a nonnegative finite row
+whose total mass is five. -/
+theorem contact_filter_counts_of_sum_five
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q : C → ℕ) (hsum : (∑ t ∈ S, q t) = 5) :
+    let n1 := (S.filter fun t ↦ q t = 1).card
+    let n2 := (S.filter fun t ↦ q t = 2).card
+    let n3 := (S.filter fun t ↦ q t = 3).card
+    let n4 := (S.filter fun t ↦ q t = 4).card
+    let n5 := (S.filter fun t ↦ q t = 5).card
+    (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1) := by
+  dsimp
+  have hqle : ∀ t ∈ S, q t ≤ 5 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ x ∈ S, q x :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hpoint : ∀ t ∈ S, q t =
+      (if q t = 1 then 1 else 0) +
+      (if q t = 2 then 2 else 0) +
+      (if q t = 3 then 3 else 0) +
+      (if q t = 4 then 4 else 0) +
+      (if q t = 5 then 5 else 0) := by
+    intro t ht
+    have := hqle t ht
+    interval_cases q t <;> simp_all
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hweighted :
+      (S.filter fun t ↦ q t = 1).card +
+      2 * (S.filter fun t ↦ q t = 2).card +
+      3 * (S.filter fun t ↦ q t = 3).card +
+      4 * (S.filter fun t ↦ q t = 4).card +
+      5 * (S.filter fun t ↦ q t = 5).card = 5 := by
+    have h1 := hsumConst (fun t ↦ q t = 1) 1
+    have h2 := hsumConst (fun t ↦ q t = 2) 2
+    have h3 := hsumConst (fun t ↦ q t = 3) 3
+    have h4 := hsumConst (fun t ↦ q t = 4) 4
+    have h5 := hsumConst (fun t ↦ q t = 5) 5
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [h1, h2, h3, h4, h5] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
+  exact contact_count_partition_of_weight_five _ _ _ _ _ hweighted
+
 /-- Components of order at least three and total order six form either one
 order-six component or two order-three components. -/
 theorem component_orders_sum_six_classification
