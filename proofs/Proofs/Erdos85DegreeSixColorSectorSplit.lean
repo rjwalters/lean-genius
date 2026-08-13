@@ -5177,6 +5177,116 @@ theorem false_of_degreeSix_threeSix_all_contacted_triangles
   change Q b b ≤ 2 at hdiagLe
   omega
 
+/-- The order-six component in a `(3,6)` cover cannot contact an order-nine
+component.  Such a contact contributes `(q,r)=(3,2)`; the remaining row
+mass then exceeds the remaining square mass, although every positive
+balanced term contributes at least its row entry. -/
+theorem degreeSix_threeSix_orderSix_no_orderNine_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (b a t : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb6 : b.supp.ncard = 6) (ha3 : a.supp.ncard = 3)
+    (ht9 : t.supp.ncard = 9)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q b a = 1 at hba
+  change Q a b = 2 at hab
+  change Q b t = 0
+  by_contra hbt0
+  have hbtPos : 0 < Q b t := Nat.pos_of_ne_zero hbt0
+  have hbaNe : b ≠ a := by intro h; subst a; omega
+  have hbtNe : b ≠ t := by intro h; subst t; omega
+  have hatNe : a ≠ t := by intro h; subst t; omega
+  have hbIn : b ∈ (Finset.univ : Finset _) := Finset.mem_univ b
+  have haIn : a ∈ Finset.univ.erase b :=
+    Finset.mem_erase.mpr ⟨hbaNe.symm, Finset.mem_univ a⟩
+  have htIn : t ∈ (Finset.univ.erase b).erase a :=
+    Finset.mem_erase.mpr ⟨hatNe.symm,
+      Finset.mem_erase.mpr ⟨hbtNe.symm, Finset.mem_univ t⟩⟩
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((Finset.univ.erase b).erase a).erase t
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrB := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) hbIn
+  have hrA := Finset.sum_erase_add (Finset.univ.erase b) (Q b) haIn
+  have hrT := Finset.sum_erase_add ((Finset.univ.erase b).erase a) (Q b) htIn
+  have hqle : Q b t ≤ 5 := by
+    have hsingle : Q b t ≤ ∑ z, Q b z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ t)
+    omega
+  have hbalBT := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b t
+  change b.supp.ncard * Q b t = t.supp.ncard * Q t b at hbalBT
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 9 := by
+    simpa [Q, Matrix.mul_apply, hb6] using hsqGraph
+  have htermLe : Q b t * Q t b ≤ 7 := by
+    have hpair : Q b a * Q a b + Q b t * Q t b ≤
+        ∑ z, Q b z * Q z b :=
+      two_distinct_terms_le_sum (fun z ↦ Q b z * Q z b) hatNe
+    rw [hba, hab, hsq] at hpair
+    omega
+  have hbt : Q b t = 3 := by
+    have hcases := degreeSix_threeSix_orderSix_heavy_contact_type_arithmetic
+      9 (Q b t) (Q t b) (by norm_num) (by norm_num) hqle (by
+        by_cases hr0 : Q t b = 0
+        · simp [hr0]
+        · have hp := htermLe
+          have hq1 : 1 ≤ Q b t := Nat.one_le_iff_ne_zero.mpr hbt0
+          have : Q t b ≤ Q b t * Q t b := by
+            simpa [one_mul] using Nat.mul_le_mul_right (Q t b) hq1
+          omega) (by simpa [hb6, ht9] using hbalBT) htermLe
+    rcases hcases with h0 | h4 | h61 | h62 | h9 | h12 | h18 | h24 <;> simp_all
+  have htb : Q t b = 2 := by rw [hb6, ht9, hbt] at hbalBT; omega
+  have hpB := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q b z * Q z b) hbIn
+  have hpA := Finset.sum_erase_add (Finset.univ.erase b)
+    (fun z ↦ Q b z * Q z b) haIn
+  have hpT := Finset.sum_erase_add ((Finset.univ.erase b).erase a)
+    (fun z ↦ Q b z * Q z b) htIn
+  have hrowR : (∑ z ∈ R, Q b z) + Q b b = 2 := by
+    dsimp [R]
+    rw [hbt] at hrT
+    omega
+  have hprodR : (∑ z ∈ R, Q b z * Q z b) + Q b b * Q b b = 1 := by
+    dsimp [R]
+    rw [hba, hab] at hpA
+    rw [hbt, htb] at hpT
+    rw [hsq] at hpB
+    omega
+  have hrowLeProd : (∑ z ∈ R, Q b z) ≤ ∑ z ∈ R, Q b z * Q z b := by
+    apply Finset.sum_le_sum
+    intro z hz
+    by_cases hq0 : Q b z = 0
+    · simp [hq0]
+    · have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) b z
+      change b.supp.ncard * Q b z = z.supp.ncard * Q z b at hbal
+      have hzPos := z.nonempty_supp.ncard_pos
+      have hrPos : 0 < Q z b := by
+        by_contra hr0
+        push Not at hr0
+        have : Q z b = 0 := by omega
+        rw [this] at hbal
+        simp at hbal
+        exact hq0 (by omega)
+      exact Nat.le_mul_of_pos_right (Q b z) hrPos
+  nlinarith
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
