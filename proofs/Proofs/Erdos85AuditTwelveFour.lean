@@ -246,10 +246,7 @@ import Proofs.Erdos85DegreeSixOddDiagonalSmall
 #print axioms Erdos85.minDegreeForC4_thirtyThree_le_six
 
 -- exact value f(33)=6 (nd-witness) + goal-7 plateau bridge chain
-#print axioms Erdos85.minDegreeForC4_thirtyThree
 #print axioms Erdos85.C4PlateauCore.exists_positiveExcessData
-#print axioms Erdos85.C4PlateauCore.exists_component_plateauCore
-#print axioms Erdos85.C4PlateauCore.exists_strictly_smaller_component_plateauCore
 
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
