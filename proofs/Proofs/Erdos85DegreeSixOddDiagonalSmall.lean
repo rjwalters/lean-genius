@@ -109,6 +109,40 @@ theorem nine_pattern_counts {n1 n2 n3 n4 n5 n6 n7 : ℕ}
   interval_cases n6 <;> interval_cases n5 <;> interval_cases n4 <;>
     interval_cases n2 <;> omega
 
+/-- Order-fifteen type classification.  This is kept in the same
+pure-arithmetic layer because its count equations have a unique feasible
+shape at total external size eighteen. -/
+theorem fifteen_partner_type {s q r : ℕ}
+    (hbal : 15 * q = s * r) (hq1 : 1 ≤ q) (hq4 : q ≤ 4)
+    (hr1 : 1 ≤ r) (hr6 : r ≤ 6) (hqr : q * r ≤ 14)
+    (hs : s ≤ 18) :
+    (s = 15 ∧ q = 1 ∧ r = 1) ∨ (s = 5 ∧ q = 1 ∧ r = 3) ∨
+    (s = 3 ∧ q = 1 ∧ r = 5) ∨ (s = 15 ∧ q = 2 ∧ r = 2) ∨
+    (s = 10 ∧ q = 2 ∧ r = 3) ∨ (s = 6 ∧ q = 2 ∧ r = 5) ∨
+    (s = 5 ∧ q = 2 ∧ r = 6) ∨ (s = 15 ∧ q = 3 ∧ r = 3) := by
+  interval_cases r <;> omega
+
+/-- The three order-fifteen partner patterns compatible with external row
+`4`, square `14`, and size budget `18`. -/
+theorem fifteen_pattern_counts {n1 n2 n3 n4 n5 n6 n7 n8 : ℕ}
+    (hrow : n1 + n2 + n3 + 2 * n4 + 2 * n5 + 2 * n6 +
+      2 * n7 + 3 * n8 = 4)
+    (hsq : n1 + 3 * n2 + 5 * n3 + 4 * n4 + 6 * n5 + 10 * n6 +
+      12 * n7 + 9 * n8 = 14)
+    (hsize : 15 * n1 + 5 * n2 + 3 * n3 + 15 * n4 + 10 * n5 +
+      6 * n6 + 5 * n7 + 15 * n8 ≤ 18) :
+    (n1 = 0 ∧ n2 = 3 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧
+      n7 = 0 ∧ n8 = 0) ∨
+    (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 1 ∧ n6 = 0 ∧
+      n7 = 0 ∧ n8 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0 ∧ n6 = 0 ∧
+      n7 = 0 ∧ n8 = 1) := by
+  have hn1 : n1 = 0 := by omega
+  have hn4 : n4 = 0 := by omega
+  have hn6 : n6 = 0 := by omega
+  have hn7 : n7 = 0 := by omega
+  omega
+
 end OddDiagonalSmall
 
 end Erdos85
