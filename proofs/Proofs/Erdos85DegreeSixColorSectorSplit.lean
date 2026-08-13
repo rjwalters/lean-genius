@@ -1944,6 +1944,56 @@ theorem false_of_degreeSix_threeTwelve_single_heavy_partition
         z q (Or.inr (Or.inr h12c.2.1)) hrow
           (by simpa [h12c.2.1, h12c.2.2] using hprod)
 
+/-- Uniform terminal for the two-heavy partitions `[3,2]` and `[2,2,1]`.
+Each heavy order is three times its source-triangle multiplicity. -/
+theorem false_of_degreeSix_threeTwelve_two_heavy_partition
+    (k l z q r x y : ℕ)
+    (hkl : (k = 2 ∧ l = 2) ∨ (k = 2 ∧ l = 3) ∨
+      (k = 3 ∧ l = 2))
+    (hbalQ : 12 * q = (3 * k) * r)
+    (hbalX : 12 * x = (3 * l) * y)
+    (hrow : q + x + z = 5)
+    (hprod : q * r + x * y + z * z = 11) : False := by
+  have classify (m q' r' : ℕ) (hm : m = 2 ∨ m = 3)
+      (hbal : 12 * q' = (3 * m) * r')
+      (hqle : q' ≤ 5) (hple : q' * r' ≤ 11) :
+      (q' = 0 ∧ r' = 0) ∨
+      (m = 2 ∧ q' = 1 ∧ r' = 2) ∨
+      (m = 2 ∧ q' = 2 ∧ r' = 4) := by
+    by_cases hq0 : q' = 0
+    · have hr0 : r' = 0 := by
+        rw [hq0] at hbal
+        rcases hm with rfl | rfl <;> norm_num at hbal ⊢
+        all_goals omega
+      exact Or.inl ⟨hq0, hr0⟩
+    · have hqpos : 0 < q' := Nat.pos_of_ne_zero hq0
+      have hrpos : 0 < r' := by
+        by_contra hr0
+        push Not at hr0
+        have hrz : r' = 0 := by omega
+        rw [hrz] at hbal
+        omega
+      have hsize : 3 * m = 6 ∨ 3 * m = 9 ∨ 3 * m = 12 ∨ 3 * m = 15 := by
+        rcases hm with rfl | rfl <;> omega
+      have ht := degreeSix_orderTwelve_heavy_contact_type_arithmetic
+        (3 * m) q' r' hsize hqpos hqle hrpos hple hbal
+      rcases ht with h | h | h | h | h
+      · exact Or.inr (Or.inl ⟨by omega, h.2⟩)
+      · exact Or.inr (Or.inr ⟨by omega, h.2⟩)
+      · exfalso; rcases hm with rfl | rfl <;> omega
+      · exfalso; rcases hm with rfl | rfl <;> omega
+      · exfalso; rcases hm with rfl | rfl <;> omega
+  have hk : k = 2 ∨ k = 3 := by rcases hkl with h | h | h <;> omega
+  have hl : l = 2 ∨ l = 3 := by rcases hkl with h | h | h <;> omega
+  have hqle : q ≤ 5 := by omega
+  have hxle : x ≤ 5 := by omega
+  have hqprod : q * r ≤ 11 := by omega
+  have hxprod : x * y ≤ 11 := by omega
+  have hqt := classify k q r hk hbalQ hqle hqprod
+  have hxt := classify l x y hl hbalX hxle hxprod
+  rcases hqt with hq0 | hq1 | hq2 <;>
+    rcases hxt with hx0 | hx1 | hx2 <;> simp_all <;> nlinarith
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
