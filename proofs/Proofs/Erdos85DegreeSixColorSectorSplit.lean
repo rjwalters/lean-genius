@@ -1485,6 +1485,39 @@ theorem component_orders_sum_six_classification
     have hfgsum : size f + size g = 6 := by simpa [hS, hfg] using hsum
     exact Or.inr ⟨f, g, hfg, hS, by omega, by omega⟩
 
+/-- Components of order at least three and total order eight form either one
+order-eight component, or two components of orders five and three, or two
+components both of order four. -/
+theorem component_orders_sum_eight_classification
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (S : Finset C) (size : C → ℕ)
+    (hlower : ∀ t ∈ S, 3 ≤ size t)
+    (hsum : (∑ t ∈ S, size t) = 8) :
+    (∃ f, S = {f} ∧ size f = 8) ∨
+    (∃ f g, f ≠ g ∧ S = {f, g} ∧
+      ((size f = 5 ∧ size g = 3) ∨
+       (size f = 3 ∧ size g = 5) ∨
+       (size f = 4 ∧ size g = 4))) := by
+  have hcardPos : 0 < S.card := by
+    by_contra hzero
+    have : S = ∅ := Finset.card_eq_zero.mp (by omega)
+    subst S
+    simp at hsum
+  have hlowerSum : (∑ t ∈ S, 3) ≤ ∑ t ∈ S, size t :=
+    Finset.sum_le_sum fun t ht ↦ hlower t ht
+  have hcardLe : S.card ≤ 2 := by
+    simp at hlowerSum
+    omega
+  rcases (show S.card = 1 ∨ S.card = 2 by omega) with hcard | hcard
+  · obtain ⟨f, hS⟩ := Finset.card_eq_one.mp hcard
+    exact Or.inl ⟨f, hS, by simpa [hS] using hsum⟩
+  · obtain ⟨f, g, hfg, hS⟩ := Finset.card_eq_two.mp hcard
+    have hf := hlower f (by simp [hS])
+    have hg := hlower g (by simp [hS])
+    have hfgsum : size f + size g = 8 := by simpa [hS, hfg] using hsum
+    refine Or.inr ⟨f, g, hfg, hS, ?_⟩
+    omega
+
 /-- Arithmetic terminal for the order-six residual partition `1+2`.  The
 two square equations and the global diagonal budget force the order-twelve
 target to contact both distinct order-six components, contradicting grouped
@@ -2261,6 +2294,235 @@ theorem false_of_degreeSix_oddEven_cover_seven_fourteen
     omega
   rw [hqat] at hterm
   omega
+
+set_option maxHeartbeats 1000000 in
+/-- The `(5,20)` cover leaves order mass eight. Balance excludes residual
+orders eight and four. The only remaining shape is `5+3`; the second
+order-five component is forced to mirror the first across the order-twenty
+component, leaving the order-three quotient row identically zero. -/
+theorem false_of_degreeSix_oddEven_cover_five_twenty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (hzero : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd t.supp.ncard →
+        componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha5 : a.supp.ncard = 5) (hb20 : b.supp.ncard = 20)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q b a = 1 at hba
+  have haa : Q a a = 0 := hzero a (by rw [ha5]; norm_num)
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 4 := by rw [ha5, hb20, hba] at habBal; omega
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ t.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun t ↦ t.supp.ncard) hbIn
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hRsize : (∑ t ∈ R, t.supp.ncard) = 8 := by
+    dsimp [R]
+    omega
+  have hclass := component_orders_sum_eight_classification R
+    (fun t ↦ t.supp.ncard) (fun t _ ↦ hr t) hRsize
+  have hrowA := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ t, Q a t) = 6 at hrowA
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hRrow : (∑ t ∈ R, Q a t) = 2 := by
+    rw [haa] at hrA
+    rw [hab] at hrB
+    dsimp [R]
+    omega
+  rcases hclass with ⟨f, hR, hf8⟩ | ⟨f, e, hfe, hR, horders⟩
+  · have hafBal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a f
+    change a.supp.ncard * Q a f = f.supp.ncard * Q f a at hafBal
+    have haf : Q a f = 2 := by simpa [hR] using hRrow
+    rw [ha5, hf8, haf] at hafBal
+    omega
+  · rcases horders with h53 | h35 | h44
+    · rcases h53 with ⟨hf5, he3⟩
+      have hsumFE : Q a f + Q a e = 2 := by
+        simpa [hR, hfe] using hRrow
+      have hafBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a f
+      have haeBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a e
+      change a.supp.ncard * Q a f = f.supp.ncard * Q f a at hafBal
+      change a.supp.ncard * Q a e = e.supp.ncard * Q e a at haeBal
+      have hae : Q a e = 0 := by rw [ha5, he3] at haeBal; omega
+      have haf : Q a f = 2 := by omega
+      have hfa : Q f a = 2 := by rw [ha5, hf5, haf] at hafBal; omega
+      have hff : Q f f = 0 := hzero f (by rw [hf5]; norm_num)
+      have hrowF := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) f
+      change (∑ t, Q f t) = 6 at hrowF
+      have hfA := Finset.sum_erase_add (Finset.univ : Finset _) (Q f) haIn
+      have hfB := Finset.sum_erase_add (Finset.univ.erase a) (Q f) hbIn
+      have hfR : (∑ t ∈ R, Q f t) = Q f f + Q f e := by simp [hR, hfe]
+      dsimp [R] at hfR
+      have hfbBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) f b
+      have hfeBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) f e
+      change f.supp.ncard * Q f b = b.supp.ncard * Q b f at hfbBal
+      change f.supp.ncard * Q f e = e.supp.ncard * Q e f at hfeBal
+      have hfb : Q f b = 4 := by
+        rw [hf5, hb20] at hfbBal
+        rw [hf5, he3] at hfeBal
+        rw [hfa] at hfA
+        rw [hff] at hfR
+        omega
+      have hfeQ : Q f e = 0 := by
+        rw [hfa] at hfA
+        rw [hfb] at hfB
+        rw [hff] at hfR
+        omega
+      have hee : Q e e = 0 := hzero e (by rw [he3]; norm_num)
+      have hebBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e b
+      change e.supp.ncard * Q e b = b.supp.ncard * Q b e at hebBal
+      have hrowE := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e
+      change (∑ t, Q e t) = 6 at hrowE
+      have heA := Finset.sum_erase_add (Finset.univ : Finset _) (Q e) haIn
+      have heB := Finset.sum_erase_add (Finset.univ.erase a) (Q e) hbIn
+      have heR : (∑ t ∈ R, Q e t) = Q e f + Q e e := by simp [hR, hfe]
+      dsimp [R] at heR
+      rw [hae] at haeBal
+      rw [hfeQ] at hfeBal
+      rw [ha5, he3] at haeBal
+      rw [hf5, he3] at hfeBal
+      rw [he3, hb20] at hebBal
+      rw [hee] at heR
+      have hea : Q e a = 0 := by omega
+      have hef : Q e f = 0 := by omega
+      have heb : Q e b = 0 := by omega
+      rw [hea] at heA
+      rw [heb] at heB
+      rw [hef] at heR
+      omega
+    · rcases h35 with ⟨hf3, he5⟩
+      have hswap : ({f, e} : Finset _) = {e, f} := by ext; simp [or_comm]
+      have hclass' : R = {e, f} ∧ e.supp.ncard = 5 ∧ f.supp.ncard = 3 :=
+        ⟨hR.trans hswap, he5, hf3⟩
+      -- The preceding branch is symmetric in the two residual components.
+      rw [hclass'.1] at hRrow
+      have haeBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a f
+      change a.supp.ncard * Q a f = f.supp.ncard * Q f a at haeBal
+      have hsum : Q a e + Q a f = 2 := by
+        simpa [hfe.symm] using hRrow
+      rw [ha5, hf3] at haeBal
+      have haf : Q a f = 0 := by omega
+      have hae : Q a e = 2 := by omega
+      -- Re-enter the same forced mirror calculation with the names swapped.
+      have hea : Q e a = 2 := by
+        have h := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) a e
+        change a.supp.ncard * Q a e = e.supp.ncard * Q e a at h
+        rw [ha5, he5, hae] at h
+        omega
+      have hee : Q e e = 0 := hzero e (by rw [he5]; norm_num)
+      have hefBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e f
+      have hebBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e b
+      change e.supp.ncard * Q e f = f.supp.ncard * Q f e at hefBal
+      change e.supp.ncard * Q e b = b.supp.ncard * Q b e at hebBal
+      have hrowE := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) e
+      change (∑ t, Q e t) = 6 at hrowE
+      have heA := Finset.sum_erase_add (Finset.univ : Finset _) (Q e) haIn
+      have heB := Finset.sum_erase_add (Finset.univ.erase a) (Q e) hbIn
+      have heR : (∑ t ∈ R, Q e t) = Q e e + Q e f := by
+        simp [hR, hfe, Nat.add_comm]
+      dsimp [R] at heR
+      have heb : Q e b = 4 := by
+        rw [he5, hf3] at hefBal
+        rw [he5, hb20] at hebBal
+        rw [hea] at heA
+        rw [hee] at heR
+        omega
+      have hef : Q e f = 0 := by
+        rw [hea] at heA
+        rw [heb] at heB
+        rw [hee] at heR
+        omega
+      have hff : Q f f = 0 := hzero f (by rw [hf3]; norm_num)
+      have hfbBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) f b
+      change f.supp.ncard * Q f b = b.supp.ncard * Q b f at hfbBal
+      have hrowF := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) f
+      change (∑ t, Q f t) = 6 at hrowF
+      have hfA := Finset.sum_erase_add (Finset.univ : Finset _) (Q f) haIn
+      have hfB := Finset.sum_erase_add (Finset.univ.erase a) (Q f) hbIn
+      have hfR : (∑ t ∈ R, Q f t) = Q f e + Q f f := by
+        simp [hR, hfe, Nat.add_comm]
+      dsimp [R] at hfR
+      rw [haf] at haeBal
+      rw [hef] at hefBal
+      rw [hf3, hb20] at hfbBal
+      rw [hff] at hfR
+      have hfa : Q f a = 0 := by omega
+      have hfeQ : Q f e = 0 := by
+        norm_num at hefBal
+        omega
+      have hfb : Q f b = 0 := by omega
+      rw [hfa] at hfA
+      rw [hfb] at hfB
+      rw [hfeQ] at hfR
+      omega
+    · rcases h44 with ⟨hf4, he4⟩
+      have hsumFE : Q a f + Q a e = 2 := by simpa [hR, hfe] using hRrow
+      have hafBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a f
+      have haeBal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) a e
+      change a.supp.ncard * Q a f = f.supp.ncard * Q f a at hafBal
+      change a.supp.ncard * Q a e = e.supp.ncard * Q e a at haeBal
+      rw [ha5, hf4] at hafBal
+      rw [ha5, he4] at haeBal
+      omega
 
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
