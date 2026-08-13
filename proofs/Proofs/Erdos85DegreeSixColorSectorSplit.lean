@@ -4965,6 +4965,72 @@ theorem false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
     rw [hqa1] at hba
     rw [hqb1] at hbb
     interval_cases r a <;> interval_cases r b <;> omega
+
+/-- Five equal-order components cannot have row sum six, total external
+mass three, and total diagonal six.  Symmetry makes every off-diagonal
+contribution occur twice, so the first two conditions force the diagonal
+sum odd, while the last condition makes it even. -/
+theorem false_of_five_symmetric_degreeSix_rows
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (Q : C → C → ℕ) (ext : C → ℕ)
+    (hcard : S.card = 5)
+    (hsymm : ∀ i ∈ S, ∀ j ∈ S, Q i j = Q j i)
+    (hrow : ∀ i ∈ S, ext i + (∑ j ∈ S, Q i j) = 6)
+    (hext : (∑ i ∈ S, ext i) = 3)
+    (hdiag : (∑ i ∈ S, Q i i) = 6) : False := by
+  have hcard' : S.card = 4 + 1 := by omega
+  obtain ⟨a, T, haT, hTa, hTcard⟩ := Finset.card_eq_succ.mp hcard'
+  have hTcard' : T.card = 3 + 1 := by omega
+  obtain ⟨b, U, hbU, hUb, hUcard⟩ := Finset.card_eq_succ.mp hTcard'
+  have hUcard' : U.card = 2 + 1 := by omega
+  obtain ⟨c, W, hcW, hWc, hWcard⟩ := Finset.card_eq_succ.mp hUcard'
+  have hWcard' : W.card = 1 + 1 := by omega
+  obtain ⟨d, X, hdX, hXd, hXcard⟩ := Finset.card_eq_succ.mp hWcard'
+  have hXcard' : X.card = 0 + 1 := by omega
+  obtain ⟨e, Y, heY, hYe, hYcard⟩ := Finset.card_eq_succ.mp hXcard'
+  have hY : Y = ∅ := Finset.card_eq_zero.mp (by omega)
+  have hS : S = {a, b, c, d, e} := by
+    rw [← hTa, ← hUb, ← hWc, ← hXd, ← hYe, hY]
+    simp
+  have hab : a ≠ b := by
+    intro h; subst b; apply haT; rw [← hUb]; simp
+  have hac : a ≠ c := by
+    intro h; subst c; apply haT; rw [← hUb, ← hWc]; simp
+  have had : a ≠ d := by
+    intro h; subst d; apply haT; rw [← hUb, ← hWc, ← hXd]; simp
+  have hae : a ≠ e := by
+    intro h; subst e; apply haT; rw [← hUb, ← hWc, ← hXd, ← hYe]; simp
+  have hbc : b ≠ c := by
+    intro h; subst c; apply hbU; rw [← hWc]; simp
+  have hbd : b ≠ d := by
+    intro h; subst d; apply hbU; rw [← hWc, ← hXd]; simp
+  have hbe : b ≠ e := by
+    intro h; subst e; apply hbU; rw [← hWc, ← hXd, ← hYe]; simp
+  have hcd : c ≠ d := by
+    intro h; subst d; apply hcW; rw [← hXd]; simp
+  have hce : c ≠ e := by
+    intro h; subst e; apply hcW; rw [← hXd, ← hYe]; simp
+  have hde : d ≠ e := by
+    intro h; subst e; apply hdX; rw [← hYe]; simp
+  have ha := hrow a (by rw [hS]; simp)
+  have hb := hrow b (by rw [hS]; simp)
+  have hc := hrow c (by rw [hS]; simp)
+  have hd := hrow d (by rw [hS]; simp)
+  have he := hrow e (by rw [hS]; simp)
+  have habQ := hsymm a (by rw [hS]; simp) b (by rw [hS]; simp)
+  have hacQ := hsymm a (by rw [hS]; simp) c (by rw [hS]; simp)
+  have hadQ := hsymm a (by rw [hS]; simp) d (by rw [hS]; simp)
+  have haeQ := hsymm a (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hbcQ := hsymm b (by rw [hS]; simp) c (by rw [hS]; simp)
+  have hbdQ := hsymm b (by rw [hS]; simp) d (by rw [hS]; simp)
+  have hbeQ := hsymm b (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hcdQ := hsymm c (by rw [hS]; simp) d (by rw [hS]; simp)
+  have hceQ := hsymm c (by rw [hS]; simp) e (by rw [hS]; simp)
+  have hdeQ := hsymm d (by rw [hS]; simp) e (by rw [hS]; simp)
+  rw [hS] at ha hb hc hd he hext hdiag
+  simp [hab, hac, had, hae, hbc, hbd, hbe, hcd, hce, hde]
+    at ha hb hc hd he hext hdiag
+  omega
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
