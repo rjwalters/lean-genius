@@ -32,6 +32,22 @@ noncomputable def oneHighReducedDefectMatrix
   (6 : ℚ) • 1 - ((secondOrderDefectGraph G).adjMatrix ℚ).submatrix
     Subtype.val Subtype.val
 
+def oneHighSplitEquiv {V : Type*} [DecidableEq V] (v : V) :
+    V ≃ Unit ⊕ oneHighReducedVertex v where
+  toFun x := if h : x = v then Sum.inl () else Sum.inr ⟨x, h⟩
+  invFun
+    | Sum.inl _ => v
+    | Sum.inr x => x.1
+  left_inv x := by
+    by_cases h : x = v
+    · simp [h]
+    · simp [h]
+  right_inv x := by
+    rcases x with u | x
+    · rcases u with ⟨⟩
+      simp
+    · simp [x.2]
+
 theorem sum_oneHighResolventWeight_eq_328
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -211,6 +227,11 @@ theorem oneHighReducedDefectMatrix_mulVec_resolventWeight
       G hfree hmin hcard hv).1
   have hvDempty : D.neighborFinset v = ∅ := by
     rw [← Finset.card_eq_zero, D.card_neighborFinset_eq_degree, hvDzero]
+  have hvDnot : ∀ x : V, ¬ D.Adj v x := by
+    intro x hvx
+    have hxmem : x ∈ D.neighborFinset v := (D.mem_neighborFinset v x).mpr hvx
+    rw [hvDempty] at hxmem
+    exact Finset.notMem_empty x hxmem
   have hsub :
       ((D.adjMatrix ℚ).submatrix Subtype.val Subtype.val).mulVec
       (oneHighResolventWeight G v) z =
@@ -254,6 +275,81 @@ theorem oneHighReducedDefectMatrix_mulVec_resolventWeight
   rw [hsum]
   by_cases hvz : G.Adj v z.1 <;>
     simp [oneHighResolventWeight, hvz] <;> norm_num
+
+theorem oneHighSquareCandidate_reindex_eq_fromBlocks
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ((Int.castRingHom ℚ).mapMatrix (orderFortyNineSquareCandidate G)).submatrix
+      (oneHighSplitEquiv v).symm (oneHighSplitEquiv v).symm =
+      Matrix.fromBlocks
+        (fun _ : Unit => fun _ : Unit => (8 : ℚ))
+        (fun _ : Unit => fun _ : oneHighReducedVertex v => (1 : ℚ))
+        (fun _ : oneHighReducedVertex v => fun _ : Unit => (1 : ℚ))
+        (oneHighReducedDefectMatrix G v +
+          Matrix.vecMulVec (fun _ : oneHighReducedVertex v => (1 : ℚ))
+            (fun _ : oneHighReducedVertex v => (1 : ℚ))) := by
+  classical
+  let D := secondOrderDefectGraph G
+  have hvDzero : D.degree v = 0 :=
+    (orderFortyNine_degreeEight_defectDegree_and_neighborExcess_zero
+      G hfree hmin hcard hv).1
+  have hvDempty : D.neighborFinset v = ∅ := by
+    rw [← Finset.card_eq_zero, D.card_neighborFinset_eq_degree, hvDzero]
+  have hvDnot_block : ∀ x : V, ¬ D.Adj v x := by
+    intro x hvx
+    have hxmem : x ∈ D.neighborFinset v := (D.mem_neighborFinset v x).mpr hvx
+    rw [hvDempty] at hxmem
+    exact Finset.notMem_empty x hxmem
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hHigh
+  have hvu : v = u := by simpa [hu] using hvHigh
+  have hnotHigh : ∀ z : oneHighReducedVertex v,
+      z.1 ∉ orderFortyNineHighVertices G := by
+    intro z hz
+    have hzu : z.1 = u := by simpa [hu] using hz
+    exact z.2 (hzu.trans hvu.symm)
+  ext i j
+  rcases i with i | i <;> rcases j with j | j
+  · rcases i with ⟨⟩
+    rcases j with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, hvHigh]
+  · rcases i with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, j.2, Ne.symm j.2, hvDnot_block]
+  · rcases j with ⟨⟩
+    simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      orderFortyNineHighDiagonal, FriendshipTheoremOQ01.onesMatrix,
+      SimpleGraph.adjMatrix_apply, D, Matrix.map_apply, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, i.2, hvDnot_block,
+      (D.adj_comm i.1 v)]
+  · simp [oneHighSplitEquiv, orderFortyNineSquareCandidate,
+      oneHighReducedDefectMatrix, orderFortyNineHighDiagonal,
+      FriendshipTheoremOQ01.onesMatrix, SimpleGraph.adjMatrix_apply,
+      D, Matrix.map_apply, Matrix.vecMulVec, Matrix.smul_apply,
+      Matrix.one_apply, Matrix.diagonal_apply, Pi.smul_apply, smul_eq_mul,
+      Matrix.ofNat_apply, hnotHigh]
+    by_cases hij : i = j
+    · subst j
+      simp [hnotHigh]
+    · have hijv : i.1 ≠ j.1 := fun h => hij (Subtype.ext h)
+      simp [hij, hijv]
+      ring
 
 end
 
