@@ -4878,6 +4878,37 @@ theorem degreeSix_orderSix_after_three_cover_diagonal_le_two
   nlinarith
 
 set_option maxHeartbeats 2000000 in
+/-- The order-six budget equations eliminate the order-four, order-nine,
+and order-twenty-four contact types and leave seven exact aggregate contact
+patterns. -/
+theorem degreeSix_threeSix_orderSix_budget_contact_counts
+    (x n4 n61 n62 n9 n12 n18 n24 : ℕ)
+    (hx : x ≤ 2)
+    (hrow : 2 * n4 + n61 + 2 * n62 + 3 * n9 + 2 * n12 +
+      3 * n18 + 4 * n24 + x = 5)
+    (hprod : 6 * n4 + n61 + 4 * n62 + 6 * n9 + 2 * n12 +
+      3 * n18 + 4 * n24 + x * x = 7) :
+    n4 = 0 ∧ n9 = 0 ∧ n24 = 0 ∧
+    ((x = 0 ∧ n61 = 0 ∧ n62 = 1 ∧ n12 = 0 ∧ n18 = 1) ∨
+     (x = 0 ∧ n61 = 1 ∧ n62 = 1 ∧ n12 = 1 ∧ n18 = 0) ∨
+     (x = 0 ∧ n61 = 3 ∧ n62 = 1 ∧ n12 = 0 ∧ n18 = 0) ∨
+     (x = 1 ∧ n61 = 0 ∧ n62 = 1 ∧ n12 = 1 ∧ n18 = 0) ∨
+     (x = 1 ∧ n61 = 2 ∧ n62 = 1 ∧ n12 = 0 ∧ n18 = 0) ∨
+     (x = 2 ∧ n61 = 0 ∧ n62 = 0 ∧ n12 = 0 ∧ n18 = 1) ∨
+     (x = 2 ∧ n61 = 1 ∧ n62 = 0 ∧ n12 = 1 ∧ n18 = 0) ∨
+     (x = 2 ∧ n61 = 3 ∧ n62 = 0 ∧ n12 = 0 ∧ n18 = 0)) := by
+  have hn4 : n4 ≤ 1 := by omega
+  have hn61 : n61 ≤ 5 := by omega
+  have hn62 : n62 ≤ 2 := by omega
+  have hn9 : n9 ≤ 1 := by omega
+  have hn12 : n12 ≤ 2 := by omega
+  have hn18 : n18 ≤ 1 := by omega
+  have hn24 : n24 ≤ 1 := by omega
+  interval_cases x <;> interval_cases n4 <;> interval_cases n61 <;>
+    interval_cases n62 <;> interval_cases n9 <;> interval_cases n12 <;>
+    interval_cases n18 <;> interval_cases n24 <;> omega
+
+set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
 unused component to have order three or six. -/
