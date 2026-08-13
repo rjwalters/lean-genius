@@ -12,6 +12,20 @@ atoms `t(x,w,z)` over the six blocks outside the paired endpoint blocks.
 
 namespace Erdos85
 
+/-- Literal block/offset coordinate used by the Python generator. -/
+def oneHighFamilyVertex (b : Fin 8) (r : Fin 5) : Fin 40 :=
+  finProdFinEquiv (b, r)
+
+@[simp] theorem oneHighFamilyVertex_divNat (b : Fin 8) (r : Fin 5) :
+    Fin.divNat (m := 8) (n := 5) (oneHighFamilyVertex b r) = b := by
+  exact congrArg Prod.fst
+    ((finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).symm_apply_apply (b, r))
+
+@[simp] theorem oneHighFamilyVertex_modNat (b : Fin 8) (r : Fin 5) :
+    Fin.modNat (m := 8) (n := 5) (oneHighFamilyVertex b r) = r := by
+  exact congrArg Prod.snd
+    ((finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).symm_apply_apply (b, r))
+
 /-- The midpoint domain used verbatim by `family_gen.py` for a standard-mate
 pair of blocks. -/
 def oneHighFamilyMidpoints (b : Fin 8) : Finset (Fin 40) :=
@@ -33,6 +47,37 @@ def oneHighFamilyCAtom (R : SimpleGraph (Fin 40))
 def oneHighFamilyCAtoms (R : SimpleGraph (Fin 40))
     [DecidableRel R.Adj] (b : Fin 8) : Finset (Fin 40 × Fin 40) :=
   oneHighEncodedCommonPairBlock R b (oneHighStandardMate b)
+
+/-- Semantic value assigned to `missvar(w,b)`: all five edge variables from
+`w` into block `b` are false. -/
+def oneHighFamilyMissesBlock (R : SimpleGraph (Fin 40))
+    (w : Fin 40) (b : Fin 8) : Prop :=
+  ∀ r : Fin 5, ¬ R.Adj w (oneHighFamilyVertex b r)
+
+/-- The three lexicographic symmetry-breaking clause families emitted for
+each canonical matching block.  Writing them as forbidden inversions makes
+the correspondence with Python's clauses `[-missvar(x,j),-missvar(y,k)]`
+literal. -/
+def OneHighPureFamilyLexConstraints
+    (a : Nat) (R : SimpleGraph (Fin 40)) : Prop :=
+  ∀ c j k : Fin 8,
+    j ≠ c → j ≠ oneHighStandardMate c →
+    k ≠ c → k ≠ oneHighStandardMate c → j.val > k.val →
+    (¬(oneHighFamilyMissesBlock R (oneHighFamilyVertex c 0) j ∧
+        oneHighFamilyMissesBlock R (oneHighFamilyVertex c 1) k)) ∧
+    (oneHighFamilyInternalEdges a c = 2 →
+      (¬(oneHighFamilyMissesBlock R (oneHighFamilyVertex c 2) j ∧
+          oneHighFamilyMissesBlock R (oneHighFamilyVertex c 3) k)) ∧
+      ¬(oneHighFamilyMissesBlock R (oneHighFamilyVertex c 0) j ∧
+          oneHighFamilyMissesBlock R (oneHighFamilyVertex c 2) k))
+
+/-- Complete semantic payload of the actual PURE CNF, including the lex WLOG
+clauses that are deliberately absent from the label-invariant base relation
+predicate. -/
+structure OneHighPureFamilyCnfConstraints
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] : Prop where
+  relation : OneHighPureFamilyRelationConstraints a R
+  lex : OneHighPureFamilyLexConstraints a R
 
 theorem oneHighFamily_endpoint_ne
     (b : Fin 8) (x z : Fin 40)
