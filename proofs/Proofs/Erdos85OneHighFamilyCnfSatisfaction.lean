@@ -3000,4 +3000,156 @@ theorem oneHighFamilyMidpointTseitinStepVal_semanticSound
       (hs₅.ids.id_bounds _ (by exact he₃)).2
       (hs₅.ids.id_bounds _ (by exact hr₃.1)).2
 
+structure OneHighFamilyCollectedMidpointsMatch
+    (x z : Nat) (ws : List Nat)
+    (input : Array Int × OneHighFamilyValState) where
+  ids : List Nat
+  vars_eq : input.1.toList = List.map (fun id : Nat => (id : Int)) ids
+  aligned : List.Forall₂ (fun w id =>
+    ((.midpoint (min x z) w (max x z)), id) ∈ input.2.1.ids) ws ids
+
+def oneHighFamilyCollectedMidpointsMatch_empty
+    (x z : Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedMidpointsMatch x z [] (#[], acc) where
+  ids := []
+  vars_eq := rfl
+  aligned := .nil
+
+noncomputable def oneHighFamilyCollectedMidpointsMatch_push
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x z w : Nat} {ws : List Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedMidpointsMatch x z ws input) :
+    OneHighFamilyCollectedMidpointsMatch x z (ws ++ [w])
+      (oneHighFamilyMidpointTseitinStepVal R x z w input) := by
+  rcases input with ⟨ts, acc⟩
+  let ta : OneHighFamilyAtom := .midpoint (min x z) w (max x z)
+  simp only [oneHighFamilyMidpointTseitinStepVal,
+    oneHighFamilyEdgeIdVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R ta acc = out₁
+  rcases out₁ with ⟨t, acc₁⟩
+  generalize h₂ : oneHighFamilyAtomIdVal R
+    (.edge (min x w) (max x w)) acc₁ = out₂
+  rcases out₂ with ⟨exw, acc₂⟩
+  generalize h₃ : oneHighFamilyAtomIdVal R
+    (.edge (min w z) (max w z)) acc₂ = out₃
+  rcases out₃ with ⟨ewz, acc₃⟩
+  have hr₁ := oneHighFamilyAtomIdVal_result R ta acc.1 acc.2
+  rw [h₁] at hr₁
+  dsimp at hr₁
+  have ht₂ := oneHighFamilyAtomIdVal_old_mem R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hr₁.1
+  rw [h₂] at ht₂
+  have ht₃ := oneHighFamilyAtomIdVal_old_mem R
+    (.edge (min w z) (max w z)) acc₂.1 acc₂.2 ht₂
+  rw [h₃] at ht₃
+  simp only [h₁, h₂, h₃]
+  refine ⟨h.ids ++ [t], ?_, ?_⟩
+  · rw [Array.toList_push, h.vars_eq]
+    simp
+  · change List.Forall₂ (fun w' id =>
+        ((.midpoint (min x z) w' (max x z)), id) ∈ acc₃.1.ids)
+        (ws ++ [w]) (h.ids ++ [t])
+    have hold : List.Forall₂ (fun w' id =>
+        ((.midpoint (min x z) w' (max x z)), id) ∈ acc₃.1.ids)
+        ws h.ids := by
+      apply h.aligned.imp
+      intro w' id hm
+      have hm₁ := oneHighFamilyAtomIdVal_old_mem R ta acc.1 acc.2 hm
+      rw [h₁] at hm₁
+      have hm₂ := oneHighFamilyAtomIdVal_old_mem R
+        (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hm₁
+      rw [h₂] at hm₂
+      have hm₃ := oneHighFamilyAtomIdVal_old_mem R
+        (.edge (min w z) (max w z)) acc₂.1 acc₂.2 hm₂
+      rw [h₃] at hm₃
+      exact hm₃
+    apply listForall₂_append_singleton hold
+    exact ht₃
+
+noncomputable def oneHighFamilyCollectMidpointsVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (ws : List Nat) (acc : OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  ws.foldl (fun input w =>
+    oneHighFamilyMidpointTseitinStepVal R x z w input) (#[], acc)
+
+noncomputable def oneHighFamilyCollectMidpointsVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (ws : List Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedMidpointsMatch x z ws
+      (oneHighFamilyCollectMidpointsVal R x z ws acc) := by
+  suffices ∀ pre : List Nat,
+      OneHighFamilyCollectedMidpointsMatch x z pre
+        (pre.foldl (fun input w =>
+          oneHighFamilyMidpointTseitinStepVal R x z w input) (#[], acc)) by
+    exact this ws
+  intro pre
+  induction pre using List.reverseRecOn with
+  | nil => exact oneHighFamilyCollectedMidpointsMatch_empty x z acc
+  | append_singleton pre w ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil]
+      exact oneHighFamilyCollectedMidpointsMatch_push R ih
+
+theorem oneHighFamilyCollectMidpointsVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x z : Nat} (hx : x < 40) (hz : z < 40) (hxz : x < z)
+    (ws : List Nat) (hws : ∀ w ∈ ws, w < 40)
+    {ts : Array Int} {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (ws.foldl (fun input w =>
+        oneHighFamilyMidpointTseitinStepVal R x z w input) (ts, acc)).2 := by
+  induction ws generalizing ts acc with
+  | nil => exact hacc
+  | cons w ws ih =>
+      simp only [oneHighFamilyCollectMidpointsVal, List.foldl_cons]
+      apply ih
+      · intro w' hw'
+        exact hws w' (by simp [hw'])
+      · exact oneHighFamilyMidpointTseitinStepVal_semanticSound R
+          hx hz (hws w (by simp)) hxz (ts := ts) hacc
+
+theorem oneHighFamilyAtomValue_midpoint
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x z w : Nat} (hx : x < 40) (hz : z < 40) (hw : w < 40)
+    (hxz : x < z) :
+    oneHighFamilyAtomValue R (.midpoint (min x z) w (max x z)) =
+      @decide (oneHighFamilyTAtom R
+        (⟨x, hx⟩ : Fin 40) ⟨w, hw⟩ ⟨z, hz⟩)
+        (Classical.propDecidable _) := by
+  classical
+  simp [oneHighFamilyAtomValue, oneHighFamilyTAtom, hx, hz, hw,
+    min_eq_left (Nat.le_of_lt hxz), max_eq_right (Nat.le_of_lt hxz)]
+
+theorem oneHighFamilyCollectedMidpoints_exists_true_iff
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x z : Nat} {ws : List Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedMidpointsMatch x z ws input)
+    (hs : OneHighFamilySemanticSound R input.2) :
+    (∃ id ∈ h.ids, input.2.2 id = true) ↔
+      ∃ w ∈ ws,
+        oneHighFamilyAtomValue R
+          (.midpoint (min x z) w (max x z)) = true := by
+  constructor
+  · rintro ⟨id, hid, hval⟩
+    rcases listForall₂_exists_left_of_mem h.aligned hid with
+      ⟨w, hwmem, hatom⟩
+    refine ⟨w, hwmem, ?_⟩
+    exact (hs.named _ id hatom).symm.trans hval
+  · rintro ⟨w, hwmem, hval⟩
+    rcases listForall₂_exists_right_of_mem h.aligned hwmem with
+      ⟨id, hid, hatom⟩
+    refine ⟨id, hid, ?_⟩
+    exact (hs.named _ id hatom).trans hval
+
+theorem oneHighFamilyPairedMidpoints_mem
+    {bi bj w : Nat} (hw : w ∈ oneHighFamilyPairedMidpoints bi bj) :
+    w < 40 ∧ w / 5 ≠ bi ∧ w / 5 ≠ bj := by
+  have hf := List.mem_filter.mp hw
+  refine ⟨List.mem_range.mp hf.1, ?_⟩
+  exact of_decide_eq_true hf.2
+
 end Erdos85
