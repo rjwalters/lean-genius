@@ -3743,10 +3743,23 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     (hU : (((((Finset.univ.erase c).erase e).erase d).erase x).erase y :
       Finset (secondOrderDefectGraph G).ConnectedComponent) = {f, g}) : False := by
   let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q c c = 2 at hcc
+  change Q c e = 1 at hce
+  change Q e c = 2 at hecQ
+  change Q e e = 0 at hee
+  change Q c d = 1 at hcd
+  change Q c x = 1 at hcx
+  change Q c y = 1 at hcy
   let U : Finset (secondOrderDefectGraph G).ConnectedComponent :=
     ((((Finset.univ.erase c).erase e).erase d).erase x).erase y
-  have hfU : f ∈ U := by rw [hU]; simp
-  have hgU : g ∈ U := by rw [hU]; simp
+  have hfU : f ∈ U := by
+    change f ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
+  have hgU : g ∈ U := by
+    change g ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y)
+    rw [hU]
+    simp
   have hfe : f ≠ e := (Finset.mem_erase.mp
     (Finset.mem_erase.mp (Finset.mem_erase.mp (Finset.mem_erase.mp hfU).2).2).2).1
   have hfc : f ≠ c := (Finset.mem_erase.mp
@@ -3776,7 +3789,10 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     have hX := Finset.sum_erase_add (((Finset.univ.erase c).erase e).erase d) F hxIn
     have hY := Finset.sum_erase_add
       ((((Finset.univ.erase c).erase e).erase d).erase x) F hyIn
-    have hlast : (∑ t ∈ U, F t) = F f + F g := by simp [hU, hfg]
+    have hlast : (∑ t ∈ U, F t) = F f + F g := by
+      change (∑ t ∈ (((((Finset.univ.erase c).erase e).erase d).erase x).erase y), F t) = F f + F g
+      rw [hU]
+      simp [hfg]
     dsimp [U] at hlast
     omega
   have hrow (z : _) : (∑ t, Q z t) = 6 :=
@@ -3829,12 +3845,14 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     by_cases hz : Q e f = 0
     · omega
     · have hs := (heprofile f (Nat.pos_of_ne_zero hz)).2
+      change f.supp.ncard = 3 * Q e f at hs
       rw [hf3] at hs
       omega
   have hegLe : Q e g ≤ 1 := by
     by_cases hz : Q e g = 0
     · omega
     · have hs := (heprofile g (Nat.pos_of_ne_zero hz)).2
+      change g.supp.ncard = 3 * Q e g at hs
       rw [hg3] at hs
       omega
   have hef : Q e f = 1 := by
@@ -3868,7 +3886,7 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
   have hcontactF : Q d f + Q x f + Q y f = 2 := by
     have hs := hsq c f hfc.symm
     rw [expand (fun t ↦ Q c t * Q t f), hcc, hce, hcd, hcx, hcy,
-      hcf, hcg, hfcQ, hef, hf3] at hs
+      hcf, hcg, hef, hf3] at hs
     omega
   have hfrow : Q f f + Q f g = 1 := by
     have hfRow := hrow f
@@ -3889,21 +3907,21 @@ theorem false_of_degreeSix_orderSix_three_single_contacts_two_unused_three_branc
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD d e f hd6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q d e f g hd.1 hff hgfSymm hfrow (by omega) hgroup
+      Q d e f g hd.1 hff hgfSymm.symm hfrow (by omega) hgroup
   · have hsqEF := hsq e f hfe.symm
     rw [expand (fun t ↦ Q e t * Q t f), hecQ, hee, hed, hex, hey,
       hef, heg, hcf, hx.1, hx.2.1, hx.2.2, hf3] at hsqEF
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD x e f hx6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q x e f g hx.2.1 hff hgfSymm hfrow (by omega) hgroup
+      Q x e f g hx.2.1 hff hgfSymm.symm hfrow (by omega) hgroup
   · have hsqEF := hsq e f hfe.symm
     rw [expand (fun t ↦ Q e t * Q t f), hecQ, hee, hed, hex, hey,
       hef, heg, hcf, hy.1, hy.2.1, hy.2.2, hf3] at hsqEF
     have hgroup := degreeSix_orderSix_two_orderThree_targets_le_one
       G hfree hmin hcard u hu huRange huD y e f hy6 he3 hf3 hfe.symm
     exact false_of_degreeSix_orderSix_three_single_contacts_two_unused_three
-      Q y e f g hy.2.2 hff hgfSymm hfrow (by omega) hgroup
+      Q y e f g hy.2.2 hff hgfSymm.symm hfrow (by omega) hgroup
 
 /-- The residual single quotient-three contact branch is impossible. -/
 theorem false_of_degreeSix_orderSix_three_contact_branch
