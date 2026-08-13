@@ -5018,6 +5018,85 @@ theorem degreeSix_threeSix_unused_half_orderSix_contact_mass
   have hU : (∑ t ∈ U, Q b t) = 2 := by omega
   simpa [U] using hU
 
+/-- Abstract named-component form of the unused-half quotient-mass-two
+classification. -/
+theorem degreeSix_threeSix_unused_half_shape
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q : C → ℕ)
+    (hsum : (∑ t ∈ S, q t) = 2)
+    (htype : ∀ t ∈ S, q t = 0 ∨
+      (size t = 6 ∧ q t = 1) ∨
+      (size t = 6 ∧ q t = 2) ∨
+      (size t = 12 ∧ q t = 2)) :
+    (∃ u, S.filter (fun t ↦ q t ≠ 0) = {u} ∧
+      ((size u = 6 ∧ q u = 2) ∨ (size u = 12 ∧ q u = 2))) ∨
+    (∃ u v, u ≠ v ∧ S.filter (fun t ↦ q t ≠ 0) = {u, v} ∧
+      size u = 6 ∧ q u = 1 ∧ size v = 6 ∧ q v = 1) := by
+  let P := S.filter fun t ↦ q t ≠ 0
+  have hqle : ∀ t ∈ S, q t ≤ 2 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hsumP : (∑ t ∈ P, q t) = 2 := by
+    dsimp [P]
+    rw [Finset.sum_filter]
+    calc
+      _ = ∑ t ∈ S, q t := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        by_cases hq : q t = 0 <;> simp [hq]
+      _ = 2 := hsum
+  have hposP : ∀ t ∈ P, 0 < q t := by
+    intro t ht
+    exact Nat.pos_of_ne_zero (Finset.mem_filter.mp ht).2
+  have hcard : P.card = 1 ∨ P.card = 2 := by
+    have hle : P.card ≤ 2 := by
+      have hone : P.card ≤ ∑ t ∈ P, q t := by
+        calc
+          P.card = ∑ _t ∈ P, 1 := by simp
+          _ ≤ ∑ t ∈ P, q t :=
+            Finset.sum_le_sum fun t ht ↦ hposP t ht
+      omega
+    have hne : P.card ≠ 0 := by
+      intro hz
+      have hempty := Finset.card_eq_zero.mp hz
+      rw [hempty] at hsumP
+      simp at hsumP
+    omega
+  rcases hcard with h1 | h2
+  · obtain ⟨u, hu⟩ := Finset.card_eq_one.mp h1
+    have huP : u ∈ P := by rw [hu]; simp
+    have huS := (Finset.mem_filter.mp huP).1
+    have hqu : q u = 2 := by
+      rw [hu] at hsumP
+      simpa using hsumP
+    have htu := htype u huS
+    refine Or.inl ⟨u, hu, ?_⟩
+    rcases htu with h0 | h61 | h62 | h122 <;> simp_all
+  · obtain ⟨u, v, huv, huvP⟩ := Finset.card_eq_two.mp h2
+    have huP : u ∈ P := by rw [huvP]; simp
+    have hvP : v ∈ P := by rw [huvP]; simp
+    have huS := (Finset.mem_filter.mp huP).1
+    have hvS := (Finset.mem_filter.mp hvP).1
+    have hquPos := hposP u huP
+    have hqvPos := hposP v hvP
+    have hqu : q u = 1 := by
+      rw [huvP] at hsumP
+      simp [huv] at hsumP
+      omega
+    have hqv : q v = 1 := by
+      rw [huvP] at hsumP
+      simp [huv] at hsumP
+      omega
+    have htu := htype u huS
+    have htv := htype v hvS
+    have hsu : size u = 6 := by
+      rcases htu with h0 | h61 | h62 | h122 <;> simp_all
+    have hsv : size v = 6 := by
+      rcases htv with h0 | h61 | h62 | h122 <;> simp_all
+    exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
+
 set_option maxHeartbeats 2000000 in
 /-- The row, square, balance, and unused-mass equations in the one-order-six
 branch force quotient two toward the order-twelve component and force every
