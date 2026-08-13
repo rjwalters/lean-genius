@@ -117,6 +117,29 @@ def seqCounterEqualsCore
   let upper := seqCounterAtMostCore lower.top vars t
   { upper with clauses := lower.clauses ++ upper.clauses }
 
+/-- Full PySAT sequential-counter at-most wrapper, including the boundary
+cases handled outside `seqcounter_encode_atmostN` itself. -/
+def seqCounterAtMost
+    (top : Nat) (vars : Array Int) (t : Nat) : SeqCounterGenState :=
+  if t = 0 then
+    { top := top, clauses := vars.map fun v => [-v] }
+  else if t + 1 = vars.size then
+    { top := top, clauses := #[vars.toList.map fun v => -v] }
+  else
+    seqCounterAtMostCore top vars t
+
+/-- Full PySAT at-least wrapper via complemented at-most. -/
+def seqCounterAtLeast
+    (top : Nat) (vars : Array Int) (t : Nat) : SeqCounterGenState :=
+  seqCounterAtMost top (vars.map fun v => -v) (vars.size - t)
+
+/-- Full `CardEnc.equals(..., EncType.seqcounter)` wrapper. -/
+def seqCounterEquals
+    (top : Nat) (vars : Array Int) (t : Nat) : SeqCounterGenState :=
+  let lower := seqCounterAtLeast top vars t
+  let upper := seqCounterAtMost lower.top vars t
+  { upper with clauses := lower.clauses ++ upper.clauses }
+
 /-- Reference output from PySAT for `atmost([1,2,3,4,5], 2)` with
 auxiliaries beginning at 6.  This kernel-reduced test pins down both clause
 order and first-encounter auxiliary allocation. -/
@@ -139,6 +162,16 @@ theorem seqCounterEqualsCore_reference_five_two :
        [-1, 12], [-12, 13], [-2, -12, 14], [-14, 15], [-3, -14],
        [-2, 13], [-13, 16], [-3, -13, 15], [-15, 17], [-4, -15],
        [-3, 16], [-4, -16, 17], [-5, -17]] := by
+  native_decide
+
+/-- PySAT boundary reference: equality to `n-1` ends with the single
+all-negative upper clause. -/
+theorem seqCounterEquals_reference_five_four :
+    let out := seqCounterEquals 5 #[1, 2, 3, 4, 5] 4
+    out.top = 9 ∧ out.clauses.toList =
+      [[1, 6], [-6, 7], [2, -6], [2, 7], [-7, 8], [3, -7],
+       [3, 8], [-8, 9], [4, -8], [4, 9], [5, -9],
+       [-1, -2, -3, -4, -5]] := by
   native_decide
 
 def seqCounterReferenceVars48 : Array Int :=

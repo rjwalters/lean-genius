@@ -170,7 +170,7 @@ def oneHighFamilyFarDegreeBound (a y : Nat) : Nat :=
 Counter auxiliaries advance the global top but do not enter `IDPool.obj2id`. -/
 def oneHighFamilyEqualsBlock (vars : Array Int) (bound : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
-  let out := seqCounterEqualsCore st.top vars bound
+  let out := seqCounterEquals st.top vars bound
   { st with top := out.top, clauses := st.clauses ++ out.clauses }
 
 def oneHighFamilyFarDegreeStep (a y : Nat)
@@ -246,6 +246,62 @@ def oneHighFamilyLexBlockStep (a c : Nat)
 def oneHighFamilyLexClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 8) (oneHighFamilyLexBlockStep a)
     (oneHighFamilyMissDefinitionClauses a)
+
+def oneHighFamilyMidpointAtomId (x w z : Nat) :
+    StateM OneHighFamilyGenState Nat :=
+  oneHighFamilyAtomId (.midpoint (min x z) w (max x z))
+
+def oneHighFamilyCommonAtomId (x z : Nat) :
+    StateM OneHighFamilyGenState Nat :=
+  oneHighFamilyAtomId (.common (min x z) (max x z))
+
+def oneHighFamilyPairedMidpoints (bi bj : Nat) : List Nat :=
+  (List.range 40).filter fun w => w / 5 ≠ bi ∧ w / 5 ≠ bj
+
+def oneHighFamilyMidpointTseitinStep (x z w : Nat)
+    (accst : Array Int × OneHighFamilyGenState) :
+    Array Int × OneHighFamilyGenState :=
+  let (ts, st) := accst
+  let (t, st) := oneHighFamilyMidpointAtomId x w z st
+  let (exw, st) := oneHighFamilyEdgeId x w st
+  let (ewz, st) := oneHighFamilyEdgeId w z st
+  let st := (oneHighFamilyEmit [-(t : Int), (exw : Int)] st).2
+  let st := (oneHighFamilyEmit [-(t : Int), (ewz : Int)] st).2
+  let st := (oneHighFamilyEmit
+    [(t : Int), -(exw : Int), -(ewz : Int)] st).2
+  (ts.push (t : Int), st)
+
+def oneHighFamilyCommonTseitinStep (bi bj x z : Nat)
+    (accst : Array Int × OneHighFamilyGenState) :
+    Array Int × OneHighFamilyGenState :=
+  let (cs, st) := accst
+  let (ts, st) := (oneHighFamilyPairedMidpoints bi bj).foldl
+    (fun accst w => oneHighFamilyMidpointTseitinStep x z w accst) (#[], st)
+  let (c, st) := oneHighFamilyCommonAtomId x z st
+  let st := (oneHighFamilyEmit (-(c : Int) :: ts.toList) st).2
+  let st := ts.foldl
+    (fun st t => (oneHighFamilyEmit [-t, (c : Int)] st).2) st
+  (cs.push (c : Int), st)
+
+def oneHighFamilyInternalEdgesNat (a b : Nat) : Nat :=
+  if b % 2 = 0 ∧ b / 2 < a then 1 else 2
+
+def oneHighFamilyPairedProductBlockStep (a pair : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let bi := 2 * pair
+  let bj := bi + 1
+  let (cs, st) := (oneHighFamilyBlockVertices bi).foldl (fun accst x =>
+    (oneHighFamilyBlockVertices bj).foldl
+      (fun accst z => oneHighFamilyCommonTseitinStep bi bj x z accst) accst)
+    (#[], st)
+  let bound := 30 - 2 * oneHighFamilyInternalEdgesNat a bi -
+    2 * oneHighFamilyInternalEdgesNat a bj
+  oneHighFamilyEqualsBlock cs bound st
+
+/-- Complete PURE family generator. -/
+def oneHighFamilyPureClauses (a : Nat) : OneHighFamilyGenState :=
+  oneHighFamilyRunList (List.range 4)
+    (oneHighFamilyPairedProductBlockStep a) (oneHighFamilyLexClauses a)
 
 theorem oneHighFamilyInternalUnits_reference :
     ∀ a ∈ [0, 1, 2, 3, 4],

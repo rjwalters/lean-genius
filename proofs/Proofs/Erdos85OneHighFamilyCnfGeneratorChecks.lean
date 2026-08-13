@@ -34,4 +34,11 @@ theorem oneHighFamilyLexClauses_AAAA_reference :
     out.top = 11532 ∧ out.ids.length = 924 ∧ out.clauses.size = 520280 := by
   native_decide
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
+theorem oneHighFamilyPureClauses_AAAA_reference :
+    let out := oneHighFamilyPureClauses 4
+    out.top = 14728 ∧ out.ids.length = 4024 ∧ out.clauses.size = 532668 := by
+  native_decide
+
 end Erdos85
