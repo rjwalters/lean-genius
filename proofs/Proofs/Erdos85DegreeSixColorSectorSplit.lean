@@ -6202,6 +6202,98 @@ theorem degreeSix_threeSix_unused_half_shape
       rcases htv with h0 | h61 | h62 | h122 <;> simp_all
     exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
 
+/-- Before using the full order-six budget to remove order four, balance
+and unused mass two give a slightly broader support classification. -/
+theorem degreeSix_threeSix_unused_half_shape_with_four
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ)
+    (hsize : (∑ t ∈ S, size t) = 12)
+    (hmin : ∀ t ∈ S, 3 ≤ size t)
+    (hbal : ∀ t ∈ S, 6 * q t = size t * r t)
+    (hsum : (∑ t ∈ S, q t) = 2)
+    (hzero3 : ∀ t ∈ S, size t = 3 → q t = 0) :
+    (∃ u, S.filter (fun t ↦ q t ≠ 0) = {u} ∧ q u = 2 ∧
+      (size u = 4 ∨ size u = 6 ∨ size u = 12)) ∨
+    (∃ u v, u ≠ v ∧ S.filter (fun t ↦ q t ≠ 0) = {u, v} ∧
+      size u = 6 ∧ q u = 1 ∧ size v = 6 ∧ q v = 1) := by
+  have htype : ∀ t ∈ S, q t = 0 ∨
+      (size t = 4 ∧ q t = 2) ∨
+      (size t = 6 ∧ q t = 1) ∨
+      (size t = 6 ∧ q t = 2) ∨
+      (size t = 12 ∧ q t = 2) := by
+    intro t ht
+    have hqle : q t ≤ 2 := by
+      have hsingle : q t ≤ ∑ z ∈ S, q z :=
+        Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+      omega
+    have hsle : size t ≤ 12 := by
+      have hsingle : size t ≤ ∑ z ∈ S, size z :=
+        Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) ht
+      omega
+    have hs3 := hmin t ht
+    have hb := hbal t ht
+    have hrle : r t ≤ 4 := by
+      nlinarith
+    have hz3 := hzero3 t ht
+    interval_cases size t <;> interval_cases q t <;> interval_cases r t <;> omega
+  let P := S.filter fun t ↦ q t ≠ 0
+  have hsumP : (∑ t ∈ P, q t) = 2 := by
+    dsimp [P]
+    rw [Finset.sum_filter]
+    calc
+      _ = ∑ t ∈ S, q t := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        by_cases hq : q t = 0 <;> simp [hq]
+      _ = 2 := hsum
+  have hposP : ∀ t ∈ P, 0 < q t := by
+    intro t ht
+    exact Nat.pos_of_ne_zero (Finset.mem_filter.mp ht).2
+  have hcard : P.card = 1 ∨ P.card = 2 := by
+    have hle : P.card ≤ 2 := by
+      have hone : P.card ≤ ∑ t ∈ P, q t := by
+        calc
+          P.card = ∑ _t ∈ P, 1 := by simp
+          _ ≤ ∑ t ∈ P, q t := Finset.sum_le_sum fun t ht ↦ hposP t ht
+      omega
+    have hne : P.card ≠ 0 := by
+      intro hz
+      rw [Finset.card_eq_zero.mp hz] at hsumP
+      simp at hsumP
+    omega
+  rcases hcard with h1 | h2
+  · obtain ⟨u, hu⟩ := Finset.card_eq_one.mp h1
+    have huP : u ∈ P := by rw [hu]; simp
+    have huS := (Finset.mem_filter.mp huP).1
+    have hqu : q u = 2 := by rw [hu] at hsumP; simpa using hsumP
+    have htu := htype u huS
+    refine Or.inl ⟨u, hu, hqu, ?_⟩
+    rcases htu with h0 | h4 | h61 | h62 | h12 <;> simp_all
+  · obtain ⟨u, v, huv, huvP⟩ := Finset.card_eq_two.mp h2
+    have huP : u ∈ P := by rw [huvP]; simp
+    have hvP : v ∈ P := by rw [huvP]; simp
+    have huS := (Finset.mem_filter.mp huP).1
+    have hvS := (Finset.mem_filter.mp hvP).1
+    have hqu : q u = 1 := by
+      rw [huvP] at hsumP
+      simp [huv] at hsumP
+      have := hposP u huP
+      have := hposP v hvP
+      omega
+    have hqv : q v = 1 := by
+      rw [huvP] at hsumP
+      simp [huv] at hsumP
+      have := hposP u huP
+      have := hposP v hvP
+      omega
+    have htu := htype u huS
+    have htv := htype v hvS
+    have hsu : size u = 6 := by
+      rcases htu with h0 | h4 | h61 | h62 | h12 <;> simp_all
+    have hsv : size v = 6 := by
+      rcases htv with h0 | h4 | h61 | h62 | h12 <;> simp_all
+    exact Or.inr ⟨u, v, huv, huvP, hsu, hqu, hsv, hqv⟩
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
