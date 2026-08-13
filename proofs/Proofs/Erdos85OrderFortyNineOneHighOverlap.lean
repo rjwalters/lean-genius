@@ -779,6 +779,111 @@ theorem exists_orderFortyNine_mate_pairedDefect_add_overlapDiags_eq_five
     G hfree (mate s) (mate s) (G.loopless.irrefl (mate s).1)] at hmPartition
   omega
 
+/-- In a one-regular local neighborhood, adjacency identifies the chosen
+mate. -/
+theorem eq_mate_of_local_centerAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1) :
+    t = mate s := by
+  have hcard := hlocal s
+  rw [← (G.induce (G.neighborSet v)).card_neighborFinset_eq_degree,
+    Finset.card_eq_one] at hcard
+  obtain ⟨x, hx⟩ := hcard
+  have htMem : t ∈ (G.induce (G.neighborSet v)).neighborFinset s :=
+    ((G.induce (G.neighborSet v)).mem_neighborFinset s t).2 hst
+  have hmMem : mate s ∈ (G.induce (G.neighborSet v)).neighborFinset s :=
+    ((G.induce (G.neighborSet v)).mem_neighborFinset s (mate s)).2
+      (hmateAdj s)
+  have htx : t = x := by simpa [hx] using htMem
+  have hmx : mate s = x := by simpa [hx] using hmMem
+  exact htx.trans hmx.symm
+
+/-- Full exact outer-defect compatibility in overlap coordinates. -/
+theorem exists_orderFortyNine_mate_exact_outerDefect_overlap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        ((orderFortyNineOuterDefectBlock G v s (mate s)).card +
+          orderFortyNineOneHighOverlap G v s s +
+          orderFortyNineOneHighOverlap G v (mate s) (mate s) = 5) ∧
+        ∀ u ∈ ((Finset.univ.erase s).erase (mate s)),
+          (orderFortyNineOuterDefectBlock G v s u).card +
+            orderFortyNineOneHighOverlap G v s (mate u) +
+            orderFortyNineOneHighOverlap G v u (mate s) = 5 := by
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  obtain ⟨mate, hmateInv, hmateAdj, hblocks⟩ :=
+    orderFortyNine_exists_mate_exact_outerDefectBlocks
+      G hfree hmin hcard hv hunique
+  have hlocal := orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+    G hfree hmin hcard hv
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  constructor
+  · have hblock := (hblocks s).1
+    have hsPartition := selfMiss_add_matchedCount_eq_five
+      G hfree hmin hcard hv s
+    have hmPartition := selfMiss_add_matchedCount_eq_five
+      G hfree hmin hcard hv (mate s)
+    rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+      G hfree s s (G.loopless.irrefl s.1)] at hsPartition
+    rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+      G hfree (mate s) (mate s) (G.loopless.irrefl (mate s).1)] at hmPartition
+    omega
+  · intro u hu
+    have hus : u ≠ s := (Finset.mem_erase.mp
+      (Finset.mem_erase.mp hu).2).1
+    have hsMateU : ¬ G.Adj s.1 (mate u).1 := by
+      intro hsMu
+      have heq := eq_mate_of_local_centerAdj
+        G mate hmateAdj hlocal s (mate u) hsMu
+      have hsu : s = u := by
+        have := congrArg mate heq
+        rw [hmateInv u, hmateInv s] at this
+        exact this.symm
+      exact hus hsu.symm
+    have huMateS : ¬ G.Adj u.1 (mate s).1 := by
+      intro huMs
+      have heq := eq_mate_of_local_centerAdj
+        G mate hmateAdj hlocal u (mate s) huMs
+      have hus' : u = s := by
+        have := congrArg mate heq
+        rw [hmateInv s, hmateInv u] at this
+        exact this.symm
+      exact hus hus'
+    have hfar := (hblocks s).2 u hu
+    rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+      G hfree s (mate u) hsMateU,
+      ← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+        G hfree u (mate s) huMateS] at hfar
+    exact hfar
+
 end
 
 end Erdos85
