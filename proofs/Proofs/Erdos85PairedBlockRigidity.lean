@@ -2093,6 +2093,44 @@ theorem paired_highBranchMatchedCount_states
   rcases even_highBranchMatchedCount G hfree (mate s) with ⟨b, hb⟩
   omega
 
+/-- Encoder-facing mate-pair profile trichotomy.  In internal-edge counts
+the three alternatives are `(1,2)`, `(2,1)`, and `(2,2)`; expressed in
+matched-vertex counts they are `(2,4)`, `(4,2)`, and `(4,4)`.  These are
+exactly the A/B pair states used by the one-high family CNFs. -/
+theorem paired_highBranchMatchedCount_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (highBranchMatchedCount G v s = 2 ∧
+        highBranchMatchedCount G v (mate s) = 4) ∨
+      (highBranchMatchedCount G v s = 4 ∧
+        highBranchMatchedCount G v (mate s) = 2) ∨
+      (highBranchMatchedCount G v s = 4 ∧
+        highBranchMatchedCount G v (mate s) = 4) := by
+  have hstates := paired_highBranchMatchedCount_states
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s
+  rcases hstates.1 with hs2 | hs4
+  · rcases hstates.2.1 with hm2 | hm4
+    · rcases hstates.2.2 with hs4 | hm4 <;> omega
+    · exact Or.inl ⟨hs2, hm4⟩
+  · rcases hstates.2.1 with hm2 | hm4
+    · exact Or.inr (Or.inl ⟨hs4, hm2⟩)
+    · exact Or.inr (Or.inr ⟨hs4, hm4⟩)
+
 /-- A one-regular induced neighborhood has a canonical-up-to-choice mate
 involution. -/
 theorem exists_localMate_involution

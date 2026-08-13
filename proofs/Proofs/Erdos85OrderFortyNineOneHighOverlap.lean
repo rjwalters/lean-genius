@@ -2629,6 +2629,62 @@ theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
       G hfree hmin hcard hv hunique hexternal houterDegree
         mate hmateInv hmateAdj s hpair
 
+/-- Top-level encoder-alphabet coverage: every mate pair in the one-high
+stratum has profile A in one orientation `(2,4)/(4,2)`, or profile B
+`(4,4)`, in matched-vertex counts. -/
+theorem orderFortyNine_exists_mate_familyPairProfiles_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        (highBranchMatchedCount G v s = 2 ∧
+            highBranchMatchedCount G v (mate s) = 4) ∨
+          (highBranchMatchedCount G v s = 4 ∧
+            highBranchMatchedCount G v (mate s) = 2) ∨
+          (highBranchMatchedCount G v s = 4 ∧
+            highBranchMatchedCount G v (mate s) = 4) := by
+  classical
+  obtain ⟨mate, hmateInv, hmateAdj, _hwitness, _hksum, _hbound⟩ :=
+    orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
+      G hfree hmin hcard hHigh hv
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  exact paired_highBranchMatchedCount_profile
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
