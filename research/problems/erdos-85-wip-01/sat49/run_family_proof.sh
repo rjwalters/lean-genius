@@ -12,6 +12,8 @@ outdir=$3
 name=$4
 glucose_bin=${GLUCOSE_BIN:-glucose}
 drat_trim_bin=${DRAT_TRIM_BIN:-drat-trim}
+max_proof_gb=${MAX_PROOF_GB:-140}
+min_free_gb=${MIN_FREE_GB:-30}
 
 mkdir -p "$outdir"
 actual=$(sha256sum "$cnf" | awk '{print $1}')
@@ -29,10 +31,35 @@ start_epoch=$(date +%s)
 
 set +e
 "$glucose_bin" -verb=1 -certified \
-  -certified-output="$proof" "$cnf" >"$solve_log" 2>&1
+  -certified-output="$proof" "$cnf" >"$solve_log" 2>&1 &
+solver_pid=$!
+resource_limit=""
+while kill -0 "$solver_pid" 2>/dev/null; do
+  proof_bytes=$(stat -c '%s' "$proof" 2>/dev/null || echo 0)
+  free_kb=$(df -Pk "$outdir" | awk 'NR == 2 {print $4}')
+  if (( proof_bytes > max_proof_gb * 1024 * 1024 * 1024 )); then
+    resource_limit="proof>${max_proof_gb}GiB"
+    kill "$solver_pid" 2>/dev/null || true
+    break
+  fi
+  if (( free_kb < min_free_gb * 1024 * 1024 )); then
+    resource_limit="free-disk<${min_free_gb}GiB"
+    kill "$solver_pid" 2>/dev/null || true
+    break
+  fi
+  sleep 5
+done
+wait "$solver_pid"
 solve_rc=$?
 set -e
 solve_seconds=$(( $(date +%s) - start_epoch ))
+
+if [[ -n "$resource_limit" ]]; then
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' \
+    "$name" "RESOURCE_LIMIT" "$resource_limit" "$solve_rc" \
+    "$solve_seconds" "$actual" >"$verdict"
+  exit 6
+fi
 
 if ! grep -q '^s UNSATISFIABLE' "$solve_log"; then
   printf '%s\t%s\t%s\t%s\t%s\n' \
