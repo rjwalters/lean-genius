@@ -215,6 +215,50 @@ theorem false_of_eleven_diag_two
     rw [h] at hsqt hrowt <;> rw [g] at hsqu hrowu <;>
       interval_cases (Q t u) <;> omega
 
+/-- Common terminal for all three feasible order-fifteen partner patterns.
+The forced order-three component already sends quotient five to `w` and
+has zero diagonal.  Every other component has order divisible by five, so
+detailed balance makes any further quotient from the triangle divisible by
+five; its remaining row capacity is only one. -/
+theorem false_of_fifteen_pattern_common
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : Matrix C C ℕ) (size : C → ℕ) (w e : C)
+    (hwe : w ≠ e) (hse : size e = 3)
+    (hQew : Q e w = 5) (hQee : Q e e = 0)
+    (hrowe : (∑ t, Q e t) = 6)
+    (hbal : ∀ t, size e * Q e t = size t * Q t e)
+    (hcover : ∀ t, t = w ∨ t = e ∨ 5 ∣ size t) :
+    False := by
+  have hzero : ∀ t, t ≠ w → t ≠ e → Q e t = 0 := by
+    intro t htw hte
+    have hadd := Finset.add_sum_erase Finset.univ (fun x ↦ Q e x)
+      (Finset.mem_univ w)
+    change Q e w + (∑ x ∈ Finset.univ.erase w, Q e x) =
+      ∑ x, Q e x at hadd
+    rw [hrowe, hQew] at hadd
+    have hterm : Q e t ≤ ∑ x ∈ Finset.univ.erase w, Q e x :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _)
+        (by simp [htw])
+    have h5size : 5 ∣ size t := (hcover t).resolve_left htw |>.resolve_left hte
+    have hb := hbal t
+    rw [hse] at hb
+    have hd : 5 ∣ 3 * Q e t := by
+      rw [hb]
+      exact dvd_mul_of_dvd_left h5size _
+    have h5q : 5 ∣ Q e t :=
+      (by norm_num : Nat.Coprime 5 3).dvd_of_dvd_mul_left hd
+    omega
+  have hsum : (∑ t, Q e t) = Q e w + Q e e := by
+    rw [← Finset.sum_subset (Finset.subset_univ {w, e})]
+    · simp [hwe]
+    · intro t _ ht
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at ht
+      have htw : t ≠ w := ht.1
+      have hte : t ≠ e := ht.2
+      exact hzero t htw hte
+  rw [hsum, hQew, hQee] at hrowe
+  omega
+
 end OddDiagonal
 
 end Erdos85
