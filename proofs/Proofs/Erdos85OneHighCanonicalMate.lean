@@ -688,6 +688,218 @@ theorem oneHighRelabeledLeafGraph_not_adj_two_in_sameBlock
   rw [hempty] at hiMem
   exact Finset.notMem_empty i hiMem
 
+/-- Union of the six branches other than `s` and its mate. -/
+def oneHighFarBranchVertices
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (s : {z : V // z ∈ G.neighborSet v}) : Finset V :=
+  ((Finset.univ.erase s).erase (mate s)).biUnion
+    (secondLayerBranch G v)
+
+/-- Exact far-degree decomposition behind `degfar` in `family_gen.py`. -/
+theorem card_neighbor_inter_oneHighFarBranchVertices_add_internal_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hexternal : externalRepairCandidates G v = ∅)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (x : V) (hx : x ∈ secondLayerBranch G v s)
+    (hxDegree : G.degree x = 7) :
+    (G.neighborFinset x ∩ oneHighFarBranchVertices G v mate s).card +
+      (G.neighborFinset x ∩ secondLayerBranch G v s).card = 6 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let U : Finset P := (Finset.univ.erase s).erase (mate s)
+  let f : P → ℕ := fun u =>
+    (G.neighborFinset x ∩ secondLayerBranch G v u).card
+  have hmateNe : s ≠ mate s := by
+    intro h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ hmateAdj s)
+  have hsumAll : ∑ u : P, f u = 6 := by
+    have h := sum_card_neighbors_inter_highBranches_eq_degree_sub_one
+      G hfree hexternal s x hx hxDegree
+    simpa [P, f] using h
+  have hmateZero : f (mate s) = 0 := by
+    apply Finset.card_eq_zero.mpr
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro q hq
+    exact not_adj_between_secondLayerBranches_of_adj_roots
+      G hfree v s (mate s) (hmateAdj s)
+        ⟨x, hx⟩ ⟨q, (Finset.mem_inter.mp hq).2⟩
+        ((G.mem_neighborFinset x q).mp (Finset.mem_inter.mp hq).1)
+  have hmateMem : mate s ∈ (Finset.univ : Finset P).erase s := by
+    simp [hmateNe.symm]
+  have hsMem : s ∈ (Finset.univ : Finset P) := Finset.mem_univ s
+  have hmateErase := Finset.sum_erase_add
+    ((Finset.univ : Finset P).erase s) f hmateMem
+  have hsErase := Finset.sum_erase_add (Finset.univ : Finset P) f hsMem
+  have hUsum : (∑ u ∈ U, f u) + f s = 6 := by
+    dsimp [U]
+    dsimp [P, f] at hsumAll hmateZero hmateErase hsErase ⊢
+    omega
+  have hbranchDisj := secondLayerBranch_pairwiseDisjoint G hfree v
+  have hinterDisj : (↑U : Set P).PairwiseDisjoint (fun u =>
+      G.neighborFinset x ∩ secondLayerBranch G v u) := by
+    intro u _ w _ huw
+    change Disjoint
+      (G.neighborFinset x ∩ secondLayerBranch G v u)
+      (G.neighborFinset x ∩ secondLayerBranch G v w)
+    rw [Finset.disjoint_left]
+    intro q hqu hqw
+    exact (Finset.disjoint_left.mp
+      (hbranchDisj (by simp) (by simp) huw))
+        (Finset.mem_inter.mp hqu).2 (Finset.mem_inter.mp hqw).2
+  have hinter : G.neighborFinset x ∩ oneHighFarBranchVertices G v mate s =
+      U.biUnion fun u => G.neighborFinset x ∩ secondLayerBranch G v u := by
+    ext q
+    constructor
+    · intro hq
+      have hqi := Finset.mem_inter.mp hq
+      rw [oneHighFarBranchVertices] at hqi
+      rcases Finset.mem_biUnion.mp hqi.2 with ⟨u, hu, hqu⟩
+      exact Finset.mem_biUnion.mpr ⟨u, hu,
+        Finset.mem_inter.mpr ⟨hqi.1, hqu⟩⟩
+    · intro hq
+      rcases Finset.mem_biUnion.mp hq with ⟨u, hu, hqu⟩
+      exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hqu).1, by
+        rw [oneHighFarBranchVertices]
+        exact Finset.mem_biUnion.mpr
+          ⟨u, hu, (Finset.mem_inter.mp hqu).2⟩⟩
+  rw [hinter, Finset.card_biUnion hinterDisj]
+  exact hUsum
+
+/-- The exact far-neighbor filter used by the encoded degree equations. -/
+def oneHighEncodedFarNeighbors
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] (i : Fin 40) :
+    Finset (Fin 40) :=
+  Finset.univ.filter fun k => R.Adj i k ∧
+    Fin.divNat (m := 8) (n := 5) k ≠ Fin.divNat (m := 8) (n := 5) i ∧
+    Fin.divNat (m := 8) (n := 5) k ≠
+      oneHighStandardMate (Fin.divNat (m := 8) (n := 5) i)
+
+/-- Encoded far neighbors are in cardinality-preserving bijection with the
+original neighbors in the six far branches. -/
+theorem card_oneHighEncodedFarNeighbors_eq_original
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (i : Fin 40) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedFarNeighbors R i).card =
+      (G.neighborFinset (E.symm i).1 ∩
+        oneHighFarBranchVertices G v mate
+          (oneHighBranchOwner G v (E.symm i))).card := by
+  classical
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let R := oneHighRelabeledLeafGraph G v E
+  let x := E.symm i
+  let s := oneHighBranchOwner G v x
+  have hxCoord := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  rw [E.apply_symm_apply] at hxCoord
+  apply Finset.card_bij (fun k _ => (E.symm k).1)
+  · intro k hk
+    have hkp := Finset.mem_filter.mp hk
+    let y := E.symm k
+    have hyCoord := oneHighLeafFinFortyEquiv_divNat
+      G hfree v branchLabel leafLabel y
+    rw [E.apply_symm_apply] at hyCoord
+    have hyOwn : oneHighBranchOwner G v y ≠ s := by
+      intro h
+      apply hkp.2.2.1
+      rw [hyCoord, hxCoord, h]
+    have hyMate : oneHighBranchOwner G v y ≠ mate s := by
+      intro h
+      apply hkp.2.2.2
+      rw [hyCoord, hxCoord, h, hbranchMate]
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact (G.mem_neighborFinset _ _).mpr
+        ((oneHighRelabeledLeafGraph_adj G v E i k).mp hkp.2.1)
+    · rw [oneHighFarBranchVertices]
+      apply Finset.mem_biUnion.mpr
+      refine ⟨oneHighBranchOwner G v y, ?_,
+        oneHighBranchOwner_mem G v y⟩
+      exact Finset.mem_erase.mpr
+        ⟨hyMate, Finset.mem_erase.mpr ⟨hyOwn, Finset.mem_univ _⟩⟩
+  · intro k _ l _ hkl
+    apply E.symm.injective
+    exact Subtype.ext hkl
+  · intro q hq
+    have hqAdj := (Finset.mem_inter.mp hq).1
+    have hqFar := (Finset.mem_inter.mp hq).2
+    rw [oneHighFarBranchVertices] at hqFar
+    rcases Finset.mem_biUnion.mp hqFar with ⟨u, hu, hqu⟩
+    have hqSecond : q ∈ secondLayer G v := by
+      change q ∈ Finset.univ.biUnion (secondLayerBranch G v)
+      exact Finset.mem_biUnion.mpr ⟨u, Finset.mem_univ _, hqu⟩
+    let y : {z : V // z ∈ secondLayer G v} := ⟨q, hqSecond⟩
+    have hyOwner : oneHighBranchOwner G v y = u :=
+      oneHighBranchOwner_eq_of_mem G hfree v y u hqu
+    have hyCoord := oneHighLeafFinFortyEquiv_divNat
+      G hfree v branchLabel leafLabel y
+    have huRaw : u ≠ mate s ∧ u ≠ s := by
+      simpa only [Finset.mem_erase, Finset.mem_univ, true_and, and_true]
+        using hu
+    refine ⟨E y, ?_, by simp [y]⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    refine ⟨?_, ?_, ?_⟩
+    · exact (oneHighRelabeledLeafGraph_adj G v E i (E y)).mpr (by
+        simpa [x, y] using (G.mem_neighborFinset _ _).mp hqAdj)
+    · rw [hyCoord, hxCoord, hyOwner]
+      exact fun h => huRaw.2 (branchLabel.injective h)
+    · rw [hyCoord, hxCoord, hyOwner, ← hbranchMate]
+      exact fun h => huRaw.1 (branchLabel.injective h)
+
+/-- The encoded `degfar` equation: far degree plus degree inside the vertex's
+own five-point block is exactly six. -/
+theorem card_oneHighEncodedFarNeighbors_add_internal_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hexternal : externalRepairCandidates G v = ∅)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (i : Fin 40)
+    (hiDegree : G.degree
+      ((oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel).symm i).1 = 7) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedFarNeighbors R i).card +
+      (G.neighborFinset (E.symm i).1 ∩
+        secondLayerBranch G v (oneHighBranchOwner G v (E.symm i))).card = 6 := by
+  classical
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let s := oneHighBranchOwner G v x
+  have hx : x.1 ∈ secondLayerBranch G v s :=
+    oneHighBranchOwner_mem G v x
+  dsimp only
+  rw [card_oneHighEncodedFarNeighbors_eq_original
+    G hfree mate branchLabel hbranchMate leafLabel i]
+  exact card_neighbor_inter_oneHighFarBranchVertices_add_internal_eq_six
+    G hfree hexternal mate hmateAdj s x.1 hx hiDegree
+
 end
 
 end Erdos85
