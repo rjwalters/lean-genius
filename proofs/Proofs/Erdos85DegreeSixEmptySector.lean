@@ -876,6 +876,78 @@ theorem false_of_degreeSix_orderNine_two_triangle_partners
   rw [hwe, hwf] at hle
   omega
 
+/-- Filter-card wrapper for the common `(6,2,3)` partner contradiction.
+This is the terminal consumed directly by order-nine count patterns five and
+six. -/
+theorem false_of_degreeSix_orderNine_orderSix_filter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw9 : w.supp.ncard = 9)
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hfilter : (S.filter fun s ↦ s.supp.ncard = 6 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) w s = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) s w = 3).card = 1) :
+    False := by
+  obtain ⟨s, hs⟩ := Finset.card_eq_one.mp hfilter
+  have hsMem : s ∈ S.filter fun z ↦ z.supp.ncard = 6 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) w z = 2 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) z w = 3 := by
+    rw [hs]
+    simp
+  have hsData := (Finset.mem_filter.mp hsMem).2
+  exact false_of_degreeSix_orderNine_orderSix_partner
+    G hfree hmin hcard w s hw9 hsData.1 hsData.2.2
+
+/-- Filter-card wrapper for the two-positive-triangle contradiction.  It is
+consumed directly by order-nine count patterns three and seven. -/
+theorem false_of_degreeSix_orderNine_two_triangle_filters
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw9 : w.supp.ncard = 9)
+    (S : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (hfilter : (S.filter fun e ↦ e.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) w e = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e w = 3).card = 2) :
+    False := by
+  obtain ⟨e, f, hef, heq⟩ := Finset.card_eq_two.mp hfilter
+  have heMem : e ∈ S.filter fun z ↦ z.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) w z = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) z w = 3 := by
+    rw [heq]
+    simp
+  have hfMem : f ∈ S.filter fun z ↦ z.supp.ncard = 3 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) w z = 1 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) z w = 3 := by
+    rw [heq]
+    simp
+  have heData := (Finset.mem_filter.mp heMem).2
+  have hfData := (Finset.mem_filter.mp hfMem).2
+  exact false_of_degreeSix_orderNine_two_triangle_partners
+    G hfree hmin hcard coord hcoord hcoordRange hcoordD w e f
+      hw9 heData.1 hfData.1 hef heData.2.1 hfData.2.1
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two
