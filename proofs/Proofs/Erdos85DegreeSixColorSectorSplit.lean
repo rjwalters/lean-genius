@@ -1543,6 +1543,75 @@ theorem degreeSix_orderFive_residual_contact_type
     (s = 15 ∧ q = 3 ∧ r = 1) := by
   interval_cases s <;> interval_cases q <;> omega
 
+/-- Filter-count form of the order-five residual classification. -/
+theorem degreeSix_orderFive_cover_filter_counts
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q r : C → ℕ)
+    (htype : ∀ t ∈ S, q t = 0 ∨
+      (q t = 1 ∧ r t = 1) ∨
+      (q t = 2 ∧ r t = 2) ∨
+      (q t = 2 ∧ r t = 1) ∨
+      (q t = 3 ∧ r t = 1))
+    (hrow : (∑ t ∈ S, q t) = 4)
+    (hprod : (∑ t ∈ S, q t * r t) = 6) :
+    (S.filter fun t ↦ q t = 2 ∧ r t = 2).card = 1 ∧
+    (S.filter fun t ↦ q t = 3 ∧ r t = 1).card = 0 ∧
+      (((S.filter fun t ↦ q t = 1 ∧ r t = 1).card = 0 ∧
+        (S.filter fun t ↦ q t = 2 ∧ r t = 1).card = 1) ∨
+       ((S.filter fun t ↦ q t = 1 ∧ r t = 1).card = 2 ∧
+        (S.filter fun t ↦ q t = 2 ∧ r t = 1).card = 0)) := by
+  let A := S.filter fun t ↦ q t = 1 ∧ r t = 1
+  let B := S.filter fun t ↦ q t = 2 ∧ r t = 2
+  let D := S.filter fun t ↦ q t = 2 ∧ r t = 1
+  let E := S.filter fun t ↦ q t = 3 ∧ r t = 1
+  have hqpoint : ∀ t ∈ S, q t =
+      (if q t = 1 ∧ r t = 1 then 1 else 0) +
+      (if q t = 2 ∧ r t = 2 then 2 else 0) +
+      (if q t = 2 ∧ r t = 1 then 2 else 0) +
+      (if q t = 3 ∧ r t = 1 then 3 else 0) := by
+    intro t ht
+    rcases htype t ht with h0 | h11 | h22 | h21 | h31
+    · simp [h0]
+    · rcases h11 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h22 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h21 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h31 with ⟨hq, hr⟩; simp [hq, hr]
+  have hppoint : ∀ t ∈ S, q t * r t =
+      (if q t = 1 ∧ r t = 1 then 1 else 0) +
+      (if q t = 2 ∧ r t = 2 then 4 else 0) +
+      (if q t = 2 ∧ r t = 1 then 2 else 0) +
+      (if q t = 3 ∧ r t = 1 then 3 else 0) := by
+    intro t ht
+    rcases htype t ht with h0 | h11 | h22 | h21 | h31
+    · simp [h0]
+    · rcases h11 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h22 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h21 with ⟨hq, hr⟩; simp [hq, hr]
+    · rcases h31 with ⟨hq, hr⟩; simp [hq, hr]
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hrowCounts : A.card + 2 * B.card + 2 * D.card + 3 * E.card = 4 := by
+    have hdecomp := Finset.sum_congr rfl hqpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1 ∧ r t = 1) 1,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 2) 2,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 1) 2,
+      hsumConst (fun t ↦ q t = 3 ∧ r t = 1) 3] at hdecomp
+    simpa [A, B, D, E, one_mul] using hdecomp.symm.trans hrow
+  have hprodCounts : A.card + 4 * B.card + 2 * D.card + 3 * E.card = 6 := by
+    have hdecomp := Finset.sum_congr rfl hppoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1 ∧ r t = 1) 1,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 2) 4,
+      hsumConst (fun t ↦ q t = 2 ∧ r t = 1) 2,
+      hsumConst (fun t ↦ q t = 3 ∧ r t = 1) 3] at hdecomp
+    simpa [A, B, D, E, one_mul] using hdecomp.symm.trans hprod
+  simpa [A, B, D, E] using
+    degreeSix_orderFive_cover_contact_count A.card B.card D.card E.card
+      hrowCounts hprodCounts
+
 /-- Arithmetic terminal for the order-six residual partition `1+2`.  The
 two square equations and the global diagonal budget force the order-twelve
 target to contact both distinct order-six components, contradicting grouped
