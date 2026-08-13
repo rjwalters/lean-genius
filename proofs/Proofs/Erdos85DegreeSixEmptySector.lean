@@ -53,7 +53,7 @@ theorem degreeSix_exists_odd_order_component
       c.supp.ncard := by
     apply Finset.dvd_sum
     intro c _
-    exact (Nat.even_iff_not_odd.mpr (hnone c)).two_dvd
+    exact (Nat.not_odd_iff_even.mp (hnone c)).two_dvd
   rw [hparts, hcard] at hdvd
   omega
 
@@ -77,9 +77,8 @@ theorem degreeSix_exists_even_carrier_of_odd_zero_diagonal
         0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
   classical
   have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
-    G hfree (d := 6) (by norm_num) (by decide) hmin
-      (by norm_num at hcard ⊢; exact hcard)
-      (by decide)
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
   by_contra hnone
   push Not at hnone
   have hzero : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
@@ -87,7 +86,7 @@ theorem degreeSix_exists_even_carrier_of_odd_zero_diagonal
     intro c
     by_cases hoddc : Odd c.supp.ncard
     · exact hodd0 c hoddc
-    · have heven : Even c.supp.ncard := Nat.even_iff_not_odd.mpr hoddc
+    · have heven : Even c.supp.ncard := Nat.not_odd_iff_even.mp hoddc
       have := hnone c heven
       omega
   have hsum : (∑ c : (secondOrderDefectGraph G).ConnectedComponent,

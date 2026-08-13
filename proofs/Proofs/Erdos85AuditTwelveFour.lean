@@ -5,6 +5,7 @@ import Proofs.Erdos85OneTwentyThreeResidualTerminal
 import Proofs.Erdos85MinimumEvenOrphanParity
 import Proofs.Erdos85ZeroLayerPartitionClassification
 import Proofs.Erdos85DegreeSixColorSectorSplit
+import Proofs.Erdos85DegreeSixEmptySector
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -192,6 +193,10 @@ import Proofs.Erdos85DegreeSixColorSectorSplit
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_seven_fourteen
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_nine_eighteen
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_eleven_twentyTwo
+
+-- d=6 empty-sector carrier lane (claude, Erdos85DegreeSixEmptySector.lean)
+#print axioms Erdos85.degreeSix_exists_odd_order_component
+#print axioms Erdos85.degreeSix_exists_even_carrier_of_odd_zero_diagonal
 
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
