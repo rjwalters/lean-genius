@@ -844,6 +844,38 @@ theorem false_of_degreeSix_orderNine_orderSix_partner
         norm_num)
   omega
 
+/-- An order-nine diagonal-two source cannot itself have two distinct
+order-three positive partners.  The small-order patterns with two
+`(3,1,3)` types therefore die without inspecting the residual carrier. -/
+theorem false_of_degreeSix_orderNine_two_triangle_partners
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (coord : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hcoord : ∀ c, Function.Injective (coord c))
+    (hcoordRange : ∀ c, Set.range (coord c) = c.supp)
+    (hcoordD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (coord c x) =
+      {coord c (x - 1), coord c (x + 1)})
+    (w e f : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw9 : w.supp.ncard = 9) (he3 : e.supp.ncard = 3)
+    (hf3 : f.supp.ncard = 3) (hef : e ≠ f)
+    (hwe : componentQuotientMatrix G (secondOrderDefectGraph G) w e = 1)
+    (hwf : componentQuotientMatrix G (secondOrderDefectGraph G) w f = 1) :
+    False := by
+  have hle := degreeSix_orderNine_two_orderThree_targets_le_one
+    G hfree hmin hcard coord hcoord hcoordRange hcoordD
+      w e f hw9 he3 hf3 hef
+  rw [hwe, hwf] at hle
+  omega
+
 /-! ## Order-seven discharge -/
 
 theorem false_of_degreeSix_orderSeven_diagonal_two
