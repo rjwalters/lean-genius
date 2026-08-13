@@ -884,6 +884,136 @@ theorem exists_orderFortyNine_mate_exact_outerDefect_overlap
         G hfree u (mate s) huMateS] at hfar
     exact hfar
 
+/-- Number of vertices of a leaf-defect connected component carrying a
+given defect-owner color. -/
+def orderFortyNineLeafComponentOwnerCensus
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (t : {z : V // z ∈ G.neighborSet v}) : ℕ :=
+  ((Finset.univ : Finset c.supp).filter fun y =>
+    y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t).card
+
+/-- The eight owner colors cover every leaf-defect component. -/
+theorem orderFortyNine_biUnion_component_ownerColors_eq_univ
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent) :
+    (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion
+        (fun t => (Finset.univ : Finset c.supp).filter fun y =>
+          y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t) =
+      Finset.univ := by
+  ext y
+  simp only [Finset.mem_biUnion, Finset.mem_univ, Finset.mem_filter,
+    true_and]
+  have hy7 : G.degree y.1.1 = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard y.1.1 with hy7 | hy8
+    · exact hy7
+    · have hyHigh : y.1.1 ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hy8]
+      have hvHigh : v ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hv]
+      obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+      have hyv : y.1.1 = v := by
+        have hyw : y.1.1 = w := by simpa [hw] using hyHigh
+        have hvw : v = w := by simpa [hw] using hvHigh
+        exact hyw.trans hvw.symm
+      exact (y.1.2.1 hyv).elim
+  obtain ⟨x, hx, _⟩ := orderFortyNine_existsUnique_defectCenter_of_not_adj_high
+    G hfree hmin hcard hv hy7 y.1.2.2
+  let t : {z : V // z ∈ G.neighborSet v} :=
+    ⟨x, (G.mem_neighborFinset v x).1 hx.1⟩
+  constructor
+  · intro _
+    trivial
+  · intro _
+    exact ⟨t, ((secondOrderDefectGraph G).mem_neighborFinset x y.1.1).2 hx.2⟩
+
+/-- Owner-color classes inside a leaf-defect component are pairwise
+disjoint. -/
+theorem orderFortyNine_component_ownerColors_pairwiseDisjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent) :
+    ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) :
+      Set {z : V // z ∈ G.neighborSet v}).PairwiseDisjoint
+        (fun t => (Finset.univ : Finset c.supp).filter fun y =>
+          y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t) := by
+  intro t _ u _ htu
+  apply Finset.disjoint_left.mpr
+  intro y hyt hyu
+  have htOwner := (Finset.mem_filter.mp hyt).2
+  have huOwner := (Finset.mem_filter.mp hyu).2
+  have hpair := orderFortyNine_closedDefectNeighborhood_pairwiseDisjoint_at_high
+    G hfree hmin hcard hv
+  have htmem : t.1 ∈ (G.neighborFinset v : Set V) := by
+    exact (G.mem_neighborFinset v t.1).2 t.2
+  have humem : u.1 ∈ (G.neighborFinset v : Set V) := by
+    exact (G.mem_neighborFinset v u.1).2 u.2
+  have htune : t.1 ≠ u.1 := fun h => htu (Subtype.ext h)
+  exact Finset.disjoint_left.mp (hpair htmem humem htune)
+    (Finset.mem_insert.mpr (Or.inr htOwner))
+    (Finset.mem_insert.mpr (Or.inr huOwner))
+
+/-- The eight local owner-color counts sum to the order of the component. -/
+theorem sum_orderFortyNineLeafComponentOwnerCensus_eq_componentOrder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent) :
+    (∑ t, orderFortyNineLeafComponentOwnerCensus G v c t) =
+      Fintype.card c.supp := by
+  rw [← Finset.card_univ,
+    ← orderFortyNine_biUnion_component_ownerColors_eq_univ
+      G hfree hmin hcard hHigh hv c,
+    Finset.card_biUnion
+      (orderFortyNine_component_ownerColors_pairwiseDisjoint
+        G hfree hmin hcard hv c)]
+  rfl
+
+/-- No component can contain more than the five vertices of a global owner
+fiber in any one color. -/
+theorem orderFortyNineLeafComponentOwnerCensus_le_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineLeafComponentOwnerCensus G v c t ≤ 5 := by
+  rw [← orderFortyNine_card_defectOwnerFiber_eq_five_of_one_high
+    G hfree hmin hcard hHigh hv t]
+  apply Finset.card_le_card_of_injOn (fun y : c.supp => y.1.1)
+  · intro y hy
+    exact (Finset.mem_filter.mp hy).2
+  · intro a ha b hb hab
+    exact Subtype.ext (Subtype.ext hab)
+
 end
 
 end Erdos85
