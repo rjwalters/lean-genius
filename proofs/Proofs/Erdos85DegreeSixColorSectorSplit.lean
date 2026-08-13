@@ -1994,6 +1994,210 @@ theorem false_of_degreeSix_threeTwelve_two_heavy_partition
   rcases hqt with hq0 | hq1 | hq2 <;>
     rcases hxt with hx0 | hx1 | hx2 <;> simp_all <;> nlinarith
 
+/-- Zero cardinality of a value filter excludes that value at every point
+of the ambient finset. -/
+theorem ne_value_of_filter_card_zero
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (k : ℕ) (hk : (S.filter fun t ↦ q t = k).card = 0) :
+    ∀ t ∈ S, q t ≠ k := by
+  intro t ht hq
+  have hm : t ∈ S.filter fun z ↦ q z = k :=
+    Finset.mem_filter.mpr ⟨ht, hq⟩
+  have hempty := Finset.card_eq_zero.mp hk
+  rw [hempty] at hm
+  simp at hm
+
+/-- Under a mass-five row bound, excluding the other values forces every
+entry to be either one or the designated heavy value `k`. -/
+theorem one_or_designated_of_mass_five_filter_zeros
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (k : ℕ) (hk2 : 2 ≤ k) (hk5 : k ≤ 5)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hrow : (∑ t ∈ S, q t) = 5)
+    (hzero : ∀ j, 2 ≤ j → j ≤ 5 → j ≠ k →
+      (S.filter fun t ↦ q t = j).card = 0) :
+    ∀ t ∈ S, q t = 1 ∨ q t = k := by
+  intro t ht
+  have hqle : q t ≤ 5 := by
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  by_cases hqk : q t = k
+  · exact Or.inr hqk
+  · left
+    by_contra hq1
+    have hq2 : 2 ≤ q t := by have := hpos t ht; omega
+    exact ne_value_of_filter_card_zero S q (q t)
+      (hzero (q t) hq2 hqle hqk) t ht rfl
+
+/-- Abstract master dispatch for the seven partitions in the two-triangle
+branch of `(3,12)`. -/
+theorem false_of_degreeSix_threeTwelve_partition_dispatch
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size xb rb : C → ℕ) (z : ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrowQ : (∑ t ∈ S, q t) = 5)
+    (hbal : ∀ t ∈ S, 12 * xb t = size t * rb t)
+    (hrowB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3), xb t) + z = 5)
+    (hprodB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3),
+      xb t * rb t) + z * z = 11)
+    (hparts :
+      let n1 := (S.filter fun t ↦ q t = 1).card
+      let n2 := (S.filter fun t ↦ q t = 2).card
+      let n3 := (S.filter fun t ↦ q t = 3).card
+      let n4 := (S.filter fun t ↦ q t = 4).card
+      let n5 := (S.filter fun t ↦ q t = 5).card
+      (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+      (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1)) : False := by
+  dsimp at hparts
+  rcases hparts with h11111 | h2111 | h221 | h311 | h32 | h41 | h5
+  · exact false_of_degreeSix_threeTwelve_all_single_partition
+      S q size xb rb z hpos hsize hrowQ h11111.2.1 h11111.2.2.1
+        h11111.2.2.2.1 h11111.2.2.2.2 hrowB hprodB
+  · have hfilter2 := Finset.card_eq_one.mp h2111.2.1
+    obtain ⟨u, hu⟩ := hfilter2
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 2 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 2 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      2 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          have := Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 2) by rw [hu]; simp)
+          exact this.1)) hrowB hprodB
+  · obtain ⟨u, v, huv, huvset⟩ := Finset.card_eq_two.mp h221.2.1
+    have huF : u ∈ S.filter (fun t ↦ q t = 2) := by rw [huvset]; simp
+    have hvF : v ∈ S.filter (fun t ↦ q t = 2) := by rw [huvset]; simp
+    have huS := (Finset.mem_filter.mp huF).1
+    have hvS := (Finset.mem_filter.mp hvF).1
+    have hqu := (Finset.mem_filter.mp huF).2
+    have hqv := (Finset.mem_filter.mp hvF).2
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 2 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH : S.filter (fun t ↦ size t ≠ 3) = {u, v} := by
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro hw
+        rcases htype w hw.1 with hq1 | hq2
+        · exact (hw.2 (by rw [hsize w hw.1, hq1])).elim
+        · have : w ∈ S.filter (fun z ↦ q z = 2) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq2⟩
+          rw [huvset] at this
+          simpa using this
+      · intro hw
+        rcases hw with hwu | hwv
+        · subst w
+          exact ⟨huS, by rw [hsize u huS, hqu]; norm_num⟩
+        · subst w
+          exact ⟨hvS, by rw [hsize v hvS, hqv]; norm_num⟩
+    rw [hH] at hrowB hprodB
+    simp [huv] at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_two_heavy_partition
+      2 2 z (xb u) (rb u) (xb v) (rb v) (Or.inl ⟨rfl, rfl⟩)
+        (by simpa [hsize u huS, hqu] using hbal u huS)
+        (by simpa [hsize v hvS, hqv] using hbal v hvS) hrowB hprodB
+  · have hfilter3 := Finset.card_eq_one.mp h311.2.2.1
+    obtain ⟨u, hu⟩ := hfilter3
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 3 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 3 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      3 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 3) by rw [hu]; simp)).1))
+        hrowB hprodB
+  · obtain ⟨u, hu⟩ := Finset.card_eq_one.mp h32.2.1
+    obtain ⟨v, hv⟩ := Finset.card_eq_one.mp h32.2.2.1
+    have huF : u ∈ S.filter (fun t ↦ q t = 2) := by rw [hu]; simp
+    have hvF : v ∈ S.filter (fun t ↦ q t = 3) := by rw [hv]; simp
+    have huS := (Finset.mem_filter.mp huF).1
+    have hvS := (Finset.mem_filter.mp hvF).1
+    have hqu := (Finset.mem_filter.mp huF).2
+    have hqv := (Finset.mem_filter.mp hvF).2
+    have huv : u ≠ v := by intro h; subst v; omega
+    have hH : S.filter (fun t ↦ size t ≠ 3) = {u, v} := by
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro hw
+        have hqle : q w ≤ 5 := by
+          have hs : q w ≤ ∑ z ∈ S, q z :=
+            Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) hw.1
+          omega
+        have hn4 := ne_value_of_filter_card_zero S q 4 h32.2.2.2.1 w hw.1
+        have hn5 := ne_value_of_filter_card_zero S q 5 h32.2.2.2.2 w hw.1
+        rcases (show q w = 1 ∨ q w = 2 ∨ q w = 3 by
+          have := hpos w hw.1; omega) with hq1 | hq2 | hq3
+        · exact (hw.2 (by rw [hsize w hw.1, hq1])).elim
+        · have hm : w ∈ S.filter (fun z ↦ q z = 2) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq2⟩
+          rw [hu] at hm
+          exact Or.inl (by simpa using hm)
+        · have hm : w ∈ S.filter (fun z ↦ q z = 3) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq3⟩
+          rw [hv] at hm
+          exact Or.inr (by simpa using hm)
+      · intro hw
+        rcases hw with hwu | hwv
+        · subst w
+          exact ⟨huS, by rw [hsize u huS, hqu]; norm_num⟩
+        · subst w
+          exact ⟨hvS, by rw [hsize v hvS, hqv]; norm_num⟩
+    rw [hH] at hrowB hprodB
+    simp [huv] at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_two_heavy_partition
+      2 3 z (xb u) (rb u) (xb v) (rb v) (Or.inr (Or.inl ⟨rfl, rfl⟩))
+        (by simpa [hsize u huS, hqu] using hbal u huS)
+        (by simpa [hsize v hvS, hqv] using hbal v hvS) hrowB hprodB
+  · have hfilter4 := Finset.card_eq_one.mp h41.2.2.2.1
+    obtain ⟨u, hu⟩ := hfilter4
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 4 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 4 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      4 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 4) by rw [hu]; simp)).1))
+        hrowB hprodB
+  · have hfilter5 := Finset.card_eq_one.mp h5.2.2.2.2
+    obtain ⟨u, hu⟩ := hfilter5
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 5 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 5 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      5 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 5) by rw [hu]; simp)).1))
+        hrowB hprodB
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
