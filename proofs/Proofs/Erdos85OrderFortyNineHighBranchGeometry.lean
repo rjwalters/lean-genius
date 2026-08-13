@@ -15,6 +15,95 @@ namespace Erdos85
 
 noncomputable section
 
+/-- A center in `N(v)` has one neighbor among the other centers and five
+neighbors in the forty-vertex leaf layer. -/
+theorem orderFortyNine_center_neighbor_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v x : V}
+    (hv : G.degree v = 8) (hx : x ∈ G.neighborFinset v) :
+    (G.neighborFinset x ∩ G.neighborFinset v).card = 1 ∧
+      (G.neighborFinset x \ insert v (G.neighborFinset v)).card = 5 := by
+  have hvx : G.Adj v x := by
+    simpa [SimpleGraph.mem_neighborFinset] using hx
+  have hxv : x ≠ v := G.ne_of_adj hvx |>.symm
+  have hxdeg := orderFortyNine_neighbor_degree_seven_of_degreeEight
+    G hfree hmin hcard hv hvx
+  have hcenter := orderFortyNine_card_common_with_degreeEight_eq_one
+    G hfree hmin hcard hv hxv.symm
+  have hcenter' :
+      (G.neighborFinset x ∩ G.neighborFinset v).card = 1 := by
+    simpa [Finset.inter_comm] using hcenter
+  refine ⟨hcenter', ?_⟩
+  have hinter : insert v (G.neighborFinset v) ∩ G.neighborFinset x =
+      insert v (G.neighborFinset v ∩ G.neighborFinset x) := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_insert,
+      SimpleGraph.mem_neighborFinset]
+    constructor
+    · rintro ⟨rfl | hvz, hxz⟩
+      · exact Or.inl rfl
+      · exact Or.inr ⟨hvz, hxz⟩
+    · rintro (rfl | ⟨hvz, hxz⟩)
+      · exact ⟨Or.inl rfl, hvx.symm⟩
+      · exact ⟨Or.inr hvz, hxz⟩
+  rw [Finset.card_sdiff, hinter,
+    Finset.card_insert_of_notMem (by simp),
+    G.card_neighborFinset_eq_degree, hxdeg]
+  have : (G.neighborFinset v ∩ G.neighborFinset x).card = 1 := hcenter
+  omega
+
+/-- A leaf outside the closed neighborhood of `v` has exactly one center
+neighbor and six leaf neighbors. -/
+theorem orderFortyNine_leaf_neighbor_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1) {v y : V}
+    (hv : G.degree v = 8) (hyv : y ≠ v) (hvy : ¬ G.Adj v y) :
+    (G.neighborFinset y ∩ G.neighborFinset v).card = 1 ∧
+      (G.neighborFinset y \ insert v (G.neighborFinset v)).card = 6 := by
+  have hydeg : G.degree y = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin hcard y with hy7 | hy8
+    · exact hy7
+    · have hvHigh : v ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hv]
+      have hyHigh : y ∈ orderFortyNineHighVertices G := by
+        simp [orderFortyNineHighVertices, hy8]
+      obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+      have hvw : v = w := by simpa [hw] using hvHigh
+      have hyw : y = w := by simpa [hw] using hyHigh
+      exact (hyv (hyw.trans hvw.symm)).elim
+  have hcenter := orderFortyNine_card_common_with_degreeEight_eq_one
+    G hfree hmin hcard hv hyv.symm
+  have hcenter' :
+      (G.neighborFinset y ∩ G.neighborFinset v).card = 1 := by
+    simpa [Finset.inter_comm] using hcenter
+  refine ⟨hcenter', ?_⟩
+  have hinter : insert v (G.neighborFinset v) ∩ G.neighborFinset y =
+      G.neighborFinset v ∩ G.neighborFinset y := by
+    ext z
+    simp only [Finset.mem_inter, Finset.mem_insert,
+      SimpleGraph.mem_neighborFinset]
+    constructor
+    · rintro ⟨rfl | hvz, hyz⟩
+      · exact (hvy hyz.symm).elim
+      · exact ⟨hvz, hyz⟩
+    · rintro ⟨hvz, hyz⟩
+      exact ⟨Or.inr hvz, hyz⟩
+  rw [Finset.card_sdiff, hinter,
+    G.card_neighborFinset_eq_degree, hydeg]
+  omega
+
 /-- Every second-layer branch rooted at a neighbor of a high vertex has size
 five. -/
 theorem orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
