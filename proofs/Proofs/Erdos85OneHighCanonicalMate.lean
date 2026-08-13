@@ -270,6 +270,29 @@ def oneHighCanonicalBranchAdj (twoEdges : Bool) (i j : Fin 5) : Bool :=
   decide ((i = 0 ∧ j = 1) ∨ (i = 1 ∧ j = 0) ∨
     (twoEdges = true ∧ ((i = 2 ∧ j = 3) ∨ (i = 3 ∧ j = 2))))
 
+/-- Matched-coordinate predicate for the canonical Fin5 branch. -/
+def oneHighCanonicalBranchMatched (twoEdges : Bool) (i : Fin 5) : Prop :=
+  i.val < 2 ∨ (twoEdges = true ∧ i.val < 4)
+
+instance oneHighCanonicalBranchMatched_decidable
+    (twoEdges : Bool) (i : Fin 5) :
+    Decidable (oneHighCanonicalBranchMatched twoEdges i) := by
+  unfold oneHighCanonicalBranchMatched
+  infer_instance
+
+/-- Far-degree target used by the generator: matched leaf coordinates have
+five far neighbors and the unique unmatched coordinate(s) have six. -/
+def oneHighCanonicalFarDegree (twoEdges : Bool) (i : Fin 5) : Nat :=
+  if oneHighCanonicalBranchMatched twoEdges i then 5 else 6
+
+/-- Exact internal degree of every canonical Fin5 coordinate. -/
+theorem card_filter_oneHighCanonicalBranchAdj
+    (twoEdges : Bool) (i : Fin 5) :
+    (Finset.univ.filter fun j =>
+      oneHighCanonicalBranchAdj twoEdges i j).card =
+        if oneHighCanonicalBranchMatched twoEdges i then 1 else 0 := by
+  native_decide +revert
+
 /-- Closed finite classification of five-point matchings. -/
 theorem finFive_matchingBits_canonical
     (edges : BitVec 10) (twoEdges : Bool)
@@ -563,6 +586,43 @@ theorem exists_oneHigh_branchVertexLabeling
     · exact Or.inr ⟨hflag.1, by rw [← hmatchedEq]; exact hflag.2⟩
   · intro x y
     simpa [H] using hedge x y
+
+/-- Transporting a canonical Fin5 labeling gives the exact internal degree
+of every original branch vertex. -/
+theorem card_neighbor_inter_branch_eq_canonicalMatched
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (s : {z : V // z ∈ G.neighborSet v})
+    (twoEdges : Bool) (e : secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj twoEdges (e x) (e y))
+    (x : secondLayerBranch G v s) :
+    (G.neighborFinset x.1 ∩ secondLayerBranch G v s).card =
+      if oneHighCanonicalBranchMatched twoEdges (e x) then 1 else 0 := by
+  classical
+  rw [← card_filter_oneHighCanonicalBranchAdj twoEdges (e x)]
+  apply Finset.card_bij (fun y hy => e ⟨y, (Finset.mem_inter.mp hy).2⟩)
+  · intro y hy
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    have hadj := (G.mem_neighborFinset x.1 y).mp
+      (Finset.mem_inter.mp hy).1
+    have hc := hcanonical x ⟨y, (Finset.mem_inter.mp hy).2⟩
+    rw [← hc]
+    exact decide_eq_true hadj
+  · intro y hy z hz heq
+    exact congrArg Subtype.val (e.injective heq)
+  · intro j hj
+    have hc := hcanonical x (e.symm j)
+    have hcanon : oneHighCanonicalBranchAdj twoEdges (e x) j = true := by
+      simpa using (Finset.mem_filter.mp hj).2
+    have hadj : G.Adj x.1 (e.symm j).1 := by
+      apply of_decide_eq_true
+      rw [hc, e.apply_symm_apply]
+      exact hcanon
+    refine ⟨(e.symm j).1, Finset.mem_inter.mpr ⟨
+      (G.mem_neighborFinset _ _).mpr hadj, (e.symm j).2⟩, ?_⟩
+    exact e.apply_symm_apply j
 
 /-- Key-sorted version of the branch labeling.  This is the exact finite
 WLOG operation used by the generator's matched-pair lex clauses. -/
@@ -1378,6 +1438,92 @@ theorem card_oneHighEncodedFarNeighbors_add_internal_eq_six
   exact card_neighbor_inter_oneHighFarBranchVertices_add_internal_eq_six
     G hfree hexternal mate hmateAdj s x.1 hx hiDegree
 
+/-- Exact encoded far degree after a branch's canonical Fin5 labeling. -/
+theorem card_oneHighEncodedFarNeighbors_eq_canonicalFarDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hexternal : externalRepairCandidates G v = ∅)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ s x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj (twoEdges s)
+        (leafLabel s x) (leafLabel s y))
+    (i : Fin 40)
+    (hiDegree : G.degree
+      ((oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel).symm i).1 = 7) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    let x := E.symm i
+    let s := oneHighBranchOwner G v x
+    (oneHighEncodedFarNeighbors R i).card =
+      oneHighCanonicalFarDegree (twoEdges s)
+        (leafLabel s ⟨x.1, oneHighBranchOwner_mem G v x⟩) := by
+  classical
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let s := oneHighBranchOwner G v x
+  let xLocal : secondLayerBranch G v s :=
+    ⟨x.1, oneHighBranchOwner_mem G v x⟩
+  have htotal := card_oneHighEncodedFarNeighbors_add_internal_eq_six
+    G hfree hexternal mate hmateAdj branchLabel hbranchMate leafLabel i hiDegree
+  have hinternal := card_neighbor_inter_branch_eq_canonicalMatched
+    G s (twoEdges s) (leafLabel s) (hcanonical s) xLocal
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card =
+        oneHighCanonicalFarDegree (twoEdges s) (leafLabel s xLocal)
+  change (G.neighborFinset x.1 ∩ secondLayerBranch G v s).card =
+    if oneHighCanonicalBranchMatched (twoEdges s) (leafLabel s xLocal)
+      then 1 else 0 at hinternal
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card +
+        (G.neighborFinset x.1 ∩ secondLayerBranch G v s).card = 6 at htotal
+  by_cases hm : oneHighCanonicalBranchMatched (twoEdges s) (leafLabel s xLocal)
+  · rw [if_pos hm] at hinternal
+    simp [oneHighCanonicalFarDegree, hm]
+    omega
+  · rw [if_neg hm] at hinternal
+    simp [oneHighCanonicalFarDegree, hm]
+    omega
+
+/-! ## Exact family profile coordinates -/
+
+/-- The exact branch word used by `family_gen.py`: the low (even) endpoint
+of each of the first `a` mate pairs has one internal edge; every other
+five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
+`AAAA, AAAB, AABB, ABBB, BBBB`. -/
+def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
+  decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
+
+/-- Numeric form of the generator's `IN` array. -/
+def oneHighFamilyInternalEdges (a : Nat) (i : Fin 8) : Nat :=
+  if i.val % 2 = 0 ∧ i.val / 2 < a then 1 else 2
+
+/-- Literal far-degree target for block `b` and within-block coordinate `r`.
+This is `family_gen.py`'s `degfar`: positions 0,1 are always matched;
+positions 2,3 are matched exactly when `IN[b]=2`; position 4 is unmatched. -/
+def oneHighFamilyFarDegree (a : Nat) (b : Fin 8) (r : Fin 5) : Nat :=
+  if r.val < 2 ∨
+      (oneHighFamilyInternalEdges a b = 2 ∧ r.val < 4) then 5 else 6
+
+/-- The canonical-branch and literal `IN` descriptions of far degree agree. -/
+theorem oneHighCanonicalFarDegree_familyTwoEdges
+    (a : Nat) (b : Fin 8) (r : Fin 5) :
+    oneHighCanonicalFarDegree (oneHighFamilyTwoEdges a b) r =
+      oneHighFamilyFarDegree a b r := by
+  unfold oneHighCanonicalFarDegree oneHighCanonicalBranchMatched
+    oneHighFamilyTwoEdges oneHighFamilyFarDegree oneHighFamilyInternalEdges
+  by_cases hp : b.val % 2 = 0 ∧ b.val / 2 < a
+  · simp [hp]
+  · simp [hp]
+
 /-! ## Encoder-facing paired-product ledger -/
 
 /-- Ordered pairs in two encoded five-point blocks having one common leaf
@@ -1508,14 +1654,86 @@ theorem card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
     G hfree hmin hcard hv hunique hexternal houterDegree
       mate hmateInv hmateAdj s).1
 
+/-- The paired-product ledger in the generator's literal `IN` coordinates.
+This is the subtraction-free form of its cardinality bound
+`30 - 2*IN[bi] - 2*IN[bj]`. -/
+theorem card_oneHighEncodedCommonPairBlock_add_familyIN_eq_thirty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {w : V}, G.degree w = 8 → w = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (a : Nat)
+    (hIN : ∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges a i)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedCommonPairBlock R (branchLabel s)
+        (oneHighStandardMate (branchLabel s))).card +
+      2 * oneHighFamilyInternalEdges a (branchLabel s) +
+      2 * oneHighFamilyInternalEdges a
+        (oneHighStandardMate (branchLabel s)) = 30 := by
+  have hledger := card_oneHighEncodedCommonPairBlock_add_matched_eq_thirty
+    G hfree hmin hcard hv hunique hexternal houterDegree mate
+      hmateInv hmateAdj branchLabel hbranchMate leafLabel s
+  have hs := hIN (branchLabel s)
+  rw [branchLabel.symm_apply_apply] at hs
+  have hm := hIN (oneHighStandardMate (branchLabel s))
+  rw [← hbranchMate s, branchLabel.symm_apply_apply] at hm
+  simpa [hs, hm, hbranchMate s] using hledger
+
 /-! ## Simultaneous generator labeling terminal -/
 
-/-- The exact branch word used by `family_gen.py`: the low (even) endpoint
-of each of the first `a` mate pairs has one internal edge; every other
-five-point branch has two.  Thus `a=4,3,2,1,0` respectively encode
-`AAAA, AAAB, AABB, ABBB, BBBB`. -/
-def oneHighFamilyTwoEdges (a : Nat) (i : Fin 8) : Bool :=
-  decide (¬(i.val % 2 = 0 ∧ i.val / 2 < a))
+/-- Family ordering determines the exact matched-vertex count `2 * IN[i]`
+used by the far-degree, paired-product, and augmented k-sum bounds. -/
+theorem highBranchMatchedCount_eq_two_mul_familyInternalEdges
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (a : Nat)
+    (hfamily : ∀ i,
+      decide (highBranchMatchedCount G v (branchLabel.symm i) = 2) =
+        decide (i.val % 2 = 0 ∧ i.val / 2 < a))
+    (hstates : ∀ i,
+      highBranchMatchedCount G v (branchLabel.symm i) = 2 ∨
+      highBranchMatchedCount G v (branchLabel.symm i) = 4) :
+    ∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges a i := by
+  intro i
+  have hf := hfamily i
+  rcases hstates i with hs | hs
+  · have hp : i.val % 2 = 0 ∧ i.val / 2 < a := by
+      have hl : decide
+          (highBranchMatchedCount G v (branchLabel.symm i) = 2) = true := by
+        simp [hs]
+      rw [hl] at hf
+      exact of_decide_eq_true hf.symm
+    simp [oneHighFamilyInternalEdges, hp, hs]
+  · have hp : ¬(i.val % 2 = 0 ∧ i.val / 2 < a) := by
+      have hne : highBranchMatchedCount G v (branchLabel.symm i) ≠ 2 := by
+        omega
+      have hl : decide
+          (highBranchMatchedCount G v (branchLabel.symm i) = 2) = false := by
+        simp [hne]
+      rw [hl] at hf
+      exact of_decide_eq_false hf.symm
+    simp [oneHighFamilyInternalEdges, hp, hs]
 
 /-- The matched-count characterization of a family-ordered labeling fixes
 the generator's one-edge/two-edge Boolean word pointwise. -/
@@ -1552,6 +1770,125 @@ theorem oneHighFamilyTwoEdges_eq_of_matchedCount
     rcases hs with hs | hs
     · exact (hm hs.2).elim
     · simp [oneHighFamilyTwoEdges, hp, hs.1]
+
+/-- Exact Fin40 far-degree counter target in the generator's literal block
+and within-block coordinates. -/
+theorem card_oneHighEncodedFarNeighbors_eq_familyFarDegree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hexternal : externalRepairCandidates G v = ∅)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s,
+      branchLabel (mate s) = oneHighStandardMate (branchLabel s))
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ s x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj (twoEdges s)
+        (leafLabel s x) (leafLabel s y))
+    (a : Nat)
+    (hword : ∀ i, twoEdges (branchLabel.symm i) =
+      oneHighFamilyTwoEdges a i)
+    (i : Fin 40)
+    (hiDegree : G.degree
+      ((oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel).symm i).1 = 7) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    (oneHighEncodedFarNeighbors R i).card =
+      oneHighFamilyFarDegree a
+        (Fin.divNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) i) := by
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let s := oneHighBranchOwner G v x
+  let xLocal : secondLayerBranch G v s :=
+    ⟨x.1, oneHighBranchOwner_mem G v x⟩
+  have hfar := card_oneHighEncodedFarNeighbors_eq_canonicalFarDegree
+    G hfree hexternal mate hmateAdj branchLabel hbranchMate
+      twoEdges leafLabel hcanonical i hiDegree
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card =
+        oneHighCanonicalFarDegree (twoEdges s) (leafLabel s xLocal) at hfar
+  have hb := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  have hr := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel x
+  rw [E.apply_symm_apply] at hb hr
+  have hw := hword (branchLabel s)
+  rw [branchLabel.symm_apply_apply] at hw
+  change (oneHighEncodedFarNeighbors
+      (oneHighRelabeledLeafGraph G v E) i).card = _
+  calc
+    _ = oneHighCanonicalFarDegree (twoEdges s) (leafLabel s xLocal) := hfar
+    _ = oneHighCanonicalFarDegree
+        (oneHighFamilyTwoEdges a (branchLabel s)) (leafLabel s xLocal) := by
+          rw [hw]
+    _ = oneHighFamilyFarDegree a (branchLabel s) (leafLabel s xLocal) :=
+      oneHighCanonicalFarDegree_familyTwoEdges a (branchLabel s) _
+    _ = oneHighFamilyFarDegree a
+        (Fin.divNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) i) := by rw [hb, hr]
+
+/-- Internal adjacency in literal Fin40 coordinates is exactly the unit-edge
+pattern emitted by `family_gen.py` for the selected family word. -/
+theorem oneHighRelabeledLeafGraph_adj_eq_familyInternal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ s x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj (twoEdges s)
+        (leafLabel s x) (leafLabel s y))
+    (a : Nat)
+    (hword : ∀ i, twoEdges (branchLabel.symm i) =
+      oneHighFamilyTwoEdges a i)
+    (i j : Fin 40)
+    (hblock : Fin.divNat (m := 8) (n := 5) i =
+      Fin.divNat (m := 8) (n := 5) j) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    decide (R.Adj i j) =
+      oneHighCanonicalBranchAdj
+        (oneHighFamilyTwoEdges a (Fin.divNat (m := 8) (n := 5) i))
+        (Fin.modNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) j) := by
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let y := E.symm j
+  let sx := oneHighBranchOwner G v x
+  let sy := oneHighBranchOwner G v y
+  have hbi := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  have hbj := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel y
+  have hri := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel x
+  have hrj := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel y
+  rw [E.apply_symm_apply] at hbi hri
+  rw [E.apply_symm_apply] at hbj hrj
+  have hsxy : sx = sy := by
+    apply branchLabel.injective
+    rw [← hbi, ← hbj]
+    exact hblock
+  have hw := hword (branchLabel sx)
+  rw [branchLabel.symm_apply_apply] at hw
+  have hc := hcanonical sx
+    ⟨x.1, oneHighBranchOwner_mem G v x⟩
+    ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩
+  change decide (G.Adj x.1 y.1) = _
+  rw [hc, hw, ← hbi, ← hri]
+  have hrj' : Fin.modNat (m := 8) (n := 5) j =
+      leafLabel sx ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩ := by
+    simpa [sx, sy, hsxy] using hrj
+  rw [← hrj']
 
 /-- A raw one-high graph admits all coordinate choices used by the family
 generator simultaneously: one mate involution, a family-ordered standard
