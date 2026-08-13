@@ -35,6 +35,21 @@ theorem finEight_fixedPointFreeInvolution_conjugate_standard
       ∀ i, σ (p i) = oneHighStandardMate (σ i) := by
   native_decide +revert
 
+/-- Automorphisms of the standard four-pair matching can place every marked
+endpoint at the even end of an initial mate pair.  The hypothesis says no
+mate pair has two marked endpoints. -/
+theorem finEight_standardMate_canonicalize_marked
+    (marked : Fin 8 → Bool)
+    (hpair : ∀ i, marked i = true →
+      marked (oneHighStandardMate i) = false) :
+    ∃ τ : Equiv.Perm (Fin 8),
+      (∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i)) ∧
+      ∀ i,
+        marked (τ.symm i) =
+          decide (i.val % 2 = 0 ∧
+            i.val / 2 < (Finset.univ.filter fun j => marked j).card) := by
+  native_decide +revert
+
 /-- Abstract eight-point form used for the graph neighborhood subtype. -/
 theorem exists_equiv_finEight_intertwining_involution
     {P : Type*} [Fintype P] [DecidableEq P]
@@ -68,6 +83,58 @@ theorem exists_equiv_finEight_intertwining_involution
   intro x
   simpa [p] using hσ (e₀ x)
 
+/-- A standard-mate labeling can additionally canonicalize any marking
+having at most one marked endpoint per mate pair. -/
+theorem exists_equiv_finEight_intertwining_involution_marked
+    {P : Type*} [Fintype P] [DecidableEq P]
+    (hcard : Fintype.card P = 8)
+    (mate : P → P) (hinv : Function.Involutive mate)
+    (hfix : ∀ x, mate x ≠ x)
+    (marked : P → Bool)
+    (hpair : ∀ x, marked x = true → marked (mate x) = false) :
+    ∃ e : P ≃ Fin 8,
+      (∀ x, e (mate x) = oneHighStandardMate (e x)) ∧
+      ∀ i,
+        marked (e.symm i) =
+          decide (i.val % 2 = 0 ∧
+            i.val / 2 < (Finset.univ.filter fun x => marked x).card) := by
+  obtain ⟨e₀, he₀⟩ := exists_equiv_finEight_intertwining_involution
+    hcard mate hinv hfix
+  let marked₀ : Fin 8 → Bool := fun i => marked (e₀.symm i)
+  have hpair₀ : ∀ i, marked₀ i = true →
+      marked₀ (oneHighStandardMate i) = false := by
+    intro i hi
+    dsimp [marked₀] at hi ⊢
+    have hm := hpair (e₀.symm i) hi
+    have he := he₀ (e₀.symm i)
+    rw [e₀.apply_symm_apply] at he
+    rw [← he, e₀.symm_apply_apply]
+    exact hm
+  obtain ⟨τ, hτMate, hτMarked⟩ :=
+    finEight_standardMate_canonicalize_marked marked₀ hpair₀
+  refine ⟨e₀.trans τ, ?_, ?_⟩
+  · intro x
+    simp only [Equiv.trans_apply]
+    rw [he₀]
+    exact hτMate (e₀ x)
+  · intro i
+    have h := hτMarked i
+    dsimp [marked₀] at h
+    have hcardEq :
+        ((Finset.univ : Finset (Fin 8)).filter fun j =>
+          marked (e₀.symm j)).card =
+          ((Finset.univ : Finset P).filter fun x => marked x).card := by
+      apply Finset.card_bij (fun j _ => e₀.symm j)
+      · intro j hj
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+          (Finset.mem_filter.mp hj).2⟩
+      · intro j _ k _ hjk
+        exact e₀.symm.injective hjk
+      · intro x hx
+        refine ⟨e₀ x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩, by simp⟩
+        simpa using (Finset.mem_filter.mp hx).2
+    simpa [hcardEq] using h
+
 /-- Graph-facing specialization: any mate involution on the eight neighbors
 of the high root admits the exact branch numbering used by `family_gen.py`. -/
 theorem exists_oneHigh_branchLabeling_intertwining_mate
@@ -89,6 +156,66 @@ theorem exists_oneHigh_branchLabeling_intertwining_mate
   apply exists_equiv_finEight_intertwining_involution hPcard mate hmateInv
   intro s hfix
   exact G.loopless.irrefl s.1 (congrArg Subtype.val hfix ▸ hmateAdj s)
+
+/-- Generator-facing branch ordering: all A pairs occur first, and their
+one-edge endpoint is the even block.  B pairs follow.  Thus a graph with `a`
+A pairs is labeled exactly as `AAAA`, `AAAB`, `AABB`, `ABBB`, or `BBBB`
+according as `a = 4,3,2,1,0`. -/
+theorem exists_oneHigh_branchLabeling_familyOrdered
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1) :
+    ∃ e : {z : V // z ∈ G.neighborSet v} ≃ Fin 8,
+      (∀ s, e (mate s) = oneHighStandardMate (e s)) ∧
+      ∀ i,
+        decide (highBranchMatchedCount G v (e.symm i) = 2) =
+          decide (i.val % 2 = 0 ∧
+            i.val / 2 < ((Finset.univ :
+              Finset {z : V // z ∈ G.neighborSet v}).filter fun s =>
+                highBranchMatchedCount G v s = 2).card) := by
+  let P := {z : V // z ∈ G.neighborSet v}
+  have hPcard : Fintype.card P = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  let marked : P → Bool := fun s =>
+    decide (highBranchMatchedCount G v s = 2)
+  have hfix : ∀ s, mate s ≠ s := by
+    intro s h
+    exact G.loopless.irrefl s.1 (congrArg Subtype.val h ▸ (hmateAdj s).symm)
+  have hpair : ∀ s, marked s = true → marked (mate s) = false := by
+    intro s hs
+    have hs2 : highBranchMatchedCount G v s = 2 := by
+      simpa [marked] using hs
+    have hp := paired_highBranchMatchedCount_profile
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s
+    have hm4 : highBranchMatchedCount G v (mate s) = 4 := by
+      rcases hp with hp | hp | hp
+      · exact hp.2
+      · omega
+      · omega
+    simp [marked, hm4]
+  obtain ⟨e, heMate, heMarked⟩ :=
+    exists_equiv_finEight_intertwining_involution_marked
+      hPcard mate hmateInv hfix marked hpair
+  refine ⟨e, heMate, ?_⟩
+  intro i
+  have h := heMarked i
+  simpa [marked] using h
 
 /-! ## Canonical labels inside a five-point branch -/
 
