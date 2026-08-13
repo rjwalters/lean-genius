@@ -200,8 +200,8 @@ import Proofs.Erdos85DegreeSixEmptySector
 
 -- d=6 cover closures (3,12) + (3,18) + (3,6) checkpoints (..9d9db4f708)
 #print axioms Erdos85.false_of_degreeSix_threeTwelve_partition_dispatch
-#print axioms Erdos85.false_of_degreeSix_threeTwelve_two_order
-#print axioms Erdos85.false_of_degreeSix_threeTwelve_one_order
+#print axioms Erdos85.false_of_degreeSix_threeTwelve_two_orderThree_branch
+#print axioms Erdos85.false_of_degreeSix_threeTwelve_one_orderSix_branch
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_twelve
 #print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_eighteen
 #print axioms Erdos85.degreeSix_threeSix_residual_profile
