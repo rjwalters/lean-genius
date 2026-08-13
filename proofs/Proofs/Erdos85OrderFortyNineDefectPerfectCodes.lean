@@ -409,6 +409,24 @@ noncomputable instance orderFortyNineLeafDefectGraphDecidableRel
     DecidableRel (orderFortyNineLeafDefectGraph G v).Adj :=
   Classical.decRel _
 
+/-- The leaf layer outside a degree-eight vertex has forty vertices. -/
+theorem orderFortyNine_card_leafLayer_eq_forty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8) :
+    Fintype.card {y : V // y ≠ v ∧ ¬ G.Adj v y} = 40 := by
+  rw [Fintype.card_subtype]
+  have heq : (Finset.univ.filter fun y : V => y ≠ v ∧ ¬ G.Adj v y) =
+      Finset.univ \ insert v (G.neighborFinset v) := by
+    ext y
+    simp [SimpleGraph.mem_neighborFinset]
+  rw [heq, Finset.card_sdiff]
+  have hsubset : insert v (G.neighborFinset v) ∩ Finset.univ =
+      insert v (G.neighborFinset v) := by simp
+  rw [hsubset, Finset.card_univ, hcard,
+    Finset.card_insert_of_notMem (by simp),
+    G.card_neighborFinset_eq_degree, hv]
+
 /-- The leaf defect graph is 5-regular in the one-high stratum. -/
 theorem orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
     {V : Type*} [Fintype V] [DecidableEq V]
