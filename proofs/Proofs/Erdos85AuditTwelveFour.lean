@@ -181,6 +181,18 @@ import Proofs.Erdos85DegreeSixColorSectorSplit
 #print axioms Erdos85.false_of_degreeSix_orderSix_singleton
 #print axioms Erdos85.false_of_degreeSix_triangleFreeCycleSector_singleton
 
+-- d=6 empty-sector seams: trace witness, odd profile, odd-even cover
+-- enumeration + first three cover terminals (recovery b3f1dbec78)
+#print axioms Erdos85.degreeSix_exists_positive_diagonal_component
+#print axioms Erdos85.degreeSix_oddComponent_profile
+#print axioms Erdos85.degreeSix_exists_odd_to_even_positive_quotient
+#print axioms Erdos85.degreeSix_exists_odd_to_even_quotient_ge_two
+#print axioms Erdos85.degreeSix_exists_odd_to_even_cover
+#print axioms Erdos85.degreeSix_odd_to_even_cover_order_cases
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_seven_fourteen
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_nine_eighteen
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_eleven_twentyTwo
+
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two

@@ -1770,6 +1770,498 @@ theorem degreeSix_orderThree_zeroDiagonal_profile
   rw [he3, hte, mul_one] at hbal
   exact hbal.symm
 
+/-- An odd-order component has row mass six and diagonal two-step mass
+`|e|+3`. Detailed balance additionally forces every quotient entry from it
+to an even-order target to be even. This is the correct arbitrary-order
+replacement for the stronger order-three zero-diagonal profile. -/
+theorem degreeSix_oddComponent_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (e : (secondOrderDefectGraph G).ConnectedComponent)
+    (heOdd : Odd e.supp.ncard) :
+    (∑ t, componentQuotientMatrix G (secondOrderDefectGraph G) e t) = 6 ∧
+    (∑ t, componentQuotientMatrix G (secondOrderDefectGraph G) e t *
+      componentQuotientMatrix G (secondOrderDefectGraph G) t e) =
+        e.supp.ncard + 3 ∧
+    ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      Even t.supp.ncard →
+        Even (componentQuotientMatrix G (secondOrderDefectGraph G) e t) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hrow : (∑ t, Q e t) = 6 :=
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e
+  have hsquare := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e e
+  have hproduct : (∑ t, Q e t * Q t e) = e.supp.ncard + 3 := by
+    simpa [Q, Matrix.mul_apply, Nat.add_comm] using hsquare
+  refine ⟨hrow, hproduct, ?_⟩
+  intro t htEven
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) e t
+  have hprodEven : Even (e.supp.ncard * Q e t) := by
+    rw [hbal]
+    exact htEven.mul_right _
+  exact (Nat.even_mul.mp hprodEven).resolve_left
+    (Nat.not_even_iff_odd.mpr heOdd)
+
+/-- Any positive-entry walk from an odd-sized index to an even-sized index
+crosses the odd/even cut in one positive step. -/
+theorem exists_odd_to_even_step_of_positive_walk
+    {C : Type*} (Q : C → C → ℕ) (size : C → ℕ) (o c : C)
+    (hoOdd : Odd (size o)) (hcEven : Even (size c))
+    (hwalk : Relation.ReflTransGen (fun a b ↦ 0 < Q a b) o c) :
+    ∃ a b, Odd (size a) ∧ Even (size b) ∧ 0 < Q a b := by
+  have hprop : ∀ {b : C},
+      Relation.ReflTransGen (fun x y ↦ 0 < Q x y) o b →
+      Even (size b) →
+      ∃ a z, Odd (size a) ∧ Even (size z) ∧ 0 < Q a z := by
+    intro b hab hbEven
+    induction hab with
+    | refl => exact absurd hbEven (Nat.not_even_iff_odd.mpr hoOdd)
+    | @tail a b hab hpos ih =>
+        by_cases haEven : Even (size a)
+        · exact ih haEven
+        · exact ⟨a, b, Nat.not_even_iff_odd.mp haEven, hbEven, hpos⟩
+  exact hprop hwalk hcEven
+
+/-- If the degree-six quotient contains both an odd-order and an even-order
+component, irreducibility supplies a positive quotient edge crossing from an
+odd component to an even component. -/
+theorem degreeSix_exists_odd_to_even_positive_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  letI : Nonempty V := Fintype.card_pos_iff.mp (by rw [hcard]; norm_num)
+  have hwalk := secondOrder_componentQuotientMatrix_irreducible_clean
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) o c
+  exact exists_odd_to_even_step_of_positive_walk
+    (componentQuotientMatrix G (secondOrderDefectGraph G))
+      (fun t ↦ t.supp.ncard) o c hoOdd hcEven hwalk
+
+/-- The odd-to-even cut edge has quotient multiplicity at least two: its
+entry is both positive by irreducibility and even by detailed balance. -/
+theorem degreeSix_exists_odd_to_even_quotient_ge_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+        2 ≤ componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  obtain ⟨a, b, haOdd, hbEven, habPos⟩ :=
+    degreeSix_exists_odd_to_even_positive_quotient
+      G hfree hmin hcard o c hoOdd hcEven
+  have habEven := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).2.2 b hbEven
+  exact ⟨a, b, haOdd, hbEven, by
+    rcases habEven with ⟨k, hk⟩
+    omega⟩
+
+/-- The first odd-to-even cut edge is an exact integral cover. Its forward
+multiplicity is one of `2,4,6`, the reverse multiplicity is one, and the
+target order is the source order times that forward multiplicity. -/
+theorem degreeSix_exists_odd_to_even_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      Odd a.supp.ncard ∧ Even b.supp.ncard ∧
+      (componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2 ∨
+       componentQuotientMatrix G (secondOrderDefectGraph G) a b = 4 ∨
+       componentQuotientMatrix G (secondOrderDefectGraph G) a b = 6) ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1 ∧
+      b.supp.ncard = a.supp.ncard *
+        componentQuotientMatrix G (secondOrderDefectGraph G) a b := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  obtain ⟨a, b, haOdd, hbEven, hab2⟩ :=
+    degreeSix_exists_odd_to_even_quotient_ge_two
+      G hfree hmin hcard o c hoOdd hcEven
+  change 2 ≤ Q a b at hab2
+  have habPos : 0 < Q a b := by omega
+  have hdiv := secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b habPos
+  have habDvd : a.supp.ncard ∣ b.supp.ncard := by
+    rcases hdiv with hab | hba
+    · exact hab
+    · exfalso
+      rcases hba with ⟨k, hk⟩
+      have haEven : Even a.supp.ncard := by
+        rw [hk]
+        exact hbEven.mul_right k
+      exact (Nat.not_even_iff_odd.mpr haOdd) haEven
+  have habNe : a.supp.ncard ≠ b.supp.ncard := by
+    intro h
+    have haEven : Even a.supp.ncard := h ▸ hbEven
+    exact (Nat.not_even_iff_odd.mpr haOdd) haEven
+  have habLt : a.supp.ncard < b.supp.ncard :=
+    lt_of_le_of_ne (Nat.le_of_dvd b.nonempty_supp.ncard_pos habDvd) habNe
+  have hentries := secondOrder_componentQuotientMatrix_entries_of_size_lt
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b habLt habPos
+  have hrow := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).1
+  change (∑ t, Q a t) = 6 at hrow
+  have habLe : Q a b ≤ 6 := by
+    have hsingle : Q a b ≤ ∑ t, Q a t :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ b)
+    omega
+  have habEven := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a haOdd).2.2 b hbEven
+  change Even (Q a b) at habEven
+  have habCases : Q a b = 2 ∨ Q a b = 4 ∨ Q a b = 6 := by
+    rcases habEven with ⟨k, hk⟩
+    omega
+  exact ⟨a, b, haOdd, hbEven, habCases, hentries.1, hentries.2.2.symm⟩
+
+/-- On 33 vertices the odd-to-even cover has one of eight exact order
+shapes. -/
+theorem degreeSix_odd_to_even_cover_order_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (o c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hoOdd : Odd o.supp.ncard) (hcEven : Even c.supp.ncard) :
+    ∃ a b : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1 ∧
+      ((a.supp.ncard = 3 ∧ b.supp.ncard = 6) ∨
+       (a.supp.ncard = 5 ∧ b.supp.ncard = 10) ∨
+       (a.supp.ncard = 7 ∧ b.supp.ncard = 14) ∨
+       (a.supp.ncard = 9 ∧ b.supp.ncard = 18) ∨
+       (a.supp.ncard = 11 ∧ b.supp.ncard = 22) ∨
+       (a.supp.ncard = 3 ∧ b.supp.ncard = 12) ∨
+       (a.supp.ncard = 5 ∧ b.supp.ncard = 20) ∨
+       (a.supp.ncard = 3 ∧ b.supp.ncard = 18)) := by
+  obtain ⟨a, b, haOdd, hbEven, habQ, hba, hsize⟩ :=
+    degreeSix_exists_odd_to_even_cover
+      G hfree hmin hcard o c hoOdd hcEven
+  have hab : a ≠ b := by
+    intro h
+    subst b
+    exact (Nat.not_even_iff_odd.mpr haOdd) hbEven
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have habSum := two_distinct_terms_le_sum
+    (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard) hab
+  rw [htotal] at habSum
+  have ha3 := hr a
+  refine ⟨a, b, hba, ?_⟩
+  rcases haOdd with ⟨k, hk⟩
+  rcases habQ with h2 | h4 | h6
+  · rw [h2] at hsize
+    have : a.supp.ncard ≤ 11 := by omega
+    interval_cases a.supp.ncard <;> omega
+  · rw [h4] at hsize
+    have : a.supp.ncard ≤ 6 := by omega
+    interval_cases a.supp.ncard <;> omega
+  · rw [h6] at hsize
+    have : a.supp.ncard ≤ 4 := by omega
+    interval_cases a.supp.ncard <;> omega
+
+/-- The `(11,22)` odd-to-even cover exhausts all 33 vertices but leaves the
+order-eleven row four units short. -/
+theorem false_of_degreeSix_oddEven_cover_eleven_twentyTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha11 : a.supp.ncard = 11) (hb22 : b.supp.ncard = 22)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a a = 0 at haa
+  change Q a b = 2 at hab
+  have habNe : a ≠ b := by intro h; subst b; omega
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ t.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun t ↦ t.supp.ncard) hbIn
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hRsize : (∑ t ∈ R, t.supp.ncard) = 0 := by
+    dsimp [R]
+    omega
+  have hRempty : R = ∅ := by
+    apply Finset.card_eq_zero.mp
+    have hlower : (∑ _t ∈ R, 3) ≤ ∑ t ∈ R, t.supp.ncard :=
+      Finset.sum_le_sum fun t ht ↦ hr t
+    simp only [Finset.sum_const_nat] at hlower
+    omega
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrow
+  change (∑ t, Q a t) = 6 at hrow
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hRrow : (∑ t ∈ R, Q a t) = 0 := by simp [hRempty]
+  dsimp [R] at hRrow
+  rw [haa] at hrA
+  rw [hab] at hrB
+  omega
+
+set_option maxHeartbeats 1000000 in
+/-- The `(9,18)` odd-to-even cover leaves total order six. One unused
+order-six component is incommensurable with order nine; two unused triangles
+would each violate their diagonal square budget. -/
+theorem false_of_degreeSix_oddEven_cover_nine_eighteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha9 : a.supp.ncard = 9) (hb18 : b.supp.ncard = 18)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a a = 0 at haa
+  change Q a b = 2 at hab
+  have habNe : a ≠ b := by intro h; subst b; omega
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ t.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun t ↦ t.supp.ncard) hbIn
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hRsize : (∑ t ∈ R, t.supp.ncard) = 6 := by
+    dsimp [R]
+    omega
+  have hclass := component_orders_sum_six_classification R
+    (fun t ↦ t.supp.ncard) (fun t _ ↦ hr t) hRsize
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ t, Q a t) = 6 at hrow
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  rcases hclass with ⟨f, hR, hf6⟩ | ⟨f, g, hfg, hR, hf3, hg3⟩
+  · have haf : Q a f = 0 := by
+      by_contra hne
+      have hpos : 0 < Q a f := Nat.pos_of_ne_zero hne
+      rcases secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) a f hpos with hdvd | hdvd
+      · rw [ha9, hf6] at hdvd
+        norm_num at hdvd
+      · rw [ha9, hf6] at hdvd
+        norm_num at hdvd
+    have hRrow : (∑ t ∈ R, Q a t) = Q a f := by simp [hR]
+    dsimp [R] at hRrow
+    rw [haa] at hrA
+    rw [hab] at hrB
+    rw [haf] at hRrow
+    omega
+  · have hRrow : (∑ t ∈ R, Q a t) = Q a f + Q a g := by
+      simp [hR, hfg]
+    dsimp [R] at hRrow
+    have hsumFG : Q a f + Q a g = 4 := by
+      rw [haa] at hrA
+      rw [hab] at hrB
+      omega
+    have hafBal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a f
+    have hagBal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a g
+    change a.supp.ncard * Q a f = f.supp.ncard * Q f a at hafBal
+    change a.supp.ncard * Q a g = g.supp.ncard * Q g a at hagBal
+    rw [ha9, hf3] at hafBal
+    rw [ha9, hg3] at hagBal
+    have hfProd := (degreeSix_oddComponent_profile
+      G hfree hmin hcard f (by rw [hf3]; norm_num)).2.1
+    have hgProd := (degreeSix_oddComponent_profile
+      G hfree hmin hcard g (by rw [hg3]; norm_num)).2.1
+    change (∑ t, Q f t * Q t f) = f.supp.ncard + 3 at hfProd
+    change (∑ t, Q g t * Q t g) = g.supp.ncard + 3 at hgProd
+    have hfTerm : Q f a * Q a f ≤ 6 := by
+      have hsingle : Q f a * Q a f ≤ ∑ t, Q f t * Q t f :=
+        Finset.single_le_sum (f := fun t ↦ Q f t * Q t f)
+          (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ a)
+      rw [hf3] at hfProd
+      omega
+    have hgTerm : Q g a * Q a g ≤ 6 := by
+      have hsingle : Q g a * Q a g ≤ ∑ t, Q g t * Q t g :=
+        Finset.single_le_sum (f := fun t ↦ Q g t * Q t g)
+          (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ a)
+      rw [hg3] at hgProd
+      omega
+    have hfforce : Q a f = 2 ∧ Q a g = 2 := by
+      rcases (show Q a f ≤ 4 ∧ Q a g ≤ 4 by omega) with ⟨hf4, hg4⟩
+      constructor <;> nlinarith
+    rcases hfforce with ⟨haf2, hag2⟩
+    rw [haf2] at hafBal hfTerm
+    rw [hag2] at hagBal hgTerm
+    norm_num at hafBal hagBal
+    omega
+
+/-- The `(7,14)` cover leaves order mass twelve. Any further positive target
+of the order-seven row must itself have order seven, so there can be only one;
+the remaining row multiplicity four then exceeds the diagonal square budget. -/
+theorem false_of_degreeSix_oddEven_cover_seven_fourteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent, 3 ≤ t.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha7 : a.supp.ncard = 7) (hb14 : b.supp.ncard = 14)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a a = 0 at haa
+  change Q a b = 2 at hab
+  have habNe : a ≠ b := by intro h; subst b; omega
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ (Finset.univ.erase a : Finset _) :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun t ↦ t.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun t ↦ t.supp.ncard) hbIn
+  have htotal : (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hRsize : (∑ t ∈ R, t.supp.ncard) = 12 := by
+    dsimp [R]
+    omega
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrow
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hRrow : (∑ t ∈ R, Q a t) = 4 := by
+    rw [haa] at hrA
+    rw [hab] at hrB
+    dsimp [R]
+    omega
+  have hRne : (∑ t ∈ R, Q a t) ≠ 0 := by omega
+  obtain ⟨t, htR, htne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hRne
+  have htpos : 0 < Q a t := Nat.pos_of_ne_zero htne
+  have target_order_seven (z : _) (hzR : z ∈ R) (hzpos : 0 < Q a z) :
+      z.supp.ncard = 7 := by
+    have hzle : z.supp.ncard ≤ ∑ w ∈ R, w.supp.ncard :=
+      Finset.single_le_sum (f := fun w ↦ w.supp.ncard)
+        (fun _ _ ↦ Nat.zero_le _) hzR
+    have hzle12 : z.supp.ncard ≤ 12 := by omega
+    have hz3 := hr z
+    have hzdiv := secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a z hzpos
+    rw [ha7] at hzdiv
+    interval_cases h : z.supp.ncard <;> try {rfl} <;> norm_num [h] at hzdiv
+  have ht7 := target_order_seven t htR htpos
+  have hzero : ∀ z ∈ R.erase t, Q a z = 0 := by
+    intro z hz
+    have hzt : z ≠ t := (Finset.mem_erase.mp hz).1
+    have hzR : z ∈ R := (Finset.mem_erase.mp hz).2
+    by_contra hne
+    have hzpos : 0 < Q a z := Nat.pos_of_ne_zero hne
+    have hz7 := target_order_seven z hzR hzpos
+    have htSplit := Finset.sum_erase_add R
+      (fun w ↦ w.supp.ncard) htR
+    have hzErase : z ∈ R.erase t := Finset.mem_erase.mpr ⟨hzt, hzR⟩
+    have hzle : z.supp.ncard ≤ ∑ w ∈ R.erase t, w.supp.ncard :=
+      Finset.single_le_sum (f := fun w ↦ w.supp.ncard)
+        (fun _ _ ↦ Nat.zero_le _) hzErase
+    omega
+  have htSplit := Finset.sum_erase_add R (Q a) htR
+  have hrest : (∑ z ∈ R.erase t, Q a z) = 0 := by
+    apply Finset.sum_eq_zero
+    intro z hz
+    exact hzero z hz
+  have hqat : Q a t = 4 := by omega
+  have hbal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a t
+  change a.supp.ncard * Q a t = t.supp.ncard * Q t a at hbal
+  rw [ha7, ht7, hqat] at hbal
+  have haProd := (degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha7]; norm_num)).2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at haProd
+  have hterm : Q a t * Q t a ≤ 10 := by
+    have hsingle : Q a t * Q t a ≤ ∑ z, Q a z * Q z a :=
+      Finset.single_le_sum (f := fun z ↦ Q a z * Q z a)
+        (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ t)
+    rw [ha7] at haProd
+    omega
+  rw [hqat] at hterm
+  omega
+
 /-- Triangle-free defect degree two propagates across a second-order defect
 edge. -/
 theorem triangleFree_degree_two_of_secondOrder_adj
@@ -4377,6 +4869,29 @@ theorem false_of_degreeSix_triangleFreeCycleSector_singleton
       G hfree hmin hcard u hu huRange huD hr c hsector h12
   · exact false_of_degreeSix_orderFifteen_singleton
       G hfree hmin hcard u hu huRange huD hr c hsector h15
+
+/-- The global nonsquare trace forces at least one second-order component
+with a positive diagonal quotient entry. -/
+theorem degreeSix_exists_positive_diagonal_component
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
+  have htrace := secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hne : (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+      componentQuotientMatrix G (secondOrderDefectGraph G) c c) ≠ 0 := by
+    rw [htrace]
+    norm_num
+  obtain ⟨c, _, hc⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
+  exact ⟨c, Nat.pos_of_ne_zero hc⟩
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
