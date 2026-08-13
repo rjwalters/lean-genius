@@ -1833,6 +1833,63 @@ theorem card_oneHighEncodedFarNeighbors_eq_familyFarDegree
         (Fin.divNat (m := 8) (n := 5) i)
         (Fin.modNat (m := 8) (n := 5) i) := by rw [hb, hr]
 
+/-- Internal adjacency in literal Fin40 coordinates is exactly the unit-edge
+pattern emitted by `family_gen.py` for the selected family word. -/
+theorem oneHighRelabeledLeafGraph_adj_eq_familyInternal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (twoEdges : {z : V // z ∈ G.neighborSet v} → Bool)
+    (leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+      secondLayerBranch G v s ≃ Fin 5)
+    (hcanonical : ∀ s x y, decide (G.Adj x.1 y.1) =
+      oneHighCanonicalBranchAdj (twoEdges s)
+        (leafLabel s x) (leafLabel s y))
+    (a : Nat)
+    (hword : ∀ i, twoEdges (branchLabel.symm i) =
+      oneHighFamilyTwoEdges a i)
+    (i j : Fin 40)
+    (hblock : Fin.divNat (m := 8) (n := 5) i =
+      Fin.divNat (m := 8) (n := 5) j) :
+    let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    decide (R.Adj i j) =
+      oneHighCanonicalBranchAdj
+        (oneHighFamilyTwoEdges a (Fin.divNat (m := 8) (n := 5) i))
+        (Fin.modNat (m := 8) (n := 5) i)
+        (Fin.modNat (m := 8) (n := 5) j) := by
+  let E := oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel
+  let x := E.symm i
+  let y := E.symm j
+  let sx := oneHighBranchOwner G v x
+  let sy := oneHighBranchOwner G v y
+  have hbi := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel x
+  have hbj := oneHighLeafFinFortyEquiv_divNat
+    G hfree v branchLabel leafLabel y
+  have hri := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel x
+  have hrj := oneHighLeafFinFortyEquiv_modNat
+    G hfree v branchLabel leafLabel y
+  rw [E.apply_symm_apply] at hbi hri
+  rw [E.apply_symm_apply] at hbj hrj
+  have hsxy : sx = sy := by
+    apply branchLabel.injective
+    rw [← hbi, ← hbj]
+    exact hblock
+  have hw := hword (branchLabel sx)
+  rw [branchLabel.symm_apply_apply] at hw
+  have hc := hcanonical sx
+    ⟨x.1, oneHighBranchOwner_mem G v x⟩
+    ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩
+  change decide (G.Adj x.1 y.1) = _
+  rw [hc, hw, ← hbi, ← hri]
+  have hrj' : Fin.modNat (m := 8) (n := 5) j =
+      leafLabel sx ⟨y.1, hsxy ▸ oneHighBranchOwner_mem G v y⟩ := by
+    simpa [sx, sy, hsxy] using hrj
+  rw [← hrj']
+
 /-- A raw one-high graph admits all coordinate choices used by the family
 generator simultaneously: one mate involution, a family-ordered standard
 Fin8 labeling, and lex-sorted canonical Fin5 labels in every branch. -/
