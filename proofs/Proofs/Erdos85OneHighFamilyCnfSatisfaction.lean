@@ -1686,6 +1686,48 @@ noncomputable def oneHighFamilyCollectFarInputsVal
   (oneHighFamilyFarVertices y).foldl
     (fun input x => oneHighFamilyCollectEdgeVal R y x input) (#[], acc)
 
+theorem oneHighFamilyCollectEdgeVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y x : Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyCollectEdgeVal R y x input
+    let raw :=
+      let (id, st) := oneHighFamilyEdgeId y x input.2.1
+      (input.1.push (id : Int), st)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  rcases input with ⟨vars, st, val⟩
+  simp only [oneHighFamilyCollectEdgeVal, oneHighFamilyEdgeIdVal,
+    oneHighFamilyEdgeId]
+  generalize hv : oneHighFamilyAtomIdVal R
+    (.edge (min y x) (max y x)) (st, val) = outVal
+  rcases outVal with ⟨idVal, stVal, val'⟩
+  generalize hs : oneHighFamilyAtomId
+    (.edge (min y x) (max y x)) st = out
+  rcases out with ⟨id, st'⟩
+  have hid := oneHighFamilyAtomIdVal_id R
+    (.edge (min y x) (max y x)) st val
+  have hstate := oneHighFamilyAtomIdVal_state R
+    (.edge (min y x) (max y x)) st val
+  rw [hv, hs] at hid hstate
+  exact ⟨by simp_all, by simp_all⟩
+
+theorem oneHighFamilyCollectEdgesListVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (y : Nat) (xs : List Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := xs.foldl
+      (fun input x => oneHighFamilyCollectEdgeVal R y x input) input
+    let raw := xs.foldl (fun input x =>
+      let (id, st) := oneHighFamilyEdgeId y x input.2
+      (input.1.push (id : Int), st)) (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction xs generalizing input with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyCollectEdgeVal_projection R y x input
+      have hi := ih (oneHighFamilyCollectEdgeVal R y x input)
+      rcases hp with ⟨hvars, hst⟩
+      simpa [hvars, hst] using hi
+
 theorem oneHighFamilyCollectEdgesListVal_sound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (y : Nat) (xs : List Nat)
@@ -1795,6 +1837,37 @@ theorem oneHighFamilyFarVertices_nodup (y : Nat) :
     (oneHighFamilyFarVertices y).Nodup := by
   exact (List.nodup_range : (List.range 40).Nodup).filter _
 
+theorem mem_oneHighEncodedFarNeighbors_iff_farVertices
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {y x : Nat} (hy : y < 40) (hx : x < 40) :
+    (⟨x, hx⟩ : Fin 40) ∈
+        oneHighEncodedFarNeighbors R (⟨y, hy⟩ : Fin 40) ↔
+      x ∈ oneHighFamilyFarVertices y ∧
+        R.Adj (⟨y, hy⟩ : Fin 40) (⟨x, hx⟩ : Fin 40) := by
+  rw [oneHighFamilyFarVertices_mem_iff hy]
+  simp only [oneHighEncodedFarNeighbors, Finset.mem_filter,
+    Finset.mem_univ, true_and, Fin.divNat]
+  constructor
+  · rintro ⟨ha, hblock, hmate⟩
+    refine ⟨⟨hx, ?_, ?_, ?_⟩, ha⟩
+    · intro hxy
+      subst x
+      exact hblock rfl
+    · intro heq
+      apply hblock
+      exact Fin.ext heq
+    · intro heq
+      apply hmate
+      exact Fin.ext heq
+  · rintro ⟨⟨_, _, hblock, hmate⟩, ha⟩
+    refine ⟨ha, ?_, ?_⟩
+    · intro heq
+      apply hblock
+      exact congrArg Fin.val heq
+    intro heq
+    apply hmate
+    exact congrArg Fin.val heq
+
 theorem oneHighFamilyCollectedFar_trueCard
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {y : Nat} (hy : y < 40) {acc : OneHighFamilyValState}
@@ -1835,6 +1908,59 @@ theorem oneHighFamilyCollectedFar_trueCard
       simp [e, xs])
   exact Fintype.card_congr ep
 
+theorem oneHighFamilyFarNeighborSubtype_card
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {y : Nat} (hy : y < 40) :
+    Fintype.card {z : {x // x ∈ oneHighFamilyFarVertices y} //
+      R.Adj (⟨y, hy⟩ : Fin 40) ⟨z.1, by
+        exact (oneHighFamilyFarVertices_mem_iff hy).mp z.2 |>.1⟩} =
+      (oneHighEncodedFarNeighbors R (⟨y, hy⟩ : Fin 40)).card := by
+  rw [← Fintype.card_coe]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun z =>
+      let hx := (oneHighFamilyFarVertices_mem_iff hy).mp z.1.2 |>.1
+      ⟨⟨z.1.1, hx⟩,
+        (mem_oneHighEncodedFarNeighbors_iff_farVertices R hy hx).mpr
+          ⟨z.1.2, z.2⟩⟩
+    invFun := fun z =>
+      let hz := (mem_oneHighEncodedFarNeighbors_iff_farVertices R hy z.1.2).mp z.2
+      ⟨⟨z.1.1, hz.1⟩, hz.2⟩
+    left_inv := by intro z; ext; rfl
+    right_inv := by intro z; ext; rfl }
+
+theorem oneHighFamilyCollectFarInputsVal_count
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {y : Nat} (hy : y < 40) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    let input := oneHighFamilyCollectFarInputsVal R y acc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+      oneHighFamilyFarDegreeBound a y := by
+  let input := oneHighFamilyCollectFarInputsVal R y acc
+  have hfar := hc.relation.2.2.2.2.2.1 (⟨y, hy⟩ : Fin 40)
+  calc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        ((Finset.range input.1.size).filter fun i =>
+          dimacsLitValue input.2.2 (input.1.getD i 0)).card := by
+            exact seqPrefixTrue_oneHighFamilyLiteralRow input.2.2 input.1
+    _ = Fintype.card {i : Fin input.1.size //
+          oneHighFamilyInputAccumRow input i = true} := by
+            rw [← finsetRangeFilter_card_eq_finSubtype_card input.1.size
+              (fun i => oneHighFamilyInputAccumRow input i = true)]
+            congr 1
+            ext i
+            simp [oneHighFamilyInputAccumRow, oneHighFamilyLiteralRow]
+    _ = Fintype.card {z : {x // x ∈ oneHighFamilyFarVertices y} //
+          R.Adj (⟨y, hy⟩ : Fin 40) ⟨z.1, by
+            exact (oneHighFamilyFarVertices_mem_iff hy).mp z.2 |>.1⟩} :=
+          oneHighFamilyCollectedFar_trueCard R hy hacc
+    _ = (oneHighEncodedFarNeighbors R (⟨y, hy⟩ : Fin 40)).card :=
+          oneHighFamilyFarNeighborSubtype_card R hy
+    _ = oneHighFamilyFarDegreeBound a y := by
+          rw [hfar]
+          exact (oneHighFamilyFarDegreeBound_eq a y hy).symm
+
 theorem oneHighFamilyEqualsBlockVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {st : OneHighFamilyGenState} {val : DimacsValuation}
@@ -1851,5 +1977,80 @@ theorem oneHighFamilyEqualsBlockVal_semanticSound
   · exact oneHighFamilyEqualsBlockVal_reifies R h.ids h.named vars x bound
   · simpa [oneHighFamilyEqualsBlockVal, oneHighFamilyEqualsBlock] using hblock.1
   · simpa [oneHighFamilyEqualsBlockVal, oneHighFamilyEqualsBlock] using hblock.2.1
+
+noncomputable def oneHighFamilyFarDegreeStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a y : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let input := oneHighFamilyCollectFarInputsVal R y acc
+  oneHighFamilyEqualsBlockVal input.1 (oneHighFamilyInputAccumRow input)
+    (oneHighFamilyFarDegreeBound a y) input.2
+
+theorem oneHighFamilyFarDegreeStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {y : Nat} (hy : y < 40) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyFarDegreeStepVal R a y acc) := by
+  let input := oneHighFamilyCollectFarInputsVal R y acc
+  apply oneHighFamilyEqualsBlockVal_semanticSound R
+    (oneHighFamilyCollectFarInputsVal_sound R hacc y).semantic
+  · exact oneHighFamilyInputAccum_reifies R
+      (oneHighFamilyCollectFarInputsVal_sound R hacc y)
+  · exact oneHighFamilyCollectFarInputsVal_count a R hc hy hacc
+
+theorem oneHighFamilyFarDegreeStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a y : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyFarDegreeStepVal R a y acc).1 =
+      oneHighFamilyFarDegreeStep a y acc.1 := by
+  have hp := oneHighFamilyCollectEdgesListVal_projection R y
+    (oneHighFamilyFarVertices y) (#[], acc)
+  unfold oneHighFamilyFarDegreeStepVal oneHighFamilyCollectFarInputsVal
+  unfold oneHighFamilyFarDegreeStep
+  generalize hv : (oneHighFamilyFarVertices y).foldl
+    (fun input x => oneHighFamilyCollectEdgeVal R y x input) (#[], acc) = input
+  rcases input with ⟨vars, st, val⟩
+  rw [hv] at hp
+  generalize hs : (oneHighFamilyFarVertices y).foldl (fun input x =>
+    let (id, st) := oneHighFamilyEdgeId y x input.2
+    (input.1.push (id : Int), st)) (#[], acc.1) = raw
+  rcases raw with ⟨rawVars, rawSt⟩
+  rw [hs] at hp
+  rcases hp with ⟨rfl, rfl⟩
+  simp
+
+noncomputable def oneHighFamilyFarDegreeClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 40)
+    (oneHighFamilyFarDegreeStepVal R a)
+    (oneHighFamilyAtMostOneBlockClausesVal R a val)
+
+theorem oneHighFamilyFarDegreeClausesVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyFarDegreeClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyAtMostOneBlockClausesVal_semanticSound a R hc val)
+  intro y hy acc hacc
+  exact oneHighFamilyFarDegreeStepVal_semanticSound a R hc
+    (List.mem_range.mp hy) hacc
+
+theorem oneHighFamilyFarDegreeClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyFarDegreeClausesVal R a val).1 =
+      oneHighFamilyFarDegreeClauses a := by
+  unfold oneHighFamilyFarDegreeClausesVal oneHighFamilyFarDegreeClauses
+  calc
+    _ = oneHighFamilyRunList (List.range 40)
+        (oneHighFamilyFarDegreeStep a)
+        (oneHighFamilyAtMostOneBlockClausesVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun y acc => oneHighFamilyFarDegreeStepVal_state R a y acc)
+    _ = _ := by rw [oneHighFamilyAtMostOneBlockClausesVal_state]
 
 end Erdos85
