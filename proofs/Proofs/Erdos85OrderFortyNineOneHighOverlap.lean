@@ -1,5 +1,7 @@
 import Proofs.Erdos85OrderFortyNineHighBranchGeometry
 import Proofs.Erdos85ExteriorDefectDecomposition
+import Proofs.Erdos85LocalTriangleParity
+import Proofs.Erdos85OrderFortyNineDistOnePinning
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -319,6 +321,82 @@ theorem orderFortyNineOneHighOverlap_eq_zero_of_centerAdj
     exact ⟨hst.symm, hsy.symm⟩
   rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hzero
   exact hzero s.1 hsCommon
+
+/-- The diagonal overlap at a center is exactly the set of triangle-free
+neighbors of that center. -/
+theorem orderFortyNine_branch_inter_ownFiber_eq_triangleFreeNeighbors
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    secondLayerBranch G v s ∩ orderFortyNineDefectOwnerFiber G v s =
+      triangleFreeNeighbors G s.1 := by
+  ext y
+  constructor
+  · intro hy
+    have hyParts := Finset.mem_inter.mp hy
+    have hsy : G.Adj s.1 y :=
+      (G.mem_neighborFinset s.1 y).1 (Finset.mem_sdiff.mp hyParts.1).1
+    have hDsy : (secondOrderDefectGraph G).Adj s.1 y :=
+      ((secondOrderDefectGraph G).mem_neighborFinset s.1 y).1 hyParts.2
+    have hzero :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree ((secondOrderDefectGraph G).ne_of_adj hDsy)).1 hDsy
+    exact (mem_triangleFreeNeighbors G s.1 y).2 ⟨hsy, hzero⟩
+  · intro hy
+    have hyTF := (mem_triangleFreeNeighbors G s.1 y).1 hy
+    have hsv : G.Adj s.1 v := s.2.symm
+    have hyv : y ≠ v := by
+      intro hyv
+      subst y
+      obtain ⟨z, hsz, hvz⟩ :=
+        (orderFortyNine_existsUnique_local_partner_of_high
+          G hfree hmin hcard hv hsv).exists
+      have hzCommon : z ∈ G.neighborFinset s.1 ∩ G.neighborFinset v := by
+        simp [SimpleGraph.mem_neighborFinset, hsz, hvz]
+      rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hyTF
+      exact hyTF.2 z hzCommon
+    have hvy : ¬ G.Adj v y := by
+      intro hvy
+      have hvCommon : v ∈ G.neighborFinset s.1 ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+          SimpleGraph.mem_neighborFinset]
+        exact ⟨hsv, hvy.symm⟩
+      rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hyTF
+      exact hyTF.2 v hvCommon
+    have hyBranch : y ∈ secondLayerBranch G v s := by
+      exact Finset.mem_sdiff.mpr ⟨
+        (G.mem_neighborFinset s.1 y).2 hyTF.1,
+        by simp [SimpleGraph.mem_neighborFinset, hyv, hvy]⟩
+    have hDsy : (secondOrderDefectGraph G).Adj s.1 y :=
+      (secondOrderDefectGraph_adj_iff_card_common_eq_zero
+        G hfree (G.ne_of_adj hyTF.1)).2 hyTF.2
+    exact Finset.mem_inter.mpr ⟨hyBranch,
+      ((secondOrderDefectGraph G).mem_neighborFinset s.1 y).2 hDsy⟩
+
+/-- Every diagonal entry of the one-high overlap matrix is odd. -/
+theorem orderFortyNineOneHighOverlap_diag_mod_two_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    orderFortyNineOneHighOverlap G v s s % 2 = 1 := by
+  rw [orderFortyNineOneHighOverlap,
+    orderFortyNine_branch_inter_ownFiber_eq_triangleFreeNeighbors
+      G hfree hmin hcard hv s,
+    triangleFreeNeighbors_card_mod_two_eq_vertexDegree G hfree]
+  rw [orderFortyNine_neighbor_degree_seven_of_degreeEight
+    G hfree hmin hcard hv s.2]
 
 end
 
