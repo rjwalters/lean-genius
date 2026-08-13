@@ -1893,6 +1893,45 @@ theorem card_neighborToNeighborEdgeBlock_eq_adjMatrix_cube_apply
           simp [hax, hxy]
       · simp [hyb]
 
+/-- The diagonal neighborhood-edge block has even cardinality: it is the
+set of oriented edges of the graph induced on one neighborhood. -/
+theorem even_card_neighborToNeighborEdgeBlock_self
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj] (a : V) :
+    Even (neighborToNeighborEdgeBlock H a a).card := by
+  let S := {x : V | H.Adj a x}
+  let K := H.induce S
+  let U : Finset (S × S) := Finset.univ.filter fun xy => K.Adj xy.1 xy.2
+  have hcard : (neighborToNeighborEdgeBlock H a a).card = U.card := by
+    apply Finset.card_bij
+      (s := neighborToNeighborEdgeBlock H a a) (t := U)
+      (fun xy hxy =>
+        (⟨xy.1, by
+            have hp := (Finset.mem_filter.mp hxy).1
+            exact (H.mem_neighborFinset a xy.1).1
+              (Finset.mem_product.mp hp).1⟩,
+         ⟨xy.2, by
+            have hp := (Finset.mem_filter.mp hxy).1
+            exact (H.mem_neighborFinset a xy.2).1
+              (Finset.mem_product.mp hp).2⟩))
+    · intro xy hxy
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        (Finset.mem_filter.mp hxy).2⟩
+    · intro x _ y _ hxy
+      exact Prod.ext
+        (congrArg (fun z => z.1.1) hxy)
+        (congrArg (fun z => z.2.1) hxy)
+    · intro xy hxy
+      refine ⟨(xy.1.1, xy.2.1), ?_, rfl⟩
+      exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨
+        (H.mem_neighborFinset a xy.1.1).2 xy.1.2,
+        (H.mem_neighborFinset a xy.2.1).2 xy.2.2⟩,
+        (Finset.mem_filter.mp hxy).2⟩
+  have hU : 2 * K.edgeFinset.card = U.card := by
+    exact K.two_mul_card_edgeFinset
+  refine ⟨K.edgeFinset.card, ?_⟩
+  omega
+
 /-- Defect edges running between the two owner fibers centered at neighbors
 `s,t` of the unique high root. -/
 def orderFortyNineDefectOwnerEdgeBlock
@@ -1913,6 +1952,16 @@ theorem card_orderFortyNineDefectOwnerEdgeBlock_eq_defectCube_apply
           (secondOrderDefectGraph G).adjMatrix ℕ) s.1 t.1 := by
   exact card_neighborToNeighborEdgeBlock_eq_adjMatrix_cube_apply
     (secondOrderDefectGraph G) s.1 t.1
+
+/-- Every diagonal owner-fiber edge count, equivalently every diagonal entry
+of the defect cube on a center, is even. -/
+theorem even_card_orderFortyNineDefectOwnerEdgeBlock_self
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    Even (orderFortyNineDefectOwnerEdgeBlock G v s s).card := by
+  exact even_card_neighborToNeighborEdgeBlock_self
+    (secondOrderDefectGraph G) s.1
 
 /-- The center block of `D²` is `5I`: every defect-owner fiber has size five,
 and distinct fibers are disjoint. -/
