@@ -6314,6 +6314,100 @@ theorem false_of_degreeSix_orderSix_budget_orderFour_term
   rw [hqt, hrt] at hp
   nlinarith
 
+/-- The order-six component in a `(3,6)` cover cannot contact an order-four
+component once the other triangle contacts have been removed. -/
+theorem degreeSix_threeSix_orderSix_no_orderFour_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (b a t : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb6 : b.supp.ncard = 6) (ha3 : a.supp.ncard = 3)
+    (ht4 : t.supp.ncard = 4)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2)
+    (hzero3 : ∀ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z ≠ a → z.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) b z = 0 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) z b = 0) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let H := ((Finset.univ.erase b).erase a).filter
+    (fun z : (secondOrderDefectGraph G).ConnectedComponent ↦ z.supp.ncard ≠ 3)
+  change Q b t = 0
+  by_contra hbt
+  have hbtPos : 0 < Q b t := Nat.pos_of_ne_zero hbt
+  have htbNe : t ≠ b := by intro h; subst t; omega
+  have htaNe : t ≠ a := by intro h; subst t; omega
+  have htH : t ∈ H := by
+    simp [H, htbNe, htaNe, ht4]
+  have hbudget := degreeSix_orderSix_budget_after_three_cover
+    G hfree hmin hcard b a hb6 ha3 hba hab hzero3
+  change (∑ z ∈ H, Q b z) + Q b b = 5 ∧
+    (∑ z ∈ H, Q b z * Q z b) + Q b b * Q b b = 7 at hbudget
+  have htermLe : Q b t * Q t b ≤ 7 := by
+    have hsingle : Q b t * Q t b ≤ ∑ z ∈ H, Q b z * Q z b :=
+      Finset.single_le_sum (f := fun z ↦ Q b z * Q z b)
+        (fun _ _ ↦ Nat.zero_le _) htH
+    omega
+  have htb : Q t b = 3 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b t
+    change b.supp.ncard * Q b t = t.supp.ncard * Q t b at hbal
+    have hqle : Q b t ≤ 6 := by
+      have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) b
+      change (∑ z, Q b z) = 6 at hrow
+      have hsingle : Q b t ≤ ∑ z, Q b z :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ t)
+      exact hsingle.trans_eq hrow
+    have hrle : Q t b ≤ 7 := by
+      have hq1 : 1 ≤ Q b t := Nat.one_le_iff_ne_zero.mpr hbt
+      have hle : Q t b ≤ Q b t * Q t b := by
+        simpa [one_mul] using Nat.mul_le_mul_right (Q t b) hq1
+      omega
+    rw [hb6, ht4] at hbal
+    interval_cases Q b t <;> interval_cases Q t b <;> omega
+  have hbt2 : Q b t = 2 := by
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b t
+    change b.supp.ncard * Q b t = t.supp.ncard * Q t b at hbal
+    rw [hb6, ht4, htb] at hbal
+    omega
+  have hdom : ∀ z ∈ H, Q b z ≤ Q b z * Q z b := by
+    intro z hz
+    by_cases hq : Q b z = 0
+    · simp [hq]
+    · have hbal := secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) b z
+      change b.supp.ncard * Q b z = z.supp.ncard * Q z b at hbal
+      have hzPos := z.nonempty_supp.ncard_pos
+      have hrPos : 0 < Q z b := by
+        by_contra hn
+        push Not at hn
+        have hz0 : Q z b = 0 := by omega
+        rw [hz0] at hbal
+        have hzSizePos := z.nonempty_supp.ncard_pos
+        have hzero : b.supp.ncard = 0 ∨ Q b z = 0 :=
+          Nat.mul_eq_zero.mp (by omega)
+        rcases hzero with hb0 | hq0
+        · omega
+        · exact hq hq0
+      exact Nat.le_mul_of_pos_right (Q b z) hrPos
+  exact false_of_degreeSix_orderSix_budget_orderFour_term
+    H (Q b) (fun z ↦ Q z b) (Q b b) t htH hbt2 htb hdom
+      hbudget.1 hbudget.2
+
 /-- If the unused half receives two units, the contacted half receives zero,
 and the full residual row plus diagonal has mass five, then the diagonal is
 three.  This is incompatible with the order-six diagonal bound two. -/
