@@ -2358,6 +2358,32 @@ theorem orderFortyNine_twoThousandThreeHundredFour_dvd_squareCandidate_det_of_on
   rw [hdet, hk]
   ring
 
+/-- Exact determinant shape in the one-high stratum: the square candidate
+has determinant `2304 * k²`.  This is the directly executable rejection
+criterion for a finite defect-graph census. -/
+theorem orderFortyNine_squareCandidate_det_eq_2304_mul_sq_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ k : ℤ, (orderFortyNineSquareCandidate G).det = 2304 * k ^ 2 := by
+  rcases orderFortyNine_fortyEight_dvd_adjMatrix_det_of_one_high
+      G hfree hmin hcard hHigh hv with ⟨k, hk⟩
+  refine ⟨k, ?_⟩
+  have hdet : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin hcard]
+    rfl
+  rw [hdet, hk]
+  ring
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
