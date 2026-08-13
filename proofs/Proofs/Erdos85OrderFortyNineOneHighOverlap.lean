@@ -1948,6 +1948,120 @@ theorem orderFortyNineLeafComponentBranchIncidence_comm
     orderFortyNineLeafComponentBranchIncidence_eq_induced]
   exact orderFortyNineLeafComponentBranchIncidenceInduced_comm G v c s t
 
+/-- The eight original branch classes partition every leaf-defect connected
+component. -/
+theorem orderFortyNine_component_branchClasses_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent) :
+    let F := fun s : {z : V // z ∈ G.neighborSet v} =>
+      (Finset.univ : Finset c.supp).filter fun y =>
+        y.1.1 ∈ secondLayerBranch G v s
+    ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) : Set _).PairwiseDisjoint F ∧
+      (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion F =
+        Finset.univ := by
+  let F := fun s : {z : V // z ∈ G.neighborSet v} =>
+    (Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v s
+  constructor
+  · intro s _ t _ hst
+    apply Finset.disjoint_left.mpr
+    intro y hys hyt
+    exact Finset.disjoint_left.mp
+      (secondLayerBranch_pairwiseDisjoint G hfree v
+        (Finset.mem_univ s) (Finset.mem_univ t) hst)
+      (Finset.mem_filter.mp hys).2 (Finset.mem_filter.mp hyt).2
+  · apply Finset.eq_univ_of_forall
+    intro y
+    rw [Finset.mem_biUnion]
+    have hyOutside : y.1.1 ∈ Finset.univ \ insert v (G.neighborFinset v) := by
+      exact Finset.mem_sdiff.mpr ⟨Finset.mem_univ _, by
+        simp [y.1.2.1, y.1.2.2]⟩
+    have hySecond : y.1.1 ∈ secondLayer G v := by
+      rw [orderFortyNine_secondLayer_degreeEight_eq_compl_closedNeighborhood
+        G hfree hmin hcard hv]
+      exact hyOutside
+    rw [secondLayer, Finset.mem_biUnion] at hySecond
+    obtain ⟨s, _, hys⟩ := hySecond
+    exact ⟨s, Finset.mem_univ _,
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, hys⟩⟩
+
+/-- Every vertex in branch `s` contributes its five component neighbors to
+exactly one target branch, so a component incidence row sums to five times
+the component branch census. -/
+theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_five_mul_census
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (∑ t, orderFortyNineLeafComponentBranchIncidence G v c s t) =
+      orderFortyNineLeafComponentBranchCensus G v c s * 5 := by
+  let H := (orderFortyNineLeafDefectGraph G v).induce c.supp
+  let S : Finset c.supp := Finset.univ.filter fun x =>
+    x.1.1 ∈ secondLayerBranch G v s
+  let F := fun t : {z : V // z ∈ G.neighborSet v} =>
+    (Finset.univ : Finset c.supp).filter fun y =>
+      y.1.1 ∈ secondLayerBranch G v t
+  have hpart := orderFortyNine_component_branchClasses_partition
+    G hfree hmin hcard hv c
+  have hdeg : ∀ x : c.supp, H.degree x = 5 := by
+    intro x
+    rw [show H.degree x = (orderFortyNineLeafDefectGraph G v).degree x.1 by
+      exact degree_induce_connectedComponent_supp
+        (orderFortyNineLeafDefectGraph G v) c x]
+    exact orderFortyNine_leafDefectGraph_degree_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv x.1
+  simp_rw [orderFortyNineLeafComponentBranchIncidence_eq_induced]
+  change (∑ t, ∑ x ∈ S, (H.neighborFinset x ∩ F t).card) = _
+  rw [Finset.sum_comm]
+  calc
+    (∑ x ∈ S, ∑ t, (H.neighborFinset x ∩ F t).card) =
+        ∑ _x ∈ S, 5 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      have hpair : ((Finset.univ : Finset {z : V // z ∈ G.neighborSet v}) :
+          Set _).PairwiseDisjoint (fun t => H.neighborFinset x ∩ F t) := by
+        intro t _ u _ htu
+        apply Finset.disjoint_left.mpr
+        intro y hyt hyu
+        exact Finset.disjoint_left.mp
+          (hpart.1 (Finset.mem_univ t) (Finset.mem_univ u) htu)
+          (Finset.mem_inter.mp hyt).2 (Finset.mem_inter.mp hyu).2
+      rw [← Finset.card_biUnion hpair]
+      have hunion :
+          (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion
+              (fun t => H.neighborFinset x ∩ F t) = H.neighborFinset x := by
+        ext y
+        simp only [Finset.mem_biUnion, Finset.mem_inter, Finset.mem_univ,
+          true_and]
+        constructor
+        · rintro ⟨t, hy, _⟩
+          exact hy
+        · intro hy
+          have hyU : y ∈
+              (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion F := by
+            rw [hpart.2]
+            exact Finset.mem_univ y
+          rw [Finset.mem_biUnion] at hyU
+          obtain ⟨t, _, hyt⟩ := hyU
+          exact ⟨t, hy, hyt⟩
+      rw [hunion, H.card_neighborFinset_eq_degree, hdeg]
+    _ = orderFortyNineLeafComponentBranchCensus G v c s * 5 := by
+      simp [S, orderFortyNineLeafComponentBranchCensus]
+
 /-- Directed cross-branch incidences decompose exactly over connected
 components. -/
 theorem sum_orderFortyNineLeafComponentBranchIncidence_eq_global
