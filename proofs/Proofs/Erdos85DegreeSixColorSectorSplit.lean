@@ -910,6 +910,64 @@ theorem degreeSix_orderTwelve_two_orderSix_targets_le_one
   have := hbound hperiod
   simpa [D, es, hef] using this
 
+/-- Components of a common order `n` have the same cycle-block period in a
+source component.  If that period is nonzero in the source cycle, their
+combined quotient multiplicity is at most one. -/
+theorem degreeSix_sameOrder_targets_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent, NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (es : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (n : ℕ) (hc3 : 3 ≤ c.supp.ncard) (hn3 : 3 ≤ n)
+    (hn : ∀ t ∈ es, t.supp.ncard = n)
+    (hn0 : (n : ZMod c.supp.ncard) ≠ 0) :
+    ∑ t ∈ es, componentQuotientMatrix G (secondOrderDefectGraph G) c t ≤ 1 := by
+  let D := secondOrderDefectGraph G
+  have hbound := sum_componentQuotientMatrix_le_one_of_periodic
+    G D hfree c (u c) (hu c) (huRange c) (n : ZMod c.supp.ncard) hn0 es
+  have hperiod : ∀ t ∈ es, ∀ z y, D.connectedComponentMk y = t →
+      (G.Adj (u c (z + n)) y ↔ G.Adj (u c z) y) := by
+    intro t ht z y hy
+    have hyrange : y ∈ Set.range (u t) := by
+      rw [huRange t]
+      exact (SimpleGraph.ConnectedComponent.mem_supp_iff t y).mpr hy
+    obtain ⟨j, rfl⟩ := hyrange
+    have htN := hn t ht
+    have ht3 : 3 ≤ t.supp.ncard := by omega
+    have hupair : ∀ a : ZMod c.supp.ncard,
+        u c (a - 1) ≠ u c (a + 1) := by
+      intro a
+      exact (hu c).ne (zmod_sub_one_ne_add_one_of_three_le hc3 a)
+    have hvpair : ∀ b : ZMod t.supp.ncard,
+        u t (b - 1) ≠ u t (b + 1) := by
+      intro b
+      exact (hu t).ne (zmod_sub_one_ne_add_one_of_three_le ht3 b)
+    have hinter := entry_cycleIntertwine_of_adjMatrix_comm G D
+      (u c) (u t) (1 : ZMod c.supp.ncard) (1 : ZMod t.supp.ncard)
+      (adjMatrix_comm_secondOrderDefect_of_even
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard))
+      (huD c) (huD t) hupair hvpair
+    have hp := adj_iff_add_targetOrder_of_entry_cycleIntertwine
+      G (u c) (u t) (1 : ZMod c.supp.ncard)
+        (1 : ZMod t.supp.ncard) hinter z j
+    simp only [ZMod.addOrderOf_one, htN, nsmul_eq_mul, mul_one] at hp
+    exact hp
+  exact hbound hperiod
+
 /-- An order-six defect component has diagonal quotient at most three.  In
 the forward orientation the Sidon bound gives two; in the reverse orientation
 looplessness restricts the zero row to the three opposite-parity phases. -/
@@ -1573,6 +1631,57 @@ theorem contact_filter_counts_of_sum_three
     simpa [one_mul] using hdecomp.symm.trans hsum
   exact contact_count_partition_of_weight_three _ _ _ hweighted
 
+/-- Filter-count form of the five partitions of a nonnegative finite row
+whose total mass is four. -/
+theorem contact_filter_counts_of_sum_four
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q : C → ℕ) (hsum : (∑ t ∈ S, q t) = 4) :
+    let n1 := (S.filter fun t ↦ q t = 1).card
+    let n2 := (S.filter fun t ↦ q t = 2).card
+    let n3 := (S.filter fun t ↦ q t = 3).card
+    let n4 := (S.filter fun t ↦ q t = 4).card
+    (n1 = 4 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 2 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1) := by
+  dsimp
+  have hqle : ∀ t ∈ S, q t ≤ 4 := by
+    intro t ht
+    have hsingle : q t ≤ ∑ x ∈ S, q x :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hpoint : ∀ t ∈ S, q t =
+      (if q t = 1 then 1 else 0) +
+      (if q t = 2 then 2 else 0) +
+      (if q t = 3 then 3 else 0) +
+      (if q t = 4 then 4 else 0) := by
+    intro t ht
+    have := hqle t ht
+    interval_cases q t <;> simp_all
+  have hsumConst (p : C → Prop) [DecidablePred p] (k : ℕ) :
+      (∑ t ∈ S, if p t then k else 0) = k * (S.filter p).card := by
+    rw [← Finset.sum_filter]
+    simp [mul_comm]
+  have hweighted :
+      (S.filter fun t ↦ q t = 1).card +
+      2 * (S.filter fun t ↦ q t = 2).card +
+      3 * (S.filter fun t ↦ q t = 3).card +
+      4 * (S.filter fun t ↦ q t = 4).card = 4 := by
+    have hdecomp := Finset.sum_congr rfl hpoint
+    simp only [Finset.sum_add_distrib] at hdecomp
+    rw [hsumConst (fun t ↦ q t = 1) 1,
+      hsumConst (fun t ↦ q t = 2) 2,
+      hsumConst (fun t ↦ q t = 3) 3,
+      hsumConst (fun t ↦ q t = 4) 4] at hdecomp
+    simpa [one_mul] using hdecomp.symm.trans hsum
+  have hn2 : (S.filter fun t ↦ q t = 2).card ≤ 2 := by omega
+  have hn3 : (S.filter fun t ↦ q t = 3).card ≤ 1 := by omega
+  have hn4 : (S.filter fun t ↦ q t = 4).card ≤ 1 := by omega
+  interval_cases (S.filter fun t ↦ q t = 4).card <;>
+    interval_cases (S.filter fun t ↦ q t = 3).card <;>
+    interval_cases (S.filter fun t ↦ q t = 2).card <;> omega
+
 /-- The seven partitions of five, encoded by multiplicities of parts
 `1,...,5`. -/
 theorem contact_count_partition_of_weight_five
@@ -1805,6 +1914,398 @@ theorem false_of_degreeSix_orderTwelve_heavy_budget_large_contact
     (q r : ℕ) (hprod : q * r ≤ 11)
     (hlarge : q * r = 12 ∨ q * r = 20) : False := by
   omega
+
+/-- If every positive entry of a mass-five row has value one, and component
+orders are three times row entries, then the non-order-three heavy filter is
+empty. -/
+theorem heavy_filter_empty_of_mass_five_all_single
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size : C → ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrow : (∑ t ∈ S, q t) = 5)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 0)
+    (h3 : (S.filter fun t ↦ q t = 3).card = 0)
+    (h4 : (S.filter fun t ↦ q t = 4).card = 0)
+    (h5 : (S.filter fun t ↦ q t = 5).card = 0) :
+    S.filter (fun t ↦ size t ≠ 3) = ∅ := by
+  apply Finset.not_nonempty_iff_eq_empty.mp
+  intro hne
+  obtain ⟨t, htH⟩ := hne
+  have ht := (Finset.mem_filter.mp htH).1
+  have htNe := (Finset.mem_filter.mp htH).2
+  have hqle : q t ≤ 5 := by
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  have hqnot (k : ℕ) (hk : (S.filter fun z ↦ q z = k).card = 0) :
+      q t ≠ k := by
+    intro hq
+    have : t ∈ S.filter fun z ↦ q z = k :=
+      Finset.mem_filter.mpr ⟨ht, hq⟩
+    have hempty := Finset.card_eq_zero.mp hk
+    rw [hempty] at this
+    simp at this
+  have hqt : q t = 1 := by
+    have := hpos t ht
+    have hn2 := hqnot 2 h2
+    have hn3 := hqnot 3 h3
+    have hn4 := hqnot 4 h4
+    have hn5 := hqnot 5 h5
+    omega
+  exact htNe (by rw [hsize t ht, hqt])
+
+/-- Complete abstract terminal for the all-single partition of the
+`(3,12)` triangle branch. -/
+theorem false_of_degreeSix_threeTwelve_all_single_partition
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size xb rb : C → ℕ) (z : ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrowQ : (∑ t ∈ S, q t) = 5)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 0)
+    (h3 : (S.filter fun t ↦ q t = 3).card = 0)
+    (h4 : (S.filter fun t ↦ q t = 4).card = 0)
+    (h5 : (S.filter fun t ↦ q t = 5).card = 0)
+    (hrowB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3), xb t) + z = 5)
+    (hprodB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3),
+      xb t * rb t) + z * z = 11) : False := by
+  have hH := heavy_filter_empty_of_mass_five_all_single
+    S q size hpos hsize hrowQ h2 h3 h4 h5
+  rw [hH] at hrowB hprodB
+  simp at hrowB hprodB
+  exact false_of_degreeSix_orderTwelve_heavy_budget_empty z hrowB hprodB
+
+/-- A mass-five profile with one non-single entry has a singleton heavy
+filter, and the heavy component order is three times that entry. -/
+theorem heavy_filter_eq_single_of_unique_non_single
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size : C → ℕ) (u : C) (k : ℕ)
+    (hk : 2 ≤ k)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (htype : ∀ t ∈ S, q t = 1 ∨ q t = k)
+    (hfilter : S.filter (fun t ↦ q t = k) = {u}) :
+    S.filter (fun t ↦ size t ≠ 3) = {u} ∧
+      size u = 3 * k ∧ q u = k := by
+  have huFilter : u ∈ S.filter (fun t ↦ q t = k) := by
+    rw [hfilter]
+    simp
+  have huS : u ∈ S := (Finset.mem_filter.mp huFilter).1
+  have hqu : q u = k := (Finset.mem_filter.mp huFilter).2
+  have hsu : size u = 3 * k := by rw [hsize u huS, hqu]
+  have huHeavy : u ∈ S.filter (fun t ↦ size t ≠ 3) := by
+    refine Finset.mem_filter.mpr ⟨huS, ?_⟩
+    rw [hsu]
+    omega
+  have hsubset : S.filter (fun t ↦ size t ≠ 3) ⊆ {u} := by
+    intro t ht
+    have htS := (Finset.mem_filter.mp ht).1
+    have htNe := (Finset.mem_filter.mp ht).2
+    rcases htype t htS with hq1 | hqk
+    · exact (htNe (by rw [hsize t htS, hq1])).elim
+    · have htFilter : t ∈ S.filter (fun z ↦ q z = k) :=
+        Finset.mem_filter.mpr ⟨htS, hqk⟩
+      rw [hfilter] at htFilter
+      simpa using htFilter
+  refine ⟨Finset.Subset.antisymm hsubset ?_, hsu, hqu⟩
+  intro t ht
+  have htu : t = u := by simpa using ht
+  subst t
+  exact huHeavy
+
+/-- Uniform singleton-heavy terminal.  The heavy order is `3k` for
+`2 ≤ k ≤ 5`; detailed balance with the order-twelve component and the
+two residual budgets are inconsistent in every case. -/
+theorem false_of_degreeSix_threeTwelve_single_heavy_partition
+    (k z q r : ℕ) (hk2 : 2 ≤ k) (hk5 : k ≤ 5)
+    (hbal : 12 * q = (3 * k) * r)
+    (hrow : q + z = 5) (hprod : q * r + z * z = 11) : False := by
+  by_cases hq0 : q = 0
+  · rw [hq0] at hrow hprod
+    norm_num at hrow hprod
+    exact false_of_degreeSix_orderTwelve_heavy_budget_empty z hrow hprod
+  · have hqpos : 0 < q := Nat.pos_of_ne_zero hq0
+    have hq5 : q ≤ 5 := by omega
+    have hrpos : 0 < r := by
+      by_contra hr0
+      push Not at hr0
+      have hrz : r = 0 := by omega
+      rw [hrz] at hbal
+      omega
+    have hprodLe : q * r ≤ 11 := by omega
+    have hsize : 3 * k = 6 ∨ 3 * k = 9 ∨ 3 * k = 12 ∨ 3 * k = 15 := by
+      interval_cases k <;> omega
+    have htype := degreeSix_orderTwelve_heavy_contact_type_arithmetic
+      (3 * k) q r hsize hqpos hq5 hrpos hprodLe hbal
+    rcases htype with h6a | h6b | h12a | h12b | h12c
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_six
+        z q r (Or.inl h6a.2) hrow hprod
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_six
+        z q r (Or.inr h6b.2) hrow hprod
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inl h12a.2.1) hrow
+          (by simpa [h12a.2.1, h12a.2.2] using hprod)
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inr (Or.inl h12b.2.1)) hrow
+          (by simpa [h12b.2.1, h12b.2.2] using hprod)
+    · exact false_of_degreeSix_orderTwelve_heavy_budget_single_twelve
+        z q (Or.inr (Or.inr h12c.2.1)) hrow
+          (by simpa [h12c.2.1, h12c.2.2] using hprod)
+
+/-- Uniform terminal for the two-heavy partitions `[3,2]` and `[2,2,1]`.
+Each heavy order is three times its source-triangle multiplicity. -/
+theorem false_of_degreeSix_threeTwelve_two_heavy_partition
+    (k l z q r x y : ℕ)
+    (hkl : (k = 2 ∧ l = 2) ∨ (k = 2 ∧ l = 3) ∨
+      (k = 3 ∧ l = 2))
+    (hbalQ : 12 * q = (3 * k) * r)
+    (hbalX : 12 * x = (3 * l) * y)
+    (hrow : q + x + z = 5)
+    (hprod : q * r + x * y + z * z = 11) : False := by
+  have classify (m q' r' : ℕ) (hm : m = 2 ∨ m = 3)
+      (hbal : 12 * q' = (3 * m) * r')
+      (hqle : q' ≤ 5) (hple : q' * r' ≤ 11) :
+      (q' = 0 ∧ r' = 0) ∨
+      (m = 2 ∧ q' = 1 ∧ r' = 2) ∨
+      (m = 2 ∧ q' = 2 ∧ r' = 4) := by
+    by_cases hq0 : q' = 0
+    · have hr0 : r' = 0 := by
+        rw [hq0] at hbal
+        rcases hm with rfl | rfl <;> norm_num at hbal ⊢
+        all_goals omega
+      exact Or.inl ⟨hq0, hr0⟩
+    · have hqpos : 0 < q' := Nat.pos_of_ne_zero hq0
+      have hrpos : 0 < r' := by
+        by_contra hr0
+        push Not at hr0
+        have hrz : r' = 0 := by omega
+        rw [hrz] at hbal
+        omega
+      have hsize : 3 * m = 6 ∨ 3 * m = 9 ∨ 3 * m = 12 ∨ 3 * m = 15 := by
+        rcases hm with rfl | rfl <;> omega
+      have ht := degreeSix_orderTwelve_heavy_contact_type_arithmetic
+        (3 * m) q' r' hsize hqpos hqle hrpos hple hbal
+      rcases ht with h | h | h | h | h
+      · exact Or.inr (Or.inl ⟨by omega, h.2⟩)
+      · exact Or.inr (Or.inr ⟨by omega, h.2⟩)
+      · exfalso; rcases hm with rfl | rfl <;> omega
+      · exfalso; rcases hm with rfl | rfl <;> omega
+      · exfalso; rcases hm with rfl | rfl <;> omega
+  have hk : k = 2 ∨ k = 3 := by rcases hkl with h | h | h <;> omega
+  have hl : l = 2 ∨ l = 3 := by rcases hkl with h | h | h <;> omega
+  have hqle : q ≤ 5 := by omega
+  have hxle : x ≤ 5 := by omega
+  have hqprod : q * r ≤ 11 := by omega
+  have hxprod : x * y ≤ 11 := by omega
+  have hqt := classify k q r hk hbalQ hqle hqprod
+  have hxt := classify l x y hl hbalX hxle hxprod
+  rcases hqt with hq0 | hq1 | hq2 <;>
+    rcases hxt with hx0 | hx1 | hx2 <;> simp_all <;> nlinarith
+
+/-- Zero cardinality of a value filter excludes that value at every point
+of the ambient finset. -/
+theorem ne_value_of_filter_card_zero
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (k : ℕ) (hk : (S.filter fun t ↦ q t = k).card = 0) :
+    ∀ t ∈ S, q t ≠ k := by
+  intro t ht hq
+  have hm : t ∈ S.filter fun z ↦ q z = k :=
+    Finset.mem_filter.mpr ⟨ht, hq⟩
+  have hempty := Finset.card_eq_zero.mp hk
+  rw [hempty] at hm
+  simp at hm
+
+/-- Under a mass-five row bound, excluding the other values forces every
+entry to be either one or the designated heavy value `k`. -/
+theorem one_or_designated_of_mass_five_filter_zeros
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (k : ℕ) (hk2 : 2 ≤ k) (hk5 : k ≤ 5)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hrow : (∑ t ∈ S, q t) = 5)
+    (hzero : ∀ j, 2 ≤ j → j ≤ 5 → j ≠ k →
+      (S.filter fun t ↦ q t = j).card = 0) :
+    ∀ t ∈ S, q t = 1 ∨ q t = k := by
+  intro t ht
+  have hqle : q t ≤ 5 := by
+    have hsingle : q t ≤ ∑ z ∈ S, q z :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) ht
+    omega
+  by_cases hqk : q t = k
+  · exact Or.inr hqk
+  · left
+    by_contra hq1
+    have hq2 : 2 ≤ q t := by have := hpos t ht; omega
+    exact ne_value_of_filter_card_zero S q (q t)
+      (hzero (q t) hq2 hqle hqk) t ht rfl
+
+/-- Abstract master dispatch for the seven partitions in the two-triangle
+branch of `(3,12)`. -/
+theorem false_of_degreeSix_threeTwelve_partition_dispatch
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size xb rb : C → ℕ) (z : ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrowQ : (∑ t ∈ S, q t) = 5)
+    (hbal : ∀ t ∈ S, 12 * xb t = size t * rb t)
+    (hrowB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3), xb t) + z = 5)
+    (hprodB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3),
+      xb t * rb t) + z * z = 11)
+    (hparts :
+      let n1 := (S.filter fun t ↦ q t = 1).card
+      let n2 := (S.filter fun t ↦ q t = 2).card
+      let n3 := (S.filter fun t ↦ q t = 3).card
+      let n4 := (S.filter fun t ↦ q t = 4).card
+      let n5 := (S.filter fun t ↦ q t = 5).card
+      (n1 = 5 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 3 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 1 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 2 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 0 ∧ n2 = 1 ∧ n3 = 1 ∧ n4 = 0 ∧ n5 = 0) ∨
+      (n1 = 1 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1 ∧ n5 = 0) ∨
+      (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0 ∧ n5 = 1)) : False := by
+  dsimp at hparts
+  rcases hparts with h11111 | h2111 | h221 | h311 | h32 | h41 | h5
+  · exact false_of_degreeSix_threeTwelve_all_single_partition
+      S q size xb rb z hpos hsize hrowQ h11111.2.1 h11111.2.2.1
+        h11111.2.2.2.1 h11111.2.2.2.2 hrowB hprodB
+  · have hfilter2 := Finset.card_eq_one.mp h2111.2.1
+    obtain ⟨u, hu⟩ := hfilter2
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 2 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 2 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      2 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          have := Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 2) by rw [hu]; simp)
+          exact this.1)) hrowB hprodB
+  · obtain ⟨u, v, huv, huvset⟩ := Finset.card_eq_two.mp h221.2.1
+    have huF : u ∈ S.filter (fun t ↦ q t = 2) := by rw [huvset]; simp
+    have hvF : v ∈ S.filter (fun t ↦ q t = 2) := by rw [huvset]; simp
+    have huS := (Finset.mem_filter.mp huF).1
+    have hvS := (Finset.mem_filter.mp hvF).1
+    have hqu := (Finset.mem_filter.mp huF).2
+    have hqv := (Finset.mem_filter.mp hvF).2
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 2 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH : S.filter (fun t ↦ size t ≠ 3) = {u, v} := by
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro hw
+        rcases htype w hw.1 with hq1 | hq2
+        · exact (hw.2 (by rw [hsize w hw.1, hq1])).elim
+        · have : w ∈ S.filter (fun z ↦ q z = 2) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq2⟩
+          rw [huvset] at this
+          simpa using this
+      · intro hw
+        rcases hw with hwu | hwv
+        · subst w
+          exact ⟨huS, by rw [hsize u huS, hqu]; norm_num⟩
+        · subst w
+          exact ⟨hvS, by rw [hsize v hvS, hqv]; norm_num⟩
+    rw [hH] at hrowB hprodB
+    simp [huv] at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_two_heavy_partition
+      2 2 z (xb u) (rb u) (xb v) (rb v) (Or.inl ⟨rfl, rfl⟩)
+        (by simpa [hsize u huS, hqu] using hbal u huS)
+        (by simpa [hsize v hvS, hqv] using hbal v hvS) hrowB hprodB
+  · have hfilter3 := Finset.card_eq_one.mp h311.2.2.1
+    obtain ⟨u, hu⟩ := hfilter3
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 3 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 3 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      3 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 3) by rw [hu]; simp)).1))
+        hrowB hprodB
+  · obtain ⟨u, hu⟩ := Finset.card_eq_one.mp h32.2.1
+    obtain ⟨v, hv⟩ := Finset.card_eq_one.mp h32.2.2.1
+    have huF : u ∈ S.filter (fun t ↦ q t = 2) := by rw [hu]; simp
+    have hvF : v ∈ S.filter (fun t ↦ q t = 3) := by rw [hv]; simp
+    have huS := (Finset.mem_filter.mp huF).1
+    have hvS := (Finset.mem_filter.mp hvF).1
+    have hqu := (Finset.mem_filter.mp huF).2
+    have hqv := (Finset.mem_filter.mp hvF).2
+    have huv : u ≠ v := by intro h; subst v; omega
+    have hH : S.filter (fun t ↦ size t ≠ 3) = {u, v} := by
+      ext w
+      simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+      constructor
+      · intro hw
+        have hqle : q w ≤ 5 := by
+          have hs : q w ≤ ∑ z ∈ S, q z :=
+            Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) hw.1
+          omega
+        have hn4 := ne_value_of_filter_card_zero S q 4 h32.2.2.2.1 w hw.1
+        have hn5 := ne_value_of_filter_card_zero S q 5 h32.2.2.2.2 w hw.1
+        rcases (show q w = 1 ∨ q w = 2 ∨ q w = 3 by
+          have := hpos w hw.1; omega) with hq1 | hq2 | hq3
+        · exact (hw.2 (by rw [hsize w hw.1, hq1])).elim
+        · have hm : w ∈ S.filter (fun z ↦ q z = 2) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq2⟩
+          rw [hu] at hm
+          exact Or.inl (by simpa using hm)
+        · have hm : w ∈ S.filter (fun z ↦ q z = 3) :=
+            Finset.mem_filter.mpr ⟨hw.1, hq3⟩
+          rw [hv] at hm
+          exact Or.inr (by simpa using hm)
+      · intro hw
+        rcases hw with hwu | hwv
+        · subst w
+          exact ⟨huS, by rw [hsize u huS, hqu]; norm_num⟩
+        · subst w
+          exact ⟨hvS, by rw [hsize v hvS, hqv]; norm_num⟩
+    rw [hH] at hrowB hprodB
+    simp [huv] at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_two_heavy_partition
+      2 3 z (xb u) (rb u) (xb v) (rb v) (Or.inr (Or.inl ⟨rfl, rfl⟩))
+        (by simpa [hsize u huS, hqu] using hbal u huS)
+        (by simpa [hsize v hvS, hqv] using hbal v hvS) hrowB hprodB
+  · have hfilter4 := Finset.card_eq_one.mp h41.2.2.2.1
+    obtain ⟨u, hu⟩ := hfilter4
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 4 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 4 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      4 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 4) by rw [hu]; simp)).1))
+        hrowB hprodB
+  · have hfilter5 := Finset.card_eq_one.mp h5.2.2.2.2
+    obtain ⟨u, hu⟩ := hfilter5
+    have htype := one_or_designated_of_mass_five_filter_zeros
+      S q 5 (by norm_num) (by norm_num) hpos hrowQ (by
+        intro j hj2 hj5 hjne
+        interval_cases j <;> simp_all)
+    have hH := heavy_filter_eq_single_of_unique_non_single
+      S q size u 5 (by norm_num) hpos hsize htype hu
+    rw [hH.1] at hrowB hprodB
+    simp at hrowB hprodB
+    exact false_of_degreeSix_threeTwelve_single_heavy_partition
+      5 z (xb u) (rb u) (by norm_num) (by norm_num)
+        (by simpa [hH.2.1] using hbal u (by
+          exact (Finset.mem_filter.mp (show u ∈ S.filter (fun t ↦ q t = 5) by rw [hu]; simp)).1))
+        hrowB hprodB
 
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
@@ -3620,6 +4121,1006 @@ theorem degreeSix_orderTwelve_heavy_budget_after_three_cover
     · simp [ht3]
   exact ⟨by rw [← hRtoH]; exact hRrow,
     by rw [← hRprodToH]; exact hRprod⟩
+
+/-- The two-order-three branch of the `(3,12)` cover is impossible.  The
+order-three profile gives one of the seven partitions of five, while grouped
+periodicity removes all triangle contacts from the order-twelve row; its row
+and square budgets then contradict the corresponding abstract terminal. -/
+theorem false_of_degreeSix_threeTwelve_two_orderThree_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ t.supp.ncard)
+    (e a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (he3 : e.supp.ncard = 3) (ha3 : a.supp.ncard = 3)
+    (hb12 : b.supp.ncard = 12) (hea : e ≠ a) (heb : e ≠ b)
+    (habNe : a ≠ b)
+    (hee : componentQuotientMatrix G (secondOrderDefectGraph G) e e = 0)
+    (heaQ : componentQuotientMatrix G (secondOrderDefectGraph G) e a = 1)
+    (haeQ : componentQuotientMatrix G (secondOrderDefectGraph G) a e = 1)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    ((Finset.univ.erase e).erase a).erase b
+  have hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ a → t.supp.ncard = 3 → Q b t = 0 ∧ Q t b = 0 := by
+    intro t hta ht3
+    exact degreeSix_orderTwelve_no_other_orderThree_contact
+      G hfree hmin hcard u hu huRange huD b a t hb12 ha3 ht3 hta.symm hba
+  have hebZero := hzero3 e hea he3
+  have hprofile := degreeSix_orderThree_after_twelve_cover_profile
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb habNe hee heaQ haeQ
+      hebZero.2 hebZero.1
+  change (∑ t ∈ S, Q e t) = 5 ∧ _ at hprofile
+  have hparts := degreeSix_orderThree_after_twelve_cover_partition_counts
+    G hfree hmin hcard hr e a b he3 ha3 hb12 hea heb habNe hee heaQ haeQ
+      hebZero.2 hebZero.1
+  change (let n1 := (S.filter fun t ↦ Q e t = 1).card
+    let n2 := (S.filter fun t ↦ Q e t = 2).card
+    let n3 := (S.filter fun t ↦ Q e t = 3).card
+    let n4 := (S.filter fun t ↦ Q e t = 4).card
+    let n5 := (S.filter fun t ↦ Q e t = 5).card
+    _) at hparts
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  change Q b a = 1 at hba
+  have hab : Q a b = 4 := by rw [ha3, hb12, hba] at habBal; omega
+  have hbudget := degreeSix_orderTwelve_heavy_budget_after_three_cover
+    G hfree hmin hcard b a hb12 ha3 hba hab hzero3
+  let H := ((Finset.univ.erase b).erase a).filter
+    (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard ≠ 3)
+  change (∑ t ∈ H, Q b t) + Q b b = 5 ∧
+    (∑ t ∈ H, Q b t * Q t b) + Q b b * Q b b = 11 at hbudget
+  have hHS : H = S.filter (fun t ↦ t.supp.ncard ≠ 3) := by
+    ext t
+    simp only [H, S, Finset.mem_filter, Finset.mem_erase, Finset.mem_univ,
+      and_true]
+    constructor
+    · rintro ⟨⟨hta, htb⟩, ht3⟩
+      exact ⟨⟨htb, hta, fun hte => ht3 (hte ▸ he3)⟩, ht3⟩
+    · rintro ⟨⟨htb, hta, hte⟩, ht3⟩
+      exact ⟨⟨hta, htb⟩, ht3⟩
+  rw [hHS] at hbudget
+  exact false_of_degreeSix_threeTwelve_partition_dispatch
+    S (Q e) (fun t ↦ t.supp.ncard) (Q b) (fun t ↦ Q t b) (Q b b)
+      (fun t ht ↦ (hprofile.2 t ht).1)
+      (fun t ht ↦ (hprofile.2 t ht).2.2)
+      hprofile.1
+      (fun t _ ↦ by
+        have hbal := secondOrder_componentQuotientMatrix_balance
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) b t
+        simpa [Q, hb12] using hbal)
+      hbudget.1 hbudget.2 hparts
+
+/-- Terminal for the one-order-six branch of `(3,12)`: if every component
+in the unused order-twelve mass has order three or six and the forced
+order-six component sends quotient two to the order-twelve component, then
+grouped periodicity annihilates the entire unused part of the order-twelve
+row.  Its diagonal would have to be four, already exceeding its square
+budget. -/
+theorem false_of_degreeSix_threeTwelve_one_orderSix_threeSix_remainder
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (a b t : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (ht6 : t.supp.ncard = 6) (habNe : a ≠ b) (hatNe : a ≠ t)
+    (hbtNe : b ≠ t)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 4)
+    (htb : componentQuotientMatrix G (secondOrderDefectGraph G) t b = 2)
+    (hrem : ∀ z ∈ (((Finset.univ.erase a).erase b).erase t),
+      z.supp.ncard = 3 ∨ z.supp.ncard = 6) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (((Finset.univ.erase a).erase b).erase t)
+  change Q b a = 1 at hba
+  change Q a b = 4 at hab
+  change Q t b = 2 at htb
+  have hbalBT := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b t
+  change b.supp.ncard * Q b t = t.supp.ncard * Q t b at hbalBT
+  have hbt : Q b t = 1 := by rw [hb12, ht6, htb] at hbalBT; omega
+  have hzeroR : ∀ z ∈ R, Q b z = 0 := by
+    intro z hz
+    rcases hrem z hz with hz3 | hz6
+    · have hza : z ≠ a := by
+        exact (Finset.mem_erase.mp (Finset.mem_erase.mp
+          (Finset.mem_erase.mp hz).2).2).1
+      exact (degreeSix_orderTwelve_no_other_orderThree_contact
+        G hfree hmin hcard u hu huRange huD b a z hb12 ha3 hz3 hza.symm hba).1
+    · have hzt : z ≠ t := (Finset.mem_erase.mp hz).1
+      have hgroup := degreeSix_orderTwelve_two_orderSix_targets_le_one
+        G hfree hmin hcard u hu huRange huD b t z hb12 ht6 hz6 hzt.symm
+      change Q b t + Q b z ≤ 1 at hgroup
+      omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have htIn : t ∈ (Finset.univ.erase a).erase b :=
+    Finset.mem_erase.mpr ⟨hbtNe.symm,
+      Finset.mem_erase.mpr ⟨hatNe.symm, Finset.mem_univ t⟩⟩
+  have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrow
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q b) hbIn
+  have hrT := Finset.sum_erase_add ((Finset.univ.erase a).erase b) (Q b) htIn
+  have hRzero : (∑ z ∈ R, Q b z) = 0 :=
+    Finset.sum_eq_zero (fun z hz ↦ hzeroR z hz)
+  have hbb : Q b b = 4 := by
+    dsimp [R] at hRzero
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 15 := by
+    simpa [Q, Matrix.mul_apply, hb12] using hsqGraph
+  have hdiagLe : Q b b * Q b b ≤ ∑ z, Q b z * Q z b :=
+    Finset.single_le_sum (f := fun z ↦ Q b z * Q z b)
+      (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ b)
+  rw [hsq, hbb] at hdiagLe
+  norm_num at hdiagLe
+
+/-- Small arithmetic classifier for a target in the unused order-twelve
+mass of the one-order-six `(3,12)` branch. -/
+theorem degreeSix_threeTwelve_orderSix_target_type_arithmetic
+    (s q r : ℕ) (hs3 : 3 ≤ s) (hs12 : s ≤ 12)
+    (hq5 : q ≤ 5) (hr7 : r ≤ 7) (hbal : 6 * q = s * r)
+    (hprod : q * r ≤ 7) :
+    (q = 0 ∧ r = 0) ∨
+    (s = 3 ∧ q = 1 ∧ r = 2) ∨
+    (s = 4 ∧ q = 2 ∧ r = 3) ∨
+    (s = 6 ∧ q = 1 ∧ r = 1) ∨
+    (s = 6 ∧ q = 2 ∧ r = 2) ∨
+    (s = 9 ∧ q = 3 ∧ r = 2) ∨
+    (s = 12 ∧ q = 2 ∧ r = 1) := by
+  interval_cases s <;> interval_cases q <;> interval_cases r <;> omega
+
+/-- Small arithmetic classifier for an order-eighteen source contacting a
+target inside residual mass twelve. -/
+theorem degreeSix_threeEighteen_target_type_arithmetic
+    (s q r : ℕ) (hs3 : 3 ≤ s) (hs12 : s ≤ 12)
+    (hq5 : q ≤ 5) (hr15 : r ≤ 15) (hbal : 18 * q = s * r)
+    (hprod : q * r ≤ 15) :
+    (q = 0 ∧ r = 0) ∨
+    (s = 3 ∧ q = 1 ∧ r = 6) ∨
+    (s = 6 ∧ q = 1 ∧ r = 3) ∨
+    (s = 6 ∧ q = 2 ∧ r = 6) ∨
+    (s = 9 ∧ q = 1 ∧ r = 2) ∨
+    (s = 9 ∧ q = 2 ∧ r = 4) ∨
+    (s = 12 ∧ q = 2 ∧ r = 3) := by
+  interval_cases s <;> interval_cases q <;> interval_cases r <;> omega
+
+set_option maxHeartbeats 10000000 in
+/-- The order-eighteen row and square budgets over residual mass twelve have
+only two shapes: one order-twelve target of quotient two, or two order-six
+targets of quotient one. -/
+theorem degreeSix_threeEighteen_remainder_arithmetic
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ) (x : ℕ)
+    (hsize : (∑ c ∈ S, size c) = 12)
+    (hmin : ∀ c ∈ S, 3 ≤ size c)
+    (hbal : ∀ c ∈ S, 18 * q c = size c * r c)
+    (hrow : x + (∑ c ∈ S, q c) = 5)
+    (hprod : x * x + (∑ c ∈ S, q c * r c) = 15) :
+    (∃ c, S = {c} ∧ size c = 12 ∧ q c = 2) ∨
+    (∃ c d, c ≠ d ∧ S = {c, d} ∧
+      size c = 6 ∧ size d = 6 ∧ q c = 1 ∧ q d = 1) := by
+  have hcardLe : S.card ≤ 4 := by
+    have hthree : S.card * 3 ≤ ∑ c ∈ S, size c := by
+      calc
+        S.card * 3 = ∑ _c ∈ S, 3 := by simp
+        _ ≤ ∑ c ∈ S, size c := Finset.sum_le_sum fun c hc ↦ hmin c hc
+    omega
+  have hcardPos : 0 < S.card := by
+    by_contra hnot
+    have hzero : S.card = 0 := by omega
+    rw [Finset.card_eq_zero.mp hzero] at hsize
+    simp at hsize
+  have hqle : ∀ c ∈ S, q c ≤ 5 := by
+    intro c hc
+    have hsingle : q c ≤ ∑ d ∈ S, q d :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hprodle : ∀ c ∈ S, q c * r c ≤ 15 := by
+    intro c hc
+    have hsingle : q c * r c ≤ ∑ d ∈ S, q d * r d :=
+      Finset.single_le_sum (f := fun d ↦ q d * r d)
+        (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hrle : ∀ c ∈ S, r c ≤ 15 := by
+    intro c hc
+    by_cases hq0 : q c = 0
+    · have hb := hbal c hc
+      have hs3 := hmin c hc
+      rw [hq0] at hb
+      have hz : size c = 0 ∨ r c = 0 := Nat.mul_eq_zero.mp (by omega)
+      omega
+    · have hp := hprodle c hc
+      have hqpos : 1 ≤ q c := Nat.one_le_iff_ne_zero.mpr hq0
+      have hrprod : r c ≤ q c * r c := by
+        simpa [one_mul] using Nat.mul_le_mul_right (r c) hqpos
+      omega
+  have hclass : ∀ c ∈ S,
+      (q c = 0 ∧ r c = 0) ∨
+      (size c = 3 ∧ q c = 1 ∧ r c = 6) ∨
+      (size c = 6 ∧ q c = 1 ∧ r c = 3) ∨
+      (size c = 6 ∧ q c = 2 ∧ r c = 6) ∨
+      (size c = 9 ∧ q c = 1 ∧ r c = 2) ∨
+      (size c = 9 ∧ q c = 2 ∧ r c = 4) ∨
+      (size c = 12 ∧ q c = 2 ∧ r c = 3) := by
+    intro c hc
+    apply degreeSix_threeEighteen_target_type_arithmetic
+    · exact hmin c hc
+    · have hsingle : size c ≤ ∑ d ∈ S, size d :=
+        Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) hc
+      omega
+    · exact hqle c hc
+    · exact hrle c hc
+    · exact hbal c hc
+    · exact hprodle c hc
+  have hcards : S.card = 1 ∨ S.card = 2 ∨ S.card = 3 ∨ S.card = 4 := by omega
+  have hx5 : x ≤ 5 := by omega
+  have hxcases : x = 0 ∨ x = 1 ∨ x = 2 ∨ x = 3 ∨ x = 4 ∨ x = 5 := by omega
+  rcases hcards with hcard | hcard | hcard | hcard
+  · obtain ⟨a, haS⟩ := Finset.card_eq_one.mp hcard
+    subst S
+    simp only [Finset.sum_singleton] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;>
+      rcases hxcases with hx0 | hx1 | hx2 | hx3 | hx4 | hx5 <;> simp_all <;> omega
+  · obtain ⟨a, b, hab, haS⟩ := Finset.card_eq_two.mp hcard
+    subst S
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      not_false_eq_true, hab] at hsize hrow hprod
+    have hsa9 : size a ≤ 9 := by have := hmin b (by simp); omega
+    have hsb9 : size b ≤ 9 := by have := hmin a (by simp); omega
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb | hb | hb <;>
+      rcases hxcases with hx0 | hx1 | hx2 | hx3 | hx4 | hx5 <;> simp_all
+    all_goals first
+      | omega
+      | exact Or.inr ⟨a, b, hab, rfl, by omega, by omega, by omega, by omega⟩
+  · obtain ⟨a, b, c, hab, hac, hbc, haS⟩ := Finset.card_eq_three.mp hcard
+    subst S
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, hbc] at hsize hrow hprod
+    have hsa6 : size a ≤ 6 := by
+      have := hmin b (by simp); have := hmin c (by simp); omega
+    have hsb6 : size b ≤ 6 := by
+      have := hmin a (by simp); have := hmin c (by simp); omega
+    have hsc6 : size c ≤ 6 := by
+      have := hmin a (by simp); have := hmin b (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨
+        (size a = 3 ∧ q a = 1 ∧ r a = 6) ∨
+        (size a = 6 ∧ q a = 1 ∧ r a = 3) ∨
+        (size a = 6 ∧ q a = 2 ∧ r a = 6) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨
+        (size b = 3 ∧ q b = 1 ∧ r b = 6) ∨
+        (size b = 6 ∧ q b = 1 ∧ r b = 3) ∨
+        (size b = 6 ∧ q b = 2 ∧ r b = 6) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨
+        (size c = 3 ∧ q c = 1 ∧ r c = 6) ∨
+        (size c = 6 ∧ q c = 1 ∧ r c = 3) ∨
+        (size c = 6 ∧ q c = 2 ∧ r c = 6) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb <;>
+      rcases hc with hc | hc | hc | hc <;>
+      rcases hxcases with hx0 | hx1 | hx2 | hx3 | hx4 | hx5 <;> simp_all <;> omega
+  · obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, haS⟩ :=
+      Finset.card_eq_four.mp hcard
+    subst S
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, had, hbc, hbd, hcd]
+      at hsize hrow hprod
+    have hsa : size a = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsb : size b = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsc : size c = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsd : size d = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨ (q a = 1 ∧ r a = 6) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨ (q b = 1 ∧ r b = 6) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨ (q c = 1 ∧ r c = 6) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hd : (q d = 0 ∧ r d = 0) ∨ (q d = 1 ∧ r d = 6) := by
+      rcases hclass d (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+      rcases hc with hc | hc <;> rcases hd with hd | hd <;>
+      rcases hxcases with hx0 | hx1 | hx2 | hx3 | hx4 | hx5 <;> simp_all <;> omega
+
+/-- The `(3,18)` odd-to-even cover is impossible once the order-three
+diagonal entry vanishes. -/
+theorem false_of_degreeSix_oddEven_cover_three_eighteen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb18 : b.supp.ncard = 18)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ z.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ z.supp.ncard) hbIn
+  have hsizeS : (∑ z ∈ S, z.supp.ncard) = 12 := by
+    dsimp [S]
+    omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 6 := by rw [ha3, hb18, hba] at habBal; omega
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q b) hbIn
+  have hrow : Q b b + (∑ z ∈ S, Q b z) = 5 := by
+    dsimp [S]
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 21 := by
+    simpa [Q, Matrix.mul_apply, hb18] using hsqGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q b z * Q z b) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q b z * Q z b) hbIn
+  have hprod : Q b b * Q b b + (∑ z ∈ S, Q b z * Q z b) = 15 := by
+    dsimp [S]
+    rw [hba, hab] at hpA
+    omega
+  have hbalS : ∀ z ∈ S, 18 * Q b z = z.supp.ncard * Q z b := by
+    intro z hz
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b z
+    simpa [Q, hb18] using hbal
+  have hshape := degreeSix_threeEighteen_remainder_arithmetic
+    S (fun z ↦ z.supp.ncard) (Q b) (fun z ↦ Q z b) (Q b b)
+      hsizeS (fun z hz ↦ hr z) hbalS hrow hprod
+  rcases hshape with ⟨c, hS, hc12, hbc⟩ |
+      ⟨c, d, hcd, hS, hc6, hd6, hbc, hbd⟩
+  · have hn0 : (12 : ZMod b.supp.ncard) ≠ 0 := by
+      intro hz
+      have hdvd : b.supp.ncard ∣ 12 :=
+        (ZMod.natCast_eq_zero_iff 12 b.supp.ncard).mp hz
+      rw [hb18] at hdvd
+      norm_num at hdvd
+    have hgroup := degreeSix_sameOrder_targets_le_one
+      G hfree hmin hcard u hu huRange huD b S 12
+        (by rw [hb18]; norm_num) (by norm_num)
+        (fun z hz ↦ by
+          rw [hS] at hz
+          have : z = c := by simpa using hz
+          subst z
+          exact hc12) hn0
+    rw [hS] at hgroup
+    simp only [Finset.sum_singleton] at hgroup
+    change Q b c ≤ 1 at hgroup
+    omega
+  · have hn0 : (6 : ZMod b.supp.ncard) ≠ 0 := by
+      intro hz
+      have hdvd : b.supp.ncard ∣ 6 :=
+        (ZMod.natCast_eq_zero_iff 6 b.supp.ncard).mp hz
+      rw [hb18] at hdvd
+      norm_num at hdvd
+    have hgroup := degreeSix_sameOrder_targets_le_one
+      G hfree hmin hcard u hu huRange huD b S 6
+        (by rw [hb18]; norm_num) (by norm_num)
+        (fun z hz ↦ by
+          rw [hS] at hz
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+          rcases hz with rfl | rfl
+          · exact hc6
+          · exact hd6) hn0
+    rw [hS] at hgroup
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      hcd, not_false_eq_true] at hgroup
+    change Q b c + Q b d ≤ 1 at hgroup
+    omega
+
+/-- In the `(3,6)` cover, the source triangle has residual row mass four
+and residual two-step mass four.  Every positive residual contact therefore
+has reverse quotient one and target order three times its forward quotient;
+the contacted and unused residual orders are both twelve. -/
+theorem degreeSix_threeSix_residual_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    (∑ t ∈ S, Q a t) = 4 ∧
+    (∀ t ∈ S, 0 < Q a t →
+      Q t a = 1 ∧ t.supp.ncard = 3 * Q a t) ∧
+    (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) = 12 ∧
+    (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) = 12 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  change Q a a = 0 at haa
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 2 := by rw [ha3, hb6, hba] at habBal; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a
+  change (∑ z, Q a z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q a) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q a) hbIn
+  have hrow : (∑ t ∈ S, Q a t) = 4 := by
+    dsimp [S]
+    omega
+  have hodd := degreeSix_oddComponent_profile
+    G hfree hmin hcard a (by rw [ha3]; norm_num)
+  have hprodGraph := hodd.2.1
+  change (∑ z, Q a z * Q z a) = a.supp.ncard + 3 at hprodGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q a z * Q z a) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q a z * Q z a) hbIn
+  have hprod : (∑ t ∈ S, Q a t * Q t a) = 4 := by
+    dsimp [S]
+    rw [ha3] at hprodGraph
+    rw [haa] at hpA
+    rw [hab, hba] at hpB
+    omega
+  have hbal : ∀ t, a.supp.ncard * Q a t = t.supp.ncard * Q t a := by
+    intro t
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) a t
+  have hreverse := reverse_eq_one_on_finset_of_balanced_product_eq_row
+    S Q (fun t ↦ t.supp.ncard) a (by rw [ha3]; norm_num) hbal
+      (by rw [hprod, hrow])
+  have hcontact : ∀ t ∈ S, 0 < Q a t →
+      Q t a = 1 ∧ t.supp.ncard = 3 * Q a t := by
+    intro t ht hpos
+    have hrev := hreverse t ht hpos
+    have hb := hbal t
+    rw [ha3, hrev, mul_one] at hb
+    exact ⟨hrev, hb.symm⟩
+  have hused : (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) = 12 := by
+    calc
+      _ = ∑ t ∈ S, 3 * Q a t := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        by_cases hq : Q a t = 0
+        · simp [hq]
+        · simp [hq, (hcontact t ht (Nat.pos_of_ne_zero hq)).2]
+      _ = 12 := by rw [← Finset.mul_sum, hrow]; norm_num
+  have htotal : (∑ z : (secondOrderDefectGraph G).ConnectedComponent,
+      z.supp.ncard) = 33 := by
+    simpa [hcard] using
+      (sum_connectedComponent_supp_ncard (secondOrderDefectGraph G))
+  have hsA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ z.supp.ncard) haIn
+  have hsB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ z.supp.ncard) hbIn
+  have hsizeS : (∑ t ∈ S, t.supp.ncard) = 24 := by
+    dsimp [S]
+    omega
+  have hsplit : (∑ t ∈ S, t.supp.ncard) =
+      (∑ t ∈ S, if Q a t = 0 then 0 else t.supp.ncard) +
+      (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases hq : Q a t = 0 <;> simp [hq]
+  refine ⟨hrow, hcontact, hused, ?_⟩
+  have hunused : (∑ t ∈ S, if Q a t = 0 then t.supp.ncard else 0) = 12 := by
+    rw [hsizeS, hused] at hsplit
+    omega
+  exact hunused
+
+/-- The contacted order-twelve half of the `(3,6)` residual decomposition
+has one of the five partitions of four, equivalently one of the order
+multisets `3+3+3+3`, `3+3+6`, `6+6`, `3+9`, or `12`. -/
+theorem degreeSix_threeSix_residual_partition_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (haa : componentQuotientMatrix G (secondOrderDefectGraph G) a a = 0)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+      (Finset.univ.erase a).erase b
+    let n1 := (S.filter fun t ↦ Q a t = 1).card
+    let n2 := (S.filter fun t ↦ Q a t = 2).card
+    let n3 := (S.filter fun t ↦ Q a t = 3).card
+    let n4 := (S.filter fun t ↦ Q a t = 4).card
+    (n1 = 4 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 2 ∧ n2 = 1 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 2 ∧ n3 = 0 ∧ n4 = 0) ∨
+    (n1 = 1 ∧ n2 = 0 ∧ n3 = 1 ∧ n4 = 0) ∨
+    (n1 = 0 ∧ n2 = 0 ∧ n3 = 0 ∧ n4 = 1) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase a).erase b
+  have hp := degreeSix_threeSix_residual_profile
+    G hfree hmin hcard hr a b ha3 hb6 haa hba
+  change (∑ t ∈ S, Q a t) = 4 ∧ _ at hp
+  simpa [Q, S] using contact_filter_counts_of_sum_four S (Q a) hp.1
+
+/-- Row and square budgets for the order-six member of a `(3,6)` cover,
+after grouped periodicity removes every other order-three target. -/
+theorem degreeSix_orderSix_budget_after_three_cover
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (b a : (secondOrderDefectGraph G).ConnectedComponent)
+    (hb6 : b.supp.ncard = 6) (ha3 : a.supp.ncard = 3)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hab : componentQuotientMatrix G (secondOrderDefectGraph G) a b = 2)
+    (hzero3 : ∀ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ a → t.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) b t = 0 ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) t b = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let H := ((Finset.univ.erase b).erase a).filter
+      (fun t : (secondOrderDefectGraph G).ConnectedComponent ↦ t.supp.ncard ≠ 3)
+    (∑ t ∈ H, Q b t) + Q b b = 5 ∧
+    (∑ t ∈ H, Q b t * Q t b) + Q b b * Q b b = 7 := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let R : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (Finset.univ.erase b).erase a
+  let H := R.filter fun t ↦ t.supp.ncard ≠ 3
+  change Q b a = 1 at hba
+  change Q a b = 2 at hab
+  have hbaNe : b ≠ a := by intro h; subst b; omega
+  have hbIn : b ∈ (Finset.univ : Finset _) := Finset.mem_univ b
+  have haIn : a ∈ Finset.univ.erase b :=
+    Finset.mem_erase.mpr ⟨hbaNe.symm, Finset.mem_univ a⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b
+  change (∑ z, Q b z) = 6 at hrowGraph
+  have hrB := Finset.sum_erase_add (Finset.univ : Finset _) (Q b) hbIn
+  have hrA := Finset.sum_erase_add (Finset.univ.erase b) (Q b) haIn
+  have hrowR : (∑ t ∈ R, Q b t) + Q b b = 5 := by
+    dsimp [R]
+    omega
+  have hzeroR : ∀ t ∈ R, t.supp.ncard = 3 → Q b t = 0 := by
+    intro t ht ht3
+    exact (hzero3 t (Finset.mem_erase.mp ht).1 ht3).1
+  have hrowRH : (∑ t ∈ R, Q b t) = ∑ t ∈ H, Q b t := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · simp [ht3, hzeroR t ht ht3]
+    · simp [ht3]
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) b b
+  have hsq : (∑ z, Q b z * Q z b) = 9 := by
+    simpa [Q, Matrix.mul_apply, hb6] using hsqGraph
+  have hpB := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q b z * Q z b) hbIn
+  have hpA := Finset.sum_erase_add (Finset.univ.erase b)
+    (fun z ↦ Q b z * Q z b) haIn
+  have hprodR : (∑ t ∈ R, Q b t * Q t b) + Q b b * Q b b = 7 := by
+    dsimp [R]
+    rw [hba, hab] at hpA
+    rw [hsq] at hpB
+    omega
+  have hprodRH : (∑ t ∈ R, Q b t * Q t b) =
+      ∑ t ∈ H, Q b t * Q t b := by
+    dsimp [H]
+    rw [Finset.sum_filter]
+    apply Finset.sum_congr rfl
+    intro t ht
+    by_cases ht3 : t.supp.ncard = 3
+    · simp [ht3, hzeroR t ht ht3]
+    · simp [ht3]
+  exact ⟨by rw [← hrowRH]; exact hrowR,
+    by rw [← hprodRH]; exact hprodR⟩
+
+set_option maxHeartbeats 2000000 in
+/-- The row, square, balance, and unused-mass equations in the one-order-six
+branch force quotient two toward the order-twelve component and force every
+unused component to have order three or six. -/
+theorem degreeSix_threeTwelve_orderSix_remainder_arithmetic
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (size q r : C → ℕ) (x y z : ℕ)
+    (hsize : (∑ c ∈ S, size c) = 12)
+    (hmin : ∀ c ∈ S, 3 ≤ size c)
+    (hbal : ∀ c ∈ S, 6 * q c = size c * r c)
+    (hx : x ≤ 2) (hyz : 6 * y = 12 * z)
+    (hrow : x + y + (∑ c ∈ S, q c) = 5)
+    (hprod : x * x + y * z + (∑ c ∈ S, q c * r c) = 7) :
+    y = 2 ∧ ∀ c ∈ S, size c = 3 ∨ size c = 6 := by
+  have hcardLe : S.card ≤ 4 := by
+    have hthree : S.card * 3 ≤ ∑ c ∈ S, size c := by
+      calc
+        S.card * 3 = ∑ _c ∈ S, 3 := by simp [mul_comm]
+        _ ≤ ∑ c ∈ S, size c := Finset.sum_le_sum fun c hc ↦ hmin c hc
+    omega
+  have hcardPos : 0 < S.card := by
+    by_contra hnot
+    have : S.card = 0 := by omega
+    have hSEmpty := Finset.card_eq_zero.mp this
+    rw [hSEmpty] at hsize
+    simp at hsize
+  have hqle : ∀ c ∈ S, q c ≤ 5 := by
+    intro c hc
+    have hsingle : q c ≤ ∑ d ∈ S, q d :=
+      Finset.single_le_sum (f := q) (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hprodle : ∀ c ∈ S, q c * r c ≤ 7 := by
+    intro c hc
+    have hsingle : q c * r c ≤ ∑ d ∈ S, q d * r d :=
+      Finset.single_le_sum (f := fun d ↦ q d * r d)
+        (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hrle : ∀ c ∈ S, r c ≤ 7 := by
+    intro c hc
+    by_cases hq0 : q c = 0
+    · have hb := hbal c hc
+      have hs3 := hmin c hc
+      rw [hq0] at hb
+      have hz : size c = 0 ∨ r c = 0 := Nat.mul_eq_zero.mp (by omega)
+      omega
+    · have hp := hprodle c hc
+      have hqpos : 1 ≤ q c := Nat.one_le_iff_ne_zero.mpr hq0
+      have hrprod : r c ≤ q c * r c := by
+        simpa [one_mul] using Nat.mul_le_mul_right (r c) hqpos
+      omega
+  have hclass : ∀ c ∈ S,
+      (q c = 0 ∧ r c = 0) ∨
+      (size c = 3 ∧ q c = 1 ∧ r c = 2) ∨
+      (size c = 4 ∧ q c = 2 ∧ r c = 3) ∨
+      (size c = 6 ∧ q c = 1 ∧ r c = 1) ∨
+      (size c = 6 ∧ q c = 2 ∧ r c = 2) ∨
+      (size c = 9 ∧ q c = 3 ∧ r c = 2) ∨
+      (size c = 12 ∧ q c = 2 ∧ r c = 1) := by
+    intro c hc
+    apply degreeSix_threeTwelve_orderSix_target_type_arithmetic
+    · exact hmin c hc
+    · have hsingle : size c ≤ ∑ d ∈ S, size d :=
+        Finset.single_le_sum (f := size) (fun _ _ ↦ Nat.zero_le _) hc
+      omega
+    · exact hqle c hc
+    · exact hrle c hc
+    · exact hbal c hc
+    · exact hprodle c hc
+  have hcards : S.card = 1 ∨ S.card = 2 ∨ S.card = 3 ∨ S.card = 4 := by omega
+  have hy5 : y ≤ 5 := by omega
+  have hz3 : z ≤ 3 := by omega
+  rcases hcards with hcard | hcard | hcard | hcard
+  · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hcard
+    simp only [Finset.sum_singleton] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;> simp_all <;>
+      interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+    simp only [Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
+      not_false_eq_true, hab] at hsize hrow hprod
+    have ha := hclass a (by simp)
+    have hb := hclass b (by simp)
+    rcases ha with ha | ha | ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb | hb | hb <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, hbc] at hsize hrow hprod
+    have hsa6 : size a ≤ 6 := by
+      have := hmin b (by simp); have := hmin c (by simp); omega
+    have hsb6 : size b ≤ 6 := by
+      have := hmin a (by simp); have := hmin c (by simp); omega
+    have hsc6 : size c ≤ 6 := by
+      have := hmin a (by simp); have := hmin b (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨
+        (size a = 3 ∧ q a = 1 ∧ r a = 2) ∨
+        (size a = 4 ∧ q a = 2 ∧ r a = 3) ∨
+        (size a = 6 ∧ q a = 1 ∧ r a = 1) ∨
+        (size a = 6 ∧ q a = 2 ∧ r a = 2) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨
+        (size b = 3 ∧ q b = 1 ∧ r b = 2) ∨
+        (size b = 4 ∧ q b = 2 ∧ r b = 3) ∨
+        (size b = 6 ∧ q b = 1 ∧ r b = 1) ∨
+        (size b = 6 ∧ q b = 2 ∧ r b = 2) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨
+        (size c = 3 ∧ q c = 1 ∧ r c = 2) ∨
+        (size c = 4 ∧ q c = 2 ∧ r c = 3) ∨
+        (size c = 6 ∧ q c = 1 ∧ r c = 1) ∨
+        (size c = 6 ∧ q c = 2 ∧ r c = 2) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha | ha | ha | ha <;>
+      rcases hb with hb | hb | hb | hb | hb <;>
+      rcases hc with hc | hc | hc | hc | hc <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+  · obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩ :=
+      Finset.card_eq_four.mp hcard
+    simp [Finset.sum_insert, Finset.sum_singleton, Finset.mem_insert,
+      Finset.mem_singleton, not_false_eq_true, hab, hac, had, hbc, hbd, hcd]
+      at hsize hrow hprod
+    have hsa : size a = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsb : size b = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsc : size c = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have hsd : size d = 3 := by
+      have := hmin a (by simp); have := hmin b (by simp)
+      have := hmin c (by simp); have := hmin d (by simp); omega
+    have ha : (q a = 0 ∧ r a = 0) ∨ (q a = 1 ∧ r a = 2) := by
+      rcases hclass a (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hb : (q b = 0 ∧ r b = 0) ∨ (q b = 1 ∧ r b = 2) := by
+      rcases hclass b (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hc : (q c = 0 ∧ r c = 0) ∨ (q c = 1 ∧ r c = 2) := by
+      rcases hclass c (by simp) with h | h | h | h | h | h | h <;> simp_all
+    have hd : (q d = 0 ∧ r d = 0) ∨ (q d = 1 ∧ r d = 2) := by
+      rcases hclass d (by simp) with h | h | h | h | h | h | h <;> simp_all
+    rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+      rcases hc with hc | hc <;> rcases hd with hd | hd <;>
+      simp_all <;> interval_cases x <;> interval_cases y <;> interval_cases z <;> omega
+
+/-- The one-order-six branch of the `(3,12)` residual contact dichotomy is
+impossible. -/
+theorem false_of_degreeSix_threeTwelve_one_orderSix_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (a b t : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (ht6 : t.supp.ncard = 6)
+    (hat : componentQuotientMatrix G (secondOrderDefectGraph G) a t = 2)
+    (hta : componentQuotientMatrix G (secondOrderDefectGraph G) t a = 1)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1)
+    (hremSize : (∑ z ∈ (((Finset.univ.erase a).erase b).erase t),
+      z.supp.ncard) = 12) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let S : Finset (secondOrderDefectGraph G).ConnectedComponent :=
+    (((Finset.univ.erase a).erase b).erase t)
+  change Q a t = 2 at hat
+  change Q t a = 1 at hta
+  change Q b a = 1 at hba
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hatNe : a ≠ t := by intro h; subst t; omega
+  have hbtNe : b ≠ t := by intro h; subst t; omega
+  have haIn : a ∈ (Finset.univ : Finset _) := Finset.mem_univ a
+  have hbIn : b ∈ Finset.univ.erase a :=
+    Finset.mem_erase.mpr ⟨habNe.symm, Finset.mem_univ b⟩
+  have htIn : t ∈ (Finset.univ.erase a).erase b :=
+    Finset.mem_erase.mpr ⟨hbtNe.symm,
+      Finset.mem_erase.mpr ⟨hatNe.symm, Finset.mem_univ t⟩⟩
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t
+  change (∑ z, Q t z) = 6 at hrowGraph
+  have hrA := Finset.sum_erase_add (Finset.univ : Finset _) (Q t) haIn
+  have hrB := Finset.sum_erase_add (Finset.univ.erase a) (Q t) hbIn
+  have hrT := Finset.sum_erase_add ((Finset.univ.erase a).erase b) (Q t) htIn
+  have hrow : Q t t + Q t b + (∑ z ∈ S, Q t z) = 5 := by
+    dsimp [S]
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t t
+  have hsq : (∑ z, Q t z * Q z t) = 9 := by
+    simpa [Q, Matrix.mul_apply, ht6] using hsqGraph
+  have hpA := Finset.sum_erase_add (Finset.univ : Finset _)
+    (fun z ↦ Q t z * Q z t) haIn
+  have hpB := Finset.sum_erase_add (Finset.univ.erase a)
+    (fun z ↦ Q t z * Q z t) hbIn
+  have hpT := Finset.sum_erase_add ((Finset.univ.erase a).erase b)
+    (fun z ↦ Q t z * Q z t) htIn
+  have hprod : Q t t * Q t t + Q t b * Q b t +
+      (∑ z ∈ S, Q t z * Q z t) = 7 := by
+    dsimp [S]
+    rw [hta, hat] at hpA
+    omega
+  have hdiag := degreeSix_orderSix_after_three_twelve_cover_diagonal_le_two
+    G hfree hmin hcard t a ht6 hta hat
+  have hbalBT := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) t b
+  change t.supp.ncard * Q t b = b.supp.ncard * Q b t at hbalBT
+  have hbalS : ∀ z ∈ S, 6 * Q t z = z.supp.ncard * Q z t := by
+    intro z hz
+    have hbal := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) t z
+    simpa [Q, ht6] using hbal
+  have harith := degreeSix_threeTwelve_orderSix_remainder_arithmetic
+    S (fun z ↦ z.supp.ncard) (Q t) (fun z ↦ Q z t)
+      (Q t t) (Q t b) (Q b t) (by simpa [S] using hremSize)
+      (fun z hz ↦ hr z) hbalS hdiag (by simpa [ht6, hb12] using hbalBT)
+      hrow hprod
+  have habBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a b
+  change a.supp.ncard * Q a b = b.supp.ncard * Q b a at habBal
+  have hab : Q a b = 4 := by rw [ha3, hb12, hba] at habBal; omega
+  exact false_of_degreeSix_threeTwelve_one_orderSix_threeSix_remainder
+    G hfree hmin hcard u hu huRange huD a b t ha3 hb12 ht6 habNe hatNe
+      hbtNe hba hab harith.1 (fun z hz ↦ harith.2 z hz)
+
+/-- The `(3,12)` odd-to-even cover is impossible once order-three diagonal
+entries vanish. -/
+theorem false_of_degreeSix_oddEven_cover_three_twelve
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hzero3 : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 3 →
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (a b : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb12 : b.supp.ncard = 12)
+    (hba : componentQuotientMatrix G (secondOrderDefectGraph G) b a = 1) :
+    False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have haa : Q a a = 0 := hzero3 a ha3
+  have hshape := degreeSix_orderThree_twelve_residual_component_shape
+    G hfree hmin hcard hr a b ha3 hb12 haa hba
+  change
+    (∃ t : (secondOrderDefectGraph G).ConnectedComponent,
+      t.supp.ncard = 6 ∧ Q a t = 2 ∧ Q t a = 1 ∧
+      (∑ z ∈ (((Finset.univ.erase a).erase b).erase t), z.supp.ncard) = 12) ∨
+    (∃ t v : (secondOrderDefectGraph G).ConnectedComponent,
+      t ≠ v ∧ t.supp.ncard = 3 ∧ v.supp.ncard = 3 ∧
+      Q a t = 1 ∧ Q t a = 1 ∧ Q a v = 1 ∧ Q v a = 1 ∧
+      (∑ z ∈ ((((Finset.univ.erase a).erase b).erase t).erase v),
+        z.supp.ncard) = 12) at hshape
+  rcases hshape with ⟨t, ht6, hat, hta, hrem⟩ |
+      ⟨t, v, htv, ht3, hv3, hat, hta, hav, hva, hrem⟩
+  · exact false_of_degreeSix_threeTwelve_one_orderSix_branch
+      G hfree hmin hcard u hu huRange huD hr a b t ha3 hb12 ht6 hat hta hba hrem
+  · have htaNe : t ≠ a := by intro h; subst t; omega
+    have htbNe : t ≠ b := by intro h; subst t; omega
+    have habNe : a ≠ b := by intro h; subst b; omega
+    exact false_of_degreeSix_threeTwelve_two_orderThree_branch
+      G hfree hmin hcard u hu huRange huD hr t a b ht3 ha3 hb12 htaNe
+        htbNe habNe (hzero3 t ht3) hta hat hba
 
 /-- The residual `(5,10)` contact filters have the unique multiplicities
 forced by row mass four and two-step mass six. -/

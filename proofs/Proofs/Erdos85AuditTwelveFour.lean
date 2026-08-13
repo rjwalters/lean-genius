@@ -198,6 +198,15 @@ import Proofs.Erdos85DegreeSixEmptySector
 #print axioms Erdos85.degreeSix_exists_odd_order_component
 #print axioms Erdos85.degreeSix_exists_even_carrier_of_odd_zero_diagonal
 
+-- d=6 cover closures (3,12) + (3,18) + (3,6) checkpoints (..9d9db4f708)
+#print axioms Erdos85.false_of_degreeSix_threeTwelve_partition_dispatch
+#print axioms Erdos85.false_of_degreeSix_threeTwelve_two_order
+#print axioms Erdos85.false_of_degreeSix_threeTwelve_one_order
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_twelve
+#print axioms Erdos85.false_of_degreeSix_oddEven_cover_three_eighteen
+#print axioms Erdos85.degreeSix_threeSix_residual_profile
+#print axioms Erdos85.degreeSix_threeSix_residual_partition_counts
+
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two
