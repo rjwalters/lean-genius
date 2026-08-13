@@ -338,6 +338,62 @@ theorem false_of_degreeSix_orderTwentyFive_diagonal_two
     omega
   omega
 
+/-- An order-twenty-one diagonal-two component has external row mass four,
+but its external carrier has total order twelve.  Detailed balance and the
+reverse row bound six would require `21 * 4 ≤ 12 * 6`. -/
+theorem false_of_degreeSix_orderTwentyOne_diagonal_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (w : (secondOrderDefectGraph G).ConnectedComponent)
+    (hw21 : w.supp.ncard = 21)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) w w = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let size : D.ConnectedComponent → ℕ := fun c ↦ c.supp.ncard
+  obtain ⟨htotal, hrow, hbal, _, hle⟩ :=
+    degreeSix_diagonal_two_quotient_profile G hfree hmin hcard w
+  change (∑ c, size c) = 33 at htotal
+  change ∀ c, (∑ t, Q c t) = 6 at hrow
+  change ∀ c t, size c * Q c t = size t * Q t c at hbal
+  change ∀ c t, Q c t ≤ 6 at hle
+  have hsw : size w = 21 := hw21
+  have hdiagQ : Q w w = 2 := hdiag
+  have hextRow : (∑ t ∈ Finset.univ.erase w, Q w t) = 4 := by
+    have hadd := Finset.add_sum_erase Finset.univ (fun t ↦ Q w t)
+      (Finset.mem_univ w)
+    have hwrow := hrow w
+    change Q w w + (∑ t ∈ Finset.univ.erase w, Q w t) =
+      ∑ t, Q w t at hadd
+    rw [hdiagQ] at hadd
+    omega
+  have hextSize : (∑ t ∈ Finset.univ.erase w, size t) = 12 := by
+    have hadd := Finset.add_sum_erase Finset.univ size (Finset.mem_univ w)
+    change size w + (∑ t ∈ Finset.univ.erase w, size t) =
+      ∑ t, size t at hadd
+    rw [hsw, htotal] at hadd
+    omega
+  have hmass : 21 * 4 ≤ 12 * 6 := by
+    calc
+      21 * 4 = ∑ t ∈ Finset.univ.erase w, 21 * Q w t := by
+        rw [← Finset.mul_sum, hextRow]
+      _ = ∑ t ∈ Finset.univ.erase w, size t * Q t w := by
+        apply Finset.sum_congr rfl
+        intro t _
+        rw [← hbal w t, hsw]
+      _ ≤ ∑ t ∈ Finset.univ.erase w, size t * 6 := by
+        apply Finset.sum_le_sum
+        intro t _
+        exact Nat.mul_le_mul_left _ (hle t w)
+      _ = 12 * 6 := by rw [← Finset.sum_mul, hextSize]
+  omega
+
 /-- An order-thirty-three component exhausts the carrier, so diagonal two
 cannot supply the degree-six row. -/
 theorem false_of_degreeSix_orderThirtyThree_diagonal_two
