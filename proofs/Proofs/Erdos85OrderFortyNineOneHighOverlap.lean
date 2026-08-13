@@ -1546,6 +1546,42 @@ theorem orderFortyNineLeafComponentBranchCensus_add_five_le_componentOrder
     rw [hTcard] at hfive
     omega
 
+/-- Globally, each original branch has total mass five across the
+leaf-defect components. -/
+theorem sum_orderFortyNineLeafComponentBranchCensus_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+      orderFortyNineLeafComponentBranchCensus G v c s) = 5 := by
+  calc
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+        orderFortyNineLeafComponentBranchCensus G v c s) =
+        ∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+          ∑ t, orderFortyNineLeafComponentOverlap G v c s t := by
+      apply Finset.sum_congr rfl
+      intro c _
+      exact (sum_orderFortyNineLeafComponentOverlap_owner_eq_branchCensus
+        G hfree hmin hcard hHigh hv c s).symm
+    _ = ∑ t, ∑ c :
+        (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+          orderFortyNineLeafComponentOverlap G v c s t := by
+      rw [Finset.sum_comm]
+    _ = ∑ t, orderFortyNineOneHighOverlap G v s t := by
+      apply Finset.sum_congr rfl
+      intro t _
+      exact sum_orderFortyNineLeafComponentOverlap_component_eq_overlap
+        G hfree hmin hcard hv s t
+    _ = 5 := sum_orderFortyNineOneHighOverlap_row_eq_five
+      G hfree hmin hcard hHigh hv s
+
 end
 
 end Erdos85
