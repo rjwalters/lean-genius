@@ -272,6 +272,129 @@ theorem orderFortyNine_card_closedDefectNeighborhood_eq_six_of_one_high
     omega
   · simp
 
+/-- In the one-high stratum, every low vertex outside the high vertex's
+neighborhood has no high neighbor and hence defect degree six. -/
+theorem orderFortyNine_defectDegree_eq_six_of_one_high_of_not_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v y : V} (hv : G.degree v = 8) (hy : G.degree y = 7)
+    (hvy : ¬ G.Adj v y) :
+    (secondOrderDefectGraph G).degree y = 6 := by
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+  have hvw : v = w := by
+    simpa [hw] using hvHigh
+  have hHighEq : orderFortyNineHighVertices G = {v} := by
+    simpa [hvw] using hw
+  have hk :
+      (G.neighborFinset y ∩ orderFortyNineHighVertices G).card = 0 := by
+    rw [hHighEq]
+    simp [SimpleGraph.mem_neighborFinset, G.adj_comm, hvy]
+  have hexcess : neighborDegreeExcess G 7 y =
+      (G.neighborFinset y ∩ orderFortyNineHighVertices G).card := by
+    rw [neighborDegreeExcess_eq_sum_neighborFinset]
+    calc
+      (∑ z ∈ G.neighborFinset y, (G.degree z - 7)) =
+          ∑ z ∈ G.neighborFinset y,
+            if G.degree z = 8 then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro z _hz
+        rcases orderFortyNine_degree_eq_seven_or_eight
+            G hfree hmin hcard z with hz7 | hz8
+        · simp [hz7]
+        · simp [hz8]
+      _ = ((G.neighborFinset y).filter fun z => G.degree z = 8).card := by
+        rw [Finset.card_filter]
+      _ = (G.neighborFinset y ∩ orderFortyNineHighVertices G).card := by
+        congr 1
+        ext z
+        simp [orderFortyNineHighVertices, and_comm]
+  have hbudget := orderFortyNine_degreeSeven_local_budget
+    G hfree hmin hcard hy
+  rw [hexcess, hk] at hbudget
+  omega
+
+/-- Every noncenter low vertex has exactly one defect neighbor among the
+eight centers `N_G(v)`.  Removing that owner edge leaves five defect edges
+inside the forty-vertex leaf layer. -/
+theorem orderFortyNine_existsUnique_defectCenter_of_not_adj_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v y : V} (hv : G.degree v = 8) (hy : G.degree y = 7)
+    (hvy : ¬ G.Adj v y) :
+    ∃! x : V, x ∈ G.neighborFinset v ∧
+      (secondOrderDefectGraph G).Adj x y := by
+  obtain ⟨x, hx, huniq⟩ :=
+    orderFortyNine_existsUnique_highNeighbor_closedDefectOwner
+      G hfree hmin hcard hv hy
+  have hxy : x ≠ y := by
+    intro h
+    subst x
+    exact hvy (by
+      simpa [SimpleGraph.mem_neighborFinset] using hx.1)
+  have hDxy : (secondOrderDefectGraph G).Adj x y := by
+    rcases Finset.mem_insert.mp hx.2 with h | h
+    · exact (hxy h.symm).elim
+    · simpa [SimpleGraph.mem_neighborFinset] using h
+  refine ⟨x, ⟨hx.1, hDxy⟩, ?_⟩
+  intro z hz
+  apply huniq z
+  exact ⟨hz.1, Finset.mem_insert.mpr (Or.inr (by
+    simpa [SimpleGraph.mem_neighborFinset] using hz.2))⟩
+
+/-- In the one-high stratum, deleting the unique center edge from a leaf's
+six defect incidences leaves exactly five leaf-layer defect neighbors. -/
+theorem orderFortyNine_card_defectNeighbors_sdiff_centers_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v y : V} (hv : G.degree v = 8) (hy : G.degree y = 7)
+    (hvy : ¬ G.Adj v y) :
+    ((secondOrderDefectGraph G).neighborFinset y \
+      G.neighborFinset v).card = 5 := by
+  let D := secondOrderDefectGraph G
+  obtain ⟨x, hx, huniq⟩ :=
+    orderFortyNine_existsUnique_defectCenter_of_not_adj_high
+      G hfree hmin hcard hv hy hvy
+  have hinter : D.neighborFinset y ∩ G.neighborFinset v = {x} := by
+    ext z
+    constructor
+    · intro hz
+      have hzparts := Finset.mem_inter.mp hz
+      have hDz : D.Adj z y := by
+        simpa [D, SimpleGraph.mem_neighborFinset, D.adj_comm] using hzparts.1
+      have : z = x := huniq z ⟨hzparts.2, hDz⟩
+      simp [this]
+    · intro hz
+      have hzx : z = x := by simpa using hz
+      subst z
+      apply Finset.mem_inter.mpr
+      exact ⟨by
+        simpa [D, SimpleGraph.mem_neighborFinset, D.adj_comm] using hx.2,
+        hx.1⟩
+  have hDdegree :=
+    orderFortyNine_defectDegree_eq_six_of_one_high_of_not_adj
+      G hfree hmin hcard hHigh hv hy hvy
+  rw [Finset.card_sdiff, Finset.inter_comm, hinter, Finset.card_singleton,
+    D.card_neighborFinset_eq_degree, hDdegree]
+
 end
 
 end Erdos85
