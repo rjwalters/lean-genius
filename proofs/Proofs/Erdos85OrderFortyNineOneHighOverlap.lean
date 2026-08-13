@@ -732,6 +732,53 @@ theorem orderFortyNineOneHighOverlap_paired_diag_sum_le_four
     G hfree t t (G.loopless.irrefl t.1)] at htPartition
   omega
 
+/-- The paired outer-defect block is exactly the complement of the two
+diagonal overlap masses.  This is the first exact compatibility equation
+between the overlap matrix and the vertex-level outer defect graph. -/
+theorem exists_orderFortyNine_mate_pairedDefect_add_overlapDiags_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      ∀ s,
+        (orderFortyNineOuterDefectBlock G v s (mate s)).card +
+          orderFortyNineOneHighOverlap G v s s +
+          orderFortyNineOneHighOverlap G v (mate s) (mate s) = 5 := by
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  obtain ⟨mate, hmateInv, hmateAdj, hblocks⟩ :=
+    orderFortyNine_exists_mate_exact_outerDefectBlocks
+      G hfree hmin hcard hv hunique
+  refine ⟨mate, hmateInv, hmateAdj, ?_⟩
+  intro s
+  have hblock := (hblocks s).1
+  have hsPartition := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv s
+  have hmPartition := selfMiss_add_matchedCount_eq_five
+    G hfree hmin hcard hv (mate s)
+  rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    G hfree s s (G.loopless.irrefl s.1)] at hsPartition
+  rw [← orderFortyNineOneHighOverlap_eq_highBranchMissCount_of_not_centerAdj
+    G hfree (mate s) (mate s) (G.loopless.irrefl (mate s).1)] at hmPartition
+  omega
+
 end
 
 end Erdos85
