@@ -4,6 +4,7 @@ import Proofs.Erdos85LocalTriangleParity
 import Proofs.Erdos85OrderFortyNineDistOnePinning
 import Proofs.Erdos85BranchDeficitSymmetry
 import Proofs.Erdos85PairedBlockRigidity
+import Proofs.Erdos85MinimumSectorAssemblyInterface
 
 /-!
 # The two five-block systems in the order-49 one-high stratum
@@ -1013,6 +1014,79 @@ theorem orderFortyNineLeafComponentOwnerCensus_le_five
     exact (Finset.mem_filter.mp hy).2
   · intro a ha b hb hab
     exact Subtype.ext (Subtype.ext hab)
+
+/-- Globally, each owner color has total mass five across all leaf-defect
+components. -/
+theorem sum_orderFortyNineLeafComponentOwnerCensus_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8)
+    (t : {z : V // z ∈ G.neighborSet v}) :
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+      orderFortyNineLeafComponentOwnerCensus G v c t) = 5 := by
+  let S : Finset {y : V // y ≠ v ∧ ¬ G.Adj v y} :=
+    Finset.univ.filter fun y =>
+      y.1 ∈ orderFortyNineDefectOwnerFiber G v t
+  have hScard : S.card = 5 := by
+    rw [← orderFortyNine_card_defectOwnerFiber_eq_five_of_one_high
+      G hfree hmin hcard hHigh hv t]
+    apply Finset.card_bij (fun y _ => y.1)
+    · intro y hy
+      exact (Finset.mem_filter.mp hy).2
+    · intro a ha b hb hab
+      exact Subtype.ext hab
+    · intro q hq
+      have hcover := orderFortyNine_biUnion_branch_inter_ownerFiber_column
+        G hfree hmin hcard hv t
+      have hqUnion : q ∈
+          (Finset.univ : Finset {z : V // z ∈ G.neighborSet v}).biUnion
+            (fun s => secondLayerBranch G v s ∩
+              orderFortyNineDefectOwnerFiber G v t) := by
+        rw [hcover]
+        exact hq
+      rw [Finset.mem_biUnion] at hqUnion
+      obtain ⟨s, _, hqs⟩ := hqUnion
+      have hqBranch := (Finset.mem_inter.mp hqs).1
+      have hqOutside := (Finset.mem_sdiff.mp hqBranch).2
+      let y : {y : V // y ≠ v ∧ ¬ G.Adj v y} := ⟨q, by
+        constructor
+        · intro h
+          subst q
+          exact hqOutside (by simp)
+        · intro hvq
+          exact hqOutside (by
+            simp [SimpleGraph.mem_neighborFinset, hvq])⟩
+      refine ⟨y, ?_, rfl⟩
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hq⟩
+  have hreindex := sum_vertex_eq_sum_connectedComponent_supp
+    (orderFortyNineLeafDefectGraph G v)
+    (fun y => if y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0)
+  have hglobal :
+      (∑ y : {y : V // y ≠ v ∧ ¬ G.Adj v y},
+        if y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0) = 5 := by
+    change ((Finset.univ : Finset {y : V // y ≠ v ∧ ¬ G.Adj v y}).filter
+      (fun y => y.1 ∈ orderFortyNineDefectOwnerFiber G v t)).card = 5 at hScard
+    rw [Finset.card_filter] at hScard
+    exact hScard
+  calc
+    (∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+        orderFortyNineLeafComponentOwnerCensus G v c t) =
+        ∑ c : (orderFortyNineLeafDefectGraph G v).ConnectedComponent,
+          ∑ y : c.supp,
+            if y.1.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro c _
+      rw [orderFortyNineLeafComponentOwnerCensus, Finset.card_filter]
+    _ = ∑ y : {y : V // y ≠ v ∧ ¬ G.Adj v y},
+          if y.1 ∈ orderFortyNineDefectOwnerFiber G v t then 1 else 0 :=
+      hreindex.symm
+    _ = 5 := hglobal
 
 end
 
