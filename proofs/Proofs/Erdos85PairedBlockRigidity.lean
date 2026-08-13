@@ -2131,6 +2131,106 @@ theorem paired_highBranchMatchedCount_profile
     · exact Or.inr (Or.inl ⟨hs4, hm2⟩)
     · exact Or.inr (Or.inr ⟨hs4, hm4⟩)
 
+/-- The distinguished endpoint of every A-type mate pair: it is the unique
+endpoint whose five-point branch contains one internal edge, equivalently
+two internally matched vertices.  B-pairs contribute no endpoint. -/
+def oneHighAEndpointSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    Finset {z : V // z ∈ G.neighborSet v} :=
+  Finset.univ.filter fun s => highBranchMatchedCount G v s = 2
+
+/-- There are at most four A-type mate pairs.  Sending an A endpoint to its
+mate injects the A-endpoint set into its complement, because `(2,2)` is
+forbidden.  Since the high root has eight neighbors, the A count is at most
+four. -/
+theorem card_oneHighAEndpointSet_le_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1) :
+    (oneHighAEndpointSet G v).card ≤ 4 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let A : Finset P := oneHighAEndpointSet G v
+  let B : Finset P := Finset.univ \ A
+  have hmateOutside : ∀ s ∈ A, mate s ∈ B := by
+    intro s hs
+    have hs2 : highBranchMatchedCount G v s = 2 := by
+      simpa [A, oneHighAEndpointSet] using hs
+    have hp := paired_highBranchMatchedCount_profile
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s
+    have hm4 : highBranchMatchedCount G v (mate s) = 4 := by
+      rcases hp with hp | hp | hp <;> omega
+    apply Finset.mem_sdiff.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    simp [A, oneHighAEndpointSet, hm4]
+  let f : {s // s ∈ A} → {t // t ∈ B} := fun s =>
+    ⟨mate s.1, hmateOutside s.1 s.2⟩
+  have hf : Function.Injective f := by
+    intro s t hst
+    apply Subtype.ext
+    apply hmateInv.injective
+    exact congrArg Subtype.val hst
+  have hAB : A.card ≤ B.card := by
+    simpa only [Fintype.card_coe] using Fintype.card_le_of_injective f hf
+  have hPcard : Fintype.card P = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hBcard : B.card + A.card = 8 := by
+    have hAle : A.card ≤ 8 := by
+      have hsub : A ⊆ (Finset.univ : Finset P) := Finset.subset_univ A
+      have := Finset.card_le_card hsub
+      rw [Finset.card_univ, hPcard] at this
+      exact this
+    dsimp [B]
+    rw [Finset.card_sdiff, Finset.inter_univ, Finset.card_univ, hPcard]
+    omega
+  dsimp [A] at hAB hBcard ⊢
+  omega
+
+/-- The invariant A-pair count therefore selects exactly one of the five
+family words `BBBB`, `ABBB`, `AABB`, `AAAB`, `AAAA`. -/
+theorem oneHighAEndpointSet_card_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1) :
+    (oneHighAEndpointSet G v).card = 0 ∨
+      (oneHighAEndpointSet G v).card = 1 ∨
+      (oneHighAEndpointSet G v).card = 2 ∨
+      (oneHighAEndpointSet G v).card = 3 ∨
+      (oneHighAEndpointSet G v).card = 4 := by
+  have hle := card_oneHighAEndpointSet_le_four
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj
+  omega
+
 /-- A one-regular induced neighborhood has a canonical-up-to-choice mate
 involution. -/
 theorem exists_localMate_involution
