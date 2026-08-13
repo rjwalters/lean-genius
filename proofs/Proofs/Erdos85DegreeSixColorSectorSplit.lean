@@ -1909,6 +1909,7 @@ theorem degreeSix_exists_odd_to_even_cover
   obtain ⟨a, b, haOdd, hbEven, hab2⟩ :=
     degreeSix_exists_odd_to_even_quotient_ge_two
       G hfree hmin hcard o c hoOdd hcEven
+  change 2 ≤ Q a b at hab2
   have habPos : 0 < Q a b := by omega
   have hdiv := secondOrder_componentQuotientMatrix_pos_imp_size_dvd_or_dvd
     G hfree (d := 6) (by norm_num) (by norm_num) hmin
@@ -1933,12 +1934,14 @@ theorem degreeSix_exists_odd_to_even_cover
       (by norm_num at hcard ⊢; exact hcard) a b habLt habPos
   have hrow := (degreeSix_oddComponent_profile
     G hfree hmin hcard a haOdd).1
+  change (∑ t, Q a t) = 6 at hrow
   have habLe : Q a b ≤ 6 := by
     have hsingle : Q a b ≤ ∑ t, Q a t :=
       Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ b)
     omega
   have habEven := (degreeSix_oddComponent_profile
     G hfree hmin hcard a haOdd).2.2 b hbEven
+  change Even (Q a b) at habEven
   have habCases : Q a b = 2 ∨ Q a b = 4 ∨ Q a b = 6 := by
     rcases habEven with ⟨k, hk⟩
     omega
