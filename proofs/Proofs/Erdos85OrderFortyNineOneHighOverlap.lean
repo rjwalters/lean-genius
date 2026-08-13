@@ -2543,6 +2543,92 @@ theorem orderFortyNine_exists_mate_kSumExact_of_one_high
     G hfree hmin hcard hv hexternal houterDegree
       mate hmateInv hmateAdj s
 
+/-- All three graph-side laws used by the augmented one-high family CNFs,
+packaged for one common mate involution: unmatched-vertex witness supply,
+exact `k`-sum, and the A-pair pointwise `k` bounds.  The final bounds are
+conditional on the mate pair having matched-count profile `(2,4)` in either
+order, equivalently total matched count six. -/
+theorem orderFortyNine_exists_mate_augmentedFamilyLaws_of_one_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    ∃ mate : {z : V // z ∈ G.neighborSet v} →
+        {z : V // z ∈ G.neighborSet v},
+      Function.Involutive mate ∧
+      (∀ s, G.Adj s.1 (mate s).1) ∧
+      (∀ (s : {z : V // z ∈ G.neighborSet v}) (x : V),
+        x ∈ secondLayerBranch G v s →
+        (G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+        ∃ u : {z : V // z ∈ G.neighborSet v},
+          u ∈ ((Finset.univ.erase s).erase (mate s)) ∧
+          ∃ q ∈ G.neighborFinset x ∩ secondLayerBranch G v u,
+            (G.neighborFinset q ∩ secondLayerBranch G v u).card = 1 ∧
+            (G.neighborFinset q ∩
+              secondLayerBranch G v (mate s)).card = 0) ∧
+      (∀ s : {z : V // z ∈ G.neighborSet v},
+        (∑ x ∈ secondLayerBranch G v s,
+          (G.neighborFinset x ∩
+            highBranchMateMissingFarVertices G v mate s).card) =
+          highBranchMatchedCount G v (mate s)) ∧
+      ∀ s : {z : V // z ∈ G.neighborSet v},
+        highBranchMatchedCount G v s +
+            highBranchMatchedCount G v (mate s) = 6 →
+        ∀ x ∈ secondLayerBranch G v s,
+          ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+            (G.neighborFinset x ∩
+              highBranchMateMissingFarVertices G v mate s).card ≤ 2) ∧
+          ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 1 →
+            (G.neighborFinset x ∩
+              highBranchMateMissingFarVertices G v mate s).card ≤ 1) := by
+  classical
+  have hunique : ∀ {w : V}, G.degree w = 8 → w = v := by
+    intro w hw
+    have hvMem : v ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hv]
+    have hwMem : w ∈ orderFortyNineHighVertices G := by
+      simp [orderFortyNineHighVertices, hw]
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hHigh
+    have hvz : v = z := by simpa [hz] using hvMem
+    have hwz : w = z := by simpa [hz] using hwMem
+    exact hwz.trans hvz.symm
+  have hlocal : ∀ s : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree s = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  obtain ⟨mate, hmateInv, hmateAdj⟩ :=
+    exists_localMate_involution G v hlocal
+  have hexternal : externalRepairCandidates G v = ∅ :=
+    orderFortyNine_externalRepairCandidates_degreeEight_eq_empty
+      G hfree hmin hcard hv
+  have houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7 := by
+    intro a ha
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin hcard a with ha7 | ha8
+    · exact ha7
+    · have hav : a = v := hunique ha8
+      rw [secondLayer] at ha
+      rcases Finset.mem_biUnion.mp ha with ⟨s, _, has⟩
+      exact ((Finset.mem_sdiff.mp has).2 (by simp [hav])).elim
+  refine ⟨mate, hmateInv, hmateAdj, ?_, ?_, ?_⟩
+  · intro s x hx hxUnmatched
+    exact unmatched_vertex_exists_matched_neighbor_missing_mate
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s x hx hxUnmatched
+  · intro s
+    exact sum_neighbor_inter_mateMissing_eq_matchedCount
+      G hfree hmin hcard hv hexternal houterDegree
+        mate hmateInv hmateAdj s
+  · intro s hpair
+    exact highBranch_mateMissingNeighbor_bounds_of_matchedCounts_add_eq_six
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s hpair
+
 /-- In the one-high stratum the square-candidate determinant is divisible by
 thirty-six.  Odd order forces `2 ∣ det A`, while the high-root kernel forces
 `3 ∣ det A`; the candidate is `A²`. -/
