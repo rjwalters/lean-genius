@@ -1905,6 +1905,152 @@ theorem sum_neighbor_inter_mateMissing_eq_matchedCount
         G hfree hmin hcard hv hexternal houterDegree
           mate hmateInv hmateAdj s
 
+/-- Five-point arithmetic behind the A-pair `k` bounds.  If the number of
+marked points plus the total `k`-mass is six, and every unmarked point has
+positive `k`-mass, then unmarked points have mass at most two and marked
+points have mass at most one. -/
+theorem five_point_k_bounds_of_marked_add_sum_eq_six
+    {α : Type*} [DecidableEq α]
+    (S : Finset α) (P : α → Prop) [DecidablePred P] (k : α → ℕ)
+    (hcard : S.card = 5)
+    (hbalance : (S.filter P).card + (∑ x ∈ S, k x) = 6)
+    (hpositive : ∀ x ∈ S, ¬P x → 1 ≤ k x) :
+    ∀ x ∈ S, (¬P x → k x ≤ 2) ∧ (P x → k x ≤ 1) := by
+  classical
+  let M := S.filter P
+  let U := S.filter fun x => ¬P x
+  have hpartCard : M.card + U.card = S.card := by
+    simpa [M, U] using
+      (Finset.card_filter_add_card_filter_not (s := S) (p := P))
+  have hpartSum : (∑ x ∈ M, k x) + (∑ x ∈ U, k x) =
+      ∑ x ∈ S, k x := by
+    simpa [M, U] using
+      (Finset.sum_filter_add_sum_filter_not (s := S) (p := P) (f := k))
+  have hUsum : U.card ≤ ∑ x ∈ U, k x := by
+    calc
+      U.card = ∑ _x ∈ U, 1 := by simp
+      _ ≤ ∑ x ∈ U, k x := by
+        apply Finset.sum_le_sum
+        intro x hx
+        exact hpositive x (Finset.mem_filter.mp hx).1
+          (Finset.mem_filter.mp hx).2
+  intro x hx
+  constructor
+  · intro hxNotP
+    have hxU : x ∈ U := Finset.mem_filter.mpr ⟨hx, hxNotP⟩
+    have hEraseCard : (U.erase x).card + 1 = U.card := by
+      rw [Finset.card_erase_of_mem hxU]
+      have : 0 < U.card := Finset.card_pos.mpr ⟨x, hxU⟩
+      omega
+    have hEraseSum : (∑ y ∈ U.erase x, k y) + k x = ∑ y ∈ U, k y := by
+      exact Finset.sum_erase_add _ _ hxU
+    have hEraseLower : (U.erase x).card ≤ ∑ y ∈ U.erase x, k y := by
+      calc
+        (U.erase x).card = ∑ _y ∈ U.erase x, 1 := by simp
+        _ ≤ ∑ y ∈ U.erase x, k y := by
+          apply Finset.sum_le_sum
+          intro y hy
+          have hyU : y ∈ U := Finset.mem_of_mem_erase hy
+          exact hpositive y (Finset.mem_filter.mp hyU).1
+            (Finset.mem_filter.mp hyU).2
+    dsimp [M, U] at hpartCard hpartSum hUsum hEraseCard hEraseSum hEraseLower
+    omega
+  · intro hxP
+    have hxM : x ∈ M := Finset.mem_filter.mpr ⟨hx, hxP⟩
+    have hMsum : k x ≤ ∑ y ∈ M, k y := by
+      have hErase := Finset.sum_erase_add M k hxM
+      omega
+    dsimp [M, U] at hpartCard hpartSum hUsum hMsum
+    omega
+
+/-- Graph-facing A-pair rigidity.  When the two mate branches have six
+matched vertices in total (the `(2,4)` profile), a vertex has at most two
+mate-missing matched neighbors if it is internally unmatched, and at most
+one if it is internally matched. -/
+theorem highBranch_mateMissingNeighbor_bounds_of_matchedCounts_add_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v})
+    (hpair : highBranchMatchedCount G v s +
+      highBranchMatchedCount G v (mate s) = 6) :
+    ∀ x ∈ secondLayerBranch G v s,
+      ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 →
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).card ≤ 2) ∧
+      ((G.neighborFinset x ∩ secondLayerBranch G v s).card = 1 →
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).card ≤ 1) := by
+  classical
+  let B := secondLayerBranch G v s
+  let P : V → Prop := fun x =>
+    (G.neighborFinset x ∩ secondLayerBranch G v s).card = 1
+  let k : V → ℕ := fun x =>
+    (G.neighborFinset x ∩
+      highBranchMateMissingFarVertices G v mate s).card
+  have hBcard : B.card = 5 :=
+    orderFortyNine_card_secondLayerBranch_degreeEight_eq_five
+      G hfree hmin hcard hv s
+  have hsum := sum_neighbor_inter_mateMissing_eq_matchedCount
+    G hfree hmin hcard hv hexternal houterDegree
+      mate hmateInv hmateAdj s
+  have hbalance : (B.filter P).card + (∑ x ∈ B, k x) = 6 := by
+    change highBranchMatchedCount G v s +
+      (∑ x ∈ secondLayerBranch G v s,
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).card) = 6
+    rw [hsum]
+    exact hpair
+  have hpositive : ∀ x ∈ B, ¬P x → 1 ≤ k x := by
+    intro x hx hnotP
+    have hinterLe :
+        (G.neighborFinset x ∩ secondLayerBranch G v s).card ≤ 1 := by
+      have hxs : x ≠ s.1 := by
+        intro h
+        exact (Finset.mem_sdiff.mp hx).2 (by
+          simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+          exact Or.inr (h ▸ s.2))
+      exact card_neighborFinset_inter_secondLayerBranch_le_one
+        G hfree v x s hxs
+    have hxUnmatched :
+        (G.neighborFinset x ∩ secondLayerBranch G v s).card = 0 := by
+      dsimp [P] at hnotP
+      omega
+    obtain ⟨u, hu, q, hq, _hqMatched, hqMiss⟩ :=
+      unmatched_vertex_exists_matched_neighbor_missing_mate
+        G hfree hmin hcard hv hunique hexternal houterDegree
+          mate hmateInv hmateAdj s x hx hxUnmatched
+    have hqMissing : q ∈ highBranchMateMissingFarVertices G v mate s := by
+      rw [highBranchMateMissingFarVertices]
+      exact Finset.mem_biUnion.mpr ⟨u, hu,
+        Finset.mem_filter.mpr ⟨(Finset.mem_inter.mp hq).2, hqMiss⟩⟩
+    have hnonempty :
+        (G.neighborFinset x ∩
+          highBranchMateMissingFarVertices G v mate s).Nonempty :=
+      ⟨q, Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hq).1, hqMissing⟩⟩
+    exact Finset.card_pos.mpr hnonempty
+  have hb := five_point_k_bounds_of_marked_add_sum_eq_six
+    B P k hBcard hbalance hpositive
+  intro x hx
+  have hxBounds := hb x hx
+  dsimp [P, k] at hxBounds
+  constructor
+  · intro hzero
+    exact hxBounds.1 (by omega)
+  · exact hxBounds.2
+
 /-- The exact paired-block identity collapses the internal matching state of
 each five-point branch to `2` or `4` matched vertices, and a mate pair cannot
 have state `(2,2)`.  Equivalently, every branch has one or three internally
@@ -1945,6 +2091,144 @@ theorem paired_highBranchMatchedCount_states
       G hfree hmin hcard hv (mate s)] at hmLe
   rcases even_highBranchMatchedCount G hfree s with ⟨a, ha⟩
   rcases even_highBranchMatchedCount G hfree (mate s) with ⟨b, hb⟩
+  omega
+
+/-- Encoder-facing mate-pair profile trichotomy.  In internal-edge counts
+the three alternatives are `(1,2)`, `(2,1)`, and `(2,2)`; expressed in
+matched-vertex counts they are `(2,4)`, `(4,2)`, and `(4,4)`.  These are
+exactly the A/B pair states used by the one-high family CNFs. -/
+theorem paired_highBranchMatchedCount_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    (highBranchMatchedCount G v s = 2 ∧
+        highBranchMatchedCount G v (mate s) = 4) ∨
+      (highBranchMatchedCount G v s = 4 ∧
+        highBranchMatchedCount G v (mate s) = 2) ∨
+      (highBranchMatchedCount G v s = 4 ∧
+        highBranchMatchedCount G v (mate s) = 4) := by
+  have hstates := paired_highBranchMatchedCount_states
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj s
+  rcases hstates.1 with hs2 | hs4
+  · rcases hstates.2.1 with hm2 | hm4
+    · rcases hstates.2.2 with hs4 | hm4 <;> omega
+    · exact Or.inl ⟨hs2, hm4⟩
+  · rcases hstates.2.1 with hm2 | hm4
+    · exact Or.inr (Or.inl ⟨hs4, hm2⟩)
+    · exact Or.inr (Or.inr ⟨hs4, hm4⟩)
+
+/-- The distinguished endpoint of every A-type mate pair: it is the unique
+endpoint whose five-point branch contains one internal edge, equivalently
+two internally matched vertices.  B-pairs contribute no endpoint. -/
+def oneHighAEndpointSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    Finset {z : V // z ∈ G.neighborSet v} :=
+  Finset.univ.filter fun s => highBranchMatchedCount G v s = 2
+
+/-- There are at most four A-type mate pairs.  Sending an A endpoint to its
+mate injects the A-endpoint set into its complement, because `(2,2)` is
+forbidden.  Since the high root has eight neighbors, the A count is at most
+four. -/
+theorem card_oneHighAEndpointSet_le_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1) :
+    (oneHighAEndpointSet G v).card ≤ 4 := by
+  classical
+  let P := {z : V // z ∈ G.neighborSet v}
+  let A : Finset P := oneHighAEndpointSet G v
+  let B : Finset P := Finset.univ \ A
+  have hmateOutside : ∀ s ∈ A, mate s ∈ B := by
+    intro s hs
+    have hs2 : highBranchMatchedCount G v s = 2 := by
+      simpa [A, oneHighAEndpointSet] using hs
+    have hp := paired_highBranchMatchedCount_profile
+      G hfree hmin hcard hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj s
+    have hm4 : highBranchMatchedCount G v (mate s) = 4 := by
+      rcases hp with hp | hp | hp <;> omega
+    apply Finset.mem_sdiff.mpr
+    refine ⟨Finset.mem_univ _, ?_⟩
+    simp [A, oneHighAEndpointSet, hm4]
+  let f : {s // s ∈ A} → {t // t ∈ B} := fun s =>
+    ⟨mate s.1, hmateOutside s.1 s.2⟩
+  have hf : Function.Injective f := by
+    intro s t hst
+    apply Subtype.ext
+    apply hmateInv.injective
+    exact congrArg Subtype.val hst
+  have hAB : A.card ≤ B.card := by
+    simpa only [Fintype.card_coe] using Fintype.card_le_of_injective f hf
+  have hPcard : Fintype.card P = 8 := by
+    rw [Fintype.card_subtype]
+    have heq : Finset.univ.filter (fun z => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by ext z; simp
+    rw [heq, G.card_neighborFinset_eq_degree, hv]
+  have hBcard : B.card + A.card = 8 := by
+    have hAle : A.card ≤ 8 := by
+      have hsub : A ⊆ (Finset.univ : Finset P) := Finset.subset_univ A
+      have := Finset.card_le_card hsub
+      rw [Finset.card_univ, hPcard] at this
+      exact this
+    dsimp [B]
+    rw [Finset.card_sdiff, Finset.inter_univ, Finset.card_univ, hPcard]
+    omega
+  dsimp [A] at hAB hBcard ⊢
+  omega
+
+/-- The invariant A-pair count therefore selects exactly one of the five
+family words `BBBB`, `ABBB`, `AABB`, `AAAB`, `AAAA`. -/
+theorem oneHighAEndpointSet_card_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V}
+    (hv : G.degree v = 8)
+    (hunique : ∀ {x : V}, G.degree x = 8 → x = v)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (mate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hmateInv : Function.Involutive mate)
+    (hmateAdj : ∀ s, G.Adj s.1 (mate s).1) :
+    (oneHighAEndpointSet G v).card = 0 ∨
+      (oneHighAEndpointSet G v).card = 1 ∨
+      (oneHighAEndpointSet G v).card = 2 ∨
+      (oneHighAEndpointSet G v).card = 3 ∨
+      (oneHighAEndpointSet G v).card = 4 := by
+  have hle := card_oneHighAEndpointSet_le_four
+    G hfree hmin hcard hv hunique hexternal houterDegree
+      mate hmateInv hmateAdj
   omega
 
 /-- A one-regular induced neighborhood has a canonical-up-to-choice mate
