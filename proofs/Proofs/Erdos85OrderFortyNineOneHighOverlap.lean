@@ -1963,6 +1963,204 @@ theorem even_card_orderFortyNineDefectOwnerEdgeBlock_self
   exact even_card_neighborToNeighborEdgeBlock_self
     (secondOrderDefectGraph G) s.1
 
+/-- At order 49, the sum of neighbor degrees is the seven-regular baseline
+plus the number of incident high vertices. -/
+theorem orderFortyNine_sum_neighbor_degrees_eq_baseline_add_highIncidence
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) (x : V) :
+    (∑ y ∈ G.neighborFinset x, G.degree y) =
+      7 * G.degree x +
+        (G.neighborFinset x ∩ orderFortyNineHighVertices G).card := by
+  calc
+    (∑ y ∈ G.neighborFinset x, G.degree y) =
+        ∑ y ∈ G.neighborFinset x,
+          (7 + if G.degree y = 8 then 1 else 0) := by
+      apply Finset.sum_congr rfl
+      intro y _
+      rcases orderFortyNine_degree_eq_seven_or_eight
+          G hfree hmin hcard y with hy | hy
+      · simp [hy]
+      · simp [hy]
+    _ = 7 * G.degree x +
+        ((G.neighborFinset x).filter fun y => G.degree y = 8).card := by
+      rw [Finset.sum_add_distrib]
+      rw [Finset.sum_const, nsmul_eq_mul,
+        G.card_neighborFinset_eq_degree, Finset.sum_boole]
+      simp [Nat.mul_comm]
+    _ = _ := by
+      congr 1
+      congr 1
+      ext y
+      simp [orderFortyNineHighVertices, and_comm]
+
+/-- A center adjacent to the unique high vertex has neighbor-degree sum 50. -/
+theorem orderFortyNine_sum_neighbor_degrees_center_eq_fifty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v s : V} (hv : G.degree v = 8) (hvs : G.Adj v s) :
+    (∑ y ∈ G.neighborFinset s, G.degree y) = 50 := by
+  have hsdeg := orderFortyNine_neighbor_degree_seven_of_degreeEight
+    G hfree hmin hcard hv hvs
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+  have hvw : v = w := by simpa [hw] using hvHigh
+  have hHighEq : orderFortyNineHighVertices G = {v} := by
+    simpa [hvw] using hw
+  rw [orderFortyNine_sum_neighbor_degrees_eq_baseline_add_highIncidence
+    G hfree hmin hcard, hsdeg, hHighEq]
+  simp [SimpleGraph.mem_neighborFinset, hvs.symm]
+
+/-- A low leaf not adjacent to the unique high vertex has neighbor-degree
+sum 49. -/
+theorem orderFortyNine_sum_neighbor_degrees_leaf_eq_fortyNine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v y : V} (hv : G.degree v = 8) (hy : G.degree y = 7)
+    (hvy : ¬ G.Adj v y) :
+    (∑ z ∈ G.neighborFinset y, G.degree z) = 49 := by
+  have hvHigh : v ∈ orderFortyNineHighVertices G := by
+    simp [orderFortyNineHighVertices, hv]
+  obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hHigh
+  have hvw : v = w := by simpa [hw] using hvHigh
+  have hHighEq : orderFortyNineHighVertices G = {v} := by
+    simpa [hvw] using hw
+  rw [orderFortyNine_sum_neighbor_degrees_eq_baseline_add_highIncidence
+    G hfree hmin hcard, hy, hHighEq]
+  simp [SimpleGraph.mem_neighborFinset, G.adj_comm, hvy]
+
+/-- The row sum of `A²` is the sum of the degrees of the neighbors of the
+row vertex. -/
+theorem adjMatrix_sq_mul_onesMatrix_apply_eq_sum_neighbor_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    (G.adjMatrix ℤ * G.adjMatrix ℤ *
+      FriendshipTheoremOQ01.onesMatrix V) x y =
+        ∑ z ∈ G.neighborFinset x, (G.degree z : ℤ) := by
+  rw [Matrix.mul_assoc, Matrix.mul_apply]
+  simp_rw [adjMatrix_mul_onesMatrix_apply_eq_degree]
+  rw [neighborFinset_eq_filter, Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro z _
+  simp only [SimpleGraph.adjMatrix_apply]
+  by_cases hxz : G.Adj x z <;> simp [hxz]
+
+/-- The column sum of `A²` is the same neighbor-degree sum, by symmetry. -/
+theorem onesMatrix_mul_adjMatrix_sq_apply_eq_sum_neighbor_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (x y : V) :
+    (FriendshipTheoremOQ01.onesMatrix V * G.adjMatrix ℤ *
+      G.adjMatrix ℤ) x y =
+        ∑ z ∈ G.neighborFinset y, (G.degree z : ℤ) := by
+  rw [Matrix.mul_apply]
+  simp_rw [onesMatrix_mul_adjMatrix_apply_eq_degree]
+  rw [neighborFinset_eq_filter, Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro z _
+  simp only [SimpleGraph.adjMatrix_apply]
+  by_cases hyz : G.Adj y z <;> simp [hyz, G.adj_comm]
+
+/-- Exact center-to-leaf fourth-walk formula in the one-high stratum.  It is
+the center/leaf entry of the square of
+`D = diag(degree-1) + J - A²`. -/
+theorem orderFortyNine_defectSquare_center_leaf_eq_fourthWalk
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v s y : V} (hv : G.degree v = 8) (hvs : G.Adj v s)
+    (hy : G.degree y = 7) (hvy : ¬ G.Adj v y) :
+    ((secondOrderDefectGraph G).adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) s y =
+      ((G.adjMatrix ℤ * G.adjMatrix ℤ) *
+          (G.adjMatrix ℤ * G.adjMatrix ℤ)) s y - 38 -
+        12 * (G.adjMatrix ℤ * G.adjMatrix ℤ) s y := by
+  let A := G.adjMatrix ℤ
+  let B := degreePredDiagonal G
+  let J := FriendshipTheoremOQ01.onesMatrix V
+  let D := (secondOrderDefectGraph G).adjMatrix ℤ
+  let M := A * A
+  have hsdeg : G.degree s = 7 :=
+    orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin hcard hv hvs
+  have hsy : s ≠ y := by
+    intro h
+    subst y
+    exact hvy hvs
+  have hD : D = B + J - M := by
+    have hsq :=
+      adjMatrix_sq_eq_degreePredDiagonal_add_ones_sub_secondOrderDefect
+        G hfree
+    dsimp [A, B, J, D, M]
+    rw [hsq]
+    noncomm_ring
+  have hexpand :
+      D * D = B * B + B * J + J * B - B * M - M * B +
+        J * J - J * M - M * J + M * M := by
+    rw [hD]
+    noncomm_ring
+  have hBB : (B * B) s y = 0 := by
+    rw [show B = Matrix.diagonal (fun x => (G.degree x : ℤ) - 1) by
+      rfl, Matrix.diagonal_mul_diagonal]
+    simp [hsy]
+  have hBJ : (B * J) s y = 6 := by
+    rw [show B = Matrix.diagonal (fun x => (G.degree x : ℤ) - 1) by
+      rfl, Matrix.diagonal_mul]
+    simp [J, FriendshipTheoremOQ01.onesMatrix, hsdeg]
+  have hJB : (J * B) s y = 6 := by
+    rw [show B = Matrix.diagonal (fun x => (G.degree x : ℤ) - 1) by
+      rfl, Matrix.mul_diagonal]
+    simp [J, FriendshipTheoremOQ01.onesMatrix, hy]
+  have hBM : (B * M) s y = 6 * M s y := by
+    rw [show B = Matrix.diagonal (fun x => (G.degree x : ℤ) - 1) by
+      rfl, Matrix.diagonal_mul]
+    simp [hsdeg]
+  have hMB : (M * B) s y = 6 * M s y := by
+    rw [show B = Matrix.diagonal (fun x => (G.degree x : ℤ) - 1) by
+      rfl, Matrix.mul_diagonal]
+    simp [hy]
+    ring
+  have hJJ : (J * J) s y = 49 := by
+    rw [Matrix.mul_apply]
+    simp [J, FriendshipTheoremOQ01.onesMatrix, hcard]
+  have hJM : (J * M) s y = 49 := by
+    dsimp [J, M, A]
+    rw [← Matrix.mul_assoc,
+      onesMatrix_mul_adjMatrix_sq_apply_eq_sum_neighbor_degrees]
+    exact_mod_cast orderFortyNine_sum_neighbor_degrees_leaf_eq_fortyNine
+      G hfree hmin hcard hHigh hv hy hvy
+  have hMJ : (M * J) s y = 50 := by
+    dsimp [J, M, A]
+    rw [adjMatrix_sq_mul_onesMatrix_apply_eq_sum_neighbor_degrees]
+    exact_mod_cast orderFortyNine_sum_neighbor_degrees_center_eq_fifty
+      G hfree hmin hcard hHigh hv hvs
+  change (D * D) s y = (M * M) s y - 38 - 12 * M s y
+  rw [hexpand]
+  simp only [Matrix.add_apply, Matrix.sub_apply]
+  rw [hBB, hBJ, hJB, hBM, hMB, hJJ, hJM, hMJ]
+  ring
+
 /-- The center block of `D²` is `5I`: every defect-owner fiber has size five,
 and distinct fibers are disjoint. -/
 theorem orderFortyNine_defectSquare_centerBlock
