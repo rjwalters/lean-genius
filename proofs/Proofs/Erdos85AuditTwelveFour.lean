@@ -207,6 +207,18 @@ import Proofs.Erdos85DegreeSixEmptySector
 #print axioms Erdos85.degreeSix_threeSix_residual_profile
 #print axioms Erdos85.degreeSix_threeSix_residual_partition_counts
 
+-- (3,6) family closures (0c9e574e11..7b77dff421)
+#print axioms Erdos85.false_of_degreeSix_threeSix_all_contacted_triangles
+#print axioms Erdos85.false_of_degreeSix_threeSix_contacted_three_or_nine
+#print axioms Erdos85.false_of_degreeSix_threeSix_zero_contacted_half
+#print axioms Erdos85.false_of_degreeSix_threeSix_orderTwelve_residual_arithmetic
+#print axioms Erdos85.false_of_degreeSix_threeSix_four_contact_branch
+#print axioms Erdos85.false_of_degreeSix_threeSix_twoSix_twoSix_branch
+#print axioms Erdos85.false_of_degreeSix_threeSix_twoSix_oneTwelve_branch
+#print axioms Erdos85.false_of_degreeSix_threeSix_sixTwoThree_oneTwelve_branch
+#print axioms Erdos85.degreeSix_threeSix_unused_half_shape
+#print axioms Erdos85.degreeSix_threeSix_unused_half_orderSix_contact_mass
+
 -- standing closure chain (regression re-audit)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_eight_two_two_two_two
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_five_five_two_two_two

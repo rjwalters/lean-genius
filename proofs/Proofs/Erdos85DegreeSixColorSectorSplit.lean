@@ -5293,6 +5293,121 @@ theorem false_of_degreeSix_threeSix_twoSix_oneTwelve_branch
       hw12 hb6 hc6 hbcNe
   change Q w b + Q w c ≤ 1 at hgroup
   omega
+
+/-- An order-twelve row cannot be supported by two order-six and two
+order-three components with the required diagonal square value. -/
+theorem false_of_orderTwelve_twoSix_twoThree_row_square_arithmetic
+    (x p q r s : ℕ)
+    (hrow : x + p + q + r + s = 6)
+    (hsq : x * x + 2 * (p * p + q * q) + 4 * (r * r + s * s) = 15) : False := by
+  have hx : x ≤ 3 := by nlinarith
+  have hp : p ≤ 2 := by nlinarith
+  have hq : q ≤ 2 := by nlinarith
+  have hr : r ≤ 1 := by nlinarith
+  have hs : s ≤ 1 := by nlinarith
+  interval_cases x <;> interval_cases p <;> interval_cases q <;>
+    interval_cases r <;> interval_cases s <;> try norm_num at hsq ⊢
+  all_goals omega
+
+/-- The `{6,3,3}|{12}` residual shape is already impossible from the
+unused order-twelve component's row and square identities. -/
+theorem false_of_degreeSix_threeSix_sixTwoThree_oneTwelve_branch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (a b c e f w : (secondOrderDefectGraph G).ConnectedComponent)
+    (ha3 : a.supp.ncard = 3) (hb6 : b.supp.ncard = 6)
+    (hc6 : c.supp.ncard = 6) (he3 : e.supp.ncard = 3)
+    (hf3 : f.supp.ncard = 3) (hw12 : w.supp.ncard = 12)
+    (haeNe : a ≠ e) (hafNe : a ≠ f) (hbcNe : b ≠ c) (hefNe : e ≠ f)
+    (haw : componentQuotientMatrix G (secondOrderDefectGraph G) a w = 0)
+    (hcover : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {a, b, c, e, f, w}) : False := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  change Q a w = 0 at haw
+  have habNe : a ≠ b := by intro h; subst b; omega
+  have hacNe : a ≠ c := by intro h; subst c; omega
+  have hawNe : a ≠ w := by intro h; subst w; omega
+  have hbeNe : b ≠ e := by intro h; subst e; omega
+  have hbfNe : b ≠ f := by intro h; subst f; omega
+  have hbwNe : b ≠ w := by intro h; subst w; omega
+  have hceNe : c ≠ e := by intro h; subst e; omega
+  have hcfNe : c ≠ f := by intro h; subst f; omega
+  have hcwNe : c ≠ w := by intro h; subst w; omega
+  have hewNe : e ≠ w := by intro h; subst w; omega
+  have hfwNe : f ≠ w := by intro h; subst w; omega
+  have hwaBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) a w
+  have hwbBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w b
+  have hwcBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w c
+  have hweBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w e
+  have hwfBal := secondOrder_componentQuotientMatrix_balance
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w f
+  change a.supp.ncard * Q a w = w.supp.ncard * Q w a at hwaBal
+  change w.supp.ncard * Q w b = b.supp.ncard * Q b w at hwbBal
+  change w.supp.ncard * Q w c = c.supp.ncard * Q c w at hwcBal
+  change w.supp.ncard * Q w e = e.supp.ncard * Q e w at hweBal
+  change w.supp.ncard * Q w f = f.supp.ncard * Q f w at hwfBal
+  have hwa : Q w a = 0 := by rw [ha3, hw12, haw] at hwaBal; omega
+  have hbw : Q b w = 2 * Q w b := by rw [hw12, hb6] at hwbBal; omega
+  have hcw : Q c w = 2 * Q w c := by rw [hw12, hc6] at hwcBal; omega
+  have hew : Q e w = 4 * Q w e := by rw [hw12, he3] at hweBal; omega
+  have hfw : Q f w = 4 * Q w f := by rw [hw12, hf3] at hwfBal; omega
+  have hrowGraph := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w
+  change (∑ z, Q w z) = 6 at hrowGraph
+  rw [hcover] at hrowGraph
+  simp [habNe, hacNe, haeNe, hafNe, hawNe, hbcNe, hbeNe, hbfNe, hbwNe,
+    hceNe, hcfNe, hcwNe, hefNe, hewNe, hfwNe, hwa] at hrowGraph
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) w w
+  have hsq : (∑ z, Q w z * Q z w) = 15 := by
+    simpa [Q, Matrix.mul_apply, hw12] using hsqGraph
+  rw [hcover] at hsq
+  simp [habNe, hacNe, haeNe, hafNe, hawNe, hbcNe, hbeNe, hbfNe, hbwNe,
+    hceNe, hcfNe, hcwNe, hefNe, hewNe, hfwNe, hwa, hbw, hcw, hew, hfw] at hsq
+  apply false_of_orderTwelve_twoSix_twoThree_row_square_arithmetic
+    (Q w w) (Q w b) (Q w c) (Q w e) (Q w f)
+  · omega
+  · ring_nf at hsq ⊢
+    exact hsq
+
+/-- The residual triangle equations in the `{6,3,3}|{6,6}` shape are
+incompatible with the grouped bounds at the two unused order-six sources. -/
+theorem false_of_twoTriangle_twoGroupedSix_arithmetic
+    (x y k ue uf ve vf : ℕ)
+    (hu : ue + uf ≤ 1) (hv : ve + vf ≤ 1)
+    (hrowE : x + k + 2 * (ue + ve) = 5)
+    (hrowF : y + k + 2 * (uf + vf) = 5)
+    (hsqE : x * x + k * k + 2 * (ue * ue + ve * ve) = 5)
+    (hsqF : y * y + k * k + 2 * (uf * uf + vf * vf) = 5) : False := by
+  have hue : ue = 0 ∨ ue = 1 := by omega
+  have huf : uf = 0 ∨ uf = 1 := by omega
+  have hve : ve = 0 ∨ ve = 1 := by omega
+  have hvf : vf = 0 ∨ vf = 1 := by omega
+  have hx : x ≤ 5 := by omega
+  have hy : y ≤ 5 := by omega
+  have hk : k ≤ 5 := by omega
+  rcases hue with rfl | rfl <;> rcases huf with rfl | rfl <;>
+    rcases hve with rfl | rfl <;> rcases hvf with rfl | rfl <;>
+    interval_cases x <;> interval_cases y <;> interval_cases k <;>
+    try norm_num at hsqE hsqF ⊢
+  all_goals omega
   /-
   have hcardLe : S.card ≤ 4 := by
     have hthree : S.card * 3 ≤ ∑ t ∈ S, size t := by
