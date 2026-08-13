@@ -387,6 +387,60 @@ theorem dimacsClauseBounded_singleton_negative
   simp at hlit
   simpa [hlit] using hid
 
+theorem dimacsClauseSatisfied_negative_pair
+    {val : DimacsValuation} {a b : Nat}
+    (hnot : ¬(val a = true ∧ val b = true)) :
+    dimacsClauseSatisfied val [-(a : Int), -(b : Int)] := by
+  cases ha : val a
+  · refine ⟨-(a : Int), by simp, ?_⟩
+    simp [dimacsLitValue, ha]
+  · have hb : val b = false := by
+      cases hb' : val b
+      · rfl
+      · exact False.elim (hnot ⟨ha, hb'⟩)
+    refine ⟨-(b : Int), by simp, ?_⟩
+    simp [dimacsLitValue, hb]
+
+theorem dimacsClauseBounded_negative_pair
+    {top a b : Nat} (ha : a ≤ top) (hb : b ≤ top) :
+    dimacsClauseBounded top [-(a : Int), -(b : Int)] := by
+  intro lit hlit
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hlit
+  rcases hlit with rfl | rfl
+  · simpa using ha
+  · simpa using hb
+
+theorem dimacsClauseSatisfied_negative_four
+    {val : DimacsValuation} {a b c d : Nat}
+    (hnot : ¬(val a = true ∧ val b = true ∧
+      val c = true ∧ val d = true)) :
+    dimacsClauseSatisfied val
+      [-(a : Int), -(b : Int), -(c : Int), -(d : Int)] := by
+  cases ha : val a
+  · exact ⟨-(a : Int), by simp, by simp [dimacsLitValue, ha]⟩
+  · cases hb : val b
+    · exact ⟨-(b : Int), by simp, by simp [dimacsLitValue, hb]⟩
+    · cases hc : val c
+      · exact ⟨-(c : Int), by simp, by simp [dimacsLitValue, hc]⟩
+      · have hd : val d = false := by
+          cases hd' : val d
+          · rfl
+          · exact False.elim (hnot ⟨ha, hb, hc, hd'⟩)
+        exact ⟨-(d : Int), by simp, by simp [dimacsLitValue, hd]⟩
+
+theorem dimacsClauseBounded_negative_four
+    {top a b c d : Nat} (ha : a ≤ top) (hb : b ≤ top)
+    (hc : c ≤ top) (hd : d ≤ top) :
+    dimacsClauseBounded top
+      [-(a : Int), -(b : Int), -(c : Int), -(d : Int)] := by
+  intro lit hlit
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hlit
+  rcases hlit with rfl | rfl | rfl | rfl
+  · simpa using ha
+  · simpa using hb
+  · simpa using hc
+  · simpa using hd
+
 noncomputable def oneHighFamilyEdgeUnitVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (i j : Nat) (present : Bool)
@@ -698,6 +752,20 @@ theorem oneHighFamilyMatePair_edgeValue
       5 * (b + 1) + j := max_eq_right (by omega)
   simp [oneHighFamilyAtomValue, hmin, hmax, hui, huj, u, v,
     hnotAdj]
+
+theorem oneHighFamilyAtomValue_edge
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {i j : Nat} (hi : i < 40) (hj : j < 40) :
+    oneHighFamilyAtomValue R (.edge (min i j) (max i j)) =
+      decide (R.Adj (⟨i, hi⟩ : Fin 40) ⟨j, hj⟩) := by
+  by_cases hij : i ≤ j
+  · have hmin : min i j = i := min_eq_left hij
+    have hmax : max i j = j := max_eq_right hij
+    simp [oneHighFamilyAtomValue, hmin, hmax, hi, hj]
+  · have hji : j ≤ i := by omega
+    have hmin : min i j = j := min_eq_right hji
+    have hmax : max i j = i := max_eq_left hji
+    simp [oneHighFamilyAtomValue, hmin, hmax, hi, hj, R.adj_comm]
 
 theorem oneHighFamilyMatePairStepVal_semanticSound
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
