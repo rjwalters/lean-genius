@@ -152,6 +152,16 @@ theorem oneHighFamilyIdsSound_foldlAccum {α β : Type} (xs : List α)
       rw [heq] at hx
       exact ih acc' hx
 
+theorem oneHighFamilyIdsSound_arrayFoldl {α : Type} (xs : Array α)
+    (step : OneHighFamilyGenState → α → OneHighFamilyGenState)
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (hstep : ∀ st x, OneHighFamilyIdsSound st →
+      OneHighFamilyIdsSound (step st x)) :
+    OneHighFamilyIdsSound (xs.foldl step st) := by
+  rw [← Array.foldl_toList]
+  exact oneHighFamilyIdsSound_runList xs.toList (fun x st => step st x) h
+    (fun x st hs => hstep st x hs)
+
 theorem oneHighFamilyIdsSound_edgeId
     {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
     (i j : Nat) :
@@ -517,6 +527,39 @@ def oneHighFamilyMissDefinitionStep (w b : Nat)
       (fun st lit => (oneHighFamilyEmit [-(xv : Int), -lit] st).2) st
     (oneHighFamilyEmit ((xv : Int) :: lits.toList) st).2
 
+theorem oneHighFamilyIdsSound_missDefinitionStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (w b : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMissDefinitionStep w b st) := by
+  simp only [oneHighFamilyMissDefinitionStep]
+  split
+  · exact h
+  · generalize h₁ : oneHighFamilyAtomId (.miss w b) st = out₁
+    rcases out₁ with ⟨xv, st₁⟩
+    have hs₁ := oneHighFamilyIdsSound_atomId h (.miss w b)
+    rw [h₁] at hs₁
+    generalize h₂ : (oneHighFamilyBlockVertices b).foldl
+      (fun (acc, st) z =>
+        let (id, st) := oneHighFamilyEdgeId w z st
+        (acc.push (id : Int), st)) (#[], st₁) = out₂
+    rcases out₂ with ⟨lits, st₂⟩
+    have hs₂ := oneHighFamilyIdsSound_foldlAccum
+      (oneHighFamilyBlockVertices b)
+      (fun z (accst : Array Int × OneHighFamilyGenState) =>
+        let (acc, st) := accst
+        let (id, st) := oneHighFamilyEdgeId w z st
+        (acc.push (id : Int), st)) #[] hs₁ (by
+          intro z acc st hz
+          exact oneHighFamilyIdsSound_edgeId hz w z)
+    rw [h₂] at hs₂
+    have hs₃ := oneHighFamilyIdsSound_arrayFoldl lits
+      (fun st lit => (oneHighFamilyEmit [-(xv : Int), -lit] st).2)
+      hs₂ (by
+        intro st lit hs
+        exact oneHighFamilyIdsSound_emit hs _)
+    simp only [h₂]
+    exact oneHighFamilyIdsSound_emit hs₃ _
+
 def oneHighFamilyMissVertexStep (a w : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   if oneHighFamilyVertexMatched a w then
@@ -524,11 +567,27 @@ def oneHighFamilyMissVertexStep (a w : Nat)
       (oneHighFamilyMissDefinitionStep w) st
   else st
 
+theorem oneHighFamilyIdsSound_missVertexStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a w : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMissVertexStep a w st) := by
+  simp only [oneHighFamilyMissVertexStep]
+  split
+  · exact oneHighFamilyIdsSound_runList _ _ h
+      (fun b st hb => oneHighFamilyIdsSound_missDefinitionStep hb w b)
+  · exact h
+
 /-- Sixth generator segment: exact Tseitin definitions of every matched
 leaf's six missing-block variables. -/
 def oneHighFamilyMissDefinitionClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 40) (oneHighFamilyMissVertexStep a)
     (oneHighFamilyFarDegreeClauses a)
+
+theorem oneHighFamilyIdsSound_missDefinitionClauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMissDefinitionClauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_farDegreeClauses a)
+    (fun w st h => oneHighFamilyIdsSound_missVertexStep h a w)
 
 def oneHighFamilyFarBlocks (c : Nat) : List Nat :=
   (List.range 8).filter fun b => b ≠ c ∧ b ≠ (c ^^^ 1)
@@ -541,12 +600,39 @@ def oneHighFamilyLexPairStep (x y j k : Nat)
     (oneHighFamilyEmit [-(xj : Int), -(yk : Int)] st).2
   else st
 
+theorem oneHighFamilyIdsSound_lexPairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (x y j k : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyLexPairStep x y j k st) := by
+  simp only [oneHighFamilyLexPairStep]
+  split
+  · generalize h₁ : oneHighFamilyAtomId (.miss x j) st = out₁
+    rcases out₁ with ⟨xj, st₁⟩
+    have hs₁ := oneHighFamilyIdsSound_atomId h (.miss x j)
+    rw [h₁] at hs₁
+    generalize h₂ : oneHighFamilyAtomId (.miss y k) st₁ = out₂
+    rcases out₂ with ⟨yk, st₂⟩
+    have hs₂ := oneHighFamilyIdsSound_atomId hs₁ (.miss y k)
+    rw [h₂] at hs₂
+    simp only [h₂]
+    exact oneHighFamilyIdsSound_emit hs₂ _
+  · exact h
+
 def oneHighFamilyLexLeq (c x y : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   let fars := oneHighFamilyFarBlocks c
   oneHighFamilyRunList fars (fun j st =>
     oneHighFamilyRunList fars
       (fun k st => oneHighFamilyLexPairStep x y j k st) st) st
+
+theorem oneHighFamilyIdsSound_lexLeq
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (c x y : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyLexLeq c x y st) := by
+  apply oneHighFamilyIdsSound_runList _ _ h
+  intro j st hj
+  exact oneHighFamilyIdsSound_runList _ _ hj
+    (fun k st hk => oneHighFamilyIdsSound_lexPairStep hk x y j k)
 
 def oneHighFamilyLexBlockStep (a c : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -557,18 +643,48 @@ def oneHighFamilyLexBlockStep (a c : Nat)
     oneHighFamilyLexLeq c base (base + 2) st
   else st
 
+theorem oneHighFamilyIdsSound_lexBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a c : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyLexBlockStep a c st) := by
+  simp only [oneHighFamilyLexBlockStep]
+  have hbase := oneHighFamilyIdsSound_lexLeq h c (5 * c) (5 * c + 1)
+  split
+  · exact oneHighFamilyIdsSound_lexLeq
+      (oneHighFamilyIdsSound_lexLeq hbase c (5 * c + 2) (5 * c + 3))
+      c (5 * c) (5 * c + 2)
+  · exact hbase
+
 /-- Seventh generator segment: the three matched-pair lex WLOG families. -/
 def oneHighFamilyLexClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 8) (oneHighFamilyLexBlockStep a)
     (oneHighFamilyMissDefinitionClauses a)
 
+theorem oneHighFamilyIdsSound_lexClauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyLexClauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_missDefinitionClauses a)
+    (fun c st h => oneHighFamilyIdsSound_lexBlockStep h a c)
+
 def oneHighFamilyMidpointAtomId (x w z : Nat) :
     StateM OneHighFamilyGenState Nat :=
   oneHighFamilyAtomId (.midpoint (min x z) w (max x z))
 
+theorem oneHighFamilyIdsSound_midpointAtomId
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (x w z : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMidpointAtomId x w z st).2 := by
+  exact oneHighFamilyIdsSound_atomId h _
+
 def oneHighFamilyCommonAtomId (x z : Nat) :
     StateM OneHighFamilyGenState Nat :=
   oneHighFamilyAtomId (.common (min x z) (max x z))
+
+theorem oneHighFamilyIdsSound_commonAtomId
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (x z : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyCommonAtomId x z st).2 := by
+  exact oneHighFamilyIdsSound_atomId h _
 
 def oneHighFamilyPairedMidpoints (bi bj : Nat) : List Nat :=
   (List.range 40).filter fun w => w / 5 ≠ bi ∧ w / 5 ≠ bj
@@ -586,6 +702,29 @@ def oneHighFamilyMidpointTseitinStep (x z w : Nat)
     [(t : Int), -(exw : Int), -(ewz : Int)] st).2
   (ts.push (t : Int), st)
 
+theorem oneHighFamilyIdsSound_midpointTseitinStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (ts : Array Int) (x z w : Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyMidpointTseitinStep x z w (ts, st)).2 := by
+  simp only [oneHighFamilyMidpointTseitinStep]
+  generalize h₁ : oneHighFamilyMidpointAtomId x w z st = out₁
+  rcases out₁ with ⟨t, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_midpointAtomId h x w z
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId x w st₁ = out₂
+  rcases out₂ with ⟨exw, st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ x w
+  rw [h₂] at hs₂
+  generalize h₃ : oneHighFamilyEdgeId w z st₂ = out₃
+  rcases out₃ with ⟨ewz, st₃⟩
+  have hs₃ := oneHighFamilyIdsSound_edgeId hs₂ w z
+  rw [h₃] at hs₃
+  simp only [h₂, h₃]
+  exact oneHighFamilyIdsSound_emit
+    (oneHighFamilyIdsSound_emit
+      (oneHighFamilyIdsSound_emit hs₃ _) _) _
+
 def oneHighFamilyCommonTseitinStep (bi bj x z : Nat)
     (accst : Array Int × OneHighFamilyGenState) :
     Array Int × OneHighFamilyGenState :=
@@ -597,6 +736,34 @@ def oneHighFamilyCommonTseitinStep (bi bj x z : Nat)
   let st := ts.foldl
     (fun st t => (oneHighFamilyEmit [-t, (c : Int)] st).2) st
   (cs.push (c : Int), st)
+
+theorem oneHighFamilyIdsSound_commonTseitinStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (cs : Array Int) (bi bj x z : Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyCommonTseitinStep bi bj x z (cs, st)).2 := by
+  simp only [oneHighFamilyCommonTseitinStep]
+  generalize h₁ : (oneHighFamilyPairedMidpoints bi bj).foldl
+    (fun accst w => oneHighFamilyMidpointTseitinStep x z w accst)
+    (#[], st) = out₁
+  rcases out₁ with ⟨ts, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_foldlAccum
+    (oneHighFamilyPairedMidpoints bi bj)
+    (fun w accst => oneHighFamilyMidpointTseitinStep x z w accst)
+    #[] h (by
+      intro w ts st hw
+      exact oneHighFamilyIdsSound_midpointTseitinStep hw ts x z w)
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyCommonAtomId x z st₁ = out₂
+  rcases out₂ with ⟨c, st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_commonAtomId hs₁ x z
+  rw [h₂] at hs₂
+  have hs₃ := oneHighFamilyIdsSound_emit hs₂ (-(c : Int) :: ts.toList)
+  have hs₄ := oneHighFamilyIdsSound_arrayFoldl ts
+    (fun st t => (oneHighFamilyEmit [-t, (c : Int)] st).2) hs₃ (by
+      intro st t ht
+      exact oneHighFamilyIdsSound_emit ht _)
+  exact hs₄
 
 def oneHighFamilyInternalEdgesNat (a b : Nat) : Nat :=
   if b % 2 = 0 ∧ b / 2 < a then 1 else 2
@@ -613,10 +780,44 @@ def oneHighFamilyPairedProductBlockStep (a pair : Nat)
     2 * oneHighFamilyInternalEdgesNat a bj
   oneHighFamilyEqualsBlock cs bound st
 
+theorem oneHighFamilyIdsSound_pairedProductBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a pair : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyPairedProductBlockStep a pair st) := by
+  simp only [oneHighFamilyPairedProductBlockStep]
+  let bi := 2 * pair
+  let bj := bi + 1
+  generalize heq : (oneHighFamilyBlockVertices bi).foldl (fun accst x =>
+    (oneHighFamilyBlockVertices bj).foldl
+      (fun accst z => oneHighFamilyCommonTseitinStep bi bj x z accst) accst)
+    (#[], st) = out
+  rcases out with ⟨cs, st'⟩
+  apply oneHighFamilyIdsSound_equalsBlock _ cs _
+  have hs := oneHighFamilyIdsSound_foldlAccum
+    (oneHighFamilyBlockVertices bi)
+    (fun x accst => (oneHighFamilyBlockVertices bj).foldl
+      (fun accst z => oneHighFamilyCommonTseitinStep bi bj x z accst) accst)
+    #[] h (by
+      intro x cs st hx
+      exact oneHighFamilyIdsSound_foldlAccum
+        (oneHighFamilyBlockVertices bj)
+        (fun z accst => oneHighFamilyCommonTseitinStep bi bj x z accst)
+        cs hx (by
+          intro z cs st hz
+          exact oneHighFamilyIdsSound_commonTseitinStep hz cs bi bj x z))
+  rw [heq] at hs
+  exact hs
+
 /-- Complete PURE family generator. -/
 def oneHighFamilyPureClauses (a : Nat) : OneHighFamilyGenState :=
   oneHighFamilyRunList (List.range 4)
     (oneHighFamilyPairedProductBlockStep a) (oneHighFamilyLexClauses a)
+
+theorem oneHighFamilyIdsSound_pureClauses (a : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyPureClauses a) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_lexClauses a)
+    (fun pair st h => oneHighFamilyIdsSound_pairedProductBlockStep h a pair)
 
 theorem oneHighFamilyInternalUnits_reference :
     ∀ a ∈ [0, 1, 2, 3, 4],
