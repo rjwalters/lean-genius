@@ -64,6 +64,35 @@ theorem seqPrefixTrue_le_total {n : Nat} (x : Fin n → Bool)
     {m : Nat} (hm : m ≤ n) : seqPrefixTrue x m ≤ seqPrefixTrue x n :=
   seqPrefixTrue_mono x hm
 
+theorem seqPrefixTrue_eq_size_of_all_true {n : Nat} (x : Fin n → Bool)
+    (htrue : ∀ i, x i = true) : seqPrefixTrue x n = n := by
+  unfold seqPrefixTrue
+  have hp : ∀ i ∈ Finset.range n,
+      (if h : i < n then x ⟨i, h⟩ else false) = true := by
+    intro i hi
+    have hin : i < n := Finset.mem_range.mp hi
+    simp [hin, htrue]
+  rw [Finset.filter_eq_self.mpr hp, Finset.card_range]
+
+theorem exists_false_of_seqPrefixTrue_lt {n : Nat} (x : Fin n → Bool)
+    (h : seqPrefixTrue x n < n) : ∃ i, x i = false := by
+  by_contra hall
+  push_neg at hall
+  have htrue : ∀ i, x i = true := by
+    intro i
+    cases hx : x i
+    · exact (hall i hx).elim
+    · rfl
+  rw [seqPrefixTrue_eq_size_of_all_true x htrue] at h
+  omega
+
+theorem seqPrefixTrue_pos_of_true {n : Nat} (x : Fin n → Bool)
+    (i : Fin n) (hi : x i = true) : 0 < seqPrefixTrue x n := by
+  unfold seqPrefixTrue
+  apply Finset.card_pos.mpr
+  refine ⟨i.val, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr i.isLt, ?_⟩⟩
+  simp [i.isLt, hi]
+
 /-- A row and its Boolean complement contain `n` true bits altogether. -/
 theorem seqPrefixTrue_neg_add {n : Nat} (x : Fin n → Bool) :
     seqPrefixTrue x n + seqPrefixTrue (seqNeg x) n = n := by

@@ -1338,6 +1338,85 @@ theorem seqCounterAtMostCore_formulaSatisfied
     · exact dimacsFormulaSatisfied_empty _
   next _ => exact dimacsFormulaSatisfied_empty _
 
+theorem seqCounterAtMost_zero_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (htotal : seqPrefixTrue x vars.size ≤ 0) :
+    dimacsFormulaSatisfied (seqCounterBlockVal inputVal top x [])
+      (vars.map fun v => [-v]) := by
+  intro clause hclause
+  simp only [Array.mem_map] at hclause
+  obtain ⟨lit, hlit, rfl⟩ := hclause
+  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hlit
+  have hx : x ⟨i, hi⟩ = false := by
+    cases hxv : x ⟨i, hi⟩
+    · rfl
+    · have hp := seqPrefixTrue_pos_of_true x ⟨i, hi⟩ hxv
+      omega
+  refine ⟨-(vars[i] : Int), by simp, ?_⟩
+  have hn := hinput.nonzero i hi
+  have hv := hinput.value i hi
+  have hb := hinput.bounded i hi
+  simp [Array.getD, hi] at hn hv hb
+  rw [dimacsLitValue_block_of_natAbs_le inputVal top x [] (by
+    simpa [Int.natAbs_neg] using hb)]
+  rw [dimacsLitValue_neg inputVal hn, hv, hx]
+  rfl
+
+theorem seqCounterAtMost_pred_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hpred : t + 1 = vars.size)
+    (htotal : seqPrefixTrue x vars.size ≤ t) :
+    dimacsFormulaSatisfied (seqCounterBlockVal inputVal top x [])
+      #[vars.toList.map fun v => -v] := by
+  intro clause hclause
+  simp only [Array.mem_singleton] at hclause
+  subst clause
+  have hlt : seqPrefixTrue x vars.size < vars.size := by omega
+  obtain ⟨i, hi⟩ := exists_false_of_seqPrefixTrue_lt x hlt
+  let k : Nat := i.val
+  have hk : k < vars.size := i.isLt
+  refine ⟨-(vars[k] : Int), ?_, ?_⟩
+  · simp only [List.mem_map]
+    exact ⟨vars[k], by simpa using Array.getElem_mem hk, rfl⟩
+  · have hn := hinput.nonzero k hk
+    have hv := hinput.value k hk
+    have hb := hinput.bounded k hk
+    simp [Array.getD, hk] at hn hv hb
+    rw [dimacsLitValue_block_of_natAbs_le inputVal top x [] (by
+      simpa [Int.natAbs_neg] using hb)]
+    rw [dimacsLitValue_neg inputVal hn, hv]
+    simpa [k] using hi
+
+/-- Soundness of the full PySAT at-most wrapper, including both boundary
+encodings outside the nontrivial Knuth loop. -/
+theorem seqCounterAtMost_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (htotal : seqPrefixTrue x vars.size ≤ t) :
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal top x
+        (seqCounterAtMost top vars t).ids)
+      (seqCounterAtMost top vars t).clauses := by
+  unfold seqCounterAtMost
+  split
+  next hz =>
+    subst t
+    simpa using seqCounterAtMost_zero_formulaSatisfied
+      inputVal top vars x hinput htotal
+  next hnz =>
+    split
+    next hp =>
+      simpa using seqCounterAtMost_pred_formulaSatisfied
+        inputVal top vars x hinput t hp htotal
+    next _ =>
+      exact seqCounterAtMostCore_formulaSatisfied
+        inputVal top vars x hinput t htotal
+
 /-! ## Complement and at-least blocks -/
 
 /-- Boolean complement transported to the index type of the mapped negative
@@ -1910,5 +1989,158 @@ theorem seqCounterEqualsCore_formulaBounded
       hlowerBound
   simpa [seqCounterEqualsCore, lower, upper] using
     dimacsFormulaBounded_append hlowerFinal hupperBound
+
+/-! ## Full PySAT wrapper, including trivial cardinality boundaries -/
+
+theorem seqCounterAtMost_top_bound (top : Nat) (vars : Array Int) (t : Nat) :
+    top ≤ (seqCounterAtMost top vars t).top := by
+  unfold seqCounterAtMost
+  split
+  next _ => simp
+  next _ =>
+    split
+    next _ => simp
+    next _ => exact
+      (seqCounterAtMostCore_allocationInvariant top vars t).top_bound
+
+theorem seqCounterAtMost_formulaBounded
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x) (t : Nat) :
+    dimacsFormulaBounded (seqCounterAtMost top vars t).top
+      (seqCounterAtMost top vars t).clauses := by
+  unfold seqCounterAtMost
+  split
+  next _ =>
+    intro clause hclause lit hlit
+    simp only [Array.mem_map] at hclause
+    obtain ⟨v, hv, rfl⟩ := hclause
+    simp only [List.mem_singleton] at hlit
+    subst lit
+    obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hv
+    have hb := hinput.bounded i hi
+    simp [Array.getD, hi] at hb
+    simpa [Int.natAbs_neg] using hb
+  next _ =>
+    split
+    next _ =>
+      intro clause hclause lit hlit
+      simp only [Array.mem_singleton] at hclause
+      subst clause
+      simp only [List.mem_map] at hlit
+      obtain ⟨v, hv, rfl⟩ := hlit
+      have hvArr : v ∈ vars := by simpa using hv
+      obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hvArr
+      have hb := hinput.bounded i hi
+      simp [Array.getD, hi] at hb
+      simpa [Int.natAbs_neg] using hb
+    next _ =>
+      exact seqCounterAtMostCore_formulaBounded
+        inputVal top vars x hinput t
+
+theorem seqCounterAtLeast_top_bound (top : Nat) (vars : Array Int) (t : Nat) :
+    top ≤ (seqCounterAtLeast top vars t).top := by
+  unfold seqCounterAtLeast
+  exact seqCounterAtMost_top_bound top _ _
+
+theorem seqCounterEquals_top_bound (top : Nat) (vars : Array Int) (t : Nat) :
+    top ≤ (seqCounterEquals top vars t).top := by
+  let lower := seqCounterAtLeast top vars t
+  exact (seqCounterAtLeast_top_bound top vars t).trans
+    (by simpa [seqCounterEquals, lower] using
+      seqCounterAtMost_top_bound lower.top vars t)
+
+theorem seqCounterAtLeast_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hlower : t ≤ seqPrefixTrue x vars.size) :
+    let negRow := seqCounterMappedNegRow vars x
+    dimacsFormulaSatisfied
+      (seqCounterBlockVal inputVal top negRow
+        (seqCounterAtLeast top vars t).ids)
+      (seqCounterAtLeast top vars t).clauses := by
+  dsimp only
+  unfold seqCounterAtLeast
+  apply seqCounterAtMost_formulaSatisfied inputVal top
+    (vars.map fun v => -v) (seqCounterMappedNegRow vars x)
+    (seqCounterInputReifies_map_neg inputVal top vars x hinput)
+  have hsum := seqPrefixTrue_mappedNeg_add vars x
+  omega
+
+theorem seqCounterAtLeast_formulaBounded
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x) (t : Nat) :
+    dimacsFormulaBounded (seqCounterAtLeast top vars t).top
+      (seqCounterAtLeast top vars t).clauses := by
+  unfold seqCounterAtLeast
+  exact seqCounterAtMost_formulaBounded inputVal top
+    (vars.map fun v => -v) (seqCounterMappedNegRow vars x)
+    (seqCounterInputReifies_map_neg inputVal top vars x hinput) _
+
+/-- Canonical layered valuation for the full PySAT equality wrapper. -/
+def seqCounterEqualsVal (inputVal : DimacsValuation) (top : Nat)
+    (vars : Array Int) (x : Fin vars.size → Bool) (t : Nat) :
+    DimacsValuation :=
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeast top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMost lower.top vars t
+  seqCounterBlockVal lowerVal lower.top x upper.ids
+
+theorem seqCounterEqualsVal_input
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool) (t id : Nat) (hid : id ≤ top) :
+    seqCounterEqualsVal inputVal top vars x t id = inputVal id := by
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeast top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMost lower.top vars t
+  have hlower : top ≤ lower.top := by
+    simpa [lower] using seqCounterAtLeast_top_bound top vars t
+  rw [seqCounterEqualsVal, show
+    seqCounterBlockVal lowerVal lower.top x upper.ids id = lowerVal id by
+      exact seqCounterBlockVal_input lowerVal lower.top x upper.ids
+        (hid.trans hlower)]
+  exact seqCounterBlockVal_input inputVal top negRow lower.ids hid
+
+/-- Soundness of full `CardEnc.equals(..., seqcounter)`, including equality
+rows at `0` or `n-1`. -/
+theorem seqCounterEqualsVal_formulaSatisfied
+    (inputVal : DimacsValuation) (top : Nat) (vars : Array Int)
+    (x : Fin vars.size → Bool)
+    (hinput : SeqCounterInputReifies inputVal top vars x)
+    (t : Nat) (hcount : seqPrefixTrue x vars.size = t) :
+    dimacsFormulaSatisfied
+      (seqCounterEqualsVal inputVal top vars x t)
+      (seqCounterEquals top vars t).clauses := by
+  let negRow := seqCounterMappedNegRow vars x
+  let lower := seqCounterAtLeast top vars t
+  let lowerVal := seqCounterBlockVal inputVal top negRow lower.ids
+  let upper := seqCounterAtMost lower.top vars t
+  let upperVal := seqCounterBlockVal lowerVal lower.top x upper.ids
+  have hlowerSat : dimacsFormulaSatisfied lowerVal lower.clauses := by
+    simpa [lower, lowerVal, negRow] using
+      seqCounterAtLeast_formulaSatisfied inputVal top vars x hinput t
+        (by omega)
+  have hlowerBound : dimacsFormulaBounded lower.top lower.clauses := by
+    simpa [lower] using
+      seqCounterAtLeast_formulaBounded inputVal top vars x hinput t
+  have hlowerTop : top ≤ lower.top := by
+    simpa [lower] using seqCounterAtLeast_top_bound top vars t
+  have hlowerSatUpper : dimacsFormulaSatisfied upperVal lower.clauses := by
+    apply dimacsFormulaSatisfied_of_bounded_agree hlowerSat hlowerBound
+    intro id hid
+    exact (seqCounterBlockVal_input lowerVal lower.top x upper.ids hid).symm
+  have hinputUpper : SeqCounterInputReifies lowerVal lower.top vars x :=
+    hinput.liftBlock negRow lower.ids hlowerTop
+  have hupperSat : dimacsFormulaSatisfied upperVal upper.clauses := by
+    simpa [upper, upperVal] using
+      seqCounterAtMost_formulaSatisfied lowerVal lower.top vars x
+        hinputUpper t (by omega)
+  simpa [seqCounterEquals, lower, upper, seqCounterEqualsVal,
+    negRow, lowerVal, upperVal] using
+    dimacsFormulaSatisfied_append hlowerSatUpper hupperSat
 
 end Erdos85

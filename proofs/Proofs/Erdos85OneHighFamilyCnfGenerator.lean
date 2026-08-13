@@ -24,11 +24,42 @@ structure OneHighFamilyGenState where
   clauses : Array DimacsClause := #[]
 deriving Repr, DecidableEq
 
+/-- Integrity of the named `IDPool` table.  Counter auxiliaries may create
+holes between named IDs, so only positivity and the global-top bound are
+required in addition to injectivity in both directions. -/
+structure OneHighFamilyIdsSound (st : OneHighFamilyGenState) : Prop where
+  keys_nodup : (st.ids.map Prod.fst).Nodup
+  ids_nodup : (st.ids.map Prod.snd).Nodup
+  id_bounds : ∀ entry ∈ st.ids, 0 < entry.2 ∧ entry.2 ≤ st.top
+
 def oneHighFamilyLookup (atom : OneHighFamilyAtom) :
     List (OneHighFamilyAtom × Nat) → Option Nat
   | [] => none
   | entry :: rest =>
       if entry.1 = atom then some entry.2 else oneHighFamilyLookup atom rest
+
+theorem oneHighFamilyLookup_eq_none_iff
+    (atom : OneHighFamilyAtom) (ids : List (OneHighFamilyAtom × Nat)) :
+    oneHighFamilyLookup atom ids = none ↔ atom ∉ ids.map Prod.fst := by
+  induction ids with
+  | nil => simp [oneHighFamilyLookup]
+  | cons entry rest ih =>
+      simp only [oneHighFamilyLookup, List.map_cons, List.mem_cons]
+      by_cases heq : entry.1 = atom
+      · rw [if_pos heq]
+        constructor
+        · intro h
+          contradiction
+        · intro h
+          exact False.elim (h (Or.inl heq.symm))
+      · rw [if_neg heq, ih]
+        constructor
+        · intro h hor
+          rcases hor with ha | ha
+          · exact heq ha.symm
+          · exact h ha
+        · intro h ha
+          exact h (Or.inr ha)
 
 /-- PySAT `IDPool.id`: named atoms are memoized, while the next fresh ID is
 strictly above the current global top (including prior counter auxiliaries). -/
@@ -40,6 +71,36 @@ def oneHighFamilyAtomId (atom : OneHighFamilyAtom) :
       let id := st.top + 1
       (id, { st with top := id, ids := (atom, id) :: st.ids })
 
+theorem oneHighFamilyIdsSound_initial :
+    OneHighFamilyIdsSound ({} : OneHighFamilyGenState) := by
+  constructor <;> simp
+
+theorem oneHighFamilyIdsSound_atomId
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (atom : OneHighFamilyAtom) :
+    OneHighFamilyIdsSound (oneHighFamilyAtomId atom st).2 := by
+  unfold oneHighFamilyAtomId
+  split
+  next id hlookup => simpa using h
+  next hlookup =>
+    constructor
+    · simp only [List.map_cons, List.nodup_cons]
+      exact ⟨(oneHighFamilyLookup_eq_none_iff atom st.ids).mp hlookup,
+        h.keys_nodup⟩
+    · simp only [List.map_cons, List.nodup_cons]
+      constructor
+      · intro hmem
+        obtain ⟨entry, hentry, heq⟩ := List.mem_map.mp hmem
+        have hb := (h.id_bounds entry hentry).2
+        omega
+      · exact h.ids_nodup
+    · intro entry hentry
+      simp only [List.mem_cons] at hentry
+      rcases hentry with rfl | hentry
+      · simp
+      · have hb := h.id_bounds entry hentry
+        exact ⟨hb.1, hb.2.trans (Nat.le_succ _)⟩
+
 def oneHighFamilyEdgeId (i j : Nat) : StateM OneHighFamilyGenState Nat :=
   oneHighFamilyAtomId (.edge (min i j) (max i j))
 
@@ -47,10 +108,38 @@ def oneHighFamilyEmit (clause : DimacsClause) :
     StateM OneHighFamilyGenState Unit :=
   modify fun st => { st with clauses := st.clauses.push clause }
 
+theorem oneHighFamilyIdsSound_emit
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (clause : DimacsClause) :
+    OneHighFamilyIdsSound (oneHighFamilyEmit clause st).2 := by
+  change OneHighFamilyIdsSound { st with clauses := st.clauses.push clause }
+  constructor
+  · exact h.keys_nodup
+  · exact h.ids_nodup
+  · exact h.id_bounds
+
 def oneHighFamilyRunList {α : Type} (xs : List α)
     (step : α → OneHighFamilyGenState → OneHighFamilyGenState)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   xs.foldl (fun st x => step x st) st
+
+theorem oneHighFamilyIdsSound_runList {α : Type} (xs : List α)
+    (step : α → OneHighFamilyGenState → OneHighFamilyGenState)
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (hstep : ∀ x st, OneHighFamilyIdsSound st →
+      OneHighFamilyIdsSound (step x st)) :
+    OneHighFamilyIdsSound (oneHighFamilyRunList xs step st) := by
+  induction xs generalizing st with
+  | nil => exact h
+  | cons x xs ih =>
+      simp only [oneHighFamilyRunList, List.foldl_cons]
+      exact ih (hstep x st h)
+
+theorem oneHighFamilyIdsSound_edgeId
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyEdgeId i j st).2 := by
+  exact oneHighFamilyIdsSound_atomId h _
 
 def oneHighFamilyInternalPairStep (a b i j : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -58,6 +147,17 @@ def oneHighFamilyInternalPairStep (a b i j : Nat)
   let twoEdges := ¬(b % 2 = 0 ∧ b / 2 < a)
   let present := (i = 0 ∧ j = 1) ∨ (twoEdges ∧ i = 2 ∧ j = 3)
   (oneHighFamilyEmit [if present then (id : Int) else -(id : Int)] st).2
+
+theorem oneHighFamilyIdsSound_internalPairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (a b i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyInternalPairStep a b i j st) := by
+  simp only [oneHighFamilyInternalPairStep]
+  generalize heq : oneHighFamilyEdgeId (5 * b + i) (5 * b + j) st = out
+  rcases out with ⟨id, st'⟩
+  have hs := oneHighFamilyIdsSound_edgeId h (5 * b + i) (5 * b + j)
+  rw [heq] at hs
+  exact oneHighFamilyIdsSound_emit hs _
 
 def oneHighFamilyInternalBlockStep (a b : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -73,6 +173,17 @@ def oneHighFamilyMatePairStep (b i j : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   let (id, st) := oneHighFamilyEdgeId (5 * b + i) (5 * (b + 1) + j) st
   (oneHighFamilyEmit [-(id : Int)] st).2
+
+theorem oneHighFamilyIdsSound_matePairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (b i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyMatePairStep b i j st) := by
+  simp only [oneHighFamilyMatePairStep]
+  generalize heq : oneHighFamilyEdgeId (5 * b + i) (5 * (b + 1) + j) st = out
+  rcases out with ⟨id, st'⟩
+  have hs := oneHighFamilyIdsSound_edgeId h (5 * b + i) (5 * (b + 1) + j)
+  rw [heq] at hs
+  exact oneHighFamilyIdsSound_emit hs _
 
 def oneHighFamilyMateBlockStep (b : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -91,6 +202,22 @@ def oneHighFamilyC4SameMidpointStep (i j w : Nat)
   let (eiw, st) := oneHighFamilyEdgeId i w st
   let (ejw, st) := oneHighFamilyEdgeId j w st
   (oneHighFamilyEmit [-(eiw : Int), -(ejw : Int)] st).2
+
+theorem oneHighFamilyIdsSound_c4SameMidpointStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (i j w : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyC4SameMidpointStep i j w st) := by
+  simp only [oneHighFamilyC4SameMidpointStep]
+  generalize h₁ : oneHighFamilyEdgeId i w st = out₁
+  rcases out₁ with ⟨eiw, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_edgeId h i w
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId j w st₁ = out₂
+  rcases out₂ with ⟨ejw, st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ j w
+  rw [h₂] at hs₂
+  simp only [h₂]
+  exact oneHighFamilyIdsSound_emit hs₂ _
 
 def oneHighFamilyC4CrossMidpointsStep (i j w w' : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
@@ -137,6 +264,22 @@ def oneHighFamilyAtMostOnePairStep (y x x' : Nat)
   let (eyx', st) := oneHighFamilyEdgeId y x' st
   (oneHighFamilyEmit [-(eyx : Int), -(eyx' : Int)] st).2
 
+theorem oneHighFamilyIdsSound_atMostOnePairStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (y x x' : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyAtMostOnePairStep y x x' st) := by
+  simp only [oneHighFamilyAtMostOnePairStep]
+  generalize h₁ : oneHighFamilyEdgeId y x st = out₁
+  rcases out₁ with ⟨eyx, st₁⟩
+  have hs₁ := oneHighFamilyIdsSound_edgeId h y x
+  rw [h₁] at hs₁
+  generalize h₂ : oneHighFamilyEdgeId y x' st₁ = out₂
+  rcases out₂ with ⟨eyx', st₂⟩
+  have hs₂ := oneHighFamilyIdsSound_edgeId hs₁ y x'
+  rw [h₂] at hs₂
+  simp only [h₂]
+  exact oneHighFamilyIdsSound_emit hs₂ _
+
 def oneHighFamilyAtMostOneVertexStep (b y : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   if y / 5 = b ^^^ 1 then st else
@@ -172,6 +315,19 @@ def oneHighFamilyEqualsBlock (vars : Array Int) (bound : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
   let out := seqCounterEquals st.top vars bound
   { st with top := out.top, clauses := st.clauses ++ out.clauses }
+
+theorem oneHighFamilyIdsSound_equalsBlock
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (vars : Array Int) (bound : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyEqualsBlock vars bound st) := by
+  constructor
+  · exact h.keys_nodup
+  · exact h.ids_nodup
+  · intro entry hentry
+    have hb := h.id_bounds entry hentry
+    exact ⟨hb.1, hb.2.trans (by
+      simpa [oneHighFamilyEqualsBlock] using
+        seqCounterEquals_top_bound st.top vars bound)⟩
 
 def oneHighFamilyFarDegreeStep (a y : Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
