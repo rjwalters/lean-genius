@@ -1846,6 +1846,27 @@ theorem heavy_filter_empty_of_mass_five_all_single
     omega
   exact htNe (by rw [hsize t ht, hqt])
 
+/-- Complete abstract terminal for the all-single partition of the
+`(3,12)` triangle branch. -/
+theorem false_of_degreeSix_threeTwelve_all_single_partition
+    {C : Type*} [DecidableEq C]
+    (S : Finset C) (q size xb rb : C → ℕ) (z : ℕ)
+    (hpos : ∀ t ∈ S, 0 < q t)
+    (hsize : ∀ t ∈ S, size t = 3 * q t)
+    (hrowQ : (∑ t ∈ S, q t) = 5)
+    (h2 : (S.filter fun t ↦ q t = 2).card = 0)
+    (h3 : (S.filter fun t ↦ q t = 3).card = 0)
+    (h4 : (S.filter fun t ↦ q t = 4).card = 0)
+    (h5 : (S.filter fun t ↦ q t = 5).card = 0)
+    (hrowB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3), xb t) + z = 5)
+    (hprodB : (∑ t ∈ S.filter (fun t ↦ size t ≠ 3),
+      xb t * rb t) + z * z = 11) : False := by
+  have hH := heavy_filter_empty_of_mass_five_all_single
+    S q size hpos hsize hrowQ h2 h3 h4 h5
+  rw [hH] at hrowB hprodB
+  simp at hrowB hprodB
+  exact false_of_degreeSix_orderTwelve_heavy_budget_empty z hrowB hprodB
+
 /-- The `(3,12)` residual row/square equations force either one order-six
 double contact or two order-three single contacts. -/
 theorem degreeSix_orderThree_twelve_contact_counts
