@@ -152,6 +152,51 @@ theorem oneHighPrunedEnum_exists_inventoryOrbit
   rcases hleft with ⟨stored, hstored, σ, hkey⟩
   exact ⟨stored, σ, hstored, hkey.symm⟩
 
+/-- Exact completeness socket for the fast future-deficit/even-pruned
+enumerator. -/
+def OneHighPrunedEnumeratorComplete : Prop :=
+  ∀ (profile : Fin 5) (table : OneHighMissTable)
+    (h : OneHighFamilyV2Admissible profile.val table),
+    ∃ w ∈ enumerateOneHighFiniteTables profile.val,
+      oneHighFiniteNatify w = oneHighNatRestrict table
+
+theorem oneHighFiniteRepresentativeCover_inventory_of_pruned_complete
+    (hcomplete : OneHighPrunedEnumeratorComplete) :
+    OneHighFiniteRepresentativeCover oneHighInventoryTables := by
+  intro profile table hadmissible
+  obtain ⟨w, hw, hwTable⟩ := hcomplete profile table hadmissible
+  obtain ⟨storedFinite, σ, hstoredFinite, hkey⟩ :=
+    oneHighPrunedEnum_exists_inventoryOrbit profile w hw
+  have hwBound : ∀ pair, oneHighFiniteNatify w pair < 5 :=
+    fun pair => (w pair).isLt
+  have horbitBound : ∀ pair,
+      oneHighNatPermute σ.1 (oneHighFiniteNatify storedFinite) pair < 5 :=
+    fun pair => (storedFinite
+      (oneHighRelevantPairMap σ.1⁻¹ pair)).isLt
+  have horbitEq : oneHighFiniteNatify w =
+      oneHighNatPermute σ.1 (oneHighFiniteNatify storedFinite) := by
+    apply oneHighNatKey_inj hwBound horbitBound hkey
+  have hinverseEq :
+      oneHighNatPermute σ.inv.1 (oneHighFiniteNatify w) =
+        oneHighFiniteNatify storedFinite := by
+    have h := congrArg (oneHighNatPermute σ.inv.1) horbitEq
+    rw [oneHighNatPermute_inverse σ] at h
+    exact h
+  obtain ⟨stored, hstoredMem, hstoredAgree⟩ :=
+    oneHighInventoryFiniteTables_sound profile storedFinite hstoredFinite
+  refine ⟨σ.inv, stored, hstoredMem, ?_⟩
+  rw [← oneHighRelevantAgreement_iff_tableRelevantAgree]
+  intro pair
+  have hvalues := congrFun
+    ((oneHighNatPermute_natRestrict hadmissible σ.inv).symm.trans
+      ((congrArg (oneHighNatPermute σ.inv.1) hwTable.symm).trans
+        hinverseEq)) pair
+  have hagreeFinite :
+      σ.inv.permuteTable table pair.1.1.val pair.1.2.val =
+        storedFinite.toMissTable pair.1.1.val pair.1.2.val := by
+    simpa [oneHighNatRestrict, oneHighFiniteNatify] using hvalues
+  exact hagreeFinite.trans (hstoredAgree pair)
+
 /-- Once the executable comparison says every enumerated canonical key is in
 the authoritative inventory, the inventory is a representative cover. -/
 theorem oneHighFiniteRepresentativeCover_inventory_of_key_membership
