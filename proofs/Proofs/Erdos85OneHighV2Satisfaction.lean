@@ -171,4 +171,69 @@ theorem oneHighFamilyV2F1ClausesVal_state
           (oneHighFamilyGraphTable R a) pair acc)
     _ = _ := by rw [oneHighFamilyV2LexClausesVal_state]
 
+noncomputable def oneHighFamilyV2PairedCommonBlockStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let bi := 2 * pair
+  let bj := bi + 1
+  (oneHighFamilyCollectCommonsVal R bi bj acc).2
+
+theorem oneHighFamilyV2PairedCommonBlockStepVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (hc : OneHighPureFamilyCnfConstraints a R)
+    {pair : Nat} (hpair : pair < 4) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2PairedCommonBlockStepVal R pair acc) := by
+  exact oneHighFamilyCollectCommonsVal_semanticSound
+    a R hc pair hpair acc hacc
+
+theorem oneHighFamilyV2PairedCommonBlockStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyV2PairedCommonBlockStepVal R pair acc).1 =
+      oneHighFamilyV2PairedCommonBlockStep pair acc.1 := by
+  unfold oneHighFamilyV2PairedCommonBlockStepVal
+    oneHighFamilyV2PairedCommonBlockStep
+  have hp := oneHighFamilyCollectCommonsVal_projection R
+    (2 * pair) (2 * pair + 1) acc
+  exact hp.2
+
+noncomputable def oneHighFamilyV2PairedCommonClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 4)
+    (oneHighFamilyV2PairedCommonBlockStepVal R)
+    (oneHighFamilyV2F1ClausesVal R a val)
+
+theorem oneHighFamilyV2PairedCommonClausesVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (hc : OneHighPureFamilyCnfConstraints a R)
+    (ledger : OneHighFamilyV2F1Ledger a R)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2PairedCommonClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyV2F1ClausesVal_semanticSound R a hc ledger val)
+  intro pair hp acc hacc
+  exact oneHighFamilyV2PairedCommonBlockStepVal_semanticSound R a hc
+    (List.mem_range.mp hp) hacc
+
+theorem oneHighFamilyV2PairedCommonClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyV2PairedCommonClausesVal R a val).1 =
+      oneHighFamilyV2PairedCommonClauses a
+        (oneHighFamilyGraphTable R a) := by
+  unfold oneHighFamilyV2PairedCommonClausesVal
+    oneHighFamilyV2PairedCommonClauses
+  calc
+    _ = oneHighFamilyRunList (List.range 4)
+        oneHighFamilyV2PairedCommonBlockStep
+        (oneHighFamilyV2F1ClausesVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun pair acc => oneHighFamilyV2PairedCommonBlockStepVal_state
+          R pair acc)
+    _ = _ := by rw [oneHighFamilyV2F1ClausesVal_state]
+
 end Erdos85
