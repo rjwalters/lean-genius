@@ -5983,6 +5983,102 @@ theorem degreeSix_component_diagonal_le_two_of_sector_empty
       · exact htwo.le
   · omega
 
+/-- Every component carrying positive diagonal trace in the empty sector is
+forward-oriented. -/
+theorem degreeSix_positiveDiagonal_forwardOriented_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c c) :
+    forwardOriented G u c := by
+  let D := secondOrderDefectGraph G
+  rcases Nat.even_or_odd c.supp.ncard with heven | hodd
+  · have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard)
+    rcases graph_equalEvenCycle_diagBlock_orientation
+        (hr3 c) heven G D hfree (u c) (hu c) hcomm (huD c) with hfwd | hrev
+    · exact fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+    · have hrevAdj : ∀ x y : ZMod c.supp.ncard,
+          G.Adj (u c (x + 1)) (u c (y - 1)) ↔ G.Adj (u c x) (u c y) :=
+        fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hrev x y)
+      exact (degreeSix_reverseOriented_positiveDiagonal_false_of_sector_empty
+        G hfree hmin hcard u hu huRange huD hempty c heven hrevAdj hpos).elim
+  · exact fun x y ↦ graph_equalOddCycle_diagBlock_adj_shift_iff
+      (hr3 c) hodd G D (u c) (hu c)
+        (adjMatrix_comm_secondOrderDefect_of_even
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard)) (huD c) x y
+
+/-- The canonical forward-oriented anchor mass over all component orders is
+the full degree-six diagonal trace in the empty sector. -/
+theorem degreeSix_orientedAnchorMass_eq_six_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    orientedAnchorMass G u (forwardOriented G u) 1 = 6 := by
+  rw [orientedAnchorMass_eq_sum_diagonalQuotient
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) u hu huRange]
+  have hfilter :
+      (∑ c ∈ Finset.univ.filter (fun c :
+          (secondOrderDefectGraph G).ConnectedComponent ↦
+            1 ∣ c.supp.ncard ∧ forwardOriented G u c),
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c) =
+      ∑ c, componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
+    apply Finset.sum_subset (Finset.filter_subset _ _)
+    intro c hc hnot
+    have hnforward : ¬ forwardOriented G u c := by
+      intro hfwd
+      apply hnot
+      simp [hfwd]
+    have hzero : componentQuotientMatrix G
+        (secondOrderDefectGraph G) c c = 0 := by
+      by_contra hne
+      have hpos : 0 < componentQuotientMatrix G
+          (secondOrderDefectGraph G) c c := Nat.pos_of_ne_zero hne
+      exact hnforward (degreeSix_positiveDiagonal_forwardOriented_of_sector_empty
+        G hfree hmin hcard u hu huRange huD hr3 hempty c hpos)
+    exact hzero
+  rw [hfilter]
+  exact secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
 `q(q-1) ≤ r/2-1`. -/
