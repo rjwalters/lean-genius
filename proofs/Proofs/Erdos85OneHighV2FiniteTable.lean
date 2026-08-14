@@ -14,7 +14,7 @@ theorem oneHighRelevantPair_card : Fintype.card OneHighRelevantPair = 24 := by
 
 /-- Every relevant miss count is at most four, so an admissible table has a
 canonical finite representation with 24 `Fin 5` coordinates. -/
-def OneHighFiniteMissTable := OneHighRelevantPair → Fin 5
+abbrev OneHighFiniteMissTable := OneHighRelevantPair → Fin 5
 
 /-- Equality on precisely the 24 coordinates represented by an artifact
 table. -/
@@ -106,5 +106,22 @@ theorem OneHighFamilyV2Admissible.agrees_toFinite_toMissTable
     OneHighRelevantAgreement table h.toFinite.toMissTable := by
   intro pair
   simp
+
+/-- A specification-level exhaustive finite cover.  It is intentionally not
+evaluated: the verified constrained enumerator will replace this enormous
+`5^24` universe by the 13,541 CP4 representatives, while preserving this
+coverage theorem. -/
+noncomputable def oneHighAllFiniteMissTables : List OneHighMissTable :=
+  ((Finset.univ : Finset OneHighFiniteMissTable).toList.map
+    OneHighFiniteMissTable.toMissTable)
+
+theorem OneHighFamilyV2Admissible.exists_mem_allFiniteMissTables_agrees
+    {profile : Nat} {table : OneHighMissTable}
+    (h : OneHighFamilyV2Admissible profile table) :
+    ∃ stored ∈ oneHighAllFiniteMissTables,
+      OneHighRelevantAgreement table stored := by
+  refine ⟨h.toFinite.toMissTable, ?_,
+    h.agrees_toFinite_toMissTable⟩
+  simp [oneHighAllFiniteMissTables]
 
 end Erdos85
