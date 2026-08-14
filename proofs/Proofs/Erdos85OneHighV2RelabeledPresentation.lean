@@ -8,6 +8,24 @@ open SimpleGraph
 
 noncomputable section
 
+theorem OneHighTableRelevantAgree.trans {a b c : OneHighMissTable}
+    (hab : OneHighTableRelevantAgree a b)
+    (hbc : OneHighTableRelevantAgree b c) :
+    OneHighTableRelevantAgree a c := by
+  intro pair hpair
+  exact (hab pair hpair).trans (hbc pair hpair)
+
+/-- Pure finite-classifier obligation for the stored representative lists.
+It contains no graph or CNF semantics: every admissible finite table must
+have a profile-stabilizer image agreeing with a stored table. -/
+def OneHighFiniteRepresentativeCover
+    (tables : Fin 5 → List OneHighMissTable) : Prop :=
+  ∀ (profile : Fin 5) (table : OneHighMissTable),
+    OneHighFamilyV2Admissible profile.val table →
+      ∃ (σ : OneHighProfilePerm profile.val) (stored : OneHighMissTable),
+        stored ∈ tables profile ∧
+        OneHighTableRelevantAgree (σ.permuteTable table) stored
+
 /-- After any profile-preserving CP4 branch permutation, fresh branch-local
 labels can be chosen so that the complete PURE constraints (including the
 numeric lex WLOG) hold again. -/
@@ -218,6 +236,36 @@ theorem OneHighRawV2Presentation.exists_relabel_graphTable_agrees
     σ.permuteTable _ c.val j.val
   rw [OneHighProfilePerm.permuteTable_apply]
   rw [hnew', hold', hs, hu]
+
+/-- A verified finite representative classifier supplies the artifact-aligned
+raw orbit cover required by the h=1 terminal. -/
+theorem oneHighRawV2OrbitCover_of_finiteRepresentativeCover
+    {tables : Fin 5 → List OneHighMissTable}
+    (hcover : OneHighFiniteRepresentativeCover tables) :
+    OneHighRawV2OrbitCover tables := by
+  intro G _ _ _ hfree hmin hHigh
+  have hnonempty : (orderFortyNineHighVertices G).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨v, hvMem⟩ := hnonempty
+  have hv : G.degree v = 8 := by
+    simpa [orderFortyNineHighVertices] using hvMem
+  obtain ⟨p⟩ := orderFortyNine_exists_rawOneHighPresentationData
+    G hfree hmin (Fintype.card_fin 49) hHigh hv
+  let profile : Fin 5 :=
+    ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+  let E := oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel
+  let R := oneHighRelabeledLeafGraph G v E
+  have hadmissible : OneHighFamilyV2Admissible profile.val
+      (oneHighFamilyGraphTable R profile.val) := by
+    simpa [profile, R, E] using p.graphTable_admissible G hfree hv
+  obtain ⟨σ, stored, hmem, hstored⟩ :=
+    hcover profile (oneHighFamilyGraphTable R profile.val) hadmissible
+  obtain ⟨p', _hmate, hprofile, _hlabel, hagree⟩ :=
+    p.exists_relabel_graphTable_agrees G hfree hmin
+      (Fintype.card_fin 49) hv σ
+  refine ⟨v, hv, p', stored, ?_, ?_⟩
+  · simpa [profile, hprofile] using hmem
+  · exact hagree.trans hstored
 
 end
 
