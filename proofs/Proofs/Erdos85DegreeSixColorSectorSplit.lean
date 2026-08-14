@@ -2455,6 +2455,78 @@ theorem degreeSix_orderThree_zeroDiagonal_profile
   rw [he3, hte, mul_one] at hbal
   exact hbal.symm
 
+/-- Global support partition induced by a zero-diagonal triangle.  Its
+positive quotient targets have total order eighteen, and the complementary
+components outside the base triangle have total order twelve. -/
+theorem degreeSix_orderThree_zeroDiagonal_support_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hzero : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let P := Finset.univ.filter fun t ↦ 0 < Q c t
+    let R := (Finset.univ.erase c) \ P
+    (∑ t ∈ P, t.supp.ncard) = 18 ∧
+      (∑ t ∈ R, t.supp.ncard) = 12 ∧
+      ∀ t ∈ P, Q t c = 1 ∧ t.supp.ncard = 3 * Q c t := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  let P := Finset.univ.filter fun t ↦ 0 < Q c t
+  let R := (Finset.univ.erase c) \ P
+  obtain ⟨hrow, hprofile⟩ :=
+    degreeSix_orderThree_zeroDiagonal_profile
+      G hfree hmin hcard c hc3 hzero
+  change (∑ t, Q c t) = 6 at hrow
+  have hcnotP : c ∉ P := by simp [P, Q, hzero]
+  have hsumQP : (∑ t ∈ P, Q c t) = 6 := by
+    calc
+      (∑ t ∈ P, Q c t) = ∑ t, Q c t := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro t ht hnot
+        have hz : Q c t = 0 := by
+          by_contra hn
+          exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+        simp [hz]
+      _ = 6 := hrow
+  have hsizeP : (∑ t ∈ P, t.supp.ncard) = 18 := by
+    calc
+      (∑ t ∈ P, t.supp.ncard) = ∑ t ∈ P, 3 * Q c t := by
+        apply Finset.sum_congr rfl
+        intro t ht
+        exact (hprofile t (by simpa [P] using
+          (Finset.mem_filter.mp ht).2)).2
+      _ = 3 * ∑ t ∈ P, Q c t := by rw [Finset.mul_sum]
+      _ = 18 := by rw [hsumQP]
+  have hPsubset : P ⊆ Finset.univ.erase c := by
+    intro t ht
+    exact Finset.mem_erase.mpr
+      ⟨fun htc ↦ hcnotP (htc ▸ ht), Finset.mem_univ t⟩
+  have htotal :
+      (∑ t : (secondOrderDefectGraph G).ConnectedComponent,
+        t.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard, hcard]
+  have hcuniv : c ∈ (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) := Finset.mem_univ c
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+      (fun t ↦ t.supp.ncard) hcuniv
+  have hsplit : (∑ t ∈ (Finset.univ.erase c) \ P, t.supp.ncard) +
+      (∑ t ∈ P, t.supp.ncard) =
+        ∑ t ∈ Finset.univ.erase c, t.supp.ncard :=
+    Finset.sum_sdiff hPsubset
+  have hsizeR : (∑ t ∈ R, t.supp.ncard) = 12 := by
+    dsimp [R]
+    omega
+  refine ⟨hsizeP, hsizeR, ?_⟩
+  intro t ht
+  exact hprofile t (by simpa [P] using (Finset.mem_filter.mp ht).2)
+
 /-- An odd-order component has row mass six and diagonal two-step mass
 `|e|+3`. Detailed balance additionally forces every quotient entry from it
 to an even-order target to be even. This is the correct arbitrary-order
