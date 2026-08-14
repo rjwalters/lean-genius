@@ -5276,10 +5276,12 @@ theorem degreeSix_exists_original_chord_in_antipodal_component_of_sector_empty
     (hempty : triangleFreeCycleSector G u = ∅) :
     ∃ (c : (secondOrderDefectGraph G).ConnectedComponent) (x y : V),
       x ∈ c.supp ∧ y ∈ c.supp ∧ G.Adj x y ∧
-        ¬ (secondOrderDefectGraph G).Adj x y := by
+        ¬ (secondOrderDefectGraph G).Adj x y ∧
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
   let D := secondOrderDefectGraph G
   obtain ⟨c, hcpos⟩ := degreeSix_exists_positive_diagonal_component
     G hfree hmin hcard
+  have hcdiag := hcpos
   let x := componentRepresentative D c
   have hx : x ∈ c.supp := componentRepresentative_mem D c
   change 0 < (componentNeighborFinset G D c x).card at hcpos
@@ -5291,14 +5293,14 @@ theorem degreeSix_exists_original_chord_in_antipodal_component_of_sector_empty
     exact hy'.2
   have hgraphs := degreeSix_secondOrderDefectGraph_eq_antipodalGraph_of_sector_empty
     G hfree hmin hcard u hu huRange huD hempty
-  refine ⟨c, x, y, hx, hyc, hxy, ?_⟩
-  intro hDxy
-  have hAxy : (antipodalGraph G).Adj x y := by
-    rw [← hgraphs]
-    exact hDxy
-  have hfar := (mem_antipodalNeighbors G x y).mp
-    ((antipodalGraph_adj G x y).mp hAxy)
-  exact hfar.2.1 hxy
+  refine ⟨c, x, y, hx, hyc, hxy, ?_, hcdiag⟩
+  · intro hDxy
+    have hAxy : (antipodalGraph G).Adj x y := by
+      rw [← hgraphs]
+      exact hDxy
+    have hfar := (mem_antipodalNeighbors G x y).mp
+      ((antipodalGraph_adj G x y).mp hAxy)
+    exact hfar.2.1 hxy
 
 /-- Coordinate form of the antipodal-cycle chord: the endpoints are neither
 equal nor consecutive in either cyclic direction. -/
@@ -5322,8 +5324,9 @@ theorem degreeSix_exists_separated_original_chord_of_sector_empty
     (hempty : triangleFreeCycleSector G u = ∅) :
     ∃ (c : (secondOrderDefectGraph G).ConnectedComponent)
       (i j : ZMod c.supp.ncard),
-      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) := by
-  obtain ⟨c, x, y, hx, hy, hxy, hnotD⟩ :=
+      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) ∧
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
+  obtain ⟨c, x, y, hx, hy, hxy, hnotD, hcdiag⟩ :=
     degreeSix_exists_original_chord_in_antipodal_component_of_sector_empty
       G hfree hmin hcard u hu huRange huD hempty
   rw [← huRange c] at hx hy
@@ -5343,7 +5346,7 @@ theorem degreeSix_exists_separated_original_chord_of_sector_empty
     apply hnotD
     rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
     simp [h]
-  exact ⟨c, i, j, hij, hjminus, hjplus, hxy⟩
+  exact ⟨c, i, j, hij, hjminus, hjplus, hxy, hcdiag⟩
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
