@@ -288,6 +288,56 @@ theorem oneHighFamilyV2SaverStepVal_state
     oneHighFamilyEdgeIdVal, hv₁, hv₂, hv₃,
     hout₁, hout₂, hout₃, oneHighFamilyEmitVal]
 
+theorem oneHighFamilyV2SaverStepVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x w : Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyV2SaverStepVal R x w input
+    let raw := oneHighFamilyV2SaverStep x w (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  constructor
+  · rcases input with ⟨ss, st, val⟩
+    generalize hv : oneHighFamilyAtomIdVal R (.saver x w) (st, val) = outV
+    rcases outV with ⟨s, acc₁⟩
+    generalize hg : oneHighFamilyAtomId (.saver x w) st = outG
+    rcases outG with ⟨sg, st₁⟩
+    have hid := oneHighFamilyAtomIdVal_id R (.saver x w) st val
+    rw [hv, hg] at hid
+    dsimp at hid
+    subst sg
+    generalize hv₂ : oneHighFamilyAtomIdVal R
+      (.edge (min x w) (max x w)) acc₁ = outV₂
+    rcases outV₂ with ⟨exw, acc₂⟩
+    generalize hv₃ : oneHighFamilyAtomIdVal R
+      (.miss w (x / 5 ^^^ 1)) acc₂ = outV₃
+    rcases outV₃ with ⟨mw, acc₃⟩
+    generalize hg₂ : oneHighFamilyEdgeId x w st₁ = outG₂
+    rcases outG₂ with ⟨exwg, st₂⟩
+    generalize hg₃ : oneHighFamilyAtomId
+      (.miss w (x / 5 ^^^ 1)) st₂ = outG₃
+    rcases outG₃ with ⟨mwg, st₃⟩
+    simp [oneHighFamilyV2SaverStepVal, oneHighFamilyV2SaverStep,
+      oneHighFamilyEdgeIdVal, hv, hg, hv₂, hv₃, hg₂, hg₃]
+  · exact oneHighFamilyV2SaverStepVal_state R x w input
+
+theorem oneHighFamilyV2CollectSaversVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Nat) (ws : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := ws.foldl
+      (fun input w => oneHighFamilyV2SaverStepVal R x w input) input
+    let raw := ws.foldl
+      (fun input w => oneHighFamilyV2SaverStep x w input)
+      (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction ws generalizing input with
+  | nil => simp
+  | cons w ws ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyV2SaverStepVal_projection R x w input
+      have hi := ih (oneHighFamilyV2SaverStepVal R x w input)
+      rcases hp with ⟨hvars, hst⟩
+      simpa [hvars, hst] using hi
+
 theorem oneHighFamilyV2SaverStepVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {x w : Nat} (hx : x < 40) (hw : w < 40)
