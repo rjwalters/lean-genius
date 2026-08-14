@@ -8270,6 +8270,39 @@ theorem degreeSix_emptySector_minimum_diagonal_two_false
       (by simpa [Q, D] using hdiag) hce hecQ hprofile htotal hrow hbal
         hsqCE hsqEE hdiagLe
 
+/-- With the diagonal-two branch closed, every globally minimum component in
+the empty color sector is a zero-diagonal triangle. -/
+theorem degreeSix_emptySector_minimum_component_eq_zero_triangle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ x.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 ∧
+      c.supp.ncard = 3 := by
+  rcases degreeSix_emptySector_minimum_component_dichotomy
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin with hzero | htwo
+  · exact hzero
+  · exact (degreeSix_emptySector_minimum_diagonal_two_false
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin htwo.1).elim
+
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
 `q(q-1) ≤ r/2-1`. -/
