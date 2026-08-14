@@ -7047,6 +7047,88 @@ theorem degreeSix_minimum_zeroDiagonal_order_eq_three_of_sector_empty
   exact degreeSix_minimum_zeroDiagonal_order_ne_five_of_sector_empty
     G hfree hmin hcard c hcmin hzero hfive
 
+/-- Every globally minimum component at the degree-six boundary has odd
+order.  This is the graph-level form of balanced-row parity and does not
+require any color-sector hypothesis. -/
+theorem degreeSix_minimum_component_order_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard) :
+    Odd c.supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨_, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hdvd : ∀ e : D.ConnectedComponent, 0 < Q c e →
+      c.supp.ncard ∣ e.supp.ncard := by
+    intro e hpos
+    exact minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin e hpos
+  exact minimum_balanced_row_order_odd Q
+    (fun e : D.ConnectedComponent ↦ e.supp.ncard) c
+      c.nonempty_supp.ncard_pos hrow hbal hdvd hsq
+
+/-- Minimum-layer dichotomy for the empty sector: the minimum component is
+either a zero-diagonal triangle or has diagonal quotient exactly two and
+odd order.  The quotient-one case is impossible because its forward
+singleton matching forces even order. -/
+theorem degreeSix_emptySector_minimum_component_dichotomy
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard) :
+    (componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0 ∧
+      c.supp.ncard = 3) ∨
+    (componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2 ∧
+      Odd c.supp.ncard) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hodd := degreeSix_minimum_component_order_odd
+    G hfree hmin hcard c hcmin
+  have hle : Q c c ≤ 2 :=
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty c
+  have hcases : Q c c = 0 ∨ Q c c = 1 ∨ Q c c = 2 := by omega
+  rcases hcases with hzero | hone | htwo
+  · left
+    refine ⟨by simpa [Q] using hzero, ?_⟩
+    exact degreeSix_minimum_zeroDiagonal_order_eq_three_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin
+        (by simpa [Q] using hzero)
+  · have horders :=
+      degreeSix_diagonal_one_component_order_cases_of_sector_empty
+        G hfree hmin hcard u hu huRange huD hr3 hempty c
+          (by simpa [Q] using hone)
+    rcases hodd with ⟨k, hk⟩
+    rcases horders with h4 | h6 | h8 | h10 <;> omega
+  · exact Or.inr ⟨by simpa [Q] using htwo, hodd⟩
+
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
 `q(q-1) ≤ r/2-1`. -/
