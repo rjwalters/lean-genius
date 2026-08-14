@@ -267,6 +267,111 @@ theorem oneHighFamilyV2F1Ledger_of_constraints
       a R hc j c hcj hcm]
   exact oneHighFamilyFullMissDeficit_symm a R hc c j
 
+noncomputable def oneHighFamilyF2SaverFinset
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Fin 40) : Finset (Fin 40) := by
+  classical
+  exact (oneHighEncodedFarNeighbors R x).filter fun w =>
+    oneHighFamilyVertexMatched a w.val = true ∧
+      oneHighFamilyMissesBlock R w
+        (oneHighStandardMate (Fin.divNat (m := 8) (n := 5) x))
+
+theorem oneHighFamilyV2SaverVertices_nodup (a x : Nat) :
+    (oneHighFamilyV2SaverVertices a x).Nodup := by
+  exact List.nodup_range.filter _
+
+theorem oneHighFamilyV2SaverVertices_mem_lt
+    (a x : Nat) {w : Nat} (hw : w ∈ oneHighFamilyV2SaverVertices a x) :
+    w < 40 := by
+  exact List.mem_range.mp (List.mem_filter.mp hw).1
+
+theorem oneHighFamily_xor_one_lt_eight {n : Nat} (h : n < 8) :
+    n ^^^ 1 < 8 := by
+  native_decide +revert
+
+/-- The worker's true saver atoms are exactly matched far neighbors which
+miss the mate block.  This is the saver half of the F2 partition. -/
+theorem oneHighFamilyV2SaverAtoms_count_eq_saverFinset_card
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Fin 40) :
+    ((oneHighFamilyV2SaverAtoms a x.val).map
+      (oneHighFamilyAtomValue R)).count true =
+      (oneHighFamilyF2SaverFinset a R x).card := by
+  classical
+  rw [oneHighFamilyV2SaverAtoms, List.map_map]
+  rw [List.count_map_true_eq_filter_toFinset_card _
+    (oneHighFamilyV2SaverVertices_nodup a x.val)]
+  apply Finset.card_bij (fun w hw =>
+    (⟨w, oneHighFamilyV2SaverVertices_mem_lt a x.val
+      (by simpa using (Finset.mem_filter.mp hw).1)⟩ : Fin 40))
+  · intro w hw
+    have hwParts := Finset.mem_filter.mp hw
+    have hwSaver : w ∈ oneHighFamilyV2SaverVertices a x.val := by
+      simpa using hwParts.1
+    have hw40 := oneHighFamilyV2SaverVertices_mem_lt a x.val hwSaver
+    have hwCond : oneHighFamilyVertexMatched a w = true ∧
+        w / 5 ≠ x.val / 5 ∧ w / 5 ≠ (x.val / 5 ^^^ 1) := by
+      have h := (by simpa [oneHighFamilyV2SaverVertices] using hwSaver :
+        w < 40 ∧ oneHighFamilyVertexMatched a w = true ∧
+          w / 5 ≠ x.val / 5 ∧ w / 5 ≠ (x.val / 5 ^^^ 1))
+      exact h.2
+    have hwValue := hwParts.2
+    have hxBlockLt : x.val / 5 < 8 := by omega
+    have hmateLt : (x.val / 5 ^^^ 1) < 8 :=
+      oneHighFamily_xor_one_lt_eight hxBlockLt
+    have hmateEq : (⟨x.val / 5 ^^^ 1, hmateLt⟩ : Fin 8) =
+        oneHighStandardMate (Fin.divNat (m := 8) (n := 5) x) := by
+      apply Fin.ext
+      rw [oneHighStandardMate_val_eq_xor]
+      rfl
+    have hwSem : R.Adj x ⟨w, hw40⟩ ∧
+        oneHighFamilyMissesBlock R ⟨w, hw40⟩
+          ⟨x.val / 5 ^^^ 1, hmateLt⟩ := by
+      simpa [oneHighFamilyAtomValue, x.isLt, hw40, hmateLt,
+        Bool.and_eq_true] using hwValue
+    apply Finset.mem_filter.mpr
+    constructor
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, hwSem.1, ?_, ?_⟩
+      · simpa [Fin.divNat] using hwCond.2.1
+      · intro h
+        apply hwCond.2.2
+        have hv := congrArg Fin.val h
+        rw [oneHighStandardMate_val_eq_xor] at hv
+        exact hv
+    · refine ⟨hwCond.1, ?_⟩
+      simpa [hmateEq] using hwSem.2
+  · intro w hw z hz heq
+    exact congrArg Fin.val heq
+  · intro w hw
+    rw [oneHighFamilyF2SaverFinset] at hw
+    have hwParts := Finset.mem_filter.mp hw
+    have hwFar := Finset.mem_filter.mp hwParts.1
+    have hwDivSelf : w.val / 5 ≠ x.val / 5 := by
+      simpa [Fin.divNat] using hwFar.2.2.1
+    have hwDivMate : w.val / 5 ≠ (x.val / 5 ^^^ 1) := by
+      intro h
+      apply hwFar.2.2.2
+      apply Fin.ext
+      rw [oneHighStandardMate_val_eq_xor]
+      simpa [Fin.divNat] using h
+    refine ⟨w.val, ?_, Fin.ext rfl⟩
+    apply Finset.mem_filter.mpr
+    constructor
+    · show w.val ∈ (oneHighFamilyV2SaverVertices a x.val).toFinset
+      simp [oneHighFamilyV2SaverVertices, w.isLt, hwParts.2.1,
+        hwDivSelf, hwDivMate]
+    · have hxBlockLt : x.val / 5 < 8 := by omega
+      have hmateLt : (x.val / 5 ^^^ 1) < 8 :=
+        oneHighFamily_xor_one_lt_eight hxBlockLt
+      have hmateEq : (⟨x.val / 5 ^^^ 1, hmateLt⟩ : Fin 8) =
+          oneHighStandardMate (Fin.divNat (m := 8) (n := 5) x) := by
+        apply Fin.ext
+        rw [oneHighStandardMate_val_eq_xor]
+        rfl
+      simp [oneHighFamilyAtomValue, x.isLt, w.isLt, hmateLt,
+        hwFar.2.1, hmateEq, hwParts.2.2]
+
 theorem oneHighFamilyFoldl_append_pairs
     (x : Nat) (zs : List Nat) (init : List (Nat × Nat)) :
     zs.foldl (fun pairs z => pairs ++ [(x, z)]) init =
