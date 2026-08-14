@@ -52,6 +52,45 @@ theorem oneHighProfilePerm_internalEdges {profile : Nat}
       oneHighFamilyInternalEdges profile i :=
   σ.2.2 i
 
+/-- Compose a raw presentation's branch coordinates with a profile
+stabilizer. -/
+def OneHighRawV2Presentation.relabelBranch
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    (p : OneHighRawV2Presentation G hfree v)
+    (σ : OneHighProfilePerm p.profile) :
+    {z : V // z ∈ G.neighborSet v} ≃ Fin 8 :=
+  p.branchLabel.trans σ.1
+
+theorem OneHighRawV2Presentation.relabelBranch_mate
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    (p : OneHighRawV2Presentation G hfree v)
+    (σ : OneHighProfilePerm p.profile)
+    (s : {z : V // z ∈ G.neighborSet v}) :
+    p.relabelBranch σ (p.mate s) =
+      oneHighStandardMate (p.relabelBranch σ s) := by
+  change σ.1 (p.branchLabel (p.mate s)) =
+    oneHighStandardMate (σ.1 (p.branchLabel s))
+  rw [p.branch_mate s, σ.2.1]
+
+theorem OneHighRawV2Presentation.relabelBranch_matchedCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    (p : OneHighRawV2Presentation G hfree v)
+    (σ : OneHighProfilePerm p.profile) (i : Fin 8) :
+    highBranchMatchedCount G v ((p.relabelBranch σ).symm i) =
+      2 * oneHighFamilyInternalEdges p.profile i := by
+  have hcount := p.matched_count (σ.1.symm i)
+  change highBranchMatchedCount G v
+    (p.branchLabel.symm (σ.1.symm i)) = _
+  rw [hcount]
+  have hstable := σ.2.2 (σ.1.symm i)
+  simpa using hstable.symm
+
 /-- Pull back a total miss table along a profile symmetry.  Coordinates
 outside `Fin 8` remain irrelevant and are normalised to zero. -/
 def OneHighProfilePerm.permuteTable {profile : Nat}
