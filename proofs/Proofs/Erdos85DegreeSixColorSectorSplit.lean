@@ -5445,6 +5445,61 @@ theorem degreeSix_exists_separated_chord_diagonal_two_or_oriented_even_of_sector
     · omega
     · exact Or.inl htwo
 
+/-- Complete parity-and-orientation classification of the residual chord
+component.  Odd diagonal blocks are necessarily forward-circulant; even
+ones obey the forward/reverse dichotomy. -/
+theorem degreeSix_exists_separated_chord_with_orientation_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    ∃ (c : (secondOrderDefectGraph G).ConnectedComponent)
+      (i j : ZMod c.supp.ncard),
+      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) ∧
+      0 < componentQuotientMatrix G (secondOrderDefectGraph G) c c ∧
+      ((Odd c.supp.ncard ∧
+          ∀ x y, G.Adj (u c (x + 1)) (u c (y + 1)) ↔
+            G.Adj (u c x) (u c y)) ∨
+       (Even c.supp.ncard ∧
+          ((∀ x y, G.Adj (u c (x + 1)) (u c (y + 1)) ↔
+              G.Adj (u c x) (u c y)) ∨
+           (∀ x y, G.Adj (u c (x + 1)) (u c (y - 1)) ↔
+              G.Adj (u c x) (u c y))))) := by
+  obtain ⟨c, i, j, hij, hjminus, hjplus, hxy, hcdiag⟩ :=
+    degreeSix_exists_separated_original_chord_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hempty
+  refine ⟨c, i, j, hij, hjminus, hjplus, hxy, hcdiag, ?_⟩
+  let D := secondOrderDefectGraph G
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard)
+  rcases Nat.even_or_odd c.supp.ncard with heven | hodd
+  · rcases graph_equalEvenCycle_diagBlock_orientation
+      (r := c.supp.ncard) (hr c) heven G D hfree (u c) (hu c)
+        hcomm (huD c) with hfwd | hrev
+    · exact Or.inr ⟨heven, Or.inl (fun x y ↦
+        adj_iff_of_adjMatrix_int_eq G (hfwd x y))⟩
+    · exact Or.inr ⟨heven, Or.inr (fun x y ↦
+        adj_iff_of_adjMatrix_int_eq G (hrev x y))⟩
+  · exact Or.inl ⟨hodd, fun x y ↦
+      graph_equalOddCycle_diagBlock_adj_shift_iff
+        (hr c) hodd G D (u c) (hu c) hcomm (huD c) x y⟩
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
