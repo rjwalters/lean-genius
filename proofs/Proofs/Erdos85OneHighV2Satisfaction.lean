@@ -12,8 +12,16 @@ namespace Erdos85
 
 structure OneHighFamilyV2F1Ledger
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] : Prop where
-  table_symm : ∀ c j,
-    oneHighFamilyGraphTable R a c j = oneHighFamilyGraphTable R a j c
+  table_symm : ∀ (c j : Fin 8), j ≠ c →
+    j ≠ oneHighStandardMate c →
+    oneHighFamilyGraphTable R a c.val j.val =
+      oneHighFamilyGraphTable R a j.val c.val
+
+theorem oneHighFamilyV2LowerTablePairs_mem_bounds
+    {pair : Nat × Nat} (h : pair ∈ oneHighFamilyV2LowerTablePairs) :
+    pair.1 < 8 ∧ pair.2 < 8 ∧ pair.2 ≠ pair.1 ∧
+      pair.2 ≠ (pair.1 ^^^ 1) := by
+  native_decide +revert
 
 noncomputable def oneHighFamilyV2UpperTableClausesVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
@@ -95,6 +103,7 @@ theorem oneHighFamilyV2LowerTablePairStepVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (a : Nat) (ledger : OneHighFamilyV2F1Ledger a R)
     (pair : Nat × Nat) {acc : OneHighFamilyValState}
+    (hpair : pair ∈ oneHighFamilyV2LowerTablePairs)
     (hacc : OneHighFamilySemanticSound R acc) :
     OneHighFamilySemanticSound R
       (oneHighFamilyV2LowerTablePairStepVal R a
@@ -115,7 +124,17 @@ theorem oneHighFamilyV2LowerTablePairStepVal_semanticSound
           (oneHighFamilyCollectAtomsVal_match R atoms acc) hsInput.semantic]
       _ = oneHighFamilyGraphTable R a pair.1 pair.2 := rfl
       _ = oneHighFamilyGraphTable R a pair.2 pair.1 :=
-        ledger.table_symm pair.1 pair.2
+        ledger.table_symm ⟨pair.1,
+          (oneHighFamilyV2LowerTablePairs_mem_bounds hpair).1⟩
+          ⟨pair.2, (oneHighFamilyV2LowerTablePairs_mem_bounds hpair).2.1⟩
+          (by
+            intro h
+            exact (oneHighFamilyV2LowerTablePairs_mem_bounds hpair).2.2.1
+              (congrArg Fin.val h))
+          (by
+            intro h
+            apply (oneHighFamilyV2LowerTablePairs_mem_bounds hpair).2.2.2
+            simpa [oneHighStandardMate_val_eq_xor] using congrArg Fin.val h)
 
 theorem oneHighFamilyV2LowerTablePairStepVal_state
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
@@ -149,11 +168,11 @@ theorem oneHighFamilyV2F1ClausesVal_semanticSound
     (ledger : OneHighFamilyV2F1Ledger a R)
     (val : DimacsValuation) :
     OneHighFamilySemanticSound R (oneHighFamilyV2F1ClausesVal R a val) := by
-  apply oneHighFamilyRunListVal_semanticSound R _ _
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
     (oneHighFamilyV2LexClausesVal_semanticSound R a hc val)
-  intro pair acc hacc
+  intro pair hpair acc hacc
   exact oneHighFamilyV2LowerTablePairStepVal_semanticSound
-    R a ledger pair hacc
+    R a ledger pair hpair hacc
 
 theorem oneHighFamilyV2F1ClausesVal_state
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]

@@ -48,6 +48,225 @@ theorem oneHighFamilyFullMissDeficit_symm
   · exact oneHighFamilyBlockFinset_cross_degree_le_one a R hc c j
   · exact oneHighFamilyBlockFinset_cross_degree_le_one a R hc j c
 
+theorem oneHighFamilyFarDegree_eq_six_of_worker_unmatched
+    (a : Nat) (c : Fin 8) (r : Fin 5)
+    (h : oneHighFamilyVertexMatched a (oneHighFamilyVertex c r).val = false) :
+    oneHighFamilyFarDegree a c r = 6 := by
+  simp only [oneHighFamilyVertexMatched, oneHighFamilyVertex_val] at h
+  simp only [oneHighFamilyFarDegree, oneHighFamilyInternalEdges]
+  split <;> simp_all <;> omega
+
+/-- A worker-unmatched vertex has one far neighbor in every one of the six
+available non-self, non-mate blocks. -/
+theorem oneHighFamilyUnmatched_not_misses_farBlock
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (c j : Fin 8) (r : Fin 5)
+    (hmatch : oneHighFamilyVertexMatched a
+      (oneHighFamilyVertex c r).val = false)
+    (hjc : j ≠ c) (hjm : j ≠ oneHighStandardMate c) :
+    ¬ oneHighFamilyMissesBlock R (oneHighFamilyVertex c r) j := by
+  intro hmiss
+  let x := oneHighFamilyVertex c r
+  let N := oneHighEncodedFarNeighbors R x
+  let blocks := N.image fun y => Fin.divNat (m := 8) (n := 5) y
+  have hxdiv : Fin.divNat (m := 8) (n := 5) x = c := by
+    exact oneHighFamilyVertex_divNat c r
+  have hxmod : Fin.modNat (m := 8) (n := 5) x = r := by
+    exact oneHighFamilyVertex_modNat c r
+  have hNcard : N.card = 6 := by
+    rw [hc.relation.2.2.2.2.2.1 x]
+    rw [hxdiv, hxmod]
+    exact oneHighFamilyFarDegree_eq_six_of_worker_unmatched a c r hmatch
+  have hinj : Set.InjOn (fun y : Fin 40 =>
+      Fin.divNat (m := 8) (n := 5) y) N := by
+    intro y hy z hz hyz
+    by_contra hne
+    have hyAdj := (Finset.mem_filter.mp hy).2.1
+    have hzAdj := (Finset.mem_filter.mp hz).2.1
+    exact hc.relation.2.2.2.2.1 x y z hne hyz ⟨hyAdj, hzAdj⟩
+  have hblocksCard : blocks.card = 6 := by
+    rw [show blocks.card = N.card by
+      simpa [blocks] using Finset.card_image_iff.mpr hinj]
+    exact hNcard
+  have hsubset : blocks ⊆
+      ((Finset.univ.erase c).erase (oneHighStandardMate c)).erase j := by
+    intro b hb
+    rcases Finset.mem_image.mp hb with ⟨y, hy, rfl⟩
+    have hyParts := (Finset.mem_filter.mp hy).2
+    apply Finset.mem_erase.mpr
+    constructor
+    · intro heq
+      have hyBlock : y ∈ oneHighFamilyBlockFinset j := by
+        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, heq⟩
+      have hyVertex : oneHighFamilyVertex j
+          (Fin.modNat (m := 8) (n := 5) y) = y := by
+        unfold oneHighFamilyVertex
+        rw [← heq]
+        exact finProdFinEquiv.apply_symm_apply y
+      exact hmiss (Fin.modNat (m := 8) (n := 5) y) (by
+        rw [hyVertex]
+        exact hyParts.1)
+    · apply Finset.mem_erase.mpr
+      exact ⟨by simpa [hxdiv] using hyParts.2.2,
+        Finset.mem_erase.mpr
+          ⟨by simpa [hxdiv] using hyParts.2.1, Finset.mem_univ _⟩⟩
+  have hle := Finset.card_le_card hsubset
+  have htarget :
+      ((((Finset.univ : Finset (Fin 8)).erase c).erase
+        (oneHighStandardMate c)).erase j).card = 5 := by
+    simp [hjc, hjm, oneHighStandardMate_ne]
+  rw [hblocksCard, htarget] at hle
+  omega
+
+theorem oneHighFamilyTableMissAtoms_eq_filter_map (a c j : Nat) :
+    oneHighFamilyTableMissAtoms a c j =
+      ((oneHighFamilyBlockVertices c).filter fun w =>
+        oneHighFamilyVertexMatched a w).map fun w => .miss w j := by
+  unfold oneHighFamilyTableMissAtoms
+  induction oneHighFamilyBlockVertices c with
+  | nil => rfl
+  | cons w ws ih =>
+      simp only [List.filterMap_cons, List.filter_cons]
+      cases oneHighFamilyVertexMatched a w <;> simp [ih]
+
+theorem oneHighFamilyFilteredBlockVertices_nodup (a c : Nat) :
+    ((oneHighFamilyBlockVertices c).filter fun w =>
+      oneHighFamilyVertexMatched a w).Nodup :=
+  (oneHighFamilyBlockVertices_nodup c).filter _
+
+noncomputable def oneHighFamilyWorkerMissFinset
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (c j : Fin 8) : Finset Nat :=
+  (((oneHighFamilyBlockVertices c.val).filter fun w =>
+    oneHighFamilyVertexMatched a w).toFinset).filter fun w =>
+      oneHighFamilyAtomValue R (.miss w j.val) = true
+
+theorem oneHighFamilyGraphTable_eq_workerMissFinset_card
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (c j : Fin 8) :
+    oneHighFamilyGraphTable R a c.val j.val =
+      (oneHighFamilyWorkerMissFinset a R c j).card := by
+  classical
+  rw [oneHighFamilyGraphTable, oneHighFamilyTableMissAtoms_eq_filter_map]
+  rw [List.map_map]
+  rw [List.count_map_true_eq_filter_toFinset_card _
+    (oneHighFamilyFilteredBlockVertices_nodup a c.val)]
+  rfl
+
+theorem oneHighFamilyWorkerMissFinset_mem_lt
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (c j : Fin 8) {w : Nat}
+    (hw : w ∈ oneHighFamilyWorkerMissFinset a R c j) : w < 40 := by
+  have hwOuter := (Finset.mem_filter.mp hw).1
+  have hwList : w ∈ (oneHighFamilyBlockVertices c.val).filter fun w =>
+      oneHighFamilyVertexMatched a w := by simpa using hwOuter
+  exact (oneHighFamilyBlockVertices_mem c.isLt
+    (List.mem_filter.mp hwList).1).1
+
+theorem oneHighFamilyMissesBlock_iff_blockFinset_card_zero
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Fin 40) (j : Fin 8) :
+    oneHighFamilyMissesBlock R x j ↔
+      (R.neighborFinset x ∩ oneHighFamilyBlockFinset j).card = 0 := by
+  rw [Finset.card_eq_zero]
+  constructor
+  · intro h
+    apply Finset.not_nonempty_iff_eq_empty.mp
+    rintro ⟨z, hz⟩
+    have hzParts := Finset.mem_inter.mp hz
+    have hzDiv := (Finset.mem_filter.mp hzParts.2).2
+    have hzVertex : oneHighFamilyVertex j
+        (Fin.modNat (m := 8) (n := 5) z) = z := by
+      unfold oneHighFamilyVertex
+      rw [← hzDiv]
+      exact (finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).apply_symm_apply z
+    exact h (Fin.modNat (m := 8) (n := 5) z) (by
+      rw [hzVertex]
+      exact (R.mem_neighborFinset x z).mp hzParts.1)
+  · intro h r hadj
+    have hz : oneHighFamilyVertex j r ∈
+        R.neighborFinset x ∩ oneHighFamilyBlockFinset j := by
+      exact Finset.mem_inter.mpr ⟨(R.mem_neighborFinset _ _).mpr hadj,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+          oneHighFamilyVertex_divNat j r⟩⟩
+    rw [h] at hz
+    simp at hz
+
+theorem oneHighFamilyWorkerMissFinset_card_eq_fullMissDeficit
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (c j : Fin 8) (hjc : j ≠ c)
+    (hjm : j ≠ oneHighStandardMate c) :
+    (oneHighFamilyWorkerMissFinset a R c j).card =
+      ((oneHighFamilyBlockFinset c).filter fun x =>
+        (R.neighborFinset x ∩ oneHighFamilyBlockFinset j).card = 0).card := by
+  classical
+  apply Finset.card_bij (fun w hw =>
+    (⟨w, oneHighFamilyWorkerMissFinset_mem_lt a R c j hw⟩ : Fin 40))
+  · intro w hw
+    have hwParts := Finset.mem_filter.mp hw
+    have hwMemList : w ∈ (oneHighFamilyBlockVertices c.val).filter fun w =>
+        oneHighFamilyVertexMatched a w := by simpa using hwParts.1
+    have hwList := List.mem_filter.mp hwMemList
+    have hwBound := oneHighFamilyBlockVertices_mem c.isLt hwList.1
+    apply Finset.mem_filter.mpr
+    constructor
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+        apply Fin.ext
+        simpa [Fin.divNat] using hwBound.2⟩
+    · rw [← oneHighFamilyMissesBlock_iff_blockFinset_card_zero]
+      simpa [oneHighFamilyAtomValue, hwBound.1, j.isLt] using hwParts.2
+  · intro w hw z hz heq
+    exact congrArg Fin.val heq
+  · intro x hx
+    have hxParts := Finset.mem_filter.mp hx
+    have hxDiv := (Finset.mem_filter.mp hxParts.1).2
+    have hmiss : oneHighFamilyMissesBlock R x j :=
+      (oneHighFamilyMissesBlock_iff_blockFinset_card_zero R x j).2 hxParts.2
+    have hxWorker : oneHighFamilyVertexMatched a x.val = true := by
+      cases hwm : oneHighFamilyVertexMatched a x.val with
+      | true => rfl
+      | false =>
+          have hxVertex : oneHighFamilyVertex c
+              (Fin.modNat (m := 8) (n := 5) x) = x := by
+            unfold oneHighFamilyVertex
+            rw [← hxDiv]
+            exact (finProdFinEquiv : Fin 8 × Fin 5 ≃ Fin 40).apply_symm_apply x
+          exact False.elim (oneHighFamilyUnmatched_not_misses_farBlock
+            a R hc c j (Fin.modNat (m := 8) (n := 5) x)
+            (by simpa [hxVertex] using hwm) hjc hjm (by
+              simpa [hxVertex] using hmiss))
+    refine ⟨x.val, ?_, Fin.ext rfl⟩
+    apply Finset.mem_filter.mpr
+    constructor
+    · show x.val ∈ ((oneHighFamilyBlockVertices c.val).filter fun w =>
+        oneHighFamilyVertexMatched a w).toFinset
+      simpa using (List.mem_filter.mpr ⟨
+        (oneHighFamilyBlockVertices_mem_iff c.isLt).mpr
+          ⟨x.isLt, by simpa [Fin.divNat] using congrArg Fin.val hxDiv⟩,
+        hxWorker⟩)
+    · simp [oneHighFamilyAtomValue, x.isLt, j.isLt, hmiss]
+
+theorem oneHighFamilyV2F1Ledger_of_constraints
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R) :
+    OneHighFamilyV2F1Ledger a R := by
+  constructor
+  intro c j hjc hjm
+  have hcj : c ≠ j := Ne.symm hjc
+  have hcm : c ≠ oneHighStandardMate j := by
+    intro h
+    apply hjm
+    rw [h, oneHighStandardMate_involutive j]
+  rw [oneHighFamilyGraphTable_eq_workerMissFinset_card,
+    oneHighFamilyGraphTable_eq_workerMissFinset_card]
+  rw [oneHighFamilyWorkerMissFinset_card_eq_fullMissDeficit
+      a R hc c j hjc hjm,
+    oneHighFamilyWorkerMissFinset_card_eq_fullMissDeficit
+      a R hc j c hcj hcm]
+  exact oneHighFamilyFullMissDeficit_symm a R hc c j
+
 theorem oneHighFamilyFoldl_append_pairs
     (x : Nat) (zs : List Nat) (init : List (Nat × Nat)) :
     zs.foldl (fun pairs z => pairs ++ [(x, z)]) init =
