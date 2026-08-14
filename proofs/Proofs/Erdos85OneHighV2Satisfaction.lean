@@ -236,4 +236,154 @@ theorem oneHighFamilyV2PairedCommonClausesVal_state
           R pair acc)
     _ = _ := by rw [oneHighFamilyV2F1ClausesVal_state]
 
+noncomputable def oneHighFamilyV2SaverStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x w : Nat) (accst : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let (ss, acc) := accst
+  let (s, acc) := oneHighFamilyAtomIdVal R (.saver x w) acc
+  let (exw, acc) := oneHighFamilyEdgeIdVal R x w acc
+  let (mw, acc) := oneHighFamilyAtomIdVal R
+    (.miss w (x / 5 ^^^ 1)) acc
+  let acc := (oneHighFamilyEmitVal [-(s : Int), (exw : Int)] acc).2
+  let acc := (oneHighFamilyEmitVal [-(s : Int), (mw : Int)] acc).2
+  let acc := (oneHighFamilyEmitVal
+    [(s : Int), -(exw : Int), -(mw : Int)] acc).2
+  (ss.push (s : Int), acc)
+
+theorem oneHighFamilyV2SaverStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x w : Nat) (input : Array Int × OneHighFamilyValState) :
+    (oneHighFamilyV2SaverStepVal R x w input).2.1 =
+      (oneHighFamilyV2SaverStep x w (input.1, input.2.1)).2 := by
+  rcases input with ⟨ss, st, val⟩
+  generalize hv₁ : oneHighFamilyAtomIdVal R (.saver x w) (st, val) = out₁
+  rcases out₁ with ⟨s, acc₁⟩
+  have hid₁ := oneHighFamilyAtomIdVal_id R (.saver x w) st val
+  have hst₁ := oneHighFamilyAtomIdVal_state R (.saver x w) st val
+  rw [hv₁] at hid₁ hst₁
+  generalize hv₂ : oneHighFamilyAtomIdVal R
+    (.edge (min x w) (max x w)) acc₁ = out₂
+  rcases out₂ with ⟨exw, acc₂⟩
+  have hid₂ := oneHighFamilyAtomIdVal_id R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2
+  have hst₂ := oneHighFamilyAtomIdVal_state R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2
+  rw [hv₂] at hid₂ hst₂
+  generalize hv₃ : oneHighFamilyAtomIdVal R
+    (.miss w (x / 5 ^^^ 1)) acc₂ = out₃
+  rcases out₃ with ⟨mw, acc₃⟩
+  have hid₃ := oneHighFamilyAtomIdVal_id R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2
+  have hst₃ := oneHighFamilyAtomIdVal_state R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2
+  rw [hv₃] at hid₃ hst₃
+  have hout₁ : oneHighFamilyAtomId (.saver x w) st = (s, acc₁.1) :=
+    Prod.ext hid₁.symm hst₁.symm
+  have hout₂ : oneHighFamilyEdgeId x w acc₁.1 = (exw, acc₂.1) :=
+    Prod.ext hid₂.symm hst₂.symm
+  have hout₃ : oneHighFamilyAtomId (.miss w (x / 5 ^^^ 1)) acc₂.1 =
+      (mw, acc₃.1) := Prod.ext hid₃.symm hst₃.symm
+  simp [oneHighFamilyV2SaverStepVal, oneHighFamilyV2SaverStep,
+    oneHighFamilyEdgeIdVal, hv₁, hv₂, hv₃,
+    hout₁, hout₂, hout₃, oneHighFamilyEmitVal]
+
+theorem oneHighFamilyV2SaverStepVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x w : Nat} (hx : x < 40) (hw : w < 40)
+    (hb : (x / 5 ^^^ 1) < 8)
+    {ss : Array Int} {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2SaverStepVal R x w (ss, acc)).2 := by
+  simp only [oneHighFamilyV2SaverStepVal, oneHighFamilyEdgeIdVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R (.saver x w) acc = out₁
+  rcases out₁ with ⟨s, acc₁⟩
+  have hs₁ := oneHighFamilyAtomIdVal_semanticSound R hacc (.saver x w)
+  rw [h₁] at hs₁
+  have hr₁ := oneHighFamilyAtomIdVal_result R (.saver x w) acc.1 acc.2
+  rw [h₁] at hr₁
+  dsimp at hr₁
+  generalize h₂ : oneHighFamilyAtomIdVal R
+    (.edge (min x w) (max x w)) acc₁ = out₂
+  rcases out₂ with ⟨exw, acc₂⟩
+  have hs₂ := oneHighFamilyAtomIdVal_semanticSound R hs₁
+    (.edge (min x w) (max x w))
+  rw [h₂] at hs₂
+  have hr₂ := oneHighFamilyAtomIdVal_result R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2
+  rw [h₂] at hr₂
+  dsimp at hr₂
+  generalize h₃ : oneHighFamilyAtomIdVal R
+    (.miss w (x / 5 ^^^ 1)) acc₂ = out₃
+  rcases out₃ with ⟨mw, acc₃⟩
+  have hs₃ := oneHighFamilyAtomIdVal_semanticSound R hs₂
+    (.miss w (x / 5 ^^^ 1))
+  rw [h₃] at hs₃
+  have hr₃ := oneHighFamilyAtomIdVal_result R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2
+  rw [h₃] at hr₃
+  dsimp at hr₃
+  have hs₂mem := oneHighFamilyAtomIdVal_old_mem R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hr₁.1
+  rw [h₂] at hs₂mem
+  have hs₃mem := oneHighFamilyAtomIdVal_old_mem R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2 hs₂mem
+  rw [h₃] at hs₃mem
+  have he₃mem := oneHighFamilyAtomIdVal_old_mem R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2 hr₂.1
+  rw [h₃] at he₃mem
+  have hsVal : acc₃.2 s =
+      (decide (R.Adj (⟨x, hx⟩ : Fin 40) ⟨w, hw⟩) &&
+        @decide (oneHighFamilyMissesBlock R (⟨w, hw⟩ : Fin 40)
+          (⟨x / 5 ^^^ 1, hb⟩ : Fin 8)) (Classical.propDecidable _)) := by
+    rw [hs₃.named (.saver x w) s hs₃mem]
+    simp [oneHighFamilyAtomValue, hx, hw, hb]
+  have heVal : acc₃.2 exw =
+      decide (R.Adj (⟨x, hx⟩ : Fin 40) ⟨w, hw⟩) :=
+    (hs₃.named _ exw he₃mem).trans (oneHighFamilyAtomValue_edge R hx hw)
+  have hmVal : acc₃.2 mw =
+      @decide (oneHighFamilyMissesBlock R (⟨w, hw⟩ : Fin 40)
+        (⟨x / 5 ^^^ 1, hb⟩ : Fin 8)) (Classical.propDecidable _) := by
+    rw [hr₃.2]
+    simp [oneHighFamilyAtomValue, hw, hb]
+  have hse : acc₃.2 s = true → acc₃.2 exw = true := by
+    rw [hsVal, heVal]
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    tauto
+  have hsm : acc₃.2 s = true → acc₃.2 mw = true := by
+    rw [hsVal, hmVal]
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    tauto
+  have hems : acc₃.2 exw = true → acc₃.2 mw = true → acc₃.2 s = true := by
+    rw [hsVal, heVal, hmVal]
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    tauto
+  let acc₄ := (oneHighFamilyEmitVal [-(s : Int), (exw : Int)] acc₃).2
+  have hs₄ : OneHighFamilySemanticSound R acc₄ := by
+    apply oneHighFamilyEmitVal_semanticSound R hs₃
+    · exact dimacsClauseSatisfied_negative_positive
+        (hs₃.ids.id_bounds _ he₃mem).1 hse
+    · exact dimacsClauseBounded_negative_positive
+        (hs₃.ids.id_bounds _ hs₃mem).2
+        (hs₃.ids.id_bounds _ he₃mem).2
+  let acc₅ := (oneHighFamilyEmitVal [-(s : Int), (mw : Int)] acc₄).2
+  have hs₅ : OneHighFamilySemanticSound R acc₅ := by
+    apply oneHighFamilyEmitVal_semanticSound R hs₄
+    · simpa [acc₄, oneHighFamilyEmitVal] using
+        dimacsClauseSatisfied_negative_positive
+          (hs₃.ids.id_bounds _ hr₃.1).1 hsm
+    · exact dimacsClauseBounded_negative_positive
+        (hs₄.ids.id_bounds _ hs₃mem).2
+        (hs₄.ids.id_bounds _ hr₃.1).2
+  simp only [h₂, h₃]
+  apply oneHighFamilyEmitVal_semanticSound R hs₅
+  · simpa [acc₄, acc₅, oneHighFamilyEmitVal] using
+      dimacsClauseSatisfied_positive_negative_pair
+        (hs₃.ids.id_bounds _ hs₃mem).1 hems
+  · exact dimacsClauseBounded_positive_negative_pair
+      (hs₅.ids.id_bounds _ hs₃mem).2
+      (hs₅.ids.id_bounds _ he₃mem).2
+      (hs₅.ids.id_bounds _ hr₃.1).2
+
 end Erdos85
