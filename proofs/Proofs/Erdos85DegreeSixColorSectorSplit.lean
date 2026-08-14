@@ -658,6 +658,134 @@ theorem false_of_minimum_zero_order_seven_balanced_row
     exact hcs.trans hbound
   interval_cases Q c e <;> norm_num at hcomp hqle hfinal
 
+/-- The analogous minimum zero row of order five is also impossible.  Its
+forced equal-size companion has quotient exactly two.  Equality of the
+remaining row and square masses makes every reverse quotient one, so the
+positive support outside the base and companion has total order exactly
+twenty.  Only three vertices remain, contradicting global minimality five. -/
+theorem false_of_minimum_zero_order_five_balanced_row
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c e : C)
+    (hce : e ≠ c) (hcsize : size c = 5) (hesize : size e = 5)
+    (hminSize : ∀ x, 5 ≤ size x)
+    (hdiag : Q c c = 0) (hcomp : 2 ≤ Q c e)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hdvd : ∀ x, 0 < Q c x → 5 ∣ size x)
+    (hsq : ∑ x, Q c x * Q x c = 8) : False := by
+  let P := Finset.univ.filter fun x ↦ 0 < Q c x
+  let T := P.erase e
+  have heP : e ∈ P := by simp [P]; omega
+  have hcnotP : c ∉ P := by simp [P, hdiag]
+  have hsumP : (∑ x ∈ P, Q c x) = 6 := by
+    calc
+      (∑ x ∈ P, Q c x) = ∑ x, Q c x := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro x hx hnot
+        have : Q c x = 0 := by
+          by_contra hn
+          exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+        simp [this]
+      _ = 6 := hrow
+  have hprodP : (∑ x ∈ P, Q c x * Q x c) = 8 := by
+    calc
+      (∑ x ∈ P, Q c x * Q x c) = ∑ x, Q c x * Q x c := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro x hx hnot
+        have : Q c x = 0 := by
+          by_contra hn
+          exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+        simp [this]
+      _ = 8 := hsq
+  have hreverse : Q e c = Q c e := by
+    have hb := hbal e
+    rw [hcsize, hesize] at hb
+    omega
+  have hq : Q c e = 2 := by
+    have hbound : Q c e * Q c e ≤ 8 := by
+      have hs := Finset.single_le_sum
+        (fun x _ ↦ Nat.zero_le (Q c x * Q x c)) heP
+      rw [hprodP] at hs
+      simpa [hreverse] using hs
+    nlinarith
+  have hrowT : (∑ x ∈ T, Q c x) = 4 := by
+    have hs := Finset.sum_erase_add P (fun x ↦ Q c x) heP
+    dsimp [T]
+    omega
+  have hprodT : (∑ x ∈ T, Q c x * Q x c) = 4 := by
+    have hs := Finset.sum_erase_add P
+      (fun x ↦ Q c x * Q x c) heP
+    rw [hreverse, hq] at hs
+    dsimp [T]
+    omega
+  have htermLe : ∀ x ∈ T, Q c x ≤ Q c x * Q x c := by
+    intro x hx
+    have hxP := (Finset.mem_erase.mp hx).2
+    have hxpos : 0 < Q c x := by
+      simpa [P] using (Finset.mem_filter.mp hxP).2
+    have hrevpos : 0 < Q x c := by
+      by_contra hz
+      have hz' : Q x c = 0 := by omega
+      have hb := hbal x
+      rw [hcsize, hz', mul_zero] at hb
+      omega
+    exact Nat.le_mul_of_pos_right _ hrevpos
+  have htermEq : ∀ x ∈ T, Q c x = Q c x * Q x c := by
+    exact (Finset.sum_eq_sum_iff_of_le htermLe).mp (by rw [hrowT, hprodT])
+  have hreverseOne : ∀ x ∈ T, Q x c = 1 := by
+    intro x hx
+    have hxP := (Finset.mem_erase.mp hx).2
+    have hxpos : 0 < Q c x := by
+      simpa [P] using (Finset.mem_filter.mp hxP).2
+    have heq := htermEq x hx
+    nlinarith
+  have hsizeEq : ∀ x ∈ T, size x = 5 * Q c x := by
+    intro x hx
+    have hb := hbal x
+    rw [hcsize, hreverseOne x hx, mul_one] at hb
+    exact hb.symm
+  have hsizeT : (∑ x ∈ T, size x) = 20 := by
+    calc
+      (∑ x ∈ T, size x) = ∑ x ∈ T, 5 * Q c x := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hsizeEq x hx
+      _ = 5 * ∑ x ∈ T, Q c x := by rw [Finset.mul_sum]
+      _ = 20 := by rw [hrowT]
+  let U := (Finset.univ.erase c).erase e
+  have hTsubset : T ⊆ U := by
+    intro x hx
+    have hxP := (Finset.mem_erase.mp hx).2
+    have hxe : x ≠ e := (Finset.mem_erase.mp hx).1
+    have hxc : x ≠ c := by
+      intro hxc
+      exact hcnotP (hxc ▸ hxP)
+    simp [U, hxe, hxc]
+  have hsizeU : (∑ x ∈ U, size x) = 23 := by
+    have hcuniv : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+    have heerase : e ∈ (Finset.univ.erase c : Finset C) := by simp [hce]
+    have hcSplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) size hcuniv
+    have heSplit := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset C) size heerase
+    rw [htotal, hcsize] at hcSplit
+    rw [hesize] at heSplit
+    dsimp [U]
+    omega
+  let R := U \ T
+  have hsizeR : (∑ x ∈ R, size x) = 3 := by
+    have hsplit : (∑ x ∈ U \ T, size x) + (∑ x ∈ T, size x) =
+        ∑ x ∈ U, size x := Finset.sum_sdiff hTsubset
+    dsimp [R]
+    omega
+  have hsumRne : (∑ x ∈ R, size x) ≠ 0 := by omega
+  obtain ⟨x, hxR, hxne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumRne
+  have hxle : size x ≤ ∑ y ∈ R, size y :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hxR
+  have hxmin := hminSize x
+  omega
+
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
 component. -/
@@ -6769,6 +6897,83 @@ theorem degreeSix_minimum_zeroDiagonal_order_eq_five_of_sector_empty
   · exact hfive
   · exact (degreeSix_minimum_zeroDiagonal_order_ne_seven_of_sector_empty
       G hfree hmin hcard c hcmin hzero hseven).elim
+
+/-- The remaining order-five minimum zero row is impossible as well: its
+positive quotient support occupies exactly thirty vertices, leaving a
+three-vertex tail below the assumed global minimum five. -/
+theorem degreeSix_minimum_zeroDiagonal_order_ne_five_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hzero : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    c.supp.ncard ≠ 5 := by
+  intro hcfive
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨e, hec, hesize, hcomp⟩ :=
+    exists_equalSize_quotient_ge_two_of_minimum_diagonal_zero
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin (by omega) hzero
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hdvd : ∀ x : D.ConnectedComponent, 0 < Q c x →
+      5 ∣ x.supp.ncard := by
+    intro x hpos
+    have hcx := minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin x hpos
+    simpa [hcfive] using hcx
+  have hsqEight : ∑ x : D.ConnectedComponent, Q c x * Q x c = 8 := by
+    simpa [hcfive] using hsq
+  exact false_of_minimum_zero_order_five_balanced_row
+    Q (fun x : D.ConnectedComponent ↦ x.supp.ncard) c e hec
+      hcfive (by simpa [hesize, hcfive]) (fun x ↦ by simpa [hcfive] using hcmin x)
+      (by simpa [Q, D] using hzero) (by simpa [Q, D] using hcomp)
+      htotal hrow hbal hdvd hsqEight
+
+/-- Therefore every globally minimum zero-diagonal component in the empty
+sector is a triangle. -/
+theorem degreeSix_minimum_zeroDiagonal_order_eq_three_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hzero : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    c.supp.ncard = 3 := by
+  by_contra hne
+  have hc4 : 4 ≤ c.supp.ncard := by have := hr3 c; omega
+  have hfive := degreeSix_minimum_zeroDiagonal_order_eq_five_of_sector_empty
+    G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin hc4 hzero
+  exact degreeSix_minimum_zeroDiagonal_order_ne_five_of_sector_empty
+    G hfree hmin hcard c hcmin hzero hfive
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
