@@ -16,6 +16,7 @@ inductive OneHighFamilyAtom where
   | miss : Nat → Nat → OneHighFamilyAtom
   | midpoint : Nat → Nat → Nat → OneHighFamilyAtom
   | common : Nat → Nat → OneHighFamilyAtom
+  | saver : Nat → Nat → OneHighFamilyAtom
 deriving DecidableEq, Repr
 
 structure OneHighFamilyGenState where
