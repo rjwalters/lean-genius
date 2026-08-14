@@ -27,14 +27,9 @@ theorem oneHighFamilyV2MaybeAppendEdgeVal_old_mem
   cases cond with
   | false => simpa using hmem
   | true =>
-      simp only [oneHighFamilyEdgeIdVal]
-      generalize h₁ : oneHighFamilyAtomIdVal R
-        (.edge (min x w) (max x w)) acc = out₁
-      rcases out₁ with ⟨e, acc₁⟩
-      have hm₁ := oneHighFamilyAtomIdVal_old_mem R
-        (.edge (min x w) (max x w)) acc.1 acc.2 hmem
-      rw [h₁] at hm₁
-      simpa using hm₁
+      simpa [oneHighFamilyV2AppendEdgeVal] using
+        (oneHighFamilyCollectAtomVal_old_mem R
+          (.edge (min x w) (max x w)) hmem)
 
 /-- Emission folds preserve the ID table. -/
 theorem oneHighFamilyEmitFoldVal_ids
@@ -137,7 +132,8 @@ theorem oneHighFamilyV2UnpairedCommonStepVal_old_mem
         (fun m => oneHighFamilyV2MaybeAppendEdgeVal R
           (oneHighFamilyVertexMatched profile z)
           x (oneHighFamilyV2PartnerVertex z) m)).2).2.1.ids
-  rw [hmids, hxo, hzo]
+  rw [hmids]
+  simp only [hxo, hzo]
   exact hold hz
 
 /-- One v2 unpaired common step appends the pair `(x, z)` to a
@@ -160,8 +156,17 @@ noncomputable def oneHighFamilyV2CollectedCommonsMatch_push
   generalize hzo : oneHighFamilyV2MaybeAppendEdgeVal R
     (oneHighFamilyVertexMatched profile z)
     x (oneHighFamilyV2PartnerVertex z) xInput = zInput
-  obtain ⟨c, hpush, hcmem, holdF⟩ :=
-    oneHighFamilyV2FinishCommonVal_mem R cs zInput.1 x z zInput.2
+  let ca : OneHighFamilyAtom := .common (min x z) (max x z)
+  generalize hca : oneHighFamilyAtomIdVal R ca zInput.2 = out
+  rcases out with ⟨c, accC⟩
+  have hrC := oneHighFamilyAtomIdVal_result R ca zInput.2.1 zInput.2.2
+  rw [hca] at hrC
+  have hfinalIds :
+      (oneHighFamilyV2FinishCommonVal R cs zInput.1 x z zInput.2).2.1.ids =
+        accC.1.ids := by
+    simp only [oneHighFamilyV2FinishCommonVal, ca, hca]
+    rw [oneHighFamilyEmitFoldVal_ids]
+    rfl
   have hold : List.Forall₂ (fun p id =>
       ((.common (min p.1 p.2) (max p.1 p.2)), id) ∈
         (oneHighFamilyV2FinishCommonVal R cs zInput.1 x z
@@ -186,11 +191,19 @@ noncomputable def oneHighFamilyV2CollectedCommonsMatch_push
       (oneHighFamilyVertexMatched profile z)
       x (oneHighFamilyV2PartnerVertex z) (input := xInput) hx
     rw [hzo] at hz
-    exact holdF hz
+    have hcOld := oneHighFamilyAtomIdVal_old_mem R ca
+      zInput.2.1 zInput.2.2 hz
+    rw [hca] at hcOld
+    rw [hfinalIds]
+    exact hcOld
+  simp only [hmids, hxo, hzo]
   refine ⟨h.ids ++ [c], ?_, ?_⟩
-  · rw [hpush, Array.toList_push, h.vars_eq]
+  · simp only [oneHighFamilyV2FinishCommonVal, ca, hca]
+    rw [Array.toList_push, h.vars_eq]
     simp
-  · exact listForall₂_append_singleton hold hcmem
+  · apply listForall₂_append_singleton hold
+    rw [hfinalIds]
+    exact hrC.1
 
 /-- Inner 5-vertex fold of the v2 collector. -/
 noncomputable def oneHighFamilyV2CollectCommonsInner_match
@@ -241,6 +254,29 @@ noncomputable def oneHighFamilyV2F3bCollectVal_match
   oneHighFamilyV2CollectCommonsOuter_match R profile pair.1 pair.2
     (oneHighFamilyBlockVertices pair.1)
     (oneHighFamilyCollectedCommonsMatch_empty acc)
+
+noncomputable def oneHighFamilyCollectedCommonsMatch_toAtomsMatch
+    {pairs : List (Nat × Nat)}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedCommonsMatch pairs input) :
+    OneHighFamilyCollectedAtomsMatch
+      (pairs.map (fun p =>
+        .common (min p.1 p.2) (max p.1 p.2))) input := {
+  ids := h.ids
+  vars_eq := h.vars_eq
+  aligned := by
+    simpa only [List.forall₂_map_left_iff] using h.aligned }
+
+theorem oneHighFamilyV2F3bCollectVal_inputAccumSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (pair : Nat × Nat) {acc : OneHighFamilyValState}
+    (hs : OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3bCollectVal R profile pair acc).2) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2F3bCollectVal R profile pair acc) := by
+  exact oneHighFamilyCollectedAtomsMatch_sound R
+    (oneHighFamilyCollectedCommonsMatch_toAtomsMatch
+      (oneHighFamilyV2F3bCollectVal_match R profile pair acc)) hs
 
 end
 

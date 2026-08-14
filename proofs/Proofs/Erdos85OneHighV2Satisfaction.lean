@@ -1109,6 +1109,55 @@ theorem oneHighFamilyV2MaybeAppendEdgeVal_projection
   · exact oneHighFamilyV2AppendEdgeVal_projection R i j input
   · exact ⟨rfl, rfl⟩
 
+theorem oneHighFamilyV2AppendEdgeVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) {input : Array Int × OneHighFamilyValState}
+    (hinput : OneHighFamilyInputAccumSound R input) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2AppendEdgeVal R i j input) := by
+  exact oneHighFamilyCollectAtomVal_sound R hinput
+    (.edge (min i j) (max i j))
+
+theorem oneHighFamilyV2MaybeAppendEdgeVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (enabled : Bool) (i j : Nat)
+    {input : Array Int × OneHighFamilyValState}
+    (hinput : OneHighFamilyInputAccumSound R input) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2MaybeAppendEdgeVal R enabled i j input) := by
+  simp only [oneHighFamilyV2MaybeAppendEdgeVal]
+  split
+  · exact oneHighFamilyV2AppendEdgeVal_semanticSound R i j hinput
+  · exact hinput
+
+noncomputable def oneHighFamilyV2CollectedMidpointsAtomsMatch
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (ws : List Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedAtomsMatch
+      (ws.map (fun w => .midpoint (min x z) w (max x z)))
+      (oneHighFamilyCollectMidpointsVal R x z ws acc) := by
+  let hm := oneHighFamilyCollectMidpointsVal_match R x z ws acc
+  exact {
+    ids := hm.ids
+    vars_eq := hm.vars_eq
+    aligned := by
+      simpa only [List.forall₂_map_left_iff] using hm.aligned }
+
+noncomputable def oneHighFamilyV2MaybeAppendEdgeVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (enabled : Bool) (i j : Nat)
+    {atoms : List OneHighFamilyAtom}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedAtomsMatch atoms input) :
+    OneHighFamilyCollectedAtomsMatch
+      (atoms ++ if enabled then [(.edge (min i j) (max i j))] else [])
+      (oneHighFamilyV2MaybeAppendEdgeVal R enabled i j input) := by
+  simp only [oneHighFamilyV2MaybeAppendEdgeVal]
+  split
+  · simpa [oneHighFamilyV2AppendEdgeVal] using
+      oneHighFamilyCollectedAtomsMatch_push R h
+  · simpa using h
+
 noncomputable def oneHighFamilyV2FinishCommonVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (cs ors : Array Int) (x z : Nat) (acc : OneHighFamilyValState) :
@@ -1272,6 +1321,79 @@ theorem oneHighFamilyV2FinishCommonVal_projection
     exact congrArg
       (fun s => (oneHighFamilyEmit (-((c : Nat) : Int) :: ors.toList) s).2)
       hstate
+
+def oneHighFamilyV2UnpairedCandidateAtoms
+    (profile a b x z : Nat) : List OneHighFamilyAtom :=
+  (oneHighFamilyV2UnpairedMidpoints a b).map
+      (fun w => .midpoint (min x z) w (max x z)) ++
+    (if oneHighFamilyVertexMatched profile x then
+      [(.edge (min (oneHighFamilyV2PartnerVertex x) z)
+        (max (oneHighFamilyV2PartnerVertex x) z))] else []) ++
+    (if oneHighFamilyVertexMatched profile z then
+      [(.edge (min x (oneHighFamilyV2PartnerVertex z))
+        (max x (oneHighFamilyV2PartnerVertex z)))] else [])
+
+noncomputable def oneHighFamilyV2UnpairedCandidateInputVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b x z : Nat) (acc : OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let midInput := (oneHighFamilyV2UnpairedMidpoints a b).foldl
+    (fun input w => oneHighFamilyMidpointTseitinStepVal R x z w input)
+    (#[], acc)
+  let xInput := oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z midInput
+  oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) xInput
+
+noncomputable def oneHighFamilyV2UnpairedCandidateInputVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b x z : Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedAtomsMatch
+      (oneHighFamilyV2UnpairedCandidateAtoms profile a b x z)
+      (oneHighFamilyV2UnpairedCandidateInputVal R profile a b x z acc) := by
+  let mids := oneHighFamilyV2UnpairedMidpoints a b
+  let midInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  let hm := oneHighFamilyV2CollectedMidpointsAtomsMatch R x z mids acc
+  let xInput := oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z midInput
+  let hx := oneHighFamilyV2MaybeAppendEdgeVal_match R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z hm
+  let hz := oneHighFamilyV2MaybeAppendEdgeVal_match R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) hx
+  simpa [oneHighFamilyV2UnpairedCandidateAtoms,
+    oneHighFamilyV2UnpairedCandidateInputVal, mids, midInput, xInput,
+    oneHighFamilyCollectMidpointsVal, List.append_assoc] using hz
+
+theorem oneHighFamilyV2UnpairedCandidateInputVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b : Nat) {x z : Nat}
+    (hx : x < 40) (hz : z < 40) (hxz : x < z)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2UnpairedCandidateInputVal R profile a b x z acc) := by
+  let mids := oneHighFamilyV2UnpairedMidpoints a b
+  let midInput := oneHighFamilyCollectMidpointsVal R x z mids acc
+  have hsMid : OneHighFamilySemanticSound R midInput.2 := by
+    apply oneHighFamilyCollectMidpointsVal_semanticSound R hx hz hxz mids
+    · intro w hw
+      exact List.mem_range.mp (List.mem_filter.mp hw).1
+    · exact hacc
+  have hm := oneHighFamilyV2CollectedMidpointsAtomsMatch R x z mids acc
+  have hiMid := oneHighFamilyCollectedAtomsMatch_sound R hm hsMid
+  have hiX := oneHighFamilyV2MaybeAppendEdgeVal_semanticSound R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z hiMid
+  have hiZ := oneHighFamilyV2MaybeAppendEdgeVal_semanticSound R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) hiX
+  simpa [oneHighFamilyV2UnpairedCandidateInputVal, mids, midInput,
+    oneHighFamilyCollectMidpointsVal] using hiZ
 
 noncomputable def oneHighFamilyV2UnpairedCommonStepVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]

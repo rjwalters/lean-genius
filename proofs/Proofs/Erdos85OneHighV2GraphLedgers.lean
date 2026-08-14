@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighV2Satisfaction
+import Proofs.Erdos85OneHighV2F3bCollectorAlign
 
 /-!
 # Graph-side ledgers for the exact fleet-v2 replay
@@ -179,6 +180,94 @@ theorem oneHighFamilyV2UnpairedCandidates_iff_commonNeighbor
     · exact ⟨oneHighFamilyV2PartnerFin profile z hm,
         hxp, (oneHighFamilyV2PartnerVertex_adj
           profile R hc z.isLt hm).symm⟩
+
+theorem oneHighFamilyV2UnpairedCandidateAtoms_true_iff_commonNeighbor
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (a b : Fin 8) (hab : b ≠ a)
+    (habm : b ≠ oneHighStandardMate a)
+    (hablt : a.val < b.val)
+    (x z : Fin 40)
+    (hxBlock : Fin.divNat (m := 8) (n := 5) x = a)
+    (hzBlock : Fin.divNat (m := 8) (n := 5) z = b) :
+    (∃ atom ∈ oneHighFamilyV2UnpairedCandidateAtoms
+        profile a.val b.val x.val z.val,
+      oneHighFamilyAtomValue R atom = true) ↔
+      ∃ w : Fin 40, R.Adj x w ∧ R.Adj w z := by
+  classical
+  have hxz : x.val < z.val := by
+    have hxa := congrArg Fin.val hxBlock
+    have hzb := congrArg Fin.val hzBlock
+    simp only [Fin.divNat] at hxa hzb
+    omega
+  let mids := oneHighFamilyV2UnpairedMidpoints a.val b.val
+  have hcand :
+      (∃ atom ∈ oneHighFamilyV2UnpairedCandidateAtoms
+          profile a.val b.val x.val z.val,
+        oneHighFamilyAtomValue R atom = true) ↔
+        (∃ w, ∃ hw : w ∈ mids,
+          R.Adj x (oneHighFamilyV2UnpairedMidpointFin a.val b.val w hw) ∧
+          R.Adj (oneHighFamilyV2UnpairedMidpointFin a.val b.val w hw) z) ∨
+        (∃ hm : oneHighFamilyVertexMatched profile x.val = true,
+          R.Adj (oneHighFamilyV2PartnerFin profile x hm) z) ∨
+        (∃ hm : oneHighFamilyVertexMatched profile z.val = true,
+          R.Adj x (oneHighFamilyV2PartnerFin profile z hm)) := by
+    constructor
+    · rintro ⟨atom, hatom, ht⟩
+      simp only [oneHighFamilyV2UnpairedCandidateAtoms,
+        List.mem_append] at hatom
+      rcases hatom with (hmid | hxedge) | hzedge
+      · rcases List.mem_map.mp hmid with ⟨w, hw, rfl⟩
+        left
+        have hw40 : w < 40 :=
+          List.mem_range.mp (List.mem_filter.mp hw).1
+        have ht' := ht
+        rw [oneHighFamilyAtomValue_midpoint R x.isLt z.isLt hw40 hxz] at ht'
+        simp only [decide_eq_true_eq, oneHighFamilyTAtom] at ht'
+        refine ⟨w, hw, ?_, ?_⟩
+        · simpa [oneHighFamilyV2UnpairedMidpointFin] using ht'.1
+        · simpa [oneHighFamilyV2UnpairedMidpointFin] using ht'.2
+      · right; left
+        by_cases hm : oneHighFamilyVertexMatched profile x.val = true
+        · simp [hm] at hxedge
+          subst atom
+          rw [oneHighFamilyAtomValue_edge R
+            (oneHighFamilyV2PartnerVertex_lt x.isLt hm) z.isLt] at ht
+          exact ⟨hm, of_decide_eq_true ht⟩
+        · simp [hm] at hxedge
+      · right; right
+        by_cases hm : oneHighFamilyVertexMatched profile z.val = true
+        · simp [hm] at hzedge
+          subst atom
+          rw [oneHighFamilyAtomValue_edge R x.isLt
+            (oneHighFamilyV2PartnerVertex_lt z.isLt hm)] at ht
+          exact ⟨hm, of_decide_eq_true ht⟩
+        · simp [hm] at hzedge
+    · rintro (⟨w, hw, hxw, hwz⟩ | ⟨hm, hpz⟩ | ⟨hm, hxp⟩)
+      · refine ⟨.midpoint (min x.val z.val) w (max x.val z.val), ?_, ?_⟩
+        · simp [oneHighFamilyV2UnpairedCandidateAtoms]
+          exact (show w ∈ oneHighFamilyV2UnpairedMidpoints a.val b.val by
+            simpa [mids] using hw)
+        · have hw40 : w < 40 :=
+            List.mem_range.mp (List.mem_filter.mp hw).1
+          rw [oneHighFamilyAtomValue_midpoint R x.isLt z.isLt hw40 hxz]
+          apply decide_eq_true
+          simpa [oneHighFamilyTAtom,
+            oneHighFamilyV2UnpairedMidpointFin] using And.intro hxw hwz
+      · refine ⟨.edge (min (oneHighFamilyV2PartnerVertex x.val) z.val)
+            (max (oneHighFamilyV2PartnerVertex x.val) z.val), ?_, ?_⟩
+        · simp [oneHighFamilyV2UnpairedCandidateAtoms, hm]
+        · rw [oneHighFamilyAtomValue_edge R
+            (oneHighFamilyV2PartnerVertex_lt x.isLt hm) z.isLt]
+          exact decide_eq_true hpz
+      · refine ⟨.edge (min x.val (oneHighFamilyV2PartnerVertex z.val))
+            (max x.val (oneHighFamilyV2PartnerVertex z.val)), ?_, ?_⟩
+        · simp [oneHighFamilyV2UnpairedCandidateAtoms, hm]
+        · rw [oneHighFamilyAtomValue_edge R x.isLt
+            (oneHighFamilyV2PartnerVertex_lt z.isLt hm)]
+          exact decide_eq_true hxp
+  exact hcand.trans (oneHighFamilyV2UnpairedCandidates_iff_commonNeighbor
+    profile R hc a b hab habm x z hxBlock hzBlock).symm
 
 /-- The five encoded vertices belonging to a branch. -/
 def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
@@ -581,6 +670,359 @@ theorem oneHighFamily_common_min_max_card
       apply Fin.ext
       simp [Nat.max_eq_left hle]
     rw [hmin, hmax, Finset.inter_comm]
+
+theorem oneHighFamilyV2CommonAtomValue_true_iff_commonNeighbor
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (x z : Fin 40) (hxz : x ≠ z) :
+    oneHighFamilyAtomValue R
+        (.common (min x.val z.val) (max x.val z.val)) = true ↔
+      ∃ w : Fin 40, R.Adj x w ∧ R.Adj w z := by
+  have hcardEq := oneHighFamily_common_min_max_card R x z
+  simp only [oneHighFamilyAtomValue, dif_pos (by omega : min x.val z.val < 40),
+    dif_pos (by omega : max x.val z.val < 40), decide_eq_true_eq]
+  rw [hcardEq]
+  constructor
+  · intro hcard
+    obtain ⟨w, hw⟩ := Finset.card_pos.mp (by omega :
+      0 < (R.neighborFinset x ∩ R.neighborFinset z).card)
+    have hp := Finset.mem_inter.mp hw
+    exact ⟨w, (R.mem_neighborFinset x w).mp hp.1,
+      ((R.mem_neighborFinset z w).mp hp.2).symm⟩
+  · rintro ⟨w, hxw, hwz⟩
+    have hw : w ∈ R.neighborFinset x ∩ R.neighborFinset z := by
+      exact Finset.mem_inter.mpr ⟨
+        (R.mem_neighborFinset x w).mpr hxw,
+        (R.mem_neighborFinset z w).mpr hwz.symm⟩
+    have hpos := Finset.card_pos.mpr ⟨w, hw⟩
+    have hle := hc.relation.2.2.1 x z hxz
+    omega
+
+set_option maxHeartbeats 400000 in
+theorem oneHighFamilyCommonPairs_filter_card_eq_encodedBlock
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a b : Fin 8) (hablt : a.val < b.val) :
+    let pairs := oneHighFamilyCommonPairs a.val b.val
+    (pairs.toFinset.filter fun p => oneHighFamilyAtomValue R
+      (.common (min p.1 p.2) (max p.1 p.2)) = true).card =
+      (oneHighEncodedCommonPairBlock R a b).card := by
+  classical
+  let pairs := oneHighFamilyCommonPairs a.val b.val
+  apply Finset.card_bij (fun p hp =>
+    let hpmem : p ∈ pairs := List.mem_toFinset.mp
+      (Finset.mem_filter.mp hp).1
+    let hb := mem_oneHighFamilyCommonPairs_iff.mp hpmem
+    ((⟨p.1, (oneHighFamilyBlockVertices_mem a.isLt hb.1).1⟩ : Fin 40),
+      (⟨p.2, (oneHighFamilyBlockVertices_mem b.isLt hb.2).1⟩ : Fin 40)))
+  · intro p hp
+    have hpmem : p ∈ pairs := List.mem_toFinset.mp
+      (Finset.mem_filter.mp hp).1
+    have hb := mem_oneHighFamilyCommonPairs_iff.mp hpmem
+    have hx := oneHighFamilyBlockVertices_mem a.isLt hb.1
+    have hz := oneHighFamilyBlockVertices_mem b.isLt hb.2
+    have hxz : p.1 < p.2 := by omega
+    have hv := (Finset.mem_filter.mp hp).2
+    simp only [oneHighFamilyAtomValue,
+      min_eq_left (Nat.le_of_lt hxz), max_eq_right (Nat.le_of_lt hxz),
+      dif_pos hx.1, dif_pos hz.1,
+      decide_eq_true_eq] at hv
+    let xf : Fin 40 := ⟨p.1, hx.1⟩
+    let zf : Fin 40 := ⟨p.2, hz.1⟩
+    have hv' : (R.neighborFinset xf ∩ R.neighborFinset zf).card = 1 := by
+      rw [← oneHighFamily_common_min_max_card R xf zf]
+      simpa [xf, zf] using hv
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_product.mpr ⟨?_, ?_⟩, hv'⟩
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      apply Fin.ext
+      simpa [Fin.divNat] using hx.2
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      apply Fin.ext
+      simpa [Fin.divNat] using hz.2
+  · intro p hp q hq heq
+    apply Prod.ext
+    · exact congrArg (fun r : Fin 40 × Fin 40 => r.1.val) heq
+    · exact congrArg (fun r : Fin 40 × Fin 40 => r.2.val) heq
+  · intro q hq
+    have hq' := hq
+    simp only [oneHighEncodedCommonPairBlock, Finset.mem_filter,
+      Finset.mem_product, Finset.mem_univ, true_and] at hq'
+    rcases hq' with ⟨⟨hxBlock, hzBlock⟩, hcommon⟩
+    have hxmem : q.1.val ∈ oneHighFamilyBlockVertices a.val := by
+      apply (oneHighFamilyBlockVertices_mem_iff a.isLt).mpr
+      refine ⟨q.1.isLt, ?_⟩
+      simpa [Fin.divNat] using congrArg Fin.val hxBlock
+    have hzmem : q.2.val ∈ oneHighFamilyBlockVertices b.val := by
+      apply (oneHighFamilyBlockVertices_mem_iff b.isLt).mpr
+      refine ⟨q.2.isLt, ?_⟩
+      simpa [Fin.divNat] using congrArg Fin.val hzBlock
+    have hxz : q.1.val < q.2.val := by
+      have hx := oneHighFamilyBlockVertices_mem a.isLt hxmem
+      have hz := oneHighFamilyBlockVertices_mem b.isLt hzmem
+      omega
+    refine ⟨(q.1.val, q.2.val), ?_, ?_⟩
+    · apply Finset.mem_filter.mpr
+      refine ⟨List.mem_toFinset.mpr
+        (mem_oneHighFamilyCommonPairs_iff.mpr ⟨hxmem, hzmem⟩), ?_⟩
+      simp only [oneHighFamilyAtomValue,
+        min_eq_left (Nat.le_of_lt hxz), max_eq_right (Nat.le_of_lt hxz),
+        dif_pos q.1.isLt, dif_pos q.2.isLt]
+      apply decide_eq_true
+      rw [oneHighFamily_common_min_max_card R q.1 q.2]
+      exact hcommon
+    · apply Prod.ext <;> apply Fin.ext <;> rfl
+
+theorem oneHighFamilyV2UnpairedCommonStepVal_semanticSound
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (a b : Fin 8) (hab : b ≠ a)
+    (habm : b ≠ oneHighStandardMate a) (hablt : a.val < b.val)
+    (x z : Fin 40)
+    (hxBlock : Fin.divNat (m := 8) (n := 5) x = a)
+    (hzBlock : Fin.divNat (m := 8) (n := 5) z = b)
+    {cs : Array Int} {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2UnpairedCommonStepVal R profile a.val b.val
+        x.val z.val (cs, acc)).2 := by
+  classical
+  have hxz : x.val < z.val := by
+    have hxa := congrArg Fin.val hxBlock
+    have hzb := congrArg Fin.val hzBlock
+    simp only [Fin.divNat] at hxa hzb
+    omega
+  let candidateInput := oneHighFamilyV2UnpairedCandidateInputVal R
+    profile a.val b.val x.val z.val acc
+  let atoms := oneHighFamilyV2UnpairedCandidateAtoms
+    profile a.val b.val x.val z.val
+  have hi := oneHighFamilyV2UnpairedCandidateInputVal_semanticSound R
+    profile a.val b.val x.isLt z.isLt hxz hacc
+  have hm := oneHighFamilyV2UnpairedCandidateInputVal_match R
+    profile a.val b.val x.val z.val acc
+  have hpos : ∀ lit ∈ candidateInput.1, 0 < lit := by
+    intro lit hlit
+    have hlit' : lit ∈ candidateInput.1.toList := by simpa using hlit
+    rw [show candidateInput.1.toList = hm.ids.map Int.ofNat from hm.vars_eq]
+      at hlit'
+    rcases List.mem_map.mp hlit' with ⟨id, hid, rfl⟩
+    rcases listForall₂_exists_left_of_mem hm.aligned hid with
+      ⟨atom, _, hatom⟩
+    have hidPos : 0 < id := (hi.semantic.ids.id_bounds _ hatom).1
+    change (0 : Int) < (id : Int)
+    exact_mod_cast hidPos
+  have hbound : ∀ lit ∈ candidateInput.1,
+      lit.natAbs ≤ candidateInput.2.1.top := hi.bounded
+  have hiff : ∀ c accC,
+      oneHighFamilyAtomIdVal R
+        (.common (min x.val z.val) (max x.val z.val)) candidateInput.2 =
+          (c, accC) →
+      (accC.2 c = true ↔ ∃ lit ∈ candidateInput.1,
+        accC.2 lit.natAbs = true) := by
+    intro c accC hout
+    have hsC := oneHighFamilyAtomIdVal_semanticSound R hi.semantic
+      (.common (min x.val z.val) (max x.val z.val))
+    rw [hout] at hsC
+    have hrC := oneHighFamilyAtomIdVal_result R
+      (.common (min x.val z.val) (max x.val z.val))
+      candidateInput.2.1 candidateInput.2.2
+    rw [hout] at hrC
+    let hmC : OneHighFamilyCollectedAtomsMatch atoms
+        (candidateInput.1, accC) := {
+      ids := hm.ids
+      vars_eq := hm.vars_eq
+      aligned := hm.aligned.imp (by
+        intro atom id hatom
+        have hold := oneHighFamilyAtomIdVal_old_mem R
+          (.common (min x.val z.val) (max x.val z.val))
+          candidateInput.2.1 candidateInput.2.2 hatom
+        rw [hout] at hold
+        exact hold) }
+    have hlits : (∃ lit ∈ candidateInput.1,
+          accC.2 lit.natAbs = true) ↔
+        ∃ atom ∈ atoms, oneHighFamilyAtomValue R atom = true := by
+      constructor
+      · rintro ⟨lit, hlit, hval⟩
+        have hlit' : lit ∈ candidateInput.1.toList := by simpa using hlit
+        rw [hmC.vars_eq] at hlit'
+        rcases List.mem_map.mp hlit' with ⟨id, hid, rfl⟩
+        rcases listForall₂_exists_left_of_mem hmC.aligned hid with
+          ⟨atom, hatom, haid⟩
+        refine ⟨atom, hatom, ?_⟩
+        exact (hsC.named atom id haid).symm.trans (by simpa using hval)
+      · rintro ⟨atom, hatom, hval⟩
+        rcases listForall₂_exists_right_of_mem hmC.aligned hatom with
+          ⟨id, hid, haid⟩
+        refine ⟨(id : Int), ?_, ?_⟩
+        · have hid' : (id : Int) ∈ candidateInput.1.toList := by
+            rw [hmC.vars_eq]
+            exact List.mem_map.mpr ⟨id, hid, rfl⟩
+          simpa using hid'
+        · simpa using (hsC.named atom id haid).trans hval
+    rw [hrC.2,
+      oneHighFamilyV2CommonAtomValue_true_iff_commonNeighbor
+        profile R hc x z (Fin.ne_of_lt hxz),
+      ← oneHighFamilyV2UnpairedCandidateAtoms_true_iff_commonNeighbor
+        profile R hc a b hab habm hablt x z hxBlock hzBlock]
+    exact hlits.symm
+  change OneHighFamilySemanticSound R
+    (oneHighFamilyV2FinishCommonVal R cs candidateInput.1
+      x.val z.val candidateInput.2).2
+  exact oneHighFamilyV2FinishCommonVal_semanticSound R
+    cs candidateInput.1 x.val z.val hi.semantic hpos hbound hiff
+
+theorem oneHighFamilyV2F3bCollectVal_semanticSound
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (pair : Nat × Nat) (hpair : pair ∈ oneHighFamilyTablePairs)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3bCollectVal R profile pair acc).2 := by
+  have hp := oneHighFamilyTablePairs_mem_bounds hpair
+  let a : Fin 8 := ⟨pair.1, hp.1⟩
+  let b : Fin 8 := ⟨pair.2, hp.2.1⟩
+  have hab : b ≠ a := by
+    intro h
+    have := congrArg Fin.val h
+    exact (Nat.ne_of_lt hp.2.2.1) this.symm
+  have habm : b ≠ oneHighStandardMate a := by
+    intro h
+    have hv := congrArg Fin.val h
+    rw [oneHighStandardMate_val_eq_xor] at hv
+    exact hp.2.2.2 hv
+  have inner : ∀ (x : Nat), x ∈ oneHighFamilyBlockVertices pair.1 →
+      ∀ (zs : List Nat),
+      (∀ z ∈ zs, z ∈ oneHighFamilyBlockVertices pair.2) →
+      ∀ (input : Array Int × OneHighFamilyValState),
+      OneHighFamilySemanticSound R input.2 →
+      OneHighFamilySemanticSound R
+        (zs.foldl (fun input z =>
+          oneHighFamilyV2UnpairedCommonStepVal R profile
+            pair.1 pair.2 x z input) input).2 := by
+    intro x hx zs hzs
+    induction zs with
+    | nil => intro input hs; exact hs
+    | cons z zs ih =>
+        intro input hs
+        simp only [List.foldl_cons]
+        apply ih
+        · intro z' hz'
+          exact hzs z' (by simp [hz'])
+        · have hxInfo := oneHighFamilyBlockVertices_mem hp.1 hx
+          have hzInfo := oneHighFamilyBlockVertices_mem hp.2.1
+            (hzs z (by simp))
+          let xf : Fin 40 := ⟨x, hxInfo.1⟩
+          let zf : Fin 40 := ⟨z, hzInfo.1⟩
+          have hxBlock : Fin.divNat (m := 8) (n := 5) xf = a := by
+            apply Fin.ext
+            simpa [xf, a, Fin.divNat] using hxInfo.2
+          have hzBlock : Fin.divNat (m := 8) (n := 5) zf = b := by
+            apply Fin.ext
+            simpa [zf, b, Fin.divNat] using hzInfo.2
+          exact oneHighFamilyV2UnpairedCommonStepVal_semanticSound
+            profile R hc a b hab habm hp.2.2.1 xf zf
+            hxBlock hzBlock hs
+  have outer : ∀ (xs : List Nat),
+      (∀ x ∈ xs, x ∈ oneHighFamilyBlockVertices pair.1) →
+      ∀ (input : Array Int × OneHighFamilyValState),
+      OneHighFamilySemanticSound R input.2 →
+      OneHighFamilySemanticSound R
+        (xs.foldl (fun input x =>
+          (oneHighFamilyBlockVertices pair.2).foldl (fun input z =>
+            oneHighFamilyV2UnpairedCommonStepVal R profile
+              pair.1 pair.2 x z input) input) input).2 := by
+    intro xs hxs
+    induction xs with
+    | nil => intro input hs; exact hs
+    | cons x xs ih =>
+        intro input hs
+        simp only [List.foldl_cons]
+        apply ih
+        · intro x' hx'
+          exact hxs x' (by simp [hx'])
+        · apply inner x (hxs x (by simp))
+          · intro z hz
+            exact hz
+          · exact hs
+  unfold oneHighFamilyV2F3bCollectVal
+  apply outer (oneHighFamilyBlockVertices pair.1)
+  · intro x hx
+    exact hx
+  · exact hacc
+
+theorem oneHighFamilyV2F3bCollectVal_collect_sound
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (pair : Nat × Nat) (hpair : pair ∈ oneHighFamilyTablePairs)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2F3bCollectVal R profile pair acc) := by
+  apply oneHighFamilyV2F3bCollectVal_inputAccumSound
+  exact oneHighFamilyV2F3bCollectVal_semanticSound
+    profile R hc pair hpair hacc
+
+theorem oneHighFamilyV2F3bCollectVal_count_eq_encodedBlock
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (pair : Nat × Nat) (hpair : pair ∈ oneHighFamilyTablePairs)
+    (acc : OneHighFamilyValState)
+    (hacc : OneHighFamilySemanticSound R acc) :
+    let input := oneHighFamilyV2F3bCollectVal R profile pair acc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+      (oneHighEncodedCommonPairBlock R
+        ⟨pair.1, (oneHighFamilyTablePairs_mem_bounds hpair).1⟩
+        ⟨pair.2, (oneHighFamilyTablePairs_mem_bounds hpair).2.1⟩).card := by
+  let input := oneHighFamilyV2F3bCollectVal R profile pair acc
+  let pairs := oneHighFamilyCommonPairs pair.1 pair.2
+  let hm := oneHighFamilyV2F3bCollectVal_match R profile pair acc
+  have hs := oneHighFamilyV2F3bCollectVal_semanticSound
+    profile R hc pair hpair hacc
+  have hvalues := oneHighFamilyCollectedCommons_values R hm hs
+  have hp := oneHighFamilyTablePairs_mem_bounds hpair
+  let a : Fin 8 := ⟨pair.1, hp.1⟩
+  let b : Fin 8 := ⟨pair.2, hp.2.1⟩
+  calc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        (List.ofFn (oneHighFamilyInputAccumRow input)).count true :=
+      seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP input.2.2 input.1
+    _ = (pairs.map (fun p => oneHighFamilyAtomValue R
+          (.common (min p.1 p.2) (max p.1 p.2)))).count true :=
+      congrArg (List.count true) hvalues
+    _ = (pairs.toFinset.filter fun p => oneHighFamilyAtomValue R
+          (.common (min p.1 p.2) (max p.1 p.2)) = true).card :=
+      List.count_map_true_eq_filter_toFinset_card pairs
+        (oneHighFamilyCommonPairs_nodup _ _) _
+    _ = (oneHighEncodedCommonPairBlock R a b).card :=
+      oneHighFamilyCommonPairs_filter_card_eq_encodedBlock
+        R a b hp.2.2.1
+    _ = (oneHighEncodedCommonPairBlock R
+          ⟨pair.1, hp.1⟩ ⟨pair.2, hp.2.1⟩).card := rfl
+
+theorem oneHighFamilyV2F3bLedger_of_constraints_of_card_eq
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (hcard : ∀ pair (hpair : pair ∈ oneHighFamilyTablePairs),
+      (oneHighEncodedCommonPairBlock R
+        ⟨pair.1, (oneHighFamilyTablePairs_mem_bounds hpair).1⟩
+        ⟨pair.2, (oneHighFamilyTablePairs_mem_bounds hpair).2.1⟩).card =
+        20 + oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.1 (pair.2 ^^^ 1) +
+        oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.2 (pair.1 ^^^ 1)) :
+    OneHighFamilyV2F3bLedger R profile := by
+  constructor
+  · intro pair hpair acc hacc
+    exact oneHighFamilyV2F3bCollectVal_collect_sound
+      profile R hc pair hpair hacc
+  · intro pair hpair acc hacc
+    dsimp only
+    intro _hle
+    rw [← hcard pair hpair]
+    exact oneHighFamilyV2F3bCollectVal_count_eq_encodedBlock
+      profile R hc pair hpair acc hacc
 
 theorem oneHighFamilyV2PairedCommonAtoms_count_eq_commonFinset_card
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
