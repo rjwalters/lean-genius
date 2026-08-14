@@ -4270,40 +4270,6 @@ theorem oneHighPureFamily_constraints_false_of_dimacsUnsat
 def oneHighFamilyPureSatCnf (a : Nat) : Std.Sat.CNF Nat where
   clauses := dimacsFormulaToSatClauses (oneHighFamilyPureClauses a).clauses
 
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 2000000 in
-theorem oneHighFamilyPureClauses_nonzero
-    (a : Nat) (ha : a ≤ 4) :
-    ∀ clause ∈ (oneHighFamilyPureClauses a).clauses,
-      DimacsClauseNonzero clause := by
-  interval_cases a <;>
-    first
-    | (have hcheck : (oneHighFamilyPureClauses 0).clauses.all
-          (fun clause => clause.all fun lit => lit != 0) := by native_decide
-       simp only [Array.all_eq_true, List.all_eq_true] at hcheck
-       intro clause hc lit hl
-       simpa using hcheck clause hc lit hl)
-    | (have hcheck : (oneHighFamilyPureClauses 1).clauses.all
-          (fun clause => clause.all fun lit => lit != 0) := by native_decide
-       simp only [Array.all_eq_true, List.all_eq_true] at hcheck
-       intro clause hc lit hl
-       simpa using hcheck clause hc lit hl)
-    | (have hcheck : (oneHighFamilyPureClauses 2).clauses.all
-          (fun clause => clause.all fun lit => lit != 0) := by native_decide
-       simp only [Array.all_eq_true, List.all_eq_true] at hcheck
-       intro clause hc lit hl
-       simpa using hcheck clause hc lit hl)
-    | (have hcheck : (oneHighFamilyPureClauses 3).clauses.all
-          (fun clause => clause.all fun lit => lit != 0) := by native_decide
-       simp only [Array.all_eq_true, List.all_eq_true] at hcheck
-       intro clause hc lit hl
-       simpa using hcheck clause hc lit hl)
-    | (have hcheck : (oneHighFamilyPureClauses 4).clauses.all
-          (fun clause => clause.all fun lit => lit != 0) := by native_decide
-       simp only [Array.all_eq_true, List.all_eq_true] at hcheck
-       intro clause hc lit hl
-       simpa using hcheck clause hc lit hl)
-
 theorem satCnf_of_dimacsFormulaSatisfied
     {formula : Array DimacsClause} {val : DimacsValuation}
     (hsat : dimacsFormulaSatisfied val formula)
@@ -4328,14 +4294,5 @@ theorem oneHighFamilyPureSatCnf_sat_of_constraints
   rcases oneHighFamilyPureClauses_dimacsSatisfiable a R hc with ⟨val, hval⟩
   exact ⟨satAssignmentOfDimacs val,
     satCnf_of_dimacsFormulaSatisfied hval hnz⟩
-
-theorem oneHighFamilyPureSatCnf_sat_of_constraints_of_le
-    (a : Nat) (ha : a ≤ 4)
-    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
-    (hc : OneHighPureFamilyCnfConstraints a R) :
-    ∃ assignment : Nat → Bool,
-      (oneHighFamilyPureSatCnf a).Sat assignment :=
-  oneHighFamilyPureSatCnf_sat_of_constraints a R hc
-    (oneHighFamilyPureClauses_nonzero a ha)
 
 end Erdos85
