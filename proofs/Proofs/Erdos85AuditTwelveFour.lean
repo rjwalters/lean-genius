@@ -10,6 +10,9 @@ import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
 import Proofs.Erdos85OneHighV2CalibrationCertificate
 import Proofs.Erdos85OneHighV2TableAgree
+import Proofs.Erdos85OneHighV2FiniteTable
+import Proofs.Erdos85OneHighV2OrbitInvariants
+import Proofs.Erdos85OneHighV2OrbitExclusion
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -275,3 +278,15 @@ import Proofs.Erdos85OneHighV2TableAgree
 #print axioms Erdos85.oneHighFamilyV2Clauses_congr
 #print axioms Erdos85.OneHighFamilyV2CheckedUnsat.transport
 #print axioms Erdos85.oneHighTableRestrict_relevantAgree
+
+-- repaired cover socket + finite bridge + raw invariants (a8b/e48/4eea..231)
+#print axioms Erdos85.OneHighRawV2Presentation.missCount_comm
+#print axioms Erdos85.OneHighRawV2Presentation.graphTable_row_sum
+#print axioms Erdos85.OneHighRawV2Presentation.graphTable_admissible
+#print axioms Erdos85.oneHighRelevantAgreement_iff_tableRelevantAgree
+#print axioms Erdos85.OneHighFamilyV2Admissible.entry_lt_five
+#print axioms Erdos85.OneHighFamilyV2Admissible.exists_mem_allFiniteMissTables_agrees
+#print axioms Erdos85.oneHighRawV2OrbitCover_allFinite
+#print axioms Erdos85.oneHighFamilyV2CheckedUnsat_of_tableCover
+#print axioms Erdos85.false_of_rawOneHigh_v2TableCover
+#print axioms Erdos85.orderFortyNineStratumExcluded_one_of_rawV2OrbitCover

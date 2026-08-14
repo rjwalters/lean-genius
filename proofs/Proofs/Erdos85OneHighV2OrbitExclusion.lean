@@ -1,4 +1,4 @@
-import Proofs.Erdos85OneHighV2Exclusion
+import Proofs.Erdos85OneHighV2TableAgree
 import Proofs.Erdos85OneHighRawPresentation
 
 /-! # Orbit-cover socket for the exact v2 one-high formula -/
@@ -14,7 +14,9 @@ def OneHighFamilyV2TableCover
     (profile : Nat) (tables : List OneHighMissTable) : Prop :=
   ∀ (R : SimpleGraph (Fin 40)) (_ : DecidableRel R.Adj),
     OneHighPureFamilyCnfConstraints profile R →
-      ∃ table ∈ tables, oneHighFamilyGraphTable R profile = table
+      ∃ table ∈ tables,
+        OneHighTableRelevantAgree
+          (oneHighFamilyGraphTable R profile) table
 
 /-- Artifact-aligned coverage: for every raw one-high graph, choose canonical
 presentation labels whose induced table is literally one of the stored orbit
@@ -33,7 +35,9 @@ def OneHighRawV2OrbitCover
       oneHighFamilyGraphTable
         (oneHighRelabeledLeafGraph G v
           (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
-        p.profile ∈ tables ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+        p.profile |> fun graphTable =>
+          ∃ table ∈ tables ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩,
+            OneHighTableRelevantAgree graphTable table
 
 /-- Select checked v2 UNSAT evidence for the table induced by a covered PURE
 family graph. -/
@@ -46,8 +50,8 @@ theorem oneHighFamilyV2CheckedUnsat_of_tableCover
     (hc : OneHighPureFamilyCnfConstraints profile R) :
     OneHighFamilyV2CheckedUnsat profile
       (oneHighFamilyGraphTable R profile) := by
-  rcases hcover R inferInstance hc with ⟨table, hmem, htable⟩
-  simpa [htable] using hchecked table hmem
+  rcases hcover R inferInstance hc with ⟨table, hmem, hagree⟩
+  exact (hchecked table hmem).transport hagree.symm
 
 /-- A covered, checked table contradicts a raw canonical one-high
 presentation.  This is the reusable endpoint beneath the order-49 terminal. -/
@@ -111,7 +115,7 @@ theorem orderFortyNineStratumExcluded_one_of_v2TableCovers
   have hv : G.degree v = 8 := by
     simpa [orderFortyNineHighVertices] using hvMem
   obtain ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
-      hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩ :=
+      hbranchMate, hprofile, _hmatchedCount, hunique, hexternal, houterDegree, hc⟩ :=
     orderFortyNine_exists_rawOneHighPresentation
       G hfree hmin (Fintype.card_fin 49) hHigh hv
   interval_cases profile
@@ -147,7 +151,7 @@ theorem orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
         OneHighFamilyV2CheckedUnsat profile.val table) :
     OrderFortyNineStratumExcluded 1 := by
   intro G _ _ _ hfree hmin hHigh
-  obtain ⟨v, hv, p, hmem⟩ :=
+  obtain ⟨v, hv, p, table, hmem, hagree⟩ :=
     hcover G inferInstance inferInstance inferInstance hfree hmin hHigh
   let profile : Fin 5 :=
     ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
@@ -156,7 +160,7 @@ theorem orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
         (oneHighRelabeledLeafGraph G v
           (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
         p.profile) := by
-    exact hchecked profile _ hmem
+    exact (hchecked profile table hmem).transport hagree.symm
   exact false_of_rawOneHigh_v2Checked
     G hfree hmin (Fintype.card_fin 49) hv p.unique_high p.external_empty
       p.outer_degree p.mate p.mate_involutive p.mate_adj p.branchLabel
