@@ -251,6 +251,16 @@ theorem oneHighRawV2OrbitCover_inventory :
   oneHighRawV2OrbitCover_of_finiteRepresentativeCover
     oneHighFiniteRepresentativeCover_inventory
 
+/-- The sole remaining h=1 terminal input is checked UNSAT evidence for each
+authoritative stored representative. -/
+theorem orderFortyNineStratumExcluded_one_of_inventory_checked
+    (hchecked : ∀ (profile : Fin 5) table,
+      table ∈ oneHighInventoryTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table) :
+    OrderFortyNineStratumExcluded 1 :=
+  orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
+    oneHighRawV2OrbitCover_inventory hchecked
+
 /-- Once the executable comparison says every enumerated canonical key is in
 the authoritative inventory, the inventory is a representative cover. -/
 theorem oneHighFiniteRepresentativeCover_inventory_of_key_membership
