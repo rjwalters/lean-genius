@@ -1220,4 +1220,143 @@ theorem oneHighFamilyV2UnpairedCommonStepVal_projection
     hzV, hzG]
   exact hf
 
+theorem oneHighFamilyV2UnpairedCommonInnerVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b x : Nat) (zs : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := zs.foldl (fun input z =>
+      oneHighFamilyV2UnpairedCommonStepVal R
+        profile a b x z input) input
+    let raw := zs.foldl (fun input z =>
+      oneHighFamilyV2UnpairedCommonStep profile a b x z input)
+      (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction zs generalizing input with
+  | nil => simp
+  | cons z zs ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyV2UnpairedCommonStepVal_projection R
+        profile a b x z input
+      have hi := ih (oneHighFamilyV2UnpairedCommonStepVal R
+        profile a b x z input)
+      rcases hp with ⟨hvars, hstate⟩
+      simpa [hvars, hstate] using hi
+
+theorem oneHighFamilyV2UnpairedCommonOuterVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b : Nat) (xs zs : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := xs.foldl (fun input x => zs.foldl
+      (fun input z => oneHighFamilyV2UnpairedCommonStepVal R
+        profile a b x z input) input) input
+    let raw := xs.foldl (fun input x => zs.foldl
+      (fun input z => oneHighFamilyV2UnpairedCommonStep
+        profile a b x z input) input) (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction xs generalizing input with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyV2UnpairedCommonInnerVal_projection R
+        profile a b x zs input
+      have hi := ih (zs.foldl (fun input z =>
+        oneHighFamilyV2UnpairedCommonStepVal R
+          profile a b x z input) input)
+      rcases hp with ⟨hvars, hstate⟩
+      simpa [hvars, hstate] using hi
+
+noncomputable def oneHighFamilyV2F3bCollectVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (pair : Nat × Nat)
+    (acc : OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  (oneHighFamilyBlockVertices pair.1).foldl (fun input x =>
+    (oneHighFamilyBlockVertices pair.2).foldl (fun input z =>
+      oneHighFamilyV2UnpairedCommonStepVal R
+        profile pair.1 pair.2 x z input) input) (#[], acc)
+
+theorem oneHighFamilyV2F3bCollectVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (pair : Nat × Nat)
+    (acc : OneHighFamilyValState) :
+    let out := oneHighFamilyV2F3bCollectVal R profile pair acc
+    let raw := oneHighFamilyV2F3bCollect profile pair acc.1
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  unfold oneHighFamilyV2F3bCollectVal oneHighFamilyV2F3bCollect
+  exact oneHighFamilyV2UnpairedCommonOuterVal_projection R
+    profile pair.1 pair.2
+    (oneHighFamilyBlockVertices pair.1)
+    (oneHighFamilyBlockVertices pair.2) (#[], acc)
+
+noncomputable def oneHighFamilyV2F3bFinishVal
+    (table : OneHighMissTable) (pair : Nat × Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    OneHighFamilyValState :=
+  let bound := 20 + oneHighFamilyTableGet table pair.1 (pair.2 ^^^ 1) +
+    oneHighFamilyTableGet table pair.2 (pair.1 ^^^ 1)
+  if bound ≤ input.1.size then
+    oneHighFamilyEqualsBlockVal input.1
+      (oneHighFamilyInputAccumRow input) bound input.2 else input.2
+
+theorem oneHighFamilyV2F3bFinishVal_state
+    (table : OneHighMissTable) (pair : Nat × Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    (oneHighFamilyV2F3bFinishVal table pair input).1 =
+      oneHighFamilyV2F3bFinish table pair (input.1, input.2.1) := by
+  rcases input with ⟨vars, st, val⟩
+  simp only [oneHighFamilyV2F3bFinishVal, oneHighFamilyV2F3bFinish]
+  split
+  · exact oneHighFamilyEqualsBlockVal_state vars _ _ st val
+  · rfl
+
+noncomputable def oneHighFamilyV2F3bBlockStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat)
+    (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyV2F3bFinishVal table pair
+    (oneHighFamilyV2F3bCollectVal R profile pair acc)
+
+theorem oneHighFamilyV2F3bBlockStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat)
+    (acc : OneHighFamilyValState) :
+    (oneHighFamilyV2F3bBlockStepVal R profile table pair acc).1 =
+      oneHighFamilyV2F3bBlockStep profile table pair acc.1 := by
+  generalize hv : oneHighFamilyV2F3bCollectVal R profile pair acc = input
+  rcases input with ⟨vars, valAcc⟩
+  generalize hg : oneHighFamilyV2F3bCollect profile pair acc.1 = raw
+  rcases raw with ⟨rawVars, rawSt⟩
+  have hp := oneHighFamilyV2F3bCollectVal_projection R profile pair acc
+  rw [hv, hg] at hp
+  rcases hp with ⟨rfl, rfl⟩
+  rw [show oneHighFamilyV2F3bBlockStepVal R profile table pair acc =
+    oneHighFamilyV2F3bFinishVal table pair (vars, valAcc) by
+      simp only [oneHighFamilyV2F3bBlockStepVal, hv]]
+  rw [oneHighFamilyV2F3bFinishVal_state]
+  simp only [oneHighFamilyV2F3bBlockStep, hg]
+
+noncomputable def oneHighFamilyV2ClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal oneHighFamilyTablePairs
+    (oneHighFamilyV2F3bBlockStepVal R profile (oneHighFamilyGraphTable R profile))
+    (oneHighFamilyV2F3aClausesVal R profile val)
+
+theorem oneHighFamilyV2ClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (val : DimacsValuation) :
+    (oneHighFamilyV2ClausesVal R profile val).1 =
+      oneHighFamilyV2Clauses profile
+        (oneHighFamilyGraphTable R profile) := by
+  unfold oneHighFamilyV2ClausesVal oneHighFamilyV2Clauses
+  calc
+    _ = oneHighFamilyRunList oneHighFamilyTablePairs
+        (oneHighFamilyV2F3bBlockStep profile
+          (oneHighFamilyGraphTable R profile))
+        (oneHighFamilyV2F3aClausesVal R profile val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun pair acc => oneHighFamilyV2F3bBlockStepVal_state R
+          profile (oneHighFamilyGraphTable R profile) pair acc)
+    _ = _ := by rw [oneHighFamilyV2F3aClausesVal_state]
+
 end Erdos85

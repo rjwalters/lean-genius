@@ -414,25 +414,36 @@ theorem oneHighFamilyIdsSound_v2UnpairedCommonStep
   rw [hzedge] at hsZ
   exact oneHighFamilyIdsSound_v2FinishCommon hsZ cs orsZ x z
 
+def oneHighFamilyV2F3bCollect
+  (profile : Nat) (pair : Nat × Nat)
+    (st : OneHighFamilyGenState) : Array Int × OneHighFamilyGenState :=
+  (oneHighFamilyBlockVertices pair.1).foldl (fun accst x =>
+    (oneHighFamilyBlockVertices pair.2).foldl (fun accst z =>
+      oneHighFamilyV2UnpairedCommonStep
+        profile pair.1 pair.2 x z accst) accst)
+    (#[], st)
+
+def oneHighFamilyV2F3bFinish
+    (table : OneHighMissTable) (pair : Nat × Nat)
+    (input : Array Int × OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let bound := 20 + oneHighFamilyTableGet table pair.1 (pair.2 ^^^ 1) +
+    oneHighFamilyTableGet table pair.2 (pair.1 ^^^ 1)
+  if bound ≤ input.1.size then
+    oneHighFamilyEqualsBlock input.1 bound input.2 else input.2
+
 def oneHighFamilyV2F3bBlockStep
     (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat)
     (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
-  let a := pair.1
-  let b := pair.2
-  let (cs, st) := (oneHighFamilyBlockVertices a).foldl (fun accst x =>
-    (oneHighFamilyBlockVertices b).foldl (fun accst z =>
-      oneHighFamilyV2UnpairedCommonStep profile a b x z accst) accst)
-    (#[], st)
-  let bound := 20 + oneHighFamilyTableGet table a (b ^^^ 1) +
-    oneHighFamilyTableGet table b (a ^^^ 1)
-  if bound ≤ cs.size then oneHighFamilyEqualsBlock cs bound st else st
+  oneHighFamilyV2F3bFinish table pair
+    (oneHighFamilyV2F3bCollect profile pair st)
 
 theorem oneHighFamilyIdsSound_v2F3bBlockStep
     {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
     (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat) :
     OneHighFamilyIdsSound
       (oneHighFamilyV2F3bBlockStep profile table pair st) := by
-  simp only [oneHighFamilyV2F3bBlockStep]
+  simp only [oneHighFamilyV2F3bBlockStep, oneHighFamilyV2F3bFinish,
+    oneHighFamilyV2F3bCollect]
   generalize hcommons : (oneHighFamilyBlockVertices pair.1).foldl
     (fun accst x => (oneHighFamilyBlockVertices pair.2).foldl
       (fun accst z => oneHighFamilyV2UnpairedCommonStep
