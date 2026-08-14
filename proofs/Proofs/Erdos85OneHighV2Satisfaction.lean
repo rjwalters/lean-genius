@@ -1054,4 +1054,170 @@ theorem oneHighFamilyV2F3aClausesVal_state
         (fun pair acc => oneHighFamilyV2F3aBlockStepVal_state R a pair acc)
     _ = _ := by rw [oneHighFamilyV2F2ClausesVal_state]
 
+noncomputable def oneHighFamilyV2AppendEdgeVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (input : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  oneHighFamilyCollectAtomVal R (.edge (min i j) (max i j)) input
+
+theorem oneHighFamilyV2AppendEdgeVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (i j : Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyV2AppendEdgeVal R i j input
+    let raw := oneHighFamilyV2AppendEdge i j (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  exact oneHighFamilyCollectAtomVal_projection R
+    (.edge (min i j) (max i j)) input
+
+noncomputable def oneHighFamilyV2MaybeAppendEdgeVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (enabled : Bool) (i j : Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  if enabled then oneHighFamilyV2AppendEdgeVal R i j input else input
+
+theorem oneHighFamilyV2MaybeAppendEdgeVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (enabled : Bool) (i j : Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyV2MaybeAppendEdgeVal R enabled i j input
+    let raw := oneHighFamilyV2MaybeAppendEdge enabled i j
+      (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  simp only [oneHighFamilyV2MaybeAppendEdgeVal,
+    oneHighFamilyV2MaybeAppendEdge]
+  split
+  · exact oneHighFamilyV2AppendEdgeVal_projection R i j input
+  · exact ⟨rfl, rfl⟩
+
+noncomputable def oneHighFamilyV2FinishCommonVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (cs ors : Array Int) (x z : Nat) (acc : OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let (c, acc) := oneHighFamilyAtomIdVal R
+    (.common (min x z) (max x z)) acc
+  let acc := (oneHighFamilyEmitVal (-(c : Int) :: ors.toList) acc).2
+  let acc := ors.foldl
+    (fun acc lit => (oneHighFamilyEmitVal [-lit, (c : Int)] acc).2) acc
+  (cs.push (c : Int), acc)
+
+theorem oneHighFamilyV2FinishCommonFoldVal_state
+    (ors : Array Int) (c : Nat) (acc : OneHighFamilyValState)
+    (st : OneHighFamilyGenState) (hstate : acc.1 = st) :
+    (ors.foldl (fun acc lit =>
+      (oneHighFamilyEmitVal [-lit, (c : Int)] acc).2) acc).1 =
+    ors.foldl (fun st lit =>
+      (oneHighFamilyEmit [-lit, (c : Int)] st).2) st := by
+  rw [← Array.foldl_toList, ← Array.foldl_toList]
+  induction ors.toList generalizing acc st with
+  | nil => exact hstate
+  | cons lit lits ih =>
+      simp only [List.foldl_cons]
+      apply ih
+      rw [oneHighFamilyEmitVal_state]
+      exact congrArg
+        (fun s => (oneHighFamilyEmit [-lit, (c : Int)] s).2) hstate
+
+theorem oneHighFamilyV2FinishCommonVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (cs ors : Array Int) (x z : Nat) (acc : OneHighFamilyValState) :
+    let out := oneHighFamilyV2FinishCommonVal R cs ors x z acc
+    let raw := oneHighFamilyV2FinishCommon cs ors x z acc.1
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  generalize hv : oneHighFamilyAtomIdVal R
+    (.common (min x z) (max x z)) acc = outV
+  rcases outV with ⟨c, accC⟩
+  generalize hg : oneHighFamilyCommonAtomId x z acc.1 = outG
+  rcases outG with ⟨cg, stC⟩
+  have hid := oneHighFamilyAtomIdVal_id R
+    (.common (min x z) (max x z)) acc.1 acc.2
+  have hstate := oneHighFamilyAtomIdVal_state R
+    (.common (min x z) (max x z)) acc.1 acc.2
+  rw [hv] at hid hstate
+  have hg' : oneHighFamilyAtomId
+      (.common (min x z) (max x z)) acc.1 = (cg, stC) := by
+    simpa [oneHighFamilyCommonAtomId] using hg
+  rw [hg'] at hid hstate
+  dsimp at hid hstate
+  subst cg
+  simp only [oneHighFamilyV2FinishCommonVal,
+    oneHighFamilyV2FinishCommon, hv, hg]
+  constructor
+  · trivial
+  · apply oneHighFamilyV2FinishCommonFoldVal_state
+    rw [oneHighFamilyEmitVal_state]
+    exact congrArg
+      (fun s => (oneHighFamilyEmit (-((c : Nat) : Int) :: ors.toList) s).2)
+      hstate
+
+noncomputable def oneHighFamilyV2UnpairedCommonStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b x z : Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    Array Int × OneHighFamilyValState :=
+  let (cs, acc) := input
+  let midInput := (oneHighFamilyV2UnpairedMidpoints a b).foldl
+    (fun input w => oneHighFamilyMidpointTseitinStepVal R x z w input)
+    (#[], acc)
+  let xInput := oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z midInput
+  let zInput := oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) xInput
+  oneHighFamilyV2FinishCommonVal R cs zInput.1 x z zInput.2
+
+theorem oneHighFamilyV2UnpairedCommonStepVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile a b x z : Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyV2UnpairedCommonStepVal R
+      profile a b x z input
+    let raw := oneHighFamilyV2UnpairedCommonStep
+      profile a b x z (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  rcases input with ⟨cs, acc⟩
+  let mids := oneHighFamilyV2UnpairedMidpoints a b
+  generalize hmV : mids.foldl (fun input w =>
+    oneHighFamilyMidpointTseitinStepVal R x z w input) (#[], acc) = midV
+  rcases midV with ⟨orsV, accM⟩
+  generalize hmG : mids.foldl (fun input w =>
+    oneHighFamilyMidpointTseitinStep x z w input) (#[], acc.1) = midG
+  rcases midG with ⟨orsG, stM⟩
+  have hm := oneHighFamilyCollectMidpointsVal_projection R x z mids (#[], acc)
+  rw [hmV, hmG] at hm
+  rcases hm with ⟨rfl, rfl⟩
+  generalize hxV : oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z (orsV, accM) = xV
+  rcases xV with ⟨orsXV, accX⟩
+  generalize hxG : oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z (orsV, accM.1) = xG
+  rcases xG with ⟨orsXG, stX⟩
+  have hx := oneHighFamilyV2MaybeAppendEdgeVal_projection R
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z (orsV, accM)
+  rw [hxV, hxG] at hx
+  rcases hx with ⟨rfl, rfl⟩
+  generalize hzV : oneHighFamilyV2MaybeAppendEdgeVal R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) (orsXV, accX) = zV
+  rcases zV with ⟨orsZV, accZ⟩
+  generalize hzG : oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) (orsXV, accX.1) = zG
+  rcases zG with ⟨orsZG, stZ⟩
+  have hz := oneHighFamilyV2MaybeAppendEdgeVal_projection R
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) (orsXV, accX)
+  rw [hzV, hzG] at hz
+  rcases hz with ⟨rfl, rfl⟩
+  have hf := oneHighFamilyV2FinishCommonVal_projection R
+    cs orsZV x z accZ
+  simp only [oneHighFamilyV2UnpairedCommonStepVal,
+    oneHighFamilyV2UnpairedCommonStep, mids, hmV, hmG, hxV, hxG,
+    hzV, hzG]
+  exact hf
+
 end Erdos85
