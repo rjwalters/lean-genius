@@ -1502,6 +1502,71 @@ theorem degreeSix_orderNine_singleton_contact_trichotomy
   rw [hexcessSum] at hsumSingle
   simp [excess, heDouble.2.1, heDouble.2.2] at hsumSingle
 
+/-- A minimum order-nine diagonal-two row is impossible.  The order-nine
+contact trichotomy leaves either one order-eighteen target or two order-nine
+targets (the order-three target violates minimality).  In both surviving
+shapes the source and its positive targets occupy twenty-seven vertices,
+leaving a nonempty six-vertex remainder below the minimum order nine. -/
+theorem false_of_minimum_diagonal_two_order_nine
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcsize : size c = 9) (hminSize : ∀ x, 9 ≤ size x)
+    (htotal : ∑ x, size x = 33)
+    (hrow : (∑ x ∈ (Finset.univ.erase c), Q c x) = 4)
+    (hprod : (∑ x ∈ (Finset.univ.erase c), Q c x * Q x c) = 8)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hperiod : ∀ x, ¬ 9 ∣ size x → Q c x ≤ 1) : False := by
+  have htri := degreeSix_orderNine_singleton_contact_trichotomy
+    Q size c hcsize htotal (fun x ↦ by have := hminSize x; omega)
+      hrow hprod hbal hperiod
+  have hsizeAfterC :
+      (∑ x ∈ (Finset.univ.erase c : Finset C), size x) = 24 := by
+    have hs := Finset.sum_erase_add
+      (Finset.univ : Finset C) size (Finset.mem_univ c)
+    rw [htotal, hcsize] at hs
+    omega
+  rcases htri with hthree | heighteen | htwo
+  · obtain ⟨e, _, he3, _, _⟩ := hthree
+    have := hminSize e
+    omega
+  · obtain ⟨e, hec, he18, _, _⟩ := heighteen
+    let R := (Finset.univ.erase c : Finset C).erase e
+    have heMem : e ∈ (Finset.univ.erase c : Finset C) := by simp [hec]
+    have hsizeR : (∑ x ∈ R, size x) = 6 := by
+      have hs := Finset.sum_erase_add
+        (Finset.univ.erase c : Finset C) size heMem
+      dsimp [R]
+      rw [hsizeAfterC, he18] at hs
+      omega
+    have hsumNe : (∑ x ∈ R, size x) ≠ 0 := by omega
+    obtain ⟨x, hxR, hxne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumNe
+    have hxle : size x ≤ ∑ y ∈ R, size y :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hxR
+    have := hminSize x
+    omega
+  · obtain ⟨e, f, hec, hfc, hef, he9, hf9, _, _, _, _⟩ := htwo
+    let U := (Finset.univ.erase c : Finset C).erase e
+    let R := U.erase f
+    have heMem : e ∈ (Finset.univ.erase c : Finset C) := by simp [hec]
+    have hsizeU : (∑ x ∈ U, size x) = 15 := by
+      have hs := Finset.sum_erase_add
+        (Finset.univ.erase c : Finset C) size heMem
+      dsimp [U]
+      rw [hsizeAfterC, he9] at hs
+      omega
+    have hfMem : f ∈ U := by simp [U, hfc, hef.symm]
+    have hsizeR : (∑ x ∈ R, size x) = 6 := by
+      have hs := Finset.sum_erase_add U size hfMem
+      dsimp [R]
+      rw [hsizeU, hf9] at hs
+      omega
+    have hsumNe : (∑ x ∈ R, size x) ≠ 0 := by omega
+    obtain ⟨x, hxR, hxne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumNe
+    have hxle : size x ≤ ∑ y ∈ R, size y :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hxR
+    have := hminSize x
+    omega
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -7560,6 +7625,103 @@ theorem degreeSix_minimum_diagonal_two_order_cases_small
   · exact Or.inr (Or.inr h9)
   · exact (degreeSix_minimum_diagonal_two_order_eleven_false
       G hfree hmin hcard c hcmin h11 hdiag).elim
+
+/-- Order nine is impossible for a globally minimum diagonal-two component:
+the quotient-row trichotomy always leaves six vertices outside the source and
+its positive targets, contradicting the minimum component order nine. -/
+theorem degreeSix_minimum_diagonal_two_order_nine_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hcsize : c.supp.ncard = 9)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  change (∑ x : D.ConnectedComponent, Q c x) = 6 at hrow
+  change (∑ x : D.ConnectedComponent, Q c x * Q x c) =
+    c.supp.ncard + 3 at hsq
+  change Q c c = 2 at hdiag
+  have hcMem : c ∈ (Finset.univ : Finset D.ConnectedComponent) :=
+    Finset.mem_univ c
+  have hrowOff : (∑ x ∈ (Finset.univ.erase c), Q c x) = 4 := by
+    have hs : (∑ x ∈ (Finset.univ.erase c), Q c x) + 2 = 6 := by
+      calc
+        (∑ x ∈ (Finset.univ.erase c), Q c x) + 2 =
+            (∑ x ∈ (Finset.univ.erase c), Q c x) + Q c c := by rw [hdiag]
+        _ = ∑ x : D.ConnectedComponent, Q c x := by
+          simpa using Finset.sum_erase_add
+            (Finset.univ : Finset D.ConnectedComponent) (Q c) hcMem
+        _ = 6 := hrow
+    omega
+  have hprodOff :
+      (∑ x ∈ (Finset.univ.erase c), Q c x * Q x c) = 8 := by
+    have hsq12 : ∑ x : D.ConnectedComponent, Q c x * Q x c = 12 := by
+      simpa [hcsize] using hsq
+    have hs :
+        (∑ x ∈ (Finset.univ.erase c), Q c x * Q x c) + 4 = 12 := by
+      calc
+        (∑ x ∈ (Finset.univ.erase c), Q c x * Q x c) + 4 =
+            (∑ x ∈ (Finset.univ.erase c), Q c x * Q x c) +
+              Q c c * Q c c := by rw [hdiag]
+        _ = ∑ x : D.ConnectedComponent, Q c x * Q x c := by
+          simpa using Finset.sum_erase_add
+            (Finset.univ : Finset D.ConnectedComponent)
+              (fun x ↦ Q c x * Q x c) hcMem
+        _ = 12 := hsq12
+    omega
+  have hdvd : ∀ x : D.ConnectedComponent, 0 < Q c x →
+      9 ∣ x.supp.ncard := by
+    intro x hpos
+    have hdiv := minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin x hpos
+    simpa [hcsize] using hdiv
+  have hperiod : ∀ x : D.ConnectedComponent,
+      ¬ 9 ∣ x.supp.ncard → Q c x ≤ 1 := by
+    intro x hnot
+    by_contra hle
+    have hpos : 0 < Q c x := by omega
+    exact hnot (hdvd x hpos)
+  exact false_of_minimum_diagonal_two_order_nine Q
+    (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hcsize
+      (fun x ↦ by simpa [hcsize] using hcmin x)
+      htotal hrowOff hprodOff hbal hperiod
+
+/-- The only remaining minimum diagonal-two component orders are five and
+seven. -/
+theorem degreeSix_minimum_diagonal_two_order_five_or_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    c.supp.ncard = 5 ∨ c.supp.ncard = 7 := by
+  rcases degreeSix_minimum_diagonal_two_order_cases_small
+      G hfree hmin hcard hr3 c hcmin hdiag with h5 | h7 | h9
+  · exact Or.inl h5
+  · exact Or.inr h7
+  · exact (degreeSix_minimum_diagonal_two_order_nine_false
+      G hfree hmin hcard c hcmin h9 hdiag).elim
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
