@@ -16,6 +16,25 @@ def OneHighFamilyV2TableCover
     OneHighPureFamilyCnfConstraints profile R →
       ∃ table ∈ tables, oneHighFamilyGraphTable R profile = table
 
+/-- Artifact-aligned coverage: for every raw one-high graph, choose canonical
+presentation labels whose induced table is literally one of the stored orbit
+representatives.  This avoids requiring a separate CNF-variable renaming
+theorem for every CP4 table image. -/
+def OneHighRawV2OrbitCover
+    (tables : Fin 5 → List OneHighMissTable) : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj)
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 1),
+    ∃ (v : Fin 49) (hv : G.degree v = 8)
+      (p : OneHighRawV2Presentation G hfree v),
+      oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile ∈ tables ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+
 /-- Select checked v2 UNSAT evidence for the table induced by a covered PURE
 family graph. -/
 theorem oneHighFamilyV2CheckedUnsat_of_tableCover
@@ -116,5 +135,31 @@ theorem orderFortyNineStratumExcluded_one_of_v2TableCovers
       G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
         mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 4 hc
         hcover4 hchecked4
+
+/-- Terminal matching the actual orbit-sweep artifacts: coverage chooses a
+canonical raw presentation, then the certificate indexed by its literal
+representative table closes the graph. -/
+theorem orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
+    {tables : Fin 5 → List OneHighMissTable}
+    (hcover : OneHighRawV2OrbitCover tables)
+    (hchecked : ∀ (profile : Fin 5) table,
+      table ∈ tables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table) :
+    OrderFortyNineStratumExcluded 1 := by
+  intro G _ _ _ hfree hmin hHigh
+  obtain ⟨v, hv, p, hmem⟩ :=
+    hcover G inferInstance inferInstance inferInstance hfree hmin hHigh
+  let profile : Fin 5 :=
+    ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+  have hcert : OneHighFamilyV2CheckedUnsat p.profile
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) := by
+    exact hchecked profile _ hmem
+  exact false_of_rawOneHigh_v2Checked
+    G hfree hmin (Fintype.card_fin 49) hv p.unique_high p.external_empty
+      p.outer_degree p.mate p.mate_involutive p.mate_adj p.branchLabel
+      p.branch_mate p.leafLabel p.profile p.constraints hcert
 
 end Erdos85

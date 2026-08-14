@@ -6,6 +6,31 @@ namespace Erdos85
 
 open SimpleGraph
 
+/-- The canonical data retained from a raw one-high graph.  Packaging it
+separately lets orbit coverage choose the labeling rather than quotient the
+generated CNF after the fact. -/
+structure OneHighRawV2Presentation
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (v : V) where
+  mate : {z : V // z ∈ G.neighborSet v} →
+    {z : V // z ∈ G.neighborSet v}
+  mate_involutive : Function.Involutive mate
+  mate_adj : ∀ s, G.Adj s.1 (mate s).1
+  branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8
+  branch_mate : ∀ s,
+    branchLabel (mate s) = oneHighStandardMate (branchLabel s)
+  leafLabel : ∀ s : {z : V // z ∈ G.neighborSet v},
+    secondLayerBranch G v s ≃ Fin 5
+  profile : Nat
+  profile_le : profile ≤ 4
+  unique_high : ∀ {w : V}, G.degree w = 8 → w = v
+  external_empty : externalRepairCandidates G v = ∅
+  outer_degree : ∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7
+  constraints : OneHighPureFamilyCnfConstraints profile
+    (oneHighRelabeledLeafGraph G v
+      (oneHighLeafFinFortyEquiv G hfree v branchLabel leafLabel))
+
 /-- Unlike the older existential PURE-family theorem, this statement retains
 the canonical mate and labeling witnesses needed by the exact-v2 graph
 ledgers. -/
@@ -119,5 +144,23 @@ theorem orderFortyNine_exists_rawOneHighPresentation
       exact ⟨(hlabels s).2.2.1, (hlabels s).2.2.2⟩
   exact ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
     hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩
+
+theorem orderFortyNine_exists_rawOneHighPresentationData
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 1)
+    {v : V} (hv : G.degree v = 8) :
+    Nonempty (OneHighRawV2Presentation G hfree v) := by
+  obtain ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
+      hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩ :=
+    orderFortyNine_exists_rawOneHighPresentation
+      G hfree hmin hcard hHigh hv
+  exact ⟨⟨mate, hmateInv, hmateAdj, branchLabel, hbranchMate, leafLabel,
+    profile, hprofile, hunique, hexternal, houterDegree, hc⟩⟩
 
 end Erdos85
