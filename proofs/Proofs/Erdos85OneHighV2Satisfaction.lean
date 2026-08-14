@@ -338,6 +338,103 @@ theorem oneHighFamilyV2CollectSaversVal_projection
       rcases hp with ⟨hvars, hst⟩
       simpa [hvars, hst] using hi
 
+theorem oneHighFamilyV2SaverStepVal_old_mem
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x w : Nat) {input : Array Int × OneHighFamilyValState}
+    {entry : OneHighFamilyAtom × Nat}
+    (hmem : entry ∈ input.2.1.ids) :
+    entry ∈ (oneHighFamilyV2SaverStepVal R x w input).2.1.ids := by
+  rcases input with ⟨ss, acc⟩
+  simp only [oneHighFamilyV2SaverStepVal, oneHighFamilyEdgeIdVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R (.saver x w) acc = out₁
+  rcases out₁ with ⟨s, acc₁⟩
+  have hm₁ := oneHighFamilyAtomIdVal_old_mem R
+    (.saver x w) acc.1 acc.2 hmem
+  rw [h₁] at hm₁
+  generalize h₂ : oneHighFamilyAtomIdVal R
+    (.edge (min x w) (max x w)) acc₁ = out₂
+  rcases out₂ with ⟨exw, acc₂⟩
+  have hm₂ := oneHighFamilyAtomIdVal_old_mem R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hm₁
+  rw [h₂] at hm₂
+  generalize h₃ : oneHighFamilyAtomIdVal R
+    (.miss w (x / 5 ^^^ 1)) acc₂ = out₃
+  rcases out₃ with ⟨mw, acc₃⟩
+  have hm₃ := oneHighFamilyAtomIdVal_old_mem R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2 hm₂
+  rw [h₃] at hm₃
+  simp only [h₁, h₂, h₃]
+  exact hm₃
+
+noncomputable def oneHighFamilyCollectedSaversMatch_push
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x : Nat} {ws : List Nat} {w : Nat}
+    {input : Array Int × OneHighFamilyValState}
+    (h : OneHighFamilyCollectedAtomsMatch
+      (ws.map fun w => OneHighFamilyAtom.saver x w) input) :
+    OneHighFamilyCollectedAtomsMatch
+      ((ws ++ [w]).map fun w => OneHighFamilyAtom.saver x w)
+      (oneHighFamilyV2SaverStepVal R x w input) := by
+  rcases input with ⟨ss, acc⟩
+  simp only [oneHighFamilyV2SaverStepVal, oneHighFamilyEdgeIdVal]
+  generalize h₁ : oneHighFamilyAtomIdVal R (.saver x w) acc = out₁
+  rcases out₁ with ⟨s, acc₁⟩
+  have hnew₁ := (oneHighFamilyAtomIdVal_result R
+    (.saver x w) acc.1 acc.2).1
+  rw [h₁] at hnew₁
+  generalize h₂ : oneHighFamilyAtomIdVal R
+    (.edge (min x w) (max x w)) acc₁ = out₂
+  rcases out₂ with ⟨exw, acc₂⟩
+  have hnew₂ := oneHighFamilyAtomIdVal_old_mem R
+    (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hnew₁
+  rw [h₂] at hnew₂
+  generalize h₃ : oneHighFamilyAtomIdVal R
+    (.miss w (x / 5 ^^^ 1)) acc₂ = out₃
+  rcases out₃ with ⟨mw, acc₃⟩
+  have hnew₃ := oneHighFamilyAtomIdVal_old_mem R
+    (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2 hnew₂
+  rw [h₃] at hnew₃
+  refine ⟨h.ids ++ [s], ?_, ?_⟩
+  · change (ss.push (s : Int)).toList = _
+    rw [Array.toList_push, h.vars_eq]
+    simp
+  · rw [List.map_append]
+    simp only [List.map_cons, List.map_nil]
+    simp only [h₂, h₃, oneHighFamilyEmitVal]
+    change List.Forall₂ (fun atom id => (atom, id) ∈ acc₃.1.ids)
+      ((ws.map fun w => OneHighFamilyAtom.saver x w) ++
+        [OneHighFamilyAtom.saver x w]) (h.ids ++ [s])
+    have hold : List.Forall₂ (fun atom id =>
+        (atom, id) ∈ acc₃.1.ids)
+        (ws.map fun w => OneHighFamilyAtom.saver x w) h.ids := by
+      apply h.aligned.imp
+      intro atom id hm
+      have hm₁ := oneHighFamilyAtomIdVal_old_mem R
+        (.saver x w) acc.1 acc.2 hm
+      rw [h₁] at hm₁
+      have hm₂ := oneHighFamilyAtomIdVal_old_mem R
+        (.edge (min x w) (max x w)) acc₁.1 acc₁.2 hm₁
+      rw [h₂] at hm₂
+      have hm₃ := oneHighFamilyAtomIdVal_old_mem R
+        (.miss w (x / 5 ^^^ 1)) acc₂.1 acc₂.2 hm₂
+      rw [h₃] at hm₃
+      exact hm₃
+    exact listForall₂_append_singleton hold hnew₃
+
+noncomputable def oneHighFamilyCollectSaversVal_match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Nat) (ws : List Nat) (acc : OneHighFamilyValState) :
+    OneHighFamilyCollectedAtomsMatch
+      (ws.map fun w => OneHighFamilyAtom.saver x w)
+      (ws.foldl (fun input w => oneHighFamilyV2SaverStepVal R x w input)
+        (#[], acc)) := by
+  induction ws using List.reverseRecOn with
+  | nil => exact oneHighFamilyCollectedAtomsMatch_empty acc
+  | append_singleton ws w ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil]
+      exact oneHighFamilyCollectedSaversMatch_push R ih
+
 theorem oneHighFamilyV2SaverStepVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     {x w : Nat} (hx : x < 40) (hw : w < 40)
