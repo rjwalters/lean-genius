@@ -5713,6 +5713,79 @@ theorem degreeSix_reverseOriented_component_diagonal_packing_bound
   have hbound := oddSidon_card_mul_pred_le_half_sub_one h2r S hsidon hodd
   simpa [hScard] using hbound
 
+/-- Every diagonal entry of the degree-six second-order component quotient is
+at most four.  Odd and forward-oriented blocks satisfy the sharper bound two;
+for a reverse-oriented even block, odd-phase Sidon packing together with the
+ambient order `33` excludes quotient five or larger. -/
+theorem degreeSix_component_diagonal_le_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [NeZero c.supp.ncard]
+    (u : ZMod c.supp.ncard → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hr3 : 3 ≤ c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≤ 4 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  rcases Nat.even_or_odd c.supp.ncard with heven | hodd
+  · have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard)
+    rcases graph_equalEvenCycle_diagBlock_orientation
+        hr3 heven G D hfree u hu hcomm huD with hfwd | hrev
+    · have hfwdAdj : ∀ x y : ZMod c.supp.ncard,
+          G.Adj (u (x + 1)) (u (y + 1)) ↔ G.Adj (u x) (u y) :=
+        fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+      have hle := forwardComponent_diagonalQuotient_le_two
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c u hu huRange hfwdAdj
+      change Q c c ≤ 4
+      change Q c c ≤ 2 at hle
+      omega
+    · have hrevAdj : ∀ x y : ZMod c.supp.ncard,
+          G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y) :=
+        fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hrev x y)
+      obtain ⟨q, hq⟩ := heven
+      have h2r : 2 ∣ c.supp.ncard := ⟨q, by omega⟩
+      have hpack :=
+        degreeSix_reverseOriented_component_diagonal_packing_bound
+          G hfree hmin hcard c u hu huRange hrevAdj h2r
+      have hsize : c.supp.ncard ≤ 33 := by
+        calc
+          c.supp.ncard ≤ (Set.univ : Set V).ncard :=
+            Set.ncard_le_ncard (Set.subset_univ _)
+          _ = 33 := by
+            rw [Set.ncard_univ]
+            simpa [Nat.card_eq_fintype_card] using hcard
+      change Q c c * (Q c c - 1) ≤ c.supp.ncard / 2 - 1 at hpack
+      change Q c c ≤ 4
+      by_contra hnot
+      push Not at hnot
+      have hq5 : 5 ≤ Q c c := by omega
+      have hpred4 : 4 ≤ Q c c - 1 := by omega
+      have hprod20 : 20 ≤ Q c c * (Q c c - 1) := by
+        exact Nat.mul_le_mul hq5 hpred4
+      omega
+  · rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) hr3 hodd c u hu huRange huD with
+      hzero | htwo
+    · change Q c c ≤ 4
+      change Q c c = 0 at hzero
+      omega
+    · change Q c c ≤ 4
+      change Q c c = 2 at htwo
+      omega
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
