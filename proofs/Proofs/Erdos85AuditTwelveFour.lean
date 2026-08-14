@@ -9,6 +9,7 @@ import Proofs.Erdos85DegreeSixEmptySector
 import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
 import Proofs.Erdos85OneHighV2CalibrationCertificate
+import Proofs.Erdos85OneHighV2TableAgree
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -268,3 +269,9 @@ import Proofs.Erdos85OneHighV2CalibrationCertificate
 #print axioms Erdos85.oneHighV2Calibration_check
 #print axioms Erdos85.oneHighV2Calibration_nonzero
 #print axioms Erdos85.oneHighV2Calibration_checkedUnsat
+
+-- relevant-coordinate transport for the v2 cover socket (TableAgree)
+-- expected: foundational-pure (kernel decide only)
+#print axioms Erdos85.oneHighFamilyV2Clauses_congr
+#print axioms Erdos85.OneHighFamilyV2CheckedUnsat.transport
+#print axioms Erdos85.oneHighTableRestrict_relevantAgree
