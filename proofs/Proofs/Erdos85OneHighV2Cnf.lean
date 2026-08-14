@@ -237,23 +237,34 @@ theorem oneHighFamilyIdsSound_v2F2Clauses
 
 /-! ## F3a paired-product totals -/
 
-def oneHighFamilyV2F3aBlockStep (a pair : Nat)
-    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+def oneHighFamilyV2F3aCollect (pair : Nat)
+    (st : OneHighFamilyGenState) : Array Int × OneHighFamilyGenState :=
   let bi := 2 * pair
   let bj := bi + 1
-  let (cs, st) := (oneHighFamilyBlockVertices bi).foldl (fun accst x =>
+  (oneHighFamilyBlockVertices bi).foldl (fun accst x =>
     (oneHighFamilyBlockVertices bj).foldl
       (fun accst z => oneHighFamilyV2CollectPairedCommonStep x z accst)
       accst) (#[], st)
+
+def oneHighFamilyV2F3aFinish (a pair : Nat)
+    (input : Array Int × OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let bi := 2 * pair
+  let bj := bi + 1
   let bound := 30 - 2 * oneHighFamilyInternalEdgesNat a bi -
     2 * oneHighFamilyInternalEdgesNat a bj
-  oneHighFamilyEqualsBlock cs bound st
+  oneHighFamilyEqualsBlock input.1 bound input.2
+
+def oneHighFamilyV2F3aBlockStep (a pair : Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  oneHighFamilyV2F3aFinish a pair
+    (oneHighFamilyV2F3aCollect pair st)
 
 theorem oneHighFamilyIdsSound_v2F3aBlockStep
     {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
     (a pair : Nat) :
     OneHighFamilyIdsSound (oneHighFamilyV2F3aBlockStep a pair st) := by
-  simp only [oneHighFamilyV2F3aBlockStep]
+  simp only [oneHighFamilyV2F3aBlockStep, oneHighFamilyV2F3aFinish,
+    oneHighFamilyV2F3aCollect]
   generalize hcommons : (oneHighFamilyBlockVertices (2 * pair)).foldl
     (fun accst x => (oneHighFamilyBlockVertices (2 * pair + 1)).foldl
       (fun accst z => oneHighFamilyV2CollectPairedCommonStep x z accst)
