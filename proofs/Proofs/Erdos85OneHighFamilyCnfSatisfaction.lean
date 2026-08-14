@@ -57,6 +57,13 @@ noncomputable def oneHighFamilyAtomValue (R : SimpleGraph (Fin 40))
         decide ((R.neighborFinset ⟨x, hx⟩ ∩
           R.neighborFinset ⟨z, hz⟩).card = 1)
       else false else false
+  | .saver x w =>
+      if hx : x < 40 then if hw : w < 40 then
+        if hb : (x / 5 ^^^ 1) < 8 then
+        decide (R.Adj ⟨x, hx⟩ ⟨w, hw⟩) &&
+          @decide (oneHighFamilyMissesBlock R ⟨w, hw⟩
+            ⟨(x / 5 ^^^ 1), hb⟩) (Classical.propDecidable _)
+        else false else false else false
 
 noncomputable def oneHighFamilyNamedVal (R : SimpleGraph (Fin 40))
     [DecidableRel R.Adj] (ids : List (OneHighFamilyAtom × Nat)) :
