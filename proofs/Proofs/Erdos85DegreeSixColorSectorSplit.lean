@@ -5863,6 +5863,126 @@ theorem degreeSix_reverseOriented_component_exists_oddSidon_phaseSet
   rw [hzero]
   exact mem_graphCycleBlockZeroSupport_iff_adj G u u (x + y) |>.symm
 
+/-- In the empty color-sector branch, a reverse-oriented diagonal block has
+zero diagonal quotient.  Its phase support is confined to odd residues by
+looplessness.  Every odd residue is `x + (x+1)` for some cycle coordinate
+`x`, but those rim pairs are edges of the antipodal defect factor and hence
+nonedges of the original graph. -/
+theorem degreeSix_reverseOriented_positiveDiagonal_false_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (heven : Even c.supp.ncard)
+    (hrev : ∀ x y : ZMod c.supp.ncard,
+      G.Adj (u c (x + 1)) (u c (y - 1)) ↔ G.Adj (u c x) (u c y))
+    (hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c c) : False := by
+  obtain ⟨q, hq⟩ := heven
+  have h2r : 2 ∣ c.supp.ncard := ⟨q, by omega⟩
+  obtain ⟨S, hScard, _hsidon, hodd, hblock⟩ :=
+    degreeSix_reverseOriented_component_exists_oddSidon_phaseSet
+      G hfree hmin hcard c (u c) (hu c) (huRange c) hrev h2r
+  have hSpos : 0 < S.card := by rw [hScard]; exact hpos
+  obtain ⟨s, hs⟩ := Finset.card_pos.mp hSpos
+  let φ : ZMod c.supp.ncard →+* ZMod 2 :=
+    ZMod.castHom h2r (ZMod 2)
+  have hsone : φ s = 1 := by
+    have hsne := hodd s hs
+    have hone (z : ZMod 2) (hz : z ≠ 0) : z = 1 := by
+      fin_cases z
+      · exact (hz rfl).elim
+      · rfl
+    exact hone (φ s) hsne
+  have hminusOne : φ (s - 1) = 0 := by
+    rw [map_sub, hsone, map_one, sub_self]
+  obtain ⟨x, hx⟩ :=
+    (zmod_mem_range_two_mul_iff_castHom_eq_zero h2r (s - 1)).mpr hminusOne
+  have hsum : x + (x + 1) = s := by
+    change 2 * x = s - 1 at hx
+    linear_combination hx
+  have hadj : G.Adj (u c x) (u c (x + 1)) :=
+    (hblock x (x + 1)).2 (by simpa [hsum] using hs)
+  have hD : (secondOrderDefectGraph G).Adj (u c x) (u c (x + 1)) := by
+    rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
+    simp
+  have hgraphs := degreeSix_secondOrderDefectGraph_eq_antipodalGraph_of_sector_empty
+    G hfree hmin hcard u hu huRange huD hempty
+  have hA : (antipodalGraph G).Adj (u c x) (u c (x + 1)) := by
+    rw [← hgraphs]
+    exact hD
+  have hfar := (mem_antipodalNeighbors G (u c x) (u c (x + 1))).mp
+    ((antipodalGraph_adj G (u c x) (u c (x + 1))).mp hA)
+  exact hfar.2.1 hadj
+
+/-- In the empty color-sector branch every diagonal component quotient is at
+most two.  Odd and forward-oriented blocks already satisfy this bound, while
+the preceding rim-phase argument excludes every positive reverse block. -/
+theorem degreeSix_component_diagonal_le_two_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≤ 2 := by
+  let D := secondOrderDefectGraph G
+  by_cases hpos : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c c
+  · rcases Nat.even_or_odd c.supp.ncard with heven | hodd
+    · have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard)
+      rcases graph_equalEvenCycle_diagBlock_orientation
+          (hr3 c) heven G D hfree (u c) (hu c) hcomm (huD c) with hfwd | hrev
+      · have hfwdAdj : ∀ x y : ZMod c.supp.ncard,
+            G.Adj (u c (x + 1)) (u c (y + 1)) ↔ G.Adj (u c x) (u c y) :=
+          fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+        exact forwardComponent_diagonalQuotient_le_two
+          G hfree (d := 6) (by norm_num) (by norm_num) hmin
+            (by norm_num at hcard ⊢; exact hcard) c (u c) (hu c)
+              (huRange c) hfwdAdj
+      · have hrevAdj : ∀ x y : ZMod c.supp.ncard,
+            G.Adj (u c (x + 1)) (u c (y - 1)) ↔ G.Adj (u c x) (u c y) :=
+          fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hrev x y)
+        exact (degreeSix_reverseOriented_positiveDiagonal_false_of_sector_empty
+          G hfree hmin hcard u hu huRange huD hempty c heven hrevAdj hpos).elim
+    · rcases oddComponent_diagonalQuotient_eq_zero_or_two
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) (hr3 c) hodd c
+            (u c) (hu c) (huRange c) (huD c) with hzero | htwo
+      · omega
+      · exact htwo.le
+  · omega
+
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
 `q(q-1) ≤ r/2-1`. -/
