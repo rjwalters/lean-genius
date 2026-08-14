@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Tier-1 exact-v2 LRAT ingestion pipeline for the 472 durable DRATs.
+"""Tier-1 exact-v2 LRAT ingestion pipeline for durable DRAT shards.
+
+Configuration is via ``H1_TIER1_*`` environment variables.  In particular,
+``H1_TIER1_JOBS`` selects a shard without replacing the active ``jobs.tsv``.
+Pass ``--dry-run`` to validate and count the selected jobs without starting
+any conversion or replay process.
 
 Per orbit:
   1. CNF: use sweep source CNF when present (state MATCH via `v2cnf check`),
@@ -20,8 +25,11 @@ LRAT_DIR = BASE + "/v2-lrat"
 DT = WORK + "/bin/drat-trim"
 LC = WORK + "/bin/lrat-check"
 IMAGE = "lean4-arm64:v4.31.0"
-RESULTS = WORK + "/results.tsv"
-WORKERS = 4
+JOBS = os.environ.get("H1_TIER1_JOBS", WORK + "/jobs.tsv")
+RESULTS = os.environ.get("H1_TIER1_RESULTS", WORK + "/results.tsv")
+WORKERS = int(os.environ.get("H1_TIER1_WORKERS", "4"))
+if WORKERS < 1:
+    raise ValueError("H1_TIER1_WORKERS must be positive")
 lock = threading.Lock()
 # Replays are the memory-heavy stage. The Docker VM is 48 GiB total, so run
 # ONE replay at a time at 32g (leaves VM headroom for the v2cnf containers
@@ -135,11 +143,16 @@ def main():
             if len(f) >= 2 and f[1].strip() == "LEAN_ACCEPTED":
                 done.add(f[0])
     jobs = []
-    for line in open(WORK + "/jobs.tsv"):
+    for line in open(JOBS):
         j = line.rstrip("\n").split("\t")
+        if len(j) != 7:
+            raise ValueError(f"malformed job row in {JOBS}: expected 7 fields")
         if j[0] not in done:
             jobs.append(j)
-    print(f"pending {len(jobs)} / done {len(done)}", flush=True)
+    print(f"jobs={JOBS} pending {len(jobs)} / accepted-ledger {len(done)}",
+          flush=True)
+    if "--dry-run" in sys.argv:
+        return
     with cf.ThreadPoolExecutor(max_workers=WORKERS) as ex:
         list(ex.map(process, jobs))
     print("PIPELINE COMPLETE", flush=True)
