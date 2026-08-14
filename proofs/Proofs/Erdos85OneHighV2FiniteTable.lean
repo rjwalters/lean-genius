@@ -9,9 +9,19 @@ abbrev OneHighRelevantPair :=
   {p : Fin 8 × Fin 8 // p.1 < p.2 ∧
     p.2 ≠ oneHighStandardMate p.1}
 
+theorem oneHighRelevantPair_card : Fintype.card OneHighRelevantPair = 24 := by
+  native_decide
+
 /-- Every relevant miss count is at most four, so an admissible table has a
 canonical finite representation with 24 `Fin 5` coordinates. -/
 def OneHighFiniteMissTable := OneHighRelevantPair → Fin 5
+
+/-- Equality on precisely the 24 coordinates represented by an artifact
+table. -/
+def OneHighRelevantAgreement
+    (left right : OneHighMissTable) : Prop :=
+  ∀ pair : OneHighRelevantPair,
+    left pair.1.1.val pair.1.2.val = right pair.1.1.val pair.1.2.val
 
 theorem OneHighFamilyV2Admissible.entry_lt_five
     {profile : Nat} {table : OneHighMissTable}
@@ -49,5 +59,19 @@ def OneHighFamilyV2Admissible.toFinite
     (h : OneHighFamilyV2Admissible profile table)
     (pair : OneHighRelevantPair) :
     h.toFinite pair = table pair.1.1.val pair.1.2.val := rfl
+
+theorem OneHighFamilyV2Admissible.toFinite_eq_iff
+    {profile : Nat} {left right : OneHighMissTable}
+    (hl : OneHighFamilyV2Admissible profile left)
+    (hr : OneHighFamilyV2Admissible profile right) :
+    hl.toFinite = hr.toFinite ↔ OneHighRelevantAgreement left right := by
+  constructor
+  · intro heq pair
+    have := congrFun heq pair
+    exact congrArg Fin.val this
+  · intro hagree
+    funext pair
+    apply Fin.ext
+    exact hagree pair
 
 end Erdos85
