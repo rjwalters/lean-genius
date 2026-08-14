@@ -786,6 +786,157 @@ theorem false_of_minimum_zero_order_five_balanced_row
   have hxmin := hminSize x
   omega
 
+/-- A diagonal-two minimum row cannot have order between twelve and
+fifteen.  Its positive off-diagonal support has order divisible by the
+minimum and at most `33-m`, hence exactly `m`; minimality makes that support
+a singleton.  Row mass four then contributes square mass sixteen, forcing
+`m = 17` instead of the assumed range. -/
+theorem false_of_minimum_diagonal_two_order_twelve_to_fifteen
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C) (m : ℕ)
+    (hm12 : 12 ≤ m) (hm15 : m ≤ 15) (hcsize : size c = m)
+    (hminSize : ∀ x, m ≤ size x)
+    (hdiag : Q c c = 2)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hdvd : ∀ x, 0 < Q c x → m ∣ size x)
+    (hsq : ∑ x, Q c x * Q x c = m + 3) : False := by
+  let P := Finset.univ.filter fun x ↦ 0 < Q c x
+  let T := P.erase c
+  have hcP : c ∈ P := by simp [P, hdiag]
+  have hsumP : (∑ x ∈ P, Q c x) = 6 := by
+    calc
+      (∑ x ∈ P, Q c x) = ∑ x, Q c x := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro x hx hnot
+        have hz : Q c x = 0 := by
+          by_contra hn
+          exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+        simp [hz]
+      _ = 6 := hrow
+  have hprodP : (∑ x ∈ P, Q c x * Q x c) = m + 3 := by
+    calc
+      (∑ x ∈ P, Q c x * Q x c) = ∑ x, Q c x * Q x c := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro x hx hnot
+        have hz : Q c x = 0 := by
+          by_contra hn
+          exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+        simp [hz]
+      _ = m + 3 := hsq
+  have hrowT : (∑ x ∈ T, Q c x) = 4 := by
+    have hs := Finset.sum_erase_add P (fun x ↦ Q c x) hcP
+    dsimp [T]
+    omega
+  have hprodT : (∑ x ∈ T, Q c x * Q x c) = m - 1 := by
+    have hs := Finset.sum_erase_add P
+      (fun x ↦ Q c x * Q x c) hcP
+    rw [hdiag] at hs
+    dsimp [T]
+    omega
+  have hTsubset : T ⊆ (Finset.univ.erase c : Finset C) := by
+    intro x hx
+    exact Finset.mem_erase.mpr
+      ⟨(Finset.mem_erase.mp hx).1, Finset.mem_univ x⟩
+  have hsizeTle : (∑ x ∈ T, size x) ≤ 33 - m := by
+    have hsub : (∑ x ∈ T, size x) ≤
+        ∑ x ∈ (Finset.univ.erase c : Finset C), size x :=
+      Finset.sum_le_sum_of_subset_of_nonneg hTsubset
+        (fun _ _ _ ↦ Nat.zero_le _)
+    have hcuniv : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) size hcuniv
+    rw [htotal, hcsize] at hsplit
+    omega
+  have hmDvd : m ∣ ∑ x ∈ T, size x := by
+    apply Finset.dvd_sum
+    intro x hx
+    have hxP := (Finset.mem_erase.mp hx).2
+    exact hdvd x (by simpa [P] using (Finset.mem_filter.mp hxP).2)
+  have hTnonempty : T.Nonempty := by
+    by_contra hempty
+    have hTempty : T = ∅ := Finset.not_nonempty_iff_eq_empty.mp hempty
+    rw [hTempty] at hrowT
+    simp at hrowT
+  have hsizeTpos : 0 < ∑ x ∈ T, size x := by
+    obtain ⟨x, hx⟩ := hTnonempty
+    have hxpos : 0 < size x := by have := hminSize x; omega
+    exact lt_of_lt_of_le hxpos
+      (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hx)
+  have hsizeT : (∑ x ∈ T, size x) = m := by
+    rcases hmDvd with ⟨k, hk⟩
+    have hkpos : 0 < k := by
+      apply Nat.pos_of_ne_zero
+      intro hkzero
+      rw [hkzero, mul_zero] at hk
+      omega
+    have hklt : k < 2 := by
+      by_contra hnot
+      have hk2 : 2 ≤ k := by omega
+      have hthreeM : 33 < 3 * m := by omega
+      have h2m : 2 * m ≤ ∑ x ∈ T, size x := by
+        calc
+          2 * m = m * 2 := by omega
+          _ ≤ m * k := Nat.mul_le_mul_left m hk2
+          _ = ∑ x ∈ T, size x := hk.symm
+      omega
+    have : k = 1 := by omega
+    subst k
+    simpa using hk
+  have hcardLe : T.card ≤ 1 := by
+    have hlower : (∑ _x ∈ T, m) ≤ ∑ x ∈ T, size x := by
+      exact Finset.sum_le_sum fun x _ ↦ hminSize x
+    simp only [Finset.sum_const_nat, Finset.card_attach, nsmul_eq_mul] at hlower
+    rw [hsizeT] at hlower
+    nlinarith
+  have hcard : T.card = 1 := by
+    have hcardPos := Finset.card_pos.mpr hTnonempty
+    omega
+  obtain ⟨e, hTe⟩ := Finset.card_eq_one.mp hcard
+  have hrowE : Q c e = 4 := by
+    simpa [hTe] using hrowT
+  have hprodE : Q c e * Q e c = m - 1 := by
+    simpa [hTe] using hprodT
+  have heSize : size e = m := by
+    have hs : (∑ x ∈ T, size x) = size e := by simp [hTe]
+    omega
+  have hreverse : Q e c = Q c e := by
+    have hb := hbal e
+    rw [hcsize, heSize] at hb
+    have hmpos : 0 < m := by omega
+    exact Nat.eq_of_mul_eq_mul_left hmpos hb.symm
+  rw [hrowE, hreverse, hrowE] at hprodE
+  omega
+
+/-- A minimum balanced diagonal-two row cannot have order three.  At order
+three the row and square sums are both six, so pointwise `Q ≤ QQᵀ` would
+force equality at the diagonal, contradicting `2 < 2²`. -/
+theorem false_of_minimum_diagonal_two_order_three
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcsize : size c = 3) (hminSize : ∀ x, 3 ≤ size x)
+    (hdiag : Q c c = 2)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hsq : ∑ x, Q c x * Q x c = 6) : False := by
+  have htermLe : ∀ x, Q c x ≤ Q c x * Q x c := by
+    intro x
+    by_cases hz : Q c x = 0
+    · simp [hz]
+    · have hqpos : 0 < Q c x := Nat.pos_of_ne_zero hz
+      have hrevpos : 0 < Q x c := by
+        by_contra hnot
+        have hrevzero : Q x c = 0 := by omega
+        have hb := hbal x
+        rw [hcsize, hrevzero, mul_zero] at hb
+        omega
+      exact Nat.le_mul_of_pos_right _ hrevpos
+  have hpoint := (Finset.sum_eq_sum_iff_of_le
+    (fun x _ ↦ htermLe x)).mp (by rw [hrow, hsq]) c (Finset.mem_univ c)
+  rw [hdiag] at hpoint
+  norm_num at hpoint
+
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
 component. -/
@@ -7128,6 +7279,58 @@ theorem degreeSix_emptySector_minimum_component_dichotomy
     rcases hodd with ⟨k, hk⟩
     rcases horders with h4 | h6 | h8 | h10 <;> omega
   · exact Or.inr ⟨by simpa [Q] using htwo, hodd⟩
+
+/-- Exact remaining order window for the diagonal-two side of the minimum
+layer dichotomy. -/
+theorem degreeSix_minimum_diagonal_two_order_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    c.supp.ncard = 5 ∨ c.supp.ncard = 7 ∨
+      c.supp.ncard = 9 ∨ c.supp.ncard = 11 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hodd := degreeSix_minimum_component_order_odd
+    G hfree hmin hcard c hcmin
+  have hupper := degreeSix_diagonal_two_component_order_le_fifteen
+    G hfree hmin hcard c hdiag
+  have hdvd : ∀ x : D.ConnectedComponent, 0 < Q c x →
+      c.supp.ncard ∣ x.supp.ncard := by
+    intro x hpos
+    exact minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin x hpos
+  have hneThree : c.supp.ncard ≠ 3 := by
+    intro hc3
+    have hsqSix : ∑ x : D.ConnectedComponent, Q c x * Q x c = 6 := by
+      simpa [hc3] using hsq
+    exact false_of_minimum_diagonal_two_order_three Q
+      (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hc3
+        (fun x ↦ by simpa [hc3] using hcmin x)
+        (by simpa [Q, D] using hdiag) hrow hbal hsqSix
+  have hltTwelve : c.supp.ncard < 12 := by
+    by_contra hnot
+    have hge12 : 12 ≤ c.supp.ncard := by omega
+    exact false_of_minimum_diagonal_two_order_twelve_to_fifteen Q
+      (fun x : D.ConnectedComponent ↦ x.supp.ncard) c c.supp.ncard
+        hge12 hupper rfl hcmin (by simpa [Q, D] using hdiag)
+          htotal hrow hbal hdvd hsq
+  rcases hodd with ⟨k, hk⟩
+  have hlower := hr3 c
+  omega
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
