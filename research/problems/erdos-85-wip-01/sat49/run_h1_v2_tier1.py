@@ -6,24 +6,36 @@ Configuration is via ``H1_TIER1_*`` environment variables.  In particular,
 Pass ``--dry-run`` to validate and count the selected jobs without starting
 any conversion or replay process.
 
-Per orbit:
+Per orbit (compact-replay flow, squad 3533/3536/3537):
   1. CNF: use sweep source CNF when present (state MATCH via `v2cnf check`),
      else emit the Lean-exact CNF via `v2cnf emit` (state LEAN-EXACT).
   2. drat-trim <cnf> <drat> -L <lrat>   -> requires "s VERIFIED"
   3. lrat-check <cnf> <lrat>            -> requires "VERIFIED" (not NOT)
-  4. lratreplay <cnf> <lrat> (Lean, in docker) -> requires "LRAT accepted: true"
-  5. all-green: bank <orbit>.v2.lrat + manifest into v2-lrat/, record row.
+  4. streaming compact (compact_h1_v2_lrat.py) -> the form Lean's checker
+     consumes; then lratreplay <cnf> <COMPACT> in docker -> requires
+     "LRAT accepted: true".  Raw lratreplay acceptance does NOT transfer
+     to parseOrderFortyNineLratProof + LRAT.check (squad 3533).
+  5. all-green: bank <orbit>.v2.compact.lrat + manifest into v2-lrat/.
+     Raw LRAT is hashed for provenance then DROPPED (source DRAT(.gz) + CNF
+     hashes preserve provenance; never delete source DRAT — squad 3537).
 
-Resumable: orbits already in results.tsv are skipped.
+Replay concurrency: ONE 32g replay host-wide, enforced both by an in-process
+semaphore and the cross-process mkdir lock at v2-tier1-work/replay.lock
+(PID+timestamp owner metadata, stale-owner liveness reclaim).  Every tool
+that runs `lratreplay` must honor the same lock (squad 3537).
+
+Resumable: orbits already LEAN_ACCEPTED in results.tsv are skipped.
 """
 import concurrent.futures as cf
-import hashlib, os, re, subprocess, sys, threading
+import hashlib, os, re, subprocess, sys, threading, time
+from contextlib import contextmanager
 
 BASE = "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49"
 WORK = BASE + "/v2-tier1-work"
 LRAT_DIR = BASE + "/v2-lrat"
 DT = WORK + "/bin/drat-trim"
 LC = WORK + "/bin/lrat-check"
+COMPACTOR = WORK + "/compact_h1_v2_lrat.py"
 IMAGE = "lean4-arm64:v4.31.0"
 JOBS = os.environ.get("H1_TIER1_JOBS", WORK + "/jobs.tsv")
 RESULTS = os.environ.get("H1_TIER1_RESULTS", WORK + "/results.tsv")
@@ -36,6 +48,59 @@ lock = threading.Lock()
 # and host drat-trim pressure); raise only from measured peak (codex, 3515).
 REPLAY_MEM = "32g"
 replay_slots = threading.Semaphore(1)
+REPLAY_LOCK = WORK + "/replay.lock"
+
+@contextmanager
+def replay_lock():
+    """Cross-process replay mutex (squad 3537): mkdir lock with PID owner
+    metadata; a lock whose owner PID is dead is reclaimed."""
+    while True:
+        try:
+            os.mkdir(REPLAY_LOCK)
+            with open(REPLAY_LOCK + "/owner", "w") as f:
+                f.write(f"{os.getpid()} {time.time():.0f}\n")
+            break
+        except FileExistsError:
+            try:
+                pid = int(open(REPLAY_LOCK + "/owner").read().split()[0])
+                os.kill(pid, 0)  # raises if owner is dead
+            except FileNotFoundError:
+                # The owner creates the directory before its metadata file.
+                # Do not steal a lock during that small publication window.
+                try:
+                    age = time.time() - os.stat(REPLAY_LOCK).st_mtime
+                except FileNotFoundError:
+                    continue
+                if age < 60:
+                    time.sleep(1)
+                    continue
+                try:
+                    os.rmdir(REPLAY_LOCK)
+                except OSError:
+                    pass
+                continue
+            except (OSError, ValueError):
+                try:
+                    os.remove(REPLAY_LOCK + "/owner")
+                except FileNotFoundError:
+                    pass
+                try:
+                    os.rmdir(REPLAY_LOCK)
+                except OSError:
+                    pass
+                continue
+            time.sleep(15)
+    try:
+        yield
+    finally:
+        try:
+            os.remove(REPLAY_LOCK + "/owner")
+        except FileNotFoundError:
+            pass
+        try:
+            os.rmdir(REPLAY_LOCK)
+        except OSError:
+            pass
 
 def sha256(path):
     h = hashlib.sha256()
@@ -43,6 +108,14 @@ def sha256(path):
         for chunk in iter(lambda: f.read(1 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+def cnf_clause_count(path):
+    """Original clause count from the DIMACS header (p cnf <vars> <clauses>)."""
+    with open(path) as f:
+        for line in f:
+            if line.startswith("p cnf"):
+                return int(line.split()[3])
+    raise ValueError(f"no DIMACS header in {path}")
 
 def docker(args, timeout, memory="12g"):
     cmd = ["docker", "run", "--rm", "--memory=" + memory, "--cpus=2",
@@ -64,6 +137,7 @@ def process(job):
     tmp = WORK + "/tmp/" + orbit
     lrat = tmp + ".lrat"
     drat = tmp + ".drat"
+    compact = tmp + ".compact.lrat"
     try:
         # 1. CNF
         if cpath:
@@ -97,16 +171,21 @@ def process(job):
             tail = [l for l in r.stdout.splitlines() if not l.startswith("c WARNING")][-3:]
             record(orbit, "FAIL-DRAT-TRIM", " | ".join(tail)[:300])
             return
-        # 3. lrat-check
+        # 3. lrat-check (raw)
         r = subprocess.run([LC, cnf, lrat], capture_output=True, text=True, timeout=3600)
         verdict = [l for l in r.stdout.splitlines() if "VERIFIED" in l]
         if not verdict or "NOT VERIFIED" in verdict[-1]:
             record(orbit, "FAIL-LRAT-CHECK", " | ".join(verdict)[:300])
             return
-        # 4. Lean replay (memory-heavy: one slot at REPLAY_MEM;
-        # 12g caused invisible exit-137 OOM kills with empty output)
-        with replay_slots:
-            r = docker(["/cache/bin/lratreplay", to_data(cnf), to_data(lrat)],
+        # 4. streaming compact, then Lean replay of the COMPACT payload
+        num_orig = cnf_clause_count(cnf)
+        r = subprocess.run([sys.executable, COMPACTOR, lrat, str(num_orig), compact],
+                           capture_output=True, text=True, timeout=3600)
+        if r.returncode != 0 or not os.path.exists(compact):
+            record(orbit, "FAIL-COMPACT", (r.stdout + r.stderr).strip().replace("\n", " | ")[:300])
+            return
+        with replay_slots, replay_lock():
+            r = docker(["/cache/bin/lratreplay", to_data(cnf), to_data(compact)],
                        3600, memory=REPLAY_MEM)
         if "LRAT accepted: true" not in r.stdout:
             detail = (r.stdout + r.stderr).strip().replace("\n", " | ")[:250]
@@ -115,23 +194,27 @@ def process(job):
             return
         m = re.search(r"CNF clauses: (\d+); LRAT actions: (\d+)", r.stdout)
         clauses, actions = m.groups() if m else ("?", "?")
-        # 5. bank
-        final = LRAT_DIR + "/" + orbit + ".v2.lrat"
-        os.replace(lrat, final)
-        csha, lsha = sha256(cnf), sha256(final)
+        # 5. bank COMPACT only; hash raw for provenance, then drop it
+        raw_sha = sha256(lrat)
+        final = LRAT_DIR + "/" + orbit + ".v2.compact.lrat"
+        os.replace(compact, final)
+        csha, ksha = sha256(cnf), sha256(final)
+        kbytes = os.path.getsize(final)
         table = open(tpath).read().strip()
         with open(LRAT_DIR + "/" + orbit + ".manifest.txt", "w") as f:
             f.write(f"orbit {orbit}\nprofile {family}\nmode {mode}\n"
                     f"cnf_state {cnf_state}\nsource_cnf_sha256 {csha}\n"
-                    f"lrat_sha256 {lsha}\nsource_cnf_clauses {clauses}\n"
-                    f"lrat_actions {actions}\n"
+                    f"raw_lrat_sha256 {raw_sha}\n"
+                    f"compact_lrat_sha256 {ksha}\ncompact_bytes {kbytes}\n"
+                    f"source_cnf_clauses {clauses}\nlrat_actions {actions}\n"
                     f"drat_trim_result s VERIFIED\nlrat_check_result c VERIFIED\n"
-                    f"lean_replay LRAT accepted: true\ntable {table}\n")
-        record(orbit, "LEAN_ACCEPTED", f"{cnf_state} clauses={clauses} actions={actions} lrat_sha={lsha[:16]}")
+                    f"lean_replay_compact LRAT accepted: true\ntable {table}\n")
+        record(orbit, "LEAN_ACCEPTED",
+               f"{cnf_state} clauses={clauses} actions={actions} compact_sha={ksha[:16]} compact_bytes={kbytes}")
     except Exception as e:
         record(orbit, "FAIL-EXC", str(e)[:300])
     finally:
-        for p in (drat, tmp + ".lean.cnf", lrat):
+        for p in (drat, tmp + ".lean.cnf", lrat, compact):
             if p != dpath and p.startswith(WORK) and os.path.exists(p):
                 os.remove(p)
 
