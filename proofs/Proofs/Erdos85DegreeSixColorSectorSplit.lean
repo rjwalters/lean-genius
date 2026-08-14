@@ -5253,6 +5253,74 @@ theorem degreeSix_secondOrderDefectGraph_eq_antipodalGraph_of_sector_empty
     secondOrderDefectGraph_neighborFinset, antipodalGraph_neighborFinset,
     hzset, Finset.union_empty]
 
+/-- Every positive diagonal quotient component in the empty sector contains
+a separated original-graph chord in its cyclic coordinates. -/
+theorem degreeSix_positiveDiagonal_component_has_separated_chord_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcdiag : 0 < componentQuotientMatrix G
+      (secondOrderDefectGraph G) c c) :
+    ∃ i j : ZMod c.supp.ncard,
+      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) := by
+  let D := secondOrderDefectGraph G
+  let x := componentRepresentative D c
+  have hx : x ∈ c.supp := componentRepresentative_mem D c
+  have hcpos := hcdiag
+  change 0 < (componentNeighborFinset G D c x).card at hcpos
+  obtain ⟨y, hy⟩ := Finset.card_pos.mp hcpos
+  have hy' := Finset.mem_filter.mp hy
+  have hxy : G.Adj x y := (G.mem_neighborFinset x y).mp hy'.1
+  have hyc : y ∈ c.supp := by
+    apply (SimpleGraph.ConnectedComponent.mem_supp_iff c y).mpr
+    exact hy'.2
+  rw [← huRange c] at hx hyc
+  obtain ⟨i, hi⟩ := hx
+  obtain ⟨j, hj⟩ := hyc
+  have hxy' : G.Adj (u c i) (u c j) := by
+    rw [hi, hj]
+    exact hxy
+  have hgraphs := degreeSix_secondOrderDefectGraph_eq_antipodalGraph_of_sector_empty
+    G hfree hmin hcard u hu huRange huD hempty
+  have hnotD : ¬ (secondOrderDefectGraph G).Adj (u c i) (u c j) := by
+    intro hDxy
+    have hAxy : (antipodalGraph G).Adj (u c i) (u c j) := by
+      rw [← hgraphs]
+      exact hDxy
+    have hfar := (mem_antipodalNeighbors G (u c i) (u c j)).mp
+      ((antipodalGraph_adj G (u c i) (u c j)).mp hAxy)
+    exact hfar.2.1 hxy'
+  have hij : i ≠ j := by
+    intro h
+    subst j
+    exact G.loopless.irrefl _ hxy'
+  have hjminus : j ≠ i - 1 := by
+    intro h
+    apply hnotD
+    rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
+    simp [h]
+  have hjplus : j ≠ i + 1 := by
+    intro h
+    apply hnotD
+    rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
+    simp [h]
+  exact ⟨i, j, hij, hjminus, hjplus, hxy'⟩
+
 /-- The positive quotient trace supplies a genuine chord of one antipodal
 defect cycle: two vertices in the same second-order component are adjacent
 in `G`, but not adjacent along the antipodal 2-factor. -/
