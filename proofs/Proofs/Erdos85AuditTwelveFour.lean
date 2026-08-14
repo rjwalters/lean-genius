@@ -8,6 +8,7 @@ import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85DegreeSixEmptySector
 import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
+import Proofs.Erdos85OneHighV2CalibrationCertificate
 
 -- [12,4] chain (new)
 #print axioms Erdos85.false_of_degree_sixteen_zeroLayer_used_orders_twelve_four
@@ -261,3 +262,9 @@ import Proofs.Erdos85DegreeSixOddDiagonalSmall
 #print axioms Erdos85.degree_sixteen_remaining_zeroLayer
 #print axioms Erdos85.false_of_degree_sixteen_twoLayer
 #print axioms Erdos85.false_of_degree_sixteen_fourLayer
+
+-- first checked exact-v2 h=1 orbit certificate (45b451daa0)
+-- expected: Lean.ofReduceBool lineage (native_decide LRAT replay), disclosed
+#print axioms Erdos85.oneHighV2Calibration_check
+#print axioms Erdos85.oneHighV2Calibration_nonzero
+#print axioms Erdos85.oneHighV2Calibration_checkedUnsat
