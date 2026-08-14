@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighV2Exclusion
+import Proofs.Erdos85OneHighRawPresentation
 
 /-! # Orbit-cover socket for the exact v2 one-high formula -/
 
@@ -68,5 +69,52 @@ theorem false_of_rawOneHigh_v2TableCover
   exact false_of_rawOneHigh_v2Checked
     G hfree hmin hcard hv hunique hexternal houterDegree mate hmateInv
       hmateAdj branchLabel hbranchMate leafLabel profile hc hcert
+
+/-- Five independently covered exact-v2 profile lists exclude the complete
+one-high order-49 stratum. -/
+theorem orderFortyNineStratumExcluded_one_of_v2TableCovers
+    {tables0 tables1 tables2 tables3 tables4 : List OneHighMissTable}
+    (hcover0 : OneHighFamilyV2TableCover 0 tables0)
+    (hcover1 : OneHighFamilyV2TableCover 1 tables1)
+    (hcover2 : OneHighFamilyV2TableCover 2 tables2)
+    (hcover3 : OneHighFamilyV2TableCover 3 tables3)
+    (hcover4 : OneHighFamilyV2TableCover 4 tables4)
+    (hchecked0 : ∀ table ∈ tables0, OneHighFamilyV2CheckedUnsat 0 table)
+    (hchecked1 : ∀ table ∈ tables1, OneHighFamilyV2CheckedUnsat 1 table)
+    (hchecked2 : ∀ table ∈ tables2, OneHighFamilyV2CheckedUnsat 2 table)
+    (hchecked3 : ∀ table ∈ tables3, OneHighFamilyV2CheckedUnsat 3 table)
+    (hchecked4 : ∀ table ∈ tables4, OneHighFamilyV2CheckedUnsat 4 table) :
+    OrderFortyNineStratumExcluded 1 := by
+  intro G _ _ _ hfree hmin hHigh
+  have hnonempty : (orderFortyNineHighVertices G).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨v, hvMem⟩ := hnonempty
+  have hv : G.degree v = 8 := by
+    simpa [orderFortyNineHighVertices] using hvMem
+  obtain ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
+      hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩ :=
+    orderFortyNine_exists_rawOneHighPresentation
+      G hfree hmin (Fintype.card_fin 49) hHigh hv
+  interval_cases profile
+  · exact false_of_rawOneHigh_v2TableCover
+      G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 0 hc
+        hcover0 hchecked0
+  · exact false_of_rawOneHigh_v2TableCover
+      G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 1 hc
+        hcover1 hchecked1
+  · exact false_of_rawOneHigh_v2TableCover
+      G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 2 hc
+        hcover2 hchecked2
+  · exact false_of_rawOneHigh_v2TableCover
+      G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 3 hc
+        hcover3 hchecked3
+  · exact false_of_rawOneHigh_v2TableCover
+      G hfree hmin (Fintype.card_fin 49) hv hunique hexternal houterDegree
+        mate hmateInv hmateAdj branchLabel hbranchMate leafLabel 4 hc
+        hcover4 hchecked4
 
 end Erdos85
