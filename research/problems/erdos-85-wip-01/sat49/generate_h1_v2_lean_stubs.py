@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Validate cert-root v2 and emit exact-v2 Lean certificate stubs.
+"""Validate cert-root v3 and emit packed exact-v2 Lean certificate stubs.
 
-Only compact LRATs that have already passed direct Lean replay may be emitted.
+Only packed LRATs whose source compacts already passed direct Lean replay may
+be emitted.  Every packed payload is hash/size checked before source emission.
 Operational orbit tags are checked as provenance but never occur in the table
 type: each generated theorem is indexed by ``(profile, localIndex)`` into the
 authoritative ``oneHighInventoryTables`` list.
@@ -31,6 +32,12 @@ EXPECTED_COLUMNS = (
     "source_cnf_clauses",
     "compact_bytes",
     "stub_ready",
+    "binary_lrat_sha256",
+    "binary_bytes",
+    "lz4_frame_sha256",
+    "lz4_frame_bytes",
+    "packed_lz4_sha256",
+    "packed_lz4_bytes",
 )
 TABLE_PAIRS = tuple(
     (c, j)
@@ -52,6 +59,12 @@ class IndexRow:
     clauses: int
     compact_bytes: int
     stub_ready: bool
+    binary_sha: str
+    binary_bytes: int
+    frame_sha: str
+    frame_bytes: int
+    packed_sha: str
+    packed_bytes: int
 
 
 def sha256(path: Path) -> str:
@@ -117,12 +130,23 @@ def read_index(path: Path) -> list[IndexRow]:
                 local_index = int(raw["localIndex"])
                 clauses = int(raw["source_cnf_clauses"])
                 compact_bytes = int(raw["compact_bytes"])
+                binary_bytes = int(raw["binary_bytes"])
+                frame_bytes = int(raw["lz4_frame_bytes"])
+                packed_bytes = int(raw["packed_lz4_bytes"])
             except ValueError as error:
                 raise ValueError(f"{path}:{line_number}: invalid numeric/profile field") from error
+            if any(value < 0 for value in (
+                local_index, clauses, compact_bytes, binary_bytes,
+                frame_bytes, packed_bytes,
+            )):
+                raise ValueError(f"{path}:{line_number}: negative numeric field")
             hashes = (
                 raw["compact_lrat_sha256"],
                 raw["raw_lrat_sha256"],
                 raw["cnf_sha256"],
+                raw["binary_lrat_sha256"],
+                raw["lz4_frame_sha256"],
+                raw["packed_lz4_sha256"],
             )
             if any(not re.fullmatch(r"[0-9a-f]{64}", item) for item in hashes):
                 raise ValueError(f"{path}:{line_number}: invalid SHA-256 field")
@@ -133,11 +157,14 @@ def read_index(path: Path) -> list[IndexRow]:
                     raw["orbit"], profile, local_index, hashes[0], hashes[1],
                     hashes[2], parse_optional_nat(raw["lrat_actions"], "lrat_actions"),
                     clauses, compact_bytes, raw["stub_ready"] == "1",
+                    hashes[3], binary_bytes, hashes[4], frame_bytes,
+                    hashes[5], packed_bytes,
                 )
             )
     keys = {
         "orbit": [row.orbit for row in rows],
         "compact hash": [row.compact_sha for row in rows],
+        "packed hash": [row.packed_sha for row in rows],
         "profile/index": [(row.profile, row.local_index) for row in rows],
     }
     for label, values in keys.items():
@@ -149,23 +176,20 @@ def read_index(path: Path) -> list[IndexRow]:
 
 
 def payload_path(cert_root: Path, row: IndexRow) -> Path:
-    candidates = (
-        cert_root / "compact" / row.compact_sha[:2] / f"{row.compact_sha}.lrat",
-        cert_root / row.compact_sha[:2] / f"{row.compact_sha}.lrat",
+    path = (
+        cert_root / "packed" / row.packed_sha[:2] /
+        f"{row.packed_sha}.lrat.lz4p7"
     )
-    existing = [path for path in candidates if path.is_file()]
-    if len(existing) != 1:
-        raise ValueError(
-            f"expected exactly one compact payload for {row.orbit}, found {existing}"
-        )
-    return existing[0].resolve()
+    if not path.is_file():
+        raise ValueError(f"packed payload is missing for {row.orbit}: {path}")
+    return path.resolve()
 
 
 def validate_row(
     row: IndexRow, profiles: list[list[str]], cert_root: Path, verify_hash: bool
 ) -> Path:
     if not row.stub_ready:
-        raise ValueError(f"{row.orbit}: compact payload has not passed direct Lean replay")
+        raise ValueError(f"{row.orbit}: source compact has not passed direct Lean replay")
     if row.local_index not in range(len(profiles[row.profile])):
         raise ValueError(f"{row.orbit}: localIndex is outside its Lean profile")
     expected_tag = profiles[row.profile][row.local_index]
@@ -174,10 +198,10 @@ def validate_row(
             f"{row.orbit}: profile/localIndex resolves to inventory tag {expected_tag}"
         )
     payload = payload_path(cert_root, row)
-    if payload.stat().st_size != row.compact_bytes:
-        raise ValueError(f"{row.orbit}: compact byte count mismatch")
-    if verify_hash and sha256(payload) != row.compact_sha:
-        raise ValueError(f"{row.orbit}: compact SHA-256 mismatch")
+    if payload.stat().st_size != row.packed_bytes:
+        raise ValueError(f"{row.orbit}: packed byte count mismatch")
+    if verify_hash and sha256(payload) != row.packed_sha:
+        raise ValueError(f"{row.orbit}: packed SHA-256 mismatch")
     return payload
 
 
@@ -192,7 +216,12 @@ import Proofs.Erdos85OrderFortyNineLratCertificateBase
     compact_lrat_sha256={row.compact_sha}
     raw_lrat_sha256={row.raw_sha}
     cnf_sha256={row.cnf_sha}
-    compact_bytes={row.compact_bytes} source_cnf_clauses={row.clauses} -/
+    binary_lrat_sha256={row.binary_sha}
+    lz4_frame_sha256={row.frame_sha}
+    packed_lz4_sha256={row.packed_sha}
+    compact_bytes={row.compact_bytes} binary_bytes={row.binary_bytes}
+    lz4_frame_bytes={row.frame_bytes} packed_lz4_bytes={row.packed_bytes}
+    source_cnf_clauses={row.clauses} -/
 
 namespace Erdos85
 
@@ -206,7 +235,8 @@ private def {stem}ProofText : String :=
   include_str {path_literal}
 
 private def {stem}Proof : Array LRAT.IntAction :=
-  parseOrderFortyNineLratProof {stem}ProofText
+  parsePackedLz4OrderFortyNineLratProof {stem}ProofText
+    {row.frame_bytes} {row.binary_bytes}
 
 private theorem {stem}Nonzero :
     ∀ clause ∈ (oneHighFamilyV2Clauses {row.profile} {stem}Table).clauses,

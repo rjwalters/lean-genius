@@ -13,6 +13,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -26,6 +27,14 @@ TABLE_PAIRS = tuple(
     if j != (c ^ 1)
 )
 assert len(TABLE_PAIRS) == 24
+
+EXPECTED_V3_COLUMNS = (
+    "orbit", "profile", "localIndex", "compact_lrat_sha256",
+    "raw_lrat_sha256", "cnf_sha256", "lrat_actions",
+    "source_cnf_clauses", "compact_bytes", "stub_ready",
+    "binary_lrat_sha256", "binary_bytes", "lz4_frame_sha256",
+    "lz4_frame_bytes", "packed_lz4_sha256", "packed_lz4_bytes",
+)
 
 
 @dataclass(frozen=True)
@@ -88,25 +97,80 @@ def read_latest_results(path: Path) -> dict[str, str]:
     return latest
 
 
-def read_stub_ready_index(path: Path) -> set[str]:
-    """Read the cert-root v2 index, rejecting pre-v2/raw-only schemas."""
-    required = {"orbit", "profile", "localIndex", "compact_lrat_sha256", "stub_ready"}
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def read_stub_ready_index(
+    path: Path,
+    entries: list[InventoryEntry],
+    cert_root: Path,
+    verify_hash: bool,
+) -> set[str]:
+    """Read and validate the exact cert-root v3 packed-payload index."""
+    local_indices = [0] * len(PROFILE_NAMES)
+    expected: dict[str, tuple[str, int]] = {}
+    for entry in entries:
+        expected[entry.tag] = (PROFILE_NAMES[entry.profile], local_indices[entry.profile])
+        local_indices[entry.profile] += 1
     ready: set[str] = set()
     seen: set[str] = set()
     with path.open(newline="") as stream:
         reader = csv.DictReader(stream, delimiter="\t")
-        fields = set(reader.fieldnames or ())
-        if not required <= fields:
-            raise ValueError(f"{path}: not a cert-root v2 index; missing {required - fields}")
+        if tuple(reader.fieldnames or ()) != EXPECTED_V3_COLUMNS:
+            raise ValueError(
+                f"{path}: expected cert-root v3 header {EXPECTED_V3_COLUMNS}, "
+                f"found {reader.fieldnames}"
+            )
         for line_number, row in enumerate(reader, 2):
             tag = row["orbit"]
+            if not re.fullmatch(r"[0-9a-f]{16}", tag):
+                raise ValueError(f"{path}:{line_number}: invalid orbit tag")
             if tag in seen:
                 raise ValueError(f"{path}:{line_number}: duplicate orbit {tag}")
             seen.add(tag)
+            if tag not in expected:
+                raise ValueError(f"{path}:{line_number}: orbit is absent from inventory")
+            expected_profile, expected_index = expected[tag]
+            if row["profile"] != expected_profile or row["localIndex"] != str(expected_index):
+                raise ValueError(
+                    f"{path}:{line_number}: profile/localIndex does not resolve to {tag}"
+                )
+            hash_fields = (
+                "compact_lrat_sha256", "raw_lrat_sha256", "cnf_sha256",
+                "binary_lrat_sha256", "lz4_frame_sha256", "packed_lz4_sha256",
+            )
+            if any(not re.fullmatch(r"[0-9a-f]{64}", row[field]) for field in hash_fields):
+                raise ValueError(f"{path}:{line_number}: invalid SHA-256 field")
+            numeric_fields = (
+                "lrat_actions", "source_cnf_clauses", "compact_bytes",
+                "binary_bytes", "lz4_frame_bytes", "packed_lz4_bytes",
+            )
+            try:
+                numbers = {field: int(row[field]) for field in numeric_fields}
+            except ValueError as error:
+                raise ValueError(f"{path}:{line_number}: invalid numeric field") from error
+            if any(value < 0 for value in numbers.values()):
+                raise ValueError(f"{path}:{line_number}: negative numeric field")
             state = row["stub_ready"]
             if state not in ("0", "1"):
                 raise ValueError(f"{path}:{line_number}: stub_ready must be 0 or 1")
             if state == "1":
+                packed_sha = row["packed_lz4_sha256"]
+                payload = (
+                    cert_root / "packed" / packed_sha[:2] /
+                    f"{packed_sha}.lrat.lz4p7"
+                )
+                if not payload.is_file():
+                    raise ValueError(f"{path}:{line_number}: packed payload is missing")
+                if payload.stat().st_size != numbers["packed_lz4_bytes"]:
+                    raise ValueError(f"{path}:{line_number}: packed byte count mismatch")
+                if verify_hash and sha256(payload) != packed_sha:
+                    raise ValueError(f"{path}:{line_number}: packed SHA-256 mismatch")
                 ready.add(tag)
     return ready
 
@@ -143,8 +207,14 @@ def main() -> int:
     parser.add_argument(
         "--cert-index",
         type=Path,
-        help="cert-root v2 index; when supplied, completion requires stub_ready coverage",
+        help="cert-root v3 index; when supplied, completion requires packed stub_ready coverage",
     )
+    parser.add_argument(
+        "--cert-root",
+        type=Path,
+        help="cert-root containing packed/ (defaults to the index parent)",
+    )
+    parser.add_argument("--skip-payload-hash", action="store_true")
     parser.add_argument(
         "--require-complete",
         action="store_true",
@@ -156,7 +226,17 @@ def main() -> int:
     if len(entries) != 13_541:
         raise ValueError(f"expected 13541 inventory rows, found {len(entries)}")
     latest = read_latest_results(args.results)
-    stub_ready = read_stub_ready_index(args.cert_index) if args.cert_index else set()
+    if args.cert_root and not args.cert_index:
+        parser.error("--cert-root requires --cert-index")
+    stub_ready = (
+        read_stub_ready_index(
+            args.cert_index,
+            entries,
+            args.cert_root or args.cert_index.parent,
+            not args.skip_payload_hash,
+        )
+        if args.cert_index else set()
+    )
     rows, unknown, unknown_stubs = audit(entries, latest, stub_ready)
 
     total = Counter()
