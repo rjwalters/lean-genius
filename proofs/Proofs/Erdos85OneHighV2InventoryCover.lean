@@ -4,6 +4,7 @@ import Proofs.Erdos85OneHighV2CanonicalKey
 import Proofs.Erdos85OneHighV2Inventory
 import Proofs.Erdos85OneHighV2Enumerator
 import Proofs.Erdos85OneHighV2InventoryOrbitCheck
+import Proofs.Erdos85OneHighV2PrunedEnumComplete
 
 /-! # Connecting the executable CP4 classifier to the stored inventory -/
 
@@ -160,6 +161,49 @@ def OneHighPrunedEnumeratorComplete : Prop :=
     ∃ w ∈ enumerateOneHighFiniteTables profile.val,
       oneHighFiniteNatify w = oneHighNatRestrict table
 
+private theorem find?_zip_map_eq_some_of_mem_nodup
+    {α β : Type*} [DecidableEq α] (f : α → β)
+    (key : α) (keys : List α) (hkeys : keys.Nodup)
+    (hmem : key ∈ keys) :
+    (keys.zip (keys.map f)).find? (fun entry => entry.1 = key) =
+      some (key, f key) := by
+  induction keys with
+  | nil => simp at hmem
+  | cons head tail ih =>
+      simp only [List.nodup_cons] at hkeys
+      rcases hkeys with ⟨hhead, htail⟩
+      rw [List.mem_cons] at hmem
+      by_cases heq : head = key
+      · subst head
+        simp
+      · have htailMem : key ∈ tail :=
+          hmem.resolve_left (fun h => heq h.symm)
+        simp [heq, ih htail htailMem]
+
+theorem oneHighPrunedEnumeratorComplete :
+    OneHighPrunedEnumeratorComplete := by
+  intro profile table hadmissible
+  let values := oneHighFamilyTablePairs.map fun e => table e.1 e.2
+  let w := oneHighFiniteTableOfValues values
+  have hvalues : values ∈ enumerateOneHighTableValues profile.val := by
+    exact enumerateOneHighTableValues_complete profile.val hadmissible
+  refine ⟨w, List.mem_map.mpr ⟨values, hvalues, rfl⟩, ?_⟩
+  funext pair
+  unfold w values oneHighFiniteTableOfValues oneHighFiniteNatify
+    oneHighNatRestrict
+  have hpairsNodup : oneHighFamilyTablePairs.Nodup := by native_decide
+  have hpairsMem := oneHighRelevantPair_mem_tablePairs pair
+  change (match (oneHighFamilyTablePairs.zip
+      (oneHighFamilyTablePairs.map fun e => table e.1 e.2)).find?
+        (fun entry => entry.1 = (pair.1.1.val, pair.1.2.val)) with
+    | some entry => entry.2
+    | none => 0) % 5 = table pair.1.1.val pair.1.2.val
+  rw [find?_zip_map_eq_some_of_mem_nodup
+    (fun e => table e.1 e.2) _ _ hpairsNodup hpairsMem]
+  simp only
+  exact Nat.mod_eq_of_lt (hadmissible.entry_lt_five pair.1.1 pair.1.2
+    (Fin.ne_of_lt pair.2.1) pair.2.2)
+
 theorem oneHighFiniteRepresentativeCover_inventory_of_pruned_complete
     (hcomplete : OneHighPrunedEnumeratorComplete) :
     OneHighFiniteRepresentativeCover oneHighInventoryTables := by
@@ -196,6 +240,16 @@ theorem oneHighFiniteRepresentativeCover_inventory_of_pruned_complete
         storedFinite.toMissTable pair.1.1.val pair.1.2.val := by
     simpa [oneHighNatRestrict, oneHighFiniteNatify] using hvalues
   exact hagreeFinite.trans (hstoredAgree pair)
+
+theorem oneHighFiniteRepresentativeCover_inventory :
+    OneHighFiniteRepresentativeCover oneHighInventoryTables :=
+  oneHighFiniteRepresentativeCover_inventory_of_pruned_complete
+    oneHighPrunedEnumeratorComplete
+
+theorem oneHighRawV2OrbitCover_inventory :
+    OneHighRawV2OrbitCover oneHighInventoryTables :=
+  oneHighRawV2OrbitCover_of_finiteRepresentativeCover
+    oneHighFiniteRepresentativeCover_inventory
 
 /-- Once the executable comparison says every enumerated canonical key is in
 the authoritative inventory, the inventory is a representative cover. -/
