@@ -533,4 +533,23 @@ theorem oneHighFamilyV2SaverStepVal_semanticSound
       (hs₅.ids.id_bounds _ he₃mem).2
       (hs₅.ids.id_bounds _ hr₃.1).2
 
+theorem oneHighFamilyV2CollectSaversVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {x : Nat} (hx : x < 40) {ws : List Nat}
+    (hws : ∀ w ∈ ws, w < 40) (hb : (x / 5 ^^^ 1) < 8)
+    {ss : Array Int} {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (ws.foldl (fun input w =>
+        oneHighFamilyV2SaverStepVal R x w input) (ss, acc)).2 := by
+  induction ws generalizing ss acc with
+  | nil => exact hacc
+  | cons w ws ih =>
+      simp only [List.foldl_cons]
+      apply ih
+      · intro z hz
+        exact hws z (List.mem_cons_of_mem w hz)
+      · exact oneHighFamilyV2SaverStepVal_semanticSound R hx
+          (hws w (by simp)) hb (ss := ss) hacc
+
 end Erdos85
