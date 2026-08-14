@@ -41,6 +41,53 @@ theorem OneHighFamilyV2Admissible.toFinite_permute {profile : Nat}
         have himage := congrArg σ.1 heq
         simpa [σ.2.1] using himage)
 
+theorem oneHighRelevantPairMap_inverse
+    (π : Equiv.Perm (Fin 8))
+    (hmate : ∀ i, π (oneHighStandardMate i) =
+      oneHighStandardMate (π i))
+    (pair : OneHighRelevantPair) :
+    oneHighRelevantPairMap π⁻¹ (oneHighRelevantPairMap π pair) = pair := by
+  apply Subtype.ext
+  have hmateInv : ∀ i, π⁻¹ (oneHighStandardMate i) =
+      oneHighStandardMate (π⁻¹ i) := by
+    intro i
+    apply π.injective
+    simpa using (hmate (π⁻¹ i)).symm
+  rcases oneHighRelevantPairMap_spec hmate pair with hp | hp <;>
+    rcases oneHighRelevantPairMap_spec hmateInv
+      (oneHighRelevantPairMap π pair) with hq | hq
+  · rw [hp] at hq
+    simpa using hq
+  · rw [hp] at hq
+    have hreverse : (oneHighRelevantPairMap π⁻¹
+        (oneHighRelevantPairMap π pair)).1 = (pair.1.2, pair.1.1) := by
+      simpa using hq
+    have hlt := (oneHighRelevantPairMap π⁻¹
+      (oneHighRelevantPairMap π pair)).2.1
+    rw [hreverse] at hlt
+    exact False.elim (asymm pair.2.1 hlt)
+  · rw [hp] at hq
+    have hreverse : (oneHighRelevantPairMap π⁻¹
+        (oneHighRelevantPairMap π pair)).1 = (pair.1.2, pair.1.1) := by
+      simpa using hq
+    have hlt := (oneHighRelevantPairMap π⁻¹
+      (oneHighRelevantPairMap π pair)).2.1
+    rw [hreverse] at hlt
+    exact False.elim (asymm pair.2.1 hlt)
+  · rw [hp] at hq
+    simpa using hq
+
+theorem oneHighNatPermute_inverse {profile : Nat}
+    (σ : OneHighProfilePerm profile)
+    (w : OneHighRelevantPair → Nat) :
+    oneHighNatPermute σ.inv.1 (oneHighNatPermute σ.1 w) = w := by
+  change oneHighNatPermute σ.1.symm (oneHighNatPermute σ.1 w) = w
+  funext pair
+  unfold oneHighNatPermute
+  change w (oneHighRelevantPairMap σ.1.symm
+    (oneHighRelevantPairMap σ.1 pair)) = w pair
+  exact congrArg w (oneHighRelevantPairMap_inverse σ.1 σ.2.1 pair)
+
 /-- The parsed authoritative rows are already in the `Fin 5` range on every
 coordinate consumed by the generator. -/
 theorem oneHighInventoryRows_relevant_lt_five :
