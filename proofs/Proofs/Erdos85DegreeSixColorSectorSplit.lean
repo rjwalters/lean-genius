@@ -8489,6 +8489,72 @@ theorem degreeSix_emptySector_minimum_component_eq_zero_triangle
   · exact (degreeSix_emptySector_minimum_diagonal_two_false
       G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin htwo.1).elim
 
+/-- The zero-triangle empty-sector branch cannot have eleven components.
+The order lower bound and total order force all eleven components to have
+order three, hence all are zero-diagonal minima, contradicting trace six. -/
+theorem degreeSix_emptySector_zeroTriangle_component_count_eleven_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 11) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hthree : ∀ x : D.ConnectedComponent, x.supp.ncard = 3 := by
+    intro x
+    have hxMem : x ∈ (Finset.univ : Finset D.ConnectedComponent) :=
+      Finset.mem_univ x
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset D.ConnectedComponent)
+        (fun y ↦ y.supp.ncard) hxMem
+    have hlower : 3 * ((Finset.univ.erase x : Finset D.ConnectedComponent).card) ≤
+        ∑ y ∈ (Finset.univ.erase x : Finset D.ConnectedComponent),
+          y.supp.ncard := by
+      calc
+        3 * ((Finset.univ.erase x : Finset D.ConnectedComponent).card) =
+            ∑ _y ∈ (Finset.univ.erase x : Finset D.ConnectedComponent), 3 := by
+          simp [Nat.mul_comm]
+        _ ≤ ∑ y ∈ (Finset.univ.erase x : Finset D.ConnectedComponent),
+            y.supp.ncard := Finset.sum_le_sum fun y _ ↦ hr3 y
+    rw [htotal] at hsplit
+    change (∑ y ∈ (Finset.univ.erase x : Finset D.ConnectedComponent),
+      y.supp.ncard) + x.supp.ncard = 33 at hsplit
+    simp only [Finset.card_erase_of_mem hxMem, Finset.card_univ] at hlower
+    have hcountD : Fintype.card D.ConnectedComponent = 11 := by
+      simpa [D] using hcount
+    rw [hcountD] at hlower
+    have hxlo := hr3 x
+    omega
+  have hzero : ∀ x : D.ConnectedComponent, Q x x = 0 := by
+    intro x
+    exact (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+        (fun y ↦ by rw [hthree x, hthree y])).1
+  have htrace : (∑ x : D.ConnectedComponent, Q x x) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  simp only [hzero, Finset.sum_const_zero] at htrace
+  omega
+
 /-- The residual component-order profile `3,3,9,9,9` is impossible.  The
 zero-diagonal row of the first triangle cannot contact the other triangle;
 its off-diagonal square entry is therefore carried by the three order-nine
