@@ -5108,6 +5108,50 @@ theorem degreeSix_exists_positive_diagonal_component
   obtain ⟨c, _, hc⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
   exact ⟨c, Nat.pos_of_ne_zero hc⟩
 
+/-- If the triangle-free color sector is empty at the degree-six boundary,
+then every vertex in every chosen defect cycle has antipodal degree two.
+This is the graph-facing form of the all-antipodal branch. -/
+theorem degreeSix_antipodalGraph_degree_eq_two_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (x : ZMod c.supp.ncard) :
+    (antipodalGraph G).degree (u c x) = 2 := by
+  have hnot : c ∉ triangleFreeCycleSector G u := by rw [hempty]; simp
+  have hcx : u c x ∈ c.supp := by
+    rw [← huRange c]
+    exact ⟨x, rfl⟩
+  rcases secondOrder_defect_local_monochromatic
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (u c x) with htri | hanti
+  · exfalso
+    apply hnot
+    apply (mem_triangleFreeCycleSector_iff_degree_two_of_mem_supp
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) u
+        hu huRange huD c hcx).mpr
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset]
+    exact htri.2
+  · rw [← (antipodalGraph G).card_neighborFinset_eq_degree,
+      antipodalGraph_neighborFinset]
+    exact hanti.1
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
