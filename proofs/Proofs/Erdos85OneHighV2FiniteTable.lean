@@ -23,6 +23,32 @@ def OneHighRelevantAgreement
   ∀ pair : OneHighRelevantPair,
     left pair.1.1.val pair.1.2.val = right pair.1.1.val pair.1.2.val
 
+/-- Interpret a finite upper-triangular table as the sparse total function
+used by certificate files.  Reverse relevant coordinates are mirrored;
+irrelevant coordinates are zero. -/
+def OneHighFiniteMissTable.toMissTable
+    (table : OneHighFiniteMissTable) : OneHighMissTable := fun c j =>
+  if hc : c < 8 then
+    if hj : j < 8 then
+      let cf : Fin 8 := ⟨c, hc⟩
+      let jf : Fin 8 := ⟨j, hj⟩
+      if hlt : cf < jf then
+        if hnm : jf ≠ oneHighStandardMate cf then
+          table ⟨(cf, jf), hlt, hnm⟩
+        else 0
+      else if hgt : jf < cf then
+        if hnm : cf ≠ oneHighStandardMate jf then
+          table ⟨(jf, cf), hgt, hnm⟩
+        else 0
+      else 0
+    else 0
+  else 0
+
+@[simp] theorem OneHighFiniteMissTable.toMissTable_relevant
+    (table : OneHighFiniteMissTable) (pair : OneHighRelevantPair) :
+    table.toMissTable pair.1.1.val pair.1.2.val = table pair := by
+  simp [OneHighFiniteMissTable.toMissTable, pair.2.1, pair.2.2]
+
 theorem OneHighFamilyV2Admissible.entry_lt_five
     {profile : Nat} {table : OneHighMissTable}
     (h : OneHighFamilyV2Admissible profile table)
@@ -73,5 +99,12 @@ theorem OneHighFamilyV2Admissible.toFinite_eq_iff
     funext pair
     apply Fin.ext
     exact hagree pair
+
+theorem OneHighFamilyV2Admissible.agrees_toFinite_toMissTable
+    {profile : Nat} {table : OneHighMissTable}
+    (h : OneHighFamilyV2Admissible profile table) :
+    OneHighRelevantAgreement table h.toFinite.toMissTable := by
+  intro pair
+  simp
 
 end Erdos85
