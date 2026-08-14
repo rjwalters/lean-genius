@@ -164,7 +164,7 @@ PROGRESS:
 
 ### How Users Contribute
 
-1. **Run research sessions**: `/research erdos-340-greedy-sidon`
+1. **Run research sessions**: `/lean-research` (after claiming a problem, e.g. erdos-340-greedy-sidon)
 2. **Donate compute**: Local Lean builds verify proofs
 3. **Share API access**: Aristotle jobs run on user's API key
 4. **Review and merge**: Human oversight on proof integration

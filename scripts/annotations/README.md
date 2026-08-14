@@ -39,15 +39,19 @@ At build time, anchors are resolved to actual line numbers.
 
 ## File Structure
 
-For each proof:
+For a proof migrated to anchors:
 
 ```
 src/data/proofs/{proof-name}/
 ├── annotations.source.json   # Source: anchors (what you edit)
 ├── annotations.json          # Generated: line numbers (for frontend)
-├── meta.json
-└── index.ts
+└── meta.json
 ```
+
+Only a small fraction of proofs have been migrated (currently ~56 of ~4,800
+gallery entries have an `annotations.source.json`). The rest carry a
+hand-maintained line-based `annotations.json`, which the build checks via the
+legacy validation path below.
 
 ## Commands
 

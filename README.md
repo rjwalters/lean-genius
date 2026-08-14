@@ -105,9 +105,11 @@ src/
 │   └── ui/           # Shared UI primitives
 ├── contexts/         # React contexts (auth)
 ├── data/proofs/      # Proof content (Lean source, annotations, metadata)
+├── hooks/            # Shared React hooks
 ├── lib/              # Utilities (Lean tokenizer, etc.)
 ├── pages/            # Route pages
-└── types/            # TypeScript types
+├── types/            # TypeScript types
+└── utils/            # Misc helpers
 
 proofs/
 ├── Proofs/           # Individual Lean proof files
@@ -122,9 +124,9 @@ scripts/              # Build, agent, and deployment scripts
 research/             # Research problem tracking and state
 infra/                # Infrastructure-as-code (unapplied Terraform skeleton)
 mcp-servers/          # MCP server implementations
-external/             # Vendored external artifacts
+external/             # Git submodules (erdosproblems, formal-conjectures)
 public/               # Build-generated static assets (gitignored)
-aristotle-results/    # Retrieved Aristotle proof-search output
+aristotle-results/    # Retrieved Aristotle proof-search output (gitignored)
 ```
 
 ## Working with Proofs
