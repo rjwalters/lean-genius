@@ -2100,6 +2100,49 @@ theorem nine_component_support_count_census
     p = 5 ∧ r = 3 ∧ np = 1 ∧ (nr = 2 ∨ nr = 3) := by
   omega
 
+/-- A finite sum dominates its baseline contribution plus one further unit
+for every term strictly above the baseline. -/
+theorem mul_card_add_card_filter_lt_le_sum
+    {C : Type*} [DecidableEq C] (S : Finset C) (f : C → ℕ) (a : ℕ)
+    (hbase : ∀ x ∈ S, a ≤ f x) :
+    a * S.card + (S.filter fun x ↦ a < f x).card ≤ ∑ x ∈ S, f x := by
+  calc
+    a * S.card + (S.filter fun x ↦ a < f x).card =
+        ∑ x ∈ S, (a + if a < f x then 1 else 0) := by
+      rw [Finset.sum_add_distrib]
+      simp [Nat.mul_comm]
+    _ ≤ ∑ x ∈ S, f x := by
+      apply Finset.sum_le_sum
+      intro x hx
+      split_ifs with hlt
+      · omega
+      · exact hbase x hx
+
+/-- If a positive finite weight has total at most six, then its total is at
+most the support cardinality plus six times the number of weights above one. -/
+theorem sum_le_card_add_six_mul_card_filter_one_lt
+    {C : Type*} [DecidableEq C] (S : Finset C) (f : C → ℕ)
+    (hpos : ∀ x ∈ S, 1 ≤ f x) (hsum : (∑ x ∈ S, f x) ≤ 6) :
+    (∑ x ∈ S, f x) ≤
+      S.card + 6 * (S.filter fun x ↦ 1 < f x).card := by
+  have hupper : ∀ x ∈ S, f x ≤ 6 := by
+    intro x hx
+    exact le_trans (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hx) hsum
+  calc
+    (∑ x ∈ S, f x) ≤
+        ∑ x ∈ S, (1 + 6 * if 1 < f x then 1 else 0) := by
+      apply Finset.sum_le_sum
+      intro x hx
+      split_ifs with hlt
+      · have hu := hupper x hx
+        omega
+      · have := hpos x hx
+        omega
+    _ = S.card + 6 * (S.filter fun x ↦ 1 < f x).card := by
+      rw [Finset.sum_add_distrib]
+      rw [← Finset.mul_sum]
+      simp [Nat.mul_comm]
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
