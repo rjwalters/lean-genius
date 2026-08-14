@@ -46,4 +46,118 @@ def parsePackedOrderFortyNineLratProof
     | .ok proof => proof
     | .error _ => #[]
 
+private def readOrderFortyNineUInt32LE
+    (data : ByteArray) (pos : Nat) : Option UInt32 := do
+  if pos + 4 > data.size then none else
+  return (data.get! pos).toUInt32 |||
+    (data.get! (pos + 1)).toUInt32 <<< 8 |||
+    (data.get! (pos + 2)).toUInt32 <<< 16 |||
+    (data.get! (pos + 3)).toUInt32 <<< 24
+
+private partial def readOrderFortyNineLz4Length
+    (data : ByteArray) (stop pos total : Nat) : Option (Nat × Nat) := do
+  if pos >= stop then none else
+  let byte := data.get! pos |>.toNat
+  let total := total + byte
+  if byte = 255 then
+    readOrderFortyNineLz4Length data stop (pos + 1) total
+  else
+    return (total, pos + 1)
+
+private partial def copyOrderFortyNineLz4Match
+    (maximum offset count : Nat) (output : ByteArray) : Option ByteArray := do
+  if count = 0 then return output
+  if output.size >= maximum || offset = 0 || offset > output.size then none else
+  let output := output.push (output.get! (output.size - offset))
+  copyOrderFortyNineLz4Match maximum offset (count - 1) output
+
+private partial def decodeOrderFortyNineLz4Block
+    (data : ByteArray) (start stop maximum : Nat)
+    (initial : ByteArray) : Option ByteArray :=
+  go start initial
+where
+  go (pos : Nat) (output : ByteArray) : Option ByteArray := do
+    if pos = stop then return output
+    if pos > stop then none else
+    let token := data.get! pos
+    let literalNibble := (token >>> 4).toNat
+    let (literalLength, pos) ←
+      if literalNibble = 15 then
+        readOrderFortyNineLz4Length data stop (pos + 1) 15
+      else
+        some (literalNibble, pos + 1)
+    if pos + literalLength > stop || output.size + literalLength > maximum then
+      none
+    else
+      let output := output.append (data.extract pos (pos + literalLength))
+      let pos := pos + literalLength
+      if pos = stop then return output
+      if pos + 2 > stop then none else
+      let offset := (data.get! pos).toNat + 256 * (data.get! (pos + 1)).toNat
+      let matchNibble := (token &&& 15).toNat
+      let (matchLength, pos) ←
+        if matchNibble = 15 then
+          readOrderFortyNineLz4Length data stop (pos + 2) 19
+        else
+          some (matchNibble + 4, pos + 2)
+      if output.size + matchLength > maximum then none else
+      let output ← copyOrderFortyNineLz4Match maximum offset matchLength output
+      go pos output
+
+/-- Decode one ordinary LZ4 frame, with output bounded by and required to equal
+`expectedSize`.  Header and content checksums are skipped: certificate integrity
+is supplied by the subsequent pure LRAT parse and positive checker theorem, and
+operational tooling additionally records SHA-256 provenance. -/
+partial def decodeOrderFortyNineLz4Frame
+    (data : ByteArray) (expectedSize : Nat) : Option ByteArray := do
+  if data.size < 7 then none else
+  if readOrderFortyNineUInt32LE data 0 != some 0x184D2204 then none else
+  let flags := data.get! 4
+  if flags &&& 0xC0 != 0x40 || flags &&& 0x02 != 0 then none else
+  let hasBlockChecksum := flags &&& 0x10 != 0
+  let hasContentSize := flags &&& 0x08 != 0
+  let hasContentChecksum := flags &&& 0x04 != 0
+  let hasDictionary := flags &&& 0x01 != 0
+  let headerBytes := 2 + (if hasContentSize then 8 else 0) +
+    (if hasDictionary then 4 else 0) + 1
+  let start := 4 + headerBytes
+  if start > data.size then none else
+  blocks start (ByteArray.emptyWithCapacity expectedSize) hasBlockChecksum
+    hasContentChecksum
+where
+  blocks (pos : Nat) (output : ByteArray)
+      (hasBlockChecksum hasContentChecksum : Bool) : Option ByteArray := do
+    let rawSize ← readOrderFortyNineUInt32LE data pos
+    let pos := pos + 4
+    if rawSize = 0 then
+      let endPos := pos + (if hasContentChecksum then 4 else 0)
+      if endPos = data.size && output.size = expectedSize then return output else none
+    else
+      let uncompressed := rawSize &&& 0x80000000 != 0
+      let blockSize := (rawSize &&& 0x7fffffff).toNat
+      if pos + blockSize > data.size then none else
+      let output ←
+        if uncompressed then
+          if output.size + blockSize > expectedSize then none else
+          some (output.append (data.extract pos (pos + blockSize)))
+        else
+          decodeOrderFortyNineLz4Block data pos (pos + blockSize) expectedSize output
+      let pos := pos + blockSize + (if hasBlockChecksum then 4 else 0)
+      blocks pos output hasBlockChecksum hasContentChecksum
+
+/-- Parse a 7-bit-packed LZ4 frame containing native binary LRAT.  Every
+decode or parse error fails closed to the empty proof. -/
+def parsePackedLz4OrderFortyNineLratProof
+    (packed : String) (frameBytes binaryBytes : Nat) : Array LRAT.IntAction :=
+  let frame := unpackOrderFortyNineSevenBit packed.toUTF8 frameBytes
+  if frame.size != frameBytes then
+    #[]
+  else
+    match decodeOrderFortyNineLz4Frame frame binaryBytes with
+    | none => #[]
+    | some binary =>
+        match LRAT.parseLRATProof binary with
+        | .ok proof => proof
+        | .error _ => #[]
+
 end Erdos85
