@@ -287,4 +287,183 @@ theorem oneHighFamilyIdsSound_v2F3aClauses
     (oneHighFamilyIdsSound_v2F2Clauses a table)
     (fun pair st h => oneHighFamilyIdsSound_v2F3aBlockStep h a pair)
 
+/-! ## F3b unpaired-product totals -/
+
+def oneHighFamilyTableGet (table : OneHighMissTable) (c j : Nat) : Nat :=
+  table (min c j) (max c j)
+
+def oneHighFamilyV2UnpairedMidpoints (a b : Nat) : List Nat :=
+  (List.range 40).filter fun w =>
+    w / 5 ≠ a ∧ w / 5 ≠ b ∧
+      w / 5 ≠ (a ^^^ 1) ∧ w / 5 ≠ (b ^^^ 1)
+
+def oneHighFamilyV2PartnerVertex (x : Nat) : Nat :=
+  if x % 5 = 0 ∨ x % 5 = 2 then x + 1 else x - 1
+
+def oneHighFamilyV2AppendEdge (i j : Nat)
+    (accst : Array Int × OneHighFamilyGenState) :
+    Array Int × OneHighFamilyGenState :=
+  let (lits, st) := accst
+  let (e, st) := oneHighFamilyEdgeId i j st
+  (lits.push (e : Int), st)
+
+theorem oneHighFamilyIdsSound_v2AppendEdge
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (lits : Array Int) (i j : Nat) :
+    OneHighFamilyIdsSound (oneHighFamilyV2AppendEdge i j (lits, st)).2 := by
+  exact oneHighFamilyIdsSound_edgeId h i j
+
+def oneHighFamilyV2MaybeAppendEdge (enabled : Bool) (i j : Nat)
+    (accst : Array Int × OneHighFamilyGenState) :
+    Array Int × OneHighFamilyGenState :=
+  if enabled then oneHighFamilyV2AppendEdge i j accst else accst
+
+theorem oneHighFamilyIdsSound_v2MaybeAppendEdge
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (lits : Array Int) (enabled : Bool) (i j : Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyV2MaybeAppendEdge enabled i j (lits, st)).2 := by
+  simp only [oneHighFamilyV2MaybeAppendEdge]
+  split
+  · exact oneHighFamilyIdsSound_v2AppendEdge h lits i j
+  · exact h
+
+def oneHighFamilyV2FinishCommon (cs ors : Array Int) (x z : Nat)
+    (st : OneHighFamilyGenState) : Array Int × OneHighFamilyGenState :=
+  let (c, st) := oneHighFamilyCommonAtomId x z st
+  let st := (oneHighFamilyEmit (-(c : Int) :: ors.toList) st).2
+  let st := ors.foldl
+    (fun st lit => (oneHighFamilyEmit [-lit, (c : Int)] st).2) st
+  (cs.push (c : Int), st)
+
+theorem oneHighFamilyIdsSound_v2FinishCommon
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (cs ors : Array Int) (x z : Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyV2FinishCommon cs ors x z st).2 := by
+  simp only [oneHighFamilyV2FinishCommon]
+  generalize hc : oneHighFamilyCommonAtomId x z st = outC
+  rcases outC with ⟨c, stC⟩
+  have hsC := oneHighFamilyIdsSound_commonAtomId h x z
+  rw [hc] at hsC
+  exact oneHighFamilyIdsSound_arrayFoldl ors
+    (fun st lit => (oneHighFamilyEmit [-lit, (c : Int)] st).2)
+    (oneHighFamilyIdsSound_emit hsC _) (by
+      intro st lit hs
+      exact oneHighFamilyIdsSound_emit hs _)
+
+def oneHighFamilyV2UnpairedCommonStep
+    (profile a b x z : Nat)
+    (accst : Array Int × OneHighFamilyGenState) :
+    Array Int × OneHighFamilyGenState :=
+  let (cs, st) := accst
+  let (ors, st) := (oneHighFamilyV2UnpairedMidpoints a b).foldl
+    (fun accst w => oneHighFamilyMidpointTseitinStep x z w accst)
+    (#[], st)
+  let (ors, st) := oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z (ors, st)
+  let (ors, st) := oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) (ors, st)
+  oneHighFamilyV2FinishCommon cs ors x z st
+
+theorem oneHighFamilyIdsSound_v2UnpairedCommonStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (cs : Array Int) (profile a b x z : Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyV2UnpairedCommonStep profile a b x z (cs, st)).2 := by
+  simp only [oneHighFamilyV2UnpairedCommonStep]
+  generalize hmids : (oneHighFamilyV2UnpairedMidpoints a b).foldl
+    (fun accst w => oneHighFamilyMidpointTseitinStep x z w accst)
+    (#[], st) = outM
+  rcases outM with ⟨ors, stM⟩
+  have hsM := oneHighFamilyIdsSound_foldlAccum
+    (oneHighFamilyV2UnpairedMidpoints a b)
+    (fun w accst => oneHighFamilyMidpointTseitinStep x z w accst)
+    #[] h (by
+      intro w ors st hw
+      exact oneHighFamilyIdsSound_midpointTseitinStep hw ors x z w)
+  rw [hmids] at hsM
+  generalize hxedge : oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z (ors, stM) = outX
+  rcases outX with ⟨orsX, stX⟩
+  have hsX := oneHighFamilyIdsSound_v2MaybeAppendEdge hsM ors
+    (oneHighFamilyVertexMatched profile x)
+    (oneHighFamilyV2PartnerVertex x) z
+  rw [hxedge] at hsX
+  generalize hzedge : oneHighFamilyV2MaybeAppendEdge
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z) (orsX, stX) = outZ
+  rcases outZ with ⟨orsZ, stZ⟩
+  have hsZ := oneHighFamilyIdsSound_v2MaybeAppendEdge hsX orsX
+    (oneHighFamilyVertexMatched profile z)
+    x (oneHighFamilyV2PartnerVertex z)
+  rw [hzedge] at hsZ
+  exact oneHighFamilyIdsSound_v2FinishCommon hsZ cs orsZ x z
+
+def oneHighFamilyV2F3bBlockStep
+    (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat)
+    (st : OneHighFamilyGenState) : OneHighFamilyGenState :=
+  let a := pair.1
+  let b := pair.2
+  let (cs, st) := (oneHighFamilyBlockVertices a).foldl (fun accst x =>
+    (oneHighFamilyBlockVertices b).foldl (fun accst z =>
+      oneHighFamilyV2UnpairedCommonStep profile a b x z accst) accst)
+    (#[], st)
+  let bound := 20 + oneHighFamilyTableGet table a (b ^^^ 1) +
+    oneHighFamilyTableGet table b (a ^^^ 1)
+  if bound ≤ cs.size then oneHighFamilyEqualsBlock cs bound st else st
+
+theorem oneHighFamilyIdsSound_v2F3bBlockStep
+    {st : OneHighFamilyGenState} (h : OneHighFamilyIdsSound st)
+    (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat) :
+    OneHighFamilyIdsSound
+      (oneHighFamilyV2F3bBlockStep profile table pair st) := by
+  simp only [oneHighFamilyV2F3bBlockStep]
+  generalize hcommons : (oneHighFamilyBlockVertices pair.1).foldl
+    (fun accst x => (oneHighFamilyBlockVertices pair.2).foldl
+      (fun accst z => oneHighFamilyV2UnpairedCommonStep
+        profile pair.1 pair.2 x z accst) accst) (#[], st) = out
+  rcases out with ⟨cs, stC⟩
+  have hc := oneHighFamilyIdsSound_foldlAccum
+    (oneHighFamilyBlockVertices pair.1)
+    (fun x accst => (oneHighFamilyBlockVertices pair.2).foldl
+      (fun accst z => oneHighFamilyV2UnpairedCommonStep
+        profile pair.1 pair.2 x z accst) accst) #[] h (by
+      intro x cs st hx
+      exact oneHighFamilyIdsSound_foldlAccum
+        (oneHighFamilyBlockVertices pair.2)
+        (fun z accst => oneHighFamilyV2UnpairedCommonStep
+          profile pair.1 pair.2 x z accst)
+        cs hx (by
+          intro z cs st hz
+          exact oneHighFamilyIdsSound_v2UnpairedCommonStep
+            hz cs profile pair.1 pair.2 x z))
+  rw [hcommons] at hc
+  split
+  · exact oneHighFamilyIdsSound_equalsBlock hc cs _
+  · exact hc
+
+/-- Complete exact generator for `sweep_worker.py` with `arm:v2`. -/
+def oneHighFamilyV2Clauses
+    (profile : Nat) (table : OneHighMissTable) : OneHighFamilyGenState :=
+  oneHighFamilyRunList oneHighFamilyTablePairs
+    (oneHighFamilyV2F3bBlockStep profile table)
+    (oneHighFamilyV2F3aClauses profile table)
+
+theorem oneHighFamilyIdsSound_v2Clauses
+    (profile : Nat) (table : OneHighMissTable) :
+    OneHighFamilyIdsSound (oneHighFamilyV2Clauses profile table) := by
+  exact oneHighFamilyIdsSound_runList _ _
+    (oneHighFamilyIdsSound_v2F3aClauses profile table)
+    (fun pair st h =>
+      oneHighFamilyIdsSound_v2F3bBlockStep h profile table pair)
+
+def oneHighFamilyV2SatCnf
+    (profile : Nat) (table : OneHighMissTable) : Std.Sat.CNF Nat where
+  clauses := dimacsFormulaToSatClauses
+    (oneHighFamilyV2Clauses profile table).clauses
+
 end Erdos85
