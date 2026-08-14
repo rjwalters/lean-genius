@@ -1567,6 +1567,136 @@ theorem false_of_minimum_diagonal_two_order_nine
     have := hminSize x
     omega
 
+/-- A minimum diagonal-two row of order seven is impossible.  Weighted
+Cauchy on its positive off-diagonal support forces that support to occupy at
+least nineteen vertices.  Its order is a positive multiple of seven and at
+most twenty-six, hence exactly twenty-one; the remaining five vertices then
+contradict the minimum component order seven. -/
+theorem false_of_minimum_diagonal_two_order_seven
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcsize : size c = 7) (hminSize : ∀ x, 7 ≤ size x)
+    (hdiag : Q c c = 2)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hdvd : ∀ x, 0 < Q c x → 7 ∣ size x)
+    (hsq : ∑ x, Q c x * Q x c = 10) : False := by
+  let P := (Finset.univ.filter fun x ↦ 0 < Q c x).erase c
+  have hcPos : 0 < Q c c := by rw [hdiag]; norm_num
+  have hcFilter : c ∈ (Finset.univ.filter fun x ↦ 0 < Q c x) := by
+    simp [hcPos]
+  have hrowP : (∑ x ∈ P, Q c x) = 4 := by
+    have hsumFilter :
+        (∑ x ∈ (Finset.univ.filter fun x ↦ 0 < Q c x), Q c x) = 6 := by
+      calc
+        _ = ∑ x, Q c x := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 6 := hrow
+    have hs := Finset.sum_erase_add
+      (Finset.univ.filter fun x ↦ 0 < Q c x) (Q c) hcFilter
+    dsimp [P]
+    rw [hdiag] at hs
+    omega
+  have hprodP : (∑ x ∈ P, Q c x * Q x c) = 6 := by
+    have hsumFilter :
+        (∑ x ∈ (Finset.univ.filter fun x ↦ 0 < Q c x),
+          Q c x * Q x c) = 10 := by
+      calc
+        _ = ∑ x, Q c x * Q x c := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 10 := hsq
+    have hs := Finset.sum_erase_add
+      (Finset.univ.filter fun x ↦ 0 < Q c x)
+        (fun x ↦ Q c x * Q x c) hcFilter
+    dsimp [P]
+    rw [hdiag] at hs
+    omega
+  have hPsubset : P ⊆ (Finset.univ.erase c : Finset C) := by
+    intro x hx
+    exact Finset.mem_erase.mpr
+      ⟨(Finset.mem_erase.mp hx).1, Finset.mem_univ x⟩
+  have hsizeU : (∑ x ∈ (Finset.univ.erase c : Finset C), size x) = 26 := by
+    have hs := Finset.sum_erase_add
+      (Finset.univ : Finset C) size (Finset.mem_univ c)
+    rw [htotal, hcsize] at hs
+    omega
+  have hsizePle : (∑ x ∈ P, size x) ≤ 26 := by
+    calc
+      (∑ x ∈ P, size x) ≤
+          ∑ x ∈ (Finset.univ.erase c : Finset C), size x :=
+        Finset.sum_le_sum_of_subset_of_nonneg hPsubset
+          (fun _ _ _ ↦ Nat.zero_le _)
+      _ = 26 := hsizeU
+  have hsizePdvd : 7 ∣ ∑ x ∈ P, size x := by
+    apply Finset.dvd_sum
+    intro x hx
+    have hxFilter := (Finset.mem_erase.mp hx).2
+    exact hdvd x (Finset.mem_filter.mp hxFilter).2
+  have hseven : (7 : ℝ) ≠ 0 := by norm_num
+  have hcs := Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul
+    (R := ℝ) P
+    (r := fun x ↦ (Q c x : ℝ))
+    (f := fun x ↦ (size x : ℝ))
+    (g := fun x ↦ ((Q c x * Q x c : ℕ) : ℝ) / 7)
+    (fun _ _ ↦ by positivity) (fun _ _ ↦ by positivity) (by
+      intro x hx
+      have hb := hbal x
+      rw [hcsize] at hb
+      have hbR : (7 : ℝ) * (Q c x : ℝ) =
+          (size x : ℝ) * (Q x c : ℝ) := by exact_mod_cast hb
+      apply le_of_eq
+      rw [← mul_div_assoc]
+      apply (eq_div_iff hseven).2
+      push_cast
+      calc
+        (Q c x : ℝ) ^ 2 * 7 =
+            (Q c x : ℝ) * ((7 : ℝ) * Q c x) := by ring
+        _ = (Q c x : ℝ) * ((size x : ℝ) * Q x c) := by rw [hbR]
+        _ = (size x : ℝ) * ((Q c x : ℝ) * Q x c) := by ring)
+  have hsizeR : (∑ x ∈ P, (size x : ℝ)) =
+      ((∑ x ∈ P, size x : ℕ) : ℝ) := by norm_num
+  have hrowR : (∑ x ∈ P, (Q c x : ℝ)) = 4 := by exact_mod_cast hrowP
+  have hprodR :
+      (∑ x ∈ P, (((Q c x * Q x c : ℕ) : ℝ) / 7)) = 6 / 7 := by
+    rw [← Finset.sum_div]
+    congr 1
+    exact_mod_cast hprodP
+  rw [hsizeR, hrowR, hprodR] at hcs
+  have hsizePge : 19 ≤ ∑ x ∈ P, size x := by
+    by_contra hnot
+    have hle18 : (∑ x ∈ P, size x) ≤ 18 := by omega
+    have hle18R : (((∑ x ∈ P, size x : ℕ) : ℝ)) ≤ 18 := by
+      exact_mod_cast hle18
+    norm_num at hcs
+    nlinarith
+  have hsizeP : (∑ x ∈ P, size x) = 21 := by
+    rcases hsizePdvd with ⟨k, hk⟩
+    omega
+  let R := (Finset.univ.erase c : Finset C) \ P
+  have hsizeRest : (∑ x ∈ R, size x) = 5 := by
+    have hs : (∑ x ∈ R, size x) + (∑ x ∈ P, size x) =
+        ∑ x ∈ (Finset.univ.erase c : Finset C), size x :=
+      Finset.sum_sdiff hPsubset
+    dsimp [R] at hs ⊢
+    omega
+  have hsumNe : (∑ x ∈ R, size x) ≠ 0 := by omega
+  obtain ⟨x, hxR, hxne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumNe
+  have hxle : size x ≤ ∑ y ∈ R, size y :=
+    Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hxR
+  have := hminSize x
+  omega
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -7722,6 +7852,66 @@ theorem degreeSix_minimum_diagonal_two_order_five_or_seven
   · exact Or.inr h7
   · exact (degreeSix_minimum_diagonal_two_order_nine_false
       G hfree hmin hcard c hcmin h9 hdiag).elim
+
+/-- Order seven is impossible for a globally minimum diagonal-two component.
+Weighted support Cauchy forces twenty-one positive-support vertices and hence
+an impossible five-vertex remainder. -/
+theorem degreeSix_minimum_diagonal_two_order_seven_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hcsize : c.supp.ncard = 7)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hdvd : ∀ x : D.ConnectedComponent, 0 < Q c x →
+      7 ∣ x.supp.ncard := by
+    intro x hpos
+    have hdiv := minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin x hpos
+    simpa [hcsize] using hdiv
+  have hsq10 : ∑ x : D.ConnectedComponent, Q c x * Q x c = 10 := by
+    simpa [hcsize] using hsq
+  exact false_of_minimum_diagonal_two_order_seven Q
+    (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hcsize
+      (fun x ↦ by simpa [hcsize] using hcmin x)
+      (by simpa [Q, D] using hdiag) htotal hrow hbal hdvd hsq10
+
+/-- A globally minimum diagonal-two component at the degree-six boundary has
+order exactly five. -/
+theorem degreeSix_minimum_diagonal_two_order_eq_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    c.supp.ncard = 5 := by
+  rcases degreeSix_minimum_diagonal_two_order_five_or_seven
+      G hfree hmin hcard hr3 c hcmin hdiag with h5 | h7
+  · exact h5
+  · exact (degreeSix_minimum_diagonal_two_order_seven_false
+      G hfree hmin hcard c hcmin h7 hdiag).elim
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
