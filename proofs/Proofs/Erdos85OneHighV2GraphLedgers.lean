@@ -9,6 +9,45 @@ from the byte-exact generator and its valuation/state mechanics.
 
 namespace Erdos85
 
+/-- The five encoded vertices belonging to a branch. -/
+def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
+  Finset.univ.filter fun x =>
+    Fin.divNat (m := 8) (n := 5) x = b
+
+theorem oneHighFamilyBlockFinset_card (b : Fin 8) :
+    (oneHighFamilyBlockFinset b).card = 5 := by
+  native_decide +revert
+
+theorem oneHighFamilyBlockFinset_cross_degree_le_one
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (c j : Fin 8) (x : Fin 40) (_hx : x ∈ oneHighFamilyBlockFinset c) :
+    (R.neighborFinset x ∩ oneHighFamilyBlockFinset j).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro y hy z hz
+  have hy' := Finset.mem_inter.mp hy
+  have hz' := Finset.mem_inter.mp hz
+  have hyBlock := (Finset.mem_filter.mp hy'.2).2
+  have hzBlock := (Finset.mem_filter.mp hz'.2).2
+  by_contra hyz
+  exact hc.relation.2.2.2.2.1 x y z hyz (hyBlock.trans hzBlock.symm)
+    ⟨(R.mem_neighborFinset x y).mp hy'.1,
+      (R.mem_neighborFinset x z).mp hz'.1⟩
+
+/-- The full five-vertex directed miss deficit is symmetric.  This is the
+encoded equal-shore bipartite incidence argument underlying F1. -/
+theorem oneHighFamilyFullMissDeficit_symm
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R) (c j : Fin 8) :
+    ((oneHighFamilyBlockFinset c).filter fun x =>
+      (R.neighborFinset x ∩ oneHighFamilyBlockFinset j).card = 0).card =
+    ((oneHighFamilyBlockFinset j).filter fun x =>
+      (R.neighborFinset x ∩ oneHighFamilyBlockFinset c).card = 0).card := by
+  apply card_filter_no_cross_neighbor_eq R
+  · rw [oneHighFamilyBlockFinset_card, oneHighFamilyBlockFinset_card]
+  · exact oneHighFamilyBlockFinset_cross_degree_le_one a R hc c j
+  · exact oneHighFamilyBlockFinset_cross_degree_le_one a R hc j c
+
 theorem oneHighFamilyFoldl_append_pairs
     (x : Nat) (zs : List Nat) (init : List (Nat × Nat)) :
     zs.foldl (fun pairs z => pairs ++ [(x, z)]) init =
