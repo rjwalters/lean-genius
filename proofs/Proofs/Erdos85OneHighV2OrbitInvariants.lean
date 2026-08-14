@@ -10,6 +10,19 @@ open SimpleGraph
 
 noncomputable section
 
+/-- The finite combinatorial conditions enumerated by
+`enumerate_h1_miss_tables.py`, stated on the 24 relevant non-mate unordered
+coordinates.  Irrelevant diagonal/mate values are deliberately unconstrained. -/
+structure OneHighFamilyV2Admissible
+    (profile : Nat) (table : OneHighMissTable) : Prop where
+  symm : ∀ (c j : Fin 8), j ≠ c →
+    j ≠ oneHighStandardMate c →
+      table c.val j.val = table j.val c.val
+  row_sum : ∀ c : Fin 8,
+    (∑ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+      table c.val j.val) =
+        2 * oneHighFamilyInternalEdges profile c
+
 /-- The directed miss matrix of a packaged one-high presentation is
 symmetric.  This is the graph-side justification for storing only the
 upper-triangular part of an orbit table. -/
@@ -108,6 +121,24 @@ theorem OneHighRawV2Presentation.graphTable_row_sum
           p.constraints s u hus hum
     _ = 2 * oneHighFamilyInternalEdges p.profile (p.branchLabel s) :=
       p.sum_far_missCount G hfree hv s
+
+/-- The exact v2 table extracted from every raw one-high presentation lies
+in the same finite admissible class enumerated by the artifact generator. -/
+theorem OneHighRawV2Presentation.graphTable_admissible
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) :
+    let E := oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel
+    let R := oneHighRelabeledLeafGraph G v E
+    OneHighFamilyV2Admissible p.profile
+      (oneHighFamilyGraphTable R p.profile) := by
+  intro E R
+  refine ⟨?_, ?_⟩
+  · exact (oneHighFamilyV2F1Ledger_of_constraints
+      p.profile R p.constraints).table_symm
+  · intro c
+    simpa using p.graphTable_row_sum G hfree hv (p.branchLabel.symm c)
 
 end
 
