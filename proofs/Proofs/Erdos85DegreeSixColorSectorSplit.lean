@@ -5300,6 +5300,51 @@ theorem degreeSix_exists_original_chord_in_antipodal_component_of_sector_empty
     ((antipodalGraph_adj G x y).mp hAxy)
   exact hfar.2.1 hxy
 
+/-- Coordinate form of the antipodal-cycle chord: the endpoints are neither
+equal nor consecutive in either cyclic direction. -/
+theorem degreeSix_exists_separated_original_chord_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    ∃ (c : (secondOrderDefectGraph G).ConnectedComponent)
+      (i j : ZMod c.supp.ncard),
+      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) := by
+  obtain ⟨c, x, y, hx, hy, hxy, hnotD⟩ :=
+    degreeSix_exists_original_chord_in_antipodal_component_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hempty
+  rw [← huRange c] at hx hy
+  obtain ⟨i, rfl⟩ := hx
+  obtain ⟨j, rfl⟩ := hy
+  have hij : i ≠ j := by
+    intro h
+    subst j
+    exact G.loopless.irrefl _ hxy
+  have hjminus : j ≠ i - 1 := by
+    intro h
+    apply hnotD
+    rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
+    simp [h]
+  have hjplus : j ≠ i + 1 := by
+    intro h
+    apply hnotD
+    rw [← (secondOrderDefectGraph G).mem_neighborFinset, huD]
+    simp [h]
+  exact ⟨c, i, j, hij, hjminus, hjplus, hxy⟩
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
