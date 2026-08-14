@@ -124,6 +124,101 @@ theorem OneHighRawV2Presentation.exists_relabel
       constraints := hc }
   exact ⟨p', rfl, rfl, rfl⟩
 
+/-- The rebuilt presentation realizes the pullback action on every table
+coordinate consumed by the exact-v2 generator.  Fresh within-branch labels
+do not affect this statement because graph-table entries are intrinsic branch
+miss counts. -/
+theorem OneHighRawV2Presentation.exists_relabel_graphTable_agrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (σ : OneHighProfilePerm p.profile) :
+    ∃ p' : OneHighRawV2Presentation G hfree v,
+      p'.mate = p.mate ∧ p'.profile = p.profile ∧
+      p'.branchLabel = p.relabelBranch σ ∧
+      OneHighTableRelevantAgree
+        (oneHighFamilyGraphTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v
+              p'.branchLabel p'.leafLabel)) p'.profile)
+        (σ.permuteTable
+          (oneHighFamilyGraphTable
+            (oneHighRelabeledLeafGraph G v
+              (oneHighLeafFinFortyEquiv G hfree v
+                p.branchLabel p.leafLabel)) p.profile)) := by
+  classical
+  obtain ⟨p', hmate, hprofile, hlabel⟩ :=
+    p.exists_relabel G hfree hmin hcard hv σ
+  refine ⟨p', hmate, hprofile, hlabel, ?_⟩
+  intro pair hpair
+  have hp := oneHighFamilyTablePairs_mem_bounds hpair
+  let c : Fin 8 := ⟨pair.1, hp.1⟩
+  let j : Fin 8 := ⟨pair.2, hp.2.1⟩
+  let s' := p'.branchLabel.symm c
+  let u' := p'.branchLabel.symm j
+  let s := p.branchLabel.symm (σ.1.symm c)
+  let u := p.branchLabel.symm (σ.1.symm j)
+  have hu's' : u' ≠ s' := by
+    intro h
+    have := congrArg p'.branchLabel h
+    simp [u', s'] at this
+    exact (Fin.ne_of_lt hp.2.2.1) this.symm
+  have hu'm' : u' ≠ p'.mate s' := by
+    intro h
+    have hh := congrArg p'.branchLabel h
+    rw [p'.branch_mate] at hh
+    simp [u', s'] at hh
+    have hval := congrArg Fin.val hh
+    rw [oneHighStandardMate_val_eq_xor] at hval
+    exact hp.2.2.2 hval
+  have hus : u ≠ s := by
+    intro h
+    have hh := congrArg p.branchLabel h
+    simp [u, s] at hh
+    exact (Fin.ne_of_lt hp.2.2.1) hh.symm
+  have hum : u ≠ p.mate s := by
+    intro h
+    have hh := congrArg p.branchLabel h
+    rw [p.branch_mate] at hh
+    simp only [u, s, Equiv.apply_symm_apply] at hh
+    have hcj := congrArg σ.1 hh
+    rw [σ.1.apply_symm_apply, σ.2.1, σ.1.apply_symm_apply] at hcj
+    have hval := congrArg Fin.val hcj
+    rw [oneHighStandardMate_val_eq_xor] at hval
+    exact hp.2.2.2 hval
+  have hnew := oneHighFamilyGraphTable_eq_highBranchMissCount
+    G hfree v p'.mate p'.branchLabel p'.branch_mate p'.leafLabel
+      p'.profile p'.constraints s' u' hu's' hu'm'
+  have hold := oneHighFamilyGraphTable_eq_highBranchMissCount
+    G hfree v p.mate p.branchLabel p.branch_mate p.leafLabel
+      p.profile p.constraints s u hus hum
+  have hnew' : oneHighFamilyGraphTable
+      (oneHighRelabeledLeafGraph G v
+        (oneHighLeafFinFortyEquiv G hfree v
+          p'.branchLabel p'.leafLabel)) p'.profile c.val j.val =
+      highBranchMissCount G v s' u' := by
+    simpa [s', u'] using hnew
+  have hold' : oneHighFamilyGraphTable
+      (oneHighRelabeledLeafGraph G v
+        (oneHighLeafFinFortyEquiv G hfree v
+          p.branchLabel p.leafLabel)) p.profile
+        (σ.1.symm c).val (σ.1.symm j).val =
+      highBranchMissCount G v s u := by
+    simpa [s, u] using hold
+  have hs : s' = s := by
+    simp [s', s, hlabel, OneHighRawV2Presentation.relabelBranch]
+  have hu : u' = u := by
+    simp [u', u, hlabel, OneHighRawV2Presentation.relabelBranch]
+  change oneHighFamilyGraphTable _ _ c.val j.val =
+    σ.permuteTable _ c.val j.val
+  rw [OneHighProfilePerm.permuteTable_apply]
+  rw [hnew', hold', hs, hu]
+
 end
 
 end Erdos85
