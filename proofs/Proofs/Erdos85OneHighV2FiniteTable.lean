@@ -1,5 +1,6 @@
 import Proofs.Erdos85OneHighV2OrbitInvariants
 import Proofs.Erdos85OneHighV2TableAgree
+import Proofs.Erdos85OneHighV2OrbitExclusion
 
 /-! # Finite representation of the 24 relevant one-high miss entries -/
 
@@ -148,5 +149,28 @@ theorem OneHighFamilyV2Admissible.exists_mem_allFiniteMissTables_agrees
   refine ⟨h.toFinite.toMissTable, ?_,
     h.agrees_toFinite_toMissTable⟩
   simp [oneHighAllFiniteMissTables]
+
+/-- The specification-level `5^24` list is already a formally complete raw
+orbit cover.  The constrained enumerator and CP4 quotient are therefore
+optimisations of a proved finite cover, rather than additional graph theory. -/
+theorem oneHighRawV2OrbitCover_allFinite :
+    OneHighRawV2OrbitCover (fun _ => oneHighAllFiniteMissTables) := by
+  intro G _ _ _ hfree hmin hHigh
+  have hnonempty : (orderFortyNineHighVertices G).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨v, hvMem⟩ := hnonempty
+  have hv : G.degree v = 8 := by
+    simpa [orderFortyNineHighVertices] using hvMem
+  obtain ⟨p⟩ := orderFortyNine_exists_rawOneHighPresentationData
+    G hfree hmin (Fintype.card_fin 49) hHigh hv
+  let E := oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel
+  let R := oneHighRelabeledLeafGraph G v E
+  have hadmissible : OneHighFamilyV2Admissible p.profile
+      (oneHighFamilyGraphTable R p.profile) :=
+    p.graphTable_admissible G hfree hv
+  obtain ⟨stored, hmem, hagree⟩ :=
+    hadmissible.exists_mem_allFiniteMissTables_agrees
+  refine ⟨v, hv, p, stored, hmem, ?_⟩
+  exact (oneHighRelevantAgreement_iff_tableRelevantAgree _ _).mp hagree
 
 end Erdos85
