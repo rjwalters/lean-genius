@@ -1309,6 +1309,47 @@ theorem oneHighFamilyV2F3bFinishVal_state
   · exact oneHighFamilyEqualsBlockVal_state vars _ _ st val
   · rfl
 
+theorem oneHighFamilyV2F3bFinishVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (table : OneHighMissTable) (pair : Nat × Nat)
+    {input : Array Int × OneHighFamilyValState}
+    (hsInput : OneHighFamilyInputAccumSound R input)
+    (hcount : 20 + oneHighFamilyTableGet table pair.1 (pair.2 ^^^ 1) +
+        oneHighFamilyTableGet table pair.2 (pair.1 ^^^ 1) ≤ input.1.size →
+      seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        20 + oneHighFamilyTableGet table pair.1 (pair.2 ^^^ 1) +
+          oneHighFamilyTableGet table pair.2 (pair.1 ^^^ 1)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3bFinishVal table pair input) := by
+  unfold oneHighFamilyV2F3bFinishVal
+  dsimp only
+  split
+  next hle =>
+    apply oneHighFamilyEqualsBlockVal_semanticSound R hsInput.semantic
+    · exact oneHighFamilyInputAccum_reifies R hsInput
+    · exact hcount hle
+  next => exact hsInput.semantic
+
+structure OneHighFamilyV2F3bLedger
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) : Prop where
+  collect_sound : ∀ pair acc,
+    OneHighFamilySemanticSound R acc →
+    OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2F3bCollectVal R profile pair acc)
+  count_eq : ∀ pair acc,
+    OneHighFamilySemanticSound R acc →
+    let input := oneHighFamilyV2F3bCollectVal R profile pair acc
+    20 + oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.1 (pair.2 ^^^ 1) +
+        oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.2 (pair.1 ^^^ 1) ≤ input.1.size →
+      seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        20 + oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.1 (pair.2 ^^^ 1) +
+        oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
+          pair.2 (pair.1 ^^^ 1)
+
 noncomputable def oneHighFamilyV2F3bBlockStepVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (profile : Nat) (table : OneHighMissTable) (pair : Nat × Nat)
@@ -1335,6 +1376,20 @@ theorem oneHighFamilyV2F3bBlockStepVal_state
   rw [oneHighFamilyV2F3bFinishVal_state]
   simp only [oneHighFamilyV2F3bBlockStep, hg]
 
+theorem oneHighFamilyV2F3bBlockStepVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (ledger : OneHighFamilyV2F3bLedger R profile)
+    (pair : Nat × Nat) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3bBlockStepVal R profile
+        (oneHighFamilyGraphTable R profile) pair acc) := by
+  let input := oneHighFamilyV2F3bCollectVal R profile pair acc
+  apply oneHighFamilyV2F3bFinishVal_semanticSound R
+    (oneHighFamilyGraphTable R profile) pair
+    (ledger.collect_sound pair acc hacc)
+  exact ledger.count_eq pair acc hacc
+
 noncomputable def oneHighFamilyV2ClausesVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (profile : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
@@ -1358,5 +1413,63 @@ theorem oneHighFamilyV2ClausesVal_state
         (fun pair acc => oneHighFamilyV2F3bBlockStepVal_state R
           profile (oneHighFamilyGraphTable R profile) pair acc)
     _ = _ := by rw [oneHighFamilyV2F3aClausesVal_state]
+
+theorem oneHighFamilyV2ClausesVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (hc : OneHighPureFamilyCnfConstraints profile R)
+    (f₁ : OneHighFamilyV2F1Ledger profile R)
+    (f₂ : OneHighFamilyV2F2Ledger R profile)
+    (f₃a : OneHighFamilyV2F3aLedger R profile)
+    (f₃b : OneHighFamilyV2F3bLedger R profile)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2ClausesVal R profile val) := by
+  apply oneHighFamilyRunListVal_semanticSound R _ _
+    (oneHighFamilyV2F3aClausesVal_semanticSound
+      R profile hc f₁ f₂ f₃a val)
+  intro pair acc hacc
+  exact oneHighFamilyV2F3bBlockStepVal_semanticSound
+    R profile f₃b pair hacc
+
+theorem oneHighFamilyV2Clauses_dimacsSatisfiable
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (hc : OneHighPureFamilyCnfConstraints profile R)
+    (f₁ : OneHighFamilyV2F1Ledger profile R)
+    (f₂ : OneHighFamilyV2F2Ledger R profile)
+    (f₃a : OneHighFamilyV2F3aLedger R profile)
+    (f₃b : OneHighFamilyV2F3bLedger R profile) :
+    ∃ val : DimacsValuation,
+      dimacsFormulaSatisfied val
+        (oneHighFamilyV2Clauses profile
+          (oneHighFamilyGraphTable R profile)).clauses := by
+  let initial : DimacsValuation := fun _ => false
+  let out := oneHighFamilyV2ClausesVal R profile initial
+  have hs := oneHighFamilyV2ClausesVal_semanticSound
+    R profile hc f₁ f₂ f₃a f₃b initial
+  have hstate := oneHighFamilyV2ClausesVal_state R profile initial
+  refine ⟨out.2, ?_⟩
+  rw [← hstate]
+  exact hs.satisfied
+
+def OneHighFamilyV2DimacsUnsat
+    (profile : Nat) (table : OneHighMissTable) : Prop :=
+  ∀ val : DimacsValuation,
+    ¬dimacsFormulaSatisfied val
+      (oneHighFamilyV2Clauses profile table).clauses
+
+theorem oneHighFamilyV2_constraints_false_of_dimacsUnsat
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (profile : Nat) (table : OneHighMissTable)
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (htable : oneHighFamilyGraphTable R profile = table)
+    (f₁ : OneHighFamilyV2F1Ledger profile R)
+    (f₂ : OneHighFamilyV2F2Ledger R profile)
+    (f₃a : OneHighFamilyV2F3aLedger R profile)
+    (f₃b : OneHighFamilyV2F3bLedger R profile)
+    (hunsat : OneHighFamilyV2DimacsUnsat profile table) : False := by
+  rcases oneHighFamilyV2Clauses_dimacsSatisfiable
+    R profile hc f₁ f₂ f₃a f₃b with ⟨val, hval⟩
+  rw [htable] at hval
+  exact hunsat val hval
 
 end Erdos85
