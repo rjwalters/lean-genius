@@ -15,6 +15,92 @@ theorem oneHighFamilyTablePairs_mem_bounds
       pair.2 ≠ (pair.1 ^^^ 1) := by
   native_decide +revert
 
+theorem oneHighFamilyV2PartnerVertex_lt
+    {a x : Nat} (hx : x < 40)
+    (_hm : oneHighFamilyVertexMatched a x = true) :
+    oneHighFamilyV2PartnerVertex x < 40 := by
+  unfold oneHighFamilyV2PartnerVertex
+  split <;> omega
+
+theorem oneHighFamilyV2PartnerVertex_div
+    {x : Nat} (hx : x < 40) :
+    oneHighFamilyV2PartnerVertex x / 5 = x / 5 := by
+  unfold oneHighFamilyV2PartnerVertex
+  split <;> omega
+
+theorem oneHighFamilyV2PartnerVertex_canonicalAdj
+    (a : Nat) {x : Nat} (hx : x < 40)
+    (hm : oneHighFamilyVertexMatched a x = true) :
+    oneHighCanonicalBranchAdj
+      (oneHighFamilyTwoEdges a (⟨x / 5, by omega⟩ : Fin 8))
+      (⟨x % 5, Nat.mod_lt _ (by omega)⟩ : Fin 5)
+      (⟨oneHighFamilyV2PartnerVertex x % 5,
+        Nat.mod_lt _ (by omega)⟩ : Fin 5) = true := by
+  simp only [oneHighFamilyVertexMatched] at hm
+  unfold oneHighFamilyV2PartnerVertex oneHighCanonicalBranchAdj
+    oneHighFamilyTwoEdges
+  split <;> simp_all [Fin.ext_iff] <;> omega
+
+theorem oneHighFamilyV2PartnerVertex_adj
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    {x : Nat} (hx : x < 40)
+    (hm : oneHighFamilyVertexMatched a x = true) :
+    R.Adj (⟨x, hx⟩ : Fin 40)
+      ⟨oneHighFamilyV2PartnerVertex x,
+        oneHighFamilyV2PartnerVertex_lt hx hm⟩ := by
+  have hrel := hc.relation.1 (⟨x, hx⟩ : Fin 40)
+    (⟨oneHighFamilyV2PartnerVertex x,
+      oneHighFamilyV2PartnerVertex_lt hx hm⟩ : Fin 40)
+  have hdiv := oneHighFamilyV2PartnerVertex_div hx
+  have heqDiv : Fin.divNat (m := 8) (n := 5) (⟨x, hx⟩ : Fin 40) =
+      Fin.divNat (m := 8) (n := 5)
+        (⟨oneHighFamilyV2PartnerVertex x,
+          oneHighFamilyV2PartnerVertex_lt hx hm⟩ : Fin 40) := by
+    apply Fin.ext
+    exact hdiv.symm
+  specialize hrel heqDiv
+  have hcanon : oneHighCanonicalBranchAdj
+      (oneHighFamilyTwoEdges a
+        (Fin.divNat (m := 8) (n := 5) (⟨x, hx⟩ : Fin 40)))
+      (Fin.modNat (m := 8) (n := 5) (⟨x, hx⟩ : Fin 40))
+      (Fin.modNat (m := 8) (n := 5)
+        (⟨oneHighFamilyV2PartnerVertex x,
+          oneHighFamilyV2PartnerVertex_lt hx hm⟩ : Fin 40)) = true := by
+    simpa [Fin.divNat, Fin.modNat] using
+      oneHighFamilyV2PartnerVertex_canonicalAdj a hx hm
+  exact of_decide_eq_true (hrel.trans hcanon)
+
+theorem oneHighFamilyCanonicalAdj_worker_partner
+    (a : Nat) {x y : Nat} (hx : x < 40) (_hy : y < 40)
+    (hdiv : y / 5 = x / 5)
+    (hadj : oneHighCanonicalBranchAdj
+      (oneHighFamilyTwoEdges a (⟨x / 5, by omega⟩ : Fin 8))
+      (⟨x % 5, Nat.mod_lt _ (by omega)⟩ : Fin 5)
+      (⟨y % 5, Nat.mod_lt _ (by omega)⟩ : Fin 5) = true) :
+    oneHighFamilyVertexMatched a x = true ∧
+      y = oneHighFamilyV2PartnerVertex x := by
+  unfold oneHighCanonicalBranchAdj oneHighFamilyTwoEdges at hadj
+  unfold oneHighFamilyVertexMatched oneHighFamilyV2PartnerVertex
+  simp only [decide_eq_true_eq] at hadj
+  split <;> simp_all [Fin.ext_iff] <;> omega
+
+theorem oneHighFamily_adj_sameBlock_eq_partner
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints a R)
+    (x y : Fin 40)
+    (hdiv : Fin.divNat (m := 8) (n := 5) y =
+      Fin.divNat (m := 8) (n := 5) x)
+    (hadj : R.Adj x y) :
+    oneHighFamilyVertexMatched a x.val = true ∧
+      y.val = oneHighFamilyV2PartnerVertex x.val := by
+  have hrel := hc.relation.1 x y hdiv.symm
+  have hdecide : decide (R.Adj x y) = true := decide_eq_true hadj
+  rw [hdecide] at hrel
+  apply oneHighFamilyCanonicalAdj_worker_partner a x.isLt y.isLt
+  · exact congrArg Fin.val hdiv
+  · simpa [Fin.divNat, Fin.modNat] using hrel.symm
+
 /-- The five encoded vertices belonging to a branch. -/
 def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
   Finset.univ.filter fun x =>
