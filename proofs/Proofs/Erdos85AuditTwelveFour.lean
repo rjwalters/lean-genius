@@ -17,6 +17,7 @@ import Proofs.Erdos85OneHighV2Inventory
 import Proofs.Erdos85OneHighV2CanonicalKey
 import Proofs.Erdos85OneHighV2PrunedEnumComplete
 import Proofs.Erdos85OneHighV2InventoryCover
+import Proofs.Erdos85OneHighV2InventoryOrbitCheck
 import Proofs.Erdos85OneHighV2FiniteTable
 import Proofs.Erdos85OneHighV2OrbitInvariants
 import Proofs.Erdos85OneHighV2OrbitExclusion
@@ -319,3 +320,9 @@ import Proofs.Erdos85OneHighV2OrbitExclusion
 #print axioms Erdos85.oneHighInventoryFiniteTables_sound
 #print axioms Erdos85.oneHighFiniteRepresentativeCover_inventory_of_key_membership
 #print axioms Erdos85.oneHighRawV2OrbitCover_of_finiteRepresentativeCover
+
+-- unconditional h1 inventory cover + certificate terminal (32f8/8933)
+#print axioms Erdos85.oneHighPrunedEnumeratorComplete
+#print axioms Erdos85.oneHighFiniteRepresentativeCover_inventory
+#print axioms Erdos85.oneHighRawV2OrbitCover_inventory
+#print axioms Erdos85.orderFortyNineStratumExcluded_one_of_inventory_checked
