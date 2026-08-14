@@ -921,6 +921,17 @@ theorem oneHighFamilyV2F3aCollectVal_eq_collectAtomsVal
   simp only [List.foldl_map,
     oneHighFamilyV2CollectPairedCommonStepVal]
 
+theorem oneHighFamilyV2F3aCollectVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (acc : OneHighFamilyValState) :
+    let out := oneHighFamilyV2F3aCollectVal R pair acc
+    let raw := oneHighFamilyV2F3aCollect pair acc.1
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  unfold oneHighFamilyV2F3aCollectVal oneHighFamilyV2F3aCollect
+  exact oneHighFamilyV2CollectPairedCommonOuterVal_projection R
+    (oneHighFamilyBlockVertices (2 * pair))
+    (oneHighFamilyBlockVertices (2 * pair + 1)) (#[], acc)
+
 noncomputable def oneHighFamilyV2F3aFinishVal
     (a pair : Nat) (input : Array Int × OneHighFamilyValState) :
     OneHighFamilyValState :=
@@ -953,11 +964,9 @@ theorem oneHighFamilyV2F3aFinishVal_semanticSound
 theorem oneHighFamilyV2F3aFinishVal_state
     (a pair : Nat) (input : Array Int × OneHighFamilyValState) :
     (oneHighFamilyV2F3aFinishVal a pair input).1 =
-      oneHighFamilyEqualsBlock input.1
-        (30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
-          2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1)) input.2.1 := by
+      oneHighFamilyV2F3aFinish a pair (input.1, input.2.1) := by
   rcases input with ⟨vars, st, val⟩
-  simp only [oneHighFamilyV2F3aFinishVal]
+  simp only [oneHighFamilyV2F3aFinishVal, oneHighFamilyV2F3aFinish]
   exact oneHighFamilyEqualsBlockVal_state vars _ _ st val
 
 theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
@@ -990,5 +999,59 @@ theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
         (oneHighFamilyCollectAtomsVal_match R
           (oneHighFamilyV2F3aAtoms pair) acc) hsGeneric.semantic]
     _ = _ := ledger.count_eq pair hpair
+
+theorem oneHighFamilyV2F3aBlockStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a pair : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyV2F3aBlockStepVal R a pair acc).1 =
+      oneHighFamilyV2F3aBlockStep a pair acc.1 := by
+  generalize hv : oneHighFamilyV2F3aCollectVal R pair acc = input
+  rcases input with ⟨vars, valAcc⟩
+  generalize hg : oneHighFamilyV2F3aCollect pair acc.1 = raw
+  rcases raw with ⟨rawVars, rawSt⟩
+  have hp := oneHighFamilyV2F3aCollectVal_projection R pair acc
+  rw [hv, hg] at hp
+  rcases hp with ⟨rfl, rfl⟩
+  rw [show oneHighFamilyV2F3aBlockStepVal R a pair acc =
+    oneHighFamilyV2F3aFinishVal a pair (vars, valAcc) by
+      simp only [oneHighFamilyV2F3aBlockStepVal, hv]]
+  rw [oneHighFamilyV2F3aFinishVal_state]
+  simp only [oneHighFamilyV2F3aBlockStep, hg]
+
+noncomputable def oneHighFamilyV2F3aClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 4)
+    (oneHighFamilyV2F3aBlockStepVal R a)
+    (oneHighFamilyV2F2ClausesVal R a val)
+
+theorem oneHighFamilyV2F3aClausesVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (hc : OneHighPureFamilyCnfConstraints a R)
+    (f₁ : OneHighFamilyV2F1Ledger a R)
+    (f₂ : OneHighFamilyV2F2Ledger R a)
+    (f₃a : OneHighFamilyV2F3aLedger R a)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3aClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyV2F2ClausesVal_semanticSound R a hc f₁ f₂ val)
+  intro pair hpair acc hacc
+  exact oneHighFamilyV2F3aBlockStepVal_semanticSound a R f₃a
+    (List.mem_range.mp hpair) hacc
+
+theorem oneHighFamilyV2F3aClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyV2F3aClausesVal R a val).1 =
+      oneHighFamilyV2F3aClauses a (oneHighFamilyGraphTable R a) := by
+  unfold oneHighFamilyV2F3aClausesVal oneHighFamilyV2F3aClauses
+  calc
+    _ = oneHighFamilyRunList (List.range 4)
+        (oneHighFamilyV2F3aBlockStep a)
+        (oneHighFamilyV2F2ClausesVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun pair acc => oneHighFamilyV2F3aBlockStepVal_state R a pair acc)
+    _ = _ := by rw [oneHighFamilyV2F2ClausesVal_state]
 
 end Erdos85
