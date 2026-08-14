@@ -111,7 +111,7 @@ theorem orderFortyNineStratumExcluded_one_of_v2TableCovers
   have hv : G.degree v = 8 := by
     simpa [orderFortyNineHighVertices] using hvMem
   obtain ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
-      hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩ :=
+      hbranchMate, hprofile, _hmatchedCount, hunique, hexternal, houterDegree, hc⟩ :=
     orderFortyNine_exists_rawOneHighPresentation
       G hfree hmin (Fintype.card_fin 49) hHigh hv
   interval_cases profile

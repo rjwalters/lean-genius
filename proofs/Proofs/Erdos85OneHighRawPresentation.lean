@@ -24,6 +24,9 @@ structure OneHighRawV2Presentation
     secondLayerBranch G v s ≃ Fin 5
   profile : Nat
   profile_le : profile ≤ 4
+  matched_count : ∀ i,
+    highBranchMatchedCount G v (branchLabel.symm i) =
+      2 * oneHighFamilyInternalEdges profile i
   unique_high : ∀ {w : V}, G.degree w = 8 → w = v
   external_empty : externalRepairCandidates G v = ∅
   outer_degree : ∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7
@@ -55,6 +58,8 @@ theorem orderFortyNine_exists_rawOneHighPresentation
       (∀ s, branchLabel (mate s) =
         oneHighStandardMate (branchLabel s)) ∧
       profile ≤ 4 ∧
+      (∀ i, highBranchMatchedCount G v (branchLabel.symm i) =
+        2 * oneHighFamilyInternalEdges profile i) ∧
       (∀ {w : V}, G.degree w = 8 → w = v) ∧
       externalRepairCandidates G v = ∅ ∧
       (∀ {x : V}, x ∈ secondLayer G v → G.degree x = 7) ∧
@@ -143,7 +148,7 @@ theorem orderFortyNine_exists_rawOneHighPresentation
       intro s
       exact ⟨(hlabels s).2.2.1, (hlabels s).2.2.2⟩
   exact ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
-    hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩
+    hbranchMate, hprofile, hIN, hunique, hexternal, houterDegree, hc⟩
 
 theorem orderFortyNine_exists_rawOneHighPresentationData
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -157,10 +162,10 @@ theorem orderFortyNine_exists_rawOneHighPresentationData
     {v : V} (hv : G.degree v = 8) :
     Nonempty (OneHighRawV2Presentation G hfree v) := by
   obtain ⟨mate, branchLabel, leafLabel, profile, hmateInv, hmateAdj,
-      hbranchMate, hprofile, hunique, hexternal, houterDegree, hc⟩ :=
+      hbranchMate, hprofile, hmatchedCount, hunique, hexternal, houterDegree, hc⟩ :=
     orderFortyNine_exists_rawOneHighPresentation
       G hfree hmin hcard hHigh hv
   exact ⟨⟨mate, hmateInv, hmateAdj, branchLabel, hbranchMate, leafLabel,
-    profile, hprofile, hunique, hexternal, houterDegree, hc⟩⟩
+    profile, hprofile, hmatchedCount, hunique, hexternal, houterDegree, hc⟩⟩
 
 end Erdos85
