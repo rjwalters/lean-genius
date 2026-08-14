@@ -10,6 +10,7 @@ not treated as certificates.
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 from collections import Counter
@@ -87,7 +88,32 @@ def read_latest_results(path: Path) -> dict[str, str]:
     return latest
 
 
-def audit(entries: list[InventoryEntry], latest: dict[str, str]) -> tuple[list[Counter], set[str]]:
+def read_stub_ready_index(path: Path) -> set[str]:
+    """Read the cert-root v2 index, rejecting pre-v2/raw-only schemas."""
+    required = {"orbit", "profile", "localIndex", "compact_lrat_sha256", "stub_ready"}
+    ready: set[str] = set()
+    seen: set[str] = set()
+    with path.open(newline="") as stream:
+        reader = csv.DictReader(stream, delimiter="\t")
+        fields = set(reader.fieldnames or ())
+        if not required <= fields:
+            raise ValueError(f"{path}: not a cert-root v2 index; missing {required - fields}")
+        for line_number, row in enumerate(reader, 2):
+            tag = row["orbit"]
+            if tag in seen:
+                raise ValueError(f"{path}:{line_number}: duplicate orbit {tag}")
+            seen.add(tag)
+            state = row["stub_ready"]
+            if state not in ("0", "1"):
+                raise ValueError(f"{path}:{line_number}: stub_ready must be 0 or 1")
+            if state == "1":
+                ready.add(tag)
+    return ready
+
+
+def audit(
+    entries: list[InventoryEntry], latest: dict[str, str], stub_ready: set[str]
+) -> tuple[list[Counter], set[str], set[str]]:
     inventory_tags = {entry.tag for entry in entries}
     rows = [Counter() for _ in PROFILE_NAMES]
     for entry in entries:
@@ -99,8 +125,10 @@ def audit(entries: list[InventoryEntry], latest: dict[str, str]) -> tuple[list[C
         else:
             bucket = "failed"
         rows[entry.profile][bucket] += 1
+        if entry.tag in stub_ready:
+            rows[entry.profile]["stub_ready"] += 1
         rows[entry.profile]["total"] += 1
-    return rows, set(latest) - inventory_tags
+    return rows, set(latest) - inventory_tags, stub_ready - inventory_tags
 
 
 def main() -> int:
@@ -113,6 +141,11 @@ def main() -> int:
     parser.add_argument("--inventory", type=Path, default=default_inventory)
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument(
+        "--cert-index",
+        type=Path,
+        help="cert-root v2 index; when supplied, completion requires stub_ready coverage",
+    )
+    parser.add_argument(
         "--require-complete",
         action="store_true",
         help="exit nonzero unless every inventory row is LEAN_ACCEPTED",
@@ -123,23 +156,29 @@ def main() -> int:
     if len(entries) != 13_541:
         raise ValueError(f"expected 13541 inventory rows, found {len(entries)}")
     latest = read_latest_results(args.results)
-    rows, unknown = audit(entries, latest)
+    stub_ready = read_stub_ready_index(args.cert_index) if args.cert_index else set()
+    rows, unknown, unknown_stubs = audit(entries, latest, stub_ready)
 
     total = Counter()
     for name, row in zip(PROFILE_NAMES, rows, strict=True):
         total.update(row)
         print(
-            f"{name:4}  accepted={row['accepted']:5}  failed={row['failed']:5}  "
+            f"{name:4}  stub_ready={row['stub_ready']:5}  "
+            f"accepted={row['accepted']:5}  failed={row['failed']:5}  "
             f"pending={row['pending']:5}  total={row['total']:5}"
         )
     print(
-        f"TOTAL accepted={total['accepted']:5}  failed={total['failed']:5}  "
+        f"TOTAL stub_ready={total['stub_ready']:5}  accepted={total['accepted']:5}  "
+        f"failed={total['failed']:5}  "
         f"pending={total['pending']:5}  total={total['total']:5}"
     )
     if unknown:
         print(f"WARNING ledger has {len(unknown)} tag(s) absent from inventory")
+    if unknown_stubs:
+        print(f"WARNING cert index has {len(unknown_stubs)} tag(s) absent from inventory")
 
-    complete = total["accepted"] == total["total"] and not unknown
+    covered = total["stub_ready"] if args.cert_index else total["accepted"]
+    complete = covered == total["total"] and not unknown and not unknown_stubs
     return 0 if complete or not args.require_complete else 1
 
 
