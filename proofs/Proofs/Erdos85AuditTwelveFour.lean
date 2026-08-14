@@ -14,6 +14,9 @@ import Proofs.Erdos85OneHighV2Cp4Action
 import Proofs.Erdos85OneHighV2EnumCompleteness
 import Proofs.Erdos85OneHighV2RelabeledPresentation
 import Proofs.Erdos85OneHighV2Inventory
+import Proofs.Erdos85OneHighV2CanonicalKey
+import Proofs.Erdos85OneHighV2PrunedEnumComplete
+import Proofs.Erdos85OneHighV2InventoryCover
 import Proofs.Erdos85OneHighV2FiniteTable
 import Proofs.Erdos85OneHighV2OrbitInvariants
 import Proofs.Erdos85OneHighV2OrbitExclusion
@@ -303,3 +306,16 @@ import Proofs.Erdos85OneHighV2OrbitExclusion
 #print axioms Erdos85.OneHighFamilyV2Admissible.natRestrict_mem_enum
 #print axioms Erdos85.OneHighRawV2Presentation.exists_relabel
 #print axioms Erdos85.OneHighRawV2Presentation.exists_relabel_graphTable_agrees
+
+-- canonical key + pruned-enumerator completeness + inventory cover layer
+#print axioms Erdos85.oneHighCanonicalKey_exists
+#print axioms Erdos85.oneHighCanonicalKey_le
+#print axioms Erdos85.oneHighNatKey_inj
+#print axioms Erdos85.oneHighNatPermute_natRestrict
+#print axioms Erdos85.oneHighEnumerationFeasible_of_invariant
+#print axioms Erdos85.enumerateOneHighTableValuesAux_complete
+#print axioms Erdos85.enumerateOneHighTableValues_complete
+#print axioms Erdos85.OneHighFamilyV2Admissible.toFinite_permute
+#print axioms Erdos85.oneHighInventoryFiniteTables_sound
+#print axioms Erdos85.oneHighFiniteRepresentativeCover_inventory_of_key_membership
+#print axioms Erdos85.oneHighRawV2OrbitCover_of_finiteRepresentativeCover
