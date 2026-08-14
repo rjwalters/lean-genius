@@ -5,6 +5,8 @@ import Proofs.Erdos85DegreeSixTriangleClosure
 import Proofs.Erdos85OrientedMassBounds
 import Proofs.Erdos85EvenCycleOrientation
 import Proofs.Erdos85ZModProjectionFiber
+import Proofs.Erdos85ForwardSupportClassification
+import Proofs.Erdos85DifferenceArrayBoundary
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -5567,6 +5569,83 @@ theorem degreeSix_exists_separated_chord_with_orientation_of_sector_empty
   · exact Or.inl ⟨hodd, fun x y ↦
       graph_equalOddCycle_diagBlock_adj_shift_iff
         (hr c) hodd G D (u c) (hu c) hcomm (huD c) x y⟩
+
+/-- A reverse-oriented diagonal block at the degree-six boundary is exactly
+an odd-parity Sidon family of reverse matchings.  The phase set is the zero
+row support, so its cardinality is the diagonal component quotient; reverse
+invariance makes adjacency depend on coordinate sum.  Looplessness excludes
+the even parity fiber, while reflection turns the reverse block into a
+circulant block to which the `C₄`-free Sidon theorem applies. -/
+theorem degreeSix_reverseOriented_component_exists_oddSidon_phaseSet
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    {r : ℕ} [NeZero r]
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (hrev : ∀ x y : ZMod r,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y))
+    (h2r : 2 ∣ r) :
+    ∃ S : Finset (ZMod r),
+      S.card = componentQuotientMatrix G (secondOrderDefectGraph G) c c ∧
+      IsOrderedSidon S ∧
+      (∀ s ∈ S, ZMod.castHom h2r (ZMod 2) s ≠ 0) ∧
+      ∀ x y, G.Adj (u x) (u y) ↔ x + y ∈ S := by
+  classical
+  let S := graphCycleBlockZeroSupport G u u
+  have hScard :
+      S.card = componentQuotientMatrix G (secondOrderDefectGraph G) c c := by
+    have hbridge := card_graphCycleBlockZeroSupport_eq_componentQuotient
+      G hfree (d := 6) (r := r) (by norm_num) (by norm_num)
+        hmin (by norm_num at hcard ⊢; exact hcard) c c u u hu huRange huRange
+    exact hbridge
+  have hodd : ∀ s ∈ S, ZMod.castHom h2r (ZMod 2) s ≠ 0 := by
+    intro s hs hseven
+    have hmem : s ∈ Set.range (fun z : ZMod r ↦ 2 * z) :=
+      (zmod_mem_range_two_mul_iff_castHom_eq_zero h2r s).mpr hseven
+    obtain ⟨z, hz⟩ := hmem
+    have hnot := add_self_not_mem_graphCycleBlockZeroSupport_of_reverse
+      G u hrev z
+    apply hnot
+    change z + z ∈ S
+    rw [← hz] at hs
+    simpa only [two_mul] using hs
+  have hzero : ∀ x y : ZMod r,
+      G.Adj (u x) (u y) ↔ G.Adj (u 0) (u (x + y)) := by
+    intro x y
+    have hrevZ : ∀ a b : ZMod r,
+        G.adjMatrix ℤ (u (a + 1)) (u (b - 1)) =
+          G.adjMatrix ℤ (u a) (u b) := by
+      intro a b
+      simp only [SimpleGraph.adjMatrix_apply, hrev a b]
+    exact adj_iff_of_adjMatrix_int_eq G
+      (reverse_block_apply_eq_zero_row
+        (fun a b ↦ G.adjMatrix ℤ (u a) (u b)) hrevZ x y)
+  have huNeg : Function.Injective (fun z : ZMod r ↦ u (-z)) :=
+    hu.comp neg_injective
+  have hblock : ∀ x z : ZMod r,
+      G.Adj (u x) (u (-z)) ↔ z - x ∈ negFinset S := by
+    intro x z
+    rw [mem_negFinset_iff, show -(z - x) = x + -z by ring]
+    change G.Adj (u x) (u (-z)) ↔ x + -z ∈ S
+    rw [show x + -z ∈ S ↔ G.Adj (u 0) (u (x + -z)) by
+      exact mem_graphCycleBlockZeroSupport_iff_adj G u u (x + -z)]
+    exact hzero x (-z)
+  have hsidonNeg : IsOrderedSidon (negFinset S) :=
+    isOrderedSidon_of_c4Free_circulantBlock G hfree u
+      (fun z : ZMod r ↦ u (-z)) hu huNeg (negFinset S) hblock
+  have hsidon : IsOrderedSidon S :=
+    (isOrderedSidon_negFinset_iff S).mp hsidonNeg
+  refine ⟨S, hScard, hsidon, hodd, ?_⟩
+  intro x y
+  rw [hzero]
+  exact mem_graphCycleBlockZeroSupport_iff_adj G u u (x + y) |>.symm
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
