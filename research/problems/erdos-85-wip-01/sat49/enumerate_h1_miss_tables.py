@@ -47,8 +47,33 @@ def enumerate_tables(rows):
     solutions = set()
     degree = [0] * 8
     values = [0] * len(EDGES)
+    future_neighbors = []
+    for k in range(len(EDGES) + 1):
+        neighbors = [[] for _ in range(8)]
+        for i, j in EDGES[k:]:
+            neighbors[i].append(j)
+            neighbors[j].append(i)
+        future_neighbors.append(neighbors)
+
+    def feasible(k):
+        """Every remaining row deficit must fit through future edges.
+
+        The old enumerator postponed this check until the final edge, which
+        made the all-B profile spend most of its time below already-doomed
+        partial tables.  Summing the other endpoints' remaining capacities
+        is an inexpensive safe upper bound.
+        """
+        deficits = [rows[i] - degree[i] for i in range(8)]
+        if sum(deficits) % 2:
+            return False
+        return all(
+            deficits[i] <= sum(deficits[j] for j in future_neighbors[k][i])
+            for i in range(8)
+        )
 
     def visit(k):
+        if not feasible(k):
+            return
         if k == len(EDGES):
             if tuple(degree) == rows:
                 solutions.add(tuple(values))

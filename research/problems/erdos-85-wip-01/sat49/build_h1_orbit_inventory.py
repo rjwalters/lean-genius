@@ -16,6 +16,14 @@ import os
 import re
 import sys
 
+from enumerate_h1_miss_tables import (
+    EDGES,
+    cp4_automorphisms,
+    enumerate_tables,
+    orbit_representatives,
+    profile_rows,
+)
+
 
 EXPECTED = {"AAAA": 842, "AAAB": 2700, "AABB": 4801,
             "ABBB": 3662, "BBBB": 1536}
@@ -89,13 +97,37 @@ def collect(root):
     return found
 
 
+def regenerate():
+    """Run the authoritative enumerator rather than recover sweep shards."""
+    found = {}
+    all_automorphisms = tuple(cp4_automorphisms())
+    for profile in EXPECTED:
+        rows = profile_rows(profile, False)
+        automorphisms = tuple(
+            permutation for permutation in all_automorphisms
+            if all(rows[permutation[i]] == rows[i] for i in range(8))
+        )
+        representatives = orbit_representatives(
+            enumerate_tables(rows), automorphisms)
+        for representative in representatives:
+            payload = {
+                str(edge): value
+                for edge, value in zip(EDGES, representative)
+                if value
+            }
+            insert(found, profile, payload, f"authoritative:{profile}")
+    return found
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("root", help="remote-sweeps artifact directory")
     parser.add_argument("output", help="stable deduplicated JSONL output")
     parser.add_argument("--allow-partial", action="store_true")
+    parser.add_argument("--regenerate", action="store_true",
+                        help="ignore shards and run the authoritative enumerator")
     args = parser.parse_args()
-    found = collect(args.root)
+    found = regenerate() if args.regenerate else collect(args.root)
     records = sorted(found.values(), key=lambda record: record["orbit"])
     with open(args.output, "w", encoding="utf-8") as handle:
         for record in records:
