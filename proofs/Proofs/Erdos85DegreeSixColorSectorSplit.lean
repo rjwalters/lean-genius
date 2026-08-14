@@ -7,6 +7,7 @@ import Proofs.Erdos85EvenCycleOrientation
 import Proofs.Erdos85ZModProjectionFiber
 import Proofs.Erdos85ForwardSupportClassification
 import Proofs.Erdos85DifferenceArrayBoundary
+import Proofs.Erdos85ZeroDiagonalSectorGeometry
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -482,6 +483,37 @@ theorem minimum_zero_of_traceSix_le_two_order_le_eight
     have hthree : 3 * size c ≤ P.card * size c :=
       Nat.mul_le_mul_right (size c) hPcard
     omega
+  omega
+
+/-- In a balanced quotient row based at a minimum-size index, divisibility
+of every positive neighbor order makes the row-square sum congruent modulo
+two to the row sum.  Thus row sum six and square sum `size c + 3` force the
+base size to be odd. -/
+theorem minimum_balanced_row_order_odd
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hpos : 0 < size c)
+    (hrow : ∑ e, Q c e = 6)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hdvd : ∀ e, 0 < Q c e → size c ∣ size e)
+    (hsq : ∑ e, Q c e * Q e c = size c + 3) :
+    Odd (size c) := by
+  have hterm : ∀ e : C, Even (Q c e * Q e c + Q c e) := by
+    intro e
+    by_cases hzero : Q c e = 0
+    · simp [hzero]
+    · obtain ⟨k, hk⟩ := hdvd e (Nat.pos_of_ne_zero hzero)
+      have hfactor : Q c e = k * Q e c := by
+        have hb := hbal e
+        rw [hk, Nat.mul_assoc] at hb
+        exact Nat.eq_of_mul_eq_mul_left hpos hb
+      rw [hfactor]
+      convert (Nat.even_mul_succ_self (Q e c)).mul_left k using 1 <;> ring
+  have hevenSum : Even (∑ e, (Q c e * Q e c + Q c e)) :=
+    Finset.even_sum _ fun e _ ↦ hterm e
+  rw [Finset.sum_add_distrib, hsq, hrow] at hevenSum
+  rcases hevenSum with ⟨k, hk⟩
+  refine ⟨k - 5, ?_⟩
   omega
 
 /-- The order-six singleton row has a forced asymmetric contact: one unit
@@ -6469,6 +6501,54 @@ theorem degreeSix_minimum_zeroDiagonal_order_le_eight_of_sector_empty
   exact minimum_zero_of_traceSix_le_two_order_le_eight
     (fun e ↦ Q e e) (fun e : D.ConnectedComponent ↦ e.supp.ncard) c
       hcmin htotal hle htrace (by simpa [Q, D] using hzero)
+
+/-- If the globally minimum zero-diagonal component in the empty sector is
+not a triangle, its order is exactly five or seven.  The upper bound comes
+from diagonal trace support, while balanced-row parity forces odd order. -/
+theorem degreeSix_minimum_zeroDiagonal_order_eq_five_or_seven_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hc4 : 4 ≤ c.supp.ncard)
+    (hzero : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    c.supp.ncard = 5 ∨ c.supp.ncard = 7 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨_, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hdvd : ∀ e : D.ConnectedComponent, 0 < Q c e →
+      c.supp.ncard ∣ e.supp.ncard := by
+    intro e hpos
+    exact minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin e hpos
+  have hodd : Odd c.supp.ncard := minimum_balanced_row_order_odd
+    Q (fun e : D.ConnectedComponent ↦ e.supp.ncard) c
+      c.nonempty_supp.ncard_pos hrow hbal hdvd hsq
+  have hupper :=
+    degreeSix_minimum_zeroDiagonal_order_le_eight_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin hzero
+  rcases hodd with ⟨k, hk⟩
+  omega
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
