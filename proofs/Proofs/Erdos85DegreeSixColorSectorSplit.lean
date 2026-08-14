@@ -1842,6 +1842,112 @@ theorem minimum_diagonal_two_order_five_support_profile
   exact ⟨(Finset.mem_filter.mp hxFilter).2,
     hreverseOne x hxP, hsizeEq x hxP⟩
 
+/-- The forced order-five profile is incompatible with the quotient square
+identities and diagonal bound two.  The off-diagonal square entry from the
+order-five source to its order-eight invisible tail forces a single
+order-twenty support component with cross quotients two and five.  These
+three components exhaust total order thirty-three, but the order-twenty row
+then has mass at most five instead of six. -/
+theorem false_of_minimum_diagonal_two_order_five_profile
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c e : C)
+    (hec : e ≠ c) (hcsize : size c = 5) (hesize : size e = 8)
+    (hcc : Q c c = 2) (hce : Q c e = 0) (hecQ : Q e c = 0)
+    (hprofile : ∀ x, x ≠ c → x ≠ e →
+      0 < Q c x ∧ Q x c = 1 ∧ size x = 5 * Q c x)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∀ x, ∑ y, Q x y = 6)
+    (hbal : ∀ x y, size x * Q x y = size y * Q y x)
+    (hsqCE : ∑ x, Q c x * Q x e = 8)
+    (hsqEE : ∑ x, Q e x * Q x e = 11)
+    (hdiagLe : ∀ x, Q x x ≤ 2) : False := by
+  have hsumNe : (∑ x, Q c x * Q x e) ≠ 0 := by rw [hsqCE]; norm_num
+  obtain ⟨x, hxMem, hxne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hsumNe
+  have hxprod : 0 < Q c x * Q x e := Nat.pos_of_ne_zero hxne
+  have hxc : x ≠ c := by
+    intro h
+    subst x
+    simp [hce] at hxprod
+  have hxe : x ≠ e := by
+    intro h
+    subst x
+    simp [hce] at hxprod
+  obtain ⟨hqpos, hxcQ, hxsize⟩ := hprofile x hxc hxe
+  have hxepos : 0 < Q x e := by nlinarith
+  have htermCE : Q c x * Q x e ≤ 8 := by
+    have hs := Finset.single_le_sum
+      (fun y _ ↦ Nat.zero_le (Q c y * Q y e)) hxMem
+    simpa [hsqCE] using hs
+  have hbxe := hbal x e
+  rw [hxsize, hesize] at hbxe
+  have hblinear : 5 * (Q c x * Q x e) = 8 * Q e x := by
+    nlinarith
+  have htermEq : Q c x * Q x e = 8 := by omega
+  have hex : Q e x = 5 := by omega
+  have htermEE : Q e x * Q x e ≤ 11 := by
+    have hs := Finset.single_le_sum
+      (fun y _ ↦ Nat.zero_le (Q e y * Q y e)) hxMem
+    simpa [hsqEE] using hs
+  have hxeLe : Q x e ≤ 2 := by
+    rw [hex] at htermEE
+    omega
+  have hqle : Q c x ≤ 4 := by
+    have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+    have hxErase : x ∈ (Finset.univ.erase c : Finset C) := by simp [hxc]
+    have hs := Finset.single_le_sum
+      (fun y _ ↦ Nat.zero_le (Q c y)) hxErase
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) (Q c) hcMem
+    have hcRow := hrow c
+    rw [hcRow, hcc] at hsplit
+    omega
+  have hxeQ : Q x e = 2 := by nlinarith
+  have hcx : Q c x = 4 := by nlinarith
+  have hx20 : size x = 20 := by rw [hxsize, hcx]
+  let R := ((Finset.univ.erase c : Finset C).erase e).erase x
+  have heMem : e ∈ (Finset.univ.erase c : Finset C) := by simp [hec]
+  have hxMem' : x ∈ (Finset.univ.erase c : Finset C).erase e := by
+    simp [hxc, hxe]
+  have hsizeR : (∑ y ∈ R, size y) = 0 := by
+    have hcSplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) size (Finset.mem_univ c)
+    have heSplit := Finset.sum_erase_add
+      (Finset.univ.erase c : Finset C) size heMem
+    have hxSplit := Finset.sum_erase_add
+      ((Finset.univ.erase c : Finset C).erase e) size hxMem'
+    dsimp [R]
+    rw [htotal, hcsize] at hcSplit
+    rw [hesize] at heSplit
+    rw [hx20] at hxSplit
+    omega
+  have hexhaust : ∀ y, y = c ∨ y = e ∨ y = x := by
+    intro y
+    by_contra hnone
+    push Not at hnone
+    have hyR : y ∈ R := by simp [R, hnone]
+    have hyle : size y ≤ ∑ z ∈ R, size z :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hyR
+    have hyprof := hprofile y hnone.1 hnone.2.1
+    omega
+  have huniv : (Finset.univ : Finset C) = {c, e, x} := by
+    ext y
+    simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton,
+      true_iff]
+    exact hexhaust y
+  have hxRow := hrow x
+  change (∑ y ∈ (Finset.univ : Finset C), Q x y) = 6 at hxRow
+  rw [huniv] at hxRow
+  have hcNot : c ∉ ({e, x} : Finset C) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨Ne.symm hec, Ne.symm hxc⟩
+  have heNot : e ∉ ({x} : Finset C) := by
+    simpa only [Finset.mem_singleton] using Ne.symm hxe
+  rw [Finset.sum_insert hcNot, Finset.sum_insert heNot,
+    Finset.sum_singleton] at hxRow
+  have hxx := hdiagLe x
+  rw [hxcQ, hxeQ] at hxRow
+  omega
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -8095,6 +8201,74 @@ theorem degreeSix_minimum_diagonal_two_order_five_support_profile
     (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hcsize
       (fun x ↦ by simpa [hcsize] using hcmin x)
       (by simpa [Q, D] using hdiag) htotal hrow hbal hsq8
+
+/-- The diagonal-two side of the empty-sector minimum dichotomy is
+impossible.  Its forced order-five profile and order-eight invisible tail
+violate the quotient square identities together with the universal
+empty-sector diagonal bound two. -/
+theorem degreeSix_emptySector_minimum_diagonal_two_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ x.supp.ncard)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hc5 := degreeSix_minimum_diagonal_two_order_eq_five
+    G hfree hmin hcard hr3 c hcmin hdiag
+  obtain ⟨e, hec, he8, hce, hecQ, hprofile⟩ :=
+    degreeSix_minimum_diagonal_two_order_five_support_profile
+      G hfree hmin hcard c hcmin hc5 hdiag
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hrow : ∀ x : D.ConnectedComponent, ∑ y, Q x y = 6 := by
+    intro x
+    exact sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x
+  have hbal : ∀ x y : D.ConnectedComponent,
+      x.supp.ncard * Q x y = y.supp.ncard * Q y x := by
+    intro x y
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hsqCE : ∑ x : D.ConnectedComponent, Q c x * Q x e = 8 := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+    simpa [Q, D, Matrix.mul_apply, hec.symm, he8] using hs
+  have hsqEE : ∑ x : D.ConnectedComponent, Q e x * Q x e = 11 := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) e e
+    simpa [Q, D, Matrix.mul_apply, he8] using hs
+  have hdiagLe : ∀ x : D.ConnectedComponent, Q x x ≤ 2 := by
+    intro x
+    exact degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+  exact false_of_minimum_diagonal_two_order_five_profile Q
+    (fun x : D.ConnectedComponent ↦ x.supp.ncard) c e hec hc5 he8
+      (by simpa [Q, D] using hdiag) hce hecQ hprofile htotal hrow hbal
+        hsqCE hsqEE hdiagLe
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
