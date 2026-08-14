@@ -552,4 +552,273 @@ theorem oneHighFamilyV2CollectSaversVal_semanticSound
       · exact oneHighFamilyV2SaverStepVal_semanticSound R hx
           (hws w (by simp)) hb (ss := ss) hacc
 
+def oneHighFamilyV2PairedCommonAtoms (x : Nat) :
+    List OneHighFamilyAtom :=
+  (oneHighFamilyBlockVertices (x / 5 ^^^ 1)).map fun z =>
+    .common (min x z) (max x z)
+
+def oneHighFamilyV2SaverAtoms (a x : Nat) :
+    List OneHighFamilyAtom :=
+  (oneHighFamilyV2SaverVertices a x).map fun w => .saver x w
+
+theorem oneHighFamilyCollectAtomsFoldVal_old_mem
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atoms : List OneHighFamilyAtom)
+    {input : Array Int × OneHighFamilyValState}
+    {entry : OneHighFamilyAtom × Nat} (hmem : entry ∈ input.2.1.ids) :
+    entry ∈ (atoms.foldl (fun input atom =>
+      oneHighFamilyCollectAtomVal R atom input) input).2.1.ids := by
+  induction atoms generalizing input with
+  | nil => exact hmem
+  | cons atom atoms ih =>
+    simp only [List.foldl_cons]
+    apply ih
+    exact oneHighFamilyCollectAtomVal_old_mem R atom hmem
+
+theorem oneHighFamilyCollectAtomsVal_old_mem
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (atoms : List OneHighFamilyAtom) {acc : OneHighFamilyValState}
+    {entry : OneHighFamilyAtom × Nat} (hmem : entry ∈ acc.1.ids) :
+    entry ∈ (oneHighFamilyCollectAtomsVal R atoms acc).2.1.ids := by
+  exact oneHighFamilyCollectAtomsFoldVal_old_mem R atoms hmem
+
+theorem oneHighFamilyListForall₂_append
+    {A B : Type*} {r : A → B → Prop}
+    {as as' : List A} {bs bs' : List B}
+    (h₁ : List.Forall₂ r as bs) (h₂ : List.Forall₂ r as' bs') :
+    List.Forall₂ r (as ++ as') (bs ++ bs') := by
+  induction h₁ with
+  | nil => exact h₂
+  | cons hr _ ih => exact .cons hr ih
+
+theorem oneHighFamilyCollectedAtomsMatch_sound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    {atoms : List OneHighFamilyAtom}
+    {input : Array Int × OneHighFamilyValState}
+    (hm : OneHighFamilyCollectedAtomsMatch atoms input)
+    (hs : OneHighFamilySemanticSound R input.2) :
+    OneHighFamilyInputAccumSound R input := by
+  have aux : ∀ {as : List OneHighFamilyAtom} {ids : List Nat},
+      List.Forall₂ (fun atom id => (atom, id) ∈ input.2.1.ids) as ids →
+      ∀ id ∈ ids, ∃ atom, (atom, id) ∈ input.2.1.ids := by
+    intro as ids h
+    induction h with
+    | nil => simp
+    | cons hr _ ih =>
+        intro id hid
+        simp only [List.mem_cons] at hid
+        rcases hid with rfl | hid
+        · exact ⟨_, hr⟩
+        · exact ih id hid
+  have hidMem := aux hm.aligned
+  refine ⟨hs, ?_, ?_⟩
+  · intro lit hlit
+    have hlit' : lit ∈ input.1.toList := by simpa using hlit
+    rw [hm.vars_eq] at hlit'
+    rcases List.mem_map.mp hlit' with ⟨id, hid, rfl⟩
+    rcases hidMem id hid with ⟨atom, hatom⟩
+    have hpos := (hs.ids.id_bounds _ hatom).1
+    simpa using (Nat.ne_of_gt hpos)
+  · intro lit hlit
+    have hlit' : lit ∈ input.1.toList := by simpa using hlit
+    rw [hm.vars_eq] at hlit'
+    rcases List.mem_map.mp hlit' with ⟨id, hid, rfl⟩
+    rcases hidMem id hid with ⟨atom, hatom⟩
+    simpa using (hs.ids.id_bounds _ hatom).2
+
+noncomputable def oneHighFamilyV2CombinedF2Match
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a x : Nat) (acc : OneHighFamilyValState) :
+    let saverInput := (oneHighFamilyV2SaverVertices a x).foldl
+      (fun input w => oneHighFamilyV2SaverStepVal R x w input) (#[], acc)
+    let commonInput := oneHighFamilyCollectAtomsVal R
+      (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+    OneHighFamilyCollectedAtomsMatch
+      (oneHighFamilyV2PairedCommonAtoms x ++ oneHighFamilyV2SaverAtoms a x)
+      (commonInput.1 ++ saverInput.1, commonInput.2) := by
+  dsimp only
+  let saverInput := (oneHighFamilyV2SaverVertices a x).foldl
+    (fun input w => oneHighFamilyV2SaverStepVal R x w input) (#[], acc)
+  let commonInput := oneHighFamilyCollectAtomsVal R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  have hs := oneHighFamilyCollectSaversVal_match R x
+    (oneHighFamilyV2SaverVertices a x) acc
+  have hc := oneHighFamilyCollectAtomsVal_match R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  refine ⟨hc.ids ++ hs.ids, ?_, ?_⟩
+  · simp only [Array.toList_append, List.map_append]
+    rw [hc.vars_eq, hs.vars_eq]
+  · apply oneHighFamilyListForall₂_append hc.aligned
+    apply hs.aligned.imp
+    intro atom id hid
+    exact oneHighFamilyCollectAtomsVal_old_mem R
+      (oneHighFamilyV2PairedCommonAtoms x) hid
+
+structure OneHighFamilyV2F2Ledger
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] (a : Nat) : Prop where
+  count_eq : ∀ x, x < 40 →
+    (((oneHighFamilyV2PairedCommonAtoms x ++
+      oneHighFamilyV2SaverAtoms a x).map
+        (oneHighFamilyAtomValue R)).count true) =
+      oneHighFamilyFarDegreeBound a x
+
+noncomputable def oneHighFamilyV2F2VertexStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a x : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  let saverInput := (oneHighFamilyV2SaverVertices a x).foldl
+    (fun input w => oneHighFamilyV2SaverStepVal R x w input) (#[], acc)
+  let commonInput := oneHighFamilyCollectAtomsVal R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  let input := (commonInput.1 ++ saverInput.1, commonInput.2)
+  oneHighFamilyEqualsBlockVal input.1
+    (oneHighFamilyInputAccumRow input)
+    (oneHighFamilyFarDegreeBound a x) input.2
+
+theorem oneHighFamilyV2F2VertexStepVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a x : Nat) (hx : x < 40) (ledger : OneHighFamilyV2F2Ledger R a)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F2VertexStepVal R a x acc) := by
+  let saverInput := (oneHighFamilyV2SaverVertices a x).foldl
+    (fun input w => oneHighFamilyV2SaverStepVal R x w input) (#[], acc)
+  let commonInput := oneHighFamilyCollectAtomsVal R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  let input : Array Int × OneHighFamilyValState :=
+    (commonInput.1 ++ saverInput.1, commonInput.2)
+  have hws : ∀ w ∈ oneHighFamilyV2SaverVertices a x, w < 40 := by
+    intro w hw
+    simp only [oneHighFamilyV2SaverVertices, List.mem_filter,
+      List.mem_range] at hw
+    exact hw.1
+  have hb : (x / 5 ^^^ 1) < 8 := by
+    let b : Fin 8 := ⟨x / 5, by omega⟩
+    have hm := (oneHighStandardMate b).isLt
+    rw [oneHighStandardMate_val_eq_xor] at hm
+    simpa [b] using hm
+  have hsSaver : OneHighFamilySemanticSound R saverInput.2 := by
+    exact oneHighFamilyV2CollectSaversVal_semanticSound R hx hws hb hacc
+  have hsCommon : OneHighFamilySemanticSound R commonInput.2 := by
+    exact (oneHighFamilyCollectAtomsVal_sound R
+      (oneHighFamilyV2PairedCommonAtoms x)
+      (oneHighFamilyInputAccumSound_empty R hsSaver)).semantic
+  have hm : OneHighFamilyCollectedAtomsMatch
+      (oneHighFamilyV2PairedCommonAtoms x ++ oneHighFamilyV2SaverAtoms a x)
+      input := oneHighFamilyV2CombinedF2Match R a x acc
+  have hsInput : OneHighFamilyInputAccumSound R input :=
+    oneHighFamilyCollectedAtomsMatch_sound R hm hsCommon
+  unfold oneHighFamilyV2F2VertexStepVal
+  change OneHighFamilySemanticSound R
+    (oneHighFamilyEqualsBlockVal input.1
+      (oneHighFamilyInputAccumRow input)
+      (oneHighFamilyFarDegreeBound a x) input.2)
+  apply oneHighFamilyEqualsBlockVal_semanticSound R hsInput.semantic
+  · exact oneHighFamilyInputAccum_reifies R hsInput
+  · calc
+      seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+          (List.ofFn (oneHighFamilyInputAccumRow input)).count true :=
+        seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP input.2.2 input.1
+      _ = (((oneHighFamilyV2PairedCommonAtoms x ++
+          oneHighFamilyV2SaverAtoms a x).map
+            (oneHighFamilyAtomValue R)).count true) := by
+        rw [oneHighFamilyCollectedAtoms_values R hm hsInput.semantic]
+      _ = oneHighFamilyFarDegreeBound a x := ledger.count_eq x hx
+
+theorem oneHighFamilyV2F2VertexStepVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a x : Nat) (acc : OneHighFamilyValState) :
+    (oneHighFamilyV2F2VertexStepVal R a x acc).1 =
+      oneHighFamilyV2F2VertexStep a x acc.1 := by
+  let saverInput := (oneHighFamilyV2SaverVertices a x).foldl
+    (fun input w => oneHighFamilyV2SaverStepVal R x w input) (#[], acc)
+  let rawSaver := (oneHighFamilyV2SaverVertices a x).foldl
+    (fun input w => oneHighFamilyV2SaverStep x w input) (#[], acc.1)
+  have hs := oneHighFamilyV2CollectSaversVal_projection R x
+    (oneHighFamilyV2SaverVertices a x) (#[], acc)
+  change saverInput.1 = rawSaver.1 ∧ saverInput.2.1 = rawSaver.2 at hs
+  let commonInput := oneHighFamilyCollectAtomsVal R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  let rawCommon := (oneHighFamilyBlockVertices (x / 5 ^^^ 1)).foldl
+    (fun input z => oneHighFamilyV2CollectPairedCommonStep x z input)
+    (#[], rawSaver.2)
+  have hc₀ := oneHighFamilyCollectAtomsVal_projection R
+    (oneHighFamilyV2PairedCommonAtoms x) saverInput.2
+  let genericStep :=
+    fun (input : Array Int × OneHighFamilyGenState) z =>
+      let (vars, inputSt) := input
+      let (c, st) := oneHighFamilyAtomId
+        (.common (min x z) (max x z)) inputSt
+      (vars.push (c : Int), st)
+  have hstep :
+      genericStep =
+      (fun input z => oneHighFamilyV2CollectPairedCommonStep x z input) := by
+    funext input z
+    rfl
+  have hc : commonInput.1 = rawCommon.1 ∧
+      commonInput.2.1 = rawCommon.2 := by
+    rw [show saverInput.2.1 = rawSaver.2 from hs.2] at hc₀
+    let atomStep :=
+      fun (input : Array Int × OneHighFamilyGenState)
+          (atom : OneHighFamilyAtom) =>
+        let (vars, inputSt) := input
+        let (id, st) := oneHighFamilyAtomId atom inputSt
+        (vars.push (id : Int), st)
+    change commonInput.1 =
+          ((oneHighFamilyV2PairedCommonAtoms x).foldl atomStep
+            (#[], rawSaver.2)).1 ∧
+        commonInput.2.1 =
+          ((oneHighFamilyV2PairedCommonAtoms x).foldl atomStep
+            (#[], rawSaver.2)).2 at hc₀
+    have hfold :
+        (oneHighFamilyV2PairedCommonAtoms x).foldl atomStep
+            (#[], rawSaver.2) =
+          (oneHighFamilyBlockVertices (x / 5 ^^^ 1)).foldl
+            genericStep (#[], rawSaver.2) := by
+      rw [oneHighFamilyV2PairedCommonAtoms, List.foldl_map]
+    rw [hfold, hstep] at hc₀
+    exact hc₀
+  unfold oneHighFamilyV2F2VertexStepVal oneHighFamilyV2F2VertexStep
+  rw [oneHighFamilyEqualsBlockVal_state]
+  change oneHighFamilyEqualsBlock
+      (commonInput.1 ++ saverInput.1)
+      (oneHighFamilyFarDegreeBound a x) commonInput.2.1 = _
+  rw [hc.1, hc.2, hs.1]
+
+noncomputable def oneHighFamilyV2F2ClausesVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) : OneHighFamilyValState :=
+  oneHighFamilyRunListVal (List.range 40)
+    (oneHighFamilyV2F2VertexStepVal R a)
+    (oneHighFamilyV2PairedCommonClausesVal R a val)
+
+theorem oneHighFamilyV2F2ClausesVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (hc : OneHighPureFamilyCnfConstraints a R)
+    (f₁ : OneHighFamilyV2F1Ledger a R)
+    (f₂ : OneHighFamilyV2F2Ledger R a)
+    (val : DimacsValuation) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F2ClausesVal R a val) := by
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
+    (oneHighFamilyV2PairedCommonClausesVal_semanticSound
+      R a hc f₁ val)
+  intro x hx acc hacc
+  exact oneHighFamilyV2F2VertexStepVal_semanticSound R a x
+    (List.mem_range.mp hx) f₂ hacc
+
+theorem oneHighFamilyV2F2ClausesVal_state
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a : Nat) (val : DimacsValuation) :
+    (oneHighFamilyV2F2ClausesVal R a val).1 =
+      oneHighFamilyV2F2Clauses a (oneHighFamilyGraphTable R a) := by
+  unfold oneHighFamilyV2F2ClausesVal oneHighFamilyV2F2Clauses
+  calc
+    _ = oneHighFamilyRunList (List.range 40)
+        (oneHighFamilyV2F2VertexStep a)
+        (oneHighFamilyV2PairedCommonClausesVal R a val).1 :=
+      oneHighFamilyRunListVal_state _ _ _ _
+        (fun x acc => oneHighFamilyV2F2VertexStepVal_state R a x acc)
+    _ = _ := by rw [oneHighFamilyV2PairedCommonClausesVal_state]
+
 end Erdos85
