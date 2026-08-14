@@ -2,6 +2,8 @@ import Proofs.Erdos85OneHighV2Cp4Action
 import Proofs.Erdos85OneHighV2EnumCompleteness
 import Proofs.Erdos85OneHighV2CanonicalKey
 import Proofs.Erdos85OneHighV2Inventory
+import Proofs.Erdos85OneHighV2Enumerator
+import Proofs.Erdos85OneHighV2InventoryOrbitCheck
 
 /-! # Connecting the executable CP4 classifier to the stored inventory -/
 
@@ -71,16 +73,37 @@ theorem oneHighInventoryFiniteTables_sound
         ((listForall_of_mem oneHighInventoryRows_relevant_lt_five hrow) pair)
   · simp at hopt
 
-def oneHighFiniteNatify (w : OneHighFiniteMissTable) :
-    OneHighRelevantPair → Nat := fun pair => (w pair).val
+theorem oneHighPrunedEnumRawKeySet_eq_inventoryOrbit (profile : Fin 5) :
+    oneHighPrunedEnumRawKeySet profile.val =
+      oneHighInventoryOrbitRawKeySet profile := by
+  fin_cases profile
+  · exact oneHighPrunedEnumRawKeySet_eq_inventoryOrbit_zero
+  · exact oneHighPrunedEnumRawKeySet_eq_inventoryOrbit_one
+  · exact oneHighPrunedEnumRawKeySet_eq_inventoryOrbit_two
+  · exact oneHighPrunedEnumRawKeySet_eq_inventoryOrbit_three
+  · exact oneHighPrunedEnumRawKeySet_eq_inventoryOrbit_four
 
-def oneHighInventoryKeys (profile : Fin 5) : List Nat :=
-  (oneHighInventoryFiniteTables profile).map fun w =>
-    oneHighNatKey (oneHighFiniteNatify w)
-
-def oneHighEnumCanonicalKeys (profile : Nat) : List Nat :=
-  (oneHighEnumFiniteTables profile).map fun w =>
-    oneHighCanonicalKey profile w
+theorem oneHighPrunedEnum_exists_inventoryOrbit
+    (profile : Fin 5) (w : OneHighFiniteMissTable)
+    (hw : w ∈ enumerateOneHighFiniteTables profile.val) :
+    ∃ (stored : OneHighFiniteMissTable)
+      (σ : OneHighProfilePerm profile.val),
+      stored ∈ oneHighInventoryFiniteTables profile ∧
+        oneHighNatKey (oneHighFiniteNatify w) =
+          oneHighNatKey
+            (oneHighNatPermute σ.1 (oneHighFiniteNatify stored)) := by
+  have hleft : oneHighNatKey (oneHighFiniteNatify w) ∈
+      oneHighPrunedEnumRawKeySet profile.val := by
+    rw [oneHighPrunedEnumRawKeySet, oneHighAdjacentDedup_mem_iff]
+    simp only [List.mem_mergeSort]
+    exact List.mem_map.mpr ⟨w, hw, rfl⟩
+  rw [oneHighPrunedEnumRawKeySet_eq_inventoryOrbit profile] at hleft
+  rw [oneHighInventoryOrbitRawKeySet,
+    oneHighAdjacentDedup_mem_iff] at hleft
+  simp only [List.mem_mergeSort, List.mem_flatMap, Finset.mem_sort,
+    Finset.mem_image, Finset.mem_univ, true_and] at hleft
+  rcases hleft with ⟨stored, hstored, σ, hkey⟩
+  exact ⟨stored, σ, hstored, hkey.symm⟩
 
 /-- Once the executable comparison says every enumerated canonical key is in
 the authoritative inventory, the inventory is a representative cover. -/
