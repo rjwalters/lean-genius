@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighV2OrbitInvariants
+import Proofs.Erdos85OneHighV2TableAgree
 
 /-! # Finite representation of the 24 relevant one-high miss entries -/
 
@@ -22,6 +23,30 @@ def OneHighRelevantAgreement
     (left right : OneHighMissTable) : Prop :=
   ∀ pair : OneHighRelevantPair,
     left pair.1.1.val pair.1.2.val = right pair.1.1.val pair.1.2.val
+
+theorem oneHighRelevantPair_mem_tablePairs (pair : OneHighRelevantPair) :
+    (pair.1.1.val, pair.1.2.val) ∈ oneHighFamilyTablePairs := by
+  native_decide +revert
+
+/-- The function-indexed finite agreement and the generator-audited list
+agreement are the same 24-coordinate relation. -/
+theorem oneHighRelevantAgreement_iff_tableRelevantAgree
+    (left right : OneHighMissTable) :
+    OneHighRelevantAgreement left right ↔
+      OneHighTableRelevantAgree left right := by
+  constructor
+  · intro h pair hmem
+    have hp := oneHighFamilyTablePairs_mem_bounds hmem
+    let c : Fin 8 := ⟨pair.1, hp.1⟩
+    let j : Fin 8 := ⟨pair.2, hp.2.1⟩
+    apply h ⟨(c, j), hp.2.2.1, ?_⟩
+    intro heq
+    apply hp.2.2.2
+    have hval := congrArg Fin.val heq
+    rw [oneHighStandardMate_val_eq_xor] at hval
+    exact hval
+  · intro h pair
+    exact h _ (oneHighRelevantPair_mem_tablePairs pair)
 
 /-- Interpret a finite upper-triangular table as the sparse total function
 used by certificate files.  Reverse relevant coordinates are mirrored;
