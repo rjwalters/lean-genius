@@ -5755,6 +5755,7 @@ theorem degreeSix_component_diagonal_le_four
           G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y) :=
         fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hrev x y)
       obtain ⟨q, hq⟩ := heven
+      have heven' : Even c.supp.ncard := ⟨q, hq⟩
       have h2r : 2 ∣ c.supp.ncard := ⟨q, by omega⟩
       have hpack :=
         degreeSix_reverseOriented_component_diagonal_packing_bound
@@ -5783,6 +5784,72 @@ theorem degreeSix_component_diagonal_le_four
       change Q c c = 0 at hzero
       omega
     · change Q c c ≤ 4
+      change Q c c = 2 at htwo
+      omega
+
+/-- A diagonal quotient at least three can occur only in the reverse-oriented
+even branch.  Its odd Sidon phases consume two cyclic coordinates for every
+ordered phase difference, giving the explicit component-order lower bound. -/
+theorem degreeSix_component_diagonal_ge_three_reverse_and_order_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [NeZero c.supp.ncard]
+    (u : ZMod c.supp.ncard → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hr3 : 3 ≤ c.supp.ncard)
+    (hdiag : 3 ≤ componentQuotientMatrix G
+      (secondOrderDefectGraph G) c c) :
+    Even c.supp.ncard ∧
+      (∀ x y : ZMod c.supp.ncard,
+        G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y)) ∧
+      2 * (componentQuotientMatrix G (secondOrderDefectGraph G) c c *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) c c - 1) + 1) ≤
+        c.supp.ncard := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  rcases Nat.even_or_odd c.supp.ncard with heven | hodd
+  · have hcomm := adjMatrix_comm_secondOrderDefect_of_even
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard)
+    rcases graph_equalEvenCycle_diagBlock_orientation
+        hr3 heven G D hfree u hu hcomm huD with hfwd | hrev
+    · have hfwdAdj : ∀ x y : ZMod c.supp.ncard,
+          G.Adj (u (x + 1)) (u (y + 1)) ↔ G.Adj (u x) (u y) :=
+        fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hfwd x y)
+      have hle := forwardComponent_diagonalQuotient_le_two
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c u hu huRange hfwdAdj
+      change 3 ≤ Q c c at hdiag
+      change Q c c ≤ 2 at hle
+      omega
+    · have hrevAdj : ∀ x y : ZMod c.supp.ncard,
+          G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y) :=
+        fun x y ↦ adj_iff_of_adjMatrix_int_eq G (hrev x y)
+      obtain ⟨q, hq⟩ := heven
+      have heven' : Even c.supp.ncard := ⟨q, hq⟩
+      have h2r : 2 ∣ c.supp.ncard := ⟨q, by omega⟩
+      have hpack :=
+        degreeSix_reverseOriented_component_diagonal_packing_bound
+          G hfree hmin hcard c u hu huRange hrevAdj h2r
+      refine ⟨heven', hrevAdj, ?_⟩
+      omega
+  · rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) hr3 hodd c u hu huRange huD with
+      hzero | htwo
+    · change 3 ≤ Q c c at hdiag
+      change Q c c = 0 at hzero
+      omega
+    · change 3 ≤ Q c c at hdiag
       change Q c c = 2 at htwo
       omega
 
