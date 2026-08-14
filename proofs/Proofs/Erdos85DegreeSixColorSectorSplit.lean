@@ -9,6 +9,7 @@ import Proofs.Erdos85ForwardSupportClassification
 import Proofs.Erdos85DifferenceArrayBoundary
 import Proofs.Erdos85ZeroDiagonalSectorGeometry
 import Proofs.Erdos85EqualCycleResidual
+import Proofs.Erdos85WeightedQuotientDimension
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -7495,6 +7496,146 @@ theorem degreeSix_component_incidence_data
         (by norm_num at hcard ⊢; exact hcard) c c
     simpa [Q, D, Matrix.mul_apply, Nat.add_comm] using hs
   exact ⟨htotal, hrow, hbal, hsq⟩
+
+/-- The degree-six weighted component quotient has odd dimension.  Its
+constant eigenline has eigenvalue six, and the complementary rational space
+has square three, hence even dimension because three is nonsquare. -/
+theorem degreeSix_component_count_odd
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) :
+    Odd (Fintype.card (secondOrderDefectGraph G).ConnectedComponent) := by
+  let D := secondOrderDefectGraph G
+  let Q : Matrix D.ConnectedComponent D.ConnectedComponent ℚ :=
+    fun c e ↦ componentQuotientMatrix G D c e
+  let size : D.ConnectedComponent → ℚ := fun c ↦ c.supp.ncard
+  have htotal : (∑ c : D.ConnectedComponent, size c) = 33 := by
+    have hn : (∑ c : D.ConnectedComponent, c.supp.ncard) = 33 := by
+      rw [sum_connectedComponent_supp_ncard D, hcard]
+    simpa [size] using congrArg (fun n : ℕ ↦ (n : ℚ)) hn
+  have hrow : ∀ c, ∑ e, Q c e = 6 := by
+    intro c
+    change (∑ e, (componentQuotientMatrix G D c e : ℚ)) = 6
+    exact_mod_cast sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c
+  have hleft : ∀ e, ∑ c, size c * Q c e = 6 * size e := by
+    intro e
+    have hbal : ∀ c, c.supp.ncard * componentQuotientMatrix G D c e =
+        e.supp.ncard * componentQuotientMatrix G D e c := by
+      intro c
+      exact secondOrder_componentQuotientMatrix_balance
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) c e
+    change (∑ c, (c.supp.ncard : ℚ) *
+      (componentQuotientMatrix G D c e : ℚ)) =
+        6 * (e.supp.ncard : ℚ)
+    simp_rw [show ∀ c, (c.supp.ncard : ℚ) *
+        (componentQuotientMatrix G D c e : ℚ) =
+          (e.supp.ncard : ℚ) *
+            (componentQuotientMatrix G D e c : ℚ) by
+      intro c; exact_mod_cast hbal c]
+    rw [← Finset.mul_sum]
+    have hre : (∑ i, (componentQuotientMatrix G D e i : ℚ)) = 6 := by
+      simpa [Q] using hrow e
+    rw [hre]
+    ring
+  have hsq : Q * Q = (3 : ℚ) • (1 : Matrix D.ConnectedComponent
+      D.ConnectedComponent ℚ) + Matrix.of (fun _ e ↦ size e) := by
+    ext c e
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+    simp only [Matrix.mul_apply, Matrix.add_apply,
+      Matrix.smul_apply, Matrix.one_apply, Matrix.of_apply, Q, size]
+    simp only [← Nat.cast_mul]
+    rw [← Nat.cast_sum]
+    have hsNat : (∑ x, componentQuotientMatrix G D c x *
+        componentQuotientMatrix G D x e) =
+          3 * (if c = e then 1 else 0) + e.supp.ncard := by
+      simpa [D, Matrix.mul_apply] using hs
+    rw [hsNat]
+    split_ifs <;> norm_num
+  exact Matrix.odd_card_of_sq_weightedRankOne_of_nonsquare
+    Q size 6 3 (by rw [htotal]; norm_num) hrow hleft hsq (by norm_num)
+
+/-- Once an empty-sector quotient contains a zero-diagonal component, its
+odd component count is exactly one of `5, 7, 9, 11`. -/
+theorem degreeSix_zeroDiagonal_component_count_cases_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent = 5 ∨
+      Fintype.card (secondOrderDefectGraph G).ConnectedComponent = 7 ∨
+      Fintype.card (secondOrderDefectGraph G).ConnectedComponent = 9 ∨
+      Fintype.card (secondOrderDefectGraph G).ConnectedComponent = 11 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let n := Fintype.card (secondOrderDefectGraph G).ConnectedComponent
+  have hodd := degreeSix_component_count_odd G hfree hmin hcard
+  have htotal : (∑ e : D.ConnectedComponent, e.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hnle : n ≤ 11 := by
+    have hlo : 3 * n ≤ ∑ e : D.ConnectedComponent, e.supp.ncard := by
+      calc
+        3 * n = ∑ _e : D.ConnectedComponent, 3 := by
+          dsimp [D, n]
+          simp [Nat.mul_comm]
+        _ ≤ ∑ e : D.ConnectedComponent, e.supp.ncard :=
+          Finset.sum_le_sum fun e _ ↦ hr3 e
+    rw [htotal] at hlo
+    omega
+  have hdiagLe : ∀ e : D.ConnectedComponent, Q e e ≤ 2 := fun e ↦
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty e
+  have htrace : (∑ e : D.ConnectedComponent, Q e e) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hcMem : c ∈ (Finset.univ : Finset D.ConnectedComponent) := Finset.mem_univ c
+  have hrest : (∑ e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent),
+      Q e e) = 6 := by
+    have hs := Finset.sum_erase_add (Finset.univ : Finset D.ConnectedComponent)
+      (fun e ↦ Q e e) hcMem
+    change Q c c = 0 at hcc
+    rw [htrace, hcc, add_zero] at hs
+    exact hs
+  have hnlo : 4 ≤ n := by
+    have hle : (∑ e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent),
+        Q e e) ≤ ∑ _e ∈ (Finset.univ.erase c : Finset D.ConnectedComponent), 2 := by
+      exact Finset.sum_le_sum fun e _ ↦ hdiagLe e
+    rw [hrest] at hle
+    simp only [Finset.sum_const_nat, Finset.card_erase_of_mem hcMem,
+      Finset.card_univ, nsmul_eq_mul] at hle
+    change 6 ≤ (n - 1) * 2 at hle
+    omega
+  change Odd n at hodd
+  obtain ⟨k, hk⟩ := hodd
+  change n = 2 * k + 1 at hk
+  omega
 
 /-- Any degree-six component with diagonal quotient two has order at most
 fifteen. -/
