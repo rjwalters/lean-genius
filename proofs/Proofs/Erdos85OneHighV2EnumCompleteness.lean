@@ -301,4 +301,47 @@ theorem OneHighFamilyV2Admissible.natRestrict_mem_enum {profile : Nat}
   rw [heq] at hmem
   exact hmem
 
+/-- Enumerated values never exceed a uniform row bound. -/
+theorem oneHighEnumGo_sound_bound (rows : Fin 8 → Nat) (B : Nat)
+    (hrows : ∀ i, rows i ≤ B) :
+    ∀ (pairs : List OneHighRelevantPair) (deg : Fin 8 → Nat)
+      (w : OneHighRelevantPair → Nat),
+      w ∈ oneHighEnumGo rows pairs deg → ∀ e, w e ≤ B := by
+  intro pairs
+  induction pairs with
+  | nil =>
+      intro deg w hw e
+      unfold oneHighEnumGo at hw
+      by_cases hdeg : deg = rows
+      · rw [if_pos hdeg, List.mem_singleton] at hw
+        rw [hw]
+        exact Nat.zero_le B
+      · rw [if_neg hdeg] at hw
+        exact absurd hw (List.not_mem_nil)
+  | cons e rest ih =>
+      intro deg w hw e'
+      unfold oneHighEnumGo at hw
+      simp only [List.mem_flatMap, List.mem_range, List.mem_map] at hw
+      obtain ⟨n, hn, w', hw', rfl⟩ := hw
+      rw [Function.update_apply]
+      by_cases hpe : e' = e
+      · rw [if_pos hpe]
+        have hle : n ≤ rows e.1.1 - deg e.1.1 := by
+          have := Nat.lt_succ_iff.mp hn
+          exact le_trans this (Nat.min_le_left _ _)
+        exact le_trans hle (le_trans (Nat.sub_le _ _) (hrows e.1.1))
+      · rw [if_neg hpe]
+        exact ih _ w' hw' e'
+
+/-- Enumerated profile tables are value-bounded below five. -/
+theorem oneHighEnumFiniteTables_bounded (profile : Nat) :
+    ∀ w ∈ oneHighEnumFiniteTables profile, ∀ e, w e < 5 := by
+  intro w hw e
+  have hb := oneHighEnumGo_sound_bound (oneHighProfileRows profile) 4
+    (fun i => by
+      unfold oneHighProfileRows oneHighFamilyInternalEdges
+      split <;> omega)
+    oneHighRelevantPairList (fun _ => 0) w hw e
+  omega
+
 end Erdos85
