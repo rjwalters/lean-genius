@@ -18,6 +18,11 @@ def oneHighInventoryRowTable (row : OneHighInventoryRow) :
   | some entry => entry.2
   | none => 0
 
+def oneHighInventoryRowFiniteTable (row : OneHighInventoryRow) :
+    OneHighFiniteMissTable := fun pair =>
+  ⟨oneHighInventoryRowTable row pair.1.1.val pair.1.2.val % 5,
+    Nat.mod_lt _ (by omega)⟩
+
 def parseOneHighInventoryRow (line : String) : Option OneHighInventoryRow := do
   let fields ← (line.splitOn " ").mapM String.toNat?
   let profileNat ← fields.head?
@@ -37,6 +42,13 @@ def oneHighInventoryRows : List OneHighInventoryRow :=
 def oneHighInventoryTables (profile : Fin 5) : List OneHighMissTable :=
   oneHighInventoryRows.filterMap fun row =>
     if row.profile = profile then some (oneHighInventoryRowTable row) else none
+
+def oneHighInventoryFiniteTables
+    (profile : Fin 5) : List OneHighFiniteMissTable :=
+  oneHighInventoryRows.filterMap fun row =>
+    if row.profile = profile then
+      some (oneHighInventoryRowFiniteTable row)
+    else none
 
 /-- The compact artifact parses without losing or adding a row. -/
 theorem oneHighInventoryRows_length : oneHighInventoryRows.length = 13541 := by
