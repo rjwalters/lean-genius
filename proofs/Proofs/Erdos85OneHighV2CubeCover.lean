@@ -20,6 +20,32 @@ def oneHighV2CubeLeftVariables : Array Nat := #[300, 301, 302, 303, 304]
 
 def oneHighV2CubeRightVariables : Array Nat := #[455, 456, 457, 458, 459]
 
+def oneHighV2CubeLeftVariable (index : Fin 5) : Nat := 300 + index.val
+
+def oneHighV2CubeRightVariable (index : Fin 5) : Nat := 455 + index.val
+
+private theorem exists_leftIndex_of_mem
+    {left : Nat} (hleft : left ∈ oneHighV2CubeLeftVariables) :
+    ∃ index : Fin 5, left = oneHighV2CubeLeftVariable index := by
+  simp [oneHighV2CubeLeftVariables] at hleft
+  rcases hleft with (rfl | rfl | rfl | rfl | rfl)
+  · exact ⟨0, rfl⟩
+  · exact ⟨1, rfl⟩
+  · exact ⟨2, rfl⟩
+  · exact ⟨3, rfl⟩
+  · exact ⟨4, rfl⟩
+
+private theorem exists_rightIndex_of_mem
+    {right : Nat} (hright : right ∈ oneHighV2CubeRightVariables) :
+    ∃ index : Fin 5, right = oneHighV2CubeRightVariable index := by
+  simp [oneHighV2CubeRightVariables] at hright
+  rcases hright with (rfl | rfl | rfl | rfl | rfl)
+  · exact ⟨0, rfl⟩
+  · exact ⟨1, rfl⟩
+  · exact ⟨2, rfl⟩
+  · exact ⟨3, rfl⟩
+  · exact ⟨4, rfl⟩
+
 def oneHighFamilyV2LeftCoverCnf (profile : Nat) (table : OneHighMissTable) :
     CNF Nat :=
   cnfWithUnits (oneHighFamilyV2SatCnf profile table)
@@ -45,6 +71,33 @@ structure OneHighFamilyV2CheckedCubeCover
   cubes : ∀ left ∈ oneHighV2CubeLeftVariables,
     ∀ right ∈ oneHighV2CubeRightVariables,
       (oneHighFamilyV2PositiveCubeCnf profile table left right).Unsat
+
+/-- Generator-facing form of a CUBE25 certificate.  Indexing by `Fin 5`
+makes omission or duplication of a grid cell impossible when a generated
+module constructs the `cubes` field. -/
+structure OneHighFamilyV2CheckedCubeGrid
+    (profile : Nat) (table : OneHighMissTable) : Prop where
+  nonzero : ∀ clause ∈ (oneHighFamilyV2Clauses profile table).clauses,
+    DimacsClauseNonzero clause
+  leftCover : (oneHighFamilyV2LeftCoverCnf profile table).Unsat
+  rightCover : (oneHighFamilyV2RightCoverCnf profile table).Unsat
+  cubes : ∀ left right : Fin 5,
+    (oneHighFamilyV2PositiveCubeCnf profile table
+      (oneHighV2CubeLeftVariable left)
+      (oneHighV2CubeRightVariable right)).Unsat
+
+def OneHighFamilyV2CheckedCubeGrid.toCubeCover
+    {profile : Nat} {table : OneHighMissTable}
+    (grid : OneHighFamilyV2CheckedCubeGrid profile table) :
+    OneHighFamilyV2CheckedCubeCover profile table where
+  nonzero := grid.nonzero
+  leftCover := grid.leftCover
+  rightCover := grid.rightCover
+  cubes := by
+    intro left hleft right hright
+    obtain ⟨leftIndex, rfl⟩ := exists_leftIndex_of_mem hleft
+    obtain ⟨rightIndex, rfl⟩ := exists_rightIndex_of_mem hright
+    exact grid.cubes leftIndex rightIndex
 
 theorem cnfUnsat_of_lrat
     {cnf : CNF Nat} (proof : Array LRAT.IntAction)
