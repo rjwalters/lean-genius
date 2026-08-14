@@ -9,6 +9,12 @@ from the byte-exact generator and its valuation/state mechanics.
 
 namespace Erdos85
 
+theorem oneHighFamilyTablePairs_mem_bounds
+    {pair : Nat × Nat} (h : pair ∈ oneHighFamilyTablePairs) :
+    pair.1 < 8 ∧ pair.2 < 8 ∧ pair.1 < pair.2 ∧
+      pair.2 ≠ (pair.1 ^^^ 1) := by
+  native_decide +revert
+
 /-- The five encoded vertices belonging to a branch. -/
 def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
   Finset.univ.filter fun x =>
