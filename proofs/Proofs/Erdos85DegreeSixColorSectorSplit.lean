@@ -1994,6 +1994,96 @@ theorem false_of_three_three_three_six_six_six_six_grouped_profile
   rw [hra, hrb, hrd, hre] at hrowr
   omega
 
+/-- Three is not a sum of two squares of natural numbers. -/
+theorem false_of_two_nat_squares_eq_three (x y : ℕ)
+    (h : x * x + y * y = 3) : False := by
+  have hx : x ≤ 1 := by nlinarith
+  have hy : y ≤ 1 := by nlinarith
+  interval_cases x <;> interval_cases y <;> norm_num at h
+
+/-- Row-balance endpoint for the nine-component order profile
+`3,3,3,3,3,3,4,5,6`: after its diagonal contribution two, every quotient
+out of the order-four component is either a multiple of three or a multiple
+of five, so the remaining row mass cannot equal four. -/
+theorem false_of_six_three_four_five_six_balanced_profile
+    {C : Type*} (Q : C → C → ℕ)
+    (c t₁ t₂ t₃ t₄ t₅ t₆ b d : C)
+    (hrow : Q c c + Q c t₁ + Q c t₂ + Q c t₃ + Q c t₄ +
+      Q c t₅ + Q c t₆ + Q c b + Q c d = 6)
+    (hcc : Q c c = 2)
+    (hct₁ : 4 * Q c t₁ = 3 * Q t₁ c)
+    (hct₂ : 4 * Q c t₂ = 3 * Q t₂ c)
+    (hct₃ : 4 * Q c t₃ = 3 * Q t₃ c)
+    (hct₄ : 4 * Q c t₄ = 3 * Q t₄ c)
+    (hct₅ : 4 * Q c t₅ = 3 * Q t₅ c)
+    (hct₆ : 4 * Q c t₆ = 3 * Q t₆ c)
+    (hcb : 4 * Q c b = 5 * Q b c)
+    (hcd : 4 * Q c d = 6 * Q d c) : False := by
+  omega
+
+theorem product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (x y : ℕ) (hbal : 4 * x = 3 * y) (hprod : x * y ≤ 3) : x * y = 0 := by
+  by_cases hx : x = 0
+  · simp [hx]
+  have hx3 : 3 ≤ x := by omega
+  have hy4 : 4 ≤ y := by omega
+  have h12 : 12 ≤ x * y := by nlinarith [Nat.mul_le_mul hx3 hy4]
+  omega
+
+theorem product_eq_zero_of_four_mul_eq_six_mul_of_product_le_three
+    (x y : ℕ) (hbal : 4 * x = 6 * y) (hprod : x * y ≤ 3) : x * y = 0 := by
+  by_cases hx : x = 0
+  · simp [hx]
+  have hx3 : 3 ≤ x := by omega
+  have hy2 : 2 ≤ y := by omega
+  have h6 : 6 ≤ x * y := by nlinarith [Nat.mul_le_mul hx3 hy2]
+  omega
+
+/-- Diagonal-square endpoint for an order-four diagonal-two component with
+exactly two other order-four components, all remaining component orders
+being three or six.  Balance makes every non-order-four contribution too
+large to occur in the residual square mass three, leaving an impossible sum
+of two natural squares. -/
+theorem false_of_order_four_diagonal_two_with_two_order_four_peers
+    {C : Type*} (Q : C → C → ℕ)
+    (c t₁ t₂ t₃ t₄ t₅ b d e : C)
+    (hsq : Q c c * Q c c +
+      Q c t₁ * Q t₁ c + Q c t₂ * Q t₂ c +
+      Q c t₃ * Q t₃ c + Q c t₄ * Q t₄ c +
+      Q c t₅ * Q t₅ c + Q c b * Q b c +
+      Q c d * Q d c + Q c e * Q e c = 7)
+    (hcc : Q c c = 2)
+    (hct₁ : 4 * Q c t₁ = 3 * Q t₁ c)
+    (hct₂ : 4 * Q c t₂ = 3 * Q t₂ c)
+    (hct₃ : 4 * Q c t₃ = 3 * Q t₃ c)
+    (hct₄ : 4 * Q c t₄ = 3 * Q t₄ c)
+    (hct₅ : 4 * Q c t₅ = 3 * Q t₅ c)
+    (hcb : Q c b = Q b c) (hcd : Q c d = Q d c)
+    (hce : 4 * Q c e = 6 * Q e c) : False := by
+  rw [hcc] at hsq
+  norm_num at hsq
+  have ht₁le : Q c t₁ * Q t₁ c ≤ 3 := by omega
+  have ht₂le : Q c t₂ * Q t₂ c ≤ 3 := by omega
+  have ht₃le : Q c t₃ * Q t₃ c ≤ 3 := by omega
+  have ht₄le : Q c t₄ * Q t₄ c ≤ 3 := by omega
+  have ht₅le : Q c t₅ * Q t₅ c ≤ 3 := by omega
+  have hele : Q c e * Q e c ≤ 3 := by omega
+  have ht₁zero := product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (Q c t₁) (Q t₁ c) hct₁ ht₁le
+  have ht₂zero := product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (Q c t₂) (Q t₂ c) hct₂ ht₂le
+  have ht₃zero := product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (Q c t₃) (Q t₃ c) hct₃ ht₃le
+  have ht₄zero := product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (Q c t₄) (Q t₄ c) hct₄ ht₄le
+  have ht₅zero := product_eq_zero_of_four_mul_eq_three_mul_of_product_le_three
+    (Q c t₅) (Q t₅ c) hct₅ ht₅le
+  have hezero := product_eq_zero_of_four_mul_eq_six_mul_of_product_le_three
+    (Q c e) (Q e c) hce hele
+  rw [ht₁zero, ht₂zero, ht₃zero, ht₄zero, ht₅zero,
+    hcb, hcd, hezero] at hsq
+  exact false_of_two_nat_squares_eq_three (Q c b) (Q c d) (by nlinarith)
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
