@@ -428,6 +428,62 @@ theorem traceSix_le_two_support_profile
     (S₁.card = 6 ∧ S₂.card = 0)
   omega
 
+/-- If a trace-six family is pointwise at most two, then a globally minimum
+index carrying zero trace weight has size at most eight when the total size
+is thirty-three.  Indeed at least three other indices carry positive weight,
+so four distinct indices each have at least the minimum size. -/
+theorem minimum_zero_of_traceSix_le_two_order_le_eight
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (q size : C → ℕ) (c : C)
+    (hcmin : ∀ e, size c ≤ size e)
+    (htotal : ∑ e, size e = 33)
+    (hle : ∀ e, q e ≤ 2)
+    (htrace : ∑ e, q e = 6)
+    (hzero : q c = 0) : size c ≤ 8 := by
+  let P := Finset.univ.filter fun e ↦ 0 < q e
+  have hcnot : c ∉ P := by simp [P, hzero]
+  have hsumP : (∑ e ∈ P, q e) = 6 := by
+    calc
+      (∑ e ∈ P, q e) = ∑ e, q e := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro e he henot
+        have hnpos : ¬ 0 < q e := by
+          intro hpos
+          apply henot
+          simp [P, hpos]
+        omega
+      _ = 6 := htrace
+  have hsumLe : (∑ e ∈ P, q e) ≤ ∑ _e ∈ P, 2 := by
+    apply Finset.sum_le_sum
+    intro e he
+    exact hle e
+  have hPcard : 3 ≤ P.card := by
+    have hconst : (∑ _e ∈ P, 2) = 2 * P.card := by
+      simp [Nat.mul_comm]
+    rw [hsumP] at hsumLe
+    rw [hconst] at hsumLe
+    omega
+  have hPsubset : P ⊆ (Finset.univ.erase c : Finset C) := by
+    intro e he
+    exact Finset.mem_erase.mpr ⟨fun hec ↦ hcnot (hec ▸ he), Finset.mem_univ e⟩
+  have hsizeP_le : (∑ e ∈ P, size e) ≤
+      ∑ e ∈ (Finset.univ.erase c : Finset C), size e :=
+    Finset.sum_le_sum_of_subset_of_nonneg hPsubset (fun _ _ _ ↦ Nat.zero_le _)
+  have hminP : P.card * size c ≤ ∑ e ∈ P, size e := by
+    calc
+      P.card * size c = ∑ _e ∈ P, size c := by simp
+      _ ≤ ∑ e ∈ P, size e := by
+        apply Finset.sum_le_sum
+        intro e he
+        exact hcmin e
+  have hcuniv : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have herase := Finset.sum_erase_add (Finset.univ : Finset C) size hcuniv
+  have hfour : 4 * size c ≤ 33 := by
+    have hthree : 3 * size c ≤ P.card * size c :=
+      Nat.mul_le_mul_right (size c) hPcard
+    omega
+  omega
+
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
 component. -/
@@ -6370,6 +6426,49 @@ theorem degreeSix_emptySector_diagonal_support_profile
       G hfree (d := 6) (by norm_num) (by norm_num) hmin
         (by norm_num at hcard ⊢; exact hcard) (by norm_num)
   simpa [Q] using traceSix_le_two_support_profile (fun c ↦ Q c c) hle htrace
+
+/-- A globally minimum zero-diagonal component in the empty sector has order
+at most eight.  It sits alongside at least three positive-diagonal trace
+components, all no smaller than it. -/
+theorem degreeSix_minimum_zeroDiagonal_order_le_eight_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hzero : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0) :
+    c.supp.ncard ≤ 8 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have htotal : (∑ e : D.ConnectedComponent, e.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hle : ∀ e, Q e e ≤ 2 := fun e ↦
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty e
+  have htrace : ∑ e, Q e e = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  exact minimum_zero_of_traceSix_le_two_order_le_eight
+    (fun e ↦ Q e e) (fun e : D.ConnectedComponent ↦ e.supp.ncard) c
+      hcmin htotal hle htrace (by simpa [Q, D] using hzero)
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
