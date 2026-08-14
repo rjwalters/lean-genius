@@ -1352,11 +1352,11 @@ theorem oneHighFamilyV2F3bFinishVal_semanticSound
 structure OneHighFamilyV2F3bLedger
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (profile : Nat) : Prop where
-  collect_sound : ∀ pair acc,
+  collect_sound : ∀ pair, pair ∈ oneHighFamilyTablePairs → ∀ acc,
     OneHighFamilySemanticSound R acc →
     OneHighFamilyInputAccumSound R
       (oneHighFamilyV2F3bCollectVal R profile pair acc)
-  count_eq : ∀ pair acc,
+  count_eq : ∀ pair, pair ∈ oneHighFamilyTablePairs → ∀ acc,
     OneHighFamilySemanticSound R acc →
     let input := oneHighFamilyV2F3bCollectVal R profile pair acc
     20 + oneHighFamilyTableGet (oneHighFamilyGraphTable R profile)
@@ -1399,6 +1399,7 @@ theorem oneHighFamilyV2F3bBlockStepVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (profile : Nat) (ledger : OneHighFamilyV2F3bLedger R profile)
     (pair : Nat × Nat) {acc : OneHighFamilyValState}
+    (hpair : pair ∈ oneHighFamilyTablePairs)
     (hacc : OneHighFamilySemanticSound R acc) :
     OneHighFamilySemanticSound R
       (oneHighFamilyV2F3bBlockStepVal R profile
@@ -1406,8 +1407,8 @@ theorem oneHighFamilyV2F3bBlockStepVal_semanticSound
   let input := oneHighFamilyV2F3bCollectVal R profile pair acc
   apply oneHighFamilyV2F3bFinishVal_semanticSound R
     (oneHighFamilyGraphTable R profile) pair
-    (ledger.collect_sound pair acc hacc)
-  exact ledger.count_eq pair acc hacc
+    (ledger.collect_sound pair hpair acc hacc)
+  exact ledger.count_eq pair hpair acc hacc
 
 noncomputable def oneHighFamilyV2ClausesVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
@@ -1443,12 +1444,12 @@ theorem oneHighFamilyV2ClausesVal_semanticSound
     (val : DimacsValuation) :
     OneHighFamilySemanticSound R
       (oneHighFamilyV2ClausesVal R profile val) := by
-  apply oneHighFamilyRunListVal_semanticSound R _ _
+  apply oneHighFamilyRunListVal_semanticSound_mem R _ _
     (oneHighFamilyV2F3aClausesVal_semanticSound
       R profile hc f₁ f₂ f₃a val)
-  intro pair acc hacc
+  intro pair hpair acc hacc
   exact oneHighFamilyV2F3bBlockStepVal_semanticSound
-    R profile f₃b pair hacc
+    R profile f₃b pair hpair hacc
 
 theorem oneHighFamilyV2Clauses_dimacsSatisfiable
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
