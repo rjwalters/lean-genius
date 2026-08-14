@@ -1697,6 +1697,151 @@ theorem false_of_minimum_diagonal_two_order_seven
   have := hminSize x
   omega
 
+/-- Exact quotient profile of a minimum diagonal-two row of order five.  All
+positive off-diagonal targets have reverse quotient one and order five times
+their forward quotient, so they occupy twenty vertices.  The complement is
+a unique order-eight part, with zero quotient in both directions. -/
+theorem minimum_diagonal_two_order_five_support_profile
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcsize : size c = 5) (hminSize : ∀ x, 5 ≤ size x)
+    (hdiag : Q c c = 2)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hsq : ∑ x, Q c x * Q x c = 8) :
+    ∃ e, e ≠ c ∧ size e = 8 ∧ Q c e = 0 ∧ Q e c = 0 ∧
+      ∀ x, x ≠ c → x ≠ e →
+        0 < Q c x ∧ Q x c = 1 ∧ size x = 5 * Q c x := by
+  let P := (Finset.univ.filter fun x ↦ 0 < Q c x).erase c
+  have hcPos : 0 < Q c c := by rw [hdiag]; norm_num
+  have hcFilter : c ∈ (Finset.univ.filter fun x ↦ 0 < Q c x) := by
+    simp [hcPos]
+  have hrowP : (∑ x ∈ P, Q c x) = 4 := by
+    have hsumFilter :
+        (∑ x ∈ (Finset.univ.filter fun x ↦ 0 < Q c x), Q c x) = 6 := by
+      calc
+        _ = ∑ x, Q c x := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 6 := hrow
+    have hs := Finset.sum_erase_add
+      (Finset.univ.filter fun x ↦ 0 < Q c x) (Q c) hcFilter
+    dsimp [P]
+    rw [hdiag] at hs
+    omega
+  have hprodP : (∑ x ∈ P, Q c x * Q x c) = 4 := by
+    have hsumFilter :
+        (∑ x ∈ (Finset.univ.filter fun x ↦ 0 < Q c x),
+          Q c x * Q x c) = 8 := by
+      calc
+        _ = ∑ x, Q c x * Q x c := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 8 := hsq
+    have hs := Finset.sum_erase_add
+      (Finset.univ.filter fun x ↦ 0 < Q c x)
+        (fun x ↦ Q c x * Q x c) hcFilter
+    dsimp [P]
+    rw [hdiag] at hs
+    omega
+  have htermLe : ∀ x ∈ P, Q c x ≤ Q c x * Q x c := by
+    intro x hx
+    have hxFilter := (Finset.mem_erase.mp hx).2
+    have hqpos : 0 < Q c x := (Finset.mem_filter.mp hxFilter).2
+    have hrevpos : 0 < Q x c := by
+      by_contra hnot
+      have hzero : Q x c = 0 := by omega
+      have hb := hbal x
+      rw [hcsize, hzero, mul_zero] at hb
+      omega
+    exact Nat.le_mul_of_pos_right _ hrevpos
+  have htermEq : ∀ x ∈ P, Q c x = Q c x * Q x c :=
+    (Finset.sum_eq_sum_iff_of_le htermLe).mp (by rw [hrowP, hprodP])
+  have hreverseOne : ∀ x ∈ P, Q x c = 1 := by
+    intro x hx
+    have hxFilter := (Finset.mem_erase.mp hx).2
+    have hqpos : 0 < Q c x := (Finset.mem_filter.mp hxFilter).2
+    have heq := htermEq x hx
+    nlinarith
+  have hsizeEq : ∀ x ∈ P, size x = 5 * Q c x := by
+    intro x hx
+    have hb := hbal x
+    rw [hcsize, hreverseOne x hx, mul_one] at hb
+    exact hb.symm
+  have hsizeP : (∑ x ∈ P, size x) = 20 := by
+    calc
+      (∑ x ∈ P, size x) = ∑ x ∈ P, 5 * Q c x := by
+        apply Finset.sum_congr rfl
+        intro x hx
+        exact hsizeEq x hx
+      _ = 5 * ∑ x ∈ P, Q c x := by rw [Finset.mul_sum]
+      _ = 20 := by rw [hrowP]
+  let U := Finset.univ.erase c
+  have hPsubset : P ⊆ U := by
+    intro x hx
+    exact Finset.mem_erase.mpr
+      ⟨(Finset.mem_erase.mp hx).1, Finset.mem_univ x⟩
+  have hsizeU : (∑ x ∈ U, size x) = 28 := by
+    have hs := Finset.sum_erase_add
+      (Finset.univ : Finset C) size (Finset.mem_univ c)
+    dsimp [U]
+    rw [htotal, hcsize] at hs
+    omega
+  let R := U \ P
+  have hsizeR : (∑ x ∈ R, size x) = 8 := by
+    have hs : (∑ x ∈ R, size x) + (∑ x ∈ P, size x) =
+        ∑ x ∈ U, size x := Finset.sum_sdiff hPsubset
+    dsimp [R] at hs ⊢
+    omega
+  have hRnonempty : R.Nonempty := by
+    by_contra hempty
+    have hRempty : R = ∅ := Finset.not_nonempty_iff_eq_empty.mp hempty
+    rw [hRempty] at hsizeR
+    simp at hsizeR
+  have hcardLe : R.card ≤ 1 := by
+    have hlower : (∑ _x ∈ R, 5) ≤ ∑ x ∈ R, size x :=
+      Finset.sum_le_sum fun x _ ↦ hminSize x
+    simp only [Finset.sum_const_nat, Finset.card_attach,
+      nsmul_eq_mul] at hlower
+    rw [hsizeR] at hlower
+    nlinarith
+  have hcard : R.card = 1 := by
+    have := Finset.card_pos.mpr hRnonempty
+    omega
+  obtain ⟨e, hRe⟩ := Finset.card_eq_one.mp hcard
+  have heR : e ∈ R := by simp [hRe]
+  have heU : e ∈ U := (Finset.mem_sdiff.mp heR).1
+  have heNotP : e ∉ P := (Finset.mem_sdiff.mp heR).2
+  have hec : e ≠ c := by simpa [U] using (Finset.mem_erase.mp heU).1
+  have heSize : size e = 8 := by simpa [hRe] using hsizeR
+  have hce : Q c e = 0 := by
+    by_contra hne
+    have hpos : 0 < Q c e := Nat.pos_of_ne_zero hne
+    exact heNotP (by simp [P, hec, hpos])
+  have hecQ : Q e c = 0 := by
+    have hb := hbal e
+    rw [hcsize, hce, heSize] at hb
+    omega
+  refine ⟨e, hec, heSize, hce, hecQ, ?_⟩
+  intro x hxc hxe
+  have hxU : x ∈ U := by simp [U, hxc]
+  have hxNotR : x ∉ R := by simp [hRe, hxe]
+  have hxP : x ∈ P := by
+    by_contra hnot
+    exact hxNotR (Finset.mem_sdiff.mpr ⟨hxU, hnot⟩)
+  have hxFilter := (Finset.mem_erase.mp hxP).2
+  exact ⟨(Finset.mem_filter.mp hxFilter).2,
+    hreverseOne x hxP, hsizeEq x hxP⟩
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -7912,6 +8057,44 @@ theorem degreeSix_minimum_diagonal_two_order_eq_five
   · exact h5
   · exact (degreeSix_minimum_diagonal_two_order_seven_false
       G hfree hmin hcard c hcmin h7 hdiag).elim
+
+/-- Graph-level exact profile for the remaining order-five minimum: there is
+a unique other component invisible in both quotient directions, it has order
+eight, and every further component has reverse quotient one and order five
+times its forward quotient from the minimum component. -/
+theorem degreeSix_minimum_diagonal_two_order_five_support_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ x.supp.ncard)
+    (hcsize : c.supp.ncard = 5)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    ∃ e : (secondOrderDefectGraph G).ConnectedComponent,
+      e ≠ c ∧ e.supp.ncard = 8 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) c e = 0 ∧
+      componentQuotientMatrix G (secondOrderDefectGraph G) e c = 0 ∧
+      ∀ x, x ≠ c → x ≠ e →
+        0 < componentQuotientMatrix G (secondOrderDefectGraph G) c x ∧
+        componentQuotientMatrix G (secondOrderDefectGraph G) x c = 1 ∧
+        x.supp.ncard = 5 *
+          componentQuotientMatrix G (secondOrderDefectGraph G) c x := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hsq8 : ∑ x : D.ConnectedComponent, Q c x * Q x c = 8 := by
+    simpa [hcsize] using hsq
+  exact minimum_diagonal_two_order_five_support_profile Q
+    (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hcsize
+      (fun x ↦ by simpa [hcsize] using hcmin x)
+      (by simpa [Q, D] using hdiag) htotal hrow hbal hsq8
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
