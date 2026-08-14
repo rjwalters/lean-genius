@@ -5570,6 +5570,44 @@ theorem degreeSix_exists_separated_chord_with_orientation_of_sector_empty
       graph_equalOddCycle_diagBlock_adj_shift_iff
         (hr c) hodd G D (u c) (hu c) hcomm (huD c) x y⟩
 
+/-- An odd-parity Sidon subset of an even cyclic group packs all of its
+nonzero ordered differences into the nonzero even-parity fiber. -/
+theorem oddSidon_card_mul_pred_le_half_sub_one
+    {r : ℕ} [NeZero r] (h2r : 2 ∣ r) (S : Finset (ZMod r))
+    (hsidon : IsOrderedSidon S)
+    (hodd : ∀ s ∈ S, ZMod.castHom h2r (ZMod 2) s ≠ 0) :
+    S.card * (S.card - 1) ≤ r / 2 - 1 := by
+  classical
+  let φ : ZMod r →+* ZMod 2 := ZMod.castHom h2r (ZMod 2)
+  let E : Finset (ZMod r) := (projectionFiber φ 0).erase 0
+  have hsubset : orderedDifferenceSet S ⊆ E := by
+    intro z hz
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hz
+    have hpdata := mem_orderedDistinctPairs_iff.mp hp
+    have hpodd := hodd p.1 hpdata.1
+    have hqodd := hodd p.2 hpdata.2.1
+    have hone (z : ZMod 2) (hz : z ≠ 0) : z = 1 := by
+      fin_cases z
+      · exact (hz rfl).elim
+      · rfl
+    have hpar : φ (p.1 - p.2) = 0 := by
+      rw [map_sub, hone (φ p.1) hpodd, hone (φ p.2) hqodd]
+      decide
+    have hne : p.1 - p.2 ≠ 0 := sub_ne_zero.mpr hpdata.2.2
+    simp only [E, Finset.mem_erase, projectionFiber, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    exact ⟨hne, hpar⟩
+  have hcardE : E.card = r / 2 - 1 := by
+    have hzero : (0 : ZMod r) ∈ projectionFiber φ 0 := by
+      simp [projectionFiber, φ]
+    change ((projectionFiber φ 0).erase 0).card = r / 2 - 1
+    rw [Finset.card_erase_of_mem hzero]
+    simpa [φ] using congrArg (fun n : ℕ ↦ n - 1)
+      (card_projectionFiber_zmod_castHom h2r (0 : ZMod 2))
+  have hle := Finset.card_le_card hsubset
+  rw [card_orderedDifferenceSet_of_sidon hsidon, hcardE] at hle
+  exact hle
+
 /-- A reverse-oriented diagonal block at the degree-six boundary is exactly
 an odd-parity Sidon family of reverse matchings.  The phase set is the zero
 row support, so its cardinality is the diagonal component quotient; reverse
@@ -5646,6 +5684,34 @@ theorem degreeSix_reverseOriented_component_exists_oddSidon_phaseSet
   intro x y
   rw [hzero]
   exact mem_graphCycleBlockZeroSupport_iff_adj G u u (x + y) |>.symm
+
+/-- Numerical packing consequence of the reverse phase-set interface: a
+reverse diagonal quotient `q` on an even component of order `r` satisfies
+`q(q-1) ≤ r/2-1`. -/
+theorem degreeSix_reverseOriented_component_diagonal_packing_bound
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    {r : ℕ} [NeZero r]
+    (u : ZMod r → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (hrev : ∀ x y : ZMod r,
+      G.Adj (u (x + 1)) (u (y - 1)) ↔ G.Adj (u x) (u y))
+    (h2r : 2 ∣ r) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c *
+        (componentQuotientMatrix G (secondOrderDefectGraph G) c c - 1) ≤
+      r / 2 - 1 := by
+  obtain ⟨S, hScard, hsidon, hodd, _hblock⟩ :=
+    degreeSix_reverseOriented_component_exists_oddSidon_phaseSet
+      G hfree hmin hcard c u hu huRange hrev h2r
+  have hbound := oddSidon_card_mul_pred_le_half_sub_one h2r S hsidon hodd
+  simpa [hScard] using hbound
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
