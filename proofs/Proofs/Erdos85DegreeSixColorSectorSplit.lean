@@ -1948,6 +1948,26 @@ theorem false_of_minimum_diagonal_two_order_five_profile
   rw [hxcQ, hxeQ] at hxRow
   omega
 
+/-- Arithmetic endpoint for the `3,3,9,9,9` zero-triangle profile.  Balance
+makes each quotient out of the first triangle three times its reverse.  An
+order-nine source cannot contact both triangles, so every contribution to
+their off-diagonal square entry vanishes, contradicting that entry's value
+three. -/
+theorem false_of_three_three_nine_nine_nine_grouped_profile
+    {C : Type*} (Q : C → C → ℕ) (c t x y z : C)
+    (hcx : Q c x = 3 * Q x c)
+    (hcy : Q c y = 3 * Q y c)
+    (hcz : Q c z = 3 * Q z c)
+    (hsq : Q c x * Q x t + Q c y * Q y t + Q c z * Q z t = 3)
+    (hgx : Q x c + Q x t ≤ 1)
+    (hgy : Q y c + Q y t ≤ 1)
+    (hgz : Q z c + Q z t ≤ 1) : False := by
+  have hxzero : Q x c * Q x t = 0 := by nlinarith
+  have hyzero : Q y c * Q y t = 0 := by nlinarith
+  have hzzero : Q z c * Q z t = 0 := by nlinarith
+  rw [hcx, hcy, hcz] at hsq
+  nlinarith
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -8302,6 +8322,115 @@ theorem degreeSix_emptySector_minimum_component_eq_zero_triangle
   · exact hzero
   · exact (degreeSix_emptySector_minimum_diagonal_two_false
       G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin htwo.1).elim
+
+/-- The residual component-order profile `3,3,9,9,9` is impossible.  The
+zero-diagonal row of the first triangle cannot contact the other triangle;
+its off-diagonal square entry is therefore carried by the three order-nine
+components.  Balance and order-nine grouped periodicity annihilate each of
+those contributions. -/
+theorem degreeSix_false_of_zeroTriangle_profile_three_three_nine_nine_nine
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ a : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero a.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ a : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod a.supp.ncard → V)
+    (hu : ∀ a, Function.Injective (u a))
+    (huRange : ∀ a, Set.range (u a) = a.supp)
+    (huD : ∀ a w, (secondOrderDefectGraph G).neighborFinset (u a w) =
+      {u a (w - 1), u a (w + 1)})
+    (c t x y z : (secondOrderDefectGraph G).ConnectedComponent)
+    (htc : t ≠ c) (hxc : x ≠ c) (hxt : x ≠ t)
+    (hyc : y ≠ c) (hyt : y ≠ t) (hyx : y ≠ x)
+    (hzc : z ≠ c) (hzt : z ≠ t) (hzx : z ≠ x) (hzy : z ≠ y)
+    (huniv : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {c, t, x, y, z})
+    (hc3 : c.supp.ncard = 3) (ht3 : t.supp.ncard = 3)
+    (hx9 : x.supp.ncard = 9) (hy9 : y.supp.ncard = 9)
+    (hz9 : z.supp.ncard = 9)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (htt : componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hcx : Q c x = 3 * Q x c := by
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c x
+    change c.supp.ncard * Q c x = x.supp.ncard * Q x c at hb
+    rw [hc3, hx9] at hb
+    omega
+  have hcy : Q c y = 3 * Q y c := by
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c y
+    change c.supp.ncard * Q c y = y.supp.ncard * Q y c at hb
+    rw [hc3, hy9] at hb
+    omega
+  have hcz : Q c z = 3 * Q z c := by
+    have hb := secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c z
+    change c.supp.ncard * Q c z = z.supp.ncard * Q z c at hb
+    rw [hc3, hz9] at hb
+    omega
+  have hcNot : c ∉ ({t, x, y, z} : Finset D.ConnectedComponent) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨Ne.symm htc, Ne.symm hxc, Ne.symm hyc, Ne.symm hzc⟩
+  have htNot : t ∉ ({x, y, z} : Finset D.ConnectedComponent) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨Ne.symm hxt, Ne.symm hyt, Ne.symm hzt⟩
+  have hxNot : x ∉ ({y, z} : Finset D.ConnectedComponent) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨Ne.symm hyx, Ne.symm hzx⟩
+  have hyNot : y ∉ ({z} : Finset D.ConnectedComponent) := by
+    simpa only [Finset.mem_singleton] using Ne.symm hzy
+  have hct : Q c t = 0 := by
+    by_contra hne
+    have hpos : 0 < Q c t := Nat.pos_of_ne_zero hne
+    have htprof := (degreeSix_orderThree_zeroDiagonal_profile
+      G hfree hmin hcard c hc3 hcc).2 t hpos
+    have hctOne : Q c t = 1 := by
+      have hs := htprof.2
+      change t.supp.ncard = 3 * Q c t at hs
+      rw [ht3] at hs
+      omega
+    have hrowC := (degreeSix_orderThree_zeroDiagonal_profile
+      G hfree hmin hcard c hc3 hcc).1
+    change (∑ a ∈ (Finset.univ : Finset D.ConnectedComponent), Q c a) = 6
+      at hrowC
+    rw [huniv, Finset.sum_insert hcNot, Finset.sum_insert htNot,
+      Finset.sum_insert hxNot, Finset.sum_insert hyNot,
+      Finset.sum_singleton] at hrowC
+    change Q c c = 0 at hcc
+    rw [hcc, hctOne, hcx, hcy, hcz] at hrowC
+    omega
+  have hsqGraph := secondOrder_componentQuotientMatrix_sq_apply
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) c t
+  have hsqFull : (∑ a ∈ (Finset.univ : Finset D.ConnectedComponent),
+      Q c a * Q a t) = 3 := by
+    simpa [Q, D, Matrix.mul_apply, htc.symm, ht3] using hsqGraph
+  rw [huniv, Finset.sum_insert hcNot, Finset.sum_insert htNot,
+    Finset.sum_insert hxNot, Finset.sum_insert hyNot,
+    Finset.sum_singleton] at hsqFull
+  change Q c c = 0 at hcc
+  change Q t t = 0 at htt
+  rw [hcc, hct, htt] at hsqFull
+  have hgx := degreeSix_orderNine_two_orderThree_targets_le_one
+    G hfree hmin hcard u hu huRange huD x c t hx9 hc3 ht3 htc.symm
+  have hgy := degreeSix_orderNine_two_orderThree_targets_le_one
+    G hfree hmin hcard u hu huRange huD y c t hy9 hc3 ht3 htc.symm
+  have hgz := degreeSix_orderNine_two_orderThree_targets_le_one
+    G hfree hmin hcard u hu huRange huD z c t hz9 hc3 ht3 htc.symm
+  exact false_of_three_three_nine_nine_nine_grouped_profile
+    Q c t x y z hcx hcy hcz (by simpa [Nat.add_assoc] using hsqFull) hgx hgy hgz
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
