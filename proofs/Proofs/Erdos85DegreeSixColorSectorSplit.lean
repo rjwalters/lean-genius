@@ -111,6 +111,93 @@ theorem degreeSix_singleton_incidence_cauchy
   exact_mod_cast (show ((size c : ℝ) * size c + 33 ≤ 18 * size c) by
     nlinarith [hcs''])
 
+/-- A diagonal-four quotient row cannot be supported on a component of order
+at least twenty-six.  After removing the diagonal, its row mass is two and
+its square mass is `|c|-13`; weighted Cauchy would force
+`4|c| ≤ (33-|c|)(|c|-13)`, which fails throughout `[26,33]`. -/
+theorem false_of_degreeSix_diagonal_four_large_incidence
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hlarge : 26 ≤ size c)
+    (htotal : (∑ e : C, size e) = 33)
+    (hrow : (∑ e : C, Q c e) = 6)
+    (hdiag : Q c c = 4)
+    (hbal : ∀ e, size c * Q c e = size e * Q e c)
+    (hsq : (∑ e : C, Q c e * Q e c) = size c + 3) : False := by
+  let S : Finset C := Finset.univ.erase c
+  have hc : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have hle33 : size c ≤ 33 := by
+    have hsingle : size c ≤ ∑ e : C, size e :=
+      Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hc
+    omega
+  have hsizeS : (∑ e ∈ S, size e) = 33 - size c := by
+    have hsplit := Finset.sum_erase_add (Finset.univ : Finset C) size hc
+    dsimp [S]
+    omega
+  have hrowS : (∑ e ∈ S, Q c e) = 2 := by
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) (fun e => Q c e) hc
+    dsimp [S]
+    omega
+  have hprodS : (∑ e ∈ S, Q c e * Q e c) = size c - 13 := by
+    have hsplit := Finset.sum_erase_add
+      (Finset.univ : Finset C) (fun e => Q c e * Q e c) hc
+    rw [hdiag] at hsplit
+    dsimp [S]
+    omega
+  have hl : (size c : ℝ) ≠ 0 := by exact_mod_cast (by omega : size c ≠ 0)
+  have hcs := Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul
+    (R := ℝ) S
+    (r := fun e => (Q c e : ℝ))
+    (f := fun e => (size e : ℝ))
+    (g := fun e => ((Q c e * Q e c : ℕ) : ℝ) / (size c : ℝ))
+    (fun _ _ => by positivity) (fun _ _ => by positivity) (by
+      intro e he
+      have hb := hbal e
+      have hbR : (size c : ℝ) * (Q c e : ℝ) =
+          (size e : ℝ) * (Q e c : ℝ) := by exact_mod_cast hb
+      apply le_of_eq
+      rw [← mul_div_assoc]
+      apply (eq_div_iff hl).2
+      push_cast
+      calc
+        (Q c e : ℝ) ^ 2 * size c =
+            (Q c e : ℝ) * ((size c : ℝ) * Q c e) := by ring
+        _ = (Q c e : ℝ) * ((size e : ℝ) * Q e c) := by rw [hbR]
+        _ = (size e : ℝ) * ((Q c e : ℝ) * Q e c) := by ring)
+  have hsizeR : (∑ e ∈ S, (size e : ℝ)) = (33 - size c : ℕ) := by
+    exact_mod_cast hsizeS
+  have hrowR : (∑ e ∈ S, (Q c e : ℝ)) = 2 := by
+    exact_mod_cast hrowS
+  have hprodR :
+      (∑ e ∈ S, (((Q c e * Q e c : ℕ) : ℝ) / (size c : ℝ))) =
+        ((size c - 13 : ℕ) : ℝ) / (size c : ℝ) := by
+    rw [← Finset.sum_div]
+    congr 1
+    exact_mod_cast hprodS
+  rw [hsizeR, hrowR, hprodR] at hcs
+  have hlR : (0 : ℝ) < size c := by exact_mod_cast (by omega : 0 < size c)
+  have hsub33 : ((33 - size c : ℕ) : ℝ) = 33 - (size c : ℝ) := by
+    rw [Nat.cast_sub hle33]
+    norm_num
+  have hsub13 : ((size c - 13 : ℕ) : ℝ) = (size c : ℝ) - 13 := by
+    rw [Nat.cast_sub (by omega : 13 ≤ size c)]
+    norm_num
+  norm_num [pow_two] at hcs
+  rw [hsub33, hsub13] at hcs
+  have hcs' := mul_le_mul_of_nonneg_right hcs hlR.le
+  have hineq : 4 * (size c : ℝ) ≤
+      (33 - (size c : ℝ)) * ((size c : ℝ) - 13) := by
+    calc
+      4 * (size c : ℝ) ≤
+          ((33 - (size c : ℝ)) *
+            (((size c : ℝ) - 13) / size c)) * size c := hcs'
+      _ = (33 - (size c : ℝ)) * ((size c : ℝ) - 13) := by
+        field_simp [hl]
+  have hlargeR : (26 : ℝ) ≤ size c := by exact_mod_cast hlarge
+  have hle33R : (size c : ℝ) ≤ 33 := by exact_mod_cast hle33
+  nlinarith
+
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
 component. -/
@@ -5852,6 +5939,88 @@ theorem degreeSix_component_diagonal_ge_three_reverse_and_order_bound
     · change 3 ≤ Q c c at hdiag
       change Q c c = 2 at htwo
       omega
+
+/-- Diagonal quotient four is impossible at the degree-six boundary.  Reverse
+phase packing would force component order at least twenty-six, while the
+balanced quotient row and square identities contradict weighted incidence
+Cauchy on such a large component. -/
+theorem degreeSix_component_diagonal_ne_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [NeZero c.supp.ncard]
+    (u : ZMod c.supp.ncard → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hr3 : 3 ≤ c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≠ 4 := by
+  intro hfour
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hhigh := degreeSix_component_diagonal_ge_three_reverse_and_order_bound
+    G hfree hmin hcard c u hu huRange huD hr3 (by
+      change 3 ≤ Q c c
+      change Q c c = 4 at hfour
+      omega)
+  have hlarge : 26 ≤ c.supp.ncard := by
+    have horder := hhigh.2.2
+    rw [hfour] at horder
+    norm_num at horder
+    exact horder
+  have htotal :
+      (∑ e : D.ConnectedComponent, e.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hrow : (∑ e : D.ConnectedComponent, Q c e) = 6 := by
+    exact sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c
+  have hbal : ∀ e : D.ConnectedComponent,
+      c.supp.ncard * Q c e = e.supp.ncard * Q e c := by
+    intro e
+    exact secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c e
+  have hsq : (∑ e : D.ConnectedComponent, Q c e * Q e c) =
+      c.supp.ncard + 3 := by
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c c
+    simpa [Q, D, Matrix.mul_apply, Nat.add_comm] using hs
+  exact false_of_degreeSix_diagonal_four_large_incidence
+    Q (fun e : D.ConnectedComponent ↦ e.supp.ncard) c hlarge htotal hrow
+      (by simpa [Q, D] using hfour) hbal hsq
+
+/-- Consequently every degree-six diagonal component quotient is at most
+three. -/
+theorem degreeSix_component_diagonal_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    [NeZero c.supp.ncard]
+    (u : ZMod c.supp.ncard → V) (hu : Function.Injective u)
+    (huRange : Set.range u = c.supp)
+    (huD : ∀ x, (secondOrderDefectGraph G).neighborFinset (u x) =
+      {u (x - 1), u (x + 1)})
+    (hr3 : 3 ≤ c.supp.ncard) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) c c ≤ 3 := by
+  have hle := degreeSix_component_diagonal_le_four
+    G hfree hmin hcard c u hu huRange huD hr3
+  have hne := degreeSix_component_diagonal_ne_four
+    G hfree hmin hcard c u hu huRange huD hr3
+  omega
 
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
