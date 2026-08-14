@@ -5152,6 +5152,37 @@ theorem degreeSix_antipodalGraph_degree_eq_two_of_sector_empty
       antipodalGraph_neighborFinset]
     exact hanti.1
 
+/-- The empty color-sector branch makes the antipodal graph globally
+two-regular, not merely on the displayed cyclic coordinates. -/
+theorem degreeSix_antipodalGraph_regular_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    ∀ v : V, (antipodalGraph G).degree v = 2 := by
+  intro v
+  let c := (secondOrderDefectGraph G).connectedComponentMk v
+  have hv : v ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c v).mpr rfl
+  rw [← huRange c] at hv
+  obtain ⟨x, hx⟩ := hv
+  rw [← hx]
+  exact degreeSix_antipodalGraph_degree_eq_two_of_sector_empty
+    G hfree hmin hcard u hu huRange huD hempty c x
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
