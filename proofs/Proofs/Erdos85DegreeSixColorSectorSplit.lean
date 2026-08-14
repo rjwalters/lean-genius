@@ -2084,6 +2084,22 @@ theorem false_of_order_four_diagonal_two_with_two_order_four_peers
     hcb, hcd, hezero] at hsq
   exact false_of_two_nat_squares_eq_three (Q c b) (Q c d) (by nlinarith)
 
+/-- Numerical core of the nine-component support census.  Here `p,r` are
+the positive- and invisible-support component counts, while `np,nr` count
+the non-triangular components in those two parts.  Positive support has six
+units of triangle weight and invisible support has order twelve. -/
+theorem nine_component_support_count_census
+    (p r np nr : ℕ)
+    (hparts : p + r = 8)
+    (hp : p ≤ 6) (hr : 3 * r ≤ 12)
+    (hnpWeight : p + np ≤ 6)
+    (hnpPositive : 6 ≤ p + 6 * np)
+    (hnrExcess : 3 * r + nr ≤ 12)
+    (hnpCard : np ≤ p) (hnrCard : nr ≤ r)
+    (hthree : 3 ≤ np + nr) :
+    p = 5 ∧ r = 3 ∧ np = 1 ∧ (nr = 2 ∨ nr = 3) := by
+  omega
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
