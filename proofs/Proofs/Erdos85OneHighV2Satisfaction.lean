@@ -1120,6 +1120,110 @@ noncomputable def oneHighFamilyV2FinishCommonVal
     (fun acc lit => (oneHighFamilyEmitVal [-lit, (c : Int)] acc).2) acc
   (cs.push (c : Int), acc)
 
+theorem oneHighFamilyV2FinishCommonVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (cs ors : Array Int) (x z : Nat)
+    {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc)
+    (hpos : ∀ lit ∈ ors, 0 < lit)
+    (hbound : ∀ lit ∈ ors, lit.natAbs ≤ acc.1.top)
+    (hiff : ∀ c accC,
+      oneHighFamilyAtomIdVal R
+        (.common (min x z) (max x z)) acc = (c, accC) →
+      (accC.2 c = true ↔ ∃ lit ∈ ors, accC.2 lit.natAbs = true)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2FinishCommonVal R cs ors x z acc).2 := by
+  let atom := OneHighFamilyAtom.common (min x z) (max x z)
+  generalize hout : oneHighFamilyAtomIdVal R atom acc = out
+  rcases out with ⟨c, accC⟩
+  have hsC := oneHighFamilyAtomIdVal_semanticSound R hacc atom
+  rw [hout] at hsC
+  have hrC := oneHighFamilyAtomIdVal_result R atom acc.1 acc.2
+  rw [hout] at hrC
+  have hstateEq : accC.1 = (oneHighFamilyAtomId atom acc.1).2 := by
+    have h := oneHighFamilyAtomIdVal_state R atom acc.1 acc.2
+    rw [hout] at h
+    exact h
+  have hcPos := (hsC.ids.id_bounds _ hrC.1).1
+  have hcBound := (hsC.ids.id_bounds _ hrC.1).2
+  let accOr := (oneHighFamilyEmitVal (-(c : Int) :: ors.toList) accC).2
+  have hsOr : OneHighFamilySemanticSound R accOr := by
+    apply oneHighFamilyEmitVal_semanticSound R hsC
+    · cases hcval : accC.2 c
+      · refine ⟨-(c : Int), by simp, ?_⟩
+        simp [dimacsLitValue, hcval]
+      · rcases (hiff c accC hout).mp hcval with ⟨lit, hlit, htrue⟩
+        refine ⟨lit, by simp [hlit], ?_⟩
+        have hlitPos := hpos lit hlit
+        simp [dimacsLitValue, hlitPos, htrue]
+    · intro lit hlit
+      simp only [List.mem_cons] at hlit
+      rcases hlit with rfl | hlit
+      · simpa using hcBound
+      · have hm : lit ∈ ors := by simpa using hlit
+        exact le_trans (hbound lit hm)
+          (by rw [hstateEq]; exact oneHighFamilyAtomId_top_le atom acc.1)
+  have hfold : OneHighFamilySemanticSound R
+      (ors.foldl (fun acc lit =>
+        (oneHighFamilyEmitVal [-lit, (c : Int)] acc).2) accOr) := by
+    have aux : ∀ (l : List Int), (∀ lit ∈ l, lit ∈ ors) →
+        ∀ start : OneHighFamilyValState,
+        start.2 = accC.2 → start.1.top = accC.1.top →
+        OneHighFamilySemanticSound R start →
+        OneHighFamilySemanticSound R
+          (l.foldl (fun acc lit =>
+            (oneHighFamilyEmitVal [-lit, (c : Int)] acc).2) start) := by
+      intro l hl
+      induction l with
+      | nil => intro start _ _ hs; exact hs
+      | cons lit lits ih =>
+        intro start hval htop hs
+        simp only [List.foldl_cons]
+        have hnext := oneHighFamilyEmitVal_semanticSound R hs
+          [-lit, (c : Int)]
+        have hsNext : OneHighFamilySemanticSound R
+            (oneHighFamilyEmitVal [-lit, (c : Int)] start).2 := by
+          apply hnext
+          · by_cases ht : start.2 lit.natAbs = true
+            · have hm : lit ∈ ors := hl lit (by simp)
+              have hcTrueC : accC.2 c = true := by
+                apply (hiff c accC hout).mpr
+                refine ⟨lit, hm, ?_⟩
+                rw [← hval]
+                exact ht
+              have hcTrue : start.2 c = true := by
+                rw [hval]
+                exact hcTrueC
+              refine ⟨(c : Int), by simp, ?_⟩
+              simp [dimacsLitValue, hcTrue, hcPos]
+            · refine ⟨-lit, by simp, ?_⟩
+              have hm : lit ∈ ors := hl lit (by simp)
+              have hge : 0 ≤ lit := le_of_lt (hpos lit hm)
+              simp [dimacsLitValue, hge, ht]
+          · intro q hq
+            simp at hq
+            rcases hq with rfl | rfl
+            · have hm : lit ∈ ors := hl lit (by simp)
+              have hb : (-lit).natAbs ≤ accC.1.top := by
+                rw [Int.natAbs_neg]
+                exact le_trans (hbound lit hm) (by
+                  rw [hstateEq]
+                  exact oneHighFamilyAtomId_top_le atom acc.1)
+              rw [htop]
+              simpa using hb
+            · rw [htop]
+              exact hcBound
+        apply ih (by
+          intro q hq
+          exact hl q (by simp [hq]))
+        · exact hval
+        · exact htop
+        exact hsNext
+    rw [← Array.foldl_toList]
+    exact aux ors.toList (by intro lit hlit; simpa using hlit) accOr
+      rfl rfl hsOr
+  simpa [oneHighFamilyV2FinishCommonVal, atom, hout, accOr] using hfold
+
 theorem oneHighFamilyV2FinishCommonFoldVal_state
     (ors : Array Int) (c : Nat) (acc : OneHighFamilyValState)
     (st : OneHighFamilyGenState) (hstate : acc.1 = st) :

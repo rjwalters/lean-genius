@@ -101,6 +101,85 @@ theorem oneHighFamily_adj_sameBlock_eq_partner
   · exact congrArg Fin.val hdiv
   · simpa [Fin.divNat, Fin.modNat] using hrel.symm
 
+def oneHighFamilyV2UnpairedMidpointFin
+    (a b w : Nat) (hw : w ∈ oneHighFamilyV2UnpairedMidpoints a b) : Fin 40 :=
+  ⟨w, List.mem_range.mp (List.mem_filter.mp hw).1⟩
+
+def oneHighFamilyV2PartnerFin
+    (profile : Nat) (x : Fin 40)
+    (hm : oneHighFamilyVertexMatched profile x.val = true) : Fin 40 :=
+  ⟨oneHighFamilyV2PartnerVertex x.val,
+    oneHighFamilyV2PartnerVertex_lt x.isLt hm⟩
+
+theorem oneHighFamilyV2UnpairedCandidates_iff_commonNeighbor
+    (profile : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (hc : OneHighPureFamilyCnfConstraints profile R)
+    (a b : Fin 8) (_hab : b ≠ a)
+    (_habm : b ≠ oneHighStandardMate a)
+    (x z : Fin 40)
+    (hxBlock : Fin.divNat (m := 8) (n := 5) x = a)
+    (hzBlock : Fin.divNat (m := 8) (n := 5) z = b) :
+    (∃ w : Fin 40, R.Adj x w ∧ R.Adj w z) ↔
+      (∃ w, ∃ hw : w ∈ oneHighFamilyV2UnpairedMidpoints a.val b.val,
+        R.Adj x (oneHighFamilyV2UnpairedMidpointFin a.val b.val w hw) ∧
+        R.Adj (oneHighFamilyV2UnpairedMidpointFin a.val b.val w hw) z) ∨
+      (∃ hm : oneHighFamilyVertexMatched profile x.val = true,
+        R.Adj (oneHighFamilyV2PartnerFin profile x hm) z) ∨
+      (∃ hm : oneHighFamilyVertexMatched profile z.val = true,
+        R.Adj x (oneHighFamilyV2PartnerFin profile z hm)) := by
+  constructor
+  · rintro ⟨w, hxw, hwz⟩
+    by_cases hwa : Fin.divNat (m := 8) (n := 5) w = a
+    · right; left
+      have hi := oneHighFamily_adj_sameBlock_eq_partner
+        profile R hc x w (hwa.trans hxBlock.symm) hxw
+      refine ⟨hi.1, ?_⟩
+      have heq : oneHighFamilyV2PartnerFin profile x hi.1 = w := by
+        apply Fin.ext
+        exact hi.2.symm
+      simpa [heq] using hwz
+    by_cases hwb : Fin.divNat (m := 8) (n := 5) w = b
+    · right; right
+      have hi := oneHighFamily_adj_sameBlock_eq_partner
+        profile R hc z w (hwb.trans hzBlock.symm) hwz.symm
+      refine ⟨hi.1, ?_⟩
+      have heq : oneHighFamilyV2PartnerFin profile z hi.1 = w := by
+        apply Fin.ext
+        exact hi.2.symm
+      simpa [heq] using hxw
+    · left
+      have hwma : Fin.divNat (m := 8) (n := 5) w ≠
+          oneHighStandardMate a := by
+        intro h
+        exact hc.relation.2.1 x w (by rw [hxBlock, h]) hxw
+      have hwmb : Fin.divNat (m := 8) (n := 5) w ≠
+          oneHighStandardMate b := by
+        intro h
+        exact hc.relation.2.1 z w (by rw [hzBlock, h]) hwz.symm
+      have hwMem : w.val ∈
+          oneHighFamilyV2UnpairedMidpoints a.val b.val := by
+        simp [oneHighFamilyV2UnpairedMidpoints, w.isLt]
+        exact ⟨fun h => hwa (Fin.ext h),
+          fun h => hwb (Fin.ext h),
+          fun h => hwma (Fin.ext (by
+            rw [oneHighStandardMate_val_eq_xor]
+            exact h)),
+          fun h => hwmb (Fin.ext (by
+            rw [oneHighStandardMate_val_eq_xor]
+            exact h))⟩
+      have heq : oneHighFamilyV2UnpairedMidpointFin
+          a.val b.val w.val hwMem = w := Fin.ext rfl
+      exact ⟨w.val, hwMem, by simpa [heq] using hxw,
+        by simpa [heq] using hwz⟩
+  · rintro (⟨w, hwMem, hxw, hwz⟩ | ⟨hm, hpz⟩ | ⟨hm, hxp⟩)
+    · exact ⟨oneHighFamilyV2UnpairedMidpointFin a.val b.val w hwMem,
+        hxw, hwz⟩
+    · exact ⟨oneHighFamilyV2PartnerFin profile x hm,
+        oneHighFamilyV2PartnerVertex_adj profile R hc x.isLt hm, hpz⟩
+    · exact ⟨oneHighFamilyV2PartnerFin profile z hm,
+        hxp, (oneHighFamilyV2PartnerVertex_adj
+          profile R hc z.isLt hm).symm⟩
+
 /-- The five encoded vertices belonging to a branch. -/
 def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
   Finset.univ.filter fun x =>
