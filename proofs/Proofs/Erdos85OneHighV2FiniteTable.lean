@@ -173,4 +173,15 @@ theorem oneHighRawV2OrbitCover_allFinite :
   refine ⟨v, hv, p, stored, hmem, ?_⟩
   exact (oneHighRelevantAgreement_iff_tableRelevantAgree _ _).mp hagree
 
+/-- Certificate-only endpoint after the graph and finite-coverage arguments:
+checked UNSAT evidence for the exhaustive finite tables closes h=1. -/
+theorem orderFortyNineStratumExcluded_one_of_allFiniteChecked
+    (hchecked : ∀ (profile : Fin 5) table,
+      table ∈ oneHighAllFiniteMissTables →
+        OneHighFamilyV2CheckedUnsat profile.val table) :
+    OrderFortyNineStratumExcluded 1 :=
+  orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
+    oneHighRawV2OrbitCover_allFinite (fun profile table hmem =>
+      hchecked profile table hmem)
+
 end Erdos85
