@@ -8,6 +8,7 @@ import Proofs.Erdos85ZModProjectionFiber
 import Proofs.Erdos85ForwardSupportClassification
 import Proofs.Erdos85DifferenceArrayBoundary
 import Proofs.Erdos85ZeroDiagonalSectorGeometry
+import Proofs.Erdos85EqualCycleResidual
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -936,6 +937,168 @@ theorem false_of_minimum_diagonal_two_order_three
     (fun x _ ↦ htermLe x)).mp (by rw [hrow, hsq]) c (Finset.mem_univ c)
   rw [hdiag] at hpoint
   norm_num at hpoint
+
+/-- A minimum balanced diagonal-two row of order eleven forces every part to
+have order eleven.  Its off-diagonal row and square masses are respectively
+four and ten.  Divisibility by the minimum makes the positive support consume
+either eleven or twenty-two vertices; the former, and a singleton support in
+the latter case, contradict balance.  Hence there are exactly two supported
+parts, both of order eleven, and they exhaust the remaining vertices. -/
+theorem all_sizes_eleven_of_minimum_diagonal_two_order_eleven
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (Q : C → C → ℕ) (size : C → ℕ) (c : C)
+    (hcsize : size c = 11) (hminSize : ∀ x, 11 ≤ size x)
+    (hdiag : Q c c = 2)
+    (htotal : ∑ x, size x = 33)
+    (hrow : ∑ x, Q c x = 6)
+    (hbal : ∀ x, size c * Q c x = size x * Q x c)
+    (hdvd : ∀ x, 0 < Q c x → 11 ∣ size x)
+    (hsq : ∑ x, Q c x * Q x c = 14) :
+    ∀ x, size x = 11 := by
+  let P := Finset.univ.filter fun x ↦ 0 < Q c x
+  let T := P.erase c
+  have hcP : c ∈ P := by simp [P, hdiag]
+  have hrowT : (∑ x ∈ T, Q c x) = 4 := by
+    have hsumP : (∑ x ∈ P, Q c x) = 6 := by
+      calc
+        (∑ x ∈ P, Q c x) = ∑ x, Q c x := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 6 := hrow
+    have hs := Finset.sum_erase_add P (fun x ↦ Q c x) hcP
+    dsimp [T]
+    omega
+  have hprodT : (∑ x ∈ T, Q c x * Q x c) = 10 := by
+    have hprodP : (∑ x ∈ P, Q c x * Q x c) = 14 := by
+      calc
+        (∑ x ∈ P, Q c x * Q x c) = ∑ x, Q c x * Q x c := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x hx hnot
+          have hz : Q c x = 0 := by
+            by_contra hn
+            exact hnot (by simp [P, Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 14 := hsq
+    have hs := Finset.sum_erase_add P
+      (fun x ↦ Q c x * Q x c) hcP
+    rw [hdiag] at hs
+    dsimp [T]
+    omega
+  have hTsubset : T ⊆ (Finset.univ.erase c : Finset C) := by
+    intro x hx
+    exact Finset.mem_erase.mpr
+      ⟨(Finset.mem_erase.mp hx).1, Finset.mem_univ x⟩
+  have hsizeU : (∑ x ∈ (Finset.univ.erase c : Finset C), size x) = 22 := by
+    have hs := Finset.sum_erase_add
+      (Finset.univ : Finset C) size (Finset.mem_univ c)
+    rw [htotal, hcsize] at hs
+    omega
+  have hsizeTle : (∑ x ∈ T, size x) ≤ 22 := by
+    calc
+      (∑ x ∈ T, size x) ≤
+          ∑ x ∈ (Finset.univ.erase c : Finset C), size x :=
+        Finset.sum_le_sum_of_subset_of_nonneg hTsubset
+          (fun _ _ _ ↦ Nat.zero_le _)
+      _ = 22 := hsizeU
+  have hsizeTdvd : 11 ∣ ∑ x ∈ T, size x := by
+    apply Finset.dvd_sum
+    intro x hx
+    have hxP := (Finset.mem_erase.mp hx).2
+    exact hdvd x (by simpa [P] using (Finset.mem_filter.mp hxP).2)
+  have hTnonempty : T.Nonempty := by
+    by_contra hempty
+    have hTempty : T = ∅ := Finset.not_nonempty_iff_eq_empty.mp hempty
+    rw [hTempty] at hrowT
+    simp at hrowT
+  have hsizeTpos : 0 < ∑ x ∈ T, size x := by
+    obtain ⟨x, hx⟩ := hTnonempty
+    exact lt_of_lt_of_le (by have := hminSize x; omega)
+      (Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hx)
+  have hsizeTcases : (∑ x ∈ T, size x) = 11 ∨
+      (∑ x ∈ T, size x) = 22 := by
+    rcases hsizeTdvd with ⟨k, hk⟩
+    have hkpos : 0 < k := by
+      apply Nat.pos_of_ne_zero
+      intro hkzero
+      rw [hkzero, mul_zero] at hk
+      omega
+    have hkle : k ≤ 2 := by nlinarith
+    omega
+  have hsizeT : (∑ x ∈ T, size x) = 22 := by
+    rcases hsizeTcases with h11 | h22
+    · have hcardLe : T.card ≤ 1 := by
+        have hlower : (∑ _x ∈ T, 11) ≤ ∑ x ∈ T, size x :=
+          Finset.sum_le_sum fun x _ ↦ hminSize x
+        simp only [Finset.sum_const_nat, Finset.card_attach,
+          nsmul_eq_mul] at hlower
+        rw [h11] at hlower
+        nlinarith
+      have hcard : T.card = 1 := by
+        have := Finset.card_pos.mpr hTnonempty
+        omega
+      obtain ⟨e, hTe⟩ := Finset.card_eq_one.mp hcard
+      have heSize : size e = 11 := by simpa [hTe] using h11
+      have hrowE : Q c e = 4 := by simpa [hTe] using hrowT
+      have hprodE : Q c e * Q e c = 10 := by
+        simpa [hTe] using hprodT
+      have hreverse : Q e c = Q c e := by
+        have hb := hbal e
+        rw [hcsize, heSize] at hb
+        omega
+      rw [hrowE, hreverse, hrowE] at hprodE
+      omega
+    · exact h22
+  have hcardLe : T.card ≤ 2 := by
+    have hlower : (∑ _x ∈ T, 11) ≤ ∑ x ∈ T, size x :=
+      Finset.sum_le_sum fun x _ ↦ hminSize x
+    simp only [Finset.sum_const_nat, Finset.card_attach,
+      nsmul_eq_mul] at hlower
+    rw [hsizeT] at hlower
+    nlinarith
+  have hcard : T.card = 2 := by
+    have hcardPos := Finset.card_pos.mpr hTnonempty
+    have hcardNeOne : T.card ≠ 1 := by
+      intro hcardOne
+      obtain ⟨e, hTe⟩ := Finset.card_eq_one.mp hcardOne
+      have heSize : size e = 22 := by simpa [hTe] using hsizeT
+      have hrowE : Q c e = 4 := by simpa [hTe] using hrowT
+      have hprodE : Q c e * Q e c = 10 := by
+        simpa [hTe] using hprodT
+      have hb := hbal e
+      rw [hcsize, heSize, hrowE] at hb
+      have hreverse : Q e c = 2 := by omega
+      rw [hrowE, hreverse] at hprodE
+      omega
+    omega
+  have hsizeOnT : ∀ x ∈ T, size x = 11 := by
+    have hconst : (∑ _x ∈ T, 11) = 22 := by
+      simp [hcard]
+    have hpoint := (Finset.sum_eq_sum_iff_of_le
+      (fun x hx ↦ hminSize x)).mp (by rw [hconst, hsizeT])
+    intro x hx
+    exact (hpoint x hx).symm
+  intro x
+  by_cases hxc : x = c
+  · simpa [hxc] using hcsize
+  · have hxU : x ∈ (Finset.univ.erase c : Finset C) := by simp [hxc]
+    by_cases hxT : x ∈ T
+    · exact hsizeOnT x hxT
+    · let R := (Finset.univ.erase c : Finset C) \ T
+      have hsizeR : (∑ y ∈ R, size y) = 0 := by
+        have hsplit : (∑ y ∈ R, size y) + (∑ y ∈ T, size y) =
+            ∑ y ∈ (Finset.univ.erase c : Finset C), size y := by
+          exact Finset.sum_sdiff hTsubset
+        dsimp [R] at hsplit ⊢
+        omega
+      have hxR : x ∈ R := by simp [R, hxU, hxT]
+      have hxle : size x ≤ ∑ y ∈ R, size y :=
+        Finset.single_le_sum (fun _ _ ↦ Nat.zero_le _) hxR
+      have := hminSize x
+      omega
 
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
@@ -7331,6 +7494,72 @@ theorem degreeSix_minimum_diagonal_two_order_cases
   rcases hodd with ⟨k, hk⟩
   have hlower := hr3 c
   omega
+
+/-- Order eleven cannot occur on the diagonal-two side of the minimum layer.
+The balanced quotient census forces all three defect components to have order
+eleven, while the equal-cycle terminal permits only degrees four and twelve. -/
+theorem degreeSix_minimum_diagonal_two_order_eleven_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hcsize : c.supp.ncard = 11)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  obtain ⟨htotal, hrow, hbal, hsq⟩ :=
+    degreeSix_component_incidence_data G hfree hmin hcard c
+  have hdvd : ∀ x : D.ConnectedComponent, 0 < Q c x →
+      11 ∣ x.supp.ncard := by
+    intro x hpos
+    have hdiv := minimumComponent_order_dvd_of_quotient_pos
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) c hcmin x hpos
+    simpa [hcsize] using hdiv
+  have hsq14 : ∑ x : D.ConnectedComponent, Q c x * Q x c = 14 := by
+    simpa [hcsize] using hsq
+  have hall : ∀ x : D.ConnectedComponent, x.supp.ncard = 11 :=
+    all_sizes_eleven_of_minimum_diagonal_two_order_eleven Q
+      (fun x : D.ConnectedComponent ↦ x.supp.ncard) c hcsize
+        (fun x ↦ by simpa [hcsize] using hcmin x)
+        (by simpa [Q, D] using hdiag) htotal hrow hbal hdvd hsq14
+  rcases equalCycle_degree_eq_four_or_twelve G hfree
+      (d := 6) (r := 11) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard) hall with h4 | h12 <;> omega
+
+/-- After the equal-cycle terminal removes order eleven, only orders five,
+seven, and nine remain for a minimum diagonal-two component. -/
+theorem degreeSix_minimum_diagonal_two_order_cases_small
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hcmin : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ e.supp.ncard)
+    (hdiag : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) :
+    c.supp.ncard = 5 ∨ c.supp.ncard = 7 ∨ c.supp.ncard = 9 := by
+  rcases degreeSix_minimum_diagonal_two_order_cases
+      G hfree hmin hcard hr3 c hcmin hdiag with h5 | h7 | h9 | h11
+  · exact Or.inl h5
+  · exact Or.inr (Or.inl h7)
+  · exact Or.inr (Or.inr h9)
+  · exact (degreeSix_minimum_diagonal_two_order_eleven_false
+      G hfree hmin hcard c hcmin h11 hdiag).elim
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
