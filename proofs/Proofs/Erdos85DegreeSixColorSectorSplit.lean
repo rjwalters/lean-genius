@@ -375,6 +375,59 @@ theorem degreeSix_diagonal_one_incidence_order_le_eleven
   have hge12R : (12 : ℝ) ≤ size c := by exact_mod_cast hge12
   nlinarith [sq_nonneg ((size c : ℝ) - 12)]
 
+/-- A trace-six family whose entries are all at most two has one of four
+exact support profiles: `(number of ones, number of twos)` is `(0,3)`,
+`(2,2)`, `(4,1)`, or `(6,0)`. -/
+theorem traceSix_le_two_support_profile
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (q : C → ℕ) (hle : ∀ c, q c ≤ 2) (htrace : ∑ c, q c = 6) :
+    let n₁ := (Finset.univ.filter fun c ↦ q c = 1).card
+    let n₂ := (Finset.univ.filter fun c ↦ q c = 2).card
+    (n₁ = 0 ∧ n₂ = 3) ∨ (n₁ = 2 ∧ n₂ = 2) ∨
+      (n₁ = 4 ∧ n₂ = 1) ∨ (n₁ = 6 ∧ n₂ = 0) := by
+  let S₁ := Finset.univ.filter fun c ↦ q c = 1
+  let S₂ := Finset.univ.filter fun c ↦ q c = 2
+  have hpoint : ∀ c, q c = (if q c = 1 then 1 else 0) +
+      (if q c = 2 then 2 else 0) := by
+    intro c
+    have hc := hle c
+    have hcases : q c = 0 ∨ q c = 1 ∨ q c = 2 := by omega
+    rcases hcases with hzero | hone | htwo
+    · simp [hzero]
+    · simp [hone]
+    · simp [htwo]
+  have hone : (∑ c, if q c = 1 then 1 else 0) = S₁.card := by
+    rw [Finset.card_filter]
+  have htwo : (∑ c, if q c = 2 then 2 else 0) = 2 * S₂.card := by
+    calc
+      (∑ c, if q c = 2 then 2 else 0) =
+          ∑ c, 2 * (if q c = 2 then 1 else 0) := by
+            apply Finset.sum_congr rfl
+            intro c hc
+            by_cases h : q c = 2 <;> simp [h]
+      _ = 2 * ∑ c, (if q c = 2 then 1 else 0) := by
+        rw [Finset.mul_sum]
+      _ = 2 * S₂.card := by
+        rw [Finset.card_filter]
+  have hcount : S₁.card + 2 * S₂.card = 6 := by
+    calc
+      S₁.card + 2 * S₂.card =
+          (∑ c, if q c = 1 then 1 else 0) +
+            (∑ c, if q c = 2 then 2 else 0) := by rw [hone, htwo]
+      _ = ∑ c, ((if q c = 1 then 1 else 0) +
+          (if q c = 2 then 2 else 0)) := by rw [Finset.sum_add_distrib]
+      _ = ∑ c, q c := by
+        apply Finset.sum_congr rfl
+        intro c hc
+        exact (hpoint c).symm
+      _ = 6 := htrace
+  dsimp
+  change (S₁.card = 0 ∧ S₂.card = 3) ∨
+    (S₁.card = 2 ∧ S₂.card = 2) ∨
+    (S₁.card = 4 ∧ S₂.card = 1) ∨
+    (S₁.card = 6 ∧ S₂.card = 0)
+  omega
+
 /-- The order-six singleton row has a forced asymmetric contact: one unit
 leaves the order-six component and two units return from an order-three
 component. -/
@@ -6278,6 +6331,45 @@ theorem degreeSix_diagonal_one_component_order_cases_of_sector_empty
   obtain ⟨q, hq⟩ := heven
   have hlower := hr3 c
   omega
+
+/-- Exact diagonal-trace support census in the empty sector.  Writing `n₁`
+for the number of quotient-one components and `n₂` for the number of
+quotient-two components, the only profiles are `(0,3)`, `(2,2)`, `(4,1)`,
+and `(6,0)`. -/
+theorem degreeSix_emptySector_diagonal_support_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero e.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod e.supp.ncard → V)
+    (hu : ∀ e, Function.Injective (u e))
+    (huRange : ∀ e, Set.range (u e) = e.supp)
+    (huD : ∀ e x, (secondOrderDefectGraph G).neighborFinset (u e x) =
+      {u e (x - 1), u e (x + 1)})
+    (hr3 : ∀ e : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ e.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+    let n₁ := (Finset.univ.filter fun c ↦ Q c c = 1).card
+    let n₂ := (Finset.univ.filter fun c ↦ Q c c = 2).card
+    (n₁ = 0 ∧ n₂ = 3) ∨ (n₁ = 2 ∧ n₂ = 2) ∨
+      (n₁ = 4 ∧ n₂ = 1) ∨ (n₁ = 6 ∧ n₂ = 0) := by
+  let Q := componentQuotientMatrix G (secondOrderDefectGraph G)
+  have hle : ∀ c, Q c c ≤ 2 := fun c ↦
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty c
+  have htrace : ∑ c, Q c c = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  simpa [Q] using traceSix_le_two_support_profile (fun c ↦ Q c c) hle htrace
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
