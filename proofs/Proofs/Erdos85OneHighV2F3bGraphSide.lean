@@ -1,18 +1,7 @@
 import Proofs.Erdos85OneHighCanonicalMate
 import Proofs.Erdos85PairedBlockRigidity
 
-/-!
-# Graph-side F3b equality for the exact v2 orbit formula
-
-Composes the encoded common-pair transport
-(`card_oneHighEncodedCommonPairBlock_eq_outerNondefect`) with exact
-outer nondefect block rigidity
-(`graph_exact_outerNondefectBlocks_of_mate_involution`) to express the
-encoded unpaired common-pair cardinality as `20` plus the two
-cross-mate miss counts — the raw graph-side input for the v2 F3b
-ledger `count_eq`.  The worker-table transport (matched-only counts
-equal full deficits) is supplied by the F1 bridge and composes on top.
--/
+/-! # Graph-side F3b equality for the exact v2 orbit formula -/
 
 namespace Erdos85
 
@@ -20,9 +9,8 @@ noncomputable section
 
 open SimpleGraph
 
-/-- Encoded unpaired common-pair count: for a far pair `s, t` of high
-branches (neither equal nor mates), the encoded common-pair block has
-cardinality exactly `20` plus the two cross-mate miss counts. -/
+/-- For far high branches, the encoded common-pair block has cardinality
+`20` plus the two cross-mate directed miss counts. -/
 theorem card_oneHighEncodedCommonPairBlock_eq_twenty_add_missCounts
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -60,9 +48,10 @@ theorem card_oneHighEncodedCommonPairBlock_eq_twenty_add_missCounts
   have hrigid := (graph_exact_outerNondefectBlocks_of_mate_involution
     G hfree hmin hcard hv hunique hexternal houterDegree
       mate hmateInv hmateAdj s).2 t hmem
-  calc (oneHighEncodedCommonPairBlock R (branchLabel s)
-        (branchLabel t)).card
-      = (orderFortyNineOuterNondefectBlock G v s t).card := htrans
+  calc
+    (oneHighEncodedCommonPairBlock R (branchLabel s)
+        (branchLabel t)).card =
+        (orderFortyNineOuterNondefectBlock G v s t).card := htrans
     _ = 20 + highBranchMissCount G v s (mate t) +
         highBranchMissCount G v t (mate s) := hrigid
 
