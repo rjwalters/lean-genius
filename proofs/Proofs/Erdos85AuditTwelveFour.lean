@@ -10,6 +10,10 @@ import Proofs.Erdos85DegreeSixOddDiagonal
 import Proofs.Erdos85DegreeSixOddDiagonalSmall
 import Proofs.Erdos85OneHighV2CalibrationCertificate
 import Proofs.Erdos85OneHighV2TableAgree
+import Proofs.Erdos85OneHighV2Cp4Action
+import Proofs.Erdos85OneHighV2EnumCompleteness
+import Proofs.Erdos85OneHighV2RelabeledPresentation
+import Proofs.Erdos85OneHighV2Inventory
 import Proofs.Erdos85OneHighV2FiniteTable
 import Proofs.Erdos85OneHighV2OrbitInvariants
 import Proofs.Erdos85OneHighV2OrbitExclusion
@@ -290,3 +294,12 @@ import Proofs.Erdos85OneHighV2OrbitExclusion
 #print axioms Erdos85.oneHighFamilyV2CheckedUnsat_of_tableCover
 #print axioms Erdos85.false_of_rawOneHigh_v2TableCover
 #print axioms Erdos85.orderFortyNineStratumExcluded_one_of_rawV2OrbitCover
+
+-- CP4 action + enumeration completeness + relabel/inventory layer
+#print axioms Erdos85.OneHighFamilyV2Admissible.permute
+#print axioms Erdos85.oneHighCp4_exists_canonical
+#print axioms Erdos85.oneHighEnumGo_complete
+#print axioms Erdos85.oneHighIncidentSum_eq_rowSum
+#print axioms Erdos85.OneHighFamilyV2Admissible.natRestrict_mem_enum
+#print axioms Erdos85.OneHighRawV2Presentation.exists_relabel
+#print axioms Erdos85.OneHighRawV2Presentation.exists_relabel_graphTable_agrees
