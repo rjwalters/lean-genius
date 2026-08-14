@@ -42,6 +42,15 @@ def oneHighInventoryTables (profile : Fin 5) : List OneHighMissTable :=
 theorem oneHighInventoryRows_length : oneHighInventoryRows.length = 13541 := by
   native_decide
 
+theorem oneHighInventoryRows_values_lt_five :
+    ∀ row ∈ oneHighInventoryRows, ∀ value ∈ row.values, value < 5 := by
+  native_decide
+
+theorem oneHighInventoryRows_keys_nodup :
+    (oneHighInventoryRows.map fun row =>
+      (row.profile.val, row.values)).Nodup := by
+  native_decide
+
 /-- Independently checked per-profile census, in generator profile order
 BBBB, ABBB, AABB, AAAB, AAAA. -/
 theorem oneHighInventoryTables_length_zero :
