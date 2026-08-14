@@ -57,6 +57,19 @@ with the graph→CNF faithfulness bridge riding on the formalized layers.
 
 ## Artifact storage
 
+The h=1 proof fleet's result ledger must be audited against the complete Lean
+inventory rather than against the (possibly partial) job queue.  Run:
+
+```bash
+python3 audit_h1_certificate_coverage.py \
+  ../../../../proofs/Proofs/Certificates/h1_orbit_inventory.compact \
+  /path/to/v2-tier1-work/results.tsv
+```
+
+The auditor recomputes the worker orbit tags, rejects unknown or conflicting
+rows, counts only `LEAN_ACCEPTED`, reports every profile separately, and exits
+successfully only at 13,541/13,541 accepted representatives.
+
 The 18 certificate triples {t2_repA, t2_repB, t3_rep0..4, t4_rep0..10}
 .{cnf, drat, lrat} (~1.1 GB) are stored durably at
 `/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/` (host artifact volume)
