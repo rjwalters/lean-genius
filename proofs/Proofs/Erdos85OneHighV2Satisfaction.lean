@@ -845,6 +845,82 @@ theorem oneHighFamilyFoldl_flatMap
       simp only [List.flatMap_cons, List.foldl_append, List.foldl_cons]
       exact ih _
 
+noncomputable def oneHighFamilyV2CollectPairedCommonStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (input : Array Int × OneHighFamilyValState) :=
+  oneHighFamilyCollectAtomVal R
+    (.common (min x z) (max x z)) input
+
+theorem oneHighFamilyV2CollectPairedCommonStepVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x z : Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := oneHighFamilyV2CollectPairedCommonStepVal R x z input
+    let raw := oneHighFamilyV2CollectPairedCommonStep x z
+      (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  exact oneHighFamilyCollectAtomVal_projection R
+    (.common (min x z) (max x z)) input
+
+theorem oneHighFamilyV2CollectPairedCommonInnerVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (x : Nat) (zs : List Nat)
+    (input : Array Int × OneHighFamilyValState) :
+    let out := zs.foldl (fun input z =>
+      oneHighFamilyV2CollectPairedCommonStepVal R x z input) input
+    let raw := zs.foldl (fun input z =>
+      oneHighFamilyV2CollectPairedCommonStep x z input)
+      (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction zs generalizing input with
+  | nil => simp
+  | cons z zs ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyV2CollectPairedCommonStepVal_projection
+        R x z input
+      have hi := ih (oneHighFamilyV2CollectPairedCommonStepVal R x z input)
+      rcases hp with ⟨hvars, hstate⟩
+      simpa [hvars, hstate] using hi
+
+noncomputable def oneHighFamilyV2F3aCollectVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (acc : OneHighFamilyValState) :=
+  (oneHighFamilyBlockVertices (2 * pair)).foldl (fun input x =>
+    (oneHighFamilyBlockVertices (2 * pair + 1)).foldl
+      (fun input z => oneHighFamilyV2CollectPairedCommonStepVal R x z input)
+      input) (#[], acc)
+
+theorem oneHighFamilyV2CollectPairedCommonOuterVal_projection
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (xs zs : List Nat) (input : Array Int × OneHighFamilyValState) :
+    let out := xs.foldl (fun input x => zs.foldl
+      (fun input z => oneHighFamilyV2CollectPairedCommonStepVal R x z input)
+      input) input
+    let raw := xs.foldl (fun input x => zs.foldl
+      (fun input z => oneHighFamilyV2CollectPairedCommonStep x z input)
+      input) (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction xs generalizing input with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      have hp := oneHighFamilyV2CollectPairedCommonInnerVal_projection R x
+        zs input
+      have hi := ih (zs.foldl (fun input z =>
+        oneHighFamilyV2CollectPairedCommonStepVal R x z input) input)
+      rcases hp with ⟨hvars, hstate⟩
+      simpa [hvars, hstate] using hi
+
+theorem oneHighFamilyV2F3aCollectVal_eq_collectAtomsVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (pair : Nat) (acc : OneHighFamilyValState) :
+    oneHighFamilyV2F3aCollectVal R pair acc =
+      oneHighFamilyCollectAtomsVal R (oneHighFamilyV2F3aAtoms pair) acc := by
+  unfold oneHighFamilyV2F3aCollectVal oneHighFamilyCollectAtomsVal
+    oneHighFamilyV2F3aAtoms
+  rw [oneHighFamilyFoldl_flatMap]
+  simp only [List.foldl_map,
+    oneHighFamilyV2CollectPairedCommonStepVal]
+
 noncomputable def oneHighFamilyV2F3aFinishVal
     (a pair : Nat) (input : Array Int × OneHighFamilyValState) :
     OneHighFamilyValState :=
@@ -857,7 +933,7 @@ noncomputable def oneHighFamilyV2F3aBlockStepVal
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (a pair : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
   oneHighFamilyV2F3aFinishVal a pair
-    (oneHighFamilyCollectAtomsVal R (oneHighFamilyV2F3aAtoms pair) acc)
+    (oneHighFamilyV2F3aCollectVal R pair acc)
 
 theorem oneHighFamilyV2F3aFinishVal_semanticSound
     (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
@@ -874,6 +950,16 @@ theorem oneHighFamilyV2F3aFinishVal_semanticSound
   · exact oneHighFamilyInputAccum_reifies R hsInput
   · exact hcount
 
+theorem oneHighFamilyV2F3aFinishVal_state
+    (a pair : Nat) (input : Array Int × OneHighFamilyValState) :
+    (oneHighFamilyV2F3aFinishVal a pair input).1 =
+      oneHighFamilyEqualsBlock input.1
+        (30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+          2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1)) input.2.1 := by
+  rcases input with ⟨vars, st, val⟩
+  simp only [oneHighFamilyV2F3aFinishVal]
+  exact oneHighFamilyEqualsBlockVal_state vars _ _ st val
+
 theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
     (ledger : OneHighFamilyV2F3aLedger R a)
@@ -881,11 +967,16 @@ theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
     (hacc : OneHighFamilySemanticSound R acc) :
     OneHighFamilySemanticSound R
       (oneHighFamilyV2F3aBlockStepVal R a pair acc) := by
-  let input := oneHighFamilyCollectAtomsVal R
-    (oneHighFamilyV2F3aAtoms pair) acc
-  have hsInput := oneHighFamilyCollectAtomsVal_sound R
+  let input := oneHighFamilyV2F3aCollectVal R pair acc
+  have heq := oneHighFamilyV2F3aCollectVal_eq_collectAtomsVal R pair acc
+  have hsGeneric := oneHighFamilyCollectAtomsVal_sound R
     (oneHighFamilyV2F3aAtoms pair)
     (oneHighFamilyInputAccumSound_empty R hacc)
+  have hsInput : OneHighFamilyInputAccumSound R input := by
+    change OneHighFamilyInputAccumSound R
+      (oneHighFamilyV2F3aCollectVal R pair acc)
+    rw [heq]
+    exact hsGeneric
   apply oneHighFamilyV2F3aFinishVal_semanticSound R a pair hsInput
   calc
     seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
@@ -893,9 +984,11 @@ theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
       seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP input.2.2 input.1
     _ = ((oneHighFamilyV2F3aAtoms pair).map
         (oneHighFamilyAtomValue R)).count true := by
+      rw [show input = oneHighFamilyCollectAtomsVal R
+        (oneHighFamilyV2F3aAtoms pair) acc from heq]
       rw [oneHighFamilyCollectedAtoms_values R
         (oneHighFamilyCollectAtomsVal_match R
-          (oneHighFamilyV2F3aAtoms pair) acc) hsInput.semantic]
+          (oneHighFamilyV2F3aAtoms pair) acc) hsGeneric.semantic]
     _ = _ := ledger.count_eq pair hpair
 
 end Erdos85
