@@ -1968,6 +1968,31 @@ theorem false_of_three_three_nine_nine_nine_grouped_profile
   rw [hcx, hcy, hcz] at hsq
   nlinarith
 
+/-- Arithmetic endpoint for the `3,3,3,6,6,6,6` zero-triangle profile.
+The three triangle rows carry total mass eighteen.  At most six units can
+run between the triangles, while balance and the grouped order-six bound
+allow at most eight units to run from the triangles to the four hexagons. -/
+theorem false_of_three_three_three_six_six_six_six_grouped_profile
+    {C : Type*} (Q : C → C → ℕ) (c t r a b d e : C)
+    (hrowc : Q c t + Q c r + Q c a + Q c b + Q c d + Q c e = 6)
+    (hrowt : Q t c + Q t r + Q t a + Q t b + Q t d + Q t e = 6)
+    (hrowr : Q r c + Q r t + Q r a + Q r b + Q r d + Q r e = 6)
+    (hinter : Q c t + Q c r + Q t c + Q t r + Q r c + Q r t ≤ 6)
+    (hca : Q c a = 2 * Q a c) (hcb : Q c b = 2 * Q b c)
+    (hcd : Q c d = 2 * Q d c) (hce : Q c e = 2 * Q e c)
+    (hta : Q t a = 2 * Q a t) (htb : Q t b = 2 * Q b t)
+    (htd : Q t d = 2 * Q d t) (hte : Q t e = 2 * Q e t)
+    (hra : Q r a = 2 * Q a r) (hrb : Q r b = 2 * Q b r)
+    (hrd : Q r d = 2 * Q d r) (hre : Q r e = 2 * Q e r)
+    (hga : Q a c + Q a t + Q a r ≤ 1)
+    (hgb : Q b c + Q b t + Q b r ≤ 1)
+    (hgd : Q d c + Q d t + Q d r ≤ 1)
+    (hge : Q e c + Q e t + Q e r ≤ 1) : False := by
+  rw [hca, hcb, hcd, hce] at hrowc
+  rw [hta, htb, htd, hte] at hrowt
+  rw [hra, hrb, hrd, hre] at hrowr
+  omega
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
@@ -8431,6 +8456,127 @@ theorem degreeSix_false_of_zeroTriangle_profile_three_three_nine_nine_nine
     G hfree hmin hcard u hu huRange huD z c t hz9 hc3 ht3 htc.symm
   exact false_of_three_three_nine_nine_nine_grouped_profile
     Q c t x y z hcx hcy hcz (by simpa [Nat.add_assoc] using hsqFull) hgx hgy hgz
+
+/-- The residual component profile `3,3,3,6,6,6,6` is incompatible with
+the order-six grouped periodicity bound. -/
+theorem degreeSix_false_of_zeroTriangle_profile_three_three_three_six_six_six_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ s : (secondOrderDefectGraph G).ConnectedComponent, NeZero s.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ s : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod s.supp.ncard → V)
+    (hu : ∀ s, Function.Injective (u s))
+    (huRange : ∀ s, Set.range (u s) = s.supp)
+    (huD : ∀ s x, (secondOrderDefectGraph G).neighborFinset (u s x) =
+      {u s (x - 1), u s (x + 1)})
+    (c t r a b d e : (secondOrderDefectGraph G).ConnectedComponent)
+    (huniv : (Finset.univ : Finset
+      (secondOrderDefectGraph G).ConnectedComponent) = {c, t, r, a, b, d, e})
+    (hcNot : c ∉ ({t, r, a, b, d, e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (htNot : t ∉ ({r, a, b, d, e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (hrNot : r ∉ ({a, b, d, e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (haNot : a ∉ ({b, d, e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (hbNot : b ∉ ({d, e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (hdNot : d ∉ ({e} : Finset
+      (secondOrderDefectGraph G).ConnectedComponent))
+    (hc3 : c.supp.ncard = 3) (ht3 : t.supp.ncard = 3)
+    (hr3 : r.supp.ncard = 3)
+    (ha6 : a.supp.ncard = 6) (hb6 : b.supp.ncard = 6)
+    (hd6 : d.supp.ncard = 6) (he6 : e.supp.ncard = 6)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (htt : componentQuotientMatrix G (secondOrderDefectGraph G) t t = 0)
+    (hrr : componentQuotientMatrix G (secondOrderDefectGraph G) r r = 0) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have hbal (x y : D.ConnectedComponent) :
+      x.supp.ncard * Q x y = y.supp.ncard * Q y x :=
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hrow (x : D.ConnectedComponent) (hx3 : x.supp.ncard = 3)
+      (hxx : Q x x = 0) : (∑ y, Q x y) = 6 :=
+    (degreeSix_orderThree_zeroDiagonal_profile G hfree hmin hcard x hx3 hxx).1
+  have hsmall (x y : D.ConnectedComponent) (hx3 : x.supp.ncard = 3)
+      (hxx : Q x x = 0) (hy3 : y.supp.ncard = 3) : Q x y ≤ 1 := by
+    by_cases hz : Q x y = 0
+    · omega
+    · have hp := (degreeSix_orderThree_zeroDiagonal_profile
+        G hfree hmin hcard x hx3 hxx).2 y (Nat.pos_of_ne_zero hz)
+      have hp' := hp.2
+      change y.supp.ncard = 3 * Q x y at hp'
+      rw [hy3] at hp'
+      omega
+  have hrowc := hrow c hc3 hcc
+  have hrowt := hrow t ht3 htt
+  have hrowr := hrow r hr3 hrr
+  change (∑ y ∈ (Finset.univ : Finset D.ConnectedComponent), Q c y) = 6 at hrowc
+  change (∑ y ∈ (Finset.univ : Finset D.ConnectedComponent), Q t y) = 6 at hrowt
+  change (∑ y ∈ (Finset.univ : Finset D.ConnectedComponent), Q r y) = 6 at hrowr
+  change Q c c = 0 at hcc
+  change Q t t = 0 at htt
+  change Q r r = 0 at hrr
+  rw [huniv, Finset.sum_insert hcNot, Finset.sum_insert htNot,
+    Finset.sum_insert hrNot, Finset.sum_insert haNot,
+    Finset.sum_insert hbNot, Finset.sum_insert hdNot,
+    Finset.sum_singleton, hcc] at hrowc
+  rw [huniv, Finset.sum_insert hcNot, Finset.sum_insert htNot,
+    Finset.sum_insert hrNot, Finset.sum_insert haNot,
+    Finset.sum_insert hbNot, Finset.sum_insert hdNot,
+    Finset.sum_singleton, htt] at hrowt
+  rw [huniv, Finset.sum_insert hcNot, Finset.sum_insert htNot,
+    Finset.sum_insert hrNot, Finset.sum_insert haNot,
+    Finset.sum_insert hbNot, Finset.sum_insert hdNot,
+    Finset.sum_singleton, hrr] at hrowr
+  have hinter : Q c t + Q c r + Q t c + Q t r + Q r c + Q r t ≤ 6 := by
+    have hct := hsmall c t hc3 hcc ht3
+    have hcr := hsmall c r hc3 hcc hr3
+    have htc := hsmall t c ht3 htt hc3
+    have htr := hsmall t r ht3 htt hr3
+    have hrc := hsmall r c hr3 hrr hc3
+    have hrt := hsmall r t hr3 hrr ht3
+    omega
+  have hct : c ≠ t := by simpa using fun h ↦ hcNot (by simp [h])
+  have hcr : c ≠ r := by simpa using fun h ↦ hcNot (by simp [h])
+  have htr : t ≠ r := by simpa using fun h ↦ htNot (by simp [h])
+  have hgroup (x : D.ConnectedComponent) (hx6 : x.supp.ncard = 6) :
+      Q x c + Q x t + Q x r ≤ 1 := by
+    have hctb := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD x c t hx6 hc3 ht3 hct
+    have hcrb := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD x c r hx6 hc3 hr3 hcr
+    have htrb := degreeSix_orderSix_two_orderThree_targets_le_one
+      G hfree hmin hcard u hu huRange huD x t r hx6 ht3 hr3 htr
+    change Q x c + Q x t ≤ 1 at hctb
+    change Q x c + Q x r ≤ 1 at hcrb
+    change Q x t + Q x r ≤ 1 at htrb
+    omega
+  have hca : Q c a = 2 * Q a c := by have h := hbal c a; rw [hc3, ha6] at h; omega
+  have hcb : Q c b = 2 * Q b c := by have h := hbal c b; rw [hc3, hb6] at h; omega
+  have hcd : Q c d = 2 * Q d c := by have h := hbal c d; rw [hc3, hd6] at h; omega
+  have hce : Q c e = 2 * Q e c := by have h := hbal c e; rw [hc3, he6] at h; omega
+  have hta : Q t a = 2 * Q a t := by have h := hbal t a; rw [ht3, ha6] at h; omega
+  have htb : Q t b = 2 * Q b t := by have h := hbal t b; rw [ht3, hb6] at h; omega
+  have htd : Q t d = 2 * Q d t := by have h := hbal t d; rw [ht3, hd6] at h; omega
+  have hte : Q t e = 2 * Q e t := by have h := hbal t e; rw [ht3, he6] at h; omega
+  have hra : Q r a = 2 * Q a r := by have h := hbal r a; rw [hr3, ha6] at h; omega
+  have hrb : Q r b = 2 * Q b r := by have h := hbal r b; rw [hr3, hb6] at h; omega
+  have hrd : Q r d = 2 * Q d r := by have h := hbal r d; rw [hr3, hd6] at h; omega
+  have hre : Q r e = 2 * Q e r := by have h := hbal r e; rw [hr3, he6] at h; omega
+  exact false_of_three_three_three_six_six_six_six_grouped_profile
+    Q c t r a b d e (by omega) (by omega) (by omega) hinter
+      hca hcb hcd hce hta htb htd hte hra hrb hrd hre
+      (hgroup a ha6) (hgroup b hb6) (hgroup d hd6) (hgroup e he6)
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
