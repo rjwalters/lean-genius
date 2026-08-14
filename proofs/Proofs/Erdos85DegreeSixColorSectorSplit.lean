@@ -5348,6 +5348,47 @@ theorem degreeSix_exists_separated_original_chord_of_sector_empty
     simp [h]
   exact ⟨c, i, j, hij, hjminus, hjplus, hxy, hcdiag⟩
 
+/-- The positive-diagonal chord component is either even, or its odd-cycle
+diagonal quotient is forced to be exactly two. -/
+theorem degreeSix_exists_separated_chord_even_or_diagonal_two_of_sector_empty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero c.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod c.supp.ncard → V)
+    (hu : ∀ c, Function.Injective (u c))
+    (huRange : ∀ c, Set.range (u c) = c.supp)
+    (huD : ∀ c x, (secondOrderDefectGraph G).neighborFinset (u c x) =
+      {u c (x - 1), u c (x + 1)})
+    (hr : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ c.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅) :
+    ∃ (c : (secondOrderDefectGraph G).ConnectedComponent)
+      (i j : ZMod c.supp.ncard),
+      i ≠ j ∧ j ≠ i - 1 ∧ j ≠ i + 1 ∧ G.Adj (u c i) (u c j) ∧
+      (Even c.supp.ncard ∨
+        componentQuotientMatrix G (secondOrderDefectGraph G) c c = 2) := by
+  obtain ⟨c, i, j, hij, hjminus, hjplus, hxy, hcdiag⟩ :=
+    degreeSix_exists_separated_original_chord_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hempty
+  refine ⟨c, i, j, hij, hjminus, hjplus, hxy, ?_⟩
+  by_cases heven : Even c.supp.ncard
+  · exact Or.inl heven
+  · have hodd : Odd c.supp.ncard := Nat.not_even_iff_odd.mp heven
+    rcases oddComponent_diagonalQuotient_eq_zero_or_two
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (hr c) hodd c
+        (u c) (hu c) (huRange c) (huD c) with hzero | htwo
+    · omega
+    · exact Or.inr htwo
+
 /-- In the empty color-sector branch, the all-triangle defect decomposition
 is impossible; hence an antipodal-colored defect cycle of order at least four
 exists. -/
