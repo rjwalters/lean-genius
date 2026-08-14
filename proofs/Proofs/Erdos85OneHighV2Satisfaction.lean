@@ -821,4 +821,81 @@ theorem oneHighFamilyV2F2ClausesVal_state
         (fun x acc => oneHighFamilyV2F2VertexStepVal_state R a x acc)
     _ = _ := by rw [oneHighFamilyV2PairedCommonClausesVal_state]
 
+def oneHighFamilyV2F3aAtoms (pair : Nat) : List OneHighFamilyAtom :=
+  (oneHighFamilyBlockVertices (2 * pair)).flatMap fun x =>
+    (oneHighFamilyBlockVertices (2 * pair + 1)).map fun z =>
+      .common (min x z) (max x z)
+
+structure OneHighFamilyV2F3aLedger
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] (a : Nat) : Prop where
+  count_eq : ∀ pair, pair < 4 →
+    ((oneHighFamilyV2F3aAtoms pair).map
+        (oneHighFamilyAtomValue R)).count true =
+      30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+        2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1)
+
+theorem oneHighFamilyFoldl_flatMap
+    {A B C : Type*} (xs : List A) (f : A → List B)
+    (step : C → B → C) (init : C) :
+    (xs.flatMap f).foldl step init =
+      xs.foldl (fun acc x => (f x).foldl step acc) init := by
+  induction xs generalizing init with
+  | nil => rfl
+  | cons x xs ih =>
+      simp only [List.flatMap_cons, List.foldl_append, List.foldl_cons]
+      exact ih _
+
+noncomputable def oneHighFamilyV2F3aFinishVal
+    (a pair : Nat) (input : Array Int × OneHighFamilyValState) :
+    OneHighFamilyValState :=
+  let bound := 30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+      2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1)
+  oneHighFamilyEqualsBlockVal input.1
+    (oneHighFamilyInputAccumRow input) bound input.2
+
+noncomputable def oneHighFamilyV2F3aBlockStepVal
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a pair : Nat) (acc : OneHighFamilyValState) : OneHighFamilyValState :=
+  oneHighFamilyV2F3aFinishVal a pair
+    (oneHighFamilyCollectAtomsVal R (oneHighFamilyV2F3aAtoms pair) acc)
+
+theorem oneHighFamilyV2F3aFinishVal_semanticSound
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (a pair : Nat) {input : Array Int × OneHighFamilyValState}
+    (hsInput : OneHighFamilyInputAccumSound R input)
+    (hcount : seqPrefixTrue (oneHighFamilyInputAccumRow input)
+      input.1.size =
+        30 - 2 * oneHighFamilyInternalEdgesNat a (2 * pair) -
+          2 * oneHighFamilyInternalEdgesNat a (2 * pair + 1)) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3aFinishVal a pair input) := by
+  unfold oneHighFamilyV2F3aFinishVal
+  apply oneHighFamilyEqualsBlockVal_semanticSound R hsInput.semantic
+  · exact oneHighFamilyInputAccum_reifies R hsInput
+  · exact hcount
+
+theorem oneHighFamilyV2F3aBlockStepVal_semanticSound
+    (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
+    (ledger : OneHighFamilyV2F3aLedger R a)
+    {pair : Nat} (hpair : pair < 4) {acc : OneHighFamilyValState}
+    (hacc : OneHighFamilySemanticSound R acc) :
+    OneHighFamilySemanticSound R
+      (oneHighFamilyV2F3aBlockStepVal R a pair acc) := by
+  let input := oneHighFamilyCollectAtomsVal R
+    (oneHighFamilyV2F3aAtoms pair) acc
+  have hsInput := oneHighFamilyCollectAtomsVal_sound R
+    (oneHighFamilyV2F3aAtoms pair)
+    (oneHighFamilyInputAccumSound_empty R hacc)
+  apply oneHighFamilyV2F3aFinishVal_semanticSound R a pair hsInput
+  calc
+    seqPrefixTrue (oneHighFamilyInputAccumRow input) input.1.size =
+        (List.ofFn (oneHighFamilyInputAccumRow input)).count true :=
+      seqPrefixTrue_oneHighFamilyLiteralRow_eq_countP input.2.2 input.1
+    _ = ((oneHighFamilyV2F3aAtoms pair).map
+        (oneHighFamilyAtomValue R)).count true := by
+      rw [oneHighFamilyCollectedAtoms_values R
+        (oneHighFamilyCollectAtomsVal_match R
+          (oneHighFamilyV2F3aAtoms pair) acc) hsInput.semantic]
+    _ = _ := ledger.count_eq pair hpair
+
 end Erdos85
