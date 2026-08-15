@@ -470,6 +470,66 @@ theorem exists_even_oddDefectSet_card_two_or_four_or_six_or_eight_or_ten_or_twel
   rcases hSeven with ⟨k, hk⟩
   omega
 
+/-- A two-vertex even kernel set is an adjacent-twin pair in the defect
+graph: the two vertices are adjacent and have identical adjacency to every
+other vertex. -/
+theorem oddDefectSet_card_two_exists_adjacent_twins
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hWcard : W.card = 2)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∃ a b : V, a ≠ b ∧ W = {a, b} ∧ D.Adj a b ∧
+      ∀ v, v ≠ a → v ≠ b → (D.Adj a v ↔ D.Adj b v) := by
+  obtain ⟨a, b, hab, hW⟩ := Finset.card_eq_two.mp hWcard
+  have hWeven : Even W.card := by rw [hWcard]; decide
+  have hinside := oddDefectSet_no_isolated_inside_of_even D W hWeven hparity
+  have haW : a ∈ W := by simp [hW]
+  obtain ⟨w, hwW, haw⟩ := hinside a haW
+  have hw : w = a ∨ w = b := by simpa [hW] using hwW
+  have habAdj : D.Adj a b := by
+    rcases hw with rfl | rfl
+    · exact (D.ne_of_adj haw rfl).elim
+    · exact haw
+  refine ⟨a, b, hab, hW, habAdj, ?_⟩
+  intro v hva hvb
+  have hvW : v ∉ W := by simp [hW, hva, hvb]
+  have hout := (oddDefectSet_neighborParity_of_even D W hWeven hparity).2 v hvW
+  have hsub : D.neighborFinset v ∩ W ⊆ W := Finset.inter_subset_right
+  have hle : (D.neighborFinset v ∩ W).card ≤ 2 := by
+    rw [← hWcard]
+    exact Finset.card_le_card hsub
+  constructor
+  · intro hav
+    have haMem : a ∈ D.neighborFinset v ∩ W := Finset.mem_inter.mpr
+      ⟨(D.mem_neighborFinset v a).mpr hav.symm, haW⟩
+    have hpos : 0 < (D.neighborFinset v ∩ W).card :=
+      Finset.card_pos.mpr ⟨a, haMem⟩
+    have heq : (D.neighborFinset v ∩ W).card = 2 := by
+      rcases hout with ⟨k, hk⟩
+      omega
+    have hall : D.neighborFinset v ∩ W = W :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [heq, hWcard])
+    have hbMem : b ∈ D.neighborFinset v := by
+      have : b ∈ D.neighborFinset v ∩ W := by rw [hall]; simp [hW]
+      exact (Finset.mem_inter.mp this).1
+    exact ((D.mem_neighborFinset v b).mp hbMem).symm
+  · intro hbv
+    have hbMem : b ∈ D.neighborFinset v ∩ W := Finset.mem_inter.mpr
+      ⟨(D.mem_neighborFinset v b).mpr hbv.symm, by simp [hW]⟩
+    have hpos : 0 < (D.neighborFinset v ∩ W).card :=
+      Finset.card_pos.mpr ⟨b, hbMem⟩
+    have heq : (D.neighborFinset v ∩ W).card = 2 := by
+      rcases hout with ⟨k, hk⟩
+      omega
+    have hall : D.neighborFinset v ∩ W = W :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [heq, hWcard])
+    have haMem : a ∈ D.neighborFinset v := by
+      have : a ∈ D.neighborFinset v ∩ W := by rw [hall]; simp [hW]
+      exact (Finset.mem_inter.mp this).1
+    exact ((D.mem_neighborFinset v a).mp haMem).symm
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
