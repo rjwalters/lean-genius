@@ -1918,6 +1918,67 @@ theorem degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
   rw [hABXcard, G.card_neighborFinset_eq_degree, hreg y] at hie
   omega
 
+/-- In the pure antipodal branch the two twins themselves lie outside the
+four-neighborhood footprint.  Adding them to the preceding 23-vertex union
+therefore certifies at least 25 distinct vertices. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_centered_footprint_twentyFive_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : x ≠ y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    25 ≤ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b}).card := by
+  let F := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  have hFcard : 23 ≤ F.card := by
+    exact degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
+      G hfree hreg hab hax hbx hay hby hxy
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hnotG_of_D : ∀ {u v : V},
+      (secondOrderDefectGraph G).Adj u v → ¬ G.Adj u v := by
+    intro u v huv
+    rw [hDeq] at huv
+    exact ((mem_antipodalNeighbors G u v).mp
+      ((antipodalGraph_adj G u v).mp huv)).2.1
+  have haNotF : a ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨G.loopless.irrefl a, fun h => hnotG_of_D hab h.symm⟩,
+      fun h => hnotG_of_D hax h.symm⟩,
+      fun h => hnotG_of_D hay h.symm⟩
+  have hbNotF : b ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨hnotG_of_D hab, G.loopless.irrefl b⟩,
+      fun h => hnotG_of_D hbx h.symm⟩,
+      fun h => hnotG_of_D hby h.symm⟩
+  have hdisj : Disjoint F ({a, b} : Finset V) := by
+    rw [Finset.disjoint_left]
+    intro z hzF hzQ
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hzQ
+    rcases hzQ with rfl | rfl
+    · exact haNotF hzF
+    · exact hbNotF hzF
+  have hQcard : ({a, b} : Finset V).card = 2 := by
+    simp [(secondOrderDefectGraph G).ne_of_adj hab]
+  change 25 ≤ (F ∪ {a, b}).card
+  rw [Finset.card_union_of_disjoint hdisj, hQcard]
+  omega
+
 /-- A size-two even defect-kernel set therefore produces an explicit
 four-vertex defect diamond whose four original neighborhoods occupy at
 least 23 vertices. -/
