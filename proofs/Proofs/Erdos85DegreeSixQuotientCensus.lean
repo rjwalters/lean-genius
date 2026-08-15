@@ -715,6 +715,73 @@ theorem false_of_degreeSixQuotient_orderThree_support_three_four_one_one_nat
     (q a a) (q a b) (q a d) (q b a) (q d a)
     (by omega) (by omega) (by omega) (by omega) (by omega) (hdiag a)
 
+/-- After excluding `4,1,1`, a three-target support is either uniformly
+weighted `2,2,2` or, after naming, has weights `3,1,2` up to swapping the two
+light targets. -/
+theorem degreeSixQuotient_orderThree_support_three_residual_weights_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 3) :
+    (∀ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j), q c p = 2) ∨
+      ∃ a b d, a ≠ b ∧ a ≠ d ∧ b ≠ d ∧
+        (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d} ∧
+        q c a = 3 ∧
+        ((q c b = 1 ∧ q c d = 2) ∨
+          (q c b = 2 ∧ q c d = 1)) := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hPcard' : P.card = 3 := by simpa [P] using hPcard
+  have hcases :=
+    degreeSixQuotient_orderThree_support_card_three_weight_dichotomy_nat
+      q c hrow hPcard
+  rcases hcases with hall | ⟨a, haP, haHeavy⟩
+  · exact Or.inl hall
+  · have haP' : a ∈ P := by simpa [P] using haP
+    have hcardErase : (P.erase a).card = 2 := by
+      rw [Finset.card_erase_of_mem haP', hPcard']
+    obtain ⟨b, d, hbd, hrest⟩ := Finset.card_eq_two.mp hcardErase
+    have hnames : P = {a, b, d} := by
+      have hi := Finset.insert_erase haP'
+      rw [hrest] at hi
+      exact hi.symm
+    have hab : a ≠ b := by
+      intro h; subst b
+      have : a ∈ P.erase a := by rw [hrest]; simp
+      simpa using this
+    have had : a ≠ d := by
+      intro h; subst d
+      have : a ∈ P.erase a := by rw [hrest]; simp
+      simpa using this
+    have hbP : b ∈ P := by rw [hnames]; simp
+    have hdP : d ∈ P := by rw [hnames]; simp
+    have hbPos : 0 < q c b := by simpa [P] using
+      (Finset.mem_filter.mp hbP).2
+    have hdPos : 0 < q c d := by simpa [P] using
+      (Finset.mem_filter.mp hdP).2
+    have heqs := degreeSixQuotient_orderThree_support_equations_nat
+      s q c hrow hsq
+    have hweights := heqs.1
+    change (∑ p ∈ P, q c p) = 6 at hweights
+    rw [hnames] at hweights
+    simp [Finset.sum_insert, hab, had, hbd] at hweights
+    have haCases : q c a = 3 ∨ q c a = 4 := by omega
+    rcases haCases with ha3 | ha4
+    · right
+      refine ⟨a, b, d, hab, had, hbd, by simpa [P] using hnames,
+        ha3, ?_⟩
+      omega
+    · have hb1 : q c b = 1 := by omega
+      have hd1 : q c d = 1 := by omega
+      exact (false_of_degreeSixQuotient_orderThree_support_three_four_one_one_nat
+        s q c a b d hspos hrow hbal hsq hdiag hc3 hcc hab had hbd
+          (by simpa [P] using hnames) ha4 hb1 hd1).elim
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
