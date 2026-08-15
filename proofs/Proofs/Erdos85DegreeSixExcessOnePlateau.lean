@@ -1518,7 +1518,7 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangl
     (hzero : (Finset.univ.filter fun x : V =>
       (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
     ∃ (m r : {p // p ∈ G.neighborFinset a} → V),
-      Function.Injective r ∧
+      Function.Injective m ∧ Function.Injective r ∧
       ∀ p,
         m p ∈ G.neighborFinset b ∧ G.Adj p (m p) ∧
         G.Adj p (r p) ∧ G.Adj (m p) (r p) ∧
@@ -1548,6 +1548,28 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangl
     have hqParts := Finset.mem_inter.mp hq
     exact ⟨q, hqParts.2, (G.mem_neighborFinset p q).mp hqParts.1⟩
   choose m hmB hmEdge using hexM
+  have hmInj : Function.Injective m := by
+    intro p q hpq
+    by_contra hpqSub
+    have hpqVal : (p : V) ≠ (q : V) := by
+      intro hpqVal
+      exact hpqSub (Subtype.ext hpqVal)
+    have haCommon : a ∈ G.neighborFinset p ∩ G.neighborFinset q := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset p a).mpr
+          ((G.mem_neighborFinset a p).mp p.property).symm,
+        (G.mem_neighborFinset q a).mpr
+          ((G.mem_neighborFinset a q).mp q.property).symm⟩
+    have hmCommon : m p ∈ G.neighborFinset p ∩ G.neighborFinset q := by
+      apply Finset.mem_inter.mpr
+      refine ⟨(G.mem_neighborFinset p (m p)).mpr (hmEdge p), ?_⟩
+      exact (G.mem_neighborFinset q (m p)).mpr (hpq ▸ hmEdge q)
+    have hle := common_le_one_of_not_containsC4 hfree (p : V) (q : V) hpqVal
+    have ham : a = m p :=
+      (Finset.card_le_one.mp hle) a haCommon (m p) hmCommon
+    apply habNotG
+    rw [ham]
+    exact ((G.mem_neighborFinset b (m p)).mp (hmB p)).symm
   have htriEq := degreeSix_thirtyFour_triangularEdgeGraph_eq_of_colorOrder_zero
     G hfree hreg hcard hzero
   have hexR : ∀ p : {p // p ∈ G.neighborFinset a},
@@ -1590,7 +1612,7 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangl
       Finset.mem_inter.mpr ⟨hmInA, hmB p⟩
     rw [hABempty] at this
     exact Finset.notMem_empty (m p) this
-  refine ⟨m, r, hrInj, ?_⟩
+  refine ⟨m, r, hmInj, hrInj, ?_⟩
   intro p
   have hrNotAset : r p ∉ G.neighborFinset a := by
     intro hrA
