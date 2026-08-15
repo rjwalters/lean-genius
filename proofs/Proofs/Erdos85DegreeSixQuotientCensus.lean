@@ -615,6 +615,57 @@ theorem degreeSixQuotient_model5_support_card_two_nat
       s q c hspos hrow hbal hsq hdiag hc3 hcc
         (by simpa [P] using h.1) (by simpa [P, R] using h.2)).elim
 
+/-- Name both halves of the forced Model5 `2+2` support split and expose the
+positive weights, reverse quotients, and orders. -/
+theorem degreeSixQuotient_model5_support_names_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 5)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    ∃ a b r t, a ≠ b ∧ r ≠ t ∧
+      (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b} ∧
+      ((Finset.univ.erase c) \
+        (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t} ∧
+      0 < q c a ∧ 0 < q c b ∧ q c a + q c b = 6 ∧
+      q a c = 1 ∧ q b c = 1 ∧
+      s a = 3 * q c a ∧ s b = 3 * q c b := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have hcards := degreeSixQuotient_model5_support_card_two_nat
+    s q c hslo hcard htotal hrow hbal hsq hdiag hc3 hcc
+  change P.card = 2 ∧ R.card = 2 at hcards
+  obtain ⟨a, b, hab, hP⟩ := Finset.card_eq_two.mp hcards.1
+  obtain ⟨r, t, hrt, hR⟩ := Finset.card_eq_two.mp hcards.2
+  have haP : a ∈ P := by rw [hP]; simp
+  have hbP : b ∈ P := by rw [hP]; simp
+  have haPos : 0 < q c a := by simpa [P] using
+    (Finset.mem_filter.mp haP).2
+  have hbPos : 0 < q c b := by simpa [P] using
+    (Finset.mem_filter.mp hbP).2
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hweights : q c a + q c b = 6 := by
+    rw [hP, Finset.sum_pair hab] at heqs
+    exact heqs.1
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have haData := hprofile a haPos
+  have hbData := hprofile b hbPos
+  exact ⟨a, b, r, t, hab, hrt, by simpa [P] using hP,
+    by simpa [P, R] using hR, haPos, hbPos, hweights,
+    haData.1, hbData.1, haData.2, hbData.2⟩
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
