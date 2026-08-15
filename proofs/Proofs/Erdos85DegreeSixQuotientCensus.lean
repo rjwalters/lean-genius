@@ -598,6 +598,67 @@ theorem degreeSixQuotient_model7_support_card_ge_three_nat
   · exact Or.inl h
   · exact Or.inr h
 
+/-- A three-element positive support either has uniform base weight two or
+contains a heavy target of weight at least three. -/
+theorem degreeSixQuotient_orderThree_support_card_three_weight_dichotomy_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (q : C → C → ℕ) (c : C)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 3) :
+    (∀ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j), q c p = 2) ∨
+      ∃ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j), 3 ≤ q c p := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hPcard' : P.card = 3 := by simpa [P] using hPcard
+  have hqsum : (∑ p ∈ P, q c p) = 6 := by
+    calc
+      (∑ p ∈ P, q c p) = ∑ p, q c p := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro p _ hp
+        have hz : q c p = 0 := by
+          by_contra hn
+          exact hp (by simp [Nat.pos_of_ne_zero hn])
+        simp [hz]
+      _ = 6 := hrow c
+  by_cases hheavy : ∃ p ∈ P, 3 ≤ q c p
+  · exact Or.inr (by simpa [P] using hheavy)
+  · left
+    intro p hp
+    have hpLe : q c p ≤ 2 := by
+      by_contra h
+      exact hheavy ⟨p, hp, by omega⟩
+    have herase := Finset.sum_erase_add P (q c) hp
+    have hcardErase : (P.erase p).card = 2 := by
+      rw [Finset.card_erase_of_mem hp, hPcard']
+    have hrestLe : (∑ j ∈ P.erase p, q c j) ≤ 4 := by
+      calc
+        (∑ j ∈ P.erase p, q c j) ≤ ∑ _j ∈ P.erase p, 2 :=
+          Finset.sum_le_sum fun j hj ↦ by
+            by_contra h
+            exact hheavy ⟨j, Finset.mem_of_mem_erase hj, by omega⟩
+        _ = 4 := by simp [hcardErase]
+    omega
+
+/-- On a four-element positive support, absence of a heavy target forces all
+base weights to be one or two. -/
+theorem degreeSixQuotient_orderThree_support_card_four_weight_dichotomy_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (q : C → C → ℕ) (c : C)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 4) :
+    (∀ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j),
+      q c p = 1 ∨ q c p = 2) ∨
+      ∃ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j), 3 ≤ q c p := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  by_cases hheavy : ∃ p ∈ P, 3 ≤ q c p
+  · exact Or.inr (by simpa [P] using hheavy)
+  · left
+    intro p hp
+    have hpPos : 0 < q c p := by simpa [P] using
+      (Finset.mem_filter.mp hp).2
+    have hpLe : q c p ≤ 2 := by
+      by_contra h
+      exact hheavy ⟨p, hp, by omega⟩
+    omega
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
