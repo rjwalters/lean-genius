@@ -36,6 +36,16 @@ theorem abs_sum_le_card_support_of_mem_neg_one_zero_one
     _ = ((Finset.univ.filter fun x => f x ≠ 0).card : ℤ) :=
       (int_card_filter_ne_zero_eq_sum_sq f hf).symm
 
+/-- Splitting an ordered-pair support count into rows. -/
+theorem int_card_pair_filter_eq_sum_row_card
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (P : ι → ι → Prop) [DecidableRel P] :
+    ((Finset.univ.filter fun p : ι × ι => P p.1 p.2).card : ℤ) =
+      ∑ x : ι, ((Finset.univ.filter fun y : ι => P x y).card : ℤ) := by
+  norm_cast
+  simp only [Finset.card_eq_sum_ones, Finset.sum_filter]
+  rw [Fintype.sum_prod_type]
+
 /-- Row sum of a graph commutator: adjacency averages the color degree,
 whereas the reversed product sees the regular degree of the ambient graph. -/
 theorem sum_adjMatrix_commutator_row_eq_neighborDegreeSum_sub
@@ -79,6 +89,124 @@ theorem sum_adjMatrix_commutator_row_eq_neighborDegreeSum_sub
       _ = (d : ℤ) * (H.degree x : ℤ) := by
         rw [← Finset.sum_mul, sum_adjMatrix_row_eq_degree_int]
         ring
+
+/-- At order 35 and degree six, the signed antipodal-commutator row sum is
+the discrete adjacency imbalance of the triangle-free color degree. -/
+theorem degreeSix_thirtyFive_antipodal_commutator_row_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 35) (x : V) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let T := triangleFreeEdgeGraph G
+    ∑ y, (A * C - C * A) x y =
+      6 * (T.degree x : ℤ) -
+        ∑ z ∈ G.neighborFinset x, (T.degree z : ℤ) := by
+  dsimp only
+  let T := triangleFreeEdgeGraph G
+  let Cg := antipodalGraph G
+  have hCform : ∀ z : V, (Cg.degree z : ℤ) =
+      4 - (T.degree z : ℤ) := by
+    intro z
+    rcases excessTwo_even_color_degree_classification
+        G hfree (by norm_num) hreg (by norm_num [hcard]) z with hz | hz | hz
+    · simp [T, Cg, hz.1, hz.2]
+    · simp [T, Cg, hz.1, hz.2]
+    · simp [T, Cg, hz.1, hz.2]
+  have hsum : (∑ z ∈ G.neighborFinset x, (Cg.degree z : ℤ)) =
+      24 - ∑ z ∈ G.neighborFinset x, (T.degree z : ℤ) := by
+    calc
+      (∑ z ∈ G.neighborFinset x, (Cg.degree z : ℤ)) =
+          ∑ z ∈ G.neighborFinset x, (4 - (T.degree z : ℤ)) := by
+        apply Finset.sum_congr rfl
+        intro z _
+        rw [hCform]
+      _ = 24 - ∑ z ∈ G.neighborFinset x, (T.degree z : ℤ) := by
+        rw [Finset.sum_sub_distrib]
+        simp only [Finset.sum_const, nsmul_eq_mul]
+        rw [G.card_neighborFinset_eq_degree, hreg x]
+        norm_num
+  have hxC := hCform x
+  have hrow := sum_adjMatrix_commutator_row_eq_neighborDegreeSum_sub
+    G Cg hreg x
+  rw [hsum, hxC] at hrow
+  change ∑ y, (G.adjMatrix ℤ * Cg.adjMatrix ℤ -
+    Cg.adjMatrix ℤ * G.adjMatrix ℤ) x y = _
+  rw [hrow]
+  ring
+
+/-- The exact signed imbalance forces at least its absolute value many
+nonzero entries in each order-35 commutator row. -/
+theorem degreeSix_thirtyFive_antipodal_commutator_row_support_lower
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 35) (x : V) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let T := triangleFreeEdgeGraph G
+    |6 * (T.degree x : ℤ) -
+        ∑ z ∈ G.neighborFinset x, (T.degree z : ℤ)| ≤
+      ((Finset.univ.filter fun y =>
+        (A * C - C * A) x y ≠ 0).card : ℤ) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let C := (antipodalGraph G).adjMatrix ℤ
+  have habs := abs_sum_le_card_support_of_mem_neg_one_zero_one
+    (fun y => (A * C - C * A) x y) (fun y =>
+      antipodal_commutator_entry_mem_neg_one_zero_one_all
+        G hfree hreg x y)
+  rw [degreeSix_thirtyFive_antipodal_commutator_row_sum
+    G hfree hreg hcard x] at habs
+  exact habs
+
+/-- Global order-35 row-imbalance budget.  This is a constraint purely on
+the ambient adjacency action on the three-valued color-degree function. -/
+theorem degreeSix_thirtyFive_sum_abs_color_degree_imbalance_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    let T := triangleFreeEdgeGraph G
+    (∑ x : V, |6 * (T.degree x : ℤ) -
+        ∑ z ∈ G.neighborFinset x, (T.degree z : ℤ)|) ≤
+      16 * (((Finset.univ.filter fun x : V => T.degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V => T.degree x = 4).card : ℤ)) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let C := (antipodalGraph G).adjMatrix ℤ
+  calc
+    (∑ x : V, |6 * ((triangleFreeEdgeGraph G).degree x : ℤ) -
+        ∑ z ∈ G.neighborFinset x,
+          ((triangleFreeEdgeGraph G).degree z : ℤ)|) ≤
+        ∑ x : V, ((Finset.univ.filter fun y : V =>
+          (A * C - C * A) x y ≠ 0).card : ℤ) := by
+      apply Finset.sum_le_sum
+      intro x _
+      exact degreeSix_thirtyFive_antipodal_commutator_row_support_lower
+        G hfree hreg hcard x
+    _ = ((Finset.univ.filter fun p : V × V =>
+          (A * C - C * A) p.1 p.2 ≠ 0).card : ℤ) := by
+      exact (int_card_pair_filter_eq_sum_row_card
+        (fun x y => (A * C - C * A) x y ≠ 0)).symm
+    _ = 16 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+      exact degreeSix_thirtyFive_card_antipodal_commutator_support
+        G hfree hreg hcard
 
 /-- In odd excess three the triangle-free degree is `1` or `3`, and the
 complementary antipodal degree is respectively `4` or `2`. -/
