@@ -1085,6 +1085,177 @@ theorem sevenHighT0CubeCommonWitnessStepVal_semanticSound
   change SevenHighT0CubeSemanticSound adj e2
   exact hsE2
 
+theorem sevenHighT0CubeCommonWitnessStepVal_new_common
+    (adj : Fin 49 → Fin 49 → Bool) (i j w : Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let out := sevenHighT0CubeCommonWitnessStepVal adj i j w input
+    ∃ id : Nat, out.1 = input.1 ++ [(id : Int)] ∧
+      (.common i j w, id) ∈ out.2.1.ids := by
+  let a0 := sevenHighT0CubeCommonIdVal adj i j w input.2
+  let a1 := sevenHighT0CubeEdgeIdVal adj i w a0.2
+  let a2 := sevenHighT0CubeEdgeIdVal adj j w a1.2
+  have hm0 : (.common i j w, a0.1) ∈ a0.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj (.common i j w)
+      input.2.1 input.2.2).1
+  have hm1 : (.common i j w, a0.1) ∈ a1.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min i w) (max i w)) a0.2.1 a0.2.2 hm0
+  have hm2 : (.common i j w, a0.1) ∈ a2.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm1
+  refine ⟨a0.1, ?_, ?_⟩
+  · rfl
+  · exact hm2
+
+theorem sevenHighT0CubeCommonWitnessStepVal_old_mem
+    (adj : Fin 49 → Fin 49 → Bool) (i j w : Nat)
+    {input : SevenHighT0CubeCommonAccum}
+    {entry : SevenHighT0CubeAtom × Nat}
+    (hmem : entry ∈ input.2.1.ids) :
+    entry ∈ (sevenHighT0CubeCommonWitnessStepVal adj i j w input).2.1.ids := by
+  let a0 := sevenHighT0CubeCommonIdVal adj i j w input.2
+  let a1 := sevenHighT0CubeEdgeIdVal adj i w a0.2
+  let a2 := sevenHighT0CubeEdgeIdVal adj j w a1.2
+  have hm0 : entry ∈ a0.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj (.common i j w)
+      input.2.1 input.2.2 hmem
+  have hm1 : entry ∈ a1.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min i w) (max i w)) a0.2.1 a0.2.2 hm0
+  have hm2 : entry ∈ a2.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm1
+  exact hm2
+
+structure SevenHighT0CubeCollectedCommonMatch
+    (i j : Nat) (ws : List Nat) (input : SevenHighT0CubeCommonAccum) where
+  ids : List Nat
+  lits_eq : input.1 = List.map (fun id : Nat => (id : Int)) ids
+  aligned : List.Forall₂ (fun w id =>
+    ((.common i j w), id) ∈ input.2.1.ids) ws ids
+
+def sevenHighT0CubeCollectedCommonMatch_empty
+    (i j : Nat) (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubeCollectedCommonMatch i j [] ([], acc) where
+  ids := []
+  lits_eq := rfl
+  aligned := .nil
+
+def sevenHighT0CubeCollectedCommonMatch_push
+    (adj : Fin 49 → Fin 49 → Bool) {i j w : Nat} {ws : List Nat}
+    {input : SevenHighT0CubeCommonAccum}
+    (h : SevenHighT0CubeCollectedCommonMatch i j ws input) :
+    SevenHighT0CubeCollectedCommonMatch i j (ws ++ [w])
+      (sevenHighT0CubeCommonWitnessStepVal adj i j w input) := by
+  let out := sevenHighT0CubeCommonWitnessStepVal adj i j w input
+  obtain ⟨id, hlits, hnew⟩ :=
+    sevenHighT0CubeCommonWitnessStepVal_new_common adj i j w input
+  refine ⟨h.ids ++ [id], ?_, ?_⟩
+  · rw [hlits, h.lits_eq]
+    simp
+  · have hold : List.Forall₂ (fun z oldId =>
+        ((.common i j z), oldId) ∈ out.2.1.ids) ws h.ids := by
+      apply h.aligned.imp
+      intro z oldId hm
+      exact sevenHighT0CubeCommonWitnessStepVal_old_mem adj i j w hm
+    exact sevenHighT0CubeForall₂_append_singleton hold hnew
+
+def sevenHighT0CubeCollectCommonVal_match
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubeCollectedCommonMatch i j sevenHighT0CubeLows
+      (sevenHighT0CubeCollectCommonVal adj i j acc) := by
+  suffices ∀ pre : List Nat,
+      SevenHighT0CubeCollectedCommonMatch i j pre
+        (pre.foldl (fun input w =>
+          sevenHighT0CubeCommonWitnessStepVal adj i j w input) ([], acc)) by
+    exact this sevenHighT0CubeLows
+  intro pre
+  induction pre using List.reverseRecOn with
+  | nil => exact sevenHighT0CubeCollectedCommonMatch_empty i j acc
+  | append_singleton pre w ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil]
+      exact sevenHighT0CubeCollectedCommonMatch_push adj ih
+
+theorem sevenHighT0CubeForall₂_exists_right_of_mem
+    {α β : Type*} {r : α → β → Prop} {xs : List α} {ys : List β}
+    (h : List.Forall₂ r xs ys) {x : α} (hx : x ∈ xs) :
+    ∃ y ∈ ys, r x y := by
+  induction h with
+  | nil => simp at hx
+  | @cons a b as bs hab hrest ih =>
+      simp only [List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact ⟨b, by simp, hab⟩
+      · rcases ih hx with ⟨y, hy, hr⟩
+        exact ⟨y, by simp [hy], hr⟩
+
+theorem sevenHighT0CubeForall₂_exists_left_of_mem
+    {α β : Type*} {r : α → β → Prop} {xs : List α} {ys : List β}
+    (h : List.Forall₂ r xs ys) {y : β} (hy : y ∈ ys) :
+    ∃ x ∈ xs, r x y := by
+  induction h with
+  | nil => simp at hy
+  | @cons a b as bs hab hrest ih =>
+      simp only [List.mem_cons] at hy
+      rcases hy with rfl | hy
+      · exact ⟨a, by simp, hab⟩
+      · rcases ih hy with ⟨x, hx, hr⟩
+        exact ⟨x, by simp [hx], hr⟩
+
+theorem sevenHighT0CubeCollectCommonVal_bounded
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) :
+    let common := sevenHighT0CubeCollectCommonVal adj i j acc
+    dimacsClauseBounded common.2.1.top common.1 := by
+  let common := sevenHighT0CubeCollectCommonVal adj i j acc
+  let hm := sevenHighT0CubeCollectCommonVal_match adj i j acc
+  have hs := sevenHighT0CubeCollectCommonVal_semanticSound adj i j
+    hacc hleft hright
+  intro lit hlit
+  rw [hm.lits_eq] at hlit
+  obtain ⟨id, hid, rfl⟩ := List.mem_map.mp hlit
+  obtain ⟨w, hw, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_left_of_mem hm.aligned hid
+  simpa using (hs.ids.id_bounds _ hatom).2
+
+theorem sevenHighT0CubeCollectCommonVal_positive
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true)
+    (hwitness : ∃ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true) :
+    let common := sevenHighT0CubeCollectCommonVal adj i j acc
+    dimacsClauseSatisfied common.2.2 common.1 := by
+  let common := sevenHighT0CubeCollectCommonVal adj i j acc
+  let hm := sevenHighT0CubeCollectCommonVal_match adj i j acc
+  have hs := sevenHighT0CubeCollectCommonVal_semanticSound adj i j
+    hacc hleft hright
+  obtain ⟨w, hw, htrue⟩ := hwitness
+  obtain ⟨id, hid, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_right_of_mem hm.aligned hw
+  have hlit : (id : Int) ∈ common.1 := by
+    rw [hm.lits_eq]
+    exact List.mem_map.mpr ⟨id, hid, rfl⟩
+  have hpos := (hs.ids.id_bounds _ hatom).1
+  have hval := (hs.named _ _ hatom).trans htrue
+  refine ⟨(id : Int), hlit, ?_⟩
+  simp [dimacsLitValue, hpos, hval]
+
 def sevenHighT0CubeCollectCommonVal
     (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
     (acc : SevenHighT0CubeValState) : SevenHighT0CubeCommonAccum :=
@@ -1203,6 +1374,61 @@ theorem sevenHighT0CubeCommonPairStepVal_semanticSound
     (sevenHighT0CubeEmitVal common.1 common.2)
   exact sevenHighT0CubeEmitVal_semanticSound adj hs common.1
     hpositive hbounded
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonPairStepVal_semanticSound_of_witness
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.1 w) (max pair.1 w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.2 w) (max pair.2 w)) = true)
+    (hwitness : ∃ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCommonPairStepVal adj pair acc) := by
+  apply sevenHighT0CubeCommonPairStepVal_semanticSound adj pair hacc
+    hleft hright
+  · exact sevenHighT0CubeCollectCommonVal_positive adj pair.1 pair.2 acc
+      hacc hleft hright hwitness
+  · exact sevenHighT0CubeCollectCommonVal_bounded adj pair.1 pair.2 acc
+      hacc hleft hright
+
+def sevenHighT0CubeCommonClausesFromVal
+    (adj : Fin 49 → Fin 49 → Bool)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  (sevenHighT0CubePairs sevenHighT0CubeHighs).foldl (fun acc pair =>
+    sevenHighT0CubeCommonPairStepVal adj pair acc) acc
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonClausesFromVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+      ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.1 w) (max pair.1 w)) = true)
+    (hright : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+      ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.2 w) (max pair.2 w)) = true)
+    (hwitness : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+      ∃ w ∈ sevenHighT0CubeLows,
+        sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCommonClausesFromVal adj acc) := by
+  unfold sevenHighT0CubeCommonClausesFromVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro pair hp acc hacc
+  exact sevenHighT0CubeCommonPairStepVal_semanticSound_of_witness
+    adj pair hacc (hleft pair hp) (hright pair hp) (hwitness pair hp)
 
 def sevenHighT0CubeC4WitnessPairVal
     (adj : Fin 49 → Fin 49 → Bool) (i j w w' : Nat)
