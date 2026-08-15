@@ -1348,6 +1348,82 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_cases
   dsimp only
   omega
 
+/-- In the pure antipodal size-two-kernel branch, the original-graph
+neighborhoods of the defect twins are disjoint and the bipartite graph
+between them is one-regular on both sides.  Thus the two six-element
+neighborhoods are joined by a perfect matching. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_neighbor_matching_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v))
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    G.neighborFinset a ∩ G.neighborFinset b = ∅ ∧
+      (∀ p ∈ G.neighborFinset a,
+        (G.neighborFinset p ∩ G.neighborFinset b).card = 1) ∧
+      ∀ q ∈ G.neighborFinset b,
+        (G.neighborFinset q ∩ G.neighborFinset a).card = 1 := by
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have habC : (antipodalGraph G).Adj a b := by
+    rw [← hDeq]
+    exact habD
+  have habFacts := (mem_antipodalNeighbors G a b).mp
+    ((antipodalGraph_adj G a b).mp habC)
+  have habNotG : ¬ G.Adj a b := habFacts.2.1
+  have habCommon : G.neighborFinset a ∩ G.neighborFinset b = ∅ := by
+    exact Finset.card_eq_zero.mp habFacts.2.2
+  refine ⟨habCommon, ?_, ?_⟩
+  · intro p hp
+    have hapG : G.Adj a p := (G.mem_neighborFinset a p).mp hp
+    have hpa : p ≠ a := fun h => G.loopless.irrefl a (h ▸ hapG)
+    have hpb : p ≠ b := by
+      intro h
+      exact habNotG (h ▸ hapG)
+    have hnotDa : ¬ (secondOrderDefectGraph G).Adj a p := by
+      rw [hDeq]
+      intro hapC
+      exact ((mem_antipodalNeighbors G a p).mp
+        ((antipodalGraph_adj G a p).mp hapC)).2.1 hapG
+    have hnotDb : ¬ (secondOrderDefectGraph G).Adj b p := by
+      intro hbpD
+      exact hnotDa ((htwins p hpa hpb).mpr hbpD)
+    have hnotMem : p ∉ (secondOrderDefectGraph G).neighborFinset b := by
+      simpa using hnotDb
+    have hone := card_common_eq_if_secondOrderDefect
+      G hfree b p hpb.symm
+    rw [if_neg hnotMem] at hone
+    simpa [Finset.inter_comm] using hone
+  · intro q hq
+    have hbqG : G.Adj b q := (G.mem_neighborFinset b q).mp hq
+    have hqb : q ≠ b := fun h => G.loopless.irrefl b (h ▸ hbqG)
+    have hqa : q ≠ a := by
+      intro h
+      exact habNotG (by simpa [h] using hbqG.symm)
+    have hnotDb : ¬ (secondOrderDefectGraph G).Adj b q := by
+      rw [hDeq]
+      intro hbqC
+      exact ((mem_antipodalNeighbors G b q).mp
+        ((antipodalGraph_adj G b q).mp hbqC)).2.1 hbqG
+    have hnotDa : ¬ (secondOrderDefectGraph G).Adj a q := by
+      intro haqD
+      exact hnotDb ((htwins q hqa hqb).mp haqD)
+    have hnotMem : q ∉ (secondOrderDefectGraph G).neighborFinset a := by
+      simpa using hnotDa
+    have hone := card_common_eq_if_secondOrderDefect
+      G hfree a q hqa.symm
+    rw [if_neg hnotMem] at hone
+    simpa [Finset.inter_comm] using hone
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
