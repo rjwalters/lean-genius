@@ -1020,24 +1020,35 @@ theorem degreeSixQuotient_model7_support_three_uniform_invisible_four_nat
   have hmass := (degreeSixQuotient_orderThree_support_partition_nat
     s q c (fun i ↦ by have := hslo i; omega) htotal hrow hbal hsq hc3 hcc).2
   change (∑ r ∈ R, s r) = 12 at hmass
+  have hRlo : ∀ r ∈ R, 4 ≤ s r := by
+    intro r hrR
+    have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
+    have heqs := degreeSixQuotient_orderThree_support_equations_nat s q c hrow hsq
+    have hsqR := heqs.2 r
+    rw [hP] at hsqR
+    simp [Finset.sum_insert, hab, had, hbd, Ne.symm hrc,
+      hca, hcb, hcd] at hsqR
+    have hsEq : s r = 2 * (q a r + q b r + q d r) := by
+      nlinarith [hsqR]
+    have heven : s r % 2 = 0 := by simp [hsEq]
+    have hne : s r ≠ 3 := by
+      intro h
+      rw [h] at heven
+      norm_num at heven
+    have := hslo r
+    omega
   intro r hr
   have hrR : r ∈ R := by simpa [P, R] using hr
-  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
-  have heqs := degreeSixQuotient_orderThree_support_equations_nat s q c hrow hsq
-  have hsqR := heqs.2 r
-  rw [hP] at hsqR
-  simp [Finset.sum_insert, hab, had, hbd, Ne.symm hrc,
-    hca, hcb, hcd] at hsqR
-  have hrlo : 4 ≤ s r := by omega
+  have hrlo := hRlo r hrR
   have herase := Finset.sum_erase_add R s hrR
   have hcardErase : (R.erase r).card = 2 := by
     rw [Finset.card_erase_of_mem hrR, hRcard']
-  have hlo : 3 * (R.erase r).card ≤ ∑ j ∈ R.erase r, s j := by
+  have hlo : 4 * (R.erase r).card ≤ ∑ j ∈ R.erase r, s j := by
     calc
-      3 * (R.erase r).card = ∑ _j ∈ R.erase r, 3 := by
+      4 * (R.erase r).card = ∑ _j ∈ R.erase r, 4 := by
         simp [Nat.mul_comm]
       _ ≤ ∑ j ∈ R.erase r, s j :=
-        Finset.sum_le_sum fun j _ ↦ hslo j
+        Finset.sum_le_sum fun j hj ↦ hRlo j (Finset.mem_of_mem_erase hj)
   rw [hcardErase] at hlo
   omega
 
@@ -1057,13 +1068,34 @@ theorem false_of_degreeSixQuotient_support_three_uniform_arithmetic
   have haa : aa ≤ 3 := by omega
   have hab : ab ≤ 3 := by omega
   have had : ad ≤ 3 := by omega
-  have har : ar ≤ 2 := by omega
-  have hav : av ≤ 2 := by omega
-  have hau : au ≤ 2 := by omega
-  interval_cases aa <;> interval_cases ab <;> interval_cases ad <;>
-    interval_cases ar <;> interval_cases av <;> interval_cases au <;>
-    norm_num at hbalR hbalT hbalU hsq <;> omega
+  have hintSq : 3 ≤ aa * aa + ab * ab + ad * ad := by
+    calc
+      3 = aa + ab + ad := hint.symm
+      _ ≤ aa * aa + ab * ab + ad * ad := by
+        exact Nat.add_le_add (Nat.add_le_add (Nat.le_mul_self aa)
+          (Nat.le_mul_self ab)) (Nat.le_mul_self ad)
+  have har : ar = 0 ∨ ar = 2 := by
+    clear hint hsq
+    omega
+  have hav : av = 0 ∨ av = 2 := by
+    clear hint hsq
+    omega
+  have hau : au = 0 ∨ au = 2 := by
+    clear hint hsq
+    omega
+  have hcrossCases :
+      (ar = 2 ∧ av = 0 ∧ au = 0) ∨
+      (ar = 0 ∧ av = 2 ∧ au = 0) ∨
+      (ar = 0 ∧ av = 0 ∧ au = 2) := by
+    clear hint hbalR hbalT hbalU hsq
+    omega
+  rcases hcrossCases with h | h | h
+  · nlinarith [hsq, hbalR]
+  · nlinarith [hsq, hbalT]
+  · nlinarith [hsq, hbalU]
 
+set_option linter.unusedSimpArgs false in
+set_option linter.unnecessarySimpa false in
 /-- The uniform `2,2,2` three-target branch of Model7 is impossible. -/
 theorem false_of_degreeSixQuotient_model7_support_three_uniform_nat
     {C : Type*} [Fintype C] [DecidableEq C]
@@ -1126,11 +1158,11 @@ theorem false_of_degreeSixQuotient_model7_support_three_uniform_nat
     · have : x = a ∨ x = b ∨ x = d := by
         simpa [P] using (show x ∈ ({a, b, d} : Finset C) by
           rw [← hP]; exact hxP)
-      aesop
+      rcases this with rfl | rfl | rfl <;> simp
     · have hxR : x ∈ R := Finset.mem_sdiff.mpr
         ⟨Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩, hxP⟩
       have : x = r ∨ x = t ∨ x = u := by simpa [hR] using hxR
-      aesop
+      rcases this with rfl | rfl | rfl <;> simp
   have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
     s q c (fun i ↦ by have := hslo i; omega) hrow hbal hsq hc3 hcc
   have haData := hprofile a (by simpa [P, hca] using
@@ -1148,9 +1180,9 @@ theorem false_of_degreeSixQuotient_model7_support_three_uniform_nat
     degreeSixQuotient_model7_support_three_uniform_invisible_four_nat
       s q c a b d hslo htotal hrow hbal hsq hc3 hcc hab had hbd hP
         hRcard hca hcb hcd
-  have hsr : s r = 4 := horders r (by simpa [R] using hrR)
-  have hst : s t = 4 := horders t (by simpa [R] using htR)
-  have hsu : s u = 4 := horders u (by simpa [R] using huR)
+  have hsr : s r = 4 := horders r (by simpa [P, R] using hrR)
+  have hst : s t = 4 := horders t (by simpa [P, R] using htR)
+  have hsu : s u = 4 := horders u (by simpa [P, R] using huR)
   have hbalR := hbal a r
   have hbalT := hbal a t
   have hbalU := hbal a u
@@ -1165,16 +1197,32 @@ theorem false_of_degreeSixQuotient_model7_support_three_uniform_nat
     (Finset.mem_filter.mp hdP).2)
   rw [haData.2, hbData.2, hca, hcb] at hbalAB
   rw [haData.2, hdData.2, hca, hcd] at hbalAD
+  norm_num at hbalR hbalT hbalU hbalAB hbalAD
+  have habEq : q b a = q a b := by omega
+  have hadEq : q d a = q a d := by omega
   have hsqA := hsq a a
   rw [huniv] at hsqA
   simp [Finset.sum_insert, hac, hbc, hdc, hrc, htc, huc, hab, had, hbd,
     hrt, hru, htu, hra, hrb, hrd, hta, htb, htd, hua, hub, hud,
+    Ne.symm hac, Ne.symm hbc, Ne.symm hdc, Ne.symm hrc, Ne.symm htc,
+    Ne.symm huc, Ne.symm hab, Ne.symm had, Ne.symm hbd, Ne.symm hrt,
+    Ne.symm hru, Ne.symm htu, Ne.symm hra, Ne.symm hrb, Ne.symm hrd,
+    Ne.symm hta, Ne.symm htb, Ne.symm htd, Ne.symm hua, Ne.symm hub,
+    Ne.symm hud,
     haData.1, hca, haData.2] at hsqA
-  apply false_of_degreeSixQuotient_support_three_uniform_arithmetic
+  rw [habEq, hadEq] at hsqA
+  have hbalR' : 3 * q a r = 2 * q r a := by omega
+  have hbalT' : 3 * q a t = 2 * q t a := by omega
+  have hbalU' : 3 * q a u = 2 * q u a := by omega
+  have hsqA' : 2 + q a a * q a a + q a b * q a b + q a d * q a d +
+      q a r * q r a + q a t * q t a + q a u * q u a = 9 := by
+    simpa [Nat.add_assoc] using hsqA
+  exact false_of_degreeSixQuotient_support_three_uniform_arithmetic
     (q a a) (q a b) (q a d) (q a r) (q a t) (q a u)
       (q r a) (q t a) (q u a)
-  · omega
-  · omega
+    (by simpa [Nat.add_assoc] using hint)
+    (by simpa [Nat.add_assoc] using hcross)
+    hbalR' hbalT' hbalU' hsqA'
 
 /-- Arithmetic core excluding the four-target weight split `3,1,1,1`.
 The trace lower bound removes heavy diagonal zero; detailed balance removes
@@ -1199,32 +1247,55 @@ theorem false_of_degreeSixQuotient_support_four_three_one_one_one_arithmetic
     False := by
   have haa : aa = 0 ∨ aa = 1 ∨ aa = 2 := by omega
   rcases haa with haa | haa | haa
-  · omega
-  · have habLe : ab ≤ 1 := by omega
-    have hadLe : ad ≤ 1 := by omega
-    have haeLe : ae ≤ 1 := by omega
-    interval_cases ab <;> interval_cases ad <;> interval_cases ae <;> omega
-  · have habLe : ab ≤ 1 := by omega
-    have hadLe : ad ≤ 1 := by omega
-    have haeLe : ae ≤ 1 := by omega
+  · clear hsqB hsqD hsqE hxb hxd hxe
+    omega
+  · have hcases :
+        (ab = 1 ∧ ad = 1 ∧ ae = 0) ∨
+        (ab = 1 ∧ ad = 0 ∧ ae = 1) ∨
+        (ab = 0 ∧ ad = 1 ∧ ae = 1) := by omega
+    rcases hcases with h | h | h
+    · clear hsqB hsqD hsqE hxb hxd hxe hrowA hbalBD hdiagA hdiagB
+        hdiagD htrace
+      omega
+    · clear hsqB hsqD hsqE hxb hxd hxe hrowA hbalBE hdiagA hdiagB
+        hdiagE htrace
+      omega
+    · clear hsqB hsqD hsqE hxb hxd hxe hrowA hbalDE hdiagA hdiagD
+        hdiagE htrace
+      omega
+  ·
     have hcases :
         (ab = 1 ∧ ad = 0 ∧ ae = 0) ∨
         (ab = 0 ∧ ad = 1 ∧ ae = 0) ∨
         (ab = 0 ∧ ad = 0 ∧ ae = 1) := by omega
     rcases hcases with h | h | h
-    · have hddLe : dd ≤ 2 := hdiagD
+    · have hdrow : dd + de = 3 := by omega
       have hdeLe : de ≤ 3 := by omega
-      interval_cases dd <;> interval_cases de <;>
-        norm_num [haa, h.1, h.2.1, h.2.2] at * <;> omega
-    · have hbbLe : bb ≤ 2 := hdiagB
+      have hda : da = 0 := by omega
+      have hdb : db = 0 := by omega
+      rw [hda, hdb, ← hbalDE] at hsqD
+      simp at hsqD
+      interval_cases dd <;> interval_cases de <;> norm_num at hsqD
+      all_goals omega
+    · have hbrow : bb + be = 3 := by omega
       have hbeLe : be ≤ 3 := by omega
-      interval_cases bb <;> interval_cases be <;>
-        norm_num [haa, h.1, h.2.1, h.2.2] at * <;> omega
-    · have hbbLe : bb ≤ 2 := hdiagB
+      have hba : ba = 0 := by omega
+      have hbd : bd = 0 := by omega
+      rw [hba, hbd, ← hbalBE] at hsqB
+      simp at hsqB
+      interval_cases bb <;> interval_cases be <;> norm_num at hsqB
+      all_goals omega
+    · have hbrow : bb + bd = 3 := by omega
       have hbdLe : bd ≤ 3 := by omega
-      interval_cases bb <;> interval_cases bd <;>
-        norm_num [haa, h.1, h.2.1, h.2.2] at * <;> omega
+      have hba : ba = 0 := by omega
+      have hbe : be = 0 := by omega
+      rw [hba, hbe, ← hbalBD] at hsqB
+      simp at hsqB
+      interval_cases bb <;> interval_cases bd <;> norm_num at hsqB
+      all_goals omega
 
+set_option linter.unusedSimpArgs false in
+set_option linter.unnecessarySimpa false in
 /-- Full quotient adapter excluding a named Model7 support of weights
 `3,1,1,1`. -/
 theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
@@ -1278,11 +1349,11 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
     by_cases hxP : x ∈ P
     · have : x = a ∨ x = b ∨ x = d ∨ x = e := by
         simpa [hP'] using hxP
-      aesop
+      rcases this with rfl | rfl | rfl | rfl <;> simp
     · have hxR : x ∈ R := Finset.mem_sdiff.mpr
         ⟨Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩, hxP⟩
       have : x = r ∨ x = t := by simpa [hR] using hxR
-      aesop
+      rcases this with rfl | rfl <;> simp
   have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
     s q c hspos hrow hbal hsq hc3 hcc
   have haData := hprofile a (by simpa [P, hca] using
@@ -1326,7 +1397,7 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
     have hxz : q x p = 0 := Nat.eq_zero_of_not_pos hn
     have hb := hbal p x
     rw [hxz, Nat.mul_zero] at hb
-    exact (Nat.mul_pos (hspos p) hpx).ne hb
+    exact (Nat.mul_pos (hspos p) hpx).ne hb.symm
   have hxb : 0 < q b r * q r b + q b t * q t b := by
     rcases Nat.eq_zero_or_pos (q b r) with hz | hp
     · have hpt : 0 < q b t := by omega
@@ -1355,8 +1426,15 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
   have htrace' := htrace
   rw [huniv] at htrace'
   simp [Finset.sum_insert, hac, hbc, hdc, hec, hrc, htc, hab, had, hae,
-    hbd, hbe, hde, hrt, hra, hrb, hrd, hre, hta, htb, htd, hte, hcc] at htrace'
-  have hPtrace : 2 ≤ q a a + q b b + q d d + q e e := by omega
+    hbd, hbe, hde, hrt, hra, hrb, hrd, hre, hta, htb, htd, hte,
+    Ne.symm hac, Ne.symm hbc, Ne.symm hdc, Ne.symm hec, Ne.symm hrc,
+    Ne.symm htc, Ne.symm hab, Ne.symm had, Ne.symm hae, Ne.symm hbd,
+    Ne.symm hbe, Ne.symm hde, Ne.symm hrt, Ne.symm hra, Ne.symm hrb,
+    Ne.symm hrd, Ne.symm hre, Ne.symm hta, Ne.symm htb, Ne.symm htd,
+    Ne.symm hte, hcc] at htrace'
+  have hPtrace : 2 ≤ q a a + q b b + q d d + q e e := by
+    clear hxb hxd hxe
+    omega
   have hbalAB := hbal a b
   have hbalAD := hbal a d
   have hbalAE := hbal a e
@@ -1369,14 +1447,50 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
   rw [hbData.2, hdData.2, hcb, hcd] at hbalBD
   rw [hbData.2, heData.2, hcb, hce] at hbalBE
   rw [hdData.2, heData.2, hcd, hce] at hbalDE
+  norm_num at hbalAB hbalAD hbalAE hbalBD hbalBE hbalDE
+  have hAB : 3 * q a b = q b a := by
+    clear hxb hxd hxe htrace'
+    omega
+  have hAD : 3 * q a d = q d a := by
+    clear hxb hxd hxe htrace'
+    omega
+  have hAE : 3 * q a e = q e a := by
+    clear hxb hxd hxe htrace'
+    omega
+  have hBD : q b d = q d b := by
+    clear hxb hxd hxe htrace'
+    omega
+  have hBE : q b e = q e b := by
+    clear hxb hxd hxe htrace'
+    omega
+  have hDE : q d e = q e d := by
+    clear hxb hxd hxe htrace'
+    omega
   have hsqB := hsq b b
   have hsqD := hsq d d
   have hsqE := hsq e e
   rw [huniv] at hsqB hsqD hsqE
   simp [Finset.sum_insert, hac, hbc, hdc, hec, hrc, htc, hab, had, hae,
     hbd, hbe, hde, hrt, hra, hrb, hrd, hre, hta, htb, htd, hte,
+    Ne.symm hac, Ne.symm hbc, Ne.symm hdc, Ne.symm hec, Ne.symm hrc,
+    Ne.symm htc, Ne.symm hab, Ne.symm had, Ne.symm hae, Ne.symm hbd,
+    Ne.symm hbe, Ne.symm hde, Ne.symm hrt, Ne.symm hra, Ne.symm hrb,
+    Ne.symm hrd, Ne.symm hre, Ne.symm hta, Ne.symm htb, Ne.symm htd,
+    Ne.symm hte,
     hbData.1, hdData.1, heData.1, hcb, hcd, hce,
     hbData.2, hdData.2, heData.2] at hsqB hsqD hsqE
+  have hsqB' : 1 + q b a * q a b + q b b * q b b +
+      q b d * q d b + q b e * q e b +
+      (q b r * q r b + q b t * q t b) = 6 := by
+    simpa [Nat.add_assoc] using hsqB
+  have hsqD' : 1 + q d a * q a d + q d b * q b d +
+      q d d * q d d + q d e * q e d +
+      (q d r * q r d + q d t * q t d) = 6 := by
+    simpa [Nat.add_assoc] using hsqD
+  have hsqE' : 1 + q e a * q a e + q e b * q b e +
+      q e d * q d e + q e e * q e e +
+      (q e r * q r e + q e t * q t e) = 6 := by
+    simpa [Nat.add_assoc] using hsqE
   exact false_of_degreeSixQuotient_support_four_three_one_one_one_arithmetic
     (q a a) (q a b) (q a d) (q a e)
     (q b a) (q b b) (q b d) (q b e)
@@ -1385,35 +1499,58 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
     (q b r * q r b + q b t * q t b)
     (q d r * q r d + q d t * q t d)
     (q e r * q r e + q e t * q t e)
-    (by omega) (by omega) (by omega) (by omega)
-    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by simpa [Nat.add_assoc] using hrowA)
+    (by simpa [Nat.add_assoc] using hrowB)
+    (by simpa [Nat.add_assoc] using hrowD)
+    (by simpa [Nat.add_assoc] using hrowE)
+    hAB hAD hAE hBD hBE hDE
     (hdiag a) (hdiag b) (hdiag d) (hdiag e) hPtrace
-    hxb hxd hxe (by omega) (by omega) (by omega)
+    hxb hxd hxe hsqB' hsqD' hsqE'
 
 /-- Cross-block arithmetic for the surviving four-target branch.  Four
 positive weights in `{1,2}` summing to six, together with the `2`-out / `3`-in
 block masses and detailed balance, force both invisible orders to be six. -/
 theorem degreeSixQuotient_support_four_light_cross_orders
     (wa wb wd we sr st : ℕ)
-    (ar at br bt dr dt er et ra rb rd re ta tb td te : ℕ)
+    (ar ax br bt dr dt er et ra rb rd re ta tb td te : ℕ)
     (hwa : 1 ≤ wa ∧ wa ≤ 2) (hwb : 1 ≤ wb ∧ wb ≤ 2)
     (hwd : 1 ≤ wd ∧ wd ≤ 2) (hwe : 1 ≤ we ∧ we ≤ 2)
     (hweights : wa + wb + wd + we = 6)
     (hsr : 3 ≤ sr) (hst : 3 ≤ st) (horders : sr + st = 12)
-    (hrowA : ar + at = 2) (hrowB : br + bt = 2)
+    (hrowA : ar + ax = 2) (hrowB : br + bt = 2)
     (hrowD : dr + dt = 2) (hrowE : er + et = 2)
     (hrowR : ra + rb + rd + re = 3)
     (hrowT : ta + tb + td + te = 3)
     (hbalAR : 3 * wa * ar = sr * ra)
-    (hbalAT : 3 * wa * at = st * ta)
+    (hbalAT : 3 * wa * ax = st * ta)
     (hbalBR : 3 * wb * br = sr * rb)
     (hbalBT : 3 * wb * bt = st * tb)
     (hbalDR : 3 * wd * dr = sr * rd)
     (hbalDT : 3 * wd * dt = st * td)
     (hbalER : 3 * we * er = sr * re)
     (hbalET : 3 * we * et = st * te) : sr = 6 ∧ st = 6 := by
-  interval_cases wa <;> interval_cases wb <;> interval_cases wd <;>
-    interval_cases we <;> interval_cases sr <;> omega
+  have waLo := hwa.1
+  have waHi := hwa.2
+  have wbLo := hwb.1
+  have wbHi := hwb.2
+  have wdLo := hwd.1
+  have wdHi := hwd.2
+  have weLo := hwe.1
+  have weHi := hwe.2
+  have srHi : sr ≤ 9 := by omega
+  have stHi : st ≤ 9 := by omega
+  have hwcases :
+      (wa = 2 ∧ wb = 2 ∧ wd = 1 ∧ we = 1) ∨
+      (wa = 2 ∧ wb = 1 ∧ wd = 2 ∧ we = 1) ∨
+      (wa = 2 ∧ wb = 1 ∧ wd = 1 ∧ we = 2) ∨
+      (wa = 1 ∧ wb = 2 ∧ wd = 2 ∧ we = 1) ∨
+      (wa = 1 ∧ wb = 2 ∧ wd = 1 ∧ we = 2) ∨
+      (wa = 1 ∧ wb = 1 ∧ wd = 2 ∧ we = 2) := by omega
+  rcases hwcases with h | h | h | h | h | h
+  all_goals
+    rcases h with ⟨hwa', hwb', hwd', hwe'⟩
+    simp [hwa', hwb', hwd', hwe'] at *
+    interval_cases sr <;> interval_cases st <;> omega
 
 /-- In a named Model7 four-target branch whose base weights are all one or
 two, the two invisible components both have order six. -/
@@ -1493,9 +1630,9 @@ theorem degreeSixQuotient_model7_support_four_light_invisible_six_nat
   rw [hR] at rowA rowB rowD rowE
   simp [Finset.sum_insert, hrt] at rowA rowB rowD rowE
   have invR := degreeSixQuotient_orderThree_invisible_row_split_nat
-    s q c r hspos hrow hbal hsq hc3 hcc (by simpa [R] using hrR)
+    s q c r hspos hrow hbal hsq hc3 hcc (by simpa [P, R] using hrR)
   have invT := degreeSixQuotient_orderThree_invisible_row_split_nat
-    s q c t hspos hrow hbal hsq hc3 hcc (by simpa [R] using htR)
+    s q c t hspos hrow hbal hsq hc3 hcc (by simpa [P, R] using htR)
   have rowR := invR.1
   have rowT := invT.1
   change (∑ x ∈ P, q r x) = 3 at rowR
@@ -1528,11 +1665,159 @@ theorem degreeSixQuotient_model7_support_four_light_invisible_six_nat
   rcases hx' with rfl | rfl
   · exact orders.1
   · exact orders.2
-  · omega
-  · omega
-  · omega
-  · omega
 
+/-- A four-element Model7 positive support has no heavy base target; every
+base weight is one or two. -/
+theorem degreeSixQuotient_model7_support_four_weights_light_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 4)
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 2) :
+    ∀ p ∈ (Finset.univ.filter fun j ↦ 0 < q c j),
+      q c p = 1 ∨ q c p = 2 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hPcard' : P.card = 4 := by simpa [P] using hPcard
+  have hdich := degreeSixQuotient_orderThree_support_card_four_weight_dichotomy_nat
+    q c hPcard
+  rcases hdich with hall | ⟨a, haP, haHeavy⟩
+  · exact hall
+  · have haP' : a ∈ P := by simpa [P] using haP
+    have hcardErase : (P.erase a).card = 3 := by
+      rw [Finset.card_erase_of_mem haP', hPcard']
+    obtain ⟨b, d, e, hbd, hbe, hde, hrest⟩ :=
+      Finset.card_eq_three.mp hcardErase
+    have hPnames : P = {a, b, d, e} := by
+      have hi := Finset.insert_erase haP'
+      rw [hrest] at hi
+      exact hi.symm
+    have hab : a ≠ b := by
+      intro h; subst b
+      have : a ∈ P.erase a := by rw [hrest]; simp
+      simpa using this
+    have had : a ≠ d := by
+      intro h; subst d
+      have : a ∈ P.erase a := by rw [hrest]; simp
+      simpa using this
+    have hae : a ≠ e := by
+      intro h; subst e
+      have : a ∈ P.erase a := by rw [hrest]; simp
+      simpa using this
+    have hbP : b ∈ P := by rw [hPnames]; simp
+    have hdP : d ∈ P := by rw [hPnames]; simp
+    have heP : e ∈ P := by rw [hPnames]; simp
+    have hbPos : 0 < q c b := by simpa [P] using
+      (Finset.mem_filter.mp hbP).2
+    have hdPos : 0 < q c d := by simpa [P] using
+      (Finset.mem_filter.mp hdP).2
+    have hePos : 0 < q c e := by simpa [P] using
+      (Finset.mem_filter.mp heP).2
+    have hweights := (degreeSixQuotient_orderThree_support_equations_nat
+      s q c hrow hsq).1
+    change (∑ x ∈ P, q c x) = 6 at hweights
+    rw [hPnames] at hweights
+    simp [Finset.sum_insert, hab, had, hae, hbd, hbe, hde] at hweights
+    have hca : q c a = 3 := by omega
+    have hcb : q c b = 1 := by omega
+    have hcd : q c d = 1 := by omega
+    have hce : q c e = 1 := by omega
+    exact (false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
+      s q c a b d e hslo hrow hbal hsq hdiag htrace hc3 hcc
+      hab had hae hbd hbe hde (by simpa [P] using hPnames) hRcard
+      hca hcb hcd hce).elim
+
+/-- Kernel-clean structural Model7 profile theorem on an arbitrary
+seven-element index type. -/
+theorem degreeSixQuotient_model7_profile_structural_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 7)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hbase : ∃ i, s i = 3 ∧ q i i = 0)
+    (hthree : ∀ i, s i = 3 → q i i = 0) :
+    ∀ i, s i = 3 ∨ s i = 6 := by
+  obtain ⟨c, hc3, hcc⟩ := hbase
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have hcards := degreeSixQuotient_model7_support_card_ge_three_nat
+    s q c hslo hcard htotal hrow hbal hsq hdiag htrace hc3 hcc hthree
+  change (P.card = 3 ∧ R.card = 3) ∨
+    (P.card = 4 ∧ R.card = 2) at hcards
+  rcases hcards with hthreeCard | hfourCard
+  · have hres := degreeSixQuotient_orderThree_support_three_residual_weights_nat
+      s q c hspos hrow hbal hsq hdiag hc3 hcc (by simpa [P] using hthreeCard.1)
+    rcases hres with hall | ⟨a, b, d, hab, had, hbd, hP, hca, hlight⟩
+    · obtain ⟨a, b, d, hab, had, hbd, hP'⟩ :=
+        Finset.card_eq_three.mp hthreeCard.1
+      have haP : a ∈ P := by rw [hP']; simp
+      have hbP : b ∈ P := by rw [hP']; simp
+      have hdP : d ∈ P := by rw [hP']; simp
+      have hca : q c a = 2 := hall a (by simpa [P] using haP)
+      have hcb : q c b = 2 := hall b (by simpa [P] using hbP)
+      have hcd : q c d = 2 := hall d (by simpa [P] using hdP)
+      exact (false_of_degreeSixQuotient_model7_support_three_uniform_nat
+        s q c a b d hslo htotal hrow hbal hsq hc3 hcc hab had hbd
+        (by simpa [P] using hP') (by simpa [P, R] using hthreeCard.2)
+        hca hcb hcd).elim
+    · rcases hlight with ⟨hcb, hcd⟩ | ⟨hcb, hcd⟩
+      · exact (false_of_degreeSixQuotient_model7_support_three_three_one_two_nat
+          s q c a b d hspos hrow hbal hsq hdiag htrace hc3 hcc
+          hab had hbd hP (by simpa [P, R] using hthreeCard.2)
+          hca hcb hcd).elim
+      · exact (false_of_degreeSixQuotient_model7_support_three_three_one_two_nat
+          s q c a d b hspos hrow hbal hsq hdiag htrace hc3 hcc
+          had hab (Ne.symm hbd)
+          (by simpa [Finset.pair_comm b d] using hP)
+          (by simpa [P, R] using hthreeCard.2)
+          hca hcd hcb).elim
+  · obtain ⟨a, b, d, e, hab, had, hae, hbd, hbe, hde, hPnames⟩ :=
+      Finset.card_eq_four.mp hfourCard.1
+    have hPnames' :
+        (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d, e} := by
+      simpa [P] using hPnames
+    have hall := degreeSixQuotient_model7_support_four_weights_light_nat
+      s q c hslo hrow hbal hsq hdiag htrace hc3 hcc
+      (by simpa [P] using hfourCard.1) (by simpa [P, R] using hfourCard.2)
+    have haW := hall a (by rw [hPnames']; simp)
+    have hbW := hall b (by rw [hPnames']; simp)
+    have hdW := hall d (by rw [hPnames']; simp)
+    have heW := hall e (by rw [hPnames']; simp)
+    have hRorders := degreeSixQuotient_model7_support_four_light_invisible_six_nat
+      s q c a b d e hslo htotal hrow hbal hsq hc3 hcc
+      hab had hae hbd hbe hde hPnames'
+      (by simpa [P, R] using hfourCard.2) haW hbW hdW heW
+    have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+      s q c hspos hrow hbal hsq hc3 hcc
+    intro i
+    by_cases hic : i = c
+    · subst i; exact Or.inl hc3
+    by_cases hiP : i ∈ P
+    · have hiPos : 0 < q c i := by simpa [P] using
+        (Finset.mem_filter.mp hiP).2
+      have hiData := hprofile i hiPos
+      have hiW := hall i (by simpa [P] using hiP)
+      rcases hiW with hi1 | hi2
+      · left; omega
+      · right; omega
+    · right
+      apply hRorders i
+      have hiR : i ∈ R := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_erase.mpr ⟨hic, Finset.mem_univ i⟩, hiP⟩
+      simpa [P, R] using hiR
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
@@ -2493,83 +2778,6 @@ theorem degreeSixQuotientModel7_reindex
   · intro i hi
     exact hthree (e i) hi
 
-/-- Every seven-component degree-six quotient model has component orders
-`3,3,3,6,6,6,6`. -/
-theorem degreeSixQuotientModel7_profile_zero
-    (s : Fin 7 → DegreeSixCensusWord)
-    (q : Fin 7 → Fin 7 → DegreeSixCensusWord)
-    (h : degreeSixQuotientModel7 s q) : s 0 = 3 ∨ s 0 = 6 := by
-  simp [degreeSixQuotientModel7, Fin.forall_fin_succ, Fin.exists_fin_succ,
-    Fin.sum_univ_succ] at h ⊢
-  generalize s 0 = s0 at h ⊢
-  generalize s 1 = s1 at h ⊢
-  generalize s 2 = s2 at h ⊢
-  generalize s 3 = s3 at h ⊢
-  generalize s 4 = s4 at h ⊢
-  generalize s 5 = s5 at h ⊢
-  generalize s 6 = s6 at h ⊢
-  generalize q 0 0 = q00 at h ⊢
-  generalize q 0 1 = q01 at h ⊢
-  generalize q 0 2 = q02 at h ⊢
-  generalize q 0 3 = q03 at h ⊢
-  generalize q 0 4 = q04 at h ⊢
-  generalize q 0 5 = q05 at h ⊢
-  generalize q 0 6 = q06 at h ⊢
-  generalize q 1 0 = q10 at h ⊢
-  generalize q 1 1 = q11 at h ⊢
-  generalize q 1 2 = q12 at h ⊢
-  generalize q 1 3 = q13 at h ⊢
-  generalize q 1 4 = q14 at h ⊢
-  generalize q 1 5 = q15 at h ⊢
-  generalize q 1 6 = q16 at h ⊢
-  generalize q 2 0 = q20 at h ⊢
-  generalize q 2 1 = q21 at h ⊢
-  generalize q 2 2 = q22 at h ⊢
-  generalize q 2 3 = q23 at h ⊢
-  generalize q 2 4 = q24 at h ⊢
-  generalize q 2 5 = q25 at h ⊢
-  generalize q 2 6 = q26 at h ⊢
-  generalize q 3 0 = q30 at h ⊢
-  generalize q 3 1 = q31 at h ⊢
-  generalize q 3 2 = q32 at h ⊢
-  generalize q 3 3 = q33 at h ⊢
-  generalize q 3 4 = q34 at h ⊢
-  generalize q 3 5 = q35 at h ⊢
-  generalize q 3 6 = q36 at h ⊢
-  generalize q 4 0 = q40 at h ⊢
-  generalize q 4 1 = q41 at h ⊢
-  generalize q 4 2 = q42 at h ⊢
-  generalize q 4 3 = q43 at h ⊢
-  generalize q 4 4 = q44 at h ⊢
-  generalize q 4 5 = q45 at h ⊢
-  generalize q 4 6 = q46 at h ⊢
-  generalize q 5 0 = q50 at h ⊢
-  generalize q 5 1 = q51 at h ⊢
-  generalize q 5 2 = q52 at h ⊢
-  generalize q 5 3 = q53 at h ⊢
-  generalize q 5 4 = q54 at h ⊢
-  generalize q 5 5 = q55 at h ⊢
-  generalize q 5 6 = q56 at h ⊢
-  generalize q 6 0 = q60 at h ⊢
-  generalize q 6 1 = q61 at h ⊢
-  generalize q 6 2 = q62 at h ⊢
-  generalize q 6 3 = q63 at h ⊢
-  generalize q 6 4 = q64 at h ⊢
-  generalize q 6 5 = q65 at h ⊢
-  generalize q 6 6 = q66 at h ⊢
-  bv_decide (config := { timeout := 600 })
-
-theorem degreeSixQuotientModel7_profile
-    (s : Fin 7 → DegreeSixCensusWord)
-    (q : Fin 7 → Fin 7 → DegreeSixCensusWord)
-    (h : degreeSixQuotientModel7 s q) : ∀ i, s i = 3 ∨ s i = 6 := by
-  intro i
-  let e : Equiv.Perm (Fin 7) := Equiv.swap 0 i
-  have h' := degreeSixQuotientModel7_profile_zero
-    (fun j => s (e j)) (fun j k => q (e j) (e k))
-      (degreeSixQuotientModel7_reindex s q e h)
-  simpa [e] using h'
-
 /-- Natural-number interface to the five-component finite certificate. -/
 theorem degreeSixQuotientModel5_profile_nat
     (s : Fin 5 → ℕ) (q : Fin 5 → Fin 5 → ℕ)
@@ -2601,74 +2809,8 @@ theorem degreeSixQuotientModel7_profile_nat
     (hbase : ∃ i, s i = 3 ∧ q i i = 0)
     (hthree : ∀ i, s i = 3 → q i i = 0) :
     ∀ i, s i = 3 ∨ s i = 6 := by
-  let sb : Fin 7 → DegreeSixCensusWord := fun i => s i
-  let qb : Fin 7 → Fin 7 → DegreeSixCensusWord := fun i j => q i j
-  have hmodel : degreeSixQuotientModel7 sb qb := by
-    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · intro i
-      constructor
-      · rw [BitVec.ule_iff_toNat_le]
-        have hi : s i < 2 ^ 8 := lt_trans (hshi i) (by norm_num)
-        simp [sb, Nat.mod_eq_of_lt hi]
-        have := hslo i
-        omega
-      · rw [BitVec.ult_iff_toNat_lt]
-        simp [sb]
-        have := hshi i
-        omega
-    · intro i j
-      rw [BitVec.ult_iff_toNat_lt]
-      simp [qb]
-      have := hq i j
-      omega
-    · change (∑ i, (s i : DegreeSixCensusWord)) = 33
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) htotal
-    · intro i
-      change (∑ j, (q i j : DegreeSixCensusWord)) = 6
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hrow i)
-    · intro i j
-      change (s i : DegreeSixCensusWord) * (q i j : DegreeSixCensusWord) =
-        (s j : DegreeSixCensusWord) * (q j i : DegreeSixCensusWord)
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hbal i j)
-    · intro i j
-      change (∑ k, (q i k : DegreeSixCensusWord) *
-        (q k j : DegreeSixCensusWord)) =
-          (if i = j then 3 else 0) + (s j : DegreeSixCensusWord)
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hsq i j)
-    · intro i
-      rw [BitVec.ule_iff_toNat_le]
-      simp [qb]
-      have := hdiag i
-      omega
-    · change (∑ i, (q i i : DegreeSixCensusWord)) = 6
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) htrace
-    · obtain ⟨i, hsi, hqi⟩ := hbase
-      exact ⟨i, by simp [sb, hsi], by simp [qb, hqi]⟩
-    · intro i hi
-      apply congrArg (fun n : ℕ => (n : DegreeSixCensusWord))
-      apply hthree i
-      have ht := congrArg BitVec.toNat hi
-      simp [sb] at ht
-      have := hshi i
-      omega
-  have hp := degreeSixQuotientModel7_profile sb qb hmodel
-  intro i
-  rcases hp i with hi | hi
-  · left
-    have ht := congrArg BitVec.toNat hi
-    simp [sb] at ht
-    have := hshi i
-    omega
-  · right
-    have ht := congrArg BitVec.toNat hi
-    simp [sb] at ht
-    have := hshi i
-    omega
+  exact degreeSixQuotient_model7_profile_structural_nat
+    s q hslo (by simp) htotal hrow hbal hsq hdiag htrace hbase hthree
 
 /-- Transport the five-component certificate across an arbitrary finite
 index type. -/
