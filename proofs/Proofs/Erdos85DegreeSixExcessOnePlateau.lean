@@ -3804,6 +3804,205 @@ theorem C4PlateauCore.degreeSix_thirtyFour_defectKernel_dichotomy
     exact exists_oddDefectSet_card_nine_or_eleven_or_thirteen_or_fifteen_or_seventeen
       (secondOrderDefectGraph G) W (by simp) hDreg hWodd hWparity
 
+set_option maxHeartbeats 600000 in
+/-- Explicit `K₃,₃` certificate for the six-vertex residual: a named
+triangle `P` and its three-vertex complement `T`, with every defect row on
+one side equal to the other side. -/
+theorem degreeSix_thirtyFour_defectKFour_residual_exists_K33_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    ∃ P T : Finset V, P.card = 3 ∧ T.card = 3 ∧
+      Disjoint P T ∧ P ∪ T = R ∧
+      (∀ p ∈ P, (secondOrderDefectGraph G).neighborFinset p = T) ∧
+      ∀ u ∈ T, (secondOrderDefectGraph G).neighborFinset u = P := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  obtain ⟨r, s, t, hr, hs, ht, hrsNe, hrtNe, hstNe,
+      hrs, hrt, hst, hcompl⟩ :=
+    degreeSix_thirtyFour_defectKFour_residual_exists_triangle_compl_three
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  let P : Finset V := {r, s, t}
+  let T : Finset V := R \ P
+  have hprofile := degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  dsimp only at hprofile
+  have hRcard := hprofile.1
+  change R.card = 6 at hRcard
+  have hPcard : P.card = 3 := by
+    simp [P, hrsNe, hrtNe, hstNe]
+  have hPsub : P ⊆ R := by
+    simp only [P, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+    exact ⟨hr, hs, ht⟩
+  have hTcard : T.card = 3 := by
+    change (R \ P).card = 3
+    rw [Finset.card_sdiff_of_subset hPsub, hRcard, hPcard]
+  have hdPT : Disjoint P T := Finset.disjoint_sdiff
+  have hPT : P ∪ T = R := Finset.union_sdiff_of_subset hPsub
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hGrow (p q u : V) (hp : p ∈ R) (hq : q ∈ R) (hu : u ∈ R)
+      (hpq : G.Adj p q) (hpu : G.Adj p u) (hqu : q ≠ u) :
+      G.neighborFinset p ∩ R = {q, u} := by
+    have hsub : ({q, u} : Finset V) ⊆ G.neighborFinset p ∩ R := by
+      simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff,
+        Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨⟨hpq, hq⟩, ⟨hpu, hu⟩⟩
+    have hpairCard : ({q, u} : Finset V).card = 2 := by simp [hqu]
+    have hinterCard := (hprofile.2 p hp).1
+    symm
+    apply Finset.eq_of_subset_of_card_le hsub
+    rw [hinterCard, hpairCard]
+  have hGr := hGrow r s t hr hs ht hrs hrt hstNe
+  have hGs := hGrow s r t hs hr ht hrs.symm hst hrtNe
+  have hGt := hGrow t r s ht hr hs hrt.symm hst.symm hrsNe
+  have hEraseR : P.erase r = {s, t} := by
+    ext z
+    simp only [P, Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hzrNe, hzr | hzs | hzt⟩
+      · exact (hzrNe hzr).elim
+      · exact Or.inl hzs
+      · exact Or.inr hzt
+    · intro hz
+      refine ⟨?_, Or.inr hz⟩
+      intro hzr
+      rcases hz with hzs | hzt
+      · exact hrsNe (hzr.symm.trans hzs)
+      · exact hrtNe (hzr.symm.trans hzt)
+  have hEraseS : P.erase s = {r, t} := by
+    ext z
+    simp only [P, Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hzsNe, hzr | hzs | hzt⟩
+      · exact Or.inl hzr
+      · exact (hzsNe hzs).elim
+      · exact Or.inr hzt
+    · intro hz
+      refine ⟨?_, ?_⟩
+      · intro hzs
+        rcases hz with hzr | hzt
+        · exact hrsNe (hzr.symm.trans hzs)
+        · exact hstNe (hzs.symm.trans hzt)
+      · rcases hz with hzr | hzt
+        · exact Or.inl hzr
+        · exact Or.inr (Or.inr hzt)
+  have hEraseT : P.erase t = {r, s} := by
+    ext z
+    simp only [P, Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hztNe, hzr | hzs | hzt⟩
+      · exact Or.inl hzr
+      · exact Or.inr hzs
+      · exact (hztNe hzt).elim
+    · intro hz
+      refine ⟨?_, ?_⟩
+      · intro hzt
+        rcases hz with hzr | hzs
+        · exact hrtNe (hzr.symm.trans hzt)
+        · exact hstNe (hzs.symm.trans hzt)
+      · rcases hz with hzr | hzs
+        · exact Or.inl hzr
+        · exact Or.inr (Or.inl hzs)
+  have hGP : ∀ p ∈ P, G.neighborFinset p ∩ R = P.erase p := by
+    intro p hp
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with hpr | hps | hpt
+    · subst p
+      rw [hEraseR]
+      exact hGr
+    · subst p
+      rw [hEraseS]
+      exact hGs
+    · subst p
+      rw [hEraseT]
+      exact hGt
+  have hDP : ∀ p ∈ P,
+      (secondOrderDefectGraph G).neighborFinset p = T := by
+    intro p hp
+    have hpR := hPsub hp
+    have hDsub : (secondOrderDefectGraph G).neighborFinset p ⊆ R := by
+      intro w hpw
+      have hpwAdj : (secondOrderDefectGraph G).Adj p w := by simpa using hpw
+      exact defectKFour_residual_closed G hfree hreg hDreg
+        hab hax hbx hay hby hxy hpR hpwAdj
+    have hDcard : ((secondOrderDefectGraph G).neighborFinset p).card = 3 := by
+      rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg p]
+    have hrow :=
+      internal_G_union_defect_neighbors_eq_erase_of_closed_cubic_antipodal_six
+        G hDeq R hRcard hpR hDsub hDcard (hprofile.2 p hpR).1
+    have hG := hGP p hp
+    ext w
+    constructor
+    · intro hwD
+      apply Finset.mem_sdiff.mpr
+      refine ⟨hDsub hwD, ?_⟩
+      intro hwP
+      have hpwNe : w ≠ p := by
+        intro hwp
+        exact (secondOrderDefectGraph G).loopless.irrefl p
+          (hwp ▸ ((secondOrderDefectGraph G).mem_neighborFinset p w).mp hwD)
+      have hwErase : w ∈ P.erase p := Finset.mem_erase.mpr ⟨hpwNe, hwP⟩
+      rw [← hG] at hwErase
+      have hpwG := (G.mem_neighborFinset p w).mp
+        (Finset.mem_inter.mp hwErase).1
+      have hpwD := ((secondOrderDefectGraph G).mem_neighborFinset p w).mp hwD
+      rw [hDeq] at hpwD
+      exact ((mem_antipodalNeighbors G p w).mp
+        ((antipodalGraph_adj G p w).mp hpwD)).2.1 hpwG
+    · intro hwT
+      have hwParts := Finset.mem_sdiff.mp hwT
+      have hpwNe : w ≠ p := by
+        intro hwp
+        exact hwParts.2 (hwp ▸ hp)
+      have hwEraseR : w ∈ R.erase p :=
+        Finset.mem_erase.mpr ⟨hpwNe, hwParts.1⟩
+      rw [← hrow] at hwEraseR
+      rcases Finset.mem_union.mp hwEraseR with hwG | hwD
+      · have hwPErase : w ∈ P.erase p := by
+          rw [← hG]
+          exact hwG
+        exact (hwParts.2 (Finset.mem_of_mem_erase hwPErase)).elim
+      · exact hwD
+  have hDT : ∀ u ∈ T,
+      (secondOrderDefectGraph G).neighborFinset u = P := by
+    intro u hu
+    have hsub : P ⊆ (secondOrderDefectGraph G).neighborFinset u := by
+      intro p hp
+      have hup : u ∈ (secondOrderDefectGraph G).neighborFinset p := by
+        rw [hDP p hp]
+        exact hu
+      have hpu := ((secondOrderDefectGraph G).mem_neighborFinset p u).mp hup
+      exact ((secondOrderDefectGraph G).mem_neighborFinset u p).mpr hpu.symm
+    symm
+    apply Finset.eq_of_subset_of_card_le hsub
+    rw [hPcard, (secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+      hDreg u]
+  exact ⟨P, T, hPcard, hTcard, hdPT, hPT, hDP, hDT⟩
+
 end
 
 end Erdos85
