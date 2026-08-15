@@ -273,6 +273,40 @@ theorem sevenHighAlignedLabeling_of_keyAligned
   · exact sevenHigh_keyAlignedLabeling_lowPartition
       G hfree hmin e masks E hE
 
+def SevenHighCanonicalFiberCover (blocks : Nat) : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+    (¬ containsC4 (Fin 49) G) →
+    (∀ x : Fin 49, 7 ≤ G.degree x) →
+    (orderFortyNineHighVertices G).card = 7 →
+    orderFortyNineHighIncidenceCount G 3 = blocks →
+    ∃ index, index < (OrderFortyNineSevenHighCensus.reps blocks).length ∧
+      ∃ e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7,
+      let masks := OrderFortyNineSevenHighCensus.representativeMasks blocks index
+      masks.size = 49 ∧
+      ∀ key : Option (Fin 7) × Finset (Fin 7),
+        Fintype.card {x : Fin 49 // sevenHighGraphAlignedKey G e x = key} =
+        Fintype.card {i : Fin 49 // sevenHighMaskAlignedKey masks i = key}
+
+/-- The entire graph-normalization obligation is reduced to equality of the
+finite aligned-key fiber cardinalities. -/
+theorem sevenHighCanonicalLabelingCover_of_fiberCover
+    {blocks : Nat} (hcover : SevenHighCanonicalFiberCover blocks) :
+    SevenHighCanonicalLabelingCover blocks := by
+  intro G _ _ _ hfree hmin hhigh hblocks
+  obtain ⟨index, hindex, e, hsize, hfibers⟩ :=
+    hcover G inferInstance inferInstance inferInstance
+      hfree hmin hhigh hblocks
+  obtain ⟨E, hE⟩ := exists_sevenHigh_keyAlignedLabeling_of_fiberCardEq
+    G e (OrderFortyNineSevenHighCensus.representativeMasks blocks index)
+      hfibers
+  refine ⟨index, hindex, E, ?_⟩
+  exact sevenHighAlignedLabeling_of_keyAligned
+    G hfree hmin e
+      (OrderFortyNineSevenHighCensus.representativeMasks blocks index)
+      hsize E hE
+
 end
 
 end Erdos85
