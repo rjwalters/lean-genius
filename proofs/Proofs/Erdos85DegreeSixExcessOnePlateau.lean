@@ -2028,6 +2028,22 @@ theorem cubic_defectKFour_neighborFinsets
     neighborFinset_eq_triple_of_degree_three D (hregD y)
       hay.symm hby.symm hxy.symm habNe haxNe hbxNe⟩
 
+/-- Every edge of a cubic `K₄` joins adjacent twins: away from its two
+endpoints, the endpoint defect-adjacency predicates agree. -/
+theorem cubic_defectKFour_adjacent_twins
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hregD : ∀ v, D.degree v = 3)
+    {a b x y : V}
+    (hab : D.Adj a b) (hax : D.Adj a x) (hbx : D.Adj b x)
+    (hay : D.Adj a y) (hby : D.Adj b y) (hxy : D.Adj x y) :
+    ∀ v, v ≠ a → v ≠ b → (D.Adj a v ↔ D.Adj b v) := by
+  rcases cubic_defectKFour_neighborFinsets D hregD
+      hab hax hbx hay hby hxy with ⟨hKa, hKb, _, _⟩
+  intro v hva hvb
+  rw [← D.mem_neighborFinset, ← D.mem_neighborFinset, hKa, hKb]
+  simp [hva, hvb]
+
 /-- Entrywise commutation propagates zero contact with an isolated defect
 block across a defect edge.  If all defect neighbors of `u` lie in `Q` and
 `v` has no original-graph neighbor in `Q`, then every defect neighbor `w`
@@ -2146,6 +2162,39 @@ theorem defectKFour_neighbor_block_three_exact_counts
       G hfree hreg hKx hav hbNot hyNot,
     card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
       G hfree hreg hKy hav hbNot hxNot⟩
+
+/-- In the pure antipodal branch, each pair of center-neighborhood blocks
+of a closed cubic defect `K₄` is also joined by an original-graph perfect
+matching.  This statement records the pair indexed by `a,b`; permutations
+of the four centers give the other five pairs. -/
+theorem degreeSix_thirtyFour_defectKFour_original_neighbor_matching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hregD : ∀ z, (secondOrderDefectGraph G).degree z = 3)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    G.neighborFinset a ∩ G.neighborFinset b = ∅ ∧
+      (∀ p ∈ G.neighborFinset a,
+        (G.neighborFinset p ∩ G.neighborFinset b).card = 1) ∧
+      ∀ q ∈ G.neighborFinset b,
+        (G.neighborFinset q ∩ G.neighborFinset a).card = 1 := by
+  apply degreeSix_thirtyFour_adjacent_defect_twins_neighbor_matching_of_colorOrder_zero
+    G hfree hreg hcard hab
+  · exact cubic_defectKFour_adjacent_twins (secondOrderDefectGraph G)
+      hregD hab hax hbx hay hby hxy
+  · exact hzero
 
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
