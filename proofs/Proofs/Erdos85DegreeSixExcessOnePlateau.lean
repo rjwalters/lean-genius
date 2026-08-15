@@ -2392,6 +2392,40 @@ theorem not_adj_outside_witnesses_of_adjacent_closed_labels
   · exact G.ne_of_adj hq₁q₂ |>.symm
   · exact G.ne_of_adj hs₂q₂ |>.symm
 
+/-- Capstone for the local cover obstruction.  A one-regular six-neighbor
+configuration forces an edge among three outside witnesses, while their
+three labels form a triangle in the closed residual and forbid every such
+edge by `C₄`-freeness. -/
+theorem false_of_six_neighbor_matching_and_residual_triangle_witnesses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (R : Finset V)
+    {p c r q₀ q₁ q₂ q₃ s₁ s₂ s₃ : V}
+    (hN : G.neighborFinset p = {c, r, q₀, q₁, q₂, q₃})
+    (hdeg : ∀ z ∈ G.neighborFinset p,
+      (G.neighborFinset z ∩ G.neighborFinset p).card = 1)
+    (hrq₀ : G.Adj r q₀)
+    (hc : c ≠ r ∧ c ≠ q₀ ∧ c ≠ q₁ ∧ c ≠ q₂ ∧ c ≠ q₃)
+    (hr : r ≠ q₀ ∧ r ≠ q₁ ∧ r ≠ q₂ ∧ r ≠ q₃)
+    (hq₀ : q₀ ≠ q₁ ∧ q₀ ≠ q₂ ∧ q₀ ≠ q₃)
+    (hq₁ : q₁ ≠ q₂ ∧ q₁ ≠ q₃)
+    (hq₂ : q₂ ≠ q₃)
+    (hq₁Out : q₁ ∉ R) (hq₂Out : q₂ ∉ R) (hq₃Out : q₃ ∉ R)
+    (hs₁R : s₁ ∈ R) (hs₂R : s₂ ∈ R) (hs₃R : s₃ ∈ R)
+    (hq₁s₁ : G.Adj q₁ s₁) (hq₂s₂ : G.Adj q₂ s₂)
+    (hq₃s₃ : G.Adj q₃ s₃)
+    (hs₁s₂ : G.Adj s₁ s₂) (hs₁s₃ : G.Adj s₁ s₃)
+    (hs₂s₃ : G.Adj s₂ s₃) : False := by
+  rcases six_neighbor_matching_forces_edge_among_triple
+      G hN hdeg hrq₀ hc hr hq₀ hq₁ hq₂ with hq₁q₂ | hq₁q₃ | hq₂q₃
+  · exact (not_adj_outside_witnesses_of_adjacent_closed_labels
+      G hfree R hq₁Out hq₂Out hs₁R hs₂R hq₁s₁ hs₁s₂ hq₂s₂.symm) hq₁q₂
+  · exact (not_adj_outside_witnesses_of_adjacent_closed_labels
+      G hfree R hq₁Out hq₃Out hs₁R hs₃R hq₁s₁ hs₁s₃ hq₃s₃.symm) hq₁q₃
+  · exact (not_adj_outside_witnesses_of_adjacent_closed_labels
+      G hfree R hq₂Out hq₃Out hs₂R hs₃R hq₂s₂ hs₂s₃ hq₃s₃.symm) hq₂q₃
+
 /-- Around a closed cubic defect `K₄`, every vertex in one center's
 original neighborhood has exactly one defect neighbor in each of the other
 three center-neighborhood blocks. -/
