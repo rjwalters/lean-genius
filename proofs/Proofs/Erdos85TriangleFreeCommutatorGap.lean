@@ -310,6 +310,28 @@ theorem degreeSix_thirtyFive_triangleFree_commutatorGap
   rw [mul_add]
   exact h
 
+/-- Equivalent antipodal fourth-word form of the order-35 gap. -/
+theorem degreeSix_thirtyFive_antipodal_commutatorGap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    Matrix.trace ((A * A) * (C * C)) -
+        Matrix.trace ((A * C) * (A * C)) =
+      8 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+  dsimp only
+  rw [trace_adj_sq_antipodal_sq_sub_alternating_eq_triangleFree_gap
+      G hfree hreg,
+    degreeSix_thirtyFive_triangleFree_commutatorGap G hfree hreg hcard]
+
 /-- **Odd excess-three normalization.**  The whole triangle-free side is a
 known affine expression in the degree-three sector size, apart from the
 single mixed count `tr(C T²)`. -/
