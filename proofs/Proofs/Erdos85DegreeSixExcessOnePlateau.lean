@@ -5386,6 +5386,107 @@ theorem degreeSix_thirtyFour_closed_defectKFour_colorSector_disjoint_centers
   simp only [Finset.mem_insert, Finset.mem_singleton] at hzQ
   rcases hzQ with rfl | rfl | rfl | rfl <;> omega
 
+/-- A set closed under triangle-free edges and containing one colored vertex
+contains at least five vertices.  This is the local form of path-sector
+quantization needed to compare the six-vertex color and residual sectors. -/
+theorem degreeSix_thirtyFour_five_le_of_triangleFree_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (K : Finset V)
+    (hclosed : ∀ v ∈ K, (triangleFreeEdgeGraph G).neighborFinset v ⊆ K)
+    {x : V} (hxK : x ∈ K)
+    (hxdeg : (triangleFreeEdgeGraph G).degree x = 2) :
+    5 ≤ K.card := by
+  let T := triangleFreeEdgeGraph G
+  have hxcard : (T.neighborFinset x).card = 2 := by
+    rw [T.card_neighborFinset_eq_degree]
+    exact hxdeg
+  obtain ⟨y, z, hyz, hset⟩ := Finset.card_eq_two.mp hxcard
+  have hxy : T.Adj x y := by
+    refine (T.mem_neighborFinset x y).mp ?_
+    rw [hset]
+    simp
+  have hxz : T.Adj x z := by
+    refine (T.mem_neighborFinset x z).mp ?_
+    rw [hset]
+    simp
+  have hydeg : T.degree y = 2 :=
+    excessOne_even_triangleFree_degree_eq_two_of_adj
+      G hfree (d := 6) (by norm_num) hreg (by omega) hxy
+  have hzdeg : T.degree z = 2 :=
+    excessOne_even_triangleFree_degree_eq_two_of_adj
+      G hfree (d := 6) (by norm_num) hreg (by omega) hxz
+  obtain ⟨w, hyw, hwx⟩ := exists_other_neighbor_of_degree_two T hydeg hxy.symm
+  obtain ⟨u, hzu, hux⟩ := exists_other_neighbor_of_degree_two T hzdeg hxz.symm
+  have hyz_nadj : ¬ T.Adj y z := fun h =>
+    triangleFreeEdgeGraph_not_triangle G hxy h hxz.symm
+  have hxy' : x ≠ y := T.ne_of_adj hxy
+  have hxz' : x ≠ z := T.ne_of_adj hxz
+  have hyw' : y ≠ w := T.ne_of_adj hyw
+  have hzu' : z ≠ u := T.ne_of_adj hzu
+  have hwz : w ≠ z := by
+    intro h
+    rw [h] at hyw
+    exact hyz_nadj hyw
+  have huy : u ≠ y := by
+    intro h
+    rw [h] at hzu
+    exact hyz_nadj hzu.symm
+  have huw : u ≠ w := by
+    intro h
+    rw [h] at hzu
+    exact triangleFreeEdgeGraph_not_four_cycle G hfree hxy hyw hzu.symm
+      hxz.symm hwx.symm hyz hxy'.symm hyw' hxz'.symm hwz.symm
+  have hyK : y ∈ K := hclosed x hxK ((T.mem_neighborFinset x y).mpr hxy)
+  have hzK : z ∈ K := hclosed x hxK ((T.mem_neighborFinset x z).mpr hxz)
+  have hwK : w ∈ K := hclosed y hyK ((T.mem_neighborFinset y w).mpr hyw)
+  have huK : u ∈ K := hclosed z hzK ((T.mem_neighborFinset z u).mpr hzu)
+  have hsub : ({x, y, z, w, u} : Finset V) ⊆ K := by
+    intro t ht
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ht
+    rcases ht with rfl | rfl | rfl | rfl | rfl
+    · exact hxK
+    · exact hyK
+    · exact hzK
+    · exact hwK
+    · exact huK
+  have hw_notin : w ∉ ({u} : Finset V) := by
+    simp only [Finset.mem_singleton]
+    exact fun h => huw h.symm
+  have c2 : ({w, u} : Finset V).card = 2 := by
+    rw [Finset.card_insert_of_notMem hw_notin, Finset.card_singleton]
+  have hz_notin : z ∉ ({w, u} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (h | h)
+    · exact hwz h.symm
+    · exact hzu' h
+  have c3 : ({z, w, u} : Finset V).card = 3 := by
+    rw [Finset.card_insert_of_notMem hz_notin, c2]
+  have hy_notin : y ∉ ({z, w, u} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (h | h | h)
+    · exact hyz h
+    · exact hyw' h
+    · exact huy h.symm
+  have c4 : ({y, z, w, u} : Finset V).card = 4 := by
+    rw [Finset.card_insert_of_notMem hy_notin, c3]
+  have hx_notin : x ∉ ({y, z, w, u} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (h | h | h | h)
+    · exact hxy' h
+    · exact hxz' h
+    · exact hwx h.symm
+    · exact hux h.symm
+  have c5 : ({x, y, z, w, u} : Finset V).card = 5 := by
+    rw [Finset.card_insert_of_notMem hx_notin, c4]
+  rw [← c5]
+  exact Finset.card_le_card hsub
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
