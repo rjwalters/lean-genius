@@ -2059,6 +2059,40 @@ theorem degreeSix_thirtyFour_antipodal_defectKFour_centered_footprint_card_eq_tw
   change (F ∪ {a, b, x, y}).card = 28
   rw [Finset.card_union_of_disjoint hdisj, hFcard, hQcard]
 
+/-- Complement form of the centered defect-`K₄` count: exactly six vertices
+remain outside the four centers and all four of their neighborhoods. -/
+theorem degreeSix_thirtyFour_antipodal_defectKFour_exists_residual_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    ∃ R : Finset V, R.card = 6 ∧
+      R = Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}) := by
+  let U := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}
+  have hUcard : U.card = 28 :=
+    degreeSix_thirtyFour_antipodal_defectKFour_centered_footprint_card_eq_twentyEight
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  let R := Finset.univ \ U
+  have hRcard : R.card = 6 := by
+    change (Finset.univ \ U).card = 6
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ U),
+      Finset.card_univ, hcard, hUcard]
+  exact ⟨R, hRcard, rfl⟩
+
 /-- In the pure antipodal branch the two twins themselves lie outside the
 four-neighborhood footprint.  Adding them to the preceding 23-vertex union
 therefore certifies at least 25 distinct vertices. -/
