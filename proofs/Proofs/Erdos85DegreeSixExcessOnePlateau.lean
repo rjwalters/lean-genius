@@ -1424,6 +1424,83 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_neighbor_matching_of_colorOrd
     rw [if_neg hnotMem] at hone
     simpa [Finset.inter_comm] using hone
 
+/-- The four vertices of a cubic defect-twin diamond already have original
+neighborhood union of order at least 23.  Every defect edge makes the two
+corresponding original neighborhoods disjoint; among the six diamond pairs,
+only the pair of common defect neighbors can overlap, and C4-freeness bounds
+that overlap by one. -/
+theorem degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : x ≠ y) :
+    23 ≤ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y).card := by
+  have hinter_of_defect : ∀ {u v : V},
+      (secondOrderDefectGraph G).Adj u v →
+        G.neighborFinset u ∩ G.neighborFinset v = ∅ := by
+    intro u v huv
+    have hne : u ≠ v := (secondOrderDefectGraph G).ne_of_adj huv
+    have hmem : v ∈ (secondOrderDefectGraph G).neighborFinset u :=
+      ((secondOrderDefectGraph G).mem_neighborFinset u v).mpr huv
+    have hc := card_common_eq_if_secondOrderDefect G hfree u v hne
+    rw [if_pos hmem] at hc
+    exact Finset.card_eq_zero.mp hc
+  have hdAB : Disjoint (G.neighborFinset a) (G.neighborFinset b) :=
+    Finset.disjoint_iff_inter_eq_empty.mpr (hinter_of_defect hab)
+  have hdAX : Disjoint (G.neighborFinset a) (G.neighborFinset x) :=
+    Finset.disjoint_iff_inter_eq_empty.mpr (hinter_of_defect hax)
+  have hdBX : Disjoint (G.neighborFinset b) (G.neighborFinset x) :=
+    Finset.disjoint_iff_inter_eq_empty.mpr (hinter_of_defect hbx)
+  have hdAY : Disjoint (G.neighborFinset a) (G.neighborFinset y) :=
+    Finset.disjoint_iff_inter_eq_empty.mpr (hinter_of_defect hay)
+  have hdBY : Disjoint (G.neighborFinset b) (G.neighborFinset y) :=
+    Finset.disjoint_iff_inter_eq_empty.mpr (hinter_of_defect hby)
+  have hdABX : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset x) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAX, hdBX⟩
+  have hdABY : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset y) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAY, hdBY⟩
+  have hABcard : (G.neighborFinset a ∪ G.neighborFinset b).card = 12 := by
+    rw [Finset.card_union_of_disjoint hdAB,
+      G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree,
+      hreg a, hreg b]
+  have hABXcard : (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x).card = 18 := by
+    rw [Finset.card_union_of_disjoint hdABX, hABcard,
+      G.card_neighborFinset_eq_degree, hreg x]
+  have hinterSub :
+      ((G.neighborFinset a ∪ G.neighborFinset b ∪ G.neighborFinset x) ∩
+          G.neighborFinset y) ⊆
+        G.neighborFinset x ∩ G.neighborFinset y := by
+    intro z hz
+    have hzparts := Finset.mem_inter.mp hz
+    refine Finset.mem_inter.mpr ⟨?_, hzparts.2⟩
+    rcases Finset.mem_union.mp hzparts.1 with hzAB | hzx
+    · exact (Finset.disjoint_left.mp hdABY hzAB hzparts.2).elim
+    · exact hzx
+  have hinterLe : ((G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x) ∩ G.neighborFinset y).card ≤ 1 := by
+    exact (Finset.card_le_card hinterSub).trans
+      (common_le_one_of_not_containsC4 hfree x y hxy)
+  have hie := Finset.card_union_add_card_inter
+    (G.neighborFinset a ∪ G.neighborFinset b ∪ G.neighborFinset x)
+    (G.neighborFinset y)
+  rw [hABXcard, G.card_neighborFinset_eq_degree, hreg y] at hie
+  omega
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
