@@ -2366,6 +2366,32 @@ theorem six_neighbor_matching_forces_edge_among_triple
   · exact (G.loopless.irrefl q₂ (hwq₂ ▸ hq₂w)).elim
   · exact hq₂q₃ (hwq₃ ▸ hq₂w)
 
+/-- Two outside witnesses attached to adjacent vertices of a closed set
+cannot themselves be adjacent: those four edges would be a `C₄`.  This is
+the final geometric edge exclusion used after the six-neighbor matching
+pigeonhole. -/
+theorem not_adj_outside_witnesses_of_adjacent_closed_labels
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (R : Finset V) {q₁ q₂ s₁ s₂ : V}
+    (hq₁Out : q₁ ∉ R) (hq₂Out : q₂ ∉ R)
+    (hs₁R : s₁ ∈ R) (hs₂R : s₂ ∈ R)
+    (hq₁s₁ : G.Adj q₁ s₁) (hs₁s₂ : G.Adj s₁ s₂)
+    (hs₂q₂ : G.Adj s₂ q₂) :
+    ¬ G.Adj q₁ q₂ := by
+  intro hq₁q₂
+  apply hfree
+  apply containsC4_of_rim hq₁s₁ hs₁s₂ hs₂q₂ hq₁q₂.symm
+  · intro hq₁s₂
+    exact hq₁Out (hq₁s₂ ▸ hs₂R)
+  · intro hs₁q₂
+    exact hq₂Out (hs₁q₂ ▸ hs₁R)
+  · exact G.ne_of_adj hq₁s₁ |>.symm
+  · exact G.ne_of_adj hs₁s₂
+  · exact G.ne_of_adj hq₁q₂ |>.symm
+  · exact G.ne_of_adj hs₂q₂ |>.symm
+
 /-- Around a closed cubic defect `K₄`, every vertex in one center's
 original neighborhood has exactly one defect neighbor in each of the other
 three center-neighborhood blocks. -/
