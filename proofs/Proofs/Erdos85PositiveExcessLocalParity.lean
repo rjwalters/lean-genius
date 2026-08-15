@@ -191,6 +191,91 @@ theorem trace_adjMatrix_cube_even_excessTwo
     G hfree heven hreg hcard] at hcube
   omega
 
+/-- Graph-theoretic edge partition at even excess two. -/
+theorem six_mul_triangularCliqueCount_add_excessTwo_colorMass
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 5) :
+    6 * ((triangularEdgeGraph G).cliqueFinset 3).card +
+      2 * (Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 2).card +
+      4 * (Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 4).card =
+      Fintype.card V * d := by
+  let H := triangularEdgeGraph G
+  let T := triangleFreeEdgeGraph G
+  let S2 := Finset.univ.filter fun x : V => T.degree x = 2
+  let S4 := Finset.univ.filter fun x : V => T.degree x = 4
+  have hsumG : ∑ x : V, G.degree x = Fintype.card V * d := by
+    simp_rw [hreg]
+    simp
+  have hedgeG : 2 * G.edgeFinset.card = Fintype.card V * d := by
+    rw [← SimpleGraph.sum_degrees_eq_twice_card_edges G]
+    exact hsumG
+  have hsumT : ∑ x : V, T.degree x = 2 * S2.card + 4 * S4.card := by
+    calc
+      (∑ x : V, T.degree x) =
+          ∑ x : V, (2 * (if x ∈ S2 then 1 else 0) +
+            4 * (if x ∈ S4 then 1 else 0)) := by
+        apply Finset.sum_congr rfl
+        intro x _hx
+        rcases excessTwo_even_color_degree_classification
+            G hfree heven hreg hcard x with hx | hx | hx
+        · simp [T, S2, S4, hx.1]
+        · simp [T, S2, S4, hx.1]
+        · simp [T, S2, S4, hx.1]
+      _ = 2 * S2.card + 4 * S4.card := by
+        rw [Finset.sum_add_distrib]
+        simp [mul_comm]
+  have hedgeT : T.edgeFinset.card = S2.card + 2 * S4.card := by
+    have hhand := SimpleGraph.sum_degrees_eq_twice_card_edges T
+    omega
+  have hTle : T ≤ G := by
+    intro x y hxy
+    exact ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).1
+  have hedgeH : H.edgeFinset.card = G.edgeFinset.card - T.edgeFinset.card := by
+    have heq : H.edgeFinset = G.edgeFinset \ T.edgeFinset := by
+      ext e
+      simp [H, T, triangularEdgeGraph]
+    rw [heq, Finset.card_sdiff_of_subset]
+    exact edgeFinset_mono hTle
+  have hpartition : G.edgeFinset.card = H.edgeFinset.card + T.edgeFinset.card := by
+    have hlecard : T.edgeFinset.card ≤ G.edgeFinset.card :=
+      Finset.card_le_card (edgeFinset_mono hTle)
+    omega
+  have hlocal : H.LocallyLinear :=
+    triangularEdgeGraph_locallyLinear_of_not_containsC4 G hfree
+  have htri : H.edgeFinset.card = 3 * (H.cliqueFinset 3).card :=
+    hlocal.card_edgeFinset
+  change 6 * (H.cliqueFinset 3).card + 2 * S2.card + 4 * S4.card =
+    Fintype.card V * d
+  omega
+
+/-- At order 35 and degree six, the weighted excess-two color-sector order
+is divisible by three. -/
+theorem degreeSix_thirtyFive_excessTwo_colorMass_mod_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    ((Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 2).card +
+      2 * (Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 4).card) % 3 = 0 := by
+  have hmass := six_mul_triangularCliqueCount_add_excessTwo_colorMass
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  omega
+
 /-- At excess two and odd degree, the local triangle-free degree is `1` or
 `3`. -/
 theorem excessTwo_triangleFreeNeighbors_card_eq_one_or_three_of_odd
