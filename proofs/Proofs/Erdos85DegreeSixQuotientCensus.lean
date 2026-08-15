@@ -994,6 +994,53 @@ theorem false_of_degreeSixQuotient_model7_support_three_three_one_two_nat
     (by have := hdiagR u huR; omega)
     (hbal r t) (hbal r u) (hbal t u)
 
+/-- In the uniform `2,2,2` three-target branch, every invisible order is four:
+the base square equation makes each even, while their three orders sum to
+twelve and are at least three. -/
+theorem degreeSixQuotient_model7_support_three_uniform_invisible_four_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 3)
+    (hca : q c a = 2) (hcb : q c b = 2) (hcd : q c d = 2) :
+    ∀ r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)), s r = 4 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hRcard' : R.card = 3 := by simpa [P, R] using hRcard
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c (fun i ↦ by have := hslo i; omega) htotal hrow hbal hsq hc3 hcc).2
+  change (∑ r ∈ R, s r) = 12 at hmass
+  intro r hr
+  have hrR : r ∈ R := by simpa [P, R] using hr
+  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat s q c hrow hsq
+  have hsqR := heqs.2 r
+  rw [hP] at hsqR
+  simp [Finset.sum_insert, hab, had, hbd, Ne.symm hrc,
+    hca, hcb, hcd] at hsqR
+  have hrlo : 4 ≤ s r := by omega
+  have herase := Finset.sum_erase_add R s hrR
+  have hcardErase : (R.erase r).card = 2 := by
+    rw [Finset.card_erase_of_mem hrR, hRcard']
+  have hlo : 3 * (R.erase r).card ≤ ∑ j ∈ R.erase r, s j := by
+    calc
+      3 * (R.erase r).card = ∑ _j ∈ R.erase r, 3 := by
+        simp [Nat.mul_comm]
+      _ ≤ ∑ j ∈ R.erase r, s j :=
+        Finset.sum_le_sum fun j _ ↦ hslo j
+  rw [hcardErase] at hlo
+  omega
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
