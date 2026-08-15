@@ -4521,6 +4521,101 @@ theorem degreeSix_thirtyFour_defectKFour_residual_exists_K33_partition
       hDreg u]
   exact ⟨P, T, hPcard, hTcard, hdPT, hPT, hDP, hDT⟩
 
+/-- In the residual `K₃,₃`, the three defect neighbors of any residual
+vertex form the opposite original-graph triangle. -/
+theorem degreeSix_thirtyFour_defectKFour_residual_defectNeighbors_pairwise_G_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y r s t : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0)
+    (hr : r ∈ Finset.univ \ ((G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y}))
+    (hrs : (secondOrderDefectGraph G).Adj r s)
+    (hrt : (secondOrderDefectGraph G).Adj r t)
+    (hst : s ≠ t) : G.Adj s t := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hrR : r ∈ R := by simpa [B, R] using hr
+  obtain ⟨P, T, hPcard, hTcard, hdPT, hPT, hDP, hDT⟩ :=
+    degreeSix_thirtyFour_defectKFour_residual_exists_K33_partition
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  change P ∪ T = R at hPT
+  have hPsub : P ⊆ R := by
+    intro z hz
+    rw [← hPT]
+    exact Finset.mem_union_left T hz
+  have hTsub : T ⊆ R := by
+    intro z hz
+    rw [← hPT]
+    exact Finset.mem_union_right P hz
+  have hRcard : R.card = 6 := by
+    rw [← hPT, Finset.card_union_of_disjoint hdPT, hPcard, hTcard]
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hprofile := degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hrPT : r ∈ P ∨ r ∈ T := by
+    rw [← Finset.mem_union, hPT]
+    exact hrR
+  rcases hrPT with hrP | hrT
+  · have hsT : s ∈ T := by
+      have hsMem : s ∈ (secondOrderDefectGraph G).neighborFinset r := by
+        simpa using hrs
+      rwa [hDP r hrP] at hsMem
+    have htT : t ∈ T := by
+      have htMem : t ∈ (secondOrderDefectGraph G).neighborFinset r := by
+        simpa using hrt
+      rwa [hDP r hrP] at htMem
+    have hsR : s ∈ R := hTsub hsT
+    have hDsub : (secondOrderDefectGraph G).neighborFinset s ⊆ R := by
+      rw [hDT s hsT]
+      exact hPsub
+    have hrow := internal_G_union_defect_neighbors_eq_erase_of_closed_cubic_antipodal_six
+      G hDeq R hRcard hsR hDsub (by rw [hDT s hsT, hPcard])
+        (hprofile.2 s hsR).1
+    have htErase : t ∈ R.erase s := Finset.mem_erase.mpr ⟨hst.symm, hTsub htT⟩
+    rw [← hrow] at htErase
+    rcases Finset.mem_union.mp htErase with htG | htD
+    · exact (G.mem_neighborFinset s t).mp (Finset.mem_inter.mp htG).1
+    · rw [hDT s hsT] at htD
+      exact (Finset.disjoint_left.mp hdPT htD htT).elim
+  · have hsP : s ∈ P := by
+      have hsMem : s ∈ (secondOrderDefectGraph G).neighborFinset r := by
+        simpa using hrs
+      rwa [hDT r hrT] at hsMem
+    have htP : t ∈ P := by
+      have htMem : t ∈ (secondOrderDefectGraph G).neighborFinset r := by
+        simpa using hrt
+      rwa [hDT r hrT] at htMem
+    have hsR : s ∈ R := hPsub hsP
+    have hDsub : (secondOrderDefectGraph G).neighborFinset s ⊆ R := by
+      rw [hDP s hsP]
+      exact hTsub
+    have hrow := internal_G_union_defect_neighbors_eq_erase_of_closed_cubic_antipodal_six
+      G hDeq R hRcard hsR hDsub (by rw [hDP s hsP, hTcard])
+        (hprofile.2 s hsR).1
+    have htErase : t ∈ R.erase s := Finset.mem_erase.mpr ⟨hst.symm, hPsub htP⟩
+    rw [← hrow] at htErase
+    rcases Finset.mem_union.mp htErase with htG | htD
+    · exact (G.mem_neighborFinset s t).mp (Finset.mem_inter.mp htG).1
+    · rw [hDP s hsP] at htD
+      exact (Finset.disjoint_left.mp hdPT htP htD).elim
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
