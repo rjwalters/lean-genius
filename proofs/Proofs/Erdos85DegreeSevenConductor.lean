@@ -3,6 +3,7 @@ import Proofs.Erdos85ER7DeletionBand
 import Proofs.Erdos85OddPlateauExcessAtLeastThree
 import Proofs.Erdos85CofinalLowerBound
 import Proofs.Erdos85DegreeSevenER8DeletionBand
+import Proofs.Erdos85DegreeSevenER9DeletionBand
 
 /-!
 # A sharp finite conductor for degree seven
@@ -405,6 +406,136 @@ theorem degreeSeven_witness_of_oneFiftyNine_le
     exact C4FreeMinDegreeWitness.add (by omega)
       (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
 
+private theorem degreeSeven_add2
+    {a b : ℕ} (ha : C4FreeMinDegreeWitness a 7)
+    (hb : C4FreeMinDegreeWitness b 7) (ha0 : 0 < a) (hb0 : 0 < b) :
+    C4FreeMinDegreeWitness (a + b) 7 :=
+  C4FreeMinDegreeWitness.add ha0 hb0 ha hb
+
+/-- Exact 48-residue band beginning at conductor 111. -/
+theorem degreeSeven_witness_oneEleven_add
+    (j : ℕ) (hj : j ≤ 47) : C4FreeMinDegreeWitness (111 + j) 7 := by
+  interval_cases j <;> norm_num
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 0 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 1 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 2 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 3 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 4 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 5 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 6 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 7 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 8 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 9 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 10 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 3 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 4 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 5 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 6 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 7 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 8 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 9 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 0 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 1 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 2 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 3 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 4 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 5 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 6 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 7 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 8 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 9 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 boza48_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 10 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 3 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 4 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 5 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 6 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 7 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 8 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 9 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_delete1_degreeSeven_witness
+      (degreeSeven_witness_eightyOne_add 10 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 er7_degreeSeven_witness er9_degreeSeven_witness
+      (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 5 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 6 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 7 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 8 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 9 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 0 (by norm_num))
+      (degreeSeven_witness_eightyOne_add 10 (by norm_num)) (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 1 (by norm_num))
+      er9_degreeSeven_witness (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 2 (by norm_num))
+      er9_degreeSeven_witness (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 3 (by norm_num))
+      er9_degreeSeven_witness (by norm_num) (by norm_num)
+  · exact degreeSeven_add2 (degreeSeven_witness_sixtyThree_add 4 (by norm_num))
+      er9_degreeSeven_witness (by norm_num) (by norm_num)
+
+theorem degreeSeven_witness_of_oneEleven_le
+    {n : ℕ} (hn : 111 ≤ n) : C4FreeMinDegreeWitness n 7 := by
+  let j := (n - 111) % 48
+  let k := (n - 111) / 48
+  have hj : j ≤ 47 := by
+    dsimp [j]
+    have := Nat.mod_lt (n - 111) (by norm_num : 0 < 48)
+    omega
+  have hdecomp : n = (111 + j) + k * 48 := by
+    have hdiv := Nat.mod_add_div (n - 111) 48
+    dsimp [j, k]
+    omega
+  have hband := degreeSeven_witness_oneEleven_add j hj
+  by_cases hk : k = 0
+  · rw [hdecomp, hk]
+    simpa using hband
+  · have hcopies : C4FreeMinDegreeWitness (k * 48) 7 := by
+      simpa [Nat.mul_comm] using
+        boza48_degreeSeven_witness.nsmul (by norm_num) (Nat.pos_of_ne_zero hk)
+    rw [hdecomp]
+    exact C4FreeMinDegreeWitness.add (by omega)
+      (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
+
 /-- A degree-seven plateau core is confined below order 632. -/
 theorem C4PlateauCore.degreeSeven_order_lt_sixThirtyTwo
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 632 := by
@@ -438,13 +569,21 @@ theorem C4PlateauCore.degreeSeven_order_lt_oneFiftyNine
   rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
   exact hfree (hnext H hdec hmin)
 
+theorem C4PlateauCore.degreeSeven_order_lt_oneEleven
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 111 := by
+  by_contra hnot
+  have hw := degreeSeven_witness_of_oneEleven_le (n := m + 1) (by omega)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
 /-- Combining odd-excess rigidity below the square with the new conductor,
 the first degree-seven candidate is exactly order 48 and every other
 candidate lies in the finite interval 49--631. -/
 theorem C4PlateauCore.degreeSeven_final_order_window
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) :
-    m = 48 ∨ (49 ≤ m ∧ m < 159) := by
-  have hupper := hcore.degreeSeven_order_lt_oneFiftyNine hm
+    m = 48 ∨ (49 ≤ m ∧ m < 111) := by
+  have hupper := hcore.degreeSeven_order_lt_oneEleven hm
   by_cases h49 : m < 49
   · obtain ⟨e, _heOdd, heLower, hdata⟩ :=
       hcore.exists_odd_positiveExcessData_three_le hm (by norm_num)
