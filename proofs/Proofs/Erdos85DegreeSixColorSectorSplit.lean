@@ -2143,6 +2143,111 @@ theorem sum_le_card_add_six_mul_card_filter_one_lt
       rw [← Finset.mul_sum]
       simp [Nat.mul_comm]
 
+/-- A five-element positive support of total weight six, with a unique weight
+above one, consists of four weight-one elements and one weight-two element. -/
+theorem five_support_weight_six_structure
+    {C : Type*} [DecidableEq C] (S : Finset C) (q : C → ℕ)
+    (hcard : S.card = 5) (hpos : ∀ x ∈ S, 1 ≤ q x)
+    (hsum : (∑ x ∈ S, q x) = 6)
+    (hlarge : (S.filter fun x ↦ 1 < q x).card = 1) :
+    ∃ a t₁ t₂ t₃ t₄,
+      S = {a, t₁, t₂, t₃, t₄} ∧ q a = 2 ∧
+        q t₁ = 1 ∧ q t₂ = 1 ∧ q t₃ = 1 ∧ q t₄ = 1 := by
+  let N := S.filter fun x ↦ 1 < q x
+  obtain ⟨a, ha⟩ := Finset.card_eq_one.mp (by simpa [N] using hlarge)
+  have haN : a ∈ N := by
+    change a ∈ S.filter fun x ↦ 1 < q x
+    rw [ha]
+    simp
+  have haS : a ∈ S := (Finset.filter_subset _ _) haN
+  have hrestCard : (S.erase a).card = 4 := by
+    rw [Finset.card_erase_of_mem haS, hcard]
+  obtain ⟨t₁, t₂, t₃, t₄, ht₁t₂, ht₁t₃, ht₁t₄, ht₂t₃, ht₂t₄,
+      ht₃t₄, hrest⟩ := Finset.card_eq_four.mp hrestCard
+  have hti : ∀ t ∈ S.erase a, q t = 1 := by
+    intro t ht
+    have htS := (Finset.erase_subset _ _) ht
+    have htne : t ≠ a := (Finset.mem_erase.mp ht).1
+    have htNotN : t ∉ N := by
+      change t ∉ S.filter fun x ↦ 1 < q x
+      rw [ha]
+      simpa [htne]
+    have hnle : ¬ 1 < q t := by
+      intro hlt
+      exact htNotN (by simp [N, htS, hlt])
+    have hlo := hpos t htS
+    omega
+  have ht₁ : q t₁ = 1 := hti t₁ (by rw [hrest]; simp)
+  have ht₂ : q t₂ = 1 := hti t₂ (by rw [hrest]; simp)
+  have ht₃ : q t₃ = 1 := hti t₃ (by rw [hrest]; simp)
+  have ht₄ : q t₄ = 1 := hti t₄ (by rw [hrest]; simp)
+  have hasplit := Finset.sum_erase_add S q haS
+  rw [hsum, hrest, Finset.sum_insert (by simp [ht₁t₂, ht₁t₃, ht₁t₄]),
+    Finset.sum_insert (by simp [ht₂t₃, ht₂t₄]),
+    Finset.sum_insert (by simp [ht₃t₄]), Finset.sum_singleton,
+    ht₁, ht₂, ht₃, ht₄] at hasplit
+  have ha2 : q a = 2 := by omega
+  refine ⟨a, t₁, t₂, t₃, t₄, ?_, ha2, ht₁, ht₂, ht₃, ht₄⟩
+  rw [← Finset.insert_erase haS, hrest]
+
+/-- A three-element support of total order twelve and minimum order three is
+either `3,4,5` (when exactly two entries exceed three) or `4,4,4` (when all
+three do). -/
+theorem three_support_order_twelve_structure
+    {C : Type*} [DecidableEq C] (S : Finset C) (size : C → ℕ)
+    (hcard : S.card = 3) (hmin : ∀ x ∈ S, 3 ≤ size x)
+    (hsum : (∑ x ∈ S, size x) = 12)
+    (hlarge : (S.filter fun x ↦ 3 < size x).card = 2 ∨
+      (S.filter fun x ↦ 3 < size x).card = 3) :
+    (∃ t a b, S = {t, a, b} ∧ size t = 3 ∧ size a = 4 ∧ size b = 5) ∨
+      (∃ a b d, S = {a, b, d} ∧ size a = 4 ∧ size b = 4 ∧ size d = 4) := by
+  obtain ⟨x, y, z, hxy, hxz, hyz, hS⟩ := Finset.card_eq_three.mp hcard
+  have hxmem : x ∈ S := by rw [hS]; simp
+  have hymem : y ∈ S := by rw [hS]; simp
+  have hzmem : z ∈ S := by rw [hS]; simp
+  have hxlo := hmin x hxmem
+  have hylo := hmin y hymem
+  have hzlo := hmin z hzmem
+  rw [hS, Finset.sum_insert (by simp [hxy, hxz]),
+    Finset.sum_insert (by simp [hyz]), Finset.sum_singleton] at hsum
+  have hxup : size x ≤ 6 := by omega
+  have hyup : size y ≤ 6 := by omega
+  have hzup : size z ≤ 6 := by omega
+  have hshape :
+      (size x = 3 ∧ size y = 4 ∧ size z = 5) ∨
+      (size x = 3 ∧ size y = 5 ∧ size z = 4) ∨
+      (size x = 4 ∧ size y = 3 ∧ size z = 5) ∨
+      (size x = 5 ∧ size y = 3 ∧ size z = 4) ∨
+      (size x = 4 ∧ size y = 5 ∧ size z = 3) ∨
+      (size x = 5 ∧ size y = 4 ∧ size z = 3) ∨
+      (size x = 4 ∧ size y = 4 ∧ size z = 4) := by
+    rcases hlarge with htwo | hthree
+    · rw [hS] at htwo
+      simp only [Finset.filter_insert, Finset.filter_singleton] at htwo
+      interval_cases size x <;> interval_cases size y <;> interval_cases size z
+      all_goals norm_num at hsum
+      all_goals try norm_num [hxy, hxz, hyz] at htwo
+      all_goals norm_num
+    · rw [hS] at hthree
+      simp only [Finset.filter_insert, Finset.filter_singleton] at hthree
+      interval_cases size x <;> interval_cases size y <;> interval_cases size z
+      all_goals norm_num at hsum
+      all_goals try norm_num [hxy, hxz, hyz] at hthree
+      all_goals norm_num
+  rcases hshape with h | h | h | h | h | h | h
+  · exact Or.inl ⟨x, y, z, hS, h.1, h.2.1, h.2.2⟩
+  · exact Or.inl ⟨x, z, y, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
+      h.1, h.2.2, h.2.1⟩
+  · exact Or.inl ⟨y, x, z, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
+      h.2.1, h.1, h.2.2⟩
+  · exact Or.inl ⟨y, z, x, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
+      h.2.1, h.2.2, h.1⟩
+  · exact Or.inl ⟨z, x, y, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
+      h.2.2, h.1, h.2.1⟩
+  · exact Or.inl ⟨z, y, x, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
+      h.2.2, h.2.1, h.1⟩
+  · exact Or.inr ⟨x, y, z, hS, h.1, h.2.1, h.2.2⟩
+
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
 quotient multiplicity by one. -/
