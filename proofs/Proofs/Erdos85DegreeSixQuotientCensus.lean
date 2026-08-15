@@ -540,6 +540,45 @@ theorem degreeSixQuotient_orderThree_support_two_weight_cases_nat
     rw [hb] at hcross
     omega
 
+/-- Once the two positive Model5 weights are `3+3`, name the two invisible
+components.  Each invisible order is a threefold base-started two-step sum,
+while their total order is twelve, leaving exactly `3+9`, `6+6`, or `9+3`. -/
+theorem degreeSixQuotient_model5_invisible_order_cases_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b r t : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (hR : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t})
+    (hab : a ≠ b) (hrt : r ≠ t)
+    (hca : q c a = 3) (hcb : q c b = 3) :
+    (s r = 3 ∧ s t = 9) ∨ (s r = 6 ∧ s t = 6) ∨
+      (s r = 9 ∧ s t = 3) := by
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c hspos htotal hrow hbal hsq hc3 hcc).2
+  rw [hR] at hmass
+  simp [hrt] at hmass
+  have hrMem : r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) := by rw [hR]; simp
+  have hrc : r ≠ c :=
+    (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrMem).1).1
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  have hsqR := heqs.2 r
+  rw [hP] at hsqR
+  rw [Finset.sum_pair hab] at hsqR
+  simp [Ne.symm hrc, hca, hcb] at hsqR
+  have hrlo := hslo r
+  have htlo := hslo t
+  omega
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
