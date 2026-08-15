@@ -1039,6 +1039,67 @@ theorem excessOne_even_adjacent_defect_twins_common_color_degree_zero
   · exact h03
   · omega
 
+/-- Quantitative form of the propagated all-antipodal diamond: adjacent
+defect twins force at least four vertices into the triangle-free-degree-zero
+sector (the twins and their two common defect neighbors). -/
+theorem excessOne_even_adjacent_defect_twins_four_le_colorDegreeZero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    4 ≤ (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 0).card := by
+  let C := (secondOrderDefectGraph G).neighborFinset a ∩
+    (secondOrderDefectGraph G).neighborFinset b
+  have hDreg : ∀ x, (secondOrderDefectGraph G).degree x = 3 := by
+    intro x
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) x
+  have hCcard : C.card = 2 := by
+    simpa [C] using adjacent_twins_commonNeighbor_card_eq_two_of_cubic
+      (secondOrderDefectGraph G) hDreg habD htwins
+  have haNotC : a ∉ C := by
+    intro ha
+    have haa := ((secondOrderDefectGraph G).mem_neighborFinset a a).mp
+      (Finset.mem_inter.mp ha).1
+    exact (secondOrderDefectGraph G).loopless.irrefl a haa
+  have hbNotC : b ∉ C := by
+    intro hb
+    have hbb := ((secondOrderDefectGraph G).mem_neighborFinset b b).mp
+      (Finset.mem_inter.mp hb).2
+    exact (secondOrderDefectGraph G).loopless.irrefl b hbb
+  let Q := insert a (insert b C)
+  have hQcard : Q.card = 4 := by
+    have hbNot : b ∉ C := hbNotC
+    have haNot : a ∉ insert b C := by
+      simp only [Finset.mem_insert]
+      exact fun h => h.elim (fun hab =>
+        (secondOrderDefectGraph G).ne_of_adj habD hab) haNotC
+    simp only [Q, Finset.card_insert_of_notMem haNot,
+      Finset.card_insert_of_notMem hbNot, hCcard]
+  have hzero := excessOne_even_adjacent_defect_twins_triangleFree_degree_zero
+    G hfree heven hreg hcard habD htwins
+  have hcommon :=
+    excessOne_even_adjacent_defect_twins_common_color_degree_zero
+      G hfree heven hreg hcard habD htwins
+  have hQsub : Q ⊆ Finset.univ.filter (fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 0) := by
+    intro v hv
+    simp only [Q, Finset.mem_insert] at hv
+    rcases hv with rfl | rfl | hv
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzero.1⟩
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzero.2⟩
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (hcommon v hv).1⟩
+  rw [← hQcard]
+  exact Finset.card_le_card hQsub
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
