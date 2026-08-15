@@ -99,6 +99,86 @@ theorem degreeSix_thirtyFour_colorOrder_mod_three
     G hfree (d := 6) (by norm_num) hreg (by omega)
   omega
 
+/-- If the order-34 triangle-free degree-two sector is empty, then the
+triangle-free color has degree zero at every vertex. -/
+theorem degreeSix_thirtyFour_triangleFree_degree_zero_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    ∀ x : V, (triangleFreeEdgeGraph G).degree x = 0 := by
+  have hempty : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2) = ∅ :=
+    Finset.card_eq_zero.mp hzero
+  intro x
+  rcases excessOne_even_triangleFree_degree_zero_or_two
+      G hfree (d := 6) (by norm_num) hreg (by omega) x with hx | hx
+  · exact hx
+  · have hxmem : x ∈ Finset.univ.filter (fun y : V =>
+        (triangleFreeEdgeGraph G).degree y = 2) := by simp [hx]
+    rw [hempty] at hxmem
+    exact (Finset.notMem_empty x hxmem).elim
+
+/-- In the pure antipodal branch at order 34, the second-order defect graph
+is exactly the antipodal graph: the triangle-free summand has no edges. -/
+theorem degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    secondOrderDefectGraph G = antipodalGraph G := by
+  have hTzero :=
+    degreeSix_thirtyFour_triangleFree_degree_zero_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  apply SimpleGraph.ext
+  funext x y
+  have hnotT : ¬ (triangleFreeEdgeGraph G).Adj x y := by
+    intro hxy
+    have hy : y ∈ (triangleFreeEdgeGraph G).neighborFinset x :=
+      ((triangleFreeEdgeGraph G).mem_neighborFinset x y).mpr hxy
+    have hempty : (triangleFreeEdgeGraph G).neighborFinset x = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, hTzero x]
+    rw [hempty] at hy
+    exact Finset.notMem_empty y hy
+  apply propext
+  constructor
+  · intro hxy
+    change (antipodalGraph G).Adj x y ∨
+      (triangleFreeEdgeGraph G).Adj x y at hxy
+    exact hxy.resolve_right hnotT
+  · intro hxy
+    change (antipodalGraph G).Adj x y ∨
+      (triangleFreeEdgeGraph G).Adj x y
+    exact Or.inl hxy
+
+/-- The pure antipodal branch has exactly 34 triangular 3-cliques. -/
+theorem degreeSix_thirtyFour_triangularCliqueCount_eq_thirtyFour_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    ((triangularEdgeGraph G).cliqueFinset 3).card = 34 := by
+  have hmass := six_mul_triangularCliqueCount_add_two_mul_colorOrder_excessOne
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  omega
+
 /-- Decode the mod-two defect-set equation when the set has even order. -/
 theorem oddDefectSet_neighborParity_of_even
     {V : Type*} [Fintype V] [DecidableEq V]
