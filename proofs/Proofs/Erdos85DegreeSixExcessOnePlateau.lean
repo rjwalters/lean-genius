@@ -5318,6 +5318,47 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_card_eq_six
   rw [Finset.card_sdiff_of_subset (Finset.subset_univ _),
     Finset.card_univ, hcard, hfoot]
 
+/-- In every color order the canonical six-vertex complement is closed under
+the cubic combined defect graph. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_cubic_residual_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    ∃ R : Finset V,
+      R = Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}) ∧
+      R.card = 6 ∧ ∀ r ∈ R,
+        (secondOrderDefectGraph G).neighborFinset r ⊆ R ∧
+        ((secondOrderDefectGraph G).neighborFinset r).card = 3 := by
+  let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+  have hRcard : R.card = 6 := by
+    simpa [R] using degreeSix_thirtyFour_closed_defectKFour_residual_card_eq_six
+      G hfree hreg hcard hab hax hbx hay hby hxy
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  refine ⟨R, rfl, hRcard, ?_⟩
+  intro r hr
+  refine ⟨?_, ?_⟩
+  · intro z hrz
+    have hrzD : (secondOrderDefectGraph G).Adj r z := by simpa using hrz
+    exact defectKFour_residual_closed G hfree hreg hDreg
+      hab hax hbx hay hby hxy (by simpa [R] using hr) hrzD
+  · rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg r]
+
 /-- Hence the nonzero triangle-free sector is disjoint from all four closed
 defect-`K₄` centers. -/
 theorem degreeSix_thirtyFour_closed_defectKFour_colorSector_disjoint_centers
