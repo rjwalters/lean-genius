@@ -229,6 +229,125 @@ theorem oddDefectSet_card_mem_nine_twentyFive_of_odd_of_cubic_thirtyFour
     oddDefectSet_card_le_twentyFive_of_odd_of_cubic_thirtyFour
       D W hcard hreg hW hparity⟩
 
+/-- On 34 vertices with cubic defect degree, the complement of an
+odd-cardinality defect-kernel set satisfies the same kernel law. -/
+theorem oddDefectSet_compl_parity_of_odd_of_cubic_thirtyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∀ v : V,
+      (if v ∈ Wᶜ then (1 : ZMod 2) else 0) + (Wᶜ.card : ZMod 2) +
+        (((D.neighborFinset v ∩ Wᶜ).card : ZMod 2)) = 0 := by
+  have hWle : W.card ≤ 34 := by
+    rw [← hcard]
+    exact Finset.card_le_univ W
+  have hScard : Wᶜ.card = 34 - W.card := by
+    simp [Finset.card_compl, hcard]
+  have hSodd : Odd Wᶜ.card := by
+    rcases hW with ⟨k, hk⟩
+    rw [hScard]
+    refine ⟨16 - k, ?_⟩
+    omega
+  have hScast : (Wᶜ.card : ZMod 2) = 1 :=
+    ZMod.natCast_eq_one_iff_odd.mpr hSodd
+  have hdecoded := oddDefectSet_neighborParity_of_odd D W hW hparity
+  intro v
+  have hinter : D.neighborFinset v ∩ Wᶜ = D.neighborFinset v \ W := by
+    ext x
+    simp
+  have hsplit : (D.neighborFinset v ∩ W).card +
+      (D.neighborFinset v ∩ Wᶜ).card = 3 := by
+    rw [hinter]
+    simpa [D.card_neighborFinset_eq_degree, hreg v] using
+      Finset.card_inter_add_card_sdiff (D.neighborFinset v) W
+  by_cases hv : v ∈ W
+  · have hvS : v ∉ Wᶜ := by simpa using hv
+    have hleftEven := hdecoded.1 v hv
+    have hrightOdd : Odd (D.neighborFinset v ∩ Wᶜ).card := by
+      rcases hleftEven with ⟨k, hk⟩
+      refine ⟨1 - k, ?_⟩
+      omega
+    have hrightCast :
+        (((D.neighborFinset v ∩ Wᶜ).card : ZMod 2)) = 1 :=
+      ZMod.natCast_eq_one_iff_odd.mpr hrightOdd
+    rw [if_neg hvS, hScast, hrightCast]
+    decide
+  · have hvS : v ∈ Wᶜ := by simpa using hv
+    have hleftOdd := hdecoded.2 v hv
+    have hrightEven : Even (D.neighborFinset v ∩ Wᶜ).card := by
+      rcases hleftOdd with ⟨k, hk⟩
+      refine ⟨1 - k, ?_⟩
+      omega
+    have hrightCast :
+        (((D.neighborFinset v ∩ Wᶜ).card : ZMod 2)) = 0 :=
+      ZMod.natCast_eq_zero_iff_even.mpr hrightEven
+    rw [if_pos hvS, hScast, hrightCast]
+    decide
+
+/-- Normalize an odd-cardinality kernel set by complementing if necessary.
+The resulting representative has one of the five possible odd sizes
+`9, 11, 13, 15, 17`. -/
+theorem exists_normalized_oddDefectSet_of_odd_of_cubic_thirtyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∃ S : Finset V, Odd S.card ∧ 9 ≤ S.card ∧ S.card ≤ 17 ∧
+      ∀ v : V,
+        (if v ∈ S then (1 : ZMod 2) else 0) + (S.card : ZMod 2) +
+          (((D.neighborFinset v ∩ S).card : ZMod 2)) = 0 := by
+  have hwindow :=
+    oddDefectSet_card_mem_nine_twentyFive_of_odd_of_cubic_thirtyFour
+      D W hcard hreg hW hparity
+  by_cases hsmall : W.card ≤ 17
+  · exact ⟨W, hW, hwindow.1, hsmall, hparity⟩
+  · have hWle : W.card ≤ 34 := by
+      rw [← hcard]
+      exact Finset.card_le_univ W
+    have hScard : Wᶜ.card = 34 - W.card := by
+      simp [Finset.card_compl, hcard]
+    have hSodd : Odd Wᶜ.card := by
+      rcases hW with ⟨k, hk⟩
+      rw [hScard]
+      refine ⟨16 - k, ?_⟩
+      omega
+    refine ⟨Wᶜ, hSodd, ?_, ?_,
+      oddDefectSet_compl_parity_of_odd_of_cubic_thirtyFour
+        D W hcard hreg hW hparity⟩
+    · rw [hScard]
+      omega
+    · rw [hScard]
+      omega
+
+/-- Finite size dispatcher for normalized odd defect-kernel sets. -/
+theorem exists_oddDefectSet_card_nine_or_eleven_or_thirteen_or_fifteen_or_seventeen
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∃ S : Finset V,
+      (S.card = 9 ∨ S.card = 11 ∨ S.card = 13 ∨
+        S.card = 15 ∨ S.card = 17) ∧
+      ∀ v : V,
+        (if v ∈ S then (1 : ZMod 2) else 0) + (S.card : ZMod 2) +
+          (((D.neighborFinset v ∩ S).card : ZMod 2)) = 0 := by
+  obtain ⟨S, hSodd, hSlo, hShi, hSparity⟩ :=
+    exists_normalized_oddDefectSet_of_odd_of_cubic_thirtyFour
+      D W hcard hreg hW hparity
+  refine ⟨S, ?_, hSparity⟩
+  rcases hSodd with ⟨k, hk⟩
+  omega
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
