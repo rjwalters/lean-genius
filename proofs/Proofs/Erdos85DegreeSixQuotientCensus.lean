@@ -398,6 +398,41 @@ theorem false_of_degreeSixQuotient_orderThree_invisible_card_one_nat
   have := hdiag r
   omega
 
+/-- Under the seven-component incidence hypotheses the singleton invisible
+branch is impossible, leaving only support splits `2+4`, `3+3`, or `4+2`. -/
+theorem degreeSixQuotient_model7_support_card_cases_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 7)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (P.card = 2 ∧ R.card = 4) ∨
+      (P.card = 3 ∧ R.card = 3) ∨
+      (P.card = 4 ∧ R.card = 2) := by
+  let P := Finset.univ.filter fun j ↦ 0 < q c j
+  let R := (Finset.univ.erase c) \ P
+  have hcases := degreeSixQuotient_orderThree_support_card_seven_nat
+    s q c hslo hcard htotal hrow hbal hsq hc3 hcc
+  change (P.card = 2 ∧ R.card = 4) ∨
+    (P.card = 3 ∧ R.card = 3) ∨
+    (P.card = 4 ∧ R.card = 2) ∨
+    (P.card = 5 ∧ R.card = 1) at hcases
+  rcases hcases with h | h | h | h
+  · exact Or.inl h
+  · exact Or.inr (Or.inl h)
+  · exact Or.inr (Or.inr h)
+  · exact (false_of_degreeSixQuotient_orderThree_invisible_card_one_nat
+      s q c (fun i ↦ by have := hslo i; omega) hrow hbal hsq hdiag hc3 hcc
+        (by simpa [P, R] using h.2)).elim
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
