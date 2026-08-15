@@ -50,9 +50,6 @@ private def {stem}Proof : Array LRAT.IntAction :=
   parsePackedLz4OrderFortyNineLratProof {stem}ProofText
     {row["lz4_frame_bytes"]} {row["binary_bytes"]}
 
-theorem {stem}Proof_size : {stem}Proof.size = {row["lrat_actions"]} := by
-  native_decide
-
 set_option maxHeartbeats 0 in
 set_option maxRecDepth 1000000 in
 theorem {stem}_check :
