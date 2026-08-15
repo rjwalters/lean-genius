@@ -396,4 +396,66 @@ theorem sevenHighT0CubeEmitVal_semanticSound
     · exact h.bounded candidate hc
     · exact hclauseBound
 
+/-- Semantic wrapper for the exact PySAT equality block used by each degree
+constraint.  Named IDs are unchanged; only the fresh counter interval and its
+canonical valuation are added. -/
+def sevenHighT0CubeEqualsBlock (vars : Array Int) (bound : Nat)
+    (st : SevenHighT0CubeGenState) : SevenHighT0CubeGenState :=
+  let out := seqCounterEquals st.top vars bound
+  { st with top := out.top, clauses := st.clauses ++ out.clauses }
+
+def sevenHighT0CubeEqualsBlockVal (vars : Array Int)
+    (x : Fin vars.size → Bool) (bound : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  (sevenHighT0CubeEqualsBlock vars bound acc.1,
+    seqCounterEqualsVal acc.2 acc.1.top vars x bound)
+
+theorem sevenHighT0CubeIdsSound_equalsBlock
+    {st : SevenHighT0CubeGenState} (h : SevenHighT0CubeIdsSound st)
+    (vars : Array Int) (bound : Nat) :
+    SevenHighT0CubeIdsSound
+      (sevenHighT0CubeEqualsBlock vars bound st) := by
+  constructor
+  · exact h.keys_nodup
+  · exact h.ids_nodup
+  · intro entry hentry
+    have hb := h.id_bounds entry hentry
+    exact ⟨hb.1, hb.2.trans (by
+      simpa [sevenHighT0CubeEqualsBlock] using
+        seqCounterEquals_top_bound st.top vars bound)⟩
+
+theorem sevenHighT0CubeEqualsBlockVal_reifies
+    (adj : Fin 49 → Fin 49 → Bool)
+    {st : SevenHighT0CubeGenState} {val : DimacsValuation}
+    (hsound : SevenHighT0CubeIdsSound st)
+    (hreifies : SevenHighT0CubeNamedValReifies adj st val)
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat) :
+    SevenHighT0CubeNamedValReifies adj
+      (sevenHighT0CubeEqualsBlockVal vars x bound (st, val)).1
+      (sevenHighT0CubeEqualsBlockVal vars x bound (st, val)).2 := by
+  intro atom id hmem
+  have hid := (hsound.id_bounds (atom, id) hmem).2
+  exact (seqCounterEqualsVal_input val st.top vars x bound id hid).trans
+    (hreifies atom id hmem)
+
+theorem sevenHighT0CubeEqualsBlockVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool)
+    {st : SevenHighT0CubeGenState} {val : DimacsValuation}
+    (h : SevenHighT0CubeSemanticSound adj (st, val))
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat)
+    (hinput : SeqCounterInputReifies val st.top vars x)
+    (hcount : seqPrefixTrue x vars.size = bound) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeEqualsBlockVal vars x bound (st, val)) := by
+  let hblock := seqCounterEqualsVal_formulaSatisfied_append
+    val st.top st.clauses vars x h.satisfied h.bounded hinput bound hcount
+  constructor
+  · exact sevenHighT0CubeIdsSound_equalsBlock h.ids vars bound
+  · exact sevenHighT0CubeEqualsBlockVal_reifies adj h.ids h.named
+      vars x bound
+  · simpa [sevenHighT0CubeEqualsBlockVal,
+      sevenHighT0CubeEqualsBlock] using hblock.1
+  · simpa [sevenHighT0CubeEqualsBlockVal,
+      sevenHighT0CubeEqualsBlock] using hblock.2.1
+
 end Erdos85
