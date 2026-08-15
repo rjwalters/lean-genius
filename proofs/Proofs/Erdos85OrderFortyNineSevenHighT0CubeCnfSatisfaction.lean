@@ -1196,4 +1196,113 @@ theorem sevenHighT0CubeCommonPairStepVal_semanticSound
   exact sevenHighT0CubeEmitVal_semanticSound adj hs common.1
     hpositive hbounded
 
+def sevenHighT0CubeC4WitnessPairVal
+    (adj : Fin 49 → Fin 49 → Bool) (i j w w' : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let (iw, acc) := sevenHighT0CubeEdgeIdVal adj i w acc
+  let (jw, acc) := sevenHighT0CubeEdgeIdVal adj j w acc
+  let (iw', acc) := sevenHighT0CubeEdgeIdVal adj i w' acc
+  let (jw', acc) := sevenHighT0CubeEdgeIdVal adj j w' acc
+  sevenHighT0CubeEmitVal
+    [-(iw : Int), -(jw : Int), -(iw' : Int), -(jw' : Int)] acc
+
+def sevenHighT0CubeC4WitnessPair (i j w w' : Nat)
+    (st : SevenHighT0CubeGenState) : SevenHighT0CubeGenState :=
+  let (iw, st) := sevenHighT0CubeEdgeId i w st
+  let (jw, st) := sevenHighT0CubeEdgeId j w st
+  let (iw', st) := sevenHighT0CubeEdgeId i w' st
+  let (jw', st) := sevenHighT0CubeEdgeId j w' st
+  sevenHighT0CubeEmit
+    [-(iw : Int), -(jw : Int), -(iw' : Int), -(jw' : Int)] st
+
+theorem sevenHighT0CubeC4WitnessPairVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (i j w w' : Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeC4WitnessPairVal adj i j w w' acc).1 =
+      sevenHighT0CubeC4WitnessPair i j w w' acc.1 := by
+  rcases acc with ⟨st, val⟩
+  simp only [sevenHighT0CubeC4WitnessPairVal,
+    sevenHighT0CubeC4WitnessPair, sevenHighT0CubeEdgeIdVal]
+  generalize h0 : sevenHighT0CubeEdgeId i w st = out0
+  rcases out0 with ⟨id0, st0⟩
+  generalize h1 : sevenHighT0CubeEdgeId j w st0 = out1
+  rcases out1 with ⟨id1, st1⟩
+  generalize h2 : sevenHighT0CubeEdgeId i w' st1 = out2
+  rcases out2 with ⟨id2, st2⟩
+  generalize h3 : sevenHighT0CubeEdgeId j w' st2 = out3
+  rcases out3 with ⟨id3, st3⟩
+  have h0' : sevenHighT0CubeAtomId (.edge (min i w) (max i w)) st =
+      (id0, st0) := h0
+  have h1' : sevenHighT0CubeAtomId (.edge (min j w) (max j w)) st0 =
+      (id1, st1) := h1
+  have h2' : sevenHighT0CubeAtomId (.edge (min i w') (max i w')) st1 =
+      (id2, st2) := h2
+  have h3' : sevenHighT0CubeAtomId (.edge (min j w') (max j w')) st2 =
+      (id3, st3) := h3
+  simp [sevenHighT0CubeAtomIdVal, h0', h1', h2', h3',
+    sevenHighT0CubeEmitVal]
+
+theorem sevenHighT0CubeC4WitnessPairVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (i j w w' : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hnot : ¬(
+      sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true ∧
+      sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true ∧
+      sevenHighT0CubeAtomValue adj (.edge (min i w') (max i w')) = true ∧
+      sevenHighT0CubeAtomValue adj (.edge (min j w') (max j w')) = true)) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeC4WitnessPairVal adj i j w w' acc) := by
+  let atom0 := SevenHighT0CubeAtom.edge (min i w) (max i w)
+  let atom1 := SevenHighT0CubeAtom.edge (min j w) (max j w)
+  let atom2 := SevenHighT0CubeAtom.edge (min i w') (max i w')
+  let atom3 := SevenHighT0CubeAtom.edge (min j w') (max j w')
+  let a0 := sevenHighT0CubeAtomIdVal adj atom0 acc
+  let a1 := sevenHighT0CubeAtomIdVal adj atom1 a0.2
+  let a2 := sevenHighT0CubeAtomIdVal adj atom2 a1.2
+  let a3 := sevenHighT0CubeAtomIdVal adj atom3 a2.2
+  have hs0 := sevenHighT0CubeAtomIdVal_semanticSound adj hacc atom0
+  have hs1 := sevenHighT0CubeAtomIdVal_semanticSound adj hs0 atom1
+  have hs2 := sevenHighT0CubeAtomIdVal_semanticSound adj hs1 atom2
+  have hs3 := sevenHighT0CubeAtomIdVal_semanticSound adj hs2 atom3
+  have hm0a0 : (atom0, a0.1) ∈ a0.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj atom0 acc.1 acc.2).1
+  have hm0a1 : (atom0, a0.1) ∈ a1.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom1 a0.2.1 a0.2.2 hm0a0
+  have hm0a2 : (atom0, a0.1) ∈ a2.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom2 a1.2.1 a1.2.2 hm0a1
+  have hm0 : (atom0, a0.1) ∈ a3.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom3 a2.2.1 a2.2.2 hm0a2
+  have hm1a1 : (atom1, a1.1) ∈ a1.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj atom1 a0.2.1 a0.2.2).1
+  have hm1a2 : (atom1, a1.1) ∈ a2.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom2 a1.2.1 a1.2.2 hm1a1
+  have hm1 : (atom1, a1.1) ∈ a3.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom3 a2.2.1 a2.2.2 hm1a2
+  have hm2a2 : (atom2, a2.1) ∈ a2.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj atom2 a1.2.1 a1.2.2).1
+  have hm2 : (atom2, a2.1) ∈ a3.2.1.ids :=
+    sevenHighT0CubeAtomIdVal_old_mem adj atom3 a2.2.1 a2.2.2 hm2a2
+  have hm3 : (atom3, a3.1) ∈ a3.2.1.ids :=
+    (sevenHighT0CubeAtomIdVal_result adj atom3 a2.2.1 a2.2.2).1
+  have hv0 := hs3.named _ _ hm0
+  have hv1 := hs3.named _ _ hm1
+  have hv2 := hs3.named _ _ hm2
+  have hv3 := hs3.named _ _ hm3
+  have hb0 := (hs3.ids.id_bounds _ hm0)
+  have hb1 := (hs3.ids.id_bounds _ hm1)
+  have hb2 := (hs3.ids.id_bounds _ hm2)
+  have hb3 := (hs3.ids.id_bounds _ hm3)
+  unfold sevenHighT0CubeC4WitnessPairVal
+  apply sevenHighT0CubeEmitVal_semanticSound adj hs3
+  · apply sevenHighT0CubeNegativeFour_satisfied
+    intro hall
+    apply hnot
+    exact ⟨hv0.symm.trans hall.1,
+      hv1.symm.trans hall.2.1,
+      hv2.symm.trans hall.2.2.1,
+      hv3.symm.trans hall.2.2.2⟩
+  · exact sevenHighT0CubeNegativeFour_bounded
+      hb0.2 hb1.2 hb2.2 hb3.2
+
 end Erdos85
