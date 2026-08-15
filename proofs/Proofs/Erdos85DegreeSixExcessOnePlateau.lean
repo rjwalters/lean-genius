@@ -2062,6 +2062,80 @@ theorem no_adj_of_defect_adj_of_zero_block_contact
       (fun z => G.Adj u z)).card) := Finset.card_pos.mpr ⟨w, hwMem⟩
   omega
 
+/-- For an isolated cubic defect `K₄`, being an outside vertex with zero
+original-graph contact to the four centers is preserved across every defect
+edge. -/
+theorem defectKFour_zero_contact_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (hregD : ∀ z, (secondOrderDefectGraph G).degree z = 3)
+    {a b x y v w : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hvOutside : v ∉ ({a, b, x, y} : Finset V))
+    (hvZero : ∀ z ∈ ({a, b, x, y} : Finset V), ¬ G.Adj z v)
+    (hvwD : (secondOrderDefectGraph G).Adj v w) :
+    w ∉ ({a, b, x, y} : Finset V) ∧
+      ∀ z ∈ ({a, b, x, y} : Finset V), ¬ G.Adj z w := by
+  let D := secondOrderDefectGraph G
+  have hK := cubic_defectKFour_neighborFinsets D hregD
+    hab hax hbx hay hby hxy
+  rcases hK with ⟨hKa, hKb, hKx, hKy⟩
+  have hwOutside : w ∉ ({a, b, x, y} : Finset V) := by
+    intro hw
+    have hvInside : v ∈ ({a, b, x, y} : Finset V) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with hwa | hwb | hwx | hwy
+      · have hav : D.Adj a v := by simpa [hwa] using hvwD.symm
+        have hv := (D.mem_neighborFinset a v).mpr hav
+        rw [hKa] at hv
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hv ⊢
+        aesop
+      · have hbv : D.Adj b v := by simpa [hwb] using hvwD.symm
+        have hv := (D.mem_neighborFinset b v).mpr hbv
+        rw [hKb] at hv
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hv ⊢
+        aesop
+      · have hxv : D.Adj x v := by simpa [hwx] using hvwD.symm
+        have hv := (D.mem_neighborFinset x v).mpr hxv
+        rw [hKx] at hv
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hv ⊢
+        aesop
+      · have hyv : D.Adj y v := by simpa [hwy] using hvwD.symm
+        have hv := (D.mem_neighborFinset y v).mpr hyv
+        rw [hKy] at hv
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hv ⊢
+        aesop
+    exact hvOutside hvInside
+  refine ⟨hwOutside, ?_⟩
+  have haZero : ¬ G.Adj a w :=
+    no_adj_of_defect_adj_of_zero_block_contact G hfree hreg
+      {a, b, x, y} (by rw [hKa]; simp) hvZero hvwD
+  have hbZero : ¬ G.Adj b w :=
+    no_adj_of_defect_adj_of_zero_block_contact G hfree hreg
+      {a, b, x, y} (by rw [hKb]; simp) hvZero hvwD
+  have hxZero : ¬ G.Adj x w :=
+    no_adj_of_defect_adj_of_zero_block_contact G hfree hreg
+      {a, b, x, y} (by rw [hKx]; simp) hvZero hvwD
+  have hyZero : ¬ G.Adj y w :=
+    no_adj_of_defect_adj_of_zero_block_contact G hfree hreg
+      {a, b, x, y} (by rw [hKy]; simp) hvZero hvwD
+  intro z hz
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+  rcases hz with hza | hzb | hzx | hzy
+  · simpa [hza] using haZero
+  · simpa [hzb] using hbZero
+  · simpa [hzx] using hxZero
+  · simpa [hzy] using hyZero
+
 /-- In the pure antipodal branch, a closed defect `K₄` and its four
 pairwise-disjoint degree-six neighborhoods occupy exactly 28 vertices. -/
 theorem degreeSix_thirtyFour_antipodal_defectKFour_centered_footprint_card_eq_twentyEight
@@ -2174,6 +2248,104 @@ theorem degreeSix_thirtyFour_antipodal_defectKFour_exists_residual_six
     rw [Finset.card_sdiff_of_subset (Finset.subset_univ U),
       Finset.card_univ, hcard, hUcard]
   exact ⟨R, hRcard, rfl⟩
+
+/-- The six vertices outside a closed defect `K₄` and its four original
+neighborhoods form a defect-closed set. -/
+theorem defectKFour_residual_closed
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (hregD : ∀ z, (secondOrderDefectGraph G).degree z = 3)
+    {a b x y v w : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hv : v ∈ Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hvwD : (secondOrderDefectGraph G).Adj v w) :
+    w ∈ Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}) := by
+  have hvNotU := (Finset.mem_sdiff.mp hv).2
+  have hvOutside : v ∉ ({a, b, x, y} : Finset V) := by
+    intro hvQ
+    apply hvNotU
+    exact Finset.mem_union_right _ hvQ
+  have hvZero : ∀ z ∈ ({a, b, x, y} : Finset V), ¬ G.Adj z v := by
+    intro z hzQ hzv
+    apply hvNotU
+    simp only [Finset.mem_union, G.mem_neighborFinset,
+      Finset.mem_insert, Finset.mem_singleton] at hzQ ⊢
+    aesop
+  have hclosed := defectKFour_zero_contact_closed G hfree hreg hregD
+    hab hax hbx hay hby hxy hvOutside hvZero hvwD
+  rcases hclosed with ⟨hwOutside, hwZero⟩
+  apply Finset.mem_sdiff.mpr
+  refine ⟨Finset.mem_univ w, ?_⟩
+  intro hwU
+  simp only [Finset.mem_union, G.mem_neighborFinset,
+    Finset.mem_insert, Finset.mem_singleton] at hwU
+  have haZero := hwZero a (by simp)
+  have hbZero := hwZero b (by simp)
+  have hxZero := hwZero x (by simp)
+  have hyZero := hwZero y (by simp)
+  have hwNeA : w ≠ a := by
+    intro hwa
+    apply hwOutside
+    simp [hwa]
+  have hwNeB : w ≠ b := by
+    intro hwb
+    apply hwOutside
+    simp [hwb]
+  have hwNeX : w ≠ x := by
+    intro hwx
+    apply hwOutside
+    simp [hwx]
+  have hwNeY : w ≠ y := by
+    intro hwy
+    apply hwOutside
+    simp [hwy]
+  aesop
+
+/-- Plateau-facing closed-residual package: in the pure antipodal closed
+defect-`K₄` branch there is an exact six-element finset closed under all
+defect neighbors. -/
+theorem degreeSix_thirtyFour_antipodal_defectKFour_exists_closed_residual_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    ∃ R : Finset V, R.card = 6 ∧
+      ∀ v ∈ R, ∀ w, (secondOrderDefectGraph G).Adj v w → w ∈ R := by
+  obtain ⟨R, hRcard, hReq⟩ :=
+    degreeSix_thirtyFour_antipodal_defectKFour_exists_residual_six
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  refine ⟨R, hRcard, ?_⟩
+  intro v hv w hvw
+  rw [hReq] at hv ⊢
+  exact defectKFour_residual_closed G hfree hreg hDreg
+    hab hax hbx hay hby hxy hv hvw
 
 /-- In the pure antipodal branch the two twins themselves lie outside the
 four-neighborhood footprint.  Adding them to the preceding 23-vertex union
