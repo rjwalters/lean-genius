@@ -55,4 +55,30 @@ theorem C4PlateauCore.degreeSix_order_eq_thirtyTwo_or_thirtyFour_or_thirtyFive
       simpa [hm33] using hcore
     omega
 
+/-- A degree-six plateau core at order 34 supplies the exact excess-one
+operator package, with no remaining cardinality ambiguity. -/
+theorem C4PlateauCore.degreeSix_thirtyFour_positiveExcessOne
+    (hcore : C4PlateauCore 34 6) :
+    PositiveExcessPlateauData 34 6 1 := by
+  rcases hcore.firstOrder_or_positiveExcessData
+      (by norm_num) (by norm_num) (by norm_num) with
+    hfirst | ⟨e, hdata⟩
+  · norm_num at hfirst
+  · have hme := hdata.1
+    have he : e = 1 := by omega
+    simpa [he] using hdata
+
+/-- A degree-six plateau core at order 35 supplies the exact excess-two
+operator package, with no remaining cardinality ambiguity. -/
+theorem C4PlateauCore.degreeSix_thirtyFive_positiveExcessTwo
+    (hcore : C4PlateauCore 35 6) :
+    PositiveExcessPlateauData 35 6 2 := by
+  rcases hcore.firstOrder_or_positiveExcessData
+      (by norm_num) (by norm_num) (by norm_num) with
+    hfirst | ⟨e, hdata⟩
+  · norm_num at hfirst
+  · have hme := hdata.1
+    have he : e = 2 := by omega
+    simpa [he] using hdata
+
 end Erdos85
