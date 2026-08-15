@@ -295,6 +295,46 @@ theorem degreeSixQuotient_orderThree_support_card_seven_nat
     (P.card = 5 ∧ R.card = 1)
   omega
 
+/-- A Model5 base triangle cannot have one-element positive support.  The
+unique target would have order eighteen and forward quotient six; its
+off-diagonal square equation would then force diagonal quotient three. -/
+theorem false_of_degreeSixQuotient_orderThree_support_card_one_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 1) : False := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hPcard' : P.card = 1 := by simpa [P] using hPcard
+  obtain ⟨a, hPa⟩ := Finset.card_eq_one.mp hPcard'
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c hspos htotal hrow hbal hsq hc3 hcc).1
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, s j) = 18 at hmass
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hac : a ≠ c := by
+    intro h
+    subst a
+    have hcP : c ∈ P := by rw [hPa]; simp
+    exact (by simpa [P, hcc] using hcP)
+  rw [hPa] at hmass heqs
+  simp only [Finset.sum_singleton] at hmass heqs
+  have hqca : q c a = 6 := heqs.1
+  have hsqA := heqs.2 a
+  simp [Ne.symm hac] at hsqA
+  rw [hqca, hmass] at hsqA
+  have hdiagA := hdiag a
+  omega
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
