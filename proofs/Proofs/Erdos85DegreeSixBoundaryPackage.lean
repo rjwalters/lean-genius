@@ -1,5 +1,6 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85PlateauExcessStructure
+import Proofs.Erdos85PositiveExcessLocalParity
 
 /-!
 # Degree-six boundary package
@@ -80,5 +81,45 @@ theorem C4PlateauCore.degreeSix_thirtyFive_positiveExcessTwo
   · have hme := hdata.1
     have he : e = 2 := by omega
     simpa [he] using hdata
+
+/-- Concrete color-sector interface for a hypothetical order-35 degree-six
+plateau core.  Its four-regular defect graph splits locally only as
+`(T,C) = (0,4)`, `(2,2)`, or `(4,0)`, and the first mixed trace counts the
+two nonzero triangle-free sectors with weights two and four. -/
+theorem C4PlateauCore.degreeSix_thirtyFive_exists_excessTwo_colorData
+    (hcore : C4PlateauCore 35 6) :
+    ∃ (G : SimpleGraph (Fin 35)) (_ : DecidableRel G.Adj)
+        (_ : DecidableRel (antipodalGraph G).Adj)
+        (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+      ¬ containsC4 (Fin 35) G ∧
+      (∀ x, G.degree x = 6) ∧
+      (∀ x, (secondOrderDefectGraph G).degree x = 4) ∧
+      (∀ x,
+        ((triangleFreeEdgeGraph G).degree x = 0 ∧
+            (antipodalGraph G).degree x = 4) ∨
+          ((triangleFreeEdgeGraph G).degree x = 2 ∧
+            (antipodalGraph G).degree x = 2) ∨
+          ((triangleFreeEdgeGraph G).degree x = 4 ∧
+            (antipodalGraph G).degree x = 0)) ∧
+      Matrix.trace (G.adjMatrix ℤ *
+          (secondOrderDefectGraph G).adjMatrix ℤ) =
+        2 * ((Finset.univ.filter fun x : Fin 35 =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        4 * ((Finset.univ.filter fun x : Fin 35 =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ) ∧
+      ∀ (H : SimpleGraph (Fin 36)) (_ : DecidableRel H.Adj),
+        6 ≤ H.minDegree → containsC4 (Fin 36) H := by
+  rcases hcore.degreeSix_thirtyFive_positiveExcessTwo with
+    ⟨_hcard, _he, G, hdec, hfree, hreg, hDreg, _hsq, _hcomm, hnext⟩
+  letI : DecidableRel G.Adj := hdec
+  letI : DecidableRel (antipodalGraph G).Adj := Classical.decRel _
+  letI : DecidableRel (triangleFreeEdgeGraph G).Adj := Classical.decRel _
+  refine ⟨G, hdec, inferInstance, inferInstance,
+    hfree, hreg, hDreg, ?_, ?_, hnext⟩
+  · intro x
+    exact excessTwo_even_color_degree_classification
+      G hfree (by norm_num) hreg (by norm_num) x
+  · exact trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
+      G hfree (by norm_num) hreg (by norm_num)
 
 end Erdos85

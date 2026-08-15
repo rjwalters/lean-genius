@@ -82,6 +82,93 @@ theorem excessTwo_triangleFreeNeighbors_card_eq_zero_or_two_or_four_of_even
   obtain ⟨k, hk⟩ := heven
   omega
 
+/-- Full local color classification at even degree and excess two.  The
+four defect neighbors split as `(T,C) = (0,4)`, `(2,2)`, or `(4,0)`. -/
+theorem excessTwo_even_color_degree_classification
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 5) (x : V) :
+    ((triangleFreeEdgeGraph G).degree x = 0 ∧
+        (antipodalGraph G).degree x = 4) ∨
+      ((triangleFreeEdgeGraph G).degree x = 2 ∧
+        (antipodalGraph G).degree x = 2) ∨
+      ((triangleFreeEdgeGraph G).degree x = 4 ∧
+        (antipodalGraph G).degree x = 0) := by
+  have hD : (secondOrderDefectGraph G).degree x = 4 := by
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 2) (by simpa using hcard) x
+  have hsum : (antipodalGraph G).degree x +
+      (triangleFreeEdgeGraph G).degree x = 4 := by
+    rw [← (antipodalGraph G).card_neighborFinset_eq_degree,
+      antipodalGraph_neighborFinset,
+      ← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset,
+      ← hD, ← (secondOrderDefectGraph G).card_neighborFinset_eq_degree,
+      secondOrderDefectGraph_neighborFinset,
+      Finset.card_union_of_disjoint
+        (disjoint_antipodal_triangleFreeNeighbors G x)]
+  rcases excessTwo_triangleFreeNeighbors_card_eq_zero_or_two_or_four_of_even
+      G hfree heven hreg hcard x with hx | hx | hx
+  · left
+    have ht : (triangleFreeEdgeGraph G).degree x = 0 := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+        triangleFreeEdgeGraph_neighborFinset]
+      exact hx
+    exact ⟨ht, by omega⟩
+  · right; left
+    have ht : (triangleFreeEdgeGraph G).degree x = 2 := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+        triangleFreeEdgeGraph_neighborFinset]
+      exact hx
+    exact ⟨ht, by omega⟩
+  · right; right
+    have ht : (triangleFreeEdgeGraph G).degree x = 4 := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+        triangleFreeEdgeGraph_neighborFinset]
+      exact hx
+    exact ⟨ht, by omega⟩
+
+/-- At even excess two, the first mixed trace is determined by the sizes of
+the degree-two and degree-four triangle-free color sectors. -/
+theorem trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 5) :
+    Matrix.trace (G.adjMatrix ℤ *
+        (secondOrderDefectGraph G).adjMatrix ℤ) =
+      2 * ((Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+      4 * ((Finset.univ.filter fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 4).card : ℤ) := by
+  rw [trace_adjMatrix_mul_secondOrderDefect_eq_sum_triangleFreeDegrees]
+  let S2 := Finset.univ.filter fun x : V =>
+    (triangleFreeEdgeGraph G).degree x = 2
+  let S4 := Finset.univ.filter fun x : V =>
+    (triangleFreeEdgeGraph G).degree x = 4
+  calc
+    (∑ x : V, ((triangleFreeEdgeGraph G).degree x : ℤ)) =
+        ∑ x : V, (2 * (if x ∈ S2 then 1 else 0) +
+          4 * (if x ∈ S4 then 1 else 0) : ℤ) := by
+      apply Finset.sum_congr rfl
+      intro x _hx
+      rcases excessTwo_even_color_degree_classification
+          G hfree heven hreg hcard x with hx | hx | hx
+      · simp [S2, S4, hx.1]
+      · simp [S2, S4, hx.1]
+      · simp [S2, S4, hx.1]
+    _ = 2 * (S2.card : ℤ) + 4 * (S4.card : ℤ) := by
+      rw [Finset.sum_add_distrib]
+      simp [Finset.mul_sum, Finset.sum_ite, mul_comm]
+    _ = _ := by rfl
+
 /-- At excess two and odd degree, the local triangle-free degree is `1` or
 `3`. -/
 theorem excessTwo_triangleFreeNeighbors_card_eq_one_or_three_of_odd
