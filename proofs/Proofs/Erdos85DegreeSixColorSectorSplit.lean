@@ -8704,6 +8704,156 @@ theorem degreeSix_emptySector_zeroTriangle_component_count_eleven_false
   simp only [hzero, Finset.sum_const_zero] at htrace
   omega
 
+/-- Graph-facing count census for the nine-component zero-triangle branch.
+The positive support has five components and exactly one nontriangle; the
+invisible support has three components and two or three nontriangles. -/
+theorem degreeSix_emptySector_zeroTriangle_nine_component_support_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 9) :
+    let D := secondOrderDefectGraph G
+    let Q := componentQuotientMatrix G D
+    let P := Finset.univ.filter fun x ↦ 0 < Q c x
+    let R := (Finset.univ.erase c) \ P
+    let NP := P.filter fun x ↦ 1 < Q c x
+    let NR := R.filter fun x ↦ 3 < x.supp.ncard
+    P.card = 5 ∧ R.card = 3 ∧ NP.card = 1 ∧
+      (NR.card = 2 ∨ NR.card = 3) := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let P : Finset D.ConnectedComponent := Finset.univ.filter fun x ↦ 0 < Q c x
+  let R : Finset D.ConnectedComponent := (Finset.univ.erase c) \ P
+  let NP : Finset D.ConnectedComponent := P.filter fun x ↦ 1 < Q c x
+  let NR : Finset D.ConnectedComponent := R.filter fun x ↦ 3 < x.supp.ncard
+  dsimp only
+  obtain ⟨hPsum, hRsum, hprof⟩ :=
+    degreeSix_orderThree_zeroDiagonal_support_partition
+      G hfree hmin hcard c hc3 hcc
+  change (∑ x ∈ P, x.supp.ncard) = 18 at hPsum
+  change (∑ x ∈ R, x.supp.ncard) = 12 at hRsum
+  change ∀ x ∈ P, Q x c = 1 ∧ x.supp.ncard = 3 * Q c x at hprof
+  change Q c c = 0 at hcc
+  have hQsum : (∑ x ∈ P, Q c x) = 6 := by
+    have hs : (∑ x ∈ P, x.supp.ncard) =
+        ∑ x ∈ P, 3 * Q c x := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      exact (hprof x hx).2
+    rw [hPsum] at hs
+    rw [← Finset.mul_sum] at hs
+    omega
+  have hcNotP : c ∉ P := by simp [P, Q, hcc]
+  have hPsub : P ⊆ (Finset.univ.erase c : Finset D.ConnectedComponent) := by
+    intro x hx
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    intro hxc
+    subst x
+    exact hcNotP hx
+  have hparts : P.card + R.card = 8 := by
+    have hecard : (Finset.univ.erase c : Finset D.ConnectedComponent).card = 8 := by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ]
+      change Fintype.card (secondOrderDefectGraph G).ConnectedComponent - 1 = 8
+      omega
+    have hpCard := Finset.card_le_card hPsub
+    rw [hecard] at hpCard
+    dsimp [R]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hPsub, hecard]
+    omega
+  have hNPdef : NP = P.filter fun x ↦ 1 < Q c x := rfl
+  have hnpWeight : P.card + NP.card ≤ 6 := by
+    have hb := mul_card_add_card_filter_lt_le_sum P (fun x ↦ Q c x) 1
+      (by intro x hx
+          have hp : 0 < Q c x := by simpa [P] using hx
+          omega)
+    rw [← hNPdef, hQsum] at hb
+    simpa using hb
+  have hnpPositive : 6 ≤ P.card + 6 * NP.card := by
+    have hb := sum_le_card_add_six_mul_card_filter_one_lt P (fun x ↦ Q c x)
+      (by intro x hx
+          have hp : 0 < Q c x := by simpa [P] using hx
+          omega)
+      (by rw [hQsum])
+    rw [← hNPdef, hQsum] at hb
+    exact hb
+  have hnrExcess : 3 * R.card + NR.card ≤ 12 := by
+    have hb := mul_card_add_card_filter_lt_le_sum R
+      (fun x ↦ x.supp.ncard) 3 (by intro x _; exact hr3 x)
+    rw [show (R.filter fun x ↦ 3 < x.supp.ncard) = NR by rfl, hRsum] at hb
+    exact hb
+  have hdiagLe : ∀ x : D.ConnectedComponent, Q x x ≤ 2 := fun x ↦
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+  have htrace : (∑ x : D.ConnectedComponent, Q x x) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  let T : Finset D.ConnectedComponent := Finset.univ.filter fun x ↦ 0 < Q x x
+  have hTthree : 3 ≤ T.card := by
+    have hsumT : (∑ x ∈ T, Q x x) = 6 := by
+      calc
+        (∑ x ∈ T, Q x x) = ∑ x, Q x x := by
+          apply Finset.sum_subset (Finset.filter_subset _ _)
+          intro x _ hx
+          have hz : Q x x = 0 := by
+            by_contra hn
+            exact hx (by simp [T, Nat.pos_of_ne_zero hn])
+          simp [hz]
+        _ = 6 := htrace
+    have hle : (∑ x ∈ T, Q x x) ≤ ∑ _x ∈ T, 2 :=
+      Finset.sum_le_sum fun x _ ↦ hdiagLe x
+    rw [hsumT] at hle
+    simp only [Finset.sum_const_nat, nsmul_eq_mul] at hle
+    omega
+  have hTsub : T ⊆ NP ∪ NR := by
+    intro x hx
+    have hdiagPos : 0 < Q x x := by simpa [T] using hx
+    have hxgt : 3 < x.supp.ncard := by
+      have hxlo := hr3 x
+      by_contra hn
+      have hx3 : x.supp.ncard = 3 := by omega
+      have hz := (degreeSix_emptySector_minimum_component_eq_zero_triangle
+        G hfree hmin hcard u hu huRange huD hr3 hempty x
+          (fun y ↦ by rw [hx3]; exact hr3 y)).1
+      change Q x x = 0 at hz
+      omega
+    have hxc : x ≠ c := by intro h; subst x; change Q c c = 0 at hcc; omega
+    by_cases hxP : x ∈ P
+    · apply Finset.mem_union_left
+      simp only [NP, Finset.mem_filter, hxP, true_and]
+      have hs := (hprof x hxP).2
+      omega
+    · apply Finset.mem_union_right
+      simp only [NR, Finset.mem_filter, hxgt, and_true]
+      simp [R, hxc, hxP]
+  have hthree : 3 ≤ NP.card + NR.card := by
+    have hc := Finset.card_le_card hTsub
+    have huCard := Finset.card_union_le NP NR
+    omega
+  exact nine_component_support_count_census P.card R.card NP.card NR.card
+    hparts (by omega) (by omega) hnpWeight hnpPositive hnrExcess
+      (Finset.card_filter_le _ _) (Finset.card_filter_le _ _) hthree
+
 /-- The residual component-order profile `3,3,9,9,9` is impossible.  The
 zero-diagonal row of the first triangle cannot contact the other triangle;
 its off-diagonal square entry is therefore carried by the three order-nine
