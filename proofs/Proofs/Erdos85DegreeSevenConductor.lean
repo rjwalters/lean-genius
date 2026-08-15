@@ -276,6 +276,135 @@ theorem degreeSeven_witness_of_twoTwentyTwo_le
     exact C4FreeMinDegreeWitness.add (by omega)
       (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
 
+private theorem degreeSeven_add3
+    {a b c : ℕ}
+    (ha : C4FreeMinDegreeWitness a 7)
+    (hb : C4FreeMinDegreeWitness b 7)
+    (hc : C4FreeMinDegreeWitness c 7)
+    (ha0 : 0 < a) (hb0 : 0 < b) (hc0 : 0 < c) :
+    C4FreeMinDegreeWitness (a + b + c) 7 := by
+  have hab := C4FreeMinDegreeWitness.add ha0 hb0 ha hb
+  exact C4FreeMinDegreeWitness.add (by omega) hc0 hab hc
+
+private theorem degreeSeven_48_48_band (x : ℕ) (hx : x ≤ 10) :
+    C4FreeMinDegreeWitness (48 + 48 + (63 + x)) 7 :=
+  degreeSeven_add3 boza48_degreeSeven_witness boza48_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (by norm_num) (by norm_num) (by omega)
+
+private theorem degreeSeven_48_56_band (x : ℕ) (hx : x ≤ 10) :
+    C4FreeMinDegreeWitness (48 + 56 + (63 + x)) 7 :=
+  degreeSeven_add3 boza48_degreeSeven_witness er7_delete1_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (by norm_num) (by norm_num) (by omega)
+
+private theorem degreeSeven_48_band_band (x y : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) :
+    C4FreeMinDegreeWitness (48 + (63 + x) + (63 + y)) 7 :=
+  degreeSeven_add3 boza48_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (by norm_num) (by omega) (by omega)
+
+private theorem degreeSeven_56_band_band (x y : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) :
+    C4FreeMinDegreeWitness (56 + (63 + x) + (63 + y)) 7 :=
+  degreeSeven_add3 er7_delete1_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (by norm_num) (by omega) (by omega)
+
+private theorem degreeSeven_57_band_band (x y : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) :
+    C4FreeMinDegreeWitness (57 + (63 + x) + (63 + y)) 7 :=
+  degreeSeven_add3 er7_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (by norm_num) (by omega) (by omega)
+
+private theorem degreeSeven_band_band_band
+    (x y z : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) (hz : z ≤ 10) :
+    C4FreeMinDegreeWitness ((63 + x) + (63 + y) + (63 + z)) 7 :=
+  degreeSeven_add3 (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (degreeSeven_witness_sixtyThree_add z hz)
+    (by omega) (by omega) (by omega)
+
+/-- Exact 48-residue band beginning at the improved conductor 159. -/
+theorem degreeSeven_witness_oneFiftyNine_add
+    (j : ℕ) (hj : j ≤ 47) : C4FreeMinDegreeWitness (159 + j) 7 := by
+  interval_cases j <;> norm_num
+  · exact degreeSeven_48_48_band 0 (by norm_num)
+  · exact degreeSeven_48_48_band 1 (by norm_num)
+  · exact degreeSeven_48_48_band 2 (by norm_num)
+  · exact degreeSeven_48_48_band 3 (by norm_num)
+  · exact degreeSeven_48_48_band 4 (by norm_num)
+  · exact degreeSeven_48_48_band 5 (by norm_num)
+  · exact degreeSeven_48_48_band 6 (by norm_num)
+  · exact degreeSeven_48_48_band 7 (by norm_num)
+  · exact degreeSeven_48_48_band 8 (by norm_num)
+  · exact degreeSeven_48_48_band 9 (by norm_num)
+  · exact degreeSeven_48_48_band 10 (by norm_num)
+  · exact degreeSeven_48_56_band 3 (by norm_num)
+  · exact degreeSeven_48_56_band 4 (by norm_num)
+  · exact degreeSeven_48_56_band 5 (by norm_num)
+  · exact degreeSeven_48_56_band 6 (by norm_num)
+  · exact degreeSeven_48_56_band 7 (by norm_num)
+  · exact degreeSeven_48_56_band 8 (by norm_num)
+  · exact degreeSeven_48_56_band 9 (by norm_num)
+  · exact degreeSeven_48_56_band 10 (by norm_num)
+  · exact degreeSeven_add3 boza48_degreeSeven_witness er7_degreeSeven_witness
+      (degreeSeven_witness_sixtyThree_add 10 (by norm_num))
+      (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 5 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 6 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 7 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 8 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 9 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 0 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 1 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 2 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 3 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 4 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 5 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 6 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 7 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 8 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 9 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band 10 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 3 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 4 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 5 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 6 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 7 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 8 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 9 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_56_band_band 10 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_57_band_band 10 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_band_band_band 0 5 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_band_band_band 0 6 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_band_band_band 0 7 10 (by norm_num) (by norm_num) (by norm_num)
+
+theorem degreeSeven_witness_of_oneFiftyNine_le
+    {n : ℕ} (hn : 159 ≤ n) : C4FreeMinDegreeWitness n 7 := by
+  let j := (n - 159) % 48
+  let k := (n - 159) / 48
+  have hj : j ≤ 47 := by
+    dsimp [j]
+    have := Nat.mod_lt (n - 159) (by norm_num : 0 < 48)
+    omega
+  have hdecomp : n = (159 + j) + k * 48 := by
+    have hdiv := Nat.mod_add_div (n - 159) 48
+    dsimp [j, k]
+    omega
+  have hband := degreeSeven_witness_oneFiftyNine_add j hj
+  by_cases hk : k = 0
+  · rw [hdecomp, hk]
+    simpa using hband
+  · have hcopies : C4FreeMinDegreeWitness (k * 48) 7 := by
+      simpa [Nat.mul_comm] using
+        boza48_degreeSeven_witness.nsmul (by norm_num) (Nat.pos_of_ne_zero hk)
+    rw [hdecomp]
+    exact C4FreeMinDegreeWitness.add (by omega)
+      (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
+
 /-- A degree-seven plateau core is confined below order 632. -/
 theorem C4PlateauCore.degreeSeven_order_lt_sixThirtyTwo
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 632 := by
@@ -301,13 +430,21 @@ theorem C4PlateauCore.degreeSeven_order_lt_twoTwentyTwo
   rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
   exact hfree (hnext H hdec hmin)
 
+theorem C4PlateauCore.degreeSeven_order_lt_oneFiftyNine
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 159 := by
+  by_contra hnot
+  have hw := degreeSeven_witness_of_oneFiftyNine_le (n := m + 1) (by omega)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
 /-- Combining odd-excess rigidity below the square with the new conductor,
 the first degree-seven candidate is exactly order 48 and every other
 candidate lies in the finite interval 49--631. -/
 theorem C4PlateauCore.degreeSeven_final_order_window
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) :
-    m = 48 ∨ (49 ≤ m ∧ m < 222) := by
-  have hupper := hcore.degreeSeven_order_lt_twoTwentyTwo hm
+    m = 48 ∨ (49 ≤ m ∧ m < 159) := by
+  have hupper := hcore.degreeSeven_order_lt_oneFiftyNine hm
   by_cases h49 : m < 49
   · obtain ⟨e, _heOdd, heLower, hdata⟩ :=
       hcore.exists_odd_positiveExcessData_three_le hm (by norm_num)
