@@ -4847,6 +4847,229 @@ theorem degreeSix_thirtyFour_defectKFour_exists_layer_attachment_witnesses
     hq₀Out, hq₁Out, hq₂Out, hq₃Out,
     hpq₀, hrq₀, hpq₁, hq₁s₁, hpq₂, hq₂s₂, hpq₃, hq₃s₃⟩
 
+/-- The extracted witnesses are all distinct and exhaust the six neighbors
+of `p`, yielding exactly the input configuration of the local capstone. -/
+theorem degreeSix_thirtyFour_defectKFour_exists_six_neighbor_terminal_configuration
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let R := Finset.univ \ ((G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y})
+    ∃ p r s₁ s₂ s₃ q₀ q₁ q₂ q₃ : V,
+      G.neighborFinset p = {a, r, q₀, q₁, q₂, q₃} ∧
+      (∀ z ∈ G.neighborFinset p,
+        (G.neighborFinset z ∩ G.neighborFinset p).card = 1) ∧
+      G.Adj r q₀ ∧
+      (a ≠ r ∧ a ≠ q₀ ∧ a ≠ q₁ ∧ a ≠ q₂ ∧ a ≠ q₃) ∧
+      (r ≠ q₀ ∧ r ≠ q₁ ∧ r ≠ q₂ ∧ r ≠ q₃) ∧
+      (q₀ ≠ q₁ ∧ q₀ ≠ q₂ ∧ q₀ ≠ q₃) ∧
+      (q₁ ≠ q₂ ∧ q₁ ≠ q₃) ∧ q₂ ≠ q₃ ∧
+      q₁ ∉ R ∧ q₂ ∉ R ∧ q₃ ∉ R ∧
+      s₁ ∈ R ∧ s₂ ∈ R ∧ s₃ ∈ R ∧
+      G.Adj q₁ s₁ ∧ G.Adj q₂ s₂ ∧ G.Adj q₃ s₃ ∧
+      G.Adj s₁ s₂ ∧ G.Adj s₁ s₃ ∧ G.Adj s₂ s₃ := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  obtain ⟨p, r, s₁, s₂, s₃, q₀, q₁, q₂, q₃,
+      hp, hrR, hpr, hDr, hs₁s₂, hs₁s₃, hs₂s₃,
+      hs₁R, hs₂R, hs₃R, hG₁₂, hG₁₃, hG₂₃,
+      hq₀Out, hq₁Out, hq₂Out, hq₃Out,
+      hpq₀, hrq₀, hpq₁, hq₁s₁, hpq₂, hq₂s₂, hpq₃, hq₃s₃⟩ :=
+    degreeSix_thirtyFour_defectKFour_exists_layer_attachment_witnesses
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  change r ∈ R at hrR
+  change s₁ ∈ R at hs₁R
+  change s₂ ∈ R at hs₂R
+  change s₃ ∈ R at hs₃R
+  change q₀ ∉ R at hq₀Out
+  change q₁ ∉ R at hq₁Out
+  change q₂ ∉ R at hq₂Out
+  change q₃ ∉ R at hq₃Out
+  have hqB (q s : V) (hqOut : q ∉ R) (hsR : s ∈ R)
+      (hqs : G.Adj q s) : q ∈ B := by
+    have hqBQ : q ∈ B ∪ Q := by
+      by_contra hqNot
+      exact hqOut (Finset.mem_sdiff.mpr ⟨Finset.mem_univ q, hqNot⟩)
+    rcases Finset.mem_union.mp hqBQ with hqB | hqQ
+    · exact hqB
+    · exfalso
+      have hsNot := (Finset.mem_sdiff.mp hsR).2
+      apply hsNot
+      apply Finset.mem_union_left Q
+      simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hqQ
+      simp only [B, Finset.mem_union, G.mem_neighborFinset]
+      rcases hqQ with hqa | hqb | hqx | hqy
+      · exact Or.inl (Or.inl (Or.inl (hqa ▸ hqs)))
+      · exact Or.inl (Or.inl (Or.inr (hqb ▸ hqs)))
+      · exact Or.inl (Or.inr (hqx ▸ hqs))
+      · exact Or.inr (hqy ▸ hqs)
+  have hq₀B : q₀ ∈ B := hqB q₀ r hq₀Out hrR hrq₀.symm
+  have hq₁B : q₁ ∈ B := hqB q₁ s₁ hq₁Out hs₁R hq₁s₁
+  have hq₂B : q₂ ∈ B := hqB q₂ s₂ hq₂Out hs₂R hq₂s₂
+  have hq₃B : q₃ ∈ B := hqB q₃ s₃ hq₃Out hs₃R hq₃s₃
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have hlabel (q u v : V) (hq : q ∈ B) (huR : u ∈ R) (hvR : v ∈ R)
+      (hqu : G.Adj q u) (hqv : G.Adj q v) : u = v := by
+    have hc :=
+      degreeSix_thirtyFour_defectKFour_blockVertex_residual_inter_card_eq_one
+        G hfree hreg hcard hDreg hab hax hbx hay hby hxy hzero hq
+    have hcR : (G.neighborFinset q ∩ R).card = 1 := by
+      simpa [B, Q, R, Finset.union_assoc] using hc
+    apply Finset.card_le_one.mp (by omega :
+      (G.neighborFinset q ∩ R).card ≤ 1)
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset q u).mpr hqu, huR⟩
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset q v).mpr hqv, hvR⟩
+  have hs₁D : (secondOrderDefectGraph G).Adj r s₁ := by
+    apply (secondOrderDefectGraph G).mem_neighborFinset r s₁ |>.mp
+    rw [hDr]
+    simp
+  have hs₂D : (secondOrderDefectGraph G).Adj r s₂ := by
+    apply (secondOrderDefectGraph G).mem_neighborFinset r s₂ |>.mp
+    rw [hDr]
+    simp
+  have hs₃D : (secondOrderDefectGraph G).Adj r s₃ := by
+    apply (secondOrderDefectGraph G).mem_neighborFinset r s₃ |>.mp
+    rw [hDr]
+    simp
+  have hrNeS₁ : r ≠ s₁ := (secondOrderDefectGraph G).ne_of_adj hs₁D
+  have hrNeS₂ : r ≠ s₂ := (secondOrderDefectGraph G).ne_of_adj hs₂D
+  have hrNeS₃ : r ≠ s₃ := (secondOrderDefectGraph G).ne_of_adj hs₃D
+  have hq₀q₁ : q₀ ≠ q₁ := by
+    intro heq
+    exact hrNeS₁ (hlabel q₀ r s₁ hq₀B hrR hs₁R hrq₀.symm (heq ▸ hq₁s₁))
+  have hq₀q₂ : q₀ ≠ q₂ := by
+    intro heq
+    exact hrNeS₂ (hlabel q₀ r s₂ hq₀B hrR hs₂R hrq₀.symm (heq ▸ hq₂s₂))
+  have hq₀q₃ : q₀ ≠ q₃ := by
+    intro heq
+    exact hrNeS₃ (hlabel q₀ r s₃ hq₀B hrR hs₃R hrq₀.symm (heq ▸ hq₃s₃))
+  have hq₁q₂ : q₁ ≠ q₂ := by
+    intro heq
+    exact hs₁s₂ (hlabel q₁ s₁ s₂ hq₁B hs₁R hs₂R hq₁s₁ (heq ▸ hq₂s₂))
+  have hq₁q₃ : q₁ ≠ q₃ := by
+    intro heq
+    exact hs₁s₃ (hlabel q₁ s₁ s₃ hq₁B hs₁R hs₃R hq₁s₁ (heq ▸ hq₃s₃))
+  have hq₂q₃ : q₂ ≠ q₃ := by
+    intro heq
+    exact hs₂s₃ (hlabel q₂ s₂ s₃ hq₂B hs₂R hs₃R hq₂s₂ (heq ▸ hq₃s₃))
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hdBQ : Disjoint B Q := by
+    simpa [B, Q] using defectKFour_blocks_disjoint_centers_of_eq_antipodal
+      G hDeq hab hax hbx hay hby hxy
+  have haQ : a ∈ Q := by simp [Q]
+  have haNeR : a ≠ r := by
+    intro har
+    exact (Finset.mem_sdiff.mp hrR).2
+      (Finset.mem_union_right B (har ▸ haQ))
+  have haNeQ₀ : a ≠ q₀ := by
+    intro haq
+    exact Finset.disjoint_left.mp hdBQ hq₀B (haq ▸ haQ)
+  have haNeQ₁ : a ≠ q₁ := by
+    intro haq
+    exact Finset.disjoint_left.mp hdBQ hq₁B (haq ▸ haQ)
+  have haNeQ₂ : a ≠ q₂ := by
+    intro haq
+    exact Finset.disjoint_left.mp hdBQ hq₂B (haq ▸ haQ)
+  have haNeQ₃ : a ≠ q₃ := by
+    intro haq
+    exact Finset.disjoint_left.mp hdBQ hq₃B (haq ▸ haQ)
+  have hrNeQ (q : V) (hqB : q ∈ B) : r ≠ q := by
+    intro hrq
+    exact (Finset.mem_sdiff.mp hrR).2
+      (Finset.mem_union_left Q (hrq ▸ hqB))
+  have hrNeQ₀ := hrNeQ q₀ hq₀B
+  have hrNeQ₁ := hrNeQ q₁ hq₁B
+  have hrNeQ₂ := hrNeQ q₂ hq₂B
+  have hrNeQ₃ := hrNeQ q₃ hq₃B
+  have hSsub : ({a, r, q₀, q₁, q₂, q₃} : Finset V) ⊆
+      G.neighborFinset p := by
+    simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff]
+    exact ⟨(G.mem_neighborFinset p a).mpr ((G.mem_neighborFinset a p).mp hp).symm,
+      (G.mem_neighborFinset p r).mpr hpr,
+      (G.mem_neighborFinset p q₀).mpr hpq₀,
+      (G.mem_neighborFinset p q₁).mpr hpq₁,
+      (G.mem_neighborFinset p q₂).mpr hpq₂,
+      (G.mem_neighborFinset p q₃).mpr hpq₃⟩
+  have hScard : ({a, r, q₀, q₁, q₂, q₃} : Finset V).card = 6 := by
+    simp [haNeR, haNeQ₀, haNeQ₁, haNeQ₂, haNeQ₃,
+      hrNeQ₀, hrNeQ₁, hrNeQ₂, hrNeQ₃,
+      hq₀q₁, hq₀q₂, hq₀q₃, hq₁q₂, hq₁q₃, hq₂q₃]
+  have hN : G.neighborFinset p = {a, r, q₀, q₁, q₂, q₃} := by
+    symm
+    apply Finset.eq_of_subset_of_card_le hSsub
+    rw [G.card_neighborFinset_eq_degree, hreg p, hScard]
+  have hlocal :=
+    degreeSix_thirtyFour_center_neighborFinset_internal_degree_one_of_colorOrder_zero
+      G hfree hreg hcard hzero p
+  exact ⟨p, r, s₁, s₂, s₃, q₀, q₁, q₂, q₃,
+    hN, hlocal, hrq₀,
+    ⟨haNeR, haNeQ₀, haNeQ₁, haNeQ₂, haNeQ₃⟩,
+    ⟨hrNeQ₀, hrNeQ₁, hrNeQ₂, hrNeQ₃⟩,
+    ⟨hq₀q₁, hq₀q₂, hq₀q₃⟩, ⟨hq₁q₂, hq₁q₃⟩, hq₂q₃,
+    hq₁Out, hq₂Out, hq₃Out, hs₁R, hs₂R, hs₃R,
+    hq₁s₁, hq₂s₂, hq₃s₃, hG₁₂, hG₁₃, hG₂₃⟩
+
+/-- The pure-antipodal (`colorOrder = 0`) closed defect-`K₄` branch is
+impossible at degree six and order 34. -/
+theorem degreeSix_thirtyFour_no_closed_defectKFour_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) : False := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  obtain ⟨p, r, s₁, s₂, s₃, q₀, q₁, q₂, q₃,
+      hN, hlocal, hrq₀, hc, hr, hq₀, hq₁, hq₂,
+      hq₁Out, hq₂Out, hq₃Out, hs₁R, hs₂R, hs₃R,
+      hq₁s₁, hq₂s₂, hq₃s₃, hs₁s₂, hs₁s₃, hs₂s₃⟩ :=
+    degreeSix_thirtyFour_defectKFour_exists_six_neighbor_terminal_configuration
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  change q₁ ∉ R at hq₁Out
+  change q₂ ∉ R at hq₂Out
+  change q₃ ∉ R at hq₃Out
+  change s₁ ∈ R at hs₁R
+  change s₂ ∈ R at hs₂R
+  change s₃ ∈ R at hs₃R
+  exact false_of_six_neighbor_matching_and_residual_triangle_witnesses
+    G hfree R hN hlocal hrq₀ hc hr hq₀ hq₁ hq₂
+      hq₁Out hq₂Out hq₃Out hs₁R hs₂R hs₃R
+      hq₁s₁ hq₂s₂ hq₃s₃ hs₁s₂ hs₁s₃ hs₂s₃
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
