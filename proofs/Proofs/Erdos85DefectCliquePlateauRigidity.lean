@@ -442,6 +442,63 @@ theorem secondOrderDefect_neighborFinset_eq_erase_of_large_clique
     hDdegree, Finset.card_erase_of_mem hc, hCcard]
   omega
 
+/-- At even ambient degree, a top-band defect clique of size `d-1` is
+automatically independent in the original graph.  Indeed, any internal
+original edge is triangle-free.  The clique exhausts the defect neighborhood,
+while common-neighbor independence makes the induced original graph a
+matching, so that endpoint would have triangle-free degree exactly one,
+contrary to parity. -/
+theorem large_secondOrderDefectClique_isIndepSet_of_even_degree
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (heven : Even d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V)) :
+    G.IsIndepSet (C : Set V) := by
+  classical
+  rw [SimpleGraph.isIndepSet_iff]
+  intro x hx y hy hxy hGxy
+  have hsafe := commonNeighborIndependent_of_secondOrderDefect_isClique
+    G hfree C hclique
+  have hcommonZero :
+      (G.neighborFinset x ∩ G.neighborFinset y).card = 0 :=
+    hsafe hx hy hxy
+  have hyT : y ∈ triangleFreeNeighbors G x :=
+    (mem_triangleFreeNeighbors G x y).mpr ⟨hGxy, hcommonZero⟩
+  have hDrow := secondOrderDefect_neighborFinset_eq_erase_of_large_clique
+    G hfree hd he hcard hreg C hCcard hclique hx
+  have hTeq : triangleFreeNeighbors G x = {y} := by
+    apply Finset.Subset.antisymm
+    · intro z hzT
+      have hzD : z ∈ (secondOrderDefectGraph G).neighborFinset x := by
+        rw [secondOrderDefectGraph_neighborFinset]
+        exact Finset.mem_union_right _ hzT
+      rw [hDrow] at hzD
+      have hzC : z ∈ C := (Finset.mem_erase.mp hzD).2
+      have hxz : G.Adj x z := (mem_triangleFreeNeighbors G x z).mp hzT |>.1
+      have hzy : z = y := by
+        by_contra hne
+        have hempty := hsafe hy hzC (fun hyz => hne hyz.symm)
+        rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem] at hempty
+        apply hempty x
+        rw [Finset.mem_inter, G.mem_neighborFinset, G.mem_neighborFinset]
+        exact ⟨hGxy.symm, hxz.symm⟩
+      simpa [hzy]
+    · intro z hz
+      have hzy : z = y := Finset.mem_singleton.mp hz
+      subst z
+      exact hyT
+  have hpar := triangleFreeNeighbors_card_mod_two_eq_degree
+    G hfree hreg x
+  rw [hTeq] at hpar
+  obtain ⟨k, hk⟩ := heven
+  simp at hpar
+  omega
+
 /-- Compatibility wrapper for the earlier independent-clique interface. -/
 theorem secondOrderDefect_neighborFinset_eq_erase_of_independent_large_clique
     (G : SimpleGraph V) [DecidableRel G.Adj]
