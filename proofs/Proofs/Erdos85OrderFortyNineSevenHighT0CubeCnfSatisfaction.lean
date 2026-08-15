@@ -1348,4 +1348,42 @@ theorem sevenHighT0CubeC4PairStepVal_semanticSound
   exact sevenHighT0CubeC4WitnessPairVal_semanticSound adj pair.1 pair.2
     witnesses.1 witnesses.2 hacc (hnot witnesses hw)
 
+def sevenHighT0CubeC4ClausesFromVal
+    (adj : Fin 49 → Fin 49 → Bool)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  (sevenHighT0CubePairs sevenHighT0CubeVertices).foldl (fun acc pair =>
+    sevenHighT0CubeC4PairStepVal adj pair acc) acc
+
+theorem sevenHighT0CubeC4ClausesFromVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeC4ClausesFromVal adj acc).1 =
+      (sevenHighT0CubePairs sevenHighT0CubeVertices).foldl
+        (fun st pair => sevenHighT0CubeC4PairStep pair st) acc.1 := by
+  unfold sevenHighT0CubeC4ClausesFromVal
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun pair acc => sevenHighT0CubeC4PairStepVal_state adj pair acc)
+
+theorem sevenHighT0CubeC4ClausesFromVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hnot : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeVertices,
+      ∀ witnesses ∈ sevenHighT0CubePairs
+        (sevenHighT0CubeVertices.filter fun w =>
+          w ≠ pair.1 && w ≠ pair.2), ¬(
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 witnesses.1) (max pair.1 witnesses.1)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.2 witnesses.1) (max pair.2 witnesses.1)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 witnesses.2) (max pair.1 witnesses.2)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.2 witnesses.2) (max pair.2 witnesses.2)) = true)) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeC4ClausesFromVal adj acc) := by
+  unfold sevenHighT0CubeC4ClausesFromVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro pair hp acc hacc
+  exact sevenHighT0CubeC4PairStepVal_semanticSound adj pair hacc
+    (hnot pair hp)
+
 end Erdos85
