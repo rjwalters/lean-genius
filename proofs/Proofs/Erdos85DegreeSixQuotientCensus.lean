@@ -977,6 +977,103 @@ theorem degreeSixQuotient_model5_support_weights_three_nat
       s q c b a r t hslo htotal hrow hbal hsq hdiag htrace hc3 hcc
         (Ne.symm hab) hrt hP' hR h42.2 h42.1 (by omega) (by omega)).elim
 
+/-- With positive weights `3+3`, the full Model5 equations exclude two
+order-six invisible components. -/
+theorem false_of_degreeSixQuotient_model5_invisible_six_six_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b r t : C)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (hrt : r ≠ t)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (hR : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t})
+    (hca : q c a = 3) (hcb : q c b = 3)
+    (haSize : s a = 9) (hbSize : s b = 9)
+    (hrSize : s r = 6) (htSize : s t = 6) : False := by
+  have haP : a ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hbP : b ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hrR : r ∈ (Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j) := by rw [hR]; simp
+  have htR : t ∈ (Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j) := by rw [hR]; simp
+  have hac : a ≠ c := by intro h; subst a; rw [hcc] at hca; omega
+  have hbc : b ≠ c := by intro h; subst b; rw [hcc] at hcb; omega
+  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
+  have htc : t ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp htR).1).1
+  have hra : r ≠ a := by
+    intro h; subst r; exact (Finset.mem_sdiff.mp hrR).2 haP
+  have hrb : r ≠ b := by
+    intro h; subst r; exact (Finset.mem_sdiff.mp hrR).2 hbP
+  have hta : t ≠ a := by
+    intro h; subst t; exact (Finset.mem_sdiff.mp htR).2 haP
+  have htb : t ≠ b := by
+    intro h; subst t; exact (Finset.mem_sdiff.mp htR).2 hbP
+  have hcr : q c r = 0 := by
+    have := (Finset.mem_sdiff.mp hrR).2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at this
+    omega
+  have hct : q c t = 0 := by
+    have := (Finset.mem_sdiff.mp htR).2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at this
+    omega
+  have hrcq : q r c = 0 := by
+    have h := hbal c r
+    rw [hc3, hcr, hrSize] at h
+    omega
+  have htcq : q t c = 0 := by
+    have h := hbal c t
+    rw [hc3, hct, htSize] at h
+    omega
+  have hacq : q a c = 1 := by
+    have h := hbal c a
+    rw [hc3, hca, haSize] at h
+    omega
+  have hbcq : q b c = 1 := by
+    have h := hbal c b
+    rw [hc3, hcb, hbSize] at h
+    omega
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat s q c hrow hsq
+  have hsqCA := heqs.2 a
+  have hsqCB := heqs.2 b
+  have hsqCR := heqs.2 r
+  have hsqCT := heqs.2 t
+  rw [hP, Finset.sum_pair hab] at hsqCA hsqCB hsqCR hsqCT
+  simp [Ne.symm hac, Ne.symm hbc, Ne.symm hrc, Ne.symm htc,
+    hca, hcb, haSize, hbSize, hrSize, htSize] at hsqCA hsqCB hsqCR hsqCT
+  have hbalAB := hbal a b
+  rw [haSize, hbSize] at hbalAB
+  have hdiagEq : q a a = q b b := by omega
+  have hU := degreeSixQuotient_model5_univ_eq_five q c a b r t hP hR
+  have hrowR := hrow r
+  have hrowT := hrow t
+  have hsqRR := hsq r r
+  rw [hU] at hrowR hrowT hsqRR htrace
+  simp [Finset.sum_insert, hac, hbc, hrc, htc, hab, hrt, hra, hrb, hta, htb,
+    Ne.symm hac, Ne.symm hbc, Ne.symm hrc, Ne.symm htc, Ne.symm hab,
+    Ne.symm hrt, Ne.symm hra, Ne.symm hrb, Ne.symm hta, Ne.symm htb,
+    hcc, hcr, hct, hrcq, htcq, hacq, hbcq, hdiagEq, hrSize]
+      at hrowR hrowT hsqRR htrace
+  have hbalAR := hbal a r
+  have hbalBR := hbal b r
+  have hbalAT := hbal a t
+  have hbalBT := hbal b t
+  have hbalRT := hbal r t
+  rw [haSize, hrSize] at hbalAR
+  rw [hbSize, hrSize] at hbalBR
+  rw [haSize, htSize] at hbalAT
+  rw [hbSize, htSize] at hbalBT
+  rw [hrSize, htSize] at hbalRT
+  exact false_of_degreeSixQuotient_model5_invisible_six_six
+    (q a r) (q b r) (q a t) (q b t) (q r a) (q r b) (q t a) (q t b)
+    (q a a) (q r r) (q r t) (q t r) (q t t)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) (by omega) (by omega) (by omega) (by omega)
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
