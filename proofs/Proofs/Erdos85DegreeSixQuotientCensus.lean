@@ -835,6 +835,110 @@ theorem false_of_degreeSixQuotient_model5_invisible_six_six
     have hrrle : rr ≤ 3 := by omega
     interval_cases d <;> interval_cases rr <;> omega
 
+/-- The full Model5 incidence equations exclude positive-support weights
+`2+4`.  This adapter expands the named five-component universe and feeds the
+resulting scalar equations to `false_of_degreeSixQuotient_model5_two_four_split`. -/
+theorem false_of_degreeSixQuotient_model5_two_four_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b r t : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (hrt : r ≠ t)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (hR : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t})
+    (hca : q c a = 2) (hcb : q c b = 4)
+    (haSize : s a = 6) (hbSize : s b = 12) : False := by
+  have haP : a ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hbP : b ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hrR : r ∈ (Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j) := by rw [hR]; simp
+  have htR : t ∈ (Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j) := by rw [hR]; simp
+  have hac : a ≠ c := by
+    intro h; subst a; rw [hcc] at hca; omega
+  have hbc : b ≠ c := by
+    intro h; subst b; rw [hcc] at hcb; omega
+  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
+  have htc : t ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp htR).1).1
+  have hra : r ≠ a := by
+    intro h; subst r
+    exact (Finset.mem_sdiff.mp hrR).2 haP
+  have hrb : r ≠ b := by
+    intro h; subst r
+    exact (Finset.mem_sdiff.mp hrR).2 hbP
+  have hta : t ≠ a := by
+    intro h; subst t
+    exact (Finset.mem_sdiff.mp htR).2 haP
+  have htb : t ≠ b := by
+    intro h; subst t
+    exact (Finset.mem_sdiff.mp htR).2 hbP
+  have hcr : q c r = 0 := by
+    have := (Finset.mem_sdiff.mp hrR).2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at this
+    omega
+  have hct : q c t = 0 := by
+    have := (Finset.mem_sdiff.mp htR).2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at this
+    omega
+  have hrcq : q r c = 0 := by
+    have := hbal c r
+    rw [hc3, hcr] at this
+    have := hslo r
+    nlinarith
+  have htcq : q t c = 0 := by
+    have := hbal c t
+    rw [hc3, hct] at this
+    have := hslo t
+    nlinarith
+  have hacq : q a c = 1 := by
+    have := hbal c a
+    rw [hc3, hca, haSize] at this
+    omega
+  have hbcq : q b c = 1 := by
+    have := hbal c b
+    rw [hc3, hcb, hbSize] at this
+    omega
+  obtain ⟨haa, habq, hbaq, hbb⟩ :=
+    degreeSixQuotient_model5_two_four_internal_nat s q c a b hab hP
+      hca hcb haSize hbSize hrow hbal hsq hdiag hcc
+  have hU := degreeSixQuotient_model5_univ_eq_five q c a b r t hP hR
+  have hrowA := hrow a
+  have hrowB := hrow b
+  have hrowR := hrow r
+  have hrowT := hrow t
+  have hsqCR := hsq c r
+  have hsqRR := hsq r r
+  rw [hU] at hrowA hrowB hrowR hrowT hsqCR hsqRR htrace
+  simp [Finset.sum_insert, hac, hbc, hrc, htc, hab, hrt, hra, hrb, hta, htb,
+    Ne.symm hac, Ne.symm hbc, Ne.symm hrc, Ne.symm htc, Ne.symm hab,
+    Ne.symm hrt, Ne.symm hra, Ne.symm hrb, Ne.symm hta, Ne.symm htb,
+    hcc, hca, hcb, hcr, hct, hrcq, htcq, hacq, hbcq,
+    haa, habq, hbaq, hbb]
+      at hrowA hrowB hrowR hrowT hsqCR hsqRR htrace
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c (fun i ↦ by have := hslo i; omega) htotal hrow hbal hsq hc3 hcc).2
+  rw [hR, Finset.sum_pair hrt] at hmass
+  have hbalAR := hbal a r
+  have hbalBR := hbal b r
+  have hbalAT := hbal a t
+  have hbalBT := hbal b t
+  have hbalRT := hbal r t
+  rw [haSize] at hbalAR hbalAT
+  rw [hbSize] at hbalBR hbalBT
+  exact false_of_degreeSixQuotient_model5_two_four_split
+    (s r) (s t) (q a r) (q b r) (q r a) (q r b) (q t a) (q t b)
+    (q r r) (q r t) (q t r) (q t t)
+    (hslo r) (hslo t) hmass (by omega) (by omega) (by omega)
+    (by omega) (by omega) (by omega) (by omega)
+    (by omega) (by omega) hbalRT (by omega) (by omega)
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
