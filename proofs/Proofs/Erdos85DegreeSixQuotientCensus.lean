@@ -904,6 +904,96 @@ theorem degreeSixQuotient_model7_three_one_two_invisible_diagonal_two_nat
   have hrDiag := hdiag r
   omega
 
+/-- Three positive-mass vertices cannot form a detailed-balanced block with
+diagonal two and total internal row mass three: the residual off-diagonal
+mass would be a fixed-point-free symmetric matching on an odd set. -/
+theorem false_of_degreeSixQuotient_three_vertex_matching
+    (x y z rt ru tr tu ur ut : ℕ)
+    (hx : 0 < x) (hy : 0 < y) (hz : 0 < z)
+    (hrowR : rt + ru = 1) (hrowT : tr + tu = 1)
+    (hrowU : ur + ut = 1)
+    (hbalRT : x * rt = y * tr)
+    (hbalRU : x * ru = z * ur)
+    (hbalTU : y * tu = z * ut) : False := by
+  have hrt : rt ≤ 1 := by omega
+  have hru : ru ≤ 1 := by omega
+  have htr : tr ≤ 1 := by omega
+  have htu : tu ≤ 1 := by omega
+  have hur : ur ≤ 1 := by omega
+  have hut : ut ≤ 1 := by omega
+  interval_cases rt <;> interval_cases ru <;>
+    interval_cases tr <;> interval_cases tu <;>
+    interval_cases ur <;> interval_cases ut <;>
+    norm_num at hbalRT hbalRU hbalTU <;> omega
+
+/-- The Model7 `3,1,2` positive-support branch is impossible: its positive
+trace is zero, so the three invisible diagonals are two, leaving the forbidden
+odd detailed-balanced matching above. -/
+theorem false_of_degreeSixQuotient_model7_support_three_three_one_two_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 3)
+    (hca : q c a = 3) (hcb : q c b = 1) (hcd : q c d = 2) : False := by
+  let R : Finset C := (Finset.univ.erase c) \
+    (Finset.univ.filter fun j ↦ 0 < q c j)
+  have hRcard' : R.card = 3 := by simpa [R] using hRcard
+  obtain ⟨r, t, u, hrt, hru, htu, hR⟩ := Finset.card_eq_three.mp hRcard'
+  have hrR : r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) := by
+    rw [show ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t, u} by
+        simpa [R] using hR]
+    simp
+  have htR : t ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) := by
+    rw [show ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t, u} by
+        simpa [R] using hR]
+    simp
+  have huR : u ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) := by
+    rw [show ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t, u} by
+        simpa [R] using hR]
+    simp
+  have hdiagR :=
+    degreeSixQuotient_model7_three_one_two_invisible_diagonal_two_nat
+      s q c a b d hspos hrow hbal hsq hdiag htrace hc3 hcc
+        hab had hbd hP hRcard hca hcb hcd
+  have hsplitR := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c r hspos hrow hbal hsq hc3 hcc hrR
+  have hsplitT := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c t hspos hrow hbal hsq hc3 hcc htR
+  have hsplitU := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c u hspos hrow hbal hsq hc3 hcc huR
+  have hR' : R = {r, t, u} := hR
+  have hrowR := hsplitR.2
+  have hrowT := hsplitT.2
+  have hrowU := hsplitU.2
+  change (∑ j ∈ R, q r j) = 3 at hrowR
+  change (∑ j ∈ R, q t j) = 3 at hrowT
+  change (∑ j ∈ R, q u j) = 3 at hrowU
+  rw [hR'] at hrowR hrowT hrowU
+  simp [Finset.sum_insert, hrt, hru, htu, Ne.symm hrt, Ne.symm hru,
+    Ne.symm htu] at hrowR hrowT hrowU
+  exact false_of_degreeSixQuotient_three_vertex_matching
+    (s r) (s t) (s u) (q r t) (q r u) (q t r) (q t u) (q u r) (q u t)
+    (hspos r) (hspos t) (hspos u)
+    (by have := hdiagR r hrR; omega)
+    (by have := hdiagR t htR; omega)
+    (by have := hdiagR u huR; omega)
+    (hbal r t) (hbal r u) (hbal t u)
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
