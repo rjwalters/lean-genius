@@ -1346,6 +1346,24 @@ def sevenHighT0CubeCommonPairStepVal
   sevenHighT0CubeEmitVal common.1 common.2
 
 set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonPairStepVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeCommonPairStepVal adj pair acc).1 =
+      sevenHighT0CubeCommonPairStep pair acc.1 := by
+  let commonVal := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
+  let commonGen := sevenHighT0CubeCollectCommon pair.1 pair.2 acc.1
+  have hp : (commonVal.1, commonVal.2.1) = commonGen :=
+    sevenHighT0CubeCollectCommonVal_projection adj pair.1 pair.2 acc
+  rcases commonVal with ⟨lits, st, val⟩
+  rcases commonGen with ⟨genLits, genSt⟩
+  cases hp
+  simp only [sevenHighT0CubeCommonPairStepVal,
+    sevenHighT0CubeCommonPairStep, sevenHighT0CubeCollectCommon,
+    sevenHighT0CubeCommonWitnessStep]
+  rfl
+
+set_option maxHeartbeats 0 in
 theorem sevenHighT0CubeCommonPairStepVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
     {acc : SevenHighT0CubeValState}
@@ -1404,6 +1422,23 @@ def sevenHighT0CubeCommonClausesFromVal
     (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
   (sevenHighT0CubePairs sevenHighT0CubeHighs).foldl (fun acc pair =>
     sevenHighT0CubeCommonPairStepVal adj pair acc) acc
+
+theorem sevenHighT0CubeCommonClausesFromVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeCommonClausesFromVal adj acc).1 =
+      (sevenHighT0CubePairs sevenHighT0CubeHighs).foldl
+        (fun st pair => sevenHighT0CubeCommonPairStep pair st) acc.1 := by
+  unfold sevenHighT0CubeCommonClausesFromVal
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun pair acc => sevenHighT0CubeCommonPairStepVal_state adj pair acc)
+
+theorem sevenHighT0CubeCommonClausesFromVal_generatorState
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState)
+    (hstate : acc.1 = sevenHighT0CubeNormalizeN1) :
+    (sevenHighT0CubeCommonClausesFromVal adj acc).1 =
+      sevenHighT0CubeCommonClauses := by
+  rw [sevenHighT0CubeCommonClausesFromVal_state, hstate]
+  rfl
 
 set_option maxHeartbeats 0 in
 theorem sevenHighT0CubeCommonClausesFromVal_semanticSound
@@ -1596,6 +1631,14 @@ theorem sevenHighT0CubeC4ClausesFromVal_state
   unfold sevenHighT0CubeC4ClausesFromVal
   exact sevenHighT0CubeFoldl_state _ _ _ _
     (fun pair acc => sevenHighT0CubeC4PairStepVal_state adj pair acc)
+
+theorem sevenHighT0CubeC4ClausesFromVal_generatorState
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState)
+    (hstate : acc.1 = sevenHighT0CubeCommonClauses) :
+    (sevenHighT0CubeC4ClausesFromVal adj acc).1 =
+      sevenHighT0CubeC4Clauses := by
+  rw [sevenHighT0CubeC4ClausesFromVal_state, hstate]
+  rfl
 
 theorem sevenHighT0CubeC4ClausesFromVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
@@ -2106,6 +2149,14 @@ theorem sevenHighT0CubeDegreeClausesFromVal_state
   exact sevenHighT0CubeFoldl_state _ _ _ _
     (fun vertex acc => sevenHighT0CubeDegreeStepVal_state adj vertex acc)
 
+theorem sevenHighT0CubeDegreeClausesFromVal_generatorState
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState)
+    (hstate : acc.1 = sevenHighT0CubeC4Clauses) :
+    (sevenHighT0CubeDegreeClausesFromVal adj acc).1 =
+      sevenHighT0CubeDegreeClauses := by
+  rw [sevenHighT0CubeDegreeClausesFromVal_state, hstate]
+  rfl
+
 theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
     (hacc : SevenHighT0CubeSemanticSound adj acc)
@@ -2246,6 +2297,40 @@ def sevenHighT0CubeCollectPartitionVal
   (sevenHighT0CubePartitionNeighbors high).foldl (fun input x =>
     sevenHighT0CubePartitionCollectStepVal adj y x input) ([], acc)
 
+theorem sevenHighT0CubePartitionFold_projection
+    (adj : Fin 49 → Fin 49 → Bool) (y : Nat) (xs : List Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let outVal := xs.foldl (fun input x =>
+      sevenHighT0CubePartitionCollectStepVal adj y x input) input
+    let outGen := xs.foldl (fun input x =>
+      sevenHighT0CubePartitionCollectStep y x input)
+      (input.1, input.2.1)
+    (outVal.1, outVal.2.1) = outGen := by
+  induction xs generalizing input with
+  | nil => rfl
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      let nextVal := sevenHighT0CubePartitionCollectStepVal adj y x input
+      have hstep := sevenHighT0CubePartitionCollectStepVal_projection
+        adj y x input
+      have hrest := ih nextVal
+      change (nextVal.1, nextVal.2.1) =
+        sevenHighT0CubePartitionCollectStep y x
+          (input.1, input.2.1) at hstep
+      rw [hstep] at hrest
+      exact hrest
+
+theorem sevenHighT0CubeCollectPartitionVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState) :
+    let out := sevenHighT0CubeCollectPartitionVal adj y high acc
+    (out.1, out.2.1) =
+      (sevenHighT0CubePartitionNeighbors high).foldl (fun input x =>
+        sevenHighT0CubePartitionCollectStep y x input) ([], acc.1) := by
+  simpa only [sevenHighT0CubeCollectPartitionVal] using
+    (sevenHighT0CubePartitionFold_projection adj y
+      (sevenHighT0CubePartitionNeighbors high) ([], acc))
+
 def sevenHighT0CubeCollectPartitionVal_match
     (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
     (acc : SevenHighT0CubeValState) :
@@ -2340,6 +2425,28 @@ def sevenHighT0CubePartitionClauseVal
   let input := sevenHighT0CubeCollectPartitionVal adj y high acc
   sevenHighT0CubeEmitVal input.1 input.2
 
+def sevenHighT0CubePartitionClause (y high : Nat)
+    (st : SevenHighT0CubeGenState) : SevenHighT0CubeGenState :=
+  let input := (sevenHighT0CubePartitionNeighbors high).foldl
+    (fun input x => sevenHighT0CubePartitionCollectStep y x input) ([], st)
+  sevenHighT0CubeEmit input.1 input.2
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubePartitionClauseVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubePartitionClauseVal adj y high acc).1 =
+      sevenHighT0CubePartitionClause y high acc.1 := by
+  let inputVal := sevenHighT0CubeCollectPartitionVal adj y high acc
+  let inputGen := (sevenHighT0CubePartitionNeighbors high).foldl
+    (fun input x => sevenHighT0CubePartitionCollectStep y x input) ([], acc.1)
+  have hp : (inputVal.1, inputVal.2.1) = inputGen :=
+    sevenHighT0CubeCollectPartitionVal_projection adj y high acc
+  rcases inputVal with ⟨lits, st, val⟩
+  rcases inputGen with ⟨genLits, genSt⟩
+  cases hp
+  rfl
+
 theorem sevenHighT0CubePartitionClauseVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
     {acc : SevenHighT0CubeValState}
@@ -2378,6 +2485,38 @@ def sevenHighT0CubePartitionClausesFromVal
   sevenHighT0CubeLows.foldl (fun acc y =>
     [0, 1].foldl (fun acc high =>
       sevenHighT0CubePartitionClauseVal adj y high acc) acc) acc
+
+theorem sevenHighT0CubePartitionHighFold_state
+    (adj : Fin 49 → Fin 49 → Bool) (y : Nat) (highs : List Nat)
+    (acc : SevenHighT0CubeValState) :
+    (highs.foldl (fun acc high =>
+      sevenHighT0CubePartitionClauseVal adj y high acc) acc).1 =
+    highs.foldl (fun st high =>
+      sevenHighT0CubePartitionClause y high st) acc.1 := by
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun high acc => sevenHighT0CubePartitionClauseVal_state
+      adj y high acc)
+
+theorem sevenHighT0CubePartitionClausesFromVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubePartitionClausesFromVal adj acc).1 =
+      sevenHighT0CubeLows.foldl (fun st y =>
+        [0, 1].foldl (fun st high =>
+          sevenHighT0CubePartitionClause y high st) st) acc.1 := by
+  unfold sevenHighT0CubePartitionClausesFromVal
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun y acc => sevenHighT0CubePartitionHighFold_state adj y [0, 1] acc)
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubePartitionClausesFromVal_generatorState
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState)
+    (hstate : acc.1 = sevenHighT0CubeDegreeClauses) :
+    (sevenHighT0CubePartitionClausesFromVal adj acc).1 =
+      sevenHighT0CubePartitionClauses := by
+  rw [sevenHighT0CubePartitionClausesFromVal_state, hstate]
+  unfold sevenHighT0CubePartitionClauses sevenHighT0CubePartitionClause
+  unfold sevenHighT0CubePartitionCollectStep
+  rfl
 
 theorem sevenHighT0CubePartitionClausesFromVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
