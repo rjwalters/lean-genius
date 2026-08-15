@@ -782,6 +782,73 @@ theorem degreeSixQuotient_orderThree_support_three_residual_weights_nat
         s q c a b d hspos hrow hbal hsq hdiag hc3 hcc hab had hbd
           (by simpa [P] using hnames) ha4 hb1 hd1).elim
 
+/-- The internal positive block for weights `3,1,2` is unique; in particular
+all three positive diagonals vanish. -/
+theorem degreeSixQuotient_support_three_three_one_two_internal
+    (aa ab ad ba bb bd da db dd : ℕ)
+    (hrowA : aa + ab + ad = 3)
+    (hrowB : ba + bb + bd = 3)
+    (hrowD : da + db + dd = 3)
+    (hbalAB : 3 * ab = ba)
+    (hbalAD : 3 * ad = 2 * da)
+    (hbalBD : bd = 2 * db)
+    (hdiagA : aa ≤ 2) (hdiagB : bb ≤ 2) (hdiagD : dd ≤ 2) :
+    aa = 0 ∧ ab = 1 ∧ ad = 2 ∧
+      ba = 3 ∧ bb = 0 ∧ bd = 0 ∧
+      da = 3 ∧ db = 0 ∧ dd = 0 := by
+  omega
+
+/-- Full quotient adapter for the unique internal `3,1,2` block. -/
+theorem degreeSixQuotient_orderThree_support_three_three_one_two_internal_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hca : q c a = 3) (hcb : q c b = 1) (hcd : q c d = 2) :
+    q a a = 0 ∧ q a b = 1 ∧ q a d = 2 ∧
+      q b a = 3 ∧ q b b = 0 ∧ q b d = 0 ∧
+      q d a = 3 ∧ q d b = 0 ∧ q d d = 0 := by
+  have haP : a ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hbP : b ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hdP : d ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have haData := hprofile a (by simpa [hca] using
+    (Finset.mem_filter.mp haP).2)
+  have hbData := hprofile b (by simpa [hcb] using
+    (Finset.mem_filter.mp hbP).2)
+  have hdData := hprofile d (by simpa [hcd] using
+    (Finset.mem_filter.mp hdP).2)
+  have hsplitA := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c a hspos hrow hbal hsq hc3 hcc haP
+  have hsplitB := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c b hspos hrow hbal hsq hc3 hcc hbP
+  have hsplitD := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c d hspos hrow hbal hsq hc3 hcc hdP
+  have hrowA := hsplitA.2.1
+  have hrowB := hsplitB.2.1
+  have hrowD := hsplitD.2.1
+  rw [hP] at hrowA hrowB hrowD
+  simp [Finset.sum_insert, hab, had, hbd] at hrowA hrowB hrowD
+  have hbalAB := hbal a b
+  have hbalAD := hbal a d
+  have hbalBD := hbal b d
+  rw [haData.2, hbData.2, hca, hcb] at hbalAB
+  rw [haData.2, hdData.2, hca, hcd] at hbalAD
+  rw [hbData.2, hdData.2, hcb, hcd] at hbalBD
+  exact degreeSixQuotient_support_three_three_one_two_internal
+    (q a a) (q a b) (q a d) (q b a) (q b b) (q b d)
+      (q d a) (q d b) (q d d)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+      (hdiag a) (hdiag b) (hdiag d)
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
