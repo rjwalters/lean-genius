@@ -2146,6 +2146,43 @@ theorem card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
   rw [hfilter, Finset.card_singleton] at hcomm
   exact hcomm
 
+/-- Entrywise commutation transports a unique contact with a defect-closed
+set across a defect edge inside that set.  If `r` is the unique vertex of
+`R` adjacent to `p`, the defect neighborhood of `s` stays in `R`, and
+`s—r` is a defect edge, then exactly one defect neighbor of `p` is adjacent
+to `s`.  In the residual `K₃,₃` branch this is the cover-label transition
+rule from a residual label to each label on the opposite side. -/
+theorem card_defectNeighbors_adj_eq_one_of_unique_closed_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (R : Finset V) {p r s : V}
+    (hDs : (secondOrderDefectGraph G).neighborFinset s ⊆ R)
+    (hpr : G.Adj p r)
+    (hrR : r ∈ R)
+    (hunique : ∀ z ∈ R, G.Adj p z → z = r)
+    (hsrD : (secondOrderDefectGraph G).Adj s r) :
+    (((secondOrderDefectGraph G).neighborFinset p).filter
+      (fun z => G.Adj z s)).card = 1 := by
+  have hcomm := card_filter_adj_secondOrderDefect_comm_of_regular
+    G hfree hreg p s
+  have hfilter : (((secondOrderDefectGraph G).neighborFinset s).filter
+      (fun z => G.Adj p z)) = {r} := by
+    ext z
+    simp only [Finset.mem_filter, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hzD, hpz⟩
+      exact hunique z (hDs hzD) hpz
+    · intro hzr
+      subst z
+      exact ⟨((secondOrderDefectGraph G).mem_neighborFinset s r).mpr hsrD,
+        hpr⟩
+  rw [hfilter, Finset.card_singleton] at hcomm
+  exact hcomm.symm
+
 /-- Around a closed cubic defect `K₄`, every vertex in one center's
 original neighborhood has exactly one defect neighbor in each of the other
 three center-neighborhood blocks. -/
@@ -3148,6 +3185,69 @@ theorem degreeSix_thirtyFour_defectKFour_residual_four_fiber_counts
       ← hcardInterUnion _ _ hdABXY]
     exact htotal
   omega
+
+/-- Residual `K₃,₃` adjacency dictates the defect labels of the cover.
+If a layer vertex `p` is attached in `G` to residual vertex `r`, then for
+every residual defect neighbor `s` of `r`, exactly one defect neighbor of
+`p` is the unique layer vertex attached to `s`. -/
+theorem degreeSix_thirtyFour_defectKFour_layer_residual_transition_count_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y p r s : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0)
+    (hp : p ∈ G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y)
+    (hr : r ∈ Finset.univ \ (
+      (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y}))
+    (hs : s ∈ Finset.univ \ (
+      (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y}))
+    (hDs : (secondOrderDefectGraph G).neighborFinset s ⊆
+      Finset.univ \ (
+        (G.neighborFinset a ∪ G.neighborFinset b ∪
+          G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y}))
+    (hpr : G.Adj p r)
+    (hrsD : (secondOrderDefectGraph G).Adj r s) :
+    (((secondOrderDefectGraph G).neighborFinset p).filter
+      (fun z => G.Adj z s)).card = 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  have hpB : p ∈ B := by simpa [B] using hp
+  have hrR : r ∈ R := by simpa [B, Q, R] using hr
+  have _hsR : s ∈ R := by simpa [B, Q, R] using hs
+  have hDsR : (secondOrderDefectGraph G).neighborFinset s ⊆ R := by
+    simpa [B, Q, R] using hDs
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have hcontact :=
+    degreeSix_thirtyFour_defectKFour_blockVertex_residual_inter_card_eq_one
+      G hfree hreg hcard hDreg hab hax hbx hay hby hxy hzero hpB
+  have hcontactR : (G.neighborFinset p ∩ R).card = 1 := by
+    simpa [B, Q, R, Finset.union_assoc] using hcontact
+  have hunique : ∀ z ∈ R, G.Adj p z → z = r := by
+    intro z hzR hpz
+    apply Finset.card_le_one.mp (by omega : (G.neighborFinset p ∩ R).card ≤ 1)
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p z).mpr hpz, hzR⟩
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p r).mpr hpr, hrR⟩
+  exact card_defectNeighbors_adj_eq_one_of_unique_closed_contact
+    G hfree hreg R hDsR hpr hrR hunique hrsD.symm
 
 /-- Every original-graph edge inside the residual six-set has a common
 neighbor inside that same residual.  A layer witness would have two residual
