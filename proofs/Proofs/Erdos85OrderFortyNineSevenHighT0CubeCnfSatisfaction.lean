@@ -1426,6 +1426,157 @@ def sevenHighT0CubeCollectEdgeVal
   let (id, acc) := sevenHighT0CubeEdgeIdVal adj y x input.2
   (input.1.push (id : Int), acc)
 
+structure SevenHighT0CubeCollectedEdgesMatch
+    (y : Nat) (xs : List Nat)
+    (input : Array Int × SevenHighT0CubeValState) where
+  ids : List Nat
+  vars_eq : input.1.toList = List.map (fun id : Nat => Int.ofNat id) ids
+  aligned : List.Forall₂ (fun x id =>
+    ((.edge (min y x) (max y x)), id) ∈ input.2.1.ids) xs ids
+
+def sevenHighT0CubeCollectedEdgesMatch_empty
+    (y : Nat) (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubeCollectedEdgesMatch y [] (#[], acc) where
+  ids := []
+  vars_eq := rfl
+  aligned := .nil
+
+theorem sevenHighT0CubeForall₂_append_singleton
+    {α β : Type*} {r : α → β → Prop} {xs : List α} {ys : List β}
+    (h : List.Forall₂ r xs ys) {x : α} {y : β} (hxy : r x y) :
+    List.Forall₂ r (xs ++ [x]) (ys ++ [y]) := by
+  induction h with
+  | nil => exact .cons hxy .nil
+  | cons hab hrest ih => exact .cons hab ih
+
+def sevenHighT0CubeCollectedEdgesMatch_push
+    (adj : Fin 49 → Fin 49 → Bool)
+    {y x : Nat} {xs : List Nat}
+    {input : Array Int × SevenHighT0CubeValState}
+    (h : SevenHighT0CubeCollectedEdgesMatch y xs input) :
+    SevenHighT0CubeCollectedEdgesMatch y (xs ++ [x])
+      (sevenHighT0CubeCollectEdgeVal adj y x input) := by
+  rcases input with ⟨vars, acc⟩
+  simp only [sevenHighT0CubeCollectEdgeVal, sevenHighT0CubeEdgeIdVal]
+  generalize hout : sevenHighT0CubeAtomIdVal adj
+    (.edge (min y x) (max y x)) acc = out
+  rcases out with ⟨id, acc'⟩
+  refine ⟨h.ids ++ [id], ?_, ?_⟩
+  · rw [Array.toList_push, h.vars_eq]
+    simp
+  · have hold : List.Forall₂ (fun z oldId =>
+        ((.edge (min y z) (max y z)), oldId) ∈ acc'.1.ids) xs h.ids := by
+      apply h.aligned.imp
+      intro z oldId hm
+      have hx := sevenHighT0CubeAtomIdVal_old_mem adj
+        (.edge (min y x) (max y x)) acc.1 acc.2 hm
+      rw [hout] at hx
+      exact hx
+    have hnew := (sevenHighT0CubeAtomIdVal_result adj
+      (.edge (min y x) (max y x)) acc.1 acc.2).1
+    rw [hout] at hnew
+    exact sevenHighT0CubeForall₂_append_singleton hold hnew
+
+def sevenHighT0CubeCollectEdgesListVal_match
+    (adj : Fin 49 → Fin 49 → Bool) (y : Nat) (xs : List Nat)
+    (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubeCollectedEdgesMatch y xs
+      (xs.foldl (fun input x =>
+        sevenHighT0CubeCollectEdgeVal adj y x input) (#[], acc)) := by
+  suffices ∀ pre : List Nat,
+      SevenHighT0CubeCollectedEdgesMatch y pre
+        (pre.foldl (fun input x =>
+          sevenHighT0CubeCollectEdgeVal adj y x input) (#[], acc)) by
+    exact this xs
+  intro pre
+  induction pre using List.reverseRecOn with
+  | nil => exact sevenHighT0CubeCollectedEdgesMatch_empty y acc
+  | append_singleton pre x ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil]
+      exact sevenHighT0CubeCollectedEdgesMatch_push adj ih
+
+theorem sevenHighT0CubeCollectedEdgesMatch_length
+    {y : Nat} {xs : List Nat}
+    {input : Array Int × SevenHighT0CubeValState}
+    (h : SevenHighT0CubeCollectedEdgesMatch y xs input) :
+    input.1.size = xs.length := by
+  have hvars := congrArg List.length h.vars_eq
+  have halign := h.aligned.length_eq
+  simpa using hvars.trans (by simpa using halign.symm)
+
+theorem sevenHighT0CubeCollectedEdgesMatch_value
+    (adj : Fin 49 → Fin 49 → Bool)
+    {y : Nat} {xs : List Nat}
+    {input : Array Int × SevenHighT0CubeValState}
+    (h : SevenHighT0CubeCollectedEdgesMatch y xs input)
+    (hs : SevenHighT0CubeSemanticSound adj input.2)
+    (i : Nat) (hi : i < input.1.size) :
+    dimacsLitValue input.2.2 (input.1.getD i 0) =
+      sevenHighT0CubeAtomValue adj
+        (.edge (min y (xs.get ⟨i, by
+          rw [← sevenHighT0CubeCollectedEdgesMatch_length h]; exact hi⟩))
+          (max y (xs.get ⟨i, by
+            rw [← sevenHighT0CubeCollectedEdgesMatch_length h]; exact hi⟩))) := by
+  have hidsLen : h.ids.length = xs.length := h.aligned.length_eq.symm
+  have hiIds : i < h.ids.length := by
+    rw [hidsLen, ← sevenHighT0CubeCollectedEdgesMatch_length h]
+    exact hi
+  have hiXs : i < xs.length := by
+    rw [← sevenHighT0CubeCollectedEdgesMatch_length h]
+    exact hi
+  have halign := h.aligned.get hiXs hiIds
+  have hiList : i < input.1.toList.length := by simpa using hi
+  have hlistGet : input.1.toList[i] =
+      (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    have hx := List.get_of_eq h.vars_eq ⟨i, hiList⟩
+    rw [List.get_eq_getElem] at hx
+    have hiMap : i <
+        (List.map (fun id : Nat => Int.ofNat id) h.ids).length := by
+      simpa using hiIds
+    calc
+      input.1.toList[i] =
+          (List.map (fun id : Nat => Int.ofNat id) h.ids)[i]'hiMap := hx
+      _ = (h.ids[i]'hiIds : Int) := List.getElem_map _
+      _ = (h.ids.get ⟨i, hiIds⟩ : Int) := by rw [List.get_eq_getElem]
+  have harrayGet : input.1.getD i 0 =
+      (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    rw [show input.1.getD i 0 = input.1[i] by simp [Array.getD, hi]]
+    rw [← Array.getElem_toList hi]
+    exact hlistGet
+  rw [harrayGet]
+  have hidPos := (hs.ids.id_bounds _ halign).1
+  have hidPosInt : 0 < (h.ids.get ⟨i, hiIds⟩ : Int) := by
+    exact_mod_cast hidPos
+  rw [dimacsLitValue, if_pos hidPosInt]
+  exact hs.named _ _ halign
+
+theorem sevenHighT0CubeSeqPrefixTrue_literalRow_eq_count
+    (val : DimacsValuation) (vars : Array Int) :
+    seqPrefixTrue (sevenHighT0CubeLiteralRow val vars) vars.size =
+      (List.ofFn (sevenHighT0CubeLiteralRow val vars)).count true := by
+  rw [seqPrefixTrue_full_eq_filter_card]
+  let v : List.Vector Bool vars.size :=
+    ⟨List.ofFn (sevenHighT0CubeLiteralRow val vars), by simp⟩
+  have h := Fin.card_filter_univ_eq_vector_get_eq_count true v
+  convert h using 1 <;> simp [v, List.Vector.get]
+
+theorem sevenHighT0CubeCollectedEdges_values
+    (adj : Fin 49 → Fin 49 → Bool)
+    {y : Nat} {xs : List Nat}
+    {input : Array Int × SevenHighT0CubeValState}
+    (hm : SevenHighT0CubeCollectedEdgesMatch y xs input)
+    (hs : SevenHighT0CubeSemanticSound adj input.2) :
+    List.ofFn (sevenHighT0CubeLiteralRow input.2.2 input.1) =
+      xs.map (fun x => sevenHighT0CubeAtomValue adj
+        (.edge (min y x) (max y x))) := by
+  apply List.ext_getElem
+  · simp [sevenHighT0CubeCollectedEdgesMatch_length hm]
+  · intro i hiLeft hiRight
+    have hi : i < input.1.size := by simpa using hiLeft
+    have hv := sevenHighT0CubeCollectedEdgesMatch_value adj hm hs i hi
+    simpa [List.getElem_ofFn, sevenHighT0CubeLiteralRow] using hv
+
 theorem sevenHighT0CubeCollectEdgeVal_projection
     (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
     (input : Array Int × SevenHighT0CubeValState) :
@@ -1551,6 +1702,36 @@ theorem sevenHighT0CubeCollectDegreeInputsVal_projection
     out.1 = raw.1 ∧ out.2.1 = raw.2 := by
   unfold sevenHighT0CubeCollectDegreeInputsVal
   exact sevenHighT0CubeCollectEdgesListVal_projection adj vertex _ (#[], acc)
+
+def sevenHighT0CubeCollectDegreeInputsVal_match
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubeCollectedEdgesMatch vertex
+      (sevenHighT0CubeVertices.filter fun x => x ≠ vertex)
+      (sevenHighT0CubeCollectDegreeInputsVal adj vertex acc) := by
+  exact sevenHighT0CubeCollectEdgesListVal_match adj vertex _ acc
+
+theorem sevenHighT0CubeCollectDegreeInputsVal_count_atoms
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc) :
+    let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+    seqPrefixTrue (sevenHighT0CubeInputAccumRow input) input.1.size =
+      ((sevenHighT0CubeVertices.filter fun x => x ≠ vertex).map fun x =>
+        sevenHighT0CubeAtomValue adj
+          (.edge (min vertex x) (max vertex x))).count true := by
+  let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+  have hm := sevenHighT0CubeCollectDegreeInputsVal_match adj vertex acc
+  have hs := (sevenHighT0CubeCollectDegreeInputsVal_sound adj vertex hacc).semantic
+  have hvalues := sevenHighT0CubeCollectedEdges_values adj hm hs
+  calc
+    seqPrefixTrue (sevenHighT0CubeInputAccumRow input) input.1.size =
+        (List.ofFn (sevenHighT0CubeLiteralRow input.2.2 input.1)).count true :=
+      sevenHighT0CubeSeqPrefixTrue_literalRow_eq_count input.2.2 input.1
+    _ = (incident.map fun x => sevenHighT0CubeAtomValue adj
+          (.edge (min vertex x) (max vertex x))).count true :=
+      congrArg (List.count true) hvalues
 
 theorem sevenHighT0CubeCollectDegreeInputsVal_sound
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
