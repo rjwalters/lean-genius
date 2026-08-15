@@ -295,6 +295,109 @@ theorem degreeSixQuotient_orderThree_support_card_seven_nat
     (P.card = 5 ∧ R.card = 1)
   omega
 
+/-- Every component invisible from an order-three base has quotient row mass
+three into the positive support and three into the invisible block. -/
+theorem degreeSixQuotient_orderThree_invisible_row_split_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c r : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hrR : r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j))) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (∑ p ∈ P, q r p) = 3 ∧ (∑ j ∈ R, q r j) = 3 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hrR' : r ∈ R := by simpa [P, R] using hrR
+  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR').1).1
+  have hrnotP : r ∉ P := (Finset.mem_sdiff.mp hrR').2
+  have hqcr : q c r = 0 := by
+    by_contra hn
+    exact hrnotP (by simp [P, Nat.pos_of_ne_zero hn])
+  have hqrc : q r c = 0 := by
+    have hb := hbal c r
+    rw [hqcr, mul_zero] at hb
+    exact (Nat.mul_eq_zero.mp hb.symm).resolve_left
+      (Nat.ne_of_gt (hspos r))
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hsqR := heqs.2 r
+  simp [Ne.symm hrc] at hsqR
+  have hweighted :
+      3 * (∑ p ∈ P, q c p * q p r) =
+        s r * (∑ p ∈ P, q r p) := by
+    rw [Finset.mul_sum, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro p hp
+    have hpPos : 0 < q c p := by simpa [P] using
+      (Finset.mem_filter.mp hp).2
+    have hpSize := (hprofile p hpPos).2
+    calc
+      3 * (q c p * q p r) = (3 * q c p) * q p r := by
+        rw [Nat.mul_assoc]
+      _ = s p * q p r := by rw [← hpSize]
+      _ = s r * q r p := hbal p r
+  rw [hsqR] at hweighted
+  have hsupportR : (∑ p ∈ P, q r p) = 3 := by
+    have hcancel : 3 = ∑ p ∈ P, q r p := by
+      apply Nat.eq_of_mul_eq_mul_left (hspos r)
+      simpa [Nat.mul_comm] using hweighted
+    exact hcancel.symm
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro p hp
+    exact Finset.mem_erase.mpr
+      ⟨fun hpc ↦ hcnotP (hpc ▸ hp), Finset.mem_univ p⟩
+  have hsplit : (∑ j ∈ R, q r j) + (∑ j ∈ P, q r j) =
+      ∑ j ∈ Finset.univ.erase c, q r j := Finset.sum_sdiff hPsub
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset C) (q r) (Finset.mem_univ c)
+  have hrowR := hrow r
+  change (∑ j ∈ (Finset.univ : Finset C), q r j) = 6 at hrowR
+  rw [hqrc, hrowR] at houtside
+  simp only [add_zero] at houtside
+  refine ⟨hsupportR, ?_⟩
+  change (∑ j ∈ R, q r j) = 3
+  omega
+
+/-- A singleton invisible block is impossible: its unique component would
+have diagonal quotient three. -/
+theorem false_of_degreeSixQuotient_orderThree_invisible_card_one_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 1) : False := by
+  let R := (Finset.univ.erase c) \
+    (Finset.univ.filter fun j ↦ 0 < q c j)
+  obtain ⟨r, hR⟩ := Finset.card_eq_one.mp (by simpa [R] using hRcard)
+  have hrR : r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) := by rw [hR]; simp
+  have hsplit := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c r hspos hrow hbal hsq hc3 hcc hrR
+  change _ ∧ (∑ j ∈ R, q r j) = 3 at hsplit
+  have hR' : R = {r} := by simpa [R] using hR
+  rw [hR'] at hsplit
+  simp only [Finset.sum_singleton] at hsplit
+  have := hdiag r
+  omega
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
