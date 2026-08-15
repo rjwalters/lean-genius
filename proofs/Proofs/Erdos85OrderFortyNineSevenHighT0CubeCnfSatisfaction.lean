@@ -410,6 +410,13 @@ def sevenHighT0CubeEqualsBlockVal (vars : Array Int)
   (sevenHighT0CubeEqualsBlock vars bound acc.1,
     seqCounterEqualsVal acc.2 acc.1.top vars x bound)
 
+@[simp] theorem sevenHighT0CubeEqualsBlockVal_state
+    (vars : Array Int) (x : Fin vars.size → Bool) (bound : Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeEqualsBlockVal vars x bound acc).1 =
+      sevenHighT0CubeEqualsBlock vars bound acc.1 := by
+  rfl
+
 theorem sevenHighT0CubeIdsSound_equalsBlock
     {st : SevenHighT0CubeGenState} (h : SevenHighT0CubeIdsSound st)
     (vars : Array Int) (bound : Nat) :
@@ -1419,6 +1426,48 @@ def sevenHighT0CubeCollectEdgeVal
   let (id, acc) := sevenHighT0CubeEdgeIdVal adj y x input.2
   (input.1.push (id : Int), acc)
 
+theorem sevenHighT0CubeCollectEdgeVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
+    (input : Array Int × SevenHighT0CubeValState) :
+    let out := sevenHighT0CubeCollectEdgeVal adj y x input
+    let raw :=
+      let (id, st) := sevenHighT0CubeEdgeId y x input.2.1
+      (input.1.push (id : Int), st)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  rcases input with ⟨vars, st, val⟩
+  simp only [sevenHighT0CubeCollectEdgeVal, sevenHighT0CubeEdgeIdVal,
+    sevenHighT0CubeEdgeId]
+  generalize hv : sevenHighT0CubeAtomIdVal adj
+    (.edge (min y x) (max y x)) (st, val) = outVal
+  rcases outVal with ⟨idVal, stVal, val'⟩
+  generalize hs : sevenHighT0CubeAtomId
+    (.edge (min y x) (max y x)) st = out
+  rcases out with ⟨id, st'⟩
+  have hid := sevenHighT0CubeAtomIdVal_id adj
+    (.edge (min y x) (max y x)) st val
+  have hstate := sevenHighT0CubeAtomIdVal_state adj
+    (.edge (min y x) (max y x)) st val
+  rw [hv, hs] at hid hstate
+  exact ⟨by simp_all, by simp_all⟩
+
+theorem sevenHighT0CubeCollectEdgesListVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (y : Nat) (xs : List Nat)
+    (input : Array Int × SevenHighT0CubeValState) :
+    let out := xs.foldl
+      (fun input x => sevenHighT0CubeCollectEdgeVal adj y x input) input
+    let raw := xs.foldl (fun input x =>
+      let (id, st) := sevenHighT0CubeEdgeId y x input.2
+      (input.1.push (id : Int), st)) (input.1, input.2.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  induction xs generalizing input with
+  | nil => simp
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      have hp := sevenHighT0CubeCollectEdgeVal_projection adj y x input
+      have hi := ih (sevenHighT0CubeCollectEdgeVal adj y x input)
+      rcases hp with ⟨hvars, hst⟩
+      simpa [hvars, hst] using hi
+
 theorem sevenHighT0CubeCollectEdgeVal_sound
     (adj : Fin 49 → Fin 49 → Bool)
     {input : Array Int × SevenHighT0CubeValState}
@@ -1491,6 +1540,18 @@ def sevenHighT0CubeCollectDegreeInputsVal
   incident.foldl (fun input x =>
     sevenHighT0CubeCollectEdgeVal adj vertex x input) (#[], acc)
 
+theorem sevenHighT0CubeCollectDegreeInputsVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState) :
+    let out := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+    let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+    let raw := incident.foldl (fun input x =>
+      let (id, st) := sevenHighT0CubeEdgeId vertex x input.2
+      (input.1.push (id : Int), st)) (#[], acc.1)
+    out.1 = raw.1 ∧ out.2.1 = raw.2 := by
+  unfold sevenHighT0CubeCollectDegreeInputsVal
+  exact sevenHighT0CubeCollectEdgesListVal_projection adj vertex _ (#[], acc)
+
 theorem sevenHighT0CubeCollectDegreeInputsVal_sound
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
     {acc : SevenHighT0CubeValState}
@@ -1523,6 +1584,24 @@ def sevenHighT0CubeDegreeStepVal
     (sevenHighT0CubeInputAccumRow input)
     (if vertex < 7 then 8 else 7) input.2
 
+theorem sevenHighT0CubeDegreeStepVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeDegreeStepVal adj vertex acc).1 =
+      sevenHighT0CubeDegreeStep vertex acc.1 := by
+  let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+  let raw := incident.foldl (fun input x =>
+    let (id, st) := sevenHighT0CubeEdgeId vertex x input.2
+    (input.1.push (id : Int), st)) (#[], acc.1)
+  have hp : input.1 = raw.1 ∧ input.2.1 = raw.2 :=
+    sevenHighT0CubeCollectDegreeInputsVal_projection adj vertex acc
+  rcases input with ⟨vars, st, val⟩
+  rcases raw with ⟨rawVars, rawSt⟩
+  rcases hp with ⟨rfl, rfl⟩
+  unfold sevenHighT0CubeDegreeStepVal sevenHighT0CubeDegreeStep
+  rfl
+
 theorem sevenHighT0CubeDegreeStepVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
     {acc : SevenHighT0CubeValState}
@@ -1545,6 +1624,15 @@ def sevenHighT0CubeDegreeClausesFromVal
     (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
   sevenHighT0CubeVertices.foldl (fun acc vertex =>
     sevenHighT0CubeDegreeStepVal adj vertex acc) acc
+
+theorem sevenHighT0CubeDegreeClausesFromVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeDegreeClausesFromVal adj acc).1 =
+      sevenHighT0CubeVertices.foldl
+        (fun st vertex => sevenHighT0CubeDegreeStep vertex st) acc.1 := by
+  unfold sevenHighT0CubeDegreeClausesFromVal
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun vertex acc => sevenHighT0CubeDegreeStepVal_state adj vertex acc)
 
 theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound
     (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
