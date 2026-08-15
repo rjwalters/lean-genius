@@ -472,6 +472,23 @@ theorem sevenHighT0CubeSemanticSound_foldl
       simp only [List.foldl_cons]
       exact ih (hstep x acc hacc)
 
+theorem sevenHighT0CubeSemanticSound_foldl_mem
+    {α : Type} (adj : Fin 49 → Fin 49 → Bool) (xs : List α)
+    (step : α → SevenHighT0CubeValState → SevenHighT0CubeValState)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hstep : ∀ x, x ∈ xs → ∀ acc,
+      SevenHighT0CubeSemanticSound adj acc →
+      SevenHighT0CubeSemanticSound adj (step x acc)) :
+    SevenHighT0CubeSemanticSound adj (xs.foldl (fun acc x => step x acc) acc) := by
+  induction xs generalizing acc with
+  | nil => exact hacc
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      apply ih (hstep x (by simp) acc hacc)
+      intro y hy acc hacc
+      exact hstep y (by simp [hy]) acc hacc
+
 theorem sevenHighT0CubeAtomId_positive
     {st : SevenHighT0CubeGenState} (h : SevenHighT0CubeIdsSound st)
     (atom : SevenHighT0CubeAtom) :
@@ -583,5 +600,53 @@ theorem sevenHighT0CubeEmitEdgeUnitVal_semanticSound
         sevenHighT0CubeSingleton_negative_bounded hidbound
     · simpa [hp] using
         sevenHighT0CubeSingleton_positive_bounded hidbound
+
+theorem sevenHighT0CubeFoldl_state
+    {α : Type} (xs : List α)
+    (stepVal : α → SevenHighT0CubeValState → SevenHighT0CubeValState)
+    (step : α → SevenHighT0CubeGenState → SevenHighT0CubeGenState)
+    (acc : SevenHighT0CubeValState)
+    (hstep : ∀ x acc, (stepVal x acc).1 = step x acc.1) :
+    (xs.foldl (fun acc x => stepVal x acc) acc).1 =
+      xs.foldl (fun st x => step x st) acc.1 := by
+  induction xs generalizing acc with
+  | nil => rfl
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      calc
+        _ = xs.foldl (fun st x => step x st) (stepVal x acc).1 :=
+          ih (stepVal x acc)
+        _ = _ := by rw [hstep x acc]
+
+def sevenHighT0CubeHighIndependentVal
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    SevenHighT0CubeValState :=
+  (sevenHighT0CubePairs sevenHighT0CubeHighs).foldl (fun acc pair =>
+    sevenHighT0CubeEmitEdgeUnitVal adj pair.1 pair.2 false acc)
+    (({} : SevenHighT0CubeGenState), initial)
+
+theorem sevenHighT0CubeHighIndependentVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    (sevenHighT0CubeHighIndependentVal adj initial).1 =
+      sevenHighT0CubeHighIndependent := by
+  unfold sevenHighT0CubeHighIndependentVal sevenHighT0CubeHighIndependent
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun pair acc =>
+      sevenHighT0CubeEmitEdgeUnitVal_state adj pair.1 pair.2 false acc)
+
+theorem sevenHighT0CubeHighIndependentVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation)
+    (hindependent : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 pair.2) (max pair.1 pair.2)) = false) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeHighIndependentVal adj initial) := by
+  unfold sevenHighT0CubeHighIndependentVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _
+    (sevenHighT0CubeSemanticSound_initial adj initial)
+  intro pair hpair acc hacc
+  apply sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj
+    pair.1 pair.2 false hacc
+  exact hindependent pair hpair
 
 end Erdos85
