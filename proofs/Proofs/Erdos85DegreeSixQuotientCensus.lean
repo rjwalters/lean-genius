@@ -849,6 +849,61 @@ theorem degreeSixQuotient_orderThree_support_three_three_one_two_internal_nat
     (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
       (hdiag a) (hdiag b) (hdiag d)
 
+/-- In the `3,1,2` support branch, trace six is carried entirely by the
+three-component invisible block, forcing every invisible diagonal to be two. -/
+theorem degreeSixQuotient_model7_three_one_two_invisible_diagonal_two_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 3)
+    (hca : q c a = 3) (hcb : q c b = 1) (hcd : q c d = 2) :
+    ∀ r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)), q r r = 2 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hRcard' : R.card = 3 := by simpa [P, R] using hRcard
+  have hint :=
+    degreeSixQuotient_orderThree_support_three_three_one_two_internal_nat
+      s q c a b d hspos hrow hbal hsq hdiag hc3 hcc hab had hbd hP
+        hca hcb hcd
+  have hP' : P = {a, b, d} := by simpa [P] using hP
+  have hPtrace : (∑ p ∈ P, q p p) = 0 := by
+    rw [hP']
+    simp [Finset.sum_insert, hab, had, hbd, hint.1, hint.2.2.2.2.1,
+      hint.2.2.2.2.2.2.2.2]
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro p hp
+    exact Finset.mem_erase.mpr
+      ⟨fun hpc ↦ hcnotP (hpc ▸ hp), Finset.mem_univ p⟩
+  have hsplit : (∑ r ∈ R, q r r) + (∑ p ∈ P, q p p) =
+      ∑ i ∈ Finset.univ.erase c, q i i := Finset.sum_sdiff hPsub
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset C) (fun i ↦ q i i) (Finset.mem_univ c)
+  change (∑ i ∈ (Finset.univ : Finset C), q i i) = 6 at htrace
+  rw [hcc, htrace] at houtside
+  have hRtrace : (∑ r ∈ R, q r r) = 6 := by omega
+  intro r hr
+  have herase := Finset.sum_erase_add R (fun i ↦ q i i) hr
+  have hcardErase : (R.erase r).card = 2 := by
+    rw [Finset.card_erase_of_mem hr, hRcard']
+  have hrestLe : (∑ j ∈ R.erase r, q j j) ≤ 4 := by
+    calc
+      (∑ j ∈ R.erase r, q j j) ≤ ∑ _j ∈ R.erase r, 2 :=
+        Finset.sum_le_sum fun j _ ↦ hdiag j
+      _ = 4 := by simp [hcardErase]
+  have hrDiag := hdiag r
+  omega
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
