@@ -1,6 +1,7 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85PlateauExcessStructure
 import Proofs.Erdos85PositiveExcessLocalParity
+import Proofs.Erdos85Boza35Witness
 import Proofs.Erdos85Boza36Witness
 
 /-!
@@ -70,6 +71,16 @@ theorem C4PlateauCore.degreeSix_thirtyFour_positiveExcessOne
     have he : e = 1 := by omega
     simpa [he] using hdata
 
+/-- The order-34 degree-six plateau case is impossible because the checked
+Boza/House-of-Graphs witness at order 35 contradicts one-step nonextension. -/
+theorem not_C4PlateauCore_thirtyFour_six : ¬ C4PlateauCore 34 6 := by
+  rintro ⟨_G, _hdec, _hmin, _hfree, _hcover, hnext⟩
+  exact boza35Graph_not_containsC4
+    (hnext boza35Graph inferInstance (by
+      apply SimpleGraph.le_minDegree_of_forall_le_degree
+      intro v
+      rw [boza35Graph_degree v]))
+
 /-- A degree-six plateau core at order 35 supplies the exact excess-two
 operator package, with no remaining cardinality ambiguity. -/
 theorem C4PlateauCore.degreeSix_thirtyFive_positiveExcessTwo
@@ -136,5 +147,20 @@ theorem not_C4PlateauCore_thirtyFive_six : ¬ C4PlateauCore 35 6 := by
       apply SimpleGraph.le_minDegree_of_forall_le_degree
       intro v
       rw [boza36Graph_degree v]))
+
+/-- All positive-excess degree-six plateau cores below the square order are
+impossible.  The only remaining degree-six case in this band is the
+first-order value `m = 32`. -/
+theorem C4PlateauCore.degreeSix_order_eq_thirtyTwo
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 6)
+    (hsize : m < 36) :
+    m = 32 := by
+  rcases hcore.degreeSix_order_eq_thirtyTwo_or_thirtyFour_or_thirtyFive
+      hm hsize with h32 | h34 | h35
+  · exact h32
+  · subst m
+    exact (not_C4PlateauCore_thirtyFour_six hcore).elim
+  · subst m
+    exact (not_C4PlateauCore_thirtyFive_six hcore).elim
 
 end Erdos85
