@@ -232,6 +232,84 @@ theorem trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments
       G hfree hreg,
     trace_antipodal_mul_triangleFree_sq_eq_zero G, sub_zero]
 
+/-- The fourth-word triangle-free commutator gap at even excess two is an
+explicit linear form in the two nonzero color-sector sizes. -/
+theorem trace_triangleFree_commutatorGap_even_excessTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 5) :
+    let A := G.adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    let s2 := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card
+    let s4 := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 4).card
+    Matrix.trace ((A * A) * (T * T)) -
+        Matrix.trace ((T * T) * (T * T)) =
+      (2 * (d : ℤ) - 4) * (s2 : ℤ) +
+        (4 * (d : ℤ) - 16) * (s4 : ℤ) := by
+  dsimp only
+  let Tgraph := triangleFreeEdgeGraph G
+  let s2 := (Finset.univ.filter fun x : V => Tgraph.degree x = 2).card
+  let s4 := (Finset.univ.filter fun x : V => Tgraph.degree x = 4).card
+  have hsum1 : (∑ x : V, (Tgraph.degree x : ℤ)) =
+      2 * (s2 : ℤ) + 4 * (s4 : ℤ) := by
+    have h := trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
+      G hfree heven hreg hcard
+    rw [trace_adjMatrix_mul_secondOrderDefect_eq_sum_triangleFreeDegrees] at h
+    exact h
+  have hsum2 : (∑ x : V, (Tgraph.degree x : ℤ) ^ 2) =
+      4 * (s2 : ℤ) + 16 * (s4 : ℤ) := by
+    calc
+      (∑ x : V, (Tgraph.degree x : ℤ) ^ 2) =
+          ∑ x : V, (4 * (if Tgraph.degree x = 2 then 1 else 0) +
+            16 * (if Tgraph.degree x = 4 then 1 else 0) : ℤ) := by
+        apply Finset.sum_congr rfl
+        intro x _hx
+        rcases excessTwo_even_color_degree_classification
+            G hfree heven hreg hcard x with hx | hx | hx
+        · simp [Tgraph, hx.1]
+        · simp [Tgraph, hx.1]
+        · simp [Tgraph, hx.1]
+      _ = 4 * (s2 : ℤ) + 16 * (s4 : ℤ) := by
+        dsimp [s2, s4]
+        rw [Finset.sum_add_distrib]
+        simp only [mul_ite, mul_one, mul_zero]
+        rw [← Finset.sum_filter, ← Finset.sum_filter]
+        simp [mul_comm]
+  rw [trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments
+      G hfree hreg, hsum1, hsum2]
+  ring
+
+/-- At order 35 and degree six, the fourth-word gap is eight times the
+number of vertices in a nonzero triangle-free color sector. -/
+theorem degreeSix_thirtyFive_triangleFree_commutatorGap
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    Matrix.trace ((A * A) * (T * T)) -
+        Matrix.trace ((T * T) * (T * T)) =
+      8 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+  have h := trace_triangleFree_commutatorGap_even_excessTwo
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  dsimp only at h ⊢
+  norm_num at h
+  rw [mul_add]
+  exact h
+
 /-- **Odd excess-three normalization.**  The whole triangle-free side is a
 known affine expression in the degree-three sector size, apart from the
 single mixed count `tr(C T²)`. -/
