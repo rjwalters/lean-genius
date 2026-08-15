@@ -4,6 +4,8 @@ import Proofs.Erdos85BoundedReplacementObstruction
 import Proofs.Erdos85EvenExcessOneThirdMoment
 import Proofs.Erdos85AlternatingFourthMoment
 import Proofs.Erdos85SecondOrderColorTrace
+import Proofs.Erdos85ExcessEigenspace
+import Proofs.Erdos85QuadraticDimension
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -178,6 +180,40 @@ theorem degreeSix_thirtyFour_triangularCliqueCount_eq_thirtyFour_of_colorOrder_z
   have hmass := six_mul_triangularCliqueCount_add_two_mul_colorOrder_excessOne
     G hfree (d := 6) (by norm_num) hreg (by omega)
   omega
+
+/-- The `-1` defect eigenspace at order 34 has even rational dimension.
+On this eigenspace the commuting adjacency restriction squares to `6`, a
+rational nonsquare.  This is the spectral parity constraint seen by an
+adjacent-defect-twin vector. -/
+theorem degreeSix_thirtyFour_negOne_defectEigenspace_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hregD : ∀ x, (secondOrderDefectGraph G).degree x = 3) :
+    Even (Module.finrank ℚ
+      (defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-1 : ℚ))) := by
+  let A := G.adjMatrix ℚ
+  let D := (secondOrderDefectGraph G).adjMatrix ℚ
+  let hcomm : A * D = D * A :=
+    adjMatrix_comm_secondOrderDefect_of_regular_rat G hfree hreg
+  have hsq :
+      defectEigenspaceRestrict A hcomm (-1 : ℚ) *
+          defectEigenspaceRestrict A hcomm (-1 : ℚ) =
+        (6 : ℚ) • LinearMap.id := by
+    simpa [A, D] using
+      (graph_defectEigenspaceRestrict_sq_of_regular_excess
+        G hfree (d := 6) (e := 1) hreg hregD
+          (μ := (-1 : ℚ)) (by norm_num))
+  exact LinearMap.even_finrank_of_sq_eq_nonsquare_nat
+    (defectEigenspaceRestrict A hcomm (-1 : ℚ)) 6
+      (by
+        rintro ⟨x, hx⟩
+        have hle : x ≤ 6 := Nat.le_of_dvd (by norm_num) ⟨x, hx⟩
+        interval_cases x <;> omega) hsq
 
 /-- Decode the mod-two defect-set equation when the set has even order. -/
 theorem oddDefectSet_neighborParity_of_even
