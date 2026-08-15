@@ -156,6 +156,55 @@ theorem sevenHigh_t0_pair_fiber_card_eq_one
     G hfree e x (by rw [hx]; simp [hab])
   simpa [hx] using hcard
 
+theorem sevenHigh_t0_singleton_fiber_card_eq_two
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (w : Fin 7) :
+    Fintype.card {x : Fin 49 // sevenHighLabeledSupport G e x = {w}} = 2 := by
+  rw [Fintype.card_subtype]
+  let v : Fin 49 := (e.symm w).1
+  have hv : v ∈ orderFortyNineHighVertices G := (e.symm w).2
+  have hset : (Finset.univ.filter fun x : Fin 49 =>
+      sevenHighLabeledSupport G e x = {w}) =
+      (G.neighborFinset v).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 1 := by
+    ext x
+    constructor
+    · intro hx
+      have hs := (Finset.mem_filter.mp hx).2
+      apply Finset.mem_filter.mpr
+      constructor
+      · have hwMem : w ∈ sevenHighLabeledSupport G e x := by simp [hs]
+        simpa [v, SimpleGraph.mem_neighborFinset, G.adj_comm] using
+          (mem_sevenHighLabeledSupport_iff G e x w).mp hwMem
+      · rw [← sevenHighLabeledSupport_card G e x, hs]
+        simp
+    · intro hx
+      have hxN := (Finset.mem_filter.mp hx).1
+      have hxCard := (Finset.mem_filter.mp hx).2
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ x, ?_⟩
+      have hwMem : w ∈ sevenHighLabeledSupport G e x := by
+        apply (mem_sevenHighLabeledSupport_iff G e x w).mpr
+        simpa [v, SimpleGraph.mem_neighborFinset, G.adj_comm] using hxN
+      have hcard : (sevenHighLabeledSupport G e x).card = 1 := by
+        rw [sevenHighLabeledSupport_card]
+        exact hxCard
+      obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hcard
+      have hwz : w = z := by
+        rw [hz] at hwMem
+        simpa using hwMem
+      simp [hz, hwz]
+  rw [hset]
+  exact (sevenHigh_t0_local_incidence
+    G hfree hmin hHigh hzero hv).1
+
 end
 
 end Erdos85
