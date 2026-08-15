@@ -5070,6 +5070,52 @@ theorem degreeSix_thirtyFour_no_closed_defectKFour_of_colorOrder_zero
       hq₁Out hq₂Out hq₃Out hs₁R hs₂R hs₃R
       hq₁s₁ hq₂s₂ hq₃s₃ hs₁s₂ hs₁s₃ hs₂s₃
 
+/-- Consequently a closed cubic defect `K₄` can occur only in one of the
+nine nonzero color orders allowed by the global dispatcher. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_nonzero_colorOrder_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    let s := (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card
+    s = 6 ∨ s = 9 ∨ s = 12 ∨ s = 15 ∨ s = 18 ∨
+      s = 21 ∨ s = 24 ∨ s = 27 ∨ s = 30 := by
+  let s := (Finset.univ.filter fun z : V =>
+    (triangleFreeEdgeGraph G).degree z = 2).card
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have htwins := cubic_defectKFour_adjacent_twins
+    (secondOrderDefectGraph G) hDreg hab hax hbx hay hby hxy
+  have hcases := degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_cases
+    G hfree hreg hcard hab htwins
+  dsimp only at hcases ⊢
+  rcases hcases with hzero | hs | hs | hs | hs | hs | hs | hs | hs | hs
+  · exact (degreeSix_thirtyFour_no_closed_defectKFour_of_colorOrder_zero
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero).elim
+  · exact Or.inl hs
+  · exact Or.inr (Or.inl hs)
+  · exact Or.inr (Or.inr (Or.inl hs))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl hs)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hs))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hs)))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hs))))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hs)))))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hs)))))))
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
