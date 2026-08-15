@@ -1,4 +1,5 @@
 import Proofs.Erdos85PositiveExcessOne
+import Proofs.Erdos85FifthMomentBridge
 
 /-!
 # Local parity at arbitrary positive excess
@@ -168,6 +169,27 @@ theorem trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
       rw [Finset.sum_add_distrib]
       simp [Finset.mul_sum, Finset.sum_ite, mul_comm]
     _ = _ := by rfl
+
+/-- Third-moment form of the excess-two sector count. -/
+theorem trace_adjMatrix_cube_even_excessTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 5) :
+    Matrix.trace (G.adjMatrix ℤ * G.adjMatrix ℤ * G.adjMatrix ℤ) =
+      (Fintype.card V : ℤ) * d -
+        2 * ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) -
+        4 * ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ) := by
+  have hcube := trace_adjMatrix_cube_add_colorTrace_eq_card_mul_degree_of_regular
+    G hfree hreg
+  rw [trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
+    G hfree heven hreg hcard] at hcube
+  omega
 
 /-- At excess two and odd degree, the local triangle-free degree is `1` or
 `3`. -/
