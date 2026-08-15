@@ -76,4 +76,20 @@ theorem C4PlateauCore.exists_connected_degreeSeven_representative
   norm_num at hmass
   omega
 
+/-- Throughout the final degree-seven conductor window, an edge-minimal
+representative has at most two connected components. -/
+theorem C4PlateauCore.exists_degreeSeven_component_count_le_two
+    {m : ℕ} (hm : 4 ≤ m) (hm111 : m < 111)
+    (hcore : C4PlateauCore m 7) :
+    ∃ (G : SimpleGraph (Fin m)) (_ : DecidableRel G.Adj),
+      G.minDegree = 7 ∧ ¬ containsC4 (Fin m) G ∧
+      Fintype.card G.ConnectedComponent ≤ 2 := by
+  rcases hcore with ⟨G, hdec, hmin, hfree, _hcover, _hnext⟩
+  letI : DecidableRel G.Adj := hdec
+  have hmass := connectedComponent_count_mul_oddMoore_le_card
+    G hfree (d := 7) (by norm_num) (by norm_num) hmin.ge
+  refine ⟨G, hdec, hmin, hfree, ?_⟩
+  norm_num at hmass
+  omega
+
 end Erdos85
