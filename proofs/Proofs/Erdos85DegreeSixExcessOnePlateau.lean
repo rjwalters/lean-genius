@@ -1501,6 +1501,51 @@ theorem degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
   rw [hABXcard, G.card_neighborFinset_eq_degree, hreg y] at hie
   omega
 
+/-- A size-two even defect-kernel set therefore produces an explicit
+four-vertex defect diamond whose four original neighborhoods occupy at
+least 23 vertices. -/
+theorem oddDefectSet_card_two_exists_twinDiamond_neighborhood_union_twentyThree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hregD : ∀ v, (secondOrderDefectGraph G).degree v = 3)
+    (W : Finset V) (hWcard : W.card = 2)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        ((((secondOrderDefectGraph G).neighborFinset v ∩ W).card :
+          ZMod 2)) = 0) :
+    ∃ a b x y : V,
+      (secondOrderDefectGraph G).Adj a b ∧
+      (secondOrderDefectGraph G).Adj a x ∧
+      (secondOrderDefectGraph G).Adj b x ∧
+      (secondOrderDefectGraph G).Adj a y ∧
+      (secondOrderDefectGraph G).Adj b y ∧ x ≠ y ∧
+      23 ≤ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y).card := by
+  obtain ⟨a, b, _habne, _hW, hab, htwins⟩ :=
+    oddDefectSet_card_two_exists_adjacent_twins
+      (secondOrderDefectGraph G) W hWcard hparity
+  let C := (secondOrderDefectGraph G).neighborFinset a ∩
+    (secondOrderDefectGraph G).neighborFinset b
+  have hCcard : C.card = 2 := by
+    simpa [C] using adjacent_twins_commonNeighbor_card_eq_two_of_cubic
+      (secondOrderDefectGraph G) hregD hab htwins
+  obtain ⟨x, y, hxy, hC⟩ := Finset.card_eq_two.mp hCcard
+  have hxC : x ∈ C := by rw [hC]; simp
+  have hyC : y ∈ C := by rw [hC]; simp
+  have hxParts := Finset.mem_inter.mp hxC
+  have hyParts := Finset.mem_inter.mp hyC
+  have hax := ((secondOrderDefectGraph G).mem_neighborFinset a x).mp hxParts.1
+  have hbx := ((secondOrderDefectGraph G).mem_neighborFinset b x).mp hxParts.2
+  have hay := ((secondOrderDefectGraph G).mem_neighborFinset a y).mp hyParts.1
+  have hby := ((secondOrderDefectGraph G).mem_neighborFinset b y).mp hyParts.2
+  exact ⟨a, b, x, y, hab, hax, hbx, hay, hby, hxy,
+    degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
+      G hfree hreg hab hax hbx hay hby hxy⟩
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
