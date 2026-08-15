@@ -3,6 +3,7 @@ import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85BoundedReplacementObstruction
 import Proofs.Erdos85EvenExcessOneThirdMoment
 import Proofs.Erdos85AlternatingFourthMoment
+import Proofs.Erdos85SecondOrderColorTrace
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -17,6 +18,86 @@ namespace Erdos85
 open SimpleGraph
 
 noncomputable section
+
+/-- Edge partition at even excess one.  Triangular edges occur in disjoint
+triangles, while the triangle-free color has degree zero or two, so twice
+the colored-sector order plus six times the triangular clique count is the
+total degree mass. -/
+theorem six_mul_triangularCliqueCount_add_two_mul_colorOrder_excessOne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4) :
+    6 * ((triangularEdgeGraph G).cliqueFinset 3).card +
+        2 * ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card) =
+      Fintype.card V * d := by
+  let H := triangularEdgeGraph G
+  let T := triangleFreeEdgeGraph G
+  let s := (Finset.univ.filter fun x : V => T.degree x = 2).card
+  have hsumG : ∑ x : V, G.degree x = Fintype.card V * d := by
+    simp_rw [hreg]
+    simp
+  have hedgeG : 2 * G.edgeFinset.card = Fintype.card V * d := by
+    rw [← SimpleGraph.sum_degrees_eq_twice_card_edges G]
+    exact hsumG
+  have hsumT : ∑ x : V, T.degree x = 2 * s := by
+    change ∑ x : V, (triangleFreeEdgeGraph G).degree x = 2 * s
+    calc
+      _ = ∑ x : V, if (triangleFreeEdgeGraph G).degree x = 2
+          then 2 else 0 := by
+        apply Finset.sum_congr rfl
+        intro x _
+        rcases excessOne_even_triangleFree_degree_zero_or_two
+            G hfree heven hreg hcard x with hx | hx <;> simp [hx]
+      _ = 2 * s := by
+        simp only [s, T]
+        rw [← Finset.sum_filter]
+        simp [mul_comm]
+  have hedgeT : T.edgeFinset.card = s := by
+    have hhand := SimpleGraph.sum_degrees_eq_twice_card_edges T
+    omega
+  have hTle : T ≤ G := by
+    intro x y hxy
+    exact ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).1
+  have hedgeH : H.edgeFinset.card = G.edgeFinset.card - T.edgeFinset.card := by
+    have heq : H.edgeFinset = G.edgeFinset \ T.edgeFinset := by
+      ext e
+      simp [H, T, triangularEdgeGraph]
+    rw [heq, Finset.card_sdiff_of_subset]
+    exact edgeFinset_mono hTle
+  have hpartition : G.edgeFinset.card = H.edgeFinset.card + T.edgeFinset.card := by
+    have hlecard : T.edgeFinset.card ≤ G.edgeFinset.card :=
+      Finset.card_le_card (edgeFinset_mono hTle)
+    omega
+  have hlocal : H.LocallyLinear :=
+    triangularEdgeGraph_locallyLinear_of_not_containsC4 G hfree
+  have htri : H.edgeFinset.card = 3 * (H.cliqueFinset 3).card :=
+    hlocal.card_edgeFinset
+  change 6 * (H.cliqueFinset 3).card + 2 * s = Fintype.card V * d
+  omega
+
+/-- At order 34 and degree six, the degree-two triangle-free color sector
+has order divisible by three. -/
+theorem degreeSix_thirtyFour_colorOrder_mod_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34) :
+    ((Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card) % 3 = 0 := by
+  have hmass := six_mul_triangularCliqueCount_add_two_mul_colorOrder_excessOne
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  omega
 
 /-- Decode the mod-two defect-set equation when the set has even order. -/
 theorem oddDefectSet_neighborParity_of_even
