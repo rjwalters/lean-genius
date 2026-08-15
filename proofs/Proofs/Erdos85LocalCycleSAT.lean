@@ -173,4 +173,53 @@ theorem boolLocalPerfectMatchingOffCycle_normalForm
     HasSixCycleMatchingNormalForm, adj36_matrixBV36] using
       localPerfectMatchingOffCycle_normalForm (matrixBV36 r) hbv
 
+/-- Graph-facing form of the six-cycle matching classifier. -/
+theorem oneRegular_off_sixCycle_normalForm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (C : SimpleGraph V) [DecidableRel C.Adj]
+    (f : Fin 6 → V) (hfinj : Function.Injective f)
+    (hclosed : ∀ i, C.neighborFinset (f i) ⊆ Finset.univ.image f)
+    (hdegree : ∀ i, C.degree (f i) = 1)
+    (hoff : ∀ i, ¬ C.Adj (f i) (f (next6 i)) ∧
+      ¬ C.Adj (f i) (f (prev6 i))) :
+    (∀ i, C.Adj (f i) (f (opposite6 i))) ∨
+    ∃ k,
+      C.Adj (f k) (f (opposite6 k)) ∧
+      C.Adj (f (next6 k)) (f (prev6 k)) ∧
+      C.Adj (f (next6 (next6 k))) (f (prev6 (prev6 k))) := by
+  classical
+  let r : Fin 6 → Fin 6 → Bool := fun i j => decide (C.Adj (f i) (f j))
+  have hrow : ∀ i, (Finset.univ.filter fun j => r i j).card = 1 := by
+    intro i
+    have hcard : (Finset.univ.filter fun j => r i j).card =
+        (C.neighborFinset (f i)).card := by
+      apply Finset.card_bij (fun j _hj => f j)
+      · intro j hj
+        have : C.Adj (f i) (f j) := by
+          simpa [r] using (Finset.mem_filter.mp hj).2
+        exact (C.mem_neighborFinset (f i) (f j)).mpr this
+      · intro j hj k hk hjk
+        exact hfinj hjk
+      · intro y hy
+        have hyRange := hclosed i hy
+        obtain ⟨j, _hj, rfl⟩ := Finset.mem_image.mp hyRange
+        refine ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ j, ?_⟩, rfl⟩
+        have hij : C.Adj (f i) (f j) :=
+          (C.mem_neighborFinset (f i) (f j)).mp hy
+        simp [r, hij]
+    rw [hcard, C.card_neighborFinset_eq_degree, hdegree]
+  have hr : BoolLocalPerfectMatchingOffCycle r := by
+    refine ⟨?_, ?_, hrow, ?_⟩
+    · intro i
+      simp [r, C.loopless.irrefl]
+    · intro i j
+      simp only [r, decide_eq_decide]
+      exact C.adj_comm (f i) (f j)
+    · intro i
+      constructor
+      · simp [r, (hoff i).1]
+      · simp [r, (hoff i).2]
+  have hnormal := boolLocalPerfectMatchingOffCycle_normalForm hr
+  simpa only [BoolHasSixCycleMatchingNormalForm, r, decide_eq_true_eq] using hnormal
+
 end Erdos85
