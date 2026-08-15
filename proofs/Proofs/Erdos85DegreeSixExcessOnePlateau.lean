@@ -5116,6 +5116,94 @@ theorem degreeSix_thirtyFour_closed_defectKFour_nonzero_colorOrder_cases
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hs)))))))
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hs)))))))
 
+/-- Independently of the global color order, every center of a closed cubic
+defect `K₄` has triangle-free degree zero (and antipodal degree three). -/
+theorem degreeSix_thirtyFour_closed_defectKFour_center_color_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    ((triangleFreeEdgeGraph G).degree a = 0 ∧
+      (antipodalGraph G).degree a = 3) ∧
+    ((triangleFreeEdgeGraph G).degree b = 0 ∧
+      (antipodalGraph G).degree b = 3) ∧
+    ((triangleFreeEdgeGraph G).degree x = 0 ∧
+      (antipodalGraph G).degree x = 3) ∧
+    ((triangleFreeEdgeGraph G).degree y = 0 ∧
+      (antipodalGraph G).degree y = 3) := by
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have htwins := cubic_defectKFour_adjacent_twins
+    (secondOrderDefectGraph G) hDreg hab hax hbx hay hby hxy
+  have habZero := excessOne_even_adjacent_defect_twins_triangleFree_degree_zero
+    G hfree (d := 6) (by norm_num) hreg (by simpa using hcard) hab htwins
+  have habColor := excessOne_even_adjacent_defect_twins_common_color_degree_zero
+    G hfree (d := 6) (by norm_num) hreg (by simpa using hcard) hab htwins
+  have hxCommon : x ∈ (secondOrderDefectGraph G).neighborFinset a ∩
+      (secondOrderDefectGraph G).neighborFinset b := by
+    exact Finset.mem_inter.mpr ⟨
+      ((secondOrderDefectGraph G).mem_neighborFinset a x).mpr hax,
+      ((secondOrderDefectGraph G).mem_neighborFinset b x).mpr hbx⟩
+  have hyCommon : y ∈ (secondOrderDefectGraph G).neighborFinset a ∩
+      (secondOrderDefectGraph G).neighborFinset b := by
+    exact Finset.mem_inter.mpr ⟨
+      ((secondOrderDefectGraph G).mem_neighborFinset a y).mpr hay,
+      ((secondOrderDefectGraph G).mem_neighborFinset b y).mpr hby⟩
+  have haColor := excessOne_even_color_degree_classification
+    G hfree (d := 6) (by norm_num) hreg (by simpa using hcard) a
+  have hbColor := excessOne_even_color_degree_classification
+    G hfree (d := 6) (by norm_num) hreg (by simpa using hcard) b
+  have ha03 : (triangleFreeEdgeGraph G).degree a = 0 ∧
+      (antipodalGraph G).degree a = 3 := by
+    rcases haColor with ha03 | ha21
+    · exact ha03
+    · omega
+  have hb03 : (triangleFreeEdgeGraph G).degree b = 0 ∧
+      (antipodalGraph G).degree b = 3 := by
+    rcases hbColor with hb03 | hb21
+    · exact hb03
+    · omega
+  exact ⟨ha03, hb03, habColor x hxCommon, habColor y hyCommon⟩
+
+/-- Hence the nonzero triangle-free sector is disjoint from all four closed
+defect-`K₄` centers. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_colorSector_disjoint_centers
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    Disjoint (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) ({a, b, x, y} : Finset V) := by
+  have hc := degreeSix_thirtyFour_closed_defectKFour_center_color_degrees
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  rw [Finset.disjoint_left]
+  intro z hzS hzQ
+  have hz2 := (Finset.mem_filter.mp hzS).2
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hzQ
+  rcases hzQ with rfl | rfl | rfl | rfl <;> omega
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
