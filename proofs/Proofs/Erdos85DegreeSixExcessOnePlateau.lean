@@ -6,6 +6,7 @@ import Proofs.Erdos85AlternatingFourthMoment
 import Proofs.Erdos85SecondOrderColorTrace
 import Proofs.Erdos85ExcessEigenspace
 import Proofs.Erdos85QuadraticDimension
+import Proofs.Erdos85PositiveExcessOnePropagation
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -2026,6 +2027,40 @@ theorem cubic_defectKFour_neighborFinsets
       hax.symm hbx.symm hxy habNe hayNe hbyNe,
     neighborFinset_eq_triple_of_degree_three D (hregD y)
       hay.symm hby.symm hxy.symm habNe haxNe hbxNe⟩
+
+/-- Entrywise commutation propagates zero contact with an isolated defect
+block across a defect edge.  If all defect neighbors of `u` lie in `Q` and
+`v` has no original-graph neighbor in `Q`, then every defect neighbor `w`
+of `v` is nonadjacent to `u` in the original graph. -/
+theorem no_adj_of_defect_adj_of_zero_block_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (Q : Finset V) {u v w : V}
+    (huD : (secondOrderDefectGraph G).neighborFinset u ⊆ Q)
+    (hvQ : ∀ z ∈ Q, ¬ G.Adj z v)
+    (hvwD : (secondOrderDefectGraph G).Adj v w) :
+    ¬ G.Adj u w := by
+  have hcomm := card_filter_adj_secondOrderDefect_comm_of_regular
+    G hfree hreg u v
+  have hright : (((secondOrderDefectGraph G).neighborFinset u).filter
+      (fun z => G.Adj z v)).card = 0 := by
+    apply Finset.card_eq_zero.mpr
+    apply Finset.filter_eq_empty_iff.mpr
+    intro z hzD
+    exact hvQ z (huD hzD)
+  rw [hright] at hcomm
+  intro huw
+  have hwMem : w ∈ (((secondOrderDefectGraph G).neighborFinset v).filter
+      (fun z => G.Adj u z)) := by
+    apply Finset.mem_filter.mpr
+    exact ⟨((secondOrderDefectGraph G).mem_neighborFinset v w).mpr hvwD, huw⟩
+  have hpos : 0 < ((((secondOrderDefectGraph G).neighborFinset v).filter
+      (fun z => G.Adj u z)).card) := Finset.card_pos.mpr ⟨w, hwMem⟩
+  omega
 
 /-- In the pure antipodal branch, a closed defect `K₄` and its four
 pairwise-disjoint degree-six neighborhoods occupy exactly 28 vertices. -/
