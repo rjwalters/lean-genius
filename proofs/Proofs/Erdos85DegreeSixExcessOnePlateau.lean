@@ -6043,6 +6043,54 @@ theorem degreeSix_thirtyFour_colorOrder_six_exists_cycleParam
   exact neighborFinset_eq_pair_of_degree_two T
     (Finset.mem_filter.mp (u z).2).2 hminusH hplusH hdistinct
 
+/-- Normalize the preceding dependent cycle coordinates to the literal
+group `ZMod 6`. -/
+theorem degreeSix_thirtyFour_colorOrder_six_exists_zmodSixParam
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6) :
+    let S := Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2
+    ∃ u : ZMod 6 → V, Function.Injective u ∧
+      Set.range u = (↑S : Set V) ∧
+      ∀ z, (triangleFreeEdgeGraph G).neighborFinset (u z) =
+        {u (z - 1), u (z + 1)} := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  obtain ⟨v, p, u, hpCycle, hpLen, huinj, hurange, huT⟩ :=
+    degreeSix_thirtyFour_colorOrder_six_exists_cycleParam
+      G hfree hreg hcard hScard
+  let e : ZMod 6 ≃+* ZMod p.length := ZMod.ringEquivCongr hpLen.symm
+  let w : ZMod 6 → V := fun z => (u (e z)).1
+  have hwinj : Function.Injective w := by
+    intro z t hzt
+    apply e.injective
+    apply huinj
+    exact Subtype.ext hzt
+  have hwrange : Set.range w = (↑S : Set V) := by
+    ext y
+    constructor
+    · rintro ⟨z, rfl⟩
+      exact (u (e z)).2
+    · intro hy
+      let ys : S := ⟨y, hy⟩
+      have hysRange : ys ∈ Set.range u := by rw [hurange]; trivial
+      obtain ⟨t, ht⟩ := hysRange
+      refine ⟨e.symm t, ?_⟩
+      change (u (e (e.symm t))).1 = y
+      rw [e.apply_symm_apply, ht]
+  refine ⟨w, hwinj, hwrange, ?_⟩
+  intro z
+  have hz := huT (e z)
+  simpa [w, e] using hz
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
