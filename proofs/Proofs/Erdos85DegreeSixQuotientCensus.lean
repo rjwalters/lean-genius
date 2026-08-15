@@ -261,6 +261,67 @@ theorem degreeSixQuotient_orderThree_support_card_seven_nat
     (P.card = 5 ∧ R.card = 1)
   omega
 
+/-- Arithmetic endpoint for the only nontrivial competing Model5 support
+weights.  After a base triangle has positive-support weights `2+4`, name the
+two invisible component orders `x,y`, their contacts with the two positive
+components, and their residual `2×2` quotient block.  Balance, row sum,
+trace, and one diagonal square equation are already inconsistent. -/
+theorem false_of_degreeSixQuotient_model5_two_four_split
+    (x y u v ra rb ta tb rr rt tr tt : ℕ)
+    (hx : 3 ≤ x) (hy : 3 ≤ y) (hxy : x + y = 12)
+    (hu : u ≤ 2) (hv : v ≤ 2)
+    (hcx : 2 * u + 4 * v = x)
+    (hrau : 6 * u = x * ra) (hrbv : 12 * v = x * rb)
+    (htau : 6 * (2 - u) = y * ta)
+    (htbv : 12 * (2 - v) = y * tb)
+    (hrowr : ra + rb + rr + rt = 6)
+    (hrowt : ta + tb + tr + tt = 6)
+    (hrtb : x * rt = y * tr)
+    (htrace : rr + tt = 3)
+    (hsqr : ra * u + rb * v + rr * rr + rt * tr = x + 3) : False := by
+  have hcases :
+      (x = 4 ∧ y = 8 ∧ u = 0 ∧ v = 1) ∨
+      (x = 8 ∧ y = 4 ∧ u = 0 ∧ v = 2) ∨
+      (x = 6 ∧ y = 6 ∧ u = 1 ∧ v = 1) ∨
+      (x = 4 ∧ y = 8 ∧ u = 2 ∧ v = 0) ∨
+      (x = 8 ∧ y = 4 ∧ u = 2 ∧ v = 1) := by
+    clear hrau hrbv htau htbv hrowr hrowt hrtb htrace hsqr
+    interval_cases u <;> interval_cases v <;> omega
+  rcases hcases with h | h | h | h | h
+  · rcases h with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at htau
+    omega
+  · rcases h with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at hrau hrbv htau htbv
+    have hra : ra = 0 := by omega
+    have hrb : rb = 3 := by omega
+    have hta : ta = 3 := by omega
+    have htb : tb = 0 := by omega
+    subst ra; subst rb; subst ta; subst tb
+    norm_num at hrowr hrowt hrtb htrace hsqr
+    nlinarith
+  · rcases h with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at hrau hrbv htau htbv
+    have hra : ra = 1 := by omega
+    have hrb : rb = 2 := by omega
+    have hta : ta = 1 := by omega
+    have htb : tb = 2 := by omega
+    subst ra; subst rb; subst ta; subst tb
+    norm_num at hrowr hrowt hrtb htrace hsqr
+    omega
+  · rcases h with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at hrau hrbv htau htbv
+    have hra : ra = 3 := by omega
+    have hrb : rb = 0 := by omega
+    have hta : ta = 0 := by omega
+    have htb : tb = 3 := by omega
+    subst ra; subst rb; subst ta; subst tb
+    norm_num at hrowr hrowt hrtb htrace hsqr
+    nlinarith
+  · rcases h with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at hrau
+    omega
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
