@@ -1,6 +1,7 @@
 import Proofs.Erdos85DegreeSixBoundaryPackage
 import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85BoundedReplacementObstruction
+import Proofs.Erdos85EvenExcessOneThirdMoment
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -578,6 +579,70 @@ theorem oddDefectSet_card_two_exists_adjacent_twins_with_two_common
     oddDefectSet_card_two_exists_adjacent_twins D W hWcard hparity
   exact ⟨a, b, hab, hW, hadj, htwins,
     adjacent_twins_commonNeighbor_card_eq_two_of_cubic D hreg hadj htwins⟩
+
+/-- In an even-degree excess-one graph, the shared edge of adjacent twins in
+the combined defect graph cannot have the triangle-free color. -/
+theorem excessOne_even_adjacent_defect_twins_not_triangleFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V}
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    ¬ (triangleFreeEdgeGraph G).Adj a b := by
+  intro habT
+  have hsubset : (triangleFreeEdgeGraph G).neighborFinset a ⊆ {b} := by
+    intro v hv
+    have havT : (triangleFreeEdgeGraph G).Adj a v :=
+      ((triangleFreeEdgeGraph G).mem_neighborFinset a v).mp hv
+    by_cases hvb : v = b
+    · simp [hvb]
+    · have hva : v ≠ a :=
+        (triangleFreeEdgeGraph G).ne_of_adj havT |>.symm
+      have havD : (secondOrderDefectGraph G).Adj a v := by
+        simp only [secondOrderDefectGraph, SimpleGraph.sup_adj]
+        exact Or.inr havT
+      have hbvD : (secondOrderDefectGraph G).Adj b v :=
+        (htwins v hva hvb).mp havD
+      exact (not_two_adjacent_triangleFree_in_defect_triangle
+        G habT.symm havT hbvD.symm).elim
+  have hbmem : b ∈ (triangleFreeEdgeGraph G).neighborFinset a :=
+    ((triangleFreeEdgeGraph G).mem_neighborFinset a b).mpr habT
+  have heq : (triangleFreeEdgeGraph G).neighborFinset a = {b} :=
+    Finset.eq_singleton_iff_unique_mem.mpr ⟨hbmem, fun v hv => by
+      have := hsubset hv
+      simpa using this⟩
+  have hdegOne : (triangleFreeEdgeGraph G).degree a = 1 := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, heq]
+    simp
+  rcases excessOne_even_triangleFree_degree_zero_or_two
+      G hfree heven hreg hcard a with hzero | htwo <;> omega
+
+/-- Therefore the shared edge of adjacent defect twins has the antipodal
+color. -/
+theorem excessOne_even_adjacent_defect_twins_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    (antipodalGraph G).Adj a b := by
+  simp only [secondOrderDefectGraph, SimpleGraph.sup_adj] at habD
+  rcases habD with habC | habT
+  · exact habC
+  · exact (excessOne_even_adjacent_defect_twins_not_triangleFree
+      G hfree heven hreg hcard htwins habT).elim
 
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
