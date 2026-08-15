@@ -1,8 +1,10 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85PlateauExcessStructure
 import Proofs.Erdos85PositiveExcessLocalParity
+import Proofs.Erdos85CofinalLowerBound
 import Proofs.Erdos85Boza35Witness
 import Proofs.Erdos85Boza36Witness
+import Proofs.Erdos85Boza37To39Witness
 
 /-!
 # Degree-six boundary package
@@ -178,5 +180,49 @@ theorem not_C4PlateauCore_degreeSix_of_lt_thirtySix
   have hm32 := hcore.degreeSix_order_eq_thirtyTwo hm hsize
   subst m
   exact not_C4PlateauCore_thirtyTwo_six hcore
+
+/-- The five checked Boza graphs fill the complete degree-six witness interval
+from order 35 through order 39. -/
+theorem degreeSix_witness_thirtyFive_add
+    (j : ℕ) (hj : j ≤ 4) :
+    C4FreeMinDegreeWitness (35 + j) 6 := by
+  interval_cases j <;> norm_num
+  · exact boza35_degreeSix_witness
+  · exact boza36_degreeSix_witness
+  · exact boza37_degreeSix_witness
+  · exact boza38_degreeSix_witness
+  · exact boza39_degreeSix_witness
+
+/-- Five consecutive witness orders reduce the degree-six conductor from the
+generic quadratic bound `1296` to `315`. -/
+theorem degreeSix_witness_of_threeHundredFifteen_le
+    {n : ℕ} (hn : 315 ≤ n) :
+    C4FreeMinDegreeWitness n 6 := by
+  apply eventually_witness_of_interval
+      (A := 35) (L := 4) (d := 6) (by norm_num) (by norm_num)
+      degreeSix_witness_thirtyFive_add n
+  norm_num at hn ⊢
+  exact hn
+
+/-- Every degree-six plateau core occurs before the improved order-315
+conductor. -/
+theorem C4PlateauCore.degreeSix_order_succ_lt_threeHundredFifteen
+    {m : ℕ} (hcore : C4PlateauCore m 6) :
+    m + 1 < 315 := by
+  by_contra hnot
+  have hw := degreeSix_witness_of_threeHundredFifteen_le (by omega : 315 ≤ m + 1)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
+/-- Combined localization for the still-unresolved degree-six regime. -/
+theorem C4PlateauCore.degreeSix_remaining_order_window
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 6) :
+    36 ≤ m ∧ m < 314 := by
+  constructor
+  · by_contra hnot
+    exact not_C4PlateauCore_degreeSix_of_lt_thirtySix hm (by omega) hcore
+  · have hlt := hcore.degreeSix_order_succ_lt_threeHundredFifteen
+    omega
 
 end Erdos85
