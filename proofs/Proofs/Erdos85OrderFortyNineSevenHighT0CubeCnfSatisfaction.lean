@@ -882,4 +882,74 @@ theorem sevenHighT0CubeFinalUnitsVal_finalState
   rw [sevenHighT0CubeFinalUnitsVal_state, hstate]
   rfl
 
+theorem sevenHighT0CubeNegativePositive_satisfied
+    {val : DimacsValuation} {a b : Nat} (hbPos : 0 < b)
+    (himp : val a = true → val b = true) :
+    dimacsClauseSatisfied val [-(a : Int), (b : Int)] := by
+  cases ha : val a
+  · exact ⟨-(a : Int), by simp, by simp [dimacsLitValue, ha]⟩
+  · refine ⟨(b : Int), by simp, ?_⟩
+    simp [dimacsLitValue, hbPos, himp ha]
+
+theorem sevenHighT0CubeNegativePositive_bounded
+    {top a b : Nat} (ha : a ≤ top) (hb : b ≤ top) :
+    dimacsClauseBounded top [-(a : Int), (b : Int)] := by
+  intro lit hlit
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hlit
+  rcases hlit with rfl | rfl
+  · simpa using ha
+  · simpa using hb
+
+theorem sevenHighT0CubePositiveList_satisfied
+    {val : DimacsValuation} {ids : List Nat}
+    (hpos : ∀ id ∈ ids, 0 < id)
+    (hwitness : ∃ id ∈ ids, val id = true) :
+    dimacsClauseSatisfied val
+      (ids.map fun id : Nat => (id : Int)) := by
+  obtain ⟨id, hid, htrue⟩ := hwitness
+  have hid' : (id : Int) ∈ ids.map (fun id : Nat => (id : Int)) :=
+    List.mem_map.mpr ⟨id, hid, rfl⟩
+  refine ⟨(id : Int), hid', ?_⟩
+  simp [dimacsLitValue, hpos id hid, htrue]
+
+theorem sevenHighT0CubePositiveList_bounded
+    {top : Nat} {ids : List Nat} (hids : ∀ id ∈ ids, id ≤ top) :
+    dimacsClauseBounded top
+      (ids.map fun id : Nat => (id : Int)) := by
+  intro lit hlit
+  obtain ⟨id, hid, heq⟩ := List.mem_map.mp hlit
+  rw [← heq]
+  simpa using hids id hid
+
+theorem sevenHighT0CubeNegativeFour_satisfied
+    {val : DimacsValuation} {a b c d : Nat}
+    (hnot : ¬(val a = true ∧ val b = true ∧
+      val c = true ∧ val d = true)) :
+    dimacsClauseSatisfied val
+      [-(a : Int), -(b : Int), -(c : Int), -(d : Int)] := by
+  cases ha : val a
+  · exact ⟨-(a : Int), by simp, by simp [dimacsLitValue, ha]⟩
+  cases hb : val b
+  · exact ⟨-(b : Int), by simp, by simp [dimacsLitValue, hb]⟩
+  cases hc : val c
+  · exact ⟨-(c : Int), by simp, by simp [dimacsLitValue, hc]⟩
+  have hd : val d = false := by
+    cases hd' : val d
+    · rfl
+    · exact False.elim (hnot ⟨ha, hb, hc, hd'⟩)
+  exact ⟨-(d : Int), by simp, by simp [dimacsLitValue, hd]⟩
+
+theorem sevenHighT0CubeNegativeFour_bounded
+    {top a b c d : Nat}
+    (ha : a ≤ top) (hb : b ≤ top) (hc : c ≤ top) (hd : d ≤ top) :
+    dimacsClauseBounded top
+      [-(a : Int), -(b : Int), -(c : Int), -(d : Int)] := by
+  intro lit hlit
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hlit
+  rcases hlit with rfl | rfl | rfl | rfl
+  · simpa using ha
+  · simpa using hb
+  · simpa using hc
+  · simpa using hd
+
 end Erdos85
