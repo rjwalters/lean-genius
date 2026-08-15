@@ -5630,6 +5630,74 @@ theorem degreeSix_thirtyFour_closed_defectKFour_colorOrder_six_localization
     exact degreeSix_thirtyFour_colorSector_eq_of_intersects_closed_six
       G hfree hreg hcard R hRcard hRTclosed (by simpa [S, T] using hScard) hdSR
 
+/-- In the residual alternative at color order six, the residual carries a
+two-regular triangle-free subgraph and a one-regular antipodal subgraph;
+both colors are closed on the residual. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_color_degrees
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∀ r ∈ R,
+      (triangleFreeEdgeGraph G).neighborFinset r ⊆ R ∧
+      ((triangleFreeEdgeGraph G).neighborFinset r).card = 2 ∧
+      (antipodalGraph G).neighborFinset r ⊆ R ∧
+      ((antipodalGraph G).neighborFinset r).card = 1 := by
+  let T := triangleFreeEdgeGraph G
+  let C := antipodalGraph G
+  let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+  obtain ⟨R', hR'eq, hRcard, hRclosed⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_cubic_residual_six
+      G hfree hreg hcard hab hax hbx hay hby hxy
+  have hR'eqR : R' = R := by simpa [R] using hR'eq
+  subst R'
+  dsimp only
+  intro r hr
+  have hrS : r ∈ Finset.univ.filter (fun z : V => T.degree z = 2) := by
+    rw [hresidual]
+    exact hr
+  have hrT2 : T.degree r = 2 := (Finset.mem_filter.mp hrS).2
+  have hrC1 : C.degree r = 1 := by
+    rcases excessOne_even_color_degree_classification
+      G hfree (d := 6) (by norm_num) hreg (by omega) r with h0 | h2
+    · have hzero : T.degree r = 0 := by simpa [T] using h0.1
+      omega
+    · exact h2.2
+  have hTclosed : T.neighborFinset r ⊆ R := by
+    intro z hrz
+    apply (hRclosed r hr).1
+    have hAdj : (secondOrderDefectGraph G).Adj r z := by
+      simp only [secondOrderDefectGraph, SimpleGraph.sup_adj]
+      exact Or.inr ((T.mem_neighborFinset r z).mp hrz)
+    simpa using hAdj
+  have hCclosed : C.neighborFinset r ⊆ R := by
+    intro z hrz
+    apply (hRclosed r hr).1
+    have hAdj : (secondOrderDefectGraph G).Adj r z := by
+      simp only [secondOrderDefectGraph, SimpleGraph.sup_adj]
+      exact Or.inl ((C.mem_neighborFinset r z).mp hrz)
+    simpa using hAdj
+  refine ⟨hTclosed, ?_, hCclosed, ?_⟩
+  · rw [T.card_neighborFinset_eq_degree, hrT2]
+  · rw [C.card_neighborFinset_eq_degree, hrC1]
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
