@@ -2062,6 +2062,91 @@ theorem no_adj_of_defect_adj_of_zero_block_contact
       (fun z => G.Adj u z)).card) := Finset.card_pos.mpr ⟨w, hwMem⟩
   omega
 
+/-- Entrywise commutation also gives the exact positive propagation count:
+if an isolated defect neighborhood is the triple `{u,r,s}` and `v` is
+adjacent in the original graph to exactly `u` from that triple, then exactly
+one defect neighbor of `v` is adjacent to the center `q`. -/
+theorem card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    {q u r s v : V}
+    (hqD : (secondOrderDefectGraph G).neighborFinset q = {u, r, s})
+    (huv : G.Adj u v) (hrv : ¬ G.Adj r v) (hsv : ¬ G.Adj s v) :
+    (((secondOrderDefectGraph G).neighborFinset v).filter
+      (fun z => G.Adj q z)).card = 1 := by
+  have hcomm := card_filter_adj_secondOrderDefect_comm_of_regular
+    G hfree hreg q v
+  have hfilter : (((secondOrderDefectGraph G).neighborFinset q).filter
+      (fun z => G.Adj z v)) = {u} := by
+    ext z
+    rw [hqD]
+    simp only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hzu | hzr | hzs, hzv⟩
+      · exact hzu
+      · exact (hrv (hzr ▸ hzv)).elim
+      · exact (hsv (hzs ▸ hzv)).elim
+    · intro hzu
+      exact ⟨Or.inl hzu, hzu ▸ huv⟩
+  rw [hfilter, Finset.card_singleton] at hcomm
+  exact hcomm
+
+/-- Around a closed cubic defect `K₄`, every vertex in one center's
+original neighborhood has exactly one defect neighbor in each of the other
+three center-neighborhood blocks. -/
+theorem defectKFour_neighbor_block_three_exact_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ}
+    (hreg : ∀ z, G.degree z = d)
+    (hregD : ∀ z, (secondOrderDefectGraph G).degree z = 3)
+    {a b x y v : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hv : v ∈ G.neighborFinset a) :
+    ((((secondOrderDefectGraph G).neighborFinset v).filter
+        (fun z => G.Adj b z)).card = 1) ∧
+      ((((secondOrderDefectGraph G).neighborFinset v).filter
+        (fun z => G.Adj x z)).card = 1) ∧
+      (((secondOrderDefectGraph G).neighborFinset v).filter
+        (fun z => G.Adj y z)).card = 1 := by
+  let D := secondOrderDefectGraph G
+  rcases cubic_defectKFour_neighborFinsets D hregD
+      hab hax hbx hay hby hxy with ⟨hKa, hKb, hKx, hKy⟩
+  have hav : G.Adj a v := (G.mem_neighborFinset a v).mp hv
+  have hbNot : ¬ G.Adj b v := by
+    intro hbv
+    exact Finset.disjoint_left.mp
+      (neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hab)
+      hv ((G.mem_neighborFinset b v).mpr hbv)
+  have hxNot : ¬ G.Adj x v := by
+    intro hxv
+    exact Finset.disjoint_left.mp
+      (neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hax)
+      hv ((G.mem_neighborFinset x v).mpr hxv)
+  have hyNot : ¬ G.Adj y v := by
+    intro hyv
+    exact Finset.disjoint_left.mp
+      (neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hay)
+      hv ((G.mem_neighborFinset y v).mpr hyv)
+  exact ⟨
+    card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
+      G hfree hreg hKb hav hxNot hyNot,
+    card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
+      G hfree hreg hKx hav hbNot hyNot,
+    card_defectNeighbors_adj_center_eq_one_of_unique_triple_contact
+      G hfree hreg hKy hav hbNot hxNot⟩
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
