@@ -2,6 +2,7 @@ import Proofs.Erdos85DegreeSixBoundaryPackage
 import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85BoundedReplacementObstruction
 import Proofs.Erdos85EvenExcessOneThirdMoment
+import Proofs.Erdos85AlternatingFourthMoment
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -865,6 +866,112 @@ theorem excessOne_even_adjacent_defect_twins_asymmetric_spokes
     exact Finset.notMem_empty v hmem
   simp only [secondOrderDefectGraph, SimpleGraph.sup_adj] at hbvD
   exact ⟨havT, hbvD.resolve_right hbvNotT⟩
+
+/-- The asymmetric twin-diamond colorings are impossible.  At the `(a,b)`
+entry, `A D` counts both common defect neighbors because their `a`-spokes
+are triangle-free, while `D A` counts none because their `b`-spokes are
+antipodal.  This contradicts commutation of `A` with the combined defect
+operator `D`. -/
+theorem excessOne_even_adjacent_defect_twins_not_asymmetric
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    ¬ ((triangleFreeEdgeGraph G).degree a = 2 ∧
+        (triangleFreeEdgeGraph G).degree b = 0) := by
+  rintro ⟨ha2, hb0⟩
+  let D := secondOrderDefectGraph G
+  let C := D.neighborFinset a ∩ D.neighborFinset b
+  have hDreg : ∀ x, D.degree x = 3 := by
+    intro x
+    simpa [D] using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) x
+  have hCcard : C.card = 2 := by
+    simpa [C, D] using adjacent_twins_commonNeighbor_card_eq_two_of_cubic
+      (secondOrderDefectGraph G) (by simpa [D] using hDreg) habD htwins
+  have hspokes := excessOne_even_adjacent_defect_twins_asymmetric_spokes
+    G hfree heven hreg hcard habD htwins ha2 hb0
+  have hleftSub : C ⊆ G.neighborFinset a ∩ D.neighborFinset b := by
+    intro v hv
+    have hv' : v ∈ (secondOrderDefectGraph G).neighborFinset a ∩
+        (secondOrderDefectGraph G).neighborFinset b := by simpa [C, D] using hv
+    have havT := (hspokes v hv').1
+    have hvParts := Finset.mem_inter.mp hv'
+    exact Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset a v).mpr
+          (((mem_triangleFreeNeighbors G a v).mp
+            ((triangleFreeEdgeGraph_adj G a v).mp havT)).1),
+        (D.mem_neighborFinset b v).mpr (by
+          simpa [D] using
+            ((secondOrderDefectGraph G).mem_neighborFinset b v).mp hvParts.2)⟩
+  have hleft : 2 ≤ (G.neighborFinset a ∩ D.neighborFinset b).card := by
+    rw [← hCcard]
+    exact Finset.card_le_card hleftSub
+  have hrightEmpty : D.neighborFinset a ∩ G.neighborFinset b = ∅ := by
+    ext v
+    simp
+    intro havD' hbvG
+    have havD : (secondOrderDefectGraph G).Adj a v := by
+      simpa [D] using havD'
+    have hva : v ≠ a := fun h => by
+      subst v
+      exact (secondOrderDefectGraph G).loopless.irrefl a havD
+    have hvb : v ≠ b := fun h => by
+      subst v
+      exact G.loopless.irrefl b hbvG
+    have hbvD : (secondOrderDefectGraph G).Adj b v :=
+      (htwins v hva hvb).mp havD
+    have hvCommon : v ∈ (secondOrderDefectGraph G).neighborFinset a ∩
+        (secondOrderDefectGraph G).neighborFinset b :=
+      Finset.mem_inter.mpr
+        ⟨((secondOrderDefectGraph G).mem_neighborFinset a v).mpr havD,
+          ((secondOrderDefectGraph G).mem_neighborFinset b v).mpr hbvD⟩
+    have hbvC := (hspokes v hvCommon).2
+    exact ((mem_antipodalNeighbors G b v).mp
+      ((antipodalGraph_adj G b v).mp hbvC)).2.1 hbvG
+  have hcomm := adjMatrix_comm_secondOrderDefect_of_regular G hfree hreg
+  have hab := congrFun (congrFun hcomm a) b
+  rw [adjMatrix_mul_subgraph_apply_eq_card_mixed,
+    adjMatrix_mul_subgraph_apply_eq_card_mixed] at hab
+  have hright : (D.neighborFinset a ∩ G.neighborFinset b).card = 0 := by
+    rw [hrightEmpty, Finset.card_empty]
+  change ((G.neighborFinset a ∩ D.neighborFinset b).card : ℤ) =
+      ((D.neighborFinset a ∩ G.neighborFinset b).card : ℤ) at hab
+  rw [hright] at hab
+  omega
+
+/-- Hence adjacent defect twins can only have triangle-free degree zero at
+both endpoints. -/
+theorem excessOne_even_adjacent_defect_twins_triangleFree_degree_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    (triangleFreeEdgeGraph G).degree a = 0 ∧
+      (triangleFreeEdgeGraph G).degree b = 0 := by
+  rcases excessOne_even_adjacent_defect_twins_triangleFree_degree_cases
+      G hfree heven hreg hcard habD htwins with h00 | h20 | h02
+  · exact h00
+  · exact (excessOne_even_adjacent_defect_twins_not_asymmetric
+      G hfree heven hreg hcard habD htwins h20).elim
+  · have hcontra := excessOne_even_adjacent_defect_twins_not_asymmetric
+      G hfree heven hreg hcard habD.symm (fun v hvb hva =>
+        (htwins v hva hvb).symm) ⟨h02.2, h02.1⟩
+    exact hcontra.elim
 
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
