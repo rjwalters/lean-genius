@@ -458,4 +458,130 @@ theorem sevenHighT0CubeEqualsBlockVal_semanticSound
   · simpa [sevenHighT0CubeEqualsBlockVal,
       sevenHighT0CubeEqualsBlock] using hblock.2.1
 
+theorem sevenHighT0CubeSemanticSound_foldl
+    {α : Type} (adj : Fin 49 → Fin 49 → Bool) (xs : List α)
+    (step : α → SevenHighT0CubeValState → SevenHighT0CubeValState)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hstep : ∀ x acc, SevenHighT0CubeSemanticSound adj acc →
+      SevenHighT0CubeSemanticSound adj (step x acc)) :
+    SevenHighT0CubeSemanticSound adj (xs.foldl (fun acc x => step x acc) acc) := by
+  induction xs generalizing acc with
+  | nil => exact hacc
+  | cons x xs ih =>
+      simp only [List.foldl_cons]
+      exact ih (hstep x acc hacc)
+
+theorem sevenHighT0CubeAtomId_positive
+    {st : SevenHighT0CubeGenState} (h : SevenHighT0CubeIdsSound st)
+    (atom : SevenHighT0CubeAtom) :
+    0 < (sevenHighT0CubeAtomId atom st).1 := by
+  let out := sevenHighT0CubeAtomId atom st
+  have hs := sevenHighT0CubeIdsSound_atomId h atom
+  have hm := sevenHighT0CubeAtomId_mem atom st
+  exact (hs.id_bounds (atom, out.1) (by simpa [out] using hm)).1
+
+theorem sevenHighT0CubeAtomId_bounded
+    {st : SevenHighT0CubeGenState} (h : SevenHighT0CubeIdsSound st)
+    (atom : SevenHighT0CubeAtom) :
+    (sevenHighT0CubeAtomId atom st).1 ≤
+      (sevenHighT0CubeAtomId atom st).2.top := by
+  let out := sevenHighT0CubeAtomId atom st
+  have hs := sevenHighT0CubeIdsSound_atomId h atom
+  have hm := sevenHighT0CubeAtomId_mem atom st
+  exact (hs.id_bounds (atom, out.1) (by simpa [out] using hm)).2
+
+theorem sevenHighT0CubeSingleton_positive_satisfied
+    {val : DimacsValuation} {id : Nat} (hid : 0 < id)
+    (hvalue : val id = true) :
+    dimacsClauseSatisfied val [(id : Int)] := by
+  refine ⟨(id : Int), by simp, ?_⟩
+  simp [dimacsLitValue, hid, hvalue]
+
+theorem sevenHighT0CubeSingleton_negative_satisfied
+    {val : DimacsValuation} {id : Nat} (hvalue : val id = false) :
+    dimacsClauseSatisfied val [-(id : Int)] := by
+  refine ⟨-(id : Int), by simp, ?_⟩
+  simp [dimacsLitValue, hvalue]
+
+theorem sevenHighT0CubeSingleton_positive_bounded
+    {top id : Nat} (hid : id ≤ top) :
+    dimacsClauseBounded top [(id : Int)] := by
+  intro lit hlit
+  simp at hlit
+  simpa [hlit] using hid
+
+theorem sevenHighT0CubeSingleton_negative_bounded
+    {top id : Nat} (hid : id ≤ top) :
+    dimacsClauseBounded top [-(id : Int)] := by
+  intro lit hlit
+  simp at hlit
+  simpa [hlit] using hid
+
+def sevenHighT0CubeEmitEdgeUnitVal
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (positive : Bool)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let (id, acc) := sevenHighT0CubeEdgeIdVal adj i j acc
+  sevenHighT0CubeEmitVal
+    [if positive then (id : Int) else -(id : Int)] acc
+
+theorem sevenHighT0CubeEmitEdgeUnitVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (positive : Bool)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeEmitEdgeUnitVal adj i j positive acc).1 =
+      sevenHighT0CubeEmitEdgeUnit i j positive acc.1 := by
+  generalize h : sevenHighT0CubeEdgeId i j acc.1 = out
+  rcases out with ⟨id, st'⟩
+  simp [sevenHighT0CubeEmitEdgeUnitVal, sevenHighT0CubeEdgeIdVal,
+    sevenHighT0CubeEdgeId, sevenHighT0CubeAtomIdVal, h,
+    sevenHighT0CubeEmitVal, sevenHighT0CubeEmitEdgeUnit]
+
+theorem sevenHighT0CubeEmitEdgeUnitVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (positive : Bool)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hvalue : sevenHighT0CubeAtomValue adj
+      (.edge (min i j) (max i j)) = positive) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeEmitEdgeUnitVal adj i j positive acc) := by
+  generalize hallocated : sevenHighT0CubeEdgeIdVal adj i j acc = allocated
+  rcases allocated with ⟨id, st', val'⟩
+  have hallocatedAtom : sevenHighT0CubeAtomIdVal adj
+      (.edge (min i j) (max i j)) (acc.1, acc.2) = (id, st', val') := by
+    simpa [sevenHighT0CubeEdgeIdVal] using hallocated
+  have ha : SevenHighT0CubeSemanticSound adj (st', val') := by
+    have ha' := sevenHighT0CubeAtomIdVal_semanticSound adj hacc
+      (.edge (min i j) (max i j))
+    rw [hallocatedAtom] at ha'
+    exact ha'
+  have hresult := sevenHighT0CubeAtomIdVal_result adj
+    (.edge (min i j) (max i j)) acc.1 acc.2
+  have hv : val' id = positive := by
+    calc
+      val' id =
+          sevenHighT0CubeAtomValue adj
+            (.edge (min i j) (max i j)) := by
+              rw [hallocatedAtom] at hresult
+              exact hresult.2
+      _ = positive := hvalue
+  have hm :
+      (.edge (min i j) (max i j), id) ∈ st'.ids := by
+    rw [hallocatedAtom] at hresult
+    exact hresult.1
+  have hidpos : 0 < id := (ha.ids.id_bounds _ hm).1
+  have hidbound : id ≤ st'.top := (ha.ids.id_bounds _ hm).2
+  unfold sevenHighT0CubeEmitEdgeUnitVal
+  rw [hallocated]
+  apply sevenHighT0CubeEmitVal_semanticSound adj ha
+  · cases hp : positive
+    · rw [hp] at hv
+      exact sevenHighT0CubeSingleton_negative_satisfied hv
+    · rw [hp] at hv
+      exact sevenHighT0CubeSingleton_positive_satisfied hidpos hv
+  · cases hp : positive
+    · simpa [hp] using
+        sevenHighT0CubeSingleton_negative_bounded hidbound
+    · simpa [hp] using
+        sevenHighT0CubeSingleton_positive_bounded hidbound
+
 end Erdos85
