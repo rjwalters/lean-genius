@@ -1385,6 +1385,43 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_cases
   dsimp only
   omega
 
+/-- Joint color/triangle dispatcher for the size-two kernel branch.  Once
+the color-sector order is fixed, the edge-mass identity fixes the exact
+number of triangular 3-cliques. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_triangleCount_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    let s := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card
+    let t := ((triangularEdgeGraph G).cliqueFinset 3).card
+    (s = 0 ∧ t = 34) ∨ (s = 6 ∧ t = 32) ∨
+      (s = 9 ∧ t = 31) ∨ (s = 12 ∧ t = 30) ∨
+      (s = 15 ∧ t = 29) ∨ (s = 18 ∧ t = 28) ∨
+      (s = 21 ∧ t = 27) ∨ (s = 24 ∧ t = 26) ∨
+      (s = 27 ∧ t = 25) ∨ (s = 30 ∧ t = 24) := by
+  let s := (Finset.univ.filter fun x : V =>
+    (triangleFreeEdgeGraph G).degree x = 2).card
+  let t := ((triangularEdgeGraph G).cliqueFinset 3).card
+  have hcases := degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_cases
+    G hfree hreg hcard habD htwins
+  have hmass := six_mul_triangularCliqueCount_add_two_mul_colorOrder_excessOne
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  have hmass' : 6 * t + 2 * s = 34 * 6 := by
+    simpa [s, t, hcard] using hmass
+  dsimp only
+  rcases hcases with hs | hs | hs | hs | hs | hs | hs | hs | hs | hs <;>
+    subst s <;> omega
+
 /-- In the pure antipodal size-two-kernel branch, the original-graph
 neighborhoods of the defect twins are disjoint and the bipartite graph
 between them is one-regular on both sides.  Thus the two six-element
