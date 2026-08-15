@@ -8,6 +8,7 @@ import Proofs.Erdos85Boza37To39Witness
 import Proofs.Erdos85Boza48DeletionBand
 import Proofs.Erdos85OrderFortyNineDegreeSixWitness
 import Proofs.Erdos85ER7DeletionBand
+import Proofs.Erdos85ER8DeletionBand
 
 /-!
 # Degree-six boundary package
@@ -369,5 +370,48 @@ theorem C4PlateauCore.degreeSix_twelve_order_window
     exact not_C4PlateauCore_degreeSix_of_thirtyFour_le_of_le_fiftySix
       (by omega) (by omega) hcore
   · exact (hcore.degreeSix_final_remaining_order_window hm).2
+
+/-- The `ER(8)` deletion certificates fill the final twelve successor orders
+58 through 69. -/
+theorem degreeSix_witness_fiftyEight_add
+    (j : ℕ) (hj : j ≤ 11) :
+    C4FreeMinDegreeWitness (58 + j) 6 := by
+  interval_cases j <;> norm_num
+  · exact er8_delete15_degreeSix_witness
+  · exact er8_delete14_degreeSix_witness
+  · exact er8_delete13_degreeSix_witness
+  · exact er8_delete12_degreeSix_witness
+  · exact er8_delete11_degreeSix_witness
+  · exact er8_delete10_degreeSix_witness
+  · exact er8_delete9_degreeSix_witness
+  · exact er8_delete8_degreeSix_witness
+  · exact er8_delete7_degreeSix_witness
+  · exact er8_delete6_degreeSix_witness
+  · exact er8_delete5_degreeSix_witness
+  · exact er8_delete4_degreeSix_witness
+
+/-- No degree-six plateau core occurs in the last possible order window. -/
+theorem not_C4PlateauCore_degreeSix_of_fiftySeven_le_of_lt_sixtyNine
+    {m : ℕ} (hlower : 57 ≤ m) (hupper : m < 69) :
+    ¬ C4PlateauCore m 6 := by
+  intro hcore
+  let j := m + 1 - 58
+  have hj : j ≤ 11 := by dsimp [j]; omega
+  have hmj : 58 + j = m + 1 := by dsimp [j]; omega
+  have hw := degreeSix_witness_fiftyEight_add j hj
+  rw [hmj] at hw
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
+/-- **Complete degree-six plateau exclusion.**  A plateau core of degree six
+cannot occur at any admissible order. -/
+theorem not_C4PlateauCore_degreeSix
+    {m : ℕ} (hm : 4 ≤ m) :
+    ¬ C4PlateauCore m 6 := by
+  intro hcore
+  have hwindow := hcore.degreeSix_twelve_order_window hm
+  exact not_C4PlateauCore_degreeSix_of_fiftySeven_le_of_lt_sixtyNine
+    hwindow.1 hwindow.2 hcore
 
 end Erdos85
