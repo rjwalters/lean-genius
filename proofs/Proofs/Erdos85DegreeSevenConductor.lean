@@ -2,6 +2,7 @@ import Proofs.Erdos85Boza48Witness
 import Proofs.Erdos85ER7DeletionBand
 import Proofs.Erdos85OddPlateauExcessAtLeastThree
 import Proofs.Erdos85CofinalLowerBound
+import Proofs.Erdos85DegreeSevenER8DeletionBand
 
 /-!
 # A sharp finite conductor for degree seven
@@ -148,6 +149,14 @@ theorem degreeSeven_witness_of_sixThirtyTwo_le
     exact C4FreeMinDegreeWitness.add (by omega)
       (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
 
+/-- The continuous ER(8) deletion band improves the conductor to 441. -/
+theorem degreeSeven_witness_of_fourFortyOne_le
+    {n : ℕ} (hn : 441 ≤ n) : C4FreeMinDegreeWitness n 7 := by
+  apply eventually_witness_of_interval (A := 63) (L := 10)
+    (by norm_num) (by norm_num) degreeSeven_witness_sixtyThree_add n
+  norm_num at hn ⊢
+  exact hn
+
 /-- A degree-seven plateau core is confined below order 632. -/
 theorem C4PlateauCore.degreeSeven_order_lt_sixThirtyTwo
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 632 := by
@@ -157,13 +166,21 @@ theorem C4PlateauCore.degreeSeven_order_lt_sixThirtyTwo
   rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
   exact hfree (hnext H hdec hmin)
 
+theorem C4PlateauCore.degreeSeven_order_lt_fourFortyOne
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 441 := by
+  by_contra hnot
+  have hw := degreeSeven_witness_of_fourFortyOne_le (n := m + 1) (by omega)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
 /-- Combining odd-excess rigidity below the square with the new conductor,
 the first degree-seven candidate is exactly order 48 and every other
 candidate lies in the finite interval 49--631. -/
 theorem C4PlateauCore.degreeSeven_final_order_window
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) :
-    m = 48 ∨ (49 ≤ m ∧ m < 632) := by
-  have hupper := hcore.degreeSeven_order_lt_sixThirtyTwo hm
+    m = 48 ∨ (49 ≤ m ∧ m < 441) := by
+  have hupper := hcore.degreeSeven_order_lt_fourFortyOne hm
   by_cases h49 : m < 49
   · obtain ⟨e, _heOdd, heLower, hdata⟩ :=
       hcore.exists_odd_positiveExcessData_three_le hm (by norm_num)
