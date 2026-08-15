@@ -2535,4 +2535,134 @@ theorem sevenHighT0CubePartitionClausesFromVal_semanticSound
   exact sevenHighT0CubePartitionClauseVal_semanticSound_of_witness
     adj y high hacc (hwitness y hy high hh)
 
+structure SevenHighT0CubeRunnerPremises
+    (edges : BitVec 1176) (cube : Nat) : Prop where
+  independent : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 pair.2) (max pair.1 pair.2)) = false
+  n0 : ∀ x ∈ sevenHighT0CubeLows,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges) (.edge 0 x) =
+      decide (x < 15)
+  matching0 : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeN0,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 pair.2) (max pair.1 pair.2)) =
+      sevenHighT0CubeMatching0 pair.1 pair.2
+  n1seven : sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+    (.edge 1 7) = true
+  n1eight : ∀ k ∈ List.range 7,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge 1 (k + 8)) = false
+  n1fifteen : ∀ k ∈ List.range 7,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge 1 (k + 15)) = true
+  n1twentytwo : ∀ k ∈ List.range 27,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge 1 (k + 22)) = false
+  matching1 : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeN1,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 pair.2) (max pair.1 pair.2)) =
+      sevenHighT0CubeMatching1 pair.1 pair.2
+  commonLeft : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+    ∀ w ∈ sevenHighT0CubeLows,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.common pair.1 pair.2 w) = true →
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 w) (max pair.1 w)) = true
+  commonRight : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+    ∀ w ∈ sevenHighT0CubeLows,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.common pair.1 pair.2 w) = true →
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.2 w) (max pair.2 w)) = true
+  commonWitness : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+    ∃ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+        (.common pair.1 pair.2 w) = true
+  c4 : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeVertices,
+    ∀ witnesses ∈ sevenHighT0CubePairs
+      (sevenHighT0CubeVertices.filter fun w =>
+        w ≠ pair.1 && w ≠ pair.2), ¬(
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 witnesses.1) (max pair.1 witnesses.1)) = true ∧
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.2 witnesses.1) (max pair.2 witnesses.1)) = true ∧
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.1 witnesses.2) (max pair.1 witnesses.2)) = true ∧
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min pair.2 witnesses.2) (max pair.2 witnesses.2)) = true)
+  degrees : ∀ i : Fin 49,
+    (Finset.univ.filter fun j => orderFortyNineBitAdj edges i j).card =
+      if i.val < 7 then 8 else 7
+  partition : ∀ y ∈ sevenHighT0CubeLows, ∀ high ∈ [0, 1],
+    ∃ x ∈ sevenHighT0CubePartitionNeighbors high,
+      x ≠ y ∧ sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+        (.edge (min y x) (max y x)) = true
+  cubeUnits : ∀ index ∈ List.range 7,
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge 9 (index + 15)) = decide (index = cube)
+
+def sevenHighT0CubeRunner (edges : BitVec 1176) (cube : Nat) :
+    SevenHighT0CubeValState :=
+  let adj := orderFortyNineBitAdj edges
+  let initial : DimacsValuation := fun _ => false
+  let n0 := sevenHighT0CubeNormalizeN0Val adj initial
+  let n1 := sevenHighT0CubeNormalizeN1Val adj initial
+  let common := sevenHighT0CubeCommonClausesFromVal adj n1
+  let c4 := sevenHighT0CubeC4ClausesFromVal adj common
+  let degrees := sevenHighT0CubeDegreeClausesFromVal adj c4
+  let partition := sevenHighT0CubePartitionClausesFromVal adj degrees
+  sevenHighT0CubeFinalUnitsVal adj cube partition
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeRunner_semanticSound
+    (edges : BitVec 1176) (cube : Nat)
+    (h : SevenHighT0CubeRunnerPremises edges cube) :
+    SevenHighT0CubeSemanticSound (orderFortyNineBitAdj edges)
+      (sevenHighT0CubeRunner edges cube) := by
+  let adj := orderFortyNineBitAdj edges
+  let initial : DimacsValuation := fun _ => false
+  let n0 := sevenHighT0CubeNormalizeN0Val adj initial
+  let n1 := sevenHighT0CubeNormalizeN1Val adj initial
+  let common := sevenHighT0CubeCommonClausesFromVal adj n1
+  let c4 := sevenHighT0CubeC4ClausesFromVal adj common
+  let degrees := sevenHighT0CubeDegreeClausesFromVal adj c4
+  let partition := sevenHighT0CubePartitionClausesFromVal adj degrees
+  have hs0 := sevenHighT0CubeNormalizeN0Val_semanticSound adj initial
+    h.independent h.n0 h.matching0
+  have hs1 := sevenHighT0CubeNormalizeN1Val_semanticSound adj initial hs0
+    h.n1seven h.n1eight h.n1fifteen h.n1twentytwo h.matching1
+  have hsCommon := sevenHighT0CubeCommonClausesFromVal_semanticSound
+    adj hs1 h.commonLeft h.commonRight h.commonWitness
+  have hsC4 := sevenHighT0CubeC4ClausesFromVal_semanticSound
+    adj hsCommon h.c4
+  have hsDegrees :=
+    sevenHighT0CubeDegreeClausesFromVal_semanticSound_of_degrees
+      edges hsC4 h.degrees
+  have hsPartition := sevenHighT0CubePartitionClausesFromVal_semanticSound
+    adj hsDegrees h.partition
+  exact sevenHighT0CubeFinalUnitsVal_semanticSound adj cube
+    hsPartition h.cubeUnits
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeRunner_state
+    (edges : BitVec 1176) (cube : Nat) :
+    (sevenHighT0CubeRunner edges cube).1 =
+      sevenHighT0CubeFinalState cube := by
+  let adj := orderFortyNineBitAdj edges
+  let initial : DimacsValuation := fun _ => false
+  let n0 := sevenHighT0CubeNormalizeN0Val adj initial
+  let n1 := sevenHighT0CubeNormalizeN1Val adj initial
+  let common := sevenHighT0CubeCommonClausesFromVal adj n1
+  let c4 := sevenHighT0CubeC4ClausesFromVal adj common
+  let degrees := sevenHighT0CubeDegreeClausesFromVal adj c4
+  let partition := sevenHighT0CubePartitionClausesFromVal adj degrees
+  have h0 := sevenHighT0CubeNormalizeN0Val_state adj initial
+  have h1 := sevenHighT0CubeNormalizeN1Val_state adj initial
+  have hc := sevenHighT0CubeCommonClausesFromVal_generatorState adj n1 h1
+  have h4 := sevenHighT0CubeC4ClausesFromVal_generatorState adj common hc
+  have hd := sevenHighT0CubeDegreeClausesFromVal_generatorState adj c4 h4
+  have hp := sevenHighT0CubePartitionClausesFromVal_generatorState
+    adj degrees hd
+  exact sevenHighT0CubeFinalUnitsVal_finalState adj cube partition hp
+
 end Erdos85
