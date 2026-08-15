@@ -2262,6 +2262,110 @@ theorem card_common_outside_eq_one_of_unique_contact_defectAdj
     exact hrsNotG (hzr ▸ hsz.symm)
   rw [Finset.inter_eq_left.mpr hsub, hcommon]
 
+/-- A six-element neighborhood whose induced graph is one-regular has the
+following local pigeonhole property.  If one distinguished pair `r,q₀` is
+already matched, then among any other three distinguished vertices, after
+allowing the sixth vertex `c` to absorb at most one, some pair of the three
+must be adjacent. -/
+theorem six_neighbor_matching_forces_edge_among_triple
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {p c r q₀ q₁ q₂ q₃ : V}
+    (hN : G.neighborFinset p = {c, r, q₀, q₁, q₂, q₃})
+    (hdeg : ∀ z ∈ G.neighborFinset p,
+      (G.neighborFinset z ∩ G.neighborFinset p).card = 1)
+    (hrq₀ : G.Adj r q₀)
+    (hc : c ≠ r ∧ c ≠ q₀ ∧ c ≠ q₁ ∧ c ≠ q₂ ∧ c ≠ q₃)
+    (hr : r ≠ q₀ ∧ r ≠ q₁ ∧ r ≠ q₂ ∧ r ≠ q₃)
+    (hq₀ : q₀ ≠ q₁ ∧ q₀ ≠ q₂ ∧ q₀ ≠ q₃)
+    (hq₁ : q₁ ≠ q₂ ∧ q₁ ≠ q₃)
+    (hq₂ : q₂ ≠ q₃) :
+    G.Adj q₁ q₂ ∨ G.Adj q₁ q₃ ∨ G.Adj q₂ q₃ := by
+  have hmem : ∀ z ∈ ({c, r, q₀, q₁, q₂, q₃} : Finset V),
+      z ∈ G.neighborFinset p := by
+    intro z hz
+    rwa [hN]
+  have hcN : c ∈ G.neighborFinset p := hmem c (by simp)
+  have hrN : r ∈ G.neighborFinset p := hmem r (by simp)
+  have hq₀N : q₀ ∈ G.neighborFinset p := hmem q₀ (by simp)
+  have hq₁N : q₁ ∈ G.neighborFinset p := hmem q₁ (by simp)
+  have hq₂N : q₂ ∈ G.neighborFinset p := hmem q₂ (by simp)
+  have hq₃N : q₃ ∈ G.neighborFinset p := hmem q₃ (by simp)
+  have hrow (u v : V) (huN : u ∈ G.neighborFinset p)
+      (hvN : v ∈ G.neighborFinset p) (huv : G.Adj u v) :
+      G.neighborFinset u ∩ G.neighborFinset p = {v} := by
+    apply Finset.eq_singleton_iff_unique_mem.mpr
+    refine ⟨Finset.mem_inter.mpr ⟨(G.mem_neighborFinset u v).mpr huv, hvN⟩, ?_⟩
+    intro z hz
+    apply Finset.card_le_one.mp (by
+      have huCard := hdeg u huN
+      omega : (G.neighborFinset u ∩ G.neighborFinset p).card ≤ 1) z hz v
+    exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset u v).mpr huv, hvN⟩
+  have hrRow := hrow r q₀ hrN hq₀N hrq₀
+  have hq₀Row := hrow q₀ r hq₀N hrN hrq₀.symm
+  by_contra hnone
+  push Not at hnone
+  rcases hnone with ⟨hq₁q₂, hq₁q₃, hq₂q₃⟩
+  have hq₁card := hdeg q₁ hq₁N
+  have hq₁nonempty : (G.neighborFinset q₁ ∩ G.neighborFinset p).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨z, hz⟩ := hq₁nonempty
+  have hq₁z : G.Adj q₁ z :=
+    (G.mem_neighborFinset q₁ z).mp (Finset.mem_inter.mp hz).1
+  have hzN := (Finset.mem_inter.mp hz).2
+  rw [hN] at hzN
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hzN
+  have hq₁c : G.Adj q₁ c := by
+    rcases hzN with hzc | hzr | hzq₀ | hzq₁ | hzq₂ | hzq₃
+    · exact hzc ▸ hq₁z
+    · subst z
+      have hq₁Mem : q₁ ∈ G.neighborFinset r ∩ G.neighborFinset p :=
+        Finset.mem_inter.mpr ⟨(G.mem_neighborFinset r q₁).mpr hq₁z.symm, hq₁N⟩
+      rw [hrRow] at hq₁Mem
+      have heq : q₁ = q₀ := by simpa using hq₁Mem
+      exact (hq₀.1 heq.symm).elim
+    · subst z
+      have hq₁Mem : q₁ ∈ G.neighborFinset q₀ ∩ G.neighborFinset p :=
+        Finset.mem_inter.mpr ⟨(G.mem_neighborFinset q₀ q₁).mpr hq₁z.symm, hq₁N⟩
+      rw [hq₀Row] at hq₁Mem
+      have heq : q₁ = r := by simpa using hq₁Mem
+      exact (hr.2.1 heq.symm).elim
+    · exact (G.loopless.irrefl q₁ (hzq₁ ▸ hq₁z)).elim
+    · exact (hq₁q₂ (hzq₂ ▸ hq₁z)).elim
+    · exact (hq₁q₃ (hzq₃ ▸ hq₁z)).elim
+  have hcRow := hrow c q₁ hcN hq₁N hq₁c.symm
+  have hq₂card := hdeg q₂ hq₂N
+  have hq₂nonempty : (G.neighborFinset q₂ ∩ G.neighborFinset p).Nonempty :=
+    Finset.card_pos.mp (by omega)
+  obtain ⟨w, hw⟩ := hq₂nonempty
+  have hq₂w : G.Adj q₂ w :=
+    (G.mem_neighborFinset q₂ w).mp (Finset.mem_inter.mp hw).1
+  have hwN := (Finset.mem_inter.mp hw).2
+  rw [hN] at hwN
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hwN
+  rcases hwN with hwc | hwr | hwq₀ | hwq₁ | hwq₂ | hwq₃
+  · subst w
+    have hq₂Mem : q₂ ∈ G.neighborFinset c ∩ G.neighborFinset p :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset c q₂).mpr hq₂w.symm, hq₂N⟩
+    rw [hcRow] at hq₂Mem
+    have heq : q₂ = q₁ := by simpa using hq₂Mem
+    exact (hq₁.1 heq.symm).elim
+  · subst w
+    have hq₂Mem : q₂ ∈ G.neighborFinset r ∩ G.neighborFinset p :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset r q₂).mpr hq₂w.symm, hq₂N⟩
+    rw [hrRow] at hq₂Mem
+    have heq : q₂ = q₀ := by simpa using hq₂Mem
+    exact (hq₀.2.1 heq.symm).elim
+  · subst w
+    have hq₂Mem : q₂ ∈ G.neighborFinset q₀ ∩ G.neighborFinset p :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset q₀ q₂).mpr hq₂w.symm, hq₂N⟩
+    rw [hq₀Row] at hq₂Mem
+    have heq : q₂ = r := by simpa using hq₂Mem
+    exact (hr.2.2.1 heq.symm).elim
+  · exact (hq₁q₂ (hwq₁ ▸ hq₂w).symm).elim
+  · exact (G.loopless.irrefl q₂ (hwq₂ ▸ hq₂w)).elim
+  · exact hq₂q₃ (hwq₃ ▸ hq₂w)
+
 /-- Around a closed cubic defect `K₄`, every vertex in one center's
 original neighborhood has exactly one defect neighbor in each of the other
 three center-neighborhood blocks. -/
