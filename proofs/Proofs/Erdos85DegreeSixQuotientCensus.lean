@@ -457,6 +457,89 @@ theorem degreeSixQuotient_orderThree_support_two_names_nat
     haData.1, hbData.1, haData.2, hbData.2⟩
   simpa [P] using hP
 
+/-- The two positive base weights are `2+4`, `3+3`, or `4+2`.  The square
+equations restricted to the named support, combined with detailed balance,
+force `qaa + qab = qbb + qba = 3`; this excludes the extreme `1+5` and
+`5+1` splits under the diagonal bound. -/
+theorem degreeSixQuotient_orderThree_support_two_weight_cases_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b : C)
+    (hab : a ≠ b)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (haPos : 0 < q c a) (hbPos : 0 < q c b)
+    (hweights : q c a + q c b = 6)
+    (haSize : s a = 3 * q c a) (hbSize : s b = 3 * q c b)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (hcc : q c c = 0) :
+    (q c a = 2 ∧ q c b = 4) ∨
+      (q c a = 3 ∧ q c b = 3) ∨
+      (q c a = 4 ∧ q c b = 2) := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hP' : P = {a, b} := by simpa [P] using hP
+  have hca : c ≠ a := by
+    intro h
+    subst a
+    rw [hcc] at haPos
+    omega
+  have hcb : c ≠ b := by
+    intro h
+    subst b
+    rw [hcc] at hbPos
+    omega
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hsqA := heqs.2 a
+  have hsqB := heqs.2 b
+  rw [hP'] at hsqA hsqB
+  simp [hab, hca, hcb] at hsqA hsqB
+  rw [haSize] at hsqA
+  rw [hbSize] at hsqB
+  have hbalAB := hbal a b
+  rw [haSize, hbSize] at hbalAB
+  have hcross : q c a * q a b = q c b * q b a := by
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [Nat.mul_assoc] using hbalAB
+  have hrowA : q a a + q a b = 3 := by
+    apply Nat.eq_of_mul_eq_mul_left haPos
+    calc
+      q c a * (q a a + q a b) =
+          q c a * q a a + q c a * q a b := Nat.mul_add _ _ _
+      _ = q c a * q a a + q c b * q b a := by rw [hcross]
+      _ = 3 * q c a := hsqA
+      _ = q c a * 3 := Nat.mul_comm _ _
+  have hrowB : q b b + q b a = 3 := by
+    apply Nat.eq_of_mul_eq_mul_left hbPos
+    calc
+      q c b * (q b b + q b a) =
+          q c b * q b b + q c b * q b a := Nat.mul_add _ _ _
+      _ = q c b * q b b + q c a * q a b := by rw [hcross]
+      _ = 3 * q c b := by omega
+      _ = q c b * 3 := Nat.mul_comm _ _
+  have haDiag := hdiag a
+  have hbDiag := hdiag b
+  have hcases : q c a = 1 ∨ q c a = 2 ∨ q c a = 3 ∨
+      q c a = 4 ∨ q c a = 5 := by omega
+  rcases hcases with h | h | h | h | h
+  · exfalso
+    rw [h] at hweights hcross
+    have hb : q c b = 5 := by omega
+    rw [hb] at hcross
+    omega
+  · exact Or.inl ⟨h, by omega⟩
+  · exact Or.inr (Or.inl ⟨h, by omega⟩)
+  · exact Or.inr (Or.inr ⟨h, by omega⟩)
+  · exfalso
+    rw [h] at hweights hcross
+    have hb : q c b = 1 := by omega
+    rw [hb] at hcross
+    omega
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
