@@ -1,4 +1,4 @@
-import Proofs.Erdos85OrderFortyNineSevenHighT0CubeCnf
+import Proofs.Erdos85OrderFortyNineSevenHighT0CubeCnfSatisfaction
 import Proofs.Erdos85OrderFortyNineSevenHighCertificateBridge
 
 /-!
