@@ -2130,6 +2130,168 @@ theorem five_component_support_count_outer_census
     (p = 1 ∧ r = 3) ∨ (p = 2 ∧ r = 2) ∨ (p = 3 ∧ r = 1) := by
   omega
 
+/-- Name the unique second triangle and the three order-nine components in
+the five-component profile, keeping all inequalities required by the graph
+terminal explicit. -/
+theorem five_component_three_nine_profile_names
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (size : C → ℕ) (c : C) (hcard : Fintype.card C = 5)
+    (htotal : (∑ x, size x) = 33) (hc3 : size c = 3)
+    (hprof : ∀ x, size x = 3 ∨ size x = 9) :
+    ∃ t x y z, t ≠ c ∧ x ≠ c ∧ x ≠ t ∧ y ≠ c ∧ y ≠ t ∧ y ≠ x ∧
+      z ≠ c ∧ z ≠ t ∧ z ≠ x ∧ z ≠ y ∧
+      (Finset.univ : Finset C) = {c, t, x, y, z} ∧
+      size t = 3 ∧ size x = 9 ∧ size y = 9 ∧ size z = 9 := by
+  have hcMem : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have hrestCard : (Finset.univ.erase c : Finset C).card = 4 := by
+    rw [Finset.card_erase_of_mem hcMem, Finset.card_univ, hcard]
+  obtain ⟨a, b, d, e, hab, had, hae, hbd, hbe, hde, hrest⟩ :=
+    Finset.card_eq_four.mp hrestCard
+  have hac : a ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have hbc : b ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have hdc : d ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have hec : e ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have hca : c ≠ a := Ne.symm hac
+  have hcb : c ≠ b := Ne.symm hbc
+  have hcd : c ≠ d := Ne.symm hdc
+  have hce : c ≠ e := Ne.symm hec
+  have huniv : (Finset.univ : Finset C) = {c, a, b, d, e} := by
+    rw [← Finset.insert_erase hcMem, hrest]
+  have hs := htotal
+  rw [huniv, Finset.sum_insert (by simp [hca, hcb, hcd, hce]),
+    Finset.sum_insert (by simp [hab, had, hae]),
+    Finset.sum_insert (by simp [hbd, hbe]),
+    Finset.sum_insert (by simp [hde]), Finset.sum_singleton, hc3] at hs
+  rcases hprof a with ha3 | ha9 <;> rcases hprof b with hb3 | hb9 <;>
+    rcases hprof d with hd3 | hd9 <;> rcases hprof e with he3 | he9
+  all_goals try omega
+  all_goals first
+    | exact ⟨a, b, d, e, hac, hbc, Ne.symm hab, hdc, Ne.symm had,
+        Ne.symm hbd, hec, Ne.symm hae, Ne.symm hbe, Ne.symm hde,
+        huniv, ha3, hb9, hd9, he9⟩
+    | exact ⟨b, a, d, e, hbc, hac, hab, hdc, Ne.symm hbd,
+        Ne.symm had, hec, Ne.symm hbe, Ne.symm hae, Ne.symm hde,
+        by ext w; simp [huniv, or_comm, or_left_comm, or_assoc],
+        hb3, ha9, hd9, he9⟩
+    | exact ⟨d, a, b, e, hdc, hac, had, hbc, hbd, Ne.symm hab,
+        hec, Ne.symm hde, Ne.symm hae, Ne.symm hbe,
+        by ext w; simp [huniv, or_comm, or_left_comm, or_assoc],
+        hd3, ha9, hb9, he9⟩
+    | exact ⟨e, a, b, d, hec, hac, hae, hbc, hbe, Ne.symm hab,
+        hdc, hde, Ne.symm had, Ne.symm hbd,
+        by ext w; simp [huniv, or_comm, or_left_comm, or_assoc],
+        he3, ha9, hb9, hd9⟩
+
+/-- Name the two further triangles and four order-six components in the
+seven-component profile. -/
+theorem seven_component_three_six_profile_names
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (size : C → ℕ) (c : C) (hcard : Fintype.card C = 7)
+    (htotal : (∑ x, size x) = 33) (hc3 : size c = 3)
+    (hprof : ∀ x, size x = 3 ∨ size x = 6) :
+    ∃ t r a b d e,
+      (Finset.univ : Finset C) = {c, t, r, a, b, d, e} ∧
+      c ∉ ({t, r, a, b, d, e} : Finset C) ∧
+      t ∉ ({r, a, b, d, e} : Finset C) ∧
+      r ∉ ({a, b, d, e} : Finset C) ∧
+      a ∉ ({b, d, e} : Finset C) ∧
+      b ∉ ({d, e} : Finset C) ∧ d ∉ ({e} : Finset C) ∧
+      size t = 3 ∧ size r = 3 ∧ size a = 6 ∧ size b = 6 ∧
+      size d = 6 ∧ size e = 6 := by
+  let H : Finset C := Finset.univ.filter fun x => size x = 6
+  have hsum : (∑ x, size x) = 3 * Fintype.card C + 3 * H.card := by
+    calc
+      (∑ x, size x) = ∑ x, (3 + if size x = 6 then 3 else 0) := by
+        apply Finset.sum_congr rfl
+        intro x _
+        rcases hprof x with hx | hx <;> simp [hx]
+      _ = 3 * Fintype.card C + 3 * H.card := by
+        rw [Finset.sum_add_distrib]
+        rw [show (∑ _x : C, 3) = 3 * Fintype.card C by
+          simp [Nat.mul_comm]]
+        congr 1
+        calc
+          (∑ x, if size x = 6 then 3 else 0) = H.card * 3 := by
+            calc
+              (∑ x, if size x = 6 then 3 else 0) =
+                  3 * ∑ x, if size x = 6 then 1 else 0 := by
+                rw [Finset.mul_sum]
+                apply Finset.sum_congr rfl
+                intro x _
+                split <;> simp_all
+              _ = 3 * H.card := by rw [Finset.sum_boole]; rfl
+              _ = H.card * 3 := by omega
+          _ = 3 * H.card := by omega
+  have hHcard : H.card = 4 := by rw [htotal, hcard] at hsum; omega
+  obtain ⟨a, b, d, e, hab, had, hae, hbd, hbe, hde, hH⟩ :=
+    Finset.card_eq_four.mp hHcard
+  have haH : a ∈ H := by rw [hH]; simp
+  have hbH : b ∈ H := by rw [hH]; simp
+  have hdH : d ∈ H := by rw [hH]; simp
+  have heH : e ∈ H := by rw [hH]; simp
+  have ha6 : size a = 6 := (Finset.mem_filter.mp haH).2
+  have hb6 : size b = 6 := (Finset.mem_filter.mp hbH).2
+  have hd6 : size d = 6 := (Finset.mem_filter.mp hdH).2
+  have he6 : size e = 6 := (Finset.mem_filter.mp heH).2
+  let T : Finset C := Finset.univ \ H
+  have hcNotH : c ∉ H := by simp [H, hc3]
+  have hcT : c ∈ T := by simp [T, hcNotH]
+  have hTcard : T.card = 3 := by
+    dsimp [T]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr (Finset.subset_univ H),
+      Finset.card_univ, hcard, hHcard]
+  have hrestCard : (T.erase c).card = 2 := by
+    rw [Finset.card_erase_of_mem hcT, hTcard]
+  obtain ⟨t, r, htr, hrest⟩ := Finset.card_eq_two.mp hrestCard
+  have htT : t ∈ T := (Finset.erase_subset _ _) (by rw [hrest]; simp)
+  have hrT : r ∈ T := (Finset.erase_subset _ _) (by rw [hrest]; simp)
+  have htc : t ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have hrc : r ≠ c := (Finset.mem_erase.mp (by rw [hrest]; simp)).1
+  have htNotH : t ∉ H := (Finset.mem_sdiff.mp htT).2
+  have hrNotH : r ∉ H := (Finset.mem_sdiff.mp hrT).2
+  have ht3 : size t = 3 := by
+    rcases hprof t with ht3 | ht6
+    · exact ht3
+    · exact (htNotH (by simp [H, ht6])).elim
+  have hr3 : size r = 3 := by
+    rcases hprof r with hr3 | hr6
+    · exact hr3
+    · exact (hrNotH (by simp [H, hr6])).elim
+  have hca : c ≠ a := by intro h; subst a; omega
+  have hcb : c ≠ b := by intro h; subst b; omega
+  have hcd : c ≠ d := by intro h; subst d; omega
+  have hce : c ≠ e := by intro h; subst e; omega
+  have hta : t ≠ a := by intro h; subst a; omega
+  have htb : t ≠ b := by intro h; subst b; omega
+  have htd : t ≠ d := by intro h; subst d; omega
+  have hte : t ≠ e := by intro h; subst e; omega
+  have hra : r ≠ a := by intro h; subst a; omega
+  have hrb : r ≠ b := by intro h; subst b; omega
+  have hrd : r ≠ d := by intro h; subst d; omega
+  have hre : r ≠ e := by intro h; subst e; omega
+  have hT : T = {c, t, r} := by rw [← Finset.insert_erase hcT, hrest]
+  have huniv : (Finset.univ : Finset C) = {c, t, r, a, b, d, e} := by
+    ext x
+    have hxprof := hprof x
+    simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton,
+      true_iff]
+    by_cases hxH : x ∈ H
+    · rw [hH] at hxH
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hxH
+      aesop
+    · have hxT : x ∈ T := by simp [T, hxH]
+      rw [hT] at hxT
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hxT
+      aesop
+  refine ⟨t, r, a, b, d, e, huniv, ?_, ?_, ?_, ?_, ?_, ?_,
+    ht3, hr3, ha6, hb6, hd6, he6⟩
+  · simp [Ne.symm htc, Ne.symm hrc, hca, hcb, hcd, hce]
+  · simp [htr, hta, htb, htd, hte]
+  · simp [hra, hrb, hrd, hre]
+  · simp [hab, had, hae]
+  · simp [hbd, hbe]
+  · simpa using hde
+
 /-- A finite sum dominates its baseline contribution plus one further unit
 for every term strictly above the baseline. -/
 theorem mul_card_add_card_filter_lt_le_sum
@@ -9482,6 +9644,52 @@ theorem degreeSix_false_of_zeroTriangle_profile_three_three_nine_nine_nine
   exact false_of_three_three_nine_nine_nine_grouped_profile
     Q c t x y z hcx hcy hcz (by simpa [Nat.add_assoc] using hsqFull) hgx hgy hgz
 
+/-- The five-component zero-triangle branch is impossible.  The finite
+quotient census forces `3,3,9,9,9`, which is ruled out by grouped
+order-nine periodicity. -/
+theorem degreeSix_emptySector_zeroTriangle_component_count_five_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 5) : False := by
+  let D := secondOrderDefectGraph G
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hprof := degreeSix_emptySector_zeroTriangle_component_profile_five
+    G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc hcount
+  obtain ⟨t, x, y, z, htc, hxc, hxt, hyc, hyt, hyx,
+      hzc, hzt, hzx, hzy, huniv, ht3, hx9, hy9, hz9⟩ :=
+    five_component_three_nine_profile_names
+      (fun a : D.ConnectedComponent => a.supp.ncard) c
+        (by simpa [D] using hcount) htotal hc3 hprof
+  have htt : componentQuotientMatrix G D t t = 0 :=
+    (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty t
+        (fun a => by rw [ht3]; exact hr3 a)).1
+  exact degreeSix_false_of_zeroTriangle_profile_three_three_nine_nine_nine
+    G hfree hmin hcard u hu huRange huD c t x y z htc hxc hxt
+      hyc hyt hyx hzc hzt hzx hzy huniv hc3 ht3 hx9 hy9 hz9 hcc htt
+
 /-- The residual component profile `3,3,3,6,6,6,6` is incompatible with
 the order-six grouped periodicity bound. -/
 theorem degreeSix_false_of_zeroTriangle_profile_three_three_three_six_six_six_six
@@ -9602,6 +9810,103 @@ theorem degreeSix_false_of_zeroTriangle_profile_three_three_three_six_six_six_si
     Q c t r a b d e (by omega) (by omega) (by omega) hinter
       hca hcb hcd hce hta htb htd hte hra hrb hrd hre
       (hgroup a ha6) (hgroup b hb6) (hgroup d hd6) (hgroup e he6)
+
+/-- The seven-component zero-triangle branch is impossible.  Its certified
+profile `3,3,3,6,6,6,6` violates grouped order-six periodicity. -/
+theorem degreeSix_emptySector_zeroTriangle_component_count_seven_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7) : False := by
+  let D := secondOrderDefectGraph G
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hprof := degreeSix_emptySector_zeroTriangle_component_profile_seven
+    G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc hcount
+  obtain ⟨t, r, a, b, d, e, huniv, hcNot, htNot, hrNot,
+      haNot, hbNot, hdNot, ht3, hr3', ha6, hb6, hd6, he6⟩ :=
+    seven_component_three_six_profile_names
+      (fun x : D.ConnectedComponent => x.supp.ncard) c
+        (by simpa [D] using hcount) htotal hc3 hprof
+  have htt : componentQuotientMatrix G D t t = 0 :=
+    (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty t
+        (fun x => by rw [ht3]; exact hr3 x)).1
+  have hrr : componentQuotientMatrix G D r r = 0 :=
+    (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty r
+        (fun x => by rw [hr3']; exact hr3 x)).1
+  exact degreeSix_false_of_zeroTriangle_profile_three_three_three_six_six_six_six
+    G hfree hmin hcard u hu huRange huD c t r a b d e huniv
+      hcNot htNot hrNot haNot hbNot hdNot hc3 ht3 hr3'
+      ha6 hb6 hd6 he6 hcc htt hrr
+
+/-- The degree-six triangle-free color sector cannot be empty.  A minimum
+defect component is a zero-diagonal triangle, its quotient has component
+count `5`, `7`, `9`, or `11`, and all four certified branches are false. -/
+theorem degreeSix_triangleFreeCycleSector_nonempty
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard) :
+    (triangleFreeCycleSector G u).Nonempty := by
+  by_contra hn
+  have hempty : triangleFreeCycleSector G u = ∅ := Finset.not_nonempty_iff_eq_empty.mp hn
+  have hVpos : 0 < Fintype.card V := by rw [hcard]; norm_num
+  obtain ⟨v⟩ := Fintype.card_pos_iff.mp hVpos
+  obtain ⟨c, -, hcmin'⟩ := Finset.exists_min_image
+    (Finset.univ : Finset (secondOrderDefectGraph G).ConnectedComponent)
+    (fun x => x.supp.ncard)
+    ⟨(secondOrderDefectGraph G).connectedComponentMk v, Finset.mem_univ _⟩
+  have hcmin : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard ≤ x.supp.ncard := fun x => hcmin' x (Finset.mem_univ x)
+  obtain ⟨hcc, hc3⟩ := degreeSix_emptySector_minimum_component_eq_zero_triangle
+    G hfree hmin hcard u hu huRange huD hr3 hempty c hcmin
+  rcases degreeSix_zeroDiagonal_component_count_cases_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hcc with
+    h5 | h7 | h9 | h11
+  · exact degreeSix_emptySector_zeroTriangle_component_count_five_false
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc h5
+  · exact degreeSix_emptySector_zeroTriangle_component_count_seven_false
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc h7
+  · exact degreeSix_emptySector_zeroTriangle_component_count_nine_false
+      G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc h9
+  · exact degreeSix_emptySector_zeroTriangle_component_count_eleven_false
+      G hfree hmin hcard u hu huRange huD hr3 hempty h11
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
