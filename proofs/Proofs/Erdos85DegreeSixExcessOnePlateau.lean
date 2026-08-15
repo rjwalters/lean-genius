@@ -5177,6 +5177,147 @@ theorem degreeSix_thirtyFour_closed_defectKFour_center_color_degrees
     · omega
   exact ⟨ha03, hb03, habColor x hxCommon, habColor y hyCommon⟩
 
+/-- Every one of the six closed defect-`K₄` edges has the antipodal color,
+without any assumption on the global triangle-free color order. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_edges_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    (antipodalGraph G).Adj a b ∧ (antipodalGraph G).Adj a x ∧
+      (antipodalGraph G).Adj b x ∧ (antipodalGraph G).Adj a y ∧
+      (antipodalGraph G).Adj b y ∧ (antipodalGraph G).Adj x y := by
+  have hc := degreeSix_thirtyFour_closed_defectKFour_center_color_degrees
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  have hC_of_D_of_Tzero {u v : V}
+      (hu0 : (triangleFreeEdgeGraph G).degree u = 0)
+      (huv : (secondOrderDefectGraph G).Adj u v) :
+      (antipodalGraph G).Adj u v := by
+    simp only [secondOrderDefectGraph, SimpleGraph.sup_adj] at huv
+    rcases huv with huvC | huvT
+    · exact huvC
+    · have hmem := ((triangleFreeEdgeGraph G).mem_neighborFinset u v).mpr huvT
+      have hempty : (triangleFreeEdgeGraph G).neighborFinset u = ∅ := by
+        rw [← Finset.card_eq_zero,
+          (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, hu0]
+      rw [hempty] at hmem
+      exact (Finset.notMem_empty v hmem).elim
+  exact ⟨hC_of_D_of_Tzero hc.1.1 hab,
+    hC_of_D_of_Tzero hc.1.1 hax,
+    hC_of_D_of_Tzero hc.2.1.1 hbx,
+    hC_of_D_of_Tzero hc.1.1 hay,
+    hC_of_D_of_Tzero hc.2.1.1 hby,
+    hC_of_D_of_Tzero hc.2.2.1.1 hxy⟩
+
+/-- The four center neighborhoods and the four centers occupy exactly 28
+vertices in every color order; global `colorOrder = 0` is not needed. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_centered_footprint_card_eq_twentyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}).card = 28 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  have hBcard : B.card = 24 := by
+    simpa [B] using degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+      G hfree hreg hab hax hbx hay hby hxy
+  have hcolors := degreeSix_thirtyFour_closed_defectKFour_edges_antipodal
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  rcases hcolors with ⟨habC, haxC, hbxC, hayC, hbyC, hxyC⟩
+  have hnotG {u v : V} (huv : (antipodalGraph G).Adj u v) : ¬ G.Adj u v :=
+    ((mem_antipodalNeighbors G u v).mp
+      ((antipodalGraph_adj G u v).mp huv)).2.1
+  have habG := hnotG habC
+  have haxG := hnotG haxC
+  have hbxG := hnotG hbxC
+  have hayG := hnotG hayC
+  have hbyG := hnotG hbyC
+  have hxyG := hnotG hxyC
+  have haNotB : a ∉ B := by
+    simp only [B, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨G.loopless.irrefl a, fun h => habG h.symm⟩,
+      fun h => haxG h.symm⟩, fun h => hayG h.symm⟩
+  have hbNotB : b ∉ B := by
+    simp only [B, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨habG, G.loopless.irrefl b⟩,
+      fun h => hbxG h.symm⟩, fun h => hbyG h.symm⟩
+  have hxNotB : x ∉ B := by
+    simp only [B, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨haxG, hbxG⟩, G.loopless.irrefl x⟩,
+      fun h => hxyG h.symm⟩
+  have hyNotB : y ∉ B := by
+    simp only [B, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨hayG, hbyG⟩, hxyG⟩, G.loopless.irrefl y⟩
+  have hdBQ : Disjoint B Q := by
+    rw [Finset.disjoint_left]
+    intro z hzB hzQ
+    simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hzQ
+    rcases hzQ with rfl | rfl | rfl | rfl
+    · exact haNotB hzB
+    · exact hbNotB hzB
+    · exact hxNotB hzB
+    · exact hyNotB hzB
+  have hQcard : Q.card = 4 := by
+    have habNe := (secondOrderDefectGraph G).ne_of_adj hab
+    have haxNe := (secondOrderDefectGraph G).ne_of_adj hax
+    have hbxNe := (secondOrderDefectGraph G).ne_of_adj hbx
+    have hayNe := (secondOrderDefectGraph G).ne_of_adj hay
+    have hbyNe := (secondOrderDefectGraph G).ne_of_adj hby
+    have hxyNe := (secondOrderDefectGraph G).ne_of_adj hxy
+    simp [Q, habNe, haxNe, hbxNe, hayNe, hbyNe, hxyNe]
+  change (B ∪ Q).card = 28
+  rw [Finset.card_union_of_disjoint hdBQ, hBcard, hQcard]
+
+/-- Thus the complement of the centered footprint is always a six-set. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_card_eq_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    (Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})).card = 6 := by
+  have hfoot := degreeSix_thirtyFour_closed_defectKFour_centered_footprint_card_eq_twentyEight
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  rw [Finset.card_sdiff_of_subset (Finset.subset_univ _),
+    Finset.card_univ, hcard, hfoot]
+
 /-- Hence the nonzero triangle-free sector is disjoint from all four closed
 defect-`K₄` centers. -/
 theorem degreeSix_thirtyFour_closed_defectKFour_colorSector_disjoint_centers
