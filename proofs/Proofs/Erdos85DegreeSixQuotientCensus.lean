@@ -579,6 +579,42 @@ theorem degreeSixQuotient_model5_invisible_order_cases_nat
   have htlo := hslo t
   omega
 
+/-- Under the full Model5 incidence hypotheses, a chosen order-three base
+has exactly two positive and two invisible targets.  This composes the
+support-cardinality census with the kernel-clean contradictions for the
+`1+3` and `3+1` branches. -/
+theorem degreeSixQuotient_model5_support_card_two_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 5)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    P.card = 2 ∧ R.card = 2 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have hcases := degreeSixQuotient_orderThree_support_card_five_nat
+    s q c hspos hcard htotal hrow hbal hsq hc3 hcc
+  change (P.card = 1 ∧ R.card = 3) ∨
+    (P.card = 2 ∧ R.card = 2) ∨
+    (P.card = 3 ∧ R.card = 1) at hcases
+  rcases hcases with h | h | h
+  · exact (false_of_degreeSixQuotient_orderThree_support_card_one_nat
+      s q c hspos htotal hrow hbal hsq hdiag hc3 hcc
+        (by simpa [P] using h.1)).elim
+  · exact h
+  · exact (false_of_degreeSixQuotient_orderThree_support_card_three_nat
+      s q c hspos hrow hbal hsq hdiag hc3 hcc
+        (by simpa [P] using h.1) (by simpa [P, R] using h.2)).elim
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
