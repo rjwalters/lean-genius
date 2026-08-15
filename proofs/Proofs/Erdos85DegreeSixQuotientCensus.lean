@@ -1,19 +1,22 @@
 import Mathlib
+import Proofs.Erdos85KernelBVDecide
 
 /-!
 # Verified finite quotient census for the degree-six boundary
 
 These certificates classify the component-order profiles of five- and
-seven-dimensional balanced quotient matrices.  Sixteen-bit arithmetic is
-wide enough for every expression under the explicit bounds, and `bv_decide`
-produces a kernel-checked proof of the finite search.
+seven-dimensional balanced quotient matrices.  Eight-bit arithmetic is
+wide enough for every expression under the explicit bounds.  The finite
+checkpoints currently use `bv_decide`; `Erdos85KernelBVDecide` provides an
+experimental typed-LRAT replay path for replacing their native-evaluation
+axioms once large certificates can be checked in bounded kernel stack space.
 -/
 
 namespace Erdos85
 
 set_option maxHeartbeats 1000000000
 
-abbrev DegreeSixCensusWord := BitVec 16
+abbrev DegreeSixCensusWord := BitVec 8
 
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
@@ -29,13 +32,39 @@ def degreeSixQuotientModel5
   (∑ i, q i i) = 6 ∧ (∃ i, s i = 3 ∧ q i i = 0) ∧
   (∀ i, s i = 3 → q i i = 0)
 
+theorem degreeSixQuotientModel5_reindex
+    (s : Fin 5 → DegreeSixCensusWord)
+    (q : Fin 5 → Fin 5 → DegreeSixCensusWord)
+    (e : Equiv.Perm (Fin 5)) (h : degreeSixQuotientModel5 s q) :
+    degreeSixQuotientModel5 (fun i => s (e i)) (fun i j => q (e i) (e j)) := by
+  rcases h with ⟨hs, hq, htotal, hrow, hbal, hsq, hdiag, htrace,
+    hbase, hthree⟩
+  refine ⟨fun i => hs (e i), fun i j => hq (e i) (e j), ?_, ?_,
+    fun i j => hbal (e i) (e j), ?_, fun i => hdiag (e i), ?_, ?_, ?_⟩
+  · exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans htotal
+  · intro i
+    exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans (hrow (e i))
+  · intro i j
+    change (∑ k, q (e i) (e k) * q (e k) (e j)) =
+      (if i = j then 3 else 0) + s (e j)
+    calc
+      _ = ∑ k, q (e i) k * q k (e j) :=
+        Fintype.sum_equiv e _ _ (fun _ => rfl)
+      _ = _ := by simpa only [e.injective.eq_iff] using hsq (e i) (e j)
+  · change (∑ i, q (e i) (e i)) = 6
+    exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans htrace
+  · obtain ⟨i, hsi, hqi⟩ := hbase
+    exact ⟨e.symm i, by simpa, by simpa⟩
+  · intro i hi
+    exact hthree (e i) hi
+
 /-- Every five-component degree-six quotient model has component orders
 `3,3,9,9,9`.  The total-order equation supplies the multiplicities once
 each entry is known to be three or nine. -/
-theorem degreeSixQuotientModel5_profile
+theorem degreeSixQuotientModel5_profile_zero
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord)
-    (h : degreeSixQuotientModel5 s q) : ∀ i, s i = 3 ∨ s i = 9 := by
+    (h : degreeSixQuotientModel5 s q) : s 0 = 3 ∨ s 0 = 9 := by
   simp [degreeSixQuotientModel5, Fin.forall_fin_succ, Fin.exists_fin_succ,
     Fin.sum_univ_succ] at h ⊢
   generalize s 0 = s0 at h ⊢
@@ -69,6 +98,17 @@ theorem degreeSixQuotientModel5_profile
   generalize q 4 3 = q43 at h ⊢
   generalize q 4 4 = q44 at h ⊢
   bv_decide (config := { timeout := 600 })
+
+theorem degreeSixQuotientModel5_profile
+    (s : Fin 5 → DegreeSixCensusWord)
+    (q : Fin 5 → Fin 5 → DegreeSixCensusWord)
+    (h : degreeSixQuotientModel5 s q) : ∀ i, s i = 3 ∨ s i = 9 := by
+  intro i
+  let e : Equiv.Perm (Fin 5) := Equiv.swap 0 i
+  have h' := degreeSixQuotientModel5_profile_zero
+    (fun j => s (e j)) (fun j k => q (e j) (e k))
+      (degreeSixQuotientModel5_reindex s q e h)
+  simpa [e] using h'
 
 def degreeSixQuotientModel7
     (s : Fin 7 → DegreeSixCensusWord)
@@ -171,7 +211,7 @@ theorem degreeSixQuotientModel5_profile_nat
     · intro i
       constructor
       · rw [BitVec.ule_iff_toNat_le]
-        have hi : s i < 2 ^ 16 := lt_trans (hshi i) (by norm_num)
+        have hi : s i < 2 ^ 8 := lt_trans (hshi i) (by norm_num)
         simp [sb, Nat.mod_eq_of_lt hi]
         have := hslo i
         omega
@@ -254,7 +294,7 @@ theorem degreeSixQuotientModel7_profile_nat
     · intro i
       constructor
       · rw [BitVec.ule_iff_toNat_le]
-        have hi : s i < 2 ^ 16 := lt_trans (hshi i) (by norm_num)
+        have hi : s i < 2 ^ 8 := lt_trans (hshi i) (by norm_num)
         simp [sb, Nat.mod_eq_of_lt hi]
         have := hslo i
         omega
