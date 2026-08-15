@@ -7299,6 +7299,61 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_permModel
     change s d c (s c d i) = i
     exact (hsUnique d c (s c d i) i (hsAdj c d i).symm).symm
 
+/-- A permutation encoding a loopless within-row matching has no fixed
+point. -/
+theorem blockGrid_diagonal_perm_fixedPointFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (u : Fin 4 → Fin 6 → V) (σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6))
+    (hσ : ∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) :
+    ∀ c i, σ c c i ≠ i := by
+  intro c i hii
+  exact G.loopless.irrefl (u c i) ((hσ c c i i).mpr hii)
+
+/-- In a `C₄`-free graph, composing row matchings around four row slots
+cannot return to the starting coordinate when opposite row slots are
+distinct.  This is the permutation form of the basic four-cycle
+obstruction and is directly suitable for a finite certificate. -/
+theorem blockGrid_fourRow_composition_fixedPointFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : Fin 4 → Fin 6 → V) (σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6))
+    (huinj : Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2))
+    (hσ : ∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j)
+    {c d e g : Fin 4} (hce : c ≠ e) (hdg : d ≠ g) (i : Fin 6) :
+    σ g c (σ e g (σ d e (σ c d i))) ≠ i := by
+  intro hclose
+  let j := σ c d i
+  let k := σ d e j
+  let l := σ e g k
+  have hcd : G.Adj (u c i) (u d j) := (hσ c d i j).mpr rfl
+  have hde : G.Adj (u d j) (u e k) := (hσ d e j k).mpr rfl
+  have heg : G.Adj (u e k) (u g l) := (hσ e g k l).mpr rfl
+  have hgc : G.Adj (u g l) (u c i) := by
+    apply (hσ g c l i).mpr
+    exact hclose
+  have hOppNe : u c i ≠ u e k := by
+    intro h
+    have hp := huinj (show u (c, i).1 (c, i).2 = u (e, k).1 (e, k).2 by
+      simpa using h)
+    exact hce (congrArg Prod.fst hp)
+  have hCommonLe :
+      (G.neighborFinset (u c i) ∩ G.neighborFinset (u e k)).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree (u c i) (u e k) hOppNe
+  have hjCommon : u d j ∈
+      G.neighborFinset (u c i) ∩ G.neighborFinset (u e k) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨hcd, hde.symm⟩
+  have hlCommon : u g l ∈
+      G.neighborFinset (u c i) ∩ G.neighborFinset (u e k) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨hgc.symm, heg⟩
+  have hjl := Finset.card_le_one.mp hCommonLe (u d j) hjCommon (u g l) hlCommon
+  have hp := huinj (show u (d, j).1 (d, j).2 = u (g, l).1 (g, l).2 by
+    simpa using hjl)
+  exact hdg (congrArg Prod.fst hp)
+
 /-- Residual `K₃,₃` adjacency transports the unique residual labels across
 the block-layer defect graph: from a block vertex labeled `r`, exactly one
 defect neighbor has any prescribed defect-adjacent label `s`. -/
