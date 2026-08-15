@@ -595,4 +595,75 @@ theorem C4PlateauCore.degreeSeven_final_order_window
     omega
   · exact Or.inr ⟨by omega, hupper⟩
 
+/-- Removing the witness orders already present below the conductor leaves
+only 36 explicit degree-seven plateau candidates. -/
+theorem C4PlateauCore.degreeSeven_sharp_candidate_windows
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) :
+    m = 48 ∨
+      (49 ≤ m ∧ m ≤ 54) ∨
+      (57 ≤ m ∧ m ≤ 61) ∨
+      (73 ≤ m ∧ m ≤ 79) ∨
+      (91 ≤ m ∧ m ≤ 94) ∨
+      (96 ≤ m ∧ m ≤ 102) ∨
+      (105 ≤ m ∧ m ≤ 110) := by
+  have hwindow := hcore.degreeSeven_final_order_window hm
+  rcases hwindow with rfl | ⟨h49, h111⟩
+  · exact Or.inl rfl
+  by_cases h54 : m ≤ 54
+  · exact Or.inr (Or.inl ⟨h49, h54⟩)
+  by_cases h56 : m ≤ 56
+  · have hw : C4FreeMinDegreeWitness (m + 1) 7 := by
+      interval_cases m
+      · simpa using er7_delete1_degreeSeven_witness
+      · simpa using er7_degreeSeven_witness
+    rcases hw with ⟨H, hdec, hmin, hfree⟩
+    rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+    exact (hfree (hnext H hdec hmin)).elim
+  by_cases h61 : m ≤ 61
+  · exact Or.inr (Or.inr (Or.inl ⟨by omega, h61⟩))
+  by_cases h72 : m ≤ 72
+  · let j := m - 62
+    have hj : j ≤ 10 := by omega
+    have hw : C4FreeMinDegreeWitness (m + 1) 7 := by
+      have := degreeSeven_witness_sixtyThree_add j hj
+      dsimp [j] at this
+      convert this using 1 <;> omega
+    rcases hw with ⟨H, hdec, hmin, hfree⟩
+    rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+    exact (hfree (hnext H hdec hmin)).elim
+  by_cases h79 : m ≤ 79
+  · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨by omega, h79⟩)))
+  by_cases h90 : m ≤ 90
+  · let j := m - 80
+    have hj : j ≤ 10 := by omega
+    have hw : C4FreeMinDegreeWitness (m + 1) 7 := by
+      have := degreeSeven_witness_eightyOne_add j hj
+      dsimp [j] at this
+      convert this using 1 <;> omega
+    rcases hw with ⟨H, hdec, hmin, hfree⟩
+    rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+    exact (hfree (hnext H hdec hmin)).elim
+  by_cases h94 : m ≤ 94
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨by omega, h94⟩))))
+  by_cases h95 : m = 95
+  · subst m
+    have hw := degreeSeven_add2 boza48_degreeSeven_witness
+      boza48_degreeSeven_witness (by norm_num) (by norm_num)
+    rcases hw with ⟨H, hdec, hmin, hfree⟩
+    rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+    exact (hfree (hnext H hdec hmin)).elim
+  by_cases h102 : m ≤ 102
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨by omega, h102⟩)))))
+  by_cases h104 : m ≤ 104
+  · have hw : C4FreeMinDegreeWitness (m + 1) 7 := by
+      interval_cases m
+      · simpa using degreeSeven_add2 boza48_degreeSeven_witness
+          er7_delete1_degreeSeven_witness (by norm_num) (by norm_num)
+      · simpa using degreeSeven_add2 boza48_degreeSeven_witness
+          er7_degreeSeven_witness (by norm_num) (by norm_num)
+    rcases hw with ⟨H, hdec, hmin, hfree⟩
+    rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+    exact (hfree (hnext H hdec hmin)).elim
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨by omega, by omega⟩)))))
+
 end Erdos85
