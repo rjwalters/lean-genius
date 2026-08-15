@@ -505,6 +505,99 @@ theorem degreeSixQuotient_model7_support_card_cases_nat
       s q c (fun i ↦ by have := hslo i; omega) hrow hbal hsq hdiag hc3 hcc
         (by simpa [P, R] using h.2)).elim
 
+/-- Model7 cannot have a two-element positive support.  Its four invisible
+components have total order twelve and lower bound three, hence all have
+order three and diagonal zero.  The two remaining positive diagonals are at
+most two each, contradicting total trace six. -/
+theorem false_of_degreeSixQuotient_model7_support_card_two_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hthree : ∀ i, s i = 3 → q i i = 0)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 2)
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 4) : False := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hPcard' : P.card = 2 := by simpa [P] using hPcard
+  have hRcard' : R.card = 4 := by simpa [P, R] using hRcard
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c (fun i ↦ by have := hslo i; omega) htotal hrow hbal hsq hc3 hcc).2
+  change (∑ r ∈ R, s r) = 12 at hmass
+  have hRthree : ∀ r ∈ R, s r = 3 := by
+    intro r hr
+    have herase := Finset.sum_erase_add R s hr
+    have hcardErase : (R.erase r).card = 3 := by
+      rw [Finset.card_erase_of_mem hr, hRcard']
+    have hlo : 3 * (R.erase r).card ≤ ∑ j ∈ R.erase r, s j := by
+      calc
+        3 * (R.erase r).card = ∑ _j ∈ R.erase r, 3 := by
+          simp [Nat.mul_comm]
+        _ ≤ ∑ j ∈ R.erase r, s j :=
+          Finset.sum_le_sum fun j _ ↦ hslo j
+    rw [hcardErase] at hlo
+    have hrlo := hslo r
+    omega
+  have hRtrace : (∑ r ∈ R, q r r) = 0 := by
+    apply Finset.sum_eq_zero
+    intro r hr
+    exact hthree r (hRthree r hr)
+  have hPtraceLe : (∑ p ∈ P, q p p) ≤ 4 := by
+    calc
+      (∑ p ∈ P, q p p) ≤ ∑ _p ∈ P, 2 :=
+        Finset.sum_le_sum fun p _ ↦ hdiag p
+      _ = 4 := by simp [hPcard']
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro p hp
+    exact Finset.mem_erase.mpr
+      ⟨fun hpc ↦ hcnotP (hpc ▸ hp), Finset.mem_univ p⟩
+  have hsplit : (∑ r ∈ R, q r r) + (∑ p ∈ P, q p p) =
+      ∑ i ∈ Finset.univ.erase c, q i i := Finset.sum_sdiff hPsub
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset C) (fun i ↦ q i i) (Finset.mem_univ c)
+  change (∑ i ∈ (Finset.univ : Finset C), q i i) = 6 at htrace
+  rw [hcc, htrace] at houtside
+  omega
+
+/-- The full Model7 hypotheses reduce the base split to `3+3` or `4+2`. -/
+theorem degreeSixQuotient_model7_support_card_ge_three_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 7)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hthree : ∀ i, s i = 3 → q i i = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (P.card = 3 ∧ R.card = 3) ∨ (P.card = 4 ∧ R.card = 2) := by
+  let P := Finset.univ.filter fun j ↦ 0 < q c j
+  let R := (Finset.univ.erase c) \ P
+  have hcases := degreeSixQuotient_model7_support_card_cases_nat
+    s q c hslo hcard htotal hrow hbal hsq hdiag hc3 hcc
+  change (P.card = 2 ∧ R.card = 4) ∨
+    (P.card = 3 ∧ R.card = 3) ∨
+    (P.card = 4 ∧ R.card = 2) at hcases
+  rcases hcases with h | h | h
+  · exact (false_of_degreeSixQuotient_model7_support_card_two_nat
+      s q c hslo htotal hrow hbal hsq hdiag htrace hc3 hcc hthree
+        (by simpa [P] using h.1) (by simpa [P, R] using h.2)).elim
+  · exact Or.inl h
+  · exact Or.inr h
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
