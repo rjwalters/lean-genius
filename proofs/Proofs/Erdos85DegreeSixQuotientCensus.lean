@@ -18,6 +18,63 @@ set_option maxHeartbeats 1000000000
 
 abbrev DegreeSixCensusWord := BitVec 8
 
+/-- Kernel-clean structural reduction at an order-three, zero-diagonal base
+row.  Equality of its ordinary and two-step row masses forces every positive
+reverse quotient to be one; detailed balance then reads off the target order
+as three times the forward quotient.  This is the common first step in the
+five- and seven-component census branches. -/
+theorem degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (_hcc : q c c = 0) :
+    ∀ j, 0 < q c j → q j c = 1 ∧ s j = 3 * q c j := by
+  have hprod : (∑ j, q c j * q j c) = 6 := by
+    rw [hsq c c, hc3]
+    simp
+  have hle : ∀ j, q c j ≤ q c j * q j c := by
+    intro j
+    by_cases hq : q c j = 0
+    · simp [hq]
+    · have hqpos : 0 < q c j := Nat.pos_of_ne_zero hq
+      have hrpos : 0 < q j c := by
+        by_contra hr
+        push Not at hr
+        have hr0 : q j c = 0 := by omega
+        have hb := hbal c j
+        rw [hr0, mul_zero] at hb
+        exact (Nat.mul_pos (hspos c) hqpos).ne' hb
+      calc
+        q c j = q c j * 1 := by simp
+        _ ≤ q c j * q j c := Nat.mul_le_mul_left _ hrpos
+  have hsum : (∑ j, q c j * q j c) = ∑ j, q c j := by
+    rw [hprod, hrow c]
+  intro j hqpos
+  have hr : q j c = 1 := by
+    have hrpos : 0 < q j c := by
+      have hj := hle j
+      by_contra hn
+      push Not at hn
+      have hz : q j c = 0 := by omega
+      rw [hz, mul_zero] at hj
+      omega
+    by_contra hrne
+    have hrlt : q c j < q c j * q j c := by
+      have hr2 : 1 < q j c := by omega
+      simpa using (Nat.mul_lt_mul_left hqpos).mpr hr2
+    have hstrict := Finset.sum_lt_sum
+      (fun k _ ↦ hle k) ⟨j, Finset.mem_univ j, hrlt⟩
+    rw [hsum] at hstrict
+    exact (lt_irrefl _ hstrict)
+  refine ⟨hr, ?_⟩
+  have hb := hbal c j
+  rw [hc3, hr, mul_one] at hb
+  exact hb.symm
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
