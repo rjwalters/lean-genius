@@ -2151,7 +2151,10 @@ theorem five_support_weight_six_structure
     (hsum : (∑ x ∈ S, q x) = 6)
     (hlarge : (S.filter fun x ↦ 1 < q x).card = 1) :
     ∃ a t₁ t₂ t₃ t₄,
-      S = {a, t₁, t₂, t₃, t₄} ∧ q a = 2 ∧
+      a ∉ ({t₁, t₂, t₃, t₄} : Finset C) ∧
+        t₁ ∉ ({t₂, t₃, t₄} : Finset C) ∧
+        t₂ ∉ ({t₃, t₄} : Finset C) ∧ t₃ ≠ t₄ ∧
+        S = {a, t₁, t₂, t₃, t₄} ∧ q a = 2 ∧
         q t₁ = 1 ∧ q t₂ = 1 ∧ q t₃ = 1 ∧ q t₄ = 1 := by
   let N := S.filter fun x ↦ 1 < q x
   obtain ⟨a, ha⟩ := Finset.card_eq_one.mp (by simpa [N] using hlarge)
@@ -2187,7 +2190,13 @@ theorem five_support_weight_six_structure
     Finset.sum_insert (by simp [ht₃t₄]), Finset.sum_singleton,
     ht₁, ht₂, ht₃, ht₄] at hasplit
   have ha2 : q a = 2 := by omega
-  refine ⟨a, t₁, t₂, t₃, t₄, ?_, ha2, ht₁, ht₂, ht₃, ht₄⟩
+  have haNot : a ∉ ({t₁, t₂, t₃, t₄} : Finset C) := by
+    rw [← hrest]
+    simp
+  refine ⟨a, t₁, t₂, t₃, t₄, haNot,
+    by simp [ht₁t₂, ht₁t₃, ht₁t₄],
+    by simp [ht₂t₃, ht₂t₄], ht₃t₄, ?_, ha2,
+    ht₁, ht₂, ht₃, ht₄⟩
   rw [← Finset.insert_erase haS, hrest]
 
 /-- A three-element support of total order twelve and minimum order three is
@@ -2199,8 +2208,10 @@ theorem three_support_order_twelve_structure
     (hsum : (∑ x ∈ S, size x) = 12)
     (hlarge : (S.filter fun x ↦ 3 < size x).card = 2 ∨
       (S.filter fun x ↦ 3 < size x).card = 3) :
-    (∃ t a b, S = {t, a, b} ∧ size t = 3 ∧ size a = 4 ∧ size b = 5) ∨
-      (∃ a b d, S = {a, b, d} ∧ size a = 4 ∧ size b = 4 ∧ size d = 4) := by
+    (∃ t a b, t ≠ a ∧ t ≠ b ∧ a ≠ b ∧ S = {t, a, b} ∧
+      size t = 3 ∧ size a = 4 ∧ size b = 5) ∨
+      (∃ a b d, a ≠ b ∧ a ≠ d ∧ b ≠ d ∧ S = {a, b, d} ∧
+        size a = 4 ∧ size b = 4 ∧ size d = 4) := by
   obtain ⟨x, y, z, hxy, hxz, hyz, hS⟩ := Finset.card_eq_three.mp hcard
   have hxmem : x ∈ S := by rw [hS]; simp
   have hymem : y ∈ S := by rw [hS]; simp
@@ -2235,18 +2246,18 @@ theorem three_support_order_twelve_structure
       all_goals try norm_num [hxy, hxz, hyz] at hthree
       all_goals norm_num
   rcases hshape with h | h | h | h | h | h | h
-  · exact Or.inl ⟨x, y, z, hS, h.1, h.2.1, h.2.2⟩
-  · exact Or.inl ⟨x, z, y, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
-      h.1, h.2.2, h.2.1⟩
-  · exact Or.inl ⟨y, x, z, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
-      h.2.1, h.1, h.2.2⟩
-  · exact Or.inl ⟨y, z, x, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
-      h.2.1, h.2.2, h.1⟩
-  · exact Or.inl ⟨z, x, y, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
-      h.2.2, h.1, h.2.1⟩
-  · exact Or.inl ⟨z, y, x, by ext w; simp [hS, or_comm, or_left_comm, or_assoc],
-      h.2.2, h.2.1, h.1⟩
-  · exact Or.inr ⟨x, y, z, hS, h.1, h.2.1, h.2.2⟩
+  · exact Or.inl ⟨x, y, z, hxy, hxz, hyz, hS, h.1, h.2.1, h.2.2⟩
+  · exact Or.inl ⟨x, z, y, hxz, hxy, Ne.symm hyz,
+      by ext w; simp [hS, or_comm, or_left_comm, or_assoc], h.1, h.2.2, h.2.1⟩
+  · exact Or.inl ⟨y, x, z, Ne.symm hxy, hyz, hxz,
+      by ext w; simp [hS, or_comm, or_left_comm, or_assoc], h.2.1, h.1, h.2.2⟩
+  · exact Or.inl ⟨y, z, x, hyz, Ne.symm hxy, Ne.symm hxz,
+      by ext w; simp [hS, or_comm, or_left_comm, or_assoc], h.2.1, h.2.2, h.1⟩
+  · exact Or.inl ⟨z, x, y, Ne.symm hxz, Ne.symm hyz, hxy,
+      by ext w; simp [hS, or_comm, or_left_comm, or_assoc], h.2.2, h.1, h.2.1⟩
+  · exact Or.inl ⟨z, y, x, Ne.symm hyz, Ne.symm hxz, Ne.symm hxy,
+      by ext w; simp [hS, or_comm, or_left_comm, or_assoc], h.2.2, h.2.1, h.1⟩
+  · exact Or.inr ⟨x, y, z, hxy, hxz, hyz, hS, h.1, h.2.1, h.2.2⟩
 
 /-- Two order-three targets occupy the same nonzero target-length residue in
 an order-nine source row, so cycle-block periodicity bounds their combined
@@ -8958,6 +8969,208 @@ theorem degreeSix_emptySector_zeroTriangle_nine_component_support_counts
   exact nine_component_support_count_census P.card R.card NP.card NR.card
     hparts (by omega) (by omega) hnpWeight hnpPositive hnrExcess
       (Finset.card_filter_le _ _) (Finset.card_filter_le _ _) hthree
+
+/-- The nine-component zero-triangle branch is impossible.  The support
+census gives exactly the two order profiles handled by the arithmetic
+terminals above. -/
+theorem degreeSix_emptySector_zeroTriangle_component_count_nine_false
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 9) : False := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  let P : Finset D.ConnectedComponent := Finset.univ.filter fun x ↦ 0 < Q c x
+  let R : Finset D.ConnectedComponent := (Finset.univ.erase c) \ P
+  let NP : Finset D.ConnectedComponent := P.filter fun x ↦ 1 < Q c x
+  let NR : Finset D.ConnectedComponent := R.filter fun x ↦ 3 < x.supp.ncard
+  have hcounts := degreeSix_emptySector_zeroTriangle_nine_component_support_counts
+    G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc hcount
+  change P.card = 5 ∧ R.card = 3 ∧ NP.card = 1 ∧
+    (NR.card = 2 ∨ NR.card = 3) at hcounts
+  obtain ⟨hPcard, hRcard, hNPcard, hNRcard⟩ := hcounts
+  obtain ⟨hPsum, hRsum, hprof⟩ :=
+    degreeSix_orderThree_zeroDiagonal_support_partition
+      G hfree hmin hcard c hc3 hcc
+  change (∑ x ∈ P, x.supp.ncard) = 18 at hPsum
+  change (∑ x ∈ R, x.supp.ncard) = 12 at hRsum
+  change ∀ x ∈ P, Q x c = 1 ∧ x.supp.ncard = 3 * Q c x at hprof
+  have hQsum : (∑ x ∈ P, Q c x) = 6 := by
+    have hs : (∑ x ∈ P, x.supp.ncard) =
+        ∑ x ∈ P, 3 * Q c x := by
+      apply Finset.sum_congr rfl
+      intro x hx
+      exact (hprof x hx).2
+    rw [hPsum, ← Finset.mul_sum] at hs
+    omega
+  have hPpos : ∀ x ∈ P, 1 ≤ Q c x := by
+    intro x hx
+    have hp : 0 < Q c x := by simpa [P] using hx
+    omega
+  obtain ⟨a, t₁, t₂, t₃, t₄, haNot, ht₁Not, ht₂Not, ht₃t₄,
+      hPset, hqa, hqt₁, hqt₂, hqt₃, hqt₄⟩ :=
+    five_support_weight_six_structure P (fun x ↦ Q c x)
+      hPcard hPpos hQsum hNPcard
+  have haP : a ∈ P := by rw [hPset]; simp
+  have ht₁P : t₁ ∈ P := by rw [hPset]; simp
+  have ht₂P : t₂ ∈ P := by rw [hPset]; simp
+  have ht₃P : t₃ ∈ P := by rw [hPset]; simp
+  have ht₄P : t₄ ∈ P := by rw [hPset]; simp
+  have ha6 : a.supp.ncard = 6 := by rw [(hprof a haP).2, hqa]
+  have ht₁3 : t₁.supp.ncard = 3 := by rw [(hprof t₁ ht₁P).2, hqt₁]
+  have ht₂3 : t₂.supp.ncard = 3 := by rw [(hprof t₂ ht₂P).2, hqt₂]
+  have ht₃3 : t₃.supp.ncard = 3 := by rw [(hprof t₃ ht₃P).2, hqt₃]
+  have ht₄3 : t₄.supp.ncard = 3 := by rw [(hprof t₄ ht₄P).2, hqt₄]
+  have hcNotP : c ∉ P := by change Q c c = 0 at hcc; simp [P, hcc]
+  have hPsub : P ⊆ (Finset.univ.erase c : Finset D.ConnectedComponent) := by
+    intro x hx
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    intro hxc
+    subst x
+    exact hcNotP hx
+  have hPR : Disjoint P R := by
+    rw [Finset.disjoint_left]
+    intro x hxP hxR
+    exact (Finset.mem_sdiff.mp hxR).2 hxP
+  have hcNotR : c ∉ R := by simp [R]
+  have hsplit (f : D.ConnectedComponent → ℕ) :
+      (∑ x, f x) = f c + (∑ x ∈ P, f x) + ∑ x ∈ R, f x := by
+    have hcover : P ∪ R = (Finset.univ.erase c : Finset D.ConnectedComponent) := by
+      simpa [R] using Finset.union_sdiff_of_subset hPsub
+    rw [add_assoc, ← Finset.sum_union hPR, hcover,
+      ← Finset.sum_insert (by simp),
+      Finset.insert_erase (Finset.mem_univ c)]
+  have hbal (x y : D.ConnectedComponent) :
+      x.supp.ncard * Q x y = y.supp.ncard * Q y x :=
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hzero (x : D.ConnectedComponent) (hx3 : x.supp.ncard = 3) : Q x x = 0 := by
+    exact (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+        (fun y ↦ by rw [hx3]; exact hr3 y)).1
+  have hdiagLe (x : D.ConnectedComponent) : Q x x ≤ 2 :=
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+  have htrace : (∑ x : D.ConnectedComponent, Q x x) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hRstruct := three_support_order_twelve_structure R
+    (fun x ↦ x.supp.ncard) hRcard (by intro x _; exact hr3 x) hRsum hNRcard
+  rcases hRstruct with ⟨r, b, d, hrb, hrd, hbd, hRset, hr3', hb4, hd5⟩ |
+      ⟨b, d, e, hbd, hbe, hde, hRset, hb4, hd4, he4⟩
+  · have htc0 := hzero c hc3
+    have htt₁0 := hzero t₁ ht₁3
+    have htt₂0 := hzero t₂ ht₂3
+    have htt₃0 := hzero t₃ ht₃3
+    have htt₄0 := hzero t₄ ht₄3
+    have hrr0 := hzero r hr3'
+    have htr := htrace
+    rw [hsplit (fun x ↦ Q x x), hPset,
+      Finset.sum_insert haNot, Finset.sum_insert ht₁Not,
+      Finset.sum_insert ht₂Not, Finset.sum_insert (by simpa using ht₃t₄),
+      Finset.sum_singleton, hRset,
+      Finset.sum_insert (by simp [hrb, hrd]),
+      Finset.sum_insert (by simp [hbd]), Finset.sum_singleton,
+      htc0, htt₁0, htt₂0, htt₃0, htt₄0, hrr0] at htr
+    have hbb : Q b b = 2 := by have := hdiagLe b; have := hdiagLe d; have := hdiagLe a; omega
+    have hrow := sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) b
+    have hrow' : Q b c + (Q b a + Q b t₁ + Q b t₂ + Q b t₃ + Q b t₄) +
+        (Q b r + Q b b + Q b d) = 6 := by
+      have hd := hsplit (fun x ↦ Q b x)
+      rw [hPset, Finset.sum_insert haNot, Finset.sum_insert ht₁Not,
+        Finset.sum_insert ht₂Not, Finset.sum_insert (by simpa using ht₃t₄),
+        Finset.sum_singleton, hRset,
+        Finset.sum_insert (by simp [hrb, hrd]),
+        Finset.sum_insert (by simp [hbd]), Finset.sum_singleton] at hd
+      rw [hrow] at hd
+      omega
+    exact false_of_six_three_four_five_six_balanced_profile Q b c t₁ t₂ t₃ t₄ r d a
+      (by omega) hbb
+      (by have h := hbal b c; rw [hb4, hc3] at h; exact h)
+      (by have h := hbal b t₁; rw [hb4, ht₁3] at h; exact h)
+      (by have h := hbal b t₂; rw [hb4, ht₂3] at h; exact h)
+      (by have h := hbal b t₃; rw [hb4, ht₃3] at h; exact h)
+      (by have h := hbal b t₄; rw [hb4, ht₄3] at h; exact h)
+      (by have h := hbal b r; rw [hb4, hr3'] at h; exact h)
+      (by have h := hbal b d; rw [hb4, hd5] at h; exact h)
+      (by have h := hbal b a; rw [hb4, ha6] at h; exact h)
+  · have htc0 := hzero c hc3
+    have htt₁0 := hzero t₁ ht₁3
+    have htt₂0 := hzero t₂ ht₂3
+    have htt₃0 := hzero t₃ ht₃3
+    have htt₄0 := hzero t₄ ht₄3
+    have htr := htrace
+    rw [hsplit (fun x ↦ Q x x), hPset,
+      Finset.sum_insert haNot, Finset.sum_insert ht₁Not,
+      Finset.sum_insert ht₂Not, Finset.sum_insert (by simpa using ht₃t₄),
+      Finset.sum_singleton, hRset,
+      Finset.sum_insert (by simp [hbd, hbe]),
+      Finset.sum_insert (by simp [hde]), Finset.sum_singleton,
+      htc0, htt₁0, htt₂0, htt₃0, htt₄0] at htr
+    have hcase : Q b b = 2 ∨ Q d d = 2 ∨ Q e e = 2 := by
+      have hb := hdiagLe b; have hd := hdiagLe d; have he := hdiagLe e
+      have ha := hdiagLe a
+      omega
+    have hkill (x y z : D.ConnectedComponent)
+        (hx4 : x.supp.ncard = 4) (hy4 : y.supp.ncard = 4)
+        (hz4 : z.supp.ncard = 4) (hxy : x ≠ y) (hxz : x ≠ z)
+        (hyz : y ≠ z) (hRxyz : R = {x, y, z}) (hxx : Q x x = 2) : False := by
+      have hs := secondOrder_componentQuotientMatrix_sq_apply
+        G hfree (d := 6) (by norm_num) (by norm_num) hmin
+          (by norm_num at hcard ⊢; exact hcard) x x
+      have hs' : Q x c * Q c x +
+          (Q x a * Q a x + Q x t₁ * Q t₁ x + Q x t₂ * Q t₂ x +
+            Q x t₃ * Q t₃ x + Q x t₄ * Q t₄ x) +
+          (Q x x * Q x x + Q x y * Q y x + Q x z * Q z x) = 7 := by
+        have heq := hsplit (fun w ↦ Q x w * Q w x)
+        rw [hPset, Finset.sum_insert haNot, Finset.sum_insert ht₁Not,
+          Finset.sum_insert ht₂Not, Finset.sum_insert (by simpa using ht₃t₄),
+          Finset.sum_singleton, hRxyz,
+          Finset.sum_insert (by simp [hxy, hxz]),
+          Finset.sum_insert (by simp [hyz]), Finset.sum_singleton] at heq
+        have hsNat : (∑ w, Q x w * Q w x) = 7 := by
+          simpa [Q, D, Matrix.mul_apply, hx4, Nat.add_comm] using hs
+        omega
+      exact false_of_order_four_diagonal_two_with_two_order_four_peers
+        Q x c t₁ t₂ t₃ t₄ y z a (by omega) hxx
+        (by have h := hbal x c; rw [hx4, hc3] at h; exact h)
+        (by have h := hbal x t₁; rw [hx4, ht₁3] at h; exact h)
+        (by have h := hbal x t₂; rw [hx4, ht₂3] at h; exact h)
+        (by have h := hbal x t₃; rw [hx4, ht₃3] at h; exact h)
+        (by have h := hbal x t₄; rw [hx4, ht₄3] at h; exact h)
+        (by have h := hbal x y; rw [hx4, hy4] at h; omega)
+        (by have h := hbal x z; rw [hx4, hz4] at h; omega)
+        (by have h := hbal x a; rw [hx4, ha6] at h; exact h)
+    rcases hcase with hbb | hdd | hee
+    · exact hkill b d e hb4 hd4 he4 hbd hbe hde hRset hbb
+    · exact hkill d b e hd4 hb4 he4 (Ne.symm hbd) hde hbe
+        (by ext w; simp [hRset, or_comm, or_left_comm, or_assoc]) hdd
+    · exact hkill e b d he4 hb4 hd4 (Ne.symm hbe) (Ne.symm hde) hbd
+        (by ext w; simp [hRset, or_comm, or_left_comm, or_assoc]) hee
 
 /-- The residual component-order profile `3,3,9,9,9` is impossible.  The
 zero-diagonal row of the first triangle cannot contact the other triangle;
