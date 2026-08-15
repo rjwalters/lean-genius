@@ -332,6 +332,44 @@ theorem degreeSix_thirtyFive_antipodal_commutatorGap
       G hfree hreg,
     degreeSix_thirtyFive_triangleFree_commutatorGap G hfree hreg hcard]
 
+/-- Frobenius form: the triangle-free color commutator has squared trace
+`-16` times the number of vertices in a nonzero color sector. -/
+theorem degreeSix_thirtyFive_triangleFree_commutator_sq_trace
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    Matrix.trace ((A * T - T * A) * (A * T - T * A)) =
+      -16 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+  dsimp only
+  rw [trace_commutator_sq_eq_two_mul_alternating_sub_square]
+  have hTle : triangleFreeEdgeGraph G ≤ G := by
+    intro x y hxy
+    exact ((mem_triangleFreeNeighbors G x y).mp
+      ((triangleFreeEdgeGraph_adj G x y).mp hxy)).1
+  have halt := trace_adj_subgraph_adj_subgraph_eq_trace_subgraph_fourth
+    G (triangleFreeEdgeGraph G) hfree hTle
+  change Matrix.trace ((G.adjMatrix ℤ *
+      (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+        (G.adjMatrix ℤ * (triangleFreeEdgeGraph G).adjMatrix ℤ)) =
+    Matrix.trace (((triangleFreeEdgeGraph G).adjMatrix ℤ *
+      (triangleFreeEdgeGraph G).adjMatrix ℤ) *
+        ((triangleFreeEdgeGraph G).adjMatrix ℤ *
+          (triangleFreeEdgeGraph G).adjMatrix ℤ)) at halt
+  rw [halt]
+  have hgap := degreeSix_thirtyFive_triangleFree_commutatorGap
+    G hfree hreg hcard
+  dsimp only at hgap
+  linear_combination -2 * hgap
+
 /-- **Odd excess-three normalization.**  The whole triangle-free side is a
 known affine expression in the degree-three sector size, apart from the
 single mixed count `tr(C T²)`. -/
