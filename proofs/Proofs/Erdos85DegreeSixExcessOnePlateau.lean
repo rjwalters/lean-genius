@@ -4343,6 +4343,103 @@ theorem negThree_eigenvector_zero_on_cubicKFour
   · linarith
   constructor <;> linarith
 
+/-- At a vertex where the absolute value of a `-3` eigenvector is at least
+that at every neighbor of a cubic graph, all three neighboring values have
+the opposite sign and the same magnitude.  This is the equality case in the
+bottom-eigenvalue bound for a cubic graph. -/
+theorem negThree_eigenvector_neighbor_eq_neg_of_local_abs_max
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hregD : ∀ z, D.degree z = 3)
+    (v : V → ℚ) (hv : (D.adjMatrix ℚ).mulVec v = (-3 : ℚ) • v)
+    {a : V}
+    (hmax : ∀ b, D.Adj a b → |v b| ≤ |v a|) :
+    ∀ b, D.Adj a b → v b = -v a := by
+  intro b hab
+  have hsum : (∑ u ∈ D.neighborFinset a, v u) = -3 * v a := by
+    have ha := congrFun hv a
+    rw [SimpleGraph.adjMatrix_mulVec_apply] at ha
+    simpa only [Pi.smul_apply, smul_eq_mul] using ha
+  have hcard : (D.neighborFinset a).card = 3 := by
+    rw [D.card_neighborFinset_eq_degree, hregD a]
+  by_cases hva : 0 ≤ v a
+  · have hlower : ∀ u ∈ D.neighborFinset a, -v a ≤ v u := by
+      intro u hu
+      have huAbs := hmax u ((D.mem_neighborFinset a u).mp hu)
+      rw [abs_of_nonneg hva] at huAbs
+      exact (abs_le.mp huAbs).1
+    by_contra hne
+    have hstrict : -v a < v b := lt_of_le_of_ne
+      (hlower b ((D.mem_neighborFinset a b).mpr hab)) (Ne.symm hne)
+    have hlt : (∑ _u ∈ D.neighborFinset a, -v a) <
+        ∑ u ∈ D.neighborFinset a, v u :=
+      Finset.sum_lt_sum hlower
+        ⟨b, (D.mem_neighborFinset a b).mpr hab, hstrict⟩
+    rw [Finset.sum_const, hcard, nsmul_eq_mul, hsum] at hlt
+    norm_num at hlt
+  · have hvaNeg : v a ≤ 0 := le_of_lt (lt_of_not_ge hva)
+    have hupper : ∀ u ∈ D.neighborFinset a, v u ≤ -v a := by
+      intro u hu
+      have huAbs := hmax u ((D.mem_neighborFinset a u).mp hu)
+      rw [abs_of_nonpos hvaNeg] at huAbs
+      exact (abs_le.mp huAbs).2
+    by_contra hne
+    have hstrict : v b < -v a := lt_of_le_of_ne
+      (hupper b ((D.mem_neighborFinset a b).mpr hab)) hne
+    have hlt : (∑ u ∈ D.neighborFinset a, v u) <
+        ∑ _u ∈ D.neighborFinset a, -v a :=
+      Finset.sum_lt_sum hupper
+        ⟨b, (D.mem_neighborFinset a b).mpr hab, hstrict⟩
+    rw [Finset.sum_const, hcard, nsmul_eq_mul, hsum] at hlt
+    norm_num at hlt
+
+/-- Every edge in a cubic graph reverses a rational eigenvector for the
+bottom eigenvalue `-3`.  The proof chooses an absolute-value maximum in the
+edge's connected component and propagates the equality case along a walk. -/
+theorem negThree_eigenvector_eq_neg_of_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hregD : ∀ z, D.degree z = 3)
+    (v : V → ℚ) (hv : (D.adjMatrix ℚ).mulVec v = (-3 : ℚ) • v)
+    {a b : V} (hab : D.Adj a b) :
+    v b = -v a := by
+  let s : Finset V := Finset.univ.filter (fun z => D.Reachable a z)
+  have has : a ∈ s := by simp [s]
+  obtain ⟨x, hxS, hxMax⟩ :=
+    Finset.exists_max_image s (fun z => |v z|) ⟨a, has⟩
+  have hxReach : D.Reachable a x := by
+    simpa [s] using hxS
+  have hbound : ∀ z, D.Reachable a z → |v z| ≤ |v x| := by
+    intro z hz
+    apply hxMax z
+    simp [s, hz]
+  have hwalk : ∀ (c d : V) (p : D.Walk c d),
+      D.Reachable a c → |v c| = |v x| → |v d| = |v x| := by
+    intro c d p
+    induction p with
+    | nil => exact fun _ hc => hc
+    | @cons c e d hce q ih =>
+        intro hcReach hcAbs
+        have hcLocal : ∀ u, D.Adj c u → |v u| ≤ |v c| := by
+          intro u hcu
+          rw [hcAbs]
+          exact hbound u (hcReach.trans hcu.reachable)
+        have heFlip : v e = -v c :=
+          negThree_eigenvector_neighbor_eq_neg_of_local_abs_max
+            D hregD v hv hcLocal e hce
+        have heAbs : |v e| = |v x| := by
+          rw [heFlip, abs_neg, hcAbs]
+        exact ih (hcReach.trans hce.reachable) heAbs
+  have haAbs : |v a| = |v x| := by
+    obtain ⟨p⟩ := hxReach.symm
+    exact hwalk x a p hxReach rfl
+  apply negThree_eigenvector_neighbor_eq_neg_of_local_abs_max
+    D hregD v hv
+  · intro z haz
+    rw [haAbs]
+    exact hbound z haz.reachable
+  · exact hab
+
 /-- The extra `-3` direction forced by parity is genuinely visible on the
 24-vertex cover layer. -/
 theorem degreeSix_thirtyFour_defectKFour_exists_negThree_eigenvector_nonzero_on_blockLayer
@@ -4394,6 +4491,46 @@ theorem degreeSix_thirtyFour_defectKFour_exists_negThree_eigenvector_nonzero_on_
     · exact hwz (hzb ▸ hcenterZero.2.1)
     · exact hwz (hzx ▸ hcenterZero.2.2.1)
     · exact hwz (hzy ▸ hcenterZero.2.2.2)
+
+/-- In the closed defect-`K₄` branch there is a nonzero alternating defect
+eigenvector visible on the 24-vertex cover layer: its value reverses across
+every defect edge. -/
+theorem degreeSix_thirtyFour_defectKFour_exists_alternating_vector_on_blockLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    ∃ w : defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ),
+      ∃ z ∈ B, w.1 z ≠ 0 ∧
+        ∀ u v, (secondOrderDefectGraph G).Adj u v → w.1 v = -w.1 u := by
+  obtain ⟨w, z, hzB, hwz⟩ :=
+    degreeSix_thirtyFour_defectKFour_exists_negThree_eigenvector_nonzero_on_blockLayer
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hDreg : ∀ q, (secondOrderDefectGraph G).degree q = 3 := by
+    intro q
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) q
+  refine ⟨w, z, hzB, hwz, ?_⟩
+  intro u v huv
+  exact negThree_eigenvector_eq_neg_of_adj
+    (secondOrderDefectGraph G) hDreg w.1
+      (mem_defectEigenspace_iff.mp w.2) huv
 
 end
 
