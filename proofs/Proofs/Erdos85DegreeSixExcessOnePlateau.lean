@@ -5800,6 +5800,98 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_color_connected
   dsimp only
   exact Fintype.card_unique
 
+/-- Any color sector of order six is a single connected two-regular
+component.  Thus both alternatives in the closed-`K₄` localization carry
+one six-cycle rather than several color cycles. -/
+theorem degreeSix_thirtyFour_colorOrder_six_connected
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6) :
+    let S := Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2
+    Fintype.card ((triangleFreeEdgeGraph G).induce (↑S : Set V)).ConnectedComponent = 1 := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  let H := T.induce (↑S : Set V)
+  have hSclosed : ∀ v ∈ S, T.neighborFinset v ⊆ S := by
+    intro v hv z hvz
+    have hvzT : T.Adj v z := (T.mem_neighborFinset v z).mp hvz
+    have hz2 := excessOne_even_triangleFree_degree_eq_two_of_adj
+      G hfree (d := 6) (by norm_num) hreg (by omega) hvzT
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ z, hz2⟩
+  have hcomponent (c : H.ConnectedComponent) : 5 ≤ c.supp.ncard := by
+    let K : Finset V := c.supp.toFinset.image (fun q : S => q.1)
+    obtain ⟨p, hp⟩ := c.nonempty_supp
+    have hpK : p.1 ∈ K := Finset.mem_image.mpr
+      ⟨p, by simpa using hp, rfl⟩
+    have hKclosed : ∀ v ∈ K, T.neighborFinset v ⊆ K := by
+      intro v hvK z hvz
+      obtain ⟨q, hqSupp, rfl⟩ := Finset.mem_image.mp hvK
+      have hzS : z ∈ S := hSclosed q.1 q.2 hvz
+      let zS : S := ⟨z, hzS⟩
+      have hqzT : T.Adj q.1 z := (T.mem_neighborFinset q.1 z).mp hvz
+      have hqzH : H.Adj q zS := hqzT
+      have hqMk : H.connectedComponentMk q = c :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c q).mp (by simpa using hqSupp)
+      have hzMk : H.connectedComponentMk zS = c :=
+        (SimpleGraph.ConnectedComponent.connectedComponentMk_eq_of_adj hqzH).symm.trans hqMk
+      have hzSupp : zS ∈ c.supp :=
+        (SimpleGraph.ConnectedComponent.mem_supp_iff c zS).mpr hzMk
+      exact Finset.mem_image.mpr ⟨zS, by simpa using hzSupp, rfl⟩
+    have hp2 : T.degree p.1 = 2 := (Finset.mem_filter.mp p.2).2
+    have hK5 := degreeSix_thirtyFour_five_le_of_triangleFree_closed
+      G hfree hreg hcard K hKclosed hpK hp2
+    have hKcard : K.card = c.supp.ncard := by
+      rw [Finset.card_image_of_injective _ Subtype.val_injective]
+      exact (Set.ncard_eq_toFinset_card' c.supp).symm
+    rwa [hKcard] at hK5
+  have hparts : (∑ c : H.ConnectedComponent, c.supp.ncard) = 6 := by
+    calc
+      (∑ c : H.ConnectedComponent, c.supp.ncard) =
+          ∑ c : H.ConnectedComponent, Fintype.card c.supp := by
+            apply Finset.sum_congr rfl
+            intro c hc
+            simpa [Nat.card_eq_fintype_card] using
+              (Nat.card_coe_set_eq c.supp).symm
+      _ = Fintype.card (Σ c : H.ConnectedComponent, c.supp) :=
+        Fintype.card_sigma.symm
+      _ = Fintype.card S := Fintype.card_congr (vertexConnectedComponentEquiv H) |>.symm
+      _ = 6 := by
+        rw [Fintype.card_coe S]
+        simpa [S, T] using hScard
+  have hsubsingle : Subsingleton H.ConnectedComponent := by
+    constructor
+    intro c e
+    by_contra hce
+    have hle : c.supp.ncard + e.supp.ncard ≤
+        ∑ q : H.ConnectedComponent, q.supp.ncard := by
+      calc
+        c.supp.ncard + e.supp.ncard =
+            ∑ q ∈ ({c, e} : Finset H.ConnectedComponent), q.supp.ncard := by simp [hce]
+        _ ≤ ∑ q ∈ (Finset.univ : Finset H.ConnectedComponent), q.supp.ncard := by
+          exact Finset.sum_le_sum_of_subset_of_nonneg (by simp) (by simp)
+        _ = _ := by simp
+    rw [hparts] at hle
+    have hc5 := hcomponent c
+    have he5 := hcomponent e
+    omega
+  have hSne : S.Nonempty := Finset.card_pos.mp (by
+    have : S.card = 6 := by simpa [S, T] using hScard
+    omega)
+  letI : Nonempty S := ⟨⟨Classical.choose hSne, Classical.choose_spec hSne⟩⟩
+  letI : Unique H.ConnectedComponent := {
+    default := H.connectedComponentMk (Classical.choice inferInstance)
+    uniq := fun _ => hsubsingle.elim _ _ }
+  dsimp only
+  exact Fintype.card_unique
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
