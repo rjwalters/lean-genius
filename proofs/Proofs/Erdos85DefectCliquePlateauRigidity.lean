@@ -660,6 +660,27 @@ theorem degree_induce_neighborSet_eq_one_of_independent_large_defectClique
   exact triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
     G hfree hd he hcard hreg C hCcard hclique hind hc
 
+/-- Even-degree form of the internal block perfect-matching theorem, with
+the clique independence discharged automatically. -/
+theorem degree_induce_neighborSet_eq_one_of_even_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (heven : Even d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    {c : V} (hc : c ∈ C)
+    (y : {z : V // z ∈ G.neighborSet c}) :
+    (G.induce (G.neighborSet c)).degree y = 1 := by
+  exact degree_induce_neighborSet_eq_one_of_independent_large_defectClique
+    G hfree hd he hcard hreg C hCcard hclique
+      (large_secondOrderDefectClique_isIndepSet_of_even_degree
+        G hfree hd he heven hcard hreg C hCcard hclique)
+      hc y
+
 /-- Every block indexed by an extremal independent defect clique meets every
 vertex of any block in exactly one neighbor.  For equal indices this is the
 internal perfect matching; for distinct indices it says that the bipartite
@@ -756,6 +777,26 @@ theorem card_common_eq_one_between_independent_large_defectClique_blocks
     exact (Finset.card_le_card hsub).trans hUcard
   rw [hreg y.1, Finset.card_erase_of_mem hc', hCcard] at hdegreeLe
   omega
+
+/-- Even-degree form of the exact block-to-block incidence theorem. -/
+theorem card_common_eq_one_between_even_large_defectClique_blocks
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (heven : Even d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    {c c' : V} (hc : c ∈ C) (hc' : c' ∈ C)
+    (y : {z : V // z ∈ G.neighborSet c}) :
+    (G.neighborFinset y.1 ∩ G.neighborFinset c').card = 1 := by
+  exact card_common_eq_one_between_independent_large_defectClique_blocks
+    G hfree hd he hcard hreg C hCcard hclique
+      (large_secondOrderDefectClique_isIndepSet_of_even_degree
+        G hfree hd he heven hcard hreg C hCcard hclique)
+      hc hc' y
 
 /-- The extremal block geometry is a sharp obstruction to direct attachment:
 every common-neighbor-independent set has size at most `d-1`.  A safe set
