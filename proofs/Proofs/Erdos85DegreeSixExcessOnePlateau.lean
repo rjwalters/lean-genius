@@ -6091,6 +6091,115 @@ theorem degreeSix_thirtyFour_colorOrder_six_exists_zmodSixParam
   have hz := huT (e z)
   simpa [w, e] using hz
 
+/-- In the residual alternative, cyclically index the six residual vertices.
+The antipodal one-factor then has one of the two certified normal forms. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_matching_normalForm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ f : Fin 6 → V, Function.Injective f ∧ Set.range f = (↑R : Set V) ∧
+      ((∀ i, (antipodalGraph G).Adj (f i) (f (opposite6 i))) ∨
+      ∃ k,
+        (antipodalGraph G).Adj (f k) (f (opposite6 k)) ∧
+        (antipodalGraph G).Adj (f (next6 k)) (f (prev6 k)) ∧
+        (antipodalGraph G).Adj (f (next6 (next6 k)))
+          (f (prev6 (prev6 k)))) := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let C := antipodalGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+  have hR6 : R.card = 6 := by
+    simpa [R] using degreeSix_thirtyFour_closed_defectKFour_residual_card_eq_six
+      G hfree hreg hcard hab hax hbx hay hby hxy
+  have hS6 : S.card = 6 := by
+    have heq : S = R := by simpa [S, T, R] using hresidual
+    rw [heq, hR6]
+  obtain ⟨u, huinj, hurange, huT⟩ :=
+    degreeSix_thirtyFour_colorOrder_six_exists_zmodSixParam
+      G hfree hreg hcard (by simpa [S, T] using hS6)
+  let e : Fin 6 ≃+ ZMod 6 := ZMod.finEquiv 6
+  let f : Fin 6 → V := fun i => u (e i)
+  have hfinj : Function.Injective f := huinj.comp e.injective
+  have hfrange : Set.range f = (↑R : Set V) := by
+    have hef : Set.range f = Set.range u := by
+      ext z
+      constructor
+      · rintro ⟨i, rfl⟩
+        exact ⟨e i, rfl⟩
+      · rintro ⟨t, rfl⟩
+        exact ⟨e.symm t, by simp [f, e]⟩
+    rw [hef, hurange]
+    simpa [S, T, R] using congrArg (fun K : Finset V => (↑K : Set V)) hresidual
+  have hcolors := degreeSix_thirtyFour_closed_defectKFour_residual_color_degrees
+    G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hfR (i : Fin 6) : f i ∈ R := by
+    have hi : f i ∈ Set.range f := ⟨i, rfl⟩
+    rw [hfrange] at hi
+    exact hi
+  have hCclosed : ∀ i, C.neighborFinset (f i) ⊆ Finset.univ.image f := by
+    intro i z hiz
+    have hzR := (hcolors (f i) (hfR i)).2.2.1 hiz
+    have hzRange : z ∈ Set.range f := by rw [hfrange]; exact hzR
+    obtain ⟨j, rfl⟩ := hzRange
+    exact Finset.mem_image.mpr ⟨j, Finset.mem_univ j, rfl⟩
+  have hCdegree : ∀ i, C.degree (f i) = 1 := by
+    intro i
+    have hc := (hcolors (f i) (hfR i)).2.2.2
+    rw [C.card_neighborFinset_eq_degree] at hc
+    exact hc
+  have hToff : ∀ i, ¬ C.Adj (f i) (f (next6 i)) ∧
+      ¬ C.Adj (f i) (f (prev6 i)) := by
+    intro i
+    have hrow := huT (e i)
+    have hnextCoord : e (next6 i) = e i + 1 := finEquiv_next6 i
+    have hprevCoord : e (prev6 i) = e i - 1 := finEquiv_prev6 i
+    have hnextT : T.Adj (f i) (f (next6 i)) := by
+      apply (T.mem_neighborFinset (f i) (f (next6 i))).mp
+      rw [hrow]
+      change u (e (next6 i)) ∈ {u (e i - 1), u (e i + 1)}
+      rw [hnextCoord]
+      simp
+    have hprevT : T.Adj (f i) (f (prev6 i)) := by
+      apply (T.mem_neighborFinset (f i) (f (prev6 i))).mp
+      rw [hrow]
+      change u (e (prev6 i)) ∈ {u (e i - 1), u (e i + 1)}
+      rw [hprevCoord]
+      simp
+    constructor
+    · intro hc
+      have hcData := (mem_antipodalNeighbors G _ _).mp
+        ((antipodalGraph_adj G _ _).mp hc)
+      have htData := (mem_triangleFreeNeighbors G _ _).mp
+        ((triangleFreeEdgeGraph_adj G _ _).mp hnextT)
+      exact hcData.2.1 htData.1
+    · intro hc
+      have hcData := (mem_antipodalNeighbors G _ _).mp
+        ((antipodalGraph_adj G _ _).mp hc)
+      have htData := (mem_triangleFreeNeighbors G _ _).mp
+        ((triangleFreeEdgeGraph_adj G _ _).mp hprevT)
+      exact hcData.2.1 htData.1
+  refine ⟨f, hfinj, hfrange, ?_⟩
+  exact oneRegular_off_sixCycle_normalForm C f hfinj hCclosed hCdegree hToff
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign

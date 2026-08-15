@@ -111,6 +111,22 @@ def prev6 (x : Fin 6) : Fin 6 := ⟨(x.val + 5) % 6, by omega⟩
 
 def opposite6 (x : Fin 6) : Fin 6 := ⟨(x.val + 3) % 6, by omega⟩
 
+theorem finEquiv_next6 (x : Fin 6) :
+    ZMod.finEquiv 6 (next6 x) = ZMod.finEquiv 6 x + 1 := by
+  letI : Fact (1 < 6) := ⟨by omega⟩
+  apply ZMod.val_injective
+  have hval (i : Fin 6) : (ZMod.finEquiv 6 i).val = i.val := by rfl
+  rw [ZMod.val_add, hval, ZMod.val_one]
+  rfl
+
+theorem finEquiv_prev6 (x : Fin 6) :
+    ZMod.finEquiv 6 (prev6 x) = ZMod.finEquiv 6 x - 1 := by
+  apply ZMod.val_injective
+  have hval (i : Fin 6) : (ZMod.finEquiv 6 i).val = i.val := by rfl
+  rw [sub_eq_add_neg, ZMod.val_add]
+  change (x.val + 5) % 6 = ((ZMod.finEquiv 6 x).val + 5) % 6
+  rw [hval x]
+
 /-- A symmetric loopless one-factor disjoint from the fixed six-cycle. -/
 def LocalPerfectMatchingOffCycle (m : BitVec 36) : Prop :=
   (∀ x, adj36 m x x = false) ∧
