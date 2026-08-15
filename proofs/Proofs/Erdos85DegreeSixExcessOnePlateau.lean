@@ -5487,6 +5487,149 @@ theorem degreeSix_thirtyFour_five_le_of_triangleFree_closed
   rw [← c5]
   exact Finset.card_le_card hsub
 
+/-- At order 34 a triangle-free-edge-closed six-set either misses the
+six-vertex color sector or is exactly that sector. -/
+theorem degreeSix_thirtyFour_colorSector_eq_of_intersects_closed_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (K : Finset V) (hKcard : K.card = 6)
+    (hclosed : ∀ v ∈ K, (triangleFreeEdgeGraph G).neighborFinset v ⊆ K)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6)
+    (hinter : ¬ Disjoint (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) K) :
+    (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) = K := by
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  have hinter' : (S ∩ K).Nonempty := by
+    rw [Finset.not_disjoint_iff] at hinter
+    obtain ⟨v, hvS, hvK⟩ := hinter
+    exact ⟨v, Finset.mem_inter.mpr ⟨by simpa [S, T] using hvS, hvK⟩⟩
+  have hIKclosed : ∀ v ∈ S ∩ K, T.neighborFinset v ⊆ S ∩ K := by
+    intro v hv u huv
+    have hvK := (Finset.mem_inter.mp hv).2
+    have hvu : T.Adj v u := (T.mem_neighborFinset v u).mp huv
+    have hu2 : T.degree u = 2 :=
+      excessOne_even_triangleFree_degree_eq_two_of_adj
+        G hfree (d := 6) (by norm_num) hreg (by omega) hvu
+    exact Finset.mem_inter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ u, hu2⟩,
+      hclosed v hvK huv⟩
+  obtain ⟨v, hvI⟩ := hinter'
+  have hv2 : T.degree v = 2 := (Finset.mem_filter.mp (Finset.mem_inter.mp hvI).1).2
+  have hIcard : 5 ≤ (S ∩ K).card :=
+    degreeSix_thirtyFour_five_le_of_triangleFree_closed
+      G hfree hreg hcard (S ∩ K) hIKclosed hvI hv2
+  change S = K
+  by_contra hne
+  have hnotSub : ¬ S ⊆ K := by
+    intro hsub
+    apply hne
+    exact Finset.eq_of_subset_of_card_le hsub
+      (Nat.le_of_eq (by simpa [S, T] using hKcard.trans hScard.symm))
+  obtain ⟨q, hqS, hqNotK⟩ := Finset.not_subset.mp hnotSub
+  have hdiffCard : (S \ K).card ≤ 1 := by
+    have hsplit := Finset.card_sdiff_add_card_inter S K
+    have hS6 : S.card = 6 := by simpa [S, T] using hScard
+    omega
+  have hqdeg : T.degree q = 2 := (Finset.mem_filter.mp hqS).2
+  have hqcard : (T.neighborFinset q).card = 2 := by
+    rw [T.card_neighborFinset_eq_degree, hqdeg]
+  have hlarge : 3 ≤ (S \ K).card := by
+    have hsub : insert q (T.neighborFinset q) ⊆ S \ K := by
+      intro u hu
+      rcases Finset.mem_insert.mp hu with rfl | hu
+      · exact Finset.mem_sdiff.mpr ⟨hqS, hqNotK⟩
+      have hqu : T.Adj q u := (T.mem_neighborFinset q u).mp hu
+      have hu2 : T.degree u = 2 :=
+        excessOne_even_triangleFree_degree_eq_two_of_adj
+          G hfree (d := 6) (by norm_num) hreg (by omega) hqu
+      refine Finset.mem_sdiff.mpr ⟨Finset.mem_filter.mpr
+        ⟨Finset.mem_univ u, hu2⟩, ?_⟩
+      intro huK
+      exact hqNotK (hclosed u huK ((T.mem_neighborFinset u q).mpr hqu.symm))
+    have hqNotN : q ∉ T.neighborFinset q := by
+      simpa using T.loopless.irrefl q
+    have hins : (insert q (T.neighborFinset q)).card = 3 := by
+      rw [Finset.card_insert_of_notMem hqNotN, hqcard]
+    rw [← hins]
+    exact Finset.card_le_card hsub
+  omega
+
+/-- In the closed defect-`K₄` branch, a color sector of order six is
+localized: it is either the canonical six-vertex residual or is contained
+entirely in the 24-vertex cover layer. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_colorOrder_six_localization
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let Q : Finset V := {a, b, x, y}
+    let R := Finset.univ \ (B ∪ Q)
+    (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) = R ∨
+    (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) ⊆ B := by
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  obtain ⟨R', hR'eq, hRcard, hRclosed⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_cubic_residual_six
+      G hfree hreg hcard hab hax hbx hay hby hxy
+  have hR'eqR : R' = R := by simpa [R, B, Q] using hR'eq
+  subst R'
+  have hRTclosed : ∀ r ∈ R, T.neighborFinset r ⊆ R := by
+    intro r hr z hrz
+    have hrzT : T.Adj r z := (T.mem_neighborFinset r z).mp hrz
+    apply (hRclosed r hr).1
+    rw [(secondOrderDefectGraph G).mem_neighborFinset]
+    simp only [secondOrderDefectGraph, SimpleGraph.sup_adj]
+    exact Or.inr hrzT
+  have hdSQ : Disjoint S Q := by
+    simpa [S, T, Q] using
+      degreeSix_thirtyFour_closed_defectKFour_colorSector_disjoint_centers
+        G hfree hreg hcard hab hax hbx hay hby hxy
+  dsimp only
+  by_cases hdSR : Disjoint S R
+  · right
+    intro z hzS
+    by_contra hzB
+    have hzNotQ : z ∉ Q := by
+      intro hzQ
+      exact Finset.disjoint_left.mp hdSQ hzS hzQ
+    have hzNotUnion : z ∉ B ∪ Q := by
+      intro hzUnion
+      rcases Finset.mem_union.mp hzUnion with hzB' | hzQ
+      · exact hzB hzB'
+      · exact hzNotQ hzQ
+    have hzR : z ∈ R := Finset.mem_sdiff.mpr ⟨Finset.mem_univ z, hzNotUnion⟩
+    exact Finset.disjoint_left.mp hdSR hzS hzR
+  · left
+    exact degreeSix_thirtyFour_colorSector_eq_of_intersects_closed_six
+      G hfree hreg hcard R hRcard hRTclosed (by simpa [S, T] using hScard) hdSR
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
