@@ -1389,6 +1389,145 @@ theorem false_of_degreeSixQuotient_model7_support_four_three_one_one_one_nat
     (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
     (hdiag a) (hdiag b) (hdiag d) (hdiag e) hPtrace
     hxb hxd hxe (by omega) (by omega) (by omega)
+
+/-- Cross-block arithmetic for the surviving four-target branch.  Four
+positive weights in `{1,2}` summing to six, together with the `2`-out / `3`-in
+block masses and detailed balance, force both invisible orders to be six. -/
+theorem degreeSixQuotient_support_four_light_cross_orders
+    (wa wb wd we sr st : ℕ)
+    (ar at br bt dr dt er et ra rb rd re ta tb td te : ℕ)
+    (hwa : 1 ≤ wa ∧ wa ≤ 2) (hwb : 1 ≤ wb ∧ wb ≤ 2)
+    (hwd : 1 ≤ wd ∧ wd ≤ 2) (hwe : 1 ≤ we ∧ we ≤ 2)
+    (hweights : wa + wb + wd + we = 6)
+    (hsr : 3 ≤ sr) (hst : 3 ≤ st) (horders : sr + st = 12)
+    (hrowA : ar + at = 2) (hrowB : br + bt = 2)
+    (hrowD : dr + dt = 2) (hrowE : er + et = 2)
+    (hrowR : ra + rb + rd + re = 3)
+    (hrowT : ta + tb + td + te = 3)
+    (hbalAR : 3 * wa * ar = sr * ra)
+    (hbalAT : 3 * wa * at = st * ta)
+    (hbalBR : 3 * wb * br = sr * rb)
+    (hbalBT : 3 * wb * bt = st * tb)
+    (hbalDR : 3 * wd * dr = sr * rd)
+    (hbalDT : 3 * wd * dt = st * td)
+    (hbalER : 3 * we * er = sr * re)
+    (hbalET : 3 * we * et = st * te) : sr = 6 ∧ st = 6 := by
+  interval_cases wa <;> interval_cases wb <;> interval_cases wd <;>
+    interval_cases we <;> interval_cases sr <;> omega
+
+/-- In a named Model7 four-target branch whose base weights are all one or
+two, the two invisible components both have order six. -/
+theorem degreeSixQuotient_model7_support_four_light_invisible_six_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d e : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hae : a ≠ e)
+    (hbd : b ≠ d) (hbe : b ≠ e) (hde : d ≠ e)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d, e})
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 2)
+    (hwa : q c a = 1 ∨ q c a = 2)
+    (hwb : q c b = 1 ∨ q c b = 2)
+    (hwd : q c d = 1 ∨ q c d = 2)
+    (hwe : q c e = 1 ∨ q c e = 2) :
+    ∀ r ∈ ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)), s r = 6 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have hRcard' : R.card = 2 := by simpa [P, R] using hRcard
+  obtain ⟨r, t, hrt, hR⟩ := Finset.card_eq_two.mp hRcard'
+  have hP' : P = {a, b, d, e} := by simpa [P] using hP
+  have haP : a ∈ P := by rw [hP']; simp
+  have hbP : b ∈ P := by rw [hP']; simp
+  have hdP : d ∈ P := by rw [hP']; simp
+  have heP : e ∈ P := by rw [hP']; simp
+  have hrR : r ∈ R := by rw [hR]; simp
+  have htR : t ∈ R := by rw [hR]; simp
+  have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+    s q c hspos htotal hrow hbal hsq hc3 hcc).2
+  change (∑ x ∈ R, s x) = 12 at hmass
+  rw [hR] at hmass
+  simp [Finset.sum_insert, hrt] at hmass
+  have hweights := (degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq).1
+  change (∑ x ∈ P, q c x) = 6 at hweights
+  rw [hP'] at hweights
+  simp [Finset.sum_insert, hab, had, hae, hbd, hbe, hde] at hweights
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have haData := hprofile a (by
+    have : 0 < q c a := by rcases hwa with h | h <;> omega
+    exact this)
+  have hbData := hprofile b (by
+    have : 0 < q c b := by rcases hwb with h | h <;> omega
+    exact this)
+  have hdData := hprofile d (by
+    have : 0 < q c d := by rcases hwd with h | h <;> omega
+    exact this)
+  have heData := hprofile e (by
+    have : 0 < q c e := by rcases hwe with h | h <;> omega
+    exact this)
+  have splitA := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c a hspos hrow hbal hsq hc3 hcc (by simpa [P] using haP)
+  have splitB := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c b hspos hrow hbal hsq hc3 hcc (by simpa [P] using hbP)
+  have splitD := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c d hspos hrow hbal hsq hc3 hcc (by simpa [P] using hdP)
+  have splitE := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c e hspos hrow hbal hsq hc3 hcc (by simpa [P] using heP)
+  have rowA := splitA.2.2
+  have rowB := splitB.2.2
+  have rowD := splitD.2.2
+  have rowE := splitE.2.2
+  change (∑ x ∈ R, q a x) = 2 at rowA
+  change (∑ x ∈ R, q b x) = 2 at rowB
+  change (∑ x ∈ R, q d x) = 2 at rowD
+  change (∑ x ∈ R, q e x) = 2 at rowE
+  rw [hR] at rowA rowB rowD rowE
+  simp [Finset.sum_insert, hrt] at rowA rowB rowD rowE
+  have invR := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c r hspos hrow hbal hsq hc3 hcc (by simpa [R] using hrR)
+  have invT := degreeSixQuotient_orderThree_invisible_row_split_nat
+    s q c t hspos hrow hbal hsq hc3 hcc (by simpa [R] using htR)
+  have rowR := invR.1
+  have rowT := invT.1
+  change (∑ x ∈ P, q r x) = 3 at rowR
+  change (∑ x ∈ P, q t x) = 3 at rowT
+  rw [hP'] at rowR rowT
+  simp [Finset.sum_insert, hab, had, hae, hbd, hbe, hde] at rowR rowT
+  have orders := degreeSixQuotient_support_four_light_cross_orders
+    (q c a) (q c b) (q c d) (q c e) (s r) (s t)
+    (q a r) (q a t) (q b r) (q b t) (q d r) (q d t)
+    (q e r) (q e t) (q r a) (q r b) (q r d) (q r e)
+    (q t a) (q t b) (q t d) (q t e)
+    (by rcases hwa with h | h <;> omega)
+    (by rcases hwb with h | h <;> omega)
+    (by rcases hwd with h | h <;> omega)
+    (by rcases hwe with h | h <;> omega)
+    (by omega) (hslo r) (hslo t) (by omega)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by simpa [Nat.mul_assoc, haData.2] using hbal a r)
+    (by simpa [Nat.mul_assoc, haData.2] using hbal a t)
+    (by simpa [Nat.mul_assoc, hbData.2] using hbal b r)
+    (by simpa [Nat.mul_assoc, hbData.2] using hbal b t)
+    (by simpa [Nat.mul_assoc, hdData.2] using hbal d r)
+    (by simpa [Nat.mul_assoc, hdData.2] using hbal d t)
+    (by simpa [Nat.mul_assoc, heData.2] using hbal e r)
+    (by simpa [Nat.mul_assoc, heData.2] using hbal e t)
+  intro x hx
+  have hx' : x = r ∨ x = t := by
+    have : x ∈ R := by simpa [P, R] using hx
+    simpa [hR] using this
+  rcases hx' with rfl | rfl
+  · exact orders.1
+  · exact orders.2
   · omega
   · omega
   · omega
