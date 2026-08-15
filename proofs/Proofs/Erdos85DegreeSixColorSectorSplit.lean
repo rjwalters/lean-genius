@@ -10,6 +10,7 @@ import Proofs.Erdos85DifferenceArrayBoundary
 import Proofs.Erdos85ZeroDiagonalSectorGeometry
 import Proofs.Erdos85EqualCycleResidual
 import Proofs.Erdos85WeightedQuotientDimension
+import Proofs.Erdos85DegreeSixQuotientCensus
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -8848,6 +8849,177 @@ theorem degreeSix_emptySector_zeroTriangle_component_count_eleven_false
         (by norm_num at hcard ⊢; exact hcard) (by norm_num)
   simp only [hzero, Finset.sum_const_zero] at htrace
   omega
+
+/-- The finite quotient certificate classifies every component order in the
+five-component zero-triangle branch as three or nine. -/
+theorem degreeSix_emptySector_zeroTriangle_component_profile_five
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 5) :
+    ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      x.supp.ncard = 3 ∨ x.supp.ncard = 9 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hrow : ∀ x : D.ConnectedComponent, (∑ y, Q x y) = 6 := fun x =>
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x
+  have hbal : ∀ x y : D.ConnectedComponent,
+      x.supp.ncard * Q x y = y.supp.ncard * Q y x := fun x y =>
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hsq : ∀ x y : D.ConnectedComponent,
+      (∑ z, Q x z * Q z y) = (if x = y then 3 else 0) + y.supp.ncard := by
+    intro x y
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+    simpa [Q, D, Matrix.mul_apply] using hs
+  have hdiag : ∀ x : D.ConnectedComponent, Q x x ≤ 2 := fun x =>
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+  have htrace : (∑ x : D.ConnectedComponent, Q x x) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hthree : ∀ x : D.ConnectedComponent,
+      x.supp.ncard = 3 → Q x x = 0 := by
+    intro x hx3
+    exact (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+        (fun y => by rw [hx3]; exact hr3 y)).1
+  apply degreeSixQuotientProfile5_of_fintype
+    (fun x : D.ConnectedComponent => x.supp.ncard) Q
+      (by simpa [D] using hcount) hr3
+  · intro x
+    have hx : x.supp.ncard ≤ ∑ z : D.ConnectedComponent, z.supp.ncard :=
+      Finset.single_le_sum (f := fun z : D.ConnectedComponent => z.supp.ncard)
+        (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)
+    rw [htotal] at hx
+    omega
+  · intro x y
+    have hy : Q x y ≤ ∑ z : D.ConnectedComponent, Q x z :=
+      Finset.single_le_sum (f := fun z : D.ConnectedComponent => Q x z)
+        (fun _ _ => Nat.zero_le _) (Finset.mem_univ y)
+    rw [hrow x] at hy
+    omega
+  · exact htotal
+  · exact hrow
+  · exact hbal
+  · exact hsq
+  · exact hdiag
+  · exact htrace
+  · exact ⟨c, hc3, by simpa [Q, D] using hcc⟩
+  · exact hthree
+
+/-- The seven-component zero-triangle branch has only orders three and six. -/
+theorem degreeSix_emptySector_zeroTriangle_component_profile_seven
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard)
+    (hempty : triangleFreeCycleSector G u = ∅)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc3 : c.supp.ncard = 3)
+    (hcc : componentQuotientMatrix G (secondOrderDefectGraph G) c c = 0)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7) :
+    ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      x.supp.ncard = 3 ∨ x.supp.ncard = 6 := by
+  let D := secondOrderDefectGraph G
+  let Q := componentQuotientMatrix G D
+  have htotal : (∑ x : D.ConnectedComponent, x.supp.ncard) = 33 := by
+    rw [sum_connectedComponent_supp_ncard D, hcard]
+  have hrow : ∀ x : D.ConnectedComponent, (∑ y, Q x y) = 6 := fun x =>
+    sum_secondOrder_componentQuotientMatrix_row_eq_degree
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x
+  have hbal : ∀ x y : D.ConnectedComponent,
+      x.supp.ncard * Q x y = y.supp.ncard * Q y x := fun x y =>
+    secondOrder_componentQuotientMatrix_balance
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+  have hsq : ∀ x y : D.ConnectedComponent,
+      (∑ z, Q x z * Q z y) = (if x = y then 3 else 0) + y.supp.ncard := by
+    intro x y
+    have hs := secondOrder_componentQuotientMatrix_sq_apply
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) x y
+    simpa [Q, D, Matrix.mul_apply] using hs
+  have hdiag : ∀ x : D.ConnectedComponent, Q x x ≤ 2 := fun x =>
+    degreeSix_component_diagonal_le_two_of_sector_empty
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+  have htrace : (∑ x : D.ConnectedComponent, Q x x) = 6 :=
+    secondOrder_componentQuotient_trace_eq_degree_of_nonsquare
+      G hfree (d := 6) (by norm_num) (by norm_num) hmin
+        (by norm_num at hcard ⊢; exact hcard) (by norm_num)
+  have hthree : ∀ x : D.ConnectedComponent,
+      x.supp.ncard = 3 → Q x x = 0 := by
+    intro x hx3
+    exact (degreeSix_emptySector_minimum_component_eq_zero_triangle
+      G hfree hmin hcard u hu huRange huD hr3 hempty x
+        (fun y => by rw [hx3]; exact hr3 y)).1
+  apply degreeSixQuotientProfile7_of_fintype
+    (fun x : D.ConnectedComponent => x.supp.ncard) Q
+      (by simpa [D] using hcount) hr3
+  · intro x
+    have hx : x.supp.ncard ≤ ∑ z : D.ConnectedComponent, z.supp.ncard :=
+      Finset.single_le_sum (f := fun z : D.ConnectedComponent => z.supp.ncard)
+        (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)
+    rw [htotal] at hx
+    omega
+  · intro x y
+    have hy : Q x y ≤ ∑ z : D.ConnectedComponent, Q x z :=
+      Finset.single_le_sum (f := fun z : D.ConnectedComponent => Q x z)
+        (fun _ _ => Nat.zero_le _) (Finset.mem_univ y)
+    rw [hrow x] at hy
+    omega
+  · exact htotal
+  · exact hrow
+  · exact hbal
+  · exact hsq
+  · exact hdiag
+  · exact htrace
+  · exact ⟨c, hc3, by simpa [Q, D] using hcc⟩
+  · exact hthree
 
 /-- Graph-facing count census for the nine-component zero-triangle branch.
 The positive support has five components and exactly one nontriangle; the
