@@ -6690,6 +6690,131 @@ theorem degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_
   change (G.neighborFinset p ∩ R).card = 1
   omega
 
+/-- The block layer is partitioned into six four-vertex label cells, one
+for each residual cycle vertex.  Equivalently every block vertex has a
+unique residual neighbor, while every residual label occurs four times. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_label_cells
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    (∀ r ∈ R, (G.neighborFinset r ∩ B).card = 4) ∧
+      ∀ p ∈ B, ∃! r, r ∈ R ∧ G.Adj p r := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hprofile := degreeSix_thirtyFour_closed_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  constructor
+  · intro r hr
+    simpa [B, R, Finset.union_assoc] using (hprofile.2 r (by
+      simpa [B, R, Finset.union_assoc] using hr)).2
+  · intro p hp
+    have hcell : (G.neighborFinset p ∩ R).card = 1 := by
+      simpa [B, R, Finset.union_assoc] using
+        degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_eq_one
+          G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+            (by simpa [B] using hp)
+    obtain ⟨r, hrCell⟩ := Finset.card_eq_one.mp hcell
+    refine ⟨r, ?_, ?_⟩
+    · have hr : r ∈ G.neighborFinset p ∩ R := by
+        rw [hrCell]
+        exact Finset.mem_singleton_self r
+      exact ⟨(Finset.mem_inter.mp hr).2,
+        (G.mem_neighborFinset p r).mp (Finset.mem_inter.mp hr).1⟩
+    · intro s hs
+      have hsCell : s ∈ G.neighborFinset p ∩ R :=
+        Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p s).mpr hs.2, hs.1⟩
+      rw [hrCell] at hsCell
+      exact Finset.mem_singleton.mp hsCell
+
+/-- A center with triangle-free degree zero induces a one-factor on its
+original neighborhood: each neighbor has exactly one partner in that
+six-vertex fiber. -/
+theorem center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {c : V}
+    (hc0 : (triangleFreeEdgeGraph G).degree c = 0) :
+    ∀ p ∈ G.neighborFinset c,
+      (G.neighborFinset p ∩ G.neighborFinset c).card = 1 := by
+  intro p hp
+  have hcp : G.Adj c p := (G.mem_neighborFinset c p).mp hp
+  have hcpNe : c ≠ p := G.ne_of_adj hcp
+  have hnotD : ¬ (secondOrderDefectGraph G).Adj c p := by
+    simp only [secondOrderDefectGraph, SimpleGraph.sup_adj]
+    rintro (hcpC | hcpT)
+    · exact ((mem_antipodalNeighbors G c p).mp
+        ((antipodalGraph_adj G c p).mp hcpC)).2.1 hcp
+    · have hpT : p ∈ (triangleFreeEdgeGraph G).neighborFinset c :=
+        ((triangleFreeEdgeGraph G).mem_neighborFinset c p).mpr hcpT
+      have hempty : (triangleFreeEdgeGraph G).neighborFinset c = ∅ := by
+        apply Finset.card_eq_zero.mp
+        rw [(triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, hc0]
+      rw [hempty] at hpT
+      exact Finset.notMem_empty p hpT
+  have hnotMem : p ∉ (secondOrderDefectGraph G).neighborFinset c := by
+    simpa using hnotD
+  have hone := card_common_eq_if_secondOrderDefect G hfree c p hcpNe
+  rw [if_neg hnotMem] at hone
+  simpa [Finset.inter_comm] using hone
+
+/-- Thus each of the four center fibers in a closed defect `K₄` carries an
+internal perfect matching, independently of the global color order. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_center_fiber_internal_degree_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    (∀ p ∈ G.neighborFinset a,
+      (G.neighborFinset p ∩ G.neighborFinset a).card = 1) ∧
+    (∀ p ∈ G.neighborFinset b,
+      (G.neighborFinset p ∩ G.neighborFinset b).card = 1) ∧
+    (∀ p ∈ G.neighborFinset x,
+      (G.neighborFinset p ∩ G.neighborFinset x).card = 1) ∧
+    ∀ p ∈ G.neighborFinset y,
+      (G.neighborFinset p ∩ G.neighborFinset y).card = 1 := by
+  have hc := degreeSix_thirtyFour_closed_defectKFour_center_color_degrees
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  exact ⟨
+    center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
+      G hfree hc.1.1,
+    center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
+      G hfree hc.2.1.1,
+    center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
+      G hfree hc.2.2.1.1,
+    center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
+      G hfree hc.2.2.2.1⟩
+
 /-- Residual `K₃,₃` adjacency transports the unique residual labels across
 the block-layer defect graph: from a block vertex labeled `r`, exactly one
 defect neighbor has any prescribed defect-adjacent label `s`. -/
