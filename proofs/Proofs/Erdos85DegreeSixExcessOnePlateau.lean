@@ -2490,6 +2490,52 @@ theorem degreeSix_thirtyFour_defectKFour_centerBlock_residual_inter_card_eq_one
   rw [hdiff]
   omega
 
+/-- In a six-set closed under a cubic antipodal defect graph, a vertex has
+at most two original-graph neighbors inside the set: its three defect
+neighbors and itself already exclude four of the six positions. -/
+theorem internal_G_neighbor_card_le_two_of_closed_cubic_antipodal_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    (hDeq : secondOrderDefectGraph G = antipodalGraph G)
+    (R : Finset V) (hRcard : R.card = 6)
+    {v : V} (hv : v ∈ R)
+    (hDsub : (secondOrderDefectGraph G).neighborFinset v ⊆ R)
+    (hDcard : ((secondOrderDefectGraph G).neighborFinset v).card = 3) :
+    (G.neighborFinset v ∩ R).card ≤ 2 := by
+  let A := G.neighborFinset v ∩ R
+  let Dv := (secondOrderDefectGraph G).neighborFinset v
+  have hdAD : Disjoint A Dv := by
+    rw [Finset.disjoint_left]
+    intro z hzA hzD
+    have hvzG : G.Adj v z :=
+      (G.mem_neighborFinset v z).mp (Finset.mem_inter.mp hzA).1
+    have hvzD : (secondOrderDefectGraph G).Adj v z :=
+      ((secondOrderDefectGraph G).mem_neighborFinset v z).mp hzD
+    rw [hDeq] at hvzD
+    exact ((mem_antipodalNeighbors G v z).mp
+      ((antipodalGraph_adj G v z).mp hvzD)).2.1 hvzG
+  have hsub : A ∪ Dv ⊆ R.erase v := by
+    intro z hz
+    apply Finset.mem_erase.mpr
+    rcases Finset.mem_union.mp hz with hzA | hzD
+    · have hzParts := Finset.mem_inter.mp hzA
+      exact ⟨fun hzv => G.loopless.irrefl v (hzv ▸
+        (G.mem_neighborFinset v z).mp hzParts.1), hzParts.2⟩
+    · have hvzD : (secondOrderDefectGraph G).Adj v z :=
+        ((secondOrderDefectGraph G).mem_neighborFinset v z).mp hzD
+      exact ⟨fun hzv => (secondOrderDefectGraph G).loopless.irrefl v
+        (hzv ▸ hvzD), hDsub hzD⟩
+  have herase : (R.erase v).card = 5 := by
+    rw [Finset.card_erase_of_mem hv, hRcard]
+  have hunion : (A ∪ Dv).card = A.card + Dv.card :=
+    Finset.card_union_of_disjoint hdAD
+  have hle := Finset.card_le_card hsub
+  dsimp only [A, Dv] at hunion ⊢
+  rw [hunion, hDcard, herase] at hle
+  omega
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
