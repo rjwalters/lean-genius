@@ -327,6 +327,169 @@ theorem sevenHigh_alignedHigh_fiber_card_eq_one
   rw [hset]
   simp
 
+def sevenHighT0KeyMultiplicity
+    (key : Option (Fin 7) × Finset (Fin 7)) : Nat :=
+  match key.1 with
+  | some _ => if key.2 = ∅ then 1 else 0
+  | none =>
+      if key.2.card = 0 then 7
+      else if key.2.card = 1 then 2
+      else if key.2.card = 2 then 1
+      else 0
+
+/-- Independent finite audit of the complete mask-side aligned-key census for
+the empty-triple representative. -/
+theorem sevenHigh_t0_mask_key_fiber_card
+    (key : Option (Fin 7) × Finset (Fin 7)) :
+    Fintype.card {i : Fin 49 //
+      sevenHighMaskAlignedKey
+        (OrderFortyNineSevenHighCensus.representativeMasks 0 0) i = key} =
+      sevenHighT0KeyMultiplicity key := by
+  native_decide +revert
+
+theorem sevenHigh_alignedHigh_nonemptySupport_fiber_card_eq_zero
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (w : Fin 7) (S : Finset (Fin 7)) (hS : S.Nonempty) :
+    Fintype.card {x : Fin 49 //
+      sevenHighGraphAlignedKey G e x = (some w, S)} = 0 := by
+  rw [Fintype.card_subtype, Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro x hx
+  have hkey := (Finset.mem_filter.mp hx).2
+  have hfirst := congrArg Prod.fst hkey
+  have hsupp := congrArg Prod.snd hkey
+  have hxHigh : x ∈ orderFortyNineHighVertices G := by
+    by_contra hxNot
+    simp [sevenHighGraphAlignedKey, hxNot] at hfirst
+  have hz := orderFortyNine_highNeighborCount_eq_zero_of_high
+    G hfree hmin (Fintype.card_fin 49) hxHigh
+  have hcard : (sevenHighLabeledSupport G e x).card = 0 := by
+    rw [sevenHighLabeledSupport_card]
+    exact hz
+  have hs : sevenHighLabeledSupport G e x = S := by
+    simpa [sevenHighGraphAlignedKey] using hsupp
+  rw [hs] at hcard
+  exact hS.ne_empty (Finset.card_eq_zero.mp hcard)
+
+theorem sevenHigh_t0_alignedLow_other_fiber_card_eq_zero
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (S : Finset (Fin 7))
+    (h0 : S.card ≠ 0) (h1 : S.card ≠ 1) (h2 : S.card ≠ 2) :
+    Fintype.card {x : Fin 49 //
+      sevenHighGraphAlignedKey G e x = (none, S)} = 0 := by
+  rw [Fintype.card_subtype, Finset.card_eq_zero]
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro x hx
+  have hkey := (Finset.mem_filter.mp hx).2
+  have hfirst := congrArg Prod.fst hkey
+  have hsupp : sevenHighLabeledSupport G e x = S := by
+    simpa [sevenHighGraphAlignedKey] using congrArg Prod.snd hkey
+  have hxNotHigh : x ∉ orderFortyNineHighVertices G := by
+    intro hxHigh
+    simp [sevenHighGraphAlignedKey, hxHigh] at hfirst
+  have hx7 : G.degree x = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+      G hfree hmin (Fintype.card_fin 49) x with hx7 | hx8
+    · exact hx7
+    · exact False.elim (hxNotHigh
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx8⟩))
+  have hle : S.card ≤ 3 := by
+    rw [← hsupp, sevenHighLabeledSupport_card]
+    simpa [orderFortyNineHighSupport] using
+      orderFortyNine_highNeighborCount_le_three
+        G hfree hmin (Fintype.card_fin 49) hx7
+  have h3 : S.card = 3 := by omega
+  have hxLow : x ∈ orderFortyNineLowVertices G :=
+    Finset.mem_sdiff.mpr ⟨Finset.mem_univ x, hxNotHigh⟩
+  have hxGlobal : x ∈ (orderFortyNineLowVertices G).filter fun y =>
+      (G.neighborFinset y ∩ orderFortyNineHighVertices G).card = 3 := by
+    apply Finset.mem_filter.mpr
+    refine ⟨hxLow, ?_⟩
+    change (orderFortyNineHighSupport G x).card = 3
+    rw [← sevenHighLabeledSupport_card G e x, hsupp]
+    exact h3
+  have hempty : ((orderFortyNineLowVertices G).filter fun y =>
+      (G.neighborFinset y ∩ orderFortyNineHighVertices G).card = 3) = ∅ :=
+    Finset.card_eq_zero.mp hzero
+  rw [hempty] at hxGlobal
+  simp at hxGlobal
+
+theorem sevenHigh_t0_graph_key_fiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (key : Option (Fin 7) × Finset (Fin 7)) :
+    Fintype.card {x : Fin 49 // sevenHighGraphAlignedKey G e x = key} =
+      sevenHighT0KeyMultiplicity key := by
+  rcases key with ⟨label, S⟩
+  cases label with
+  | some w =>
+      by_cases hS0 : S = ∅
+      · subst S
+        simpa [sevenHighT0KeyMultiplicity] using
+          sevenHigh_alignedHigh_fiber_card_eq_one G hfree hmin e w
+      · have hSne : S.Nonempty := Finset.nonempty_iff_ne_empty.mpr hS0
+        simpa [sevenHighT0KeyMultiplicity, hS0] using
+          sevenHigh_alignedHigh_nonemptySupport_fiber_card_eq_zero
+            G hfree hmin e w S hSne
+  | none =>
+      by_cases h0 : S.card = 0
+      · have hS0 : S = ∅ := Finset.card_eq_zero.mp h0
+        subst S
+        simpa [sevenHighT0KeyMultiplicity] using
+          sevenHigh_t0_aligned_emptyLow_fiber_card_eq_seven
+            G hfree hmin hHigh hzero e
+      · by_cases h1 : S.card = 1
+        · obtain ⟨w, rfl⟩ := Finset.card_eq_one.mp h1
+          simpa [sevenHighT0KeyMultiplicity] using
+            sevenHigh_nonempty_alignedLowFiber_card G hfree hmin e {w}
+              (by simp) |>.trans
+              (sevenHigh_t0_singleton_fiber_card_eq_two
+                G hfree hmin hHigh hzero e w)
+        · by_cases h2 : S.card = 2
+          · obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp h2
+            simpa [sevenHighT0KeyMultiplicity, hab] using
+              (sevenHigh_nonempty_alignedLowFiber_card G hfree hmin e {a, b}
+                (by simp) |>.trans
+                (sevenHigh_t0_pair_fiber_card_eq_one
+                  G hfree hmin hzero e a b hab))
+          · simpa [sevenHighT0KeyMultiplicity, h0, h1, h2] using
+              sevenHigh_t0_alignedLow_other_fiber_card_eq_zero
+                G hfree hmin hzero e S h0 h1 h2
+
+theorem sevenHighCanonicalFiberCover_zero :
+    SevenHighCanonicalFiberCover 0 := by
+  intro G _ _ _ hfree hmin hHigh hzero
+  let e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7 :=
+    Fintype.equivFinOfCardEq (by simpa using hHigh)
+  refine ⟨0, by native_decide, e, by native_decide, ?_⟩
+  intro key
+  rw [sevenHigh_t0_graph_key_fiber_card
+      G hfree hmin hHigh hzero e key,
+    sevenHigh_t0_mask_key_fiber_card key]
+
+theorem sevenHighCanonicalGraphCover_zero :
+    SevenHighCanonicalGraphCover 0 :=
+  sevenHighCanonicalGraphCover_of_labelingCover
+    (sevenHighCanonicalLabelingCover_of_fiberCover
+      sevenHighCanonicalFiberCover_zero)
+
 end
 
 end Erdos85
