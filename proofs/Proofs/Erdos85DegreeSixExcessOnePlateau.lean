@@ -3052,6 +3052,103 @@ theorem degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
   change (G.neighborFinset r ∩ R).card = 2
   omega
 
+/-- Every residual vertex has exactly one original neighbor in each of the
+four center-neighborhood fibers.  The four total layer neighbors are forced
+to distribute one per fiber because two in the same fiber would give that
+residual vertex and the fiber's center two common neighbors, creating a
+`C₄`. -/
+theorem degreeSix_thirtyFour_defectKFour_residual_four_fiber_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y r : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0)
+    (hr : r ∈ Finset.univ \ (
+      (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y) ∪ {a, b, x, y})) :
+    (G.neighborFinset r ∩ G.neighborFinset a).card = 1 ∧
+      (G.neighborFinset r ∩ G.neighborFinset b).card = 1 ∧
+      (G.neighborFinset r ∩ G.neighborFinset x).card = 1 ∧
+      (G.neighborFinset r ∩ G.neighborFinset y).card = 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  have hrR : r ∈ R := by simpa [B, Q, R] using hr
+  have hprofile := degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have htotal : (G.neighborFinset r ∩ B).card = 4 := hprofile.2 r hrR |>.2
+  have hrNotQ : r ∉ Q := by
+    intro hrQ
+    exact (Finset.mem_sdiff.mp hrR).2 (Finset.mem_union_right B hrQ)
+  have hra : r ≠ a := by
+    intro hra
+    apply hrNotQ
+    simp [Q, hra]
+  have hrb : r ≠ b := by
+    intro hrb
+    apply hrNotQ
+    simp [Q, hrb]
+  have hrx : r ≠ x := by
+    intro hrx
+    apply hrNotQ
+    simp [Q, hrx]
+  have hry : r ≠ y := by
+    intro hry
+    apply hrNotQ
+    simp [Q, hry]
+  have hA : (G.neighborFinset r ∩ G.neighborFinset a).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree r a hra
+  have hB : (G.neighborFinset r ∩ G.neighborFinset b).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree r b hrb
+  have hX : (G.neighborFinset r ∩ G.neighborFinset x).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree r x hrx
+  have hY : (G.neighborFinset r ∩ G.neighborFinset y).card ≤ 1 :=
+    common_le_one_of_not_containsC4 hfree r y hry
+  have hdAB := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hab
+  have hdAX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hax
+  have hdBX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hbx
+  have hdAY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hay
+  have hdBY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hby
+  have hdXY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hxy
+  have hdABX : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset x) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAX, hdBX⟩
+  have hdABXY : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b ∪ G.neighborFinset x)
+      (G.neighborFinset y) := by
+    rw [Finset.disjoint_union_left, Finset.disjoint_union_left]
+    exact ⟨⟨hdAY, hdBY⟩, hdXY⟩
+  have hcardInterUnion (P S : Finset V) (hd : Disjoint P S) :
+      (G.neighborFinset r ∩ (P ∪ S)).card =
+        (G.neighborFinset r ∩ P).card +
+          (G.neighborFinset r ∩ S).card := by
+    rw [Finset.inter_union_distrib_left]
+    apply Finset.card_union_of_disjoint
+    exact hd.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hsum :
+      (G.neighborFinset r ∩ G.neighborFinset a).card +
+        (G.neighborFinset r ∩ G.neighborFinset b).card +
+        (G.neighborFinset r ∩ G.neighborFinset x).card +
+        (G.neighborFinset r ∩ G.neighborFinset y).card = 4 := by
+    rw [← hcardInterUnion _ _ hdAB,
+      ← hcardInterUnion _ _ hdABX,
+      ← hcardInterUnion _ _ hdABXY]
+    exact htotal
+  omega
+
 /-- Every original-graph edge inside the residual six-set has a common
 neighbor inside that same residual.  A layer witness would have two residual
 neighbors, contradicting its exact residual degree one; a center witness is
