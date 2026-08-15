@@ -5,6 +5,7 @@ import Proofs.Erdos85CofinalLowerBound
 import Proofs.Erdos85Boza35Witness
 import Proofs.Erdos85Boza36Witness
 import Proofs.Erdos85Boza37To39Witness
+import Proofs.Erdos85Boza48DeletionBand
 
 /-!
 # Degree-six boundary package
@@ -223,6 +224,59 @@ theorem C4PlateauCore.degreeSix_remaining_order_window
   · by_contra hnot
     exact not_C4PlateauCore_degreeSix_of_lt_thirtySix hm (by omega) hcore
   · have hlt := hcore.degreeSix_order_succ_lt_threeHundredFifteen
+    omega
+
+/-- The Boza witnesses and safe deletions fill every degree-six witness order
+from 35 through 48. -/
+theorem degreeSix_witness_thirtyFive_add_of_le_thirteen
+    (j : ℕ) (hj : j ≤ 13) :
+    C4FreeMinDegreeWitness (35 + j) 6 := by
+  interval_cases j <;> norm_num
+  · exact boza35_degreeSix_witness
+  · exact boza36_degreeSix_witness
+  · exact boza37_degreeSix_witness
+  · exact boza38_degreeSix_witness
+  · exact boza39_degreeSix_witness
+  · exact boza48_delete8_degreeSix_witness
+  · exact boza48_delete7_degreeSix_witness
+  · exact boza48_delete6_degreeSix_witness
+  · exact boza48_delete5_degreeSix_witness
+  · exact boza48_delete4_degreeSix_witness
+  · exact boza48_delete3_degreeSix_witness
+  · exact boza48_delete2_degreeSix_witness
+  · exact boza48_delete1_degreeSix_witness
+  · exact boza48_degreeSeven_witness.mono_degree (by norm_num)
+
+/-- The fourteen-order witness interval gives the sharp conductor bound used
+by the degree-six plateau localization: every order at least 105 works. -/
+theorem degreeSix_witness_of_oneHundredFive_le
+    {n : ℕ} (hn : 105 ≤ n) :
+    C4FreeMinDegreeWitness n 6 := by
+  apply eventually_witness_of_interval
+      (A := 35) (L := 13) (d := 6) (by norm_num) (by norm_num)
+      degreeSix_witness_thirtyFive_add_of_le_thirteen n
+  norm_num at hn ⊢
+  exact hn
+
+/-- Improved complete localization of every degree-six plateau core. -/
+theorem C4PlateauCore.degreeSix_order_succ_lt_oneHundredFive
+    {m : ℕ} (hcore : C4PlateauCore m 6) :
+    m + 1 < 105 := by
+  by_contra hnot
+  have hw := degreeSix_witness_of_oneHundredFive_le (by omega : 105 ≤ m + 1)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
+/-- After all checked constructions and the sub-square contradiction, only
+the finite degree-six order window 36 through 103 can still contain a core. -/
+theorem C4PlateauCore.degreeSix_sharp_remaining_order_window
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 6) :
+    36 ≤ m ∧ m < 104 := by
+  constructor
+  · by_contra hnot
+    exact not_C4PlateauCore_degreeSix_of_lt_thirtySix hm (by omega) hcore
+  · have hlt := hcore.degreeSix_order_succ_lt_oneHundredFive
     omega
 
 end Erdos85
