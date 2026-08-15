@@ -5976,6 +5976,73 @@ theorem degreeSix_thirtyFour_colorOrder_six_exists_cycle
   dsimp only
   exact ⟨v, p, hpCycle, hpLen, hpVerts.trans hcSupp⟩
 
+set_option maxHeartbeats 3000000 in
+/-- Additive cyclic coordinates on an order-six color sector.  The returned
+cycle has length six, covers the whole sector, and its predecessor/successor
+coordinates are exactly the two ambient triangle-free neighbors. -/
+theorem degreeSix_thirtyFour_colorOrder_six_exists_cycleParam
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6) :
+    let S := Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2
+    let H := (triangleFreeEdgeGraph G).induce (↑S : Set V)
+    ∃ (v : S) (p : H.Walk v v) (u : ZMod p.length → S),
+      p.IsCycle ∧ p.length = 6 ∧ Function.Injective u ∧
+      Set.range u = Set.univ ∧
+      ∀ z, (triangleFreeEdgeGraph G).neighborFinset (u z).1 =
+        {(u (z - 1)).1, (u (z + 1)).1} := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  let H := T.induce (↑S : Set V)
+  obtain ⟨v, p, hpCycle, hpLen, hpVerts⟩ :=
+    degreeSix_thirtyFour_colorOrder_six_exists_cycle
+      G hfree hreg hcard hScard
+  have hHdeg : ∀ q : S, H.degree q = 2 := by
+    intro q
+    have hq2 : T.degree q.1 = 2 := (Finset.mem_filter.mp q.2).2
+    have hclosed : T.neighborSet q.1 ⊆ (↑S : Set V) := by
+      intro z hqz
+      have hz2 := excessOne_even_triangleFree_degree_eq_two_of_adj
+        G hfree (d := 6) (by norm_num) hreg (by omega) hqz
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ z, hz2⟩
+    have hcardN : (H.neighborFinset q).card = (T.neighborFinset q.1).card := by
+      apply Finset.card_bij (fun z _hz => z.1)
+      · intro z hz
+        exact (T.mem_neighborFinset q.1 z.1).mpr
+          ((H.mem_neighborFinset q z).mp hz)
+      · intro z hz w hw hzw
+        exact Subtype.ext hzw
+      · intro z hz
+        have hqz : T.Adj q.1 z := (T.mem_neighborFinset q.1 z).mp hz
+        let zS : S := ⟨z, hclosed hqz⟩
+        refine ⟨zS, ?_, rfl⟩
+        exact (H.mem_neighborFinset q zS).mpr hqz
+    rw [← H.card_neighborFinset_eq_degree, hcardN,
+      T.card_neighborFinset_eq_degree, hq2]
+  letI : NeZero p.length := ⟨by omega⟩
+  obtain ⟨u, huinj, hurange, huH⟩ :=
+    exists_zmod_cycleParam_neighborFinset hpCycle hHdeg
+  refine ⟨v, p, u, hpCycle, hpLen, huinj, hurange.trans hpVerts, ?_⟩
+  intro z
+  have hminusH : H.Adj (u z) (u (z - 1)) :=
+    (H.mem_neighborFinset (u z) (u (z - 1))).mp (by rw [huH]; simp)
+  have hplusH : H.Adj (u z) (u (z + 1)) :=
+    (H.mem_neighborFinset (u z) (u (z + 1))).mp (by rw [huH]; simp)
+  have hdistinct : (u (z - 1)).1 ≠ (u (z + 1)).1 := by
+    intro heq
+    have huz : u (z - 1) = u (z + 1) := Subtype.ext heq
+    exact zmod_sub_one_ne_add_one_of_three_le hpCycle.three_le_length z (huinj huz)
+  exact neighborFinset_eq_pair_of_degree_two T
+    (Finset.mem_filter.mp (u z).2).2 hminusH hplusH hdistinct
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
