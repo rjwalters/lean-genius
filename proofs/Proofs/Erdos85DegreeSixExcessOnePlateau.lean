@@ -1,5 +1,6 @@
 import Proofs.Erdos85DegreeSixBoundaryPackage
 import Proofs.Erdos85EvenExcessOneDefectKernel
+import Proofs.Erdos85BoundedReplacementObstruction
 
 /-!
 # The degree-six excess-one plateau kernel
@@ -102,6 +103,46 @@ theorem oddDefectSet_no_isolated_inside_of_even
   obtain ⟨w, hw⟩ := Finset.card_pos.mp hpos
   exact ⟨w, (Finset.mem_inter.mp hw).2,
     (D.mem_neighborFinset v w).mp (Finset.mem_inter.mp hw).1⟩
+
+/-- In a cubic graph on 34 vertices, an odd-cardinality defect set satisfying
+the kernel law has at least nine vertices.  Every outside vertex contributes
+at least one cut incidence, while the set supplies at most three per vertex. -/
+theorem oddDefectSet_nine_le_card_of_odd_of_cubic_thirtyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    9 ≤ W.card := by
+  have hdom := oddDefectSet_dominates_of_odd D W hW hparity
+  have hpoint : ∀ v : {v : V // v ∉ W},
+      1 ≤ (D.neighborFinset v.1 ∩ W).card := by
+    intro v
+    obtain ⟨w, hwW, hvw⟩ := hdom v.1 v.2
+    exact Finset.one_le_card.mpr ⟨w, Finset.mem_inter.mpr
+      ⟨(D.mem_neighborFinset v.1 w).mpr hvw, hwW⟩⟩
+  have hlower : Fintype.card {v : V // v ∉ W} ≤
+      ∑ v : {v : V // v ∉ W}, (D.neighborFinset v.1 ∩ W).card := by
+    have hsum := Finset.sum_le_sum (s :=
+      (Finset.univ : Finset {v : V // v ∉ W})) fun v _hv => hpoint v
+    simpa using hsum
+  have hupper := sum_card_neighbor_inter_deleted_le_sum_degrees D W
+  have hrhs : (∑ x ∈ W, D.degree x) = W.card * 3 := by
+    simp [hreg]
+  have hcut : Fintype.card {v : V // v ∉ W} ≤ W.card * 3 := by
+    rw [← hrhs]
+    exact hlower.trans hupper
+  have hinside : Fintype.card {v : V // v ∈ W} = W.card := by
+    simpa using Fintype.card_coe W
+  have houtside : Fintype.card {v : V // v ∉ W} = 34 - W.card := by
+    rw [Fintype.card_subtype_compl (fun v : V => v ∈ W), hcard, hinside]
+  have hWle : W.card ≤ 34 := by
+    rw [← hcard]
+    exact Finset.card_le_univ W
+  rw [houtside] at hcut
+  omega
 
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
