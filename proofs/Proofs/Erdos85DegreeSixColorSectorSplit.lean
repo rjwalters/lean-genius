@@ -11,6 +11,7 @@ import Proofs.Erdos85ZeroDiagonalSectorGeometry
 import Proofs.Erdos85EqualCycleResidual
 import Proofs.Erdos85WeightedQuotientDimension
 import Proofs.Erdos85DegreeSixQuotientCensus
+import Proofs.Erdos85FrequencyPairMixedTransport
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
@@ -9907,6 +9908,78 @@ theorem degreeSix_triangleFreeCycleSector_nonempty
       G hfree hmin hcard u hu huRange huD hr3 hempty c hc3 hcc h9
   · exact degreeSix_emptySector_zeroTriangle_component_count_eleven_false
       G hfree hmin hcard u hu huRange huD hr3 hempty h11
+
+/-- The degree-six exact-boundary assumptions are inconsistent once the
+canonical cyclic labelings of the second-order defect components are fixed.
+The PSD bound makes the triangle-free color sector a singleton, while the
+two sector terminals rule out both zero and one components. -/
+theorem false_of_degreeSix_exact_boundary_of_cycle_labeling
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    [∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33)
+    (u : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      ZMod x.supp.ncard → V)
+    (hu : ∀ x, Function.Injective (u x))
+    (huRange : ∀ x, Set.range (u x) = x.supp)
+    (huD : ∀ x z, (secondOrderDefectGraph G).neighborFinset (u x z) =
+      {u x (z - 1), u x (z + 1)})
+    (hr3 : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      3 ≤ x.supp.ncard) : False := by
+  let S := triangleFreeCycleSector G u
+  have hnonempty : S.Nonempty :=
+    degreeSix_triangleFreeCycleSector_nonempty
+      G hfree hmin hcard u hu huRange huD hr3
+  have hle : S.card ≤ 1 := degreeSix_triangleFreeCycleSector_card_le_one
+    G hfree hmin (by norm_num at hcard ⊢; exact hcard)
+      u hu huRange huD hr3
+  have hcardS : S.card = 1 := by
+    have hone : 1 ≤ S.card := Finset.one_le_card.mpr hnonempty
+    omega
+  obtain ⟨c, hsector⟩ := Finset.card_eq_one.mp hcardS
+  exact false_of_degreeSix_triangleFreeCycleSector_singleton
+    G hfree hmin hcard u hu huRange huD hr3 c hsector
+
+/-- There is no `C₄`-free graph at the degree-six exact boundary.  The
+cyclic labelings required by the color-sector argument are extracted
+intrinsically from the second-order defect cycles. -/
+theorem false_of_degreeSix_exact_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (hmin : 6 ≤ G.minDegree)
+    (hcard : Fintype.card V = 33) : False := by
+  classical
+  letI : DecidableRel (antipodalGraph G).Adj := Classical.decRel _
+  letI : DecidableRel (triangleFreeEdgeGraph G).Adj := Classical.decRel _
+  letI : DecidableRel (triangularEdgeGraph G).Adj := Classical.decRel _
+  letI : Fintype (secondOrderDefectGraph G).ConnectedComponent :=
+    Fintype.ofFinite _
+  letI : DecidableEq (secondOrderDefectGraph G).ConnectedComponent :=
+    Classical.decEq _
+  obtain ⟨u, hu, huRange, huD, hr3⟩ := exists_mixed_cycle_labeling
+    G hfree (d := 6) (by norm_num) (by norm_num) hmin
+      (by norm_num at hcard ⊢; exact hcard)
+  letI : ∀ x : (secondOrderDefectGraph G).ConnectedComponent,
+      NeZero x.supp.ncard := fun x => ⟨by have := hr3 x; omega⟩
+  exact false_of_degreeSix_exact_boundary_of_cycle_labeling
+    G hfree hmin hcard u hu huRange huD hr3
+
+/-- Every graph of order `33` and minimum degree at least six contains a
+four-cycle. -/
+theorem containsC4_of_degreeSix_exact_boundary
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hmin : 6 ≤ G.minDegree) (hcard : Fintype.card V = 33) :
+    containsC4 V G := by
+  by_contra hfree
+  exact false_of_degreeSix_exact_boundary G hfree hmin hcard
 
 /-- Numerical packing consequence of the reverse phase-set interface: a
 reverse diagonal quotient `q` on an even component of order `r` satisfies
