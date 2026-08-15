@@ -343,4 +343,31 @@ theorem C4PlateauCore.degreeSix_final_remaining_order_window
   · have hlt := hcore.degreeSix_order_succ_lt_seventy
     omega
 
+/-- The continuous witness band also eliminates every degree-six plateau core
+whose successor order lies between 35 and 57. -/
+theorem not_C4PlateauCore_degreeSix_of_thirtyFour_le_of_le_fiftySix
+    {m : ℕ} (hlower : 34 ≤ m) (hupper : m ≤ 56) :
+    ¬ C4PlateauCore m 6 := by
+  intro hcore
+  let j := m + 1 - 35
+  have hj : j ≤ 22 := by dsimp [j]; omega
+  have hmj : 35 + j = m + 1 := by dsimp [j]; omega
+  have hw := degreeSix_witness_thirtyFive_add_of_le_twentyTwo j hj
+  rw [hmj] at hw
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
+/-- Final degree-six localization after consuming both ends of the witness
+interval: only orders 57 through 68 can still support a plateau core. -/
+theorem C4PlateauCore.degreeSix_twelve_order_window
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 6) :
+    57 ≤ m ∧ m < 69 := by
+  constructor
+  · have h36 := (hcore.degreeSix_final_remaining_order_window hm).1
+    by_contra hnot
+    exact not_C4PlateauCore_degreeSix_of_thirtyFour_le_of_le_fiftySix
+      (by omega) (by omega) hcore
+  · exact (hcore.degreeSix_final_remaining_order_window hm).2
+
 end Erdos85
