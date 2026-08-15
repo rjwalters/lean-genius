@@ -32,6 +32,56 @@ theorem sevenHighLabeledSupport_card
   intro v hv
   exact (Finset.mem_inter.mp hv).2
 
+theorem sevenHighLabeledSupport_inter_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (x y : Fin 49) :
+    (sevenHighLabeledSupport G e x ∩ sevenHighLabeledSupport G e y).card =
+      (orderFortyNineHighSupport G x ∩
+        orderFortyNineHighSupport G y).card := by
+  simp only [sevenHighLabeledSupport, ← Finset.map_inter,
+    Finset.card_map, inter_finsetInSubtype]
+  apply card_finsetInSubtype_of_subset
+  intro v hv
+  exact (Finset.mem_inter.mp (Finset.mem_inter.mp hv).1).2
+
+theorem sevenHighLabeledSupport_injective_of_two_le
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    {x y : Fin 49} (hx : 2 ≤ (sevenHighLabeledSupport G e x).card)
+    (hxy : sevenHighLabeledSupport G e x =
+      sevenHighLabeledSupport G e y) : x = y := by
+  by_contra hne
+  have hle := orderFortyNine_card_inter_highSupport_le_one G hfree hne
+  have hinter := sevenHighLabeledSupport_inter_card G e x y
+  have hcards := congrArg Finset.card hxy
+  rw [hxy, Finset.inter_self] at hinter
+  omega
+
+theorem sevenHighLabeledSupport_fiber_card_eq_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (x : Fin 49) (hx : 2 ≤ (sevenHighLabeledSupport G e x).card) :
+    Fintype.card {y : Fin 49 // sevenHighLabeledSupport G e y =
+      sevenHighLabeledSupport G e x} = 1 := by
+  rw [Fintype.card_subtype]
+  have hfilter : (Finset.univ.filter fun y : Fin 49 =>
+      sevenHighLabeledSupport G e y = sevenHighLabeledSupport G e x) =
+      {x} := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_singleton]
+    constructor
+    · intro hy
+      exact (sevenHighLabeledSupport_injective_of_two_le
+        G hfree e hx hy.symm).symm
+    · rintro rfl
+      rfl
+  rw [hfilter]
+  simp
+
 theorem mem_sevenHighLabeledSupport_iff
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
     (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
