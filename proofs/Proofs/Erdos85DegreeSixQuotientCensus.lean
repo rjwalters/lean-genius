@@ -1074,6 +1074,55 @@ theorem false_of_degreeSixQuotient_model5_invisible_six_six_nat
     (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
     (by omega) (by omega) (by omega) (by omega) (by omega)
 
+/-- Kernel-clean structural Model5 profile theorem on an arbitrary
+five-element index type. -/
+theorem degreeSixQuotient_model5_profile_structural_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 5)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hbase : ∃ i, s i = 3 ∧ q i i = 0) :
+    ∀ i, s i = 3 ∨ s i = 9 := by
+  obtain ⟨c, hc3, hcc⟩ := hbase
+  obtain ⟨a, b, r, t, hab, hrt, hP, hR, hca, hcb, haSize, hbSize⟩ :=
+    degreeSixQuotient_model5_support_weights_three_nat
+      s q c hslo hcard htotal hrow hbal hsq hdiag htrace hc3 hcc
+  have horders := degreeSixQuotient_model5_invisible_order_cases_nat
+    s q c a b r t hslo htotal hrow hbal hsq hc3 hcc
+      hP hR hab hrt hca hcb
+  rcases horders with h39 | h66 | h93
+  · have hU := degreeSixQuotient_model5_univ_eq_five q c a b r t hP hR
+    intro i
+    have hi : i = c ∨ i = a ∨ i = b ∨ i = r ∨ i = t := by
+      have : i ∈ ({c, a, b, r, t} : Finset C) := by rw [← hU]; simp
+      simpa only [Finset.mem_insert, Finset.mem_singleton] using this
+    rcases hi with rfl | rfl | rfl | rfl | rfl
+    · exact Or.inl hc3
+    · exact Or.inr haSize
+    · exact Or.inr hbSize
+    · exact Or.inl h39.1
+    · exact Or.inr h39.2
+  · exact (false_of_degreeSixQuotient_model5_invisible_six_six_nat
+      s q c a b r t hrow hbal hsq htrace hc3 hcc hab hrt hP hR
+        hca hcb haSize hbSize h66.1 h66.2).elim
+  · have hU := degreeSixQuotient_model5_univ_eq_five q c a b r t hP hR
+    intro i
+    have hi : i = c ∨ i = a ∨ i = b ∨ i = r ∨ i = t := by
+      have : i ∈ ({c, a, b, r, t} : Finset C) := by rw [← hU]; simp
+      simpa only [Finset.mem_insert, Finset.mem_singleton] using this
+    rcases hi with rfl | rfl | rfl | rfl | rfl
+    · exact Or.inl hc3
+    · exact Or.inr haSize
+    · exact Or.inr hbSize
+    · exact Or.inr h93.1
+    · exact Or.inl h93.2
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
@@ -1297,74 +1346,8 @@ theorem degreeSixQuotientModel5_profile_nat
     (hbase : ∃ i, s i = 3 ∧ q i i = 0)
     (hthree : ∀ i, s i = 3 → q i i = 0) :
     ∀ i, s i = 3 ∨ s i = 9 := by
-  let sb : Fin 5 → DegreeSixCensusWord := fun i => s i
-  let qb : Fin 5 → Fin 5 → DegreeSixCensusWord := fun i j => q i j
-  have hmodel : degreeSixQuotientModel5 sb qb := by
-    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · intro i
-      constructor
-      · rw [BitVec.ule_iff_toNat_le]
-        have hi : s i < 2 ^ 8 := lt_trans (hshi i) (by norm_num)
-        simp [sb, Nat.mod_eq_of_lt hi]
-        have := hslo i
-        omega
-      · rw [BitVec.ult_iff_toNat_lt]
-        simp [sb]
-        have := hshi i
-        omega
-    · intro i j
-      rw [BitVec.ult_iff_toNat_lt]
-      simp [qb]
-      have := hq i j
-      omega
-    · change (∑ i, (s i : DegreeSixCensusWord)) = 33
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) htotal
-    · intro i
-      change (∑ j, (q i j : DegreeSixCensusWord)) = 6
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hrow i)
-    · intro i j
-      change (s i : DegreeSixCensusWord) * (q i j : DegreeSixCensusWord) =
-        (s j : DegreeSixCensusWord) * (q j i : DegreeSixCensusWord)
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hbal i j)
-    · intro i j
-      change (∑ k, (q i k : DegreeSixCensusWord) *
-        (q k j : DegreeSixCensusWord)) =
-          (if i = j then 3 else 0) + (s j : DegreeSixCensusWord)
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) (hsq i j)
-    · intro i
-      rw [BitVec.ule_iff_toNat_le]
-      simp [qb]
-      have := hdiag i
-      omega
-    · change (∑ i, (q i i : DegreeSixCensusWord)) = 6
-      norm_cast
-      exact congrArg (fun n : ℕ => (n : DegreeSixCensusWord)) htrace
-    · obtain ⟨i, hsi, hqi⟩ := hbase
-      exact ⟨i, by simp [sb, hsi], by simp [qb, hqi]⟩
-    · intro i hi
-      apply congrArg (fun n : ℕ => (n : DegreeSixCensusWord))
-      apply hthree i
-      have ht := congrArg BitVec.toNat hi
-      simp [sb] at ht
-      have := hshi i
-      omega
-  have hp := degreeSixQuotientModel5_profile sb qb hmodel
-  intro i
-  rcases hp i with hi | hi
-  · left
-    have ht := congrArg BitVec.toNat hi
-    simp [sb] at ht
-    have := hshi i
-    omega
-  · right
-    have ht := congrArg BitVec.toNat hi
-    simp [sb] at ht
-    have := hshi i
-    omega
+  exact degreeSixQuotient_model5_profile_structural_nat
+    s q hslo (by simp) htotal hrow hbal hsq hdiag htrace hbase
 
 /-- Natural-number interface to the seven-component finite certificate. -/
 theorem degreeSixQuotientModel7_profile_nat
