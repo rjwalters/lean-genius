@@ -164,6 +164,43 @@ theorem degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOr
       (triangleFreeEdgeGraph G).Adj x y
     exact Or.inl hxy
 
+/-- In the zero-color-order branch every original edge is triangular, so
+the triangular-edge graph is the whole original graph. -/
+theorem degreeSix_thirtyFour_triangularEdgeGraph_eq_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    triangularEdgeGraph G = G := by
+  have hTzero :=
+    degreeSix_thirtyFour_triangleFree_degree_zero_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  apply SimpleGraph.ext
+  funext x y
+  apply propext
+  constructor
+  · exact fun hxy => (triangularEdgeGraph_adj G x y).mp hxy |>.1
+  · intro hxy
+    apply (triangularEdgeGraph_adj G x y).mpr
+    refine ⟨hxy, ?_⟩
+    intro hcommon
+    have hT : (triangleFreeEdgeGraph G).Adj x y :=
+      (triangleFreeEdgeGraph_adj G x y).mpr
+        ((mem_triangleFreeNeighbors G x y).mpr ⟨hxy, hcommon⟩)
+    have hy : y ∈ (triangleFreeEdgeGraph G).neighborFinset x :=
+      ((triangleFreeEdgeGraph G).mem_neighborFinset x y).mpr hT
+    have hempty : (triangleFreeEdgeGraph G).neighborFinset x = ∅ := by
+      apply Finset.card_eq_zero.mp
+      rw [(triangleFreeEdgeGraph G).card_neighborFinset_eq_degree, hTzero x]
+    rw [hempty] at hy
+    exact Finset.notMem_empty y hy
+
 /-- The pure antipodal branch has exactly 34 triangular 3-cliques. -/
 theorem degreeSix_thirtyFour_triangularCliqueCount_eq_thirtyFour_of_colorOrder_zero
     {V : Type*} [Fintype V] [DecidableEq V]
