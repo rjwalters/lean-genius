@@ -369,6 +369,52 @@ theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
     excessOne_even_exists_odd_defect_set G hfree (by decide) hreg (by norm_num)
   exact ⟨G, hdec, W, hfree, hreg, hWempty, hWuniv, hWparity⟩
 
+/-- Plateau-facing structural dichotomy for the order-34 excess-one kernel.
+The even-cardinality branch has no isolated vertex in the induced defect
+subgraph; the odd branch admits a normalized representative of one of five
+explicit sizes. -/
+theorem C4PlateauCore.degreeSix_thirtyFour_defectKernel_dichotomy
+    (hcore : C4PlateauCore 34 6) :
+    ∃ (G : SimpleGraph (Fin 34)) (_ : DecidableRel G.Adj)
+        (W : Finset (Fin 34)),
+      ¬ containsC4 (Fin 34) G ∧
+      (∀ x, G.degree x = 6) ∧
+      (∀ x, (secondOrderDefectGraph G).degree x = 3) ∧
+      W ≠ ∅ ∧ W ≠ Finset.univ ∧
+      (∀ v : Fin 34,
+        (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+          ((((secondOrderDefectGraph G).neighborFinset v ∩ W).card :
+            ZMod 2)) = 0) ∧
+      ((Even W.card ∧ ∀ v ∈ W, ∃ w ∈ W,
+          (secondOrderDefectGraph G).Adj v w) ∨
+        ∃ S : Finset (Fin 34),
+          (S.card = 9 ∨ S.card = 11 ∨ S.card = 13 ∨
+            S.card = 15 ∨ S.card = 17) ∧
+          ∀ v : Fin 34,
+            (if v ∈ S then (1 : ZMod 2) else 0) + (S.card : ZMod 2) +
+              ((((secondOrderDefectGraph G).neighborFinset v ∩ S).card :
+                ZMod 2)) = 0) := by
+  rcases hcore.degreeSix_thirtyFour_positiveExcessOne with
+    ⟨_hm, _he, G, hdec, hfree, hreg, hregD, _hsq, _hcomm, _hnext⟩
+  letI : DecidableRel G.Adj := hdec
+  letI : DecidableRel (antipodalGraph G).Adj := Classical.decRel _
+  letI : DecidableRel (triangleFreeEdgeGraph G).Adj := Classical.decRel _
+  obtain ⟨W, hWempty, hWuniv, hWparity⟩ :=
+    excessOne_even_exists_odd_defect_set G hfree (by decide) hreg (by norm_num)
+  have hDreg : ∀ x, (secondOrderDefectGraph G).degree x = 3 := by
+    intro x
+    simpa using hregD x
+  refine ⟨G, hdec, W, hfree, hreg, hDreg, hWempty, hWuniv,
+    hWparity, ?_⟩
+  rcases Nat.even_or_odd W.card with hWeven | hWodd
+  · left
+    exact ⟨hWeven,
+      oddDefectSet_no_isolated_inside_of_even
+        (secondOrderDefectGraph G) W hWeven hWparity⟩
+  · right
+    exact exists_oddDefectSet_card_nine_or_eleven_or_thirteen_or_fifteen_or_seventeen
+      (secondOrderDefectGraph G) W (by simp) hDreg hWodd hWparity
+
 end
 
 end Erdos85
