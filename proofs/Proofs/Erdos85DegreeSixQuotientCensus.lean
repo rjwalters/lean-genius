@@ -414,6 +414,49 @@ theorem false_of_degreeSixQuotient_orderThree_support_card_three_nat
   have hdiagR := hdiag r
   omega
 
+/-- Name the two positive targets of an order-three base row.  Their forward
+weights are positive and sum to six, their reverse quotients are one, and
+their orders are three times those weights. -/
+theorem degreeSixQuotient_orderThree_support_two_names_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hPcard : (Finset.univ.filter fun j ↦ 0 < q c j).card = 2) :
+    ∃ a b, a ≠ b ∧
+      (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b} ∧
+      0 < q c a ∧ 0 < q c b ∧ q c a + q c b = 6 ∧
+      q a c = 1 ∧ q b c = 1 ∧
+      s a = 3 * q c a ∧ s b = 3 * q c b := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hPcard' : P.card = 2 := by simpa [P] using hPcard
+  obtain ⟨a, b, hab, hP⟩ := Finset.card_eq_two.mp hPcard'
+  have haP : a ∈ P := by rw [hP]; simp
+  have hbP : b ∈ P := by rw [hP]; simp
+  have haPos : 0 < q c a := by simpa [P] using
+    (Finset.mem_filter.mp haP).2
+  have hbPos : 0 < q c b := by simpa [P] using
+    (Finset.mem_filter.mp hbP).2
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hweights : q c a + q c b = 6 := by
+    rw [hP] at heqs
+    simpa [hab] using heqs.1
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have haData := hprofile a haPos
+  have hbData := hprofile b hbPos
+  refine ⟨a, b, hab, ?_, haPos, hbPos, hweights,
+    haData.1, hbData.1, haData.2, hbData.2⟩
+  simpa [P] using hP
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
