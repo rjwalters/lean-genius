@@ -1305,4 +1305,47 @@ theorem sevenHighT0CubeC4WitnessPairVal_semanticSound
   · exact sevenHighT0CubeNegativeFour_bounded
       hb0.2 hb1.2 hb2.2 hb3.2
 
+def sevenHighT0CubeC4PairStepVal
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let others := sevenHighT0CubeVertices.filter fun w =>
+    w ≠ pair.1 && w ≠ pair.2
+  (sevenHighT0CubePairs others).foldl (fun acc witnesses =>
+    sevenHighT0CubeC4WitnessPairVal adj pair.1 pair.2
+      witnesses.1 witnesses.2 acc) acc
+
+theorem sevenHighT0CubeC4PairStepVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeC4PairStepVal adj pair acc).1 =
+      sevenHighT0CubeC4PairStep pair acc.1 := by
+  unfold sevenHighT0CubeC4PairStepVal sevenHighT0CubeC4PairStep
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun witnesses acc =>
+      sevenHighT0CubeC4WitnessPairVal_state adj pair.1 pair.2
+        witnesses.1 witnesses.2 acc)
+
+theorem sevenHighT0CubeC4PairStepVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hnot : ∀ witnesses ∈ sevenHighT0CubePairs
+        (sevenHighT0CubeVertices.filter fun w =>
+          w ≠ pair.1 && w ≠ pair.2), ¬(
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 witnesses.1) (max pair.1 witnesses.1)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.2 witnesses.1) (max pair.2 witnesses.1)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 witnesses.2) (max pair.1 witnesses.2)) = true ∧
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.2 witnesses.2) (max pair.2 witnesses.2)) = true)) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeC4PairStepVal adj pair acc) := by
+  unfold sevenHighT0CubeC4PairStepVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro witnesses hw acc hacc
+  exact sevenHighT0CubeC4WitnessPairVal_semanticSound adj pair.1 pair.2
+    witnesses.1 witnesses.2 hacc (hnot witnesses hw)
+
 end Erdos85
