@@ -1672,6 +1672,56 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangl
   exact ⟨hmB p, hmEdge p, hrP p, hrM p, hrNotAset, hrNotBset,
     hrNeA, hrNeB⟩
 
+/-- Finset form of the cross-triangle witness injection: six witness
+vertices lie outside both twin neighborhoods and avoid the twins. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitnesses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v))
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    ∃ R : Finset V, R.card = 6 ∧
+      Disjoint R (G.neighborFinset a) ∧
+      Disjoint R (G.neighborFinset b) ∧ a ∉ R ∧ b ∉ R := by
+  classical
+  obtain ⟨_m, r, _hmInj, hrInj, hprops⟩ :=
+    degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangleWitnesses
+      G hfree hreg hcard habD htwins hzero
+  let R : Finset V := Finset.univ.image r
+  have hRcard : R.card = 6 := by
+    change (Finset.univ.image r).card = 6
+    rw [Finset.card_image_of_injective _ hrInj,
+      Finset.card_univ, Fintype.card_coe,
+      G.card_neighborFinset_eq_degree, hreg a]
+  have hRA : Disjoint R (G.neighborFinset a) := by
+    rw [Finset.disjoint_left]
+    intro z hzR hzA
+    obtain ⟨p, _hp, rfl⟩ := Finset.mem_image.mp hzR
+    exact (hprops p).2.2.2.2.1 hzA
+  have hRB : Disjoint R (G.neighborFinset b) := by
+    rw [Finset.disjoint_left]
+    intro z hzR hzB
+    obtain ⟨p, _hp, rfl⟩ := Finset.mem_image.mp hzR
+    exact (hprops p).2.2.2.2.2.1 hzB
+  have haR : a ∉ R := by
+    intro ha
+    obtain ⟨p, _hp, hpa⟩ := Finset.mem_image.mp ha
+    exact (hprops p).2.2.2.2.2.2.1 hpa
+  have hbR : b ∉ R := by
+    intro hb
+    obtain ⟨p, _hp, hpb⟩ := Finset.mem_image.mp hb
+    exact (hprops p).2.2.2.2.2.2.2 hpb
+  exact ⟨R, hRcard, hRA, hRB, haR, hbR⟩
+
 /-- The four vertices of a cubic defect-twin diamond already have original
 neighborhood union of order at least 23.  Every defect edge makes the two
 corresponding original neighborhoods disjoint; among the six diamond pairs,
