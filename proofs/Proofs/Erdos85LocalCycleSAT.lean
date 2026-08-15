@@ -140,4 +140,37 @@ theorem localPerfectMatchingOffCycle_normalForm :
     Fin.exists_fin_succ]
   bv_decide (config := { timeout := 300 })
 
+def BoolLocalPerfectMatchingOffCycle (r : Fin 6 → Fin 6 → Bool) : Prop :=
+  (∀ x, r x x = false) ∧
+  (∀ x y, r x y = r y x) ∧
+  (∀ x, (Finset.univ.filter fun y => r x y).card = 1) ∧
+  (∀ x, r x (next6 x) = false ∧ r x (prev6 x) = false)
+
+def BoolHasSixCycleMatchingNormalForm (r : Fin 6 → Fin 6 → Bool) : Prop :=
+  (∀ x, r x (opposite6 x) = true) ∨
+  ∃ k,
+    r k (opposite6 k) = true ∧
+    r (next6 k) (prev6 k) = true ∧
+    r (next6 (next6 k)) (prev6 (prev6 k)) = true
+
+/-- Relation-facing bridge for the verified matching classifier. -/
+theorem boolLocalPerfectMatchingOffCycle_normalForm
+    {r : Fin 6 → Fin 6 → Bool}
+    (hr : BoolLocalPerfectMatchingOffCycle r) :
+    BoolHasSixCycleMatchingNormalForm r := by
+  have hbv : LocalPerfectMatchingOffCycle (matrixBV36 r) := by
+    rcases hr with ⟨hloop, hsym, hdeg, hoff⟩
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · simpa only [adj36_matrixBV36] using hloop
+    · simpa only [adj36_matrixBV36] using hsym
+    · intro x
+      apply BitVec.eq_of_toNat_eq
+      rw [cpop6_eq_filter_card]
+      simp only [row36_matrixBV36_getLsbD]
+      simpa using hdeg x
+    · simpa only [adj36_matrixBV36] using hoff
+  simpa only [BoolHasSixCycleMatchingNormalForm,
+    HasSixCycleMatchingNormalForm, adj36_matrixBV36] using
+      localPerfectMatchingOffCycle_normalForm (matrixBV36 r) hbv
+
 end Erdos85
