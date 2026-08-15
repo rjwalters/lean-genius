@@ -666,6 +666,45 @@ theorem degreeSixQuotient_model5_support_names_nat
     by simpa [P, R] using hR, haPos, hbPos, hweights,
     haData.1, hbData.1, haData.2, hbData.2⟩
 
+/-- Exact positive-support internal block in the Model5 `2+4` weight branch.
+The order-six target has internal row `(1,2)` and the order-twelve target
+has internal row `(1,2)`. -/
+theorem degreeSixQuotient_model5_two_four_internal_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b : C)
+    (hab : a ≠ b)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (hca : q c a = 2) (hcb : q c b = 4)
+    (haSize : s a = 6) (hbSize : s b = 12)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (hcc : q c c = 0) :
+    q a a = 1 ∧ q a b = 2 ∧ q b a = 1 ∧ q b b = 2 := by
+  have hcaNe : c ≠ a := by
+    intro h
+    subst a
+    rw [hcc] at hca
+    omega
+  have hcbNe : c ≠ b := by
+    intro h
+    subst b
+    rw [hcc] at hcb
+    omega
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  have hsqA := heqs.2 a
+  have hsqB := heqs.2 b
+  rw [hP, Finset.sum_pair hab] at hsqA hsqB
+  simp [hcaNe, hcbNe, hca, hcb, haSize, hbSize] at hsqA hsqB
+  have hbalAB := hbal a b
+  rw [haSize, hbSize] at hbalAB
+  have haDiag := hdiag a
+  have hbDiag := hdiag b
+  omega
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
