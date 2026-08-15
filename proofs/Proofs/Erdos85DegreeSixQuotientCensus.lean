@@ -124,12 +124,38 @@ def degreeSixQuotientModel7
   (∑ i, q i i) = 6 ∧ (∃ i, s i = 3 ∧ q i i = 0) ∧
   (∀ i, s i = 3 → q i i = 0)
 
-/-- Every seven-component degree-six quotient model has component orders
-`3,3,3,6,6,6,6`. -/
-theorem degreeSixQuotientModel7_profile
+theorem degreeSixQuotientModel7_reindex
     (s : Fin 7 → DegreeSixCensusWord)
     (q : Fin 7 → Fin 7 → DegreeSixCensusWord)
-    (h : degreeSixQuotientModel7 s q) : ∀ i, s i = 3 ∨ s i = 6 := by
+    (e : Equiv.Perm (Fin 7)) (h : degreeSixQuotientModel7 s q) :
+    degreeSixQuotientModel7 (fun i => s (e i)) (fun i j => q (e i) (e j)) := by
+  rcases h with ⟨hs, hq, htotal, hrow, hbal, hsq, hdiag, htrace,
+    hbase, hthree⟩
+  refine ⟨fun i => hs (e i), fun i j => hq (e i) (e j), ?_, ?_,
+    fun i j => hbal (e i) (e j), ?_, fun i => hdiag (e i), ?_, ?_, ?_⟩
+  · exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans htotal
+  · intro i
+    exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans (hrow (e i))
+  · intro i j
+    change (∑ k, q (e i) (e k) * q (e k) (e j)) =
+      (if i = j then 3 else 0) + s (e j)
+    calc
+      _ = ∑ k, q (e i) k * q k (e j) :=
+        Fintype.sum_equiv e _ _ (fun _ => rfl)
+      _ = _ := by simpa only [e.injective.eq_iff] using hsq (e i) (e j)
+  · change (∑ i, q (e i) (e i)) = 6
+    exact (Fintype.sum_equiv e _ _ (fun _ => rfl)).trans htrace
+  · obtain ⟨i, hsi, hqi⟩ := hbase
+    exact ⟨e.symm i, by simpa, by simpa⟩
+  · intro i hi
+    exact hthree (e i) hi
+
+/-- Every seven-component degree-six quotient model has component orders
+`3,3,3,6,6,6,6`. -/
+theorem degreeSixQuotientModel7_profile_zero
+    (s : Fin 7 → DegreeSixCensusWord)
+    (q : Fin 7 → Fin 7 → DegreeSixCensusWord)
+    (h : degreeSixQuotientModel7 s q) : s 0 = 3 ∨ s 0 = 6 := by
   simp [degreeSixQuotientModel7, Fin.forall_fin_succ, Fin.exists_fin_succ,
     Fin.sum_univ_succ] at h ⊢
   generalize s 0 = s0 at h ⊢
@@ -189,6 +215,17 @@ theorem degreeSixQuotientModel7_profile
   generalize q 6 5 = q65 at h ⊢
   generalize q 6 6 = q66 at h ⊢
   bv_decide (config := { timeout := 600 })
+
+theorem degreeSixQuotientModel7_profile
+    (s : Fin 7 → DegreeSixCensusWord)
+    (q : Fin 7 → Fin 7 → DegreeSixCensusWord)
+    (h : degreeSixQuotientModel7 s q) : ∀ i, s i = 3 ∨ s i = 6 := by
+  intro i
+  let e : Equiv.Perm (Fin 7) := Equiv.swap 0 i
+  have h' := degreeSixQuotientModel7_profile_zero
+    (fun j => s (e j)) (fun j k => q (e j) (e k))
+      (degreeSixQuotientModel7_reindex s q e h)
+  simpa [e] using h'
 
 /-- Natural-number interface to the five-component finite certificate. -/
 theorem degreeSixQuotientModel5_profile_nat
