@@ -2143,4 +2143,257 @@ theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound_of_degrees
   exact (sevenHighT0CubeCollectDegreeInputsVal_count_bitAdj
     edges i acc hacc).trans (hdegree i)
 
+def sevenHighT0CubePartitionCollectStepVal
+    (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
+    (input : SevenHighT0CubeCommonAccum) : SevenHighT0CubeCommonAccum :=
+  if x = y then input else
+    let (id, acc) := sevenHighT0CubeEdgeIdVal adj y x input.2
+    (input.1 ++ [(id : Int)], acc)
+
+def sevenHighT0CubePartitionCollectStep (y x : Nat)
+    (input : List Int × SevenHighT0CubeGenState) :
+    List Int × SevenHighT0CubeGenState :=
+  if x = y then input else
+    let (id, st) := sevenHighT0CubeEdgeId y x input.2
+    (input.1 ++ [(id : Int)], st)
+
+theorem sevenHighT0CubePartitionCollectStepVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let out := sevenHighT0CubePartitionCollectStepVal adj y x input
+    (out.1, out.2.1) =
+      sevenHighT0CubePartitionCollectStep y x (input.1, input.2.1) := by
+  by_cases hxy : x = y
+  · simp [sevenHighT0CubePartitionCollectStepVal,
+      sevenHighT0CubePartitionCollectStep, hxy]
+  · rcases input with ⟨lits, st, val⟩
+    simp only [sevenHighT0CubePartitionCollectStepVal,
+      sevenHighT0CubePartitionCollectStep, hxy, if_false,
+      sevenHighT0CubeEdgeIdVal]
+    generalize hv : sevenHighT0CubeAtomIdVal adj
+      (.edge (min y x) (max y x)) (st, val) = outVal
+    rcases outVal with ⟨idVal, stVal, val'⟩
+    generalize hs : sevenHighT0CubeAtomId
+      (.edge (min y x) (max y x)) st = out
+    rcases out with ⟨id, st'⟩
+    have hid := sevenHighT0CubeAtomIdVal_id adj
+      (.edge (min y x) (max y x)) st val
+    have hstate := sevenHighT0CubeAtomIdVal_state adj
+      (.edge (min y x) (max y x)) st val
+    rw [hv, hs] at hid hstate
+    simp_all
+
+theorem sevenHighT0CubePartitionCollectStepVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
+    {input : SevenHighT0CubeCommonAccum}
+    (hinput : SevenHighT0CubeSemanticSound adj input.2) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubePartitionCollectStepVal adj y x input).2 := by
+  by_cases hxy : x = y
+  · simpa [sevenHighT0CubePartitionCollectStepVal, hxy] using hinput
+  · simp only [sevenHighT0CubePartitionCollectStepVal, hxy, if_false,
+      sevenHighT0CubeEdgeIdVal]
+    exact sevenHighT0CubeAtomIdVal_semanticSound adj hinput _
+
+structure SevenHighT0CubePartitionMatch
+    (y : Nat) (xs : List Nat) (input : SevenHighT0CubeCommonAccum) where
+  ids : List Nat
+  lits_eq : input.1 = List.map (fun id : Nat => (id : Int)) ids
+  aligned : List.Forall₂ (fun x id =>
+    ((.edge (min y x) (max y x)), id) ∈ input.2.1.ids) xs ids
+
+def sevenHighT0CubePartitionMatch_empty
+    (y : Nat) (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubePartitionMatch y [] ([], acc) where
+  ids := []
+  lits_eq := rfl
+  aligned := .nil
+
+def sevenHighT0CubePartitionMatch_push
+    (adj : Fin 49 → Fin 49 → Bool) {y x : Nat} {xs : List Nat}
+    {input : SevenHighT0CubeCommonAccum}
+    (h : SevenHighT0CubePartitionMatch y xs input) :
+    SevenHighT0CubePartitionMatch y
+      (if x = y then xs else xs ++ [x])
+      (sevenHighT0CubePartitionCollectStepVal adj y x input) := by
+  by_cases hxy : x = y
+  · simpa [sevenHighT0CubePartitionCollectStepVal, hxy] using h
+  · simp only [hxy, if_false]
+    simp only [sevenHighT0CubePartitionCollectStepVal, hxy, if_false,
+      sevenHighT0CubeEdgeIdVal]
+    generalize hout : sevenHighT0CubeAtomIdVal adj
+      (.edge (min y x) (max y x)) input.2 = out
+    rcases out with ⟨id, acc'⟩
+    refine ⟨h.ids ++ [id], ?_, ?_⟩
+    · rw [h.lits_eq]
+      simp
+    · have hold : List.Forall₂ (fun z oldId =>
+          ((.edge (min y z) (max y z)), oldId) ∈ acc'.1.ids) xs h.ids := by
+        apply h.aligned.imp
+        intro z oldId hm
+        have hz := sevenHighT0CubeAtomIdVal_old_mem adj
+          (.edge (min y x) (max y x)) input.2.1 input.2.2 hm
+        rw [hout] at hz
+        exact hz
+      have hnew := (sevenHighT0CubeAtomIdVal_result adj
+        (.edge (min y x) (max y x)) input.2.1 input.2.2).1
+      rw [hout] at hnew
+      exact sevenHighT0CubeForall₂_append_singleton hold hnew
+
+def sevenHighT0CubeCollectPartitionVal
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeCommonAccum :=
+  (sevenHighT0CubePartitionNeighbors high).foldl (fun input x =>
+    sevenHighT0CubePartitionCollectStepVal adj y x input) ([], acc)
+
+def sevenHighT0CubeCollectPartitionVal_match
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState) :
+    SevenHighT0CubePartitionMatch y
+      ((sevenHighT0CubePartitionNeighbors high).filter fun x => x ≠ y)
+      (sevenHighT0CubeCollectPartitionVal adj y high acc) := by
+  suffices ∀ pre : List Nat,
+      SevenHighT0CubePartitionMatch y (pre.filter fun x => x ≠ y)
+        (pre.foldl (fun input x =>
+          sevenHighT0CubePartitionCollectStepVal adj y x input) ([], acc)) by
+    exact this (sevenHighT0CubePartitionNeighbors high)
+  intro pre
+  induction pre using List.reverseRecOn with
+  | nil => exact sevenHighT0CubePartitionMatch_empty y acc
+  | append_singleton pre x ih =>
+      rw [List.foldl_append]
+      simp only [List.foldl_cons, List.foldl_nil, List.filter_append,
+        List.filter_singleton]
+      by_cases hxy : x = y
+      · simpa [hxy] using sevenHighT0CubePartitionMatch_push adj ih
+      · simpa [hxy] using sevenHighT0CubePartitionMatch_push adj ih
+
+theorem sevenHighT0CubeCollectPartitionVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCollectPartitionVal adj y high acc).2 := by
+  unfold sevenHighT0CubeCollectPartitionVal
+  have hfold : ∀ xs : List Nat, ∀ input : SevenHighT0CubeCommonAccum,
+      SevenHighT0CubeSemanticSound adj input.2 →
+      SevenHighT0CubeSemanticSound adj
+        (xs.foldl (fun input x =>
+          sevenHighT0CubePartitionCollectStepVal adj y x input) input).2 := by
+    intro xs
+    induction xs with
+    | nil => exact fun _ h => h
+    | cons x xs ih =>
+        intro input hinput
+        simp only [List.foldl_cons]
+        exact ih _ (sevenHighT0CubePartitionCollectStepVal_semanticSound
+          adj y x hinput)
+  exact hfold _ ([], acc) hacc
+
+theorem sevenHighT0CubeCollectPartitionVal_bounded
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc) :
+    let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+    dimacsClauseBounded input.2.1.top input.1 := by
+  let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+  let hm := sevenHighT0CubeCollectPartitionVal_match adj y high acc
+  have hs := sevenHighT0CubeCollectPartitionVal_semanticSound
+    adj y high hacc
+  intro lit hlit
+  rw [hm.lits_eq] at hlit
+  obtain ⟨id, hid, rfl⟩ := List.mem_map.mp hlit
+  obtain ⟨x, hx, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_left_of_mem hm.aligned hid
+  simpa using (hs.ids.id_bounds _ hatom).2
+
+theorem sevenHighT0CubeCollectPartitionVal_positive
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hwitness : ∃ x ∈ sevenHighT0CubePartitionNeighbors high,
+      x ≠ y ∧ sevenHighT0CubeAtomValue adj
+        (.edge (min y x) (max y x)) = true) :
+    let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+    dimacsClauseSatisfied input.2.2 input.1 := by
+  let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+  let hm := sevenHighT0CubeCollectPartitionVal_match adj y high acc
+  have hs := sevenHighT0CubeCollectPartitionVal_semanticSound
+    adj y high hacc
+  obtain ⟨x, hx, hxy, htrue⟩ := hwitness
+  have hxfilter : x ∈
+      (sevenHighT0CubePartitionNeighbors high).filter fun z => z ≠ y := by
+    simp [hx, hxy]
+  obtain ⟨id, hid, hatom⟩ :=
+    sevenHighT0CubeForall₂_exists_right_of_mem hm.aligned hxfilter
+  have hlit : (id : Int) ∈ input.1 := by
+    rw [hm.lits_eq]
+    exact List.mem_map.mpr ⟨id, hid, rfl⟩
+  have hpos := (hs.ids.id_bounds _ hatom).1
+  have hval := (hs.named _ _ hatom).trans htrue
+  refine ⟨(id : Int), hlit, ?_⟩
+  simp [dimacsLitValue, hpos, hval]
+
+def sevenHighT0CubePartitionClauseVal
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+  sevenHighT0CubeEmitVal input.1 input.2
+
+theorem sevenHighT0CubePartitionClauseVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hpositive : let input :=
+        sevenHighT0CubeCollectPartitionVal adj y high acc
+      dimacsClauseSatisfied input.2.2 input.1)
+    (hbounded : let input :=
+        sevenHighT0CubeCollectPartitionVal adj y high acc
+      dimacsClauseBounded input.2.1.top input.1) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubePartitionClauseVal adj y high acc) := by
+  let input := sevenHighT0CubeCollectPartitionVal adj y high acc
+  have hs := sevenHighT0CubeCollectPartitionVal_semanticSound
+    adj y high hacc
+  exact sevenHighT0CubeEmitVal_semanticSound adj hs input.1
+    hpositive hbounded
+
+theorem sevenHighT0CubePartitionClauseVal_semanticSound_of_witness
+    (adj : Fin 49 → Fin 49 → Bool) (y high : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hwitness : ∃ x ∈ sevenHighT0CubePartitionNeighbors high,
+      x ≠ y ∧ sevenHighT0CubeAtomValue adj
+        (.edge (min y x) (max y x)) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubePartitionClauseVal adj y high acc) := by
+  apply sevenHighT0CubePartitionClauseVal_semanticSound adj y high hacc
+  · exact sevenHighT0CubeCollectPartitionVal_positive adj y high acc
+      hacc hwitness
+  · exact sevenHighT0CubeCollectPartitionVal_bounded adj y high acc hacc
+
+def sevenHighT0CubePartitionClausesFromVal
+    (adj : Fin 49 → Fin 49 → Bool)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  sevenHighT0CubeLows.foldl (fun acc y =>
+    [0, 1].foldl (fun acc high =>
+      sevenHighT0CubePartitionClauseVal adj y high acc) acc) acc
+
+theorem sevenHighT0CubePartitionClausesFromVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hwitness : ∀ y ∈ sevenHighT0CubeLows, ∀ high ∈ [0, 1],
+      ∃ x ∈ sevenHighT0CubePartitionNeighbors high,
+        x ≠ y ∧ sevenHighT0CubeAtomValue adj
+          (.edge (min y x) (max y x)) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubePartitionClausesFromVal adj acc) := by
+  unfold sevenHighT0CubePartitionClausesFromVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro y hy acc hacc
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj [0, 1] _ hacc
+  intro high hh acc hacc
+  exact sevenHighT0CubePartitionClauseVal_semanticSound_of_witness
+    adj y high hacc (hwitness y hy high hh)
+
 end Erdos85
