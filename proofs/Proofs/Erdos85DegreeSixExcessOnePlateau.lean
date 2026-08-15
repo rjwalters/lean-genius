@@ -6500,6 +6500,251 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_four_fiber_counts
     exact htotal
   omega
 
+/-- No block-layer vertex can be attached to two residual cycle vertices.
+The three possible cyclic separations are excluded respectively by a
+triangle-free edge, the antipodal relation, or the `C₄` bound. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y p : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hp : p ∈ G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    (G.neighborFinset p ∩ R).card ≤ 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  obtain ⟨f, hfinj, hfrange, hTrow, hopp⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_residual_matching_opposite
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hpB : p ∈ B := by simpa [B] using hp
+  have hpNotR : p ∉ R := by
+    intro hpR
+    exact (Finset.mem_sdiff.mp hpR).2 (Finset.mem_union_left _ hpB)
+  have hTnext (i : Fin 6) :
+      (triangleFreeEdgeGraph G).Adj (f i) (f (next6 i)) := by
+    apply ((triangleFreeEdgeGraph G).mem_neighborFinset _ _).mp
+    rw [hTrow]
+    simp
+  have hNoSharedNext (i : Fin 6) :
+      ¬ (G.Adj p (f i) ∧ G.Adj p (f (next6 i))) := by
+    rintro ⟨hpi, hpn⟩
+    have hdata := (mem_triangleFreeNeighbors G _ _).mp
+      ((triangleFreeEdgeGraph_adj G _ _).mp (hTnext i))
+    have hpCommon : p ∈
+        G.neighborFinset (f i) ∩ G.neighborFinset (f (next6 i)) := by
+      simp only [Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hpi.symm, hpn.symm⟩
+    rw [Finset.card_eq_zero.mp hdata.2] at hpCommon
+    exact Finset.notMem_empty _ hpCommon
+  have hNoSharedOpposite (i : Fin 6) :
+      ¬ (G.Adj p (f i) ∧ G.Adj p (f (opposite6 i))) := by
+    rintro ⟨hpi, hpo⟩
+    have hdata := (mem_antipodalNeighbors G _ _).mp
+      ((antipodalGraph_adj G _ _).mp (hopp i))
+    have hpCommon : p ∈
+        G.neighborFinset (f i) ∩ G.neighborFinset (f (opposite6 i)) := by
+      simp only [Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hpi.symm, hpo.symm⟩
+    rw [Finset.card_eq_zero.mp hdata.2.2] at hpCommon
+    exact Finset.notMem_empty _ hpCommon
+  have hNoSharedDistanceTwo (i : Fin 6) :
+      ¬ (G.Adj p (f i) ∧ G.Adj p (f (next6 (next6 i)))) := by
+    rintro ⟨hpi, hpnn⟩
+    have hiT := hTnext i
+    have hnT := hTnext (next6 i)
+    have hiG := ((mem_triangleFreeNeighbors G _ _).mp
+      ((triangleFreeEdgeGraph_adj G _ _).mp hiT)).1
+    have hnG := ((mem_triangleFreeNeighbors G _ _).mp
+      ((triangleFreeEdgeGraph_adj G _ _).mp hnT)).1
+    have hne : f i ≠ f (next6 (next6 i)) := by
+      apply hfinj.ne
+      fin_cases i <;> decide
+    have hle := common_le_one_of_not_containsC4 hfree
+      (f i) (f (next6 (next6 i))) hne
+    have hpCommon : p ∈
+        G.neighborFinset (f i) ∩
+          G.neighborFinset (f (next6 (next6 i))) := by
+      simp only [Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hpi.symm, hpnn.symm⟩
+    have hnCommon : f (next6 i) ∈
+        G.neighborFinset (f i) ∩
+          G.neighborFinset (f (next6 (next6 i))) := by
+      simp only [Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hiG, hnG.symm⟩
+    have hpeq := Finset.card_le_one.mp hle p hpCommon
+      (f (next6 i)) hnCommon
+    apply hpNotR
+    rw [hpeq]
+    have : f (next6 i) ∈ Set.range f := Set.mem_range_self _
+    rw [hfrange] at this
+    simpa [B, R, Finset.union_assoc] using this
+  apply Finset.card_le_one.mpr
+  intro r hr s hs
+  have hrR := (Finset.mem_inter.mp hr).2
+  have hsR := (Finset.mem_inter.mp hs).2
+  have hrRange : r ∈ Set.range f := by
+    rw [hfrange]
+    simpa [B, R, Finset.union_assoc] using hrR
+  have hsRange : s ∈ Set.range f := by
+    rw [hfrange]
+    simpa [B, R, Finset.union_assoc] using hsR
+  obtain ⟨i, rfl⟩ := hrRange
+  obtain ⟨j, rfl⟩ := hsRange
+  have hpi : G.Adj p (f i) :=
+    (G.mem_neighborFinset _ _).mp (Finset.mem_inter.mp hr).1
+  have hpj : G.Adj p (f j) :=
+    (G.mem_neighborFinset _ _).mp (Finset.mem_inter.mp hs).1
+  rcases fin6_pair_classification i j with hij | hij | hij | hij | hij | hij
+  · rw [hij]
+  · exfalso
+    exact hNoSharedNext i ⟨hpi, hij ▸ hpj⟩
+  · exfalso
+    exact hNoSharedNext j ⟨hpj, hij ▸ hpi⟩
+  · exfalso
+    exact hNoSharedOpposite i ⟨hpi, hij ▸ hpj⟩
+  · exfalso
+    exact hNoSharedDistanceTwo i ⟨hpi, hij ▸ hpj⟩
+  · exfalso
+    exact hNoSharedDistanceTwo j ⟨hpj, hij ▸ hpi⟩
+
+/-- Double-counting the 24 residual-to-layer incidences upgrades the local
+upper bound to a unique residual label on every block-layer vertex. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y p : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hp : p ∈ G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    (G.neighborFinset p ∩ R).card = 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hpB : p ∈ B := by simpa [B] using hp
+  have hBcard : B.card = 24 := by
+    simpa [B] using degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+      G hfree hreg hab hax hbx hay hby hxy
+  have hprofile := degreeSix_thirtyFour_closed_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hRcard : R.card = 6 := by
+    simpa [B, R, Finset.union_assoc] using hprofile.1
+  have hsumR : (∑ r ∈ R, (G.neighborFinset r ∩ B).card) = 24 := by
+    calc
+      (∑ r ∈ R, (G.neighborFinset r ∩ B).card) = ∑ _r ∈ R, 4 := by
+        apply Finset.sum_congr rfl
+        intro r hr
+        simpa [B, R, Finset.union_assoc] using (hprofile.2 r (by
+          simpa [B, R, Finset.union_assoc] using hr)).2
+      _ = 24 := by simp [hRcard]
+  have hsumB : (∑ q ∈ B, (G.neighborFinset q ∩ R).card) = 24 := by
+    rw [sum_card_neighbor_inter_comm G B R]
+    exact hsumR
+  have hle : ∀ q ∈ B, (G.neighborFinset q ∩ R).card ≤ 1 := by
+    intro q hq
+    simpa [B, R, Finset.union_assoc] using
+      degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_le_one
+        G hfree hreg hcard hab hax hbx hay hby hxy hresidual (by simpa [B] using hq)
+  have hrest : (∑ q ∈ B.erase p, (G.neighborFinset q ∩ R).card) ≤ 23 := by
+    calc
+      (∑ q ∈ B.erase p, (G.neighborFinset q ∩ R).card) ≤
+          ∑ _q ∈ B.erase p, 1 := by
+        apply Finset.sum_le_sum
+        intro q hq
+        exact hle q (Finset.mem_of_mem_erase hq)
+      _ = 23 := by simp [Finset.card_erase_of_mem hpB, hBcard]
+  rw [← Finset.sum_erase_add _ _ hpB] at hsumB
+  have hpLe := hle p hpB
+  change (G.neighborFinset p ∩ R).card = 1
+  omega
+
+/-- Residual `K₃,₃` adjacency transports the unique residual labels across
+the block-layer defect graph: from a block vertex labeled `r`, exactly one
+defect neighbor has any prescribed defect-adjacent label `s`. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_layer_residual_transition_count_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y p r s : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hp : p ∈ G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y)
+    (hr : r ∈ Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hs : s ∈ Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hDs : (secondOrderDefectGraph G).neighborFinset s ⊆
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hpr : G.Adj p r)
+    (hrsD : (secondOrderDefectGraph G).Adj r s) :
+    (((secondOrderDefectGraph G).neighborFinset p).filter
+      (fun z => G.Adj z s)).card = 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hpB : p ∈ B := by simpa [B] using hp
+  have hrR : r ∈ R := by simpa [B, R, Finset.union_assoc] using hr
+  have hDsR : (secondOrderDefectGraph G).neighborFinset s ⊆ R := by
+    simpa [B, R, Finset.union_assoc] using hDs
+  have hcontactR : (G.neighborFinset p ∩ R).card = 1 := by
+    simpa [B, R, Finset.union_assoc] using
+      degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_eq_one
+        G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+          (by simpa [B] using hpB)
+  have hunique : ∀ z ∈ R, G.Adj p z → z = r := by
+    intro z hzR hpz
+    apply Finset.card_le_one.mp (by omega : (G.neighborFinset p ∩ R).card ≤ 1)
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p z).mpr hpz, hzR⟩
+    · exact Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p r).mpr hpr, hrR⟩
+  exact card_defectNeighbors_adj_eq_one_of_unique_closed_contact
+    G hfree hreg R hDsR hpr hunique hrsD.symm
+
 /-- Explicit cubic rows on the residual: each cyclic coordinate is joined
 in the combined defect graph to its predecessor, successor, and opposite
 coordinate.  This is the `K₃,₃` model of the residual component. -/

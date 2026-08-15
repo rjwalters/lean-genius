@@ -111,6 +111,13 @@ def prev6 (x : Fin 6) : Fin 6 := ⟨(x.val + 5) % 6, by omega⟩
 
 def opposite6 (x : Fin 6) : Fin 6 := ⟨(x.val + 3) % 6, by omega⟩
 
+/-- Every pair of positions on a six-cycle has one of the six oriented
+cyclic separations used by the residual incidence arguments. -/
+theorem fin6_pair_classification (i j : Fin 6) :
+    j = i ∨ j = next6 i ∨ i = next6 j ∨ j = opposite6 i ∨
+      j = next6 (next6 i) ∨ i = next6 (next6 j) := by
+  fin_cases i <;> fin_cases j <;> decide
+
 theorem finEquiv_next6 (x : Fin 6) :
     ZMod.finEquiv 6 (next6 x) = ZMod.finEquiv 6 x + 1 := by
   letI : Fact (1 < 6) := ⟨by omega⟩
