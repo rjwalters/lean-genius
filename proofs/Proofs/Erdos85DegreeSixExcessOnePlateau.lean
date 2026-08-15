@@ -7711,6 +7711,42 @@ theorem blockGrid_mixed_twoStep_fixedPointFree
     simpa using hvertices)
   exact hce (congrArg Prod.fst hcoords)
 
+/-- Core four-row obstruction, placed with the other compatibility lemmas
+so it can be included in the combined finite model below. -/
+theorem blockGrid_fourRow_fixedPointFree_core
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (u : Fin 4 → Fin 6 → V) (σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6))
+    (huinj : Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2))
+    (hσ : ∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) :
+    ∀ c d e g, c ≠ e → d ≠ g → ∀ i,
+      σ g c (σ e g (σ d e (σ c d i))) ≠ i := by
+  intro c d e g hce hdg i hclose
+  let j := σ c d i
+  let k := σ d e j
+  let l := σ e g k
+  have hcd : G.Adj (u c i) (u d j) := (hσ c d i j).mpr rfl
+  have hde : G.Adj (u d j) (u e k) := (hσ d e j k).mpr rfl
+  have heg : G.Adj (u e k) (u g l) := (hσ e g k l).mpr rfl
+  have hgc : G.Adj (u g l) (u c i) := (hσ g c l i).mpr hclose
+  have hOppNe : u c i ≠ u e k := by
+    intro h
+    have hp := huinj (show u (c, i).1 (c, i).2 = u (e, k).1 (e, k).2 by
+      simpa using h)
+    exact hce (congrArg Prod.fst hp)
+  have hle := common_le_one_of_not_containsC4 hfree (u c i) (u e k) hOppNe
+  have hjMem : u d j ∈ G.neighborFinset (u c i) ∩ G.neighborFinset (u e k) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨hcd, hde.symm⟩
+  have hlMem : u g l ∈ G.neighborFinset (u c i) ∩ G.neighborFinset (u e k) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨hgc.symm, heg⟩
+  have hjl := Finset.card_le_one.mp hle (u d j) hjMem (u g l) hlMem
+  have hp := huinj (show u (d, j).1 (d, j).2 = u (g, l).1 (g, l).2 by
+    simpa using hjl)
+  exact hdg (congrArg Prod.fst hp)
+
 /-- Combined finite interface for the closed order-six branch: original
 row matchings are `S₆` permutations, residual defect edges lift through
 `S₄` sheet permutations, and the two matching systems are pointwise
@@ -7738,8 +7774,12 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
       ∃ σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6),
         Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
         (∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) ∧
+        (∀ c d i, σ d c (σ c d i) = i) ∧
+        (∀ c i, σ c c i ≠ i) ∧
         (∀ c d i, σ c d i ≠ prev6 i ∧ σ c d i ≠ next6 i) ∧
         (∀ c d e i, c ≠ e → σ d e (σ c d i) ≠ i) ∧
+        (∀ c d e g, c ≠ e → d ≠ g → ∀ i,
+          σ g c (σ e g (σ d e (σ c d i))) ≠ i) ∧
         ∀ i j, (secondOrderDefectGraph G).Adj (f i) (f j) →
           ∃ τ : Equiv.Perm (Fin 4),
             (∀ c d, (secondOrderDefectGraph G).Adj (u c i) (u d j) ↔ τ c = d) ∧
@@ -7777,6 +7817,10 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
       change s c d i = j at hij
       rw [← hij]
       exact hsAdj c d i
+  have hσinv : ∀ c d i, σ d c (σ c d i) = i := by
+    intro c d i
+    change s d c (s c d i) = i
+    exact (hsUnique d c (s c d i) i (hsAdj c d i).symm).symm
   have huB (c : Fin 4) (i : Fin 6) : u c i ∈
       G.neighborFinset a ∪ G.neighborFinset b ∪
         G.neighborFinset x ∪ G.neighborFinset y := by
@@ -7794,7 +7838,9 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
     · simp [centerFiber4] at hc
       simp only [Finset.mem_union]
       exact Or.inr ((G.mem_neighborFinset _ _).mpr hc)
-  refine ⟨f, u, σ, huinj, hσ, ?_, ?_, ?_⟩
+  refine ⟨f, u, σ, huinj, hσ, hσinv, ?_, ?_, ?_, ?_, ?_⟩
+  · intro c i hii
+    exact G.loopless.irrefl (u c i) ((hσ c c i i).mpr hii)
   · intro c d i
     have havoid := blockGrid_residualEdge_avoidance G hfree f u σ
       (fun e k => (huData e k).2) hsep hσ
@@ -7809,6 +7855,7 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
       simp
   · apply blockGrid_mixed_twoStep_fixedPointFree G hfree f u σ
       (fun c i => (huData c i).2) hsep huinj hσ
+  · exact blockGrid_fourRow_fixedPointFree_core G hfree u σ huinj hσ
   intro i j hijD
   obtain ⟨τ, hτ⟩ := hDperms i j hijD
   refine ⟨τ, hτ, ?_, ?_⟩
