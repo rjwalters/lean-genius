@@ -157,6 +157,125 @@ theorem degreeSeven_witness_of_fourFortyOne_le
   norm_num at hn ⊢
   exact hn
 
+private theorem degreeSeven_add4
+    {a b c d : ℕ}
+    (ha : C4FreeMinDegreeWitness a 7)
+    (hb : C4FreeMinDegreeWitness b 7)
+    (hc : C4FreeMinDegreeWitness c 7)
+    (hd : C4FreeMinDegreeWitness d 7)
+    (ha0 : 0 < a) (hb0 : 0 < b) (hc0 : 0 < c) (hd0 : 0 < d) :
+    C4FreeMinDegreeWitness (a + b + c + d) 7 := by
+  have hab := C4FreeMinDegreeWitness.add ha0 hb0 ha hb
+  have hcpos : 0 < a + b := by omega
+  have habc := C4FreeMinDegreeWitness.add hcpos hc0 hab hc
+  exact C4FreeMinDegreeWitness.add (by omega) hd0 habc hd
+
+private theorem degreeSeven_48_48_band_band
+    (x y : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) :
+    C4FreeMinDegreeWitness (48 + 48 + (63 + x) + (63 + y)) 7 :=
+  degreeSeven_add4 boza48_degreeSeven_witness boza48_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (by norm_num) (by norm_num) (by omega) (by omega)
+
+private theorem degreeSeven_48_band_band_band
+    (x y z : ℕ) (hx : x ≤ 10) (hy : y ≤ 10) (hz : z ≤ 10) :
+    C4FreeMinDegreeWitness (48 + (63 + x) + (63 + y) + (63 + z)) 7 :=
+  degreeSeven_add4 boza48_degreeSeven_witness
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (degreeSeven_witness_sixtyThree_add z hz)
+    (by norm_num) (by omega) (by omega) (by omega)
+
+private theorem degreeSeven_band_band_band_band
+    (w x y z : ℕ) (hw : w ≤ 10) (hx : x ≤ 10)
+    (hy : y ≤ 10) (hz : z ≤ 10) :
+    C4FreeMinDegreeWitness ((63 + w) + (63 + x) + (63 + y) + (63 + z)) 7 :=
+  degreeSeven_add4 (degreeSeven_witness_sixtyThree_add w hw)
+    (degreeSeven_witness_sixtyThree_add x hx)
+    (degreeSeven_witness_sixtyThree_add y hy)
+    (degreeSeven_witness_sixtyThree_add z hz)
+    (by omega) (by omega) (by omega) (by omega)
+
+/-- A complete residue band for the exact semigroup conductor 222. -/
+theorem degreeSeven_witness_twoTwentyTwo_add
+    (j : ℕ) (hj : j ≤ 47) : C4FreeMinDegreeWitness (222 + j) 7 := by
+  interval_cases j <;> norm_num
+  · exact degreeSeven_48_48_band_band 0 0 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 1 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 2 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 3 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 4 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 5 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 6 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 7 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 8 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 9 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 0 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 1 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 2 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 3 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 4 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 5 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 6 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 7 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 8 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 9 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_48_band_band 10 10 (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 0 6 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 0 7 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 0 8 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 0 9 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 0 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 1 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 2 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 3 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 4 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 5 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 6 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 7 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 8 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 9 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 0 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 1 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 2 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 3 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 4 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 5 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 6 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 7 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 8 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 9 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_48_band_band_band 10 10 10 (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_band_band_band_band 0 0 6 10
+      (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+  · exact degreeSeven_band_band_band_band 0 0 7 10
+      (by norm_num) (by norm_num) (by norm_num) (by norm_num)
+
+/-- Exact conductor of the semigroup generated by orders 48 and 63--73. -/
+theorem degreeSeven_witness_of_twoTwentyTwo_le
+    {n : ℕ} (hn : 222 ≤ n) : C4FreeMinDegreeWitness n 7 := by
+  let j := (n - 222) % 48
+  let k := (n - 222) / 48
+  have hj : j ≤ 47 := by
+    dsimp [j]
+    have := Nat.mod_lt (n - 222) (by norm_num : 0 < 48)
+    omega
+  have hdecomp : n = (222 + j) + k * 48 := by
+    have hdiv := Nat.mod_add_div (n - 222) 48
+    dsimp [j, k]
+    omega
+  have hband := degreeSeven_witness_twoTwentyTwo_add j hj
+  by_cases hk : k = 0
+  · rw [hdecomp, hk]
+    simpa using hband
+  · have hcopies : C4FreeMinDegreeWitness (k * 48) 7 := by
+      simpa [Nat.mul_comm] using
+        boza48_degreeSeven_witness.nsmul (by norm_num) (Nat.pos_of_ne_zero hk)
+    rw [hdecomp]
+    exact C4FreeMinDegreeWitness.add (by omega)
+      (Nat.mul_pos (Nat.pos_of_ne_zero hk) (by norm_num)) hband hcopies
+
 /-- A degree-seven plateau core is confined below order 632. -/
 theorem C4PlateauCore.degreeSeven_order_lt_sixThirtyTwo
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 632 := by
@@ -174,13 +293,21 @@ theorem C4PlateauCore.degreeSeven_order_lt_fourFortyOne
   rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
   exact hfree (hnext H hdec hmin)
 
+theorem C4PlateauCore.degreeSeven_order_lt_twoTwentyTwo
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) : m < 222 := by
+  by_contra hnot
+  have hw := degreeSeven_witness_of_twoTwentyTwo_le (n := m + 1) (by omega)
+  rcases hw with ⟨H, hdec, hmin, hfree⟩
+  rcases hcore with ⟨_G, _hGdec, _hGmin, _hGfree, _hcover, hnext⟩
+  exact hfree (hnext H hdec hmin)
+
 /-- Combining odd-excess rigidity below the square with the new conductor,
 the first degree-seven candidate is exactly order 48 and every other
 candidate lies in the finite interval 49--631. -/
 theorem C4PlateauCore.degreeSeven_final_order_window
     {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 7) :
-    m = 48 ∨ (49 ≤ m ∧ m < 441) := by
-  have hupper := hcore.degreeSeven_order_lt_fourFortyOne hm
+    m = 48 ∨ (49 ≤ m ∧ m < 222) := by
+  have hupper := hcore.degreeSeven_order_lt_twoTwentyTwo hm
   by_cases h49 : m < 49
   · obtain ⟨e, _heOdd, heLower, hdata⟩ :=
       hcore.exists_odd_positiveExcessData_three_le hm (by norm_num)
