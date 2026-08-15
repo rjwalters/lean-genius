@@ -1077,4 +1077,123 @@ theorem sevenHighT0CubeCommonWitnessStepVal_semanticSound
   change SevenHighT0CubeSemanticSound adj e2
   exact hsE2
 
+def sevenHighT0CubeCollectCommonVal
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeCommonAccum :=
+  sevenHighT0CubeLows.foldl (fun input w =>
+    sevenHighT0CubeCommonWitnessStepVal adj i j w input) ([], acc)
+
+def sevenHighT0CubeCollectCommon (i j : Nat)
+    (st : SevenHighT0CubeGenState) : List Int × SevenHighT0CubeGenState :=
+  sevenHighT0CubeLows.foldl (fun input w =>
+    sevenHighT0CubeCommonWitnessStep i j w input) ([], st)
+
+theorem sevenHighT0CubeCommonFold_projection
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat) (ws : List Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let outVal := ws.foldl (fun input w =>
+      sevenHighT0CubeCommonWitnessStepVal adj i j w input) input
+    let outGen := ws.foldl (fun input w =>
+      sevenHighT0CubeCommonWitnessStep i j w input)
+      (input.1, input.2.1)
+    (outVal.1, outVal.2.1) = outGen := by
+  induction ws generalizing input with
+  | nil => rfl
+  | cons w ws ih =>
+      simp only [List.foldl_cons]
+      let nextVal := sevenHighT0CubeCommonWitnessStepVal adj i j w input
+      have hstep := sevenHighT0CubeCommonWitnessStepVal_projection
+        adj i j w input
+      have hrest := ih nextVal
+      change (nextVal.1, nextVal.2.1) =
+        sevenHighT0CubeCommonWitnessStep i j w
+          (input.1, input.2.1) at hstep
+      rw [hstep] at hrest
+      exact hrest
+
+theorem sevenHighT0CubeCollectCommonVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    (acc : SevenHighT0CubeValState) :
+    let out := sevenHighT0CubeCollectCommonVal adj i j acc
+    (out.1, out.2.1) = sevenHighT0CubeCollectCommon i j acc.1 := by
+  simpa only [sevenHighT0CubeCollectCommonVal,
+    sevenHighT0CubeCollectCommon] using
+    (sevenHighT0CubeCommonFold_projection adj i j
+      sevenHighT0CubeLows ([], acc))
+
+theorem sevenHighT0CubeCollectCommonVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (i j : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common i j w) = true →
+        sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCollectCommonVal adj i j acc).2 := by
+  unfold sevenHighT0CubeCollectCommonVal
+  have hfold : ∀ ws : List Nat, ∀ input : SevenHighT0CubeCommonAccum,
+      SevenHighT0CubeSemanticSound adj input.2 →
+      (∀ w ∈ ws,
+        sevenHighT0CubeAtomValue adj (.common i j w) = true →
+          sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true) →
+      (∀ w ∈ ws,
+        sevenHighT0CubeAtomValue adj (.common i j w) = true →
+          sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) →
+      SevenHighT0CubeSemanticSound adj
+        (ws.foldl (fun input w =>
+          sevenHighT0CubeCommonWitnessStepVal adj i j w input) input).2 := by
+    intro ws
+    induction ws with
+    | nil => intro input hinput _ _; exact hinput
+    | cons w ws ih =>
+        intro input hinput hl hr
+        simp only [List.foldl_cons]
+        apply ih
+        · exact sevenHighT0CubeCommonWitnessStepVal_semanticSound adj i j w
+            hinput (hl w (by simp)) (hr w (by simp))
+        · intro x hx
+          exact hl x (by simp [hx])
+        · intro x hx
+          exact hr x (by simp [hx])
+  exact hfold sevenHighT0CubeLows ([], acc) hacc hleft hright
+
+def sevenHighT0CubeCommonPairStepVal
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let common := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
+  sevenHighT0CubeEmitVal common.1 common.2
+
+set_option maxHeartbeats 0 in
+theorem sevenHighT0CubeCommonPairStepVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (pair : Nat × Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hleft : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.1 w) (max pair.1 w)) = true)
+    (hright : ∀ w ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.common pair.1 pair.2 w) = true →
+        sevenHighT0CubeAtomValue adj
+          (.edge (min pair.2 w) (max pair.2 w)) = true)
+    (hpositive : let common :=
+        sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
+      dimacsClauseSatisfied common.2.2 common.1)
+    (hbounded : let common :=
+        sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
+      dimacsClauseBounded common.2.1.top common.1) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCommonPairStepVal adj pair acc) := by
+  let common := sevenHighT0CubeCollectCommonVal adj pair.1 pair.2 acc
+  have hs : SevenHighT0CubeSemanticSound adj common.2 :=
+    sevenHighT0CubeCollectCommonVal_semanticSound adj pair.1 pair.2
+      hacc hleft hright
+  change SevenHighT0CubeSemanticSound adj
+    (sevenHighT0CubeEmitVal common.1 common.2)
+  exact sevenHighT0CubeEmitVal_semanticSound adj hs common.1
+    hpositive hbounded
+
 end Erdos85
