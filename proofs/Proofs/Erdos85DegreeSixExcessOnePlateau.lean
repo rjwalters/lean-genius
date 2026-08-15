@@ -1980,6 +1980,53 @@ theorem degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
     G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree,
     hreg a, hreg b, hreg x, hreg y]
 
+/-- Three displayed distinct neighbors exhaust the neighborhood of a
+degree-three vertex. -/
+theorem neighborFinset_eq_triple_of_degree_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    {u p q r : V} (hdeg : H.degree u = 3)
+    (hup : H.Adj u p) (huq : H.Adj u q) (hur : H.Adj u r)
+    (hpq : p ≠ q) (hpr : p ≠ r) (hqr : q ≠ r) :
+    H.neighborFinset u = {p, q, r} := by
+  have hsub : ({p, q, r} : Finset V) ⊆ H.neighborFinset u := by
+    simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff,
+      H.mem_neighborFinset]
+    exact ⟨hup, huq, hur⟩
+  have htriple : ({p, q, r} : Finset V).card = 3 := by
+    simp [hpq, hpr, hqr]
+  symm
+  apply Finset.eq_of_subset_of_card_le hsub
+  rw [htriple, H.card_neighborFinset_eq_degree, hdeg]
+
+/-- A cubic defect `K₄` is an isolated defect component: each center's
+defect neighborhood is exactly the other three centers. -/
+theorem cubic_defectKFour_neighborFinsets
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hregD : ∀ v, D.degree v = 3)
+    {a b x y : V}
+    (hab : D.Adj a b) (hax : D.Adj a x) (hbx : D.Adj b x)
+    (hay : D.Adj a y) (hby : D.Adj b y) (hxy : D.Adj x y) :
+    D.neighborFinset a = {b, x, y} ∧
+      D.neighborFinset b = {a, x, y} ∧
+      D.neighborFinset x = {a, b, y} ∧
+      D.neighborFinset y = {a, b, x} := by
+  have habNe := D.ne_of_adj hab
+  have haxNe := D.ne_of_adj hax
+  have hayNe := D.ne_of_adj hay
+  have hbxNe := D.ne_of_adj hbx
+  have hbyNe := D.ne_of_adj hby
+  have hxyNe := D.ne_of_adj hxy
+  refine ⟨neighborFinset_eq_triple_of_degree_three D (hregD a)
+      hab hax hay hbxNe hbyNe hxyNe,
+    neighborFinset_eq_triple_of_degree_three D (hregD b)
+      hab.symm hbx hby haxNe hayNe hxyNe,
+    neighborFinset_eq_triple_of_degree_three D (hregD x)
+      hax.symm hbx.symm hxy habNe hayNe hbyNe,
+    neighborFinset_eq_triple_of_degree_three D (hregD y)
+      hay.symm hby.symm hxy.symm habNe haxNe hbxNe⟩
+
 /-- In the pure antipodal branch, a closed defect `K₄` and its four
 pairwise-disjoint degree-six neighborhoods occupy exactly 28 vertices. -/
 theorem degreeSix_thirtyFour_antipodal_defectKFour_centered_footprint_card_eq_twentyEight
