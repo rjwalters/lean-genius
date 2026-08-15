@@ -205,6 +205,65 @@ theorem antipodal_commutator_entry_mem_neg_one_zero_one_all
   · exact antipodal_commutator_entry_mem_neg_one_zero_one
       G hfree hreg hxy
 
+/-- At order 35 and degree six, the number of ordered pairs on which the
+antipodal color fails to commute with adjacency is exactly sixteen times the
+number of vertices in a nonzero triangle-free color sector. -/
+theorem degreeSix_thirtyFive_card_antipodal_commutator_support
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let C := (antipodalGraph G).adjMatrix ℤ
+    ((Finset.univ.filter fun p : V × V =>
+      (A * C - C * A) p.1 p.2 ≠ 0).card : ℤ) =
+      16 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let C := (antipodalGraph G).adjMatrix ℤ
+  have hAsym : ∀ x y, A x y = A y x := by
+    intro x y
+    have ht : (G.adjMatrix ℤ).transpose = G.adjMatrix ℤ :=
+      SimpleGraph.transpose_adjMatrix G
+    have he := congrFun (congrFun ht y) x
+    simpa [A] using he
+  have hCsym : ∀ x y, C x y = C y x := by
+    intro x y
+    have ht : ((antipodalGraph G).adjMatrix ℤ).transpose =
+        (antipodalGraph G).adjMatrix ℤ :=
+      SimpleGraph.transpose_adjMatrix (antipodalGraph G)
+    have he := congrFun (congrFun ht y) x
+    simpa [C] using he
+  calc
+    ((Finset.univ.filter fun p : V × V =>
+        (A * C - C * A) p.1 p.2 ≠ 0).card : ℤ) =
+        ∑ p : V × V, ((A * C - C * A) p.1 p.2) ^ 2 := by
+      apply int_card_filter_ne_zero_eq_sum_sq
+      intro p
+      exact antipodal_commutator_entry_mem_neg_one_zero_one_all
+        G hfree hreg p.1 p.2
+    _ = ∑ x : V, ∑ y : V, ((A * C - C * A) x y) ^ 2 := by
+      rw [Fintype.sum_prod_type]
+    _ = -Matrix.trace ((A * C - C * A) * (A * C - C * A)) :=
+      (neg_trace_commutator_sq_eq_sum_entry_sq A C hAsym hCsym).symm
+    _ = 2 * (Matrix.trace ((A * A) * (C * C)) -
+        Matrix.trace ((A * C) * (A * C))) := by
+      rw [trace_commutator_sq_eq_two_mul_alternating_sub_square]
+      ring
+    _ = 16 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+      rw [degreeSix_thirtyFive_antipodal_commutatorGap
+        G hfree hreg hcard]
+      ring
+
 /-- **Exact antipodal mismatch mass at odd excess three.**  The squared
 entrywise mass of the antipodal commutator is completely determined by the
 number of vertices in the degree-three triangle-free sector. -/
