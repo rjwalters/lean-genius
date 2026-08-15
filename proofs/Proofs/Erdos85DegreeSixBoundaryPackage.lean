@@ -414,4 +414,23 @@ theorem not_C4PlateauCore_degreeSix
   exact not_C4PlateauCore_degreeSix_of_fiftySeven_le_of_lt_sixtyNine
     hwindow.1 hwindow.2 hcore
 
+/-- Consolidated construction interface: every order at least 35 carries a
+`C₄`-free minimum-degree-six graph. -/
+theorem degreeSix_witness_of_thirtyFive_le
+    {n : ℕ} (hn : 35 ≤ n) :
+    C4FreeMinDegreeWitness n 6 := by
+  by_cases h58 : n < 58
+  · let j := n - 35
+    have hj : j ≤ 22 := by dsimp [j]; omega
+    have hnj : 35 + j = n := by dsimp [j]; omega
+    rw [← hnj]
+    exact degreeSix_witness_thirtyFive_add_of_le_twentyTwo j hj
+  by_cases h70 : n < 70
+  · let j := n - 58
+    have hj : j ≤ 11 := by dsimp [j]; omega
+    have hnj : 58 + j = n := by dsimp [j]; omega
+    rw [← hnj]
+    exact degreeSix_witness_fiftyEight_add j hj
+  · exact degreeSix_witness_of_seventy_le (by omega)
+
 end Erdos85
