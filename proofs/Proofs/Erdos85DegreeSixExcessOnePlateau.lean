@@ -6307,6 +6307,86 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_defect_rows
   ext z
   simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
 
+/-- The cyclic residual coordinates canonically split into their even and
+odd classes, exhibiting the closed residual as a named `K₃,₃`. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_exists_K33_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ P T : Finset V, P.card = 3 ∧ T.card = 3 ∧ Disjoint P T ∧
+      P ∪ T = R ∧
+      (∀ p ∈ P, (secondOrderDefectGraph G).neighborFinset p = T) ∧
+      ∀ t ∈ T, (secondOrderDefectGraph G).neighborFinset t = P := by
+  obtain ⟨f, hfinj, hfrange, hrows⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_residual_defect_rows
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  let P : Finset V := {f 0, f 2, f 4}
+  let T : Finset V := {f 1, f 3, f 5}
+  refine ⟨P, T, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · simp [P, hfinj.eq_iff]
+  · simp [T, hfinj.eq_iff]
+  · simp only [Finset.disjoint_left]
+    intro z hzP hzT
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hzP
+    simp only [T, Finset.mem_insert, Finset.mem_singleton] at hzT
+    rcases hzP with rfl | rfl | rfl <;>
+      rcases hzT with h | h | h <;> exact hfinj.ne (by decide) h
+  · ext z
+    simp only [Finset.mem_union]
+    constructor
+    · intro hz
+      have hzRange : z ∈ Set.range f := by
+        rcases hz with hz | hz <;>
+          simp only [P, T, Finset.mem_insert, Finset.mem_singleton] at hz <;>
+          rcases hz with rfl | rfl | rfl <;> exact Set.mem_range_self _
+      rw [hfrange] at hzRange
+      exact hzRange
+    · intro hzR
+      have hzRange : z ∈ Set.range f := by rw [hfrange]; exact hzR
+      obtain ⟨i, rfl⟩ := hzRange
+      fin_cases i <;> simp [P, T]
+  · intro p hp
+    simp only [P, Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl
+    · rw [hrows 0]
+      ext z
+      simp [T, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+    · rw [hrows 2]
+      ext z
+      simp [T, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+    · rw [hrows 4]
+      ext z
+      simp [T, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+  · intro t ht
+    simp only [T, Finset.mem_insert, Finset.mem_singleton] at ht
+    rcases ht with rfl | rfl | rfl
+    · rw [hrows 1]
+      ext z
+      simp [P, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+    · rw [hrows 3]
+      ext z
+      simp [P, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+    · rw [hrows 5]
+      ext z
+      simp [P, prev6, next6, opposite6, or_comm, or_left_comm, or_assoc]
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
