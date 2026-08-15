@@ -6815,6 +6815,128 @@ theorem degreeSix_thirtyFour_closed_defectKFour_center_fiber_internal_degree_one
     center_neighborFinset_internal_degree_one_of_triangleFree_degree_zero
       G hfree hc.2.2.2.1⟩
 
+/-- A vertex in one center fiber has exactly one original neighbor in each
+of the four center fibers.  Together with its center and residual label,
+these six vertices exhaust its original neighborhood. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y p : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}))
+    (hp : p ∈ G.neighborFinset a) :
+    (G.neighborFinset p ∩ G.neighborFinset a).card = 1 ∧
+      (G.neighborFinset p ∩ G.neighborFinset b).card = 1 ∧
+      (G.neighborFinset p ∩ G.neighborFinset x).card = 1 ∧
+      (G.neighborFinset p ∩ G.neighborFinset y).card = 1 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  have hC := degreeSix_thirtyFour_closed_defectKFour_edges_antipodal
+    G hfree hreg hcard hab hax hbx hay hby hxy
+  have noG_of_C {u v : V} (huv : (antipodalGraph G).Adj u v) :
+      ¬ G.Adj u v :=
+    ((mem_antipodalNeighbors G u v).mp
+      ((antipodalGraph_adj G u v).mp huv)).2.1
+  have hnab := noG_of_C hC.1
+  have hnax := noG_of_C hC.2.1
+  have hnbx := noG_of_C hC.2.2.1
+  have hnay := noG_of_C hC.2.2.2.1
+  have hnby := noG_of_C hC.2.2.2.2.1
+  have hnxy := noG_of_C hC.2.2.2.2.2
+  have hnba : ¬ G.Adj b a := fun h => hnab h.symm
+  have hnxa : ¬ G.Adj x a := fun h => hnax h.symm
+  have hnxb : ¬ G.Adj x b := fun h => hnbx h.symm
+  have hnya : ¬ G.Adj y a := fun h => hnay h.symm
+  have hnyb : ¬ G.Adj y b := fun h => hnby h.symm
+  have hnyx : ¬ G.Adj y x := fun h => hnxy h.symm
+  have hdBQ : Disjoint B Q := by
+    rw [Finset.disjoint_left]
+    intro z hzB hzQ
+    simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hzQ
+    rcases hzQ with rfl | rfl | rfl | rfl <;>
+      simp [B, G.loopless.irrefl, hnab, hnax, hnbx, hnay, hnby, hnxy,
+        hnba, hnxa, hnxb, hnya, hnyb, hnyx] at hzB
+  have hself :=
+    (degreeSix_thirtyFour_closed_defectKFour_center_fiber_internal_degree_one
+      G hfree hreg hcard hab hax hbx hay hby hxy).1 p hp
+  have hpB : p ∈ B := by simp [B, hp]
+  have hres : (G.neighborFinset p ∩ R).card = 1 := by
+    simpa [B, Q, R, Finset.union_assoc] using
+      degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_eq_one
+        G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+          (by simpa [B] using hpB)
+  have hcenter : G.neighborFinset p ∩ Q = {a} := by
+    simpa [Q] using defectKFour_centerBlock_center_inter_eq_singleton
+      G hfree hab hax hay hp
+  have hcenterCard : (G.neighborFinset p ∩ Q).card = 1 := by
+    rw [hcenter]
+    simp
+  have hpartition : (G.neighborFinset p ∩ (B ∪ Q)).card +
+      (G.neighborFinset p ∩ R).card = 6 := by
+    simpa [R] using card_neighbor_inter_add_card_neighbor_inter_compl_union
+      G (B ∪ Q) ∅ (hreg p) (by simp)
+  have hcentered : (G.neighborFinset p ∩ (B ∪ Q)).card =
+      (G.neighborFinset p ∩ B).card +
+        (G.neighborFinset p ∩ Q).card := by
+    rw [Finset.inter_union_distrib_left]
+    apply Finset.card_union_of_disjoint
+    exact hdBQ.mono Finset.inter_subset_right Finset.inter_subset_right
+  rw [hcentered, hcenterCard, hres] at hpartition
+  have hBtotal : (G.neighborFinset p ∩ B).card = 4 := by omega
+  have hdAB := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hab
+  have hdAX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hax
+  have hdBX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hbx
+  have hdAY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hay
+  have hdBY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hby
+  have hdXY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hxy
+  have hdABX : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset x) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAX, hdBX⟩
+  have hdABXY : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b ∪ G.neighborFinset x)
+      (G.neighborFinset y) := by
+    rw [Finset.disjoint_union_left, Finset.disjoint_union_left]
+    exact ⟨⟨hdAY, hdBY⟩, hdXY⟩
+  have hcardInterUnion (P S : Finset V) (hd : Disjoint P S) :
+      (G.neighborFinset p ∩ (P ∪ S)).card =
+        (G.neighborFinset p ∩ P).card +
+          (G.neighborFinset p ∩ S).card := by
+    rw [Finset.inter_union_distrib_left]
+    apply Finset.card_union_of_disjoint
+    exact hd.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hsum :
+      (G.neighborFinset p ∩ G.neighborFinset a).card +
+        (G.neighborFinset p ∩ G.neighborFinset b).card +
+        (G.neighborFinset p ∩ G.neighborFinset x).card +
+        (G.neighborFinset p ∩ G.neighborFinset y).card = 4 := by
+    rw [← hcardInterUnion _ _ hdAB,
+      ← hcardInterUnion _ _ hdABX,
+      ← hcardInterUnion _ _ hdABXY]
+    exact hBtotal
+  have hpNeB : p ≠ b := by intro h; exact hnab ((G.mem_neighborFinset a b).mp (h ▸ hp))
+  have hpNeX : p ≠ x := by intro h; exact hnax ((G.mem_neighborFinset a x).mp (h ▸ hp))
+  have hpNeY : p ≠ y := by intro h; exact hnay ((G.mem_neighborFinset a y).mp (h ▸ hp))
+  have hBLe := common_le_one_of_not_containsC4 hfree p b hpNeB
+  have hXLe := common_le_one_of_not_containsC4 hfree p x hpNeX
+  have hYLe := common_le_one_of_not_containsC4 hfree p y hpNeY
+  exact ⟨hself, by omega, by omega, by omega⟩
+
 /-- Residual `K₃,₃` adjacency transports the unique residual labels across
 the block-layer defect graph: from a block vertex labeled `r`, exactly one
 defect neighbor has any prescribed defect-adjacent label `s`. -/
