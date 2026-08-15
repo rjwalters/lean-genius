@@ -18,14 +18,14 @@ and each stratum is parameterized by a linear triple system on the h highs
 
 ## OPEN HYPOTHESES (named, one per remaining instance family)
 
-### SurvivorUNSAT_h7_t0
-The single h=7 empty-triple-system instance (t=0; census (7,14,21,0)).
-All t = 1..7 are certificate-closed by the classified sweeps (incl. Fano t=7).
-Coverage obligation: t-classification exhaustiveness at h=7 (profile law,
-proven) + the cube dichotomy used in the running lanes (cube0 killed by
-`not_adj_of_adj_common_root_and_adj_partner`; cubes 2–6 iso to cube1 by the
-matched-pair stabilizer WLOG — Lean lemma needed if the cube split is used).
-SAT status: cube1 running (deep).
+### SurvivorUNSAT_h7_t0, ..., SurvivorUNSAT_h7_t7
+All eight h=7 triple-incidence cells remain formally open.  The earlier claim
+that t=1..7 were certificate-closed was not backed by durable proof artifacts:
+the artifact volume contains no DRAT, LRAT, verdict, or Lean semantic endpoint
+for any h=7 cell.  The only durable h=7 inputs currently found are the seven
+`h7t0_cube0..6.cnf` files in `deepsix-scout/`; these are CNFs, not exclusion
+certificates.  Coverage of t=0..7 is Lean-certified by
+`orderFortyNineStratumExcluded_seven_of_tripleCells`.
 
 ### SurvivorUNSAT_h5_t0, SurvivorUNSAT_h5_t1, SurvivorUNSAT_h5_t2
 The three h=5 classified reps (unique triple systems (), (012), (012)(034);
@@ -54,8 +54,12 @@ Two execution routes:
 1. **Same-miss collapse** (open lemma; SAT tests deep/UNDECIDED at 200K
    conflicts): mates share their miss ⟹ all m-entries even ⟹ 102 role-free
    table cases across all five profiles (AAAB/ABBB die by handshake parity).
-2. **Full orbit sweep**: 13,541 table orbits across the five in-profiles
-   (authoritative enumerator `enumerate_h1_miss_tables.py`), counts-only +
+2. **Capacity-filtered orbit sweep**: 13,351 table orbits across the five
+   in-profiles (1485/3617/4717/2693/839).  The graph-to-filter cover is
+   Lean-certified by `oneHighRawV2OrbitCover_capacityInventory`; the cross-miss
+   capacity filter removes 190 raw rows.  Of the filtered rows, 493 currently
+   have Lean-accepted certificates and 12,858 remain pending.  The underlying
+   authoritative enumerator is `enumerate_h1_miss_tables.py`; counts-only +
    per-branch D8 lex instances (timing: 17–90 s/table verified feasible);
    coverage obligations = profile exhaustiveness (in ∈ {1,2}, pair-sums ≥ 3 —
    Lean: `paired_highBranchMatchedCount_states`), orbit classification
@@ -63,6 +67,11 @@ Two execution routes:
 Calibration artifacts: C8-table 30-bracelet closure (running, all
 UNSAT+verified so far); honest single-table kill verified (Glucose 433K-line
 DRAT, `bbbb_table1b*`).
+
+The exact theorem-backed integration socket is
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_verifiedFrontier`: filtered h=1,
+the two h=3 cells, the three h=5 cells, and all eight h=7 cells.  The h=9
+stratum is discharged internally.
 
 ## Discharge pipeline (identical to h=9)
 Glucose 4.2 with proof → drat-trim verify → `emit_lrat_compact.py` →
