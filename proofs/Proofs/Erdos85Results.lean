@@ -117,6 +117,7 @@ import Proofs.Erdos85TriangleDefectPolynomial
 import Proofs.Erdos85DegreeSixFiniteFieldTrace
 import Proofs.Erdos85DegreeSixTriangleClosure
 import Proofs.Erdos85DegreeSixBoundaryPackage
+import Proofs.Erdos85DegreeSixExcessOnePlateau
 import Proofs.Erdos85QuadraticSixTrace
 import Proofs.Erdos85DegreeTwelveResolvent
 import Proofs.Erdos85DegreeSixBoundaryResolvent
