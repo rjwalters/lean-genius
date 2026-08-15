@@ -649,4 +649,193 @@ theorem sevenHighT0CubeHighIndependentVal_semanticSound
     pair.1 pair.2 false hacc
   exact hindependent pair hpair
 
+def sevenHighT0CubeNormalizeN0Val
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    SevenHighT0CubeValState :=
+  let acc := sevenHighT0CubeLows.foldl (fun acc x =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 0 x (x < 15) acc)
+    (sevenHighT0CubeHighIndependentVal adj initial)
+  (sevenHighT0CubePairs sevenHighT0CubeN0).foldl (fun acc pair =>
+    sevenHighT0CubeEmitEdgeUnitVal adj pair.1 pair.2
+      (sevenHighT0CubeMatching0 pair.1 pair.2) acc) acc
+
+theorem sevenHighT0CubeNormalizeN0Val_state
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    (sevenHighT0CubeNormalizeN0Val adj initial).1 =
+      sevenHighT0CubeNormalizeN0 := by
+  unfold sevenHighT0CubeNormalizeN0Val sevenHighT0CubeNormalizeN0
+  let lowVal := sevenHighT0CubeLows.foldl (fun acc x =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 0 x (x < 15) acc)
+    (sevenHighT0CubeHighIndependentVal adj initial)
+  let lowState := sevenHighT0CubeLows.foldl (fun st x =>
+    sevenHighT0CubeEmitEdgeUnit 0 x (x < 15) st)
+    sevenHighT0CubeHighIndependent
+  have hlow : lowVal.1 = lowState := by
+    unfold lowVal lowState
+    calc
+      _ = sevenHighT0CubeLows.foldl (fun st x =>
+          sevenHighT0CubeEmitEdgeUnit 0 x (x < 15) st)
+          (sevenHighT0CubeHighIndependentVal adj initial).1 :=
+        sevenHighT0CubeFoldl_state _ _ _ _
+          (fun x acc => sevenHighT0CubeEmitEdgeUnitVal_state adj 0 x
+            (x < 15) acc)
+      _ = _ := by rw [sevenHighT0CubeHighIndependentVal_state]
+  calc
+    _ = (sevenHighT0CubePairs sevenHighT0CubeN0).foldl
+        (fun st pair => sevenHighT0CubeEmitEdgeUnit pair.1 pair.2
+          (sevenHighT0CubeMatching0 pair.1 pair.2) st) lowVal.1 :=
+      sevenHighT0CubeFoldl_state _ _ _ _
+        (fun pair acc => sevenHighT0CubeEmitEdgeUnitVal_state adj
+          pair.1 pair.2 (sevenHighT0CubeMatching0 pair.1 pair.2) acc)
+    _ = _ := by rw [hlow]
+
+theorem sevenHighT0CubeNormalizeN0Val_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation)
+    (hindependent : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeHighs,
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 pair.2) (max pair.1 pair.2)) = false)
+    (hn0 : ∀ x ∈ sevenHighT0CubeLows,
+      sevenHighT0CubeAtomValue adj (.edge 0 x) = decide (x < 15))
+    (hmatching : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeN0,
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 pair.2) (max pair.1 pair.2)) =
+        sevenHighT0CubeMatching0 pair.1 pair.2) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeNormalizeN0Val adj initial) := by
+  unfold sevenHighT0CubeNormalizeN0Val
+  have hhigh := sevenHighT0CubeHighIndependentVal_semanticSound
+    adj initial hindependent
+  have hlow : SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeLows.foldl (fun acc x =>
+        sevenHighT0CubeEmitEdgeUnitVal adj 0 x (x < 15) acc)
+        (sevenHighT0CubeHighIndependentVal adj initial)) := by
+    apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hhigh
+    intro x hx acc hacc
+    apply sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj 0 x
+      (x < 15) hacc
+    simpa using hn0 x hx
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hlow
+  intro pair hp acc hacc
+  exact sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj pair.1 pair.2
+    (sevenHighT0CubeMatching0 pair.1 pair.2) hacc (hmatching pair hp)
+
+def sevenHighT0CubeNormalizeN1Val
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    SevenHighT0CubeValState :=
+  let acc := sevenHighT0CubeEmitEdgeUnitVal adj 1 7 true
+    (sevenHighT0CubeNormalizeN0Val adj initial)
+  let acc := (List.range 7).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 8) false acc) acc
+  let acc := (List.range 7).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 15) true acc) acc
+  let acc := (List.range 27).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 22) false acc) acc
+  (sevenHighT0CubePairs sevenHighT0CubeN1).foldl (fun acc pair =>
+    sevenHighT0CubeEmitEdgeUnitVal adj pair.1 pair.2
+      (sevenHighT0CubeMatching1 pair.1 pair.2) acc) acc
+
+theorem sevenHighT0CubeNormalizeN1Val_state
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation) :
+    (sevenHighT0CubeNormalizeN1Val adj initial).1 =
+      sevenHighT0CubeNormalizeN1 := by
+  unfold sevenHighT0CubeNormalizeN1Val sevenHighT0CubeNormalizeN1
+  let a0 := sevenHighT0CubeEmitEdgeUnitVal adj 1 7 true
+    (sevenHighT0CubeNormalizeN0Val adj initial)
+  let s0 := sevenHighT0CubeEmitEdgeUnit 1 7 true sevenHighT0CubeNormalizeN0
+  have h0 : a0.1 = s0 := by
+    unfold a0 s0
+    rw [sevenHighT0CubeEmitEdgeUnitVal_state,
+      sevenHighT0CubeNormalizeN0Val_state]
+  let a1 := (List.range 7).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 8) false acc) a0
+  let s1 := (List.range 7).foldl (fun st k =>
+    sevenHighT0CubeEmitEdgeUnit 1 (k + 8) false st) s0
+  have h1 : a1.1 = s1 := by
+    unfold a1 s1
+    calc
+      _ = (List.range 7).foldl (fun st k =>
+          sevenHighT0CubeEmitEdgeUnit 1 (k + 8) false st) a0.1 :=
+        sevenHighT0CubeFoldl_state _ _ _ _
+          (fun k acc => sevenHighT0CubeEmitEdgeUnitVal_state adj 1
+            (k + 8) false acc)
+      _ = _ := by rw [h0]
+  let a2 := (List.range 7).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 15) true acc) a1
+  let s2 := (List.range 7).foldl (fun st k =>
+    sevenHighT0CubeEmitEdgeUnit 1 (k + 15) true st) s1
+  have h2 : a2.1 = s2 := by
+    unfold a2 s2
+    calc
+      _ = (List.range 7).foldl (fun st k =>
+          sevenHighT0CubeEmitEdgeUnit 1 (k + 15) true st) a1.1 :=
+        sevenHighT0CubeFoldl_state _ _ _ _
+          (fun k acc => sevenHighT0CubeEmitEdgeUnitVal_state adj 1
+            (k + 15) true acc)
+      _ = _ := by rw [h1]
+  let a3 := (List.range 27).foldl (fun acc k =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 22) false acc) a2
+  let s3 := (List.range 27).foldl (fun st k =>
+    sevenHighT0CubeEmitEdgeUnit 1 (k + 22) false st) s2
+  have h3 : a3.1 = s3 := by
+    unfold a3 s3
+    calc
+      _ = (List.range 27).foldl (fun st k =>
+          sevenHighT0CubeEmitEdgeUnit 1 (k + 22) false st) a2.1 :=
+        sevenHighT0CubeFoldl_state _ _ _ _
+          (fun k acc => sevenHighT0CubeEmitEdgeUnitVal_state adj 1
+            (k + 22) false acc)
+      _ = _ := by rw [h2]
+  calc
+    _ = (sevenHighT0CubePairs sevenHighT0CubeN1).foldl
+        (fun st pair => sevenHighT0CubeEmitEdgeUnit pair.1 pair.2
+          (sevenHighT0CubeMatching1 pair.1 pair.2) st) a3.1 :=
+      sevenHighT0CubeFoldl_state _ _ _ _
+        (fun pair acc => sevenHighT0CubeEmitEdgeUnitVal_state adj
+          pair.1 pair.2 (sevenHighT0CubeMatching1 pair.1 pair.2) acc)
+    _ = _ := by rw [h3]
+
+theorem sevenHighT0CubeNormalizeN1Val_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (initial : DimacsValuation)
+    (hn0sound : SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeNormalizeN0Val adj initial))
+    (h7 : sevenHighT0CubeAtomValue adj (.edge 1 7) = true)
+    (h8 : ∀ k ∈ List.range 7,
+      sevenHighT0CubeAtomValue adj (.edge 1 (k + 8)) = false)
+    (h15 : ∀ k ∈ List.range 7,
+      sevenHighT0CubeAtomValue adj (.edge 1 (k + 15)) = true)
+    (h22 : ∀ k ∈ List.range 27,
+      sevenHighT0CubeAtomValue adj (.edge 1 (k + 22)) = false)
+    (hmatching : ∀ pair ∈ sevenHighT0CubePairs sevenHighT0CubeN1,
+      sevenHighT0CubeAtomValue adj
+        (.edge (min pair.1 pair.2) (max pair.1 pair.2)) =
+        sevenHighT0CubeMatching1 pair.1 pair.2) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeNormalizeN1Val adj initial) := by
+  unfold sevenHighT0CubeNormalizeN1Val
+  have hs0 := sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj
+    1 7 true hn0sound h7
+  have hs1 : SevenHighT0CubeSemanticSound adj
+      ((List.range 7).foldl (fun acc k =>
+        sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 8) false acc)
+        (sevenHighT0CubeEmitEdgeUnitVal adj 1 7 true
+          (sevenHighT0CubeNormalizeN0Val adj initial))) := by
+    apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hs0
+    intro k hk acc hacc
+    exact sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj 1 (k + 8)
+      false hacc (h8 k hk)
+  have hs2 := sevenHighT0CubeSemanticSound_foldl_mem adj (List.range 7)
+    (fun k acc => sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 15) true acc)
+    hs1 (fun k hk acc hacc =>
+      sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj 1 (k + 15)
+        true hacc (h15 k hk))
+  have hs3 := sevenHighT0CubeSemanticSound_foldl_mem adj (List.range 27)
+    (fun k acc => sevenHighT0CubeEmitEdgeUnitVal adj 1 (k + 22) false acc)
+    hs2 (fun k hk acc hacc =>
+      sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj 1 (k + 22)
+        false hacc (h22 k hk))
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hs3
+  intro pair hp acc hacc
+  exact sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj pair.1 pair.2
+    (sevenHighT0CubeMatching1 pair.1 pair.2) hacc (hmatching pair hp)
+
 end Erdos85
