@@ -1,5 +1,5 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
-import Proofs.Erdos85RamseyPlateau
+import Proofs.Erdos85PlateauExcessStructure
 
 /-!
 # Degree-six boundary package
@@ -35,5 +35,24 @@ theorem degreeSix_secondOrder_boundary_package :
     minDegreeForC4 33 ≤ 6 ∧ ¬ C4PlateauCore 33 6 :=
   ⟨minDegreeForC4_thirtyThree_le_six,
     not_C4PlateauCore_thirtyThree_six⟩
+
+/-- Below the square order, the degree-six plateau band has only three
+remaining orders.  The first-order alternative gives `32`; positive excess
+has `e ≤ 2`, and the exact-boundary result removes `e = 0` (order `33`). -/
+theorem C4PlateauCore.degreeSix_order_eq_thirtyTwo_or_thirtyFour_or_thirtyFive
+    {m : ℕ} (hm : 4 ≤ m) (hcore : C4PlateauCore m 6)
+    (hsize : m < 36) :
+    m = 32 ∨ m = 34 ∨ m = 35 := by
+  rcases hcore.firstOrder_or_positiveExcessData hm (by norm_num) hsize with
+    hfirst | ⟨e, hdata⟩
+  · left
+    omega
+  · have hme := hdata.1
+    have he := hdata.2
+    have hmne : m ≠ 33 := by
+      intro hm33
+      apply not_C4PlateauCore_thirtyThree_six
+      simpa [hm33] using hcore
+    omega
 
 end Erdos85
