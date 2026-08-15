@@ -1498,6 +1498,158 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_neighbor_matching_of_colorOrd
     rw [if_neg hnotMem] at hone
     simpa [Finset.inter_comm] using hone
 
+/-- The six cross-matching edges between the twin neighborhoods have six
+distinct triangle witnesses, all outside both neighborhoods and distinct
+from the twins.  The witnesses are indexed by the six-element subtype
+`N_G(a)`, making the injection explicit for later residual counting. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangleWitnesses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v))
+    (hzero : (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
+    ∃ (m r : {p // p ∈ G.neighborFinset a} → V),
+      Function.Injective r ∧
+      ∀ p,
+        m p ∈ G.neighborFinset b ∧ G.Adj p (m p) ∧
+        G.Adj p (r p) ∧ G.Adj (m p) (r p) ∧
+        r p ∉ G.neighborFinset a ∧ r p ∉ G.neighborFinset b ∧
+        r p ≠ a ∧ r p ≠ b := by
+  classical
+  have hgeom :=
+    degreeSix_thirtyFour_adjacent_defect_twins_neighbor_matching_of_colorOrder_zero
+      G hfree hreg hcard habD htwins hzero
+  have hABempty := hgeom.1
+  have hmatch := hgeom.2.1
+  have habC : (antipodalGraph G).Adj a b := by
+    rw [← degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero]
+    exact habD
+  have habNotG : ¬ G.Adj a b :=
+    ((mem_antipodalNeighbors G a b).mp
+      ((antipodalGraph_adj G a b).mp habC)).2.1
+  have hexM : ∀ p : {p // p ∈ G.neighborFinset a},
+      ∃ q : V, q ∈ G.neighborFinset b ∧ G.Adj p q := by
+    intro p
+    have hcardOne := hmatch p p.property
+    have hnonempty :
+        (G.neighborFinset p ∩ G.neighborFinset b).Nonempty :=
+      Finset.card_pos.mp (by omega)
+    obtain ⟨q, hq⟩ := hnonempty
+    have hqParts := Finset.mem_inter.mp hq
+    exact ⟨q, hqParts.2, (G.mem_neighborFinset p q).mp hqParts.1⟩
+  choose m hmB hmEdge using hexM
+  have htriEq := degreeSix_thirtyFour_triangularEdgeGraph_eq_of_colorOrder_zero
+    G hfree hreg hcard hzero
+  have hexR : ∀ p : {p // p ∈ G.neighborFinset a},
+      ∃ z : V, G.Adj p z ∧ G.Adj (m p) z := by
+    intro p
+    have htri : (triangularEdgeGraph G).Adj p (m p) := by
+      rw [htriEq]
+      exact hmEdge p
+    have hnonzero := (triangularEdgeGraph_adj G p (m p)).mp htri |>.2
+    have hnonempty :
+        (G.neighborFinset p ∩ G.neighborFinset (m p)).Nonempty :=
+      Finset.card_ne_zero.mp hnonzero
+    obtain ⟨z, hz⟩ := hnonempty
+    have hzParts := Finset.mem_inter.mp hz
+    exact ⟨z, (G.mem_neighborFinset p z).mp hzParts.1,
+      (G.mem_neighborFinset (m p) z).mp hzParts.2⟩
+  choose r hrP hrM using hexR
+  have hrInj : Function.Injective r := by
+    intro p q hpq
+    by_contra hpqSub
+    have hpqVal : (p : V) ≠ (q : V) := by
+      intro hpqVal
+      exact hpqSub (Subtype.ext hpqVal)
+    have haCommon : a ∈ G.neighborFinset p ∩ G.neighborFinset q := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset p a).mpr
+          ((G.mem_neighborFinset a p).mp p.property).symm,
+        (G.mem_neighborFinset q a).mpr
+          ((G.mem_neighborFinset a q).mp q.property).symm⟩
+    have hrCommon : r p ∈ G.neighborFinset p ∩ G.neighborFinset q := by
+      apply Finset.mem_inter.mpr
+      refine ⟨(G.mem_neighborFinset p (r p)).mpr (hrP p), ?_⟩
+      exact (G.mem_neighborFinset q (r p)).mpr (hpq ▸ hrP q)
+    have hle := common_le_one_of_not_containsC4 hfree (p : V) (q : V) hpqVal
+    have har : a = r p := (Finset.card_le_one.mp hle) a haCommon (r p) hrCommon
+    have hmInA : m p ∈ G.neighborFinset a := by
+      apply (G.mem_neighborFinset a (m p)).mpr
+      exact har ▸ (hrM p).symm
+    have : m p ∈ G.neighborFinset a ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨hmInA, hmB p⟩
+    rw [hABempty] at this
+    exact Finset.notMem_empty (m p) this
+  refine ⟨m, r, hrInj, ?_⟩
+  intro p
+  have hrNotAset : r p ∉ G.neighborFinset a := by
+    intro hrA
+    have haCommon : a ∈ G.neighborFinset p ∩ G.neighborFinset (r p) := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset p a).mpr
+          ((G.mem_neighborFinset a p).mp p.property).symm,
+        (G.mem_neighborFinset (r p) a).mpr
+          ((G.mem_neighborFinset a (r p)).mp hrA).symm⟩
+    have hmCommon : m p ∈ G.neighborFinset p ∩ G.neighborFinset (r p) := by
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset p (m p)).mpr (hmEdge p),
+          (G.mem_neighborFinset (r p) (m p)).mpr (hrM p).symm⟩
+    have hpr : (p : V) ≠ r p := G.ne_of_adj (hrP p)
+    have hle := common_le_one_of_not_containsC4 hfree (p : V) (r p) hpr
+    have ham : a = m p :=
+      (Finset.card_le_one.mp hle) a haCommon (m p) hmCommon
+    exact habNotG (ham ▸ (G.mem_neighborFinset b (m p)).mp (hmB p) |>.symm)
+  have hrNotBset : r p ∉ G.neighborFinset b := by
+    intro hrB
+    have hbCommon : b ∈ G.neighborFinset (m p) ∩ G.neighborFinset (r p) := by
+      apply Finset.mem_inter.mpr
+      exact ⟨(G.mem_neighborFinset (m p) b).mpr
+          ((G.mem_neighborFinset b (m p)).mp (hmB p)).symm,
+        (G.mem_neighborFinset (r p) b).mpr
+          ((G.mem_neighborFinset b (r p)).mp hrB).symm⟩
+    have hpCommon : (p : V) ∈
+        G.neighborFinset (m p) ∩ G.neighborFinset (r p) := by
+      exact Finset.mem_inter.mpr
+        ⟨(G.mem_neighborFinset (m p) p).mpr (hmEdge p).symm,
+          (G.mem_neighborFinset (r p) p).mpr (hrP p).symm⟩
+    have hmr : m p ≠ r p := G.ne_of_adj (hrM p)
+    have hle := common_le_one_of_not_containsC4 hfree (m p) (r p) hmr
+    have hbp : b = (p : V) :=
+      (Finset.card_le_one.mp hle) b hbCommon p hpCommon
+    apply habNotG
+    rw [hbp]
+    exact (G.mem_neighborFinset a p).mp p.property
+  have hrNeA : r p ≠ a := by
+    intro hra
+    have hmInA : m p ∈ G.neighborFinset a := by
+      apply (G.mem_neighborFinset a (m p)).mpr
+      exact hra ▸ (hrM p).symm
+    have hmBoth : m p ∈ G.neighborFinset a ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨hmInA, hmB p⟩
+    rw [hABempty] at hmBoth
+    exact Finset.notMem_empty (m p) hmBoth
+  have hrNeB : r p ≠ b := by
+    intro hrb
+    have hpInB : (p : V) ∈ G.neighborFinset b := by
+      apply (G.mem_neighborFinset b p).mpr
+      exact hrb ▸ (hrP p).symm
+    have hpBoth : (p : V) ∈ G.neighborFinset a ∩ G.neighborFinset b :=
+      Finset.mem_inter.mpr ⟨p.property, hpInB⟩
+    rw [hABempty] at hpBoth
+    exact Finset.notMem_empty (p : V) hpBoth
+  exact ⟨hmB p, hmEdge p, hrP p, hrM p, hrNotAset, hrNotBset,
+    hrNeA, hrNeB⟩
+
 /-- The four vertices of a cubic defect-twin diamond already have original
 neighborhood union of order at least 23.  Every defect edge makes the two
 corresponding original neighborhoods disjoint; among the six diamond pairs,
