@@ -2347,6 +2347,44 @@ theorem degreeSix_thirtyFour_antipodal_defectKFour_exists_closed_residual_six
   exact defectKFour_residual_closed G hfree hreg hDreg
     hab hax hbx hay hby hxy hv hvw
 
+/-- Finset-facing cubic form of the closed residual package: every residual
+vertex has all three of its defect neighbors inside the six-set. -/
+theorem degreeSix_thirtyFour_antipodal_defectKFour_exists_cubic_residual_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    ∃ R : Finset V, R.card = 6 ∧
+      ∀ v ∈ R, (secondOrderDefectGraph G).neighborFinset v ⊆ R ∧
+        ((secondOrderDefectGraph G).neighborFinset v).card = 3 := by
+  obtain ⟨R, hRcard, hclosed⟩ :=
+    degreeSix_thirtyFour_antipodal_defectKFour_exists_closed_residual_six
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  refine ⟨R, hRcard, ?_⟩
+  intro v hv
+  refine ⟨?_, ?_⟩
+  · intro w hvw
+    have hvwAdj : (secondOrderDefectGraph G).Adj v w := by
+      simpa using hvw
+    exact hclosed v hv w hvwAdj
+  · rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg v]
+
 /-- In the pure antipodal branch the two twins themselves lie outside the
 four-neighborhood footprint.  Adding them to the preceding 23-vertex union
 therefore certifies at least 25 distinct vertices. -/
