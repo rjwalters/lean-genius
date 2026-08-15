@@ -838,4 +838,48 @@ theorem sevenHighT0CubeNormalizeN1Val_semanticSound
   exact sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj pair.1 pair.2
     (sevenHighT0CubeMatching1 pair.1 pair.2) hacc (hmatching pair hp)
 
+def sevenHighT0CubeFinalUnitsVal
+    (adj : Fin 49 → Fin 49 → Bool) (cube : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  (List.range 7).foldl (fun acc index =>
+    sevenHighT0CubeEmitEdgeUnitVal adj 9 (index + 15)
+      (index = cube) acc) acc
+
+theorem sevenHighT0CubeFinalUnitsVal_state
+    (adj : Fin 49 → Fin 49 → Bool) (cube : Nat)
+    (acc : SevenHighT0CubeValState) :
+    (sevenHighT0CubeFinalUnitsVal adj cube acc).1 =
+      (List.range 7).foldl (fun st index =>
+        sevenHighT0CubeEmitEdgeUnit 9 (index + 15)
+          (index = cube) st) acc.1 := by
+  unfold sevenHighT0CubeFinalUnitsVal
+  exact sevenHighT0CubeFoldl_state _ _ _ _
+    (fun index acc => sevenHighT0CubeEmitEdgeUnitVal_state adj
+      9 (index + 15) (index = cube) acc)
+
+theorem sevenHighT0CubeFinalUnitsVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (cube : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hcube : ∀ index ∈ List.range 7,
+      sevenHighT0CubeAtomValue adj (.edge 9 (index + 15)) =
+        decide (index = cube)) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeFinalUnitsVal adj cube acc) := by
+  unfold sevenHighT0CubeFinalUnitsVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro index hi acc hacc
+  apply sevenHighT0CubeEmitEdgeUnitVal_semanticSound adj
+    9 (index + 15) (index = cube) hacc
+  simpa using hcube index hi
+
+theorem sevenHighT0CubeFinalUnitsVal_finalState
+    (adj : Fin 49 → Fin 49 → Bool) (cube : Nat)
+    (acc : SevenHighT0CubeValState)
+    (hstate : acc.1 = sevenHighT0CubePartitionClauses) :
+    (sevenHighT0CubeFinalUnitsVal adj cube acc).1 =
+      sevenHighT0CubeFinalState cube := by
+  rw [sevenHighT0CubeFinalUnitsVal_state, hstate]
+  rfl
+
 end Erdos85
