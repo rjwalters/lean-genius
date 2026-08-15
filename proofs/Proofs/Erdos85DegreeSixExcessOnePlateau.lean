@@ -101,6 +101,23 @@ theorem degreeSix_thirtyFour_colorOrder_mod_three
     G hfree (d := 6) (by norm_num) hreg (by omega)
   omega
 
+/-- Endpoints of a second-order defect edge have disjoint original-graph
+neighborhoods. -/
+theorem neighborFinset_disjoint_of_secondOrderDefect_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {u v : V}
+    (huv : (secondOrderDefectGraph G).Adj u v) :
+    Disjoint (G.neighborFinset u) (G.neighborFinset v) := by
+  have huvNe : u ≠ v := (secondOrderDefectGraph G).ne_of_adj huv
+  have hvMem : v ∈ (secondOrderDefectGraph G).neighborFinset u :=
+    ((secondOrderDefectGraph G).mem_neighborFinset u v).mpr huv
+  have hcommon := card_common_eq_if_secondOrderDefect G hfree u v huvNe
+  rw [if_pos hvMem] at hcommon
+  exact Finset.disjoint_iff_inter_eq_empty.mpr (Finset.card_eq_zero.mp hcommon)
+
 /-- If the order-34 triangle-free degree-two sector is empty, then the
 triangle-free color has degree zero at every vertex. -/
 theorem degreeSix_thirtyFour_triangleFree_degree_zero_of_colorOrder_zero
@@ -1917,6 +1934,51 @@ theorem degreeSix_adjacent_defect_twins_four_neighborhood_union_twentyThree_le
     (G.neighborFinset y)
   rw [hABXcard, G.card_neighborFinset_eq_degree, hreg y] at hie
   omega
+
+/-- If the two common neighbors of the twin pair are themselves defect
+adjacent, the defect diamond closes to a `K₄`; all four original
+neighborhoods are then pairwise disjoint and have total order 24. -/
+theorem degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y).card = 24 := by
+  have hdAB := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hab
+  have hdAX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hax
+  have hdBX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hbx
+  have hdAY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hay
+  have hdBY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hby
+  have hdXY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hxy
+  have hdABX : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset x) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAX, hdBX⟩
+  have hdABY : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b) (G.neighborFinset y) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdAY, hdBY⟩
+  have hdABXY : Disjoint
+      (G.neighborFinset a ∪ G.neighborFinset b ∪ G.neighborFinset x)
+      (G.neighborFinset y) := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨hdABY, hdXY⟩
+  rw [Finset.card_union_of_disjoint hdABXY,
+    Finset.card_union_of_disjoint hdABX,
+    Finset.card_union_of_disjoint hdAB,
+    G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree,
+    G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree,
+    hreg a, hreg b, hreg x, hreg y]
 
 /-- In the pure antipodal branch the two twins themselves lie outside the
 four-neighborhood footprint.  Adding them to the preceding 23-vertex union
