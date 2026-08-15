@@ -6252,6 +6252,61 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_matching_opposite
     exact not_two_adjacent_triangleFree_in_defect_triangle
       G hkNext.symm hkPrev hthird
 
+/-- Explicit cubic rows on the residual: each cyclic coordinate is joined
+in the combined defect graph to its predecessor, successor, and opposite
+coordinate.  This is the `K₃,₃` model of the residual component. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_residual_defect_rows
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ f : Fin 6 → V, Function.Injective f ∧ Set.range f = (↑R : Set V) ∧
+      ∀ i, (secondOrderDefectGraph G).neighborFinset (f i) =
+        {f (opposite6 i), f (prev6 i), f (next6 i)} := by
+  let C := antipodalGraph G
+  obtain ⟨f, hfinj, hfrange, hTrow, hopp⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_residual_matching_opposite
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  refine ⟨f, hfinj, hfrange, ?_⟩
+  intro i
+  have hiR : f i ∈ Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}) := by
+    have hi : f i ∈ Set.range f := ⟨i, rfl⟩
+    rw [hfrange] at hi
+    exact hi
+  have hcolors := degreeSix_thirtyFour_closed_defectKFour_residual_color_degrees
+    G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hCcard : (C.neighborFinset (f i)).card = 1 :=
+    (hcolors (f i) hiR).2.2.2
+  have hCsub : ({f (opposite6 i)} : Finset V) ⊆ C.neighborFinset (f i) := by
+    intro z hz
+    rw [Finset.mem_singleton.mp hz]
+    exact (C.mem_neighborFinset _ _).mpr (hopp i)
+  have hCrow : C.neighborFinset (f i) = {f (opposite6 i)} := by
+    apply (Finset.eq_of_subset_of_card_le hCsub (by
+      rw [hCcard, Finset.card_singleton])).symm
+  rw [secondOrderDefectGraph_neighborFinset,
+    ← antipodalGraph_neighborFinset, ← triangleFreeEdgeGraph_neighborFinset,
+    hCrow, hTrow]
+  ext z
+  simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
