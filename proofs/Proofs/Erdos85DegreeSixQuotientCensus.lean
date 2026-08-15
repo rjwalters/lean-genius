@@ -705,6 +705,40 @@ theorem degreeSixQuotient_model5_two_four_internal_nat
   have hbDiag := hdiag b
   omega
 
+/-- The named positive and invisible support pairs, together with the base,
+exhaust a Model5 index type.  This is the finite-sum expansion router for the
+remaining row, trace, and square equations. -/
+theorem degreeSixQuotient_model5_univ_eq_five
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (q : C → C → ℕ) (c a b r t : C)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b})
+    (hR : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t}) :
+    (Finset.univ : Finset C) = {c, a, b, r, t} := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hP' : P = {a, b} := by simpa [P] using hP
+  have hR' : R = {r, t} := by simpa [P, R] using hR
+  ext x
+  simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton,
+    true_iff]
+  by_cases hxc : x = c
+  · exact Or.inl hxc
+  by_cases hxP : x ∈ P
+  · rw [hP'] at hxP
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hxP
+    rcases hxP with hxa | hxb
+    · exact Or.inr (Or.inl hxa)
+    · exact Or.inr (Or.inr (Or.inl hxb))
+  · have hxR : x ∈ R := by
+      exact Finset.mem_sdiff.mpr
+        ⟨Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩, hxP⟩
+    rw [hR'] at hxR
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hxR
+    rcases hxR with hxr | hxt
+    · exact Or.inr (Or.inr (Or.inr (Or.inl hxr)))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr hxt)))
+
 /-- Arithmetic endpoint for the only nontrivial competing Model5 support
 weights.  After a base triangle has positive-support weights `2+4`, name the
 two invisible component orders `x,y`, their contacts with the two positive
