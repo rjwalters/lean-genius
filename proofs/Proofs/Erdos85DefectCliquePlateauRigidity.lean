@@ -594,6 +594,27 @@ theorem triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
   rw [SimpleGraph.isIndepSet_iff] at hind
   exact hind hc hyC (G.ne_of_adj hcy) hcy
 
+/-- Independence is automatic in the even-degree top band, so every vertex
+of a large defect clique has triangle-free color degree zero without an
+extra hypothesis. -/
+theorem triangleFreeNeighbors_card_eq_zero_of_even_large_defectClique
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d e : ℕ} (hd : 4 ≤ d)
+    (he : e ≤ d - 4) (heven : Even d)
+    (hcard : Fintype.card V = d * (d - 1) + 3 + e)
+    (hreg : ∀ x, G.degree x = d)
+    (C : Finset V) (hCcard : C.card = d - 1)
+    (hclique : (secondOrderDefectGraph G).IsClique (C : Set V))
+    {c : V} (hc : c ∈ C) :
+    (triangleFreeNeighbors G c).card = 0 := by
+  apply triangleFreeNeighbors_card_eq_zero_of_independent_large_defectClique
+    G hfree hd he hcard hreg C hCcard hclique
+  · exact large_secondOrderDefectClique_isIndepSet_of_even_degree
+      G hfree hd he heven hcard hreg C hCcard hclique
+  · exact hc
+
 /-- If no edge at `c` is triangle-free, then the graph induced by the open
 neighborhood of `c` is 1-regular.  The upper bound is the usual local
 matching consequence of `C₄`-freeness; the absence of triangle-free edges
