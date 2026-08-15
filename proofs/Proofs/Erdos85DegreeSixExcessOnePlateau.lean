@@ -1691,7 +1691,8 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitne
       (triangleFreeEdgeGraph G).degree x = 2).card = 0) :
     ∃ R : Finset V, R.card = 6 ∧
       Disjoint R (G.neighborFinset a) ∧
-      Disjoint R (G.neighborFinset b) ∧ a ∉ R ∧ b ∉ R := by
+      Disjoint R (G.neighborFinset b) ∧ a ∉ R ∧ b ∉ R ∧
+      ∀ c : V, (secondOrderDefectGraph G).Adj a c → c ∉ R := by
   classical
   obtain ⟨_m, r, _hmInj, hrInj, hprops⟩ :=
     degreeSix_thirtyFour_adjacent_defect_twins_exists_injective_crossTriangleWitnesses
@@ -1720,7 +1721,25 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitne
     intro hb
     obtain ⟨p, _hp, hpb⟩ := Finset.mem_image.mp hb
     exact (hprops p).2.2.2.2.2.2.2 hpb
-  exact ⟨R, hRcard, hRA, hRB, haR, hbR⟩
+  have havoid : ∀ c : V, (secondOrderDefectGraph G).Adj a c → c ∉ R := by
+    intro c hac hcR
+    obtain ⟨p, _hp, hpc⟩ := Finset.mem_image.mp hcR
+    have hacNe : a ≠ c := (secondOrderDefectGraph G).ne_of_adj hac
+    have hcMem : c ∈ (secondOrderDefectGraph G).neighborFinset a :=
+      ((secondOrderDefectGraph G).mem_neighborFinset a c).mpr hac
+    have hcommon := card_common_eq_if_secondOrderDefect G hfree a c hacNe
+    rw [if_pos hcMem] at hcommon
+    have hempty : G.neighborFinset a ∩ G.neighborFinset c = ∅ :=
+      Finset.card_eq_zero.mp hcommon
+    have hpCommon : (p : V) ∈
+        G.neighborFinset a ∩ G.neighborFinset c := by
+      apply Finset.mem_inter.mpr
+      refine ⟨p.property, ?_⟩
+      apply (G.mem_neighborFinset c p).mpr
+      exact hpc ▸ (hprops p).2.2.1 |>.symm
+    rw [hempty] at hpCommon
+    exact Finset.notMem_empty (p : V) hpCommon
+  exact ⟨R, hRcard, hRA, hRB, haR, hbR, havoid⟩
 
 /-- A six-element witness set cannot meet both neighborhoods of two
 distinct vertices in four or more points: the two intersections live inside
@@ -1804,18 +1823,21 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitne
     (htwins : ∀ v, v ≠ a → v ≠ b →
       ((secondOrderDefectGraph G).Adj a v ↔
         (secondOrderDefectGraph G).Adj b v))
+    (haxD : (secondOrderDefectGraph G).Adj a x)
+    (hayD : (secondOrderDefectGraph G).Adj a y)
     (hxy : x ≠ y)
     (hzero : (Finset.univ.filter fun z : V =>
       (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
     ∃ R : Finset V, R.card = 6 ∧
       Disjoint R (G.neighborFinset a) ∧
-      Disjoint R (G.neighborFinset b) ∧ a ∉ R ∧ b ∉ R ∧
+      Disjoint R (G.neighborFinset b) ∧
+      a ∉ R ∧ b ∉ R ∧ x ∉ R ∧ y ∉ R ∧
       ((R ∩ G.neighborFinset x).card ≤ 3 ∨
         (R ∩ G.neighborFinset y).card ≤ 3) := by
-  obtain ⟨R, hRcard, hRA, hRB, haR, hbR⟩ :=
+  obtain ⟨R, hRcard, hRA, hRB, haR, hbR, havoid⟩ :=
     degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitnesses
       G hfree hreg hcard habD htwins hzero
-  exact ⟨R, hRcard, hRA, hRB, haR, hbR,
+  exact ⟨R, hRcard, hRA, hRB, haR, hbR, havoid x haxD, havoid y hayD,
     sixSet_one_neighbor_intersection_le_three_of_c4Free
       G hfree R hRcard hxy⟩
 
