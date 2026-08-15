@@ -105,4 +105,39 @@ theorem boolLocalTwoRegularTriangleFree_hasCycleOrder6
   simpa only [BoolHasCycleOrder6, HasCycleOrder6, adj36_matrixBV36] using
     localTwoRegularTriangleFree_hasCycleOrder6 (matrixBV36 r) hbv
 
+def next6 (x : Fin 6) : Fin 6 := ⟨(x.val + 1) % 6, by omega⟩
+
+def prev6 (x : Fin 6) : Fin 6 := ⟨(x.val + 5) % 6, by omega⟩
+
+def opposite6 (x : Fin 6) : Fin 6 := ⟨(x.val + 3) % 6, by omega⟩
+
+/-- A symmetric loopless one-factor disjoint from the fixed six-cycle. -/
+def LocalPerfectMatchingOffCycle (m : BitVec 36) : Prop :=
+  (∀ x, adj36 m x x = false) ∧
+  (∀ x y, adj36 m x y = adj36 m y x) ∧
+  (∀ x, (row36 m x).cpop = 1) ∧
+  (∀ x, adj36 m x (next6 x) = false ∧
+    adj36 m x (prev6 x) = false)
+
+/-- The two dihedral types of perfect matching disjoint from a six-cycle:
+either all three opposite chords, or one opposite chord and the two
+distance-two chords on the remaining four vertices. -/
+def HasSixCycleMatchingNormalForm (m : BitVec 36) : Prop :=
+  (∀ x, adj36 m x (opposite6 x) = true) ∨
+  ∃ k,
+    adj36 m k (opposite6 k) = true ∧
+    adj36 m (next6 k) (prev6 k) = true ∧
+    adj36 m (next6 (next6 k)) (prev6 (prev6 k)) = true
+
+/-- Verified finite classification of one-factors in the complement of
+`C₆`. -/
+theorem localPerfectMatchingOffCycle_normalForm :
+    ∀ m : BitVec 36,
+      LocalPerfectMatchingOffCycle m → HasSixCycleMatchingNormalForm m := by
+  simp only [LocalPerfectMatchingOffCycle, HasSixCycleMatchingNormalForm,
+    adj36, row36, next6, prev6, opposite6]
+  simp (config := { maxSteps := 10000000 }) [Fin.forall_fin_succ,
+    Fin.exists_fin_succ]
+  bv_decide (config := { timeout := 300 })
+
 end Erdos85
