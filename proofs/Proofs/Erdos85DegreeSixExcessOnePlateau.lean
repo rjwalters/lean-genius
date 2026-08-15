@@ -1181,6 +1181,57 @@ theorem excessOne_even_adjacent_defect_twins_four_le_colorDegreeZero
   rw [← hQcard]
   exact Finset.card_le_card hQsub
 
+/-- Exact global color-order dispatcher forced by a size-two defect kernel
+at order 34.  The degree-two sector is a union of cycles, its order is
+divisible by three, and the propagated all-antipodal seed leaves at least
+four vertices outside it. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_colorOrder_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    let s := (Finset.univ.filter fun x : V =>
+      (triangleFreeEdgeGraph G).degree x = 2).card
+    s = 0 ∨ s = 6 ∨ s = 9 ∨ s = 12 ∨ s = 15 ∨ s = 18 ∨
+      s = 21 ∨ s = 24 ∨ s = 27 ∨ s = 30 := by
+  let s := (Finset.univ.filter fun x : V =>
+    (triangleFreeEdgeGraph G).degree x = 2).card
+  let z := (Finset.univ.filter fun x : V =>
+    (triangleFreeEdgeGraph G).degree x = 0).card
+  have hlocal := excessOne_even_triangleFree_degree_zero_or_two
+    G hfree (d := 6) (by norm_num) hreg (by omega)
+  have hnot : (Finset.univ.filter fun x : V =>
+      ¬ (triangleFreeEdgeGraph G).degree x = 2) =
+      Finset.univ.filter (fun x : V =>
+        (triangleFreeEdgeGraph G).degree x = 0) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    rcases hlocal x with hx | hx <;> simp [hx]
+  have hpartition : s + z = 34 := by
+    have hsplit := Finset.card_filter_add_card_filter_not
+      (s := (Finset.univ : Finset V))
+      (p := fun x : V => (triangleFreeEdgeGraph G).degree x = 2)
+    rw [hnot, Finset.card_univ, hcard] at hsplit
+    exact hsplit
+  have hz : 4 ≤ z := by
+    exact excessOne_even_adjacent_defect_twins_four_le_colorDegreeZero
+      G hfree (d := 6) (by norm_num) hreg (by omega) habD htwins
+  have hmod : s % 3 = 0 := by
+    exact degreeSix_thirtyFour_colorOrder_mod_three G hfree hreg hcard
+  have hpath : s = 0 ∨ 5 ≤ s := by
+    exact excessOne_even_pathSector_card_eq_zero_or_five_le
+      G hfree (d := 6) (by norm_num) hreg (by omega)
+  dsimp only
+  omega
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
