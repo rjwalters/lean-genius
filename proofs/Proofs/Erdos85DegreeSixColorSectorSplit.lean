@@ -2100,6 +2100,35 @@ theorem nine_component_support_count_census
     p = 5 ∧ r = 3 ∧ np = 1 ∧ (nr = 2 ∨ nr = 3) := by
   omega
 
+/-- Coarse support-count census in the seven-component branch.  The same
+mass and trace inequalities used in the nine-component census already force
+the positive/invisible split to be either `3+3` or `4+2`. -/
+theorem seven_component_support_count_outer_census
+    (p r np nr : ℕ)
+    (hparts : p + r = 6)
+    (hp : p ≤ 6) (hr : 3 * r ≤ 12)
+    (hnpWeight : p + np ≤ 6)
+    (hnpPositive : 6 ≤ p + 6 * np)
+    (hnrExcess : 3 * r + nr ≤ 12)
+    (hnpCard : np ≤ p) (hnrCard : nr ≤ r)
+    (hthree : 3 ≤ np + nr) :
+    (p = 3 ∧ r = 3) ∨ (p = 4 ∧ r = 2) := by
+  omega
+
+/-- Coarse support-count census in the five-component branch.  Its
+positive/invisible split is one of `1+3`, `2+2`, or `3+1`. -/
+theorem five_component_support_count_outer_census
+    (p r np nr : ℕ)
+    (hparts : p + r = 4)
+    (hp : p ≤ 6) (hr : 3 * r ≤ 12)
+    (hnpWeight : p + np ≤ 6)
+    (hnpPositive : 6 ≤ p + 6 * np)
+    (hnrExcess : 3 * r + nr ≤ 12)
+    (hnpCard : np ≤ p) (hnrCard : nr ≤ r)
+    (hthree : 3 ≤ np + nr) :
+    (p = 1 ∧ r = 3) ∨ (p = 2 ∧ r = 2) ∨ (p = 3 ∧ r = 1) := by
+  omega
+
 /-- A finite sum dominates its baseline contribution plus one further unit
 for every term strictly above the baseline. -/
 theorem mul_card_add_card_filter_lt_le_sum
