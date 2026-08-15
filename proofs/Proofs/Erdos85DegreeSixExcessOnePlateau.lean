@@ -1980,6 +1980,85 @@ theorem degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
     G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree,
     hreg a, hreg b, hreg x, hreg y]
 
+/-- In the pure antipodal branch, a closed defect `K₄` and its four
+pairwise-disjoint degree-six neighborhoods occupy exactly 28 vertices. -/
+theorem degreeSix_thirtyFour_antipodal_defectKFour_centered_footprint_card_eq_twentyEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y}).card = 28 := by
+  let F := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  have hFcard : F.card = 24 :=
+    degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+      G hfree hreg hab hax hbx hay hby hxy
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hnotG_of_D : ∀ {u v : V},
+      (secondOrderDefectGraph G).Adj u v → ¬ G.Adj u v := by
+    intro u v huv
+    rw [hDeq] at huv
+    exact ((mem_antipodalNeighbors G u v).mp
+      ((antipodalGraph_adj G u v).mp huv)).2.1
+  have haNotF : a ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨G.loopless.irrefl a, fun h => hnotG_of_D hab h.symm⟩,
+      fun h => hnotG_of_D hax h.symm⟩,
+      fun h => hnotG_of_D hay h.symm⟩
+  have hbNotF : b ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨hnotG_of_D hab, G.loopless.irrefl b⟩,
+      fun h => hnotG_of_D hbx h.symm⟩,
+      fun h => hnotG_of_D hby h.symm⟩
+  have hxNotF : x ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨hnotG_of_D hax, hnotG_of_D hbx⟩,
+      G.loopless.irrefl x⟩, fun h => hnotG_of_D hxy h.symm⟩
+  have hyNotF : y ∉ F := by
+    simp only [F, Finset.mem_union, G.mem_neighborFinset]
+    push Not
+    exact ⟨⟨⟨hnotG_of_D hay, hnotG_of_D hby⟩,
+      hnotG_of_D hxy⟩, G.loopless.irrefl y⟩
+  have hcenter : ∀ z ∈ ({a, b, x, y} : Finset V), z ∉ F := by
+    intro z hz
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hz
+    rcases hz with hz | hz | hz | hz
+    · exact hz ▸ haNotF
+    · exact hz ▸ hbNotF
+    · exact hz ▸ hxNotF
+    · exact hz ▸ hyNotF
+  have hdisj : Disjoint F ({a, b, x, y} : Finset V) := by
+    rw [Finset.disjoint_left]
+    exact fun z hzF hzQ => hcenter z hzQ hzF
+  have hQcard : ({a, b, x, y} : Finset V).card = 4 := by
+    have habNe := (secondOrderDefectGraph G).ne_of_adj hab
+    have haxNe := (secondOrderDefectGraph G).ne_of_adj hax
+    have hbxNe := (secondOrderDefectGraph G).ne_of_adj hbx
+    have hayNe := (secondOrderDefectGraph G).ne_of_adj hay
+    have hbyNe := (secondOrderDefectGraph G).ne_of_adj hby
+    have hxyNe := (secondOrderDefectGraph G).ne_of_adj hxy
+    simp [habNe, haxNe, hbxNe, hayNe, hbyNe, hxyNe]
+  change (F ∪ {a, b, x, y}).card = 28
+  rw [Finset.card_union_of_disjoint hdisj, hFcard, hQcard]
+
 /-- In the pure antipodal branch the two twins themselves lie outside the
 four-neighborhood footprint.  Adding them to the preceding 23-vertex union
 therefore certifies at least 25 distinct vertices. -/
