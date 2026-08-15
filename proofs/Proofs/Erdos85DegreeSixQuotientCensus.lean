@@ -75,6 +75,66 @@ theorem degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
   rw [hc3, hr, mul_one] at hb
   exact hb.symm
 
+/-- The order-three base profile splits every finite quotient census into
+positive support of total order eighteen and invisible support of total order
+twelve.  This packages the exact mass equations used by both remaining
+five- and seven-component branch classifications. -/
+theorem degreeSixQuotient_orderThree_support_partition_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (∑ j ∈ P, s j) = 18 ∧ (∑ j ∈ R, s j) = 12 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hqsum : (∑ j ∈ P, q c j) = 6 := by
+    calc
+      (∑ j ∈ P, q c j) = ∑ j, q c j := by
+        apply Finset.sum_subset (Finset.filter_subset _ _)
+        intro j _ hj
+        have hz : q c j = 0 := by
+          by_contra hn
+          exact hj (by simp [Nat.pos_of_ne_zero hn])
+        simp [hz]
+      _ = 6 := hrow c
+  have hPmass : (∑ j ∈ P, s j) = 18 := by
+    calc
+      (∑ j ∈ P, s j) = ∑ j ∈ P, 3 * q c j := by
+        apply Finset.sum_congr rfl
+        intro j hj
+        exact (hprofile j (by simpa [P] using
+          (Finset.mem_filter.mp hj).2)).2
+      _ = 3 * ∑ j ∈ P, q c j := by rw [Finset.mul_sum]
+      _ = 18 := by rw [hqsum]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro j hj
+    exact Finset.mem_erase.mpr
+      ⟨fun hjc ↦ hcnotP (hjc ▸ hj), Finset.mem_univ j⟩
+  have hcuniv : c ∈ (Finset.univ : Finset C) := Finset.mem_univ c
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset C) s hcuniv
+  change (∑ j ∈ (Finset.univ : Finset C), s j) = 33 at htotal
+  rw [htotal, hc3] at houtside
+  have hsplit : (∑ j ∈ (Finset.univ.erase c) \ P, s j) +
+      (∑ j ∈ P, s j) = ∑ j ∈ Finset.univ.erase c, s j :=
+    Finset.sum_sdiff hPsub
+  have houtside30 : (∑ j ∈ Finset.univ.erase c, s j) = 30 := by
+    omega
+  rw [hPmass, houtside30] at hsplit
+  refine ⟨hPmass, ?_⟩
+  change (∑ j ∈ (Finset.univ.erase c) \ P, s j) = 12
+  omega
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
