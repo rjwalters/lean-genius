@@ -1722,6 +1722,74 @@ theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitne
     exact (hprops p).2.2.2.2.2.2.2 hpb
   exact ⟨R, hRcard, hRA, hRB, haR, hbR⟩
 
+/-- A six-element witness set cannot meet both neighborhoods of two
+distinct vertices in four or more points: the two intersections live inside
+the six-set, while their overlap is a common-neighbor set of order at most
+one. -/
+theorem sixSet_one_neighbor_intersection_le_three_of_c4Free
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (R : Finset V) (hRcard : R.card = 6)
+    {x y : V} (hxy : x ≠ y) :
+    (R ∩ G.neighborFinset x).card ≤ 3 ∨
+      (R ∩ G.neighborFinset y).card ≤ 3 := by
+  let X := R ∩ G.neighborFinset x
+  let Y := R ∩ G.neighborFinset y
+  change X.card ≤ 3 ∨ Y.card ≤ 3
+  have hUnionSub : X ∪ Y ⊆ R := by
+    intro z hz
+    rcases Finset.mem_union.mp hz with hzX | hzY
+    · exact (Finset.mem_inter.mp hzX).1
+    · exact (Finset.mem_inter.mp hzY).1
+  have hUnion : (X ∪ Y).card ≤ 6 := by
+    rw [← hRcard]
+    exact Finset.card_le_card hUnionSub
+  have hInterSub : X ∩ Y ⊆
+      G.neighborFinset x ∩ G.neighborFinset y := by
+    intro z hz
+    have hzParts := Finset.mem_inter.mp hz
+    exact Finset.mem_inter.mpr
+      ⟨(Finset.mem_inter.mp hzParts.1).2,
+        (Finset.mem_inter.mp hzParts.2).2⟩
+  have hInter : (X ∩ Y).card ≤ 1 :=
+    (Finset.card_le_card hInterSub).trans
+      (common_le_one_of_not_containsC4 hfree x y hxy)
+  have hie := Finset.card_union_add_card_inter X Y
+  by_contra hnot
+  push Not at hnot
+  omega
+
+/-- Applied to the six cross-triangle witnesses, at least one of the two
+common defect neighbors sees at most three witnesses. -/
+theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitnesses_one_common_inter_le_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v))
+    (hxy : x ≠ y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    ∃ R : Finset V, R.card = 6 ∧
+      Disjoint R (G.neighborFinset a) ∧
+      Disjoint R (G.neighborFinset b) ∧ a ∉ R ∧ b ∉ R ∧
+      ((R ∩ G.neighborFinset x).card ≤ 3 ∨
+        (R ∩ G.neighborFinset y).card ≤ 3) := by
+  obtain ⟨R, hRcard, hRA, hRB, haR, hbR⟩ :=
+    degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitnesses
+      G hfree hreg hcard habD htwins hzero
+  exact ⟨R, hRcard, hRA, hRB, haR, hbR,
+    sixSet_one_neighbor_intersection_le_three_of_c4Free
+      G hfree R hRcard hxy⟩
+
 /-- The four vertices of a cubic defect-twin diamond already have original
 neighborhood union of order at least 23.  Every defect edge makes the two
 corresponding original neighborhoods disjoint; among the six diamond pairs,
