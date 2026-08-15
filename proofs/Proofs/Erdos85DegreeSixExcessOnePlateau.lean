@@ -5892,6 +5892,90 @@ theorem degreeSix_thirtyFour_colorOrder_six_connected
   dsimp only
   exact Fintype.card_unique
 
+set_option maxHeartbeats 3000000 in
+/-- Explicit cycle witness for the order-six color sector: the induced
+triangle-free graph has a cycle of length six whose vertex set is the whole
+sector. -/
+theorem degreeSix_thirtyFour_colorOrder_six_exists_cycle
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hScard : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 6) :
+    let S := Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2
+    let H := (triangleFreeEdgeGraph G).induce (↑S : Set V)
+    ∃ v : S, ∃ p : H.Walk v v,
+      p.IsCycle ∧ p.length = 6 ∧ p.toSubgraph.verts = Set.univ := by
+  classical
+  let T := triangleFreeEdgeGraph G
+  let S := Finset.univ.filter fun z : V => T.degree z = 2
+  let H := T.induce (↑S : Set V)
+  have hS6 : S.card = 6 := by simpa [S, T] using hScard
+  have hSclosed : ∀ v ∈ S, T.neighborSet v ⊆ (↑S : Set V) := by
+    intro v hv z hvz
+    have hz2 := excessOne_even_triangleFree_degree_eq_two_of_adj
+      G hfree (d := 6) (by norm_num) hreg (by omega) hvz
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ z, hz2⟩
+  have hHneighborCard : ∀ q : S, Fintype.card (H.neighborSet q) = 2 := by
+    intro q
+    have himage : (fun w : S => w.1) '' H.neighborSet q = T.neighborSet q.1 := by
+      ext z
+      constructor
+      · rintro ⟨w, hw, rfl⟩
+        exact hw
+      · intro hz
+        let w : S := ⟨z, hSclosed q.1 q.2 hz⟩
+        exact ⟨w, hz, rfl⟩
+    have hn := Set.ncard_image_of_injective (f := fun z : S => z.1)
+      (H.neighborSet q) Subtype.val_injective
+    rw [himage] at hn
+    rw [← Nat.card_eq_fintype_card, Nat.card_coe_set_eq]
+    rw [← hn, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
+    rw [← Nat.card_eq_fintype_card, Nat.card_coe_set_eq,
+      Set.ncard_eq_toFinset_card']
+    exact (Finset.mem_filter.mp q.2).2
+  have hcycles : H.IsCycles := by
+    intro q hq
+    rw [← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
+    exact hHneighborCard q
+  have hSne : S.Nonempty := Finset.card_pos.mp (by omega)
+  let v : S := ⟨Classical.choose hSne, Classical.choose_spec hSne⟩
+  let c := H.connectedComponentMk v
+  have hvSupp : v ∈ c.supp :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff c v).mpr rfl
+  have hvN : (H.neighborSet v).Nonempty := by
+    apply Set.nonempty_of_ncard_ne_zero
+    rw [← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, hHneighborCard]
+    norm_num
+  obtain ⟨p, hpCycle, hpVerts⟩ :=
+    hcycles.exists_cycle_toSubgraph_verts_eq_connectedComponentSupp hvSupp hvN
+  have hconn := degreeSix_thirtyFour_colorOrder_six_connected
+    G hfree hreg hcard hScard
+  have hallComp : ∀ e : H.ConnectedComponent, e = c := by
+    obtain ⟨d, hd⟩ := Fintype.card_eq_one_iff.mp (by simpa [H, S, T] using hconn)
+    intro e
+    exact (hd e).trans (hd c).symm
+  have hcSupp : c.supp = Set.univ := by
+    ext q
+    simp only [Set.mem_univ, iff_true]
+    exact (SimpleGraph.ConnectedComponent.mem_supp_iff c q).mpr
+      (hallComp (H.connectedComponentMk q))
+  have hpLen : p.length = 6 := by
+    have hcycleCard := isCycle_card_verts_eq_length hpCycle
+    rw [hpVerts, hcSupp] at hcycleCard
+    have hNat : Nat.card S = 6 := by
+      rw [Nat.card_eq_fintype_card, Fintype.card_coe S]
+      exact hS6
+    have hcycleCard' : Nat.card S = p.length := by simpa using hcycleCard
+    exact hcycleCard'.symm.trans hNat
+  dsimp only
+  exact ⟨v, p, hpCycle, hpLen, hpVerts.trans hcSupp⟩
+
 /-- The signed bipartition indicator of a cubic `K₃,₃` component is a
 `-3` adjacency eigenvector, extended by zero off the component. -/
 theorem adjMatrix_mulVec_K33_bipartitionSign
