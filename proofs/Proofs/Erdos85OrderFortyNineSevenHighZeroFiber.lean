@@ -205,6 +205,81 @@ theorem sevenHigh_t0_singleton_fiber_card_eq_two
   exact (sevenHigh_t0_local_incidence
     G hfree hmin hHigh hzero hv).1
 
+theorem sevenHigh_nonempty_alignedLowFiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (S : Finset (Fin 7)) (hS : S.Nonempty) :
+    Fintype.card {x : Fin 49 // sevenHighGraphAlignedKey G e x = (none, S)} =
+      Fintype.card {x : Fin 49 // sevenHighLabeledSupport G e x = S} := by
+  simp only [Fintype.card_subtype]
+  congr 1
+  ext x
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro hx
+    exact congrArg Prod.snd hx
+  · intro hx
+    have hxNotHigh : x ∉ orderFortyNineHighVertices G := by
+      intro hxHigh
+      have hz := orderFortyNine_highNeighborCount_eq_zero_of_high
+        G hfree hmin (Fintype.card_fin 49) hxHigh
+      have hcard : (sevenHighLabeledSupport G e x).card = 0 := by
+        rw [sevenHighLabeledSupport_card]
+        exact hz
+      rw [hx] at hcard
+      exact hS.ne_empty (Finset.card_eq_zero.mp hcard)
+    simp [sevenHighGraphAlignedKey, hxNotHigh, hx]
+
+theorem sevenHigh_t0_aligned_emptyLow_fiber_card_eq_seven
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7) :
+    Fintype.card {x : Fin 49 //
+      sevenHighGraphAlignedKey G e x = (none, ∅)} = 7 := by
+  rw [Fintype.card_subtype]
+  have hset : (Finset.univ.filter fun x : Fin 49 =>
+      sevenHighGraphAlignedKey G e x = (none, ∅)) =
+      (orderFortyNineLowVertices G).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 0 := by
+    ext x
+    constructor
+    · intro hx
+      have hkey := (Finset.mem_filter.mp hx).2
+      have hfirst := congrArg Prod.fst hkey
+      have hsupp := congrArg Prod.snd hkey
+      have hxNotHigh : x ∉ orderFortyNineHighVertices G := by
+        intro hxHigh
+        simp [sevenHighGraphAlignedKey, hxHigh] at hfirst
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ x, hxNotHigh⟩, ?_⟩
+      have : sevenHighLabeledSupport G e x = ∅ := by
+        simpa [sevenHighGraphAlignedKey] using hsupp
+      rw [← sevenHighLabeledSupport_card G e x, this]
+      simp
+    · intro hx
+      have hxLow := (Finset.mem_filter.mp hx).1
+      have hx0 := (Finset.mem_filter.mp hx).2
+      have hxNotHigh := (Finset.mem_sdiff.mp hxLow).2
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ x, ?_⟩
+      have hs : sevenHighLabeledSupport G e x = ∅ :=
+        Finset.card_eq_zero.mp (by
+          rw [sevenHighLabeledSupport_card]
+          exact hx0)
+      simp [sevenHighGraphAlignedKey, hxNotHigh, hs]
+  rw [hset]
+  exact (sevenHigh_t0_global_incidence
+    G hfree hmin hHigh hzero).1
+
 end
 
 end Erdos85
