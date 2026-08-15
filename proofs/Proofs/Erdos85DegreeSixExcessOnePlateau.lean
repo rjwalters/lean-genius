@@ -3180,6 +3180,74 @@ theorem degreeSix_thirtyFour_defectKFour_residual_locally_triangle_union
   · exact (hst hts.symm).elim
   · exact htu ▸ hsu
 
+/-- Explicit first half of the residual `2K₃` partition: there is an
+internal triangle whose complement in the residual has exactly three
+vertices. -/
+theorem degreeSix_thirtyFour_defectKFour_residual_exists_triangle_compl_three
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    ∃ r s t : V, r ∈ R ∧ s ∈ R ∧ t ∈ R ∧
+      r ≠ s ∧ r ≠ t ∧ s ≠ t ∧
+      G.Adj r s ∧ G.Adj r t ∧ G.Adj s t ∧
+      (R \ {r, s, t}).card = 3 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hprofile := degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hclose := degreeSix_thirtyFour_defectKFour_residual_edge_closes_triangle
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  dsimp only at hprofile hclose ⊢
+  have hRcard := hprofile.1
+  change R.card = 6 at hRcard
+  have hRnonempty : R.Nonempty := by
+    apply Finset.card_pos.mp
+    omega
+  obtain ⟨r, hr⟩ := hRnonempty
+  have hNrCard : (G.neighborFinset r ∩ R).card = 2 := (hprofile.2 r hr).1
+  have hNrNonempty : (G.neighborFinset r ∩ R).Nonempty := by
+    apply Finset.card_pos.mp
+    omega
+  obtain ⟨s, hsN⟩ := hNrNonempty
+  have hsParts := Finset.mem_inter.mp hsN
+  have hrs : G.Adj r s := (G.mem_neighborFinset r s).mp hsParts.1
+  have hs : s ∈ R := hsParts.2
+  obtain ⟨t, ht, hts, hst, hN⟩ := hclose r hr s hs hrs
+  have hrt : G.Adj r t := by
+    have : t ∈ G.neighborFinset r ∩ R := by
+      rw [hN]
+      simp
+    exact (G.mem_neighborFinset r t).mp (Finset.mem_inter.mp this).1
+  have hrsNe : r ≠ s := G.ne_of_adj hrs
+  have hrtNe : r ≠ t := G.ne_of_adj hrt
+  have hPsub : ({r, s, t} : Finset V) ⊆ R := by
+    simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff]
+    exact ⟨hr, hs, ht⟩
+  have hPcard : ({r, s, t} : Finset V).card = 3 := by
+    simp [hrsNe, hrtNe, hts.symm]
+  have hcompl : (R \ {r, s, t}).card = 3 := by
+    rw [Finset.card_sdiff_of_subset hPsub, hRcard, hPcard]
+  exact ⟨r, s, t, hr, hs, ht, hrsNe, hrtNe, hts.symm,
+    hrs, hrt, hst, hcompl⟩
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
