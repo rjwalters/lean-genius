@@ -370,6 +370,78 @@ theorem degreeSixQuotient_orderThree_invisible_row_split_nat
   change (∑ j ∈ R, q r j) = 3
   omega
 
+/-- Every positive target of an order-three base has reverse quotient one,
+row mass three inside the positive support, and residual row mass two into the
+invisible block. -/
+theorem degreeSixQuotient_orderThree_positive_row_split_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c p : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hpP : p ∈ (Finset.univ.filter fun j ↦ 0 < q c j)) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    q p c = 1 ∧ (∑ k ∈ P, q p k) = 3 ∧
+      (∑ r ∈ R, q p r) = 2 := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hpP' : p ∈ P := by simpa [P] using hpP
+  have hpPos : 0 < q c p := by simpa [P] using
+    (Finset.mem_filter.mp hpP').2
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have hpData := hprofile p hpPos
+  have hpc : p ≠ c := by
+    intro h; subst p; rw [hcc] at hpPos; omega
+  have heqs := degreeSixQuotient_orderThree_support_equations_nat
+    s q c hrow hsq
+  change (∑ j ∈ P, q c j) = 6 ∧
+    ∀ j, (∑ k ∈ P, q c k * q k j) =
+      (if c = j then 3 else 0) + s j at heqs
+  have hsqP := heqs.2 p
+  simp [Ne.symm hpc] at hsqP
+  have hterm : ∀ k ∈ P,
+      q c k * q k p = q c p * q p k := by
+    intro k hk
+    have hkPos : 0 < q c k := by simpa [P] using
+      (Finset.mem_filter.mp hk).2
+    have hkSize := (hprofile k hkPos).2
+    have hb := hbal k p
+    rw [hkSize, hpData.2] at hb
+    apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 3)
+    simpa [Nat.mul_assoc] using hb
+  have hinternal : (∑ k ∈ P, q p k) = 3 := by
+    have hw : q c p * (∑ k ∈ P, q p k) = 3 * q c p := by
+      rw [Finset.mul_sum]
+      calc
+        (∑ k ∈ P, q c p * q p k) =
+            ∑ k ∈ P, q c k * q k p := by
+              apply Finset.sum_congr rfl
+              intro k hk
+              exact (hterm k hk).symm
+        _ = s p := hsqP
+        _ = 3 * q c p := hpData.2
+    exact Nat.eq_of_mul_eq_mul_left hpPos (by simpa [Nat.mul_comm] using hw)
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro k hk
+    exact Finset.mem_erase.mpr
+      ⟨fun hkc ↦ hcnotP (hkc ▸ hk), Finset.mem_univ k⟩
+  have hsplit : (∑ r ∈ R, q p r) + (∑ k ∈ P, q p k) =
+      ∑ j ∈ Finset.univ.erase c, q p j := Finset.sum_sdiff hPsub
+  have houtside := Finset.sum_erase_add
+    (Finset.univ : Finset C) (q p) (Finset.mem_univ c)
+  have hrowP := hrow p
+  change (∑ j ∈ (Finset.univ : Finset C), q p j) = 6 at hrowP
+  rw [hpData.1, hrowP] at houtside
+  refine ⟨hpData.1, hinternal, ?_⟩
+  change (∑ r ∈ R, q p r) = 2
+  omega
+
 /-- A singleton invisible block is impossible: its unique component would
 have diagonal quotient three. -/
 theorem false_of_degreeSixQuotient_orderThree_invisible_card_one_nat
