@@ -4003,6 +4003,160 @@ theorem degreeSix_thirtyFour_defectKFour_residual_exists_K33_partition
       hDreg u]
   exact ⟨P, T, hPcard, hTcard, hdPT, hPT, hDP, hDT⟩
 
+/-- The signed bipartition indicator of a cubic `K₃,₃` component is a
+`-3` adjacency eigenvector, extended by zero off the component. -/
+theorem adjMatrix_mulVec_K33_bipartitionSign
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (P T : Finset V) (hPcard : P.card = 3) (hTcard : T.card = 3)
+    (hdPT : Disjoint P T)
+    (hDP : ∀ p ∈ P, D.neighborFinset p = T)
+    (hDT : ∀ t ∈ T, D.neighborFinset t = P) :
+    (D.adjMatrix ℚ).mulVec
+        (fun z => if z ∈ P then (1 : ℚ) else if z ∈ T then -1 else 0) =
+      (-3 : ℚ) •
+        (fun z => if z ∈ P then (1 : ℚ) else if z ∈ T then -1 else 0) := by
+  funext z
+  rw [SimpleGraph.adjMatrix_mulVec_apply]
+  by_cases hzP : z ∈ P
+  · rw [hDP z hzP]
+    have hsum : (∑ w ∈ T,
+        (if w ∈ P then (1 : ℚ) else if w ∈ T then -1 else 0)) = -3 := by
+      calc
+        (∑ w ∈ T,
+            (if w ∈ P then (1 : ℚ) else if w ∈ T then -1 else 0)) =
+            ∑ _w ∈ T, (-1 : ℚ) := by
+              apply Finset.sum_congr rfl
+              intro w hw
+              have hwP : w ∉ P := fun hwP =>
+                Finset.disjoint_left.mp hdPT hwP hw
+              simp [hwP, hw]
+        _ = -3 := by simp [hTcard]
+    rw [hsum]
+    simp [hzP]
+  · by_cases hzT : z ∈ T
+    · rw [hDT z hzT]
+      have hsum : (∑ w ∈ P,
+          (if w ∈ P then (1 : ℚ) else if w ∈ T then -1 else 0)) = 3 := by
+        calc
+          (∑ w ∈ P,
+              (if w ∈ P then (1 : ℚ) else if w ∈ T then -1 else 0)) =
+              ∑ _w ∈ P, (1 : ℚ) := by
+                apply Finset.sum_congr rfl
+                intro w hw
+                simp [hw]
+          _ = 3 := by simp [hPcard]
+      rw [hsum]
+      simp [hzP, hzT]
+    · have hzero : ∀ w ∈ D.neighborFinset z,
+          (if w ∈ P then (1 : ℚ) else if w ∈ T then -1 else 0) = 0 := by
+        intro w hw
+        have hwP : w ∉ P := by
+          intro hwP
+          have hzw := (D.mem_neighborFinset z w).mp hw
+          have hzIn : z ∈ D.neighborFinset w :=
+            (D.mem_neighborFinset w z).mpr hzw.symm
+          rw [hDP w hwP] at hzIn
+          exact hzT hzIn
+        have hwT : w ∉ T := by
+          intro hwT
+          have hzw := (D.mem_neighborFinset z w).mp hw
+          have hzIn : z ∈ D.neighborFinset w :=
+            (D.mem_neighborFinset w z).mpr hzw.symm
+          rw [hDT w hwT] at hzIn
+          exact hzP hzIn
+        simp [hwP, hwT]
+      rw [Finset.sum_congr rfl hzero]
+      simp [hzP, hzT]
+
+/-- The closed residual branch therefore supplies a concrete nonzero
+`-3` defect eigenvector. -/
+theorem degreeSix_thirtyFour_defectKFour_exists_nonzero_negThree_defectEigenvector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    ∃ v : V → ℚ, v ≠ 0 ∧
+      v ∈ defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ) := by
+  obtain ⟨P, T, hPcard, hTcard, hdPT, _hPT, hDP, hDT⟩ :=
+    degreeSix_thirtyFour_defectKFour_residual_exists_K33_partition
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  let v : V → ℚ :=
+    fun z => if z ∈ P then (1 : ℚ) else if z ∈ T then -1 else 0
+  have hmul := adjMatrix_mulVec_K33_bipartitionSign
+    (secondOrderDefectGraph G) P T hPcard hTcard hdPT hDP hDT
+  have hPnonempty : P.Nonempty := by
+    apply Finset.card_pos.mp
+    omega
+  obtain ⟨p, hp⟩ := hPnonempty
+  have hvNonzero : v ≠ 0 := by
+    intro hv
+    have hpv := congrFun hv p
+    simp [v, hp] at hpv
+  refine ⟨v, hvNonzero, ?_⟩
+  apply mem_defectEigenspace_iff.mpr
+  exact hmul
+
+/-- Combining the explicit residual eigenvector with quadratic parity, the
+global `-3` defect eigenspace has dimension at least two.  Hence the residual
+direction cannot be the only `-3` direction. -/
+theorem degreeSix_thirtyFour_defectKFour_two_le_negThree_defectEigenspace_finrank
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    2 ≤ Module.finrank ℚ
+      (defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ)) := by
+  let E := defectEigenspace
+    ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ)
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have heven : Even (Module.finrank ℚ E) := by
+    simpa [E] using degreeSix_thirtyFour_negThree_defectEigenspace_even
+      G hfree hreg hDreg
+  obtain ⟨v, hvNonzero, hvE⟩ :=
+    degreeSix_thirtyFour_defectKFour_exists_nonzero_negThree_defectEigenvector
+      G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  have hsubNonzero : (⟨v, hvE⟩ : E) ≠ 0 := by
+    intro h
+    apply hvNonzero
+    exact congrArg Subtype.val h
+  letI : Nontrivial E := ⟨⟨⟨v, hvE⟩, 0, hsubNonzero⟩⟩
+  have hpos : 0 < Module.finrank ℚ E := Module.finrank_pos
+  rcases heven with ⟨k, hk⟩
+  change 2 ≤ Module.finrank ℚ E
+  omega
+
 end
 
 end Erdos85
