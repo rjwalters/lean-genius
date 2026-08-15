@@ -1,3 +1,4 @@
+import Proofs.Erdos85OrderFortyNineSevenHighT1Rep0Certificate
 import Proofs.Erdos85OrderFortyNineSevenHighT2Rep0Certificate
 import Proofs.Erdos85OrderFortyNineSevenHighT2Rep1Certificate
 import Proofs.Erdos85OrderFortyNineSevenHighT3Rep0Certificate
@@ -62,5 +63,14 @@ theorem orderFortyNineStratumExcluded_seven_of_t0_t1
     have hi : index = 0 := by omega
     subst index
     exact sevenHighT7Rep0_excluded
+
+/-- All thirteen checked canonical representatives with at least one high
+triple are excluded.  The empty triple-system representative is the sole
+remaining certificate input for the seven-high stratum. -/
+theorem orderFortyNineStratumExcluded_seven_of_t0
+    (hzero : SevenHighCanonicalRepresentativeExcluded 0 0) :
+    OrderFortyNineStratumExcluded 7 :=
+  orderFortyNineStratumExcluded_seven_of_t0_t1
+    hzero sevenHighT1Rep0_excluded
 
 end Erdos85
