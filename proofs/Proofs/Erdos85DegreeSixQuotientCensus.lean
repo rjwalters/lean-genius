@@ -1041,6 +1041,144 @@ theorem degreeSixQuotient_model7_support_three_uniform_invisible_four_nat
   rw [hcardErase] at hlo
   omega
 
+/-- Arithmetic core of the uniform three-target contradiction.  A positive
+row has internal mass three and invisible mass two.  Detailed balance at
+orders six and four makes every invisible contact contribute too much to the
+diagonal square equation. -/
+theorem false_of_degreeSixQuotient_support_three_uniform_arithmetic
+    (aa ab ad ar at au ra ta ua : ℕ)
+    (hint : aa + ab + ad = 3)
+    (hcross : ar + at + au = 2)
+    (hbalR : 3 * ar = 2 * ra)
+    (hbalT : 3 * at = 2 * ta)
+    (hbalU : 3 * au = 2 * ua)
+    (hsq : 2 + aa * aa + ab * ab + ad * ad +
+      ar * ra + at * ta + au * ua = 9) : False := by
+  have haa : aa ≤ 3 := by omega
+  have hab : ab ≤ 3 := by omega
+  have had : ad ≤ 3 := by omega
+  have har : ar ≤ 2 := by omega
+  have hat : at ≤ 2 := by omega
+  have hau : au ≤ 2 := by omega
+  interval_cases aa <;> interval_cases ab <;> interval_cases ad <;>
+    interval_cases ar <;> interval_cases at <;> interval_cases au <;>
+    norm_num at hbalR hbalT hbalU hsq <;> omega
+
+/-- The uniform `2,2,2` three-target branch of Model7 is impossible. -/
+theorem false_of_degreeSixQuotient_model7_support_three_uniform_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hRcard : ((Finset.univ.erase c) \
+      (Finset.univ.filter fun j ↦ 0 < q c j)).card = 3)
+    (hca : q c a = 2) (hcb : q c b = 2) (hcd : q c d = 2) : False := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  have hRcard' : R.card = 3 := by simpa [P, R] using hRcard
+  obtain ⟨r, t, u, hrt, hru, htu, hR⟩ := Finset.card_eq_three.mp hRcard'
+  have haP : a ∈ P := by rw [show P = {a, b, d} by simpa [P] using hP]; simp
+  have hbP : b ∈ P := by rw [show P = {a, b, d} by simpa [P] using hP]; simp
+  have hdP : d ∈ P := by rw [show P = {a, b, d} by simpa [P] using hP]; simp
+  have hrR : r ∈ R := by rw [hR]; simp
+  have htR : t ∈ R := by rw [hR]; simp
+  have huR : u ∈ R := by rw [hR]; simp
+  have hac : a ≠ c := by
+    intro h; subst a; simpa [P, hcc] using haP
+  have hbc : b ≠ c := by
+    intro h; subst b; simpa [P, hcc] using hbP
+  have hdc : d ≠ c := by
+    intro h; subst d; simpa [P, hcc] using hdP
+  have hrc : r ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp hrR).1).1
+  have htc : t ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp htR).1).1
+  have huc : u ≠ c := (Finset.mem_erase.mp (Finset.mem_sdiff.mp huR).1).1
+  have hra : r ≠ a := by
+    intro h; subst r; exact (Finset.mem_sdiff.mp hrR).2 haP
+  have hrb : r ≠ b := by
+    intro h; subst r; exact (Finset.mem_sdiff.mp hrR).2 hbP
+  have hrd : r ≠ d := by
+    intro h; subst r; exact (Finset.mem_sdiff.mp hrR).2 hdP
+  have hta : t ≠ a := by
+    intro h; subst t; exact (Finset.mem_sdiff.mp htR).2 haP
+  have htb : t ≠ b := by
+    intro h; subst t; exact (Finset.mem_sdiff.mp htR).2 hbP
+  have htd : t ≠ d := by
+    intro h; subst t; exact (Finset.mem_sdiff.mp htR).2 hdP
+  have hua : u ≠ a := by
+    intro h; subst u; exact (Finset.mem_sdiff.mp huR).2 haP
+  have hub : u ≠ b := by
+    intro h; subst u; exact (Finset.mem_sdiff.mp huR).2 hbP
+  have hud : u ≠ d := by
+    intro h; subst u; exact (Finset.mem_sdiff.mp huR).2 hdP
+  have huniv : (Finset.univ : Finset C) = {c, a, b, d, r, t, u} := by
+    ext x
+    simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]
+    by_cases hxc : x = c
+    · exact Or.inl hxc
+    by_cases hxP : x ∈ P
+    · have : x = a ∨ x = b ∨ x = d := by
+        simpa [P] using (show x ∈ ({a, b, d} : Finset C) by
+          rw [← hP]; exact hxP)
+      aesop
+    · have hxR : x ∈ R := Finset.mem_sdiff.mpr
+        ⟨Finset.mem_erase.mpr ⟨hxc, Finset.mem_univ x⟩, hxP⟩
+      have : x = r ∨ x = t ∨ x = u := by simpa [hR] using hxR
+      aesop
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c (fun i ↦ by have := hslo i; omega) hrow hbal hsq hc3 hcc
+  have haData := hprofile a (by simpa [P, hca] using
+    (Finset.mem_filter.mp haP).2)
+  have hsplitA := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c a (fun i ↦ by have := hslo i; omega) hrow hbal hsq hc3 hcc
+      (by simpa [P] using haP)
+  have hint := hsplitA.2.1
+  have hcross := hsplitA.2.2
+  rw [hP] at hint
+  rw [show R = {r, t, u} from hR] at hcross
+  simp [Finset.sum_insert, hab, had, hbd, hrt, hru, htu] at hint hcross
+  have horders :=
+    degreeSixQuotient_model7_support_three_uniform_invisible_four_nat
+      s q c a b d hslo htotal hrow hbal hsq hc3 hcc hab had hbd hP
+        hRcard hca hcb hcd
+  have hsr : s r = 4 := horders r (by simpa [R] using hrR)
+  have hst : s t = 4 := horders t (by simpa [R] using htR)
+  have hsu : s u = 4 := horders u (by simpa [R] using huR)
+  have hbalR := hbal a r
+  have hbalT := hbal a t
+  have hbalU := hbal a u
+  rw [haData.2, hca, hsr] at hbalR
+  rw [haData.2, hca, hst] at hbalT
+  rw [haData.2, hca, hsu] at hbalU
+  have hbalAB := hbal a b
+  have hbalAD := hbal a d
+  have hbData := hprofile b (by simpa [P, hcb] using
+    (Finset.mem_filter.mp hbP).2)
+  have hdData := hprofile d (by simpa [P, hcd] using
+    (Finset.mem_filter.mp hdP).2)
+  rw [haData.2, hbData.2, hca, hcb] at hbalAB
+  rw [haData.2, hdData.2, hca, hcd] at hbalAD
+  have hsqA := hsq a a
+  rw [huniv] at hsqA
+  simp [Finset.sum_insert, hac, hbc, hdc, hrc, htc, huc, hab, had, hbd,
+    hrt, hru, htu, hra, hrb, hrd, hta, htb, htd, hua, hub, hud,
+    haData.1, hca, haData.2] at hsqA
+  apply false_of_degreeSixQuotient_support_three_uniform_arithmetic
+    (q a a) (q a b) (q a d) (q a r) (q a t) (q a u)
+      (q r a) (q t a) (q u a)
+  · omega
+  · omega
+  · omega
+  · omega
+  · omega
+  · omega
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
