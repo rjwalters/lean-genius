@@ -135,6 +135,132 @@ theorem degreeSixQuotient_orderThree_support_partition_nat
   change (∑ j ∈ (Finset.univ.erase c) \ P, s j) = 12
   omega
 
+/-- Cardinality form of the base support partition.  Positive and invisible
+support are both nonempty and together contain every component except the
+base. -/
+theorem degreeSixQuotient_orderThree_support_card_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C) (n : ℕ)
+    (hspos : ∀ i, 0 < s i)
+    (hcard : Fintype.card C = n)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    P.card + R.card = n - 1 ∧ 0 < P.card ∧ 0 < R.card := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  let R : Finset C := (Finset.univ.erase c) \ P
+  obtain ⟨hPmass, hRmass⟩ :=
+    degreeSixQuotient_orderThree_support_partition_nat
+      s q c hspos htotal hrow hbal hsq hc3 hcc
+  change (∑ j ∈ P, s j) = 18 at hPmass
+  change (∑ j ∈ R, s j) = 12 at hRmass
+  have hcnotP : c ∉ P := by simp [P, hcc]
+  have hPsub : P ⊆ Finset.univ.erase c := by
+    intro j hj
+    exact Finset.mem_erase.mpr
+      ⟨fun hjc ↦ hcnotP (hjc ▸ hj), Finset.mem_univ j⟩
+  have hparts : P.card + R.card = n - 1 := by
+    have herase : (Finset.univ.erase c : Finset C).card = n - 1 := by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ,
+        hcard]
+    have hpCard : P.card ≤ n - 1 := by
+      rw [← herase]
+      exact Finset.card_le_card hPsub
+    dsimp [R]
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hPsub, herase]
+    omega
+  have hPpos : 0 < P.card := by
+    by_contra hn
+    push Not at hn
+    have hz : P = ∅ := Finset.card_eq_zero.mp (by omega)
+    rw [hz] at hPmass
+    simp at hPmass
+  have hRpos : 0 < R.card := by
+    by_contra hn
+    push Not at hn
+    have hz : R = ∅ := Finset.card_eq_zero.mp (by omega)
+    rw [hz] at hRmass
+    simp at hRmass
+  exact ⟨hparts, hPpos, hRpos⟩
+
+/-- At five components the positive/invisible support split is `1+3`,
+`2+2`, or `3+1`. -/
+theorem degreeSixQuotient_orderThree_support_card_five_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hspos : ∀ i, 0 < s i)
+    (hcard : Fintype.card C = 5)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (P.card = 1 ∧ R.card = 3) ∨
+      (P.card = 2 ∧ R.card = 2) ∨
+      (P.card = 3 ∧ R.card = 1) := by
+  have h := degreeSixQuotient_orderThree_support_card_nat
+    s q c 5 hspos hcard htotal hrow hbal hsq hc3 hcc
+  dsimp only at h ⊢
+  omega
+
+/-- At seven components the positive/invisible support split is `2+4`,
+`3+3`, `4+2`, or `5+1`; later trace and square constraints remove the two
+outer cases. -/
+theorem degreeSixQuotient_orderThree_support_card_seven_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 7)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    let R := (Finset.univ.erase c) \ P
+    (P.card = 2 ∧ R.card = 4) ∨
+      (P.card = 3 ∧ R.card = 3) ∨
+      (P.card = 4 ∧ R.card = 2) ∨
+      (P.card = 5 ∧ R.card = 1) := by
+  let P := Finset.univ.filter fun j ↦ 0 < q c j
+  let R := (Finset.univ.erase c) \ P
+  have hspos : ∀ i, 0 < s i := fun i ↦ by have := hslo i; omega
+  have h := degreeSixQuotient_orderThree_support_card_nat
+    s q c 7 hspos hcard htotal hrow hbal hsq hc3 hcc
+  change P.card + R.card = 7 - 1 ∧ 0 < P.card ∧ 0 < R.card at h
+  have hPle : P.card ≤ 6 := by
+    have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+      s q c hspos htotal hrow hbal hsq hc3 hcc).1
+    change (∑ j ∈ P, s j) = 18 at hmass
+    have hlo : 3 * P.card ≤ ∑ j ∈ P, s j := by
+      calc
+        3 * P.card = ∑ _j ∈ P, 3 := by simp [Nat.mul_comm]
+        _ ≤ ∑ j ∈ P, s j := Finset.sum_le_sum fun j _ ↦ hslo j
+    omega
+  have hRle : R.card ≤ 4 := by
+    have hmass := (degreeSixQuotient_orderThree_support_partition_nat
+      s q c hspos htotal hrow hbal hsq hc3 hcc).2
+    change (∑ j ∈ R, s j) = 12 at hmass
+    have hlo : 3 * R.card ≤ ∑ j ∈ R, s j := by
+      calc
+        3 * R.card = ∑ _j ∈ R, 3 := by simp [Nat.mul_comm]
+        _ ≤ ∑ j ∈ R, s j := Finset.sum_le_sum fun j _ ↦ hslo j
+    omega
+  change (P.card = 2 ∧ R.card = 4) ∨
+    (P.card = 3 ∧ R.card = 3) ∨
+    (P.card = 4 ∧ R.card = 2) ∨
+    (P.card = 5 ∧ R.card = 1)
+  omega
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
