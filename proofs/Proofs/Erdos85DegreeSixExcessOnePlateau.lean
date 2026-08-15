@@ -7034,6 +7034,91 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_negThree_eigenvector_nonz
     · exact hwz (hzx ▸ hcenterZero.2.2.1)
     · exact hwz (hzy ▸ hcenterZero.2.2.2)
 
+/-- The closed order-six branch has a nonzero block-layer vector whose
+value reverses across every defect edge. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_alternating_vector_on_blockLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    ∃ w : defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ),
+      ∃ z ∈ B, w.1 z ≠ 0 ∧
+        ∀ u v, (secondOrderDefectGraph G).Adj u v → w.1 v = -w.1 u := by
+  obtain ⟨w, z, hzB, hwz⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_negThree_eigenvector_nonzero_on_blockLayer
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hDreg : ∀ q, (secondOrderDefectGraph G).degree q = 3 := by
+    intro q
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) q
+  refine ⟨w, z, hzB, hwz, ?_⟩
+  intro u v huv
+  exact negThree_eigenvector_eq_neg_of_adj
+    (secondOrderDefectGraph G) hDreg w.1
+      (mem_defectEigenspace_iff.mp w.2) huv
+
+/-- The alternating block-layer vector in the closed order-six branch is
+balanced on each of the four six-element original-neighborhood fibers. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_balanced_alternating_vector
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    ∃ w : defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ),
+      (∃ z ∈ B, w.1 z ≠ 0) ∧
+      (∀ u v, (secondOrderDefectGraph G).Adj u v → w.1 v = -w.1 u) ∧
+      (∑ z ∈ G.neighborFinset a, w.1 z) = 0 ∧
+      (∑ z ∈ G.neighborFinset b, w.1 z) = 0 ∧
+      (∑ z ∈ G.neighborFinset x, w.1 z) = 0 ∧
+      (∑ z ∈ G.neighborFinset y, w.1 z) = 0 := by
+  obtain ⟨w, z, hzB, hwz, halt⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_alternating_vector_on_blockLayer
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hDreg : ∀ q, (secondOrderDefectGraph G).degree q = 3 := by
+    intro q
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) q
+  have hbal := negThree_eigenvector_centerBlock_sums_zero
+    G hfree hreg hDreg hab hax hbx hay hby hxy w.1
+      (mem_defectEigenspace_iff.mp w.2)
+  exact ⟨w, ⟨z, hzB, hwz⟩, halt, hbal⟩
+
 /-- The extra `-3` direction forced by parity is genuinely visible on the
 24-vertex cover layer. -/
 theorem degreeSix_thirtyFour_defectKFour_exists_negThree_eigenvector_nonzero_on_blockLayer
