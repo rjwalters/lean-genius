@@ -2642,6 +2642,272 @@ theorem degreeSix_thirtyFour_defectKFour_block_residual_incidence_sum_eq_twentyF
   rw [← sum_card_neighbor_inter_comm G B R]
   exact hleft
 
+/-- A sharp averaging lemma for the residual incidence count. -/
+theorem eq_four_of_mem_of_card_six_of_four_le_of_sum_eq_twentyFour
+    {V : Type*} [DecidableEq V] (R : Finset V) (hRcard : R.card = 6)
+    (f : V → ℕ) (hlower : ∀ r ∈ R, 4 ≤ f r)
+    (hsum : (∑ r ∈ R, f r) = 24) {v : V} (hv : v ∈ R) :
+    f v = 4 := by
+  have hrest : ∑ r ∈ R.erase v, 4 ≤ ∑ r ∈ R.erase v, f r := by
+    apply Finset.sum_le_sum
+    intro r hr
+    exact hlower r (Finset.mem_of_mem_erase hr)
+  have herase : (R.erase v).card = 5 := by
+    rw [Finset.card_erase_of_mem hv, hRcard]
+  have hdecomp := Finset.sum_erase_add _ f hv
+  have hvLower := hlower v hv
+  simp [herase] at hrest
+  rw [hsum] at hdecomp
+  omega
+
+/-- Degree partition across a set `B` and the complement of `B ∪ Q`, when
+the vertex has no neighbors in the omitted set `Q`. -/
+theorem card_neighbor_inter_add_card_neighbor_inter_compl_union
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (B Q : Finset V) {v : V} (hdeg : G.degree v = 6)
+    (hvQ : ∀ q ∈ Q, ¬ G.Adj v q) :
+    (G.neighborFinset v ∩ B).card +
+      (G.neighborFinset v ∩ (Finset.univ \ (B ∪ Q))).card = 6 := by
+  let R := Finset.univ \ (B ∪ Q)
+  have hdBR : Disjoint B R := by
+    rw [Finset.disjoint_left]
+    intro z hzB hzR
+    exact (Finset.mem_sdiff.mp hzR).2 (Finset.mem_union_left Q hzB)
+  have hcover : G.neighborFinset v =
+      (G.neighborFinset v ∩ B) ∪ (G.neighborFinset v ∩ R) := by
+    ext z
+    simp only [Finset.mem_union, Finset.mem_inter]
+    constructor
+    · intro hvz
+      by_cases hzB : z ∈ B
+      · exact Or.inl ⟨hvz, hzB⟩
+      · by_cases hzR : z ∈ R
+        · exact Or.inr ⟨hvz, hzR⟩
+        · exfalso
+          have hzU : z ∈ B ∪ Q := by
+            by_contra hzU
+            exact hzR (Finset.mem_sdiff.mpr ⟨Finset.mem_univ z, hzU⟩)
+          rcases Finset.mem_union.mp hzU with hzB' | hzQ
+          · exact hzB hzB'
+          · exact hvQ z hzQ ((G.mem_neighborFinset v z).mp hvz)
+    · rintro (⟨hvz, -⟩ | ⟨hvz, -⟩)
+      · exact hvz
+      · exact hvz
+  have hdInter : Disjoint (G.neighborFinset v ∩ B)
+      (G.neighborFinset v ∩ R) :=
+    hdBR.mono Finset.inter_subset_right Finset.inter_subset_right
+  have hcard := Finset.card_union_of_disjoint hdInter
+  rw [← hcover, G.card_neighborFinset_eq_degree, hdeg] at hcard
+  simpa [R] using hcard.symm
+
+/-- The four centers of a defect `K₄` are disjoint from the union of their
+four original neighborhoods when the defect graph is antipodal. -/
+theorem defectKFour_blocks_disjoint_centers_of_eq_antipodal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    (hDeq : secondOrderDefectGraph G = antipodalGraph G)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y) :
+    Disjoint (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y) ({a, b, x, y} : Finset V) := by
+  have hnotG_of_D : ∀ {u w : V},
+      (secondOrderDefectGraph G).Adj u w → ¬ G.Adj u w := by
+    intro u w huw
+    rw [hDeq] at huw
+    exact ((mem_antipodalNeighbors G u w).mp
+      ((antipodalGraph_adj G u w).mp huw)).2.1
+  rw [Finset.disjoint_left]
+  intro z hzB hzQ
+  simp only [Finset.mem_union, G.mem_neighborFinset] at hzB
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hzQ
+  have haa : ¬ G.Adj a a := G.loopless.irrefl a
+  have hbb : ¬ G.Adj b b := G.loopless.irrefl b
+  have hxx : ¬ G.Adj x x := G.loopless.irrefl x
+  have hyy : ¬ G.Adj y y := G.loopless.irrefl y
+  have habG := hnotG_of_D hab
+  have haxG := hnotG_of_D hax
+  have hbxG := hnotG_of_D hbx
+  have hayG := hnotG_of_D hay
+  have hbyG := hnotG_of_D hby
+  have hxyG := hnotG_of_D hxy
+  have hbaG : ¬ G.Adj b a := fun h => habG h.symm
+  have hxaG : ¬ G.Adj x a := fun h => haxG h.symm
+  have hxbG : ¬ G.Adj x b := fun h => hbxG h.symm
+  have hyaG : ¬ G.Adj y a := fun h => hayG h.symm
+  have hybG : ¬ G.Adj y b := fun h => hbyG h.symm
+  have hyxG : ¬ G.Adj y x := fun h => hxyG h.symm
+  aesop
+
+/-- Sharp residual degree structure in the pure antipodal closed-`K₄`
+branch: every residual vertex has four neighbors in the 24-vertex block
+layer and two neighbors inside the residual six-set. -/
+theorem degreeSix_thirtyFour_defectKFour_residual_G_degree_profile
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    R.card = 6 ∧ ∀ r ∈ R,
+      (G.neighborFinset r ∩ R).card = 2 ∧
+        (G.neighborFinset r ∩ B).card = 4 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  have hBcard : B.card = 24 := by
+    simpa [B] using
+      degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+        G hfree hreg hab hax hbx hay hby hxy
+  have hQcard : Q.card = 4 := by
+    have habNe := (secondOrderDefectGraph G).ne_of_adj hab
+    have haxNe := (secondOrderDefectGraph G).ne_of_adj hax
+    have hbxNe := (secondOrderDefectGraph G).ne_of_adj hbx
+    have hayNe := (secondOrderDefectGraph G).ne_of_adj hay
+    have hbyNe := (secondOrderDefectGraph G).ne_of_adj hby
+    have hxyNe := (secondOrderDefectGraph G).ne_of_adj hxy
+    simp [Q, habNe, haxNe, hbxNe, hayNe, hbyNe, hxyNe]
+  have hdBQ : Disjoint B Q := by
+    simpa [B, Q] using defectKFour_blocks_disjoint_centers_of_eq_antipodal
+      G hDeq hab hax hbx hay hby hxy
+  have hUcard : (B ∪ Q).card = 28 := by
+    rw [Finset.card_union_of_disjoint hdBQ, hBcard, hQcard]
+  have hRcard : R.card = 6 := by
+    change (Finset.univ \ (B ∪ Q)).card = 6
+    rw [Finset.card_sdiff_of_subset (Finset.subset_univ _),
+      Finset.card_univ, hcard, hUcard]
+  rcases cubic_defectKFour_neighborFinsets (secondOrderDefectGraph G) hDreg
+      hab hax hbx hay hby hxy with ⟨hKa, hKb, hKx, hKy⟩
+  have hinternal : ∀ r ∈ R, (G.neighborFinset r ∩ R).card ≤ 2 := by
+    intro r hr
+    have hDsub : (secondOrderDefectGraph G).neighborFinset r ⊆ R := by
+      intro w hrw
+      have hrwAdj : (secondOrderDefectGraph G).Adj r w := by simpa using hrw
+      have hrNotU := (Finset.mem_sdiff.mp hr).2
+      have hrOutside : r ∉ Q := by
+        intro hrQ
+        exact hrNotU (Finset.mem_union_right B hrQ)
+      have hrZero : ∀ z ∈ Q, ¬ G.Adj z r := by
+        intro z hzQ hzr
+        apply hrNotU
+        apply Finset.mem_union_left Q
+        simp only [B, Finset.mem_union, G.mem_neighborFinset]
+        simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hzQ
+        rcases hzQ with hza | hzb | hzx | hzy
+        · exact Or.inl (Or.inl (Or.inl (hza ▸ hzr)))
+        · exact Or.inl (Or.inl (Or.inr (hzb ▸ hzr)))
+        · exact Or.inl (Or.inr (hzx ▸ hzr))
+        · exact Or.inr (hzy ▸ hzr)
+      have haZero : ¬ G.Adj a w :=
+        no_adj_of_defect_adj_of_zero_block_contact G hfree hreg Q
+          (by rw [hKa]; simp [Q]) hrZero hrwAdj
+      have hbZero : ¬ G.Adj b w :=
+        no_adj_of_defect_adj_of_zero_block_contact G hfree hreg Q
+          (by rw [hKb]; simp [Q]) hrZero hrwAdj
+      have hxZero : ¬ G.Adj x w :=
+        no_adj_of_defect_adj_of_zero_block_contact G hfree hreg Q
+          (by rw [hKx]; simp [Q]) hrZero hrwAdj
+      have hyZero : ¬ G.Adj y w :=
+        no_adj_of_defect_adj_of_zero_block_contact G hfree hreg Q
+          (by rw [hKy]; simp [Q]) hrZero hrwAdj
+      have hwOutside : w ∉ Q := by
+        intro hwQ
+        apply hrOutside
+        have hrMem : r ∈ (secondOrderDefectGraph G).neighborFinset w := by
+          simpa using hrwAdj.symm
+        simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hwQ ⊢
+        rcases hwQ with hwa | hwb | hwx | hwy
+        · rw [hwa, hKa] at hrMem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hrMem ⊢
+          aesop
+        · rw [hwb, hKb] at hrMem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hrMem ⊢
+          aesop
+        · rw [hwx, hKx] at hrMem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hrMem ⊢
+          aesop
+        · rw [hwy, hKy] at hrMem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hrMem ⊢
+          aesop
+      apply Finset.mem_sdiff.mpr
+      refine ⟨Finset.mem_univ w, ?_⟩
+      intro hwU
+      rcases Finset.mem_union.mp hwU with hwB | hwQ
+      · simp only [B, Finset.mem_union, G.mem_neighborFinset] at hwB
+        rcases hwB with ((hwa | hwb) | hwx) | hwy
+        · exact haZero hwa
+        · exact hbZero hwb
+        · exact hxZero hwx
+        · exact hyZero hwy
+      · exact hwOutside hwQ
+    have hDcard : ((secondOrderDefectGraph G).neighborFinset r).card = 3 := by
+      rw [(secondOrderDefectGraph G).card_neighborFinset_eq_degree, hDreg r]
+    exact internal_G_neighbor_card_le_two_of_closed_cubic_antipodal_six
+      G hDeq R hRcard hr hDsub hDcard
+  have hpartition : ∀ r ∈ R,
+      (G.neighborFinset r ∩ B).card + (G.neighborFinset r ∩ R).card = 6 := by
+    intro r hr
+    have hrNotU := (Finset.mem_sdiff.mp hr).2
+    have hrQ : ∀ q ∈ Q, ¬ G.Adj r q := by
+      intro q hq hrq
+      apply hrNotU
+      apply Finset.mem_union_left Q
+      simp only [B, Finset.mem_union, G.mem_neighborFinset]
+      simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with hqa | hqb | hqx | hqy
+      · exact Or.inl (Or.inl (Or.inl (hqa ▸ hrq.symm)))
+      · exact Or.inl (Or.inl (Or.inr (hqb ▸ hrq.symm)))
+      · exact Or.inl (Or.inr (hqx ▸ hrq.symm))
+      · exact Or.inr (hqy ▸ hrq.symm)
+    simpa [R] using
+      card_neighbor_inter_add_card_neighbor_inter_compl_union
+        G B Q (hreg r) hrQ
+  have hlower : ∀ r ∈ R, 4 ≤ (G.neighborFinset r ∩ B).card := by
+    intro r hr
+    have hi := hinternal r hr
+    have hp := hpartition r hr
+    omega
+  have hsum : (∑ r ∈ R, (G.neighborFinset r ∩ B).card) = 24 := by
+    simpa [B, Q, R] using
+      (degreeSix_thirtyFour_defectKFour_block_residual_incidence_sum_eq_twentyFour
+        G hfree hreg hcard hDreg hab hax hbx hay hby hxy hzero).2
+  refine ⟨hRcard, ?_⟩
+  intro r hr
+  have hcross := eq_four_of_mem_of_card_six_of_four_le_of_sum_eq_twentyFour
+    R hRcard (fun z => (G.neighborFinset z ∩ B).card) hlower hsum hr
+  have hp := hpartition r hr
+  refine ⟨?_, hcross⟩
+  change (G.neighborFinset r ∩ R).card = 2
+  omega
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
