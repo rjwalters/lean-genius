@@ -135,6 +135,40 @@ theorem degreeSixQuotient_orderThree_support_partition_nat
   change (∑ j ∈ (Finset.univ.erase c) \ P, s j) = 12
   omega
 
+/-- Restrict the base row and every base-started two-step sum to its positive
+support.  This is the algebraic router used by the branchwise Model5 proof:
+once the support Finset is named, the full quotient-square equations expand
+over only one, two, or three terms. -/
+theorem degreeSixQuotient_orderThree_support_equations_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j) :
+    let P := Finset.univ.filter fun j ↦ 0 < q c j
+    (∑ j ∈ P, q c j) = 6 ∧
+      ∀ j, (∑ k ∈ P, q c k * q k j) =
+        (if c = j then 3 else 0) + s j := by
+  let P : Finset C := Finset.univ.filter fun j ↦ 0 < q c j
+  have hsupport (f : C → ℕ) :
+      (∑ j ∈ P, q c j * f j) = ∑ j, q c j * f j := by
+    apply Finset.sum_subset (Finset.filter_subset _ _)
+    intro j _ hj
+    have hz : q c j = 0 := by
+      by_contra hn
+      exact hj (by simp [Nat.pos_of_ne_zero hn])
+    simp [hz]
+  constructor
+  · calc
+      (∑ j ∈ P, q c j) = ∑ j ∈ P, q c j * 1 := by simp
+      _ = ∑ j, q c j * 1 := hsupport (fun _ ↦ 1)
+      _ = 6 := by simpa using hrow c
+  · intro j
+    calc
+      (∑ k ∈ P, q c k * q k j) = ∑ k, q c k * q k j :=
+        hsupport (fun k ↦ q k j)
+      _ = (if c = j then 3 else 0) + s j := hsq c j
+
 /-- Cardinality form of the base support partition.  Positive and invisible
 support are both nonempty and together contain every component except the
 base. -/
