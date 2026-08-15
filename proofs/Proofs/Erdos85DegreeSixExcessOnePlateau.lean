@@ -270,6 +270,41 @@ theorem degreeSix_thirtyFour_negOne_defectEigenspace_even
         have hle : x ≤ 6 := Nat.le_of_dvd (by norm_num) ⟨x, hx⟩
         interval_cases x <;> omega) hsq
 
+/-- The `-3` defect eigenspace likewise has even rational dimension: the
+original adjacency restriction squares to `8`, again a rational
+nonsquare.  The residual `K₃,₃` contributes one visible `-3` direction, so
+this parity forces another such direction elsewhere in the defect graph. -/
+theorem degreeSix_thirtyFour_negThree_defectEigenspace_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hregD : ∀ x, (secondOrderDefectGraph G).degree x = 3) :
+    Even (Module.finrank ℚ
+      (defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ))) := by
+  let A := G.adjMatrix ℚ
+  let D := (secondOrderDefectGraph G).adjMatrix ℚ
+  let hcomm : A * D = D * A :=
+    adjMatrix_comm_secondOrderDefect_of_regular_rat G hfree hreg
+  have hsq :
+      defectEigenspaceRestrict A hcomm (-3 : ℚ) *
+          defectEigenspaceRestrict A hcomm (-3 : ℚ) =
+        (8 : ℚ) • LinearMap.id := by
+    have ht := graph_defectEigenspaceRestrict_sq_of_regular_excess
+      G hfree (d := 6) (e := 1) hreg hregD
+        (μ := (-3 : ℚ)) (by norm_num)
+    norm_num at ht
+    simpa [A, D] using ht
+  exact LinearMap.even_finrank_of_sq_eq_nonsquare_nat
+    (defectEigenspaceRestrict A hcomm (-3 : ℚ)) 8
+      (by
+        rintro ⟨x, hx⟩
+        have hle : x ≤ 8 := Nat.le_of_dvd (by norm_num) ⟨x, hx⟩
+        interval_cases x <;> omega) hsq
+
 /-- Decode the mod-two defect-set equation when the set has even order. -/
 theorem oddDefectSet_neighborParity_of_even
     {V : Type*} [Fintype V] [DecidableEq V]
