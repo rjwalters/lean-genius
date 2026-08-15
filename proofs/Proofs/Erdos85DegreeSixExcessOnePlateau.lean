@@ -144,6 +144,91 @@ theorem oddDefectSet_nine_le_card_of_odd_of_cubic_thirtyFour
   rw [houtside] at hcut
   omega
 
+/-- In the odd-cardinality branch of a cubic defect graph, every vertex of
+the defect set also has a neighbor outside it. -/
+theorem oddDefectSet_complement_dominates_inside_of_odd_of_cubic
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hreg : ∀ v, D.degree v = 3) (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∀ v ∈ W, ∃ w ∉ W, D.Adj v w := by
+  have hin := (oddDefectSet_neighborParity_of_odd D W hW hparity).1
+  intro v hv
+  by_contra hnone
+  push Not at hnone
+  have hsubset : D.neighborFinset v ⊆ W := by
+    intro w hw
+    by_contra hwW
+    exact hnone w hwW ((D.mem_neighborFinset v w).mp hw)
+  have hinter : D.neighborFinset v ∩ W = D.neighborFinset v :=
+    Finset.inter_eq_left.mpr hsubset
+  have hthree : (D.neighborFinset v ∩ W).card = 3 := by
+    rw [hinter, D.card_neighborFinset_eq_degree, hreg v]
+  have heven := hin v hv
+  rw [hthree] at heven
+  norm_num at heven
+
+/-- The symmetric cubic cut count bounds an odd-cardinality defect set on 34
+vertices from above by 25. -/
+theorem oddDefectSet_card_le_twentyFive_of_odd_of_cubic_thirtyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    W.card ≤ 25 := by
+  let S : Finset V := Wᶜ
+  have hdom := oddDefectSet_complement_dominates_inside_of_odd_of_cubic
+    D W hreg hW hparity
+  have hpoint : ∀ v : {v : V // v ∉ S},
+      1 ≤ (D.neighborFinset v.1 ∩ S).card := by
+    intro v
+    have hvW : v.1 ∈ W := by simpa [S] using v.2
+    obtain ⟨w, hwW, hvw⟩ := hdom v.1 hvW
+    have hwS : w ∈ S := by simpa [S] using hwW
+    exact Finset.one_le_card.mpr ⟨w, Finset.mem_inter.mpr
+      ⟨(D.mem_neighborFinset v.1 w).mpr hvw, hwS⟩⟩
+  have hlower : Fintype.card {v : V // v ∉ S} ≤
+      ∑ v : {v : V // v ∉ S}, (D.neighborFinset v.1 ∩ S).card := by
+    have hsum := Finset.sum_le_sum (s :=
+      (Finset.univ : Finset {v : V // v ∉ S})) fun v _hv => hpoint v
+    simpa using hsum
+  have hupper := sum_card_neighbor_inter_deleted_le_sum_degrees D S
+  have hrhs : (∑ x ∈ S, D.degree x) = S.card * 3 := by
+    simp [hreg]
+  have hcut : Fintype.card {v : V // v ∉ S} ≤ S.card * 3 := by
+    rw [← hrhs]
+    exact hlower.trans hupper
+  have houtside : Fintype.card {v : V // v ∉ S} = W.card := by
+    simp [S]
+  have hScard : S.card = 34 - W.card := by
+    simp [S, Finset.card_compl, hcard]
+  have hWle : W.card ≤ 34 := by
+    rw [← hcard]
+    exact Finset.card_le_univ W
+  rw [houtside, hScard] at hcut
+  omega
+
+/-- Combined size window for the odd-cardinality branch of the order-34
+cubic defect kernel. -/
+theorem oddDefectSet_card_mem_nine_twentyFive_of_odd_of_cubic_thirtyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hcard : Fintype.card V = 34) (hreg : ∀ v, D.degree v = 3)
+    (hW : Odd W.card)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    9 ≤ W.card ∧ W.card ≤ 25 :=
+  ⟨oddDefectSet_nine_le_card_of_odd_of_cubic_thirtyFour
+      D W hcard hreg hW hparity,
+    oddDefectSet_card_le_twentyFive_of_odd_of_cubic_thirtyFour
+      D W hcard hreg hW hparity⟩
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
