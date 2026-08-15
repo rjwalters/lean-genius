@@ -163,4 +163,20 @@ theorem C4PlateauCore.degreeSix_order_eq_thirtyTwo
   · subst m
     exact (not_C4PlateauCore_thirtyFive_six hcore).elim
 
+/-- The remaining first-order degree-six case is excluded by the parity-free
+second strict Moore bound. -/
+theorem not_C4PlateauCore_thirtyTwo_six : ¬ C4PlateauCore 32 6 := by
+  rintro ⟨G, hdec, hmin, hfree, _hcover, _hnext⟩
+  letI : DecidableRel G.Adj := hdec
+  exact hfree (containsC4_of_firstOrder G (by norm_num) hmin.ge (by norm_num))
+
+/-- Complete degree-six plateau exclusion below the square order. -/
+theorem not_C4PlateauCore_degreeSix_of_lt_thirtySix
+    {m : ℕ} (hm : 4 ≤ m) (hsize : m < 36) :
+    ¬ C4PlateauCore m 6 := by
+  intro hcore
+  have hm32 := hcore.degreeSix_order_eq_thirtyTwo hm hsize
+  subst m
+  exact not_C4PlateauCore_thirtyTwo_six hcore
+
 end Erdos85
