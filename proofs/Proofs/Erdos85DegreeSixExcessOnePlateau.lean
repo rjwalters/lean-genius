@@ -1760,6 +1760,35 @@ theorem sixSet_one_neighbor_intersection_le_three_of_c4Free
   push Not at hnot
   omega
 
+/-- Degree-six complement form: at least one of the two neighborhoods has
+three vertices outside the six-set. -/
+theorem sixSet_one_neighbor_sdiff_three_le_of_c4Free_degreeSix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ v, G.degree v = 6)
+    (R : Finset V) (hRcard : R.card = 6)
+    {x y : V} (hxy : x ≠ y) :
+    3 ≤ (G.neighborFinset x \ R).card ∨
+      3 ≤ (G.neighborFinset y \ R).card := by
+  have hsmall := sixSet_one_neighbor_intersection_le_three_of_c4Free
+    G hfree R hRcard hxy
+  have hxpart := Finset.card_sdiff_add_card_inter
+    (G.neighborFinset x) R
+  have hypart := Finset.card_sdiff_add_card_inter
+    (G.neighborFinset y) R
+  rw [G.card_neighborFinset_eq_degree, hreg x] at hxpart
+  rw [G.card_neighborFinset_eq_degree, hreg y] at hypart
+  rcases hsmall with hx | hy
+  · left
+    have hx' : (G.neighborFinset x ∩ R).card ≤ 3 := by
+      simpa [Finset.inter_comm] using hx
+    omega
+  · right
+    have hy' : (G.neighborFinset y ∩ R).card ≤ 3 := by
+      simpa [Finset.inter_comm] using hy
+    omega
+
 /-- Applied to the six cross-triangle witnesses, at least one of the two
 common defect neighbors sees at most three witnesses. -/
 theorem degreeSix_thirtyFour_adjacent_defect_twins_exists_six_crossTriangleWitnesses_one_common_inter_le_three
