@@ -370,6 +370,96 @@ theorem degreeSix_thirtyFive_triangleFree_commutator_sq_trace
   dsimp only at hgap
   linear_combination -2 * hgap
 
+/-- The negative trace of the square of a skew-symmetric integer matrix is
+its entrywise squared norm. -/
+theorem neg_trace_sq_eq_sum_entry_sq_of_skew
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (K : Matrix ι ι ℤ)
+    (hskew : ∀ i j, K j i = -K i j) :
+    -Matrix.trace (K * K) = ∑ i : ι, ∑ j : ι, (K i j) ^ 2 := by
+  rw [Matrix.trace]
+  simp only [Matrix.diag_apply, Matrix.mul_apply]
+  calc
+    -(∑ i, ∑ j, K i j * K j i) =
+        ∑ i, -(∑ j, K i j * K j i) := by simp
+    _ = ∑ i, ∑ j, -(K i j * K j i) := by simp
+    _ = ∑ i, ∑ j, (K i j) ^ 2 := by
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [hskew i j]
+      ring
+
+/-- The commutator of two symmetric integer matrices is skew-symmetric. -/
+theorem matrix_commutator_apply_swap_eq_neg
+    {ι : Type*} [Fintype ι]
+    (A T : Matrix ι ι ℤ)
+    (hA : ∀ i j, A j i = A i j)
+    (hT : ∀ i j, T j i = T i j) :
+    ∀ i j, (A * T - T * A) j i = -(A * T - T * A) i j := by
+  intro i j
+  simp only [Matrix.sub_apply, Matrix.mul_apply]
+  have hAT : (∑ k, A j k * T k i) = ∑ k, T i k * A k j := by
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [hA j k, hT k i, mul_comm]
+  have hTA : (∑ k, T j k * A k i) = ∑ k, A i k * T k j := by
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [hT j k, hA k i, mul_comm]
+  rw [hAT, hTA]
+  ring
+
+/-- Entrywise Frobenius form of the order-35 color commutator identity. -/
+theorem degreeSix_thirtyFive_triangleFree_commutator_entry_sq_sum
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ x, G.degree x = 6)
+    (hcard : Fintype.card V = 35) :
+    let A := G.adjMatrix ℤ
+    let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+    (∑ i : V, ∑ j : V, ((A * T - T * A) i j) ^ 2) =
+      16 * (((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 2).card : ℤ) +
+        ((Finset.univ.filter fun x : V =>
+          (triangleFreeEdgeGraph G).degree x = 4).card : ℤ)) := by
+  dsimp only
+  let A := G.adjMatrix ℤ
+  let T := (triangleFreeEdgeGraph G).adjMatrix ℤ
+  have hA : ∀ i j, A j i = A i j := by
+    intro i j
+    simp only [A, SimpleGraph.adjMatrix_apply]
+    simp [G.adj_comm]
+  have hT : ∀ i j, T j i = T i j := by
+    intro i j
+    simp only [T, SimpleGraph.adjMatrix_apply]
+    by_cases hij : G.Adj i j
+    · have hji : G.Adj j i := (G.adj_comm i j).mp hij
+      by_cases hempty : G.neighborFinset i ∩ G.neighborFinset j = ∅
+      · have hempty' : G.neighborFinset j ∩ G.neighborFinset i = ∅ := by
+          simpa [Finset.inter_comm] using hempty
+        simp [hij, hji, hempty, hempty']
+      · have hempty' : G.neighborFinset j ∩ G.neighborFinset i ≠ ∅ := by
+          simpa [Finset.inter_comm] using hempty
+        simp [hij, hji, hempty, hempty']
+    · have hji : ¬G.Adj j i := by
+        intro hji
+        exact hij ((G.adj_comm j i).mp hji)
+      simp [hij, hji]
+  have hnorm := neg_trace_sq_eq_sum_entry_sq_of_skew
+    (A * T - T * A) (matrix_commutator_apply_swap_eq_neg A T hA hT)
+  have htrace := degreeSix_thirtyFive_triangleFree_commutator_sq_trace
+    G hfree hreg hcard
+  dsimp only at htrace
+  change Matrix.trace ((A * T - T * A) * (A * T - T * A)) = _ at htrace
+  rw [htrace] at hnorm
+  rw [← hnorm]
+  ring
+
 /-- **Odd excess-three normalization.**  The whole triangle-free side is a
 known affine expression in the degree-three sector size, apart from the
 single mixed count `tr(C T²)`. -/
