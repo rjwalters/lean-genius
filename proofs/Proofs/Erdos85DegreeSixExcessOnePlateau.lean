@@ -6690,6 +6690,15 @@ theorem degreeSix_thirtyFour_closed_defectKFour_blockVertex_residual_inter_card_
   change (G.neighborFinset p ∩ R).card = 1
   omega
 
+/-- The four center-neighborhood fibers, indexed in the order `a,b,x,y`. -/
+def centerFiber4 {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b x y : V) (c : Fin 4) : Finset V :=
+  if c = 0 then G.neighborFinset a
+  else if c = 1 then G.neighborFinset b
+  else if c = 2 then G.neighborFinset x
+  else G.neighborFinset y
+
 /-- The block layer is partitioned into six four-vertex label cells, one
 for each residual cycle vertex.  Equivalently every block vertex has a
 unique residual neighbor, while every residual label occurs four times. -/
@@ -6744,6 +6753,170 @@ theorem degreeSix_thirtyFour_closed_defectKFour_residual_label_cells
         Finset.mem_inter.mpr ⟨(G.mem_neighborFinset p s).mpr hs.2, hs.1⟩
       rw [hrCell] at hsCell
       exact Finset.mem_singleton.mp hsCell
+
+/-- Choose the unique vertex in every center-fiber/residual-label
+intersection.  The resulting `Fin 4 × Fin 6` coordinate map is injective,
+so it names all 24 block-layer vertices without collisions. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_coordinates
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ f : Fin 6 → V, ∃ u : Fin 4 → Fin 6 → V,
+      Function.Injective f ∧ Set.range f = (↑R : Set V) ∧
+      (∀ c i, u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i)) ∧
+      Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  obtain ⟨f, hfinj, hfrange, _hrows⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_residual_original_rows
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hfR (i : Fin 6) : f i ∈ R := by
+    have hi : f i ∈ Set.range f := Set.mem_range_self _
+    rw [hfrange] at hi
+    simpa [B, R, Finset.union_assoc] using hi
+  have hcellCard (c : Fin 4) (i : Fin 6) :
+      (G.neighborFinset (f i) ∩ centerFiber4 G a b x y c).card = 1 := by
+    have hc := degreeSix_thirtyFour_closed_defectKFour_residual_four_fiber_counts
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+        (by simpa [B, R, Finset.union_assoc] using hfR i)
+    fin_cases c
+    · simpa [centerFiber4] using hc.1
+    · simpa [centerFiber4] using hc.2.1
+    · simpa [centerFiber4] using hc.2.2.1
+    · simpa [centerFiber4] using hc.2.2.2
+  let u : Fin 4 → Fin 6 → V := fun c i =>
+    (Finset.card_pos.mp (by rw [hcellCard c i]; decide)).choose
+  have huMem (c : Fin 4) (i : Fin 6) :
+      u c i ∈ G.neighborFinset (f i) ∩ centerFiber4 G a b x y c :=
+    (Finset.card_pos.mp (by rw [hcellCard c i]; decide)).choose_spec
+  have huData : ∀ c i,
+      u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i) := by
+    intro c i
+    have hm := Finset.mem_inter.mp (huMem c i)
+    exact ⟨hm.2, (G.mem_neighborFinset (f i) (u c i)).mp hm.1 |>.symm⟩
+  have hcells := degreeSix_thirtyFour_closed_defectKFour_residual_label_cells
+    G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  refine ⟨f, u, hfinj, hfrange, huData, ?_⟩
+  rintro ⟨c, i⟩ ⟨d, j⟩ hud
+  have hucB : u c i ∈ B := by
+    have hc := (huData c i).1
+    fin_cases c
+    · simp [centerFiber4] at hc
+      simp only [B, Finset.mem_union]
+      exact Or.inl (Or.inl (Or.inl ((G.mem_neighborFinset _ _).mpr hc)))
+    · simp [centerFiber4] at hc
+      simp only [B, Finset.mem_union]
+      exact Or.inl (Or.inl (Or.inr ((G.mem_neighborFinset _ _).mpr hc)))
+    · simp [centerFiber4] at hc
+      simp only [B, Finset.mem_union]
+      exact Or.inl (Or.inr ((G.mem_neighborFinset _ _).mpr hc))
+    · simp [centerFiber4] at hc
+      simp only [B, Finset.mem_union]
+      exact Or.inr ((G.mem_neighborFinset _ _).mpr hc)
+  change u c i = u d j at hud
+  obtain ⟨r, _hr, huniq⟩ := hcells.2 (u c i) (by simpa [B] using hucB)
+  have hri := huniq (f i) ⟨by
+    simpa [B, R, Finset.union_assoc] using hfR i, (huData c i).2⟩
+  have hrj := huniq (f j) ⟨by
+    simpa [B, R, Finset.union_assoc] using hfR j, by
+      rw [hud]
+      exact (huData d j).2⟩
+  have hij : i = j := hfinj (hri.trans hrj.symm)
+  subst j
+  have huc := (huData c i).1
+  have hud' := (huData d i).1
+  rw [hud] at huc
+  have hdAB := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hab
+  have hdAX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hax
+  have hdBX := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hbx
+  have hdAY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hay
+  have hdBY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hby
+  have hdXY := neighborFinset_disjoint_of_secondOrderDefect_adj G hfree hxy
+  have hFiberDisjoint (c d : Fin 4) (hne : c ≠ d) :
+      Disjoint (centerFiber4 G a b x y c) (centerFiber4 G a b x y d) := by
+    fin_cases c <;> fin_cases d <;> simp at hne
+    all_goals first
+      | simpa [centerFiber4] using hdAB
+      | simpa [centerFiber4] using hdAB.symm
+      | simpa [centerFiber4] using hdAX
+      | simpa [centerFiber4] using hdAX.symm
+      | simpa [centerFiber4] using hdBX
+      | simpa [centerFiber4] using hdBX.symm
+      | simpa [centerFiber4] using hdAY
+      | simpa [centerFiber4] using hdAY.symm
+      | simpa [centerFiber4] using hdBY
+      | simpa [centerFiber4] using hdBY.symm
+      | simpa [centerFiber4] using hdXY
+      | simpa [centerFiber4] using hdXY.symm
+  have hcd : c = d := by
+    by_contra hne
+    exact Finset.disjoint_left.mp (hFiberDisjoint c d hne) huc hud'
+  subst d
+  rfl
+
+/-- The preceding coordinate map exhausts every center fiber: each row is
+literally the image of its six residual-label coordinates. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_equiv
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ f : Fin 6 → V, ∃ u : Fin 4 → Fin 6 → V,
+      Function.Injective f ∧ Set.range f = (↑R : Set V) ∧
+      (∀ c i, u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i)) ∧
+      Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
+      ∀ c, Finset.univ.image (u c) = centerFiber4 G a b x y c := by
+  obtain ⟨f, u, hfinj, hfrange, huData, huinj⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_coordinates
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  refine ⟨f, u, hfinj, hfrange, huData, huinj, ?_⟩
+  intro c
+  apply Finset.eq_of_subset_of_card_le
+  · intro z hz
+    obtain ⟨i, _hi, rfl⟩ := Finset.mem_image.mp hz
+    exact (huData c i).1
+  · have hrowInj : Function.Injective (u c) := by
+      intro i j hij
+      have hp := huinj (show u (c, i).1 (c, i).2 = u (c, j).1 (c, j).2 by
+        simpa using hij)
+      exact congrArg Prod.snd hp
+    rw [Finset.card_image_of_injective _ hrowInj, Finset.card_univ]
+    fin_cases c <;>
+      simp [centerFiber4, SimpleGraph.card_neighborFinset_eq_degree, hreg]
 
 /-- A center with triangle-free degree zero induces a one-factor on its
 original neighborhood: each neighbor has exactly one partner in that
@@ -6936,6 +7109,195 @@ theorem degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
   have hXLe := common_le_one_of_not_containsC4 hfree p x hpNeX
   have hYLe := common_le_one_of_not_containsC4 hfree p y hpNeY
   exact ⟨hself, by omega, by omega, by omega⟩
+
+set_option maxHeartbeats 1000000 in
+/-- In block-grid coordinates, every ordered pair of center rows determines
+a permutation matching: each coordinate in the source row has a unique
+original-graph neighbor coordinate in the target row. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_G_permutations
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ f : Fin 6 → V, ∃ u : Fin 4 → Fin 6 → V,
+      Function.Injective f ∧ Set.range f = (↑R : Set V) ∧
+      (∀ c i, u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i)) ∧
+      Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
+      (∀ c, Finset.univ.image (u c) = centerFiber4 G a b x y c) ∧
+      ∀ c d i, ∃! j, G.Adj (u c i) (u d j) := by
+  obtain ⟨f, u, hfinj, hfrange, huData, huinj, huRange⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_equiv
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hres1 : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset b ∪ G.neighborFinset a ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {b, a, x, y}) := by
+    rw [hresidual]
+    congr 1
+    ext z
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  have hres2 : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset x ∪ G.neighborFinset a ∪
+        G.neighborFinset b ∪ G.neighborFinset y ∪ {x, a, b, y}) := by
+    rw [hresidual]
+    congr 1
+    ext z
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  have hres3 : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset y ∪ G.neighborFinset a ∪
+        G.neighborFinset b ∪ G.neighborFinset x ∪ {y, a, b, x}) := by
+    rw [hresidual]
+    congr 1
+    ext z
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  have hcount (c d : Fin 4) (i : Fin 6) :
+      (G.neighborFinset (u c i) ∩ centerFiber4 G a b x y d).card = 1 := by
+    have h0 := degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+        (by simpa [centerFiber4] using (huData 0 i).1)
+    have h1 := degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
+      G hfree hreg hcard hab.symm hbx hax hby hay hxy hres1
+        (by simpa [centerFiber4] using (huData 1 i).1)
+    have h2 := degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
+      G hfree hreg hcard hax.symm hbx.symm hab hxy hay hby hres2
+        (by simpa [centerFiber4] using (huData 2 i).1)
+    have h3 := degreeSix_thirtyFour_closed_defectKFour_centerFiber_four_G_counts
+      G hfree hreg hcard hay.symm hby.symm hab hxy.symm hax hbx hres3
+        (by simpa [centerFiber4] using (huData 3 i).1)
+    fin_cases c <;> fin_cases d
+    · change (G.neighborFinset (u 0 i) ∩ G.neighborFinset a).card = 1; exact h0.1
+    · change (G.neighborFinset (u 0 i) ∩ G.neighborFinset b).card = 1; exact h0.2.1
+    · change (G.neighborFinset (u 0 i) ∩ G.neighborFinset x).card = 1; exact h0.2.2.1
+    · change (G.neighborFinset (u 0 i) ∩ G.neighborFinset y).card = 1; exact h0.2.2.2
+    · change (G.neighborFinset (u 1 i) ∩ G.neighborFinset a).card = 1; exact h1.2.1
+    · change (G.neighborFinset (u 1 i) ∩ G.neighborFinset b).card = 1; exact h1.1
+    · change (G.neighborFinset (u 1 i) ∩ G.neighborFinset x).card = 1; exact h1.2.2.1
+    · change (G.neighborFinset (u 1 i) ∩ G.neighborFinset y).card = 1; exact h1.2.2.2
+    · change (G.neighborFinset (u 2 i) ∩ G.neighborFinset a).card = 1; exact h2.2.1
+    · change (G.neighborFinset (u 2 i) ∩ G.neighborFinset b).card = 1; exact h2.2.2.1
+    · change (G.neighborFinset (u 2 i) ∩ G.neighborFinset x).card = 1; exact h2.1
+    · change (G.neighborFinset (u 2 i) ∩ G.neighborFinset y).card = 1; exact h2.2.2.2
+    · change (G.neighborFinset (u 3 i) ∩ G.neighborFinset a).card = 1; exact h3.2.1
+    · change (G.neighborFinset (u 3 i) ∩ G.neighborFinset b).card = 1; exact h3.2.2.1
+    · change (G.neighborFinset (u 3 i) ∩ G.neighborFinset x).card = 1; exact h3.2.2.2
+    · change (G.neighborFinset (u 3 i) ∩ G.neighborFinset y).card = 1; exact h3.1
+  refine ⟨f, u, hfinj, hfrange, huData, huinj, huRange, ?_⟩
+  intro c d i
+  obtain ⟨z, hzCell⟩ := Finset.card_eq_one.mp (hcount c d i)
+  have hzRow : z ∈ centerFiber4 G a b x y d := by
+    have : z ∈ G.neighborFinset (u c i) ∩ centerFiber4 G a b x y d := by
+      rw [hzCell]
+      simp
+    exact (Finset.mem_inter.mp this).2
+  have hzImage : z ∈ Finset.univ.image (u d) := by rwa [huRange d]
+  obtain ⟨j, _hj, hjz⟩ := Finset.mem_image.mp hzImage
+  refine ⟨j, ?_, ?_⟩
+  · subst z
+    have : u d j ∈ G.neighborFinset (u c i) ∩ centerFiber4 G a b x y d := by
+      rw [hzCell]
+      simp
+    exact (G.mem_neighborFinset _ _).mp (Finset.mem_inter.mp this).1
+  · intro k hk
+    have hkCell : u d k ∈
+        G.neighborFinset (u c i) ∩ centerFiber4 G a b x y d :=
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset _ _).mpr hk,
+        (huData d k).1⟩
+    have hjCell : u d j ∈
+        G.neighborFinset (u c i) ∩ centerFiber4 G a b x y d := by
+      rw [hzCell]
+      simpa using hjz
+    have hukj : u d k = u d j := by
+      rw [hzCell] at hkCell hjCell
+      exact (Finset.mem_singleton.mp hkCell).trans
+        (Finset.mem_singleton.mp hjCell).symm
+    have hp := huinj (show u (d, k).1 (d, k).2 = u (d, j).1 (d, j).2 by
+      simpa using hukj)
+    exact congrArg Prod.snd hp
+
+/-- Package the unique row-to-row neighbors as literal permutations of the
+six residual labels.  Symmetry of `G` makes the reverse-row permutation the
+inverse matching. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_permModel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    ∃ f : Fin 6 → V, ∃ u : Fin 4 → Fin 6 → V,
+      ∃ σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6),
+        Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
+        (∀ c i, G.Adj (u c i) (f i)) ∧
+        (∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) ∧
+        ∀ c d i, σ d c (σ c d i) = i := by
+  obtain ⟨f, u, _hfinj, _hfrange, huData, huinj, _huRange, hunique⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_G_permutations
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  let s : Fin 4 → Fin 4 → Fin 6 → Fin 6 := fun c d i =>
+    Classical.choose (hunique c d i)
+  have hsAdj (c d : Fin 4) (i : Fin 6) : G.Adj (u c i) (u d (s c d i)) :=
+    Classical.choose_spec (hunique c d i) |>.1
+  have hsUnique (c d : Fin 4) (i j : Fin 6)
+      (hij : G.Adj (u c i) (u d j)) : j = s c d i :=
+    Classical.choose_spec (hunique c d i) |>.2 j hij
+  have hsInj (c d : Fin 4) : Function.Injective (s c d) := by
+    intro i k hik
+    have hi : i = s d c (s c d i) :=
+      hsUnique d c (s c d i) i (hsAdj c d i).symm
+    have hk : k = s d c (s c d k) :=
+      hsUnique d c (s c d k) k (hsAdj c d k).symm
+    rw [hik] at hi
+    exact hi.trans hk.symm
+  let σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6) := fun c d =>
+    Equiv.ofBijective (s c d)
+      ((Fintype.bijective_iff_injective_and_card (s c d)).2
+        ⟨hsInj c d, rfl⟩)
+  refine ⟨f, u, σ, huinj, (fun c i => (huData c i).2), ?_, ?_⟩
+  · intro c d i j
+    constructor
+    · intro hij
+      change s c d i = j
+      exact (hsUnique c d i j hij).symm
+    · intro hij
+      change s c d i = j at hij
+      rw [← hij]
+      exact hsAdj c d i
+  · intro c d i
+    change s d c (s c d i) = i
+    exact (hsUnique d c (s c d i) i (hsAdj c d i).symm).symm
 
 /-- Residual `K₃,₃` adjacency transports the unique residual labels across
 the block-layer defect graph: from a block vertex labeled `r`, exactly one
