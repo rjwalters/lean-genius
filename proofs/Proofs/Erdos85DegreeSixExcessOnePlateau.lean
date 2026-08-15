@@ -743,6 +743,58 @@ theorem excessOne_even_adjacent_defect_twins_triangleFree_degree_cases
       exact not_two_adjacent_triangleFree_in_defect_triangle
         G havT hbvT.symm habD.symm
 
+/-- Full two-color degree profile at adjacent defect twins.  The three
+triangle-free cases lift respectively to `(T,C)` degree pairs
+`((0,3),(0,3))`, `((2,1),(0,3))`, and `((0,3),(2,1))`. -/
+theorem excessOne_even_adjacent_defect_twins_color_degree_cases
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} (heven : Even d)
+    (hreg : ∀ x, G.degree x = d)
+    (hcard : Fintype.card V = d * (d - 1) + 4)
+    {a b : V} (habD : (secondOrderDefectGraph G).Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b →
+      ((secondOrderDefectGraph G).Adj a v ↔
+        (secondOrderDefectGraph G).Adj b v)) :
+    (((triangleFreeEdgeGraph G).degree a = 0 ∧
+          (antipodalGraph G).degree a = 3) ∧
+        ((triangleFreeEdgeGraph G).degree b = 0 ∧
+          (antipodalGraph G).degree b = 3)) ∨
+      (((triangleFreeEdgeGraph G).degree a = 2 ∧
+          (antipodalGraph G).degree a = 1) ∧
+        ((triangleFreeEdgeGraph G).degree b = 0 ∧
+          (antipodalGraph G).degree b = 3)) ∨
+      (((triangleFreeEdgeGraph G).degree a = 0 ∧
+          (antipodalGraph G).degree a = 3) ∧
+        ((triangleFreeEdgeGraph G).degree b = 2 ∧
+          (antipodalGraph G).degree b = 1)) := by
+  have ha := excessOne_even_color_degree_classification
+    G hfree heven hreg hcard a
+  have hb := excessOne_even_color_degree_classification
+    G hfree heven hreg hcard b
+  rcases excessOne_even_adjacent_defect_twins_triangleFree_degree_cases
+      G hfree heven hreg hcard habD htwins with h00 | h20 | h02
+  · left
+    rcases ha with ha0 | ha2
+    · rcases hb with hb0 | hb2
+      · exact ⟨ha0, hb0⟩
+      · omega
+    · omega
+  · right; left
+    rcases ha with ha0 | ha2
+    · omega
+    · rcases hb with hb0 | hb2
+      · exact ⟨ha2, hb0⟩
+      · omega
+  · right; right
+    rcases ha with ha0 | ha2
+    · rcases hb with hb0 | hb2
+      · omega
+      · exact ⟨ha0, hb2⟩
+    · omega
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
