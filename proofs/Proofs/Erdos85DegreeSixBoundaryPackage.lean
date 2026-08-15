@@ -1,6 +1,7 @@
 import Proofs.Erdos85DegreeSixColorSectorSplit
 import Proofs.Erdos85PlateauExcessStructure
 import Proofs.Erdos85PositiveExcessLocalParity
+import Proofs.Erdos85Boza36Witness
 
 /-!
 # Degree-six boundary package
@@ -121,5 +122,19 @@ theorem C4PlateauCore.degreeSix_thirtyFive_exists_excessTwo_colorData
       G hfree (by norm_num) hreg (by norm_num) x
   · exact trace_adjMatrix_mul_secondOrderDefect_even_excessTwo
       G hfree (by norm_num) hreg (by norm_num)
+
+/-- The order-35 degree-six plateau case is impossible because the checked
+Boza/House-of-Graphs witness already supplies a `C₄`-free minimum-degree-six
+graph at order 36, contradicting one-step nonextension. -/
+theorem not_C4PlateauCore_thirtyFive_six : ¬ C4PlateauCore 35 6 := by
+  intro hcore
+  rcases hcore.degreeSix_thirtyFive_exists_excessTwo_colorData with
+    ⟨_G, _hdec, _hantiDec, _htriangleDec, _hfree, _hreg, _hDreg,
+      _hcolors, _htrace, hnext⟩
+  exact boza36Graph_not_containsC4
+    (hnext boza36Graph inferInstance (by
+      apply SimpleGraph.le_minDegree_of_forall_le_degree
+      intro v
+      rw [boza36Graph_degree v]))
 
 end Erdos85
