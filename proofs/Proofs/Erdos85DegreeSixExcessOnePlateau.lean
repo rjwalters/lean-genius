@@ -2631,6 +2631,55 @@ theorem internal_G_neighbor_card_le_two_of_closed_cubic_antipodal_six
   rw [hunion, hDcard, herase] at hle
   omega
 
+/-- Sharp form of the same six-set count: once the internal original degree
+is two, the two original neighbors and three defect neighbors partition all
+five other residual vertices. -/
+theorem internal_G_union_defect_neighbors_eq_erase_of_closed_cubic_antipodal_six
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    (hDeq : secondOrderDefectGraph G = antipodalGraph G)
+    (R : Finset V) (hRcard : R.card = 6)
+    {v : V} (hv : v ∈ R)
+    (hDsub : (secondOrderDefectGraph G).neighborFinset v ⊆ R)
+    (hDcard : ((secondOrderDefectGraph G).neighborFinset v).card = 3)
+    (hGcard : (G.neighborFinset v ∩ R).card = 2) :
+    (G.neighborFinset v ∩ R) ∪
+      (secondOrderDefectGraph G).neighborFinset v = R.erase v := by
+  let A := G.neighborFinset v ∩ R
+  let Dv := (secondOrderDefectGraph G).neighborFinset v
+  have hdAD : Disjoint A Dv := by
+    rw [Finset.disjoint_left]
+    intro z hzA hzD
+    have hvzG : G.Adj v z :=
+      (G.mem_neighborFinset v z).mp (Finset.mem_inter.mp hzA).1
+    have hvzD : (secondOrderDefectGraph G).Adj v z :=
+      ((secondOrderDefectGraph G).mem_neighborFinset v z).mp hzD
+    rw [hDeq] at hvzD
+    exact ((mem_antipodalNeighbors G v z).mp
+      ((antipodalGraph_adj G v z).mp hvzD)).2.1 hvzG
+  have hsub : A ∪ Dv ⊆ R.erase v := by
+    intro z hz
+    apply Finset.mem_erase.mpr
+    rcases Finset.mem_union.mp hz with hzA | hzD
+    · have hzParts := Finset.mem_inter.mp hzA
+      exact ⟨fun hzv => G.loopless.irrefl v (hzv ▸
+        (G.mem_neighborFinset v z).mp hzParts.1), hzParts.2⟩
+    · have hvzD : (secondOrderDefectGraph G).Adj v z :=
+        ((secondOrderDefectGraph G).mem_neighborFinset v z).mp hzD
+      exact ⟨fun hzv => (secondOrderDefectGraph G).loopless.irrefl v
+        (hzv ▸ hvzD), hDsub hzD⟩
+  have herase : (R.erase v).card = 5 := by
+    rw [Finset.card_erase_of_mem hv, hRcard]
+  have hunion : (A ∪ Dv).card = A.card + Dv.card :=
+    Finset.card_union_of_disjoint hdAD
+  change A ∪ Dv = R.erase v
+  apply Finset.eq_of_subset_of_card_le hsub
+  rw [herase, hunion]
+  dsimp only [A, Dv]
+  omega
+
 /-- Symmetric cut-incidence double count for two finite vertex sets. -/
 theorem sum_card_neighbor_inter_comm
     {V : Type*} [Fintype V] [DecidableEq V]
