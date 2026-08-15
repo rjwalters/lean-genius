@@ -939,6 +939,44 @@ theorem false_of_degreeSixQuotient_model5_two_four_nat
     (by omega) (by omega) (by omega) (by omega)
     (by omega) (by omega) hbalRT (by omega) (by omega)
 
+/-- Under the full Model5 hypotheses the two positive base weights are both
+three.  The competing `2+4` and `4+2` cases are discharged by the structural
+five-component adapter above. -/
+theorem degreeSixQuotient_model5_support_weights_three_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c : C)
+    (hslo : ∀ i, 3 ≤ s i)
+    (hcard : Fintype.card C = 5)
+    (htotal : (∑ i, s i) = 33)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2) (htrace : (∑ i, q i i) = 6)
+    (hc3 : s c = 3) (hcc : q c c = 0) :
+    ∃ a b r t, a ≠ b ∧ r ≠ t ∧
+      (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b} ∧
+      ((Finset.univ.erase c) \
+        (Finset.univ.filter fun j ↦ 0 < q c j)) = {r, t} ∧
+      q c a = 3 ∧ q c b = 3 ∧ s a = 9 ∧ s b = 9 := by
+  obtain ⟨a, b, r, t, hab, hrt, hP, hR, haPos, hbPos, hweights,
+      hac, hbc, haSize, hbSize⟩ := degreeSixQuotient_model5_support_names_nat
+    s q c hslo hcard htotal hrow hbal hsq hdiag hc3 hcc
+  have hcases := degreeSixQuotient_orderThree_support_two_weight_cases_nat
+    s q c a b hab hP haPos hbPos hweights haSize hbSize
+      hrow hbal hsq hdiag hcc
+  rcases hcases with h24 | h33 | h42
+  · exact (false_of_degreeSixQuotient_model5_two_four_nat
+      s q c a b r t hslo htotal hrow hbal hsq hdiag htrace hc3 hcc
+        hab hrt hP hR h24.1 h24.2 (by omega) (by omega)).elim
+  · exact ⟨a, b, r, t, hab, hrt, hP, hR, h33.1, h33.2,
+      by omega, by omega⟩
+  · have hP' : (Finset.univ.filter fun j ↦ 0 < q c j) = {b, a} := by
+      simpa [Finset.pair_comm] using hP
+    exact (false_of_degreeSixQuotient_model5_two_four_nat
+      s q c b a r t hslo htotal hrow hbal hsq hdiag htrace hc3 hcc
+        (Ne.symm hab) hrt hP' hR h42.2 h42.1 (by omega) (by omega)).elim
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
