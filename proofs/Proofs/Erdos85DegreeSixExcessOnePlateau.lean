@@ -7270,6 +7270,7 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_cover
       Function.Injective f ∧
       Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
       (∀ c i, u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i)) ∧
+      (∀ i c j, f i ≠ u c j) ∧
       (∀ c d i, ∃! j, G.Adj (u c i) (u d j)) ∧
       ∀ i j, (secondOrderDefectGraph G).Adj (f i) (f j) →
         ∀ c, ∃! d, (secondOrderDefectGraph G).Adj (u c i) (u d j) := by
@@ -7300,6 +7301,11 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_cover
     · simp [centerFiber4] at hc
       simp only [B, Finset.mem_union]
       exact Or.inr ((G.mem_neighborFinset _ _).mpr hc)
+  have hsep (i : Fin 6) (c : Fin 4) (j : Fin 6) : f i ≠ u c j := by
+    intro h
+    have hfNotB : f i ∉ B := by
+      exact (Finset.mem_sdiff.mp (hfR i)).2 ∘ Finset.mem_union_left Q
+    exact hfNotB (h ▸ huB c j)
   obtain ⟨R', hR'eq, _hRcard, hRclosed⟩ :=
     degreeSix_thirtyFour_closed_defectKFour_exists_cubic_residual_six
       G hfree hreg hcard hab hax hbx hay hby hxy
@@ -7315,7 +7321,7 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_cover
     simpa [B, Q, R, Finset.union_assoc] using hz'
   have hcells := degreeSix_thirtyFour_closed_defectKFour_residual_label_cells
     G hfree hreg hcard hab hax hbx hay hby hxy hresidual
-  refine ⟨f, u, hfinj, huinj, huData, hGunique, ?_⟩
+  refine ⟨f, u, hfinj, huinj, huData, hsep, hGunique, ?_⟩
   intro i j hijD c
   have hcontactR : (G.neighborFinset (u c i) ∩ R).card = 1 := by
     simpa [B, Q, R, Finset.union_assoc] using
@@ -7456,14 +7462,15 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_permutations
     ∃ f : Fin 6 → V, ∃ u : Fin 4 → Fin 6 → V,
       Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
       (∀ c i, u c i ∈ centerFiber4 G a b x y c ∧ G.Adj (u c i) (f i)) ∧
+      (∀ i c j, f i ≠ u c j) ∧
       (∀ c d i, ∃! j, G.Adj (u c i) (u d j)) ∧
       ∀ i j, (secondOrderDefectGraph G).Adj (f i) (f j) →
         ∃ τ : Equiv.Perm (Fin 4),
           ∀ c d, (secondOrderDefectGraph G).Adj (u c i) (u d j) ↔ τ c = d := by
-  obtain ⟨f, u, _hfinj, huinj, huData, hGunique, hcover⟩ :=
+  obtain ⟨f, u, _hfinj, huinj, huData, hsep, hGunique, hcover⟩ :=
     degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_cover
       G hfree hreg hcard hab hax hbx hay hby hxy hresidual
-  refine ⟨f, u, huinj, huData, hGunique, ?_⟩
+  refine ⟨f, u, huinj, huData, hsep, hGunique, ?_⟩
   intro i j hijD
   let s : Fin 4 → Fin 4 := fun c => Classical.choose (hcover i j hijD c)
   have hsD (c : Fin 4) :
@@ -7638,6 +7645,38 @@ theorem blockGrid_antipodal_permutation_compatibility
   rw [Finset.card_eq_zero.mp hCdata.2.2] at hkCommon
   exact Finset.notMem_empty _ hkCommon
 
+/-- A mixed residual/block four-cycle is forbidden: starting in sheet `c`
+at label `i`, crossing to sheet `d`, and then returning to label `i` in a
+different sheet `e` would give two common neighbors of `f i` and the middle
+block vertex. -/
+theorem blockGrid_mixed_twoStep_fixedPointFree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (f : Fin 6 → V) (u : Fin 4 → Fin 6 → V)
+    (σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6))
+    (hlabel : ∀ c i, G.Adj (u c i) (f i))
+    (hsep : ∀ i c j, f i ≠ u c j)
+    (huinj : Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2))
+    (hσ : ∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) :
+    ∀ c d e i, c ≠ e → σ d e (σ c d i) ≠ i := by
+  intro c d e i hce hreturn
+  let j := σ c d i
+  have hcd : G.Adj (u c i) (u d j) := (hσ c d i j).mpr rfl
+  have hde : G.Adj (u d j) (u e i) := (hσ d e j i).mpr hreturn
+  have hle := common_le_one_of_not_containsC4 hfree (f i) (u d j) (hsep i d j)
+  have hcMem : u c i ∈ G.neighborFinset (f i) ∩ G.neighborFinset (u d j) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨(hlabel c i).symm, hcd.symm⟩
+  have heMem : u e i ∈ G.neighborFinset (f i) ∩ G.neighborFinset (u d j) := by
+    simp only [Finset.mem_inter, G.mem_neighborFinset]
+    exact ⟨(hlabel e i).symm, hde⟩
+  have hvertices : u c i = u e i :=
+    Finset.card_le_one.mp hle (u c i) hcMem (u e i) heMem
+  have hcoords := huinj (show u (c, i).1 (c, i).2 = u (e, i).1 (e, i).2 by
+    simpa using hvertices)
+  exact hce (congrArg Prod.fst hcoords)
+
 /-- Combined finite interface for the closed order-six branch: original
 row matchings are `S₆` permutations, residual defect edges lift through
 `S₄` sheet permutations, and the two matching systems are pointwise
@@ -7665,12 +7704,13 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
       ∃ σ : Fin 4 → Fin 4 → Equiv.Perm (Fin 6),
         Function.Injective (fun q : Fin 4 × Fin 6 => u q.1 q.2) ∧
         (∀ c d i j, G.Adj (u c i) (u d j) ↔ σ c d i = j) ∧
+        (∀ c d e i, c ≠ e → σ d e (σ c d i) ≠ i) ∧
         ∀ i j, (secondOrderDefectGraph G).Adj (f i) (f j) →
           ∃ τ : Equiv.Perm (Fin 4),
             (∀ c d, (secondOrderDefectGraph G).Adj (u c i) (u d j) ↔ τ c = d) ∧
             (∀ c, σ c (τ c) i ≠ j) ∧
             ∀ c e, σ c e i ≠ σ (τ c) e j := by
-  obtain ⟨f, u, huinj, huData, hGunique, hDperms⟩ :=
+  obtain ⟨f, u, huinj, huData, hsep, hGunique, hDperms⟩ :=
     degreeSix_thirtyFour_closed_defectKFour_exists_blockGrid_D_permutations
       G hfree hreg hcard hab hax hbx hay hby hxy hresidual
   let s : Fin 4 → Fin 4 → Fin 6 → Fin 6 := fun c d i =>
@@ -7719,7 +7759,9 @@ theorem degreeSix_thirtyFour_closed_defectKFour_exists_combined_permModel
     · simp [centerFiber4] at hc
       simp only [Finset.mem_union]
       exact Or.inr ((G.mem_neighborFinset _ _).mpr hc)
-  refine ⟨f, u, σ, huinj, hσ, ?_⟩
+  refine ⟨f, u, σ, huinj, hσ, ?_, ?_⟩
+  · apply blockGrid_mixed_twoStep_fixedPointFree G hfree f u σ
+      (fun c i => (huData c i).2) hsep huinj hσ
   intro i j hijD
   obtain ⟨τ, hτ⟩ := hDperms i j hijD
   refine ⟨τ, hτ, ?_, ?_⟩
