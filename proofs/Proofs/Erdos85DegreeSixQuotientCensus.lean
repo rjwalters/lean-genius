@@ -659,6 +659,62 @@ theorem degreeSixQuotient_orderThree_support_card_four_weight_dichotomy_nat
       exact hheavy ⟨p, hp, by omega⟩
     omega
 
+/-- A three-target positive block cannot carry base weights `4,1,1`.
+Detailed balance makes both off-diagonal entries from the heavy target
+multiples constrained by the light rows, forcing its diagonal to be three. -/
+theorem false_of_degreeSixQuotient_support_three_four_one_one
+    (aa ab ad ba da : ℕ)
+    (hrowA : aa + ab + ad = 3)
+    (hba : ba ≤ 3) (hda : da ≤ 3)
+    (hbalAB : 4 * ab = ba) (hbalAD : 4 * ad = da)
+    (hdiagA : aa ≤ 2) : False := by
+  omega
+
+/-- Full quotient adapter excluding a named `4,1,1` positive support. -/
+theorem false_of_degreeSixQuotient_orderThree_support_three_four_one_one_nat
+    {C : Type*} [Fintype C] [DecidableEq C]
+    (s : C → ℕ) (q : C → C → ℕ) (c a b d : C)
+    (hspos : ∀ i, 0 < s i)
+    (hrow : ∀ i, (∑ j, q i j) = 6)
+    (hbal : ∀ i j, s i * q i j = s j * q j i)
+    (hsq : ∀ i j, (∑ k, q i k * q k j) =
+      (if i = j then 3 else 0) + s j)
+    (hdiag : ∀ i, q i i ≤ 2)
+    (hc3 : s c = 3) (hcc : q c c = 0)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d)
+    (hP : (Finset.univ.filter fun j ↦ 0 < q c j) = {a, b, d})
+    (hca : q c a = 4) (hcb : q c b = 1) (hcd : q c d = 1) : False := by
+  have haP : a ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hbP : b ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hdP : d ∈ Finset.univ.filter fun j ↦ 0 < q c j := by rw [hP]; simp
+  have hprofile := degreeSixQuotient_orderThree_zeroDiagonal_profile_nat
+    s q c hspos hrow hbal hsq hc3 hcc
+  have haData := hprofile a (by simpa [hca] using
+    (Finset.mem_filter.mp haP).2)
+  have hbData := hprofile b (by simpa [hcb] using
+    (Finset.mem_filter.mp hbP).2)
+  have hdData := hprofile d (by simpa [hcd] using
+    (Finset.mem_filter.mp hdP).2)
+  have hsplitA := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c a hspos hrow hbal hsq hc3 hcc haP
+  have hsplitB := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c b hspos hrow hbal hsq hc3 hcc hbP
+  have hsplitD := degreeSixQuotient_orderThree_positive_row_split_nat
+    s q c d hspos hrow hbal hsq hc3 hcc hdP
+  have hrowA := hsplitA.2.1
+  have hrowB := hsplitB.2.1
+  have hrowD := hsplitD.2.1
+  rw [hP] at hrowA hrowB hrowD
+  simp [Finset.sum_insert, hab, had, hbd, Ne.symm hab, Ne.symm had,
+    Ne.symm hbd] at hrowA hrowB hrowD
+  have hbalAB := hbal a b
+  have hbalAD := hbal a d
+  rw [haData.2, hbData.2, hca, hcb] at hbalAB
+  rw [haData.2, hdData.2, hca, hcd] at hbalAD
+  exact false_of_degreeSixQuotient_support_three_four_one_one
+    (q a a) (q a b) (q a d) (q b a) (q d a)
+    (by omega) (by omega) (by omega) (by omega) (by omega) (hdiag a)
+
 /-- A Model5 base triangle cannot have one-element positive support.  The
 unique target would have order eighteen and forward quotient six; its
 off-diagonal square equation would then force diagonal quotient three. -/
