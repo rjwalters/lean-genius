@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineSevenHighT0CubeCnf
+import Proofs.Erdos85OrderFortyNineDimacsRows
 import Proofs.Erdos85SequentialCounterReification
 
 /-!
@@ -1561,6 +1562,14 @@ theorem sevenHighT0CubeSeqPrefixTrue_literalRow_eq_count
   have h := Fin.card_filter_univ_eq_vector_get_eq_count true v
   convert h using 1 <;> simp [v, List.Vector.get]
 
+theorem sevenHighT0CubeSeqPrefixTrue_eq_count
+    {n : Nat} (x : Fin n → Bool) :
+    seqPrefixTrue x n = (List.ofFn x).count true := by
+  rw [seqPrefixTrue_full_eq_filter_card]
+  let v : List.Vector Bool n := ⟨List.ofFn x, by simp⟩
+  have h := Fin.card_filter_univ_eq_vector_get_eq_count true v
+  convert h using 1 <;> simp [v, List.Vector.get]
+
 theorem sevenHighT0CubeCollectedEdges_values
     (adj : Fin 49 → Fin 49 → Bool)
     {y : Nat} {xs : List Nat}
@@ -1733,6 +1742,62 @@ theorem sevenHighT0CubeCollectDegreeInputsVal_count_atoms
           (.edge (min vertex x) (max vertex x))).count true :=
       congrArg (List.count true) hvalues
 
+theorem sevenHighT0CubeIncidentList_eq_otherVertices (vertex : Fin 49) :
+    sevenHighT0CubeVertices.filter (fun x => x ≠ vertex.val) =
+      List.ofFn (fun k : Fin 48 =>
+        (orderFortyNineOtherVertex vertex k).val) := by
+  native_decide +revert
+
+theorem sevenHighT0CubeAtomValue_edge_bitAdj
+    (edges : BitVec 1176) (i j : Fin 49) :
+    sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+      (.edge (min i.val j.val) (max i.val j.val)) =
+      orderFortyNineBitAdj edges i j := by
+  by_cases hij : i = j
+  · subst j
+    simp [sevenHighT0CubeAtomValue, orderFortyNineBitAdj]
+  · simp only [sevenHighT0CubeAtomValue]
+    split <;> rename_i hmin
+    · split <;> rename_i hmax
+      · simp only [orderFortyNineBitAdj, hij, if_false]
+        congr 1
+        simp [orderFortyNineEdgeIndex]
+      · omega
+    · omega
+
+theorem sevenHighT0CubeCollectDegreeInputsVal_count_bitAdj
+    (edges : BitVec 1176) (vertex : Fin 49)
+    (acc : SevenHighT0CubeValState)
+    (hacc : SevenHighT0CubeSemanticSound
+      (orderFortyNineBitAdj edges) acc) :
+    let input := sevenHighT0CubeCollectDegreeInputsVal
+      (orderFortyNineBitAdj edges) vertex.val acc
+    seqPrefixTrue (sevenHighT0CubeInputAccumRow input) input.1.size =
+      (Finset.univ.filter fun j =>
+        orderFortyNineBitAdj edges vertex j).card := by
+  let input := sevenHighT0CubeCollectDegreeInputsVal
+    (orderFortyNineBitAdj edges) vertex.val acc
+  rw [sevenHighT0CubeCollectDegreeInputsVal_count_atoms
+    (orderFortyNineBitAdj edges) vertex.val acc hacc]
+  rw [sevenHighT0CubeIncidentList_eq_otherVertices vertex]
+  calc
+    ((List.ofFn fun k : Fin 48 =>
+        (orderFortyNineOtherVertex vertex k).val).map fun x =>
+          sevenHighT0CubeAtomValue (orderFortyNineBitAdj edges)
+            (.edge (min vertex.val x) (max vertex.val x))).count true =
+        (List.ofFn (orderFortyNineCounterRow edges vertex)).count true := by
+      congr 1
+      apply List.ext_getElem
+      · simp
+      · intro i hi₁ hi₂
+        simp only [List.getElem_map, List.getElem_ofFn]
+        exact sevenHighT0CubeAtomValue_edge_bitAdj edges vertex
+          (orderFortyNineOtherVertex vertex ⟨i, by simpa using hi₁⟩)
+    _ = seqPrefixTrue (orderFortyNineCounterRow edges vertex) 48 :=
+      (sevenHighT0CubeSeqPrefixTrue_eq_count
+        (orderFortyNineCounterRow edges vertex)).symm
+    _ = _ := orderFortyNineCounterRow_count edges vertex
+
 theorem sevenHighT0CubeCollectDegreeInputsVal_sound
     (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
     {acc : SevenHighT0CubeValState}
@@ -1831,5 +1896,25 @@ theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound
   intro vertex hv acc hacc
   exact sevenHighT0CubeDegreeStepVal_semanticSound adj vertex hacc
     (hcount vertex hv acc hacc)
+
+theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound_of_degrees
+    (edges : BitVec 1176) {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound
+      (orderFortyNineBitAdj edges) acc)
+    (hdegree : ∀ i : Fin 49,
+      (Finset.univ.filter fun j =>
+        orderFortyNineBitAdj edges i j).card =
+          if i.val < 7 then 8 else 7) :
+    SevenHighT0CubeSemanticSound (orderFortyNineBitAdj edges)
+      (sevenHighT0CubeDegreeClausesFromVal
+        (orderFortyNineBitAdj edges) acc) := by
+  apply sevenHighT0CubeDegreeClausesFromVal_semanticSound
+    (orderFortyNineBitAdj edges) hacc
+  intro vertex hv acc hacc
+  have hvlt : vertex < 49 := by
+    simpa [sevenHighT0CubeVertices] using hv
+  let i : Fin 49 := ⟨vertex, hvlt⟩
+  exact (sevenHighT0CubeCollectDegreeInputsVal_count_bitAdj
+    edges i acc hacc).trans (hdegree i)
 
 end Erdos85
