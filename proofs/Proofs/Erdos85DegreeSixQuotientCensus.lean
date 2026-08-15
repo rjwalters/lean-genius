@@ -322,6 +322,41 @@ theorem false_of_degreeSixQuotient_model5_two_four_split
     norm_num at hrau
     omega
 
+/-- Arithmetic endpoint excluding the residual invisible-order split `6+6`
+after Model5's positive support has weights `3+3`.  Balance makes each
+order-six component meet exactly one order-nine component with forward and
+reverse multiplicities `2` and `3`.  Equal-size symmetry and trace then
+contradict the diagonal square equation. -/
+theorem false_of_degreeSixQuotient_model5_invisible_six_six
+    (ar br au bu ra rb ta tb d rr rt tr tt : ℕ)
+    (hrContact : ar + br = 2) (htContact : au + bu = 2)
+    (hbalAR : 3 * ar = 2 * ra) (hbalBR : 3 * br = 2 * rb)
+    (hbalAT : 3 * au = 2 * ta) (hbalBT : 3 * bu = 2 * tb)
+    (hrowR : ra + rb + rr + rt = 6)
+    (hrowT : ta + tb + tr + tt = 6)
+    (hRT : rt = tr) (htrace : 2 * d + rr + tt = 6)
+    (hsqR : ra * ar + rb * br + rr * rr + rt * tr = 9) : False := by
+  have hrCases :
+      (ar = 0 ∧ br = 2 ∧ ra = 0 ∧ rb = 3) ∨
+      (ar = 2 ∧ br = 0 ∧ ra = 3 ∧ rb = 0) := by
+    omega
+  have htCases :
+      (au = 0 ∧ bu = 2 ∧ ta = 0 ∧ tb = 3) ∨
+      (au = 2 ∧ bu = 0 ∧ ta = 3 ∧ tb = 0) := by
+    omega
+  rcases hrCases with hr | hr <;> rcases htCases with ht | ht
+  all_goals
+    rcases hr with ⟨rfl, rfl, rfl, rfl⟩
+    rcases ht with ⟨rfl, rfl, rfl, rfl⟩
+    norm_num at hrowR hrowT hsqR
+    subst tr
+    have hdiag : d + rr = 3 := by omega
+    have hrt : rt = d := by omega
+    rw [hrt] at hsqR
+    have hdle : d ≤ 3 := by omega
+    have hrrle : rr ≤ 3 := by omega
+    interval_cases d <;> interval_cases rr <;> omega
+
 def degreeSixQuotientModel5
     (s : Fin 5 → DegreeSixCensusWord)
     (q : Fin 5 → Fin 5 → DegreeSixCensusWord) : Prop :=
