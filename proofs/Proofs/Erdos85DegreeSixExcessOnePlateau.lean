@@ -3103,6 +3103,48 @@ theorem degreeSix_thirtyFour_defectKFour_residual_edge_closes_triangle
   apply Finset.eq_of_subset_of_card_le hsub
   rw [hinterCard, hpairCard]
 
+/-- Local classification of the residual graph: the two residual neighbors
+of every vertex are adjacent, so the residual is locally a union of
+triangles (and, at order six, is therefore `2 K₃`). -/
+theorem degreeSix_thirtyFour_defectKFour_residual_locally_triangle_union
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    ∀ r ∈ R, ∀ s ∈ R, ∀ t ∈ R,
+      G.Adj r s → G.Adj r t → s ≠ t → G.Adj s t := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hclose := degreeSix_thirtyFour_defectKFour_residual_edge_closes_triangle
+    G hfree hreg hcard hab hax hbx hay hby hxy hzero
+  dsimp only at hclose ⊢
+  intro r hr s hs t ht hrs hrt hst
+  obtain ⟨u, hu, hus, hsu, hN⟩ := hclose r hr s hs hrs
+  have htN : t ∈ G.neighborFinset r ∩ R :=
+    Finset.mem_inter.mpr ⟨(G.mem_neighborFinset r t).mpr hrt, ht⟩
+  rw [hN] at htN
+  simp only [Finset.mem_insert, Finset.mem_singleton] at htN
+  rcases htN with hts | htu
+  · exact (hst hts.symm).elim
+  · exact htu ▸ hsu
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
