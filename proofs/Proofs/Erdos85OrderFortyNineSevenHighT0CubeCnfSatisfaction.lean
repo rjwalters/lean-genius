@@ -1386,4 +1386,181 @@ theorem sevenHighT0CubeC4ClausesFromVal_semanticSound
   exact sevenHighT0CubeC4PairStepVal_semanticSound adj pair hacc
     (hnot pair hp)
 
+def sevenHighT0CubeLiteralRow (val : DimacsValuation) (vars : Array Int) :
+    Fin vars.size → Bool := fun i => dimacsLitValue val (vars.getD i.val 0)
+
+structure SevenHighT0CubeInputAccumSound
+    (adj : Fin 49 → Fin 49 → Bool)
+    (input : Array Int × SevenHighT0CubeValState) : Prop where
+  semantic : SevenHighT0CubeSemanticSound adj input.2
+  nonzero : ∀ lit ∈ input.1, lit ≠ 0
+  bounded : ∀ lit ∈ input.1, lit.natAbs ≤ input.2.1.top
+
+theorem sevenHighT0CubeInputAccumSound_empty
+    (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
+    (h : SevenHighT0CubeSemanticSound adj acc) :
+    SevenHighT0CubeInputAccumSound adj (#[], acc) where
+  semantic := h
+  nonzero := by simp
+  bounded := by simp
+
+theorem sevenHighT0CubeAtomId_top_le
+    (atom : SevenHighT0CubeAtom) (st : SevenHighT0CubeGenState) :
+    st.top ≤ (sevenHighT0CubeAtomId atom st).2.top := by
+  unfold sevenHighT0CubeAtomId
+  split
+  · exact Nat.le_refl _
+  · exact Nat.le_succ _
+
+def sevenHighT0CubeCollectEdgeVal
+    (adj : Fin 49 → Fin 49 → Bool) (y x : Nat)
+    (input : Array Int × SevenHighT0CubeValState) :
+    Array Int × SevenHighT0CubeValState :=
+  let (id, acc) := sevenHighT0CubeEdgeIdVal adj y x input.2
+  (input.1.push (id : Int), acc)
+
+theorem sevenHighT0CubeCollectEdgeVal_sound
+    (adj : Fin 49 → Fin 49 → Bool)
+    {input : Array Int × SevenHighT0CubeValState}
+    (h : SevenHighT0CubeInputAccumSound adj input) (y x : Nat) :
+    SevenHighT0CubeInputAccumSound adj
+      (sevenHighT0CubeCollectEdgeVal adj y x input) := by
+  rcases input with ⟨vars, st, val⟩
+  simp only [sevenHighT0CubeCollectEdgeVal, sevenHighT0CubeEdgeIdVal]
+  generalize hout : sevenHighT0CubeAtomIdVal adj
+    (.edge (min y x) (max y x)) (st, val) = out
+  rcases out with ⟨id, acc'⟩
+  have hs := sevenHighT0CubeAtomIdVal_semanticSound adj h.semantic
+    (.edge (min y x) (max y x))
+  rw [hout] at hs
+  have hr := sevenHighT0CubeAtomIdVal_result adj
+    (.edge (min y x) (max y x)) st val
+  rw [hout] at hr
+  dsimp at hr
+  have hstate := sevenHighT0CubeAtomIdVal_state adj
+    (.edge (min y x) (max y x)) st val
+  rw [hout] at hstate
+  have htop : st.top ≤ acc'.1.top := by
+    rw [hstate]
+    exact sevenHighT0CubeAtomId_top_le _ st
+  constructor
+  · exact hs
+  · intro lit hlit
+    simp only [Array.mem_push] at hlit
+    rcases hlit with hold | rfl
+    · exact h.nonzero lit hold
+    · have hidPos := (hs.ids.id_bounds _ hr.1).1
+      exact_mod_cast (Nat.ne_of_gt hidPos)
+  · intro lit hlit
+    simp only [Array.mem_push] at hlit
+    rcases hlit with hold | rfl
+    · exact (h.bounded lit hold).trans htop
+    · simpa using (hs.ids.id_bounds _ hr.1).2
+
+def sevenHighT0CubeInputAccumRow
+    (input : Array Int × SevenHighT0CubeValState) :
+    Fin input.1.size → Bool :=
+  sevenHighT0CubeLiteralRow input.2.2 input.1
+
+theorem sevenHighT0CubeInputAccum_reifies
+    (adj : Fin 49 → Fin 49 → Bool)
+    {input : Array Int × SevenHighT0CubeValState}
+    (h : SevenHighT0CubeInputAccumSound adj input) :
+    SeqCounterInputReifies input.2.2 input.2.1.top input.1
+      (sevenHighT0CubeInputAccumRow input) where
+  size_eq := rfl
+  nonzero := by
+    intro i hi
+    apply h.nonzero
+    rw [show input.1.getD i 0 = input.1[i] by simp [Array.getD, hi]]
+    exact Array.getElem_mem hi
+  bounded := by
+    intro i hi
+    apply h.bounded
+    rw [show input.1.getD i 0 = input.1[i] by simp [Array.getD, hi]]
+    exact Array.getElem_mem hi
+  value := by
+    intro i hi
+    rfl
+
+def sevenHighT0CubeCollectDegreeInputsVal
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState) :
+    Array Int × SevenHighT0CubeValState :=
+  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+  incident.foldl (fun input x =>
+    sevenHighT0CubeCollectEdgeVal adj vertex x input) (#[], acc)
+
+theorem sevenHighT0CubeCollectDegreeInputsVal_sound
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc) :
+    SevenHighT0CubeInputAccumSound adj
+      (sevenHighT0CubeCollectDegreeInputsVal adj vertex acc) := by
+  unfold sevenHighT0CubeCollectDegreeInputsVal
+  let incident := sevenHighT0CubeVertices.filter fun x => x ≠ vertex
+  have hfold : ∀ xs : List Nat,
+      ∀ input : Array Int × SevenHighT0CubeValState,
+      SevenHighT0CubeInputAccumSound adj input →
+      SevenHighT0CubeInputAccumSound adj
+        (xs.foldl (fun input x =>
+          sevenHighT0CubeCollectEdgeVal adj vertex x input) input) := by
+    intro xs
+    induction xs with
+    | nil => exact fun _ h => h
+    | cons x xs ih =>
+        intro input hinput
+        simp only [List.foldl_cons]
+        exact ih _ (sevenHighT0CubeCollectEdgeVal_sound adj hinput vertex x)
+  exact hfold incident (#[], acc)
+    (sevenHighT0CubeInputAccumSound_empty adj hacc)
+
+def sevenHighT0CubeDegreeStepVal
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+  sevenHighT0CubeEqualsBlockVal input.1
+    (sevenHighT0CubeInputAccumRow input)
+    (if vertex < 7 then 8 else 7) input.2
+
+theorem sevenHighT0CubeDegreeStepVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (vertex : Nat)
+    {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hcount : let input :=
+        sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+      seqPrefixTrue (sevenHighT0CubeInputAccumRow input) input.1.size =
+        if vertex < 7 then 8 else 7) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeDegreeStepVal adj vertex acc) := by
+  let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+  have hi := sevenHighT0CubeCollectDegreeInputsVal_sound adj vertex hacc
+  unfold sevenHighT0CubeDegreeStepVal
+  exact sevenHighT0CubeEqualsBlockVal_semanticSound adj hi.semantic input.1
+    (sevenHighT0CubeInputAccumRow input) (if vertex < 7 then 8 else 7)
+    (sevenHighT0CubeInputAccum_reifies adj hi) hcount
+
+def sevenHighT0CubeDegreeClausesFromVal
+    (adj : Fin 49 → Fin 49 → Bool)
+    (acc : SevenHighT0CubeValState) : SevenHighT0CubeValState :=
+  sevenHighT0CubeVertices.foldl (fun acc vertex =>
+    sevenHighT0CubeDegreeStepVal adj vertex acc) acc
+
+theorem sevenHighT0CubeDegreeClausesFromVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) {acc : SevenHighT0CubeValState}
+    (hacc : SevenHighT0CubeSemanticSound adj acc)
+    (hcount : ∀ vertex ∈ sevenHighT0CubeVertices,
+      ∀ acc : SevenHighT0CubeValState,
+      SevenHighT0CubeSemanticSound adj acc →
+      let input := sevenHighT0CubeCollectDegreeInputsVal adj vertex acc
+      seqPrefixTrue (sevenHighT0CubeInputAccumRow input) input.1.size =
+        if vertex < 7 then 8 else 7) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeDegreeClausesFromVal adj acc) := by
+  unfold sevenHighT0CubeDegreeClausesFromVal
+  apply sevenHighT0CubeSemanticSound_foldl_mem adj _ _ hacc
+  intro vertex hv acc hacc
+  exact sevenHighT0CubeDegreeStepVal_semanticSound adj vertex hacc
+    (hcount vertex hv acc hacc)
+
 end Erdos85
