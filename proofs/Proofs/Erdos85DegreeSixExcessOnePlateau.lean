@@ -2196,6 +2196,39 @@ theorem degreeSix_thirtyFour_defectKFour_original_neighbor_matching
       hregD hab hax hbx hay hby hxy
   · exact hzero
 
+/-- In the pure antipodal branch, the graph induced by the original graph
+on each center's six-element neighborhood is one-regular: every incident
+edge through the center has its unique triangle partner in that block. -/
+theorem degreeSix_thirtyFour_center_neighborFinset_internal_degree_one_of_colorOrder_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0)
+    (a : V) :
+    ∀ p ∈ G.neighborFinset a,
+      (G.neighborFinset p ∩ G.neighborFinset a).card = 1 := by
+  have hDeq :=
+    degreeSix_thirtyFour_secondOrderDefectGraph_eq_antipodalGraph_of_colorOrder_zero
+      G hfree hreg hcard hzero
+  intro p hp
+  have hap : G.Adj a p := (G.mem_neighborFinset a p).mp hp
+  have hapNe : a ≠ p := G.ne_of_adj hap
+  have hnotD : ¬ (secondOrderDefectGraph G).Adj a p := by
+    rw [hDeq]
+    intro hapC
+    exact ((mem_antipodalNeighbors G a p).mp
+      ((antipodalGraph_adj G a p).mp hapC)).2.1 hap
+  have hnotMem : p ∉ (secondOrderDefectGraph G).neighborFinset a := by
+    simpa using hnotD
+  have hone := card_common_eq_if_secondOrderDefect G hfree a p hapNe
+  rw [if_neg hnotMem] at hone
+  simpa [Finset.inter_comm] using hone
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
