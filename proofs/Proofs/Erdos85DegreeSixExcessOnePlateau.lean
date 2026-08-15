@@ -530,6 +530,55 @@ theorem oddDefectSet_card_two_exists_adjacent_twins
       exact (Finset.mem_inter.mp this).1
     exact ((D.mem_neighborFinset v a).mp haMem).symm
 
+/-- Adjacent twins in a cubic graph have exactly two common neighbors, so
+their shared edge belongs to exactly two triangles. -/
+theorem adjacent_twins_commonNeighbor_card_eq_two_of_cubic
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (hreg : ∀ v, D.degree v = 3) {a b : V} (hadj : D.Adj a b)
+    (htwins : ∀ v, v ≠ a → v ≠ b → (D.Adj a v ↔ D.Adj b v)) :
+    (D.neighborFinset a ∩ D.neighborFinset b).card = 2 := by
+  have heq : D.neighborFinset a ∩ D.neighborFinset b =
+      (D.neighborFinset a).erase b := by
+    ext v
+    constructor
+    · intro hv
+      have hva := (Finset.mem_inter.mp hv).1
+      have hvb := (Finset.mem_inter.mp hv).2
+      have hvne : v ≠ b := fun h => by
+        subst v
+        exact D.loopless.irrefl b ((D.mem_neighborFinset b b).mp hvb)
+      exact Finset.mem_erase.mpr ⟨hvne, hva⟩
+    · intro hv
+      have hv' := Finset.mem_erase.mp hv
+      have hav : D.Adj a v := (D.mem_neighborFinset a v).mp hv'.2
+      have hva : v ≠ a := fun h => by
+        subst v
+        exact D.loopless.irrefl a hav
+      have hbv : D.Adj b v := (htwins v hva hv'.1).mp hav
+      exact Finset.mem_inter.mpr
+        ⟨hv'.2, (D.mem_neighborFinset b v).mpr hbv⟩
+  rw [heq, Finset.card_erase_of_mem
+    ((D.mem_neighborFinset a b).mpr hadj),
+    D.card_neighborFinset_eq_degree, hreg a]
+
+/-- Cubic specialization of the two-vertex kernel classification: the
+forced adjacent twins have exactly two common defect neighbors. -/
+theorem oddDefectSet_card_two_exists_adjacent_twins_with_two_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj] (W : Finset V)
+    (hreg : ∀ v, D.degree v = 3) (hWcard : W.card = 2)
+    (hparity : ∀ v : V,
+      (if v ∈ W then (1 : ZMod 2) else 0) + (W.card : ZMod 2) +
+        (((D.neighborFinset v ∩ W).card : ZMod 2)) = 0) :
+    ∃ a b : V, a ≠ b ∧ W = {a, b} ∧ D.Adj a b ∧
+      (∀ v, v ≠ a → v ≠ b → (D.Adj a v ↔ D.Adj b v)) ∧
+      (D.neighborFinset a ∩ D.neighborFinset b).card = 2 := by
+  obtain ⟨a, b, hab, hW, hadj, htwins⟩ :=
+    oddDefectSet_card_two_exists_adjacent_twins D W hWcard hparity
+  exact ⟨a, b, hab, hW, hadj, htwins,
+    adjacent_twins_commonNeighbor_card_eq_two_of_cubic D hreg hadj htwins⟩
+
 /-- Every hypothetical degree-six plateau core at order 34 carries a proper,
 nonempty defect set satisfying the exact mod-two neighborhood law. -/
 theorem C4PlateauCore.degreeSix_thirtyFour_exists_odd_defect_set
