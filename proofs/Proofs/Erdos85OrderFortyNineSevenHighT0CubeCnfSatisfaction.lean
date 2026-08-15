@@ -952,4 +952,129 @@ theorem sevenHighT0CubeNegativeFour_bounded
   · simpa using hc
   · simpa using hd
 
+abbrev SevenHighT0CubeCommonAccum := List Int × SevenHighT0CubeValState
+
+/-- Semantic counterpart of one iteration of the inner `common` fold. -/
+def sevenHighT0CubeCommonWitnessStepVal
+    (adj : Fin 49 → Fin 49 → Bool) (i j w : Nat)
+    (input : SevenHighT0CubeCommonAccum) : SevenHighT0CubeCommonAccum :=
+  let (common, acc) := sevenHighT0CubeCommonIdVal adj i j w input.2
+  let (iw, acc) := sevenHighT0CubeEdgeIdVal adj i w acc
+  let (jw, acc) := sevenHighT0CubeEdgeIdVal adj j w acc
+  let acc := sevenHighT0CubeEmitVal [-(common : Int), (iw : Int)] acc
+  let acc := sevenHighT0CubeEmitVal [-(common : Int), (jw : Int)] acc
+  (input.1 ++ [(common : Int)], acc)
+
+/-- Generator-side form of the same inner iteration, split out so subsequent
+fold projection proofs remain readable. -/
+def sevenHighT0CubeCommonWitnessStep (i j w : Nat)
+    (input : List Int × SevenHighT0CubeGenState) :
+    List Int × SevenHighT0CubeGenState :=
+  let (common, st) := sevenHighT0CubeCommonId i j w input.2
+  let (iw, st) := sevenHighT0CubeEdgeId i w st
+  let (jw, st) := sevenHighT0CubeEdgeId j w st
+  let st := sevenHighT0CubeEmit [-(common : Int), (iw : Int)] st
+  let st := sevenHighT0CubeEmit [-(common : Int), (jw : Int)] st
+  (input.1 ++ [(common : Int)], st)
+
+theorem sevenHighT0CubeCommonWitnessStep_eq_generator
+    (i j w : Nat) (input : List Int × SevenHighT0CubeGenState) :
+    sevenHighT0CubeCommonWitnessStep i j w input =
+      (let (common, st) := sevenHighT0CubeCommonId i j w input.2
+       let (iw, st) := sevenHighT0CubeEdgeId i w st
+       let (jw, st) := sevenHighT0CubeEdgeId j w st
+       let st := sevenHighT0CubeEmit [-(common : Int), (iw : Int)] st
+       let st := sevenHighT0CubeEmit [-(common : Int), (jw : Int)] st
+       (input.1 ++ [(common : Int)], st)) := by
+  rfl
+
+theorem sevenHighT0CubeCommonWitnessStepVal_projection
+    (adj : Fin 49 → Fin 49 → Bool) (i j w : Nat)
+    (input : SevenHighT0CubeCommonAccum) :
+    let out := sevenHighT0CubeCommonWitnessStepVal adj i j w input
+    (out.1, out.2.1) =
+      sevenHighT0CubeCommonWitnessStep i j w (input.1, input.2.1) := by
+  rcases input with ⟨lits, st, val⟩
+  simp only [sevenHighT0CubeCommonWitnessStepVal,
+    sevenHighT0CubeCommonWitnessStep,
+    sevenHighT0CubeCommonIdVal, sevenHighT0CubeEdgeIdVal]
+  generalize hc : sevenHighT0CubeCommonId i j w st = commonOut
+  rcases commonOut with ⟨common, st1⟩
+  generalize hi : sevenHighT0CubeEdgeId i w st1 = iwOut
+  rcases iwOut with ⟨iw, st2⟩
+  generalize hj : sevenHighT0CubeEdgeId j w st2 = jwOut
+  rcases jwOut with ⟨jw, st3⟩
+  have hc' : sevenHighT0CubeAtomId (.common i j w) st =
+      (common, st1) := hc
+  have hi' : sevenHighT0CubeAtomId (.edge (min i w) (max i w)) st1 =
+      (iw, st2) := hi
+  have hj' : sevenHighT0CubeAtomId (.edge (min j w) (max j w)) st2 =
+      (jw, st3) := hj
+  simp [sevenHighT0CubeAtomIdVal, hc', hi', hj',
+    sevenHighT0CubeEmitVal]
+
+theorem sevenHighT0CubeCommonWitnessStepVal_semanticSound
+    (adj : Fin 49 → Fin 49 → Bool) (i j w : Nat)
+    {input : SevenHighT0CubeCommonAccum}
+    (hinput : SevenHighT0CubeSemanticSound adj input.2)
+    (hleft : sevenHighT0CubeAtomValue adj (.common i j w) = true →
+      sevenHighT0CubeAtomValue adj (.edge (min i w) (max i w)) = true)
+    (hright : sevenHighT0CubeAtomValue adj (.common i j w) = true →
+      sevenHighT0CubeAtomValue adj (.edge (min j w) (max j w)) = true) :
+    SevenHighT0CubeSemanticSound adj
+      (sevenHighT0CubeCommonWitnessStepVal adj i j w input).2 := by
+  let a0 := sevenHighT0CubeCommonIdVal adj i j w input.2
+  let a1 := sevenHighT0CubeEdgeIdVal adj i w a0.2
+  let a2 := sevenHighT0CubeEdgeIdVal adj j w a1.2
+  let e1 := sevenHighT0CubeEmitVal
+    [-(a0.1 : Int), (a1.1 : Int)] a2.2
+  let e2 := sevenHighT0CubeEmitVal
+    [-(a0.1 : Int), (a2.1 : Int)] e1
+  have hs0 : SevenHighT0CubeSemanticSound adj a0.2 := by
+    exact sevenHighT0CubeAtomIdVal_semanticSound adj hinput (.common i j w)
+  have hs1 : SevenHighT0CubeSemanticSound adj a1.2 := by
+    exact sevenHighT0CubeAtomIdVal_semanticSound adj hs0
+      (.edge (min i w) (max i w))
+  have hs2 : SevenHighT0CubeSemanticSound adj a2.2 := by
+    exact sevenHighT0CubeAtomIdVal_semanticSound adj hs1
+      (.edge (min j w) (max j w))
+  have hm0a0 : (.common i j w, a0.1) ∈ a0.2.1.ids := by
+    exact (sevenHighT0CubeAtomIdVal_result adj (.common i j w)
+      input.2.1 input.2.2).1
+  have hm0a1 : (.common i j w, a0.1) ∈ a1.2.1.ids := by
+    exact sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min i w) (max i w)) a0.2.1 a0.2.2 hm0a0
+  have hm0 : (.common i j w, a0.1) ∈ a2.2.1.ids := by
+    exact sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm0a1
+  have hm1a1 : (.edge (min i w) (max i w), a1.1) ∈ a1.2.1.ids := by
+    exact (sevenHighT0CubeAtomIdVal_result adj
+      (.edge (min i w) (max i w)) a0.2.1 a0.2.2).1
+  have hm1 : (.edge (min i w) (max i w), a1.1) ∈ a2.2.1.ids := by
+    exact sevenHighT0CubeAtomIdVal_old_mem adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2 hm1a1
+  have hm2 : (.edge (min j w) (max j w), a2.1) ∈ a2.2.1.ids := by
+    exact (sevenHighT0CubeAtomIdVal_result adj
+      (.edge (min j w) (max j w)) a1.2.1 a1.2.2).1
+  have hv0 := hs2.named _ _ hm0
+  have hv1 := hs2.named _ _ hm1
+  have hv2 := hs2.named _ _ hm2
+  have hb0 := (hs2.ids.id_bounds _ hm0)
+  have hb1 := (hs2.ids.id_bounds _ hm1)
+  have hb2 := (hs2.ids.id_bounds _ hm2)
+  have hsE1 : SevenHighT0CubeSemanticSound adj e1 := by
+    apply sevenHighT0CubeEmitVal_semanticSound adj hs2
+    · apply sevenHighT0CubeNegativePositive_satisfied hb1.1
+      intro htrue
+      exact hv1.trans (hleft (hv0.symm.trans htrue))
+    · exact sevenHighT0CubeNegativePositive_bounded hb0.2 hb1.2
+  have hsE2 : SevenHighT0CubeSemanticSound adj e2 := by
+    apply sevenHighT0CubeEmitVal_semanticSound adj hsE1
+    · apply sevenHighT0CubeNegativePositive_satisfied hb2.1
+      intro htrue
+      exact hv2.trans (hright (hv0.symm.trans htrue))
+    · exact sevenHighT0CubeNegativePositive_bounded hb0.2 hb2.2
+  change SevenHighT0CubeSemanticSound adj e2
+  exact hsE2
+
 end Erdos85
