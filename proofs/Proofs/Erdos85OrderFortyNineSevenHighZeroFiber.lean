@@ -280,6 +280,53 @@ theorem sevenHigh_t0_aligned_emptyLow_fiber_card_eq_seven
   exact (sevenHigh_t0_global_incidence
     G hfree hmin hHigh hzero).1
 
+theorem sevenHigh_alignedHigh_fiber_card_eq_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 7)
+    (w : Fin 7) :
+    Fintype.card {x : Fin 49 //
+      sevenHighGraphAlignedKey G e x = (some w, ∅)} = 1 := by
+  rw [Fintype.card_subtype]
+  let v : Fin 49 := (e.symm w).1
+  have hv : v ∈ orderFortyNineHighVertices G := (e.symm w).2
+  have hset : (Finset.univ.filter fun x : Fin 49 =>
+      sevenHighGraphAlignedKey G e x = (some w, ∅)) = {v} := by
+    ext x
+    constructor
+    · intro hx
+      have hkey := (Finset.mem_filter.mp hx).2
+      have hfirst := congrArg Prod.fst hkey
+      have hxHigh : x ∈ orderFortyNineHighVertices G := by
+        by_contra hxNot
+        simp [sevenHighGraphAlignedKey, hxNot] at hfirst
+      have heq : e ⟨x, hxHigh⟩ = w := by
+        simpa [sevenHighGraphAlignedKey, hxHigh] using hfirst
+      have hxv : x = v := by
+        have hsub : (⟨x, hxHigh⟩ : {u // u ∈
+            orderFortyNineHighVertices G}) = e.symm w := by
+          apply e.injective
+          simpa using heq
+        exact congrArg Subtype.val hsub
+      simp [hxv]
+    · intro hx
+      have hxv : x = v := by simpa using hx
+      subst x
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ v, ?_⟩
+      have hz := orderFortyNine_highNeighborCount_eq_zero_of_high
+        G hfree hmin (Fintype.card_fin 49) hv
+      have hs : sevenHighLabeledSupport G e v = ∅ :=
+        Finset.card_eq_zero.mp (by
+          rw [sevenHighLabeledSupport_card]
+          exact hz)
+      simp [sevenHighGraphAlignedKey, hv, v, hs]
+  rw [hset]
+  simp
+
 end
 
 end Erdos85
