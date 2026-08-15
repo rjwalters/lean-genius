@@ -6518,6 +6518,107 @@ theorem negThree_eigenvector_eq_smul_K33_bipartitionSign_of_support
       rw [hsupp z hzOut]
       simp [hzP, hzT]
 
+/-- If the `-3` eigenspace has even dimension, a named `K₃,₃` component
+forces a second eigenvector which is nonzero away from that component. -/
+theorem exists_negThree_eigenvector_nonzero_off_K33_of_even_finrank
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    (P T : Finset V) (hPcard : P.card = 3) (hTcard : T.card = 3)
+    (hdPT : Disjoint P T)
+    (hDP : ∀ p ∈ P, D.neighborFinset p = T)
+    (hDT : ∀ t ∈ T, D.neighborFinset t = P)
+    (heven : Even (Module.finrank ℚ (defectEigenspace (D.adjMatrix ℚ) (-3 : ℚ)))) :
+    ∃ w : defectEigenspace (D.adjMatrix ℚ) (-3 : ℚ),
+      ∃ z, z ∉ P ∪ T ∧ w.1 z ≠ 0 := by
+  let E := defectEigenspace (D.adjMatrix ℚ) (-3 : ℚ)
+  let sign : V → ℚ :=
+    fun z => if z ∈ P then (1 : ℚ) else if z ∈ T then -1 else 0
+  have hsignMul := adjMatrix_mulVec_K33_bipartitionSign
+    D P T hPcard hTcard hdPT hDP hDT
+  have hsignE : sign ∈ E := by
+    apply mem_defectEigenspace_iff.mpr
+    exact hsignMul
+  let e : E := ⟨sign, hsignE⟩
+  have hPnonempty : P.Nonempty := Finset.card_pos.mp (by omega)
+  obtain ⟨p, hp⟩ := hPnonempty
+  have heNonzero : e ≠ 0 := by
+    intro he
+    have hpv := congrFun (congrArg Subtype.val he) p
+    simp [e, sign, hp] at hpv
+  have hfin : 2 ≤ Module.finrank ℚ E := by
+    letI : Nontrivial E := ⟨⟨e, 0, heNonzero⟩⟩
+    have hpos : 0 < Module.finrank ℚ E := Module.finrank_pos
+    have hevenE : Even (Module.finrank ℚ E) := by simpa [E] using heven
+    rcases hevenE with ⟨k, hk⟩
+    change 2 ≤ Module.finrank ℚ E
+    omega
+  by_contra hnone
+  push Not at hnone
+  have hall : ∀ w : E, w ∈ ℚ ∙ e := by
+    intro w
+    have hwEig : (D.adjMatrix ℚ).mulVec w.1 = (-3 : ℚ) • w.1 :=
+      mem_defectEigenspace_iff.mp w.2
+    have hwSupp : ∀ z, z ∉ P ∪ T → w.1 z = 0 := by
+      intro z hz
+      exact hnone w z hz
+    obtain ⟨c, hc⟩ :=
+      negThree_eigenvector_eq_smul_K33_bipartitionSign_of_support
+        D P T hPcard hTcard hdPT hDP hDT w.1 hwEig hwSupp
+    apply Submodule.mem_span_singleton.mpr
+    refine ⟨c, ?_⟩
+    apply Subtype.ext
+    simpa [e, sign] using hc.symm
+  have htop : ℚ ∙ e = ⊤ := eq_top_iff.mpr (by
+    intro w _hw
+    exact hall w)
+  have hfinOne : Module.finrank ℚ E = 1 := by
+    have hf := finrank_span_singleton (K := ℚ) (V := E) heNonzero
+    rw [htop, finrank_top] at hf
+    exact hf
+  omega
+
+/-- In the closed order-six branch, parity forces a `-3` eigenvector which
+is nonzero outside the explicit residual `K₃,₃`. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_negThree_eigenvector_nonzero_off_residual
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let R := Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})
+    ∃ w : defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ),
+      ∃ z, z ∉ R ∧ w.1 z ≠ 0 := by
+  obtain ⟨P, T, hPcard, hTcard, hdPT, hPT, hDP, hDT⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_residual_exists_K33_partition
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hDreg : ∀ z, (secondOrderDefectGraph G).degree z = 3 := by
+    intro z
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) z
+  have heven := degreeSix_thirtyFour_negThree_defectEigenspace_even
+    G hfree hreg hDreg
+  obtain ⟨w, z, hz, hwz⟩ :=
+    exists_negThree_eigenvector_nonzero_off_K33_of_even_finrank
+      (secondOrderDefectGraph G) P T hPcard hTcard hdPT hDP hDT heven
+  refine ⟨w, z, ?_, hwz⟩
+  rwa [hPT] at hz
+
 /-- The closed residual branch therefore supplies a concrete nonzero
 `-3` defect eigenvector. -/
 theorem degreeSix_thirtyFour_defectKFour_exists_nonzero_negThree_defectEigenvector
@@ -6878,6 +6979,60 @@ theorem negThree_eigenvector_eq_neg_of_adj
     rw [haAbs]
     exact hbound z haz.reachable
   · exact hab
+
+/-- The parity-forced direction in the closed order-six branch is visible
+on the 24-vertex block layer rather than only at the central `K₄`. -/
+theorem degreeSix_thirtyFour_closed_defectKFour_exists_negThree_eigenvector_nonzero_on_blockLayer
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableRel (triangularEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hresidual : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2) =
+      Finset.univ \ (G.neighborFinset a ∪ G.neighborFinset b ∪
+        G.neighborFinset x ∪ G.neighborFinset y ∪ {a, b, x, y})) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    ∃ w : defectEigenspace
+        ((secondOrderDefectGraph G).adjMatrix ℚ) (-3 : ℚ),
+      ∃ z ∈ B, w.1 z ≠ 0 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let Q : Finset V := {a, b, x, y}
+  let R := Finset.univ \ (B ∪ Q)
+  obtain ⟨w, z, hzNotR, hwz⟩ :=
+    degreeSix_thirtyFour_closed_defectKFour_exists_negThree_eigenvector_nonzero_off_residual
+      G hfree hreg hcard hab hax hbx hay hby hxy hresidual
+  have hDreg : ∀ q, (secondOrderDefectGraph G).degree q = 3 := by
+    intro q
+    simpa using secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg (e := 1) (by simpa using hcard) q
+  have hcenterZero := negThree_eigenvector_zero_on_cubicKFour
+    (secondOrderDefectGraph G) hDreg hab hax hbx hay hby hxy w.1
+      (mem_defectEigenspace_iff.mp w.2)
+  have hzU : z ∈ B ∪ Q := by
+    by_contra hzU
+    exact hzNotR (Finset.mem_sdiff.mpr ⟨Finset.mem_univ z, hzU⟩)
+  rcases Finset.mem_union.mp hzU with hzB | hzQ
+  · exact ⟨w, z, hzB, hwz⟩
+  · exfalso
+    simp only [Q, Finset.mem_insert, Finset.mem_singleton] at hzQ
+    rcases hzQ with hza | hzb | hzx | hzy
+    · exact hwz (hza ▸ hcenterZero.1)
+    · exact hwz (hzb ▸ hcenterZero.2.1)
+    · exact hwz (hzx ▸ hcenterZero.2.2.1)
+    · exact hwz (hzy ▸ hcenterZero.2.2.2)
 
 /-- The extra `-3` direction forced by parity is genuinely visible on the
 24-vertex cover layer. -/
