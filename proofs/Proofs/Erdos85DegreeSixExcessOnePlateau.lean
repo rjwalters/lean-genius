@@ -2536,6 +2536,112 @@ theorem internal_G_neighbor_card_le_two_of_closed_cubic_antipodal_six
   rw [hunion, hDcard, herase] at hle
   omega
 
+/-- Symmetric cut-incidence double count for two finite vertex sets. -/
+theorem sum_card_neighbor_inter_comm
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
+    (∑ a ∈ A, (G.neighborFinset a ∩ B).card) =
+      ∑ b ∈ B, (G.neighborFinset b ∩ A).card := by
+  classical
+  rw [← Finset.card_sigma, ← Finset.card_sigma]
+  apply Finset.card_bij (fun p _ => ⟨p.2, p.1⟩)
+  · intro p hp
+    simp only [Finset.mem_sigma, Finset.mem_inter, G.mem_neighborFinset] at hp ⊢
+    exact ⟨hp.2.2, hp.2.1.symm, hp.1⟩
+  · intro p hp q hq heq
+    cases p
+    cases q
+    cases heq
+    rfl
+  · intro p hp
+    simp only [Finset.mem_sigma, Finset.mem_inter, G.mem_neighborFinset] at hp
+    refine ⟨⟨p.2, p.1⟩, ?_, ?_⟩
+    · simp only [Finset.mem_sigma, Finset.mem_inter, G.mem_neighborFinset]
+      exact ⟨hp.2.2, hp.2.1.symm, hp.1⟩
+    · cases p
+      rfl
+
+/-- The four six-blocks send exactly 24 original-graph incidences into the
+residual six-set, and the symmetric residual-side incidence sum is therefore
+also exactly 24. -/
+theorem degreeSix_thirtyFour_defectKFour_block_residual_incidence_sum_eq_twentyFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hreg : ∀ z, G.degree z = 6)
+    (hcard : Fintype.card V = 34)
+    (hregD : ∀ z, (secondOrderDefectGraph G).degree z = 3)
+    {a b x y : V}
+    (hab : (secondOrderDefectGraph G).Adj a b)
+    (hax : (secondOrderDefectGraph G).Adj a x)
+    (hbx : (secondOrderDefectGraph G).Adj b x)
+    (hay : (secondOrderDefectGraph G).Adj a y)
+    (hby : (secondOrderDefectGraph G).Adj b y)
+    (hxy : (secondOrderDefectGraph G).Adj x y)
+    (hzero : (Finset.univ.filter fun z : V =>
+      (triangleFreeEdgeGraph G).degree z = 2).card = 0) :
+    let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+      G.neighborFinset x ∪ G.neighborFinset y
+    let R := Finset.univ \ (B ∪ {a, b, x, y})
+    (∑ v ∈ B, (G.neighborFinset v ∩ R).card) = 24 ∧
+      (∑ r ∈ R, (G.neighborFinset r ∩ B).card) = 24 := by
+  let B := G.neighborFinset a ∪ G.neighborFinset b ∪
+    G.neighborFinset x ∪ G.neighborFinset y
+  let R := Finset.univ \ (B ∪ {a, b, x, y})
+  have hone : ∀ v ∈ B, (G.neighborFinset v ∩ R).card = 1 := by
+    intro v hv
+    simp only [B, Finset.mem_union] at hv
+    rcases hv with ((hva | hvb) | hvx) | hvy
+    · simpa only [B, R] using
+        degreeSix_thirtyFour_defectKFour_centerBlock_residual_inter_card_eq_one
+          G hfree hreg hcard hregD hab hax hbx hay hby hxy hzero hva
+    · have ht :=
+        degreeSix_thirtyFour_defectKFour_centerBlock_residual_inter_card_eq_one
+          G hfree hreg hcard hregD hab.symm hbx hax hby hay hxy hzero hvb
+      have hQ : ({b, a, x, y} : Finset V) = {a, b, x, y} := by
+        ext z
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
+      rw [hQ] at ht
+      simpa only [B, R, Finset.union_comm, Finset.union_left_comm,
+        Finset.union_assoc] using ht
+    · have ht :=
+        degreeSix_thirtyFour_defectKFour_centerBlock_residual_inter_card_eq_one
+          G hfree hreg hcard hregD hax.symm hbx.symm hab hxy hay hby hzero hvx
+      have hQ : ({x, a, b, y} : Finset V) = {a, b, x, y} := by
+        ext z
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
+      rw [hQ] at ht
+      simpa only [B, R, Finset.union_comm, Finset.union_left_comm,
+        Finset.union_assoc] using ht
+    · have ht :=
+        degreeSix_thirtyFour_defectKFour_centerBlock_residual_inter_card_eq_one
+          G hfree hreg hcard hregD hay.symm hby.symm hab hxy.symm hax hbx hzero hvy
+      have hQ : ({y, a, b, x} : Finset V) = {a, b, x, y} := by
+        ext z
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        tauto
+      rw [hQ] at ht
+      simpa only [B, R, Finset.union_comm, Finset.union_left_comm,
+        Finset.union_assoc] using ht
+  have hBcard : B.card = 24 := by
+    simpa [B] using
+      degreeSix_defectKFour_four_neighborhood_union_card_eq_twentyFour
+        G hfree hreg hab hax hbx hay hby hxy
+  have hleft : (∑ v ∈ B, (G.neighborFinset v ∩ R).card) = 24 := by
+    calc
+      (∑ v ∈ B, (G.neighborFinset v ∩ R).card) = ∑ v ∈ B, 1 := by
+        apply Finset.sum_congr rfl
+        intro v hv
+        exact hone v hv
+      _ = 24 := by simp [hBcard]
+  refine ⟨hleft, ?_⟩
+  rw [← sum_card_neighbor_inter_comm G B R]
+  exact hleft
+
 /-- For an isolated cubic defect `K₄`, being an outside vertex with zero
 original-graph contact to the four centers is preserved across every defect
 edge. -/
