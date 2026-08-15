@@ -71,8 +71,15 @@ theorem C4PlateauCore.exists_orderFortyNine_surviving_incidence_profile
         ((n 0 = 14 ∧ n 1 = 20 ∧ n 2 = 10 ∧ n 3 = 0) ∨
          (n 0 = 13 ∧ n 1 = 23 ∧ n 2 = 7 ∧ n 3 = 1) ∨
          (n 0 = 12 ∧ n 1 = 26 ∧ n 2 = 4 ∧ n 3 = 2))) ∨
-      (H.card = 7 ∧ n 0 + n 3 = 7 ∧ n 1 = 14 + 3 * n 3 ∧
-        n 2 + 3 * n 3 = 21 ∧ n 3 ≤ 7) := by
+      (H.card = 7 ∧
+        ((n 0 = 7 ∧ n 1 = 14 ∧ n 2 = 21 ∧ n 3 = 0) ∨
+         (n 0 = 6 ∧ n 1 = 17 ∧ n 2 = 18 ∧ n 3 = 1) ∨
+         (n 0 = 5 ∧ n 1 = 20 ∧ n 2 = 15 ∧ n 3 = 2) ∨
+         (n 0 = 4 ∧ n 1 = 23 ∧ n 2 = 12 ∧ n 3 = 3) ∨
+         (n 0 = 3 ∧ n 1 = 26 ∧ n 2 = 9 ∧ n 3 = 4) ∨
+         (n 0 = 2 ∧ n 1 = 29 ∧ n 2 = 6 ∧ n 3 = 5) ∨
+         (n 0 = 1 ∧ n 1 = 32 ∧ n 2 = 3 ∧ n 3 = 6) ∨
+         (n 0 = 0 ∧ n 1 = 35 ∧ n 2 = 0 ∧ n 3 = 7))) := by
   obtain ⟨G, hdec, hmin, hfree, hconnected, hbranches⟩ :=
     hcore.exists_orderFortyNine_connected_fourHighBranches
   letI : DecidableRel G.Adj := hdec
@@ -93,7 +100,7 @@ theorem C4PlateauCore.exists_orderFortyNine_surviving_incidence_profile
     exact ⟨h5, orderFortyNine_highIncidence_profile_of_five_high
       G hfree hdegree (by norm_num) h5⟩
   · right; right; right
-    exact ⟨h7, orderFortyNine_highIncidence_profile_of_seven_high
+    exact ⟨h7, orderFortyNine_highIncidence_profiles_of_seven_high
       G hfree hdegree (by norm_num) h7⟩
 
 end Erdos85

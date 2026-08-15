@@ -40,6 +40,35 @@ theorem orderFortyNine_highIncidence_profile_of_seven_high
   rw [hHigh] at hp
   omega
 
+/-- The parameterized seven-high profile consists of exactly eight numerical
+possibilities.  Keeping this as a literal disjunction gives finite-search
+consumers no arithmetic side condition to reconstruct. -/
+set_option maxHeartbeats 800000 in
+theorem orderFortyNine_highIncidence_profiles_of_seven_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 7) :
+    let n := orderFortyNineHighIncidenceCount G
+    (n 0 = 7 ∧ n 1 = 14 ∧ n 2 = 21 ∧ n 3 = 0) ∨
+    (n 0 = 6 ∧ n 1 = 17 ∧ n 2 = 18 ∧ n 3 = 1) ∨
+    (n 0 = 5 ∧ n 1 = 20 ∧ n 2 = 15 ∧ n 3 = 2) ∨
+    (n 0 = 4 ∧ n 1 = 23 ∧ n 2 = 12 ∧ n 3 = 3) ∨
+    (n 0 = 3 ∧ n 1 = 26 ∧ n 2 = 9 ∧ n 3 = 4) ∨
+    (n 0 = 2 ∧ n 1 = 29 ∧ n 2 = 6 ∧ n 3 = 5) ∨
+    (n 0 = 1 ∧ n 1 = 32 ∧ n 2 = 3 ∧ n 3 = 6) ∨
+    (n 0 = 0 ∧ n 1 = 35 ∧ n 2 = 0 ∧ n 3 = 7) := by
+  dsimp only
+  have hp := orderFortyNine_highIncidence_profile_of_seven_high
+    G hfree hmin hcard hHigh
+  dsimp only at hp
+  have hn3 : orderFortyNineHighIncidenceCount G 3 ≤ 7 := hp.2.2.2
+  interval_cases orderFortyNineHighIncidenceCount G 3 <;> omega
+
 /-- Every high point in the seven-high stratum lies in at most three triple
 blocks; locally `a₁=a₃+2` and `a₂+2a₃=6`. -/
 theorem orderFortyNine_highNeighborhood_profile_of_seven_high
