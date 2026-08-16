@@ -408,6 +408,125 @@ theorem oneHigh_oddProfileRepeatedPairResidual_of_all_even
   · exact Or.inr (Or.inl hmateOwner)
   · exact Or.inr (Or.inr ⟨howner, hmateOwner⟩)
 
+/-- A reciprocal pair of concrete same-miss internal edges, represented by
+one matched endpoint in each of the two source branches. -/
+structure OneHighReciprocalSameMissEdges
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) where
+  s : {z : V // z ∈ G.neighborSet v}
+  u : {z : V // z ∈ G.neighborSet v}
+  u_far : u ∈ ((Finset.univ.erase s).erase (p.mate s))
+  x : OneHighMatchedBranchVertices G v s
+  a : OneHighMatchedBranchVertices G v u
+  x_misses_u : oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj s x = u
+  x_mate_misses_u : oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj s
+      (oneHighInternalMate G hfree v s x) = u
+  a_misses_s : oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj u a = s
+  a_mate_misses_s : oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj u
+      (oneHighInternalMate G hfree v u a) = s
+  x_to_u_zero : (G.neighborFinset x.1.1 ∩
+    secondLayerBranch G v u).card = 0
+  x_mate_to_u_zero :
+    (G.neighborFinset (oneHighInternalMate G hfree v s x).1.1 ∩
+      secondLayerBranch G v u).card = 0
+  a_to_s_zero : (G.neighborFinset a.1.1 ∩
+    secondLayerBranch G v s).card = 0
+  a_mate_to_s_zero :
+    (G.neighborFinset (oneHighInternalMate G hfree v u a).1.1 ∩
+      secondLayerBranch G v s).card = 0
+
+/-- Global same-miss behavior always contains a reciprocal pair of concrete
+internal edges: an edge in branch `s` misses `u`, and an edge in branch `u`
+misses `s`. -/
+theorem exists_oneHighReciprocalSameMissEdges
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (hsame : OneHighGlobalSameMiss G hfree v p.mate) :
+    Nonempty (OneHighReciprocalSameMissEdges G hfree hv p) := by
+  let s := p.branchLabel.symm 0
+  have hrow := p.sum_far_missCount G hfree hv s
+  have hrowPos : 0 < ∑ u ∈ ((Finset.univ.erase s).erase (p.mate s)),
+      highBranchMissCount G v s u := by
+    rw [hrow]
+    unfold oneHighFamilyInternalEdges
+    split <;> omega
+  obtain ⟨u, hu, hsuPos⟩ := Finset.sum_pos_iff.mp hrowPos
+  have hus : s ∈ ((Finset.univ.erase u).erase (p.mate u)) := by
+    have hum : u ≠ p.mate s := (Finset.mem_erase.mp hu).1
+    have hus : u ≠ s :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp hu).2).1
+    apply Finset.mem_erase.mpr
+    refine ⟨?_, Finset.mem_erase.mpr ⟨hus.symm, Finset.mem_univ _⟩⟩
+    intro hsm
+    apply hum
+    exact (p.mate_involutive u).symm.trans (congrArg p.mate hsm).symm
+  have husPos : 0 < highBranchMissCount G v u s := by
+    simpa [p.missCount_comm G hfree v s u] using hsuPos
+  have hxCard := card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj s u hu
+  have haCard := card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj u s hus
+  have hxNonempty : ((Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v s)).filter fun x =>
+        oneHighMatchedMissLabel G hfree hv p.external_empty p.outer_degree
+          p.mate p.mate_adj s x = u).Nonempty := by
+    rw [← Finset.card_pos, hxCard]
+    exact hsuPos
+  have haNonempty : ((Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v u)).filter fun a =>
+        oneHighMatchedMissLabel G hfree hv p.external_empty p.outer_degree
+          p.mate p.mate_adj u a = s).Nonempty := by
+    rw [← Finset.card_pos, haCard]
+    exact husPos
+  obtain ⟨x, hx⟩ := hxNonempty
+  obtain ⟨a, ha⟩ := haNonempty
+  have hxMiss := (Finset.mem_filter.mp hx).2
+  have haMiss := (Finset.mem_filter.mp ha).2
+  have hxSame := (oneHighGlobalMissLabel_eq_iff_sameMiss_at
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+      (⟨s, x⟩ : OneHighAllMatchedVertices G v)).mpr (hsame ⟨s, x⟩)
+  have haSame := (oneHighGlobalMissLabel_eq_iff_sameMiss_at
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+      (⟨u, a⟩ : OneHighAllMatchedVertices G v)).mpr (hsame ⟨u, a⟩)
+  have hxMateMiss : oneHighMatchedMissLabel G hfree hv p.external_empty
+      p.outer_degree p.mate p.mate_adj s
+        (oneHighInternalMate G hfree v s x) = u := by
+    change oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+      p.mate p.mate_adj
+        (oneHighGlobalInternalMate G hfree v ⟨s, x⟩) = u
+    exact hxSame.symm.trans hxMiss
+  have haMateMiss : oneHighMatchedMissLabel G hfree hv p.external_empty
+      p.outer_degree p.mate p.mate_adj u
+        (oneHighInternalMate G hfree v u a) = s := by
+    change oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+      p.mate p.mate_adj
+        (oneHighGlobalInternalMate G hfree v ⟨u, a⟩) = s
+    exact haSame.symm.trans haMiss
+  have hxMem := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj s x
+  have hxmMem := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj s
+      (oneHighInternalMate G hfree v s x)
+  have haMem := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj u a
+  have hamMem := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj u
+      (oneHighInternalMate G hfree v u a)
+  refine ⟨⟨s, u, hu, x, a, hxMiss, hxMateMiss, haMiss, haMateMiss,
+    ?_, ?_, ?_, ?_⟩⟩
+  · simpa [hxMiss] using (Finset.mem_filter.mp hxMem).2
+  · simpa [hxMateMiss] using (Finset.mem_filter.mp hxmMem).2
+  · simpa [haMiss] using (Finset.mem_filter.mp haMem).2
+  · simpa [haMateMiss] using (Finset.mem_filter.mp hamMem).2
+
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
 an even, odd, even, odd, and even same-miss count. -/
