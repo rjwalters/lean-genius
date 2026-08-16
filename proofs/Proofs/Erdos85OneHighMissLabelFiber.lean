@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighGlobalMissLabelCounting
+import Proofs.Erdos85OneHighGlobalExchangeParity
 
 /-! # Matched miss-label fibers
 
@@ -137,6 +138,106 @@ theorem card_oneHighGlobalMissLabelFiber_eq_sum_branchFibers
         OneHighMatchedBranchVertices G v s =>
           oneHighMatchedMissLabel G hfree hv hexternal houterDegree
             rootMate hrootAdj s x = u))
+
+private theorem mem_farSources_comm_of_involutive
+    {L : Type*} [Fintype L] [DecidableEq L]
+    (mate : L → L) (hinv : Function.Involutive mate) (s u : L) :
+    u ∈ ((Finset.univ.erase s).erase (mate s)) ↔
+      s ∈ ((Finset.univ.erase u).erase (mate u)) := by
+  simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+  constructor
+  · rintro ⟨hums, hus⟩
+    refine ⟨?_, hus.symm⟩
+    intro hsmu
+    apply hums
+    rw [hsmu, hinv u]
+  · rintro ⟨hsmu, hsu⟩
+    refine ⟨?_, hsu.symm⟩
+    intro hums
+    apply hsmu
+    rw [hums, hinv s]
+
+/-- Under an involutive root matching, the global endpoint-label fiber is
+exactly the far-column sum of the graph miss table. -/
+theorem card_oneHighGlobalMissLabelFiber_eq_farColumn
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hrootAdj : ∀ s, G.Adj s.1 (rootMate s).1)
+    (hinv : Function.Involutive rootMate)
+    (u : {z : V // z ∈ G.neighborSet v}) :
+    ((Finset.univ : Finset (OneHighAllMatchedVertices G v)).filter
+      fun x => oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj x = u).card =
+      ∑ s ∈ ((Finset.univ.erase u).erase (rootMate u)),
+        highBranchMissCount G v s u := by
+  classical
+  rw [card_oneHighGlobalMissLabelFiber_eq_sum_branchFibers
+    G hfree hv hexternal houterDegree rootMate hrootAdj u]
+  let S := ((Finset.univ.erase u).erase (rootMate u))
+  let f := fun s : {z : V // z ∈ G.neighborSet v} =>
+    ((Finset.univ : Finset (OneHighMatchedBranchVertices G v s)).filter
+      fun x => oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj s x = u).card
+  have hout : ∀ s ∈ (Finset.univ : Finset
+      {z : V // z ∈ G.neighborSet v}), s ∉ S → f s = 0 := by
+    intro s _ hs
+    change ((Finset.univ : Finset (OneHighMatchedBranchVertices G v s)).filter
+      fun x => oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj s x = u).card = 0
+    rw [Finset.card_eq_zero]
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · intro hxlabel
+      have hlabelMem := oneHighMatchedMissLabel_mem G hfree hv hexternal
+        houterDegree rootMate hrootAdj s x
+      have huFar : u ∈ ((Finset.univ.erase s).erase (rootMate s)) := by
+        have := (Finset.mem_filter.mp hlabelMem).1
+        simpa [hxlabel] using this
+      have hfalse : False :=
+        hs ((mem_farSources_comm_of_involutive rootMate hinv s u).mp huFar)
+      exact hfalse.elim
+    · simp
+  rw [← Finset.sum_subset (Finset.subset_univ S) (by
+    intro s _ hs
+    exact hout s (Finset.mem_univ s) hs)]
+  apply Finset.sum_congr rfl
+  intro s hs
+  apply card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+    G hfree hv hexternal houterDegree rootMate hrootAdj s u
+  exact (mem_farSources_comm_of_involutive rootMate hinv s u).mpr hs
+
+/-- Every global miss-label endpoint fiber is even, unconditionally on
+same-miss behavior. -/
+theorem even_card_oneHighGlobalMissLabelFiber
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hv : G.degree v = 8)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = 7)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hrootAdj : ∀ s, G.Adj s.1 (rootMate s).1)
+    (hinv : Function.Involutive rootMate)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (u : {z : V // z ∈ G.neighborSet v}) :
+    Even (((Finset.univ : Finset (OneHighAllMatchedVertices G v)).filter
+      fun x => oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj x = u).card) := by
+  rw [card_oneHighGlobalMissLabelFiber_eq_farColumn G hfree hv hexternal
+    houterDegree rootMate hrootAdj hinv u]
+  exact even_sum_far_highBranchMissCount_column G hfree (d := 7) (by omega)
+    (by simpa using hv) hneigh hlocal hexternal rootMate hrootAdj
+      houterDegree u
 
 end
 
