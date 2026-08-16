@@ -1636,7 +1636,7 @@ theorem finsetRangeFilter_card_eq_finSubtype_card
 
 theorem oneHighStandardMate_val_eq_xor (b : Fin 8) :
     (oneHighStandardMate b).val = b.val ^^^ 1 := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighFamilyFarDegreeBound_eq
     (a y : Nat) (hy : y < 40) :

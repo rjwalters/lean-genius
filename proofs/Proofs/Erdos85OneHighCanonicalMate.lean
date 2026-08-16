@@ -20,7 +20,7 @@ def oneHighStandardMate : Equiv.Perm (Fin 8) :=
 theorem oneHighStandardMate_involutive :
     Function.Involutive oneHighStandardMate := by
   intro i
-  native_decide +revert
+  decide +revert
 
 theorem oneHighStandardMate_ne (i : Fin 8) : oneHighStandardMate i ≠ i := by
   decide +revert

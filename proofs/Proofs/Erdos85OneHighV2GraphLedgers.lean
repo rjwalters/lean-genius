@@ -276,7 +276,7 @@ def oneHighFamilyBlockFinset (b : Fin 8) : Finset (Fin 40) :=
 
 theorem oneHighFamilyBlockFinset_card (b : Fin 8) :
     (oneHighFamilyBlockFinset b).card = 5 := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighFamilyBlockFinset_cross_degree_le_one
     (a : Nat) (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj]
