@@ -17,21 +17,59 @@ def oneHighTableHasSaturatedTurnRow
     (profile : Nat) (table : OneHighMissTable) : Bool :=
   decide (∃ source b a c : Fin 8,
     oneHighFamilyInternalEdges profile source = 2 ∧
-    table source.val b.val = 2 ∧
-    table source.val a.val = 1 ∧
-    table source.val c.val = 1 ∧
+    oneHighFamilyTableGet table source.val b.val = 2 ∧
+    oneHighFamilyTableGet table source.val a.val = 1 ∧
+    oneHighFamilyTableGet table source.val c.val = 1 ∧
     (∀ label : Fin 8,
-      table source.val label.val =
-        oneHighLabelPairEndpointCount
-            (oneHighCanonicalLabelPair a b) label +
+      oneHighRootPair source ≠ oneHighRootPair label →
+        oneHighFamilyTableGet table source.val label.val =
           oneHighLabelPairEndpointCount
-            (oneHighCanonicalLabelPair b c) label) ∧
+              (oneHighCanonicalLabelPair a b) label +
+            oneHighLabelPairEndpointCount
+              (oneHighCanonicalLabelPair b c) label) ∧
     oneHighRootPair source ≠ oneHighRootPair a ∧
     oneHighRootPair source ≠ oneHighRootPair b ∧
     oneHighRootPair source ≠ oneHighRootPair c ∧
     oneHighRootPair a ≠ oneHighRootPair b ∧
     oneHighRootPair b ≠ oneHighRootPair c ∧
     oneHighRootPair a ≠ oneHighRootPair c)
+
+set_option maxHeartbeats 800000 in
+/-- Relevant-coordinate agreement preserves normalized table lookup between
+distinct root-pair colors. -/
+theorem oneHighFamilyTableGet_eq_of_relevantAgree_of_rootPair_ne
+    {left right : OneHighMissTable}
+    (h : OneHighTableRelevantAgree left right) {i j : Fin 8}
+    (hij : oneHighRootPair i ≠ oneHighRootPair j) :
+    oneHighFamilyTableGet left i.val j.val =
+      oneHighFamilyTableGet right i.val j.val := by
+  unfold oneHighFamilyTableGet
+  apply h (min i.val j.val, max i.val j.val)
+  fin_cases i <;> fin_cases j <;>
+    simp [oneHighRootPair] at hij <;>
+    simp_all [oneHighFamilyTablePairs]
+
+/-- The saturated-turn signature depends only on the 24 table coordinates
+read by the exact v2 generator. -/
+theorem oneHighTableHasSaturatedTurnRow_of_relevantAgree
+    {profile : Nat} {left right : OneHighMissTable}
+    (h : OneHighTableRelevantAgree left right)
+    (hleft : oneHighTableHasSaturatedTurnRow profile left = true) :
+    oneHighTableHasSaturatedTurnRow profile right = true := by
+  rw [oneHighTableHasSaturatedTurnRow, decide_eq_true_eq] at hleft ⊢
+  rcases hleft with ⟨source, b, a, c, hedges, hb, ha, hc, hrow,
+    hsa, hsb, hsc, hab, hbc, hac⟩
+  refine ⟨source, b, a, c, hedges, ?_, ?_, ?_, ?_, hsa, hsb, hsc,
+    hab, hbc, hac⟩
+  · rw [← hb]
+    exact (oneHighFamilyTableGet_eq_of_relevantAgree_of_rootPair_ne h hsb).symm
+  · rw [← ha]
+    exact (oneHighFamilyTableGet_eq_of_relevantAgree_of_rootPair_ne h hsa).symm
+  · rw [← hc]
+    exact (oneHighFamilyTableGet_eq_of_relevantAgree_of_rootPair_ne h hsc).symm
+  · intro label hslabel
+    rw [← hrow label hslabel]
+    exact (oneHighFamilyTableGet_eq_of_relevantAgree_of_rootPair_ne h hslabel).symm
 
 @[simp] theorem oneHighLabelPairEndpointCount_canonical_left
     {a b : Fin 8} (h : a ≠ b) :
@@ -210,15 +248,18 @@ theorem OneHighPinnedThreePairTurn.graphRelevantMissTable_hasSaturatedTurnRow
     have hrow := T.sameOwner_graphRelevantMissTable_eq G hfree hv p howner
     refine ⟨p.branchLabel T.qAB.sourceEdge.1,
       p.branchLabel T.b, p.branchLabel T.a, p.branchLabel T.c,
-      T.sameOwner_internalEdges_eq_two G hfree hv p howner, ?_, ?_, ?_, hrow,
+      T.sameOwner_internalEdges_eq_two G hfree hv p howner, ?_, ?_, ?_, ?_,
       hfourth.2.1, hfourth.2.2.1, hfourth.2.2.2,
       T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne⟩
-    · rw [hrow]
+    · rw [oneHighFamilyTableGet_graphRelevantMissTable, hrow]
       simp [hab, hbc]
-    · rw [hrow]
+    · rw [oneHighFamilyTableGet_graphRelevantMissTable, hrow]
       simp [hab, hbc, hac, hab.symm, hbc.symm, hac.symm]
-    · rw [hrow]
+    · rw [oneHighFamilyTableGet_graphRelevantMissTable, hrow]
       simp [hab, hbc, hac, hab.symm, hbc.symm, hac.symm]
+    · intro label _
+      rw [oneHighFamilyTableGet_graphRelevantMissTable]
+      exact hrow label
   · exact False.elim ((oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
       p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far)
         (hcolor.symm.trans hc))
