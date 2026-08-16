@@ -212,6 +212,26 @@ theorem squareOrder_highQuadraticFactor_dvd_adjMatrixRat_charpoly
     (squareOrder_highQuadraticSector_span_invariant
       G hfree hd hmin hcard ha)
 
+/-- Cardinality-normalized form of the high-sector factor: its exponent is
+exactly one less than the number of high vertices. -/
+theorem squareOrder_highQuadraticFactor_card_sub_one_dvd_adjMatrixRat_charpoly
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    (Polynomial.X ^ 2 - Polynomial.C (d : ℚ)) ^
+        ((squareOrderHighVertices G d).card - 1) ∣
+      LinearMap.charpoly (G.adjMatrix ℚ).toLin' := by
+  have h := squareOrder_highQuadraticFactor_dvd_adjMatrixRat_charpoly
+    G hfree hd hmin hcover hcard ha
+  rw [Fintype.card_coe, Finset.card_erase_of_mem ha] at h
+  exact h
+
 end
 
 end Erdos85
