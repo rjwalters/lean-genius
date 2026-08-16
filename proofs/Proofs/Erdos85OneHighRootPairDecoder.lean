@@ -11,13 +11,6 @@ namespace Erdos85
 
 noncomputable section
 
-/-- Two canonical root labels have the same pair quotient exactly when they
-are equal or standard mates. -/
-theorem oneHighRootPair_eq_iff_eq_or_standardMate (x y : Fin 8) :
-    oneHighRootPair x = oneHighRootPair y ↔
-      x = y ∨ x = oneHighStandardMate y := by
-  decide +revert
-
 /-- Every canonical mate-pair fiber contains exactly two root labels. -/
 theorem card_oneHighRootPair_fiber (p : Fin 4) :
     ((Finset.univ : Finset (Fin 8)).filter fun x =>
