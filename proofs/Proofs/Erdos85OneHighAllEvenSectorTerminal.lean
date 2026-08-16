@@ -1103,6 +1103,56 @@ theorem OneHighReciprocalSameMissEdges.reverse_other_missCount_eq_zero
   rw [herase] at hle
   exact Nat.eq_zero_of_le_zero hle
 
+theorem OneHighReciprocalSameMissEdges.reverse_diagonalPair_mem_pairing
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p) :
+    (p.branchLabel q.s, p.branchLabel q.s) ∈
+      oneHighGraphSourcePairing G hfree hv p (p.branchLabel q.u) := by
+  let M := oneHighInternalMate G hfree v q.u
+  let rootLabel := oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj q.u
+  let label := fun z => p.branchLabel (rootLabel z)
+  have hinv : Function.Involutive M := degreeOneMate_involutive _ _
+  have hne : M q.a ≠ q.a := degreeOneMate_ne _ _ q.a
+  have hmem : (min (label q.a) (label (M q.a)),
+      max (label q.a) (label (M q.a))) ∈
+      matchingPairingListSorted M label := by
+    rcases lt_or_gt_of_ne hne with hlt | hgt
+    · have hm : M q.a ∈ matchingEdgeSources M := by
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        change M q.a < M (M q.a)
+        rw [hinv q.a]
+        exact hlt
+      simpa [hinv q.a, min_comm, max_comm] using
+        canonicalPair_mem_matchingPairingListSorted_of_mem_source M label hm
+    · exact canonicalPair_mem_matchingPairingListSorted_of_mem_source M label
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hgt⟩)
+  rw [oneHighGraphSourcePairing, p.branchLabel.symm_apply_apply]
+  simpa [M, rootLabel, label, q.a_misses_s, q.a_mate_misses_s] using hmem
+
+/-- When both reciprocal branches have one edge, the reverse canonical
+pairing row is the diagonal singleton back to source label `0`. -/
+theorem OneHighReciprocalSameMissEdges.reverse_pairing_eq_singleton
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (huEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1) :
+    oneHighGraphSourcePairing G hfree hv p (p.branchLabel q.u) =
+      [(p.branchLabel q.s, p.branchLabel q.s)] := by
+  have hlen := oneHighGraphSourcePairing_length G hfree hv p
+    (p.branchLabel q.u)
+  rw [huEdge] at hlen
+  obtain ⟨pair, hpair⟩ := List.length_eq_one_iff.mp hlen
+  have hmem := q.reverse_diagonalPair_mem_pairing
+  rw [hpair] at hmem ⊢
+  exact congrArg List.singleton (List.mem_singleton.mp hmem).symm
+
 /-- In a one-edge target branch, the forced distinct nonadjacent targets of
 the canonical source edge cannot both be internally matched. -/
 theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_with_isolated
