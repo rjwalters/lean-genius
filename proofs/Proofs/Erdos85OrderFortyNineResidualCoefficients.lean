@@ -87,6 +87,36 @@ theorem exists_orderFortyNineSeven_residualCharpoly_coefficients
   · dsimp [H] at hcoeffFourC ⊢
     exact_mod_cast hcoeffFourC
 
+/-- Numerical form of the residual coefficient constraints on the five
+admissible high-count strata.  This is convenient for modular and
+real-rootedness terminals, which can now work with literal coefficients. -/
+theorem orderFortyNineSeven_residual_coefficient_cases
+    (h : ℕ) (c₂ c₄ : ℚ)
+    (hh : h = 1 ∨ h = 3 ∨ h = 5 ∨ h = 7 ∨ h = 9)
+    (hc₂ : 2 * c₂ = -(357 - 13 * (h : ℚ)))
+    (hc₄ : 8 * c₄ = 169 * (h : ℚ) ^ 2 - 9144 * (h : ℚ) + 118335) :
+    (h = 1 ∧ c₂ = -172 ∧ c₄ = 13670) ∨
+    (h = 3 ∧ c₂ = -159 ∧ c₄ = 11553) ∨
+    (h = 5 ∧ c₂ = -146 ∧ c₄ = 9605) ∨
+    (h = 7 ∧ c₂ = -133 ∧ c₄ = 7826) ∨
+    (h = 9 ∧ c₂ = -120 ∧ c₄ = 6216) := by
+  rcases hh with rfl | rfl | rfl | rfl | rfl
+  · left
+    norm_num at hc₂ hc₄ ⊢
+    exact ⟨by linarith, by linarith⟩
+  · right; left
+    norm_num at hc₂ hc₄ ⊢
+    exact ⟨by linarith, by linarith⟩
+  · right; right; left
+    norm_num at hc₂ hc₄ ⊢
+    exact ⟨by linarith, by linarith⟩
+  · right; right; right; left
+    norm_num at hc₂ hc₄ ⊢
+    exact ⟨by linarith, by linarith⟩
+  · right; right; right; right
+    norm_num at hc₂ hc₄ ⊢
+    exact ⟨by linarith, by linarith⟩
+
 end
 
 end Erdos85

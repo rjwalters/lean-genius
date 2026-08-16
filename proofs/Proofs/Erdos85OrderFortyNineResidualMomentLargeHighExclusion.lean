@@ -11,6 +11,50 @@ last two analytic inputs needed by the graph-level consumer.
 
 namespace Erdos85
 
+/-- Cauchy--Schwarz for the squared roots after removing one distinguished
+root.  This is the analytic inequality used by both large-high terminals. -/
+theorem remaining_root_squares_cauchy
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (lambda : ι → ℝ) (i0 : ι) :
+    (∑ i ∈ Finset.univ.erase i0, lambda i ^ 2) ^ 2 ≤
+      ((Fintype.card ι - 1 : ℕ) : ℝ) *
+        ∑ i ∈ Finset.univ.erase i0, lambda i ^ 4 := by
+  have h := sq_sum_le_card_mul_sum_sq
+    (s := Finset.univ.erase i0) (f := fun i => lambda i ^ 2)
+  simp_rw [show ∀ i, (lambda i ^ 2) ^ 2 = lambda i ^ 4 by
+    intro i
+    ring] at h
+  simpa [Finset.card_erase_of_mem] using h
+
+/-- Moment form of `remaining_root_squares_cauchy`: if `x` is the square of
+one distinguished root, then the remaining second and fourth moments obey
+the denominator-free inequality used below. -/
+theorem residual_moment_cauchy_of_distinguished_root
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (lambda : ι → ℝ) (i0 : ι) (second fourth x : ℝ)
+    (hsecond : (∑ i, lambda i ^ 2) = second)
+    (hfourth : (∑ i, lambda i ^ 4) = fourth)
+    (hx : lambda i0 ^ 2 = x) :
+    (second - x) ^ 2 ≤
+      ((Fintype.card ι - 1 : ℕ) : ℝ) * (fourth - x ^ 2) := by
+  have h := remaining_root_squares_cauchy lambda i0
+  have hsecondErase :
+      (∑ i ∈ Finset.univ.erase i0, lambda i ^ 2) = second - x := by
+    have hadd := Finset.add_sum_erase Finset.univ
+      (fun i => lambda i ^ 2) (Finset.mem_univ i0)
+    rw [hsecond, hx] at hadd
+    linarith
+  have hfourthErase :
+      (∑ i ∈ Finset.univ.erase i0, lambda i ^ 4) = fourth - x ^ 2 := by
+    have hadd := Finset.add_sum_erase Finset.univ
+      (fun i => lambda i ^ 4) (Finset.mem_univ i0)
+    rw [hfourth] at hadd
+    have hi : lambda i0 ^ 4 = x ^ 2 := by
+      rw [show lambda i0 ^ 4 = (lambda i0 ^ 2) ^ 2 by ring, hx]
+    rw [hi] at hadd
+    linarith
+  rwa [hsecondErase, hfourthErase] at h
+
 /-- The `h = 19` residual profile is impossible once `x = ρ²` satisfies
 the degree-square Rayleigh lower bound and the remaining-root Cauchy bound. -/
 theorem false_of_orderFortyNine_h19_residualMoment_bounds
