@@ -763,6 +763,35 @@ theorem OneHighReciprocalSameMissEdges.source_reverse_commonNeighbor_unique
       ⟨(G.mem_neighborFinset z.1.1 y').mpr hzy',
         (G.mem_neighborFinset b.1.1 y').mpr hby'⟩
 
+/-- A fixed source/reverse endpoint pair can collide in at most one root
+branch: two branches containing common neighbors of the same endpoints must
+be equal. -/
+theorem OneHighReciprocalSameMissEdges.source_reverse_commonBranch_unique
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    (b : OneHighMatchedBranchVertices G v q.u)
+    {w w' : {r : V // r ∈ G.neighborSet v}}
+    (hw : ∃ y : V, y ∈ secondLayerBranch G v w ∧
+      G.Adj z.1.1 y ∧ G.Adj b.1.1 y)
+    (hw' : ∃ y : V, y ∈ secondLayerBranch G v w' ∧
+      G.Adj z.1.1 y ∧ G.Adj b.1.1 y) :
+    w = w' := by
+  by_contra hww'
+  obtain ⟨y, hyBranch, hzy, hby⟩ := hw
+  obtain ⟨y', hy'Branch, hzy', hby'⟩ := hw'
+  have hyy' := q.source_reverse_commonNeighbor_unique z b
+    hzy hby hzy' hby'
+  subst y'
+  have hdisj : Disjoint (secondLayerBranch G v w)
+      (secondLayerBranch G v w') :=
+    secondLayerBranch_pairwiseDisjoint G hfree v
+      (by simp) (by simp) hww'
+  exact Finset.disjoint_left.mp hdisj hyBranch hy'Branch
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
