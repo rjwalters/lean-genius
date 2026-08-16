@@ -30,12 +30,19 @@ def orderFortyNineVariableHighPairs (h : OrderFortyNineHighCount) :
   (List.finRange h.val).flatMap fun a =>
     ((List.finRange h.val).filter fun b => a.val < b.val).map fun b => (a, b)
 
+def orderFortyNineVariableHighHighUnitLiteral
+    (h : OrderFortyNineHighCount) (masks : Array Nat)
+    (a b : Fin h.val) : Int :=
+  let edge := orderFortyNineEdgeLiteral
+    (orderFortyNineVariableHighVertex h a)
+    (orderFortyNineVariableHighVertex h b)
+  if (orderFortyNineSupportMask masks
+      (orderFortyNineVariableHighVertex h a)).getLsbD b.val then edge else -edge
+
 def orderFortyNineVariableHighHighFixedClauses
-    (h : OrderFortyNineHighCount) : Array DimacsClause :=
+    (h : OrderFortyNineHighCount) (masks : Array Nat) : Array DimacsClause :=
   (orderFortyNineVariableHighPairs h |>.map fun ab =>
-    [-orderFortyNineEdgeLiteral
-      (orderFortyNineVariableHighVertex h ab.1)
-      (orderFortyNineVariableHighVertex h ab.2)]).toArray
+    [orderFortyNineVariableHighHighUnitLiteral h masks ab.1 ab.2]).toArray
 
 def orderFortyNineVariableSupportUnitLiteral
     (h : OrderFortyNineHighCount) (masks : Array Nat)
@@ -53,8 +60,8 @@ def orderFortyNineVariableHighLowFixedClauses
       [orderFortyNineVariableSupportUnitLiteral h masks y w]).toArray
 
 def orderFortyNineVariableFixedClauses
-    (h : OrderFortyNineHighCount) (masks : Array Nat) : Array DimacsClause :=
-  orderFortyNineVariableHighHighFixedClauses h ++
+  (h : OrderFortyNineHighCount) (masks : Array Nat) : Array DimacsClause :=
+  orderFortyNineVariableHighHighFixedClauses h masks ++
     orderFortyNineVariableHighLowFixedClauses h masks
 
 def OrderFortyNineVariableHighMasksZero
