@@ -1043,6 +1043,18 @@ theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_with_isolated
     (adj_of_distinct_oneHighMatchedBranchVertices_of_internalEdges_eq_one
       hwEdge Y Y' hYY')
 
+/-- Finite profile-4 arithmetic: after removing source label `0`, its mate
+`1`, and any reciprocal target, at least two distinct one-edge branch labels
+remain. -/
+theorem exists_two_other_oneEdge_labels_profile_four
+    (u : Fin 8) (hu0 : u ≠ 0) (hu1 : u ≠ 1) :
+    ∃ w₁ w₂ : Fin 8,
+      w₁ ≠ w₂ ∧ w₁ ≠ 0 ∧ w₁ ≠ 1 ∧ w₁ ≠ u ∧
+      w₂ ≠ 0 ∧ w₂ ≠ 1 ∧ w₂ ≠ u ∧
+      oneHighFamilyInternalEdges 4 w₁ = 1 ∧
+      oneHighFamilyInternalEdges 4 w₂ = 1 := by
+  native_decide +revert
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
