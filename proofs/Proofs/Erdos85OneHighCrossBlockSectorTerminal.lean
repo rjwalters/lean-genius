@@ -11,6 +11,26 @@ open SimpleGraph
 
 noncomputable section
 
+private theorem minMax_pair_ne_of_left_not_endpoint
+    {L : Type*} [LinearOrder L] {a b c d : L}
+    (hab : a ≠ b) (hcd : c ≠ d) (hac : a ≠ c) (had : a ≠ d) :
+    (min a b, max a b) ≠ (min c d, max c d) := by
+  intro hpair
+  rcases lt_or_gt_of_ne hab with hablt | hbalt <;>
+    rcases lt_or_gt_of_ne hcd with hcdlt | hdclt
+  · rw [min_eq_left hablt.le, max_eq_right hablt.le,
+      min_eq_left hcdlt.le, max_eq_right hcdlt.le] at hpair
+    exact hac (Prod.mk.inj hpair).1
+  · rw [min_eq_left hablt.le, max_eq_right hablt.le,
+      min_eq_right hdclt.le, max_eq_left hdclt.le] at hpair
+    exact had (Prod.mk.inj hpair).1
+  · rw [min_eq_right hbalt.le, max_eq_left hbalt.le,
+      min_eq_left hcdlt.le, max_eq_right hcdlt.le] at hpair
+    exact had (Prod.mk.inj hpair).2
+  · rw [min_eq_right hbalt.le, max_eq_left hbalt.le,
+      min_eq_right hdclt.le, max_eq_left hdclt.le] at hpair
+    exact hac (Prod.mk.inj hpair).2
+
 /-- The graph-side realization of a full odd cross block.  Its four support
 edges are represented by four actual nonconstant internal matching edges. -/
 structure OneHighCrossBlockSourceConfiguration
@@ -149,6 +169,99 @@ theorem OneHighCrossBlockSourceConfiguration.sourceBranch_collision
   · exact Or.inr (Or.inr (Or.inr (Or.inl (decode h))))
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (decode h)))))
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (decode h)))))
+
+/-- The four K₂,₂ support edges have four different unordered keys, so
+their concrete oriented matching-edge witnesses are pairwise distinct. -/
+theorem OneHighCrossBlockSourceConfiguration.sourceEdges_pairwise_ne
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    C.q₀₀.sourceEdge ≠ C.q₀₁.sourceEdge ∧
+      C.q₀₀.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+      C.q₀₀.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+      C.q₀₁.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+      C.q₀₁.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+      C.q₁₀.sourceEdge ≠ C.q₁₁.sourceEdge := by
+  have ha₀a₁ : C.a₀ ≠ C.a₁ := by
+    intro h
+    have hadj := p.mate_adj C.a₀
+    rw [C.a_mate, ← h] at hadj
+    exact G.loopless.irrefl C.a₀.1 hadj
+  have hb₀b₁ : C.b₀ ≠ C.b₁ := by
+    intro h
+    have hadj := p.mate_adj C.b₀
+    rw [C.b_mate, ← h] at hadj
+    exact G.loopless.irrefl C.b₀.1 hadj
+  have haPair : oneHighRootPair (p.branchLabel C.a₁) =
+      oneHighRootPair (p.branchLabel C.a₀) := by
+    rw [← C.a_mate, p.branch_mate]
+    exact oneHighRootPair_standardMate _
+  have hbPair : oneHighRootPair (p.branchLabel C.b₁) =
+      oneHighRootPair (p.branchLabel C.b₀) := by
+    rw [← C.b_mate, p.branch_mate]
+    exact oneHighRootPair_standardMate _
+  have crossNe (a : {z : V // z ∈ G.neighborSet v})
+      (ha : a = C.a₀ ∨ a = C.a₁)
+      (b : {z : V // z ∈ G.neighborSet v})
+      (hb : b = C.b₀ ∨ b = C.b₁) : a ≠ b := by
+    intro hab
+    apply C.pair_ne
+    rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+    · exact congrArg (fun x => oneHighRootPair (p.branchLabel x)) hab
+    · exact (congrArg (fun x => oneHighRootPair (p.branchLabel x)) hab).trans hbPair
+    · exact haPair.symm.trans
+        (congrArg (fun x => oneHighRootPair (p.branchLabel x)) hab)
+    · exact haPair.symm.trans
+        ((congrArg (fun x => oneHighRootPair (p.branchLabel x)) hab).trans hbPair)
+  have keyNe {q r : OneHighAllMatchedVertices G v}
+      {a b c d : {z : V // z ∈ G.neighborSet v}}
+      (hq : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b)
+      (hr : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj c d)
+      (hkey : (min a b, max a b) ≠ (min c d, max c d))
+      (eqQ : q = hq.sourceEdge) (eqR : r = hr.sourceEdge) : q ≠ r := by
+    subst q
+    subst r
+    intro heq
+    apply hkey
+    rw [← hq.key_eq, ← hr.key_eq, heq]
+  have h00_01 : (min C.a₀ C.b₀, max C.a₀ C.b₀) ≠
+      (min C.a₀ C.b₁, max C.a₀ C.b₁) := by
+    simpa [min_comm, max_comm] using minMax_pair_ne_of_left_not_endpoint
+      (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl)).symm
+      (crossNe C.a₀ (Or.inl rfl) C.b₁ (Or.inr rfl))
+      (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl)).symm hb₀b₁
+  have h00_10 := minMax_pair_ne_of_left_not_endpoint
+    (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl))
+    (crossNe C.a₁ (Or.inr rfl) C.b₀ (Or.inl rfl)) ha₀a₁
+    (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl))
+  have h00_11 := minMax_pair_ne_of_left_not_endpoint
+    (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl))
+    (crossNe C.a₁ (Or.inr rfl) C.b₁ (Or.inr rfl)) ha₀a₁
+    (crossNe C.a₀ (Or.inl rfl) C.b₁ (Or.inr rfl))
+  have h01_10 := minMax_pair_ne_of_left_not_endpoint
+    (crossNe C.a₀ (Or.inl rfl) C.b₁ (Or.inr rfl))
+    (crossNe C.a₁ (Or.inr rfl) C.b₀ (Or.inl rfl)) ha₀a₁
+    (crossNe C.a₀ (Or.inl rfl) C.b₀ (Or.inl rfl))
+  have h01_11 := minMax_pair_ne_of_left_not_endpoint
+    (crossNe C.a₀ (Or.inl rfl) C.b₁ (Or.inr rfl))
+    (crossNe C.a₁ (Or.inr rfl) C.b₁ (Or.inr rfl)) ha₀a₁
+    (crossNe C.a₀ (Or.inl rfl) C.b₁ (Or.inr rfl))
+  have h10_11 : (min C.a₁ C.b₀, max C.a₁ C.b₀) ≠
+      (min C.a₁ C.b₁, max C.a₁ C.b₁) := by
+    simpa [min_comm, max_comm] using minMax_pair_ne_of_left_not_endpoint
+      (crossNe C.a₁ (Or.inr rfl) C.b₀ (Or.inl rfl)).symm
+      (crossNe C.a₁ (Or.inr rfl) C.b₁ (Or.inr rfl))
+      (crossNe C.a₁ (Or.inr rfl) C.b₀ (Or.inl rfl)).symm hb₀b₁
+  exact ⟨keyNe C.q₀₀ C.q₀₁ h00_01 rfl rfl,
+    keyNe C.q₀₀ C.q₁₀ h00_10 rfl rfl,
+    keyNe C.q₀₀ C.q₁₁ h00_11 rfl rfl,
+    keyNe C.q₀₁ C.q₁₀ h01_10 rfl rfl,
+    keyNe C.q₀₁ C.q₁₁ h01_11 rfl rfl,
+    keyNe C.q₁₀ C.q₁₁ h10_11 rfl rfl⟩
 
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
