@@ -62,6 +62,39 @@ theorem squareOrder_rank_high_commutator_block
     _ = Matrix.rank M := by rw [hgram]
     _ = H.card := hrankM
 
+/-- The full commutator has rank at least the number of high vertices. -/
+theorem squareOrder_card_high_le_rank_commutator
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hHtwo : 2 ≤ (squareOrderHighVertices G d).card) :
+    let H := squareOrderHighVertices G d
+    let C : Matrix V V ℚ := fun x y =>
+      ((G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ -
+        (secondOrderDefectGraph G).adjMatrix ℤ * G.adjMatrix ℤ) x y : ℚ)
+    H.card ≤ Matrix.rank C := by
+  classical
+  let H := squareOrderHighVertices G d
+  let CZ := G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ -
+    (secondOrderDefectGraph G).adjMatrix ℤ * G.adjMatrix ℤ
+  let C : Matrix V V ℚ := fun x y => (CZ x y : ℚ)
+  let B : Matrix (↥H) V ℚ := fun a y => (CZ a.1 y : ℚ)
+  dsimp only
+  have hrankB : Matrix.rank B = H.card := by
+    simpa [H, CZ, B] using squareOrder_rank_high_commutator_block
+      G hfree hd hmin hcover hcard hHtwo
+  have hsub := Matrix.rank_submatrix_le C
+    (fun a : ↥H => a.1) (id : V → V)
+  have hBC : B = C.submatrix (fun a : ↥H => a.1) (id : V → V) := by
+    rfl
+  rw [← hBC, hrankB] at hsub
+  exact hsub
+
 end
 
 end Erdos85
