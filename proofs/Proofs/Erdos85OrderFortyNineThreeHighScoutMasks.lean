@@ -44,7 +44,7 @@ theorem orderFortyNineThreeHighDistTwoMasks_size :
     orderFortyNineThreeHighDistTwoMasks.size = 49 := by decide
 
 theorem orderFortyNineThreeHighDistOneC2Masks_size :
-      orderFortyNineThreeHighDistOneC2Masks.size = 49 := by decide
+    orderFortyNineThreeHighDistOneC2Masks.size = 49 := by decide +kernel
 
 theorem orderFortyNineThreeHighDistOneNoCoincidenceMasks_size :
     orderFortyNineThreeHighDistOneNoCoincidenceMasks.size = 49 := by decide

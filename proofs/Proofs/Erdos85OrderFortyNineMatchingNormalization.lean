@@ -118,7 +118,21 @@ theorem oneHighStandardMate_exists_automorphism_fix_zero_send_two
     ∃ τ : Equiv.Perm (Fin 8),
       τ 0 = 0 ∧ τ k = 2 ∧
       ∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i) := by
-  native_decide +revert
+  fin_cases k
+  · exact (hk0 rfl).elim
+  · exact (hkmate (by decide)).elim
+  · refine ⟨Equiv.refl _, rfl, rfl, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 3, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 4 * Equiv.swap 3 5, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 5 * Equiv.swap 3 4, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 6 * Equiv.swap 3 7, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 7 * Equiv.swap 3 6, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
 
 /-- Two-rooted normalization.  Two distinguished nonadjacent vertices may
 be placed at coordinates zero and two while retaining the canonical matching
