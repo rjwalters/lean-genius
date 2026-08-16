@@ -17,7 +17,7 @@ open SimpleGraph
 matched vertices is exactly the directed graph miss count.  The reverse
 direction uses dirty conservation: a vertex missing a far branch has positive
 internal degree, hence degree one in its C4-free source branch. -/
-theorem card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+theorem card_oneHighMatchingLabelFiber_eq_highBranchMissCount
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (hfree : ¬ containsC4 V G) {v : V}
@@ -218,7 +218,7 @@ theorem oneHighGraphSourcePairing_endpointCount
         oneHighStandardMate_val_eq_xor]
     · have huFar : u ∈ ((Finset.univ.erase s).erase (p.mate s)) := by
         simp [hus, hum]
-      rw [card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+      rw [card_oneHighMatchingLabelFiber_eq_highBranchMissCount
         G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj s u huFar]
       have htable := oneHighFamilyGraphTable_eq_highBranchMissCount
         G hfree v p.mate p.branchLabel p.branch_mate p.leafLabel
