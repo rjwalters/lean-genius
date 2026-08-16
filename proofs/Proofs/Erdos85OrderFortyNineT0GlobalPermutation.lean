@@ -379,6 +379,97 @@ theorem sevenHighT0GlobalPerm_preserves_high_prefix
     rw [sevenHighT0GlobalPerm_fix_high e₀ e₁ hroot₁ v hv]
     exact hv
 
+theorem sevenHighT0GlobalPerm_targetN0_iff_sourceN0
+    (e₀ : SevenHighT0Fiber 0 ≃ Fin 8)
+    (e₁ : SevenHighT0Fiber 1 ≃ Fin 8)
+    (hroot₁ : e₁ ⟨7, sevenHighT0SupportFiber_one_mem_seven⟩ = 0)
+    (v : Fin 49) :
+    v ∈ sevenHighT0TargetN0 ↔
+      sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+        sevenHighT0SupportFiber 0 := by
+  constructor
+  · exact sevenHighT0GlobalPerm_targetN0_mem_source e₀ e₁ hroot₁ v
+  · intro hev
+    let t := (sevenHighT0N0BlockEquiv e₀).symm
+      ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v, hev⟩
+    have htmap := sevenHighT0GlobalPerm_apply_targetN0
+      e₀ e₁ hroot₁ t.1 t.2
+    have hsame : sevenHighT0GlobalPerm e₀ e₁ hroot₁ t.1 =
+        sevenHighT0GlobalPerm e₀ e₁ hroot₁ v := by
+      rw [htmap]
+      exact congrArg Subtype.val
+        ((sevenHighT0N0BlockEquiv e₀).apply_symm_apply
+          ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v, hev⟩)
+    have htv : t.1 = v :=
+      (sevenHighT0GlobalPerm e₀ e₁ hroot₁).injective hsame
+    simpa [htv] using t.2
+
+theorem sevenHighT0GlobalPerm_targetN1Only_iff_sourceN1Only
+    (e₀ : SevenHighT0Fiber 0 ≃ Fin 8)
+    (e₁ : SevenHighT0Fiber 1 ≃ Fin 8)
+    (hroot₁ : e₁ ⟨7, sevenHighT0SupportFiber_one_mem_seven⟩ = 0)
+    (v : Fin 49) :
+    v ∈ sevenHighT0TargetN1Only ↔
+      sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+        sevenHighT0SupportFiber 1 \ sevenHighT0SupportFiber 0 := by
+  constructor
+  · exact sevenHighT0GlobalPerm_targetN1Only_mem_source e₀ e₁ hroot₁ v
+  · intro hev
+    let t := (sevenHighT0N1OnlyBlockEquiv e₁ hroot₁).symm
+      ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v, hev⟩
+    have htmap := sevenHighT0GlobalPerm_apply_targetN1Only
+      e₀ e₁ hroot₁ t.1 t.2
+    have hsame : sevenHighT0GlobalPerm e₀ e₁ hroot₁ t.1 =
+        sevenHighT0GlobalPerm e₀ e₁ hroot₁ v := by
+      rw [htmap]
+      exact congrArg Subtype.val
+        ((sevenHighT0N1OnlyBlockEquiv e₁ hroot₁).apply_symm_apply
+          ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v, hev⟩)
+    have htv : t.1 = v :=
+      (sevenHighT0GlobalPerm e₀ e₁ hroot₁).injective hsame
+    simpa [htv] using t.2
+
+theorem sevenHighT0GlobalPerm_targetN1_iff_sourceN1
+    (e₀ : SevenHighT0Fiber 0 ≃ Fin 8)
+    (hroot₀ : e₀ ⟨7, sevenHighT0SupportFiber_zero_mem_seven⟩ = 0)
+    (e₁ : SevenHighT0Fiber 1 ≃ Fin 8)
+    (hroot₁ : e₁ ⟨7, sevenHighT0SupportFiber_one_mem_seven⟩ = 0)
+    (v : Fin 49) :
+    (v.val = 7 ∨ (15 ≤ v.val ∧ v.val < 22)) ↔
+      sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+        sevenHighT0SupportFiber 1 := by
+  constructor
+  · rintro (hv7 | hvonly)
+    · have hv : v = 7 := Fin.ext hv7
+      rw [hv, sevenHighT0GlobalPerm_root e₀ hroot₀ e₁ hroot₁]
+      exact sevenHighT0SupportFiber_one_mem_seven
+    · have hv : v ∈ sevenHighT0TargetN1Only := by
+        simp [sevenHighT0TargetN1Only, hvonly]
+      exact (Finset.mem_sdiff.mp
+        (sevenHighT0GlobalPerm_targetN1Only_mem_source
+          e₀ e₁ hroot₁ v hv)).1
+  · intro hev
+    by_cases he0 : sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+        sevenHighT0SupportFiber 0
+    · have hinter : sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+          sevenHighT0SupportFiber 0 ∩ sevenHighT0SupportFiber 1 :=
+        Finset.mem_inter.mpr ⟨he0, hev⟩
+      rw [sevenHighT0SupportFiber_zero_one_inter] at hinter
+      have he7 : sevenHighT0GlobalPerm e₀ e₁ hroot₁ v = 7 := by
+        simpa using hinter
+      have hv7 : v = 7 := by
+        apply (sevenHighT0GlobalPerm e₀ e₁ hroot₁).injective
+        rw [he7, sevenHighT0GlobalPerm_root e₀ hroot₀ e₁ hroot₁]
+      exact Or.inl (congrArg Fin.val hv7)
+    · have hdiff : sevenHighT0GlobalPerm e₀ e₁ hroot₁ v ∈
+          sevenHighT0SupportFiber 1 \ sevenHighT0SupportFiber 0 :=
+        Finset.mem_sdiff.mpr ⟨hev, he0⟩
+      have hv := (sevenHighT0GlobalPerm_targetN1Only_iff_sourceN1Only
+        e₀ e₁ hroot₁ v).mpr hdiff
+      exact Or.inr (by
+        simpa [sevenHighT0TargetN1Only] using
+          (Finset.mem_filter.mp hv).2)
+
 end
 
 end Erdos85
