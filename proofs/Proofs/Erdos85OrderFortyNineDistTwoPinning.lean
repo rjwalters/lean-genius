@@ -306,6 +306,7 @@ theorem orderFortyNineDistTwo_exists_exact_pinned_neighborhood
       G.degree l3 = 7 ∧
       G.Adj v1 t ∧ G.Adj v2 x2 ∧ G.Adj v3 x3 ∧
       t ∉ ({x2, x3} : Finset V) ∧ x2 ≠ x3 ∧
+      l3 ∉ ({v1, v2, v3, t, x2, x3} : Finset V) ∧
       l3 ∈ secondLayerBranch G v1 parent := by
   dsimp
   rcases orderFortyNineDistTwo_exists_partner_not_adj_foreign_highs
@@ -436,8 +437,9 @@ theorem orderFortyNineDistTwo_exists_exact_pinned_neighborhood
     ext z
     simp [K, or_comm, or_left_comm, or_assoc]
   refine ⟨t, x2, x3, l3, hNshape, htdeg, hx2deg, hx3deg,
-    hl3deg, ht1, hx2v2, hx3v3, ?_, hx23, hl3Branch⟩
-  simp [htx2, htx3]
+    hl3deg, ht1, hx2v2, hx3v3, ?_, hx23, ?_, hl3Branch⟩
+  · simp [htx2, htx3]
+  · exact hl3notK
 
 end
 
