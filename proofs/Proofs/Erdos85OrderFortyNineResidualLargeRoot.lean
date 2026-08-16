@@ -34,6 +34,8 @@ theorem exists_orderFortyNineSeven_residual_largeRoot
       complexRootPowerSum (Q.map (algebraMap ℚ ℂ)) 4 =
         4557 - 69 * ((squareOrderHighVertices G 7).card : ℂ) ∧
       (Q.map (algebraMap ℚ ℝ)).IsRoot lambda ∧
+      (Q.map (algebraMap ℚ ℝ)).Splits ∧
+      lambda ∈ (Q.map (algebraMap ℚ ℝ)).roots ∧
       ((2401 : ℝ) + 15 * (squareOrderHighVertices G 7).card) / 49 ≤
         lambda ^ 2 := by
   obtain ⟨Q, hQmonic, hfactor, hdegree, hnext, hsecond, hfourth⟩ :=
@@ -81,8 +83,24 @@ theorem exists_orderFortyNineSeven_residual_largeRoot
       (Q := Q.map (algebraMap ℚ ℝ)) 7 lambda
       ((squareOrderHighVertices G 7).card - 1)
       hfactorR hroot hlambdaNe
+  have hQmapNe : Q.map (algebraMap ℚ ℝ) ≠ 0 := by
+    simpa using
+      (Polynomial.map_injective (algebraMap ℚ ℝ)
+        (algebraMap ℚ ℝ).injective).ne hQmonic.ne_zero
+  have hAherm : (G.adjMatrix ℝ).IsHermitian := by
+    apply Matrix.IsHermitian.ext
+    intro i j
+    simp [SimpleGraph.adjMatrix_apply, G.adj_comm]
+  have hQsplits : (Q.map (algebraMap ℚ ℝ)).Splits := by
+    have hcharSplits := hAherm.splits_charpoly
+    rw [hfactorR] at hcharSplits
+    exact ((Polynomial.splits_mul
+      (pow_ne_zero _ (X_pow_sub_C_ne_zero (by norm_num) (7 : ℝ)))
+      hQmapNe).mp hcharSplits).2
+  have hlambdaMem : lambda ∈ (Q.map (algebraMap ℚ ℝ)).roots :=
+    (mem_roots hQmapNe).mpr hQroot
   exact ⟨Q, lambda, hQmonic, hfactor, hdegree, hnext,
-    hsecond, hfourth, hQroot, hlambdaLower⟩
+    hsecond, hfourth, hQroot, hQsplits, hlambdaMem, hlambdaLower⟩
 
 end
 
