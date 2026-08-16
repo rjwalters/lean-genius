@@ -1,6 +1,8 @@
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighExchangedMissCounting
 import Proofs.Erdos85OneHighSameMissCountingBridge
+import Proofs.Erdos85OneHighSameMissParityConsumer
+import Proofs.Erdos85QuotientCutParity
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -149,6 +151,169 @@ theorem card_globalMatchingEdgeSources_eq_profile
 private theorem even_sixteen_sub_iff (a : Nat) (ha : a ≤ 4) :
     Even (16 - a) ↔ Even a := by
   interval_cases a <;> decide
+
+/-- A symmetric admissible miss table whose six relevant entries in every
+row are all even can only have an even family profile. -/
+theorem even_profile_of_admissible_all_relevant_even
+    {profile : Nat} (hprofile : profile ≤ 4) (table : OneHighMissTable)
+    (hadm : OneHighFamilyV2Admissible profile table)
+    (heven : ∀ c : Fin 8,
+      ∀ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+        Even (table c.val j.val)) :
+    Even profile := by
+  let F : Fin 8 → Fin 8 → Nat := fun c j =>
+    if j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c))
+      then table c.val j.val else 0
+  let H : Fin 8 → Fin 8 → Nat := fun c j => F c j / 2
+  have hF_even (c j : Fin 8) : Even (F c j) := by
+    simp only [F]
+    split
+    · exact heven c j ‹_›
+    · exact Even.zero
+  have hF_eq (c j : Fin 8) : F c j = 2 * H c j := by
+    obtain ⟨k, hk⟩ := hF_even c j
+    simp only [H]
+    omega
+  have hF_symm (c j : Fin 8) : F c j = F j c := by
+    by_cases hcj : c = j
+    · subst j
+      rfl
+    by_cases hjm : j = oneHighStandardMate c
+    · subst j
+      have hcm : c = oneHighStandardMate (oneHighStandardMate c) := by
+        rw [oneHighStandardMate_involutive]
+      simp only [F, Finset.mem_erase, Finset.mem_univ, and_true]
+      rw [if_neg (fun h => h.1 rfl), if_neg (fun h => h.1 hcm)]
+    · have hjc : j ≠ c := Ne.symm hcj
+      have hcm : c ≠ oneHighStandardMate j := by
+        intro h
+        apply hjm
+        rw [h, oneHighStandardMate_involutive]
+      simp only [F, Finset.mem_erase, Finset.mem_univ, and_true]
+      rw [if_pos ⟨hjm, hjc⟩, if_pos ⟨hcm, hcj⟩]
+      exact hadm.symm c j hjc hjm
+  have hH_symm (c j : Fin 8) : H c j = H j c := by
+    simp only [H, hF_symm]
+  have hHtotal : Even (∑ c : Fin 8, ∑ j : Fin 8, H c j) := by
+    apply even_principal_sum_of_pair_even Finset.univ H
+    · intro c _
+      simp [H, F]
+    · intro c _ j _ hcj
+      rw [hH_symm c j]
+      exact Even.add_self _
+  have htotalF : (∑ c : Fin 8, ∑ j : Fin 8, F c j) =
+      32 - 2 * profile := by
+    calc
+      (∑ c : Fin 8, ∑ j : Fin 8, F c j) =
+          ∑ c : Fin 8, 2 * oneHighFamilyInternalEdges profile c := by
+        apply Finset.sum_congr rfl
+        intro c _
+        rw [← hadm.row_sum c]
+        simp only [F]
+        rw [← Finset.sum_subset (Finset.subset_univ _) (by
+          intro j _ hj
+          rw [if_neg hj])]
+        apply Finset.sum_congr rfl
+        intro j hj
+        rw [if_pos hj]
+      _ = 32 - 2 * profile :=
+        sum_two_mul_oneHighFamilyInternalEdges profile hprofile
+  have htotalFH : (∑ c : Fin 8, ∑ j : Fin 8, F c j) =
+      2 * (∑ c : Fin 8, ∑ j : Fin 8, H c j) := by
+    simp_rw [hF_eq, Finset.mul_sum]
+  have hhalf : (∑ c : Fin 8, ∑ j : Fin 8, H c j) = 16 - profile := by
+    rw [htotalF] at htotalFH
+    omega
+  rw [hhalf] at hHtotal
+  exact (even_sixteen_sub_iff profile hprofile).mp hHtotal
+
+/-- Consequently, genuine global same-miss behavior is possible only in the
+even profiles `0`, `2`, and `4`. -/
+theorem even_profile_of_oneHighGlobalSameMiss
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (hsame : OneHighGlobalSameMiss G hfree v p.mate) :
+    Even p.profile := by
+  let E := oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel
+  let R := oneHighRelabeledLeafGraph G v E
+  let table := oneHighFamilyGraphTable R p.profile
+  have hadm : OneHighFamilyV2Admissible p.profile table := by
+    simpa [E, R, table] using p.graphTable_admissible G hfree hv
+  apply even_profile_of_admissible_all_relevant_even
+    p.profile_le table hadm
+  intro c j hj
+  let s := p.branchLabel.symm c
+  let u := p.branchLabel.symm j
+  have hjm : j ≠ oneHighStandardMate c :=
+    (Finset.mem_erase.mp hj).1
+  have hjc : j ≠ c :=
+    (Finset.mem_erase.mp (Finset.mem_erase.mp hj).2).1
+  have hus : u ≠ s := by
+    intro h
+    apply hjc
+    simpa [s, u] using congrArg p.branchLabel h
+  have hum : u ≠ p.mate s := by
+    intro h
+    apply hjm
+    calc
+      j = p.branchLabel u := by simp [u]
+      _ = p.branchLabel (p.mate s) := by rw [h]
+      _ = oneHighStandardMate (p.branchLabel s) := p.branch_mate s
+      _ = oneHighStandardMate c := by simp [s]
+  have hcount : Even (highBranchMissCount G v s u) := by
+    apply even_highBranchMissCount_of_sameMiss G hfree (d := 7)
+      (by simpa using hv) p.external_empty p.mate p.mate_adj p.outer_degree
+      (internalEdge_sameMiss_of_globalSameMiss G hfree v p.mate hsame)
+    exact Finset.mem_erase.mpr ⟨hum, Finset.mem_erase.mpr ⟨hus, by simp⟩⟩
+  have htable := oneHighFamilyGraphTable_eq_highBranchMissCount
+    G hfree v p.mate p.branchLabel p.branch_mate p.leafLabel p.profile
+      p.constraints s u hus hum
+  change Even (table c.val j.val)
+  have htable' : table c.val j.val = highBranchMissCount G v s u := by
+    simpa [table, R, E, s, u] using htable
+  rw [htable']
+  exact hcount
+
+/-- In the odd profiles (`1` and `3`), the all-even sector necessarily lies
+in the repeated-exchanged-pair branch; global same-miss is impossible. -/
+theorem oneHigh_repeated_exchangedPair_of_all_even_of_profile_odd
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (hprofile : Odd p.profile)
+    (heven : ∀ key ∈ exchangedMissPairKeys (Fin 8),
+      Even (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)) key)) :
+    ∃ key ∈ exchangedMissPairKeys (Fin 8),
+      ∃ x ∈ nonconstantMatchingEdgeSources
+        (oneHighGlobalInternalMate G hfree v)
+        (fun z => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj z)),
+      ∃ y ∈ nonconstantMatchingEdgeSources
+        (oneHighGlobalInternalMate G hfree v)
+        (fun z => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj z)),
+        x ≠ y ∧
+          exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+            (fun z => p.branchLabel
+              (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+                p.mate p.mate_adj z)) x = key ∧
+          exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+            (fun z => p.branchLabel
+              (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+                p.mate p.mate_adj z)) y = key := by
+  rcases oneHigh_globalSameMiss_or_repeated_exchangedPair_of_all_even
+      G hfree hv p heven with hsame | hrepeated
+  · exact ((Nat.not_even_iff_odd.mpr hprofile)
+      (even_profile_of_oneHighGlobalSameMiss G hfree hv p hsame)).elim
+  · exact hrepeated
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
