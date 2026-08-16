@@ -11,6 +11,20 @@ pairs `01, 23, 45, 67`. -/
 def oneHighRootPair (x : Fin 8) : Fin 4 :=
   ⟨x.val / 2, by omega⟩
 
+/-- Two canonical root labels determine the same mate-pair exactly when they
+are equal or are standard mates. -/
+theorem oneHighRootPair_eq_iff_eq_or_standardMate
+    (x y : Fin 8) :
+    oneHighRootPair x = oneHighRootPair y ↔
+      x = y ∨ x = oneHighStandardMate y := by
+  fin_cases x <;> fin_cases y <;> decide
+
+theorem oneHighRootPair_ne_of_ne_of_ne_standardMate
+    {x y : Fin 8} (hxy : x ≠ y) (hxm : x ≠ oneHighStandardMate y) :
+    oneHighRootPair x ≠ oneHighRootPair y := by
+  rw [Ne, oneHighRootPair_eq_iff_eq_or_standardMate]
+  exact not_or_intro hxy hxm
+
 /-- With four colors, three distinct endpoint colors and the two far-source
 constraints leave an exact trichotomy at a turn. -/
 theorem fourColor_far_turn_trichotomy
