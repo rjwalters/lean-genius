@@ -412,6 +412,163 @@ theorem fiveHigh_singleton_fiber_card_eq_triple_incidence_add_four
   rw [hHigh] at hp
   omega
 
+theorem fiveHigh_existsUnique_labeled_pairBlock
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    {a b : Fin 5} (hab : a ≠ b) :
+    ∃! x : Fin 49, ({a, b} : Finset (Fin 5)) ⊆
+        fiveHighLabeledSupport G e x ∧
+      ((fiveHighLabeledSupport G e x).card = 2 ∨
+       (fiveHighLabeledSupport G e x).card = 3) := by
+  have hvab : (e.symm a).1 ≠ (e.symm b).1 := by
+    intro h
+    apply hab
+    apply e.symm.injective
+    exact Subtype.ext h
+  obtain ⟨x, hx, huniq⟩ := orderFortyNine_existsUnique_pairBlock_of_highs
+    G hfree hmin (Fintype.card_fin 49)
+      (e.symm a).2 (e.symm b).2 hvab
+  refine ⟨x, ?_, ?_⟩
+  · refine ⟨?_, ?_⟩
+    · intro w hw
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+      rcases hw with hw | hw
+      · rw [hw]
+        exact (mem_fiveHighLabeledSupport_iff G e x _).mpr hx.1.symm
+      · rw [hw]
+        exact (mem_fiveHighLabeledSupport_iff G e x _).mpr hx.2.1.symm
+    · simpa [fiveHighLabeledSupport_card] using hx.2.2.2
+  · intro y hy
+    apply huniq y
+    have ha := hy.1 (by simp : a ∈ ({a, b} : Finset (Fin 5)))
+    have hb := hy.1 (by simp : b ∈ ({a, b} : Finset (Fin 5)))
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · simpa [G.adj_comm] using
+        (mem_fiveHighLabeledSupport_iff G e y a).mp ha
+    · simpa [G.adj_comm] using
+        (mem_fiveHighLabeledSupport_iff G e y b).mp hb
+    · exact orderFortyNine_neighbor_degree_seven_of_degreeEight
+        G hfree hmin (Fintype.card_fin 49)
+          (Finset.mem_filter.mp (e.symm a).2).2 (by
+            simpa [G.adj_comm] using
+              (mem_fiveHighLabeledSupport_iff G e y a).mp ha)
+    · simpa [fiveHighLabeledSupport_card] using hy.2
+
+/-- A high pair has one exact pair-block unless it is already covered by a
+triple, in which case linearity forces the exact pair fiber to be empty. -/
+theorem fiveHigh_pair_fiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (a b : Fin 5) (hab : a ≠ b) :
+    Fintype.card {z : Fin 49 // fiveHighLabeledSupport G e z = {a, b}} =
+      if ∃ q : Fin 49,
+          (fiveHighLabeledSupport G e q).card = 3 ∧
+          ({a, b} : Finset (Fin 5)) ⊆ fiveHighLabeledSupport G e q
+        then 0 else 1 := by
+  obtain ⟨z, hz, hzuniq⟩ :=
+    fiveHigh_existsUnique_labeled_pairBlock G hfree hmin e hab
+  by_cases htriple : ∃ q : Fin 49,
+      (fiveHighLabeledSupport G e q).card = 3 ∧
+      ({a, b} : Finset (Fin 5)) ⊆ fiveHighLabeledSupport G e q
+  · rw [if_pos htriple, Fintype.card_subtype, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro u hu
+    have huEq := (Finset.mem_filter.mp hu).2
+    have huQual : ({a, b} : Finset (Fin 5)) ⊆
+        fiveHighLabeledSupport G e u ∧
+        ((fiveHighLabeledSupport G e u).card = 2 ∨
+         (fiveHighLabeledSupport G e u).card = 3) := by
+      refine ⟨by rw [huEq], Or.inl ?_⟩
+      rw [huEq]
+      simp [hab]
+    obtain ⟨q, hq3, hqSub⟩ := htriple
+    have hqQual : ({a, b} : Finset (Fin 5)) ⊆
+        fiveHighLabeledSupport G e q ∧
+        ((fiveHighLabeledSupport G e q).card = 2 ∨
+         (fiveHighLabeledSupport G e q).card = 3) :=
+      ⟨hqSub, Or.inr hq3⟩
+    have huq : u = q := (hzuniq u huQual).trans (hzuniq q hqQual).symm
+    have := congrArg (fun v => (fiveHighLabeledSupport G e v).card) huq
+    rw [huEq] at this
+    simp [hab] at this
+    omega
+  · rw [if_neg htriple]
+    have hz2 : (fiveHighLabeledSupport G e z).card = 2 := by
+      rcases hz.2 with hz2 | hz3
+      · exact hz2
+      · exact False.elim (htriple ⟨z, hz3, hz.1⟩)
+    have hzEq : fiveHighLabeledSupport G e z = {a, b} :=
+      (Finset.eq_of_subset_of_card_le hz.1 (by simp [hab, hz2])).symm
+    have hone := fiveHighLabeledSupport_fiber_card_eq_one
+      G hfree e z (by omega)
+    simpa [hzEq] using hone
+
+theorem fiveHigh_aligned_emptyLow_fiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5) :
+    Fintype.card {x : Fin 49 //
+      fiveHighGraphAlignedKey G e x = (none, ∅)} =
+      orderFortyNineHighIncidenceCount G 0 := by
+  rw [Fintype.card_subtype]
+  have hset : (Finset.univ.filter fun x : Fin 49 =>
+      fiveHighGraphAlignedKey G e x = (none, ∅)) =
+      (orderFortyNineLowVertices G).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 0 := by
+    ext x
+    constructor
+    · intro hx
+      have hkey := (Finset.mem_filter.mp hx).2
+      have hfirst := congrArg Prod.fst hkey
+      have hsupp := congrArg Prod.snd hkey
+      have hxNotHigh : x ∉ orderFortyNineHighVertices G := by
+        intro hxHigh
+        simp [fiveHighGraphAlignedKey, hxHigh] at hfirst
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_sdiff.mpr ⟨Finset.mem_univ x, hxNotHigh⟩, ?_⟩
+      have : fiveHighLabeledSupport G e x = ∅ := by
+        simpa [fiveHighGraphAlignedKey] using hsupp
+      rw [← fiveHighLabeledSupport_card G e x, this]
+      simp
+    · intro hx
+      have hxLow := (Finset.mem_filter.mp hx).1
+      have hx0 := (Finset.mem_filter.mp hx).2
+      have hxNotHigh := (Finset.mem_sdiff.mp hxLow).2
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ x, ?_⟩
+      have hs : fiveHighLabeledSupport G e x = ∅ :=
+        Finset.card_eq_zero.mp (by
+          rw [fiveHighLabeledSupport_card]
+          exact hx0)
+      simp [fiveHighGraphAlignedKey, hxNotHigh, hs]
+  rw [hset]
+  rfl
+
+theorem fiveHigh_emptyLow_fiber_card_eq_fourteen_sub_triples
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 5)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (t : Nat) (ht : orderFortyNineHighIncidenceCount G 3 = t) :
+    Fintype.card {x : Fin 49 //
+      fiveHighGraphAlignedKey G e x = (none, ∅)} = 14 - t := by
+  rw [fiveHigh_aligned_emptyLow_fiber_card]
+  have hp := orderFortyNine_highIncidence_general_profile
+    G hfree hmin (Fintype.card_fin 49)
+  dsimp only at hp
+  rw [hHigh, ht] at hp
+  omega
+
 end
 
 end Erdos85
