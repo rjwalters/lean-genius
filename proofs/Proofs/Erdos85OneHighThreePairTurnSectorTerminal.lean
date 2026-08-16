@@ -176,6 +176,29 @@ theorem OneHighPinnedThreePairTurn.equalColor_sourceBranches_eq_or_mate
   exact (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
     p.mate p.branchLabel p.branch_mate _ _).mp hcolor
 
+/-- Fully graph-decoded terminal split.  There is no remaining quotient-color
+equality: the two turn edges are owned by one branch, by mate branches, or
+one of the two edge sources is colored by the opposite turn endpoint pair. -/
+theorem OneHighPinnedThreePairTurn.graph_source_sector
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1 ∨
+      T.qAB.sourceEdge.1 = p.mate T.qBC.sourceEdge.1 ∨
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.c) ∨
+      oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.a) := by
+  rcases T.source_sector with hcolor | hc | ha
+  · rcases T.equalColor_sourceBranches_eq_or_mate G hfree hv p hcolor with
+      hsame | hmate
+    · exact Or.inl hsame
+    · exact Or.inr (Or.inl hmate)
+  · exact Or.inr (Or.inr (Or.inl hc))
+  · exact Or.inr (Or.inr (Or.inr ha))
+
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
 def OneHighPinnedThreePairTurnSectorExcluded : Prop :=
