@@ -232,6 +232,25 @@ theorem squareOrder_highQuadraticFactor_card_sub_one_dvd_adjMatrixRat_charpoly
   rw [Fintype.card_coe, Finset.card_erase_of_mem ha] at h
   exact h
 
+/-- The residual rational characteristic polynomial after removing all
+certified high-sector quadratic factors. -/
+theorem exists_squareOrder_residualCharpoly
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    ∃ Q : Polynomial ℚ,
+      LinearMap.charpoly (G.adjMatrix ℚ).toLin' =
+        (Polynomial.X ^ 2 - Polynomial.C (d : ℚ)) ^
+          ((squareOrderHighVertices G d).card - 1) * Q := by
+  exact squareOrder_highQuadraticFactor_card_sub_one_dvd_adjMatrixRat_charpoly
+    G hfree hd hmin hcover hcard ha
+
 end
 
 end Erdos85
