@@ -1,6 +1,7 @@
 import Proofs.Erdos85MatchingMultiplicityRelabel
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighOddLabelTurn
+import Proofs.Erdos85OneHighRootPairGraphDecoder
 
 /-! # Concrete graph witnesses from the three-pair turn sector -/
 
@@ -159,6 +160,21 @@ theorem OneHighPinnedThreePairTurn.sharpened_source_sector
         (hsame.symm.trans heq)
   · exact Or.inr (Or.inl hc)
   · exact Or.inr (Or.inr ha)
+
+/-- Equal source-pair color means that the two distinct matching edges are
+owned either by the same root branch or by the two mate branches. -/
+theorem OneHighPinnedThreePairTurn.equalColor_sourceBranches_eq_or_mate
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (hcolor : oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+      oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1)) :
+    T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1 ∨
+      T.qAB.sourceEdge.1 = p.mate T.qBC.sourceEdge.1 := by
+  exact (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
+    p.mate p.branchLabel p.branch_mate _ _).mp hcolor
 
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
