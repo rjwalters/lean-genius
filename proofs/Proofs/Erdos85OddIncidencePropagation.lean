@@ -59,4 +59,81 @@ theorem exists_odd_canonical_neighbor_of_even_incidence
   simp only [min_self, max_self] at hjodd
   exact (Nat.not_odd_iff_even.mpr hdiag) hjodd
 
+/-- An Eulerian odd-support graph whose color classes have size at most two
+either has no edges, has a turn through three colors, or contains the full
+four-cycle between two two-point color classes. -/
+theorem odd_support_three_color_turn_or_cross
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [LinearOrder ι]
+    (color : ι → κ) (m : ι × ι → ℕ)
+    (hfiber : ∀ x y z, color x = color y → color x = color z →
+      x = y ∨ x = z ∨ y = z)
+    (hincidence : ∀ i, Even (∑ j, m (min i j, max i j)))
+    (hdiag : ∀ i, Even (m (i, i)))
+    (hsame : ∀ a b, color a = color b →
+      Even (m (min a b, max a b))) :
+    (∀ a b, a ≠ b → Even (m (min a b, max a b))) ∨
+      (∃ a b c,
+        color a ≠ color b ∧ color b ≠ color c ∧ color a ≠ color c ∧
+        Odd (m (min a b, max a b)) ∧
+        Odd (m (min b c, max b c))) ∨
+      (∃ a b c d,
+        a ≠ c ∧ b ≠ d ∧ color a = color c ∧ color b = color d ∧
+        color a ≠ color b ∧
+        Odd (m (min a b, max a b)) ∧
+        Odd (m (min a d, max a d)) ∧
+        Odd (m (min c b, max c b)) ∧
+        Odd (m (min c d, max c d))) := by
+  classical
+  by_cases hall : ∀ a b, a ≠ b → Even (m (min a b, max a b))
+  · exact Or.inl hall
+  right
+  push Not at hall
+  obtain ⟨a, b, hab, habNotEven⟩ := hall
+  have habOdd : Odd (m (min a b, max a b)) :=
+    Nat.not_even_iff_odd.mp habNotEven
+  have hcolorAB : color a ≠ color b := by
+    intro h
+    exact (Nat.not_odd_iff_even.mpr (hsame a b h)) habOdd
+  obtain ⟨c, hcb, hca, hbcOdd⟩ :=
+    exists_odd_canonical_neighbor_of_even_incidence
+      m b a (hincidence b) (by simpa [min_comm, max_comm] using habOdd)
+        (hdiag b)
+  have hcolorBC : color b ≠ color c := by
+    intro h
+    exact (Nat.not_odd_iff_even.mpr (hsame b c h)) hbcOdd
+  by_cases hcolorAC : color a ≠ color c
+  · exact Or.inl ⟨a, b, c, hcolorAB, hcolorBC, hcolorAC,
+      habOdd, hbcOdd⟩
+  have hcolorACeq : color a = color c := not_ne_iff.mp hcolorAC
+  obtain ⟨d, hdc, hdb, hcdOdd⟩ :=
+    exists_odd_canonical_neighbor_of_even_incidence
+      m c b (hincidence c) (by simpa [min_comm, max_comm] using hbcOdd)
+        (hdiag c)
+  have hcolorCD : color c ≠ color d := by
+    intro h
+    exact (Nat.not_odd_iff_even.mpr (hsame c d h)) hcdOdd
+  by_cases hcolorBD : color b ≠ color d
+  · exact Or.inl ⟨b, c, d, hcolorBC, hcolorCD, hcolorBD,
+      hbcOdd, hcdOdd⟩
+  have hcolorBDeq : color b = color d := not_ne_iff.mp hcolorBD
+  obtain ⟨e, hea, heb, haeOdd⟩ :=
+    exists_odd_canonical_neighbor_of_even_incidence
+      m a b (hincidence a) habOdd (hdiag a)
+  have hcolorAE : color a ≠ color e := by
+    intro h
+    exact (Nat.not_odd_iff_even.mpr (hsame a e h)) haeOdd
+  by_cases hcolorEB : color e ≠ color b
+  · exact Or.inl ⟨e, a, b, hcolorAE.symm, hcolorAB, hcolorEB,
+      (by simpa [min_comm, max_comm] using haeOdd), habOdd⟩
+  have hcolorEBeq : color e = color b := not_ne_iff.mp hcolorEB
+  have hed : e = d := by
+    rcases hfiber b d e hcolorBDeq hcolorEBeq.symm with hbd | hbe | hde
+    · exact (hdb hbd.symm).elim
+    · exact (heb hbe.symm).elim
+    · exact hde.symm
+  subst e
+  exact Or.inr ⟨a, b, c, d, hca.symm, hdb.symm, hcolorACeq,
+    hcolorBDeq, hcolorAB, habOdd, haeOdd,
+    (by simpa [min_comm, max_comm] using hbcOdd), hcdOdd⟩
+
 end Erdos85
