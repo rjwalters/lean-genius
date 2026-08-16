@@ -343,6 +343,267 @@ theorem fiveHighCanonicalLabelingCover_zero :
   fiveHighCanonicalLabelingCover_of_fiberCover
     fiveHighCanonicalFiberCover_zero
 
+theorem fiveHigh_t1_local_triple_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (x : Fin 49)
+    (hxSupport : fiveHighLabeledSupport G e x = {0, 1, 2})
+    (huniq : ∀ y : Fin 49,
+      (fiveHighLabeledSupport G e y).card = 3 → y = x)
+    (w : Fin 5) :
+    ((G.neighborFinset (e.symm w).1).filter fun y =>
+      (orderFortyNineHighSupport G y).card = 3).card =
+      if w ∈ ({0, 1, 2} : Finset (Fin 5)) then 1 else 0 := by
+  by_cases hw : w ∈ ({0, 1, 2} : Finset (Fin 5))
+  · rw [if_pos hw]
+    have hset : ((G.neighborFinset (e.symm w).1).filter fun y =>
+        (orderFortyNineHighSupport G y).card = 3) = {x} := by
+      ext y
+      constructor
+      · intro hy
+        have hy3 : (fiveHighLabeledSupport G e y).card = 3 := by
+          rw [fiveHighLabeledSupport_card]
+          exact (Finset.mem_filter.mp hy).2
+        simp [huniq y hy3]
+      · intro hy
+        have hyx : y = x := by simpa using hy
+        subst y
+        apply Finset.mem_filter.mpr
+        constructor
+        · simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+            (mem_fiveHighLabeledSupport_iff G e x w).mp
+              (by simpa [hxSupport] using hw)
+        · rw [← fiveHighLabeledSupport_card G e x, hxSupport]
+          decide
+    rw [hset]
+    simp
+  · rw [if_neg hw, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro y hy
+    have hy3 : (fiveHighLabeledSupport G e y).card = 3 := by
+      rw [fiveHighLabeledSupport_card]
+      exact (Finset.mem_filter.mp hy).2
+    have hyx := huniq y hy3
+    have hwMem : w ∈ fiveHighLabeledSupport G e y :=
+      (mem_fiveHighLabeledSupport_iff G e y w).mpr (by
+        simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+          (Finset.mem_filter.mp hy).1)
+    rw [hyx, hxSupport] at hwMem
+    exact hw hwMem
+
+theorem fiveHigh_t1_triple_fiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (x : Fin 49)
+    (hxSupport : fiveHighLabeledSupport G e x = {0, 1, 2})
+    (huniq : ∀ y : Fin 49,
+      (fiveHighLabeledSupport G e y).card = 3 → y = x)
+    (S : Finset (Fin 5)) (hS3 : S.card = 3) :
+    Fintype.card {y : Fin 49 // fiveHighLabeledSupport G e y = S} =
+      if S = {0, 1, 2} then 1 else 0 := by
+  by_cases hS : S = {0, 1, 2}
+  · subst S
+    rw [if_pos rfl, Fintype.card_subtype]
+    have hset : (Finset.univ.filter fun y : Fin 49 =>
+        fiveHighLabeledSupport G e y = {0, 1, 2}) = {x} := by
+      ext y
+      constructor
+      · intro hy
+        have hyEq := (Finset.mem_filter.mp hy).2
+        have hy3 : (fiveHighLabeledSupport G e y).card = 3 := by
+          rw [hyEq]
+          decide
+        simp [huniq y hy3]
+      · intro hy
+        have hyx : y = x := by simpa using hy
+        subst y
+        simp [hxSupport]
+    rw [hset]
+    simp
+  · rw [if_neg hS, Fintype.card_subtype, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro y hy
+    have hyEq := (Finset.mem_filter.mp hy).2
+    have hy3 : (fiveHighLabeledSupport G e y).card = 3 := by
+      rw [hyEq]
+      exact hS3
+    have hyx := huniq y hy3
+    apply hS
+    rw [← hyEq, hyx, hxSupport]
+
+theorem fiveHighCanonicalFiberCover_one :
+    FiveHighCanonicalFiberCover 1 orderFortyNineFiveHighT1Masks := by
+  intro G _ _ _ hfree hmin hHigh hone
+  obtain ⟨e, x, hxSupport, huniq⟩ :=
+    fiveHigh_t1_exists_normalized_labeling G hfree hmin hHigh hone
+  refine ⟨e, orderFortyNineFiveHighT1Masks_size, ?_⟩
+  intro key
+  rw [fiveHigh_graph_key_fiber_card_of_canonical_census
+      G hfree hmin hHigh 1 hone e]
+  · exact (fiveHigh_t1_mask_key_fiber_card key).symm
+  · intro w
+    rw [fiveHigh_singleton_fiber_card_eq_triple_incidence_add_four
+      G hfree hmin hHigh e w]
+    rw [fiveHigh_t1_local_triple_card G e x hxSupport huniq w]
+    fin_cases w <;> native_decide
+  · intro a b hab
+    constructor
+    · rintro ⟨q, hq3, hsub⟩
+      have hqx := huniq q hq3
+      subst q
+      simpa [fiveHighCanonicalTripleSystem, hxSupport] using hsub
+    · intro h
+      have hsub : ({a, b} : Finset (Fin 5)) ⊆ {0, 1, 2} := by
+        simpa [fiveHighCanonicalTripleSystem] using h
+      exact ⟨x, by rw [hxSupport]; decide, by simpa [hxSupport] using hsub⟩
+  · intro S hS3
+    have hf := fiveHigh_t1_triple_fiber_card G e x hxSupport huniq S hS3
+    simpa [fiveHighCanonicalTripleSystem] using hf
+
+theorem fiveHighCanonicalLabelingCover_one :
+    FiveHighCanonicalLabelingCover 1 orderFortyNineFiveHighT1Masks :=
+  fiveHighCanonicalLabelingCover_of_fiberCover
+    fiveHighCanonicalFiberCover_one
+
+theorem fiveHigh_t2_local_triple_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (x y : Fin 49)
+    (hxSupport : fiveHighLabeledSupport G e x = {0, 1, 2})
+    (hySupport : fiveHighLabeledSupport G e y = {0, 3, 4})
+    (hxy : x ≠ y)
+    (huniq : ∀ z : Fin 49,
+      (fiveHighLabeledSupport G e z).card = 3 → z = x ∨ z = y)
+    (w : Fin 5) :
+    ((G.neighborFinset (e.symm w).1).filter fun z =>
+      (orderFortyNineHighSupport G z).card = 3).card =
+      ((fiveHighCanonicalTripleSystem 2).filter fun T => w ∈ T).card := by
+  have hset : ((G.neighborFinset (e.symm w).1).filter fun z =>
+      (orderFortyNineHighSupport G z).card = 3) =
+      ({x, y} : Finset (Fin 49)).filter fun z =>
+        w ∈ fiveHighLabeledSupport G e z := by
+    ext z
+    constructor
+    · intro hz
+      have hz3 : (fiveHighLabeledSupport G e z).card = 3 := by
+        rw [fiveHighLabeledSupport_card]
+        exact (Finset.mem_filter.mp hz).2
+      have hzw : w ∈ fiveHighLabeledSupport G e z :=
+        (mem_fiveHighLabeledSupport_iff G e z w).mpr (by
+          simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+            (Finset.mem_filter.mp hz).1)
+      exact Finset.mem_filter.mpr ⟨by simpa using huniq z hz3, hzw⟩
+    · intro hz
+      have hzxy := (Finset.mem_filter.mp hz).1
+      have hzw := (Finset.mem_filter.mp hz).2
+      apply Finset.mem_filter.mpr
+      constructor
+      · simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+          (mem_fiveHighLabeledSupport_iff G e z w).mp hzw
+      · rcases (by simpa using hzxy : z = x ∨ z = y) with hzx | hzy
+        · rw [hzx, ← fiveHighLabeledSupport_card G e x, hxSupport]
+          decide
+        · rw [hzy, ← fiveHighLabeledSupport_card G e y, hySupport]
+          decide
+  rw [hset]
+  simp only [Finset.filter_insert, Finset.filter_singleton]
+  rw [hxSupport, hySupport]
+  fin_cases w <;> simp [fiveHighCanonicalTripleSystem, hxy] <;> native_decide
+
+theorem fiveHigh_t2_exists_triple_superset_iff
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (x y : Fin 49)
+    (hxSupport : fiveHighLabeledSupport G e x = {0, 1, 2})
+    (hySupport : fiveHighLabeledSupport G e y = {0, 3, 4})
+    (huniq : ∀ z : Fin 49,
+      (fiveHighLabeledSupport G e z).card = 3 → z = x ∨ z = y)
+    (P : Finset (Fin 5)) :
+    (∃ q : Fin 49, (fiveHighLabeledSupport G e q).card = 3 ∧
+      P ⊆ fiveHighLabeledSupport G e q) ↔
+      ∃ T ∈ fiveHighCanonicalTripleSystem 2, P ⊆ T := by
+  constructor
+  · rintro ⟨q, hq3, hPq⟩
+    rcases huniq q hq3 with hqx | hqy
+    · refine ⟨{0, 1, 2}, by simp [fiveHighCanonicalTripleSystem], ?_⟩
+      simpa [hqx, hxSupport] using hPq
+    · refine ⟨{0, 3, 4}, by simp [fiveHighCanonicalTripleSystem], ?_⟩
+      simpa [hqy, hySupport] using hPq
+  · rintro ⟨T, hT, hPT⟩
+    have hcases : T = ({0, 1, 2} : Finset (Fin 5)) ∨
+        T = ({0, 3, 4} : Finset (Fin 5)) := by
+      simpa [fiveHighCanonicalTripleSystem] using hT
+    rcases hcases with rfl | rfl
+    · refine ⟨x, by rw [hxSupport]; decide, ?_⟩
+      simpa [hxSupport] using hPT
+    · refine ⟨y, by rw [hySupport]; decide, ?_⟩
+      simpa [hySupport] using hPT
+
+theorem fiveHigh_t2_triple_fiber_card
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (x y : Fin 49)
+    (hxSupport : fiveHighLabeledSupport G e x = {0, 1, 2})
+    (hySupport : fiveHighLabeledSupport G e y = {0, 3, 4})
+    (huniq : ∀ z : Fin 49,
+      (fiveHighLabeledSupport G e z).card = 3 → z = x ∨ z = y)
+    (S : Finset (Fin 5)) (hS3 : S.card = 3) :
+    Fintype.card {z : Fin 49 // fiveHighLabeledSupport G e z = S} =
+      if S ∈ fiveHighCanonicalTripleSystem 2 then 1 else 0 := by
+  by_cases hmem : S ∈ fiveHighCanonicalTripleSystem 2
+  · rw [if_pos hmem]
+    have hcases : S = ({0, 1, 2} : Finset (Fin 5)) ∨
+        S = ({0, 3, 4} : Finset (Fin 5)) := by
+      simpa [fiveHighCanonicalTripleSystem] using hmem
+    rcases hcases with hS | hS
+    · have hone := fiveHighLabeledSupport_fiber_card_eq_one
+        G hfree e x (by rw [hxSupport]; decide)
+      simpa [hS, hxSupport] using hone
+    · have hone := fiveHighLabeledSupport_fiber_card_eq_one
+        G hfree e y (by rw [hySupport]; decide)
+      simpa [hS, hySupport] using hone
+  · rw [if_neg hmem, Fintype.card_subtype, Finset.card_eq_zero]
+    apply Finset.eq_empty_iff_forall_notMem.mpr
+    intro z hz
+    have hzEq := (Finset.mem_filter.mp hz).2
+    have hz3 : (fiveHighLabeledSupport G e z).card = 3 := by
+      rw [hzEq]
+      exact hS3
+    rcases huniq z hz3 with hzx | hzy
+    · apply hmem
+      simp [fiveHighCanonicalTripleSystem, ← hzEq, hzx, hxSupport]
+    · apply hmem
+      simp [fiveHighCanonicalTripleSystem, ← hzEq, hzy, hySupport]
+
+theorem fiveHighCanonicalFiberCover_two :
+    FiveHighCanonicalFiberCover 2 orderFortyNineFiveHighT2Masks := by
+  intro G _ _ _ hfree hmin hHigh htwo
+  obtain ⟨e, x, y, hxSupport, hySupport, hxy, huniq⟩ :=
+    fiveHigh_t2_exists_normalized_labeling G hfree hmin hHigh htwo
+  refine ⟨e, orderFortyNineFiveHighT2Masks_size, ?_⟩
+  intro key
+  rw [fiveHigh_graph_key_fiber_card_of_canonical_census
+      G hfree hmin hHigh 2 htwo e]
+  · exact (fiveHigh_t2_mask_key_fiber_card key).symm
+  · intro w
+    rw [fiveHigh_singleton_fiber_card_eq_triple_incidence_add_four
+      G hfree hmin hHigh e w]
+    exact congrArg (fun n => n + 4)
+      (fiveHigh_t2_local_triple_card G e x y hxSupport hySupport
+        hxy huniq w)
+  · intro a b _
+    exact fiveHigh_t2_exists_triple_superset_iff
+      G e x y hxSupport hySupport huniq {a, b}
+  · intro S hS3
+    exact fiveHigh_t2_triple_fiber_card
+      G hfree e x y hxSupport hySupport huniq S hS3
+
+theorem fiveHighCanonicalLabelingCover_two :
+    FiveHighCanonicalLabelingCover 2 orderFortyNineFiveHighT2Masks :=
+  fiveHighCanonicalLabelingCover_of_fiberCover
+    fiveHighCanonicalFiberCover_two
+
 end
 
 end Erdos85
