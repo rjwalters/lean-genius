@@ -241,6 +241,33 @@ theorem OneHighPinnedThreePairTurn.mateOwner_one_internalEdges_eq_two
   · exact Or.inr hright
   · exact Or.inl (by simpa [hlabel] using hleft)
 
+/-- Final branch-level decoding of the turn terminal.  Both opposite-color
+sectors split into literal equality with the opposite root or its mate. -/
+theorem OneHighPinnedThreePairTurn.fully_decoded_source_sector
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1 ∨
+      T.qAB.sourceEdge.1 = p.mate T.qBC.sourceEdge.1 ∨
+      T.qAB.sourceEdge.1 = T.c ∨
+      T.qAB.sourceEdge.1 = p.mate T.c ∨
+      T.qBC.sourceEdge.1 = T.a ∨
+      T.qBC.sourceEdge.1 = p.mate T.a := by
+  rcases T.graph_source_sector G hfree hv p with
+    hsame | hmate | hc | ha
+  · exact Or.inl hsame
+  · exact Or.inr (Or.inl hmate)
+  · rcases (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
+        p.mate p.branchLabel p.branch_mate _ _).mp hc with hc | hmc
+    · exact Or.inr (Or.inr (Or.inl hc))
+    · exact Or.inr (Or.inr (Or.inr (Or.inl hmc)))
+  · rcases (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
+        p.mate p.branchLabel p.branch_mate _ _).mp ha with ha | hma
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ha))))
+    · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr hma))))
+
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
 def OneHighPinnedThreePairTurnSectorExcluded : Prop :=
