@@ -27,6 +27,13 @@ theorem exists_orderFortyNine_threeHighDistTwo_geometryLabeling
     (hHigh : orderFortyNineHighVertices G = {v1, v2, v3}) :
     ∃ E : V ≃ Fin 49,
       let H := orderFortyNineRelabeledGraph G E
+      E v1 = 0 ∧ E v2 = 1 ∧ E v3 = 2 ∧
+      H.neighborFinset 0 =
+          Finset.univ.image orderFortyNineDistTwoFirstTarget ∧
+      H.neighborFinset 1 =
+          Finset.univ.image orderFortyNineDistTwoSecondTarget ∧
+      H.neighborFinset 2 =
+          Finset.univ.image orderFortyNineDistTwoThirdTarget ∧
       OrderFortyNineGraphPinnedMatchingRealized H
         [3, 4, 5, 6, 7, 8, 9, 10]
         [(3, 4), (5, 6), (7, 8), (9, 10)] ∧
@@ -277,7 +284,23 @@ theorem exists_orderFortyNine_threeHighDistTwo_geometryLabeling
     simpa [extra, orderFortyNineDistTwoExtraTarget] using hExtra 2
   have hEl3 : E l3 = 13 := by
     simpa [extra, orderFortyNineDistTwoExtraTarget] using hExtra 3
-  refine ⟨E, hmatchA, hmatchB, hmatchC, ?_⟩
+  have hneighborA :=
+    orderFortyNineRelabeledGraph_neighborFinset_eq_targetImage
+      G eA E orderFortyNineDistTwoFirstTarget hmapA
+  have hneighborB :=
+    orderFortyNineRelabeledGraph_neighborFinset_eq_targetImage
+      G eB E orderFortyNineDistTwoSecondTarget hmapB
+  have hneighborC :=
+    orderFortyNineRelabeledGraph_neighborFinset_eq_targetImage
+      G eC E orderFortyNineDistTwoThirdTarget hmapC
+  refine ⟨E, hEv1, hEv2, hEv3, ?_, ?_, ?_,
+    hmatchA, hmatchB, hmatchC, ?_⟩
+  · rw [hEv1] at hneighborA
+    exact hneighborA
+  · rw [hEv2] at hneighborB
+    exact hneighborB
+  · rw [hEv3] at hneighborC
+    exact hneighborC
   exact orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_of_pinned
     G E hN hroot hEv1 hEv2 hEv3 hEt hEx2 hEx3 hEl3
 
