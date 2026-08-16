@@ -1,5 +1,6 @@
 import Proofs.Erdos85SquareOrderHighQuadraticCharpoly
 import Proofs.Erdos85SquareOrderHighQuadraticSector
+import Proofs.Erdos85InvariantCharpolyDivisibility
 
 /-!
 # Characteristic polynomial of the high quadratic sector
@@ -93,6 +94,30 @@ theorem squareOrder_highQuadraticSector_restrict_charpoly
   rw [hchar, hmatrix, highSectorQuadraticExchangeMatrix_charpoly]
   congr 1
   rw [Fintype.card_coe, Finset.card_erase_of_mem ha]
+
+theorem squareOrder_highQuadraticSector_factor_dvd_adjMatrix_charpoly
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    (Polynomial.X ^ 2 - Polynomial.C (d : ℚ)) ^
+        ((squareOrderHighVertices G d).card - 1) ∣
+      (G.adjMatrix ℚ).charpoly := by
+  let U := Submodule.span ℚ
+    (Set.range (squareOrderHighQuadraticSectorFamily
+      G (squareOrderHighVertices G d) a))
+  let T := (G.adjMatrix ℚ).toLin'
+  have hdvd := charpoly_restrict_dvd_of_invariant T U
+    (squareOrder_highQuadraticSector_span_invariant
+      G hfree hd hmin hcard ha)
+  rw [squareOrder_highQuadraticSector_restrict_charpoly
+    G hfree hd hmin hcover hcard ha] at hdvd
+  simpa [T, Matrix.charpoly_toLin'] using hdvd
 
 end
 
