@@ -3,6 +3,7 @@ import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighOddLabelTurn
 import Proofs.Erdos85OneHighRootPairGraphDecoder
 import Proofs.Erdos85OneHighRepeatedSourceCapacity
+import Proofs.Erdos85OneHighTurnPairingBridge
 
 /-! # Concrete graph witnesses from the cross-block sector -/
 
@@ -90,6 +91,28 @@ private theorem four_finFour_values_avoiding_two_have_collision
 private theorem oneHighRootPair_standardMate (x : Fin 8) :
     oneHighRootPair (oneHighStandardMate x) = oneHighRootPair x := by
   fin_cases x <;> decide
+
+/-- Exact executable-row package produced by a saturated concrete cross
+source: the witness's canonical miss pair occurs in a pairing row of length
+two. -/
+structure OneHighSaturatedCrossSourcePairingWitness
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) where
+  a : {z : V // z ∈ G.neighborSet v}
+  b : {z : V // z ∈ G.neighborSet v}
+  q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj a b
+  saturated : oneHighFamilyInternalEdges p.profile
+    (p.branchLabel q.sourceEdge.1) = 2
+  pair_mem :
+    oneHighCanonicalLabelPair (p.branchLabel a) (p.branchLabel b) ∈
+      oneHighGraphSourcePairing G hfree hv p
+        (p.branchLabel q.sourceEdge.1)
+  row_length :
+    (oneHighGraphSourcePairing G hfree hv p
+      (p.branchLabel q.sourceEdge.1)).length = 2
 
 /-- Since the block occupies two of the four root-mate pairs, its four
 concrete source edges use only the other two.  Thus two source edges
@@ -453,6 +476,41 @@ theorem OneHighCrossBlockSourceConfiguration.has_saturated_sourceEdge
   · rcases mate C.q₁₀ C.q₁₁ hmate with h | h
     · exact Or.inr (Or.inr (Or.inl h))
     · exact Or.inr (Or.inr (Or.inr h))
+
+/-- A concrete cross block therefore determines an exact length-two
+executable source row together with one of its actual canonical miss pairs. -/
+theorem OneHighCrossBlockSourceConfiguration.exists_saturatedSourcePairingWitness
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    Nonempty (OneHighSaturatedCrossSourcePairingWitness G hfree hv p) := by
+  have make {a b : {z : V // z ∈ G.neighborSet v}}
+      (q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b)
+      (hs : oneHighFamilyInternalEdges p.profile
+        (p.branchLabel q.sourceEdge.1) = 2) :
+      Nonempty (OneHighSaturatedCrossSourcePairingWitness G hfree hv p) := by
+    refine ⟨{
+      a := a
+      b := b
+      q := q
+      saturated := hs
+      pair_mem := q.canonicalPair_mem_graphSourcePairing G hfree hv p
+      row_length := ?_ }⟩
+    calc
+      (oneHighGraphSourcePairing G hfree hv p
+          (p.branchLabel q.sourceEdge.1)).length =
+          oneHighFamilyInternalEdges p.profile
+            (p.branchLabel q.sourceEdge.1) :=
+        oneHighGraphSourcePairing_length G hfree hv p _
+      _ = 2 := hs
+  rcases C.has_saturated_sourceEdge G hfree hv p with h | h | h | h
+  · exact make C.q₀₀ h
+  · exact make C.q₀₁ h
+  · exact make C.q₁₀ h
+  · exact make C.q₁₁ h
 
 /-- Row-reconstruction form: an owner of one concrete cross-block source
 edge has exactly four matched vertices, hence its two internal edges exhaust
