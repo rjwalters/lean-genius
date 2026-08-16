@@ -1,4 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.Rayleigh
+import Mathlib.Analysis.Matrix.Hermitian
 
 /-!
 # A finite-dimensional Rayleigh eigenvalue lower bound
@@ -46,6 +47,19 @@ theorem exists_eigenvalue_ge_rayleigh
   have hle : q ⟨v, hv⟩ ≤ ⨆ x, q x :=
     le_ciSup hbounded ⟨v, hv⟩
   simpa [mu, q] using hle
+
+/-- Matrix specialization for the square of a Hermitian real matrix. -/
+theorem exists_sq_eigenvalue_ge_rayleigh_matrix
+    {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
+    (A : Matrix n n ℝ) (hA : A.IsHermitian)
+    (v : EuclideanSpace ℝ n) (hv : v ≠ 0) :
+    ∃ mu : ℝ,
+      Module.End.HasEigenvalue (A ^ 2).toEuclideanLin mu ∧
+      @inner ℝ (EuclideanSpace ℝ n) _ v ((A ^ 2).toEuclideanLin v) /
+          ‖v‖ ^ 2 ≤ mu := by
+  exact exists_eigenvalue_ge_rayleigh
+    (A ^ 2).toEuclideanLin
+      ((Matrix.isSymmetric_toEuclideanLin_iff (A := A ^ 2)).mpr (hA.pow 2)) v hv
 
 end
 
