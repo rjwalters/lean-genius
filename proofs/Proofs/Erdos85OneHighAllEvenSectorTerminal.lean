@@ -417,6 +417,7 @@ structure OneHighReciprocalSameMissEdges
     (p : OneHighRawV2Presentation G hfree v) where
   s : {z : V // z ∈ G.neighborSet v}
   u : {z : V // z ∈ G.neighborSet v}
+  s_label : p.branchLabel s = 0
   u_far : u ∈ ((Finset.univ.erase s).erase (p.mate s))
   x : OneHighMatchedBranchVertices G v s
   a : OneHighMatchedBranchVertices G v u
@@ -520,12 +521,69 @@ theorem exists_oneHighReciprocalSameMissEdges
   have hamMem := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
     p.outer_degree p.mate p.mate_adj u
       (oneHighInternalMate G hfree v u a)
-  refine ⟨⟨s, u, hu, x, a, hxMiss, hxMateMiss, haMiss, haMateMiss,
+  refine ⟨⟨s, u, by simp [s], hu, x, a, hxMiss, hxMateMiss, haMiss, haMateMiss,
     ?_, ?_, ?_, ?_⟩⟩
   · simpa [hxMiss] using (Finset.mem_filter.mp hxMem).2
   · simpa [hxMateMiss] using (Finset.mem_filter.mp hxmMem).2
   · simpa [haMiss] using (Finset.mem_filter.mp haMem).2
   · simpa [haMateMiss] using (Finset.mem_filter.mp hamMem).2
+
+/-- In every positive profile (in particular the surviving profiles `2` and
+`4`), the canonical source branch in the reciprocal witness has exactly one
+internal edge. -/
+theorem OneHighReciprocalSameMissEdges.source_internalEdges_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    oneHighFamilyInternalEdges p.profile (p.branchLabel q.s) = 1 := by
+  rw [q.s_label]
+  simp [oneHighFamilyInternalEdges, hprofile]
+
+theorem OneHighReciprocalSameMissEdges.source_matched_card_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    Fintype.card (OneHighMatchedBranchVertices G v q.s) = 2 := by
+  rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+  have hcount : highBranchMatchedCount G v q.s =
+      2 * oneHighFamilyInternalEdges p.profile (p.branchLabel q.s) := by
+    simpa using p.matched_count (p.branchLabel q.s)
+  rw [hcount]
+  rw [q.source_internalEdges_eq_one hprofile]
+
+theorem OneHighReciprocalSameMissEdges.source_matched_eq_x_or_mate
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    (z : OneHighMatchedBranchVertices G v q.s) :
+    z = q.x ∨ z = oneHighInternalMate G hfree v q.s q.x := by
+  let xm := oneHighInternalMate G hfree v q.s q.x
+  have hne : q.x ≠ xm := by
+    exact (degreeOneMate_ne _ _ q.x).symm
+  have hpairCard : ({q.x, xm} : Finset
+      (OneHighMatchedBranchVertices G v q.s)).card = 2 := by
+    simp [hne]
+  have hunivCard : (Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v q.s)).card = 2 := by
+    simpa using q.source_matched_card_eq_two hprofile
+  have hpairUniv : ({q.x, xm} : Finset
+      (OneHighMatchedBranchVertices G v q.s)) = Finset.univ := by
+    apply Finset.eq_of_subset_of_card_le (by simp)
+    rw [hpairCard, hunivCard]
+  have hz : z ∈ ({q.x, xm} : Finset
+      (OneHighMatchedBranchVertices G v q.s)) := by
+    rw [hpairUniv]
+    exact Finset.mem_univ z
+  simpa [xm] using hz
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
