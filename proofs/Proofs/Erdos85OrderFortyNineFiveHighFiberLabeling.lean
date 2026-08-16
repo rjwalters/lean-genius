@@ -352,6 +352,66 @@ theorem fiveHighCanonicalLabelingCover_of_fiberCover
   exact fiveHighAlignedLabeling_of_keyAligned
     G hfree hmin e masks hsize E hE
 
+theorem fiveHigh_singleton_fiber_card_eq_local
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (w : Fin 5) :
+    Fintype.card {x : Fin 49 // fiveHighLabeledSupport G e x = {w}} =
+      ((G.neighborFinset (e.symm w).1).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 1).card := by
+  rw [Fintype.card_subtype]
+  congr 1
+  ext x
+  constructor
+  · intro hx
+    have hs := (Finset.mem_filter.mp hx).2
+    apply Finset.mem_filter.mpr
+    constructor
+    · have hw : w ∈ fiveHighLabeledSupport G e x := by simp [hs]
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using
+        (mem_fiveHighLabeledSupport_iff G e x w).mp hw
+    · rw [← fiveHighLabeledSupport_card G e x, hs]
+      simp
+  · intro hx
+    have hxN := (Finset.mem_filter.mp hx).1
+    have hxCard := (Finset.mem_filter.mp hx).2
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_univ x, ?_⟩
+    have hw : w ∈ fiveHighLabeledSupport G e x := by
+      apply (mem_fiveHighLabeledSupport_iff G e x w).mpr
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hxN
+    have hcard : (fiveHighLabeledSupport G e x).card = 1 := by
+      rw [fiveHighLabeledSupport_card]
+      exact hxCard
+    obtain ⟨z, hz⟩ := Finset.card_eq_one.mp hcard
+    have hwz : w = z := by
+      rw [hz] at hw
+      simpa using hw
+    simpa [hz, hwz]
+
+/-- At five highs, a singleton support occurs four more times than a triple
+support through the same high point. -/
+theorem fiveHigh_singleton_fiber_card_eq_triple_incidence_add_four
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 5)
+    (e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 5)
+    (w : Fin 5) :
+    Fintype.card {x : Fin 49 // fiveHighLabeledSupport G e x = {w}} =
+      ((G.neighborFinset (e.symm w).1).filter fun x =>
+        (orderFortyNineHighSupport G x).card = 3).card + 4 := by
+  rw [fiveHigh_singleton_fiber_card_eq_local]
+  have hv8 : G.degree (e.symm w).1 = 8 :=
+    (Finset.mem_filter.mp (e.symm w).2).2
+  have hp := orderFortyNine_highNeighborhood_general_profile
+    G hfree hmin (Fintype.card_fin 49) hv8
+  dsimp only at hp
+  rw [hHigh] at hp
+  omega
+
 end
 
 end Erdos85
