@@ -84,6 +84,52 @@ def lazy_to_lean_permutation(high_count: int) -> list[int]:
     return permutation
 
 
+def recover_permutation_from_c4_segment(
+    source: Path, prefix_clauses: int
+) -> list[int]:
+    """Recover arbitrary historical edge allocation from its universal C4 block.
+
+    Some scout generators emitted geometry-specific edge units before the
+    fixed support prefix, so their ``IDPool`` order is not determined by the
+    high count alone.  The following universal C4 block names every edge and
+    has a fixed clause order, allowing its old ids to be matched directly to
+    Lean's lexicographic ids.
+    """
+    actual = itertools.islice(dimacs_clauses(source), prefix_clauses, None)
+    permutation = [0] * (EDGE_VARIABLES + 1)
+    clause_count = 0
+    for i, j in itertools.combinations(range(ORDER), 2):
+        others = [w for w in range(ORDER) if w != i and w != j]
+        for w, w2 in itertools.combinations(others, 2):
+            try:
+                clause = next(actual)
+            except StopIteration as error:
+                raise ValueError("source ended inside the universal C4 block") from error
+            expected = ((i, w), (j, w), (i, w2), (j, w2))
+            if len(clause) != 4 or any(literal >= 0 for literal in clause):
+                raise ValueError(
+                    f"clause {prefix_clauses + clause_count + 1} is not a C4 clause"
+                )
+            for literal, pair in zip(clause, expected):
+                old_id = abs(literal)
+                if old_id > EDGE_VARIABLES:
+                    raise ValueError("auxiliary variable appeared in the C4 block")
+                new_id = lean_edge_id(*pair)
+                if permutation[old_id] not in (0, new_id):
+                    raise ValueError(
+                        f"inconsistent edge id {old_id}: "
+                        f"{permutation[old_id]} versus {new_id}"
+                    )
+                permutation[old_id] = new_id
+            clause_count += 1
+    if 0 in permutation[1:]:
+        missing = [index for index, value in enumerate(permutation) if index and not value]
+        raise ValueError(f"C4 block did not expose edge ids: {missing[:10]}")
+    if sorted(permutation[1:]) != list(range(1, EDGE_VARIABLES + 1)):
+        raise ValueError("recovered edge-id map is not a permutation")
+    return permutation
+
+
 def permute_literal(literal: int, permutation: list[int]) -> int:
     variable = abs(literal)
     if variable == 0 or variable > EDGE_VARIABLES:
@@ -106,10 +152,17 @@ def normalize_line(line: str, permutation: list[int]) -> str:
     return " ".join(output) + "\n"
 
 
-def normalize_file(source: Path, target: Path, high_count: int) -> None:
+def normalize_file(
+    source: Path, target: Path, high_count: int,
+    recover_c4_prefix: int | None = None,
+) -> None:
     if source.resolve() == target.resolve():
         raise ValueError("source and target must be different paths")
-    permutation = lazy_to_lean_permutation(high_count)
+    permutation = (
+        recover_permutation_from_c4_segment(source, recover_c4_prefix)
+        if recover_c4_prefix is not None
+        else lazy_to_lean_permutation(high_count)
+    )
     target.parent.mkdir(parents=True, exist_ok=True)
     with source.open() as incoming, target.open("w") as outgoing:
         for line in incoming:
@@ -210,10 +263,15 @@ def main() -> None:
         "--verify-h5", action="store_true",
         help="independently regenerate and compare the exact four h5 segments",
     )
+    parser.add_argument(
+        "--recover-c4-prefix", type=int,
+        help=("recover an arbitrary lazy edge allocation from the universal C4 "
+              "block beginning after this many clauses"),
+    )
     parser.add_argument("source", type=Path)
     parser.add_argument("target", type=Path)
     args = parser.parse_args()
-    normalize_file(args.source, args.target, args.high_count)
+    normalize_file(args.source, args.target, args.high_count, args.recover_c4_prefix)
     if args.verify_h5:
         if args.high_count != 5:
             parser.error("--verify-h5 requires --high-count 5")
