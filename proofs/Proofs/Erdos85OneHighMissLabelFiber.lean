@@ -83,6 +83,61 @@ theorem card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
         houterDegree rootMate hrootAdj s a haParts.1 hmatched u hmissMem
     refine ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlabel⟩, rfl⟩
 
+/-- A global miss-label fiber is the disjoint sigma-sum of its source-branch
+fibers.  This separates the purely dependent-type bookkeeping from the graph
+identity above. -/
+theorem card_oneHighGlobalMissLabelFiber_eq_sum_branchFibers
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hv : G.degree v = 8)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hrootAdj : ∀ s, G.Adj s.1 (rootMate s).1)
+    (u : {z : V // z ∈ G.neighborSet v}) :
+    ((Finset.univ : Finset (OneHighAllMatchedVertices G v)).filter
+      fun x => oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj x = u).card =
+      ∑ s : {z : V // z ∈ G.neighborSet v},
+        ((Finset.univ : Finset (OneHighMatchedBranchVertices G v s)).filter
+          fun x => oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+            rootMate hrootAdj s x = u).card := by
+  classical
+  let A := {x : OneHighAllMatchedVertices G v //
+    oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+      rootMate hrootAdj x = u}
+  let B := Σ s : {z : V // z ∈ G.neighborSet v},
+    {x : OneHighMatchedBranchVertices G v s //
+      oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+        rootMate hrootAdj s x = u}
+  let e : A ≃ B :=
+    { toFun := fun x => ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
+      invFun := fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩
+      left_inv := fun x => by cases x; rfl
+      right_inv := fun x => by cases x; rfl }
+  calc
+    ((Finset.univ : Finset (OneHighAllMatchedVertices G v)).filter
+        fun x => oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+          rootMate hrootAdj x = u).card = Fintype.card A := by
+      simpa [A] using (Fintype.card_subtype (fun x :
+        OneHighAllMatchedVertices G v =>
+          oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+            rootMate hrootAdj x = u)).symm
+    _ = Fintype.card B := Fintype.card_congr e
+    _ = ∑ s : {z : V // z ∈ G.neighborSet v},
+        ((Finset.univ : Finset (OneHighMatchedBranchVertices G v s)).filter
+          fun x => oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+            rootMate hrootAdj s x = u).card := by
+      rw [Fintype.card_sigma]
+      apply Finset.sum_congr rfl
+      intro s _
+      simpa using (Fintype.card_subtype (fun x :
+        OneHighMatchedBranchVertices G v s =>
+          oneHighMatchedMissLabel G hfree hv hexternal houterDegree
+            rootMate hrootAdj s x = u))
+
 end
 
 end Erdos85
