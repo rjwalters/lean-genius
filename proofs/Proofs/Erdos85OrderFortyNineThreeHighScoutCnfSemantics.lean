@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineThreeHighScoutCnf
+import Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero
 
 /-!
 # Semantics for normalized three-high scout CNFs
@@ -28,22 +29,10 @@ structure OrderFortyNineThreeHighScoutCnfCovered
     (∃ source ∈ orderFortyNineVariablePartitionClauses (3 : Fin 50) masks,
       DimacsClauseNonzero source ∧ clause = dimacsClauseToSatClause source)
 
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 2000000 in
 theorem orderFortyNineDegreeBlocks_three_nonzero :
     ∀ clause ∈ (orderFortyNineDegreeBlocks 3).clauses,
-      DimacsClauseNonzero clause := by
-  have hcheck :
-      (orderFortyNineDegreeBlocks 3).clauses.all fun clause =>
-        clause.all fun lit => lit != 0 := by
-    decide
-  simp only [Array.all_eq_true] at hcheck
-  intro clause hclause lit hlit
-  obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
-  have hclauseCheck := hcheck i hi
-  simp only [List.all_eq_true] at hclauseCheck
-  have hlitCheck := hclauseCheck lit hlit
-  simpa using hlitCheck
+      DimacsClauseNonzero clause :=
+  orderFortyNineDegreeBlocks_nonzero_all 3
 
 theorem orderFortyNineGeneratedThreeHighScoutCnf_covered
     (masks : Array Nat) (geometry : Array DimacsClause)
