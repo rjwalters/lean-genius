@@ -1,5 +1,6 @@
 import Proofs.Erdos85FiniteDropWitnesses
 import Proofs.Erdos85PolarityEven
+import Mathlib.FieldTheory.Finite.GaloisField
 
 /-!
 # Cofinal plane-order drops imply the negation of Erdős 85
@@ -114,5 +115,46 @@ theorem not_erdos85Question_of_evenFieldSquareExclusion
     (h : CofinalEvenFieldSquareExclusion) : ¬ Erdos85Question :=
   not_erdos85Question_of_cofinalPlaneOrderDropFamily
     (cofinalPlaneOrderDropFamily_of_evenFieldSquareExclusion h)
+
+/-- The exact uniform square-order obstruction along binary prime powers. -/
+def BinarySquareOrderExclusion : Prop :=
+  ∀ k : Nat, 2 ≤ k →
+    ¬ C4FreeMinDegreeWitness ((2 ^ k) * (2 ^ k)) (2 ^ k)
+
+theorem cofinalEvenFieldSquareExclusion_of_binary
+    (h : BinarySquareOrderExclusion) :
+    CofinalEvenFieldSquareExclusion.{0} := by
+  intro N
+  let k := N + 2
+  let K := GaloisField 2 k
+  letI : DecidableEq K := Classical.decEq K
+  have hk : k ≠ 0 := by simp [k]
+  have hk2 : 2 ≤ k := by simp [k]
+  have hcard : Nat.card K = 2 ^ k := GaloisField.card 2 k hk
+  have hpow : 2 * k ≤ 2 ^ k :=
+    Nat.mul_le_pow (a := 2) (by decide : 2 ≠ 1) k
+  have hq4 : 4 ≤ Nat.card K := by
+    rw [hcard]
+    omega
+  refine ⟨K, inferInstance, inferInstance, inferInstance, ?_, ?_, ?_, ?_⟩
+  · apply Nat.le_sub_of_add_le
+    rw [hcard]
+    have hNq : N + 1 ≤ 2 ^ k := by
+      dsimp [k] at hpow ⊢
+      omega
+    exact hNq.trans (Nat.le_mul_of_pos_right _ (by positivity))
+  · omega
+  · exact CharP.cast_eq_zero K 2
+  · simpa [hcard] using h k hk2
+
+theorem erdos85Negation_of_binarySquareOrderExclusion
+    (h : BinarySquareOrderExclusion) : Erdos85Negation :=
+  erdos85Negation_of_evenFieldSquareExclusion
+    (cofinalEvenFieldSquareExclusion_of_binary h)
+
+theorem not_erdos85Question_of_binarySquareOrderExclusion
+    (h : BinarySquareOrderExclusion) : ¬ Erdos85Question :=
+  not_erdos85Question_of_evenFieldSquareExclusion
+    (cofinalEvenFieldSquareExclusion_of_binary h)
 
 end Erdos85
