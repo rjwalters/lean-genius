@@ -139,6 +139,32 @@ theorem sevenHighT0_source_high_commonWitness
   · rw [orderFortyNineBitAdj_comm]
     exact (hsupport w ⟨j.val, by omega⟩ hj).trans hwj
 
+theorem sevenHighT0_source_highIndependent
+    (edges : BitVec 1176)
+    (h : orderFortyNineBooleanConstraints 7
+      (OrderFortyNineSevenHighCensus.representativeMasks 0 0) edges) :
+    ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      orderFortyNineBitAdj edges i j = false := by
+  rcases h with ⟨_, _, _, _, hsupport, _⟩
+  intro i j hi hj _
+  have hz := OrderFortyNineSevenHighCensus.representativeMasks_high_zero
+    0 0 ⟨i.val, hi⟩
+  have hs := hsupport i ⟨j.val, by omega⟩ hj
+  rw [hz] at hs
+  simpa using hs
+
+theorem orderFortyNine_source_supportColumn
+    (h : Nat) (masks : Array Nat) (adj : Fin 49 → Fin 49 → Bool)
+    (hc : orderFortyNineRelationConstraints h masks adj)
+    (w : Fin 9) (hw : w.val < h) :
+    ∀ y : Fin 49,
+      adj y ⟨w.val, by omega⟩ =
+        decide (y ∈ orderFortyNineSupportFiber masks w) := by
+  rcases hc with ⟨_, _, _, _, hsupport, _⟩
+  intro y
+  rw [hsupport y w hw]
+  simp [orderFortyNineSupportFiber]
+
 /-- Transport an exact-one neighbor law from a source support fiber to its
 normalized target block.  Unlike terminal-wide invariance, this is precisely
 the form needed when normalization deliberately changes the mask layout. -/
