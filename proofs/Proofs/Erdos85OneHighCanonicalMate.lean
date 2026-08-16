@@ -578,7 +578,8 @@ theorem finFive_matchingBits_canonical
     ∃ σ : Equiv.Perm (Fin 5), ∀ i j,
       oneHighBranchBitAdj edges i j =
         oneHighCanonicalBranchAdj twoEdges (σ i) (σ j) := by
-  native_decide +revert
+  set_option maxRecDepth 10000 in
+    decide +revert
 
 def oneHighSwapZeroOne : Equiv.Perm (Fin 5) :=
   Equiv.swap 0 1
