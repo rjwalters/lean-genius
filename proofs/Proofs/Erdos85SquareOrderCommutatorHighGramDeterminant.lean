@@ -1,4 +1,4 @@
-import Proofs.Erdos85SquareOrderCommutatorHighFullQuadratic
+import Proofs.Erdos85SquareOrderCommutatorHighEquidistance
 import Mathlib.LinearAlgebra.Matrix.SchurComplement
 
 /-!
@@ -26,20 +26,25 @@ private theorem det_const_offDiagonal_rat
     Matrix.replicateCol (Fin 1) u * Matrix.replicateRow (Fin 1) v
   have hmatrix : ((fun i j : ι => if i = j then d + s else s) :
       Matrix ι ι ℚ) =
-      d • (1 + R) := by
+      d • ((1 : Matrix ι ι ℚ) + R) := by
     ext i j
-    simp [R, u, v, Matrix.mul_apply, hd]
-    by_cases hij : i = j <;> simp [hij, hd]
+    by_cases hij : i = j
+    · subst j
+      simp [R, u, v, Matrix.mul_apply, Matrix.one_apply_eq]
+      field_simp
+    · simp [R, u, v, Matrix.mul_apply, hij]
+      field_simp
   rw [hmatrix, Matrix.det_smul]
   have hdetR : Matrix.det (1 + R) = 1 + v ⬝ᵥ u := by
-    simpa [R] using
-      Matrix.det_one_add_replicateCol_mul_replicateRow
-        (ι := Fin 1) u v
+    change Matrix.det (1 +
+      Matrix.replicateCol (Fin 1) u * Matrix.replicateRow (Fin 1) v) = _
+    exact Matrix.det_one_add_replicateCol_mul_replicateRow
+      (ι := Fin 1) u v
   rw [hdetR]
   have hcardpos : 0 < Fintype.card ι := Fintype.card_pos
   obtain ⟨k, hk⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hcardpos)
   rw [hk]
-  simp [u, v, dotProduct, Finset.sum_const, hd]
+  simp [u, v, dotProduct, Finset.sum_const, hk]
   field_simp
   ring
 
@@ -72,6 +77,7 @@ theorem squareOrder_det_high_commutator_gram
   have hHtwo' : 2 ≤ H.card := by simpa [H] using hHtwo
   obtain ⟨u, hu, v, hv, huv⟩ :=
     Finset.one_lt_card.mp (show 1 < H.card by omega)
+  letI : Nonempty ↥H := ⟨⟨u, hu⟩⟩
   have hcapacity : 2 * d + 1 + H.card ≤ d * d := by
     simpa [H] using
       squareOrder_two_mul_add_one_add_card_high_le_of_two_high
@@ -103,6 +109,40 @@ theorem squareOrder_det_high_commutator_gram
   rw [hM, det_const_offDiagonal_rat]
   · simp
   · exact_mod_cast (by omega : d ≠ 0)
+
+/-- The high commutator Gram matrix is nonsingular over `ℚ`. -/
+theorem squareOrder_det_high_commutator_gram_ne_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hHtwo : 2 ≤ (squareOrderHighVertices G d).card) :
+    let H := squareOrderHighVertices G d
+    let C := G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ -
+      (secondOrderDefectGraph G).adjMatrix ℤ * G.adjMatrix ℤ
+    let M : Matrix (↥H) (↥H) ℚ := fun a b =>
+      ((∑ y : V, C a.1 y * C b.1 y : ℤ) : ℚ)
+    Matrix.det M ≠ 0 := by
+  classical
+  let H := squareOrderHighVertices G d
+  let C := G.adjMatrix ℤ * (secondOrderDefectGraph G).adjMatrix ℤ -
+    (secondOrderDefectGraph G).adjMatrix ℤ * G.adjMatrix ℤ
+  let M : Matrix (↥H) (↥H) ℚ := fun a b =>
+    ((∑ y : V, C a.1 y * C b.1 y : ℤ) : ℚ)
+  let s := d * d - H.card - (2 * d + 1)
+  dsimp only
+  have hdet := squareOrder_det_high_commutator_gram
+    G hfree hd hmin hcover hcard hHtwo
+  change Matrix.det M =
+    (d : ℚ) ^ (H.card - 1) * ((d : ℚ) + (s : ℚ) * H.card) at hdet
+  rw [hdet]
+  have hdpos : (0 : ℚ) < d := by exact_mod_cast (by omega : 0 < d)
+  have hsnonneg : (0 : ℚ) ≤ s := by exact_mod_cast (Nat.zero_le s)
+  positivity
 
 end
 
