@@ -123,9 +123,25 @@ theorem matchingPairingList_endpointCount
 /-- Sorted form used by the executable source-shape enumeration. -/
 def matchingPairingListSorted
     {X : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
-    (mate : X → X) (label : X → Fin 8) : List OneHighLabelPair :=
+  (mate : X → X) (label : X → Fin 8) : List OneHighLabelPair :=
   (matchingPairingList mate label).mergeSort fun a b =>
     decide (oneHighLabelPairCode a ≤ oneHighLabelPairCode b)
+
+/-- Every oriented matching-edge source contributes its canonical label pair
+to the sorted pairing list. -/
+theorem canonicalPair_mem_matchingPairingListSorted_of_mem_source
+    {X : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    (mate : X → X) (label : X → Fin 8) {x : X}
+    (hx : x ∈ matchingEdgeSources mate) :
+    (min (label x) (label (mate x)),
+      max (label x) (label (mate x))) ∈
+        matchingPairingListSorted mate label := by
+  have hp := List.mergeSort_perm (matchingPairingList mate label)
+    (fun a b => decide
+      (oneHighLabelPairCode a ≤ oneHighLabelPairCode b))
+  apply hp.mem_iff.mpr
+  simp only [matchingPairingList, List.mem_map, Finset.mem_toList]
+  exact ⟨x, hx, rfl⟩
 
 @[simp] theorem matchingPairingListSorted_length
     {X : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
