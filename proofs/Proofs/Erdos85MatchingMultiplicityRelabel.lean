@@ -1,4 +1,4 @@
-import Proofs.Erdos85OneHighExchangedMissCounting
+import Proofs.Erdos85OddKeyLabelGraph
 
 /-! # Relabeling invariance of unordered matching-key multiplicity -/
 
@@ -85,6 +85,27 @@ theorem exchangedMissPairMultiplicity_equiv
   simp only [Finset.mem_filter, Function.comp_apply, exchangedMissPairKey]
   rw [canonicalOrderedPair_equiv_eq_iff e
     (label x) (label (mate x)) a b]
+
+/-- Consequently the equivalence on labels is an exact adjacency transport
+between the two odd exchanged-key support graphs. -/
+theorem oddExchangedKeyLabelGraph_adj_equiv
+    {X L M : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    [Fintype L] [DecidableEq L] [LinearOrder L]
+    [Fintype M] [DecidableEq M] [LinearOrder M]
+    (mate : X → X) (label : X → L) (e : L ≃ M) (a b : L) :
+    (oddExchangedKeyLabelGraph
+      (exchangedMissPairMultiplicity mate (e ∘ label))).Adj (e a) (e b) ↔
+    (oddExchangedKeyLabelGraph
+      (exchangedMissPairMultiplicity mate label)).Adj a b := by
+  constructor
+  · rintro ⟨hne, hodd⟩
+    refine ⟨fun hab => hne (congrArg e hab), ?_⟩
+    rw [exchangedMissPairMultiplicity_equiv mate label e a b] at hodd
+    exact hodd
+  · rintro ⟨hne, hodd⟩
+    refine ⟨fun hab => hne (e.injective hab), ?_⟩
+    rw [exchangedMissPairMultiplicity_equiv mate label e a b]
+    exact hodd
 
 end
 
