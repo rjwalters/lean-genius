@@ -13,6 +13,8 @@ namespace Erdos85
 
 noncomputable section
 
+set_option maxHeartbeats 0
+
 /-- A symmetric loopless Boolean relation with a unique neighbor at every
 point of an eight-element type is the standard four-edge matching after a
 change of coordinates. -/
@@ -65,7 +67,19 @@ theorem oneHighStandardMate_exists_automorphism_send_zero (k : Fin 8) :
     ∃ τ : Equiv.Perm (Fin 8),
       τ k = 0 ∧
       ∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i) := by
-  native_decide +revert
+  let τ : Equiv.Perm (Fin 8) :=
+    { toFun := fun i => i ^^^ k
+      invFun := fun i => i ^^^ k
+      left_inv := by
+        intro i
+        fin_cases i <;> fin_cases k <;> decide
+      right_inv := by
+        intro i
+        fin_cases i <;> fin_cases k <;> decide }
+  refine ⟨τ, ?_, ?_⟩
+  · fin_cases k <;> decide
+  · intro i
+    fin_cases k <;> fin_cases i <;> decide
 
 /-- Rooted form of the eight-point matching normalization.  A distinguished
 vertex may be assigned coordinate zero while retaining the canonical mate

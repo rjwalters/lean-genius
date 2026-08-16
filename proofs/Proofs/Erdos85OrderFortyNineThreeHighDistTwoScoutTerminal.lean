@@ -38,11 +38,11 @@ theorem orderFortyNineThreeHighDistTwo_smallHighAlignedLabeling
     · have hi' : i = 0 ∨ i = 1 ∨ i = 2 := by omega
       rcases hi' with rfl | rfl | rfl
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN0]
-        native_decide
+        decide
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN1]
-        native_decide
+        decide
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN2]
-        native_decide
+        decide
     · rw [if_neg hi, orderFortyNineRelabeledGraph_degree]
       rcases orderFortyNine_degree_eq_seven_or_eight
           G hfree hmin (Fintype.card_fin 49) (E.symm i) with h7 | h8
@@ -87,15 +87,15 @@ theorem orderFortyNineThreeHighDistTwo_smallHighAlignedLabeling
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 0 ↔ _
       rw [hAdj0]
-      fin_cases i <;> native_decide
+      fin_cases i <;> decide
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 1 ↔ _
       rw [hAdj1]
-      fin_cases i <;> native_decide
+      fin_cases i <;> decide
     · rw [Bool.eq_iff_iff, decide_eq_true_eq]
       change H.Adj i 2 ↔ _
       rw [hAdj2]
-      fin_cases i <;> native_decide
+      fin_cases i <;> decide
   refine ⟨orderFortyNineThreeHighDistTwoMasks_size, hdegree, hsupport, ?_⟩
   intro i hi w hw
   let wi : Fin 49 := ⟨w.val, by omega⟩

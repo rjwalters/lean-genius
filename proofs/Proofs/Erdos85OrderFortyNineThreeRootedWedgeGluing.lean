@@ -35,7 +35,7 @@ def orderFortyNineDistTwoWedgeTarget :
 
 theorem orderFortyNineDistTwoWedgeTarget_injective :
     Function.Injective orderFortyNineDistTwoWedgeTarget := by
-  native_decide +revert
+  decide +revert
 
 theorem threeRootedWedgeSource_injective
     {V : Type*} [DecidableEq V]
@@ -154,12 +154,12 @@ def orderFortyNineDistTwoExtraTarget : Fin 4 → Fin 49 := ![0, 1, 2, 13]
 
 theorem orderFortyNineDistTwoExtraTarget_injective :
     Function.Injective orderFortyNineDistTwoExtraTarget := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineDistTwoExtraTarget_disjoint_wedge :
     ∀ i j, orderFortyNineDistTwoExtraTarget i ≠
       orderFortyNineDistTwoWedgeTarget j := by
-  native_decide
+  decide
 
 /-- Add the three high centers and the residual root neighbor to the rooted
 wedge before extending the partial labeling to all 49 vertices. -/
