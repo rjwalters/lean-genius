@@ -11,6 +11,23 @@ large orders and Erdős 85 has a negative answer.
 
 namespace Erdos85
 
+theorem erdos85Negation_iff_not_erdos85Question :
+    Erdos85Negation ↔ ¬ Erdos85Question := by
+  constructor
+  · intro hneg hquestion
+    obtain ⟨N, hN⟩ := Filter.eventually_atTop.1 hquestion
+    obtain ⟨n, hn, hdrop⟩ := hneg N
+    exact (Nat.not_lt_of_ge (hN n hn)) hdrop
+  · intro hnot N
+    by_contra hnone
+    apply hnot
+    apply Filter.eventually_atTop.2
+    refine ⟨N, ?_⟩
+    intro n hn
+    apply Nat.le_of_not_gt
+    intro hdrop
+    exact hnone ⟨n, hn, hdrop⟩
+
 theorem erdos85Negation_of_unbounded_planeOrder_witness_gap
     (hgap : ∀ N : Nat, ∃ q : Nat,
       3 ≤ q ∧ N ≤ q * q - 1 ∧
@@ -46,5 +63,13 @@ theorem erdos85Negation_of_eventual_planeOrder_witness_gap
   have hq1 : 1 ≤ q := by omega
   have hqq : q ≤ q * q := Nat.le_mul_of_pos_right q hq1
   omega
+
+theorem not_erdos85Question_of_eventual_planeOrder_witness_gap
+    (hgap : ∀ᶠ q in Filter.atTop,
+      C4FreeMinDegreeWitness (q * q - 1) q ∧
+      ¬ C4FreeMinDegreeWitness (q * q) q) :
+    ¬ Erdos85Question :=
+  erdos85Negation_iff_not_erdos85Question.mp
+    (erdos85Negation_of_eventual_planeOrder_witness_gap hgap)
 
 end Erdos85
