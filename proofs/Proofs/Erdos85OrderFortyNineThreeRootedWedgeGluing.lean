@@ -150,6 +150,58 @@ theorem exists_orderFortyNine_equiv_of_threeRootedWedge
     orderFortyNineDistTwoFirstTarget, hsymm] using
       hE (Sum.inl (0 : Fin 8))
 
+def orderFortyNineDistTwoExtraTarget : Fin 4 → Fin 49 := ![0, 1, 2, 13]
+
+theorem orderFortyNineDistTwoExtraTarget_injective :
+    Function.Injective orderFortyNineDistTwoExtraTarget := by
+  native_decide +revert
+
+theorem orderFortyNineDistTwoExtraTarget_disjoint_wedge :
+    ∀ i j, orderFortyNineDistTwoExtraTarget i ≠
+      orderFortyNineDistTwoWedgeTarget j := by
+  native_decide
+
+/-- Add the three high centers and the residual root neighbor to the rooted
+wedge before extending the partial labeling to all 49 vertices. -/
+theorem exists_orderFortyNine_equiv_of_threeRootedWedge_with_extra
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (hcard : Fintype.card V = 49)
+    (A B C : Finset V) {root : V}
+    (hrA : root ∈ A) (hrB : root ∈ B) (hrC : root ∈ C)
+    (hAB : A ∩ B = {root}) (hAC : A ∩ C = {root})
+    (hBC : B ∩ C = {root})
+    (eA : {x // x ∈ A} ≃ Fin 8)
+    (eB : {x // x ∈ B} ≃ Fin 8)
+    (eC : {x // x ∈ C} ≃ Fin 8)
+    (hrootA : eA ⟨root, hrA⟩ = 0)
+    (hrootB : eB ⟨root, hrB⟩ = 0)
+    (hrootC : eC ⟨root, hrC⟩ = 0)
+    (extra : Fin 4 → V) (hextra : Function.Injective extra)
+    (hcross : ∀ i j,
+      extra i ≠ threeRootedWedgeSource A B C eA eB eC j) :
+    ∃ E : V ≃ Fin 49,
+      (∀ i, E (extra i) = orderFortyNineDistTwoExtraTarget i) ∧
+      E root = 3 ∧
+      (∀ j, E (threeRootedWedgeSource A B C eA eB eC j) =
+        orderFortyNineDistTwoWedgeTarget j) := by
+  obtain ⟨E, hExtra, hWedge⟩ :=
+    exists_equiv_fin_extending_disjoint_pairs hcard
+      extra (threeRootedWedgeSource A B C eA eB eC)
+      orderFortyNineDistTwoExtraTarget orderFortyNineDistTwoWedgeTarget
+      hextra
+      (threeRootedWedgeSource_injective A B C hrB hrC
+        hAB hAC hBC eA eB eC hrootB hrootC)
+      orderFortyNineDistTwoExtraTarget_injective
+      orderFortyNineDistTwoWedgeTarget_injective hcross
+      orderFortyNineDistTwoExtraTarget_disjoint_wedge
+  refine ⟨E, hExtra, ?_, hWedge⟩
+  have hsymm : eA.symm 0 = ⟨root, hrA⟩ := by
+    apply eA.injective
+    simp [hrootA]
+  simpa [threeRootedWedgeSource, orderFortyNineDistTwoWedgeTarget,
+    orderFortyNineDistTwoFirstTarget, hsymm] using
+      hWedge (Sum.inl (0 : Fin 8))
+
 end
 
 end Erdos85
