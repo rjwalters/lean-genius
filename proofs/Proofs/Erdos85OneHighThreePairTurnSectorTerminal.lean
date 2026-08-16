@@ -220,6 +220,21 @@ theorem OneHighPinnedThreePairTurn.sameOwner_internalEdges_eq_two
   · exact T.source_edges_ne
   · exact howner
 
+/-- The same-owner case is saturated: its two witnessed matching edges use
+all four internally matched outer vertices in that branch. -/
+theorem OneHighPinnedThreePairTurn.sameOwner_matchedBranch_card_eq_four
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) :
+    Fintype.card (OneHighMatchedBranchVertices G v T.qAB.sourceEdge.1) = 4 := by
+  rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+  have hmatched := p.matched_count (p.branchLabel T.qAB.sourceEdge.1)
+  have htwo := T.sameOwner_internalEdges_eq_two G hfree hv p howner
+  simpa [htwo] using hmatched
+
 /-- In the mate-owner sector, the canonical profile forces at least one of
 the two owner branches to have two internal edges. -/
 theorem OneHighPinnedThreePairTurn.mateOwner_one_internalEdges_eq_two
