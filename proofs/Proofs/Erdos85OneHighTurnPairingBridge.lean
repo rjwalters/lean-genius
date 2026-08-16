@@ -372,6 +372,62 @@ theorem OneHighPinnedThreePairTurn.graphPairingMultiplicity_bc_odd
     (min_lt_max.mpr hbc)]
   exact T.bc_odd
 
+/-- Executable refinement-level signature of the exact same-owner turn,
+including the two global odd-multiplicity conditions. -/
+def oneHighRefinementHasSaturatedOddThreePairTurn
+    (refinement : List (List OneHighLabelPair)) : Bool :=
+  decide (∃ source a b c : Fin 8, ∃ row : List OneHighLabelPair,
+    refinement[source.val]? = some row ∧
+    row.Perm [oneHighCanonicalLabelPair a b,
+      oneHighCanonicalLabelPair b c] ∧
+    oneHighRootPair source ≠ oneHighRootPair a ∧
+    oneHighRootPair source ≠ oneHighRootPair b ∧
+    oneHighRootPair source ≠ oneHighRootPair c ∧
+    oneHighRootPair a ≠ oneHighRootPair b ∧
+    oneHighRootPair b ≠ oneHighRootPair c ∧
+    oneHighRootPair a ≠ oneHighRootPair c ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair a b)) ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair b c)))
+
+/-- The graph-induced refinement of every same-owner pinned turn satisfies
+the executable saturated odd-turn signature. -/
+theorem OneHighPinnedThreePairTurn.graphPairingRefinement_hasSaturatedOddTurn
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) :
+    oneHighRefinementHasSaturatedOddThreePairTurn
+      (oneHighGraphPairingRefinement G hfree hv p) = true := by
+  rw [oneHighRefinementHasSaturatedOddThreePairTurn, decide_eq_true_eq]
+  have hfourth := T.sharpened_source_sector G hfree hv p
+  have hcolor :
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1) := by rw [howner]
+  rcases hfourth with hfourth | hc | ha
+  · let source := p.branchLabel T.qAB.sourceEdge.1
+    let row := oneHighGraphSourcePairing G hfree hv p source
+    refine ⟨source, p.branchLabel T.a, p.branchLabel T.b,
+      p.branchLabel T.c, row, ?_,
+      T.sameOwner_sourcePairing_perm G hfree hv p howner,
+      hfourth.2.1, hfourth.2.2.1, hfourth.2.2.2,
+      T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
+      T.graphPairingMultiplicity_ab_odd G hfree hv p,
+      T.graphPairingMultiplicity_bc_odd G hfree hv p⟩
+    change (List.ofFn fun s : Fin 8 =>
+      oneHighGraphSourcePairing G hfree hv p s)[source.val]? = some row
+    rw [List.getElem?_eq_getElem (by simp)]
+    rw [List.getElem_ofFn]
+  · exact False.elim ((oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far)
+        (hcolor.symm.trans hc))
+  · exact False.elim ((oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far)
+        (hcolor.trans ha))
+
 end
 
 end Erdos85
