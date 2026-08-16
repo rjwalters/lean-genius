@@ -39,6 +39,31 @@ theorem orderFortyNineDistTwoThirdTarget_standard :
   unfold OrderFortyNineStandardMatchingTarget
   native_decide
 
+/-- A coordinate map on a normalized local neighborhood remembers more than
+the induced matching: it identifies the entire relabeled neighborhood with
+the image of the target map.  This is the support-alignment fact needed by
+the small-high Boolean bridge. -/
+theorem orderFortyNineRelabeledGraph_neighborFinset_eq_targetImage
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {v : V} (e : {x : V // x ∈ G.neighborSet v} ≃ Fin 8)
+    (E : V ≃ Fin 49) (target : Fin 8 → Fin 49)
+    (hmap : ∀ i, E (e.symm i).1 = target i) :
+    (orderFortyNineRelabeledGraph G E).neighborFinset (E v) =
+      Finset.univ.image target := by
+  rw [orderFortyNineRelabeledGraph_neighborFinset]
+  ext z
+  simp only [Finset.mem_map, Finset.mem_image, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    let x' : {x : V // x ∈ G.neighborSet v} :=
+      ⟨x, by simpa using hx⟩
+    refine ⟨e x', ?_⟩
+    simpa [x'] using (hmap (e x')).symm
+  · rintro ⟨i, rfl⟩
+    refine ⟨(e.symm i).1, ?_, hmap i⟩
+    exact (G.mem_neighborFinset v _).mpr (e.symm i).2
+
 theorem orderFortyNineGraphPinnedMatchingRealized_of_localNormalization
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
