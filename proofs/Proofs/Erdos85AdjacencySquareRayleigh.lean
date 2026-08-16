@@ -1,4 +1,5 @@
 import Proofs.Erdos85RayleighEigenvalueLowerBound
+import Proofs.Erdos85SquareOrderAdjacencyMoments
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 
 /-!
@@ -92,6 +93,33 @@ theorem exists_adjMatrix_sq_eigenvalue_ge_mean_degree_sq
   refine ⟨mu, hmuEig, ?_⟩
   rw [inner_euclideanOnes_adjMatrix_sq_eq_sum_degree_sq,
     norm_euclideanOnes_sq] at hmu
+  exact hmu
+
+/-- At order 49 and minimum degree 7, the Rayleigh eigenvalue lower bound is
+exactly `(2401 + 15h) / 49`. -/
+theorem exists_orderFortyNine_adjMatrix_sq_eigenvalue_ge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 7 ∨ G.degree v = 7)
+    (hcard : Fintype.card V = 49) :
+    ∃ mu : ℝ,
+      Module.End.HasEigenvalue
+          ((G.adjMatrix ℝ) ^ 2).toEuclideanLin mu ∧
+      ((2401 : ℝ) + 15 * (squareOrderHighVertices G 7).card) / 49 ≤ mu := by
+  letI : Nonempty V := Fintype.card_pos_iff.mp (by omega)
+  obtain ⟨mu, hmuEig, hmu⟩ :=
+    exists_adjMatrix_sq_eigenvalue_ge_mean_degree_sq G
+  have hsZ := (squareOrder_sum_degree_and_sq
+    G hfree (d := 7) (by norm_num) hmin hcover
+      (by norm_num [hcard])).2
+  have hsR : (∑ x : V, (G.degree x : ℝ) ^ 2) =
+      2401 + 15 * (squareOrderHighVertices G 7).card := by
+    exact_mod_cast hsZ
+  refine ⟨mu, hmuEig, ?_⟩
+  rw [hcard, hsR] at hmu
+  norm_num at hmu ⊢
   exact hmu
 
 end
