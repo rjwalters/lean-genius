@@ -885,6 +885,7 @@ theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_nonadjacent
       y' ∈ secondLayerBranch G v w ∧
       G.Adj q.x.1.1 y ∧
       G.Adj (oneHighInternalMate G hfree v q.s q.x).1.1 y' ∧
+      y ≠ y' ∧
       ¬ G.Adj y y' := by
   have hsw : q.s ≠ w := by
     exact (Finset.mem_erase.mp (Finset.mem_erase.mp hw).2).1.symm
@@ -903,9 +904,48 @@ theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_nonadjacent
     rw [q.source_endpoint_hits_other hprofile
       (oneHighInternalMate G hfree v q.s q.x) hw hwu]
     omega
-  exact exists_nonadjacent_crossTargets_of_internalEdge
+  obtain ⟨y, y', hy, hy', hxyTarget, hmTarget, hnonadj⟩ :=
+    exists_nonadjacent_crossTargets_of_internalEdge
     G hfree q.s w hsw q.x.1.2
       (oneHighInternalMate G hfree v q.s q.x).1.2 hxy hxHit hmHit
+  refine ⟨y, y', hy, hy', hxyTarget, hmTarget, ?_, hnonadj⟩
+  intro hyy'
+  subst y'
+  have hendNe : q.x.1.1 ≠
+      (oneHighInternalMate G hfree v q.s q.x).1.1 := by
+    intro hval
+    apply degreeOneMate_ne (G.induce (secondLayerBranch G v q.s))
+      (degree_induce_secondLayerBranch_le_one G hfree v q.s) q.x
+    exact Subtype.ext (Subtype.ext hval.symm)
+  have hcommon := common_le_one_of_not_containsC4 hfree q.x.1.1
+    (oneHighInternalMate G hfree v q.s q.x).1.1 hendNe
+  have hyCommon : y ∈ G.neighborFinset q.x.1.1 ∩
+      G.neighborFinset (oneHighInternalMate G hfree v q.s q.x).1.1 :=
+    Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset q.x.1.1 y).mpr hxyTarget,
+        (G.mem_neighborFinset
+          (oneHighInternalMate G hfree v q.s q.x).1.1 y).mpr hmTarget⟩
+  have hsCommon : q.s.1 ∈ G.neighborFinset q.x.1.1 ∩
+      G.neighborFinset (oneHighInternalMate G hfree v q.s q.x).1.1 := by
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact (G.mem_neighborFinset q.x.1.1 q.s.1).mpr
+        ((G.mem_neighborFinset q.s.1 q.x.1.1).mp
+          (Finset.mem_sdiff.mp q.x.1.2).1).symm
+    · exact (G.mem_neighborFinset
+        (oneHighInternalMate G hfree v q.s q.x).1.1 q.s.1).mpr
+        ((G.mem_neighborFinset q.s.1
+          (oneHighInternalMate G hfree v q.s q.x).1.1).mp
+            (Finset.mem_sdiff.mp
+              (oneHighInternalMate G hfree v q.s q.x).1.2).1).symm
+  have hyEqS := Finset.card_le_one.mp hcommon y hyCommon q.s.1 hsCommon
+  have hyNeS : y ≠ q.s.1 := by
+    intro h
+    subst y
+    exact (Finset.mem_sdiff.mp hy).2 (by
+      simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+      exact Or.inr q.s.2)
+  exact hyNeS hyEqS
 
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
