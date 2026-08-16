@@ -1055,6 +1055,117 @@ theorem exists_two_other_oneEdge_labels_profile_four
       oneHighFamilyInternalEdges 4 w₂ = 1 := by
   native_decide +revert
 
+/-- Packaged isolated-target witness in a far branch. -/
+structure OneHighReciprocalIsolatedTarget
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (w : {r : V // r ∈ G.neighborSet v}) where
+  y : V
+  y' : V
+  y_mem : y ∈ secondLayerBranch G v w
+  y'_mem : y' ∈ secondLayerBranch G v w
+  x_adj_y : G.Adj q.x.1.1 y
+  xmate_adj_y' : G.Adj
+    (oneHighInternalMate G hfree v q.s q.x).1.1 y'
+  ne : y ≠ y'
+  nonadj : ¬ G.Adj y y'
+  isolated :
+    (G.neighborFinset y ∩ secondLayerBranch G v w).card = 0 ∨
+    (G.neighborFinset y' ∩ secondLayerBranch G v w).card = 0
+
+theorem OneHighReciprocalSameMissEdges.nonempty_isolatedTarget
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u)
+    (hwEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel w) = 1) :
+    Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w) := by
+  obtain ⟨y, y', hy, hy', hxy, hmy', hne, hnonadj, hisolated⟩ :=
+    q.exists_source_crossTargets_with_isolated hprofile hw hwu hwEdge
+  exact ⟨⟨y, y', hy, hy', hxy, hmy', hne, hnonadj, hisolated⟩⟩
+
+/-- Profile `4` forces isolated reciprocal source targets in two distinct
+one-edge branches. -/
+theorem OneHighReciprocalSameMissEdges.exists_two_profileFour_isolatedTargets
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : p.profile = 4) :
+    ∃ w₁ w₂ : {r : V // r ∈ G.neighborSet v},
+      w₁ ≠ w₂ ∧
+      Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₁) ∧
+      Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w₂) := by
+  have hus : q.u ≠ q.s :=
+    (Finset.mem_erase.mp (Finset.mem_erase.mp q.u_far).2).1
+  have hum : q.u ≠ p.mate q.s := (Finset.mem_erase.mp q.u_far).1
+  have hu0 : p.branchLabel q.u ≠ 0 := by
+    intro hu
+    apply hus
+    apply p.branchLabel.injective
+    rw [hu, q.s_label]
+  have hu1 : p.branchLabel q.u ≠ 1 := by
+    intro hu
+    apply hum
+    apply p.branchLabel.injective
+    rw [hu, p.branch_mate, q.s_label]
+    native_decide
+  obtain ⟨i₁, i₂, hiNe, hi10, hi11, hi1u, hi20, hi21, hi2u,
+      hi1Edge, hi2Edge⟩ :=
+    exists_two_other_oneEdge_labels_profile_four (p.branchLabel q.u) hu0 hu1
+  let w₁ := p.branchLabel.symm i₁
+  let w₂ := p.branchLabel.symm i₂
+  have farMem (i : Fin 8) (hi0 : i ≠ 0) (hi1 : i ≠ 1) :
+      p.branchLabel.symm i ∈
+        ((Finset.univ.erase q.s).erase (p.mate q.s)) := by
+    apply Finset.mem_erase.mpr
+    constructor
+    · intro heq
+      apply hi1
+      have hlabel := congrArg p.branchLabel heq
+      have hmate01 : oneHighStandardMate (0 : Fin 8) = 1 := by native_decide
+      simpa [p.branch_mate, q.s_label, hmate01] using hlabel
+    · apply Finset.mem_erase.mpr
+      refine ⟨?_, Finset.mem_univ _⟩
+      intro heq
+      apply hi0
+      have hlabel := congrArg p.branchLabel heq
+      simpa [q.s_label] using hlabel
+  have hw₁ : w₁ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) :=
+    farMem i₁ hi10 hi11
+  have hw₂ : w₂ ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) :=
+    farMem i₂ hi20 hi21
+  have hw₁u : w₁ ≠ q.u := by
+    intro heq
+    apply hi1u
+    simpa [w₁] using congrArg p.branchLabel heq
+  have hw₂u : w₂ ≠ q.u := by
+    intro heq
+    apply hi2u
+    simpa [w₂] using congrArg p.branchLabel heq
+  have hw₁Edge : oneHighFamilyInternalEdges p.profile
+      (p.branchLabel w₁) = 1 := by
+    simpa [hprofile, w₁] using hi1Edge
+  have hw₂Edge : oneHighFamilyInternalEdges p.profile
+      (p.branchLabel w₂) = 1 := by
+    simpa [hprofile, w₂] using hi2Edge
+  have hpos : 0 < p.profile := by omega
+  refine ⟨w₁, w₂, ?_,
+    q.nonempty_isolatedTarget hpos hw₁ hw₁u hw₁Edge,
+    q.nonempty_isolatedTarget hpos hw₂ hw₂u hw₂Edge⟩
+  intro heq
+  apply hiNe
+  simpa [w₁, w₂] using congrArg p.branchLabel heq
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
