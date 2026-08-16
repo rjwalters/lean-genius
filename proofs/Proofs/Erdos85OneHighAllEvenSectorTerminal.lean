@@ -645,6 +645,50 @@ theorem OneHighReciprocalSameMissEdges.source_other_missCount_eq_zero
   rw [herase] at hle
   exact Nat.eq_zero_of_le_zero hle
 
+/-- Every matched endpoint in the canonical source hits each far branch other
+than the unique reciprocal miss branch exactly once.  Thus the reciprocal
+witness determines the complete pointwise far-incidence pattern of `s`. -/
+theorem OneHighReciprocalSameMissEdges.source_endpoint_hits_other
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u) :
+    (G.neighborFinset z.1.1 ∩ secondLayerBranch G v w).card = 1 := by
+  have hzLabel : oneHighMatchedMissLabel G hfree hv p.external_empty
+      p.outer_degree p.mate p.mate_adj q.s z = q.u := by
+    rcases q.source_matched_eq_x_or_mate hprofile z with rfl | rfl
+    · exact q.x_misses_u
+    · exact q.x_mate_misses_u
+  have hzw : z.1.1 ≠ w.1 := by
+    intro h
+    have hwBranch : w.1 ∈ secondLayerBranch G v q.s := h.symm ▸ z.1.2
+    exact (Finset.mem_sdiff.mp hwBranch).2 (by
+      simp only [Finset.mem_insert, SimpleGraph.mem_neighborFinset]
+      exact Or.inr w.2)
+  have hle := card_neighborFinset_inter_secondLayerBranch_le_one
+    G hfree v z.1.1 w hzw
+  have hne : (G.neighborFinset z.1.1 ∩
+      secondLayerBranch G v w).card ≠ 0 := by
+    intro hzero
+    have hwMiss : w ∈ oneHighFarMissBranches G v p.mate q.s z.1.1 :=
+      Finset.mem_filter.mpr ⟨hw, hzero⟩
+    have hzMatched : (G.neighborFinset z.1.1 ∩
+        secondLayerBranch G v q.s).card = 1 := by
+      rw [← degree_induce_secondLayerBranch_eq_card_inter]
+      exact z.2
+    have hweq := eq_oneHighMissingBranch_of_matched_of_mem
+      G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+        q.s z.1.1 z.1.2 hzMatched w hwMiss
+    apply hwu
+    exact hweq.trans hzLabel
+  omega
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
