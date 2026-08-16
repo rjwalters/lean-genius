@@ -136,4 +136,26 @@ theorem orderFortyNineDegreeBlocks_three_top :
 theorem orderFortyNineDegreeBlocks_five_top :
     (orderFortyNineDegreeBlocks 5).top = 29632 := by native_decide
 
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem orderFortyNineGeneratedVariableHighSatCnf_clause_count_three
+    (masks : Array Nat) :
+    (orderFortyNineGeneratedVariableHighSatCnf (3 : Fin 50) masks).clauses.size =
+      1328183 := by
+  simp [orderFortyNineGeneratedVariableHighSatCnf, dimacsFormulaToSatClauses,
+    orderFortyNineVariableFixedClauses_size_three,
+    orderFortyNineVariablePartitionClauses_size_three]
+  native_decide
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 0 in
+theorem orderFortyNineGeneratedVariableHighSatCnf_clause_count_five
+    (masks : Array Nat) :
+    (orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50) masks).clauses.size =
+      1328618 := by
+  simp [orderFortyNineGeneratedVariableHighSatCnf, dimacsFormulaToSatClauses,
+    orderFortyNineVariableFixedClauses_size_five,
+    orderFortyNineVariablePartitionClauses_size_five]
+  native_decide
+
 end Erdos85
