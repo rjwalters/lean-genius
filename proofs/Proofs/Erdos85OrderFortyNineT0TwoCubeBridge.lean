@@ -56,6 +56,12 @@ def SevenHighT0CubeOneCnfSound : Prop :=
     ∃ assignment : Nat → Bool,
       (orderFortyNineGeneratedH7T0CubeSatCnf 1).Sat assignment
 
+theorem sevenHighT0CubeOneCnfSound_of_core
+    (hsound : SevenHighT0CubeCoreCnfSound) :
+    SevenHighT0CubeOneCnfSound := by
+  intro edges h
+  exact hsound 1 edges h
+
 /-- The global normalization and residual action reduce semantic coverage to
 the two CNFs numbered zero and one. -/
 theorem sevenHighT0_twoCubeSemanticCover
@@ -127,5 +133,16 @@ theorem sevenHighT0_canonicalExcluded_of_cubeOne_lratCheck
     SevenHighCanonicalRepresentativeExcluded 0 0 :=
   sevenHighT0CoreExcluded_to_canonical
     (sevenHighT0_excluded_of_cubeOne_lratCheck hsound proof hcheck)
+
+/-- Aggregate-facing endpoint when encoding soundness is available uniformly
+for the lightweight relation interface. -/
+theorem sevenHighT0_canonicalExcluded_of_coreSound_cubeOne_lratCheck
+    (hsound : SevenHighT0CubeCoreCnfSound)
+    (proof : Array LRAT.IntAction)
+    (hcheck : LRAT.check proof
+      (orderFortyNineGeneratedH7T0CubeSatCnf 1)) :
+    SevenHighCanonicalRepresentativeExcluded 0 0 :=
+  sevenHighT0_canonicalExcluded_of_cubeOne_lratCheck
+    (sevenHighT0CubeOneCnfSound_of_core hsound) proof hcheck
 
 end Erdos85
