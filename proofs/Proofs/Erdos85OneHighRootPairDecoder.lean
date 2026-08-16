@@ -18,6 +18,20 @@ theorem oneHighRootPair_eq_iff_eq_or_standardMate (x y : Fin 8) :
       x = y ∨ x = oneHighStandardMate y := by
   decide +revert
 
+/-- Every canonical mate-pair fiber contains exactly two root labels. -/
+theorem card_oneHighRootPair_fiber (p : Fin 4) :
+    ((Finset.univ : Finset (Fin 8)).filter fun x =>
+      oneHighRootPair x = p).card = 2 := by
+  fin_cases p <;> decide +revert
+
+/-- Three labels in one mate-pair fiber cannot be pairwise distinct. -/
+theorem three_same_oneHighRootPair_not_pairwise_distinct
+    (x y z : Fin 8)
+    (hxy : oneHighRootPair x = oneHighRootPair y)
+    (hxz : oneHighRootPair x = oneHighRootPair z) :
+    x = y ∨ x = z ∨ y = z := by
+  fin_cases x <;> fin_cases y <;> fin_cases z <;> simp_all [oneHighRootPair]
+
 /-- A graph root lying in a source's far set has a different canonical
 mate-pair from that source. -/
 theorem oneHighRootPair_ne_of_branch_mem_far
