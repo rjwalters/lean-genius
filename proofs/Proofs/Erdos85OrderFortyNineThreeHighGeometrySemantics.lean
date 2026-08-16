@@ -127,4 +127,34 @@ theorem orderFortyNineThreeHighDistOneC2GeometryClauses_satisfied
       orderFortyNineThreeHighDistOneC2GeometryClauses := by
   exact orderFortyNineThreePinnedMatchingClauses_satisfied h0 h1 h2
 
+theorem orderFortyNineThreeHighDistOneB1GeometryClauses_satisfied
+    {edges : BitVec 1176}
+    (h0 : OrderFortyNinePinnedMatchingRealized edges
+      [3, 4, 6, 7, 8, 9, 10, 11]
+      [(3, 4), (6, 7), (8, 9), (10, 11)])
+    (h1 : OrderFortyNinePinnedMatchingRealized edges
+      [3, 5, 12, 13, 14, 15, 16, 17]
+      [(3, 12), (5, 13), (14, 15), (16, 17)])
+    (h2 : OrderFortyNinePinnedMatchingRealized edges
+      [4, 5, 18, 19, 20, 21, 22, 23]
+      [(4, 18), (5, 19), (20, 21), (22, 23)]) :
+    dimacsFormulaSatisfied (orderFortyNineDimacsEdgeVal edges)
+      orderFortyNineThreeHighDistOneB1GeometryClauses := by
+  exact orderFortyNineThreePinnedMatchingClauses_satisfied h0 h1 h2
+
+theorem orderFortyNineThreeHighDistOneC1GeometryClauses_satisfied
+    {edges : BitVec 1176}
+    (h0 : OrderFortyNinePinnedMatchingRealized edges
+      [3, 4, 6, 7, 8, 9, 10, 11]
+      [(3, 6), (4, 7), (8, 9), (10, 11)])
+    (h1 : OrderFortyNinePinnedMatchingRealized edges
+      [3, 5, 12, 13, 14, 15, 16, 17]
+      [(3, 12), (5, 13), (14, 15), (16, 17)])
+    (h2 : OrderFortyNinePinnedMatchingRealized edges
+      [4, 5, 18, 19, 20, 21, 22, 23]
+      [(4, 18), (5, 19), (20, 21), (22, 23)]) :
+    dimacsFormulaSatisfied (orderFortyNineDimacsEdgeVal edges)
+      orderFortyNineThreeHighDistOneC1GeometryClauses := by
+  exact orderFortyNineThreePinnedMatchingClauses_satisfied h0 h1 h2
+
 end Erdos85
