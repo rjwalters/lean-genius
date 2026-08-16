@@ -29,4 +29,15 @@ theorem exists_ne_odd_of_even_sum_of_odd
   rw [hfilter] at hcard
   simp at hcard
 
+/-- Type-indexed form of `exists_ne_odd_of_even_sum_of_odd`. -/
+theorem exists_ne_odd_of_even_univ_sum_of_odd
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (f : ι → ℕ) (i : ι)
+    (hsum : Even (∑ j, f j))
+    (hodd : Odd (f i)) :
+    ∃ j, j ≠ i ∧ Odd (f j) := by
+  obtain ⟨j, _, hji, hjodd⟩ :=
+    exists_ne_odd_of_even_sum_of_odd Finset.univ f i (by simp) hsum hodd
+  exact ⟨j, hji, hjodd⟩
+
 end Erdos85
