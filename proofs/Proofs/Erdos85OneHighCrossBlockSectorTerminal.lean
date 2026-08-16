@@ -2,6 +2,7 @@ import Proofs.Erdos85MatchingMultiplicityRelabel
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighOddLabelTurn
 import Proofs.Erdos85OneHighRootPairGraphDecoder
+import Proofs.Erdos85OneHighRepeatedSourceCapacity
 
 /-! # Concrete graph witnesses from the cross-block sector -/
 
@@ -299,6 +300,75 @@ theorem OneHighCrossBlockSourceConfiguration.distinct_same_or_mate_collision
       (Or.inl ⟨hn.2.2.2.2.1, h⟩))))
   · exact Or.inr (Or.inr (Or.inr (Or.inr
       (Or.inr ⟨hn.2.2.2.2.2, h⟩))))
+
+/-- The genuinely residual mate-owner alternatives after same-owner
+collisions have been converted into saturated branch capacity. -/
+def OneHighCrossBlockMateOwnerCollision
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) : Prop :=
+  (C.q₀₀.sourceEdge ≠ C.q₀₁.sourceEdge ∧
+    C.q₀₀.sourceEdge.1 = p.mate C.q₀₁.sourceEdge.1) ∨
+  (C.q₀₀.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+    C.q₀₀.sourceEdge.1 = p.mate C.q₁₀.sourceEdge.1) ∨
+  (C.q₀₀.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+    C.q₀₀.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1) ∨
+  (C.q₀₁.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+    C.q₀₁.sourceEdge.1 = p.mate C.q₁₀.sourceEdge.1) ∨
+  (C.q₀₁.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+    C.q₀₁.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1) ∨
+  (C.q₁₀.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+    C.q₁₀.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1)
+
+/-- Every concrete cross block either saturates some owner branch with its
+two internal matching edges, or contains two distinct edges owned by the two
+branches of one root-mate pair. -/
+theorem OneHighCrossBlockSourceConfiguration.saturatedOwner_or_mateCollision
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    (∃ s : {z : V // z ∈ G.neighborSet v},
+      oneHighFamilyInternalEdges p.profile (p.branchLabel s) = 2) ∨
+      OneHighCrossBlockMateOwnerCollision G hfree hv p C := by
+  have saturated {a b : {z : V // z ∈ G.neighborSet v}}
+      (q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b)
+      {c d : {z : V // z ∈ G.neighborSet v}}
+      (r : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj c d)
+      (hne : q.sourceEdge ≠ r.sourceEdge)
+      (howner : q.sourceEdge.1 = r.sourceEdge.1) :
+      ∃ s : {z : V // z ∈ G.neighborSet v},
+        oneHighFamilyInternalEdges p.profile (p.branchLabel s) = 2 := by
+    refine ⟨q.sourceEdge.1, ?_⟩
+    apply oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner
+      G hfree hv p
+    · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+        q.sourceEdge_mem
+    · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+        r.sourceEdge_mem
+    · exact hne
+    · exact howner
+  rcases C.distinct_same_or_mate_collision G hfree hv p with
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩ |
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩ |
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩
+  · exact Or.inl (saturated C.q₀₀ C.q₀₁ hne hsame)
+  · exact Or.inr (Or.inl ⟨hne, hmate⟩)
+  · exact Or.inl (saturated C.q₀₀ C.q₁₀ hne hsame)
+  · exact Or.inr (Or.inr (Or.inl ⟨hne, hmate⟩))
+  · exact Or.inl (saturated C.q₀₀ C.q₁₁ hne hsame)
+  · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hne, hmate⟩)))
+  · exact Or.inl (saturated C.q₀₁ C.q₁₀ hne hsame)
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨hne, hmate⟩))))
+  · exact Or.inl (saturated C.q₀₁ C.q₁₁ hne hsame)
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨hne, hmate⟩)))))
+  · exact Or.inl (saturated C.q₁₀ C.q₁₁ hne hsame)
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨hne, hmate⟩)))))
 
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
