@@ -106,6 +106,29 @@ theorem OneHighPinnedThreePairTurn.sameOwner_sourcePairing_perm
   · subst u; subst w; exact List.Perm.swap _ _ []
   · exact (hpairNe (hAB.trans hBC.symm)).elim
 
+/-- The exact graph-table row forced by a same-owner turn: its endpoint-count
+function is the sum of the two witnessed `AB` and `BC` keys. -/
+theorem OneHighPinnedThreePairTurn.sameOwner_graphRelevantMissTable_eq
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) (label : Fin 8) :
+    oneHighGraphRelevantMissTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile (p.branchLabel T.qAB.sourceEdge.1).val label.val =
+      oneHighLabelPairEndpointCount
+          (oneHighCanonicalLabelPair (p.branchLabel T.a) (p.branchLabel T.b)) label +
+        oneHighLabelPairEndpointCount
+          (oneHighCanonicalLabelPair (p.branchLabel T.b) (p.branchLabel T.c)) label := by
+  rw [← oneHighGraphSourcePairing_endpointCount G hfree hv p]
+  have hp := (T.sameOwner_sourcePairing_perm G hfree hv p howner).map
+    (fun pair => oneHighLabelPairEndpointCount pair label)
+  rw [oneHighPairingEndpointCount, hp.sum_eq]
+  simp
+
 end
 
 end Erdos85
