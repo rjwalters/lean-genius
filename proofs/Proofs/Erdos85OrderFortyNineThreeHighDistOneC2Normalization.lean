@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineHighNeighborhoodNormalization
+import Proofs.Erdos85OrderFortyNineThreeHighMatchingTransport
 
 /-! # Normalization infrastructure for the three-high `dist1_c2` scout -/
 
@@ -67,6 +68,39 @@ theorem exists_orderFortyNine_highNeighborhood_two_rooted_matching
   · simp [H, rootLocal, otherLocal, hnotAdj]
   · intro h
     exact hne (congrArg Subtype.val h)
+
+def orderFortyNineDistOneC2FirstTarget : Fin 8 → Fin 49 :=
+  ![3, 4, 5, 6, 7, 8, 9, 10]
+
+def orderFortyNineDistOneC2SecondTarget : Fin 8 → Fin 49 :=
+  ![3, 25, 12, 13, 14, 15, 16, 17]
+
+def orderFortyNineDistOneC2ThirdTarget : Fin 8 → Fin 49 :=
+  ![5, 18, 19, 25, 20, 21, 22, 23]
+
+theorem orderFortyNineDistOneC2FirstTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistOneC2FirstTarget
+      [3, 4, 5, 6, 7, 8, 9, 10]
+      [(3, 4), (5, 6), (7, 8), (9, 10)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  native_decide
+
+theorem orderFortyNineDistOneC2SecondTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistOneC2SecondTarget
+      [3, 12, 13, 14, 15, 16, 17, 25]
+      [(3, 25), (12, 13), (14, 15), (16, 17)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  native_decide
+
+theorem orderFortyNineDistOneC2ThirdTarget_standard :
+    OrderFortyNineStandardMatchingTarget
+      orderFortyNineDistOneC2ThirdTarget
+      [5, 18, 19, 20, 21, 22, 23, 25]
+      [(5, 18), (19, 25), (20, 21), (22, 23)] := by
+  unfold OrderFortyNineStandardMatchingTarget
+  native_decide
 
 end
 
