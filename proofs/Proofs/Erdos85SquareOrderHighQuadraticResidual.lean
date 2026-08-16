@@ -85,6 +85,52 @@ theorem exists_monic_orderFortyNineSeven_residualCharpoly
   simpa using exists_monic_squareOrder_residualCharpoly
     G hfree (d := 7) (by norm_num) hmin hcover (by norm_num [hcard]) ha
 
+/-- The residual polynomial has vanishing next coefficient, equivalently its
+roots have sum zero. -/
+theorem exists_monic_squareOrder_residualCharpoly_nextCoeff_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    ∃ Q : Polynomial ℚ,
+      Q.Monic ∧
+      LinearMap.charpoly (G.adjMatrix ℚ).toLin' =
+        (Polynomial.X ^ 2 - Polynomial.C (d : ℚ)) ^
+          ((squareOrderHighVertices G d).card - 1) * Q ∧
+      Q.natDegree =
+        d * d - 2 * ((squareOrderHighVertices G d).card - 1) ∧
+      Q.nextCoeff = 0 := by
+  obtain ⟨Q, hQmonic, hfactor, hdegree⟩ :=
+    exists_monic_squareOrder_residualCharpoly
+      G hfree hd hmin hcover hcard ha
+  let k := (squareOrderHighVertices G d).card - 1
+  let p : Polynomial ℚ := Polynomial.X ^ 2 - Polynomial.C (d : ℚ)
+  have hpData : p.IsMonicOfDegree 2 := by
+    dsimp [p]
+    exact (Polynomial.isMonicOfDegree_X_pow ℚ 2).sub (by simp)
+  have hppow : (p ^ k).Monic := hpData.monic.pow k
+  have hpnext : p.nextCoeff = 0 := by
+    rw [Polynomial.nextCoeff, hpData.natDegree_eq]
+    dsimp [p]
+    simp
+  have hfactorNext := congrArg Polynomial.nextCoeff hfactor
+  rw [hppow.nextCoeff_mul hQmonic,
+    hpData.monic.nextCoeff_pow, hpnext, nsmul_zero, zero_add] at hfactorNext
+  have htrace : Matrix.trace (G.adjMatrix ℚ) = 0 := by
+    simp [Matrix.trace]
+  have hcharNext :
+      (LinearMap.charpoly (G.adjMatrix ℚ).toLin').nextCoeff = 0 := by
+    simp only [Matrix.charpoly_toLin']
+    rw [← neg_eq_zero, ← Matrix.trace_eq_neg_charpoly_nextCoeff]
+    exact htrace
+  refine ⟨Q, hQmonic, hfactor, hdegree, ?_⟩
+  exact hfactorNext ▸ hcharNext
+
 end
 
 end Erdos85
