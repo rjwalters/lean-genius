@@ -507,7 +507,7 @@ theorem threeHigh_t1_mask_key_fiber_card
       smallHighMaskAlignedKey
         (OrderFortyNineSmallHighCensus.threeHighRepresentativeMasks 1) i = key} =
       threeHighT1KeyMultiplicity key := by
-  native_decide +revert
+  decide +kernel +revert
 
 theorem threeHighCanonicalFiberCover_one :
     ThreeHighCanonicalFiberCover 1 := by
@@ -515,7 +515,7 @@ theorem threeHighCanonicalFiberCover_one :
   obtain ⟨e, x, hxSupport, huniq⟩ :=
     threeHigh_t1_exists_normalized_labeling
       G hfree hmin hHigh hone
-  refine ⟨e, by native_decide, ?_⟩
+  refine ⟨e, by decide, ?_⟩
   intro key
   rw [threeHigh_t1_graph_key_fiber_card
       G hfree hmin hHigh hone e x hxSupport huniq key,

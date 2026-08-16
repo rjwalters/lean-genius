@@ -346,7 +346,7 @@ theorem threeHigh_t0_mask_key_fiber_card
       smallHighMaskAlignedKey
         (OrderFortyNineSmallHighCensus.threeHighRepresentativeMasks 0) i = key} =
       threeHighT0KeyMultiplicity key := by
-  native_decide +revert
+  decide +kernel +revert
 
 theorem threeHigh_alignedHigh_nonemptySupport_fiber_card_eq_zero
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
@@ -479,7 +479,7 @@ theorem threeHighCanonicalFiberCover_zero :
   intro G _ _ _ hfree hmin hHigh hzero
   let e : {v // v ∈ orderFortyNineHighVertices G} ≃ Fin 3 :=
     Fintype.equivFinOfCardEq (by simpa using hHigh)
-  refine ⟨e, by native_decide, ?_⟩
+  refine ⟨e, by decide, ?_⟩
   intro key
   rw [threeHigh_t0_graph_key_fiber_card
       G hfree hmin hHigh hzero e key,
