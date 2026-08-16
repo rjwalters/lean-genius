@@ -45,13 +45,13 @@ theorem equivOfSubtypeAndCompl_apply_neg
 already been combined into one injective list: the unnamed complement is
 filled in automatically. -/
 theorem exists_equiv_fin_extending_pair
-    {V : Type*} [Fintype V] [DecidableEq V]
-    {n k : Nat} (hcard : Fintype.card V = n)
-    (f : Fin k → V) (g : Fin k → Fin n)
+    {V I : Type*} [Fintype V] [DecidableEq V] [Finite I]
+    {n : Nat} (hcard : Fintype.card V = n)
+    (f : I → V) (g : I → Fin n)
     (hf : Function.Injective f) (hg : Function.Injective g) :
     ∃ E : V ≃ Fin n, ∀ i, E (f i) = g i := by
   let b : Fin n ≃ V := (Fintype.equivFinOfCardEq hcard).symm
-  let f' : Fin k → Fin n := fun i => b.symm (f i)
+  let f' : I → Fin n := fun i => b.symm (f i)
   have hf' : Function.Injective f' := b.symm.injective.comp hf
   obtain ⟨σ, hσ⟩ := Equiv.Perm.exists_extending_pair f' g hf' hg
   refine ⟨b.symm.trans σ, ?_⟩
