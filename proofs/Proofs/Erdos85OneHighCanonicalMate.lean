@@ -1,5 +1,6 @@
 import Proofs.Erdos85PairedBlockRigidity
 import Proofs.Erdos85OrderFortyNineOneHighOverlap
+import Proofs.Erdos85FinEightPairCoordinates
 
 /-!
 # Canonical labeling of the one-high mate involution
@@ -16,6 +17,31 @@ noncomputable section
 /-- The standard four-pair involution used by the family encoders. -/
 def oneHighStandardMate : Equiv.Perm (Fin 8) :=
   Equiv.swap 0 1 * Equiv.swap 2 3 * Equiv.swap 4 5 * Equiv.swap 6 7
+
+@[simp] theorem finEightPairCoordinates_standardMate (i : Fin 8) :
+    finEightPairCoordinates (oneHighStandardMate i) =
+      (finEightPairCoordinates i).map id finTwoSwap := by
+  fin_cases i <;> decide
+
+/-- Every lifted pair-coordinate permutation is an automorphism of the
+standard four-pair matching. -/
+theorem finEightLiftPairPerm_standardMate
+    (σ : Equiv.Perm (Fin 4)) (flip : Fin 4 → Bool) (i : Fin 8) :
+    finEightLiftPairPerm σ flip (oneHighStandardMate i) =
+      oneHighStandardMate (finEightLiftPairPerm σ flip i) := by
+  apply finEightPairCoordinates.injective
+  simp only [finEightLiftPairPerm, Equiv.trans_apply,
+    Equiv.apply_symm_apply]
+  simp_rw [finEightPairCoordinates_standardMate]
+  rcases finEightPairCoordinates i with ⟨p, b⟩
+  simp only [Equiv.apply_symm_apply, Prod.map, id_eq,
+    finFourPairEndpointPerm]
+  change (σ p, if flip p then finTwoSwap (finTwoSwap b) else finTwoSwap b) =
+    (σ p, finTwoSwap (if flip p then finTwoSwap b else b))
+  by_cases h : flip p = true
+  · simp [h]
+  · have hf : flip p = false := Bool.eq_false_of_not_eq_true h
+    simp [hf]
 
 theorem oneHighStandardMate_involutive :
     Function.Involutive oneHighStandardMate := by
@@ -139,6 +165,71 @@ theorem finEight_fixedPointFreeInvolution_conjugate_standard
     simpa [σ, orient, rep, hi, hpi, hpp, hnip, hnle, hinv, hrepp] using
       (hmate1 (eR ⟨rep i, hrep i⟩)).symm
 
+theorem finEight_marked_card_eq_pairMarked_card
+    (marked : Fin 8 → Bool)
+    (hpair : ∀ i, marked i = true →
+      marked (oneHighStandardMate i) = false) :
+    ((Finset.univ : Finset (Fin 8)).filter fun i => marked i).card =
+      ((Finset.univ : Finset (Fin 4)).filter fun p =>
+        marked (finEightPairCoordinates.symm (p, 0)) ||
+          marked (finEightPairCoordinates.symm (p, 1))).card := by
+  classical
+  let M8 := (Finset.univ : Finset (Fin 8)).filter fun i => marked i
+  apply Finset.card_bij (fun i _ => (finEightPairCoordinates i).1)
+  · intro i hi
+    have him : marked i = true := (Finset.mem_filter.mp hi).2
+    rcases hcoord : finEightPairCoordinates i with ⟨p, b⟩
+    have hiEq : i = finEightPairCoordinates.symm (p, b) := by
+      apply finEightPairCoordinates.injective
+      simp [hcoord]
+    fin_cases b
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      simp only [Bool.or_eq_true]
+      exact Or.inl (by simpa [hiEq] using him)
+    · apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      simp only [Bool.or_eq_true]
+      exact Or.inr (by simpa [hiEq] using him)
+  · intro i hi j hj heq
+    have him : marked i = true := (Finset.mem_filter.mp hi).2
+    have hjm : marked j = true := (Finset.mem_filter.mp hj).2
+    rcases hci : finEightPairCoordinates i with ⟨p, bi⟩
+    rcases hcj : finEightPairCoordinates j with ⟨q, bj⟩
+    have hpq : p = q := by simpa [hci, hcj] using heq
+    subst q
+    have hiEq : i = finEightPairCoordinates.symm (p, bi) := by
+      apply finEightPairCoordinates.injective
+      simp [hci]
+    have hjEq : j = finEightPairCoordinates.symm (p, bj) := by
+      apply finEightPairCoordinates.injective
+      simp [hcj]
+    fin_cases bi <;> fin_cases bj
+    · simpa [hiEq, hjEq]
+    · have hm := hpair i him
+      have hmate : oneHighStandardMate i = j := by
+        apply finEightPairCoordinates.injective
+        simp [finEightPairCoordinates_standardMate, hci, hcj]
+      rw [hmate, hjm] at hm
+      contradiction
+    · have hm := hpair j hjm
+      have hmate : oneHighStandardMate j = i := by
+        apply finEightPairCoordinates.injective
+        simp [finEightPairCoordinates_standardMate, hci, hcj]
+      rw [hmate, him] at hm
+      contradiction
+    · simpa [hiEq, hjEq]
+  · intro p hp
+    have hpm := (Finset.mem_filter.mp hp).2
+    simp only [Bool.or_eq_true] at hpm
+    rcases hpm with hlow | hhigh
+    · refine ⟨finEightPairCoordinates.symm (p, 0), ?_, ?_⟩
+      · simp [M8, hlow]
+      · simp
+    · refine ⟨finEightPairCoordinates.symm (p, 1), ?_, ?_⟩
+      · simp [M8, hhigh]
+      · simp
+
 /-- Automorphisms of the standard four-pair matching can place every marked
 endpoint at the even end of an initial mate pair.  The hypothesis says no
 mate pair has two marked endpoints. -/
@@ -152,7 +243,71 @@ theorem finEight_standardMate_canonicalize_marked
         marked (τ.symm i) =
           decide (i.val % 2 = 0 ∧
             i.val / 2 < (Finset.univ.filter fun j => marked j).card) := by
-  native_decide +revert
+  classical
+  let pairMarked : Fin 4 → Bool := fun p =>
+    marked (finEightPairCoordinates.symm (p, 0)) ||
+      marked (finEightPairCoordinates.symm (p, 1))
+  obtain ⟨σ, hσ⟩ := exists_finFour_perm_canonicalizing_bool pairMarked
+  let flip : Fin 4 → Bool := fun p =>
+    marked (finEightPairCoordinates.symm (p, 1))
+  let τ := finEightLiftPairPerm σ flip
+  refine ⟨τ, finEightLiftPairPerm_standardMate σ flip, ?_⟩
+  intro i
+  have hcard := finEight_marked_card_eq_pairMarked_card marked hpair
+  rcases hci : finEightPairCoordinates i with ⟨q, b⟩
+  have hiEq : i = finEightPairCoordinates.symm (q, b) := by
+    apply finEightPairCoordinates.injective
+    simp [hci]
+  let p := σ.symm q
+  have hpairMarked := hσ q
+  change pairMarked p = _ at hpairMarked
+  have hpreEq : τ.symm i = finEightPairCoordinates.symm
+      (p, if flip p then finTwoSwap b else b) := by
+    apply finEightPairCoordinates.injective
+    simpa [τ, p, hci] using
+      (finEightPairCoordinates_liftPairPerm_symm σ flip i)
+  fin_cases b
+  · have hrhs :
+        decide (i.val % 2 = 0 ∧
+          i.val / 2 < (Finset.univ.filter fun j => marked j).card) =
+        decide (q.val < (Finset.univ.filter fun j => marked j).card) := by
+      simp [hiEq, finEightPairCoordinates]
+    rw [hrhs, hpreEq]
+    have hpm : pairMarked p =
+        decide (q.val < (Finset.univ.filter fun j => marked j).card) := by
+      rw [hcard]
+      exact hpairMarked
+    dsimp only [flip]
+    by_cases hodd : marked (finEightPairCoordinates.symm (p, 1)) = true
+    · have hpmTrue : pairMarked p = true := by
+        simp [pairMarked, hodd]
+      rw [hpmTrue] at hpm
+      simpa [hodd] using hpm
+    · have hoddf : marked (finEightPairCoordinates.symm (p, 1)) = false :=
+        Bool.eq_false_of_not_eq_true hodd
+      have hpmEven : pairMarked p =
+          marked (finEightPairCoordinates.symm (p, 0)) := by
+        simp [pairMarked, hoddf]
+      rw [hpmEven] at hpm
+      simpa [hoddf] using hpm
+  · have hrhs :
+        decide (i.val % 2 = 0 ∧
+          i.val / 2 < (Finset.univ.filter fun j => marked j).card) = false := by
+      simp [hiEq, finEightPairCoordinates]
+    rw [hrhs, hpreEq]
+    dsimp only [flip]
+    by_cases hodd : marked (finEightPairCoordinates.symm (p, 1)) = true
+    · have heven := hpair (finEightPairCoordinates.symm (p, 1)) hodd
+      have hmate : oneHighStandardMate
+          (finEightPairCoordinates.symm (p, 1)) =
+          finEightPairCoordinates.symm (p, 0) := by
+        apply finEightPairCoordinates.injective
+        simp [finEightPairCoordinates_standardMate]
+      rw [hmate] at heven
+      simp [hodd, heven]
+    · have hoddf : marked (finEightPairCoordinates.symm (p, 1)) = false :=
+        Bool.eq_false_of_not_eq_true hodd
+      simp [hoddf]
 
 /-- Abstract eight-point form used for the graph neighborhood subtype. -/
 theorem exists_equiv_finEight_intertwining_involution

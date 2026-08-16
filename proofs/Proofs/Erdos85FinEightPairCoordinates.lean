@@ -1,4 +1,5 @@
 import Proofs.Erdos85FinFourPredicateCanonicalization
+import Mathlib.Tactic
 
 /-! # Pair and endpoint coordinates on eight standard-matched points -/
 
@@ -14,6 +15,9 @@ def finEightPairCoordinates : Fin 8 ≃ Fin 4 × Fin 2 where
     omega
   right_inv x := by
     apply Prod.ext <;> apply Fin.ext <;> dsimp <;> omega
+
+@[simp] theorem finEightPairCoordinates_symm_val (p : Fin 4) (b : Fin 2) :
+    (finEightPairCoordinates.symm (p, b)).val = 2 * p.val + b.val := rfl
 
 def finTwoSwap : Equiv.Perm (Fin 2) := Equiv.swap 0 1
 
@@ -54,29 +58,12 @@ def finEightLiftPairPerm
   finEightPairCoordinates.trans
     ((finFourPairEndpointPerm σ flip).trans finEightPairCoordinates.symm)
 
-@[simp] theorem finEightPairCoordinates_standardMate (i : Fin 8) :
-    finEightPairCoordinates (oneHighStandardMate i) =
-      (finEightPairCoordinates i).map id finTwoSwap := by
-  fin_cases i <;> decide
-
-/-- Every lifted pair-coordinate permutation is an automorphism of the
-standard four-pair matching. -/
-theorem finEightLiftPairPerm_standardMate
+@[simp] theorem finEightPairCoordinates_liftPairPerm_symm
     (σ : Equiv.Perm (Fin 4)) (flip : Fin 4 → Bool) (i : Fin 8) :
-    finEightLiftPairPerm σ flip (oneHighStandardMate i) =
-      oneHighStandardMate (finEightLiftPairPerm σ flip i) := by
-  apply finEightPairCoordinates.injective
-  simp only [finEightLiftPairPerm, Equiv.trans_apply,
-    Equiv.apply_symm_apply]
-  simp_rw [finEightPairCoordinates_standardMate]
-  rcases finEightPairCoordinates i with ⟨p, b⟩
-  simp only [Equiv.apply_symm_apply, Prod.map, id_eq,
-    finFourPairEndpointPerm]
-  change (σ p, if flip p then finTwoSwap (finTwoSwap b) else finTwoSwap b) =
-    (σ p, finTwoSwap (if flip p then finTwoSwap b else b))
-  by_cases h : flip p = true
-  · simp [h]
-  · have hf : flip p = false := Bool.eq_false_of_not_eq_true h
-    simp [hf]
+    finEightPairCoordinates ((finEightLiftPairPerm σ flip).symm i) =
+      let p := σ.symm (finEightPairCoordinates i).1
+      (p, if flip p then finTwoSwap (finEightPairCoordinates i).2
+        else (finEightPairCoordinates i).2) := by
+  simp [finEightLiftPairPerm, finFourPairEndpointPerm]
 
 end Erdos85
