@@ -58,6 +58,40 @@ theorem exists_equiv_fin_extending_pair
   intro i
   exact hσ i
 
+theorem Sum.elim_injective_of_disjoint
+    {I J X : Type*} {f : I → X} {g : J → X}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    (hcross : ∀ i j, f i ≠ g j) :
+    Function.Injective (Sum.elim f g) := by
+  intro x y hxy
+  cases x with
+  | inl i =>
+      cases y with
+      | inl j => simpa using hf hxy
+      | inr j => exact (hcross i j hxy).elim
+  | inr i =>
+      cases y with
+      | inl j => exact (hcross j i hxy.symm).elim
+      | inr j => simpa using hg hxy
+
+/-- Extend two disjoint injective partial labelings simultaneously. -/
+theorem exists_equiv_fin_extending_disjoint_pairs
+    {V I J : Type*} [Fintype V] [DecidableEq V]
+    [Finite I] [Finite J] {n : Nat}
+    (hcard : Fintype.card V = n)
+    (fI : I → V) (fJ : J → V) (gI : I → Fin n) (gJ : J → Fin n)
+    (hfI : Function.Injective fI) (hfJ : Function.Injective fJ)
+    (hgI : Function.Injective gI) (hgJ : Function.Injective gJ)
+    (hfCross : ∀ i j, fI i ≠ fJ j)
+    (hgCross : ∀ i j, gI i ≠ gJ j) :
+    ∃ E : V ≃ Fin n,
+      (∀ i, E (fI i) = gI i) ∧ (∀ j, E (fJ j) = gJ j) := by
+  obtain ⟨E, hE⟩ := exists_equiv_fin_extending_pair hcard
+    (Sum.elim fI fJ) (Sum.elim gI gJ)
+    (Sum.elim_injective_of_disjoint hfI hfJ hfCross)
+    (Sum.elim_injective_of_disjoint hgI hgJ hgCross)
+  exact ⟨E, fun i => hE (Sum.inl i), fun j => hE (Sum.inr j)⟩
+
 end
 
 
