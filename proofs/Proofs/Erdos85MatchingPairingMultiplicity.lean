@@ -9,7 +9,7 @@ noncomputable section
 /-- On a genuine off-diagonal key, counting the key in the canonical list of
 matching edges is exactly the exchanged-key multiplicity used by the graph
 parity argument. -/
-theorem matchingPairingListSorted_count_eq_exchangedMissPairMultiplicity
+theorem matchingPairingListSorted_count_eq_exchangedMissPairMultiplicity_of_lt
     {X : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
     (mate : X → X) (label : X → Fin 8) (key : OneHighLabelPair)
     (hkey : key.1 < key.2) :
@@ -61,7 +61,7 @@ theorem matchingPairingRefinementMultiplicity_eq_exchangedMissPairMultiplicity
         [matchingPairingListSorted mate label] key =
       exchangedMissPairMultiplicity mate label key := by
   simpa [oneHighPairingRefinementMultiplicity] using
-    matchingPairingListSorted_count_eq_exchangedMissPairMultiplicity
+    matchingPairingListSorted_count_eq_exchangedMissPairMultiplicity_of_lt
       mate label key hkey
 
 end
