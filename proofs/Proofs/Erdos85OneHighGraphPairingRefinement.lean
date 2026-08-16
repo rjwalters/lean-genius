@@ -94,6 +94,173 @@ theorem card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
     refine ⟨Finset.mem_univ _, ?_⟩
     simpa [label, x, oneHighMatchedMissLabel] using heq.symm
 
+theorem card_matchingLabelFiber_equiv_comp
+    {X L K : Type*} [Fintype X] [DecidableEq X]
+    [DecidableEq L] [DecidableEq K]
+    (e : L ≃ K) (label : X → L) (k : K) :
+    (matchingLabelFiber (fun x => e (label x)) k).card =
+      (matchingLabelFiber label (e.symm k)).card := by
+  congr 1
+  ext x
+  simp only [matchingLabelFiber, Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro h
+    apply e.injective
+    simpa using h
+  · intro h
+    simpa [h]
+
+/-- The concrete sorted pairing chosen in one canonical source branch. -/
+def oneHighGraphSourcePairing
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    List OneHighLabelPair :=
+  let s := p.branchLabel.symm source
+  matchingPairingListSorted (oneHighInternalMate G hfree v s) fun x =>
+    p.branchLabel (oneHighMatchedMissLabel G hfree hv p.external_empty
+      p.outer_degree p.mate p.mate_adj s x)
+
+/-- The graph table restricted to the 24 coordinates actually stored by the
+inventory.  Diagonal and standard-mate coordinates are deliberately zero. -/
+def oneHighGraphRelevantMissTable
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] (profile : Nat) :
+    OneHighMissTable := fun c j =>
+  if c < 8 ∧ j < 8 ∧ c ≠ j ∧ j ≠ (c ^^^ 1) then
+    oneHighFamilyTableGet (oneHighFamilyGraphTable R profile) c j
+  else 0
+
+theorem oneHighFamilyTableGet_graphRelevantMissTable
+    (R : SimpleGraph (Fin 40)) [DecidableRel R.Adj] (profile : Nat)
+    (source label : Fin 8) :
+    oneHighFamilyTableGet (oneHighGraphRelevantMissTable R profile)
+        source.val label.val =
+      oneHighGraphRelevantMissTable R profile source.val label.val := by
+  fin_cases source <;> fin_cases label <;>
+    simp [oneHighFamilyTableGet, oneHighGraphRelevantMissTable]
+
+theorem oneHighGraphSourcePairing_endpointCount
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source label : Fin 8) :
+    oneHighPairingEndpointCount
+        (oneHighGraphSourcePairing G hfree hv p source) label =
+      oneHighGraphRelevantMissTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+          p.profile
+        source.val label.val := by
+  classical
+  let s := p.branchLabel.symm source
+  let u := p.branchLabel.symm label
+  let rootLabel := oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj s
+  let R := oneHighRelabeledLeafGraph G v
+    (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel)
+  change oneHighPairingEndpointCount
+      (matchingPairingListSorted (oneHighInternalMate G hfree v s)
+        (fun x => p.branchLabel (rootLabel x))) label = _
+  have hend := matchingPairingListSorted_endpointCount
+    (oneHighInternalMate G hfree v s)
+    (fun x => p.branchLabel (rootLabel x)) label
+    (degreeOneMate_involutive _ _)
+    (degreeOneMate_ne _ _)
+  rw [hend]
+  rw [card_matchingLabelFiber_equiv_comp p.branchLabel rootLabel label]
+  by_cases hus : u = s
+  · have hls : label = source := by
+      apply p.branchLabel.symm.injective
+      simpa [u, s] using hus
+    subst label
+    have hfiber : matchingLabelFiber rootLabel s = ∅ := by
+      ext x
+      simp only [matchingLabelFiber, Finset.mem_filter, Finset.mem_univ,
+        true_and]
+      constructor
+      · intro hxLabel
+        have hfar := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+          p.outer_degree p.mate p.mate_adj s x
+        have hbase := (Finset.mem_filter.mp hfar).1
+        have hne := (Finset.mem_erase.mp
+          (Finset.mem_erase.mp hbase).2).1
+        exact (hne hxLabel).elim
+      · intro hx
+        simpa using hx
+    change (matchingLabelFiber rootLabel s).card = _
+    rw [hfiber]
+    simp [oneHighGraphRelevantMissTable]
+  · by_cases hum : u = p.mate s
+    · have hlm : label = oneHighStandardMate source := by
+        calc
+          label = p.branchLabel u := by simp [u]
+          _ = p.branchLabel (p.mate s) := congrArg p.branchLabel hum
+          _ = oneHighStandardMate (p.branchLabel s) := p.branch_mate s
+          _ = oneHighStandardMate source := by simp [s]
+      have hfiber : matchingLabelFiber rootLabel u = ∅ := by
+        ext x
+        simp only [matchingLabelFiber, Finset.mem_filter, Finset.mem_univ,
+          true_and]
+        constructor
+        · intro hxLabel
+          have hfar := oneHighMatchedMissLabel_mem G hfree hv p.external_empty
+            p.outer_degree p.mate p.mate_adj s x
+          have hbase := (Finset.mem_filter.mp hfar).1
+          have hne := (Finset.mem_erase.mp hbase).1
+          exact (hne (hxLabel.trans hum)).elim
+        · intro hx
+          simpa using hx
+      rw [hfiber]
+      simp [oneHighGraphRelevantMissTable, hlm,
+        oneHighStandardMate_val_eq_xor]
+    · have huFar : u ∈ ((Finset.univ.erase s).erase (p.mate s)) := by
+        simp [hus, hum]
+      rw [card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+        G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj s u huFar]
+      have htable := oneHighFamilyGraphTable_eq_highBranchMissCount
+        G hfree v p.mate p.branchLabel p.branch_mate p.leafLabel
+          p.profile p.constraints s u hus hum
+      have hlabelS : p.branchLabel s = source := by simp [s]
+      have hlabelU : p.branchLabel u = label := by simp [u]
+      have hget := oneHighFamilyTableGet_graphTable_eq p.profile R
+        p.constraints source label
+          (fun h => hus (p.branchLabel.injective (by simpa [s, u] using h)))
+          (fun h => hum (p.branchLabel.injective (by
+            rw [p.branch_mate s]
+            simpa [s, u] using h)))
+      simp only [oneHighGraphRelevantMissTable]
+      rw [if_pos]
+      · rw [hget]
+        simpa [R, hlabelS, hlabelU] using htable.symm
+      · refine ⟨source.isLt, label.isLt, ?_, ?_⟩
+        · intro h
+          apply hus
+          apply p.branchLabel.injective
+          simpa [s, u] using (Fin.ext h).symm
+        · exact fun h => hum (p.branchLabel.injective (by
+            rw [p.branch_mate s]
+            apply Fin.ext
+            simpa [s, u, oneHighStandardMate_val_eq_xor] using h))
+
+theorem oneHighGraphSourcePairing_compatible
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    oneHighSourcePairingCompatible
+      (oneHighGraphRelevantMissTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile)
+      source (oneHighGraphSourcePairing G hfree hv p source) = true := by
+  rw [oneHighSourcePairingCompatible, List.all_eq_true]
+  intro label _
+  apply decide_eq_true
+  rw [oneHighGraphSourcePairing_endpointCount]
+  symm
+  exact oneHighFamilyTableGet_graphRelevantMissTable _ _ source label
+
 end
 
 end Erdos85
