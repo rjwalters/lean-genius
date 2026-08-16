@@ -263,6 +263,43 @@ theorem OneHighCrossBlockSourceConfiguration.sourceEdges_pairwise_ne
     keyNe C.q₀₁ C.q₁₁ h01_11 rfl rfl,
     keyNe C.q₁₀ C.q₁₁ h10_11 rfl rfl⟩
 
+/-- Combined nondegenerate collision interface: one explicitly listed pair
+consists of distinct matching edges whose owner branches are equal or mates. -/
+theorem OneHighCrossBlockSourceConfiguration.distinct_same_or_mate_collision
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    (C.q₀₀.sourceEdge ≠ C.q₀₁.sourceEdge ∧
+      (C.q₀₀.sourceEdge.1 = C.q₀₁.sourceEdge.1 ∨
+       C.q₀₀.sourceEdge.1 = p.mate C.q₀₁.sourceEdge.1)) ∨
+    (C.q₀₀.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+      (C.q₀₀.sourceEdge.1 = C.q₁₀.sourceEdge.1 ∨
+       C.q₀₀.sourceEdge.1 = p.mate C.q₁₀.sourceEdge.1)) ∨
+    (C.q₀₀.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+      (C.q₀₀.sourceEdge.1 = C.q₁₁.sourceEdge.1 ∨
+       C.q₀₀.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1)) ∨
+    (C.q₀₁.sourceEdge ≠ C.q₁₀.sourceEdge ∧
+      (C.q₀₁.sourceEdge.1 = C.q₁₀.sourceEdge.1 ∨
+       C.q₀₁.sourceEdge.1 = p.mate C.q₁₀.sourceEdge.1)) ∨
+    (C.q₀₁.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+      (C.q₀₁.sourceEdge.1 = C.q₁₁.sourceEdge.1 ∨
+       C.q₀₁.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1)) ∨
+    (C.q₁₀.sourceEdge ≠ C.q₁₁.sourceEdge ∧
+      (C.q₁₀.sourceEdge.1 = C.q₁₁.sourceEdge.1 ∨
+       C.q₁₀.sourceEdge.1 = p.mate C.q₁₁.sourceEdge.1)) := by
+  have hn := C.sourceEdges_pairwise_ne G hfree hv p
+  rcases C.sourceBranch_collision G hfree hv p with h | h | h | h | h | h
+  · exact Or.inl ⟨hn.1, h⟩
+  · exact Or.inr (Or.inl ⟨hn.2.1, h⟩)
+  · exact Or.inr (Or.inr (Or.inl ⟨hn.2.2.1, h⟩))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl ⟨hn.2.2.2.1, h⟩)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr
+      (Or.inl ⟨hn.2.2.2.2.1, h⟩))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr
+      (Or.inr ⟨hn.2.2.2.2.2, h⟩))))
+
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
