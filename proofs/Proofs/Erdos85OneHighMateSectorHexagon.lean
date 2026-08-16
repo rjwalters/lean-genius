@@ -1,6 +1,5 @@
-import Proofs.Erdos85OneHighMateMissHexagonGraph
+import Proofs.Erdos85OneHighMateEdgeCycleHexagon
 import Proofs.Erdos85OneHighOddLabelSectorCapstone
-import Proofs.Erdos85OneHighRootPairGraphDecoder
 
 /-! # Replace the mate-edge odd-label sector by a graph hexagon -/
 
@@ -69,26 +68,10 @@ theorem oneHigh_even_multiplicities_or_mateMissHexagon_or_residualCycle
   · exact Or.inl hall
   · rcases hsector with hmate | hturn | halt
     · obtain ⟨i, hpair⟩ := hmate
-      let u := c.getVert i.1
-      let w := c.getVert (oneHighCycleNext c hc i).1
-      have hadj : (oddExchangedKeyLabelGraph
-          (exchangedMissPairMultiplicity
-            (oneHighGlobalInternalMate G hfree v)
-            (oneHighGlobalMissLabel G hfree hv hexternal houterDegree
-              rootMate hrootAdj))).Adj u w := by
-        dsimp [u, w]
-        rw [getVert_oneHighCycleNext c hc i]
-        exact c.adj_getVert_succ i.2
-      have huwPair : u = w ∨ u = rootMate w :=
-        (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
-          rootMate branchLabel hbranchMate u w).mp hpair
-      have huwMate : u = rootMate w := huwPair.resolve_left hadj.1
-      have huw : G.Adj u.1 w.1 := by
-        rw [huwMate]
-        exact (hrootAdj w).symm
       exact Or.inr (Or.inl
-        (exists_oneHighMateMissHexagon_of_oddMultiplicity
-          G hfree hv hexternal houterDegree rootMate hrootAdj u w huw hadj.2))
+        (exists_oneHighMateMissHexagon_of_oddLabelCycle_mateEdge
+          G hfree hv hexternal houterDegree rootMate hrootAdj branchLabel
+          hbranchMate hc i hpair))
     · exact Or.inr (Or.inr ⟨l, c, hc, Or.inl hturn⟩)
     · exact Or.inr (Or.inr ⟨l, c, hc, Or.inr halt⟩)
 
