@@ -334,13 +334,13 @@ def oneHighBranchBitAdj (edges : BitVec 10) (i j : Fin 5) : Bool :=
 
 theorem oneHighBranchEdgeIndex_lt (i j : Fin 5) (hij : i ≠ j) :
     oneHighBranchEdgeIndex i j < 10 := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighBranchEdgeIndex_eq_iff
     (i j k l : Fin 5) (hij : i ≠ j) (hkl : k ≠ l) :
     oneHighBranchEdgeIndex i j = oneHighBranchEdgeIndex k l ↔
       (i = k ∧ j = l) ∨ (i = l ∧ j = k) := by
-  native_decide +revert
+  decide +revert
 
 def oneHighBranchGraphEdges
     (G : SimpleGraph (Fin 5)) [DecidableRel G.Adj] : BitVec 10 :=
@@ -394,7 +394,7 @@ theorem card_filter_oneHighCanonicalBranchAdj
     (Finset.univ.filter fun j =>
       oneHighCanonicalBranchAdj twoEdges i j).card =
         if oneHighCanonicalBranchMatched twoEdges i then 1 else 0 := by
-  native_decide +revert
+  decide +revert
 
 /-- Closed finite classification of five-point matchings. -/
 theorem finFive_matchingBits_canonical
@@ -423,7 +423,7 @@ theorem oneHighCanonicalBranchAdj_swapZeroOne
     oneHighCanonicalBranchAdj twoEdges (oneHighSwapZeroOne i)
         (oneHighSwapZeroOne j) =
       oneHighCanonicalBranchAdj twoEdges i j := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighCanonicalBranchAdj_swapTwoThree
     (twoEdges : Bool) (i j : Fin 5) :
