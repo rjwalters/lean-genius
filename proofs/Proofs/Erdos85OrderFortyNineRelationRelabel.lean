@@ -53,6 +53,47 @@ theorem orderFortyNineC4Constraints_relabel
     (fun k => adj (e i) k && adj (e j) k)]
   exact hc4 (e i) (e j) (fun heq => hij (e.injective heq))
 
+theorem orderFortyNineHighIndependent_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (hfix : ∀ i : Fin 49, i.val < 7 → e i = i)
+    (hind : ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      adj i j = false) :
+    ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      adj (e i) (e j) = false := by
+  intro i j hi hj hij
+  simpa [hfix i hi, hfix j hj] using hind i j hi hj hij
+
+theorem orderFortyNineHighCommonWitness_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (hfix : ∀ i : Fin 49, i.val < 7 → e i = i)
+    (hprefix : ∀ i : Fin 49, (e i).val < 7 ↔ i.val < 7)
+    (hcommon : ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      ∃ w : Fin 49, 7 ≤ w.val ∧ adj i w = true ∧ adj j w = true) :
+    ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      ∃ w : Fin 49, 7 ≤ w.val ∧
+        adj (e i) (e w) = true ∧ adj (e j) (e w) = true := by
+  intro i j hi hj hij
+  obtain ⟨w, hw, hiw, hjw⟩ := hcommon i j hi hj hij
+  refine ⟨e.symm w, ?_, ?_, ?_⟩
+  · have hw' : ¬w.val < 7 := Nat.not_lt_of_ge hw
+    have := (hprefix (e.symm w)).not.mp (by simpa using hw')
+    omega
+  · simpa [hfix i hi] using hiw
+  · simpa [hfix j hj] using hjw
+
+/-- Transport one named high-support column to a normalized target block. -/
+theorem orderFortyNineSupportColumn_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (high : Fin 49) (source target : Finset (Fin 49))
+    (hsymm : ∀ i j, adj i j = adj j i)
+    (hfix : e high = high)
+    (hsource : ∀ y : Fin 49, adj y high = decide (y ∈ source))
+    (hblock : ∀ y : Fin 49, y ∈ target ↔ e y ∈ source) :
+    ∀ y : Fin 49, adj (e high) (e y) = decide (y ∈ target) := by
+  intro y
+  rw [hfix, hsymm, hsource]
+  exact congrArg decide (propext (hblock y).symm)
+
 /-- Transport an exact-one neighbor law from a source support fiber to its
 normalized target block.  Unlike terminal-wide invariance, this is precisely
 the form needed when normalization deliberately changes the mask layout. -/
