@@ -1,5 +1,6 @@
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighExchangedMissCounting
+import Proofs.Erdos85OneHighSameMissCountingBridge
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -18,6 +19,90 @@ theorem even_nonconstantMatchingEdgeSources_of_all_exchanged_even
     Even (nonconstantMatchingEdgeSources mate label).card := by
   rw [← sum_exchangedMissPairMultiplicity_over_keys mate label]
   exact Finset.even_sum _ fun key hkey => heven key hkey
+
+/-- An all-even exchanged multiset is either empty or contains two distinct
+matching edges carrying the same genuine exchanged key. -/
+theorem empty_or_repeated_exchangedPair_of_all_even
+    {X L : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    [Fintype L] [DecidableEq L] [LinearOrder L]
+    (mate : X → X) (label : X → L)
+    (heven : ∀ key ∈ exchangedMissPairKeys L,
+      Even (exchangedMissPairMultiplicity mate label key)) :
+    nonconstantMatchingEdgeSources mate label = ∅ ∨
+      ∃ key ∈ exchangedMissPairKeys L,
+        ∃ x ∈ nonconstantMatchingEdgeSources mate label,
+          ∃ y ∈ nonconstantMatchingEdgeSources mate label,
+            x ≠ y ∧ exchangedMissPairKey mate label x = key ∧
+              exchangedMissPairKey mate label y = key := by
+  by_cases hempty : nonconstantMatchingEdgeSources mate label = ∅
+  · exact Or.inl hempty
+  · right
+    obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.mpr hempty
+    let key := exchangedMissPairKey mate label x
+    have hkey : key ∈ exchangedMissPairKeys L := by
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        exchangedMissPairKey_lt_of_mem hx⟩
+    have hxFiber : x ∈ (nonconstantMatchingEdgeSources mate label).filter
+        fun z => exchangedMissPairKey mate label z = key :=
+      Finset.mem_filter.mpr ⟨hx, rfl⟩
+    have hpos : 0 < exchangedMissPairMultiplicity mate label key := by
+      unfold exchangedMissPairMultiplicity
+      exact Finset.card_pos.mpr ⟨x, hxFiber⟩
+    have htwo : 1 < exchangedMissPairMultiplicity mate label key := by
+      obtain ⟨k, hk⟩ := heven key hkey
+      omega
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp htwo
+    have haParts := Finset.mem_filter.mp ha
+    have hbParts := Finset.mem_filter.mp hb
+    exact ⟨key, hkey, a, haParts.1, b, hbParts.1, hab,
+      haParts.2, hbParts.2⟩
+
+/-- Graph-facing all-even dichotomy: either every internal edge has the same
+miss at both endpoints, or two distinct global internal edges carry the same
+unordered pair of canonical miss labels. -/
+theorem oneHigh_globalSameMiss_or_repeated_exchangedPair_of_all_even
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (heven : ∀ key ∈ exchangedMissPairKeys (Fin 8),
+      Even (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)) key)) :
+    OneHighGlobalSameMiss G hfree v p.mate ∨
+      ∃ key ∈ exchangedMissPairKeys (Fin 8),
+        ∃ x ∈ nonconstantMatchingEdgeSources
+          (oneHighGlobalInternalMate G hfree v)
+          (fun z => p.branchLabel
+            (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+              p.mate p.mate_adj z)),
+        ∃ y ∈ nonconstantMatchingEdgeSources
+          (oneHighGlobalInternalMate G hfree v)
+          (fun z => p.branchLabel
+            (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+              p.mate p.mate_adj z)),
+          x ≠ y ∧
+            exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+              (fun z => p.branchLabel
+                (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+                  p.mate p.mate_adj z)) x = key ∧
+            exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+              (fun z => p.branchLabel
+                (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+                  p.mate p.mate_adj z)) y = key := by
+  let mate := oneHighGlobalInternalMate G hfree v
+  let rawLabel := oneHighGlobalMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj
+  let label := fun x => p.branchLabel (rawLabel x)
+  obtain hempty | hrepeated :=
+    empty_or_repeated_exchangedPair_of_all_even mate label heven
+  · left
+    apply (oneHigh_nonconstantSources_eq_empty_iff_globalSameMiss
+      G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj).mp
+    simpa [mate, label, rawLabel, nonconstantMatchingEdgeSources] using hempty
+  · exact Or.inr hrepeated
 
 /-- Matching edges on which the two endpoint miss labels agree. -/
 def constantMatchingEdgeSources
