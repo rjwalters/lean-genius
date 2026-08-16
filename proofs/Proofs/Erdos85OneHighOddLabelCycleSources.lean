@@ -151,6 +151,85 @@ theorem oneHigh_sourceColoring_turn_trichotomy
     (branchLabel (source ei).1) (branchLabel (source ej).1)
     hab hbc hac hsa hsb htb htc
 
+/-- Re-express the second far endpoint of each colored dart using the cyclic
+successor index. -/
+theorem oneHigh_sourceColoring_far_next
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    {H : SimpleGraph {z : V // z ∈ G.neighborSet v}}
+    {l : {z : V // z ∈ G.neighborSet v}} {c : H.Walk l l}
+    (hc : c.IsCycle)
+    (source : Fin c.length → OneHighAllMatchedVertices G v)
+    (hfar : ∀ i : Fin c.length,
+      c.getVert i.1 ∈
+        ((Finset.univ.erase (source i).1).erase (rootMate (source i).1)) ∧
+      c.getVert (i.1 + 1) ∈
+        ((Finset.univ.erase (source i).1).erase (rootMate (source i).1)))
+    (i : Fin c.length) :
+    c.getVert (oneHighCycleNext c hc i).1 ∈
+      ((Finset.univ.erase (source i).1).erase (rootMate (source i).1)) := by
+  rw [getVert_oneHighCycleNext c hc i]
+  exact (hfar i).2
+
+/-- Uniform cyclic turn classifier, including the two turns crossing the
+chosen start/end of the walk representation. -/
+theorem oneHigh_sourceColoring_cyclic_turn_trichotomy
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (branchLabel : {z : V // z ∈ G.neighborSet v} ≃ Fin 8)
+    (hbranchMate : ∀ s, branchLabel (rootMate s) =
+      oneHighStandardMate (branchLabel s))
+    {H : SimpleGraph {z : V // z ∈ G.neighborSet v}}
+    {l : {z : V // z ∈ G.neighborSet v}} {c : H.Walk l l}
+    (hc : c.IsCycle)
+    (source : Fin c.length → OneHighAllMatchedVertices G v)
+    (hfar : ∀ i : Fin c.length,
+      c.getVert i.1 ∈
+        ((Finset.univ.erase (source i).1).erase (rootMate (source i).1)) ∧
+      c.getVert (i.1 + 1) ∈
+        ((Finset.univ.erase (source i).1).erase (rootMate (source i).1)))
+    (i : Fin c.length)
+    (hab : oneHighRootPair (branchLabel (c.getVert i.1)) ≠
+      oneHighRootPair (branchLabel
+        (c.getVert (oneHighCycleNext c hc i).1)))
+    (hbc : oneHighRootPair (branchLabel
+        (c.getVert (oneHighCycleNext c hc i).1)) ≠
+      oneHighRootPair (branchLabel
+        (c.getVert (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1)))
+    (hac : oneHighRootPair (branchLabel (c.getVert i.1)) ≠
+      oneHighRootPair (branchLabel
+        (c.getVert (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1))) :
+    oneHighRootPair (branchLabel (source i).1) =
+        oneHighRootPair (branchLabel (source (oneHighCycleNext c hc i)).1) ∨
+      oneHighRootPair (branchLabel (source i).1) =
+        oneHighRootPair (branchLabel
+          (c.getVert (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1)) ∨
+      oneHighRootPair (branchLabel (source (oneHighCycleNext c hc i)).1) =
+        oneHighRootPair (branchLabel (c.getVert i.1)) := by
+  let j := oneHighCycleNext c hc i
+  let k := oneHighCycleNext c hc j
+  have hif := hfar i
+  have hjf := hfar j
+  have hsa := oneHighRootPair_ne_of_branch_mem_far rootMate branchLabel
+    hbranchMate (source i).1 (c.getVert i.1) hif.1
+  have hsb := oneHighRootPair_ne_of_branch_mem_far rootMate branchLabel
+    hbranchMate (source i).1 (c.getVert j.1)
+      (oneHigh_sourceColoring_far_next G v rootMate hc source hfar i)
+  have htb := oneHighRootPair_ne_of_branch_mem_far rootMate branchLabel
+    hbranchMate (source j).1 (c.getVert j.1) hjf.1
+  have htc := oneHighRootPair_ne_of_branch_mem_far rootMate branchLabel
+    hbranchMate (source j).1 (c.getVert k.1)
+      (oneHigh_sourceColoring_far_next G v rootMate hc source hfar j)
+  exact oneHigh_sourcePair_turn_trichotomy
+    (branchLabel (c.getVert i.1)) (branchLabel (c.getVert j.1))
+    (branchLabel (c.getVert k.1))
+    (branchLabel (source i).1) (branchLabel (source j).1)
+    hab hbc hac hsa hsb htb htc
+
 end
 
 end Erdos85
