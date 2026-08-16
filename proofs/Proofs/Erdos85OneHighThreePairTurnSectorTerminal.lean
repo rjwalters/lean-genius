@@ -76,6 +76,61 @@ theorem exists_oneHighThreePairTurn_sourcePair_trichotomy
     by simpa [hlabels.1, hlabels.2.2] using hac,
     qAB, qBC, hsources⟩
 
+/-- A graph-level normal form for the residual three-pair-turn terminal.  It
+retains the actual roots and internal matching edges, rather than only their
+relabelled odd multiplicities. -/
+structure OneHighPinnedThreePairTurn
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) where
+  a : {z : V // z ∈ G.neighborSet v}
+  b : {z : V // z ∈ G.neighborSet v}
+  c : {z : V // z ∈ G.neighborSet v}
+  ab_pair_ne : oneHighRootPair (p.branchLabel a) ≠
+    oneHighRootPair (p.branchLabel b)
+  bc_pair_ne : oneHighRootPair (p.branchLabel b) ≠
+    oneHighRootPair (p.branchLabel c)
+  ac_pair_ne : oneHighRootPair (p.branchLabel a) ≠
+    oneHighRootPair (p.branchLabel c)
+  qAB : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj a b
+  qBC : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj b c
+  source_sector :
+    oneHighRootPair (p.branchLabel qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel qBC.sourceEdge.1) ∨
+      oneHighRootPair (p.branchLabel qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel c) ∨
+      oneHighRootPair (p.branchLabel qBC.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel a)
+
+/-- The exact graph-side obligation remaining after the multiplicity turn is
+decoded into roots and matching-edge sources. -/
+def OneHighPinnedThreePairTurnSectorExcluded : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+    (hfree : ¬ containsC4 (Fin 49) G) →
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x) →
+    (hHigh : (orderFortyNineHighVertices G).card = 1) →
+    ∀ {v : Fin 49} (hv : G.degree v = 8)
+      (p : OneHighRawV2Presentation G hfree v),
+      Nonempty (OneHighPinnedThreePairTurn G hfree hv p) → False
+
+/-- Excluding the pinned source configuration excludes the original
+three-pair-turn multiplicity sector. -/
+theorem oneHighThreePairTurnSectorExcluded_of_pinned
+    (h : OneHighPinnedThreePairTurnSectorExcluded) :
+    OneHighThreePairTurnSectorExcluded := by
+  intro G _ _ _ hfree hmin hHigh v hv p
+  dsimp only
+  intro hturn
+  obtain ⟨a, b, c, hab, hbc, hac, qAB, qBC, hsources⟩ :=
+    exists_oneHighThreePairTurn_sourcePair_trichotomy G hfree hv p hturn
+  exact h G inferInstance inferInstance inferInstance hfree hmin hHigh hv p
+    ⟨⟨a, b, c, hab, hbc, hac, qAB, qBC, hsources⟩⟩
+
 end
 
 end Erdos85
