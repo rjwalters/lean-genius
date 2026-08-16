@@ -1,4 +1,5 @@
 import Proofs.Erdos85FiniteDropWitnesses
+import Proofs.Erdos85PolarityEven
 
 /-!
 # Cofinal plane-order drops imply the negation of Erdős 85
@@ -66,5 +67,52 @@ theorem planeOrderDropWitness_seven
     exact boza48_degreeSeven_witness
   · norm_num
     exact hno49
+
+/-- For characteristic-two finite fields, the entire `(q² - 1)` existence
+half is already supplied by the deleted polarity graph.  Consequently only
+the square-order nonexistence statement remains to produce a drop. -/
+theorem planeOrderDropWitness_of_evenField
+    (K : Type*) [Field K] [Finite K] [DecidableEq K]
+    (hq : 3 ≤ Nat.card K) (h2 : (2 : K) = 0)
+    (hnoSquare : ¬ C4FreeMinDegreeWitness
+      (Nat.card K * Nat.card K) (Nat.card K)) :
+    PlaneOrderDropWitness (Nat.card K) := by
+  exact ⟨hq,
+    Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus K h2,
+    hnoSquare⟩
+
+universe u
+
+/-- A cofinal supply of finite characteristic-two fields for which the
+square-order witness is impossible.  The polarity construction discharges
+the companion existence theorem automatically. -/
+def CofinalEvenFieldSquareExclusion : Prop :=
+  ∀ N : Nat,
+    ∃ (K : Type u) (_ : Field K) (_ : Finite K) (_ : DecidableEq K),
+      N ≤ Nat.card K * Nat.card K - 1 ∧
+      3 ≤ Nat.card K ∧
+      (2 : K) = 0 ∧
+      ¬ C4FreeMinDegreeWitness (Nat.card K * Nat.card K) (Nat.card K)
+
+theorem cofinalPlaneOrderDropFamily_of_evenFieldSquareExclusion
+    (h : CofinalEvenFieldSquareExclusion) :
+    CofinalPlaneOrderDropFamily := by
+  intro N
+  obtain ⟨K, fieldK, finiteK, decEqK, hN, hq, h2, hno⟩ := h N
+  letI : Field K := fieldK
+  letI : Finite K := finiteK
+  letI : DecidableEq K := decEqK
+  exact ⟨Nat.card K, hN,
+    planeOrderDropWitness_of_evenField K hq h2 hno⟩
+
+theorem erdos85Negation_of_evenFieldSquareExclusion
+    (h : CofinalEvenFieldSquareExclusion) : Erdos85Negation :=
+  erdos85Negation_of_cofinalPlaneOrderDropFamily
+    (cofinalPlaneOrderDropFamily_of_evenFieldSquareExclusion h)
+
+theorem not_erdos85Question_of_evenFieldSquareExclusion
+    (h : CofinalEvenFieldSquareExclusion) : ¬ Erdos85Question :=
+  not_erdos85Question_of_cofinalPlaneOrderDropFamily
+    (cofinalPlaneOrderDropFamily_of_evenFieldSquareExclusion h)
 
 end Erdos85
