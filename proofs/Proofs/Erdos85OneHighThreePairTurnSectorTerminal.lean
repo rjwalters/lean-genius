@@ -50,6 +50,18 @@ theorem exists_oneHighThreePairTurn_sourcePair_trichotomy
       oneHighRootPair (p.branchLabel a) ≠ oneHighRootPair (p.branchLabel b) ∧
       oneHighRootPair (p.branchLabel b) ≠ oneHighRootPair (p.branchLabel c) ∧
       oneHighRootPair (p.branchLabel a) ≠ oneHighRootPair (p.branchLabel c) ∧
+      Odd (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x))
+        (oneHighCanonicalLabelPair (p.branchLabel a) (p.branchLabel b))) ∧
+      Odd (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x))
+        (oneHighCanonicalLabelPair (p.branchLabel b) (p.branchLabel c))) ∧
       ∃ qAB : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
           p.outer_degree p.mate p.mate_adj a b,
         ∃ qBC : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
@@ -96,6 +108,8 @@ theorem exists_oneHighThreePairTurn_sourcePair_trichotomy
     by simpa [hlabels.1, hlabels.2.1] using hab,
     by simpa [hlabels.2.1, hlabels.2.2] using hbc,
     by simpa [hlabels.1, hlabels.2.2] using hac,
+    by simpa [hlabels.1, hlabels.2.1, oneHighCanonicalLabelPair] using hAB.2,
+    by simpa [hlabels.2.1, hlabels.2.2, oneHighCanonicalLabelPair] using hBC.2,
     qAB, qBC, hsources⟩
 
 /-- A graph-level normal form for the residual three-pair-turn terminal.  It
@@ -115,6 +129,18 @@ structure OneHighPinnedThreePairTurn
     oneHighRootPair (p.branchLabel c)
   ac_pair_ne : oneHighRootPair (p.branchLabel a) ≠
     oneHighRootPair (p.branchLabel c)
+  ab_odd : Odd (exchangedMissPairMultiplicity
+    (oneHighGlobalInternalMate G hfree v)
+    (fun x => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj x))
+    (oneHighCanonicalLabelPair (p.branchLabel a) (p.branchLabel b)))
+  bc_odd : Odd (exchangedMissPairMultiplicity
+    (oneHighGlobalInternalMate G hfree v)
+    (fun x => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj x))
+    (oneHighCanonicalLabelPair (p.branchLabel b) (p.branchLabel c)))
   qAB : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
     p.outer_degree p.mate p.mate_adj a b
   qBC : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
@@ -304,7 +330,7 @@ theorem oneHighThreePairTurnSectorExcluded_of_pinned
   intro G _ _ _ hfree hmin hHigh v hv p
   dsimp only
   intro hturn
-  obtain ⟨a, b, c, hab, hbc, hac, qAB, qBC, hsources⟩ :=
+  obtain ⟨a, b, c, hab, hbc, hac, hAB, hBC, qAB, qBC, hsources⟩ :=
     exists_oneHighThreePairTurn_sourcePair_trichotomy G hfree hv p hturn
   have habv : a ≠ b := fun e => hab (congrArg
     (fun x => oneHighRootPair (p.branchLabel x)) e)
@@ -317,7 +343,7 @@ theorem oneHighThreePairTurnSectorExcluded_of_pinned
     apply consecutive_minMax_ne habv hbcv hacv
     rw [← qAB.key_eq, ← qBC.key_eq, heq]
   exact h G inferInstance inferInstance inferInstance hfree hmin hHigh hv p
-    ⟨⟨a, b, c, hab, hbc, hac, qAB, qBC, hsourceNe, hsources⟩⟩
+    ⟨⟨a, b, c, hab, hbc, hac, hAB, hBC, qAB, qBC, hsourceNe, hsources⟩⟩
 
 end
 

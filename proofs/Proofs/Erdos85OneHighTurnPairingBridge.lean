@@ -1,5 +1,6 @@
 import Proofs.Erdos85OneHighThreePairTurnSectorTerminal
 import Proofs.Erdos85OneHighGraphPairingRefinement
+import Proofs.Erdos85OneHighGraphPairingMultiplicity
 import Proofs.Erdos85MatchingMultiplicityRelabel
 
 /-! # Concrete turn witnesses inside graph source pairings -/
@@ -336,6 +337,40 @@ theorem OneHighPinnedThreePairTurn.sourcePairing_singleton_or_both_saturated
           G hfree hv p (p.branchLabel T.qAB.sourceEdge.1)).trans hedgeAB
       · simpa [rowBC] using (oneHighGraphSourcePairing_length
           G hfree hv p (p.branchLabel T.qBC.sourceEdge.1)).trans hedgeBC
+
+/-- The pinned `AB` edge remains odd in the concrete graph-induced global
+pairing refinement. -/
+theorem OneHighPinnedThreePairTurn.graphPairingMultiplicity_ab_odd
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    Odd (oneHighPairingRefinementMultiplicity
+      (oneHighGraphPairingRefinement G hfree hv p)
+      (oneHighCanonicalLabelPair (p.branchLabel T.a) (p.branchLabel T.b))) := by
+  have hab : p.branchLabel T.a ≠ p.branchLabel T.b := fun h =>
+    T.ab_pair_ne (congrArg oneHighRootPair h)
+  rw [oneHighGraphPairingRefinementMultiplicity_eq_global G hfree hv p _
+    (min_lt_max.mpr hab)]
+  exact T.ab_odd
+
+/-- The pinned `BC` edge remains odd in the concrete graph-induced global
+pairing refinement. -/
+theorem OneHighPinnedThreePairTurn.graphPairingMultiplicity_bc_odd
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    Odd (oneHighPairingRefinementMultiplicity
+      (oneHighGraphPairingRefinement G hfree hv p)
+      (oneHighCanonicalLabelPair (p.branchLabel T.b) (p.branchLabel T.c))) := by
+  have hbc : p.branchLabel T.b ≠ p.branchLabel T.c := fun h =>
+    T.bc_pair_ne (congrArg oneHighRootPair h)
+  rw [oneHighGraphPairingRefinementMultiplicity_eq_global G hfree hv p _
+    (min_lt_max.mpr hbc)]
+  exact T.bc_odd
 
 end
 
