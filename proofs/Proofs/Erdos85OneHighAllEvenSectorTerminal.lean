@@ -4,6 +4,7 @@ import Proofs.Erdos85OneHighSameMissCountingBridge
 import Proofs.Erdos85OneHighSameMissParityConsumer
 import Proofs.Erdos85QuotientCutParity
 import Proofs.Erdos85OneHighRepeatedSourceCapacity
+import Proofs.Erdos85OneHighGraphPairingRefinement
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -644,6 +645,54 @@ theorem OneHighReciprocalSameMissEdges.source_other_missCount_eq_zero
     Finset.single_le_sum (fun _ _ => Nat.zero_le _) hwErase
   rw [herase] at hle
   exact Nat.eq_zero_of_le_zero hle
+
+/-- The reciprocal diagonal label pair occurs in the canonical graph pairing
+row of the source branch. -/
+theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p) :
+    (p.branchLabel q.u, p.branchLabel q.u) ∈
+      oneHighGraphSourcePairing G hfree hv p (p.branchLabel q.s) := by
+  let M := oneHighInternalMate G hfree v q.s
+  let rootLabel := oneHighMatchedMissLabel G hfree hv p.external_empty
+    p.outer_degree p.mate p.mate_adj q.s
+  let label := fun z => p.branchLabel (rootLabel z)
+  have hne : M q.x ≠ q.x := degreeOneMate_ne _ _ q.x
+  have hmem : (min (label q.x) (label (M q.x)),
+      max (label q.x) (label (M q.x))) ∈
+      matchingPairingListSorted M label := by
+    rcases lt_or_gt_of_ne hne with hlt | hgt
+    · have hm : M q.x ∈ matchingEdgeSources M := by
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        simpa [degreeOneMate_involutive] using hlt
+      simpa [degreeOneMate_involutive, min_comm, max_comm] using
+        canonicalPair_mem_matchingPairingListSorted_of_mem_source M label hm
+    · exact canonicalPair_mem_matchingPairingListSorted_of_mem_source M label
+        (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hgt⟩)
+  rw [oneHighGraphSourcePairing, p.branchLabel.symm_apply_apply]
+  simpa [M, rootLabel, label, q.x_misses_u, q.x_mate_misses_u] using hmem
+
+/-- In a positive profile, the canonical pairing row is literally the
+singleton reciprocal diagonal pair. -/
+theorem OneHighReciprocalSameMissEdges.source_pairing_eq_singleton
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    oneHighGraphSourcePairing G hfree hv p (p.branchLabel q.s) =
+      [(p.branchLabel q.u, p.branchLabel q.u)] := by
+  have hlen := oneHighGraphSourcePairing_length G hfree hv p
+    (p.branchLabel q.s)
+  rw [q.source_internalEdges_eq_one hprofile] at hlen
+  obtain ⟨a, ha⟩ := List.length_eq_one_iff.mp hlen
+  rw [ha] at q ⊢
+  simpa using q.source_diagonalPair_mem_pairing
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
