@@ -116,20 +116,22 @@ theorem not_erdos85Question_of_evenFieldSquareExclusion
   not_erdos85Question_of_cofinalPlaneOrderDropFamily
     (cofinalPlaneOrderDropFamily_of_evenFieldSquareExclusion h)
 
-/-- The exact uniform square-order obstruction along binary prime powers. -/
+/-- The exact uniform square-order obstruction along binary prime powers from
+`q = 8` onward.  The omitted `k = 2` case is genuinely false: `f(16) = 5`,
+so order 16 has a C4-free minimum-degree-four witness. -/
 def BinarySquareOrderExclusion : Prop :=
-  ∀ k : Nat, 2 ≤ k →
+  ∀ k : Nat, 3 ≤ k →
     ¬ C4FreeMinDegreeWitness ((2 ^ k) * (2 ^ k)) (2 ^ k)
 
 theorem cofinalEvenFieldSquareExclusion_of_binary
     (h : BinarySquareOrderExclusion) :
     CofinalEvenFieldSquareExclusion.{0} := by
   intro N
-  let k := N + 2
+  let k := N + 3
   let K := GaloisField 2 k
   letI : DecidableEq K := Classical.decEq K
   have hk : k ≠ 0 := by simp [k]
-  have hk2 : 2 ≤ k := by simp [k]
+  have hk3 : 3 ≤ k := by simp [k]
   have hcard : Nat.card K = 2 ^ k := GaloisField.card 2 k hk
   have hpow : 2 * k ≤ 2 ^ k :=
     Nat.mul_le_pow (a := 2) (by decide : 2 ≠ 1) k
@@ -145,7 +147,7 @@ theorem cofinalEvenFieldSquareExclusion_of_binary
     exact hNq.trans (Nat.le_mul_of_pos_right _ (by positivity))
   · omega
   · exact CharP.cast_eq_zero K 2
-  · simpa [hcard] using h k hk2
+  · simpa [hcard] using h k hk3
 
 theorem erdos85Negation_of_binarySquareOrderExclusion
     (h : BinarySquareOrderExclusion) : Erdos85Negation :=
