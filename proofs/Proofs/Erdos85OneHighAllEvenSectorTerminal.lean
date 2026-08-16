@@ -991,6 +991,118 @@ theorem adj_of_distinct_oneHighMatchedBranchVertices_of_internalEdges_eq_one
     (G.induce (secondLayerBranch G v s))
     (degree_induce_secondLayerBranch_le_one G hfree v s) y
 
+/-- The chosen edge exhausts the matched vertices of a one-edge branch. -/
+theorem oneHighMatchedBranchVertex_eq_or_internalMate_of_internalEdges_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    {p : OneHighRawV2Presentation G hfree v}
+    {s : {r : V // r ∈ G.neighborSet v}}
+    (hedge : oneHighFamilyInternalEdges p.profile (p.branchLabel s) = 1)
+    (a z : OneHighMatchedBranchVertices G v s) :
+    z = a ∨ z = oneHighInternalMate G hfree v s a := by
+  let am := oneHighInternalMate G hfree v s a
+  have hamNe : am ≠ a := degreeOneMate_ne _ _ a
+  have hcard : Fintype.card (OneHighMatchedBranchVertices G v s) = 2 := by
+    rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+    have hcount := p.matched_count (p.branchLabel s)
+    simpa [hedge] using hcount
+  have hpairCard : ({a, am} : Finset
+      (OneHighMatchedBranchVertices G v s)).card = 2 := by
+    simp [hamNe.symm]
+  have hunivCard : (Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v s)).card = 2 := by
+    simpa using hcard
+  have hpairUniv : ({a, am} : Finset
+      (OneHighMatchedBranchVertices G v s)) = Finset.univ := by
+    apply Finset.eq_of_subset_of_card_le (by simp)
+    rw [hpairCard, hunivCard]
+  have hzMem : z ∈ ({a, am} : Finset
+      (OneHighMatchedBranchVertices G v s)) := by
+    rw [hpairUniv]
+    exact Finset.mem_univ z
+  simpa [am] using hzMem
+
+/-- If the reciprocal target branch has one internal edge, its selected
+reverse edge exhausts that branch and both endpoints miss the source. -/
+theorem OneHighReciprocalSameMissEdges.reverse_missCount_eq_two_of_internalEdges_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (huEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1) :
+    highBranchMissCount G v q.u q.s = 2 := by
+  have husFar : q.s ∈ ((Finset.univ.erase q.u).erase (p.mate q.u)) := by
+    have hum : q.u ≠ p.mate q.s := (Finset.mem_erase.mp q.u_far).1
+    have hus : q.u ≠ q.s :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp q.u_far).2).1
+    apply Finset.mem_erase.mpr
+    refine ⟨?_, Finset.mem_erase.mpr ⟨hus.symm, Finset.mem_univ _⟩⟩
+    intro hsm
+    apply hum
+    exact (p.mate_involutive q.u).symm.trans (congrArg p.mate hsm).symm
+  have hfilter : ((Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v q.u)).filter fun z =>
+        oneHighMatchedMissLabel G hfree hv p.external_empty p.outer_degree
+          p.mate p.mate_adj q.u z = q.s) = Finset.univ := by
+    apply Finset.eq_univ_of_forall
+    intro z
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_univ z, ?_⟩
+    rcases oneHighMatchedBranchVertex_eq_or_internalMate_of_internalEdges_eq_one
+      huEdge q.a z with rfl | rfl
+    · exact q.a_misses_s
+    · exact q.a_mate_misses_s
+  have hfiber := card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+      q.u q.s husFar
+  rw [hfilter] at hfiber
+  rw [← hfiber]
+  change Fintype.card (OneHighMatchedBranchVertices G v q.u) = 2
+  rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+  have hcount := p.matched_count (p.branchLabel q.u)
+  simpa [huEdge] using hcount
+
+/-- In the one-edge reciprocal-target case, the reverse miss row is supported
+only at the canonical source branch. -/
+theorem OneHighReciprocalSameMissEdges.reverse_other_missCount_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (huEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.u).erase (p.mate q.u)))
+    (hws : w ≠ q.s) :
+    highBranchMissCount G v q.u w = 0 := by
+  let S := ((Finset.univ.erase q.u).erase (p.mate q.u))
+  let f := fun z => highBranchMissCount G v q.u z
+  have hrow := p.sum_far_missCount G hfree hv q.u
+  have hsum : ∑ z ∈ S, f z = 2 := by
+    simpa [S, f, huEdge] using hrow
+  have hsFar : q.s ∈ S := by
+    have hum : q.u ≠ p.mate q.s := (Finset.mem_erase.mp q.u_far).1
+    have hus : q.u ≠ q.s :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp q.u_far).2).1
+    apply Finset.mem_erase.mpr
+    refine ⟨?_, Finset.mem_erase.mpr ⟨hus.symm, Finset.mem_univ _⟩⟩
+    intro hsm
+    apply hum
+    exact (p.mate_involutive q.u).symm.trans (congrArg p.mate hsm).symm
+  have hdecomp := Finset.sum_erase_add S f hsFar
+  have herase : ∑ z ∈ S.erase q.s, f z = 0 := by
+    have hmiss : f q.s = 2 :=
+      q.reverse_missCount_eq_two_of_internalEdges_eq_one huEdge
+    rw [hmiss, hsum] at hdecomp
+    omega
+  have hwErase : w ∈ S.erase q.s := Finset.mem_erase.mpr ⟨hws, hw⟩
+  have hle : f w ≤ ∑ z ∈ S.erase q.s, f z :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) hwErase
+  rw [herase] at hle
+  exact Nat.eq_zero_of_le_zero hle
+
 /-- In a one-edge target branch, the forced distinct nonadjacent targets of
 the canonical source edge cannot both be internally matched. -/
 theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_with_isolated
