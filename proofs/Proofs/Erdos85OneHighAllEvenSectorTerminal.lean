@@ -947,6 +947,102 @@ theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_nonadjacent
       exact Or.inr q.s.2)
   exact hyNeS hyEqS
 
+/-- A branch with exactly one internal edge has only two matched vertices, so
+any two distinct matched vertices are the endpoints of that edge. -/
+theorem adj_of_distinct_oneHighMatchedBranchVertices_of_internalEdges_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    {p : OneHighRawV2Presentation G hfree v}
+    {s : {r : V // r ∈ G.neighborSet v}}
+    (hedge : oneHighFamilyInternalEdges p.profile (p.branchLabel s) = 1)
+    (y y' : OneHighMatchedBranchVertices G v s) (hyy' : y ≠ y') :
+    G.Adj y.1.1 y'.1.1 := by
+  have hcard : Fintype.card (OneHighMatchedBranchVertices G v s) = 2 := by
+    rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+    have hcount := p.matched_count (p.branchLabel s)
+    simpa [hedge] using hcount
+  let ym := oneHighInternalMate G hfree v s y
+  have hymNe : ym ≠ y := degreeOneMate_ne _ _ y
+  have hpairCard : ({y, ym} : Finset
+      (OneHighMatchedBranchVertices G v s)).card = 2 := by
+    simp [hymNe.symm]
+  have hunivCard : (Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v s)).card = 2 := by
+    simpa using hcard
+  have hpairUniv : ({y, ym} : Finset
+      (OneHighMatchedBranchVertices G v s)) = Finset.univ := by
+    apply Finset.eq_of_subset_of_card_le (by simp)
+    rw [hpairCard, hunivCard]
+  have hy'mem : y' ∈ ({y, ym} : Finset
+      (OneHighMatchedBranchVertices G v s)) := by
+    rw [hpairUniv]
+    exact Finset.mem_univ y'
+  have hy'eq : y' = ym := by
+    rcases Finset.mem_insert.mp hy'mem with hy'y | hy'ym
+    · exact False.elim (hyy' hy'y.symm)
+    · exact Finset.mem_singleton.mp hy'ym
+  rw [hy'eq]
+  change G.Adj y.1.1
+    (degreeOneMate (G.induce (secondLayerBranch G v s))
+      (degree_induce_secondLayerBranch_le_one G hfree v s) y).1.1
+  simpa using degreeOneMate_adj
+    (G.induce (secondLayerBranch G v s))
+    (degree_induce_secondLayerBranch_le_one G hfree v s) y
+
+/-- In a one-edge target branch, the forced distinct nonadjacent targets of
+the canonical source edge cannot both be internally matched. -/
+theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_with_isolated
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u)
+    (hwEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel w) = 1) :
+    ∃ y y' : V,
+      y ∈ secondLayerBranch G v w ∧
+      y' ∈ secondLayerBranch G v w ∧
+      G.Adj q.x.1.1 y ∧
+      G.Adj (oneHighInternalMate G hfree v q.s q.x).1.1 y' ∧
+      y ≠ y' ∧ ¬ G.Adj y y' ∧
+      ((G.neighborFinset y ∩ secondLayerBranch G v w).card = 0 ∨
+       (G.neighborFinset y' ∩ secondLayerBranch G v w).card = 0) := by
+  obtain ⟨y, y', hy, hy', hxy, hmy', hne, hnonadj⟩ :=
+    q.exists_source_crossTargets_nonadjacent hprofile hw hwu
+  refine ⟨y, y', hy, hy', hxy, hmy', hne, hnonadj, ?_⟩
+  by_contra hboth
+  push Not at hboth
+  have hyLe := degree_induce_secondLayerBranch_le_one G hfree v w ⟨y, hy⟩
+  have hy'Le := degree_induce_secondLayerBranch_le_one G hfree v w ⟨y', hy'⟩
+  rw [degree_induce_secondLayerBranch_eq_card_inter] at hyLe hy'Le
+  have hyLe' : (G.neighborFinset y ∩
+      secondLayerBranch G v w).card ≤ 1 := by simpa using hyLe
+  have hy'Le' : (G.neighborFinset y' ∩
+      secondLayerBranch G v w).card ≤ 1 := by simpa using hy'Le
+  have hyCard : (G.neighborFinset y ∩ secondLayerBranch G v w).card = 1 := by
+    omega
+  have hy'Card : (G.neighborFinset y' ∩ secondLayerBranch G v w).card = 1 := by
+    omega
+  have hyOne : (G.induce (secondLayerBranch G v w)).degree ⟨y, hy⟩ = 1 := by
+    rw [degree_induce_secondLayerBranch_eq_card_inter]
+    exact hyCard
+  have hy'One : (G.induce (secondLayerBranch G v w)).degree ⟨y', hy'⟩ = 1 := by
+    rw [degree_induce_secondLayerBranch_eq_card_inter]
+    exact hy'Card
+  let Y : OneHighMatchedBranchVertices G v w := ⟨⟨y, hy⟩, hyOne⟩
+  let Y' : OneHighMatchedBranchVertices G v w := ⟨⟨y', hy'⟩, hy'One⟩
+  have hYY' : Y ≠ Y' := by
+    intro h
+    apply hne
+    exact congrArg (fun z : OneHighMatchedBranchVertices G v w => z.1.1) h
+  exact hnonadj
+    (adj_of_distinct_oneHighMatchedBranchVertices_of_internalEdges_eq_one
+      hwEdge Y Y' hYY')
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
