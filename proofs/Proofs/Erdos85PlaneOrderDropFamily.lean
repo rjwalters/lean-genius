@@ -16,6 +16,23 @@ namespace Erdos85
 
 open Filter
 
+theorem erdos85Negation_iff_not_question :
+    Erdos85Negation ↔ ¬ Erdos85Question := by
+  constructor
+  · intro hneg hquestion
+    obtain ⟨N, hN⟩ := eventually_atTop.1 hquestion
+    obtain ⟨n, hn, hdrop⟩ := hneg N
+    exact (Nat.not_lt_of_ge (hN n hn)) hdrop
+  · intro hnot N
+    by_contra hnone
+    apply hnot
+    apply eventually_atTop.2
+    refine ⟨N, fun n hn => ?_⟩
+    by_contra hmono
+    have hdrop : minDegreeForC4 (n + 1) < minDegreeForC4 n :=
+      Nat.lt_of_not_ge hmono
+    exact hnone ⟨n, hn, hdrop⟩
+
 structure PlaneOrderDropWitness (q : Nat) : Prop where
   three_le : 3 ≤ q
   previous : C4FreeMinDegreeWitness (q * q - 1) q
