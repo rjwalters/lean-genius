@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighPairingRefinement
+import Proofs.Erdos85OneHighV2InventoryOrbitCheck
 
 /-! # Compact parity states of pairing refinements -/
 
@@ -22,6 +23,15 @@ def oneHighPairingRefinementParityMask :
       oneHighSourcePairingParityMask pairs ^^^
         oneHighPairingRefinementParityMask refinement
 
+/-- Sort followed by adjacent deduplication, avoiding the quadratic scan of
+`List.eraseDups` on large reachable-state layers. -/
+def oneHighParityStateDedup (states : List Nat) : List Nat :=
+  oneHighAdjacentDedup states.mergeSort
+
+@[simp] theorem mem_oneHighParityStateDedup (mask : Nat) (states : List Nat) :
+    mask ∈ oneHighParityStateDedup states ↔ mask ∈ states := by
+  simp [oneHighParityStateDedup, oneHighAdjacentDedup_mem_iff]
+
 /-- Reachable global parity masks, deduplicated after every source choice.
 Unlike `oneHighChooseEach`, this never materializes duplicate refinement
 prefixes that induce the same parity state. -/
@@ -29,9 +39,9 @@ def oneHighChooseEachParityStates :
     List (List (List OneHighLabelPair)) → List Nat
   | [] => [0]
   | choices :: remaining =>
-      (choices.flatMap fun choice =>
+      oneHighParityStateDedup (choices.flatMap fun choice =>
         (oneHighChooseEachParityStates remaining).map fun suffixMask =>
-          oneHighSourcePairingParityMask choice ^^^ suffixMask).eraseDups
+          oneHighSourcePairingParityMask choice ^^^ suffixMask)
 
 /-- Compact parity-state image of all compatible pairings of a miss table. -/
 def oneHighPairingParityStates
@@ -56,7 +66,7 @@ theorem mem_oneHighChooseEachParityStates_iff
         oneHighChooseEach, exists_eq_left, oneHighPairingRefinementParityMask]
       exact eq_comm
   | cons choices remaining ih =>
-      simp only [oneHighChooseEachParityStates, List.mem_eraseDups,
+      simp only [oneHighChooseEachParityStates, mem_oneHighParityStateDedup,
         List.mem_flatMap, List.mem_map, ih]
       constructor
       · rintro ⟨choice, hchoice, suffixMask,
