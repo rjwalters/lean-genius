@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineT0NormalizationCore
+import Proofs.Erdos85OrderFortyNineSevenHighCanonicalCapstone
 
 /-!
 # Two-cube certificate bridge for the `h = 7, t = 0` representative
@@ -109,5 +110,22 @@ theorem sevenHighT0_excluded_of_cubeOne_lratCheck
     have hfalse := hunsat assignment
     rw [hsat] at hfalse
     contradiction
+
+theorem sevenHighT0CoreExcluded_to_canonical
+    (h : SevenHighT0CoreExcluded) :
+    SevenHighCanonicalRepresentativeExcluded 0 0 := by
+  intro edges hedges
+  apply h edges
+  simpa [sevenHighT0Masks] using hedges
+
+/-- Aggregate-facing one-certificate endpoint. -/
+theorem sevenHighT0_canonicalExcluded_of_cubeOne_lratCheck
+    (hsound : SevenHighT0CubeOneCnfSound)
+    (proof : Array LRAT.IntAction)
+    (hcheck : LRAT.check proof
+      (orderFortyNineGeneratedH7T0CubeSatCnf 1)) :
+    SevenHighCanonicalRepresentativeExcluded 0 0 :=
+  sevenHighT0CoreExcluded_to_canonical
+    (sevenHighT0_excluded_of_cubeOne_lratCheck hsound proof hcheck)
 
 end Erdos85
