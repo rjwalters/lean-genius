@@ -792,6 +792,82 @@ theorem OneHighReciprocalSameMissEdges.source_reverse_commonBranch_unique
       (by simp) (by simp) hww'
   exact Finset.disjoint_left.mp hdisj hyBranch hy'Branch
 
+/-- Root branches containing a common neighbor of a fixed source/reverse
+endpoint pair. -/
+def OneHighReciprocalSameMissEdges.collisionBranches
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    (b : OneHighMatchedBranchVertices G v q.u) :
+    Finset {r : V // r ∈ G.neighborSet v} :=
+  Finset.univ.filter fun w =>
+    (G.neighborFinset z.1.1 ∩ G.neighborFinset b.1.1 ∩
+      secondLayerBranch G v w).Nonempty
+
+theorem OneHighReciprocalSameMissEdges.collisionBranches_card_le_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    (b : OneHighMatchedBranchVertices G v q.u) :
+    (q.collisionBranches z b).card ≤ 1 := by
+  apply Finset.card_le_one.mpr
+  intro w hw w' hw'
+  have hwNonempty := (Finset.mem_filter.mp hw).2
+  have hw'Nonempty := (Finset.mem_filter.mp hw').2
+  obtain ⟨y, hy⟩ := hwNonempty
+  obtain ⟨y', hy'⟩ := hw'Nonempty
+  have hyp := Finset.mem_inter.mp hy
+  have hyp' := Finset.mem_inter.mp hy'
+  exact q.source_reverse_commonBranch_unique z b
+    ⟨y, hyp.2, (G.mem_neighborFinset z.1.1 y).mp
+      (Finset.mem_inter.mp hyp.1).1,
+      (G.mem_neighborFinset b.1.1 y).mp (Finset.mem_inter.mp hyp.1).2⟩
+    ⟨y', hyp'.2, (G.mem_neighborFinset z.1.1 y').mp
+      (Finset.mem_inter.mp hyp'.1).1,
+      (G.mem_neighborFinset b.1.1 y').mp (Finset.mem_inter.mp hyp'.1).2⟩
+
+/-- Across the two endpoints of each reciprocal internal edge, at most four
+root branches can contain any source/reverse endpoint collision. -/
+theorem OneHighReciprocalSameMissEdges.all_collisionBranches_card_le_four
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p) :
+    let xm := oneHighInternalMate G hfree v q.s q.x
+    let am := oneHighInternalMate G hfree v q.u q.a
+    ((((q.collisionBranches q.x q.a) ∪ q.collisionBranches q.x am) ∪
+      q.collisionBranches xm q.a) ∪ q.collisionBranches xm am).card ≤ 4 := by
+  dsimp only
+  have hxa := q.collisionBranches_card_le_one q.x q.a
+  have hxam := q.collisionBranches_card_le_one q.x
+    (oneHighInternalMate G hfree v q.u q.a)
+  have hma := q.collisionBranches_card_le_one
+    (oneHighInternalMate G hfree v q.s q.x) q.a
+  have hmam := q.collisionBranches_card_le_one
+    (oneHighInternalMate G hfree v q.s q.x)
+    (oneHighInternalMate G hfree v q.u q.a)
+  have h₁ := Finset.card_union_le
+    (q.collisionBranches q.x q.a)
+    (q.collisionBranches q.x (oneHighInternalMate G hfree v q.u q.a))
+  have h₂ := Finset.card_union_le
+    ((q.collisionBranches q.x q.a) ∪
+      q.collisionBranches q.x (oneHighInternalMate G hfree v q.u q.a))
+    (q.collisionBranches (oneHighInternalMate G hfree v q.s q.x) q.a)
+  have h₃ := Finset.card_union_le
+    (((q.collisionBranches q.x q.a) ∪
+      q.collisionBranches q.x (oneHighInternalMate G hfree v q.u q.a)) ∪
+      q.collisionBranches (oneHighInternalMate G hfree v q.s q.x) q.a)
+    (q.collisionBranches (oneHighInternalMate G hfree v q.s q.x)
+      (oneHighInternalMate G hfree v q.u q.a))
+  omega
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
