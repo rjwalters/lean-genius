@@ -100,4 +100,76 @@ theorem oneHighRefinementHasKnownParitySector_eq_true_iff
   simp only [oneHighRefinementHasKnownParitySector, Bool.or_eq_true]
   tauto
 
+def OneHighRefinementAllOffDiagonalEvenProp
+    (refinement : List (List OneHighLabelPair)) : Prop :=
+  ∀ pair ∈ oneHighCanonicalLabelPairs, pair.1 ≠ pair.2 →
+    Even (oneHighPairingRefinementMultiplicity refinement pair)
+
+def OneHighRefinementOddMateKeyProp
+    (refinement : List (List OneHighLabelPair)) : Prop :=
+  ∃ i : Fin 4,
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair
+        (oneHighStandardPairLow i) (oneHighStandardPairHigh i)))
+
+def OneHighRefinementOddThreePairTurnProp
+    (refinement : List (List OneHighLabelPair)) : Prop :=
+  ∃ a b c : Fin 8,
+    oneHighLabelPairColor a ≠ oneHighLabelPairColor b ∧
+    oneHighLabelPairColor b ≠ oneHighLabelPairColor c ∧
+    oneHighLabelPairColor a ≠ oneHighLabelPairColor c ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair a b)) ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair b c))
+
+def OneHighRefinementOddCrossBlockProp
+    (refinement : List (List OneHighLabelPair)) : Prop :=
+  ∃ i j : Fin 4, i < j ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair
+        (oneHighStandardPairLow i) (oneHighStandardPairLow j))) ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair
+        (oneHighStandardPairLow i) (oneHighStandardPairHigh j))) ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair
+        (oneHighStandardPairHigh i) (oneHighStandardPairLow j))) ∧
+    Odd (oneHighPairingRefinementMultiplicity refinement
+      (oneHighCanonicalLabelPair
+        (oneHighStandardPairHigh i) (oneHighStandardPairHigh j)))
+
+def OneHighRefinementKnownParitySectorProp
+    (refinement : List (List OneHighLabelPair)) : Prop :=
+  OneHighRefinementAllOffDiagonalEvenProp refinement ∨
+  OneHighRefinementOddMateKeyProp refinement ∨
+  OneHighRefinementOddThreePairTurnProp refinement ∨
+  OneHighRefinementOddCrossBlockProp refinement
+
+theorem oneHighRefinementHasKnownParitySector_eq_true_iff_prop
+    (refinement : List (List OneHighLabelPair)) :
+    oneHighRefinementHasKnownParitySector refinement = true ↔
+      OneHighRefinementKnownParitySectorProp refinement := by
+  rw [OneHighRefinementKnownParitySectorProp,
+    OneHighRefinementAllOffDiagonalEvenProp,
+    OneHighRefinementOddMateKeyProp,
+    OneHighRefinementOddThreePairTurnProp,
+    OneHighRefinementOddCrossBlockProp,
+    oneHighRefinementHasKnownParitySector_eq_true_iff,
+    oneHighRefinementAllOffDiagonalEven_eq_true_iff,
+    oneHighRefinementHasOddMateKey_eq_true_iff,
+    oneHighRefinementHasOddThreePairTurn_eq_true_iff,
+    oneHighRefinementHasOddCrossBlock_eq_true_iff]
+
+/-- A table-level universal coverage certificate, applied to the actual
+compatible refinement, yields the graph-ready Prop sector disjunction. -/
+theorem oneHighTableKnownParitySectorsCovered_prop
+    {profile : Nat} {table : OneHighMissTable}
+    (hcovered : oneHighTableKnownParitySectorsCovered profile table = true)
+    {refinement : List (List OneHighLabelPair)}
+    (hrefinement : refinement ∈ oneHighPairingRefinements profile table) :
+    OneHighRefinementKnownParitySectorProp refinement := by
+  apply (oneHighRefinementHasKnownParitySector_eq_true_iff_prop refinement).mp
+  exact oneHighTableKnownParitySectorsCovered_sound hcovered hrefinement
+
 end Erdos85
