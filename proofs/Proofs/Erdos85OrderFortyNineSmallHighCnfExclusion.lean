@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineSmallHighProfileMasks
+import Proofs.Erdos85OrderFortyNineSmallHighCanonicalCapstone
 import Proofs.Erdos85OrderFortyNineThreeHighCnfSemantics
 import Proofs.Erdos85OrderFortyNineFiveHighCnfSemantics
 
@@ -53,5 +54,47 @@ theorem false_of_orderFortyNine_fiveHighRepresentative_lrat
   apply false_of_orderFortyNine_generated_h5_lrat hc
     (fiveHighRepresentativeMasks_high_lsb_zero index) proof
   simpa [orderFortyNineGeneratedH5SatCnf_eq_canonical] using hcheck
+
+theorem threeHighCanonicalRepresentativeExcluded_of_lrat
+    (index : Nat) (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedCanonicalSatCnf 3
+        (threeHighRepresentativeMasks index))) :
+    ThreeHighCanonicalRepresentativeExcluded index := by
+  intro edges hc
+  exact false_of_orderFortyNine_threeHighRepresentative_lrat hc proof hcheck
+
+theorem fiveHighCanonicalRepresentativeExcluded_of_lrat
+    (index : Nat) (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedCanonicalSatCnf 5
+        (fiveHighRepresentativeMasks index))) :
+    FiveHighCanonicalRepresentativeExcluded index := by
+  intro edges hc
+  exact false_of_orderFortyNine_fiveHighRepresentative_lrat hc proof hcheck
+
+theorem orderFortyNineStrataExcluded_smallHigh_of_lratChecks
+    (hcover3 : ∀ blocks, blocks ≤ 1 → ThreeHighCanonicalGraphCover blocks)
+    (hcover5 : ∀ blocks, blocks ≤ 2 → FiveHighCanonicalGraphCover blocks)
+    (hchecks3 : ∀ index, index ≤ 1 →
+      ∃ proof : Array Std.Tactic.BVDecide.LRAT.IntAction,
+        Std.Tactic.BVDecide.LRAT.check proof
+          (orderFortyNineGeneratedCanonicalSatCnf 3
+            (threeHighRepresentativeMasks index)))
+    (hchecks5 : ∀ index, index ≤ 2 →
+      ∃ proof : Array Std.Tactic.BVDecide.LRAT.IntAction,
+        Std.Tactic.BVDecide.LRAT.check proof
+          (orderFortyNineGeneratedCanonicalSatCnf 5
+            (fiveHighRepresentativeMasks index))) :
+    OrderFortyNineStratumExcluded 3 ∧ OrderFortyNineStratumExcluded 5 := by
+  constructor
+  · apply orderFortyNineStratumExcluded_three_of_canonical hcover3
+    intro index hindex
+    obtain ⟨proof, hcheck⟩ := hchecks3 index hindex
+    exact threeHighCanonicalRepresentativeExcluded_of_lrat index proof hcheck
+  · apply orderFortyNineStratumExcluded_five_of_canonical hcover5
+    intro index hindex
+    obtain ⟨proof, hcheck⟩ := hchecks5 index hindex
+    exact fiveHighCanonicalRepresentativeExcluded_of_lrat index proof hcheck
 
 end Erdos85
