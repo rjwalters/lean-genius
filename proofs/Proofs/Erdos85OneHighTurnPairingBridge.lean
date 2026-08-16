@@ -226,6 +226,76 @@ theorem OneHighPinnedThreePairTurn.graphRelevantMissTable_hasSaturatedTurnRow
       p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far)
         (hcolor.trans ha))
 
+/-- For every pinned turn, either one witnessed owner row is completely
+reconstructed as its singleton key, or both owner rows are saturated
+two-entry rows.  This covers all six literal owner branches uniformly. -/
+theorem OneHighPinnedThreePairTurn.sourcePairing_singleton_or_both_saturated
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    oneHighGraphSourcePairing G hfree hv p
+        (p.branchLabel T.qAB.sourceEdge.1) =
+        [oneHighCanonicalLabelPair (p.branchLabel T.a) (p.branchLabel T.b)] ∨
+      oneHighGraphSourcePairing G hfree hv p
+        (p.branchLabel T.qBC.sourceEdge.1) =
+        [oneHighCanonicalLabelPair (p.branchLabel T.b) (p.branchLabel T.c)] ∨
+      ((oneHighGraphSourcePairing G hfree hv p
+          (p.branchLabel T.qAB.sourceEdge.1)).length = 2 ∧
+        (oneHighGraphSourcePairing G hfree hv p
+          (p.branchLabel T.qBC.sourceEdge.1)).length = 2) := by
+  let rowAB := oneHighGraphSourcePairing G hfree hv p
+    (p.branchLabel T.qAB.sourceEdge.1)
+  let rowBC := oneHighGraphSourcePairing G hfree hv p
+    (p.branchLabel T.qBC.sourceEdge.1)
+  let pairAB := oneHighCanonicalLabelPair
+    (p.branchLabel T.a) (p.branchLabel T.b)
+  let pairBC := oneHighCanonicalLabelPair
+    (p.branchLabel T.b) (p.branchLabel T.c)
+  have hAB : pairAB ∈ rowAB :=
+    T.qAB.canonicalPair_mem_graphSourcePairing G hfree hv p
+  have hBC : pairBC ∈ rowBC :=
+    T.qBC.canonicalPair_mem_graphSourcePairing G hfree hv p
+  have hedgeAB : oneHighFamilyInternalEdges p.profile
+      (p.branchLabel T.qAB.sourceEdge.1) = 1 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel T.qAB.sourceEdge.1) = 2 := by
+    unfold oneHighFamilyInternalEdges
+    split <;> simp
+  have hedgeBC : oneHighFamilyInternalEdges p.profile
+      (p.branchLabel T.qBC.sourceEdge.1) = 1 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel T.qBC.sourceEdge.1) = 2 := by
+    unfold oneHighFamilyInternalEdges
+    split <;> simp
+  rcases hedgeAB with hedgeAB | hedgeAB
+  · left
+    have hlen : rowAB.length = 1 := by
+      simpa [rowAB] using (oneHighGraphSourcePairing_length
+        G hfree hv p (p.branchLabel T.qAB.sourceEdge.1)).trans hedgeAB
+    obtain ⟨x, hx⟩ := List.length_eq_one_iff.mp hlen
+    change rowAB = [pairAB]
+    rw [hx] at hAB ⊢
+    have heq : pairAB = x := by simpa using hAB
+    simpa [heq]
+  · rcases hedgeBC with hedgeBC | hedgeBC
+    · right; left
+      have hlen : rowBC.length = 1 := by
+        simpa [rowBC] using (oneHighGraphSourcePairing_length
+          G hfree hv p (p.branchLabel T.qBC.sourceEdge.1)).trans hedgeBC
+      obtain ⟨x, hx⟩ := List.length_eq_one_iff.mp hlen
+      change rowBC = [pairBC]
+      rw [hx] at hBC ⊢
+      have heq : pairBC = x := by simpa using hBC
+      simpa [heq]
+    · right; right
+      constructor
+      · simpa [rowAB] using (oneHighGraphSourcePairing_length
+          G hfree hv p (p.branchLabel T.qAB.sourceEdge.1)).trans hedgeAB
+      · simpa [rowBC] using (oneHighGraphSourcePairing_length
+          G hfree hv p (p.branchLabel T.qBC.sourceEdge.1)).trans hedgeBC
+
 end
 
 end Erdos85
