@@ -10,6 +10,26 @@ open SimpleGraph
 
 noncomputable section
 
+private theorem consecutive_minMax_ne
+    {L : Type*} [LinearOrder L] {a b c : L}
+    (hab : a ≠ b) (hbc : b ≠ c) (hac : a ≠ c) :
+    (min a b, max a b) ≠ (min b c, max b c) := by
+  intro hpair
+  rcases le_total a b with habLe | hbaLe <;>
+    rcases le_total b c with hbcLe | hcbLe
+  · rw [min_eq_left habLe, max_eq_right habLe,
+      min_eq_left hbcLe, max_eq_right hbcLe] at hpair
+    exact hab (Prod.mk.inj hpair).1
+  · rw [min_eq_left habLe, max_eq_right habLe,
+      min_eq_right hcbLe, max_eq_left hcbLe] at hpair
+    exact hac (Prod.mk.inj hpair).1
+  · rw [min_eq_right hbaLe, max_eq_left hbaLe,
+      min_eq_left hbcLe, max_eq_right hbcLe] at hpair
+    exact hac (Prod.mk.inj hpair).2
+  · rw [min_eq_right hbaLe, max_eq_left hbaLe,
+      min_eq_right hcbLe, max_eq_left hcbLe] at hpair
+    exact hbc (Prod.mk.inj hpair).1
+
 /-- The relabeled three-pair turn supplied by the structural capstone pulls
 back to two genuine odd root-label edges.  Hence it has two concrete internal
 matching-edge sources satisfying the exact source-pair trichotomy. -/
@@ -97,6 +117,7 @@ structure OneHighPinnedThreePairTurn
     p.outer_degree p.mate p.mate_adj a b
   qBC : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
     p.outer_degree p.mate p.mate_adj b c
+  source_edges_ne : qAB.sourceEdge ≠ qBC.sourceEdge
   source_sector :
     oneHighRootPair (p.branchLabel qAB.sourceEdge.1) =
         oneHighRootPair (p.branchLabel qBC.sourceEdge.1) ∨
@@ -128,8 +149,18 @@ theorem oneHighThreePairTurnSectorExcluded_of_pinned
   intro hturn
   obtain ⟨a, b, c, hab, hbc, hac, qAB, qBC, hsources⟩ :=
     exists_oneHighThreePairTurn_sourcePair_trichotomy G hfree hv p hturn
+  have habv : a ≠ b := fun e => hab (congrArg
+    (fun x => oneHighRootPair (p.branchLabel x)) e)
+  have hbcv : b ≠ c := fun e => hbc (congrArg
+    (fun x => oneHighRootPair (p.branchLabel x)) e)
+  have hacv : a ≠ c := fun e => hac (congrArg
+    (fun x => oneHighRootPair (p.branchLabel x)) e)
+  have hsourceNe : qAB.sourceEdge ≠ qBC.sourceEdge := by
+    intro heq
+    apply consecutive_minMax_ne habv hbcv hacv
+    rw [← qAB.key_eq, ← qBC.key_eq, heq]
   exact h G inferInstance inferInstance inferInstance hfree hmin hHigh hv p
-    ⟨⟨a, b, c, hab, hbc, hac, qAB, qBC, hsources⟩⟩
+    ⟨⟨a, b, c, hab, hbc, hac, qAB, qBC, hsourceNe, hsources⟩⟩
 
 end
 
