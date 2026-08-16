@@ -31,22 +31,22 @@ def orderFortyNineThreeHighDistOneC2Masks : Array Nat :=
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 theorem orderFortyNineThreeHighDistTwoMasks_size :
-    orderFortyNineThreeHighDistTwoMasks.size = 49 := by native_decide
+    orderFortyNineThreeHighDistTwoMasks.size = 49 := by decide
 
 theorem orderFortyNineThreeHighDistOneC2Masks_size :
-    orderFortyNineThreeHighDistOneC2Masks.size = 49 := by native_decide
+    orderFortyNineThreeHighDistOneC2Masks.size = 49 := by decide
 
 theorem orderFortyNineThreeHighDistTwoMasks_high_zero :
     OrderFortyNineVariableHighMasksZero (3 : Fin 50)
       orderFortyNineThreeHighDistTwoMasks := by
   intro a w
-  fin_cases a <;> fin_cases w <;> native_decide
+  fin_cases a <;> fin_cases w <;> decide
 
 theorem orderFortyNineThreeHighDistOneC2Masks_high_zero :
     OrderFortyNineVariableHighMasksZero (3 : Fin 50)
       orderFortyNineThreeHighDistOneC2Masks := by
   intro a w
-  fin_cases a <;> fin_cases w <;> native_decide
+  fin_cases a <;> fin_cases w <;> decide
 
 theorem orderFortyNineThreeHighDistTwoMasks_partitionExcluded :
     OrderFortyNineVariableHighPartitionExcluded (3 : Fin 50)
