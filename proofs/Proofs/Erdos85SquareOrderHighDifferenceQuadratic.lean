@@ -1,3 +1,4 @@
+import Proofs.Erdos85SquareOrderHighIncidence
 import Proofs.Erdos85SquareOrderHighRootKernel
 
 /-!
@@ -39,6 +40,25 @@ private theorem adjMatrix_mulVec_adjRow_eq_card_common
       simp [SimpleGraph.adjMatrix_apply, G.adj_comm, mul_comm]
     _ = _ := by
       rw [adjMatrix_sq_apply_eq_card_common]
+
+private theorem adjMatrixRat_mulVec_adjRow_eq_card_common
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (a x : V) :
+    (G.adjMatrix ℚ).mulVec (fun y => G.adjMatrix ℚ a y) x =
+      ((G.neighborFinset a ∩ G.neighborFinset x).card : ℚ) := by
+  simp only [Matrix.mulVec, dotProduct, SimpleGraph.adjMatrix_apply]
+  simp_rw [ite_mul, one_mul, zero_mul]
+  have hterm : ∀ y : V,
+      (if G.Adj x y then if G.Adj a y then (1 : ℚ) else 0 else 0) =
+        if G.Adj x y ∧ G.Adj a y then 1 else 0 := by
+    intro y
+    split_ifs <;> simp_all
+  simp_rw [hterm]
+  rw [Finset.sum_boole]
+  norm_cast
+  apply congrArg Finset.card
+  ext y
+  simp [neighborFinset_eq_filter, and_comm]
 
 /-- Adjacency sends a high incidence-row difference to `d` times the
 corresponding coordinate difference. -/
@@ -142,20 +162,28 @@ theorem squareOrder_adjMatrix_sq_mulVec_highRowDifference
 
 /-- Over the rationals, the coordinate differences from a fixed base point
 to the other points of a finite set are linearly independent. -/
+def coordinateDifferenceRat
+    {V : Type*} [DecidableEq V] (a b : V) : V → ℚ :=
+  fun x => (if x = a then 1 else 0) - (if x = b then 1 else 0)
+
+def squareOrderHighRowDifferenceRat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) : V → ℚ :=
+  fun x => G.adjMatrix ℚ a x - G.adjMatrix ℚ b x
+
 theorem coordinateDifferencesRat_linearIndependent
     {V : Type*} [Fintype V] [DecidableEq V]
     (H : Finset V) (a : V) :
     LinearIndependent ℚ
-      (fun b : {x // x ∈ H.erase a} => fun x : V =>
-        (if x = b.1 then (1 : ℚ) else 0) -
-          if x = a then (1 : ℚ) else 0) := by
+      (fun b : {x // x ∈ H.erase a} => coordinateDifferenceRat b.1 a) := by
   classical
   rw [Fintype.linearIndependent_iff]
   intro g hg b
   have hb := congrFun hg b.1
   have hba : b.1 ≠ a := by
     exact (Finset.mem_erase.mp b.2).1
-  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hb
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply,
+    coordinateDifferenceRat] at hb
   have hsingle :
       (∑ i : {x // x ∈ H.erase a},
         g i * (if b.1 = i.1 then (1 : ℚ) else 0)) = g b := by
@@ -177,6 +205,107 @@ theorem coordinateDifferencesRat_linearIndependent
     simp [hba]
   rw [hsingle, hbase, sub_zero] at hb
   exact hb
+
+/-- Rational form of the exchange map from an incidence-row difference to
+the matching coordinate difference. -/
+theorem squareOrder_adjMatrixRat_mulVec_highRowDifferenceRat
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    {a b : V} (ha : G.degree a = d + 1) (hb : G.degree b = d + 1) :
+    (G.adjMatrix ℚ).mulVec (squareOrderHighRowDifferenceRat G a b) =
+      fun x => (d : ℚ) * coordinateDifferenceRat a b x := by
+  funext x
+  simp only [squareOrderHighRowDifferenceRat, Matrix.mulVec, dotProduct]
+  simp_rw [mul_sub]
+  rw [Finset.sum_sub_distrib]
+  rw [show (∑ y, G.adjMatrix ℚ x y * G.adjMatrix ℚ a y) =
+      ((G.neighborFinset a ∩ G.neighborFinset x).card : ℚ) by
+    simpa [Matrix.mulVec, dotProduct, G.adj_comm, mul_comm] using
+      adjMatrixRat_mulVec_adjRow_eq_card_common G a x]
+  rw [show (∑ y, G.adjMatrix ℚ x y * G.adjMatrix ℚ b y) =
+      ((G.neighborFinset b ∩ G.neighborFinset x).card : ℚ) by
+    simpa [Matrix.mulVec, dotProduct, G.adj_comm, mul_comm] using
+      adjMatrixRat_mulVec_adjRow_eq_card_common G b x]
+  have hcommonA :
+      (G.neighborFinset a ∩ G.neighborFinset x).card =
+        if x = a then d + 1 else 1 := by
+    by_cases hxa : x = a
+    · subst x
+      simp [G.card_neighborFinset_eq_degree, ha]
+    · rw [if_neg hxa]
+      exact squareOrder_card_common_highRoot_eq_one
+        G hfree hd hmin hcard ha (Ne.symm hxa)
+  have hcommonB :
+      (G.neighborFinset b ∩ G.neighborFinset x).card =
+        if x = b then d + 1 else 1 := by
+    by_cases hxb : x = b
+    · subst x
+      simp [G.card_neighborFinset_eq_degree, hb]
+    · rw [if_neg hxb]
+      exact squareOrder_card_common_highRoot_eq_one
+        G hfree hd hmin hcard hb (Ne.symm hxb)
+  rw [hcommonA, hcommonB]
+  simp only [coordinateDifferenceRat]
+  split_ifs <;> push_cast <;> ring
+
+/-- Fixing one high base vertex, the rational high incidence-row differences
+to all other high vertices are linearly independent. -/
+theorem squareOrder_highRowDifferencesRat_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    LinearIndependent ℚ
+      (fun b : {x // x ∈ (squareOrderHighVertices G d).erase a} =>
+        squareOrderHighRowDifferenceRat G b.1 a) := by
+  classical
+  let H := squareOrderHighVertices G d
+  let rows := fun b : {x // x ∈ H.erase a} =>
+    squareOrderHighRowDifferenceRat G b.1 a
+  let coords := fun b : {x // x ∈ H.erase a} =>
+    coordinateDifferenceRat b.1 a
+  have hcoord : LinearIndependent ℚ coords := by
+    simpa [H, coords] using coordinateDifferencesRat_linearIndependent H a
+  rw [Fintype.linearIndependent_iff]
+  intro g hg b
+  have hdegA : G.degree a = d + 1 := (Finset.mem_filter.mp ha).2
+  have hdeg : ∀ i : {x // x ∈ H.erase a}, G.degree i.1 = d + 1 := by
+    intro i
+    exact (Finset.mem_filter.mp (Finset.mem_of_mem_erase i.2)).2
+  have hmapped := congrArg (Matrix.mulVecLin (G.adjMatrix ℚ)) hg
+  simp only [map_sum, map_smul, map_zero] at hmapped
+  change (∑ i, g i • (G.adjMatrix ℚ).mulVec (rows i)) = 0 at hmapped
+  have hexchange : ∀ i : {x // x ∈ H.erase a},
+      (G.adjMatrix ℚ).mulVec (rows i) = fun x => (d : ℚ) * coords i x := by
+    intro i
+    simpa [rows, coords] using
+      squareOrder_adjMatrixRat_mulVec_highRowDifferenceRat
+        G hfree hd hmin hcard (hdeg i) hdegA
+  simp_rw [hexchange] at hmapped
+  have hdq : (d : ℚ) ≠ 0 := by exact_mod_cast (by omega : d ≠ 0)
+  have hcoordsum : ∑ i, g i • coords i = 0 := by
+    funext x
+    have hx := congrFun hmapped x
+    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hx ⊢
+    have hfactor :
+        (∑ i, g i * ((d : ℚ) * coords i x)) =
+          (d : ℚ) * ∑ i, g i * coords i x := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      ring
+    rw [hfactor] at hx
+    exact (mul_eq_zero.mp hx).resolve_left hdq
+  exact (Fintype.linearIndependent_iff.mp hcoord g hcoordsum b)
 
 end
 
