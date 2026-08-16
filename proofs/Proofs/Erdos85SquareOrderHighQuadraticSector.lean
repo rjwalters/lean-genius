@@ -239,6 +239,81 @@ theorem squareOrder_highQuadraticSector_span_invariant
           (Submodule.subset_span (Set.mem_range_self (Sum.inl b)))
   exact hle hx
 
+/-- The exchanged high-difference family, regarded as a basis of its rational
+span. -/
+noncomputable def squareOrderHighQuadraticSectorBasis
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    Module.Basis
+      (Sum
+        {x // x ∈ (squareOrderHighVertices G d).erase a}
+        {x // x ∈ (squareOrderHighVertices G d).erase a})
+      ℚ
+      (Submodule.span ℚ
+        (Set.range (squareOrderHighQuadraticSectorFamily
+          G (squareOrderHighVertices G d) a))) :=
+  Module.Basis.span (squareOrder_highQuadraticSectorFamily_linearIndependent
+    G hfree hd hmin hcover hcard ha)
+
+/-- In the natural sector basis, adjacency sends the left basis vector to the
+right basis vector. -/
+theorem squareOrder_highQuadraticSector_restrict_basis_inl
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d)
+    (b : {x // x ∈ (squareOrderHighVertices G d).erase a}) :
+    LinearMap.restrict (G.adjMatrix ℚ).toLin'
+        (squareOrder_highQuadraticSector_span_invariant
+          G hfree hd hmin hcard ha)
+        (squareOrderHighQuadraticSectorBasis
+          G hfree hd hmin hcover hcard ha (Sum.inl b)) =
+      squareOrderHighQuadraticSectorBasis
+        G hfree hd hmin hcover hcard ha (Sum.inr b) := by
+  apply Subtype.ext
+  simpa [squareOrderHighQuadraticSectorBasis] using
+    squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inl
+      G (squareOrderHighVertices G d) a b
+
+/-- In the natural sector basis, adjacency sends the right basis vector to
+the scalar multiple by d of the left basis vector. -/
+theorem squareOrder_highQuadraticSector_restrict_basis_inr
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d)
+    (b : {x // x ∈ (squareOrderHighVertices G d).erase a}) :
+    LinearMap.restrict (G.adjMatrix ℚ).toLin'
+        (squareOrder_highQuadraticSector_span_invariant
+          G hfree hd hmin hcard ha)
+        (squareOrderHighQuadraticSectorBasis
+          G hfree hd hmin hcover hcard ha (Sum.inr b)) =
+      (d : ℚ) • squareOrderHighQuadraticSectorBasis
+        G hfree hd hmin hcover hcard ha (Sum.inl b) := by
+  apply Subtype.ext
+  simpa [squareOrderHighQuadraticSectorBasis] using
+    squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
+      G hfree hd hmin hcard (squareOrderHighVertices G d) a b
+        (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2
+        (Finset.mem_filter.mp ha).2
+
 theorem squareOrder_highQuadraticSector_le_finrank_quadraticDefect_ker
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
