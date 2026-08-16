@@ -370,6 +370,90 @@ theorem OneHighCrossBlockSourceConfiguration.saturatedOwner_or_mateCollision
   · exact Or.inl (saturated C.q₁₀ C.q₁₁ hne hsame)
   · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨hne, hmate⟩)))))
 
+/-- At least one of the four concrete cross-block edges is owned by a
+two-edge branch.  Same-owner collisions force this by capacity; mate-owner
+collisions force it by the canonical profile symmetry of a mate pair. -/
+theorem OneHighCrossBlockSourceConfiguration.has_saturated_sourceEdge
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    oneHighFamilyInternalEdges p.profile
+        (p.branchLabel C.q₀₀.sourceEdge.1) = 2 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel C.q₀₁.sourceEdge.1) = 2 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel C.q₁₀.sourceEdge.1) = 2 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel C.q₁₁.sourceEdge.1) = 2 := by
+  have same {a b : {z : V // z ∈ G.neighborSet v}}
+      (q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b)
+      {c d : {z : V // z ∈ G.neighborSet v}}
+      (r : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj c d)
+      (hne : q.sourceEdge ≠ r.sourceEdge)
+      (howner : q.sourceEdge.1 = r.sourceEdge.1) :
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel q.sourceEdge.1) = 2 := by
+    apply oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner
+      G hfree hv p
+    · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+        q.sourceEdge_mem
+    · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+        r.sourceEdge_mem
+    · exact hne
+    · exact howner
+  have mate {a b : {z : V // z ∈ G.neighborSet v}}
+      (q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b)
+      {c d : {z : V // z ∈ G.neighborSet v}}
+      (r : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj c d)
+      (howner : q.sourceEdge.1 = p.mate r.sourceEdge.1) :
+      oneHighFamilyInternalEdges p.profile
+          (p.branchLabel q.sourceEdge.1) = 2 ∨
+        oneHighFamilyInternalEdges p.profile
+          (p.branchLabel r.sourceEdge.1) = 2 := by
+    rcases oneHighFamilyInternalEdges_eq_two_or_mate_eq_two p.profile
+        (p.branchLabel r.sourceEdge.1) with hr | hmate
+    · exact Or.inr hr
+    · left
+      have hlabel : p.branchLabel q.sourceEdge.1 =
+          oneHighStandardMate (p.branchLabel r.sourceEdge.1) := by
+        rw [howner, p.branch_mate]
+      rwa [hlabel]
+  rcases C.distinct_same_or_mate_collision G hfree hv p with
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩ |
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩ |
+    ⟨hne, hsame | hmate⟩ | ⟨hne, hsame | hmate⟩
+  · exact Or.inl (same C.q₀₀ C.q₀₁ hne hsame)
+  · rcases mate C.q₀₀ C.q₀₁ hmate with h | h
+    · exact Or.inl h
+    · exact Or.inr (Or.inl h)
+  · exact Or.inl (same C.q₀₀ C.q₁₀ hne hsame)
+  · rcases mate C.q₀₀ C.q₁₀ hmate with h | h
+    · exact Or.inl h
+    · exact Or.inr (Or.inr (Or.inl h))
+  · exact Or.inl (same C.q₀₀ C.q₁₁ hne hsame)
+  · rcases mate C.q₀₀ C.q₁₁ hmate with h | h
+    · exact Or.inl h
+    · exact Or.inr (Or.inr (Or.inr h))
+  · exact Or.inr (Or.inl (same C.q₀₁ C.q₁₀ hne hsame))
+  · rcases mate C.q₀₁ C.q₁₀ hmate with h | h
+    · exact Or.inr (Or.inl h)
+    · exact Or.inr (Or.inr (Or.inl h))
+  · exact Or.inr (Or.inl (same C.q₀₁ C.q₁₁ hne hsame))
+  · rcases mate C.q₀₁ C.q₁₁ hmate with h | h
+    · exact Or.inr (Or.inl h)
+    · exact Or.inr (Or.inr (Or.inr h))
+  · exact Or.inr (Or.inr (Or.inl
+      (same C.q₁₀ C.q₁₁ hne hsame)))
+  · rcases mate C.q₁₀ C.q₁₁ hmate with h | h
+    · exact Or.inr (Or.inr (Or.inl h))
+    · exact Or.inr (Or.inr (Or.inr h))
+
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
