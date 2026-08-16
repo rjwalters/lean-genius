@@ -18,11 +18,20 @@ def threeRootedWedgeSource
   | Sum.inr (Sum.inl i) => (eB.symm i.succ).1
   | Sum.inr (Sum.inr i) => (eC.symm i.succ).1
 
+def orderFortyNineDistTwoFirstTarget : Fin 8 → Fin 49 :=
+  ![3, 4, 5, 6, 7, 8, 9, 10]
+
+def orderFortyNineDistTwoSecondTarget : Fin 8 → Fin 49 :=
+  ![3, 11, 14, 15, 16, 17, 18, 19]
+
+def orderFortyNineDistTwoThirdTarget : Fin 8 → Fin 49 :=
+  ![3, 12, 20, 21, 22, 23, 24, 25]
+
 def orderFortyNineDistTwoWedgeTarget :
     ThreeRootedWedgeIndex → Fin 49
-  | Sum.inl i => ![3, 4, 5, 6, 7, 8, 9, 10] i
-  | Sum.inr (Sum.inl i) => ![11, 14, 15, 16, 17, 18, 19] i
-  | Sum.inr (Sum.inr i) => ![12, 20, 21, 22, 23, 24, 25] i
+  | Sum.inl i => orderFortyNineDistTwoFirstTarget i
+  | Sum.inr (Sum.inl i) => orderFortyNineDistTwoSecondTarget i.succ
+  | Sum.inr (Sum.inr i) => orderFortyNineDistTwoThirdTarget i.succ
 
 theorem orderFortyNineDistTwoWedgeTarget_injective :
     Function.Injective orderFortyNineDistTwoWedgeTarget := by
@@ -138,7 +147,8 @@ theorem exists_orderFortyNine_equiv_of_threeRootedWedge
     apply eA.injective
     simp [hrootA]
   simpa [threeRootedWedgeSource, orderFortyNineDistTwoWedgeTarget,
-    hsymm] using hE (Sum.inl (0 : Fin 8))
+    orderFortyNineDistTwoFirstTarget, hsymm] using
+      hE (Sum.inl (0 : Fin 8))
 
 end
 
