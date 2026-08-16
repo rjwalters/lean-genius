@@ -21,6 +21,12 @@ def orderFortyNinePinnedMatchingClauses
     [if ab ∈ matching then orderFortyNineEdgeLiteral ab.1 ab.2
       else -orderFortyNineEdgeLiteral ab.1 ab.2]).toArray
 
+theorem orderFortyNinePinnedMatchingClauses_size
+    (vertices : List (Fin 49)) (matching : List (Fin 49 × Fin 49)) :
+    (orderFortyNinePinnedMatchingClauses vertices matching).size =
+      (orderFortyNineStrictPairs vertices).length := by
+  simp [orderFortyNinePinnedMatchingClauses]
+
 def orderFortyNineThreeHighDistTwoMatchingClauses : Array DimacsClause :=
   orderFortyNinePinnedMatchingClauses
       [3, 4, 5, 6, 7, 8, 9, 10]
@@ -107,22 +113,38 @@ def orderFortyNineGeneratedThreeHighDistOneC1ScoutCnf : CNF Nat :=
     orderFortyNineThreeHighDistOneC1GeometryClauses
 
 theorem orderFortyNineThreeHighDistTwoMatchingClauses_size :
-    orderFortyNineThreeHighDistTwoMatchingClauses.size = 84 := by native_decide
+    orderFortyNineThreeHighDistTwoMatchingClauses.size = 84 := by
+  simp only [orderFortyNineThreeHighDistTwoMatchingClauses, Array.size_append,
+    orderFortyNinePinnedMatchingClauses_size]
+  decide +kernel
 
 theorem orderFortyNineThreeHighDistTwoRootEmptyClauses_size :
-    orderFortyNineThreeHighDistTwoRootEmptyClauses.size = 24 := by native_decide
+    orderFortyNineThreeHighDistTwoRootEmptyClauses.size = 24 := by
+  simp [orderFortyNineThreeHighDistTwoRootEmptyClauses]
 
 theorem orderFortyNineThreeHighDistTwoGeometryClauses_size :
-    orderFortyNineThreeHighDistTwoGeometryClauses.size = 108 := by native_decide
+    orderFortyNineThreeHighDistTwoGeometryClauses.size = 108 := by
+  simp only [orderFortyNineThreeHighDistTwoGeometryClauses, Array.size_append,
+    orderFortyNineThreeHighDistTwoMatchingClauses_size,
+    orderFortyNineThreeHighDistTwoRootEmptyClauses_size]
 
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_size :
-    orderFortyNineThreeHighDistOneC2GeometryClauses.size = 84 := by native_decide
+    orderFortyNineThreeHighDistOneC2GeometryClauses.size = 84 := by
+  simp only [orderFortyNineThreeHighDistOneC2GeometryClauses, Array.size_append,
+    orderFortyNinePinnedMatchingClauses_size]
+  decide +kernel
 
 theorem orderFortyNineThreeHighDistOneB1GeometryClauses_size :
-    orderFortyNineThreeHighDistOneB1GeometryClauses.size = 84 := by decide
+    orderFortyNineThreeHighDistOneB1GeometryClauses.size = 84 := by
+  simp only [orderFortyNineThreeHighDistOneB1GeometryClauses, Array.size_append,
+    orderFortyNinePinnedMatchingClauses_size]
+  decide +kernel
 
 theorem orderFortyNineThreeHighDistOneC1GeometryClauses_size :
-    orderFortyNineThreeHighDistOneC1GeometryClauses.size = 84 := by decide
+    orderFortyNineThreeHighDistOneC1GeometryClauses.size = 84 := by
+  simp only [orderFortyNineThreeHighDistOneC1GeometryClauses, Array.size_append,
+    orderFortyNinePinnedMatchingClauses_size]
+  decide +kernel
 
 theorem orderFortyNineGeneratedThreeHighDistTwoScoutCnf_clause_count :
     orderFortyNineGeneratedThreeHighDistTwoScoutCnf.clauses.size = 1328291 := by
