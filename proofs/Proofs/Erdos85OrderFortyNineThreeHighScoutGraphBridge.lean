@@ -7,6 +7,25 @@ namespace Erdos85
 
 open SimpleGraph
 
+/-- Relabeling transports an exact neighborhood by the same vertex
+equivalence.  This is the set-level companion to
+`orderFortyNineRelabeledGraph_adj`. -/
+theorem orderFortyNineRelabeledGraph_neighborFinset
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : V ≃ Fin 49) (x : V) :
+    (orderFortyNineRelabeledGraph G E).neighborFinset (E x) =
+      (G.neighborFinset x).map E.toEmbedding := by
+  ext i
+  rw [SimpleGraph.mem_neighborFinset, orderFortyNineRelabeledGraph_adj]
+  simp only [E.symm_apply_apply, Finset.mem_map,
+    SimpleGraph.mem_neighborFinset]
+  constructor
+  · intro h
+    exact ⟨E.symm i, h, E.apply_symm_apply i⟩
+  · rintro ⟨y, hy, rfl⟩
+    simpa using hy
+
 def OrderFortyNineGraphPinnedMatchingRealized
     (G : SimpleGraph (Fin 49))
     (vertices : List (Fin 49))
@@ -63,6 +82,25 @@ theorem orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_of_neighborFinset
         Fin.ext_iff] at hz
     · exact h
   · exact fun h => Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h)))))
+
+/-- Coordinate form of the distance-two exact pinned-neighborhood package.
+Once its seven named vertices receive the scout coordinates, the relabeled
+triple root has exactly the neighborhood required by the root units. -/
+theorem orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_of_pinned
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (E : V ≃ Fin 49)
+    {sStar v1 v2 v3 t x2 x3 l3 : V}
+    (hN : G.neighborFinset sStar = {v1, v2, v3, t, x2, x3, l3})
+    (hs : E sStar = 3) (hv1 : E v1 = 0) (hv2 : E v2 = 1)
+    (hv3 : E v3 = 2) (ht : E t = 4) (hx2 : E x2 = 11)
+    (hx3 : E x3 = 12) (hl3 : E l3 = 13) :
+    OrderFortyNineThreeHighDistTwoRootEmptyGraphRealized
+      (orderFortyNineRelabeledGraph G E) := by
+  apply orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_of_neighborFinset
+  rw [← hs, orderFortyNineRelabeledGraph_neighborFinset, hN]
+  ext z
+  simp [hv1, hv2, hv3, ht, hx2, hx3, hl3]
 
 theorem orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_edges
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
