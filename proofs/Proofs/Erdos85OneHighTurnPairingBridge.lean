@@ -10,6 +10,57 @@ open SimpleGraph
 
 noncomputable section
 
+/-- Executable table signature of a saturated three-root-pair turn row.  The
+source has two internal edges, lies in the fourth root-pair color, and its
+entire endpoint-count row is the `AB, BC` path. -/
+def oneHighTableHasSaturatedTurnRow
+    (profile : Nat) (table : OneHighMissTable) : Bool :=
+  decide (∃ source b a c : Fin 8,
+    oneHighFamilyInternalEdges profile source = 2 ∧
+    table source.val b.val = 2 ∧
+    table source.val a.val = 1 ∧
+    table source.val c.val = 1 ∧
+    (∀ label : Fin 8,
+      table source.val label.val =
+        oneHighLabelPairEndpointCount
+            (oneHighCanonicalLabelPair a b) label +
+          oneHighLabelPairEndpointCount
+            (oneHighCanonicalLabelPair b c) label) ∧
+    oneHighRootPair source ≠ oneHighRootPair a ∧
+    oneHighRootPair source ≠ oneHighRootPair b ∧
+    oneHighRootPair source ≠ oneHighRootPair c ∧
+    oneHighRootPair a ≠ oneHighRootPair b ∧
+    oneHighRootPair b ≠ oneHighRootPair c ∧
+    oneHighRootPair a ≠ oneHighRootPair c)
+
+@[simp] theorem oneHighLabelPairEndpointCount_canonical_left
+    {a b : Fin 8} (h : a ≠ b) :
+    oneHighLabelPairEndpointCount (oneHighCanonicalLabelPair a b) a = 1 := by
+  rcases lt_or_gt_of_ne h with hab | hba
+  · simp [oneHighLabelPairEndpointCount, oneHighCanonicalLabelPair,
+      min_eq_left hab.le, max_eq_right hab.le, h, h.symm]
+  · simp [oneHighLabelPairEndpointCount, oneHighCanonicalLabelPair,
+      min_eq_right hba.le, max_eq_left hba.le, h, h.symm]
+
+@[simp] theorem oneHighLabelPairEndpointCount_canonical_right
+    {a b : Fin 8} (h : a ≠ b) :
+    oneHighLabelPairEndpointCount (oneHighCanonicalLabelPair a b) b = 1 := by
+  rw [oneHighCanonicalLabelPair]
+  rcases lt_or_gt_of_ne h with hab | hba
+  · simp [oneHighLabelPairEndpointCount, min_eq_left hab.le,
+      max_eq_right hab.le, h]
+  · simp [oneHighLabelPairEndpointCount, min_eq_right hba.le,
+      max_eq_left hba.le, h]
+
+@[simp] theorem oneHighLabelPairEndpointCount_canonical_other
+    {a b c : Fin 8} (hca : c ≠ a) (hcb : c ≠ b) :
+    oneHighLabelPairEndpointCount (oneHighCanonicalLabelPair a b) c = 0 := by
+  rcases le_total a b with hab | hba
+  · simp [oneHighLabelPairEndpointCount, oneHighCanonicalLabelPair,
+      min_eq_left hab, max_eq_right hab, hca.symm, hcb.symm]
+  · simp [oneHighLabelPairEndpointCount, oneHighCanonicalLabelPair,
+      min_eq_right hba, max_eq_left hba, hca.symm, hcb.symm]
+
 /-- A concrete odd-label edge witness occurs in the canonical pairing row of
 its actual source branch, after transporting its two root labels through the
 presentation's branch equivalence. -/
@@ -128,6 +179,52 @@ theorem OneHighPinnedThreePairTurn.sameOwner_graphRelevantMissTable_eq
     (fun pair => oneHighLabelPairEndpointCount pair label)
   rw [oneHighPairingEndpointCount, hp.sum_eq]
   simp
+
+/-- A same-owner turn forces the executable saturated-turn signature on the
+relabeled graph table. -/
+theorem OneHighPinnedThreePairTurn.graphRelevantMissTable_hasSaturatedTurnRow
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) :
+    oneHighTableHasSaturatedTurnRow p.profile
+      (oneHighGraphRelevantMissTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) = true := by
+  rw [oneHighTableHasSaturatedTurnRow, decide_eq_true_eq]
+  have hfourth := T.sharpened_source_sector G hfree hv p
+  have hcolor :
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1) := by
+    rw [howner]
+  rcases hfourth with hfourth | hc | ha
+  · have hab : p.branchLabel T.a ≠ p.branchLabel T.b := fun h =>
+      T.ab_pair_ne (congrArg oneHighRootPair h)
+    have hbc : p.branchLabel T.b ≠ p.branchLabel T.c := fun h =>
+      T.bc_pair_ne (congrArg oneHighRootPair h)
+    have hac : p.branchLabel T.a ≠ p.branchLabel T.c := fun h =>
+      T.ac_pair_ne (congrArg oneHighRootPair h)
+    have hrow := T.sameOwner_graphRelevantMissTable_eq G hfree hv p howner
+    refine ⟨p.branchLabel T.qAB.sourceEdge.1,
+      p.branchLabel T.b, p.branchLabel T.a, p.branchLabel T.c,
+      T.sameOwner_internalEdges_eq_two G hfree hv p howner, ?_, ?_, ?_, hrow,
+      hfourth.2.1, hfourth.2.2.1, hfourth.2.2.2,
+      T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne⟩
+    · rw [hrow]
+      simp [hab, hbc]
+    · rw [hrow]
+      simp [hab, hbc, hac, hab.symm, hbc.symm, hac.symm]
+    · rw [hrow]
+      simp [hab, hbc, hac, hab.symm, hbc.symm, hac.symm]
+  · exact False.elim ((oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far)
+        (hcolor.symm.trans hc))
+  · exact False.elim ((oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+      p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far)
+        (hcolor.trans ha))
 
 end
 
