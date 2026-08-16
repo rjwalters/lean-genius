@@ -34,7 +34,7 @@ theorem orderFortyNineThreeHighDistTwoMasks_size :
     orderFortyNineThreeHighDistTwoMasks.size = 49 := by native_decide
 
 theorem orderFortyNineThreeHighDistOneC2Masks_size :
-    orderFortyNineThreeHighDistOneC2Masks.size = 49 := by native_decide
+    orderFortyNineThreeHighDistOneC2Masks.size = 49 := by decide +kernel
 
 theorem orderFortyNineThreeHighDistTwoMasks_high_zero :
     OrderFortyNineVariableHighMasksZero (3 : Fin 50)

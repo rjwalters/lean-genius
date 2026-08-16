@@ -65,7 +65,23 @@ theorem oneHighStandardMate_exists_automorphism_send_zero (k : Fin 8) :
     ∃ τ : Equiv.Perm (Fin 8),
       τ k = 0 ∧
       ∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i) := by
-  native_decide +revert
+  fin_cases k
+  · refine ⟨Equiv.refl _, rfl, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 1, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 2 * Equiv.swap 1 3, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 3 * Equiv.swap 1 2, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 4 * Equiv.swap 1 5, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 5 * Equiv.swap 1 4, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 6 * Equiv.swap 1 7, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 0 7 * Equiv.swap 1 6, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
 
 /-- Rooted form of the eight-point matching normalization.  A distinguished
 vertex may be assigned coordinate zero while retaining the canonical mate
@@ -104,7 +120,21 @@ theorem oneHighStandardMate_exists_automorphism_fix_zero_send_two
     ∃ τ : Equiv.Perm (Fin 8),
       τ 0 = 0 ∧ τ k = 2 ∧
       ∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i) := by
-  native_decide +revert
+  fin_cases k
+  · exact (hk0 rfl).elim
+  · exact (hkmate (by decide)).elim
+  · refine ⟨Equiv.refl _, rfl, rfl, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 3, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 4 * Equiv.swap 3 5, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 5 * Equiv.swap 3 4, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 6 * Equiv.swap 3 7, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
+  · refine ⟨Equiv.swap 2 7 * Equiv.swap 3 6, by decide, by decide, ?_⟩
+    intro i; fin_cases i <;> decide
 
 /-- Two-rooted normalization.  Two distinguished nonadjacent vertices may
 be placed at coordinates zero and two while retaining the canonical matching
