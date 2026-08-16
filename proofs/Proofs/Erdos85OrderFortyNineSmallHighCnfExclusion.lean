@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderFortyNineSmallHighProfileMasks
 import Proofs.Erdos85OrderFortyNineSmallHighCanonicalCapstone
+import Proofs.Erdos85OrderFortyNineThreeHighOneFiber
 import Proofs.Erdos85OrderFortyNineThreeHighCnfSemantics
 import Proofs.Erdos85OrderFortyNineFiveHighCnfSemantics
 
@@ -72,6 +73,18 @@ theorem fiveHighCanonicalRepresentativeExcluded_of_lrat
     FiveHighCanonicalRepresentativeExcluded index := by
   intro edges hc
   exact false_of_orderFortyNine_fiveHighRepresentative_lrat hc proof hcheck
+
+theorem orderFortyNineStratumExcluded_three_of_lratChecks
+    (hchecks : ∀ index, index ≤ 1 →
+      ∃ proof : Array Std.Tactic.BVDecide.LRAT.IntAction,
+        Std.Tactic.BVDecide.LRAT.check proof
+          (orderFortyNineGeneratedCanonicalSatCnf 3
+            (threeHighRepresentativeMasks index))) :
+    OrderFortyNineStratumExcluded 3 := by
+  apply orderFortyNineStratumExcluded_three_of_representativeExclusions
+  intro index hindex
+  obtain ⟨proof, hcheck⟩ := hchecks index hindex
+  exact threeHighCanonicalRepresentativeExcluded_of_lrat index proof hcheck
 
 theorem orderFortyNineStrataExcluded_smallHigh_of_lratChecks
     (hcover3 : ∀ blocks, blocks ≤ 1 → ThreeHighCanonicalGraphCover blocks)
