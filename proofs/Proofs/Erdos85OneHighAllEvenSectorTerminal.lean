@@ -632,13 +632,12 @@ theorem OneHighReciprocalSameMissEdges.source_other_missCount_eq_zero
   let f := fun z => highBranchMissCount G v q.s z
   have hrow := p.sum_far_missCount G hfree hv q.s
   have hsum : ∑ z ∈ S, f z = 2 := by
-    dsimp only [S, f]
-    rw [hrow, q.source_internalEdges_eq_one hprofile]
-    norm_num
+    simpa [S, f, q.source_internalEdges_eq_one hprofile] using hrow
   have hu : q.u ∈ S := q.u_far
   have hdecomp := Finset.sum_erase_add S f hu
   have herase : ∑ z ∈ S.erase q.u, f z = 0 := by
-    rw [q.source_missCount_eq_two hprofile, hsum] at hdecomp
+    have hmiss : f q.u = 2 := q.source_missCount_eq_two hprofile
+    rw [hmiss, hsum] at hdecomp
     omega
   have hwErase : w ∈ S.erase q.u := Finset.mem_erase.mpr ⟨hwu, hw⟩
   have hle : f w ≤ ∑ z ∈ S.erase q.u, f z :=
@@ -660,6 +659,7 @@ theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
   let rootLabel := oneHighMatchedMissLabel G hfree hv p.external_empty
     p.outer_degree p.mate p.mate_adj q.s
   let label := fun z => p.branchLabel (rootLabel z)
+  have hinv : Function.Involutive M := degreeOneMate_involutive _ _
   have hne : M q.x ≠ q.x := degreeOneMate_ne _ _ q.x
   have hmem : (min (label q.x) (label (M q.x)),
       max (label q.x) (label (M q.x))) ∈
@@ -668,8 +668,10 @@ theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
     · have hm : M q.x ∈ matchingEdgeSources M := by
         apply Finset.mem_filter.mpr
         refine ⟨Finset.mem_univ _, ?_⟩
-        simpa [degreeOneMate_involutive] using hlt
-      simpa [degreeOneMate_involutive, min_comm, max_comm] using
+        change M q.x < M (M q.x)
+        rw [hinv q.x]
+        exact hlt
+      simpa [hinv q.x, min_comm, max_comm] using
         canonicalPair_mem_matchingPairingListSorted_of_mem_source M label hm
     · exact canonicalPair_mem_matchingPairingListSorted_of_mem_source M label
         (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hgt⟩)
@@ -691,8 +693,30 @@ theorem OneHighReciprocalSameMissEdges.source_pairing_eq_singleton
     (p.branchLabel q.s)
   rw [q.source_internalEdges_eq_one hprofile] at hlen
   obtain ⟨a, ha⟩ := List.length_eq_one_iff.mp hlen
-  rw [ha] at q ⊢
-  simpa using q.source_diagonalPair_mem_pairing
+  have hmem := q.source_diagonalPair_mem_pairing
+  rw [ha] at hmem ⊢
+  exact congrArg List.singleton (List.mem_singleton.mp hmem).symm
+
+/-- Certificate-facing form of the reconstructed reciprocal row: the source
+zero compatible-pairing search space contains its exact diagonal singleton. -/
+theorem OneHighReciprocalSameMissEdges.source_singleton_mem_compatible
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    [(p.branchLabel q.u, p.branchLabel q.u)] ∈
+      oneHighCompatibleSourcePairings p.profile
+        (oneHighGraphRelevantMissTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+          p.profile)
+        0 := by
+  have hmem := oneHighGraphSourcePairing_mem_compatible G hfree hv p
+    (p.branchLabel q.s)
+  rw [q.source_pairing_eq_singleton hprofile, q.s_label] at hmem
+  exact hmem
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
