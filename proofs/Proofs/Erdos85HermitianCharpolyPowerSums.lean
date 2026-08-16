@@ -62,6 +62,24 @@ theorem complexRootPowerSum_ratAdjCharpoly_eq_trace_pow
   rw [← Matrix.charpoly_map, hadj]
   exact complexRootPowerSum_charpoly_eq_trace_pow (G.adjMatrix ℂ) hherm m
 
+/-- Complex adjacency traces are obtained by casting the corresponding
+integer adjacency traces. -/
+theorem trace_complex_adjMatrix_pow_eq_intCast
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℕ) :
+    Matrix.trace ((G.adjMatrix ℂ) ^ m) =
+      ((Matrix.trace ((G.adjMatrix ℤ) ^ m) : ℤ) : ℂ) := by
+  have hadj : (G.adjMatrix ℤ).map (Int.castRingHom ℂ) = G.adjMatrix ℂ := by
+    ext i j
+    simp [SimpleGraph.adjMatrix_apply]
+  calc
+    Matrix.trace ((G.adjMatrix ℂ) ^ m) =
+        Matrix.trace (((G.adjMatrix ℤ) ^ m).map (Int.castRingHom ℂ)) := by
+      rw [Matrix.map_pow, hadj]
+    _ = ((Matrix.trace ((G.adjMatrix ℤ) ^ m) : ℤ) : ℂ) := by
+      rw [← AddMonoidHom.map_trace]
+      rfl
+
 end
 
 end Erdos85
