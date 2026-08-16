@@ -1,5 +1,7 @@
 import Proofs.Erdos85MatchingPairingRefinement
 import Proofs.Erdos85OneHighGraphMissLabelCounting
+import Proofs.Erdos85OneHighGlobalMissLabelCounting
+import Proofs.Erdos85OneHighPairingRefinementOfFn
 import Proofs.Erdos85OneHighRawPresentation
 import Proofs.Erdos85OneHighV2F3bRawLedger
 
@@ -260,6 +262,106 @@ theorem oneHighGraphSourcePairing_compatible
   rw [oneHighGraphSourcePairing_endpointCount]
   symm
   exact oneHighFamilyTableGet_graphRelevantMissTable _ _ source label
+
+theorem oneHighGraphSourcePairing_mem_shapes
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    oneHighGraphSourcePairing G hfree hv p source ∈
+      oneHighSourcePairingShapes p.profile source := by
+  let s := p.branchLabel.symm source
+  let mate := oneHighInternalMate G hfree v s
+  let label := fun x => p.branchLabel
+    (oneHighMatchedMissLabel G hfree hv p.external_empty p.outer_degree
+      p.mate p.mate_adj s x)
+  let pairs := oneHighGraphSourcePairing G hfree hv p source
+  have hcard : Fintype.card (OneHighMatchedBranchVertices G v s) =
+      2 * oneHighFamilyInternalEdges p.profile source := by
+    calc
+      Fintype.card (OneHighMatchedBranchVertices G v s) =
+          highBranchMatchedCount G v s :=
+        card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount G v s
+      _ = 2 * oneHighFamilyInternalEdges p.profile source := by
+        simpa [s] using p.matched_count source
+  have hlen : pairs.length = oneHighFamilyInternalEdges p.profile source := by
+    have htwo := two_mul_matchingPairingList_length mate label
+      (degreeOneMate_involutive _ _) (degreeOneMate_ne _ _)
+    have hsorted := matchingPairingListSorted_length mate label
+    change pairs.length = _
+    change (matchingPairingListSorted mate label).length = _
+    omega
+  change pairs ∈ oneHighSourcePairingShapes p.profile source
+  by_cases hedge : oneHighFamilyInternalEdges p.profile source = 1
+  · have hpairs : pairs.length = 1 := hlen.trans hedge
+    obtain ⟨pair, hpairsEq⟩ := List.length_eq_one_iff.mp hpairs
+    rw [hpairsEq]
+    apply oneHigh_singleton_mem_sourcePairingShapes hedge
+    apply mem_matchingPairingListSorted_canonical mate label
+    change pair ∈ pairs
+    rw [hpairsEq]
+    simp
+  · have hedgeTwo : oneHighFamilyInternalEdges p.profile source = 2 := by
+      unfold oneHighFamilyInternalEdges at hedge ⊢
+      split <;> simp_all
+    have hpairs : pairs.length = 2 := hlen.trans hedgeTwo
+    obtain ⟨first, second, hpairsEq⟩ := List.length_eq_two.mp hpairs
+    rw [hpairsEq]
+    apply oneHigh_pair_mem_sourcePairingShapes hedge
+    · apply mem_matchingPairingListSorted_canonical mate label
+      change first ∈ pairs
+      rw [hpairsEq]
+      simp
+    · apply mem_matchingPairingListSorted_canonical mate label
+      change second ∈ pairs
+      rw [hpairsEq]
+      simp
+    · have hs := matchingPairingListSorted_pairwise_code mate label
+      change pairs.Pairwise (fun a b =>
+        oneHighLabelPairCode a ≤ oneHighLabelPairCode b) at hs
+      rw [hpairsEq] at hs
+      simpa using hs
+
+theorem oneHighGraphSourcePairing_mem_compatible
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (source : Fin 8) :
+    oneHighGraphSourcePairing G hfree hv p source ∈
+      oneHighCompatibleSourcePairings p.profile
+        (oneHighGraphRelevantMissTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+          p.profile)
+        source := by
+  rw [oneHigh_mem_compatibleSourcePairings_iff]
+  exact ⟨oneHighGraphSourcePairing_mem_shapes G hfree hv p source,
+    oneHighGraphSourcePairing_compatible G hfree hv p source⟩
+
+/-- The actual eight-source refinement induced by the graph presentation. -/
+def oneHighGraphPairingRefinement
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) :
+    List (List OneHighLabelPair) :=
+  List.ofFn fun source : Fin 8 =>
+    oneHighGraphSourcePairing G hfree hv p source
+
+theorem oneHighGraphPairingRefinement_mem
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) :
+    oneHighGraphPairingRefinement G hfree hv p ∈
+      oneHighPairingRefinements p.profile
+        (oneHighGraphRelevantMissTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+          p.profile) := by
+  apply oneHigh_listOfFn_mem_pairingRefinements
+  intro source
+  exact oneHighGraphSourcePairing_mem_compatible G hfree hv p source
 
 end
 
