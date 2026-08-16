@@ -719,6 +719,50 @@ theorem OneHighReciprocalSameMissEdges.existsUnique_source_neighbor_other
     rw [hy] at hy'mem
     exact Finset.mem_singleton.mp hy'mem
 
+/-- Any endpoint of the canonical source edge and any endpoint of the reverse
+edge have at most one common neighbor.  Consequently their unique witnesses
+in distinct third branches cannot collide twice. -/
+theorem OneHighReciprocalSameMissEdges.source_reverse_common_le_one
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    (b : OneHighMatchedBranchVertices G v q.u) :
+    (G.neighborFinset z.1.1 ∩ G.neighborFinset b.1.1).card ≤ 1 := by
+  have hus : q.u ≠ q.s :=
+    (Finset.mem_erase.mp (Finset.mem_erase.mp q.u_far).2).1
+  have hdisj : Disjoint (secondLayerBranch G v q.s)
+      (secondLayerBranch G v q.u) :=
+    secondLayerBranch_pairwiseDisjoint G hfree v
+      (by simp) (by simp) hus.symm
+  have hne : z.1.1 ≠ b.1.1 := by
+    intro h
+    have hbSource : b.1.1 ∈ secondLayerBranch G v q.s := h.symm ▸ z.1.2
+    exact Finset.disjoint_left.mp hdisj hbSource b.1.2
+  exact common_le_one_of_not_containsC4 hfree z.1.1 b.1.1 hne
+
+theorem OneHighReciprocalSameMissEdges.source_reverse_commonNeighbor_unique
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    (b : OneHighMatchedBranchVertices G v q.u)
+    {y y' : V}
+    (hzy : G.Adj z.1.1 y) (hby : G.Adj b.1.1 y)
+    (hzy' : G.Adj z.1.1 y') (hby' : G.Adj b.1.1 y') :
+    y = y' := by
+  apply Finset.card_le_one.mp (q.source_reverse_common_le_one z b)
+  · exact Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z.1.1 y).mpr hzy,
+        (G.mem_neighborFinset b.1.1 y).mpr hby⟩
+  · exact Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z.1.1 y').mpr hzy',
+        (G.mem_neighborFinset b.1.1 y').mpr hby'⟩
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
