@@ -23,7 +23,7 @@ theorem oneHighStandardMate_involutive :
   decide +revert
 
 theorem oneHighStandardMate_ne (i : Fin 8) : oneHighStandardMate i ≠ i := by
-  native_decide +revert
+  decide +revert
 
 /-- Every fixed-point-free involution of eight points is conjugate to the
 standard four-pair involution.  This is a closed finite classification over
