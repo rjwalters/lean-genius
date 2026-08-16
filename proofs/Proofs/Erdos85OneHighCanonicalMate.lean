@@ -332,6 +332,22 @@ def oneHighBranchEdgeIndex (i j : Fin 5) : Nat :=
 def oneHighBranchBitAdj (edges : BitVec 10) (i j : Fin 5) : Bool :=
   if i = j then false else edges.getLsbD (oneHighBranchEdgeIndex i j)
 
+theorem oneHighBranchEdgeIndex_comm (i j : Fin 5) :
+    oneHighBranchEdgeIndex i j = oneHighBranchEdgeIndex j i := by
+  simp [oneHighBranchEdgeIndex, min_comm, max_comm]
+
+theorem oneHighBranchBitAdj_comm (edges : BitVec 10) (i j : Fin 5) :
+    oneHighBranchBitAdj edges i j = oneHighBranchBitAdj edges j i := by
+  by_cases hij : i = j
+  · subst j
+    rfl
+  · simp [oneHighBranchBitAdj, hij, Ne.symm hij,
+      oneHighBranchEdgeIndex_comm]
+
+@[simp] theorem oneHighBranchBitAdj_self (edges : BitVec 10) (i : Fin 5) :
+    oneHighBranchBitAdj edges i i = false := by
+  simp [oneHighBranchBitAdj]
+
 theorem oneHighBranchEdgeIndex_lt (i j : Fin 5) (hij : i ≠ j) :
     oneHighBranchEdgeIndex i j < 10 := by
   decide +revert
