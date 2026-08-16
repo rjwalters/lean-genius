@@ -868,6 +868,45 @@ theorem OneHighReciprocalSameMissEdges.all_collisionBranches_card_le_four
       (oneHighInternalMate G hfree v q.u q.a))
   omega
 
+/-- In every non-missed far branch, the two neighbors reached from the
+canonical source edge form a forced nonedge. -/
+theorem OneHighReciprocalSameMissEdges.exists_source_crossTargets_nonadjacent
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u) :
+    ∃ y y' : V,
+      y ∈ secondLayerBranch G v w ∧
+      y' ∈ secondLayerBranch G v w ∧
+      G.Adj q.x.1.1 y ∧
+      G.Adj (oneHighInternalMate G hfree v q.s q.x).1.1 y' ∧
+      ¬ G.Adj y y' := by
+  have hsw : q.s ≠ w := by
+    exact (Finset.mem_erase.mp (Finset.mem_erase.mp hw).2).1.symm
+  have hxy : G.Adj q.x.1.1
+      (oneHighInternalMate G hfree v q.s q.x).1.1 := by
+    simpa [oneHighInternalMate] using degreeOneMate_adj
+      (G.induce (secondLayerBranch G v q.s))
+      (degree_induce_secondLayerBranch_le_one G hfree v q.s) q.x
+  have hxHit : (G.neighborFinset q.x.1.1 ∩
+      secondLayerBranch G v w).card ≠ 0 := by
+    rw [q.source_endpoint_hits_other hprofile q.x hw hwu]
+    omega
+  have hmHit : (G.neighborFinset
+      (oneHighInternalMate G hfree v q.s q.x).1.1 ∩
+      secondLayerBranch G v w).card ≠ 0 := by
+    rw [q.source_endpoint_hits_other hprofile
+      (oneHighInternalMate G hfree v q.s q.x) hw hwu]
+    omega
+  exact exists_nonadjacent_crossTargets_of_internalEdge
+    G hfree q.s w hsw q.x.1.2
+      (oneHighInternalMate G hfree v q.s q.x).1.2 hxy hxHit hmHit
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
