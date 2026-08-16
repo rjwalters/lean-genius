@@ -604,6 +604,27 @@ theorem fiveHighCanonicalLabelingCover_two :
   fiveHighCanonicalLabelingCover_of_fiberCover
     fiveHighCanonicalFiberCover_two
 
+/-- Closed graph-facing h5 interface: checked Boolean exclusions for the
+three canonical arrays eliminate the entire five-high stratum. -/
+theorem orderFortyNineStratumExcluded_five_of_booleanExclusions
+    (h0 : ∀ edges : BitVec 1176,
+      orderFortyNineBooleanConstraints 5 orderFortyNineFiveHighT0Masks edges →
+        False)
+    (h1 : ∀ edges : BitVec 1176,
+      orderFortyNineBooleanConstraints 5 orderFortyNineFiveHighT1Masks edges →
+        False)
+    (h2 : ∀ edges : BitVec 1176,
+      orderFortyNineBooleanConstraints 5 orderFortyNineFiveHighT2Masks edges →
+        False) :
+    OrderFortyNineStratumExcluded 5 :=
+  orderFortyNineStratumExcluded_five_of_tripleCells
+    (orderFortyNineTripleCellExcluded_five_t0_of_labelingCover
+      fiveHighCanonicalLabelingCover_zero h0)
+    (orderFortyNineTripleCellExcluded_five_t1_of_labelingCover
+      fiveHighCanonicalLabelingCover_one h1)
+    (orderFortyNineTripleCellExcluded_five_t2_of_labelingCover
+      fiveHighCanonicalLabelingCover_two h2)
+
 end
 
 end Erdos85
