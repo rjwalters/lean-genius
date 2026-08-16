@@ -430,38 +430,42 @@ theorem oneHighCanonicalBranchAdj_swapTwoThree
     oneHighCanonicalBranchAdj twoEdges (oneHighSwapTwoThree i)
         (oneHighSwapTwoThree j) =
       oneHighCanonicalBranchAdj twoEdges i j := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighCanonicalBranchAdj_swapMatchingEdges
     (i j : Fin 5) :
     oneHighCanonicalBranchAdj true (oneHighSwapMatchingEdges i)
         (oneHighSwapMatchingEdges j) =
       oneHighCanonicalBranchAdj true i j := by
-  native_decide +revert
+  decide +revert
 
 theorem oneHighSwapZeroOne_symm : oneHighSwapZeroOne.symm = oneHighSwapZeroOne := by
-  native_decide
+  decide
 
 theorem oneHighSwapTwoThree_symm :
     oneHighSwapTwoThree.symm = oneHighSwapTwoThree := by
-  native_decide
+  decide
 
 theorem oneHighSwapMatchingEdges_symm :
     oneHighSwapMatchingEdges.symm = oneHighSwapMatchingEdges := by
-  native_decide
+  decide
 
-@[simp] theorem oneHighSwapZeroOne_zero : oneHighSwapZeroOne 0 = 1 := by native_decide
-@[simp] theorem oneHighSwapZeroOne_one : oneHighSwapZeroOne 1 = 0 := by native_decide
-@[simp] theorem oneHighSwapTwoThree_two : oneHighSwapTwoThree 2 = 3 := by native_decide
-@[simp] theorem oneHighSwapTwoThree_three : oneHighSwapTwoThree 3 = 2 := by native_decide
+@[simp] theorem oneHighSwapZeroOne_zero : oneHighSwapZeroOne 0 = 1 := by decide
+@[simp] theorem oneHighSwapZeroOne_one : oneHighSwapZeroOne 1 = 0 := by decide
+@[simp] theorem oneHighSwapZeroOne_two : oneHighSwapZeroOne 2 = 2 := by decide
+@[simp] theorem oneHighSwapZeroOne_three : oneHighSwapZeroOne 3 = 3 := by decide
+@[simp] theorem oneHighSwapTwoThree_zero : oneHighSwapTwoThree 0 = 0 := by decide
+@[simp] theorem oneHighSwapTwoThree_one : oneHighSwapTwoThree 1 = 1 := by decide
+@[simp] theorem oneHighSwapTwoThree_two : oneHighSwapTwoThree 2 = 3 := by decide
+@[simp] theorem oneHighSwapTwoThree_three : oneHighSwapTwoThree 3 = 2 := by decide
 @[simp] theorem oneHighSwapMatchingEdges_zero :
-    oneHighSwapMatchingEdges 0 = 2 := by native_decide
+    oneHighSwapMatchingEdges 0 = 2 := by decide
 @[simp] theorem oneHighSwapMatchingEdges_one :
-    oneHighSwapMatchingEdges 1 = 3 := by native_decide
+    oneHighSwapMatchingEdges 1 = 3 := by decide
 @[simp] theorem oneHighSwapMatchingEdges_two :
-    oneHighSwapMatchingEdges 2 = 0 := by native_decide
+    oneHighSwapMatchingEdges 2 = 0 := by decide
 @[simp] theorem oneHighSwapMatchingEdges_three :
-    oneHighSwapMatchingEdges 3 = 1 := by native_decide
+    oneHighSwapMatchingEdges 3 = 1 := by decide
 
 /-- A canonical one- or two-edge matching can be relabeled so its matched
 endpoints are ordered by any finite key; in the two-edge case the two edges
@@ -475,7 +479,61 @@ theorem finFive_exists_canonical_lex_perm
       (twoEdges = true →
         key (τ.symm 2) ≤ key (τ.symm 3) ∧
         key (τ.symm 0) ≤ key (τ.symm 2)) := by
-  native_decide +revert
+  have hcomp (a b : Equiv.Perm (Fin 5))
+      (ha : ∀ i j, oneHighCanonicalBranchAdj twoEdges (a i) (a j) =
+        oneHighCanonicalBranchAdj twoEdges i j)
+      (hb : ∀ i j, oneHighCanonicalBranchAdj twoEdges (b i) (b j) =
+        oneHighCanonicalBranchAdj twoEdges i j) :
+      ∀ i j, oneHighCanonicalBranchAdj twoEdges ((a.trans b) i)
+          ((a.trans b) j) = oneHighCanonicalBranchAdj twoEdges i j := by
+    intro i j
+    rw [Equiv.trans_apply, Equiv.trans_apply, hb, ha]
+  by_cases htwo : twoEdges = true
+  · subst twoEdges
+    by_cases h01 : key 0 ≤ key 1
+    <;> by_cases h23 : key 2 ≤ key 3
+    all_goals
+      let a : Equiv.Perm (Fin 5) :=
+        (if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne).trans
+          (if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree)
+      have hfirst : ∀ i j,
+          oneHighCanonicalBranchAdj true
+              ((if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne) i)
+              ((if key 0 ≤ key 1 then Equiv.refl _ else oneHighSwapZeroOne) j) =
+            oneHighCanonicalBranchAdj true i j := by
+        split <;> simp_all [oneHighCanonicalBranchAdj_swapZeroOne]
+      have hsecond : ∀ i j,
+          oneHighCanonicalBranchAdj true
+              ((if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree) i)
+              ((if key 2 ≤ key 3 then Equiv.refl _ else oneHighSwapTwoThree) j) =
+            oneHighCanonicalBranchAdj true i j := by
+        split <;> simp_all [oneHighCanonicalBranchAdj_swapTwoThree]
+      have ha : ∀ i j, oneHighCanonicalBranchAdj true (a i) (a j) =
+          oneHighCanonicalBranchAdj true i j := by
+        dsimp only [a]
+        exact hcomp _ _ hfirst hsecond
+      have ha01 : key (a.symm 0) ≤ key (a.symm 1) := by
+        simp [a, h01, h23, oneHighSwapZeroOne_symm,
+          oneHighSwapTwoThree_symm] <;> omega
+      have ha23 : key (a.symm 2) ≤ key (a.symm 3) := by
+        simp [a, h01, h23, oneHighSwapZeroOne_symm,
+          oneHighSwapTwoThree_symm] <;> omega
+      by_cases hedge : key (a.symm 0) ≤ key (a.symm 2)
+      · exact ⟨a, ha, ha01, fun _ => ⟨ha23, hedge⟩⟩
+      · let τ := a.trans oneHighSwapMatchingEdges
+        refine ⟨τ, hcomp a oneHighSwapMatchingEdges ha
+          oneHighCanonicalBranchAdj_swapMatchingEdges, ?_, fun _ => ⟨?_, ?_⟩⟩
+        · simpa [τ, oneHighSwapMatchingEdges_symm] using ha23
+        · simpa [τ, oneHighSwapMatchingEdges_symm] using ha01
+        · simpa [τ, oneHighSwapMatchingEdges_symm] using
+            (le_of_not_ge hedge)
+  · have hfalse : twoEdges = false := Bool.eq_false_of_not_eq_true htwo
+    subst twoEdges
+    by_cases h01 : key 0 ≤ key 1
+    · exact ⟨Equiv.refl _, by simp, h01, by simp⟩
+    · refine ⟨oneHighSwapZeroOne,
+        oneHighCanonicalBranchAdj_swapZeroOne false, ?_, by simp⟩
+      simpa [oneHighSwapZeroOne_symm] using (le_of_not_ge h01)
 
 /-- Abstract five-point matching canonicalization.  The Boolean flag is
 `false` for one internal edge and `true` for two internal edges. -/
