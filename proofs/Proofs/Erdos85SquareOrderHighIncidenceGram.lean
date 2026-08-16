@@ -168,6 +168,27 @@ theorem squareOrder_highIncidence_gram_det
   rw [hpowd, hsign]
   ring
 
+/-- The positive-high Gram matrix is nonsingular over the integers. -/
+theorem squareOrder_highIncidence_gram_det_ne_zero
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hpositive : 0 < (squareOrderHighVertices G d).card) :
+    (Matrix.transpose
+        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+          (squareOrderHighVertices G d)) *
+      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderHighVertices G d)).det ≠ 0 := by
+  rw [squareOrder_highIncidence_gram_det G hfree hd hmin hcover hcard hpositive]
+  apply mul_ne_zero
+  · exact pow_ne_zero _ (by exact_mod_cast (show d ≠ 0 by omega))
+  · exact ne_of_gt (by positivity)
+
 end
 
 end Erdos85
