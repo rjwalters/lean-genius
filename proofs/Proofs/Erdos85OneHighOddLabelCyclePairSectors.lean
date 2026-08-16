@@ -34,10 +34,14 @@ theorem oneHigh_oddLabelCycle_pairPattern_trichotomy
       oneHighRootPair (branchLabel (c.getVert i.1)) ≠
         oneHighRootPair (branchLabel (c.getVert
           (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1))) ∨
-    ∀ i : Fin c.length,
-      oneHighRootPair (branchLabel (c.getVert i.1)) =
-        oneHighRootPair (branchLabel (c.getVert
-          (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1)) := by
+    ((∀ i : Fin c.length,
+      oneHighRootPair (branchLabel (c.getVert i.1)) ≠
+        oneHighRootPair
+          (branchLabel (c.getVert (oneHighCycleNext c hc i).1))) ∧
+     ∀ i : Fin c.length,
+       oneHighRootPair (branchLabel (c.getVert i.1)) =
+         oneHighRootPair (branchLabel (c.getVert
+           (oneHighCycleNext c hc (oneHighCycleNext c hc i)).1))) := by
   classical
   let next := oneHighCycleNext c hc
   let label : Fin c.length → Fin 8 := fun i => branchLabel (c.getVert i.1)
@@ -46,7 +50,7 @@ theorem oneHigh_oddLabelCycle_pairPattern_trichotomy
   · rcases exists_threeRootPair_turn_or_twoStepPeriodic next label hproper with
       hturn | hperiodic
     · exact Or.inr (Or.inl hturn)
-    · exact Or.inr (Or.inr hperiodic)
+    · exact Or.inr (Or.inr ⟨hproper, hperiodic⟩)
   · push Not at hproper
     obtain ⟨i, hi⟩ := hproper
     exact Or.inl ⟨i, hi⟩
