@@ -689,6 +689,36 @@ theorem OneHighReciprocalSameMissEdges.source_endpoint_hits_other
     exact hweq.trans hzLabel
   omega
 
+/-- Vertex-level form of `source_endpoint_hits_other`: each canonical-source
+endpoint has a unique neighbor in every non-missed far branch. -/
+theorem OneHighReciprocalSameMissEdges.existsUnique_source_neighbor_other
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    (z : OneHighMatchedBranchVertices G v q.s)
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u) :
+    ∃! y : V, y ∈ secondLayerBranch G v w ∧ G.Adj z.1.1 y := by
+  have hcard := q.source_endpoint_hits_other hprofile z hw hwu
+  obtain ⟨y, hy⟩ := Finset.card_eq_one.mp hcard
+  refine ⟨y, ?_, ?_⟩
+  · have hymem : y ∈ G.neighborFinset z.1.1 ∩
+        secondLayerBranch G v w := by
+      rw [hy]
+      exact Finset.mem_singleton_self y
+    exact ⟨(Finset.mem_inter.mp hymem).2,
+      (G.mem_neighborFinset z.1.1 y).mp (Finset.mem_inter.mp hymem).1⟩
+  · intro y' hy'
+    have hy'mem : y' ∈ G.neighborFinset z.1.1 ∩
+        secondLayerBranch G v w := Finset.mem_inter.mpr
+      ⟨(G.mem_neighborFinset z.1.1 y').mpr hy'.2, hy'.1⟩
+    rw [hy] at hy'mem
+    exact Finset.mem_singleton.mp hy'mem
+
 /-- The reciprocal diagonal label pair occurs in the canonical graph pairing
 row of the source branch. -/
 theorem OneHighReciprocalSameMissEdges.source_diagonalPair_mem_pairing
