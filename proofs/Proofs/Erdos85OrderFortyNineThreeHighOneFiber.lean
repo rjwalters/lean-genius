@@ -527,6 +527,20 @@ theorem threeHighCanonicalGraphCover_one :
     (threeHighCanonicalLabelingCover_of_fiberCover
       threeHighCanonicalFiberCover_one)
 
+theorem threeHighCanonicalGraphCover_all
+    (blocks : Nat) (hblocks : blocks ≤ 1) :
+    ThreeHighCanonicalGraphCover blocks := by
+  interval_cases blocks
+  · exact threeHighCanonicalGraphCover_zero
+  · exact threeHighCanonicalGraphCover_one
+
+theorem orderFortyNineStratumExcluded_three_of_representativeExclusions
+    (hexcluded : ∀ index, index ≤ 1 →
+      ThreeHighCanonicalRepresentativeExcluded index) :
+    OrderFortyNineStratumExcluded 3 :=
+  orderFortyNineStratumExcluded_three_of_canonical
+    threeHighCanonicalGraphCover_all hexcluded
+
 end
 
 end Erdos85
