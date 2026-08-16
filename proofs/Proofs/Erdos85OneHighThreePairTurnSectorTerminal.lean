@@ -220,6 +220,27 @@ theorem OneHighPinnedThreePairTurn.sameOwner_internalEdges_eq_two
   · exact T.source_edges_ne
   · exact howner
 
+/-- In the mate-owner sector, the canonical profile forces at least one of
+the two owner branches to have two internal edges. -/
+theorem OneHighPinnedThreePairTurn.mateOwner_one_internalEdges_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = p.mate T.qBC.sourceEdge.1) :
+    oneHighFamilyInternalEdges p.profile
+        (p.branchLabel T.qAB.sourceEdge.1) = 2 ∨
+      oneHighFamilyInternalEdges p.profile
+        (p.branchLabel T.qBC.sourceEdge.1) = 2 := by
+  have hlabel : p.branchLabel T.qAB.sourceEdge.1 =
+      oneHighStandardMate (p.branchLabel T.qBC.sourceEdge.1) := by
+    rw [howner, p.branch_mate]
+  rcases oneHighFamilyInternalEdges_eq_two_or_mate_eq_two p.profile
+      (p.branchLabel T.qBC.sourceEdge.1) with hright | hleft
+  · exact Or.inr hright
+  · exact Or.inl (by simpa [hlabel] using hleft)
+
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
 def OneHighPinnedThreePairTurnSectorExcluded : Prop :=
