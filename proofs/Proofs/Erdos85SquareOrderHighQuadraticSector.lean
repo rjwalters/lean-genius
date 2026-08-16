@@ -56,6 +56,66 @@ theorem squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
       G hfree hd hmin hcard hb ha) x
   simpa [squareOrderHighQuadraticSectorFamily, Pi.smul_apply] using hx
 
+theorem squareOrder_adjMatrixRat_sq_mulVec_highQuadraticSectorFamily
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d)
+    (i : Sum
+      {x // x ∈ (squareOrderHighVertices G d).erase a}
+      {x // x ∈ (squareOrderHighVertices G d).erase a}) :
+    (G.adjMatrix ℚ).mulVec ((G.adjMatrix ℚ).mulVec
+        (squareOrderHighQuadraticSectorFamily
+          G (squareOrderHighVertices G d) a i)) =
+      (d : ℚ) • squareOrderHighQuadraticSectorFamily
+        G (squareOrderHighVertices G d) a i := by
+  have haDegree : G.degree a = d + 1 := (Finset.mem_filter.mp ha).2
+  cases i with
+  | inl b =>
+      rw [squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inl]
+      exact squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
+        G hfree hd hmin hcard _ a b
+        (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2 haDegree
+  | inr b =>
+      rw [squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
+        G hfree hd hmin hcard _ a b
+        (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2 haDegree]
+      rw [Matrix.mulVec_smul,
+        squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inl]
+
+def squareOrderAdjacencyQuadraticDefect
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (d : Nat) :
+    (V → ℚ) →ₗ[ℚ] (V → ℚ) :=
+  (G.adjMatrix ℚ).toLin' * (G.adjMatrix ℚ).toLin' -
+    (d : ℚ) • LinearMap.id
+
+theorem squareOrder_highQuadraticSectorFamily_mem_quadraticDefect_ker
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d)
+    (i : Sum
+      {x // x ∈ (squareOrderHighVertices G d).erase a}
+      {x // x ∈ (squareOrderHighVertices G d).erase a}) :
+    squareOrderHighQuadraticSectorFamily
+        G (squareOrderHighVertices G d) a i ∈
+      LinearMap.ker (squareOrderAdjacencyQuadraticDefect G d) := by
+  rw [LinearMap.mem_ker]
+  simp only [squareOrderAdjacencyQuadraticDefect, Module.End.mul_eq_comp,
+    LinearMap.sub_apply, LinearMap.comp_apply, Matrix.toLin'_apply,
+    LinearMap.smul_apply, LinearMap.id_coe, id_eq, sub_eq_zero]
+  exact squareOrder_adjMatrixRat_sq_mulVec_highQuadraticSectorFamily
+    G hfree hd hmin hcard ha i
+
 theorem squareOrder_highQuadraticSectorFamily_linearIndependent
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -132,6 +192,60 @@ theorem squareOrder_highQuadraticSectorFamily_linearIndependent
   cases i with
   | inl b => exact hgleft b
   | inr b => exact hgright b
+
+theorem squareOrder_highQuadraticSector_le_finrank_quadraticDefect_ker
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    Fintype.card (Sum
+        {x // x ∈ (squareOrderHighVertices G d).erase a}
+        {x // x ∈ (squareOrderHighVertices G d).erase a}) ≤
+      Module.finrank ℚ
+        (LinearMap.ker (squareOrderAdjacencyQuadraticDefect G d)) := by
+  let I := Sum
+    {x // x ∈ (squareOrderHighVertices G d).erase a}
+    {x // x ∈ (squareOrderHighVertices G d).erase a}
+  let f : I → (V → ℚ) := squareOrderHighQuadraticSectorFamily
+    G (squareOrderHighVertices G d) a
+  let fker : I → LinearMap.ker (squareOrderAdjacencyQuadraticDefect G d) :=
+    fun i => ⟨f i,
+      squareOrder_highQuadraticSectorFamily_mem_quadraticDefect_ker
+        G hfree hd hmin hcard ha i⟩
+  have hf : LinearIndependent ℚ f := by
+    simpa [I, f] using squareOrder_highQuadraticSectorFamily_linearIndependent
+      G hfree hd hmin hcover hcard ha
+  have hfker : LinearIndependent ℚ fker := by
+    apply LinearIndependent.of_comp
+      (LinearMap.ker (squareOrderAdjacencyQuadraticDefect G d)).subtype
+    simpa [Function.comp_def, fker] using hf
+  exact hfker.fintype_card_le_finrank
+
+theorem squareOrder_twice_high_card_sub_one_le_finrank_quadraticDefect_ker
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    2 * ((squareOrderHighVertices G d).card - 1) ≤
+      Module.finrank ℚ
+        (LinearMap.ker (squareOrderAdjacencyQuadraticDefect G d)) := by
+  have h := squareOrder_highQuadraticSector_le_finrank_quadraticDefect_ker
+    G hfree hd hmin hcover hcard ha
+  have herase :
+      Fintype.card {x // x ∈ (squareOrderHighVertices G d).erase a} =
+        (squareOrderHighVertices G d).card - 1 := by
+    rw [Fintype.card_coe, Finset.card_erase_of_mem ha]
+  simpa only [Fintype.card_sum, herase, two_mul] using h
 
 end
 
