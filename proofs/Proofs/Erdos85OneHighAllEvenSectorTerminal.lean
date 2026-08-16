@@ -585,6 +585,35 @@ theorem OneHighReciprocalSameMissEdges.source_matched_eq_x_or_mate
     exact Finset.mem_univ z
   simpa [xm] using hz
 
+/-- In a positive profile, the reciprocal target consumes the entire miss
+budget of the canonical source branch: both endpoints of its unique internal
+edge miss `u`. -/
+theorem OneHighReciprocalSameMissEdges.source_missCount_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    highBranchMissCount G v q.s q.u = 2 := by
+  have hcard := card_oneHighMatchedMissLabelFiber_eq_highBranchMissCount
+    G hfree hv p.external_empty p.outer_degree p.mate p.mate_adj
+      q.s q.u q.u_far
+  have hfilter : ((Finset.univ : Finset
+      (OneHighMatchedBranchVertices G v q.s)).filter fun z =>
+        oneHighMatchedMissLabel G hfree hv p.external_empty p.outer_degree
+          p.mate p.mate_adj q.s z = q.u) = Finset.univ := by
+    apply Finset.eq_univ_of_forall
+    intro z
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_univ z, ?_⟩
+    rcases q.source_matched_eq_x_or_mate hprofile z with rfl | rfl
+    · exact q.x_misses_u
+    · exact q.x_mate_misses_u
+  rw [hfilter] at hcard
+  rw [← hcard]
+  simpa using q.source_matched_card_eq_two hprofile
+
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
 an even, odd, even, odd, and even same-miss count. -/
