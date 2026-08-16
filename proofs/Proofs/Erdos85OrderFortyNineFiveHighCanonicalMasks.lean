@@ -86,4 +86,37 @@ theorem orderFortyNineFiveHighT2Masks_partitionExcluded :
   orderFortyNineVariableHighPartitionExcluded_of_high_zero
     orderFortyNineFiveHighT2Masks_high_zero
 
+theorem false_of_orderFortyNine_generated_h5_t0_lrat
+    {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 5
+      orderFortyNineFiveHighT0Masks edges)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50)
+        orderFortyNineFiveHighT0Masks)) : False :=
+  false_of_orderFortyNine_generated_h5_lrat hc
+    orderFortyNineFiveHighT0Masks_partitionExcluded proof hcheck
+
+theorem false_of_orderFortyNine_generated_h5_t1_lrat
+    {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 5
+      orderFortyNineFiveHighT1Masks edges)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50)
+        orderFortyNineFiveHighT1Masks)) : False :=
+  false_of_orderFortyNine_generated_h5_lrat hc
+    orderFortyNineFiveHighT1Masks_partitionExcluded proof hcheck
+
+theorem false_of_orderFortyNine_generated_h5_t2_lrat
+    {edges : BitVec 1176}
+    (hc : orderFortyNineBooleanConstraints 5
+      orderFortyNineFiveHighT2Masks edges)
+    (proof : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck : Std.Tactic.BVDecide.LRAT.check proof
+      (orderFortyNineGeneratedVariableHighSatCnf (5 : Fin 50)
+        orderFortyNineFiveHighT2Masks)) : False :=
+  false_of_orderFortyNine_generated_h5_lrat hc
+    orderFortyNineFiveHighT2Masks_partitionExcluded proof hcheck
+
 end Erdos85
