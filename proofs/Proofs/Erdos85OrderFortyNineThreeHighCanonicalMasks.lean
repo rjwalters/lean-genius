@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderFortyNineVariableHighCnfSemantics
 import Proofs.Erdos85OrderFortyNineSmallHighCanonicalCapstone
+import Proofs.Erdos85OrderFortyNineThreeHighOneFiber
 
 /-!
 # Canonical support masks for the two three-high cells
@@ -170,5 +171,20 @@ theorem threeHighCanonicalRepresentativeExcluded_one_of_lrat
   intro edges hc
   rw [orderFortyNineThreeHighRepresentativeMasks_one_eq] at hc hcheck
   exact false_of_orderFortyNine_generated_h3_t1_lrat hc proof hcheck
+
+theorem orderFortyNineStratumExcluded_three_of_lrats
+    (proof0 proof1 : Array Std.Tactic.BVDecide.LRAT.IntAction)
+    (hcheck0 : Std.Tactic.BVDecide.LRAT.check proof0
+      (orderFortyNineGeneratedVariableHighSatCnf (3 : Fin 50)
+        (OrderFortyNineSmallHighCensus.threeHighRepresentativeMasks 0)))
+    (hcheck1 : Std.Tactic.BVDecide.LRAT.check proof1
+      (orderFortyNineGeneratedVariableHighSatCnf (3 : Fin 50)
+        (OrderFortyNineSmallHighCensus.threeHighRepresentativeMasks 1))) :
+    OrderFortyNineStratumExcluded 3 := by
+  apply orderFortyNineStratumExcluded_three_of_representativeExclusions
+  intro index hindex
+  interval_cases index
+  · exact threeHighCanonicalRepresentativeExcluded_zero_of_lrat proof0 hcheck0
+  · exact threeHighCanonicalRepresentativeExcluded_one_of_lrat proof1 hcheck1
 
 end Erdos85
