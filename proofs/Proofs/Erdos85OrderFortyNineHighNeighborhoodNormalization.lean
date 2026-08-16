@@ -1,0 +1,64 @@
+import Proofs.Erdos85OrderFortyNineMatchingNormalization
+
+/-! # Rooted normalization of a degree-eight neighborhood -/
+
+namespace Erdos85
+
+open SimpleGraph
+
+noncomputable section
+
+/-- Every degree-eight neighborhood in an order-49 candidate is canonically
+a rooted four-edge matching. -/
+theorem exists_orderFortyNine_highNeighborhood_rooted_matching
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    {v root : V} (hv : G.degree v = 8) (hroot : G.Adj root v) :
+    ∃ e : {x : V // x ∈ G.neighborSet v} ≃ Fin 8,
+      e ⟨root, by simpa using hroot.symm⟩ = 0 ∧
+      ∀ x y,
+        decide ((G.induce (G.neighborSet v)).Adj x y) =
+          decide (e y = oneHighStandardMate (e x)) := by
+  let P := {x : V // x ∈ G.neighborSet v}
+  let H := G.induce (G.neighborSet v)
+  have hPcard : Fintype.card P = 8 := by
+    rw [Fintype.card_subtype]
+    have hfilter : Finset.univ.filter (fun z : V => z ∈ G.neighborSet v) =
+        G.neighborFinset v := by
+      ext z
+      simp
+    rw [hfilter, G.card_neighborFinset_eq_degree, hv]
+  have hlocal : ∀ x : P, H.degree x = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin hcard hv
+  have hunique : ∀ x : P, ∃! y : P, decide (H.Adj x y) = true := by
+    intro x
+    have hx := hlocal x
+    rw [← H.card_neighborFinset_eq_degree, Finset.card_eq_one] at hx
+    obtain ⟨y, hy⟩ := hx
+    refine ⟨y, ?_, ?_⟩
+    · simp only [decide_eq_true_eq]
+      rw [← H.mem_neighborFinset, hy]
+      simp
+    · intro z hz
+      have hzmem : z ∈ H.neighborFinset x := by
+        rw [H.mem_neighborFinset]
+        simpa using hz
+      simpa [hy] using hzmem
+  apply exists_equiv_finEight_canonical_matching_of_unique_rooted
+    hPcard (fun x y : P => decide (H.Adj x y))
+  · intro x y
+    apply Bool.decide_congr
+    exact H.adj_comm x y
+  · intro x
+    simp
+  · exact hunique
+
+end
+
+end Erdos85
