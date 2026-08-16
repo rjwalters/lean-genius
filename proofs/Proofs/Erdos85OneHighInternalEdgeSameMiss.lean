@@ -96,6 +96,74 @@ theorem exists_nonadjacent_crossTargets_of_internalEdge
       ((G.mem_neighborFinset x a).mp haParts.1)
       ((G.mem_neighborFinset y b).mp hbParts.1)
 
+/-- Every internally matched outer vertex has a unique missed far branch.
+This packages pointwise dirty conservation as the miss-label function needed
+for a global alternating-pair count. -/
+theorem existsUnique_farMiss_of_internalMatchedVertex
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {d : ℕ} {v : V}
+    (hv : G.degree v = d + 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (s t : {z : V // z ∈ G.neighborSet v})
+    (hst : G.Adj s.1 t.1)
+    {x : V} (hxs : x ∈ secondLayerBranch G v s)
+    (hxdegree : G.degree x = d)
+    (hxInternal :
+      (G.neighborFinset x ∩ secondLayerBranch G v s).card = 1) :
+    ∃! u : {z : V // z ∈ G.neighborSet v},
+      u ∈ ((Finset.univ.erase s).erase t) ∧
+      (G.neighborFinset x ∩ secondLayerBranch G v u).card = 0 := by
+  classical
+  let misses := ((Finset.univ.erase s).erase t).filter fun u =>
+    (G.neighborFinset x ∩ secondLayerBranch G v u).card = 0
+  have hcard : misses.card = 1 := by
+    simpa [misses, hxInternal] using
+      card_farBranch_misses_eq_internalDegree
+        G hfree hv hexternal s t hst x hxs hxdegree
+  obtain ⟨u, hu⟩ := Finset.card_eq_one.mp hcard
+  have huMem : u ∈ misses := by simp [hu]
+  refine ⟨u, Finset.mem_filter.mp huMem, ?_⟩
+  intro w hw
+  have hwMem : w ∈ misses := Finset.mem_filter.mpr hw
+  rw [hu] at hwMem
+  simpa using hwMem
+
+/-- With unique miss labels chosen for two vertices, equality of those labels
+is equivalent to pointwise agreement of the miss predicates on all far
+branches.  The hard same-miss problem can therefore be stated as constancy
+of this label along the internal matching. -/
+theorem farMiss_iff_agree_of_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {v : V}
+    (s t : {z : V // z ∈ G.neighborSet v})
+    {x y : V} {ux uy : {z : V // z ∈ G.neighborSet v}}
+    (hux : ux ∈ ((Finset.univ.erase s).erase t) ∧
+      (G.neighborFinset x ∩ secondLayerBranch G v ux).card = 0)
+    (huy : uy ∈ ((Finset.univ.erase s).erase t) ∧
+      (G.neighborFinset y ∩ secondLayerBranch G v uy).card = 0)
+    (huniqx : ∀ u, u ∈ ((Finset.univ.erase s).erase t) ∧
+      (G.neighborFinset x ∩ secondLayerBranch G v u).card = 0 → u = ux)
+    (huniqy : ∀ u, u ∈ ((Finset.univ.erase s).erase t) ∧
+      (G.neighborFinset y ∩ secondLayerBranch G v u).card = 0 → u = uy) :
+    ux = uy ↔
+      ∀ u ∈ ((Finset.univ.erase s).erase t),
+        ((G.neighborFinset x ∩ secondLayerBranch G v u).card = 0 ↔
+         (G.neighborFinset y ∩ secondLayerBranch G v u).card = 0) := by
+  constructor
+  · intro hlabels u hu
+    constructor
+    · intro hx
+      have hueq : u = ux := huniqx u ⟨hu, hx⟩
+      rw [hueq, hlabels]
+      exact huy.2
+    · intro hy
+      have hueq : u = uy := huniqy u ⟨hu, hy⟩
+      rw [hueq, ← hlabels]
+      exact hux.2
+  · intro hagree
+    exact huniqy ux ⟨hux.1, (hagree ux hux.1).mp hux.2⟩
+
 /-- A failure of same-miss across an internal edge is necessarily an
 exchange: the second endpoint has a unique missed far branch different from
 `u`, and the first endpoint hits that branch.  This reduces the hard case to
