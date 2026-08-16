@@ -55,6 +55,67 @@ theorem OneHighCrossBlockSourceConfiguration.primarySourcePair_avoids_block
     oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
       p.branch_mate q.sourceEdge.1 C.b₀ q.right_far⟩
 
+private theorem four_finFour_values_avoiding_two_have_collision
+    (i j s₀₀ s₀₁ s₁₀ s₁₁ : Fin 4) (hij : i ≠ j)
+    (h₀₀ : s₀₀ ≠ i ∧ s₀₀ ≠ j)
+    (h₀₁ : s₀₁ ≠ i ∧ s₀₁ ≠ j)
+    (h₁₀ : s₁₀ ≠ i ∧ s₁₀ ≠ j)
+    (h₁₁ : s₁₁ ≠ i ∧ s₁₁ ≠ j) :
+    s₀₀ = s₀₁ ∨ s₀₀ = s₁₀ ∨ s₀₀ = s₁₁ ∨
+      s₀₁ = s₁₀ ∨ s₀₁ = s₁₁ ∨ s₁₀ = s₁₁ := by
+  decide +revert
+
+private theorem oneHighRootPair_standardMate (x : Fin 8) :
+    oneHighRootPair (oneHighStandardMate x) = oneHighRootPair x := by
+  fin_cases x <;> decide
+
+/-- Since the block occupies two of the four root-mate pairs, its four
+concrete source edges use only the other two.  Thus two source edges
+necessarily have the same root-pair color. -/
+theorem OneHighCrossBlockSourceConfiguration.sourcePair_collision
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    let color (q : OneHighAllMatchedVertices G v) :=
+      oneHighRootPair (p.branchLabel q.1)
+    color C.q₀₀.sourceEdge = color C.q₀₁.sourceEdge ∨
+      color C.q₀₀.sourceEdge = color C.q₁₀.sourceEdge ∨
+      color C.q₀₀.sourceEdge = color C.q₁₁.sourceEdge ∨
+      color C.q₀₁.sourceEdge = color C.q₁₀.sourceEdge ∨
+      color C.q₀₁.sourceEdge = color C.q₁₁.sourceEdge ∨
+      color C.q₁₀.sourceEdge = color C.q₁₁.sourceEdge := by
+  dsimp only
+  have haPair : oneHighRootPair (p.branchLabel C.a₁) =
+      oneHighRootPair (p.branchLabel C.a₀) := by
+    rw [← C.a_mate, p.branch_mate]
+    exact oneHighRootPair_standardMate _
+  have hbPair : oneHighRootPair (p.branchLabel C.b₁) =
+      oneHighRootPair (p.branchLabel C.b₀) := by
+    rw [← C.b_mate, p.branch_mate]
+    exact oneHighRootPair_standardMate _
+  have avoids {a b : {z : V // z ∈ G.neighborSet v}}
+      (q : OneHighOddLabelEdgeSourceWitness G hfree hv p.external_empty
+        p.outer_degree p.mate p.mate_adj a b) :
+      oneHighRootPair (p.branchLabel q.sourceEdge.1) ≠
+          oneHighRootPair (p.branchLabel a) ∧
+        oneHighRootPair (p.branchLabel q.sourceEdge.1) ≠
+          oneHighRootPair (p.branchLabel b) :=
+    ⟨oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+        p.branch_mate q.sourceEdge.1 a q.left_far,
+      oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+        p.branch_mate q.sourceEdge.1 b q.right_far⟩
+  apply four_finFour_values_avoiding_two_have_collision
+    (oneHighRootPair (p.branchLabel C.a₀))
+    (oneHighRootPair (p.branchLabel C.b₀))
+  · exact C.pair_ne
+  · exact avoids C.q₀₀
+  · exact ⟨(avoids C.q₀₁).1, hbPair ▸ (avoids C.q₀₁).2⟩
+  · exact ⟨haPair ▸ (avoids C.q₁₀).1, (avoids C.q₁₀).2⟩
+  · exact ⟨haPair ▸ (avoids C.q₁₁).1,
+      hbPair ▸ (avoids C.q₁₁).2⟩
+
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
