@@ -80,6 +80,38 @@ def ThreeHighDistinctRootExcluded : Prop :=
     G.neighborFinset v2 ∩ G.neighborFinset v3 = {u23} →
     u12 ≠ u13 → u12 ≠ u23 → u13 ≠ u23 → False
 
+/-- Exact normalization target for the distinct-root structural lane. -/
+def ThreeHighDistinctRootAlignedCover : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+    (¬ containsC4 (Fin 49) G) →
+    (∀ x : Fin 49, 7 ≤ G.degree x) →
+    ∀ v1 v2 v3 u12 u13 u23 : Fin 49,
+    orderFortyNineHighVertices G = {v1, v2, v3} →
+    G.degree v1 = 8 → G.degree v2 = 8 → G.degree v3 = 8 →
+    v1 ≠ v2 → v1 ≠ v3 → v2 ≠ v3 →
+    G.neighborFinset v1 ∩ G.neighborFinset v2 = {u12} →
+    G.neighborFinset v1 ∩ G.neighborFinset v3 = {u13} →
+    G.neighborFinset v2 ∩ G.neighborFinset v3 = {u23} →
+    u12 ≠ u13 → u12 ≠ u23 → u13 ≠ u23 →
+    ∃ E : Equiv.Perm (Fin 49),
+      ThreeHighDistOneC2ScoutAlignedLabeling G E
+
+/-- A distinct-root aligned cover plus its checked scout certificate closes
+the remaining structural branch. -/
+theorem threeHighDistinctRootExcluded_of_alignedCover
+    (hcover : ThreeHighDistinctRootAlignedCover)
+    (certificate : ThreeHighDistOneC2ScoutCertificate) :
+    ThreeHighDistinctRootExcluded := by
+  intro G _ _ _ hfree hmin v1 v2 v3 u12 u13 u23 hHigh
+    hv1 hv2 hv3 h12 h13 h23 hu12 hu13 hu23 h1213 h1223 h1323
+  exact false_of_exists_threeHighDistOneC2ScoutAlignedLabeling G hfree
+    (hcover G inferInstance inferInstance inferInstance hfree hmin
+      v1 v2 v3 u12 u13 u23 hHigh hv1 hv2 hv3 h12 h13 h23
+      hu12 hu13 hu23 h1213 h1223 h1323)
+    certificate
+
 /-- The verified distance-two terminal removes the equal-root half of the
 canonical three-high normal form.  Thus a consumer for only the distinct-root
 half suffices to discharge the entire stratum. -/
