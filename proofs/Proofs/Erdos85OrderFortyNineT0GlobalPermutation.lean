@@ -470,6 +470,45 @@ theorem sevenHighT0GlobalPerm_targetN1_iff_sourceN1
         simpa [sevenHighT0TargetN1Only] using
           (Finset.mem_filter.mp hv).2)
 
+@[simp] theorem sevenHighT0TargetN0Coord_val
+    (v : {v : Fin 49 // v ∈ sevenHighT0TargetN0}) :
+    (sevenHighT0TargetN0Coord v).val = v.1.val - 7 := by
+  rfl
+
+@[simp] theorem sevenHighT0TargetN1OnlyCoord_val
+    (v : {v : Fin 49 // v ∈ sevenHighT0TargetN1Only}) :
+    (sevenHighT0TargetN1OnlyCoord v).1.val = v.1.val - 14 := by
+  rfl
+
+theorem sevenHighT0GlobalPerm_targetN0_coord
+    (e₀ : SevenHighT0Fiber 0 ≃ Fin 8)
+    (e₁ : SevenHighT0Fiber 1 ≃ Fin 8)
+    (hroot₁ : e₁ ⟨7, sevenHighT0SupportFiber_one_mem_seven⟩ = 0)
+    (v : Fin 49) (hv : v ∈ sevenHighT0TargetN0) :
+    e₀ ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v,
+      sevenHighT0GlobalPerm_targetN0_mem_source e₀ e₁ hroot₁ v hv⟩ =
+      sevenHighT0TargetN0Coord ⟨v, hv⟩ := by
+  rw [← e₀.apply_symm_apply (sevenHighT0TargetN0Coord ⟨v, hv⟩)]
+  apply congrArg e₀
+  apply Subtype.ext
+  exact sevenHighT0GlobalPerm_apply_targetN0 e₀ e₁ hroot₁ v hv
+
+theorem sevenHighT0GlobalPerm_targetN1Only_coord
+    (e₀ : SevenHighT0Fiber 0 ≃ Fin 8)
+    (e₁ : SevenHighT0Fiber 1 ≃ Fin 8)
+    (hroot₁ : e₁ ⟨7, sevenHighT0SupportFiber_one_mem_seven⟩ = 0)
+    (v : Fin 49) (hv : v ∈ sevenHighT0TargetN1Only) :
+    e₁ ⟨sevenHighT0GlobalPerm e₀ e₁ hroot₁ v,
+      (Finset.mem_sdiff.mp
+        (sevenHighT0GlobalPerm_targetN1Only_mem_source
+          e₀ e₁ hroot₁ v hv)).1⟩ =
+      (sevenHighT0TargetN1OnlyCoord ⟨v, hv⟩).1 := by
+  rw [← e₁.apply_symm_apply
+    (sevenHighT0TargetN1OnlyCoord ⟨v, hv⟩).1]
+  apply congrArg e₁
+  apply Subtype.ext
+  exact sevenHighT0GlobalPerm_apply_targetN1Only e₀ e₁ hroot₁ v hv
+
 end
 
 end Erdos85
