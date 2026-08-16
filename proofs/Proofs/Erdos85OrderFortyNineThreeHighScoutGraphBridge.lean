@@ -30,6 +30,40 @@ def OrderFortyNineThreeHighDistTwoRootEmptyGraphRealized
   ∀ z ∈ orderFortyNineThreeHighDistTwoRootEmptyVertices,
     (G.Adj 3 z ↔ z = 13)
 
+/-- The exact seven-neighbor census at the triple root immediately supplies
+the scout's residual root units.  The other six neighbors are the three highs
+and the three matching partners already fixed by the matching segments. -/
+theorem orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_of_neighborFinset
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (hroot : G.neighborFinset 3 = {0, 1, 2, 4, 11, 12, 13}) :
+    OrderFortyNineThreeHighDistTwoRootEmptyGraphRealized G := by
+  intro z hz
+  rw [← G.mem_neighborFinset, hroot]
+  simp only [Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · intro h
+    rcases h with h | h | h | h | h | h | h
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · subst z
+      norm_num [orderFortyNineThreeHighDistTwoRootEmptyVertices,
+        Fin.ext_iff] at hz
+    · exact h
+  · exact fun h => Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h)))))
+
 theorem orderFortyNineThreeHighDistTwoRootEmptyGraphRealized_edges
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
     (hrealized : OrderFortyNineThreeHighDistTwoRootEmptyGraphRealized G) :
