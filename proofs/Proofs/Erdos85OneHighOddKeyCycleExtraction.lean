@@ -51,6 +51,44 @@ theorem exists_isCycle_of_two_distinct_neighbors
   have hyw : (⟨y, hyC⟩ : C.supp) = w := hwunique _ hTy
   exact hxy (congrArg Subtype.val (hxw.trans hyw.symm))
 
+/-- A finite graph with an edge and even degree at every vertex contains a
+cycle.  Isolated vertices are allowed. -/
+theorem exists_isCycle_of_even_degrees_of_adj
+    {V : Type*} [Fintype V] (G : SimpleGraph V)
+    [∀ v, Fintype (G.neighborSet v)]
+    (heven : ∀ v : V, Even (G.degree v)) {a b : V} (hab : G.Adj a b) :
+    ∃ v : V, ∃ c : G.Walk v v, c.IsCycle := by
+  classical
+  by_contra hcycle
+  have hacyc : G.IsAcyclic := by
+    intro v c hc
+    exact hcycle ⟨v, c, hc⟩
+  let C : G.ConnectedComponent := G.connectedComponentMk a
+  let T : SimpleGraph C.supp := C.toSimpleGraph
+  have hTtree : T.IsTree := hacyc.isTree_connectedComponent C
+  have haC : a ∈ C.supp := by simp [C]
+  have hbC : b ∈ C.supp := C.mem_supp_of_adj_mem_supp haC hab
+  have hnontrivial : Nontrivial C.supp :=
+    ⟨⟨a, haC⟩, ⟨b, hbC⟩, by
+      intro h
+      exact hab.ne (congrArg Subtype.val h)⟩
+  letI : Nontrivial C.supp := hnontrivial
+  obtain ⟨v, hvdeg⟩ := hTtree.exists_vert_degree_one_of_nontrivial
+  obtain ⟨w, hvw, hwunique⟩ := degree_eq_one_iff_existsUnique_adj.mp hvdeg
+  have hGdeg : G.degree v.1 = 1 := by
+    apply degree_eq_one_iff_existsUnique_adj.mpr
+    refine ⟨w.1, ?_, ?_⟩
+    · simpa [T, ConnectedComponent.toSimpleGraph] using hvw
+    · intro x hvx
+      have hxC : x ∈ C.supp := C.mem_supp_of_adj_mem_supp v.2 hvx
+      have hTx : T.Adj v ⟨x, hxC⟩ := by
+        simpa [T, ConnectedComponent.toSimpleGraph] using hvx
+      exact congrArg Subtype.val (hwunique ⟨x, hxC⟩ hTx)
+  have := heven v.1
+  rw [hGdeg] at this
+  rcases this with ⟨n, hn⟩
+  omega
+
 /-- The genuine exchanged keys occurring with odd multiplicity. -/
 def OddExchangedKey {L : Type*} [Fintype L] [LinearOrder L]
     (m : L × L → Nat) :=

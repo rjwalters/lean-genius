@@ -2,6 +2,7 @@ import Proofs.Erdos85OneHighMissLabelFiber
 import Proofs.Erdos85OneHighGlobalExchangeParity
 import Proofs.Erdos85MatchingKeyMultiplicity
 import Proofs.Erdos85OneHighOddKeyCycleExtraction
+import Proofs.Erdos85OddKeyLabelGraph
 
 /-! # Unconditional odd-support cycle bridge for the one-high case
 
@@ -79,6 +80,64 @@ theorem oneHigh_even_multiplicities_or_oddKey_cycle
     apply Finset.sum_congr rfl
     intro q _
     simp [unorderedKeyIncidence, m]
+
+/-- Strong label-level form: if some exchanged-key multiplicity is odd, the
+odd-support graph on the eight root labels contains a genuine cycle. -/
+theorem oneHigh_even_multiplicities_or_oddLabel_cycle
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V}
+    (hv : G.degree v = 8)
+    (hneigh : ∀ y, G.Adj v y → G.degree y = 7)
+    (hlocal : ∀ u : {z : V // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1)
+    (hexternal : externalRepairCandidates G v = ∅)
+    (houterDegree : ∀ {a : V}, a ∈ secondLayer G v → G.degree a = 7)
+    (rootMate : {z : V // z ∈ G.neighborSet v} →
+      {z : V // z ∈ G.neighborSet v})
+    (hrootAdj : ∀ s, G.Adj s.1 (rootMate s).1)
+    (hrootInv : Function.Involutive rootMate) :
+    let mate := oneHighGlobalInternalMate G hfree v
+    let label := oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+      rootMate hrootAdj
+    let m := exchangedMissPairMultiplicity mate label
+    (∀ k ∈ exchangedMissPairKeys {z : V // z ∈ G.neighborSet v}, Even (m k)) ∨
+      ∃ l : {z : V // z ∈ G.neighborSet v},
+        ∃ c : (oddExchangedKeyLabelGraph m).Walk l l, c.IsCycle := by
+  classical
+  dsimp only
+  let mate := oneHighGlobalInternalMate G hfree v
+  let label := oneHighGlobalMissLabel G hfree hv hexternal houterDegree
+    rootMate hrootAdj
+  let m := exchangedMissPairMultiplicity mate label
+  obtain hall | ⟨k, c, hc⟩ := oneHigh_even_multiplicities_or_oddKey_cycle
+    G hfree hv hneigh hlocal hexternal houterDegree rootMate hrootAdj hrootInv
+  · exact Or.inl hall
+  · right
+    have hevenWeighted : ∀ l, Even
+        (∑ q ∈ exchangedMissPairKeys {z : V // z ∈ G.neighborSet v},
+          unorderedKeyIncidence q l * m q) := by
+      intro l
+      have hfiberEven : Even (matchingLabelFiber label l).card := by
+        simpa [matchingLabelFiber, label] using
+          (even_card_oneHighGlobalMissLabelFiber G hfree hv hneigh hlocal
+            hexternal rootMate hrootAdj hrootInv houterDegree l)
+      have hnonconstant := even_nonconstantMatchingLabelFiber_of_even
+        mate label l (oneHighGlobalInternalMate_involutive G hfree v)
+          (oneHighGlobalInternalMate_ne G hfree v) hfiberEven
+      have hkey := even_nonconstantMatchingKeyIncidence_of_even
+        mate label l (oneHighGlobalInternalMate_involutive G hfree v)
+          (oneHighGlobalInternalMate_ne G hfree v) hnonconstant
+      convert (even_sum_keyIncidence_mul_multiplicity_of_even
+        mate label l hkey) using 1
+    apply exists_isCycle_of_even_degrees_of_adj
+      (oddExchangedKeyLabelGraph m)
+      (even_degree_oddExchangedKeyLabelGraph m hevenWeighted)
+    have hklt : k.1.1 < k.1.2 := by
+      simpa [exchangedMissPairKeys] using k.2.1
+    change k.1.1 ≠ k.1.2 ∧ Odd (m (min k.1.1 k.1.2, max k.1.1 k.1.2))
+    simpa [min_eq_left (le_of_lt hklt), max_eq_right (le_of_lt hklt)] using
+      ⟨ne_of_lt hklt, k.2.2⟩
 
 end
 
