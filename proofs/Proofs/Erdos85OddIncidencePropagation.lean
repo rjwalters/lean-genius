@@ -40,4 +40,23 @@ theorem exists_ne_odd_of_even_univ_sum_of_odd
     exists_ne_odd_of_even_sum_of_odd Finset.univ f i (by simp) hsum hodd
   exact ⟨j, hji, hjodd⟩
 
+/-- For symmetric data stored under canonical unordered keys, parity at one
+endpoint propagates past a given odd edge.  An even diagonal rules out the
+degenerate choice of the endpoint itself. -/
+theorem exists_odd_canonical_neighbor_of_even_incidence
+    {ι : Type*} [Fintype ι] [DecidableEq ι] [LinearOrder ι]
+    (m : ι × ι → ℕ) (i k : ι)
+    (hsum : Even (∑ j, m (min i j, max i j)))
+    (hik : Odd (m (min i k, max i k)))
+    (hdiag : Even (m (i, i))) :
+    ∃ j, j ≠ i ∧ j ≠ k ∧ Odd (m (min i j, max i j)) := by
+  obtain ⟨j, hjk, hjodd⟩ :=
+    exists_ne_odd_of_even_univ_sum_of_odd
+      (fun j => m (min i j, max i j)) k hsum hik
+  refine ⟨j, ?_, hjk, hjodd⟩
+  intro hji
+  subst j
+  simp only [min_self, max_self] at hjodd
+  exact (Nat.not_odd_iff_even.mpr hdiag) hjodd
+
 end Erdos85
