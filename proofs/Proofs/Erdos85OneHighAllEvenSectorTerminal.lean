@@ -3,6 +3,7 @@ import Proofs.Erdos85OneHighExchangedMissCounting
 import Proofs.Erdos85OneHighSameMissCountingBridge
 import Proofs.Erdos85OneHighSameMissParityConsumer
 import Proofs.Erdos85QuotientCutParity
+import Proofs.Erdos85OneHighRepeatedSourceCapacity
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -227,6 +228,37 @@ theorem even_profile_of_admissible_all_relevant_even
   rw [hhalf] at hHtotal
   exact (even_sixteen_sub_iff profile hprofile).mp hHtotal
 
+/-- Dividing an all-even admissible table by two gives a symmetric weighted
+graph whose row degree is exactly the profile internal-edge count (`1` or
+`2`).  This is the residual object in the surviving even profiles. -/
+theorem halfTable_row_sum_eq_familyInternalEdges
+    {profile : Nat} (table : OneHighMissTable)
+    (hadm : OneHighFamilyV2Admissible profile table)
+    (heven : ∀ c : Fin 8,
+      ∀ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+        Even (table c.val j.val))
+    (c : Fin 8) :
+    (∑ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+      table c.val j.val / 2) = oneHighFamilyInternalEdges profile c := by
+  have hdouble : (∑ j ∈ ((Finset.univ.erase c).erase
+      (oneHighStandardMate c)), table c.val j.val) =
+      2 * (∑ j ∈ ((Finset.univ.erase c).erase
+        (oneHighStandardMate c)), table c.val j.val / 2) := by
+    calc
+      (∑ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+          table c.val j.val) =
+          ∑ j ∈ ((Finset.univ.erase c).erase (oneHighStandardMate c)),
+            2 * (table c.val j.val / 2) := by
+        apply Finset.sum_congr rfl
+        intro j hj
+        obtain ⟨k, hk⟩ := heven c j hj
+        omega
+      _ = 2 * (∑ j ∈ ((Finset.univ.erase c).erase
+          (oneHighStandardMate c)), table c.val j.val / 2) := by
+        rw [Finset.mul_sum]
+  rw [hadm.row_sum c] at hdouble
+  omega
+
 /-- Consequently, genuine global same-miss behavior is possible only in the
 even profiles `0`, `2`, and `4`. -/
 theorem even_profile_of_oneHighGlobalSameMiss
@@ -314,6 +346,67 @@ theorem oneHigh_repeated_exchangedPair_of_all_even_of_profile_odd
   · exact ((Nat.not_even_iff_odd.mpr hprofile)
       (even_profile_of_oneHighGlobalSameMiss G hfree hv p hsame)).elim
   · exact hrepeated
+
+/-- Pinned repeated-pair residual for the odd all-even profiles.  Equal
+owners are automatically saturated two-edge branches; the other cases are
+an exact mate-owner collision or genuinely separated owners. -/
+structure OneHighOddProfileRepeatedPairResidual
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) where
+  key : Fin 8 × Fin 8
+  key_mem : key ∈ exchangedMissPairKeys (Fin 8)
+  x : OneHighAllMatchedVertices G v
+  y : OneHighAllMatchedVertices G v
+  x_mem : x ∈ nonconstantMatchingEdgeSources
+    (oneHighGlobalInternalMate G hfree v)
+    (fun z => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj z))
+  y_mem : y ∈ nonconstantMatchingEdgeSources
+    (oneHighGlobalInternalMate G hfree v)
+    (fun z => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj z))
+  x_ne_y : x ≠ y
+  x_key : exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+    (fun z => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj z)) x = key
+  y_key : exchangedMissPairKey (oneHighGlobalInternalMate G hfree v)
+    (fun z => p.branchLabel
+      (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+        p.mate p.mate_adj z)) y = key
+  owner_sector :
+    (x.1 = y.1 ∧
+      oneHighFamilyInternalEdges p.profile (p.branchLabel x.1) = 2) ∨
+    x.1 = p.mate y.1 ∨
+    (x.1 ≠ y.1 ∧ x.1 ≠ p.mate y.1)
+
+theorem oneHigh_oddProfileRepeatedPairResidual_of_all_even
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v) (hprofile : Odd p.profile)
+    (heven : ∀ key ∈ exchangedMissPairKeys (Fin 8),
+      Even (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)) key)) :
+    Nonempty (OneHighOddProfileRepeatedPairResidual G hfree hv p) := by
+  obtain ⟨key, hkey, x, hx, y, hy, hxy, hxkey, hykey⟩ :=
+    oneHigh_repeated_exchangedPair_of_all_even_of_profile_odd
+      G hfree hv p hprofile heven
+  refine ⟨⟨key, hkey, x, y, hx, hy, hxy, hxkey, hykey, ?_⟩⟩
+  by_cases howner : x.1 = y.1
+  · exact Or.inl ⟨howner,
+      oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner
+        G hfree hv p hx hy hxy howner⟩
+  by_cases hmateOwner : x.1 = p.mate y.1
+  · exact Or.inr (Or.inl hmateOwner)
+  · exact Or.inr (Or.inr ⟨howner, hmateOwner⟩)
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
