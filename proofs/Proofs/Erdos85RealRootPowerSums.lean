@@ -50,6 +50,48 @@ theorem complexRootPowerSum_rat_map_eq_real
   rw [← hcomp]
   simpa [Polynomial.map_map] using h
 
+/-- Multiplicity-aware Cauchy--Schwarz for a real multiset. -/
+theorem multiset_sq_sum_le_card_mul_sum_sq
+    (s : Multiset ℝ) (f : ℝ → ℝ) :
+    (s.map f).sum ^ 2 ≤ (s.card : ℝ) * (s.map fun x => (f x) ^ 2).sum := by
+  rw [← Multiset.sum_map_toList, ← Multiset.sum_map_toList,
+    ← Fin.sum_univ_fun_getElem, ← Fin.sum_univ_fun_getElem,
+    ← Multiset.length_toList]
+  simpa using sq_sum_le_card_mul_sum_sq
+    (α := ℝ) (ι := Fin s.toList.length)
+    (s := Finset.univ) (f := fun i => f s.toList[i])
+
+/-- Cauchy--Schwarz after erasing one occurrence of a distinguished member. -/
+theorem realRootPowerSum_cauchy_erase
+    (p : ℝ[X]) {lambda : ℝ} (hlambda : lambda ∈ p.roots) :
+    (realRootPowerSum p 2 - lambda ^ 2) ^ 2 ≤
+      ((p.roots.card - 1 : ℕ) : ℝ) *
+        (realRootPowerSum p 4 - lambda ^ 4) := by
+  have h := multiset_sq_sum_le_card_mul_sum_sq
+    (p.roots.erase lambda) (fun x => x ^ 2)
+  rw [realRootPowerSum, realRootPowerSum]
+  rw [Multiset.card_erase_of_mem hlambda] at h
+  have htwo :
+      ((p.roots.erase lambda).map fun x => x ^ 2).sum =
+        (p.roots.map fun x => x ^ 2).sum - lambda ^ 2 := by
+    have hadd := Multiset.sum_map_erase (m := p.roots)
+      (f := fun x => x ^ 2) hlambda
+    linarith
+  have hfour :
+      ((p.roots.erase lambda).map fun x => (x ^ 2) ^ 2).sum =
+        (p.roots.map fun x => x ^ 4).sum - lambda ^ 4 := by
+    have hadd := Multiset.sum_map_erase (m := p.roots)
+      (f := fun x => x ^ 4) hlambda
+    have hm : ((p.roots.erase lambda).map fun x => (x ^ 2) ^ 2).sum =
+        ((p.roots.erase lambda).map fun x => x ^ 4).sum := by
+      apply congrArg Multiset.sum
+      apply Multiset.map_congr rfl
+      intro x _
+      ring
+    rw [hm]
+    linarith
+  rwa [htwo, hfour] at h
+
 end
 
 end Erdos85
