@@ -140,6 +140,44 @@ theorem squareOrder_adjMatrix_sq_mulVec_highRowDifference
           (squareOrder_adjMatrix_mulVec_coordinateDifference G a b) x
         simpa [Matrix.mulVec, dotProduct] using h]
 
+/-- Over the rationals, the coordinate differences from a fixed base point
+to the other points of a finite set are linearly independent. -/
+theorem coordinateDifferencesRat_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : Finset V) (a : V) :
+    LinearIndependent ℚ
+      (fun b : {x // x ∈ H.erase a} => fun x : V =>
+        (if x = b.1 then (1 : ℚ) else 0) -
+          if x = a then (1 : ℚ) else 0) := by
+  classical
+  rw [Fintype.linearIndependent_iff]
+  intro g hg b
+  have hb := congrFun hg b.1
+  have hba : b.1 ≠ a := by
+    exact (Finset.mem_erase.mp b.2).1
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hb
+  have hsingle :
+      (∑ i : {x // x ∈ H.erase a},
+        g i * (if b.1 = i.1 then (1 : ℚ) else 0)) = g b := by
+    rw [Finset.sum_eq_single b]
+    · simp
+    · intro c _hc hcb
+      have hval : b.1 ≠ c.1 := by
+        intro h
+        apply hcb
+        exact Subtype.ext h.symm
+      simp [hval]
+    · intro hbnot
+      exact (hbnot (Finset.mem_univ b)).elim
+  simp_rw [mul_sub] at hb
+  rw [Finset.sum_sub_distrib] at hb
+  have hbase :
+      (∑ i : {x // x ∈ H.erase a},
+        g i * (if b.1 = a then (1 : ℚ) else 0)) = 0 := by
+    simp [hba]
+  rw [hsingle, hbase, sub_zero] at hb
+  exact hb
+
 end
 
 end Erdos85
