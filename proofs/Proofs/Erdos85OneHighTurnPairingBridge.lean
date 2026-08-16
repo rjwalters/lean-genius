@@ -59,6 +59,53 @@ theorem OneHighOddLabelEdgeSourceWitness.canonicalPair_mem_graphSourcePairing
   rw [oneHighGraphSourcePairing, p.branchLabel.symm_apply_apply]
   simpa [s, M, label, rootLabel] using hlocal
 
+/-- In the same-owner sector, the two witnessed keys exhaust the saturated
+two-entry source pairing row. -/
+theorem OneHighPinnedThreePairTurn.sameOwner_sourcePairing_perm
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) :
+    (oneHighGraphSourcePairing G hfree hv p
+      (p.branchLabel T.qAB.sourceEdge.1)).Perm
+        [oneHighCanonicalLabelPair (p.branchLabel T.a) (p.branchLabel T.b),
+          oneHighCanonicalLabelPair (p.branchLabel T.b) (p.branchLabel T.c)] := by
+  let pairAB := oneHighCanonicalLabelPair
+    (p.branchLabel T.a) (p.branchLabel T.b)
+  let pairBC := oneHighCanonicalLabelPair
+    (p.branchLabel T.b) (p.branchLabel T.c)
+  let row := oneHighGraphSourcePairing G hfree hv p
+    (p.branchLabel T.qAB.sourceEdge.1)
+  have hpairNe : pairAB ≠ pairBC := by
+    intro h
+    have hp := (canonicalOrderedPair_eq_iff
+      (p.branchLabel T.a) (p.branchLabel T.b)
+      (p.branchLabel T.b) (p.branchLabel T.c)).mp h
+    rcases hp with hp | hp
+    · exact T.ab_pair_ne (congrArg oneHighRootPair hp.1)
+    · exact T.ac_pair_ne (congrArg oneHighRootPair hp.1)
+  have hAB : pairAB ∈ row := by
+    exact T.qAB.canonicalPair_mem_graphSourcePairing G hfree hv p
+  have hBC : pairBC ∈ row := by
+    have := T.qBC.canonicalPair_mem_graphSourcePairing G hfree hv p
+    simpa [row, howner] using this
+  have hlen : row.length = 2 := by
+    change (oneHighGraphSourcePairing G hfree hv p
+      (p.branchLabel T.qAB.sourceEdge.1)).length = 2
+    rw [oneHighGraphSourcePairing_length,
+      T.sameOwner_internalEdges_eq_two G hfree hv p howner]
+  obtain ⟨u, w, hrow⟩ := List.length_eq_two.mp hlen
+  change row.Perm [pairAB, pairBC]
+  rw [hrow] at hAB hBC ⊢
+  simp at hAB hBC
+  rcases hAB with hAB | hAB <;> rcases hBC with hBC | hBC
+  · exact (hpairNe (hAB.trans hBC.symm)).elim
+  · subst u; subst w; simp
+  · subst u; subst w; exact List.Perm.swap _ _ []
+  · exact (hpairNe (hAB.trans hBC.symm)).elim
+
 end
 
 end Erdos85
