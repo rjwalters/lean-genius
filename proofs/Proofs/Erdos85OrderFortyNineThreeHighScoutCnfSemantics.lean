@@ -36,7 +36,7 @@ theorem orderFortyNineDegreeBlocks_three_nonzero :
   have hcheck :
       (orderFortyNineDegreeBlocks 3).clauses.all fun clause =>
         clause.all fun lit => lit != 0 := by
-    native_decide
+    decide
   simp only [Array.all_eq_true] at hcheck
   intro clause hclause lit hlit
   obtain ⟨i, hi, rfl⟩ := Array.mem_iff_getElem.mp hclause
@@ -149,25 +149,25 @@ theorem orderFortyNineThreeHighDistTwoGeometryClauses_nonzero :
     ∀ clause ∈ orderFortyNineThreeHighDistTwoGeometryClauses,
       DimacsClauseNonzero clause := by
   apply dimacsFormulaNonzero_of_all
-  native_decide
+  decide
 
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_nonzero :
     ∀ clause ∈ orderFortyNineThreeHighDistOneC2GeometryClauses,
       DimacsClauseNonzero clause := by
   apply dimacsFormulaNonzero_of_all
-  native_decide
+  decide
 
 theorem orderFortyNineThreeHighDistTwoGeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistTwoGeometryClauses := by
   apply dimacsFormulaBounded_of_all
-  native_decide
+  decide
 
 theorem orderFortyNineThreeHighDistOneC2GeometryClauses_bounded :
     dimacsFormulaBounded 1176
       orderFortyNineThreeHighDistOneC2GeometryClauses := by
   apply dimacsFormulaBounded_of_all
-  native_decide
+  decide
 
 theorem false_of_orderFortyNine_generated_h3_distTwo_scout_lrat
     {edges : BitVec 1176}
