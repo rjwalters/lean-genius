@@ -10,6 +10,25 @@ open SimpleGraph
 
 noncomputable section
 
+/-- Cyclic successor on the dart indices of a genuine cycle. -/
+def oneHighCycleNext
+    {L : Type*} {H : SimpleGraph L} {l : L} (c : H.Walk l l)
+    (hc : c.IsCycle) (i : Fin c.length) : Fin c.length :=
+  ⟨(i.1 + 1) % c.length, Nat.mod_lt _ (by
+    have := hc.three_le_length
+    omega)⟩
+
+/-- The cyclic successor index denotes the literal next walk vertex; at the
+last dart this identifies `getVert length` with the initial vertex. -/
+theorem getVert_oneHighCycleNext
+    {L : Type*} {H : SimpleGraph L} {l : L} (c : H.Walk l l)
+    (hc : c.IsCycle) (i : Fin c.length) :
+    c.getVert (oneHighCycleNext c hc i).1 = c.getVert (i.1 + 1) := by
+  by_cases hnext : i.1 + 1 < c.length
+  · simp [oneHighCycleNext, Nat.mod_eq_of_lt hnext]
+  · have hlast : i.1 + 1 = c.length := by omega
+    simp [oneHighCycleNext, hlast]
+
 /-- Every dart of an odd label-support cycle can be decorated by a concrete
 nonconstant internal matching-edge source.  The decoration retains its exact
 exchanged key and the two graph-side far constraints. -/
