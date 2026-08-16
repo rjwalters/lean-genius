@@ -126,6 +126,40 @@ structure OneHighPinnedThreePairTurn
       oneHighRootPair (p.branchLabel qBC.sourceEdge.1) =
         oneHighRootPair (p.branchLabel a)
 
+/-- In the equal-source-color sector, that color is necessarily the fourth
+root pair: it avoids all three root pairs at the turn. -/
+theorem OneHighPinnedThreePairTurn.sharpened_source_sector
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p) :
+    (oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1) ∧
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) ≠
+        oneHighRootPair (p.branchLabel T.a) ∧
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) ≠
+        oneHighRootPair (p.branchLabel T.b) ∧
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) ≠
+        oneHighRootPair (p.branchLabel T.c)) ∨
+      oneHighRootPair (p.branchLabel T.qAB.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.c) ∨
+      oneHighRootPair (p.branchLabel T.qBC.sourceEdge.1) =
+        oneHighRootPair (p.branchLabel T.a) := by
+  rcases T.source_sector with hsame | hc | ha
+  · left
+    refine ⟨hsame, ?_, ?_, ?_⟩
+    · exact oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+        p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far
+    · exact oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+        p.branch_mate T.qAB.sourceEdge.1 T.b T.qAB.right_far
+    · intro heq
+      exact (oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
+        p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far)
+        (hsame.symm.trans heq)
+  · exact Or.inr (Or.inl hc)
+  · exact Or.inr (Or.inr ha)
+
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
 def OneHighPinnedThreePairTurnSectorExcluded : Prop :=
