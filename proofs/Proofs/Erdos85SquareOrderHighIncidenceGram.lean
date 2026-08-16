@@ -107,6 +107,67 @@ theorem squareOrder_highIncidence_gram
   simp only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply,
     smul_eq_mul]
 
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
+/-- In the positive-high branch the Gram determinant is explicit.  Writing
+`h` for the number of high vertices, it is `d^(h-1) * (d+h)`. -/
+theorem squareOrder_highIncidence_gram_det
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (hpositive : 0 < (squareOrderHighVertices G d).card) :
+    (Matrix.transpose
+        (finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+          (squareOrderHighVertices G d)) *
+      finsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+        (squareOrderHighVertices G d)).det =
+      (d : ℤ) ^ ((squareOrderHighVertices G d).card - 1) *
+        ((d : ℤ) + (squareOrderHighVertices G d).card) := by
+  classical
+  let H := (squareOrderHighVertices G d : Set V)
+  let M : Matrix H H ℤ :=
+    (d : ℤ) • (1 : Matrix H H ℤ) + Matrix.of (fun _ _ => (1 : ℤ))
+  have hHcard : Fintype.card H = (squareOrderHighVertices G d).card := by
+    simp [H]
+  letI : Nonempty H := Fintype.card_pos_iff.mp (by
+    rw [hHcard]
+    exact hpositive)
+  have hgram := squareOrder_highIncidence_gram
+    G hfree hd hmin hcover hcard
+  change _ = _
+  rw [hgram]
+  change M.det = _
+  have hnegM :
+      ((-(d : ℤ)) • (1 : Matrix H H ℤ) -
+        FriendshipTheoremOQ01.onesMatrix H) = -M := by
+    ext x y
+    simp [M, FriendshipTheoremOQ01.onesMatrix, Matrix.of_apply]
+    ring
+  have hformula :=
+    FriendshipTheoremOQ01.det_scalar_sub_onesMatrix (V := H) (-(d : ℤ))
+  rw [hnegM, Matrix.det_neg, hHcard] at hformula
+  have hsign_ne : ((-1 : ℤ) ^ (squareOrderHighVertices G d).card) ≠ 0 :=
+    pow_ne_zero _ (by norm_num)
+  apply (mul_left_cancel₀ hsign_ne)
+  rw [hformula]
+  have hsucc : (squareOrderHighVertices G d).card =
+      ((squareOrderHighVertices G d).card - 1) + 1 := by omega
+  have hpowd : (-(d : ℤ)) ^ ((squareOrderHighVertices G d).card - 1) =
+      (-1 : ℤ) ^ ((squareOrderHighVertices G d).card - 1) *
+        (d : ℤ) ^ ((squareOrderHighVertices G d).card - 1) := by
+    rw [neg_pow]
+  have hsign : (-1 : ℤ) ^ (squareOrderHighVertices G d).card =
+      -((-1 : ℤ) ^ ((squareOrderHighVertices G d).card - 1)) := by
+    conv_lhs => rw [hsucc, pow_succ]
+    ring
+  rw [hpowd, hsign]
+  ring
+
 end
 
 end Erdos85
