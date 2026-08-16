@@ -614,6 +614,37 @@ theorem OneHighReciprocalSameMissEdges.source_missCount_eq_two
   rw [← hcard]
   simpa using q.source_matched_card_eq_two hprofile
 
+/-- No second far branch can receive a miss from the canonical source: the
+reciprocal entry `u` already consumes its full row sum. -/
+theorem OneHighReciprocalSameMissEdges.source_other_missCount_eq_zero
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile)
+    {w : {z : V // z ∈ G.neighborSet v}}
+    (hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)))
+    (hwu : w ≠ q.u) :
+    highBranchMissCount G v q.s w = 0 := by
+  let S := ((Finset.univ.erase q.s).erase (p.mate q.s))
+  let f := fun z => highBranchMissCount G v q.s z
+  have hrow := p.sum_far_missCount G hfree hv q.s
+  have hsum : ∑ z ∈ S, f z = 2 := by
+    dsimp only [S, f]
+    rw [hrow, q.source_internalEdges_eq_one hprofile]
+    norm_num
+  have hu : q.u ∈ S := q.u_far
+  have hdecomp := Finset.sum_erase_add S f hu
+  have herase : ∑ z ∈ S.erase q.u, f z = 0 := by
+    rw [q.source_missCount_eq_two hprofile, hsum] at hdecomp
+    omega
+  have hwErase : w ∈ S.erase q.u := Finset.mem_erase.mpr ⟨hwu, hw⟩
+  have hle : f w ≤ ∑ z ∈ S.erase q.u, f z :=
+    Finset.single_le_sum (fun _ _ => Nat.zero_le _) hwErase
+  rw [herase] at hle
+  exact Nat.eq_zero_of_le_zero hle
+
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
 an even, odd, even, odd, and even same-miss count. -/
