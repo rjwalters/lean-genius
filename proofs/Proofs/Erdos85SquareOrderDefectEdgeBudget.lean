@@ -98,6 +98,37 @@ theorem squareOrder_two_mul_defectEdges_add_two_mul_degree_mul_high_eq
           ((d + 1) * H.card + H.card * (d - 1)) := by rw [hcombine]
     _ = d * d * (d - 1) := by simpa only [Nat.add_assoc] using hsum
 
+/-- Characteristic-two form, after cancelling the common factor two. -/
+theorem squareOrder_defectEdges_add_degree_mul_high_eq_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hdeven : Even d)
+    (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) :
+    (secondOrderDefectGraph G).edgeFinset.card +
+        d * (squareOrderHighVertices G d).card =
+      (d / 2) * d * (d - 1) := by
+  have hglobal :=
+    squareOrder_two_mul_defectEdges_add_two_mul_degree_mul_high_eq
+      G hfree hd hmin hcover hcard
+  have htwoDvd : 2 ∣ d := by
+    rcases hdeven with ⟨a, ha⟩
+    exact ⟨a, by omega⟩
+  have htwoHalf : 2 * (d / 2) = d := Nat.mul_div_cancel' htwoDvd
+  apply Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2)
+  calc
+    2 * ((secondOrderDefectGraph G).edgeFinset.card +
+        d * (squareOrderHighVertices G d).card) =
+        2 * (secondOrderDefectGraph G).edgeFinset.card +
+          2 * d * (squareOrderHighVertices G d).card := by ring
+    _ = d * d * (d - 1) := hglobal
+    _ = (2 * (d / 2)) * d * (d - 1) := by rw [htwoHalf]
+    _ = 2 * ((d / 2) * d * (d - 1)) := by ring
+
 end
 
 end Erdos85
