@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineBitRelabel
+import Proofs.Erdos85OrderFortyNineSevenHighProfileMasks
 
 /-!
 # Relabeling tools for the order-49 Boolean terminal
@@ -92,7 +93,51 @@ theorem orderFortyNineSupportColumn_relabel
     ∀ y : Fin 49, adj (e high) (e y) = decide (y ∈ target) := by
   intro y
   rw [hfix, hsymm, hsource]
-  exact congrArg decide (propext (hblock y).symm)
+  by_cases hy : y ∈ target
+  · simp [hy, (hblock y).mp hy]
+  · have hey : e y ∉ source := fun hey => hy ((hblock y).mpr hey)
+    simp [hy, hey]
+
+set_option maxRecDepth 100000 in
+theorem sevenHighT0Masks_pairWitness :
+    ∀ i j : Fin 7, i ≠ j →
+      ∃ w : Fin 49, 7 ≤ w.val ∧
+        (orderFortyNineSupportMask
+          (OrderFortyNineSevenHighCensus.representativeMasks 0 0) w).getLsbD
+            i.val = true ∧
+        (orderFortyNineSupportMask
+          (OrderFortyNineSevenHighCensus.representativeMasks 0 0) w).getLsbD
+            j.val = true := by
+  native_decide
+
+/-- Every pair of canonical high vertices has its prescribed pair-support
+low vertex.  This supplies the positive common clause after relabeling. -/
+theorem sevenHighT0_source_high_commonWitness
+    (edges : BitVec 1176)
+    (h : orderFortyNineBooleanConstraints 7
+      (OrderFortyNineSevenHighCensus.representativeMasks 0 0) edges) :
+    ∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
+      ∃ w : Fin 49, 7 ≤ w.val ∧
+        orderFortyNineBitAdj edges i w = true ∧
+        orderFortyNineBitAdj edges j w = true := by
+  rcases h with ⟨_, _, _, _, hsupport, _⟩
+  intro i j hi hj hij
+  let i7 : Fin 7 := ⟨i.val, hi⟩
+  let j7 : Fin 7 := ⟨j.val, hj⟩
+  have hij7 : i7 ≠ j7 := by
+    intro heq
+    apply hij
+    have hv : i7.val = j7.val :=
+      congrArg (fun z : Fin 7 => z.val) heq
+    apply Fin.ext
+    exact hv
+  obtain ⟨w, hw, hwi, hwj⟩ :=
+    sevenHighT0Masks_pairWitness i7 j7 hij7
+  refine ⟨w, hw, ?_, ?_⟩
+  · rw [orderFortyNineBitAdj_comm]
+    exact (hsupport w ⟨i.val, by omega⟩ hi).trans hwi
+  · rw [orderFortyNineBitAdj_comm]
+    exact (hsupport w ⟨j.val, by omega⟩ hj).trans hwj
 
 /-- Transport an exact-one neighbor law from a source support fiber to its
 normalized target block.  Unlike terminal-wide invariance, this is precisely
@@ -107,16 +152,16 @@ theorem orderFortyNinePartitionConstraint_relabel
       adj (e i) (e k) && decide (k ∈ target)).card = 1 := by
   have hcard := univ_filter_card_comp_equiv e (fun k =>
     adj (e i) k && decide (k ∈ source))
-  rw [hcard]
-  have hsets :
+  have htarget :
       (Finset.univ.filter fun k =>
-        adj (e i) k && decide (k ∈ source)) =
+        adj (e i) (e k) && decide (k ∈ target)) =
       (Finset.univ.filter fun k =>
-        adj (e i) k && decide (e.symm k ∈ target)) := by
+        adj (e i) (e k) && decide (e k ∈ source)) := by
     ext k
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    rw [hblock (e.symm k), e.apply_symm_apply]
-  rw [← hsets]
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    exact and_congr Iff.rfl (hblock k)
+  rw [htarget, hcard]
   exact hsource
 
 /-- Relabeling invariance for the complete relation-level terminal.  The
@@ -178,10 +223,11 @@ theorem orderFortyNineRelationConstraints_relabel
     rw [hsets]
     exact hp
 
-/-- Bit-vector form of `orderFortyNineRelationConstraints_relabel`.  This is
+/- Bit-vector form of `orderFortyNineRelationConstraints_relabel`.  This is
 the adapter used by normalization: the constructed target-to-source vertex
 equivalence is turned into an actual 1176-bit edge vector, while all Boolean
 terminal constraints are transported automatically. -/
+set_option maxRecDepth 100000 in
 theorem orderFortyNineBooleanConstraints_relabel
     (h : Nat) (masks : Array Nat) (edges : BitVec 1176)
     (e : Fin 49 ≃ Fin 49)
@@ -195,8 +241,12 @@ theorem orderFortyNineBooleanConstraints_relabel
     orderFortyNineBooleanConstraints h masks
       (orderFortyNineRelabelEdges edges e) := by
   unfold orderFortyNineBooleanConstraints at hconstraints ⊢
-  simpa only [orderFortyNineBitAdj_relabelEdges] using
-    orderFortyNineRelationConstraints_relabel h masks
-      (orderFortyNineBitAdj edges) e hconstraints hfix hprefix hmask
+  have hadj : orderFortyNineBitAdj (orderFortyNineRelabelEdges edges e) =
+      fun i j => orderFortyNineBitAdj edges (e i) (e j) := by
+    funext i j
+    exact orderFortyNineBitAdj_relabelEdges edges e i j
+  rw [hadj]
+  exact orderFortyNineRelationConstraints_relabel h masks
+    (orderFortyNineBitAdj edges) e hconstraints hfix hprefix hmask
 
 end Erdos85
