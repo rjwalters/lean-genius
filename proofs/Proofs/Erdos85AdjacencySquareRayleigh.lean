@@ -1,4 +1,5 @@
 import Proofs.Erdos85RayleighEigenvalueLowerBound
+import Proofs.Erdos85SquareEigenvalueLift
 import Proofs.Erdos85SquareOrderAdjacencyMoments
 import Mathlib.Combinatorics.SimpleGraph.AdjMatrix
 
@@ -121,6 +122,42 @@ theorem exists_orderFortyNine_adjMatrix_sq_eigenvalue_ge
   rw [hcard, hsR] at hmu
   norm_num at hmu ⊢
   exact hmu
+
+/-- Lifting the squared eigenvalue gives an adjacency eigenvalue whose square
+obeys the same exact lower bound. -/
+theorem exists_orderFortyNine_adjMatrix_eigenvalue_sq_ge
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 7 ∨ G.degree v = 7)
+    (hcard : Fintype.card V = 49) :
+    ∃ lambda : ℝ,
+      Module.End.HasEigenvalue (G.adjMatrix ℝ).toEuclideanLin lambda ∧
+      ((2401 : ℝ) + 15 * (squareOrderHighVertices G 7).card) / 49 ≤
+        lambda ^ 2 := by
+  obtain ⟨mu, hmuEig, hmuLower⟩ :=
+    exists_orderFortyNine_adjMatrix_sq_eigenvalue_ge
+      G hfree hmin hcover hcard
+  have hmupos : 0 < mu := by
+    have : (0 : ℝ) <
+        ((2401 : ℝ) + 15 * (squareOrderHighVertices G 7).card) / 49 := by
+      positivity
+    exact this.trans_le hmuLower
+  let T := (G.adjMatrix ℝ).toEuclideanLin
+  have hpow : ((G.adjMatrix ℝ) ^ 2).toEuclideanLin = T ^ 2 := by
+    ext v i
+    simp [T, pow_two, Matrix.toEuclideanLin_apply,
+      Matrix.mulVec_mulVec]
+  rw [hpow] at hmuEig
+  rcases hasEigenvalue_sqrt_or_neg_sqrt_of_sq T hmuEig hmupos with hpos | hneg
+  · refine ⟨Real.sqrt mu, hpos, ?_⟩
+    rw [Real.sq_sqrt hmupos.le]
+    exact hmuLower
+  · refine ⟨-Real.sqrt mu, hneg, ?_⟩
+    rw [show (-Real.sqrt mu) ^ 2 = (Real.sqrt mu) ^ 2 by ring,
+      Real.sq_sqrt hmupos.le]
+    exact hmuLower
 
 end
 
