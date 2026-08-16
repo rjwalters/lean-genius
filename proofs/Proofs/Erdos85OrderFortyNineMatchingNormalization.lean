@@ -96,6 +96,60 @@ theorem exists_equiv_finEight_canonical_matching_of_unique_rooted
     apply τ.injective
     simpa only [Equiv.trans_apply, hτmate] using h
 
+/-- The stabilizer of zero in the standard matching is transitive on the
+six vertices outside zero's mate pair. -/
+theorem oneHighStandardMate_exists_automorphism_fix_zero_send_two
+    (k : Fin 8) (hk0 : k ≠ 0)
+    (hkmate : k ≠ oneHighStandardMate 0) :
+    ∃ τ : Equiv.Perm (Fin 8),
+      τ 0 = 0 ∧ τ k = 2 ∧
+      ∀ i, τ (oneHighStandardMate i) = oneHighStandardMate (τ i) := by
+  native_decide +revert
+
+/-- Two-rooted normalization.  Two distinguished nonadjacent vertices may
+be placed at coordinates zero and two while retaining the canonical matching
+relation. -/
+theorem exists_equiv_finEight_canonical_matching_of_unique_two_rooted
+    {P : Type*} [Fintype P] [DecidableEq P]
+    (hcard : Fintype.card P = 8)
+    (adj : P → P → Bool)
+    (hsymm : ∀ x y, adj x y = adj y x)
+    (hloop : ∀ x, adj x x = false)
+    (hunique : ∀ x, ∃! y, adj x y = true)
+    (root other : P) (hnotAdj : adj root other = false)
+    (hne : root ≠ other) :
+    ∃ e : P ≃ Fin 8,
+      e root = 0 ∧ e other = 2 ∧
+      ∀ x y, adj x y = decide (e y = oneHighStandardMate (e x)) := by
+  obtain ⟨e₀, hroot, he₀⟩ :=
+    exists_equiv_finEight_canonical_matching_of_unique_rooted
+      hcard adj hsymm hloop hunique root
+  have hk0 : e₀ other ≠ 0 := by
+    intro h
+    apply hne
+    apply e₀.injective
+    simpa [hroot] using h.symm
+  have hkmate : e₀ other ≠ oneHighStandardMate 0 := by
+    intro h
+    have hadj : adj root other = true := by
+      rw [he₀]
+      simp [hroot, h]
+    rw [hnotAdj] at hadj
+    contradiction
+  obtain ⟨τ, hτ0, hτother, hτmate⟩ :=
+    oneHighStandardMate_exists_automorphism_fix_zero_send_two
+      (e₀ other) hk0 hkmate
+  refine ⟨e₀.trans τ, by simp [hroot, hτ0], hτother, ?_⟩
+  intro x y
+  rw [he₀]
+  apply Bool.decide_congr
+  constructor
+  · intro h
+    rw [Equiv.trans_apply, Equiv.trans_apply, h, hτmate]
+  · intro h
+    apply τ.injective
+    simpa only [Equiv.trans_apply, hτmate] using h
+
 end
 
 end Erdos85
