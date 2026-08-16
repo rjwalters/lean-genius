@@ -146,6 +146,70 @@ theorem matchingPairingListSorted_endpointCount
   rw [hp.sum_eq]
   exact matchingPairingList_endpointCount mate label l hinv hfree
 
+theorem list_countP_eq_toFinset_filter_card_of_nodup
+    {A : Type*} [DecidableEq A] (l : List A) (p : A → Bool)
+    (h : l.Nodup) :
+    l.countP p = (l.toFinset.filter fun x => p x = true).card := by
+  induction l with
+  | nil => simp
+  | cons a l ih =>
+      have ha := (List.nodup_cons.mp h).1
+      have hl := (List.nodup_cons.mp h).2
+      have hat : a ∉ l.toFinset := by simpa using ha
+      by_cases hp : p a = true
+      · rw [List.countP_cons_of_pos hp, ih hl, List.toFinset_cons,
+          Finset.filter_insert]
+        simp [hp, hat]
+      · rw [List.countP_cons_of_neg hp, ih hl, List.toFinset_cons,
+          Finset.filter_insert]
+        simp [hp]
+
+/-- On an off-diagonal key, counting the full pairing list agrees exactly
+with the pre-existing nonconstant exchanged-key multiplicity. -/
+theorem matchingPairingList_count_eq_exchangedMissPairMultiplicity
+    {X L : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    [Fintype L] [LinearOrder L]
+    (mate : X → X) (label : X → L) (key : L × L)
+    (hkey : key.1 < key.2) :
+    (matchingPairingList mate label).count key =
+      exchangedMissPairMultiplicity mate label key := by
+  classical
+  unfold matchingPairingList exchangedMissPairMultiplicity
+    matchingEdgeSources nonconstantMatchingEdgeSources
+    exchangedMissPairKey
+  rw [List.count_eq_countP, List.countP_map,
+    list_countP_eq_toFinset_filter_card_of_nodup _ _
+      (Finset.nodup_toList _)]
+  simp only [Finset.toList_toFinset]
+  simp only [Finset.filter_filter]
+  congr 1
+  ext x
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+    Function.comp_apply, beq_iff_eq]
+  constructor
+  · rintro ⟨hxlt, hpair⟩
+    refine ⟨⟨hxlt, ?_⟩, hpair⟩
+    intro heq
+    have hkdiag : key.1 = key.2 := by
+      rw [← hpair]
+      simp [heq]
+    exact (ne_of_lt hkey) hkdiag
+  · rintro ⟨⟨hxlt, _⟩, hpair⟩
+    exact ⟨hxlt, hpair⟩
+
+theorem matchingPairingListSorted_count_eq_exchangedMissPairMultiplicity
+    {X L : Type*} [Fintype X] [DecidableEq X] [LinearOrder X]
+    [Fintype L] [LinearOrder L]
+    (mate : X → X) (label : X → L) (key : L × L)
+    (hkey : key.1 < key.2) :
+    ((matchingPairingList mate label).mergeSort fun a b =>
+        decide (a ≤ b)).count key =
+      exchangedMissPairMultiplicity mate label key := by
+  rw [(List.mergeSort_perm (matchingPairingList mate label)
+    (fun a b => decide (a ≤ b))).count_eq]
+  exact matchingPairingList_count_eq_exchangedMissPairMultiplicity
+    mate label key hkey
+
 end
 
 end Erdos85
