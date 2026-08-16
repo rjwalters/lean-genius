@@ -34,7 +34,110 @@ theorem finEight_fixedPointFreeInvolution_conjugate_standard
     (hfix : ∀ i, p i ≠ i) :
     ∃ σ : Equiv.Perm (Fin 8),
       ∀ i, σ (p i) = oneHighStandardMate (σ i) := by
-  native_decide +revert
+  let R : Finset (Fin 8) := Finset.univ.filter fun i => i < p i
+  let S : Finset (Fin 8) := Finset.univ.filter fun i => p i < i
+  let eRS : {i // i ∈ R} ≃ {i // i ∈ S} :=
+    { toFun := fun i => ⟨p i, by
+        have hi : (i : Fin 8) < p i := (Finset.mem_filter.mp i.2).2
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        simpa only [hinv] using hi⟩
+      invFun := fun i => ⟨p i, by
+        have hi : p (i : Fin 8) < i := (Finset.mem_filter.mp i.2).2
+        apply Finset.mem_filter.mpr
+        refine ⟨Finset.mem_univ _, ?_⟩
+        simpa only [hinv] using hi⟩
+      left_inv := by
+        intro i
+        apply Subtype.ext
+        exact hinv i
+      right_inv := by
+        intro i
+        apply Subtype.ext
+        exact hinv i }
+  have hcardEq : R.card = S.card := by
+    simpa using Fintype.card_congr eRS
+  have hdisjoint : Disjoint R S := by
+    apply Finset.disjoint_left.mpr
+    intro i hiR hiS
+    have hlt : i < p i := (Finset.mem_filter.mp hiR).2
+    have hgt : p i < i := (Finset.mem_filter.mp hiS).2
+    omega
+  have hunion : R ∪ S = Finset.univ := by
+    ext i
+    simp only [Finset.mem_union, Finset.mem_univ, iff_true]
+    rcases lt_or_gt_of_ne (Ne.symm (hfix i)) with hi | hi
+    · exact Or.inl (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩)
+    · exact Or.inr (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩)
+  have hcardR : R.card = 4 := by
+    have hsum : R.card + S.card = 8 := by
+      rw [← Finset.card_union_of_disjoint hdisjoint, hunion]
+      decide
+    omega
+  let rep (i : Fin 8) : Fin 8 := if i < p i then i else p i
+  have hrep (i : Fin 8) : rep i ∈ R := by
+    by_cases hi : i < p i
+    · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simpa [rep, hi]⟩
+    · have hpi : p i < i := lt_of_le_of_ne (le_of_not_gt hi) (hfix i)
+      apply Finset.mem_filter.mpr
+      refine ⟨Finset.mem_univ _, ?_⟩
+      simp [rep, hi, hpi, hinv]
+  let orient : Fin 8 ≃ ({i // i ∈ R} × Fin 2) :=
+    { toFun := fun i =>
+        (⟨rep i, hrep i⟩, if i < p i then 0 else 1)
+      invFun := fun q => if q.2 = 0 then q.1 else p q.1
+      left_inv := by
+        intro i
+        by_cases hi : i < p i
+        · simp [rep, hi]
+        · simp [rep, hi, hinv]
+      right_inv := by
+        rintro ⟨r, b⟩
+        have hr : (r : Fin 8) < p r := (Finset.mem_filter.mp r.2).2
+        fin_cases b
+        · simp [rep, hr]
+        · have hpr : ¬p (r : Fin 8) < p (p r) := by
+            rw [hinv]
+            exact not_lt_of_ge (le_of_lt hr)
+          have hnpr : ¬p (r : Fin 8) < r :=
+            not_lt_of_ge (le_of_lt hr)
+          apply Prod.ext
+          · apply Subtype.ext
+            simp [rep, hpr, hnpr, hinv]
+          · apply Fin.ext
+            simp [hpr, hnpr, hinv] }
+  let eR : {i // i ∈ R} ≃ Fin 4 :=
+    Fintype.equivFinOfCardEq (by simpa using hcardR)
+  let σ : Equiv.Perm (Fin 8) :=
+    orient.trans ((Equiv.prodCongr eR (Equiv.refl (Fin 2))).trans
+      finProdFinEquiv)
+  have hmate0 (a : Fin 4) :
+      oneHighStandardMate (finProdFinEquiv (a, (0 : Fin 2))) =
+        finProdFinEquiv (a, (1 : Fin 2)) := by
+    fin_cases a <;> decide
+  have hmate1 (a : Fin 4) :
+      oneHighStandardMate (finProdFinEquiv (a, (1 : Fin 2))) =
+        finProdFinEquiv (a, (0 : Fin 2)) := by
+    fin_cases a <;> decide
+  refine ⟨σ, ?_⟩
+  intro i
+  by_cases hi : i < p i
+  · have hpi : ¬p i < p (p i) := by
+      rw [hinv]
+      exact not_lt_of_ge (le_of_lt hi)
+    have hnpi : ¬p i < i := not_lt_of_ge (le_of_lt hi)
+    have hrepp : rep (p i) = rep i := by
+      simp [rep, hi, hpi, hnpi, hinv]
+    simpa [σ, orient, rep, hi, hpi, hnpi, hinv, hrepp] using
+      (hmate0 (eR ⟨rep i, hrep i⟩)).symm
+  · have hpi : p i < i := lt_of_le_of_ne (le_of_not_gt hi) (hfix i)
+    have hpp : p i < p (p i) := by simpa only [hinv] using hpi
+    have hnle : ¬i ≤ p i := not_le_of_gt hpi
+    have hrepp : rep (p i) = rep i := by
+      simp [rep, hi, hpp, hnle, hinv]
+    have hnip : ¬i < p i := hi
+    simpa [σ, orient, rep, hi, hpi, hpp, hnip, hnle, hinv, hrepp] using
+      (hmate1 (eR ⟨rep i, hrep i⟩)).symm
 
 /-- Automorphisms of the standard four-pair matching can place every marked
 endpoint at the even end of an initial mate pair.  The hypothesis says no
