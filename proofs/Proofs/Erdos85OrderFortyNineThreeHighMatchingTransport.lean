@@ -15,29 +15,32 @@ def OrderFortyNineStandardMatchingTarget
       target i = ab.1 ∧ target j = ab.2 ∧
       (ab ∈ matching ↔ j = oneHighStandardMate i)
 
+set_option maxRecDepth 100000 in
 theorem orderFortyNineDistTwoFirstTarget_standard :
     OrderFortyNineStandardMatchingTarget
       orderFortyNineDistTwoFirstTarget
       [3, 4, 5, 6, 7, 8, 9, 10]
       [(3, 4), (5, 6), (7, 8), (9, 10)] := by
   unfold OrderFortyNineStandardMatchingTarget
-  native_decide
+  decide
 
+set_option maxRecDepth 100000 in
 theorem orderFortyNineDistTwoSecondTarget_standard :
     OrderFortyNineStandardMatchingTarget
       orderFortyNineDistTwoSecondTarget
       [3, 11, 14, 15, 16, 17, 18, 19]
       [(3, 11), (14, 15), (16, 17), (18, 19)] := by
   unfold OrderFortyNineStandardMatchingTarget
-  native_decide
+  decide
 
+set_option maxRecDepth 100000 in
 theorem orderFortyNineDistTwoThirdTarget_standard :
     OrderFortyNineStandardMatchingTarget
       orderFortyNineDistTwoThirdTarget
       [3, 12, 20, 21, 22, 23, 24, 25]
       [(3, 12), (20, 21), (22, 23), (24, 25)] := by
   unfold OrderFortyNineStandardMatchingTarget
-  native_decide
+  decide
 
 /-- A coordinate map on a normalized local neighborhood remembers more than
 the induced matching: it identifies the entire relabeled neighborhood with

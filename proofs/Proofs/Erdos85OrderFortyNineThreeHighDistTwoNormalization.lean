@@ -251,7 +251,7 @@ theorem exists_orderFortyNine_threeHighDistTwo_geometryLabeling
       simp [SimpleGraph.induce_adj, rootLocal, pLocal, hsp]
     rw [hc] at ht
     have heq := of_decide_eq_true ht
-    have hmate : oneHighStandardMate (0 : Fin 8) = 1 := by native_decide
+    have hmate : oneHighStandardMate (0 : Fin 8) = 1 := by decide
     simpa [rootLocal, pLocal, hrootE, hmate] using heq
   have hEt : E t = 4 := by
     have htcoord := hcoord_of_mate v1 t hs1 ht1 hst eA hrootA hcanA
