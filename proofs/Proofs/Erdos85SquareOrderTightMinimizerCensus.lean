@@ -23,6 +23,16 @@ def SquareOrderHighCensus (d h : Nat) : Prop :=
       d + 1 ≤ d * d - h ∧
       h * h + (3 * d + 1) * h ≤ d * d * d)
 
+/-- At even degree, handshake parity forces the high sector itself to have
+even cardinality. -/
+theorem SquareOrderHighCensus.even_high_of_even_degree
+    {d h : Nat} (hcensus : SquareOrderHighCensus d h) (hdeven : Even d) :
+    Even h := by
+  rw [Nat.even_iff] at hdeven ⊢
+  have hsum := hcensus.1
+  rw [Nat.even_iff] at hsum
+  simpa [Nat.add_mod, Nat.mul_mod, hdeven] using hsum
+
 /-- Every tight minimizer has a high-sector cardinality satisfying the
 uniform scalar census. -/
 theorem squareOrderTightMinimizer_exists_highCensus
