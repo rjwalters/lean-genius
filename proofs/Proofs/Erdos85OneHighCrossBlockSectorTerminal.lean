@@ -454,6 +454,31 @@ theorem OneHighCrossBlockSourceConfiguration.has_saturated_sourceEdge
     · exact Or.inr (Or.inr (Or.inl h))
     · exact Or.inr (Or.inr (Or.inr h))
 
+/-- Row-reconstruction form: an owner of one concrete cross-block source
+edge has exactly four matched vertices, hence its two internal edges exhaust
+the branch matching. -/
+theorem OneHighCrossBlockSourceConfiguration.has_full_matched_sourceBranch
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    Fintype.card (OneHighMatchedBranchVertices G v C.q₀₀.sourceEdge.1) = 4 ∨
+      Fintype.card (OneHighMatchedBranchVertices G v C.q₀₁.sourceEdge.1) = 4 ∨
+      Fintype.card (OneHighMatchedBranchVertices G v C.q₁₀.sourceEdge.1) = 4 ∨
+      Fintype.card (OneHighMatchedBranchVertices G v C.q₁₁.sourceEdge.1) = 4 := by
+  have full (s : {z : V // z ∈ G.neighborSet v})
+      (hs : oneHighFamilyInternalEdges p.profile (p.branchLabel s) = 2) :
+      Fintype.card (OneHighMatchedBranchVertices G v s) = 4 := by
+    rw [card_oneHighMatchedBranchVertices_eq_highBranchMatchedCount]
+    have hmatched := p.matched_count (p.branchLabel s)
+    simpa [hs] using hmatched
+  rcases C.has_saturated_sourceEdge G hfree hv p with h | h | h | h
+  · exact Or.inl (full C.q₀₀.sourceEdge.1 h)
+  · exact Or.inr (Or.inl (full C.q₀₁.sourceEdge.1 h))
+  · exact Or.inr (Or.inr (Or.inl (full C.q₁₀.sourceEdge.1 h)))
+  · exact Or.inr (Or.inr (Or.inr (full C.q₁₁.sourceEdge.1 h)))
+
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
     {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
