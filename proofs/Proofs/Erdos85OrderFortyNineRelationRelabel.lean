@@ -1,4 +1,4 @@
-import Proofs.Erdos85OrderFortyNineBooleanTerminal
+import Proofs.Erdos85OrderFortyNineBitRelabel
 
 /-!
 # Relabeling invariance of the order-49 Boolean terminal
@@ -82,5 +82,26 @@ theorem orderFortyNineRelationConstraints_relabel
       rw [← hmask (e.symm k), e.apply_symm_apply]
     rw [hsets]
     exact hp
+
+/-- Bit-vector form of `orderFortyNineRelationConstraints_relabel`.  This is
+the adapter used by normalization: the constructed target-to-source vertex
+equivalence is turned into an actual 1176-bit edge vector, while all Boolean
+terminal constraints are transported automatically. -/
+theorem orderFortyNineBooleanConstraints_relabel
+    (h : Nat) (masks : Array Nat) (edges : BitVec 1176)
+    (e : Fin 49 ≃ Fin 49)
+    (hconstraints : orderFortyNineBooleanConstraints h masks edges)
+    (hfix : ∀ w : Fin 9, w.val < h →
+      e ⟨w.val, by omega⟩ = ⟨w.val, by omega⟩)
+    (hprefix : ∀ i : Fin 49, (e i).val < h ↔ i.val < h)
+    (hmask : ∀ i : Fin 49,
+      orderFortyNineSupportMask masks (e i) =
+        orderFortyNineSupportMask masks i) :
+    orderFortyNineBooleanConstraints h masks
+      (orderFortyNineRelabelEdges edges e) := by
+  unfold orderFortyNineBooleanConstraints at hconstraints ⊢
+  simpa only [orderFortyNineBitAdj_relabelEdges] using
+    orderFortyNineRelationConstraints_relabel h masks
+      (orderFortyNineBitAdj edges) e hconstraints hfix hprefix hmask
 
 end Erdos85
