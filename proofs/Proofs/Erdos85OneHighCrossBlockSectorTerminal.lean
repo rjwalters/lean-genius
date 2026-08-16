@@ -1,6 +1,7 @@
 import Proofs.Erdos85MatchingMultiplicityRelabel
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighOddLabelTurn
+import Proofs.Erdos85OneHighRootPairGraphDecoder
 
 /-! # Concrete graph witnesses from the cross-block sector -/
 
@@ -115,6 +116,39 @@ theorem OneHighCrossBlockSourceConfiguration.sourcePair_collision
   · exact ⟨haPair ▸ (avoids C.q₁₀).1, (avoids C.q₁₀).2⟩
   · exact ⟨haPair ▸ (avoids C.q₁₁).1,
       hbPair ▸ (avoids C.q₁₁).2⟩
+
+/-- Graph-level form of the collision: two of the four concrete internal
+edges are sourced either in the same branch or in the two branches of one
+root-mate pair. -/
+theorem OneHighCrossBlockSourceConfiguration.sourceBranch_collision
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (C : OneHighCrossBlockSourceConfiguration G hfree hv p) :
+    let related (q r : OneHighAllMatchedVertices G v) :=
+      q.1 = r.1 ∨ q.1 = p.mate r.1
+    related C.q₀₀.sourceEdge C.q₀₁.sourceEdge ∨
+      related C.q₀₀.sourceEdge C.q₁₀.sourceEdge ∨
+      related C.q₀₀.sourceEdge C.q₁₁.sourceEdge ∨
+      related C.q₀₁.sourceEdge C.q₁₀.sourceEdge ∨
+      related C.q₀₁.sourceEdge C.q₁₁.sourceEdge ∨
+      related C.q₁₀.sourceEdge C.q₁₁.sourceEdge := by
+  dsimp only
+  have decode {q r : OneHighAllMatchedVertices G v}
+      (hqr : oneHighRootPair (p.branchLabel q.1) =
+        oneHighRootPair (p.branchLabel r.1)) :
+      q.1 = r.1 ∨ q.1 = p.mate r.1 :=
+    (oneHighRootPair_branchLabel_eq_iff_eq_or_rootMate
+      p.mate p.branchLabel p.branch_mate q.1 r.1).mp hqr
+  rcases C.sourcePair_collision G hfree hv p with
+    h | h | h | h | h | h
+  · exact Or.inl (decode h)
+  · exact Or.inr (Or.inl (decode h))
+  · exact Or.inr (Or.inr (Or.inl (decode h)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl (decode h))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (decode h)))))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (decode h)))))
 
 /-- Pull an odd support edge through the presentation's branch relabeling. -/
 private theorem oddSupportAdj_unlabel
