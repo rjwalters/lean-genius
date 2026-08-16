@@ -1,12 +1,14 @@
 import Proofs.Erdos85OrderFortyNineBitRelabel
 
 /-!
-# Relabeling invariance of the order-49 Boolean terminal
+# Relabeling tools for the order-49 Boolean terminal
 
 The `t = 0` normalization constructs a permutation of the 42 low vertices.
-This file isolates the generic fact that the relation-level SAT terminal is
-unchanged by any permutation which fixes the high prefix and preserves the
-prescribed support mask of every vertex.
+Degree and common-neighbor constraints transport under every permutation;
+partition constraints transport when the permutation identifies the target
+block with the corresponding source support fiber.  A stronger terminal-wide
+corollary is also recorded for genuinely mask-preserving permutations (the
+cube normalization itself deliberately is not mask-preserving).
 -/
 
 namespace Erdos85
@@ -23,6 +25,58 @@ theorem univ_filter_card_comp_equiv {α : Type*} [Fintype α] [DecidableEq α]
   · intro y hy
     refine ⟨e.symm y, ?_, by simp⟩
     simpa using (Finset.mem_filter.mp hy).2
+
+theorem orderFortyNineDegreeConstraints_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (hdegree : ∀ i : Fin 49,
+      (Finset.univ.filter fun j => adj i j).card =
+        if i.val < 7 then 8 else 7)
+    (hprefix : ∀ i : Fin 49, (e i).val < 7 ↔ i.val < 7) :
+    ∀ i : Fin 49,
+      (Finset.univ.filter fun j => adj (e i) (e j)).card =
+        if i.val < 7 then 8 else 7 := by
+  intro i
+  rw [univ_filter_card_comp_equiv e (fun j => adj (e i) j), hdegree (e i)]
+  split <;> rename_i hi
+  · rw [if_pos ((hprefix i).mp hi)]
+  · rw [if_neg (fun hi' => hi ((hprefix i).mpr hi'))]
+
+theorem orderFortyNineC4Constraints_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (hc4 : ∀ i j : Fin 49, i ≠ j →
+      (Finset.univ.filter fun k => adj i k && adj j k).card ≤ 1) :
+    ∀ i j : Fin 49, i ≠ j →
+      (Finset.univ.filter fun k =>
+        adj (e i) (e k) && adj (e j) (e k)).card ≤ 1 := by
+  intro i j hij
+  rw [univ_filter_card_comp_equiv e
+    (fun k => adj (e i) k && adj (e j) k)]
+  exact hc4 (e i) (e j) (fun heq => hij (e.injective heq))
+
+/-- Transport an exact-one neighbor law from a source support fiber to its
+normalized target block.  Unlike terminal-wide invariance, this is precisely
+the form needed when normalization deliberately changes the mask layout. -/
+theorem orderFortyNinePartitionConstraint_relabel
+    (adj : Fin 49 → Fin 49 → Bool) (e : Fin 49 ≃ Fin 49)
+    (i : Fin 49) (source target : Finset (Fin 49))
+    (hblock : ∀ k : Fin 49, k ∈ target ↔ e k ∈ source)
+    (hsource : (Finset.univ.filter fun k =>
+      adj (e i) k && decide (k ∈ source)).card = 1) :
+    (Finset.univ.filter fun k =>
+      adj (e i) (e k) && decide (k ∈ target)).card = 1 := by
+  have hcard := univ_filter_card_comp_equiv e (fun k =>
+    adj (e i) k && decide (k ∈ source))
+  rw [hcard]
+  have hsets :
+      (Finset.univ.filter fun k =>
+        adj (e i) k && decide (k ∈ source)) =
+      (Finset.univ.filter fun k =>
+        adj (e i) k && decide (e.symm k ∈ target)) := by
+    ext k
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    rw [hblock (e.symm k), e.apply_symm_apply]
+  rw [← hsets]
+  exact hsource
 
 /-- Relabeling invariance for the complete relation-level terminal.  The
 equivalence may permute low vertices freely inside their prescribed support
