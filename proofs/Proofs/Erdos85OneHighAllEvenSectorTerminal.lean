@@ -5,6 +5,7 @@ import Proofs.Erdos85OneHighSameMissParityConsumer
 import Proofs.Erdos85QuotientCutParity
 import Proofs.Erdos85OneHighRepeatedSourceCapacity
 import Proofs.Erdos85OneHighGraphPairingRefinement
+import Proofs.Erdos85OneHighAllEvenRowInventory
 
 /-! # Reduction of the one-high all-even terminal -/
 
@@ -1307,6 +1308,23 @@ theorem OneHighReciprocalSameMissEdges.source_singleton_mem_compatible
     (p.branchLabel q.s)
   rw [q.source_pairing_eq_singleton hprofile, q.s_label] at hmem
   exact hmem
+
+/-- Executable inventory signature forced by the graph-side reciprocal
+same-miss witness. -/
+theorem OneHighReciprocalSameMissEdges.graphTable_has_sourceZeroDiagonalSingleton
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : 0 < p.profile) :
+    oneHighTableHasSourceZeroDiagonalSingleton p.profile
+      (oneHighGraphRelevantMissTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) = true :=
+  oneHighTableHasSourceZeroDiagonalSingleton_of_mem
+    (q.source_singleton_mem_compatible hprofile)
 
 /-- Exact all-even invariant: same-miss internal edges have the same parity
 as the family profile.  Thus the five terminal profiles require respectively
