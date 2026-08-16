@@ -41,7 +41,7 @@ def orderFortyNineThreeHighDistOneNoCoincidenceMasks : Array Nat :=
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 theorem orderFortyNineThreeHighDistTwoMasks_size :
-    orderFortyNineThreeHighDistTwoMasks.size = 49 := by decide
+    orderFortyNineThreeHighDistTwoMasks.size = 49 := by decide +kernel
 
 theorem orderFortyNineThreeHighDistOneC2Masks_size :
     orderFortyNineThreeHighDistOneC2Masks.size = 49 := by decide +kernel
@@ -60,7 +60,6 @@ theorem orderFortyNineThreeHighDistOneC2Masks_high_zero :
       orderFortyNineThreeHighDistOneC2Masks := by
   intro a w
   fin_cases a <;> fin_cases w <;> decide
-
 theorem orderFortyNineThreeHighDistOneNoCoincidenceMasks_high_zero :
     OrderFortyNineVariableHighMasksZero (3 : Fin 50)
       orderFortyNineThreeHighDistOneNoCoincidenceMasks := by

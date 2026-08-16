@@ -38,11 +38,11 @@ theorem orderFortyNineThreeHighDistTwo_smallHighAlignedLabeling
     · have hi' : i = 0 ∨ i = 1 ∨ i = 2 := by omega
       rcases hi' with rfl | rfl | rfl
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN0]
-        decide
+        decide +kernel
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN1]
-        decide
+        decide +kernel
       · rw [if_pos (by omega), ← H.card_neighborFinset_eq_degree, hN2]
-        decide
+        decide +kernel
     · rw [if_neg hi, orderFortyNineRelabeledGraph_degree]
       rcases orderFortyNine_degree_eq_seven_or_eight
           G hfree hmin (Fintype.card_fin 49) (E.symm i) with h7 | h8
