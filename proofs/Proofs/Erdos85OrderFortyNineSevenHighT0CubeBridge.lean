@@ -25,15 +25,17 @@ def SevenHighT0CubeRelationConstraints (cube : Nat)
   (∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j → adj i j = false) ∧
   (∀ x : Fin 49, 7 ≤ x.val →
     adj 0 x = decide (x.val < 15)) ∧
-  (∀ a b : Fin 49, 7 ≤ a.val → a.val < 15 →
-    7 ≤ b.val → b.val < 15 → a ≠ b →
-    adj a b = sevenHighT0CubeMatching0 a.val b.val) ∧
+    (∀ a b : Fin 49, 7 ≤ a.val → a.val < 15 →
+      7 ≤ b.val → b.val < 15 → a ≠ b →
+      adj a b = sevenHighT0CubeMatching0
+        (min a.val b.val) (max a.val b.val)) ∧
   (∀ x : Fin 49, 7 ≤ x.val →
     adj 1 x = decide (x.val = 7 ∨ (15 ≤ x.val ∧ x.val < 22))) ∧
-  (∀ a b : Fin 49,
-    (a.val = 7 ∨ (15 ≤ a.val ∧ a.val < 22)) →
-    (b.val = 7 ∨ (15 ≤ b.val ∧ b.val < 22)) → a ≠ b →
-    adj a b = sevenHighT0CubeMatching1 a.val b.val) ∧
+    (∀ a b : Fin 49,
+      (a.val = 7 ∨ (15 ≤ a.val ∧ a.val < 22)) →
+      (b.val = 7 ∨ (15 ≤ b.val ∧ b.val < 22)) → a ≠ b →
+      adj a b = sevenHighT0CubeMatching1
+        (min a.val b.val) (max a.val b.val)) ∧
   (∀ i j : Fin 49, i.val < 7 → j.val < 7 → i ≠ j →
     ∃ w : Fin 49, 7 ≤ w.val ∧ adj i w = true ∧ adj j w = true) ∧
   (∀ i j : Fin 49, i ≠ j →
