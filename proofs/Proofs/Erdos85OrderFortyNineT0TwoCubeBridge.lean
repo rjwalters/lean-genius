@@ -22,6 +22,39 @@ def SevenHighT0CoreExcluded : Prop :=
   ∀ edges : BitVec 1176,
     orderFortyNineBooleanConstraints 7 sevenHighT0Masks edges → False
 
+/-- Cube zero is impossible without invoking its CNF: vertices `7` and `9`
+would have the two distinct common neighbors `0` and `15`. -/
+theorem sevenHighT0_relationCore_zero_false
+    (adj : Fin 49 → Fin 49 → Bool)
+    (hsymm : ∀ i j, adj i j = adj j i)
+    (h : SevenHighT0CubeRelationCore 0 adj) : False := by
+  rcases h with ⟨_, _, hn0, _, _, hm1, _, hc4, _, _, hcubes⟩
+  have h07 : adj 0 7 = true := by simpa using hn0 7 (by omega)
+  have h09 : adj 0 9 = true := by simpa using hn0 9 (by omega)
+  have h715 : adj 7 15 = true := by
+    have hm := hm1 7 15 (Or.inl rfl) (Or.inr ⟨by omega, by omega⟩)
+      (by decide)
+    simpa [sevenHighT0CubeMatching1] using hm
+  have h915 : adj 9 15 = true := by
+    have hu := hcubes 0
+    simpa using hu
+  let common := Finset.univ.filter fun w => adj 7 w && adj 9 w
+  have hzero : (0 : Fin 49) ∈ common := by
+    simp [common, (hsymm 7 0).trans h07,
+      (hsymm 9 0).trans h09]
+  have hfifteen : (15 : Fin 49) ∈ common := by
+    simp [common, h715, h915]
+  have heq := (Finset.card_le_one.mp
+    (hc4 7 9 (by decide))) 0 hzero 15 hfifteen
+  exact (by decide : (0 : Fin 49) ≠ 15) heq
+
+/-- Only cube one needs an encoding-soundness proof. -/
+def SevenHighT0CubeOneCnfSound : Prop :=
+  ∀ edges,
+    SevenHighT0CubeRelationCore 1 (orderFortyNineBitAdj edges) →
+    ∃ assignment : Nat → Bool,
+      (orderFortyNineGeneratedH7T0CubeSatCnf 1).Sat assignment
+
 /-- The global normalization and residual action reduce semantic coverage to
 the two CNFs numbered zero and one. -/
 theorem sevenHighT0_twoCubeSemanticCover
@@ -54,5 +87,27 @@ theorem sevenHighT0_excluded_of_twoCube_lratChecks
   have hfalse := hunsat assignment
   rw [hsat] at hfalse
   contradiction
+
+/-- Final reduced bridge: cube zero is discharged structurally, so the only
+external certificate and encoding theorem required are for cube one. -/
+theorem sevenHighT0_excluded_of_cubeOne_lratCheck
+    (hsound : SevenHighT0CubeOneCnfSound)
+    (proof : Array LRAT.IntAction)
+    (hcheck : LRAT.check proof
+      (orderFortyNineGeneratedH7T0CubeSatCnf 1)) :
+    SevenHighT0CoreExcluded := by
+  intro edges hedges
+  obtain ⟨cube, normalizedEdges, hnormalized⟩ :=
+    sevenHighT0_exists_normalized_relationCore_zero_or_one edges hedges
+  fin_cases cube
+  · exact sevenHighT0_relationCore_zero_false
+      (orderFortyNineBitAdj normalizedEdges)
+      (orderFortyNineBitAdj_comm normalizedEdges) hnormalized
+  · obtain ⟨assignment, hsat⟩ := hsound normalizedEdges hnormalized
+    have hunsat := LRAT.check_sound proof
+      (orderFortyNineGeneratedH7T0CubeSatCnf 1) hcheck
+    have hfalse := hunsat assignment
+    rw [hsat] at hfalse
+    contradiction
 
 end Erdos85
