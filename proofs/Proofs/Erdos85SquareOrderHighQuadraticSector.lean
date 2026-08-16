@@ -23,6 +23,39 @@ def squareOrderHighQuadraticSectorFamily
   | Sum.inl b => coordinateDifferenceRat b.1 a
   | Sum.inr b => squareOrderHighRowDifferenceRat G b.1 a
 
+theorem squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inl
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H : Finset V) (a : V) (b : {x // x ∈ H.erase a}) :
+    (G.adjMatrix ℚ).mulVec
+        (squareOrderHighQuadraticSectorFamily G H a (Sum.inl b)) =
+      squareOrderHighQuadraticSectorFamily G H a (Sum.inr b) := by
+  funext x
+  simp only [squareOrderHighQuadraticSectorFamily, Matrix.mulVec, dotProduct,
+    coordinateDifferenceRat, squareOrderHighRowDifferenceRat]
+  simp_rw [mul_sub]
+  rw [Finset.sum_sub_distrib]
+  simp [G.adj_comm]
+
+theorem squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    (H : Finset V) (a : V) (b : {x // x ∈ H.erase a})
+    (hb : G.degree b.1 = d + 1) (ha : G.degree a = d + 1) :
+    (G.adjMatrix ℚ).mulVec
+        (squareOrderHighQuadraticSectorFamily G H a (Sum.inr b)) =
+      (d : ℚ) • squareOrderHighQuadraticSectorFamily G H a (Sum.inl b) := by
+  funext x
+  have hx := congrFun
+    (squareOrder_adjMatrixRat_mulVec_highRowDifferenceRat
+      G hfree hd hmin hcard hb ha) x
+  simpa [squareOrderHighQuadraticSectorFamily, Pi.smul_apply] using hx
+
 theorem squareOrder_highQuadraticSectorFamily_linearIndependent
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
