@@ -193,6 +193,52 @@ theorem squareOrder_highQuadraticSectorFamily_linearIndependent
   | inl b => exact hgleft b
   | inr b => exact hgright b
 
+/-- The rational span of the doubled high-difference family is invariant under
+the adjacency operator. -/
+theorem squareOrder_highQuadraticSector_span_invariant
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    ∀ x ∈ Submodule.span ℚ
+        (Set.range (squareOrderHighQuadraticSectorFamily
+          G (squareOrderHighVertices G d) a)),
+      (G.adjMatrix ℚ).toLin' x ∈ Submodule.span ℚ
+        (Set.range (squareOrderHighQuadraticSectorFamily
+          G (squareOrderHighVertices G d) a)) := by
+  let S := Submodule.span ℚ
+    (Set.range (squareOrderHighQuadraticSectorFamily
+      G (squareOrderHighVertices G d) a))
+  intro x hx
+  have hle : S ≤ S.comap (G.adjMatrix ℚ).toLin' := by
+    refine Submodule.span_le.mpr ?_
+    intro y hy
+    obtain ⟨i, rfl⟩ := hy
+    cases i with
+    | inl b =>
+        change (G.adjMatrix ℚ).toLin'
+            (squareOrderHighQuadraticSectorFamily
+              G (squareOrderHighVertices G d) a (Sum.inl b)) ∈ S
+        rw [Matrix.toLin'_apply,
+          squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inl]
+        exact Submodule.subset_span (Set.mem_range_self (Sum.inr b))
+    | inr b =>
+        change (G.adjMatrix ℚ).toLin'
+            (squareOrderHighQuadraticSectorFamily
+              G (squareOrderHighVertices G d) a (Sum.inr b)) ∈ S
+        rw [Matrix.toLin'_apply,
+          squareOrder_adjMatrixRat_mulVec_highQuadraticSectorFamily_inr
+            G hfree hd hmin hcard _ a b
+            (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2
+            (Finset.mem_filter.mp ha).2]
+        exact S.smul_mem (d : ℚ)
+          (Submodule.subset_span (Set.mem_range_self (Sum.inl b)))
+  exact hle hx
+
 theorem squareOrder_highQuadraticSector_le_finrank_quadraticDefect_ker
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
