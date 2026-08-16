@@ -2,6 +2,7 @@ import Proofs.Erdos85MatchingMultiplicityRelabel
 import Proofs.Erdos85OneHighStructuralTerminalInterface
 import Proofs.Erdos85OneHighOddLabelTurn
 import Proofs.Erdos85OneHighRootPairGraphDecoder
+import Proofs.Erdos85OneHighRepeatedSourceCapacity
 
 /-! # Concrete graph witnesses from the three-pair turn sector -/
 
@@ -198,6 +199,26 @@ theorem OneHighPinnedThreePairTurn.graph_source_sector
     · exact Or.inr (Or.inl hmate)
   · exact Or.inr (Or.inr (Or.inl hc))
   · exact Or.inr (Or.inr (Or.inr ha))
+
+/-- In the same-owner branch of the decoded split, that owner is forced to
+be a profile two-edge branch. -/
+theorem OneHighPinnedThreePairTurn.sameOwner_internalEdges_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (T : OneHighPinnedThreePairTurn G hfree hv p)
+    (howner : T.qAB.sourceEdge.1 = T.qBC.sourceEdge.1) :
+    oneHighFamilyInternalEdges p.profile
+      (p.branchLabel T.qAB.sourceEdge.1) = 2 := by
+  apply oneHighFamilyInternalEdges_eq_two_of_distinct_sources_sameOwner
+    G hfree hv p
+  · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+      T.qAB.sourceEdge_mem
+  · simpa [nonconstantMatchingEdgeSources, Function.comp_def] using
+      T.qBC.sourceEdge_mem
+  · exact T.source_edges_ne
+  · exact howner
 
 /-- The exact graph-side obligation remaining after the multiplicity turn is
 decoded into roots and matching-edge sources. -/
