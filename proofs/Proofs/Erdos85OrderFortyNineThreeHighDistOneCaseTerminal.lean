@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderFortyNineThreeHighDistOneCaseSplit
 import Proofs.Erdos85OrderFortyNineThreeHighScoutDichotomyTerminal
+import Proofs.Erdos85OrderFortyNineThreeHighDistOneNoCoincidenceScoutTerminal
 
 /-! # Exact terminal interfaces for the `b1/c1/c2` distance-one cases -/
 
@@ -61,6 +62,50 @@ def ThreeHighDistOneC1Excluded : Prop :=
     ∀ D : ThreeHighDistinctRootBase G,
     ¬ ∃ x2 x3, ThreeHighDistOneSiblingData G D x2 x3 ∧
       ¬ G.Adj D.u12 D.u13 ∧ x2 ≠ D.u23 ∧ x3 ≠ D.u23
+
+/-- Exact graph-normalization obligation for the paired/no-coincidence scout. -/
+def ThreeHighDistOneB1AlignedCover : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+    (¬ containsC4 (Fin 49) G) →
+    (∀ x : Fin 49, 7 ≤ G.degree x) →
+    ∀ D : ThreeHighDistinctRootBase G,
+    (∃ x2 x3, ThreeHighDistOneSiblingData G D x2 x3 ∧
+      G.Adj D.u12 D.u13 ∧ x2 ≠ D.u23 ∧ x3 ≠ D.u23) →
+    ∃ E : Equiv.Perm (Fin 49),
+      ThreeHighDistOneB1ScoutAlignedLabeling G E
+
+/-- Exact graph-normalization obligation for the unpaired/no-coincidence scout. -/
+def ThreeHighDistOneC1AlignedCover : Prop :=
+  ∀ (G : SimpleGraph (Fin 49)) (_ : DecidableRel G.Adj)
+    (_ : DecidableRel (antipodalGraph G).Adj)
+    (_ : DecidableRel (triangleFreeEdgeGraph G).Adj),
+    (¬ containsC4 (Fin 49) G) →
+    (∀ x : Fin 49, 7 ≤ G.degree x) →
+    ∀ D : ThreeHighDistinctRootBase G,
+    (∃ x2 x3, ThreeHighDistOneSiblingData G D x2 x3 ∧
+      ¬ G.Adj D.u12 D.u13 ∧ x2 ≠ D.u23 ∧ x3 ≠ D.u23) →
+    ∃ E : Equiv.Perm (Fin 49),
+      ThreeHighDistOneC1ScoutAlignedLabeling G E
+
+theorem threeHighDistOneB1Excluded_of_alignedCover_lrat
+    (hcover : ThreeHighDistOneB1AlignedCover)
+    (certificate : ThreeHighDistOneB1ScoutCertificate) :
+    ThreeHighDistOneB1Excluded := by
+  intro G _ _ _ hfree hmin D hcase
+  exact false_of_exists_threeHighDistOneB1ScoutAlignedLabeling G hfree
+    (hcover G inferInstance inferInstance inferInstance hfree hmin D hcase)
+    certificate
+
+theorem threeHighDistOneC1Excluded_of_alignedCover_lrat
+    (hcover : ThreeHighDistOneC1AlignedCover)
+    (certificate : ThreeHighDistOneC1ScoutCertificate) :
+    ThreeHighDistOneC1Excluded := by
+  intro G _ _ _ hfree hmin D hcase
+  exact false_of_exists_threeHighDistOneC1ScoutAlignedLabeling G hfree
+    (hcover G inferInstance inferInstance inferInstance hfree hmin D hcase)
+    certificate
 
 /-- Exact normalization obligation for the surviving unpaired/one-coincidence
 `c2` case.  The disjunction allows swapping the second and third highs. -/
