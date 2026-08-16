@@ -314,6 +314,51 @@ theorem squareOrder_highQuadraticSector_restrict_basis_inr
         (Finset.mem_filter.mp (Finset.mem_of_mem_erase b.2)).2
         (Finset.mem_filter.mp ha).2
 
+/-- The matrix of adjacency restricted to the high quadratic sector is the
+explicit exchanged-pair block matrix. -/
+theorem squareOrder_highQuadraticSector_restrict_toMatrix
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : Nat} (hd : 2 ≤ d) (hmin : ∀ x : V, d ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    {a : V} (ha : a ∈ squareOrderHighVertices G d) :
+    let E := {x // x ∈ (squareOrderHighVertices G d).erase a}
+    let B := squareOrderHighQuadraticSectorBasis
+      G hfree hd hmin hcover hcard ha
+    LinearMap.toMatrix B B
+        (LinearMap.restrict (G.adjMatrix ℚ).toLin'
+          (squareOrder_highQuadraticSector_span_invariant
+            G hfree hd hmin hcard ha)) =
+      Matrix.fromBlocks (0 : Matrix E E ℚ)
+        ((d : ℚ) • (1 : Matrix E E ℚ))
+        (1 : Matrix E E ℚ) 0 := by
+  classical
+  dsimp only
+  ext i j
+  cases i with
+  | inl i =>
+      cases j with
+      | inl j =>
+          simp [LinearMap.toMatrix_apply,
+            squareOrder_highQuadraticSector_restrict_basis_inl]
+      | inr j =>
+          by_cases hij : i = j <;>
+            simp [LinearMap.toMatrix_apply,
+              squareOrder_highQuadraticSector_restrict_basis_inr, hij]
+  | inr i =>
+      cases j with
+      | inl j =>
+          by_cases hij : i = j <;>
+            simp [LinearMap.toMatrix_apply,
+              squareOrder_highQuadraticSector_restrict_basis_inl, hij]
+      | inr j =>
+          simp [LinearMap.toMatrix_apply,
+            squareOrder_highQuadraticSector_restrict_basis_inr]
+
 theorem squareOrder_highQuadraticSector_le_finrank_quadraticDefect_ker
     {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
