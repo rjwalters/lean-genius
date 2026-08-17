@@ -192,8 +192,12 @@ def process(job):
             state = "FAIL-INFRA-OOM" if r.returncode == 137 else "FAIL-LEAN-REPLAY"
             record(orbit, state, f"rc={r.returncode} {detail}")
             return
-        m = re.search(r"CNF clauses: (\d+); LRAT actions: (\d+)", r.stdout)
-        clauses, actions = m.groups() if m else ("?", "?")
+        # The fast replay runtime reports padding diagnostics between these
+        # fields, so parse them independently rather than assuming adjacency.
+        m_clauses = re.search(r"CNF clauses: (\d+)", r.stdout)
+        m_actions = re.search(r"LRAT actions: (\d+)", r.stdout)
+        clauses = m_clauses.group(1) if m_clauses else "?"
+        actions = m_actions.group(1) if m_actions else "?"
         # 5. bank COMPACT only; hash raw for provenance, then drop it
         raw_sha = sha256(lrat)
         final = LRAT_DIR + "/" + orbit + ".v2.compact.lrat"
