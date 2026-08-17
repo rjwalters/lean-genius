@@ -72,6 +72,88 @@ theorem false_of_large_secondMoment_charpoly_factor
     A hA hf hq hfactor
   linarith
 
+/-- Rational divisibility is enough for the Hermitian moment terminal:
+base change turns the rational cofactor into the required complex
+characteristic factorization. -/
+theorem false_of_large_secondMoment_dvd_rational_charpoly
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ)
+    {f : ℤ[X]} (hfmonic : f.Monic)
+    (hdvd : f.map (Int.castRingHom ℚ) ∣ D.charpoly)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (hmoment : 63 <
+      (complexRootPowerSum (f.map (Int.castRingHom ℂ)) 2).re)
+    (htrace : (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    False := by
+  obtain ⟨q, hq⟩ := hdvd
+  have hq0 : q ≠ 0 := by
+    intro hzero
+    rw [hzero, mul_zero] at hq
+    exact D.charpoly_monic.ne_zero hq
+  have hqmap0 : q.map (algebraMap ℚ ℂ) ≠ 0 := by
+    simpa using
+      (Polynomial.map_injective _ (algebraMap ℚ ℂ).injective).ne hq0
+  have hfactor :
+      (D.map (algebraMap ℚ ℂ)).charpoly =
+        f.map (Int.castRingHom ℂ) * q.map (algebraMap ℚ ℂ) := by
+    rw [Matrix.charpoly_map, hq, Polynomial.map_mul, Polynomial.map_map]
+    congr 1
+  exact false_of_large_secondMoment_charpoly_factor
+    (D.map (algebraMap ℚ ℂ)) hD (hfmonic.map _).ne_zero hqmap0
+      hfactor hmoment htrace
+
+theorem false_of_cycleDefectCubicSeven_dvd_rational_charpoly
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ)
+    (hdvd : cycleDefectCubicSeven.map (Int.castRingHom ℚ) ∣ D.charpoly)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    False := by
+  apply false_of_large_secondMoment_dvd_rational_charpoly D
+    cycleDefectCubicSeven_monic hdvd hD
+  · rw [cycleDefectCubicSeven_complexRootPowerSum_two]
+    norm_num
+  · exact htrace
+
+theorem false_of_cycleDefectCubicNine_dvd_rational_charpoly
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ)
+    (hdvd : cycleDefectCubicNine.map (Int.castRingHom ℚ) ∣ D.charpoly)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    False := by
+  apply false_of_large_secondMoment_dvd_rational_charpoly D
+    cycleDefectCubicNine_monic hdvd hD
+  · rw [cycleDefectCubicNine_complexRootPowerSum_two]
+    norm_num
+  · exact htrace
+
+theorem false_of_cycleDefectQuinticEleven_dvd_rational_charpoly
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ)
+    (hdvd : cycleDefectQuinticEleven.map (Int.castRingHom ℚ) ∣ D.charpoly)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    False := by
+  apply false_of_large_secondMoment_dvd_rational_charpoly D
+    cycleDefectQuinticEleven_monic hdvd hD
+  · rw [cycleDefectQuinticEleven_complexRootPowerSum_two]
+    norm_num
+  · exact htrace
+
+theorem false_of_cycleDefectSexticThirteen_dvd_rational_charpoly
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (D : Matrix n n ℚ)
+    (hdvd : cycleDefectSexticThirteen.map (Int.castRingHom ℚ) ∣ D.charpoly)
+    (hD : (D.map (algebraMap ℚ ℂ)).IsHermitian)
+    (htrace : (Matrix.trace ((D.map (algebraMap ℚ ℂ)) ^ 2)).re ≤ 63) :
+    False := by
+  apply false_of_large_secondMoment_dvd_rational_charpoly D
+    cycleDefectSexticThirteen_monic hdvd hD
+  · rw [cycleDefectSexticThirteen_complexRootPowerSum_two]
+    norm_num
+  · exact htrace
+
 theorem false_of_cycleDefectCubicSeven_charpoly_factor
     {n : Type*} [Fintype n] [DecidableEq n]
     (A : Matrix n n ℂ) (hA : A.IsHermitian) {q : ℂ[X]} (hq : q ≠ 0)
