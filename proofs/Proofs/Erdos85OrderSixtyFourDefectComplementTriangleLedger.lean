@@ -114,6 +114,55 @@ theorem orderSixtyFour_defectComponent_compl_triangleMinorCount_sum
   norm_cast at htrace
   omega
 
+/-- Each complement component has at most `112` triangles. -/
+theorem orderSixtyFour_defectComponent_compl_triangleMinorCount_le
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 4)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let H := (secondOrderDefectGraph G).induce c.supp
+    (adjacencyTriangleMinorFinset Hᶜ).card ≤ 112 := by
+  have hsum := orderSixtyFour_defectComponent_compl_triangleMinorCount_sum
+    G hfree hreg hcount c
+  omega
+
+/-- The defect-component and complement triangle counts have the same
+parity, since their sum is the even number `112`. -/
+theorem orderSixtyFour_defectComponent_triangleMinorCount_even_iff_compl
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ x, G.degree x = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 4)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    let H := (secondOrderDefectGraph G).induce c.supp
+    Even (adjacencyTriangleMinorFinset H).card ↔
+      Even (adjacencyTriangleMinorFinset Hᶜ).card := by
+  let H := (secondOrderDefectGraph G).induce c.supp
+  change Even (adjacencyTriangleMinorFinset H).card ↔
+    Even (adjacencyTriangleMinorFinset Hᶜ).card
+  have hsum := orderSixtyFour_defectComponent_compl_triangleMinorCount_sum
+    G hfree hreg hcount c
+  change (adjacencyTriangleMinorFinset H).card +
+    (adjacencyTriangleMinorFinset Hᶜ).card = 112 at hsum
+  constructor
+  · rintro ⟨k, hk⟩
+    refine ⟨56 - k, ?_⟩
+    omega
+  · rintro ⟨k, hk⟩
+    refine ⟨56 - k, ?_⟩
+    omega
+
 end
 
 end Erdos85
