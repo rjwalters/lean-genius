@@ -1279,9 +1279,14 @@ generalized rather than merely replayed.
      `12` such prescribed routing cycles.  Summing the rooted fibers in
      `Erdos85BinarySquareMixedOwnerRoutingCycleCensus` gives a global sigma-
      finset of at least `64 * 12 = 768` prescribed rooted routing-cycle
-     incidences for every ordered triple of distinct colors.  The remaining
-     structural gap is to exploit the incidence constraints imposed by these
-     ubiquitous routing cycles and derive a contradiction.
+     incidences for every ordered triple of distinct colors.  In the branch
+     with no same-component owner rainbow,
+     `Erdos85BinarySquareMixedOwnerNoRainbowMiddleConcentration` combines the
+     sharper sixteen-cycle root bound with the three possible external middle
+     components: at every root, some one external component carries at least
+     six prescribed routing cycles.  The remaining structural gap is to
+     exploit the incidence constraints imposed by this concentration and
+     derive a contradiction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
