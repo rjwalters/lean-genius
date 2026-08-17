@@ -165,6 +165,113 @@ theorem rowSumCongruence_laplacian_add_ones_ne_ne
   rw [rowSumCongruence_apply_ne_ne hri hrj]
   rfl
 
+abbrev rootReduced {ι : Type*} (r : ι) := {x : ι // x ≠ r}
+
+def rootSplitEquiv {ι : Type*} [DecidableEq ι] (r : ι) :
+    ι ≃ Unit ⊕ rootReduced r where
+  toFun x := if h : x = r then Sum.inl () else Sum.inr ⟨x, h⟩
+  invFun
+    | Sum.inl _ => r
+    | Sum.inr x => x.1
+  left_inv x := by
+    by_cases h : x = r <;> simp [h]
+  right_inv x := by
+    rcases x with u | x
+    · rcases u with ⟨⟩
+      simp
+    · simp [x.2]
+
+/-- After splitting off the root, the transformed matrix has the explicit
+block form needed by the Schur complement. -/
+theorem rowSumCongruence_reindex_eq_fromBlocks
+    {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
+    (r : ι) (L : Matrix ι ι R)
+    (hrow : ∀ i, ∑ j, L i j = 0)
+    (hcol : ∀ j, ∑ i, L i j = 0) :
+    Matrix.reindex (rootSplitEquiv r) (rootSplitEquiv r)
+      (rowSumCongruence r (L + Matrix.of (fun _ _ => (1 : R)))) =
+      Matrix.fromBlocks
+        (fun _ : Unit => fun _ : Unit => (Fintype.card ι : R) ^ 2)
+        (fun _ : Unit => fun _ : rootReduced r => (Fintype.card ι : R))
+        (fun _ : rootReduced r => fun _ : Unit => (Fintype.card ι : R))
+        (L.submatrix (fun x : rootReduced r => x.1)
+            (fun x : rootReduced r => x.1) +
+          Matrix.of (fun _ : rootReduced r => fun _ : rootReduced r => (1 : R))) := by
+  ext i j
+  rcases i with i | i <;> rcases j with j | j
+  · rcases i with ⟨⟩
+    rcases j with ⟨⟩
+    simpa [Matrix.reindex_apply, rootSplitEquiv] using
+      rowSumCongruence_laplacian_add_ones_root_root r L hrow
+  · rcases i with ⟨⟩
+    simpa [Matrix.reindex_apply, rootSplitEquiv] using
+      rowSumCongruence_laplacian_add_ones_root_row j.2 L hcol
+  · rcases j with ⟨⟩
+    simpa [Matrix.reindex_apply, rootSplitEquiv] using
+      rowSumCongruence_laplacian_add_ones_root_col i.2 L hrow
+  · simpa [Matrix.reindex_apply, rootSplitEquiv] using
+      rowSumCongruence_laplacian_add_ones_ne_ne i.2 j.2 L
+
+/-- **Laplacian rank-one/cofactor identity.**  For a nonempty finite index
+type and a matrix with zero row and column sums,
+`det (L + J) = n² det(L without one row and column)`. -/
+theorem det_laplacian_add_ones_eq_card_sq_mul_minor
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (r : ι) (L : Matrix ι ι ℚ)
+    (hrow : ∀ i, ∑ j, L i j = 0)
+    (hcol : ∀ j, ∑ i, L i j = 0) :
+    Matrix.det (L + Matrix.of (fun _ _ => (1 : ℚ))) =
+      (Fintype.card ι : ℚ) ^ 2 *
+        Matrix.det (L.submatrix (fun x : rootReduced r => x.1)
+          (fun x : rootReduced r => x.1)) := by
+  letI : Nonempty ι := ⟨r⟩
+  let n : ℚ := Fintype.card ι
+  let A : Matrix Unit Unit ℚ := fun _ _ => n ^ 2
+  let B : Matrix Unit (rootReduced r) ℚ := fun _ _ => n
+  let C : Matrix (rootReduced r) Unit ℚ := fun _ _ => n
+  let K := L.submatrix (fun x : rootReduced r => x.1)
+    (fun x : rootReduced r => x.1)
+  let D : Matrix (rootReduced r) (rootReduced r) ℚ :=
+    K + Matrix.of (fun _ _ => (1 : ℚ))
+  have hn0 : n ≠ 0 := by
+    dsimp only [n]
+    norm_cast
+    exact Fintype.card_ne_zero
+  have hAdet : Matrix.det A = n ^ 2 := by
+    rw [Matrix.det_unique]
+  have hAunit : IsUnit (Matrix.det A) := by
+    rw [hAdet]
+    exact isUnit_iff_ne_zero.mpr (pow_ne_zero 2 hn0)
+  letI : Invertible A := Matrix.invertibleOfIsUnitDet A hAunit
+  have hschur : D - C * ⅟A * B = K := by
+    have hAA : A * ⅟A = 1 := mul_invOf_self A
+    have hentry := congrArg (fun M : Matrix Unit Unit ℚ => M () ()) hAA
+    simp only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton,
+      A, Matrix.one_apply_eq] at hentry
+    ext x y
+    simp only [Matrix.sub_apply, Matrix.mul_apply, Finset.univ_unique,
+      Finset.sum_singleton, D, C, B, Matrix.add_apply, Matrix.of_apply]
+    dsimp only [K]
+    field_simp [hn0] at hentry ⊢
+    nlinarith
+  calc
+    Matrix.det (L + Matrix.of (fun _ _ => (1 : ℚ))) =
+        Matrix.det (rowSumCongruence r
+          (L + Matrix.of (fun _ _ => (1 : ℚ)))) :=
+      (det_rowSumChange_mul_mul_transpose r _).symm
+    _ = Matrix.det (Matrix.reindex (rootSplitEquiv r) (rootSplitEquiv r)
+          (rowSumCongruence r
+            (L + Matrix.of (fun _ _ => (1 : ℚ))))) :=
+      (Matrix.det_reindex_self (rootSplitEquiv r) _).symm
+    _ = Matrix.det (Matrix.fromBlocks A B C D) := by
+      rw [rowSumCongruence_reindex_eq_fromBlocks r L hrow hcol]
+    _ = Matrix.det A * Matrix.det (D - C * ⅟A * B) :=
+      Matrix.det_fromBlocks₁₁ A B C D
+    _ = n ^ 2 * Matrix.det K := by rw [hAdet, hschur]
+    _ = (Fintype.card ι : ℚ) ^ 2 *
+        Matrix.det (L.submatrix (fun x : rootReduced r => x.1)
+          (fun x : rootReduced r => x.1)) := by rfl
+
 end
 
 end Erdos85
