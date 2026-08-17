@@ -487,6 +487,15 @@ generalized rather than merely replayed.
       high common neighbor of `x,u` that was removed is the owner `z`, when it
       is high.  This is the proved bridge from weighted branches to a family of
       transversal words with prescribed symbol multiplicities.
+    - The first proved cross-center gluing laws are
+      `mem_squareOrderDefectBranch_comm_of_adj_owner`,
+      `card_inter_squareOrderDefectBranch_le_one_of_owner_ne`, and
+      `card_inter_squareOrderDefectBranch_same_owner`: membership through one
+      owner is reciprocal between centers; branches with different owners
+      intersect in at most one point; branches with the same owner `z` at two
+      distinct centers overlap in exactly `deg(z)-2` points.  Any next model
+      must realize these shared-owner overlaps globally, not instantiate the
+      local transversal codes independently.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
