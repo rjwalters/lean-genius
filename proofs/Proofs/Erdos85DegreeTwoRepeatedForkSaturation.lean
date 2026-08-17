@@ -80,6 +80,45 @@ theorem degreeTwo_repeatedFork_isolatedK22
     degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hxy hxr₁.symm hyr₁.symm,
     degreeTwo_neighborFinset_eq_pair_of_adj H hdeg hxy hxr₂.symm hyr₂.symm⟩
 
+/-- The four vertices of a repeated fork form a cardinality-four set closed
+under taking graph neighbors.  This is the counting interface for packing
+several forced owner blocks into a sixteen-vertex factor. -/
+theorem degreeTwo_repeatedFork_closed_card_four
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (hdeg : ∀ z, H.degree z = 2)
+    {x y r₁ r₂ : V} (hxy : x ≠ y) (hr : r₁ ≠ r₂)
+    (hxr₁ : H.Adj x r₁) (hyr₁ : H.Adj y r₁)
+    (hxr₂ : H.Adj x r₂) (hyr₂ : H.Adj y r₂) :
+    let S : Finset V := {x, y, r₁, r₂}
+    S.card = 4 ∧ ∀ u ∈ S, H.neighborFinset u ⊆ S := by
+  classical
+  let S : Finset V := {x, y, r₁, r₂}
+  obtain ⟨hx, hy, hr₁, hr₂⟩ := degreeTwo_repeatedFork_isolatedK22
+    H hdeg hxy hr hxr₁ hyr₁ hxr₂ hyr₂
+  have hxr₁ne : x ≠ r₁ := H.ne_of_adj hxr₁
+  have hxr₂ne : x ≠ r₂ := H.ne_of_adj hxr₂
+  have hyr₁ne : y ≠ r₁ := H.ne_of_adj hyr₁
+  have hyr₂ne : y ≠ r₂ := H.ne_of_adj hyr₂
+  refine ⟨?_, ?_⟩
+  · simp [hxy, hr, hxr₁ne, hxr₂ne, hyr₁ne, hyr₂ne]
+  · intro u hu v hv
+    change u ∈ ({x, y, r₁, r₂} : Finset V) at hu
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hu ⊢
+    rcases hu with rfl | rfl | rfl | rfl
+    · rw [hx] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      aesop
+    · rw [hy] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      aesop
+    · rw [hr₁] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      aesop
+    · rw [hr₂] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      aesop
+
 end
 
 end Erdos85
