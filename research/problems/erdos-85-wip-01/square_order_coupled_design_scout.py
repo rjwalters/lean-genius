@@ -33,7 +33,7 @@ def surviving_profiles():
 
 def coupled_solver(
     h, counts, timeout_ms, coupling=True, omit_block=False, omit_defect=False,
-    full_graph=False, h2_split=None,
+    full_graph=False, h2_split=None, low_high_c4=True, owner_direction="both",
 ):
     weights = [k for k, count in enumerate(counts) for _ in range(count)]
     n = len(weights)
@@ -183,16 +183,28 @@ def coupled_solver(
                     if w != u and w != v
                 ] + [z3.And(block[u][a], block[v][a]) for a in range(h)]
                 solver.add(z3.PbLe([(x, 1) for x in common], 1))
-                solver.add(z3.Implies(defect[u][v], z3.PbEq([(x, 1) for x in common], 0)))
-                solver.add(z3.Implies(z3.Not(defect[u][v]), z3.PbEq([(x, 1) for x in common], 1)))
-        for u in range(n):
-            for a in range(h):
-                common = [
-                    z3.And(low_adj[u][v], block[v][a])
-                    for v in range(n)
-                    if v != u
-                ]
-                solver.add(z3.PbLe([(x, 1) for x in common], 1))
+                if owner_direction in ("both", "defect"):
+                    solver.add(
+                        z3.Implies(
+                            defect[u][v], z3.PbEq([(x, 1) for x in common], 0)
+                        )
+                    )
+                if owner_direction in ("both", "nondefect"):
+                    solver.add(
+                        z3.Implies(
+                            z3.Not(defect[u][v]),
+                            z3.PbEq([(x, 1) for x in common], 1),
+                        )
+                    )
+        if low_high_c4:
+            for u in range(n):
+                for a in range(h):
+                    common = [
+                        z3.And(low_adj[u][v], block[v][a])
+                        for v in range(n)
+                        if v != u
+                    ]
+                    solver.add(z3.PbLe([(x, 1) for x in common], 1))
         return solver
     for u in range(n):
         for v in range(u + 1, n):
@@ -228,6 +240,13 @@ def main():
     parser.add_argument("--block-only", action="store_true")
     parser.add_argument("--defect-only", action="store_true")
     parser.add_argument("--full-graph", action="store_true", help="reconstruct exact G")
+    parser.add_argument("--omit-low-high-c4", action="store_true")
+    parser.add_argument(
+        "--owner-direction",
+        choices=("both", "defect", "nondefect"),
+        default="both",
+        help="directions of D iff zero common low/high neighbors to impose",
+    )
     parser.add_argument(
         "--h2-split",
         nargs=3,
@@ -263,6 +282,8 @@ def main():
             omit_defect=args.block_only,
             full_graph=args.full_graph,
             h2_split=tuple(args.h2_split) if args.h2_split is not None else None,
+            low_high_c4=not args.omit_low_high_c4,
+            owner_direction=args.owner_direction,
         )
         if args.write_dimacs is not None:
             goal = z3.Goal()
