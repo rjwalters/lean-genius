@@ -52,6 +52,10 @@ def componentDefectComplementGraph
     intro u h
     exact h.1 rfl⟩
 
+noncomputable instance componentDefectComplementGraph.instDecidableAdj
+    {V : Type*} (D : SimpleGraph V) (c : D.ConnectedComponent) :
+    DecidableRel (componentDefectComplementGraph D c).Adj := Classical.decRel _
+
 @[simp] theorem componentDefectComplementGraph_eq_compl_induce
     {V : Type*} (D : SimpleGraph V) (c : D.ConnectedComponent) :
     componentDefectComplementGraph D c = (D.induce c.supp)ᶜ := by
