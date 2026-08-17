@@ -170,6 +170,23 @@ theorem orderSixtyFour_four_high_graph_profiles
   · simpa [hh] using hm.2.1
   · simpa [hh] using hm.2.2
 
+/-- A compact parametrization of the twelve possible positive-incidence
+multiplicity profiles when the high sector has cardinality six.  The free
+parameters `n₃,n₄` satisfy `n₃ + 2n₄ ≤ 5`; hence they have respectively
+`6 + 4 + 2 = 12` possibilities for `n₄ = 0,1,2`. -/
+theorem orderSixtyFour_six_high_incidence_parameters
+    (k : Fin 64 → Nat)
+    (hk : ∀ x, k x ≤ 4)
+    (hsum : (∑ x : Fin 64, k x) = 54)
+    (hsq : (∑ x : Fin 64, (k x) ^ 2) = 84) :
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 3 + 2 * n 4 ≤ 5 ∧
+      n 2 + 3 * n 3 + 6 * n 4 = 15 ∧
+      n 1 = 24 + 3 * n 3 + 8 * n 4 := by
+  dsimp only
+  have heq := orderSixtyFour_incidence_count_equations k hk
+  omega
+
 /-- The numerical profile forced by the order-64 moments when there are two
 high vertices: exactly one vertex sees both high vertices and exactly sixteen
 vertices see one of them. -/
