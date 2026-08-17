@@ -53,6 +53,19 @@ theorem eightCompleteLaplacianMatrix_mulVec_of_sum_zero
   change 8 * v i - coordinateSumLinearMap ι v = 8 * v i
   rw [hv, sub_zero]
 
+/-- The complete eight-vertex Laplacian preserves the mean-zero sector. -/
+theorem eightCompleteLaplacianMatrix_maps_meanZero
+    (ι : Type*) [Fintype ι] [DecidableEq ι] :
+    ∀ v ∈ LinearMap.ker (coordinateSumLinearMap ι),
+      (eightCompleteLaplacianMatrix ι).toLin' v ∈
+        LinearMap.ker (coordinateSumLinearMap ι) := by
+  intro v hv
+  apply LinearMap.mem_ker.mpr
+  have heq := eightCompleteLaplacianMatrix_mulVec_of_sum_zero ι v hv
+  rw [Matrix.toLin'_apply, heq]
+  exact map_smul (coordinateSumLinearMap ι) (8 : ℚ) v |>.trans
+    (by rw [hv, smul_zero])
+
 /-- The determinant of the complete eight-vertex Laplacian on its residual
 mean-zero sector is `8^7`. -/
 theorem det_eightCompleteLaplacian_restrict_meanZero
@@ -65,13 +78,8 @@ theorem det_eightCompleteLaplacian_restrict_meanZero
           ((eightCompleteLaplacianMatrix ι).toLin'.restrict hW) =
         (8 : ℚ) ^ 7 := by
   let W := LinearMap.ker (coordinateSumLinearMap ι)
-  have hW : ∀ v ∈ W, (eightCompleteLaplacianMatrix ι).toLin' v ∈ W := by
-    intro v hv
-    have heq := eightCompleteLaplacianMatrix_mulVec_of_sum_zero ι v hv
-    change coordinateSumLinearMap ι
-      ((eightCompleteLaplacianMatrix ι).mulVec v) = 0
-    rw [heq]
-    exact (W.smul_mem (8 : ℚ) hv)
+  have hW : ∀ v ∈ W, (eightCompleteLaplacianMatrix ι).toLin' v ∈ W :=
+    eightCompleteLaplacianMatrix_maps_meanZero ι
   refine ⟨hW, ?_⟩
   have hrestrict :
       (eightCompleteLaplacianMatrix ι).toLin'.restrict hW =

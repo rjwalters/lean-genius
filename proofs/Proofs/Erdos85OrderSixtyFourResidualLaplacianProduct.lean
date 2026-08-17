@@ -254,6 +254,60 @@ theorem det_sevenRegularLaplacian_restrict_eq_prod_components
         (fun c : D.ConnectedComponent =>
           LinearMap.ker (coordinateSumLinearMap c.supp)) f
 
+/-- On an order-eight component of a seven-regular graph, the stable
+component Laplacian is exactly the complete-block matrix `8I-J`. -/
+theorem sevenRegularLaplacian_component_order_eight_eq_complete
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (hreg : ∀ x : Fin 64, D.degree x = 7)
+    (c : D.ConnectedComponent) [Fintype c.supp]
+    (hc8 : c.supp.ncard = 8) :
+    sevenRegularLaplacianMatrix (D.induce c.supp) =
+      eightCompleteLaplacianMatrix c.supp := by
+  ext x y
+  by_cases hxy : x = y
+  · subst y
+    simp [sevenRegularLaplacianMatrix, eightCompleteLaplacianMatrix,
+      Matrix.scalar_apply, SimpleGraph.adjMatrix_apply]
+    norm_num
+  · have hval : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
+    have hx : D.connectedComponentMk x.1 = c :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c x.1).mp x.2
+    have hy : D.connectedComponentMk y.1 = c :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c y.1).mp y.2
+    have hadj : D.Adj x.1 y.1 :=
+      sevenRegular_component_order_eight_adj D hreg c hc8 hx hy hval
+    have hadjInd : (D.induce c.supp).Adj x y := hadj
+    simp [sevenRegularLaplacianMatrix, eightCompleteLaplacianMatrix,
+      Matrix.scalar_apply, SimpleGraph.adjMatrix_apply, hxy, hadj]
+
+/-- Every order-eight component contributes the exact residual determinant
+factor `8^7`. -/
+theorem exists_componentResidual_det_eq_eight_pow_seven_of_order_eight
+    (D : SimpleGraph (Fin 64)) [DecidableRel D.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (hreg : ∀ x : Fin 64, D.degree x = 7)
+    (c : D.ConnectedComponent) [Fintype c.supp]
+    (hc8 : c.supp.ncard = 8) :
+    ∃ (hC : ∀ v ∈ LinearMap.ker (coordinateSumLinearMap c.supp),
+          (sevenRegularLaplacianMatrix (D.induce c.supp)).toLin' v ∈
+            LinearMap.ker (coordinateSumLinearMap c.supp)),
+      LinearMap.det
+          ((sevenRegularLaplacianMatrix (D.induce c.supp)).toLin'.restrict hC) =
+        (8 : ℚ) ^ 7 := by
+  have hmat := sevenRegularLaplacian_component_order_eight_eq_complete
+    D hreg c hc8
+  have hC : ∀ v ∈ LinearMap.ker (coordinateSumLinearMap c.supp),
+      (sevenRegularLaplacianMatrix (D.induce c.supp)).toLin' v ∈
+        LinearMap.ker (coordinateSumLinearMap c.supp) := by
+    simpa only [hmat] using
+      (eightCompleteLaplacianMatrix_maps_meanZero c.supp)
+  refine ⟨hC, ?_⟩
+  obtain ⟨h8, hdet⟩ :=
+    det_eightCompleteLaplacian_restrict_meanZero c.supp
+      (by simpa [Set.fintypeCard_eq_ncard] using hc8)
+  simpa only [hmat] using hdet
+
 end
 
 end Erdos85
