@@ -134,6 +134,88 @@ theorem fiveCore_repeated_color_or_bijective_boundary
   refine ⟨hE, hinj, Finset.eq_of_subset_of_card_le himageSub ?_⟩
   rw [himageCard, hpalette]
 
+/-- Exact shape of the sharp boundary: the two vertices outside the three
+non-base repetitions are distinct, with the base color occurring on opposite
+sides exactly once. -/
+theorem fiveCore_exactThree_exception_normalForm
+    {R C : Type*} [DecidableEq R] [DecidableEq C]
+    (S : Finset R) (left right : R → C) (base : C)
+    (hcard : S.card = 5)
+    (hleft : (S.filter fun r => left r = base).card ≤ 1)
+    (hright : (S.filter fun r => right r = base).card ≤ 1)
+    (hno : ∀ r ∈ S,
+      left r = right r ∨ left r = base ∨ right r = base)
+    (hexact : (S.filter fun r =>
+      left r = right r ∧ left r ≠ base).card = 3) :
+    let E := S.filter fun r => left r = right r ∧ left r ≠ base
+    ∃ ℓ t, ℓ ≠ t ∧ ℓ ∈ S ∧ t ∈ S ∧
+      left ℓ = base ∧ right ℓ ≠ base ∧
+      right t = base ∧ left t ≠ base ∧
+      S = E ∪ {ℓ, t} := by
+  classical
+  let E := S.filter fun r => left r = right r ∧ left r ≠ base
+  let L := S.filter fun r => left r = base
+  let T := S.filter fun r => right r = base
+  have hsub : S ⊆ E ∪ (L ∪ T) := by
+    intro r hr
+    have hrCases := hno r hr
+    simp only [E, L, T, Finset.mem_union, Finset.mem_filter]
+    by_cases hb : left r = base
+    · exact Or.inr (Or.inl ⟨hr, hb⟩)
+    rcases hrCases with he | hl | ht
+    · exact Or.inl ⟨hr, he, hb⟩
+    · exact (hb hl).elim
+    · exact Or.inr (Or.inr ⟨hr, ht⟩)
+  have htotal := Finset.card_le_card hsub
+  have houter := Finset.card_union_le E (L ∪ T)
+  have hinner := Finset.card_union_le L T
+  change L.card ≤ 1 at hleft
+  change T.card ≤ 1 at hright
+  change E.card = 3 at hexact
+  have hLcard : L.card = 1 := by omega
+  have hTcard : T.card = 1 := by omega
+  rcases Finset.card_eq_one.mp hLcard with ⟨ℓ, hL⟩
+  rcases Finset.card_eq_one.mp hTcard with ⟨t, hT⟩
+  have hℓL : ℓ ∈ L := by simp [hL]
+  have htT : t ∈ T := by simp [hT]
+  have hℓdata := Finset.mem_filter.mp hℓL
+  have htdata := Finset.mem_filter.mp htT
+  have hℓt : ℓ ≠ t := by
+    intro heq
+    subst t
+    have hLT : L ∪ T = {ℓ} := by simp [hL, hT]
+    rw [hLT] at htotal
+    have hsmall := Finset.card_union_le E (L ∪ T)
+    rw [hLT, hexact] at hsmall
+    rw [Finset.union_singleton] at htotal hsmall
+    norm_num at hsmall
+    omega
+  have hrightℓ : right ℓ ≠ base := by
+    intro h
+    have : ℓ ∈ T := Finset.mem_filter.mpr ⟨hℓdata.1, h⟩
+    rw [hT] at this
+    exact hℓt (by simpa using this)
+  have hleftt : left t ≠ base := by
+    intro h
+    have : t ∈ L := Finset.mem_filter.mpr ⟨htdata.1, h⟩
+    rw [hL] at this
+    have htℓ : t = ℓ := by simpa using this
+    exact hℓt htℓ.symm
+  have hset : S = E ∪ {ℓ, t} := by
+    apply Finset.Subset.antisymm
+    · intro r hr
+      have hh := hsub hr
+      simpa [hL, hT] using hh
+    · intro r hr
+      simp only [Finset.mem_union, Finset.mem_insert,
+        Finset.mem_singleton] at hr
+      rcases hr with hrE | hrℓ | hrt
+      · exact (Finset.mem_filter.mp hrE).1
+      · simpa [hrℓ] using hℓdata.1
+      · simpa [hrt] using htdata.1
+  exact ⟨ℓ, t, hℓt, hℓdata.1, htdata.1, hℓdata.2,
+    hrightℓ, htdata.2, hleftt, hset⟩
+
 end
 
 end Erdos85
