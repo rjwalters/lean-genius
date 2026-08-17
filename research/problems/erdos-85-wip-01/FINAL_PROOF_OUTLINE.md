@@ -789,10 +789,23 @@ generalized rather than merely replayed.
      `centered_posSemidef_of_const_eigen` proves that `n M - r J` is PSD
      whenever `M` is PSD and `M 1 = r 1`; its graph specialization
      `binarySquare_regular_centeredOwnerGram_posSemidef` proves every `C_c`
-     is PSD.  Thus the next theorem must turn the now-complete package
+     is PSD.  For a unit color (`m_c=1`), the complementary bound is also
+     `PROVEN` in `Erdos85BinarySquareUnitOwnerSpectralInterval`:
 
      ```text
-     C_c >= 0,   trace(C_c^2) = q^2 trace(C_c)
+     q^2 I - C_c = q Lap(Owner(c)) + J >= 0.
+     ```
+
+     The proof includes the needed integer graph-Laplacian positivity theorem.
+     Hence unit-color sectors satisfy the genuine spectral interval
+     `0 <= C_c <= q^2 I`.  Together with the moment identity, this is exactly
+     the equality-case mechanism forcing any eventual real spectral
+     decomposition to live at the interval endpoints; the formal endpoint
+     multiplicity/rank theorem remains to be packaged.  Thus the next theorem
+     must turn the now-complete package
+
+     ```text
+     0 <= C_c <= q^2 I,   trace(C_c^2) = q^2 trace(C_c)   (m_c=1)
      ```
 
      into eigenvalue/rank rigidity, then feed the equality case back into the
