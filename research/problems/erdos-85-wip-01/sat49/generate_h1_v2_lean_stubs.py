@@ -4,8 +4,11 @@
 Only packed LRATs whose source compacts already passed direct Lean replay may
 be emitted.  Every packed payload is hash/size checked before source emission.
 Operational orbit tags are checked as provenance but never occur in the table
-type: each generated theorem is indexed by ``(profile, localIndex)`` into the
-authoritative ``oneHighInventoryTables`` list.
+type.  By default each generated theorem is indexed by ``(profile,
+localIndex)`` into ``oneHighInventoryTables``.  A terminal campaign may also
+supply its ordered jobs manifest and terminal table-list definition; emitted
+tables then use the corresponding terminal-local index, making an ordered
+checked bank definitionally cover that consumer inventory.
 """
 
 from __future__ import annotations
@@ -65,6 +68,13 @@ class IndexRow:
     frame_bytes: int
     packed_sha: str
     packed_bytes: int
+
+
+@dataclass(frozen=True)
+class TerminalTableTarget:
+    module: str
+    definition: str
+    index: int
 
 
 def sha256(path: Path) -> str:
@@ -205,15 +215,31 @@ def validate_row(
     return payload
 
 
-def lean_source(row: IndexRow, payload: Path) -> str:
+def lean_source(
+    row: IndexRow, payload: Path, terminal: TerminalTableTarget | None = None
+) -> str:
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
     path_literal = json.dumps(str(payload))
+    terminal_import = f"import {terminal.module}\n" if terminal else ""
+    table_source = (
+        f"  {terminal.definition}.get\n"
+        f"    ⟨{terminal.index}, by native_decide⟩"
+        if terminal
+        else f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
+             f"    ⟨{row.local_index}, by native_decide⟩"
+    )
+    terminal_metadata = (
+        f"    terminal_table={terminal.definition} terminalIndex={terminal.index}\n"
+        if terminal else ""
+    )
     return f'''import Proofs.Erdos85OneHighV2CertificateAggregation
 import Proofs.Erdos85OneHighV2ExtensionCertificate
 import Proofs.Erdos85OrderFortyNineLratCertificateBase
+{terminal_import}
 
 /-! GENERATED exact-v2 certificate stub.
     profile={row.profile} localIndex={row.local_index}
+{terminal_metadata}    orbit={row.orbit}
     compact_lrat_sha256={row.compact_sha}
     raw_lrat_sha256={row.raw_sha}
     cnf_sha256={row.cnf_sha}
@@ -229,8 +255,7 @@ namespace Erdos85
 open Std.Tactic.BVDecide
 
 def {stem}Table : OneHighMissTable :=
-  (oneHighInventoryTables ({row.profile} : Fin 5)).get
-    ⟨{row.local_index}, by native_decide⟩
+{table_source}
 
 private def {stem}ProofText : String :=
   include_str {path_literal}
@@ -306,11 +331,37 @@ def main() -> int:
     parser.add_argument("--orbit", action="append", default=[])
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--skip-payload-hash", action="store_true")
+    parser.add_argument(
+        "--terminal-jobs",
+        type=Path,
+        help="ordered seven-field campaign jobs TSV; orbit order becomes terminal-local order",
+    )
+    parser.add_argument(
+        "--terminal-module",
+        help="Lean module defining the campaign terminal table list",
+    )
+    parser.add_argument(
+        "--terminal-table-def",
+        help="qualified Lean name of the campaign terminal table list",
+    )
     args = parser.parse_args()
     if args.all == bool(args.orbit):
         parser.error("choose exactly one of --all or one/more --orbit arguments")
     if args.output_dir is None:
         parser.error("--output-dir is required")
+    terminal_options = (
+        args.terminal_jobs, args.terminal_module, args.terminal_table_def
+    )
+    if any(terminal_options) and not all(terminal_options):
+        parser.error(
+            "--terminal-jobs, --terminal-module, and --terminal-table-def "
+            "must be supplied together"
+        )
+    lean_name = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
+    if args.terminal_module and not lean_name.fullmatch(args.terminal_module):
+        parser.error("--terminal-module is not a qualified Lean identifier")
+    if args.terminal_table_def and not lean_name.fullmatch(args.terminal_table_def):
+        parser.error("--terminal-table-def is not a qualified Lean identifier")
 
     profiles = read_inventory(args.inventory)
     rows = read_index(args.index)
@@ -319,11 +370,43 @@ def main() -> int:
         found = {row.orbit for row in selected}
         raise ValueError(f"requested orbit(s) absent from index: {sorted(set(args.orbit) - found)}")
 
+    terminal_indices: dict[str, int] | None = None
+    if args.terminal_jobs:
+        terminal_tags: list[str] = []
+        for line_number, line in enumerate(args.terminal_jobs.read_text().splitlines(), 1):
+            fields = line.split("\t")
+            if len(fields) != 7 or not re.fullmatch(r"[0-9a-f]{16}", fields[0]):
+                raise ValueError(
+                    f"{args.terminal_jobs}:{line_number}: malformed seven-field job"
+                )
+            terminal_tags.append(fields[0])
+        if len(terminal_tags) != len(set(terminal_tags)):
+            raise ValueError(f"{args.terminal_jobs}: duplicate orbit tag")
+        terminal_indices = {tag: index for index, tag in enumerate(terminal_tags)}
+        missing = {row.orbit for row in selected} - terminal_indices.keys()
+        if missing:
+            raise ValueError(
+                "selected certificate orbit(s) absent from terminal jobs: "
+                f"{sorted(missing)}"
+            )
+
     for row in selected:
         payload = validate_row(row, profiles, args.cert_root, not args.skip_payload_hash)
         destination = args.output_dir / f"Erdos85H1V2CertP{row.profile}I{row.local_index:05d}.lean"
-        atomic_write(destination, lean_source(row, payload))
-        print(f"{row.orbit}\tprofile={row.profile}\tlocalIndex={row.local_index}\t{destination}")
+        terminal = (
+            TerminalTableTarget(
+                args.terminal_module,
+                args.terminal_table_def,
+                terminal_indices[row.orbit],
+            )
+            if terminal_indices is not None else None
+        )
+        atomic_write(destination, lean_source(row, payload, terminal))
+        terminal_field = f"\tterminalIndex={terminal.index}" if terminal else ""
+        print(
+            f"{row.orbit}\tprofile={row.profile}\tlocalIndex={row.local_index}"
+            f"{terminal_field}\t{destination}"
+        )
     return 0
 
 
