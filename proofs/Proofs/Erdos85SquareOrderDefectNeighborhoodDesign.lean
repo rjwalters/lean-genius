@@ -229,6 +229,23 @@ theorem squareOrder_card_largeDefectBranches_eq_highIncidence
     exact ⟨huz, (squareOrder_card_defectBranch_eq_iff_owner_high
       G hfree hd hmin hcover hcard huz).mpr (Finset.mem_filter.mp hz).2⟩
 
+/-- A vertex distinct from a branch owner has at most one original neighbor
+inside that branch.  Thus vertices route through the local branch partition
+as partial transversals. -/
+theorem card_neighbors_inter_squareOrderDefectBranch_le_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (u : V) {z v : V} (hzv : z ≠ v) :
+    (G.neighborFinset v ∩ squareOrderDefectBranch G u z).card ≤ 1 := by
+  have hsub :
+      G.neighborFinset v ∩ squareOrderDefectBranch G u z ⊆
+        G.neighborFinset v ∩ G.neighborFinset z := by
+    intro x hx
+    exact Finset.mem_inter.mpr ⟨(Finset.mem_inter.mp hx).1,
+      Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2⟩
+  exact (Finset.card_le_card hsub).trans
+    (common_le_one_of_not_containsC4 hfree v z hzv.symm)
+
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
     {V : Type*} [Fintype V] [DecidableEq V]
