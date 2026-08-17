@@ -368,6 +368,9 @@ generalized rather than merely replayed.
       disjoint partition of `(V\{u})\N_D(u)`.
     - `squareOrder_card_largeDefectBranches_eq_highIncidence`: those branches
       have size `q-1` or `q`, and exactly `k(u)` of them have size `q`.
+    - `card_neighbors_inter_squareOrderDefectBranch_le_one`: every vertex
+      distinct from a branch owner has at most one original neighbor inside
+      that branch, so non-owner vertices route as partial transversals.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
