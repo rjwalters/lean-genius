@@ -48,8 +48,10 @@ Fix an edge `aa'` of `H_c` and define
 s(b)+s(b')=4                    for every bb' in E(H_d).   (3)
 ```
 
-The graph `H_d` is connected enough for this equation in the following
-precise sense: it is not bipartite.  Indeed, a bipartite `q`-regular graph on
+The graph `H_d` is connected and nonbipartite.  Connectedness follows because
+every component of a simple `q`-regular graph has at least `q+1` vertices, so
+two components would require more than `2q` vertices.  A bipartite
+`q`-regular graph on
 `2q` vertices has two parts of size `q` and must be `K_{q,q}`.  Its complement
 is then `K_q disjoint_union K_q`, contradicting connectedness of the defect
 component `D_d`.
@@ -121,4 +123,3 @@ require four pairwise orthogonal systems of this kind.
    the fact that every edge of `H_d` occurs twice.
 3. For the `q=8`, `2+2+2+2` sector, search at the rectangle/one-factor level
    rather than at the original 64-vertex graph level.
-
