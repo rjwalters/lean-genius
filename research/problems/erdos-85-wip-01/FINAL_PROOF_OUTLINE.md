@@ -1317,9 +1317,15 @@ generalized rather than merely replayed.
      `Erdos85OrderSixtyFourDistinctCentersSaturateRoutingRow` now proves that
      the corresponding exact lift fibers cannot take either the equal-center
      or owner-adjacent/shared-hub branch and must saturate their four-point
-     routing row.  The remaining structural gap is to propagate
-     that forced saturation across the paired `b`/`c` alternatives and obtain
-     a rectangle or degree contradiction.
+     routing row.  `Erdos85OrderSixtyFourRoutingForkSaturation` performs the
+     paired propagation.  For distinct fork closings, the canonical `b`-
+     centers and canonical `c`-centers cannot both coincide (the two colors
+     lie in distinct components); whichever pair separates forces saturation
+     of its corresponding four-point row.  Thus every forced fork saturates
+     either the `b`-side row from `y` through the root component or the
+     `c`-side row from `x` through the middle component.  The remaining
+     structural gap is to obtain a rectangle or degree contradiction from
+     this unavoidable two-sided saturation alternative.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
