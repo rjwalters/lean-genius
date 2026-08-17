@@ -216,8 +216,24 @@ generalized rather than merely replayed.
     These are `squareOrder_lowIncidence_orientedDirichlet_eq_thirdMomentSlack`
     and `squareOrder_sum_low_highIncidence_cube_le`. This identity measures
     heterogeneous variation exactly, but does not by itself exclude the raw
-    `q=8` moment profiles; it must be coupled to an additional spectral, Gram,
-    or component-structure bound.
+    `q=8` moment profiles. The additional Gram input is now uniform and
+    `PROVEN`: if `B` is the vertex-by-high-vertex incidence matrix, then
+
+    ```text
+    BᵀB = qI + J,
+    ```
+
+    so its columns are independent. After fixing any high base vertex, the
+    other `h-1` column differences, and hence the corresponding full adjacency
+    row differences, are jointly independent; every such row difference is a
+    `-1` eigenvector of the defect adjacency matrix. These are
+    `squareOrder_highIncidence_columns_linearIndependent`,
+    `squareOrder_highIncidence_columnDifferences_linearIndependent`,
+    `squareOrder_highRowDifferences_linearIndependent`, and
+    `squareOrder_defect_mulVec_highRowDifference`. Thus the missing terminal
+    may assume a defect `-1` eigenspace of dimension at least `h-1`; the open
+    work is to make that multiplicity incompatible with every surviving
+    heterogeneous profile or to identify the further graph constraint needed.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -252,9 +268,12 @@ generalized rather than merely replayed.
     that works for all admissible `h` and incidence distributions.
 
 20. **`GAP A-NONREG-TERMINALS`.** There is not yet a proposed scalable terminal
-    for every high-vertex sector. This is the largest mathematical hole in the
-    binary branch. Generalizing certificate families is not a substitute for
-    finding these statements.
+    for every high-vertex sector. The most concrete current candidate is to
+    combine the exact Dirichlet/third-moment budget with the proved `h-1`
+    multiplicity of the defect eigenvalue `-1`; neither constraint has yet
+    been shown to eliminate all parameterized profiles. This is the largest
+    mathematical hole in the binary branch. Generalizing certificate families
+    is not a substitute for finding these statements.
 
 ### A6. Binary branch capstone
 
