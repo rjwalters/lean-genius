@@ -239,6 +239,37 @@ theorem orderSixtyFour_seven_components_even_exteriorPair_overlap
   exact even_edgeOverlapDegree_of_even_outsideReturn_diagonal
     H R Q M hQ hM hdiag
 
+/-- Graph-facing all-or-none form: every cycle of the actual H16
+two-factor is either wholly contained in the exterior-pair graph or
+edge-disjoint from it. -/
+theorem orderSixtyFour_seven_components_cycle_all_or_no_exteriorPair
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 7) :
+    ∃ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 16 ∧
+      let H := G.induce c.supp
+      let R := exteriorPairGraph G c.supp
+      ∀ a : H.ConnectedComponent,
+        (∀ {u v : a.supp}, H.Adj u.1 v.1 → R.Adj u.1 v.1) ∨
+        (∀ {u v : a.supp}, H.Adj u.1 v.1 → ¬R.Adj u.1 v.1) := by
+  classical
+  obtain ⟨c, hc16, htwo, heven⟩ :=
+    orderSixtyFour_seven_components_even_exteriorPair_overlap
+      G hfree hmin hcover hcount
+  refine ⟨c, hc16, ?_⟩
+  dsimp only
+  intro a
+  exact connectedComponent_all_or_no_edgeOverlap
+    (G.induce c.supp) (exteriorPairGraph G c.supp) htwo heven a
+
 end
 
 end Erdos85
