@@ -1,5 +1,6 @@
 import Proofs.Erdos85SquareOrderDefectIncidence
 import Proofs.Erdos85SquareOrderHighIncidenceGram
+import Mathlib.LinearAlgebra.AffineSpace.Independent
 
 /-!
 # Uniform defect eigenvectors from the square-order high sector
@@ -116,6 +117,81 @@ theorem squareOrder_highIncidence_columns_linearIndependent
     rfl
   rw [heq]
   exact hQ
+
+/-- After choosing one high vertex as base point, the differences of the
+remaining high-incidence columns from the base column are linearly
+independent. -/
+theorem squareOrder_highIncidence_columnDifferences_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (x₀ : ↥(squareOrderHighVertices G d)) :
+    let B := squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+      (squareOrderHighVertices G d)
+    LinearIndependent ℤ
+      (fun x : {x : ↥(squareOrderHighVertices G d) // x ≠ x₀} =>
+        B.col x.1 - B.col x₀) := by
+  classical
+  let B := squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+    (squareOrderHighVertices G d)
+  change LinearIndependent ℤ
+    (fun x : {x : ↥(squareOrderHighVertices G d) // x ≠ x₀} =>
+      B.col x.1 - B.col x₀)
+  have hpositive : 0 < (squareOrderHighVertices G d).card := by
+    rw [Finset.card_pos]
+    exact ⟨x₀, x₀.property⟩
+  have hLI : LinearIndependent ℤ B.col := by
+    simpa [B] using squareOrder_highIncidence_columns_linearIndependent
+      G hfree hd hmin hcover hcard hpositive
+  exact
+    (affineIndependent_iff_linearIndependent_vsub ℤ B.col x₀).mp
+      hLI.affineIndependent
+
+/-- Restriction of integer-valued vertex functions to the full vertex
+finset, expressed as a linear map. -/
+private def restrictToUnivLinearMap (V : Type*) [Fintype V] :
+    (V → ℤ) →ₗ[ℤ] (↥((Finset.univ : Finset V) : Set V) → ℤ) where
+  toFun f x := f x.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Fixing a high base vertex produces a jointly linearly independent
+family of full adjacency-row differences.  Together with
+`squareOrder_defect_mulVec_highRowDifference`, these are `h - 1`
+independent `-1` defect eigenvectors. -/
+theorem squareOrder_highRowDifferences_linearIndependent
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (x₀ : ↥(squareOrderHighVertices G d)) :
+    LinearIndependent ℤ
+      (fun x : {x : ↥(squareOrderHighVertices G d) // x ≠ x₀} =>
+        squareOrderHighRowDifference G x.1.1 x₀.1) := by
+  classical
+  let B := squareOrderFinsetAdjIncidenceMatrix (K := ℤ) G Finset.univ
+    (squareOrderHighVertices G d)
+  have hdiff : LinearIndependent ℤ
+      (fun x : {x : ↥(squareOrderHighVertices G d) // x ≠ x₀} =>
+        B.col x.1 - B.col x₀) := by
+    simpa [B] using squareOrder_highIncidence_columnDifferences_linearIndependent
+      G hfree hd hmin hcover hcard x₀
+  apply LinearIndependent.of_comp (restrictToUnivLinearMap V)
+  convert hdiff using 1
+  funext x
+  ext y
+  simp [restrictToUnivLinearMap, squareOrderHighRowDifference, B,
+    squareOrderFinsetAdjIncidenceMatrix, SimpleGraph.adjMatrix_apply,
+    G.adj_comm]
 
 /-- Every difference of two high adjacency rows is a `-1` eigenvector of the
 square-order defect adjacency matrix. -/
