@@ -67,6 +67,8 @@ theorem orderSixtyFour_seven_components_OA_composite_fibers
           (∀ i (x : (κ i).1.supp),
             ((Finset.univ : Finset c.supp).filter
               (fun u ↦ ℓ i u.1 = x)).card = 2) ∧
+          (∀ (y u : c.supp), (G.induce c.supp).Adj y u →
+            ∀ i j, ℓ i (ℓ j u.1).1 ≠ ℓ i y.1) ∧
           ∀ i j (x : (κ i).1.supp),
             ((Finset.univ : Finset c.supp).filter
               (fun u ↦ ℓ i (ℓ j u.1).1 = x)).card = 2 := by
@@ -74,7 +76,33 @@ theorem orderSixtyFour_seven_components_OA_composite_fibers
   obtain ⟨c, hc16, κ, ℓ, _hpair, hiff, hbalance⟩ :=
     orderSixtyFour_seven_defect_components_orthogonalArray_H_restriction
       G hfree hmin hcover hcount
-  refine ⟨c, hc16, κ, ℓ, hiff, hbalance, ?_⟩
+  let D := secondOrderDefectGraph G
+  have hH_K (i : Fin 6) (y : c.supp) (x : (κ i).1.supp) :
+      y.1 ≠ x.1 := by
+    intro h
+    have hycomp : D.connectedComponentMk y.1 = c :=
+      (ConnectedComponent.mem_supp_iff c y.1).mp y.2
+    have hxcomp : D.connectedComponentMk x.1 = (κ i).1 :=
+      (ConnectedComponent.mem_supp_iff (κ i).1 x.1).mp x.2
+    have hcEq : c = (κ i).1 :=
+      hycomp.symm.trans ((congrArg D.connectedComponentMk h).trans hxcomp)
+    exact (κ i).2 hcEq.symm
+  have hedge : ∀ (y u : c.supp), (G.induce c.supp).Adj y u →
+      ∀ i j, ℓ i (ℓ j u.1).1 ≠ ℓ i y.1 := by
+    intro y u hyu i j heq
+    let x : (κ i).1.supp := ℓ i y.1
+    let x' : (κ j).1.supp := ℓ j u.1
+    have hyx : G.Adj y.1 x.1 := ((hiff i x y.1).mpr rfl).symm
+    have hx'u : G.Adj x'.1 u.1 := (hiff j x' u.1).mpr rfl
+    have hcross : G.Adj x.1 x'.1 := (hiff i x x'.1).mpr heq
+    have huy : u.1 ≠ y.1 := by
+      intro h
+      exact (G.induce c.supp).ne_of_adj hyu (Subtype.ext h.symm)
+    have hxx' : x.1 ≠ x'.1 := G.ne_of_adj hcross
+    exact hfree (containsC4_of_rim hyx hcross hx'u hyu.symm
+      (hH_K j y x') ((hH_K i u x).symm) ((hH_K i y x).symm)
+      hxx' huy (hH_K j u x'))
+  refine ⟨c, hc16, κ, ℓ, hiff, hbalance, hedge, ?_⟩
   intro i j x
   exact oa_compositeLabel_fiber_card_eq G
     (fun k : Fin 6 ↦ (κ k).1.supp) c.supp ℓ hiff hbalance i j x
