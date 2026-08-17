@@ -176,6 +176,8 @@ def solve_free_incidence_factorization(
     first_cycle_type: tuple[int, ...] | None = None,
     timeout_ms: int = 300_000,
     enforce_minimum_lifts: bool = False,
+    enforce_no_rectangles: bool = True,
+    normalize_cross_first_rows: bool = True,
 ) -> tuple[z3.CheckSatResult, list[list[list[int]]]]:
     """Search for an exact certificate, optionally normalizing block (0,0)."""
     solver = z3.Solver()
@@ -214,12 +216,30 @@ def solve_free_incidence_factorization(
         for x in range(16):
             for y in range(16):
                 solver.add(blocks[0, 0, x, y] == ((min(x, y), max(x, y)) in canonical_edges))
+        if normalize_cross_first_rows:
+            # Once component 0 is normalized, the other three component
+            # labelings are still independent.  Normalize the two neighbors
+            # of its vertex 0 in each first cross row to 0 and 1.
+            for right in range(1, 4):
+                for y in range(16):
+                    solver.add(blocks[0, right, 0, y] == (y in (0, 1)))
     for left in range(4):
         for right in range(4):
             for x in range(16):
                 solver.add(z3.PbEq(
                     [(incidence(left, right, x, y), 1) for y in range(16)], 2
                 ))
+    if enforce_no_rectangles:
+        for left in range(4):
+            for right in range(left, 4):
+                for x1, x2 in itertools.combinations(range(16), 2):
+                    for y1, y2 in itertools.combinations(range(16), 2):
+                        solver.add(z3.Not(z3.And(
+                            blocks[left, right, x1, y1],
+                            blocks[left, right, x1, y2],
+                            blocks[left, right, x2, y1],
+                            blocks[left, right, x2, y2],
+                        )))
 
     routing_cache: dict[tuple[int, int, int, int, int], z3.BoolRef] = {}
 
@@ -287,6 +307,11 @@ def main() -> None:
         help="also solve the free exact system with block (0,0) normalized, e.g. 16 or 8,8",
     )
     parser.add_argument("--minimum-lifts", action="store_true")
+    parser.add_argument(
+        "--allow-rectangles",
+        action="store_true",
+        help="drop the ambient C4-free no-rectangle constraints from free blocks",
+    )
     parser.add_argument("--timeout-ms", type=int, default=300_000)
     args = parser.parse_args()
     common_results = {"common": solve_common(False), "common-even": solve_common(True)}
@@ -314,11 +339,13 @@ def main() -> None:
     if args.free_cycle_type:
         cycle_type = tuple(int(part) for part in args.free_cycle_type.split(","))
         free_result, free_witness = solve_free_incidence_factorization(
-            cycle_type, args.timeout_ms, args.minimum_lifts
+            cycle_type, args.timeout_ms, args.minimum_lifts,
+            not args.allow_rectangles,
         )
         print(
             f"free-exact-incidence-factorization[{cycle_type},"
-            f" minimum-lifts={args.minimum_lifts}]: {free_result}"
+            f" minimum-lifts={args.minimum_lifts},"
+            f" no-rectangles={not args.allow_rectangles}]: {free_result}"
         )
         if free_result == z3.sat:
             for pair, rows in zip(
