@@ -645,8 +645,7 @@ generalized rather than merely replayed.
       original owner, whose diagonal cell has size at most `q-1` and whose
       off-diagonal row and column vanish; the remaining `(q-1)²` cells have
       size at most one.  This exact two-center inequality is now an input to
-      the `q=8` simultaneous `G/D` scout; its finite profile impact is not yet
-      classified.
+      the `q=8` simultaneous `G/D` scout.
       The sharper theorem
       `squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh`
       retains the owner type:
@@ -671,6 +670,17 @@ generalized rather than merely replayed.
       for a low `D`-nonedge with `k(u)+k(v)=q-1`, `commonD≤commonHigh≤1`, and
       positive common defect degree forces the unique original owner to be
       high.  At `q=8` this is the coupled rule for every `k=4/k=3` pair.
+      The audited discovery model `square_order_coupled_design_scout.py`
+      realizes the high-incidence blocks and `D` vertex by vertex and imposes
+      all of these owner-sensitive pair bounds.  This relaxation is SAT for
+      every one of the 11 combined-census survivors with `h≤6`, so these
+      inequalities alone are not a terminal.  Its `--full-graph` mode restores
+      the low-low adjacency matrix, exact low degrees, and every remaining
+      C4/common-owner constraint; even the canonically symmetry-reduced `h=2`
+      profile is currently solver-unknown after 120 seconds.  This is negative
+      discovery evidence, not an exclusion or certificate: the next lemma must
+      expose additional global structure (or make the exact model tractable),
+      rather than merely restate the same pairwise owner budget.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
