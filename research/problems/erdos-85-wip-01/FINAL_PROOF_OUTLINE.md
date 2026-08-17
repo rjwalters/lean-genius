@@ -1453,10 +1453,14 @@ generalized rather than merely replayed.
      commuting with the seven-regular adjacency matrix on a codegree-six pair
      force equal rows on its uniquely identified private-neighbor pair, with
      the two directed private-side memberships included in the conclusion so
-     the step can be iterated.  Thus the remaining classification bridge is
-     purely structural: formalize the asserted private-pair cycle and show
-     that it carries one owner color around a whole twin triangle; the
-     three-equal-row theorem then closes it immediately.
+     the step can be iterated.  The corresponding abstract terminal is also
+     PROVEN in `Erdos85NearTwinPrivateCycleTerminal`: two successive λ=6
+     pairs whose directed private neighbors route `(x,y)` to `(u,v)` and then
+     `(u,v)` to `(y,z)` contradict any commuting two-regular owner color when
+     `x,y,z` are distinct and the owner rows at `x,y` agree.  Thus the
+     remaining classification bridge is purely structural: formalize the
+     asserted private-pair cycle and instantiate the terminal with its four
+     directed membership facts and two codegree-six facts.
 
      Computed classification scope (external finite-model evidence, not yet a
      Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
