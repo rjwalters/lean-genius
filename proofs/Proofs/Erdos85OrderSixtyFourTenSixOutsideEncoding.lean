@@ -111,4 +111,78 @@ theorem tenSixOutsideParsed_numLiterals :
     tenSixC006Cnf.numLiterals = (tenSixOutsideAllowedPairs 5).size := by
   native_decide
 
+/-- Ordered `itertools.combinations(xs, 2)`. -/
+def listPairs : List α → List (α × α)
+  | [] => []
+  | x :: xs => xs.map (fun y => (x, y)) ++ listPairs xs
+
+/-- IDs of all allowed C-neighbours `f` of `e` incident with inside vertex
+`u`, in the generator's increasing `f` order. -/
+def tenSixOutsideServiceTerms (i : Fin 6) (e : Fin 48) (u : Fin 16) :
+    List Nat :=
+  (List.finRange 48).filterMap fun f =>
+    if tenSixIncidence i u f then tenSixOutsideVar? i e f else none
+
+def tenSixOutsideServiceClausesAt
+    (i : Fin 6) (e : Fin 48) (u : Fin 16) : List (CNF.Clause Nat) :=
+  let terms := tenSixOutsideServiceTerms i e u
+  if tenSixOutsideTarget i u e = 0 then
+    terms.map fun id => [(id, false)]
+  else
+    [positiveClause terms] ++
+      (listPairs terms).map fun p => [(p.1, false), (p.2, false)]
+
+def tenSixOutsideServiceClauses (i : Fin 6) : List (CNF.Clause Nat) :=
+  (List.finRange 48).flatMap fun e =>
+    (List.finRange 16).flatMap fun u => tenSixOutsideServiceClausesAt i e u
+
+/-- For fixed `a<b`, the two variable IDs witnessing common neighbour `c`. -/
+def tenSixOutsideCommonTerms (i : Fin 6) (a b : Fin 48) :
+    List (Nat × Nat) :=
+  (List.finRange 48).filterMap fun c =>
+    if c = a || c = b then none else
+      match tenSixOutsideVar? i a c, tenSixOutsideVar? i b c with
+      | some ac, some bc => some (ac, bc)
+      | _, _ => none
+
+def tenSixOutsideC4ClausesAt (i : Fin 6) (a b : Fin 48) :
+    List (CNF.Clause Nat) :=
+  (listPairs (tenSixOutsideCommonTerms i a b)).map fun p =>
+    [(p.1.1, false), (p.1.2, false),
+      (p.2.1, false), (p.2.2, false)]
+
+def tenSixOutsideC4Clauses (i : Fin 6) : List (CNF.Clause Nat) :=
+  tenSixOutsidePairs.toList.flatMap fun p =>
+    tenSixOutsideC4ClausesAt i p.1 p.2
+
+/-- Exact Lean reconstruction of the outside-C formula for model `i`. -/
+def tenSixOutsideGeneratedCnf (i : Fin 6) : CNF Nat where
+  clauses := (tenSixOutsideServiceClauses i ++
+    tenSixOutsideC4Clauses i).toArray
+
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
+/-- First end-to-end generator audit: the Lean reconstruction is exactly the
+formula parsed from `r001.cnf`, clause order and literal order included. -/
+theorem tenSixOutsideGeneratedCnf_zero_eq_parsed :
+    tenSixOutsideGeneratedCnf 0 = tenSixC001Cnf := by
+  apply cnf_eq_of_clauses_eq
+  native_decide
+
+def tenSixOutsideParsedCnf : Fin 6 → CNF Nat
+  | ⟨0, _⟩ => tenSixC001Cnf
+  | ⟨1, _⟩ => tenSixC002Cnf
+  | ⟨2, _⟩ => tenSixC003Cnf
+  | ⟨3, _⟩ => tenSixC004Cnf
+  | ⟨4, _⟩ => tenSixC005Cnf
+  | ⟨5, _⟩ => tenSixC006Cnf
+
+set_option maxHeartbeats 0 in
+set_option maxRecDepth 1000000 in
+/-- All six formulas are reproduced exactly by the Lean generator. -/
+theorem tenSixOutsideGeneratedCnf_eq_parsed (i : Fin 6) :
+    tenSixOutsideGeneratedCnf i = tenSixOutsideParsedCnf i := by
+  apply cnf_eq_of_clauses_eq
+  fin_cases i <;> native_decide
+
 end Erdos85
