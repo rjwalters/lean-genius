@@ -1367,7 +1367,7 @@ theorem profile_two_reciprocalTarget_or_other_oneEdge
     (u : Fin 8) (hu0 : u ≠ 0) (hu1 : u ≠ 1) :
     u = 2 ∨
       ((2 : Fin 8) ≠ u ∧ oneHighFamilyInternalEdges 2 (2 : Fin 8) = 1) := by
-  native_decide +revert
+  decide +revert
 
 /-- Graph-facing profile-2 residual: the reciprocal branch has one internal
 edge, or a distinct one-edge branch contains a forced isolated source target. -/
@@ -1395,12 +1395,12 @@ theorem OneHighReciprocalSameMissEdges.profileTwo_targetOneEdge_or_isolatedTarge
     apply hum
     apply p.branchLabel.injective
     rw [hu, p.branch_mate, q.s_label]
-    native_decide
+    decide
   rcases profile_two_reciprocalTarget_or_other_oneEdge
       (p.branchLabel q.u) hu0 hu1 with hu2 | ⟨h2u, h2Edge⟩
   · left
     rw [hprofile, hu2]
-    native_decide
+    decide
   · right
     let w := p.branchLabel.symm (2 : Fin 8)
     have hw : w ∈ ((Finset.univ.erase q.s).erase (p.mate q.s)) := by
@@ -1408,7 +1408,7 @@ theorem OneHighReciprocalSameMissEdges.profileTwo_targetOneEdge_or_isolatedTarge
       constructor
       · intro heq
         have hlabel := congrArg p.branchLabel heq
-        have hmate01 : oneHighStandardMate (0 : Fin 8) = 1 := by native_decide
+        have hmate01 : oneHighStandardMate (0 : Fin 8) = 1 := by decide
         have : (2 : Fin 8) = 1 := by
           simpa [w, p.branch_mate, q.s_label, hmate01] using hlabel
         have hval := congrArg Fin.val this
