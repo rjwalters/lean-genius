@@ -333,6 +333,24 @@ theorem orderSixtyFour_defect_component_count_ne_eight
     (LinearMap.IsIdempotentElem.isCompl hPid) hU hW htrace
     8 (by norm_num) hUtrace 8 (by norm_num) hWsq
 
+/-- Packaged payoff: a surviving order-64 endpoint has at most seven defect
+components. -/
+theorem orderSixtyFour_defect_component_count_le_seven
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8) :
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent ≤ 7 := by
+  have hle := orderSixtyFour_defect_component_count_le_eight
+    G hfree hmin hcover
+  have hne := orderSixtyFour_defect_component_count_ne_eight
+    G hfree hmin hcover
+  omega
+
 end
 
 end Erdos85
