@@ -146,11 +146,116 @@ def renumber (numOriginalClauses : Nat) (proof : Array IntAction) :
 
 end LratRenumber
 
+namespace LratExtensionVariables
+
+open LRAT
+
+def clauseMaxLiteral (clause : Array Int) : Nat :=
+  clause.foldl (fun maximum literal => max maximum literal.natAbs) 0
+
+def actionMaxLiteral : IntAction → Nat
+  | .addEmpty _ _ => 0
+  | .addRup _ clause _ => clauseMaxLiteral clause
+  | .addRat _ clause pivot _ _ => max (clauseMaxLiteral clause) pivot.1
+  | .del _ => 0
+
+def proofMaxLiteral (proof : Array IntAction) : Nat :=
+  proof.foldl (fun maximum action => max maximum (actionMaxLiteral action)) 0
+
+/--
+Extend a parsed CNF with one tautological clause when an LRAT proof uses fresh
+variables.  DRAT/LRAT permits such extension variables, but Lean's checker
+sizes its internal literal arrays from the CNF.  The tautology is logically
+inert and makes the larger variable universe explicit.  `convertLRAT` drops
+the tautology itself, so original and derived clause identifiers stay fixed.
+-/
+def padCnfForProof (cnf : CNF Nat) (proof : Array IntAction) : CNF Nat :=
+  let maximum := proofMaxLiteral proof
+  if _h : cnf.numLiterals < maximum then
+    let extensionVar := maximum - 1
+    { clauses := cnf.clauses.push [(extensionVar, true), (extensionVar, false)] }
+  else
+    cnf
+
+end LratExtensionVariables
+
+namespace LratAmbiguousRat
+
+open LRAT LRAT.Internal
+
+/-!
+`drat-trim` writes a vacuous RAT addition on a fresh pivot as `... 0 0`.
+That spelling is indistinguishable from an empty-hint RUP addition, and Lean's
+text parser conservatively chooses RUP.  We replay the proof once to resolve
+only those ambiguous fresh-variable actions: retain RUP when it checks, or
+use RAT when that checks.  The resulting ordinary action array is subsequently
+submitted to `LRAT.check`, which remains the trust boundary.
+-/
+
+partial def go {n : Nat} (originalNumLiterals : Nat) (f : DefaultFormula n)
+    (proof : Array IntAction) (idx : Nat) (out : Array IntAction) :
+    Except String (Array IntAction) := do
+  if h : idx < proof.size then
+    let action := proof[idx]
+    let some internal := intActionToDefaultClauseAction n action
+      | throw s!"LRAT action {idx} has a literal outside the padded universe"
+    match internal with
+    | .addEmpty _ hints =>
+        let (_, accepted) := Formula.performRupAdd f Clause.empty hints
+        if accepted then return out.push action
+        else throw s!"LRAT empty-clause action {idx} failed RUP"
+    | .addRup _ clause hints =>
+        let (rupFormula, rupAccepted) := Formula.performRupAdd f clause hints
+        if rupAccepted then
+          go originalNumLiterals rupFormula proof (idx + 1) (out.push action)
+        else
+          match action with
+          | .addRup id rawClause rawHints =>
+              let some pivotInt := rawClause[0]?
+                | throw s!"LRAT action {idx} has an empty nonempty clause"
+              if rawHints.isEmpty && originalNumLiterals < pivotInt.natAbs then
+                let pivot : Literal Nat := (pivotInt.natAbs, 0 < pivotInt)
+                let ratAction : IntAction := .addRat id rawClause pivot rawHints #[]
+                let some (.addRat _ ratClause ratPivot ratRupHints ratHints) :=
+                    intActionToDefaultClauseAction n ratAction
+                  | throw s!"LRAT action {idx} could not be restored as RAT"
+                let (ratFormula, ratAccepted) := Formula.performRatAdd
+                  f ratClause ratPivot ratRupHints ratHints
+                if ratAccepted then
+                  go originalNumLiterals ratFormula proof (idx + 1) (out.push ratAction)
+                else
+                  throw s!"LRAT ambiguous extension action {idx} failed RUP and RAT"
+              else
+                throw s!"LRAT action {idx} failed RUP"
+          | _ => throw s!"LRAT action {idx} changed kind during conversion"
+    | .addRat _ clause pivot rupHints ratHints =>
+        if pivot ∈ Clause.toList clause then
+          let (nextFormula, accepted) := Formula.performRatAdd
+            f clause pivot rupHints ratHints
+          if accepted then
+            go originalNumLiterals nextFormula proof (idx + 1) (out.push action)
+          else
+            throw s!"LRAT action {idx} failed RAT"
+        else
+          go originalNumLiterals f proof (idx + 1) (out.push action)
+    | .del ids =>
+        go originalNumLiterals (Formula.delete f ids) proof (idx + 1) (out.push action)
+  else
+    throw "LRAT proof ended before deriving the empty clause"
+
+def restore (originalNumLiterals : Nat) (cnf : CNF Nat)
+    (proof : Array IntAction) : Except String (Array IntAction) :=
+  go originalNumLiterals (CNF.convertLRAT cnf) proof 0 #[]
+
+end LratAmbiguousRat
+
 def replayLrat (cnfPath lratPath : System.FilePath) : IO Bool := do
   let cnf ← DimacsRuntime.load cnfPath
   let rawProof ← LRAT.loadLRATProof lratPath
-  let proof ← IO.ofExcept (LratRenumber.renumber cnf.clauses.size rawProof)
-  return LRAT.check proof cnf
+  let paddedCnf := LratExtensionVariables.padCnfForProof cnf rawProof
+  let renumbered ← IO.ofExcept (LratRenumber.renumber cnf.clauses.size rawProof)
+  let proof ← IO.ofExcept (LratAmbiguousRat.restore cnf.numLiterals paddedCnf renumbered)
+  return LRAT.check proof paddedCnf
 
 partial def cnfSegmentEq (cnf : Sat.CNF Nat) (offset : Nat)
     (segment : Array DimacsClause) (idx : Nat := 0) : Bool :=
@@ -239,10 +344,14 @@ def main (args : List String) : IO UInt32 := do
   | [cnfPath, lratPath] =>
       let cnf ← Erdos85.DimacsRuntime.load cnfPath
       let rawProof ← Std.Tactic.BVDecide.LRAT.loadLRATProof lratPath
-      let proof ← IO.ofExcept
+      let paddedCnf := Erdos85.LratExtensionVariables.padCnfForProof cnf rawProof
+      let renumbered ← IO.ofExcept
         (Erdos85.LratRenumber.renumber cnf.clauses.size rawProof)
-      IO.println s!"CNF clauses: {cnf.clauses.size}; LRAT actions: {proof.size}"
-      let accepted := Std.Tactic.BVDecide.LRAT.check proof cnf
+      let proof ← IO.ofExcept (Erdos85.LratAmbiguousRat.restore
+        cnf.numLiterals paddedCnf renumbered)
+      IO.println s!"CNF clauses: {cnf.clauses.size}; padded clauses: {paddedCnf.clauses.size}; LRAT actions: {proof.size}"
+      IO.println s!"CNF literals: {cnf.numLiterals}; proof maximum literal: {Erdos85.LratExtensionVariables.proofMaxLiteral rawProof}; padded literals: {paddedCnf.numLiterals}"
+      let accepted := Std.Tactic.BVDecide.LRAT.check proof paddedCnf
       IO.println s!"LRAT accepted: {accepted}"
       return if accepted then 0 else 1
   | _ =>
