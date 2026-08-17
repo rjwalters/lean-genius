@@ -1,4 +1,5 @@
 import Proofs.Erdos85SquareOrderDefectNeighborhoodDesign
+import Proofs.Erdos85SquareOrderTwoHighExclusion
 
 /-! # Structural incidence trichotomy with four high vertices -/
 
@@ -267,6 +268,69 @@ theorem squareOrder_eight_fourHigh_exact_incidence_profiles
       rw [hfirst, htwoCount] at hsumFormula
       omega
     exact ⟨htwo, htwoCount, honeCount⟩
+
+/-- The first four-high profile is impossible: its unique weight-four point
+is adjacent to every high vertex, contradicting the universal-incidence
+saturation theorem. -/
+theorem false_of_squareOrder_eight_fourHigh_incidenceFour
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 8 ∨ G.degree v = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (hhigh : (squareOrderHighVertices G 8).card = 4)
+    (hfour : ∃ x : V, squareOrderHighIncidenceCount G 8 x = 4) : False := by
+  obtain ⟨x, hx⟩ := hfour
+  have hnonempty : (squareOrderHighVertices G 8).Nonempty := by
+    apply Finset.card_pos.mp
+    rw [hhigh]
+    omega
+  apply false_of_squareOrder_eight_universalHighIncidence
+    G hfree hmin hcover hcard hnonempty x
+  rw [hhigh]
+  exact hx
+
+/-- Consequently only the final two exact incidence profiles survive in the
+four-high sector. -/
+theorem squareOrder_eight_fourHigh_remaining_incidence_profiles
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 8 ∨ G.degree v = 8)
+    (hcard : Fintype.card V = 8 * 8)
+    (hhigh : (squareOrderHighVertices G 8).card = 4) :
+    let k := squareOrderHighIncidenceCount G 8
+    (((∃! x : V, k x = 3) ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 2).card = 3 ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 1).card = 27) ∨
+     ((∀ x : V, k x ≤ 2) ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 2).card = 6 ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 1).card = 24)) := by
+  let k := squareOrderHighIncidenceCount G 8
+  have hprofiles := squareOrder_eight_fourHigh_exact_incidence_profiles
+    G hfree hmin hcover hcard hhigh
+  change
+    (((∃! x : V, k x = 4) ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 1).card = 32) ∨
+     ((∃! x : V, k x = 3) ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 2).card = 3 ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 1).card = 27) ∨
+     ((∀ x : V, k x ≤ 2) ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 2).card = 6 ∧
+        ((Finset.univ : Finset V).filter fun x => k x = 1).card = 24)) at hprofiles
+  rcases hprofiles with hfour | hrest
+  · exfalso
+    apply false_of_squareOrder_eight_fourHigh_incidenceFour
+      G hfree hmin hcover hcard hhigh
+    obtain ⟨x, hx, huniq⟩ := hfour.1
+    exact ⟨x, hx⟩
+  · exact hrest
 
 end
 
