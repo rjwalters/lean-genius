@@ -19,7 +19,8 @@ from audit_h16_circulant_tree_squares import bareiss_determinant
 from audit_h16_quintic_square_sectors import lower_states
 
 
-def main() -> int:
+def sextic_frontier() -> tuple[int, int, list[tuple[int, ...]]]:
+    """Return the checked lower-state count, examined count, and frontier."""
     states = {state for state in lower_states() if state[0] <= 9}
     index: dict[tuple[int, int], list[tuple[int, ...]]] = defaultdict(list)
     for state in states:
@@ -105,15 +106,21 @@ def main() -> int:
                             defect_trace, defect_square_trace,
                         ))
 
+    return len(states), examined, feasible
+
+
+def main() -> int:
+    state_count, examined, feasible = sextic_frontier()
+
     digest = hashlib.sha256(
         json.dumps(feasible, separators=(",", ":")).encode()
     ).hexdigest()
     expected_digest = "cf78e91367d09d8345ff7db4b4355c5283ce6c10fa711d2d1d18e9faa3713a5d"
-    if (len(states) != 137417 or examined != 52434
+    if (state_count != 137417 or examined != 52434
             or len(feasible) != 4761 or digest != expected_digest):
         raise AssertionError("unexpected sextic frontier census")
     print(
-        f"lower_states={len(states)} examined_signatures={examined} "
+        f"lower_states={state_count} examined_signatures={examined} "
         f"feasible_signatures={len(feasible)} sha256={digest}"
     )
     return 0
