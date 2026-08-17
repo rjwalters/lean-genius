@@ -253,12 +253,20 @@ generalized rather than merely replayed.
 
     These are `squareOrder_defect_mulVec_lowIndicatorRat`,
     `squareOrder_defect_mulVec_highIncidenceRat`, and
-    `squareOrder_defect_incidence_quadratic`. The candidate quotient polynomial
-    is `X²-(q-2)X+(h-q+1)`, with discriminant `q²-4h`. In the heterogeneous
-    branch `ℓ,k` should be independent, so the next precise subgoal is to turn
-    this annihilator into a certified two-dimensional invariant sector and a
-    defect-charpoly factor, then combine its conjugate roots with the `-1`
-    multiplicity and defect trace moments.
+    `squareOrder_defect_incidence_quadratic`. The quotient polynomial is
+    `X²-(q-2)X+(h-q+1)`, with discriminant `q²-4h`. The heterogeneous upgrade
+    is also `PROVEN`: two low vertices with different incidences make `ℓ,k`
+    linearly independent; their span is invariant with matrix
+
+    ```text
+    [ q-1   h ]
+    [ -1   -1 ],
+    ```
+
+    and `squareOrder_defectIncidenceQuadratic_dvd_defectCharpoly` proves that
+    the displayed quadratic divides the full rational defect characteristic
+    polynomial. The remaining work is to combine its conjugate roots with the
+    `-1` multiplicity and defect trace moments.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -296,12 +304,12 @@ generalized rather than merely replayed.
     for every high-vertex sector. The most concrete current candidate is to
     combine the exact Dirichlet/third-moment budget with the proved `h-1`
     multiplicity of the defect eigenvalue `-1` and the proved incidence
-    quadratic of discriminant `q²-4h`. The immediate GAP is the heterogeneous
-    independence/charpoly-factor theorem for the latter; the resulting spectral
-    constraints have not yet been shown to eliminate all parameterized
-    profiles. This is the largest mathematical hole in the binary branch.
-    Generalizing certificate families is not a substitute for finding these
-    statements.
+    charpoly factor of discriminant `q²-4h`. The immediate GAP is now a
+    spectral consumer: derive defect trace/root constraints after removing
+    `(X+1)^(h-1)` and this quadratic, and test whether they eliminate all
+    parameterized heterogeneous profiles. This is the largest mathematical
+    hole in the binary branch. Generalizing certificate families is not a
+    substitute for finding these statements.
 
 ### A6. Binary branch capstone
 
