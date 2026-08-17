@@ -212,6 +212,47 @@ theorem orderSixtyFour_six_high_graph_parameters
   · simpa [hh] using hm.2.1
   · simpa [hh] using hm.2.2
 
+/-- Necessary incidence-count parameters when the high sector has cardinality
+eight.  The additional fact that all eight high vertices lie in the zero
+incidence class can further remove the single endpoint with `n₃=1,n₄=4`. -/
+theorem orderSixtyFour_eight_high_incidence_parameters
+    (k : Fin 64 → Nat)
+    (hk : ∀ x, k x ≤ 4)
+    (hsum : (∑ x : Fin 64, k x) = 72)
+    (hsq : (∑ x : Fin 64, (k x) ^ 2) = 128) :
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 3 + 2 * n 4 ≤ 9 ∧
+      n 2 + 3 * n 3 + 6 * n 4 = 28 ∧
+      n 1 = 16 + 3 * n 3 + 8 * n 4 := by
+  dsimp only
+  have heq := orderSixtyFour_incidence_count_equations k hk
+  omega
+
+/-- Graph-level specialization of the eight-high necessary parameters. -/
+theorem orderSixtyFour_eight_high_graph_parameters
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (hh : (squareOrderHighVertices G 8).card = 8) :
+    let H := squareOrderHighVertices G 8
+    let k : Fin 64 → Nat := fun x => (G.neighborFinset x ∩ H).card
+    let n := fun i => (Finset.univ.filter fun x => k x = i).card
+    n 3 + 2 * n 4 ≤ 9 ∧
+      n 2 + 3 * n 3 + 6 * n 4 = 28 ∧
+      n 1 = 16 + 3 * n 3 + 8 * n 4 := by
+  classical
+  dsimp only
+  have hm := orderSixtyFour_high_incidence_moments G hfree hmin hcover
+  dsimp only at hm
+  apply orderSixtyFour_eight_high_incidence_parameters
+  · exact hm.1
+  · simpa [hh] using hm.2.1
+  · simpa [hh] using hm.2.2
+
 /-- The numerical profile forced by the order-64 moments when there are two
 high vertices: exactly one vertex sees both high vertices and exactly sixteen
 vertices see one of them. -/
