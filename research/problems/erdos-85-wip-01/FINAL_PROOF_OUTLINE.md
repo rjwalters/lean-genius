@@ -1297,7 +1297,11 @@ generalized rather than merely replayed.
      `b`-side centers and the two `c`-side centers cannot both coincide:
      otherwise the distinct closing vertices `z₁,z₂` would share one common
      neighbor in component `b` and another in component `c`, contradicting
-     `C₄`-freeness.  The exact two-lift side has also been pushed to an
+     `C₄`-freeness.  Since every component selector has cardinality two,
+     `Erdos85BinarySquareMixedOwnerNoRainbowAmbientExhaustion` upgrades this:
+     either the separated `b`-centers exhaust the component-`b` neighbor
+     selector of `y`, or the separated `c`-centers exhaust the component-`c`
+     neighbor selector of `x`.  The exact two-lift side has also been pushed to an
      explicit overlap split.  `Erdos85OrderSixtyFourRoutingCycleLiftSeparation`
      shows that each cycle's closing owner-`c` route has exactly two
      monochromatic `c,c` lifts through the middle component, both different
@@ -1305,9 +1309,15 @@ generalized rather than merely replayed.
      `Erdos85OrderSixtyFourRoutingLiftPairDichotomy` places both two-point
      lift fibers inside the same four-point route-`c` row and proves that
      either they share a `c`-hub, or they are disjoint and together saturate
-     that row.  The remaining structural gap is to eliminate both this
-     shared-hub branch and this saturated-row branch using the ambient-center
-     separation and rectangle-free cross-block constraints.
+     that row.  `Erdos85BinarySquareSeparatedCentersDisjointSelectors` gives
+     the direct bridge from ambient separation to this split: distinct
+     centers already sharing `x` (respectively `y`) have disjoint selectors
+     into every component not containing that shared neighbor.  Hence on the
+     side selected by ambient-center separation, the corresponding exact
+     lift fibers cannot take the shared-hub branch and must saturate their
+     four-point routing row.  The remaining structural gap is to propagate
+     that forced saturation across the paired `b`/`c` alternatives and obtain
+     a rectangle or degree contradiction.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
