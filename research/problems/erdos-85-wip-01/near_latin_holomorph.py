@@ -98,6 +98,7 @@ def paired(i: int, j: int) -> bool:
 def sat_search(
     q: int, timeout: int, group: str = "dihedral", c4_max_fibers: int = 4,
     c4_min_fibers: int = 1, c4_fiber_counts: set[int] | None = None,
+    c4_allowed_fibers: set[int] | None = None,
 ) -> tuple[str, Datum | None, dict[str, int]]:
     m, r, vertex_count = q - 1, q + 1, q * q - 1
     if r % 2:
@@ -328,7 +329,10 @@ def sat_search(
 
         if c4_max_fibers:
             for a, b, c, d in itertools.combinations(range(vertex_count), 4):
-                fiber_count = len({a // r, b // r, c // r, d // r})
+                support = {a // r, b // r, c // r, d // r}
+                if c4_allowed_fibers is not None and not support <= c4_allowed_fibers:
+                    continue
+                fiber_count = len(support)
                 if c4_fiber_counts is not None:
                     if fiber_count not in c4_fiber_counts:
                         continue
@@ -384,8 +388,10 @@ def sat_search(
                 for s in range(2 if paired(i, j) else 1)
             ]
     datum = Datum(q, blocks, within)
-    if (c4_fiber_counts is None and c4_min_fibers == 1 and c4_max_fibers == 4) or \
-            c4_fiber_counts == {1, 2, 3, 4}:
+    if c4_allowed_fibers is None and (
+        (c4_fiber_counts is None and c4_min_fibers == 1 and c4_max_fibers == 4)
+        or c4_fiber_counts == {1, 2, 3, 4}
+    ):
         assert objective(datum) == 0
     return "SAT", datum, stats
 
@@ -403,6 +409,8 @@ def main() -> None:
                         help="diagnostic: impose only C4 clauses using at least this many fibers")
     parser.add_argument("--c4-fiber-counts",
                         help="diagnostic: comma-separated exact fiber counts, e.g. 2,4")
+    parser.add_argument("--c4-allowed-fibers",
+                        help="diagnostic: emit C4 clauses only inside this comma-separated fiber set")
     parser.add_argument("--output")
     args = parser.parse_args()
     if args.q < 3 or args.q % 2 == 0:
@@ -412,11 +420,17 @@ def main() -> None:
         fiber_counts = {int(x) for x in args.c4_fiber_counts.split(",")}
         if not fiber_counts <= {1, 2, 3, 4}:
             parser.error("--c4-fiber-counts entries must lie in 1..4")
+    allowed_fibers = None
+    if args.c4_allowed_fibers:
+        allowed_fibers = {int(x) for x in args.c4_allowed_fibers.split(",")}
+        if not allowed_fibers <= set(range(args.q - 1)):
+            parser.error("--c4-allowed-fibers contains an invalid fiber")
     status, datum, stats = sat_search(
         args.q, args.timeout, args.group,
         c4_max_fibers=0 if args.omit_c4 else args.c4_max_fibers,
         c4_min_fibers=args.c4_min_fibers,
         c4_fiber_counts=fiber_counts,
+        c4_allowed_fibers=allowed_fibers,
     )
     result: dict[str, object] = {"q": args.q, "status": status, "stats": stats}
     if datum is not None:

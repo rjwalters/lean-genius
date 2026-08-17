@@ -245,6 +245,24 @@ constraints together with lower-fiber routing consistency. The script exposes
 `--c4-min-fibers`, `--c4-max-fibers`, and `--c4-fiber-counts` to reproduce
 these diagnostics.
 
+An induced-fiber audit makes the obstruction finite and asymmetric between the
+two group types. Keep all eight-fiber cocycle equations, but emit C4 clauses
+only when all four vertices lie in a chosen fiber subset. For the cyclic model,
+every subset of at most five fibers is SAT. Six fibers consisting of three
+complete doubled pairs are already UNSAT, whereas the other six-fiber type
+(two complete pairs and two single fibers) is SAT. Thus the minimal cyclic
+configuration is three doubled pairs. For the dihedral model both six-fiber
+types are SAT, while seven fibers (three complete pairs plus one single fiber)
+are UNSAT. These conclusions use symmetry of the fixed-point-free pairing to
+reduce subsets to their numbers of complete pairs and singles. The diagnostic
+is reproducible with `--c4-allowed-fibers`.
+
+This identifies concrete prospective lemmas: a common-`C₁₀` routing atlas
+cannot be C4-free on three doubled pairs, and a common-`D₁₀` atlas cannot be
+C4-free on three doubled pairs plus one endpoint from the fourth. Proving
+either directly should target transition products around fiber triangles and
+quadrilaterals rather than the full 80-vertex graph.
+
 ## 3. Precise candidate axiom for B-EXIST
 
 **AXIOM B-NEAR-LATIN-LIFT.** There are collision-free near-Latin lift data of
