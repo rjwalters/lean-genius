@@ -800,16 +800,22 @@ generalized rather than merely replayed.
      Hence unit-color sectors satisfy the genuine spectral interval
      `0 <= C_c <= q^2 I`.  Together with the moment identity, this is exactly
      the equality-case mechanism forcing any eventual real spectral
-     decomposition to live at the interval endpoints; the formal endpoint
-     multiplicity/rank theorem remains to be packaged.  Thus the next theorem
-     must turn the now-complete package
+     decomposition to live at the interval endpoints.  The abstract equality
+     case is now `PROVEN` in `Erdos85BinarySquareEndpointRigidity`:
+     `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
+     `A^2 = r A`, and
+     `eigenvalue_eq_zero_or_endpoint_of_posSemidef_of_upper_of_trace_sq_eq`
+     gives `lambda = 0` or `lambda = r` for every nonzero real eigenvector.
+     Thus the now-complete real-matrix package
 
      ```text
      0 <= C_c <= q^2 I,   trace(C_c^2) = q^2 trace(C_c)   (m_c=1)
      ```
 
-     into eigenvalue/rank rigidity, then feed the equality case back into the
-     self-indexed block.  The
+     yields endpoint spectral rigidity.  The remaining interface is to cast
+     the integer centered-owner package uniformly to the real matrix theorem,
+     extract the endpoint multiplicities/rank, and feed that equality case
+     back into the self-indexed block.  The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
