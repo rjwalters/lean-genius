@@ -33,6 +33,10 @@ theorem ordered_mem_oneHighLabelPairOrientations_canonical
   · simp [oneHighLabelPairOrientations, oneHighCanonicalLabelPair,
       min_eq_right hba, max_eq_left hba]
 
+private theorem oneHighRootPair_standardMate_turn (x : Fin 8) :
+    oneHighRootPair (oneHighStandardMate x) = oneHighRootPair x := by
+  fin_cases x <;> decide
+
 /-- An exact refinement contains a three-pair odd turn whose two source rows
 satisfy one of the five decoded non-same-owner relations.  The evaluator only
 visits pairs actually stored in the two rows and their two orientations. -/
@@ -47,6 +51,7 @@ def oneHighRefinementHasNonSameOwnerOddTurn
   (oneHighLabelPairOrientations pairBC).any fun orientedBC =>
     decide (
       orientedAB.2 = orientedBC.1 ∧
+      sourceAB ≠ sourceBC ∧
       let a := orientedAB.1
       let b := orientedAB.2
       let c := orientedBC.2
@@ -136,45 +141,73 @@ theorem OneHighPinnedThreePairTurn.graphPairingRefinement_hasNonSameOwnerOddTurn
     exact T.qBC.canonicalPair_mem_graphSourcePairing G hfree hv p
   · exact ordered_mem_oneHighLabelPairOrientations_canonical _ _
   · exact ordered_mem_oneHighLabelPairOrientations_canonical _ _
-  rw [decide_eq_true_eq]
-  refine ⟨rfl, T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
+  have hfarABa : oneHighRootPair sourceAB ≠
+      oneHighRootPair (p.branchLabel T.a) :=
     oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
-      p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far,
+      p.branch_mate T.qAB.sourceEdge.1 T.a T.qAB.left_far
+  have hfarABb : oneHighRootPair sourceAB ≠
+      oneHighRootPair (p.branchLabel T.b) :=
     oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
-      p.branch_mate T.qAB.sourceEdge.1 T.b T.qAB.right_far,
+      p.branch_mate T.qAB.sourceEdge.1 T.b T.qAB.right_far
+  have hfarBCb : oneHighRootPair sourceBC ≠
+      oneHighRootPair (p.branchLabel T.b) :=
     oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
-      p.branch_mate T.qBC.sourceEdge.1 T.b T.qBC.left_far,
+      p.branch_mate T.qBC.sourceEdge.1 T.b T.qBC.left_far
+  have hfarBCc : oneHighRootPair sourceBC ≠
+      oneHighRootPair (p.branchLabel T.c) :=
     oneHighRootPair_ne_of_branch_mem_far p.mate p.branchLabel
-      p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far,
-    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
-      (T.graphPairingMultiplicity_ab_odd G hfree hv p),
-    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
-      (T.graphPairingMultiplicity_bc_odd G hfree hv p), ?_⟩
-  · rcases hsector with hmate | hc | hmc | ha | hma
+      p.branch_mate T.qBC.sourceEdge.1 T.c T.qBC.right_far
+  have hlabelRelation :
+      sourceAB = oneHighStandardMate sourceBC ∨
+      sourceAB = p.branchLabel T.c ∨
+      sourceAB = oneHighStandardMate (p.branchLabel T.c) ∨
+      sourceBC = p.branchLabel T.a ∨
+      sourceBC = oneHighStandardMate (p.branchLabel T.a) := by
+    rcases hsector with hmate | hc | hmc | ha | hma
     · left
       dsimp [sourceAB, sourceBC]
-      calc
-        p.branchLabel T.qAB.sourceEdge.1 =
-            p.branchLabel (p.mate T.qBC.sourceEdge.1) :=
-          congrArg p.branchLabel hmate
-        _ = oneHighStandardMate (p.branchLabel T.qBC.sourceEdge.1) :=
-          p.branch_mate _
+      exact (congrArg p.branchLabel hmate).trans (p.branch_mate _)
     · exact Or.inr (Or.inl (by
         dsimp [sourceAB]; exact congrArg p.branchLabel hc))
     · exact Or.inr (Or.inr (Or.inl (by
         dsimp [sourceAB]
-        calc
-          p.branchLabel T.qAB.sourceEdge.1 = p.branchLabel (p.mate T.c) :=
-            congrArg p.branchLabel hmc
-          _ = oneHighStandardMate (p.branchLabel T.c) := p.branch_mate _)))
+        exact (congrArg p.branchLabel hmc).trans (p.branch_mate _))))
     · exact Or.inr (Or.inr (Or.inr (Or.inl
         (by dsimp [sourceBC]; exact congrArg p.branchLabel ha))))
     · exact Or.inr (Or.inr (Or.inr (Or.inr (by
         dsimp [sourceBC]
-        calc
-          p.branchLabel T.qBC.sourceEdge.1 = p.branchLabel (p.mate T.a) :=
-            congrArg p.branchLabel hma
-          _ = oneHighStandardMate (p.branchLabel T.a) := p.branch_mate _))))
+        exact (congrArg p.branchLabel hma).trans (p.branch_mate _)))))
+  have hsourceNe : sourceAB ≠ sourceBC := by
+    intro heq
+    rcases hlabelRelation with hm | hc | hmc | ha | hma
+    · exact oneHighStandardMate_ne sourceBC (hm.symm.trans heq)
+    · apply hfarBCc
+      rw [← hc, heq]
+    · apply hfarBCc
+      calc
+        oneHighRootPair sourceBC = oneHighRootPair sourceAB :=
+          congrArg oneHighRootPair heq.symm
+        _ = oneHighRootPair (oneHighStandardMate (p.branchLabel T.c)) :=
+          congrArg oneHighRootPair hmc
+        _ = oneHighRootPair (p.branchLabel T.c) :=
+          oneHighRootPair_standardMate_turn _
+    · apply hfarABa
+      rw [heq, ha]
+    · apply hfarABa
+      calc
+        oneHighRootPair sourceAB = oneHighRootPair sourceBC :=
+          congrArg oneHighRootPair heq
+        _ = oneHighRootPair (oneHighStandardMate (p.branchLabel T.a)) :=
+          congrArg oneHighRootPair hma
+        _ = oneHighRootPair (p.branchLabel T.a) :=
+          oneHighRootPair_standardMate_turn _
+  rw [decide_eq_true_eq]
+  refine ⟨rfl, hsourceNe, T.ab_pair_ne, T.bc_pair_ne, T.ac_pair_ne,
+    hfarABa, hfarABb, hfarBCb, hfarBCc,
+    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
+      (T.graphPairingMultiplicity_ab_odd G hfree hv p),
+    (oneHighMultiplicityOdd_eq_true_iff _ _ _).2
+      (T.graphPairingMultiplicity_bc_odd G hfree hv p), hlabelRelation⟩
 
 /-- Graph-to-inventory socket for all five non-same-owner source sectors. -/
 theorem OneHighPinnedThreePairTurn.mem_nonSameOwnerOddTurnInventory

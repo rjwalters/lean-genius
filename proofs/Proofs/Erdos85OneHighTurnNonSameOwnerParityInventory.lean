@@ -21,6 +21,7 @@ def oneHighNonSameOwnerOrientedTurnShape
     (orientedAB orientedBC : OneHighLabelPair) : Bool :=
   decide (
     orientedAB.2 = orientedBC.1 ∧
+    sourceAB ≠ sourceBC ∧
     let a := orientedAB.1
     let b := orientedAB.2
     let c := orientedBC.2
@@ -59,10 +60,40 @@ def oneHighTableHasNonSameOwnerOddTurnByParity
           oneHighParityMaskOdd mask orientedAB.1 orientedAB.2 &&
             oneHighParityMaskOdd mask orientedBC.1 orientedBC.2
 
+/-- Correlation-preserving variant: the global parity state is recomputed
+after fixing the two witnessed owner rows.  Unlike the fast abstraction
+above, the oddness tests therefore refer to the same row choices that carry
+the two oriented turn edges. -/
+def oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity
+    (profile : Nat) (table : OneHighMissTable) : Bool :=
+  let choices := List.ofFn fun source : Fin 8 =>
+    oneHighCompatibleSourcePairings profile (oneHighTableRestrict table) source
+  let sources := List.ofFn (fun source : Fin 8 ↦ source)
+  sources.any fun sourceAB =>
+  sources.any fun sourceBC =>
+  choices[sourceAB.val]!.any fun rowAB =>
+  choices[sourceBC.val]!.any fun rowBC =>
+  let states := oneHighPairingParityStatesWithTwoSourceRowsChoices
+    choices sourceAB rowAB sourceBC rowBC
+  rowAB.any fun pairAB =>
+  rowBC.any fun pairBC =>
+  (oneHighLabelPairOrientations pairAB).any fun orientedAB =>
+  (oneHighLabelPairOrientations pairBC).any fun orientedBC =>
+    oneHighNonSameOwnerOrientedTurnShape
+        sourceAB sourceBC orientedAB orientedBC &&
+      states.any fun mask =>
+          oneHighParityMaskOdd mask orientedAB.1 orientedAB.2 &&
+            oneHighParityMaskOdd mask orientedBC.1 orientedBC.2
+
 def oneHighNonSameOwnerOddTurnParityInventoryTables (profile : Fin 5) :
     List OneHighMissTable :=
   (oneHighCapacityInventoryTables profile).filter
     (oneHighTableHasNonSameOwnerOddTurnByParity profile.val)
+
+def oneHighNonSameOwnerOddTurnCorrelatedParityInventoryTables
+    (profile : Fin 5) : List OneHighMissTable :=
+  (oneHighCapacityInventoryTables profile).filter
+    (oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity profile.val)
 
 /-- Even after retaining all four graph-forced source-far inequalities, the
 sound local-shape/global-parity abstraction accepts the following rows. -/
@@ -77,6 +108,21 @@ theorem oneHighNonSameOwnerOddTurnParityInventory_total_length :
       (oneHighNonSameOwnerOddTurnParityInventoryTables profile).length).sum =
       12518 := by
   rw [oneHighNonSameOwnerOddTurnParityInventory_profile_lengths]
+  norm_num
+
+/-- Preserving the correlation between both selected owner rows and the
+global parity state still leaves the same five profile counts. -/
+theorem oneHighNonSameOwnerOddTurnCorrelatedParityInventory_profile_lengths :
+    (List.finRange 5).map (fun profile =>
+      (oneHighNonSameOwnerOddTurnCorrelatedParityInventoryTables profile).length) =
+      [1333, 3617, 4225, 2693, 650] := by
+  native_decide
+
+theorem oneHighNonSameOwnerOddTurnCorrelatedParityInventory_total_length :
+    ((List.finRange 5).map fun profile =>
+      (oneHighNonSameOwnerOddTurnCorrelatedParityInventoryTables profile).length).sum =
+      12518 := by
+  rw [oneHighNonSameOwnerOddTurnCorrelatedParityInventory_profile_lengths]
   norm_num
 
 private theorem oneHighChoicesCompatible_length_eq {A : Type*}
@@ -94,20 +140,21 @@ private theorem oneHighChoicesCompatible_length_eq {A : Type*}
 
 /-- Soundness: every exact semantic witness is accepted by the deduplicated
 global-parity evaluator. -/
-theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
+theorem oneHighTableHasNonSameOwnerOddTurnByBothParities_of_refinement
     {profile : Nat} {table : OneHighMissTable}
     {refinement : List (List OneHighLabelPair)}
     (hrefinement : refinement ∈
       oneHighPairingRefinements profile (oneHighTableRestrict table))
     (hturn : oneHighRefinementHasNonSameOwnerOddTurn refinement = true) :
-    oneHighTableHasNonSameOwnerOddTurnByParity profile table = true := by
+    oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity profile table = true ∧
+      oneHighTableHasNonSameOwnerOddTurnByParity profile table = true := by
   rw [oneHighRefinementHasNonSameOwnerOddTurn] at hturn
   simp only [List.any_eq_true] at hturn
   rcases hturn with ⟨sourceAB, hsourceAB, sourceBC, hsourceBC,
     pairAB, hpairAB, pairBC, hpairBC, orientedAB, horientedAB,
     orientedBC, horientedBC, hshape⟩
   rw [decide_eq_true_eq] at hshape
-  rcases hshape with ⟨hjoin, hab, hbc, hac, hsourceABa, hsourceABb,
+  rcases hshape with ⟨hjoin, hsourceNe, hab, hbc, hac, hsourceABa, hsourceABb,
     hsourceBCb, hsourceBCc, hoddAB', hoddBC', hrelation⟩
   let choices := List.ofFn fun source : Fin 8 =>
     oneHighCompatibleSourcePairings profile (oneHighTableRestrict table) source
@@ -148,17 +195,65 @@ theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
         orientedBC.1 orientedBC.2 = true := by
     rw [oneHighParityMaskOdd_refinement]
     simpa [hjoin] using hoddBC'
-  rw [oneHighTableHasNonSameOwnerOddTurnByParity]
-  simp only [List.any_eq_true, Bool.and_eq_true]
-  refine ⟨sourceAB, hsourceAB, sourceBC, hsourceBC, rowAB, ?_, rowBC, ?_,
-    pairAB, hpairABRow, pairBC, hpairBCRow,
-    orientedAB, horientedAB, orientedBC, horientedBC, ?_,
-    oneHighPairingRefinementParityMask refinement, hmaskMem, hoddAB, hoddBC⟩
-  · fin_cases sourceAB <;> simpa [choices] using hrowABMem
-  · fin_cases sourceBC <;> simpa [choices] using hrowBCMem
-  · rw [oneHighNonSameOwnerOrientedTurnShape, decide_eq_true_eq]
-    exact ⟨hjoin, hab, hbc, hac, hsourceABa, hsourceABb,
+  have hrowABMem' : rowAB ∈ choices[sourceAB.val]! := by
+    fin_cases sourceAB <;> simpa [choices] using hrowABMem
+  have hrowBCMem' : rowBC ∈ choices[sourceBC.val]! := by
+    fin_cases sourceBC <;> simpa [choices] using hrowBCMem
+  have hturnShape : oneHighNonSameOwnerOrientedTurnShape
+      sourceAB sourceBC orientedAB orientedBC = true := by
+    rw [oneHighNonSameOwnerOrientedTurnShape, decide_eq_true_eq]
+    exact ⟨hjoin, hsourceNe, hab, hbc, hac, hsourceABa, hsourceABb,
       hsourceBCb, hsourceBCc, hrelation⟩
+  constructor
+  · have hfixedAB : OneHighChoicesCompatible
+        (choices.set sourceAB.val [rowAB]) refinement :=
+      oneHighChoicesCompatible_set_singleton_of_getElem?_eq_some
+        hcompatible hgetAB
+    have hfixedBoth : OneHighChoicesCompatible
+        ((choices.set sourceAB.val [rowAB]).set sourceBC.val [rowBC]) refinement :=
+      oneHighChoicesCompatible_set_singleton_of_getElem?_eq_some
+        hfixedAB hgetBC
+    have hfixedMaskMem : oneHighPairingRefinementParityMask refinement ∈
+        oneHighPairingParityStatesWithTwoSourceRowsChoices
+          choices sourceAB rowAB sourceBC rowBC := by
+      rw [oneHighPairingParityStatesWithTwoSourceRowsChoices,
+        mem_oneHighChooseEachParityStates_iff]
+      exact ⟨refinement, (oneHighChooseEach_mem_iff _ _).2 hfixedBoth, rfl⟩
+    rw [oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity]
+    simp only [List.any_eq_true, Bool.and_eq_true]
+    exact ⟨sourceAB, hsourceAB, sourceBC, hsourceBC,
+      rowAB, hrowABMem', rowBC, hrowBCMem',
+      pairAB, hpairABRow, pairBC, hpairBCRow,
+      orientedAB, horientedAB, orientedBC, horientedBC, hturnShape,
+      oneHighPairingRefinementParityMask refinement,
+      hfixedMaskMem, hoddAB, hoddBC⟩
+  · rw [oneHighTableHasNonSameOwnerOddTurnByParity]
+    simp only [List.any_eq_true, Bool.and_eq_true]
+    exact ⟨sourceAB, hsourceAB, sourceBC, hsourceBC,
+      rowAB, hrowABMem', rowBC, hrowBCMem',
+      pairAB, hpairABRow, pairBC, hpairBCRow,
+      orientedAB, horientedAB, orientedBC, horientedBC, hturnShape,
+      oneHighPairingRefinementParityMask refinement, hmaskMem, hoddAB, hoddBC⟩
+
+theorem oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity_of_refinement
+    {profile : Nat} {table : OneHighMissTable}
+    {refinement : List (List OneHighLabelPair)}
+    (hrefinement : refinement ∈
+      oneHighPairingRefinements profile (oneHighTableRestrict table))
+    (hturn : oneHighRefinementHasNonSameOwnerOddTurn refinement = true) :
+    oneHighTableHasNonSameOwnerOddTurnByCorrelatedParity profile table = true :=
+  (oneHighTableHasNonSameOwnerOddTurnByBothParities_of_refinement
+    hrefinement hturn).1
+
+theorem oneHighTableHasNonSameOwnerOddTurnByParity_of_refinement
+    {profile : Nat} {table : OneHighMissTable}
+    {refinement : List (List OneHighLabelPair)}
+    (hrefinement : refinement ∈
+      oneHighPairingRefinements profile (oneHighTableRestrict table))
+    (hturn : oneHighRefinementHasNonSameOwnerOddTurn refinement = true) :
+    oneHighTableHasNonSameOwnerOddTurnByParity profile table = true :=
+  (oneHighTableHasNonSameOwnerOddTurnByBothParities_of_refinement
+    hrefinement hturn).2
 
 /-- The semantic inventory is contained in the fast parity inventory. -/
 theorem mem_oneHighNonSameOwnerOddTurnParityInventoryTables_of_semantic
