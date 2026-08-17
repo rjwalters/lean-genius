@@ -1033,7 +1033,13 @@ generalized rather than merely replayed.
      Hence the actual cross-incidence block, not merely an abstract spectral
      bijection, transports the paired factor actions.  This is the exact
      vertex-level intertwining constraint available to a simultaneous-block
-     classification.
+     classification.  Its direct combinatorial form is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossFactorPathBalance`: for every `x` in
+     component `c` and `z` in component `d`, the number of intermediate
+     vertices reached by an `F_cd` edge followed by a `B_cd` edge equals the
+     number reached by a `B_cd` edge followed by an `F_dc` edge.  Thus the
+     matrix intertwiner is available to a finite census as an exact local
+     alternating-path count, with no spectral decoding step.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
