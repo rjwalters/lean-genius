@@ -1446,7 +1446,11 @@ generalized rather than merely replayed.
      `[16]`: 270 of 392 classified models are near-twin-free.  That stratum
      therefore still needs a second terminal, naturally through codegree-five
      nonedges or codegree-four edges.  The `[8,8]` structural cut also remains
-     separate.
+     separate.  The ambient interface for the first option is already
+     `PROVEN`: `defect_positive_codegree_component_adapter` preserves every
+     positive defect codegree after passing to the common connected
+     component, and `defect_codegree_five_component_adapter` exposes the
+     exact codegree-five specialization needed by the near-twin-lite route.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

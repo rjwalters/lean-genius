@@ -75,6 +75,87 @@ theorem defect_codegree_six_component_adapter
     · rw [SimpleGraph.mem_neighborFinset]
       exact (D.mem_neighborFinset y z).mp hzData.2
 
+/-- Positive codegree is enough for the component part of the preceding
+adapter.  Moreover the exact codegree is preserved after inducing the common
+connected component. -/
+theorem defect_positive_codegree_component_adapter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    {x y : V} (k : ℕ) (hk : 0 < k)
+    (hcode : (D.adjMatrix ℤ * D.adjMatrix ℤ) x y = (k : ℤ)) :
+    let d := D.connectedComponentMk x
+    ∃ hy : y ∈ d.supp,
+      let xs : d.supp := ⟨x, by
+        exact (ConnectedComponent.mem_supp_iff d x).mpr rfl⟩
+      let ys : d.supp := ⟨y, hy⟩
+      (((D.induce d.supp).neighborFinset xs) ∩
+        ((D.induce d.supp).neighborFinset ys)).card = k := by
+  classical
+  let d := D.connectedComponentMk x
+  have hcommon : (D.neighborFinset x ∩ D.neighborFinset y).card = k := by
+    have h := adjMatrix_sq_apply_eq_card_common D x y
+    rw [h] at hcode
+    exact_mod_cast hcode
+  obtain ⟨z, hz⟩ := Finset.card_pos.mp (show
+      0 < (D.neighborFinset x ∩ D.neighborFinset y).card by omega)
+  have hzData := Finset.mem_inter.mp hz
+  have hxz : D.Adj x z := (D.mem_neighborFinset x z).mp hzData.1
+  have hyz : D.Adj y z := (D.mem_neighborFinset y z).mp hzData.2
+  have hcompXZ : D.connectedComponentMk x = D.connectedComponentMk z :=
+    ConnectedComponent.connectedComponentMk_eq_of_adj hxz
+  have hcompYZ : D.connectedComponentMk y = D.connectedComponentMk z :=
+    ConnectedComponent.connectedComponentMk_eq_of_adj hyz
+  have hyComp : D.connectedComponentMk y = d :=
+    hcompYZ.trans hcompXZ.symm
+  have hySupp : y ∈ d.supp :=
+    (ConnectedComponent.mem_supp_iff d y).mpr hyComp
+  refine ⟨hySupp, ?_⟩
+  let xs : d.supp := ⟨x,
+    (ConnectedComponent.mem_supp_iff d x).mpr rfl⟩
+  let ys : d.supp := ⟨y, hySupp⟩
+  change (((D.induce d.supp).neighborFinset xs) ∩
+    ((D.induce d.supp).neighborFinset ys)).card = k
+  rw [← hcommon]
+  apply Finset.card_bij (fun z _ => z.1)
+  · intro z hz
+    have hzData := Finset.mem_inter.mp hz
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact (D.mem_neighborFinset x z.1).mpr
+        (((D.induce d.supp).mem_neighborFinset xs z).mp hzData.1)
+    · exact (D.mem_neighborFinset y z.1).mpr
+        (((D.induce d.supp).mem_neighborFinset ys z).mp hzData.2)
+  · intro z₁ _ z₂ _ heq
+    exact Subtype.ext heq
+  · intro z hz
+    have hzData := Finset.mem_inter.mp hz
+    have hxz : D.Adj x z := (D.mem_neighborFinset x z).mp hzData.1
+    have hzComp : D.connectedComponentMk z = d :=
+      (ConnectedComponent.connectedComponentMk_eq_of_adj hxz).symm
+    let zs : d.supp := ⟨z,
+      (ConnectedComponent.mem_supp_iff d z).mpr hzComp⟩
+    refine ⟨zs, ?_, rfl⟩
+    apply Finset.mem_inter.mpr
+    constructor
+    · exact ((D.induce d.supp).mem_neighborFinset xs zs).mpr hxz
+    · exact ((D.induce d.supp).mem_neighborFinset ys zs).mpr
+        ((D.mem_neighborFinset y z).mp hzData.2)
+
+/-- Codegree-five specialization used by the near-twin-lite `[16]` route. -/
+theorem defect_codegree_five_component_adapter
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    {x y : V}
+    (hcode : (D.adjMatrix ℤ * D.adjMatrix ℤ) x y = 5) :
+    let d := D.connectedComponentMk x
+    ∃ hy : y ∈ d.supp,
+      let xs : d.supp := ⟨x, by
+        exact (ConnectedComponent.mem_supp_iff d x).mpr rfl⟩
+      let ys : d.supp := ⟨y, hy⟩
+      (((D.induce d.supp).neighborFinset xs) ∩
+        ((D.induce d.supp).neighborFinset ys)).card = 5 := by
+  simpa using defect_positive_codegree_component_adapter D 5 (by norm_num) hcode
+
 /-- Graph-facing composition of the component adapter with the near-twin
 owner-fork theorem: a global codegree-six defect nonedge forces the repeated
 non-base owner fork in its defect component whenever that component is in the
