@@ -1,5 +1,4 @@
-import Proofs.Erdos85OrderSixtyFourTenSixOutsideConsequence
-import Proofs.Erdos85OrderSixtyFourTenSixOutsideListPairs
+import Proofs.Erdos85OrderSixtyFourTenSixOutsideServiceSatisfaction
 
 /-! # Satisfaction of the generated `[10,6]` C4 clauses -/
 
@@ -26,6 +25,10 @@ theorem tenSixOutsideCommonTerm_reifies
     cases hac : tenSixOutsideVar? i a c <;>
       cases hbc : tenSixOutsideVar? i b c <;> simp_all
     rename_i ac bc
+    have htermEq : term = (ac, bc) := by
+      symm
+      simpa [hac, hbc] using hout
+    subst term
     have hca : c ≠ a := by
       intro h
       subst c
@@ -38,10 +41,42 @@ theorem tenSixOutsideCommonTerm_reifies
       tenSixOutsideDimacsValuation_var i C a c hac,
       tenSixOutsideDimacsValuation_var i C b c hbc⟩
 
-theorem tenSixOutsideCommonTerms_nodup :
-    ∀ (i : Fin 6) (a b : Fin 48),
-      (tenSixOutsideCommonTerms i a b).Nodup := by
-  native_decide
+theorem tenSixOutsideCommonTerms_nodup
+    (i : Fin 6) (a b : Fin 48) :
+    (tenSixOutsideCommonTerms i a b).Nodup := by
+  unfold tenSixOutsideCommonTerms
+  apply List.Nodup.filterMap
+  · intro c d term hc hd
+    by_cases hcskip : c = a ∨ c = b
+    · simp [hcskip] at hc
+    · have hcskip' : (decide (c = a) || decide (c = b)) = false := by
+        cases hca : decide (c = a) <;> cases hcb : decide (c = b) <;>
+          simp_all
+      by_cases hdskip : d = a ∨ d = b
+      · simp [hdskip] at hd
+      · have hdskip' : (decide (d = a) || decide (d = b)) = false := by
+          cases hda : decide (d = a) <;> cases hdb : decide (d = b) <;>
+            simp_all
+        cases hac : tenSixOutsideVar? i a c <;>
+          cases hbc : tenSixOutsideVar? i b c <;>
+          simp [hcskip', hac, hbc] at hc
+        rename_i ac bc
+        cases had : tenSixOutsideVar? i a d <;>
+          cases hbd : tenSixOutsideVar? i b d <;>
+          simp [hdskip', had, hbd] at hd
+        rename_i ad bd
+        have hcEq : term = (ac, bc) := by
+          symm
+          simpa [hcskip', hac, hbc] using hc
+        have hdEq : term = (ad, bd) := by
+          symm
+          simpa [hdskip', had, hbd] using hd
+        have hacad : ac = ad := by
+          have := congrArg Prod.fst (hcEq.symm.trans hdEq)
+          simpa using this
+        subst ad
+        exact tenSixOutsideVar?_injective_right i a c d hac had
+  · exact List.nodup_finRange 48
 
 /-- Every four-negative clause emitted for fixed `a<b` is satisfied. -/
 theorem tenSixOutsideC4ClausesAt_eval
@@ -66,7 +101,7 @@ theorem tenSixOutsideC4ClausesAt_eval
     rw [hac] at had
     rw [hbc] at hbd
     apply hpne
-    exact Prod.ext (Option.some.inj had.symm) (Option.some.inj hbd.symm)
+    exact Prod.ext (Option.some.inj had) (Option.some.inj hbd)
   rw [CNF.Clause.eval_cons, CNF.Clause.eval_cons,
     CNF.Clause.eval_cons, CNF.Clause.eval_cons, CNF.Clause.eval_nil,
     hvalaC, hvalbC, hvalaD, hvalbD]
@@ -74,5 +109,22 @@ theorem tenSixOutsideC4ClausesAt_eval
     by_cases had' : C.Adj a d <;> by_cases hbd' : C.Adj b d
   all_goals simp_all
   exact False.elim (hs.no_two_common a b c d hab hcd hac' hbc' had' hbd')
+
+theorem mem_tenSixOutsidePairs_lt {p : Fin 48 × Fin 48}
+    (hp : p ∈ tenSixOutsidePairs.toList) : p.1 < p.2 := by
+  simpa [tenSixOutsidePairs] using hp
+
+/-- Every generated four-negative C4 clause evaluates to true. -/
+theorem tenSixOutsideC4Clause_eval
+    (i : Fin 6) (C : SimpleGraph (Fin 48)) [DecidableRel C.Adj]
+    (hs : OutsideCClauseSemantics C
+      (fun u e ↦ tenSixIncidence i u e = true) (tenSixOutsideTarget i))
+    {clause : CNF.Clause Nat}
+    (hclause : clause ∈ tenSixOutsideC4Clauses i) :
+    CNF.Clause.eval (tenSixOutsideDimacsValuation i C) clause = true := by
+  simp only [tenSixOutsideC4Clauses, List.mem_flatMap] at hclause
+  obtain ⟨p, hp, hclause⟩ := hclause
+  have hab : p.1 ≠ p.2 := ne_of_lt (mem_tenSixOutsidePairs_lt hp)
+  exact tenSixOutsideC4ClausesAt_eval i C hs p.1 p.2 hab hclause
 
 end Erdos85
