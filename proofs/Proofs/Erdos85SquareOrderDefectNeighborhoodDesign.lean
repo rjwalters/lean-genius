@@ -175,6 +175,57 @@ theorem squareOrder_defectBranches_pairwise_disjoint
   have huw : G.Adj u w := by simpa [SimpleGraph.mem_neighborFinset] using hwu
   exact hfree (containsC4_of_two_common hzw hvu.symm huz huw hvz'.symm hvw'.symm)
 
+/-- Branch membership is reciprocal between two distinct centers incident to
+the same owner.  This is the elementary gluing map between local partitions. -/
+theorem mem_squareOrderDefectBranch_comm_of_adj_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {u x z : V}
+    (huz : G.Adj u z) (hxz : G.Adj x z) :
+    x ∈ squareOrderDefectBranch G u z ↔
+      u ∈ squareOrderDefectBranch G x z := by
+  simp [squareOrderDefectBranch, SimpleGraph.mem_neighborFinset,
+    huz, hxz, G.adj_comm, ne_comm]
+
+/-- Branches with different owners meet in at most one point, uniformly even
+when they belong to different local center partitions. -/
+theorem card_inter_squareOrderDefectBranch_le_one_of_owner_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {u v z w : V} (hzw : z ≠ w) :
+    (squareOrderDefectBranch G u z ∩
+        squareOrderDefectBranch G v w).card ≤ 1 := by
+  have hsub : squareOrderDefectBranch G u z ∩
+      squareOrderDefectBranch G v w ⊆
+        G.neighborFinset z ∩ G.neighborFinset w := by
+    intro x hx
+    exact Finset.mem_inter.mpr ⟨
+      Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).1,
+      Finset.mem_of_mem_erase (Finset.mem_inter.mp hx).2⟩
+  exact (Finset.card_le_card hsub).trans
+    (common_le_one_of_not_containsC4 hfree z w hzw)
+
+/-- Branches at two distinct centers with the same owner overlap in exactly
+the owner's neighborhood with those two centers deleted. -/
+theorem card_inter_squareOrderDefectBranch_same_owner
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {u v z : V}
+    (huv : u ≠ v) (huz : G.Adj u z) (hvz : G.Adj v z) :
+    (squareOrderDefectBranch G u z ∩
+        squareOrderDefectBranch G v z).card = G.degree z - 2 := by
+  have hu : u ∈ G.neighborFinset z := by
+    simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using huz
+  have hv : v ∈ (G.neighborFinset z).erase u := by
+    exact Finset.mem_erase.mpr ⟨huv.symm, by
+      simpa [SimpleGraph.mem_neighborFinset, G.adj_comm] using hvz⟩
+  have heq : squareOrderDefectBranch G u z ∩
+      squareOrderDefectBranch G v z =
+        ((G.neighborFinset z).erase u).erase v := by
+    ext x
+    simp [squareOrderDefectBranch, and_left_comm]
+  rw [heq, Finset.card_erase_of_mem hv,
+    Finset.card_erase_of_mem hu, G.card_neighborFinset_eq_degree]
+  omega
+
 /-- A branch through an adjacent owner `z` has size `deg(z)-1`. -/
 theorem card_squareOrderDefectBranch_eq_degree_sub_one
     {V : Type*} [Fintype V] [DecidableEq V]
