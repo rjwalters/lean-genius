@@ -1451,6 +1451,15 @@ generalized rather than merely replayed.
      positive defect codegree after passing to the common connected
      component, and `defect_codegree_five_component_adapter` exposes the
      exact codegree-five specialization needed by the near-twin-lite route.
+     The no-rainbow five-core analysis is now `PROVEN` in
+     `Erdos85NearTwinLiteOwnerDichotomy`: it yields either a repeated
+     non-base owner fork or the sharp boundary on which exactly three
+     complement-common closures repeat a non-base owner.  The ambient
+     composition is `PROVEN` as
+     `orderSixtyFour_global_codegreeFive_ownerFork_or_exactThree` in the
+     adapter.  Thus the remaining λ=5 task is precisely to eliminate or
+     propagate the exact-three boundary; the fork alternative feeds the same
+     closed owner-`K_{2,2}` machinery as λ=6.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

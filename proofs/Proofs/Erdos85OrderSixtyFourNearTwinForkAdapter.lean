@@ -1,4 +1,5 @@
 import Proofs.Erdos85NearTwinOwnerFourCycle
+import Proofs.Erdos85NearTwinLiteOwnerDichotomy
 
 /-! # Global-to-component adapter for the order-64 near-twin fork -/
 
@@ -254,6 +255,63 @@ theorem orderSixtyFour_global_codegreeSix_forces_ownerFactor_C4
       G hfree hreg hcount d xs ys hxySub hnotInd hindCode (hno d)
   refine ⟨d, xs, ys, rfl, rfl, owner, ?_, hC4⟩
   simpa [D, d, xs, ys] using howner
+
+/-- Global λ=5 endpoint for the near-twin-lite route.  An ambient
+codegree-five defect nonedge either forces a repeated non-base owner fork in
+its component or lands on the sharp exact-three owner-color boundary. -/
+theorem orderSixtyFour_global_codegreeFive_ownerFork_or_exactThree
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 4)
+    {x y : Fin 64} (hxy : x ≠ y)
+    (hnotD : ¬ (secondOrderDefectGraph G).Adj x y)
+    (hcode : ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) x y = 5)
+    (hno : ∀ d : (secondOrderDefectGraph G).ConnectedComponent,
+      ∀ a b c, a ≠ b → a ≠ c → b ≠ c →
+        ¬ routingOwnerRainbow G d a b c) :
+    ∃ d : (secondOrderDefectGraph G).ConnectedComponent,
+      ∃ xs ys : d.supp,
+        xs.1 = x ∧ ys.1 = y ∧
+        let base := nondefectPairOwner G hfree hxy (by simpa using hnotD)
+        let left := fun r : d.supp =>
+          nondefectPairOwnerOrBase G hfree base xs.1 r.1
+        let right := fun r : d.supp =>
+          nondefectPairOwnerOrBase G hfree base ys.1 r.1
+        let R :=
+          ((((secondOrderDefectGraph G).induce d.supp)ᶜ.neighborFinset xs) ∩
+            (((secondOrderDefectGraph G).induce d.supp)ᶜ.neighborFinset ys))
+        (∃ owner r₁ r₂, owner ≠ base ∧ r₁ ≠ r₂ ∧
+          r₁ ∈ R ∧ r₂ ∈ R ∧
+          (restrictedComponentOwnerGraph G d owner).Adj xs r₁ ∧
+          (restrictedComponentOwnerGraph G d owner).Adj ys r₁ ∧
+          (restrictedComponentOwnerGraph G d owner).Adj xs r₂ ∧
+          (restrictedComponentOwnerGraph G d owner).Adj ys r₂) ∨
+          (R.filter fun r =>
+            left r = right r ∧ left r ≠ base).card = 3 := by
+  classical
+  let D := secondOrderDefectGraph G
+  let d := D.connectedComponentMk x
+  obtain ⟨hySupp, hindCode⟩ :=
+    defect_codegree_five_component_adapter D hcode
+  let xs : d.supp := ⟨x,
+    (ConnectedComponent.mem_supp_iff d x).mpr rfl⟩
+  let ys : d.supp := ⟨y, hySupp⟩
+  have hxySub : xs ≠ ys := by
+    intro h
+    exact hxy (congrArg Subtype.val h)
+  have hnotInd : ¬ (D.induce d.supp).Adj xs ys := by
+    simpa [D, xs, ys] using hnotD
+  have hdichotomy := orderSixtyFour_codegreeFive_ownerFork_or_exactThree
+    G hfree hreg hcount d xs ys hxySub hnotInd hindCode (hno d)
+  refine ⟨d, xs, ys, rfl, rfl, ?_⟩
+  simpa [D, d, xs, ys] using hdichotomy
 
 end
 
