@@ -608,6 +608,12 @@ generalized rather than merely replayed.
       size at most one.  This exact two-center inequality is now an input to
       the `q=8` simultaneous `G/D` scout; its finite profile impact is not yet
       classified.
+      The sharper theorem
+      `squareOrder_card_commonDefect_add_highIncidences_le_pred_add_commonHigh`
+      retains the owner type:
+      `commonD+k(u)+k(v) ≤ q-1+|N_G(u)∩N_G(v)∩H|`.  Thus the budget is only
+      `q-1` when the unique owner is low and rises to `q` exactly for a high
+      owner; the preceding owner-free statement is a corollary.
 
     Thus the complement pairs of `D` admit a unique decomposition into a
     symmetric family of owner blocks. The next GAP is a classification or
