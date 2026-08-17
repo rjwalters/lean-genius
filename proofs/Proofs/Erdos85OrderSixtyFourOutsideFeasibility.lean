@@ -30,6 +30,8 @@ theorem orderSixtyFour_seven_components_outside_feasibility
       let B := (G.adjMatrix ℂ).toBlock p (fun x ↦ x ∈ q)
       let Cg := G.induce q
       let C := Cg.adjMatrix ℂ
+      ∃ _outsideLabel : q ≃ Fin 48,
+      Fintype.card q = 48 ∧
       (∀ x : Fin 64,
         (componentNeighborFinset G (secondOrderDefectGraph G) c x).card = 2) ∧
       (∀ z : q, Cg.degree z = 6) ∧
@@ -59,7 +61,16 @@ theorem orderSixtyFour_seven_components_outside_feasibility
     (heq_of_16 hc16).trans (heq_of_16 hc''16).symm
   subst c'
   subst c''
-  refine ⟨c, hc16, hinc, hout, ?_, hcross⟩
+  have hqcard : Fintype.card {x : Fin 64 // x ∉ c.supp} = 48 := by
+    calc
+      Fintype.card {x : Fin 64 // x ∉ c.supp} = c.suppᶜ.ncard := by
+        rw [← Nat.card_eq_fintype_card]
+        exact Nat.card_coe_set_eq c.suppᶜ
+      _ = Nat.card (Fin 64) - c.supp.ncard := Set.ncard_compl c.supp
+      _ = 48 := by simp [hc16]
+  have houtsideLabel : {x : Fin 64 // x ∉ c.supp} ≃ Fin 48 :=
+    Fintype.equivOfCardEq (by simpa using hqcard)
+  refine ⟨c, hc16, houtsideLabel, hqcard, hinc, hout, ?_, hcross⟩
   intro hC4
   obtain ⟨f, hf, hadj⟩ := hC4
   apply hfree
