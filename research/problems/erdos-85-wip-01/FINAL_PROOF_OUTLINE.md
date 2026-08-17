@@ -945,6 +945,16 @@ generalized rather than merely replayed.
      line-graph/orthogonal-double-cover structure that ordinary spectra and
      trace moments forget, and exposes the perfect-matching compatibility
      problem as the next combinatorial terminal for the all-size-two branch.
+     The promised matching statement is now itself `PROVEN` in
+     `Erdos85BinarySquareSizeTwoStarPerfectMatching`.  For a point `u` in one
+     defect coordinate `c`, index ambient vertices by the selector star at
+     `u`.  In every distinct normalized size-two coordinate `d`, their
+     `d`-selectors are pairwise disjoint two-element sets and every point of
+     `d` occurs in exactly one of them.  Thus each `c`-star becomes an actual
+     perfect matching of `d`, not merely a family of disjoint edges.  The
+     remaining all-size-two terminal is the compatibility/classification of
+     these simultaneous two-fold perfect-matching covers for at least four
+     connected-complement coordinates (at `q=8`).
      The abstract equality case is now `PROVEN` in
      `Erdos85BinarySquareEndpointRigidity`:
      `posSemidef_mul_self_eq_smul_of_upper_of_trace_sq_eq` gives
