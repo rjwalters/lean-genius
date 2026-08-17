@@ -121,6 +121,50 @@ theorem rowSumCongruence_apply_distinguished
   simp_rw [rowSumChange_mul_apply_distinguished]
   rw [Finset.sum_comm]
 
+/-- For a matrix with zero column sums, adding the all-ones matrix makes
+every non-root entry of the transformed root row equal to the order. -/
+theorem rowSumCongruence_laplacian_add_ones_root_row
+    {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
+    {r j : ι} (hrj : j ≠ r) (L : Matrix ι ι R)
+    (hcol : ∀ j, ∑ i, L i j = 0) :
+    rowSumCongruence r (L + Matrix.of (fun _ _ => (1 : R))) r j =
+      (Fintype.card ι : R) := by
+  rw [rowSumCongruence_apply_distinguished_left hrj]
+  simp only [Matrix.add_apply, Matrix.of_apply, Finset.sum_add_distrib,
+    hcol, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, zero_add]
+
+/-- The analogous transformed root column also equals the order. -/
+theorem rowSumCongruence_laplacian_add_ones_root_col
+    {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
+    {r i : ι} (hri : i ≠ r) (L : Matrix ι ι R)
+    (hrow : ∀ i, ∑ j, L i j = 0) :
+    rowSumCongruence r (L + Matrix.of (fun _ _ => (1 : R))) i r =
+      (Fintype.card ι : R) := by
+  rw [rowSumCongruence_apply_distinguished_right hri]
+  simp only [Matrix.add_apply, Matrix.of_apply, Finset.sum_add_distrib,
+    hrow, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, zero_add]
+
+/-- The transformed root diagonal is the square of the order. -/
+theorem rowSumCongruence_laplacian_add_ones_root_root
+    {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
+    (r : ι) (L : Matrix ι ι R)
+    (hrow : ∀ i, ∑ j, L i j = 0) :
+    rowSumCongruence r (L + Matrix.of (fun _ _ => (1 : R))) r r =
+      (Fintype.card ι : R) ^ 2 := by
+  rw [rowSumCongruence_apply_distinguished]
+  simp_rw [Matrix.add_apply, Matrix.of_apply, Finset.sum_add_distrib, hrow]
+  simp [pow_two]
+
+/-- The non-root block is unchanged, hence remains `L + J`. -/
+theorem rowSumCongruence_laplacian_add_ones_ne_ne
+    {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
+    {r i j : ι} (hri : i ≠ r) (hrj : j ≠ r)
+    (L : Matrix ι ι R) :
+    rowSumCongruence r (L + Matrix.of (fun _ _ => (1 : R))) i j =
+      L i j + 1 := by
+  rw [rowSumCongruence_apply_ne_ne hri hrj]
+  rfl
+
 end
 
 end Erdos85
