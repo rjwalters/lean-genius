@@ -289,6 +289,65 @@ theorem squareOrder_card_highNeighbors_inter_defectNonneighbors_eq
   change (A ∩ squareOrderDefectNonneighbors G u).card = d
   omega
 
+/-- Under the preceding hypotheses the aggregate transversal is pointwise
+perfect: the high vertex meets every branch at the low center exactly once. -/
+theorem squareOrder_card_highNeighbors_inter_defectBranch_eq_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ y : V, d ≤ G.degree y)
+    (hcard : Fintype.card V = d * d) {u v z : V}
+    (hu : G.degree u = d) (hv : G.degree v = d + 1)
+    (huv : ¬ G.Adj u v) (hzu : z ∈ G.neighborFinset u) :
+    (G.neighborFinset v ∩ squareOrderDefectBranch G u z).card = 1 := by
+  let S := G.neighborFinset u
+  let F := fun z => G.neighborFinset v ∩ squareOrderDefectBranch G u z
+  have hpair : (S : Set V).PairwiseDisjoint F := by
+    intro a ha b hb hab
+    exact (squareOrder_defectBranches_pairwise_disjoint G hfree u
+      a ha b hb hab).mono Finset.inter_subset_right Finset.inter_subset_right
+  have hunion : S.biUnion F =
+      G.neighborFinset v ∩ squareOrderDefectNonneighbors G u := by
+    rw [← squareOrder_defectBranches_biUnion_eq_nonneighbors G hfree u]
+    ext x
+    simp only [S, F, Finset.mem_biUnion, Finset.mem_inter,
+      SimpleGraph.mem_neighborFinset]
+    aesop
+  have hsum : ∑ a ∈ S, (F a).card = d := by
+    rw [← Finset.card_biUnion hpair, hunion]
+    exact squareOrder_card_highNeighbors_inter_defectNonneighbors_eq
+      G hfree hd hmin hcard hu hv huv
+  have hScard : S.card = d := by
+    dsimp [S]
+    exact hu
+  have hle : ∀ a ∈ S, (F a).card ≤ 1 := by
+    intro a ha
+    have hav : a ≠ v := by
+      have hua : G.Adj u a := by
+        simpa [S, SimpleGraph.mem_neighborFinset] using ha
+      intro h
+      subst a
+      exact huv hua
+    exact card_neighbors_inter_squareOrderDefectBranch_le_one G hfree u hav
+  have hzS : z ∈ S := hzu
+  by_contra hne
+  have hz0 : (F z).card = 0 := by
+    change (F z).card ≠ 1 at hne
+    have := hle z hzS
+    omega
+  have herase : ∑ a ∈ S.erase z, (F a).card ≤ (S.erase z).card := by
+    calc
+      ∑ a ∈ S.erase z, (F a).card ≤ ∑ _a ∈ S.erase z, 1 :=
+        Finset.sum_le_sum fun a ha => hle a (Finset.mem_of_mem_erase ha)
+      _ = (S.erase z).card := by simp
+  have hsum' : (∑ a ∈ S.erase z, (F a).card) + (F z).card = d := by
+    exact (Finset.sum_erase_add S (fun a => (F a).card) hzS).trans hsum
+  rw [hz0, add_zero] at hsum'
+  rw [Finset.card_erase_of_mem hzS, hScard] at herase
+  omega
+
 /-- At square order every owner block has size `d` or `d+1`. -/
 theorem squareOrder_card_defectOwnerBlock_eq_or_succ
     {V : Type*} [Fintype V] [DecidableEq V]
