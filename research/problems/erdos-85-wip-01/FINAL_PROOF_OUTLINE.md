@@ -154,9 +154,11 @@ generalized rather than merely replayed.
      for an even-dimensional alternating matrix killing `1`. This is a real
      uniform constraint on every binary regular core: the support of `w` has
      even `G`-neighborhood at every vertex while simultaneously satisfying the
-     defect parity equation. It is not yet a contradiction; the next A-REG
-     task is to combine this coupled proper parity set with defect components
-     or the integral/complex Gram identities.
+     defect parity equation. The decoded graph-theoretic statement is the
+     `PROVEN` theorem `binarySquare_regular_exists_coupled_parity_set`, which
+     supplies a proper nonempty set `W` with both laws pointwise. It is not yet
+     a contradiction; the next A-REG task is to combine this coupled proper
+     parity set with defect components or the integral/complex Gram identities.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
