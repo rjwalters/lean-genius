@@ -1381,7 +1381,16 @@ generalized rather than merely replayed.
 
      Thus propagation has been reduced to adjacent-codegrees in the
      7-regular sixteen-vertex defect component, with no remaining matrix-to-
-     combinatorics interface gap.
+     combinatorics interface gap.  The source-common summand is not an
+     arbitrary `2+λ`-edge subgraph: `PROVEN` in
+     `Erdos85BinarySquareCenterGridComplement`, it is a matching between the
+     two eight-center root neighborhoods (both coordinate projections are
+     injective).  The proof uses the size-two source selector to make the
+     source witness unique and then `C₄`-freeness to make the opposite center
+     unique.  In particular it has at most eight edges.  The fourth 2-factor
+     is therefore decomposed into a matching of size `2+λ` and a residual
+     defect-edge graph of size `14-λ`; propagation must preserve this much
+     sharper matching/residual structure.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

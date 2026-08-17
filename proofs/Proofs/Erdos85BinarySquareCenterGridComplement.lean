@@ -329,6 +329,154 @@ theorem orderSixtyFour_sourceCommon_add_defect_centerPairs_card_eq_sixteen
         G hfree d x.1 y.1)] at hcard
   exact hcard
 
+/-- The source-common part of the fourth factor is left-unique: it is the
+graph of a partial function on the first center neighborhood. -/
+theorem binarySquare_sizeTwo_sourceCommonCenterPairs_left_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d : (secondOrderDefectGraph G).ConnectedComponent}
+    (hdTwo : ∀ u : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) d u).card = 2)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    {p q : V × V}
+    (hp : p ∈ crossRootSourceCommonCenterPairs G d x.1 y.1)
+    (hq : q ∈ crossRootSourceCommonCenterPairs G d x.1 y.1)
+    (hfirst : p.1 = q.1) : p = q := by
+  classical
+  obtain ⟨hpgrid, w, hpw⟩ := Finset.mem_filter.mp hp
+  obtain ⟨hqgrid, z, hqz⟩ := Finset.mem_filter.mp hq
+  have hpgrid' := hpgrid
+  have hqgrid' := hqgrid
+  rw [crossRootCenterGrid, Finset.mem_product] at hpgrid' hqgrid'
+  have hxy : x.1 ≠ y.1 := (secondOrderDefectGraph G).ne_of_adj hxyD
+  have hwx : w.1 ≠ x.1 := by
+    intro hwx
+    have hyv : G.Adj y.1 p.2 := (G.mem_neighborFinset y.1 p.2).mp hpgrid'.2
+    have hxv : G.Adj x.1 p.2 := by simpa [hwx] using hpw.2.symm
+    exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
+      hxv hyv) hxyD
+  have hzx : z.1 ≠ x.1 := by
+    intro hzx
+    have hyv : G.Adj y.1 q.2 := (G.mem_neighborFinset y.1 q.2).mp hqgrid'.2
+    have hxv : G.Adj x.1 q.2 := by simpa [hzx] using hqz.2.symm
+    exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
+      hxv hyv) hxyD
+  have hwz : w.1 = z.1 := by
+    by_contra hwz
+    let S := componentNeighborFinset G (secondOrderDefectGraph G) d p.1
+    have hxS : x.1 ∈ S := by
+      dsimp [S]
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset p.1 x.1).mpr
+        ((G.mem_neighborFinset x.1 p.1).mp hpgrid'.1).symm,
+        (ConnectedComponent.mem_supp_iff d x.1).mp x.2⟩
+    have hwS : w.1 ∈ S := by
+      dsimp [S]
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset p.1 w.1).mpr hpw.1,
+        (ConnectedComponent.mem_supp_iff d w.1).mp w.2⟩
+    have hzS : z.1 ∈ S := by
+      dsimp [S]
+      rw [componentNeighborFinset, Finset.mem_filter]
+      exact ⟨(G.mem_neighborFinset p.1 z.1).mpr (hfirst ▸ hqz.1),
+        (ConnectedComponent.mem_supp_iff d z.1).mp z.2⟩
+    have hthree : ({x.1, w.1, z.1} : Finset V).card = 3 := by
+      have hxw : x.1 ≠ w.1 := hwx.symm
+      have hxz : x.1 ≠ z.1 := hzx.symm
+      rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+        Finset.card_singleton]
+      · simpa only [Finset.mem_singleton] using hwz
+      · simpa only [Finset.mem_insert, Finset.mem_singleton, not_or] using
+          And.intro hxw hxz
+    have hsub : ({x.1, w.1, z.1} : Finset V) ⊆ S := by
+      simp only [Finset.insert_subset_iff, Finset.singleton_subset_iff]
+      exact ⟨hxS, hwS, hzS⟩
+    have := Finset.card_le_card hsub
+    rw [hthree, hdTwo p.1] at this
+    omega
+  apply Prod.ext hfirst
+  by_contra hsecond
+  have hyw : y.1 ≠ w.1 := by
+    intro hyw
+    have hxu : G.Adj x.1 p.1 := (G.mem_neighborFinset x.1 p.1).mp hpgrid'.1
+    have hyu : G.Adj y.1 p.1 := by simpa [hyw] using hpw.1.symm
+    exact (not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
+      hxu hyu) hxyD
+  apply hfree
+  exact containsC4_of_two_common hyw hsecond
+    ((G.mem_neighborFinset y.1 p.2).mp hpgrid'.2).symm hpw.2
+    ((G.mem_neighborFinset y.1 q.2).mp hqgrid'.2).symm
+    (by simpa [hwz] using hqz.2)
+
+/-- The same source-common factor is right-unique, hence is a matching. -/
+theorem binarySquare_sizeTwo_sourceCommonCenterPairs_right_unique
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d : (secondOrderDefectGraph G).ConnectedComponent}
+    (hdTwo : ∀ u : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) d u).card = 2)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1)
+    {p q : V × V}
+    (hp : p ∈ crossRootSourceCommonCenterPairs G d x.1 y.1)
+    (hq : q ∈ crossRootSourceCommonCenterPairs G d x.1 y.1)
+    (hsecond : p.2 = q.2) : p = q := by
+  classical
+  have swap_mem {r : V × V}
+      (hr : r ∈ crossRootSourceCommonCenterPairs G d x.1 y.1) :
+      r.swap ∈ crossRootSourceCommonCenterPairs G d y.1 x.1 := by
+    obtain ⟨hrgrid, w, hrw⟩ := Finset.mem_filter.mp hr
+    rw [crossRootCenterGrid, Finset.mem_product] at hrgrid
+    apply Finset.mem_filter.mpr
+    refine ⟨?_, ⟨w, hrw.2, hrw.1⟩⟩
+    rw [crossRootCenterGrid, Finset.mem_product]
+    exact ⟨hrgrid.2, hrgrid.1⟩
+  have hswap := binarySquare_sizeTwo_sourceCommonCenterPairs_left_unique
+    G hfree hdTwo y x hxyD.symm (swap_mem hp) (swap_mem hq) hsecond
+  exact Prod.swap_injective hswap
+
+/-- Consequently the source-common portion has cardinality at most the
+ambient degree of either root. -/
+theorem binarySquare_sizeTwo_sourceCommonCenterPairs_card_le_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {d : (secondOrderDefectGraph G).ConnectedComponent}
+    (hdTwo : ∀ u : V,
+      (componentNeighborFinset G (secondOrderDefectGraph G) d u).card = 2)
+    (x y : d.supp)
+    (hxyD : (secondOrderDefectGraph G).Adj x.1 y.1) :
+    (crossRootSourceCommonCenterPairs G d x.1 y.1).card ≤ G.degree x.1 := by
+  let S := crossRootSourceCommonCenterPairs G d x.1 y.1
+  have hinj : Set.InjOn Prod.fst (↑S : Set (V × V)) := by
+    intro p hp q hq hpq
+    exact binarySquare_sizeTwo_sourceCommonCenterPairs_left_unique
+      G hfree hdTwo x y hxyD hp hq hpq
+  have himage : S.image Prod.fst ⊆ G.neighborFinset x.1 := by
+    intro u hu
+    obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp hu
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).1
+  calc
+    S.card = (S.image Prod.fst).card :=
+      (Finset.card_image_of_injOn hinj).symm
+    _ ≤ (G.neighborFinset x.1).card := Finset.card_le_card himage
+    _ = G.degree x.1 := G.card_neighborFinset_eq_degree x.1
+
 end
 
 end Erdos85
