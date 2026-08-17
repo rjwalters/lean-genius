@@ -226,3 +226,64 @@ Promising consumers are:
    selector-disjointness representation into (1).
 
 This is now the highest-level open node in Track A.
+
+## 7. Triangle inventory and its exact limitation
+
+The first trace-cube calculation can be completed in closed form.  Write
+`T(H)` for the number of (unoriented) triangles of a simple graph `H`, and
+put `n=q^2`.  If `D_c` is the defect graph induced on a component of size
+`q m_c`, then transport of the nonprincipal `D_c` eigenvalues through
+`O_c=M_c-m_cI` gives
+
+```text
+T(O_c) =
+  m_c q(q-1)(m_c^2 q - 3m_c q + q^2 + q - 2) / 6 - T(D_c).       (8)
+```
+
+OWNER-CROSS also determines every mixed-color triangle count.  For distinct
+coordinates `c,d,e`,
+
+```text
+#(triangles with two c-edges and one d-edge)
+  = q^2 m_c m_d (q-1)(m_c-1) / 2,                               (9)
+
+#(triangles with one edge in each of c,d,e)
+  = q^2 m_c m_d m_e (q-1).                                      (10)
+```
+
+Indeed, (9) is `tr(O_c^2 O_d)/2`; multiply (1') by `O_c` and use
+`tr(O_cO_d)=0`, edge-disjointness, and regularity.  Equation (10) is
+`tr(O_cO_dO_e)`; on an `e`-owned edge the mixed-walk entry in (1') is
+`m_cm_d`.
+
+For binary `q>=8`, the polynomial term in (8) is divisible by `8`.  To see
+this, `q` supplies a factor `8`; the remaining product supplies a factor `2`
+because either `m_c` is even or the parenthesis is even, and supplies a
+factor `3` by considering `q mod 3`.  Consequently
+
+```text
+T(O_c) = -T(D_c)  (mod 8).                                      (11)
+```
+
+This congruence does **not** close A-REG.  The mixed counts (9)-(10) vanish
+modulo `8`, so summing (11) merely recovers the standard complement-triangle
+identity for the `(q-1)`-regular graph `D`; its constant term is itself
+divisible by `8` (in fact by a substantially larger power of two).  Thus raw
+triangle totals, like raw real spectra, are transport rather than a terminal.
+
+There is, however, a sharper graph-specific normal form when `m_c=2`.
+The proved selector equivalence identifies ambient vertices with the edges of
+`H_c := complement(D_c)`.  Under this bijection, `O_c` is exactly the line
+graph `L(H_c)`: two selectors are owner-adjacent precisely when the
+corresponding two edges intersect.  Hence
+
+```text
+T(O_c) = 2q * choose(q,3) + T(H_c).                              (12)
+```
+
+Substitution into (8) is again an identity, using the complement-triangle
+formula for `D_c` and `H_c`; triangle *counts* alone lose the selector data.
+The useful next object is therefore the full line-graph identification (or
+its Hadamard adjacency identity), combined across two different size-two
+coordinates.  Cross-coordinate compatibility is information absent from
+each individual spectrum and from (8).
