@@ -134,6 +134,54 @@ def r_base_model(h: np.ndarray):
     return pairs, rows, lo, hi
 
 
+def make_r_solver(h: np.ndarray):
+    """Build the exact commuting/separated R model in Z3."""
+    pairs = list(combinations(range(16), 2))
+    index = {p: i for i, p in enumerate(pairs)}
+    rvars = [z3.Bool(f"r_{u}_{v}") for u, v in pairs]
+
+    def var(u: int, v: int):
+        if u == v:
+            return z3.BoolVal(False)
+        return rvars[index[tuple(sorted((u, v)))]]
+
+    solver = z3.Solver()
+    for u in range(16):
+        solver.add(z3.PbEq([(var(u, v), 1)
+                            for v in range(16) if v != u], 6))
+    for u in range(16):
+        for v in range(16):
+            lhs = z3.Sum([z3.If(var(k, v), 1, 0)
+                          for k in range(16) if h[u, k]])
+            rhs = z3.Sum([z3.If(var(u, k), 1, 0)
+                          for k in range(16) if h[k, v]])
+            solver.add(lhs == rhs)
+    h2 = h @ h
+    for u, v in pairs:
+        if h2[u, v] > 0:
+            solver.add(z3.Not(var(u, v)))
+    unseen = set(range(16))
+    while unseen:
+        root = next(iter(unseen))
+        component = {root}
+        frontier = [root]
+        unseen.remove(root)
+        while frontier:
+            u = frontier.pop()
+            for v in np.flatnonzero(h[u]):
+                v = int(v)
+                if v in unseen:
+                    unseen.remove(v)
+                    component.add(v)
+                    frontier.append(v)
+        hedges = [(u, v) for u, v in pairs
+                  if u in component and v in component and h[u, v]]
+        anchor = var(*hedges[0])
+        for edge in hedges[1:]:
+            solver.add(var(*edge) == anchor)
+    return pairs, rvars, solver
+
+
 def c_feasible(h: np.ndarray, redges: list[tuple[int, int]]):
     assert len(redges) == 48
     incidence = np.zeros((16, 48), dtype=int)
@@ -238,24 +286,52 @@ def emit_c_cnf(h: np.ndarray, redges: list[tuple[int, int]], path: Path):
     return len(allowed), len(clauses)
 
 
+def emit_r_completeness_cnf(h: np.ndarray, models: list[np.ndarray], path: Path):
+    """Assert the complete R ledger while excluding the supplied models."""
+    pairs, rows, lower, upper = r_base_model(h)
+    clauses: list[list[int]] = []
+    for row, lo, hi in zip(rows, lower, upper):
+        keys = sorted(row)
+        for mask in range(1 << len(keys)):
+            value = sum(row[key] for i, key in enumerate(keys)
+                        if mask & (1 << i))
+            if lo <= value <= hi:
+                continue
+            clauses.append([
+                -(key + 1) if mask & (1 << i) else key + 1
+                for i, key in enumerate(keys)
+            ])
+    for bits in models:
+        clauses.append([-(i + 1) if bit else i + 1
+                        for i, bit in enumerate(bits)])
+    with path.open("w") as out:
+        out.write(f"p cnf {len(pairs)} {len(clauses)}\n")
+        for clause in clauses:
+            out.write(" ".join(map(str, clause)) + " 0\n")
+    return len(pairs), len(clauses)
+
+
 def classify(parts: list[int], limit: int, show_witness: bool,
-             emit_cnf_dir: Path | None = None):
+             emit_cnf_dir: Path | None = None,
+             emit_r_completeness: Path | None = None):
     h = cycle_adjacency(parts)
-    pairs, base_rows, base_lo, base_hi = r_base_model(h)
-    nogood_rows: list[dict[int, int]] = []
-    nogood_lo: list[int] = []
-    nogood_hi: list[int] = []
+    pairs, rvars, rsolver = make_r_solver(h)
     tested = 0
     c_alive = 0
     c_unknown = 0
+    models: list[np.ndarray] = []
     while tested < limit:
-        result = solve_binary(
-            len(pairs), base_rows + nogood_rows,
-            base_lo + nogood_lo, base_hi + nogood_hi,
-        )
-        if not result.success:
-            return tested, c_alive, c_unknown, result.status == 2
-        bits = np.rint(result.x).astype(int)
+        result = rsolver.check()
+        if result != z3.sat:
+            exhausted = result == z3.unsat
+            if exhausted and emit_r_completeness is not None:
+                emit_r_completeness.parent.mkdir(parents=True, exist_ok=True)
+                emit_r_completeness_cnf(h, models, emit_r_completeness)
+            return tested, c_alive, c_unknown, exhausted
+        model = rsolver.model()
+        bits = np.array([1 if z3.is_true(model.eval(x)) else 0
+                         for x in rvars])
+        models.append(bits)
         redges = [pairs[i] for i, bit in enumerate(bits) if bit]
         if emit_cnf_dir is not None:
             emit_cnf_dir.mkdir(parents=True, exist_ok=True)
@@ -276,13 +352,8 @@ def classify(parts: list[int], limit: int, show_witness: bool,
             print(f"R#{tested}: C4-DEAD allowed={allowed_count} "
                   f"c4_terms={c4terms}{detail}", flush=True)
 
-        ones = [i for i, bit in enumerate(bits) if bit]
-        zeros = [i for i, bit in enumerate(bits) if not bit]
-        row = {i: 1 for i in ones}
-        row.update({i: -1 for i in zeros})
-        nogood_rows.append(row)
-        nogood_lo.append(-len(zeros))
-        nogood_hi.append(len(ones) - 1)
+        rsolver.add(z3.Or(*[x != bool(bit)
+                            for x, bit in zip(rvars, bits)]))
     return tested, c_alive, c_unknown, False
 
 
@@ -292,12 +363,14 @@ def main():
     parser.add_argument("--limit", type=int, default=10000)
     parser.add_argument("--show-witness", action="store_true")
     parser.add_argument("--emit-cnf-dir", type=Path)
+    parser.add_argument("--emit-r-completeness-cnf", type=Path)
     args = parser.parse_args()
     names = PARTITIONS if args.partition == "all" else {args.partition: PARTITIONS[args.partition]}
     for name, parts in names.items():
         print(f"=== {name} ===", flush=True)
         tested, alive, unknown, exhausted = classify(
-            parts, args.limit, args.show_witness, args.emit_cnf_dir)
+            parts, args.limit, args.show_witness, args.emit_cnf_dir,
+            args.emit_r_completeness_cnf)
         print(f"SUMMARY {name}: R_tested={tested} C_alive={alive} "
               f"C_unknown={unknown} "
               f"R_exhausted={exhausted}", flush=True)
