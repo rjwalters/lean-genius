@@ -509,7 +509,30 @@ generalized rather than merely replayed.
      and `binarySquare_regular_componentOwnerGraph_shifted_quadratic_eq_zero_iff`
      proves that equality holds exactly when `(Av)_z=0` throughout component
      `c`.  Thus any extra `-m_c` eigendirection is forced into a concrete
-     componentwise adjacency-kernel condition.
+     componentwise adjacency-kernel condition.  The whole quotient equality
+     space has now been lifted integrally.  For coefficients `a_e`, define
+     `v(x)=a_[x]_D`; `defectComponentLinearCombinationInt_apply` verifies this
+     pointwise description, while
+     `binarySquare_regular_adj_mulVec_defectComponentLinearCombinationInt`
+     proves
+
+     ```text
+     Av = (sum_e Q(e0,e) a_e) 1.
+     ```
+
+     Hence every weighted-zero assignment lies in `ker A`, and the `PROVEN`
+     theorem
+     `binarySquare_regular_componentOwnerGraph_mulVec_linearCombinationInt`
+     makes it a simultaneous eigenvector
+
+     ```text
+     Adj(Owner(c)) v = -m_c v
+     ```
+
+     for every color `c`.  Because the component-constant lift is injective,
+     this supplies the expected `(number of D-components)-1` dimensional
+     common bottom eigenspace (the dimension statement itself remains to be
+     packaged over a field).
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give

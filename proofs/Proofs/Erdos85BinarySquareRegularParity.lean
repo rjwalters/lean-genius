@@ -2586,6 +2586,140 @@ theorem binarySquare_regular_componentNeighborCard_eq_quotient
     G hfree hq hreg hcard e₀ c
   exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (hlocal.trans href.symm)
 
+/-- Integral indicator of one defect component. -/
+def defectComponentIndicatorInt
+    {V : Type*} (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) : V → ℤ :=
+  fun x => if D.connectedComponentMk x = c then 1 else 0
+
+/-- The ambient adjacency matrix sends an integral defect-component indicator
+to the constant vector given by the common component quotient entry. -/
+theorem binarySquare_regular_adj_mulVec_defectComponentIndicatorInt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c : (secondOrderDefectGraph G).ConnectedComponent) :
+    (G.adjMatrix ℤ).mulVec
+        (defectComponentIndicatorInt (secondOrderDefectGraph G) c) =
+      fun _ => (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c : ℤ) := by
+  funext x
+  rw [Matrix.mulVec, dotProduct]
+  simp only [SimpleGraph.adjMatrix_apply, defectComponentIndicatorInt,
+    ite_mul, one_mul, zero_mul]
+  rw [← Finset.sum_filter]
+  have hfilt : Finset.univ.filter (fun y => G.Adj x y) =
+      G.neighborFinset x := by
+    ext y
+    simp [SimpleGraph.mem_neighborFinset]
+  rw [hfilt]
+  calc
+    (∑ y ∈ G.neighborFinset x,
+        if (secondOrderDefectGraph G).connectedComponentMk y = c
+          then (1 : ℤ) else 0) =
+        ((componentNeighborFinset G (secondOrderDefectGraph G) c x).card : ℤ) := by
+      rw [Finset.sum_boole]
+      congr 2
+    _ = (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c : ℤ) := by
+      exact congrArg (fun n : ℕ => (n : ℤ))
+        (binarySquare_regular_componentNeighborCard_eq_quotient
+          G hfree hq hreg hcard e₀ c x)
+
+/-- Integral vector obtained by assigning one coefficient to each defect
+component and extending it constantly across that component. -/
+def defectComponentLinearCombinationInt
+    {V : Type*} (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent] (a : D.ConnectedComponent → ℤ) : V → ℤ :=
+  ∑ c, a c • defectComponentIndicatorInt D c
+
+@[simp] theorem defectComponentLinearCombinationInt_apply
+    {V : Type*} (D : SimpleGraph V) [Fintype D.ConnectedComponent]
+    [DecidableEq D.ConnectedComponent] (a : D.ConnectedComponent → ℤ) (x : V) :
+    defectComponentLinearCombinationInt D a x = a (D.connectedComponentMk x) := by
+  simp [defectComponentLinearCombinationInt, defectComponentIndicatorInt]
+
+/-- Exact ambient adjacency action on component-constant integral vectors. -/
+theorem binarySquare_regular_adj_mulVec_defectComponentLinearCombinationInt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (a : (secondOrderDefectGraph G).ConnectedComponent → ℤ) :
+    (G.adjMatrix ℤ).mulVec
+        (defectComponentLinearCombinationInt (secondOrderDefectGraph G) a) =
+      fun _ => ∑ c, (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c : ℤ) *
+        a c := by
+  rw [defectComponentLinearCombinationInt, Matrix.mulVec_sum]
+  simp_rw [Matrix.mulVec_smul,
+    binarySquare_regular_adj_mulVec_defectComponentIndicatorInt
+      G hfree hq hreg hcard e₀]
+  funext x
+  simp [mul_comm]
+
+/-- Weighted-zero component coefficients give an integral ambient adjacency
+kernel vector. -/
+theorem binarySquare_regular_defectComponentLinearCombinationInt_mem_kernel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ : (secondOrderDefectGraph G).ConnectedComponent)
+    (a : (secondOrderDefectGraph G).ConnectedComponent → ℤ)
+    (ha : ∑ c, (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c : ℤ) *
+      a c = 0) :
+    (G.adjMatrix ℤ).mulVec
+        (defectComponentLinearCombinationInt (secondOrderDefectGraph G) a) = 0 := by
+  rw [binarySquare_regular_adj_mulVec_defectComponentLinearCombinationInt
+    G hfree hq hreg hcard e₀ a, ha]
+  rfl
+
+/-- Every weighted-zero component-constant vector is simultaneously a
+`-m_c` eigenvector of the owner color belonging to `c`. -/
+theorem binarySquare_regular_componentOwnerGraph_mulVec_linearCombinationInt
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c)
+    (a : (secondOrderDefectGraph G).ConnectedComponent → ℤ)
+    (ha : ∑ d, (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ d : ℤ) *
+      a d = 0) :
+    ((componentOwnerGraph G (secondOrderDefectGraph G) c).adjMatrix ℤ).mulVec
+        (defectComponentLinearCombinationInt (secondOrderDefectGraph G) a) =
+      (-(m_c : ℤ)) •
+        defectComponentLinearCombinationInt (secondOrderDefectGraph G) a := by
+  let v := defectComponentLinearCombinationInt (secondOrderDefectGraph G) a
+  have hker : (G.adjMatrix ℤ).mulVec v = 0 :=
+    binarySquare_regular_defectComponentLinearCombinationInt_mem_kernel
+      G hfree hq hreg hcard e₀ a ha
+  rw [binarySquare_regular_componentOwnerGraph_adjMatrix_eq
+    G hfree hq hreg hcard c hc, Matrix.sub_mulVec,
+    ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hker, Matrix.mulVec_zero,
+    Matrix.smul_mulVec, Matrix.one_mulVec]
+  simp
+
 /-- Characteristic-two indicator of one defect component. -/
 def defectComponentIndicatorZModTwo
     {V : Type*} (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
