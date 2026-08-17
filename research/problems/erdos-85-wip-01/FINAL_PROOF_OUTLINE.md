@@ -1255,9 +1255,17 @@ generalized rather than merely replayed.
      components.  The five fiber cardinalities sum to `56` at every root,
      and the local fiber is the earlier size-at-most-four finset.  Therefore
      one of the four nonlocal patterns occurs at least `13` times at every
-     root.  The remaining gap is to bound the first three nonlocal patterns
-     sharply enough that the all-three-distinct pattern is forced, then turn
-     that pattern into an incompatible routing/incidence constraint.
+     root.  `Erdos85BinarySquareMixedOwnerRootedPatternBounds` begins the
+     sharp pattern analysis.  It proves that an edge of a third owner color
+     has exactly four two-step middle vertices in any prescribed ordered pair
+     of the other distinct colors.  Combining this with the local degree-two
+     owner factors bounds each “only one vertex leaves” pattern by `8`.
+     Hence at every root either the “both leave together” pattern or the
+     all-three-distinct pattern has size at least `18`.  The next quantitative
+     leaf is the expected bound `both-leave-together ≤ 24`, obtained from the
+     three external components, four first-color neighbors into each, and two
+     second-color neighbors inside it; after that, the incidence structure of
+     the two surviving large patterns must be compared with the routing array.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
