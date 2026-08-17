@@ -204,7 +204,20 @@ generalized rather than merely replayed.
     below-energy vertex has a defect neighbor of strictly larger incidence,
     while an above-energy vertex has one of strictly smaller incidence. Thus
     the remaining open subbranch is specifically a heterogeneous component
-    supporting this forced ascent/descent system.
+    supporting this forced ascent/descent system. The global low sector also
+    has the exact third-moment/Dirichlet budget
+
+    ```text
+    Σ_x Σ_{y~_D x}(k(x)-k(y))²
+      = 2(h(q²-h)-Σ_x k(x)³),
+    hence Σ_x k(x)³ ≤ h(q²-h).
+    ```
+
+    These are `squareOrder_lowIncidence_orientedDirichlet_eq_thirdMomentSlack`
+    and `squareOrder_sum_low_highIncidence_cube_le`. This identity measures
+    heterogeneous variation exactly, but does not by itself exclude the raw
+    `q=8` moment profiles; it must be coupled to an additional spectral, Gram,
+    or component-structure bound.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
