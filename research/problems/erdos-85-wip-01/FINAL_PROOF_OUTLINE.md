@@ -1203,6 +1203,19 @@ generalized rather than merely replayed.
      canonical common neighbor is invariant under endpoint reversal and that
      reversing the direct edge leaves the rainbow-excess finset through a
      fixed third component literally equal (hence with the same cardinality).
+     A global numerical budget for this geometry is `PROVEN` in
+     `Erdos85BinarySquareMixedOwnerCubicTrace`.  The shifted rank-one product
+     of two distinct owner matrices implies, for three pairwise-distinct
+     owner coordinates of normalized sizes `m_a,m_b,m_c`,
+
+     ```text
+     trace(O_a O_b O_c) = q²(q-1)m_a m_b m_c.
+     ```
+
+     Hence in the order-64 all-two branch every ordered triple of distinct
+     owner colors has mixed cubic trace exactly `3584`.  The remaining work
+     can therefore compare the component-local routing-rainbow census against
+     a fixed global exactly-colored triangle count.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
