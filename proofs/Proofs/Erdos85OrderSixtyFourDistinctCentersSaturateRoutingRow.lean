@@ -72,10 +72,15 @@ theorem orderSixtyFour_twoClosingRoutes_distinctCenters_union_eq_row
       (restrictedOwner_adj_iff_crossNeighbor_inter_nonempty G c e u₁ u₂).mp hadj
     have hdisjoint :=
       componentCrossNeighborFinset_disjoint_of_distinct_sharedNeighbor_outside
-        G hfree u₁ u₂
+        G hfree (source := c) (target := e) u₁ u₂
           (fun h => hcenters (congrArg Subtype.val h))
           (crossCommonNeighbor_spec G hfree hdf₁ x z₁).1.symm
-          (crossCommonNeighbor_spec G hfree hdf₂ x z₂).1.symm hde
+          (crossCommonNeighbor_spec G hfree hdf₂ x z₂).1.symm
+          (by
+            intro h
+            apply hde
+            have hxcomp := (ConnectedComponent.mem_supp_iff d x.1).mp x.2
+            exact hxcomp.symm.trans h)
     have hempty : componentCrossNeighborFinset G e u₁ ∩
         componentCrossNeighborFinset G e u₂ = ∅ := by
       exact Finset.disjoint_iff_inter_eq_empty.mp hdisjoint
