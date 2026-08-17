@@ -131,6 +131,93 @@ theorem defectIncidence_orientedDirichlet_eq_thirdMomentSlack
   push_cast
   ring
 
+/-- The global square-order low sector satisfies the exact incidence
+Dirichlet/third-moment identity. -/
+theorem squareOrder_lowIncidence_orientedDirichlet_eq_thirdMomentSlack
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) :
+    let H := squareOrderHighVertices G d
+    let L := (Finset.univ : Finset V) \ H
+    let D := secondOrderDefectGraph G
+    let k := squareOrderHighIncidenceCount G d
+    let h := H.card
+    (∑ x ∈ L, ∑ y ∈ D.neighborFinset x,
+        ((k x : ℤ) - k y) ^ 2) =
+      2 * ((h : ℤ) * ((d : ℤ) ^ 2 - h) -
+        ∑ x ∈ L, (k x : ℤ) ^ 3) := by
+  classical
+  let H := squareOrderHighVertices G d
+  let L := (Finset.univ : Finset V) \ H
+  let D := secondOrderDefectGraph G
+  let k := squareOrderHighIncidenceCount G d
+  let h := H.card
+  dsimp only
+  have hSlow : ∀ x ∈ L, G.degree x = d := by
+    intro x hxL
+    have hxnot : x ∉ H := (Finset.mem_sdiff.mp hxL).2
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree hd hmin hcover hcard x with hx | hx
+    · exact hx
+    · exact (hxnot (Finset.mem_filter.mpr ⟨by simp, hx⟩)).elim
+  have hclosed : ∀ ⦃x y : V⦄, x ∈ L → D.Adj x y → y ∈ L := by
+    intro x y hxL hxy
+    refine Finset.mem_sdiff.mpr ⟨Finset.mem_univ y, ?_⟩
+    intro hyH
+    have hyHigh : G.degree y = d + 1 := (Finset.mem_filter.mp hyH).2
+    have hydeg0 : D.degree y = 0 :=
+      (squareOrder_degree_succ_highRoot_structure
+        G hfree hd hmin hcard hyHigh).1
+    have hyempty : D.neighborFinset y = ∅ := by
+      apply Finset.card_eq_zero.mp
+      simpa [D.card_neighborFinset_eq_degree] using hydeg0
+    have hxyN : x ∈ D.neighborFinset y := by
+      simpa [SimpleGraph.mem_neighborFinset, D.adj_comm] using hxy
+    rw [hyempty] at hxyN
+    exact Finset.notMem_empty x hxyN
+  have hpoint : ∀ x ∈ L,
+      (∑ y ∈ D.neighborFinset x, k y) + k x = h := by
+    intro x hxL
+    exact squareOrder_sum_highIncidence_over_defectNeighbors_add_self
+      G hfree hd hmin hcard (hSlow x hxL)
+  have hdegree : ∀ x ∈ L, D.degree x + k x = d - 1 := by
+    intro x hxL
+    exact squareOrder_defectDegree_add_highIncidence_eq_pred
+      G hfree hd hmin hcover hcard (hSlow x hxL)
+  have hkzero : ∀ x ∈ H, k x = 0 := by
+    intro x hxH
+    simpa [k, H, squareOrderHighIncidenceCount] using
+      squareOrder_highNeighborCount_eq_zero_of_high G hcover hxH
+  have hfirstAll : (∑ x : V, k x) = (d + 1) * h := by
+    simpa [k, h, H, squareOrderHighIncidenceCount] using
+      squareOrder_sum_highNeighborCount_eq G d
+  have hsecondAll : (∑ x : V, (k x) ^ 2) = h * (h + d) := by
+    simpa [k, h, H, squareOrderHighIncidenceCount] using
+      squareOrder_sum_highNeighborCount_sq_eq
+        G hfree hd hmin hcover hcard
+  have hfirstSplit := Finset.sum_sdiff
+    (show H ⊆ (Finset.univ : Finset V) by simp) (f := k)
+  have hsecondSplit := Finset.sum_sdiff
+    (show H ⊆ (Finset.univ : Finset V) by simp) (f := fun x => (k x) ^ 2)
+  have hfirst : (∑ x ∈ L, k x) = (d + 1) * h := by
+    have hz : (∑ x ∈ H, k x) = 0 := Finset.sum_eq_zero hkzero
+    rw [hz, add_zero] at hfirstSplit
+    simpa [L] using hfirstSplit.trans hfirstAll
+  have hsecond : (∑ x ∈ L, (k x) ^ 2) = h * (h + d) := by
+    have hz : (∑ x ∈ H, (k x) ^ 2) = 0 := by
+      apply Finset.sum_eq_zero
+      intro x hxH
+      simp [hkzero x hxH]
+    rw [hz, add_zero] at hsecondSplit
+    simpa [L] using hsecondSplit.trans hsecondAll
+  exact defectIncidence_orientedDirichlet_eq_thirdMomentSlack
+    D L k d h (by omega) hclosed hpoint hdegree hfirst hsecond
+
 end
 
 end Erdos85
