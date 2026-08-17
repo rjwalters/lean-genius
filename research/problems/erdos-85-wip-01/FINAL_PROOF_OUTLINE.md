@@ -200,6 +200,36 @@ generalized rather than merely replayed.
      must return to integral/complex Gram structure or a stronger
      characteristic-two invariant than ordinary factor multiplicity.
 
+     The first return to the integral component quotient is now `PROVEN` and
+     uniform.  `sum_componentNeighborCard_mul_eq_sum_ncard_mul_of_regular_comm`
+     groups component-neighbor products for any regular commuting defect
+     partition, while
+     `sum_ncard_mul_componentQuotient_eq_of_ne_of_regular_comm` applies the
+     C4-free cross-pair law.  Its square-order specialization
+     `binarySquare_regular_componentQuotient_weightedGram_offDiagonal` gives,
+     for distinct defect components `c,c'`,
+
+     ```text
+     sum_e |e| Q(e,c) Q(e,c') = |c| |c'|.
+     ```
+
+     This is graph-specific information unavailable from the component
+     characteristic polynomials alone.  The next precise `GAP A-REG-GRAM` is
+     to formalize the diagonal equality.  The expected calculation uses
+     detailed balance and `A^2=(q-1)I+J-D`: since `D` has degree `q-1`, it
+     predicts
+
+     ```text
+     sum_e |e| Q(e,c)^2 = |c|^2.
+     ```
+
+     Together with the proved off-diagonal identities this would make the
+     full weighted Gram matrix rank one.  Positivity would then force all
+     quotient columns to be proportional; the row sum and detailed balance
+     predict the integral formula `Q(e,c)=|c|/q`, and hence `q divides |c|`
+     for every defect component.  These consequences remain `GAP`, not
+     claimed theorems, until the diagonal/rank-one consumer is checked.
+
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
      quotient arguments kill eight, and R-classification plus exhaustive

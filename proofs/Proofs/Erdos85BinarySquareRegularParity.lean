@@ -2,6 +2,8 @@ import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85AdjacencyCharpolySquareModTwo
 import Proofs.Erdos85ComponentFactorization
 import Proofs.Erdos85ComponentLocalObstruction
+import Proofs.Erdos85QuotientGramIdentity
+import Proofs.Erdos85ExcessEigenspace
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -279,5 +281,44 @@ theorem binarySquare_regular_defectComponent_charpoly_isSquare_zmodTwo
   apply adjMatrix_charpoly_isSquare_zmodTwo
   exact binarySquare_regular_defectComponent_card_even
     G hfree hq heven hreg hcard c
+
+/-- **Uniform binary-square weighted quotient Gram identity.**  In a regular
+square-order candidate, the defect graph has degree `q-1` and commutes with
+the ambient adjacency operator.  Therefore distinct defect components `c,c'`
+satisfy the exact weighted quotient inner-product law below. -/
+theorem binarySquare_regular_componentQuotient_weightedGram_offDiagonal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c c' : (secondOrderDefectGraph G).ConnectedComponent) (hne : c ≠ c') :
+    (∑ e : (secondOrderDefectGraph G).ConnectedComponent,
+        e.supp.ncard *
+          (componentQuotientMatrix G (secondOrderDefectGraph G) e c *
+            componentQuotientMatrix G (secondOrderDefectGraph G) e c')) =
+      c.supp.ncard * c'.supp.ncard := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ x : V,
+      (secondOrderDefectGraph G).degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change (secondOrderDefectGraph G).degree x = (q - 3) + 2 at h
+    omega
+  have hcomm : G.adjMatrix ℝ * (secondOrderDefectGraph G).adjMatrix ℝ =
+      (secondOrderDefectGraph G).adjMatrix ℝ * G.adjMatrix ℝ :=
+    adjMatrix_comm_secondOrderDefect_of_regular_field G hfree hreg
+  exact sum_ncard_mul_componentQuotient_eq_of_ne_of_regular_comm
+    G hfree hDdegree hcomm c c' hne
 
 end Erdos85
