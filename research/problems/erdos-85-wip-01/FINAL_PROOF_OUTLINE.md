@@ -1164,6 +1164,14 @@ generalized rather than merely replayed.
      Thus every colored endpoint edge extends through every third coordinate
      to at least two monochromatic routing triangles.  This rules out many
      balanced four-color arrays that satisfy only the binary line-sum laws.
+     `Erdos85BinarySquareRoutingTriangleLift` identifies the geometry hidden
+     behind each such monochromatic triangle.  Its three unique pairwise
+     ambient common neighbors lie in the routing-color component and satisfy
+     a sharp dichotomy: either all three are one shared center, or they are
+     pairwise distinct and form a rainbow owner triangle.  In the latter
+     case the three owner-edge colors are exactly the three endpoint defect
+     components.  Consequently the finite routing classification must also
+     support this star-versus-rainbow lift for every monochromatic triangle.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
