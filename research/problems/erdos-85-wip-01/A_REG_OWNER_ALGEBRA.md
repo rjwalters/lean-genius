@@ -431,3 +431,48 @@ Two cheap computational checks prevent overstatement:
 The `q=8` self-ODC feasibility test is much harder; a direct permutation SAT
 encoding did not reach a verdict in a short run.  No conclusion should be
 drawn from that timeout.
+
+### 8.3 The extra condition absent from abstract ODCs: self-indexed cycles
+
+An arbitrary ODC by perfect matchings still forgets an essential part of the
+square-order graph.  The edge labels of `H_c` are the ambient vertices `V`,
+while its ground vertices are the actual subset `c.supp` of `V`.  Hence the
+`2q` labels lying in `c` are distinguished, and their incidence with the
+ground set is forced by the internal ambient graph:
+
+```text
+e_c(x) = N_G(x) cap c             for x in c.                    (17)
+```
+
+When `m_c=2`, `G[c]` is a disjoint union of cycles (with no 4-cycle).  On a
+cycle written cyclically, (17) says
+
+```text
+e_c(x_i) = {x_(i-1), x_(i+1)}.                                  (18)
+```
+
+Thus the `2q` distinguished edges of `H_c` indexed by `c` themselves form a
+2-factor: an odd internal cycle stays one cycle under the distance-two map,
+whereas an even internal cycle splits into its two parity cycles.  In matrix
+language, if rows and columns are both restricted to `c`, the incidence
+matrix `B_c` is not arbitrary but is the symmetric adjacency matrix of
+`G[c]`:
+
+```text
+B_c[c,c] = Adj(G[c]).                                             (19)
+```
+
+Over `F_2`, a cycle block of length `ell` in (19) has nullity `1` for odd
+`ell` and nullity `2` for even `ell`; its kernel consists of constant vectors
+in the odd case and the two parity-class constants in the even case.
+
+This identifies the correct strengthened design problem.  We do not merely
+need an ODC (or a mutual pair of ODCs) by perfect matchings.  We need a family
+whose edge labels are partitioned into the ground sets of all coordinates,
+such that every diagonal label block is the symmetric cycle incidence (19),
+every off-diagonal pair obeys `B_c^T B_d=J`, and defect adjacency is
+simultaneous disjointness in every coordinate.  The `q=4` ODC countermodel
+above was not checked against (19), so it does not refute this stronger
+self-indexed statement.  This diagonal cycle constraint is the first
+graph-specific datum in the size-two reduction that is absent from ordinary
+ODC theory and from all preceding spectral transports.
