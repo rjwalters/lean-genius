@@ -1287,10 +1287,13 @@ generalized rather than merely replayed.
      six prescribed routing cycles.  Routing-row regularity leaves only four
      possible route-`a` middle vertices in that component, so
      `Erdos85BinarySquareMixedOwnerNoRainbowMiddleCollision` further forces
-     two of those cycles to share the same owner-`a` middle vertex.  The
-     remaining structural gap is to exploit the two distinct closing
-     endpoints forced by this repeated-middle incidence and derive a
-     contradiction.
+     two of those cycles to share the same owner-`a` middle vertex.
+     `Erdos85BinarySquareMixedOwnerNoRainbowFork` unpacks the cardinal
+     statement into distinct closing vertices `z₁,z₂`: both are owner-`b`
+     neighbors of the shared middle `y`, both are owner-`c` neighbors of the
+     root `x`, and each triangle `x-y-zᵢ` occupies three distinct defect
+     components.  The remaining structural gap is to rule out this forced
+     mixed-owner fork using the cross-block incidence constraints.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
