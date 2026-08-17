@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighV2CertificateAggregation
+import Proofs.Erdos85OneHighProfileTwoReciprocalInventoryTerminal
 import Proofs.Erdos85OrderFortyNineLratCertificateBase
 
 /-! # Checked profile-2 reciprocal inventory certificate 01c2be116496a476 -/
@@ -8,7 +9,7 @@ namespace Erdos85
 open Std.Tactic.BVDecide
 
 def oneHighProfileTwoReciprocalTable01c2be116496a476 : OneHighMissTable :=
-  (oneHighInventoryTables (2 : Fin 5)).get ⟨30, by native_decide⟩
+  oneHighProfileTwoReciprocalEntryInventoryTables.head (by native_decide)
 
 def oneHighProfileTwoReciprocalProofText01c2be116496a476 : String :=
   include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/v2-lrat/01c2be116496a476.v2.compact.lrat"
