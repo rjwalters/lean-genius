@@ -8,9 +8,10 @@ This mirrors ``oneHighProfileTwoReciprocalEntryInventoryTables`` from
 * the cross-miss capacity predicate holds, and
 * the relevant table coordinate ``(0, 2)`` is exactly ``2``.
 
-The default TSV output is directly usable as a targeted solver/certificate
-manifest.  ``--jsonl-output`` additionally writes the original inventory
-records for the selected tags, preserving their authoritative table format.
+The default TSV output is a targeted certificate manifest.
+``--jsonl-output`` writes original authoritative inventory records, while
+``--queue-output`` writes the legacy table-dictionary JSONL consumed directly
+by ``queue_v2.py`` and ``sweep_worker.py``.
 """
 
 from __future__ import annotations
@@ -53,6 +54,11 @@ def main() -> None:
         "--jsonl-output",
         type=Path,
         help="write selected authoritative JSONL records to this path",
+    )
+    parser.add_argument(
+        "--queue-output",
+        type=Path,
+        help="write selected table dictionaries for queue_v2.py",
     )
     parser.add_argument("--summary-only", action="store_true")
     args = parser.parse_args()
@@ -109,6 +115,23 @@ def main() -> None:
         args.jsonl_output.write_text(
             "".join(records[tag] + "\n" for tag, _, _ in selected)
         )
+
+    if args.queue_output:
+        queue_lines = []
+        for expected_tag, values, _ in selected:
+            table = {
+                str(pair): value
+                for pair, value in zip(TABLE_PAIRS, values, strict=True)
+                if value != 0
+            }
+            line = json.dumps(table, separators=(",", ":"))
+            parsed_values = tuple(
+                int(json.loads(line).get(str(pair), 0)) for pair in TABLE_PAIRS
+            )
+            if worker_tag(parsed_values) != expected_tag:
+                raise ValueError(f"queue serialization changed tag {expected_tag}")
+            queue_lines.append(line)
+        args.queue_output.write_text("".join(line + "\n" for line in queue_lines))
 
     if not args.summary_only:
         print("profile\ttag\tlatest_status\ttable_values")
