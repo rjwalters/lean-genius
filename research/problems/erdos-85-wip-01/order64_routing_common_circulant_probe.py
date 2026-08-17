@@ -12,8 +12,10 @@ Z3 proves that no such common table exists.  The stronger optional ``even``
 case additionally imposes ``p(t)=p(-t)``.  In contrast, allowing the six
 pair tables to differ produces explicit SAT models even after fixing the
 first table to ``t mod 4`` or ``(t // 2) mod 4``.  Thus the currently proved
-routing-array axioms do not by themselves close the branch: the next model
-must retain the cross-incidence/owner-factor certificate.
+routing-array axioms do not by themselves close the branch.  Both displayed
+SAT atlases become UNSAT when the ten symmetric 2-regular incidence blocks
+and the exact Gram factorization ``R_ce(d)=B_dc^T B_de`` are imposed.  This
+confirms computationally that the next full model must retain that certificate.
 """
 
 from __future__ import annotations
@@ -111,6 +113,62 @@ def solve_pair_dependent(first_table: list[int]) -> tuple[z3.CheckSatResult, lis
     return result, witness
 
 
+def check_incidence_factorization(witness: list[list[int]]) -> z3.CheckSatResult:
+    """Test exact realization by ten symmetric 2-regular incidence blocks."""
+    pair_order = list(itertools.combinations(range(4), 2))
+    tables = dict(zip(pair_order, witness))
+
+    def routing_color(left: int, right: int, x: int, z: int) -> int:
+        if left < right:
+            return tables[left, right][(z - x) % 16]
+        return tables[right, left][(x - z) % 16]
+
+    solver = z3.Solver()
+    blocks = {
+        (i, j, x, y): z3.Bool(f"b_{witness[0][1]}_{i}_{j}_{x}_{y}")
+        for i in range(4)
+        for j in range(i, 4)
+        for x in range(16)
+        for y in range(16)
+    }
+    for i in range(4):
+        for x in range(16):
+            solver.add(z3.Not(blocks[i, i, x, x]))
+            for y in range(x):
+                solver.add(blocks[i, i, x, y] == blocks[i, i, y, x])
+
+    def incidence(left: int, right: int, x: int, y: int):
+        if left <= right:
+            return blocks[left, right, x, y]
+        return blocks[right, left, y, x]
+
+    for left in range(4):
+        for right in range(4):
+            for x in range(16):
+                solver.add(
+                    z3.PbEq(
+                        [(incidence(left, right, x, y), 1) for y in range(16)],
+                        2,
+                    )
+                )
+    for left, right in itertools.combinations(range(4), 2):
+        for routing_component in range(4):
+            for x in range(16):
+                for z in range(16):
+                    product_terms = [
+                        z3.And(
+                            incidence(routing_component, left, y, x),
+                            incidence(routing_component, right, y, z),
+                        )
+                        for y in range(16)
+                    ]
+                    target = int(
+                        routing_color(left, right, x, z) == routing_component
+                    )
+                    solver.add(z3.PbEq([(term, 1) for term in product_terms], target))
+    return solver.check()
+
+
 def main() -> None:
     common_results = {"common": solve_common(False), "common-even": solve_common(True)}
     for name, result in common_results.items():
@@ -129,6 +187,10 @@ def main() -> None:
             raise SystemExit(f"expected {name} to be SAT")
         for pair, table in zip(itertools.combinations(range(4), 2), witness):
             print(f"  {pair}: {table}")
+        factorization = check_incidence_factorization(witness)
+        print(f"  exact-incidence-factorization: {factorization}")
+        if factorization != z3.unsat:
+            raise SystemExit(f"expected {name}'s factorization to be UNSAT")
 
 
 if __name__ == "__main__":
