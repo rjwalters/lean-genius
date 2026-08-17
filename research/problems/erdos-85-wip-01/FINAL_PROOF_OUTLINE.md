@@ -812,10 +812,17 @@ generalized rather than merely replayed.
      0 <= C_c <= q^2 I,   trace(C_c^2) = q^2 trace(C_c)   (m_c=1)
      ```
 
-     yields endpoint spectral rigidity.  The remaining interface is to cast
-     the integer centered-owner package uniformly to the real matrix theorem,
-     extract the endpoint multiplicities/rank, and feed that equality case
-     back into the self-indexed block.  The
+     yields endpoint spectral rigidity.  The integer-to-real interface and
+     its application to the actual unit sector are now `PROVEN` in
+     `Erdos85BinarySquareUnitOwnerProjection`:
+     `binarySquare_regular_unit_centeredOwnerGram_real_mul_self` proves
+     `C_c^2 = q^2 C_c`, while
+     `binarySquare_regular_unit_centeredOwnerGram_real_eigenvalue_eq_zero_or_sq`
+     proves every real eigenvalue is `0` or `q^2`.  The proof reconstructs
+     real Gram/centering positivity, the real Laplacian upper bound, and casts
+     the exact integer trace moment.  The remaining interface is to extract
+     the endpoint multiplicities/rank (the trace predicts rank `q-1`) and feed
+     that equality case back into the self-indexed block.  The
      remaining classification must exploit the self-indexed diagonal block
      of each summand (or its rank/spectrum) to distinguish `q=4` from
      `q >= 8`.
