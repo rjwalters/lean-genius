@@ -276,8 +276,10 @@ generalized rather than merely replayed.
     and `h>0`, the factors are coprime;
     `squareOrder_combinedDefectFactors_dvd_defectCharpoly` proves their product
     divides the full defect characteristic polynomial. The remaining work is
-    to construct the residual polynomial and consume its degree and trace/root
-    moments.
+    not merely to construct the residual polynomial: the `q=8` census below
+    shows that low-order residual trace/Cauchy bounds are too slack to be a
+    terminal. Any useful spectral consumer must encode additional vertex-level
+    structure.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
@@ -316,12 +318,26 @@ generalized rather than merely replayed.
     combine the exact Dirichlet/third-moment budget with the proved `h-1`
     multiplicity of the defect eigenvalue `-1` and the proved incidence
     charpoly factor of discriminant `q²-4h`. Their coprime product divisibility
-    is now proved. The immediate GAP is the residual spectral consumer: derive
-    its exact degree and defect trace/root constraints after removing both
-    factors, and test whether they eliminate all parameterized heterogeneous
-    profiles. This is the largest mathematical hole in the binary branch.
-    Generalizing certificate families is not a substitute for finding these
-    statements.
+    is now proved, but a `q=8` exact census gives strong negative evidence
+    against a scalar terminal:
+
+    - the moment equations leave 77 profiles across
+      `h ∈ {2,4,6,8,10,12}` (respectively `1,4,12,29,22,9`);
+    - exact weight-class defect-edge feasibility kills only seven
+      (`h=8: 29→25`, `h=12: 9→6`);
+    - all 77 survive the `-1` multiplicity plus defect trace-two/Cauchy budget;
+      `BᵀB=qI+J` supplies no additional class-level equation.
+
+    The incidence quadratic is already forced by the same pointwise
+    `(D+I)k=h1` system; its two roots consume only `q²-2q+2-2h` of the defect
+    square trace, leaving a large residual budget at `q=8`. Thus the revised
+    immediate GAP is **vertex-level structure**, not more low-order spectral
+    bookkeeping: branch partitions, induced matching/miss constraints, or a
+    new uniform relation coupling `D` back to common-neighbor ownership in
+    `G`. A vertex-level `q=8` model search is being used only to discover the
+    first such obstruction, not as a certificate terminal. This is the largest
+    mathematical hole in the binary branch. Generalizing certificate families
+    is not a substitute for finding these statements.
 
 ### A6. Binary branch capstone
 
