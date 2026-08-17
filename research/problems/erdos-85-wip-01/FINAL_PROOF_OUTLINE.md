@@ -373,6 +373,12 @@ generalized rather than merely replayed.
      the ambient vertices and complement edges form an exact bijective design;
      `binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective`
      records the injective half directly as a reusable selector-map theorem.
+     The range theorem
+     `binarySquare_regular_sizeTwoPart_componentNeighborFinset_range` and the
+     explicit equivalence
+     `binarySquare_regular_sizeTwoPart_selector_equiv_nondefectPairs` package
+     the full statement: ambient vertices are canonically equivalent to the
+     non-defect two-element pairs in `c`.
      This is the concrete interface for decomposing the complement edges into
      regular layers indexed by source defect components.  The `PROVEN` theorem
      `binarySquare_regular_selector_incidence_from_component` supplies the

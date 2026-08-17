@@ -1431,6 +1431,111 @@ theorem binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective
   have hyz : y = z := hzunique y hyPair
   exact hxz.trans hyz.symm
 
+/-- The range of the selector map into a normalized size-two component is
+exactly the family of two-element pairs that are nonedges of the defect graph.
+Together with selector injectivity, this is the explicit bijective-design
+interface between ambient vertices and complement edges of `D[c]`. -/
+theorem binarySquare_regular_sizeTwoPart_componentNeighborFinset_range
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    Set.range
+        (fun x : V => componentNeighborFinset G (secondOrderDefectGraph G) c x) =
+      {s : Finset V | ∃ u v : c.supp,
+        u ≠ v ∧ ¬(secondOrderDefectGraph G).Adj u.1 v.1 ∧ s = {u.1, v.1}} := by
+  let D := secondOrderDefectGraph G
+  ext s
+  constructor
+  · rintro ⟨x, rfl⟩
+    have htwo : (componentNeighborFinset G D c x).card = 2 := by
+      have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+        G hfree hq hreg hcard (D.connectedComponentMk x) c (x := x) (by rfl)
+      rw [hc] at hmul
+      exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+    obtain ⟨u, v, huv, hpair⟩ := Finset.card_eq_two.mp htwo
+    have huMem : u ∈ componentNeighborFinset G D c x := by
+      rw [hpair]
+      simp [huv]
+    have hvMem : v ∈ componentNeighborFinset G D c x := by
+      rw [hpair]
+      simp
+    have huSupp : u ∈ c.supp :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c u).mpr
+        (Finset.mem_filter.mp huMem).2
+    have hvSupp : v ∈ c.supp :=
+      (SimpleGraph.ConnectedComponent.mem_supp_iff c v).mpr
+        (Finset.mem_filter.mp hvMem).2
+    let u' : c.supp := ⟨u, huSupp⟩
+    let v' : c.supp := ⟨v, hvSupp⟩
+    have huv' : u' ≠ v' := by
+      intro h
+      exact huv (congrArg Subtype.val h)
+    have hnotD : ¬ D.Adj u v :=
+      (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+        G hfree hq hreg hcard c hc u' v' huv').mp ⟨x, hpair⟩
+    exact ⟨u', v', huv', hnotD, hpair⟩
+  · rintro ⟨u, v, huv, hnotD, rfl⟩
+    obtain ⟨x, hx⟩ :=
+      (binarySquare_regular_sizeTwoPart_pair_iff_not_defectAdj
+        G hfree hq hreg hcard c hc u v huv).mpr hnotD
+    exact ⟨x, hx⟩
+
+/-- Explicit equivalence form of the size-two selector design: ambient
+vertices are in bijection with the non-defect pairs inside `c`, and the
+underlying pair of the equivalence is the component-neighbor selector. -/
+theorem binarySquare_regular_sizeTwoPart_selector_equiv_nondefectPairs
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hc : c.supp.ncard = q * 2) :
+    ∃ E : V ≃ {s : Finset V // ∃ u v : c.supp,
+        u ≠ v ∧ ¬(secondOrderDefectGraph G).Adj u.1 v.1 ∧ s = {u.1, v.1}},
+      ∀ x, (E x).1 =
+        componentNeighborFinset G (secondOrderDefectGraph G) c x := by
+  let target := {s : Finset V | ∃ u v : c.supp,
+    u ≠ v ∧ ¬(secondOrderDefectGraph G).Adj u.1 v.1 ∧ s = {u.1, v.1}}
+  have hrange := binarySquare_regular_sizeTwoPart_componentNeighborFinset_range
+    G hfree hq hreg hcard c hc
+  let f : V → target := fun x =>
+    ⟨componentNeighborFinset G (secondOrderDefectGraph G) c x, by
+      have hxrange : componentNeighborFinset G (secondOrderDefectGraph G) c x ∈
+          Set.range (fun y : V =>
+            componentNeighborFinset G (secondOrderDefectGraph G) c y) := ⟨x, rfl⟩
+      rw [hrange] at hxrange
+      simpa [target] using hxrange⟩
+  have hfinj : Function.Injective f := by
+    intro x y hxy
+    apply binarySquare_regular_sizeTwoPart_componentNeighborFinset_injective
+      G hfree hq hreg hcard c hc
+    exact congrArg Subtype.val hxy
+  have hfsurj : Function.Surjective f := by
+    intro s
+    have hs : s.1 ∈ {t : Finset V | ∃ u v : c.supp,
+        u ≠ v ∧ ¬(secondOrderDefectGraph G).Adj u.1 v.1 ∧ t = {u.1, v.1}} := by
+      simpa [target] using s.2
+    rw [← hrange] at hs
+    obtain ⟨x, hx⟩ := hs
+    refine ⟨x, Subtype.ext ?_⟩
+    exact hx
+  refine ⟨Equiv.ofBijective f ⟨hfinj, hfsurj⟩, ?_⟩
+  intro x
+  rfl
+
 /-- Fix a vertex of a target defect component `c`.  The component-neighbor
 selectors coming from a source defect component of normalized size `m`
 contain that vertex exactly `m` times.  When `c` has normalized size two, the
