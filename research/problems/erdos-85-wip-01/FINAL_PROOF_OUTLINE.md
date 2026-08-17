@@ -1132,7 +1132,14 @@ generalized rather than merely replayed.
      identifies it exactly with the Gram summand
      `transpose(B_dc) B_de`, and proves
      `transpose(R_ce(d)) = R_ec(d)`.  Thus endpoint reversal transposes every
-     color class without permuting its component label.
+     color class without permuting its component label.  The actual maximal
+     order-64 branch is packaged in
+     `Erdos85OrderSixtyFourFourComponentRoutingArray`: after choosing the
+     canonical cardinality equivalence from the four defect components to
+     `Fin 4`, each distinct component pair carries a `Fin 4`-valued routing
+     array.  Its Lean interface simultaneously states reversal symmetry and
+     exact four-per-color row and column fibers.  This is the finite
+     four-coordinate object that the remaining classification must rule out.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
