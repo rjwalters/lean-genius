@@ -758,6 +758,41 @@ theorem secondOrderDefect_adj_iff_componentNeighborFinset_disjoint_forall
       exact Finset.mem_filter.mpr ⟨hz'.2, rfl⟩
     exact (Finset.disjoint_left.mp (hall c)) hzx hzy
 
+/-- The owner graph of a defect component `c`: two distinct ambient vertices
+are adjacent when their unique common neighbor lies in `c`, equivalently when
+their `c`-selectors overlap. -/
+def componentOwnerGraph
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) : SimpleGraph V where
+  Adj x y := x ≠ y ∧
+    (componentNeighborFinset G D c x ∩
+      componentNeighborFinset G D c y).Nonempty
+  symm := ⟨by
+    intro x y hxy
+    exact ⟨hxy.1.symm, by simpa [Finset.inter_comm] using hxy.2⟩⟩
+  loopless := ⟨by
+    intro x hxx
+    exact hxx.1 rfl⟩
+
+noncomputable instance componentOwnerGraph.instDecidableAdj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) :
+    DecidableRel (componentOwnerGraph G D c).Adj := Classical.decRel _
+
+@[simp] theorem componentOwnerGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G D : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) (x y : V) :
+    (componentOwnerGraph G D c).Adj x y ↔
+      x ≠ y ∧ (componentNeighborFinset G D c x ∩
+        componentNeighborFinset G D c y).Nonempty := by
+  rfl
+
 /-- Every non-defect pair has a unique owner component: the unique common
 ambient neighbor of the pair lies in that component, equivalently their two
 component-neighbor selectors overlap in exactly that coordinate. -/
@@ -818,6 +853,22 @@ theorem not_secondOrderDefect_adj_iff_existsUnique_component_selector_inter_none
     exact not_secondOrderDefect_adj_of_commonNeighbor G hfree hxy
       ((G.mem_neighborFinset x z).mp hzx.1)
       ((G.mem_neighborFinset y z).mp hzy.1)
+
+/-- Graph-facing partition form of the unique-owner theorem: every non-defect
+pair is an edge of exactly one component owner graph. -/
+theorem not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {x y : V} (hxy : x ≠ y) :
+    ¬ (secondOrderDefectGraph G).Adj x y ↔
+      ∃! c : (secondOrderDefectGraph G).ConnectedComponent,
+        (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x y := by
+  simpa [componentOwnerGraph_adj, hxy] using
+    (not_secondOrderDefect_adj_iff_existsUnique_component_selector_inter_nonempty
+      G hfree hxy)
 
 /-- Triangle-free edges stay inside the defect component, so their degree at
 a vertex is bounded by the normalized component part. -/
@@ -1744,6 +1795,93 @@ theorem binarySquare_regular_selector_incidence_from_component
     G hfree hq hreg hcard c e (x := u.1) u.2
   rw [he] at hmul
   exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+
+/-- The owner graph attached to a normalized component `c` is regular of
+degree `m_c (q-1)`.  Its neighbor set at `x` is the disjoint union, over the
+`m_c` vertices of the `c`-selector of `x`, of their other `q-1` ambient
+neighbors. -/
+theorem binarySquare_regular_componentOwnerGraph_degree
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) {m_c : ℕ}
+    (hc : c.supp.ncard = q * m_c) (x : V) :
+    (componentOwnerGraph G (secondOrderDefectGraph G) c).degree x =
+      m_c * (q - 1) := by
+  let D := secondOrderDefectGraph G
+  let O := componentOwnerGraph G D c
+  let S := componentNeighborFinset G D c x
+  let F := fun z : V => (G.neighborFinset z).erase x
+  have hNeighbor : O.neighborFinset x = S.biUnion F := by
+    ext y
+    constructor
+    · intro hy
+      have hxy : O.Adj x y := (O.mem_neighborFinset x y).mp hy
+      obtain ⟨z, hz⟩ := hxy.2
+      have hzData := Finset.mem_inter.mp hz
+      have hzy : z ∈ G.neighborFinset y ∧ D.connectedComponentMk z = c := by
+        simpa [componentNeighborFinset] using hzData.2
+      apply Finset.mem_biUnion.mpr
+      refine ⟨z, hzData.1, Finset.mem_erase.mpr ⟨hxy.1.symm, ?_⟩⟩
+      exact (G.mem_neighborFinset z y).mpr
+        ((G.mem_neighborFinset y z).mp hzy.1).symm
+    · intro hy
+      obtain ⟨z, hzS, hyF⟩ := Finset.mem_biUnion.mp hy
+      have hzData : z ∈ G.neighborFinset x ∧ D.connectedComponentMk z = c := by
+        simpa [S, componentNeighborFinset] using hzS
+      have hyData := Finset.mem_erase.mp hyF
+      apply (O.mem_neighborFinset x y).mpr
+      refine ⟨hyData.1.symm, ?_⟩
+      refine ⟨z, Finset.mem_inter.mpr ⟨hzS, ?_⟩⟩
+      rw [componentNeighborFinset]
+      exact Finset.mem_filter.mpr
+        ⟨(G.mem_neighborFinset y z).mpr
+            ((G.mem_neighborFinset z y).mp hyData.2).symm,
+          hzData.2⟩
+  have hPairwise : (S : Set V).PairwiseDisjoint F := by
+    intro z hz w hw hzw
+    change Disjoint (F z) (F w)
+    rw [Finset.disjoint_left]
+    intro y hyz hyw
+    have hzData : z ∈ G.neighborFinset x ∧ D.connectedComponentMk z = c := by
+      simpa [S, componentNeighborFinset] using hz
+    have hwData : w ∈ G.neighborFinset x ∧ D.connectedComponentMk w = c := by
+      simpa [S, componentNeighborFinset] using hw
+    have hyzData := Finset.mem_erase.mp hyz
+    have hywData := Finset.mem_erase.mp hyw
+    exact hfree (containsC4_of_two_common hzw hyzData.1.symm
+      ((G.mem_neighborFinset x z).mp hzData.1)
+      ((G.mem_neighborFinset x w).mp hwData.1)
+      ((G.mem_neighborFinset z y).mp hyzData.2).symm
+      ((G.mem_neighborFinset w y).mp hywData.2).symm)
+  have hScard : S.card = m_c := by
+    have hmul := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+      G hfree hq hreg hcard (D.connectedComponentMk x) c (x := x) (by rfl)
+    rw [hc] at hmul
+    exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) hmul
+  have hFcard (z : V) (hz : z ∈ S) : (F z).card = q - 1 := by
+    have hzData : z ∈ G.neighborFinset x ∧ D.connectedComponentMk z = c := by
+      simpa [S, componentNeighborFinset] using hz
+    have hxMem : x ∈ G.neighborFinset z :=
+      (G.mem_neighborFinset z x).mpr
+        ((G.mem_neighborFinset x z).mp hzData.1).symm
+    change ((G.neighborFinset z).erase x).card = q - 1
+    rw [Finset.card_erase_of_mem hxMem, G.card_neighborFinset_eq_degree, hreg z]
+  rw [← O.card_neighborFinset_eq_degree, hNeighbor,
+    Finset.card_biUnion hPairwise]
+  calc
+    ∑ z ∈ S, (F z).card = ∑ _z ∈ S, (q - 1) := by
+      apply Finset.sum_congr rfl
+      intro z hz
+      exact hFcard z hz
+    _ = S.card * (q - 1) := by simp
+    _ = m_c * (q - 1) := by rw [hScard]
 
 /-- Pointwise owner-coordinate intersection number across distinct defect
 components.  If `x` lies in a normalized part `e`, then among the vertices of

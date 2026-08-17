@@ -441,6 +441,14 @@ generalized rather than merely replayed.
 
      This is an integral association-scheme-style constraint on every
      component partition, valid uniformly in `q`.
+     The relation is now promoted to a first-class graph:
+     `componentOwnerGraph G D c` joins exactly the pairs owned by `c`.
+     `not_secondOrderDefect_adj_iff_existsUnique_componentOwnerGraph_adj`
+     states that the owner graphs edge-partition the complement of `D`, and
+     `binarySquare_regular_componentOwnerGraph_degree` proves that the graph
+     for a normalized part `m_c` is exactly `m_c(q-1)`-regular.  This exposes
+     adjacency matrices and spectra of the owner-color classes as the next
+     uniform obstruction layer.
      The remaining subgoal is no longer an interface gap: it is to classify or
      obstruct this connected weighted cycle quotient and its rectangular
      cycle intertwiners under the square-order common-neighbor laws.
