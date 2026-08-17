@@ -254,12 +254,22 @@ generalized rather than merely replayed.
      components.  The graph-facing theorem
      `binarySquare_regular_mul_componentNeighborCard_eq_componentCard` says
      pointwise that every vertex has exactly `m_c` ambient neighbors in target
-     component `c`.  This also exposes a limitation of the earlier mod-two
-     kernel vector: if `D` is disconnected, component-constant combinations
-     can already create extra vectors in `ker A` according to the parities of
-     the `m_c`.  A successful parity terminal must therefore force genuinely
-     within-component variation (or separately eliminate the disconnected
-     partitions), rather than merely reuse nullity greater than one.
+     component `c`.  The resulting limitation of the earlier mod-two kernel
+     vector is now formal.  `defectComponentIndicatorZModTwo` is the
+     characteristic-two component indicator, and
+     `binarySquare_regular_adj_mulVec_defectComponentIndicatorZModTwo` proves
+     that `A` sends it to the constant vector `m_c`.  Consequently
+     `binarySquare_regular_defectComponentIndicator_mem_kernel_of_evenRow`
+     puts every even part directly in `ker A`, while
+     `binarySquare_regular_add_defectComponentIndicators_mem_kernel` does the
+     same for any two parts of equal parity.  Thus disconnected
+     component-constant combinations genuinely do account for many extra
+     kernel vectors.  In particular the alternating-matrix second vector is
+     automatic when there are at least three parts (two have equal parity),
+     and for two even parts; only the connected case and the two-odd-part case
+     necessarily demand within-component variation.  A successful parity
+     terminal must address that split rather than merely reuse nullity greater
+     than one.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;

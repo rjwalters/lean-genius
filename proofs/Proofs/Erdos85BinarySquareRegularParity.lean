@@ -602,6 +602,148 @@ theorem binarySquare_regular_mul_componentNeighborCard_eq_componentCard
   exact binarySquare_regular_mul_componentQuotient_eq_componentCard
     G hfree hq hreg hcard e c
 
+/-- Every row of the defect-component quotient is identical. -/
+theorem binarySquare_regular_componentQuotient_row_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e e' c : (secondOrderDefectGraph G).ConnectedComponent) :
+    componentQuotientMatrix G (secondOrderDefectGraph G) e c =
+      componentQuotientMatrix G (secondOrderDefectGraph G) e' c := by
+  have he := binarySquare_regular_mul_componentQuotient_eq_componentCard
+    G hfree hq hreg hcard e c
+  have he' := binarySquare_regular_mul_componentQuotient_eq_componentCard
+    G hfree hq hreg hcard e' c
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (he.trans he'.symm)
+
+/-- Pointwise equitability with a fixed reference row: the number of
+neighbors of an arbitrary vertex in `c` is the same quotient entry, with no
+dependence on the source component. -/
+theorem binarySquare_regular_componentNeighborCard_eq_quotient
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c : (secondOrderDefectGraph G).ConnectedComponent) (x : V) :
+    (componentNeighborFinset G (secondOrderDefectGraph G) c x).card =
+      componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c := by
+  let e := (secondOrderDefectGraph G).connectedComponentMk x
+  have hlocal := binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    G hfree hq hreg hcard e c (x := x) (by rfl)
+  have href := binarySquare_regular_mul_componentQuotient_eq_componentCard
+    G hfree hq hreg hcard e₀ c
+  exact Nat.eq_of_mul_eq_mul_left (by omega : 0 < q) (hlocal.trans href.symm)
+
+/-- Characteristic-two indicator of one defect component. -/
+def defectComponentIndicatorZModTwo
+    {V : Type*} (D : SimpleGraph V) [DecidableEq D.ConnectedComponent]
+    (c : D.ConnectedComponent) : V → ZMod 2 :=
+  fun x => if D.connectedComponentMk x = c then 1 else 0
+
+/-- **Component-constant mod-two action.**  The ambient adjacency matrix sends
+the indicator of a defect component `c` to the constant vector whose value is
+the common quotient entry toward `c`.  This is the formal source of the
+automatic quotient-kernel vectors in disconnected candidates. -/
+theorem binarySquare_regular_adj_mulVec_defectComponentIndicatorZModTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c : (secondOrderDefectGraph G).ConnectedComponent) :
+    (G.adjMatrix (ZMod 2)).mulVec
+        (defectComponentIndicatorZModTwo (secondOrderDefectGraph G) c) =
+      fun _ => (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c :
+        ZMod 2) := by
+  funext x
+  rw [Matrix.mulVec, dotProduct]
+  simp only [SimpleGraph.adjMatrix_apply, defectComponentIndicatorZModTwo,
+    ite_mul, one_mul, zero_mul]
+  rw [← Finset.sum_filter]
+  have hfilt : Finset.univ.filter (fun y => G.Adj x y) =
+      G.neighborFinset x := by
+    ext y
+    simp [SimpleGraph.mem_neighborFinset]
+  rw [hfilt]
+  calc
+    (∑ y ∈ G.neighborFinset x,
+        if (secondOrderDefectGraph G).connectedComponentMk y = c
+          then (1 : ZMod 2) else 0) =
+        ((componentNeighborFinset G (secondOrderDefectGraph G) c x).card :
+          ZMod 2) := by
+      rw [Finset.sum_boole]
+      congr 2
+    _ = (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c :
+          ZMod 2) := by
+      exact congrArg (fun n : ℕ => (n : ZMod 2))
+        (binarySquare_regular_componentNeighborCard_eq_quotient
+          G hfree hq hreg hcard e₀ c x)
+
+/-- A component whose normalized order is even already supplies an ambient
+adjacency-kernel vector over `𝔽₂`. -/
+theorem binarySquare_regular_defectComponentIndicator_mem_kernel_of_evenRow
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c : (secondOrderDefectGraph G).ConnectedComponent)
+    (hevenRow : (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c :
+      ZMod 2) = 0) :
+    (G.adjMatrix (ZMod 2)).mulVec
+        (defectComponentIndicatorZModTwo (secondOrderDefectGraph G) c) = 0 := by
+  rw [binarySquare_regular_adj_mulVec_defectComponentIndicatorZModTwo
+    G hfree hq hreg hcard e₀ c]
+  funext x
+  simpa using hevenRow
+
+/-- Two component indicators whose normalized orders have the same parity
+also sum to an ambient adjacency-kernel vector over `𝔽₂`. -/
+theorem binarySquare_regular_add_defectComponentIndicators_mem_kernel
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e₀ c c' : (secondOrderDefectGraph G).ConnectedComponent)
+    (hparity :
+      (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c : ZMod 2) +
+        (componentQuotientMatrix G (secondOrderDefectGraph G) e₀ c' : ZMod 2) =
+          0) :
+    (G.adjMatrix (ZMod 2)).mulVec
+        (defectComponentIndicatorZModTwo (secondOrderDefectGraph G) c +
+          defectComponentIndicatorZModTwo (secondOrderDefectGraph G) c') = 0 := by
+  rw [Matrix.mulVec_add,
+    binarySquare_regular_adj_mulVec_defectComponentIndicatorZModTwo
+      G hfree hq hreg hcard e₀ c,
+    binarySquare_regular_adj_mulVec_defectComponentIndicatorZModTwo
+      G hfree hq hreg hcard e₀ c']
+  funext x
+  simpa using hparity
+
 /-- The normalized defect-component orders form an honest partition of `q`.
 Concretely, one may take the parts to be any row of the component quotient. -/
 theorem binarySquare_regular_exists_defectComponent_partition
