@@ -546,9 +546,16 @@ generalized rather than merely replayed.
      alpha(Owner(c)) <= q,
      ```
 
-     so every such defect component is a maximum coclique attaining equality
-     simultaneously in all colors.  Formalizing this sharp Hoffman step and
-     exploiting its equality partition is the next GAP in this operator lane.
+     and this is now `PROVEN`.  The reusable theorem
+     `hoffman_card_bound_of_shifted_adjMatrix_posSemidef` establishes
+     `(k+tau)|S| <= tau|V|` directly over integral adjacency matrices;
+     `binarySquare_regular_componentOwnerGraph_indepSet_card_le` specializes
+     it to `|S| <= q`.  Finally,
+     `binarySquare_regular_sizeQ_component_isMaximumIndepSet_componentOwnerGraph`
+     proves that every order-`q` defect component is a maximum coclique
+     attaining equality simultaneously in every nonzero owner color.
+     Exploiting the resulting simultaneous equality partitions is the next
+     GAP in this operator lane.
      A stronger pairwise-owner identity is now reduced to an exact bridge.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
      projectors, defect block-diagonality, and uniform component routing give
