@@ -1431,7 +1431,22 @@ generalized rather than merely replayed.
      the roots in one defect component, preserves their codegree after
      induction, and feeds the result directly to that repeated-owner-fork
      endpoint.  Thus the graph-facing near-twin hypothesis no longer has an
-     ambient-to-component gap in the no-rainbow branch.
+     ambient-to-component gap in the no-rainbow branch.  The fork-to-cycle
+     conversion is `PROVEN` in `Erdos85NearTwinOwnerFourCycle`, and the
+     condensed ambient endpoint
+     `orderSixtyFour_global_codegreeSix_forces_ownerFactor_C4` is `PROVEN` in
+     the adapter: every such near-twin forces a four-cycle in a non-base
+     restricted owner 2-factor.  The remaining local step is to exploit the
+     degree-two saturation of this closed four-cycle.
+
+     Computed classification scope (external finite-model evidence, not yet a
+     Lean theorem): every `[10,6]` and `[5,5,3,3]` representative has a
+     codegree-six nonedge, so the near-twin terminal covers those strata once
+     the owner-cycle contradiction is closed.  It is not universal for
+     `[16]`: 270 of 392 classified models are near-twin-free.  That stratum
+     therefore still needs a second terminal, naturally through codegree-five
+     nonedges or codegree-four edges.  The `[8,8]` structural cut also remains
+     separate.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in

@@ -1,4 +1,4 @@
-import Proofs.Erdos85NearTwinOwnerFork
+import Proofs.Erdos85NearTwinOwnerFourCycle
 
 /-! # Global-to-component adapter for the order-64 near-twin fork -/
 
@@ -127,6 +127,52 @@ theorem orderSixtyFour_global_codegreeSix_forces_repeatedOwnerFork
     G hfree hreg hcount d xs ys hxySub hnotInd hindCode (hno d)
   refine ⟨d, xs, ys, rfl, rfl, ?_⟩
   simpa [D, d, xs, ys] using hfork
+
+/-- Condensed global endpoint: in the no-rainbow branch, an ambient defect
+near-twin forces a four-cycle in a non-base restricted owner factor of its
+defect component. -/
+theorem orderSixtyFour_global_codegreeSix_forces_ownerFactor_C4
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hreg : ∀ z, G.degree z = 8)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 4)
+    {x y : Fin 64} (hxy : x ≠ y)
+    (hnotD : ¬ (secondOrderDefectGraph G).Adj x y)
+    (hcode : ((secondOrderDefectGraph G).adjMatrix ℤ *
+      (secondOrderDefectGraph G).adjMatrix ℤ) x y = 6)
+    (hno : ∀ d : (secondOrderDefectGraph G).ConnectedComponent,
+      ∀ a b c, a ≠ b → a ≠ c → b ≠ c →
+        ¬ routingOwnerRainbow G d a b c) :
+    ∃ d : (secondOrderDefectGraph G).ConnectedComponent,
+      ∃ xs ys : d.supp,
+        xs.1 = x ∧ ys.1 = y ∧
+        ∃ owner,
+          owner ≠ nondefectPairOwner G hfree hxy (by simpa using hnotD) ∧
+          containsC4 d.supp
+            (restrictedComponentOwnerGraph G d owner) := by
+  classical
+  let D := secondOrderDefectGraph G
+  let d := D.connectedComponentMk x
+  obtain ⟨hySupp, hindCode⟩ :=
+    defect_codegree_six_component_adapter D hcode
+  let xs : d.supp := ⟨x,
+    (ConnectedComponent.mem_supp_iff d x).mpr rfl⟩
+  let ys : d.supp := ⟨y, hySupp⟩
+  have hxySub : xs ≠ ys := by
+    intro h
+    exact hxy (congrArg Subtype.val h)
+  have hnotInd : ¬ (D.induce d.supp).Adj xs ys := by
+    simpa [D, xs, ys] using hnotD
+  obtain ⟨owner, howner, hC4⟩ :=
+    orderSixtyFour_codegreeSix_forces_ownerFactor_C4
+      G hfree hreg hcount d xs ys hxySub hnotInd hindCode (hno d)
+  refine ⟨d, xs, ys, rfl, rfl, owner, ?_, hC4⟩
+  simpa [D, d, xs, ys] using howner
 
 end
 
