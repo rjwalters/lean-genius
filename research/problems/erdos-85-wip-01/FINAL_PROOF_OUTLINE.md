@@ -1080,6 +1080,19 @@ generalized rather than merely replayed.
      factors have identical cycle-length multisets by an explicit
      combinatorial correspondence, strictly strengthening the earlier
      characteristic-polynomial equality.
+     Pairwise classification is not the end of the block constraints.  The
+     first simultaneous identity is `PROVEN` in
+     `Erdos85BinarySquareCrossBlockResolution`: resolving the ambient row
+     coordinate by its defect component gives, for distinct `c,e`,
+
+     ```text
+     sum_d transpose(B_dc) B_de = J.
+     ```
+
+     Thus the cross blocks through every intermediate coordinate jointly
+     resolve the unique-common-neighbor design.  In the all-two q=8 branch
+     this is a genuine constraint coupling all four coordinates, rather than
+     six independent paired cycle systems.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
