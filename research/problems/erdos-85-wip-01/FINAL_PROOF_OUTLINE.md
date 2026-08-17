@@ -1313,9 +1313,11 @@ generalized rather than merely replayed.
      the direct bridge from ambient separation to this split: distinct
      centers already sharing `x` (respectively `y`) have disjoint selectors
      into every component not containing that shared neighbor.  Hence on the
-     side selected by ambient-center separation, the corresponding exact
-     lift fibers cannot take the shared-hub branch and must saturate their
-     four-point routing row.  The remaining structural gap is to propagate
+     side selected by ambient-center separation,
+     `Erdos85OrderSixtyFourDistinctCentersSaturateRoutingRow` now proves that
+     the corresponding exact lift fibers cannot take either the equal-center
+     or owner-adjacent/shared-hub branch and must saturate their four-point
+     routing row.  The remaining structural gap is to propagate
      that forced saturation across the paired `b`/`c` alternatives and obtain
      a rectangle or degree contradiction.
      This ambient-adjacency symmetry is another constraint not present in an

@@ -41,6 +41,38 @@ theorem componentNeighborFinset_disjoint_of_distinct_sharedNeighbor_outside
   rw [hxv]
   exact hv₁'.2
 
+/-- Subtype-valued cross-selector version of the same separation lemma. -/
+theorem componentCrossNeighborFinset_disjoint_of_distinct_sharedNeighbor_outside
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G)
+    {source target : (secondOrderDefectGraph G).ConnectedComponent}
+    (u₁ u₂ : source.supp)
+    {x : V} (hu : u₁ ≠ u₂) (h₁ : G.Adj u₁.1 x) (h₂ : G.Adj u₂.1 x)
+    (hx : (secondOrderDefectGraph G).connectedComponentMk x ≠ target) :
+    Disjoint (componentCrossNeighborFinset G target u₁)
+      (componentCrossNeighborFinset G target u₂) := by
+  classical
+  have huval : u₁.1 ≠ u₂.1 := fun h => hu (Subtype.ext h)
+  have hamb := componentNeighborFinset_disjoint_of_distinct_sharedNeighbor_outside
+    G (secondOrderDefectGraph G) hfree target huval h₁ h₂ hx
+  rw [Finset.disjoint_left]
+  intro v hv₁ hv₂
+  have hv₁adj : G.Adj u₁.1 v.1 := (Finset.mem_filter.mp hv₁).2
+  have hv₂adj : G.Adj u₂.1 v.1 := (Finset.mem_filter.mp hv₂).2
+  have hv₁amb : v.1 ∈ componentNeighborFinset G (secondOrderDefectGraph G)
+      target u₁.1 := by
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset u₁.1 v.1).mpr hv₁adj,
+      (ConnectedComponent.mem_supp_iff target v.1).mp v.2⟩
+  have hv₂amb : v.1 ∈ componentNeighborFinset G (secondOrderDefectGraph G)
+      target u₂.1 := by
+    rw [componentNeighborFinset, Finset.mem_filter]
+    exact ⟨(G.mem_neighborFinset u₂.1 v.1).mpr hv₂adj,
+      (ConnectedComponent.mem_supp_iff target v.1).mp v.2⟩
+  exact Finset.disjoint_left.mp hamb hv₁amb hv₂amb
+
 end
 
 end Erdos85
