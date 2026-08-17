@@ -1009,6 +1009,20 @@ generalized rather than merely replayed.
      exactly on the corresponding restricted owner-factor edge and zero
      otherwise.  Thus each owner 2-factor is precisely the simple row-Gram
      graph of a rectangle-free 2-regular bipartite cross block.
+     The resulting spectral compatibility is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossFactorCospectral`.  If `B_cd` is the
+     cross-incidence matrix, then
+
+     ```text
+     B_cd B_cd^T = 2I + Adj(F_cd),
+     B_cd^T B_cd = 2I + Adj(F_dc).
+     ```
+
+     Equal size-two component orders and the rectangular `AB/BA`
+     characteristic-polynomial identity therefore imply that the paired
+     restricted owner factors `F_cd` and `F_dc` are cospectral.  Thus the
+     coordinate-indexed 2-factorizations on different components cannot be
+     chosen independently even at the level of cycle-length multisets.
      It is therefore the
      compatibility/classification of these simultaneous two-fold
      perfect-matching covers for at least four connected-complement
