@@ -892,6 +892,62 @@ theorem binarySquare_regular_allUnit_triangleFree_degree_eq_one
   exact binarySquare_regular_card_componentNeighbors_sizeQ_eq_one
     G hfree hq hreg hcard c (hall c) x
 
+/-- **All-unit parity terminal.**  An all-unit defect partition forces exactly
+one triangle-free edge at each vertex.  All remaining incident edges occur in
+pairs inside triangles, so the regular degree is odd.  In particular no such
+partition exists at positive even degree. -/
+theorem binarySquare_regular_not_allUnit_of_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (hqEven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = q) : False := by
+  have hV : Nonempty V := Fintype.card_pos_iff.mp (by
+    rw [hcard]
+    positivity)
+  let x : V := Classical.choice hV
+  have hlocal := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  have htf := binarySquare_regular_allUnit_triangleFree_degree_eq_one
+    G hfree hq hreg hcard hall x
+  have htfcard : (triangleFreeNeighbors G x).card = 1 := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset] at htf
+    exact htf
+  rw [hreg x, htfcard] at hlocal
+  obtain ⟨m, hm⟩ := hqEven
+  omega
+
+/-- Hence the all-unit defect-component partition is impossible at every
+binary prime-power degree in the square-order range. -/
+theorem binarySquare_regular_not_allUnit_of_two_pow
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hq : 3 ≤ 2 ^ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcard : Fintype.card V = (2 ^ k) * (2 ^ k))
+    (hall : ∀ c : (secondOrderDefectGraph G).ConnectedComponent,
+      c.supp.ncard = 2 ^ k) : False := by
+  have hk : k ≠ 0 := by
+    intro hk
+    simp [hk] at hq
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk
+  have hEven : Even (2 ^ (j + 1)) := by
+    refine ⟨2 ^ j, ?_⟩
+    rw [pow_succ]
+    omega
+  exact binarySquare_regular_not_allUnit_of_even
+    G hfree hq hEven hreg hcard hall
+
 /-- Consequently the spanning graph of edges which lie in triangles is
 `(q-1)`-regular in the all-unit partition. -/
 theorem binarySquare_regular_allUnit_triangularEdge_degree_eq_pred
