@@ -148,6 +148,27 @@ work should add mathematically justified symmetry breaking or enumerate the
 `4^4` doubled-pair cycle-type tuples; simply extending the timeout would not
 clarify the construction.
 
+An exact local catalog (`near_latin_local_catalog.py`) further locates the
+difficulty. There are 945 perfect matchings on a ten-point fiber. For each
+doubled-pair cycle type, the number of ordered pairs of internal matchings
+whose induced 20-vertex graph is C4-free is:
+
+```text
+cycle type       compatible pairs out of 945²
+20               84,261
+6+14             85,008
+8+12             83,712
+10+10            82,330
+```
+
+Every left matching has at least 56 compatible right matchings (the minimum
+over all four types). Thus no doubled-pair type has a local obstruction. The
+missing condition is global orthogonality: the ordinary perfect matchings
+between different doubled pairs must be coordinated so that no vertex pair
+acquires common neighbors through two distinct fibers. Future reductions
+should target this matching-array condition rather than prune local cycle
+types.
+
 ## 6. Honest status in the final tree
 
 - `PROVEN-AT-49-ONLY`: the q=7 datum exists, via `boza48Graph`.
