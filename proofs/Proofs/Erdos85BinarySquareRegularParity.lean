@@ -187,4 +187,18 @@ theorem binarySquare_defect_charpoly_isSquare_zmodTwo
   rw [hcard, hk]
   ring
 
+/-- Every normalized polynomial factor occurs with even valuation in the
+mod-two defect characteristic polynomial at an even square order. -/
+theorem binarySquare_defect_charpoly_factorization_even_zmodTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    {q : ℕ} (heven : Even q) (hcard : Fintype.card V = q * q)
+    (r : Polynomial (ZMod 2)) :
+    Even (factorization
+      ((secondOrderDefectGraph G).adjMatrix (ZMod 2)).charpoly r) := by
+  obtain ⟨p, hp⟩ :=
+    binarySquare_defect_charpoly_isSquare_zmodTwo G heven hcard
+  exact factorization_even_of_eq_sq hp r
+
 end Erdos85

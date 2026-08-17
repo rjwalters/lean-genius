@@ -100,6 +100,18 @@ theorem adjMatrix_charpoly_isSquare_zmodTwo
   rw [hexpand] at hfrob
   simpa [f, p, frobenius_def] using hfrob
 
+/-- Every factor valuation of a square in a unique factorization monoid is
+even.  This is the algebraic consumer used to turn mod-two characteristic
+polynomial squarehood into component-factor parity. -/
+theorem factorization_even_of_eq_sq
+    {R : Type*} [CommMonoidWithZero R] [UniqueFactorizationMonoid R]
+    [NormalizationMonoid R] [DecidableEq R]
+    {f p : R} (h : f = p ^ 2) (r : R) :
+    Even (factorization f r) := by
+  rw [h, factorization_pow]
+  refine ⟨factorization p r, ?_⟩
+  simp [Finsupp.smul_apply, two_mul]
+
 end
 
 end Erdos85

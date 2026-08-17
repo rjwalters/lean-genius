@@ -174,12 +174,15 @@ generalized rather than merely replayed.
      `A²=I+J+D`: the defect graph is itself a simple graph on the same even
      vertex set. Accordingly `binarySquare_defect_charpoly_isSquare_zmodTwo`
      is `PROVEN` and gives `χ_D(X)=r(X)²` over `𝔽₂`. The next precise spectral
-     subgoal is the factor consumer: combine componentwise charpoly
-     factorization with unique factorization to show that every irreducible
-     mod-two factor occurs with even total multiplicity across the defect
-     components, then find a factor parity forced odd by the square-order Gram
-     or component equations. Squarehood alone is universal for even-order
-     graphs and therefore is infrastructure, not the terminal.
+     layer is partly `PROVEN`: the generic UFD lemma
+     `factorization_even_of_eq_sq` and its graph specialization
+     `binarySquare_defect_charpoly_factorization_even_zmodTwo` show that every
+     normalized mod-two polynomial factor has even valuation in `χ_D`. The
+     remaining component consumer is to combine this with a general
+     componentwise charpoly product theorem, then find a factor parity forced
+     odd by the square-order Gram or component equations. Squarehood and even
+     global valuations alone are universal for even-order graphs and therefore
+     are infrastructure, not the terminal.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
