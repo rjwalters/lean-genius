@@ -1008,7 +1008,18 @@ generalized rather than merely replayed.
      distinct defect components the forgetful map from the bipartite block
      into the ambient vertex set is injective and edge-preserving, so ambient
      `C4`-freeness excludes cross-block four-cycles.  Every connected block
-     cycle consequently has even order at least six.
+     cycle consequently has even order at least six.  Summing over connected
+     components is `PROVEN` in
+     `Erdos85BinarySquareSizeTwoCrossBipartiteComponentBound`:
+
+     ```text
+     6 * number_of_cross_cycles(c,d) <= 4q.
+     ```
+
+     In the order-64 all-two branch (`q=8`), every off-diagonal cross block
+     therefore has at most five cycle components.  This supplies a finite
+     cycle-partition search space for each of the six unordered coordinate
+     pairs.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
