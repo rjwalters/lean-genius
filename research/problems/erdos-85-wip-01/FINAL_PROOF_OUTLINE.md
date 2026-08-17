@@ -1121,7 +1121,18 @@ generalized rather than merely replayed.
      q=8 in the all-two branch this turns the four component labels into a
      four-color decomposition of the 16-by-16 endpoint array by 4-regular
      bipartite relations, rather than merely an unconstrained entrywise
-     partition of `J`.
+     partition of `J`.  These ordered routing tables are not independent:
+     `Erdos85BinarySquareCrossRoutingSymmetry` proves
+
+     ```text
+     route_ce(x,z) = route_ec(z,x).
+     ```
+
+     It packages each intermediate color as a zero-one matrix `R_ce(d)`,
+     identifies it exactly with the Gram summand
+     `transpose(B_dc) B_de`, and proves
+     `transpose(R_ce(d)) = R_ec(d)`.  Thus endpoint reversal transposes every
+     color class without permuting its component label.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
