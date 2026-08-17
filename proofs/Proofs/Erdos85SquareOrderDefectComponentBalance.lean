@@ -14,6 +14,43 @@ namespace Erdos85
 
 noncomputable section
 
+/-- If a natural-valued function has exact average `a` on a nonempty finite
+set, then it is constant or takes values strictly on both sides of `a`. -/
+theorem eq_constant_or_exists_lt_and_gt_of_card_mul_eq_sum
+    {V : Type*} [DecidableEq V] (S : Finset V) (f : V → ℕ) (a : ℕ)
+    (haverage : S.card * a = ∑ x ∈ S, f x) :
+    (∀ x ∈ S, f x = a) ∨
+      ∃ x ∈ S, ∃ y ∈ S, f x < a ∧ a < f y := by
+  classical
+  by_cases hconstant : ∀ x ∈ S, f x = a
+  · exact Or.inl hconstant
+  · right
+    push Not at hconstant
+    obtain ⟨x, hxS, hxne⟩ := hconstant
+    rcases lt_or_gt_of_ne hxne with hxlt | hxgt
+    · have hy : ∃ y ∈ S, a < f y := by
+        by_contra hno
+        push Not at hno
+        have hsum_lt : (∑ z ∈ S, f z) < ∑ _z ∈ S, a := by
+          apply Finset.sum_lt_sum
+          · exact fun z hz => hno z hz
+          · exact ⟨x, hxS, hxlt⟩
+        have : (∑ z ∈ S, f z) < S.card * a := by simpa using hsum_lt
+        omega
+      obtain ⟨y, hyS, hygt⟩ := hy
+      exact ⟨x, hxS, y, hyS, hxlt, hygt⟩
+    · have hy : ∃ y ∈ S, f y < a := by
+        by_contra hno
+        push Not at hno
+        have hsum_lt : (∑ _z ∈ S, a) < ∑ z ∈ S, f z := by
+          apply Finset.sum_lt_sum
+          · exact fun z hz => hno z hz
+          · exact ⟨x, hxS, hxgt⟩
+        have : S.card * a < ∑ z ∈ S, f z := by simpa using hsum_lt
+        omega
+      obtain ⟨y, hyS, hylt⟩ := hy
+      exact ⟨y, hyS, x, hxS, hylt, hxgt⟩
+
 /-- Weighted double counting on a vertex set closed under graph adjacency. -/
 theorem sum_closed_neighbor_weights
     {V : Type*} [Fintype V] [DecidableEq V]
@@ -142,6 +179,38 @@ theorem squareOrder_constant_incidence_defectClosed_factorization
       S.card * (c * (d - c)) := by simp
   rw [hconst_sum] at hbalance
   exact Nat.eq_of_mul_eq_mul_left hcard_pos hbalance
+
+/-- On every nonempty defect-closed low set, the incidence energy is either
+identically the global high count or crosses it strictly in both directions. -/
+theorem squareOrder_defectClosed_energy_constant_or_crosses
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d)
+    (S : Finset V)
+    (hSlow : ∀ x ∈ S, G.degree x = d)
+    (hSclosed : ∀ ⦃x y : V⦄, x ∈ S →
+      (secondOrderDefectGraph G).Adj x y → y ∈ S) :
+    (∀ x ∈ S, squareOrderHighIncidenceCount G d x *
+        (d - squareOrderHighIncidenceCount G d x) =
+          (squareOrderHighVertices G d).card) ∨
+      ∃ x ∈ S, ∃ y ∈ S,
+        squareOrderHighIncidenceCount G d x *
+            (d - squareOrderHighIncidenceCount G d x) <
+          (squareOrderHighVertices G d).card ∧
+        (squareOrderHighVertices G d).card <
+          squareOrderHighIncidenceCount G d y *
+            (d - squareOrderHighIncidenceCount G d y) := by
+  exact eq_constant_or_exists_lt_and_gt_of_card_mul_eq_sum S
+    (fun x => squareOrderHighIncidenceCount G d x *
+      (d - squareOrderHighIncidenceCount G d x))
+    (squareOrderHighVertices G d).card
+    (squareOrder_defectClosed_low_incidence_balance
+      G hfree hd hmin hcover hcard S hSlow hSclosed)
 
 end
 
