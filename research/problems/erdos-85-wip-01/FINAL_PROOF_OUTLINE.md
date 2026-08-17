@@ -576,6 +576,28 @@ generalized rather than merely replayed.
      branch, all four owner colors therefore share a common `-2` eigenspace
      of dimension at least three.  This is the precise simultaneous
      multiplicity constraint that the next finite spectral consumer may use.
+     The common subspace is now known exactly, not only from below.  The
+     `PROVEN` resolution
+
+     ```text
+     sum_c (Adj(Owner(c)) + m_c I) = A_G^2
+     ```
+
+     is `binarySquare_regular_sum_shifted_componentOwnerGraph_adjMatrix_eq_sq_rat`,
+     and symmetry of `A_G` yields the `PROVEN` equivalence
+
+     ```text
+     A_G v = 0  iff  for every c, Adj(Owner(c)) v = -m_c v
+     ```
+
+     in `binarySquare_regular_adj_mulVec_eq_zero_iff_forall_owner_bottom_rat`.
+     Thus in the q=8 all-two branch the intersection of the four `-2`
+     eigenspaces has dimension exactly three.  This does **not** by itself
+     eliminate any internal order-16 two-factor cycle partition: those cycle
+     spectra belong to the diagonal induced graphs, not to the ambient
+     adjacency kernel.  A valid finite consumer must couple the owner colors
+     (or their ranges) rather than apply the nullity statistic to each
+     diagonal cycle graph separately.
 
      Minimum defect components interact sharply with this bound.  The
      `PROVEN` theorem
