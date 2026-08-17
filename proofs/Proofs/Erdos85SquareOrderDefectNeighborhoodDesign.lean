@@ -130,6 +130,39 @@ theorem card_inter_squareOrderDefectNonneighbors_add_degrees
           (if D.Adj u v then 2 else 0)
   omega
 
+/-- Uniform high-overlap obstruction.  Two distinct vertices have at most one
+common high neighbor in a `C₄`-free graph, while both high-neighbor sets lie
+inside the global high sector.  Hence their incidence weights sum to at most
+`h+1`. -/
+theorem squareOrder_highIncidenceCount_add_le_card_high_add_one
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) (d : ℕ) {u v : V} (huv : u ≠ v) :
+    squareOrderHighIncidenceCount G d u +
+        squareOrderHighIncidenceCount G d v ≤
+      (squareOrderHighVertices G d).card + 1 := by
+  let H := squareOrderHighVertices G d
+  let A := G.neighborFinset u ∩ H
+  let B := G.neighborFinset v ∩ H
+  have hunion : (A ∪ B).card ≤ H.card := by
+    apply Finset.card_le_card
+    intro x hx
+    rcases Finset.mem_union.mp hx with hxA | hxB
+    · exact (Finset.mem_inter.mp hxA).2
+    · exact (Finset.mem_inter.mp hxB).2
+  have hinterSub : A ∩ B ⊆ G.neighborFinset u ∩ G.neighborFinset v := by
+    intro x hx
+    have hxdata := Finset.mem_inter.mp hx
+    exact Finset.mem_inter.mpr ⟨
+      (Finset.mem_inter.mp hxdata.1).1,
+      (Finset.mem_inter.mp hxdata.2).1⟩
+  have hinter : (A ∩ B).card ≤ 1 :=
+    (Finset.card_le_card hinterSub).trans
+      (common_le_one_of_not_containsC4 hfree u v huv)
+  have hsum := Finset.card_union_add_card_inter A B
+  change A.card + B.card ≤ H.card + 1
+  omega
+
 /-- Two distinct points in one original neighborhood cannot be adjacent in
 the second-order defect graph. -/
 theorem not_defectAdj_of_mem_squareOrderDefectOwnerBlock
