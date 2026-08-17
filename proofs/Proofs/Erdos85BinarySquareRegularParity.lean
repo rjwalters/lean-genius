@@ -563,4 +563,106 @@ theorem binarySquare_regular_dvd_defectComponent_card
   exact (binarySquare_regular_mul_componentQuotient_eq_componentCard
     G hfree hq hreg hcard e c).symm
 
+/-- Graph-facing form of the exact quotient formula: every vertex, regardless
+of its source defect component, has exactly `|c|/q` ambient neighbors in the
+target defect component `c`. -/
+theorem binarySquare_regular_mul_componentNeighborCard_eq_componentCard
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent)
+    {x : V} (hx : x ∈ e.supp) :
+    q * (componentNeighborFinset G (secondOrderDefectGraph G) c x).card =
+      c.supp.ncard := by
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ y : V,
+      (secondOrderDefectGraph G).degree y = q - 1 := by
+    intro y
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus y
+    change (secondOrderDefectGraph G).degree y = (q - 3) + 2 at h
+    omega
+  have hcomm : G.adjMatrix ℝ * (secondOrderDefectGraph G).adjMatrix ℝ =
+      (secondOrderDefectGraph G).adjMatrix ℝ * G.adjMatrix ℝ :=
+    adjMatrix_comm_secondOrderDefect_of_regular_field G hfree hreg
+  have hQ := componentQuotientMatrix_apply_eq
+    G (secondOrderDefectGraph G) (q - 1) hDdegree hcomm e c hx
+  rw [← hQ]
+  exact binarySquare_regular_mul_componentQuotient_eq_componentCard
+    G hfree hq hreg hcard e c
+
+/-- The normalized defect-component orders form an honest partition of `q`.
+Concretely, one may take the parts to be any row of the component quotient. -/
+theorem binarySquare_regular_exists_defectComponent_partition
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    ∃ m : (secondOrderDefectGraph G).ConnectedComponent → ℕ,
+      (∀ c, c.supp.ncard = q * m c) ∧ ∑ c, m c = q := by
+  have hV : Nonempty V := Fintype.card_pos_iff.mp (by
+    rw [hcard]
+    positivity)
+  let x : V := Classical.choice hV
+  let e := (secondOrderDefectGraph G).connectedComponentMk x
+  let m : (secondOrderDefectGraph G).ConnectedComponent → ℕ :=
+    fun c => componentQuotientMatrix G (secondOrderDefectGraph G) e c
+  refine ⟨m, ?_, ?_⟩
+  · intro c
+    exact (binarySquare_regular_mul_componentQuotient_eq_componentCard
+      G hfree hq hreg hcard e c).symm
+  · simpa [m] using
+      (show (∑ c : (secondOrderDefectGraph G).ConnectedComponent,
+          componentQuotientMatrix G (secondOrderDefectGraph G) e c) = q by
+        rw [sum_componentQuotientMatrix_row, hreg])
+
+/-- There are at most `q` defect components: their positive normalized orders
+sum to `q`. -/
+theorem binarySquare_regular_card_defectComponents_le
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q) :
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent ≤ q := by
+  obtain ⟨m, hmSize, hmSum⟩ :=
+    binarySquare_regular_exists_defectComponent_partition
+      G hfree hq hreg hcard
+  calc
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent =
+        ∑ c : (secondOrderDefectGraph G).ConnectedComponent, 1 := by simp
+    _ ≤ ∑ c : (secondOrderDefectGraph G).ConnectedComponent, m c := by
+      apply Finset.sum_le_sum
+      intro c _
+      have hcpos : 0 < c.supp.ncard := c.nonempty_supp.ncard_pos
+      have hqpos : 0 < q := by omega
+      have hmpos : 0 < m c := by
+        by_contra hm0
+        push Not at hm0
+        have : m c = 0 := by omega
+        rw [hmSize c, this, mul_zero] at hcpos
+        omega
+      omega
+    _ = q := hmSum
+
 end Erdos85

@@ -247,6 +247,20 @@ generalized rather than merely replayed.
      set, or derive an additional local block constraint that rules out every
      partition of `q` when `q` is a power of two.
 
+     The partition interpretation is itself now `PROVEN` rather than prose:
+     `binarySquare_regular_exists_defectComponent_partition` supplies positive
+     integers `m_c` with `|c|=q m_c` and `sum_c m_c=q`, while
+     `binarySquare_regular_card_defectComponents_le` gives at most `q`
+     components.  The graph-facing theorem
+     `binarySquare_regular_mul_componentNeighborCard_eq_componentCard` says
+     pointwise that every vertex has exactly `m_c` ambient neighbors in target
+     component `c`.  This also exposes a limitation of the earlier mod-two
+     kernel vector: if `D` is disconnected, component-constant combinations
+     can already create extra vectors in `ker A` according to the parities of
+     the `m_c`.  A successful parity terminal must therefore force genuinely
+     within-component variation (or separately eliminate the disconnected
+     partitions), rather than merely reuse nullity greater than one.
+
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
      quotient arguments kill eight, and R-classification plus exhaustive
