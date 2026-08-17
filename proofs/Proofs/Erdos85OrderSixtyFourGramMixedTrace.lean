@@ -64,6 +64,25 @@ theorem trace_cycleSq_mul_gram_eq_twoForty_sub_half_trace_four
   norm_num at ht ⊢
   linear_combination -ht
 
+/-- Once the Gram matrix is recognized as `6I + A_R`, the C4-free
+two-regular fourth moment `96` makes the residual mixed trace vanish.  Thus
+the exterior-pair graph carries no edge seen by the distance-two walk matrix
+of the internal cycle graph. -/
+theorem trace_cycleSq_mul_pairAdj_eq_zero
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (A AR Q : Matrix n n ℂ)
+    (hQ : Q = (6 : ℂ) • (1 : Matrix n n ℂ) + AR)
+    (htrA2 : Matrix.trace (A * A) = 32)
+    (hmixed : 2 * Matrix.trace ((A * A) * Q) = 384) :
+    Matrix.trace ((A * A) * AR) = 0 := by
+  have hexpand : (A * A) * Q =
+      (6 : ℂ) • (A * A) + (A * A) * AR := by
+    rw [hQ]
+    simp only [Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one]
+  rw [hexpand, Matrix.trace_add, Matrix.trace_smul, htrA2] at hmixed
+  norm_num at hmixed ⊢
+  linear_combination hmixed / 2
+
 end
 
 end Erdos85
