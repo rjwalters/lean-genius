@@ -139,10 +139,52 @@ sum_c r_c >= q(q-1).
 
 Thus at least `q²-q` dimensions of `1^perp` are consumed by mutually
 orthogonal owner-coordinate ranges; at most `q-1` dimensions remain in their
-common kernel. Equality in (6) would force every positive nontrivial
-eigenvalue of `M_c` to equal `q`.
+common kernel.
 
-## 5. Precise next statements
+## 5. Decisive audit: the pure spectral algebra is a transport, not a terminal
+
+The rank inequality is never the sharp information. Restrict the Gram block
+to the columns indexed by `c`. Its square is
+
+```text
+P_c A² P_c = (q-1)I_c + J_c - D_c.
+```
+
+The connected graph `D_c` is `(q-1)`-regular. Therefore
+`(q-1)I_c-D_c` is positive semidefinite with kernel exactly the constant
+line, while `J_c` is strictly positive on that line and zero on its
+orthogonal complement. The displayed matrix is positive definite. Hence the
+columns of `A P_c` are independent and
+
+```text
+rank M_c = |c| = q m_c,
+rank(M_c | 1^perp) = q m_c - 1.                (7)
+```
+
+Summing (7) gives `q²-r`, where `r` is the number of defect components. The
+common kernel on `1^perp` consequently has dimension `r-1`. This is exactly
+the component-constant subspace: a weighted combination of component
+indicators orthogonal to `1` is killed by `A`, and conversely
+`A²=(q-1)I+J-D` identifies `ker A ∩ 1^perp` with the `q-1` eigenspace of `D`.
+
+More explicitly, if `u` is a nonconstant eigenvector of `D_c` with eigenvalue
+`delta`, then transport by `A` produces an owner-coordinate vector with
+
+```text
+M_c-eigenvalue = q-1-delta,
+O_c-eigenvalue = q-m_c-1-delta,
+O_d-eigenvalue = -m_d                         (d != c).
+```
+
+Thus equations (2)-(5) reorganize the already known component spectra but do
+not constrain them further. The owner algebra is valuable infrastructure and
+a simultaneous-coordinate normal form, but **ordinary real spectral moments
+of the owner matrices alone cannot close A-REG**. Any terminal must insert a
+graph-specific condition not preserved by this transport—most plausibly the
+selector disjointness/unique-owner laws or the internal cycle restrictions for
+size-two parts.
+
+## 6. Precise next statements
 
 The immediate Lean target is OWNER-CROSS, followed by pairwise commutation.
 Both are uniform structural theorems and use no finite certificate.
@@ -151,15 +193,16 @@ The remaining mathematical terminal can now be stated narrowly:
 
 **GAP A-REG-OWNER-SPECTRUM.** Show that no family of simple regular owner
 graphs with positive parts `m_c>=2`, `sum m_c=q=2^k`, can satisfy (1), the
-owner edge partition, and the component-selector intersection laws.
+owner edge partition, and the **component-selector intersection laws**. The
+last condition is essential; deleting it leaves only the spectrally tautological
+transport above.
 
 Promising consumers are:
 
-1. strengthen (6) to equality using the rank of `A P_c A` and the known
-   `q m_c`-dimensional component coordinate;
-2. use integrality/algebraic conjugacy of the exceptional spectra in (3)-(4);
-3. combine the forced large multiplicity of eigenvalue `-m_c` in each `O_c`
-   with trace-cube/triangle counts;
+1. formalize (7) to prevent further searches for nonexistent rank slack;
+2. express selector disjointness and unique ownership directly in the joint
+   owner-matrix algebra (Hadamard products, not ordinary products);
+3. combine those entrywise laws with trace-cube/triangle counts;
 4. reduce the `m_c=2` case by inserting the already proved cycle quotient and
    selector-disjointness representation into (1).
 
