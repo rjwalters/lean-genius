@@ -76,6 +76,105 @@ theorem OneHighReciprocalIsolatedTarget.y'_hits_farBranch
     (G.neighborFinset T.y' ∩ secondLayerBranch G v u).card = 1 :=
   oneHigh_isolatedVertex_hits_farBranch (hv := hv) T.y'_mem hisolated hu
 
+/-- Choose the isolated side of a packaged target and retain its forced hit
+in any specified far branch. -/
+theorem OneHighReciprocalIsolatedTarget.isolatedSide_hits_farBranch
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    {q : OneHighReciprocalSameMissEdges G hfree hv p}
+    {w : {r : V // r ∈ G.neighborSet v}}
+    (T : OneHighReciprocalIsolatedTarget G hfree hv p q w)
+    {u : {r : V // r ∈ G.neighborSet v}}
+    (hu : u ∈ ((Finset.univ.erase w).erase (p.mate w))) :
+    (((G.neighborFinset T.y ∩ secondLayerBranch G v w).card = 0 ∧
+      (G.neighborFinset T.y ∩ secondLayerBranch G v u).card = 1) ∨
+     ((G.neighborFinset T.y' ∩ secondLayerBranch G v w).card = 0 ∧
+      (G.neighborFinset T.y' ∩ secondLayerBranch G v u).card = 1)) := by
+  rcases T.isolated with hisolated | hisolated
+  · exact Or.inl ⟨hisolated, T.y_hits_farBranch hisolated hu⟩
+  · exact Or.inr ⟨hisolated, T.y'_hits_farBranch hisolated hu⟩
+
+theorem profile_three_oneEdge_not_standardMate
+    (a b : Fin 8)
+    (ha : oneHighFamilyInternalEdges 3 a = 1)
+    (hb : oneHighFamilyInternalEdges 3 b = 1) :
+    b ≠ oneHighStandardMate a := by
+  native_decide +revert
+
+theorem profileThree_distinct_oneEdge_mem_far
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V}
+    {p : OneHighRawV2Presentation G hfree v}
+    (hprofile : p.profile = 3)
+    {wa wb : {r : V // r ∈ G.neighborSet v}}
+    (hwne : wa ≠ wb)
+    (hwa : oneHighFamilyInternalEdges p.profile (p.branchLabel wa) = 1)
+    (hwb : oneHighFamilyInternalEdges p.profile (p.branchLabel wb) = 1) :
+    wb ∈ ((Finset.univ.erase wa).erase (p.mate wa)) := by
+  have hwa' : oneHighFamilyInternalEdges 3 (p.branchLabel wa) = 1 := by
+    simpa [hprofile] using hwa
+  have hwb' : oneHighFamilyInternalEdges 3 (p.branchLabel wb) = 1 := by
+    simpa [hprofile] using hwb
+  have hlabelMate := profile_three_oneEdge_not_standardMate
+    (p.branchLabel wa) (p.branchLabel wb) hwa' hwb'
+  apply Finset.mem_erase.mpr
+  constructor
+  · intro heq
+    apply hlabelMate
+    rw [heq, p.branch_mate]
+  · exact Finset.mem_erase.mpr ⟨hwne.symm, Finset.mem_univ _⟩
+
+/-- Once the nine profile-three finite rows are checked, both surviving
+isolated targets are saturated toward the other one-edge branch. -/
+theorem OneHighReciprocalSameMissEdges.exists_mutuallySaturated_isolatedTargets_of_profileThree_checked
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    {v : Fin 49} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : p.profile = 3)
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables 3)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) stored)
+    (hchecked : ∀ table ∈ oneHighProfileThreeReciprocalEntryInventoryTables,
+      OneHighFamilyV2CheckedUnsat 3 table) :
+    ∃ w₁ w₂ : {r : Fin 49 // r ∈ G.neighborSet v},
+      w₁ ≠ w₂ ∧ w₁ ≠ q.u ∧ w₂ ≠ q.u ∧
+      oneHighFamilyInternalEdges p.profile (p.branchLabel w₁) = 1 ∧
+      oneHighFamilyInternalEdges p.profile (p.branchLabel w₂) = 1 ∧
+      ∃ (T₁ : OneHighReciprocalIsolatedTarget G hfree hv p q w₁)
+        (T₂ : OneHighReciprocalIsolatedTarget G hfree hv p q w₂),
+        (((G.neighborFinset T₁.y ∩ secondLayerBranch G v w₁).card = 0 ∧
+          (G.neighborFinset T₁.y ∩ secondLayerBranch G v w₂).card = 1) ∨
+         ((G.neighborFinset T₁.y' ∩ secondLayerBranch G v w₁).card = 0 ∧
+          (G.neighborFinset T₁.y' ∩ secondLayerBranch G v w₂).card = 1)) ∧
+        (((G.neighborFinset T₂.y ∩ secondLayerBranch G v w₂).card = 0 ∧
+          (G.neighborFinset T₂.y ∩ secondLayerBranch G v w₁).card = 1) ∨
+         ((G.neighborFinset T₂.y' ∩ secondLayerBranch G v w₂).card = 0 ∧
+          (G.neighborFinset T₂.y' ∩ secondLayerBranch G v w₁).card = 1)) := by
+  obtain ⟨w₁, w₂, hwne, hw₁u, hw₂u, hw₁Edge, hw₂Edge, hT₁, hT₂⟩ :=
+    q.exists_two_isolatedTargets_of_profileThree_checked
+      G hfree hmin hprofile stored hstored hagree hchecked
+  rcases hT₁ with ⟨T₁⟩
+  rcases hT₂ with ⟨T₂⟩
+  have hw12 := profileThree_distinct_oneEdge_mem_far
+    hprofile hwne hw₁Edge hw₂Edge
+  have hw21 := profileThree_distinct_oneEdge_mem_far
+    hprofile hwne.symm hw₂Edge hw₁Edge
+  exact ⟨w₁, w₂, hwne, hw₁u, hw₂u, hw₁Edge, hw₂Edge,
+    T₁, T₂, T₁.isolatedSide_hits_farBranch hw12,
+    T₂.isolatedSide_hits_farBranch hw21⟩
+
 theorem profile_four_oneEdge_not_standardMate
     (a b : Fin 8)
     (ha : oneHighFamilyInternalEdges 4 a = 1)
@@ -164,6 +263,91 @@ def OneHighSaturatedSameSideIsolatedPair
     (G.neighborFinset Ta.y' ∩ secondLayerBranch G v wb).card = 1 ∧
     (G.neighborFinset Tb.y' ∩ secondLayerBranch G v wa).card = 1))
 
+/-- A saturated same-side pair either closes a triangle between its two
+isolated vertices or supplies two genuine cross-detour vertices, one in each
+target branch. -/
+def OneHighSameSideTriangleOrDetour
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (wa wb : {r : V // r ∈ G.neighborSet v})
+    (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
+    (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb) : Prop :=
+  ((G.Adj Ta.y Tb.y ∨
+      ∃ za zb : V,
+        za ∈ secondLayerBranch G v wb ∧
+        zb ∈ secondLayerBranch G v wa ∧
+        G.Adj Ta.y za ∧ G.Adj Tb.y zb ∧
+        za ≠ Tb.y ∧ zb ≠ Ta.y) ∨
+   (G.Adj Ta.y' Tb.y' ∨
+      ∃ za zb : V,
+        za ∈ secondLayerBranch G v wb ∧
+        zb ∈ secondLayerBranch G v wa ∧
+        G.Adj Ta.y' za ∧ G.Adj Tb.y' zb ∧
+        za ≠ Tb.y' ∧ zb ≠ Ta.y'))
+
+theorem triangleOrDetour_of_saturatedSameSidePair
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    {G : SimpleGraph V} [DecidableRel G.Adj]
+    {hfree : ¬ containsC4 V G} {v : V} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    {q : OneHighReciprocalSameMissEdges G hfree hv p}
+    {wa wb : {r : V // r ∈ G.neighborSet v}}
+    {Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa}
+    {Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb}
+    (hsat : OneHighSaturatedSameSideIsolatedPair
+      G hfree hv p q wa wb Ta Tb) :
+    OneHighSameSideTriangleOrDetour G hfree hv p q wa wb Ta Tb := by
+  rcases hsat with hsat | hsat
+  · left
+    by_cases hab : G.Adj Ta.y Tb.y
+    · exact Or.inl hab
+    · right
+      obtain ⟨za, hza⟩ := Finset.card_eq_one.mp hsat.2.2.1
+      obtain ⟨zb, hzb⟩ := Finset.card_eq_one.mp hsat.2.2.2
+      have hzaMem : za ∈ G.neighborFinset Ta.y ∩
+          secondLayerBranch G v wb := by rw [hza]; simp
+      have hzbMem : zb ∈ G.neighborFinset Tb.y ∩
+          secondLayerBranch G v wa := by rw [hzb]; simp
+      refine ⟨za, zb, (Finset.mem_inter.mp hzaMem).2,
+        (Finset.mem_inter.mp hzbMem).2,
+        (G.mem_neighborFinset Ta.y za).mp (Finset.mem_inter.mp hzaMem).1,
+        (G.mem_neighborFinset Tb.y zb).mp (Finset.mem_inter.mp hzbMem).1,
+        ?_, ?_⟩
+      · intro heq
+        subst za
+        exact hab ((G.mem_neighborFinset Ta.y Tb.y).mp
+          (Finset.mem_inter.mp hzaMem).1)
+      · intro heq
+        subst zb
+        exact hab (((G.mem_neighborFinset Tb.y Ta.y).mp
+          (Finset.mem_inter.mp hzbMem).1).symm)
+  · right
+    by_cases hab : G.Adj Ta.y' Tb.y'
+    · exact Or.inl hab
+    · right
+      obtain ⟨za, hza⟩ := Finset.card_eq_one.mp hsat.2.2.1
+      obtain ⟨zb, hzb⟩ := Finset.card_eq_one.mp hsat.2.2.2
+      have hzaMem : za ∈ G.neighborFinset Ta.y' ∩
+          secondLayerBranch G v wb := by rw [hza]; simp
+      have hzbMem : zb ∈ G.neighborFinset Tb.y' ∩
+          secondLayerBranch G v wa := by rw [hzb]; simp
+      refine ⟨za, zb, (Finset.mem_inter.mp hzaMem).2,
+        (Finset.mem_inter.mp hzbMem).2,
+        (G.mem_neighborFinset Ta.y' za).mp (Finset.mem_inter.mp hzaMem).1,
+        (G.mem_neighborFinset Tb.y' zb).mp (Finset.mem_inter.mp hzbMem).1,
+        ?_, ?_⟩
+      · intro heq
+        subst za
+        exact hab ((G.mem_neighborFinset Ta.y' Tb.y').mp
+          (Finset.mem_inter.mp hzaMem).1)
+      · intro heq
+        subst zb
+        exact hab (((G.mem_neighborFinset Tb.y' Ta.y').mp
+          (Finset.mem_inter.mp hzbMem).1).symm)
+
 /-- Certificate-backed profile-four terminal with dirty-conservation
 saturation already assembled. -/
 theorem OneHighReciprocalSameMissEdges.exists_saturatedSameSidePair_of_profileFour_checked
@@ -206,5 +390,39 @@ theorem OneHighReciprocalSameMissEdges.exists_saturatedSameSidePair_of_profileFo
   · exact Or.inr ⟨hsame.1, hsame.2,
       Ta.y'_hits_farBranch hsame.1 hwab,
       Tb.y'_hits_farBranch hsame.2 hwba⟩
+
+/-- Fully assembled profile-four local residual: saturation plus its exact
+triangle-versus-cross-detour consequence. -/
+theorem OneHighReciprocalSameMissEdges.exists_saturated_triangleOrDetour_of_profileFour_checked
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    {v : Fin 49} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : p.profile = 4)
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables 4)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) stored)
+    (hchecked : ∀ table ∈ oneHighProfileFourReciprocalEntryInventoryTables,
+      OneHighFamilyV2CheckedUnsat 4 table) :
+    ∃ wa wb : {r : Fin 49 // r ∈ G.neighborSet v}, wa ≠ wb ∧
+      oneHighFamilyInternalEdges p.profile (p.branchLabel wa) = 1 ∧
+      oneHighFamilyInternalEdges p.profile (p.branchLabel wb) = 1 ∧
+      ∃ (Ta : OneHighReciprocalIsolatedTarget G hfree hv p q wa)
+        (Tb : OneHighReciprocalIsolatedTarget G hfree hv p q wb),
+        OneHighSaturatedSameSideIsolatedPair G hfree hv p q wa wb Ta Tb ∧
+        OneHighSameSideTriangleOrDetour G hfree hv p q wa wb Ta Tb := by
+  obtain ⟨wa, wb, hwne, hwa, hwb, Ta, Tb, hsat⟩ :=
+    q.exists_saturatedSameSidePair_of_profileFour_checked
+      G hfree hmin hprofile stored hstored hagree hchecked
+  exact ⟨wa, wb, hwne, hwa, hwb, Ta, Tb, hsat,
+    triangleOrDetour_of_saturatedSameSidePair hsat⟩
 
 end Erdos85
