@@ -650,6 +650,14 @@ generalized rather than merely replayed.
      to the complete relation with multiplicity one.  This is the precise
      mixed permutation-composition law needed for a three-coordinate parity
      argument; the matrix-to-combinatorics bridge is no longer a GAP.
+     Its first genuinely three-component consequence is also `PROVEN` as
+     `unitOwnerColors_matchingCompositions_pointwise_ne_of_intermediate_ne`:
+     for fixed distinct unit colors `c,d`, the `c`-then-`d` matching
+     compositions through two different intermediate order-`q` components
+     disagree at every source point.  Thus intermediate components themselves
+     index a second maximum-distance permutation code.  The live parity task
+     can now count/compare these composition codes against the color-indexed
+     code and the diagonal cycle permutations.
      The first such algebra-to-cycle bridge is now `PROVEN` in
      `Erdos85BinarySquareCenteredOwnerResolution`.  For the normalized
      component sizes `m_c`, the theorem

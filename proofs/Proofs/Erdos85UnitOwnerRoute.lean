@@ -81,4 +81,62 @@ theorem binarySquare_regular_unitOwnerColors_existsUnique_mixedRoute
   rw [hy] at hwmem
   simpa using hwmem
 
+/-- **Distinct-intermediate composition law.**  Fix two distinct unit owner
+colors.  Matching equivalences composed through two different intermediate
+defect components disagree at every source point.  Otherwise the two
+intermediate images would be two mixed-color routes with the same endpoints,
+contradicting uniqueness. -/
+theorem unitOwnerColors_matchingCompositions_pointwise_ne_of_intermediate_ne
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (e f f' g c d : (secondOrderDefectGraph G).ConnectedComponent)
+    (hff' : f ≠ f') (hcd : c ≠ d)
+    (hc : c.supp.ncard = q) (hd : d.supp.ncard = q)
+    (σ : g.supp ≃ f.supp) (τ : f.supp ≃ e.supp)
+    (σ' : g.supp ≃ f'.supp) (τ' : f'.supp ≃ e.supp)
+    (hσ : ∀ x : g.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 (σ x).1)
+    (hτ : ∀ y : f.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) d).Adj y.1 (τ y).1)
+    (hσ' : ∀ x : g.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) c).Adj x.1 (σ' x).1)
+    (hτ' : ∀ y : f'.supp,
+      (componentOwnerGraph G (secondOrderDefectGraph G) d).Adj y.1 (τ' y).1)
+    (x : g.supp) : τ (σ x) ≠ τ' (σ' x) := by
+  intro hout
+  let Oc := componentOwnerGraph G (secondOrderDefectGraph G) c
+  let Od := componentOwnerGraph G (secondOrderDefectGraph G) d
+  have hroute := binarySquare_regular_unitOwnerColors_existsUnique_mixedRoute
+    G hfree hq hreg hcard c d hcd hc hd x.1 (τ (σ x)).1
+  have hy :
+      (x.1 = (σ x).1 ∨ Oc.Adj x.1 (σ x).1) ∧
+      ((σ x).1 = (τ (σ x)).1 ∨ Od.Adj (σ x).1 (τ (σ x)).1) :=
+    ⟨Or.inr (hσ x), Or.inr (hτ (σ x))⟩
+  have hy' :
+      (x.1 = (σ' x).1 ∨ Oc.Adj x.1 (σ' x).1) ∧
+      ((σ' x).1 = (τ (σ x)).1 ∨ Od.Adj (σ' x).1 (τ (σ x)).1) := by
+    refine ⟨Or.inr (hσ' x), Or.inr ?_⟩
+    have houtVal : (τ' (σ' x)).1 = (τ (σ x)).1 :=
+      congrArg Subtype.val hout.symm
+    rw [← houtVal]
+    exact hτ' (σ' x)
+  have hinter : (σ x).1 = (σ' x).1 := hroute.unique hy hy'
+  have hfComp : (secondOrderDefectGraph G).connectedComponentMk (σ x).1 = f :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff f (σ x).1).mp (σ x).2
+  have hf'Comp : (secondOrderDefectGraph G).connectedComponentMk (σ' x).1 = f' :=
+    (SimpleGraph.ConnectedComponent.mem_supp_iff f' (σ' x).1).mp (σ' x).2
+  have hfeq : f = f' := by
+    calc
+      f = (secondOrderDefectGraph G).connectedComponentMk (σ x).1 := hfComp.symm
+      _ = (secondOrderDefectGraph G).connectedComponentMk (σ' x).1 := by rw [hinter]
+      _ = f' := hf'Comp
+  exact hff' hfeq
+
 end Erdos85
