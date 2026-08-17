@@ -181,11 +181,30 @@ generalized rather than merely replayed.
     |S| h = Σ_{x∈S} k(x)(q-k(x)).
     ```
 
-    This is `squareOrder_defectClosed_low_incidence_balance`. In particular,
-    `squareOrder_constant_incidence_defectClosed_factorization` proves that a
-    nonempty defect component with constant incidence `k(x)=c` forces the exact
-    global factorization `h=c(q-c)`. This is a proved terminal for equitable
-    components; the nonconstant-component branch remains open.
+    This is `squareOrder_defectClosed_low_incidence_balance`. Since `2k≤q`
+    makes `k↦k(q-k)` injective, the proved capstone
+    `squareOrder_defectClosed_factorization_or_energy_crosses` gives an
+    exhaustive component dichotomy:
+
+    ```text
+    h = c(q-c) for some c,
+    or there are x,y in one component with
+       k(x)(q-k(x)) < h < k(y)(q-k(y)).
+    ```
+
+    The first branch is therefore a precise Diophantine terminal, not merely
+    an equitable-case heuristic. In the second branch the exact identity
+
+    ```text
+    h-k(x)(q-k(x)) = Σ_{z~_D x}(k(z)-k(x))
+    ```
+
+    is `squareOrder_highIncidence_energy_laplacian`; the theorem
+    `squareOrder_highIncidence_exists_defectNeighbor_strict` proves that a
+    below-energy vertex has a defect neighbor of strictly larger incidence,
+    while an above-energy vertex has one of strictly smaller incidence. Thus
+    the remaining open subbranch is specifically a heterogeneous component
+    supporting this forced ascent/descent system.
 
 15. **`PROVEN-AT-49-ONLY` — complete finite endpoint.** The checked 48-vertex
     construction `boza48_degreeSeven_witness` and the order-49 exclusion assemble
