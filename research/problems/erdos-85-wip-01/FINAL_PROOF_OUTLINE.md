@@ -625,8 +625,13 @@ generalized rather than merely replayed.
      `m_c>=2`, `sum m_c=8`, and at most four components, while
      `orderSixtyFour_regular_four_defectComponents_all_orderSixteen` proves
      that the maximal four-component branch consists of four 16-vertex
-     components.  Binary A-REG work should proceed through these mixed
-     partitions and the centered owner/defect resolution below.
+     components.  The three-component census is now `PROVEN` in the
+     trace-facing form
+     `orderSixtyFour_regular_three_defectComponents_partition_secondMoment`:
+     the normalized partition is `4+2+2` or `3+3+2`, equivalently
+     `sum m_c^2` is `24` or `22`.  Binary A-REG work should proceed through
+     these mixed-partition moment values and the centered owner/defect
+     resolution below.
 
      A stronger pairwise-owner identity is also `PROVEN` graph-facing.
      For distinct components `c,e`, put `M_c=A P_c A=O_c+m_c I`.  Orthogonal
