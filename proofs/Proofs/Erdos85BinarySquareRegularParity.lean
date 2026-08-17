@@ -1,6 +1,7 @@
 import Proofs.Erdos85EvenExcessOneDefectKernel
 import Proofs.Erdos85AdjacencyCharpolySquareModTwo
 import Proofs.Erdos85ComponentFactorization
+import Proofs.Erdos85ComponentLocalObstruction
 
 /-!
 # Characteristic-two parity for regular square-order cores
@@ -220,5 +221,63 @@ theorem binarySquare_sum_defectComponent_charpoly_factorization_even_zmodTwo
   rw [← adjMatrix_charpoly_factorization_eq_sum_connectedComponents]
   exact binarySquare_defect_charpoly_factorization_even_zmodTwo
     G heven hcard r
+
+/-- In a regular even square-order candidate, every defect component has even
+order.  Indeed the defect graph is `(q-1)`-regular, hence odd-regular, and the
+handshaking lemma applies inside each connected component. -/
+theorem binarySquare_regular_defectComponent_card_even
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (heven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    Even (Fintype.card c.supp) := by
+  let D := secondOrderDefectGraph G
+  let H := D.induce c.supp
+  have hcensus : Fintype.card V = q * (q - 1) + 3 + (q - 3) := by
+    rw [hcard]
+    calc
+      q * q = q * ((q - 1) + 1) := by rw [Nat.sub_add_cancel (by omega : 1 ≤ q)]
+      _ = q * (q - 1) + q := by ring
+      _ = q * (q - 1) + 3 + (q - 3) := by omega
+  have hDdegree : ∀ x : V, D.degree x = q - 1 := by
+    intro x
+    have h := secondOrderDefectGraph_degree_eq_excess_add_two
+      G hfree hreg hcensus x
+    change D.degree x = (q - 3) + 2 at h
+    change D.degree x = q - 1
+    omega
+  have hHdegree : ∀ x : c.supp, H.degree x = q - 1 := by
+    intro x
+    rw [degree_induce_connectedComponent_supp D c x]
+    exact hDdegree x.1
+  have hqpredOdd : Odd (q - 1) := by
+    obtain ⟨k, hk⟩ := heven
+    refine ⟨k - 1, ?_⟩
+    omega
+  have hhandshake := H.even_card_odd_degree_vertices
+  simpa [hHdegree, hqpredOdd] using hhandshake
+
+/-- Consequently, each defect component characteristic polynomial is already
+a square modulo two individually.  This shows that global component-factor
+parity cannot by itself be the missing regular-sector contradiction. -/
+theorem binarySquare_regular_defectComponent_charpoly_isSquare_zmodTwo
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ} (hq : 3 ≤ q) (heven : Even q)
+    (hreg : ∀ x, G.degree x = q)
+    (hcard : Fintype.card V = q * q)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    ∃ p : Polynomial (ZMod 2),
+      (((secondOrderDefectGraph G).induce c.supp).adjMatrix
+        (ZMod 2)).charpoly = p ^ 2 := by
+  apply adjMatrix_charpoly_isSquare_zmodTwo
+  exact binarySquare_regular_defectComponent_card_even
+    G hfree hq heven hreg hcard c
 
 end Erdos85

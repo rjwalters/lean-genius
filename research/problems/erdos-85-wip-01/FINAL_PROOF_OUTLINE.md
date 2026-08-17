@@ -184,12 +184,21 @@ generalized rather than merely replayed.
      `adjMatrix_charpoly_factorization_eq_sum_connectedComponents` turns each
      global valuation into the sum of component valuations. Consequently
      `binarySquare_sum_defectComponent_charpoly_factorization_even_zmodTwo`
-     proves that component sum is even for every factor. The sole remaining
-     terminal in this subroute is now graph-specific: find a factor whose
-     component valuation sum is forced odd by the square-order Gram or
-     component equations. Squarehood and even global valuations alone are
-     universal for even-order graphs and therefore are infrastructure, not the
-     terminal.
+     proves that component sum is even for every factor. This initially
+     suggested seeking a graph-specific factor with odd component sum, but
+     that proposed terminal is now **ruled out**, not merely open. In a regular
+     square-order candidate the defect graph is `(q-1)`-regular; for even `q`
+     this is odd-regular, so the handshaking lemma makes every connected defect
+     component even-order. The `PROVEN` theorems
+     `binarySquare_regular_defectComponent_card_even` and
+     `binarySquare_regular_defectComponent_charpoly_isSquare_zmodTwo` show that
+     every component polynomial is itself already a square modulo two. Hence
+     every component valuation is even individually, independent of the Gram
+     equations. No odd factor sum can be forced consistently. This
+     characteristic-polynomial parity lane is useful infrastructure and a
+     decisive negative audit, but it cannot be the A-REG terminal; the search
+     must return to integral/complex Gram structure or a stronger
+     characteristic-two invariant than ordinary factor multiplicity.
 
 13b. **`AT-64-ONLY` — finite component census.** For the first binary case,
      the 16-vertex defect subproblem was reduced to 12 two-factor partitions;
