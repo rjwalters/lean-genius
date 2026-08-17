@@ -999,6 +999,11 @@ generalized rather than merely replayed.
      the corresponding cross-neighbor finsets, and proves that it is
      2-regular and `IsCycles`.  Its connected components can therefore be
      consumed directly by the existing cycle-component classification API.
+     `Erdos85BinarySquareSizeTwoCrossBipartiteParity` supplies the canonical
+     left/right two-coloring and proves that every one of these connected
+     cycle components has even order.  Thus every off-diagonal block carries
+     an explicit partition of its `4q` bipartite vertices into even cycle
+     lengths, rather than merely row/column degree data.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
