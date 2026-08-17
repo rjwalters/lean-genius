@@ -1003,7 +1003,12 @@ generalized rather than merely replayed.
      left/right two-coloring and proves that every one of these connected
      cycle components has even order.  Thus every off-diagonal block carries
      an explicit partition of its `4q` bipartite vertices into even cycle
-     lengths, rather than merely row/column degree data.
+     lengths, rather than merely row/column degree data.  The girth refinement
+     is `PROVEN` in `Erdos85BinarySquareSizeTwoCrossBipartiteGirth`: for
+     distinct defect components the forgetful map from the bipartite block
+     into the ambient vertex set is injective and edge-preserving, so ambient
+     `C4`-freeness excludes cross-block four-cycles.  Every connected block
+     cycle consequently has even order at least six.
      This ambient-adjacency symmetry is another constraint not present in an
      arbitrary family of ODC pages or a bare line-sum-two tensor.
      Its row-Gram/owner consequence is `PROVEN` in
