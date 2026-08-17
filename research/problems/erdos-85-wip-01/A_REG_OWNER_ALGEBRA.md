@@ -287,3 +287,71 @@ The useful next object is therefore the full line-graph identification (or
 its Hadamard adjacency identity), combined across two different size-two
 coordinates.  Cross-coordinate compatibility is information absent from
 each individual spectrum and from (8).
+
+## 8. Two size-two coordinates are orthogonal edge bijections
+
+The cross-coordinate content of the preceding line-graph form has a compact
+purely combinatorial statement.  Suppose `m_c=m_d=2`, let
+
+```text
+H_c = complement(D_c),       H_d = complement(D_d),
+```
+
+and use the two selector equivalences to label every ambient vertex `x` by
+an edge `e_c(x)` of `H_c` and an edge `e_d(x)` of `H_d`.  Both graphs have
+`2q` vertices, are `q`-regular, and have `q^2` edges.  The resulting edge
+bijection
+
+```text
+phi_cd : E(H_c) -> E(H_d),       e_c(x) |-> e_d(x)
+```
+
+has the orthogonality property
+
+```text
+intersecting edges of H_c map to disjoint edges of H_d.             (13)
+```
+
+This is just edge-disjointness of the owner colors: intersection is
+adjacency in the corresponding line graph.  It has a stronger equivalent
+star form.  For every vertex `u` of `H_c`, the `q` edges in its star map to
+`q` pairwise disjoint edges of `H_d`; since `H_d` has `2q` vertices, they
+form a perfect matching.  Thus the `2q` stars of `H_c` become a two-fold
+perfect-matching cover of `H_d`.  Matchings indexed by adjacent vertices of
+`H_c` share exactly the image of their common edge, while matchings indexed
+by nonadjacent vertices are disjoint.
+
+In incidence-matrix notation this becomes especially transparent.  Let
+`B_c,B_d` be the `q^2 by 2q` unsigned incidence matrices of `H_c,H_d`, with
+rows identified by the ambient vertices.  Then
+
+```text
+B_c^T B_d = J_(2q).                                               (14)
+```
+
+Indeed, a vertex of `D_c` and a vertex of the distinct defect component
+`D_d` are a non-defect pair, hence have exactly one common ambient neighbor.
+Conversely, (14) says every `c`-star maps to a perfect matching in `H_d`.
+It also immediately recovers OWNER-CROSS in this case:
+
+```text
+(B_c B_c^T)(B_d B_d^T) = B_c J B_d^T = 4J.
+```
+
+This reduction isolates the missing invariant more sharply than triangle
+counts: rule out a sufficiently large family of pairwise orthogonal edge
+bijections between connected-complement `q`-regular graphs on `2q` vertices.
+The qualifier is essential.  `K_(q,q)` admits the familiar Latin-square
+models of such orthogonality, but its complement is two disjoint `q`-cliques
+and therefore represents two forbidden unit defect parts, not one connected
+size-two part.  A terminal must use connectedness of each `D_c` (equivalently,
+exclude this split model), rather than orthogonality alone.
+
+Over `F_2`, a connected `H_c` has unsigned incidence rank `2q-1`, and (14)
+reduces to a rank-one cross pairing.  The even-coefficient subspaces of
+dimension `2q-2` from different size-two coordinates are mutually
+orthogonal.  For `q/2` size-two coordinates their dimensions sum to
+`q(q-1)`, exactly the same saturated dimension already seen over the reals.
+So a bare mod-two rank count is again tight; a successful characteristic-two
+argument must use the induced alternating/quadratic forms or the exclusion
+of the split `K_(q,q)` model.
