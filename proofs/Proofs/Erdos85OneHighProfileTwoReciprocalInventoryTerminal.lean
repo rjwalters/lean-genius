@@ -49,7 +49,7 @@ theorem OneHighReciprocalSameMissEdges.graphTable_profileTwoHasReciprocalEntry
     (hprofile : p.profile = 2)
     (huEdge : oneHighFamilyInternalEdges p.profile (p.branchLabel q.u) = 1) :
     oneHighProfileTwoHasReciprocalEntry
-      (oneHighGraphRelevantMissTable
+      (oneHighFamilyGraphTable
         (oneHighRelabeledLeafGraph G v
           (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
         p.profile) = true := by
@@ -72,8 +72,14 @@ theorem OneHighReciprocalSameMissEdges.graphTable_profileTwoHasReciprocalEntry
   have hcount := oneHighGraphSourcePairing_endpointCount G hfree hv p
     (p.branchLabel q.s) (p.branchLabel q.u)
   rw [q.source_pairing_eq_singleton (by omega), q.s_label, hu2] at hcount
-  simpa [oneHighProfileTwoHasReciprocalEntry, oneHighPairingEndpointCount,
-    oneHighLabelPairEndpointCount] using hcount.symm
+  have hrelevant : oneHighGraphRelevantMissTable
+      (oneHighRelabeledLeafGraph G v
+        (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+      p.profile 0 2 = 2 := by
+    simpa [oneHighPairingEndpointCount, oneHighLabelPairEndpointCount] using
+      hcount.symm
+  simpa [oneHighProfileTwoHasReciprocalEntry,
+    oneHighGraphRelevantMissTable, oneHighFamilyTableGet] using hrelevant
 
 /-- Complete profile-2 reciprocal residual relative to a stored capacity orbit
 representative: either that representative lies in the 78-row finite lane,
@@ -88,7 +94,7 @@ theorem OneHighReciprocalSameMissEdges.storedTable_mem_profileTwoInventory_or_is
     (stored : OneHighMissTable)
     (hstored : stored ∈ oneHighCapacityInventoryTables 2)
     (hagree : OneHighTableRelevantAgree
-      (oneHighGraphRelevantMissTable
+      (oneHighFamilyGraphTable
         (oneHighRelabeledLeafGraph G v
           (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
         p.profile)
@@ -105,5 +111,48 @@ theorem OneHighReciprocalSameMissEdges.storedTable_mem_profileTwoInventory_or_is
     exact oneHighProfileTwoHasReciprocalEntry_of_relevantAgree hagree
       (q.graphTable_profileTwoHasReciprocalEntry hprofile huEdge)
   · exact Or.inr hisolated
+
+/-- Once checked UNSAT evidence covers the exact 78-row inventory, the finite
+arm of the stored-orbit dichotomy is impossible; only the isolated-target
+packing residual remains.  This is the direct consumer socket for the
+targeted certificate campaign. -/
+theorem OneHighReciprocalSameMissEdges.exists_isolatedTarget_of_profileTwo_checked
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    {v : Fin 49} {hv : G.degree v = 8}
+    {p : OneHighRawV2Presentation G hfree v}
+    (q : OneHighReciprocalSameMissEdges G hfree hv p)
+    (hprofile : p.profile = 2)
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables 2)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile)
+      stored)
+    (hchecked : ∀ table ∈ oneHighProfileTwoReciprocalEntryInventoryTables,
+      OneHighFamilyV2CheckedUnsat 2 table) :
+    ∃ w : {r : Fin 49 // r ∈ G.neighborSet v},
+      w ≠ q.u ∧
+      Nonempty (OneHighReciprocalIsolatedTarget G hfree hv p q w) := by
+  rcases q.storedTable_mem_profileTwoInventory_or_isolatedTarget hprofile
+      stored hstored hagree with hmem | hisolated
+  · have hcertStored : OneHighFamilyV2CheckedUnsat p.profile stored := by
+      simpa [hprofile] using hchecked stored hmem
+    have hcertGraph : OneHighFamilyV2CheckedUnsat p.profile
+        (oneHighFamilyGraphTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+          p.profile) :=
+      hcertStored.transport hagree.symm
+    exact False.elim (false_of_rawOneHigh_v2Checked
+      G hfree hmin (Fintype.card_fin 49) hv p.unique_high p.external_empty
+        p.outer_degree p.mate p.mate_involutive p.mate_adj p.branchLabel
+        p.branch_mate p.leafLabel p.profile p.constraints hcertGraph)
+  · exact hisolated
 
 end Erdos85
