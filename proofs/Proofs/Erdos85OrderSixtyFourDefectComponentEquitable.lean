@@ -154,6 +154,70 @@ theorem orderSixtyFour_eight_dvd_defect_component_order
   exact (orderSixtyFour_eight_mul_componentNeighborFinset_card
     G hfree hmin hcover c x).symm
 
+/-- The entire component quotient is forced by the component orders: every
+row is the same, and eight times the entry in column `c` is `|c|`. -/
+theorem orderSixtyFour_eight_mul_componentQuotientMatrix_apply
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8)
+    (e c : (secondOrderDefectGraph G).ConnectedComponent) :
+    8 * componentQuotientMatrix G (secondOrderDefectGraph G) e c =
+      c.supp.ncard := by
+  classical
+  change 8 * (componentNeighborFinset G (secondOrderDefectGraph G) c
+    (componentRepresentative (secondOrderDefectGraph G) e)).card =
+      c.supp.ncard
+  exact orderSixtyFour_eight_mul_componentNeighborFinset_card
+    G hfree hmin hcover c _
+
+/-- There are at most eight defect components.  Together with the preceding
+quotient formula, this reduces the disconnected endpoint to a partition of
+eight into positive component weights. -/
+theorem orderSixtyFour_defect_component_count_le_eight
+    (G : SimpleGraph (Fin 64)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [DecidableEq (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 (Fin 64) G)
+    (hmin : ∀ x : Fin 64, 8 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v →
+      G.degree u = 8 ∨ G.degree v = 8) :
+    Fintype.card (secondOrderDefectGraph G).ConnectedComponent ≤ 8 := by
+  classical
+  let D := secondOrderDefectGraph G
+  change Fintype.card D.ConnectedComponent ≤ 8
+  have hsize (c : D.ConnectedComponent) : 8 ≤ c.supp.ncard := by
+    apply Nat.le_of_dvd c.nonempty_supp.ncard_pos
+    exact orderSixtyFour_eight_dvd_defect_component_order
+      G hfree hmin hcover c
+  have hsum : (∑ c : D.ConnectedComponent, c.supp.ncard) = 64 := by
+    calc
+      (∑ c : D.ConnectedComponent, c.supp.ncard) =
+          ∑ c : D.ConnectedComponent, Fintype.card c.supp := by
+        apply Finset.sum_congr rfl
+        intro c _
+        simpa [Nat.card_eq_fintype_card] using
+          (Nat.card_coe_set_eq c.supp).symm
+      _ = Fintype.card (Σ c : D.ConnectedComponent, c.supp) :=
+        Fintype.card_sigma.symm
+      _ = Fintype.card (Fin 64) :=
+        (Fintype.card_congr (vertexConnectedComponentEquiv D)).symm
+      _ = 64 := by simp
+  have hbound : 8 * Fintype.card D.ConnectedComponent ≤
+      ∑ c : D.ConnectedComponent, c.supp.ncard := by
+    calc
+      8 * Fintype.card D.ConnectedComponent =
+          ∑ _c : D.ConnectedComponent, 8 := by simp [mul_comm]
+      _ ≤ ∑ c : D.ConnectedComponent, c.supp.ncard := by
+        exact Finset.sum_le_sum fun c _ => hsize c
+  rw [hsum] at hbound
+  omega
+
 end
 
 end Erdos85
