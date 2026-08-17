@@ -111,6 +111,68 @@ theorem squareOrder_sum_highIncidence_over_defectNeighbors_add_self
   rw [hsum, Finset.card_sdiff]
   exact Nat.sub_add_cancel (Finset.card_le_card Finset.inter_subset_right)
 
+/-- At square order, neighbor degree excess is exactly the number of high
+neighbors. -/
+theorem squareOrder_neighborDegreeExcess_eq_highIncidenceCount
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) (x : V) :
+    neighborDegreeExcess G d x = squareOrderHighIncidenceCount G d x := by
+  rw [neighborDegreeExcess_eq_sum_neighborFinset]
+  have hterm : ∀ y ∈ G.neighborFinset x,
+      G.degree y - d = if G.degree y = d + 1 then 1 else 0 := by
+    intro y _hy
+    rcases squareOrder_degree_eq_or_succ_of_tightEdgeCover
+        G hfree hd hmin hcover hcard y with hyLow | hyHigh
+    · simp [hyLow]
+    · simp [hyHigh]
+  calc
+    (∑ y ∈ G.neighborFinset x, (G.degree y - d)) =
+        ∑ y ∈ G.neighborFinset x,
+          if G.degree y = d + 1 then 1 else 0 := by
+      apply Finset.sum_congr rfl
+      intro y hy
+      exact hterm y hy
+    _ = ((G.neighborFinset x).filter
+          fun y => G.degree y = d + 1).card := by
+      rw [Finset.card_filter]
+    _ = squareOrderHighIncidenceCount G d x := by
+      unfold squareOrderHighIncidenceCount
+      congr 1
+      ext y
+      simp [squareOrderHighVertices, and_comm]
+
+/-- A low vertex of high incidence `k(y)` has defect degree `d-1-k(y)`.
+Equivalently, `deg_D(y) + k(y) = d-1`. -/
+theorem squareOrder_defectDegree_add_highIncidence_eq_pred
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    {d : ℕ} (hd : 2 ≤ d) (hmin : ∀ z : V, d ≤ G.degree z)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = d ∨ G.degree v = d)
+    (hcard : Fintype.card V = d * d) {x : V}
+    (hx : G.degree x = d) :
+    (secondOrderDefectGraph G).degree x +
+      squareOrderHighIncidenceCount G d x = d - 1 := by
+  have hcard' : Fintype.card V = d * (d - 1) + 1 + (d - 1) := by
+    rw [hcard]
+    obtain ⟨e, rfl⟩ : ∃ e, d = e + 2 :=
+      ⟨d - 2, (Nat.sub_add_cancel hd).symm⟩
+    norm_num
+    ring
+  have hbudget :=
+    secondOrderDefect_degree_add_weightedExcess_add_neighborExcess
+      G hfree (d := d) (q := d - 1) (by omega) hmin hcard' x
+  rw [hx, Nat.sub_self, zero_mul, Nat.add_zero,
+    squareOrder_neighborDegreeExcess_eq_highIncidenceCount
+      G hfree hd hmin hcover hcard x] at hbudget
+  exact hbudget
+
 end
 
 end Erdos85
